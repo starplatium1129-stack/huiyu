@@ -231,10 +231,11 @@ function entryForRecord({ record, review, key }, loraVersions) {
     category = '画师风格';
     type = 'artist';
   } else if (batch === 'popular') {
-    const subject = safeSegment(record.subject, key);
-    id = `pc_${subject}`;
+    const subject = safeSegment(record.subject || record.characterId, key);
+    const blueprint = record.blueprintId ? safeSegment(record.blueprintId, '') : '';
+    id = blueprint ? `pc_${subject}_${blueprint}` : `pc_${subject}`;
     char = subject;
-    category = '热门角色';
+    category = record.adult ? '成人' : '热门角色';
     type = 'popular';
   } else if (batch === 'latest-lora') {
     const characterId = safeSegment(record.characterId, 'nene');
@@ -261,7 +262,7 @@ function entryForRecord({ record, review, key }, loraVersions) {
     story: '',
     category,
     char,
-    rating: 'All',
+    rating: record.adult ? 'R18' : 'All',
     attempt,
     type,
     image: `images/${id}.jpg`,

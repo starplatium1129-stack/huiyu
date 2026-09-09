@@ -543,6 +543,20 @@ test('showcase publish helper gates on manual review and builds per-batch entrie
     'entry provenance must carry the real top-level reviewedAt',
   );
 
+  const adultPopular = publish.entryForRecord({
+    record: {
+      batch: 'popular', key: 'popular:raiden_shogun:raiden_shogun_r18_bath',
+      characterId: 'raiden_shogun', blueprintId: 'raiden_shogun_r18_bath', adult: true,
+      displayName: '雷电将军 / 天守阁汤殿 (R18)', recordId: 'adult@attempt-1', attempt: 1,
+    },
+    review: { verdict: 'pass', recordId: 'adult@attempt-1', reviewedAt: 'x' },
+    key: 'popular:raiden_shogun:raiden_shogun_r18_bath',
+  }, {});
+  assert.strictEqual(adultPopular.entry.id, 'pc_raiden_shogun_raiden_shogun_r18_bath');
+  assert.strictEqual(adultPopular.entry.char, 'raiden_shogun');
+  assert.strictEqual(adultPopular.entry.category, '成人');
+  assert.strictEqual(adultPopular.entry.rating, 'R18');
+
   const artist = publish.entryForRecord({ record: records[2], review: review.records['artist:bunbun'], key: 'artist:bunbun' }, {});
   assert.strictEqual(artist.entry.id, 'artist_bunbun');
   assert.strictEqual(artist.entry.type, 'artist');
