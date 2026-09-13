@@ -1,0 +1,2238 @@
+{
+  "generatedAt": "2026-09-12T17:44:35.473Z",
+  "targetCharactersCount": 20,
+  "characters": [
+    {
+      "characterId": "nene",
+      "displayName": "绫地宁宁",
+      "franchise": "YUZUSOFT《サノバウィッチ / 魔女的夜宴》",
+      "sourceFile": "data/character-reference-standards.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "witch_canonical",
+          "name": "经典魔女服",
+          "prose": "wearing her signature black witch outfit with a pointed witch hat, black cape, criss-cross halter crop top with pink bow, black pleated skirt, and asymmetrical striped thigh-highs",
+          "tokens": [
+            "nene_witch_canonical",
+            "witch_hat",
+            "black_cape",
+            "criss-cross_halter",
+            "crop_top",
+            "strap_between_breasts",
+            "pink_bow",
+            "black_skirt",
+            "asymmetrical_legwear",
+            "striped_thighhighs"
+          ]
+        },
+        {
+          "outfitId": "school_uniform",
+          "name": "学院校服",
+          "prose": "wearing her neat high school uniform with white collared shirt, navy blazer, school tie, and pleated navy skirt with black knee socks",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_shirt",
+            "collared_shirt",
+            "necktie",
+            "pleated_skirt",
+            "knee_socks"
+          ]
+        },
+        {
+          "outfitId": "casual_summer",
+          "name": "日常夏装",
+          "prose": "wearing a comfortable casual light pastel summer dress with delicate floral accents and white flat shoes",
+          "tokens": [
+            "casual",
+            "summer_dress",
+            "sundress",
+            "flat_shoes"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 0,
+      "existingBlueprintsSample": []
+    },
+    {
+      "characterId": "natsume",
+      "displayName": "四季夏目",
+      "franchise": "YUZUSOFT《喫茶ステラと死神の蝶 / 星光咖啡馆与死神之蝶》",
+      "sourceFile": "data/character-reference-standards.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "cafe_uniform",
+          "name": "Café Stella 制服",
+          "prose": "wearing the elegant Café Stella uniform with a crisp collared white shirt, neat necktie, dark work apron, tailored brown pleated skirt, and black thigh-highs",
+          "tokens": [
+            "natsume_cafe_uniform",
+            "cafe_uniform",
+            "apron",
+            "white_shirt",
+            "collared_shirt",
+            "necktie",
+            "brown_skirt",
+            "pleated_skirt",
+            "black_thighhighs"
+          ]
+        },
+        {
+          "outfitId": "casual_knit",
+          "name": "秋冬针织私服",
+          "prose": "wearing a cozy oversized knit beige sweater, dark mini skirt, warm woolen scarf, and black tights",
+          "tokens": [
+            "casual",
+            "sweater",
+            "knit_sweater",
+            "scarf",
+            "black_tights",
+            "mini_skirt"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 0,
+      "existingBlueprintsSample": []
+    },
+    {
+      "characterId": "katou_megumi",
+      "displayName": "加藤惠",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "official_toyogasaki_uniform",
+          "name": "丰之崎学园水手服与红开衫",
+          "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers, with her short brown bob",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "navy_dress",
+            "white_collar",
+            "ribbon_tie",
+            "red_cardigan",
+            "open_cardigan",
+            "white_socks",
+            "loafers",
+            "short_hair",
+            "bob_cut"
+          ]
+        },
+        {
+          "outfitId": "white_beret_dress",
+          "name": "春日坡道命运白裙与贝雷帽",
+          "prose": "the iconic white one-piece summer dress with short puff sleeves, a flowing flared skirt fluttering in the spring breeze, and her signature white beret resting lightly on her short brown bob",
+          "tokens": [
+            "white_dress",
+            "one-piece_dress",
+            "puff_sleeves",
+            "flared_skirt",
+            "white_beret",
+            "beret",
+            "casual_wear",
+            "short_hair",
+            "bob_cut"
+          ]
+        },
+        {
+          "outfitId": "casual_ponytail_summer",
+          "name": "后期长发马尾夏日私服",
+          "prose": "her later-series mature style: her brown hair grown longer and tied in a neat ponytail with a hair scrunchie, wearing a sleeveless pastel pink knit top and a cream pleated midi skirt",
+          "tokens": [
+            "casual_clothes",
+            "pink_top",
+            "sleeveless",
+            "knit_top",
+            "pleated_skirt",
+            "midi_skirt",
+            "long_hair",
+            "ponytail",
+            "hair_scrunchie"
+          ]
+        },
+        {
+          "outfitId": "sensual_lace_lingerie",
+          "name": "纯白纯棉蕾丝内衣",
+          "prose": "a delicate pure white cotton lingerie set trimmed with soft floral lace: a soft-cup bra framing her modest breasts, matching lace-trimmed hipster panties, and a pale pink chiffon robe slipping off both shoulders",
+          "tokens": [
+            "white_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "cotton_panties",
+            "chiffon_robe",
+            "off_shoulder",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, porcelain-skinned body with her brown hair falling softly around her delicate collarbones, modest perky breasts with tender pink nipples, a smooth flat stomach, and a slender frame",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body",
+            "pale_skin"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "夜归连帽外套",
+          "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers, with her short brown bob",
+          "tokens": [
+            "green_hoodie",
+            "white_t-shirt",
+            "jeans",
+            "sneakers",
+            "short_hair",
+            "bob_cut"
+          ]
+        },
+        {
+          "outfitId": "sfw_kitchen_apron",
+          "name": "柠檬黄厨房围裙",
+          "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers, with her brown hair tied in a practical ponytail",
+          "tokens": [
+            "white_blouse",
+            "long_sleeves",
+            "yellow_apron",
+            "dark_pants",
+            "slippers",
+            "ponytail",
+            "hair_scrunchie"
+          ]
+        },
+        {
+          "outfitId": "sfw_bridal_lace",
+          "name": "蕾丝长袖花嫁",
+          "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps, with her short brown bob",
+          "tokens": [
+            "ivory_wedding_dress",
+            "long_sleeves",
+            "lace_overlay",
+            "long_skirt",
+            "bridal_veil",
+            "short_hair",
+            "bob_cut"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "megumi_slope_white_beret",
+          "title": "加藤惠 · 坡道上的白色贝雷帽·「那个……你刚才是在叫我吗」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "megumi_clubroom_computer_deadpan",
+          "title": "加藤惠 · 社团电脑前的无声吐槽·「伦也君……这个剧情是不是太奇怪了」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "megumi_convenience_store_night",
+          "title": "加藤惠 · 赶工后的便利店热饮",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "megumi_shopping_weekend_dress",
+          "title": "加藤惠 · 周末服装店的认真挑选·「这两件衣服……伦也君觉得哪一件更好看呢」",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "shiina_mahiru",
+      "displayName": "椎名真昼",
+      "franchise": "Otonari no Tenshi-sama",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "official_school_uniform",
+          "name": "私立高校水手西装制服",
+          "prose": "her high school uniform: a tailored navy blazer with gold crest buttons over a crisp white dress shirt and striped necktie, a pleated grey skirt, dark brown tights, and neat leather school shoes",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "navy_jacket",
+            "white_shirt",
+            "necktie",
+            "pleated_skirt",
+            "grey_skirt",
+            "pantyhose",
+            "brown_pantyhose"
+          ]
+        },
+        {
+          "outfitId": "home_cooking_apron",
+          "name": "邻家料理粉白围裙",
+          "prose": "her cozy homestyle outfit: a pastel-pink ruffled cooking apron tied over an oversized beige knit sweater and long dark skirt, her golden hair tied up in a loose side ponytail",
+          "tokens": [
+            "apron",
+            "pink_apron",
+            "ruffled_apron",
+            "oversized_sweater",
+            "knit_sweater",
+            "long_skirt",
+            "side_ponytail",
+            "hair_scrunchie"
+          ]
+        },
+        {
+          "outfitId": "casual_winter_coat",
+          "name": "冬日散步白色羽绒大衣",
+          "prose": "a warm winter date outfit: an ivory hooded duffle coat with toggles, a fluffy red-and-white plaid wool scarf wrapped around her neck, black stockings, and ankle boots",
+          "tokens": [
+            "duffle_coat",
+            "white_coat",
+            "winter_coat",
+            "plaid_scarf",
+            "scarf",
+            "black_pantyhose",
+            "boots",
+            "casual_wear"
+          ]
+        },
+        {
+          "outfitId": "sensual_lace_lingerie",
+          "name": "天使薄纱纯白内衣",
+          "prose": "an angelic pure white and pale gold lace lingerie set: a demi-cup bra lifting her modest breasts with delicate scalloped lace, matching low-rise lace panties, and a gossamer silk robe slipping down both arms",
+          "tokens": [
+            "white_lingerie",
+            "gold_trim",
+            "lace_bra",
+            "lace_panties",
+            "silk_robe",
+            "off_shoulder",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, angelically fair body with waist-length golden hair draping across her shoulders, perky soft breasts with delicate pink nipples, a slender waist, and flawless glowing porcelain skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body",
+            "pale_skin",
+            "very_long_hair"
+          ]
+        },
+        {
+          "outfitId": "bridal_wedding_dress",
+          "name": "圣洁教堂纯白花嫁婚纱",
+          "prose": "an angelically pure white wedding gown with a sweeping cathedral train and delicate lace embroidery, a translucent bridal veil over her waist-length blonde hair, and a bouquet of white calla lilies",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "lace-trimmed_dress",
+            "bouquet",
+            "white_flowers",
+            "jewelry",
+            "white_footwear"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "奶油针织居家服",
+          "prose": "an opaque cream cable-knit sweater, loose pale-blue full-length lounge trousers and soft house socks",
+          "tokens": [
+            "cream_sweater",
+            "cable_knit",
+            "pajama_pants",
+            "socks"
+          ]
+        },
+        {
+          "outfitId": "sfw_care_cardigan",
+          "name": "薄荷色照料家居装",
+          "prose": "a mint-green buttoned cardigan over an opaque ivory round-neck blouse, loose grey full-length lounge trousers and soft slippers",
+          "tokens": [
+            "mint_cardigan",
+            "buttoned_cardigan",
+            "ivory_blouse",
+            "pajama_pants",
+            "slippers"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "mahiru_rain_umbrella_park",
+          "title": "椎名真昼 · 细雨公园递出雨伞的初遇·「淋湿的话，可是会感冒的哦」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "mahiru_kitchen_apron_morning",
+          "title": "椎名真昼 · 邻家厨房围裙微烫的早餐·「周总是起这么晚……再不吃煎蛋要凉了」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "mahiru_sofa_pillow_evening",
+          "title": "椎名真昼 · 抱枕旁的读书便签",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "mahiru_balcony_hairband_dusk",
+          "title": "椎名真昼 · 阳台晚风与发绳整理·「隔壁的阳台……原来距离这么近呢」",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "gotoh_hitori",
+      "displayName": "后藤一里",
+      "franchise": "Bocchi the Rock!",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "pink_tracksuit",
+          "name": "经典粉色运动服常服",
+          "prose": "wearing her iconic oversized bright pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks, casual sneakers, and carrying a black electric guitar gig bag",
+          "tokens": [
+            "pink_tracksuit",
+            "tracksuit",
+            "track_jacket",
+            "jacket",
+            "long_sleeves",
+            "pleated_skirt",
+            "black_skirt",
+            "black_socks",
+            "sneakers",
+            "guitar_case"
+          ]
+        },
+        {
+          "outfitId": "kessoku_band_live_tshirt",
+          "name": "结束乐队Live演出T恤",
+          "prose": "wearing a black Kessoku Band graphic print t-shirt tucked into a dark pleated skirt, a red wristband, and slinging her black Gibson Les Paul Custom electric guitar across her shoulder",
+          "tokens": [
+            "black_t-shirt",
+            "t-shirt",
+            "print_t-shirt",
+            "black_skirt",
+            "pleated_skirt",
+            "wristband",
+            "electric_guitar",
+            "gibson_les_paul",
+            "guitar_strap",
+            "guitar_pick"
+          ]
+        },
+        {
+          "outfitId": "cultural_festival_maid",
+          "name": "文化祭复古黑白女仆装",
+          "prose": "wearing a classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+          "tokens": [
+            "maid_uniform",
+            "maid_dress",
+            "black_dress",
+            "white_apron",
+            "maid_apron",
+            "maid_headdress",
+            "frills",
+            "frilled_apron",
+            "thighhighs",
+            "black_thighhighs"
+          ]
+        },
+        {
+          "outfitId": "shuka_summer_uniform",
+          "name": "秀华高中夏季水手校服",
+          "prose": "wearing the official Shuka High School summer uniform featuring a short-sleeved white sailor shirt with a navy blue collar, red ribbon necktie, and neat dark pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "white_shirt",
+            "short_sleeves",
+            "sailor_collar",
+            "blue_collar",
+            "red_necktie",
+            "pleated_skirt",
+            "black_skirt",
+            "white_socks",
+            "loafers"
+          ]
+        },
+        {
+          "outfitId": "closet_pajamas_casual",
+          "name": "壁橱避难所宽松睡衣私服",
+          "prose": "wearing an oversized baggy pastel t-shirt and loose lounge shorts while wearing large over-ear monitor headphones sitting curled up inside her dimly lit cozy closet recording nook",
+          "tokens": [
+            "oversized_t-shirt",
+            "pajamas",
+            "loose_clothes",
+            "bare_legs",
+            "headphones",
+            "casual_clothes"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked with zero clothes, unexpectedly voluptuous and busty figure with soft fair skin, prominent perky pink nipples, smooth shaved exposed pussy, blushing intensely from head to toe",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "blushing",
+            "bare_feet"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "gotoh_hitori_starry_stage",
+          "title": "后藤一里 · STARRY 舞台觉醒",
+          "sampleRating": "All"
+        },
+        {
+          "id": "gotoh_hitori_closet_shelter",
+          "title": "后藤一里 · 壁橱秘密基地",
+          "sampleRating": "All"
+        },
+        {
+          "id": "gotoh_hitori_school_cultural_maid",
+          "title": "后藤一里 · 文化祭女仆危机",
+          "sampleRating": "All"
+        },
+        {
+          "id": "gotoh_hitori_park_bench_sunset",
+          "title": "后藤一里 · 黄昏公园长椅",
+          "sampleRating": "All"
+        }
+      ]
+    },
+    {
+      "characterId": "frieren",
+      "displayName": "芙莉莲",
+      "franchise": "Frieren: Beyond Journey's End",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "wizard_robe",
+          "name": "魔导师袍",
+          "prose": "her plain white robe with a deep hood and simple adventurer belt",
+          "tokens": [
+            "robe",
+            "white_robe",
+            "hood",
+            "belt",
+            "long_sleeves",
+            "staff"
+          ]
+        },
+        {
+          "outfitId": "travel_clothes",
+          "name": "旅行装",
+          "prose": "a practical traveler's cloak over simple clothes",
+          "tokens": [
+            "cloak",
+            "jacket",
+            "pants",
+            "traveling_clothes"
+          ]
+        },
+        {
+          "outfitId": "casual",
+          "name": "便服",
+          "prose": "a soft casual dress she wears away from battle",
+          "tokens": [
+            "casual_clothes",
+            "dress",
+            "cardigan"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "frieren_magic_library",
+          "title": "芙莉莲 · 魔法书研究",
+          "sampleRating": "All"
+        },
+        {
+          "id": "frieren_journey_field",
+          "title": "芙莉莲 · 旷野旅途·苍月草的花海",
+          "sampleRating": "All"
+        },
+        {
+          "id": "frieren_graveyard",
+          "title": "芙莉莲 · 墓地回忆",
+          "sampleRating": "All"
+        },
+        {
+          "id": "frieren_r18_inn_bath",
+          "title": "芙莉莲 · 旅店浴后·千年的精灵与炉火",
+          "sampleRating": "R18"
+        }
+      ]
+    },
+    {
+      "characterId": "artoria_pendragon",
+      "displayName": "阿尔托莉雅",
+      "franchise": "Fate",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "knight_dress",
+          "name": "骑士裙装",
+          "prose": "her iconic blue armored dress with a white underdress, blue cuirass and long white gloves",
+          "tokens": [
+            "dress",
+            "armor",
+            "blue_dress",
+            "white_gloves",
+            "blue_armor",
+            "bare_legs",
+            "sword"
+          ]
+        },
+        {
+          "outfitId": "casual",
+          "name": "卫宫家便服",
+          "prose": "a cozy dark blue knit cardigan over a crisp white collared shirt and skirt, her signature casual look from Today's Menu for the Emiya Family",
+          "tokens": [
+            "casual_clothes",
+            "white_shirt",
+            "collared_shirt",
+            "blue_skirt",
+            "skirt",
+            "long_sleeves"
+          ]
+        },
+        {
+          "outfitId": "bridal_dress",
+          "name": "纯白誓约露肩花嫁婚纱",
+          "prose": "an exquisite strapless white bridal gown with delicate lace embroidery, sheer translucent veil cascading over her golden braided updo, and an exposed sweetheart neckline",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "strapless_dress",
+            "bare_shoulders",
+            "cleavage",
+            "white_dress",
+            "lace_trim"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 10,
+      "existingBlueprintsSample": [
+        {
+          "id": "artoria_moonlit_city",
+          "title": "阿尔托莉雅 · 月下誓约·「请问，你是我的御主吗？」",
+          "sampleRating": "All"
+        },
+        {
+          "id": "artoria_emiya_dining",
+          "title": "阿尔托莉雅 · 卫宫家餐桌",
+          "sampleRating": "All"
+        },
+        {
+          "id": "artoria_final_battle",
+          "title": "阿尔托莉雅 · 最终决战",
+          "sampleRating": "All"
+        },
+        {
+          "id": "artoria_r18_royal_chamber",
+          "title": "阿尔托莉雅 · 纯白誓约的花嫁初夜",
+          "sampleRating": "R18"
+        }
+      ]
+    },
+    {
+      "characterId": "marcille_donato",
+      "displayName": "玛露希尔",
+      "franchise": "Delicious in Dungeon",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "sfw_travel",
+          "name": "迷宫旅行蓝色长袍",
+          "prose": "a practical blue long-sleeved robe over a cream tunic, leggings and boots",
+          "tokens": [
+            "blue_robe",
+            "long_sleeves",
+            "cream_tunic",
+            "leggings",
+            "boots"
+          ]
+        },
+        {
+          "outfitId": "sfw_rest",
+          "name": "营地休息针织便装",
+          "prose": "a cream knit top and comfortable brown trousers",
+          "tokens": [
+            "cream_sweater",
+            "brown_pants"
+          ]
+        },
+        {
+          "outfitId": "sfw_academy",
+          "name": "学院古籍阅读装",
+          "prose": "a tidy blue academic jacket, white blouse and ankle-length skirt",
+          "tokens": [
+            "blue_jacket",
+            "white_blouse",
+            "long_skirt",
+            "academic_clothes"
+          ]
+        },
+        {
+          "outfitId": "nsfw_boudoir",
+          "name": "玛露希尔·成人私密造型",
+          "prose": "a private adult ensemble built around robe, blue_robe, completely_nude",
+          "tokens": [
+            "robe",
+            "blue_robe",
+            "completely_nude"
+          ]
+        },
+        {
+          "outfitId": "sfw_bridal",
+          "name": "玛露希尔·圣洁花嫁",
+          "prose": "a blue-and-white elven bridal robe with a translucent veil, braided gold hair and a bouquet of glowing dungeon flowers",
+          "tokens": [
+            "wedding_robe",
+            "blue_white_gown",
+            "elven_veil",
+            "braided_hair",
+            "glowing_flower_bouquet"
+          ]
+        },
+        {
+          "outfitId": "sfw_beach",
+          "name": "玛露希尔·海滨泳装",
+          "prose": "a practical blue swimsuit with a cream travel robe, sun hat and a basket of carefully prepared mushroom dishes",
+          "tokens": [
+            "blue_swimsuit",
+            "cream_travel_robe",
+            "sun_hat",
+            "mushroom_basket",
+            "picnic_rock"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "苔绿露营斗篷装",
+          "prose": "a moss-green short cape over a rust-colored long-sleeved tunic, cream trousers and brown travel boots",
+          "tokens": [
+            "green_cape",
+            "rust_tunic",
+            "long_sleeves",
+            "cream_pants",
+            "boots"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "marcille_donato_sfw_b9_01",
+          "title": "玛露希尔 · 魔物料理的真香现场",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "marcille_donato_sfw_b9_02",
+          "title": "玛露希尔 · 营地里的香草面包",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "marcille_donato_sfw_b9_03",
+          "title": "玛露希尔 · 睡前的编发准备",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "marcille_donato_sfw_b9_04",
+          "title": "玛露希尔 · 迷宫营地的精灵花嫁",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "raphtalia",
+      "displayName": "拉芙塔莉雅",
+      "franchise": "The Rising of the Shield Hero",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "sfw_travel",
+          "name": "轻装旅行服",
+          "prose": "a red-brown travel tunic over a cream blouse, light leather vest, practical trousers and boots",
+          "tokens": [
+            "red_tunic",
+            "cream_blouse",
+            "leather_vest",
+            "pants",
+            "boots"
+          ]
+        },
+        {
+          "outfitId": "sfw_home",
+          "name": "营地料理便装",
+          "prose": "a cream long-sleeved blouse, brown ankle-length skirt and blue cooking apron",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "blue_apron"
+          ]
+        },
+        {
+          "outfitId": "sfw_winter",
+          "name": "冬季旅馆针织装",
+          "prose": "a warm burgundy sweater, long brown skirt and wool shawl",
+          "tokens": [
+            "burgundy_sweater",
+            "long_skirt",
+            "wool_shawl"
+          ]
+        },
+        {
+          "outfitId": "nsfw_boudoir",
+          "name": "拉芙塔莉雅·成人私密造型",
+          "prose": "a private adult ensemble built around armor, leather_armor, dressing_room, completely_nude",
+          "tokens": [
+            "armor",
+            "leather_armor",
+            "dressing_room",
+            "completely_nude"
+          ]
+        },
+        {
+          "outfitId": "sfw_bridal",
+          "name": "拉芙塔莉雅·圣洁花嫁",
+          "prose": "an ivory wedding dress with a short veil, chestnut ribbon details and practical lace-up boots",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "ivory_dress",
+            "ribbon_details",
+            "lace_up_boots"
+          ]
+        },
+        {
+          "outfitId": "sfw_beach",
+          "name": "拉芙塔莉雅·海滨泳装",
+          "prose": "a modest red-brown one-piece swimsuit with a cream beach shirt, woven belt and light sandals",
+          "tokens": [
+            "one_piece_swimsuit",
+            "red_brown_swimsuit",
+            "beach_shirt",
+            "woven_belt",
+            "sandals"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "青绿市集便装",
+          "prose": "a teal long-sleeved tunic, a cream waistcoat, brown straight trousers and sturdy lace-up boots",
+          "tokens": [
+            "teal_tunic",
+            "cream_vest",
+            "brown_pants",
+            "boots"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 10,
+      "existingBlueprintsSample": [
+        {
+          "id": "raphtalia_sfw_b6_01",
+          "title": "拉芙塔莉雅 · 晨训后的擦剑",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "raphtalia_sfw_b6_02",
+          "title": "拉芙塔莉雅 · 市集里的围巾试色",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "raphtalia_sfw_b6_03",
+          "title": "拉芙塔莉雅 · 篝火旁的晚餐分餐",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "raphtalia_sfw_b6_04",
+          "title": "拉芙塔莉雅 · 边境小镇的白誓约",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "raiden_shogun",
+      "displayName": "雷电将军",
+      "franchise": "Genshin Impact",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "shogun_robes",
+          "name": "将军神装",
+          "prose": "the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid with gold trim, pauldron, black fingerless gloves, obi, and sash",
+          "tokens": [
+            "japanese_clothes",
+            "kimono",
+            "purple_clothes",
+            "gold_trim",
+            "pauldron",
+            "black_fingerless_gloves",
+            "obi",
+            "sash",
+            "bare_shoulders",
+            "black_thighhighs",
+            "detached_sleeves",
+            "long_sleeves"
+          ]
+        },
+        {
+          "outfitId": "modern_clothes",
+          "name": "现代便服",
+          "prose": "a refined modern purple dress and her signature long single braid",
+          "tokens": [
+            "modern_clothing",
+            "dress",
+            "purple_dress",
+            "long_sleeves"
+          ]
+        },
+        {
+          "outfitId": "inazuma_bikini",
+          "name": "稻妻紫电前系带比基尼",
+          "prose": "a captivating deep purple front-tie string bikini adorned with subtle golden Mitsudomoe emblems, thin side-tie panties, bare shoulders, bare midriff, and glowing violet electro accents",
+          "tokens": [
+            "front-tie_bikini",
+            "triangle_bikini",
+            "purple_bikini",
+            "side-tie_panties",
+            "cleavage",
+            "bare_shoulders",
+            "bare_midriff",
+            "bare_legs",
+            "barefoot"
+          ]
+        },
+        {
+          "outfitId": "shogun_virgin_killer",
+          "name": "鸣神纯黑露背高领毛衣",
+          "prose": "an alluring black sleeveless turtleneck virgin killer sweater, completely backless showing her smooth spine and waist contours, subtle sideboob, and delicate purple ribbons",
+          "tokens": [
+            "virgin_killer_sweater",
+            "black_sweater",
+            "backless_sweater",
+            "turtleneck_sweater",
+            "sleeveless_sweater",
+            "sideboob",
+            "bare_back",
+            "bare_shoulders",
+            "bare_legs"
+          ]
+        },
+        {
+          "outfitId": "sheer_babydoll",
+          "name": "天守夜寝透明薄纱睡袍",
+          "prose": "a sheer translucent dark purple babydoll nightgown, open-front design revealing her cleavage and collarbone, delicate black lace trims, and an untied silk sash slipping off her shoulder",
+          "tokens": [
+            "sheer_babydoll",
+            "open-front_negligee",
+            "translucent_cloth",
+            "see-through",
+            "falling_strap",
+            "cleavage",
+            "bare_shoulders",
+            "bare_legs",
+            "silk_slip"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 10,
+      "existingBlueprintsSample": [
+        {
+          "id": "raiden_shogun_tenshukaku",
+          "title": "成年雷电将军 · 天守阁晨茶私享",
+          "sampleRating": "R18"
+        },
+        {
+          "id": "raiden_shogun_thunder_night",
+          "title": "雷电将军 · 离岛海滨的清凉微风",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "raiden_shogun_narukami_shrine",
+          "title": "雷电将军 · 鸣神神社的落樱",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "raiden_shogun_r18_chamber",
+          "title": "雷电将军 · 天守深闺的紫纱微颤",
+          "sampleRating": "R18"
+        }
+      ]
+    },
+    {
+      "characterId": "yamada_anna",
+      "displayName": "山田杏奈",
+      "franchise": "The Dangers in My Heart",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "official_school_uniform",
+          "name": "圣立学园初中部制服与长开衫",
+          "prose": "her school uniform: a buttoned white collared blouse beneath a loose beige cardigan, a navy pleated skirt, black over-knee socks and white sneakers, with a snack bag in her tote, with her long black hair in a high ponytail",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "open_cardigan",
+            "beige_cardigan",
+            "pleated_skirt",
+            "navy_skirt",
+            "thighhighs",
+            "black_socks",
+            "sneakers",
+            "tall_female",
+            "ponytail"
+          ]
+        },
+        {
+          "outfitId": "model_casual_oversized",
+          "name": "杂志模特街拍大号卫衣短裤",
+          "prose": "an oversized charcoal hoodie with full sleeves, mid-thigh denim shorts and chunky sneakers, with her long black hair in a high ponytail",
+          "tokens": [
+            "oversized_hoodie",
+            "black_hoodie",
+            "denim_shorts",
+            "bare_legs",
+            "sneakers",
+            "tall_female",
+            "casual_wear",
+            "ponytail"
+          ]
+        },
+        {
+          "outfitId": "summer_beach_bikini",
+          "name": "盛夏海滩条纹运动比基尼",
+          "prose": "a vibrant navy-and-white striped halterneck bikini that struggles to contain her enormous natural bust, paired with matching tie-side bikini bottoms, her long black hair tied in a messy high ponytail",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "striped_bikini",
+            "halterneck",
+            "cleavage",
+            "large_breasts",
+            "bare_shoulders",
+            "wet_skin",
+            "tall_female"
+          ]
+        },
+        {
+          "outfitId": "sensual_lace_lingerie",
+          "name": "纯白纯棉大号运动蕾丝内衣",
+          "prose": "a pure white cotton-and-lace lingerie set designed for full figures: a supportive underwire bra framing her heavy breasts with scalloped lace, matching high-cut lace-trimmed briefs hugging her wide hips, and sheer thigh-high stockings",
+          "tokens": [
+            "white_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "cotton_panties",
+            "white_thighhighs",
+            "cleavage",
+            "large_breasts",
+            "tall_female",
+            "sensual"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, statuesque 172cm model body with inky black hair spilling down her back, enormous natural breasts with pale pink nipples, a toned flat belly, plush wide hips, and endlessly long sculpted legs",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "large_breasts",
+            "tall_female",
+            "long_legs",
+            "mole_under_eye"
+          ]
+        },
+        {
+          "outfitId": "summer_festival_yukata",
+          "name": "夏祭金鱼纹藏青浴衣",
+          "prose": "a navy-blue summer festival yukata with goldfish print tied with a dark red obi, worn with wooden geta sandals, with her long black hair in a high ponytail",
+          "tokens": [
+            "yukata",
+            "japanese_clothes",
+            "floral_print",
+            "obi",
+            "geta",
+            "short_sleeves",
+            "ponytail"
+          ]
+        },
+        {
+          "outfitId": "bridal_wedding_dress",
+          "name": "高定抹胸鱼尾花嫁婚纱",
+          "prose": "a top-model couture strapless mermaid wedding gown tailored for her tall figure, a dreamy long bridal veil, and a bouquet of white roses, with her long black hair in a high ponytail",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "strapless",
+            "bouquet",
+            "white_flowers",
+            "high_heels",
+            "jewelry",
+            "ponytail"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "黄色雨衣与牛仔背带裤",
+          "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots, with her long black hair in a high ponytail",
+          "tokens": [
+            "yellow_raincoat",
+            "striped_shirt",
+            "long_sleeves",
+            "overalls",
+            "rain_boots",
+            "ponytail"
+          ]
+        },
+        {
+          "outfitId": "sfw_basketball_tracksuit",
+          "name": "篮球练习运动套装",
+          "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck, with her long black hair in a high ponytail",
+          "tokens": [
+            "blue_track_jacket",
+            "white_sports_shirt",
+            "track_pants",
+            "white_sneakers",
+            "towel_around_neck",
+            "ponytail"
+          ]
+        },
+        {
+          "outfitId": "sfw_studio_rest",
+          "name": "摄影休息室散发便服",
+          "prose": "an oversized charcoal hoodie, mid-thigh denim shorts and comfortable sneakers, with her long black hair worn loose",
+          "tokens": [
+            "oversized_hoodie",
+            "denim_shorts",
+            "sneakers",
+            "hair_down",
+            "long_hair"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "yamada_library_snack_caught",
+          "title": "山田杏奈 · 图书馆书架死角偷吃薯片的受惊回眸·「市川……嘘！不许告诉图书委员！」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "yamada_studio_oversized_hoodie",
+          "title": "山田杏奈 · 拍摄休息室大号卫衣的大长腿瘫坐·「拍摄好累哦……市川，给我吃一口软糖嘛」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "yamada_rainy_shared_umbrella_crouch",
+          "title": "山田杏奈 · 雨停前的小小收获",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "yamada_parfait_happy_eating",
+          "title": "山田杏奈 · 甜品店特盛巨无霸芭菲的幸福笑颜·「市川……这一大口草莓，给你吃！」",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "chitanda_eru",
+      "displayName": "千反田爱瑠",
+      "franchise": "Hyouka",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "official_kamiyama_uniform",
+          "name": "神山高校水手长裙制服",
+          "prose": "her Kamiyama High School sailor uniform: a crisp white short-sleeved blouse with a navy blue sailor collar, a black silk scarf tie, a pleated navy skirt falling just below the knees, white ankle socks, and black leather school shoes",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "white_shirt",
+            "sailor_collar",
+            "scarf",
+            "pleated_skirt",
+            "navy_skirt",
+            "white_socks",
+            "loafers"
+          ]
+        },
+        {
+          "outfitId": "festive_shrine_kimono",
+          "name": "新春参拜雅致和服",
+          "prose": "a traditional high-class silk furisode kimono in pale wisteria purple patterned with white cranes and cherry blossoms, cinched with a golden obi sash, and her long black hair styled in an elegant chignon with a floral kanzashi",
+          "tokens": [
+            "furisode",
+            "kimono",
+            "purple_kimono",
+            "floral_print",
+            "obi",
+            "japanese_clothes",
+            "chignon",
+            "kanzashi",
+            "geta"
+          ]
+        },
+        {
+          "outfitId": "casual_summer_onepiece",
+          "name": "豪农千金素雅长裙",
+          "prose": "a refined summer casual outfit: a sleeveless pale lavender cotton maxi sundress with fine pintucks down the bodice, a thin white cardigan draped loosely over her forearms, and woven flat sandals",
+          "tokens": [
+            "sundress",
+            "lavender_dress",
+            "maxi_dress",
+            "bare_shoulders",
+            "cardigan",
+            "white_cardigan",
+            "casual_wear"
+          ]
+        },
+        {
+          "outfitId": "sensual_lace_lingerie",
+          "name": "和风素雅纯白蕾丝内衣",
+          "prose": "an elegant ivory silk and French lace lingerie set: a balconette bra lifting her surprisingly generous breasts, matching high-waisted lace panties, and a sheer silk kimono-style dressing robe with flowing bell sleeves",
+          "tokens": [
+            "white_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "silk_robe",
+            "kimono_robe",
+            "off_shoulder",
+            "cleavage",
+            "large_breasts",
+            "sensual"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, noble body with her long inky-black hair cascading down her back and chest, full natural breasts with pale rose nipples, a soft feminine waist, and flawless milky-white skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "large_breasts",
+            "long_hair",
+            "pale_skin"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "文集工作围裙裙装",
+          "prose": "a lavender long-sleeved blouse beneath a navy pinafore dress, with an ankle-length skirt and flat brown shoes",
+          "tokens": [
+            "lavender_blouse",
+            "long_sleeves",
+            "pinafore_dress",
+            "long_skirt",
+            "flat_shoes"
+          ]
+        },
+        {
+          "outfitId": "sfw_library_cardigan",
+          "name": "浅绿开衫图书馆便装",
+          "prose": "a pale-green cardigan over an ivory high-collared blouse, a charcoal calf-length skirt and flat brown shoes",
+          "tokens": [
+            "green_cardigan",
+            "ivory_blouse",
+            "high_collar",
+            "long_skirt",
+            "flat_shoes"
+          ]
+        },
+        {
+          "outfitId": "sfw_shiromuku",
+          "name": "白无垢婚礼和服",
+          "prose": "a formal opaque white shiromuku wedding kimono, white brocade obi, layered white uchikake and a simple white bridal hair ornament",
+          "tokens": [
+            "shiromuku",
+            "white_kimono",
+            "white_uchikake",
+            "white_obi",
+            "bridal_hair_ornament"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "chitanda_curious_eyes_close_up",
+          "title": "千反田爱瑠 · 好奇心大盛的紫瞳迫近·「折木同学，我很好奇！」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "chitanda_clubroom_afternoon_gaze",
+          "title": "千反田爱瑠 · 文集装订的最后一道线",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "chitanda_shrine_new_year_kimono",
+          "title": "千反田爱瑠 · 神社初诣振袖和服的端庄回眸·「新年快乐，折木同学」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "chitanda_library_ladder_books",
+          "title": "千反田爱瑠 · 书架上层的意外发现",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "isshiki_iroha",
+      "displayName": "一色彩羽",
+      "franchise": "Oregairu",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "official_sobu_uniform",
+          "name": "总武高水手西装制服与开衫",
+          "prose": "her Sobu High school uniform: an unbuttoned navy blazer over a light cream knit cardigan, a white collared blouse with a thin red ribbon tie, a short pleated plaid skirt, sheer black pantyhose, and loafers",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "navy_jacket",
+            "cardigan",
+            "cream_cardigan",
+            "white_shirt",
+            "ribbon_tie",
+            "pleated_skirt",
+            "plaid_skirt",
+            "black_pantyhose"
+          ]
+        },
+        {
+          "outfitId": "student_council_blazer",
+          "name": "学生会执行干练正装",
+          "prose": "her student council executive attire: a neatly buttoned navy blazer with an armband on her left sleeve, crisp white shirt with collar pins, a slightly longer pleated skirt, and sheer black tights",
+          "tokens": [
+            "formal_wear",
+            "blazer",
+            "navy_jacket",
+            "armband",
+            "white_shirt",
+            "pleated_skirt",
+            "black_pantyhose",
+            "professional"
+          ]
+        },
+        {
+          "outfitId": "casual_shopping_date",
+          "name": "商业街甜美私服约会装",
+          "prose": "a cute and stylish date outfit: an oversized soft pastel pink mohair sweater hanging off one shoulder, a brown plaid wool miniskirt, thigh-high black socks, and a small leather shoulder bag",
+          "tokens": [
+            "casual_wear",
+            "oversized_sweater",
+            "pink_sweater",
+            "off_shoulder",
+            "miniskirt",
+            "plaid_skirt",
+            "thighhighs",
+            "black_thighhighs",
+            "shoulder_bag"
+          ]
+        },
+        {
+          "outfitId": "sensual_lace_lingerie",
+          "name": "鹅黄薄纱小恶魔内衣",
+          "prose": "a flirty pale-yellow and black lace lingerie set: a balconette bra lifting her perky young breasts with contrasting black ribbon bows, matching lace boyshort panties with a cheeky peekaboo cutout, and garter straps",
+          "tokens": [
+            "yellow_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "black_ribbon",
+            "garter_straps",
+            "cleavage",
+            "sensual",
+            "flirty"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, youthful and enticing body with soft honey-brown wavy locks framing her collarbones, pert rounded breasts with sweet pink nipples, a smooth tummy, and shapely slender legs",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body",
+            "youthful",
+            "pale_skin"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "球场应援运动外套",
+          "prose": "a coral windbreaker over an ivory sweatshirt, charcoal straight athletic trousers and white trainers",
+          "tokens": [
+            "coral_jacket",
+            "windbreaker",
+            "sweatshirt",
+            "track_pants",
+            "white_sneakers"
+          ]
+        },
+        {
+          "outfitId": "sfw_weekend_trench",
+          "name": "浅蓝周末风衣",
+          "prose": "a pale-blue lightweight trench coat over a cream crewneck knit top, navy full-length trousers and white trainers",
+          "tokens": [
+            "blue_trench_coat",
+            "cream_sweater",
+            "navy_pants",
+            "white_sneakers"
+          ]
+        },
+        {
+          "outfitId": "sfw_rain_utility",
+          "name": "米白防雨工作外套",
+          "prose": "a cream waterproof utility jacket over a red long-sleeved shirt, charcoal cargo trousers and rubber-soled work shoes",
+          "tokens": [
+            "cream_rain_jacket",
+            "red_shirt",
+            "long_sleeves",
+            "cargo_pants",
+            "work_shoes"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "iroha_student_council_teasing_smile",
+          "title": "一色彩羽 · 学生会室小恶魔托腮的虚假拒绝·「前辈，这算是告白吗？对不起，我们是不可能的♪」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "iroha_bleachers_warm_tea",
+          "title": "一色彩羽 · 看台上尚热的红茶",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "iroha_commuter_train_shoulder_lean",
+          "title": "一色彩羽 · 电车里的半张车票",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "iroha_rainy_storage_room_gaze",
+          "title": "一色彩羽 · 雨天收好的活动横幅",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "waguri_kaoruko",
+      "displayName": "和栗薰子",
+      "franchise": "Kaoru Hana wa Rin to Saku",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "official_chidori_uniform",
+          "name": "千鸟女子高校名媛水手制服",
+          "prose": "her prestigious Kikyo Girls' High School uniform: an elegant white-and-navy sailor blazer with a crisp pleated white collar, a navy necktie, a pleated navy skirt below the knees, white knee-high socks, and polished dark loafers",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "blazer",
+            "white_collar",
+            "necktie",
+            "pleated_skirt",
+            "navy_skirt",
+            "knee_socks",
+            "white_socks",
+            "loafers"
+          ]
+        },
+        {
+          "outfitId": "bakery_pastry_apron",
+          "name": "蛋糕工坊甜品烘焙围裙",
+          "prose": "her warm bakery work attire: a soft cafe-brown cooking apron worn over a yellow pastel knit sweater and long floral skirt, with flour smudges on her cheek and a small chef's bandana tying back her blackish-purple braids",
+          "tokens": [
+            "apron",
+            "brown_apron",
+            "knit_sweater",
+            "yellow_sweater",
+            "long_skirt",
+            "bandana",
+            "twin_braids",
+            "casual_wear"
+          ]
+        },
+        {
+          "outfitId": "festive_summer_yukata",
+          "name": "夏祭牵牛花浅蓝浴衣",
+          "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, with a goldfish pouch as a festival accessory and her blackish-purple braids pinned with floral clips",
+          "tokens": [
+            "yukata",
+            "blue_yukata",
+            "floral_print",
+            "obi",
+            "yellow_obi",
+            "japanese_clothes",
+            "twin_braids",
+            "geta",
+            "hair_ornament"
+          ]
+        },
+        {
+          "outfitId": "sensual_lace_lingerie",
+          "name": "甜粉草莓蕾丝内衣",
+          "prose": "a delightfully sweet pastel pink and ivory lace lingerie set: a balconette bra framing her full soft breasts with tiny strawberry ribbon bows, matching scalloped lace hipster panties, and a sheer pink chiffon peignoir",
+          "tokens": [
+            "pink_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "chiffon_robe",
+            "off_shoulder",
+            "cleavage",
+            "large_breasts",
+            "sensual",
+            "sweet"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, sweet and voluptuous body with golden-blonde hair spilling loose over her shoulders, full rounded breasts with soft peach-pink nipples, a gentle tummy, and smooth radiant porcelain skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "large_breasts",
+            "plump_body",
+            "pale_skin"
+          ]
+        },
+        {
+          "outfitId": "bridal_wedding_dress",
+          "name": "糖霜白花蕾丝蓬蓬婚纱",
+          "prose": "a dreamy pure white lace princess wedding gown with a puffy layered skirt like whipped cream, a white flower bridal veil, and a bouquet decorated with fresh strawberries and sugar-frosted lilies",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "lace",
+            "puffy_sleeves",
+            "bouquet",
+            "white_flowers",
+            "jewelry"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "烘焙体验格纹衬衫",
+          "prose": "a cream-and-brown checked long-sleeved shirt, dark straight trousers, a mint-green cotton apron and padded oven mitts",
+          "tokens": [
+            "checkered_shirt",
+            "long_sleeves",
+            "pants",
+            "green_apron",
+            "oven_mitts"
+          ]
+        },
+        {
+          "outfitId": "sfw_cake_cafe",
+          "name": "草莓红开衫便装",
+          "prose": "a strawberry-red cardigan over a cream collared blouse, a navy calf-length skirt and a narrow cream hairband",
+          "tokens": [
+            "red_cardigan",
+            "cream_blouse",
+            "collared_blouse",
+            "navy_long_skirt",
+            "hairband"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "waguri_bakery_window_sweet_wave",
+          "title": "和栗薰子 · 烘焙课后的窗口招手",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "waguri_oven_fresh_bread_blush",
+          "title": "和栗薰子 · 烘焙体验课的第一盘饼干",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "waguri_tutoring_desk_notebook_smile",
+          "title": "和栗薰子 · 图书馆里认真核对的一行",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "waguri_cake_tasting_cream_cheek",
+          "title": "和栗薰子 · 蛋糕店里的第一小口",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "yanami_anna",
+      "displayName": "八奈见杏菜",
+      "franchise": "Too Many Losing Heroines!",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "sfw_school",
+          "name": "石蕗高校整齐制服",
+          "prose": "a white school blouse, blue bow, navy knee-length skirt and black socks",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "blue_bow",
+            "navy_skirt",
+            "black_socks"
+          ]
+        },
+        {
+          "outfitId": "sfw_home",
+          "name": "厨房围裙日常装",
+          "prose": "a yellow long-sleeved top, blue trousers and a cream apron",
+          "tokens": [
+            "yellow_shirt",
+            "long_sleeves",
+            "blue_pants",
+            "cream_apron"
+          ]
+        },
+        {
+          "outfitId": "sfw_festival",
+          "name": "夏祭蓝色花纹浴衣",
+          "prose": "a blue floral yukata with a yellow obi and wooden sandals",
+          "tokens": [
+            "blue_yukata",
+            "floral_print",
+            "yellow_obi",
+            "geta"
+          ]
+        },
+        {
+          "outfitId": "nsfw_boudoir",
+          "name": "八奈见杏菜·成人私密造型",
+          "prose": "a private adult ensemble built around small_towel, completely_nude",
+          "tokens": [
+            "small_towel",
+            "completely_nude"
+          ]
+        },
+        {
+          "outfitId": "sfw_bridal",
+          "name": "八奈见杏菜·圣洁花嫁",
+          "prose": "a blue-and-white bridal dress with a short veil, ribbon sash and an apple-candy bouquet charm",
+          "tokens": [
+            "wedding_dress",
+            "blue_white_dress",
+            "short_veil",
+            "ribbon_sash",
+            "apple_candy_charm"
+          ]
+        },
+        {
+          "outfitId": "sfw_beach",
+          "name": "八奈见杏菜·海滨泳装",
+          "prose": "a bright blue swimsuit with a white overshirt, striped sun hat and an oversized box of fries",
+          "tokens": [
+            "blue_swimsuit",
+            "white_overshirt",
+            "striped_sun_hat",
+            "box_of_fries",
+            "iced_tea"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "蓝白棒球衫野餐装",
+          "prose": "a blue-and-white baseball jacket over a yellow T-shirt, full-length light denim jeans and comfortable trainers",
+          "tokens": [
+            "baseball_jacket",
+            "yellow_shirt",
+            "jeans",
+            "sneakers"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "yanami_anna_sfw_b8_01",
+          "title": "八奈见杏菜 · 食堂大份定食的满足感",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "yanami_anna_sfw_b8_02",
+          "title": "八奈见杏菜 · 野餐盒里的最后一口",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "yanami_anna_sfw_b8_03",
+          "title": "八奈见杏菜 · 家庭餐厅薯条作战会议",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "yanami_anna_sfw_b8_04",
+          "title": "八奈见杏菜 · 食堂花束里的花嫁定食",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "vivy",
+      "displayName": "Vivy",
+      "franchise": "Vivy: Fluorite Eye's Song",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "sfw_stage",
+          "name": "白蓝舞台端庄长袖装",
+          "prose": "an opaque white-and-blue stage dress with covered shoulders, knee-length skirt, small earpiece and white boots",
+          "tokens": [
+            "white_blue_dress",
+            "covered_shoulders",
+            "knee_length_skirt",
+            "earpiece",
+            "white_boots"
+          ]
+        },
+        {
+          "outfitId": "sfw_rain",
+          "name": "闭园雨天蓝色外套",
+          "prose": "a blue waterproof coat over the stage outfit, opaque tights and practical boots",
+          "tokens": [
+            "blue_raincoat",
+            "tights",
+            "boots"
+          ]
+        },
+        {
+          "outfitId": "sfw_rest",
+          "name": "后台修补针织便装",
+          "prose": "a cream long-sleeved blouse and comfortable navy trousers",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "navy_pants"
+          ]
+        },
+        {
+          "outfitId": "nsfw_boudoir",
+          "name": "Vivy·成人私密造型",
+          "prose": "a private adult ensemble built around dress, white_dress, completely_nude, dressing_room",
+          "tokens": [
+            "dress",
+            "white_dress",
+            "completely_nude",
+            "dressing_room"
+          ]
+        },
+        {
+          "outfitId": "sfw_bridal",
+          "name": "Vivy·圣洁花嫁",
+          "prose": "an opaque white-and-blue bridal stage dress with covered shoulders, a translucent veil, earpiece and white boots",
+          "tokens": [
+            "wedding_dress",
+            "white_blue_stage_gown",
+            "covered_shoulders",
+            "translucent_veil",
+            "white_boots"
+          ]
+        },
+        {
+          "outfitId": "sfw_beach",
+          "name": "Vivy·海滨泳装",
+          "prose": "a white-and-blue resort swimsuit with a light stage jacket, waterproof earpiece and compact recorder",
+          "tokens": [
+            "white_blue_swimsuit",
+            "stage_jacket",
+            "waterproof_earpiece",
+            "compact_recorder",
+            "seaside_stage"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "淡蓝衬衫与白色长裤",
+          "prose": "a pale-blue long-sleeved collared shirt, white wide-leg full-length trousers and simple dark flats",
+          "tokens": [
+            "blue_shirt",
+            "long_sleeves",
+            "white_pants",
+            "wide_leg_pants",
+            "flat_shoes"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 10,
+      "existingBlueprintsSample": [
+        {
+          "id": "vivy_sfw_b9_01",
+          "title": "Vivy · 无人小舞台的每日首唱",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "vivy_sfw_b9_02",
+          "title": "Vivy · 休演日的调音练习",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "vivy_sfw_b9_03",
+          "title": "Vivy · 雨中的伞与流浪狗",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "vivy_sfw_b9_04",
+          "title": "Vivy · 无人舞台的白蓝花嫁",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "maomao",
+      "displayName": "猫猫",
+      "franchise": "The Apothecary Diaries",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "sfw_pharmacy",
+          "name": "药房长袖襦裙",
+          "prose": "a modest green long-sleeved jacket over a cream inner collar and ankle-length skirt",
+          "tokens": [
+            "green_jacket",
+            "long_sleeves",
+            "cream_collar",
+            "aoqun",
+            "long_skirt"
+          ]
+        },
+        {
+          "outfitId": "sfw_market",
+          "name": "街巷外出襦裙",
+          "prose": "a pale rose long-sleeved blouse, dark green ankle-length skirt and small cloth bag",
+          "tokens": [
+            "rose_blouse",
+            "long_sleeves",
+            "green_skirt",
+            "cloth_bag"
+          ]
+        },
+        {
+          "outfitId": "sfw_rain",
+          "name": "回廊防雨披肩装",
+          "prose": "a dark green cape over a closed-collar long robe and practical shoes",
+          "tokens": [
+            "green_cape",
+            "high_collar",
+            "long_robe",
+            "shoes"
+          ]
+        },
+        {
+          "outfitId": "nsfw_boudoir",
+          "name": "猫猫·成人私密造型",
+          "prose": "a private adult ensemble built around completely_nude",
+          "tokens": [
+            "completely_nude"
+          ]
+        },
+        {
+          "outfitId": "sfw_bridal",
+          "name": "猫猫·圣洁花嫁",
+          "prose": "a pale green bridal robe with botanical embroidery, a cream veil, practical hair bun and a bouquet of safe medicinal flowers",
+          "tokens": [
+            "wedding_robe",
+            "pale_green_gown",
+            "botanical_embroidery",
+            "cream_veil",
+            "medicinal_bouquet"
+          ]
+        },
+        {
+          "outfitId": "sfw_beach",
+          "name": "猫猫·海滨泳装",
+          "prose": "a deep green swimsuit with a short cream cape, herb pouch and a glass of chilled citrus herbal tea",
+          "tokens": [
+            "deep_green_swimsuit",
+            "cream_cape",
+            "herb_pouch",
+            "citrus_tea",
+            "market_stall"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "靛蓝晒药工作衣",
+          "prose": "an indigo long-sleeved cotton work jacket, a pale beige ankle-length skirt and a plain linen waist apron",
+          "tokens": [
+            "indigo_jacket",
+            "long_sleeves",
+            "beige_long_skirt",
+            "linen_apron"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "maomao_sfw_b9_01",
+          "title": "猫猫 · 药房的调配",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "maomao_sfw_b9_02",
+          "title": "猫猫 · 晒架上的最后一缕日光",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "maomao_sfw_b9_03",
+          "title": "猫猫 · 后宫庭院的採集",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "maomao_sfw_b9_04",
+          "title": "猫猫 · 后宫药房的草木花嫁",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "tatsumaki",
+      "displayName": "战栗的龙卷",
+      "franchise": "One-Punch Man",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "sfw_official",
+          "name": "黑色长袖及膝连衣裙",
+          "prose": "a closed-neck black long-sleeved knee-length dress, opaque tights and simple shoes",
+          "tokens": [
+            "black_dress",
+            "long_sleeves",
+            "high_neck",
+            "opaque_tights",
+            "shoes"
+          ]
+        },
+        {
+          "outfitId": "sfw_casual",
+          "name": "周末绿色针织便装",
+          "prose": "a moss-green knitted cardigan, cream top and ankle-length black skirt",
+          "tokens": [
+            "green_cardigan",
+            "cream_top",
+            "long_black_skirt"
+          ]
+        },
+        {
+          "outfitId": "sfw_winter",
+          "name": "冬夜温暖家居装",
+          "prose": "a cream turtleneck sweater and loose green trousers",
+          "tokens": [
+            "cream_sweater",
+            "turtleneck",
+            "green_pants"
+          ]
+        },
+        {
+          "outfitId": "nsfw_boudoir",
+          "name": "战栗的龙卷·成人私密造型",
+          "prose": "a private adult ensemble built around black_dress, completely_nude",
+          "tokens": [
+            "black_dress",
+            "completely_nude"
+          ]
+        },
+        {
+          "outfitId": "sfw_bridal",
+          "name": "战栗的龙卷·圣洁花嫁",
+          "prose": "a black-and-emerald bridal gown with a floating layered veil, rose embroidery and polished black shoes",
+          "tokens": [
+            "wedding_dress",
+            "emerald_gown",
+            "layered_veil",
+            "rose_embroidery",
+            "black_shoes"
+          ]
+        },
+        {
+          "outfitId": "sfw_beach",
+          "name": "战栗的龙卷·海滨泳装",
+          "prose": "a black-and-emerald swimsuit with a short wrap skirt, lime parasol and chilled citrus soda",
+          "tokens": [
+            "emerald_swimsuit",
+            "black_swimsuit",
+            "wrap_skirt",
+            "lime_parasol",
+            "citrus_soda"
+          ]
+        },
+        {
+          "outfitId": "sfw_refined_daily",
+          "name": "薄荷飞行夹克便装",
+          "prose": "a mint bomber jacket over an opaque cream turtleneck, navy straight trousers and white sneakers",
+          "tokens": [
+            "mint_bomber_jacket",
+            "cream_turtleneck",
+            "navy_pants",
+            "white_sneakers"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 10,
+      "existingBlueprintsSample": [
+        {
+          "id": "tatsumaki_sfw_b6_01",
+          "title": "战栗的龙卷 · 英雄协会的蔑视",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "tatsumaki_sfw_b6_02",
+          "title": "战栗的龙卷 · 甜品店的身高悲剧",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "tatsumaki_sfw_b6_03",
+          "title": "战栗的龙卷 · 门口藏不住的礼物",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "tatsumaki_sfw_b6_04",
+          "title": "战栗的龙卷 · 浮空花廊的傲娇花嫁",
+          "sampleRating": "SFW"
+        }
+      ]
+    },
+    {
+      "characterId": "misaka_mikoto",
+      "displayName": "御坂美琴",
+      "franchise": "A Certain Scientific Railgun",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "tokiwadai_uniform",
+          "name": "常盘台校服",
+          "prose": "her Tokiwadai uniform, a white blouse with a light-brown sweater vest and a beige pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "sweater_vest",
+            "pleated_skirt",
+            "beige_skirt"
+          ]
+        },
+        {
+          "outfitId": "casual",
+          "name": "便服",
+          "prose": "a casual outfit with a shirt and jeans",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans",
+            "jacket"
+          ]
+        },
+        {
+          "outfitId": "summer_yukata",
+          "name": "夏日淡蓝浴衣",
+          "prose": "wearing a fresh light-blue summer yukata with a white sash obi, a shortened hemline above the knees, and wooden geta sandals",
+          "tokens": [
+            "yukata",
+            "summer_yukata",
+            "light_blue_yukata",
+            "blue_yukata",
+            "white_obi",
+            "waist_sash",
+            "geta",
+            "wooden_geta",
+            "short_hem",
+            "bare_legs"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 10,
+      "existingBlueprintsSample": [
+        {
+          "id": "misaka_mikoto_overpass",
+          "title": "御坂美琴 · 学园都市天桥",
+          "sampleRating": "All"
+        },
+        {
+          "id": "misaka_mikoto_street",
+          "title": "御坂美琴 · 街头便利店",
+          "sampleRating": "All"
+        },
+        {
+          "id": "misaka_mikoto_electric_battle",
+          "title": "御坂美琴 · 电光战场",
+          "sampleRating": "All"
+        },
+        {
+          "id": "misaka_mikoto_r18_dorm",
+          "title": "御坂美琴 · 公寓夜雨的静电失控",
+          "sampleRating": "R18"
+        }
+      ]
+    },
+    {
+      "characterId": "asuna_yuuki",
+      "displayName": "结城明日奈",
+      "franchise": "Sword Art Online",
+      "sourceFile": "data/popular-characters.json",
+      "sfwOutfits": [
+        {
+          "outfitId": "official_knights_of_blood_uniform",
+          "name": "血盟骑士团红白战袍副团长装",
+          "prose": "her iconic Knights of the Blood Oath battle uniform: a tailored white sleeveless tunic with crimson cross insignias, red pleated mini skirt, white thigh-high stockings with red cross garters, silver breastplate accents, and holding the rapier Lambent Light",
+          "tokens": [
+            "knights_of_the_blood_uniform",
+            "white_tunic",
+            "red_cross",
+            "pleated_skirt",
+            "thighhighs",
+            "white_thighhighs",
+            "rapier",
+            "holding_sword",
+            "lambent_light"
+          ]
+        },
+        {
+          "outfitId": "casual_real_world_uniform",
+          "name": "现实世界私立高中制服",
+          "prose": "her real-world high school uniform: a grey tailored blazer over a crisp white collared shirt, red ribbon bow tie, pleated navy skirt, and dark brown loafers",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_shirt",
+            "ribbon_tie",
+            "pleated_skirt",
+            "black_stockings"
+          ]
+        },
+        {
+          "outfitId": "casual_home_apron_sweater",
+          "name": "22层湖畔木屋毛衣围裙人妻装",
+          "prose": "a cozy domestic outfit: an oversized cream knit sweater, pink floral cooking apron tied around her waist, bare legs, holding a wooden spoon with sweet domestic warmth",
+          "tokens": [
+            "apron",
+            "cooking_apron",
+            "sweater",
+            "knit_sweater",
+            "bare_legs",
+            "holding_spoon",
+            "domestic"
+          ]
+        },
+        {
+          "outfitId": "sensual_bikini_swimsuit",
+          "name": "深红修身细带比基尼泳装",
+          "prose": "a flattering crimson two-piece bikini with white cross-string ties, accentuating her sun-kissed athletic curves and toned stomach beside the water",
+          "tokens": [
+            "bikini",
+            "red_bikini",
+            "string_bikini",
+            "halterneck",
+            "cleavage",
+            "wet_skin",
+            "toned_abs"
+          ]
+        },
+        {
+          "outfitId": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, toned and feminine body with long chestnut hair flowing over her shoulders, full natural breasts with delicate pink nipples, slender waist, and smooth fair skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hourglass_body"
+          ]
+        },
+        {
+          "outfitId": "sfw_cabin_apron",
+          "name": "木屋早餐围裙装",
+          "prose": "a cream knit sweater under a pink floral cooking apron, a navy knee-length skirt and simple house slippers",
+          "tokens": [
+            "cream_knit_sweater",
+            "pink_floral_apron",
+            "navy_skirt",
+            "house_slippers"
+          ]
+        },
+        {
+          "outfitId": "sfw_lakeside_knit",
+          "name": "湖畔休憩针织私服",
+          "prose": "a soft cream knit sweater with a modest round neckline and a flowing navy knee-length skirt, with simple brown flats placed beside the picnic blanket",
+          "tokens": [
+            "cream_knit_sweater",
+            "round_neckline",
+            "navy_skirt",
+            "brown_flats"
+          ]
+        }
+      ],
+      "existingBlueprintsCount": 11,
+      "existingBlueprintsSample": [
+        {
+          "id": "asuna_flashing_rapier_dungeon",
+          "title": "结城明日奈 · 闪光的细剑连击·「攻略就交给我吧，绝对不会输的！」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "asuna_floor22_cabin_cooking_breakfast",
+          "title": "结城明日奈 · 22层木屋的暖心早餐·「快趁热吃吧，特制的三明治烤好了哦！」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "asuna_lakeside_nap_lap_pillow",
+          "title": "结城明日奈 · 湖畔微风下的草地膝枕·「真是的……像小猫一样睡得这么香呢」",
+          "sampleRating": "SFW"
+        },
+        {
+          "id": "asuna_after_school_crepe_date",
+          "title": "结城明日奈 · 涩谷街角的可丽饼喂食·「啊——先说好，草莓最甜的部分是我的哦！」",
+          "sampleRating": "SFW"
+        }
+      ]
+    }
+  ]
+}
