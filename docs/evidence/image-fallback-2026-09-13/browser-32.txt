@@ -1,0 +1,50 @@
+
+[WebServer] (node:35660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+
+[WebServer] (node:33944) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+Running 32 tests using 1 worker
+
+(node:33084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR1 详情主图失败回退缩略图并真实解码 [dark]
+[2/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR1 详情主图失败回退缩略图并真实解码 [light]
+[3/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR2 主图与缩略图均失败显示缺失状态且不循环 [dark]
+[4/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR2 主图与缩略图均失败显示缺失状态且不循环 [light]
+[5/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR3 切角色不串图且切回有界重试 [dark]
+[6/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR3 切角色不串图且切回有界重试 [light]
+[7/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR4 页面重载后使用新版本主图恢复 [dark]
+[8/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR4 页面重载后使用新版本主图恢复 [light]
+[9/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR5 无缩略图角色直接缺失且不虚构图源 [dark]
+[10/32] [desktop] › tests\e2e\character-detail-recovery.spec.ts:69:9 › CR5 无缩略图角色直接缺失且不虚构图源 [light]
+[11/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H1 英雄图 404 占位可读并恢复 [dark]
+[12/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H1 英雄图 404 占位可读并恢复 [light]
+[13/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H2 英雄图失败按角色隔离且切换重试有界 [dark]
+[14/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H2 英雄图失败按角色隔离且切换重试有界 [light]
+[15/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H3 热门横条缩略图 404 占位并恢复 [dark]
+[16/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H3 热门横条缩略图 404 占位并恢复 [light]
+[17/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H4 单卡失败不拖垮其他卡 [dark]
+[18/32] [desktop] › tests\e2e\home-image-recovery.spec.ts:56:9 › H4 单卡失败不拖垮其他卡 [light]
+[19/32] [desktop] › tests\e2e\image-fallback-visual.spec.ts:26:11 › desktop › fallback text and layout dark
+[20/32] [desktop] › tests\e2e\image-fallback-visual.spec.ts:26:11 › desktop › fallback text and layout light
+[21/32] [desktop] › tests\e2e\image-fallback-visual.spec.ts:26:11 › 4k150 › fallback text and layout dark
+[22/32] [desktop] › tests\e2e\image-fallback-visual.spec.ts:26:11 › 4k150 › fallback text and layout light
+[23/32] [desktop] › tests\e2e\image-fallback-visual.spec.ts:26:11 › phone › fallback text and layout dark
+[24/32] [desktop] › tests\e2e\image-fallback-visual.spec.ts:26:11 › phone › fallback text and layout light
+[25/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F03 角色列表缩略图 404 首字回退 [dark]
+[26/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F03 角色列表缩略图 404 首字回退 [light]
+[27/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F05 场景卡片缩略图 404 提示可用 [dark]
+[28/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F05 场景卡片缩略图 404 提示可用 [light]
+[29/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F08b 参考卡片拒绝不可放大 [dark]
+[30/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F08b 参考卡片拒绝不可放大 [light]
+[31/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F09 画册灯箱 404 可关闭可恢复 [dark]
+[32/32] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F09 画册灯箱 404 可关闭可恢复 [light]
+  32 passed (1.4m)

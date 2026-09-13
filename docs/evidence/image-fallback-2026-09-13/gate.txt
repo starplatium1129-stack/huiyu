@@ -1,0 +1,34 @@
+[执行] gate:full: ["C:\\Program Files\\nodejs\\node.exe","scripts/maintenance/gate-quick.js","full"]
+── gate full ──
+✔ check（质量门禁编排） 15.4s
+✔ vitest 7.1s
+✔ unit 套件 623 用例 23.6s
+✔ test-anima-routes.js 17.4s
+✔ test-desktop-tools-route.js 4.3s
+✔ test-generation-routes.js 693ms
+✔ test-chat.js 928ms
+✔ test-control-failure-contract.js 8.0s
+✔ test-gateway-contract.js 17.6s
+✔ test-gateway-token.js 69ms
+✔ test-http-client.js 99ms
+✔ test-maintenance.js 131ms
+✔ test-scene-maintenance-save.js 3.6s
+✔ test-interrogate-routes.js 442ms
+✔ test-interrogate-engine.js 91ms
+✔ test-live2d-route.js 213ms
+✔ test-character-reference-contract.js 176ms
+✔ test-pinned-scene-prompts.js 128ms
+✔ test-scene-story-alignment.js 51ms
+✔ test-sd-runtime.js 162ms
+✔ test-scene-shard-integrity.js 92ms
+✔ test-popular-shard-integrity.js 73ms
+✔ test-blueprint-shard-integrity.js 131ms
+✔ test-security.js 229ms
+✔ test-tunnel-restart.js 223ms
+✔ test-upstream-health.js 344ms
+✔ test-precompressed.js 192ms
+✔ test-video-ai.js 1.1s
+✔ test-video-routes.js 9.2s
+sum [contract]: PASS · 26 过 / 0 挂 · 1m 6s
+✔ build（打包预算） 24.9s
+gate 总计: PASS · 2m 17s

@@ -17,9 +17,17 @@
             <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="homeMuse = 'natsume'"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
           </div>
         </div>
-        <aside class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
-          <img class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="heroAssets.nene" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" />
-          <img class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :src="heroAssets.natsume" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" />
+        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" aria-label="宁宁与夏目的角色视觉">
+          <img v-if="!heroFailed.nene" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="heroAssets.nene" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" @error="heroFailed.nene = true" />
+          <div v-else class="hero-fallback nene" :class="{ 'is-current': homeMuse === 'nene' }" aria-hidden="true">
+            <ArchiveIcon name="image" />
+            <span class="hero-fallback-text">主视觉暂未加载</span>
+          </div>
+          <img v-if="!heroFailed.natsume" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :src="heroAssets.natsume" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" @error="heroFailed.natsume = true" />
+          <div v-else class="hero-fallback natsume" :class="{ 'is-current': homeMuse === 'natsume' }" aria-hidden="true">
+            <ArchiveIcon name="image" />
+            <span class="hero-fallback-text">主视觉暂未加载</span>
+          </div>
           <div class="orbit-label" aria-live="polite"><span>{{ homeMuse === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ homeMuse === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
         <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
@@ -85,7 +93,16 @@
               class="pop-card-mini"
               :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
             >
-              <img :src="portraitSrc(c.id)" :alt="c.displayName" loading="lazy" decoding="async" />
+              <img
+                v-if="!isPortraitFailed(c.id)"
+                :key="portraitSrc(c.id)"
+                :src="portraitSrc(c.id)"
+                :alt="c.displayName"
+                loading="lazy"
+                decoding="async"
+                @error="markPortraitFailure"
+              />
+              <span v-else class="pop-portrait-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span>
               <span class="pop-cap">
                 <span class="pop-cap-name">{{ c.displayName }}</span>
                 <span class="pop-cap-franchise">{{ franchiseLabel(c.franchise) }}</span>
@@ -195,7 +212,7 @@
 
 <script setup lang="ts">
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, onMounted, onUnmounted, reactive } from 'vue'
+import { ref, computed, onMounted, onUnmounted, reactive, watch } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
@@ -234,6 +251,25 @@ const heroAssets = Object.freeze({
   nene: '/assets/characters/nene-home-cg-1024.webp',
   natsume: '/assets/characters/natsume-home-cg-1024.webp',
 })
+
+// ── 图片失败回退：每张图独立跟踪，失败只换占位不循环重试 ──
+// 英雄图：按角色各记一个失败态；src 是内置常量，重试入口是用户切换 muse（watch 重置后重挂 img）。
+const heroFailed = reactive({ nene: false, natsume: false })
+watch(homeMuse, (muse) => { heroFailed[muse] = false })
+
+// 热门横条：以完整 src（含 ?v= 版本）为键；版本变化产生新键自动重试，img :key 重挂避免
+// 旧请求的 error 误标新 src。同一失败 src 在本页生命周期内不重复请求。
+const portraitFailed = reactive<Record<string, boolean>>({})
+function isPortraitFailed(id: string): boolean {
+  return portraitFailed[portraitSrc(id)] === true
+}
+function markPortraitFailure(event: Event) {
+  const el = event.currentTarget
+  if (!(el instanceof HTMLImageElement)) return
+  const src = el.getAttribute('src')
+  if (src) portraitFailed[src] = true
+}
+
 /** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
 let unmounted = false
 

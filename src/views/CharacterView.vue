@@ -28,13 +28,22 @@
         <div class="library-detail">
           <CharacterAssetSummary v-if="current" :character-id="current.id" />
       <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
-        <div class="portrait" :class="{ natsume: current.id === 'natsume' }">
-          <img v-if="current.portrait?.image && !brokenPortraits.has(current.id)" class="portrait-image"
-            :src="current.portrait.image" :alt="current.portrait.alt || current.name"
+        <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
+          <img v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
+            :src="portraitView.src" :data-attempt-token="portraitView.token"
+            :alt="current.portrait?.alt || current.name"
             loading="eager" decoding="async" @load="measurePortrait"
-            @error="markPortraitBroken(current.id)" />
+            @error="onPortraitError" />
+          <div v-else class="portrait-missing" role="status">
+            <ArchiveIcon name="image" class="portrait-missing-icon" />
+            <strong class="portrait-missing-title">{{ portraitView.reason === 'empty' ? '立绘未登记' : '立绘缺失' }}</strong>
+            <span class="portrait-missing-text">{{ portraitMissingText }}</span>
+          </div>
           <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> {{ isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
-          <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
+          <div class="portrait-footer">
+            <span v-if="showFallbackNote" class="portrait-fallback-note">原图无法读取，已显示现有缩略图</span>
+            <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
+          </div>
         </div>
         <div>
           <h2 class="character-name">{{ current.name }}</h2>
@@ -255,6 +264,7 @@ import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
+import { usePortraitFallback } from '@/composables/usePortraitFallback'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
@@ -270,11 +280,6 @@ const route = useRoute()
 const router = useRouter()
 const characters = ref<CharacterProfile[]>([])
 const scenes = ref<CharacterScene[]>([])
-const portraitRatio = ref(0.7)
-function measurePortrait(event: Event) {
-  const image = event.target as HTMLImageElement
-  if (image.naturalHeight) portraitRatio.value = image.naturalWidth / image.naturalHeight
-}
 const loading = ref(true)
 const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
@@ -285,11 +290,28 @@ const directoryItems = computed(() => characters.value.map(character => ({
   image: character.type === 'popular' ? popularPortraitSrc(character.id) : character.portrait?.image,
 })))
 
-const brokenPortraits = ref(new Set<string>())
-function markPortraitBroken(id: string) {
-  if (brokenPortraits.value.has(id)) return
-  brokenPortraits.value = new Set(brokenPortraits.value).add(id)
+const portraitSources = computed(() => {
+  const profile = current.value
+  const main = profile?.portrait?.image || ''
+  return { id: profile?.id || '', main,
+    thumb: profile?.type === 'popular' ? popularPortraitSrc(profile.id) : '' }
+})
+const { view: portraitView, ratio: portraitRatio, fail: failPortrait,
+  loaded: loadPortrait, isLoaded: portraitLoaded } = usePortraitFallback(portraitSources)
+function onPortraitError(event: Event) {
+  failPortrait((event.target as HTMLImageElement).dataset.attemptToken || '')
 }
+function measurePortrait(event: Event) {
+  const image = event.target as HTMLImageElement
+  loadPortrait(image.dataset.attemptToken || '', image.naturalWidth, image.naturalHeight)
+}
+const portraitMissingText = computed(() => ({
+  empty: '该角色档案暂未登记立绘图源。',
+  broken: '原图与缩略图均无法读取，本机暂无可显示的立绘。',
+  nothumb: '原图无法读取，该角色也没有已登记的缩略图。',
+})[portraitView.value.reason])
+const showFallbackNote = computed(() => portraitView.value.state === 'fallback' && portraitLoaded.value
+  && !!current.value && !isPopularPortraitPending(current.value.id))
 
 const profileAnchor = ref<HTMLElement | null>(null)
 function selectCharacter(id: string) {

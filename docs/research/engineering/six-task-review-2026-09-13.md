@@ -64,3 +64,17 @@ GLM 5.3 Flash 按 [分批任务包](../../guides/engineering/glm-flash-next-batc
 当次统计、夹具结果与测试源码哈希见 [验收摘要](../../evidence/resource-recovery-2026-09-13.json)，正式测试执行见 [浏览器日志](../../evidence/resource-recovery-browser-2026-09-13.txt)。本机一次性脚本和旧失败 trace 留在 scripts/archive，远端复验浏览器流程使用已提交的测试文件，不依赖这些临时路径。
 
 整合后的 [完整门禁](../../evidence/resource-recovery-gate-2026-09-13.txt) 通过：check、vitest、623 项 unit、26 组 contract 与生产构建，总计 2 分 5 秒。仍显式使用 structure 参考模式。首次门禁被上一轮日志在本机保留的 CRLF 阻断，已将该工作树文件换行规范到 Git 中的 LF 后重跑；没有修改历史测试结果或放宽门禁。
+
+## N1/N2 首页与角色详情图片回退
+
+基线 `afeb050`。GLM 提交首页英雄图/热门横条的逐图失败占位，以及角色详情主图→缩略图→缺失说明的实现。主任务复核后移除未纳入本批验收的最近作品封面扩展，保留本批页面边界。
+
+角色详情的失败/加载状态移入 `usePortraitFallback`：角色或主图/缩略图变化产生新尝试周期，每个来源在同周期只尝试一次；旧周期 load/error 不影响当前图片、加载状态或宽高比。4 项单测覆盖同实例 A→B→A、相同 URL 跨角色、迟到事件和相同主/缩略图去重。回退成功提示只在图片实际 load 后显示。
+
+新增缺失文字使用主题背景与文本令牌，不能沿用“画框永远深色”的假设：workspace-layout 实际将资料库画框改为透明。来源和回退说明改成可换行的正常布局，避免窄画框相互覆盖。没有修改图像资产、提示词、分级、参考索引或安装包资源清单；R1 下载、独立资源包和完整安装验收仍是后续工作。
+
+验收已完成：完整门禁（623 项 unit、26 组 contract、前端测试与构建）通过；首页 8 项、详情 10 项、视觉 6 项和既有资源恢复 8 项合计 **32 项浏览器检查通过**。视觉检查复用实际层叠文字对比度工具，新增文字均满足 4.5:1，来源与说明无重叠；覆盖深浅主题、1440×960、2560×1440 DPR1.5 和 390×844。
+
+看截图发现首页窄屏底部渐变仍压淡占位文字，最终在缺图状态关闭图片装饰渐变（正常图片保留），并将占位置于装饰层之上。该调整后重新通过样式检查、前端类型检查、构建和相关 **14 项浏览器复验**，没有因局部层级修正重复无关全量测试。代表截图已人工查看；4K/150% 为浏览器等效视口，不替代物理设备/DPI/WebView2 验收。
+
+源码/构建哈希、验证范围和日志索引见 [N1/N2 验收摘要](../../evidence/image-fallback-2026-09-13/summary.json)。截图示例：[首页窄屏浅色](../../evidence/image-fallback-2026-09-13/home-phone-light.png)、[首页桌面深色](../../evidence/image-fallback-2026-09-13/home-desktop-dark.png)、[详情缺图浅色](../../evidence/image-fallback-2026-09-13/portrait-missing-desktop-light.png)、[详情缺图深色](../../evidence/image-fallback-2026-09-13/portrait-missing-desktop-dark.png)、[缩略图回退浅色](../../evidence/image-fallback-2026-09-13/portrait-fallback-4k150-light.png)、[缩略图回退深色](../../evidence/image-fallback-2026-09-13/portrait-fallback-4k150-dark.png)。

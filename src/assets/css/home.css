@@ -21,6 +21,13 @@
 .hero-orbit::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-deep), transparent 25%), linear-gradient(0deg, var(--bg-deep), transparent 45%); pointer-events: none; }
 .hero-character { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0; transform: scale(1.025); transition: opacity var(--motion-atmosphere) var(--ease-out), transform var(--motion-atmosphere) var(--ease-out); }
 .hero-character.is-current { opacity: 1; transform: scale(1); }
+/* 英雄图失败占位：与 .hero-character 同层叠放，过渡只用 opacity/transform */
+.hero-fallback { position: absolute; z-index: var(--z-base); inset: 0; display: grid; place-content: center; justify-items: center; gap: var(--s-2); background: var(--bg-deep); color: var(--text-muted); opacity: 0; transform: scale(1.025); transition: opacity var(--motion-atmosphere) var(--ease-out), transform var(--motion-atmosphere) var(--ease-out); }
+.hero-fallback.is-current { opacity: 1; transform: scale(1); }
+.hero-fallback .archive-icon { width: 40px; height: 40px; }
+.hero-fallback-text { font-size: var(--fs-label-sm); letter-spacing: .1em; }
+.hero-orbit.has-fallback::after { display: none; }
+.hero-orbit.has-fallback .orbit-label { background: none; }
 .orbit-label { position: absolute; z-index: var(--z-raised); bottom: 0; left: 0; right: 0; padding: var(--s-7) var(--s-6) var(--s-5); background: linear-gradient(0deg, var(--bg-deep) 72%, transparent); }
 .orbit-label span { display: block; color: var(--accent); font-size: var(--fs-label-xs); letter-spacing: .14em; margin-bottom: var(--s-2); }
 .orbit-label strong { color: var(--text-primary); font: 400 var(--fs-title-xs)/var(--lh-loose) var(--font-serif); }
@@ -62,6 +69,9 @@
 .sc-link { display: block; color: inherit; text-decoration: none; scroll-snap-align: start; }
 .pop-card-mini { flex: 0 0 140px; min-width: 0; scroll-snap-align: start; text-decoration: none; border-radius: var(--r-md); transition: transform var(--motion-hover); }
 .pop-card-mini img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 22%; border-radius: var(--r-lg); background: var(--bg-elevated); }
+/* 缩略图失败占位：沿用 img 的画幅与底色，姓名/作品标签在下方不受影响 */
+.pop-portrait-fallback { display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 5; border-radius: var(--r-lg); background: var(--bg-elevated); color: var(--text-muted); }
+.pop-portrait-fallback .archive-icon { width: 26px; height: 26px; }
 .pop-cap { display: flex; flex-direction: column; gap: var(--s-1); padding: var(--s-2) var(--s-1) 0; }
 .pop-cap-name { color: var(--text-primary); font-size: var(--fs-label-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pop-cap-franchise { color: var(--text-muted); font-size: var(--fs-label-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -117,6 +127,6 @@
   .recent-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-character, .hero-muses button, .tool-card, .pop-card-mini, .recent-card { transition: none; }
+  .hero-character, .hero-fallback, .hero-muses button, .tool-card, .pop-card-mini, .recent-card { transition: none; }
   .tool-card:hover, .pop-card-mini:hover, .recent-card:hover { transform: none; }
 }

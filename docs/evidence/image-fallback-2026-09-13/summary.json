@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-13",
+  "baseline": "afeb050",
+  "scope": "N1/N2 home and character image fallback",
+  "sourceSha256": {
+    "src/views/HomeView.vue": "6984faf6150ccbe36a8ec0d13811f7bf95e1fa882975d4bf82a3518d3f143067",
+    "src/assets/css/home.css": "2fcff60ac22625b35a473cc8311cbef2a1d1cb1dcad41e91bbe9d4eb697f9551",
+    "src/views/CharacterView.vue": "d99549927791f30b3d4896d7e55aace6a1dbc4a39dfbcbbde10ffb0712bec147",
+    "src/assets/css/character-view.css": "4578d2a6cad57e74e15fff4d1163becf121b1fa4002ef4a2d01072db40a46b7d",
+    "src/composables/usePortraitFallback.ts": "9252d5538b5d5d7fbe7df8ad8b6630ac3b77620e7e5e8f02932370cd6330f612",
+    "src/composables/usePortraitFallback.spec.ts": "c5992e26a7e31c1825f41c5fec98d6e51976763a7e122074542a406e77cab21b",
+    "tests/e2e/home-image-recovery.spec.ts": "2dcf0250a95d4b8572a3aea588b2bd8a69765889d394fec761ef8ae3fcd4c911",
+    "tests/e2e/character-detail-recovery.spec.ts": "25ce141000a8740661da2044b83222a8b5a096de683f351659ef6f2d12002bfa",
+    "tests/e2e/image-fallback-visual.spec.ts": "b55372f299a651ed156c13a5b40e0861cc72d5a44cecba250504fec89b9aaecd"
+  },
+  "build": {
+    "distIndexSha256": "5f8c7bd29494a584deaa33c8672c744d3872229ccf606609d80d141eae8a54df"
+  },
+  "checks": {
+    "fullGate": {
+      "passed": true,
+      "unitCount": 623,
+      "contractSuites": 26,
+      "log": "gate.txt",
+      "note": "Before final home overlay correction; affected checks rerun below"
+    },
+    "portraitStateUnit": {
+      "passed": 4
+    },
+    "browser": {
+      "passed": 32,
+      "log": "browser-32.txt",
+      "scope": "N1 8 + N2 10 + visual 6 + existing resource recovery 8"
+    },
+    "finalOverlayChecks": {
+      "typecheckApp": "passed",
+      "style": "passed",
+      "build": "passed",
+      "browserPassed": 14,
+      "log": "browser-final-14.txt"
+    },
+    "visual": {
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "viewports": [
+        "1440x960 DPR1",
+        "2560x1440 DPR1.5",
+        "390x844 DPR1"
+      ],
+      "textContrastAssertion": ">=4.5",
+      "noteSourceOverlapAssertion": "none",
+      "screenshotsReviewed": true
+    }
+  },
+  "limitations": [
+    "Reference audit used structure mode; no real generation or image-quality acceptance",
+    "No installation, WebView2, physical DPI, GPU or native-device acceptance",
+    "Home and character pages only; resource packages/download/offline install still pending"
+  ]
+}

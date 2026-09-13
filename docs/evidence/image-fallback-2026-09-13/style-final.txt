@@ -1,0 +1,235 @@
+
+> huiyu@1.7.1 test:style-debt
+> node scripts/tests/test-style-debt.js && node scripts/maintenance/scan-style-literals.js --check && node scripts/maintenance/check-contrast.js --check && node scripts/maintenance/lint-colors.js --check && node scripts/maintenance/lint-animations.js --check
+
+inline style occurrences: 105
+✔ style-debt (52.9806ms)
+✔ contrast: parses real theme overrides, nested mixes and alpha without silent skips (82.4773ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 141.6729
+     4  src/assets/css/design-system.csszindex=2 black=1 bezier=1
+     2  src/assets/css/chat.css       font-shorthand=1 zindex=1
+     2  src/assets/css/scene-card.css black=2
+     2  src/components/home/HomeArtJournal.vuefont-shorthand=1 bezier=1
+     2  src/views/ShowcaseView.vue    font-shorthand=2
+     1  src/assets/css/character-view.cssfontsize=1
+     1  src/assets/css/director/layout.cssfontsize=1
+     1  src/assets/css/home.css       font-shorthand=1
+     1  src/assets/css/workspace-layout.cssfont-shorthand=1
+     1  src/components/ArtistStylePicker.vuefontsize=1
+     1  src/components/ConfirmDialog.vueblack=1
+     1  src/components/DesktopTitleBar.vuefontsize=1
+     1  src/components/SpeechInputSettings.vueradius=1
+     1  src/components/visual/ArchivePageHero.vuefont-shorthand=1
+     1  src/components/visual/ImageSplitCompare.vuezindex=1
+     1  src/views/SceneExplorerView.vueblack=1
+TOTAL literal occurrences: 23 (budget 36)
+字面量预算检查通过。
+
+=== dark theme / --bg-deep (合成后 #181420) ===
+  OK   --success-text        #4ade80   10.39:1
+  OK   --warning-text        #fbbf24   10.85:1
+  OK   --danger-text         #f87171   6.55:1
+  OK   --info-text           #60a5fa   7.12:1
+  OK   --mood-joy-text       #ffd166   12.56:1
+  OK   --mood-love-text      #ff8db0   8.35:1
+  OK   --mood-calm-text      #4ade80   10.39:1
+  OK   --mood-sad-text       #60a5fa   7.12:1
+  OK   --mood-tension-text   #c498ff   8.00:1
+  OK   --mood-warmth-text    #fbb040   9.82:1
+  OK   --nene-violet         #b784f6   6.59:1
+  OK   --natsume-amber       #fbb040   9.82:1
+  OK   --accent              #f2a8be   9.59:1
+  OK   --accent-violet       #b784f6   6.59:1
+  OK   --text-primary        #fff8f4   17.23:1
+  OK   --text-secondary      #c8c7d2   10.83:1
+  OK   --text-muted          #adb0c2   8.42:1
+  OK   --text-disabled       #a6a9bc   7.78:1
+
+=== dark theme / --bg-base (合成后 #211c30) ===
+  OK   --success-text        #4ade80   9.46:1
+  OK   --warning-text        #fbbf24   9.88:1
+  OK   --danger-text         #f87171   5.96:1
+  OK   --info-text           #60a5fa   6.49:1
+  OK   --mood-joy-text       #ffd166   11.44:1
+  OK   --mood-love-text      #ff8db0   7.61:1
+  OK   --mood-calm-text      #4ade80   9.46:1
+  OK   --mood-sad-text       #60a5fa   6.49:1
+  OK   --mood-tension-text   #c498ff   7.29:1
+  OK   --mood-warmth-text    #fbb040   8.94:1
+  OK   --nene-violet         #b784f6   6.00:1
+  OK   --natsume-amber       #fbb040   8.94:1
+  OK   --accent              #f2a8be   8.73:1
+  OK   --accent-violet       #b784f6   6.00:1
+  OK   --text-primary        #fff8f4   15.69:1
+  OK   --text-secondary      #c8c7d2   9.86:1
+  OK   --text-muted          #adb0c2   7.67:1
+  OK   --text-disabled       #a6a9bc   7.09:1
+
+=== dark theme / --bg-surface (合成后 #272135) ===
+  OK   --success-text        #4ade80   8.89:1
+  OK   --warning-text        #fbbf24   9.28:1
+  OK   --danger-text         #f87171   5.60:1
+  OK   --info-text           #60a5fa   6.09:1
+  OK   --mood-joy-text       #ffd166   10.75:1
+  OK   --mood-love-text      #ff8db0   7.15:1
+  OK   --mood-calm-text      #4ade80   8.89:1
+  OK   --mood-sad-text       #60a5fa   6.09:1
+  OK   --mood-tension-text   #c498ff   6.85:1
+  OK   --mood-warmth-text    #fbb040   8.40:1
+  OK   --nene-violet         #b784f6   5.64:1
+  OK   --natsume-amber       #fbb040   8.40:1
+  OK   --accent              #f2a8be   8.21:1
+  OK   --accent-violet       #b784f6   5.64:1
+  OK   --text-primary        #fff8f4   14.75:1
+  OK   --text-secondary      #c8c7d2   9.26:1
+  OK   --text-muted          #adb0c2   7.21:1
+  OK   --text-disabled       #a6a9bc   6.66:1
+
+=== dark theme / --bg-elevated (合成后 #30283d) ===
+  OK   --success-text        #4ade80   8.05:1
+  OK   --warning-text        #fbbf24   8.41:1
+  OK   --danger-text         #f87171   5.07:1
+  OK   --info-text           #60a5fa   5.52:1
+  OK   --mood-joy-text       #ffd166   9.73:1
+  OK   --mood-love-text      #ff8db0   6.47:1
+  OK   --mood-calm-text      #4ade80   8.05:1
+  OK   --mood-sad-text       #60a5fa   5.52:1
+  OK   --mood-tension-text   #c498ff   6.20:1
+  OK   --mood-warmth-text    #fbb040   7.61:1
+  OK   --nene-violet         #b784f6   5.11:1
+  OK   --natsume-amber       #fbb040   7.61:1
+  OK   --accent              #f2a8be   7.43:1
+  OK   --accent-violet       #b784f6   5.11:1
+  OK   --text-primary        #fff8f4   13.35:1
+  OK   --text-secondary      #c8c7d2   8.39:1
+  OK   --text-muted          #adb0c2   6.53:1
+  OK   --text-disabled       #a6a9bc   6.03:1
+
+=== light theme / --bg-deep (合成后 #f3ebe8) ===
+  OK   --success-text        #126239   6.31:1
+  OK   --warning-text        #865400   5.44:1
+  OK   --danger-text         #b12d49   5.35:1
+  OK   --info-text           #245d9b   5.74:1
+  OK   --mood-joy-text       #805009   5.82:1
+  OK   --mood-love-text      #9f2e58   5.94:1
+  OK   --mood-calm-text      #126239   6.31:1
+  OK   --mood-sad-text       #245d9b   5.74:1
+  OK   --mood-tension-text   #754096   6.10:1
+  OK   --mood-warmth-text    #855014   5.66:1
+  OK   --nene-violet         #71409d   6.11:1
+  OK   --natsume-amber       #855014   5.66:1
+  OK   --accent              #92365f   6.13:1
+  OK   --accent-violet       #6d3bb4   6.09:1
+  OK   --text-primary        #211c30   14.02:1
+  OK   --text-secondary      #504858   7.41:1
+  OK   --text-muted          #645c6e   5.42:1
+  OK   --text-disabled       #665d6e   5.32:1
+
+=== light theme / --bg-base (合成后 #fff8f4) ===
+  OK   --success-text        #126239   7.06:1
+  OK   --warning-text        #865400   6.09:1
+  OK   --danger-text         #b12d49   5.98:1
+  OK   --info-text           #245d9b   6.42:1
+  OK   --mood-joy-text       #805009   6.51:1
+  OK   --mood-love-text      #9f2e58   6.65:1
+  OK   --mood-calm-text      #126239   7.06:1
+  OK   --mood-sad-text       #245d9b   6.42:1
+  OK   --mood-tension-text   #754096   6.82:1
+  OK   --mood-warmth-text    #855014   6.33:1
+  OK   --nene-violet         #71409d   6.84:1
+  OK   --natsume-amber       #855014   6.33:1
+  OK   --accent              #92365f   6.86:1
+  OK   --accent-violet       #6d3bb4   6.81:1
+  OK   --text-primary        #211c30   15.69:1
+  OK   --text-secondary      #504858   8.30:1
+  OK   --text-muted          #645c6e   6.06:1
+  OK   --text-disabled       #665d6e   5.96:1
+
+=== light theme / --bg-surface (合成后 #ffffff) ===
+  OK   --success-text        #126239   7.42:1
+  OK   --warning-text        #865400   6.40:1
+  OK   --danger-text         #b12d49   6.29:1
+  OK   --info-text           #245d9b   6.74:1
+  OK   --mood-joy-text       #805009   6.84:1
+  OK   --mood-love-text      #9f2e58   6.99:1
+  OK   --mood-calm-text      #126239   7.42:1
+  OK   --mood-sad-text       #245d9b   6.74:1
+  OK   --mood-tension-text   #754096   7.17:1
+  OK   --mood-warmth-text    #855014   6.66:1
+  OK   --nene-violet         #71409d   7.19:1
+  OK   --natsume-amber       #855014   6.66:1
+  OK   --accent              #92365f   7.20:1
+  OK   --accent-violet       #6d3bb4   7.16:1
+  OK   --text-primary        #211c30   16.49:1
+  OK   --text-secondary      #504858   8.72:1
+  OK   --text-muted          #645c6e   6.37:1
+  OK   --text-disabled       #665d6e   6.26:1
+
+=== light theme / --bg-elevated (合成后 #eee8f0) ===
+  OK   --success-text        #126239   6.16:1
+  OK   --warning-text        #865400   5.31:1
+  OK   --danger-text         #b12d49   5.22:1
+  OK   --info-text           #245d9b   5.60:1
+  OK   --mood-joy-text       #805009   5.68:1
+  OK   --mood-love-text      #9f2e58   5.80:1
+  OK   --mood-calm-text      #126239   6.16:1
+  OK   --mood-sad-text       #245d9b   5.60:1
+  OK   --mood-tension-text   #754096   5.95:1
+  OK   --mood-warmth-text    #855014   5.53:1
+  OK   --nene-violet         #71409d   5.97:1
+  OK   --natsume-amber       #855014   5.53:1
+  OK   --accent              #92365f   5.98:1
+  OK   --accent-violet       #6d3bb4   5.94:1
+  OK   --text-primary        #211c30   13.69:1
+  OK   --text-secondary      #504858   7.24:1
+  OK   --text-muted          #645c6e   5.29:1
+  OK   --text-disabled       #665d6e   5.20:1
+角色强调色检查: 1224 项
+
+=== dark theme / 非文字图形 3:1 (--bg-elevated) ===
+  OK   --success             #4ade80   8.05:1
+  OK   --warning             #fbbf24   8.41:1
+  OK   --danger              #f87171   5.07:1
+  OK   --info                #60a5fa   5.52:1
+
+=== light theme / 非文字图形 3:1 (--bg-elevated) ===
+  OK   --success             #126239   6.16:1
+  OK   --warning             #865400   5.31:1
+  OK   --danger              #b12d49   5.22:1
+  OK   --info                #245d9b   5.60:1
+
+未达 AA(4.5:1) 的文字 token: 0 项
+未达 3:1 的非文字图形 token: 0 项
+
+=== SFC <style> 局部文字色（组件级盲区补扫） ===
+  SFC 局部文字色检查 404 处，FAIL 0 处，已豁免 1 处
+  ✅ No hardcoded colors found. All colors use design tokens.
+布局属性补间清单（transform/opacity 以外的过渡/关键帧补间）：
+  [豁免] src/assets/css/character-view.css · transition
+          .bg-story { display:block; width:100%; text-align:left; border:none; background:none; font…
+  [豁免] src/assets/css/design-system.css · transition
+          transition: width var(--motion-surface) var(--ease-out); } .meter-lg { height: 10px; }
+  [豁免] src/assets/css/design-system.css · transition
+          transition: grid-template-rows var(--motion-control) var(--ease-out); } .anim-collapse-gri…
+TOTAL 3 处，其中已豁免 3 处 / 基线 3
+
+重绘型过渡 59 处（不阻断：会逐帧重绘，filter 还需离屏合成）：
+  box-shadow         35 处
+  filter             13 处
+  filter @keyframes  9 处
+  box-shadow @keyframes 2 处
+  集中文件：
+    10 处  src/assets/css/director/panels.css
+    8 处  src/assets/css/design-system.css
+    6 处  src/assets/css/director/stage.css
+    5 处  src/assets/css/chat.css
+    3 处  src/assets/css/companion.css
+  整改方向：改用 transform/opacity 表达，或把变化挪到伪元素/静态图层上。
+动效合成器铁律门禁通过。

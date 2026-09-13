@@ -106,7 +106,48 @@
   font-size:var(--fs-mono-xs); color:var(--on-art-secondary);
 }
 .portrait-badge { top:var(--s-3); left:var(--s-3); }
-.portrait-source { bottom:var(--s-3); right:var(--s-3); }
+.portrait-footer {
+  position:relative; z-index:var(--z-raised); width:100%;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end;
+  gap:var(--s-2); padding:var(--s-2) var(--s-3);
+  background:var(--bg-elevated);
+}
+.portrait-footer .portrait-source { position:static; overflow-wrap:anywhere; color:var(--text-secondary); }
+/* 缺失与回退说明采用主题表面，兼容资料库的透明画框。 */
+.portrait-missing {
+  position:relative;
+  width:100%;
+  min-height:clamp(220px, 34vh, 340px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:var(--s-2);
+  padding:var(--s-6) var(--s-4);
+  text-align:center;
+  color:var(--text-secondary);
+  background:var(--bg-elevated);
+}
+.portrait-missing-icon { font-size:1.7rem; }
+.portrait-missing-title { color:var(--text-primary); font-size:var(--fs-title-xs); font-weight:700; letter-spacing:.04em; }
+.portrait-missing-text { max-width:30ch; font-size:var(--fs-label-sm); line-height:var(--lh-label); }
+/* 缺失时的"空展位"虚线框：与档案语言（cb-empty 等虚线空态）一致 */
+.portrait[data-portrait-state="missing"]::after {
+  content:''; position:absolute; inset:var(--s-2);
+  border:1px dashed var(--on-art-line);
+  border-radius:calc(var(--r-stage) - 4px);
+  pointer-events:none;
+}
+.portrait-fallback-note {
+  max-width:100%;
+  margin-right:auto;
+  padding:3px 10px;
+  border:1px solid var(--on-art-line);
+  border-radius:var(--r-pill);
+  background:var(--bg-elevated);
+  color:var(--text-secondary);
+  font-size:var(--fs-mono-xs);
+}
 .character-name { font-size:clamp(1.6rem,3vw,2.4rem); font-weight:800; margin-bottom:var(--s-2); }
 .identity-row { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-3); }
 .identity-row .item { padding:3px var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); font-size:var(--fs-label-sm); color:var(--text-secondary); }
