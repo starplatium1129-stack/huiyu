@@ -76,6 +76,22 @@
 | `src/views/ChatView.vue`、`src/composables/chat/useChatStorage.ts`、`useVoice.ts`、`useLive2D.ts` | 角色房间编排、存储、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
 | `src/assets/css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
 
+## 人物、服装与参考域的维护边界
+
+2026-09-13 按实际解析和写入链核对。此处补充上表，不另建一套字段契约；验证范围仍按 [工作流分层规则](workflow.md#门禁与构建) 选择，不因编辑档案就默认执行全部构建或参考同步。
+
+| 域 | 维护与读取入口 | 要保留的边界 |
+| --- | --- | --- |
+| 人物档案 | `data/characters.json` → `src/utils/characterProfiles.ts` → CharacterView | 详情解析仅保留其显式字段；JSON 中存在 traits/visual_dna 等字段不代表详情页正在展示。保存链还会清理 lora.recommended_scene 引用 |
+| 热门生成身份 | `data/popular/` 源 → popular:build → 聚合 → `src/utils/popularContent.ts` | 展示档案与生成身份用途独立；不能把两份同名字段机械合并 |
+| 服装 | 热门分片 outfits，经 parseOutfit 解析；工作室服装另见 useDirectorCatalog、promptPolicy 与 promptBuilderStore | 热门服装按角色 ID + 服装 ID 定位；parseOutfit 保留 default，不保留分片 isDefault；参考 view 的 isDefault 属于另一条派生链 |
+| 参考标准与视图 | standards/view；写入者包括 sync-multi-outfit-standards 和 register-pending-reference-outfits | view 是合并投影且登记器会写入，不是纯覆盖产物。镜像契约通过不代表图片存在或已审核 |
+| 角色蓝图 | `data/blueprints/` 源 → blueprints:build → 聚合；运行时按角色解析 outfitId | 当前 UI 保存只写聚合，启动自愈可能按旧分片覆盖；在持久化修复验收前不能把保存回执当作源已更新。见 [待办](roadmap.md#后续工作流与内容数据治理) |
+
+参考同步有实际数据写入，不能作为档案编辑后的固定必跑步骤：`sync-multi-outfit-standards.js` 根据磁盘四个参考机位是否齐全过滤热门服装，并允许角色级旧机位路径回退；在缺素材根的机器上运行可能写出空形态。名称启发式产生的 isNsfw 与该磁盘过滤是两条独立逻辑，不能据此解释某形态缺失原因。同步中的 `o.default || idx === 0` 无条件将首套标成默认；若其他服装也标 default，需检查输出是否出现双默认，不能称为“仅无标记时兜底”。
+
+`accent_color` 有机器读取者：覆盖审计 `report-content-coverage.js` 将其带入缺主题报告，但不与 tokens.css 比对。主题渲染以实际 CSS 为准；不同颜色值不能直接判为数据冲突。更多已核实范围与未验收项见 [盘点复核](research/engineering/six-task-review-2026-09-13.md)。
+
 ## 角色聊天、实时语音与 Live2D
 
 角色房间按“页面状态 → 浏览器能力控制器 → 网关路由 → 上游服务”分层：

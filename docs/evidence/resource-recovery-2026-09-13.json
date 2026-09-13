@@ -1,0 +1,114 @@
+{
+  "date": "2026-09-13",
+  "baseline": "e34cad7",
+  "scope": "RB temporary path fixtures, RC maintenance documentation, selected RD browser recovery tests",
+  "assetInventory": {
+    "totals": {
+      "files": 629,
+      "bytes": 353211795,
+      "bytesMiB": 336.849,
+      "byCategory": {
+        "brand-root": {
+          "count": 5,
+          "bytes": 2902
+        },
+        "live2d:nene": {
+          "count": 24,
+          "bytes": 51251221
+        },
+        "live2d:natsume": {
+          "count": 93,
+          "bytes": 18893871
+        },
+        "particles": {
+          "count": 160,
+          "bytes": 9157784
+        },
+        "chibi": {
+          "count": 12,
+          "bytes": 512774
+        },
+        "dual-poses": {
+          "count": 1,
+          "bytes": 302
+        },
+        "characters/thumbs": {
+          "count": 160,
+          "bytes": 2816246
+        },
+        "characters/popular-portrait": {
+          "count": 160,
+          "bytes": 268964651
+        },
+        "characters/base-display": {
+          "count": 4,
+          "bytes": 622770
+        },
+        "characters/variant": {
+          "count": 8,
+          "bytes": 962151
+        },
+        "characters/placeholder": {
+          "count": 1,
+          "bytes": 920
+        },
+        "characters/governance": {
+          "count": 1,
+          "bytes": 26203
+        },
+        "unknown": {
+          "count": 0,
+          "bytes": 0
+        }
+      },
+      "categoryOrder": [
+        "brand-root",
+        "live2d:nene",
+        "live2d:natsume",
+        "particles",
+        "chibi",
+        "dual-poses",
+        "characters/thumbs",
+        "characters/popular-portrait",
+        "characters/base-display",
+        "characters/variant",
+        "characters/placeholder",
+        "characters/governance",
+        "unknown"
+      ]
+    },
+    "quality": "unverified",
+    "installationSize": "unmeasured"
+  },
+  "pathFixtures": {
+    "total": 38,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "testFile": "tests/e2e/resource-recovery.spec.ts",
+    "sourceSha256": "701abe5daefcb77c09abf3e13aba62fdecca4098e2376ed2b58009092526f16b",
+    "passed": 8,
+    "failed": 0,
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "cases": [
+      "F03",
+      "F05",
+      "F08b",
+      "F09"
+    ],
+    "portOffset": 16000,
+    "build": "existing dist, not rebuilt during browser execution",
+    "log": "docs/evidence/resource-recovery-browser-2026-09-13.txt"
+  },
+  "limitations": [
+    "No generation model, installation or native device acceptance",
+    "F08 reference lightbox fault not reliably triggered; not integrated",
+    "F01/F02/F04 UI fallbacks remain unimplemented",
+    "F07 pixel rendering and F10-F12 Live2D acceptance remain unverified",
+    "DOM and fixture screenshots do not prove full WCAG or real image quality"
+  ]
+}

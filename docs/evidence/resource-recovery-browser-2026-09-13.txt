@@ -1,0 +1,26 @@
+
+[WebServer] (node:33796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+
+[WebServer] (node:29252) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+Running 8 tests using 1 worker
+
+
+(node:45892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F03 角色列表缩略图 404 首字回退 [dark]
+[2/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F03 角色列表缩略图 404 首字回退 [light]
+[3/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F05 场景卡片缩略图 404 提示可用 [dark]
+[4/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F05 场景卡片缩略图 404 提示可用 [light]
+[5/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F08b 参考卡片拒绝不可放大 [dark]
+[6/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F08b 参考卡片拒绝不可放大 [light]
+[7/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F09 画册灯箱 404 可关闭可恢复 [dark]
+[8/8] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F09 画册灯箱 404 可关闭可恢复 [light]
+  8 passed (22.2s)
