@@ -2,7 +2,7 @@
 
 2026-09-13。用户希望优先使用即将到期的 GLM 5.3 Flash 额度。此处按任务边界安排工作，不声明其通用能力或基准排名。依据见 [六报告复核](../../research/engineering/six-task-review-2026-09-13.md)。
 
-最新复核：A、RB、RC、N1/N2/N3、G1–G7 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。资源清单的生成、核验与结构差异比较已形成基础链；本文件保留已执行批次，后续按 roadmap 的实际缺口另分任务，不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
+最新复核：A、RB、RC、N1/N2/N3、G1–G7 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。当前执行文末 G8/G9/G10，三项可并行；旧批次不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
 
 ## 执行与交付
 
@@ -217,3 +217,42 @@
 - 非空 unverified 或不可支持格式不得得出“完整一致”的成功结论；清楚区分已列条目的差异与目录覆盖完整性。两份清单相同不证明当前文件存在、已审核或已交付。
 - 用隔离夹具覆盖新增、删除、同大小改哈希、大小变化、完全相同、输入条目乱序、空清单、重复/坏路径/坏版本、带 unverified、参数错误；记录型 IO 证明未访问任何资产文件、两份输入不变，help/plan 零目标读取。已有生成/核验和排除域/junction 回归必须继续通过。
 - 不重构成资源数据库、不新增网络行为、不复制或删除图片。必要时在 600 行内拆纯辅助模块，不重复制造另一套路径检查器。定向测试与注册审计通过后写回执，最终全量门禁由主任务统一处理。
+
+## G8/G9/G10：工具可用性与资源导出基础
+
+2026-09-14，分派时基线 `d1a1953`。用户明确希望继续利用 GLM 完成更多实际工作。本轮三项文件互不重叠；G10 独占工作流注册和文档，G8/G9 的注册/文档补充写在回执中交主任务统一处理。所有会话先核对实际 HEAD/diff，不做任何 Git 写操作，不构建共享 dist、不启动共享浏览器服务、不调用生成模型、不安装/下载/发布。定向隔离测试可直接执行并修复失败；不得用新增报告替代要求的实现。
+
+### G8：影响报告的人类可读输出
+
+独占 `scripts/maintenance/report-content-impact.js`、可新增 `scripts/lib/content-impact-format.js`，以及 `scripts/tests/test-content-impact.js` 或新增 `scripts/tests/test-content-impact-format.js`。回执 `scripts/archive/glm-g8-impact-output/result.md`。若新增测试文件，列明注册位置交主任务处理，不改共享测试清单。
+
+- 默认文字输出目前逐段 JSON.stringify。改为清楚的目标/范围摘要、必改/需复验/仅关联数量与条目、未知范围、未执行建议命令。每个问题保留 kind/id/原因或现有对应标识，不丢失定位依据。
+- 默认服装、主题、参考状态、场景和显式样张关系以易读短行呈现；区分 pending、URL 声明、实际存在性未知，不把关联对象全称为必须修改。空集合省略，长清单如截断须注明剩余数量及 --json 入口。
+- `--json` 的结构/数值、parse/report 的判定、退出码、所有已有选项和只读行为保持。格式化层只处理报告结果，不重新查文件、不执行建议、不改内容或推荐范围。
+- 测试覆盖必改/复验/关联分离、未知项保留、空集合、多目标定位、异常兜底、输入对象不变；同一隔离夹具下 JSON 与旧 report 结果一致，文字与 JSON 的退出码一致。复用既有 CLI/零写入测试，不锁整份长文本快照。
+- 不修改 scripts/workflow.js、docs/workflow.md 或其他批次文件。完成代码、定向测试及简洁回执。
+
+### G9：覆盖缺口报告支持角色/服装筛选
+
+独占 `scripts/maintenance/report-content-coverage.js`、`scripts/tests/test-coverage-report.js`；如需拆分可新增纯辅助 `scripts/lib/coverage-selection.js`。回执 `scripts/archive/glm-g9-coverage-filter/result.md`，注册与文档修改建议交主任务，不碰 G10 的共享文件。
+
+- 给 audit:coverage 增加 `--character <规范ID>` 与可选 `--outfit <角色内ID>`；outfit 必须同时指定 character，未知角色/服装明确报参数错误，不能返回貌似正常的空报告。
+- 无筛选参数时保留现有全库输出、版本与退出码。筛选时只列所选角色/服装的参考覆盖结果和该角色主题状态，数量按所选范围重算，JSON 增加明确 scope，不把局部结果称为全库通过。
+- manifest、重复身份、standards/view 镜像等既有全域结构检查仍执行且问题保留，并注明全域错误不一定由所选对象造成。不要靠先丢弃其他角色来掩盖全库结构错误。
+- 文件存在性核对仅针对所选参考范围；未选角色不应额外触发其素材文件检查。允许为全域结构检查读取已有元数据 JSON，但不得把未检查图片计为 verified。
+- 测试覆盖单角色、单服装、缺登记、pending、素材根未知、参考独有形态、无关角色不出现在局部条目中、全域结构错误仍可见、未知ID/不合法参数、输入不变及零源写入；记录型 fileExists 证明不检查未选参考文件。
+- 使用现有 buildReport/analyseReferences 等逻辑，避免整套重写；保留默认主题和兼容别名。不要注册服装、不补描述、不生成图片、不修改分级或主题。
+
+### G10：离线资源候选包导出
+
+这是 R1 后续的受控复制工具，不是安装器或下载器。GLM 仅用临时夹具执行写入验收；本机真实素材导出由主任务另行选择，不在本批自动进行。
+
+独占新增 `scripts/lib/resource-pack.js`、`scripts/maintenance/stage-resource-pack.js`、`scripts/tests/test-resource-pack.js`，以及 `scripts/workflow.js`、`scripts/tests/quality-test-inventory.js`、`docs/workflow.md` 的必要注册。可只读复用 resource-manifest 库，不修改它；回执 `scripts/archive/glm-g10-resource-pack/result.md`。
+
+- 新入口 `resource:pack --manifest <root内JSON> --name <包名> [--root <目录>] [--apply]`。默认只预览计划，零写入；--help/--plan 不读取目标。包名限字母、数字、下划线、短横线，不允许路径片段。
+- 首版输出固定在 `<root>/scripts/archive/resource-packs/<包名>/` 的新目录。先校验最终路径及所有已存在祖先的真实位置，拒绝 symlink/junction 绕出允许候选目录；目标只要已存在（包括空目录）就拒绝，不覆盖任何旧包。
+- 显式 --apply 才复制清单已列普通文件，保留 `assets/...` 相对结构，并写入可被已有 manifest 工具核验的 manifest.json。先复用清单核验，遇到不支持格式、重复/越界、排除域、未核验项、缺失、错大小/哈希须拒绝；不遍历补入未列文件，不执行任何复制内容。
+- 写到本次专用临时目录，逐项核验候选副本与声明字节/哈希一致，全部成功后才将该目录放到最终包名。源在复制期间变化、写入失败、目标冲突等都不能报告成功；失败候选可保留并明确路径，不删除无关目录，不把残缺包当成可用包。
+- 不转换或重采样图片，不编辑原 manifest，不运行资产中的脚本；不写安装目录、生产 assets、用户作品或外部托管，不生成可执行更新逻辑，不做 ZIP 解压/安装/缓存淘汰。输出仅称“候选包已通过字节核验”，不能称质量/审核/部署完成。
+- 临时夹具至少覆盖预览零写入、正常导出且原文件字节不变、同名目标拒绝、坏清单拒绝、排除域/路径/junction拒绝、复制失败或源变化不发布最终包、导出后用现有 verifyManifest 校验通过。清理只针对明确由本测试创建并已确认位于临时根内的路径，不能递归清理链接目标。
+- 新命令登记默认 preview/read-only 与 --apply 的 writes-product 行为，注册定向测试和文档；不把它标为发布入口。遵守单文件 600 行预算。完成定向验证后交主任务统一门禁与写入边界复核。
