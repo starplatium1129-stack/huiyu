@@ -3,12 +3,15 @@
 /**
  * scripts/lib/resource-manifest.js — 本地资源清单生成与校验（只读纯函数，schemaVersion 1）
  *
- * 职责（G5 批次）：
+ * 职责（G5 批次，G7 增补差异比较）：
  *  - 显式 root 下 root/assets 普通文件清单：root 相对 posix 路径、字节数、SHA-256，路径按
  *    码元顺序稳定排序；generatedAt 仅信息性，不作为内容版本；首版以路径标识文件，
  *    不声称跨重命名身份稳定。
  *  - 校验清单：重复路径、非法/越界路径、文件缺失、字节或哈希不匹配；结构错误不得
  *    返回无条件成功。
+ *  - 比较两份清单（G7）：纯函数，不触 fs、不读取实际资产；先做与核验一致的结构检查，
+ *    再按精确路径输出新增/移除/改变/未改变。不用 generatedAt 判定新旧，不按相同哈希
+ *    猜测重命名；非空 unverified 或结构错误时不得得出「完整一致」的成功结论。
  *  - 只读：不写、不下载、不转换、不删除；清单落盘由调用者显式重定向。
  *
  * 路径边界复用 glm-next-b/RB 夹具已验证的经验（未整搬临时脚本）：
@@ -250,22 +253,28 @@ function generateManifest({ root, io = nodeFs } = {}) {
   };
 }
 
-/** 清单条目内容核验（不可信数据）：先结构，后合规，再边界，最后 stat/字节/哈希。 */
-function verifyEntries(rootReal, manifest, io) {
+/**
+ * 清单结构检查（纯函数，不触 fs，核验与比较共用同一套检查）：对象/schemaVersion/
+ * entries 数组/unverified 形态、逐条目 path/bytes/sha256 类型、Windows 大小写与精确
+ * 重复、路径合规。返回 errors、listed（含坏条目在内的条目数）、byPath（唯一路径 →
+ * { count, bytes, sha256 }）与 invalidPaths（路径合规失败的路径，调用方跳过其后续
+ * fs 检查，比较端不得用其产出差异）。
+ */
+function parseManifestStructure(manifest) {
   const errors = [];
   const push = (error) => errors.push(error);
-  const done = () => ({ errors, listed: 0, uniquePaths: 0, byPath: new Map() });
+  const empty = () => ({ errors, listed: 0, byPath: new Map(), invalidPaths: new Set() });
   if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
     push({ code: 'bad-manifest', message: '清单必须是 JSON 对象' });
-    return done();
+    return empty();
   }
   if (manifest.schemaVersion !== SCHEMA_VERSION) {
     push({ code: 'unsupported-schema', message: `不支持的 schemaVersion: ${JSON.stringify(manifest.schemaVersion)}（本工具支持 ${SCHEMA_VERSION}）` });
-    return done();
+    return empty();
   }
   if (!Array.isArray(manifest.entries)) {
     push({ code: 'bad-manifest', message: 'entries 必须是数组' });
-    return done();
+    return empty();
   }
   if (manifest.unverified !== undefined) {
     if (!Array.isArray(manifest.unverified)) {
@@ -275,6 +284,7 @@ function verifyEntries(rootReal, manifest, io) {
     }
   }
   const byPath = new Map();
+  const invalidPaths = new Set();
   const pathIdentities = new Map();
   let listed = 0;
   for (const entry of manifest.entries) {
@@ -310,8 +320,18 @@ function verifyEntries(rootReal, manifest, io) {
     const check = checkManifestPath(rel);
     if (!check.ok) {
       push({ path: rel, code: check.code, message: check.message });
-      continue;
+      invalidPaths.add(rel);
     }
+  }
+  return { errors, listed, byPath, invalidPaths };
+}
+
+/** 清单条目内容核验（不可信数据）：先结构，再边界，最后 stat/字节/哈希。 */
+function verifyEntries(rootReal, manifest, io) {
+  const { errors, listed, byPath, invalidPaths } = parseManifestStructure(manifest);
+  const push = (error) => errors.push(error);
+  for (const [rel, record] of byPath) {
+    if (invalidPaths.has(rel)) continue;
     const abs = path.join(rootReal, ...rel.split('/'));
     const boundary = resolveRealpathBoundary(io, abs, rootReal);
     if (!boundary.ok) {
@@ -374,6 +394,27 @@ function verifyManifestEntries({ root, manifest, io = nodeFs } = {}) {
   };
 }
 
+/** 读取 root 内指定清单文件（--manifest/--compare-manifest 共用）：路径与真实路径
+ *  边界检查先于任何读取；越界/不可读抛 UsageError（退出 2）。 */
+function readManifestFile(rootReal, manifestPath, flag, io) {
+  const resolved = path.resolve(rootReal, manifestPath);
+  if (!isInsideRoot(rootReal, resolved)) throw new UsageError(`${flag} 必须位于 root 内: ${manifestPath}`);
+  const boundary = resolveRealpathBoundary(io, resolved, rootReal);
+  if (!boundary.ok) throw new UsageError(`${flag} ${boundary.message}`);
+  let raw;
+  try {
+    raw = io.readFileSync(resolved);
+  } catch (err) {
+    throw new UsageError(`${flag} 不可读取: ${err.message}`);
+  }
+  return { resolved, raw };
+}
+
+/** root 相对 posix 形式的清单路径（结果标注用）。 */
+function manifestRelPath(rootReal, resolved) {
+  return path.relative(rootReal, resolved).split(path.sep).join('/');
+}
+
 /**
  * 校验 --manifest 指定的 root 内 JSON 文件。清单路径越界/不可读、root 问题抛
  * UsageError（退出 2）；JSON 解析失败与结构问题返回结果对象（退出 1）。
@@ -381,16 +422,7 @@ function verifyManifestEntries({ root, manifest, io = nodeFs } = {}) {
 function verifyManifest({ root, manifestPath, io = nodeFs } = {}) {
   if (!manifestPath || typeof manifestPath !== 'string') throw new UsageError('--manifest 缺失或不是字符串');
   const rootReal = resolveRoot({ root, io });
-  const resolved = path.resolve(rootReal, manifestPath);
-  if (!isInsideRoot(rootReal, resolved)) throw new UsageError(`--manifest 必须位于 root 内: ${manifestPath}`);
-  const boundary = resolveRealpathBoundary(io, resolved, rootReal);
-  if (!boundary.ok) throw new UsageError(`--manifest ${boundary.message}`);
-  let raw;
-  try {
-    raw = io.readFileSync(resolved);
-  } catch (err) {
-    throw new UsageError(`--manifest 不可读取: ${err.message}`);
-  }
+  const { resolved, raw } = readManifestFile(rootReal, manifestPath, '--manifest', io);
   let manifest;
   try {
     manifest = JSON.parse(raw.toString('utf8'));
@@ -405,8 +437,111 @@ function verifyManifest({ root, manifestPath, io = nodeFs } = {}) {
     };
   }
   const result = verifyManifestEntries({ root: rootReal, manifest, io });
-  result.manifestPath = path.relative(rootReal, resolved).split(path.sep).join('/');
+  result.manifestPath = manifestRelPath(rootReal, resolved);
   return result;
 }
 
-module.exports = { SCHEMA_VERSION, SCAN_ROOT, EXCLUDED_PATHS, UsageError, generateManifest, verifyManifest, verifyManifestEntries, checkManifestPath, resolveRealpathBoundary };
+/**
+ * 差异比较结果的范围说明（G7）：identical 只覆盖两份清单已列条目；「完整一致」
+ * 的成功结论要求 ok 且 identical 同时为真。
+ */
+const DIFF_SCOPE = Object.freeze({
+  basis: '按精确路径比较两份清单已列条目；不读取实际资产；不用 generatedAt 判定新旧；不按相同哈希猜测重命名',
+  coverageNote: '一致仅表示两份清单已列条目的集合与记录内容一致；不证明目录覆盖完整、当前文件存在、内容已审核或已交付。「完整一致」结论要求 ok 且 identical 同时为真',
+});
+
+/**
+ * 纯比较两份清单对象（G7，不触 fs、不读取实际资产）：先做与核验一致的结构检查；
+ * 除非空 unverified 外的任何结构错误（坏格式、不支持 schema、坏条目、重复或非法/
+ * 越界路径）都阻止差异计算——不可信的条目集合不产出可信差异；非空 unverified 时
+ * 仍比较已列条目，但整体 ok=false，不构成「完整一致」的成功结论。old→new 由调用
+ * 参数顺序决定；结果路径按码元顺序稳定排序。
+ */
+function compareManifests({ oldManifest, newManifest } = {}) {
+  const oldStructure = parseManifestStructure(oldManifest);
+  const newStructure = parseManifestStructure(newManifest);
+  const errors = [
+    ...oldStructure.errors.map((e) => ({ ...e, side: 'old' })),
+    ...newStructure.errors.map((e) => ({ ...e, side: 'new' })),
+  ];
+  const result = {
+    schemaVersion: SCHEMA_VERSION,
+    kind: 'resource-manifest-diff',
+    ok: errors.length === 0,
+    identical: false,
+    totals: { added: 0, removed: 0, changed: 0, unchanged: 0 },
+    added: [],
+    removed: [],
+    changed: [],
+    errors,
+    scope: DIFF_SCOPE,
+  };
+  const blocking = (list) => list.some((e) => e.code !== 'unverified-items');
+  if (blocking(oldStructure.errors) || blocking(newStructure.errors)) return result;
+  const added = [];
+  const removed = [];
+  const changed = [];
+  let unchanged = 0;
+  for (const [rel, before] of oldStructure.byPath) {
+    const after = newStructure.byPath.get(rel);
+    if (!after) {
+      removed.push({ path: rel, bytes: before.bytes, sha256: before.sha256 });
+    } else if (after.bytes !== before.bytes || after.sha256.toLowerCase() !== before.sha256.toLowerCase()) {
+      changed.push({ path: rel, before: { bytes: before.bytes, sha256: before.sha256 }, after: { bytes: after.bytes, sha256: after.sha256 } });
+    } else {
+      unchanged++;
+    }
+  }
+  for (const [rel, entry] of newStructure.byPath) {
+    if (!oldStructure.byPath.has(rel)) added.push({ path: rel, bytes: entry.bytes, sha256: entry.sha256 });
+  }
+  const byPathOrder = (a, b) => comparePath(a.path, b.path);
+  added.sort(byPathOrder);
+  removed.sort(byPathOrder);
+  changed.sort(byPathOrder);
+  result.totals = { added: added.length, removed: removed.length, changed: changed.length, unchanged };
+  result.added = added;
+  result.removed = removed;
+  result.changed = changed;
+  result.identical = added.length === 0 && removed.length === 0 && changed.length === 0;
+  return result;
+}
+
+/**
+ * 读取 root 内两份指定清单并比较（G7）。只读取这两份 JSON，不读取/哈希实际
+ * assets；旧清单已移除的文件不因当前磁盘缺失而无法比较。清单路径越界/不可读、
+ * root 问题抛 UsageError（退出 2）；JSON 解析失败与结构问题返回结果对象（退出 1）。
+ */
+function compareManifestFiles({ root, manifestPath, compareManifestPath, io = nodeFs } = {}) {
+  if (!manifestPath || typeof manifestPath !== 'string') throw new UsageError('--manifest 缺失或不是字符串（差异比较需要 --manifest <旧清单> 与 --compare-manifest <新清单>）');
+  if (!compareManifestPath || typeof compareManifestPath !== 'string') throw new UsageError('--compare-manifest 缺失或不是字符串（差异比较需要 --manifest <旧清单> 与 --compare-manifest <新清单>）');
+  const rootReal = resolveRoot({ root, io });
+  const oldRead = readManifestFile(rootReal, manifestPath, '--manifest', io);
+  const newRead = readManifestFile(rootReal, compareManifestPath, '--compare-manifest', io);
+  const base = {
+    schemaVersion: SCHEMA_VERSION,
+    kind: 'resource-manifest-diff',
+    root: rootReal,
+    oldManifestPath: manifestRelPath(rootReal, oldRead.resolved),
+    newManifestPath: manifestRelPath(rootReal, newRead.resolved),
+  };
+  let oldManifest = null;
+  let newManifest = null;
+  const parseErrors = [];
+  try {
+    oldManifest = JSON.parse(oldRead.raw.toString('utf8'));
+  } catch (err) {
+    parseErrors.push({ side: 'old', code: 'bad-manifest', message: `旧清单 JSON 解析失败: ${err.message}` });
+  }
+  try {
+    newManifest = JSON.parse(newRead.raw.toString('utf8'));
+  } catch (err) {
+    parseErrors.push({ side: 'new', code: 'bad-manifest', message: `新清单 JSON 解析失败: ${err.message}` });
+  }
+  if (parseErrors.length) {
+    return { ...base, ok: false, identical: false, totals: { added: 0, removed: 0, changed: 0, unchanged: 0 }, added: [], removed: [], changed: [], errors: parseErrors, scope: DIFF_SCOPE };
+  }
+  return { ...base, ...compareManifests({ oldManifest, newManifest }) };
+}
+
+module.exports = { SCHEMA_VERSION, SCAN_ROOT, EXCLUDED_PATHS, UsageError, generateManifest, verifyManifest, verifyManifestEntries, compareManifests, compareManifestFiles, checkManifestPath, resolveRealpathBoundary };

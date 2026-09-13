@@ -1,0 +1,42 @@
+{
+  "date": "2026-09-14",
+  "baseline": "2ea9455",
+  "scope": "G7 pure resource manifest comparison; no distribution or asset mutation",
+  "sourceSha256": {
+    "scripts/lib/resource-manifest.js": "b9ae6859fba0f0f1a2a22e5abcf67913f2d1ba1160f106a9ec3a1090ecc6bbfe",
+    "scripts/maintenance/report-resource-manifest.js": "d0bcc22044253675c2e5672904f6ea5deedb4e03ca2e6f786c8966ca4493c1b2",
+    "scripts/tests/test-resource-manifest.js": "d519e449934fd4cfafa6d7ce323e6dcc8ecd8dff5a87e06ec1e8b157e32ee0d4",
+    "scripts/workflow.js": "f35bfd1eac924cde592b57a7a3a0a307e64f9b70dc094acfaee43cc87f8327c5"
+  },
+  "checks": {
+    "fullGate": {
+      "passed": true,
+      "unitCount": 660,
+      "contractSuites": 26,
+      "log": "gate.txt"
+    },
+    "resourceTests": {
+      "passed": 22
+    },
+    "directedInitial": {
+      "passed": 53,
+      "note": "Before adding one frozen-input/same-hash-path regression; final gate covers it"
+    },
+    "realCliComparison": {
+      "ok": true,
+      "identical": true,
+      "totals": {
+        "added": 0,
+        "removed": 0,
+        "changed": 0,
+        "unchanged": 629
+      }
+    }
+  },
+  "limitations": [
+    "Comparison reads two explicitly selected manifests only",
+    "identical covers listed entries; ok=false if unverified entries remain",
+    "No generation, installation, download or native device acceptance",
+    "Reference structure mode in full gate"
+  ]
+}

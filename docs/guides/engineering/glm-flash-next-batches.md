@@ -2,7 +2,7 @@
 
 2026-09-13。用户希望优先使用即将到期的 GLM 5.3 Flash 额度。此处按任务边界安排工作，不声明其通用能力或基准排名。依据见 [六报告复核](../../research/engineering/six-task-review-2026-09-13.md)。
 
-最新复核：A、RB、RC、N1/N2/N3、G1–G6 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。下一批执行文末 G7，推进资源清单差异比较；旧批次保留交接，不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
+最新复核：A、RB、RC、N1/N2/N3、G1–G7 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。资源清单的生成、核验与结构差异比较已形成基础链；本文件保留已执行批次，后续按 roadmap 的实际缺口另分任务，不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
 
 ## 执行与交付
 

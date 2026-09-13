@@ -16,7 +16,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { spawnSync } = require('node:child_process');
 
-const { generateManifest, verifyManifest, verifyManifestEntries, checkManifestPath } = require('../lib/resource-manifest');
+const { generateManifest, verifyManifest, verifyManifestEntries, checkManifestPath, compareManifests, compareManifestFiles } = require('../lib/resource-manifest');
 
 const repo = path.resolve(__dirname, '..', '..');
 const sha256 = (value) => crypto.createHash('sha256').update(value).digest('hex');
@@ -72,10 +72,10 @@ function snapshot(root) {
   });
 }
 
-function writeManifest(root, manifest) {
+function writeManifest(root, manifest, name = 'manifest.json') {
   const dir = path.join(root, 'artifacts');
   fs.mkdirSync(dir, { recursive: true });
-  const file = path.join(dir, 'manifest.json');
+  const file = path.join(dir, name);
   fs.writeFileSync(file, JSON.stringify(manifest));
   return file;
 }
@@ -282,6 +282,13 @@ test('工作流注册入口转发结果与直连一致', (t) => {
   assert.equal(direct.status, 0);
   assert.equal(viaWorkflow.status, 0);
   assert.deepEqual(JSON.parse(viaWorkflow.stdout), JSON.parse(direct.stdout));
+  // G7：差异比较参数同样经注册入口转发
+  const sameFile = writeManifest(fx.root, manifest, 'workflow-diff-same.json');
+  const viaWorkflowDiff = spawnSync(process.execPath, [path.join(repo, 'scripts', 'workflow.js'), 'audit:resource-manifest', '--root', fx.root, '--manifest', file, '--compare-manifest', sameFile], { encoding: 'utf8' });
+  assert.equal(viaWorkflowDiff.status, 0);
+  const forwarded = JSON.parse(viaWorkflowDiff.stdout);
+  assert.equal(forwarded.kind, 'resource-manifest-diff');
+  assert.equal(forwarded.identical, true);
 });
 
 test('排除域大小写与 root 内 junction 别名不能读取内容', (t) => {
@@ -339,4 +346,211 @@ test('Windows 大小写别名不能重复计为已核验资源', { skip: process
   assert.equal(result.totals.verified, 0);
   assert.equal(result.totals.failedPaths, 2);
   assert.ok(result.errors.every((e) => e.code === 'duplicate-path'));
+});
+
+// ——— G7：资源清单差异比较 ———
+
+function manifestOf(entries, extra = {}) {
+  return { schemaVersion: 1, kind: 'resource-manifest', generatedAt: '2026-01-01T00:00:00.000Z', ...extra, entries };
+}
+
+function ent(rel, content) {
+  return { path: rel, bytes: Buffer.byteLength(content), sha256: sha256(content) };
+}
+
+test('G7 纯比较：新增/移除/改变/未改变按路径稳定输出，输入乱序不影响结果', () => {
+  const oldEntries = [ent('assets/a.txt', 'A'), ent('assets/c.txt', 'C3'), ent('assets/dir/b.bin', 'BB'), ent('assets/gone.txt', 'GGGG')];
+  const newEntries = [ent('assets/a.txt', 'A'), ent('assets/c.txt', 'CCCCCCCC'), ent('assets/dir/b.bin', 'BX'), ent('assets/new.txt', 'N')];
+  const result = compareManifests({ oldManifest: manifestOf(oldEntries), newManifest: manifestOf(newEntries) });
+  assert.equal(result.kind, 'resource-manifest-diff');
+  assert.equal(result.ok, true);
+  assert.equal(result.identical, false);
+  assert.deepEqual(result.totals, { added: 1, removed: 1, changed: 2, unchanged: 1 });
+  assert.deepEqual(result.added, [newEntries[3]]);
+  assert.deepEqual(result.removed, [oldEntries[3]]);
+  assert.deepEqual(result.changed.map((e) => e.path), ['assets/c.txt', 'assets/dir/b.bin']);
+  assert.deepEqual(result.changed[0].before, { bytes: 2, sha256: sha256('C3') });
+  assert.deepEqual(result.changed[0].after, { bytes: 8, sha256: sha256('CCCCCCCC') });
+  assert.equal(result.changed[1].before.bytes, result.changed[1].after.bytes, '同大小改哈希也算内容改变');
+  assert.equal(result.changed[1].before.sha256, sha256('BB'));
+  assert.equal(result.changed[1].after.sha256, sha256('BX'));
+  assert.ok(result.scope.coverageNote.includes('完整一致'), '范围说明区分已列条目一致与完整一致');
+
+  const shuffled = compareManifests({
+    oldManifest: manifestOf([...oldEntries].reverse(), { generatedAt: '2030-01-01T00:00:00.000Z' }),
+    newManifest: manifestOf([newEntries[2], newEntries[0], newEntries[3], newEntries[1]], { generatedAt: '2000-01-01T00:00:00.000Z' }),
+  });
+  assert.deepEqual({ totals: shuffled.totals, added: shuffled.added, removed: shuffled.removed, changed: shuffled.changed }, { totals: result.totals, added: result.added, removed: result.removed, changed: result.changed }, 'generatedAt 与条目顺序不影响比较结果');
+});
+
+test('G7 纯比较：完全相同与空清单', () => {
+  const entries = [ent('assets/a.txt', 'A'), ent('assets/dir/b.bin', 'BB')];
+  const same = compareManifests({ oldManifest: manifestOf(entries), newManifest: manifestOf([...entries]) });
+  assert.equal(same.ok, true);
+  assert.equal(same.identical, true);
+  assert.deepEqual(same.totals, { added: 0, removed: 0, changed: 0, unchanged: 2 });
+  assert.deepEqual(same.added, []);
+  assert.deepEqual(same.removed, []);
+  assert.deepEqual(same.changed, []);
+
+  const empty = compareManifests({ oldManifest: manifestOf([]), newManifest: manifestOf([]) });
+  assert.equal(empty.ok, true);
+  assert.equal(empty.identical, true);
+  assert.deepEqual(empty.totals, { added: 0, removed: 0, changed: 0, unchanged: 0 });
+  const fromEmpty = compareManifests({ oldManifest: manifestOf([]), newManifest: manifestOf([ent('assets/a.txt', 'A')]) });
+  assert.deepEqual(fromEmpty.totals, { added: 1, removed: 0, changed: 0, unchanged: 0 });
+  assert.deepEqual(fromEmpty.added, [ent('assets/a.txt', 'A')]);
+  const toEmpty = compareManifests({ oldManifest: manifestOf([ent('assets/a.txt', 'A')]), newManifest: manifestOf([]) });
+  assert.deepEqual(toEmpty.totals, { added: 0, removed: 1, changed: 0, unchanged: 0 });
+  assert.deepEqual(toEmpty.removed, [ent('assets/a.txt', 'A')]);
+});
+
+test('G7 纯比较：冻结输入不修改，同哈希不同路径不猜重命名', () => {
+  const oldEntry = Object.freeze(ent('assets/old.txt', 'same bytes'));
+  const newEntry = Object.freeze(ent('assets/new.txt', 'same bytes'));
+  const oldManifest = Object.freeze({ schemaVersion: 1, entries: Object.freeze([oldEntry]), unverified: Object.freeze([]) });
+  const newManifest = Object.freeze({ schemaVersion: 1, entries: Object.freeze([newEntry]), unverified: Object.freeze([]) });
+  const result = compareManifests({ oldManifest, newManifest });
+  assert.equal(result.ok, true);
+  assert.equal(result.identical, false);
+  assert.deepEqual(result.totals, { added: 1, removed: 1, changed: 0, unchanged: 0 });
+  assert.deepEqual(result.added, [newEntry]);
+  assert.deepEqual(result.removed, [oldEntry]);
+  assert.deepEqual(oldManifest.entries, [oldEntry]);
+  assert.deepEqual(newManifest.entries, [newEntry]);
+});
+
+test('G7 纯比较：结构错误阻止差异计算并标明来源清单', () => {
+  const good = manifestOf([ent('assets/a.txt', 'A')]);
+  const cases = [
+    ['old', manifestOf([ent('assets/a.txt', 'A')], { schemaVersion: 2 }), 'unsupported-schema'],
+    ['new', manifestOf('nope'), 'bad-manifest'],
+    ['new', manifestOf([{ path: 'assets/a.txt', bytes: '1', sha256: sha256('A') }]), 'bad-entry'],
+    ['new', manifestOf([ent('assets/a.txt', 'A'), ent('assets/a.txt', 'B')]), 'duplicate-path'],
+    ['old', manifestOf([ent('data/secret.txt', 'A')]), 'out-of-scope'],
+    ['old', manifestOf([{ path: 'assets/..\\evil.txt', bytes: 1, sha256: sha256('A') }]), 'illegal-path'],
+  ];
+  for (const [side, bad, code] of cases) {
+    const result = compareManifests({ oldManifest: side === 'old' ? bad : good, newManifest: side === 'new' ? bad : good });
+    assert.equal(result.ok, false, code);
+    const err = result.errors.find((e) => e.code === code);
+    assert.ok(err, `${code} 应出现: ${JSON.stringify(result.errors)}`);
+    assert.equal(err.side, side, code);
+    assert.deepEqual(result.totals, { added: 0, removed: 0, changed: 0, unchanged: 0 }, code);
+    assert.equal(result.identical, false, code);
+  }
+});
+
+test('G7 纯比较：非空 unverified 保留已列条目差异但不构成完整一致结论', () => {
+  const entries = [ent('assets/a.txt', 'A')];
+  const unverifiedOld = manifestOf(entries, { unverified: [{ path: 'assets/link', kind: 'symlink', message: '不跟随' }] });
+  const plain = manifestOf(entries);
+  const sameListed = compareManifests({ oldManifest: unverifiedOld, newManifest: plain });
+  assert.equal(sameListed.ok, false);
+  const unv = sameListed.errors.find((e) => e.code === 'unverified-items');
+  assert.ok(unv);
+  assert.equal(unv.side, 'old');
+  assert.equal(unv.count, 1);
+  assert.equal(sameListed.identical, true);
+  assert.deepEqual(sameListed.totals, { added: 0, removed: 0, changed: 0, unchanged: 1 });
+
+  const diffListed = compareManifests({ oldManifest: unverifiedOld, newManifest: manifestOf([ent('assets/a.txt', 'A2')]) });
+  assert.equal(diffListed.ok, false);
+  assert.equal(diffListed.identical, false);
+  assert.deepEqual(diffListed.totals, { added: 0, removed: 0, changed: 1, unchanged: 0 });
+  assert.deepEqual(diffListed.changed.map((e) => e.path), ['assets/a.txt']);
+
+  assert.equal(compareManifests({ oldManifest: plain, newManifest: manifestOf(entries, { unverified: [] }) }).ok, true, '空 unverified 数组不构成未核验项错误');
+});
+
+test('G7 文件级比较：只读取两份指定清单，不访问实际资产，输入保持不变', (t) => {
+  const fx = buildFixture(t);
+  const before = generateManifest({ root: fx.root });
+  const oldFile = writeManifest(fx.root, before, 'diff-old.json');
+  const oldJson = fs.readFileSync(oldFile, 'utf8');
+  // 旧清单落盘后磁盘继续变化：删除已登记文件、修改另一文件——比较不依赖当前磁盘状态
+  fs.unlinkSync(path.join(fx.root, 'assets/alpha.txt'));
+  fs.writeFileSync(path.join(fx.root, 'assets/dir/bravo.bin'), 'changed!');
+  const after = generateManifest({ root: fx.root });
+  const newFile = writeManifest(fx.root, after, 'diff-new.json');
+  const newJson = fs.readFileSync(newFile, 'utf8');
+
+  const { io, calls } = recordingFs();
+  const result = compareManifestFiles({ root: fx.root, manifestPath: oldFile, compareManifestPath: newFile, io });
+  assert.equal(result.kind, 'resource-manifest-diff');
+  assert.equal(result.ok, true);
+  assert.equal(result.oldManifestPath, 'artifacts/diff-old.json');
+  assert.equal(result.newManifestPath, 'artifacts/diff-new.json');
+  assert.deepEqual(result.totals, { added: 0, removed: 1, changed: 1, unchanged: 2 });
+  assert.deepEqual(result.removed.map((e) => e.path), ['assets/alpha.txt']);
+  assert.deepEqual(result.changed.map((e) => e.path), ['assets/dir/bravo.bin']);
+  assert.equal(result.changed[0].after.sha256, sha256('changed!'));
+
+  const rootReal = fs.realpathSync(fx.root);
+  const reads = calls.filter((c) => c.op === 'readFileSync').map((c) => path.resolve(c.target));
+  assert.deepEqual(reads.sort(), [path.resolve(oldFile), path.resolve(newFile)].sort(), 'readFileSync 只指向两份清单');
+  assert.ok(calls.every((c) => !path.resolve(c.target).startsWith(path.join(rootReal, 'assets'))), '比较不得访问 assets 下任何路径');
+  assertNoAccessOutside(calls, rootReal);
+  assert.equal(fs.readFileSync(oldFile, 'utf8'), oldJson, '旧清单未被改动');
+  assert.equal(fs.readFileSync(newFile, 'utf8'), newJson, '新清单未被改动');
+});
+
+test('G7 CLI：差异模式退出码契约、参数错误与 help/plan 零读取', (t) => {
+  const fx = buildFixture(t);
+  const manifest = generateManifest({ root: fx.root });
+  writeManifest(fx.root, manifest, 'cli-old.json');
+  writeManifest(fx.root, manifest, 'cli-same.json');
+  const diffArgs = (a, b) => ['--root', fx.root, '--manifest', `artifacts/${a}`, '--compare-manifest', `artifacts/${b}`];
+
+  const identical = cli(diffArgs('cli-old.json', 'cli-same.json'));
+  assert.equal(identical.status, 0);
+  const same = JSON.parse(identical.stdout);
+  assert.equal(same.ok, true);
+  assert.equal(same.identical, true);
+  assert.deepEqual(same.totals, { added: 0, removed: 0, changed: 0, unchanged: 4 });
+
+  fs.writeFileSync(path.join(fx.root, 'assets/alpha.txt'), 'AA');
+  fs.unlinkSync(path.join(fx.root, 'assets/dir/charlie.txt'));
+  fs.writeFileSync(path.join(fx.root, 'assets/new.txt'), 'fresh');
+  const manifest2 = generateManifest({ root: fx.root });
+  writeManifest(fx.root, manifest2, 'cli-new.json');
+  const changed = cli(diffArgs('cli-old.json', 'cli-new.json'));
+  assert.equal(changed.status, 0, '存在差异的比较本身成功');
+  const diff = JSON.parse(changed.stdout);
+  assert.equal(diff.ok, true);
+  assert.equal(diff.identical, false);
+  assert.deepEqual(diff.totals, { added: 1, removed: 1, changed: 1, unchanged: 2 });
+  assert.deepEqual(diff.changed.map((e) => e.path), ['assets/alpha.txt']);
+  assert.equal(diff.changed[0].before.sha256, sha256('A'));
+  assert.equal(diff.changed[0].after.sha256, sha256('AA'));
+
+  // 非空 unverified：已列条目一致也不得宣称完整一致（退出 1）
+  fs.symlinkSync(fx.outside, path.join(fx.root, 'assets', 'lnk-diff'), process.platform === 'win32' ? 'junction' : 'dir');
+  const withUnverified = generateManifest({ root: fx.root });
+  assert.equal(withUnverified.unverified.length, 1);
+  writeManifest(fx.root, withUnverified, 'cli-unv-a.json');
+  writeManifest(fx.root, withUnverified, 'cli-unv-b.json');
+  const unverifiedRun = cli(diffArgs('cli-unv-a.json', 'cli-unv-b.json'));
+  assert.equal(unverifiedRun.status, 1);
+  assert.equal(JSON.parse(unverifiedRun.stdout).identical, true);
+
+  // 结构错误 → 1
+  writeManifest(fx.root, { ...manifest, schemaVersion: 2 }, 'cli-v2.json');
+  assert.equal(cli(diffArgs('cli-old.json', 'cli-v2.json')).status, 1);
+
+  // 参数错误 → 2
+  assert.equal(cli(['--root', fx.root, '--compare-manifest', 'artifacts/cli-new.json']).status, 2);
+  assert.equal(cli(['--root', fx.root, '--manifest', 'artifacts/cli-old.json', '--compare-manifest']).status, 2);
+  assert.equal(cli(['--root', fx.root, '--manifest', 'artifacts/cli-old.json', '--compare-manifest', path.join(fx.base, 'outside', 'escape.json')]).status, 2);
+
+  // help/plan 带比较参数也不读取目标
+  for (const flag of ['--help', '--plan']) {
+    const help = cli([flag, '--root', path.join(os.tmpdir(), 'resource-manifest-nonexistent-g7'), '--manifest', 'x.json', '--compare-manifest', 'y.json']);
+    assert.equal(help.status, 0);
+    assert.ok(help.stdout.includes('--compare-manifest'));
+  }
+
+  // 比较不改动两份输入清单
+  assert.equal(fs.readFileSync(path.join(fx.root, 'artifacts/cli-old.json'), 'utf8'), JSON.stringify(manifest));
+  assert.equal(fs.readFileSync(path.join(fx.root, 'artifacts/cli-new.json'), 'utf8'), JSON.stringify(manifest2));
 });
