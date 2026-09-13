@@ -52,7 +52,8 @@ function validateRun(name, def) {
   for (const item of machine) if (!MACHINES.includes(item)) errors.push(`${name}: 未知 machine "${item}"`);
   if (run.switches != null && typeof run.switches === 'object' && !Array.isArray(run.switches)) {
     for (const [flag, effects] of Object.entries(run.switches)) {
-      if (!flag.startsWith('--')) errors.push(`${name}: 开关名必须以 -- 开头（${flag}）`);
+      const batchSwitch = def.cmd?.[0]?.endsWith('.bat') && /^-[A-Za-z]+$/.test(flag);
+      if (!flag.startsWith('--') && !batchSwitch) errors.push(`${name}: 开关名必须以 -- 开头，或为批处理入口的单杠字母开关（${flag}）`);
       const values = list(effects);
       if (!Array.isArray(effects)) errors.push(`${name}: 开关 ${flag} 的行为必须是数组`);
       if (!values.length) errors.push(`${name}: 开关 ${flag} 的行为不能为空`);

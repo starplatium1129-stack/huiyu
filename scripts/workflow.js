@@ -104,13 +104,13 @@ const WORKFLOWS = {
     desc: '聚合场景分片 -> scenes.json（热门角色见 popular:build）',
     cmd: ['node', 'scripts/maintenance/build-scenes.js'],
     docs: 'docs/maintenance.md#文件职责',
-    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-scenes.js:15-42', unknown: [], notes: ['--check：产物缺失时落盘自愈重建（fresh clone）；已构建但与源不一致时报错退出 1；写 src/stores/sceneStore.ts 的 DATA_VERSION'] },
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-scenes.js:15-42', unknown: [], notes: ['默认构建写聚合并同步 src/stores/sceneStore.ts 的 DATA_VERSION（build-scenes.js:31-42）；--check 不写版本：产物缺失自愈重建（fresh clone，:15-22），齐全但与源不一致报错退出 1（:24-27）'] },
   },
   'popular:build': {
     desc: '聚合热门角色分片 -> popular-characters.json',
     cmd: ['node', 'scripts/maintenance/build-popular.js'],
     docs: 'docs/maintenance.md#文件职责',
-    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-popular.js:12-37', unknown: [] },
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-popular.js:12-37', unknown: [], notes: ['默认构建同步 DATA_VERSION（build-popular.js:26-37）；--check 不写版本：产物缺失自愈重建（:14-17），齐全但与源不一致报错退出 1（:18-21）'] },
   },
   'popular:split': {
     desc: 'popular→分片（仅写分片文件，不重建聚合；如需重建用 popular:import）',
@@ -128,7 +128,7 @@ const WORKFLOWS = {
     desc: '聚合场景蓝图分片 -> scene-blueprints.json',
     cmd: ['node', 'scripts/maintenance/build-blueprints.js'],
     docs: 'docs/maintenance.md#文件职责',
-    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-blueprints.js:24-49', unknown: [] },
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-blueprints.js:24-49', unknown: [], notes: ['默认构建同步 DATA_VERSION（build-blueprints.js:38-49）；--check 不写版本：产物缺失自愈重建（:26-29），齐全但与源不一致报错退出 1（:30-33）'] },
   },
   'blueprints:split': {
     desc: 'blueprints→分片（仅写分片文件，不重建聚合；如需重建用 blueprints:import）',
@@ -288,10 +288,10 @@ const WORKFLOWS = {
     run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:65-118,174-189', unknown: ['实际范围由 Git 变更或位置参数决定，此处列可能发生的行为'], notes: ['scripts/config 等变更会升级 full 并执行构建；data 面积含三个 --check 构建守卫；纯文档改动跳过'] },
   },
   'gate:full': {
-    desc: '全量门禁：typecheck + check + 前端 + unit + contract + 打包预算（横切重构/提交前）',
+    desc: '全量门禁：check（内含双 typecheck）+ vitest + unit + contract + 打包预算（横切重构/提交前）',
     cmd: ['node', 'scripts/maintenance/gate-quick.js', 'full'],
     docs: 'docs/workflow.md',
-    run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:174-189', unknown: [], notes: ['末步真实执行 npm run build（vite+预算+预压）'] },
+    run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:174-189; scripts/maintenance/run-check-parallel.js:22-25', unknown: [], notes: ['typecheck:app/typecheck 已包含在 check 编排内（run-check-parallel.js:24-25），不单独重复执行；末步真实执行 npm run build（vite+预算+预压）'] },
   },
   'check:full': {
     desc: '完整校验：check + frontend + unit + contract',
@@ -321,13 +321,33 @@ const WORKFLOWS = {
     desc: '桌面增量部署（跳过构建）',
     cmd: ['deploy-desktop.bat', '-SkipBuild'],
     docs: 'docs/desktop-deployment.md',
-    run: { nature: ['writes-release', 'service'], machine: ['windows'], switches: {}, resume: 'idempotent', evidence: 'deploy-desktop.bat:17-23; scripts/lib/workflow-runner.js:100-103', unknown: [], notes: ['UAC 需用户操作；runner 仅接受开关参数并强制 Windows'] },
+    run: {
+      nature: ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], machine: ['windows'],
+      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
+      evidence: 'deploy-desktop.bat:18,22; scripts/maintenance/deploy-desktop-quick.ps1:20-28,114-122,178-184,290-296; scripts/lib/workflow-runner.js:178-182',
+      unknown: [],
+      notes: [
+        '-SkipBuild 只跳过 npm run build（ps1:114-122）；数据聚合仍每次重建并写 data 产物（ps1:178-184），随后清 WebView2 缓存、修剪陈旧 chunk、验证反推依赖并启动桌面端（ps1:213-225,264-296）。',
+        'bat 固定附加 -Cleanup（清安装目录源端删除型残留）再转发其余开关（bat:18）；非管理员时经 UAC 透传全部参数重启自身，需用户点「是」（ps1:52-70）；runner 强制 Windows 且仅接受无值开关（workflow-runner.js:178-182）。',
+        '开关标签描述可能副作用，不抵消默认标签：-UseInstaller 改跑 runtime/desktop-updates 最新 *-setup.exe（前置：先 package:tauri 产出安装包，缺失退出 1；跳过本地构建及数据刷新，ps1:106,157-169）；-QuietInstall 仅随 -UseInstaller 静默安装（ps1:72,163-164）；-NoRestart 结束不启动；-StartupRepair 仅修 1.6.0 文档/图标/快捷方式，与 -UseInstaller 互斥（ps1:43,76-103）；-InstallDir <路径> 只能直接运行 bat。数据刷新可能写 DATA_VERSION。',
+      ],
+    },
   },
   'deploy:desktop:full': {
     desc: '桌面完整部署（前端构建 + 复制 + 清缓存 + 验证 + 重启）',
     cmd: ['deploy-desktop.bat'],
     docs: 'docs/desktop-deployment.md',
-    run: { nature: ['writes-product', 'writes-release', 'service'], machine: ['windows'], switches: {}, resume: 'idempotent', evidence: 'deploy-desktop.bat:7-15', unknown: [] },
+    run: {
+      nature: ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], machine: ['windows'],
+      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
+      evidence: 'deploy-desktop.bat:18,22; scripts/maintenance/deploy-desktop-quick.ps1:20-28,114-119,178-184,186-211,290-296',
+      unknown: [],
+      notes: [
+        '默认完整增量：npm run build → 停应用 → 清残留 → 刷新数据产物并复制 → 清 WebView2 缓存 + 验证依赖 → 启动（ps1:113-296）；增量模式要求安装目录已存在（ps1:108-111）。',
+        'bat 固定附加 -Cleanup 再转发其余开关（bat:18）；非管理员时经 UAC 透传全部参数重启自身，需用户点「是」（ps1:52-70）；runner 强制 Windows 且仅接受无值开关（workflow-runner.js:178-182）。',
+        '开关标签描述可能副作用，不抵消默认标签：-UseInstaller 改跑 runtime/desktop-updates 最新 *-setup.exe（前置：先 package:tauri 产出安装包，缺失退出 1；跳过本地构建及数据刷新，ps1:106,157-169）；-QuietInstall 仅随 -UseInstaller 静默安装（ps1:72,163-164）；-NoRestart 结束不启动；-StartupRepair 仅修 1.6.0 文档/图标/快捷方式，与 -UseInstaller 互斥（ps1:43,76-103）；-InstallDir <路径> 只能直接运行 bat。数据刷新可能写 DATA_VERSION。',
+      ],
+    },
   },
   // ── check: 单项门禁（可单独跑或组合）──────────────────────────────
   'check:monolith': {
@@ -365,8 +385,8 @@ const WORKFLOWS = {
     desc: '批量改写完整性门禁（覆盖率/模板签名/跨条目雷同）',
     cmd: ['node', 'scripts/tests/test-prompt-rewrite-integrity.js'],
     docs: 'AGENTS.md#质量红线',
-    opts: '[--delivery <交付文件>] 复检指定交付',
-    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/workflow.js:279-284', unknown: ['脚本主体未逐行核实（盘点 code-verified 级）'] },
+    opts: '[--delivery <交付文件>] 复检指定交付；[--baseline <commit>] 换基线；[--targeted] 精确修复模式',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/test-prompt-rewrite-integrity.js:206-217,246-278,281-292', unknown: [], notes: ['默认基线 b1ccfc0，经 git show 读取基线数据，需本地 Git；无 --delivery 时对当前工作区数据层全量复查'] },
   },
   'check:popular': {
     desc: '热门角色与提示词契约',
@@ -431,8 +451,8 @@ const WORKFLOWS = {
     desc: '关键 e2e 套件：主流程、双主题/设备、角色及办公机回归（用例数以执行结果为准）',
     cmd: ['npm', 'run', 'test:e2e:critical:run'],
     docs: 'package.json',
-    needs: 'playwright 浏览器已安装（npx playwright install）',
-    run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.test:e2e:critical:run', unknown: [], notes: ['生成链路用模拟上游；浏览器测试期间不得重建共享 dist'] },
+    needs: 'playwright 浏览器已安装（npx playwright install）；已有前端构建产物',
+    run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.test:e2e:critical:run', unknown: [], notes: ['注册入口为无 build 的 :run 脚本，复用已有 dist（npm 脚本 test:e2e:critical 才先 build）；生成链路用模拟上游；浏览器测试期间不得重建共享 dist'] },
   },
   'test:e2e:performance': {
     desc: '独立单 worker 绘图页冷/热进入与首次操作测量',

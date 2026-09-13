@@ -73,7 +73,7 @@
 | 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
 | 分类与规范化 | data:normalize | 会写数据，不用于只读文档审计；遵守定稿保护 |
 
-详细文件职责见 [维护手册](maintenance.md#文件职责)。构建脚本会同步版本；校验失败需定位来源，不能只改版本掩盖数据漂移。
+详细文件职责见 [维护手册](maintenance.md#文件职责)。三个聚合构建脚本只在默认构建时同步 DATA_VERSION（写 src/stores/sceneStore.ts）；`--check` 不写版本——产物缺失时自愈重建（fresh clone），齐全但与源不一致时报错退出 1。校验失败需定位来源，不能只改版本掩盖数据漂移。
 
 场景语义门禁复用工作台的镜头过滤和负向组装（scripts/lib/scene-render-contract.js），检索 tags 不冒充发送给模型的词条。`optimize-scenes --check` 检查持久化数据的实际编译结果；changed 表示可选的格式改写建议，不要求机械改写提示词。分级脚本只维护分级/使用元数据，不再改写 negative；任何提示词改写仍须独立真实出图和定稿保护验收。
 
@@ -169,12 +169,12 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | gate:quick ui/server/data/all | 按变更面积分层；默认检测 Git 改动；脚本、依赖、配置及未知代码路径升级 full；纯文档跳过 |
 | check:quick | npm run check 的全部已注册并行检查 |
 | check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build |
-| gate:full | typecheck + check + frontend + unit + contract + build，全量入口 |
+| gate:full | npm run check（内含 typecheck:app/typecheck）+ vitest + unit + contract + build，全量入口 |
 | build:web / build:runtime | 前端与预算/预压；服务 TypeScript 编译 |
 | check:style-debt | 样式字面值、颜色、动画和双主题全局/角色令牌对比度；动态组件另做视觉验收 |
-| check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery |
+| check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
 | check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
-| test:contract / test:e2e:critical | 契约套件与关键浏览器回归 |
+| test:contract / test:e2e:critical | 契约套件与关键浏览器回归；test:e2e:critical 工作流走无 build 的 `test:e2e:critical:run` 入口，复用已有构建产物（npm 脚本 `test:e2e:critical` 才先 build） |
 | test:e2e:performance | 已构建产物的单 worker 冷／热进入与首次操作测量；与回归分开执行 |
 
 关键浏览器回归包含 `ui-layout.spec.ts` 的双主题/多尺寸布局与可读性检查。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
@@ -206,7 +206,11 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
 
-桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认跳过构建，必须已有新构建；`deploy:desktop:full` 执行完整增量流程。依赖/exe 变化的完整安装与 UAC 见 [部署指南](desktop-deployment.md)。
+桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认跳过前端构建（dist 需已构建，数据聚合产物仍会刷新，并可能写源码中的 DATA_VERSION）；`deploy:desktop:full` 执行完整构建加增量流程；两个入口的默认增量模式都会清 WebView2 缓存并默认重启桌面端。
+
+可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` 需直接运行 bat）：`-UseInstaller` 改跑 `runtime/desktop-updates` 最新安装包（前置：先用 `package:tauri` 产出 `*-setup.exe`，缺失退出 1；隐含跳过本地构建）、`-QuietInstall`（仅随 `-UseInstaller` 静默安装）、`-NoRestart`（结束后不启动）、`-StartupRepair`（1.6.0 窄修复，与 `-UseInstaller` 互斥）。非管理员时脚本经 UAC 重启并透传全部参数，需用户确认。依赖/exe 变化的完整安装与 UAC 见 [部署指南](desktop-deployment.md)。
+
+批处理入口的单杠字母开关可以登记于 run.switches，help/plan/audit 共用；其他入口仍要求双杠元数据键。`--plan` 会显示所传安装开关的行为标签而不启动执行器。默认与开关标签是可能副作用说明，不做标签抵消或参数权限判断；具体互斥及跳过行为以本段和部署实现为准。
 
 ## 备份与清理
 

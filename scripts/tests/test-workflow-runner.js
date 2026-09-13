@@ -244,3 +244,36 @@ test('run metadata stays semantically consistent with the registry', () => {
   assert.ok(WORKFLOWS['runtime:clean'].run.switches['--prune'].includes('delete'));
   assert.ok(!WORKFLOWS['showcase:full'].run.nature.includes('writes-release'), 'showcase:full 的发布步只预览');
 });
+
+test('deploy preview describes installer switches without invoking deployment', () => {
+  assert.deepEqual(WORKFLOWS['deploy:desktop'].cmd, ['deploy-desktop.bat', '-SkipBuild']);
+  assert.deepEqual(WORKFLOWS['deploy:desktop:full'].cmd, ['deploy-desktop.bat']);
+  for (const name of ['deploy:desktop', 'deploy:desktop:full']) {
+    const run = WORKFLOWS[name].run;
+    assert.ok(run.switches['-UseInstaller'].includes('writes-release'));
+    assert.ok(run.nature.includes('writes-source'), `${name} 未声明 DATA_VERSION 写入`);
+    assert.ok(run.nature.includes('writes-product'), `${name} 未声明数据聚合重建的 writes-product`);
+    for (const flag of ['-UseInstaller', '-QuietInstall', '-NoRestart', '-StartupRepair', '-InstallDir']) {
+      assert.ok(run.notes.some((note) => note.includes(flag)), `${name} 未记录开关 ${flag}`);
+    }
+  }
+  const lines = [], original = console.error;
+  console.error = (...args) => lines.push(args.join(' '));
+  try {
+    assert.equal(main(['deploy:desktop', '-UseInstaller', '-NoRestart', '--plan'], WORKFLOWS, root, () => assert.fail('deployment executed')), 0);
+    assert.ok(lines.some(line => line.includes('-UseInstaller: writes-release')));
+    assert.ok(lines.some(line => line.includes('-SkipBuild') && line.includes('-NoRestart')));
+  } finally { console.error = original; }
+});
+
+test('single-dash metadata is limited to batch alphabetic flags', () => {
+  const def = WORKFLOWS['deploy:desktop'];
+  for (const flag of ['-UseInstaller', '-NoRestart']) {
+    const run = { ...def.run, switches: { [flag]: ['writes-release'] } };
+    assert.deepEqual(validateRun('batch', { ...def, run }), []);
+    assert.ok(validateRun('node', { ...def, cmd: ['node', 'example.js'], run }).length > 0);
+  }
+  for (const flag of ['-UseInstaller & whoami', '-InstallDir=elsewhere', '-']) {
+    assert.ok(validateRun('batch', { ...def, run: { ...def.run, switches: { [flag]: ['writes-release'] } } }).length > 0);
+  }
+});
