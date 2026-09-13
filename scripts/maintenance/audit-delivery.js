@@ -4,6 +4,7 @@ const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { spawnSync } = require('node:child_process');
 const { WORKFLOWS } = require('../workflow');
+const { formatReport } = require('../lib/delivery-report-format');
 const ROOT = path.resolve(__dirname, '../..');
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -270,7 +271,7 @@ function main(args) {
   if (o.plan) { console.log(JSON.stringify({ action: 'audit:delivery', ...o, executed: false })); return 0; }
   let r;
   try { r = report(o); } catch (e) { r = { status: 'failed', errors: [{ message: e.message }], exitCode: 1 }; }
-  console.log(o.json ? JSON.stringify(r, null, 2) : Object.entries(r).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join('\n'));
+  console.log(o.json ? JSON.stringify(r, null, 2) : formatReport(r));
   return r.exitCode;
 }
 if (require.main === module) process.exitCode = main(process.argv.slice(2));

@@ -78,6 +78,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-delivery-audit.js', // W2 双证据标识比较、文件哈希、HEAD/worktree；隔离 Git 零写入与失败关闭
     'test-scene-prose-contract.js',
     'test-quick-create.js',
+    'test-resource-manifest.js', // G5 资源清单生成/校验：稳定排序、字节哈希、越界/junction 拒绝、零写入与退出码契约
     'test-resource-scheduling.js',
     'test-scene-ux.js',
     'test-scene-write.js',

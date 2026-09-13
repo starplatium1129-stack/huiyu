@@ -1,0 +1,36 @@
+[WebServer] (node:26348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+
+[WebServer] (node:33420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+Running 18 tests using 1 worker
+
+
+(node:31904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 埃列什基伽勒（ereshkigal_fate）强调色生效且文字可读
+[2/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 伊什塔尔（ishtar_fate）强调色生效且文字可读
+[3/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 霞之丘诗羽（kasumigaoka_utaha）强调色生效且文字可读
+[4/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 蝴蝶忍（kochou_shinobu）强调色生效且文字可读
+[5/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 希斯特里亚（krista_lenz）强调色生效且文字可读
+[6/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 令（ling_arknights）强调色生效且文字可读
+[7/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 四宫辉夜（shinomiya_kaguya）强调色生效且文字可读
+[8/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [dark] 食蜂操祈（shokuhou_misaki）强调色生效且文字可读
+[9/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 埃列什基伽勒（ereshkigal_fate）强调色生效且文字可读
+[10/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 伊什塔尔（ishtar_fate）强调色生效且文字可读
+[11/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 霞之丘诗羽（kasumigaoka_utaha）强调色生效且文字可读
+[12/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 蝴蝶忍（kochou_shinobu）强调色生效且文字可读
+[13/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 希斯特里亚（krista_lenz）强调色生效且文字可读
+[14/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 令（ling_arknights）强调色生效且文字可读
+[15/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 四宫辉夜（shinomiya_kaguya）强调色生效且文字可读
+[16/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:100:9 › [light] 食蜂操祈（shokuhou_misaki）强调色生效且文字可读
+[17/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:150:5 › [dark] krista_lenz 与旧别名 historia_reiss 在编译后样式中共用规则
+[18/18] [desktop] › tests\e2e\character-theme-completion.spec.ts:179:5 › [dark] 角色面板点击选择食蜂操祈后主题即时切换
+  18 passed (34.4s)

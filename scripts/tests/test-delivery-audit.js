@@ -7,6 +7,7 @@ const { test } = require('node:test');
 const { spawnSync } = require('node:child_process');
 const { createHash } = require('node:crypto');
 const { report, parse, state } = require('../maintenance/audit-delivery');
+const { formatReport } = require('../lib/delivery-report-format');
 const commit = 'a'.repeat(40), hash = 'b'.repeat(64);
 test('比较同提交同构建；重复参数、状态隔离及组合检查零写入', t => {
   const f = gitFixture(t);
@@ -376,4 +377,126 @@ test('worktree 接受 Git 合法 type-change porcelain 状态', t => {
   const report = JSON.parse(result.stdout);
   assert.equal(report.repositoryWorktree.status, 'dirty');
   assert.equal(report.repositoryWorktree.changedFiles[0].worktreeStatus, 'T');
+});
+
+// G4：人类可读输出。formatReport 只排版 report() 既有结果，不产生新判定。
+test('人类输出三分桶各带文件/字段/原因，未知与未运行不混同', () => {
+  const out = formatReport({
+    schemaVersion: 1,
+    errors: [{ file: 'a.json', field: 'fullGate', message: '记录状态: failed', status: 'failed' }],
+    passed: [{ file: 'a.json', field: 'commit', message: 'a'.repeat(40) }],
+    pending: [
+      { file: 'a.json', field: 'installation', message: '记录状态: unknown', status: 'unknown' },
+      { file: 'a.json', field: 'deviceAcceptance', message: '记录状态: unrun', status: 'unrun' },
+    ],
+    limitations: [{ message: '只比较 HEAD commit' }],
+    recommendations: [{ name: 'audit:delivery', command: ['node', 'scripts/maintenance/audit-delivery.js'], nature: ['read-only'], executed: false }],
+    status: 'failed', exitCode: 1,
+  });
+  assert.ok(out.startsWith('交付审计状态: 失败（退出码 1）'), out);
+  assert.ok(out.includes('通过 1 ｜ 错误 1 ｜ 待验 2'));
+  assert.ok(out.includes('待验 (2；未知 1、未运行 1):'));
+  assert.ok(out.includes('[失败] a.json · fullGate — 记录状态: failed'));
+  assert.ok(out.includes('[未知] a.json · installation — 记录状态: unknown'));
+  assert.ok(out.includes('[未运行] a.json · deviceAcceptance — 记录状态: unrun'));
+  assert.ok(out.includes(`a.json · commit — ${'a'.repeat(40)}`));
+  assert.ok(out.includes('限制与未覆盖 (1):') && out.includes('- 只比较 HEAD commit'));
+  assert.ok(out.includes('未执行推荐命令 (1):'));
+  assert.ok(out.includes('audit:delivery（nature: read-only）: node scripts/maintenance/audit-delivery.js'));
+});
+
+test('未启用检查保持缺席，空集合不堆整段 JSON', () => {
+  const out = formatReport({ schemaVersion: 1, errors: [], passed: [], pending: [], limitations: [], recommendations: [], status: 'pending', exitCode: 3 });
+  assert.ok(out.startsWith('交付审计状态: 待验（退出码 3）'), out);
+  assert.ok(out.includes('通过 0 ｜ 错误 0 ｜ 待验 0'));
+  for (const banned of ['仓库 HEAD', '工作树', '证据比较', '显式文件核验', '证据记录', '限制与未覆盖', '未执行推荐命令', '错误 (', '通过 (', '待验 (', '{"', '[{']) {
+    assert.ok(!out.includes(banned), banned);
+  }
+});
+
+test('多文件比较失败与文件核验结果逐项可读并保留原因', () => {
+  const out = formatReport({
+    errors: [
+      { file: 'drift.json', field: 'comparisons', message: '交付标识不匹配: build.manifestSha256' },
+      { file: 'missing.log', field: 'verifiedFiles', message: 'ENOENT', status: 'missing' },
+    ],
+    passed: [{ file: 'same.json', field: 'comparisons', message: '共有最终提交及构建标识一致' }],
+    pending: [],
+    verifiedFiles: [
+      { file: 'gate.log', realPath: 'gate.log', status: 'exists' },
+      { file: 'missing.log', status: 'missing', message: 'ENOENT' },
+    ],
+    comparisons: [
+      { file: 'same.json', status: 'matched', sharedIds: ['commit', 'build.manifestSha256'] },
+      { file: 'drift.json', status: 'failed', sharedIds: ['commit'], message: '交付标识不匹配: build.manifestSha256' },
+      { file: 'absent.json', status: 'failed', message: 'ENOENT' },
+    ],
+    status: 'failed', exitCode: 1,
+  });
+  assert.ok(out.includes('显式文件核验 (2):'));
+  assert.ok(out.includes('[存在] gate.log'));
+  assert.ok(out.includes('[缺失] missing.log — ENOENT'));
+  assert.ok(out.includes('证据比较 (3):'));
+  assert.ok(out.includes('[一致] same.json — 共有标识: commit, build.manifestSha256'));
+  assert.ok(out.includes('[失败] drift.json — 交付标识不匹配: build.manifestSha256'));
+  assert.ok(out.includes('[失败] absent.json — ENOENT'));
+});
+
+test('HEAD 与工作树结果可读，携带提交与改动摘要', () => {
+  const out = formatReport({
+    errors: [], passed: [], pending: [],
+    repositoryHead: { root: '/r', commit: 'a'.repeat(40), status: 'matched', evidenceCommit: 'b'.repeat(40), message: '证据最终 commit 与仓库 HEAD 一致' },
+    repositoryWorktree: {
+      root: '/r', status: 'dirty', message: '存在未提交或未跟踪文件',
+      changedFiles: [{ kind: 'uncommitted', pathPorcelain: 'evidence.json', raw: ' M evidence.json' }, { kind: 'untracked', pathPorcelain: 'new.txt', raw: '?? new.txt' }],
+    },
+    status: 'failed', exitCode: 1,
+  });
+  assert.ok(out.includes('仓库 HEAD: [一致] 证据最终 commit 与仓库 HEAD 一致'));
+  assert.ok(out.includes(`HEAD ${'a'.repeat(12)}… · 证据 ${'b'.repeat(12)}…`));
+  assert.ok(out.includes('工作树: [有改动] 存在未提交或未跟踪文件'));
+  assert.ok(out.includes('[未提交] evidence.json'));
+  assert.ok(out.includes('[未跟踪] new.txt'));
+});
+
+test('异常兜底：缺失定位、非对象报告与怪异值不抛错、不冒充通过', () => {
+  const fallback = formatReport({ status: 'failed', errors: [{ message: 'boom' }], exitCode: 1 });
+  assert.ok(fallback.startsWith('交付审计状态: 失败（退出码 1）'), fallback);
+  assert.ok(fallback.includes('boom'));
+  assert.ok(!fallback.includes('通过 ('));
+  const circular = {}; circular.self = circular;
+  for (const input of [null, undefined, 42, 'x', [], {}, circular]) {
+    const out = formatReport(input);
+    assert.equal(typeof out, 'string');
+    assert.ok(out.length > 0);
+    assert.ok(!out.includes('通过 ('));
+  }
+  const pending = formatReport({ status: 'pending', pending: [{ file: 'e', field: 'commit', message: '基线提交不能证明最终交付提交', status: 'unknown' }], exitCode: 3 });
+  assert.ok(pending.includes('交付审计状态: 待验（退出码 3）'));
+  assert.ok(pending.includes('[未知] e · commit — 基线提交不能证明最终交付提交'));
+});
+
+test('CLI 默认输出与 --json 同源：JSON 结构值不变，状态与退出码一致', t => {
+  const f = fixture(t);
+  f.write('other.json', { ...f.d });
+  f.write('gate.log', 'ok');
+  const cli = path.resolve(__dirname, '../maintenance/audit-delivery.js');
+  const args = ['--root', f.root, '--evidence', 'evidence.json', '--verify-file', 'gate.log', '--compare-evidence', 'other.json'];
+  const jsonRun = spawnSync(process.execPath, [cli, ...args, '--json'], { encoding: 'utf8' });
+  const parsed = JSON.parse(jsonRun.stdout);
+  assert.deepEqual(parsed, report(parse([...args, '--json'])));
+  assert.equal(jsonRun.status, 3);
+  const humanRun = spawnSync(process.execPath, [cli, ...args], { encoding: 'utf8' });
+  assert.equal(humanRun.status, jsonRun.status);
+  assert.ok(humanRun.stdout.includes('交付审计状态: 待验（退出码 3）'), humanRun.stdout);
+  assert.ok(humanRun.stdout.includes('[未知] evidence.json · installation — 记录状态: unknown'));
+  assert.ok(humanRun.stdout.includes('[存在] gate.log'));
+  assert.ok(humanRun.stdout.includes('[一致] other.json'));
+  assert.ok(!humanRun.stdout.includes('仓库 HEAD') && !humanRun.stdout.includes('工作树'));
+  assert.ok(humanRun.stdout.includes('限制与未覆盖 (2):'));
+  assert.ok(humanRun.stdout.includes('未执行推荐命令 (2):'));
+  const brokenRun = spawnSync(process.execPath, [cli, '--root', path.join(f.root, 'absent'), '--evidence', 'missing.json'], { encoding: 'utf8' });
+  assert.equal(brokenRun.status, 1);
+  assert.ok(brokenRun.stdout.includes('交付审计状态: 失败（退出码 1）'), brokenRun.stdout);
+  assert.ok(brokenRun.stdout.length > '交付审计状态: 失败（退出码 1）'.length);
 });

@@ -1,0 +1,90 @@
+{
+  "completedAt": "2026-09-14",
+  "baseline": "3a7c095",
+  "scope": "G4 readable delivery audit, G5 local resource manifests, G6 eight character themes",
+  "sourceSha256": {
+    "scripts/lib/delivery-report-format.js": "e3dd763f5ef3cf6720328690518751fef045316c47888b330d36d78044da794e",
+    "scripts/maintenance/audit-delivery.js": "f5a330978d309b0cc2406c91ed05fb95b8652cd6789da3b7469b5c67d13d4cbc",
+    "scripts/tests/test-delivery-audit.js": "01492b2e5e24ae9bf6e5792924b451082085144391af688983d5043e9f43eeb8",
+    "scripts/lib/resource-manifest.js": "b9a18cfdde842aec4e008eda42bf76f9636ef1ecca3b8c2e27432a3323077617",
+    "scripts/maintenance/report-resource-manifest.js": "ca8ac9ce4a2cc9174620fec713ea24fbb1405e003f5bed64c548af716469f80c",
+    "scripts/tests/test-resource-manifest.js": "4120265d9d9c0c6ab45f7d5b3f317d3cd7fefd44bc41bd710426a50d1646f91c",
+    "src/assets/css/director/tokens.css": "7c2ccc005e81bd3756080286efa995c933cfc8bf34cdb72f7ff3bb75f1b38abc",
+    "tests/e2e/character-theme-completion.spec.ts": "3ba3c03570df9877af1f829371c3f64ed66e23a5765479fdfffe55f83506a6ed"
+  },
+  "build": {
+    "distIndexSha256": "8cce5f838616dbf3c1a7a9f4d3dc7fb0b545d15cc3144a4c2f570abce6fdaed6"
+  },
+  "checks": {
+    "fullGate": {
+      "passed": true,
+      "unitCount": 653,
+      "contractSuites": 26,
+      "log": "gate.txt"
+    },
+    "deliveryTests": {
+      "passed": 32
+    },
+    "resourceTests": {
+      "passed": 15,
+      "skipped": 0
+    },
+    "resourceRoundTrip": {
+      "ok": true,
+      "totals": {
+        "listed": 629,
+        "uniquePaths": 629,
+        "verified": 629,
+        "failedPaths": 0,
+        "errorCount": 0
+      }
+    },
+    "workflowAudit": {
+      "entries": 80,
+      "passed": true
+    },
+    "themeBrowser": {
+      "passed": 18,
+      "failed": 0,
+      "log": "browser.txt",
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "viewport": "1440x960",
+      "standardSurfaceAndSampledControlContrast": ">=4.5",
+      "roleSelection": "real route plus picker clicks",
+      "screenshots": [
+        "g6-ereshkigal_fate-dark.png",
+        "g6-ereshkigal_fate-light.png",
+        "g6-ishtar_fate-dark.png",
+        "g6-ishtar_fate-light.png",
+        "g6-kasumigaoka_utaha-dark.png",
+        "g6-kasumigaoka_utaha-light.png",
+        "g6-kochou_shinobu-dark.png",
+        "g6-kochou_shinobu-light.png",
+        "g6-krista_lenz-dark.png",
+        "g6-krista_lenz-light.png",
+        "g6-ling_arknights-dark.png",
+        "g6-ling_arknights-light.png",
+        "g6-shinomiya_kaguya-dark.png",
+        "g6-shinomiya_kaguya-light.png",
+        "g6-shokuhou_misaki-dark.png",
+        "g6-shokuhou_misaki-light.png"
+      ]
+    },
+    "finalTestTypecheck": "passed",
+    "finalTargetedLint": "passed"
+  },
+  "corrections": [
+    "Resource excluded-domain case and alias boundaries; reject linked scan root; retain unverified state; Windows duplicate-path normalization",
+    "Browser contrast measured on explicit standard surface and sampled real controls after finishing transitions"
+  ],
+  "limitations": [
+    "Reference audit structure mode; no generation, image-quality or native-device acceptance",
+    "Manifest verifies listed files, not full coverage or trusted distribution",
+    "Screenshots contain transient selection notifications; checked character panel and controls, not all page overlays",
+    "historia_reiss retained as compatibility alias; nene retains default theme",
+    "Blueprint persistence, resource downloads/import and installation remain pending"
+  ]
+}

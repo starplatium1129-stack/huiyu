@@ -137,7 +137,9 @@
     --character-soft:rgba(225,29,72,.16); --character-glow:rgba(225,29,72,.34);
     --character-aura:rgba(159,18,57,.34); --character-aura-secondary:rgba(148,163,184,.22);
   }
-  /* 调校：璀璨王冠金发女王 · 希斯特里亚·雷斯 */
+  /* 调校：璀璨王冠金发女王 · 希斯特里亚·雷斯（规范 ID krista_lenz；historia_reiss 为旧别名，
+     共用本规则保持兼容，色值语义不变） */
+  .pb[data-character="krista_lenz"],
   .pb[data-character="historia_reiss"] {
     --character-accent:#eab308; --character-accent-hover:#facc15;
     --character-soft:rgba(234,179,8,.16); --character-glow:rgba(234,179,8,.34);
@@ -799,6 +801,7 @@
     --character-aura:rgba(159,18,57,.34);
     --character-aura-secondary:rgba(148,163,184,.22);
   }
+  body:has(.pb[data-character="krista_lenz"]),
   body:has(.pb[data-character="historia_reiss"]) {
     --character-aura:rgba(202,138,4,.34);
     --character-aura-secondary:rgba(125,211,252,.22);
@@ -1176,4 +1179,71 @@
   --character-glow:color-mix(in srgb, var(--character-accent) 32%, transparent);
   --character-aura:color-mix(in srgb, var(--character-accent) 22%, transparent);
   --character-aura-secondary:color-mix(in srgb, var(--character-accent) 14%, transparent);
+}
+
+/* G6 补齐批次（2026-09-13）：八位缺失主题角色。accent 取 data/characters.json 各自
+   声明的 accent_color（未统一套色），aura / aura-secondary 按各自 palette、bg_color
+   与立绘语义派生；krista_lenz 复用上方历史规则，不在此重复。 */
+/* 派生：冥界蓝缎金冠 · 埃列什基伽勒 */
+.pb[data-character="ereshkigal_fate"], body:has(.pb[data-character="ereshkigal_fate"]) {
+  --character-accent:#60a5fa;
+  --character-accent-hover:color-mix(in srgb, #60a5fa 75%, white);
+  --character-soft:rgba(96,165,250,.16);
+  --character-glow:rgba(96,165,250,.34);
+  --character-aura:rgba(30,64,175,.34);
+  --character-aura-secondary:rgba(253,230,138,.22);
+}
+/* 派生：金冠天舟女神 · 伊什塔尔 */
+.pb[data-character="ishtar_fate"], body:has(.pb[data-character="ishtar_fate"]) {
+  --character-accent:#eab308;
+  --character-accent-hover:color-mix(in srgb, #eab308 75%, white);
+  --character-soft:rgba(234,179,8,.16);
+  --character-glow:rgba(234,179,8,.34);
+  --character-aura:rgba(146,64,14,.32);
+  --character-aura-secondary:rgba(59,130,246,.22);
+}
+/* 派生：红瞳黑长直作家 · 霞之丘诗羽 */
+.pb[data-character="kasumigaoka_utaha"], body:has(.pb[data-character="kasumigaoka_utaha"]) {
+  --character-accent:#ef4444;
+  --character-accent-hover:color-mix(in srgb, #ef4444 75%, white);
+  --character-soft:rgba(239,68,68,.16);
+  --character-glow:rgba(239,68,68,.34);
+  --character-aura:rgba(127,29,29,.34);
+  --character-aura-secondary:rgba(226,232,240,.22);
+}
+/* 派生：紫藤蝶翼虫柱 · 蝴蝶忍 */
+.pb[data-character="kochou_shinobu"], body:has(.pb[data-character="kochou_shinobu"]) {
+  --character-accent:#a78bfa;
+  --character-accent-hover:color-mix(in srgb, #a78bfa 75%, white);
+  --character-soft:rgba(167,139,250,.16);
+  --character-glow:rgba(167,139,250,.34);
+  --character-aura:rgba(76,29,149,.32);
+  --character-aura-secondary:rgba(249,168,212,.24);
+}
+/* 派生：墨青金纹诗仙 · 令 */
+.pb[data-character="ling_arknights"], body:has(.pb[data-character="ling_arknights"]) {
+  --character-accent:#d4a83c;
+  --character-accent-hover:color-mix(in srgb, #d4a83c 75%, white);
+  --character-soft:rgba(212,168,60,.16);
+  --character-glow:rgba(212,168,60,.34);
+  --character-aura:rgba(14,116,144,.30);
+  --character-aura-secondary:rgba(212,168,60,.24);
+}
+/* 派生：红瞳黑发大小姐 · 四宫辉夜 */
+.pb[data-character="shinomiya_kaguya"], body:has(.pb[data-character="shinomiya_kaguya"]) {
+  --character-accent:#e11d48;
+  --character-accent-hover:color-mix(in srgb, #e11d48 75%, white);
+  --character-soft:rgba(225,29,72,.16);
+  --character-glow:rgba(225,29,72,.34);
+  --character-aura:rgba(153,27,27,.34);
+  --character-aura-secondary:rgba(251,191,36,.22);
+}
+/* 派生：蜜金星瞳女王蜂 · 食蜂操祈 */
+.pb[data-character="shokuhou_misaki"], body:has(.pb[data-character="shokuhou_misaki"]) {
+  --character-accent:#fbbf24;
+  --character-accent-hover:color-mix(in srgb, #fbbf24 75%, white);
+  --character-soft:rgba(251,191,36,.16);
+  --character-glow:rgba(251,191,36,.34);
+  --character-aura:rgba(168,85,247,.28);
+  --character-aura-secondary:rgba(252,211,77,.22);
 }

@@ -48,6 +48,8 @@
 
 ### 只读交付证据审计（W2 最小切片）
 
+默认文字输出按错误、待验、通过分组，列出数量及每项文件/字段/原因；待验继续区分未知与未运行。显式文件、证据比较、HEAD/worktree、限制和未执行建议按已启用项呈现，完整标识与结构仍由 `--json` 提供。格式化层不改变状态、退出码、旧证据适配或文件边界，也不执行建议命令。
+
 `--compare-evidence <root内相对JSON路径>` 可重复，与主 `--evidence` 独立比较，结果列入 `comparisons`（primary/other 的 files、ids、sharedIds、status、失败 message）。双方各解析最多一层 versioned evidence / delivery-receipt 关联；必须有完整最终 commit 和至少一个共有构建 SHA 字段，全部共有 ID 大小写归一后必须一致。识别 `build.*Sha256`（排除 source/snapshot/baseline）及 `browser.distIndexSha256BeforeAndAfter`（对应 build.distIndexSha256）。关联内明确标识冲突同样报错。缺失、格式不支持、坏 JSON、相对路径或真实路径越界进入 errors，退出 1。仅单边存在的构建字段保留在 ids；不自动合并机器、状态、安装或模型验收，比较 matched 不消除主证据 pending。可叠加 HEAD/worktree 与显式文件核验；未启用不读取第二文件，help/plan 不读取。示例：`node scripts/workflow.js audit:delivery --evidence office.json --compare-evidence main.json --json`。
 
 `--check-worktree` 显式在 root 对应仓库执行 `git status --porcelain=v1 --untracked-files=all`，独立 `repositoryWorktree` 输出 root、status（clean/dirty/unavailable）、changedFiles、message 和成功读取的 rawPorcelain。未提交项标记 uncommitted，未跟踪项标记 untracked；每项保留 indexStatus/worktreeStatus、pathPorcelain 和 raw，路径使用 Git 原始转义表示（重命名保留原始箭头表达式）。dirty、非 Git、命令失败或不可解析均进入 errors、退出 1。设置 GIT_OPTIONAL_LOCKS=0，避免刷新索引写入；不查询远端、不清理文件。与 `--check-head`、文件核验独立叠加；HEAD 匹配不能证明工作树 clean。unborn 仓库按 status 实际输出判定，组合 HEAD 检查时无提交由 repositoryHead 报 unavailable。未启用不增加结果；help/plan 不执行 Git。clean 仅表示此次 status 未报告改动，不证明忽略文件、产物或验收有效性。
@@ -154,6 +156,14 @@
 entries 的 role 保留 source/product 职责；status 为 source/product/missing/invalid/external-unknown。manifest 按当前 files 结构解析；场景按 .1 起连续批次优先，否则读取逻辑单文件。检查真实路径边界、JSON 及浅层容器，输出实际字段名；不证明完整 schema、源产物一致性、字段语义、审核或图片质量。参考 view 是合并投影且登记器也会写入；外部样张固定 external-unknown，不扫描外部清单或图片。
 
 写入入口仅展示，不执行 builders（包括可能自愈写入的 --check）、模型或网络。`--help` / `--plan` 不读取目标目录；退出码 0 表示读取完成（允许 external-unknown），1 表示有 missing/invalid，2 表示参数或根目录错误。隔离回归：`node scripts/tests/test-content-ownership.js`。
+
+## 本地资源清单生成与校验
+
+`node scripts/workflow.js audit:resource-manifest [--root <目录>]` 默认只读生成 `root/assets` 普通文件的清单 JSON（stdout）：每条含 root 相对 posix 路径、字节数、SHA-256，路径按码元顺序稳定排序；`generatedAt` 仅信息性，不作为内容版本；首版以路径标识文件，不声称跨重命名身份稳定。`assets/character-references` 外部参考域整棵排除；不进入外部挂载、runtime 或用户作品目录；扫描根自身为符号链接/junction 时拒绝扫描；目录遍历不跟随符号链接/junction，非普通文件、目录不可读和无法合规表示的文件名（如含编码分隔符形态）单列 `unverified`，不伪造完整覆盖。
+
+`--manifest <root内JSON>` 切换为校验（清单须位于 root 内）：检查重复路径、非法/越界路径、文件缺失、字节数或哈希不匹配。清单路径按字面文件路径处理，不做 URL 解码；含百分号转义时做单字节解码核对，解码引入分隔符、盘符、控制字符或改变段结构（编码反斜杠、编码穿越）先于任何文件访问被拒；条目在 stat/读取前先做真实路径边界检查，junction/symlink 指向 root 外即拒绝，目标缺失时沿最近存在祖先解析，不以「目标不存在」跳过边界。校验按 Windows 大小写语义检查重复路径与排除域，并核对真实目标仍在 assets 允许域中；清单含非空 unverified 时保留已列条目的核验数量，但整体结果失败（退出 1）。校验只核对已列条目，不发现未登记文件，不做隐式修复、删除或上传，不做任意 URL 抓取或全盘发现。清单保存由调用者显式重定向到自己的输出目录，本入口零写入。
+
+退出码：0 表示生成无未核验项或校验全部通过；1 表示目标内容有问题（生成含未核验项、校验错误、清单格式错误或不支持的 schemaVersion）；2 表示参数或环境问题（参数非法、root/扫描根不可用、manifest 路径越界或不可读）。`--help` / `--plan` 不读取目标文件、不计算哈希。哈希相等只证明字节一致；文件存在不代表内容已交付、图片质量或审核通过，清单不代表可信发布源。隔离回归：`node scripts/tests/test-resource-manifest.js`（已登记 unit 套件）。
 
 ## 门禁与构建
 
