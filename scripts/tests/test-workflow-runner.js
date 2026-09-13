@@ -224,10 +224,14 @@ test('run metadata stays semantically consistent with the registry', () => {
       // 非 Windows 工具链的发布产物（安装包）需要 windows 声明；showcase 版本目录除外。
       assert.ok(!['installer:', 'desktop:', 'deploy:'].some((prefix) => name.startsWith(prefix)) || run.machine.includes('windows'), `${name}: 安装/部署类需声明 windows`);
     }
-    // 默认 preview 的发布器，默认行为不得包含写入；写入只能出现在开关里。
+    // 默认 preview 的入口，默认行为不得包含写入；写入只能出现在开关里。
+    // 发布器 --apply 写发布产物（writes-release）；候选暂存类 --apply 写生成产物（writes-product，G10）。
     if (nature.includes('preview') && nature.every((effect) => ['read-only', 'preview'].includes(effect))) {
       assert.ok(!nature.includes('writes-release'), `${name}: 默认预览不得声明默认写入`);
-      assert.ok(Object.values(run.switches || {}).some((effects) => effects.includes('writes-release')), `${name}: 预览类发布器缺少 --apply 写入描述`);
+      assert.ok(
+        Object.values(run.switches || {}).some((effects) => effects.includes('writes-release') || effects.includes('writes-product')),
+        `${name}: 预览类入口缺少写入开关描述（writes-release/writes-product）`
+      );
     }
     // 复合工作流的 nature 必须与其子步骤有交集（不能凭空弱化）。
     if (def.steps) {

@@ -22,14 +22,25 @@
  *
  * 用法：
  *   node scripts/maintenance/report-content-coverage.js [--json] [--root <目录>]
+ *     [--character <规范ID>] [--outfit <角色内ID>]
  *   --root 用于隔离夹具（测试）；默认仓库根（与 popular-store 的 AICS_DATA_ROOT 同约定）。
+ *   --character/--outfit 筛选局部范围（G9）：--outfit 必须与 --character 同时给出；
+ *   未知角色/服装按参数错误退出 2，不产出貌似正常的空报告。筛选时条目数量按所选
+ *   范围重算，JSON 增加 scope 字段；manifest/重复身份/standards↔view 镜像等全域
+ *   结构检查仍按全库执行并保留问题（全域错误不一定由所选对象造成）。素材文件
+ *   存在性核对仅针对所选范围的参考 URL，未选角色的文件不 stat、不计入 verified。
  *
  * 退出码：0 = 仅有覆盖差额或全部覆盖；1 = 结构错误（清单缺文件、根结构不对、
- * 跨分片重复 ID、manifest 批次数缺失/不符、standards↔view 镜像破坏）。
+ * 跨分片重复 ID、manifest 批次数缺失/不符、standards↔view 镜像破坏）；
+ * 2 = 参数错误（--character/--outfit 语法或未知 ID）。
  */
 
 const fs = require('fs');
 const path = require('path');
+const {
+  parseSelectionArgs, collectKnownIds, assertSelectionKnown,
+  collectScopedRefUrls, scopeFileExists, filterReportToScope,
+} = require('../lib/coverage-selection');
 
 /** 默认主题归属：tokens.css 的 :root 默认强调色对所有未显式注册角色生效。
  *  现状（2026-09-13）仅 nene 被有意留在默认主题（工程契约「新角色必做主题层」之前的
@@ -160,7 +171,7 @@ function analyseReferences({ popular, standards, view, fileExists }) {
     }
     for (const ref of refs) {
       if (ref.pending === true || !ref.url) continue;
-      const exists = fileExists(ref.url);
+      const exists = fileExists(ref.url, entry);
       if (exists === true) verifiedImage += 1;
       else if (exists === false) missingImage.push({ id: entry.id, outfitId: entry.outfitId, refId: ref.id, url: ref.url, source: 'data/character-reference-view.json' });
       else unverifiedImage.push({ id: entry.id, outfitId: entry.outfitId, refId: ref.id, url: ref.url });
@@ -237,6 +248,11 @@ function popularAliasMapOf(popularCharacters) {
 }
 
 function printHuman(report) {
+  const scope = report.scope || null;
+  if (scope) {
+    const target = scope.outfit ? `${scope.character}/${scope.outfit}` : scope.character;
+    console.log(`[coverage] 筛选范围：${target}（条目数量按所选范围重算；结构检查仍为全库；未选角色的素材文件未核对）`);
+  }
   const ref = report.reference;
   console.log(`[coverage] 热门服装→参考登记：缺登记 ${ref.missingRegistration.length}；登记未出图(pending) ${ref.pending.length}；URL 已填缺实图 ${ref.missingImage.length}；无法核实(素材根缺失) ${ref.unverifiedImage.length}；实图在位 ${ref.verifiedImage}；参考库独有形态 ${ref.referenceOnlyForms.length}`);
   const byChar = new Map();
@@ -251,12 +267,16 @@ function printHuman(report) {
   for (const row of ref.missingImage) console.log(`  缺实图 ${row.id}/${row.outfitId}/${row.refId}: ${row.url}`);
   for (const row of ref.unverifiedImage) console.log(`  未核实 ${row.id}/${row.outfitId}/${row.refId}: ${row.url}（素材根不存在于本机，见 check:ref-urls）`);
   const themes = report.themes;
-  console.log(`[coverage] 角色→主题选择器：显式主题 ${themes.explicit.length}；默认主题允许 ${themes.defaultAllowed.length}（${themes.defaultAllowed.join(', ') || '无'}）；待补 ${themes.missingTheme.length}；旧别名选择器 ${themes.staleAlias.length}；未归类选择器 ${themes.nonCharacter.length}`);
+  if (scope) {
+    console.log(`[coverage] 主题（仅 ${scope.character}）：显式主题 ${themes.explicit.length}；默认主题允许 ${themes.defaultAllowed.length}；待补 ${themes.missingTheme.length}（旧别名/未归类选择器为全库信息，局部报告不列出）`);
+  } else {
+    console.log(`[coverage] 角色→主题选择器：显式主题 ${themes.explicit.length}；默认主题允许 ${themes.defaultAllowed.length}（${themes.defaultAllowed.join(', ') || '无'}）；待补 ${themes.missingTheme.length}；旧别名选择器 ${themes.staleAlias.length}；未归类选择器 ${themes.nonCharacter.length}`);
+  }
   for (const row of themes.missingTheme) console.log(`  待补主题 ${row.id}（accent_color=${row.accentColor || '未登记'}）`);
   for (const row of themes.staleAlias) console.log(`  旧别名选择器 ${row.selector} → 建议 ${row.suggestion}（${row.note}）`);
   for (const row of themes.nonCharacter) console.log(`  未归类选择器 ${row.selector}（${row.note}）`);
   if (report.structuralErrors.length) {
-    console.error(`[coverage] 结构错误 ${report.structuralErrors.length} 项：`);
+    console.error(`[coverage] 结构错误 ${report.structuralErrors.length} 项${scope ? '（全域结构检查结果，不一定由所选对象造成）' : ''}：`);
     for (const message of report.structuralErrors) console.error(`  - ${message}`);
   }
 }
@@ -304,6 +324,14 @@ function validateCharacters(records, source, outfitKey) {
 function main(argv = process.argv.slice(2)) {
   const json = argv.includes('--json');
   const rootIndex = argv.indexOf('--root');
+  let selection = null;
+  try {
+    selection = parseSelectionArgs(argv);
+  } catch (error) {
+    console.error(`[coverage] 参数错误：${error.message}`);
+    process.exitCode = 2;
+    return;
+  }
   const root = rootIndex >= 0 && argv[rootIndex + 1]
     ? path.resolve(argv[rootIndex + 1])
     : path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '..', '..'));
@@ -358,24 +386,43 @@ function main(argv = process.argv.slice(2)) {
     id,
     outfits: (profile.outfits || []).map((o) => ({ outfitId: o.outfitId, references: o.references || [] })),
   }));
+  const aliasMap = popularAliasMapOf(sources.flatMap(({ characters: items }) => items));
 
+  if (selection) {
+    try {
+      assertSelectionKnown(selection, collectKnownIds({
+        characters, popularCharacters: sources.flatMap(({ characters: items }) => items),
+        popularRows: rows, standards: standardsRows, view: viewRows,
+      }), aliasMap);
+    } catch (error) {
+      console.error(`[coverage] 参数错误：${error.message}`);
+      process.exitCode = 2;
+      return;
+    }
+  }
+
+  const baseFileExists = makeFileExists({ appRoot: root, env: rootIndex >= 0 ? {
+    AICS_CHARACTER_REF_ROOT: path.join(root, 'assets', 'character-references'),
+    AICS_ASSETS_ROOT: path.join(root, 'assets'),
+  } : process.env });
   const report = buildReport({
     characters,
     popularRows: rows,
     standards: standardsRows,
     view: viewRows,
     selectors: extractThemeSelectors(cssText),
-    popularAliasMap: popularAliasMapOf(sources.flatMap(({ characters: items }) => items)),
-    fileExists: makeFileExists({ appRoot: root, env: rootIndex >= 0 ? {
-      AICS_CHARACTER_REF_ROOT: path.join(root, 'assets', 'character-references'),
-      AICS_ASSETS_ROOT: path.join(root, 'assets'),
-    } : process.env }),
+    popularAliasMap: aliasMap,
+    // 筛选模式下只有所选范围声明过的参考 URL 允许真实 stat；其余一律按未核实处理。
+    fileExists: selection
+      ? scopeFileExists(baseFileExists, collectScopedRefUrls({ view: viewRows, character: selection.character, outfit: selection.outfit }), selection)
+      : baseFileExists,
   });
   report.structuralErrors.push(...structuralErrors);
 
-  if (json) console.log(JSON.stringify(report, null, 2));
-  else printHuman(report);
-  process.exitCode = report.structuralErrors.length ? 1 : 0;
+  const output = selection ? filterReportToScope(report, selection) : report;
+  if (json) console.log(JSON.stringify(output, null, 2));
+  else printHuman(output);
+  process.exitCode = output.structuralErrors.length ? 1 : 0;
 }
 
 if (require.main === module) main();

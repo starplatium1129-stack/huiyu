@@ -6,6 +6,7 @@ const path = require('node:path');
 const { test } = require('node:test');
 const { spawnSync } = require('node:child_process');
 const { parse, report } = require('../maintenance/report-content-impact');
+const { formatImpactReport } = require('../lib/content-impact-format');
 
 function git(root, ...args) {
   const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
@@ -639,4 +640,127 @@ test('直接 CLI 帮助/预览不读数据；JSON 成功及错误退出码', (t)
   assert.equal(bad.status, 2);
   assert.ok(JSON.parse(bad.stdout).error);
   assert.deepEqual(snapshot(root), before);
+});
+// G8：人类可读输出。formatImpactReport 只排版 report() 既有结果，不产生新判定。
+test('G8 三分级条目保留 domain/object/reason，未知与未执行建议独立呈现', () => {
+  const out = formatImpactReport({
+    version: 1, readOnly: true,
+    input: { character: 'a', outfit: 'dress', scene: null, paths: ['data/popular/one.json'] },
+    mustChange: [{ domain: 'theme', object: 'src/assets/css/director/tokens.css#a', reason: 'canonical 角色缺少显式主题，且不在默认主题白名单' }],
+    revalidate: [{ domain: 'blueprint', object: 'data/blueprints/one.json#a1', reason: '显式角色/服装引用；需复核编译和画面，未执行' }],
+    related: [{ domain: 'popular', object: 'data/popular/one.json#a', reason: '权威身份/服装源；关联不等于必须重写' }],
+    unknown: ['b: 主题 unknown；外部热门角色'],
+    recommendations: [{ name: 'data:validate', argv: ['node', 'scripts/workflow.js', 'data:validate'], nature: ['read-only'], executed: false }],
+  });
+  assert.ok(out.startsWith('只读影响报告'), out);
+  assert.ok(out.includes('目标: 角色 a · 服装 dress · 路径 1 个: data/popular/one.json'));
+  assert.ok(out.includes('必改 1 ｜ 需复验 1 ｜ 仅关联 1 ｜ 未知 1 条 ｜ 建议命令 1（未执行）'));
+  assert.ok(out.includes('必改 mustChange: 1 条'));
+  assert.ok(out.includes('[theme] src/assets/css/director/tokens.css#a — canonical 角色缺少显式主题'));
+  assert.ok(out.includes('需复验 revalidate: 1 条'));
+  assert.ok(out.includes('[blueprint] data/blueprints/one.json#a1 — 显式角色/服装引用'));
+  assert.ok(out.includes('仅关联 related: 1 条'));
+  assert.ok(out.includes('[popular] data/popular/one.json#a — 权威身份/服装源；关联不等于必须重写'));
+  assert.ok(out.includes('未知范围 unknown: 1 条'));
+  assert.ok(out.includes('- b: 主题 unknown'));
+  assert.ok(out.includes('未执行推荐命令 recommendations: 1 条'));
+  assert.ok(out.includes('data:validate（nature: read-only）: node scripts/workflow.js data:validate'));
+  assert.ok(!out.includes('{"') && !out.includes('[{'), '不得残留整段 JSON');
+});
+test('G8 空集合整节省略，只剩目标与摘要行', () => {
+  const out = formatImpactReport({ version: 1, readOnly: true, input: { character: null, outfit: null, scene: null, paths: [] }, mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [] });
+  for (const banned of ['必改 mustChange', '需复验 revalidate', '仅关联 related', '未知范围 unknown', '未执行推荐命令 recommendations', 'Git 变更', '默认服装', '参考状态', '主题 themes', '场景 scenes', '样张 showcase', '{"', '[{']) assert.ok(!out.includes(banned), banned);
+  assert.ok(out.includes('必改 0 ｜ 需复验 0 ｜ 仅关联 0 ｜ 未知 0 条 ｜ 建议命令 0（未执行）'));
+  assert.ok(out.includes('未指定显式目标'));
+});
+test('G8 参考状态区分 pending/URL 声明/存在性未知，服装主题场景样张短行保留定位', () => {
+  const out = formatImpactReport({
+    input: { character: 'a', outfit: 'dress', scene: 'sc001', paths: [] },
+    outfitDefaults: [{ id: 'a', status: 'explicit', defaultOutfit: 'coat', defaultIds: ['coat'], isDefaultIds: ['coat'], reasons: ['两字段集合一致，恰好一个默认项且 ID 唯一有效'] }],
+    referenceEvidence: [
+      { characterId: 'a', outfitId: 'dress', status: 'pending', total: 3, pendingCount: 2, urlDeclaredCount: 2, reviewDeclaredCount: 1, reviewStatus: 'declared-unverified', assetStatus: 'unverified', reason: '仅统计索引声明' },
+      { characterId: 'b', outfitId: null, status: 'empty', total: 0, pendingCount: 0, urlDeclaredCount: 0, reviewDeclaredCount: 0, reviewStatus: 'unknown', assetStatus: 'unverified', reason: '仅统计索引声明' },
+      { characterId: 'c', outfitId: null, status: 'missing', total: null, pendingCount: null, urlDeclaredCount: null, reviewDeclaredCount: null, reviewStatus: 'unknown', assetStatus: 'unverified', reason: '角色未登记' },
+    ],
+    themes: [{ id: 'a', file: 'src/assets/css/director/tokens.css', canonical: true, themeStatus: 'explicit', selector: '[data-character="a"]', reason: '当前 CSS 有显式角色选择器' }],
+    scenes: [{ id: 'sc001', sourceStatus: 'present', sources: [{ file: 'data/scenes/base.1.json', group: 'data/scenes/base.json' }], aggregate: { file: 'data/scenes.json', status: 'current' }, curation: { curatedSceneIds: 'included', signatureSceneIds: 'not-listed', personaCoreSceneIds: 'not-listed' }, retirement: { status: 'not-listed', records: [] } }],
+    showcase: { status: 'partial', manifests: [{ file: 'showcase.json', status: 'parsed', entries: [{ index: 0, id: 'sc001', type: 'scene', char: 'a', rating: 'safe', attempt: 2, reviewPresent: true, matchedBy: ['scene'] }] }] },
+    mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [],
+  });
+  assert.ok(out.includes('a/dress: pending · 共 3 条 · pending 2、URL 声明 2、review 声明 1 · review: declared-unverified · 素材存在性: unverified'), out);
+  assert.ok(out.includes('b/*: empty'));
+  assert.ok(out.includes('c/*: missing'));
+  assert.ok(out.includes('a: explicit（默认 coat'));
+  assert.ok(out.includes('a: explicit [data-character="a"]'));
+  assert.ok(out.includes('sc001: 源 present: data/scenes/base.1.json · 聚合 current（data/scenes.json） · 精选 curatedSceneIds=included, signatureSceneIds=not-listed, personaCoreSceneIds=not-listed · 退役 not-listed'));
+  assert.ok(out.includes('#0 sc001 · type=scene · char=a · rating=safe · attempt=2 · review 字段已声明 · 命中: scene'));
+});
+test('G8 超长列表截断并注明剩余数量与 --json 入口', () => {
+  const related = Array.from({ length: 100 }, (_, i) => ({ domain: 'x', object: `data/x.json#item${i}`, reason: 'r' }));
+  const out = formatImpactReport({ input: { paths: Array.from({ length: 8 }, (_, i) => `data/${i}.json`) }, mustChange: [], revalidate: [], related, unknown: [], recommendations: [] });
+  assert.ok(out.includes('其余 3 个见 --json'));
+  assert.ok(out.includes('仅关联 related: 100 条'));
+  assert.ok(out.includes('item0'));
+  assert.ok(!out.includes('item99'), '截断后不得输出全部条目');
+  const note = out.match(/其余 (\d+) 条见 --json/);
+  const shown = (out.match(/#item\d+/g) || []).length;
+  assert.ok(note, '须注明剩余数量');
+  assert.equal(Number(note[1]), 100 - shown);
+});
+test('G8 异常兜底：非对象报告与怪异条目不抛错、不冒充可读结果', () => {
+  const circular = {}; circular.self = circular;
+  for (const input of [null, undefined, 42, 'x', []]) {
+    const out = formatImpactReport(input);
+    assert.equal(typeof out, 'string');
+    assert.ok(out.includes('--json'), '非对象兜底输出须指向 --json');
+  }
+  assert.equal(typeof formatImpactReport(circular), 'string');
+  const garbage = {
+    input: { paths: 'not-array', character: 5 },
+    mustChange: [null, 7, { object: null, reason: { deep: true } }, { domain: '', object: 'x' }],
+    revalidate: 'nope', related: [{ domain: 'd' }], unknown: [null, { a: 1 }],
+    recommendations: [{ name: '' }, { argv: 'node x' }],
+    outfitDefaults: [null, { status: 'explicit' }],
+    referenceEvidence: [{ characterId: 'a' }],
+    themes: [{ id: 'a' }],
+    scenes: [{ id: 'sc001', sources: 'bad', aggregate: null, curation: [], retirement: null }],
+    showcase: { status: 'error', manifests: [{ file: 'f', status: 'error' }] },
+    gitChanges: 42,
+  };
+  const out = formatImpactReport(garbage);
+  assert.equal(typeof out, 'string');
+  assert.ok(out.length > 0);
+  assert.ok(out.includes('必改 mustChange: 4 条'));
+  assert.ok(out.includes('[无域] （无对象）'));
+  assert.ok(!out.includes('需复验 revalidate:'), '非数组 revalidate 视为空集合');
+  assert.ok(out.includes('场景 scenes: 1 项'));
+  assert.ok(out.includes('sc001: 源 unknown'));
+});
+test('G8 格式化不修改报告对象；CLI 文本与 --json 同源且退出码一致，零写入', (t) => {
+  const f = themeFixture(t, '.pb { color: red; }');
+  const args = ['--root', f.root, '--character', 'a', '--outfit', 'dress'];
+  const original = report(parse(args));
+  const clone = JSON.parse(JSON.stringify(original));
+  const formatted = formatImpactReport(original);
+  assert.deepEqual(original, clone, '格式化不得修改报告对象');
+  assert.ok(formatted.includes('[theme] src/assets/css/director/tokens.css#a'), '缺主题为必改');
+  const before = snapshot(f.root);
+  const script = path.resolve(__dirname, '../maintenance/report-content-impact.js');
+  const jsonRun = spawnSync(process.execPath, [script, ...args, '--json'], { encoding: 'utf8' });
+  assert.deepEqual(JSON.parse(jsonRun.stdout), clone, 'CLI --json 与 report() 同源');
+  const textRun = spawnSync(process.execPath, [script, ...args], { encoding: 'utf8' });
+  assert.equal(textRun.status, jsonRun.status, '文本与 JSON 退出码一致');
+  assert.equal(textRun.status, 1);
+  assert.ok(textRun.stdout.includes('必改 mustChange: 1 条'));
+  assert.ok(textRun.stdout.includes('[theme] src/assets/css/director/tokens.css#a'));
+  const ok = themeFixture(t, '[data-character="a"] { color: red; }');
+  const okArgs = ['--root', ok.root, '--character', 'a'];
+  const okJson = spawnSync(process.execPath, [script, ...okArgs, '--json'], { encoding: 'utf8' });
+  assert.equal(okJson.status, 0);
+  const okText = spawnSync(process.execPath, [script, ...okArgs], { encoding: 'utf8' });
+  assert.equal(okText.status, 0);
+  assert.ok(okText.stdout.includes('必改 0 ｜ 需复验'));
+  assert.ok(okText.stdout.includes('a: explicit [data-character="a"]'));
+  assert.ok(!okText.stdout.includes('必改 mustChange:'));
+  assert.deepEqual(snapshot(f.root), before);
 });

@@ -1,0 +1,50 @@
+{
+  "date": "2026-09-14",
+  "baseline": "be1c0b319a7228629abe4d22f7692543cba45325",
+  "batches": [
+    "G8 readable impact",
+    "G9 scoped coverage",
+    "G10 candidate resource export"
+  ],
+  "gate": {
+    "result": "PASS",
+    "referenceMode": "structure",
+    "unit": 696,
+    "contract": 26,
+    "frontend": true,
+    "build": true
+  },
+  "focusedTests": {
+    "impact": 46,
+    "coverage": 20,
+    "resourcePack": 20,
+    "resourceManifest": 22
+  },
+  "workflowCount": 81,
+  "fixes": [
+    "Render actual array-valued command nature and explicit target truncation",
+    "Scope shared URL checks by character and outfit; preserve zero-outfit identities and global duplicate diagnostics",
+    "Verify persisted manifest before final rename; recheck source exclusion and destination ancestors; exclusive copy writes",
+    "Windows-only apply with real rename-conflict fixture"
+  ],
+  "limitations": [
+    "No production asset export, installation, download, generation or UI change",
+    "Windows-only apply; preview available elsewhere",
+    "Byte verification is not content quality or trusted publication",
+    "No absolute isolation against malicious concurrent local path replacement"
+  ],
+  "sha256": {
+    "scripts/lib/content-impact-format.js": "2ebf1211f0c165fb012b5588f14d2f805f9372929f7b5a2c92194f7618d5816d",
+    "scripts/lib/coverage-selection.js": "3b53b0a1e46fa766bb256c78f39d58ddf8e2d50f4728c5a984adb43db30869e9",
+    "scripts/lib/resource-pack.js": "84f8195ef4412bd74930262df01df97b82d7fc0390f69bf9cb47209681788641",
+    "scripts/maintenance/report-content-impact.js": "966e5aba8dfa8f9fce3868b93c0f98fde5def1fb8b134897a8fdd4ed559b68e1",
+    "scripts/maintenance/report-content-coverage.js": "783722c83258efd4ac4b4eec9f9a17986077a9a574c1ec1dc0931d1ae7b1fc38",
+    "scripts/maintenance/stage-resource-pack.js": "a69bd40c573f493936ab8a2e59338cbc369f6761bdedb570f13023b03fce24f1",
+    "scripts/tests/test-content-impact.js": "de92798a067674c9543a29437004e0e5da551dbe00631adc914bc1419e9a64ec",
+    "scripts/tests/test-coverage-report.js": "a7268b8736d1da981357c902b6a12701dd65f92e24b1e1a04a9f57b21e90a7c3",
+    "scripts/tests/test-resource-pack.js": "7d1f77e429eef2f113305ee12764f00d6c7314cddf7428db384d7816ebecf545",
+    "scripts/tests/test-workflow-runner.js": "5ddd6a26a3c823ed8f6439747b3817c1ee822d8febcba020441652bdf7d28e42",
+    "scripts/tests/quality-test-inventory.js": "d7af087ff8650d0b7d73aa5006f609a636896560aeec534dd55847da0fc8e088",
+    "scripts/workflow.js": "bdcc8e6dde8b07beae20e54744db03dbeabea84146fd3dcc54bc2e5128d7a8c3"
+  }
+}

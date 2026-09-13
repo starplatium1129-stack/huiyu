@@ -79,6 +79,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-scene-prose-contract.js',
     'test-quick-create.js',
     'test-resource-manifest.js', // G5 资源清单生成/校验：稳定排序、字节哈希、越界/junction 拒绝、零写入与退出码契约
+    'test-resource-pack.js', // G10 离线候选包暂存导出：预览零写入、清单核验复用、目标/junction 拒绝、失败不发布与字节复核
     'test-resource-scheduling.js',
     'test-scene-ux.js',
     'test-scene-write.js',

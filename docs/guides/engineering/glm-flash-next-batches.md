@@ -2,7 +2,7 @@
 
 2026-09-13。用户希望优先使用即将到期的 GLM 5.3 Flash 额度。此处按任务边界安排工作，不声明其通用能力或基准排名。依据见 [六报告复核](../../research/engineering/six-task-review-2026-09-13.md)。
 
-最新复核：A、RB、RC、N1/N2/N3、G1–G7 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。当前执行文末 G8/G9/G10，三项可并行；旧批次不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
+最新复核：A、RB、RC、N1/N2/N3、G1–G10 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。当前执行文末 G11/G12/G13，三项可并行；旧批次不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
 
 ## 执行与交付
 
@@ -256,3 +256,37 @@
 - 不转换或重采样图片，不编辑原 manifest，不运行资产中的脚本；不写安装目录、生产 assets、用户作品或外部托管，不生成可执行更新逻辑，不做 ZIP 解压/安装/缓存淘汰。输出仅称“候选包已通过字节核验”，不能称质量/审核/部署完成。
 - 临时夹具至少覆盖预览零写入、正常导出且原文件字节不变、同名目标拒绝、坏清单拒绝、排除域/路径/junction拒绝、复制失败或源变化不发布最终包、导出后用现有 verifyManifest 校验通过。清理只针对明确由本测试创建并已确认位于临时根内的路径，不能递归清理链接目标。
 - 新命令登记默认 preview/read-only 与 --apply 的 writes-product 行为，注册定向测试和文档；不把它标为发布入口。遵守单文件 600 行预算。完成定向验证后交主任务统一门禁与写入边界复核。
+
+## G11/G12/G13：隔离校验、蓝图保存基础与增量候选包
+
+2026-09-14。在主任务完成 G8–G10 整合后开始，以实际 HEAD 为准。三项独占文件，可并行。共同约束：不做 Git 写操作、不启动共享 build/browser、不改生产 data/assets/提示词/分级、不调用真实模型或安装下载。只用自建临时夹具验证写入；完成实现和定向检查后回执，不用研究报告代替代码。G13 独占注册和工作流文档，G11/G12 将注册建议写入回执交主任务。
+
+### G11：内容契约校验统一隔离根
+
+独占 `scripts/maintenance/validate-content-contracts.js`、可新增 `scripts/tests/test-content-contract-root.js` 与必要纯辅助 `scripts/lib/content-contract-root.js`；不改现有 store/data-version 库或其他测试。回执 `scripts/archive/glm-g11-content-root/result.md`。
+
+- 当前 validate-content-contracts 固定仓库 ROOT，维护保存及其他 store 已支持 AICS_DATA_ROOT/AICS_APP_ROOT。使该 CLI 的数据读取、参考核对、压缩产物、DATA_VERSION 计算和读取统一采用 `AICS_DATA_ROOT || AICS_APP_ROOT || repoRoot`。明确 root 表示完整项目布局根（含 data/assets/src/stores），不能在夹具缺文件时回退读生产。
+- TS 校验规则的 require 仍来自代码仓库，区分规则代码与待校验数据。不得复制整套规则到夹具、跳过分级/引用/压缩/版本检查或修改生产 DATA_VERSION；保持无环境参数时的行为与 validateContent 导出兼容。
+- 缺文件/坏 JSON 等输出可定位失败，不得异常后继续报告成功；校验全程只读，不调用自愈/build/sync。若发现额外根相关库缺口，先记录，勿扩大所有库改造。
+- 隔离 CLI 测试覆盖两种环境变量及优先级；至少一个完整有效夹具能通过，改变夹具的引用/压缩产物/版本分别会失败。用两个不同根证明选错根不会假通过；快照/记录型 IO 证明零写入且不读取生产数据。参考检查采用夹具或 structure 模式，不能访问真实素材。保留已有契约规则，测试不要只断言字符串里出现变量。
+- 新测试注册由主任务处理，不改共享文件；遵守 600 行预算。
+
+### G12：蓝图分片变更的纯规划器
+
+独占新增 `scripts/lib/blueprint-change-plan.js`、`scripts/tests/test-blueprint-change-plan.js`。只读参考 `blueprint-store.js`、`popular-store.js`、场景增量保存实现与蓝图保存复现记录；不修改它们，不接入 routes 或实际磁盘写入。回执 `scripts/archive/glm-g12-blueprint-plan/result.md`。
+
+- 为后续主任务修复蓝图保存提供可直接复用的纯函数：输入当前 manifest、各分片解析对象和原始文本、完整目标 blueprints 数组及已有角色→franchise 映射，输出下一 manifest/聚合及明确 writes/deletes/unchanged 计划。参数与返回结构自行设计并写清楚；模块不 require fs、不读环境、不执行命令、不自带自动 apply。
+- 校验输入完整、manifest 文件唯一且为安全 JSON basename（拒绝 traversal/绝对/分隔符/Windows 大小写冲突）、来源分片齐全、蓝图 ID 非空且唯一；未知角色或无法确认 franchise 必须明确错误，不归入 unknown 自动建片。旧 manifest/franchise 冲突不得静默合并。
+- 同 franchise 沿用既有文件名和 manifest 顺序；新 franchise 用现有 franchiseSlug 规则并检查冲突，按目标首次出现顺序追加。保留目标条目全部字段与组内顺序，不改内容、评级或绑定；跨 franchise 移动须在旧片移除、新片加入。聚合使用 version 2 与 manifest 顺序拼接。
+- 不变分片保留原始字节，不因格式化整库改写；变化分片输出与现有 jsonText 格式兼容，manifest count 精确更新。删除计划只能包含输入 manifest 声明的已知片，不能扫描或删除未登记文件。空 franchise 可删除其已知片及 manifest 项；全空目标返回明确拒绝（当前 reader 不接受空 manifest），不伪称已支持清空整个库。
+- 测试覆盖不变零写计划、修改、新增系列、删除最后条目、跨系列移动、顺序/count、重复与路径/slug 冲突、未知身份、缺片、全空拒绝、冻结输入不变；以计划应用到内存后再聚合证明结果正确。不得修改生产蓝图或编译提示词；本批只是保存事务前的规划模块，不宣称保存/回滚已修好。
+
+### G13：只复制差异文件的增量候选包
+
+独占 `scripts/lib/resource-pack.js`、`scripts/maintenance/stage-resource-pack.js`、`scripts/tests/test-resource-pack.js`；可新增纯辅助 `scripts/lib/resource-pack-delta.js` 与相应测试。独占必要 `scripts/workflow.js`、`scripts/tests/quality-test-inventory.js`、`docs/workflow.md` 注册。只读复用 resource-manifest 库，不修改它。回执 `scripts/archive/glm-g13-resource-delta/result.md`。
+
+- 在现有入口新增可选 `--base-manifest <root内旧JSON>`，与 `--manifest <新JSON>` 同用；无此参数保留 G10 全包行为。复用现有纯比较结果，新增/改变项才复制，unchanged 不进候选文件，removed 仅作为差异记录，不删除任何源/目标资源。
+- 明确产物是增量候选，不是完整可安装包。候选 manifest.json 只列实际复制的 added/changed 项，可由已有 verifier 核验；另写 delta.json 记录旧/新清单内容身份（稳定路径/bytes/sha256，不依赖 generatedAt）、四类数量和移除路径，供以后基线匹配用。不要冒充数字签名/可信来源，不实现安装或执行删除。
+- 旧清单仅做结构核验，不读取旧资产（其 removed 文件可已不存在）；新清单实际文件继续按 G10 完整核验，不能用增量缩小绕过新清单损坏。任一清单结构错误/非空 unverified 拒绝。默认 preview 零写入，help/plan 零目标读取；完全无差异也可输出明确的零资产候选，不能称已安装更新。
+- 复用现有安全复制与 staging 协议，不另造宽松通道。manifest.json 和 delta.json 都须在最终改名前读回核对；副本哈希失败、元数据损坏、目标冲突、源或路径变化不报告成功。保留 Windows-only apply、排除域、独占写入、同名拒绝等所有 G10 回归。只用临时夹具，不导出真实资产。
+- 测试旧 removed 文件缺失仍可比较、added/changed 字节正确且 unchanged 未复制、仅删除/无差异、坏旧/新清单、时间戳不影响身份、预览不写、两个元数据写坏不发布、已有全包模式兼容。文件接近 600 行时拆独立辅助/测试文件；主任务统一最终门禁。

@@ -8,6 +8,7 @@ const { isDeepStrictEqual } = require('node:util');
 const { collectGitChanges } = require('./content-impact-git');
 const { referenceImpact } = require('./content-impact-references');
 const { WORKFLOWS } = require('../workflow');
+const { formatImpactReport } = require('../lib/content-impact-format');
 const { extractThemeSelectors, DEFAULT_THEME_ALLOWED } = require('./report-content-coverage');
 
 const HELP = 'audit:impact [--character <canonical-id> [--outfit <id>]] [--scene <scNNN>] [--path <repo-relative-path>]... [--root <fixture-root>] [--json]\n只读报告；--path 接收明确 Git 变更路径（不自动读取 Git、不比较历史字段）。场景路径支持 data/scenes/<逻辑组.json 或实际批次.N.json>，按当前 manifest 展开。\n--plan 与 --help 仅展示用法，不读取数据。退出码 0=报告（可能有未知范围），1=结构问题，2=参数错误。';
@@ -461,7 +462,11 @@ function main(argv = process.argv.slice(2)) {
     return 2;
   }
   const output = report(opts);
-  console.log(opts.json ? JSON.stringify(output, null, 2) : ['只读影响报告', ...['gitChanges', 'outfitDefaults', 'referenceEvidence', 'themes', 'scenes', 'showcase', 'mustChange', 'revalidate', 'related', 'unknown', 'recommendations'].filter((key) => output[key]).map((key) => `${key}:\n${JSON.stringify(output[key], null, 2)}`)].join('\n'));
+  let human = '';
+  if (!opts.json) {
+    try { human = formatImpactReport(output); } catch { human = '影响报告渲染失败；请使用 --json 查看结构化结果。'; }
+  }
+  console.log(opts.json ? JSON.stringify(output, null, 2) : human);
   return output.mustChange.length ? 1 : 0;
 }
 if (require.main === module) process.exitCode = main();

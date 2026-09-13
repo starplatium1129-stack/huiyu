@@ -47,6 +47,9 @@ const WORKFLOWS = {
   'audit:resource-manifest': { desc: '只读本地资源清单生成、校验与差异比较：root/assets 路径、字节、SHA-256，零写入', cmd: ['node', 'scripts/maintenance/report-resource-manifest.js'],
     opts: '--root <目录>；--manifest <root内JSON>（校验模式：重复/非法/越界路径、缺失、字节与哈希）；--manifest <旧JSON> --compare-manifest <新JSON>（差异比较：按精确路径输出新增/移除/改变/未改变，只读两份清单不读实际资产）', docs: 'docs/workflow.md',
     run: { nature: ['read-only'], machine: ['node'], switches: { '--manifest': ['guard'], '--compare-manifest': ['guard'] }, resume: 'na', evidence: 'scripts/maintenance/report-resource-manifest.js:1', unknown: ['哈希一致只证明字节相同；文件存在不代表内容已交付、图片质量或审核通过；校验只核对已列条目，不发现未登记文件；差异比较不含未核验项与结构错误时才可宣称已列条目一致，仍不证明目录覆盖完整或内容已审核'] } },
+  'resource:pack': { desc: '离线资源候选包暂存导出：默认预览零写入；--apply 经清单核验后复制到 root 内新候选目录（不覆盖旧包，不是发布/安装入口）', cmd: ['node', 'scripts/maintenance/stage-resource-pack.js'],
+    opts: '--manifest <root内JSON> --name <包名>；--root <目录>；--apply（仅 Windows 实际复制；其他平台可预览）', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product'] }, resume: 'na', evidence: 'scripts/maintenance/stage-resource-pack.js:1', unknown: ['候选包通过字节核验仅表示复制内容与清单一致，不代表图片质量、审核或部署完成；目标必须不存在（不覆盖旧包），写入范围限 --root 内 scripts/archive/resource-packs；预览仍会读取清单与源文件'] } },
   'showcase:review-sheets': { desc: '从候选审核目录生成逐图查看用联系表', cmd: ['python', 'scripts/maintenance/build-scene-manual-audit-sheets.py'], required: ['--audit'], docs: 'docs/workflow.md',
     run: { nature: ['writes-product'], machine: ['python-pillow'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-scene-manual-audit-sheets.py:134-162', unknown: [], notes: ['输出写在 --audit 目录下，通常在仓库外'] } },
   'showcase:manual-review': { desc: '汇总明确人工决定；缺少决定的图片保持 pending', cmd: ['node', 'scripts/maintenance/build-scene-manual-review.js'], required: ['--manifest', '--decisions'], docs: 'docs/workflow.md',
@@ -480,9 +483,9 @@ const WORKFLOWS = {
   'audit:coverage': {
     desc: '只读差额报告：热门服装→参考登记、角色→主题选择器覆盖差额（信息性，不作为门禁失败依据）',
     cmd: ['node', 'scripts/maintenance/report-content-coverage.js'],
-    opts: '[--json] 机器可读输出；[--root <目录>] 指定隔离夹具根（默认仓库根）',
+    opts: '[--json] 机器可读输出；[--root <目录>] 指定隔离夹具根（默认仓库根）；[--character <规范ID>] [--outfit <角色内ID>] 筛选范围（outfit 须与 character 同用）',
     docs: 'docs/workflow.md',
-    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-coverage.js:1', unknown: [], notes: ['结构错误（清单缺文件/重复 ID/批次数不符）退出 1；覆盖差额只报告恒退出 0，不自动登记/补图/改主题'] },
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'], '--character': ['read-only'], '--outfit': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-coverage.js:1', unknown: [], notes: ['结构错误（清单缺文件/重复 ID/批次数不符）退出 1；覆盖差额只报告恒退出 0，不自动登记/补图/改主题', '筛选数量按所选范围重算并输出 scope；结构检查仍为全库，素材存在性只核对所选范围；未知角色/服装或 outfit 缺 character 退出 2'] },
   },
 };
 
