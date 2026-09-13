@@ -1,0 +1,51 @@
+{
+  "date": "2026-09-13",
+  "baseline": "c3db914",
+  "scope": "N3 scene explorer and not-found illustration fallback",
+  "sourceSha256": {
+    "src/views/SceneExplorerView.vue": "d997480364267f8f55ba81070021ca6be2e792ed1d068aa6b11c24c1a6a81cf4",
+    "src/views/NotFoundView.vue": "02fe4ef9ed7b25e27f7e566c3f3dcc419152d684b1fc8c3309bc6f1fb8cb690f",
+    "tests/e2e/illustration-recovery.spec.ts": "c3afb7b04199bfb6d5e43b2a204faca4ff6c67261b69caec80a8c1e4e407e6bf"
+  },
+  "build": {
+    "distIndexSha256": "bcecdcce18f073ee08572506b19f03b60c7cea9ab880bab2ce5f04b4866fd049"
+  },
+  "checks": {
+    "fullGate": {
+      "passed": true,
+      "unitCount": 623,
+      "contractSuites": 26,
+      "log": "gate.txt"
+    },
+    "browser": {
+      "passed": 14,
+      "failed": 0,
+      "scope": "6 N3 behavior + 6 layout/contrast + 2 existing scene-card regressions",
+      "log": "browser.txt",
+      "portOffset": 18000
+    },
+    "visual": {
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "viewportWidths": [
+        1440,
+        768,
+        390
+      ],
+      "newTextContrastAssertion": ">=4.5",
+      "placeholderCaptionGapAssertion": ">=4 CSS pixels",
+      "screenshotsReviewed": true
+    }
+  },
+  "corrections": [
+    "Reserved space below the scene placeholder to avoid caption overlap",
+    "404 fixture matches hashed build asset as well as source asset; first failures were unhit interception, not product fallback failures"
+  ],
+  "limitations": [
+    "Reference audit used structure mode",
+    "No generation, installation or native-device acceptance",
+    "R1 resource download and full offline installation remain pending"
+  ]
+}

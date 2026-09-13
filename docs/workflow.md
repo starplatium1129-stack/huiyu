@@ -183,6 +183,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 首页英雄图/热门横条回退见 `home-image-recovery.spec.ts`，角色详情主图/缩略图失败及恢复见 `character-detail-recovery.spec.ts`；`image-fallback-visual.spec.ts` 覆盖两处新增文字 AA 对比度、标签避让与普通桌面/2560×1440 DPR1.5/390×844 窄屏的双主题截图。它们沿用上述 Playwright 定向入口，默认 e2e 可发现，未加入显式 critical 清单。DPR1.5 是浏览器等效视口，不替代主力机 Windows DPI/WebView2 验收；装饰遮罩与实际图像叠字仍需查看截图。
 
+`illustration-recovery.spec.ts` 补充场景手帖两角色图片失败/切换/恢复与 404 页插图回退、返回导航；内含双主题及 1440/768/390 宽度的占位/台词避让和 AA 检查。404 插图的固定 src 会被构建成带哈希的资源地址，拦截测试须兼容实际打包路径，不能只核对源码 URL。
+
 `workbench-loading.spec.ts` 检查生产构建的实际脚本请求：未打开的素材分类、专家面板和结果弹窗应保持未加载；首次打开后切换分类不丢搜索或草稿。覆盖场景／专家模式与深浅主题，防止只拆分文件却仍在首屏请求全部分片。
 
 `office-code.spec.ts` 同属关键浏览器入口，覆盖文档安全策略、存储受限导航、键盘出图入册、按需对比面板及脱敏诊断下载；麦克风策略使用浏览器模拟设备与真实响应头，不读取操作员麦克风。`library-concurrency.spec.ts` 使用真实双页 IndexedDB/Web Locks，验证并发入册、收藏、软删恢复、备份合并与失败重试；页面壳是隔离夹具，仓储源码和存储未替换。`office-performance.bench.ts` 经独立性能入口执行，记录本机 runtime 下的冷／热进入与首次操作耗时，不与浏览器回归争抢资源。生成链路使用模拟上游，不代表真实模型或桌面安装验收。

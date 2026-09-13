@@ -1,0 +1,32 @@
+
+[WebServer] (node:6200) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+[WebServer] (node:2596) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+Running 14 tests using 1 worker
+
+
+(node:5124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:57:9 › S1 场景手帖双图 404 占位可读并恢复 [dark]
+[2/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:57:9 › S1 场景手帖双图 404 占位可读并恢复 [light]
+[3/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:57:9 › S2 场景手帖按角色隔离且切换重试有界 [dark]
+[4/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:57:9 › S2 场景手帖按角色隔离且切换重试有界 [light]
+[5/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:57:9 › P1 404 页插图占位可读且返回入口可用并恢复 [dark]
+[6/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:57:9 › P1 404 页插图占位可读且返回入口可用并恢复 [light]
+[7/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:154:9 › illustration fallback layout 1440 dark
+[8/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:154:9 › illustration fallback layout 1440 light
+[9/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:154:9 › illustration fallback layout 768 dark
+[10/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:154:9 › illustration fallback layout 768 light
+[11/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:154:9 › illustration fallback layout 390 dark
+[12/14] [desktop] › tests\e2e\illustration-recovery.spec.ts:154:9 › illustration fallback layout 390 light
+[13/14] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F05 场景卡片缩略图 404 提示可用 [dark]
+[14/14] [desktop] › tests\e2e\resource-recovery.spec.ts:57:9 › F05 场景卡片缩略图 404 提示可用 [light]
+  14 passed (20.3s)

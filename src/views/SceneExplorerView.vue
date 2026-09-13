@@ -19,11 +19,19 @@
         </div>
       </div>
       <figure class="scene-atlas-portrait" aria-label="陪伴角色">
-        <img v-for="character in ['nene', 'natsume']" :key="character"
-          :src="'/assets/characters/' + character + '-home-cg-1024.webp'"
-          :class="{ current: companionId === character }"
-          :alt="companionId === character ? (character === 'nene' ? '绫地宁宁' : '四季夏目') : ''"
-          :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async" />
+        <template v-for="character in ['nene', 'natsume']" :key="character">
+          <img v-if="!companionFailed[character]"
+            :src="'/assets/characters/' + character + '-home-cg-1024.webp'"
+            :class="[character, { current: companionId === character }]"
+            :alt="companionId === character ? (character === 'nene' ? '绫地宁宁' : '四季夏目') : ''"
+            :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async"
+            @error="companionFailed[character] = true" />
+          <div v-else class="companion-fallback" :class="[character, { current: companionId === character }]"
+            role="status" :aria-hidden="companionId !== character">
+            <ArchiveIcon name="image" />
+            <span class="companion-fallback-text">{{ character === 'nene' ? '绫地宁宁' : '四季夏目' }}的主视觉暂未加载</span>
+          </div>
+        </template>
         <figcaption aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
       </figure>
       <div class="mood-rails" aria-live="polite">
@@ -202,7 +210,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue'
 const searchInput = ref<HTMLInputElement | null>(null)
 import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
@@ -266,6 +274,12 @@ favs,
 toggleFav,
 PAGE_SIZE
 } = useSceneExplorerWorkspace()
+
+// ── 陪伴图失败回退：两位角色各记一个失败态，互不牵连 ──
+// 失败即撤下对应 img 换占位；切回该角色时重置失败态让 img 重挂重试一次（用户驱动、有界，非递归）。
+// error 处理按 v-for 槽位闭包写入自己的键，旧请求的迟到事件不会污染另一位角色的状态。
+const companionFailed = reactive<Record<string, boolean>>({})
+watch(companionId, (id) => { companionFailed[id] = false })
 </script>
 
 <style scoped>
@@ -286,7 +300,13 @@ PAGE_SIZE
 .scene-atlas-portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0; transition: opacity var(--motion-atmosphere); }
 .scene-atlas-portrait img.current { opacity: 1; }
 .scene-atlas-portrait figcaption { position: absolute; inset: auto 0 0; padding: var(--s-6) var(--s-5) var(--s-4); background: linear-gradient(0deg, var(--bg-deep) 72%, transparent); color: var(--text-primary); font: 400 var(--fs-body)/var(--lh-loose) var(--font-serif); }
-@media (prefers-reduced-motion: reduce) { .scene-atlas-portrait img { transition: none; } }
+/* 缺图占位：透明底 + z-index 抬到 figcaption 渐变罩之上，占位文字不会被台词底部渐变压淡；
+   台词 figcaption 在其下方照常可读。非当前角色的占位与 img 同样以 opacity 隐藏。 */
+.scene-atlas-portrait .companion-fallback { position: absolute; z-index: var(--z-raised); inset: 0; display: grid; place-content: center; justify-items: center; gap: var(--s-2); padding-bottom: var(--s-8); color: var(--text-muted); opacity: 0; transition: opacity var(--motion-atmosphere); }
+.scene-atlas-portrait .companion-fallback.current { opacity: 1; }
+.companion-fallback .archive-icon { width: 40px; height: 40px; }
+.companion-fallback-text { max-width: 32ch; padding: 0 var(--s-3); text-align: center; font-size: var(--fs-label-sm); letter-spacing: .04em; }
+@media (prefers-reduced-motion: reduce) { .scene-atlas-portrait img, .scene-atlas-portrait .companion-fallback { transition: none; } }
 .curation-intro { display:flex; flex-direction:column; justify-content:center; }
 .curation-intro { margin-top:var(--s-5); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .curation-intro h2 { margin:var(--s-1) 0 var(--s-1); font-size:var(--fs-title-xs); }

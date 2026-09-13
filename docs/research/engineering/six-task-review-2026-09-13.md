@@ -78,3 +78,13 @@ GLM 5.3 Flash 按 [分批任务包](../../guides/engineering/glm-flash-next-batc
 看截图发现首页窄屏底部渐变仍压淡占位文字，最终在缺图状态关闭图片装饰渐变（正常图片保留），并将占位置于装饰层之上。该调整后重新通过样式检查、前端类型检查、构建和相关 **14 项浏览器复验**，没有因局部层级修正重复无关全量测试。代表截图已人工查看；4K/150% 为浏览器等效视口，不替代物理设备/DPI/WebView2 验收。
 
 源码/构建哈希、验证范围和日志索引见 [N1/N2 验收摘要](../../evidence/image-fallback-2026-09-13/summary.json)。截图示例：[首页窄屏浅色](../../evidence/image-fallback-2026-09-13/home-phone-light.png)、[首页桌面深色](../../evidence/image-fallback-2026-09-13/home-desktop-dark.png)、[详情缺图浅色](../../evidence/image-fallback-2026-09-13/portrait-missing-desktop-light.png)、[详情缺图深色](../../evidence/image-fallback-2026-09-13/portrait-missing-desktop-dark.png)、[缩略图回退浅色](../../evidence/image-fallback-2026-09-13/portrait-fallback-4k150-light.png)、[缩略图回退深色](../../evidence/image-fallback-2026-09-13/portrait-fallback-4k150-dark.png)。
+
+## N3 场景手帖与 404 页插图回退
+
+基线 `c3db914`。场景手帖按角色记录图片失败，保留台词与场景入口，切换回失败角色时允许一次新的尝试；404 页插图失败改为明确占位，保留错误路径和返回链接。没有修改图片文件、分级、生成请求或通用路由逻辑。
+
+主任务补充占位区域的台词留白；仅提高 z-index 不能证明文字不重叠。浏览器视觉用例检查两个文本 Range 的实际位置，并对新增占位文字核对 4.5:1 对比度；覆盖深浅主题及 1440、768、390 三种视口宽度，同时验证 404 页返回首页的真实导航。
+
+完整门禁通过（623 项 unit、26 组 contract、前端测试和构建，总计 2 分 6 秒，structure 参考模式）。首轮浏览器中的 404 失败来自测试未拦截 Vite 生成的带哈希图片地址，已修正夹具匹配；最终 **14 项通过**：N3 行为 6 项、布局/对比度 6 项、既有场景卡回归 2 项。代表截图经主任务查看，占位与台词无重叠，返回入口保持可用；不等同于真机安装、模型或全站离线验收。
+
+源码/构建标识及日志见 [N3 验收摘要](../../evidence/illustration-recovery-2026-09-13/summary.json)。截图：[场景窄屏浅色](../../evidence/illustration-recovery-2026-09-13/scene-390-light.png)、[场景窄屏深色](../../evidence/illustration-recovery-2026-09-13/scene-390-dark.png)、[404 窄屏浅色](../../evidence/illustration-recovery-2026-09-13/notfound-390-light.png)、[404 桌面深色](../../evidence/illustration-recovery-2026-09-13/notfound-1440-dark.png)。N1–N3 图片回退批次已收尾，独立资源包/下载/离线导入和蓝图保存持久化仍按 roadmap 单独追踪。
