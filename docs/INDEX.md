@@ -22,7 +22,10 @@
 ## 当前审计与待办
 
 - [GLM W1 实施复核与提交范围](research/engineering/glm-w1-review-and-submit-scope.md)：元数据预览、覆盖漏检、类型边界修复及分批提交建议。
+- [Gemini 场景候选复核与修订](research/prompts/gemini-scene-candidates/review.md)：60 份概念／12 份深化稿核对，三条双引擎修订候选，均未出图。
+- [Gemini 第二轮复核与场景创作交接](guides/engineering/gemini-scene-draft-handoff.md)：已纠正项、新误报与 60 份场景概念／12 份双引擎草稿任务；不写生产内容。
 - [GLM 报告复核与实施交接](guides/engineering/glm-implementation-handoff.md)：先做工作流元数据和只读覆盖报告，发布与真实内容变更单列。
+- [Gemini 资产交付复核](research/engineering/gemini-asset-review-2026-09-13.md)与[后续任务包](guides/engineering/gemini-followup-tasks.md)：结构账本复核、报告更正、视觉初筛与文案/文档整理。
 - [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复修复。
 - [GLM / Gemini 任务提示词](guides/engineering/model-task-briefs.md)：工作流与字段职责盘点、资产对账与视觉初审；输出范围分离，统一复核。
 - [手机竖屏壁纸](guides/prompts/mobile-wallpaper-prompt-standard.md)与[成年角色非露骨 CG 研究](research/prompts/adult-nonexplicit-cg-reliability-2026-09-13.md)：iPhone 17 Pro／通用长屏适配、非露骨创作及中性一致性检查；候选未出图。

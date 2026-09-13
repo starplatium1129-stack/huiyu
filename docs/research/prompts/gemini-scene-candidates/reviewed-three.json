@@ -1,0 +1,206 @@
+{
+  "status": "draft",
+  "compiled": false,
+  "rendered": false,
+  "visuallyAccepted": false,
+  "autoRun": false,
+  "notes": [
+    "三条均为独立候选，不写生产场景、不改定稿或模型参数。",
+    "positiveDraft 是完整阅读草稿；入库前须适配分字段编译，不能叠加到已含身份/衣装的最终请求。",
+    "目标显示尺寸不是推理尺寸；generationSize 留空，等待当前模型实际配置与编译验收。"
+  ],
+  "candidates": [
+    {
+      "sourceDraftId": "draft_c01_01",
+      "characterId": "nene",
+      "outfitId": "school_uniform",
+      "sourceFile": "data/character-reference-standards.json",
+      "title": "旧书架前的一点微光",
+      "usage": "narrative_cg",
+      "aspectRatio": "4:3",
+      "changes": [
+        "保留引蝶构思，但明确为原创奇幻意象，撤回跨作品的原作契约断言。",
+        "保留绑定校服；以目光—指尖—光蝶形成焦点关系，不靠通用质量词。",
+        "移除 exposed skin 等可能排斥正常面部与手部的宽泛负向。"
+      ],
+      "negativeStrategy": [
+        "按实际 profile 复用基础负向；不另塞 exposed skin 或 broad hand exclusions。",
+        "若实测多蝶或指尖粘连，再分别调整对应正向关系和针对性负向。"
+      ],
+      "imageChecks": [
+        "仅一人、一蝶；右手与蝶分离",
+        "左手/前臂确实托住书本",
+        "三层空间可辨且主光方向一致"
+      ],
+      "generationSize": null,
+      "status": "draft",
+      "compiled": false,
+      "rendered": false,
+      "visuallyAccepted": false,
+      "sourceSnapshot": {
+        "identityTokens": [
+          "ayachi_nene",
+          "1girl",
+          "solo",
+          "silver_hair",
+          "long_hair",
+          "low_twintails",
+          "purple_eyes",
+          "ahoge",
+          "hair_ribbon",
+          "pink_ribbon"
+        ],
+        "identityProse": "Ayachi Nene, a gentle and beautiful girl with long silver hair tied in elegant low twintails, an expressive ahoge, delicate pink hair ribbons, deep violet eyes",
+        "outfitTokens": [
+          "school_uniform",
+          "blazer",
+          "white_shirt",
+          "collared_shirt",
+          "necktie",
+          "pleated_skirt",
+          "knee_socks"
+        ],
+        "outfitProse": "wearing her neat high school uniform with white collared shirt, navy blazer, school tie, and pleated navy skirt with black knee socks"
+      },
+      "anima": {
+        "positiveDraft": "ayachi_nene, 1girl, solo, silver_hair, long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pink_ribbon, school_uniform, blazer, white_shirt, collared_shirt, necktie, pleated_skirt, knee_socks, holding_book, standing, bookshelf, window, sunlight, dust_motes, butterfly. One character stands beside an old wooden bookshelf, visible from the knees upward. Her left forearm supports a closed brown book against her torso. Her right elbow stays close to her body while her raised index finger points toward one small translucent pink butterfly hovering just above it, with a visible air gap. She watches the butterfly with quiet surprise. An out-of-focus desk corner frames the lower left; the bookshelf occupies the middle ground and a window recedes behind her. A narrow band of late-afternoon sunlight crosses her hair and the book. The butterfly adds a small pink reflection on her fingertip; the room remains softly lit rather than filled with glowing particles.",
+        "caption": "One character stands beside an old wooden bookshelf, visible from the knees upward. Her left forearm supports a closed brown book against her torso. Her right elbow stays close to her body while her raised index finger points toward one small translucent pink butterfly hovering just above it, with a visible air gap. She watches the butterfly with quiet surprise. An out-of-focus desk corner frames the lower left; the bookshelf occupies the middle ground and a window recedes behind her. A narrow band of late-afternoon sunlight crosses her hair and the book. The butterfly adds a small pink reflection on her fingertip; the room remains softly lit rather than filled with glowing particles."
+      },
+      "krea": {
+        "positiveDraft": "Ayachi Nene, a gentle and beautiful girl with long silver hair tied in elegant low twintails, an expressive ahoge, delicate pink hair ribbons, deep violet eyes. wearing her neat high school uniform with white collared shirt, navy blazer, school tie, and pleated navy skirt with black knee socks. An anime narrative illustration in a 4:3 composition. She stands beside an old wooden bookshelf, framed from the knees upward, supporting a closed brown book against her torso with her left forearm. Her right elbow stays close to her side and her index finger is raised toward a single small pink butterfly made of translucent light. A visible gap separates its wings from her fingertip. Her eyes follow it with a restrained, surprised smile. A blurred desk corner leads into the foreground, shelf edges establish the middle ground, and a window sits farther behind her. Slanting afternoon sunlight picks out strands of hair and the book cover, while a faint pink reflection links the butterfly to her hand. This is an original imagined moment, with one person and no printed dialogue.",
+        "negative": ""
+      }
+    },
+    {
+      "sourceDraftId": "draft_c02_02",
+      "characterId": "natsume",
+      "outfitId": "casual_knit",
+      "sourceFile": "data/character-reference-standards.json",
+      "title": "初冬站台的等候音符",
+      "usage": "pc_wallpaper",
+      "aspectRatio": "16:9",
+      "targetDisplayPixels": [
+        3840,
+        2160
+      ],
+      "changes": [
+        "恢复 shiki_natsume 源身份，去掉错误的 natsume_(senren_banka)。",
+        "保留针织毛衣、围巾、裙与黑裤袜，撤回外套和插外套口袋动作。",
+        "桌面左侧低对比延伸空间按画面设计，不承诺固定百分比一定适配。"
+      ],
+      "negativeStrategy": [
+        "不要注入其他作品的 natsume 标签。",
+        "若测试中自动加外套，先检查上游衣装与导演层，避免用负向掩盖错误绑定。"
+      ],
+      "imageChecks": [
+        "角色身份不串作品",
+        "针织毛衣而非大衣，双手动作与衣装一致",
+        "全身未截断，左侧真实桌面图标叠加后仍清晰"
+      ],
+      "generationSize": null,
+      "status": "draft",
+      "compiled": false,
+      "rendered": false,
+      "visuallyAccepted": false,
+      "sourceSnapshot": {
+        "identityTokens": [
+          "shiki_natsume",
+          "1girl",
+          "solo",
+          "black_hair",
+          "long_hair",
+          "amber_eyes",
+          "mole_under_eye",
+          "mole_under_left_eye",
+          "hairclip",
+          "side_hairclip"
+        ],
+        "identityProse": "Shiki Natsume, a cool and refined young woman with silky long straight black hair, amber golden eyes, a subtle distinct mole under her left eye, side hairclip",
+        "outfitTokens": [
+          "casual",
+          "sweater",
+          "knit_sweater",
+          "scarf",
+          "black_tights",
+          "mini_skirt"
+        ],
+        "outfitProse": "wearing a cozy oversized knit beige sweater, dark mini skirt, warm woolen scarf, and black tights"
+      },
+      "anima": {
+        "positiveDraft": "shiki_natsume, 1girl, solo, black_hair, long_hair, amber_eyes, mole_under_eye, mole_under_left_eye, hairclip, side_hairclip, casual, sweater, knit_sweater, scarf, black_tights, mini_skirt, standing, train_station, platform, scarf, holding_ticket, dusk, breath, full_body. A wide 16:9 anime landscape. Shiki Natsume stands in full view on the right side of a quiet suburban train platform, safely behind the marked edge. She wears the source beige knit sweater, wool scarf, dark skirt and black tights, with no overcoat. Her right hand loosely holds a small train ticket near her waist and her left hand gathers the end of her scarf. She looks along the empty tracks with a calm expression. The platform and rails taper toward the left horizon beneath a subdued violet dusk sky. A single warm platform lamp illuminates her face and the scarf; faint breath is visible in the cold air. Keep the sky and distant structures on the left low in contrast, while preserving enough rail and platform detail to make the setting feel complete. Her head and feet remain within the frame.",
+        "caption": "A wide 16:9 anime landscape. Shiki Natsume stands in full view on the right side of a quiet suburban train platform, safely behind the marked edge. She wears the source beige knit sweater, wool scarf, dark skirt and black tights, with no overcoat. Her right hand loosely holds a small train ticket near her waist and her left hand gathers the end of her scarf. She looks along the empty tracks with a calm expression. The platform and rails taper toward the left horizon beneath a subdued violet dusk sky. A single warm platform lamp illuminates her face and the scarf; faint breath is visible in the cold air. Keep the sky and distant structures on the left low in contrast, while preserving enough rail and platform detail to make the setting feel complete. Her head and feet remain within the frame."
+      },
+      "krea": {
+        "positiveDraft": "Shiki Natsume, a cool and refined young woman with silky long straight black hair, amber golden eyes, a subtle distinct mole under her left eye, side hairclip. wearing a cozy oversized knit beige sweater, dark mini skirt, warm woolen scarf, and black tights. A wide anime desktop wallpaper in 16:9. The composition places her full figure on the right side of a quiet suburban platform, behind its safety line. Her beige knit sweater and thick wool scarf catch the warm light of a nearby platform lamp; a dark skirt and black tights complete the outfit, with no outer coat. She holds a small train ticket near her waist in her right hand and lightly gathers the scarf in her left. Her gaze follows the rails into the distance, a faint cloud of breath suspended beside her face. Rails and platform edges recede toward the left beneath a muted violet evening sky and distant hills. The open left area has gentle tonal transitions for desktop icons, with sparse station detail rather than blank fill. Include her entire silhouette without cropping her hair or shoes.",
+        "negative": ""
+      }
+    },
+    {
+      "sourceDraftId": "draft_c05_03",
+      "characterId": "gotoh_hitori",
+      "outfitId": "pink_tracksuit",
+      "sourceFile": "data/popular/bocchi-the-rock.json",
+      "title": "纸箱边缘的小小招呼",
+      "usage": "mobile_wallpaper",
+      "aspectRatio": "9:20",
+      "targetDisplayPixels": [
+        1206,
+        2622
+      ],
+      "changes": [
+        "保留纸箱构思，收敛夸张恐惧与怪兽词，重点是可辨认的表情和发饰。",
+        "粉色运动服衣袖保留，吉他包明确已放在箱旁；这是道具摆位调整，不更换服装。",
+        "用长竖幅草稿测试；9:20 与目标手机比例略有差异，仍需实际裁切和时钟/图标叠加。"
+      ],
+      "negativeStrategy": [
+        "不使用 monster 作为正向或强迫全身可见的镜头词。",
+        "当前 Krea 分支保持空 negative；用正向说明手、箱沿和可见部分。"
+      ],
+      "imageChecks": [
+        "脸与蓝黄发饰可辨，手不与箱沿融合",
+        "箱旁只有一个吉他包",
+        "分别叠加锁屏时钟与主屏图标，并测试 iPhone 长屏裁切"
+      ],
+      "generationSize": null,
+      "status": "draft",
+      "compiled": false,
+      "rendered": false,
+      "visuallyAccepted": false,
+      "sourceSnapshot": {
+        "identityTokens": [
+          "gotoh_hitori",
+          "1girl",
+          "solo",
+          "pink_hair",
+          "long_hair",
+          "blue_eyes",
+          "hair_ornament",
+          "cube_hair_ornament",
+          "bocchi_the_rock!"
+        ],
+        "identityProse": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression",
+        "outfitTokens": [
+          "pink_tracksuit",
+          "tracksuit",
+          "track_jacket",
+          "jacket",
+          "long_sleeves",
+          "pleated_skirt",
+          "black_skirt",
+          "black_socks",
+          "sneakers",
+          "guitar_case"
+        ],
+        "outfitProse": "wearing her iconic oversized bright pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks, casual sneakers, and carrying a black electric guitar gig bag"
+      },
+      "anima": {
+        "positiveDraft": "gotoh_hitori, 1girl, solo, pink_hair, long_hair, blue_eyes, hair_ornament, cube_hair_ornament, bocchi_the_rock!, pink_tracksuit, tracksuit, track_jacket, jacket, long_sleeves, pleated_skirt, black_skirt, black_socks, sneakers, guitar_case, cardboard_box, peeking, pink_tracksuit, guitar_case, indoors, soft_lighting. A tall 9:20 anime illustration with one character. A brown cardboard box rests on a bedroom floor in the lower half of the frame. Hitori peeks over its lowered front flap; her face, blue-and-yellow cube hair ornament and both hands are clearly visible, while the box hides the rest of her body. Her hands hold two separated points on the cardboard edge and her pink track-jacket cuffs remain visible. She wears a small embarrassed smile with raised eyebrows, not a frightened horror expression. Her black guitar gig bag has been set upright beside the box against the wall. Use a slightly elevated front view, avoiding a steep overhead angle that hides her face. Soft window light reaches the box and hair. The upper background is a quiet wall with a faint light gradient; keep her eyes and hair clip below the expected clock region, then verify with an actual lockscreen overlay.",
+        "caption": "A tall 9:20 anime illustration with one character. A brown cardboard box rests on a bedroom floor in the lower half of the frame. Hitori peeks over its lowered front flap; her face, blue-and-yellow cube hair ornament and both hands are clearly visible, while the box hides the rest of her body. Her hands hold two separated points on the cardboard edge and her pink track-jacket cuffs remain visible. She wears a small embarrassed smile with raised eyebrows, not a frightened horror expression. Her black guitar gig bag has been set upright beside the box against the wall. Use a slightly elevated front view, avoiding a steep overhead angle that hides her face. Soft window light reaches the box and hair. The upper background is a quiet wall with a faint light gradient; keep her eyes and hair clip below the expected clock region, then verify with an actual lockscreen overlay."
+      },
+      "krea": {
+        "positiveDraft": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression. She wears her bright pink zip-up track jacket over a dark pleated school skirt, black knee-high socks and sneakers. Her black guitar gig bag is beside the box rather than on her back.. A gentle, playful vertical anime phone wallpaper in a tall 9:20 composition. Hitori peeks over the lowered front flap of a cardboard box placed in the lower half of a quiet bedroom. Her aqua-blue eyes, pink fringe and distinctive blue-and-yellow cube hair ornament are visible above the rim. Pink track-jacket sleeves lead to two small hands gripping separate points on the cardboard, with a clear gap between the hands. The rest of her figure is hidden inside the box. Her hesitant smile and slightly lifted eyebrows suggest a shy greeting. Her black guitar gig bag has been put down upright against the wall beside her. View the box from slightly above and in front so her face remains readable. Gentle side light warms the cardboard; the upper wall recedes into a low-contrast gradient suitable for testing clock placement. Do not render a phone frame, lettering or interface elements.",
+        "negative": ""
+      }
+    }
+  ]
+}
