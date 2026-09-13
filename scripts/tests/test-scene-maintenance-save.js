@@ -28,6 +28,9 @@ const store = require('../../scripts/lib/scene-store');
 /** 从仓库复制受治理源文件；聚合产物在夹具内重建。 */
 function seedFixture() {
   fs.mkdirSync(shardsDir, { recursive: true });
+  const scriptsDir = path.join(root, 'scripts', 'lib');
+  fs.mkdirSync(scriptsDir, { recursive: true });
+  fs.copyFileSync(path.join(REPO, 'scripts/lib/manual-scene-ratings.js'), path.join(scriptsDir, 'manual-scene-ratings.js'));
   for (const name of fs.readdirSync(path.join(REPO, 'data', 'scenes'))) {
     if (name.endsWith('.json')) {
       fs.copyFileSync(path.join(REPO, 'data', 'scenes', name), path.join(shardsDir, name));

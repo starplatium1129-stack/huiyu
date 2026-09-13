@@ -4,6 +4,10 @@
 
 ## 先查入口
 
+`node scripts/workflow.js audit:workflow-conditions --json` 从当前注册表报告运行条件、入口/文档存在性及递归复合副作用覆盖。`--domain audit` 按工作流分组筛选；`--root` 仅替换文件存在性核验根，不加载该目录中的 JavaScript。`--help/--plan` 不读取目标根或启动子进程。结构问题退出 1，所有命令执行状态始终为 `not-run`；元数据通过不代表实际运行通过。`showcase:fill-gaps` 为需网关的样张补缺入口，会调用模型并写产物及源登记，办公机报告不执行它。
+
+`apply-scene-patch.js --patch <JSON> [--out <报告JSON>]` 保持默认 dry-run：不写数据或备份，显式 `--out` 仅写报告。报告保留旧字段，并增加 schema/version、sourceFiles、changedRecords、protectedFieldDecision、derivedOutputs、writeStatus、applyStatus、rollbackCapability。输入 patch 仍为 v1 数组格式；保护字段拒绝整批，不产生允许报告。`--out` 禁止覆盖 data 目录、输入、源、派生产物、基线及压缩兄弟文件，核对现有父目录的真实路径。`--apply` 先保存可读 manifest 和原始字节，再逐文件原子替换；重建/校验异常恢复声明范围内原文件及压缩文件，并删除原先不存在的产物。失败报告区分已回滚与回滚失败。此契约不覆盖进程被强杀、断电、并发写入和回调未声明的额外文件；不构成真实保存 API 或跨进程事务。
+
 `npm run workflow -- --help` 查看全部命令，`node scripts/workflow.js reference --help` 查看分组。具体命令帮助只展示注册信息，绝不启动底层脚本。`--plan` 统一预览实际命令，分别标注默认行为与本次所带开关的关联行为，不出图、不写数据；`--dry-run` 是底层脚本参数，仅在该脚本明确支持时使用。
 
 每个注册项带结构化 `run` 元数据（W1）：`nature`（默认行为 facet，如 read-only / writes-source / writes-product / writes-release / external-model）、`machine`（node / windows / python-pillow / gateway / comfyui / vision-api 等）、`switches`（显式开关改变的行为，如 `--check` 的自愈与守卫）、`resume`（idempotent / checkpoint / na）、`evidence`（核实位置）与 `unknown`。help 的详细 JSON 与 `--plan` 预览、`audit:workflows` 审计共用这份元数据；它只用于描述与审计，不改变任何执行步骤，也不做运行时拦截。复合工作流的 nature 必须覆盖子步骤的副作用；真实纯只读的组合可以保留只读标记。开关关联行为不是完整执行模式，不替代底层参数组合与优先级规则。
@@ -40,6 +44,24 @@
 
 `audit:coverage` 对照热门服装分片与参考索引（standards/view）、characters.json 与 `tokens.css` 主题选择器，输出差额清单：缺参考登记、登记未出图（pending）、URL 已填缺实图、无法核实（素材根缺失，与 `check:ref-urls` 同一解析）、参考库独有形态（来源需另行核对，不直接判为自动生成或可删除）；主题侧区分显式主题、默认主题允许项（nene）、待补与旧别名选择器（如 `historia_reiss` → 建议 `krista_lenz`，须人工确认）。结构错误（清单缺文件、跨分片重复 ID、manifest 批次数缺失/不符、standards↔view 镜像破坏）退出 1；覆盖差额只报告，恒退出 0——历史覆盖缺口是待办清单，不是门禁失败，也不授权自动登记或补图。
 
+### 只读交付证据审计（W2 最小切片）
+
+`--compare-evidence <root内相对JSON路径>` 可重复，与主 `--evidence` 独立比较，结果列入 `comparisons`（primary/other 的 files、ids、sharedIds、status、失败 message）。双方各解析最多一层 versioned evidence / delivery-receipt 关联；必须有完整最终 commit 和至少一个共有构建 SHA 字段，全部共有 ID 大小写归一后必须一致。识别 `build.*Sha256`（排除 source/snapshot/baseline）及 `browser.distIndexSha256BeforeAndAfter`（对应 build.distIndexSha256）。关联内明确标识冲突同样报错。缺失、格式不支持、坏 JSON、相对路径或真实路径越界进入 errors，退出 1。仅单边存在的构建字段保留在 ids；不自动合并机器、状态、安装或模型验收，比较 matched 不消除主证据 pending。可叠加 HEAD/worktree 与显式文件核验；未启用不读取第二文件，help/plan 不读取。示例：`node scripts/workflow.js audit:delivery --evidence office.json --compare-evidence main.json --json`。
+
+`--check-worktree` 显式在 root 对应仓库执行 `git status --porcelain=v1 --untracked-files=all`，独立 `repositoryWorktree` 输出 root、status（clean/dirty/unavailable）、changedFiles、message 和成功读取的 rawPorcelain。未提交项标记 uncommitted，未跟踪项标记 untracked；每项保留 indexStatus/worktreeStatus、pathPorcelain 和 raw，路径使用 Git 原始转义表示（重命名保留原始箭头表达式）。dirty、非 Git、命令失败或不可解析均进入 errors、退出 1。设置 GIT_OPTIONAL_LOCKS=0，避免刷新索引写入；不查询远端、不清理文件。与 `--check-head`、文件核验独立叠加；HEAD 匹配不能证明工作树 clean。unborn 仓库按 status 实际输出判定，组合 HEAD 检查时无提交由 repositoryHead 报 unavailable。未启用不增加结果；help/plan 不执行 Git。clean 仅表示此次 status 未报告改动，不证明忽略文件、产物或验收有效性。
+
+`node scripts/workflow.js audit:delivery --evidence <JSON路径> --json` 显式读取已有 schemaVersion 1 证据，或已有无版本 delivery-receipt（commit + evidence），并解析一层关联回执/证据。路径相对 `--root <隔离目录>`（默认仓库根）；绝对路径和真实路径均须留在 root 内。不会扫描“最新”报告、复制或改写证据。
+
+`--require checks.fullGate` 可重复指定本次必要门禁的证据字段；默认识别 fullGate/gate/checks.fullGate/checks.gateFull，未发现则待验，不自动要求全量门禁。`--expect-commit <完整Git SHA>` 核对最终 commit；baseline/baseCommit 仅作基线。`--expect-build build.manifestSha256=<SHA256>` 可重复核对明确的构建字段，支持已有 build 中的 Sha256 字段及 browser.distIndexSha256BeforeAndAfter；不以日期、日志成功或源哈希冒充构建标识。跨机交接需显式传相同预期标识；不传时仅检查记录格式。
+
+报告分 errors/passed/pending/limitations；pending 每项保留 unknown/unrun/pending。精确 pass/passed（大小写兼容）与布尔 passed 才识别为通过，失败计数/非零 exitCode 优先，跳过或 flaky 保持待验；数字通过数量和自由文本不推断成功。通过项需有 log/transcript/report/sha256 索引。执行范围取 scope，机器/运行时取 environment.platform/node；旧证据缺字段如实未知，不要求改写历史文件。安装、设备及模型验收分别检查 installation/deviceAcceptance/modelAcceptance 对象的同类状态与索引；已有 deferred/limitations 原样列出，deployment 同步和回执推送状态均不替代这些验收。
+
+`--verify-file <相对root路径>` 可重复检查普通文件存在性；`--expect-file-sha256 <相对root路径=64位SHA256>` 可重复检查文件并计算本地 SHA-256（哈希大小写兼容），无需同时传 verify-file。所有显式文件必须使用 root 内相对路径，realpath 校验拒绝符号链接/junction 越界；目录不算文件。独立 `verifiedFiles` 按请求列出 exists/matched/missing/mismatch/outside-root/not-file/error，哈希项包含 expectedSha256 和成功读取后的 actualSha256。缺失、不匹配及其他核验错误进入 errors。未指定时 verifiedFiles 为空并保持原有判定；不自动扫描证据中的 log/report 字符串，不从源哈希、日期或文件名推断产物哈希。存在或匹配只证明所选文件的本地状态，不证明日志内容真实性。
+
+`--check-head` 显式启用本地 Git 只读检查：在 `--root` 对应仓库执行 `git rev-parse --verify HEAD^{commit}`。独立 `repositoryHead` 输出 root、commit、evidenceCommit、status 和原因；比较解析回执后的最终 commit，匹配为 matched，旧提交为 mismatch，缺最终提交为 missing-commit，非 Git 仓库/无 HEAD/Git 不可用为 unavailable；后三者进入 errors、退出 1。baseline 不替代最终 commit。只比较 HEAD commit，不覆盖 dirty working tree，不验证未提交改动，不查询远端。未启用时不执行 Git、不增加该结果；与 `--expect-commit` 和显式文件核验独立叠加。
+
+退出码 0 仅表示所选记录及显式检查通过；1 表示错误/失败/标识冲突；2 表示参数错误；3 表示仍有未知、未运行或待验。`--help` 与 `--plan` 不读取证据或核验目标文件，也不执行 Git；建议命令从注册表读取，只列出不执行。范围限制：不认证声明真实性、不自动选择当前构建、不自动推导源码变化导致的证据失效、不合并任意历史格式和续跑/回滚记录。主力机真实安装、模型与设备验收仍须实际执行并保留对应证据。
+
 ## 数据维护
 
 | 操作 | 入口 | 注意事项 |
@@ -56,6 +78,30 @@
 场景语义门禁复用工作台的镜头过滤和负向组装（scripts/lib/scene-render-contract.js），检索 tags 不冒充发送给模型的词条。`optimize-scenes --check` 检查持久化数据的实际编译结果；changed 表示可选的格式改写建议，不要求机械改写提示词。分级脚本只维护分级/使用元数据，不再改写 negative；任何提示词改写仍须独立真实出图和定稿保护验收。
 
 ## 参考库
+
+评级诊断：`node scripts/maintenance/classify-scene-ratings.js --check --json`（`--explain` 同义）只读输出 totals、changedCount、changes 的 current/expected rating/mature/category/usage 及推导来源。sources 汇总 manual/policy/existing-mature/pinned；差异退出 1，参数或结构无效退出 2。诊断禁止与 `--write` 组合，不生成文件；默认人类汇总及正常 `--write` 路径保留。隔离测试通过 `AICS_DATA_ROOT` 定位夹具，入口为 `node scripts/tests/test-scene-rating-diagnostics.js`。
+
+归属报告支持 `node scripts/workflow.js audit:ownership --domain scene-ratings --json`：人工表 `scripts/lib/manual-scene-ratings.js` 为源，`classify-scene-ratings.js` 为读取/派生入口，场景分片的 rating/mature/category/usage 为字段产物。这些字段不属于提示词正文；人工审核语义与真实画面仍未验证。人工表静态解析，缺失、未知值、重复键或缺值报告 missing/invalid，不执行表内代码。
+
+### 只读变更影响预览（D2 第一批）
+
+显式 `--path data/curation.json` 在三层 ID 数组均合法时选择当前成员，独立输出 curation-source 关联/复验；`--path data/retired-scenes.json` 从合法 records.id 选择当前退役成员，输出 retired-source、retired-scene 关联/复验。每个所选场景沿用 curation/aggregate/retirement 状态检查。显式登记缺失、损坏或字段不完整时退出 1，不采用部分 ID；空登记及历史删除记录保持 unknown，缺少历史 diff 本身不列必改。`--git-diff` 复用同一路径处理。`data/scenes.json`、manifest 及其他历史路径仍不从当前聚合猜受影响 ID。
+
+`--git-diff` 可单独使用或与 character/scene/path/showcase-manifest 组合：`node scripts/workflow.js audit:impact --git-diff --json`。仅启用时在 root 工作树根目录只读收集 HEAD 对比的 staged/unstaged 路径及未跟踪文件，独立 `gitChanges` 输出 status/raw/paths/reason。NUL 分隔避免引号、中文、空格和换行被拆分；关闭重命名检测以保留旧、新两端。路径复用既有分片/场景分析，主题及工作流路径列复验，未知路径仍为 unknown，不推断字段或历史内容语义。Git 不可用、命令失败、无 HEAD、root 非工作树根目录、编码或路径无法解析均退出 1，丢弃部分采集路径，保留 raw 和原因；显式输入仍独立处理。未启用、帮助及预览不执行 Git；不写索引、不查询远端。受忽略文件不纳入未跟踪集合。
+
+`npm run wf -- audit:impact --character <canonical-id> --outfit <角色内服装id>` 查询热门源及关联蓝图/参考 view；省略 outfit 查询整位角色。`--path data/popular/<系列>.json` 可重复传入明确 Git 变更路径，不自动调用 Git；路径模式保守纳入整个分片，无法推断删除或字段差异。`--root <目录>` 指定隔离夹具。
+
+`node scripts/workflow.js audit:impact --character <id> --json` 输出机器可读报告；`--help` 查看参数，`--plan` 仅预览命令，均无写入。报告的 mustChange 为已证明的结构问题/源聚合失配，revalidate 为需复验对象，related 仅表示关联，unknown 明示未解析边界。全域快照问题不归因于当前输入；源与聚合比较 JSON 内容，不检查字节格式。退出码 0 表示报告完成（可能仍有未知项），1 表示结构问题，2 表示输入错误。
+
+`--scene sc001` 查询单个场景；`--path data/scenes/<逻辑组>.json` 按当前 manifest 展开全部批次，`--path data/scenes/<逻辑组>.2.json` 只选择该实际批次。报告 scenes 列出源/逻辑组、数组聚合比较、curatedSceneIds/signatureSceneIds/personaCoreSceneIds 三层独立成员关系及退役登记。目标重复、聚合失配、悬空精选和活跃/退役冲突列为结构问题；无关场景的聚合内容不比较。源清单不完整、批次缺号/并存、未登记文件会明确报告；未知 ID、删除/重命名、manifest/聚合/元数据路径的历史影响列入 unknown，不从旧聚合猜测源归属。
+
+角色/服装报告的独立 `themes` 数组按所选角色（包括路径展开的角色）列出 `id/file/canonical/themeStatus/reason`。只读解析 root 下 `src/assets/css/director/tokens.css` 的规则选择器，复用 audit:coverage 的选择器提取与默认白名单；注释和声明字符串不算选择器。显式主题为 explicit，列入 related + revalidate；nene 无显式选择器时为 default。CSS 缺失、损坏或存在不支持的选择器语法为 unknown；无显式主题且 canonical 数据缺失/无效、角色属外部热门或身份无法确认时也为 unknown，不列 mustChange。仅当 `data/characters.json` 可证明 canonical 角色缺显式主题且不在默认白名单时为 missing，列 mustChange。显式选择器关系不依赖热门或 canonical 登记；不证明实际 CSS 层叠、配色与渲染。纯场景输入不展开角色主题。
+
+角色/服装报告的独立 `outfitDefaults` 数组覆盖每个所选角色，输出 `id/status/defaultOutfit/defaultIds/isDefaultIds/reasons`。仅当全部服装的 `default` 与 `isDefault` 均为布尔值、集合一致且恰好一个默认项、默认 ID 非空且角色内唯一时为 explicit，`defaultOutfit` 为解析出的 ID；其余结果为 null。可证明的多默认/默认 ID 重复为 ambiguous、两字段冲突为 mismatch、默认 ID 缺失或完整双字段无默认项为 missing，逐条列 mustChange。字段缺失、非布尔、空列表或身份不唯一等无法证明的格式保持 unknown；不猜第一项。部分字段仍可证明的重复/冲突照常报告。省略 outfitId 的蓝图在 revalidate 原因中包含明确的默认 ID，否则同时保留 unknown；显式 outfit 过滤和引用检查不变。
+
+`--showcase-manifest <root内相对路径>` 可重复（建议单个），例如 `node scripts/workflow.js audit:impact --scene sc001 --showcase-manifest reports/showcase.json --json`。独立 `showcase.manifests` 只读解析 JSON 的 entries 数组：显式 scene 匹配 entry.id，显式 character 匹配 entry.char 或 entry.type；路径输入不推断样张目标。匹配项列 related/revalidate，保留 index/id/type/char/rating/attempt、matchedBy 和 reviewPresent（provenance.review 字段是否存在，即使 null 也算存在），不输出 review 内容或图片路径。reviewPresent 不代表审核通过，不读取图片或执行生成/审核/发布。未提供时 unknown“样张清单在外部/未提供”；可读清单整体标记 partial，不证明完整覆盖。无匹配条目保持 unknown，不能列必改。显式文件缺失、非普通文件、JSON/entries 无效或真实路径越界时标记 error 并退出 1；参数中的绝对/越界路径退出 2。每个清单独立处理，坏清单不掩盖有效关联；所有清单均不证明缺失条目。帮助/预览不读取清单，不扫描外部目录。
+
+推荐命令与操作性质来自工作流注册表，全部只列出、不执行；build 可能写数据和版本，不能因出现在报告里就当作只读检查。本批不提供自动增量检查：全域聚合顺序、浏览器分片、样张完整性、DATA_VERSION、压缩产物、历史删除/重命名未覆盖。公共构建器/契约路径建议全量 data:validate；未知路径不宣称影响为空。全域主题与参考覆盖沿用 audit:coverage；真实编译/画面验收仍需后续对应机器执行。
 
 1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。
 2. `reference:render` 生成参考图；`reference:design` 补三视图设计图。合计 4 种肖像机位 + 3 种设计机位。
@@ -92,6 +138,16 @@
 ## 角色接入
 
 `character:onboard --character <id>` 为自动化辅助；`--skip-render` 跳过出图，不能据此声明资产完成；`--deploy` 涉及桌面同步。必须同时核对 [六层契约](engineering-contracts.md#角色接入) 和 [接入步骤](guides/characters/character-onboarding-workflow.md)。
+
+`audit:impact` 的 `referenceEvidence` 按所选角色/服装统计参考 view 的显式 references：total、pendingCount（pending=true 或缺非空 URL）、urlDeclaredCount、reviewDeclaredCount。pending 优先于 declared-unverified；空数组为 empty，缺角色/服装/references 为 missing，坏或缺 view 为 unknown，未知计数为 null。reviewStatus 仅区分字段声明与 unknown，assetStatus 始终 unverified。显式 outfit 仅过滤对应 character，路径带入其他角色保留全部服装。保留 reference 关联与复验；不访问 URL、图片或素材根，不把声明当成资产或审核通过。
+
+## 内容归属只读报告
+
+`node scripts/workflow.js audit:ownership --json` 读取当前根目录结构，报告人物档案、热门身份/服装、场景、蓝图、精选、退役、参考标准/view、主题及外部样张的字段职责、读取者、写入边界和机器条件。`--root <隔离目录>` 可替换数据根；`--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>` 仅检查指定域。
+
+entries 的 role 保留 source/product 职责；status 为 source/product/missing/invalid/external-unknown。manifest 按当前 files 结构解析；场景按 .1 起连续批次优先，否则读取逻辑单文件。检查真实路径边界、JSON 及浅层容器，输出实际字段名；不证明完整 schema、源产物一致性、字段语义、审核或图片质量。参考 view 是合并投影且登记器也会写入；外部样张固定 external-unknown，不扫描外部清单或图片。
+
+写入入口仅展示，不执行 builders（包括可能自愈写入的 --check）、模型或网络。`--help` / `--plan` 不读取目标目录；退出码 0 表示读取完成（允许 external-unknown），1 表示有 missing/invalid，2 表示参数或根目录错误。隔离回归：`node scripts/tests/test-content-ownership.js`。
 
 ## 门禁与构建
 

@@ -19,6 +19,34 @@ function readJson(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
 function object(value) { return value !== null && typeof value === 'object' && !Array.isArray(value); }
 function jsonText(value) { return JSON.stringify(value, null, 2) + '\n'; }
 
+// Resolve existing parents as well as aliases of existing files before any report write.
+function canonicalPath(file) {
+  const absolute = path.resolve(file);
+  if (fs.existsSync(absolute)) return fs.realpathSync(absolute);
+  const parent = path.dirname(absolute);
+  return parent === absolute ? absolute : path.join(canonicalPath(parent), path.basename(absolute));
+}
+function validateOutput(output, reserved, root) {
+  const key = file => { const value = canonicalPath(file); return process.platform === 'win32' ? value.toLowerCase() : value; };
+  const target = key(output);
+  const data = key(path.join(root, 'data'));
+  if (target === data || target.startsWith(data + path.sep) || reserved.flatMap(file => [file, file + '.gz', file + '.br']).some(file => key(file) === target)) {
+    throw new Error('--out 不得覆盖输入、数据源、产物、版本常量或定稿基线（含压缩文件和路径别名）');
+  }
+}
+function changeSetReport(plan, { sources, entries, pinned, derivedFiles, apply, outcome }) {
+  validatePatch(entries);
+  if (!Array.isArray(sources) || sources.some(doc => !object(doc) || typeof doc.file !== 'string') || !Array.isArray(derivedFiles) || derivedFiles.some(file => typeof file !== 'string') || !object(pinned) || !Object.keys(pinned).length || typeof apply !== 'boolean' || !object(outcome) || typeof outcome.applied !== 'boolean') throw new Error('变更集证据缺少必要字段');
+  const expected = planPatches(sources, entries, pinned);
+  if (JSON.stringify(expected) !== JSON.stringify(plan)) throw new Error('变更集计划与输入不一致');
+  return { schema: 'ai-cg-studio.scene-patch-report', schemaVersion: 1, patchSchema: { type: 'array', version: 1 },
+    sourceFiles: sources.map(doc => doc.file), changedRecords: plan.results.filter(item => Object.keys(item.diff).length),
+    protectedFieldDecision: { status: 'allowed', fields: PROTECTED_SCENE_FIELDS, pinnedIds: entries.filter(item => item.type === 'scene' && Object.hasOwn(pinned, item.id)).map(item => item.id) },
+    derivedOutputs: derivedFiles, writeStatus: outcome.applied ? 'validated' : outcome.outcome,
+    applyStatus: { requested: apply, applied: outcome.applied },
+    rollbackCapability: { supported: true, scope: 'planned sources, declared derived outputs and .gz/.br siblings', backup: outcome.backup || null, exercised: Boolean(outcome.rollbackAttempted), restored: outcome.restored ?? null } };
+}
+
 function writeTextAtomic(file, content) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = path.join(path.dirname(file), `.${path.basename(file)}.${process.pid}.${Date.now()}.tmp`);
@@ -150,9 +178,9 @@ function commitPlan(plan, options) {
     return { applied: true, outcome: 'validated', version, backup };
   } catch (error) {
     try { restoreSnapshot(snapshot); } catch (rollbackError) {
-      throw new Error(`补丁失败且自动回滚失败；备份 ${backup}: ${error.message}; ${rollbackError.message}`);
+      throw Object.assign(new Error(`补丁失败且自动回滚失败；备份 ${backup}: ${error.message}; ${rollbackError.message}`), { patchOutcome: { applied: false, outcome: 'rollback-failed', backup, rollbackAttempted: true, restored: false } });
     }
-    throw new Error(`补丁写入/校验失败，已回滚；备份 ${backup}: ${error.message}`);
+    throw Object.assign(new Error(`补丁写入/校验失败，已回滚；备份 ${backup}: ${error.message}`), { patchOutcome: { applied: false, outcome: 'rolled-back', backup, rollbackAttempted: true, restored: true } });
   }
 }
 
@@ -204,15 +232,17 @@ function main(argv = process.argv.slice(2)) {
   if (args.out) {
     const output = path.resolve(args.out);
     const reserved = [...sources.map(source => source.file), ...derivedFiles, path.resolve(args.patch), path.join(ROOT, 'data/prompt-pinned-scenes.json')];
-    if (reserved.includes(output)) throw new Error('--out 不得覆盖输入、数据源、产物、版本常量或定稿基线');
+    validateOutput(output, reserved, ROOT);
   }
   const changed = plan.results.filter(item => Object.keys(item.diff).length);
   console.log(`[apply-scene-patch] 补丁 ${entries.length} 条 | 实际变更 ${changed.length} | 源分片 ${plan.writes.length}`);
   for (const item of changed) console.log(JSON.stringify(item));
   let outcome = { applied: false, outcome: args.apply ? 'planned' : 'dry-run' };
-  const report = () => ({ createdAt: new Date().toISOString(), dryRun: !args.apply, entries: entries.length, changed: changed.length, results: plan.results, ...outcome });
+  const report = () => ({ createdAt: new Date().toISOString(), dryRun: !args.apply, entries: entries.length, changed: changed.length, results: plan.results, ...outcome,
+    ...changeSetReport(plan, { sources, entries, pinned, derivedFiles, apply: args.apply, outcome }) });
   if (args.out) writeTextAtomic(path.resolve(args.out), jsonText(report()));
   if (args.apply) {
+    try {
     outcome = commitPlan(plan, {
       root: ROOT, derivedFiles,
       rebuild() {
@@ -227,12 +257,17 @@ function main(argv = process.argv.slice(2)) {
         if (pinnedRun.error || pinnedRun.status !== 0) throw new Error('定稿校验失败: ' + (pinnedRun.error?.message || pinnedRun.stdout || pinnedRun.stderr));
       },
     });
+    } catch (error) {
+      outcome = error.patchOutcome || { applied: false, outcome: 'failed-before-write' };
+      if (args.out) writeTextAtomic(path.resolve(args.out), jsonText(report()));
+      throw error;
+    }
   }
   if (args.out) writeTextAtomic(path.resolve(args.out), jsonText(report()));
   console.log(`[apply-scene-patch] ${outcome.outcome}${outcome.backup ? '，备份 ' + path.basename(outcome.backup) : ''}`);
 }
 
-module.exports = { PROTECTED_SCENE_FIELDS, loadPinnedScenes, validatePatch, planPatches, snapshotFiles, restoreSnapshot, refreshCompression, commitPlan, parseArgs, main };
+module.exports = { PROTECTED_SCENE_FIELDS, loadPinnedScenes, validatePatch, planPatches, snapshotFiles, restoreSnapshot, refreshCompression, commitPlan, parseArgs, main, validateOutput, changeSetReport };
 if (require.main === module) {
   try { main(); } catch (error) { console.error('[apply-scene-patch] ' + error.message); process.exitCode = 1; }
 }

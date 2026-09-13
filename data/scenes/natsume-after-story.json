@@ -120,7 +120,8 @@
     "lighting": "秋日清晨暖光",
     "usage": [
       "展示图",
-      "头像"
+      "头像",
+      "R15"
     ],
     "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, boyfriend_shirt, white_shirt, unbuttoned, falling_strap, bare_shoulders, collarbone, bare_legs, bottomless, lying_on_bed, messy_hair, yawning, lazy_smirk, bedroom, bright_morning_sunlight, soft_white_sheets, cozy, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, pajamas, sleepwear_pants, nsfw, nude, explicit",

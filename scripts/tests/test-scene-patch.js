@@ -14,6 +14,69 @@ function fixture(t) {
 }
 function write(file, data) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, typeof data === 'string' ? data : JSON.stringify(data)); }
 const pinned = { sc001: { prompt: 'locked' } };
+test('scene patch: isolated CLI dry-run only writes explicitly requested report', t => {
+  const root = fixture(t), input = sources(root);
+  input.forEach(doc => write(doc.file, doc.data));
+  write(path.join(root, 'data/prompt-pinned-scenes.json'), { scenes: pinned });
+  const script = path.join(root, 'scripts/maintenance/apply-scene-patch.js');
+  write(script, fs.readFileSync(require.resolve('../maintenance/apply-scene-patch'), 'utf8'));
+  write(path.join(root, 'scripts/lib/data-version.js'), 'exports.syncDataVersion = () => { throw new Error("unexpected rebuild"); };');
+  write(path.join(root, 'scripts/lib/scene-store.js'), `module.exports = { loadSceneShards: () => ({sources: [{source: ${JSON.stringify(input[0].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/scenes.json'))}, browserShardPath: {}, corePath: ${JSON.stringify(path.join(root, 'data/core.json'))}, indexPath: ${JSON.stringify(path.join(root, 'data/index.json'))} };`);
+  write(path.join(root, 'scripts/lib/blueprint-store.js'), `module.exports = { loadBlueprintShards: () => ({sources: [{source: ${JSON.stringify(input[1].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/blueprints.json'))} };`);
+  const patchFile = path.join(root, 'patch.json'), output = path.join(root, 'report.json');
+  write(patchFile, [{ type: 'scene', id: 'sc001', changes: { story: 'candidate' } }]);
+  const snapshot = () => fs.readdirSync(root, { recursive: true }).filter(file => fs.statSync(path.join(root, file)).isFile()).map(file => [file, fs.readFileSync(path.join(root, file)).toString('base64')]);
+  const before = snapshot();
+  const run = extra => require('node:child_process').spawnSync(process.execPath, [script, '--patch', patchFile, ...extra], { cwd: root, env: { ...process.env, AICS_DATA_ROOT: root }, encoding: 'utf8' });
+  const dry = run([]); assert.equal(dry.status, 0, dry.stderr); assert.deepEqual(snapshot(), before);
+  const reportRun = run(['--out', output]); assert.equal(reportRun.status, 0, reportRun.stderr);
+  const report = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.equal(report.dryRun, true); assert.equal(report.changed, 1); assert.equal(report.schemaVersion, 1);
+  assert.deepEqual(snapshot().filter(([file]) => file !== 'report.json'), before);
+  const rejected = run(['--out', input[0].file + '.gz']); assert.equal(rejected.status, 1);
+  assert.deepEqual(snapshot().filter(([file]) => file !== 'report.json'), before);
+  const failed = run(['--apply', '--out', output]); assert.equal(failed.status, 1);
+  const failureReport = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.equal(failureReport.writeStatus, 'rolled-back'); assert.equal(failureReport.rollbackCapability.restored, true);
+  assert.equal(JSON.parse(fs.readFileSync(input[0].file, 'utf8'))[0].story, 'old');
+});
+test('scene patch: output rejects data, compressed siblings and parent aliases', t => {
+  const root = fixture(t), input = path.join(root, 'input.json');
+  write(input, []);
+  for (const output of [input, input + '.gz', input + '.br', path.join(root, 'data/new.json')]) assert.throws(() => patch.validateOutput(output, [input], root), /不得覆盖/);
+  const alias = path.join(root, 'alias');
+  fs.symlinkSync(root, alias, 'junction');
+  assert.throws(() => patch.validateOutput(path.join(alias, 'input.json'), [input], root), /不得覆盖/);
+  patch.validateOutput(path.join(root, 'reports/plan.json'), [input], root);
+});
+test('scene patch: change set report is additive and planning writes no files', t => {
+  const root = fixture(t), input = sources(root), entries = [{ type: 'scene', id: 'sc001', changes: { story: 'reviewed' } }];
+  const plan = patch.planPatches(input, entries, pinned);
+  const options = { sources: input, entries, pinned, derivedFiles: ['aggregate.json'], apply: false, outcome: { applied: false, outcome: 'dry-run' } };
+  const report = patch.changeSetReport(plan, options);
+  assert.equal(report.schemaVersion, 1); assert.equal(report.changedRecords.length, 1);
+  assert.deepEqual(report.protectedFieldDecision.pinnedIds, ['sc001']);
+  assert.equal(report.applyStatus.applied, false); assert.equal(report.writeStatus, 'dry-run');
+  assert.equal(report.rollbackCapability.backup, null);
+  assert.deepEqual(fs.readdirSync(root), []);
+  assert.throws(() => patch.changeSetReport(plan, { ...options, pinned: null }));
+  assert.throws(() => patch.changeSetReport(plan, { ...options, entries: [{}] }));
+});
+test('scene patch: rebuild failure restores source compression and readable backup bytes', t => {
+  const root = fixture(t), input = sources(root);
+  input.forEach(doc => write(doc.file, doc.data));
+  const file = input[0].file;
+  fs.writeFileSync(file + '.gz', zlib.gzipSync(fs.readFileSync(file)));
+  fs.writeFileSync(file + '.br', zlib.brotliCompressSync(fs.readFileSync(file)));
+  const original = patch.snapshotFiles([file, file + '.gz', file + '.br']);
+  const plan = patch.planPatches(input, [{ type: 'scene', id: 'sc001', changes: { story: 'changed' } }], pinned);
+  assert.throws(() => patch.commitPlan(plan, { root, derivedFiles: [], rebuild() { fs.writeFileSync(file + '.gz', 'broken'); throw new Error('rebuild failed'); }, validate() { assert.fail('validation reached'); } }), /已回滚/);
+  original.forEach(item => assert.deepEqual(fs.readFileSync(item.file), item.content));
+  const directory = path.join(root, 'runtime/maintenance-backups');
+  const backup = path.join(directory, fs.readdirSync(directory)[0]);
+  const manifest = JSON.parse(fs.readFileSync(path.join(backup, 'manifest.json'), 'utf8'));
+  for (const item of manifest.files.filter(item => item.existed)) assert.deepEqual(fs.readFileSync(path.join(backup, 'files', item.backup)), fs.readFileSync(path.join(root, item.source)));
+});
 function sources(root) {
   return [
     { type: 'scene', file: path.join(root, 'data/scenes/shared.json'), data: [{ id: 'sc001', prompt: 'locked', story: 'old' }, { id: 'sc002', prompt: 'ordinary' }] },

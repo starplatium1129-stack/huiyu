@@ -32,6 +32,18 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  'audit:workflow-conditions': { desc: '只读运行条件与复合副作用覆盖报告', cmd: ['node', 'scripts/maintenance/report-workflow-conditions.js'],
+    opts: '--json；--root <隔离目录>；--domain <工作流分组>', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/report-workflow-conditions.js:1', unknown: ['元数据与路径存在性不证明实际执行成功'] } },
+  'audit:ownership': { desc: '只读内容归属报告：权威源、派生文件与读写边界', cmd: ['node', 'scripts/maintenance/report-content-ownership.js'],
+    opts: '--json；--root <隔离目录>；--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-ownership.js:1', unknown: ['仅浅层结构与职责；内容、图片质量及外部样张未验收'] } },
+  'audit:delivery': { desc: '只读交付证据审计：比较交付标识，区分错误与待验', cmd: ['node', 'scripts/maintenance/audit-delivery.js'],
+    opts: '--evidence <JSON>；--compare-evidence <root内相对JSON路径>（可重复）；--require <gate.path>（可重复）；--expect-commit <SHA>；--check-head（需本地 Git，只比较 HEAD commit，不覆盖 dirty working tree，不查询远端）；--check-worktree（需本地 Git，独立检查未提交/未跟踪文件，dirty 或不可用退出 1）；--expect-build <field=SHA256>（可重复）；--verify-file <相对root路径>（可重复）；--expect-file-sha256 <相对root路径=64位SHA256>（可重复）；--root <隔离目录>；--json', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'], '--check-head': ['read-only'], '--check-worktree': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/audit-delivery.js:1', unknown: ['检查记录与显式文件存在性/期望哈希；--check-worktree 需本地 Git，独立检查未提交及未跟踪文件；不证明日志语义或真实设备/模型验收'] } },
+  'audit:impact': { desc: '只读变更影响报告：角色/服装、场景与显式路径；未知范围单列', cmd: ['node', 'scripts/maintenance/report-content-impact.js'],
+    opts: '--character <id> [--outfit <id>] 或 --scene <scNNN> 或 --path <仓库相对路径>（可重复，支持场景逻辑组/实际批次）；--git-diff（显式只读 Git 路径，可组合）；--showcase-manifest <root内相对路径>（可重复，建议单个）；--root <隔离目录>；--json', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-impact.js:1', unknown: ['D2 角色/服装及显式场景关系；历史差异与增量检查未覆盖，详见报告 unknown'] } },
   'showcase:review-sheets': { desc: '从候选审核目录生成逐图查看用联系表', cmd: ['python', 'scripts/maintenance/build-scene-manual-audit-sheets.py'], required: ['--audit'], docs: 'docs/workflow.md',
     run: { nature: ['writes-product'], machine: ['python-pillow'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-scene-manual-audit-sheets.py:134-162', unknown: [], notes: ['输出写在 --audit 目录下，通常在仓库外'] } },
   'showcase:manual-review': { desc: '汇总明确人工决定；缺少决定的图片保持 pending', cmd: ['node', 'scripts/maintenance/build-scene-manual-review.js'], required: ['--manifest', '--decisions'], docs: 'docs/workflow.md',
@@ -221,6 +233,7 @@ const WORKFLOWS = {
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-scene-showcase-anima11.js:71-77,269-285', unknown: [] },
   },
   'showcase:fill-gaps': {
+    docs: 'docs/workflow.md',
     desc: '样张缺口补齐：对照活跃版本manifest批量渲染缺失的pc_<角色>_<场景>样张（miaomiao v1.2，按蓝图recommendedSize出图，并发3）',
     cmd: ['node', 'scripts/maintenance/render-showcase-gaps.js'],
     opts: '[--only <charId1,charId2>] [--concurrency <n>] [--gateway <url>] [--redo-mine]',

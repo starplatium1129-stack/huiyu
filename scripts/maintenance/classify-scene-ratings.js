@@ -9,13 +9,22 @@ const { loadSceneShards, writeAggregate } = require('../lib/scene-store');
 // 计划 006 D5：写入走增量路径，改动只落受影响分片；全量重切仍归 split-scenes。
 const sceneWrite = require('../lib/scene-write');
 const { ratingFor } = require('../lib/prompt-policy');
-const write = process.argv.includes('--write');
-
-const pinnedPath = path.resolve(__dirname, '..', '..', 'data', 'prompt-pinned-scenes.json');
-let pinnedScenes = {};
-try {
-  pinnedScenes = JSON.parse(fs.readFileSync(pinnedPath, 'utf8')).scenes || {};
-} catch {}
+function parseManualRatings(raw) {
+  const text = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '').trim();
+  const match = text.match(/^(?:['"]use strict['"];\s*)?module\.exports\s*=\s*\{([\s\S]*)\};?$/);
+  if (!match) throw new Error('Invalid manual ratings table');
+  const result = {};
+  const body = match[1].trim().replace(/,\s*$/, '');
+  const entries = body ? body.split(',') : [];
+  for (const entry of entries) {
+    const item = entry.trim().match(/^(?:['"](sc\d+)['"]|(sc\d+))\s*:\s*['"](All|R15|R18)['"]$/);
+    if (!item) throw new Error('Invalid manual rating entry');
+    const id = item[1] || item[2];
+    if (Object.hasOwn(result, id)) throw new Error('Duplicate manual rating: ' + id);
+    result[id] = item[3];
+  }
+  return result;
+}
 const STANDARD_NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic';
 
 const additions = [
@@ -128,18 +137,36 @@ function normalizeUsage(scene, rating) {
  * 评级以样张实际画面为准（露点/性行为=R18，半裸/内衣/强暗示=R15，否则 All），
  * 覆盖 ratingFor 的 tag 推导与 R18 强制保留逻辑；只列入降级项。
  */
-const MANUAL_RATINGS = require('../lib/manual-scene-ratings.js');
+function main(args = process.argv.slice(2)) {
+const json = args.includes('--json') || args.includes('--explain');
+try {
+  if (new Set(args).size !== args.length || args.some((a) => !['--check', '--write', '--json', '--explain'].includes(a))) throw new Error('Unknown or duplicate argument');
+  const write = args.includes('--write');
+  if (write && (json || args.includes('--check'))) throw new Error('Read-only diagnostics cannot be combined with --write');
+  const root = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '../..'));
+  const pinnedScenes = JSON.parse(fs.readFileSync(path.join(root, 'data/prompt-pinned-scenes.json'), 'utf8')).scenes;
+  if (!pinnedScenes || typeof pinnedScenes !== 'object' || Array.isArray(pinnedScenes)) throw new Error('Invalid pinned scenes');
+  const MANUAL_RATINGS = parseManualRatings(fs.readFileSync(path.join(root, 'scripts/lib/manual-scene-ratings.js'), 'utf8'));
 
 // 原地改评级前先深拷贝：增量写入靠「入参与磁盘快照的值差异」判断改动范围
 const previous = loadSceneShards();
 const scenes = JSON.parse(JSON.stringify(previous.scenes));
+const seen = new Set();
+for (const scene of scenes) {
+  if (!scene || !/^sc\d+$/.test(scene.id) || seen.has(scene.id)) throw new Error('Invalid or duplicate scene id: ' + scene?.id);
+  seen.add(scene.id);
+  if (!['All', 'R15', 'R18'].includes(scene.rating) || typeof scene.mature !== 'boolean' || typeof scene.category !== 'string' || !Array.isArray(scene.usage) || !scene.usage.every((v) => typeof v === 'string')) throw new Error('Invalid or missing rating fields: ' + scene.id);
+}
 const ids = new Set(scenes.map((scene) => scene.id));
 for (const addition of additions) if (!ids.has(addition.id)) scenes.push(addition);
 
 let changed = 0;
+const changes = [];
+const sources = { pinned: 0, manual: 0, 'existing-mature': 0, policy: 0 };
 const totals = { All: 0, R15: 0, R18: 0 };
 for (const scene of scenes) {
   if (pinnedScenes[scene.id]) {
+    sources.pinned++;
     totals[scene.rating || (scene.mature ? 'R18' : 'All')] += 1;
     continue;
   }
@@ -149,7 +176,12 @@ for (const scene of scenes) {
   const manual = MANUAL_RATINGS[scene.id];
   const rating = manual || (force ? 'R18' : ratingFor(scene));
   const next = { rating, mature: rating === 'R18', category: categoryFor(scene, rating), usage: normalizeUsage(scene, rating) };
-  if (scene.rating !== next.rating || scene.mature !== next.mature || scene.category !== next.category || JSON.stringify(scene.usage) !== JSON.stringify(next.usage)) changed += 1;
+  const source = manual ? 'manual' : force ? 'existing-mature' : 'policy';
+  sources[source]++;
+  if (scene.rating !== next.rating || scene.mature !== next.mature || scene.category !== next.category || JSON.stringify(scene.usage) !== JSON.stringify(next.usage)) {
+    changed += 1;
+    changes.push({ id: scene.id, current: { rating: scene.rating, mature: scene.mature, category: scene.category, usage: scene.usage }, expected: next, source, derivation: { rating: source, mature: 'rating === R18', category: 'categoryFor', usage: 'normalizeUsage' } });
+  }
   Object.assign(scene, next);
   totals[rating] += 1;
 }
@@ -158,5 +190,13 @@ if (write) {
   sceneWrite.applySceneChanges(scenes, previous, { retiredIds: sceneWrite.readRetiredSceneIds() });
   writeAggregate(scenes);
 }
-console.log('ratings: All=' + totals.All + ' R15=' + totals.R15 + ' R18=' + totals.R18 + ' changed=' + changed + (write ? ' written' : ''));
-if (!write && changed) process.exitCode = 1;
+console.log(json ? JSON.stringify({ totals, changedCount: changed, changes, sources, visualReview: 'unverified' }) : 'ratings: All=' + totals.All + ' R15=' + totals.R15 + ' R18=' + totals.R18 + ' changed=' + changed + (write ? ' written' : ''));
+return !write && changed ? 1 : 0;
+} catch (error) {
+  if (json) console.log(JSON.stringify({ status: 'invalid', error: error.message }));
+  else console.error(error.message);
+  return 2;
+}
+}
+if (require.main === module) process.exitCode = main();
+module.exports = { parseManualRatings, main };

@@ -19,6 +19,9 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-ux-regressions.js',
   ]),
   unit: Object.freeze([
+    'test-workflow-conditions.js',
+    'test-content-ownership.js',
+    'test-scene-rating-diagnostics.js', // 人工 R15 usage 真实隔离写入、受保护字段保持与幂等检查
     'test-anima-session.js',
     'test-api-client.js',
     'test-archive-state-panel.js',
@@ -71,6 +74,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-popular-content.js',
     'test-content-gate-repairs.js',
     'test-coverage-report.js',
+    'test-content-impact.js', // 角色/默认服装、参考声明证据、主题、场景、精选/退役路径、样张及 Git、失败关闭与索引零写入
+    'test-delivery-audit.js', // W2 双证据标识比较、文件哈希、HEAD/worktree；隔离 Git 零写入与失败关闭
     'test-scene-prose-contract.js',
     'test-quick-create.js',
     'test-resource-scheduling.js',
