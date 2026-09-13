@@ -116,7 +116,7 @@
 1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。
 2. `reference:render` 生成参考图；`reference:design` 补三视图设计图。合计 4 种肖像机位 + 3 种设计机位。
 3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
-4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。
+4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。CLI 数据根为 `--root <完整项目根>` > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根，view 与审计 appRoot 对齐，显式外部素材配置保留；直接 `--help` / `--plan` 零目标读取。参数/根错误退出 2，缺失或损坏 view、审计问题退出 1。
 
 `reference:full` 是 render → audit → repair，不包含自动完成所有新增形态登记与设计图的承诺。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
 
@@ -184,6 +184,14 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 安全边界：包名限字母、数字、下划线、短横线（1-64 字符），拒绝路径片段；目标只要已存在（含空目录、文件或链接）即拒绝，不覆盖任何旧包；目标祖先链中已存在的符号链接/junction（realpath 与字面路径不一致）先于任何写入被拒；复制期间源变化、候选写入失败或发布冲突都不报告成功，暂存目录保留并在结果中给出明确路径（残缺暂存不是可用候选包），不删除任何目录。不转换或重采样图片，不执行复制内容，无 ZIP 解压/安装/缓存淘汰与网络行为，写入范围限 `--root` 内候选目录。
 
 退出码：0 表示预览计划可行或候选包已通过字节核验并落盘；1 表示目标或内容问题（清单核验失败/格式错误/不支持版本、目标已存在、目标链含链接、复制或发布后核验失败；增量模式含任一清单结构错误或非空 unverified）；2 表示参数或环境问题（包名非法、参数缺失或无法识别、root 不可用、清单路径越界或不可读）。隔离回归：`node scripts/tests/test-resource-pack.js` 与 `node scripts/tests/test-resource-pack-delta.js`（已登记 unit 套件，全部夹具位于临时目录，不导出真实素材）。
+
+## 增量候选包与基线兼容核验
+
+`node scripts/workflow.js resource:verify-delta --base-manifest <root内JSON> --pack <root内候选目录> [--root <目录>]` 只读核验 G13 增量候选包与给定基线的兼容性，全程零写入、无安装/删除/网络；`--help` / `--plan` 仅打印用法，不读取目标文件。本入口仅核验增量候选：候选包内缺少 `delta.json` 的全包按 `missing-delta-json` 拒绝，不能冒充增量。核验通过只表示「相对于给定基线可重建声明目标且候选已列字节匹配」，不是数字签名、可信来源、当前安装状态或质量验收；空候选与仅删除候选可合法通过，不代表已安装更新。
+
+核验分两层。元数据兼容层（纯函数）：先复用 `audit:resource-manifest` 同套结构检查（schemaVersion、条目形态、重复与 Windows 大小写重复、路径合规、非空 unverified），再核对 `delta.json` 的 kind/schemaVersion 与身份/数量字段形态；验证基线 `contentIdentity`/`entryCount`/`totalBytes` 与 `delta.baseManifest` 相符；以基线移除 `delta.removed` 后叠加候选 added/changed 重建目标条目，其身份三项必须与 `delta.newManifest` 相符；按基线→目标的实际集合关系重算 added/removed/changed/unchanged，与 `delta.totals` 逐项一致，且 `delta.candidate` 的 files/bytes/zeroAssets 与候选 manifest 实际条目一致。不只对比总数：removed 每项必须确实存在于基线且 bytes/sha256 相符，路径唯一且不得同时出现在候选中；候选与基线同路径同内容的条目不能冒充 changed。IO 层：只读取明确指定的基线 JSON、候选 `manifest.json`/`delta.json` 与候选已列资源（复用现有清单核验逐条核验候选实际字节）；不 stat/read 基线资产、不扫描安装目录，基线文件可已不存在而元数据仍可核验；基线清单、候选目录与内部路径遵守 root 与真实路径边界，junction 或坏路径访问外部目录在读取前拒绝。
+
+退出码：0 核验通过；1 内容/不兼容（元数据缺失/损坏/不支持版本、清单结构错误或非空 unverified、基线或重建目标身份/数量失配、totals/candidate 与实际不符、候选实际字节核验失败）；2 参数/越界/环境（参数缺失或无法识别、root 不可用、基线清单越界/缺失/不可读、候选目录越界/缺失/不是目录/junction 逃逸、内部异常）。隔离回归：`node scripts/tests/test-resource-pack-verify.js`（已登记 unit 套件，候选包由 G13 导出器在临时夹具内生成，记录型 fs 证明旧资产零访问与全程零写入）。
 
 ## 门禁与构建
 

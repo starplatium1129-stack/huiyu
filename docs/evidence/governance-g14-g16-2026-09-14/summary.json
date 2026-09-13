@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-14",
+  "baseline": "b6554878754b30e32f39aeadd7178b450352d0d0",
+  "batches": [
+    "G14 reference audit root",
+    "G15 delta baseline verification",
+    "G16 blueprint write adapter"
+  ],
+  "gate": {
+    "result": "PASS",
+    "referenceMode": "structure",
+    "unit": 789,
+    "contract": 26,
+    "frontend": true,
+    "build": true
+  },
+  "isolation": {
+    "checkout": "detached b655487 with only scoped backend/tool files overlaid",
+    "dependencies": "independent copy",
+    "uiUpgradeIncluded": false,
+    "sharedDistUsed": false
+  },
+  "focusedTests": {
+    "referenceRoot": 10,
+    "deltaVerification": 18,
+    "blueprintWrite": 19
+  },
+  "workflowCount": 82,
+  "reviewFixes": [
+    "Nested malformed reference metadata is reported as a located CLI failure",
+    "Reconstructed delta target must pass Windows path uniqueness checks; metadata stays within candidate directory",
+    "Private complete blueprint source baselines include unchanged shards; original prepared object authenticated with WeakMap",
+    "Reject altered snapshot Buffers; recheck directories; isolated expected output bytes; exclusive randomized temporary files"
+  ],
+  "limitations": [
+    "Concurrent UI changes excluded and not modified or staged",
+    "Blueprint route, shared backup, lock and rollback integration not implemented",
+    "No production data writes, installation, download or generation",
+    "Candidate compatibility does not verify installed state, trusted provenance or image quality"
+  ],
+  "environmentRepair": "Fresh checkout had no dist; initial chat SPA fallback test failed. Built only isolated checkout, then reran full gate.",
+  "sha256": {
+    "scripts/maintenance/check-ref-urls.js": "baf3b873e6d5c88ce6c856b4cf731a3d527906b46fadf595f746838de4631a69",
+    "scripts/tests/quality-test-inventory.js": "b8b220cd47969af2a61e5ad5e33467570e90392605427845daa84382e32afbdf",
+    "scripts/workflow.js": "c62fd663a23eeea96cfc5cda723c38c686f4e4ad995c366a70d70c2ce859d192",
+    "scripts/lib/blueprint-write.js": "a35f32f89fe1dbbc0af5d16751a9cd6374b404d61f8bf542c6fc0f6dbff0dcf9",
+    "scripts/lib/resource-pack-verify.js": "a3ac6634843f99d3c96d1fee5ef7a932303d9328f2cd2f1d09f99ad082ca7ec9",
+    "scripts/maintenance/verify-resource-pack.js": "450b7a450582a03a7e15ad1e748027d9d0d051955865e11b522dff3800912814",
+    "scripts/tests/test-blueprint-write.js": "317bf9906eb04192c8f959c93b4a35d73e4f7972c68ed146a458d44922120666",
+    "scripts/tests/test-reference-audit-root.js": "b55118a31e47b24d53641b8ac05bec1c416f134ce509cf02d0fbca4e4019cad0",
+    "scripts/tests/test-resource-pack-verify.js": "be9164a3dd853110d19f2446de313bf9fe1868eb16e11346ff1ac4e942bd96c5"
+  }
+}

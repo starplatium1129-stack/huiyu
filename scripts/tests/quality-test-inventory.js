@@ -23,6 +23,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-content-ownership.js',
     'test-content-contract-root.js',
     'test-blueprint-change-plan.js',
+    'test-blueprint-write.js',
+    'test-reference-audit-root.js',
     'test-scene-rating-diagnostics.js', // 人工 R15 usage 真实隔离写入、受保护字段保持与幂等检查
     'test-anima-session.js',
     'test-api-client.js',
@@ -83,6 +85,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-resource-manifest.js', // G5 资源清单生成/校验：稳定排序、字节哈希、越界/junction 拒绝、零写入与退出码契约
     'test-resource-pack.js', // G10 离线候选包暂存导出：预览零写入、清单核验复用、目标/junction 拒绝、失败不发布与字节复核
     'test-resource-pack-delta.js', // G13 增量候选包：只复制 added/changed、旧清单结构核验零旧资产访问、delta.json 身份与零差异候选
+    'test-resource-pack-verify.js', // G15 增量候选包兼容核验：基线身份/removed 逐项/重建目标/候选字节，零写入与旧资产零访问
     'test-resource-scheduling.js',
     'test-scene-ux.js',
     'test-scene-write.js',

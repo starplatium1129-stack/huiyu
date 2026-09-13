@@ -50,6 +50,9 @@ const WORKFLOWS = {
   'resource:pack': { desc: '离线资源候选包暂存导出：默认预览零写入；--apply 经清单核验后复制到 root 内新候选目录（不覆盖旧包，不是发布/安装入口）；--base-manifest 增量模式只复制差异项', cmd: ['node', 'scripts/maintenance/stage-resource-pack.js'],
     opts: '--manifest <root内JSON> --name <包名>；[--base-manifest <root内旧JSON>]（与 --manifest 同用：增量候选，只复制 added/changed，写 manifest.json 与 delta.json，不是完整可安装包）；--root <目录>；--apply（仅 Windows 实际复制；其他平台可预览）', docs: 'docs/workflow.md',
     run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product'], '--base-manifest': ['guard'] }, resume: 'na', evidence: 'scripts/maintenance/stage-resource-pack.js:1', unknown: ['候选包通过字节核验仅表示复制内容与清单一致，不代表图片质量、审核或部署完成；目标必须不存在（不覆盖旧包），写入范围限 --root 内 scripts/archive/resource-packs；预览仍会读取清单与源文件；增量候选只含差异项，不是完整可安装包，不能当作已安装更新'] } },
+  'resource:verify-delta': { desc: '只读增量候选包与基线兼容核验：结构/身份/数量重算与候选实际字节，全程零写入', cmd: ['node', 'scripts/maintenance/verify-resource-pack.js'],
+    opts: '--base-manifest <root内JSON> --pack <root内候选目录>；--root <目录>', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/verify-resource-pack.js:1', unknown: ['核验通过仅表示相对于给定基线可重建声明目标且候选已列字节匹配；不是数字签名、可信来源、当前安装状态或质量验收；不发现候选包未登记文件；基线资产不被读取（removed 文件可已不存在）'] } },
   'showcase:review-sheets': { desc: '从候选审核目录生成逐图查看用联系表', cmd: ['python', 'scripts/maintenance/build-scene-manual-audit-sheets.py'], required: ['--audit'], docs: 'docs/workflow.md',
     run: { nature: ['writes-product'], machine: ['python-pillow'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-scene-manual-audit-sheets.py:134-162', unknown: [], notes: ['输出写在 --audit 目录下，通常在仓库外'] } },
   'showcase:manual-review': { desc: '汇总明确人工决定；缺少决定的图片保持 pending', cmd: ['node', 'scripts/maintenance/build-scene-manual-review.js'], required: ['--manifest', '--decisions'], docs: 'docs/workflow.md',
@@ -378,8 +381,9 @@ const WORKFLOWS = {
   'check:ref-urls': {
     desc: '参考库 URL 断链门禁（按当前索引，pending 不算已发布）',
     cmd: ['node', 'scripts/maintenance/check-ref-urls.js'],
+    opts: '[--root <完整项目根>]；优先级 --root > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根；--help/--plan 零目标读取',
     docs: 'scripts/maintenance/check-ref-urls.js:1',
-    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/check-ref-urls.js:51-61', unknown: [], notes: ['URL 存在性检查与网关共用素材根解析；素材根缺失可用 AICS_REFERENCE_AUDIT_MODE=structure（仅结构，须注明）'] },
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: { '--root': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/check-ref-urls.js:93', unknown: [], notes: ['URL 存在性检查与网关共用素材根解析；素材根缺失可用 AICS_REFERENCE_AUDIT_MODE=structure（仅结构，须注明）'] },
   },
   'check:pinned-scenes': {
     desc: '定稿场景字节级保护门禁（100 条手工定稿）',
