@@ -1,0 +1,128 @@
+{
+  "reviewedAt": "2026-09-13",
+  "status": "source-reviewed-only",
+  "method": "逐项读取原文与列出的代码入口；存在性仅作路径核对，不代替行为或设备验收。",
+  "targetDocumentsCount": 8,
+  "documents": [
+    {
+      "path": "docs/guides/characters/character-onboarding-workflow.md",
+      "title": "热门角色接入工作流",
+      "versionContext": "页首日期 2026-09-08；当前入口说明",
+      "currentEntry": "character:onboard",
+      "finding": "文档实际使用 character:onboard，兼容脚本为 workflow-onboard-popular-character.js。原报告的 char:onboard / onboard-character.js 不来自原文，撤回命令路径漂移结论。",
+      "evidence": [
+        "scripts/workflow.js",
+        "package.json",
+        "scripts/maintenance/workflow-onboard-popular-character.js"
+      ],
+      "limitation": "注册项与 package.json 命令目标一致；未执行接入或生成。",
+      "status": "source-reviewed-only"
+    },
+    {
+      "path": "docs/guides/characters/particle-portrait-pipeline.md",
+      "title": "角色点阵粒子管线（操作手册）",
+      "versionContext": "2026-09-09 当前入口；2026-08-16 历史实验",
+      "currentEntry": "npm run particles:build",
+      "finding": "当前组件入口为 PopularSceneExplorerView.vue → SemanticParticleField.vue，后者引用 particlePortrait 工具。历史像素实验和性能描述不能当作本轮测量。",
+      "evidence": [
+        "package.json",
+        "scripts/maintenance/build-particle-portraits.py",
+        "src/views/PopularSceneExplorerView.vue",
+        "src/components/visual/SemanticParticleField.vue",
+        "src/utils/particlePortrait.ts"
+      ],
+      "limitation": "仅核对调用与路径；未重建点云、未全库重算哈希或验证渲染。",
+      "status": "source-reviewed-only"
+    },
+    {
+      "path": "docs/guides/characters/scene-maintenance-workspace.md",
+      "title": "场景维护工作台重构 · 1.5.7",
+      "versionContext": "v1.5.7 历史重构记录",
+      "currentEntry": "/scene-manager",
+      "finding": "路由由 src/router/index.ts 注册到 SceneManagerView.vue。原报告的 /scenes 不正确；历史验证不代表当前保存实现全部通过。后续保存审计另见 scene-save-review-2026-09-13.md。",
+      "evidence": [
+        "src/router/index.ts",
+        "src/views/SceneManagerView.vue",
+        "docs/archive/audits/scene-save-review-2026-09-13.md"
+      ],
+      "limitation": "核对路由与文档适用范围；未重跑 UI 或保存测试。",
+      "status": "source-reviewed-only"
+    },
+    {
+      "path": "docs/guides/characters/quality-audit-standards-charter.md",
+      "title": "视觉资产审核历史宪章",
+      "versionContext": "v1.5.0 批次；2026-09-12 时效说明",
+      "currentEntry": "AGENTS.md",
+      "finding": "页首明确将741个场景与通过率限定为历史批次；不能用档案目录存在证明数字或人工裁定。",
+      "evidence": [
+        "AGENTS.md"
+      ],
+      "limitation": "本轮确认时效说明存在；未复核历史图片、数量或裁定。",
+      "status": "source-reviewed-only"
+    },
+    {
+      "path": "docs/guides/desktop/game-installer.md",
+      "title": "绫季绘境 · 现代安装界面",
+      "versionContext": "当前构建指南与历史发行记录并存",
+      "currentEntry": "installer:modern / installer:bundle",
+      "finding": "文档区分现代展示层和 package:tauri 产生的 NSIS 核心；不能把源码或历史截图文件存在写成当前安装器已通过。",
+      "evidence": [
+        "scripts/workflow.js",
+        "desktop-tauri/src-tauri/installer/modern/Installer.xaml",
+        "desktop-tauri/src-tauri/installer/modern/InstallerWindow.cs",
+        "desktop-tauri/src-tauri/installer/modern/InstallEngine.cs"
+      ],
+      "limitation": "核对文档与入口注册、源码分工；未编译预览、运行安装或查看原生效果。",
+      "status": "source-reviewed-only"
+    },
+    {
+      "path": "docs/guides/desktop/companion-dsh-agent-architecture.md",
+      "title": "桌宠 DSH 架构对齐与配置指南",
+      "versionContext": "2026-08-20 基线，含后续权限调整说明",
+      "currentEntry": "/companion / /companion-chat",
+      "finding": "路由已注册。文档声称的历史实机 PASS 不能由视图文件存在证明；抓屏、工具调用与音频链路需分别核验。",
+      "evidence": [
+        "src/router/index.ts",
+        "src/views/CompanionView.vue",
+        "src/views/CompanionChatView.vue"
+      ],
+      "limitation": "仅核对路由与历史声明范围；未验证好感度、工具调用或本机 Live2D。",
+      "status": "source-reviewed-only"
+    },
+    {
+      "path": "docs/guides/desktop/live2d-native-runtime.md",
+      "title": "Live2D 原生运行时",
+      "versionContext": "2026-09-12 更新；历史验收另有限定",
+      "currentEntry": "npm run test:live2d-native",
+      "finding": "package.json 对应 run-live2d-selftest.js --release。原报告虚构了 src-tauri/cubism-native 依赖路径；实际 crate 为 desktop-tauri/native-live2d。构建脚本检查显式 SDK 配置、仓库 runtime 位置及历史路径，部署文档已说明 SDK 配置。不存在所谓内部目录不证明依赖缺失。",
+      "evidence": [
+        "package.json",
+        "scripts/tests/run-live2d-selftest.js",
+        "desktop-tauri/src-tauri/Cargo.toml",
+        "desktop-tauri/native-live2d/build.rs",
+        "docs/desktop-deployment.md"
+      ],
+      "limitation": "核对构建解析规则；未判断此机器SDK完整性，未执行原生测试。",
+      "status": "source-reviewed-only"
+    },
+    {
+      "path": "docs/desktop-deployment.md",
+      "title": "桌面端部署：增量 还是 完整安装",
+      "versionContext": "当前入口与历史故障说明并存",
+      "currentEntry": "deploy-desktop.bat",
+      "finding": "批处理调用 deploy-desktop-quick.ps1 并默认传入 -Cleanup。脚本声明 SkipBuild / Cleanup / UseInstaller 参数。只证明这些入口和参数对齐，不声称全部部署行为高度一致或执行通过。",
+      "evidence": [
+        "deploy-desktop.bat",
+        "scripts/maintenance/deploy-desktop-quick.ps1"
+      ],
+      "limitation": "未运行部署、停止应用、清缓存、安装或发布。",
+      "status": "source-reviewed-only"
+    }
+  ],
+  "corrections": [
+    "撤回伪造命令引文、/scenes 路由与 SDK 内部目录缺失结论。",
+    "删除未重新核实的粒子哈希覆盖数量、版本推断和全部参数高度一致表述。",
+    "删除把历史截图、文件或目录存在写成验证通过的结论。"
+  ],
+  "results": []
+}

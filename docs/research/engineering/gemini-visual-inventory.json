@@ -1,0 +1,1602 @@
+{
+  "generatedAt": "2026-09-12T17:26:37.709Z",
+  "scope": "45 image candidates: 43 existing All selections and 2 pilot characters without selection records; no new rating assignment",
+  "summary": {
+    "totalCharactersInRepo": 160,
+    "candidateRecords": 45,
+    "existingAllSelections": 43,
+    "ungradedPilotRecords": 2,
+    "otherUnclassifiedRecords": 115,
+    "independentlyAcceptedImages": 0
+  },
+  "screenedBatches": {
+    "batch1": [
+      {
+        "index": 1,
+        "id": "nene",
+        "name": "绫地宁宁",
+        "entryId": null,
+        "rating": null,
+        "dimensions": "832x1216",
+        "sizeBytes": 2143074,
+        "sha256": "b26fb7ff865ddc81536098790a5b89a0969ca1534ed3283f1f5514f2122dacd9",
+        "thumbDimensions": "128x128",
+        "thumbBytes": 5056,
+        "assetPath": "assets/characters/popular-nene.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-nene.webp",
+        "ratingBasis": "pilot-character-without-selection-record",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": [
+          "thumbnail-aspect-differs-from-original-not-necessarily-a-defect"
+        ]
+      },
+      {
+        "index": 2,
+        "id": "natsume",
+        "name": "四季夏目",
+        "entryId": null,
+        "rating": null,
+        "dimensions": "832x1216",
+        "sizeBytes": 1199784,
+        "sha256": "066b8ec06f885c24296e90334f990e76f3a9a47fa7169539dfe14eac002c0023",
+        "thumbDimensions": "320x468",
+        "thumbBytes": 11806,
+        "assetPath": "assets/characters/popular-natsume.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-natsume.webp",
+        "ratingBasis": "pilot-character-without-selection-record",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 3,
+        "id": "katou_megumi",
+        "name": "加藤惠",
+        "entryId": "pc_katou_megumi_megumi_slope_white_beret",
+        "rating": "All",
+        "dimensions": "832x1216",
+        "sizeBytes": 2072598,
+        "sha256": "9c528c109d519ddca1e592260dc9c522608cc736378147204eefaa5f6f37b226",
+        "thumbDimensions": "320x468",
+        "thumbBytes": 23206,
+        "assetPath": "assets/characters/popular-katou_megumi.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-katou_megumi.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 4,
+        "id": "shiina_mahiru",
+        "name": "椎名真昼",
+        "entryId": "pc_shiina_mahiru_mahiru_kitchen_apron_morning",
+        "rating": "All",
+        "dimensions": "832x1216",
+        "sizeBytes": 1832891,
+        "sha256": "3c053bc964b88312f95eb178c1f6454acbdf44aa977f7a2b216fa386d9d3d376",
+        "thumbDimensions": "320x468",
+        "thumbBytes": 19770,
+        "assetPath": "assets/characters/popular-shiina_mahiru.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-shiina_mahiru.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 5,
+        "id": "chitanda_eru",
+        "name": "千反田爱瑠",
+        "entryId": "pc_chitanda_eru_chitanda_library_ladder_books",
+        "rating": "All",
+        "dimensions": "832x1216",
+        "sizeBytes": 1910410,
+        "sha256": "242bb8f298d71a720007766fd6804080bf722886c0f69416265963f3a1910f6e",
+        "thumbDimensions": "320x468",
+        "thumbBytes": 21998,
+        "assetPath": "assets/characters/popular-chitanda_eru.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-chitanda_eru.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 6,
+        "id": "isshiki_iroha",
+        "name": "一色彩羽",
+        "entryId": "pc_isshiki_iroha_iroha_corridor_chasing_pout",
+        "rating": "All",
+        "dimensions": "832x1216",
+        "sizeBytes": 1883826,
+        "sha256": "89a74190986a8307e932a919aa4ee4da67667e6bb523f7e169a2d2ede2f48dd2",
+        "thumbDimensions": "320x468",
+        "thumbBytes": 18902,
+        "assetPath": "assets/characters/popular-isshiki_iroha.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-isshiki_iroha.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 7,
+        "id": "yukinoshita_haruno",
+        "name": "雪之下阳乃",
+        "entryId": "pc_yukinoshita_haruno_haruno_cafe_terrace_teasing_gaze",
+        "rating": "All",
+        "dimensions": "832x1216",
+        "sizeBytes": 1849098,
+        "sha256": "59ea23a6f75e8f1a54c1b633e71b7f7d48501662a26deb8f1b1c63d6beef6691",
+        "thumbDimensions": "320x468",
+        "thumbBytes": 18682,
+        "assetPath": "assets/characters/popular-yukinoshita_haruno.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-yukinoshita_haruno.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 8,
+        "id": "yamada_anna",
+        "name": "山田杏奈",
+        "entryId": "pc_yamada_anna_yamada_basketball_court_towel_water",
+        "rating": "All",
+        "dimensions": "832x1216",
+        "sizeBytes": 1805347,
+        "sha256": "b7206082db0be3f8cfa897eae29b5c2658ee1bae3ecf7f1ac5e5b45d7a0d2071",
+        "thumbDimensions": "320x468",
+        "thumbBytes": 18560,
+        "assetPath": "assets/characters/popular-yamada_anna.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-yamada_anna.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 9,
+        "id": "waguri_kaoruko",
+        "name": "和栗薰子",
+        "entryId": "pc_waguri_kaoruko_waguri_cake_tasting_cream_cheek",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2753541,
+        "sha256": "95daffe55c0d952ab976859bcba958162eb9fcfa1772e1bc9292cd9bef886c9e",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13980,
+        "assetPath": "assets/characters/popular-waguri_kaoruko.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-waguri_kaoruko.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 10,
+        "id": "raphtalia",
+        "name": "拉芙塔莉雅",
+        "entryId": "pc_raphtalia_raphtalia_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2724935,
+        "sha256": "faab887e9062127f0d9d41821849aab0ee4ce31b0a0b0e8686027025ff577b2d",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 12274,
+        "assetPath": "assets/characters/popular-raphtalia.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-raphtalia.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 11,
+        "id": "yatogami_tohka",
+        "name": "夜刀神十香",
+        "entryId": "pc_yatogami_tohka_yatogami_tohka_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2798675,
+        "sha256": "f8970923b37845ca3519a53f9a96b33aa4a1bae30366da98e636579c87cf06d0",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 16316,
+        "assetPath": "assets/characters/popular-yatogami_tohka.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-yatogami_tohka.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 12,
+        "id": "tobiichi_origami",
+        "name": "鸢一折纸",
+        "entryId": "pc_tobiichi_origami_tobiichi_origami_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2234126,
+        "sha256": "a17f22bad3d82b572a5aab788185eee26b86a85f5ce676f290d00707ab3a6800",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 10484,
+        "assetPath": "assets/characters/popular-tobiichi_origami.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-tobiichi_origami.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 13,
+        "id": "ubel_frieren",
+        "name": "尤贝尔",
+        "entryId": "pc_ubel_frieren_ubel_frieren_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2608446,
+        "sha256": "a5631bb658e2c34ffb824d59db2d5bbffc2f613a7b45d6d1988e3e3a1947cf89",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 8146,
+        "assetPath": "assets/characters/popular-ubel_frieren.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-ubel_frieren.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 14,
+        "id": "kanroji_mitsuri",
+        "name": "甘露寺蜜璃",
+        "entryId": "pc_kanroji_mitsuri_kanroji_mitsuri_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2963351,
+        "sha256": "d33d7374ebbb56a8cfc3bfb0b97cedc41886daa308bb1ea9315f3429d7b22bf9",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 19260,
+        "assetPath": "assets/characters/popular-kanroji_mitsuri.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-kanroji_mitsuri.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 15,
+        "id": "zero_two",
+        "name": "02",
+        "entryId": "pc_zero_two_zero_two_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2508698,
+        "sha256": "7f86138c68a372bebed5d9dcdd72d3fc7b80ff0c0f032706e4d2a3f4a58bf283",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13476,
+        "assetPath": "assets/characters/popular-zero_two.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-zero_two.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 16,
+        "id": "asada_shino",
+        "name": "朝田诗乃",
+        "entryId": "pc_asada_shino_asada_shino_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2322214,
+        "sha256": "ecd3cc2d0a80c913e97e0ee752512136fcacc36ec06020012153b23665c43343",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 6576,
+        "assetPath": "assets/characters/popular-asada_shino.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-asada_shino.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 17,
+        "id": "tatsumaki",
+        "name": "战栗的龙卷",
+        "entryId": "pc_tatsumaki_tatsumaki_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2180407,
+        "sha256": "228405a552c118a9c905daaf7f52ee22d539e47a90e57bc8668b6d634a30ffcd",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 7592,
+        "assetPath": "assets/characters/popular-tatsumaki.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-tatsumaki.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 18,
+        "id": "fubuki_one_punch",
+        "name": "吹雪",
+        "entryId": "pc_fubuki_one_punch_fubuki_one_punch_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2574167,
+        "sha256": "f24daad1911806e7edd4e268f1b44d953ffe3b3fc98086580926e0b6e284871d",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 12842,
+        "assetPath": "assets/characters/popular-fubuki_one_punch.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-fubuki_one_punch.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 19,
+        "id": "mouri_ran",
+        "name": "毛利兰",
+        "entryId": "pc_mouri_ran_mouri_ran_sfw_b6_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2552370,
+        "sha256": "9cd5568f5619e5a5d76a9e0d2ce7a189ffe156b27ba7e2599f149c7eede5907c",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 11434,
+        "assetPath": "assets/characters/popular-mouri_ran.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-mouri_ran.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 20,
+        "id": "medusa_rider",
+        "name": "美杜莎 Rider",
+        "entryId": "pc_medusa_rider_medusa_rider_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2745043,
+        "sha256": "8bacdb352eda7e92ba3d3c9ae23fc7b384d05dac3a4adcda6c5a09384b4f8306",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13852,
+        "assetPath": "assets/characters/popular-medusa_rider.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-medusa_rider.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      }
+    ],
+    "batch2": [
+      {
+        "index": 21,
+        "id": "chloe_von_einzbern",
+        "name": "克洛伊",
+        "entryId": "pc_chloe_von_einzbern_chloe_von_einzbern_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2486956,
+        "sha256": "6ea4fcf35fa1cf179f69047b4d6ecaca073343462664e906aef298e78d600ee5",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 11562,
+        "assetPath": "assets/characters/popular-chloe_von_einzbern.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-chloe_von_einzbern.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 22,
+        "id": "medea_caster",
+        "name": "美狄亚",
+        "entryId": "pc_medea_caster_medea_caster_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2556138,
+        "sha256": "62354105c844845d6b3d113e4ba9c643d36739708a65c06e70a472a31fa3e3dc",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 12502,
+        "assetPath": "assets/characters/popular-medea_caster.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-medea_caster.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 23,
+        "id": "kama_fate",
+        "name": "迦摩",
+        "entryId": "pc_kama_fate_kama_fate_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2749277,
+        "sha256": "498092ed6c8d7c3acc7fbeccd7b8af2a535a631848d5903deb47a0811cbb6f73",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13548,
+        "assetPath": "assets/characters/popular-kama_fate.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-kama_fate.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 24,
+        "id": "kasugano_sora",
+        "name": "春日野穹",
+        "entryId": "pc_kasugano_sora_kasugano_sora_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2958287,
+        "sha256": "4d13d58d7002d58b238dee9e1caec16d06bd7506f6091797cebf48ed09373da5",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 15764,
+        "assetPath": "assets/characters/popular-kasugano_sora.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-kasugano_sora.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 25,
+        "id": "kuonji_alice",
+        "name": "久远寺有珠",
+        "entryId": "pc_kuonji_alice_kuonji_alice_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2028120,
+        "sha256": "badc3f5ca62e74986d1d2a67cedc8d7eb0b3c6132513e8ff6861d3352237484d",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 6496,
+        "assetPath": "assets/characters/popular-kuonji_alice.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-kuonji_alice.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 26,
+        "id": "akizuki_kanna",
+        "name": "明月栞那",
+        "entryId": "pc_akizuki_kanna_akizuki_kanna_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2657797,
+        "sha256": "31d906cc344d6374be96164ffc77b2a277f879da5c46b5fd0ff06c0fc5a9037c",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13152,
+        "assetPath": "assets/characters/popular-akizuki_kanna.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-akizuki_kanna.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 27,
+        "id": "yae_miko",
+        "name": "八重神子",
+        "entryId": "pc_yae_miko_yae_miko_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 3178359,
+        "sha256": "f44911885f716d06ebd81427fbc7e69da73778d223f0bf4fc223957806ee6799",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 19332,
+        "assetPath": "assets/characters/popular-yae_miko.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-yae_miko.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 28,
+        "id": "changli_wuthering",
+        "name": "长离",
+        "entryId": "pc_changli_wuthering_changli_wuthering_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2633814,
+        "sha256": "7a175364f42ea0896eaa2b4a107854aff6994fd5efe156b5e8646d89e0b009ca",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13532,
+        "assetPath": "assets/characters/popular-changli_wuthering.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-changli_wuthering.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 29,
+        "id": "shorekeeper",
+        "name": "守岸人",
+        "entryId": "pc_shorekeeper_shorekeeper_sfw_b7_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2694765,
+        "sha256": "3a3601415204465afc3634465b602dd3094ad1ee251173d3fa555b50b96e124e",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 12946,
+        "assetPath": "assets/characters/popular-shorekeeper.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-shorekeeper.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 30,
+        "id": "makinohara_shouko",
+        "name": "牧之原翔子",
+        "entryId": "pc_makinohara_shouko_makinohara_shouko_sfw_b8_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2647300,
+        "sha256": "a43372d741641f584e6f9c8b722115ccb5102e2027f16c4649dcadb9c36872de",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 9676,
+        "assetPath": "assets/characters/popular-makinohara_shouko.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-makinohara_shouko.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 31,
+        "id": "futaba_rio",
+        "name": "双叶理央",
+        "entryId": "pc_futaba_rio_futaba_rio_sfw_b8_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2521043,
+        "sha256": "7bdb3383cb713e2c73cf79ad86f343e9552ad8bfec3cf11f4f880b5c484a49e8",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 10674,
+        "assetPath": "assets/characters/popular-futaba_rio.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-futaba_rio.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 32,
+        "id": "shirogane_kei",
+        "name": "白银圭",
+        "entryId": "pc_shirogane_kei_shirogane_kei_sfw_b8_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2496135,
+        "sha256": "6f93fc8b9ffecc196138c2f53ff17ad7d142d3d5e97ec1abf4b17e9251712366",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 11530,
+        "assetPath": "assets/characters/popular-shirogane_kei.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-shirogane_kei.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 33,
+        "id": "yanami_anna",
+        "name": "八奈见杏菜",
+        "entryId": "pc_yanami_anna_yanami_anna_sfw_b8_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2964609,
+        "sha256": "9b01ab0ba67ec309774c28ec112713e768654c9a3b06b9e558cd3ee1709b4e73",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 19524,
+        "assetPath": "assets/characters/popular-yanami_anna.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-yanami_anna.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 34,
+        "id": "tachibana_mikari",
+        "name": "橘美花莉",
+        "entryId": "pc_tachibana_mikari_tachibana_mikari_sfw_b8_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2556782,
+        "sha256": "e0504624b5104561b923633ded3050a7c69bc0de538332d0a4ebedc3d4e30827",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 12788,
+        "assetPath": "assets/characters/popular-tachibana_mikari.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-tachibana_mikari.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 35,
+        "id": "shinjou_akane",
+        "name": "新条茜",
+        "entryId": "pc_shinjou_akane_shinjou_akane_sfw_b8_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2472087,
+        "sha256": "3f8d3257c08880d82f78e579398bebca2581b1e22e7f3445e5134334658a1300",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 12436,
+        "assetPath": "assets/characters/popular-shinjou_akane.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-shinjou_akane.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 36,
+        "id": "suou_yuki",
+        "name": "周防有希",
+        "entryId": "pc_suou_yuki_suou_yuki_sfw_b8_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2870199,
+        "sha256": "0ae9e780d43c34da37a187b0fed1783b81c1ada5c57a2c12e3abb68b45c4409c",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 17716,
+        "assetPath": "assets/characters/popular-suou_yuki.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-suou_yuki.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 37,
+        "id": "maria_mikhailovna_kujou",
+        "name": "玛夏",
+        "entryId": "pc_maria_mikhailovna_kujou_maria_mikhailovna_kujou_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2894662,
+        "sha256": "9c3031c8deb5f31b5b192b728f218950f2d6c84eb4b73ae3291ae5533ae594bd",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 14622,
+        "assetPath": "assets/characters/popular-maria_mikhailovna_kujou.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-maria_mikhailovna_kujou.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 38,
+        "id": "elfaria_alvis_serfort",
+        "name": "艾尔菲利亚",
+        "entryId": "pc_elfaria_alvis_serfort_elfaria_alvis_serfort_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2605102,
+        "sha256": "0c90874c76def733961a8da36c05f27b383d36c1c26a2a8979b9bb5233a468eb",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 10468,
+        "assetPath": "assets/characters/popular-elfaria_alvis_serfort.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-elfaria_alvis_serfort.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 39,
+        "id": "vivy",
+        "name": "Vivy",
+        "entryId": "pc_vivy_vivy_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2725623,
+        "sha256": "50bfbc472ac9e6f1b53f99f14ad5b2b3efe1bb213e527f8f258b42d9522bd12d",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13522,
+        "assetPath": "assets/characters/popular-vivy.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-vivy.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 40,
+        "id": "maomao",
+        "name": "猫猫",
+        "entryId": "pc_maomao_maomao_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2600982,
+        "sha256": "8da2ceae359330e0f0a84b6079b010d9b51af1acf5e366ca33716dd13d34723c",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 10994,
+        "assetPath": "assets/characters/popular-maomao.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-maomao.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      }
+    ],
+    "batch3": [
+      {
+        "index": 41,
+        "id": "marcille_donato",
+        "name": "玛露希尔",
+        "entryId": "pc_marcille_donato_marcille_donato_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2496380,
+        "sha256": "382309c85bd9cb1ca628cd957e9c3fe812d9301971c5e5becc57930b4e72ed71",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 12988,
+        "assetPath": "assets/characters/popular-marcille_donato.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-marcille_donato.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 42,
+        "id": "cartethyia",
+        "name": "卡提希娅",
+        "entryId": "pc_cartethyia_cartethyia_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 3178273,
+        "sha256": "09e806ae5a04e99a3548b67aaf64cb8b923f56200a28a8fc6a01b5720fd8df2a",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 15760,
+        "assetPath": "assets/characters/popular-cartethyia.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-cartethyia.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 43,
+        "id": "dorothy_nikke",
+        "name": "桃乐丝",
+        "entryId": "pc_dorothy_nikke_dorothy_nikke_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2675198,
+        "sha256": "c61c176d88aebb85df0b1777c03c4c9dfa771ce4499a0c813073616a4093c260",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 11496,
+        "assetPath": "assets/characters/popular-dorothy_nikke.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-dorothy_nikke.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 44,
+        "id": "shiranui_mai",
+        "name": "不知火舞",
+        "entryId": "pc_shiranui_mai_shiranui_mai_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2870792,
+        "sha256": "a8ff88099e5189a67368899f60e697ea572a470615d29dbb3b223f8580ef2e3b",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 15072,
+        "assetPath": "assets/characters/popular-shiranui_mai.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-shiranui_mai.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      },
+      {
+        "index": 45,
+        "id": "togawa_sakiko",
+        "name": "丰川祥子",
+        "entryId": "pc_togawa_sakiko_togawa_sakiko_sfw_b9_01",
+        "rating": "All",
+        "dimensions": "1152x1536",
+        "sizeBytes": 2617639,
+        "sha256": "4f1d3dbfdccda52034db2effdbc4d1e701863acdf20db7034946bcbd89048d99",
+        "thumbDimensions": "320x427",
+        "thumbBytes": 13414,
+        "assetPath": "assets/characters/popular-togawa_sakiko.png",
+        "thumbnailPath": "assets/characters/thumbs/popular-togawa_sakiko.webp",
+        "ratingBasis": "existing-portrait-selection",
+        "visualReviewStatus": "pending-independent-image-review",
+        "metadataFlags": []
+      }
+    ]
+  },
+  "unclassifiedAwaitingConfirmation": [
+    {
+      "id": "raiden_shogun",
+      "name": "雷电将军",
+      "franchise": "miHoYo《原神 / Genshin Impact》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "sakurajima_mai",
+      "name": "樱岛麻衣",
+      "franchise": "鴨志田一《青春猪头少年不会梦到兔女郎学姐 / Seishun Buta Yarou》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "tokisaki_kurumi",
+      "name": "时崎狂三",
+      "franchise": "橘公司《约会大作战 / Date A Live》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "frieren",
+      "name": "芙莉莲",
+      "franchise": "山田钟人《葬送的芙莉莲 / Sousou no Frieren》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "artoria_pendragon",
+      "name": "阿尔托莉雅",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hatsune_miku",
+      "name": "初音未来",
+      "franchise": "Crypton Future Media《VOCALOID》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "yuzuriha_inori",
+      "name": "楪祈",
+      "franchise": "Production I.G《罪恶王冠 / Guilty Crown》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "yukinoshita_yukino",
+      "name": "雪之下雪乃",
+      "franchise": "渡航《我的青春恋爱物语果然有问题 / Oregairu》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "elaina",
+      "name": "伊雷娜",
+      "franchise": "白石定规《魔女之旅 / Majo no Tabitabi》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "misaka_mikoto",
+      "name": "御坂美琴",
+      "franchise": "鎌池和馬《魔法禁书目录》/ 冬川基《某科学的超电磁炮 / A Certain Scientific Railgun》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "shokuhou_misaki",
+      "name": "食蜂操祈",
+      "franchise": "鎌池和馬《魔法禁书目录》/ 冬川基《某科学的超电磁炮 / A Certain Scientific Railgun》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "makima",
+      "name": "玛奇玛",
+      "franchise": "藤本タツキ《电锯人 / Chainsaw Man》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "tohsaka_rin",
+      "name": "远坂凛",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "rem_rezero",
+      "name": "雷姆",
+      "franchise": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "emilia_rezero",
+      "name": "爱蜜莉雅",
+      "franchise": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "roxy_migurdia",
+      "name": "洛琪希",
+      "franchise": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "illyasviel_von_einzbern",
+      "name": "伊莉雅丝菲尔",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kitagawa_marin",
+      "name": "喜多川海梦",
+      "franchise": "福田晋一《更衣人偶坠入爱河 / My Dress-Up Darling》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kisara_engage_kiss",
+      "name": "木更",
+      "franchise": "丸戸史明《Engage Kiss / 契约之吻》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "chen_arknights",
+      "name": "陈",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "dusk_arknights",
+      "name": "夕",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "eunectes_arknights",
+      "name": "森蚺",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "exusiai_arknights",
+      "name": "能天使",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "eyjafjalla_arknights",
+      "name": "艾雅法拉",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "goldenglow_arknights",
+      "name": "澄闪",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kaltsit_arknights",
+      "name": "凯尔希",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "laevatain_arknights",
+      "name": "莱万汀",
+      "franchise": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "lemuen_arknights",
+      "name": "蕾缪安",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "mudrock_arknights",
+      "name": "泥岩",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "perlica_arknights",
+      "name": "佩丽卡",
+      "franchise": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "quillpen_arknights",
+      "name": "羽毛笔",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "skadi_arknights",
+      "name": "斯卡蒂",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "surtr_arknights",
+      "name": "史尔特尔",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "suzuran_arknights",
+      "name": "铃兰",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "alisa_mikhailovna_kujou",
+      "name": "艾莉莎·米哈伊洛夫娜·九条",
+      "franchise": "灿灿SUN《不时轻声地用俄语遮羞的邻座艾莉同学》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "sylphiette",
+      "name": "希露菲叶特",
+      "franchise": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "yuigahama_yui",
+      "name": "由比滨结衣",
+      "franchise": "渡航《我的青春恋爱物语果然有问题 / Oregairu》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "jeanne_alter",
+      "name": "贞德[Alter]",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "matou_sakura",
+      "name": "间桐樱",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "yor_forger",
+      "name": "约尔·福杰",
+      "franchise": "远藤达哉《间谍过家家 / SPY x FAMILY》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "reze_chainsaw",
+      "name": "蕾塞",
+      "franchise": "藤本タツキ《电锯人 / Chainsaw Man》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "fern_frieren",
+      "name": "菲伦",
+      "franchise": "山田钟人《葬送的芙莉莲 / Sousou no Frieren》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "mimori_byakuya",
+      "name": "深森白夜",
+      "franchise": "藤原可可亚《曾经魔法少女和大恶魔经常为敌》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "saint_cecilia",
+      "name": "塞西莉亚",
+      "franchise": "和武叶佐乃《白圣女与黑牧师》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "misono_mika",
+      "name": "圣园未花",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "sorasaki_hina",
+      "name": "空崎日奈",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kyouyama_kazusa",
+      "name": "杏山和纱",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "asuma_toki",
+      "name": "飞鸟马时",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "tsukatsuki_rio",
+      "name": "调月莉音",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ling_arknights",
+      "name": "令",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "eris_greyrat",
+      "name": "艾莉丝",
+      "franchise": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hoshino_ai",
+      "name": "星野爱",
+      "franchise": "Doga Kobo《我推的孩子 / Oshi no Ko》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kurokawa_akane",
+      "name": "黑川茜",
+      "franchise": "Doga Kobo《我推的孩子 / Oshi no Ko》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "yvonne_arknights",
+      "name": "伊冯",
+      "franchise": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "morgan_le_fay_fate",
+      "name": "摩根",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "mash_kyrielight",
+      "name": "玛修",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "caren_hortensia",
+      "name": "卡莲·C·奥尔黛西亚",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "artoria_pendragon_alter",
+      "name": "阿尔托莉雅·Alter",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "jeanne_d_arc",
+      "name": "圣女贞德",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "scathach_fate",
+      "name": "斯卡哈",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ishtar_fate",
+      "name": "伊什塔尔",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ereshkigal_fate",
+      "name": "埃列什基伽勒",
+      "franchise": "TYPE-MOON《Fate 系列》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "mikasa_ackerman",
+      "name": "三笠",
+      "franchise": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "krista_lenz",
+      "name": "希斯特里亚",
+      "franchise": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "gotoh_hitori",
+      "name": "后藤一里",
+      "franchise": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ayanami_rei",
+      "name": "绫波丽",
+      "franchise": "GAINAX / Khara《新世纪福音战士 / Neon Genesis Evangelion》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "asuka_langley",
+      "name": "惣流/式波·明日香·兰格雷",
+      "franchise": "GAINAX / Khara《新世纪福音战士 / Neon Genesis Evangelion》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "furina",
+      "name": "芙宁娜",
+      "franchise": "miHoYo《原神 / Genshin Impact》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hu_tao",
+      "name": "胡桃",
+      "franchise": "miHoYo《原神 / Genshin Impact》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kafka",
+      "name": "卡芙卡",
+      "franchise": "miHoYo《崩坏：星穹铁道 / Honkai: Star Rail》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hayase_yuuka",
+      "name": "早濑优香",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "shiromi_iori",
+      "name": "银镜伊织",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "texas_arknights",
+      "name": "德克萨斯",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "lappland_arknights",
+      "name": "拉普兰德",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "viviana_arknights",
+      "name": "薇薇安娜",
+      "franchise": "Hypergryph《明日方舟 / Arknights》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ellen_joe",
+      "name": "艾莲·乔",
+      "franchise": "HoYoverse《绝区零 / Zenless Zone Zero》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hoshimi_miyabi",
+      "name": "星见雅",
+      "franchise": "HoYoverse《绝区零 / Zenless Zone Zero》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "cheshire_azur",
+      "name": "柴郡",
+      "franchise": "Manjuu/Yongshi《碧蓝航线 / Azur Lane》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "taihou_azur",
+      "name": "大凤",
+      "franchise": "Manjuu/Yongshi《碧蓝航线 / Azur Lane》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ichinose_asuna",
+      "name": "一之濑明日奈",
+      "franchise": "NEXON《蔚蓝档案 / Blue Archive》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "lucy_cyberpunk",
+      "name": "露西",
+      "franchise": "Studio TRIGGER / CD PROJEKT RED《赛博朋克：边缘行者》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "yorha_2b",
+      "name": "2B",
+      "franchise": "Square Enix / PlatinumGames《尼尔：机械纪元 / NieR:Automata》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "murasame",
+      "name": "丛雨",
+      "franchise": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hitachi_mako",
+      "name": "常陆茉子",
+      "franchise": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "tomotake_yoshino",
+      "name": "朝武芳乃",
+      "franchise": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kazami_kazuki",
+      "name": "风见一姬",
+      "franchise": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "suou_amane",
+      "name": "周防天音",
+      "franchise": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "komine_sachi",
+      "name": "小岭幸",
+      "franchise": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "harudera_yuria",
+      "name": "春寺由梨亚 (JB)",
+      "franchise": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ikaros",
+      "name": "伊卡洛斯",
+      "franchise": "水无月すう《天降之物 / Sora no Otoshimono》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "golden_darkness",
+      "name": "金色暗影",
+      "franchise": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "lala_satalin_deviluke",
+      "name": "菈菈·萨塔琳·戴比路克",
+      "franchise": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "momo_velia_deviluke",
+      "name": "梦梦·贝莉雅·戴比路克",
+      "franchise": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kotegawa_yui",
+      "name": "古手川唯",
+      "franchise": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "nana_asta_deviluke",
+      "name": "娜娜·阿斯达·戴比路克",
+      "franchise": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "rias_gremory",
+      "name": "莉雅丝·吉蒙里",
+      "franchise": "石踏一榮《恶魔高校DxD / High School DxD》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "akeno_himejima",
+      "name": "姬岛朱乃",
+      "franchise": "石踏一榮《恶魔高校DxD / High School DxD》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "albedo_overlord",
+      "name": "雅儿贝德",
+      "franchise": "丸山くがね《不死者之王 / OVERLORD》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "sparkle_hsr",
+      "name": "花火",
+      "franchise": "miHoYo《崩坏：星穹铁道 / Honkai: Star Rail》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "cc_code_geass",
+      "name": "C.C.",
+      "franchise": "谷口悟朗《反叛的鲁路修 / Code Geass》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ryougi_shiki",
+      "name": "两仪式",
+      "franchise": "TYPE-MOON《空之境界 / Kara no Kyoukai》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "arcueid_brunestud",
+      "name": "爱尔奎特·布伦史塔德",
+      "franchise": "TYPE-MOON《月姬 / Tsukihime》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "ciel_tsukihime",
+      "name": "希耶尔",
+      "franchise": "TYPE-MOON《月姬 / Tsukihime》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "asuna_yuuki",
+      "name": "结城明日奈",
+      "franchise": "川原砾《刀剑神域 / Sword Art Online》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "violet_evergarden",
+      "name": "薇尔莉特·伊芙加登",
+      "franchise": "暁佳奈《紫罗兰永恒花园 / Violet Evergarden》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "vladilena_milize",
+      "name": "芙拉蒂蕾娜·米利杰",
+      "franchise": "安里アサト《86-不存在的战区 / 86 -Eighty Six-》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "shinomiya_kaguya",
+      "name": "四宫辉夜",
+      "franchise": "赤坂アカ《辉夜大小姐想让我告白 / Kaguya-sama: Love Is War》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kasumigaoka_utaha",
+      "name": "霞之丘诗羽",
+      "franchise": "丸戸史明《路人女主的养成方法 / Saenai Heroine no Sodatekata》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "kochou_shinobu",
+      "name": "蝴蝶忍",
+      "franchise": "吾峠呼世晴《鬼灭之刃 / Kimetsu no Yaiba》",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "shiina_mashiro",
+      "name": "椎名真白",
+      "franchise": "The Pet Girl of Sakurasou",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "izumi_sagiri",
+      "name": "和泉纱雾",
+      "franchise": "Eromanga Sensei",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "takarada_rikka",
+      "name": "宝多六花",
+      "franchise": "SSSS.GRIDMAN",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hayasaka_ai",
+      "name": "早坂爱",
+      "franchise": "Kaguya-sama: Love Is War",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "arima_kana",
+      "name": "有马加奈",
+      "franchise": "Oshi no Ko",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    },
+    {
+      "id": "hori_kyouko",
+      "name": "堀京子",
+      "franchise": "Horimiya",
+      "status": "awaiting_confirmation",
+      "reason": "not_registered_in_portrait_selections"
+    }
+  ],
+  "review": {
+    "status": "verified-metadata-pending-visual-review",
+    "notes": [
+      "撤回未逐图独立核验的像素距离、面积百分比、色彩数值及视觉质量断言。",
+      "保留原 45 个对象用于后续看图，不将联系表或模型自评升级为人工验收。",
+      "原提交的 37/8 主观分类不再作为验收统计。"
+    ]
+  }
+}

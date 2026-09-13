@@ -1,0 +1,93 @@
+{
+  "reviewedAt": "2026-09-13",
+  "status": "reviewed-documentation-with-validation-gaps",
+  "allTasksSettled": false,
+  "notes": [
+    "completed仅指对应文档任务完成，不代表运行/视觉验收完成。",
+    "撤回原先全部无缺口结论；主观图片评定不再作为已通过记录。"
+  ],
+  "tasks": {
+    "G0": {
+      "name": "修正并自校验上一份交付",
+      "status": "completed",
+      "documentReview": "accepted-with-stated-scope",
+      "scope": "334个物理文件及160角色用途映射；结构复核",
+      "resultFiles": [
+        "docs/research/engineering/gemini-asset-audit.md",
+        "docs/research/engineering/gemini-asset-audit.json"
+      ],
+      "unverifiedItems": [
+        "外部参考图存在性与容量未核验",
+        "图片内容与安装/运行未验收"
+      ]
+    },
+    "G1": {
+      "name": "扩大已有全年龄素材的视觉初筛",
+      "status": "pending",
+      "documentReview": "accepted-with-stated-scope",
+      "scope": "45个图片候选元数据，43个既有All登记与2个未新增分级的主角样例；其余115位待确认",
+      "resultFiles": [
+        "docs/research/engineering/gemini-visual-inventory.md",
+        "docs/research/engineering/gemini-visual-inventory.json"
+      ],
+      "unverifiedItems": [
+        "45个候选待独立完整看图",
+        "其余115个对象待确认",
+        "未新增任何图片分级"
+      ]
+    },
+    "G2": {
+      "name": "图片使用场景与裁切建议表",
+      "status": "completed",
+      "documentReview": "accepted-with-stated-scope",
+      "scope": "5类实际图片容器的源码与回退关系",
+      "resultFiles": [
+        "docs/research/engineering/gemini-crop-usage.md",
+        "docs/research/engineering/gemini-crop-usage.json"
+      ],
+      "unverifiedItems": [
+        "未运行浏览器或原生窗口，实际裁切待验证"
+      ]
+    },
+    "G3": {
+      "name": "界面文字与状态提示盘点",
+      "status": "completed",
+      "documentReview": "accepted-with-stated-scope",
+      "scope": "6条文案建议：1条确认状态不匹配、4条可选建议、1条撤回",
+      "resultFiles": [
+        "docs/research/engineering/gemini-ui-copy-review.md",
+        "docs/research/engineering/gemini-ui-copy-review.json"
+      ],
+      "unverifiedItems": [
+        "仅源码复核，没有修改UI或验证使用者理解"
+      ]
+    },
+    "G4": {
+      "name": "指定专题文档的时效与证据索引",
+      "status": "completed",
+      "documentReview": "accepted-with-stated-scope",
+      "scope": "8份文档的原文与代码入口",
+      "resultFiles": [
+        "docs/research/engineering/gemini-doc-evidence-index.md",
+        "docs/research/engineering/gemini-doc-evidence-index.json"
+      ],
+      "unverifiedItems": [
+        "文件和源码存在不代表安装、设备或模型通过"
+      ]
+    },
+    "G5": {
+      "name": "资源分发与 PC 体验的人工验收用例",
+      "status": "completed",
+      "documentReview": "accepted-with-stated-scope",
+      "scope": "9项未执行用例：6项现状、3项未来R1",
+      "resultFiles": [
+        "docs/research/engineering/gemini-resource-acceptance.md",
+        "docs/research/engineering/gemini-resource-acceptance.json"
+      ],
+      "unverifiedItems": [
+        "全部用例尚未执行",
+        "未来R1能力仍未实现"
+      ]
+    }
+  }
+}

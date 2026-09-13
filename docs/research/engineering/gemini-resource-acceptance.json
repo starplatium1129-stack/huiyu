@@ -1,0 +1,257 @@
+{
+  "reviewedAt": "2026-09-13",
+  "testSuite": "资源与PC体验人工验收设计",
+  "status": "not-executed",
+  "autoRun": false,
+  "targetEnvironment": "主力机4K/150%；记录实际CSS视口和DPR。办公机浏览器模拟单独标记。",
+  "scope": "6项当前实现的测试设计与3项R1未来测试草案；当前设计也不代表功能已通过。",
+  "safety": "所有故障注入在隔离浏览器会话、夹具服务或虚拟机中进行，不重命名/破坏真实素材，不断开日常网络，不调用真实生成，不安装到日常环境。",
+  "summary": {
+    "totalTestCases": 9,
+    "currentCapabilities": 6,
+    "futurePlan006R1Capabilities": 3
+  },
+  "testCases": [
+    {
+      "id": "TC-DISP-01",
+      "name": "离线首次进入的现状核验",
+      "capabilityTier": "current",
+      "status": "not-executed",
+      "targetPages": "/、/character、/popular-scenes",
+      "evidence": [
+        "src/views/HomeView.vue",
+        "src/views/CharacterView.vue",
+        "src/router/index.ts"
+      ],
+      "preconditions": [
+        "准备独立安装副本和新的测试用户配置；核对版本及随包资源清单。",
+        "仅阻断外网，保留本地网关和静态资源连接；禁止直接关闭所有网络而误伤 localhost。"
+      ],
+      "steps": [
+        "启动首页，核对热门横条实际数量与图像请求。",
+        "进入角色资料库，依据夹具角色清单滚动并抽查详情；进入热门场景页。"
+      ],
+      "expectedObservations": [
+        "首页热门横条按当前代码最多12位，数量为 min(可用热门角色数,12)，不是160位。",
+        "记录随包图片能否显示，以及缺失时实际提示；不预设完整离线详情回退已实现。",
+        "页面导航与文字可操作；任何空白、裂图或异常记录为发现，不以旧报告消除。"
+      ],
+      "evidenceToRetain": "截图、实际角色数量、失败请求、应用与数据版本。",
+      "recoverySteps": "解除测试会话拦截并关闭独立配置；保存证据后还原测试主题/窗口设置。不要清理日常用户数据。",
+      "results": []
+    },
+    {
+      "id": "TC-DISP-02",
+      "name": "角色详情原图失败的现状核验",
+      "capabilityTier": "current",
+      "status": "not-executed",
+      "targetPages": "/character",
+      "evidence": [
+        "src/views/CharacterView.vue"
+      ],
+      "preconditions": [
+        "仅在隔离浏览器会话拦截一个选定角色的详情原图 URL，返回404；保留列表头像请求。"
+      ],
+      "steps": [
+        "选择该角色，等图片错误事件后检查详情与控制台。",
+        "解除拦截并重新加载测试页面。"
+      ],
+      "expectedObservations": [
+        "当前代码隐藏失败原图；徽章由角色类型和 pending 状态决定，不因404自动变成“立绘待补”。",
+        "记录原图隐藏后的空白范围与替代展示情况；不要将原图隐藏等同于完整预览回退。",
+        "解除拦截后确认图片恢复，且其他角色仍可访问。"
+      ],
+      "evidenceToRetain": "目标 URL、错误请求记录、失败与恢复截图、未捕获异常记录。",
+      "recoverySteps": "解除测试会话拦截并关闭独立配置；保存证据后还原测试主题/窗口设置。不要清理日常用户数据。",
+      "results": []
+    },
+    {
+      "id": "TC-DISP-03",
+      "name": "列表缩略图失败的占位",
+      "capabilityTier": "current",
+      "status": "not-executed",
+      "targetPages": "/character",
+      "evidence": [
+        "src/components/library/CharacterPortrait.vue"
+      ],
+      "preconditions": [
+        "在测试会话拦截一个列表头像请求；不修改仓库或安装目录图片。"
+      ],
+      "steps": [
+        "显示该头像，检查图片错误后的占位与列表对齐。",
+        "解除拦截并刷新，检查恢复。"
+      ],
+      "expectedObservations": [
+        "CharacterPortrait 的 failed 状态应显示角色名首字，名字为空时使用“人”。",
+        "记录占位前后容器尺寸和文字对齐，不预先宣称无布局变化。"
+      ],
+      "evidenceToRetain": "失败请求、占位 DOM、前后截图、容器尺寸。",
+      "recoverySteps": "解除测试会话拦截并关闭独立配置；保存证据后还原测试主题/窗口设置。不要清理日常用户数据。",
+      "results": []
+    },
+    {
+      "id": "TC-DISP-04",
+      "name": "参考图 pending、加载失败与灯箱失败分支",
+      "capabilityTier": "current",
+      "status": "not-executed",
+      "targetPages": "/character",
+      "evidence": [
+        "src/views/CharacterView.vue"
+      ],
+      "preconditions": [
+        "隔离夹具提供：无 URL 的 pending、带 URL 可用图和另一张待阻断图片。",
+        "参考数据响应和图像请求仅在测试会话替换，保持分级访问限制。"
+      ],
+      "steps": [
+        "检查无 URL 条目。",
+        "阻断一张卡片图，确认不可用状态及点击、键盘行为。",
+        "另开干净会话，让卡片图片先成功，打开灯箱后单独让灯箱请求失败；需禁用测试缓存并确认请求确实发生，否则本分支标未覆盖。"
+      ],
+      "expectedObservations": [
+        "无 URL 条目显示“待生成”且不可打开；已失败 URL 显示“本机暂无参考图”且不可打开。",
+        "不能要求已失败卡片继续打开灯箱。只有单独覆盖灯箱请求失败时，才检查“参考图暂时无法读取”回退和关闭/ESC。"
+      ],
+      "evidenceToRetain": "夹具状态、请求记录、卡片和灯箱截图、键盘结果与未覆盖分支。",
+      "recoverySteps": "解除测试会话拦截并关闭独立配置；保存证据后还原测试主题/窗口设置。不要清理日常用户数据。",
+      "results": []
+    },
+    {
+      "id": "TC-DISP-05",
+      "name": "4K 与150%缩放布局",
+      "capabilityTier": "current",
+      "status": "not-executed",
+      "targetPages": "/、/character、/scene-manager、/prompt-builder、/gallery",
+      "evidence": [
+        "src/router/index.ts"
+      ],
+      "preconditions": [
+        "主力机3840×2160、Windows150%，应用最大化；记录任务栏、窗口边框和应用标题栏。",
+        "办公机可用2560×1440 CSS视口及DPR1.5做近似浏览器检查，但另标模拟，不能替代桌面验收。"
+      ],
+      "steps": [
+        "记录实际 innerWidth、innerHeight、devicePixelRatio 与截图像素尺寸。",
+        "遍历上述页面，检查文字、工具栏、滚动容器与底部控件。",
+        "重点检查创作素材列表能否使用剩余高度，最后一项是否可滚动到达。"
+      ],
+      "expectedObservations": [
+        "不要求真实内容视口恰好2560×1440；系统/应用栏会影响高度。",
+        "无文字或按钮非预期截断、重叠或不可到达；留白按各页面实际布局判断，不要求所有页面统一限宽。",
+        "记录缩放下细线与字体表现，不承诺分数缩放绝对无抗锯齿或发虚。"
+      ],
+      "evidenceToRetain": "物理分辨率、缩放、实际视口/DPR、完整截图及滚动到末项证据。",
+      "recoverySteps": "解除测试会话拦截并关闭独立配置；保存证据后还原测试主题/窗口设置。不要清理日常用户数据。",
+      "results": []
+    },
+    {
+      "id": "TC-DISP-06",
+      "name": "深浅主题可读性",
+      "capabilityTier": "current",
+      "status": "not-executed",
+      "targetPages": "/character、/scene-manager、/gallery",
+      "evidence": [
+        "src/views/CharacterView.vue",
+        "src/components/visual/SemanticParticleField.vue"
+      ],
+      "preconditions": [
+        "使用允许范围内、经实际查看选出的深底与浅底图片作为夹具，记录路径；不凭角色名假定底色。"
+      ],
+      "steps": [
+        "通过当前实际主题控件切换深浅主题。",
+        "检查正文、禁用文字、图片叠字、控件状态和粒子轮廓。",
+        "测量适用文本的前景/背景对比度；动态背景另记录最不利可见状态。"
+      ],
+      "expectedObservations": [
+        "记录实际测量并按项目WCAG AA要求判断，不能仅凭截图肉眼宣布合格。",
+        "记录闪烁、遮挡与边界可读性；不强制未经确认的描边倍率、动画时长或控件位置。"
+      ],
+      "evidenceToRetain": "双主题同区域截图、对比度计算输入与结果、问题位置。",
+      "recoverySteps": "解除测试会话拦截并关闭独立配置；保存证据后还原测试主题/窗口设置。不要清理日常用户数据。",
+      "results": []
+    },
+    {
+      "id": "TC-R1-FUTURE-01",
+      "name": "可选高清资源取消与完成",
+      "capabilityTier": "future",
+      "status": "not-executed",
+      "targetPages": "待 R1 实现确定的资源入口",
+      "evidence": [
+        "plans/006-workflow-and-content-governance.md"
+      ],
+      "preconditions": [
+        "R1 下载与资源解析实现后，依据真实接口补充步骤。",
+        "使用隔离缓存目录和本地可控资源服务器；基础展示图可用。"
+      ],
+      "steps": [
+        "开始可选高清下载，在可控暂停点取消；再次请求并完成下载。",
+        "分别检查下载前、取消后及成功后的资源解析结果。"
+      ],
+      "expectedObservations": [
+        "取消不能使既有基础资源失效；临时文件保留/清理由最终恢复策略明确。",
+        "完整资源经实现约定校验后可用，未完成资源不能作为有效高清图。",
+        "具体按钮、进度表现、校验算法和完成时限待实现确定，不视为现有功能。"
+      ],
+      "evidenceToRetain": "测试服务器与缓存日志、资源哈希或实现指定校验值、状态与图片截图。",
+      "recoverySteps": "撤销测试拦截或停止测试服务器；恢复隔离快照，仅清理已核验位于测试目录内的夹具。",
+      "results": []
+    },
+    {
+      "id": "TC-R1-FUTURE-02",
+      "name": "损坏资源拒绝与旧资源保留",
+      "capabilityTier": "future",
+      "status": "not-executed",
+      "targetPages": "待 R1 实现确定的导入或下载入口",
+      "evidence": [
+        "plans/006-workflow-and-content-governance.md"
+      ],
+      "preconditions": [
+        "R1 校验和替换协议实现后，准备测试生成的有效小资源包及单字节损坏副本。",
+        "所有输入和输出限隔离临时目录，记录旧有效资源哈希。"
+      ],
+      "steps": [
+        "提交损坏副本，检查失败结果和目标资源。",
+        "提交有效副本，检查成功结果。"
+      ],
+      "expectedObservations": [
+        "损坏资源不能替代旧有效资源；旧资源内容完整且仍可解析。",
+        "错误信息应明确可操作；不预设报错文案、事务锁或解压前后的具体实现。"
+      ],
+      "evidenceToRetain": "操作日志、前后文件清单与哈希、拒绝和成功回执。",
+      "recoverySteps": "撤销测试拦截或停止测试服务器；恢复隔离快照，仅清理已核验位于测试目录内的夹具。",
+      "results": []
+    },
+    {
+      "id": "TC-R1-FUTURE-03",
+      "name": "应用升级保留可选资源",
+      "capabilityTier": "future",
+      "status": "not-executed",
+      "targetPages": "待 R1 实现及桌面部署验收",
+      "evidence": [
+        "plans/006-workflow-and-content-governance.md",
+        "docs/desktop-deployment.md"
+      ],
+      "preconditions": [
+        "R1 外置缓存及版本兼容策略实现后，在隔离虚拟机准备两个实际可测试版本。",
+        "保存可回滚快照与资源清单；不使用日常安装或用户真实资源目录。"
+      ],
+      "steps": [
+        "按项目部署指南从旧测试版升级到新测试版。",
+        "检查兼容资源可用性及需要迁移/失效资源的明确状态。"
+      ],
+      "expectedObservations": [
+        "兼容资源保留并按策略复用；不承诺所有跨版本资源永远无需更新。",
+        "不把当前部署命令存在视为此未来能力已实现。"
+      ],
+      "evidenceToRetain": "前后版本、缓存路径和哈希、资源解析记录与升级日志。",
+      "recoverySteps": "撤销测试拦截或停止测试服务器；恢复隔离快照，仅清理已核验位于测试目录内的夹具。",
+      "results": []
+    }
+  ],
+  "corrections": [
+    "首页最多12位，按实际数据计算，不要求160位。",
+    "已失败参考卡片不可点击；灯箱失败需独立请求夹具。",
+    "4K150%不等于固定内容视口，也不等于2560×1440物理截图。",
+    "删除未来功能的虚构按钮、固定50%取消点、固定Tier命名与未测时限承诺。",
+    "原图错误只触发隐藏，徽章不随错误自动变为待补。"
+  ],
+  "results": []
+}
