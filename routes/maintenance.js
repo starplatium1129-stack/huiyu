@@ -402,7 +402,8 @@ async function runMaintenanceChecks() {
         var retiredIds = sceneWrite.readRetiredSceneIds(path.join(cfg.ROOT_DIR, 'data'));
         var deletedIds = previous.scenes.filter(function (scene) { return !ids.has(scene.id); }).map(function (scene) { return scene.id; });
         if (tags !== undefined) validateTags(tags);
-        var cleanCuration = curation !== undefined ? sanitizeCuration(curation, ids) : null;
+        // 基线已在锁内核对：旧客户端未提交核心精选时保留当前值，显式 [] 才清空。
+        var cleanCuration = curation !== undefined ? sanitizeCuration(curation, ids, readJson(path.join(cfg.ROOT_DIR, 'data', 'curation.json'))) : null;
         snapshot = maintenanceSnapshot(deletedIds);
         var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, blueprints !== undefined ? 'content-blueprints' : 'content');
         // 增量写入：改动留在原分片文件，新增追加批次；不整体重切（计划 006 D5）

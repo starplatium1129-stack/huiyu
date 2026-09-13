@@ -19,7 +19,13 @@ const {
 // 2026-08-15 样张视觉定级的人工评级覆盖：非 mature 场景也信任人工评级，不做 tag 反推交叉检查。
 const MANUAL_SCENE_RATINGS = require('../lib/manual-scene-ratings.js');
 
-const dataDir = path.join(__dirname, '..', '..', 'data');
+// 数据根与 scene-store 等维护脚本同链解析：夹具经 AICS_DATA_ROOT 运行时，
+// 本脚本全部数据输入（分片与 characters/presets/curation/retired/pinned）取自同一根；
+// 未设置环境变量时保持仓库 data/ 的既有行为。
+const dataDir = path.join(
+  path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..')),
+  'data'
+);
 const characterSource = path.join(dataDir, 'characters.json');
 const presetSource = path.join(dataDir, 'presets.json');
 const curationSource = path.join(dataDir, 'curation.json');
@@ -254,6 +260,25 @@ for (const sceneId of signatureSceneIds) {
 for (const sceneId of reviewSceneIds) {
   if (!ids.has(sceneId)) errors.push('curation.json review references missing scene: ' + sceneId);
   if (curatedSeen.has(sceneId)) errors.push('curation.json scene cannot be both curated and review: ' + sceneId);
+}
+// personaCoreSceneIds：字段存在时核对数组、非空字符串 ID、重复项与活跃引用；
+// 空数组与缺省保持兼容（首屏预算、角色覆盖等政策检查归 test-scene-shard-integrity.js）。
+const personaCoreSceneIds = curationData?.personaCoreSceneIds;
+if (personaCoreSceneIds !== undefined) {
+  if (!Array.isArray(personaCoreSceneIds)) {
+    errors.push('curation.json personaCoreSceneIds must be an array');
+  } else {
+    const coreSeen = new Set();
+    personaCoreSceneIds.forEach((sceneId, index) => {
+      if (typeof sceneId !== 'string' || !sceneId.trim()) {
+        errors.push('curation.json personaCoreSceneIds[' + index + '] must be a non-empty string');
+        return;
+      }
+      if (coreSeen.has(sceneId)) errors.push('curation.json personaCoreSceneIds[' + index + '] duplicates an earlier entry: ' + sceneId);
+      coreSeen.add(sceneId);
+      if (!ids.has(sceneId)) errors.push('curation.json personaCoreSceneIds[' + index + '] references missing scene: ' + sceneId);
+    });
+  }
 }
 for (const sceneId of Object.keys(recommendationReasons)) {
   if (!ids.has(sceneId)) errors.push('curation.json recommendation reason references missing scene: ' + sceneId);

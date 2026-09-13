@@ -39,12 +39,33 @@ function reportConditions({ root = path.resolve(__dirname, '../..'), domain, reg
       missingEffects = childEffects.filter(effect => !PASSIVE_EFFECTS.includes(effect) && !(Array.isArray(def.run?.nature) && def.run.nature.includes(effect)));
       if (missingEffects.length) errors.push('Composite omitted effects: ' + missingEffects.join(', '));
     } catch (error) { errors.push(error.message); }
-    return { name, nature: def.run?.nature ?? null, machine: def.run?.machine ?? null, resume: def.run?.resume ?? null,
-      evidence: def.run?.evidence ?? null, unknown: def.run?.unknown ?? ['未声明'], entry: cmd, entryExists, docs: def.docs ?? null, docsExist,
+    // G2：原样复制已声明的条件元数据，不从文本推断行为；缺省给稳定的空集合/null。
+    const run = def.run || {};
+    const switches = run.switches == null ? {} : typeof run.switches === 'object' && !Array.isArray(run.switches)
+      ? Object.fromEntries(Object.entries(run.switches).map(([flag, value]) => [flag, Array.isArray(value) ? [...value] : value]))
+      : run.switches;
+    const notes = Array.isArray(run.notes) ? [...run.notes] : run.notes == null ? [] : run.notes;
+    return { name, nature: def.run?.nature ?? null, machine: def.run?.machine ?? null, switches, resume: def.run?.resume ?? null,
+      evidence: def.run?.evidence ?? null, unknown: def.run?.unknown ?? ['未声明'], notes, needs: def.needs ?? null, entry: cmd, entryExists, docs: def.docs ?? null, docsExist,
       composite: { steps: def.steps || [], childEffects, missingEffects }, errors, executionStatus: 'not-run' };
   });
   return { schemaVersion: 1, ok: commands.every(row => !row.errors.length), commands, executionStatus: 'not-run' };
 }
+function formatConditionRow(row) {
+  const lines = [`${row.name}: ${row.errors.length ? row.errors.join('; ') : 'metadata valid'}; not-run`];
+  lines.push(`  默认: ${Array.isArray(row.nature) ? row.nature.join(', ') : '未声明'}`);
+  const switches = row.switches;
+  const switchText = switches != null && typeof switches === 'object' && !Array.isArray(switches)
+    ? Object.entries(switches).map(([flag, effects]) => `${flag} → ${Array.isArray(effects) ? effects.join(', ') : String(effects)}`).join('；')
+    : String(switches ?? '');
+  if (switchText) lines.push(`  开关: ${switchText}`);
+  if (row.needs != null && row.needs !== '') lines.push(`  前置: ${row.needs}`);
+  const notesText = Array.isArray(row.notes) ? row.notes.join('；') : row.notes == null ? '' : String(row.notes);
+  if (notesText) lines.push(`  说明: ${notesText}`);
+  if (Array.isArray(row.unknown) && row.unknown.length) lines.push(`  未知: ${row.unknown.join('；')}`);
+  return lines.join('\n');
+}
+function formatConditions(result) { return result.commands.map(formatConditionRow).join('\n'); }
 function main(argv = process.argv.slice(2)) {
   const options = {}; let json = false, preview = false;
   for (let i = 0; i < argv.length; i++) {
@@ -56,8 +77,8 @@ function main(argv = process.argv.slice(2)) {
   }
   if (preview) { console.log('audit:workflow-conditions [--json] [--root <directory>] [--domain <workflow group>]：只读注册条件；不执行命令。'); return 0; }
   const result = reportConditions(options);
-  console.log(json ? JSON.stringify(result, null, 2) : result.commands.map(row => `${row.name}: ${row.errors.length ? row.errors.join('; ') : 'metadata valid'}; not-run`).join('\n'));
+  console.log(json ? JSON.stringify(result, null, 2) : formatConditions(result));
   return result.ok ? 0 : 1;
 }
-module.exports = { reportConditions, main };
+module.exports = { reportConditions, formatConditions, formatConditionRow, main };
 if (require.main === module) { try { process.exitCode = main(); } catch (error) { console.error(error.message); process.exitCode = 1; } }

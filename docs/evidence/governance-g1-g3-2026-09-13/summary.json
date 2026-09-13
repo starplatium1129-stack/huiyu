@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-13",
+  "baseline": "266d61f",
+  "scope": "G1 core curation save/validation; G2 workflow condition presentation; G3 ownership descriptions",
+  "sourceSha256": {
+    "routes/maintenance-validation.js": "d769479e6d2ee827164d470e127fe3cf109b20ebf2f3684cbf9f399ca2dabc60",
+    "routes/maintenance.js": "c44941869fc733b0a417733f9695f853620d02719ef63709de85c6634330b694",
+    "scripts/maintenance/validate-scenes.js": "696f7d5cabcdd7dd9134912fba03c5d852471b5f2bf7b4f8eb4ed5c89311c18e",
+    "scripts/maintenance/report-workflow-conditions.js": "defe7a698410d52f6ee5c45928ab8f28cf9defe497ed22d70d2241104c441248",
+    "scripts/maintenance/report-content-ownership.js": "bb95517427167e27280ecac95900c3a3aa816c9a8f05baea4d7d42a3578da8f0",
+    "scripts/tests/test-maintenance.js": "eaece358b6a26352fae5ed6659019e0c70cb32979610d529d5ff219dbf76346b",
+    "scripts/tests/test-scene-maintenance-save.js": "8575b0c5e5ed8dbb9994a5fdda8fdeedf0fe31d38df0a7a721576e854afeca2d",
+    "scripts/tests/test-workflow-conditions.js": "9f6077e8c06d6967a2dc06f16e7a5e8df824c36f69473fa957e80d6c980395bd",
+    "scripts/tests/test-content-ownership.js": "88ebb1a9b82f2f919aeb111454bdc356f2870db111b9eb79bdd5c5e0d0cffd33"
+  },
+  "checks": {
+    "fullGate": {
+      "passed": true,
+      "unitCount": 632,
+      "contractSuites": 26,
+      "log": "gate.txt"
+    },
+    "g1Directed": {
+      "passed": 24,
+      "note": "Final CLI assertions also covered by full gate contract suite"
+    },
+    "g2g3Directed": {
+      "passed": 21
+    },
+    "workflowAudit": {
+      "entries": 79,
+      "passed": true,
+      "executionStatus": "not-run"
+    }
+  },
+  "corrections": [
+    "Preserve existing core IDs for omitted legacy payload fields inside the save lock; explicit [] clears",
+    "Add CLI non-array cases and preserve ordinary errors for null curation roots",
+    "Remove overbroad ownership claims about traits and loadPopularShards",
+    "Fix test lint issues without weakening checks"
+  ],
+  "limitations": [
+    "Reference structure mode only; no external asset verification",
+    "No production data mutation, generation, installation, browser or device acceptance",
+    "Blueprint persistence and full resource delivery remain separate pending work"
+  ]
+}

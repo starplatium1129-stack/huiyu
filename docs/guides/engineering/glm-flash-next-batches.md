@@ -2,7 +2,7 @@
 
 2026-09-13。用户希望优先使用即将到期的 GLM 5.3 Flash 额度。此处按任务边界安排工作，不声明其通用能力或基准排名。依据见 [六报告复核](../../research/engineering/six-task-review-2026-09-13.md)。
 
-最新复核：A、RB、RC、N1/N2/N3 已收尾；RD 的 F03/F05/F08b/F09 已纳入正式测试，其余用例单列未验收。图片回退验收见 [汇总记录](../../research/engineering/six-task-review-2026-09-13.md)。当前继续执行文末 G1/G2/G3，三项可并行；旧批次保留交接，不重复启动或重做报告。
+最新复核：A、RB、RC、N1/N2/N3、G1/G2/G3 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。当前继续执行文末 G4/G5/G6，三项可并行；旧批次保留交接，不重复启动或重做报告。
 
 ## 执行与交付
 
@@ -164,3 +164,43 @@
 - 保持原 JSON 字段、domain 选择、未知外部资产状态、错误码和路径保护。读写者仍是静态职责说明，本批不加载或执行列出的维护脚本来“验证”。不要新增针对暂缺 readers/writers 文件的硬门禁，旧隔离夹具无需复制整套源码。
 - 定向测试覆盖关键职责信息在 JSON/文字输出中可见、已有各 domain 与参数兼容、未知域拒绝、外部素材仍 unknown、help/plan 零目标读取及报告零写入。用少量关键行为断言，不把全文说明锁成大快照。
 - 三个阶段不得同时改共享文档；把拟增补工作流说明写到自己的 result.md，由主任务合并。完成后停止本批，不自动开始资产下载、ID 迁移或蓝图事务修复。
+
+## G4/G5/G6：继续实施，不重复盘点
+
+共同约束沿用上文：开工核对 HEAD/diff，保护其他会话；不做 Git 写操作，不调用生成模型，不安装/下载/发布，不修改生产内容与分级。只做本批实现及明确隔离的定向检查；最终统一门禁、共享 dist 构建和浏览器视觉由主任务负责。G5 独占本轮工作流注册与文档文件，G4/G6 的说明写各自回执。
+
+### G4：交付审计的人类可读输出
+
+独占 `scripts/maintenance/audit-delivery.js`、`scripts/tests/test-delivery-audit.js`；确需拆分时可新增 `scripts/lib/delivery-report-format.js`。回执 `scripts/archive/glm-g4-delivery-output/result.md`。
+
+- 默认输出目前按对象字段 JSON.stringify 拼接。改为简洁的总体状态、通过/错误/待验数量，以及每项对应文件、字段和原因；未知/未运行/失败/通过不得混为一谈。
+- 让 commit/build 比较、显式文件核验、HEAD/worktree 检查中已存在的结果可读；未启用的检查不能显示已通过。空集合不堆砌整段 JSON，必要限制和未执行推荐命令仍能看到。
+- `--json` 保持原结构和值；parse/report/state 判定、退出码、文件边界、旧证据适配保持不变。只抽出纯格式化层，不改历史证据文件，不扫描新日志，不执行建议命令。
+- 测试覆盖 passed/failed/pending、缺失信息、多文件比较失败、异常兜底结果、JSON 与退出码兼容。用小型报告对象和现有隔离夹具验证，不新增大快照、不通过放宽判定来让文字更好看。
+- 不修改 scripts/workflow.js 或 docs/workflow.md，文案补充写回执。完成定向测试后交主任务复核。
+
+### G5：本地资源清单生成器与校验器
+
+本批是 R1 后续代码基础，交付可复用工具；不开发下载器，不改变打包白名单，不复制/转换/删除图片。
+
+独占新增 `scripts/lib/resource-manifest.js`、`scripts/maintenance/report-resource-manifest.js`、`scripts/tests/test-resource-manifest.js`，以及 `scripts/workflow.js`、`scripts/tests/quality-test-inventory.js`、`docs/workflow.md` 的必要注册。回执 `scripts/archive/glm-g5-resource-manifest/result.md`。没有必要则不新增依赖或 JSON Schema 文件。
+
+- 提供纯函数/显式 root 的本地资产清单生成与校验。首版 schemaVersion=1，每条保留资源相对路径、字节数、SHA-256；路径按稳定排序输出，不能把时间戳当内容版本。首版以路径标识文件，不声称跨重命名身份稳定。
+- 默认只清点 root/assets 下普通文件，排除 character-references 外部参考域；不自动进入外部挂载、不扫描 runtime/用户作品。目录遍历不跟随 symlink/junction，遇到非普通文件或无法核验项明确列出，不伪造完整覆盖。
+- 校验清单中的重复路径、非法/越界路径、实际文件缺失、字节或哈希不匹配；路径解码/Windows 分隔符/真实路径安全复用 RB 已验证经验，不把 700 行临时脚本整体搬进正式工具。静态受控根即可，不增加任意 URL 抓取或全盘发现。
+- 新入口 `audit:resource-manifest`：正常生成打印 JSON；显式 `--manifest <root内JSON>` 走校验。支持 --root/--help/--plan，帮助/预览不读目标文件或计算哈希。默认无文件写入，不提供隐式修复、删除或上传。清单要保存时由调用者显式重定向到自己的输出目录。
+- 复用现有注册元数据并登记维护文档、测试清单；声明只读、不代表图片质量/审核/可信发布源。哈希相等只能证明字节一致，不把“文件存在”变为“内容已交付”。
+- 临时夹具覆盖稳定输出、单文件改变后哈希变化、重复、缺失、错大小/哈希、编码与原始路径越界、junction、不支持 schemaVersion、help/plan 零读取、生成/校验零源写入。格式错误与未核验状态不得返回无条件成功；输出清楚的退出码契约。
+- 每文件遵守 600 行预算，不扩成数据库、资源管理 UI 或缓存系统。定向测试/注册审计通过后交付，不构建共享 dist。
+
+### G6：补齐八位角色的主题覆盖
+
+独占 `src/assets/css/director/tokens.css`，可新增 `tests/e2e/character-theme-completion.spec.ts`；回执 `scripts/archive/glm-g6-character-themes/result.md`。不修改人物数据、色彩校验器、现有阈值或全局主题默认值。
+
+本次只读覆盖报告仍缺：ereshkigal_fate、ishtar_fate、kasumigaoka_utaha、kochou_shinobu、krista_lenz、ling_arknights、shinomiya_kaguya、shokuhou_misaki。以开工时报告重核为准，不为凑数新增不存在的角色。
+
+- 沿现有角色主题格式补齐强调色与关联变量，以项目现有资料/立绘和当前设计令牌为依据，不凭记忆编角色设定，不统一套同一组色值。深浅主题均需可读；先核对实际 CSS 消费链，不能仅让选择器计数变绿。
+- krista_lenz 的旧 historia_reiss 选择器保留兼容，可让规范 ID 与旧别名共用对应规则；不重命名任何角色/服装 ID，不删除旧兼容样式。nene 的默认主题保持原有方式。
+- 运行覆盖报告和相关颜色/样式/动画/单体预算检查；记录修前/修后缺口、每个 ID 对应规则及实际对比度结果。不得降低 AA 阈值或将问题角色加入忽略名单。
+- 补双主题的针对性浏览器测试草稿：按真实路由/选择方式展示这些角色，验证身份正确、实际强调色生效与文字可读。不要直接改 DOM 数据属性再声称真实选择流程已验收；不调用生成。
+- 本批不构建共享 dist、不启动共享浏览器服务。主任务会用当前构建逐角色检查双主题和实际布局；GLM 回执明确未执行视觉验收，不把覆盖报告当视觉通过。

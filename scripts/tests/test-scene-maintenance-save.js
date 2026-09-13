@@ -343,3 +343,136 @@ test('ID 用尽仍可读取现有内容与编辑基线', async () => {
     assert.deepEqual(state.body.snapshot.scenes, loadScenesFromShards());
   } finally { await stopApp(); }
 });
+
+test('保存清洗 personaCoreSceneIds：稳定顺序去重、剔除非活跃引用、其他策展字段不动', async () => {
+  seedFixture();
+  await startApp(false);
+  try {
+    const baseVersion = await currentBaseVersion();
+    const curationPath = path.join(dataDir, 'curation.json');
+    const payload = JSON.parse(fs.readFileSync(curationPath, 'utf8'));
+    payload.personaCoreSceneIds = ['sc002', 'sc148', 'sc006', 'sc002'];
+    const reasonsBefore = JSON.parse(JSON.stringify(payload.personaCoreReasons));
+    const aliasesBefore = JSON.parse(JSON.stringify(payload.searchAliases));
+    const result = await post('/api/maintenance/scenes', {
+      scenes: loadScenesFromShards(), curation: payload, baseVersion,
+    });
+    assert.equal(result.status, 200, JSON.stringify(result.body).slice(0, 400));
+    const saved = JSON.parse(fs.readFileSync(curationPath, 'utf8'));
+    assert.deepEqual(saved.personaCoreSceneIds, ['sc002', 'sc006'],
+      '必须保持首次出现顺序去重并剔除退役/未知引用（sc148 已退役）');
+    assert.deepEqual(saved.personaCoreReasons, reasonsBefore, 'personaCoreReasons 语义不得被改动');
+    assert.deepEqual(saved.searchAliases, aliasesBefore, 'searchAliases 必须原样透传');
+  } finally { await stopApp(); }
+});
+
+test('保存拒绝非数组 personaCoreSceneIds 且不写盘', async () => {
+  seedFixture();
+  await startApp(false);
+  try {
+    const baseVersion = await currentBaseVersion();
+    const before = shardBytes();
+    const curationPath = path.join(dataDir, 'curation.json');
+    const curationBefore = fs.readFileSync(curationPath, 'utf8');
+    const payload = JSON.parse(curationBefore);
+    payload.personaCoreSceneIds = 'sc002';
+    const result = await post('/api/maintenance/scenes', {
+      scenes: loadScenesFromShards(), curation: payload, baseVersion,
+    });
+    assert.equal(result.status, 400);
+    assert.ok(result.body.error.includes('personaCoreSceneIds'), result.body.error);
+    assert.equal(fs.readFileSync(curationPath, 'utf8'), curationBefore, '被拒绝的保存不得改写 curation.json');
+    assert.deepEqual(shardBytes(), before, '被拒绝的保存不得改写分片');
+  } finally { await stopApp(); }
+});
+
+test('旧请求缺省 personaCoreSceneIds 保留现存核心精选，显式空数组才清空', async () => {
+  seedFixture();
+  await startApp(false);
+  try {
+    const baseVersion = await currentBaseVersion();
+    const curationPath = path.join(dataDir, 'curation.json');
+    const payload = JSON.parse(fs.readFileSync(curationPath, 'utf8'));
+    const originalCore = [...payload.personaCoreSceneIds];
+    const scenesBefore = shardBytes();
+    delete payload.personaCoreSceneIds;
+    const result = await post('/api/maintenance/scenes', {
+      scenes: loadScenesFromShards(), curation: payload, baseVersion,
+    });
+    assert.equal(result.status, 200, JSON.stringify(result.body).slice(0, 400));
+    const saved = JSON.parse(fs.readFileSync(curationPath, 'utf8'));
+    assert.deepEqual(saved.personaCoreSceneIds, originalCore, '旧客户端漏字段不能删除已保存核心精选');
+    assert.deepEqual(shardBytes(), scenesBefore);
+    const cleared = await post('/api/maintenance/scenes', {
+      scenes: loadScenesFromShards(), curation: { ...saved, personaCoreSceneIds: [] },
+      baseVersion: await currentBaseVersion(),
+    });
+    assert.equal(cleared.status, 200, JSON.stringify(cleared.body));
+    assert.deepEqual(JSON.parse(fs.readFileSync(curationPath, 'utf8')).personaCoreSceneIds, []);
+  } finally { await stopApp(); }
+});
+
+/** 独立隔离根：全部数据输入同根复制，专供 validate-scenes CLI 夹具运行。 */
+function makeValidateFixture(fixtureRoot) {
+  const fixtureData = path.join(fixtureRoot, 'data');
+  const fixtureShards = path.join(fixtureData, 'scenes');
+  fs.mkdirSync(fixtureShards, { recursive: true });
+  for (const name of fs.readdirSync(path.join(REPO, 'data', 'scenes'))) {
+    if (name.endsWith('.json')) fs.copyFileSync(path.join(REPO, 'data', 'scenes', name), path.join(fixtureShards, name));
+  }
+  for (const name of ['curation.json', 'characters.json', 'presets.json', 'retired-scenes.json', 'prompt-pinned-scenes.json']) {
+    fs.copyFileSync(path.join(REPO, 'data', name), path.join(fixtureData, name));
+  }
+  return path.join(fixtureData, 'curation.json');
+}
+
+function runValidateScenes(fixtureRoot) {
+  return new Promise((resolve) => {
+    const { spawn } = require('child_process');
+    const child = spawn(process.execPath, ['scripts/maintenance/validate-scenes.js'], {
+      cwd: REPO,
+      env: { ...process.env, AICS_DATA_ROOT: fixtureRoot },
+      windowsHide: true,
+    });
+    let out = '';
+    child.stdout.on('data', (chunk) => { out += chunk; });
+    child.stderr.on('data', (chunk) => { out += chunk; });
+    child.on('close', (code) => resolve({ status: code, output: out }));
+  });
+}
+
+test('validate-scenes 对坏核心精选夹具返回非零并指出字段、ID 与位置', async () => {
+  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-core-validate-'));
+  try {
+    const curationPath = makeValidateFixture(fixtureRoot);
+    const curation = JSON.parse(fs.readFileSync(curationPath, 'utf8'));
+    const firstCoreId = curation.personaCoreSceneIds[0];
+    // 坏值全部落在夹具副本上：重复项、退役 ID（sc148）、非字符串项
+    curation.personaCoreSceneIds = [firstCoreId, 'sc148', firstCoreId, 42];
+    fs.writeFileSync(curationPath, JSON.stringify(curation, null, 2) + '\n');
+    const bad = await runValidateScenes(fixtureRoot);
+    assert.notEqual(bad.status, 0, '坏夹具必须返回非零：' + bad.output.slice(-800));
+    assert.ok(bad.output.includes('personaCoreSceneIds'), '错误必须指出字段名：' + bad.output.slice(-800));
+    assert.ok(bad.output.includes('sc148'), '错误必须指出退役 ID');
+    assert.ok(bad.output.includes('duplicates an earlier entry: ' + firstCoreId), '错误必须指出重复项');
+    assert.ok(bad.output.includes('personaCoreSceneIds[3] must be a non-empty string'), '错误必须指出非字符串项位置');
+    for (const invalid of [null, 'sc001', { id: 'sc001' }]) {
+      curation.personaCoreSceneIds = invalid;
+      fs.writeFileSync(curationPath, JSON.stringify(curation));
+      const invalidResult = await runValidateScenes(fixtureRoot);
+      assert.notEqual(invalidResult.status, 0);
+      assert.ok(invalidResult.output.includes('personaCoreSceneIds must be an array'));
+    }
+    // 空数组与缺省保持兼容：两者都必须通过
+    curation.personaCoreSceneIds = [];
+    fs.writeFileSync(curationPath, JSON.stringify(curation, null, 2) + '\n');
+    const emptied = await runValidateScenes(fixtureRoot);
+    assert.equal(emptied.status, 0, '空数组必须保持兼容：' + emptied.output.slice(-800));
+    delete curation.personaCoreSceneIds;
+    fs.writeFileSync(curationPath, JSON.stringify(curation, null, 2) + '\n');
+    const absent = await runValidateScenes(fixtureRoot);
+    assert.equal(absent.status, 0, '字段缺省必须保持兼容：' + absent.output.slice(-800));
+  } finally {
+    fs.rmSync(fixtureRoot, { recursive: true, force: true });
+  }
+});

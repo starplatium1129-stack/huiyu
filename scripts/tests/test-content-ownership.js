@@ -63,6 +63,33 @@ test('scene-ratings records manual ownership without accepting review and reject
   fs.unlinkSync(path.join(root, 'scripts/lib/manual-scene-ratings.js'));
   assert.equal(cli(root, ['--domain', 'scene-ratings', '--json']).status, 1);
 });
+test('updated ownership notes surface key responsibilities in JSON and text output', (t) => {
+  const { root } = fixture(t);
+  const report = reportOwnership({ root });
+  const byDomain = Object.fromEntries(report.domains.map((d) => [d.domain, d]));
+  assert.ok(byDomain.characters.readers.some((r) => r.includes('characterProfiles.ts')));
+  assert.ok(byDomain.characters.readers.some((r) => r.includes('usePromptAssembly.ts') && r.includes('traits')));
+  assert.ok(byDomain.characters.fields.includes('traits 另由提示词组装消费'));
+  assert.ok(byDomain.characters.readers.some((r) => r.includes('report-content-coverage.js') && r.includes('accent_color')));
+  assert.ok(byDomain.characters.writers.some((w) => w.includes('cleanOrphanedSceneRefs')));
+  assert.ok(byDomain.characters.boundary.includes('不代表详情页展示'));
+  assert.ok(byDomain.popular.readers.some((r) => r.includes('parseOutfit')));
+  assert.ok(byDomain.popular.readers.some((r) => r.includes('loadPopularShards') && r.includes('build 与启动自愈')));
+  assert.ok(byDomain.popular.boundary.includes('isDefault'));
+  for (const key of ['blueprints:build', 'blueprints:import', 'apply-scene-patch.js']) assert.ok(byDomain.blueprints.writers.some((w) => w.includes(key)));
+  assert.ok(byDomain.blueprints.writers.some((w) => w.includes('只写聚合')));
+  assert.ok(byDomain.blueprints.boundary.includes('重启自愈'));
+  assert.ok(byDomain.references.writers.some((w) => w.includes('合并写入')));
+  assert.ok(byDomain.references.writers.some((w) => w.includes('双写')));
+  assert.ok(byDomain.references.boundary.includes('idx===0') && byDomain.references.boundary.includes('首套'));
+  assert.ok(byDomain.references.boundary.includes('机位'));
+  assert.ok(byDomain.themes.readers.some((r) => r.includes('--character-')));
+  assert.ok(byDomain.themes.boundary.includes('accent_color'));
+  assert.ok(report.scope.includes('不声称穷尽'));
+  const text = cli(root, ['--domain', 'characters']).stdout;
+  assert.ok(text.includes('characterProfiles.ts'));
+  assert.ok(text.includes('cleanOrphanedSceneRefs'));
+});
 test('missing shard and malformed manifest remain errors, never rebuild products', (t) => {
   const { root, put } = fixture(t);
   fs.unlinkSync(path.join(root, 'data/popular/a.json'));
