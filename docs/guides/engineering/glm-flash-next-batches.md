@@ -2,7 +2,7 @@
 
 2026-09-13。用户希望优先使用即将到期的 GLM 5.3 Flash 额度。此处按任务边界安排工作，不声明其通用能力或基准排名。依据见 [六报告复核](../../research/engineering/six-task-review-2026-09-13.md)。
 
-最新复核：A、RB、RC、N1/N2/N3、G1–G10 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。当前执行文末 G11/G12/G13，三项可并行；旧批次不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
+最新复核：A、RB、RC、N1/N2/N3、G1–G13 已整合；RD 的部分用例仍未验收。记录见 [汇总复核](../../research/engineering/six-task-review-2026-09-13.md)。当前执行文末 G14/G15/G16，三项可并行；旧批次不重复启动或重做报告。查修前版本使用 git show，不得 stash、切分支或自行提交。
 
 ## 执行与交付
 
@@ -290,3 +290,37 @@
 - 旧清单仅做结构核验，不读取旧资产（其 removed 文件可已不存在）；新清单实际文件继续按 G10 完整核验，不能用增量缩小绕过新清单损坏。任一清单结构错误/非空 unverified 拒绝。默认 preview 零写入，help/plan 零目标读取；完全无差异也可输出明确的零资产候选，不能称已安装更新。
 - 复用现有安全复制与 staging 协议，不另造宽松通道。manifest.json 和 delta.json 都须在最终改名前读回核对；副本哈希失败、元数据损坏、目标冲突、源或路径变化不报告成功。保留 Windows-only apply、排除域、独占写入、同名拒绝等所有 G10 回归。只用临时夹具，不导出真实资产。
 - 测试旧 removed 文件缺失仍可比较、added/changed 字节正确且 unchanged 未复制、仅删除/无差异、坏旧/新清单、时间戳不影响身份、预览不写、两个元数据写坏不发布、已有全包模式兼容。文件接近 600 行时拆独立辅助/测试文件；主任务统一最终门禁。
+
+## G14/G15/G16：参考校验入口、增量兼容核验、蓝图写入适配
+
+2026-09-14。主任务整合 G11–G13 后开始，以实际 HEAD 为准，三项可并行。共同约束：只改独占文件，不做 Git 写操作、不启动共享 build/browser、不改生产数据或资源、不调用模型/安装/下载。写入验收全部用自建临时夹具；代码、行为测试、简洁回执缺一不可。G15 独占共享注册与工作流文档，另两项仅提交注册建议。
+
+### G14：参考 URL 校验 CLI 统一根与帮助边界
+
+独占 `scripts/maintenance/check-ref-urls.js`、新增 `scripts/tests/test-reference-audit-root.js`；可只读复用 content-contract-root，不改其他库、注册或文档。回执 `scripts/archive/glm-g14-reference-root/result.md`。
+
+- API auditReferenceView 已可接收 root/env，但 CLI main 仍固定仓库根读取 view。支持 `--root <完整项目根>`，优先级显式参数 > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根；view 的数据根和 API 的 appRoot 对齐，避免双环境根交叉读取。显式 AICS_CHARACTER_REF_ROOT/AICS_ASSETS_ROOT/AI_WORKSPACE_ROOT 仍保留已有含义，不清掉用户配置。
+- 添加直接 CLI 的 --help/--plan，零目标读取、零写入。未知/重复/缺值参数明确退出 2；缺 view、坏 JSON、不可用根返回可定位错误，不崩溃后假通过。无参数的有效数据输出与既有退出语义保持；auditReferenceView 的已用签名兼容。
+- 不改变 pending/缺图/unverified 的判定，不扩大 structure 豁免，不自动查找素材/修索引/写 pending。保留真实素材根的配置规则；测试使用显式夹具素材根，剥离宿主根变量。
+- 测试双环境根、显式覆盖、好/坏根交叉、help/plan 对缺失根零访问、缺文件/坏 JSON/参数错误、成功/失败零写入。fs 探针证明指定夹具时未读取生产 view/assets；现有 test:content 根回归继续通过。记录待主任务补的注册说明，不改共享文件。
+
+### G15：增量候选包与基线的只读兼容核验
+
+独占新增 `scripts/lib/resource-pack-verify.js`、`scripts/maintenance/verify-resource-pack.js`、`scripts/tests/test-resource-pack-verify.js`；独占必要 `scripts/workflow.js`、`scripts/tests/quality-test-inventory.js`、`docs/workflow.md` 注册。只读复用已有 manifest/delta 库，不修改 G13 导出器。回执 `scripts/archive/glm-g15-pack-verify/result.md`。
+
+- 新只读入口 `resource:verify-delta --root <根> --base-manifest <root内JSON> --pack <root内候选目录>`。明确仅验证增量候选，缺 delta.json 的全包不能冒充增量；help/plan 零目标读取。默认 JSON 输出，可定位错误；有效 0、内容/不兼容 1、参数/越界/环境 2。全程零写入、无安装/删除/网络。
+- 纯函数接收基线清单、候选 manifest 和 delta 元数据：先复用清单结构检查，核对 kind/schema、身份/数量字段形态，再验证基线 contentIdentity 与 delta.baseManifest 相符。以基线移除 delta.removed 后叠加候选 added/changed，重建目标清单条目；其 contentIdentity、entryCount、totalBytes 必须与 delta.newManifest 相符。
+- 不只对比总数：removed 每项必须确实存在于基线且 bytes/hash 相符，路径唯一且不能同时在候选中；候选与基线相同的条目不能冒充 changed；根据实际集合关系重算 added/removed/changed/unchanged，并与 delta.totals、candidate 的 files/bytes/zeroAssets 和候选 manifest 实际条目一致。结构错误、非空 unverified、身份失配拒绝；空候选与仅删除候选可合法，不把它叫已安装。
+- IO 层只读取明确指定的基线 JSON、候选 manifest.json/delta.json 和候选已列资源，复用 verifyManifest 核验候选实际字节。不要 stat/read 基线资产或扫描安装目录；基线文件可能已不存在，元数据仍可兼容核验。清单/包目录/内部路径遵守 root 与真实路径边界，拒绝通过 junction 或坏路径访问外部目录。
+- 测试生成器产物往返（added/changed/removed/unchanged、零差异、仅删除）、错基线、篡改目标身份/数量、重复或不存在的 removed、候选多余同内容项、候选实图损坏、元数据坏/缺/不支持版本、路径/junction、旧资产零访问、输入不变和零写入。正确性仅表示“相对于给定基线可重建声明目标并且候选字节匹配”，不是签名/可信来源/当前安装状态/质量验收。
+
+### G16：蓝图计划的磁盘准备与应用适配器
+
+独占新增 `scripts/lib/blueprint-write.js`、`scripts/tests/test-blueprint-write.js`。只读参考现有 blueprint-change-plan、blueprint-store、routes/maintenance 的 snapshotFiles/restoreSnapshot/saveSnapshotBackup；不修改它们，不接路由，不新增第二套备份或独立事务系统。回执 `scripts/archive/glm-g16-blueprint-write/result.md`。
+
+- 提供 `prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io })`：显式根读取当前 manifest 与声明源分片，调用纯规划器，返回 plan、原始字节基线、兼容现有 `{file, exists, content: Buffer|null}` 的 snapshotEntries。只读准备，不创建目录、不自愈。
+- 快照包含 manifest、聚合和所有更新/删除/新建的准确分片路径；新增路径若已被未登记文件占用必须拒绝，不覆盖它。manifest/分片/聚合及祖先真实位置、Windows 大小写与设备名等必须校验，拒绝链接逃逸或不支持形态；不扫描/读取其他未登记分片内容。
+- 提供 `applyBlueprintWrite(prepared, { writeFileAtomic, io })`：写入前复核所有源基线与新建路径仍符合准备时状态，过期计划零写入拒绝；只应用已准备计划，unchanged 不写，使用已有原子写入接口或注入适配，删除只限明确计划项，最后 manifest/聚合与计划一致。不要信任调用方可变 plan 中任意路径；准备对象内部冻结/受控绑定或重验路径，避免准备后篡改导致越界。
+- 任意 IO 阶段失败都抛错交调用方，不吞错、不宣称保存成功，不自行持久备份或执行完整事务回滚。主任务后续将在已有锁内 prepare → 合并快照并只备份一次 → 场景与蓝图应用 → 校验/版本同步；后续失败由统一快照回滚。本批不改 DATA_VERSION、压缩伴生文件、锁、HTTP 响应或生产保存。
+- 隔离测试覆盖修改/新增/删除、未变分片原始字节保留、应用后真实 reader 聚合一致；过期计划/目标占用/路径与 junction/准备后篡改零越界写；各写入/删除阶段故障向上传递。按现有快照约定在测试中恢复后，精确文件集合与 Buffer 必须等于之前，包含“适配器成功、后续校验失败”的恢复案例；回滚注入失败不能称恢复成功。未登记文件和其他根不被读写删除。
+- 不修改规划器或路由；如发现不兼容，先写明具体输入/失败证据供主任务处理。新测试登记建议写回执，遵守 600 行预算。

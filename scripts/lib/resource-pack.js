@@ -20,6 +20,9 @@
  *  - 不是安装器/下载器：不转换/重采样图片，不执行复制内容，不做 ZIP 解压/安装/
  *    缓存淘汰，无网络行为。输出只称「候选包已通过字节核验」，不代表图片质量、
  *    审核或部署完成。
+ *  - 暂存发布协议抽为通用 applyPackPlan（G13）：全包模式与增量模式
+ *    （scripts/lib/resource-pack-delta.js）共用同一复制核验、元数据读回、发布与
+ *    验收路径，增量模式不另造通道。
  *
  * 只读复用 scripts/lib/resource-manifest.js 导出（不修改该库）：
  * SCHEMA_VERSION / UsageError / verifyManifest / verifyManifestEntries / resolveRealpathBoundary。
@@ -254,16 +257,42 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }) {
   return true;
 }
 
+/** 全包模式的候选包元数据：manifest.json 与源清单条目逐条一致。 */
+function fullPackMetadata({ plan, destAbs, rootReal }) {
+  const bytes = plan.entries.reduce((acc, e) => acc + e.bytes, 0);
+  const packManifest = {
+    schemaVersion: SCHEMA_VERSION,
+    kind: 'resource-manifest',
+    generatedAt: new Date().toISOString(),
+    root: destAbs,
+    scope: {
+      scanRoot: 'assets/',
+      followsSymbolicLinks: false,
+      pack: {
+        note: '离线资源候选包（暂存导出）：只字节复制源清单已列文件，不补入未列文件，不转换、不执行复制内容',
+        sourceRoot: rootReal,
+        sourceManifestPath: plan.manifestPath,
+      },
+      coverageNote: BYTE_ONLY_NOTE,
+    },
+    totals: { files: plan.entries.length, bytes, unverified: 0 },
+    entries: plan.entries.map((e) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
+    unverified: [],
+  };
+  return [{ name: 'manifest.json', object: packManifest, mismatchCode: 'manifest-write-mismatch' }];
+}
+
 /**
- * 暂存导出（--apply，仅 Windows）：复用预览的全部检查，通过后写入专用暂存目录，逐项与整体
- * 复核，最后原子改名为最终包名并做发布后验收。失败不报告成功；暂存目录保留并在
- * 结果中给出路径。不修改源清单与源文件，不添加未列条目。
+ * 通用暂存发布协议（全包与增量模式共用，G13 拆出）：plan 通过后写入专用暂存目录，
+ * 逐项复制并读回核验；buildMetadata({ plan, destAbs, rootReal }) 产出元数据文件
+ * （manifest.json，增量模式另有 delta.json）并逐一读回比对，整体用 verifyManifest
+ * 复核暂存树，全部成功后才原子改名为最终包名并做发布后验收。失败不报告成功；
+ * 暂存目录保留并在结果中给出路径。不修改源清单与源文件，不添加未列条目。
  */
-function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = process.platform } = {}) {
-  const plan = planResourcePack({ root, name, manifestPath, io });
+function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultKind, buildMetadata }) {
   const base = {
     schemaVersion: SCHEMA_VERSION,
-    kind: 'resource-pack-result',
+    kind: resultKind,
     mode: 'apply',
     ok: false,
     name: plan.name,
@@ -299,42 +328,37 @@ function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = p
     for (const entry of plan.entries) {
       if (!copyEntryVerified({ rootReal, staging, entry, io, errors })) break;
     }
-    let packManifest = null;
+    let metadataFiles = null;
     if (errors.length === 0) {
-      const bytes = plan.entries.reduce((acc, e) => acc + e.bytes, 0);
-      packManifest = {
-        schemaVersion: SCHEMA_VERSION,
-        kind: 'resource-manifest',
-        generatedAt: new Date().toISOString(),
-        root: destAbs,
-        scope: {
-          scanRoot: 'assets/',
-          followsSymbolicLinks: false,
-          pack: {
-            note: '离线资源候选包（暂存导出）：只字节复制源清单已列文件，不补入未列文件，不转换、不执行复制内容',
-            sourceRoot: rootReal,
-            sourceManifestPath: plan.manifestPath,
-          },
-          coverageNote: BYTE_ONLY_NOTE,
-        },
-        totals: { files: plan.entries.length, bytes, unverified: 0 },
-        entries: plan.entries.map((e) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
-        unverified: [],
-      };
-      try {
-        io.writeFileSync(path.join(staging, 'manifest.json'), `${JSON.stringify(packManifest, null, 2)}\n`);
-      } catch (err) {
-        errors.push({ code: 'write-error', message: `候选包 manifest.json 写入失败: ${err.message}` });
+      metadataFiles = buildMetadata({ plan, destAbs, rootReal });
+      for (const file of metadataFiles) {
+        try {
+          io.writeFileSync(path.join(staging, file.name), `${JSON.stringify(file.object, null, 2)}\n`);
+        } catch (err) {
+          errors.push({ code: 'write-error', message: `候选包 ${file.name} 写入失败: ${err.message}` });
+          break;
+        }
       }
     }
     if (errors.length === 0) {
-      // 发布前核验磁盘清单本身，不能以内存对象掩盖清单写入损坏或丢条目。
-      const persistedManifest = JSON.parse(io.readFileSync(path.join(staging, 'manifest.json'), 'utf8'));
-      if (JSON.stringify(persistedManifest) !== JSON.stringify(packManifest)) {
-        errors.push({ code: 'manifest-write-mismatch', message: '磁盘清单与预期清单不同，不发布最终包' });
+      // 发布前逐个读回磁盘元数据，不能以内存对象掩盖清单写入损坏或丢条目。
+      for (const file of metadataFiles) {
+        let persisted = null;
+        try {
+          persisted = JSON.parse(io.readFileSync(path.join(staging, file.name), 'utf8'));
+        } catch (err) {
+          errors.push({ code: file.mismatchCode, message: `磁盘 ${file.name} 不可解析: ${err.message}` });
+          break;
+        }
+        if (JSON.stringify(persisted) !== JSON.stringify(file.object)) {
+          errors.push({ code: file.mismatchCode, message: `磁盘 ${file.name} 与预期内容不同，不发布最终包` });
+          break;
+        }
       }
-      const stagedVerification = verifyManifest({ root: staging, manifestPath: 'manifest.json', io });
-      if (!stagedVerification.ok) errors.push(...stagedVerification.errors);
+      if (errors.length === 0) {
+        const stagedVerification = verifyManifest({ root: staging, manifestPath: 'manifest.json', io });
+        if (!stagedVerification.ok) errors.push(...stagedVerification.errors);
+      }
     }
     if (errors.length === 0) {
       const publishBoundary = checkDestination({ root: rootReal, name: plan.name, io });
@@ -369,14 +393,24 @@ function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = p
         ].filter(Boolean),
       };
     }
+    for (const file of metadataFiles) {
+      try {
+        const persisted = JSON.parse(io.readFileSync(path.join(destAbs, file.name), 'utf8'));
+        if (JSON.stringify(persisted) !== JSON.stringify(file.object)) {
+          errors.push({ code: file.mismatchCode, message: '发布后 ' + file.name + ' 与预期内容不同，候选包不可用' });
+        }
+      } catch (err) {
+        errors.push({ code: file.mismatchCode, message: '发布后 ' + file.name + ' 不可读取或解析: ' + err.message });
+      }
+    }
     const finalVerify = verifyManifest({ root: destAbs, manifestPath: 'manifest.json', io });
     return {
       ...base,
-      ok: finalVerify.ok,
+      ok: finalVerify.ok && errors.length === 0,
       destinationCreated: true,
-      finalVerification: { ok: finalVerify.ok, verified: finalVerify.totals.verified, errorCount: finalVerify.totals.errorCount },
-      errors: finalVerify.ok ? [] : finalVerify.errors,
-      notes: finalVerify.ok
+      finalVerification: { ok: finalVerify.ok && errors.length === 0, verified: finalVerify.totals.verified, errorCount: finalVerify.totals.errorCount + errors.length },
+      errors: [...errors, ...finalVerify.errors],
+      notes: finalVerify.ok && errors.length === 0
         ? [...plan.notes, `候选包已通过字节核验并写入 ${plan.destination}；可用 audit:resource-manifest --root <包目录> --manifest manifest.json 复核。`]
         : [...plan.notes, '候选包已写到目标位置但发布后核验失败，不要作为可用候选包使用。'],
     };
@@ -392,4 +426,13 @@ function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = p
   }
 }
 
-module.exports = { PACKS_DIR_SEGMENTS, PACK_NAME_RE, STAGING_PREFIX, UsageError, BYTE_ONLY_NOTE, validatePackName, checkDestination, planResourcePack, stageResourcePack };
+/**
+ * 暂存导出（--apply，仅 Windows）：复用预览的全部检查，经通用 applyPackPlan 协议
+ * 完成复制与发布；全包 manifest.json 与源清单条目逐条一致。
+ */
+function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = process.platform } = {}) {
+  const plan = planResourcePack({ root, name, manifestPath, io });
+  return applyPackPlan({ plan, io, platform, resultKind: 'resource-pack-result', buildMetadata: fullPackMetadata });
+}
+
+module.exports = { PACKS_DIR_SEGMENTS, PACK_NAME_RE, STAGING_PREFIX, UsageError, BYTE_ONLY_NOTE, validatePackName, checkDestination, loadVerifiedManifest, planResourcePack, applyPackPlan, stageResourcePack };

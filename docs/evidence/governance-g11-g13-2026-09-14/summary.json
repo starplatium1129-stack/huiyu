@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-14",
+  "baseline": "407011d2f16ba6d4127b70df5c38a9a041b901e9",
+  "batches": [
+    "G11 isolated content validation root",
+    "G12 pure blueprint change planning",
+    "G13 delta candidate export"
+  ],
+  "gate": {
+    "result": "PASS",
+    "referenceMode": "structure",
+    "unit": 742,
+    "contract": 26,
+    "frontend": true,
+    "build": true
+  },
+  "focusedTests": {
+    "contentRoot": 12,
+    "blueprintPlan": 19,
+    "resourceDelta": 15,
+    "resourcePack": 20
+  },
+  "workflowCount": 81,
+  "blueprintReadOnlySmoke": {
+    "blueprints": 1692,
+    "shards": 70,
+    "dirty": false,
+    "writes": 0,
+    "deletes": 0
+  },
+  "reviewFixes": [
+    "CLI fs probe rejects repository data-domain reads and writes",
+    "Existing shard paths reject Windows reserved devices; JSON extension fields survive prototype-sensitive property names",
+    "Post-rename verification reads all candidate metadata including delta.json and fails on corruption",
+    "Delta identity stability and unchanged new-asset validation regressions"
+  ],
+  "limitations": [
+    "No production data or resource writes; all export tests use temporary fixtures",
+    "Blueprint planner is not connected to maintenance route or rollback",
+    "Delta candidate is not an installed update, signature, or quality verification",
+    "Actual resource export remains Windows-only; no UI changes or browser verification required"
+  ],
+  "sha256": {
+    "scripts/lib/content-contract-root.js": "a70cf1c52f2affabf65310ee7fe070aa88b10e2c34605f21ea2492bf9a2cb53a",
+    "scripts/maintenance/validate-content-contracts.js": "557f40724339753abed98431eca19e28b53758f280efe69621dcb2a6f32d6389",
+    "scripts/tests/test-content-contract-root.js": "010036836339ba453eefe2d00deaf723f9ef859bba8fdd817f5c2f9338c9e3b3",
+    "scripts/lib/blueprint-change-plan.js": "5a6ad9e16d11c09683af3e3290e4b6efac7027a6426de149beea14a11f2a74b0",
+    "scripts/tests/test-blueprint-change-plan.js": "8563f8dc309a681ed2ca01b5fe53181c379e3295a3442c55aa19ce013b52c605",
+    "scripts/lib/resource-pack.js": "a4085f4091cdbc0592577826bc34a5f7d68ce08a96c6019d93667576d9079b86",
+    "scripts/lib/resource-pack-delta.js": "0c2e5f529bf8cc6145b28fc15db82a54d08719f088643c83c782838340082ac2",
+    "scripts/maintenance/stage-resource-pack.js": "302b290621312d044e7b30df4e7f846b66ee0833bf1e376eda9d83ca330cbd3a",
+    "scripts/tests/test-resource-pack-delta.js": "f745fb9edfe5e7574720c5f3bd08a9cb05cd5469b98ef39c4038e09ced445f77",
+    "scripts/tests/quality-test-inventory.js": "6ffd749bd15063265686edff3af74df3e6aaf5b546007ccaa107d17a382d3124",
+    "scripts/workflow.js": "545c297cf55e22abc1449020e2e4777ef2cc7ccc10c580677e257f3ada4e0fe1"
+  }
+}

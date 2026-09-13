@@ -4,8 +4,15 @@ var fs = require('fs');
 var path = require('path');
 var zlib = require('zlib');
 var expectedDataVersion = require('../lib/data-version').expectedDataVersion;
+var resolveContentRoot = require('../lib/content-contract-root').resolveContentRoot;
 
-var ROOT = path.resolve(__dirname, '..', '..');
+/**
+ * 数据根：AICS_DATA_ROOT || AICS_APP_ROOT || 仓库根（G11，与维护保存/store 链一致）。
+ * 表示完整项目布局根（含 data/assets/src/stores）；夹具必须自备全部布局文件，
+ * 缺文件按缺失报错，不回退读取生产数据。校验规则代码（popularContent /
+ * kreaStyleRecipes 等 TS 模块）仍按代码仓库 require，与该根无关。
+ */
+var ROOT = resolveContentRoot();
 
 /**
  * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存。
@@ -18,10 +25,20 @@ function contentVersion() {
 }
 
 function checkDataVersion() {
-  var storeSource = fs.readFileSync(path.join(ROOT, 'src', 'stores', 'sceneStore.ts'), 'utf8');
+  var storeSource;
+  try {
+    storeSource = fs.readFileSync(path.join(ROOT, 'src', 'stores', 'sceneStore.ts'), 'utf8');
+  } catch (error) {
+    return ['src/stores/sceneStore.ts is missing or unreadable: ' + error.message];
+  }
   var match = /DATA_VERSION\s*=\s*(\d+)/.exec(storeSource);
   if (!match) return ['sceneStore.ts is missing DATA_VERSION'];
-  var expected = contentVersion();
+  var expected;
+  try {
+    expected = contentVersion();
+  } catch (error) {
+    return ['DATA_VERSION 计算失败（root=' + ROOT + ' 的 data/ 产物缺失或不可读）: ' + error.message];
+  }
   var actual = Number(match[1]);
   if (actual !== expected) {
     return ['DATA_VERSION mismatch: sceneStore.ts has ' + actual + ', data content expects ' + expected
@@ -112,7 +129,7 @@ function validateSceneShards(data) {
       if (!Array.isArray(items)) errors.push(file + ' must be an array');
       return { char: char, file: file, items: Array.isArray(items) ? items : [] };
     } catch (error) {
-      errors.push(file + ' is missing or unreadable');
+      errors.push(file + ' is missing or unreadable: ' + error.message);
       return { char: char, file: file, items: [] };
     }
   });
@@ -158,7 +175,7 @@ function validateSceneShards(data) {
     var ordered = Array.isArray(index.orderedIds) ? index.orderedIds : [];
     if (ordered.length !== scenes.length) errors.push('scenes-index.json orderedIds length mismatch');
   } catch (error) {
-    errors.push('scenes-index.json is missing or unreadable');
+    errors.push('scenes-index.json is missing or unreadable: ' + error.message);
   }
   return errors;
 }
@@ -296,7 +313,10 @@ function checkReferenceViewUrls() {
   } catch (error) {
     return ['character-reference-view.json cannot be parsed: ' + error.message];
   }
-  var result = require('./check-ref-urls').auditReferenceView(view, ROOT);
+  // 参考核对与数据读取使用同一统一根：auditReferenceView 内部优先 env.AICS_APP_ROOT，
+  // 当 AICS_DATA_ROOT 命中时必须把它对齐到 ROOT，避免两套根各查各的。
+  var result = require('./check-ref-urls').auditReferenceView(view, ROOT,
+    Object.assign({}, process.env, { AICS_APP_ROOT: ROOT }));
   var errors = result.errors.map(function (error) { return 'character-reference-view: ' + error; });
   if (result.missing) errors.push('参考图缺失 ' + result.missing + '/' + result.total
     + '；素材根目录: ' + (result.refRoot || '(未配置)') + '。先确认素材路径与同步，不自动改写索引。');
@@ -322,22 +342,33 @@ function checkSceneRatingInterlock(data) {
 }
 
 function main() {
-  var data = {
-    characters:readJson('data/characters.json'),
-    loras:readJson('data/loras.json'),
-    scenes:readJson('data/scenes.json')
-  };
-  var errors = validateContent(data, function (relative) {
-    // 样张/立绘 URL 允许携带缓存版本串（如 popular-*.png?v=2），存在性检查需剥离。
-    var pathOnly = String(relative).replace(/\?.*$/, '');
-    return fs.existsSync(path.resolve(ROOT, 'data', pathOnly));
+  // 核心数据逐文件装载：缺文件/坏 JSON 输出定位到具体路径，不允许异常后继续报告成功。
+  var data = {};
+  var loadErrors = [];
+  [['characters', 'data/characters.json'], ['loras', 'data/loras.json'], ['scenes', 'data/scenes.json']].forEach(function (entry) {
+    try {
+      data[entry[0]] = readJson(entry[1]);
+    } catch (error) {
+      loadErrors.push(entry[1] + ' is missing or unreadable: ' + error.message);
+    }
   });
-  errors = errors.concat(validateSceneShards(data));
+
+  var errors = loadErrors.slice();
+  if (!loadErrors.length) {
+    errors = errors.concat(validateContent(data, function (relative) {
+      // 样张/立绘 URL 允许携带缓存版本串（如 popular-*.png?v=2），存在性检查需剥离。
+      var pathOnly = String(relative).replace(/\?.*$/, '');
+      return fs.existsSync(path.resolve(ROOT, 'data', pathOnly));
+    }));
+    errors = errors.concat(validateSceneShards(data));
+    errors = errors.concat(checkSceneRatingInterlock(data));
+  }
+  // 与核心数据无关的检查继续执行：坏夹具下一次暴露尽可能多的可定位问题。
   errors = errors.concat(validatePopularContent());
-  errors = errors.concat(checkSceneRatingInterlock(data));
   errors = errors.concat(checkPrecompressArtifacts());
   errors = errors.concat(checkReferenceViewUrls());
-  errors = errors.concat(checkDataVersion());  if (errors.length) {
+  errors = errors.concat(checkDataVersion());
+  if (errors.length) {
     console.error(errors.map(function (error) { return '  - ' + error; }).join('\n'));
     process.exitCode = 1;
     return;

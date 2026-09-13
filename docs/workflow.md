@@ -175,15 +175,19 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 当前 `--apply` 仅支持 Windows，其他平台拒绝写入、仍可预览。原因是普通目录 rename 在 POSIX 可覆盖并发出现的空目录；Windows 隔离回归已验证该冲突会拒绝。工具面向受控本地目录，不承诺抵御其他进程持续恶意替换路径的绝对事务隔离。
 
-`node scripts/workflow.js resource:pack --manifest <root内JSON> --name <包名> [--root <目录>] [--apply]` 是 R1 之后的受控复制工具，不是安装器、下载器或发布入口。默认只预览复制计划（stdout JSON：目标路径、条目、字节合计与核验摘要），零写入；但预览会读取清单并对源文件做与 `audit:resource-manifest` 同套的核验（读取不是零读取）。`--help` / `--plan` 仅打印用法，不读取目标文件。
+`node scripts/workflow.js resource:pack --manifest <root内JSON> --name <包名> [--base-manifest <root内旧JSON>] [--root <目录>] [--apply]` 是 R1 之后的受控复制工具，不是安装器、下载器或发布入口。默认只预览复制计划（stdout JSON：目标路径、条目、字节合计与核验摘要），零写入；但预览会读取清单并对源文件做与 `audit:resource-manifest` 同套的核验（读取不是零读取）。`--help` / `--plan` 仅打印用法，不读取目标文件。
 
 显式 `--apply` 才实际复制：先复用现有清单核验，重复路径、非法/越界路径（含编码分隔符）、排除域（`assets/character-references`）、非空 unverified、文件缺失、字节或哈希不匹配任一失败即整体拒绝；通过后把清单已列普通文件复制到 `<root>/scripts/archive/resource-packs/<包名>/` 新目录，保留 `assets/...` 相对结构，不遍历补入未列文件，并写入可被 `audit:resource-manifest --root <包目录> --manifest manifest.json` 再次核验的 `manifest.json`。复制先写入本次专用暂存目录 `.staging-<包名>-<随机>`，逐条读回核验候选副本的字节与 SHA-256（复制时源已变化会被发现并终止），整体复核通过后才改名为最终包名，再做发布后核验；核验通过只输出「候选包已通过字节核验」，不代表图片质量、内容审核或部署完成。
 
+`--base-manifest <root内旧JSON>`（与 `--manifest <新JSON>` 同用，缺 `--manifest` 退出 2）切换为增量候选包：复用 `audit:resource-manifest` 的纯比较，只把 added/changed 项写入候选，`unchanged` 不进候选文件，`removed` 仅作为差异记录，不删除任何源/目标资源。旧清单只做结构核验（schemaVersion、条目形态、重复、路径合规），不读取其对应的磁盘资产（removed 文件可已不存在）；新清单仍按全包同套完整核验，不能用增量绕过新清单损坏；任一清单结构错误或非空 unverified 即整体拒绝。候选 `manifest.json` 只列实际复制的 added/changed 项，可被现有 verifier 再次核验；另写 `delta.json` 记录旧/新清单内容身份（按稳定 path/bytes/sha256 计算的 contentIdentity，不含 `generatedAt`）、四类数量与移除路径，供以后基线匹配用；两个元数据都在最终改名前读回核对。增量产物不是完整可安装包，也不能当作已安装更新；零差异时输出明确的零资产候选（无 assets 目录）。复制/暂存/发布协议、目标冲突与 junction 拒绝与全包模式相同。
+
 安全边界：包名限字母、数字、下划线、短横线（1-64 字符），拒绝路径片段；目标只要已存在（含空目录、文件或链接）即拒绝，不覆盖任何旧包；目标祖先链中已存在的符号链接/junction（realpath 与字面路径不一致）先于任何写入被拒；复制期间源变化、候选写入失败或发布冲突都不报告成功，暂存目录保留并在结果中给出明确路径（残缺暂存不是可用候选包），不删除任何目录。不转换或重采样图片，不执行复制内容，无 ZIP 解压/安装/缓存淘汰与网络行为，写入范围限 `--root` 内候选目录。
 
-退出码：0 表示预览计划可行或候选包已通过字节核验并落盘；1 表示目标或内容问题（清单核验失败/格式错误/不支持版本、目标已存在、目标链含链接、复制或发布后核验失败）；2 表示参数或环境问题（包名非法、参数缺失或无法识别、root 不可用、清单路径越界或不可读）。隔离回归：`node scripts/tests/test-resource-pack.js`（已登记 unit 套件，全部夹具位于临时目录，不导出真实素材）。
+退出码：0 表示预览计划可行或候选包已通过字节核验并落盘；1 表示目标或内容问题（清单核验失败/格式错误/不支持版本、目标已存在、目标链含链接、复制或发布后核验失败；增量模式含任一清单结构错误或非空 unverified）；2 表示参数或环境问题（包名非法、参数缺失或无法识别、root 不可用、清单路径越界或不可读）。隔离回归：`node scripts/tests/test-resource-pack.js` 与 `node scripts/tests/test-resource-pack-delta.js`（已登记 unit 套件，全部夹具位于临时目录，不导出真实素材）。
 
 ## 门禁与构建
+
+内容契约 CLI（`check:content` / `test:content`）支持 `AICS_DATA_ROOT || AICS_APP_ROOT || 仓库根`。该根须提供完整 data/assets/src/stores 布局；数据、压缩产物和 DATA_VERSION 核对均使用所选根，缺文件失败，不回退到仓库数据。校验规则代码仍从代码仓库加载；显式外部素材路径配置仍生效。隔离回归 `test-content-contract-root.js` 验证根优先级、损坏定位、零写入及不读取仓库数据域。
 
 按影响面选验证，不按“改了代码”或“准备提交”一律升级：
 
