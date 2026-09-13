@@ -2,7 +2,7 @@
 
 2026-09-13。用户希望优先使用即将到期的 GLM 5.3 Flash 额度。此处按任务边界安排工作，不声明其通用能力或基准排名。依据见 [六报告复核](../../research/engineering/six-task-review-2026-09-13.md)。
 
-最新复核：A、RB、RC、N1/N2/N3 已收尾；RD 的 F03/F05/F08b/F09 已纳入正式测试，其余用例单列未验收。首页、角色详情、场景手帖与 404 页的图片回退已整合，验收见 [汇总记录](../../research/engineering/six-task-review-2026-09-13.md)。本文件保留已执行批次的交接要求，不再重复启动或重做报告；下一阶段按 roadmap 的明确缺口另分任务。
+最新复核：A、RB、RC、N1/N2/N3 已收尾；RD 的 F03/F05/F08b/F09 已纳入正式测试，其余用例单列未验收。图片回退验收见 [汇总记录](../../research/engineering/six-task-review-2026-09-13.md)。当前继续执行文末 G1/G2/G3，三项可并行；旧批次保留交接，不重复启动或重做报告。
 
 ## 执行与交付
 
@@ -120,3 +120,47 @@
 - 参考已交付 N1/N2 的模式：状态复杂时复用或独立封装；图片实际解码前不要宣布恢复成功；复用 ArchiveIcon 和主题令牌。先核对真实 CSS 层叠，缺图文字不得被 figcaption 或装饰渐变压淡。
 - 补两页图片 404、成功恢复、场景手帖按角色隔离/切换的双主题测试。拦截必须命中，恢复验证同目标图片解码，分别保存失败和恢复截图，不能只检查标签存在。复用现有 test helpers，不新增维护工具。
 - 执行相关类型、逻辑与样式检查；不构建共享 dist、不启动共享浏览器服务，主任务统一构建与双主题/窄屏视觉验收。报告明确区分已运行检查与未执行浏览器用例，不下载/删图/改分级或触发模型。
+
+## G1/G2/G3：工程治理实施批次
+
+2026-09-13，分派时基线 `75e6224`。用户已要求继续按并行实施、主任务复核的节奏推进。下面是实际代码任务，不是新一轮盘点。
+
+共同边界：先记录实际 HEAD 与已有改动；仅编辑本批允许文件。三个会话都不修改 scripts/workflow.js、docs/workflow.md、roadmap、共享测试注册表或 Git 状态，文档增补建议写入各自回执目录，由主任务统一更新及提交。保持现有命令名、JSON 旧字段、退出码及权限边界；不执行生成、安装、下载、发布或生产数据写入。可自主执行明确隔离的定向测试，失败须修复后重跑；共享 dist 构建与最终门禁由主任务统一执行。不要把“测试文件存在/被收集”写成测试通过。
+
+### G1：补齐 personaCoreSceneIds 保存清洗与主校验
+
+独占写入：`routes/maintenance-validation.js`、`scripts/maintenance/validate-scenes.js`、`scripts/tests/test-maintenance.js`、`scripts/tests/test-scene-maintenance-save.js`。若确需共享纯函数，可新增小型 `scripts/lib/curation-core-validation.js`。回执：`scripts/archive/glm-g1-core-curation/result.md`。
+
+事实起点：sanitizeCuration 处理 curated/signature/review，但遗漏 personaCoreSceneIds；validate-scenes 的策展段也未覆盖它。已有 test-scene-shard-integrity.js 会检查 core 引用、条数/包体等，不能宣称全项目没有检查，也不要复制这些预算或扩大约束。
+
+- 保存清洗：对显式提供的 personaCoreSceneIds 沿用稳定顺序去重与删除非活跃引用的既有方式；显式非数组输入报明确错误。旧请求未提供此字段时保留既有兼容方式，不擅自将“字段缺省”解释为清空已保存核心精选。先追踪调用者确认现有快照行为。
+- 主校验：字段存在时核对数组、非空字符串 ID、重复项和活跃引用，错误指出 personaCoreSceneIds 及具体 ID/位置。空数组与缺省保持兼容，不新增“必须非空”“必须是 curated 子集”或角色覆盖配额；不改现有 core 首屏预算规则。
+- 不改 personaCoreReasons、推荐理由或其他策展层的语义，不删除/新增任何生产场景，不修改提示词或 pinned 基线。
+- 隔离验证：合法/空/缺省、重复、未知或退役 ID、非数组、非字符串、稳定顺序、输入对象未被修改、其他策展字段未受影响；既有 signature→curated 与 review 互斥测试继续通过。至少有一次真实校验 CLI 对坏夹具返回非零且指出 core 字段，不能只断言源码字符串。
+- 注意 validate-scenes 当前 dataDir 固定仓库路径，而 scene-store 可接受 AICS_DATA_ROOT。若通过环境变量运行夹具，必须让该脚本的全部数据输入使用同一夹具根；允许在本脚本内对齐这一个根目录，不重构共享根解析器。先验证隔离范围，不将生产 curation 临时改坏做测试。
+- 不改蓝图保存事务、routes/maintenance.js 或源分片写入协议。回执列出原缺口、最终行为、定向命令/结果及需要主任务统一补的门禁。
+
+### G2：完整呈现已有工作流条件元数据
+
+独占写入：`scripts/maintenance/report-workflow-conditions.js`、`scripts/tests/test-workflow-conditions.js`。回执：`scripts/archive/glm-g2-workflow-report/result.md`。
+
+事实起点：注册项已有 run.switches/run.notes 与顶层 needs，但条件报告当前只输出 nature/machine/resume 等，默认文字输出也只有 metadata valid/not-run。此批完善信息呈现，不改变执行逻辑。
+
+- JSON 以加字段方式保留 switches、notes 和 needs；复制已有值，不从自然语言推断副作用或前置条件。旧字段与 schemaVersion 保持兼容；缺省值给出稳定的空集合/null，不假装已满足条件。
+- 文字输出包含默认行为、所声明开关及其行为、前置条件、说明、已有错误/未知项。保持清楚简洁，不把整份注册表再序列化成大段 JSON；原有 `--json` 和 `--domain` 行为保持。
+- 真实执行状态仍是 not-run；不能把元数据合法写成命令可安全执行或已验收。复合步骤的现有错误检查继续工作，不重新实现 runner 的执行或权限判断。
+- 测试使用小型注册表/临时根：双杠普通开关、批处理单杠开关、多条 notes、needs、字段缺省、非法元数据和嵌套复合项。分别断言 JSON 结构与人类输出能看到关键条件；确认 help/plan 不读目标根或启动执行器，report 不改输入注册表。
+- 允许为测试导出纯格式化函数，但不新增 CLI 命令、不改共享 runner 和注册表。测试不能只有完整大快照或字符串长度断言。
+
+### G3：把已复核字段职责落实到 ownership 工具
+
+独占写入：`scripts/maintenance/report-content-ownership.js`、`scripts/tests/test-content-ownership.js`。回执：`scripts/archive/glm-g3-ownership/result.md`。
+
+阅读 docs/maintenance.md 的“人物、服装与参考域的维护边界”和六报告复核；旧 scripts/archive 报告只作线索。此批更新工具提供的职责知识，保持当前只读与浅层检查边界，不另造 schema 或图谱平台。
+
+- 补齐 characters/popular/blueprints/references/themes 的实际读取者与写入者：人物档案解析、accent_color 覆盖报告、保存链推荐引用清洗；热门服装 default 解析与参考 isDefault 派生；蓝图 build/import/受控补丁/当前 API 聚合写入；view 合并与登记器双写。逐条核对当前函数，不把函数名、文件名或旧报告措辞当成执行证据。
+- 明确源/产物方向和维护入口影响，特别保留蓝图当前只写聚合的未修风险，以及参考 sync 依赖磁盘机位、可能过滤形态的边界。不能宣布本批修好了这些写入行为。
+- 将笼统字段描述改为实际用途：档案字段存在不代表详情页全部渲染；不同用途字段不机械合并；职责清单是核对范围内的说明，不声称穷尽所有写入者。保持资料维护与提示词变更的验收要求有区别，不给普通档案文字强加真实出图。
+- 保持原 JSON 字段、domain 选择、未知外部资产状态、错误码和路径保护。读写者仍是静态职责说明，本批不加载或执行列出的维护脚本来“验证”。不要新增针对暂缺 readers/writers 文件的硬门禁，旧隔离夹具无需复制整套源码。
+- 定向测试覆盖关键职责信息在 JSON/文字输出中可见、已有各 domain 与参数兼容、未知域拒绝、外部素材仍 unknown、help/plan 零目标读取及报告零写入。用少量关键行为断言，不把全文说明锁成大快照。
+- 三个阶段不得同时改共享文档；把拟增补工作流说明写到自己的 result.md，由主任务合并。完成后停止本批，不自动开始资产下载、ID 迁移或蓝图事务修复。
