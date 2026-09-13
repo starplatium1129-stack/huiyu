@@ -1,6 +1,7 @@
 import { mergeTokenText } from './promptPolicy.ts'
 
-export type BlueprintCompositionIntent = 'single' | 'group' | 'triptych'
+import type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
+export type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
 type CompositionSource = { adult?: boolean; compositionIntent?: BlueprintCompositionIntent }
 
 export function parseCompositionIntent(value: unknown): BlueprintCompositionIntent {

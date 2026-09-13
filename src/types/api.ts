@@ -243,7 +243,7 @@ export interface SceneMaintenanceSnapshot {
   scenes: SceneDraft[]
   tags: TagRecord[]
   curation: CurationData
-  blueprints: import('../utils/popularContent').SceneBlueprint[]
+  blueprints: import('./sceneBlueprint').SceneBlueprint[]
 }
 
 /** POST /api/maintenance/scenes */

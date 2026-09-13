@@ -70,6 +70,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-random-prompt.js',
     'test-popular-content.js',
     'test-content-gate-repairs.js',
+    'test-coverage-report.js',
     'test-scene-prose-contract.js',
     'test-quick-create.js',
     'test-resource-scheduling.js',

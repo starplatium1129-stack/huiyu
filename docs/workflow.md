@@ -1,10 +1,12 @@
 # 统一工作流手册
 
-> 维护日期：2026-09-12。命令注册与默认参数以 scripts/workflow.js 为准；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
+> 维护日期：2026-09-13。命令注册与默认参数以 scripts/workflow.js 为准；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
 
 ## 先查入口
 
-`npm run workflow -- --help` 查看全部命令，`node scripts/workflow.js reference --help` 查看分组。具体命令帮助只展示注册信息，绝不启动底层脚本。`--plan` 统一预览实际命令，不出图、不写数据；`--dry-run` 是底层脚本参数，仅在该脚本明确支持时使用。
+`npm run workflow -- --help` 查看全部命令，`node scripts/workflow.js reference --help` 查看分组。具体命令帮助只展示注册信息，绝不启动底层脚本。`--plan` 统一预览实际命令，分别标注默认行为与本次所带开关的关联行为，不出图、不写数据；`--dry-run` 是底层脚本参数，仅在该脚本明确支持时使用。
+
+每个注册项带结构化 `run` 元数据（W1）：`nature`（默认行为 facet，如 read-only / writes-source / writes-product / writes-release / external-model）、`machine`（node / windows / python-pillow / gateway / comfyui / vision-api 等）、`switches`（显式开关改变的行为，如 `--check` 的自愈与守卫）、`resume`（idempotent / checkpoint / na）、`evidence`（核实位置）与 `unknown`。help 的详细 JSON 与 `--plan` 预览、`audit:workflows` 审计共用这份元数据；它只用于描述与审计，不改变任何执行步骤，也不做运行时拦截。复合工作流的 nature 必须覆盖子步骤的副作用；真实纯只读的组合可以保留只读标记。开关关联行为不是完整执行模式，不替代底层参数组合与优先级规则。
 
 没有入口时查 scripts/maintenance 或运行 `npm run workflow -- audit:orphans --json`。有现成流程必须复用；新增脚本同时登记 WORKFLOWS、本手册分组，新增文档登记 INDEX.md；一次性脚本用完归入 scripts/archive。
 
@@ -15,6 +17,7 @@
 | 想做什么 | 命令 |
 | --- | --- |
 | 查找命令 | `npm run wf -- search 样张`（中英文关键词均可） |
+| 查看一个命令的运行条件 | `npm run wf -- <命令> --help`（详细 JSON 含 run 元数据） |
 | 生成品牌图标 | `npm run wf -- brand:build`（母版 `assets/brand-mark.svg` → 深浅字标、favicon、Windows ICO、安装器线条） |
 | 文档迁移后检查链接 | `npm run wf -- docs:check`（含旧地址映射；不联网核验外部来源） |
 | 查看一个分组 | `npm run wf -- reference` |
@@ -23,6 +26,7 @@
 | 检查入口是否失效 | `npm run wf -- audit:workflows --json` |
 | 检查工作流行为回归 | `npm run wf -- check:workflows` |
 | 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（已纳入 check 与 CI，候选须人工复核） |
+| 查看内容覆盖差额 | `npm run wf -- audit:coverage`（只读报告：热门服装→参考登记、角色→主题选择器；`--json` 机器可读；信息性，不作为门禁失败依据） |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
 | 按当前改动验证 | `npm run wf -- gate:quick` |
 | 跨域/构建链等全量验证 | `npm run wf -- gate:full` |
@@ -30,7 +34,11 @@
 | 检查安装包网关资源完整性 | `npm run wf -- desktop:verify-gateway`（需要已暂存资源；隔离目录真实启动，打包前自动执行） |
 | 生成本机测试安装包 | `npm run wf -- desktop:package-local`（跳过压缩，不安装） |
 
-所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 不接受公共参数，定向操作请分别调用子步骤。只读审计覆盖注册文件、npm 入口、文档存在性和复合依赖循环，不代表模型、账户、外部服务或桌面安装已经验收。
+所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 不接受公共参数，定向操作请分别调用子步骤。只读审计覆盖注册文件、npm 入口、文档存在性、复合依赖循环和 run 元数据合法性，不代表模型、账户、外部服务或桌面安装已经验收。
+
+### 内容覆盖差额报告
+
+`audit:coverage` 对照热门服装分片与参考索引（standards/view）、characters.json 与 `tokens.css` 主题选择器，输出差额清单：缺参考登记、登记未出图（pending）、URL 已填缺实图、无法核实（素材根缺失，与 `check:ref-urls` 同一解析）、参考库独有形态（来源需另行核对，不直接判为自动生成或可删除）；主题侧区分显式主题、默认主题允许项（nene）、待补与旧别名选择器（如 `historia_reiss` → 建议 `krista_lenz`，须人工确认）。结构错误（清单缺文件、跨分片重复 ID、manifest 批次数缺失/不符、standards↔view 镜像破坏）退出 1；覆盖差额只报告，恒退出 0——历史覆盖缺口是待办清单，不是门禁失败，也不授权自动登记或补图。
 
 ## 数据维护
 
