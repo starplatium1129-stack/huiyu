@@ -27,7 +27,7 @@
 - [Gemini 场景候选复核与修订](research/prompts/gemini-scene-candidates/review.md)：60 份概念／12 份深化稿核对，三条双引擎修订候选，均未出图。
 - [Gemini 第二轮复核与场景创作交接](guides/engineering/gemini-scene-draft-handoff.md)：已纠正项、新误报与 60 份场景概念／12 份双引擎草稿任务；不写生产内容。
 - [GLM 报告复核与实施交接](guides/engineering/glm-implementation-handoff.md)：先做工作流元数据和只读覆盖报告，发布与真实内容变更单列。
-- [Gemini 资产交付复核](research/engineering/gemini-asset-review-2026-09-13.md)与[后续任务包](guides/engineering/gemini-followup-tasks.md)：结构账本复核、报告更正、视觉初筛与文案/文档整理。
+- [Gemini 资产交付复核](research/engineering/gemini-asset-review-2026-09-13.md)与[后续任务包](guides/engineering/gemini-followup-tasks.md)：结构账本复核、报告更正、视觉初筛與文案/文档整理。
 - [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复修复。
 - [GLM / Gemini 任务提示词](guides/engineering/model-task-briefs.md)：工作流与字段职责盘点、资产对账与视觉初审；输出范围分离，统一复核。
 - [成年角色 NSFW / R-18 CG 提示词规范](guides/prompts/nsfw-cg-prompt-standard.md)：双引擎 NSFW 语法、脱衣防冲突机制、Danbooru 核心矩阵与 R-18 蓝图规范。
@@ -45,6 +45,7 @@
 
 ## 按需查阅
 
+- [Apple HIG Web 设计规范](guides/design/apple-hig-web-guidelines.md)：官方原则、Web 无障碍底线、组件状态与验收矩阵；已按当前仓库更正双主题与品牌边界，不替代根目录 DESIGN.md。
 - [启动与排错](../STARTUP.md)：干净工作区启动、AI 服务端点、模型目录与本机凭据恢复。
 - [专题指南](guides/README.md)：角色与粒子、提示词、美术、视频、桌面、工程设计。
 - [研究与候选方案](research/README.md)：调研依据与待评估提案。
