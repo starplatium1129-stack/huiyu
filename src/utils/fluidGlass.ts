@@ -1,5 +1,5 @@
 /** Rounded glass optics adapted from DeepSeek Harness Desktop's MIT liquid-glass module. */
-export const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, [data-fluid-glass]'
+export const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gen-bar, [data-fluid-glass]'
 const SVG_NS = 'http://www.w3.org/2000/svg'
 const MAX_SURFACES = 12
 const MAX_MAPS = 32

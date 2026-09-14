@@ -2,10 +2,10 @@
    above opaque reading surfaces. html makes these rules independent of lazy CSS
    load order without overriding page-specific state selectors. */
 :root {
-  --workspace-chrome: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  --workspace-chrome: color-mix(in srgb, var(--bg-surface) 80%, transparent);
   --workspace-edge: color-mix(in srgb, var(--border-soft) 76%, var(--glass-highlight));
   --workspace-inset: inset 0 1px 0 var(--glass-highlight);
-  --workspace-lift: var(--workspace-inset), 0 6px 20px -12px color-mix(in srgb, var(--ink-base) 28%, transparent);
+  --workspace-lift: var(--workspace-inset), 0 10px 28px -10px color-mix(in srgb, var(--ink-base) 28%, transparent);
 }
 
 /* Browse: one grouped control surface, with quieter image mats below it. */
@@ -18,8 +18,8 @@ html .library-page .pop-toolbar {
   border-radius: var(--r-xl);
   background: linear-gradient(120deg, var(--glass-highlight), transparent 54%), var(--workspace-chrome);
   box-shadow: var(--workspace-lift);
-  -webkit-backdrop-filter: blur(18px) saturate(125%);
-  backdrop-filter: blur(18px) saturate(125%);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+  backdrop-filter: blur(24px) saturate(135%);
 }
 html .scene-discovery .scene-toolbar::before { display: none; }
 html .gallery-page :is(.gallery-search, .gallery-project),
@@ -150,7 +150,10 @@ html .pb.journal-workspace .panel-title { line-height: var(--lh-label); }
 html .pb.journal-workspace .gen-bar {
   border-color: var(--workspace-edge);
   border-radius: var(--r-xl);
+  background: linear-gradient(120deg, var(--glass-highlight), transparent 54%), var(--workspace-chrome);
   box-shadow: var(--workspace-lift);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+  backdrop-filter: blur(24px) saturate(135%);
 }
 html .pb.journal-workspace .gen-bar-actions .btn-primary:not(:disabled) { box-shadow: var(--shadow-glass-sm); }
 
@@ -296,7 +299,8 @@ html .notfound-page .notfound-actions {
   html .gallery-page .gallery-toolbar,
   html .showcase-page .toolbar-shell,
   html .scene-discovery .scene-toolbar,
-  html .library-page .pop-toolbar {
+  html .library-page .pop-toolbar,
+  html .pb.journal-workspace .gen-bar {
     background: var(--bg-surface);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;

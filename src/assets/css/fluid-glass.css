@@ -5,20 +5,20 @@
   -webkit-backdrop-filter: var(--fluid-glass-filter);
   backdrop-filter: var(--fluid-glass-filter);
 }
-html[data-fluid-effects="low"] :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, [data-fluid-glass]) {
-  background: var(--bg-surface);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+html[data-fluid-effects="low"] :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
+  background: var(--bg-surface) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, [data-fluid-glass]) {
-    background: var(--bg-surface);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
+  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
+    background: var(--bg-surface) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 }
 @media (forced-colors: active) {
-  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, [data-fluid-glass]) {
+  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
     background: Canvas;
     border-color: CanvasText;
     box-shadow: none;

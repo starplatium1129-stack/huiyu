@@ -30,8 +30,8 @@
   --archive-line: rgba(62, 44, 72, .15);
   --archive-grid: rgba(62, 44, 72, .04);
   --archive-glass: rgba(255, 255, 255, .88);
-  --nav-bg: rgba(255, 248, 244, .94);
-  --glass-fill: rgba(255, 255, 255, .94);
+  --nav-bg: rgba(255, 248, 244, .82);
+  --glass-fill: rgba(255, 255, 255, .82);
   --glass-fill-strong: #ffffff;
   --glass-edge: rgba(62, 44, 72, .16);
   --glass-highlight: rgba(255, 255, 255, .8);

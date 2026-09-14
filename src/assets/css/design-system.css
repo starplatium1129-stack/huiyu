@@ -76,8 +76,8 @@
   --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(39, 33, 53, 0.92);
-  --glass-highlight: rgba(220, 224, 246, 0.08);
+  --nav-bg: rgba(33, 27, 46, 0.80);
+  --glass-highlight: rgba(220, 224, 246, 0.12);
   /* inset 玻璃高光令牌族（2026-09-05 收纳星夜绀紫主题引入的系统性用法，
      保持视觉值逐字节一致；使用点一律走令牌，见 scan-style-literals 门禁） */
   --hl-inset-04: rgba(255, 255, 255, 0.04);
@@ -88,7 +88,7 @@
   --hl-inset-18: rgba(255, 255, 255, 0.18);
   --hl-inset-22: rgba(255, 255, 255, 0.22);
   --hl-inset-32: rgba(255, 255, 255, 0.32);
-  --glass-fill: rgba(39, 33, 53, 0.92);
+  --glass-fill: rgba(39, 33, 53, 0.80);
   --glass-fill-strong: #30283d;
   --glass-edge: rgba(255, 220, 246, 0.16);
   --glass-specular: color-mix(in srgb, #fff2fa 26%, transparent);

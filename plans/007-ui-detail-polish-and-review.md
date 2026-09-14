@@ -1,6 +1,6 @@
 # 007：UI 细节打磨与分批审核
 
-> 2026-09-14。状态：U0/U1 返修已复审；U2 场景与参数工具区已验收；U3 浮层、抽屉与结果查看已实施待审核；U4–U6 未开始。
+> 2026-09-14。状态：U0/U1 返修已复审；U2 场景与参数工具区已验收；U3 浮层、抽屉与结果查看待审核；U4 真实玻璃表达已实施待审核；U5–U6 未开始。
 > 分工：其他执行者实施；当前 Codex 会话审核。本文不派发任务，也不启动自动监控。
 > 已提交基线：`e82329e`。开始实施前仍须核对最新 HEAD 和工作区，不能覆盖后续改动。
 > U0/U1 交付包：`scripts/archive/ui-polish-007/`（本地、被忽略）——`U0-control-inventory.md`、`DELIVERY-U0-U1.md`、`REWORK-U0-U1.md`、`env-3210.json`、`shots-before-3210/` ↔ `shots-after-3210/`、`video-keyboard-flow.webm`、`e2e-targeted.log`、`reviewer/`。
@@ -186,7 +186,7 @@
 | U1 角色选择 | 待审核 | 首轮 `8527cc2`（构建 `f5344e5c…`）；返修 `e67f6ad`（构建 `f13b6d5b…`）；交付说明 `DELIVERY-U0-U1.md`；返修说明 `REWORK-U0-U1.md`（逐项回应 R1/R2/R3）；同条件前后图 `shots-before-3210/` ↔ `shots-after-3210/`（均在 3210 + 已连接样张）；录屏 `video-keyboard-flow.webm`；回归输出 `e2e-targeted.log` | 首轮结论：返修（`REVIEW-U0-U1.md`）；返修结果待复审 |
 | U2 场景与参数 | 已验收 | 控件收敛与审核修复同批提交；真实页面测试 `tests/e2e/director-u2.spec.ts`；构建 `0d9bcb19…`；证据 `scripts/archive/ui-polish-007/u2-review/` | 通过：双主题、1440/390、草稿保留及文字可读性复核；可进入 U3；桌面验收留 U6，详见 §9 |
 | U3 浮层与结果 | 待审核 | 动效分级（全屏微动效/小菜单/标准模态/减少动效）；大图关闭内容防闪烁保护；对比弹窗与故事抽屉焦点陷阱与 Esc 支持；原生 dialog backdrop 点击关闭；交付说明 `scripts/archive/ui-polish-007/DELIVERY-U3.md`；单测与门禁全部通过 | — |
-| U4 实际玻璃表达 | 待实施 | — | — |
+| U4 实际玻璃表达 | 待审核 | 3 处小样（主导航、画册/工作台悬浮工具条、浮层头部）；底板不透明度调优至 80%/82%；顶光与边缘折射；低效果/降透明度/高对比/强制颜色模式实体底色回退；tests/e2e/glass-u4.spec.ts 与 fluidGlass.spec.ts 门禁全通；交付说明 DELIVERY-U4.md | — |
 | U5 推广与排版 | 待实施 | — | — |
 | U6 桌面交付 | 待实施 | — | — |
 

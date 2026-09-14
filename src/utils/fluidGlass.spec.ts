@@ -1,7 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { fluidLens, installFluidGlass } from './fluidGlass'
+import { fluidLens, installFluidGlass, FLUID_GLASS_SELECTOR } from './fluidGlass'
 
 describe('structural glass optics', () => {
+  it('includes navigation, floating toolbars and generation bar in FLUID_GLASS_SELECTOR', () => {
+    expect(FLUID_GLASS_SELECTOR).toContain('.nav')
+    expect(FLUID_GLASS_SELECTOR).toContain('.sticky-toolbar')
+    expect(FLUID_GLASS_SELECTOR).toContain('.gen-bar')
+    expect(FLUID_GLASS_SELECTOR).toContain('.toolbar-shell')
+  })
   it('keeps reading centers and the outer silhouette undistorted', () => {
     expect(fluidLens(300, 100, 20, 150, 50)).toEqual([0, 0])
     expect(fluidLens(300, 100, 20, 0, 50)).toEqual([0, 0])
