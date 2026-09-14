@@ -1,6 +1,6 @@
 # 007：UI 细节打磨与分批审核
 
-> 2026-09-14。状态：U0/U1 首轮审核结论为「返修」（见 `scripts/archive/ui-polish-007/REVIEW-U0-U1.md`），返修已交回待复审；U2–U6 未开始。
+> 2026-09-14。状态：U0/U1 返修已复审；U2 场景与参数工具区经审核修复后通过（浏览器范围）；U3–U6 未开始。
 > 分工：其他执行者实施；当前 Codex 会话审核。本文不派发任务，也不启动自动监控。
 > 已提交基线：`e82329e`。开始实施前仍须核对最新 HEAD 和工作区，不能覆盖后续改动。
 > U0/U1 交付包：`scripts/archive/ui-polish-007/`（本地、被忽略）——`U0-control-inventory.md`、`DELIVERY-U0-U1.md`、`REWORK-U0-U1.md`、`env-3210.json`、`shots-before-3210/` ↔ `shots-after-3210/`、`video-keyboard-flow.webm`、`e2e-targeted.log`、`reviewer/`。
@@ -184,8 +184,27 @@
 | --- | --- | --- | --- |
 | U0 基线与清单 | 待审核 | 基线 `e82329e`（构建 `6590cb2f…`）；控件表 `scripts/archive/ui-polish-007/U0-control-inventory.md`；返修补做素材连接与环境（独立端口 3210 + 隔离 runtime）：`verify-showcase.mjs` → `env-3210.json` | — |
 | U1 角色选择 | 待审核 | 首轮 `8527cc2`（构建 `f5344e5c…`）；返修 `e67f6ad`（构建 `f13b6d5b…`）；交付说明 `DELIVERY-U0-U1.md`；返修说明 `REWORK-U0-U1.md`（逐项回应 R1/R2/R3）；同条件前后图 `shots-before-3210/` ↔ `shots-after-3210/`（均在 3210 + 已连接样张）；录屏 `video-keyboard-flow.webm`；回归输出 `e2e-targeted.log` | 首轮结论：返修（`REVIEW-U0-U1.md`）；返修结果待复审 |
-| U2 场景与参数 | 待实施 | — | — |
+| U2 场景与参数 | 已验收 | 控件收敛与审核修复同批提交；真实页面测试 `tests/e2e/director-u2.spec.ts`；构建 `0d9bcb19…`；证据 `scripts/archive/ui-polish-007/u2-review/` | 通过：双主题、1440/390、草稿保留及文字可读性复核；可进入 U3；桌面验收留 U6，详见 §9 |
 | U3 浮层与结果 | 待实施 | — | — |
 | U4 实际玻璃表达 | 待实施 | — | — |
 | U5 推广与排版 | 待实施 | — | — |
 | U6 桌面交付 | 待实施 | — | — |
+
+## 9. U2 审核修复与验收（2026-09-14）
+
+按用户授权，审核者直接修复并提交 U2 交付及本轮补丁。审核基线为 `6a15757` 上的 U2 未提交交付；交付构建 `92457efb…`，最终 `dist/index.html` SHA256 为 `0d9bcb19d55dd7614a494c2bbf13c1fb6d55a9f8c26a598b52c94048b3b8fdd9`。
+
+发现并解决：
+
+- 引擎/底模禁用态在 `--text-disabled` 上再叠 `opacity: 0.6`；改为完整不透明文字，辅助说明也不再压低透明度。
+- 未做过备份却显示“距上次备份 0 天”；入口与菜单统一为“尚未备份，建议导出备份”。
+- 390px 生成栏把尺寸挤成“83…”；尺寸在窄屏独占一行，离线提示与操作保留在下一行。
+- 热门场景分类计数、摘要、元数据使用透明度淡化；改为文字令牌并增大摘要字号，实测抽样对比度最低 4.60:1。
+
+移除未提交的 `DirectorModeSwitch.spec.ts`（直接赋值 store 不能证明 UI 切换行为），改用 `tests/e2e/director-u2.spec.ts` 实际点击、输入并验证故事、场景搜索、SD CFG、热门角色和服装保持。场景模式沿用自动路线，返回 SD 后检查保存的 SD 参数，不更改路线业务。
+
+当次验证：4 个页面用例通过（深浅主题 × 1440/390）；director 组件单测 4/4；`typecheck:app`、`test:style-debt`、单体门禁、生产构建与 18 路由预算、`git diff --check` 通过。最后的场景卡样式调整后已重跑样式门禁、构建、页面用例与截图。没有执行或宣称全量测试通过。
+
+证据在本地忽略目录 `scripts/archive/ui-polish-007/u2-review/`：`before/` 为 U2 交付修改前，`after/` 为审核修复后（均同端口、主题、视口、正常背景）；工作台整页、工具栏、生成栏、热门场景卡、两个场景页截图及像素对比度见 `after/report.json`；实际切换录屏见 `browser-results/`，结果见 `e2e.log`。该对照不冒充 U1 → U2 的初始视觉基线。
+
+环境为 Windows、Edge 153、DPR1、1440×960/390×960、显式深浅主题、减少动效。独立网关 3410、隔离 runtime 仅读取当前配置中的样张位置；原图/缩略图实际解码、画册 48 张图片解码通过，见 `materials.json`。仅启动本会话网关，无生成请求；浏览器已关闭、网关已清理。不部署桌面；真实 WebView2、Windows DPI、完整动效与设备验收留 U3/U6。本轮结论为 U2 浏览器范围通过，可进入 U3，不代表全站验收完成。

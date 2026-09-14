@@ -104,11 +104,12 @@ const categoryChips = computed(() => {
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-cat-btn:active { transform: translateY(1px) scale(.96); }
-.blueprint-cat-btn em { font-style: normal; font: 700 var(--fs-mono-xs) var(--font-mono); opacity: .55; }
+.blueprint-cat-btn em { font-style: normal; font: 700 var(--fs-mono-xs) var(--font-mono); color: var(--text-muted); }
 .blueprint-cat-btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); color: var(--text-primary); }
+.blueprint-cat-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .blueprint-cat-btn.active {
   border-color: var(--pb-active, var(--accent));
-  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
+  background: color-mix(in srgb, var(--mood-love) 18%, var(--bg-elevated));
   color: var(--accent);
 }
 .blueprint-cat-btn.adult { border-color: color-mix(in srgb, var(--danger-text) 40%, var(--border-soft)); }
@@ -116,7 +117,7 @@ const categoryChips = computed(() => {
 .blueprint-cat-btn.adult:hover,
 .blueprint-cat-btn.adult.active {
   border-color: var(--danger-text);
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  background: var(--bg-elevated);
   color: var(--danger-text);
 }
 .blueprint-reco-head {
@@ -128,11 +129,12 @@ const categoryChips = computed(() => {
 }
 .blueprint-reco-note {
   font-size: var(--fs-mono-sm);
-  opacity: 0.6;
+  color: var(--text-muted);
 }
 .blueprint-reco-btn {
+  min-height: 28px;
   padding: 3px var(--s-3);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-md);
   border: 1px solid var(--border-soft);
   background: var(--glass-fill);
   color: var(--text-secondary);
@@ -141,6 +143,7 @@ const categoryChips = computed(() => {
   transition: border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-reco-btn:hover { border-color: var(--accent); color: var(--accent); }
+.blueprint-reco-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .blueprint-reco-btn:active { transform: translateY(1px) scale(.96); }
 .blueprint-list {
   display: flex;
@@ -161,6 +164,7 @@ const categoryChips = computed(() => {
   cursor: pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover);
 }
+.blueprint-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .blueprint-card:hover {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft));
@@ -182,8 +186,8 @@ const categoryChips = computed(() => {
   gap: 6px;
 }
 .blueprint-desc {
-  font-size: var(--fs-mono-sm);
-  opacity: 0.7;
+  font-size: var(--fs-label-xs);
+  color: var(--text-secondary);
   line-height: var(--lh-label);
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -195,6 +199,6 @@ const categoryChips = computed(() => {
   gap: var(--s-2);
   flex-wrap: wrap;
   font-size: var(--fs-mono-xs);
-  opacity: 0.5;
+  color: var(--text-muted);
 }
 </style>

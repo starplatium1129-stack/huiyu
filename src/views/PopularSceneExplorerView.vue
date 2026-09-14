@@ -407,15 +407,22 @@ onMounted(() => { void init() })
   transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .pop-rating-pill:hover { border-color: var(--border-strong); color: var(--text-primary); }
+.pop-rating-pill:focus-visible,
+.pop-cat:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
 .pop-rating-pill.active {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--bg-elevated));
   color: var(--accent);
+  font-weight: 700;
 }
 .pop-rating-pill.rating-R18.active {
   border-color: var(--danger-text);
-  background: color-mix(in srgb, var(--danger-text) 14%, transparent);
+  background: var(--bg-elevated);
   color: var(--danger-text);
+  font-weight: 700;
 }
 .pop-count { color: var(--text-muted); font: 600 var(--fs-mono-sm) var(--font-mono); white-space: nowrap; }
 .pop-count strong { color: var(--accent); }

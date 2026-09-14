@@ -47,7 +47,7 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 }
 @media (max-width: 600px) {
   .pb.journal-workspace .workspace-copy strong, .pb.journal-workspace .workspace-state { display: none; }
-  .pb.journal-workspace .api-status { width: 100%; flex-wrap: wrap; min-width: 0; justify-content: space-between; }
+  .pb.journal-workspace .api-status { width: 100%; flex-wrap: wrap; min-width: 0; justify-content: space-between; border-left: 0; padding-left: 0; margin-left: 0; }
   .pb.journal-workspace .api-status .badge { max-width: 100%; white-space: normal; text-align: left; }
   .pb.journal-workspace .stage-placeholder { min-height: 360px; }
   .pb.journal-workspace .stage-quick-actions { flex-direction: column; }

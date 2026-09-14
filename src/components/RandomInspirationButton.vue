@@ -74,9 +74,9 @@ function onUndo() {
   align-items: center;
   justify-content: center;
   gap: var(--s-2);
-  padding: 0 var(--s-4);
+  padding: 0 var(--s-3);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-pill);
+  border-radius: var(--r-md);
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
@@ -87,6 +87,11 @@ function onUndo() {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
   background: var(--bg-elevated);
   color: var(--accent);
+}
+.random-dice:focus-visible,
+.random-menu-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .random-dice:active,
 .random-menu-trigger:active {

@@ -24,17 +24,28 @@
   .pb .scene-search:focus ~ .scene-list,
   .pb .scene-list:hover { max-height: var(--scene-list-max-height, min(54vh, 640px)); }
   .pb .scene-scope {
-    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:3px;
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2px;
     margin-bottom:var(--s-2); padding:3px;
-    border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep);
+    border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-deep);
+    box-shadow:inset 0 1px 3px color-mix(in srgb,var(--bg-base) 55%,transparent);
   }
   .pb .scene-scope button {
-    min-height:30px; padding:0 var(--s-2); border:0; border-radius:var(--r-sm);
+    min-height:32px; padding:0 var(--s-2); border:1px solid transparent; border-radius:var(--r-pill);
     background:transparent; color:var(--text-muted); cursor:pointer;
     font:650 var(--fs-mono-xs) var(--font-sans);
+    transition:background var(--motion-surface) var(--ease-out),color var(--motion-surface) var(--ease-out),
+               border-color var(--motion-surface) var(--ease-out),box-shadow var(--motion-surface) var(--ease-out);
   }
-  .pb .scene-scope button:hover { color:var(--text-primary); }
-  .pb .scene-scope button.active { background:var(--accent-soft); color:var(--accent); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent); }
+  .pb .scene-scope button:hover:not(.active) { color:var(--text-primary); background:var(--bg-hover); }
+  .pb .scene-scope button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .pb .scene-scope button:active { transform:scale(.97); }
+  .pb .scene-scope button.active {
+    background:color-mix(in srgb,var(--accent) 18%,var(--bg-elevated));
+    color:var(--accent);
+    border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft));
+    box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
+    font-weight:700;
+  }
   .pb .scene-core-mark {
     flex:0 0 auto; margin-left:auto; padding:2px 6px; border-radius:var(--r-pill);
     background:var(--accent-soft); color:var(--accent);
@@ -44,12 +55,20 @@
   .pb .scene-count-badge { color:var(--text-muted); font-weight:600; }
   /* ── Vue SPA class aliases（模板类名与旧 HTML 控制器类名对齐） ── */
   .pb .scene-cat-btn {
-    appearance:none; padding:3px var(--s-3); border:1px solid var(--border-soft);
+    appearance:none; min-height:28px; padding:3px var(--s-3); border:1px solid var(--border-soft);
     background:var(--bg-surface); color:var(--text-secondary); border-radius:var(--r-pill);
-    cursor:pointer; font:500 var(--fs-label-xs) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out);
+    cursor:pointer; font:500 var(--fs-label-xs) var(--font-sans);
+    transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out);
   }
-  .pb .scene-cat-btn:hover { border-color:var(--accent); color:var(--accent); }
-  .pb .scene-cat-btn.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
+  .pb .scene-cat-btn:hover:not(.active) { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); color:var(--text-primary); }
+  .pb .scene-cat-btn:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .pb .scene-cat-btn:active { transform:translateY(1px) scale(.97); }
+  .pb .scene-cat-btn.active {
+    background:var(--accent-soft);
+    color:var(--accent);
+    border-color:var(--accent);
+    font-weight:600;
+  }
   .pb .scene-card-title { display:flex; align-items:flex-start; gap:var(--s-2); font-weight:700; font-size:var(--fs-body); margin-bottom:2px; text-align:left; color:var(--text-primary); }
   .pb .scene-card-story {
     display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;

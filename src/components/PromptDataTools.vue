@@ -1,12 +1,16 @@
 <template>
   <details ref="utilityEl" class="utility-menu">
-    <summary class="utility-trigger" aria-label="数据工具">
-      ···
+    <summary
+      class="utility-trigger"
+      :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
+      :title="backupStale ? `数据工具（${backupReminder}）` : '数据工具与蓝图'"
+    >
+      <span class="utility-trigger-dots" aria-hidden="true">···</span>
       <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
     </summary>
     <div class="utility-popover">
       <div v-if="backupStale" class="utility-note" role="status">
-        <ArchiveIcon name="health" /> 距上次备份 {{ backupDays }} 天，建议导出一次以防数据丢失
+        <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
       <div class="utility-label">本地数据</div>
       <div class="utility-actions">
@@ -116,6 +120,9 @@ const backupDays = computed(() => {
   if (!last) return 0
   return Math.max(0, Math.floor((Date.now() - last) / (24 * 60 * 60 * 1000)))
 })
+const backupReminder = computed(() => backup.lastBackupAt.value
+  ? `距上次备份 ${backupDays.value} 天，建议导出备份`
+  : '尚未备份，建议导出备份')
 
 useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
   onEscape: () => { if (!backup.busy.value) discard() },
@@ -212,11 +219,19 @@ async function onBackupFilePicked(event: Event) {
 
 <style scoped>
 .utility-trigger { position: relative; }
+.utility-trigger-dots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  margin-top: -2px;
+}
 .utility-dot {
-  position: absolute; top: 2px; right: 2px;
-  width: 7px; height: 7px; border-radius: 50%;
+  position: absolute; top: 3px; right: 3px;
+  width: 6px; height: 6px; border-radius: 50%;
   background: var(--warning);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--warning) 70%, transparent);
+  box-shadow: 0 0 0 1.5px var(--bg-surface), 0 0 6px color-mix(in srgb, var(--warning) 60%, transparent);
 }
 .utility-note {
   display: flex; align-items: center; gap: var(--s-2);

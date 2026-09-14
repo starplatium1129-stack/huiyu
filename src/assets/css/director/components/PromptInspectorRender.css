@@ -20,15 +20,28 @@
   cursor: pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
+.pb .engine-btn:hover:not(:disabled):not(.active) {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft));
+  background: var(--bg-hover);
+}
+.pb .engine-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .pb .engine-btn.active {
   border-color: var(--engine-active-border);
   background: color-mix(in srgb, var(--mood-love) 14%, transparent);
   color: var(--engine-active-text);
 }
+.pb .engine-btn:disabled {
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+  background: var(--bg-deep);
+  cursor: not-allowed;
+  opacity: 1;
+}
 .pb .engine-sub {
   font-size: var(--fs-mono-sm);
-  opacity: 0.6;
+  color: var(--text-muted);
 }
+.pb .engine-btn:disabled .engine-sub { color: var(--text-disabled); }
 .pb .base-model-picker {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -46,8 +59,17 @@
   min-width: 0;
   padding: 7px 9px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-md);
   background: var(--bg-surface);
   color: var(--text-primary);
   font-size: var(--fs-label-sm);
+}
+.pb .base-model-picker select:focus {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent-soft);
+}
+.pb .base-model-picker select:disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  opacity: 1;
 }

@@ -108,14 +108,16 @@
     box-shadow:inset 0 1px 3px color-mix(in srgb,var(--bg-base) 55%,transparent);
   }
   .pb .director-mode-option {
-    min-height:32px; padding:0 16px; border:0; border-radius:var(--r-pill);
+    min-height:32px; padding:0 16px; border:1px solid transparent; border-radius:var(--r-pill);
     background:transparent; color:var(--text-muted); cursor:pointer; font:700 var(--fs-label-sm) var(--font-sans);
     transition:background var(--motion-surface) var(--ease-out),color var(--motion-surface) var(--ease-out),
                box-shadow var(--motion-surface) var(--ease-out),transform var(--motion-hover) var(--ease-out);
   }
+  .pb .director-mode-option:hover:not(.active) { color:var(--text-primary); }
+  .pb .director-mode-option:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   .pb .director-mode-option:active { transform:scale(.96); }
   .pb .director-mode-option.active {
-    border:1px solid var(--glass-edge);
+    border-color:var(--glass-edge);
     background:linear-gradient(135deg,var(--glass-specular),var(--glass-fill-strong));
     color:var(--accent);
     box-shadow:inset 0 1px 0 var(--glass-highlight),var(--glow-sm);
@@ -290,10 +292,11 @@
     .pb .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
   }
   /* 表面(玻璃底/边/内衬)统一由下方 liquid glass 组声明,此处只留自身几何与排版 */
-  .pb .api-status { display:flex; align-items:center; gap:var(--s-2); justify-content:flex-end; margin-bottom:0; font-size:var(--fs-label); color:var(--text-muted); }
+  .pb .api-status { display:flex; align-items:center; gap:var(--s-2); justify-content:flex-end; margin-bottom:0; margin-left:var(--s-1); padding-left:var(--s-3); border-left:1px solid var(--border-soft); font-size:var(--fs-label); color:var(--text-muted); }
   /* 表面由下方 liquid glass 组声明 */
-  .pb .api-status .badge { cursor:pointer; margin-right:4px; padding:var(--s-2) var(--s-3); border-radius:var(--r-pill); border:1px solid var(--border-soft); font-size:var(--fs-label-xs); white-space:nowrap; transition:border-color var(--motion-hover),background var(--motion-hover),opacity var(--motion-hover); }
+  .pb .api-status .badge { cursor:pointer; margin-right:0; padding:var(--s-2) var(--s-3); border-radius:var(--r-pill); border:1px solid var(--border-soft); font-size:var(--fs-label-xs); white-space:nowrap; transition:border-color var(--motion-hover),background var(--motion-hover),opacity var(--motion-hover); }
   .pb .api-status .badge:hover { border-color:var(--accent); }
+  .pb .api-status .badge:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   /* SD 已连接时淡化状态徽章：连接中保持醒目，就绪后不抢操作区 */
   .pb .api-status .badge.badge-online { opacity:1; }
   .pb .api-status .badge.badge-online:hover { opacity:1; }
@@ -316,6 +319,7 @@
     .pb-topline { align-items:stretch; flex-direction:column; gap:var(--s-2); margin-bottom:var(--s-2); }
     .pb-sub { display:none; }
     .pb-top-actions { justify-content:space-between; width:100%; }
+    .pb .api-status { border-left:0; padding-left:0; margin-left:0; }
     .pb .focus-mode-label { display:none; }
     .pb .focus-mode-btn { width:36px; padding:0; }
     .pb .shortcut-only { display:none; }
