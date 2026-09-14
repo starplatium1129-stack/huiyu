@@ -1,9 +1,9 @@
 # 007：UI 细节打磨与分批审核
 
-> 2026-09-14。状态：U0/U1 已由执行者提交，待审核；U2–U6 未开始。
+> 2026-09-14。状态：U0/U1 首轮审核结论为「返修」（见 `scripts/archive/ui-polish-007/REVIEW-U0-U1.md`），返修已交回待复审；U2–U6 未开始。
 > 分工：其他执行者实施；当前 Codex 会话审核。本文不派发任务，也不启动自动监控。
 > 已提交基线：`e82329e`。开始实施前仍须核对最新 HEAD 和工作区，不能覆盖后续改动。
-> U0/U1 交付包：`scripts/archive/ui-polish-007/`（本地、被忽略）——`U0-control-inventory.md`、`DELIVERY-U0-U1.md`、`shots-before-dist/` ↔ `shots-after-dist/`、`video-keyboard-flow.webm`、`e2e-targeted.log`。
+> U0/U1 交付包：`scripts/archive/ui-polish-007/`（本地、被忽略）——`U0-control-inventory.md`、`DELIVERY-U0-U1.md`、`REWORK-U0-U1.md`、`env-3210.json`、`shots-before-3210/` ↔ `shots-after-3210/`、`video-keyboard-flow.webm`、`e2e-targeted.log`、`reviewer/`。
 
 ## 1. 目标与已确认方向
 
@@ -182,8 +182,8 @@
 
 | 批次 | 状态 | 执行提交 / 证据 | 审核结论 |
 | --- | --- | --- | --- |
-| U0 基线与清单 | 待审核 | 基线 `e82329e`（构建 `6590cb2f…`）；控件表 `scripts/archive/ui-polish-007/U0-control-inventory.md` | — |
-| U1 角色选择 | 待审核 | 提交 `8527cc2`（构建 `f5344e5c…`）；交付说明 `scripts/archive/ui-polish-007/DELIVERY-U0-U1.md`；同条件前后图 `shots-before-dist/` ↔ `shots-after-dist/`；录屏 `video-keyboard-flow.webm`；回归输出 `e2e-targeted.log` | — |
+| U0 基线与清单 | 待审核 | 基线 `e82329e`（构建 `6590cb2f…`）；控件表 `scripts/archive/ui-polish-007/U0-control-inventory.md`；返修补做素材连接与环境（独立端口 3210 + 隔离 runtime）：`verify-showcase.mjs` → `env-3210.json` | — |
+| U1 角色选择 | 待审核 | 首轮 `8527cc2`（构建 `f5344e5c…`）；返修 `e67f6ad`（构建 `f13b6d5b…`）；交付说明 `DELIVERY-U0-U1.md`；返修说明 `REWORK-U0-U1.md`（逐项回应 R1/R2/R3）；同条件前后图 `shots-before-3210/` ↔ `shots-after-3210/`（均在 3210 + 已连接样张）；录屏 `video-keyboard-flow.webm`；回归输出 `e2e-targeted.log` | 首轮结论：返修（`REVIEW-U0-U1.md`）；返修结果待复审 |
 | U2 场景与参数 | 待实施 | — | — |
 | U3 浮层与结果 | 待实施 | — | — |
 | U4 实际玻璃表达 | 待实施 | — | — |
