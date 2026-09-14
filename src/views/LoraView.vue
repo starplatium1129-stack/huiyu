@@ -129,7 +129,7 @@ onMounted(() => { void loadCatalog() })
 .model-details { font-size: var(--fs-label); color: var(--text-secondary); margin-bottom: var(--s-3); }
 .model-details summary { cursor: pointer; }
 .lora-grid .lora-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.model-search-row { display: flex; align-items: center; gap: var(--s-4); margin-bottom: var(--s-5); }
+.model-search-row { display: flex; align-items: center; gap: var(--s-4); margin-bottom: var(--s-5); flex-wrap: wrap; }
 .model-search-row input { width: min(440px, 100%); min-height: 42px; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-surface); font: inherit; }
 .model-search-row span { color: var(--text-muted); font-size: var(--fs-label); }
 
@@ -142,7 +142,7 @@ onMounted(() => { void loadCatalog() })
 }
 .lora-title-row .title { margin-bottom:var(--s-2); }
 .lora-title-row .subtitle { margin-bottom:0; }
-.lora-grid { display:grid; gap:var(--s-4); grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); }
+.lora-grid { display:grid; gap:var(--s-4); grid-template-columns:repeat(auto-fill,minmax(min(320px, 100%),1fr)); }
 .lora-card {
   position:relative;
   overflow:hidden;

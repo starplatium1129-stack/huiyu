@@ -239,3 +239,6 @@
   .video-submit-panel .btn { width:100%; }
   .video-review-checklist { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
+@media (max-width: 400px) {
+  .video-review-checklist { grid-template-columns:1fr; }
+}

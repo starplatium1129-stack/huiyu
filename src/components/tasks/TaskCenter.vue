@@ -12,7 +12,7 @@ import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useTaskCenter, consumeTaskReloadApproval, type TaskStatus } from '@/composables/useTaskCenter'
 import { useTaskRecovery } from '@/composables/tasks/useTaskRecovery'
-import { useFluidDialog } from '@/composables/useFluidDialog'
+import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 const recovery = useTaskRecovery()
 const { refreshing, error: recoveryError, refresh } = recovery
 const { tasks, opened, activeCount, controls, storageError, clearCompleted } = useTaskCenter()
@@ -21,7 +21,7 @@ const motion = useFluidDialog(dialog)
 const filters = [{ id: 'all', label: '全部' }, { id: 'running', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'succeeded', label: '已完成' }]
 const labels: Record<TaskStatus, string> = { idle: '待开始', running: '进行中', succeeded: '已完成', failed: '失败', cancelled: '已停止', interrupted: '待检查' }
 const visible = computed(() => tasks.value.filter(task => selected.value === 'all' || (selected.value === 'attention' ? ['failed', 'interrupted'].includes(task.status) : task.status === selected.value)))
-function onDialogClick(event: MouseEvent) { if (event.target === dialog.value) opened.value = false }
+function onDialogClick(event: MouseEvent) { if (isBackdropClick(event, dialog.value)) opened.value = false }
 function onClosed() { if (!dialog.value?.open) opened.value = false }
 watch(opened, async value => {
   const source = document.activeElement as HTMLElement | null

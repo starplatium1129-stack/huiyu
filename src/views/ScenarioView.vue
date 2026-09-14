@@ -238,7 +238,7 @@ onMounted(async () => {
 .scenario-page .scenario-en { display: none; }
 .scenario-page .viewer-header-row { position: sticky; top: 72px; z-index: var(--z-sticky); background: var(--bg-surface); padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-lg); }
 @media(max-width:900px) { .scenario-workspace { grid-template-columns: 1fr; } .scenario-page .scenario-list { position: static; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media(max-width:600px) { .scenario-page .scenario-list { grid-template-columns: 1fr; } }
+@media(max-width:600px) { .scenario-page .scenario-list { grid-template-columns: 1fr; } .scenario-page .viewer-header-row { position: static; } }
 
 .info-callout { margin-bottom:var(--s-5); padding:var(--s-3) var(--s-4); border:1px solid var(--accent); border-radius:var(--r-md); background:var(--accent-soft); font-size:var(--fs-body-sm); }
 .info-callout strong { color:var(--accent); }

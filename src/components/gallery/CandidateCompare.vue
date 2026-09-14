@@ -16,7 +16,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { imgGet } from '@/composables/useImageStore'
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { ArtworkRecord } from '@/types/artwork'
-import { useFluidDialog } from '@/composables/useFluidDialog'
+import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 const props = defineProps<{ open: boolean; items: ArtworkRecord[] }>()
 const emit = defineEmits<{ close: []; changed: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), urls = ref<Record<string, string>>({}), busy = ref(false), loading = ref(false), error = ref('')
@@ -25,7 +25,7 @@ const owned = new Set<string>()
 let version = 0
 const title = (item: ArtworkRecord) => item.sceneTitle || item.scene || '未命名作品'
 function onDialogClick(event: MouseEvent) {
-  if (event.target === dialog.value) emit('close')
+  if (isBackdropClick(event, dialog.value)) emit('close')
 }
 function release() { version++; for (const url of owned) URL.revokeObjectURL(url); owned.clear(); urls.value = {} }
 watch(() => props.open, async open => {

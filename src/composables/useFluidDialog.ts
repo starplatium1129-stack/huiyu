@@ -96,3 +96,19 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
   onDeactivated(dispose); onUnmounted(dispose)
   return { open, close, dispose }
 }
+
+/**
+ * 判定原生 `<dialog>` 的点击事件是否真正命中背景遮罩（`::backdrop`）。
+ * 原生 `<dialog>` 的 padding/border/空白间隙点击时 `event.target` 也是 dialog 元素本身，
+ * 必须比对客户端坐标与 boundingClientRect，只有在矩形外部才属于 backdrop。
+ */
+export function isBackdropClick(event: MouseEvent, dialog: HTMLElement | null): boolean {
+  if (!dialog || event.target !== dialog) return false
+  const rect = dialog.getBoundingClientRect()
+  return (
+    event.clientX < rect.left ||
+    event.clientX > rect.right ||
+    event.clientY < rect.top ||
+    event.clientY > rect.bottom
+  )
+}
