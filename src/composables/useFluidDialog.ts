@@ -37,7 +37,15 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
   let intention = 0
   let locked = false
   let listenerTarget: HTMLDialogElement | null = null
-  function onNativeClose() { releaseScrollLock() }
+  /**
+   * 原生 close 事件在本轮任务队列末尾派发。`close(() => open())` 这类同轮重开会在
+   * 事件到达前重新 showModal，此时弹窗仍然是打开状态，旧事件不能把重开所需持有的
+   * 滚动锁释放掉；只有确认当前没有打开的弹窗才解锁。
+   */
+  function onNativeClose() {
+    if (dialog.value?.open) return
+    releaseScrollLock()
+  }
   function trackClose(el: HTMLDialogElement) {
     if (listenerTarget === el) return
     listenerTarget?.removeEventListener('close', onNativeClose)
@@ -78,9 +86,11 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
   function dispose() {
     intention++
     releaseScrollLock()
-    const el = dialog.value
-    if (!el) return
+    // 卸载时 Vue 会先把模板 ref 置空，这里回退到实际打开过的那个元素，
+    // 否则会留下一个仍处于 open 状态的游离 dialog 和它的 close 监听。
+    const el = dialog.value ?? listenerTarget
     if (listenerTarget) { listenerTarget.removeEventListener('close', onNativeClose); listenerTarget = null }
+    if (!el) return
     surface.dispose(el); el.close()
   }
   onDeactivated(dispose); onUnmounted(dispose)

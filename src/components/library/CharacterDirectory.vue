@@ -12,7 +12,7 @@
     <div class="directory-main">
       <div class="directory-tools">
         <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
-        <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" @keydown.enter="results[0] && emit('select', results[0].id)" @keydown.down.prevent="focusFirst" />
+        <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" @keydown.enter="results[0] && emit('select', results[0].id)" @keydown.down.prevent="focusFirst" @keydown.escape="onEscape" />
         <select v-if="!catalog" v-model="series" aria-label="筛选角色系列"><option value="">全部系列</option><option v-for="group in groups" :key="group.key" :value="group.key">{{ group.label }} · {{ group.count }}</option></select>
         <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
       </div>
@@ -40,7 +40,7 @@ import CharacterPortrait from './CharacterPortrait.vue'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; aliases?: string[] }
 const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
-const emit = defineEmits<{ select: [id: string] }>()
+const emit = defineEmits<{ select: [id: string]; dismiss: [] }>()
 const inputId = useId()
 const query = defineModel<string>('search', { default: '' })
 const series = ref('')
@@ -89,6 +89,17 @@ function onRailKeys(event: KeyboardEvent) {
   if (!step) return
   event.preventDefault()
   moveIn(rail.value, step)
+}
+/**
+ * 弹窗语境（catalog）下 Esc 关闭弹窗并保留搜索，而不是让 `<input type="search">`
+ * 的原生「Esc 清空输入」抢先吃掉按键：那样第一次 Esc 只清空搜索、弹窗不关，
+ * 与「Esc 关闭弹窗、关闭不丢搜索上下文」的既有约定冲突。
+ * 非弹窗目录（角色档案、热门场景）没有 dismiss 监听，保持浏览器原生清空行为。
+ */
+function onEscape(event: KeyboardEvent) {
+  if (!props.catalog) return
+  event.preventDefault()
+  emit('dismiss')
 }
 async function locateSelected() {
   query.value = ''; series.value = ''; await nextTick()
