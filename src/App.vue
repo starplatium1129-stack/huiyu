@@ -8,6 +8,7 @@
   <AppInteractionLayer v-if="!isCompanion" />
   <AppToast v-if="!isCompanion" />
   <ConfirmDialog />
+  <AppearancePreferences hide-triggers />
   <TaskCenter v-if="!isCompanion" />
   <GlobalSearch v-if="!isCompanion" />
 </template>
@@ -21,6 +22,7 @@ import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import TaskCenter from '@/components/tasks/TaskCenter.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'

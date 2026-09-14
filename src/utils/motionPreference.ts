@@ -8,6 +8,11 @@ const query = typeof window !== 'undefined' && typeof window.matchMedia === 'fun
   : null
 
 export function prefersReducedMotion(): boolean {
+  if (typeof document !== 'undefined') {
+    const mode = document.documentElement.dataset.motion
+    if (mode === 'reduce' || mode === 'reduced') return true
+    if (mode === 'full') return false
+  }
   return query?.matches === true
 }
 

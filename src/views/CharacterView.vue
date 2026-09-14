@@ -256,6 +256,7 @@
 </template>
 
 <script setup lang="ts">
+import { useFluidDialog } from '@/composables/useFluidDialog'
 import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vue'
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -351,6 +352,7 @@ const unavailableReferences = ref(new Set<string>())
 const refVersion = ref(Date.now())
 
 const refDialogEl = ref<HTMLDialogElement | null>(null)
+const refMotion = useFluidDialog(refDialogEl)
 const activeRefIndex = ref(-1)
 const activeRefModal = computed(() => {
   if (activeRefIndex.value < 0 || !activeOutfit.value?.references) return null
@@ -363,13 +365,12 @@ function openRefViewer(index: number) {
   if (!refItem || !refItem.url || unavailableReferences.value.has(refItem.url)) return
   activeRefIndex.value = index
   nextTick(() => {
-    refDialogEl.value?.showModal()
+    refMotion.open()
   })
 }
 
 function closeRefViewer() {
-  refDialogEl.value?.close()
-  activeRefIndex.value = -1
+  refMotion.close(() => { activeRefIndex.value = -1 })
 }
 
 function nextRefIndex(delta: number): number {

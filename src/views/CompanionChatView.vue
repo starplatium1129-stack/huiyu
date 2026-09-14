@@ -6,6 +6,7 @@
         <h1 class="companion-chat-title">与{{ currentCharacter.name }}聊天</h1>
       </div>
       <div class="titlebar-controls">
+        <AppearanceButton class="companion-chat-mini" />
         <div class="companion-chat-char-switch" aria-label="切换角色">
           <button
             v-for="id in CHARACTER_IDS"
@@ -149,6 +150,7 @@
 </template>
 
 <script setup lang="ts">
+import AppearanceButton from '@/components/AppearanceButton.vue'
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import { usePolling } from '@/composables/usePolling'

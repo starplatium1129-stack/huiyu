@@ -36,6 +36,8 @@
 
 <script setup lang="ts">
 import { animateMini } from 'motion'
+import { onMounted, onUnmounted, onDeactivated } from 'vue'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 import AppNav from './AppNav.vue'
 import RouteAtmosphere from './visual/RouteAtmosphere.vue'
 import GuestGuide from './GuestGuide.vue'
@@ -45,6 +47,7 @@ import GuestGuide from './GuestGuide.vue'
 const activeAnimations = new Map<Element, {
   controls: ReturnType<typeof animateMini>
   done: () => void
+  opacity: number
 }>()
 
 // done 可能在"动画自然完成"和"stop 强制完成"两条路径被触发，只执行一次
@@ -64,12 +67,14 @@ function stopActive(el: Element) {
   const active = activeAnimations.get(el)
   if (!active) return
   active.controls.stop()
+  ;(el as HTMLElement).style.opacity = String(active.opacity)
+  ;(el as HTMLElement).style.transform = ''
   active.done()
   activeAnimations.delete(el)
 }
 
-function trackAnimation(el: Element, controls: ReturnType<typeof animateMini>, done: () => void) {
-  activeAnimations.set(el, { controls, done })
+function trackAnimation(el: Element, controls: ReturnType<typeof animateMini>, done: () => void, opacity: number) {
+  activeAnimations.set(el, { controls, done, opacity })
   controls.then(() => {
     done()
     if (activeAnimations.get(el)?.controls === controls) activeAnimations.delete(el)
@@ -79,7 +84,7 @@ function trackAnimation(el: Element, controls: ReturnType<typeof animateMini>, d
 function onEnter(el: Element, done: () => void) {
   stopActive(el)
   const doneOnce = onceDone(done)
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reduced = prefersReducedMotion()
   const controls = reduced
     ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0 })
     : animateMini(
@@ -87,16 +92,22 @@ function onEnter(el: Element, done: () => void) {
         { opacity: [0, 1], transform: ['translateY(10px) scale(.994)', 'translateY(0) scale(1)'] },
         { type: 'spring', bounce: 0, duration: 0.44 },
       )
-  trackAnimation(el, controls, doneOnce)
+  trackAnimation(el, controls, doneOnce, 1)
 }
 
 function onLeave(el: Element, done: () => void) {
   stopActive(el)
   const doneOnce = onceDone(done)
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reduced = prefersReducedMotion()
   const controls = animateMini(el as HTMLElement, { opacity: 0 }, { duration: reduced ? 0 : 0.12, ease: 'easeOut' })
-  trackAnimation(el, controls, doneOnce)
+  trackAnimation(el, controls, doneOnce, 0)
 }
+const motionMedia = matchMedia('(prefers-reduced-motion: reduce)')
+function settleAll() { for (const el of [...activeAnimations.keys()]) stopActive(el) }
+function motionChanged() { if (prefersReducedMotion()) settleAll() }
+onMounted(() => { motionMedia.addEventListener('change', motionChanged); window.addEventListener('atelier:motion-preference', motionChanged) })
+onDeactivated(settleAll)
+onUnmounted(() => { settleAll(); motionMedia.removeEventListener('change', motionChanged); window.removeEventListener('atelier:motion-preference', motionChanged) })
 </script>
 
 <style scoped>

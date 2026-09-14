@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
@@ -163,7 +164,7 @@ async function handleStart() {
 </script>
 
 <template>
-  <Transition name="layer-pop">
+  <FluidTransition>
   <div v-if="open" class="modal-backdrop" @click.self="emit('close')">
     <div ref="modalEl" class="modal-card inpaint-modal" role="dialog" aria-modal="true" aria-label="智能局部换装">
       <CornerFrame variant="ghost" />
@@ -436,7 +437,7 @@ async function handleStart() {
       </footer>
     </div>
   </div>
-  </Transition>
+  </FluidTransition>
 </template>
 
 <style scoped src="@/assets/css/anima-inpaint.css"></style>

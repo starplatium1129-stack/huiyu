@@ -451,7 +451,7 @@
       </section>
 
       <Teleport to="body">
-        <Transition name="layer-pop">
+        <FluidTransition>
         <div v-if="scriptOpen" class="shot-script-overlay" @click.self="scriptOpen = false">
           <section ref="scriptDialog" class="shot-script-panel" role="dialog" aria-modal="true" aria-label="AI 生成分镜脚本">
             <header class="shot-script-head">
@@ -506,7 +506,7 @@
             </footer>
           </section>
         </div>
-        </Transition>
+        </FluidTransition>
       </Teleport>
 
       <section class="video-panel shot-submit-panel" :data-ready="canSubmit || undefined">
@@ -566,6 +566,7 @@
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { nextTick, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

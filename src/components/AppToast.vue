@@ -47,7 +47,8 @@
 
 <script setup lang="ts">
 import { animateMini } from 'motion'
-import { nextTick, onUnmounted, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useToast, type ToastItem, type ToastType } from '@/composables/useToast'
 
@@ -80,11 +81,39 @@ interface DragSession {
 }
 
 let activeDrag: DragSession | null = null
+const motions = new Map<HTMLElement, { controls: ReturnType<typeof animateMini>; opacity: number; done: () => void }>()
+function settle(el: HTMLElement) {
+  const motion = motions.get(el)
+  if (!motion) return
+  motions.delete(el)
+  motion.controls.stop()
+  el.style.opacity = String(motion.opacity)
+  el.style.transform = ''
+  motion.done()
+}
+function track(el: HTMLElement, controls: ReturnType<typeof animateMini>, opacity: number, done: () => void = () => {}) {
+  const motion = { controls, opacity, done }
+  motions.set(el, motion)
+  controls.then(() => { if (motions.get(el) === motion) settle(el) })
+}
+const motionMedia = matchMedia('(prefers-reduced-motion: reduce)')
+function motionChanged() {
+  if (!prefersReducedMotion()) return
+  if (activeDrag) { activeDrag.el.style.transform = ''; activeDrag.el.style.opacity = ''; activeDrag = null }
+  for (const el of [...motions.keys()]) settle(el)
+}
+onMounted(() => { motionMedia.addEventListener('change', motionChanged); window.addEventListener('atelier:motion-preference', motionChanged) })
+onUnmounted(() => {
+  motionMedia.removeEventListener('change', motionChanged); window.removeEventListener('atelier:motion-preference', motionChanged)
+  for (const motion of motions.values()) motion.controls.stop()
+  motions.clear(); activeDrag = null
+})
 
 function onPointerDown(e: PointerEvent, id: number) {
   // 按钮保留自己的点击目标；父容器捕获指针会把 click 重定向到提示条。
   if ((e.target as Element).closest('button, a, input, select, textarea')) return
   const el = e.currentTarget as HTMLElement
+  settle(el)
   activeDrag = {
     id,
     startY: e.clientY,
@@ -113,24 +142,23 @@ function onPointerUp(e: PointerEvent, id: number) {
   const velocity = (e.clientY - activeDrag.lastY) / elapsed // px/ms，向上回拖不视为下滑消除
   const el = activeDrag.el
   activeDrag = null
+  settle(el)
 
   // 向下滑动超过 32px 或滑动速度超过 0.12 px/ms 则顺势消除
   if (deltaY > 32 || (deltaY > 0 && velocity > 0.12)) {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    void animateMini(el, reduced ? { opacity: 0 } : { opacity: 0, transform: `translateY(${deltaY + 24}px)` }, { duration: 0.14 }).then(() => {
-      dismiss(id)
-    })
+    const reduced = prefersReducedMotion()
+    track(el, animateMini(el, reduced ? { opacity: 0 } : { opacity: 0, transform: `translateY(${deltaY + 24}px)` }, { duration: reduced ? 0 : 0.14 }), 0, () => dismiss(id))
   } else {
     // 未达阈值时从当前拖拽位置短促回弹，reduced motion 仅保留淡回反馈。
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduced = prefersReducedMotion()
     if (reduced) {
       el.style.transform = ''
     }
-    void animateMini(
+    track(el, animateMini(
       el,
       reduced ? { opacity: 1 } : { opacity: 1, transform: 'translateY(0)' },
-      reduced ? { duration: 0.1, ease: 'easeOut' } : { type: 'spring', bounce: 0.12, duration: 0.22 },
-    )
+      reduced ? { duration: 0 } : { type: 'spring', bounce: 0.12, duration: 0.22 },
+    ), 1)
   }
 }
 
@@ -145,27 +173,29 @@ function onPointerCancel(e: PointerEvent) {
 // toast 进出走 spring：多个 toast 连续弹出时可互相打断、从当前值续走，
 // 不会像固定时长 keyframes 那样排队撞墙。
 function onToastEnter(el: Element, done: () => void) {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  settle(el as HTMLElement)
+  const reduced = prefersReducedMotion()
   const t = reduced
-    ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0.12 })
+    ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0 })
     : animateMini(
         el as HTMLElement,
         { opacity: [0, 1], transform: ['translateY(16px) scale(.97)', 'translateY(0) scale(1)'] },
         { type: 'spring', bounce: 0, duration: 0.38 },
       )
-  t.then(done)
+  track(el as HTMLElement, t, 1, done)
 }
 
 function onToastLeave(el: Element, done: () => void) {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  settle(el as HTMLElement)
+  const reduced = prefersReducedMotion()
   const t = reduced
-    ? animateMini(el as HTMLElement, { opacity: 0 }, { duration: 0.12, ease: 'easeOut' })
+    ? animateMini(el as HTMLElement, { opacity: 0 }, { duration: 0 })
     : animateMini(
         el as HTMLElement,
         { opacity: 0, transform: 'translateY(-8px) scale(.96)' },
         { duration: 0.16, ease: 'easeOut' },
       )
-  t.then(() => {
+  track(el as HTMLElement, t, 0, () => {
     done()
     void nextTick(() => {
       // Removing a focused close/action button need not emit focusout.

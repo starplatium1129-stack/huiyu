@@ -20,7 +20,7 @@
     >
       <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
     </button>
-    <Transition name="popover-pop">
+    <FluidTransition>
       <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="夏目的调色笔记">
         <div class="random-label">夏目的调色笔记</div>
         <label class="random-toggle">
@@ -32,11 +32,12 @@
           夏目：“退回刚才那一抽”
         </button>
       </div>
-    </Transition>
+    </FluidTransition>
   </div>
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'

@@ -1,6 +1,7 @@
 <template>
   <Teleport to="body">
-    <div v-if="open" class="global-search" @pointerdown.self="close()">
+    <Transition :css="false" @enter="surface.enter" @leave="surface.leave" @after-leave="surface.dispose">
+    <div v-show="open" class="global-search" :inert="!open" :aria-hidden="!open" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
         <div class="gs-input-row">
           <ArchiveIcon name="search" class="gs-search-icon" />
@@ -9,7 +10,7 @@
             v-model="query"
             type="search"
             class="gs-input"
-            placeholder="搜索场景、作品、页面… ↑↓ 选择 · Enter 打开"
+            placeholder="搜索场景、作品、页面…"
             aria-label="搜索场景、作品或页面"
             @keydown="onInputKeydown"
           />
@@ -76,8 +77,10 @@
             </p>
           </template>
         </div>
+        <div class="gs-footer" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
       </div>
     </div>
+    </Transition>
   </Teleport>
 </template>
 
@@ -90,6 +93,9 @@ import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'
 import { kvInit, kvGet } from '@/composables/useKVStore'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+import { useFluidSurface } from '@/composables/useFluidSurface'
+
+const surface = useFluidSurface('.gs-panel')
 
 interface SearchItem {
   id: string
@@ -323,32 +329,31 @@ onUnmounted(() => {
   display: flex; align-items: flex-start; justify-content: center;
   padding: clamp(8vh, 14vh, 20vh) var(--s-4) 0;
   background: color-mix(in srgb, var(--art-backdrop) 72%, transparent);
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .gs-panel {
   width: min(640px, 96vw);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-stage);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r-2xl);
   background: var(--bg-surface);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-elevated);
   overflow: hidden;
-  animation: gs-in .22s var(--ease-out) both;
 }
-.gs-panel[data-trigger="keyboard"] {
-  animation: none;
-}
-@keyframes gs-in { from { opacity: 0; transform: translateY(-10px) scale(.99); } to { opacity: 1; transform: none; } }
 .gs-input-row {
   display: flex; align-items: center; gap: var(--s-3);
-  padding: var(--s-3) var(--s-4);
+  padding: var(--s-4) var(--s-5);
+  background: linear-gradient(120deg, var(--glass-highlight), transparent), var(--bg-surface);
   border-bottom: 1px solid var(--border-soft);
 }
 .gs-search-icon { color: var(--text-muted); flex: 0 0 auto; }
 .gs-input {
   flex: 1; min-width: 0;
   background: transparent; border: 0; outline: 0;
-  color: var(--text-primary); font-size: var(--fs-body);
+  color: var(--text-primary); font-size: var(--fs-body-lg);
+  min-height: 32px;
 }
+.gs-input:focus-visible { outline: none; box-shadow: none; }
+.gs-input-row:focus-within { box-shadow: inset 0 -2px var(--accent); }
 .gs-input::placeholder { color: var(--text-muted); }
 .gs-esc {
   display: inline-grid; place-items: center; width: 36px; height: 36px;
@@ -358,17 +363,16 @@ onUnmounted(() => {
   border: 1px solid var(--border-soft); border-radius: var(--r-sm);
   color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono);
 }
-.gs-results { max-height: min(52vh, 480px); overflow-y: auto; padding: var(--s-2); }
+.gs-results { max-height: min(52vh, 480px); overflow-y: auto; padding: var(--s-3); }
 .gs-group { margin-bottom: var(--s-2); }
 .gs-group-title {
   margin: var(--s-2) var(--s-2) var(--s-1);
   color: var(--text-muted);
-  font: 700 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .1em; text-transform: uppercase;
+  font-size: var(--fs-label-sm); font-weight: 600;
 }
 .gs-row {
   display: flex; align-items: center; gap: var(--s-3);
-  width: 100%; padding: var(--s-2) var(--s-3);
+  width: 100%; min-height: 46px; padding: var(--s-2) var(--s-3);
   border: 0; border-radius: var(--r-md);
   background: transparent; color: var(--text-primary);
   font: inherit; text-align: left; cursor: pointer;
@@ -376,6 +380,8 @@ onUnmounted(() => {
 .gs-row small { margin-left: auto; color: var(--text-muted); font-size: var(--fs-label-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46%; }
 .gs-row.active { background: var(--accent-soft); color: var(--text-primary); }
 .gs-row.active small { color: var(--text-secondary); }
+.gs-footer { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border-soft); color: var(--text-muted); background: var(--bg-surface); font-size: var(--fs-label-sm); }
+@media (max-width: 600px) { .global-search { padding-top: var(--s-5); } .gs-input { font-size: var(--fs-body); } .gs-results { max-height: 60dvh; } }
 .gs-empty { padding: var(--s-6) var(--s-4); color: var(--text-muted); text-align: center; font-size: var(--fs-body-sm); }
 @media (prefers-reduced-motion: reduce) { .gs-panel { animation: none; } }
 </style>

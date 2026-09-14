@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useFluidDialog } from '@/composables/useFluidDialog'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { computed, ref, useId } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
@@ -20,10 +21,11 @@ const emit = defineEmits<{
 }>()
 
 const browserDialog = ref<HTMLDialogElement | null>(null)
+const browserMotion = useFluidDialog(browserDialog)
 const dialogTitle = useId()
 const searchProxy = computed({ get: () => props.search, set: value => emit('update:search', value) })
 const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: popularPortraitSrc(character.id) })))
-function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) { emit('select', character); browserDialog.value?.close() } }
+function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) { emit('select', character); browserMotion.close() } }
 
 const selectedCharacter = computed<PopularCharacter | null>(() =>
   props.characters.find(c => c.id === props.selectedCharacterId) ?? null,
@@ -37,15 +39,15 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 
 <template>
   <div class="popular-picker">
-    <button type="button" class="character-browse-trigger" aria-haspopup="dialog" @click="browserDialog?.showModal()">
+    <button type="button" class="character-browse-trigger" aria-haspopup="dialog" @click="browserMotion.open()">
       <CharacterPortrait :src="selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined" :name="selectedCharacter?.displayName || '角色'" />
       <span><small>当前角色</small><strong>{{ selectedCharacter?.displayName || '选择创作角色' }}</strong><small>{{ selectedCharacter?.franchise || '从作品与肖像中挑选' }}</small></span>
     </button>
-    <button type="button" class="character-browse-all" aria-haspopup="dialog" @click="browserDialog?.showModal()"><ArchiveIcon name="search" />浏览全部 {{ characters.length }} 位角色</button>
+    <button type="button" class="character-browse-all" aria-haspopup="dialog" @click="browserMotion.open()"><ArchiveIcon name="search" />浏览全部 {{ characters.length }} 位角色</button>
     <p class="character-browse-hint">按作品挑选 · 肖像速览 · 分页浏览</p>
     <Teleport to="body">
-      <dialog ref="browserDialog" class="character-browser-dialog" :aria-labelledby="dialogTitle">
-        <header class="character-browser-heading"><div><h2 :id="dialogTitle">挑选这一幕的主角</h2><p>先选作品，再选角色；点击肖像即可带回工作台。</p></div><button type="button" aria-label="关闭角色选择" @click="browserDialog?.close()"><ArchiveIcon name="close" /></button></header>
+      <dialog ref="browserDialog" class="character-browser-dialog" :aria-labelledby="dialogTitle" @cancel.prevent="browserMotion.close()">
+        <header class="character-browser-heading"><div><h2 :id="dialogTitle">挑选这一幕的主角</h2><p>先选作品，再选角色；点击肖像即可带回工作台。</p></div><button type="button" aria-label="关闭角色选择" @click="browserMotion.close()"><ArchiveIcon name="close" /></button></header>
         <CharacterDirectory :items="directoryItems" :selected-id="selectedCharacterId" v-model:search="searchProxy" catalog :page-size="18" @select="selectFromDirectory" />
       </dialog>
     </Teleport>

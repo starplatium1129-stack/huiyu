@@ -13,7 +13,7 @@
             :aria-expanded="moreOpen ? 'true' : 'false'" aria-haspopup="menu"
             @keydown.down.prevent="focusRoomAction(0)" @keydown.up.prevent="focusRoomAction(-1)"
             @click="moreOpen = !moreOpen">更多<span class="chat-more-caret" aria-hidden="true">{{ moreOpen ? '▴' : '▾' }}</span></button>
-          <Transition name="layer-fade">
+          <FluidTransition>
             <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作" @keydown="navigateRoomActions">
               <button class="chat-more-item is-danger" role="menuitem" type="button"
                 @click="runRoomAction(() => clearAllMemory())">清除聊天记忆</button>
@@ -24,27 +24,32 @@
               <button class="chat-more-item" role="menuitem" type="button"
                 @click="runRoomAction(() => { profileOpen = !profileOpen })">我的档案</button>
             </div>
-          </Transition>
+          </FluidTransition>
         </div>
       </div>
     </header>
 
-    <ChatArchivePanel
+    <FluidTransition>
+<ChatArchivePanel
       v-if="archiveOpen"
       :storage="storage"
       :active-char="activeChar"
       @close="archiveOpen = false"
       @notice="(message, kind) => setError(message, kind || 'info', 4500)"
     />
+</FluidTransition>
 
-    <ChatUserProfilePanel
+    <FluidTransition>
+<ChatUserProfilePanel
       v-if="profileOpen"
       :profile="userProfile"
       @save="onUserProfileSave"
       @close="profileOpen = false"
     />
+</FluidTransition>
 
-    <ChatMemoryPanel
+    <FluidTransition>
+<ChatMemoryPanel
       v-if="memoryOpen"
       :items="currentMemories"
       :character-name="currentCharacter.name"
@@ -52,6 +57,7 @@
       @delete="deleteMemory"
       @close="memoryOpen = false"
     />
+</FluidTransition>
 
     <section class="chat-layout" aria-label="角色聊天">
       <ChatCharacterStage
@@ -111,7 +117,8 @@
           </div></details>
         </div>
 
-        <ChatApiSettings
+        <FluidTransition>
+<ChatApiSettings
           v-if="chatProvider === 'api' && apiSettingsOpen"
           :vendor="apiVendor"
           :base-url="useHostConfig ? (hostApiBaseUrl || apiBaseUrl) : apiBaseUrl"
@@ -129,6 +136,7 @@
           @save-host="saveToHost"
           @clear-host="clearHostConfigAndRefresh"
         />
+</FluidTransition>
 
         <div v-if="(!chatReady || voiceCapabilityState === 'offline' || preparingRoom)
           && !(chatProvider === 'api' && !chatReady && apiSettingsOpen)" class="room-setup">
@@ -206,8 +214,10 @@
           <ArchiveIcon name="spark" /> 思考中…
         </div>
 
-        <SpeechInputSettings v-if="speechSettingsOpen" class="speech-settings-host"
+        <FluidTransition>
+<SpeechInputSettings v-if="speechSettingsOpen" class="speech-settings-host"
           @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+</FluidTransition>
 
         <div class="chat-composer">
           <div class="composer-row">
@@ -304,6 +314,7 @@
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import '@/assets/css/chat.css'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'

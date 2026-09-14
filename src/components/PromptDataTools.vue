@@ -46,6 +46,7 @@
   </details>
 
   <Teleport to="body">
+    <FluidTransition>
     <div v-if="backup.pending.value" class="pb-backup-overlay open" @click.self="discard">
       <div
         ref="backupCardEl"
@@ -72,10 +73,12 @@
         </div>
       </div>
     </div>
+    </FluidTransition>
   </Teleport>
 </template>
 
 <script setup lang="ts">
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 import { downloadBlob } from "@/utils/downloadBlob"
 import { ref, computed } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'

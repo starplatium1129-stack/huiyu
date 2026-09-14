@@ -36,6 +36,8 @@
     "allow-window-maximize-toggle",
     "allow-window-close",
     "allow-get-window-state",
+    "allow-window-zoom-get",
+    "allow-window-zoom-set",
     "allow-set-progress",
     "allow-open-workspace",
     "allow-open-runtime",

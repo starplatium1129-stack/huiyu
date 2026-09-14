@@ -1,8 +1,10 @@
 <template>
   <Teleport to="body">
-    <Transition name="confirm-fade">
+    <Transition :css="false" @enter="surface.enter" @leave="surface.leave" @after-leave="surface.dispose">
       <div
-        v-if="state.visible"
+        v-show="state.visible"
+        :inert="!state.visible"
+        :aria-hidden="!state.visible"
         class="confirm-overlay"
         @pointerdown.self="cancel"
       >
@@ -45,6 +47,9 @@
 import { nextTick, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
+import { useFluidSurface } from '@/composables/useFluidSurface'
+
+const surface = useFluidSurface('.confirm-panel')
 
 const state = useConfirmState()
 const panel = ref<HTMLElement | null>(null)
@@ -105,11 +110,11 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 }
 .confirm-panel {
   width: min(380px, calc(100vw - 32px));
-  padding: var(--s-4);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-lg);
+  padding: var(--s-5);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r-xl);
   background: var(--bg-surface);
-  box-shadow: var(--shadow-lg, 0 18px 48px rgba(0, 0, 0, 0.4));
+  box-shadow: var(--shadow-glass-elevated);
   color: var(--text-primary);
 }
 .confirm-icon { display: block; margin-bottom: var(--s-2); color: var(--text-secondary); }
@@ -132,12 +137,4 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
   gap: var(--s-2);
 }
 .confirm-btn { min-width: 96px; }
-/* 进出场只动 transform/opacity（合成器属性铁律） */
-.confirm-fade-enter-active,
-.confirm-fade-leave-active { transition: opacity var(--motion-control) var(--ease-out); }
-.confirm-fade-enter-active .confirm-panel,
-.confirm-fade-leave-active .confirm-panel { transition: transform var(--motion-control) var(--ease-out); }
-.confirm-fade-enter-from,
-.confirm-fade-leave-to { opacity: 0; }
-.confirm-fade-enter-from .confirm-panel { transform: translateY(10px) scale(0.98); }
 </style>

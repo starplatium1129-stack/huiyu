@@ -7,12 +7,14 @@
       :aria-label="label || undefined"
       @change="onChange"
     />
-    <span class="toggle-slider" aria-hidden="true"></span>
+    <span class="toggle-slider" aria-hidden="true"><span ref="knob" class="toggle-knob"></span></span>
     <slot />
   </label>
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { createFluidMotion } from '@/utils/fluidSpring'
 const props = withDefaults(defineProps<{
   modelValue: boolean
   disabled?: boolean
@@ -30,6 +32,14 @@ function onChange(event: Event) {
   emit('update:modelValue', value)
   emit('change', value)
 }
+const knob = ref<HTMLElement | null>(null)
+let motion: ReturnType<typeof createFluidMotion> | undefined
+onMounted(() => {
+  motion = createFluidMotion([props.modelValue ? 14 : 0], ([x]) => { if (knob.value) knob.value.style.transform = `translateX(${x}px)` }, 5.5)
+  motion.to([props.modelValue ? 14 : 0], true)
+})
+watch(() => props.modelValue, value => motion?.to([value ? 14 : 0]))
+onUnmounted(() => motion?.dispose())
 </script>
 
 <style scoped>
@@ -66,8 +76,7 @@ function onChange(event: Event) {
   border-radius: var(--r-pill);
   transition: background var(--motion-hover), box-shadow var(--motion-hover);
 }
-.toggle-slider::before {
-  content: "";
+.toggle-knob {
   position: absolute;
   height: 13px;
   width: 13px;
@@ -75,13 +84,10 @@ function onChange(event: Event) {
   bottom: 2.5px;
   background: var(--text-primary);
   border-radius: 50%;
-  transition: transform var(--motion-hover), background var(--motion-hover);
+  transition: background var(--motion-hover);
 }
 .toggle-switch input:checked + .toggle-slider {
   background: var(--accent);
-}
-.toggle-switch input:checked + .toggle-slider::before {
-  transform: translateX(14px);
 }
 .toggle-switch input:focus-visible + .toggle-slider {
   outline: 2px solid var(--accent);
@@ -95,7 +101,7 @@ function onChange(event: Event) {
   background: var(--bg-elevated);
   box-shadow: inset 0 0 0 1px var(--border-soft);
 }
-.toggle-switch.is-disabled .toggle-slider::before {
+.toggle-switch.is-disabled .toggle-knob {
   background: var(--text-disabled);
 }
 </style>

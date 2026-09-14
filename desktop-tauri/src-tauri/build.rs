@@ -24,6 +24,8 @@ fn main() {
                 "window_maximize_toggle",
                 "window_close",
                 "get_window_state",
+                "window_zoom_get",
+                "window_zoom_set",
                 "set_progress",
                 "open_workspace",
                 "open_runtime",

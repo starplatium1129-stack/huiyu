@@ -1,11 +1,13 @@
 <template><span ref="indicator" class="animated-selection" aria-hidden="true"></span></template>
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { createFluidMotion } from '@/utils/fluidSpring'
 const props = withDefaults(defineProps<{ target?: string }>(), { target: '[aria-pressed="true"]' })
 const indicator = ref<HTMLElement | null>(null)
 let resize: ResizeObserver | undefined
 let mutations: MutationObserver | undefined
-let animation: Animation | undefined
+let fluid: ReturnType<typeof createFluidMotion> | undefined
+let baseWidth = 1, baseHeight = 1
 let frame = 0
 let media: MediaQueryList | undefined
 let initialized = false
@@ -22,8 +24,7 @@ function update() {
     observedTarget = selected ?? null
     if (observedTarget) resize?.observe(observedTarget)
   }
-  if (!selected || !selected.getClientRects().length) { animation?.cancel(); el.style.opacity = '0'; initialized = false; destinationBox = ''; return }
-  const previous = el.getBoundingClientRect()
+  if (!selected || !selected.getClientRects().length) { fluid?.dispose(); fluid = undefined; el.style.opacity = '0'; initialized = false; destinationBox = ''; return }
   const host = parent.getBoundingClientRect()
   const next = selected.getBoundingClientRect()
   const x = next.left - host.left + parent.scrollLeft - parent.clientLeft
@@ -31,17 +32,14 @@ function update() {
   const box = [x, y, next.width, next.height].map(value => Math.round(value * 100) / 100).join(',')
   if (initialized && box === destinationBox && !media?.matches) return
   destinationBox = box
-  animation?.cancel()
-  el.style.width = next.width + 'px'
-  el.style.height = next.height + 'px'
+  baseWidth = next.width; baseHeight = next.height
+  el.style.width = baseWidth + 'px'
+  el.style.height = baseHeight + 'px'
   el.style.opacity = '1'
-  const destination = 'translate(' + x + 'px,' + y + 'px)'
-  el.style.transform = destination
-  if (initialized && previous.width && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const origin = 'translate(' + (previous.left - host.left + parent.scrollLeft - parent.clientLeft) + 'px,' + (previous.top - host.top + parent.scrollTop - parent.clientTop) + 'px) scale(' + previous.width / next.width + ',' + previous.height / next.height + ')'
-    const duration = parseFloat(getComputedStyle(el).getPropertyValue('--motion-control')) || 200
-    animation = el.animate([{ transform: origin }, { transform: destination }], { duration, easing: 'cubic-bezier(.22,1,.36,1)' })
-  }
+  fluid ??= createFluidMotion([x, y, next.width, next.height], ([left, top, width, height]) => {
+    el.style.transform = `translate(${left}px,${top}px) scale(${width / baseWidth},${height / baseHeight})`
+  }, 5.5)
+  fluid.to([x, y, next.width, next.height], !initialized)
   initialized = true
 }
 onMounted(() => {
@@ -58,8 +56,8 @@ onMounted(() => {
   schedule()
 })
 watch(() => props.target, schedule)
-onUnmounted(() => { document.fonts?.removeEventListener('loadingdone', schedule); media?.removeEventListener('change', schedule); resize?.disconnect(); mutations?.disconnect(); animation?.cancel(); cancelAnimationFrame(frame); parent?.removeEventListener('scroll', schedule) })
+onUnmounted(() => { document.fonts?.removeEventListener('loadingdone', schedule); media?.removeEventListener('change', schedule); resize?.disconnect(); mutations?.disconnect(); fluid?.dispose(); cancelAnimationFrame(frame); parent?.removeEventListener('scroll', schedule) })
 </script>
 <style scoped>
-.animated-selection { position: absolute; inset: 0 auto auto 0; pointer-events: none; opacity: 0; transform-origin: 0 0; border-radius: var(--r-md); background: var(--bg-elevated); border: 1px solid var(--border-soft); box-shadow: none; }
+.animated-selection { position: absolute; inset: 0 auto auto 0; pointer-events: none; opacity: 0; transform-origin: 0 0; border-radius: var(--selection-radius, var(--r-md)); background: linear-gradient(135deg, var(--glass-highlight), transparent), var(--bg-elevated); border: 1px solid var(--glass-edge); box-shadow: var(--selection-shadow, var(--shadow-glass-sm)); }
 </style>

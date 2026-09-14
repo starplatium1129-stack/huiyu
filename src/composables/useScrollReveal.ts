@@ -1,4 +1,5 @@
 import { getCurrentInstance, onActivated, onDeactivated, onMounted, onUnmounted } from 'vue'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 
 /** Reveal content once as it enters the viewport, including late-loading collections. */
 export function useScrollReveal(selector = '[data-reveal]', options?: IntersectionObserverInit) {
@@ -15,7 +16,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     const elements = [...root.querySelectorAll(selector)]
     if (root.matches(selector)) elements.unshift(root)
     elements.forEach(el => {
-      if (media?.matches || !observer) { el.classList.add('revealed'); return }
+      if (prefersReducedMotion() || !observer) { el.classList.add('revealed'); observer?.unobserve(el); return }
       if (seen.has(el) || el.classList.contains('revealed')) return
       seen.add(el)
       observer.observe(el)
@@ -33,6 +34,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
       entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('revealed'); observer?.unobserve(entry.target) } })
     }, { threshold: 0.04, rootMargin: '0px 0px -24px 0px', ...options })
     media.addEventListener('change', observeAll)
+    window.addEventListener('atelier:motion-preference', observeAll)
     mutations = new MutationObserver(schedule)
     mutations.observe(root, { childList: true, subtree: true })
     observeAll()
@@ -40,6 +42,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
   function stop() {
     active = false
     observer?.disconnect(); mutations?.disconnect(); media?.removeEventListener('change', observeAll); cancelAnimationFrame(frame)
+    window.removeEventListener('atelier:motion-preference', observeAll)
     observer = null; mutations = null; root = null; frame = 0
   }
   onMounted(start)

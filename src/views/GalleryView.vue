@@ -246,7 +246,7 @@
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
-      <Transition name="layer-pop">
+      <FluidTransition>
         <div
           v-show="viewerIndex >= 0"
           class="art-viewer"
@@ -335,13 +335,14 @@
         </div>
       </aside>
         </div>
-      </Transition>
+      </FluidTransition>
     </Teleport>
   </article>
 
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { ref } from 'vue'
 const searchInput = ref<HTMLInputElement | null>(null)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'

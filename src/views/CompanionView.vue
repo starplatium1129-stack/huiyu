@@ -41,7 +41,9 @@
           :aria-expanded="settingsOpen"
           @click="settingsOpen = !settingsOpen"
         ><ArchiveIcon name="gear" /><span>设置</span></button>
-        <div v-if="settingsOpen" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop>
+        <FluidTransition>
+<div v-if="settingsOpen" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop>
+          <AppearancePreferences launcher-only @open="settingsOpen = false" />
           <div class="companion-pop-group">
             <strong>陪伴</strong>
             <Live2DQualityControl :native="Boolean(desktopBridge)" />
@@ -113,6 +115,7 @@
             </label>
           </div>
         </div>
+</FluidTransition>
       </div>
     </header>
 
@@ -329,7 +332,8 @@
         <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>
       </section>
 
-      <div v-if="workspaceOpen" class="companion-workspace-settings" role="dialog" aria-label="AI 工作区设置">
+      <FluidTransition>
+<div v-if="workspaceOpen" class="companion-workspace-settings" role="dialog" aria-label="AI 工作区设置">
         <div>
           <strong>AI 工作区</strong>
           <span>存放样张、训练数据与配音资源的目录（例如 E:\AI）。设置后网关重启生效。</span>
@@ -348,6 +352,7 @@
           <button type="button" class="btn btn-ghost" @click="workspaceOpen = false">关闭</button>
         </div>
       </div>
+</FluidTransition>
 
       <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
       <div v-if="desktopBridge" class="companion-desktop-float" aria-label="桌宠快捷操作">
@@ -383,6 +388,8 @@
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
+import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import '@/assets/css/companion.css'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'

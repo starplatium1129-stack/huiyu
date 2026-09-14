@@ -12,6 +12,7 @@ mod tray;
 mod updater_cmd;
 mod watchers;
 mod window_state;
+mod window_presentation;
 
 use std::sync::atomic::Ordering;
 use std::time::{Duration, Instant};
@@ -182,6 +183,8 @@ fn main() {
             bridge::window_maximize_toggle,
             bridge::window_close,
             bridge::get_window_state,
+            window_presentation::window_zoom_get,
+            window_presentation::window_zoom_set,
             bridge::set_progress,
             bridge::open_workspace,
             bridge::open_runtime,

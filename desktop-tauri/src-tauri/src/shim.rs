@@ -138,6 +138,8 @@ pub const COMPANION_SHIM_JS: &str = r#"
     toggleMaximizeWindow: () => invoke('window_maximize_toggle'),
     closeWindow: () => invoke('window_close'),
     getWindowState: () => invoke('get_window_state'),
+    getWindowZoom: () => invoke('window_zoom_get'),
+    setWindowZoom: (value) => invoke('window_zoom_set', { value }),
     onMaximizedChanged: (cb) => on('aics:maximized', cb), offMaximizedChanged: off,
   }
 

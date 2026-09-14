@@ -1,5 +1,6 @@
 use std::fs;
 use std::path::Path;
+use std::sync::Mutex;
 
 /// 与 Electron 版 windowState.ts 完全一致的 JSON 文件格式与语义，
 /// 保证升级迁移后数据无缝可用。
@@ -24,6 +25,44 @@ pub struct CompanionPreferences {
 }
 
 const DEFAULT_BOUNDS: WindowBounds = WindowBounds { x: 24, y: 80, width: 540, height: 760 };
+
+// Geometry and zoom can be saved from different IPC/window callbacks. Serialize
+// read-modify-write so neither callback discards the other's JSON fields.
+static WINDOW_STATE_WRITE: Mutex<()> = Mutex::new(());
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct WindowPresentation {
+    pub zoom: f64,
+    pub maximized: bool,
+}
+
+pub fn bounded_window_zoom(zoom: f64) -> f64 {
+    if zoom.is_finite() { zoom.clamp(0.75, 2.0) } else { 1.0 }
+}
+
+fn window_state_json(file_path: &Path) -> serde_json::Value {
+    fs::read_to_string(file_path).ok()
+        .and_then(|raw| serde_json::from_str::<serde_json::Value>(&raw).ok())
+        .filter(|value| value.is_object())
+        .unwrap_or_else(|| serde_json::json!({}))
+}
+
+pub fn load_window_presentation(file_path: &Path) -> WindowPresentation {
+    let value = window_state_json(file_path);
+    WindowPresentation {
+        zoom: bounded_window_zoom(value.get("zoom").and_then(|zoom| zoom.as_f64()).unwrap_or(1.0)),
+        maximized: value.get("maximized").and_then(|state| state.as_bool()).unwrap_or(false),
+    }
+}
+
+pub fn save_window_presentation(file_path: &Path, zoom: Option<f64>, maximized: Option<bool>) -> bool {
+    let _guard = WINDOW_STATE_WRITE.lock().unwrap_or_else(|error| error.into_inner());
+    let mut value = window_state_json(file_path);
+    let previous = value.clone();
+    if let Some(zoom) = zoom { value["zoom"] = serde_json::json!(bounded_window_zoom(zoom)); }
+    if let Some(maximized) = maximized { value["maximized"] = serde_json::json!(maximized); }
+    value == previous || try_save_json_atomic(file_path, &value)
+}
 
 fn is_finite_number(v: &serde_json::Value) -> Option<i64> {
     v.as_f64().filter(|f| f.is_finite()).map(|f| f.round() as i64)
@@ -69,14 +108,19 @@ pub fn clamp_window_bounds(
 
 /// 原子写：临时文件 + rename（与 Electron 版一致，防半写损坏）
 pub fn save_json_atomic(file_path: &Path, value: &serde_json::Value) {
-    let Some(parent) = file_path.parent() else { return };
-    let _ = fs::create_dir_all(parent);
+    let _ = try_save_json_atomic(file_path, value);
+}
+
+fn try_save_json_atomic(file_path: &Path, value: &serde_json::Value) -> bool {
+    let Some(parent) = file_path.parent() else { return false };
+    if fs::create_dir_all(parent).is_err() { return false; }
     let temporary = file_path.with_extension(format!("{}.{}.tmp", "json", std::process::id()));
-    if fs::write(&temporary, serde_json::to_string(value).unwrap_or_default()).is_ok() {
-        let _ = fs::rename(&temporary, file_path);
-    } else {
-        let _ = fs::remove_file(&temporary);
+    if fs::write(&temporary, serde_json::to_string(value).unwrap_or_default()).is_ok()
+        && fs::rename(&temporary, file_path).is_ok() {
+        return true;
     }
+    let _ = fs::remove_file(&temporary);
+    false
 }
 
 pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds) {
@@ -87,10 +131,14 @@ pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds) {
         || bounds.x > 100_000 || bounds.y > 100_000 {
         return;
     }
-    save_json_atomic(
-        file_path,
-        &serde_json::json!({ "x": bounds.x, "y": bounds.y, "width": bounds.width, "height": bounds.height }),
-    );
+    let _guard = WINDOW_STATE_WRITE.lock().unwrap_or_else(|error| error.into_inner());
+    let mut value = window_state_json(file_path);
+    let previous = value.clone();
+    value["x"] = serde_json::json!(bounds.x);
+    value["y"] = serde_json::json!(bounds.y);
+    value["width"] = serde_json::json!(bounds.width);
+    value["height"] = serde_json::json!(bounds.height);
+    if value != previous { save_json_atomic(file_path, &value); }
 }
 
 /// Convert Tauri's physical client-area measurements to Electron-compatible DIP values.
@@ -179,6 +227,51 @@ pub fn save_ai_workspace(file_path: &Path, root: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn presentation_accepts_legacy_bounds_and_keeps_normal_geometry() {
+        let tmp = std::env::temp_dir().join(format!("aics-window-presentation-{}", std::process::id()));
+        let file = tmp.join("window.json");
+        let normal = WindowBounds { x: 120, y: 72, width: 1100, height: 800 };
+        save_window_bounds(&file, &normal);
+        assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.0, maximized: false });
+        save_window_presentation(&file, Some(1.5), Some(true));
+        assert_eq!(load_window_bounds(&file, None).width, normal.width);
+        assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.5, maximized: true });
+        save_window_bounds(&file, &WindowBounds { x: 200, ..normal });
+        assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.5, maximized: true });
+        save_window_presentation(&file, Some(1.0), Some(false));
+        assert_eq!(load_window_bounds(&file, None).x, 200);
+        assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.0, maximized: false });
+        let _ = fs::remove_dir_all(tmp);
+    }
+
+    #[test]
+    fn corrupt_and_out_of_range_zoom_have_safe_defaults() {
+        assert_eq!(bounded_window_zoom(f64::NAN), 1.0);
+        assert_eq!(bounded_window_zoom(f64::INFINITY), 1.0);
+        assert_eq!(bounded_window_zoom(0.1), 0.75);
+        assert_eq!(bounded_window_zoom(3.0), 2.0);
+        let tmp = std::env::temp_dir().join(format!("aics-window-presentation-corrupt-{}", std::process::id()));
+        let file = tmp.join("window.json");
+        fs::create_dir_all(&tmp).unwrap();
+        fs::write(&file, r#"{"zoom":"bad","maximized":"true"}"#).unwrap();
+        assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.0, maximized: false });
+        fs::write(&file, "{broken").unwrap();
+        assert_eq!(load_window_presentation(&file), WindowPresentation { zoom: 1.0, maximized: false });
+        let _ = fs::remove_dir_all(tmp);
+    }
+
+    #[test]
+    fn presentation_reports_unwritable_state_instead_of_claiming_persistence() {
+        let tmp = std::env::temp_dir().join(format!("aics-window-presentation-write-{}", std::process::id()));
+        fs::create_dir_all(&tmp).unwrap();
+        let blocker = tmp.join("not-a-directory");
+        fs::write(&blocker, "keep").unwrap();
+        assert!(!save_window_presentation(&blocker.join("window.json"), Some(1.5), None));
+        assert_eq!(fs::read_to_string(&blocker).unwrap(), "keep");
+        let _ = fs::remove_dir_all(tmp);
+    }
 
     #[test]
     fn companion_preferences_survive_save_and_restart() {

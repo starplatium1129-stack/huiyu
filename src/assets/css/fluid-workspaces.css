@@ -1,0 +1,314 @@
+/* Page-level material hierarchy. Art stays on its existing canvas; chrome floats
+   above opaque reading surfaces. html makes these rules independent of lazy CSS
+   load order without overriding page-specific state selectors. */
+:root {
+  --workspace-chrome: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  --workspace-edge: color-mix(in srgb, var(--border-soft) 76%, var(--glass-highlight));
+  --workspace-inset: inset 0 1px 0 var(--glass-highlight);
+  --workspace-lift: var(--workspace-inset), 0 6px 20px -12px color-mix(in srgb, var(--ink-base) 28%, transparent);
+}
+
+/* Browse: one grouped control surface, with quieter image mats below it. */
+html .gallery-page .gallery-toolbar,
+html .showcase-page .toolbar-shell,
+html .scene-discovery .scene-toolbar,
+html .library-page .pop-toolbar {
+  padding: var(--s-3);
+  border: 1px solid var(--workspace-edge);
+  border-radius: var(--r-xl);
+  background: linear-gradient(120deg, var(--glass-highlight), transparent 54%), var(--workspace-chrome);
+  box-shadow: var(--workspace-lift);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  backdrop-filter: blur(18px) saturate(125%);
+}
+html .scene-discovery .scene-toolbar::before { display: none; }
+html .gallery-page :is(.gallery-search, .gallery-project),
+html .showcase-page :is(.scene-search, .filter-select),
+html .scene-discovery .scene-search,
+html .library-page .pop-search {
+  min-height: 40px;
+  border-radius: var(--r-md);
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+html .gallery-page .gallery-filter,
+html .showcase-page .filter-pill,
+html .scene-discovery .scene-cat,
+html .library-page :is(.pop-cat, .pop-rating-pill) {
+  min-height: 36px;
+  border-radius: var(--r-md);
+}
+html .gallery-page .gallery-toolbar-note { font-variant-numeric: tabular-nums; }
+html .gallery-page .artwork:not(.artwork-selected),
+html .showcase-page .sample,
+html .library-page .pop-card {
+  box-shadow: var(--workspace-inset);
+  transition: transform var(--motion-surface) var(--ease-out);
+}
+html .scene-discovery .scene-facet-panel {
+  padding: var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+}
+
+/* Character archives keep the full portrait and a quiet, separate reading page. */
+html .character-page .voice-block {
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  padding: var(--s-4);
+  line-height: var(--lh-loose);
+}
+html .character-page :is(.bg-story, .char-reference-section, .recommend-section) {
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-inset);
+}
+html .character-page .char-outfit-tabs {
+  gap: var(--s-2);
+  padding: var(--s-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-base);
+}
+
+/* Creative references: navigation is a small shelf; color chips stay unfiltered. */
+html .page .creative-library-nav {
+  gap: var(--s-1);
+  padding: var(--s-2);
+  border: 1px solid var(--workspace-edge);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-inset);
+}
+html .style-page .style-mood-card,
+html .page:has(> .lighting-ref) .mood-card {
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-inset);
+  transition: transform var(--motion-surface) var(--ease-out);
+}
+html .style-page .style-mood-card .mood-go {
+  opacity: 1;
+  transform: none;
+}
+html .style-page .style-tips { border-radius: var(--r-xl); background: var(--bg-surface); }
+html .page:has(> .model-search-row) .model-search-row {
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--workspace-edge);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-inset);
+}
+html .page:has(> .model-search-row) .lora-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+}
+html .page:has(> .model-search-row) .lora-card {
+  border-radius: var(--r-xl);
+  box-shadow: var(--workspace-inset);
+  transition: transform var(--motion-surface) var(--ease-out);
+}
+html .page:has(> .lighting-ref) .result-panel {
+  border-color: var(--border-strong);
+  box-shadow: var(--workspace-inset);
+}
+html .page:has(> .lighting-ref) :is(.prompt-code, .mapping-item) {
+  background: var(--bg-base);
+  border: 1px solid var(--border-soft);
+}
+html .page:has(> .lighting-ref) .lighting-mini { border-radius: var(--r-lg); }
+
+/* Scenario readers: the selected story is navigational, each act is a page. */
+html .scenario-page .scenario-list {
+  gap: var(--s-2);
+  padding: var(--s-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  background: var(--bg-base);
+}
+html .scenario-page .scenario-list .scenario-card { border-radius: var(--r-lg); }
+html .scenario-page .viewer .viewer-header-row {
+  border-color: var(--workspace-edge);
+  box-shadow: var(--workspace-lift);
+}
+html .scenario-page .act { box-shadow: var(--workspace-inset); }
+html .scenario-page .prompt-code { background: var(--bg-base); border: 1px solid var(--border-soft); }
+
+/* Drawing: small chrome receives depth, large prompts and preview stay stable. */
+html .pb.journal-workspace .pb-top-actions {
+  padding: var(--s-2);
+  border: 1px solid var(--workspace-edge);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-inset);
+}
+html .pb.journal-workspace :is(.panel, .result-frame) { box-shadow: var(--workspace-inset); }
+html .pb.journal-workspace .panel-title { line-height: var(--lh-label); }
+html .pb.journal-workspace .gen-bar {
+  border-color: var(--workspace-edge);
+  border-radius: var(--r-xl);
+  box-shadow: var(--workspace-lift);
+}
+html .pb.journal-workspace .gen-bar-actions .btn-primary:not(:disabled) { box-shadow: var(--shadow-glass-sm); }
+
+/* Video: mode selection as one control group, not four competing raised cards. */
+html .video-studio .video-mode-strip {
+  gap: var(--s-2);
+  padding: var(--s-2);
+  border: 1px solid var(--workspace-edge);
+  border-radius: var(--r-xl);
+  background: var(--bg-base);
+}
+html .video-studio .video-mode-card { border-radius: var(--r-lg); box-shadow: none; }
+html .video-studio .video-mode-card.active { box-shadow: var(--workspace-inset); }
+html .video-studio .video-panel {
+  background: var(--bg-surface);
+  border-color: var(--border-soft);
+  box-shadow: var(--workspace-inset);
+}
+html .video-studio .video-submit-panel { border-radius: var(--r-xl); box-shadow: var(--workspace-lift); }
+html .video-studio .video-prompt { line-height: var(--lh-loose); background: var(--bg-base); }
+html .video-studio .video-jump-nav { flex-wrap: wrap; gap: var(--s-2); }
+
+/* Chat: opaque bubbles and input, a raised composer, no film over the character. */
+html .chat-page .conversation-card { box-shadow: var(--workspace-inset); }
+html .chat-page .conversation-head { background: var(--bg-surface); }
+html .chat-page .chat-composer {
+  border-top-color: var(--workspace-edge);
+  background: var(--bg-surface);
+  box-shadow: inset 0 1px var(--glass-highlight);
+}
+html .chat-page .chat-input {
+  border-radius: var(--r-lg);
+  background: var(--bg-base);
+  line-height: var(--lh-loose);
+}
+html .chat-page .chat-starters { gap: var(--s-2); }
+
+/* Independent windows: do not alter transparent root/stage/native pet hit area. */
+html .companion-page .companion-toolbar {
+  border-radius: var(--r-xl);
+  box-shadow: var(--workspace-lift);
+}
+html .companion-page .companion-composer,
+html .companion-chat-window .companion-chat-composer {
+  border-color: var(--workspace-edge);
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-lift);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html .companion-page .companion-composer .companion-input,
+html .companion-chat-window .companion-chat-input { border-radius: var(--r-md); line-height: var(--lh-loose); }
+html .companion-chat-window .companion-chat-titlebar {
+  background: var(--bg-surface);
+  border-bottom-color: var(--workspace-edge);
+  box-shadow: var(--workspace-inset);
+}
+html .companion-chat-window .companion-chat-bubble { border-radius: var(--r-lg); }
+
+/* Operational workspaces: structure via tone, never obscure logs or statuses. */
+html .control-page .control-rail { box-shadow: inset -1px 0 var(--glass-highlight); }
+html .control-page .control-rail-link { border-radius: var(--r-lg); }
+html .control-page :is(.status-tile, .panel-card) { box-shadow: var(--workspace-inset); }
+html .control-page .log-wrap { background: var(--bg-base); border-radius: var(--r-lg); }
+html .scene-maintenance-page .manager-nav {
+  border-color: var(--workspace-edge);
+  border-radius: var(--r-xl);
+  box-shadow: var(--workspace-inset);
+}
+html .scene-maintenance-page .catalog-workspace { border-radius: var(--r-xl); }
+html .scene-maintenance-page .inspector-header { box-shadow: var(--workspace-inset); }
+html .scene-maintenance-page .catalog-browser { background: var(--bg-base); }
+html .scene-maintenance-page .table-wrap { border-radius: var(--r-lg); }
+
+/* Home and recovery: retain the editorial hero and make destinations tactile. */
+html .home-page .tool-card {
+  border-radius: var(--r-xl);
+  box-shadow: var(--workspace-inset);
+  transition: transform var(--motion-surface) var(--ease-out);
+}
+html .home-page .hero-muses {
+  --selection-radius: var(--r-pill);
+  --selection-shadow: inset 0 1px var(--glass-highlight);
+  flex-wrap: nowrap;
+  gap: var(--s-1);
+  padding: var(--s-1);
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid var(--workspace-edge);
+  border-radius: var(--r-pill);
+  background: var(--bg-surface);
+}
+html .notfound-page .notfound-actions {
+  padding: var(--s-3);
+  border: 1px solid var(--workspace-edge);
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-inset);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html .gallery-page .artwork:hover,
+  html .showcase-page .sample:hover,
+  html .library-page .pop-card:hover,
+  html .page:has(> .model-search-row) .lora-card:hover,
+  html .style-page .style-mood-card:hover,
+  html .home-page .tool-card:hover { transform: translateY(-2px); }
+}
+@media (max-width: 600px) {
+  html .control-mobile-nav .nav-local { flex-wrap: wrap; gap: var(--s-3); }
+  html .control-mobile-nav .nav-local-brand { flex: 1 0 100%; display: flex; align-items: center; gap: var(--s-3); }
+  html .control-mobile-nav .nav-logo { width: 90px; }
+  html .control-mobile-nav .nav-local-actions { width: 100%; justify-content: flex-end; }
+  html .control-mobile-nav .nav-local-actions > * { flex-shrink: 0; }
+  html .control-mobile-nav .nav-local-home { white-space: nowrap; margin-right: auto; }
+  html .scene-maintenance-page .sm-head-actions { display: flex; flex-wrap: wrap; }
+  html .scene-maintenance-page .sm-head-actions > .btn { white-space: nowrap; flex: 1 0 auto; }
+  html .gallery-page .gallery-toolbar { gap: var(--s-2); padding: var(--s-2); }
+  html .gallery-page .gallery-search-field { max-width: none; flex-basis: 100%; }
+  html .gallery-page .gallery-toolbar-note { white-space: normal; margin-left: 0; }
+  html .page:has(> .model-search-row) .model-search-row input { width: 100%; }
+  html .video-studio .video-mode-strip { padding: var(--s-1); }
+  html .scenario-page .viewer .viewer-header-row { position: static; }
+  html .notfound-page .notfound-actions { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html .gallery-page .artwork,
+  html .showcase-page .sample,
+  html .library-page .pop-card,
+  html .page:has(> .model-search-row) .lora-card,
+  html .style-page .style-mood-card,
+  html .home-page .tool-card { transition: none; }
+  html .gallery-page .artwork:hover,
+  html .showcase-page .sample:hover,
+  html .library-page .pop-card:hover,
+  html .page:has(> .model-search-row) .lora-card:hover,
+  html .style-page .style-mood-card:hover,
+  html .home-page .tool-card:hover { transform: none; }
+  html .gallery-page .artwork:hover .artwork-image { transform: none; }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  html .gallery-page .gallery-toolbar,
+  html .showcase-page .toolbar-shell,
+  html .scene-discovery .scene-toolbar,
+  html .library-page .pop-toolbar {
+    background: var(--bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  :root { --workspace-edge: var(--text-muted); --workspace-lift: none; --workspace-inset: none; }
+}
+@media (forced-colors: active) {
+  :root { --workspace-edge: CanvasText; --workspace-lift: none; --workspace-inset: none; }
+  html .gallery-page .gallery-toolbar,
+  html .showcase-page .toolbar-shell,
+  html .scene-discovery .scene-toolbar,
+  html .library-page .pop-toolbar { background: Canvas; border-color: CanvasText; }
+}

@@ -4,7 +4,8 @@ use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
 use crate::paths::DesktopPaths;
 use crate::state::AppState;
 use crate::window_state::{
-    clamp_window_bounds, load_window_bounds, physical_to_logical_bounds, save_window_bounds, WindowBounds,
+    clamp_window_bounds, load_window_bounds, load_window_presentation, physical_to_logical_bounds,
+    save_window_bounds, save_window_presentation, WindowBounds,
 };
 
 /// 规范化 Atelier 目标路径（与 deepLink.ts normalizeAtelierPath 同规则，容忍尾斜杠）
@@ -139,11 +140,16 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
                 return;
             }
         };
+        let presentation = load_window_presentation(&state.paths.atelier_window_file);
+        save_window_bounds(&state.paths.atelier_window_file, &bounds);
         match WebviewWindowBuilder::new(&app, "atelier", WebviewUrl::External(parsed))
             .title("绘遇 · HUIYU")
+            // The controlled bridge clamps and persists Ctrl±/0 and Ctrl+wheel.
+            .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
             .min_inner_size(1024.0, 720.0)
+            .maximized(presentation.maximized)
             .decorations(false)
             .visible(false)
             .initialization_script(crate::shim::COMPANION_SHIM_JS)
@@ -151,6 +157,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
         {
             Ok(win) => {
                 state.info("open atelier: window built");
+                crate::window_presentation::restore_zoom(&win);
                 let show_result = win.show();
                 let focus_result = win.set_focus();
                 state.info(&format!(
@@ -231,11 +238,15 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
             state.error(&format!("open companion-chat: bad url {url}"));
             return;
         };
+        let presentation = load_window_presentation(&state.paths.companion_chat_window_file);
+        save_window_bounds(&state.paths.companion_chat_window_file, &bounds);
         match WebviewWindowBuilder::new(&app, "companion-chat", WebviewUrl::External(parsed))
             .title("绘遇聊天")
+            .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
             .min_inner_size(380.0, 460.0)
+            .maximized(presentation.maximized)
             .decorations(false)
             .skip_taskbar(true)
             .shadow(true)
@@ -245,6 +256,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         {
             Ok(win) => {
                 state.info("open companion-chat: window built");
+                crate::window_presentation::restore_zoom(&win);
                 let _ = win.show();
                 let _ = win.set_focus();
             }
@@ -312,14 +324,19 @@ pub fn persist_window_bounds(app: &AppHandle) {
             let _ = w.emit("aics:window-bounds", bounds);
         }
     }
-    if let Some(w) = app.get_webview_window("atelier") {
-        if let Some(bounds) = persisted_webview_bounds(&w) {
-            save_window_bounds(&state.paths.atelier_window_file, &bounds);
-        }
-    }
-    if let Some(w) = app.get_webview_window("companion-chat") {
-        if let Some(bounds) = persisted_webview_bounds(&w) {
-            save_window_bounds(&state.paths.companion_chat_window_file, &bounds);
+    for (label, file) in [
+        ("atelier", &state.paths.atelier_window_file),
+        ("companion-chat", &state.paths.companion_chat_window_file),
+    ] {
+        if let Some(w) = app.get_webview_window(label) {
+            // Keep the last normal geometry; maximized/fullscreen/minimized sizes
+            // would otherwise replace the rectangle used by the restore button.
+            if w.is_minimized().unwrap_or(true) || w.is_fullscreen().unwrap_or(true) { continue; }
+            let Ok(maximized) = w.is_maximized() else { continue };
+            if !maximized {
+                if let Some(bounds) = persisted_webview_bounds(&w) { save_window_bounds(file, &bounds); }
+            }
+            save_window_presentation(file, None, Some(maximized));
         }
     }
 }

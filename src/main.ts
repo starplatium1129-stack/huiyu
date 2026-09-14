@@ -4,6 +4,9 @@ import App from './App.vue'
 import router from './router'
 import { installRouteRecovery } from './composables/useRouteRecovery'
 import { initializeTheme } from './composables/useTheme'
+import { initializeDesktopPreferences, installDesktopInteraction } from './composables/useDesktopInteraction'
+import { installFluidGlass } from './utils/fluidGlass'
+import { installDesktopZoom } from './composables/useDesktopZoom'
 // 字体声明移入独立异步 chunk（2026-08-28 审计 P1-7）：315 条 @font-face
 // 不再打进入口 CSS（453KB → ~85KB），首帧用 fallback 渲染、swap 无闪换。
 // 不 await —— 首帧即发起加载，不阻塞入口解析。
@@ -18,8 +21,16 @@ import './assets/css/viewer.css'
 import './assets/css/mood.css'
 import './assets/css/light-theme.css'
 import './assets/css/workspace-layout.css'
+import './assets/css/fluid-surfaces.css'
+import './assets/css/fluid-workspaces.css'
+import './assets/css/fluid-glass.css'
 
 initializeTheme()
+initializeDesktopPreferences()
 installRouteRecovery(router)
 
 createApp(App).use(createPinia()).use(router).mount('#app')
+const stopDesktopInteraction = installDesktopInteraction(router)
+const stopFluidGlass = installFluidGlass()
+const stopDesktopZoom = installDesktopZoom()
+if (import.meta.hot) import.meta.hot.dispose(() => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom() })

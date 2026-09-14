@@ -1,10 +1,10 @@
 <template>
 <!-- 出图大图对比：上一张 vs 当前 -->
     <Teleport to="body">
-      <Transition name="layer-pop">
+      <FluidTransition>
         <PromptComparePanel v-if="compareOpen && prevResult && lastResult"
           :previous="prevResult" :current="lastResult" @ready="compareEl = $event" @close="closeCompare" />
-      </Transition>
+      </FluidTransition>
     </Teleport>
 
     <!-- Anima 智能局部换装弹窗 -->
@@ -28,6 +28,7 @@
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { defineAsyncComponent } from 'vue'
 import type { PromptDialogBindings } from '@/composables/prompt/promptPanelBindings'
 import DeferredPanel from './DeferredPanel.vue'

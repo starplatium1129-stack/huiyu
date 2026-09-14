@@ -9,6 +9,7 @@
           <h2>从角色的心情，走进场景</h2>
           <p>月光下的秘密，或午后的闲谈。今天，想和谁一起？</p>
           <div class="companion-switch" role="group" aria-label="看板娘陪伴选择">
+            <AnimatedSelection />
             <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
               <span class="dot"></span>绫地宁宁
             </button>
@@ -190,26 +191,28 @@
     <!-- 故事抽屉（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
-      <Transition name="layer-pop">
-        <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" aria-label="场景故事"
+      <FluidTransition>
+        <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" :aria-hidden="!drawerScene" aria-label="场景故事"
           @click.self="drawerScene = null">
-          <div class="story-card" v-if="drawerScene">
-          <h3><ArchiveIcon name="cherry" /> {{ drawerScene.title }}</h3>
-          <div class="story-meta">{{ charName(drawerScene) }} · {{ seasonLabel(drawerScene.season) }} · {{ timeLabel(drawerScene.timeOfDay) }} · {{ drawerScene.emotion }}</div>
-          <div class="story-body">{{ drawerScene.story || '' }}</div>
+          <div class="story-card" v-if="displayedDrawerScene">
+          <h3><ArchiveIcon name="cherry" /> {{ displayedDrawerScene.title }}</h3>
+          <div class="story-meta">{{ charName(displayedDrawerScene) }} · {{ seasonLabel(displayedDrawerScene.season) }} · {{ timeLabel(displayedDrawerScene.timeOfDay) }} · {{ displayedDrawerScene.emotion }}</div>
+          <div class="story-body">{{ displayedDrawerScene.story || '' }}</div>
           <div class="story-actions">
-            <a class="btn btn-primary" :href="quickCreateUrl(drawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
-            <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id)"><ArchiveIcon name="clap" /> 进入工作台调整</RouterLink>
+            <a class="btn btn-primary" :href="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
+            <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(displayedDrawerScene.id)"><ArchiveIcon name="clap" /> 进入工作台调整</RouterLink>
             <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
           </div>
           </div>
         </div>
-      </Transition>
+      </FluidTransition>
     </Teleport>
   </article>
 </template>
 
 <script setup lang="ts">
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { ref, reactive, watch } from 'vue'
 const searchInput = ref<HTMLInputElement | null>(null)
 import SceneCard from '@/components/SceneCard.vue'
@@ -274,6 +277,8 @@ favs,
 toggleFav,
 PAGE_SIZE
 } = useSceneExplorerWorkspace()
+const displayedDrawerScene = ref(drawerScene.value)
+watch(drawerScene, value => { if (value) displayedDrawerScene.value = value }, { flush: 'sync' })
 
 // ── 陪伴图失败回退：两位角色各记一个失败态，互不牵连 ──
 // 失败即撤下对应 img 换占位；切回该角色时重置失败态让 img 重挂重试一次（用户驱动、有界，非递归）。
@@ -311,12 +316,13 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .curation-intro { margin-top:var(--s-5); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .curation-intro h2 { margin:var(--s-1) 0 var(--s-1); font-size:var(--fs-title-xs); }
 .curation-intro p { margin:0; color:var(--text-muted); font-size:var(--fs-label); line-height:var(--lh-body); }
-.companion-switch { display:flex; align-items:center; gap:var(--s-2); margin-top:var(--s-3); }
-.companion-pill { display:inline-flex; align-items:center; gap:var(--s-1); padding:var(--s-2) var(--s-3); min-height:44px; border-radius:var(--r-pill); border:1px solid var(--border-soft); background:var(--bg-elevated); color:var(--text-secondary); font:600 var(--fs-label-xs) var(--font-sans); cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.2); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),box-shadow var(--motion-hover); }
-.companion-pill .dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+.companion-switch { --selection-radius:var(--r-pill); --selection-shadow:inset 0 1px var(--glass-highlight); position:relative; isolation:isolate; display:flex; align-items:center; width:fit-content; max-width:100%; gap:var(--s-1); margin-top:var(--s-3); padding:var(--s-1); border:1px solid var(--workspace-edge); border-radius:var(--r-pill); background:var(--bg-surface); }
+.companion-pill { position:relative; z-index:var(--z-raised); display:inline-flex; align-items:center; gap:var(--s-2); padding:var(--s-2) var(--s-3); min-height:44px; border-radius:var(--r-pill); border:1px solid transparent; background:transparent; color:var(--text-muted); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; box-shadow:none; transition:color var(--motion-hover); }
+.companion-pill .dot { width:6px; height:6px; border-radius:50%; background:var(--cp-accent); }
 .companion-pill.nene { --cp-accent:var(--nene-violet); }
 .companion-pill.natsume { --cp-accent:var(--natsume-amber); }
-.companion-pill:hover, .companion-pill.active { border-color:var(--cp-accent); color:var(--text-primary); background:color-mix(in srgb,var(--cp-accent) 18%,var(--bg-elevated)); box-shadow:none; }
+.companion-pill:hover, .companion-pill.active { color:var(--text-primary); }
+.companion-switch :deep(.animated-selection) { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:color-mix(in srgb,var(--accent) 32%,var(--border-soft)); }
 .mood-rails { position:relative; z-index:var(--z-raised); grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:inset 0 1px 0 var(--glass-highlight); transition:transform var(--motion-hover) var(--ease-out),border-color var(--motion-hover),box-shadow var(--motion-hover); }
 .mood-rail.nene { background:linear-gradient(135deg,color-mix(in srgb,var(--nene-violet) 8%,transparent),color-mix(in srgb,var(--accent) 8%,transparent)),var(--bg-elevated); }

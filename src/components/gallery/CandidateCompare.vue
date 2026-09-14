@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body"><dialog ref="dialog" class="candidate-compare" aria-labelledby="candidate-title" @close="emit('close')">
+  <Teleport to="body"><dialog ref="dialog" class="candidate-compare" aria-labelledby="candidate-title" @close="emit('close')" @cancel.prevent="emit('close')">
     <header><div><h2 id="candidate-title">对比挑选</h2><p>并排看画面与参数，选出最满意的一张。暂不采用的图片仍然保留。</p></div><button class="btn btn-ghost" type="button" aria-label="关闭对比" @click="emit('close')"><ArchiveIcon name="close" /></button></header>
     <p v-if="error" class="candidate-error" role="alert">{{ error }}</p>
     <div class="candidate-grid"><article v-for="item in items" :key="item.id" :data-choice="item.reviewState || 'candidate'" class="candidate-card">
@@ -16,17 +16,20 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { imgGet } from '@/composables/useImageStore'
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { ArtworkRecord } from '@/types/artwork'
+import { useFluidDialog } from '@/composables/useFluidDialog'
 const props = defineProps<{ open: boolean; items: ArtworkRecord[] }>()
 const emit = defineEmits<{ close: []; changed: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), urls = ref<Record<string, string>>({}), busy = ref(false), loading = ref(false), error = ref('')
+const motion = useFluidDialog(dialog)
 const owned = new Set<string>()
 let version = 0
 const title = (item: ArtworkRecord) => item.sceneTitle || item.scene || '未命名作品'
 function release() { version++; for (const url of owned) URL.revokeObjectURL(url); owned.clear(); urls.value = {} }
 watch(() => props.open, async open => {
+  if (!open) { motion.close(release); return }
   release(); error.value = ''; await nextTick()
-  if (!open) { dialog.value?.close(); return }
-  dialog.value?.showModal(); loading.value = true
+  if (!props.open) return
+  motion.open(); loading.value = true
   const current = version
   await Promise.all(props.items.map(async item => {
     try {

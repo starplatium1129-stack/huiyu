@@ -10,6 +10,7 @@
           <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
         <div class="nav-local-actions">
+          <AppearanceButton />
           <TaskCenterButton />
           <RouterLink class="nav-local-home" to="/">← 回绘遇</RouterLink>
           <AppThemeToggle /><AppSoundToggle />
@@ -25,6 +26,7 @@
         </RouterLink>
         <TaskCenterButton />
         <span class="control-nav-label">工作台管理</span>
+        <AppearancePreferences launcher-only />
         <nav class="control-rail-nav" aria-label="控制区">
           <a v-for="item in sections" :key="item.id" class="control-rail-link" :href="'#' + item.id"
             :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id)">
@@ -294,6 +296,8 @@
 </template>
 
 <script setup lang="ts">
+import AppearancePreferences from '@/components/AppearancePreferences.vue'
+import AppearanceButton from '@/components/AppearanceButton.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
 import { computed, onMounted, onUnmounted } from 'vue'

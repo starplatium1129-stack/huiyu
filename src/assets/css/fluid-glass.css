@@ -1,0 +1,28 @@
+/* Actual backdrop refraction is restricted to structural chrome, never reading panels. */
+:root { --fluid-glass-filter: none; }
+.fluid-glass-definitions { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+:root body [data-fluid-refracted] {
+  -webkit-backdrop-filter: var(--fluid-glass-filter);
+  backdrop-filter: var(--fluid-glass-filter);
+}
+html[data-fluid-effects="low"] :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, [data-fluid-glass]) {
+  background: var(--bg-surface);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, [data-fluid-glass]) {
+    background: var(--bg-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (forced-colors: active) {
+  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, [data-fluid-glass]) {
+    background: Canvas;
+    border-color: CanvasText;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

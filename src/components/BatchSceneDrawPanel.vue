@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <Transition name="layer-pop">
+    <FluidTransition>
     <div v-if="open" class="batch-overlay" @click.self="emit('close')">
       <section ref="panel" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
         <header class="batch-head">
@@ -224,11 +224,12 @@
         </Transition>
       </section>
     </div>
-    </Transition>
+    </FluidTransition>
   </Teleport>
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { computed, reactive, ref, watch, onUnmounted } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'

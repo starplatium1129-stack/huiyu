@@ -154,6 +154,7 @@
 </template>
 
 <script setup lang="ts">
+import { useFluidDialog } from '@/composables/useFluidDialog'
 import { ref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
@@ -201,6 +202,7 @@ let sentinelObserver: IntersectionObserver | null = null
 function loadMore() { visibleCount.value += PAGE_SIZE }
 const currentId   = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
+const viewerMotion = useFluidDialog(dialogEl)
 const brokenThumbs = ref(new Set<string>())
 const loadedThumbs = ref(new Set<string>())
 const viewerImageFailed = ref(false)
@@ -297,8 +299,6 @@ function openLinkedScene() {
   if (typeof id === 'string' && entries.value.some(entry => entry.id === id && entry.rating !== 'R18')) currentId.value = id
 }
 watch(() => route.query.scene, openLinkedScene)
-let viewerAnimation: Animation | undefined
-let closingViewer = false
 function clearLinkedScene() {
   if (route.path !== '/showcase') return
   if (typeof route.query.scene !== 'string') return
@@ -307,13 +307,7 @@ function clearLinkedScene() {
   void router.replace({ query })
 }
 function closeViewer() {
-  if (closingViewer) return
-  const dialog = dialogEl.value
-  if (!dialog || matchMedia('(prefers-reduced-motion: reduce)').matches) { currentId.value = ''; clearLinkedScene(); return }
-  closingViewer = true
-  viewerAnimation?.cancel()
-  viewerAnimation = dialog.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 170, easing: 'ease-out' })
-  viewerAnimation.onfinish = () => { currentId.value = ''; closingViewer = false; clearLinkedScene() }
+  viewerMotion.close(() => { currentId.value = ''; clearLinkedScene(); document.body.classList.remove('overlay-open') })
 }
 
 /**
@@ -327,10 +321,10 @@ watch(currentEntry, (entry) => {
     viewerImageFailed.value = false
     viewerImageReady.value = false
     viewerVersion.value = Date.now()
-    dialog.showModal()
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) viewerAnimation = dialog.animate([{ opacity: 0, transform: 'translateY(18px) scale(.965)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' })
+    viewerMotion.open()
     document.body.classList.add('overlay-open')
   } else if (entry) {
+    viewerMotion.open()
     viewerImageFailed.value = false
     viewerImageReady.value = false
     viewerVersion.value = Date.now()
@@ -401,8 +395,7 @@ onDeactivated(() => {
   viewActive = false
   document.removeEventListener('keydown', onKey)
   sentinelObserver?.disconnect()
-  viewerAnimation?.cancel()
-  closingViewer = false
+  viewerMotion.dispose()
   currentId.value = ''
   if (dialogEl.value?.open) dialogEl.value.close()
   document.body.classList.remove('overlay-open')
@@ -424,7 +417,7 @@ onMounted(async () => {
 })
 onUnmounted(() => {
   unmounted = true
-  viewerAnimation?.cancel()
+  viewerMotion.dispose()
   sentinelObserver?.disconnect()
   sentinelObserver = null
   manifestController.abort()

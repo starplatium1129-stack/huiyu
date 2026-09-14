@@ -300,7 +300,7 @@
 
     <!-- 编辑 Modal -->
     <Teleport to="body">
-      <Transition name="layer-pop">
+      <FluidTransition>
       <div v-if="editing" class="overlay" @click.self="closeModal">
         <div
           ref="modalEl"
@@ -379,12 +379,12 @@
           <p class="note-sm">注意：修改仅在内存中生效，需点"保存到项目"写回 data/scenes.json</p>
         </div>
       </div>
-      </Transition>
+      </FluidTransition>
     </Teleport>
 
     <!-- 蓝图编辑 Modal -->
     <Teleport to="body">
-      <Transition name="layer-pop">
+      <FluidTransition>
       <div v-if="bpEditing" class="overlay" @click.self="closeBlueprintModal">
         <div
           ref="bpModalEl"
@@ -457,12 +457,12 @@
           <p class="note-sm">注意：修改仅在内存中生效，需点“保存到项目”写回 data/scene-blueprints.json</p>
         </div>
       </div>
-      </Transition>
+      </FluidTransition>
     </Teleport>
 
     <!-- 标签表单 Modal -->
     <Teleport to="body">
-      <Transition name="layer-pop">
+      <FluidTransition>
       <div v-if="tagModalOpen" class="overlay" @click.self="closeTagModal">
         <div
           ref="tagModalEl"
@@ -499,12 +499,13 @@
           </div>
         </div>
       </div>
-      </Transition>
+      </FluidTransition>
     </Teleport>
   </article>
 </template>
 
 <script setup lang="ts">
+import FluidTransition from "@/components/visual/FluidTransition.vue"
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

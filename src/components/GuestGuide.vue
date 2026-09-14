@@ -1,4 +1,5 @@
 <template>
+  <FluidTransition appear>
   <aside
     v-if="visible"
     ref="guideEl"
@@ -51,9 +52,11 @@
       </div>
     </div>
   </aside>
+  </FluidTransition>
 </template>
 
 <script setup lang="ts">
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'

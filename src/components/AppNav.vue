@@ -7,7 +7,7 @@
         <BrandLogo class="nav-logo" />
       </RouterLink>
 
-      <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }">
+      <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }" @keydown="onNavigationKey">
         <AnimatedSelection target=":scope > a.active" />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
@@ -19,6 +19,7 @@
           :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
           :class="{ active: activeId === item.id }"
           :aria-current="activeId === item.id ? 'page' : undefined"
+          :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
           @click="closeMenu"
         >
           <ArchiveIcon :name="item.icon" />
@@ -48,6 +49,7 @@
               </RouterLink>
             </template>
             <button class="nav-help" type="button" @click="openGuide">初次来访 · 使用指南</button>
+            <AppearancePreferences launcher-only @open="closeMenu" />
           </div>
         </details>
 
@@ -87,6 +89,7 @@
 
 <script setup lang="ts">
 import BrandLogo from '@/components/BrandLogo.vue'
+import AppearancePreferences from './AppearancePreferences.vue'
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
@@ -200,6 +203,16 @@ function onDocKey(e: KeyboardEvent) {
     menuToggleEl.value?.focus()
     e.preventDefault()
   }
+}
+
+function onNavigationKey(event: KeyboardEvent) {
+  if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
+  const links = [...(linksEl.value?.querySelectorAll<HTMLAnchorElement>(':scope > a') ?? [])]
+  const index = links.indexOf(event.target as HTMLAnchorElement)
+  if (index < 0) return
+  const next = event.key === 'Home' ? 0 : event.key === 'End' ? links.length - 1
+    : event.key === 'ArrowRight' ? (index + 1) % links.length : event.key === 'ArrowLeft' ? (index - 1 + links.length) % links.length : -1
+  if (next >= 0) { event.preventDefault(); links[next]?.focus() }
 }
 
 onMounted(() => {
