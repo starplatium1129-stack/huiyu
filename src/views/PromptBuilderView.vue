@@ -24,43 +24,48 @@
 
     <div class="pb-topline">
       <div class="pb-header">
-        <h1 class="pb-title">开始绘制</h1>
+        <div class="pb-heading-row">
+          <h1 class="pb-title">开始绘制</h1>
+          <div class="api-status">
+            <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
+              :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
+              @click="recheckEngineConnection">
+              <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
+              <span>{{ drawEngineLabel }} {{ engineOnline ? '已连接' : '未连接' }}</span>
+            </button>
+            <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
+          </div>
+        </div>
         <p class="pb-sub">{{ modeDescription }}</p>
       </div>
       <div class="pb-top-actions">
-        <div class="director-mode-switch" role="group" aria-label="切换绘图工作模式">
-          <button class="director-mode-option" type="button"
-            :class="{ active: pb.directorMode === 'basic' }"
-            :aria-pressed="pb.directorMode === 'basic'"
-            @click="setDirectorMode('basic')">场景模式</button>
-          <button class="director-mode-option" type="button"
-            :class="{ active: pb.directorMode === 'pro' }"
-            :aria-pressed="pb.directorMode === 'pro'"
-            @click="setDirectorMode('pro')">专家模式</button>
-        </div>
-        <button class="focus-mode-btn" type="button"
-          :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
-          :aria-pressed="pb.focusMode"
-          @click="pb.focusMode = !pb.focusMode">
-          <ArchiveIcon :name="pb.focusMode ? 'compress' : 'expand'" class="focus-mode-icon" aria-hidden="true" />
-          <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
-        </button>
-        <RandomInspirationButton />
-        <PromptDataTools
-          :blueprint-data="currentBlueprintData"
-          @flash="pb.flash"
-          @load-blueprint="handleLoadBlueprint"
-        />
-        <div class="api-status">
-          <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
-            :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
-            @click="recheckEngineConnection">
-            <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
-            <span>{{ drawEngineLabel }} {{ engineOnline ? '已连接' : '未连接' }}</span>
+        <div class="pb-mode-actions">
+          <div class="director-mode-switch" role="group" aria-label="切换绘图工作模式">
+            <button class="director-mode-option" type="button"
+              :class="{ active: pb.directorMode === 'basic' }"
+              :aria-pressed="pb.directorMode === 'basic'"
+              @click="setDirectorMode('basic')">场景模式</button>
+            <button class="director-mode-option" type="button"
+              :class="{ active: pb.directorMode === 'pro' }"
+              :aria-pressed="pb.directorMode === 'pro'"
+              @click="setDirectorMode('pro')">专家模式</button>
+          </div>
+          <button class="focus-mode-btn" type="button"
+            :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
+            :aria-pressed="pb.focusMode"
+            @click="pb.focusMode = !pb.focusMode">
+            <ArchiveIcon :name="pb.focusMode ? 'compress' : 'expand'" class="focus-mode-icon" aria-hidden="true" />
+            <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
           </button>
-          <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
         </div>
-
+        <div class="pb-utility-actions">
+          <RandomInspirationButton />
+          <PromptDataTools
+            :blueprint-data="currentBlueprintData"
+            @flash="pb.flash"
+            @load-blueprint="handleLoadBlueprint"
+          />
+        </div>
       </div>
     </div>
 

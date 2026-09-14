@@ -17,31 +17,32 @@
     box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 36px -6px rgba(4, 3, 16, 0.38);
     transition: border-color var(--motion-hover), box-shadow var(--motion-hover);
   }
-  .pb .gen-bar-size { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); font-size: var(--fs-label); }
+  .pb .gen-bar-size { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); font-size: var(--fs-body); }
   .pb .gen-bar-label { font-weight: 650; white-space: nowrap; }
   .pb .gen-bar-size select {
-    max-width: 220px; min-width: 140px; padding: 6px 12px;
+    max-width: 220px; min-width: 140px; min-height: 40px; padding: 6px 12px;
     border: 1px solid var(--border-soft); border-radius: var(--r-md);
     background: var(--bg-deep); color: var(--text-primary);
-    font-size: var(--fs-label-sm); cursor: pointer; outline: none;
+    font-size: var(--fs-body); cursor: pointer; outline: none;
     transition: border-color var(--motion-hover);
   }
   .pb .gen-bar-size select:focus { border-color: var(--accent); outline: 2px solid var(--accent-soft); }
   .pb .gen-bar-size select:disabled { color: var(--text-disabled); cursor: not-allowed; }
   /* 自动参数摘要：空间紧张时最先让位，信息在输出面板仍有完整版 */
   .pb .gen-bar-preset {
-    flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    color: var(--text-muted); font: 500 var(--fs-mono-xs) var(--font-mono);
+    flex: 1 1 14rem; min-width: 0; overflow-wrap: anywhere;
+    color: var(--text-secondary); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans);
+    font-variant-numeric: tabular-nums;
   }
   /* 校验未通过的原因：贴在按钮左侧常驻，比 title 悬停提示可靠 */
   .pb .gen-bar-blocked {
-    flex: 1; min-width: 0; margin-left: auto;
-    color: var(--danger-text); font-size: var(--fs-label-sm); line-height: 1.45;
+    flex: 1 1 16rem; min-width: 0; margin-left: auto;
+    color: var(--danger-text); font-size: var(--fs-body); line-height: var(--lh-body);
   }
   .pb .gen-bar-actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
   /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
   .pb .gen-bar-blocked + .gen-bar-actions { margin-left: 0; }
-  .pb .gen-bar-actions .btn { min-height: 38px; font-size: var(--fs-label); padding: var(--s-2) var(--s-4); border-radius: var(--r-md); }
+  .pb .gen-bar-actions .btn { min-height: 38px; font-size: var(--fs-body); padding: var(--s-2) var(--s-4); border-radius: var(--r-md); }
   .pb .gen-bar-actions .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .pb .gen-bar-actions .btn-primary:not(:disabled) {
     box-shadow: 0 0 16px -2px var(--character-glow, var(--accent-glow));
@@ -53,7 +54,7 @@
     .pb .gen-bar { top: 66px; border-radius: var(--r-md); }
     .pb .gen-bar-preset { display: none; }
     .pb .gen-bar-size { flex: 1; min-width: 0; }
-    .pb .gen-bar-size select { flex: 1; min-width: 0; max-width: none; }
+    .pb .gen-bar-size select { flex: 1; min-width: 0; min-height: 44px; max-width: none; }
     .pb .gen-bar-actions { margin-left: 0; }
     .pb .gen-bar-actions .btn { min-height: 44px; }
   }

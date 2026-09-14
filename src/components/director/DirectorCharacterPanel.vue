@@ -10,7 +10,7 @@
       <button type="button" class="char-source-btn" :class="{ active: pb.isPopular }"
         :aria-pressed="pb.isPopular" @click="$emit('selectSource', 'popular')">
         <ArchiveIcon name="spark" class="char-source-icon" />
-        <span>热门角色 · 无需 LoRA</span>
+        <span>热门角色<span class="char-source-note"> · 无需 LoRA</span></span>
       </button>
     </div>
 

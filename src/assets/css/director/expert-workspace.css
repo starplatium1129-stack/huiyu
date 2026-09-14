@@ -2,15 +2,15 @@
    layout.css owns viewport allocation and all outer column placement. */
 .pb .inspector-section { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
 .pb .inspector-heading { display: flex; align-items: center; justify-content: space-between; padding: 16px; }
-.pb .inspector-heading span { font-size: var(--fs-label-xs); color: var(--text-muted); }
+.pb .inspector-heading span { font-size: var(--fs-label); color: var(--text-muted); }
 .pb .inspector-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 0 10px 10px; border-bottom: 1px solid var(--border-soft); }
 .pb .inspector-tabs button {
-  min-height: 36px;
+  min-height: 40px;
   border: 1px solid transparent;
   border-radius: var(--r-md);
   background: transparent;
   color: var(--text-secondary);
-  font: 600 var(--fs-label-sm) var(--font-sans);
+  font: 600 var(--fs-label) var(--font-sans);
   cursor: pointer;
   transition: background var(--motion-hover), color var(--motion-hover), border-color var(--motion-hover);
 }
@@ -52,7 +52,7 @@
 .pb[data-director-mode="pro"] .director-inspector .engine-switch { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
 .pb[data-director-mode="pro"] .director-inspector .engine-btn { padding: 8px 4px; min-height: 40px; font-size: var(--fs-label-xs); }
 .pb[data-director-mode="pro"] .director-inspector .engine-sub { display: none; }
-.pb .inspector-route { color: var(--text-muted); font-size: var(--fs-label-sm); }
+.pb .inspector-route { color: var(--text-secondary); font-size: var(--fs-label); }
 .pb .inspector-route summary { cursor: pointer; padding: 4px 0; }
 .pb .inspector-route .pb-managed-route-banner { margin-top: 12px; }
 .pb[data-director-mode="pro"] .director-inspector .base-model-picker { display: grid; grid-template-columns: 1fr; }

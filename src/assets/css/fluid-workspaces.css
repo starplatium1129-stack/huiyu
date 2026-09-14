@@ -138,13 +138,6 @@ html .scenario-page .act { box-shadow: var(--workspace-inset); }
 html .scenario-page .prompt-code { background: var(--bg-base); border: 1px solid var(--border-soft); }
 
 /* Drawing: small chrome receives depth, large prompts and preview stay stable. */
-html .pb.journal-workspace .pb-top-actions {
-  padding: var(--s-2);
-  border: 1px solid var(--workspace-edge);
-  border-radius: var(--r-lg);
-  background: var(--bg-surface);
-  box-shadow: var(--workspace-inset);
-}
 html .pb.journal-workspace :is(.panel, .result-frame) { box-shadow: var(--workspace-inset); }
 html .pb.journal-workspace .panel-title { line-height: var(--lh-label); }
 html .pb.journal-workspace .gen-bar {

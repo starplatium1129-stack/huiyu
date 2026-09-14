@@ -8,46 +8,76 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .workspace-code { display: none; }
 .pb.journal-workspace .workspace-copy { flex: 1; display: flex; flex-direction: row; gap: var(--s-3); align-items: center; min-width: 0; }
 .pb.journal-workspace .workspace-copy strong { display: none; }
-.pb.journal-workspace .pb-topline { align-items: flex-start; gap: var(--s-5); margin-bottom: var(--s-4); }
-.pb.journal-workspace .pb-header { min-width: 180px; max-width: 420px; flex-shrink: 0; }
+.pb.journal-workspace .pb-topline { align-items: center; gap: var(--s-4); margin-bottom: var(--s-4); }
+.pb.journal-workspace .pb-header { min-width: 0; flex: 1; }
+.pb.journal-workspace .pb-heading-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2) var(--s-4); }
 .pb.journal-workspace .pb-title { font-size: var(--fs-title); font-weight: 600; }
 .pb.journal-workspace .pb-kicker { display: none; }
 .pb.journal-workspace .pb-sub { margin-top: var(--s-2); font-size: var(--fs-label); line-height: var(--lh-body); color: var(--text-secondary); }
-.pb.journal-workspace .pb-top-actions { gap: var(--s-2); }
+.pb.journal-workspace .pb-top-actions { gap: var(--s-3); min-width: 0; }
+.pb.journal-workspace .pb-mode-actions,
+.pb.journal-workspace .pb-utility-actions { display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
 .pb.journal-workspace .focus-mode-btn, .pb.journal-workspace .utility-trigger,
-.pb.journal-workspace .api-status .badge { background: var(--bg-surface); box-shadow: none; backdrop-filter: none; border-color: var(--border-soft); }
+.pb.journal-workspace .random-dice, .pb.journal-workspace .random-menu-trigger,
+.pb.journal-workspace .api-status .badge { background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-color: transparent; }
+.pb.journal-workspace .focus-mode-btn,
+.pb.journal-workspace .random-dice { font-size: var(--fs-label); min-height: 40px; }
+.pb.journal-workspace .focus-mode-btn:hover,
+.pb.journal-workspace .random-dice:hover,
+.pb.journal-workspace .random-menu-trigger:hover,
+.pb.journal-workspace .utility-trigger:hover { background: var(--bg-hover); }
+.pb.journal-workspace .focus-mode-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.pb.journal-workspace .api-status { flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0; border: 0; }
+.pb.journal-workspace .api-status .badge { min-height: 32px; padding: var(--s-1); font-family: var(--font-sans); font-size: var(--fs-label); }
+.pb.journal-workspace .api-recovery-link { display: inline-flex; align-items: center; min-height: 32px; font-size: var(--fs-label); }
+.pb.journal-workspace .api-status .badge::before { display: none; }
 .pb.journal-workspace .pb-managed-route-banner { margin-bottom: var(--s-4); border-color: var(--border-soft); background: var(--bg-surface); box-shadow: none; }
 .pb.journal-workspace .panel, .pb.journal-workspace .result-frame { border-color: var(--border-soft); border-radius: var(--r-xl); box-shadow: none; background: var(--bg-surface); }
 .pb.journal-workspace .panel::before, .pb.journal-workspace .panel::after { display: none; }
-.pb.journal-workspace .panel-title { letter-spacing: .02em; font-weight: 600; }
+.pb.journal-workspace .panel-title { font-size: var(--fs-label); letter-spacing: normal; font-weight: 600; }
+/* The material drawer already provides a reading surface and a category label. */
+.pb.journal-workspace .material-content .panel { border: 0; border-radius: 0; box-shadow: none; background: transparent; padding: 0; margin: 0; }
+.pb.journal-workspace .material-content #stepChar > .panel-title { display: none; }
 .pb.journal-workspace .stage-placeholder { min-height: clamp(280px, calc(var(--drawing-viewport-height) - 390px), 580px); max-height: none; border-color: var(--border-soft); border-radius: var(--r-xl); background: radial-gradient(ellipse at 85% 100%, var(--character-soft), transparent 60%), var(--bg-deep); box-shadow: none; transition: none; }
 .pb.journal-workspace .stage-placeholder::before { background: none; }
-.pb.journal-workspace .stage-chrome { background: transparent; box-shadow: none; border: 0; backdrop-filter: none; }
+.pb.journal-workspace .stage-chrome { background: transparent; box-shadow: none; border: 0; backdrop-filter: none; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); letter-spacing: normal; }
 .pb.journal-workspace .stage-muse { animation: none; filter: none; }
 .pb.journal-workspace .stage-idle { position: relative; z-index: var(--z-raised); padding: var(--s-6) var(--s-4); }
 .pb.journal-workspace .stage-placeholder-title { font-size: var(--fs-title-sm); line-height: var(--lh-label); }
-.pb.journal-workspace .stage-placeholder-copy { max-width: 380px; color: var(--text-secondary); }
+.pb.journal-workspace .stage-placeholder-copy { max-width: 380px; color: var(--text-secondary); font-size: var(--fs-body-sm); }
 .pb.journal-workspace .stage-quick-actions { gap: var(--s-2); }
 .pb.journal-workspace .stage-quick-actions .btn { font-size: var(--fs-label); }
 .pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
 .pb.journal-workspace .result-image-wrap { border-color: var(--border-soft); border-radius: var(--r-xl); box-shadow: none; }
 .pb.journal-workspace .gen-bar { padding: var(--s-3) var(--s-4); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); box-shadow: none; backdrop-filter: none; transition: none; }
-.pb.journal-workspace .gen-bar-actions .btn { border-radius: var(--r-md); min-height: 42px; }
+.pb.journal-workspace .gen-bar-actions .btn { border-radius: var(--r-md); min-height: 44px; }
 .pb.journal-workspace .gen-bar-actions .btn-primary:not(:disabled) { box-shadow: none; }
 .pb.journal-workspace .drawing-jump-links { display: none; }
 @media (max-width: 1200px) {
   .pb.journal-workspace .pb-topline { flex-direction: column; gap: var(--s-3); }
-  .pb.journal-workspace .pb-header { max-width: none; }
+  .pb.journal-workspace .pb-header { width: 100%; }
+  .pb.journal-workspace .pb-sub { display: none; }
   .pb.journal-workspace .pb-top-actions { width: 100%; justify-content: flex-start; }
 }
 @media (max-width: 900px) {
-  .pb.journal-workspace .drawing-jump-links { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); }
-  .pb.journal-workspace .drawing-jump-links a { flex: 1; text-align: center; padding: var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-secondary); background: var(--bg-surface); font-size: var(--fs-label-sm); }
+  .pb.journal-workspace .drawing-jump-links { display: flex; gap: var(--s-2); margin-bottom: var(--s-3); border-bottom: 1px solid var(--border-soft); }
+  .pb.journal-workspace .drawing-jump-links a { display: flex; align-items: center; justify-content: center; flex: 1; min-height: 44px; text-align: center; padding: var(--s-2); border-radius: var(--r-md); color: var(--text-secondary); font-size: var(--fs-label); }
+  .pb.journal-workspace .drawing-jump-links a:hover { background: var(--bg-hover); color: var(--text-primary); }
   .pb.journal-workspace .drawing-jump-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
 @media (max-width: 600px) {
   .pb.journal-workspace .workspace-copy strong, .pb.journal-workspace .workspace-state { display: none; }
-  .pb.journal-workspace .api-status { width: 100%; flex-wrap: wrap; min-width: 0; justify-content: space-between; border-left: 0; padding-left: 0; margin-left: 0; }
+  .pb.journal-workspace .pb-heading-row { justify-content: space-between; gap: var(--s-2); }
+  .pb.journal-workspace .pb-top-actions { gap: var(--s-1) var(--s-3); }
+  .pb.journal-workspace .pb-mode-actions,
+  .pb.journal-workspace .pb-utility-actions { flex: 1 1 100%; justify-content: space-between; }
+  .pb.journal-workspace .director-mode-option { min-height: 44px; font-size: var(--fs-label); }
+  .pb.journal-workspace .focus-mode-btn,
+  .pb.journal-workspace .utility-trigger,
+  .pb.journal-workspace .random-menu-trigger { min-width: 44px; height: 44px; }
+  .pb.journal-workspace .random-dice { min-height: 44px; }
+  .pb.journal-workspace .random-popover { left: 0; right: auto; transform-origin: top left; }
+  .pb.journal-workspace .api-status { min-width: 0; }
   .pb.journal-workspace .api-status .badge { max-width: 100%; white-space: normal; text-align: left; }
   .pb.journal-workspace .stage-placeholder { min-height: 360px; }
   .pb.journal-workspace .stage-quick-actions { flex-direction: column; }
