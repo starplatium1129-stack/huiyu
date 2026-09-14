@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { useFluidSurface } from '@/composables/useFluidSurface'
 const props = withDefaults(defineProps<{ panel?: string; appear?: boolean }>(), {
-  panel: '.story-card, .modal-card, .batch-panel, .shot-script-panel, .pb-compare, .pb-backup-modal, .guest-guide-card, [role="dialog"]',
+  panel: '.story-card, .modal-card, .batch-panel, .shot-script-panel, .pb-compare, .pb-backup-card, .pb-backup-modal, .candidate-compare, .task-center, .art-viewer, .showcase-viewer, .guest-guide-card, [role="dialog"]',
   appear: false,
 })
 const surface = useFluidSurface(props.panel)

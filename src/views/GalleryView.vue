@@ -288,13 +288,13 @@
         <div class="viewer-position">{{ viewerIndex + 1 }} / {{ visible.length }}</div>
       </section>
 
-      <aside class="viewer-info" v-if="current">
-        <div class="viewer-kicker">Artwork {{ viewerIndex + 1 }}</div>
-        <h2 class="viewer-title">{{ sceneTitle(current.scene, current) }}</h2>
+      <aside class="viewer-info" v-if="displayedCurrent">
+        <div class="viewer-kicker">Artwork {{ (viewerIndex >= 0 ? viewerIndex : displayedIndex) + 1 }}</div>
+        <h2 class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
         <div class="viewer-meta">
-          {{ characterName(current.character, current) }} · {{ formatDate(stamp(current)) }} · v{{ current.version || 1 }}
+          {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }} · v{{ displayedCurrent.version || 1 }}
         </div>
-        <div class="viewer-story viewer-story-on-art">{{ current.story || '这幅作品还没有附加文字。' }}</div>
+        <div class="viewer-story viewer-story-on-art">{{ displayedCurrent.story || '这幅作品还没有附加文字。' }}</div>
         <div class="viewer-facts">
           <div class="viewer-fact" v-for="f in facts" :key="f.label">
             <small>{{ f.label }}</small>
@@ -303,17 +303,17 @@
         </div>
         <details class="viewer-details">
           <summary>创作参数与 Prompt</summary>
-          <div class="viewer-prompt">{{ current.prompt || '未保存 Prompt' }}</div>
+          <div class="viewer-prompt">{{ displayedCurrent.prompt || '未保存 Prompt' }}</div>
         </details>
         <div class="viewer-actions">
           <button class="btn btn-ghost" type="button"
-            :class="{ 'btn-favorite-on': current.favorite }"
-            :aria-pressed="!!current.favorite"
-            @click="toggleFavorite(current)">
-            <ArchiveIcon name="love" /><span>{{ current.favorite ? '取消收藏' : '收藏这幅' }}</span>
+            :class="{ 'btn-favorite-on': displayedCurrent.favorite }"
+            :aria-pressed="!!displayedCurrent.favorite"
+            @click="toggleFavorite(displayedCurrent)">
+            <ArchiveIcon name="love" /><span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
           </button>
-          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
-          <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">原参重跑</RouterLink>
+          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
+          <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
           <button
             class="btn btn-ghost"
@@ -324,11 +324,11 @@
             <ArchiveIcon :name="copiedPrompt ? 'success' : 'copy'" />
             <span>{{ copiedPrompt ? '已复制' : '复制 Prompt' }}</span>
           </button>
-          <button v-if="pendingDeleteId !== current.id" class="btn btn-ghost btn-danger" type="button"
-            @click="pendingDeleteId = current.id">删除这幅</button>
+          <button v-if="pendingDeleteId !== displayedCurrent.id" class="btn btn-ghost btn-danger" type="button"
+            @click="pendingDeleteId = displayedCurrent.id">删除这幅</button>
           <template v-else>
             <button class="btn btn-danger" type="button" :disabled="deleting"
-              @click="confirmDelete(current)">{{ deleting ? '删除中…' : '移入回收站' }}</button>
+              @click="confirmDelete(displayedCurrent)">{{ deleting ? '删除中…' : '移入回收站' }}</button>
             <button class="btn btn-ghost" type="button" :disabled="deleting"
               @click="pendingDeleteId = null">取消</button>
           </template>
@@ -343,7 +343,7 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 const searchInput = ref<HTMLInputElement | null>(null)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
@@ -418,6 +418,15 @@ downloadCurrent,
 copiedPrompt,
 copyPrompt
 } = useGalleryWorkspace()
+
+const displayedCurrent = ref(current.value)
+const displayedIndex = ref(viewerIndex.value)
+watch(current, value => {
+  if (value) {
+    displayedCurrent.value = value
+    displayedIndex.value = viewerIndex.value
+  }
+}, { flush: 'sync' })
 </script>
 
 <style scoped src="@/assets/css/gallery-view.css"></style>

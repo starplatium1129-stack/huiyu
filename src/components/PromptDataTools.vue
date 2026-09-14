@@ -67,7 +67,7 @@
             {{ pendingSummary?.history ?? 0 }} 条历史 ·
             {{ pendingSummary?.projects ?? 0 }} 个项目 ·
             {{ pendingSummary?.images ?? 0 }} 张图片 ·
-            数据版本 v{{ backup.pending.value.schemaVersion }}
+            数据版本 v{{ backup.pending.value?.schemaVersion ?? '1.0' }}
           </span>
         </div>
         <div class="pb-backup-actions">

@@ -21,6 +21,8 @@
 
 ## 当前审计与待办
 
+- [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：同心圆角、角色选择器、工具栏层级、真实玻璃表达与桌面交付；执行与审核分工及首批任务。
+
 - [六份盘点报告汇总复核](research/engineering/six-task-review-2026-09-13.md)与[GLM Flash 分批任务](guides/engineering/glm-flash-next-batches.md)：状态校准、立绘缺失误报修正、蓝图保存风险和后续实施边界。
 - [工程研究资料归档](research/engineering/README.md)：资产、图片候选、容器与文案、文档证据及未执行验收用例的已核验范围。
 - [GLM W1 实施复核与提交范围](research/engineering/glm-w1-review-and-submit-scope.md)：元数据预览、覆盖漏检、类型边界修复及分批提交建议。

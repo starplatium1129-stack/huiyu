@@ -195,14 +195,17 @@
         <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" :aria-hidden="!drawerScene" aria-label="场景故事"
           @click.self="drawerScene = null">
           <div class="story-card" v-if="displayedDrawerScene">
-          <h3><ArchiveIcon name="cherry" /> {{ displayedDrawerScene.title }}</h3>
-          <div class="story-meta">{{ charName(displayedDrawerScene) }} · {{ seasonLabel(displayedDrawerScene.season) }} · {{ timeLabel(displayedDrawerScene.timeOfDay) }} · {{ displayedDrawerScene.emotion }}</div>
-          <div class="story-body">{{ displayedDrawerScene.story || '' }}</div>
-          <div class="story-actions">
-            <a class="btn btn-primary" :href="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
-            <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(displayedDrawerScene.id)"><ArchiveIcon name="clap" /> 进入工作台调整</RouterLink>
-            <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
-          </div>
+            <div class="story-card-head">
+              <h3><ArchiveIcon name="cherry" /> {{ displayedDrawerScene.title }}</h3>
+              <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭故事" @click="drawerScene = null"><ArchiveIcon name="close" /></button>
+            </div>
+            <div class="story-meta">{{ charName(displayedDrawerScene) }} · {{ seasonLabel(displayedDrawerScene.season) }} · {{ timeLabel(displayedDrawerScene.timeOfDay) }} · {{ displayedDrawerScene.emotion }}</div>
+            <div class="story-body">{{ displayedDrawerScene.story || '' }}</div>
+            <div class="story-actions">
+              <a class="btn btn-primary" :href="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
+              <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(displayedDrawerScene.id)"><ArchiveIcon name="clap" /> 进入工作台调整</RouterLink>
+              <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
+            </div>
           </div>
         </div>
       </FluidTransition>
@@ -219,6 +222,7 @@ import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneExplorerWorkspace } from "@/composables/scene/useSceneExplorerWorkspace"
 const {
 drawerEl,companionId,
@@ -279,6 +283,10 @@ PAGE_SIZE
 } = useSceneExplorerWorkspace()
 const displayedDrawerScene = ref(drawerScene.value)
 watch(drawerScene, value => { if (value) displayedDrawerScene.value = value }, { flush: 'sync' })
+
+useFocusTrap(drawerEl, () => Boolean(drawerScene.value), {
+  onEscape: () => { drawerScene.value = null },
+})
 
 // ── 陪伴图失败回退：两位角色各记一个失败态，互不牵连 ──
 // 失败即撤下对应 img 换占位；切回该角色时重置失败态让 img 重挂重试一次（用户驱动、有界，非递归）。
@@ -429,7 +437,8 @@ watch(companionId, (id) => { companionFailed[id] = false })
 
 .story-drawer { position:fixed; inset:0; z-index:var(--z-overlay); display:flex; align-items:center; justify-content:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(6px); }
 .story-card { transform-origin:center; width:100%; max-width:480px; padding:var(--s-5); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-elevated); box-shadow:var(--shadow-lg); }
-.story-card h3 { margin-bottom:var(--s-2); color:var(--text-primary); font-size:var(--fs-title-sm); font-weight:800; }
+.story-card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-2); }
+.story-card-head h3 { margin:0; color:var(--text-primary); font-size:var(--fs-title-sm); font-weight:800; }
 .story-meta { margin-bottom:var(--s-3); color:var(--text-muted); font-size:var(--fs-label-sm); }
 .story-body { margin-bottom:var(--s-4); color:var(--text-secondary); font-size:var(--fs-body); line-height:var(--lh-loose); }
 .story-actions { display:flex; gap:var(--s-2); }

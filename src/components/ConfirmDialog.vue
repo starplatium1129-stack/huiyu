@@ -63,10 +63,12 @@ function ok() { resolveConfirm(true) }
 // 破坏性操作默认聚焦取消键，Enter 手滑不会直接执行删除
 watch(() => state.value.visible, async (visible) => {
   if (visible) {
+    document.body.classList.add('overlay-open')
     restoreFocusTo = document.activeElement as HTMLElement | null
     await nextTick()
     ;(state.value.danger ? cancelBtn : confirmBtn).value?.focus()
   } else {
+    document.body.classList.remove('overlay-open')
     restoreFocusTo?.focus?.()
     restoreFocusTo = null
   }
@@ -93,7 +95,10 @@ function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') { e.preventDefault(); cancel() }
 }
 document.addEventListener('keydown', onKeydown)
-onUnmounted(() => document.removeEventListener('keydown', onKeydown))
+onUnmounted(() => {
+  document.body.classList.remove('overlay-open')
+  document.removeEventListener('keydown', onKeydown)
+})
 </script>
 
 <style scoped>

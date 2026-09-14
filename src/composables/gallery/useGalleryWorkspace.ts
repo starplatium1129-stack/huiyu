@@ -474,10 +474,11 @@ export function useGalleryWorkspace() {
         viewerObjectUrl = '';
     }
     /* ---------- Viewer 控制 ---------- */
+    let releaseViewerTimer: ReturnType<typeof setTimeout> | undefined;
     function openViewer(index: number) {
+        clearTimeout(releaseViewerTimer);
         const item = visible.value[index];
-        if (!item)
-            return;
+        if (!item) return;
         viewerIndex.value = index;
         infoOpen.value = false;
         compareMode.value = false;
@@ -488,8 +489,8 @@ export function useGalleryWorkspace() {
         viewerIndex.value = -1;
         infoOpen.value = false;
         compareMode.value = false;
-        releaseViewerUrl();
-        viewerUrl.value = '';
+        clearTimeout(releaseViewerTimer);
+        releaseViewerTimer = setTimeout(() => { if (viewerIndex.value < 0) { releaseViewerUrl(); viewerUrl.value = ''; } }, 260);
     }
     // 焦点存取、Tab 陷阱、Escape、滚动锁统一由 useFocusTrap 负责。
     // 这里原本是全项目唯一做对的那份实现，已抽成 composable 给其余弹层复用。

@@ -1,6 +1,6 @@
 <template>
-  <Teleport to="body"><dialog ref="dialog" class="candidate-compare" aria-labelledby="candidate-title" @close="emit('close')" @cancel.prevent="emit('close')">
-    <header><div><h2 id="candidate-title">对比挑选</h2><p>并排看画面与参数，选出最满意的一张。暂不采用的图片仍然保留。</p></div><button class="btn btn-ghost" type="button" aria-label="关闭对比" @click="emit('close')"><ArchiveIcon name="close" /></button></header>
+  <Teleport to="body"><dialog ref="dialog" class="candidate-compare" aria-labelledby="candidate-title" @click="onDialogClick" @close="emit('close')" @cancel.prevent="emit('close')">
+    <header><div><h2 id="candidate-title">对比挑选</h2><p>并排看画面与参数，选出最满意的一张。暂不采用的图片仍然保留。</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭对比" @click="emit('close')"><ArchiveIcon name="close" /></button></header>
     <p v-if="error" class="candidate-error" role="alert">{{ error }}</p>
     <div class="candidate-grid"><article v-for="item in items" :key="item.id" :data-choice="item.reviewState || 'candidate'" class="candidate-card">
       <div class="candidate-image"><img v-if="urls[String(item.id)]" :src="urls[String(item.id)]" :alt="title(item)" /><span v-else>{{ loading ? '正在读取原图…' : '原图暂不可用，作品记录仍保留' }}</span></div>
@@ -24,6 +24,9 @@ const motion = useFluidDialog(dialog)
 const owned = new Set<string>()
 let version = 0
 const title = (item: ArtworkRecord) => item.sceneTitle || item.scene || '未命名作品'
+function onDialogClick(event: MouseEvent) {
+  if (event.target === dialog.value) emit('close')
+}
 function release() { version++; for (const url of owned) URL.revokeObjectURL(url); owned.clear(); urls.value = {} }
 watch(() => props.open, async open => {
   if (!open) { motion.close(release); return }
