@@ -1,26 +1,36 @@
 <template>
   <aside class="character-directory" :class="{ 'directory-catalog': catalog }" aria-label="角色目录">
-    <div class="directory-tools">
-      <label class="directory-heading" :for="inputId">选择角色 <span>{{ items.length }}</span></label>
-      <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" @keydown.enter="results[0] && emit('select', results[0].id)" @keydown.down.prevent="focusFirst" />
-      <div v-if="catalog" class="directory-series" role="group" aria-label="按作品浏览"><button type="button" :aria-pressed="!series" @click="series = ''">全部作品</button><button v-for="group in groups" :key="group.key" type="button" :aria-pressed="series === group.key" @click="series = group.key">{{ group.label }} <span>{{ group.count }}</span></button></div>
-      <select v-else v-model="series" aria-label="筛选角色系列"><option value="">全部系列</option><option v-for="group in groups" :key="group.key" :value="group.key">{{ group.label }} · {{ group.count }}</option></select>
-      <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
+    <!-- 作品筛选：宽屏独立侧栏，窄屏折叠为单行横向筛选，始终只有一个纵向滚动区 -->
+    <div v-if="catalog" class="directory-rail">
+      <p class="directory-rail-title">按作品筛选</p>
+      <div ref="rail" class="directory-series" role="group" aria-label="按作品浏览" @keydown="onRailKeys">
+        <button type="button" :aria-pressed="!series" @click="series = ''">全部作品</button>
+        <button v-for="group in groups" :key="group.key" type="button"
+          :aria-pressed="series === group.key" @click="series = group.key">{{ group.label }} <span>{{ group.count }}</span></button>
+      </div>
     </div>
-    <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
-      <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
-        <CharacterPortrait :src="item.image" :name="item.name" />
-        <span class="directory-label"><strong>{{ item.name }}</strong><small :title="franchiseLabel(franchiseKey(item.source))">{{ franchiseLabel(franchiseKey(item.source)) }}</small></span>
-        <span v-if="selectedId === item.id" class="directory-selected" aria-hidden="true"><ArchiveIcon name="success" /></span>
-      </button>
-      <div v-if="!results.length" class="directory-empty">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
+    <div class="directory-main">
+      <div class="directory-tools">
+        <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
+        <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" @keydown.enter="results[0] && emit('select', results[0].id)" @keydown.down.prevent="focusFirst" />
+        <select v-if="!catalog" v-model="series" aria-label="筛选角色系列"><option value="">全部系列</option><option v-for="group in groups" :key="group.key" :value="group.key">{{ group.label }} · {{ group.count }}</option></select>
+        <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
+      </div>
+      <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
+        <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
+          <CharacterPortrait :src="item.image" :name="item.name" />
+          <span class="directory-label"><strong>{{ item.name }}</strong><small :title="franchiseLabel(franchiseKey(item.source))">{{ franchiseLabel(franchiseKey(item.source)) }}</small></span>
+          <span v-if="selectedId === item.id" class="directory-selected" aria-hidden="true"><ArchiveIcon name="success" /></span>
+        </button>
+        <div v-if="!results.length" class="directory-empty">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
+      </div>
+      <nav v-if="pageCount > 1" class="directory-pagination" aria-label="角色分页">
+        <button type="button" :disabled="page === 1" @click="page--">上一页</button>
+        <label>第 <select v-model.number="page" aria-label="跳转角色页"><option v-for="n in pageCount" :key="n" :value="n">{{ n }}</option></select> / {{ pageCount }} 页</label>
+        <button type="button" :disabled="page === pageCount" @click="page++">下一页</button>
+      </nav>
+      <div class="directory-current"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
     </div>
-    <nav v-if="pageCount > 1" class="directory-pagination" aria-label="角色分页">
-      <button type="button" :disabled="page === 1" @click="page--">上一页</button>
-      <label>第 <select v-model.number="page" aria-label="跳转角色页"><option v-for="n in pageCount" :key="n" :value="n">{{ n }}</option></select> / {{ pageCount }} 页</label>
-      <button type="button" :disabled="page === pageCount" @click="page++">下一页</button>
-    </nav>
-    <div class="directory-current"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
   </aside>
 </template>
 <script setup lang="ts">
@@ -36,8 +46,16 @@ const query = defineModel<string>('search', { default: '' })
 const series = ref('')
 const page = ref(1)
 const list = ref<HTMLElement | null>(null)
+const rail = ref<HTMLElement | null>(null)
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
-watch(() => props.selectedId, async () => { await nextTick(); list.value?.querySelector<HTMLElement>('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest' }) }, { immediate: true })
+/** 选中项变化时把结果区落到它所在的页并滚入视野：打开弹窗即可看到当前角色，不用先找页。 */
+watch(() => props.selectedId, async () => {
+  await nextTick()
+  const index = results.value.findIndex(item => item.id === props.selectedId)
+  if (props.pageSize && index >= 0) page.value = Math.floor(index / props.pageSize) + 1
+  await nextTick()
+  list.value?.querySelector<HTMLElement>('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest' })
+}, { immediate: true })
 const groups = computed(() => {
   const counts = new Map<string, number>()
   for (const item of props.items) { const key = franchiseKey(item.source); counts.set(key, (counts.get(key) || 0) + 1) }
@@ -55,10 +73,22 @@ watch([query, series], () => { page.value = 1 })
 watch(pageCount, count => { page.value = Math.min(page.value, count) })
 watch(page, async () => { await nextTick(); if (list.value) list.value.scrollTop = 0 })
 function focusFirst() { list.value?.querySelector<HTMLButtonElement>('button')?.focus() }
-function move(step: number) {
-  const buttons = [...(list.value?.querySelectorAll<HTMLButtonElement>('button') || [])]
+/** 同一组内循环移动焦点；容器既可能是纵向侧栏，也可能是窄屏的单行筛选。 */
+function moveIn(container: HTMLElement | null, step: number) {
+  const buttons = [...(container?.querySelectorAll<HTMLButtonElement>('button') || [])]
+  if (!buttons.length) return
   const index = buttons.indexOf(document.activeElement as HTMLButtonElement)
-  buttons[(index + step + buttons.length) % buttons.length]?.focus()
+  const next = buttons[(index + step + buttons.length) % buttons.length]
+  next?.focus()
+  next?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+}
+function move(step: number) { moveIn(list.value, step) }
+function onRailKeys(event: KeyboardEvent) {
+  const step = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1
+    : event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? -1 : 0
+  if (!step) return
+  event.preventDefault()
+  moveIn(rail.value, step)
 }
 async function locateSelected() {
   query.value = ''; series.value = ''; await nextTick()
@@ -71,13 +101,14 @@ async function locateSelected() {
 </script>
 <style scoped>
 .character-directory { position: sticky; top: 82px; display: flex; flex-direction: column; max-height: max(360px, calc(100dvh - 280px)); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); overflow: hidden; }
+.directory-main { display: flex; flex-direction: column; min-height: 0; flex: 1 1 auto; }
 .directory-tools { padding: var(--s-4); display: grid; gap: var(--s-3); flex-shrink: 0; }
 .directory-heading { display: flex; justify-content: space-between; font-size: var(--fs-body-sm); font-weight: 600; }
 .directory-heading span, .directory-count { color: var(--text-muted); font-size: var(--fs-label-xs); }
 .directory-tools input, .directory-tools select { min-width: 0; width: 100%; min-height: 40px; padding: var(--s-2) var(--s-3); color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); font: inherit; font-size: var(--fs-label); }
 .directory-count, .directory-current { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); }
 .directory-count button, .directory-current button { padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font: inherit; }
-.directory-list { min-height: 120px; overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; }
+.directory-list { flex: 1 1 auto; min-height: 120px; overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }
 .directory-item { width: 100%; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2); margin-bottom: var(--s-1); text-align: left; background: transparent; border: 1px solid transparent; border-radius: var(--r-md); color: var(--text-primary); cursor: pointer; transition: transform var(--motion-hover); }
 .directory-item:hover { background: var(--bg-hover); }
 .directory-item[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
@@ -92,20 +123,35 @@ async function locateSelected() {
 .directory-empty { padding: var(--s-5) var(--s-3); color: var(--text-muted); font-size: var(--fs-label); }
 @media (max-width: 900px) { .character-directory { position: static; max-height: 360px; } }
 @media (prefers-reduced-motion: reduce) { .directory-item { transition: none; } }
-.directory-catalog { position: static; max-height: none; min-height: 0; flex: 1; border: 0; background: transparent; }
-.directory-catalog .directory-tools { padding: var(--s-3) 0; }
-.directory-catalog .directory-list { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: var(--s-2); padding: var(--s-1); align-content: start; }
+
+/* catalog：作品筛选侧栏 + 角色结果区，滚动职责分别归属筛选栏与结果列表。 */
+.directory-catalog { position: static; max-height: none; min-height: 0; flex: 1 1 auto; display: grid; grid-template-columns: minmax(0, 208px) minmax(0, 1fr); gap: var(--s-4); border: 0; background: transparent; }
+.directory-rail { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; min-height: 0; padding-right: var(--s-3); border-right: 1px solid var(--border-soft); }
+.directory-rail-title { margin: 0; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 600; }
+.directory-series { display: flex; flex-direction: column; gap: var(--s-1); min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
+.directory-series button, .directory-pagination button, .directory-pagination select { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); min-height: 36px; color: var(--text-secondary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
+.directory-series button { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); width: 100%; min-width: 0; text-align: left; line-height: var(--lh-body); overflow-wrap: anywhere; }
+.directory-series button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.directory-series button span { color: var(--text-muted); flex-shrink: 0; }
+/* 分页行给结果滚动区一个明确的下边界，让「未滚到底」与「被裁切」可区分。 */
+.directory-pagination { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); padding: var(--s-3) 0; margin-top: var(--s-2); border-top: 1px solid var(--border-soft); color: var(--text-secondary); font-size: var(--fs-label); flex-shrink: 0; }
+.directory-pagination button:disabled { color: var(--text-disabled); cursor: default; }
+.directory-catalog button:focus-visible, .directory-pagination select:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.directory-catalog .directory-tools { padding: var(--s-3) 0 0; }
+.directory-catalog .directory-list { min-height: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: var(--s-2); padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
 .directory-catalog .directory-item { margin: 0; min-width: 0; background: var(--bg-deep); border-color: var(--border-soft); }
 .directory-catalog .directory-item[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
 .directory-catalog .directory-label strong { overflow-wrap: anywhere; line-height: var(--lh-body); }
 .directory-catalog .directory-empty { grid-column: 1 / -1; }
-.directory-series { display: flex; flex-wrap: wrap; gap: var(--s-2); max-height: 120px; overflow-y: auto; padding: var(--s-1); }
-.directory-series button, .directory-pagination button, .directory-pagination select { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); min-height: 36px; color: var(--text-secondary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
-.directory-series button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
-.directory-series button span { margin-left: var(--s-1); color: var(--text-muted); }
-.directory-pagination { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); padding: var(--s-3) 0; color: var(--text-secondary); font-size: var(--fs-label); flex-shrink: 0; }
-.directory-pagination button:disabled { color: var(--text-disabled); cursor: default; }
-.directory-catalog button:focus-visible, .directory-pagination select:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .directory-catalog .directory-current { padding-inline: 0; }
-@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: 1fr; } .directory-series { max-height: 92px; } }
+/* 窄屏：作品筛选折叠成单行横向条，不再用固定高度裁掉第三行。 */
+@media (max-width: 900px) {
+  .directory-catalog { display: flex; flex-direction: column; gap: var(--s-3); }
+  /* 筛选条按内容取高，不参与纵向收缩，否则会被结果区挤成只有几像素高的裁切条。 */
+  .directory-rail { flex: 0 0 auto; padding: 0 0 var(--s-2); border-right: 0; border-bottom: 1px solid var(--border-soft); }
+  .directory-rail-title { margin-bottom: var(--s-1); }
+  .directory-series { flex: 0 0 auto; flex-direction: row; flex-wrap: nowrap; min-height: 44px; overflow-x: auto; overflow-y: hidden; padding: var(--s-1) 0 var(--s-2); }
+  .directory-series button { flex: 0 0 auto; width: auto; white-space: nowrap; }
+}
+@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: 1fr; } }
 </style>
