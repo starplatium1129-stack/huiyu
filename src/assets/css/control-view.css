@@ -130,4 +130,5 @@
 @media (max-width: 1200px) { .control-layout { grid-template-columns: 184px minmax(0, 1fr); } .control-shell { padding: var(--s-5); } .service-rows { grid-template-columns: 1fr; } .voice-grid { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .control-mobile-nav { display: block; } .nav-local { display: flex; justify-content: space-between; padding: var(--s-3); } .nav-local-actions { display: flex; align-items: center; gap: var(--s-2); } .nav-local-brand { color: var(--text-primary); } .control-rail { display: none; } .control-layout { display: block; } .status-wall { grid-template-columns: repeat(2,minmax(0,1fr)); } .control-work-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .control-shell { padding: var(--s-4); } .mode-grid { grid-template-columns: 1fr; } .overview-heading { flex-direction: column; } .log-panel > summary { flex-wrap: wrap; } }
+@media (max-width: 480px) { .status-wall { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .spin { animation: none; } .tunnel-switch-knob { transition: none; } }

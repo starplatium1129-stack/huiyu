@@ -64,3 +64,6 @@
 @media (max-width: 480px) {
   .mood-grid-lg { grid-template-columns: repeat(2, 1fr); }
 }
+@media (max-width: 360px) {
+  .mood-grid-lg { grid-template-columns: 1fr; }
+}
