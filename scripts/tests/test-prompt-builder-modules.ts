@@ -73,7 +73,7 @@ const parsedDraft = persistence.parsePromptBuilderDraft({
 });
 assert(parsedDraft, 'valid draft must survive persistence parsing');
 assert.strictEqual(parsedDraft.char, undefined, 'unknown character ids must not enter director state');
-assert.deepStrictEqual(parsedDraft.selections.emotion, ['shy'], 'draft selections must keep only string ids');
+assert.deepStrictEqual(parsedDraft.selections!.emotion, ['shy'], 'draft selections must keep only string ids');
 assert.deepStrictEqual(parsedDraft.sdParams, { cfg:5.5, hiresFix:true }, 'draft SD params must whitelist known typed fields');
 assert.strictEqual(
   persistence.parsePromptBuilderDraft({ updatedAt:1, story:'', sceneId:null }),
@@ -112,7 +112,7 @@ const restoredContext = persistence.restoreHistorySceneStory(
   { scene:'scene-cafe', story:'用户自定义：宁宁在雨后收起伞。' },
   [{ id:'scene-cafe', title:'咖啡馆' }],
 );
-assert.strictEqual(restoredContext.scene.id, 'scene-cafe', 'history round-trip must resolve the saved scene');
+assert.strictEqual(restoredContext.scene!.id, 'scene-cafe', 'history round-trip must resolve the saved scene');
 assert.strictEqual(restoredContext.story, '用户自定义：宁宁在雨后收起伞。', 'history round-trip must preserve custom story text');
 assert.deepStrictEqual(parsedAnima.match, ['anima-base-v1.0'], 'profile match list must remain string-only');
 

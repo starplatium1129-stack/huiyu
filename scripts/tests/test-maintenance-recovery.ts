@@ -65,7 +65,7 @@ test('two real processes race: exactly one writes; SIGKILL recovery restores all
     const blocked = previewMaintenanceRecovery(f.options);
     assert.equal(blocked.executable, false);
     assert.deepEqual(tree(f.base), before);
-    await live.stop();
+    await live!.stop();
     fs.writeFileSync(path.join(f.options.rootDir, 'data/scenes/unrelated-new.json'), 'keep unrelated new bytes');
     const snapshot = tree(f.base);
     const plan = previewMaintenanceRecovery(f.options);

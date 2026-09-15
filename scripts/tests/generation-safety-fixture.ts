@@ -93,10 +93,10 @@ async function mockGateway(t: any) {
       return json({ ok: true, job: { id: `job-${state.posts.length}`, status: 'queued' } });
     }
     state.gets.push(req.url);
-    if (req.url.startsWith('/api/anima/jobs/')) {
+    if (req.url!.startsWith('/api/anima/jobs/')) {
       state.onPoll?.();
       if (state.mode === 'bad-poll') return res.end('{');
-      const id = req.url.split('/').pop();
+      const id = req.url!.split('/').pop();
       const failed = state.mode === 'failed' || (state.mode === 'retry-once' && id === 'job-1');
       return json({ ok: true, job: { id: state.mode === 'wrong-id' ? 'unexpected' : id,
         status: failed ? 'failed' : state.mode === 'running' ? 'running' : 'succeeded',
@@ -111,7 +111,7 @@ async function mockGateway(t: any) {
     res.end(state.mode === 'bad-image' ? Buffer.from('<html>invalid</html>') : state.mode === 'truncated' ? image.subarray(0, 45) : image);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  const origin = `http://127.0.0.1:${server.address().port}`;
+  const origin = `http://127.0.0.1:${server.address!().port}`;
   t.after(() => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); }));
   return { state, origin, image, fetchImpl: (url: any, init: any) => {
     if (new URL(url).origin !== origin) throw new Error(`non-mock network forbidden: ${url}`);
@@ -124,8 +124,8 @@ async function guarded(f: any, action: any, { preview = false } = {}) {
   const under = (value: any, base: any) => typeof value === 'string' && (path.resolve(value) === base || path.resolve(value).startsWith(base + path.sep));
   const methods = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'rmdirSync', 'copyFileSync', 'cpSync', 'truncateSync'];
   for (const method of methods) {
-    original[method] = fs[method];
-    fs[method] = (...args) => {
+    original[method] = (fs as any)[method];
+    (fs as any)[method] = (...args: any[]) => {
       writes.push({ method, path: args[0] });
       if (preview || !under(args[0], f.output) || (['renameSync', 'copyFileSync', 'cpSync'].includes(method) && !under(args[1], f.output))) {
         throw new Error(`forbidden filesystem mutation: ${method} ${args[0]}`);

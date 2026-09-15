@@ -170,7 +170,7 @@ test('concurrent imports conflict without stealing a live same-process lock', as
   const running = f.installer({ onEvent: async (e: any) => { if (e.phase === 'journal') { entered(); await gate; } } }).install({ releaseId: 'base' });
   await started;
   try { await assert.rejects(f.installer().install({ releaseId: 'base' }), code('BUSY')); }
-  finally { resume(); }
+  finally { resume!(); }
   assert.equal((await running).action, 'installed');
 });
 

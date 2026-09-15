@@ -11,7 +11,7 @@ const digest = (value: any) => createHash('sha256').update(value).digest('hex');
 function openArtworkCandidate(root: any, fault = () => {}) {
   fs.mkdirSync(path.join(root, 'media'), { recursive: true });
   const db = new DatabaseSync(path.join(root, 'candidate.sqlite'));
-  if (db.prepare('PRAGMA user_version').get().user_version > 1) {
+  if (db.prepare('PRAGMA user_version').get!().user_version! > 1) {
     db.close();
     throw new Error('Unsupported candidate schema version');
   }
@@ -45,7 +45,7 @@ function openArtworkCandidate(root: any, fault = () => {}) {
     const fingerprint = digest(JSON.stringify({ history: snapshot.history, projects: snapshot.projects, trash: snapshot.trash, manifest }));
     const previous = db.prepare('SELECT * FROM migrations WHERE id=?').get(id);
     if (previous && previous.fingerprint !== fingerprint) throw new Error('Source changed: start a new isolated candidate');
-    if (!previous && db.prepare('SELECT count(*) AS n FROM migrations').get().n) throw new Error('Candidate already belongs to a migration');
+    if (!previous && db.prepare('SELECT count(*) AS n FROM migrations').get!().n) throw new Error('Candidate already belongs to a migration');
     db.prepare('INSERT OR IGNORE INTO migrations VALUES(?,?,?)').run(id, fingerprint, 'preparing');
     // Immutable content-addressed files: a crash may leave an orphan, never a published missing image.
     for (let index = 0; index < manifest.length; index += 1) {
@@ -83,7 +83,7 @@ function openArtworkCandidate(root: any, fault = () => {}) {
   return {
     importSnapshot, publishMetadata,
     state: (id: any) => db.prepare('SELECT state FROM migrations WHERE id=?').get(id)?.state,
-    count: () => db.prepare('SELECT count(*) AS n FROM artwork').get().n,
+    count: () => db.prepare('SELECT count(*) AS n FROM artwork').get!().n,
     history: () => db.prepare('SELECT body FROM artwork ORDER BY rowid').all().map(row => JSON.parse(row.body)),
     patch: (id: any, patch: any) => transaction(() => {
       const current = db.prepare('SELECT body FROM artwork WHERE id=?').get(id);

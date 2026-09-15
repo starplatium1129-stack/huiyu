@@ -192,16 +192,16 @@ test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', asy
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/natsume.moc3', canvasWidth: 420, canvasHeight: 610, character: 'natsume' });
 
-  session.sendMouthLevel(0.42);
+  session.sendMouthLevel!(0.42);
   assert.deepEqual(bridge.calls.setMouthLevel[0], [0.42]);
-  session.sendMouthLevel(1.5);
+  session.sendMouthLevel!(1.5);
   await new Promise(resolve => setTimeout(resolve, 35));
   assert.deepEqual(bridge.calls.setMouthLevel[1], [1], '口型电平应钳制到 0..1');
 
-  session.sendEmotion('happy', 0.8);
+  session.sendEmotion!('happy', 0.8);
   assert.deepEqual(bridge.calls.setEmotion[0], ['happy', 0.8]);
 
-  session.sendGaze(-0.5, 0.25);
+  session.sendGaze!(-0.5, 0.25);
   assert.deepEqual(bridge.calls.setGaze[0], [-0.5, 0.25]);
 
   session.setMaxFps(30);
@@ -211,7 +211,7 @@ test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', asy
   session.setMaxFps(10);
   assert.deepEqual(bridge.calls.setMaxFps[2], [24], '下限仍为 24');
 
-  session.updateOverlay({ x: 100, y: 80, width: 300, height: 480 }, true);
+  session.updateOverlay!({ x: 100, y: 80, width: 300, height: 480 }, true);
   assert.deepEqual(bridge.calls.setFrame[0][0], {
     rect: { x: 100, y: 80, width: 300, height: 480 },
     visible: true,
@@ -248,14 +248,14 @@ test('原生后端：高频凝视 latest-wins，桥繁忙时只保留最新目�
   };
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
-  session.sendGaze(0.1, 0.1);
-  session.sendGaze(0.2, 0.2);
-  session.sendGaze(0.7, -0.4);
+  session.sendGaze!(0.1, 0.1);
+  session.sendGaze!(0.2, 0.2);
+  session.sendGaze!(0.7, -0.4);
   assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.1]], '首个请求未完成时不堆积桥调用');
-  releases.shift()();
+  releases.shift!()();
   await new Promise(resolve => setImmediate(resolve));
   assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.1], [0.7, -0.4]], '完成后只发送最新目标');
-  releases.shift()();
+  releases.shift!()();
 });
 
 test('原生后端：原生 HitArea 事件回传（作者分区命中）', async () => {
@@ -264,7 +264,7 @@ test('原生后端：原生 HitArea 事件回传（作者分区命中）', async
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
 
   const hits: any = [];
-  const unsubscribe = session.onNativeHitTest((areas) => hits.push(areas));
+  const unsubscribe = session.onNativeHitTest!((areas) => hits.push(areas));
   assert(bridge._hitTestListeners.length > 0, '应订阅 onHitTest');
   bridge._hitTestListeners.forEach((listener) => listener(['Head', 'Body']));
   assert.deepEqual(hits, [['Head', 'Body']]);
@@ -280,7 +280,7 @@ test('原生后端：onMotionFailed 转发 busy 拒绝（同一互动播放中�
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
 
   const failures: any = [];
-  const unsubscribe = session.onMotionFailed((info) => failures.push(info));
+  const unsubscribe = session.onMotionFailed!((info) => failures.push(info));
   bridge._motionFailedListeners.forEach((listener) => listener({ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }));
   assert.deepEqual(failures, [{ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }]);
 
@@ -351,7 +351,7 @@ test('原生后端：取消挂起连接立即清理，迟到响应不影响重�
   assert.equal(bridge.calls.destroy.length, 1);
   bridge.setCharacter = originalSetCharacter;
   const session = await backend.connect(options);
-  release({ ok: true });
+  release!({ ok: true });
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(bridge.calls.destroy.length, 1, '迟到结果不能再清理已经加载的新模型');
   assert.equal(bridge._offCalls.length, 0);
@@ -369,7 +369,7 @@ test('原生后端：相同帧率不重复发送，失败后允许下一次重�
   const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
   for (let i = 0; i < 120; i++) session.setMaxFps(60);
   assert.equal(bridge.calls.setMaxFps.length, 1);
-  reject(new Error('IPC unavailable'));
+  reject!(new Error('IPC unavailable'));
   await new Promise(resolve => setImmediate(resolve));
   session.setMaxFps(60);
   assert.equal(bridge.calls.setMaxFps.length, 2);
@@ -385,15 +385,15 @@ test('原生后端：失败帧可重试，迟到的旧失败不清除新帧缓�
   };
   const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
   const rect = { x: 0, y: 0, width: 300, height: 480 };
-  session.updateOverlay(rect, true);
+  session.updateOverlay!(rect, true);
   failures[0](new Error('first failure'));
   await new Promise(resolve => setImmediate(resolve));
-  session.updateOverlay(rect, true);
+  session.updateOverlay!(rect, true);
   assert.equal(bridge.calls.setFrame.length, 2);
-  session.updateOverlay({ ...rect, x: 10 }, true);
+  session.updateOverlay!({ ...rect, x: 10 }, true);
   failures[1](new Error('old failure'));
   await new Promise(resolve => setImmediate(resolve));
-  session.updateOverlay({ ...rect, x: 10 }, true);
+  session.updateOverlay!({ ...rect, x: 10 }, true);
   assert.equal(bridge.calls.setFrame.length, 3);
   session.destroy();
 });
@@ -406,11 +406,11 @@ test('原生后端：销毁幂等，旧句柄和会话不能再发命令', async
   session.destroy();
   session.destroy();
   session.setPaused(false);
-  session.updateOverlay({ x: 0, y: 0, width: 300, height: 480 }, true);
+  session.updateOverlay!({ x: 0, y: 0, width: 300, height: 480 }, true);
   session.setMaxFps(60);
-  session.sendMouthLevel(1);
-  session.sendEmotion('happy', 1);
-  session.sendGaze(0, 0);
+  session.sendMouthLevel!(1);
+  session.sendEmotion!('happy', 1);
+  session.sendGaze!(0, 0);
   assert.equal(await handle.motion('TapHead'), false);
   assert.equal(await handle.expression('school'), false);
   assert.deepEqual(handle.hitTest(0.5, 0.5), []);
@@ -443,19 +443,19 @@ test('native texture quality is sent only to bridges that advertise support', as
 test('native pause clears queued samples, closes the mouth and blocks hidden gaze', async () => {
   const bridge = createStubBridge();
   const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.model3.json', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
-  session.sendMouthLevel(0.7);
-  session.sendEmotion('happy', 0.8);
-  session.sendGaze(0.1, 0.2);
+  session.sendMouthLevel!(0.7);
+  session.sendEmotion!('happy', 0.8);
+  session.sendGaze!(0.1, 0.2);
   session.setPaused(true);
-  session.sendMouthLevel(1);
-  session.sendEmotion('sad', 1);
-  session.sendGaze(0.9, 0.9);
+  session.sendMouthLevel!(1);
+  session.sendEmotion!('sad', 1);
+  session.sendGaze!(0.9, 0.9);
   await new Promise(resolve => setTimeout(resolve, 60));
   assert.deepEqual(bridge.calls.setMouthLevel, [[0.7], [0]]);
   assert.deepEqual(bridge.calls.setEmotion, [['happy', 0.8]]);
   assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.2]]);
   session.setPaused(false);
-  session.sendGaze(-0.2, 0.3);
+  session.sendGaze!(-0.2, 0.3);
   assert.deepEqual(bridge.calls.setGaze[1], [-0.2, 0.3]);
   session.destroy();
 });

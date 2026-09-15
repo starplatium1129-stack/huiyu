@@ -263,9 +263,9 @@ test('run metadata stays semantically consistent with the registry', () => {
     for (const machine of run.machine) assert.ok(MACHINES.includes(machine));
   }
   // 已确证语义的定点校验（来自盘点证据，不是实现复述）。
-  assert.deepEqual(WORKFLOWS['data:build'].run.switches['--check'], ['self-heal-missing', 'guard']);
+  assert.deepEqual(WORKFLOWS['data:build'].run.switches!['--check'], ['self-heal-missing', 'guard']);
   assert.ok(WORKFLOWS['reference:register'].run.nature.includes('writes-source'), 'reference:register 默认写 standards/view');
-  assert.ok(WORKFLOWS['runtime:clean'].run.switches['--prune'].includes('delete'));
+  assert.ok(WORKFLOWS['runtime:clean'].run.switches!['--prune'].includes('delete'));
   assert.ok(!WORKFLOWS['showcase:full'].run.nature.includes('writes-release'), 'showcase:full 的发布步只预览');
 });
 
@@ -274,11 +274,11 @@ test('deploy preview describes installer switches without invoking deployment', 
   assert.deepEqual(WORKFLOWS['deploy:desktop:full'].cmd, ['deploy-desktop.bat']);
   for (const name of ['deploy:desktop', 'deploy:desktop:full']) {
     const run = WORKFLOWS[name].run;
-    assert.ok(run.switches['-UseInstaller'].includes('writes-release'));
+    assert.ok(run.switches!['-UseInstaller'].includes('writes-release'));
     assert.ok(run.nature.includes('writes-source'), `${name} 未声明 DATA_VERSION 写入`);
     assert.ok(run.nature.includes('writes-product'), `${name} 未声明数据聚合重建的 writes-product`);
     for (const flag of ['-UseInstaller', '-QuietInstall', '-NoRestart', '-StartupRepair', '-InstallDir']) {
-      assert.ok(run.notes.some((note) => note.includes(flag)), `${name} 未记录开关 ${flag}`);
+      assert.ok(run.notes!.some((note) => note.includes(flag)), `${name} 未记录开关 ${flag}`);
     }
   }
   const lines: string[] = [], original = console.error;

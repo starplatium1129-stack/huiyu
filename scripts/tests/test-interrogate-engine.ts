@@ -77,7 +77,7 @@ async function run() {
     var probeReal = engine.probe(REAL_CONFIG);
     check('probe(有模型) available=true 且模型元信息完整', function () {
       assert.equal(probeReal.available, true);
-      assert.equal(probeReal.model, model.modelName);
+      assert.equal(probeReal.model, model!.modelName);
       assert.ok(probeReal.modelPath && probeReal.modelBytes > 0);
     });
 
@@ -86,7 +86,7 @@ async function run() {
     check('真实推理: ok=true / engine=wd14 / tags 非空', function () {
       assert.equal(r.ok, true);
       assert.equal(r.engine, 'wd14');
-      assert.equal(r.model, model.modelName);
+      assert.equal(r.model, model!.modelName);
       assert.ok(Array.isArray(r.tags) && r.tags.length > 0, 'tags 为空');
       assert.ok(r.tags.length <= 100, '默认 topN=100 上限');
     });

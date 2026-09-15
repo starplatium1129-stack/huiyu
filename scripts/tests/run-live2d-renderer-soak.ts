@@ -151,14 +151,14 @@ function trend(samples: unknown[], field: string) {
   let numerator = 0
   let denominator = 0
   for (const sample of values) {
-    numerator += (sample.t - meanT) * (sample[field] - meanV)
-    denominator += (sample.t - meanT) ** 2
+    numerator += (sample.t - meanT!) * (sample[field] - meanV!)
+    denominator += (sample.t - meanT!) ** 2
   }
   return {
     count: values.length,
     firstQuarterAvg: first,
     lastQuarterAvg: last,
-    deltaBytes: last - first,
+    deltaBytes: last! - first!,
     slopeBytesPerMinute: denominator === 0 ? 0 : (numerator / denominator) * 60000,
     min: Math.min(...values.map((sample: { [x: string]: unknown }) => sample[field])),
     max: Math.max(...values.map((sample: { [x: string]: unknown }) => sample[field])),

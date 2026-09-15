@@ -36,11 +36,11 @@ assert.deepStrictEqual(legacy.identity, { role: 'Existing identity' }, 'legacy i
 assert.strictEqual(legacy.voice, 'Existing speech example', 'speech examples must be displayed when legacy voice is absent');
 const modern = parseCharacterProfiles([{ id: 'modern', name: 'Modern', identity: { faction: 'Existing faction' }, voice: 'Voice example', speech: 'Fallback' }])[0];
 assert.strictEqual(modern.voice, 'Voice example', 'explicit voice examples retain precedence');
-assert.strictEqual(modern.identity.faction, 'Existing faction', 'factions must survive profile parsing');
-assert.strictEqual(parseCharacterProfiles([{ id: 'named', name: 'Named', lora: { name: 'registered-model' } }])[0].lora.name, 'registered-model', 'registered LoRA names must not become empty profile panels');
+assert.strictEqual(modern.identity!.faction, 'Existing faction', 'factions must survive profile parsing');
+assert.strictEqual(parseCharacterProfiles([{ id: 'named', name: 'Named', lora: { name: 'registered-model' } }])[0].lora!.name, 'registered-model', 'registered LoRA names must not become empty profile panels');
 assert.deepStrictEqual(profiles[0].tags, ['gentle'], 'profile string arrays must be normalized');
 assert.deepStrictEqual(
-  profiles[0].lora.recommended_scene,
+  profiles[0].lora!.recommended_scene,
   ['sc001'],
   'recommended scene ids must discard non-string values',
 );

@@ -24,8 +24,8 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: any
       const file = child(directory, name);
       const stat = noLinks(fs, file);
       if (rel.toLowerCase() === 'character-references' || rel.toLowerCase().startsWith('character-references/')) continue;
-      if (stat.isDirectory()) walk(file, rel + '/');
-      else entries.push({ rel, sourceBytes: stat.size });
+      if (stat!.isDirectory()) walk(file, rel + '/');
+      else entries.push({ rel, sourceBytes: stat!.size });
     }
   }
   walk(source);

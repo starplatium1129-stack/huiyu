@@ -84,7 +84,7 @@ function httpJson(urlPath: string, body: { model: string; messages: { role: stri
       res.on('end', function () {
         var json = null;
         try { json = JSON.parse(d); } catch (error) {}
-        if (res.statusCode >= 200 && res.statusCode < 300 && json) return resolve(json);
+        if (res.statusCode! >= 200 && res.statusCode! < 300 && json) return resolve(json);
         var detail = json && json.error ? JSON.stringify(json.error) : d.slice(0, 600);
         reject(new Error('HTTP ' + res.statusCode + ': ' + detail));
       });

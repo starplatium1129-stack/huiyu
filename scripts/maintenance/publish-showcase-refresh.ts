@@ -182,7 +182,7 @@ function planPublished(review: any, records: any) {
   }
   const additions: any[] = [];
   const rejected: any[] = [];
-  for (const [key, verdict] of Object.entries(review.records)) {
+  for (const [key, verdict]: [string, any] of Object.entries(review.records)) {
     if (verdict.verdict === 'fail') {
       rejected.push(key);
       continue;

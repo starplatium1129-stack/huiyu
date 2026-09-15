@@ -120,14 +120,14 @@ test('publication preview is read-only; apply creates one complete version and p
   assert.equal(fs.existsSync(f.target), false);
   const published = await P.publishReferenceCandidates({ ...f.options, apply: true });
   const resolved = P.resolveReferenceRelease(f.target, { dataRoot: f.root });
-  assert.equal(resolved.identity, published.identity);
-  const view = R.json(resolved.viewFile);
+  assert.equal(resolved!.identity, published.identity);
+  const view = R.json(resolved!.viewFile);
   assert.ok(validateView(view), ajv.errorsText(validateView.errors));
   assert.equal(view.fixture.outfits[0].outfitId, 'coat');
   assert.equal(view.fixture.outfits[0].references[0].pending, false);
   assert.equal(view.fixture.outfits[0].references[0].url, '/character-references/' + f.inspection.items[0].intendedReferencePath);
-  assert.equal(resolved.release.approvals[0].recordId, f.inspection.items[0].recordId);
-  assert.equal(resolved.release.approvals[0].review.verdict, 'pass');
+  assert.equal(resolved!.release.approvals[0].recordId, f.inspection.items[0].recordId);
+  assert.equal(resolved!.release.approvals[0].review.verdict, 'pass');
   assert.deepEqual(F.tree(f.source), original);
   assert.deepEqual(F.tree(f.root), project);
   assert.deepEqual(F.tree(f.output), candidates);
@@ -254,7 +254,7 @@ test('a competing process cannot steal a live publication lock', async t => {
     assert.equal(result.code, 'BUSY');
     assert.equal(fs.existsSync(f.target), false);
   } });
-  assert.equal(P.resolveReferenceRelease(f.target, { dataRoot: f.root }).identity, published.identity);
+  assert.equal(P.resolveReferenceRelease!(f.target, { dataRoot: f.root }).identity, published.identity);
 });
 
 test('process death after staging recovers the stale lock and publishes without changing the old library', async t => {
@@ -265,7 +265,7 @@ test('process death after staging recovers the stale lock and publishes without 
   await new Promise((resolve, reject) => {
     const worker = fork(path.join(__dirname, 'reference-publication-worker.js'), [optionsFile, 'prepared'], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
     let reached = false, errorText = '';
-    worker.stderr.on('data', bytes => { errorText += bytes; });
+    worker.stderr!.on('data', bytes => { errorText += bytes; });
     const timer = setTimeout(() => { worker.kill('SIGKILL'); reject(new Error('Publication worker timed out: ' + errorText)); }, 30000);
     worker.on('message', message => {
       if (message.phase === 'prepared') { reached = true; worker.kill('SIGKILL'); }
@@ -277,6 +277,6 @@ test('process death after staging recovers the stale lock and publishes without 
   assert.equal(fs.existsSync(f.target), false);
   assert.deepEqual(F.tree(f.source), original);
   const retried = await P.publishReferenceCandidates({ ...f.options, apply: true });
-  assert.equal(P.resolveReferenceRelease(f.target, { dataRoot: f.root }).identity, retried.identity);
+  assert.equal(P.resolveReferenceRelease!(f.target, { dataRoot: f.root }).identity, retried.identity);
   assert.deepEqual(F.tree(f.source), original);
 });

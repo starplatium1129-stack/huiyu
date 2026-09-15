@@ -39,7 +39,7 @@ function tree(directory: string, excludeRuntime = false, output: any = {}, prefi
 async function spawnWorker(fixture: any, mode = 'hold') {
   const child = fork(path.join(__dirname, 'maintenance-recovery-worker.js'), [mode, JSON.stringify(fixture.options)], { silent: true, windowsHide: true });
   let stderr = '';
-  child.stderr.on('data', chunk => { stderr += chunk; });
+  child.stderr!.on('data', chunk => { stderr += chunk; });
   const closed = once(child, 'exit');
   const message = await Promise.race([
     once(child, 'message').then(([value]) => value),

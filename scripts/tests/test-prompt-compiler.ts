@@ -322,10 +322,10 @@ test('Anima profiles do not bind one character and LoRA contracts own exact cont
   }
   const nene = loras.find(lora => lora.id === 'L_NENE_V21_ANIMA');
   const natsume = loras.find(lora => lora.id === 'L_NAT_V21_ANIMA');
-  assert(nene.prompt_contract.exact_prefixes.includes('nene_'));
-  assert(natsume.prompt_contract.exact_prefixes.includes('natsume_'));
-  assert(!nene.prompt_contract.exact_prefixes.includes('natsume_'));
-  assert(!natsume.prompt_contract.exact_prefixes.includes('nene_'));
+  assert(nene!.prompt_contract!.exact_prefixes.includes('nene_'));
+  assert(natsume!.prompt_contract!.exact_prefixes.includes('natsume_'));
+  assert(!nene!.prompt_contract!.exact_prefixes.includes('natsume_'));
+  assert(!natsume!.prompt_contract!.exact_prefixes.includes('nene_'));
 });
 
 test('WAI profile owns the adaptive automatic hires preset', () => {

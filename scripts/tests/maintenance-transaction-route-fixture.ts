@@ -47,7 +47,7 @@ function seed() {
 async function start(fixture: any, mode = 'success') {
   const child = fork(__filename, [fixture.options.rootDir, mode], { silent: true, windowsHide: true });
   let errors = '';
-  child.stderr.on('data', chunk => { errors += chunk; });
+  child.stderr!.on('data', chunk => { errors += chunk; });
   const closed = once(child, 'exit');
   const [message] = await Promise.race([once(child, 'message'), closed.then(([code]) => { throw new Error('HTTP fixture exited ' + code + ': ' + errors); })]);
   const base = 'http://127.0.0.1:' + message.port;
@@ -71,8 +71,8 @@ async function serve(rootDir: any, mode: any) {
   const { createMaintenanceRouter, _test: helpers }: typeof import('../../routes/maintenance') = require('../../routes/maintenance');
   const cfg = { ROOT_DIR: rootDir, RUNTIME_ROOT: leaseOptions.runtimeRoot, SCENE_SHOWCASE_DIR: null, DESKTOP_PACKAGED: mode === 'packaged' };
   if (mode === 'startup') {
-    try { createMaintenanceRouter(cfg); process.send({ started: true }, () => process.exit(0)); }
-    catch (error) { process.send({ started: false, code: runtimeErrorCode(error) }, () => process.exit(0)); }
+    try { createMaintenanceRouter(cfg); process.send!({ started: true }, () => process.exit(0)); }
+    catch (error) { process.send!({ started: false, code: runtimeErrorCode(error) }, () => process.exit(0)); }
     return;
   }
   if (!cfg.DESKTOP_PACKAGED) maintenanceReadToken(leaseOptions);
@@ -98,7 +98,7 @@ async function serve(rootDir: any, mode: any) {
       }
       if (mode === 'pause') {
         io.atomicWrite(path.join(rootDir, 'data/scenes.json.gz'), 'fixture partial gzip sibling');
-        process.send({ checkpoint: 'half-written' });
+        process.send!({ checkpoint: 'half-written' });
         await new Promise(resolve => process.once('message', resolve));
       }
     },
@@ -113,13 +113,13 @@ async function serve(rootDir: any, mode: any) {
   app.get('/data/delayed.json', (_req, res) => {
     res.type('json');
     res.write('{"old":');
-    process.send({ checkpoint: 'stream-started' });
+    process.send!({ checkpoint: 'stream-started' });
     process.once('message', () => res.end('true}'));
   });
   app.use('/data', express.static(path.join(rootDir, 'data')));
   const server = app.listen(0, '127.0.0.1');
   await once(server, 'listening');
-  process.send({ port: server.address().port });
+  process.send!({ port: server.address!().port });
 }
 if (require.main === module) serve(process.argv[2], process.argv[3]).catch(error => { process.stderr.write(error.stack + '\n'); process.exit(1); });
 export = { seed, start };

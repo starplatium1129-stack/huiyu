@@ -99,7 +99,7 @@ test('HTTP task cancel, resume and explicit install work across manager restart 
   const started: any = await request(stack, '/api/resources/tasks', { action: 'download', releaseId: 'network' });
   assert.equal(started.status, 202);
   assert.equal((await request(stack, '/api/resources/tasks', { action: 'import', releaseId: 'images-old' })).status, 409);
-  for (let i = 0; i < 100 && !source.requests.some(req => req.url.endsWith('large.webp')); i++) await new Promise(resolve => setTimeout(resolve, 10));
+  for (let i = 0; i < 100 && !source.requests.some(req => req.url!.endsWith('large.webp')); i++) await new Promise(resolve => setTimeout(resolve, 10));
   await new Promise(resolve => setTimeout(resolve, 35));
   assert.equal((await request(stack, `/api/resources/tasks/${started.data.task.id}/cancel`, {})).status, 200);
   await stack.gateway.services.resources.settled();

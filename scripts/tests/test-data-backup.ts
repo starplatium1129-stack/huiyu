@@ -41,7 +41,7 @@ const merged = backup.mergeBackupRecords(
   [{ id:1, timestamp:30, prompt:'imported' }, { id:3, timestamp:40 }]
 );
 assert.deepEqual(merged.map(item => item.id), [3, 1, 2]);
-assert.equal(merged.find(item => item.id === 1).prompt, 'imported');
+assert.equal(merged.find!(item => item.id === 1).prompt, 'imported');
 
 const legacyMerged = backup.mergeBackupRecords(
   [{ timestamp:50, prompt:'legacy local' }],

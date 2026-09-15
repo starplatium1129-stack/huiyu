@@ -15,7 +15,7 @@ const health: typeof import('../../server/upstream-health') = require('../../ser
 function listen(server: Server<IncomingMessage,ServerResponse>) {
   return new Promise(function (resolve) {
     server.listen(0, '127.0.0.1', function () {
-      resolve('http://127.0.0.1:' + server.address().port);
+      resolve('http://127.0.0.1:' + server.address!().port);
     });
   });
 }

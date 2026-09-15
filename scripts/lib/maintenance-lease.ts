@@ -204,7 +204,7 @@ function claimRecovery(options: any, expectedHash: any) {
   let finished = false;
   function own() {
     const current = readLease(io.context(options));
-    if (finished || !current || current.journal.nonce !== original.journal.nonce || !io.equal(current.directory, original.directory)
+    if (finished || !current || current.journal.nonce !== original!.journal.nonce || !io.equal(current.directory, original!.directory)
       || !ownerDead(current.journal)) throw failure('MAINTENANCE_CONFLICT', '恢复锁身份变化或原进程仍活着');
     const owners = recoveryOwners(ctx, current.journal);
     const last = owners[owners.length - 1];

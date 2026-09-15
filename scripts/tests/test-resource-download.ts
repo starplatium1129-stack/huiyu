@@ -24,8 +24,8 @@ async function fixtureHttp(t: any) {
     state.requests.push({ url: req.url, range: req.headers.range, ifRange: req.headers['if-range'] });
     let bytes = files.get(req.url);
     if (!bytes) { res.writeHead(404); res.end(); return; }
-    const metadata = req.url.endsWith('.json');
-    const big = req.url.endsWith('/assets/new.bin');
+    const metadata = req.url!.endsWith('.json');
+    const big = req.url!.endsWith('/assets/new.bin');
     if (metadata && state.mode === 'redirect') {
       res.writeHead(302, { location: '/not-approved' }); res.end(); return;
     }
@@ -74,7 +74,7 @@ async function fixtureHttp(t: any) {
   await once(server, 'listening');
   t.after(() => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); }));
   f.policy.sources.fixture = { kind: 'http', approved: true, loopbackFixture: true,
-    baseUrl: 'http://127.0.0.1:' + server.address().port + '/' };
+    baseUrl: 'http://127.0.0.1:' + server.address!().port + '/' };
   for (const id of ['full', 'delta']) f.policy.releases[id].sourceId = 'fixture';
   f.download = (extra = {}) => createResourceDownloader(f.options(extra));
   return { ...f, state, files };
@@ -242,7 +242,7 @@ test('download and installation share a lock; cancellation releases it without l
   await started;
   await assert.rejects(f.installer().install({ releaseId: 'base' }), code('BUSY'));
   controller.abort();
-  resume();
+  resume!();
   await rejected;
   assert.deepEqual((await f.installer().status()).state, old.state);
 });

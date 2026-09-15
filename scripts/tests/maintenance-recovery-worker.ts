@@ -25,7 +25,7 @@ if (mode === 'recover-crash') {
 }
 let lease;
 try { lease = acquireMaintenanceLease(options); }
-catch (error) { process.send({ status: 'blocked', code: runtimeErrorCode(error) }, () => process.exit(0)); }
+catch (error) { process.send!({ status: 'blocked', code: runtimeErrorCode(error) }, () => process.exit(0)); }
 if (lease) {
   let backup;
   let participant;
@@ -59,7 +59,7 @@ if (lease) {
       lease.addParticipant(participant.pid);
     }
   }
-  process.send({ status: 'ready', backup, nonce: lease.nonce, participant: participant?.pid, writeBlocked }, () => {
+  process.send!({ status: 'ready', backup, nonce: lease.nonce, participant: participant?.pid, writeBlocked }, () => {
     if (mode === 'exit') process.exit(73);
   });
   setInterval(() => {}, 1000);

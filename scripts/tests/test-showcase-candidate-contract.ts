@@ -565,8 +565,8 @@ test('single-character scene candidates use the audited short prompt and correct
   // requiring the production corpus to retain a known unsafe classification.
   for (const id of ['sc122', 'sc126', 'sc180', 'sc200']) {
     const source = singles.find(scene => scene.id === id);
-    assert.strictEqual(source.rating, 'R18', `${id} must retain its adult classification`);
-    assert.strictEqual(source.mature, true, `${id} must remain behind the mature boundary`);
+    assert.strictEqual(source!.rating, 'R18', `${id} must retain its adult classification`);
+    assert.strictEqual(source!.mature, true, `${id} must remain behind the mature boundary`);
   }
   const wronglyRated = { ...singles.find(scene => scene.id === 'sc122'), rating: 'All', mature: false };
   const rejected = sceneGen.planScenes([wronglyRated], 1);
@@ -644,7 +644,7 @@ test('scene candidate baseline mode changes only positive prompt direction', () 
   assert.ok(compared.prompt.startsWith('old exact tag stream\n'));
   assert.ok(direction.length > 0, 'current scene must supply one short director caption');
   assert.strictEqual(compared.prompt, `old exact tag stream\n${direction}`);
-  assert.ok(compared.prompt.includes(scene.animaCaption));
+  assert.ok(compared.prompt.includes(scene!.animaCaption));
   assert.strictEqual(compared.negative, baseline.negative);
   assert.strictEqual(compared.loraStrength, 0.82);
   assert.strictEqual(compared.seed, 123);
@@ -710,7 +710,7 @@ test('mechanical image inspection: PNG/JPEG magic + dimensions', () => {
     0, 0, 4, 0, 0, 0, 5, 32, 0, 0, 0, 0, 0, 0, 0,
   ]);
   const info = gen.imageInfo(png);
-  assert.deepStrictEqual({ mime: info.mime, width: info.width, height: info.height }, { mime: 'image/png', width: 1024, height: 1312 });
+  assert.deepStrictEqual({ mime: info!.mime, width: info!.width, height: info!.height }, { mime: 'image/png', width: 1024, height: 1312 });
   assert.strictEqual(gen.imageInfo(Buffer.from([0, 1, 2, 3, 4])), null, 'garbage must not look like an image');
   assert.strictEqual(gen.imageInfo(Buffer.alloc(0)), null);
 });

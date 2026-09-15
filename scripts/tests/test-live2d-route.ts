@@ -17,7 +17,7 @@ async function json(response: Response) { return response.json(); }
 function listen(app: Express) {
   return new Promise(function (resolve) {
     var server = app.listen(0, '127.0.0.1', function () {
-      resolve({ server:server, base:'http://127.0.0.1:' + server.address().port });
+      resolve({ server:server, base:'http://127.0.0.1:' + server.address!().port });
     });
   });
 }

@@ -71,7 +71,7 @@ test('通用命令必须由操作员启用，模型参数不能声明信任', as
     const args = { command: 'node', args: ['--version'], trustedCommands: true };
     const direct = await runToolUntrusted(root, 'run_command', args);
     assert.equal(direct.code, 'TRUSTED_EXECUTION_REQUIRED');
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/desktop-tools`, {
+    const response = await fetch(`http://127.0.0.1:${server.address!().port}/api/desktop-tools`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ name: 'run_command', args, trustedCommands: true, commandMode: 'trusted' }),
     });
@@ -132,7 +132,7 @@ test('工具路由沿用注入的网关工作区，进程环境不能覆盖它',
   const server = app.listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
   try {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/desktop-tools`, {
+    const response = await fetch(`http://127.0.0.1:${server.address!().port}/api/desktop-tools`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ name: 'get_workspace_info', args: {} }),
     });
@@ -239,7 +239,7 @@ test('生产桌面桥取消：真实 HTTP 断开后终止网关内工具进程�
   let pids: any = [];
   try {
     writeProcessTree(root);
-    const bridge = nativeBridge(`http://127.0.0.1:${server.address().port}`);
+    const bridge = nativeBridge(`http://127.0.0.1:${server.address!().port}`);
     const pending = bridge.runTool('run_command', { command: 'node', args: ['tree.cjs'] }, { signal: controller.signal }).catch((error: any) => error);
     await waitFor(() => fs.existsSync(path.join(root, 'ready.json')));
     pids = JSON.parse(fs.readFileSync(path.join(root, 'ready.json'), 'utf8'));
@@ -524,7 +524,7 @@ test('HTTP 装配：/api/desktop-tools 本机可用、代理头拒绝、缺工�
   app.use(createDesktopToolsRouter());
   const server = app.listen(0, '127.0.0.1');
   await new Promise((resolve) => server.once('listening', resolve));
-  const base = `http://127.0.0.1:${server.address().port}`;
+  const base = `http://127.0.0.1:${server.address!().port}`;
   try {
     fs.writeFileSync(path.join(root, 'hello.txt'), 'hi');
 

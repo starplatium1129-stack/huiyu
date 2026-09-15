@@ -10,7 +10,7 @@ function killAt(config: string, phase: string, action = 'install', releaseId = '
       { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
     let reached = false;
     let stderr = '';
-    worker.stderr.on('data', data => { stderr += data; });
+    worker.stderr!.on('data', data => { stderr += data; });
     const timeout = setTimeout(() => { worker.kill('SIGKILL'); reject(new Error('Worker did not reach ' + phase + ': ' + stderr)); }, 30000);
     worker.on('error', error => { clearTimeout(timeout); reject(error); });
     worker.on('message', message => {

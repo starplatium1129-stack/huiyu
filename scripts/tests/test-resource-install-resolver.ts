@@ -187,7 +187,7 @@ test('HTTP-approved installed resources resolve offline without requesting even 
   const f = fixture(t);
   const installed = await f.installer().install({ releaseId: 'base' });
   f.policy.sources.media = { kind: 'http', approved: true, baseUrl: 'https://offline.invalid/resources/' };
-  assert.equal(checked(f).result.identity, installed.state.current.identity);
+  assert.equal(checked(f).result!.identity, installed.state.current.identity);
 });
 
 test('incomplete or unsafe HTTP source configuration fails closed without networking', async t => {
@@ -278,7 +278,7 @@ test('a killed post-switch process is not treated as a finished installation by 
   await killAt(f.config(), 'switched');
   checked(f, { error: 'PENDING_TRANSACTION' });
   await f.installer().recover();
-  assert.equal(checked(f).result.identity, f.policy.releases.delta.targetIdentity);
+  assert.equal(checked(f).result!.identity, f.policy.releases.delta.targetIdentity);
 });
 
 test('writer and stale claim locks are never acquired, removed or reclaimed', async t => {
@@ -291,7 +291,7 @@ test('writer and stale claim locks are never acquired, removed or reclaimed', as
     fs.unlinkSync(path.join(locks, name));
   }
   fs.rmdirSync(locks);
-  assert.equal(checked(f).result.status, 'verified');
+  assert.equal(checked(f).result!.status, 'verified');
   assert.equal(fs.existsSync(locks), false);
 });
 

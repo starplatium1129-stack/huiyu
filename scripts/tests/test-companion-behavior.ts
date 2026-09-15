@@ -113,9 +113,9 @@ test('dismiss 移除指定提醒；clear 清空队列', () => {
   const behavior = createCompanionBehavior({ queueLimit: 5 });
   const first = behavior.noteReturn('one', NOON);
   const second = behavior.noteReturn('two', NOON);
-  behavior.dismiss(first.id);
+  behavior.dismiss(first!.id);
   assert.equal(behavior.pending().length, 1);
-  assert.equal(behavior.pending()[0].id, second.id);
+  assert.equal(behavior.pending()[0].id, second!.id);
   behavior.clear();
   assert.equal(behavior.pending().length, 0);
 });

@@ -24,10 +24,10 @@ function parseArgs(args: any, extra = {}, env = process.env) {
     if (!name || !Object.hasOwn(spec, name)) throw new Error(`unknown option: ${args[i]}`);
     if (Object.hasOwn(parsed, name)) throw new Error(`duplicate option: --${name}`);
     if (spec[name] === 'flag') {
-      if (match[2] !== undefined) throw new Error(`--${name} does not take a value`);
+      if (match![2] !== undefined) throw new Error(`--${name} does not take a value`);
       parsed[name] = true;
     } else {
-      const value = match[2] ?? args[++i];
+      const value = match![2] ?? args[++i];
       if (!value || value.startsWith('--')) throw new Error(`--${name} requires a value`);
       parsed[name] = value;
     }

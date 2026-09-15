@@ -73,7 +73,7 @@ async function app(run: any, packaged = false) {
     ROOT_DIR: root, RUNTIME_ROOT: path.join(root, 'runtime'), SCENE_SHOWCASE_DIR: null, DESKTOP_PACKAGED: packaged,
   }).router).listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
-  const base = 'http://127.0.0.1:' + server.address().port;
+  const base = 'http://127.0.0.1:' + server.address!().port;
   const request = async (url: any, body: any) => {
     const response = await fetch(base + url, body === undefined ? {} : {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
@@ -118,11 +118,11 @@ test('HTTP blueprint save persists canonical shards, companions and survives fre
     const bp = structuredClone(state.snapshot.blueprints[0]);
     bp.description += ' [office persisted description]';
     const unrelated = blueprintStore.loadBlueprintShards().sources.find(source => !source.blueprints.some(item => item.id === bp.id));
-    const untouched = fs.readFileSync(unrelated.source);
+    const untouched = fs.readFileSync(unrelated!.source);
     const result = await request(changesUrl, delta(state.version, [], [bp]));
     assert.equal(result.status, 200, describe(result.body));
     assert.deepEqual(blueprintStore.loadBlueprintShards().blueprints.find(item => item.id === bp.id), bp);
-    assert.deepEqual(fs.readFileSync(unrelated.source), untouched);
+    assert.deepEqual(fs.readFileSync(unrelated!.source), untouched);
     const raw = fs.readFileSync(path.join(root, 'data/scene-blueprints.json'));
     for (const ext of ['gz', 'br']) {
       const packed = fs.readFileSync(path.join(root, 'data/scene-blueprints.json.' + ext));

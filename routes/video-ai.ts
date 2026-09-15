@@ -65,14 +65,14 @@ let MOTION_VALUES = ['subtle', 'natural', 'expressive'];
 
 function buildRewriteUserPrompt(value: { prompt: string; identity: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }|undefined) {
   return [
-    'Identity anchor (for reference only, do not restate it in the shot description): ' + (value.identity || '(none)'),
+    'Identity anchor (for reference only, do not restate it in the shot description): ' + (value!.identity || '(none)'),
     '',
     'Still-image prompt (what generated the first frame):',
-    value.prompt,
+    value!.prompt,
     '',
-    'Current shot parameters: shotSize=' + (value.shotSize || 'default')
-      + ', camera=' + value.camera + ', motion=' + value.motion
-      + (value.dialogue ? ', dialogue=' + value.dialogue : ''),
+    'Current shot parameters: shotSize=' + (value!.shotSize || 'default')
+      + ', camera=' + value!.camera + ', motion=' + value!.motion
+      + (value!.dialogue ? ', dialogue=' + value!.dialogue : ''),
     '',
     'Rewrite this shot for video:'
   ].join('\n');
@@ -138,11 +138,11 @@ function validatePolishBody(body: any) {
 
 function buildPolishUserPrompt(value: { identity: string; shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
   let lines = [
-    'Identity anchor (for reference only): ' + (value.identity || '(none)'),
+    'Identity anchor (for reference only): ' + (value!.identity || '(none)'),
     '',
     'Shot list (index | shotSize | camera | motion | dialogue | description):'
   ];
-  value.shots.forEach(function (shot, index: number) {
+  value!.shots.forEach(function (shot, index: number) {
     lines.push((index + 1) + '. ' + (shot.shotSize || 'default') + ' | ' + shot.camera + ' | ' + shot.motion
       + ' | ' + (shot.dialogue ? JSON.stringify(shot.dialogue) : '""')
       + ' | ' + shot.prompt.slice(0, 160));
@@ -153,7 +153,7 @@ function buildPolishUserPrompt(value: { identity: string; shots: { prompt: strin
 
 // 清洗编排输出：index 对齐 + 字段白名单；非法/越界条目整体跳过（保持原值）。
 function cleanPolishOutput(parsed: { shots: string|unknown[]; }, value: { identity: string; shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
-  let out = value.shots.map(function () {
+  let out = value!.shots.map(function () {
     return { shotSize:null, camera:null, motion:null, dialogue:null };
   });
   if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.shots)) return out;
@@ -522,12 +522,12 @@ function validateDialogueBody(body: any) {
 
 function buildDialogueUserPrompt(value: { prompt: string; identity: string; currentDialogue: string; mood: string; }|undefined) {
   return [
-    'Identity anchor (for reference only): ' + (value.identity || '(none)'),
-    'Shot description: ' + value.prompt,
-    value.currentDialogue ? 'Current dialogue: ' + value.currentDialogue : '',
-    value.mood ? 'Requested mood: ' + value.mood : '',
+    'Identity anchor (for reference only): ' + (value!.identity || '(none)'),
+    'Shot description: ' + value!.prompt,
+    value!.currentDialogue ? 'Current dialogue: ' + value!.currentDialogue : '',
+    value!.mood ? 'Requested mood: ' + value!.mood : '',
     '',
-    value.currentDialogue ? 'Polish the current dialogue and give two alternatives:' : 'Write three dialogue options for this shot:'
+    value!.currentDialogue ? 'Polish the current dialogue and give two alternatives:' : 'Write three dialogue options for this shot:'
   ].filter(Boolean).join('\n');
 }
 
@@ -569,7 +569,7 @@ function validateReviewBody(body: { shots: string|unknown[]; }) {
 
 function buildReviewUserPrompt(value: { shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
   let lines = ['Shot list (index | shotSize | camera | motion | dialogue | description):'];
-  value.shots.forEach(function (shot, index: number) {
+  value!.shots.forEach(function (shot, index: number) {
     lines.push((index + 1) + '. ' + (shot.shotSize || 'default') + ' | ' + shot.camera + ' | ' + shot.motion
       + ' | ' + (shot.dialogue ? JSON.stringify(shot.dialogue) : '""')
       + ' | ' + shot.prompt.slice(0, 200));
@@ -587,7 +587,7 @@ function cleanReviewOutput(parsed: { issues: string|unknown[]; }, value: { shots
     let item: any = parsed.issues[i];
     if (!item || typeof item !== 'object') continue;
     let index = Number(item.index);
-    if (!Number.isInteger(index) || index < 0 || index >= value.shots.length) continue;
+    if (!Number.isInteger(index) || index < 0 || index >= value!.shots.length) continue;
     let severity = String(item.severity || '').trim();
     if (severity !== 'error' && severity !== 'warn') continue;
     let field = String(item.field || '').trim();

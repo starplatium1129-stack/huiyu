@@ -14,7 +14,7 @@ async function main() {
   await page.evaluate(() => document.documentElement.classList.remove('companion-ui-hidden'))
   await page.waitForTimeout(500)
   const stage = await page.evaluate(() => {
-    const r = document.querySelector('.portrait-stage').getBoundingClientRect()
+    const r = document.querySelector!('.portrait-stage').getBoundingClientRect()
     return { x: r.x, y: r.y, w: r.width, h: r.height }
   })
 

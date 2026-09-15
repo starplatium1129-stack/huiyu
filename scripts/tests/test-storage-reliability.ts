@@ -155,7 +155,7 @@ async function testImageStoreTransactions() {
   Object.defineProperty(namedBlob, 'name', { value: 'sample.webp' });
   const namedId = await img.imgPut(namedBlob);
   const namedRecord = (await img.imgList()).find(record => record.id === namedId);
-  assert.strictEqual(namedRecord.name, 'sample.webp', 'File-compatible Blob names must be preserved');
+  assert.strictEqual(namedRecord!.name, 'sample.webp', 'File-compatible Blob names must be preserved');
 
   // 空 blob 必须被拒绝，避免写入坏记录
   await assert.rejects(() => img.imgPut(new Blob([])), /图片文件为空/);

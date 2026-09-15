@@ -67,7 +67,7 @@ async function downloadSource(t: any, f: any) {
   const requests: { url: string|undefined; range: string|undefined; }[] = [];
   const server = http.createServer((req, res) => {
     requests.push({ url: req.url, range: req.headers.range });
-    const rel = req.url.slice('/network/'.length);
+    const rel = req.url!.slice('/network/'.length);
     if (!['manifest.json', 'assets/a.txt', 'assets/keep.bin', 'assets/new.bin', 'assets/characters/portrait.png', 'assets/characters/large.webp'].includes(rel)) {
       res.writeHead(404); res.end(); return;
     }
@@ -87,7 +87,7 @@ async function downloadSource(t: any, f: any) {
   });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   t.after(() => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); }));
-  f.policy.sources.network = { kind: 'http', approved: true, loopbackFixture: true, baseUrl: `http://127.0.0.1:${server.address().port}/` };
+  f.policy.sources.network = { kind: 'http', approved: true, loopbackFixture: true, baseUrl: `http://127.0.0.1:${server.address!().port}/` };
   f.policy.releases.network.sourceId = 'network'; f.config();
   return { requests, server };
 }

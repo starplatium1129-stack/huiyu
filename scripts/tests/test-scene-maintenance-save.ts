@@ -325,7 +325,7 @@ test('相同基线的两个并发保存仅有一个成功，状态读取与保�
     ]);
     assert.deepEqual(results.map(result => result.status).sort(), [200, 409]);
     const state = await get('/api/maintenance/scenes-state');
-    const saved = results.find(result => result.status === 200).body;
+    const saved = results.find!(result => result.status === 200).body;
     assert.equal(state.body.version, saved.version);
     assert.deepEqual(state.body.snapshot, saved.snapshot);
   } finally { await stopApp(); }

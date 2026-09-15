@@ -544,7 +544,7 @@ function createVideoRouter(config: any, dependencies: any) {
     } catch (error: any) {
       if (job) await service.cancel(job);
       return envelope.fail(res, runtimeErrorStatus(error) || 502,
-        runtimeErrorStatus(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
+        runtimeErrorStatus!(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
         { code:runtimeErrorCode(error) || 'VIDEO_SUBMIT_FAILED', detail:error.detail });
     }
     res.status(202);
@@ -616,7 +616,7 @@ function createVideoRouter(config: any, dependencies: any) {
       batch = await batchService.create(requestOwner(req), batchInput);
     } catch (error: any) {
       return envelope.fail(res, runtimeErrorStatus(error) || 502,
-        runtimeErrorStatus(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
+        runtimeErrorStatus!(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
         { code:runtimeErrorCode(error) || 'BATCH_SUBMIT_FAILED', detail:error.detail });
     }
     res.status(202);

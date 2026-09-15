@@ -24,7 +24,7 @@ function saveSnapshotBackup(snapshot: any, backupRoot: any, label: any, options?
   const files = items.map((item, index) => {
     const backup = item.exists ? String(index).padStart(5, '0') + '.bin' : '';
     if (item.exists) io.atomicWrite(path.join(staging, 'files', backup), item.content);
-    return { source: item.file, existed: item.exists, backup, sha256: item.exists ? io.digest(item.content) : null, size: item.exists ? item.content.length : 0 };
+    return { source: item.file, existed: item.exists, backup, sha256: item.exists ? io.digest(item.content) : null, size: item.exists ? item.content!.length : 0 };
   });
   const manifest = { schemaVersion: 2, kind: 'maintenance-backup', createdAt: new Date().toISOString(), label, files,
     root: ctx ? ctx.root : null, runtimeRoot: ctx ? ctx.runtimeRoot : null, showcaseRoot: ctx ? ctx.showcaseRoot : null,
@@ -64,7 +64,7 @@ function readBackup(options: any, id: any, expectedHash?: any) {
       if (!/^\d{5}\.bin$/.test(item.backup) || names.has(item.backup)) throw failure('MAINTENANCE_INVALID_BACKUP', '备份文件名无效');
       names.add(item.backup);
       content = io.readBytes(path.join(directory, 'files', item.backup));
-      if (io.digest(content) !== item.sha256 || content.length !== item.size) throw failure('MAINTENANCE_INVALID_BACKUP', '备份内容哈希不匹配：' + item.source);
+      if (io.digest(content) !== item.sha256 || content!.length !== item.size) throw failure('MAINTENANCE_INVALID_BACKUP', '备份内容哈希不匹配：' + item.source);
     } else if (item.backup !== '' || item.sha256 !== null || item.size !== 0) throw failure('MAINTENANCE_INVALID_BACKUP', '不存在文件的备份身份无效');
     return { file, exists: item.existed, content, expected: { exists: item.existed, sha256: item.sha256, size: item.size } };
   });

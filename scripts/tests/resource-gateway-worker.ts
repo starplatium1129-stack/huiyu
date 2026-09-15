@@ -11,8 +11,8 @@ if (require.main === module && process.argv[2]) {
     let notified = false;
     setInterval(() => {
       const status = manager.status();
-      if (!notified && status.task?.bytes > 0) { notified = true; process.send({ ready: true }); }
-      if (status.task?.state === 'failed') { process.send({ error: status.task.error }); process.exit(1); }
+      if (!notified && status.task?.bytes > 0) { notified = true; process.send!({ ready: true }); }
+      if (status.task?.state === 'failed') { process.send!({ error: status.task.error }); process.exit(1); }
     }, 5);
-  } catch (error) { process.send({ error: { code: runtimeErrorCode(error), message: runtimeErrorMessage(error) } }); process.exit(1); }
+  } catch (error) { process.send!({ error: { code: runtimeErrorCode(error), message: runtimeErrorMessage(error) } }); process.exit(1); }
 }

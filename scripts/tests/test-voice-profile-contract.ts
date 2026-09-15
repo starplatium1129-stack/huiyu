@@ -69,10 +69,10 @@ const valid = tts.validateInput({
   speed: 1
 }, profiles);
 assert(!valid.error, 'valid TTS input must pass');
-assert.strictEqual(valid.value.payload.seed, 1234);
-assert.strictEqual(valid.value.payload.top_k, 15);
-assert.strictEqual(valid.value.payload.text_split_method, 'cut5');
-assert.strictEqual(valid.value.payload.ref_audio_path, profiles.nene.references.happy.refAudioPath);
+assert.strictEqual(valid.value!.payload.seed, 1234);
+assert.strictEqual(valid.value!.payload.top_k, 15);
+assert.strictEqual(valid.value!.payload.text_split_method, 'cut5');
+assert.strictEqual(valid.value!.payload.ref_audio_path, profiles.nene.references.happy.refAudioPath);
 assert.strictEqual(tts.normalizeSpeechText('\u30fb\u30c6\u30b9\u30c8', 'ja'), '\u30c6\u30b9\u30c8');
 
 const neutral = tts.validateInput({
@@ -84,8 +84,8 @@ const neutral = tts.validateInput({
   consistency: 'locked'
 }, profiles);
 assert(!neutral.error, 'neutral TTS input must pass');
-assert.strictEqual(neutral.value.payload.ref_audio_path, profiles.nene.refAudioPath, 'neutral path must use the character main ref');
-assert.strictEqual(neutral.value.payload.prompt_text, profiles.nene.promptText, 'neutral prompt must use the character main prompt');
+assert.strictEqual(neutral.value!.payload.ref_audio_path, profiles.nene.refAudioPath, 'neutral path must use the character main ref');
+assert.strictEqual(neutral.value!.payload.prompt_text, profiles.nene.promptText, 'neutral prompt must use the character main prompt');
 
 const badVoice = tts.validateInput({ voice: 'unknown', text: 'hi', language: 'ja' }, profiles);
 assert.strictEqual(badVoice.status, 400);
@@ -106,6 +106,6 @@ const zhLocked = tts.validateInput({
   referenceEmotion: 'happy'
 }, profiles);
 assert(!zhLocked.error, 'Chinese input must still validate');
-assert.strictEqual(zhLocked.value.payload.ref_audio_path, profiles.nene.refAudioPath, 'Chinese path must use neutral main ref');
+assert.strictEqual(zhLocked.value!.payload.ref_audio_path, profiles.nene.refAudioPath, 'Chinese path must use neutral main ref');
 
 });

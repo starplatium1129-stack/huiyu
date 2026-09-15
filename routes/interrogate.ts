@@ -77,7 +77,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
       res.on('end', function () {
         let raw = Buffer.concat(chunks).toString('utf8'); let data;
         try { data = raw ? JSON.parse(raw) : null; } catch (e) { reject(serviceError(502, 'INVALID_UPSTREAM_RESPONSE', '上游返回无效 JSON')); return; }
-        if (res.statusCode < 200 || res.statusCode >= 300) { reject(serviceError(502, 'UPSTREAM_ERROR', '上游请求失败', { status: res.statusCode, data: data })); return; }
+        if (res.statusCode! < 200 || res.statusCode! >= 300) { reject(serviceError(502, 'UPSTREAM_ERROR', '上游请求失败', { status: res.statusCode, data: data })); return; }
         resolve(data);
       });
     });
@@ -219,7 +219,7 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
         let chunks: any = []; res.on('data', function (c) { chunks.push(c); });
         res.on('end', function () {
           let raw = Buffer.concat(chunks).toString('utf8');
-          if (res.statusCode < 200 || res.statusCode >= 300) return reject(new Error('WD14 tag failed ' + res.statusCode + ' ' + raw.slice(0, 300)));
+          if (res.statusCode! < 200 || res.statusCode! >= 300) return reject(new Error('WD14 tag failed ' + res.statusCode + ' ' + raw.slice(0, 300)));
           try {
             let data = JSON.parse(raw);
             // 节点返回字符串或数组，兼容两种

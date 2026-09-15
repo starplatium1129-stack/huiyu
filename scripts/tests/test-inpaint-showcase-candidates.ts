@@ -381,7 +381,7 @@ test('imageInfo/sha256 helpers: PNG magic + dimensions, sha consistency', () => 
     0, 0, 4, 0, 0, 0, 5, 32, 0, 0, 0, 0, 0, 0, 0,
   ]);
   const info = inpaint.imageInfo(png);
-  assert.deepStrictEqual({ mime: info.mime, width: info.width, height: info.height }, { mime: 'image/png', width: 1024, height: 1312 });
+  assert.deepStrictEqual({ mime: info!.mime, width: info!.width, height: info!.height }, { mime: 'image/png', width: 1024, height: 1312 });
   assert.strictEqual(inpaint.imageInfo(Buffer.from([0, 1, 2, 3])), null);
   const a = Buffer.from('hello');
   const b = Buffer.from('hello');

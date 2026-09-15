@@ -170,7 +170,7 @@ function createMockAiServer() {
         res.end('ok');
         return;
       }
-      if (req.url.startsWith('/set_sovits_weights') || req.url.startsWith('/set_gpt_weights')) {
+      if (req.url!.startsWith('/set_sovits_weights') || req.url!.startsWith('/set_gpt_weights')) {
         res.end('ok');
         return;
       }
@@ -501,7 +501,7 @@ async function run() {
     messages:[{ role:'user', content:'hello' }]
   });
   assert(
-    compatibleValidation.value.api.pathname === '/v1/chat/completions',
+    compatibleValidation.value!.api!.pathname === '/v1/chat/completions',
     'compatible API base paths must preserve the /v1 prefix'
   );
   var deepseekValidation = chatRoute.validateCompatibleApi({
@@ -509,15 +509,15 @@ async function run() {
     model:'deepseek-v4-flash',
     apiKey:'secret'
   });
-  assert(deepseekValidation.value.vendor === 'deepseek', 'official DeepSeek endpoints must receive the role-chat optimization');
+  assert(deepseekValidation.value!.vendor === 'deepseek', 'official DeepSeek endpoints must receive the role-chat optimization');
   var opencodeValidation = chatRoute.validateCompatibleApi({
     baseUrl:'https://opencode.ai/zen/v1',
     model:'deepseek-v4-flash-free',
     apiKey:'secret'
   });
   assert(
-    opencodeValidation.value.vendor === 'opencode'
-      && opencodeValidation.value.pathname === '/zen/v1/chat/completions',
+    opencodeValidation.value!.vendor === 'opencode'
+      && opencodeValidation.value!.pathname === '/zen/v1/chat/completions',
     'OpenCode Zen must use its OpenAI-compatible chat endpoint'
   );
   var opencodeGoValidation = chatRoute.validateCompatibleApi({
@@ -526,8 +526,8 @@ async function run() {
     apiKey:'secret'
   });
   assert(
-    opencodeGoValidation.value.vendor === 'opencode'
-      && opencodeGoValidation.value.pathname === '/zen/go/v1/chat/completions',
+    opencodeGoValidation.value!.vendor === 'opencode'
+      && opencodeGoValidation.value!.pathname === '/zen/go/v1/chat/completions',
     'OpenCode Go must preserve its dedicated OpenAI-compatible chat endpoint'
   );
   assert(chatRoute.chatCharacterPrompt('nene').includes('不要每句话都结巴'), 'Nene prompt must constrain repetitive roleplay mannerisms');
@@ -549,13 +549,13 @@ async function run() {
     userProfile:{ callName:'阿澈', relationship:'lover', note:'喜欢苦咖啡。' },
     messages:[{ role:'user', content:'你好' }]
   });
-  assert(profiledValidation.value.messages[0].content.includes('• 希望称呼：阿澈'), 'validated user profile must reach the system prompt');
+  assert(profiledValidation.value!.messages[0].content.includes('• 希望称呼：阿澈'), 'validated user profile must reach the system prompt');
   assert(chatRoute.validateChatBody({ character:'nene', userProfile:{ relationship:'invalid' }, messages:[{ role:'user', content:'x' }] }).error, 'unknown relationship must fail closed');
   assert(chatRoute.validateChatBody({ character:'nene', userProfile:{ callName:'x'.repeat(41) }, messages:[{ role:'user', content:'x' }] }).error, 'overlong profile fields must be rejected');
   var memoryValidation = chatRoute.validateChatBody({
     character:'nene', memories:['用户每周五晚上会玩 MMORPG。'], messages:[{ role:'user', content:'周五做什么？' }]
   });
-  assert(memoryValidation.value.messages[0].content.includes('【长期记忆（用户确认过的本机事实') && memoryValidation.value.messages[0].content.includes('用户每周五晚上会玩 MMORPG。'), 'validated memory facts must reach the system prompt');
+  assert(memoryValidation.value!.messages[0].content.includes('【长期记忆（用户确认过的本机事实') && memoryValidation.value!.messages[0].content.includes('用户每周五晚上会玩 MMORPG。'), 'validated memory facts must reach the system prompt');
   assert(chatRoute.validateChatBody({ character:'nene', memories:['1','2','3','4','5'], messages:[{ role:'user', content:'x' }] }).error, 'memory injection count must be bounded');
 
   var live2dService = (require('../../services/live2d-service') as typeof import('../../services/live2d-service')).createLive2dService({
@@ -701,9 +701,9 @@ async function run() {
       ]
     });
     assert(toolRound.value, 'tool messages must be accepted when companionTools is enabled');
-    var toolMessages = toolRound.value.messages.filter(function (m: any) { return m.role === 'tool' || Array.isArray(m.tool_calls); });
+    var toolMessages = toolRound.value!.messages.filter(function (m: any) { return m.role === 'tool' || Array.isArray(m.tool_calls); });
     assert(toolMessages.length === 2, 'tool messages must survive validation untouched');
-    var toolCallMsg: any = toolRound.value.messages.find(function (m: any) { return Array.isArray(m.tool_calls); });
+    var toolCallMsg: any = toolRound.value!.messages.find(function (m: any) { return Array.isArray(m.tool_calls); });
     assert(
       toolCallMsg && toolCallMsg.reasoning_content === '我先想想',
       'V4 reasoning_content must round-trip through validation alongside tool_calls'
@@ -735,7 +735,7 @@ async function run() {
       ]
     });
     assert(multimodal.value, 'multimodal user messages from read_image must be accepted');
-    var multimodalParts: any = multimodal.value.messages.filter(function (m: any) { return Array.isArray(m.content); });
+    var multimodalParts: any = multimodal.value!.messages.filter(function (m: any) { return Array.isArray(m.content); });
     assert(multimodalParts.length === 1, 'multimodal content arrays must survive validation');
     assert(
       multimodalParts[0].content.some(function (p: any) { return p.type === 'image_url' && p.image_url.url.startsWith('data:image/png;base64,'); }),

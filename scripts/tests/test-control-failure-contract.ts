@@ -28,7 +28,7 @@ function listen(server: Server<IncomingMessage,ServerResponse>) {
   return new Promise(function (resolve, reject) {
     server.once('error', reject);
     server.listen(0, '127.0.0.1', function () {
-      resolve('http://127.0.0.1:' + server.address().port);
+      resolve('http://127.0.0.1:' + server.address!().port);
     });
   });
 }
@@ -336,7 +336,7 @@ function startFakeService(options: any) {
     var freePortProbe = net.createServer();
     freePortProbe.once('error', reject);
     freePortProbe.listen(0, '127.0.0.1', function () {
-      var port = freePortProbe.address().port;
+      var port = freePortProbe.address!().port;
       freePortProbe.close(function () {
         var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-fake-' + entryName + '-'));
         var helper = path.join(dir, 'fake.js');

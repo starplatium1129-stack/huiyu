@@ -56,8 +56,8 @@ test('单张失败不打断整批：失败计数、其余照常执行', async ()
   assert.equal(batch.progress.value.failed, 1);
   assert.equal(batch.progress.value.done, 3);
   const failed = batch.jobs.value.find(j => j.status === 'failed');
-  assert.equal(failed.seed, 2000);
-  assert.equal(failed.error, '模拟失败');
+  assert.equal(failed!.seed, 2000);
+  assert.equal(failed!.error, '模拟失败');
 });
 
 test('runner 抛异常按失败处理，不中断整批', async () => {
@@ -109,7 +109,7 @@ test('running 中重复 start 被拒绝', async () => {
 
   const first = batch.start(scenes(1), 1, 1);
   const second = batch.start(scenes(1), 1, 1); // 应直接返回
-  release();
+  release!();
   await first;
   await second;
 
@@ -167,8 +167,8 @@ test('retryFailed 只重跑失败/已取消张，seed 与候选序号原样保�
     { id: 'scene-0', seed: 2000, variant: 1 },
   );
   const retriedJob = batch.jobs.value.find(j => j.seed === 2000);
-  assert.equal(retriedJob.status, 'succeeded');
-  assert.equal(retriedJob.error, undefined, '重跑成功后清掉旧错误');
+  assert.equal(retriedJob!.status, 'succeeded');
+  assert.equal(retriedJob!.error, undefined, '重跑成功后清掉旧错误');
 });
 
 test('支持 character 类型通用实体：avatarUrl 与 subtitle 正确落任务', async () => {
@@ -201,7 +201,7 @@ test('执行中状态响应式更新；不能 reset 绕过并发保护', async (
   batch.reset();
   assert.equal(batch.running.value, true);
   assert.equal(batch.jobs.value.length, 1);
-  release(); await run;
+  release!(); await run;
   assert.equal(batch.progress.value.succeeded, 1);
 });
 
@@ -233,7 +233,7 @@ test('销毁后不启动下一张，晚到的预览被释放', async () => {
   try {
     const batch = useBatchDraw({ run: async () => { await new Promise(resolve => { release = resolve; }); return { ok: true, resultUrl: 'blob:late' }; } });
     const run = batch.start(scenes(2), 1, 42);
-    batch.dispose(); release(); await run;
+    batch.dispose(); release!(); await run;
     assert.deepEqual(revoked, ['blob:late']);
     assert.equal(batch.jobs.value[1].status, 'cancelled');
   } finally { URL.revokeObjectURL = previous; }

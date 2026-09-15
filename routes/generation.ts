@@ -251,7 +251,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
       });
       res.on('end', function () {
         let raw = Buffer.concat(chunks).toString('utf8'); let data; try { data = raw ? JSON.parse(raw) : null; } catch (e) { reject(error(502, 'INVALID_UPSTREAM_RESPONSE', '上游返回无效 JSON')); return; }
-        if (res.statusCode < 200 || res.statusCode >= 300) { reject(error(502, 'UPSTREAM_ERROR', '上游请求失败', { status:res.statusCode, data:data })); return; }
+        if (res.statusCode! < 200 || res.statusCode! >= 300) { reject(error(502, 'UPSTREAM_ERROR', '上游请求失败', { status:res.statusCode, data:data })); return; }
         resolve(data);
       });
     });

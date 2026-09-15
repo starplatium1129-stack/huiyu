@@ -30,7 +30,7 @@ async function main() {
   await page.evaluate(() => document.documentElement.classList.remove('companion-ui-hidden'))
   await page.waitForTimeout(600)
   const s2 = await page.evaluate(() => {
-    const r = document.querySelector('.portrait-stage').getBoundingClientRect()
+    const r = document.querySelector!('.portrait-stage').getBoundingClientRect()
     return { x: r.x, y: r.y, w: r.width, h: r.height }
   })
   console.log('STAGE_AFTER_UNHIDE:', JSON.stringify(s2))

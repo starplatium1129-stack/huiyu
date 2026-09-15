@@ -23,11 +23,11 @@ test('分类：CUDA OOM -> oom + 降载重试', () => {
 });
 
 test('分类：LoRA 缺失 -> 去掉 LoRA 重试', () => {
-  assert.strictEqual(classify({ message: 'could not find lora ayachi_nene', status: 500 }).action.id, 'retry_without_lora');
+  assert.strictEqual(classify({ message: 'could not find lora ayachi_nene', status: 500 }).action!.id, 'retry_without_lora');
 });
 
 test('分类：checkpoint 缺失 -> 当前模型重试', () => {
-  assert.strictEqual(classify({ detail: 'checkpoint not found', status: 500 }).action.id, 'retry_current_model');
+  assert.strictEqual(classify({ detail: 'checkpoint not found', status: 500 }).action!.id, 'retry_current_model');
 });
 
 test('分类：sampler 错误 -> sampler', () => {
@@ -35,7 +35,7 @@ test('分类：sampler 错误 -> sampler', () => {
 });
 
 test('分类：超时 -> 轻负载重试', () => {
-  assert.strictEqual(classify({ name: 'TimeoutError', message: 'SD WebUI 请求超时' }).action.id, 'retry_light');
+  assert.strictEqual(classify({ name: 'TimeoutError', message: 'SD WebUI 请求超时' }).action!.id, 'retry_light');
 });
 
 test('分类：404 -> gateway', () => {
@@ -43,7 +43,7 @@ test('分类：404 -> gateway', () => {
 });
 
 test('分类：网络错误 -> 重新检查连接', () => {
-  assert.strictEqual(classify({ name: 'NetworkError', message: '无法连接 SD WebUI' }).action.id, 'recheck_connection');
+  assert.strictEqual(classify({ name: 'NetworkError', message: '无法连接 SD WebUI' }).action!.id, 'recheck_connection');
 });
 
 test('分类：取消 -> cancelled', () => {

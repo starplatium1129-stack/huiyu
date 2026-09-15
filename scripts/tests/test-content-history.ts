@@ -271,7 +271,7 @@ test('assume-unchanged cannot be used as evidence that the working tree has no i
 
 test('partial/invalid Git NUL output is discarded and base blobs retain exact byte hashes', (t) => {
   const f = fixture(t);
-  const read = collectGitHistory(f.root, f.base).baseReader.read('data/blueprints/one.json');
+  const read = collectGitHistory(f.root, f.base).baseReader!.read('data/blueprints/one.json');
   assert.equal(read.sha256, (require('node:crypto') as typeof import('node:crypto')).createHash('sha256').update(fs.readFileSync(path.join(f.root, 'data/blueprints/one.json'))).digest('hex'));
   const spawn = cp.spawnSync;
   for (const stdout of [Buffer.from('M\0data/blueprints/one.json\0D\0missing-terminator'), Buffer.from('R100\0data/blueprints/one.json\0../escape\0'), Buffer.from([255, 0])]) {

@@ -109,8 +109,8 @@ test('单文件内容改变仅影响该条目的字节与哈希', (t) => {
   fs.writeFileSync(path.join(fx.root, 'assets/dir/bravo.bin'), Buffer.from([9, 9]));
   const after = generateManifest({ root: fx.root });
   const target = after.entries.find((e) => e.path === 'assets/dir/bravo.bin');
-  assert.equal(target.bytes, 2);
-  assert.equal(target.sha256, sha256(Buffer.from([9, 9])));
+  assert.equal(target!.bytes, 2);
+  assert.equal(target!.sha256, sha256(Buffer.from([9, 9])));
   assert.deepEqual(
     after.entries.filter((e) => e.path !== 'assets/dir/bravo.bin'),
     before.entries.filter((e) => e.path !== 'assets/dir/bravo.bin')

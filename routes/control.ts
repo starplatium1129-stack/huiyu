@@ -40,6 +40,13 @@ let createScriptRunner = (require('./control/script-runner') as typeof import('.
 let statusRoutes: typeof import('./control/status') = require('./control/status');
 let serviceRoutes: typeof import('./control/services') = require('./control/services');
 
+// 控制路由除 Express Router 能力外还携带生命周期成员（函数末尾赋值、server.ts 的 close() 消费，
+// 与迁移前 JS 的真实契约一致），这里显式声明该形状。
+type ControlRouter = import('express-serve-static-core').Router & {
+  watchdog: ReturnType<typeof createServiceWatchdog>;
+  close: () => void;
+};
+
 // ── 前端构建状态与触发已拆至 routes/control/web-build.js（2026-08-29 审计 P1-10）──
 let WEBUI_START_TIMEOUT_MS = 6 * 60 * 1000;
 
@@ -61,7 +68,7 @@ const pingOllamaDetail = upstreamHealth.pingOllamaDetail;
 
 function createControlRouter(config: any, gatewayRef: () => unknown, dependencies: any) {
   dependencies = dependencies || {};
-  let router = express.Router();
+  let router = express.Router() as ControlRouter;
   let persistConfig = typeof dependencies.writeJson === 'function' ? dependencies.writeJson : writeJson;
   let startTime = Date.now();
   let rootDir = config.ROOT_DIR || path.join(__dirname, '..');

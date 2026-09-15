@@ -37,7 +37,7 @@ async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: a
   ensureSpace(ctx, entry.bytes + 65536);
   const source = child(sourceRoot, entry.path);
   const sourceStat = noLinks(ctx.io, source);
-  if (!sourceStat.isFile() || sourceStat.size !== entry.bytes) fail('CONTENT_INVALID', 'Source resource changed before copy');
+  if (!sourceStat!.isFile() || sourceStat!.size !== entry.bytes) fail('CONTENT_INVALID', 'Source resource changed before copy');
   mkdir(ctx.io, path.dirname(target));
   mkdir(ctx.io, parts);
   const partial = child(parts, digest(entry.path) + '.part');
@@ -48,7 +48,7 @@ async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: a
   try {
     noLinks(ctx.io, source);
     const opened = ctx.io.fstatSync(input);
-    if (opened.ino !== sourceStat.ino || opened.dev !== sourceStat.dev) fail('FILE_CHANGED', 'Source changed while opening');
+    if (opened.ino !== sourceStat!.ino || opened.dev !== sourceStat!.dev) fail('FILE_CHANGED', 'Source changed while opening');
     output = ctx.io.openSync(partial, 'wx', 0o600);
     noLinks(ctx.io, partial);
     const hash = createHash('sha256');

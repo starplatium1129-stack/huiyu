@@ -37,7 +37,7 @@ try {
     } }], server: { host: '127.0.0.1', port: 0, strictPort: true,
       watch: { ignored: ['**/desktop-tauri/**', '**/runtime/**'] } }, logLevel: 'error' })
   await server.listen()
-  const origin = `http://127.0.0.1:${server.httpServer.address().port}`
+  const origin = `http://127.0.0.1:${server.httpServer!.address!().port}`
   const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || (process.platform === 'win32'
     ? ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe'].find(file => fs.existsSync(file)) : undefined)
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })

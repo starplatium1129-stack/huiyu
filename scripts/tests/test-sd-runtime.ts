@@ -75,12 +75,12 @@ function testDualEnhancementPayload() {
 
   assert(payload.prompt.split(/\bBREAK\b/).length === 3, 'dual regional prompt must contain base, left, and right scopes');
   assert(payload.prompt.indexOf('<lora:ayachi_nene_v15:0.55>') < payload.prompt.indexOf('BREAK'), 'dual LoRAs must live in the shared base scope in Attention mode');
-  assert(payload.alwayson_scripts['Regional Prompter'], 'Regional Prompter payload must be enabled');
-  assert.strictEqual(payload.alwayson_scripts['Regional Prompter'].args[11], 'Attention');
-  assert(payload.alwayson_scripts.ControlNet, 'ControlNet payload must be enabled when a pose exists');
-  assert.strictEqual(payload.alwayson_scripts.ControlNet.args[0].resize_mode, 'Resize and Fill');
-  assert.strictEqual(payload.alwayson_scripts.ControlNet.args[0].image, 'cG9zZQ==');
-  assert(payload.alwayson_scripts.ADetailer, 'ADetailer payload must be enabled for distant dual faces');
+  assert(payload.alwayson_scripts!['Regional Prompter'], 'Regional Prompter payload must be enabled');
+  assert.strictEqual(payload.alwayson_scripts!['Regional Prompter'].args[11], 'Attention');
+  assert(payload.alwayson_scripts!.ControlNet, 'ControlNet payload must be enabled when a pose exists');
+  assert.strictEqual(payload.alwayson_scripts!.ControlNet.args[0].resize_mode, 'Resize and Fill');
+  assert.strictEqual(payload.alwayson_scripts!.ControlNet.args[0].image, 'cG9zZQ==');
+  assert(payload.alwayson_scripts!.ADetailer, 'ADetailer payload must be enabled for distant dual faces');
   assert.deepStrictEqual(
     JSON.parse(JSON.stringify(result.enhancements)),
     { regional:true, controlNet:true, adetailer:true }
@@ -121,7 +121,7 @@ function testProfilesAndCapabilities() {
   ];
 
   const actual = policy.resolveModelProfile(profiles, 'actualModel');
-  assert.strictEqual(actual.id, 'actual', 'checkpoint must resolve to its own profile');
+  assert.strictEqual(actual!.id, 'actual', 'checkpoint must resolve to its own profile');
 
   assert.strictEqual(policy.qualityPrefix(actual, { rating: 'All' }), 'quality, safe');
   assert.strictEqual(policy.qualityPrefix(actual, { rating: 'R15' }), 'quality', 'R15 must not inherit safe');
@@ -136,7 +136,7 @@ function testProfilesAndCapabilities() {
   // 站内 LoRA 基于 WAI/Illustrious 训练：未识别的 checkpoint 回退首个 profile，
   // 而不是退回与项目无关的通用 SDXL 词组。
   const unknown = policy.resolveModelProfile(profiles, 'mysteryModel');
-  assert.strictEqual(unknown.id, 'actual', 'unknown checkpoints must fall back to the primary profile');
+  assert.strictEqual(unknown!.id, 'actual', 'unknown checkpoints must fall back to the primary profile');
   assert.strictEqual(
     policy.qualityPrefix(null, { rating: 'All' }),
     'masterpiece, best quality, very aesthetic, absurdres',

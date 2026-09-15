@@ -216,9 +216,9 @@ test('generation API timeout baselines keep status/job probes short and creation
 test('translate caller abort maps to aborted and passes the caller signal through', async () => {
   let requestSignal: any;
   const client = createApiClient(async (_url, init) => {
-    requestSignal = init.signal;
+    requestSignal = init!.signal;
     return new Promise((_resolve, reject) => {
-      init.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+      init!.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
     });
   });
   const controller = new AbortController();
@@ -378,8 +378,8 @@ test('aborting one concurrent request does not affect another request', async ()
   const pending = new Map();
   const client = createApiClient((url, init) => new Promise((resolve, reject) => {
     const key = String(url);
-    pending.set(key, { resolve, signal: init.signal });
-    init.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+    pending.set(key, { resolve, signal: init!.signal });
+    init!.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
   }));
   const firstController = new AbortController();
   const first = client.request('/first', { signal: firstController.signal, timeoutMs: 1_000 });
@@ -431,7 +431,7 @@ test('client removes the caller listener and clears its timeout after success', 
     },
   };
   const client = createApiClient(async (_url, init) => {
-    requestSignal = init.signal;
+    requestSignal = init!.signal;
     return jsonResponse({ ok: true });
   });
   await client.request('/cleanup', { signal: callerSignal, timeoutMs: 15 });
@@ -541,13 +541,13 @@ test('useControlStatus stopPolling aborts isolated in-flight status and logs req
   const logSignals: any = [];
   const waitForAbort = (signal: AbortSignal|undefined, bucket: unknown[]) => new Promise((_resolve, reject) => {
     bucket.push(signal);
-    signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+    signal!.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
   });
   const status = useControlStatus({
     showToast: () => {},
     api: {
-      getStatus: options => waitForAbort(options.signal, statusSignals),
-      getLogs: (_since, options) => waitForAbort(options.signal, logSignals),
+      getStatus: options => waitForAbort(options!.signal, statusSignals),
+      getLogs: (_since, options) => waitForAbort(options!.signal, logSignals),
     },
   });
   status.startPolling();
@@ -574,16 +574,16 @@ test('useControlStatus aborts older same-kind requests and clears protected stal
   const logSignals: any = [];
   const waitForAbort = (signal: AbortSignal|undefined, bucket: any) => new Promise((_resolve, reject) => {
     bucket.push(signal);
-    signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+    signal!.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
   });
   let protectedFailures = false;
   const status = useControlStatus({
     showToast: () => {},
     api: {
-      getStatus: options => waitForAbort(options.signal, statusSignals),
+      getStatus: options => waitForAbort(options!.signal, statusSignals),
       getLogs: (_since, options) => protectedFailures
         ? Promise.reject(new ApiClientError('forbidden', { kind: 'http', status: 403 }))
-        : waitForAbort(options.signal, logSignals),
+        : waitForAbort(options!.signal, logSignals),
       getShareLink: () => Promise.reject(new ApiClientError('bad host', { kind: 'http', status: 421 })),
     },
   });

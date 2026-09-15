@@ -45,8 +45,8 @@ const positiveFramed = reframedParts.filter(part => part.cls !== 'n').map(part =
   assert(!policy.tokenize(positiveFramed).includes(tag), 'final framing policy must remove stale ' + tag + ' from every positive source');
 });
 assert(positiveFramed.includes('close_up'), 'selected close framing must survive final composition');
-assert(reframedParts.find(part => part.source === 'scene').source === 'scene', 'framing policy must retain part metadata');
-assert(reframedParts.find(part => part.cls === 'n').text.includes('cropped'), 'positive framing policy must not rewrite negative parts');
+assert(reframedParts.find!(part => part.source === 'scene').source === 'scene', 'framing policy must retain part metadata');
+assert(reframedParts.find!(part => part.cls === 'n').text.includes('cropped'), 'positive framing policy must not rewrite negative parts');
 assert.strictEqual(policy.resolveFramingMode('close', ['wide_shot','full_body']), 'close', 'explicit close shot must override stale wide scene tags for LoRA policy');
 assert.strictEqual(policy.resolveFramingMode('pov', ['wide_shot','full_body']), '', 'explicit non-framing shot must not fall back to stale scene framing');
 assert.strictEqual(policy.resolveFramingMode('', ['full_body']), 'wide', 'scene tags may drive LoRA framing only before a shot is selected');
@@ -124,7 +124,7 @@ const engineProfiles = [
   { id:'anima', engine:'anima', model_id:'anima-base-v1.0', match:['shared-model'], tag_style:'space' },
 ];
 assert.strictEqual(
-  policy.resolveModelProfile(engineProfiles, 'anima-base-v1.0', 'anima').id,
+  policy.resolveModelProfile!(engineProfiles, 'anima-base-v1.0', 'anima').id,
   'anima',
   'Anima profile lookup must not fall back to an SD profile',
 );
@@ -148,7 +148,7 @@ assert.strictEqual(
 const presetProfiles = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
 const animaBase = presetProfiles.find(profile => profile.id === 'anima_base_v10');
 const animaAesthetic = presetProfiles.find(profile => profile.id === 'anima_aesthetic_v11');
-const neneContract = (require('../../data/loras.json') as typeof import('../../data/loras.json')).find(lora => lora.id === 'L_NENE_V21_ANIMA').prompt_contract;
+const neneContract = (require('../../data/loras.json') as typeof import('../../data/loras.json')).find!(lora => lora.id === 'L_NENE_V21_ANIMA').prompt_contract;
 assert(animaBase && animaAesthetic, 'Anima Base and Aesthetic profiles must be present in the production catalog');
 for (const profile of [animaBase, animaAesthetic]) {
   assert.deepStrictEqual(profile.exact_tokens, [], 'model profiles keep no family-level exact tokens; LoRA contracts own them');

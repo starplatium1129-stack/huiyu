@@ -8,19 +8,19 @@ function sourceUrl(release: any, relative: any) {
   const source = release.source;
   let base;
   try { base = new URL(source.baseUrl); } catch { fail('SOURCE_REQUIRED', 'A valid configured source baseUrl is required'); }
-  if (base.username || base.password || base.search || base.hash || !base.pathname.endsWith('/')) {
+  if (base!.username || base!.password || base!.search || base!.hash || !base!.pathname.endsWith('/')) {
     fail('UNSAFE_SOURCE', 'Source URL must have a directory path and no credentials/query/fragment');
   }
-  const loopback = ['127.0.0.1', '[::1]'].includes(base.hostname);
-  if (base.protocol !== 'https:' && !(base.protocol === 'http:' && loopback && source.loopbackFixture === true)) {
+  const loopback = ['127.0.0.1', '[::1]'].includes(base!.hostname);
+  if (base!.protocol !== 'https:' && !(base!.protocol === 'http:' && loopback && source.loopbackFixture === true)) {
     fail('UNSAFE_SOURCE', 'HTTPS is required; HTTP is limited to explicitly configured numeric loopback fixtures');
   }
   // Source and release locations come only from reviewed local configuration, never a request URL.
-  if (base.pathname !== '/') relativePath(decodeURIComponent(base.pathname.slice(1, -1)));
+  if (base!.pathname !== '/') relativePath(decodeURIComponent(base!.pathname.slice(1, -1)));
   relativePath(release.path);
   relativePath(relative);
   const url = new URL([release.path, relative].join('/').split('/').map(encodeURIComponent).join('/'), base);
-  if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) fail('UNSAFE_SOURCE', 'URL left its approved source directory');
+  if (url.origin !== base!.origin || !url.pathname.startsWith(base!.pathname)) fail('UNSAFE_SOURCE', 'URL left its approved source directory');
   return url;
 }
 function response(url: any, { headers = {}, signal, timeoutMs = 30000 } = {}) {
@@ -37,7 +37,7 @@ function response(url: any, { headers = {}, signal, timeoutMs = 30000 } = {}) {
       // callback. Keep an error listener during that gap; async iteration still observes errored.
       incoming.on('error', () => {});
       // No redirects, cookie jar, proxy, auth forwarding, decompression or content execution.
-      if (incoming.statusCode >= 300 && incoming.statusCode < 400) {
+      if (incoming.statusCode! >= 300 && incoming.statusCode! < 400) {
         incoming.destroy();
         reject(new ResourceError('REDIRECT_REJECTED', 'Resource redirects are not followed'));
       } else if (incoming.headers['content-encoding'] && incoming.headers['content-encoding'] !== 'identity') {

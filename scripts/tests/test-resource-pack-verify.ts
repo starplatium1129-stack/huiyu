@@ -155,8 +155,8 @@ test('往返：四类差异候选包核验通过，基线资产零访问、全�
   assert.equal(result.compatibility.recomputedTotals.removed, 1);
   assert.equal(result.compatibility.recomputedTotals.changed, 1);
   assert.equal(result.compatibility.recomputedTotals.unchanged, 1);
-  assert.equal(result.packVerification.ok, true, '候选实际字节核验通过');
-  assert.equal(result.packVerification.verified, 2, '候选两个已列文件均通过字节核验');
+  assert.equal(result.packVerification!.ok, true, '候选实际字节核验通过');
+  assert.equal(result.packVerification!.verified, 2, '候选两个已列文件均通过字节核验');
   assert.ok(result.compatibility.identities.base.contentIdentity, '结果含基线身份');
   assert.notEqual(result.compatibility.identities.base.contentIdentity, result.compatibility.identities.target.contentIdentity);
   assert.ok(result.scope.coverageNote.includes('不是数字签名'), '结果声明正确性边界');
@@ -198,7 +198,7 @@ test('往返：仅删除候选（零资产、removed 保留旧条目）核验通
   const result = verify(fx.root, OLD_MANIFEST, packRel('rm-pack'));
   assert.equal(result.ok, true, JSON.stringify(result.errors));
   assert.deepEqual(result.compatibility.recomputedTotals, { added: 0, removed: 1, changed: 0, unchanged: 1 });
-  assert.equal(result.packVerification.verified, 0);
+  assert.equal(result.packVerification!.verified, 0);
   const r = cli(['--root', fx.root, '--base-manifest', OLD_MANIFEST, '--pack', packRel('rm-pack')]);
   assert.equal(r.status, 0, r.stderr);
 });
@@ -301,7 +301,7 @@ test('候选实图损坏：元数据全部相符仍因实际字节核验失败�
   assert.equal(result.ok, false);
   assert.ok(result.compatibility, '元数据层本身相符，compatibility 仍完整给出');
   assert.ok(result.errors.some((e) => e.source === 'pack-files' && e.code === 'hash-mismatch' && e.path === 'assets/alpha.txt'), JSON.stringify(result.errors));
-  assert.equal(result.packVerification.ok, false);
+  assert.equal(result.packVerification!.ok, false);
   const r = cli(['--root', fx.root, '--base-manifest', OLD_MANIFEST, '--pack', packRel('delta-ok')]);
   assert.equal(r.status, 1);
   assert.equal(JSON.parse(r.stdout).packVerification.errorCount > 0, true);
@@ -422,7 +422,7 @@ test('纯函数直接核验内存对象：篡改 totals/candidate 与输入不�
 
   const okResult = verifyDeltaPackContent({ baseManifest, packManifest, delta });
   assert.equal(okResult.ok, true, JSON.stringify(okResult.errors));
-  assert.equal(okResult.compatibility.candidate.actual.files, 2);
+  assert.equal(okResult.compatibility!.candidate.actual.files, 2);
 
   const totalsTampered = verifyDeltaPackContent({ baseManifest, packManifest, delta: { ...delta, totals: { ...delta.totals, added: 99 } } });
   assert.equal(totalsTampered.ok, false);

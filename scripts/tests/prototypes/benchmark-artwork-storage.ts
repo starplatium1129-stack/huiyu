@@ -53,7 +53,7 @@ async function main() {
         const context = await browser.newContext();
         try {
           const page = await context.newPage();
-          await page.goto(`http://127.0.0.1:${server.address().port}`);
+          await page.goto(`http://127.0.0.1:${server.address!().port}`);
           const indexedDB = await page.evaluate(async ({ history, projects }: any) => {
             const api = window.storageFixture;
             const start = performance.now();
@@ -89,7 +89,7 @@ async function main() {
       const context = await browser.newContext();
       try {
         const page = await context.newPage();
-        await page.goto(`http://127.0.0.1:${server.address().port}`);
+        await page.goto(`http://127.0.0.1:${server.address!().port}`);
         const indexedDB = await page.evaluate(async () => {
           const api = window.storageFixture;
           const images = Array.from({ length: 64 }, (_, index) => ({
@@ -119,7 +119,7 @@ async function main() {
         try {
           const publishMs = timed(() => candidate.importSnapshot('benchmark', { history: [], projects: [], trash: [], images }));
           let bytes = 0;
-          const readAllMs = timed(() => { for (const image of images) bytes += candidate.readImage(image.id).length; });
+          const readAllMs = timed(() => { for (const image of images) bytes += candidate.readImage!(image.id).length; });
           sqlite = { publishMs, readAllMs, bytes };
         } finally { candidate.close(); }
         assert.equal(indexedDB.bytes, 64 * 272 * 1024); assert.equal(sqlite.bytes, indexedDB.bytes);

@@ -240,7 +240,7 @@ function scanText(bytes: NodeJS.AllowSharedBufferSource|undefined, expectedEol: 
 
   const controlPattern = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/g;
   for (const match of source.matchAll(controlPattern)) {
-    const code = match[0].codePointAt(0).toString(16).toUpperCase().padStart(4, '0');
+    const code = match[0].codePointAt!(0).toString(16).toUpperCase().padStart(4, '0');
     violations.push(textViolation(
       'control',
       `illegal control character U+${code}`,
@@ -431,7 +431,7 @@ function scanWorktreeTarget(repositoryRoot: string, relativePaths: unknown[], ta
 
 function sortViolations(violations: unknown[]) {
   violations.sort((left: any, right: any) => {
-    const targetDifference = TARGET_ORDER.get(left.target) - TARGET_ORDER.get(right.target);
+    const targetDifference = TARGET_ORDER.get!(left.target) - TARGET_ORDER.get!(right.target);
     if (targetDifference !== 0) return targetDifference;
     const pathDifference = compareStrings(left.path, right.path);
     if (pathDifference !== 0) return pathDifference;
@@ -529,7 +529,7 @@ async function scanRepository(startPath: string, options: any = {}) {
   sortViolations(result.violations);
   result.allowed.sort((left: any, right: any) => {
     const pathDifference = compareStrings(left.path, right.path);
-    return pathDifference || TARGET_ORDER.get(left.target) - TARGET_ORDER.get(right.target);
+    return pathDifference || TARGET_ORDER.get!(left.target) - TARGET_ORDER.get!(right.target);
   });
   return result;
 }

@@ -16,8 +16,8 @@ test('host configuration cache isolates equally sized files with identical times
       fs.utimesSync(file, new Date(0), new Date(0));
       return { RUNTIME: { state } };
     });
-    assert.equal(readHostConfig(configs[0]).model, 'first');
-    assert.equal(readHostConfig(configs[1]).model, 'other');
+    assert.equal(readHostConfig!(configs[0]).model, 'first');
+    assert.equal(readHostConfig!(configs[1]).model, 'other');
   } finally {
     assert.equal(path.dirname(root), path.resolve(os.tmpdir()));
     assert.ok(path.basename(root).startsWith('aics-config-audit-'));
@@ -35,10 +35,10 @@ test('failed atomic replacement preserves the previous configuration and cleans 
     store.writeHostConfig(config, original);
     const fault = createHostConfigStore({ ...fs, renameSync() { throw new Error('replacement denied'); } });
     assert.throws(() => fault.writeHostConfig(config, { ...original, model: 'new' }), /replacement denied/);
-    assert.equal(store.readHostConfig(config).model, 'old');
+    assert.equal(store.readHostConfig!(config).model, 'old');
     assert.deepEqual(fs.readdirSync(root), ['chat_api_config.json']);
     store.writeHostConfig(config, { ...original, model: 'new' });
-    assert.equal(store.readHostConfig(config).model, 'new');
+    assert.equal(store.readHostConfig!(config).model, 'new');
     store.deleteHostConfig(config);
     assert.equal(store.readHostConfig(config), null);
   } finally {

@@ -103,8 +103,8 @@ async function main() {
   assert(blueprint, 'blueprint not found: ' + sceneId);
 
   fs.mkdirSync(OUTPUT_ROOT, { recursive: true });
-  console.log('场景: ' + blueprint.title + '（' + blueprint.id + '）');
-  console.log('角色: ' + character.displayName + '（' + character.id + '）');
+  console.log('场景: ' + blueprint!.title + '（' + blueprint!.id + '）');
+  console.log('角色: ' + character!.displayName + '（' + character!.id + '）');
 
   // ── 1) Anima 出图（横图 1216x832，匹配视频画布比例） ─────────────────────
   console.log('\n[1/4] Anima 出图…');
@@ -118,8 +118,8 @@ async function main() {
   });
   assert(built && built.prompt, 'buildPopularPromptPlan failed');
   var imageInput = animaRoute.validateInput({
-    prompt: built.prompt,
-    negative: built.negative || '',
+    prompt: built!.prompt,
+    negative: built!.negative || '',
     modelId: 'anima-aesthetic-v1.1',
     width: 1216,
     height: 832,
@@ -143,8 +143,8 @@ async function main() {
   var config = { AI_WORKSPACE_ROOT: AI_ROOT, ROOT_DIR: ROOT };
   // 与 VideoStudioView.composeVideoPrompt 同源：优先英文 promptProse（可直接
   // 驱动 H3 三段式），没有才回退中文结构化字段。
-  var scenePrompt = (blueprint.promptProse || '').trim()
-    || [blueprint.description, blueprint.action, blueprint.lighting]
+  var scenePrompt = (blueprint!.promptProse || '').trim()
+    || [blueprint!.description, blueprint!.action, blueprint!.lighting]
       .filter(Boolean).join('，');
   console.log('  场景描述: ' + scenePrompt);
   var input = videoRoute.validateInput({

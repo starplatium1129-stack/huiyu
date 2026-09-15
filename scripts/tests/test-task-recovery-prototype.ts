@@ -78,7 +78,7 @@ test('durable cancel intent during an in-flight completion query prevents result
   const recovery = f.recovery.reconcile(id);
   await started;
   f.recovery.requestCancel(id);
-  release({ state: 'succeeded' });
+  release!({ state: 'succeeded' });
   assert.equal((await recovery).state, 'cancelled');
   f.restart();
   assert.equal(f.journal.get(id).resultDisposition, 'discard');

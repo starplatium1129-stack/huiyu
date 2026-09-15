@@ -43,10 +43,11 @@ function fixture(t: any, withGit = true) {
     { id: 'sc002', char: 'natsume', prompt: 'two', rating: 'All', mature: false },
     { id: 'sc1000', char: 'triad', prompt: 'four digits', rating: 'All', mature: false },
   ];
-  for (const [domain, key, values, output, version] of [
+  const domains: Array<[string, string, typeof characters | typeof blueprints, string, number]> = [
     ['popular', 'characters', characters, 'popular-characters', 1],
     ['blueprints', 'blueprints', blueprints, 'scene-blueprints', 2],
-  ]) {
+  ];
+  for (const [domain, key, values, output, version] of domains) {
     write(`data/${domain}/manifest.json`, { files: [{ file: 'one.json', count: values.length }] });
     write(`data/${domain}/one.json`, { [key]: values });
     write(`data/${output}.json`, { version, [key]: values });

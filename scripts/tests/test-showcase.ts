@@ -217,27 +217,27 @@ test('showcase manifest extended contract: scene/artist/popular/lora entries wit
   assert.deepStrictEqual(mixed.counts, { All: 4, R15: 0, R18: 0 }, 'counts run across all entries');
 
   const scene = mixed.entries.find(entry => entry.id === 'sc001');
-  assert.strictEqual(scene.type, 'scene', 'missing type must default to scene');
-  assert.strictEqual(scene.meta, undefined, 'scene without meta stays metadata-free');
+  assert.strictEqual(scene!.type, 'scene', 'missing type must default to scene');
+  assert.strictEqual(scene!.meta, undefined, 'scene without meta stays metadata-free');
 
   const popular = mixed.entries.find(entry => entry.id === 'pc_raiden_shogun');
-  assert.strictEqual(popular.type, 'popular');
-  assert.strictEqual(popular.char, 'raiden_shogun', 'popular char is a free-form character id');
-  assert.strictEqual(popular.displayName, '雷电将军 (Genshin Impact)');
-  assert.strictEqual(popular.image, 'images/pc_raiden_shogun.png');
-  assert.strictEqual(popular.thumb, 'thumbs/pc_raiden_shogun.jpg');
+  assert.strictEqual(popular!.type, 'popular');
+  assert.strictEqual(popular!.char, 'raiden_shogun', 'popular char is a free-form character id');
+  assert.strictEqual(popular!.displayName, '雷电将军 (Genshin Impact)');
+  assert.strictEqual(popular!.image, 'images/pc_raiden_shogun.png');
+  assert.strictEqual(popular!.thumb, 'thumbs/pc_raiden_shogun.jpg');
   assert.deepStrictEqual(
-    popular.meta,
+    popular!.meta,
     { engine: 'anima', checkpoint: 'anima-aesthetic-v1.1.safetensors', seed: 12345 },
     'meta must keep only present fields and truncate seed to integer',
   );
 
   const artist = mixed.entries.find(entry => entry.id === 'artist_bunbun');
-  assert.strictEqual(artist.type, 'artist');
-  assert.strictEqual(artist.attempt, 2, 'artist entry keeps its attempt');
-  assert.strictEqual(artist.prompt, '1girl, bunbun', 'prompt is preserved for audit');
-  assert.strictEqual(artist.negative, 'bad anatomy');
-  assert.deepStrictEqual(artist.provenance, {
+  assert.strictEqual(artist!.type, 'artist');
+  assert.strictEqual(artist!.attempt, 2, 'artist entry keeps its attempt');
+  assert.strictEqual(artist!.prompt, '1girl, bunbun', 'prompt is preserved for audit');
+  assert.strictEqual(artist!.negative, 'bad anatomy');
+  assert.deepStrictEqual(artist!.provenance, {
     batch: 'artist',
     key: 'artist:bunbun',
     recordId: 'artist:bunbun@attempt-2',
@@ -245,8 +245,8 @@ test('showcase manifest extended contract: scene/artist/popular/lora entries wit
   }, 'provenance carries the review reference');
 
   const lora = mixed.entries.find(entry => entry.id === 'lora_nene_sd_closeup');
-  assert.strictEqual(lora.type, 'lora');
-  assert.deepStrictEqual(lora.meta, { engine: 'sd', loraId: 'L_NENE_V18_WD14', loraVersion: '1.8.0' });
+  assert.strictEqual(lora!.type, 'lora');
+  assert.deepStrictEqual(lora!.meta, { engine: 'sd', loraId: 'L_NENE_V18_WD14', loraVersion: '1.8.0' });
 
   // 元数据部分字段缺省：不存在的 key 不进入对象，空对象视为无 meta。
   const partial = parseShowcaseManifest({
@@ -260,8 +260,8 @@ test('showcase manifest extended contract: scene/artist/popular/lora entries wit
   }).entries;
   const partialMiku = partial.find(entry => entry.id === 'pc_miku');
   const partialEmpty = partial.find(entry => entry.id === 'pc_empty');
-  assert.deepStrictEqual(partialMiku.meta, { loraId: 'L_NENE_V20_ANIMA', loraVersion: '20b' });
-  assert.strictEqual(partialEmpty.meta, undefined, 'empty meta object must be dropped');
+  assert.deepStrictEqual(partialMiku!.meta, { loraId: 'L_NENE_V20_ANIMA', loraVersion: '20b' });
+  assert.strictEqual(partialEmpty!.meta, undefined, 'empty meta object must be dropped');
 
   // 类型约束：scene 必须使用工作室角色；artist/popular/lora 必须有非空 char。
   assert.throws(() => parseShowcaseManifest({ entries: [{ id: 'scx', title: 'x', char: 'unknown', rating: 'All' }] }), /没有有效条目/);

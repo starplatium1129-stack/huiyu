@@ -54,7 +54,7 @@ function safePath(file: any, kind = 'file', allowMissing = true) {
 }
 function directoryIdentity(file: any) {
   const info = safePath(file, 'directory', false);
-  return { path: keyPath(path.resolve(file)), dev: String(info.dev), ino: String(info.ino) };
+  return { path: keyPath(path.resolve(file)), dev: String(info!.dev), ino: String(info!.ino) };
 }
 function ensureDirectory(file: any) {
   if (safePath(file, 'directory')) return;
@@ -77,7 +77,7 @@ function readBytes(file: any, allowMissing = false) {
     if (before.dev !== opened.dev || before.ino !== opened.ino || !opened.isFile()) throw failure('MAINTENANCE_CONFLICT', '读取期间文件被替换：' + file);
     const bytes = fs.readFileSync(fd);
     const after = safePath(file, 'file', false);
-    if (after.ino !== before.ino || after.dev !== before.dev || after.size !== before.size || after.mtimeNs !== before.mtimeNs) throw failure('MAINTENANCE_CONFLICT', '读取期间文件发生变化：' + file);
+    if (after!.ino !== before.ino || after!.dev !== before.dev || after!.size !== before.size || after!.mtimeNs !== before.mtimeNs) throw failure('MAINTENANCE_CONFLICT', '读取期间文件发生变化：' + file);
     return bytes;
   } finally { fs.closeSync(fd); }
 }
@@ -120,8 +120,8 @@ function removeFile(file: any) {
 function writeJson(file: any, value: any) { atomicWrite(file, JSON.stringify(value, null, 2) + '\n'); }
 function readJson(file: any) {
   const bytes = readBytes(file);
-  if (bytes.length > 32 * 1024 * 1024) throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据过大');
-  try { return JSON.parse(bytes.toString('utf8')); }
+  if (bytes!.length > 32 * 1024 * 1024) throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据过大');
+  try { return JSON.parse(bytes!.toString('utf8')); }
   catch { throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据不是有效 JSON：' + file); }
 }
 
@@ -176,7 +176,7 @@ function readKey(ctx: any, create = false) {
     }
   }
   const key = readBytes(file);
-  if (key.length !== 32) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护签名密钥不完整，拒绝恢复');
+  if (key!.length !== 32) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护签名密钥不完整，拒绝恢复');
   return key;
 }
 function seal(value: any, key: any) { return { ...value, hmacSha256: crypto.createHmac('sha256', key).update(canonical(value)).digest('hex') }; }

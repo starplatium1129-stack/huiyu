@@ -53,7 +53,7 @@ async function application(f: any, position: string) {
     res.writeHead(200, 'OK', { 'Content-Type': 'application/json', 'ETag': '"old"' });
     res.flushHeaders();
     res.write('{"old":');
-    started.resolve(res);
+    started.resolve!(res);
     finish.promise.then(() => res.end('true}'));
   });
   app.use('/data', express.static(io.path.join(f.options.rootDir, 'data')));
@@ -63,7 +63,7 @@ async function application(f: any, position: string) {
     source, body, started, finish,
     get(url = '/data/scenes.json', headers = {}, method = 'GET', onResponse = () => {}) {
       return new Promise((resolve, reject) => {
-        const request = http.request({ hostname: '127.0.0.1', port: server.address().port, path: url, headers, method, agent: false }, response => {
+        const request = http.request({ hostname: '127.0.0.1', port: server.address!().port, path: url, headers, method, agent: false }, response => {
           onResponse(response);
           const chunks: any = [];
           response.on('data', chunk => chunks.push(chunk));
@@ -75,7 +75,7 @@ async function application(f: any, position: string) {
         request.end();
       });
     },
-    async close() { finish.resolve(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); },
+    async close() { finish.resolve!(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); },
   };
 }
 function decode(response: any) {
@@ -133,7 +133,7 @@ for (const position of ['before-compression', 'after-compression']) {
       await new Promise(resolve => setImmediate(resolve));
       assert.equal(sent, false, 'headers must remain private until the read fence passes');
       assert.equal(res.headersSent, false);
-      app.finish.resolve();
+      app.finish.resolve!();
       const rejected: any = await reading;
       assert.equal(rejected.status, 409);
       assert.equal(rejected.headers['content-encoding'], undefined);
@@ -164,7 +164,7 @@ for (const position of ['before-compression', 'after-compression']) {
             paused = stream;
             streamClosed = once(stream, 'close');
             streamClosed.catch(() => {});
-            stream.once('data', () => { stream.pause(); started.resolve(); });
+            stream.once('data', () => { stream.pause(); started.resolve!(); });
           }
           return stream;
         };

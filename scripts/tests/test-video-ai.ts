@@ -50,7 +50,7 @@ var DEFAULT_REPLY = JSON.stringify({
 function listen(server: Server<IncomingMessage,ServerResponse>) {
   return new Promise(function (resolve, reject) {
     server.once('error', reject);
-    server.listen(0, '127.0.0.1', function () { resolve(server.address().port); });
+    server.listen(0, '127.0.0.1', function () { resolve(server.address!().port); });
   });
 }
 

@@ -271,7 +271,7 @@ test('corpus: Anima Base single tag stream, underscores only on score/contract t
 
 test('corpus: Anima Aesthetic strips all quality/score tokens from positive and score from negative', () => {
   const aesthetic = profileOf('anima_aesthetic_v11')
-  assert.strictEqual(aesthetic.strip_quality_tokens, true, 'Aesthetic profile must declare strip_quality_tokens')
+  assert.strictEqual(aesthetic!.strip_quality_tokens, true, 'Aesthetic profile must declare strip_quality_tokens')
   for (const scene of scenes) {
     const effective = animaProfile(aesthetic, scene)
     const rendered = compiler.renderPromptPlan(planFor(scene, aesthetic, 'anima'), 'anima', effective)

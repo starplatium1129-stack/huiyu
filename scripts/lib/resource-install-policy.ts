@@ -74,7 +74,7 @@ function decodePack(manifestBytes: any, deltaBytes: any, release: any) {
   return { manifest: normalized, delta, manifestBytes, deltaBytes };
 }
 function inventory(ctx: any, root: any, declared: any) {
-  if (!noLinks(ctx.io, root).isDirectory()) fail('UNSAFE_PATH', 'Package/version root is not a directory');
+  if (!noLinks!(ctx.io, root).isDirectory()) fail('UNSAFE_PATH', 'Package/version root is not a directory');
   const seen = new Set();
   const directories = new Set(['assets']);
   for (const rel of declared) {
@@ -87,7 +87,7 @@ function inventory(ctx: any, root: any, declared: any) {
       const rel = prefix + name;
       const absolute = child(root, rel);
       const st = noLinks(ctx.io, absolute);
-      if (st.isDirectory()) {
+      if (st!.isDirectory()) {
         if (!directories.has(rel)) fail('UNLISTED_FILE', 'Unlisted directory in resource tree: ' + rel);
         visit(absolute, rel + '/');
       } else {

@@ -198,7 +198,7 @@ function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io =
   const manifestEntry = readRealFile(paths.manifestPath, io, '蓝图 manifest（' + paths.manifestPath + '）', false);
   let manifest;
   try {
-    manifest = JSON.parse(manifestEntry.content.toString('utf8'));
+    manifest = JSON.parse(manifestEntry.content!.toString('utf8'));
   } catch (error) {
     throw new BlueprintWriteError('蓝图 manifest 不是合法 JSON: ' + runtimeErrorMessage(error), 'boundary', paths.manifestPath);
   }
@@ -215,11 +215,11 @@ function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io =
     const shardEntry = readRealFile(abs, io, '来源分片 ' + file, false);
     let data;
     try {
-      data = JSON.parse(shardEntry.content.toString('utf8'));
+      data = JSON.parse(shardEntry.content!.toString('utf8'));
     } catch (error) {
       throw new BlueprintWriteError('来源分片 ' + file + ' 不是合法 JSON: ' + runtimeErrorMessage(error), 'boundary', abs);
     }
-    shardInputs[file] = { text: shardEntry.content.toString('utf8'), data };
+    shardInputs[file] = { text: shardEntry.content!.toString('utf8'), data };
     shardEntries.push({ file, entry: shardEntry });
   }
 

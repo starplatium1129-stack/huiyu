@@ -82,8 +82,8 @@ test('unsupported schemas keep their original version and data', t => {
   assert.throws(() => openArtworkCandidate(root), /Unsupported/);
   db = new DatabaseSync(database);
   try {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 2);
-    assert.equal(db.prepare('SELECT value FROM newer').get().value, 'preserved');
+    assert.equal(db.prepare('PRAGMA user_version').get!().user_version, 2);
+    assert.equal(db.prepare('SELECT value FROM newer').get!().value, 'preserved');
   } finally { db.close(); }
 });
 

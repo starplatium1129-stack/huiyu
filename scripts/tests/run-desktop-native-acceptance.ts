@@ -621,7 +621,7 @@ async function waitRectAligned(product: any, timeoutMs = 200, operationAt = Date
     if (measurement.expectedToDiagnostic.max <= 2) {
       const alignedInMs = Date.now() - operationAt
       const withHwnd = await rectMeasurement(product, true)
-      if (withHwnd.diagnosticToHwnd.max <= 2) return { ...withHwnd, alignedInMs }
+      if (withHwnd.diagnosticToHwnd!.max <= 2) return { ...withHwnd, alignedInMs }
       measurement = withHwnd
     }
     await delay(10)

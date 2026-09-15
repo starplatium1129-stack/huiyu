@@ -326,7 +326,7 @@ test('F2/F3：新一轮失败不清掉上一张成片与冻结上下文，可一
   session.patchState({ online: true });
   await session.generate();
   assert.equal(session.state.value.phase, 'succeeded');
-  const firstUrl = session.state.value.result.url;
+  const firstUrl = session.state.value.result!.url;
   // F3：成功结果的上下文来自提交时冻结快照
   assert.equal(session.state.value.resultContext?.characterId, 'raiden_shogun');
   assert.equal(session.state.value.resultContext?.outfitId, 'shogun_robes');
@@ -345,7 +345,7 @@ test('F2/F3：新一轮失败不清掉上一张成片与冻结上下文，可一
   // 找回：结果与冻结上下文一并回到舞台，错误态复位
   assert.equal(session.restoreStashedResult(), true);
   assert.equal(session.state.value.phase, 'succeeded');
-  assert.equal(session.state.value.result.url, firstUrl);
+  assert.equal(session.state.value.result!.url, firstUrl);
   assert.equal(session.state.value.resultContext?.outfitId, 'shogun_robes');
   assert.equal(session.state.value.errorMsg, '');
   assert.equal(session.restoreStashedResult(), false, 'stash 一次性消费');
@@ -386,7 +386,7 @@ test('late submit response after dispose is cancelled without reviving state', a
   session.patchState({ online: true });
   const generation = session.generate();
   session.dispose();
-  release({ ok: true, job: { id: 'late', seed: 1 } });
+  release!({ ok: true, job: { id: 'late', seed: 1 } });
   await generation;
   assert.equal(deleted, true);
   assert.notEqual(session.state.value.phase, 'running');

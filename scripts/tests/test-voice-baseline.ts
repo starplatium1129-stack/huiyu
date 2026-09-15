@@ -37,10 +37,10 @@ for (const id of requiredIds) {
 
 const nene = characters.find(function (item) { return item.id === 'nene'; });
 const natsume = characters.find(function (item) { return item.id === 'natsume'; });
-assert.strictEqual(byId.get('nene-ja-neutral').text, nene.voiceJa);
-assert.strictEqual(byId.get('nene-zh-neutral').text, nene.voice);
-assert.strictEqual(byId.get('natsume-ja-neutral').text, natsume.voiceJa);
-assert.strictEqual(byId.get('natsume-zh-neutral').text, natsume.voice);
+assert.strictEqual(byId.get('nene-ja-neutral').text, nene!.voiceJa);
+assert.strictEqual(byId.get('nene-zh-neutral').text, nene!.voice);
+assert.strictEqual(byId.get('natsume-ja-neutral').text, natsume!.voiceJa);
+assert.strictEqual(byId.get('natsume-zh-neutral').text, natsume!.voice);
 
 assert(metricsDoc.entries && typeof metricsDoc.entries === 'object', 'metrics entries required');
 for (const id of requiredIds) {
