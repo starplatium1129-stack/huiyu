@@ -463,12 +463,12 @@
     },
     {
       "id": "utaha_nsfw_senpai_straddle",
-      "title": "霞之丘诗羽 · 学姐的主控取材·「今天的题材是……让你说不出话」",
+      "title": "霞之丘诗羽 · 学姐的稿纸取材秘密·「今天的题材是……让你说不出话」",
       "category": "主控骑乘",
       "characterId": "kasumigaoka_utaha",
       "description": "【诗羽的公寓·深夜】「取材」是学姐最擅长的借口。诗羽跨坐在你的腰间，黑色蕾丝内衣早已在灯下凌乱，她俯身压下，红瞳近在咫尺——「今天的题材是……让你说不出话。安心，前辈会很温柔的……大概。那么，霞诗子老师的特别讲座——开、始、了♪」",
       "location": "公寓大床",
-      "action": "跨坐腰间俯身压下，黑蕾丝凌乱，红瞳近在咫尺",
+      "action": "跪坐稿纸地毯俯身下压，黑蕾丝凌乱半褪，红瞳近在咫尺含情挑逗",
       "timeOfDay": "深夜",
       "lighting": "床头幽暗暖光与蕾丝光泽",
       "camera": "cowgirl straddle POV, vertical framing, dominant lean-in",
@@ -483,8 +483,8 @@
         "smirk",
         "night"
       ],
-      "promptProse": "Research is senpai's favorite excuse. Kasumigaoka Utaha straddles your waist with her black lace lingerie already disheveled under the lamp, leaning down until her red eyes are inches from yours as she announces tonight's subject: rendering you speechless. She promises to be gentle — probably — before starting Kasumi Utako's special lecture with a slow, expert roll of her hips. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, volumetric warmth, depth of field.",
-      "nsfwProse": "Straddling the viewer's lap with her black lace lingerie pulled wide, Utaha Kasumigaoka leans down over bare bouncing breasts, whispering scandalous promises through flushed crimson lips.",
+      "promptProse": "Research is senpai's favorite excuse. Kasumigaoka Utaha kneels forward amidst scattered manuscripts with her black lace lingerie already disheveled under the lamp, leaning down until her red eyes are inches from the lens as she announces tonight's subject: rendering you speechless. She promises to be gentle — probably — before starting Kasumi Utako's special lecture with a slow, expert arch of her hips. Vertical low-angle solo composition, bouncing breasts, heavy blush, cinematic lighting, volumetric warmth, depth of field.",
+      "nsfwProse": "Kneeling forward amidst scattered manuscripts with her black lace lingerie pulled wide, Utaha Kasumigaoka curves over bare bouncing breasts, whispering scandalous prose through flushed crimson lips.",
       "promptTokens": [
         "bedroom",
         "lamp",
@@ -519,9 +519,10 @@
         "special_nsfw"
       ],
       "nsfwTokens": [
-        "straddling",
-        "cowgirl_position",
-        "on_lap",
+        "pov",
+        "kneeling",
+        "carpet",
+        "leaning_forward",
         "black_lingerie",
         "lace_bra",
         "bare_breasts",
@@ -529,7 +530,8 @@
         "pink_nipples",
         "pussy_juice",
         "heavy_blush",
-        "red_eyes"
+        "red_eyes",
+        "parted_lips"
       ]
     },
     {
@@ -697,7 +699,7 @@
         "steam"
       ],
       "promptProse": "Kasumigaoka Utaha's deadline-night ritual is a tub of hot water and a silk robe soaked to translucent sheerness. Reclining against the bath rim with the wet silk clinging to every mature curve, she lets one hand drift beneath the water, tracing remembered contours while her red eyes fall half-lidded, recording in her mental research diary that memory alone has verifiable precision. Sensual solo composition, wet translucent silk, cinematic lighting, volumetric steam, detailed bathroom background, depth of field.",
-      "nsfwProse": "Reclining in hot bathwater with a wet silk robe clinging sheer over full breasts and taut dark nipples, Utaha touches herself beneath the steaming ripples with lazy, sensual precision.",
+      "nsfwProse": "Reclining in hot bathwater with a wet silk robe clinging sheerly over full breasts and taut dark nipples, Utaha touches herself beneath the steaming ripples with lazy, sensual precision.",
       "promptTokens": [
         "bathroom",
         "bathtub",
@@ -732,17 +734,22 @@
         "special_nsfw"
       ],
       "nsfwTokens": [
+        "sitting_in_water",
+        "bathtub",
         "translucent_clothing",
         "wet_clothes",
         "see-through",
         "wet_cloth",
         "silk_robe",
         "nipples_visible_through_clothes",
-        "underwater",
+        "bare_breasts",
+        "submerged",
         "hand_between_legs",
         "masturbation",
+        "pussy_juice",
         "heavy_blush",
-        "teary_eyes"
+        "teary_eyes",
+        "parted_lips"
       ]
     },
     {
@@ -1246,12 +1253,12 @@
     },
     {
       "id": "megumi_nsfw_morning_straddle",
-      "title": "加藤惠 · 假日晨光的大号衬衫跨坐 ·「伦也君……这个节奏可以吗」",
+      "title": "加藤惠 · 假日晨光的大号衬衫柔情 ·「伦也君……这个节奏可以吗」",
       "category": "主控骑乘",
       "characterId": "katou_megumi",
       "description": "【伦也卧室·假日清晨】难得留宿的早晨，惠套着男式大号白衬衫跨坐在你腰间。衬衫扣子解开了大半，露出纤细白皙的锁骨与软肉，平时波澜不惊的眼神在微喘中漾起轻微水光——「伦也君……别光看着啊。要是社团脚本写不出来的话……这种取材……稍微、再多陪你一下也可以哦。」",
       "location": "伦也卧室·假日清晨",
-      "action": "跨坐腰间大号衬衫半敞，纤细双腿夹紧，垂眸微喘浅笑",
+      "action": "跪坐晨光软被大号衬衫半敞，纤细双腿微曲，垂眸微喘前倾浅笑",
       "timeOfDay": "深夜",
       "lighting": "柔和暖光与唯美阴影交错",
       "camera": "vertical POV",
@@ -1263,8 +1270,8 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Megumi Kato from Saekano straddles your lap in the quiet holiday morning light, wearing an oversized white boyfriend shirt left mostly unbuttoned. Her modest pale chest rises and falls with delicate breaths, pink nipples exposed above the parted cotton as her slender thighs frame your hips. Her deadpan expression softens into a fond, bashful gaze, soft brown eyes glinting through subtle morning tears as she rolls her waist with quiet tenderness. Vertical low-angle composition, golden hour sunlight streaming across rumpled sheets, detailed bedroom background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Straddling the viewer's lap in morning sunlight with her oversized boyfriend shirt unbuttoned over bare perky breasts, Megumi Kato rolls her hips with shy, tender affection.",
+      "promptProse": "Megumi Kato from Saekano kneels forward upon tangled sheets in the quiet holiday morning light, wearing an oversized white boyfriend shirt left mostly unbuttoned. Her modest pale chest rises and falls with delicate breaths, pink nipples exposed above the parted cotton as her slender thighs fold beneath her. Her deadpan expression softens into a fond, bashful gaze, soft brown eyes glinting through subtle morning tears as she leans close with quiet tenderness. Vertical low-angle composition, golden hour sunlight streaming across rumpled sheets, detailed bedroom background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Kneeling forward upon tangled morning sheets with her oversized boyfriend shirt unbuttoned over bare perky breasts, Megumi Kato leans in close with shy, tender affection.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -1303,9 +1310,11 @@
         "h_cg"
       ],
       "nsfwTokens": [
-        "straddling",
-        "cowgirl_position",
-        "on_lap",
+        "pov",
+        "kneeling",
+        "on_bed",
+        "white_sheets",
+        "leaning_forward",
         "oversized_shirt",
         "white_shirt",
         "open_shirt",
@@ -1313,7 +1322,8 @@
         "pink_nipples",
         "pussy_juice",
         "heavy_blush",
-        "gentle_smile"
+        "gentle_smile",
+        "parted_lips"
       ]
     },
     {
@@ -1336,7 +1346,7 @@
         "special_nsfw"
       ],
       "promptProse": "Megumi Kato sits on the smooth tiled edge of a steaming bathroom late at night, a soaked white towel clinging translucently over her petite frame. Droplets of moisture glisten down her delicate collarbone and bare stomach as one slender hand glides between her trembling thighs beneath the rising vapor. Her calm brown eyes turn glossy with private longing, lips parted in a quiet sigh of shy pleasure. Sensual vertical composition, soft cinematic rim light cutting through misty steam, detailed bathroom background, depth of field, solo 1girl, no text.",
-      "nsfwProse": "Sitting upon the tiled tub edge with a soaked white towel clinging translucently over small bare breasts, Megumi Kato touches her wet thighs in quiet, misty yearning.",
+      "nsfwProse": "Sitting upon the tiled tub edge with a soaked white towel clinging translucently over small bare breasts, Megumi Kato touches her wet thighs in quiet, misty yearning amidst warm bathroom vapors.",
       "promptTokens": [
         "bathroom",
         "bath_edge",
@@ -1374,11 +1384,14 @@
         "h_cg"
       ],
       "nsfwTokens": [
+        "sitting_on_edge",
+        "bathtub",
         "wet_skin",
         "wet_towel",
         "small_towel",
         "translucent_clothing",
         "nipples_visible_through_clothes",
+        "bare_breasts",
         "hand_between_legs",
         "masturbation",
         "pussy_juice",
