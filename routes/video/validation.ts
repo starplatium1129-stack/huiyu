@@ -102,7 +102,7 @@ function validateInput(body: any, config?: any, options?: { isLocal: boolean; }|
   let quality = body.quality === undefined || body.quality === null || body.quality === ''
     ? 'standard'
     : body.quality;
-  if (typeof quality !== 'string' || !QUALITIES[quality]) {
+  if (typeof quality !== 'string' || !QUALITIES[quality as keyof typeof QUALITIES]) {
     throw serviceError(400, 'INVALID_PARAMETER', '不支持的画质档位');
   }
   let image = body.image;
@@ -172,7 +172,7 @@ function validateInput(body: any, config?: any, options?: { isLocal: boolean; }|
   let dialogueLang = body.dialogueLang === undefined || body.dialogueLang === null || body.dialogueLang === ''
     ? 'auto'
     : body.dialogueLang;
-  if (typeof dialogueLang !== 'string' || !DIALOGUE_LANGS[dialogueLang]) {
+  if (typeof dialogueLang !== 'string' || !DIALOGUE_LANGS[dialogueLang as keyof typeof DIALOGUE_LANGS]) {
     throw serviceError(400, 'INVALID_PARAMETER', '对白语言仅支持 auto/zh/ja/en');
   }
   // 景别（P5 分镜字段）：H3 自然语言句；Wan 链路不接受（避免歧义）。
@@ -183,7 +183,7 @@ function validateInput(body: any, config?: any, options?: { isLocal: boolean; }|
     if (!isH3) {
       throw serviceError(400, 'MODEL_INPUT_MODE', '景别仅支持 MiniMax H3');
     }
-    if (!H3_SHOT_SIZE[shotSize]) {
+    if (!H3_SHOT_SIZE[shotSize as keyof typeof H3_SHOT_SIZE]) {
       throw serviceError(400, 'INVALID_PARAMETER', '不支持的景别');
     }
   }
@@ -209,20 +209,20 @@ function validateInput(body: any, config?: any, options?: { isLocal: boolean; }|
     if (!imageSize || !(imageSize.width > 0) || !(imageSize.height > 0)) {
       throw serviceError(400, 'INVALID_PARAMETER', '无法解析首帧图尺寸');
     }
-    aspect = fitCanvasToRatio(imageSize.width, imageSize.height, QUALITIES[quality]);
+    aspect = fitCanvasToRatio(imageSize.width, imageSize.height, QUALITIES[quality as keyof typeof QUALITIES]);
   } else {
-    aspect = QUALITIES[quality].sizes[body.aspectRatio];
+    aspect = (QUALITIES[quality as keyof typeof QUALITIES].sizes as Record<string, any>)[body.aspectRatio];
     if (!aspect) throw serviceError(400, 'INVALID_PARAMETER', '不支持的画面比例');
   }
-  let duration = DURATIONS[body.duration];
+  let duration = DURATIONS[body.duration as keyof typeof DURATIONS];
   if (!duration && isH3 && H3_EXTRA_DURATIONS.has(body.duration)) {
     duration = { seconds:body.duration, frames:0 };
   }
   if (!duration) {
     throw serviceError(400, 'INVALID_PARAMETER', isH3 ? '时长支持 3/5/10/15 秒' : '时长只支持 3 秒或 5 秒');
   }
-  if (!CAMERA[body.camera]) throw serviceError(400, 'INVALID_PARAMETER', '不支持的镜头运动');
-  if (!MOTION[body.motion]) throw serviceError(400, 'INVALID_PARAMETER', '不支持的主体运动');
+  if (!CAMERA[body.camera as keyof typeof CAMERA]) throw serviceError(400, 'INVALID_PARAMETER', '不支持的镜头运动');
+  if (!MOTION[body.motion as keyof typeof MOTION]) throw serviceError(400, 'INVALID_PARAMETER', '不支持的主体运动');
   let seed = body.seed;
   if (seed === undefined || seed === null || seed === '') {
     seed = crypto.randomInt(0, 0x7fffffff);
@@ -238,14 +238,14 @@ function validateInput(body: any, config?: any, options?: { isLocal: boolean; }|
   // 组装前的派生量：文案自带镜头/动作意图时控制器句子让位；
   // soundscape/music 按场景信号派生（无信号回退通用模板）。
   let userPrompt = body.prompt.trim();
-  let h3CameraLine = proseCarriesCameraMention(userPrompt) ? null : H3_CAMERA[body.camera];
-  let h3MotionLine = proseCarriesMotionMention(userPrompt) ? null : H3_MOTION[body.motion];
-  let wanCameraLine = proseCarriesCameraMention(userPrompt) ? null : CAMERA[body.camera];
-  let wanMotionLine = proseCarriesMotionMention(userPrompt) ? null : MOTION[body.motion];
+  let h3CameraLine = proseCarriesCameraMention(userPrompt) ? null : H3_CAMERA[body.camera as keyof typeof H3_CAMERA];
+  let h3MotionLine = proseCarriesMotionMention(userPrompt) ? null : H3_MOTION[body.motion as keyof typeof H3_MOTION];
+  let wanCameraLine = proseCarriesCameraMention(userPrompt) ? null : CAMERA[body.camera as keyof typeof CAMERA];
+  let wanMotionLine = proseCarriesMotionMention(userPrompt) ? null : MOTION[body.motion as keyof typeof MOTION];
 
   // H3 景别/对白派生句（官方 4.1/4.4）：景别写成构图自然句；对白用说话人 ID
   // (S1) + <d>[语言标签] 原文</d> 块，逐字保留用户台词（不翻译不改写）。
-  let h3ShotLine = shotSize === null ? null : H3_SHOT_SIZE[shotSize].line;
+  let h3ShotLine = shotSize === null ? null : H3_SHOT_SIZE[shotSize as keyof typeof H3_SHOT_SIZE].line;
   let dialogueLine = dialogue
     ? ' The subject in the frame (S1) says: <d>[' + resolveDialogueLang(dialogue, dialogueLang) + '] ' + dialogue + '</d>'
     : null;
@@ -357,7 +357,7 @@ function validateBatchInput(body: any, config?: any) {
   let quality = body.quality === undefined || body.quality === null || body.quality === ''
     ? 'standard'
     : body.quality;
-  if (typeof quality !== 'string' || !QUALITIES[quality]) {
+  if (typeof quality !== 'string' || !QUALITIES[quality as keyof typeof QUALITIES]) {
     throw serviceError(400, 'INVALID_PARAMETER', '不支持的画质档位');
   }
   let linkLastFrame = body.linkLastFrame === undefined || body.linkLastFrame === null
