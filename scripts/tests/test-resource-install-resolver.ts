@@ -25,7 +25,7 @@ function readOnlyIo(onRead?: any) {
     }
   }
   io.createWriteStream = denied('createWriteStream');
-  io.openSync = (file: any, flags: any, ...rest) => {
+  io.openSync = (file: any, flags: any, ...rest: any[]) => {
     if (flags !== 'r' && flags !== fs.constants.O_RDONLY) return denied('openSync')(file, flags);
     const fd = fs.openSync(file, flags, ...rest);
     opened.set(fd, String(file));

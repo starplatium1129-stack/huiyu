@@ -60,7 +60,7 @@ const TEXT_TOKENS = [
 ];
 
 // 解开 var(--x) 别名链,拿到最终字面值
-function resolve(tokens: any, name: any, depth: any) {
+function resolve(tokens: any, name: any, depth: any): any {
   const raw = tokens[name];
   if (!raw) return null;
   if ((depth || 0) > 8) return null;

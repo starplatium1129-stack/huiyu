@@ -57,7 +57,7 @@ function assertNoAccessOutside(calls: any, rootReal: any) {
 }
 
 /** 快照目录内容（不跟随链接）。仅用于本测试创建的夹具目录。 */
-function snapshot(dir: any) {
+function snapshot(dir: any): any {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(dir, e.name);
     if (e.isSymbolicLink()) return [[p, '<link>']];
@@ -507,7 +507,7 @@ test('候选元数据真实路径离开包目录即使仍在 root 内也不得�
   const packAbs = path.join(fx.root, packRel('metadata-scope'));
   for (const filename of ['manifest.json', 'delta.json']) {
     const target = path.join(packAbs, filename);
-    const { io, calls } = recordingIo({ realpathSync: (p: any, ...rest) => {
+    const { io, calls } = recordingIo({ realpathSync: (p: any, ...rest: any[]) => {
       if (String(p) === target) return fs.realpathSync(path.join(fx.root, OLD_MANIFEST));
       return fs.realpathSync(p, ...rest);
     } });

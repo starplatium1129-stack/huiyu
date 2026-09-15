@@ -49,7 +49,7 @@ function assertNoAccessOutside(calls: any, rootReal: any) {
 }
 
 /** 快照目录内容（不跟随链接；链接只记占位）。仅用于本测试创建的夹具目录。 */
-function snapshot(dir: any) {
+function snapshot(dir: any): any {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(dir, e.name);
     if (e.isSymbolicLink()) return [[p, '<link>']];
@@ -241,7 +241,7 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
   const alpha = path.join(fx.root, 'assets', 'alpha.txt');
   let alphaReads = 0;
   const { io, calls } = recordingIo({
-    readFileSync: (p: any, ...rest) => {
+    readFileSync: (p: any, ...rest: any[]) => {
       if (path.resolve(String(p)) === path.resolve(alpha)) {
         alphaReads++;
         if (alphaReads === 2) {
@@ -268,7 +268,7 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
 test('候选写入失败：不发布最终包，已复制候选保留在暂存目录', (t) => {
   const fx = buildFixture(t);
   const { io } = recordingIo({
-    writeFileSync: (p: any, ...rest) => {
+    writeFileSync: (p: any, ...rest: any[]) => {
       if (String(p).endsWith(path.join('assets', 'dir', 'bravo.bin'))) throw Object.assign(new Error('模拟写入失败'), { code: 'EIO' });
       return fs.writeFileSync(p, ...rest);
     },
@@ -396,7 +396,7 @@ test('非 Windows 只读预览可用，apply 明确拒绝且零写入', (t) => {
 test('清单磁盘写入损坏或合法但丢条目均不得发布', (t) => {
   for (const corrupt of ['{broken', JSON.stringify({ schemaVersion: 1, entries: [] })]) {
     const fx = buildFixture(t);
-    const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest) => {
+    const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest: any[]) => {
       if (String(p).endsWith('manifest.json')) return fs.writeFileSync(p, corrupt, ...rest);
       return fs.writeFileSync(p, value, ...rest);
     } });
@@ -410,7 +410,7 @@ test('清单磁盘写入损坏或合法但丢条目均不得发布', (t) => {
 
 test('候选副本读回内容损坏不得发布', (t) => {
   const fx = buildFixture(t);
-  const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest) => {
+  const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest: any[]) => {
     return fs.writeFileSync(p, String(p).endsWith('alpha.txt') ? Buffer.from('Z') : value, ...rest);
   } });
   const result = stageResourcePack({ root: fx.root, name: 'badcopy', manifestPath: 'artifacts/manifest.json', io });
@@ -429,7 +429,7 @@ test('源核验后内部目录变成排除域 junction，复制前拒绝读取',
     fs.symlinkSync(path.join(excluded, 'saved-dir'), path.join(fx.root, 'assets/dir'), process.platform === 'win32' ? 'junction' : 'dir');
     swapped = true;
     return dir;
-  }, readFileSync: (p: any, ...rest) => {
+  }, readFileSync: (p: any, ...rest: any[]) => {
     if (swapped && String(p).startsWith(path.join(fx.root, 'assets/dir') + path.sep)) throw new Error('排除目标被读取');
     return fs.readFileSync(p, ...rest);
   } });
@@ -442,7 +442,7 @@ test('源核验后内部目录变成排除域 junction，复制前拒绝读取',
 test('源核验期间目标祖先出现 junction，首次写入前拒绝', (t) => {
   const fx = buildFixture(t);
   let inserted = false;
-  const { io, calls } = recordingIo({ readFileSync: (p: any, ...rest) => {
+  const { io, calls } = recordingIo({ readFileSync: (p: any, ...rest: any[]) => {
     const value = fs.readFileSync(p, ...rest);
     if (!inserted && String(p).endsWith(path.join('assets', 'dir', 'charlie.txt'))) {
       fs.mkdirSync(path.join(fx.root, 'scripts'));

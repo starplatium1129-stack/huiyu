@@ -21,7 +21,7 @@ function object(value: any) { return value !== null && typeof value === 'object'
 function jsonText(value: any) { return JSON.stringify(value, null, 2) + '\n'; }
 
 // Resolve existing parents as well as aliases of existing files before any report write.
-function canonicalPath(file: any) {
+function canonicalPath(file: any): any {
   const absolute = path.resolve(file);
   if (fs.existsSync(absolute)) return fs.realpathSync(absolute);
   const parent = path.dirname(absolute);

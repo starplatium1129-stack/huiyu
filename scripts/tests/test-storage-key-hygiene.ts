@@ -40,7 +40,7 @@ const REGISTERED_KEYS = {
   'aics_show_mature': ['src/utils/storageKeys.ts'],
 };
 
-function listSourceFiles(dir: string) {
+function listSourceFiles(dir: string): any {
   const out = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);

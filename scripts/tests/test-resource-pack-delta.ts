@@ -50,7 +50,7 @@ function assertNoAccessOutside(calls: any, rootReal: any) {
 }
 
 /** 快照目录内容（不跟随链接）。仅用于本测试创建的夹具目录。 */
-function snapshot(dir: any) {
+function snapshot(dir: any): any {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(dir, e.name);
     if (e.isSymbolicLink()) return [[p, '<link>']];
@@ -280,7 +280,7 @@ test('两个元数据任一写坏都不发布：暂存保留并给出明确错�
   for (const [target, code] of [['manifest.json', 'manifest-write-mismatch'], ['delta.json', 'delta-write-mismatch']]) {
     const fx = buildDeltaFixture(t);
     const packName = `bad-${target.replace('.json', '')}`;
-    const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest) => {
+    const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest: any[]) => {
       if (String(p).endsWith(target)) return fs.writeFileSync(p, '{corrupted', ...rest);
       return fs.writeFileSync(p, value, ...rest);
     } });

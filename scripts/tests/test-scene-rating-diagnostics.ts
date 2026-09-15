@@ -25,7 +25,7 @@ function fixture(t: any) {
   const run = (...args) => spawnSync(process.execPath, [path.join(root, 'scripts/maintenance/classify-scene-ratings.js'), ...args], { encoding: 'utf8', env: { ...process.env, AICS_DATA_ROOT: root } });
   return { root, put, rows, run };
 }
-function snapshot(root: any) {
+function snapshot(root: any): any {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap((e) => {
     const target = path.join(root, e.name);
     return e.isDirectory() ? snapshot(target) : [[target, fs.readFileSync(target).toString('base64')]];

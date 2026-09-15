@@ -16,7 +16,7 @@ function write(file: any, bytes: any) {
   fs.writeFileSync(file, bytes);
 }
 function json(file: any) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-function snapshot(root: any) {
+function snapshot(root: any): any {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap(entry => {
     const target = path.join(root, entry.name);
     if (entry.isSymbolicLink()) return [[target, '<link>']];

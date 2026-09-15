@@ -150,7 +150,7 @@ test('unlisted source paths and unknown generator mappings remain unknown and ar
   const f = fixture(t);
   const read = fs.readFileSync;
   const source = path.join(f.root, 'data/neutral.json');
-  const guard = t.mock.method(fs, 'readFileSync', (file: PathOrFileDescriptor, ...args) => {
+  const guard = t.mock.method(fs, 'readFileSync', (file: PathOrFileDescriptor, ...args: any[]) => {
     assert.notEqual(String(file), source, 'unlisted source must not be accessed');
     return read(file, ...args);
   });
@@ -175,7 +175,7 @@ test('escaping asset symlinks are rejected without reading their targets', (t) =
   try { fs.symlinkSync(outside, image, 'file'); }
   catch (error) { if (runtimeErrorCode(error) === 'EPERM') { t.skip('file symlink unavailable; junction test below is unconditional'); return; } throw error; }
   const read = fs.readFileSync;
-  t.mock.method(fs, 'readFileSync', (file: any, ...args) => { assert.notEqual(file, outside); return read(file, ...args); });
+  t.mock.method(fs, 'readFileSync', (file: any, ...args: any[]) => { assert.notEqual(file, outside); return read(file, ...args); });
   const result = audit(f.options);
   assert.equal(result.items[0].asset.status, 'invalid');
   assert.equal(result.exitCode, 1);
@@ -187,7 +187,7 @@ test('candidate image directory junction is rejected before any bytes can escape
   fs.renameSync(path.join(f.candidateRoot, 'images'), outside);
   fs.symlinkSync(outside, path.join(f.candidateRoot, 'images'), process.platform === 'win32' ? 'junction' : 'dir');
   const read = fs.readFileSync;
-  t.mock.method(fs, 'readFileSync', (file: any, ...args) => {
+  t.mock.method(fs, 'readFileSync', (file: any, ...args: any[]) => {
     assert.ok(!String(file).startsWith(outside));
     assert.notEqual(file, path.join(f.candidateRoot, f.record.image), 'do not read through the junction alias');
     return read(file, ...args);
@@ -224,7 +224,7 @@ test('input drift during verification makes an otherwise approved result stale',
   const file = path.join(f.root, 'data/neutral.json');
   const read = fs.readFileSync;
   let calls = 0;
-  t.mock.method(fs, 'readFileSync', (name: PathOrFileDescriptor, ...args) => {
+  t.mock.method(fs, 'readFileSync', (name: PathOrFileDescriptor, ...args: any[]) => {
     if (name === file && ++calls > 1) return Buffer.from('concurrent source change');
     return read(name, ...args);
   });

@@ -8,7 +8,7 @@ const { spawnSync }: typeof import('node:child_process') = require('node:child_p
 const { parse, report }: typeof import('../maintenance/report-content-impact') = require('../maintenance/report-content-impact');
 const { formatImpactReport }: typeof import('../lib/content-impact-format') = require('../lib/content-impact-format');
 
-function git(root: any, ...args) {
+function git(root: any, ...args: any[]) {
   const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
 }
@@ -157,7 +157,7 @@ test('reference 仅读取索引，URL 和配置的素材根不访问', (t) => {
   f.write('data/character-reference-view.json', { a: { outfits: [{ outfitId: 'dress', references: [{ url: 'https://invalid.test/image' }] }] } });
   const original = fs.readFileSync;
   const reads: any = [];
-  t.mock.method(fs, 'readFileSync', (file: any, ...args) => { reads.push(String(file)); return original(file, ...args); });
+  t.mock.method(fs, 'readFileSync', (file: any, ...args: any[]) => { reads.push(String(file)); return original(file, ...args); });
   t.mock.method(globalThis, 'fetch', () => { throw new Error('network forbidden'); });
   const r = report(options(f.root));
   assert.equal(r.referenceEvidence[0].status, 'declared-unverified');

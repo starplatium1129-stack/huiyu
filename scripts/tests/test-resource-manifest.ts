@@ -64,7 +64,7 @@ function buildFixture(t: any) {
   return { base, root, outside, secretAbs: path.join(outside, 'secret.txt') };
 }
 
-function snapshot(root: any) {
+function snapshot(root: any): any {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(root, e.name);
     if (e.isSymbolicLink()) return [[p, '<link>']];

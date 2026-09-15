@@ -29,7 +29,7 @@ function fixture(t: any) {
   put('src/assets/css/director/tokens.css', '.pb { --character-accent: red; }');
   return { root, put };
 }
-function snapshot(root: any) {
+function snapshot(root: any): any {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(root, e.name);
     return e.isDirectory() ? snapshot(p) : [[p, fs.readFileSync(p).toString('base64')]];

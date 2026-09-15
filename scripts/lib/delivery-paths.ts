@@ -9,7 +9,7 @@ const EVIDENCE_DIR = 'runtime/delivery-evidence';
 const object = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const sha256 = (value: any) => createHash('sha256').update(value).digest('hex');
 const canonical = (value: any) => JSON.stringify(sortValue(value));
-function sortValue(value: any) {
+function sortValue(value: any): any {
   if (Array.isArray(value)) return value.map(sortValue);
   if (!object(value)) return value;
   return Object.fromEntries(Object.keys(value).sort().map(key => [key, sortValue(value[key])]));

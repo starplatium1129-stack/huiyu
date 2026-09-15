@@ -16,7 +16,7 @@ function within(parent: any, file: any) {
   const relative = path.relative(keyPath(path.resolve(parent)), keyPath(path.resolve(file)));
   return relative !== '' && relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative);
 }
-function canonical(value: any) {
+function canonical(value: any): any {
   if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
   if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
   return JSON.stringify(value);

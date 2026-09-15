@@ -19,7 +19,7 @@ function pathDomain(file: string) {
     'data/character-reference-standards.json': 'references', 'data/character-reference-view.json': 'references' }[file] || null;
 }
 
-function fieldDiff(before: any, after: any, prefix: any = '') {
+function fieldDiff(before: any, after: any, prefix: any = ''): any {
   if (equal(before, after)) return [];
   if (!before || !after || typeof before !== 'object' || typeof after !== 'object' || Array.isArray(before) || Array.isArray(after)) return [prefix || '/'];
   return [...new Set([...Object.keys(before), ...Object.keys(after)])].sort().flatMap((field: any) =>

@@ -196,7 +196,7 @@ test('junction escape is rejected without reading external data and no write API
   fs.symlinkSync(path.join(outside, 'blueprints'), path.join(f.root, 'data/blueprints'), process.platform === 'win32' ? 'junction' : 'dir');
   const before = snapshot(outside);
   const read = fs.readFileSync;
-  t.mock.method(fs, 'readFileSync', (file: PathOrFileDescriptor, ...args) => {
+  t.mock.method(fs, 'readFileSync', (file: PathOrFileDescriptor, ...args: any[]) => {
     assert.ok(!String(file).startsWith(outside), 'outside data must not be read');
     return read(file, ...args);
   });

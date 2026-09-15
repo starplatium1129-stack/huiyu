@@ -34,7 +34,7 @@ function createLocalStorage(initial = {}) {
   };
 }
 
-function filesUnder(directory: any) {
+function filesUnder(directory: any): any {
   const result = [];
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const full = path.join(directory, entry.name);

@@ -66,7 +66,7 @@ assert(
 // Vue 用 @click / v-on 绑定；出现 onclick= 说明是拼接字符串塞进 v-html，会被 CSP 拦。
 const inlineHandlerRe = /\son(?:click|change|input|submit|keydown|keyup|focus|blur|error)\s*=\s*["'][^"']/i;
 
-function walk(dir: any) {
+function walk(dir: any): any {
   const out = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);

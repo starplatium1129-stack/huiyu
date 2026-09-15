@@ -433,7 +433,7 @@ test('generate_character_image：仅保存草稿，不虚报图片、任务或�
 test('generate_character_image：草稿写入失败明确返回失败', async (t) => {
   const root = tempWorkspace();
   const originalWrite = fs.writeFileSync;
-  t.mock.method(fs, 'writeFileSync', function (file: any, ...args) {
+  t.mock.method(fs, 'writeFileSync', function (file: any, ...args: any[]) {
     if (String(file).startsWith(path.join(root, 'generated-images'))) throw new Error('draft write failed');
     return originalWrite.call(this, file, ...args);
   });

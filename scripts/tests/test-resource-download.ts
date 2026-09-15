@@ -217,8 +217,8 @@ test('download ENOSPC keeps installed resources and permits retry', async t => {
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
   const files = new Map();
-  io.openSync = (file: any, ...args) => { const fd = fs.openSync(file, ...args); files.set(fd, String(file)); return fd; };
-  io.writeSync = (fd: any, ...args) => {
+  io.openSync = (file: any, ...args: any[]) => { const fd = fs.openSync(file, ...args); files.set(fd, String(file)); return fd; };
+  io.writeSync = (fd: any, ...args: any[]) => {
     if (files.get(fd)?.endsWith('.part')) throw Object.assign(new Error('injected disk full'), { code: 'ENOSPC' });
     return fs.writeSync(fd, ...args);
   };
