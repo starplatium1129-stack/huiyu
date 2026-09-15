@@ -68,7 +68,7 @@ html[data-reduced-motion="true"] *::after {
   transition: none !important;
   scroll-behavior: auto !important;
 }
-html[data-reduced-motion="true"] .route-loader { display: none; }
+html[data-reduced-motion="true"] .route-loader i { width: 100%; transform: none; }
 html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay, .nav, .gallery-toolbar, .gen-bar, .pb .gen-bar) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;

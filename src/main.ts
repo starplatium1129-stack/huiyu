@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import { installRouteRecovery } from './composables/useRouteRecovery'
+import { installNavigationFeedback } from './composables/useNavigationFeedback'
 import { initializeTheme } from './composables/useTheme'
 import { initializeDesktopPreferences, installDesktopInteraction } from './composables/useDesktopInteraction'
 import { installFluidGlass } from './utils/fluidGlass'
@@ -28,9 +29,10 @@ import './assets/css/fluid-glass.css'
 initializeTheme()
 initializeDesktopPreferences()
 installRouteRecovery(router)
+const stopNavigationFeedback = installNavigationFeedback(router)
 
 createApp(App).use(createPinia()).use(router).mount('#app')
 const stopDesktopInteraction = installDesktopInteraction(router)
 const stopFluidGlass = installFluidGlass()
 const stopDesktopZoom = installDesktopZoom()
-if (import.meta.hot) import.meta.hot.dispose(() => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom() })
+if (import.meta.hot) import.meta.hot.dispose(() => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom(); stopNavigationFeedback() })

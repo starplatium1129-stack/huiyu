@@ -1,9 +1,8 @@
 /* 画面舞台 */
   .pb .stage-placeholder {
     position:relative; isolation:isolate; overflow:hidden;
-    /* 2026-08-22 动效审计 #6：接活原 workspace-enter-studio 的交接动画——
-       v-show 关→开会重启动画，回到画布即获得导演级软落位。 */
-    animation:directorViewIn .42s var(--ease-out) both;
+    /* 画布切换只轻移表面，不再次模糊文字或持有变换图层。 */
+    animation:directorViewIn var(--motion-control) var(--ease-out);
     min-height:clamp(380px, 46vh, 560px);
     max-height:580px;
     display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;

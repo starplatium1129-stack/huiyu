@@ -21,7 +21,10 @@
 
 ## 当前审计与待办
 
-- [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：同心圆角、角色选择器、工具栏层级、真实玻璃表达与桌面交付；执行与审核分工及首批任务。
+- [剩余任务与验收顺序](roadmap.md)：后续补丁桌面同步、蓝图保存事务、资源分发、剩余治理、真实模型/设备及暂停事项；已完成项不重复列入。
+- [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：U0–U5 及后续浏览器打磨已有记录，保留 U6 后续补丁交付、真机验收和未覆盖状态；原启动任务属于历史。
+- [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：部分切片已实施，按文末状态表复用现成工具，剩余任务从 roadmap 进入。
+- [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局/接口与计划内评估已完成；拟议的新增存储/恢复方案不等于已接入生产，现有行为保留，原生设备验收单列。
 
 - [六份盘点报告汇总复核](research/engineering/six-task-review-2026-09-13.md)与[GLM Flash 分批任务](guides/engineering/glm-flash-next-batches.md)：状态校准、立绘缺失误报修正、蓝图保存风险和后续实施边界。
 - [工程研究资料归档](research/engineering/README.md)：资产、图片候选、容器与文案、文档证据及未执行验收用例的已核验范围。
@@ -30,20 +33,21 @@
 - [Gemini 第二轮复核与场景创作交接](guides/engineering/gemini-scene-draft-handoff.md)：已纠正项、新误报与 60 份场景概念／12 份双引擎草稿任务；不写生产内容。
 - [GLM 报告复核与实施交接](guides/engineering/glm-implementation-handoff.md)：先做工作流元数据和只读覆盖报告，发布与真实内容变更单列。
 - [Gemini 资产交付复核](research/engineering/gemini-asset-review-2026-09-13.md)与[后续任务包](guides/engineering/gemini-followup-tasks.md)：结构账本复核、报告更正、视觉初筛与文案/文档整理。
-- [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复修复。
 - [GLM / Gemini 任务提示词](guides/engineering/model-task-briefs.md)：工作流与字段职责盘点、资产对账与视觉初审；输出范围分离，统一复核。
 - [成年角色 NSFW / R-18 CG 提示词规范](guides/prompts/nsfw-cg-prompt-standard.md)：双引擎 NSFW 语法、脱衣防冲突机制、Danbooru 核心矩阵与 R-18 蓝图规范。
 - [手机竖屏壁纸](guides/prompts/mobile-wallpaper-prompt-standard.md)与[成年角色非露骨 CG 研究](research/prompts/adult-nonexplicit-cg-reliability-2026-09-13.md)：iPhone 17 Pro／通用长屏适配、非露骨创作及中性一致性检查；候选未出图。
 - [单人物立绘与特写壁纸规范](guides/prompts/character-wallpaper-prompt-standard.md)：与叙事 CG 同列重点，分别评价人物表现和桌面适配；案例尚未出图。
 - [叙事 CG 提示词规范](guides/prompts/narrative-cg-prompt-standard.md)与[研究依据](research/prompts/anima-krea2-narrative-cg-research-2026-09-12.md)：Anima／Krea 2 人物环境融合；示例及实验计划尚未真实出图。
-- [工作流与内容数据治理计划（006）](../plans/006-workflow-and-content-governance.md)：后续工作流优化与人物、服装、场景、资产数据维护规划。
-- [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局与状态接口整理、持久化和恢复原型、职责映射及本轮验收记录。
+## 已实现与验收记录
+
+- [项目状态](project-status.md)：已实现范围与分阶段验证边界；内容数量保留日期，不把旧统计当作新盘点。
+- [页面切换、工作台动效与旧模块清理（2026-09-15）](archive/audits/ui-navigation-and-unused-2026-09-15.md)：导航阶段 41 项浏览器回归与后续删除分别记录；两处旧实现及专属测试已移除，安装版尚未同步。
+- [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：已完成的草稿 ID、快照版本、增量分片、完整性与失败恢复修复；剩余变更集及 ID 格式迁移仍见 roadmap。
 - [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。
 - [全站交互细节优化（2026-09-12）](archive/audits/interaction-detail-polish-2026-09-12.md)：状态联动、菜单/搜索/灯箱焦点、录音、分镜反馈与双主题页面复验。
 - [1.7.1 办公机修复](releases/v1.7.1.md)：独立审计 A01–A05 的修复、浏览器契约整理与发布验收边界。
 
-- [办公机独立全面审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md)：当前源码、当次门禁、隔离复现与浏览器结果；区分代码缺陷、已验证范围和无出图环境的验收缺口。
-- [未完成事项](roadmap.md)：本次确证问题、保留的素材/真机验收、暂停任务与待决策项。历史记录中的“待办”不自动成为当前执行指令。
+- [办公机独立全面审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md)：当时源码与失败/通过证据；后续修复查项目状态，不直接执行旧待办。
 
 ## 按需查阅
 
@@ -53,7 +57,7 @@
 - [研究与候选方案](research/README.md)：调研依据与待评估提案。
 - [历史记录](archive/README.md)：审计、批次、实验、故障与过期方案。
 - [版本更新](releases/v1.7.1.md)：当前修复及验收边界；[1.7.0](releases/v1.7.0.md)、[1.6.1](releases/v1.6.1.md)、[1.6.0](releases/v1.6.0.md) 与 [1.5.10](releases/v1.5.10.md) 保留为历史版本。
-- [暂缓提案](../plans/README.md)：未启动的专项提案。
+- [专项计划与保留提案](../plans/README.md)：部分实施、待验收与暂停提案分别登记；001–003 已归档。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)：面向使用者的静态手册。
 
 ## 文档放在哪里

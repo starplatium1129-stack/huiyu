@@ -7,6 +7,19 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.goto('/prompt-builder')
     await expect(page.locator('.gen-bar')).toBeVisible()
+    const randomMenu = page.locator('.random-menu-trigger')
+    await expect(randomMenu).toBeVisible()
+    await expect(randomMenu).toBeEnabled()
+    await randomMenu.click()
+    const randomUndo = page.locator('.random-undo')
+    await expect(randomUndo).toBeDisabled()
+    await expect(randomUndo).toHaveCSS('opacity', '1')
+    await expect(randomUndo).toHaveCSS('color', await randomUndo.evaluate(el => {
+      const probe = document.createElement('span')
+      probe.style.color = 'var(--text-disabled)'; el.append(probe)
+      const color = getComputedStyle(probe).color; probe.remove(); return color
+    }))
+    await randomMenu.click()
     if (width === 390) {
       expect((await page.locator('.gen-bar-size select').boundingBox())!.width).toBeGreaterThanOrEqual(140)
     }

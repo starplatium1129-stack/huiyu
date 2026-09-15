@@ -209,7 +209,10 @@ function onUndo() {
   color: var(--accent);
 }
 .random-undo:disabled {
-  opacity: .45;
+  color: var(--text-disabled);
+  border-color: color-mix(in srgb, var(--border-soft) 60%, transparent);
+  background: var(--bg-deep);
   cursor: not-allowed;
+  transform: none;
 }
 </style>

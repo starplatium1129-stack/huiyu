@@ -1,30 +1,44 @@
-<template><div class="route-loader" :class="{ active: loading }" aria-hidden="true"><i></i></div></template>
+<template>
+  <div class="route-loader" :class="{ active: loading }" aria-hidden="true"><i></i></div>
+  <span class="sr-only" role="status" aria-label="页面加载状态" aria-live="polite" aria-atomic="true">{{ loading ? '正在打开页面…' : '' }}</span>
+</template>
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, onUnmounted } from 'vue'
 import { prefetchRoute } from '@/router'
-import { useSceneStore } from '@/stores/sceneStore'
+import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { playInterfaceTone } from '@/composables/useInterfaceFeedback'
-import { prefersReducedMotion } from '@/utils/motionPreference'
-const router = useRouter()
-const store = useSceneStore()
-const loading = ref(false)
-const prefetched = new Set<string>()
-let timer = 0
-let media: MediaQueryList | null = null
-let before: (() => void) | undefined
-let after: (() => void) | undefined
-let error: (() => void) | undefined
-function finish() { clearTimeout(timer); loading.value = false }
-function motionChanged() { if (prefersReducedMotion()) finish() }
-function prefetch(event: Event) {
+
+const { loading } = useNavigationFeedback()
+let hoverTimer = 0
+type Connection = { saveData?: boolean; effectiveType?: string }
+
+function intentLink(event: Event): HTMLAnchorElement | null {
   const el = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null
-  if (!el || el.target === '_blank') return
+  if (!el || el.target === '_blank' || el.hasAttribute('download')) return null
   const url = new URL(el.href, location.href)
-  if (url.origin !== location.origin || url.pathname === location.pathname || prefetched.has(url.pathname)) return
-  prefetched.add(url.pathname)
-  prefetchRoute(url.pathname + url.search)
-  if (['/scene-explorer', '/prompt-builder', '/showcase', '/character'].includes(url.pathname) && !store.loaded) void store.load()
+  if (url.origin !== location.origin || url.pathname === location.pathname) return null
+  return el
+}
+function cancelHover() { clearTimeout(hoverTimer) }
+function prefetch(event: Event) {
+  const el = intentLink(event)
+  if (!el) return
+  const connection = (navigator as Navigator & { connection?: Connection }).connection
+  if (connection?.saveData || /^(slow-)?2g$/.test(connection?.effectiveType ?? '')) return
+  if (event instanceof PointerEvent && event.type === 'pointerdown' && event.button !== 0) return
+  if (event instanceof PointerEvent && event.type === 'pointerover' && event.relatedTarget instanceof Node && el.contains(event.relatedTarget)) return
+  cancelHover()
+  const warm = () => {
+    const url = new URL(el.href, location.href)
+    void prefetchRoute(url.pathname + url.search)
+  }
+  // Crossing the navigation is not intent; focus and pointer-down are.
+  if (event.type === 'pointerover') hoverTimer = window.setTimeout(warm, 90)
+  else warm()
+}
+function pointerOut(event: PointerEvent) {
+  const el = intentLink(event)
+  if (el && (!(event.relatedTarget instanceof Node) || !el.contains(event.relatedTarget))) cancelHover()
 }
 function click(event: MouseEvent) {
   const el = event.target instanceof Element ? event.target.closest('button,a[href],summary') : null
@@ -32,21 +46,23 @@ function click(event: MouseEvent) {
   playInterfaceTone(el.matches('.btn-danger,[data-tone="danger"]') ? 'warning' : el.matches('.btn-primary') ? 'confirm' : 'tap')
 }
 onMounted(() => {
-  media = matchMedia('(prefers-reduced-motion: reduce)')
-  media.addEventListener('change', motionChanged)
-  window.addEventListener('atelier:motion-preference', motionChanged)
   document.addEventListener('pointerover', prefetch, { passive: true })
+  document.addEventListener('pointerout', pointerOut, { passive: true })
   document.addEventListener('focusin', prefetch)
   document.addEventListener('pointerdown', prefetch, { passive: true })
   document.addEventListener('click', click)
-  before = router.beforeEach(() => { finish(); if (!prefersReducedMotion()) timer = window.setTimeout(() => { loading.value = !prefersReducedMotion() }, 180) })
-  after = router.afterEach(finish)
-  error = router.onError(finish)
 })
-onUnmounted(() => { finish(); before?.(); after?.(); error?.(); media?.removeEventListener('change', motionChanged); window.removeEventListener('atelier:motion-preference', motionChanged); document.removeEventListener('pointerover', prefetch); document.removeEventListener('focusin', prefetch); document.removeEventListener('pointerdown', prefetch); document.removeEventListener('click', click) })
+onUnmounted(() => {
+  cancelHover()
+  document.removeEventListener('pointerover', prefetch)
+  document.removeEventListener('pointerout', pointerOut)
+  document.removeEventListener('focusin', prefetch)
+  document.removeEventListener('pointerdown', prefetch)
+  document.removeEventListener('click', click)
+})
 </script>
 <style scoped>
-.route-loader { position: fixed; z-index: var(--z-toast); inset: 0 0 auto; height: 2px; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity .2s ease; }
+.route-loader { position: fixed; z-index: var(--z-toast); inset: 0 0 auto; height: 2px; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity var(--motion-hover) ease; }
 .route-loader.active { opacity: 1; }
 .route-loader i { display: block; width: 35%; height: 100%; background: var(--accent); transform: translateX(-110%); }
 .route-loader.active i { animation: route-progress 1.2s ease-in-out infinite; }

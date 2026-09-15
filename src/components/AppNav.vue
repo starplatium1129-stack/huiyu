@@ -19,6 +19,7 @@
           :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
           :class="{ active: activeId === item.id }"
           :aria-current="activeId === item.id ? 'page' : undefined"
+          :data-pending="pendingPath === item.to || undefined"
           :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
           @click="closeMenu"
         >
@@ -27,7 +28,7 @@
         </RouterLink>
 
         <!-- 归档 · 分组下拉：发现/美学/工坊，5 项主导航之外全部收口 -->
-        <details class="nav-more" :data-active="secondaryActive || undefined" ref="moreEl">
+        <details class="nav-more" :data-active="secondaryActive || undefined" :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined" ref="moreEl">
           <!-- 不加 aria-label:它会盖掉可见文字"归档",违反 SC 2.5.3 Label in Name -->
           <summary>更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></summary>
           <div class="nav-more-menu">
@@ -42,6 +43,7 @@
           :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
                 :class="{ active: activeId === item.id }"
                 :aria-current="activeId === item.id ? 'page' : undefined"
+                :data-pending="pendingPath === item.to || undefined"
                 @click="closeMenu"
               >
                 <ArchiveIcon :name="item.icon" />
@@ -96,6 +98,7 @@ import AppSoundToggle from './AppSoundToggle.vue'
 import AppThemeToggle from './AppThemeToggle.vue'
 import TaskCenterButton from './tasks/TaskCenterButton.vue'
 import { useTaskCenter } from '@/composables/useTaskCenter'
+import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { needsDocumentReload } from '@/router'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { openGlobalSearch } from '@/composables/useGlobalSearch'
@@ -103,6 +106,7 @@ import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 
 const route = useRoute()
 const { activeCount } = useTaskCenter()
+const { pendingPath } = useNavigationFeedback()
 function openBesideTask(path: string) { return activeCount.value > 0 && needsDocumentReload(route.path, path) && !location.hostname.includes('tauri') }
 const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
@@ -226,6 +230,12 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.nav-links a[data-pending="true"], .nav-more[data-pending="true"] > summary {
+  outline: 1px solid var(--border-strong);
+  outline-offset: -1px;
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
 .nav-help { grid-column: 1 / -1; padding: var(--s-3); margin-top: var(--s-2); border: 0; border-top: 1px solid var(--border-soft); background: transparent; color: var(--text-muted); text-align: left; font: inherit; font-size: var(--fs-label); cursor: pointer; }
 
 /* logo.svg 是 132×48 的完整字标（图形 + 绘遇），

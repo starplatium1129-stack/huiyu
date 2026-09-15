@@ -68,10 +68,8 @@
   grid-template-areas: "story stage" "story decisions";
   gap: var(--s-4);
   align-items: start;
-  animation: pbWorkspaceIn .38s var(--ease-out) both;
 }
-  .pb .director-workspace > .col-left { animation:directorRailIn .48s var(--ease-out) .04s both; }
-  .pb .director-workspace > .col-center { animation:directorStageIn .56s var(--ease-out) .1s both; }
+/* The route owns page entry; nested columns remain opaque and immediately readable. */
 .pb .director-col { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
 .pb.journal-workspace .col-left {
   grid-area: story;

@@ -9,10 +9,11 @@
 
 ## 审计快照
 
+- [页面切换、工作台动效与旧模块清理（2026-09-15）](audits/ui-navigation-and-unused-2026-09-15.md)：导航/动效验证和后续删除分阶段记录；桌面同步仍未完成。
 - [场景滚动与角色档案补全（2026-09-12）](audits/scene-scroll-character-profiles-2026-09-12.md)
 - [全站交互细节审查与优化（2026-09-12）](audits/interaction-detail-polish-2026-09-12.md)
 
-当前结论见 [2026-09-12 独立审计](audits/office-independent-audit-2026-09-12.md)。以下均为历史快照；保留原始成功、失败与未执行记录，不将旧评分、数量或未修复列表当作现状。尚未完成的工作统一留在 [未来规划](../roadmap.md)。
+当前实现见 [项目状态](../project-status.md)，尚未完成的工作统一留在 [未来规划](../roadmap.md)。[2026-09-12 独立审计](audits/office-independent-audit-2026-09-12.md)及以下条目均为历史快照；保留原始成功、失败与未执行记录，不将旧评分、数量或未修复列表当作现状。
 
 - [工作台包体优化与办公机验收（2026-09-12）](audits/workbench-bundle-2026-09-12.md)
 - [网站体验审计与优化 · 2026-09-09](audits/website-experience-2026-09-09.md)

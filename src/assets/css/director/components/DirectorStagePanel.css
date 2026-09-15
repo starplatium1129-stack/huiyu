@@ -5,10 +5,8 @@
    ============================================================ */
    .pb .result-image-wrap {
      position:relative; overflow:hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
-     /* 2026-08-22 动效审计 #6：接活原 workspace-enter-result 的交接动画——
-       v-if 随每张新成片重挂载，整块面板获得导演级软落位；
-       图片自身的 aicsBloomReveal 保持，形成双层质感。 */
-     animation:directorViewIn .46s var(--ease-out) both;
+     /* 成片容器轻移，图片自身单独显现，操作文字保持清晰。 */
+     animation:directorViewIn var(--motion-control) var(--ease-out);
      border-radius:var(--r-stage); background:var(--bg-deep);
      box-shadow:inset 0 1px 0 var(--glass-specular), 0 20px 50px color-mix(in srgb, black 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
    }

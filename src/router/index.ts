@@ -3,6 +3,7 @@ import { confirmAction } from '@/composables/useConfirm'
 import { createRouter, createWebHistory } from 'vue-router'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import { needsDocumentReload } from './documentPolicy'
+import { createRoutePrefetcher } from './prefetch'
 export { needsDocumentReload } from './documentPolicy'
 
 /**
@@ -67,15 +68,7 @@ const router = createRouter({
  * 加载的），所以模块求值不需要 eval，在严格 CSP 的文档里预热也不会抛错；
  * 真抛了也被下面的 catch 吞掉，而整页刷新后会用新文档重新加载，不受影响。
  */
-export function prefetchRoute(path: string): void {
-  const route = router.resolve(path)
-  for (const record of route.matched) {
-    const component = record.components?.default
-    if (typeof component === 'function') {
-      void (component as () => Promise<unknown>)().catch(() => {})
-    }
-  }
-}
+export const prefetchRoute = createRoutePrefetcher(router)
 
 router.beforeEach(async (to, from) => {
   // 初次进入（无 from）由浏览器自己请求文档，CSP 已经对路径生效

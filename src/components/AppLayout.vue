@@ -5,9 +5,9 @@
     <RouteAtmosphere />
     <GuestGuide />
     <!-- 必须是真的 <main>：skip-link 指向这里，之前是 div，跳转链接落在一个普通容器上 -->
-    <main id="main" class="page-main" tabindex="-1">
+    <main id="main" class="page-main" tabindex="-1" :aria-busy="!!pendingPath || undefined">
       <RouterView v-slot="{ Component, route }">
-        <Transition :css="false" @enter="onEnter" @leave="onLeave">
+        <Transition :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled">
           <!-- 作品册缓存：数百张大图的 blob URL 与解码结果常驻内存，
                切到其他页再回来不重新从 IndexedDB 读图，秒开。
                其余页面按需重建（各自 onMounted 拉最新数据）。 -->
@@ -35,79 +35,17 @@
 </template>
 
 <script setup lang="ts">
-import { animateMini } from 'motion'
-import { onMounted, onUnmounted, onDeactivated } from 'vue'
-import { prefersReducedMotion } from '@/utils/motionPreference'
+import { useRouteTransition } from '@/composables/useRouteTransition'
+import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import AppNav from './AppNav.vue'
 import RouteAtmosphere from './visual/RouteAtmosphere.vue'
 import GuestGuide from './GuestGuide.vue'
 
-// 每个路由节点独立持有动画。进入与离开可能同时发生，若共用单个句柄，
-// leave 会把新页面的 enter 停在 opacity:0，快速切页时就会出现空白舞台。
-const activeAnimations = new Map<Element, {
-  controls: ReturnType<typeof animateMini>
-  done: () => void
-  opacity: number
-}>()
-
-// done 可能在"动画自然完成"和"stop 强制完成"两条路径被触发，只执行一次
-function onceDone(done: () => void) {
-  let called = false
-  return () => {
-    if (called) return
-    called = true
-    done()
-  }
-}
-
+const { onBeforeEnter, onEnter, onLeave, onEnterCancelled } = useRouteTransition()
+const { pendingPath } = useNavigationFeedback()
 // 页脚年份跟随当前年份，避免手写年份过期
 const currentYear = new Date().getFullYear()
 
-function stopActive(el: Element) {
-  const active = activeAnimations.get(el)
-  if (!active) return
-  active.controls.stop()
-  ;(el as HTMLElement).style.opacity = String(active.opacity)
-  ;(el as HTMLElement).style.transform = ''
-  active.done()
-  activeAnimations.delete(el)
-}
-
-function trackAnimation(el: Element, controls: ReturnType<typeof animateMini>, done: () => void, opacity: number) {
-  activeAnimations.set(el, { controls, done, opacity })
-  controls.then(() => {
-    done()
-    if (activeAnimations.get(el)?.controls === controls) activeAnimations.delete(el)
-  })
-}
-
-function onEnter(el: Element, done: () => void) {
-  stopActive(el)
-  const doneOnce = onceDone(done)
-  const reduced = prefersReducedMotion()
-  const controls = reduced
-    ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0 })
-    : animateMini(
-        el as HTMLElement,
-        { opacity: [0, 1], transform: ['translateY(10px) scale(.994)', 'translateY(0) scale(1)'] },
-        { type: 'spring', bounce: 0, duration: 0.44 },
-      )
-  trackAnimation(el, controls, doneOnce, 1)
-}
-
-function onLeave(el: Element, done: () => void) {
-  stopActive(el)
-  const doneOnce = onceDone(done)
-  const reduced = prefersReducedMotion()
-  const controls = animateMini(el as HTMLElement, { opacity: 0 }, { duration: reduced ? 0 : 0.12, ease: 'easeOut' })
-  trackAnimation(el, controls, doneOnce, 0)
-}
-const motionMedia = matchMedia('(prefers-reduced-motion: reduce)')
-function settleAll() { for (const el of [...activeAnimations.keys()]) stopActive(el) }
-function motionChanged() { if (prefersReducedMotion()) settleAll() }
-onMounted(() => { motionMedia.addEventListener('change', motionChanged); window.addEventListener('atelier:motion-preference', motionChanged) })
-onDeactivated(settleAll)
-onUnmounted(() => { settleAll(); motionMedia.removeEventListener('change', motionChanged); window.removeEventListener('atelier:motion-preference', motionChanged) })
 </script>
 
 <style scoped>
