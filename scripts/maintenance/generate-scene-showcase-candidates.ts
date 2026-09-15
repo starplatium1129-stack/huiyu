@@ -75,7 +75,7 @@ function assertIsolated(output: any) {
   }
   return resolved;
 }
-function profileById(id: any) {
+function profileById(id: any): any {
   const profile = (presets.model_profiles || []).find((item: any) => item.id === id);
   if (!profile) throw new Error(`presets.json missing profile ${id}`);
   return profile;

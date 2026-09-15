@@ -383,7 +383,7 @@ function verifyEntries(rootReal: string, manifest: ManifestObject, io: typeof im
 /**
  * 校验内存清单对象（测试/调用者可直接传入）。返回结果对象，不抛内容性错误。
  */
-function verifyManifestEntries({ root, manifest, io = nodeFs }: { root: string; manifest: ManifestObject; io?: typeof import('node:fs') }) {
+function verifyManifestEntries({ root, manifest, io = nodeFs }: any) {
   const rootReal = resolveRoot({ root, io });
   const { errors, listed, uniquePaths, byPath } = verifyEntries(rootReal, manifest, io);
   const errorPaths = new Set(errors.map((e) => (e as { path?: string }).path).filter((e): e is string => Boolean(e)));
@@ -462,7 +462,7 @@ const DIFF_SCOPE = Object.freeze({
  * 仍比较已列条目，但整体 ok=false，不构成「完整一致」的成功结论。old→new 由调用
  * 参数顺序决定；结果路径按码元顺序稳定排序。
  */
-function compareManifests({ oldManifest, newManifest }: { oldManifest: ManifestObject; newManifest: ManifestObject }) {
+function compareManifests({ oldManifest, newManifest }: any) {
   const oldStructure = parseManifestStructure(oldManifest);
   const newStructure = parseManifestStructure(newManifest);
   const errors: Array<Record<string, any>> = [

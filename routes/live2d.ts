@@ -4,7 +4,7 @@ let express: typeof import('express') = require('express');
 let createLive2dService = (require('../services/live2d-service') as typeof import('../services/live2d-service')).createLive2dService;
 let createLive2dTextureService = (require('../services/live2d-textures') as typeof import('../services/live2d-textures')).createLive2dTextureService;
 
-function createLive2dRouter(config: { LIVE2D_ROOT: string; }, dependencies?: any) {
+function createLive2dRouter(config: any, dependencies?: any) {
   dependencies = dependencies || {};
   let router = express.Router();
   let service = dependencies.live2d || createLive2dService({

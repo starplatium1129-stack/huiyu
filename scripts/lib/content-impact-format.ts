@@ -219,7 +219,7 @@ function formatImpactReport(result: any) {
     `范围摘要: 必改 ${count(result.mustChange)} ｜ 需复验 ${count(result.revalidate)} ｜ 仅关联 ${count(result.related)} ｜ 未知 ${count(result.unknown)} 条 ｜ 建议命令 ${count(result.recommendations)}（未执行）`,
   ];
   const blocks = [header];
-  const add = (build: { (): any[]; (): any[]; (): any[]; (): any[]; (): any[]; (): string[]; (): any; (): any; (): any[]; (): any[]; (): any[]; (): any[]; (): any[]; (): any; }) => {
+  const add = (build: any) => {
     try { const block: any = build(); if (block.length) blocks.push(block); } catch { blocks.push(['（该节渲染异常；完整结果使用 --json 查看）']); }
   };
   add(() => issueSection('必改 mustChange', result.mustChange));

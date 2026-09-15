@@ -88,7 +88,7 @@ function validJob(overrides?: any) {
   }, overrides || {});
 }
 
-function prepareComfyResources(context: { config: { AI_WORKSPACE_ROOT: string; }; }) {
+function prepareComfyResources(context: any) {
   var root = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
   [
     ['diffusion_models', 'anima-base-v1.0.safetensors'],

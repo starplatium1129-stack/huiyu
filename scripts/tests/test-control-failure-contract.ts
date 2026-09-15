@@ -57,7 +57,7 @@ async function getJson(baseUrl: any, pathname: string) {
   return { status:response.status, json:await response.json() };
 }
 
-async function waitFor(check: { (): Promise<any>; (): Promise<""|"active">; (): Promise<""|"cleared">; (): Promise<any>; (): Promise<any>; (): any; }, description: string) {
+async function waitFor(check: any, description: string) {
   var deadline = Date.now() + 3000;
   while (Date.now() < deadline) {
     var value = await check();

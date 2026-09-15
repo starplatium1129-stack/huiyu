@@ -35,7 +35,7 @@ function hostConfigPublic(config: GatewayConfig) {
   };
 }
 
-function chatCharacterPrompt(character: string, context?: { userProfile: { callName: string; relationship: string; note: string; }|null|undefined; memories: string[]|undefined; }) {
+function chatCharacterPrompt(character: string, context?: any) {
   return chatPrompts.buildCharacterPrompt(character, context);
 }
 
@@ -430,7 +430,7 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
   if (handlers.onDone) await handlers.onDone();
 }
 
-async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; model: string; apiKey: string; vendor: string; }, signal?: AbortSignal) {
+async function inspectCompatibleApi(api: any, signal?: AbortSignal) {
   let modelsPath = api.pathname.replace(/\/chat\/completions$/, '/models');
   let result = await httpClient.request(api.baseUrl, modelsPath, {
     method:'GET',

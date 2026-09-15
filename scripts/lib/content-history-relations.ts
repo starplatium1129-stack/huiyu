@@ -45,7 +45,7 @@ function relations(row: any, snapshots: any, unknown: string[]) {
   return output;
 }
 
-function relationshipIssues(snapshots: { [x: string]: { groups: { [x: string]: any; }; }; popular: { groups: { [x: string]: any; }; }; blueprints: { groups: { [x: string]: any; }; }; scenes: { groups: { [x: string]: any; }; }; }, { keys } = {}) {
+function relationshipIssues(snapshots: any, { keys } = {}) {
   const issues = [];
   const selected = (row: any) => !keys || keys.has(row.key);
   const popular: any = snapshots.popular?.groups['popular:source'];

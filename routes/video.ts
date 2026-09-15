@@ -207,7 +207,7 @@ function createVideoService(config: any, dependencies: any) {
     snapshots.remove(job.id);
   }
 
-  function schedulePoll(job: { status: string; pollTimer: string|number|NodeJS.Timeout|null|undefined; }, delay: number|undefined) {
+  function schedulePoll(job: any, delay: number|undefined) {
     if (registry.isClosed() || job.status !== 'running') return;
     if (job.pollTimer) clearTimeout(job.pollTimer);
     job.pollTimer = setTimeout(function () {

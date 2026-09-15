@@ -333,7 +333,7 @@ function shouldReuse(record: any, imagePath: any, force: any) {
   if (!fs.existsSync(imagePath)) return false;
   try { return fs.statSync(imagePath).size > 1000; } catch (error) { return false; }
 }
-function profileById(id: any) {
+function profileById(id: any): any {
   const profile = (presets.model_profiles || []).find((item: any) => item.id === id);
   if (!profile) throw new Error(`presets.json missing profile ${id}`);
   return profile;

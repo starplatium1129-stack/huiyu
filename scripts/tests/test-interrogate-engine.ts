@@ -37,7 +37,7 @@ async function generateTestImage() {
 
 async function run() {
   var failures = 0;
-  async function check(name: string, fn: { (): void; (): void; (): Promise<void>; (): void; (): void; (): void; (): void; (): void; (): void; (): void; (): void; (): any; }) {
+  async function check(name: string, fn: any) {
     try { await fn(); console.log('  ✔ ' + name); }
     catch (e) { failures++; console.error('  ✘ ' + name + ' — ' + runtimeErrorMessage(e)); }
   }

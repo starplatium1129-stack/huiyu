@@ -262,7 +262,7 @@ function buildWanWorkflow(input: any) {
  * 按模型族分派工作流。options.t8Available 由编排层注入（探测缓存在那里），
  * 保持本模块无状态、可独立单测。
  */
-function buildWorkflow(input: { modelId: string; }, options: any) {
+function buildWorkflow(input: any, options: any) {
   let t8Available = Boolean(options && options.t8Available);
   if (input.modelId === 'minimax-h3') {
     return t8Available ? buildH3T8Workflow(input) : buildH3Workflow(input);

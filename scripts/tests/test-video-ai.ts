@@ -28,7 +28,7 @@ function createApiMock() {
     var chunks: any = [];
     req.on('data', function (chunk) { chunks.push(chunk); });
     req.on('end', function () {
-      var body = {};
+      var body: any = {};
       try { body = JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch (error) { /* 保持空 */ }
       state.requests.push({ method:req.method, url:req.url, headers:req.headers, body:body });
       var reply = state.replies.length ? state.replies.shift() : DEFAULT_REPLY;
