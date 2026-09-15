@@ -28,7 +28,7 @@ function runToolProcess(command: string, args: readonly string[], options: ToolO
     let stderr: Buffer[] = [];
     let limit = options.maxBuffer || 64 * 1024;
 
-    function finish(error?: unknown, result?: ToolOutput) {
+    function finish(error?: any, result?: ToolOutput) {
       if (settled) return;
       settled = true;
       clearTimeout(timer);

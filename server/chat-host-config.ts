@@ -37,7 +37,7 @@ function createHostConfigStore(io = fs) {
     } catch { cache.delete(file); return null; }
   }
 
-  function writeHostConfig(config: ChatConfigLocation, value: unknown) {
+  function writeHostConfig(config: ChatConfigLocation, value: any) {
     const file = chatHostConfigPath(config);
     io.mkdirSync(path.dirname(file), { recursive: true });
     const temporary = file + '.' + randomUUID() + '.tmp';

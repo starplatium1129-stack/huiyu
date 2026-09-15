@@ -35,7 +35,7 @@ function jsonResponse(body: any, status = 200, headers = {}) {
 }
 
 function pendingFetch(signals: any) {
-  return (_url: unknown, init: any) => new Promise((_resolve, reject) => {
+  return (_url: any, init: any) => new Promise((_resolve, reject) => {
     signals.push(init.signal);
     init.signal.addEventListener('abort', () => {
       reject(new DOMException('aborted', 'AbortError'));
@@ -419,12 +419,12 @@ test('client removes the caller listener and clears its timeout after success', 
   let requestSignal: any;
   const callerSignal = {
     aborted: false,
-    addEventListener(event: unknown, listener: unknown) {
+    addEventListener(event: any, listener: any) {
       assert.equal(event, 'abort');
       assert.equal(typeof listener, 'function');
       addCount += 1;
     },
-    removeEventListener(event: unknown, listener: unknown) {
+    removeEventListener(event: any, listener: any) {
       assert.equal(event, 'abort');
       assert.equal(typeof listener, 'function');
       removeCount += 1;
@@ -539,7 +539,7 @@ test('useControlActions.doStart stops after a real config API failure', async ()
 test('useControlStatus stopPolling aborts isolated in-flight status and logs requests', async () => {
   const statusSignals: any = [];
   const logSignals: any = [];
-  const waitForAbort = (signal: AbortSignal|undefined, bucket: unknown[]) => new Promise((_resolve, reject) => {
+  const waitForAbort = (signal: AbortSignal|undefined, bucket: any[]) => new Promise((_resolve, reject) => {
     bucket.push(signal);
     signal!.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
   });

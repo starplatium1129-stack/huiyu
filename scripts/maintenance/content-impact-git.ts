@@ -36,7 +36,7 @@ function collectGitHistory(root: PathLike, base: string) {
     validateRevision(base);
     const settings = ['-c', 'core.fsmonitor=false', '-c', 'gc.auto=0', '-c', 'maintenance.auto=false'];
     const env = gitEnvironment();
-    const run = (args: unknown[], allowed: any = [0], record: any = true, binary: any = false) => {
+    const run = (args: any[], allowed: any = [0], record: any = true, binary: any = false) => {
       const output = childProcess.spawnSync('git', [...settings, ...args], {
         cwd: root, env, timeout: 15000, maxBuffer: MAX_BYTES, windowsHide: true, shell: false,
       });

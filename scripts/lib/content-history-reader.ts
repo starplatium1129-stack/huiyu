@@ -10,8 +10,8 @@ const { TextDecoder }: typeof import('node:util') = require('node:util');
 const { isSceneId }: typeof import('./scene-id') = require('./scene-id');
 
 const MAX_BYTES = 16 * 1024 * 1024;
-const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
-const validId = (value: unknown): value is string => typeof value === 'string' && value.length > 0 && value.trim() === value;
+const object = (value: any): value is Record<string, any> => value !== null && typeof value === 'object' && !Array.isArray(value);
+const validId = (value: any): value is string => typeof value === 'string' && value.length > 0 && value.trim() === value;
 // Keep the existing three-digit namespace; wider IDs cannot have redundant zeroes.
 const canonicalSceneId = isSceneId;
 const digest = (bytes: string|NodeJS.ArrayBufferView<ArrayBufferLike>) => createHash('sha256').update(bytes).digest('hex');

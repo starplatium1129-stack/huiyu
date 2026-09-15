@@ -27,7 +27,7 @@ function text(value: any) {
 }
 
 // 摘要行中的 40 位以上十六进制标识缩略为 12 位；完整值保留在 --json。
-function short(value: string|unknown[]|null|undefined) {
+function short(value: string|any[]|null|undefined) {
   return typeof value === 'string' && /^[a-f\d]{40,64}$/i.test(value) ? `${value.slice(0, 12)}…` : text(value);
 }
 
@@ -42,14 +42,14 @@ function entryLine(entry: any) {
   return `  ${line || '（无详情）'}`;
 }
 
-function bucket(lines: string[], title: string, entries: string|unknown[]) {
+function bucket(lines: string[], title: string, entries: string|any[]) {
   if (!Array.isArray(entries) || !entries.length) return;
   lines.push(`${title} (${entries.length}):`);
   for (const entry of entries) lines.push(entryLine(entry));
 }
 
 // 待验条目内部仍区分 unknown/unrun 等状态，混合时在标题注明分布。
-function pendingTitle(entries: string|unknown[]) {
+function pendingTitle(entries: string|any[]) {
   const counts = new Map();
   for (const e of entries) if (e && typeof e.status === 'string') counts.set(e.status, (counts.get(e.status) || 0) + 1);
   if (counts.size < 2) return `待验 (${entries.length}):`;

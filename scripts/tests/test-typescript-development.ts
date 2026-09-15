@@ -20,7 +20,7 @@ test('development restarts only after a changed successful build and keeps the l
   const { startDevelopment } = await development;
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-dev-cycle-'));
   const children: ChildProcess[] = [];
-  const errors: unknown[] = [];
+  const errors: any[] = [];
   let mode: 'changed' | 'cached' | 'failed' = 'changed';
   let builds = 0;
   const session = await startDevelopment(root, {
@@ -65,7 +65,7 @@ test('an initially failing check starts no gateway and can recover on the next s
   const { startDevelopment } = await development;
   const children: ChildProcess[] = [];
   let valid = false;
-  const errors: unknown[] = [];
+  const errors: any[] = [];
   const session = await startDevelopment(process.cwd(), {
     watch: false,
     build() { if (!valid) throw new Error('invalid initial source'); return true; },
@@ -88,7 +88,7 @@ test('source watcher reacts to TypeScript edits without looping on its generated
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-dev-watch-'));
   fs.writeFileSync(path.join(root, 'server.ts'), 'export const fixture = 1;\n');
   const children: ChildProcess[] = [];
-  const errors: unknown[] = [];
+  const errors: any[] = [];
   let builds = 0;
   const session = await startDevelopment(root, {
     debounceMs: 20,

@@ -19,7 +19,7 @@ test('eleven authored coverage additions preserve exact binding and compile in b
   assert.equal(new Set(repairs.additions.map(x => x.id)).size, 11);
   assert.equal(blueprints.length, repairs.baselineTotal + repairs.additions.length);
   for (const entry of repairs.additions) {
-    const c = characters.find(x => x.id === entry.characterId);
+    const c = characters.find(x => x.id === entry.characterId)!;
     const b = blueprints.find(x => x.id === entry.id);
     assert.ok(b, entry.id);
     assert.equal(b.characterId, c!.id);
@@ -63,8 +63,8 @@ test('the preserved round-fan outfit does not become a folding fan or replace th
 
 
 test('Ellen tea-service depth of field is retained in both payloads without duplicate tags', () => {
-  const b = blueprints.find(item => item.id === 'ellen_maid_cafe_tea_service_deadpan');
-  const c = characters.find(item => item.id === b!.characterId);
+  const b = blueprints.find(item => item.id === 'ellen_maid_cafe_tea_service_deadpan')!;
+  const c = characters.find(item => item.id === b!.characterId)!;
   assert.ok(!b!.promptTokens.includes('depth_of_field'));
   assert.ok(b!.promptProse.includes('depth of field'));
   for (const engine of ['anima', 'krea2']) {

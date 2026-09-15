@@ -45,7 +45,7 @@ const YOUTH_UNIFORM_TAGS = new Set([
 
 const ADULT_SAFETY_NEGATIVE = ['child', 'loli', 'underage'];
 
-function tokenKey(value: unknown) {
+function tokenKey(value: any) {
   let token = String(value || '').trim().toLowerCase();
   if (!token || /^<lora:/i.test(token) || /^break$/i.test(token)) return token;
   token = token.replace(/^[\s([{]+/, '').replace(/[\s)\]}]+$/, '');
@@ -53,13 +53,13 @@ function tokenKey(value: unknown) {
   return token.trim().replace(/[\s-]+/g, '_');
 }
 
-function splitPromptSegments(prompt: unknown) {
+function splitPromptSegments(prompt: any) {
   return String(prompt || '')
     .split(/\s*,?\s*\bBREAK\b\s*,?\s*/i)
     .map((segment) => segment.split(',').map((token) => token.trim()).filter(Boolean));
 }
 
-function promptTokenKeys(prompt: unknown) {
+function promptTokenKeys(prompt: any) {
   return splitPromptSegments(prompt).flat().map(tokenKey).filter(Boolean);
 }
 
@@ -78,7 +78,7 @@ function ratingFor(scene: any) {
   return 'All';
 }
 
-function framingConflicts(scene: unknown) {
+function framingConflicts(scene: any) {
   const keys = scenePositiveKeys(scene);
   const conflicts = [];
   const close = keys.has('close_up') || keys.has('face_focus');
@@ -99,7 +99,7 @@ function poseConflicts(scene: any) {
       'lying_on_table', 'lying_on_lap', 'lying_on_stomach'],
     kneeling: ['kneeling', 'all_fours']
   };
-  const activeFor = (keys: Set<unknown>) => Object.entries(poseGroups)
+  const activeFor = (keys: Set<any>) => Object.entries(poseGroups)
     .filter(([, tags]) => tags.some((tag) => keys.has(tag)))
     .map(([name]) => name);
   if ((scene && scene.char === 'triad') || /\bBREAK\b/i.test(String(scene && scene.prompt || ''))) {

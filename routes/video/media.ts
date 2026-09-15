@@ -40,7 +40,7 @@ function imageInputRoot(config: any) {
 let IMAGE_INPUT_PATTERN = /^aics_video_input_[a-f0-9]{16,40}\.(png|jpg|jpeg|webp)$/i;
 let IMAGE_REF_PATTERN = /^aics_video_ref_[a-f0-9]{16,40}\.(png|jpg|jpeg|webp)$/i;
 
-function imageInputAvailable(config: unknown, name: string) {
+function imageInputAvailable(config: any, name: string) {
   if (typeof name !== 'string') return false;
   if (!IMAGE_INPUT_PATTERN.test(name) && !IMAGE_REF_PATTERN.test(name)) return false;
   let target = path.resolve(imageInputRoot(config), name);
@@ -49,7 +49,7 @@ function imageInputAvailable(config: unknown, name: string) {
 
 // ── 魔数嗅探与尺寸解析 ──────────────────────────────────────────
 // 魔数识别：只信任解码后的真实格式，不信任客户端声称的 type。
-function sniffImageExtension(buffer: string|unknown[]) {
+function sniffImageExtension(buffer: string|any[]) {
   if (buffer.length >= 8 && buffer[0] === 0x89 && buffer[1] === 0x50
     && buffer[2] === 0x4e && buffer[3] === 0x47) return 'png';
   if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return 'jpg';
@@ -142,7 +142,7 @@ function resourceAvailable(root: string, kind: string, file: string) {
   try { return fs.statSync(target).isFile(); } catch (error) { return false; }
 }
 
-function modelAvailability(config: unknown, model: any) {
+function modelAvailability(config: any, model: any) {
   let root = modelRoot(config);
   let missing = model.requirements.filter(function (requirement: string[]) {
     return !resourceAvailable(root, requirement[0], requirement[1]);
@@ -172,7 +172,7 @@ function safeMediaPath(root: string, file: string) {
   return resolved.indexOf(resolvedRoot + path.sep) === 0 ? resolved : null;
 }
 
-function cleanupMediaRoot(config: unknown) {
+function cleanupMediaRoot(config: any) {
   let root = ensureMediaRoot(config);
   let entries = [];
   try { entries = fs.readdirSync(root); } catch (error) { return; }
@@ -188,7 +188,7 @@ function cleanupMediaRoot(config: unknown) {
 
 // 启动时清理由本服务写入的孤儿首帧图（网关重启后无活动任务引用它们）。
 // 只清 aics_video_input_ 前缀；aics_video_ref_（参考卡）是跨任务资产，保留。
-function cleanupImageInput(config: unknown) {
+function cleanupImageInput(config: any) {
   let root = imageInputRoot(config);
   let entries = [];
   try { entries = fs.readdirSync(root); } catch (error) { return; }
@@ -199,13 +199,13 @@ function cleanupImageInput(config: unknown) {
 }
 
 // 任务生命周期结束时删除其专属首帧图（文件名唯一、只被本 job 引用）。
-function removeInputImage(config: unknown, name: string) {
+function removeInputImage(config: any, name: string) {
   if (!IMAGE_INPUT_PATTERN.test(String(name || ''))) return;
   try { fs.unlinkSync(path.resolve(imageInputRoot(config), name)); } catch (error) {}
 }
 
 // ── 上游结果校验 ────────────────────────────────────────────────
-function decodePathValue(value: unknown) {
+function decodePathValue(value: any) {
   let decoded = String(value || '');
   for (let i = 0; i < 3; i += 1) {
     var next;
@@ -235,7 +235,7 @@ function validateVideoReference(value: any) {
   return { filename:filename, subfolder:'', type:'output' };
 }
 
-function videoMimeAndExtension(contentType: unknown, body: any, filename: string) {
+function videoMimeAndExtension(contentType: any, body: any, filename: string) {
   let mime = String(contentType || '').split(';')[0].trim().toLowerCase();
   let extension = path.extname(filename).slice(1).toLowerCase();
   if ((extension === 'mp4' || extension === 'mov')

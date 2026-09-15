@@ -29,16 +29,16 @@ let CHARACTERS: Readonly<Record<string, { id: string; label: string; loraId: str
 // 与服务端契约一致的输入键白名单实例
 let ALLOWED_INPUT_KEYS = new Set(generationContract.ALLOWED_INPUT_KEYS);
 
-function finiteNumber(value: unknown): value is number {
+function finiteNumber(value: any): value is number {
   return typeof value === 'number' && Number.isFinite(value);
 }
-function validateNumber(value: unknown, name: string, min: number, max: number, integer: boolean) {
+function validateNumber(value: any, name: string, min: number, max: number, integer: boolean) {
   if (!finiteNumber(value) || (integer && !Number.isInteger(value)) || value < min || value > max) {
     throw serviceError(400, 'INVALID_PARAMETER', name + ' 超出允许范围');
   }
   return value;
 }
-function assertAdultAllowed(req: RequestContext | null | undefined, body: Record<string, unknown>) {
+function assertAdultAllowed(req: RequestContext | null | undefined, body: Record<string, any>) {
   if (!validationCore.detectAdultIntent(body.prompt)) return;
   // 本机个人使用（127.0.0.1 直连，含 Tauri 桌面端）直接放行，不再卡角色白名单与 adultEnabled
   let hasLocalBypass = req && security.isDirectLocalRequest(req);
@@ -61,9 +61,9 @@ function assertAdultAllowed(req: RequestContext | null | undefined, body: Record
 }
 // 成人内容双门（AGENTS.md 红线 #4 fail-closed）：常量与纯判定收口在
 // server/validation-core.js（2026-08-28 审计 P1-6，此前 4 处实现漂移），此处保留家族组装。
-function validateInput(reqOrBody: unknown, expectedFamilyOrBody?: unknown, maybeExpectedFamily?: string): ImageJobInput {
+function validateInput(reqOrBody: any, expectedFamilyOrBody?: any, maybeExpectedFamily?: string): ImageJobInput {
   let req: RequestContext | null = null;
-  let rawBody: unknown;
+  let rawBody: any;
   let expectedFamily;
   // 兼容旧调用 validateInput(body) 与新调用 validateInput(req, body)
   const candidate = reqOrBody as RequestContext | null | undefined;

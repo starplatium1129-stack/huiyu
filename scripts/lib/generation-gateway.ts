@@ -4,7 +4,7 @@ import { errorMessage as runtimeErrorMessage } from './runtime-errors';
 const zlib: typeof import('node:zlib') = require('node:zlib');
 const { setTimeout: delay }: typeof import('node:timers/promises') = require('node:timers/promises');
 
-function gatewayUrl(explicit: unknown, env = process.env) {
+function gatewayUrl(explicit: any, env = process.env) {
   const value: any = explicit ?? env.GATEWAY_URL ?? env.BASE ?? env.AICS_COMMS_BASE ?? 'http://127.0.0.1:3000';
   let url;
   try { url = new URL(value); } catch { throw new Error('invalid gateway URL'); }

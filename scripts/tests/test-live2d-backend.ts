@@ -241,7 +241,7 @@ test('凝视轨迹：坐标归一化、边界钳制与连续回中', () => {
 
 test('原生后端：高频凝视 latest-wins，桥繁忙时只保留最新目标', async () => {
   const bridge = createStubBridge();
-  const releases: { (value: unknown): void; (): void; new(): unknown; }[] = [];
+  const releases: { (value: any): void; (): void; new(): any; }[] = [];
   bridge.setGaze = (x, y) => {
     bridge.calls.setGaze.push([x, y]);
     return new Promise((resolve: any) => releases.push(resolve));
@@ -482,7 +482,7 @@ function createStubBridge() {
     stopped: [],
   };
   let nextId = 1;
-  const offCalls: unknown[] = [];
+  const offCalls: any[] = [];
   const bridge = {
     isNativeLive2D: true,
     calls,
@@ -492,15 +492,15 @@ function createStubBridge() {
     _stoppedListeners: listeners.stopped,
     _offCalls: offCalls,
 
-    async setCharacter(modelPath: unknown, options: unknown) { calls.setCharacter.push([modelPath, options]); return { ok: true }; },
-    setFrame(frame: unknown) { calls.setFrame.push([frame]); },
-    setMaxFps(fps: unknown) { calls.setMaxFps.push([fps]); },
-    async playMotion(group: unknown, index: unknown, priority: unknown) { calls.playMotion.push([group, index, priority]); return { ok: true }; },
-    async setExpression(name: unknown) { calls.setExpression.push([name]); return { ok: true }; },
-    setMouthLevel(level: unknown) { calls.setMouthLevel.push([level]); },
-    setEmotion(name: unknown, intensity: unknown) { calls.setEmotion.push([name, intensity]); },
-    setGaze(x: unknown, y: unknown) { calls.setGaze.push([x, y]); },
-    async hitTest(x: unknown, y: unknown) { calls.hitTest.push([x, y]); return { areas: [] }; },
+    async setCharacter(modelPath: any, options: any) { calls.setCharacter.push([modelPath, options]); return { ok: true }; },
+    setFrame(frame: any) { calls.setFrame.push([frame]); },
+    setMaxFps(fps: any) { calls.setMaxFps.push([fps]); },
+    async playMotion(group: any, index: any, priority: any) { calls.playMotion.push([group, index, priority]); return { ok: true }; },
+    async setExpression(name: any) { calls.setExpression.push([name]); return { ok: true }; },
+    setMouthLevel(level: any) { calls.setMouthLevel.push([level]); },
+    setEmotion(name: any, intensity: any) { calls.setEmotion.push([name, intensity]); },
+    setGaze(x: any, y: any) { calls.setGaze.push([x, y]); },
+    async hitTest(x: any, y: any) { calls.hitTest.push([x, y]); return { areas: [] }; },
     async destroy() { calls.destroy.push([]); },
 
     onReady(listener: any) { listeners.ready.push(listener); return nextId++; },
@@ -509,7 +509,7 @@ function createStubBridge() {
     onHitTest(listener: any) { listeners.hitTest.push(listener); return nextId++; },
     onEntranceFinished(listener: any) { listeners.entranceFinished.push(listener); return nextId++; },
     onStopped(listener: any) { listeners.stopped.push(listener); return nextId++; },
-    off(id: unknown) {
+    off(id: any) {
       offCalls.push(id);
       listeners.ready.splice(0, listeners.ready.length);
       listeners.motionStarted.splice(0, listeners.motionStarted.length);

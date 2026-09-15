@@ -152,7 +152,7 @@ function buildPolishUserPrompt(value: { identity: string; shots: { prompt: strin
 }
 
 // 清洗编排输出：index 对齐 + 字段白名单；非法/越界条目整体跳过（保持原值）。
-function cleanPolishOutput(parsed: { shots: string|unknown[]; }, value: { identity: string; shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
+function cleanPolishOutput(parsed: { shots: string|any[]; }, value: { identity: string; shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
   let out = value!.shots.map(function () {
     return { shotSize:null, camera:null, motion:null, dialogue:null };
   });
@@ -531,7 +531,7 @@ function buildDialogueUserPrompt(value: { prompt: string; identity: string; curr
   ].filter(Boolean).join('\n');
 }
 
-function cleanDialogueOutput(parsed: { options: string|unknown[]; }) {
+function cleanDialogueOutput(parsed: { options: string|any[]; }) {
   let options = [];
   if (parsed && typeof parsed === 'object' && Array.isArray(parsed.options)) {
     for (let i = 0; i < parsed.options.length && options.length < 3; i += 1) {
@@ -545,7 +545,7 @@ function cleanDialogueOutput(parsed: { options: string|unknown[]; }) {
   return options;
 }
 
-function validateReviewBody(body: { shots: string|unknown[]; }) {
+function validateReviewBody(body: { shots: string|any[]; }) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return { error:'请求体必须是 JSON 对象' };
   if (!Array.isArray(body.shots) || body.shots.length < 1 || body.shots.length > MAX_POLISH_SHOTS) {
     return { error:'分镜数量需为 1—' + MAX_POLISH_SHOTS };
@@ -580,7 +580,7 @@ function buildReviewUserPrompt(value: { shots: { prompt: string; shotSize: strin
 
 let REVIEW_FIELDS = ['prompt', 'shotSize', 'camera', 'motion', 'dialogue', 'continuity'];
 
-function cleanReviewOutput(parsed: { issues: string|unknown[]; }, value: { shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
+function cleanReviewOutput(parsed: { issues: string|any[]; }, value: { shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
   let issues: { index: number; severity: string; field: string; message: string; suggestion: string; }[] = [];
   if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.issues)) return issues;
   for (let i = 0; i < parsed.issues.length; i += 1) {
@@ -644,7 +644,7 @@ function buildScriptUserPrompt(value: any) {
   return lines.join('\n');
 }
 
-function cleanScriptOutput(parsed: { shots: string|unknown[]; }) {
+function cleanScriptOutput(parsed: { shots: string|any[]; }) {
   let shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; duration: number; }[] = [];
   if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.shots)) return shots;
   for (let i = 0; i < parsed.shots.length && shots.length < 20; i += 1) {

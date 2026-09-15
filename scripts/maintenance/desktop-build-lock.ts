@@ -23,7 +23,7 @@ type LockOwner = {
   hostname?: string;
 };
 
-const isNodeError = (error: unknown): error is NodeJS.ErrnoException => error instanceof Error && 'code' in error;
+const isNodeError = (error: any): error is NodeJS.ErrnoException => error instanceof Error && 'code' in error;
 
 function canonicalWorkspace(workspaceRoot: string): string {
   const resolved = fs.existsSync(workspaceRoot)
@@ -51,7 +51,7 @@ function processIsAlive(pid: number | undefined): boolean {
   try {
     process.kill(pid, 0);
     return true;
-  } catch (error: unknown) {
+  } catch (error: any) {
     return isNodeError(error) && error.code === 'EPERM';
   }
 }
@@ -60,7 +60,7 @@ function clearStaleLock(lockPath: string, staleMs: number): boolean {
   let stat;
   try {
     stat = fs.statSync(lockPath);
-  } catch (error: unknown) {
+  } catch (error: any) {
     if (isNodeError(error) && error.code === 'ENOENT') return true;
     throw error;
   }
@@ -75,7 +75,7 @@ function clearStaleLock(lockPath: string, staleMs: number): boolean {
   const stalePath = `${lockPath}.stale-${process.pid}-${crypto.randomUUID()}`;
   try {
     fs.renameSync(lockPath, stalePath);
-  } catch (error: unknown) {
+  } catch (error: any) {
     if (isNodeError(error) && error.code === 'ENOENT') return true;
     return false;
   }
@@ -119,7 +119,7 @@ async function acquireDesktopBuildLock(options: LockOptions): Promise<() => bool
         fs.rmSync(lockPath, { recursive: true, force: true });
         return true;
       };
-    } catch (error: unknown) {
+    } catch (error: any) {
       if (!isNodeError(error) || error.code !== 'EEXIST') throw error;
       if (clearStaleLock(lockPath, staleMs)) continue;
       if (Date.now() >= deadline) {

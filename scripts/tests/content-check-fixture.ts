@@ -37,7 +37,7 @@ function fixture(t: any, withGit = true) {
     git(f.root, 'init'); git(f.root, 'add', '--', 'data', 'src'); git(f.root, 'commit', '-m', 'neutral check fixture');
     f.base = git(f.root, 'rev-parse', 'HEAD');
   }
-  f.changeBlueprint = (patch: unknown) => {
+  f.changeBlueprint = (patch: any) => {
     const rows = f.read('data/blueprints/one.json');
     Object.assign(rows.blueprints[0], patch);
     f.write('data/blueprints/one.json', rows);

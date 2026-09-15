@@ -12,7 +12,7 @@ function requestBuffered(target: string | URL, options: RequestOptions): Promise
     if (url.protocol !== 'http:' && url.protocol !== 'https:') return reject(new Error('unsupported upstream protocol'));
     const timeout = Number.isFinite(options.timeoutMs) && options.timeoutMs! > 0 ? options.timeoutMs! : 10000;
     const limit = Number.isFinite(options.maxBytes) && options.maxBytes! > 0 ? options.maxBytes! : 2 * 1024 * 1024;
-    const makeError = options.makeError || ((kind: string, error?: unknown) => error instanceof Error ? error : new Error(kind));
+    const makeError = options.makeError || ((kind: string, error?: any) => error instanceof Error ? error : new Error(kind));
     let settled = false, deadline: NodeJS.Timeout | undefined, chunks: Buffer[] = [], size = 0;
     const finish = (error?: Error, result?: BufferedResult) => {
       if (settled) return;

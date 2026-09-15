@@ -113,7 +113,7 @@ function requireRealDirectory(abs: string, io: typeof import("node:fs"), label: 
   }
 }
 
-function requirePlanSource(shardEntries: unknown[], file: string, where: string) {
+function requirePlanSource(shardEntries: any[], file: string, where: string) {
   const source = shardEntries.find((item: { file: string; }) => item.file === file);
   if (!source) {
     throw new BlueprintWriteError(where + ' 引用了 manifest 未声明的分片: ' + JSON.stringify(file), 'path-validation', file);

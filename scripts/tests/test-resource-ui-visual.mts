@@ -77,7 +77,7 @@ try {
         for (const element of document.querySelectorAll('.resource-library :is(p,span,h2,label,select,button,code,strong)')) {
           if (!element.textContent.trim() || !element.getBoundingClientRect().height) continue
           const style = getComputedStyle(element)
-          let ancestor = element, background
+          let ancestor = element!!, background
           while (ancestor) {
             const color = getComputedStyle(ancestor).backgroundColor
             if (color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') { background = color; break }

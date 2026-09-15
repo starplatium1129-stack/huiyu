@@ -11,7 +11,7 @@ const os: typeof import('os') = require('os');
 const path: typeof import('path') = require('path');
 const helpers = (require('../../routes/maintenance') as typeof import('../../routes/maintenance'))._test;
 
-function expectThrow(action: { (): void; (): void; (): unknown; }, message: string|Error|undefined) {
+function expectThrow(action: { (): void; (): void; (): any; }, message: string|Error|undefined) {
   assert.throws(action, message);
 }
 

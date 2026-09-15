@@ -27,7 +27,7 @@ const EXE = path.join(
   process.platform === 'win32' ? 'renderer_soak.exe' : 'renderer_soak',
 )
 
-function argValue(name: string|unknown[], fallback: string) {
+function argValue(name: string|any[], fallback: string) {
   const index = process.argv.findIndex((value) => value === name || value.startsWith(`${name}=`))
   if (index < 0) return fallback
   const inline = process.argv[index].slice(name.length + 1)
@@ -135,19 +135,19 @@ try {
   }
 }
 
-function average(values: unknown[]) {
+function average(values: any[]) {
   if (!values.length) return null
   return values.reduce((sum: any, value: any) => sum + value, 0) / values.length
 }
 
-function trend(samples: unknown[], field: string) {
-  const values = samples.filter((sample: { [x: string]: unknown }) => Number.isFinite(sample[field]))
+function trend(samples: any[], field: string) {
+  const values = samples.filter((sample: { [x: string]: any }) => Number.isFinite(sample[field]))
   if (values.length < 4) return null
   const quarter = Math.max(1, Math.floor(values.length / 4))
-  const first = average(values.slice(0, quarter).map((sample: { [x: string]: unknown }) => sample[field]))
-  const last = average(values.slice(-quarter).map((sample: { [x: string]: unknown }) => sample[field]))
+  const first = average(values.slice(0, quarter).map((sample: { [x: string]: any }) => sample[field]))
+  const last = average(values.slice(-quarter).map((sample: { [x: string]: any }) => sample[field]))
   const meanT = average(values.map((sample: any) => sample.t))
-  const meanV = average(values.map((sample: { [x: string]: unknown }) => sample[field]))
+  const meanV = average(values.map((sample: { [x: string]: any }) => sample[field]))
   let numerator = 0
   let denominator = 0
   for (const sample of values) {
@@ -160,8 +160,8 @@ function trend(samples: unknown[], field: string) {
     lastQuarterAvg: last,
     deltaBytes: last! - first!,
     slopeBytesPerMinute: denominator === 0 ? 0 : (numerator / denominator) * 60000,
-    min: Math.min(...values.map((sample: { [x: string]: unknown }) => sample[field])),
-    max: Math.max(...values.map((sample: { [x: string]: unknown }) => sample[field])),
+    min: Math.min(...values.map((sample: { [x: string]: any }) => sample[field])),
+    max: Math.max(...values.map((sample: { [x: string]: any }) => sample[field])),
   }
 }
 
@@ -205,7 +205,7 @@ function runRenderer() {
     windowsHide: false,
   })
   let output = ''
-  const append = (chunk: unknown) => {
+  const append = (chunk: any) => {
     const text = String(chunk)
     output += text
     log.write(text)
@@ -214,7 +214,7 @@ function runRenderer() {
   child.stdout.on('data', append)
   child.stderr.on('data', append)
 
-  const samples: unknown[] = []
+  const samples: any[] = []
   const sample = () => {
     const value = powershellSample(child.pid)
     if (value) samples.push({ t: Date.now(), ...value })

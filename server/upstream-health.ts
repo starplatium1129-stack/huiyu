@@ -19,7 +19,7 @@ let requestBuffered = (require('./buffered-request') as typeof import('./buffere
 
 let MAX_JSON_BYTES = 8 * 1024 * 1024;
 
-async function requestJson<T = unknown>(baseUrl: string|URL|undefined, apiPath: string|URL, body?: unknown, timeoutMs?: number, maxBytes?: number): Promise<{ status: number; data: T | null; raw: string }> {
+async function requestJson<T = any>(baseUrl: string|URL|undefined, apiPath: string|URL, body?: any, timeoutMs?: number, maxBytes?: number): Promise<{ status: number; data: T | null; raw: string }> {
   const target = new URL(apiPath, baseUrl);
   const payload = body === null || body === undefined ? null : JSON.stringify(body);
   const response = await requestBuffered(target, {

@@ -96,7 +96,7 @@ function runWebBuild(config: any, callback: any) {
     maintenanceRuntime.killProcessTree(child);
   }, WEB_BUILD_TIMEOUT_MS);
   let tail = '';
-  let onOutput = function (chunk: unknown) {
+  let onOutput = function (chunk: any) {
     let text = String(chunk || '');
     tail = (tail + text).slice(-4000);
   };

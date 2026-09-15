@@ -10,7 +10,7 @@ const { UUID, validateRecord, inputVersion, reviewState, validateDecisions }: ty
 function sourceEvidence(record: any, reader: any, options: any) {
   const files = [];
   for (const [role, declaration, allowed] of [
-    ...record.sources.map((source: unknown) => ['source', source, options.sources || []]),
+    ...record.sources.map((source: any) => ['source', source, options.sources || []]),
     ['recipe', record.recipeSource, options.recipe ? [options.recipe] : []],
   ]) {
     const file = explicitSource(reader.root, declaration.path, allowed);

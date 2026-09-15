@@ -65,7 +65,7 @@ function loadBlueprints(config: { ROOT_DIR: string; }) {
   }
 }
 
-function extractDialogues(description: unknown) {
+function extractDialogues(description: any) {
   let matches = String(description || '').match(DIALOGUE_RE);
   if (!matches) return [];
   return matches.slice(0, 2).map(function (raw) { return raw.slice(1, -1); });

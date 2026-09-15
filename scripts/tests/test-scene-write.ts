@@ -321,8 +321,8 @@ test('retireRemovedScenes 登记退役并清样张', () => {
   }, null, 2) + '\n');
   const io = {
     readJson: (source: PathOrFileDescriptor) => JSON.parse(fs.readFileSync(source, 'utf8')),
-    writeJson: (source: PathOrFileDescriptor, data: unknown) => fs.writeFileSync(source, JSON.stringify(data, null, 2) + '\n'),
-    sanitizeCuration: (value: unknown) => value,
+    writeJson: (source: PathOrFileDescriptor, data: any) => fs.writeFileSync(source, JSON.stringify(data, null, 2) + '\n'),
+    sanitizeCuration: (value: any) => value,
   };
   fs.writeFileSync(path.join(dataDir, 'retired-scenes.json'), JSON.stringify({ records: [] }, null, 2) + '\n');
   const previous = loadPrevious();
@@ -358,8 +358,8 @@ test('cleanOrphanedSceneRefs 清理失效引用且保留无关设置', () => {
     rootDir: root,
     io: {
       readJson: (source: PathOrFileDescriptor) => JSON.parse(fs.readFileSync(source, 'utf8')),
-      writeJson: (source: PathOrFileDescriptor, data: unknown) => fs.writeFileSync(source, JSON.stringify(data, null, 2) + '\n'),
-      sanitizeCuration: (value: unknown, activeIds: any) => {
+      writeJson: (source: PathOrFileDescriptor, data: any) => fs.writeFileSync(source, JSON.stringify(data, null, 2) + '\n'),
+      sanitizeCuration: (value: any, activeIds: any) => {
         const curation = JSON.parse(JSON.stringify(value));
         curation.curatedSceneIds = curation.curatedSceneIds.filter((id: string) => activeIds.has(id));
         curation.recommendationReasons = Object.fromEntries(Object.entries(curation.recommendationReasons)

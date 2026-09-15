@@ -65,7 +65,7 @@ function clientIdFor(config: ComfyStateConfig | null | undefined, namespace: str
 }
 
 /** 与 routes 层 serviceError 同形的最小错误工厂（server 不反向依赖 routes）。 */
-function comfyError(status: number, code: string, message?: string, detail?: unknown): ComfyError {
+function comfyError(status: number, code: string, message?: string, detail?: any): ComfyError {
   let error = new Error(message) as ComfyError;
   error.status = status;
   error.code = code;
@@ -79,7 +79,7 @@ function comfyError(status: number, code: string, message?: string, detail?: unk
  * 字节上限/错误分类口径互不一致；server 内部另有一份更旧的残部）。
  * 返回 {status,headers,body(Buffer)}，不解析 JSON；默认 10s 超时 / 2MB 上限。
  */
-async function requestComfy(config: ComfyConfig, method: string, pathname: string, body?: Record<string, unknown> | null, timeoutMs?: number, maxBytes?: number) {
+async function requestComfy(config: ComfyConfig, method: string, pathname: string, body?: Record<string, any> | null, timeoutMs?: number, maxBytes?: number) {
   let target;
   try { target = new URL(config.COMFY_HOST); } catch { throw comfyError(502, 'COMFY_CONFIG_INVALID', 'ComfyUI 地址无效'); }
   const rawPath = String(pathname || '/');
@@ -87,7 +87,7 @@ async function requestComfy(config: ComfyConfig, method: string, pathname: strin
   target.pathname = queryIndex >= 0 ? rawPath.slice(0, queryIndex) : rawPath;
   target.search = queryIndex >= 0 ? rawPath.slice(queryIndex) : '';
   if (method === 'POST' && rawPath === '/prompt' && body) {
-    body = { ...body, extra_data: { ...body.extra_data as Record<string, unknown> | undefined, aics_session_id: sessionId } };
+    body = { ...body, extra_data: { ...body.extra_data as Record<string, any> | undefined, aics_session_id: sessionId } };
   }
   const payload = body === undefined || body === null ? null : Buffer.from(JSON.stringify(body));
   const headers: import('node:http').OutgoingHttpHeaders = { Accept:'application/json' };
@@ -104,9 +104,9 @@ async function requestComfy(config: ComfyConfig, method: string, pathname: strin
 }
 
 /** 缓冲请求 + JSON 解析 + 非 2xx 上抛；detail 含上游状态与可解析体（诊断面并集）。 */
-async function requestComfyJson<T = unknown>(config: ComfyConfig, method: string, pathname: string, body?: Record<string, unknown> | null, timeoutMs?: number, maxBytes?: number): Promise<T | null> {
+async function requestComfyJson<T = any>(config: ComfyConfig, method: string, pathname: string, body?: Record<string, any> | null, timeoutMs?: number, maxBytes?: number): Promise<T | null> {
   const response = await requestComfy(config, method, pathname, body, timeoutMs, maxBytes || 2 * 1024 * 1024);
-  let data: unknown = null;
+  let data: any = null;
   try { data = response.body.length ? JSON.parse(response.body.toString('utf8')) : null; } catch (error) {
     throw comfyError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 返回了无效 JSON', { upstreamStatus: response.status });
   }
@@ -122,7 +122,7 @@ async function requestComfyJson<T = unknown>(config: ComfyConfig, method: string
 }
 
 /** 从 ComfyUI /queue 的 running/pending 里挑出属于本网关的 prompt_id。 */
-function ownedPromptIds(queue: unknown, clientId: string) {
+function ownedPromptIds(queue: any, clientId: string) {
   let ids: string[] = [];
   (Array.isArray(queue) ? queue : []).forEach(function (item) {
     // ComfyUI: [number, prompt_id, prompt, extra_data, outputs_to_execute]。

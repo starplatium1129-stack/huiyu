@@ -17,16 +17,16 @@ function websocketUrl(host: string|URL, clientId: string|number|boolean) {
   return target.toString();
 }
 
-function finite(value: unknown): value is number {
+function finite(value: any): value is number {
   return typeof value === 'number' && Number.isFinite(value);
 }
 
-function clampProgress(value: unknown, max: unknown) {
+function clampProgress(value: any, max: any) {
   if (!finite(value) || !finite(max) || max <= 0) return null;
   return Math.max(0, Math.min(1, value / max));
 }
 
-function readMessage(raw: unknown): unknown {
+function readMessage(raw: any): any {
   let data = Buffer.isBuffer(raw) ? raw.toString('utf8') : String(raw || '');
   try { return JSON.parse(data); } catch (error) { return null; }
 }
@@ -49,10 +49,10 @@ function createComfyProgressMonitor<Job extends ProgressJob = ProgressJob>(confi
     if (typeof reconnectTimer.unref === 'function') reconnectTimer.unref();
   }
 
-  function handleMessage(raw: unknown, isBinary?: boolean) {
+  function handleMessage(raw: any, isBinary?: boolean) {
     // 预览帧是二进制图片；不解码为字符串，也不尝试 JSON.parse。
     if (isBinary === true) return;
-    let message = readMessage(raw) as { type?: unknown; data?: Record<string, unknown>; prompt_id?: unknown } | null;
+    let message = readMessage(raw) as { type?: any; data?: Record<string, any>; prompt_id?: any } | null;
     if (!message || typeof message.type !== 'string') return;
     let data = message.data && typeof message.data === 'object' ? message.data : {};
     let promptId = data.prompt_id || message.prompt_id;
@@ -94,12 +94,12 @@ function createComfyProgressMonitor<Job extends ProgressJob = ProgressJob>(confi
     });
   }
 
-  function watch(promptId: unknown, job: Job) {
+  function watch(promptId: any, job: Job) {
     subscriptions.set(String(promptId), job);
     connect();
   }
 
-  function unwatch(promptId: unknown) { subscriptions.delete(String(promptId)); }
+  function unwatch(promptId: any) { subscriptions.delete(String(promptId)); }
 
   function close() {
     closed = true;

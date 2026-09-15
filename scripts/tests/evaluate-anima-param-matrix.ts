@@ -86,7 +86,7 @@ function readJson(file: PathOrFileDescriptor) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function writeJson(file: PathLike, value: unknown) {
+function writeJson(file: PathLike, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive:true });
   var temporary = file + '.tmp';
   fs.writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n', 'utf8');
@@ -233,7 +233,7 @@ async function main() {
     records:[],
   };
 
-  var pending: unknown[] = [];
+  var pending: any[] = [];
   for (var groupKey of only) {
     var group = GROUPS[groupKey];
     assert(group, 'Unknown group: ' + groupKey);

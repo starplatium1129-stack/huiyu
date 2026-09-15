@@ -53,7 +53,7 @@ function sha256File(filePath: PathOrFileDescriptor) {
   return sha256Buffer(fs.readFileSync(filePath))
 }
 
-function quoteArg(value: unknown) {
+function quoteArg(value: any) {
   const text = String(value)
   return /[\s"]/u.test(text) ? `"${text.replace(/"/g, '\\"')}"` : text
 }
@@ -139,7 +139,7 @@ function runCommand(command: string, args: readonly string[], options: any = {})
   })
 }
 
-function walkFiles(target: PathLike, root: string, output: unknown[]) {
+function walkFiles(target: PathLike, root: string, output: any[]) {
   if (!fs.existsSync(target)) return
   const stat = fs.statSync(target)
   if (stat.isFile()) {
@@ -154,7 +154,7 @@ function walkFiles(target: PathLike, root: string, output: unknown[]) {
 }
 
 function packagingFingerprint(root: string) {
-  const files: unknown[] = []
+  const files: any[] = []
   for (const relative of PACKAGING_INPUTS) walkFiles(path.join(root, relative), root, files)
   files.sort((a: any, b: any) => a.relative.localeCompare(b.relative, 'en'))
   const aggregate = crypto.createHash('sha256')

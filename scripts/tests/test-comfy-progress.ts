@@ -8,12 +8,12 @@ class FakeSocket {
     handlers!: any;
   url!: any;
 static instances = [];
-  constructor(url: unknown) {
+  constructor(url: any) {
     this.url = url;
     this.handlers = {};
     FakeSocket.instances.push(this);
   }
-  on(name: string|number, handler: unknown) { this.handlers[name] = handler; }
+  on(name: string|number, handler: any) { this.handlers[name] = handler; }
   emit(name: string, value?: any) { if (this.handlers[name]) this.handlers[name](value); }
   close() { this.emit('close'); }
 }

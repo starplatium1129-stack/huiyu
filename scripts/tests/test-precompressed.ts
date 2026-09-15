@@ -27,7 +27,7 @@ async function fixture(run: any) {
   app.use('/data', (req, res, next) => { if (!(require('../../server/public-data') as typeof import('../../server/public-data')).includes(req.path.slice(1))) return res.sendStatus(404); next(); }, express.static(path.join(root, 'data')));
   const server = http.createServer(app);
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  const get = (url: unknown, accept: unknown) => new Promise((resolve, reject) => {
+  const get = (url: any, accept: any) => new Promise((resolve, reject) => {
     http.get({ host:'127.0.0.1', port:server.address!().port, path:url, headers:{ 'Accept-Encoding':accept } }, res => {
       const chunks: any = []; res.on('data', c => chunks.push(c));
       res.on('end', () => {

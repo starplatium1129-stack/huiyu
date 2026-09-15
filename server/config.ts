@@ -8,7 +8,7 @@ let safeLocalUrl = (require('./security') as typeof import('./security')).safeLo
 
 // 上游 host 在读取时也要过一遍校验：落盘的 runtime/config.json 可能被改坏，
 // 只在写入端校验会让重启成为绕过手段。
-function resolveUpstreamHost(envValue: unknown, savedValue: unknown, fallback: string) {
+function resolveUpstreamHost(envValue: any, savedValue: any, fallback: string) {
   let candidates = [envValue, savedValue, fallback];
   for (let i = 0; i < candidates.length; i++) {
     if (!candidates[i]) continue;
@@ -19,11 +19,11 @@ function resolveUpstreamHost(envValue: unknown, savedValue: unknown, fallback: s
   return fallback;
 }
 
-function readJson(file: string): Record<string, unknown> {
+function readJson(file: string): Record<string, any> {
   try {
-    const value: unknown = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const value: any = JSON.parse(fs.readFileSync(file, 'utf8'));
     return value !== null && typeof value === 'object' && !Array.isArray(value)
-      ? value as Record<string, unknown> : {};
+      ? value as Record<string, any> : {};
   } catch (error) {
     return {};
   }
@@ -58,13 +58,13 @@ function resolveGatewayToken(envToken: string | undefined, tokenFile: string) {
   return token;
 }
 
-function boundedInteger(value: unknown, fallback: number, min: number, max: number) {
+function boundedInteger(value: any, fallback: number, min: number, max: number) {
   let number = Number(value);
   if (!Number.isFinite(number)) return fallback;
   return Math.max(min, Math.min(max, Math.round(number)));
 }
 
-function resolveSceneShowcaseDir(rootDir: string, configured?: unknown, workspaceRoot?: string) {
+function resolveSceneShowcaseDir(rootDir: string, configured?: any, workspaceRoot?: string) {
   // Accept either a published collection or its parent library folder.
   let roots = [];
   if (typeof configured === 'string' && configured.trim()) roots.push(path.resolve(configured));
@@ -153,7 +153,7 @@ function loadGatewayConfig(rootDir: string, env: NodeJS.ProcessEnv = process.env
     COMFY_HOST:resolveUpstreamHost(env.COMFY_HOST, saved.comfyHost, 'http://127.0.0.1:8188'),
     TTS_HOST:resolveUpstreamHost(env.TTS_HOST, saved.ttsHost, 'http://127.0.0.1:9880'),
     VOICE_PROFILES:saved.voices && typeof saved.voices === 'object' && !Array.isArray(saved.voices)
-      ? saved.voices as Record<string, unknown> : {},
+      ? saved.voices as Record<string, any> : {},
     OLLAMA_HOST:resolveUpstreamHost(env.OLLAMA_HOST, saved.ollamaHost, 'http://127.0.0.1:11434'),
     OLLAMA_MODEL:env.OLLAMA_MODEL || (typeof saved.ollamaModel === 'string' ? saved.ollamaModel : ''),
     OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m',

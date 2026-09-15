@@ -26,7 +26,7 @@ let MODELS: Readonly<Record<string, ImageModelDefinition>> = modelCatalog.MODELS
 let LORAS: Readonly<Record<string, ImageLoraDefinition>> = modelCatalog.LORAS;
 let KREA_STYLE_LORAS: Readonly<Record<string, { file: string; trigger: string }>> = modelCatalog.KREA_STYLE_LORAS;
 
-function decodePathValue(value: unknown) {
+function decodePathValue(value: any) {
   let decoded = String(value || '');
   for (let i = 0; i < 3; i += 1) {
     var next;
@@ -43,7 +43,7 @@ function imageInputRoot(config: Pick<ImageGenerationConfig, 'ROOT_DIR' | 'AI_WOR
   return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'input');
 }
 let IMAGE_INPUT_PATTERN = /^aics_anima_input_[a-f0-9]{16,40}\.(png|jpg|jpeg|webp)$/i;
-function imageInputAvailable(config: Pick<ImageGenerationConfig, 'ROOT_DIR' | 'AI_WORKSPACE_ROOT'>, name: unknown) {
+function imageInputAvailable(config: Pick<ImageGenerationConfig, 'ROOT_DIR' | 'AI_WORKSPACE_ROOT'>, name: any) {
   if (typeof name !== 'string') return false;
   if (!IMAGE_INPUT_PATTERN.test(name)) return false;
   let target = path.resolve(imageInputRoot(config), name);
@@ -101,14 +101,14 @@ function requiredResources(config: ImageGenerationConfig, input: ImageJobInput, 
     throw serviceError(503, 'ANIMA_MASK_UNAVAILABLE', '局部重绘遮罩图不存在或已过期');
   }
 }
-function imageMimeAndExtension(contentType: unknown, body: Buffer) {
+function imageMimeAndExtension(contentType: any, body: Buffer) {
   let mime = String(contentType || '').split(';')[0].trim().toLowerCase();
   if (mime === 'image/png' && body.length >= 8 && body.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) return { mime:'image/png', extension:'png' };
   if (mime === 'image/jpeg' && body.length >= 3 && body.subarray(0, 3).equals(Buffer.from([255, 216, 255]))) return { mime:'image/jpeg', extension:'jpg' };
   if (mime === 'image/webp' && body.length >= 12 && body.toString('ascii', 0, 4) === 'RIFF' && body.toString('ascii', 8, 12) === 'WEBP') return { mime:'image/webp', extension:'webp' };
   return null;
 }
-function validateImageReference(image: unknown, outputPrefix?: string) {
+function validateImageReference(image: any, outputPrefix?: string) {
   if (!isPlainObject(image)) throw serviceError(400, 'INVALID_RESULT', 'ComfyUI 图片描述无效');
   let type = String(image.type || 'output').toLowerCase();
   if (type !== 'output') throw serviceError(400, 'INVALID_RESULT', '只允许读取 output 图片');
@@ -160,7 +160,7 @@ function cleanupMediaRoot(config: Pick<ImageGenerationConfig, 'ROOT_DIR' | 'RUNT
     } catch (error) {}
   });
 }
-async function materializeResult(config: ImageGenerationConfig, job: { id: string; }, image: unknown, options: { outputPrefix?: string; mediaNamespace?: string }) {
+async function materializeResult(config: ImageGenerationConfig, job: { id: string; }, image: any, options: { outputPrefix?: string; mediaNamespace?: string }) {
   let reference = validateImageReference(image, options.outputPrefix);
   let query = '?filename=' + encodeURIComponent(reference.filename) + '&type=output';
   let response = await requestComfy(config, 'GET', '/view' + query, null, 20000, MAX_IMAGE_BYTES);

@@ -270,7 +270,7 @@ test('speechInputConfig：normalize 非法值回退默认', () => {
 });
 
 test('speechInputConfig：load 坏 JSON 回退默认，save 后 load 往返一致', () => {
-  const storage = { map: new Map(), getItem(k: unknown) { return this.map.get(k) ?? null; }, setItem(k: unknown, v: unknown) { this.map.set(k, v); }, removeItem(k: unknown) { this.map.delete(k); } };
+  const storage = { map: new Map(), getItem(k: any) { return this.map.get(k) ?? null; }, setItem(k: any, v: any) { this.map.set(k, v); }, removeItem(k: any) { this.map.delete(k); } };
   storage.map.set('aics_speech_input_v1', '{broken');
   assert.deepEqual(loadSpeechInputConfig(storage), DEFAULT_SPEECH_INPUT_CONFIG);
   saveSpeechInputConfig({ ...DEFAULT_SPEECH_INPUT_CONFIG, enabled: true, endpoint: 'http://127.0.0.1:8000/v1' }, storage);

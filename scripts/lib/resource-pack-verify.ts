@@ -99,7 +99,7 @@ function checkDeltaMetadataForm(delta: any) {
   if (!Array.isArray(delta.removed)) {
     errors.push({ source: 'pack-delta', code: 'bad-delta-metadata', message: 'delta.removed 必须是数组' });
   } else {
-    delta.removed.forEach((item: any, index: unknown) => {
+    delta.removed.forEach((item: any, index: any) => {
       if (!item || typeof item !== 'object' || Array.isArray(item)) {
         errors.push({ source: 'pack-delta', code: 'bad-delta-metadata', message: `delta.removed[${index}] 必须是对象（path/bytes/sha256）` });
         return;
@@ -131,8 +131,8 @@ function checkDeltaMetadataForm(delta: any) {
   return errors;
 }
 
-function sumBytes(entries: unknown[]) {
-  return entries.reduce((acc: unknown, e: any) => acc + e.bytes, 0);
+function sumBytes(entries: any[]) {
+  return entries.reduce((acc: any, e: any) => acc + e.bytes, 0);
 }
 
 function identityOf(entries: any) {
@@ -186,7 +186,7 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
 
   // removed 逐项核验：存在于基线、bytes/sha256 相符、路径唯一、不得同时在候选中
   const removedPaths = new Set();
-  delta.removed.forEach((item: any, index: unknown) => {
+  delta.removed.forEach((item: any, index: any) => {
     if (removedPaths.has(item.path)) {
       errors.push({ source: 'pack-delta', path: item.path, code: 'duplicate-removed-path', message: `delta.removed[${index}] 路径重复` });
       return;

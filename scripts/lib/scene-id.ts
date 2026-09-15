@@ -1,13 +1,13 @@
 'use strict';
 
 // Existing IDs keep their spelling; numbers beyond 999 simply gain digits.
-function isSceneId(value: unknown) {
+function isSceneId(value: any) {
   if (typeof value !== 'string' || !/^sc(?:\d{3}|[1-9]\d{3,})$/.test(value)) return false;
   const number = Number(value.slice(2));
   return Number.isSafeInteger(number) && number > 0;
 }
 
-function formatSceneId(number: unknown) {
+function formatSceneId(number: any) {
   if (typeof number !== 'number' || !Number.isSafeInteger(number)) throw new Error('场景编号必须是正安全整数');
   return 'sc' + String(number).padStart(3, '0');
 }

@@ -25,7 +25,7 @@ interface LockEntry {
   dependencies?: Record<string, string>;
   optionalDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
-  [field: string]: unknown;
+  [field: string]: any;
 }
 interface RootPackage { version: string; dependencies?: Record<string, string> }
 interface RootLock { packages: Record<string, LockEntry> }

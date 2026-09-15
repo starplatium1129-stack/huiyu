@@ -102,7 +102,7 @@ function validateContent(data: any, fileExists: any) {
       errors.push(label + '.strength must satisfy min <= default <= max');
     }
     if (!Array.isArray(lora.compatible_models) || !lora.compatible_models.length) errors.push(label + '.compatible_models is required');
-    (lora.test_scene || []).forEach(function (sceneId: unknown) {
+    (lora.test_scene || []).forEach(function (sceneId: any) {
       if (!sceneIds.has(sceneId)) errors.push(label + '.test_scene references unknown scene: ' + sceneId);
     });
   });
@@ -113,7 +113,7 @@ function validateContent(data: any, fileExists: any) {
   scenes.forEach(function (scene: any, index: string) {
     if (!scene || !scene.char) return;
     if (scene.char !== 'triad' && !characterIds.has(scene.char)) errors.push('scenes[' + index + '].char references unknown character: ' + scene.char);
-    (Array.isArray(scene.character) ? scene.character : []).forEach(function (id: unknown) {
+    (Array.isArray(scene.character) ? scene.character : []).forEach(function (id: any) {
       if (!characterIds.has(id)) errors.push('scenes[' + index + '].character references unknown character: ' + id);
     });
   });
@@ -358,7 +358,7 @@ function main() {
 
   var errors = loadErrors.slice();
   if (!loadErrors.length) {
-    errors = errors.concat(validateContent(data, function (relative: unknown) {
+    errors = errors.concat(validateContent(data, function (relative: any) {
       // 样张/立绘 URL 允许携带缓存版本串（如 popular-*.png?v=2），存在性检查需剥离。
       var pathOnly = String(relative).replace(/\?.*$/, '');
       return fs.existsSync(path.resolve(ROOT, 'data', pathOnly));

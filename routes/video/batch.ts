@@ -25,7 +25,7 @@ let IMAGE_INPUT_PREFIX = constants.IMAGE_INPUT_PREFIX;
 let BATCH_TTL_MS = constants.BATCH_TTL_MS;
 let BATCH_JOB_TTL_MS = constants.BATCH_JOB_TTL_MS;
 
-function createBatchService(config: unknown, videoService: any, dependencies: any) {
+function createBatchService(config: any, videoService: any, dependencies: any) {
   dependencies = dependencies || {};
   let batches = new Map();
   let closed = false;
@@ -81,7 +81,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
     };
   }
 
-  function get(id: unknown, owner: unknown) {
+  function get(id: any, owner: any) {
     let batch = batches.get(String(id || ''));
     return batch && batch.owner === owner ? batch : null;
   }
@@ -104,7 +104,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
   }
 
   // 批状态收敛：无待处理/运行中镜头时定终态；否则继续推进下一镜。
-  function finalizeStatus(batch: { shots: unknown[]; status: string; }) {
+  function finalizeStatus(batch: { shots: any[]; status: string; }) {
     let pending = batch.shots.some(function (s: { status: string; }) { return s.status === 'pending'; });
     let active = batch.shots.some(function (s: { status: string; }) { return s.status === 'queued' || s.status === 'running'; });
     if (!pending && !active) {
@@ -121,7 +121,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
   // linkLastFrame 衔接可能在提交前改写了 image/lastFrame（上一镜尾帧）：
   // 提示词必须按当前输入模式重新组装（官方参考图指令随 I2VA/FL2VA/L2VA 变化），
   // seed 显式传回保证确定性（重抽/重试不换随机种子）。
-  function recomposeInput(input: any, batch: any, config: unknown) {
+  function recomposeInput(input: any, batch: any, config: any) {
     let body: any = {
       prompt:input.originalPrompt,
       modelId:batch.modelId,
@@ -235,7 +235,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
     batches.delete(batch.id);
   }
 
-  async function create(owner: unknown, batchInput: any) {
+  async function create(owner: any, batchInput: any) {
     let availability = media.modelAvailability(config, MODEL_BY_ID[batchInput.modelId]);
     if (!availability.available) {
       throw serviceError(503, 'VIDEO_MODEL_UNAVAILABLE', '视频模型文件尚未安装', {
@@ -277,7 +277,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
     return batch;
   }
 
-  async function cancel(batch: { status: string; watchTimer: string|number|NodeJS.Timeout|null|undefined; shots: string|unknown[]; }) {
+  async function cancel(batch: { status: string; watchTimer: string|number|NodeJS.Timeout|null|undefined; shots: string|any[]; }) {
     if (batch.status === 'done') return batch;
     batch.status = 'cancelled';
     if (batch.watchTimer) { clearTimeout(batch.watchTimer); batch.watchTimer = null; }
@@ -298,7 +298,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
     return batch;
   }
 
-  async function retryShot(batch: { shots: { [x: string]: unknown; }; status: string; }, index: string|number) {
+  async function retryShot(batch: { shots: { [x: string]: any; }; status: string; }, index: string|number) {
     let shot: any = batch.shots[index];
     if (!shot) throw serviceError(404, 'SHOT_NOT_FOUND', '分镜不存在');
     if (shot.status !== 'failed' && shot.status !== 'cancelled') {

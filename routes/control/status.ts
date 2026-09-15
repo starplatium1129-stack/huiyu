@@ -22,7 +22,7 @@ function registerStatusRoutes(router: any, ctx: any) {
   let localOnly = security.localOnly;
 
   // GET /api/sd-status — 导演台 / 出图页连接检测
-  router.get('/api/sd-status', function (req: unknown, res: any) {
+  router.get('/api/sd-status', function (req: any, res: any) {
     let host = ctx.config.SD_HOST;
     Promise.all([
       upstreamHealth.requestJson(host, '/sdapi/v1/sd-models', null, 5000).catch(function () { return null; }),
@@ -142,7 +142,7 @@ function registerStatusRoutes(router: any, ctx: any) {
   // GET /api/share-link — 含 token 的分享链接，仅本机可读。
   // 从 /api/status 拆出来：状态接口会被前端 3 秒轮询一次，
   // 把原始 token 放在里面等于任何拿到链接的人都能反过来提取 token。
-  router.get('/api/share-link', localOnly, function(req: unknown, res: any) {
+  router.get('/api/share-link', localOnly, function(req: any, res: any) {
     let gw = ctx.gatewayRef ? ctx.gatewayRef() : null;
     let tunnelUrl = gw ? gw.tunnelUrl : '';
     res.setHeader('Cache-Control', 'no-store');
@@ -152,7 +152,7 @@ function registerStatusRoutes(router: any, ctx: any) {
   });
 
   // GET /api/diagnostics
-  router.get('/api/diagnostics', localOnly, function(req: unknown, res: any) {
+  router.get('/api/diagnostics', localOnly, function(req: any, res: any) {
     let saved = ctx.readJson(ctx.config.RUNTIME.config);
     // 状态契约（刻意不走 envelope）：无 ok 字段，前端 controlApi.isDiagnostics 按
     // timestamp/port/... 直接校验。

@@ -6,12 +6,12 @@ var health: typeof import('../../src/utils/storageHealth.ts') = require('../../s
 const { test }: typeof import('node:test') = require('node:test');
 
 test("Storage health tests passed against the production TypeScript module", () => {
-const good: unknown[] = [
+const good: any[] = [
   { id:1, timestamp:100, image_id:'img_a', prompt:'ok' },
   { id:2, timestamp:200, image_id:'img_b', prompt:'ok2' },
   { id:3, timestamp:300, prompt:'no image is fine' }
 ];
-const mixed: unknown[] = good.concat([
+const mixed: any[] = good.concat([
   null,
   'bad',
   { prompt:'no id' },

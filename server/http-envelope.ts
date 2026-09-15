@@ -1,8 +1,8 @@
 'use strict';
 
-type JsonRecord = Record<string, unknown>;
+type JsonRecord = Record<string, any>;
 type ErrorLike = { status?: number; statusCode?: number };
-interface JsonResponse<Result> { json(body: unknown): Result }
+interface JsonResponse<Result> { json(body: any): Result }
 interface FailureResponse<Result> { status(code: number): JsonResponse<Result> }
 /**
  * server/http-envelope.js — API 响应信封的唯一定义。
@@ -23,7 +23,7 @@ interface FailureResponse<Result> { status(code: number): JsonResponse<Result> }
  * 分享链接页面缓存；新代码不要读它。前端已全部改读 `error`。
  */
 
-function fail<Result>(res: FailureResponse<Result>, status: number, error: unknown, extra?: JsonRecord): Result {
+function fail<Result>(res: FailureResponse<Result>, status: number, error: any, extra?: JsonRecord): Result {
   let body: JsonRecord = Object.assign({ ok:false, error:String(error || '请求无法处理') }, extra || {});
   // 旧字段镜像，见文件头注释
   body.msg = body.error;
@@ -38,7 +38,7 @@ function ok<Result>(res: JsonResponse<Result>, payload?: JsonRecord): Result {
  * 从上游/内部错误里挑一个合适的 HTTP 状态。
  * 4xx 原样透传（那是客户端的问题），其余归到 fallback。
  */
-function statusFor(error: unknown, fallback?: number) {
+function statusFor(error: any, fallback?: number) {
   let detail = error as ErrorLike | null | undefined;
   let status = Number(detail && (detail.status || detail.statusCode));
   if (Number.isInteger(status) && status >= 400 && status < 500) return status;

@@ -69,8 +69,8 @@ function assertAdultAllowed(req: express.Request | null, body: any) {
 function error(status: number, code: string, message: string|undefined, detail?: any) {
   let e: any = new Error(message); e.status = status; e.code = code; e.detail = detail; return e;
 }
-function plain(o: unknown) { return Boolean(o) && typeof o === 'object' && !Array.isArray(o); }
-function number(v: unknown, name: string, min: number, max: number, integer: boolean) {
+function plain(o: any) { return Boolean(o) && typeof o === 'object' && !Array.isArray(o); }
+function number(v: any, name: string, min: number, max: number, integer: boolean) {
   if (typeof v !== 'number' || !Number.isFinite(v) || (integer && !Number.isInteger(v)) || v < min || v > max) {
     throw error(400, 'INVALID_PARAMETER', name + ' 超出允许范围');
   }
@@ -85,7 +85,7 @@ function owner(req: any) {
 function comfyModelsRoot(config: any, kind: string) {
   return path.resolve(config.AI_WORKSPACE_ROOT || '', 'ComfyUI', 'models', kind);
 }
-function safeComfyResource(config: unknown, kind: string, file: string) {
+function safeComfyResource(config: any, kind: string, file: string) {
   let root = comfyModelsRoot(config, kind);
   let target = path.resolve(root, file);
   if (target.indexOf(root + path.sep) !== 0) return false;
@@ -106,17 +106,17 @@ function normalizeCheckpointName(value: string) {
 function isWaiCheckpoint(value: string) {
   return normalizeCheckpointName(value) === normalizeCheckpointName(CHECKPOINT);
 }
-function comfyResourcesAvailable(config: unknown, input: any) {
+function comfyResourcesAvailable(config: any, input: any) {
   if (!safeComfyResource(config, 'checkpoints', CHECKPOINT)) return false;
   return (input.loras || []).every(function (lora: { file: string; }) { return safeComfyResource(config, 'loras', lora.file); });
 }
-function validateWaiResources(config: unknown, input: unknown) {
+function validateWaiResources(config: any, input: any) {
   if (!comfyResourcesAvailable(config, input)) throw error(503, 'COMFY_RESOURCES_UNAVAILABLE', 'WAI checkpoint 或所选 LoRA 资源不可用');
 }
 function freezeLoras(loras: any) {
   return Object.freeze((loras || []).map(function (lora: any) { return Object.freeze({ id:lora.id, strength:lora.strength }); }));
 }
-function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, maybeBody?: any) {
+function validate(reqOrBody: Request<ParamsDictionary,any,any,ParsedQs,Record<string,any>>, maybeBody?: any) {
   let req = null;
   let body: any;
   if (maybeBody !== undefined || (reqOrBody && reqOrBody.socket && reqOrBody.headers)) {
@@ -353,7 +353,7 @@ function createWebUIJob(config: { [x: string]: string|URL; }, input: any, ownerI
 
 function createGenerationRouter(config: any, dependencies: any) {
   dependencies = dependencies || {};
-  let comfy = dependencies.waiComfy || anima.createAnimaService(config, { buildWorkflow:buildWorkflow, validateResources:function (input: unknown) { validateWaiResources(config, input); }, outputPrefix:OUTPUT_PREFIX, outputNodeId:'10', mediaNamespace:'wai', engine:'sd', routeBase:'/api/generation' });
+  let comfy = dependencies.waiComfy || anima.createAnimaService(config, { buildWorkflow:buildWorkflow, validateResources:function (input: any) { validateWaiResources(config, input); }, outputPrefix:OUTPUT_PREFIX, outputNodeId:'10', mediaNamespace:'wai', engine:'sd', routeBase:'/api/generation' });
   // 任务注册表骨架收口到 server/job-runner.js（2026-08-21）：WebUI 分支的
   // webJob 与 Comfy 分支（anima 服务内部 registry）共用同一套定时器原语。
   let registry = jobRunner.createJobRegistry();

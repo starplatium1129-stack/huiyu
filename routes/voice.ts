@@ -22,7 +22,7 @@ function waitForDrain(res: any) {
   });
 }
 
-async function relayAudio(source: unknown[], res: Response<unknown,Record<string,unknown>,number>) {
+async function relayAudio(source: any[], res: Response<any,Record<string,any>,number>) {
   for await (let chunk of source) {
     if (res.destroyed || res.writableEnded) throw httpClient.abortError();
     if (!res.write(chunk)) await waitForDrain(res);
@@ -65,7 +65,7 @@ function fixWavHeaderServer(buffer: Buffer<ArrayBuffer>) {
   return buffer;
 }
 
-function cacheTtsAudio(key: string, buffer: string|unknown[]|Buffer<ArrayBuffer>) {
+function cacheTtsAudio(key: string, buffer: string|any[]|Buffer<ArrayBuffer>) {
   if (ttsAudioCache.has(key)) {
     ttsAudioCacheBytes -= ttsAudioCache.get(key).length;
     ttsAudioCache.delete(key);
@@ -241,7 +241,7 @@ function createVoiceRouter(config: any, dependencies: any) {
     req.once('aborted', function () { controller.abort(); });
     res.once('close', function () { if (!res.writableEnded) controller.abort(); });
 
-    function relayBufferedAudio(audio: unknown) {
+    function relayBufferedAudio(audio: any) {
       if (res.destroyed || res.writableEnded) return;
       res.status(200);
       res.setHeader('Content-Type', 'audio/wav');
@@ -253,7 +253,7 @@ function createVoiceRouter(config: any, dependencies: any) {
 
     let existing = inFlightTts.get(cacheKey);
     if (existing) {
-      existing.then(function (audio: unknown) {
+      existing.then(function (audio: any) {
         res.setHeader('X-TTS-Cache', 'hit');
         return relayBufferedAudio(audio);
       }).then(function () {
@@ -302,7 +302,7 @@ function createVoiceRouter(config: any, dependencies: any) {
       if (inFlightTts.get(cacheKey) === generation) inFlightTts.delete(cacheKey);
     });
 
-    generation.then(function (audio: unknown) {
+    generation.then(function (audio: any) {
       res.setHeader('X-TTS-Cache', 'miss');
       return relayBufferedAudio(audio);
     }).then(function () {

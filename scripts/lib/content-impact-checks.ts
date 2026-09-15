@@ -57,11 +57,11 @@ function selectExecution(report: any, forceFull = false, context: any) {
     fullGate: 'required-not-run', wholeLibrary: 'not-validated' };
 }
 
-function outcome(id: string, scope: string|unknown[], issues = [], unknown = []) {
+function outcome(id: string, scope: string|any[], issues = [], unknown = []) {
   return { id, scope, executed: true, status: issues.length ? 'failed' : unknown.length ? 'unknown' : 'passed', issues, unknown };
 }
 
-function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>) {
+function recordEquality(snapshots: { [x: string]: any; }, keys: Set<any>) {
   const issues: any = [], unknown = [];
   for (const key of keys) {
     const [kind, , id] = JSON.parse(key);
@@ -78,7 +78,7 @@ function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>
       if (domain === 'scenes' && file !== PRODUCTS.scenes) {
         const owner = value.char === 'natsume' ? 'natsume' : value.char === 'triad' ? 'shared' : 'nene';
         count = file === 'data/scenes-core.json'
-          ? snapshot.metadata['data/curation.json'].personaCoreSceneIds.slice(0, 2000).filter((v: unknown) => v === id).length
+          ? snapshot.metadata['data/curation.json'].personaCoreSceneIds.slice(0, 2000).filter((v: any) => v === id).length
           : Number(file === `data/scenes-${owner}.json`);
       }
       const actual = data.rows.filter((row: any) => row.key === key);
@@ -89,7 +89,7 @@ function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>
   return outcome('record-equality', [...keys], issues, unknown);
 }
 
-function relationCheck(snapshots: any, keys?: Set<unknown>|undefined) {
+function relationCheck(snapshots: any, keys?: Set<any>|undefined) {
   const unknown = [];
   for (const snapshot of Object.values(snapshots)) {
     if (!snapshot.groups[`${snapshot.domain}:source`]?.complete) unknown.push(`${snapshot.domain}: source relationship coverage incomplete`);
@@ -98,7 +98,7 @@ function relationCheck(snapshots: any, keys?: Set<unknown>|undefined) {
   return outcome('source-relationships', keys ? [...keys] : 'all supported source IDs', relationshipIssues(snapshots, { keys }), [...new Set(unknown)]);
 }
 
-function runtimeFieldChecks(snapshots: { [s: string]: unknown; }|ArrayLike<unknown>, keys?: Set<unknown>|undefined) {
+function runtimeFieldChecks(snapshots: { [s: string]: any; }|ArrayLike<any>, keys?: Set<any>|undefined) {
   const issues = [], unknown = [], coverage = [];
   let parsers;
   try { parsers = (require('../../src/utils/popularContent.ts') as typeof import('../../src/utils/popularContent.ts')); }
@@ -158,11 +158,11 @@ function fullFieldChecks(reader: any, snapshots: any) {
   return { checks, fields: unknown, ruleRoot: CODE_ROOT };
 }
 
-function executePredicates(selection: { mode: string; targets: Iterable<unknown>|null|undefined; }, context: any, root: PathLike) {
+function executePredicates(selection: { mode: string; targets: Iterable<any>|null|undefined; }, context: any, root: PathLike) {
   const reader = context?.currentReader || localReader(root);
   const snapshots = { ...(context?.after || {}) };
   const checks = [];
-  let fieldCoverage: { domain: string; observedFields: unknown[]; semanticCoverage: string; }[] = [];
+  let fieldCoverage: { domain: string; observedFields: any[]; semanticCoverage: string; }[] = [];
   if (selection.mode === 'full') {
     for (const domain of DOMAINS) {
       snapshots[domain] ||= inspectDomain(reader, domain);

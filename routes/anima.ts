@@ -145,7 +145,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     }, delay);
   }
 
-  function failJob(job: ImageJob<Input>, error: unknown, fallbackCode?: string | number) {
+  function failJob(job: ImageJob<Input>, error: any, fallbackCode?: string | number) {
     if (job.status === 'cancelled' || job.status === 'cancelling') return;
     job.status = 'failed';
     job.finishedAt = Date.now();
@@ -157,8 +157,8 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     if (job.pollTimer) { clearTimeout(job.pollTimer); job.pollTimer = null; }
   }
 
-  function queueHasPrompt(items: unknown, promptId: string) {
-    return Array.isArray(items) && items.some(function (item: unknown) {
+  function queueHasPrompt(items: any, promptId: string) {
+    return Array.isArray(items) && items.some(function (item: any) {
       return Array.isArray(item) ? item[1] === promptId : item && errorField(item, 'prompt_id') === promptId;
     });
   }
@@ -434,7 +434,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     return job;
   }
 
-  function get(id: unknown, owner: string) {
+  function get(id: any, owner: string) {
     let job = jobs.get(String(id || ''));
     if (!job || job.owner !== owner) return null;
     return job;
@@ -557,8 +557,8 @@ function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima
   let router = express.Router();
   let service = dependencies.anima || createAnimaService(config);
   let jobLimit = security.rateLimit({ capacity:12, refillMs:5000, label:'Anima 出图' });
-  function routeFamily(req: Request<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>) { return String(req.path || '').startsWith('/api/anima') ? 'anima' : 'creative'; }
-  function routeOwnsJob(req: Request<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, job: ImageJob | null): job is ImageJob { return Boolean(job) && (routeFamily(req) === 'anima' ? job!.input.family === 'anima' : job!.input.family === 'krea2'); }
+  function routeFamily(req: Request<ParamsDictionary,any,any,ParsedQs,Record<string,any>>) { return String(req.path || '').startsWith('/api/anima') ? 'anima' : 'creative'; }
+  function routeOwnsJob(req: Request<ParamsDictionary,any,any,ParsedQs,Record<string,any>>, job: ImageJob | null): job is ImageJob { return Boolean(job) && (routeFamily(req) === 'anima' ? job!.input.family === 'anima' : job!.input.family === 'krea2'); }
 
   router.get(['/api/anima/status', '/api/creative/status'], function (req, res) {
     service.probe().then(function (online) {

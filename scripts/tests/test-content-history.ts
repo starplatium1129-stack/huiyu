@@ -219,8 +219,8 @@ test('clean filters/external diff hooks cannot execute; Git commands have safe e
   git(f.root, 'config', 'diff.external', 'definitely-not-an-executable');
   fs.appendFileSync(path.join(f.root, 'data/blueprints/one.json'), '\n');
   const original = cp.spawnSync;
-  const commands: unknown[] = [];
-  t.mock.method(cp, 'spawnSync', (command: unknown, args: readonly string[], options: SpawnSyncOptionsWithStringEncoding) => {
+  const commands: any[] = [];
+  t.mock.method(cp, 'spawnSync', (command: any, args: readonly string[], options: SpawnSyncOptionsWithStringEncoding) => {
     assert.equal(command, 'git');
     assert.equal(options.shell, false);
     assert.equal(options.env.GIT_NO_LAZY_FETCH, '1');

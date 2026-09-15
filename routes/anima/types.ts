@@ -44,7 +44,7 @@ export interface ImageJobInput {
   seed: number;
   family?: string;
   profileId?: string;
-  character?: unknown;
+  character?: any;
   loraId?: string | number | false | null;
   loraStrength?: number | null;
   loras?: Array<{ id: string; strength: number }>;
@@ -68,7 +68,7 @@ export interface ImageJobInput {
 
 export interface ComfyNode {
   class_type: string;
-  inputs: Record<string, unknown>;
+  inputs: Record<string, any>;
 }
 export type ComfyWorkflow = Record<string, ComfyNode>;
 export type ComfyLink = [string, number];
@@ -80,7 +80,7 @@ export interface ImageJob<Input extends ImageJobInput = ImageJobInput> {
   owner: string;
   provider: string;
   input: Readonly<Input>;
-  metadata: Readonly<Record<string, unknown>>;
+  metadata: Readonly<Record<string, any>>;
   status: string;
   createdAt: number;
   finishedAt?: number;
@@ -104,7 +104,7 @@ export interface ImageJob<Input extends ImageJobInput = ImageJobInput> {
 
 export interface ImageServiceOptions<Input extends ImageJobInput> {
   buildWorkflow?: (input: Input) => ComfyWorkflow;
-  validateResources?: (input: Input) => unknown;
+  validateResources?: (input: Input) => any;
   outputPrefix?: string;
   outputNodeId?: string;
   mediaNamespace?: string;
@@ -120,7 +120,7 @@ export interface ImageServiceOptions<Input extends ImageJobInput> {
 
 export interface ComfyHistoryEntry {
   status?: any;
-  outputs?: Record<string, { images?: unknown[] }>;
+  outputs?: Record<string, { images?: any[] }>;
 }
 export type ComfyHistory = Record<string, ComfyHistoryEntry>;
-export interface PromptSubmission { prompt_id?: unknown }
+export interface PromptSubmission { prompt_id?: any }

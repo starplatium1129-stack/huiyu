@@ -5,7 +5,7 @@ import { PathLike } from 'node:fs';
 
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
-const object = (value: unknown) => value !== null && typeof value === 'object' && !Array.isArray(value);
+const object = (value: any) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const { isDeepStrictEqual: equal }: typeof import('node:util') = require('node:util');
 
 // Pure mirror contract. URL/pending/review and actual assets depend on other
@@ -14,7 +14,7 @@ function compareReferenceProjection(standards: any, view: any) {
   const result: any = { file: 'data/character-reference-view.json', status: 'unknown', scope: 'reference-mirror-fields',
     sourceFiles: ['data/character-reference-standards.json'], issues: [],
     untracked: ['URL/fileName/pending/review and asset existence', 'popular-to-standards generation: hard-coded heroines, asset filtering and merge writers'] };
-  const idRows = (rows: unknown[], key: string) => Array.isArray(rows) && rows.every((row: any) => object(row) && typeof row[key] === 'string' && row[key].trim())
+  const idRows = (rows: any[], key: string) => Array.isArray(rows) && rows.every((row: any) => object(row) && typeof row[key] === 'string' && row[key].trim())
     && new Set(rows.map((row: any) => row[key])).size === rows.length;
   if (!object(standards) || !idRows(standards.characters, 'id') || !idRows(standards.perspectives, 'id') || !object(view)
     || standards.characters.some((c: any) => !idRows(c.outfits, 'id'))
@@ -22,7 +22,7 @@ function compareReferenceProjection(standards: any, view: any) {
     result.reason = 'invalid or duplicate reference identities; no partial mirror accepted';
     return result;
   }
-  const check = (location: string, actual: unknown, expected: unknown) => {
+  const check = (location: string, actual: any, expected: any) => {
     if (!equal(actual, expected)) result.issues.push({ file: result.file, location, reason: 'reference source/derived field mismatch' });
   };
   check('character-ids', Object.keys(view).sort(), standards.characters.map((c: any) => c.id).sort());
@@ -70,7 +70,7 @@ function referenceImpact(opts: any, selected: any, result: any, add: any) {
   for (const characterId of selected) {
     // An explicit outfit restricts its explicit character, not other path-selected characters.
     const outfit = characterId === opts.character ? opts.outfit : null;
-    const emit = (outfitId: unknown, status: string, references: any = null, reason: any = '') => {
+    const emit = (outfitId: any, status: string, references: any = null, reason: any = '') => {
       const item = { characterId, outfitId, status, total: references?.length ?? null,
         pendingCount: references ? references.filter((r: { pending: boolean; url: string; }) => r.pending === true || typeof r.url !== 'string' || !r.url.trim()).length : null,
         urlDeclaredCount: references ? references.filter((r: { url: string; }) => typeof r.url === 'string' && Boolean(r.url.trim())).length : null,

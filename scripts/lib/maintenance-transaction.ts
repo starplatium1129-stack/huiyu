@@ -20,7 +20,7 @@ function commitMaintenanceTransaction(lease: any) {
   lease.complete('committed');
   lease.release();
 }
-function rollbackMaintenanceTransaction(lease: any, options: unknown) {
+function rollbackMaintenanceTransaction(lease: any, options: any) {
   if (!lease) return { ok: true };
   try {
     const journal = lease.assertOwned();
@@ -37,7 +37,7 @@ function rollbackMaintenanceTransaction(lease: any, options: unknown) {
     return { ok: false, error: runtimeErrorMessage(error), dataIntegrity: 'INCONSISTENT' };
   }
 }
-async function withMaintenanceTransaction(options: any, capture: () => unknown, task: any, label = 'content') {
+async function withMaintenanceTransaction(options: any, capture: () => any, task: any, label = 'content') {
   const lease = acquireMaintenanceLease(options);
   try {
     const snapshot = capture();

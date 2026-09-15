@@ -131,7 +131,7 @@ function sourceTokens(scene: any) {
   ];
 }
 
-function canonicalFor(characterId: string|number, tags: unknown[]) {
+function canonicalFor(characterId: string|number, tags: any[]) {
   const rules = CANONICAL_OUTFIT[characterId] || [];
   const hay = tags.join(' ');
   for (const [re, token] of rules) if (re.test(hay)) return token;

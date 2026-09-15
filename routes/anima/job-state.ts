@@ -4,8 +4,8 @@ interface JobState {
   id: string; status: string; provider?: string; progress?: number | null; progressText?: string;
   currentNode?: string | null; createdAt: number; finishedAt?: number;
   input: any;
-  result?: unknown; resultConsumed?: boolean; metadata?: Record<string, unknown>;
-  error?: unknown; errorCode?: string | number | null;
+  result?: any; resultConsumed?: boolean; metadata?: Record<string, any>;
+  error?: any; errorCode?: string | number | null;
 }
 
 function publicJob(job: JobState, routeBase?: string) {

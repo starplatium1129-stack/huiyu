@@ -7,7 +7,7 @@ const path: typeof import('node:path') = require('node:path');
 import type { WorkflowRun, WorkflowRegistry, WorkflowDefinition } from '../lib/workflow-types';
 type TestContext = import('node:test').TestContext;
 type WorkflowReportRegistry = import('../lib/workflow-types').RegisteredWorkflows;
-const registryFixture = (value: unknown): WorkflowReportRegistry => value as WorkflowReportRegistry;
+const registryFixture = (value: any): WorkflowReportRegistry => value as WorkflowReportRegistry;
 const { reportConditions, formatConditions, formatConditionRow, main }: typeof import('../maintenance/report-workflow-conditions') = require('../maintenance/report-workflow-conditions');
 function fixture(t: TestContext) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'workflow-conditions-'));
@@ -149,7 +149,7 @@ test('conditions: --domain filtering and unknown domain rejection unchanged', t 
 });
 test('conditions: main --json and text render the real registry read-only', t => {
   const logs: string[] = [];
-  t.mock.method(console, 'log', (...args: unknown[]) => logs.push(args.join(' ')));
+  t.mock.method(console, 'log', (...args: any[]) => logs.push(args.join(' ')));
   assert.equal(main(['--json', '--domain', 'deploy']), 0);
   const parsed = JSON.parse(logs.join('\n'));
   assert.equal(parsed.schemaVersion, 1);

@@ -4,8 +4,8 @@ import { errorMessage } from '../scripts/lib/runtime-errors';
 interface LogTail { path: string; available: boolean; text: string; bytes?: number; truncated?: boolean; error?: string }
 interface DiagnosticsOptions {
   logs?: any;
-  exportedAt?: unknown; appVersion?: unknown; nodeVersion?: unknown; platform?: unknown;
-  control?: unknown; gateway?: unknown; tunnel?: unknown; showcase?: unknown; config?: unknown; token?: unknown;
+  exportedAt?: any; appVersion?: any; nodeVersion?: any; platform?: any;
+  control?: any; gateway?: any; tunnel?: any; showcase?: any; config?: any; token?: any;
 }
 let fs: typeof import('fs') = require('fs');
 
@@ -13,14 +13,14 @@ let TOKEN_IN_URL = /([?&]token=)[^&\s"'`]+/gi;
 let TOKEN_KV = /(\b(?:token|aics_token|api[-_]?key|password|secret|authorization)\b["']?\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;&]+)/gi;
 let HEX_LONG = /\b[a-f0-9]{32,}\b/gi;
 
-function maskSecret(value?: unknown) {
+function maskSecret(value?: any) {
   let text = String(value || '');
   if (!text) return '';
   if (text.length <= 4) return '****';
   return '…' + text.slice(-4);
 }
 
-function redactText(text?: unknown) {
+function redactText(text?: any) {
   return String(text || '')
     .replace(TOKEN_IN_URL, '$1[REDACTED]')
     .replace(/\bBearer\s+[^\s,;"']+/gi, 'Bearer [REDACTED]')
@@ -81,12 +81,12 @@ function readLogTail(filePath: string, maxBytes?: number): LogTail {
   }
 }
 
-function redactConfig(raw: readonly unknown[]): unknown[];
-function redactConfig(raw: unknown): Record<string, unknown>;
-function redactConfig(raw: unknown): Record<string, unknown> | unknown[] {
+function redactConfig(raw: readonly any[]): any[];
+function redactConfig(raw: any): Record<string, any>;
+function redactConfig(raw: any): Record<string, any> | any[] {
   if (Array.isArray(raw)) return raw.map(function (item) { return item && typeof item === 'object' ? redactConfig(item) : typeof item === 'string' ? redactText(item) : item; });
-  let source: Record<string, unknown> = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {};
-  let out: Record<string, unknown> = {};
+  let source: Record<string, any> = raw && typeof raw === 'object' ? raw as Record<string, any> : {};
+  let out: Record<string, any> = {};
   Object.keys(source).forEach(function (key) {
     let value = source[key];
     if (/token|password|secret|auth|api[-_]?key|cookie|credential|prompt|messages|imageData/i.test(key)) {
@@ -106,7 +106,7 @@ function redactConfig(raw: unknown): Record<string, unknown> | unknown[] {
   return out;
 }
 
-function summarizeToken(token: unknown) {
+function summarizeToken(token: any) {
   let text = String(token || '');
   return {
     present:!!text,

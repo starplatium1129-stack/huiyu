@@ -1,7 +1,7 @@
 import type { PathLike } from 'node:fs';
 
-type Blueprint = { characterId?: unknown; [key: string]: unknown };
-type BlueprintManifestEntry = { file: string; franchise?: unknown; count?: number };
+type Blueprint = { characterId?: any; [key: string]: any };
+type BlueprintManifestEntry = { file: string; franchise?: any; count?: number };
 type BlueprintManifest = { version?: number; files: BlueprintManifestEntry[] };
 
 /**
@@ -111,9 +111,9 @@ function writeBlueprintShards() {
         files: [] as BlueprintManifestEntry[],
       };
 
-  const known = new Map<unknown, BlueprintManifestEntry>(manifest.files.map((entry) => [entry.franchise, entry]));
+  const known = new Map<any, BlueprintManifestEntry>(manifest.files.map((entry) => [entry.franchise, entry]));
 
-  const groups = new Map<unknown, Blueprint[]>();
+  const groups = new Map<any, Blueprint[]>();
   // 先按 popularManifest 顺序初始化 groups
   for (const f of franchiseOrder) {
     groups.set(f, []);

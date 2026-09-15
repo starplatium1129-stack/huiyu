@@ -20,7 +20,7 @@ let responseCode = 0;
 let responseBody: any = null;
 const response = {
   status(code: number) { responseCode = code; return this; },
-  json(body: unknown) { responseBody = body; return this; }
+  json(body: any) { responseBody = body; return this; }
 };
 assert.strictEqual(manager.rejectConflict(response), true, 'running operation must reject conflicting work');
 assert.strictEqual(responseCode, 409, 'conflict response must use HTTP 409');

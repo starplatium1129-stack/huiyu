@@ -53,7 +53,7 @@ test('scene shards: core tier is a curated subset backed by curation', () => {
   ]);
   const coreIds = readJson('scenes-core.json').map((s: any) => s.id);
   const curationIds = readJson('curation.json').personaCoreSceneIds || [];
-  assert.deepStrictEqual(coreIds, curationIds.filter((id: unknown) => aggregateIds.has(id)),
+  assert.deepStrictEqual(coreIds, curationIds.filter((id: any) => aggregateIds.has(id)),
     'scenes-core.json must equal personaCoreSceneIds ∩ aggregate');
   for (const id of coreIds) {
     assert.ok(browserIds.has(id),
@@ -71,7 +71,7 @@ test('scene shards: core tier obeys first-paint policy', () => {
 
   // 1) 意图不静默丢失：build 侧对 personaCoreSceneIds 做 filter(byId.has)，
   //    失效引用会被无声吞掉——这里要求每个引用都真实存在。
-  const staleRefs = curationIds.filter((id: unknown) => !aggregateIds.has(id));
+  const staleRefs = curationIds.filter((id: any) => !aggregateIds.has(id));
   assert.deepStrictEqual(staleRefs, [],
     'curation.json personaCoreSceneIds 引用了不存在的场景 id（失效引用不得静默过滤，请清理 curation）');
 

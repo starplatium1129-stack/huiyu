@@ -48,7 +48,7 @@ function printExcerpt(output: string, file: string) {
 }
 
 /** 跑单个 node 脚本（捕获输出）。返回 {ok, duration, output}。 */
-function runStep(name: unknown, file: string, args: any, timeout: number) {
+function runStep(name: any, file: string, args: any, timeout: number) {
   const started = Date.now();
   const result = spawnSync(process.execPath, [file, ...(args || [])], {
     cwd: root,
@@ -69,7 +69,7 @@ function runStep(name: unknown, file: string, args: any, timeout: number) {
  * 逐文件跑一组 node 脚本并输出摘要。
  * entries: { name, file, args? }[]；返回非零退出码（有失败时）。
  */
-function runSuiteFiles(entries: string|unknown[], { label, timeout, verbose = false, keepGoing = false }: any) {
+function runSuiteFiles(entries: string|any[], { label, timeout, verbose = false, keepGoing = false }: any) {
   const passed = [];
   const failed = [];
   const started = Date.now();
@@ -144,7 +144,7 @@ function runUnitSuite({ verbose = false } = {}) {
 
 /** 跑一个 npm script。Node 24 禁止 spawnSync 直呼 .cmd（EINVAL），
  *  故整串命令 + shell:true；script 名全部来自本文件内部常量，无注入面。 */
-function runNpmScript(script: unknown, timeout = 300_000) {
+function runNpmScript(script: any, timeout = 300_000) {
   const started = Date.now();
   const result = spawnSync(`npm run ${script}`, {
     cwd: root,

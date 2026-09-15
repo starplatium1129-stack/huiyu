@@ -62,13 +62,13 @@ function mockRes() {
     status(code: number) { this.statusCode = code; return this; },
     json(body: any) { this.body = body; return this; },
     send(body: any) { this.body = body; return this; },
-    setHeader(key: string|number, value: unknown) { this.headers[key] = value; },
+    setHeader(key: string|number, value: any) { this.headers[key] = value; },
     redirect(code: number, url: any) { this.statusCode = code; this.redirected = url; },
   };
   return res;
 }
 
-function runMiddleware(mw: RequestHandler<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, req: { socket: { remoteAddress: string; }; headers: any; query: any; path: string; originalUrl: string; secure: boolean; }) {
+function runMiddleware(mw: RequestHandler<ParamsDictionary,any,any,ParsedQs,Record<string,any>>, req: { socket: { remoteAddress: string; }; headers: any; query: any; path: string; originalUrl: string; secure: boolean; }) {
   return new Promise(function (resolve) {
     const res = mockRes();
     let nextCalled = false;

@@ -24,16 +24,16 @@ const indexPath = path.join(dataDir, 'scenes-index.json');
 /** 单批默认场景数；可由 manifest 根级 batchSize 或条目级 batchSize 覆盖。 */
 const DEFAULT_BATCH_SIZE = 50;
 
-type Scene = { id: unknown; char?: string; category?: unknown; [key: string]: unknown };
-type SceneManifestEntry = { file: string; batchSize?: unknown };
-type SceneManifest = { files: SceneManifestEntry[]; batchSize?: unknown };
+type Scene = { id: any; char?: string; category?: any; [key: string]: any };
+type SceneManifestEntry = { file: string; batchSize?: any };
+type SceneManifest = { files: SceneManifestEntry[]; batchSize?: any };
 type BrowserGroups = { nene: Scene[]; natsume: Scene[]; shared: Scene[] };
 
 function readJson(source: string) {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
 }
 
-function jsonText(value: unknown) {
+function jsonText(value: any) {
   return JSON.stringify(value, null, 2) + '\n';
 }
 
@@ -167,7 +167,7 @@ function readCuration() {
   }
 }
 
-function tierIds(curation: { [x: string]: unknown; }, key: string) {
+function tierIds(curation: { [x: string]: any; }, key: string) {
   const ids = curation && Array.isArray(curation[key]) ? curation[key] : [];
   return ids.filter((id) => typeof id === 'string').slice(0, 2000);
 }
@@ -193,9 +193,9 @@ function writeBrowserShards(scenes: Scene[]) {
   return groups;
 }
 
-function writeCoreAndIndex(scenes: Scene[], curation: unknown, groups: BrowserGroups) {
+function writeCoreAndIndex(scenes: Scene[], curation: any, groups: BrowserGroups) {
   const byId = new Map(scenes.map((scene) => [scene.id, scene]));
-  const coreIds = tierIds((curation && typeof curation === 'object' ? curation : {}) as Record<string, unknown>, 'personaCoreSceneIds').filter((id) => byId.has(id));
+  const coreIds = tierIds((curation && typeof curation === 'object' ? curation : {}) as Record<string, any>, 'personaCoreSceneIds').filter((id) => byId.has(id));
   writeTextAtomic(corePath, jsonText(coreIds.map((id) => byId.get(id) as Scene)));
 
   const index = {

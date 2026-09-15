@@ -5,7 +5,7 @@ const path: typeof import('node:path') = require('node:path');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 import type { WorkflowDefinition, WorkflowRegistry, WorkflowStep, WorkflowCommandRunner } from './workflow-types';
 import { errorMessage } from './runtime-errors';
-const isRecord = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
+const isRecord = (value: any): value is Record<string, any> => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 /**
  * 运行条件元数据（W1）枚举。run.nature / run.switches 的值取自 EFFECTS，
@@ -44,7 +44,7 @@ function validateRun(name: string, def: any) {
     errors.push(`${name}: 缺少 run 运行条件元数据`);
     return errors;
   }
-  const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : value == null ? [] : [value]);
+  const list = (value: any): any[] => (Array.isArray(value) ? value : value == null ? [] : [value]);
   const nature = list(run.nature);
   if (!Array.isArray(run.nature)) errors.push(`${name}: run.nature 必须是数组`);
   if (!nature.length) errors.push(`${name}: run.nature 不能为空`);
@@ -73,7 +73,7 @@ function validateRun(name: string, def: any) {
 }
 
 function audit(registry: WorkflowRegistry, root: string) {
-  const scripts: Record<string, unknown> = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).scripts;
+  const scripts: Record<string, any> = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).scripts;
   const errors: string[] = [];
   for (const [name, def] of Object.entries(registry)) {
     if (!def.cmd && !def.steps && !def.builtin) errors.push(`${name}: 缺少入口`);

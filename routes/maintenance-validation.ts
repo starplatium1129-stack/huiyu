@@ -28,13 +28,13 @@ function writeFileAtomic(source: string, content: string|NodeJS.ArrayBufferView<
 }
 
 
-function writeJson(source: any, data: unknown) {
+function writeJson(source: any, data: any) {
   writeFileAtomic(source, JSON.stringify(data, null, 2) + '\n');
 }
 
 
 // ── 2. 校验与文件工具 ──
-function uniqueActiveIds(values: unknown, activeIds: any) {
+function uniqueActiveIds(values: any, activeIds: any) {
   let seen = new Set();
   return (Array.isArray(values) ? values : []).filter(function (id) {
     if (!activeIds.has(id) || seen.has(id)) return false;
@@ -44,11 +44,11 @@ function uniqueActiveIds(values: unknown, activeIds: any) {
 }
 
 
-function sanitizeCuration(value: unknown, activeIds: any, previous?: { personaCoreSceneIds: any; }) {
+function sanitizeCuration(value: any, activeIds: any, previous?: { personaCoreSceneIds: any; }) {
   let curation = value && typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : {};
   curation.curatedSceneIds = uniqueActiveIds(curation.curatedSceneIds, activeIds);
   curation.signatureSceneIds = uniqueActiveIds(curation.signatureSceneIds, activeIds);
-  curation.signatureSceneIds.forEach(function (id: unknown) {
+  curation.signatureSceneIds.forEach(function (id: any) {
     if (curation.curatedSceneIds.indexOf(id) < 0) curation.curatedSceneIds.push(id);
   });
   let curated = new Set(curation.curatedSceneIds);
@@ -75,7 +75,7 @@ function sanitizeCuration(value: unknown, activeIds: any, previous?: { personaCo
 }
 
 
-function validateTags(tags: unknown[]) {
+function validateTags(tags: any[]) {
   if (!Array.isArray(tags) || tags.length > 2000) throw new Error('Tag 数据格式错误或数量超出限制');
   let ids = new Set();
   let names = new Set();
@@ -95,7 +95,7 @@ function validateTags(tags: unknown[]) {
 }
 
 
-function decodeJpegDataUrl(value: unknown, label: string) {
+function decodeJpegDataUrl(value: any, label: string) {
   let match = String(value || '').match(/^data:image\/jpeg;base64,([A-Za-z0-9+/=\r\n]+)$/);
   if (!match) throw new Error(label + '必须是 JPEG 图片');
   let buffer = Buffer.from(match[1].replace(/\s/g, ''), 'base64');

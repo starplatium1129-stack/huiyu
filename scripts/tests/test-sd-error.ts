@@ -16,7 +16,7 @@ const sdError: typeof import('../../src/utils/sdError.ts') = require('../../src/
 const source = fs.readFileSync(path.resolve(__dirname, '../../src/utils/sdError.ts'), 'utf8');
 assert(!/\bany\b/.test(source), 'SD error parsing must keep unknown inputs narrowed');
 
-function classify(error: unknown) { return sdError.classifySDError(error); }
+function classify(error: any) { return sdError.classifySDError(error); }
 
 test('分类：CUDA OOM -> oom + 降载重试', () => {
   assert.strictEqual(classify({ message: 'CUDA out of memory', status: 500 }).kind, 'oom');

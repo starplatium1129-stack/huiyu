@@ -141,7 +141,7 @@ test('runner 回传 resultUrl 时落到任务上，reset 释放', async () => {
 });
 
 test('retryFailed 只重跑失败/已取消张，seed 与候选序号原样保留', async () => {
-  const calls: unknown[] = [];
+  const calls: any[] = [];
   let failSeed = 2000;
   const batch = useBatchDraw({
     run: async (input) => {

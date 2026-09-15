@@ -86,7 +86,7 @@ type ChatValidationValue = {
   webSearch: boolean;
   companionTools: boolean;
   reasoning: string;
-  messages: unknown[];
+  messages: any[];
 };
 
 /** 校验结果：要么带 error，要么带 value，二者互斥。 */
@@ -472,7 +472,7 @@ async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; mo
   };
 }
 
-function writeEvent(res: Response<unknown,Record<string,unknown>,number>, event: any) {
+function writeEvent(res: Response<any,Record<string,any>,number>, event: any) {
   if (res.destroyed || res.writableEnded) return Promise.reject(httpClient.abortError());
   if (res.write(JSON.stringify(event) + '\n')) return Promise.resolve();
   return new Promise<void>(function (resolve, reject) {
@@ -575,7 +575,7 @@ function createChatRouter(config: GatewayConfig, dependencies?: ChatDependencies
     });
 
     let chatService: any = validation.value.provider === 'api'
-      ? { streamChat:function (input: unknown, handlers: unknown) { return streamCompatibleApi(input, handlers, config); } }
+      ? { streamChat:function (input: any, handlers: any) { return streamCompatibleApi(input, handlers, config); } }
       : service;
     chatService.streamChat({
       character:validation.value.character,
@@ -597,13 +597,13 @@ function createChatRouter(config: GatewayConfig, dependencies?: ChatDependencies
         res.flushHeaders();
         await writeEvent(res, { type:'meta', model:meta.model, queueWaitMs:meta.queueWaitMs || 0 });
       },
-      onToken:function (content: unknown) {
+      onToken:function (content: any) {
         return writeEvent(res, { type:'token', content:content });
       },
-      onToolCall:function (call: unknown) {
+      onToolCall:function (call: any) {
         return writeEvent(res, Object.assign({ type:'tool-call' }, call));
       },
-      onReasoning:function (content: unknown) {
+      onReasoning:function (content: any) {
         return writeEvent(res, { type:'reasoning', content:content });
       },
       onDone:function () {
@@ -613,7 +613,7 @@ function createChatRouter(config: GatewayConfig, dependencies?: ChatDependencies
       }
     }).then(function () {
       if (!res.writableEnded) res.end();
-    }).catch(function (error: unknown) {
+    }).catch(function (error: any) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       let fallback = validation.value.provider === 'api' ? '聊天 API 暂不可用' : 'Ollama 暂不可用';
       if (!res.headersSent) {

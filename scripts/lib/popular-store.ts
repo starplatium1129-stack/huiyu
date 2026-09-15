@@ -1,7 +1,7 @@
 import type { PathLike } from 'node:fs';
 
-type PopularCharacter = { id?: unknown; franchise?: unknown; [key: string]: unknown };
-type PopularManifestEntry = { file: string; franchise?: unknown; count?: number };
+type PopularCharacter = { id?: any; franchise?: any; [key: string]: any };
+type PopularManifestEntry = { file: string; franchise?: any; count?: number };
 type PopularManifest = { version?: number; files: PopularManifestEntry[] };
 
 /**
@@ -50,7 +50,7 @@ function writeTextAtomic(source: PathLike, content: string) {
 
 /** franchise -> 文件名 slug：小写、撇号去掉、其余非字母数字转连字符
  *  （如 "Frieren: Beyond Journey's End" -> frieren-beyond-journeys-end）。 */
-function franchiseSlug(franchise: unknown) {
+function franchiseSlug(franchise: any) {
   const slug = String(franchise || 'unknown')
     .toLowerCase()
     .replace(/'/g, '')
@@ -102,9 +102,9 @@ function writePopularShards() {
   const manifest = fs.existsSync(manifestPath)
     ? readManifest()
     : { version: 1, description: '热门角色分片清单。每个 franchise 一个文件，按首次出现顺序合并为 data/popular-characters.json。', files: [] as PopularManifestEntry[] };
-  const known = new Map<unknown, PopularManifestEntry>(manifest.files.map((entry) => [entry.franchise, entry]));
+  const known = new Map<any, PopularManifestEntry>(manifest.files.map((entry) => [entry.franchise, entry]));
 
-  const groups = new Map<unknown, PopularCharacter[]>();
+  const groups = new Map<any, PopularCharacter[]>();
   for (const character of characters) {
     const franchise = character.franchise || 'unknown';
     if (!groups.has(franchise)) groups.set(franchise, []);

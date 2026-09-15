@@ -9,7 +9,7 @@ const MAX_ITEMS = 40;
 const TIERS = ['curatedSceneIds', 'signatureSceneIds', 'personaCoreSceneIds'];
 
 const isObject = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
-const rows = (v: unknown) => (Array.isArray(v) ? v : []);
+const rows = (v: any) => (Array.isArray(v) ? v : []);
 const field = (row: any, key: string) => ((row && typeof row[key] === 'string' && row[key]) || '');
 
 // 任意值安全转文字；循环引用等 JSON.stringify 失败时退回 String()，不抛出。
@@ -20,7 +20,7 @@ function text(value: any) {
   try { return JSON.stringify(value); } catch { return '[不可序列化]'; }
 }
 
-function limited(lines: string|unknown[]) {
+function limited(lines: string|any[]) {
   if (lines.length <= MAX_ITEMS) return lines;
   return [...lines.slice(0, MAX_ITEMS), `  …（其余 ${lines.length - MAX_ITEMS} 条见 --json）`];
 }
@@ -33,13 +33,13 @@ function issueLine(entry: { reason: any; }) {
   return `  ${reason ? `${head} — ${reason}` : head}`;
 }
 
-function issueSection(title: string, entries: unknown) {
+function issueSection(title: string, entries: any) {
   const list = rows(entries);
   if (!list.length) return [];
   return [`${title}: ${list.length} 条`, ...limited(list.map(issueLine))];
 }
 
-function unknownSection(items: unknown) {
+function unknownSection(items: any) {
   const list = rows(items);
   if (!list.length) return [];
   return [`未知范围 unknown: ${list.length} 条`, ...limited(list.map((item) => `  - ${text(item)}`))];
@@ -53,7 +53,7 @@ function recommendationLine(rec: any) {
   return `  - ${name}${executed}${nature ? `（nature: ${nature}）` : ''}${argv ? `: ${argv}` : ''}`;
 }
 
-function recommendationSection(items: unknown) {
+function recommendationSection(items: any) {
   const list = rows(items);
   if (!list.length) return [];
   return [`未执行推荐命令 recommendations: ${list.length} 条`, ...limited(list.map(recommendationLine))];
@@ -95,7 +95,7 @@ function incrementalSection(plan: any) {
   return limited(lines);
 }
 
-function outfitSection(items: unknown) {
+function outfitSection(items: any) {
   const list = rows(items);
   if (!list.length) return [];
   const lines = list.map((row) => {
@@ -114,7 +114,7 @@ function outfitSection(items: unknown) {
   return [`默认服装 outfitDefaults: ${list.length} 项`, ...limited(lines)];
 }
 
-function referenceSection(items: unknown) {
+function referenceSection(items: any) {
   const list = rows(items);
   if (!list.length) return [];
   const lines = list.map((row) => {
@@ -136,7 +136,7 @@ function referenceSection(items: unknown) {
   return [`参考状态 referenceEvidence: ${list.length} 项（仅索引声明，未访问素材）`, ...limited(lines)];
 }
 
-function themeSection(items: unknown) {
+function themeSection(items: any) {
   const list = rows(items);
   if (!list.length) return [];
   const lines = list.map((row) => {
@@ -149,7 +149,7 @@ function themeSection(items: unknown) {
   return [`主题 themes: ${list.length} 项`, ...limited(lines)];
 }
 
-function sceneSection(items: unknown) {
+function sceneSection(items: any) {
   const list = rows(items);
   if (!list.length) return [];
   const lines = list.map((scene) => {
@@ -212,14 +212,14 @@ function formatImpactReport(result: any) {
   if (isObject(result.gitChanges)) target.push('Git 工作树变更');
   if (isObject(result.gitHistory)) target.push(`历史基线 ${field(input, 'base')}`);
   if (!target.length) target.push('未指定显式目标');
-  const count = (list: unknown) => rows(list).length;
+  const count = (list: any) => rows(list).length;
   const header = [
     '只读影响报告（只读分析；未执行推荐命令，未验证真实渲染）',
     `目标: ${target.join(' · ')}`,
     `范围摘要: 必改 ${count(result.mustChange)} ｜ 需复验 ${count(result.revalidate)} ｜ 仅关联 ${count(result.related)} ｜ 未知 ${count(result.unknown)} 条 ｜ 建议命令 ${count(result.recommendations)}（未执行）`,
   ];
   const blocks = [header];
-  const add = (build: { (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): string[]; (): unknown; (): unknown; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown; }) => {
+  const add = (build: { (): any[]; (): any[]; (): any[]; (): any[]; (): any[]; (): string[]; (): any; (): any; (): any[]; (): any[]; (): any[]; (): any[]; (): any[]; (): any; }) => {
     try { const block: any = build(); if (block.length) blocks.push(block); } catch { blocks.push(['（该节渲染异常；完整结果使用 --json 查看）']); }
   };
   add(() => issueSection('必改 mustChange', result.mustChange));

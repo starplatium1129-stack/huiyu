@@ -87,7 +87,7 @@ function firstResponseChunk(response: any) {
 
 // 把上游 /view 的视频结果安全落盘：校验引用 → 流式请求 → 魔数嗅探 →
 // 边收边写（按 MAX_VIDEO_BYTES 计数拦截）→ 原子 rename。
-async function materializeResult(config: { COMFY_HOST: string|URL; }, job: { id: string; }, output: unknown) {
+async function materializeResult(config: { COMFY_HOST: string|URL; }, job: { id: string; }, output: any) {
   let reference = media.validateVideoReference(output);
   let query = '?filename=' + encodeURIComponent(reference.filename) + '&type=output';
   let upstream: any = await requestComfyStream(config, 'GET', '/view' + query, 120000);
@@ -114,7 +114,7 @@ async function materializeResult(config: { COMFY_HOST: string|URL; }, job: { id:
     let out = fs.createWriteStream(temporary, { flags:'wx' });
     let total = head.length;
     let settled = false;
-    let finish = function (error: Error|null, value?: unknown) {
+    let finish = function (error: Error|null, value?: any) {
       if (settled) return;
       settled = true;
       if (error) {
@@ -126,7 +126,7 @@ async function materializeResult(config: { COMFY_HOST: string|URL; }, job: { id:
         resolve(value);
       }
     };
-    upstreamResponse.on('data', function (chunk: string|unknown[]) {
+    upstreamResponse.on('data', function (chunk: string|any[]) {
       total += chunk.length;
       if (total > constants.MAX_VIDEO_BYTES) {
         finish(serviceError(502, 'INVALID_RESULT', 'ComfyUI 返回的视频格式无效'));

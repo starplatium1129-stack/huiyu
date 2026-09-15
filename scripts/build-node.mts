@@ -19,7 +19,7 @@ interface BuildResult { project: ProjectName; sources: number; outputs: number; 
 const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const digest = (data: string | Buffer) => crypto.createHash('sha256').update(data).digest('hex');
 const posix = (value: string) => value.replaceAll('\\', '/');
-const isRecord = (value: unknown): value is Record<string, unknown> =>
+const isRecord = (value: any): value is Record<string, any> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 
 function formatDiagnostics(diagnostics: readonly ts.Diagnostic[], root: string): string {
@@ -57,10 +57,10 @@ function outputForSource(source: string): string {
 
 function readRecord(file: string): BuildRecord | undefined {
   try {
-    const value: unknown = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const value: any = JSON.parse(fs.readFileSync(file, 'utf8'));
     if (!isRecord(value) || value.version !== 1 || typeof value.fingerprint !== 'string'
       || !isRecord(value.outputs) || !Object.values(value.outputs).every(item => typeof item === 'string')) return;
-    return value as unknown as BuildRecord;
+    return value as any as BuildRecord;
   } catch { return; }
 }
 

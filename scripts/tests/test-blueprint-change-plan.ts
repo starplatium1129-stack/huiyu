@@ -59,7 +59,7 @@ function baseState() {
   return { manifest, shards, target: [...frierenGroup, ...fateGroup], mapping };
 }
 
-function shardInputs(shards: { [s: string]: unknown; }|ArrayLike<unknown>, textOverrides?: { "fate.json": string; }|undefined) {
+function shardInputs(shards: { [s: string]: any; }|ArrayLike<any>, textOverrides?: { "fate.json": string; }|undefined) {
   const out: any = {};
   for (const [file, data] of Object.entries(shards)) {
     out[file] = {
@@ -70,7 +70,7 @@ function shardInputs(shards: { [s: string]: unknown; }|ArrayLike<unknown>, textO
   return out;
 }
 
-function plan(state: any, target?: unknown, textOverrides?: { "fate.json": string; }|undefined) {
+function plan(state: any, target?: any, textOverrides?: { "fate.json": string; }|undefined) {
   return planBlueprintChanges({
     manifest: state.manifest,
     shards: shardInputs(state.shards, textOverrides),

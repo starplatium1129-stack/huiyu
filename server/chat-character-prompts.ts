@@ -56,10 +56,10 @@ function cleanProfileText(value: string, maxLength: number|undefined) {
   return text.slice(0, maxLength);
 }
 
-function normalizeUserProfile(input?: unknown): Normalized<UserProfile | null> {
+function normalizeUserProfile(input?: any): Normalized<UserProfile | null> {
   if (input === undefined || input === null) return { value:null };
   if (!input || typeof input !== 'object' || Array.isArray(input)) return { error:'用户档案格式错误' };
-  const fields = input as Record<string, unknown>;
+  const fields = input as Record<string, any>;
   let rawCallName = String(fields.callName || '').replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim();
   let rawNote = String(fields.note || '').replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim();
   if (rawCallName.length > 40) return { error:'用户称呼不能超过 40 字' };
@@ -86,7 +86,7 @@ function userProfileLines(profile: UserProfile | null | undefined) {
   return lines;
 }
 
-function normalizeMemories(input?: unknown): Normalized<string[]> {
+function normalizeMemories(input?: any): Normalized<string[]> {
   if (input === undefined || input === null) return { value:[] };
   if (!Array.isArray(input) || input.length > 4) return { error:'长期记忆最多注入 4 条' };
   let value: string[] = [];

@@ -9,7 +9,7 @@ const path: typeof import('path') = require('path');
 const { resolveCharRefRoot }: typeof import('../../server/config') = require('../../server/config');
 const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 
-function auditReferenceView(data: { [s: string]: unknown; }|ArrayLike<unknown>, root: string, env: any = process.env) {
+function auditReferenceView(data: { [s: string]: any; }|ArrayLike<any>, root: string, env: any = process.env) {
   const appRoot = path.resolve(env.AICS_APP_ROOT || root);
   const assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
   const refRoot = resolveCharRefRoot(appRoot, env, env.AI_WORKSPACE_ROOT);
@@ -67,7 +67,7 @@ const HELP = [
   '2 参数或环境问题（未知/重复/缺值参数、根不可用）。',
 ].join('\n');
 
-function parseArgs(args: string|unknown[]) {
+function parseArgs(args: string|any[]) {
   const parsed: any = { help: false, plan: false, root: null };
   const seen = new Set();
   for (let i = 0; i < args.length; i++) {

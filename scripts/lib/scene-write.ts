@@ -158,13 +158,13 @@ function verifyShardIntegrity() {
 
 // ── 增量分片写入 ────────────────────────────────────────────────────────
 
-function sameScene(left: unknown, right: unknown) {
+function sameScene(left: any, right: any) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
 /** 组内当前批次文件名（磁盘真实形态，按展开顺序）：单文件 → [base.json]，
  *  批次 → [base.1.json, ...]。workingFiles 优先（同一事务内已改写的形态）。 */
-function groupFileOrder(entry: { file: string; }, workingFiles: unknown[]|Map<unknown,unknown>) {
+function groupFileOrder(entry: { file: string; }, workingFiles: any[]|Map<any,any>) {
   const base = groupPrefix(entry.file);
   const names = workingFiles ? [...workingFiles.keys()] : fs.readdirSync(shardsDir);
   const batch = names
@@ -245,7 +245,7 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
     touched.add(last);
   }
 
-  function removeFrom(file: unknown, id: string) {
+  function removeFrom(file: any, id: string) {
     const scenes = working.get(file);
     const index = scenes.findIndex((scene: any) => String(scene.id) === id);
     if (index >= 0) scenes.splice(index, 1);
@@ -323,7 +323,7 @@ function cleanOrphanedSceneRefs(options: any) {
   const charactersPath = path.join(dataDir, 'characters.json');
   const characters = io.readJson(charactersPath);
   let changed = false;
-  characters.forEach((character: { lora: { recommended_scene: unknown[]; }; }) => {
+  characters.forEach((character: { lora: { recommended_scene: any[]; }; }) => {
     const recommended = character.lora && character.lora.recommended_scene;
     if (Array.isArray(recommended)) {
       const filtered = recommended.filter((id) => activeIds.has(id));
@@ -338,7 +338,7 @@ function cleanOrphanedSceneRefs(options: any) {
   const lorasPath = path.join(dataDir, 'loras.json');
   const loras = io.readJson(lorasPath);
   changed = false;
-  loras.forEach((lora: { related_scenes: unknown[]; scenes: unknown[]; }) => {
+  loras.forEach((lora: { related_scenes: any[]; scenes: any[]; }) => {
     const related = lora.related_scenes || lora.scenes;
     if (Array.isArray(related)) {
       const filtered = related.filter((id) => activeIds.has(id));

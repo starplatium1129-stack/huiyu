@@ -231,7 +231,7 @@ function themeImpact(opts: { root: PathLike; }, selected: any, result: any, add:
     if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) throw new Error(`${name}: 真实路径超出 --root`);
     return fs.readFileSync(real, 'utf8');
   };
-  let selectors: Set<unknown>;
+  let selectors: Set<any>;
   let cssError: string;
   let canonical: any;
   let dataError: string;

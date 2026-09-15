@@ -31,7 +31,7 @@ function fakeSpawn() {
 }
 
 function makeManager() {
-  var children: unknown[] = [];
+  var children: any[] = [];
   var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tunnel-test-'));
   var config = {
     DISABLE_TUNNEL: false,
@@ -59,7 +59,7 @@ function makeManager() {
   return { manager: manager, dir: dir, config: config, children: children };
 }
 
-function waitFor(predicate: { (): boolean; (): boolean; (): boolean; (): boolean; (): unknown; }, timeoutMs: any) {
+function waitFor(predicate: { (): boolean; (): boolean; (): boolean; (): boolean; (): any; }, timeoutMs: any) {
   var deadline = Date.now() + (timeoutMs || 500);
   return new Promise(function (resolve, reject) {
     function check() {

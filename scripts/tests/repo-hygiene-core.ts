@@ -307,7 +307,7 @@ function expectedLineEnding(target: string, relativePath: string) {
  * 数十秒的纯进程创建开销——这是扫描耗时的主要来源（2026-08-22 提速）。
  * 返回 Map<小写 oid, Buffer>；--batch 按输入顺序逐帧输出。
  */
-function catFileBatch(repositoryRoot: string, objectIds: unknown[]) {
+function catFileBatch(repositoryRoot: string, objectIds: any[]) {
   const unique = [...new Set(objectIds.map((id: string) => id.toLowerCase()))];
   if (unique.length === 0) return Promise.resolve(new Map());
   const child: any = spawn('git', ['cat-file', '--batch'], {
@@ -318,7 +318,7 @@ function catFileBatch(repositoryRoot: string, objectIds: unknown[]) {
   });
   const chunks: any = [];
   let stderr = '';
-  child.stdout.on('data', (chunk: unknown) => chunks.push(chunk));
+  child.stdout.on('data', (chunk: any) => chunks.push(chunk));
   child.stderr.on('data', (chunk: string) => { stderr += chunk; });
   for (const id of unique) child.stdin.write(`${id}\n`);
   child.stdin.end();
@@ -367,7 +367,7 @@ function unknownViolation(target: string, relativePath: string) {
   };
 }
 
-function appendBlobViolations(result: any, target: string, relativePath: string|undefined, bytes: NonSharedBuffer, allowanceLookup: Map<unknown,unknown>) {
+function appendBlobViolations(result: any, target: string, relativePath: string|undefined, bytes: NonSharedBuffer, allowanceLookup: Map<any,any>) {
   const violations = scanText(bytes, expectedLineEnding(target, relativePath), relativePath);
   if (violations.length === 0) return;
   const digest = sha256(bytes);
@@ -415,7 +415,7 @@ function readWorktreeBlob(repositoryRoot: string, relativePath: string, target: 
   }
 }
 
-function scanWorktreeTarget(repositoryRoot: string, relativePaths: unknown[], target: string, allowanceLookup: Map<unknown,unknown>, result: any) {
+function scanWorktreeTarget(repositoryRoot: string, relativePaths: any[], target: string, allowanceLookup: Map<any,any>, result: any) {
   for (const relativePath of relativePaths) {
     const bytes = readWorktreeBlob(repositoryRoot, relativePath, target, result);
     if (bytes === null) continue;
@@ -429,7 +429,7 @@ function scanWorktreeTarget(repositoryRoot: string, relativePaths: unknown[], ta
   }
 }
 
-function sortViolations(violations: unknown[]) {
+function sortViolations(violations: any[]) {
   violations.sort((left: any, right: any) => {
     const targetDifference = TARGET_ORDER.get!(left.target) - TARGET_ORDER.get!(right.target);
     if (targetDifference !== 0) return targetDifference;

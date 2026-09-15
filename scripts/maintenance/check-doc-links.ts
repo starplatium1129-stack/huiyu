@@ -30,7 +30,7 @@ function check() {
       if (!fs.existsSync(target) && !appPaths.has(route)) errors.push(path.relative(root, file).replaceAll('\\', '/') + ': ' + url);
     }
   }
-  const redirects: Record<string, unknown> = JSON.parse(fs.readFileSync(path.join(root, 'docs/redirects.json'), 'utf8'));
+  const redirects: Record<string, any> = JSON.parse(fs.readFileSync(path.join(root, 'docs/redirects.json'), 'utf8'));
   for (const [old, target] of Object.entries(redirects)) {
     if (!old.startsWith('/docs/') || typeof target !== 'string' || !target.startsWith('/docs/') || target.includes('..') || !fs.existsSync(path.join(root, target.slice(1)))) errors.push('Invalid document redirect: ' + old + ' -> ' + String(target));
   }

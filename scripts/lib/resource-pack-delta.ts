@@ -110,7 +110,7 @@ function planResourcePackDelta({ root, name, manifestPath, baseManifestPath, io 
   if (errors.length === 0) {
     const diff = compareManifests({ oldManifest: baseLoaded.manifest, newManifest: loaded.manifest });
     if (!diff.ok) {
-      errors.push(...(diff.errors as unknown[]));
+      errors.push(...(diff.errors as any[]));
     } else {
       const newByPath = new Map(loaded.manifest.entries.map((e: PackEntry) => [e.path, e]));
       const changedEntries = diff.changed as Array<{ path: string }>;

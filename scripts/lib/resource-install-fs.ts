@@ -12,18 +12,18 @@ interface ResourceContext {
   io: typeof fs;
   userRoot: string;
   store: string;
-  policy: unknown;
+  policy: any;
   access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
-  onEvent?: (event: { phase: string; [key: string]: unknown }) => unknown;
+  onEvent?: (event: { phase: string; [key: string]: any }) => any;
   freeBytes?: () => number;
 }
 interface ContextOptions {
   userDataRoot: string;
   io?: typeof fs;
   protectedRoots?: string[];
-  policy?: unknown;
+  policy?: any;
   access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
-  onEvent?: (event: { phase: string; [key: string]: unknown }) => unknown;
+  onEvent?: (event: { phase: string; [key: string]: any }) => any;
   freeBytes?: () => number;
 }
 
@@ -33,15 +33,15 @@ const MAX_JSON = 16 * 1024 * 1024;
 
 class ResourceError extends Error {
   code: string;
-  details?: unknown;
-  constructor(code: string, message: string, details?: unknown) {
+  details?: any;
+  constructor(code: string, message: string, details?: any) {
     super(message);
     this.name = 'ResourceError';
     this.code = code;
     if (details !== undefined) this.details = details;
   }
 }
-function fail(code: string, message: string, details?: unknown): never { throw new ResourceError(code, message, details); }
+function fail(code: string, message: string, details?: any): never { throw new ResourceError(code, message, details); }
 function digest(bytes: string | Uint8Array): string { return createHash('sha256').update(bytes).digest('hex'); }
 function samePath(a: string, b: string): boolean {
   const normalize = (value: string) => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
@@ -151,7 +151,7 @@ function writeAtomic(io: typeof fs, target: string, bytes: Buffer): void {
   io.renameSync(tmp, target);
   flushDir(io, path.dirname(target));
 }
-function writeJson(io: typeof fs, target: string, value: unknown): void { writeAtomic(io, target, Buffer.from(JSON.stringify(value) + '\n')); }
+function writeJson(io: typeof fs, target: string, value: any): void { writeAtomic(io, target, Buffer.from(JSON.stringify(value) + '\n')); }
 function cleanAtomicTemps(io: typeof fs, directory: string, names: string[]): void {
   noLinks(io, directory);
   for (const name of io.readdirSync(directory)) {
@@ -169,7 +169,7 @@ function unlink(io: typeof fs, target: string): void {
 function cancelled(signal?: AbortSignal): void {
   if (signal?.aborted) fail('CANCELLED', 'Operation cancelled; verified files and previous installation are retained');
 }
-async function event(ctx: ResourceContext, phase: string, details: Record<string, unknown> = {}, signal?: AbortSignal): Promise<void> {
+async function event(ctx: ResourceContext, phase: string, details: Record<string, any> = {}, signal?: AbortSignal): Promise<void> {
   cancelled(signal);
   if (ctx.onEvent) await ctx.onEvent({ phase, ...details });
   await new Promise((resolve) => setImmediate(resolve));
@@ -268,7 +268,7 @@ function lockFile(ctx: ResourceContext, name: string = 'writer', depth: number =
     if (noLinks(io, claim, { missing: true, hardlinks: true })) io.unlinkSync(claim);
   }
 }
-async function locked(ctx: ResourceContext, fn: () => unknown): Promise<unknown> {
+async function locked(ctx: ResourceContext, fn: () => any): Promise<any> {
   initialize(ctx);
   const release = lockFile(ctx);
   try { return await fn(); } finally { release(); }

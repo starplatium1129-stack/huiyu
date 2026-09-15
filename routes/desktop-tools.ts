@@ -210,7 +210,7 @@ function runTool(workspaceRoot: any, name: string, args: any, context?: any) {
         command = assertSafeCommand(root, command);
         if (command.length > 256) throw new Error('命令名过长');
         if (rawArgs.length > 16) throw new Error('参数过多');
-        if (rawArgs.some(function (arg: string|unknown[]) { return arg.length > 256; })) throw new Error('参数过长');
+        if (rawArgs.some(function (arg: string|any[]) { return arg.length > 256; })) throw new Error('参数过长');
         let executable = resolveToolCommand(command, rawArgs);
         return runToolProcess(executable.command, executable.args, {
             cwd: root,

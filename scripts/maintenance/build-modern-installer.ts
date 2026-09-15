@@ -94,7 +94,7 @@ function verifyUpdaterSignature(executable: PathOrFileDescriptor, signature: Wit
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  const value = (key: string|unknown[], fallback: string|undefined) => args.find((arg: any) => arg.startsWith(`--${key}=`))?.slice(key.length + 3) || fallback;
+  const value = (key: string|any[], fallback: string|undefined) => args.find((arg: any) => arg.startsWith(`--${key}=`))?.slice(key.length + 3) || fallback;
   if (args.includes('--help')) console.log('Build modern installer: --preview [--capture --theme=dark|light --state=ready|installing|done|error --dpi=96|120|144] or --payload=<NSIS exe> --output=<wrapper exe>');
   else try { buildModernInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), theme: value('theme', 'dark'), state: value('state', 'ready'), dpi: Number(value('dpi', '96')), payload: value('payload', undefined), output: value('output', undefined) }); }
   catch (error) { console.error(runtimeErrorMessage(error)); process.exitCode = 1; }

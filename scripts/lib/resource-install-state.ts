@@ -5,8 +5,8 @@ const { manifest, verifyTree, validateReference }: typeof import('./resource-ins
 const { manifestContentIdentity }: typeof import('./resource-pack-delta') = require('./resource-pack-delta');
 
 function emptyState() { return { schemaVersion: 1, sequence: 0, current: null, previous: null }; }
-function equal(a: unknown, b: { schemaVersion: number; reference: { identity: string; }; }) { return JSON.stringify(a) === JSON.stringify(b); }
-function validateState(ctx: unknown, state: any) {
+function equal(a: any, b: { schemaVersion: number; reference: { identity: string; }; }) { return JSON.stringify(a) === JSON.stringify(b); }
+function validateState(ctx: any, state: any) {
   if (!state || state.schemaVersion !== 1 || !Number.isSafeInteger(state.sequence) || state.sequence < 0
     || !Object.hasOwn(state, 'current') || !Object.hasOwn(state, 'previous')) fail('STATE_INVALID', 'Installed state is malformed');
   for (const ref of [state.current, state.previous]) if (ref !== null) validateReference(ctx, ref);

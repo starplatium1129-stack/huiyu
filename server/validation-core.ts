@@ -1,5 +1,5 @@
 'use strict';
-type AdultBody = { character?: unknown; prompt?: unknown; loras?: any };
+type AdultBody = { character?: any; prompt?: any; loras?: any };
 type LoraOptions = { useLoras?: boolean };
 
 
@@ -31,7 +31,7 @@ let ADULT_NOT_ENABLED_MESSAGE = '成人内容未获本机授权（adultEnabled !
 let ADULT_REMOTE_NOT_ALLOWED_MESSAGE = '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。';
 
 /** 提示词是否命中成人锚点（词边界语义；"xnsfw" 这类粘连词不误报）。 */
-function detectAdultIntent(prompt: unknown): boolean {
+function detectAdultIntent(prompt: any): boolean {
   return ADULT_PROMPT_RE.test(String(prompt || ''));
 }
 
@@ -64,7 +64,7 @@ function inferAdultTargetChar(body: AdultBody | null | undefined, options?: Lora
  * @returns {null | {reason: 'CHARACTER_NOT_ELIGIBLE'|'NOT_ENABLED', message: string}}
  *   null = 放行。desktop-tools 等返回值形态的调用方按 reason 映射自己的 code。
  */
-function evaluateAdultAccess(targetChar: unknown, adultEnabled: unknown) {
+function evaluateAdultAccess(targetChar: any, adultEnabled: any) {
   if (!ADULT_ELIGIBLE_CHARACTERS.has(String(targetChar || '').toLowerCase())) {
     return { reason: 'CHARACTER_NOT_ELIGIBLE', message: ADULT_NOT_ELIGIBLE_MESSAGE };
   }
@@ -79,7 +79,7 @@ function evaluateAdultAccess(targetChar: unknown, adultEnabled: unknown) {
  * 远程/隧道默认拒绝，AICS_ADULT_REMOTE=1 后放行。
  * @returns {null | {code: 'ADULT_REMOTE_NOT_ALLOWED', message: string}}
  */
-function evaluateAdultRemote(isLocal: unknown) {
+function evaluateAdultRemote(isLocal: any) {
   if (isLocal !== false) return null;
   if (security.adultRemoteEnabled()) return null;
   return { code: 'ADULT_REMOTE_NOT_ALLOWED', message: ADULT_REMOTE_NOT_ALLOWED_MESSAGE };

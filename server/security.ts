@@ -8,13 +8,13 @@ interface SecurityRequest {
   headers: IncomingHttpHeaders;
   method?: string;
 }
-interface HeaderWriter { setHeader(name: string, value: string): unknown }
-interface BucketOptions { capacity?: unknown; refillMs?: unknown }
+interface HeaderWriter { setHeader(name: string, value: string): any }
+interface BucketOptions { capacity?: any; refillMs?: any }
 
 let crypto: typeof import('crypto') = require('crypto');
 let envelope: typeof import('./http-envelope') = require('./http-envelope');
 
-function tokenMatches(expectedToken: string, value: unknown) {
+function tokenMatches(expectedToken: string, value: any) {
   if (typeof value !== 'string') return false;
   let actual = Buffer.from(value);
   let expected = Buffer.from(expectedToken);
@@ -67,7 +67,7 @@ const LOOPBACK_HOSTNAMES = ['127.0.0.1', 'localhost', '::1', '[::1]'];
 
 // 上游 host（SD / TTS / Ollama）只允许指向本机 http。
 // 未校验时这里是 SSRF；又因为值会落盘、而代理构造时读它，重启后会变成通用开放代理。
-function safeLocalUrl(value: unknown) {
+function safeLocalUrl(value: any) {
   let raw = String(value == null ? '' : value).trim();
   if (!raw) return '';
   let url;
@@ -84,7 +84,7 @@ function safeLocalUrl(value: unknown) {
 // 用户访问的任意网页都能把域名 rebind 到 127.0.0.1，进而以「本机」身份调用控制接口。
 // 只校验 hostname，不校验端口：rebinding 攻击靠的是把域名解析到 127.0.0.1，
 // 端口本来就是攻击者已知的；而比对端口会误杀挂在其他 listener 上的合法访问（含测试）。
-function hostAllowed(hostHeader: unknown, port?: unknown, tunnelHost?: string) {
+function hostAllowed(hostHeader: any, port?: any, tunnelHost?: string) {
   let host = String(hostHeader || '').trim().toLowerCase();
   if (!host) return false;
   let withoutPort = host.replace(/:\d+$/, '');
@@ -166,7 +166,7 @@ function rateLimit(options?: BucketOptions & { label?: string }): RequestHandler
   };
 }
 
-function normalizeRequestPath(pathValue?: unknown) {
+function normalizeRequestPath(pathValue?: any) {
   let value = String(pathValue || '/');
   let q = value.indexOf('?');
   if (q >= 0) value = value.slice(0, q);
@@ -174,7 +174,7 @@ function normalizeRequestPath(pathValue?: unknown) {
   return value || '/';
 }
 
-function buildContentSecurityPolicy(pathValue?: unknown) {
+function buildContentSecurityPolicy(pathValue?: any) {
   let path = normalizeRequestPath(pathValue);
   // Live2D（PixiJS）需要 unsafe-eval 才能编译着色器。
   // 只对角色房间与桌宠放行；其他页面继续使用严格脚本策略。

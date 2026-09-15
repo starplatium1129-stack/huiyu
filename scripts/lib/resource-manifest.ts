@@ -41,7 +41,7 @@ const HEX_ESCAPE_RE = /%[0-9a-fA-F]{2}/;
 const FORBIDDEN_CHARS_RE = /[\\:\u0000-\u001f\u007f]/;
 
 type ManifestEntry = { path: string; bytes: number; sha256: string };
-type ManifestObject = { schemaVersion: number; entries: unknown; unverified?: unknown };
+type ManifestObject = { schemaVersion: number; entries: any; unverified?: any };
 type ScanItem = { kind: string; path: string; message?: string };
 type ManifestOptions = { root: string; io?: typeof import('node:fs') };
 
@@ -267,7 +267,7 @@ function generateManifest({ root, io = nodeFs }: ManifestOptions) {
  * fs 检查，比较端不得用其产出差异）。
  */
 function parseManifestStructure(manifest: ManifestObject) {
-  const errors: unknown[] = [];
+  const errors: any[] = [];
   const push = (error: any) => errors.push(error);
   const empty = () => ({ errors, listed: 0, byPath: new Map(), invalidPaths: new Set() });
   if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
@@ -376,7 +376,7 @@ function verifyEntries(rootReal: string, manifest: ManifestObject, io: typeof im
       push({ path: rel, code: 'hash-mismatch', expected: record.sha256.toLowerCase(), actual, message: 'SHA-256 不匹配：实际内容与清单记录不一致' });
     }
   }
-  errors.sort((a, b) => comparePath(String((a as { path?: unknown }).path || ''), String((b as { path?: unknown }).path || '')) || comparePath(String((a as { code?: unknown }).code || ''), String((b as { code?: unknown }).code || '')));
+  errors.sort((a, b) => comparePath(String((a as { path?: any }).path || ''), String((b as { path?: any }).path || '')) || comparePath(String((a as { code?: any }).code || ''), String((b as { code?: any }).code || '')));
   return { errors, listed, uniquePaths: byPath.size, byPath };
 }
 
@@ -465,7 +465,7 @@ const DIFF_SCOPE = Object.freeze({
 function compareManifests({ oldManifest, newManifest }: { oldManifest: ManifestObject; newManifest: ManifestObject }) {
   const oldStructure = parseManifestStructure(oldManifest);
   const newStructure = parseManifestStructure(newManifest);
-  const errors: Array<Record<string, unknown>> = [
+  const errors: Array<Record<string, any>> = [
     ...oldStructure.errors.map((e) => ({ ...(e as object), side: 'old' })),
     ...newStructure.errors.map((e) => ({ ...(e as object), side: 'new' })),
   ];
@@ -473,7 +473,7 @@ function compareManifests({ oldManifest, newManifest }: { oldManifest: ManifestO
     added: ManifestEntry[];
     removed: ManifestEntry[];
     changed: Array<{ path: string; before: ManifestEntry; after: ManifestEntry }>;
-    [key: string]: unknown;
+    [key: string]: any;
   } = {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-manifest-diff',
@@ -486,7 +486,7 @@ function compareManifests({ oldManifest, newManifest }: { oldManifest: ManifestO
     errors,
     scope: DIFF_SCOPE,
   };
-  const blocking = (list: unknown[]) => list.some((e) => (e as { code?: string }).code !== 'unverified-items');
+  const blocking = (list: any[]) => list.some((e) => (e as { code?: string }).code !== 'unverified-items');
   if (blocking(oldStructure.errors) || blocking(newStructure.errors)) return result;
   const added: ManifestEntry[] = [];
   const removed: ManifestEntry[] = [];

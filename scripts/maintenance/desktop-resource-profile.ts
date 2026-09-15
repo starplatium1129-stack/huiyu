@@ -2,7 +2,7 @@
 
 // Internal staging step, not an install/download or user-selected filesystem API.
 const { applyResourceProfile }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
-async function main(args: string|unknown[]) {
+async function main(args: string|any[]) {
   if (args.includes('--help') || args.includes('--plan')) {
     console.log('Internal desktop staging helper: <source root> <fresh gateway staging root> <full|base>. Called by desktop-stage-resources; does not install or download. Help/plan read no target files.');
     return;

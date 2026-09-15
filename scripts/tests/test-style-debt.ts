@@ -146,7 +146,7 @@ for (const rel of [...sfcFiles, 'src/main.ts']) {
 }
 
 const referenced = new Map();
-function collectRefs(rawText: string, label: unknown) {
+function collectRefs(rawText: string, label: any) {
   // 先剥注释:CSS 注释与 HTML 注释里的 var(--xxx) 是文档示例,不是真实引用
   const text = rawText.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/<!--[\s\S]*?-->/g, ' ');
   for (const match of text.matchAll(/var\(\s*(--[\w-]+)\s*([,)])/g)) {

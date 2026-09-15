@@ -34,7 +34,7 @@ let DEFAULT_THRESHOLD = 0.35;
 function serviceError(status: number, code: string, message: string|undefined) {
   let e: any = new Error(message); e.status = status; e.code = code; return e;
 }
-function isPlainObject(v: unknown) { return Boolean(v) && typeof v === 'object' && !Array.isArray(v); }
+function isPlainObject(v: any) { return Boolean(v) && typeof v === 'object' && !Array.isArray(v); }
 
 function stripDataUrlPrefix(dataUrl: string) {
   let s = String(dataUrl || '').trim();
@@ -48,7 +48,7 @@ function sniffBase64Bytes(b64: string) {
   let pad = b64.endsWith('==') ? 2 : (b64.endsWith('=') ? 1 : 0);
   return Math.floor(len * 3 / 4) - pad;
 }
-function validateImageBase64(b64: string|unknown[]) {
+function validateImageBase64(b64: string|any[]) {
   if (typeof b64 !== 'string' || !b64.length) throw serviceError(400, 'INVALID_IMAGE', '请上传图片');
   let raw = stripDataUrlPrefix(b64);
   if (!/^[A-Za-z0-9+/=\r\n]+$/.test(raw)) throw serviceError(400, 'INVALID_IMAGE', '图片 base64 非法');
@@ -135,7 +135,7 @@ let CAPTION_PHRASE: any = {
   'portrait': 'a portrait', 'cowboy_shot': 'a cowboy shot', 'cute': 'a cute look',
   'serious': 'a serious expression', 'happy': 'a happy expression'
 };
-function captionFromTags(tags: unknown[]|undefined) {
+function captionFromTags(tags: any[]|undefined) {
   let top = (tags || []).slice(0, 10);
   let subject = '';
   let phrases: string[] = [];

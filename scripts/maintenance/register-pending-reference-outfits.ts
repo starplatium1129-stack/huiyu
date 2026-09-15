@@ -47,7 +47,7 @@ function main() {
 
   const popularById = new Map((popular.characters || []).map((c: any) => [c.id, c]));
 
-  const targets = standards.characters.filter((c: { outfits: string|unknown[]; id: string; }) => {
+  const targets = standards.characters.filter((c: { outfits: string|any[]; id: string; }) => {
     if (c.outfits.length > 0) return false;
     if (!(view[c.id]?.outfits || []).length) return false;
     return onlyIds ? onlyIds.has(c.id) : true;

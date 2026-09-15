@@ -80,7 +80,7 @@ test('registry references and graph are valid', () => {
   assert.equal(audit({ a: { steps: ['a'] } }, root).ok, false);
 });
 test('composites stop after failure and preserve child errors', () => {
-  const registry = { a: { cmd: ['node', 'a.js'] }, b: { cmd: ['node', 'b.js'] }, all: { steps: ['a', 'b'] } } as unknown as WorkflowRegistry;
+  const registry = { a: { cmd: ['node', 'a.js'] }, b: { cmd: ['node', 'b.js'] }, all: { steps: ['a', 'b'] } } as any as WorkflowRegistry;
   let calls = 0;
   const runner: WorkflowCommandRunner = () => { calls++; return { status: 7 }; };
   assert.equal(main(['all'], registry, root, runner), 7);
@@ -154,7 +154,7 @@ test('metadata is descriptive only: execution path never consults run', () => {
   // machine 声明为 windows 的 node 命令在任何平台都按原样执行（无基于元数据的拦截）。
   const registry = {
     winOnly: { cmd: ['node', 'x.js'], run: { nature: ['writes-product'], machine: ['windows'], switches: {}, resume: 'na', evidence: 'x.js:1' } },
-  } as unknown as WorkflowRegistry;
+  } as any as WorkflowRegistry;
   const calls: CommandCall[] = [];
   assert.equal(main(['winOnly'], registry, root, (...args) => { calls.push(args); return { status: 0 }; }), 0);
   assert.equal(calls.length, 1);
@@ -219,7 +219,7 @@ test('plan distinguishes default effects from requested switch effects without e
 
 test('audit accepts truly passive composites and rejects missing child write effects', () => {
   const run: WorkflowRun = { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'fixture:1' };
-  const registry = { read: { cmd: ['node', 'fixture.js'], run }, all: { steps: ['read'], run } } as unknown as WorkflowRegistry;
+  const registry = { read: { cmd: ['node', 'fixture.js'], run }, all: { steps: ['read'], run } } as any as WorkflowRegistry;
   assert.deepEqual(audit(registry, root).errors, []);
   registry.read.run = { ...run, nature: ['read-only', 'writes-product'] };
   registry.all.run = { ...run, nature: ['read-only', 'guard'] };

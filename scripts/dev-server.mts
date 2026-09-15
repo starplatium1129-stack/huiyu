@@ -14,7 +14,7 @@ interface DevelopmentOptions {
   debounceMs?: number;
   build?: () => boolean;
   start?: () => ChildProcess;
-  reportError?: (error: unknown) => void;
+  reportError?: (error: any) => void;
 }
 
 /** Rebuild before restarting; a failed check leaves the last working gateway running. */
@@ -24,7 +24,7 @@ export async function startDevelopment(root = defaultRoot, options: DevelopmentO
   const start = options.start || (() => spawn(process.execPath, [path.join(root, 'server.js')], {
     cwd: root, stdio: 'inherit', env: process.env, windowsHide: true,
   }));
-  const reportError = options.reportError || ((error: unknown) => console.error(
+  const reportError = options.reportError || ((error: any) => console.error(
     error instanceof Error ? error.message : String(error)));
   const watchers: fs.FSWatcher[] = [];
   let child: ChildProcess | undefined;

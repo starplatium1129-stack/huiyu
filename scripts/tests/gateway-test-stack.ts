@@ -89,7 +89,7 @@ function buildConfig(runtime: { root: string; }, upstreams: Upstreams, options: 
   return config;
 }
 
-async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; prefix?: string; token?: string; env?: Record<string,string>; [key: string]: unknown } = {}) {
+async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; prefix?: string; token?: string; env?: Record<string,string>; [key: string]: any } = {}) {
   options = options || {};
   var ownsTemporaryRoot = !options.runtimeRoot;
   var temporaryRoot = ownsTemporaryRoot
@@ -98,7 +98,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
   var cleanupRuntime = options.cleanupRuntime === true || (ownsTemporaryRoot && options.cleanupRuntime !== false);
   var runtime = runtimePaths.createRuntimePaths(temporaryRoot);
   var upstreams: Upstreams | null = null;
-  var gateway: { app: RequestListener; handleUpgrade: (...args: unknown[]) => void; close: () => void; }|null = null;
+  var gateway: { app: RequestListener; handleUpgrade: (...args: any[]) => void; close: () => void; }|null = null;
   var server: Server | null = null;
   var closed = false;
 

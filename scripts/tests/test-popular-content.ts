@@ -27,7 +27,7 @@ test('explicit SFW composition survives core and showcase guards without relaxin
   const profile = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles.find(p => p.model_id === 'anima-miaomiao-v1.2');
   const tokens = (text: any) => text.split(',').map((t: any) => t.trim().toLowerCase().replaceAll('_', ' '));
   for (const id of ['marcille_donato_sfw_b9_01', 'togawa_sakiko_sfw_b9_06', 'illyasviel_grail_war']) {
-    const b = blueprints.find(b => b.id === id), c = characters.find(c => c.id === b!.characterId);
+    const b = blueprints.find(b => b.id === id)!, c = characters.find(c => c.id === b!.characterId)!;
     const p = generator.buildCandidate(c, b, profile, 1), neg = tokens(p.negative);
     assert.ok(!/single girl only|one person only|no other person|single subject only/.test(p.prompt), id);
     assert.ok(!tokens(p.prompt.split('\n')[0]).includes('solo'), id + ' identity must allow composition');
@@ -526,9 +526,9 @@ test('blueprint rotation: deterministic, changes per cursor, avoids immediate re
 });
 
 test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, Krea negative always empty', function () {
-  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   var outfit = raiden!.outfits.find(function (item) { return item.default; }) || raiden!.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; })!;
 
   var anima = popular.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
@@ -576,7 +576,7 @@ test('adult blueprints compile as explicit adult versions in both engines', func
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length > 0, 'adult blueprint corpus must not be empty');
   adultBlueprints.forEach(function (blueprint) {
-    var character = popular.findCharacter(characters, blueprint.characterId);
+    var character = popular.findCharacter(characters, blueprint.characterId)!;
     var outfit = character!.outfits.find(function (item) { return item.id === blueprint.outfitId; })
       || character!.outfits.find(function (item) { return item.default; })
       || character!.outfits[0];
@@ -646,9 +646,9 @@ test('blueprint decisions: angle keywords outrank framing substrings; every blue
 });
 
 test('krea prose: director shot/lighting decisions must reach the compiled prompt', function () {
-  var yor = popular.findCharacter(characters, 'yor_forger');
+  var yor = popular.findCharacter(characters, 'yor_forger')!;
   var outfit = yor!.outfits.find(function (item) { return item.default; }) || yor!.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'yor_moonlit_rooftop_stiletto'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'yor_moonlit_rooftop_stiletto'; })!;
   var built = popular.buildPopularPromptPlan({
     character: yor, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: null,
     adultEnabled: false, shot: 'medium', lighting: 'moon', composition: 'rule3',
@@ -672,7 +672,7 @@ test('krea prose: director shot/lighting decisions must reach the compiled promp
 });
 
 test('prompt compiler: manual expert tags are sanitized against studio control tokens', function () {
-  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   var outfit = raiden!.outfits[0];
   var manual = ['nene_school_uniform', 'shiki_natsume', 'raiden_shogun', 'thighhighs', 'natsume_cafe_uniform'];
   var sanitized = popular.sanitizePopularManual(manual);
@@ -724,7 +724,7 @@ test('krea style recipes: adult recipes fail closed for unknown/underage and wit
 });
 
 test('krea style recipes: resolution is engine-default -> blueprint hint -> selection, gated fail-closed', function () {
-  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   var flower = blueprints.find(function (blueprint) { return blueprint.id === 'raiden_shogun_narukami_shrine'; });
   var adultBp = blueprints.find(function (blueprint) { return blueprint.adult; });
 
@@ -767,9 +767,9 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
 });
 
 test('krea prose: automatic style first, 3-5 visual sentences, no meta phrases or tag stuffing', function () {
-  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   var outfit = raiden!.outfits.find(function (item) { return item.default; }) || raiden!.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; })!;
   var style = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', blueprint, null, raiden, { adultEnabled: true });
 
   var krea = popular.buildPopularPromptPlan({
@@ -806,7 +806,7 @@ test('krea prose: automatic style first, 3-5 visual sentences, no meta phrases o
 test('krea prose: adult recipe fails closed inside buildPopularPromptPlan for ineligible characters', function () {
   var ineligible = JSON.parse(JSON.stringify(characters[0]));
   ineligible.adultEligibility = 'underage';
-  var adultBp = blueprints.find(function (blueprint) { return blueprint.adult; });
+  var adultBp = blueprints.find(function (blueprint) { return blueprint.adult; })!;
   var adultStyle = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, ineligible, { adultEnabled: true });
   assert.strictEqual(adultStyle, null, 'underage must never resolve an adult style');
   // 即便调用方绕过解析直接传 adult 配方，build 层也要再 fail-closed 一次。
@@ -815,7 +815,7 @@ test('krea prose: adult recipe fails closed inside buildPopularPromptPlan for in
     profile: null, adultEnabled: true, style: { lead: 'mature sensual content', adult: true },
   });
   assert.strictEqual(sneaked, null, 'build layer must reject an adult style for an ineligible character');
-  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   var legit = popular.buildPopularPromptPlan({
     character: raiden, outfit: raiden!.outfits[0], blueprint: adultBp, engine: 'krea2',
     profile: null, adultEnabled: true, style: { lead: 'mature sensual content', medium: 'mature art', adult: true },
@@ -835,9 +835,9 @@ test('blueprint hints: kreaStyleHint/animaStyleHint stay optional; adult bluepri
 });
 
 test('prompt compiler: Anima negative merges profile negative_prefix per negative_mode, Krea stays empty', function () {
-  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   var outfit = raiden!.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; })!;
   blueprint = { ...blueprint, negativeTokens: [...blueprint!.negativeTokens, 'neon'] };
   // anima_aesthetic_v11：negative_mode=replace, replace_scope=boilerplate。
   var profile = { engine: 'anima', negative_prefix: 'worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration', negative_mode: 'replace', negative_replace_scope: 'boilerplate', exact_tokens: ['best_quality'] };
@@ -859,9 +859,9 @@ test('prompt compiler: Anima negative merges profile negative_prefix per negativ
 });
 
 test('curated artist styles use native Anima tags and Krea prose', function () {
-  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var raiden = popular.findCharacter(characters, 'raiden_shogun')!;
   var outfit = raiden!.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; })!;
   var anima = popular.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: { engine:'anima' },
     artistTags: ['@kantoku', '@mika pikazo'], artistProse: 'with visual styling inspired by Kantoku and Mika Pikazo',

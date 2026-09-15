@@ -77,7 +77,7 @@ function historyImpact(opts: any, captureSnapshots: any) {
     after[domain] = inspectDomain(currentReader, domain);
     for (const [side, snapshot] of [['base', before[domain]], ['working-tree', after[domain]]]) {
       result.consistency.push({ side, ...summarizeConsistency(snapshot) });
-      result.unknown.push(...snapshot.unknown.map((message: unknown) => `${side}: ${message}`));
+      result.unknown.push(...snapshot.unknown.map((message: any) => `${side}: ${message}`));
       for (const issue of snapshot.issues) {
         if (side === 'working-tree') add('mustChange', domain, issue.file + (issue.location ? `#${issue.location}` : ''), issue.reason);
         else result.unknown.push(`base: ${issue.file}: ${issue.reason}; baseline cannot certify prior validation`);
@@ -114,14 +114,14 @@ function historyImpact(opts: any, captureSnapshots: any) {
         else if (!current.length) change = newGroup.complete ? 'removed' : 'unresolved-removal';
         else if (old[0].file !== current[0].file) change = equal(old[0].value, current[0].value) ? 'moved' : 'modified-and-moved';
         else change = 'modified';
-        const oldRelations = old.flatMap((r: unknown) => edges.get(r).targets);
-        const newRelations = current.flatMap((r: unknown) => edges.get(r).targets);
+        const oldRelations = old.flatMap((r: any) => edges.get(r).targets);
+        const newRelations = current.flatMap((r: any) => edges.get(r).targets);
         const changedFields = old.length === 1 && current.length === 1 ? fieldDiff(old[0].value, current[0].value) : ['/'];
         result.history.entities.push({ ...target(row.kind, row.id, row.characterId || null), domain, role: row.role, group, change, changedFields,
           before: old.map((r: any) => ({ file: r.file, side: 'base' })), after: current.map((r: any) => ({ file: r.file, side: 'working-tree' })),
           beforeComplete: oldGroup.complete, afterComplete: newGroup.complete, oldRelations, newRelations,
-          removedRelations: oldRelations.filter((r: unknown) => !newRelations.some((n: unknown) => equal(n, r))),
-          addedRelations: newRelations.filter((r: unknown) => !oldRelations.some((n: unknown) => equal(n, r))) });
+          removedRelations: oldRelations.filter((r: any) => !newRelations.some((n: any) => equal(n, r))),
+          addedRelations: newRelations.filter((r: any) => !oldRelations.some((n: any) => equal(n, r))) });
         if (change === 'ambiguous' || change.startsWith('unresolved')) result.unknown.push(`${domain}/${row.id}: ${change}; no authoritative absence inferred`);
         if (change !== 'modified' || !equal(oldRelations, newRelations)) globalReasons.push(`${domain}/${row.id}: identity, location or relation membership changed`);
       }
@@ -166,7 +166,7 @@ function historyImpact(opts: any, captureSnapshots: any) {
   const contexts = new Map();
   for (const row of [...oldRows, ...newRows].filter((r: any) => affected.has(r.key))) {
     for (const edge of edges.get(row).targets) contexts.set(edge.key, edge);
-    result.unknown.push(...edges.get(row).unknown.map((message: unknown) => `${edges.get(row).side}: ${message}`));
+    result.unknown.push(...edges.get(row).unknown.map((message: any) => `${edges.get(row).side}: ${message}`));
   }
   const proofTargets: any[] = [];
   for (const key of new Set([...affected, ...contexts.keys()])) {
@@ -174,7 +174,7 @@ function historyImpact(opts: any, captureSnapshots: any) {
     const current = newRows.filter((row: any) => row.key === key);
     const identity = current[0] || old[0] || contexts.get(key);
     if (!identity) { result.unknown.push(`${key}: explicit target not found in either snapshot`); continue; }
-    const locations = (rows: unknown[], side: string, role: string) => rows.filter((r: { role: string; }) => r.role === role).map((r: any) => ({ file: r.file, side }));
+    const locations = (rows: any[], side: string, role: string) => rows.filter((r: { role: string; }) => r.role === role).map((r: any) => ({ file: r.file, side }));
     const item: any = { ...target(identity.kind, identity.id, identity.characterId || null),
       impact: affected.has(key) ? 'revalidate' : 'related-context',
       oldRelations: old.flatMap((row: any) => edges.get(row).targets), newRelations: current.flatMap((row: any) => edges.get(row).targets),
@@ -210,14 +210,14 @@ function historyImpact(opts: any, captureSnapshots: any) {
   return result;
 }
 
-function buildPlan(result: any, targets: unknown[], globalReasons: string[]) {
+function buildPlan(result: any, targets: any[], globalReasons: string[]) {
   const unknown = [...result.unknown];
   const reasons = [...new Set([...globalReasons, ...unknown])];
   const byGroup = result.history.entities;
   const proven = byGroup.filter((change: any) => ['popular', 'scenes', 'blueprints'].includes(change.domain)
     && change.beforeComplete && change.afterComplete && change.change !== 'ambiguous'
     && result.consistency.filter((entry: any) => entry.domain === change.domain).length === 2
-    && result.consistency.filter((entry: any) => entry.domain === change.domain).every((entry: { groups: unknown[]; }) => entry.groups.every((group: any) => group.complete)));
+    && result.consistency.filter((entry: any) => entry.domain === change.domain).every((entry: { groups: any[]; }) => entry.groups.every((group: any) => group.complete)));
   const full = reasons.length > 0;
   return { version: 1, preview: true, executed: false, mode: full ? 'full' : 'incremental',
     wholeLibrary: 'not-validated', baselineAcceptance: 'unknown (a commit identifies input, not a previously passed gate)',

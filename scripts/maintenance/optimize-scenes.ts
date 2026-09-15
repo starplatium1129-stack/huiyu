@@ -65,7 +65,7 @@ function canonical(value: string) {
   return aliases.get(normalized) || normalized;
 }
 
-function dedupe(values: unknown[]) {
+function dedupe(values: any[]) {
   const seen = new Set();
   return values.filter((value: string) => {
     const normalized = key(value);
@@ -101,7 +101,7 @@ function cameraTags(scene: any, tags: any) {
   return [...set];
 }
 
-function optimizePrompt(prompt: unknown) {
+function optimizePrompt(prompt: any) {
   const prepared = String(prompt || '')
     .replace(/\{[^}]+\}/g, '')
     .replace(/_break_/gi, 'BREAK');
@@ -131,7 +131,7 @@ function ensureAdultPrompt(prompt: string) {
   return 'adult, ' + prompt;
 }
 
-function optimizePromptCamera(scene: unknown, prompt: string) {
+function optimizePromptCamera(scene: any, prompt: string) {
   const intent = cameraIntent(scene);
   const blocked = intent === 'wide'
     ? new Set(['close_up', 'face_focus', 'medium_shot', 'upper_body'])

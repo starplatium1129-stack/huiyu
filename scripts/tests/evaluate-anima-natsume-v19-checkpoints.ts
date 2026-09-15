@@ -41,7 +41,7 @@ var CLIENT_ID = 'aics-natsume-v19-product-matrix-' + crypto.randomUUID();
 
 function assert(condition: string|boolean|undefined, message: string|undefined) { if (!condition) throw new Error(message); }
 function readJson(file: PathOrFileDescriptor) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-function writeJson(file: PathOrFileDescriptor, value: unknown) { fs.mkdirSync(path.dirname(file), { recursive:true }); fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n', 'utf8'); }
+function writeJson(file: PathOrFileDescriptor, value: any) { fs.mkdirSync(path.dirname(file), { recursive:true }); fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n', 'utf8'); }
 function sha256(value: string|NodeJS.ArrayBufferView<ArrayBufferLike>|NonSharedBuffer) { return crypto.createHash('sha256').update(value).digest('hex'); }
 function sha256File(file: PathOrFileDescriptor) { return sha256(fs.readFileSync(file)); }
 function localUrl(base: string|URL, pathname: string|URL) {

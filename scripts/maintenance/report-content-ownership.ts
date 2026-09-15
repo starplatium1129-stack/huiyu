@@ -9,7 +9,7 @@ const { parseManualRatings }: typeof import('./classify-scene-ratings') = requir
 const { localReader }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 const { inspectDomain, summarizeConsistency }: typeof import('../lib/content-impact-consistency') = require('../lib/content-impact-consistency');
 const { FIELD_VALIDATION }: typeof import('../lib/content-impact-checks') = require('../lib/content-impact-checks');
-const object = (v: unknown) => v !== null && typeof v === 'object' && !Array.isArray(v);
+const object = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const records = (v: any) => Array.isArray(v) && v.every(object);
 const DOMAINS = {
   'scene-ratings': { fields: 'data/scenes rating/mature/category/usage：分级及使用元数据，不属于提示词正文', readers: ['scripts/maintenance/classify-scene-ratings.js', 'scripts/maintenance/validate-scenes.js'], writers: ['人工维护 scripts/lib/manual-scene-ratings.js', 'classify-scene-ratings.js --write'], boundary: '人工表覆盖 policy 与成熟标记，pinned 优先保留；人工审核语义与真实画面仍未验证；结构可读取不代表内容质量通过' },
@@ -126,7 +126,7 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
     else if (id === 'retired') add('data/retired-scenes.json', 'source', (v: any) => object(v) && records(v.records) && v.records.every((r: any) => typeof r.id === 'string'));
     else if (id === 'references') {
       add('data/character-reference-standards.json', 'source', (v: any) => object(v) && records(v.characters) && records(v.perspectives));
-      add('data/character-reference-view.json', 'product', (v: ArrayLike<unknown>|{ [s: string]: unknown; }) => object(v) && Object.values(v).every((r: any) => object(r) && records(r.outfits)));
+      add('data/character-reference-view.json', 'product', (v: ArrayLike<any>|{ [s: string]: any; }) => object(v) && Object.values(v).every((r: any) => object(r) && records(r.outfits)));
     } else if (id === 'themes') add('src/assets/css/director/tokens.css', 'source', (v: string|string[]) => v.includes('--character-') && v.includes('{') && v.includes('}'), true);
     else result.entries.push({ path: null, role: 'source', status: 'external-unknown', reason: '外部样张 manifest 未定位；未读取外部文件', quality: 'unverified' });
     if (consistency) {

@@ -34,7 +34,7 @@ async function application(f: any, position: string) {
   const finish = deferred();
   app.use((req, res, next) => req.headers['x-fixture-deny'] ? res.status(403).end('authorization denied') : next());
   const fence = maintenanceReadBarrier(f.options);
-  const callbackProbe = (_req: unknown, res: any) => {
+  const callbackProbe = (_req: any, res: any) => {
     res.setHeader('Content-Type', 'application/json');
     const buffer = Buffer.from('{"copied":true}');
     res.write(buffer, () => { buffer.fill(0); res.end(); });

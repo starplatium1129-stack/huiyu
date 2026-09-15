@@ -6,7 +6,7 @@ const { object, validId, canonicalSceneId }: typeof import('./content-history-re
 const TIERS = ['curatedSceneIds', 'signatureSceneIds', 'personaCoreSceneIds'];
 const PRODUCTS: Record<string, string> = { popular: 'data/popular-characters.json', blueprints: 'data/scene-blueprints.json', scenes: 'data/scenes.json' };
 const ENTITY: Record<string, string> = { popular: 'character', blueprints: 'blueprint', scenes: 'scene', characters: 'profile', curation: 'curation', retired: 'retired' };
-const keyFor = (kind: string|string[], id: unknown, characterId: unknown = null) => JSON.stringify([kind, characterId, id]);
+const keyFor = (kind: string|string[], id: any, characterId: any = null) => JSON.stringify([kind, characterId, id]);
 
 function loadDomain(reader: { json: (file: string) => any; read: (file: string) => any; list: (dir: string) => string[]; }, domain: string) {
   const result: any = { domain, complete: true, rows: [], groups: {}, metadata: {}, unknown: [], issues: [], checks: [], files: [] };
@@ -16,20 +16,20 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
     if (!result.files.includes(file)) result.files.push(file);
     return reader.json(file);
   };
-  const read = (file: string, validate: (v: unknown) => boolean): any => {
+  const read = (file: string, validate: (v: any) => boolean): any => {
     const value = json(file);
     if (!validate(value)) throw new Error(`${file}: invalid container/IDs`);
     return value;
   };
-  const validRows = (rows: unknown, scene = false) => Array.isArray(rows) && rows.every((row: any) => object(row) && (scene ? canonicalSceneId(row.id) : validId(row.id)));
-  const put = (group: string|string[], file: string, kind: string|string[], id: unknown, value: unknown, extra: Record<string, unknown> = {}) => {
+  const validRows = (rows: any, scene = false) => Array.isArray(rows) && rows.every((row: any) => object(row) && (scene ? canonicalSceneId(row.id) : validId(row.id)));
+  const put = (group: string|string[], file: string, kind: string|string[], id: any, value: any, extra: Record<string, any> = {}) => {
     const row: any = { group, file, domain, role: group.includes(':derived:') ? 'derived' : 'source', kind, id, value, ...extra };
     row.key = keyFor(kind, id, kind.includes('outfit') ? row.characterId : null);
     result.rows.push(row);
     result.groups[group] ||= { complete: true, rows: [] };
     result.groups[group].rows.push(row);
   };
-  const entities = (group: string, file: string, values: unknown[]) => {
+  const entities = (group: string, file: string, values: any[]) => {
     result.groups[group] ||= { complete: true, rows: [] };
     for (const row of values) {
       put(group, file, ENTITY[domain], row.id, row);
@@ -38,10 +38,10 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
       for (const outfit of row.outfits) put(group, file, 'outfit', outfit.id, outfit, { characterId: row.id });
     }
   };
-  const metadata = (file: string, value: { [s: string]: unknown; }|ArrayLike<unknown>, omit: string|string[]) => {
+  const metadata = (file: string, value: { [s: string]: any; }|ArrayLike<any>, omit: string|string[]) => {
     result.metadata[file] = Object.fromEntries(Object.entries(value).filter(([key]) => !omit.includes(key)));
   };
-  const product = (file: string, expected: unknown, validate: (v: unknown) => boolean, rowSelector: (v: any) => any = (v: any) => v) => {
+  const product = (file: string, expected: any, validate: (v: any) => boolean, rowSelector: (v: any) => any = (v: any) => v) => {
     try {
       const actual = read(file, validate);
       const group = `${domain}:derived:${file}`;
@@ -68,12 +68,12 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
     const sourceGroup = `${domain}:source`;
     result.groups[sourceGroup] = { complete: true, rows: [] };
     const recordsKey = domain === 'popular' ? 'characters' : 'blueprints';
-    const shape = domain === 'scenes' ? (v: unknown) => validRows(v, true) : (v: any) => object(v) && validRows(v[recordsKey]);
+    const shape = domain === 'scenes' ? (v: any) => validRows(v, true) : (v: any) => object(v) && validRows(v[recordsKey]);
     let sourceComplete = true;
     const sourceRows: any[] = [];
     try {
       const manifestFile = `${directory}/manifest.json`;
-      const manifest = read(manifestFile, (v: unknown) => object(v) && Array.isArray((v as any).files)
+      const manifest = read(manifestFile, (v: any) => object(v) && Array.isArray((v as any).files)
         && (v as any).files.every((e: any) => object(e) && typeof e.file === 'string' && /^[^/\\:\x00]+\.json$/.test(e.file)
           && e.file !== 'manifest.json' && e.file !== '..json')
         && new Set((v as any).files.map((e: any) => e.file)).size === (v as any).files.length);
@@ -135,12 +135,12 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
       for (const [group, rows] of Object.entries(grouped)) product(`data/scenes-${group}.json`, sourceComplete ? rows : undefined, shape);
       let coreIds: any;
       try {
-        const curation = read('data/curation.json', (v: unknown) => object(v) && TIERS.every((tier) => Array.isArray((v as any)[tier]) && (v as any)[tier].every(canonicalSceneId)));
+        const curation = read('data/curation.json', (v: any) => object(v) && TIERS.every((tier) => Array.isArray((v as any)[tier]) && (v as any)[tier].every(canonicalSceneId)));
         result.metadata['data/curation.json'] = curation;
-        coreIds = curation.personaCoreSceneIds.slice(0, 2000).filter((id: unknown) => seen.has(id));
+        coreIds = curation.personaCoreSceneIds.slice(0, 2000).filter((id: any) => seen.has(id));
       } catch (error) { unknown('data/curation.json', runtimeErrorMessage(error)); }
       const byId = new Map(sourceRows.map((row) => [row.id, row]));
-      product('data/scenes-core.json', sourceComplete && coreIds ? coreIds.map((id: unknown) => byId.get(id)) : undefined, shape);
+      product('data/scenes-core.json', sourceComplete && coreIds ? coreIds.map((id: any) => byId.get(id)) : undefined, shape);
       const index = sourceComplete && coreIds ? { version: 1, total: sourceRows.length,
         shards: Object.fromEntries(Object.entries(grouped).map(([key, rows]) => [key, { file: `scenes-${key}.json`, count: rows.length }])),
         tiers: { core: coreIds }, orderedIds: sourceRows.map((row) => row.id) } : undefined;

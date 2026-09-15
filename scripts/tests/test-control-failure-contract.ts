@@ -40,7 +40,7 @@ function close(server: Server<IncomingMessage,ServerResponse>) {
   });
 }
 
-async function postJson(baseUrl: unknown, pathname: string, payload: { action?: string; sdHost?: string; }) {
+async function postJson(baseUrl: any, pathname: string, payload: { action?: string; sdHost?: string; }) {
   var response = await fetch(baseUrl + pathname, {
     method:'POST',
     headers:{ 'Content-Type':'application/json' },
@@ -52,12 +52,12 @@ async function postJson(baseUrl: unknown, pathname: string, payload: { action?: 
   return { status:response.status, body:body, json:json };
 }
 
-async function getJson(baseUrl: unknown, pathname: string) {
+async function getJson(baseUrl: any, pathname: string) {
   var response = await fetch(baseUrl + pathname);
   return { status:response.status, json:await response.json() };
 }
 
-async function waitFor(check: { (): Promise<unknown>; (): Promise<""|"active">; (): Promise<""|"cleared">; (): Promise<unknown>; (): Promise<unknown>; (): unknown; }, description: string) {
+async function waitFor(check: { (): Promise<any>; (): Promise<""|"active">; (): Promise<""|"cleared">; (): Promise<any>; (): Promise<any>; (): any; }, description: string) {
   var deadline = Date.now() + 3000;
   while (Date.now() < deadline) {
     var value = await check();
@@ -130,7 +130,7 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     refreshServiceStates:async function () {
       return { sdOnline:false, ttsOnline:false, ollamaOnline:false, ollamaModels:[], ollamaVram:0, webuiManaged:false };
     },
-    writeJson:function (file: PathOrFileDescriptor, data: unknown) {
+    writeJson:function (file: PathOrFileDescriptor, data: any) {
       if (failConfigWrite) throw new Error('simulated config write failure');
       fs.writeFileSync(file, JSON.stringify(data), 'utf8');
     }
@@ -394,7 +394,7 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
         path.join(projectRoot, 'scripts', 'lib', 'managed-comfyui.ps1'), '-Action', action,
         '-AIWorkspaceRoot', path.join(temporaryRoot, 'workspace'), '-RuntimeRoot', path.join(temporaryRoot, 'runtime'), '-ComfyHost', base],
-        { windowsHide:true }, function (error: unknown, stdout: unknown, _stderr: unknown) {
+        { windowsHide:true }, function (error: any, stdout: any, _stderr: any) {
           if (error && !stdout) return reject(error);
           resolve(JSON.parse(String(stdout).trim()));
         });

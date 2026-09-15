@@ -174,7 +174,7 @@ function loadVerifiedManifest({ rootReal, manifestPath, io }: any) {
 function planTotals(loaded: any) {
   if (!loaded.ok || !loaded.manifest || !Array.isArray(loaded.manifest.entries)) return { files: 0, bytes: 0 };
   // 核验通过时条目无重复，字节数直接对已核验条目求和
-  return { files: loaded.manifest.entries.length, bytes: loaded.manifest.entries.reduce((acc: unknown, e: any) => acc + e.bytes, 0) };
+  return { files: loaded.manifest.entries.length, bytes: loaded.manifest.entries.reduce((acc: any, e: any) => acc + e.bytes, 0) };
 }
 
 /**
@@ -261,7 +261,7 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
 
 /** 全包模式的候选包元数据：manifest.json 与源清单条目逐条一致。 */
 function fullPackMetadata({ plan, destAbs, rootReal }: any) {
-  const bytes = plan.entries.reduce((acc: unknown, e: any) => acc + e.bytes, 0);
+  const bytes = plan.entries.reduce((acc: any, e: any) => acc + e.bytes, 0);
   const packManifest = {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-manifest',
@@ -319,7 +319,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
   const rootReal = plan.root;
   const destAbs = destinationAbsPath(rootReal, plan.name);
   const packsDir = path.join(rootReal, ...PACKS_DIR_SEGMENTS);
-  const errors: unknown[] = [];
+  const errors: any[] = [];
   let staging = null;
   let destinationCreated = false;
   try {

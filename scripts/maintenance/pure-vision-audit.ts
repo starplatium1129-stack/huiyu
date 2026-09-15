@@ -65,7 +65,7 @@ const PERSPECTIVE_CONFIGS: any = {
   }
 };
 
-function runVisionInspect(imagePath: string, promptGuide: unknown) {
+function runVisionInspect(imagePath: string, promptGuide: any) {
   return new Promise<any>((resolve: any) => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;

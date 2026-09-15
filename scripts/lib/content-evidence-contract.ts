@@ -41,7 +41,7 @@ function inputVersion(record: any) {
     rule: 'generation-candidates.runCandidates: sources/recipeSource/key/metadata/recipe without seed' };
 }
 
-function reviewState(record: string[], integrity: string, decisionFile: any, manifestSha256: unknown, runId: unknown) {
+function reviewState(record: string[], integrity: string, decisionFile: any, manifestSha256: any, runId: any) {
   if (!decisionFile) return { status: 'pending', authenticity: 'unverified' };
   const decision: any = decisionFile.records[record.key];
   if (!decision) return { status: 'pending', authenticity: 'unverified' };

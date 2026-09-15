@@ -27,6 +27,6 @@ export interface JobSnapshot extends SnapshotJob {
 
 export interface JobSnapshotStore {
   save(job: SnapshotJob): void;
-  remove(id: unknown): void;
+  remove(id: any): void;
   drain(): JobSnapshot[];
 }

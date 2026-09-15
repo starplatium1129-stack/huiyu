@@ -39,7 +39,7 @@ function inspectDesktopBuildEnvironment(options: EnvironmentOptions = {}) {
   const root = options.root || ROOT;
   const env = desktopBuildEnvironment(root, options.env || process.env);
   const checks: BuildCheck[] = [];
-  const add = (name: string, ready: unknown, detail: string, help?: string) => checks.push({ name, ready: Boolean(ready), detail, ...(help ? { help } : {}) });
+  const add = (name: string, ready: any, detail: string, help?: string) => checks.push({ name, ready: Boolean(ready), detail, ...(help ? { help } : {}) });
   add('Windows', process.platform === 'win32' && process.arch === 'x64', `${process.platform} ${process.arch}`, '安装包需要 Windows x64 构建主机');
   const node = process.versions.node.split('.').map(Number);
   add('Node.js', node[0] > 22 || (node[0] === 22 && node[1] >= 18), process.versions.node, '需要 Node.js >=22.18');

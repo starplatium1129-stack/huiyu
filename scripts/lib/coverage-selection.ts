@@ -42,7 +42,7 @@ function parseSelectionArgs(argv: string|string[]) {
 function collectKnownIds({ characters, popularCharacters = [], popularRows, standards, view }: any) {
   const characterIds = new Set();
   const outfitsByCharacter = new Map();
-  const addOutfit = (id: unknown, outfitId: unknown) => {
+  const addOutfit = (id: any, outfitId: any) => {
     if (!outfitsByCharacter.has(id)) outfitsByCharacter.set(id, new Set());
     outfitsByCharacter.get(id).add(outfitId);
   };
@@ -84,7 +84,7 @@ function collectScopedRefUrls({ view, character, outfit }: any) {
 
 /** 包装 fileExists：范围外 URL 直接返回 null（未核实），不调用底层实现。 */
 function scopeFileExists(fileExists: any, scopedUrls: any, selection?: any) {
-  return (url: unknown, owner: any) => {
+  return (url: any, owner: any) => {
     if (selection && (!owner || owner.id !== selection.character
       || (selection.outfit && owner.outfitId !== selection.outfit))) return null;
     return scopedUrls.has(url) ? fileExists(url) : null;
@@ -125,8 +125,8 @@ function filterReportToScope(report: any, selection: any) {
   };
   const themes = report.themes;
   const scopedThemes = {
-    explicit: themes.explicit.filter((id: unknown) => id === character),
-    defaultAllowed: themes.defaultAllowed.filter((id: unknown) => id === character),
+    explicit: themes.explicit.filter((id: any) => id === character),
+    defaultAllowed: themes.defaultAllowed.filter((id: any) => id === character),
     missingTheme: themes.missingTheme.filter((row: any) => row.id === character),
     staleAlias: [],
     nonCharacter: [],

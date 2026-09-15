@@ -19,7 +19,7 @@ function evidencePath(file: string) {
   return file;
 }
 
-function evidenceReader(root: PathLike, label: unknown) {
+function evidenceReader(root: PathLike, label: any) {
   const base = fs.realpathSync(root);
   const cache = new Map(), directories = new Map();
   const resolve = (file: string) => {
@@ -90,7 +90,7 @@ function evidenceReader(root: PathLike, label: unknown) {
 }
 
 // Imported absolute source paths are identities only. They never grant read access.
-function explicitSource(root: string, embedded: string, allowed: unknown[]) {
+function explicitSource(root: string, embedded: string, allowed: any[]) {
   if (typeof embedded !== 'string' || embedded.includes('\0')) return null;
   let relative = path.isAbsolute(embedded) ? path.relative(root, embedded).replace(/\\/g, '/') : embedded.replace(/\\/g, '/');
   try { relative = evidencePath(relative); } catch { return null; }

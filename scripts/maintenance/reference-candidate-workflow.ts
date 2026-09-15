@@ -6,7 +6,7 @@ const { CODE_ROOT, hash, runCli }: typeof import('../lib/generation-candidates')
 const R: typeof import('../lib/reference-candidate-review') = require('../lib/reference-candidate-review');
 const { publishReferenceCandidates }: typeof import('../lib/reference-candidate-publish') = require('../lib/reference-candidate-publish');
 
-function parse(args: string|string[]|[unknown,...unknown[]], env: any) {
+function parse(args: string|string[]|[any,...any[]], env: any) {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) return { help: true };
   const [action, ...rest]: any = args;
   if (!['inspect', 'review', 'publish', 'full'].includes(action)) throw new Error('Choose inspect, review, publish or full');

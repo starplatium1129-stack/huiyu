@@ -14,7 +14,7 @@ var fs: typeof import('fs') = require('fs');
 
 function readJson(file: PathOrFileDescriptor) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
 
-function parseVerdict(content: unknown) {
+function parseVerdict(content: any) {
   // 归一化 Claude 风格（"## 结论" 独立标题行）为冒号风格
   var text = String(content || '').replace(/^#+\s*结论\s*$/gm, '结论：');
   var m = text.match(/\*{0,2}\s*结论\s*\*{0,2}\s*[：:]\s*\*{0,2}\s*(通过|需复核|不通过)/);

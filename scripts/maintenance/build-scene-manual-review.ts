@@ -24,7 +24,7 @@ function argument(name: string, fallback: any = '') {
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
 
-function buildReview(records: unknown[], decisions: { [s: string]: unknown; }|ArrayLike<unknown>, { latestOnly = false, reviewedAt = new Date().toISOString() }: any = {}) {
+function buildReview(records: any[], decisions: { [s: string]: any; }|ArrayLike<any>, { latestOnly = false, reviewedAt = new Date().toISOString() }: any = {}) {
   if (!Array.isArray(records)) throw new Error('manifest must be an array');
   if (!decisions || typeof decisions !== 'object' || Array.isArray(decisions)) throw new Error('decisions must be an object');
   const succeeded = records.filter((record: any) => record && record.status === 'succeeded');

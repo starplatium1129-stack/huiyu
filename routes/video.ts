@@ -80,7 +80,7 @@ let T8_PROBE_TTL_MS = 60 * 1000;
 function setT8Available(value: boolean) {
   t8Available = Boolean(value);
 }
-async function probeT8Nodes(config: unknown) {
+async function probeT8Nodes(config: any) {
   try {
     // object_info 返回 { <nodeName>: {...} }；必须确认节点键真实存在
     // （mock 对任意路径返回 200 {} 时不得误判为可用）。
@@ -98,7 +98,7 @@ async function probeT8Nodes(config: unknown) {
 }
 // 提交前确保探测是最新的：T8 未启用且超过 TTL 时重探一次（ComfyUI 恢复或
 // 节点就绪后，第一次提交自动重新发现 T8，不再需要重启网关）。
-async function ensureT8Probe(config: unknown) {
+async function ensureT8Probe(config: any) {
   if (t8Available) return;
   if (Date.now() - t8ProbeAt < T8_PROBE_TTL_MS) return;
   t8ProbeAt = Date.now();
@@ -133,7 +133,7 @@ function requestOwner(req: any) {
   return crypto.createHash('sha256').update(String(token)).digest('hex');
 }
 
-function outputReference(entry: { outputs: { [x: string]: unknown; }; }) {
+function outputReference(entry: { outputs: { [x: string]: any; }; }) {
   let output: any = entry && entry.outputs && entry.outputs[OUTPUT_NODE_ID];
   let values = output && (output.images || output.videos);
   return Array.isArray(values) && values.length ? values[0] : null;
@@ -325,7 +325,7 @@ function createVideoService(config: any, dependencies: any) {
     schedulePoll(job, 0);
   }
 
-  function create(input: { frames: number; steps: number; }, owner: unknown, opts: any) {
+  function create(input: { frames: number; steps: number; }, owner: any, opts: any) {
     if (pendingCount() >= MAX_PENDING) {
       throw serviceError(429, 'VIDEO_QUEUE_FULL', '视频队列已满，请等待当前任务完成');
     }
@@ -358,13 +358,13 @@ function createVideoService(config: any, dependencies: any) {
     return job;
   }
 
-  function get(id: unknown, owner: unknown) {
+  function get(id: any, owner: any) {
     let job = jobs.get(String(id || ''));
     return job && job.owner === owner ? job : null;
   }
 
   /** 重启遗留任务的 tombstone 查询（owner 对齐内存注册表同一判定） */
-  function getLost(id: unknown, owner: unknown) {
+  function getLost(id: any, owner: any) {
     let key = String(id || '');
     for (let i = 0; i < lostJobs.length; i++) {
       if (lostJobs[i].id === key && lostJobs[i].owner === owner) return lostJobs[i];

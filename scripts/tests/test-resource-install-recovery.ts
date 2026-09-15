@@ -50,7 +50,7 @@ createResourceInstaller({...config, access:{isLocalStudioHost:()=>true,isAuthori
  .then(result=>process.send({ok:result.ok})).catch(error=>{process.send({code:error.code});process.exitCode=error.code==='BUSY'?0:1;});`);
     const run = () => new Promise((resolve, reject) => {
       const worker = fork(file, [f.config()], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
-      let message: unknown;
+      let message: any;
       worker.on('message', value => { message = value; });
       worker.on('error', reject);
       worker.on('exit', codeValue => codeValue === 0 ? resolve(message) : reject(new Error(JSON.stringify(message))));

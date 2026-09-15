@@ -37,7 +37,7 @@ function readJson(file: PathOrFileDescriptor) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function refUrlToPath(url: unknown) {
+function refUrlToPath(url: any) {
   // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences，URL 前缀
   // /character-references/；兼容旧 /assets/ 前缀兜底。
   if (String(url).startsWith('/character-references/')) {
@@ -56,7 +56,7 @@ const refRoot = (() => {
 
 // 一个引用「可解析」= 规范名在盘，或前缀名在盘（A 类改名后即落到规范名）。
 // dry-run 不落盘也用同一判定，保证试跑与实跑语义一致。
-function refResolvable(ref: any, cid: string, outfitId: unknown) {
+function refResolvable(ref: any, cid: string, outfitId: any) {
   const target = refUrlToPath(ref.url);
   if (fs.existsSync(target)) return true;
   const prefixed = path.join(path.dirname(target), `${cid}_${outfitId}_${path.basename(target)}`);
@@ -64,11 +64,11 @@ function refResolvable(ref: any, cid: string, outfitId: unknown) {
 }
 
 function entryFullyOnDisk(entry: any, cid: string) {
-  return (entry.references || []).every((ref: unknown) => refResolvable(ref, cid, entry.outfitId));
+  return (entry.references || []).every((ref: any) => refResolvable(ref, cid, entry.outfitId));
 }
 
 // A 类：目录内前缀名漂移 -> 重命名为目录式规范名
-function repairDriftedFiles(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
+function repairDriftedFiles(view: ArrayLike<any>|{ [s: string]: any; }) {
   const renames: any[] = [];
   for (const [cid, profile] of Object.entries(view)) {
     for (const outfit of profile.outfits || []) {
@@ -87,7 +87,7 @@ function repairDriftedFiles(view: ArrayLike<unknown>|{ [s: string]: unknown; }) 
 }
 
 // B+C 类：view 按 outfitId 去重并剔除幽灵形态；返回 { view, removed, deduped }
-function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
+function pruneViewOutfits(view: ArrayLike<any>|{ [s: string]: any; }) {
   const removed: any[] = [];
   const deduped: any[] = [];
   const survivingIds: Record<string, any> = {};
@@ -99,7 +99,7 @@ function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
     }
     const kept: any[] = [];
     for (const [oid, entries] of groups) {
-      const valid = entries.filter((entry: unknown) => entryFullyOnDisk(entry, cid));
+      const valid = entries.filter((entry: any) => entryFullyOnDisk(entry, cid));
       if (!valid.length) {
         removed.push(`${cid}/${oid} (${entries.length} 条目，0 资产)`);
         continue;
@@ -116,7 +116,7 @@ function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
 }
 
 // standards 与 view 逐 outfitId 对齐（镜像契约：两侧集合必须一致，且各自无重复条目）
-function alignStandards(standards: any, survivingIds: { [x: string]: unknown; }) {
+function alignStandards(standards: any, survivingIds: { [x: string]: any; }) {
   const removed: any[] = [];
   for (const character of standards.characters) {
     const keep: any = survivingIds[character.id];
@@ -148,7 +148,7 @@ function snapshotBackup(renames: { from: string; to: string; }[]) {
   return dir;
 }
 
-function countBroken(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
+function countBroken(view: ArrayLike<any>|{ [s: string]: any; }) {
   let missing = 0;
   for (const [cid, profile] of Object.entries(view)) {
     for (const outfit of profile.outfits || []) {
@@ -163,13 +163,13 @@ function countBroken(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
 function main() {
   const view = readJson(VIEW_FILE);
   const standards = readJson(STANDARDS_FILE);
-  const beforeRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: any) => m + (o.references || []).length, 0), 0);
+  const beforeRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: any, o: any) => m + (o.references || []).length, 0), 0);
 
   const renames = repairDriftedFiles(view);
   const { removed, deduped, survivingIds } = pruneViewOutfits(view);
   const standardsRemoved = alignStandards(standards, survivingIds);
 
-  const afterRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: any) => m + (o.references || []).length, 0), 0);
+  const afterRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: any, o: any) => m + (o.references || []).length, 0), 0);
   const stillBroken = countBroken(view);
 
   console.log(`[ref-url-repair] 漂移重命名: ${renames.length}`);

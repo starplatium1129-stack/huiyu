@@ -5,16 +5,16 @@
  */
 
 
-interface ServiceError extends Error { status: number; code: string; detail?: unknown }
+interface ServiceError extends Error { status: number; code: string; detail?: any }
 
-function serviceError(status: number, code: string, message?: string, detail?: unknown): ServiceError {
+function serviceError(status: number, code: string, message?: string, detail?: any): ServiceError {
   let error = new Error(message) as ServiceError;
   error.status = status;
   error.code = code;
   error.detail = detail;
   return error;
 }
-function isPlainObject(value: unknown): value is Record<string, unknown> {
+function isPlainObject(value: any): value is Record<string, any> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 function hasOwn<Value extends object>(value: Value, key: PropertyKey): key is keyof Value {

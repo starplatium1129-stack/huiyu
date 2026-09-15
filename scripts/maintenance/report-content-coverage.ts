@@ -55,7 +55,7 @@ function readJson(file: PathOrFileDescriptor) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function sortedUnique(values: Iterable<unknown>|null|undefined) {
+function sortedUnique(values: Iterable<any>|null|undefined) {
   return [...new Set(values)].sort();
 }
 

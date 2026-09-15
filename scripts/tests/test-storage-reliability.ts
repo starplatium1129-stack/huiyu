@@ -43,17 +43,17 @@ function createFakeIndexedDB(transactionDelay: number|undefined) {
       objectStoreNames: { contains: () => true },
       createObjectStore: () => {},
       close: () => {},
-      set onversionchange(_fn: unknown) { /* 忽略 */ },
-      transaction(_storeName: unknown, mode: string) {
-        const operations: { (): Map<unknown,unknown>; (): boolean; (): void; }[] = [];
+      set onversionchange(_fn: any) { /* 忽略 */ },
+      transaction(_storeName: any, mode: string) {
+        const operations: { (): Map<any,any>; (): boolean; (): void; }[] = [];
         const shouldFail = mode === 'readwrite' && api.failNextWrite;
         if (shouldFail) api.failNextWrite = false;
         const tx: any = { error: null, oncomplete: null, onerror: null, onabort: null, abort() {} };
         const store = {
           put(record: any) { operations.push(() => records.set(record.key ?? record.id, record)); },
-          delete(key: unknown) { operations.push(() => records.delete(key)); },
+          delete(key: any) { operations.push(() => records.delete(key)); },
           clear() { operations.push(() => records.clear()); },
-          get(key: unknown) {
+          get(key: any) {
             const request = { result: undefined, error: null, onsuccess: null, onerror: null };
             setTimeout(() => {
               request.result = records.get(key);

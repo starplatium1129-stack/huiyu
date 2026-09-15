@@ -156,7 +156,7 @@ const seen = new Set();
 for (const scene of scenes) {
   if (!scene || !/^sc\d+$/.test(scene.id) || seen.has(scene.id)) throw new Error('Invalid or duplicate scene id: ' + scene?.id);
   seen.add(scene.id);
-  if (!['All', 'R15', 'R18'].includes(scene.rating) || typeof scene.mature !== 'boolean' || typeof scene.category !== 'string' || !Array.isArray(scene.usage) || !scene.usage.every((v: unknown) => typeof v === 'string')) throw new Error('Invalid or missing rating fields: ' + scene.id);
+  if (!['All', 'R15', 'R18'].includes(scene.rating) || typeof scene.mature !== 'boolean' || typeof scene.category !== 'string' || !Array.isArray(scene.usage) || !scene.usage.every((v: any) => typeof v === 'string')) throw new Error('Invalid or missing rating fields: ' + scene.id);
 }
 const ids = new Set(scenes.map((scene: any) => scene.id));
 for (const addition of additions) if (!ids.has(addition.id)) scenes.push(addition);

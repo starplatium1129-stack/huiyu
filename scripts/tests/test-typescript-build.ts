@@ -15,7 +15,7 @@ function fixture() {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, content);
   };
-  const configs: Record<ProjectName, Record<string, unknown>> = {
+  const configs: Record<ProjectName, Record<string, any>> = {
     services: { compilerOptions: { target: 'ES2022', module: 'CommonJS', strict: true, declaration: true,
       rootDir: 'services', outDir: 'services', types: [], skipLibCheck: true },
       include: ['services/**/*.ts'], exclude: ['services/**/*.d.ts'] },
@@ -156,7 +156,7 @@ test('source, compiler options, dependency lock and changed or missing outputs i
     assert.equal(f.read('server/value.js'), compiled);
     f.write('package-lock.json', JSON.stringify({ lockfileVersion: 3, packages: {}, fixtureRevision: 1 }));
     assert.equal(build().cached, false);
-    const config = JSON.parse(f.read('tsconfig.node.json')) as { compilerOptions: Record<string, unknown> };
+    const config = JSON.parse(f.read('tsconfig.node.json')) as { compilerOptions: Record<string, any> };
     config.compilerOptions.removeComments = true;
     f.write('tsconfig.node.json', JSON.stringify(config));
     assert.equal(build().cached, false);
@@ -190,7 +190,7 @@ test('build refuses weakened checking, corrupted caches cannot count as successf
     buildProjects(f.root, { quiet: true, projects: ['node'] });
     f.write('.cache/typescript-build/node.json', '{corrupt');
     assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, false);
-    const config = JSON.parse(f.read('tsconfig.node.json')) as { compilerOptions: Record<string, unknown> };
+    const config = JSON.parse(f.read('tsconfig.node.json')) as { compilerOptions: Record<string, any> };
     config.compilerOptions.strict = false;
     f.write('tsconfig.node.json', JSON.stringify(config));
     assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }), /strictly check TypeScript/);

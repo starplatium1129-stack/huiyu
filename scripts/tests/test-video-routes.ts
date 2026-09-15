@@ -23,7 +23,7 @@ async function json(response: Response) {
   return response.json();
 }
 
-async function post(base: string, body: unknown) {
+async function post(base: string, body: any) {
   return fetch(base + '/api/video/jobs', {
     method:'POST',
     headers:{ 'content-type':'application/json' },
@@ -527,7 +527,7 @@ async function run() {
     var boardBody = await json(boardResponse);
     assert.equal(boardBody.storyboard.blueprintId, normalBlueprint.id);
     assert.equal(boardBody.storyboard.shots.length, 4, 'storyboard endpoint returns the four-beat plan');
-    var quoted = (normalBlueprint.description.match(/「[^「」]+」/g) || []).map(function (raw: string|unknown[]) { return raw.slice(1, -1); });
+    var quoted = (normalBlueprint.description.match(/「[^「」]+」/g) || []).map(function (raw: string|any[]) { return raw.slice(1, -1); });
     if (quoted.length) {
       assert.equal(boardBody.storyboard.shots[1].dialogue, quoted[0], 'server extraction matches the fixture expectation');
     }
@@ -763,7 +763,7 @@ async function run() {
   }
 
   // ── P5/P6/P8 网关：分镜批量（逐镜排队 + 尾帧衔接 + 拼接）───────────────
-  var fakeFfmpeg = async function (args: string|unknown[]) {
+  var fakeFfmpeg = async function (args: string|any[]) {
     var out: any = args[args.length - 1];
     if (String(out).endsWith('.png')) {
       fs.writeFileSync(out, Buffer.from(tinyPngBase64, 'base64'));

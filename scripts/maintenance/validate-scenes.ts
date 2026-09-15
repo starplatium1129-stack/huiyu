@@ -59,7 +59,7 @@ function readJson(source: PathOrFileDescriptor, label: string, errors: string[])
   }
 }
 
-function hasRepeatedNgram(value: unknown, size: any = 12) {
+function hasRepeatedNgram(value: any, size: any = 12) {
   const compact = String(value || '').replace(/\s+/g, '');
   const counts = new Map();
   for (let index = 0; index <= compact.length - size; index += 1) {

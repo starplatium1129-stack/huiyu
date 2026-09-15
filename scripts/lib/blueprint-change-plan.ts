@@ -57,7 +57,7 @@ import { errorMessage as runtimeErrorMessage } from './runtime-errors';
 
 /** franchise → 分片文件名 slug。逐字复制 popular-store.js 的 franchiseSlug：
  *  本模块不 require 任何带 fs/环境读取的模块，测试用原函数对拍防止漂移。 */
-function franchiseSlug(franchise: unknown) {
+function franchiseSlug(franchise: any) {
   const slug = String(franchise || 'unknown')
     .toLowerCase()
     .replace(/'/g, '')
@@ -73,7 +73,7 @@ function jsonText(value: any) {
 
 class BlueprintChangePlanError extends Error {
     problems!: any;
-constructor(problems: unknown[]) {
+constructor(problems: any[]) {
     super('蓝图变更规划失败: ' + problems.join('；'));
     this.name = 'BlueprintChangePlanError';
     this.problems = Object.freeze(problems.slice());
@@ -115,7 +115,7 @@ function validateManifest(manifest: any, problems: string[]) {
     problems.push('manifest.files 必须是数组');
     return [];
   }
-  const entries: unknown[] = [];
+  const entries: any[] = [];
   const fileByLower = new Map();
   const franchiseSeen = new Set();
   manifest.files.forEach((entry: any, index: string) => {
@@ -155,7 +155,7 @@ function validateManifest(manifest: any, problems: string[]) {
 }
 
 /** 校验分片输入与 manifest 一一对应；返回 Map<file, { text, data }>。 */
-function validateShards(shards: any, entries: unknown[], problems: string[]) {
+function validateShards(shards: any, entries: any[], problems: string[]) {
   let provided;
   if (shards instanceof Map) {
     provided = shards;
@@ -231,7 +231,7 @@ function validateShards(shards: any, entries: unknown[], problems: string[]) {
 }
 
 /** 校验目标集合并按 franchise 分组（Map 保序：franchise 按首次出现排序）。 */
-function validateTarget(blueprints: unknown[], mapping: unknown, mappingUsable: boolean, problems: string[]) {
+function validateTarget(blueprints: any[], mapping: any, mappingUsable: boolean, problems: string[]) {
   const groups = new Map();
   if (!Array.isArray(blueprints)) {
     problems.push('目标 blueprints 必须是数组');
@@ -286,12 +286,12 @@ function validateTarget(blueprints: unknown[], mapping: unknown, mappingUsable: 
 
 // ── 计划构建 ────────────────────────────────────────────────────────────
 
-function planWrite(file: string, franchise: unknown, group: string|unknown[], kind: string) {
+function planWrite(file: string, franchise: any, group: string|any[], kind: string) {
   const data = { version: 2, franchise, blueprints: group };
   return { file, franchise, count: group.length, kind, data, text: jsonText(data) };
 }
 
-function buildPlan(manifest: unknown, entries: unknown[], shardMap: Map<unknown,unknown>, groups: Map<unknown,unknown>, problems: string[]) {
+function buildPlan(manifest: any, entries: any[], shardMap: Map<any,any>, groups: Map<any,any>, problems: string[]) {
   const existingByFranchise = new Map(entries.map((entry: any) => [entry.franchise, entry]));
   const nextFiles = [];
   const writes = [];

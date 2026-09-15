@@ -351,7 +351,7 @@ function createGateway(options: GatewayOptions = {}) {
     envelope.fail(res, 404, '接口不存在: ' + req.method + ' ' + req.baseUrl + req.path);
   });
 
-  app.use(function (error: unknown, req: Request, res: Response, next: NextFunction) {
+  app.use(function (error: any, req: Request, res: Response, next: NextFunction) {
     if (res.headersSent) return next(error);
     // 尊重 err.status/err.statusCode：否则 express.static 的 404、body-parser 的 413
     // 都会变成 500，而 detail 还会把主机绝对路径回给客户端。

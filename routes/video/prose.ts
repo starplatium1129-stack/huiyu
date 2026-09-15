@@ -85,10 +85,10 @@ let H3_MUSIC = 'Soft piano notes at a slow tempo joined by sustained low strings
 let CAMERA_MENTION_RE = /(推进|推近|推镜|推入|拉远|拉近|拉镜|横移|平移|环绕|环绕镜头|摇镜|摇摄|俯拍|仰拍|特写|推拉|运镜|镜头移|镜头从|镜头缓慢|镜头慢慢|视角转换|视角变化|\bzoom\s*(?:in|out)\b|\bpush\s*in\b|\bpull\s*out\b|\bpans?\b|\borbit\b|\barc\s*shot\b|\btracking\s*shot\b|\bdolly\b|\btilt\b|\bcamera\s*(?:moves|pushes|pulls|pans|arcs|tracks|zooms)\b|\bpov\b|\bclose-?up\b)/i;
 let MOTION_MENTION_RE = /(动作|运动|转身|回头|回眸|回望|站起|起身|坐下|躺下|跳跃|跳起|跳向|起舞|奔跑|跑向|跑进|跑出|走向|走进|走出|走到|走去|走来|举手|举起|挥手|挥动|挥舞|拿起|放下|端起|拾起|扭动|张开|伸出手|抬头|低头|转头|迈步|走动|踱步|舞动|跃起|跪下|跪坐|倚|偎|靠向|推开|拉开|打开|关上|翻页|弹奏|歌唱|哼唱|呼喊|微笑|轻笑|大笑|哭泣|仰望|俯身|弯腰|抱起|行走|跑动|爬出|\bmov(?:e|es|ed|ing)\b|\bwalk(?:s|ed|ing)\b|\brun(?:s|ning)\b|\bjump(?:s|ed|ing)\b|\bturn(?:s|ed|ing)\b|\brais(?:e|es|ed|ing)\b|\breach(?:es|ed|ing)\b|\bstand(?:s|ing)\b|\bsit(?:s|ting)\b|\bdanc(?:e|es|ed|ing)\b|\blift(?:s|ed|ing)\b|\bplac(?:e|es|ed|ing)\b|\bopen(?:s|ed|ing)\b|\bclos(?:e|es|ed|ing)\b|\bblink(?:s|ed|ing)\b|\bwav(?:e|es|ed|ing)\b|\bgrab(?:s|bed|bing)\b|\bstep(?:s|ped|ping)\b|\blean(?:s|ed|ing)\b|\bstretch(?:es|ed|ing)\b|\bbend(?:s|ing)\b|\bkneel(?:s|ing)\b|\bbow(?:s|ing)\b|\bspin(?:s|ning)\b|\bswing(?:s|ing)\b|\bpunch(?:es|ed|ing)\b|\bkick(?:s|ed|ing)\b|\bnod(?:s|ded|ding)\b|\bgestur(?:e|es|ed|ing)\b|\bsmil(?:e|es|ed|ing)\b|\blaugh(?:s|ed|ing)\b|\bwhisper(?:s|ed|ing)\b|\bspeak(?:s|ing)\b|\bsay(?:s|ing)\b|\bsing(?:s|ing)\b|\bsigh(?:s|ed|ing)\b|\bbreath(?:e|es|ed|ing)\b|\bflutter(?:s|ed|ing)\b|\bsway(?:s|ed|ing)\b)/i;
 
-function proseCarriesCameraMention(prompt: unknown) {
+function proseCarriesCameraMention(prompt: any) {
   return CAMERA_MENTION_RE.test(String(prompt || ''));
 }
-function proseCarriesMotionMention(prompt: unknown) {
+function proseCarriesMotionMention(prompt: any) {
   return MOTION_MENTION_RE.test(String(prompt || ''));
 }
 
@@ -126,14 +126,14 @@ let H3_SCENE_MUSIC = Object.freeze([
     music:'Bright acoustic guitar and light percussion at a moderate tempo with a gently rising melody and clean tone.' },
 ]);
 
-function deriveH3Soundscape(prompt: unknown) {
+function deriveH3Soundscape(prompt: any) {
   let source = String(prompt || '');
   for (let i = 0; i < H3_SCENE_SOUND.length; i += 1) {
     if (H3_SCENE_SOUND[i].re.test(source)) return H3_SCENE_SOUND[i].sound;
   }
   return H3_SOUNDSCAPE;
 }
-function deriveH3Music(prompt: unknown) {
+function deriveH3Music(prompt: any) {
   let source = String(prompt || '');
   for (let i = 0; i < H3_SCENE_MUSIC.length; i += 1) {
     if (H3_SCENE_MUSIC[i].re.test(source)) return H3_SCENE_MUSIC[i].music;

@@ -156,7 +156,7 @@ function checkAbortDequeue() {
 
 test('queued abort settles before a blocked head and repeated aborts retain no backlog', async () => {
   const q = new SerialQueue('blocked', 2);
-  let release: ((value?: unknown) => void) | undefined;
+  let release: ((value?: any) => void) | undefined;
   const head = q.run(() => new Promise(resolve => { release = resolve; }));
   await new Promise(resolve => setImmediate(resolve));
   try {
@@ -166,7 +166,7 @@ test('queued abort settles before a blocked head and repeated aborts retain no b
       controller.abort();
       await assert.rejects(abandoned, { name: 'AbortError' });
       assert.equal(q.status().pending, 0);
-      assert.equal((q as unknown as { entries: unknown[] }).entries.length, 0);
+      assert.equal((q as any as { entries: any[] }).entries.length, 0);
     }
   } finally { release?.(); await head; }
 });

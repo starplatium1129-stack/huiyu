@@ -42,7 +42,7 @@ function createScriptRunner(options: any) {
       let stdout = '';
       let stderr = '';
       let finished = false;
-      function done(result: unknown) {
+      function done(result: any) {
         if (finished) return;
         finished = true;
         clearTimeout(timer);

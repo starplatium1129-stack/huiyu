@@ -14,7 +14,7 @@ function paethPredictor(left: number, up: number, upperLeft: number) {
   return upperLeft;
 }
 
-function decodePng8(buffer: unknown[]) {
+function decodePng8(buffer: any[]) {
   if (!Buffer.isBuffer(buffer) || buffer.length < 33
     || !buffer.subarray(0, PNG_SIGNATURE.length).equals(PNG_SIGNATURE)) {
     return null;

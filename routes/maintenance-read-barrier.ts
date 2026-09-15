@@ -8,7 +8,7 @@ const installed = new WeakSet();
 // of compression is supported: capture its encoded bytes when it runs downstream,
 // or release a verified immutable buffer to it when it runs upstream. writeHead and
 // flushHeaders must be deferred too, so an aborted read can replace the response.
-function maintenanceReadBarrier(options: unknown) {
+function maintenanceReadBarrier(options: any) {
   return function barrier(req: { method: string; }, res: any, next: () => void) {
     if (!['GET', 'HEAD'].includes(req.method) || installed.has(res)) return next();
     let token;
@@ -24,7 +24,7 @@ function maintenanceReadBarrier(options: unknown) {
     let size = 0;
     let bufferError: Error|null = null;
     let ended = false;
-    res.writeHead = function (statusCode: unknown, statusMessage: unknown, headers: any) {
+    res.writeHead = function (statusCode: any, statusMessage: any, headers: any) {
       res.statusCode = statusCode;
       if (typeof statusMessage === 'string') res.statusMessage = statusMessage;
       else headers = statusMessage;
@@ -40,7 +40,7 @@ function maintenanceReadBarrier(options: unknown) {
       return res;
     };
     res.flushHeaders = () => {};
-    res.write = (chunk: any, encoding: number|undefined, callback: unknown) => {
+    res.write = (chunk: any, encoding: number|undefined, callback: any) => {
       if (ended || res.destroyed) return false;
       // Copy buffers: the producer may reuse a chunk after its write callback.
       const bytes = Buffer.from(chunk, typeof encoding === 'string' ? encoding : undefined);
@@ -51,7 +51,7 @@ function maintenanceReadBarrier(options: unknown) {
       if (done) process.nextTick(done);
       return true;
     };
-    res.end = (chunk: any, encoding: unknown, callback: unknown) => {
+    res.end = (chunk: any, encoding: any, callback: any) => {
       if (ended) return res;
       const done = typeof chunk === 'function' ? chunk : typeof encoding === 'function' ? encoding : callback;
       if (typeof chunk === 'function') chunk = undefined;

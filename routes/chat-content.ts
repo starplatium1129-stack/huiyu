@@ -1,7 +1,7 @@
 'use strict';
 
 
-function normalizeMultimodalContent(parts: string|unknown[]) {
+function normalizeMultimodalContent(parts: string|any[]) {
   if (!Array.isArray(parts) || !parts.length || parts.length > 8) {
     return { error:'多模态消息格式错误' };
   }

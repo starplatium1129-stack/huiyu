@@ -67,7 +67,7 @@ function concurrencyFromArgs() {
   return n;
 }
 
-function assert(condition: unknown, message: string|undefined) {
+function assert(condition: any, message: string|undefined) {
   if (!condition) throw new Error(message);
 }
 
@@ -75,7 +75,7 @@ function readJson(file: PathOrFileDescriptor) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function writeJson(file: PathLike, value: unknown) {
+function writeJson(file: PathLike, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive:true });
   var temporary = file + '.tmp';
   fs.writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n', 'utf8');
@@ -269,7 +269,7 @@ async function main() {
   // 先收集所有待生成任务（跳过已成功且图片在盘上的记录），
   // 再用并发窗口提交：ComfyUI 入队即返回，GPU 队列自行串行执行，
   // 避免"提交→等完成→下载→再提交"的串行往返浪费。
-  var pending: unknown[] = [];
+  var pending: any[] = [];
   for (var candidateIndex = 0; candidateIndex < candidates.length; candidateIndex += 1) {
     var candidate = candidates[candidateIndex];
     for (var sceneIndex = 0; sceneIndex < scenes.length; sceneIndex += 1) {

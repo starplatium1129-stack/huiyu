@@ -112,7 +112,7 @@ function buildH3T8Workflow(input: any) {
   // （2026-08-17 短片流水线实锤：9 镜批量全败）。节点 21 起每张一个 LoadImage，
   // 提示词用 <Picture N> 标签（排序后第 N 张）。
   if (hasReferences) {
-    input.references.forEach(function (refName: unknown, refIndex: string|number) {
+    input.references.forEach(function (refName: any, refIndex: string|number) {
       let nodeId = String(21 + refIndex);
       graph[nodeId] = { class_type:'LoadImage', inputs:{ image:refName } };
       graph['5'].inputs['ref_images.ref_image_' + refIndex] = [nodeId, 0];

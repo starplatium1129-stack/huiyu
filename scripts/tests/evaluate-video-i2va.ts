@@ -97,8 +97,8 @@ async function main() {
 
   var characters = popular.parsePopularCharacters(readJson(path.join(ROOT, 'data', 'popular-characters.json')));
   var blueprints = popular.parseSceneBlueprints(readJson(path.join(ROOT, 'data', 'scene-blueprints.json')));
-  var character = characters.find(function (c) { return c.id === characterId; });
-  var blueprint = blueprints.find(function (bp) { return bp.id === sceneId; });
+  var character = characters.find(function (c) { return c.id === characterId; })!;
+  var blueprint = blueprints.find(function (bp) { return bp.id === sceneId; })!;
   assert(character, 'character not found: ' + characterId);
   assert(blueprint, 'blueprint not found: ' + sceneId);
 

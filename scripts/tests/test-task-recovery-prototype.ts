@@ -24,7 +24,7 @@ function fixture(t: TestContext) {
   const backend = {
     fingerprint, idempotentCancel: true, state: 'running',
     async queryById() { calls.query += 1; return { state: this.state }; },
-    async cancelById(id: unknown, key: unknown) { calls.cancel.push({ id, key }); this.state = 'cancelled'; },
+    async cancelById(id: any, key: any) { calls.cancel.push({ id, key }); this.state = 'cancelled'; },
     async submit() { calls.submit += 1; throw Error('RECOVERY_MUST_NEVER_SUBMIT'); },
   };
   let journal: any;
@@ -72,7 +72,7 @@ test('durable cancel intent during an in-flight completion query prevents result
   const f = fixture(t);
   const id = f.accepted();
   let release;
-  let entered: (value: unknown) => void;
+  let entered: (value: any) => void;
   const started = new Promise(resolve => { entered = resolve; });
   f.backend.queryById = () => { entered(); return new Promise(resolve => { release = resolve; }); };
   const recovery = f.recovery.reconcile(id);

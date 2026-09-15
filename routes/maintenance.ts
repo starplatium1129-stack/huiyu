@@ -14,7 +14,7 @@ const { maintenanceReadBarrier }: typeof import('./maintenance-read-barrier') = 
 const products: typeof import('./maintenance-content-products') = require('./maintenance-content-products');
 const { captureMaintenanceSnapshot }: typeof import('../scripts/lib/maintenance-transaction-snapshot') = require('../scripts/lib/maintenance-transaction-snapshot');
 const writeFileAtomic = (file: string, bytes: string|Buffer<ArrayBuffer>) => recoveryFs.atomicWrite(file, bytes, true);
-const writeJson = (file: string, value: unknown) => writeFileAtomic(file, JSON.stringify(value, null, 2) + '\n');
+const writeJson = (file: string, value: any) => writeFileAtomic(file, JSON.stringify(value, null, 2) + '\n');
 
 let fs: typeof import('fs') = require('fs');
 let path: typeof import('path') = require('path');
@@ -75,7 +75,7 @@ function snapshotFiles(files: string[]) {
   return recoveryFs.snapshotFiles(files);
 }
 
-function restoreSnapshot(snapshot: unknown[]) {
+function restoreSnapshot(snapshot: any[]) {
   snapshot.forEach(function (item: any) {
     if (item.exists) writeFileAtomic(item.file, item.content);
     else recoveryFs.removeFile(item.file);
@@ -132,7 +132,7 @@ function isDesktopPackagedMode(cfg: any) {
 const DESKTOP_MAINTENANCE_UNAVAILABLE = '桌面应用模式下场景内容编辑不可用（数据位于只读的应用包内）。' +
   '请在源码开发模式（npm run dev / npm start）中编辑场景内容。';
 
-function desktopMaintenanceUnavailable(req: Request<{},unknown,unknown,ParsedQs,Record<string,unknown>>, res: any) {
+function desktopMaintenanceUnavailable(req: Request<{},any,any,ParsedQs,Record<string,any>>, res: any) {
   return envelope.fail(res, 501, DESKTOP_MAINTENANCE_UNAVAILABLE, { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
 }
 
@@ -181,13 +181,13 @@ function createMaintenanceRouter(cfg: any) {
     return captureMaintenanceSnapshot(leaseOptions, sceneStore, deletedIds);
   }
 
-  function runNodeScript(script: string|string[], args: string|string[], timeoutMs: number, lease: unknown) {
+  function runNodeScript(script: string|string[], args: string|string[], timeoutMs: number, lease: any) {
     return runMaintenanceNode(script, args || [], timeoutMs || MAINT_TIMEOUT_MS, {
       rootDir: cfg.ROOT_DIR, repoRoot: path.join(__dirname, '..'), lease, trackChild, killChild: processTree.killProcessTree,
     });
   }
 
-async function runMaintenanceChecks(lease: unknown) {
+async function runMaintenanceChecks(lease: any) {
   let commands = [
     ['scripts/maintenance/classify-scene-ratings.js', ['--write']],
     ['scripts/maintenance/optimize-scenes.js', ['--write']],
@@ -253,7 +253,7 @@ async function runMaintenanceChecks(lease: unknown) {
     try {
       if (!fs.existsSync(MAINTENANCE_BACKUP_DIR)) return envelope.ok(res, { entries: [] });
       let dirents = fs.readdirSync(MAINTENANCE_BACKUP_DIR, { withFileTypes:true });
-      let entries: unknown[] = [];
+      let entries: any[] = [];
       dirents.forEach(function (entry) {
         if (!entry.isDirectory()) return;
         let id = entry.name;
@@ -471,7 +471,7 @@ async function runMaintenanceChecks(lease: unknown) {
     let result;
     try {
       result = await sceneWrite.withSceneWriteLock(() => withMaintenanceTransaction(leaseOptions,
-        () => maintenanceSnapshot([]), async (lease: unknown) => {
+        () => maintenanceSnapshot([]), async (lease: any) => {
           const before = sceneStore.loadSceneShards().scenes;
           let output: any = await runNodeScript(script, args, MAINT_TIMEOUT_MS, lease);
           if (output.status !== 0) throw Object.assign(new Error((output.stderr || output.stdout || '维护校验失败').trim().slice(-1200)), { statusCode: 400 });

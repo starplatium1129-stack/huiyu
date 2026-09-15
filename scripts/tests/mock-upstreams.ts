@@ -2,11 +2,11 @@
 
 import { IncomingMessage, ServerResponse } from 'node:http';
 
-type JsonObject = Record<string, unknown>;
-type MockState = { faults: JsonObject; latency: number; calls: unknown[]; };
-type MockContext = { path: string; body: unknown; state: MockState; req: IncomingMessage; res: ServerResponse; };
+type JsonObject = Record<string, any>;
+type MockState = { faults: JsonObject; latency: number; calls: any[]; };
+type MockContext = { path: string; body: any; state: MockState; req: IncomingMessage; res: ServerResponse; };
 
-function objectBody(value: unknown): JsonObject {
+function objectBody(value: any): JsonObject {
   return value && typeof value === 'object' ? value as JsonObject : {};
 }
 
@@ -84,13 +84,13 @@ function readBody(req: IncomingMessage, limitBytes?: number): Promise<Buffer> {
   });
 }
 
-async function readJsonBody(req: IncomingMessage): Promise<Record<string, unknown>> {
+async function readJsonBody(req: IncomingMessage): Promise<Record<string, any>> {
   var raw = await readBody(req);
   if (!raw.length) return {};
-  try { return JSON.parse(raw.toString('utf8')) as Record<string, unknown>; } catch (error) { return {}; }
+  try { return JSON.parse(raw.toString('utf8')) as Record<string, any>; } catch (error) { return {}; }
 }
 
-function sendJson(res: ServerResponse, status: number, payload: unknown) {
+function sendJson(res: ServerResponse, status: number, payload: any) {
   var body = JSON.stringify(payload);
   res.writeHead(status, {
     'Content-Type':'application/json; charset=utf-8',
@@ -110,15 +110,15 @@ function delay(ms: number) {
  * （显存不足、上游 502、超时……）；`state.calls` 记录请求，供断言"网关到底
  * 转发了什么"，而不是只断言 UI 文案。
  */
-function createMockServer(name: string, handler: (ctx: MockContext) => unknown) {
+function createMockServer(name: string, handler: (ctx: MockContext) => any) {
   var state = {
     name:name,
-    calls: [] as unknown[],
-    faults: {} as Record<string, unknown>,
+    calls: [] as any[],
+    faults: {} as Record<string, any>,
     latency:0
   };
 
-  function record(req: IncomingMessage, body: unknown) {
+  function record(req: IncomingMessage, body: any) {
     state.calls.push({
       at:Date.now(),
       method:req.method,
@@ -262,8 +262,8 @@ function createComfyMock() {
       var now = Date.now();
       var renderWindow = Math.max(0, Number(faults.renderMs) || 50);
       var queueWindow = Math.min(renderWindow, Math.max(0, Number(faults.queueMs) || 10));
-      var running: unknown[][] = [];
-      var pending: unknown[][] = [];
+      var running: any[][] = [];
+      var pending: any[][] = [];
       jobs.forEach(function (job, promptId) {
         if (job.removed || job.interrupted) return;
         var item = [0, promptId, job.body && job.body.prompt, {}, []];

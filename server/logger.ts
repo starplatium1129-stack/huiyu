@@ -1,7 +1,7 @@
 'use strict';
 
 type LoggerOptions = { dir?: string; prefix?: string; retainDays?: number; maxBytes?: number; dailyBytesLimit?: number; debug?: boolean };
-type Logger = { info(message: string, detail?: unknown): void; warn(message: string, detail?: unknown): void; error(message: string, detail?: unknown): void; debug(message: string): void };
+type Logger = { info(message: string, detail?: any): void; warn(message: string, detail?: any): void; error(message: string, detail?: any): void; debug(message: string): void };
 
 /* eslint-disable no-console -- console 输出是本模块的职责（终端/sidecar 可见性契约），文件行另落 */
 
@@ -120,7 +120,7 @@ function createLogger(options?: LoggerOptions): Logger {
       'MB），今日落盘暂停、仅保留终端输出；疑似刷屏 bug，次日自动恢复。');
   }
 
-  function write(level: 'info' | 'warn' | 'error' | 'debug', message: string, detail?: unknown) {
+  function write(level: 'info' | 'warn' | 'error' | 'debug', message: string, detail?: any) {
     let now = new Date();
     // 日期翻转时再做一次旧日志清理（每天最多触发一次）。
     let key = dateKey(now);
@@ -159,9 +159,9 @@ function createLogger(options?: LoggerOptions): Logger {
   }
 
   return {
-    info: function (message: string, detail?: unknown) { write('info', message, detail); },
-    warn: function (message: string, detail?: unknown) { write('warn', message, detail); },
-    error: function (message: string, detail?: unknown) { write('error', message, detail); },
+    info: function (message: string, detail?: any) { write('info', message, detail); },
+    warn: function (message: string, detail?: any) { write('warn', message, detail); },
+    error: function (message: string, detail?: any) { write('error', message, detail); },
     debug: function (message: string) { write('debug', message); }
   };
 }

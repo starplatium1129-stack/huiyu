@@ -145,7 +145,7 @@ test('execution never invokes a builder or write API and checks only temporary d
   const mocks = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'copyFileSync']
     .map((name) => t.mock.method(fs, name, () => { throw new Error(`Unexpected write: ${name}`); }));
   const spawn = cp.spawnSync;
-  const proc = t.mock.method(cp, 'spawnSync', (command: unknown, args: readonly string[], options: SpawnSyncOptionsWithStringEncoding) => {
+  const proc = t.mock.method(cp, 'spawnSync', (command: any, args: readonly string[], options: SpawnSyncOptionsWithStringEncoding) => {
     assert.equal(command, 'git');
     return spawn(command, args, options);
   });

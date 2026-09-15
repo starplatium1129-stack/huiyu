@@ -162,8 +162,8 @@ test('原生动画策略：宁宁衣装与现有点击动作绝不作为情绪�
   assert.deepEqual(LIVE2D_NATIVE_POLICIES.natsume.motions, []);
   const calls: any = [];
   const model = {
-    expression: async (name: unknown) => { calls.push(['expression', name]); return true; },
-    motion: async (group: unknown, index: unknown, priority: unknown) => { calls.push(['motion', group, index, priority]); return true; },
+    expression: async (name: any) => { calls.push(['expression', name]); return true; },
+    motion: async (group: any, index: any, priority: any) => { calls.push(['motion', group, index, priority]); return true; },
   };
   const adapter = createLive2dNativeAdapter();
   assert.equal(await adapter.apply({ token: 1, expression: 'expression1', motion: null, suppressParamIds: [] }, model, 'nene'), false);
@@ -180,7 +180,7 @@ test('原生动画 adapter：只执行角色白名单动作并转换优先级', 
     },
   });
   const model = {
-    motion: async (group: unknown, index: unknown, priority: unknown) => { calls.push([group, index, priority]); return true; },
+    motion: async (group: any, index: any, priority: any) => { calls.push([group, index, priority]); return true; },
   };
   const started = await adapter.apply({
     token: 3,

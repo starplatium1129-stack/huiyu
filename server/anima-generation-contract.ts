@@ -61,12 +61,12 @@ const CHARACTER_LORA_BINDINGS = Object.freeze({
   natsume: 'L_NAT_V21_ANIMA',
 });
 
-function requiredCharacterForLora(loraId: unknown) {
+function requiredCharacterForLora(loraId: any) {
   return Object.entries(CHARACTER_LORA_BINDINGS)
     .find(([, binding]) => binding === loraId)?.[0] || '';
 }
 
-function validateTunableNumber(value: unknown, name: string|number) {
+function validateTunableNumber(value: any, name: string|number) {
   const limit = PARAMETER_LIMITS[name as keyof typeof PARAMETER_LIMITS];
   if (!limit || typeof value !== 'number' || !Number.isFinite(value)
     || (limit.integer && !Number.isInteger(value))

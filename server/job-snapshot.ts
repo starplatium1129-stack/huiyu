@@ -21,7 +21,7 @@ import type { SnapshotJob, JobSnapshot, JobSnapshotStore } from './job-types';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
-function safeId(id: unknown) {
+function safeId(id: any) {
   return String(id || '').replace(/[^\w.-]/g, '').slice(0, 80);
 }
 
@@ -54,7 +54,7 @@ function createJobSnapshotStore(dir?: string | null): JobSnapshotStore {
     if (!fs.existsSync(directory)) fs.mkdirSync(directory, { recursive: true });
   }
 
-  function fileOf(id: unknown) {
+  function fileOf(id: any) {
     return path.join(directory, safeId(id) + '.json');
   }
 
@@ -70,7 +70,7 @@ function createJobSnapshotStore(dir?: string | null): JobSnapshotStore {
     }
   }
 
-  function remove(id: unknown) {
+  function remove(id: any) {
     try {
       fs.unlinkSync(fileOf(id));
     } catch (error) {

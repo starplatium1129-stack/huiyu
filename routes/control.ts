@@ -53,7 +53,7 @@ let WEBUI_START_TIMEOUT_MS = 6 * 60 * 1000;
 function readJson(file: PathOrFileDescriptor) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return {}; }
 }
-function writeJson(file: string, data: unknown) {
+function writeJson(file: string, data: any) {
   let dir = path.dirname(file);
   fs.mkdirSync(dir, { recursive:true });
   let tmp = file + '.' + process.pid + '.tmp';
@@ -66,7 +66,7 @@ const pingTts = upstreamHealth.pingTts;
 const pingComfy = upstreamHealth.pingComfy;
 const pingOllamaDetail = upstreamHealth.pingOllamaDetail;
 
-function createControlRouter(config: any, gatewayRef: () => unknown, dependencies: any) {
+function createControlRouter(config: any, gatewayRef: () => any, dependencies: any) {
   dependencies = dependencies || {};
   let router = express.Router() as ControlRouter;
   let persistConfig = typeof dependencies.writeJson === 'function' ? dependencies.writeJson : writeJson;

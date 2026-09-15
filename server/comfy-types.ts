@@ -11,14 +11,14 @@ export interface ComfyStateConfig {
 export interface ComfyError extends Error {
   status: number;
   code: string;
-  detail?: unknown;
+  detail?: any;
 }
 
 export interface ComfyQueueResponse {
-  queue_running?: unknown;
-  queue_pending?: unknown;
-  running?: unknown;
-  pending?: unknown;
+  queue_running?: any;
+  queue_pending?: any;
+  running?: any;
+  pending?: any;
 }
 
 export interface ProgressJob {
@@ -30,16 +30,16 @@ export interface ProgressJob {
 
 /** Only the socket operations used by the monitor, also implementable by fixtures. */
 export interface ProgressSocket {
-  on(event: 'message', listener: (raw: unknown, isBinary: boolean) => void): unknown;
-  on(event: 'open' | 'close', listener: () => void): unknown;
-  on(event: 'error', listener: (error: Error) => void): unknown;
-  close(): unknown;
+  on(event: 'message', listener: (raw: any, isBinary: boolean) => void): any;
+  on(event: 'open' | 'close', listener: () => void): any;
+  on(event: 'error', listener: (error: Error) => void): any;
+  close(): any;
 }
 
 export interface ProgressOptions<Job extends ProgressJob> {
   WebSocket?: new (url: string) => ProgressSocket;
   reconnectMs?: number;
-  onUpdate?: (job: Job, type: string, data: Record<string, unknown>) => void;
+  onUpdate?: (job: Job, type: string, data: Record<string, any>) => void;
   onOpen?: () => void;
   onError?: (error: Error) => void;
 }

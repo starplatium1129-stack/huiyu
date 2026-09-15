@@ -83,13 +83,13 @@ function newestSourceByScene() {
   return best;
 }
 
-function pick(entry: { [x: string]: unknown; }) {
+function pick(entry: { [x: string]: any; }) {
   const out: Record<string, any> = {};
   for (const f of PIN_FIELDS) out[f] = entry[f];
   return out;
 }
 
-function diffFields(current: { [x: string]: unknown; }, target: any) {
+function diffFields(current: { [x: string]: any; }, target: any) {
   const drift: any[] = [];
   for (const f of PIN_FIELDS) {
     if (JSON.stringify(current[f]) !== JSON.stringify(target[f])) drift.push(f);
@@ -97,7 +97,7 @@ function diffFields(current: { [x: string]: unknown; }, target: any) {
   return drift;
 }
 
-function gitScene(commit: unknown, id: unknown) {
+function gitScene(commit: any, id: any) {
   const raw = execFileSync('git', ['show', `${commit}:data/scenes.json`], { cwd: ROOT, maxBuffer: 5e8, stdio: 'pipe' }).toString();
   return JSON.parse(raw).find((s: any) => s.id === id) || null;
 }
