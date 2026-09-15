@@ -1,10 +1,10 @@
 # 统一工作流手册
 
-> 维护日期：2026-09-13。命令注册与默认参数以 scripts/workflow.js 为准；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
+> 维护日期：2026-09-15。命令注册与默认参数以 scripts/workflow.js 为准；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
 
 ## 先查入口
 
-`node scripts/workflow.js audit:workflow-conditions --json` 从当前注册表报告运行条件、入口/文档存在性及递归复合副作用覆盖。`--domain audit` 按工作流分组筛选；`--root` 仅替换文件存在性核验根，不加载该目录中的 JavaScript。`--help/--plan` 不读取目标根或启动子进程。结构问题退出 1，所有命令执行状态始终为 `not-run`；元数据通过不代表实际运行通过。`showcase:fill-gaps` 为需网关的样张补缺入口，会调用模型并写产物及源登记，办公机报告不执行它。
+`node scripts/workflow.js audit:workflow-conditions --json` 从当前注册表报告运行条件、入口/文档存在性及递归复合副作用覆盖。`--domain audit` 按工作流分组筛选；`--root` 仅替换文件存在性核验根，不加载该目录中的 JavaScript。`--help/--plan` 不读取目标根或启动子进程。结构问题退出 1，所有命令执行状态始终为 `not-run`；元数据通过不代表实际运行通过。`showcase:fill-gaps` 实际生成需网关与显式候选目录，只写待审核候选；`--dry-run` 不写盘、不调用模型，不回填活跃源登记。
 
 条件报告的 JSON 还保留已声明的 `switches`、`notes`、`needs`（缺省分别为 `{}`、`[]`、`null`），不从说明文字推断副作用。默认文字按项列出默认行为、开关及效果、前置条件、说明和未知项；不改变命令执行、旧 JSON 字段或退出码。
 
@@ -114,11 +114,11 @@
 推荐命令与操作性质来自工作流注册表，全部只列出、不执行；build 可能写数据和版本，不能因出现在报告里就当作只读检查。本批不提供自动增量检查：全域聚合顺序、浏览器分片、样张完整性、DATA_VERSION、压缩产物、历史删除/重命名未覆盖。公共构建器/契约路径建议全量 data:validate；未知路径不宣称影响为空。全域主题与参考覆盖沿用 audit:coverage；真实编译/画面验收仍需后续对应机器执行。
 
 1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。
-2. `reference:render` 生成参考图；`reference:design` 补三视图设计图。合计 4 种肖像机位 + 3 种设计机位。
+2. `reference:render --output <候选目录>` 生成四视角待审核候选；人工验收与发布仍须显式完成。`reference:design` 是独立的三视图设计图入口，行为不等同于候选生成器。
 3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
 4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。CLI 数据根为 `--root <完整项目根>` > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根，view 与审计 appRoot 对齐，显式外部素材配置保留；直接 `--help` / `--plan` 零目标读取。参数/根错误退出 2，缺失或损坏 view、审计问题退出 1。
 
-`reference:full` 是 render → audit → repair，不包含自动完成所有新增形态登记与设计图的承诺。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
+`reference:full` 的旧 render → audit → repair 尚未适配隔离候选的审核/发布。它不共享参数，而 render 现在要求 output，因此当前会在执行前拒绝；请分别使用显式候选入口。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
 
 旧参考库 URL 迁移使用 `reference:repair-urls --dry-run` 预览；核对后移除 `--dry-run` 才会修改文件并生成备份。日常断链检查仍用 `check:ref-urls`。
 
@@ -192,6 +192,24 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 核验分两层。元数据兼容层（纯函数）：先复用 `audit:resource-manifest` 同套结构检查（schemaVersion、条目形态、重复与 Windows 大小写重复、路径合规、非空 unverified），再核对 `delta.json` 的 kind/schemaVersion 与身份/数量字段形态；验证基线 `contentIdentity`/`entryCount`/`totalBytes` 与 `delta.baseManifest` 相符；以基线移除 `delta.removed` 后叠加候选 added/changed 重建目标条目，其身份三项必须与 `delta.newManifest` 相符；按基线→目标的实际集合关系重算 added/removed/changed/unchanged，与 `delta.totals` 逐项一致，且 `delta.candidate` 的 files/bytes/zeroAssets 与候选 manifest 实际条目一致。不只对比总数：removed 每项必须确实存在于基线且 bytes/sha256 相符，路径唯一且不得同时出现在候选中；候选与基线同路径同内容的条目不能冒充 changed。IO 层：只读取明确指定的基线 JSON、候选 `manifest.json`/`delta.json` 与候选已列资源（复用现有清单核验逐条核验候选实际字节）；不 stat/read 基线资产、不扫描安装目录，基线文件可已不存在而元数据仍可核验；基线清单、候选目录与内部路径遵守 root 与真实路径边界，junction 或坏路径访问外部目录在读取前拒绝。
 
 退出码：0 核验通过；1 内容/不兼容（元数据缺失/损坏/不支持版本、清单结构错误或非空 unverified、基线或重建目标身份/数量失配、totals/candidate 与实际不符、候选实际字节核验失败）；2 参数/越界/环境（参数缺失或无法识别、root 不可用、基线清单越界/缺失/不可读、候选目录越界/缺失/不是目录/junction 逃逸、内部异常）。隔离回归：`node scripts/tests/test-resource-pack-verify.js`（已登记 unit 套件，候选包由 G13 导出器在临时夹具内生成，记录型 fs 证明旧资产零访问与全程零写入）。
+
+## 办公机工程阶段入口（2026-09-15）
+
+本阶段提交后端与维护工具，前端保存界面、资源服务接线和主力机验收继续保留待办。不能据此运行真实生成、安装或发布。
+
+场景维护新增 `/api/maintenance/scenes/preview`、`/changes` 与独立 `/import`；旧 `/scenes` 全量请求保持兼容。预览与变更集接收 `{baseVersion, changeSet:{version:1, scenes:{upsert:[],remove:[]}, blueprints?, tags?, curation?}}`。upsert 是完整记录，未知字段保留，remove 只能列现有 ID，旧基线返回 409。保存复用同一进程锁和一次备份，同步场景/蓝图源分片、聚合、现有压缩伴生文件与 DATA_VERSION；失败恢复精确计划路径。后端支持 sc1000 及后续规范安全整数编号，已退役 ID 不复用；前端编号及变更集界面迁移仍待接线。安装版源库写入继续拒绝，跨进程保存及断电恢复未完成。
+
+`audit:impact --base <本地commit/ref>` 对照历史与当前源/产物，保留删除、重命名、旧新角色/服装关系和字节证据；`audit:ownership --consistency` 核对热门角色、蓝图、场景分组/core/index 与已覆盖参考字段镜像。未知约束明确保留，增量报告仅生成计划，不执行命令；不能将局部相等视为全库通过。impact 参数错误退出 2、已证明问题退出 1；ownership 显式一致性检查的 unknown/mismatch 退出 1。
+
+`capture:delivery` 先用 `--scope`、可重复的 `--source-file`/`--source-tree`、`--build-file`/`--build-tree` 捕获执行前身份；执行检查后用 `--baseline` 与 `--record` 绑定实际结果及日志。结果 JSON 须携带执行前证据的 `baselineSha256`，不能将生成记录当作执行门禁。`--save runtime/delivery-evidence/<新文件>.json` 显式创建文件并拒绝覆盖，默认仅输出 JSON。`--finalize-commit <完整SHA>` 可将已测的相同源码/构建关联到最终提交，保留原执行 HEAD；`--machine main` 接收办公机证据不消除安装、设备、模型的 pending。
+
+`audit:delivery` 自动重算 tracking 中的明确选择项与日志；受影响通过项失效为 stale，旧无 tracking 通过项保持 unknown，范围外文档不使代码检查过期。退出码为 0=所选记录核验通过、1=错误/陈旧、2=参数错误、3=未知/未运行/待验；仅认证选定字节关系，不认证日志语义或真实设备。
+
+资源生命周期入口共用 `--config <可信本地JSON>`：`resource:install`、`resource:download` 另需 `--release <已配置ID>`；`resource:recover`、`resource:rollback` 复用已登记事务/旧版本。四者默认预览，显式 `--apply` 才写入；下载仅存候选，不自动安装。配置包含已存在的 userDataRoot、应用/作品 protectedRoots、独立审核的来源与发布 policy，固定使用 userDataRoot 下 resource-library-v1。支持完整/增量包、哈希核对、取消、已知事务恢复和旧版保留；不提供默认托管，不以哈希相同代替来源批准，不执行包中代码。
+
+`resource:installed` 核对实际安装字节、pending 与旧版健康，会短暂获取并释放专用锁，不能描述为零写入审计。Ctrl+C 请求取消；CLI 参数问题退出 2、内容/操作失败退出 1、取消退出 130。`resource-install-resolver` 提供可信调用方使用的只读启动快照，当前尚未接入网关/页面；没有安装或权限未知时不自动下载、修复或放宽访问。
+
+`reference:render`、`showcase:batch-miaomiao`、`showcase:fill-gaps` 经工作流调用均需 `--output <隔离候选目录>`，包括预览；底层直接脚本的 dry-run 可省略 output。网关优先级为 `--gateway > GATEWAY_URL > BASE > AICS_COMMS_BASE > http://127.0.0.1:3000`。候选 review 始终 pending；已知 job 恢复，响应丢失的未知提交需核对后显式 `--retry-unknown`。真实人工审核及发布继续使用各自入口，旧 reference:full 尚未接通。
 
 ## 门禁与构建
 

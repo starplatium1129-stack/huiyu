@@ -9,6 +9,8 @@ const LABELS = {
   exists: '存在', matched: '一致', mismatch: '不匹配', missing: '缺失',
   'not-file': '非普通文件', 'outside-root': '越出 root', error: '错误',
   clean: '干净', dirty: '有改动', unavailable: '不可用', 'missing-commit': '缺最终提交',
+  fresh: '有效', stale: '已陈旧', invalid: '无效', added: '新增', removed: '删除', changed: '改变',
+  empty: '空目录', 'unsafe-or-unreadable': '不安全或不可读', 'not-directory': '非目录',
 };
 const KIND_LABELS = { untracked: '未跟踪', uncommitted: '未提交' };
 
@@ -121,6 +123,26 @@ function formatReport(r) {
   }
   if (isObject(r.repositoryHead)) lines.push(...headLines(r.repositoryHead));
   if (isObject(r.repositoryWorktree)) lines.push(...worktreeLines(r.repositoryWorktree));
+  if (isObject(r.freshness)) {
+    lines.push(`证据新鲜度: [${statusLabel(r.freshness.status)}] ${text(r.freshness.message)}`.trimEnd());
+    for (const key of ['source', 'build']) {
+      const group = r.freshness[key];
+      if (!isObject(group)) continue;
+      lines.push(`  ${key}: [${statusLabel(group.status)}] ${short(group.expectedSha256)} → ${short(group.actualSha256)}`);
+      for (const item of (group.changes || []).slice(0, 10)) lines.push(`    [${statusLabel(item.status)}] ${text(item.path)}`);
+      if (group.changes?.length > 10) lines.push(`    …其余 ${group.changes.length - 10} 个变化见 --json`);
+      for (const item of (group.problems || []).slice(0, 10)) lines.push(`    [${statusLabel(item.status)}] ${text(item.path)} ${text(item.message)}`);
+    }
+  }
+  if (isObject(r.handoff)) {
+    const h = r.handoff;
+    lines.push(`办公机 → 主力机交接: [${statusLabel(h.status)}]`);
+    if (h.commit) lines.push(`  commit: [${statusLabel(h.commit.status)}] ${short(h.commit.expected)} → ${short(h.commit.actual)}`);
+    if (h.finalization) lines.push(`  finalize: [${statusLabel(h.finalization.status)}] baselineHead ${short(h.finalization.baselineHead)} → finalCommit ${short(h.finalization.finalCommit)} ${text(h.finalization.message)}`.trimEnd());
+    for (const machine of ['office', 'main']) if (h.environment?.[machine]) lines.push(`  environment.${machine}: ${text(h.environment[machine])}`);
+    if (h.install) lines.push(`  install: ${text(h.install.entry)} · ${text(h.install.machine)}`);
+    for (const item of h.requiredMain || []) lines.push(`  [${statusLabel(item.status)}] ${text(item.field)} · ${text(item.action)}`);
+  }
   if (Array.isArray(r.records) && r.records.length) {
     lines.push(`证据记录 (${r.records.length}):`);
     for (const rec of r.records) lines.push(recordLine(rec));

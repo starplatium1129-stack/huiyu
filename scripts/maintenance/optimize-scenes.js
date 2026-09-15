@@ -14,7 +14,8 @@ const {
 const write = process.argv.includes('--write');
 const check = process.argv.includes('--check');
 
-const pinnedPath = path.resolve(__dirname, '..', '..', 'data', 'prompt-pinned-scenes.json');
+const pinnedPath = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT
+  || path.resolve(__dirname, '..', '..'), 'data', 'prompt-pinned-scenes.json');
 let pinnedScenes = {};
 try {
   pinnedScenes = JSON.parse(fs.readFileSync(pinnedPath, 'utf8')).scenes || {};

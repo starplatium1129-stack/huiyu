@@ -41,7 +41,6 @@ var MAINTENANCE_TASKS = {
 var expectedDataVersion = require('../scripts/lib/data-version').expectedDataVersion;
 // 场景写入侧治理（计划 006 D5）：稳定 ID 分配、增量分片写入、完整性校验、退役登记
 var sceneWrite = require('../scripts/lib/scene-write');
-var { sceneContentVersion, readSceneState } = require('./maintenance-scene-state');
 
 function syncSceneStoreDataVersion(rootDir) {
   var expected = expectedDataVersion(rootDir);
@@ -166,7 +165,9 @@ function createMaintenanceRouter(cfg) {
   function maintenanceSnapshot(deletedIds) {
     var dataDir = path.join(cfg.ROOT_DIR, 'data');
     var files = [
-      ...require('../scripts/lib/data-version').VERSIONED_FILES.map(function (name) { return path.join(dataDir, name); }),
+      ...require('../scripts/lib/data-version').VERSIONED_FILES.flatMap(function (name) {
+        return ['', '.gz', '.br'].map(function (suffix) { return path.join(dataDir, name + suffix); });
+      }),
       path.join(cfg.ROOT_DIR, 'src', 'stores', 'sceneStore.ts'),
       path.join(sceneStore.shardsDir, 'manifest.json'),
       path.join(dataDir, 'retired-scenes.json'),
@@ -194,7 +195,8 @@ function createMaintenanceRouter(cfg) {
   function runNodeScript(script, args, timeoutMs) {
   return new Promise(function (resolve, reject) {
     var child = trackChild(cp.spawn(process.execPath, [script].concat(args || []), {
-      cwd:path.join(__dirname, '..'), windowsHide:true
+      cwd:path.join(__dirname, '..'), windowsHide:true,
+      env: { ...process.env, AICS_DATA_ROOT:cfg.ROOT_DIR, AICS_APP_ROOT:cfg.ROOT_DIR }
     }));
     var stdout = '';
     var stderr = '';
@@ -344,162 +346,11 @@ async function runMaintenanceChecks() {
     res.json({ ok:true, version:manifest.version || 1, entries:entries });
   });
 
-  router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'20mb' }), async function (req, res) {
-    if (isDesktopPackagedMode(cfg)) return desktopMaintenanceUnavailable(req, res);
-    var scenes = req.body && req.body.scenes;
-    var tags = req.body && req.body.tags;
-    var curation = req.body && req.body.curation;
-    var blueprints = req.body && req.body.blueprints;
-    var baseVersion = req.body && req.body.baseVersion;
-    if (!Array.isArray(scenes) || !scenes.length || scenes.length > 1000) return envelope.fail(res, 400, '场景数据格式错误、为空或数量超出限制');
-    var ids = new Set();
-    for (var i = 0; i < scenes.length; i += 1) {
-      var id = String(scenes[i] && scenes[i].id || '');
-      if (!/^sc\d{3}$/.test(id) || ids.has(id)) return envelope.fail(res, 400, '场景 ID 必须唯一且符合 sc001 格式：' + id);
-      ids.add(id);
-    }
-    var bpPath = path.join(cfg.ROOT_DIR, 'data', 'scene-blueprints.json');
-    if (blueprints !== undefined) {
-      if (!Array.isArray(blueprints) || blueprints.length > 2000) return envelope.fail(res, 400, '蓝图数据格式错误、为空或数量超出限制');
-      var bpIds = new Set();
-      for (var bi = 0; bi < blueprints.length; bi += 1) {
-        var bp = blueprints[bi] || {};
-        var bpId = String(bp.id || '');
-        if (!bpId || bpIds.has(bpId)) return envelope.fail(res, 400, '蓝图 ID 必须唯一且不能为空：' + bpId);
-        bpIds.add(bpId);
-        if (typeof bp.characterId !== 'string' || !bp.characterId) return envelope.fail(res, 400, '蓝图缺少 characterId：' + bpId);
-        if (typeof bp.title !== 'string' || !bp.title.trim()) return envelope.fail(res, 400, '蓝图缺少标题：' + bpId);
-        if (!Array.isArray(bp.promptTokens) || !Array.isArray(bp.negativeTokens)) return envelope.fail(res, 400, '蓝图 promptTokens/negativeTokens 必须为数组：' + bpId);
-        if (typeof bp.promptProse !== 'string') return envelope.fail(res, 400, '蓝图缺少 promptProse：' + bpId);
-      }
-    }
-    // 读取基线版本：页面加载后 data 被其他会话/构建/维护更新过的旧快照禁止直接覆盖
-    // （计划 006 D5）。回执带可解释差异，用户先重新加载再决定如何合并。
-    if (!Number.isSafeInteger(baseVersion)) {
-      return envelope.fail(res, 409, '保存缺少读取基线版本（baseVersion）。请先重新加载场景库再保存。', {
-        code:'SCENE_BASE_VERSION_REQUIRED',
-        conflict:{ currentVersion:currentContentVersion() }
-      });
-    }
-    return sceneWrite.withSceneWriteLock(async function () {
-      var snapshot;
-      try {
-        var integrity = sceneWrite.verifyShardIntegrity();
-        if (!integrity.ok) {
-          throw Object.assign(new Error('场景源分片不完整，保存已拒绝（先用维护脚本重切或修复）：\n' + integrity.problems.join('\n')), { statusCode:400 });
-        }
-        var previous = sceneStore.loadSceneShards();
-        var currentVersion = sceneContentVersion(cfg.ROOT_DIR);
-        if (baseVersion !== currentVersion) {
-          var conflict = buildConflictSummary(previous, scenes);
-          conflict.baseVersion = baseVersion;
-          conflict.currentVersion = currentVersion;
-          throw Object.assign(new Error(
-            '场景库在本次编辑期间已被更新（读取基线 ' + baseVersion + '，当前 ' + currentVersion + '）。'
-            + '请先重新加载再保存，避免覆盖他人改动。差异：' + describeConflict(conflict)
-          ), { statusCode:409, conflict:conflict });
-        }
-        var retiredIds = sceneWrite.readRetiredSceneIds(path.join(cfg.ROOT_DIR, 'data'));
-        var deletedIds = previous.scenes.filter(function (scene) { return !ids.has(scene.id); }).map(function (scene) { return scene.id; });
-        if (tags !== undefined) validateTags(tags);
-        // 基线已在锁内核对：旧客户端未提交核心精选时保留当前值，显式 [] 才清空。
-        var cleanCuration = curation !== undefined ? sanitizeCuration(curation, ids, readJson(path.join(cfg.ROOT_DIR, 'data', 'curation.json'))) : null;
-        snapshot = maintenanceSnapshot(deletedIds);
-        var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, blueprints !== undefined ? 'content-blueprints' : 'content');
-        // 增量写入：改动留在原分片文件，新增追加批次；不整体重切（计划 006 D5）
-        var changes = sceneWrite.applySceneChanges(scenes, previous, { retiredIds:retiredIds });
-        sceneStore.writeAggregate(scenes);
-        if (tags !== undefined) {
-          writeJson(path.join(cfg.ROOT_DIR, 'data', 'tags.json'), tags);
-        }
-        if (curation !== undefined) {
-          writeJson(path.join(cfg.ROOT_DIR, 'data', 'curation.json'), cleanCuration);
-        }
-        if (blueprints !== undefined) {
-          var existingBp = fs.existsSync(bpPath) ? readJson(bpPath) : { version: 2, blueprints: [] };
-          writeJson(bpPath, { version: existingBp && existingBp.version || 2, blueprints: blueprints });
-        }
-        sceneWrite.retireRemovedScenes({
-          incomingScenes:scenes, previousScenes:previous.scenes, rootDir:cfg.ROOT_DIR,
-          showcaseDir:SCENE_SHOWCASE_DIR, io:{ readJson:readJson, writeJson:writeJson, sanitizeCuration:sanitizeCuration },
-          log:function (line) { console.log(line); }
-        });
-        sceneWrite.cleanOrphanedSceneRefs({
-          rootDir:cfg.ROOT_DIR,
-          io:{ readJson:readJson, writeJson:writeJson, sanitizeCuration:sanitizeCuration }
-        });
-        await runMaintenanceChecks();
-        if (blueprints !== undefined) {
-          var contentResult = await runNodeScript('scripts/maintenance/validate-content-contracts.js', [], MAINT_TIMEOUT_MS);
-          if (contentResult.status !== 0) {
-            throw new Error((contentResult.stderr || contentResult.stdout || '蓝图内容契约校验失败').trim().slice(-1200));
-          }
-        }
-        syncSceneStoreDataVersion(cfg.ROOT_DIR);
-        var savedState = readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite);
-        res.json({
-          ok:true, count:scenes.length,
-          blueprintCount:Array.isArray(blueprints) ? blueprints.length : undefined,
-          tagCount:Array.isArray(tags) ? tags.length : undefined,
-          version:savedState.version, snapshot:savedState.snapshot, backup:path.basename(backupDir),
-          added:changes.addedIds, updated:changes.updatedIds, removed:changes.removedIds,
-          message:'内容已保存并通过校验'
-        });
-      } catch (error) {
-        // 回滚失败必须告诉客户端：此时场景分片处于半写状态，
-        // 之前这里是空 catch，用户只会看到"保存失败"而以为数据没动。
-        var rollback = attemptRollback(snapshot, 'scenes');
-        res.status(error.statusCode && rollback.ok ? error.statusCode : (rollback.ok ? 400 : 500)).json({
-          ok:false,
-          error:error.message,
-          conflict:error.conflict,
-          rolledBack:rollback.ok,
-          dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT',
-          recovery:rollback.ok ? undefined
-            : '自动回滚也失败了（' + rollback.error + '）。数据可能处于半写状态，'
-              + '请用 runtime 备份目录里最近一份 content-* 手动恢复。'
-        });
-      }
-    });
-  });
-
-  // 编辑事务版本涵盖源文件，与浏览器缓存版本分开。
-  function currentContentVersion() {
-    try { return sceneContentVersion(cfg.ROOT_DIR); } catch (error) { return null; }
-  }
-
-  /** 旧快照冲突的可解释差异：服务器多出的 ID、同 ID 内容差异、客户端新增的 ID。 */
-  function buildConflictSummary(previous, incoming) {
-    var currentById = new Map(previous.scenes.map(function (scene) { return [scene.id, scene]; }));
-    var incomingIds = new Set(incoming.map(function (scene) { return scene.id; }));
-    var serverOnlyIds = previous.scenes.filter(function (scene) { return !incomingIds.has(scene.id); }).map(function (scene) { return scene.id; });
-    var clientNewIds = incoming.filter(function (scene) { return !currentById.has(scene.id); }).map(function (scene) { return scene.id; });
-    var changedIds = incoming.filter(function (scene) {
-      var current = currentById.get(scene.id);
-      return current && JSON.stringify(current) !== JSON.stringify(scene);
-    }).map(function (scene) { return scene.id; });
-    return { serverOnlyIds:serverOnlyIds, clientNewIds:clientNewIds, changedIds:changedIds };
-  }
-
-  function describeConflict(conflict) {
-    var parts = [];
-    if (conflict.serverOnlyIds.length) parts.push('服务器多出 ' + conflict.serverOnlyIds.join(', '));
-    if (conflict.changedIds.length) parts.push('同 ID 内容有差异 ' + conflict.changedIds.join(', '));
-    if (conflict.clientNewIds.length) parts.push('本次新增 ' + conflict.clientNewIds.join(', '));
-    return parts.length ? parts.join('；') : '无 ID 级差异（内容版本仍不同）';
-  }
-
-  // 同一把锁保护读取、写入和失败回滚，不能返回正在保存的中间状态。
-  router.get('/api/maintenance/scenes-state', maintenanceLocalOnly, async function (req, res) {
-    if (isDesktopPackagedMode(cfg)) return desktopMaintenanceUnavailable(req, res);
-    return sceneWrite.withSceneWriteLock(function () {
-      try {
-        res.set('Cache-Control', 'no-store');
-        res.json({ ok:true, ...readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite) });
-      } catch (error) {
-        envelope.fail(res, 500, error.message || '读取场景状态失败');
-      }
-    });
+  require('./maintenance-scene-save').registerSceneMaintenance({
+    router, cfg, sceneStore, localOnly:maintenanceLocalOnly,
+    packaged:isDesktopPackagedMode, unavailable:desktopMaintenanceUnavailable,
+    maintenanceSnapshot, attemptRollback, runMaintenanceChecks, runNodeScript,
+    syncVersion:syncSceneStoreDataVersion, timeoutMs:MAINT_TIMEOUT_MS
   });
 
   router.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'26mb' }), function (req, res) {

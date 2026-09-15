@@ -3,81 +3,46 @@
 
 /**
  * scripts/maintenance/generate-all-scenes-showcase-miaomiao.js
- * 
- * 全库场景样张一站式批量生成与发布流水线（MiaoMiao Harem v1.2 专属正规编译版）：
- * 
+ *
+ * 全库场景样张待审核候选生成（MiaoMiao Harem v1.2 专属正规编译版）：
+ *
  * 核心特性：
  * - 提示词编译：通过 buildPopularPromptPlan 完整绑定【角色核心DNA + 专属服装 + 场景蓝图 + @rella 画风 + 防分身/Solo守护】
  * - 专属女主角：宁宁/夏目 强制绑定官方 v21 LoRA (0.85 强度) 保证 100% 角色神韵
  * - 底模：MiaoMiao Harem Anima v1.2 (anima-miaomiao-v1.2)
  * - 极速画幅：832x1216 (竖版) / 1216x832 (横版)
  * - 加速机制：TeaCache (0.08 阈值, 1.9x 加速)
- * - 存储对齐：输出至 AI/SceneShowcase/2026-09-02_v27-miaomiao/ (大图+560px WebP缩略图+manifest.json)
+ * - 存储：显式 --output 隔离目录，PNG 原图与 generation-manifest.json；不自动发布
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
-
-const ROOT = path.resolve(__dirname, '..', '..');
-const AI_ROOT = path.resolve(ROOT, '..', 'AI');
-const SHOWCASE_ROOT = path.join(AI_ROOT, 'SceneShowcase');
-const VERSION_TAG = '2026-09-02_v27-miaomiao';
-const TARGET_VERSION_DIR = path.join(SHOWCASE_ROOT, VERSION_TAG);
-const IMAGES_DIR = path.join(TARGET_VERSION_DIR, 'images');
-const THUMBS_DIR = path.join(TARGET_VERSION_DIR, 'thumbs');
-
-const BASE = process.env.GATEWAY_URL || process.env.BASE || 'http://127.0.0.1:3123';
-const CONCURRENCY = parseInt(process.env.CONCURRENCY || '3', 10);
+const safety = require('../lib/generation-candidates');
 const MODEL_ID = 'anima-miaomiao-v1.2';
 const PROFILE_ID = 'anima_miaomiao_v12';
 const ARTIST_TAG = 'rella';
 
-const popularContent = require(path.join(ROOT, 'src', 'utils', 'popularContent.ts'));
-const { artistTagsForEngine } = require(path.join(ROOT, 'src', 'config', 'artistStyles.ts'));
-
-const BLUEPRINTS_FILE = path.join(ROOT, 'data', 'scene-blueprints.json');
-const SCENES_FILE = path.join(ROOT, 'data', 'scenes.json');
-const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
-const PRESETS_FILE = path.join(ROOT, 'data', 'presets.json');
-
-fs.mkdirSync(IMAGES_DIR, { recursive: true });
-fs.mkdirSync(THUMBS_DIR, { recursive: true });
-
-function parseArgs() {
-  const args = process.argv.slice(2);
-  const opts = {
-    force: args.includes('--force'),
-    character: '',
-    limit: 0,
-  };
-  const charIdx = args.indexOf('--character');
-  if (charIdx !== -1 && args[charIdx + 1]) opts.character = args[charIdx + 1];
-  const limitIdx = args.indexOf('--limit');
-  if (limitIdx !== -1 && args[limitIdx + 1]) opts.limit = parseInt(args[limitIdx + 1], 10);
-  return opts;
-}
-
-function resolveProfile() {
-  const presets = JSON.parse(fs.readFileSync(PRESETS_FILE, 'utf8'));
+function resolveProfile(presets) {
   const profile = (presets.model_profiles || []).find(item => item.id === PROFILE_ID || item.id === 'anima_base_v10');
   if (!profile) throw new Error(`presets.json missing profile for anima`);
   return profile;
 }
 
-function collectAllSceneTasks(opts) {
+function collectAllSceneTasks(opts, input) {
+  const popularContent = require('../../src/utils/popularContent.ts');
+  const { artistTagsForEngine } = require('../../src/config/artistStyles.ts');
   const tasks = [];
-  const popularRaw = JSON.parse(fs.readFileSync(POPULAR_FILE, 'utf8'));
+  const popularRaw = input.data['data/popular-characters.json'];
   const characters = popularContent.parsePopularCharacters(popularRaw);
-  const blueprintsRaw = JSON.parse(fs.readFileSync(BLUEPRINTS_FILE, 'utf8'));
+  const blueprintsRaw = input.data['data/scene-blueprints.json'];
   const blueprints = popularContent.parseSceneBlueprints(blueprintsRaw);
-  const profile = resolveProfile();
+  const profile = resolveProfile(input.data['data/presets.json']);
 
   // 1. 热门角色场景蓝图（必须走 buildPopularPromptPlan 保证角色DNA）
   for (const character of characters) {
     if (opts.character && character.id !== opts.character) continue;
     const owned = blueprints.filter(bp => bp.characterId === character.id);
-    
+
     for (const bp of owned) {
       const isHorizontal = bp.recommendedSize && (bp.recommendedSize.includes('1536x1152') || bp.recommendedSize.includes('1216x832') || bp.recommendedSize.includes('1344x768'));
       const width = isHorizontal ? 1216 : 832;
@@ -106,7 +71,7 @@ function collectAllSceneTasks(opts) {
       const soloGuard = adult
         ? `(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), no other person, no bystanders, ${cloneGuard}`
         : `(single girl only:1.4), (one person only:1.4), no second person, ${cloneGuard}`;
-      
+
       const fullPrompt = plan.prompt.includes('\n')
         ? plan.prompt.replace('\n', `, ${soloGuard}\n`)
         : `${plan.prompt}, ${soloGuard}`;
@@ -128,19 +93,16 @@ function collectAllSceneTasks(opts) {
         negative: fullNegative,
         width,
         height,
-        targetPng: path.join(IMAGES_DIR, `pc_${character.id}_${bp.id}.png`),
-        targetBigJpg: path.join(IMAGES_DIR, `pc_${character.id}_${bp.id}.jpg`),
-        targetThumbJpg: path.join(THUMBS_DIR, `pc_${character.id}_${bp.id}.jpg`),
-        plainBigJpg: path.join(IMAGES_DIR, `${bp.id}.jpg`),
-        plainThumbJpg: path.join(THUMBS_DIR, `${bp.id}.jpg`),
+        outfitId: outfit?.id,
+        adult,
         seed: Math.floor(Math.random() * 1000000000) + 100000000
       });
     }
   }
 
   // 2. 经典主线场景 (scenes.json - 宁宁/夏目主线)
-  if (fs.existsSync(SCENES_FILE)) {
-    const scenes = JSON.parse(fs.readFileSync(SCENES_FILE, 'utf8'));
+  if (input.data['data/scenes.json']) {
+    const scenes = input.data['data/scenes.json'];
     for (const sc of scenes) {
       if (opts.character && sc.char !== opts.character) continue;
       if (tasks.some(t => t.id === sc.id)) continue;
@@ -163,9 +125,6 @@ function collectAllSceneTasks(opts) {
         negative,
         width,
         height,
-        targetPng: path.join(IMAGES_DIR, `${sc.id}.png`),
-        targetBigJpg: path.join(IMAGES_DIR, `${sc.id}.jpg`),
-        targetThumbJpg: path.join(THUMBS_DIR, `${sc.id}.jpg`),
         seed: Math.floor(Math.random() * 1000000000) + 100000000
       });
     }
@@ -175,7 +134,7 @@ function collectAllSceneTasks(opts) {
   return tasks;
 }
 
-async function renderSceneImage(task) {
+function buildPayload(task) {
   const payload = {
     modelId: MODEL_ID,
     prompt: task.prompt,
@@ -200,214 +159,40 @@ async function renderSceneImage(task) {
     payload.loraStrength = 0.85;
   }
 
-  const submitRes = await fetch(`${BASE}/api/anima/jobs`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  const submitJson = await submitRes.json();
-  if (!submitRes.ok || !submitJson.ok || !submitJson.job?.id) {
-    throw new Error(`提交失败: ${JSON.stringify(submitJson)}`);
-  }
-
-  const jobId = submitJson.job.id;
-  const deadline = Date.now() + 10 * 60 * 1000;
-  let jobState = null;
-
-  while (Date.now() < deadline) {
-    await new Promise(r => setTimeout(r, 2000));
-    const queryRes = await fetch(`${BASE}/api/anima/jobs/${encodeURIComponent(jobId)}`);
-    const queryJson = await queryRes.json();
-    if (queryRes.ok && queryJson.ok && queryJson.job) {
-      jobState = queryJson.job;
-      if (jobState.status === 'succeeded' && jobState.resultUrl) break;
-      if (jobState.status === 'failed' || jobState.status === 'cancelled') {
-        throw new Error(`渲染失败: ${jobState.error || jobState.status}`);
-      }
-    }
-  }
-
-  if (!jobState?.resultUrl) {
-    throw new Error('渲染超时未返回图片');
-  }
-
-  const imgRes = await fetch(`${BASE}${jobState.resultUrl}`);
-  const buffer = Buffer.from(await imgRes.arrayBuffer());
-  fs.writeFileSync(task.targetPng, buffer);
-
-  // 转码为高质量 Progressive JPEG + 560px 缩略图
-  try {
-    const convertCmd = `python scripts/maintenance/convert-showcase-image.py "${task.targetPng}" "${task.targetBigJpg}" "${task.targetThumbJpg}"`;
-    execSync(convertCmd, { cwd: ROOT, stdio: 'ignore' });
-    if (fs.existsSync(task.targetPng)) fs.unlinkSync(task.targetPng);
-    
-    // 如果有 plainBigJpg (如热门场景的非前缀别名)，保留副本以兼容直接 ID 读取
-    if (task.plainBigJpg && !fs.existsSync(task.plainBigJpg)) {
-      fs.copyFileSync(task.targetBigJpg, task.plainBigJpg);
-    }
-    if (task.plainThumbJpg && !fs.existsSync(task.plainThumbJpg)) {
-      fs.copyFileSync(task.targetThumbJpg, task.plainThumbJpg);
-    }
-  } catch (e) {
-    console.warn(`[Warn] 转换缩略图失败: ${task.id}`);
-  }
+  return payload;
 }
 
-async function runWorker(tasksQueue, progress, total) {
-  while (tasksQueue.length > 0) {
-    const task = tasksQueue.shift();
-    progress.current++;
-    const idx = progress.current;
-    
-    console.log(`[${idx}/${total}] 🚀 正在出图: ${task.id} (${task.title}) [${task.width}x${task.height}]...`);
-    
-    try {
-      await renderSceneImage(task);
-      progress.success++;
-      console.log(`[${idx}/${total}] ✅ 完成: ${task.id}`);
-    } catch (err) {
-      progress.fail++;
-      console.error(`[${idx}/${total}] ❌ 失败: ${task.id} - ${err.message}`);
-    }
-  }
+function loadInputs(opts) {
+  const names = ['data/popular-characters.json', 'data/scene-blueprints.json', 'data/presets.json'];
+  if (fs.existsSync(safety.noLinks(path.join(opts.root, 'data/scenes.json')))) names.push('data/scenes.json');
+  return safety.snapshot(opts.root, names);
 }
 
-function updateManifest(allTasks) {
-  // 继承上一版本的 home/ 目录与主视觉配置 (如果当前目录尚未存在)
-  try {
-    const prevVersions = fs.readdirSync(SHOWCASE_ROOT, { withFileTypes: true })
-      .filter(e => e.isDirectory() && !e.name.startsWith('.') && e.name !== VERSION_TAG && fs.existsSync(path.join(SHOWCASE_ROOT, e.name, 'manifest.json')))
-      .map(e => path.join(SHOWCASE_ROOT, e.name))
-      .sort((a, b) => path.basename(b).localeCompare(path.basename(a), 'zh-CN'));
-    
-    if (prevVersions.length > 0) {
-      const latestPrev = prevVersions[0];
-      const prevHome = path.join(latestPrev, 'home');
-      const targetHome = path.join(TARGET_VERSION_DIR, 'home');
-      if (fs.existsSync(prevHome) && !fs.existsSync(targetHome)) {
-        fs.cpSync(prevHome, targetHome, { recursive: true });
-      }
-      const filesToCopy = ['home-hero.json', '00-cover.jpg', 'README.txt', 'index.html'];
-      filesToCopy.forEach(file => {
-        const src = path.join(latestPrev, file);
-        const dst = path.join(TARGET_VERSION_DIR, file);
-        if (fs.existsSync(src) && !fs.existsSync(dst)) {
-          fs.copyFileSync(src, dst);
-        }
-      });
-    }
-  } catch (err) {
-    console.warn('  继承历史 home-hero 失败:', err.message);
-  }
-
-  const manifestFile = path.join(TARGET_VERSION_DIR, 'manifest.json');
-  const entries = [];
-
-  allTasks.forEach(t => {
-    const entryId = t.standardId || t.id;
-    entries.push({
-      id: entryId,
-      title: t.title,
-      story: t.story || '',
-      category: t.category || (t.type === 'popular' ? '热门角色' : '日常'),
-      char: t.characterId,
-      rating: t.rating || 'All',
-      attempt: 1,
-      type: t.type || 'scene',
-      displayName: t.type === 'popular' ? `${t.characterId} / ${t.title}` : t.title,
-      image: `images/${entryId}.jpg`,
-      thumb: `thumbs/${entryId}.jpg`,
-      meta: {
-        engine: 'anima',
-        model: MODEL_ID,
-        checkpoint: 'miaomiaoHarem_anima12.safetensors',
-        seed: t.seed
-      },
-      prompt: t.prompt,
-      negative: t.negative
-    });
-  });
-
-  // 继承上一版本的 artist 与 lora 展示条目
-  try {
-    const prevVersions = fs.readdirSync(SHOWCASE_ROOT, { withFileTypes: true })
-      .filter(e => e.isDirectory() && !e.name.startsWith('.') && e.name !== VERSION_TAG && fs.existsSync(path.join(SHOWCASE_ROOT, e.name, 'manifest.json')))
-      .map(e => path.join(SHOWCASE_ROOT, e.name))
-      .sort((a, b) => path.basename(b).localeCompare(path.basename(a), 'zh-CN'));
-    
-    if (prevVersions.length > 0) {
-      const prevManifest = JSON.parse(fs.readFileSync(path.join(prevVersions[0], 'manifest.json'), 'utf8'));
-      const prevEntries = Array.isArray(prevManifest.entries) ? prevManifest.entries : [];
-      prevEntries.forEach(pe => {
-        if (pe.type === 'artist' || pe.type === 'lora') {
-          entries.push(pe);
-        }
-      });
-    }
-  } catch (err) {}
-
-  const typeCounts = { scene: 0, artist: 0, popular: 0, lora: 0 };
-  const counts = { All: 0, R15: 0, R18: 0, popular: 0 };
-  entries.forEach(e => {
-    if (typeCounts[e.type] !== undefined) typeCounts[e.type]++;
-    if (counts[e.rating] !== undefined) counts[e.rating]++;
-    if (e.type === 'popular') counts.popular++;
-  });
-
-  const fullManifest = {
-    version: 5,
-    source: VERSION_TAG,
-    sourceAudit: `${VERSION_TAG}_published`,
-    publishedAt: new Date().toISOString(),
-    sceneCount: entries.length,
-    entryCount: entries.length,
-    typeCounts,
-    counts,
-    entries
-  };
-
-  fs.writeFileSync(manifestFile, JSON.stringify(fullManifest, null, 2), 'utf8');
-  console.log(`\n📋 标准 manifest.json 清单已生成: ${manifestFile} (共 ${entries.length} 个条目)`);
+function candidateTasks(tasks) {
+  return tasks.map(task => ({
+    key: task.type === 'popular' ? `popular:${task.characterId}:${task.id}` : `scene:${task.id}`,
+    metadata: { batch: task.type || 'scene', engine: 'anima', characterId: task.characterId,
+      blueprintId: task.type === 'popular' ? task.id : undefined,
+      blueprintTitle: task.type === 'popular' ? task.title : undefined,
+      sceneId: task.type === 'popular' ? undefined : task.id,
+      outfitId: task.outfitId, adult: task.adult,
+      title: task.title, story: task.story || '',
+      category: task.category || (task.type === 'popular' ? '热门角色' : '日常'),
+      rating: task.rating || 'All', checkpoint: 'miaomiaoHarem_anima12.safetensors',
+      intendedEntryId: task.standardId || task.id },
+    payload: () => buildPayload(task),
+  }));
 }
 
-async function main() {
-  const opts = parseArgs();
-  console.log(`\n======================================================`);
-  console.log(`🎨 全库场景样张批量生成流水线 (MiaoMiao Harem v1.2 正规编译版)`);
-  console.log(`   - 目标版本: ${VERSION_TAG}`);
-  console.log(`   - 底模: ${MODEL_ID}`);
-  console.log(`   - 极速画幅: 832x1216 (竖) / 1216x832 (横)`);
-  console.log(`   - 并发: ${CONCURRENCY}`);
-  console.log(`   - 强制重绘: ${opts.force}`);
-  if (opts.character) console.log(`   - 过滤角色: ${opts.character}`);
-  console.log(`======================================================\n`);
-
-  const allTasks = collectAllSceneTasks(opts);
-  const pendingTasks = allTasks.filter(t => {
-    if (opts.force) return true;
-    const hasThumb = fs.existsSync(t.targetThumbJpg) && fs.statSync(t.targetThumbJpg).size > 2048;
-    return !hasThumb;
-  });
-
-  console.log(`全库场景总数: ${allTasks.length} | 待出图: ${pendingTasks.length} | 已有样张跳过: ${allTasks.length - pendingTasks.length}\n`);
-
-  if (pendingTasks.length > 0) {
-    const progress = { current: 0, success: 0, fail: 0 };
-    const workers = [];
-    for (let i = 0; i < CONCURRENCY; i++) {
-      workers.push(runWorker(pendingTasks, progress, pendingTasks.length));
-    }
-    await Promise.all(workers);
-    console.log(`\n🎉 出图批次结束: 成功 ${progress.success} 张 / 失败 ${progress.fail} 张`);
-  } else {
-    console.log(`✨ 本版本目录已有全部有效样张！`);
-  }
-
-  updateManifest(allTasks);
+async function main(args = process.argv.slice(2), deps = {}) {
+  const opts = safety.parseArgs(args, { force: 'flag', character: 'value', limit: 'value' }, deps.env || process.env);
+  if (opts.help) return safety.help(__filename, '[--force] [--character <id>] [--limit <n>]');
+  opts.limit = Number(opts.limit || 0);
+  if (!Number.isInteger(opts.limit) || opts.limit < 0) throw new Error('limit must be a non-negative integer');
+  const input = loadInputs(opts);
+  const tasks = candidateTasks(collectAllSceneTasks(opts, input));
+  return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources }, deps);
 }
 
-main().catch(err => {
-  console.error('流水线异常终止:', err);
-  process.exit(1);
-});
+module.exports = { main, loadInputs, collectAllSceneTasks, buildPayload, candidateTasks };
+if (require.main === module) safety.runCli(main);

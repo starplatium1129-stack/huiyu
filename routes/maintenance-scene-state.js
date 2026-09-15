@@ -41,7 +41,12 @@ function readSceneState(root, store, sceneWrite) {
   const dataDir = path.join(root, 'data');
   const read = name => JSON.parse(fs.readFileSync(path.join(dataDir, name), 'utf8'));
   const retiredIds = sceneWrite.readRetiredSceneIds(dataDir);
-  const blueprints = read('scene-blueprints.json');
+  let blueprints = read('scene-blueprints.json');
+  if (fs.existsSync(path.join(dataDir, 'blueprints', 'manifest.json'))) {
+    const store = require('../scripts/lib/blueprint-store');
+    if (path.resolve(store.shardsDir) !== path.resolve(dataDir, 'blueprints')) throw new Error('蓝图数据根与维护根不一致');
+    blueprints = { blueprints: store.loadBlueprintShards().blueprints };
+  }
   const snapshot = {
     scenes: loaded.scenes,
     tags: read('tags.json'),
@@ -52,7 +57,7 @@ function readSceneState(root, store, sceneWrite) {
   let nextSceneId = null;
   try { nextSceneId = sceneWrite.allocateSceneId(loaded.scenes.map(scene => scene.id), retiredIds); }
   catch (error) {
-    if (![...loaded.scenes.map(scene => scene.id), ...retiredIds].some(id => /^sc\d+$/.test(id) && Number(id.slice(2)) >= 999)) throw error;
+    if (error.code !== 'SCENE_ID_EXHAUSTED') throw error;
   }
   return { version, snapshot, nextSceneId, sceneCount: loaded.scenes.length, retiredCount: retiredIds.size };
 }

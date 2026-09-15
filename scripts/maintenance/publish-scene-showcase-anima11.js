@@ -526,7 +526,7 @@ async function main() {
       const dir = path.join(tempDir, kind);
       const entries = fs.readdirSync(dir);
       for (const name of entries) {
-        const match = /^sc(\d{3})\.(?:jpg|png|webp)$/i.exec(name);
+        const match = /^sc(\d{3}|[1-9]\d{3,})\.(?:jpg|png|webp)$/i.exec(name);
         if (match && !sceneById.has(`sc${match[1]}`)) {
           fs.rmSync(path.join(dir, name), { force: true });
         }

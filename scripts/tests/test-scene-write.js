@@ -71,9 +71,25 @@ test('allocateSceneId 跳过活跃与退役 ID，绝不复用旧身份', () => {
   assert.equal(sceneWrite.allocateSceneId(['sc005'], new Set()), 'sc006');
 });
 
-test('allocateSceneId 越过 sc999 抛容量错误而非静默突破格式', () => {
-  const ids = ['sc999'];
-  assert.throws(() => sceneWrite.allocateSceneId(ids, new Set()), /sc999.*容量上限/);
+test('planOnly discovers exact new batches without changing source files or loaded data', () => {
+  resetFixture();
+  const previous = loadPrevious();
+  const before = Object.fromEntries(fs.readdirSync(shardsDir).map(name => [name, fs.readFileSync(path.join(shardsDir, name), 'utf8')]));
+  const sourceBefore = JSON.stringify(previous);
+  const incoming = [...previous.scenes, scene('sc021', 'nene'), scene('sc022', 'nene'), scene('sc023', 'nene')];
+  const planned = sceneWrite.applySceneChanges(incoming, previous, { planOnly: true });
+  assert.ok(planned.touchedFiles.includes('nene-core.3.json'));
+  assert.deepEqual(Object.fromEntries(fs.readdirSync(shardsDir).map(name => [name, fs.readFileSync(path.join(shardsDir, name), 'utf8')])), before);
+  assert.equal(JSON.stringify(previous), sourceBefore);
+  const applied = sceneWrite.applySceneChanges(incoming, previous);
+  assert.deepEqual(applied, planned);
+});
+
+test('allocateSceneId 兼容 sc999 后续编号并拒绝安全整数溢出', () => {
+  assert.equal(sceneWrite.allocateSceneId(['sc999'], new Set()), 'sc1000');
+  assert.equal(sceneWrite.allocateSceneId(['sc999'], new Set(['sc1000'])), 'sc1001');
+  assert.throws(() => sceneWrite.allocateSceneId(['sc9007199254740991'], new Set()), /安全整数上限/);
+  assert.throws(() => sceneWrite.allocateSceneId(['sc0001'], new Set()), /不规范/);
 });
 
 test('readRetiredSceneIds 仅缺失可为空，损坏清单必须阻止分配', () => {

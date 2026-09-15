@@ -5,7 +5,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { isDeepStrictEqual } = require('node:util');
-const { collectGitChanges } = require('./content-impact-git');
+const { collectGitChanges, validateRevision } = require('./content-impact-git');
+const { historyImpact } = require('./content-impact-history');
+const { canonicalSceneId, localReader } = require('../lib/content-history-reader');
 const { referenceImpact } = require('./content-impact-references');
 const { WORKFLOWS } = require('../workflow');
 const { formatImpactReport } = require('../lib/content-impact-format');
@@ -19,12 +21,12 @@ function parse(argv) {
     const arg = argv[i];
     if (arg === '--json') { opts.json = true; continue; }
     if (arg === '--git-diff') { opts.gitDiff = true; continue; }
-    if (!['--root', '--character', '--outfit', '--scene', '--path', '--showcase-manifest'].includes(arg)) throw new Error(`未知参数 ${arg}`);
+    if (!['--root', '--base', '--character', '--outfit', '--scene', '--path', '--showcase-manifest'].includes(arg)) throw new Error(`未知参数 ${arg}`);
     const value = argv[++i];
     if (!value || value.startsWith('--')) throw new Error(`${arg} 缺少值`);
     if (arg === '--path' || arg === '--showcase-manifest') {
       const normalized = value.replace(/\\/g, '/');
-      if (path.posix.isAbsolute(normalized) || normalized.includes(':') || normalized.split('/').some((p) => p === '..' || !p)) throw new Error(`${arg} 必须为仓库相对路径`);
+      if (path.posix.isAbsolute(normalized) || /[:\x00]/.test(normalized) || normalized.split('/').some((p) => p === '..' || !p)) throw new Error(`${arg} 必须为仓库相对路径`);
       (arg === '--path' ? opts.paths : opts.showcaseManifests).push(normalized.replace(/^\.\//, ''));
     } else {
       const key = arg.slice(2);
@@ -33,8 +35,9 @@ function parse(argv) {
     }
   }
   if (opts.outfit && !opts.character) throw new Error('--outfit 必须同时指定 --character');
-  if (opts.scene && !/^sc\d{3}$/.test(opts.scene)) throw new Error('--scene 必须为 scNNN 场景 ID');
-  if (!opts.character && !opts.scene && !opts.paths.length && !opts.gitDiff) throw new Error('需要 --character、--scene、--path 或 --git-diff');
+  if (opts.scene && !canonicalSceneId(opts.scene)) throw new Error('--scene 必须为 canonical scNNN 或 sc1000+，不接受 sc0001 等冗余前导零');
+  if (opts.base) validateRevision(opts.base);
+  if (!opts.character && !opts.scene && !opts.paths.length && !opts.gitDiff && !opts.base) throw new Error('需要 --character、--scene、--path、--git-diff 或 --base');
   opts.root = path.resolve(opts.root);
   return opts;
 }
@@ -349,6 +352,7 @@ function showcaseImpact(opts, result, add) {
 }
 
 function report(opts) {
+  if (opts.base) return historyImpact(opts);
   const result = { version: 1, readOnly: true, input: { character: opts.character || null, outfit: opts.outfit || null, scene: opts.scene || null, paths: opts.paths }, mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [] };
   const add = (level, domain, object, reason) => result[level].push({ domain, object, reason });
   if (opts.gitDiff) {
@@ -359,7 +363,8 @@ function report(opts) {
     }
     opts = { ...opts, paths: [...new Set([...opts.paths, ...result.gitChanges.paths])] };
   }
-  const read = (file) => JSON.parse(fs.readFileSync(path.join(opts.root, file), 'utf8'));
+  let currentReader;
+  const read = (file) => { currentReader ||= localReader(opts.root); return currentReader.json(file); };
   const recommend = (name) => {
     const def = WORKFLOWS[name];
     if (!def) throw new Error(`未注册推荐入口 ${name}`);
@@ -455,7 +460,7 @@ function report(opts) {
 }
 
 function main(argv = process.argv.slice(2)) {
-  if (argv.includes('--help') || argv.includes('--plan')) { console.log(`${HELP}\n--git-diff 显式只读采集 root Git 工作树 staged/unstaged/untracked 路径，与其他输入组合；失败退出 1。\n--showcase-manifest <root内相对路径> 可重复（建议单个），只读解析 entries 安全元数据；不读取图片。`); return 0; }
+  if (argv.includes('--help') || argv.includes('--plan')) { console.log(`${HELP}\n--base <local-commit/ref> 显式比较本地基线与当前工作树，按稳定 ID 追踪字段/删除/移动及旧新关系，生成只读增量计划；未知/全局约束要求 full，默认预览且不执行命令。与显式目标组合时不会过滤掉其他历史差异。\n--scene 支持 sc001、sc1000；拒绝 sc0001。\n--git-diff 显式只读采集 root Git 工作树 staged/unstaged/untracked 路径，与其他输入组合；失败退出 1。\n--showcase-manifest <root内相对路径> 可重复（建议单个），只读解析 entries 安全元数据；不读取图片。`); return 0; }
   let opts;
   try { opts = parse(argv); } catch (error) {
     console.log(argv.includes('--json') ? JSON.stringify({ version: 1, error: error.message }) : error.message);

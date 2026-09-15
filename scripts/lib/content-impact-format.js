@@ -72,6 +72,29 @@ function gitSection(git) {
   return lines;
 }
 
+function historySection(history, git) {
+  if (!isObject(git)) return [];
+  const lines = [`历史对照 gitHistory: ${field(git, 'status') || 'unknown'} · ${field(git, 'baseCommit') || '未解析基线'} → 当前工作树`];
+  if (git.reason) lines.push(`  ${text(git.reason)}`);
+  for (const change of rows(git.changes)) lines.push(`  ${text(change.status)} ${text(change.oldPath)}${change.oldPath && change.path ? ' → ' : ''}${text(change.path)}`);
+  for (const change of rows(history && history.entities)) {
+    lines.push(`  [${text(change.role)}] ${text(change.kind)} ${change.characterId ? text(change.characterId) + '/' : ''}${text(change.id)}: ${text(change.change)} · ${rows(change.changedFields).map(text).join(', ')}`);
+  }
+  return limited(lines);
+}
+
+function incrementalSection(plan) {
+  if (!isObject(plan)) return [];
+  const lines = [`增量检查计划: ${field(plan, 'mode') || 'unknown'}（预览；未执行）`,
+    `  全库状态: ${field(plan, 'wholeLibrary') || 'unknown'}`, `  ${text(plan.acceptance)}`];
+  for (const check of rows(plan.incrementalChecks)) lines.push(`  可限定检查 ${text(check.id)}: ${rows(check.targets).length} 个稳定 ID · ${text(check.proof)}`);
+  for (const check of rows(plan.fullChecks)) {
+    lines.push(`  full 必需 ${text(check.id)}:`);
+    lines.push(...rows(check.reasons).map((reason) => `    ${text(reason)}`));
+  }
+  return limited(lines);
+}
+
 function outfitSection(items) {
   const list = rows(items);
   if (!list.length) return [];
@@ -187,6 +210,7 @@ function formatImpactReport(result) {
   const paths = rows(input.paths);
   if (paths.length) target.push(`路径 ${paths.length} 个: ${paths.slice(0, 5).map(text).join(', ')}${paths.length > 5 ? ` …（其余 ${paths.length - 5} 个见 --json）` : ''}`);
   if (isObject(result.gitChanges)) target.push('Git 工作树变更');
+  if (isObject(result.gitHistory)) target.push(`历史基线 ${field(input, 'base')}`);
   if (!target.length) target.push('未指定显式目标');
   const count = (list) => rows(list).length;
   const header = [
@@ -204,6 +228,8 @@ function formatImpactReport(result) {
   add(() => unknownSection(result.unknown));
   add(() => recommendationSection(result.recommendations));
   add(() => gitSection(result.gitChanges));
+  add(() => historySection(result.history, result.gitHistory));
+  add(() => incrementalSection(result.incrementalPlan));
   add(() => outfitSection(result.outfitDefaults));
   add(() => referenceSection(result.referenceEvidence));
   add(() => themeSection(result.themes));

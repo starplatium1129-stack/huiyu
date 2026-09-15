@@ -331,14 +331,14 @@ test('相同基线的两个并发保存仅有一个成功，状态读取与保�
   } finally { await stopApp(); }
 });
 
-test('ID 用尽仍可读取现有内容与编辑基线', async () => {
+test('三位 ID 边界仍可读取内容并分配 sc1000', async () => {
   seedFixture();
   fs.writeFileSync(path.join(dataDir, 'retired-scenes.json'), JSON.stringify({ records: [{ id: 'sc999' }] }));
   await startApp(false);
   try {
     const state = await get('/api/maintenance/scenes-state');
     assert.equal(state.status, 200);
-    assert.equal(state.body.nextSceneId, null);
+    assert.equal(state.body.nextSceneId, 'sc1000');
     assert.ok(Number.isSafeInteger(state.body.version));
     assert.deepEqual(state.body.snapshot.scenes, loadScenesFromShards());
   } finally { await stopApp(); }

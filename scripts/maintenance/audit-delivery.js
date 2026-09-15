@@ -5,6 +5,11 @@ const { createHash } = require('node:crypto');
 const { spawnSync } = require('node:child_process');
 const { WORKFLOWS } = require('../workflow');
 const { formatReport } = require('../lib/delivery-report-format');
+const { state } = require('../lib/delivery-state');
+const { inspectTracking, inspectGate } = require('../lib/delivery-freshness');
+const { inspectHandoff } = require('../lib/delivery-handoff');
+const { validateSnapshot } = require('../lib/delivery-identity');
+const { isReboundGate } = require('../lib/delivery-finalize');
 const ROOT = path.resolve(__dirname, '../..');
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -28,18 +33,6 @@ function parse(args) {
   if (o.require.some(v => !/^[\w.-]+$/.test(v))) throw Error('--require 需要字段路径');
   if (o.fileHashes.some(v => !/^.+=[a-f\d]{64}$/i.test(v))) throw Error('--expect-file-sha256 需要 相对root路径=64位SHA256');
   return o;
-}
-// Exact vocabulary only. Numeric success counts and prose are never pass verdicts.
-function state(v) {
-  if (!object(v)) return 'unknown';
-  const raw = v.status ?? v.result;
-  const states = { pass: 'passed', passed: 'passed', fail: 'failed', failed: 'failed', unknown: 'unknown', unrun: 'unrun', 'not-run': 'unrun', pending: 'pending', skipped: 'unrun' };
-  let s = typeof raw === 'string' ? states[raw.toLowerCase()] || 'unknown' : typeof v.passed === 'boolean' ? (v.passed ? 'passed' : 'failed') : 'unknown';
-  if (['failed', 'unexpected', 'runnerErrors'].some(k => typeof v[k] === 'number' && v[k] > 0) || (typeof v.exitCode === 'number' && v.exitCode !== 0)) s = 'failed';
-  if (s === 'passed' && (v.skipped > 0 || v.flaky > 0)) s = 'pending';
-  if (v.status !== undefined && v.result !== undefined && String(v.status).toLowerCase() !== String(v.result).toLowerCase()) s = 'failed';
-  if (s === 'passed' && v.passed === false) s = 'failed';
-  return s;
 }
 function report(o) {
   const root = fs.realpathSync(o.root);
@@ -159,6 +152,11 @@ function report(o) {
         if (/Sha256$/.test(key) && !/source|snapshot|baseline/i.test(key)) id(`build.${key}`, value, 64);
       }
       if (d.browser?.distIndexSha256BeforeAndAfter !== undefined) id('build.distIndexSha256', d.browser.distIndexSha256BeforeAndAfter, 64);
+      if (d.tracking !== undefined) {
+        if (d.tracking?.schemaVersion !== 1) throw Error('输入追踪版本不支持');
+        validateSnapshot(d.tracking.source); validateSnapshot(d.tracking.build);
+        id('source.sha256', d.tracking.source.sha256, 64);
+      }
     }
     if (!ids.commit) throw Error('缺少最终 commit，baseline 不能代替');
     if (Object.keys(ids).length < 2) throw Error('缺少可识别构建 SHA，source hash 不能代替');
@@ -221,7 +219,7 @@ function report(o) {
     } catch (e) { add('errors', delivery.file, 'evidence', e.message); }
   }
   const build = object(d.build) ? d.build : {};
-  const ids = Object.entries(build).filter(([k]) => /Sha256$/.test(k) && !/^(before|after)Snapshot/.test(k));
+  const ids = Object.entries(build).filter(([k]) => /Sha256$/.test(k) && !/source|snapshot|baseline/i.test(k));
   if (text(d.browser?.distIndexSha256BeforeAndAfter)) ids.push(['browser.distIndexSha256BeforeAndAfter', d.browser.distIndexSha256BeforeAndAfter]);
   if (!ids.length) add('pending', file, 'build', '缺少构建产物哈希；日志或源哈希不能代替构建标识', 'unknown');
   for (const [k, v] of ids) add(/^[a-f\d]{64}$/i.test(v) ? 'passed' : 'errors', file, `build.${k}`, String(v));
@@ -234,25 +232,42 @@ function report(o) {
   if (!object(d.environment) || !text(d.environment.platform)) add('pending', file, 'environment', '缺少结构化执行机器/platform；不从文件名或 prose 推断', 'unknown');
   if (!text(d.environment?.node)) add('pending', file, 'environment.node', '运行时版本未知', 'unknown');
   r.records.push({ file, commit: commit ?? null, baseline: baseline ?? null, scope: d.scope ?? null, environment: d.environment ?? null });
-  const required = o.require?.length ? o.require : ['fullGate', 'gate', 'checks.fullGate', 'checks.gateFull'].filter(k => get(d, k) !== undefined);
+  const freshness = r.freshness = inspectTracking(root, d);
+  if (freshness.status === 'unknown') add('pending', file, 'tracking', freshness.message, 'unknown');
+  if (freshness.status === 'invalid') add('errors', file, 'tracking', freshness.message || '输入身份记录无效', 'invalid');
+  for (const key of ['source', 'build']) if (freshness[key]) {
+    const group = freshness[key];
+    add(group.status === 'fresh' ? 'passed' : 'errors', file, `tracking.${key}`,
+      group.message || (group.status === 'fresh' ? '所选文件集合及字节身份一致' : `已陈旧或不可用；${group.changes.length} 个路径变化`), group.status);
+  }
+  if (d.handoff !== undefined) {
+    r.handoff = inspectHandoff(root, d, freshness);
+    for (const message of r.handoff.errors) add('errors', file, 'handoff', message, 'failed');
+    for (const message of r.handoff.pending) add('pending', file, 'handoff', message, 'pending');
+  }
+  const selected = o.require?.length ? o.require : ['fullGate', 'gate', 'checks.fullGate', 'checks.gateFull'].filter(k => get(d, k) !== undefined);
+  const tracked = object(d.tracking?.gates) ? Object.keys(d.tracking.gates).filter(k => !['installation', 'deviceAcceptance', 'modelAcceptance'].includes(k)) : [];
+  const required = [...new Set([...selected, ...tracked])];
   if (!required.length) add('pending', file, 'gates', '没有识别到必要门禁；请用 --require 指定已有字段', 'unknown');
   function check(field) {
-    const v = get(d, field), s = state(v);
-    add(s === 'failed' ? 'errors' : s === 'passed' ? 'passed' : 'pending', file, field, `记录状态: ${s}`, s);
+    const v = get(d, field), declared = state(v), validity = inspectGate(root, d, freshness, field), s = validity.effectiveStatus;
+    add(['failed', 'stale'].includes(s) ? 'errors' : s === 'passed' ? 'passed' : 'pending', file, field,
+      `记录状态: ${declared}${s !== declared ? `；有效状态: ${s}；${validity.message || '需复验'}` : ''}`, s);
+    if (validity.status === 'invalid') add('errors', file, `${field}.tracking`, validity.message, 'invalid');
     if (s === 'passed' && ![v.log, v.transcript, v.report, v.sha256].some(text)) add('pending', file, field, '缺少日志/报告索引，结果尚不可追溯', 'unknown');
-    if (object(v) && v.commit !== undefined && v.commit !== commit) add('errors', file, `${field}.commit`, '此项结果属于另一提交');
+    if (object(v) && v.commit !== undefined && v.commit !== commit && !isReboundGate(d, field, freshness.finalization)) add('errors', file, `${field}.commit`, '此项结果属于另一提交');
     if (object(v?.build)) for (const [key, value] of Object.entries(v.build)) {
       if (/Sha256$/.test(key) && build[key] !== value) add('errors', file, `${field}.build.${key}`, '此项结果构建与交付构建不匹配或无法关联');
     }
-    if (delivery && get(delivery.d, field) !== undefined && state(get(delivery.d, field)) !== s) add('errors', delivery.file, field, '回执与证据状态冲突');
+    if (delivery && get(delivery.d, field) !== undefined && state(get(delivery.d, field)) !== declared) add('errors', delivery.file, field, '回执与证据状态冲突');
   }
   required.forEach(check);
   for (const field of ['installation', 'deviceAcceptance', 'modelAcceptance']) check(field);
   for (const key of ['limitations', 'implementationLimits', 'deferred']) {
     if (Array.isArray(d[key])) d[key].forEach(v => add('limitations', file, key, v));
   }
-  r.limitations.push({ message: '核验显式记录及显式选择的 root 内普通文件；仅显式期望文件哈希触发 SHA-256 复算。不扫描 log/report 字符串、不执行日志命令、不证明日志真实性或远端一致性；仅 --check-head 比较当前 HEAD。状态通过只适用于其字段范围。' });
-  r.limitations.push({ message: '未覆盖任意历史 JSON、日志语义、自动门禁选择、源码变化失效推导、多阶段续跑与回滚；源哈希、基线、日期和文件名不用于推断产物哈希或自动判新。安装/deviceAcceptance/modelAcceptance 缺失保持 unknown，deployment 文件同步记录不代替设备验收。' });
+  r.limitations.push({ message: '显式文件及 tracking 中选定的文件集合/报告哈希只读复算；旧记录无追踪则新鲜度 unknown，不补签通过。不执行日志命令、不证明结果声明真实性或远端一致性；handoff 与 --check-head 分别核对当前 HEAD，均不代替机器验收。' });
+  r.limitations.push({ message: '输入影响范围由明确选择项与门禁依赖决定，未选择的路径不受监测；.git 和专用 runtime/delivery-evidence 排除，时间/HEAD/环境不进入内容身份。日志语义、构建来源真实性、多阶段自动恢复/回滚、真实安装/模型/设备需另验；deployment 或相同 HEAD 不代替这些验收。' });
   r.recommendations = ['audit:delivery', 'check:workflows'].map(name => ({ name, command: WORKFLOWS[name].cmd, nature: WORKFLOWS[name].run.nature, executed: false }));
   return finish();
   function finish() {
@@ -264,6 +279,7 @@ function report(o) {
 function main(args) {
   let o;
   try { o = parse(args); } catch (e) { console.error(e.message); return 2; }
+  if (o.help) console.log('带 tracking 的 schemaVersion 1 证据自动复算 source/build 文件集合与已绑定日志哈希，stale/缺失/不安全退出 1；旧无追踪通过声明降为 unknown，退出 3。handoff 分开 commit/source/build/environment/install 与主力机待验；新记录用 scripts/maintenance/capture-delivery.js。');
   if (o.help) console.log('--check-head：在 root 对应仓库只读执行 git rev-parse --verify HEAD^{commit}，独立 repositoryHead 比较证据最终 commit；缺失/不匹配/仓库不可用退出 1。只比较 HEAD commit，不覆盖 dirty working tree，不查询远端。--help/--plan 不执行 git。');
   if (o.help) console.log('--compare-evidence <root内相对JSON路径> 可重复；独立 comparisons 比较最终 commit 与共有构建 SHA，解析一层关联；缺失/不支持/越界/不匹配退出 1。不合并状态和机器验收；help/plan 不读取文件。');
   if (o.help) console.log('--check-worktree：只读执行 git status --porcelain=v1 --untracked-files=all，独立 repositoryWorktree 报告 clean/dirty/unavailable、changedFiles 和原因；dirty/命令失败/不可解析退出 1。与 --check-head 独立，不查询远端，不写索引；--help/--plan 不执行 Git。');

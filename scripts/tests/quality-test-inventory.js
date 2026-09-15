@@ -21,6 +21,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
   unit: Object.freeze([
     'test-workflow-conditions.js',
     'test-content-ownership.js',
+    'test-content-history.js',
+    'test-content-consistency.js',
     'test-content-contract-root.js',
     'test-blueprint-change-plan.js',
     'test-blueprint-write.js',
@@ -80,15 +82,25 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-coverage-report.js',
     'test-content-impact.js', // 角色/默认服装、参考声明证据、主题、场景、精选/退役路径、样张及 Git、失败关闭与索引零写入
     'test-delivery-audit.js', // W2 双证据标识比较、文件哈希、HEAD/worktree；隔离 Git 零写入与失败关闭
+    'test-delivery-evidence.js',
+    'test-delivery-handoff.js',
+    'test-delivery-finalize.js',
+    'test-generation-workflow-safety.js',
     'test-scene-prose-contract.js',
     'test-quick-create.js',
     'test-resource-manifest.js', // G5 资源清单生成/校验：稳定排序、字节哈希、越界/junction 拒绝、零写入与退出码契约
     'test-resource-pack.js', // G10 离线候选包暂存导出：预览零写入、清单核验复用、目标/junction 拒绝、失败不发布与字节复核
     'test-resource-pack-delta.js', // G13 增量候选包：只复制 added/changed、旧清单结构核验零旧资产访问、delta.json 身份与零差异候选
     'test-resource-pack-verify.js', // G15 增量候选包兼容核验：基线身份/removed 逐项/重建目标/候选字节，零写入与旧资产零访问
+    'test-resource-install.js',
+    'test-resource-install-recovery.js',
+    'test-resource-install-edge.js',
+    'test-resource-install-resolver.js',
+    'test-resource-download.js',
     'test-resource-scheduling.js',
     'test-scene-ux.js',
     'test-scene-write.js',
+    'test-scene-change-set.js',
     'test-sd-error.js',
     'test-serial-queue.js',
     'test-service-watchdog.js',
@@ -106,6 +118,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-wav-quality.js',
   ]),
   contract: Object.freeze([
+    'test-maintenance-blueprint-transaction.js',
     'test-anima-routes.js',
     'test-desktop-tools-route.js',
     'test-generation-routes.js',

@@ -2,6 +2,50 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+const { isDeepStrictEqual: equal } = require('node:util');
+
+// Pure mirror contract. URL/pending/review and actual assets depend on other
+// writers and the filesystem; they are deliberately not inferred from prose.
+function compareReferenceProjection(standards, view) {
+  const result = { file: 'data/character-reference-view.json', status: 'unknown', scope: 'reference-mirror-fields',
+    sourceFiles: ['data/character-reference-standards.json'], issues: [],
+    untracked: ['URL/fileName/pending/review and asset existence', 'popular-to-standards generation: hard-coded heroines, asset filtering and merge writers'] };
+  const idRows = (rows, key) => Array.isArray(rows) && rows.every((row) => object(row) && typeof row[key] === 'string' && row[key].trim())
+    && new Set(rows.map((row) => row[key])).size === rows.length;
+  if (!object(standards) || !idRows(standards.characters, 'id') || !idRows(standards.perspectives, 'id') || !object(view)
+    || standards.characters.some((c) => !idRows(c.outfits, 'id'))
+    || Object.values(view).some((c) => !object(c) || !idRows(c.outfits, 'outfitId') || c.outfits.some((o) => !idRows(o.references, 'id')))) {
+    result.reason = 'invalid or duplicate reference identities; no partial mirror accepted';
+    return result;
+  }
+  const check = (location, actual, expected) => {
+    if (!equal(actual, expected)) result.issues.push({ file: result.file, location, reason: 'reference source/derived field mismatch' });
+  };
+  check('character-ids', Object.keys(view).sort(), standards.characters.map((c) => c.id).sort());
+  for (const character of standards.characters) {
+    const actual = view[character.id];
+    if (!actual) continue;
+    check(`${character.id}/characterId`, actual.characterId, character.id);
+    for (const field of ['displayName', 'source', 'identityProse']) check(`${character.id}/${field}`, actual[field], character[field]);
+    check(`${character.id}/outfit-ids`, actual.outfits.map((o) => o.outfitId).sort(), character.outfits.map((o) => o.id).sort());
+    const defaults = character.outfits.filter((o) => o.isDefault === true);
+    if (defaults.length !== (character.outfits.length ? 1 : 0)) result.issues.push({ file: result.sourceFiles[0], location: character.id, reason: 'reference default outfit count is invalid' });
+    for (const outfit of character.outfits) {
+      const projection = actual.outfits.find((o) => o.outfitId === outfit.id);
+      if (!projection) continue;
+      for (const [target, source] of [['outfitName', 'name'], ['prose', 'prose']]) check(`${character.id}/${outfit.id}/${target}`, projection[target], outfit[source]);
+      for (const field of ['isDefault', 'isNsfw']) check(`${character.id}/${outfit.id}/${field}`, projection[field], outfit[field] === true);
+      check(`${character.id}/${outfit.id}/perspective-ids`, projection.references.map((r) => r.id), standards.perspectives.map((p) => p.id));
+      for (const reference of projection.references) {
+        const perspective = standards.perspectives.find((p) => p.id === reference.id);
+        if (!perspective) continue;
+        for (const field of ['name', 'shotType', 'lens', 'targetUsage']) check(`${character.id}/${outfit.id}/${reference.id}/${field}`, reference[field], perspective[field]);
+      }
+    }
+  }
+  result.status = result.issues.length ? 'mismatch' : 'current';
+  return result;
+}
 
 // Index declarations only. Never resolve reference URLs or asset roots.
 function referenceImpact(opts, selected, result, add) {
@@ -54,4 +98,4 @@ function referenceImpact(opts, selected, result, add) {
     }
   }
 }
-module.exports = { referenceImpact };
+module.exports = { referenceImpact, compareReferenceProjection };

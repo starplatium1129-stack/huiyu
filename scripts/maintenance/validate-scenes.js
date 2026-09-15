@@ -4,6 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { isSceneId, formatSceneId, missingSceneIdRanges } = require('../lib/scene-id');
 const { loadSceneShards } = require('../lib/scene-store');
 const { renderedScene } = require('../lib/scene-render-contract');
 const {
@@ -104,7 +105,7 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
     }
   }
 
-  if (!/^sc\d{3}$/.test(scene.id || '')) errors.push(label + ': id must match sc000');
+  if (!isSceneId(scene.id)) errors.push(label + ': id must use canonical sc001 / sc1000 format');
   if (ids.has(scene.id)) errors.push(label + ': duplicate id');
   ids.add(scene.id);
 
@@ -222,7 +223,7 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
 const retiredRecords = retiredData && Array.isArray(retiredData.records) ? retiredData.records : [];
 const retiredIds = new Set();
 for (const record of retiredRecords) {
-  if (!record || !/^sc\d{3}$/.test(record.id || '')) {
+  if (!record || !isSceneId(record.id)) {
     errors.push('retired-scenes.json contains an invalid id');
     continue;
   }
@@ -231,10 +232,13 @@ for (const record of retiredRecords) {
   if (!record.reason) errors.push('retired scene lacks reason: ' + record.id);
   retiredIds.add(record.id);
 }
-const highestSceneNumber = Math.max(0, ...[...ids, ...retiredIds].map((id) => Number(id.slice(2))));
-for (let number = 1; number <= highestSceneNumber; number += 1) {
-  const expected = 'sc' + String(number).padStart(3, '0');
-  if (!ids.has(expected) && !retiredIds.has(expected)) errors.push('missing undeclared id ' + expected);
+for (const gap of missingSceneIdRanges(ids, retiredIds)) {
+  // Work scales with recorded IDs, not with the largest supplied number.
+  if (gap.count <= 20) {
+    for (let number = gap.start; number <= gap.end; number++) errors.push('missing undeclared id ' + formatSceneId(number));
+  } else {
+    errors.push('missing undeclared ids ' + formatSceneId(gap.start) + '..' + formatSceneId(gap.end) + ' (' + gap.count + ')');
+  }
 }
 
 const curatedSceneIds = curationData && Array.isArray(curationData.curatedSceneIds) ? curationData.curatedSceneIds : [];

@@ -77,7 +77,7 @@ test('updated ownership notes surface key responsibilities in JSON and text outp
   assert.ok(byDomain.popular.readers.some((r) => r.includes('loadPopularShards') && r.includes('build 与启动自愈')));
   assert.ok(byDomain.popular.boundary.includes('isDefault'));
   for (const key of ['blueprints:build', 'blueprints:import', 'apply-scene-patch.js']) assert.ok(byDomain.blueprints.writers.some((w) => w.includes(key)));
-  assert.ok(byDomain.blueprints.writers.some((w) => w.includes('只写聚合')));
+  assert.ok(byDomain.blueprints.writers.some((w) => w.includes('blueprint-write.js') && w.includes('分片/manifest/聚合')));
   assert.ok(byDomain.blueprints.boundary.includes('重启自愈'));
   assert.ok(byDomain.references.writers.some((w) => w.includes('合并写入')));
   assert.ok(byDomain.references.writers.some((w) => w.includes('双写')));

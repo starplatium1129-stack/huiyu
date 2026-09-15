@@ -3,8 +3,7 @@
  *
  * 职责边界：日常保存走「稳定目标 + 增量写分片」；全量重切只属于显式维护
  * （split-scenes / clean-scenes 经 scene-store.writeSceneSet）。这里不迁移
- * 数据库、不打开安装版写入口、不改 ID 语义：兼容 scNNN，越过 sc999 的
- * 新格式与消费者迁移是独立任务（见 plans/006 D5）。
+ * 数据库、不打开安装版写入口；兼容既有 scNNN，sc999 后自然续接 sc1000。
  *
  * 关键约定：
  * - 已有场景留在原分片文件（存储细节），展示分类改名不迁移物理分组；
@@ -37,23 +36,9 @@ function readRetiredSceneIds(dataDir) {
   return new Set(data.records.map((record) => record.id));
 }
 
-/** 写入侧分配下一个稳定 ID：跳过全部活跃与已退役 ID（不复用旧身份）。
- *  超出 sc999 时抛错——扩容格式需要所有消费者同步迁移，不由本函数静默突破。 */
+/** 写入侧确认稳定 ID：活跃及退役身份都参与分配，不复用旧身份。 */
 function allocateSceneId(activeIds, retiredIds) {
-  let maxNumber = 0;
-  const scan = (ids) => {
-    for (const id of ids) {
-      const match = /^sc(\d+)$/.exec(String(id || ''));
-      if (match) maxNumber = Math.max(maxNumber, Number(match[1]));
-    }
-  };
-  scan(activeIds || []);
-  scan(retiredIds || []);
-  if (maxNumber >= 999) {
-    throw new Error('场景 ID 已达到 sc999 容量上限（活跃+退役最大 sc' + maxNumber
-      + '）。需要先设计并迁移越过三位数的新 ID 格式，见 plans/006 D5');
-  }
-  return 'sc' + String(maxNumber + 1).padStart(3, '0');
+  return require('./scene-id').nextSceneId(activeIds || [], retiredIds || []);
 }
 
 // ── 源分片完整性（manifest ↔ 目录 ↔ 内容） ──────────────────────────────
@@ -192,7 +177,7 @@ function groupFileOrder(entry, workingFiles) {
  *
  * @param {Array} incoming 客户端提交的完整场景集（含新增/修改，缺的即下架）
  * @param {{ sources: Array<{entry,file,scenes}> }} previous loadSceneShards() 结果
- * @param {{ retiredIds?: Set<string> }} options 保存前已读出的退役 ID
+ * @param {{ retiredIds?: Set<string>, planOnly?: boolean }} options 保存前已读出的退役 ID；planOnly 不写入
  * @returns {{ addedIds:string[], updatedIds:string[], removedIds:string[], touchedFiles:string[] }}
  */
 function applySceneChanges(incoming, previous, options) {
@@ -302,6 +287,13 @@ function applySceneChanges(incoming, previous, options) {
     }
   }
 
+  const changes = {
+    addedIds: addedIds.sort(),
+    updatedIds: updatedIds.sort(),
+    removedIds: removedIds.sort(),
+    touchedFiles: [...touched].sort(),
+  };
+  if (options_.planOnly) return changes;
   for (const file of touched) {
     const scenes = working.get(file);
     if (scenes) {
@@ -311,12 +303,7 @@ function applySceneChanges(incoming, previous, options) {
       try { fs.unlinkSync(path.join(shardsDir, file)); } catch (error) { if (error.code !== 'ENOENT') throw error; }
     }
   }
-  return {
-    addedIds: addedIds.sort(),
-    updatedIds: updatedIds.sort(),
-    removedIds: removedIds.sort(),
-    touchedFiles: [...touched].sort(),
-  };
+  return changes;
 }
 
 // ── 保存副作用（自 routes/maintenance.js 下放，行为保持一致） ────────────

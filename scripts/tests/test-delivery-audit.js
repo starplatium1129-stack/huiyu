@@ -54,15 +54,18 @@ test('比较支持双向一层回执关联，拒绝冲突和不支持的关联�
   f.write('other.json', { schemaVersion: 2, commit });
   assert.equal(f.run({ comparisons: ['receipt.json'] }).exitCode, 1);
 });
-test('比较 CLI 同提交同构建返回通过，别名构建与全部验收独立', t => {
+test('比较 CLI 标识匹配仍保留旧无追踪验收 unknown，别名构建独立', t => {
   const f = fixture(t);
   for (const key of ['installation', 'deviceAcceptance', 'modelAcceptance']) f.d[key] = { status: 'passed', report: 'fixture.log' };
   f.d.build = { distIndexSha256: hash };
   f.write('evidence.json', f.d);
   f.write('other.json', { schemaVersion: 1, commit: commit.toUpperCase(), browser: { distIndexSha256BeforeAndAfter: hash.toUpperCase() } });
   const result = spawnSync(process.execPath, [path.resolve(__dirname, '../workflow.js'), 'audit:delivery', '--root', f.root, '--evidence', 'evidence.json', '--compare-evidence', 'other.json', '--json'], { encoding: 'utf8' });
-  assert.equal(result.status, 0, result.stderr);
-  assert.equal(JSON.parse(result.stdout).comparisons[0].status, 'matched');
+  assert.equal(result.status, 3, result.stderr);
+  const r = JSON.parse(result.stdout);
+  assert.equal(r.comparisons[0].status, 'matched');
+  assert.equal(r.freshness.status, 'unknown');
+  assert.equal(r.freshness.gates.deviceAcceptance.effectiveStatus, 'unknown');
 });
 test('比较拒绝缺失、坏 JSON、绝对/父目录/junction 越界；help/plan 不读', t => {
   const f = fixture(t), other = fixture(t);
@@ -107,13 +110,14 @@ test('同提交跨两个隔离环境交接；办公机通过不等于设备通�
   const before = fs.readFileSync(path.join(office.root, 'evidence.json'));
   const r = office.run({ commit, builds: [`build.manifestSha256=${hash}`] });
   assert.equal(r.exitCode, 3);
-  assert.deepEqual(r.pending.map(v => v.field), ['installation', 'deviceAcceptance', 'modelAcceptance']);
+  assert.deepEqual(r.pending.map(v => v.field), ['tracking', 'fullGate', 'installation', 'deviceAcceptance', 'modelAcceptance']);
   assert.ok(r.recommendations.every(v => v.executed === false));
   assert.deepEqual(fs.readFileSync(path.join(office.root, 'evidence.json')), before);
   main.d.scope = 'isolated main-machine record fixture';
   for (const key of ['installation', 'deviceAcceptance', 'modelAcceptance']) main.d[key] = { status: 'passed', report: `${key}.log` };
   main.write('evidence.json', main.d);
-  assert.equal(main.run({ commit, builds: [`build.manifestSha256=${hash}`] }).exitCode, 0);
+  assert.equal(main.run({ commit, builds: [`build.manifestSha256=${hash}`] }).exitCode, 3);
+  assert.equal(main.run().freshness.gates.fullGate.effectiveStatus, 'unknown');
   main.d.build.manifestSha256 = 'd'.repeat(64);
   main.write('evidence.json', main.d);
   assert.equal(main.run({ builds: [`build.manifestSha256=${hash}`] }).exitCode, 1);
