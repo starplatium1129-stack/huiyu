@@ -1,11 +1,11 @@
 # 008 — TypeScript 迁移修复（机械阶段已完成，逐文件阶段进行中）
 
-- **Status**: IN_PROGRESS — 机械规则已跑完并收敛，剩余 1,776 个需逐点现场修复（见「本会话（第二轮）」）
-- **Branch**: `codex/ts-migration-repair-20260915`
-- **Commit**: 机械阶段 10 个检查点，最新一个为「视频校验常量表键断言」（见 `git log --oneline`）
+- **Status**: IN_PROGRESS — 机械规则已跑到收敛，剩余 1,095 个需逐点现场修复
+- **Branch**: 已 fast-forward 到 `main`（工作分支 `codex/ts-migration-repair-20260915` 与 main 同一提交）
+- **Commit**: 机械阶段 20 个检查点，最新为「索引签名规则后的收敛」（见 `git log --oneline`）
 - **Severity**: BLOCKER — 构建、测试、桌面打包、CI 全链路不可用
 - **Category**: Build / TypeScript 迁移
-- **剩余规模**: 1,776 个类型错误（node 323 + tests 1,453），跨 223 个 `.ts` 文件
+- **剩余规模**: 1,095 个类型错误（node 216 + tests 879）
 
 ## 进度快照（均为官方门禁命令实测）
 
@@ -14,7 +14,8 @@
 | 迁移后原始基线 | 5,395 | 10,485 | 15,880 | 0% |
 | 前次 WIP `b0ceaf8` | 3,087 | 8,223 | 11,310 | 29% |
 | 机械修复（第一轮，6 个检查点） | 516 | 2,002 | 2,518 | 84% |
-| 本会话（第二轮，4 个检查点） | **323** | **1,453** | **1,776** | **89%** |
+| 第二轮（规则 J/K/L/M） | 323 | 1,453 | 1,776 | 89% |
+| 第三轮（规则 Q/S/T/U/V/P，当前） | **216** | **879** | **1,095** | **93%** |
 
 `services` / `browser` 两个项目实测 PASS（exit 0），`node` / `tests` 仍红。
 
@@ -121,6 +122,24 @@ TypeError；`!` 的编译产物与之一模一样。而 `if (!b) throw ...` 会�
 且对象字面量简写（`{character: c}`）的报点落在**属性名**上，逐使用点补 `!` 根本覆盖不全——
 加在声明处才是一次到位。
 
+### 第三轮新增规则（收益远大于第二轮，核心是「推断出来的类型也算伪造」）
+
+第二轮只把**写出来的** `unknown` / 退化标注当伪造。第三轮的关键推进是：迁移文件里
+**由 TS 从默认值 / 初始化式 / 某一次 return 反推出来的类型，同样是伪造的**——原始 `.js` 没有任何
+标注，所以任何非 `typeof import(...)` 的形状都是 codemod 的产物。据此新增：
+
+| # | 脚本 | 规则 | 实测净收益 |
+| --- | --- | --- | --- |
+| T | `fix-destructured-param.mjs` | 无标注的**解构形参**补 `: any`（`({ rootDir, io = fs }: any = {})`） | −112 |
+| U | `fix-param-default.mjs` | 无标注的**带默认值形参**补 `: any`（`function f(t = 5000)`） | −129 |
+| V | `fix-receiver-widen.mjs` | TS2339/18046/2571 回溯到接收者的声明并放宽（`Error` / `string` / `{}` 也算伪造） | −124 |
+| P | `fix-index-signature.mjs`（重写） | TS7053：把**被访问对象**断言成 `Record<string, any>` | −52 |
+| Q | `fix-fixture-return.mjs` | 共享夹具/工厂函数的返回值被推窄 → 返回类型放宽为 `any` | −132 |
+| — | 手工 | `generation-safety-fixture.ts` 的 `fixture()` 放宽为 `any` | −127 |
+
+其中 T 和 Q 是**单点杠杆**：`prepareBlueprintWrite` 与 `checked` 两个函数的形参各补一个 `: any`
+就清掉 57 个错误；`fixture()` 一个返回类型清掉 131 个。**优先找这类「一个声明压着上百个错误」的点。**
+
 ### L 的判定依据（为什么可以放心把 unknown 全改掉）
 
 只作用于迁移生成的文件（有同名原始 `.js`、且不在 `ba50cef` 的手写 TS 清单里）。原始 `.js` 里
@@ -167,21 +186,27 @@ for (const entry of entries) { entry.file }   // 'entry' is of type 'unknown'
     插 `!` 会产出 `out.x! = v` 这种非法赋值目标（TS2364）。`fix-truthiness.mjs` 里已加注释锁死。
 15. **TS2353 的目标绝大多数不是类型字面量**：`fix-excess-property.mjs` 实测 171 条全部跳过
     （目标是命名接口或 `string[]` 等），不要再从这个方向入手。
-16. **TS7053 的下标对象大多不是简单标识符**：`fix-index-signature.mjs` 实测 79 条全部跳过
-    （是 `this.x[k]`、`QUALITIES[q].sizes[k]` 这类），`typeof` 取不到类型。这条规则只在
-    `routes/video/validation.ts` 手工落地成功，见上表。
+16. **TS7053 用「给下标加 `as keyof typeof X`」走不通**：被访问对象往往不是简单标识符
+    （`this.x[k]`、`QUALITIES[q].sizes[k]`），`typeof` 取不到类型，实测 79 条全跳过。
+    **改成断言对象侧** `(obj as Record<string, any>)[k]` 后 58 条里修掉 54 条——方向比写法重要。
+17. **绑定元素（BindingElement）不能加标注**：`const { a } = o` 里在 `a` 后插 `: any` 会变成
+    `const { a: any } = o`，语义被改写成重命名。第一版 V 规则因此**写坏 37 个文件**
+    （`syntax=37` 的假绿）。现在 V 规则完全跳过绑定元素，且**每次写入前都会重新解析校验**。
+    后来试过「在 host 变量声明上加 `: any` / 给 for-of 表达式加 `as any[]`」，实测净 +35，也已回滚。
+18. **给所有修复脚本加写入前解析校验**：`ts.createSourceFile(...).parseDiagnostics` 为空才落盘。
+    语法错误会让 TS 跳过该文件的语义分析，错误数暴跌成假绿——写坏文件比不修更糟。
 
 ## 剩余批次（按价值排序，含实测残留）
 
 ### 当前残留（第二轮机械规则收敛后实测）
 
-| 批次 | 范围 | 残留 | 文件数 | 备注 |
-| --- | --- | --- | --- | --- |
-| R1 | `scripts/tests/**`（tests 项目） | **1,196** | 126 | 仍是最大一块。热点：`test-reference-candidate-workflow.ts`、`test-popular-content.ts`、`test-live2d-backend.ts` |
-| R2 | `scripts/lib/**` | **258** | 24 | `content-history-snapshot.ts`、`resource-pack-verify.ts`、`blueprint-write.ts`、`content-impact-checks.ts` |
-| R3 | `scripts/maintenance/**` | **251** | 48 | `publish-showcase-refresh.ts`、`publish-scene-showcase-anima11.ts` |
-| R4 | `routes/**`（发货路径） | **69** | 15 | `routes/video/*`、`generation.ts`、`desktop-tools.ts`、`maintenance.ts` |
-| R5 | `server.ts` + `server/**` | **2** | 2 | 路由工厂签名的下游症状，几乎已清 |
+| 批次 | 范围 | 残留 | 备注 |
+| --- | --- | --- | --- |
+| R1 | `scripts/tests/**`（tests 项目） | **695** | 仍是最大一块。热点：`test-live2d-backend.ts` 43、`test-resource-gateway.ts` 32、`test-popular-content.ts` 30、`test-anima-routes.ts` 30 |
+| R2 | `scripts/maintenance/**` | **203** | `publish-showcase-refresh.ts` 40、`publish-scene-showcase-anima11.ts` 32 |
+| R3 | `scripts/lib/**` | **148** | `content-history-snapshot.ts`、`content-impact-checks.ts`、`reference-candidate-review.ts` |
+| R4 | `routes/**`（发货路径） | **47** | 已有大幅收敛 |
+| R5 | `server.ts` + `server/**` | **2** | 几乎已清 |
 
 主因分布（两项目合计）：TS2345 402、TS2339 412、TS2353 171、TS2322 156、TS18046 132、TS7053 88。
 第二轮的 `unknown` 治理吃掉了一大块，剩下的基本都是**需要看现场判断**的形状不符，机械规则的边际
@@ -250,8 +275,17 @@ bash scripts/archive/ts-repair/count.sh tests
 node scripts/archive/ts-repair/show-errors.mjs --code 2339 --grep "on type '{}'" --limit 10
 node scripts/archive/ts-repair/show-errors.mjs --file test-popular-content --limit 20
 
-# 全部机械规则跑到收敛
-bash scripts/archive/ts-repair/pipeline.sh
+# 全部机械规则跑到收敛（第三轮用的顺序；各脚本可单独跑，都支持 --dry / --project）
+for s in fix-unknown-annotations fix-destructured-param fix-param-default fix-decl-nonnull \
+         fix-truthiness fix-fixture-return fix-receiver-widen fix-index-signature \
+         fix-signature-annotations; do
+  node scripts/archive/ts-repair/$s.mjs --write
+done
+for p in node tests; do node scripts/archive/ts-repair/fix-param-shape.mjs --write --project $p; done
+
+# 并行分片（配额恢复后）
+node scripts/archive/ts-repair/make-shards.mjs 6      # 重新切成 6 片
+bash scripts/archive/ts-repair/count-shard.sh .cache/ts-repair/shards/s1.txt
 ```
 
 **判据：`syntax` 必须恒为 0**；`total` 归零才算该批次完成。
@@ -294,7 +328,7 @@ Windows 下 node 解析不了 git-bash 的 `/tmp`。）
   本会话因此改为单会话推进，靠「可判定规则 + tsc 快速反馈（node 项目约 5 秒）」批量化，才把
   11,310 压到 2,518。剩余部分建议在配额恢复后按 R1–R5 分片并行（文件归属已切分好，
   见 `.cache/tswork/A1..A7.txt` 与 `scripts/archive/ts-repair/CONTRACT.md`）。
-- **`git push` 失败原因已定位（更正上一轮的「疑与代理有关」）**：实测报
+- **`git push` 仍未成功（main 已 fast-forward，本地领先远端 23 个提交）**：实测报
   `fatal: could not read Username for 'https://github.com': terminal prompts disabled`。
   `origin` 是 HTTPS（`https://github.com/starplatium1129-stack/huiyu.git`），
   `credential.helper = helper-selector` 在非交互环境下无法弹窗取凭证。**即凭证/交互问题，不是代理问题**——
