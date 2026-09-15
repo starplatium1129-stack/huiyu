@@ -48,7 +48,7 @@ function requestComfyStream(config: { COMFY_HOST: string|URL; }, method: string,
     }, function (response) {
       resolve({ status:response.statusCode || 0, headers:response.headers, response:response });
     });
-    request.on('error', function (error) {
+    request.on('error', function (error: any) {
       if (error && error.code) reject(error);
       else reject(serviceError(502, 'COMFY_UNAVAILABLE', error && error.message || 'ComfyUI 不可用'));
     });

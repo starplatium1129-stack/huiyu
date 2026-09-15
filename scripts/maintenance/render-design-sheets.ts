@@ -233,7 +233,7 @@ async function submitAndWait(text: string, seed: number) {
 }
 
 /** 把 ComfyUI 输出移到参考图目录（同盘 rename 原子移动，避开 unlink 钩子）。 */
-function moveOutput(relFile: string, destDir: PathLike, destFile: string) {
+function moveOutput(relFile: string, destDir: string, destFile: string) {
   const src = path.join(COMFY_OUTPUT, relFile);
   if (!fs.existsSync(src)) return false;
   fs.mkdirSync(destDir, { recursive: true });

@@ -229,7 +229,7 @@ function inspectCandidatePrompt(candidate: any) {
 function assertShortPrompt(prompt: any, options: any) {
   const report = inspectShortPrompt(prompt, options);
   if (!report.ok) {
-    const error = new Error(`prompt contract failed: ${report.errors.join('；')}`);
+    const error: any = new Error(`prompt contract failed: ${report.errors.join('；')}`);
     error.code = 'PROMPT_CONTRACT_FAILED';
     error.report = report;
     throw error;

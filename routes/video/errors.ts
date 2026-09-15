@@ -7,7 +7,7 @@
  */
 
 function serviceError(status: unknown, code: unknown, message: string|undefined, detail?: unknown) {
-  let error = new Error(message);
+  let error: any = new Error(message);
   error.status = status;
   error.code = code;
   error.detail = detail;

@@ -32,7 +32,7 @@ let ALLOWED_MODE = new Set(['tag', 'caption']);
 let DEFAULT_THRESHOLD = 0.35;
 
 function serviceError(status: number, code: string, message: string|undefined) {
-  let e = new Error(message); e.status = status; e.code = code; return e;
+  let e: any = new Error(message); e.status = status; e.code = code; return e;
 }
 function isPlainObject(v: unknown) { return Boolean(v) && typeof v === 'object' && !Array.isArray(v); }
 

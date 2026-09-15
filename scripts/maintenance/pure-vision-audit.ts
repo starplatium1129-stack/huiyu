@@ -95,7 +95,7 @@ function runVisionInspect(imagePath: string, promptGuide: unknown) {
   });
 }
 
-function findActualFile(dir: PathLike, persId: string) {
+function findActualFile(dir: string, persId: string) {
   // 兼容两种磁盘命名：首批无前缀（ref_01_face_closeup.png）与
   // 今日带前缀（<charId>_<outfitId>_ref_01_face_closeup.png）。
   const plain = path.join(dir, `${persId}.png`);

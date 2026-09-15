@@ -271,7 +271,7 @@ function checkPrecompressArtifacts() {
   var errors: string[] = [];
   var dataDir = path.join(ROOT, 'data');
   if (!fs.existsSync(dataDir)) return errors;
-  function walk(dir: PathLike) {
+  function walk(dir: string) {
     fs.readdirSync(dir, { withFileTypes: true }).forEach(function (entry: any) {
       var full = path.join(dir, entry.name);
       if (entry.isDirectory()) { walk(full); return; }

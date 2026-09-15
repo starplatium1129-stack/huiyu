@@ -468,7 +468,7 @@ function applyBlueprintWrite(prepared: any, { writeFileAtomic, io = nodeFs } = {
 }
 
 /** 内置原子写：同目录临时文件 + rename，失败清理临时文件；不创建目录。 */
-function defaultWriteFileAtomic(source: PathLike, content: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
+function defaultWriteFileAtomic(source: string, content: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
   const dir = path.dirname(source);
   const temporary = path.join(dir, '.' + path.basename(source) + '.' + randomUUID() + '.tmp');
   let created = false;

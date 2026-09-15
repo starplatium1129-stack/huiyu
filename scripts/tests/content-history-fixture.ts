@@ -90,7 +90,7 @@ function fixture(t: any, withGit = true) {
 
 function snapshot(root: string) {
   const entries: string[][] = [];
-  const visit = (directory: PathLike) => {
+  const visit = (directory: string) => {
     for (const entry of fs.readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
       const file = path.join(directory, entry.name);
       const relative = path.relative(root, file);

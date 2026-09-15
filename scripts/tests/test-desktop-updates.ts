@@ -59,7 +59,7 @@ test('手动版先上传草稿并验证资产，再公开但不晋升自动更�
   const run = (_command: any, args: any) => {
     calls.push(args);
     if (args[0] === 'release' && args[1] === 'view' && args.includes('isDraft,body,targetCommitish')) {
-      const error = new Error('release not found'); error.stderr = 'release not found'; throw error;
+      const error: any = new Error('release not found'); error.stderr = 'release not found'; throw error;
     }
     if (args.includes('assets')) return JSON.stringify({ assets: files.map((file: any) => ({ name: path.basename(file), size: fs.statSync(file).size })) });
     return '';

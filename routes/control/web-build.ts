@@ -21,7 +21,7 @@ let WEB_BUILD_TIMEOUT_MS = 10 * 60 * 1000;
 
 function newestSourceMtime(rootDir: string) {
   let newest = 0;
-  let walk = function (dir: PathLike) {
+  let walk = function (dir: string) {
     let entries;
     try { entries = fs.readdirSync(dir, { withFileTypes:true }); } catch (error) { return; }
     for (let i = 0; i < entries.length; i += 1) {

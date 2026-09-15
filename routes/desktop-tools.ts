@@ -303,7 +303,7 @@ function runTool(workspaceRoot: any, name: string, args: any, context?: any) {
           // 任一不满足即整体拒绝 —— 不回退到安全 token，也不写入任何生成元数据。
           let denial = assertAdultAllowed(targetChar, context);
           if (denial) {
-            let refusal = new Error(denial.message);
+            let refusal: any = new Error(denial.message);
             refusal.code = denial.code;
             throw refusal;
           }
@@ -381,7 +381,7 @@ function createDesktopToolsRouter(options?: any) {
       if (!res.destroyed) res.json(result);
     }).catch(function (error) {
       if (res.destroyed) return;
-      let err = error instanceof Error ? error : new Error(String(error));
+      let err: any = error instanceof Error ? error : new Error(String(error));
       let extra: any = { output: String(err.message).slice(0, 2000) };
       if (err.code) extra.code = err.code;
       envelope.fail(res, envelope.statusFor(err, 500), err.message, extra);

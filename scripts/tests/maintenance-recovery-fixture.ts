@@ -24,7 +24,7 @@ function createFixture() {
   const options = { rootDir, runtimeRoot: path.join(rootDir, 'runtime') };
   return { base, options, files: names.map(name => path.join(rootDir, name)), cleanup: () => fs.rmSync(base, { recursive: true, force: true }) };
 }
-function tree(directory: PathLike, excludeRuntime = false, output: any = {}, prefix = '') {
+function tree(directory: string, excludeRuntime = false, output: any = {}, prefix = '') {
   if (!fs.existsSync(directory)) return output;
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     if (excludeRuntime && entry.name === 'runtime') continue;

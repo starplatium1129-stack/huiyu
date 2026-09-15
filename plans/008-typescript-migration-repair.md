@@ -1,147 +1,244 @@
-# 008 — TypeScript 迁移修复（进行中，阻塞级）
+# 008 — TypeScript 迁移修复（机械阶段已完成，逐文件阶段进行中）
 
-- **Status**: IN_PROGRESS（WIP 检查点已落，待模型配额恢复后按批次续做）
+- **Status**: IN_PROGRESS — 自动化可判定部分已做完并收敛，剩余需逐点现场修复
 - **Branch**: `codex/ts-migration-repair-20260915`
-- **Commit**: `b0ceaf8`（WIP，未合并、未推 main）
+- **Commit**: 机械阶段 6 个检查点，最新一个为「类成员补声明 + 逻辑表达式回溯」（见 `git log --oneline`）
 - **Severity**: BLOCKER — 构建、测试、桌面打包、CI 全链路不可用
 - **Category**: Build / TypeScript 迁移
-- **Estimated scope**: 剩余约 11,310 个类型错误，跨 ~150 个 `.ts` 文件，需逐点现场修复
+- **剩余规模**: 2,518 个类型错误（node 516 + tests 2,002），跨 241 个 `.ts` 文件
 
-## Problem
+## 进度快照（均为官方门禁命令实测）
 
-提交 `63889f4 migrate project sources to TypeScript`（连同基础提交 `ba50cef`）**已推送到 origin/main 且本地与远端完全同步**，但它把仓库带入了**构建中断**状态：
+| 阶段 | node | tests | 合计 | 完成度 |
+| --- | --- | --- | --- | --- |
+| 迁移后原始基线 | 5,395 | 10,485 | 15,880 | 0% |
+| 前次 WIP `b0ceaf8` | 3,087 | 8,223 | 11,310 | 29% |
+| 机械修复（本会话，6 个检查点） | **516** | **2,002** | **2,518** | **84%** |
 
-- `scripts/build-node.mts` 是所有运行态 JS 的唯一生成器，且硬要求每个 tsconfig `strict: true`；
-- 只要任一诊断存在即 `throw`，**且在抛错前不写入任何产物**；
-- 因此 `npm ci`(postinstall) / `npm run build`(prebuild) / `npm start`(prestart) / CI `quality.yml` **全部会失败**。
+## ⚠️ 官方门禁的真实覆盖范围（本轮更正）
 
-当前 app 之所以还能跑，纯粹因为仓库里仍留有**迁移前的旧 JS 兜底**——而迁移后的 `.ts` 与运行中的 `.js` **已经分叉**（抽查 6 个文件仅 2 个字节完全一致；近 6 小时 449 个 `.ts` 变动对 26 个 `.js`）。也就是说**改 TS 目前完全不影响运行时**。
+`node scripts/build-node.mts` 的 `PROJECTS` 只有四个：
+
+```ts
+export const PROJECTS = {
+  services: 'tsconfig.runtime.json',
+  node: 'tsconfig.node.json',
+  tests: 'tsconfig.tests.json',
+  browser: 'tsconfig.browser-tools.json',
+}
+```
+
+- **Vue 前端（`tsconfig.app.json`）不在构建门禁里**，它的检查入口是 `npm run typecheck:app`（**vue-tsc**）。
+  用普通 `tsc -p tsconfig.app.json --noEmit` 会因 `.vue` 模块类型报一堆 TS2614，那是**测量方式错误**，不是回归。
+- 官方命令等价性已验证：`--check --project {services,browser,node,tests}` 与
+  `tsc -p tsconfig.<x>.json --noEmit` 在本次修复后给出相同数字，故日常可用 tsc 快速迭代。
+
+| 项目 | 官方结果 |
+| --- | --- |
+| services | **PASS（exit 0）** |
+| browser | **PASS（exit 0）** |
+| node | FAIL exit 1，516 |
+| tests | FAIL exit 1，2,002 |
+
+原始诊断主因分布：TS7006 隐式 any 1,527、TS2339 属性不存在 1,279、TS18046 unknown 627、TS2345 569、TS2554 347。
 
 ## 根因（已彻查，非猜测）
 
-`63889f4` 是**自动化类型推断迁移**的产物（证据：`.cache/typescript-migration/` 下有 `inferred-types.json`、`inference-progress.log`、1MB 的 `initial-types.log`）。它做了三件事：
+`63889f4 migrate project sources to TypeScript` 是**自动化类型推断迁移**的产物（证据：`.cache/typescript-migration/`
+下有 `inferred-types.json`、`inference-progress.log`、1MB 的 `initial-types.log`）。它做了三件事：
 
 1. ✅ `var x = require('...')` → `let x: typeof import('...') = require('...')` —— **正确，保留**
 2. ✅ `var` → `let` —— **保留**
 3. ❌ **凭空给本来没有任何标注的 JS 注入 `{}` / `unknown` / 过窄的结构类型** —— 罪魁
 
-第 3 类的实际形态：
+**关键认知：原始 JS 里这些变量本来根本没有标注，很多错误是「无中生有的标注」造成的。**
 
-```ts
-// 过窄且把可选参数写成必填
-function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unknown) => unknown; ... } })
-// 局部变量被注成 {}，后续属性访问全报 TS2339
-let part = parts[i] || {};  part.type        // Property 'type' does not exist on type '{}'
-// 工厂签名用 unknown 值域
-function createChatRouter(config: { OLLAMA_HOST: unknown; ... }, dependencies: { ollama?: unknown; })
-```
+### 最大的发现：迁移前的原始 `.js` 仍在仓库里
 
-**关键认知：原始 JS 里这些变量本来根本没有标注，很多错误是「无中生有的标注」造成的。** 因此正确修法常常是**删掉凭空注入的标注、让 TS 自行推断**，而不是再写一个更复杂但仍然错误的类型。
+只处理「存在同名 `.js` 的 `.ts`」时，`diff routes/generation.js routes/generation.ts` 就能**精确看出
+codemod 注入了什么**——它是「这段代码原来长什么样」的权威参照，判定「哪些标注是伪造的」不需要靠猜。
+原始 `.js` 是构建产物，**只读，绝不修改**。
 
-上游代理自己的记录 `.cache/typescript-migration/diagnostic-counts.json` 写着 `total: 5395` —— **明知是红的仍然提交了**。
+另需用 `ba50cef`（迁移前提交）的 454 个手写 TS 清单排除 `src/`、`services/`、`tests/`、`tools/` 等
+**本来就绿的手写 TS**（第一版工具曾误改 `services/ollama-service.ts`，已修正并回退）。
 
-## 基线损伤全景
+## 机械修复阶段：7 类可判定规则（已收敛）
 
-`node` / `tests` / `services` 三个项目是单 program 全量检查，普通 `tsc -p <config> --noEmit` 与官方等价。
+工具位于 **`scripts/archive/ts-repair/`**（`scripts/archive/` 已被 `.gitignore` 第 123 行忽略，
+所以工具在仓库里可长期留存又不会污染 git；同目录也放了一份 `CONTRACT.md` 工作器契约）。
 
-| 项目 | 配置 | 官方结果 | 基线错误数 |
-| --- | --- | --- | --- |
-| Vue 前端 | `tsconfig.app.json` | PASS | 0 |
-| services | `tsconfig.runtime.json` | PASS | 0 |
-| browser-tools | `tsconfig.browser-tools.json` | **PASS** | 0 |
-| 网关/路由/脚本 | `tsconfig.node.json` | FAIL | **5,395** |
-| 测试 | `tsconfig.tests.json` | FAIL | **10,485** |
-| | | | **合计 15,880** |
+| # | 脚本 | 规则 | 依据 | 净收益 |
+| --- | --- | --- | --- | --- |
+| A | `fix-degenerate.mjs` | 标注整型为 `{}` / `never` / `null` / `undefined` 及其并集 → 放宽为 `any` | 这些类型不可能是有意写的 | ~145 |
+| B | `fix-optional-params.mjs` | 尾随必填参数改可选：以该符号**全部调用点的最小实参个数**为准，索引 ≥ minArgs 的尾随参数补 `?` | 调用点会省略 → JS 下本来传 undefined | ~150 |
+| C | `fix-fabricated.mjs` | 标注内含合成参数名 `arg0..argN`，或属性值全为 `unknown` 的类型字面量 → 变量有初始化式则**删标注交给推断**，其余放宽为 `any` | 合成名 `argN` 在源码里从未存在 = 铁证 | ~2,500 |
+| D | `fix-implicit-any.mjs` | TS7006 / TS7005 / TS7031 / TS7034 → 显式补 `: any` | 原 JS 本就没有类型，补 any 是恢复语义的最小改动 | ~1,900 |
+| E | `fix-by-diagnostic.mjs` | 诊断驱动：从 TS2339/7053/18046/18047/18048/2345/2322/2353/2769/2559/2739/2740/2741/2488/2538/2532/2571 回溯到承载该错误类型的声明，若其类型是伪造形态则放宽为 `any` | 见下方「E 的四个关键细节」 | ~1,700 |
+| F | `fix-assert-destructure.mjs` | TS2775：把被断言调用的名字从 `const { assert }: typeof import('M') = ...` 中拆出为 `const assert: typeof import('M')['assert'] = require('M').assert;` | 已最小复现：整体标注写在解构模式上**不算逐名标注** | ~175 |
+| G | `fix-this-members.mjs` | 类上未声明的 `this.x` → 在类体开头补 `x!: any;` | 原 JS 给实例自由挂属性合法，TS 必须先声明字段 | ~196 |
 
-注意：`server/` 目录**本身就是干净的（0 错）**；红色只在 `server.ts`(12) + `routes/`(1,674)。
+配套：`fix-forof-annotations.mjs`（清理器）、`pipeline.sh`（按序跑到收敛的驱动）、
+`show-errors.mjs`（按错误码/文件打印错误 + 源码行，排查用）、`count.sh`（去 ANSI 统计）。
 
-错误码主因：TS7006 隐式 any 1,527、TS2339 属性不存在 1,279、TS18046 unknown 627、TS2345 569、TS2554 347。
+### E 类的四个关键细节（决定成败，勿重蹈）
 
-错误高度集中在工具脚本：`scripts/maintenance` 2,290 + `scripts/lib` 1,763（占 node 项目 75%），发货路径 `routes`+`server.ts` 仅约 24%。
+1. **TS2339 的报点在属性名上**（`part.type` 报在 `type`），不是接收者上。必须先「上浮」到所属属性/下标访问
+   表达式，再取最左接收者；否则符号解析失败，收益直接归零。
+2. 接收者回溯需支持**逻辑表达式**：`(x || []).map(...)` 的结果被推成 `{}`/`unknown`，真正要放宽的是 `x`。
+   还要支持 `?.`、括号、下标访问、条件表达式。
+3. **报点也可能是属性名自身的声明**（如 `res.data.models` 里 `data` 被注成 `unknown`），故需同时考察
+   `PropertySignature` / `PropertyDeclaration`。
+4. 放宽分支必须要求 `!decl.type`。早期版本对「已有标注」的声明也走了推断分支，在 nameEnd 又插了一次
+   `: any`，产生 `record: any: any: any` 这种语法损坏。
 
-## 修复标准（四类场景，后续批次统一遵循）
+### 两条窄规则（有外部依据）
 
-codemod 新增的 `require` 类型标注与 `var→let` **保留**；只修第 3 类损伤。
+- **规则 H（Error 自有属性）**：TS2339 且接收者推断类型恰为 `Error` → 放宽为 `any`。
+  原 JS 常写 `err.code = ...`，codemod 注成 `Error` 后必然报 TS2339。
+- **规则 I（PathLike → string）**：TS2345 报「`Argument of type 'PathLike' is not assignable to parameter of type 'string'`」
+  且实参标注恰为 `PathLike` → 收窄为 `string`。依据 `node_modules/@types/node/path.d.ts:110`：
+  `function dirname(path: string): string`——`path.dirname/join` 只收 `string`，而原 JS 传的都是字符串。
 
-1. **路由工厂签名**：`config: {X: unknown}` → `config: GatewayConfig`（复用 `server/config-types.ts`，它派生自 `ReturnType<typeof loadGatewayConfig>`）。
-   `dependencies` → 该工厂**自己的精确类型**，且**必须可选**（`dependencies?: XxxDependencies`）。理由：`server/gateway-types.ts` 的 `ServiceDependencies` 是**从各工厂第 2 形参反推**的（`NonNullable<Parameters<...>[1]>`），所以工厂不能反向引用它（会循环），且 `server.ts` 会传可能为 `undefined` 的 `options.services`。
-2. **外部 / 不可信载荷**（模型 API 响应、SSE 事件流、磁盘 JSON、HTTP 请求体、子进程输出）：用宽松类型（`any` / `Record<string, any>`），并**原样保留已有的 `typeof` / `Array.isArray` / `?.` 运行时守卫**。依据 `docs/guides/engineering/typescript-development.md`：「文件内容与外部返回值仍需要运行时校验，类型声明不代替数据验证」。
-3. **Express 处理器**：`router: express.Router`、`req: express.Request`、`res: express.Response`。
-4. **局部变量**：优先删掉凭空注入的 `{}` 标注让 TS 推断；推断确实不可行时才显式标注。
+## ⚠️ 已确认的坑（勿重蹈）
 
-**绝对禁止**：`@ts-ignore` / `@ts-nocheck` / `@ts-expect-error`；为过关而删除或弱化断言、改运行时逻辑、改导出契约；无差别的 `as any`；只改 `.js`（构建产物，改了无效）。
+1. **ANSI 颜色码会骗过 grep**：TS 诊断带颜色码，把 `error` 与 `TS2339` 隔开，对**未去色**日志
+   `grep -c 'error TS'` 返回 **0**，看起来像「已归零」。**先去色再统计**（`sed -e 's/\x1b\[[0-9;]*m//g'`）。
+2. **语法错误会让数字暴跌成假绿**：TS 遇到语法错误会**跳过该文件的语义分析**。本会话两次遇到
+   「2,813 → 315」这种暴跌，实际是重叠编辑把文件改坏了。**任何暴跌都必须先确认 `syntax=0`**。
+3. **语法错误统计口径**：`grep -E 'error TS1[0-9]{3}'` 会把 5 位的 `TS18046` 也算进去；
+   必须锚定冒号：`grep -cE 'error TS1[0-9]{3}:'`。
+4. **重叠编辑范围**是毁源码的头号原因：父节点的标注范围会包住子节点。修法是「命中后不再递归进入该类型节点」
+   + `applyEdits` 加重叠断言（`e.end > lastStart` 直接抛错）。
+5. **`arr.map(x => ...)` 的无括号单参箭头函数**不能直接插 `: any`（会变成 `x: any =>`，语法错误）。
+   括号判定**不能**看「前一个字符是不是 `(`」——那个 `(` 属于外层调用（`current.map(scene => ...)` 会误判）；
+   正确判据是**参数结束到 `=>` 之间是否存在 `)`**。
+6. **有 `?` 的参数**必须把 `: any` 插在 `?` 之后，否则得到非法的 `max: any?`。
+7. **`for...of` / `for...in` 左侧不允许类型标注（TS2483）**。判定必须看 `VariableDeclaration.parent`
+   是 `VariableDeclarationList`，再看它的 `.parent` 才是 for 语句——**漏掉这一层会让 TS2483 反复回潮**，
+   并伪装成「某类修复是负收益」。
+8. **`browser` 项目逐文件隔离检查**（`build-node.mts` 里 `project === 'browser'` 时每个文件一个 program）。
+   用 `tsc -p tsconfig.browser-tools.json` 合并检查会因跨文件同名函数误报 TS2393。**该项目实际 PASS。**
+9. **工作器自报数字不可信**：上轮已抓到一次（某工作器报「`scripts/lib` 1763 → 0」，实测仍有 1,591）。
+   任何完成声明一律以**我方去色统计**为准。
+10. **产物写入发生在所有项目通过之后**（`for (const item of pending)` 在 `throw` 之后）：node 项目里只要
+    `scripts/` 仍红，`server`/`routes` 的 JS 也不会被重新生成。
+11. **不能靠拆分构建项目来隔离脚本债务**：TS 会连带检查被 `import` 的文件，而 `routes/chat.ts` 正 import 了
+    `scripts/lib/runtime-errors`，所以拆出 `scripts/` 并不能让网关先绿。已评估并放弃。
 
-参考范式（已落地于 `routes/chat.ts`）：
+## 剩余批次（按价值排序，含实测残留）
 
-```ts
-import type { GatewayConfig } from '../server/config-types';
+| 批次 | 范围 | 残留 | 文件数 | 备注 |
+| --- | --- | --- | --- | --- |
+| R1 | `scripts/tests/**`（tests 项目） | 1,559 | 131 | 最大一块。热点：`test-popular-content.ts` 150、`test-reference-candidate-workflow.ts` 136、`test-live2d-backend.ts` 73、`test-blueprint-write.ts` 49 |
+| R2 | `scripts/lib/**` | 476 | 34 | `content-history-snapshot.ts` 46、`content-evidence-contract.ts` 40、`blueprint-write.ts` 38、`content-impact-checks.ts` 36、`blueprint-change-plan.ts` 34 |
+| R3 | `scripts/maintenance/**` | 291 | 49 | `publish-showcase-refresh.ts` 38、`publish-scene-showcase-anima11.ts` 34 |
+| R4 | `routes/**`（发货路径） | ~96 | 16 | `routes/video/*` 48、`video-ai.ts` 23、`video.ts` 16、`generation.ts` 14、`interrogate.ts` 8、`maintenance.ts` 8 |
+| R5 | `server.ts` + `server/**` | 4 | 3 | 主要是路由工厂签名的下游症状 |
 
-/** 注入的 Ollama 客户端；缺省时工厂按 config 自行创建。 */
-type ChatDependencies = { ollama?: ReturnType<typeof createOllamaService> };
+### R1–R5 的主要错误形态（已抽样确认，不是猜测）
 
-function createChatRouter(config: GatewayConfig, dependencies?: ChatDependencies) {
-```
+1. **`Array.prototype.find()` 返回 `T | undefined`**（TS18047/18048，全仓 313）。原 JS 直接当非空用。
+   典型现场 `scripts/tests/test-popular-content.ts:30`：
+   ```ts
+   const b = blueprints.find(b => b.id === id), c = characters.find(c => c.id === b.characterId);
+   if (b.compositionIntent === 'triptych') { ... }   // 'b' is possibly 'undefined'
+   ```
+   **这是需要用户拍板的决策点**：加 `!`（`find(...)!`，把测试夹具必然存在的既有假设写成类型断言，
+   行为与 JS 一致——JS 里取 undefined 属性会抛 TypeError）还是补显式守卫 `if (!b) throw ...`。
+   手册倾向 `!`（测试文件里是惯用法），但这与 AGENTS.md「不能靠断言掩盖」的边界相邻，故未批量自动化。
+2. **`Type 'undefined' is not assignable to type 'string'`**（TS2322，54 处集中在少数文件）——同上。
+3. **`Property 'X' does not exist on type '<命名接口>'`**（TS2339）——codemod 从对象字面量反推出来的接口
+   只覆盖了部分用法。需逐个判断应属「放宽该对象」还是「补上接口成员」。
+4. **`Argument of type 'unknown' is not assignable to parameter of type 'string'`**（TS2345，194 处）——
+   实参来自外部载荷；正确修法是给该实参加宽松类型，而不是给形参放宽。
+5. **`Cannot find namespace 'express'`（TS2833）/ 处理器形参被注成 `object`、`{}`、`{ method: string }`**——
+   按修复标准第 3 条换成真实 Express 类型。本项目既有范式是
+   `import { Request, Response, Router, NextFunction } from 'express-serve-static-core';`（见 `routes/generation.ts` 第 5 行）。
+   注意 `let express: typeof import('express') = require('express')` 这种**变量绑定不能当命名空间用**。
+6. **`Property 'watchdog' / 'close' does not exist on type 'Router'`**（`routes/control.ts:473`）——
+   `createControlRouter` 的真实返回结构需要查清（含 `close` 与 `watchdog`），**不要靠断言掩盖**。
 
-注意：签名类修复对整个 node 项目只削掉约 10 个错误，**真正的量在局部变量的 `{}` 标注上**，不要以为改完签名就完事。
+## 修复标准（四类，逐文件阶段统一遵循）
 
-## 剩余批次（按执行顺序）
+codemod 新增的 `require` 类型标注与 `var→let` **保留**；只修凭空注入的损伤。
 
-进度基线：WIP 检查点测得 node 3,087 / tests 8,223（已完成约 29%）。
+1. **路由工厂签名**：`config: {X: unknown}` → `config: GatewayConfig`
+   （`import type { GatewayConfig } from '../server/config-types';`，它派生自 `ReturnType<typeof loadGatewayConfig>`）。
+   `dependencies` → 该工厂**自己的精确类型**，且**必须可选**（`dependencies?: XxxDependencies`）。
+   理由：`server/gateway-types.ts` 用 `NonNullable<Parameters<...>[1]>` 从各工厂第 2 形参反推，
+   工厂不能反向引用它（会循环）；且 `server.ts` 会传可能为 `undefined` 的 `options.services`。
+2. **外部 / 不可信载荷**（模型 API 响应、SSE 事件流、磁盘 JSON、HTTP 请求体、子进程输出）：用宽松类型
+   （`any` / `Record<string, any>`），并**原样保留已有的 `typeof` / `Array.isArray` / `?.` 运行时守卫**。
+   依据 `docs/guides/engineering/typescript-development.md`：「文件内容与外部返回值仍需要运行时校验，
+   类型声明不代替数据验证」。
+3. **Express 处理器**：用真实 Express 类型，不留 `object` / `{ method: string }` / `{}`。
+4. **局部变量**：优先删掉凭空注入的 `{}` / `never` / `null` / `undefined` 标注让 TS 推断；
+   推断不可行时才显式标注。
 
-| 批次 | 范围 | 检查点残留 | 备注 |
-| --- | --- | --- | --- |
-| B1 | `routes/video/**` | 306 | **完全未开始** |
-| B2 | `routes/control/**` | 82 | **完全未开始** |
-| B3 | `server.ts` | 10 | 主要是路由工厂签名的下游症状；`server.ts:379` 的 `control.close()` 需查清 `createControlRouter` 的真实返回结构（含 `close`），不要靠断言掩盖 |
-| B4 | `routes/` 顶层残留 | 793 | 重灾区：`generation.ts` 197、`video.ts` 100、`video-ai.ts` 93、`chat.ts` 84、`maintenance.ts` 61 |
-| B5 | `scripts/lib/**` | 1,450 | 第一梯队：`resource-install-fs.ts` 97、`resource-install-gateway.ts` 89、`content-impact-format.ts` 78、`delivery-report-format.ts` 73、`generation-candidates.ts` 59 |
-| B6 | `scripts/maintenance/**` | 402 | 收尾 |
-| B7 | `scripts/tests/**`（tests 项目） | 8,223 | 依赖 B4–B6 稳定后再开，否则返工 |
-| B8 | `browser` 项目 | 0 | 已 PASS，无需处理 |
+**绝对禁止**：`@ts-ignore` / `@ts-nocheck` / `@ts-expect-error`；为过关而删除或弱化断言、改运行时逻辑、
+改导出契约；无差别的 `as any`；只改 `.js`（构建产物，改了无效）。
 
 ## 门禁与验收命令
 
 ```bash
 cd /d/code/ai-cg-studio-main
 
-npx tsc -p tsconfig.node.json  --noEmit > /tmp/n.log 2>&1
-npx tsc -p tsconfig.tests.json --noEmit > /tmp/t.log 2>&1
-sed -e 's/\x1b\[[0-9;]*m//g' /tmp/n.log > /tmp/n.plain.log   # 必须去 ANSI
-sed -e 's/\x1b\[[0-9;]*m//g' /tmp/t.log > /tmp/t.plain.log
+# 官方门禁（等价于 CI 构建路径）——逐项目跑，失败时不会写任何产物
+node scripts/build-node.mts --check --project services   # 目标 exit 0
+node scripts/build-node.mts --check --project browser    # 目标 exit 0（browser 必须单独隔离检查）
+node scripts/build-node.mts --check --project node       # 目标 0 错
+node scripts/build-node.mts --check --project tests      # 目标 0 错
+node scripts/build-node.mts --check                      # 四个项目全绿
 
-grep -cE 'error TS[0-9]+' /tmp/n.plain.log                   # 目标 0
-grep -cE 'error TS[0-9]+' /tmp/t.plain.log                   # 目标 0
+# 快速迭代（与上面等价，已验证）
+bash scripts/archive/ts-repair/count.sh node    # 输出 "node total=N syntax=M"
+bash scripts/archive/ts-repair/count.sh tests
 
-# 官方验证（等价于 CI 的构建路径）
-node scripts/build-node.mts --check
-node scripts/build-node.mts --project browser --check        # browser 必须单独隔离检查
+# 排查单条错误现场（打印错误 + 源码行）
+node scripts/archive/ts-repair/show-errors.mjs --code 2339 --grep "on type '{}'" --limit 10
+node scripts/archive/ts-repair/show-errors.mjs --file test-popular-content --limit 20
+
+# 全部机械规则跑到收敛
+bash scripts/archive/ts-repair/pipeline.sh
 ```
 
-## ⚠️ 已确认的坑（勿重蹈）
-
-1. **ANSI 颜色码会骗过 grep**：TS 诊断带颜色码，把 `error` 与 `TS2339` 隔开，对**未去色**日志 `grep -c 'error TS'` 返回 **0**，看起来像「已归零」。**先去色再统计。**
-2. **`browser` 项目逐文件隔离检查**（`build-node.mts` 里 `project === 'browser'` 时每个文件一个 program）。用普通 `tsc -p tsconfig.browser-tools.json` 合并检查会因跨文件同名函数（`escapeHtml`/`init`）误报 TS2393。**该项目实际 PASS，不要被误报带偏。**
-3. **工作器自报数字不可信**：本轮已抓到一次实例——某工作器报告「`scripts/lib` 1763 → 0」，实测仍有 1,591 错。**任何完成声明一律以我方去色统计为准。**
-4. **产物写入发生在所有项目通过之后**（`for (const item of pending)` 在 `throw` 之后）：node 项目里只要 `scripts/` 仍红，`server`/`routes` 的 JS **也不会被重新生成**。
-5. **不能靠拆分构建项目来隔离脚本债务**：TS 会连带检查被 `import` 的文件，而 `routes/chat.ts` 正 import 了 `scripts/lib/runtime-errors`，所以拆出 `scripts/` 并不能让网关先绿。已评估并放弃。
-6. `.cache/typescript-build/` 当前**不存在**（无热缓存）——所以本地热缓存从未掩盖过这个红状态，任何一次 `npm ci` 都会失败。
+**判据：`syntax` 必须恒为 0**；`total` 归零才算该批次完成。
+（`count.sh` 会把去色日志镜像到 `.cache/ts-repair/logs/` 供 `show-errors.mjs` 读取——
+Windows 下 node 解析不了 git-bash 的 `/tmp`。）
 
 ## 修绿之后的后续链路
 
-1. **干净状态验证**：清空 `.cache/typescript-build/` 与所有生成物后跑 `node scripts/build-node.mts`，确认四个项目全绿且产物可重建（模拟 fresh clone）。
-2. **取消跟踪生成 JS**：`git rm --cached` 处理那 **449 个已被 `.gitignore` 覆盖却仍被跟踪**的 JS（`.gitignore` 第 32–49 行已声明「TypeScript is the source of truth」）。保留 4 个合理例外：`poc/live2d-compare/vendor/{cubism2,cubism4,index}.js`（第三方 vendor）与 `poc/audit-stability-apply.cjs`。
+1. **干净状态验证**：清空 `.cache/typescript-build/` 与所有生成物后跑 `node scripts/build-node.mts`，
+   确认四个项目全绿且产物可重建（模拟 fresh clone）。
+2. **取消跟踪生成 JS**：`git rm --cached` 处理那 **449 个已被 `.gitignore` 覆盖却仍被跟踪**的 JS
+   （`.gitignore` 第 32–49 行已声明「TypeScript is the source of truth」）。保留 4 个合理例外：
+   `poc/live2d-compare/vendor/{cubism2,cubism4,index}.js`（第三方 vendor）与 `poc/audit-stability-apply.cjs`。
    **前置条件：必须先修绿**——此刻取消跟踪会让新克隆既无可用 JS 又编译不出来，仓库直接不可运行。
-3. **推广生成物守卫**：把 `scripts/maintenance/runtime-generated-files.ts` + `scripts/tests/test-runtime-generated.ts` 的「产物不得被 Git 跟踪」断言从 `services/` 推广到 `server` / `routes` / `scripts`。
-4. **完整测试**：`npm run check`、`npm run validate`（含 `test:frontend` / `test:unit` / `test:contract`）。
-5. **桌面打包与实机验收**：只用 `deploy-desktop.bat`（UAC 由用户操作）；`npm run package:tauri` 产出 NSIS 安装包；随后实机运行验收。未执行或失败的步骤如实列出，历史 PASS 不替代当次证据。
+3. **推广生成物守卫**：把 `scripts/maintenance/runtime-generated-files.ts` + `scripts/tests/test-runtime-generated.ts`
+   的「产物不得被 Git 跟踪」断言从 `services/` 推广到 `server` / `routes` / `scripts`。
+4. **完整测试**：`npm run check`、`npm run validate`（含 `test:frontend` / `test:unit` / `test:contract`），
+   以及 `npm run typecheck:app`（vue-tsc）。
+5. **桌面打包与实机验收**：只用 `deploy-desktop.bat`（UAC 由用户操作）；`npm run package:tauri` 产出 NSIS 安装包；
+   随后实机运行验收。未执行或失败的步骤如实列出，历史 PASS 不替代当次证据。
 
 ## 决策记录
 
-- 用户已拍板：**修复迁移**（保留 TS 为唯一真源）／**修绿后再取消跟踪**生成 JS／**一路推到桌面验收**。解锁顺序选「按推荐方案」，最终目标是全部迁移完成。
-- 已排除的替代路线：回滚迁移提交、分层收割、拆分构建项目（理由见坑 5）。
+- 用户已拍板：**修复迁移**（保留 TS 为唯一真源）／**修绿后再取消跟踪**生成 JS／**一路推到桌面验收**。
+- 已排除的替代路线：回滚迁移提交、分层收割、拆分构建项目（理由见坑 11）。
+- 本会话补充决策：机械修复只改「由 `63889f4` 从 `.js` 迁移生成」的 `.ts`；工具落到
+  `scripts/archive/ts-repair/`（gitignored）；`find()` 的 `!` vs 显式守卫不由脚本代决，留给用户/逐文件判断。
 
 ## 未决 / 阻塞
 
-- **模型配额 429**：并行工作器全部中断，配额 **2026-09-16 02:37 UTC+8** 重置。
-- **`git push` 挂起**：WIP 分支推送长时间无输出，疑与代理（127.0.0.1:7897）连通性有关；提交本身已安全落在本地分支。按既有经验**先查代理，再怀疑授权**。
-- **行为验证缺口**：`build:runtime` 仍不可能通过，因此当前所有改动**只有类型层面证据，没有任何运行时验证**。控制流守恒（`if/return/throw/assert` 删除 144 行 / 新增 145 行）与「无新增 `@ts-*` 抑制」已抽检通过，但不等于行为不变。
+- **模型配额 429**：并行工作器全部无法启动，配额 **2026-09-16 02:37 UTC+8** 重置。
+  本会话因此改为单会话推进，靠「可判定规则 + tsc 快速反馈（node 项目约 5 秒）」批量化，才把
+  11,310 压到 2,518。剩余部分建议在配额恢复后按 R1–R5 分片并行（文件归属已切分好，
+  见 `.cache/tswork/A1..A7.txt` 与 `scripts/archive/ts-repair/CONTRACT.md`）。
+- **`git push` 失败原因已定位（更正上一轮的「疑与代理有关」）**：实测报
+  `fatal: could not read Username for 'https://github.com': terminal prompts disabled`。
+  `origin` 是 HTTPS（`https://github.com/starplatium1129-stack/huiyu.git`），
+  `credential.helper = helper-selector` 在非交互环境下无法弹窗取凭证。**即凭证/交互问题，不是代理问题**——
+  需要用户在交互终端完成一次认证（或配置可用的凭证助手）。提交本身已安全落在本地分支（7 个检查点，未推）。
+- **行为验证缺口**：`build:runtime` 仍不可能通过，因此当前所有改动**只有类型层面证据，没有任何运行时验证**。
+  控制流守恒已抽检（`if/return/throw/assert/process.exit` 增删基本持平），全仓 `@ts-*` 抑制数为 0、
+  6 个提交内不含任何 `.js`——但不等于行为不变。

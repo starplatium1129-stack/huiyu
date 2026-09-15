@@ -67,7 +67,7 @@ function assertAdultAllowed(req: express.Request | null, body: any) {
 }
 
 function error(status: number, code: string, message: string|undefined, detail?: any) {
-  let e = new Error(message); e.status = status; e.code = code; e.detail = detail; return e;
+  let e: any = new Error(message); e.status = status; e.code = code; e.detail = detail; return e;
 }
 function plain(o: unknown) { return Boolean(o) && typeof o === 'object' && !Array.isArray(o); }
 function number(v: unknown, name: string, min: number, max: number, integer: boolean) {

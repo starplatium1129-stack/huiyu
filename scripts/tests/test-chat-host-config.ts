@@ -50,6 +50,6 @@ test('failed atomic replacement preserves the previous configuration and cleans 
 
 test('permission failure while deleting a configuration is not reported as success', () => {
   const { createHostConfigStore }: typeof import('../../server/chat-host-config') = require('../../server/chat-host-config');
-  const store = createHostConfigStore({ unlinkSync() { const error = new Error('denied'); error.code = 'EACCES'; throw error; } });
+  const store = createHostConfigStore({ unlinkSync() { const error: any = new Error('denied'); error.code = 'EACCES'; throw error; } });
   assert.throws(() => store.deleteHostConfig({ RUNTIME: { state: os.tmpdir() } }), /denied/);
 });

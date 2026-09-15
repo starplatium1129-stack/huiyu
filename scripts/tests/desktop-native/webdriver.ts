@@ -45,7 +45,7 @@ function requestJson(port: any, method: any, pathname: any, body: any, timeoutMs
         try { parsed = text ? JSON.parse(text) : null } catch {}
         if ((response.statusCode || 0) >= 400) {
           const message = parsed?.value?.message || parsed?.message || text || `HTTP ${response.statusCode}`
-          const error = new Error(`WebDriver ${method} ${pathname}: ${message}`)
+          const error: any = new Error(`WebDriver ${method} ${pathname}: ${message}`)
           error.statusCode = response.statusCode
           error.response = parsed || text
           reject(error)

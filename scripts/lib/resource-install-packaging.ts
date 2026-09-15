@@ -17,7 +17,7 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: any
   if (within(source, target) || within(target, source) || within(gatewayRoot, root)) throw new Error('Profile output overlaps source assets');
   noLinks(fs, source); noLinks(fs, target);
   const entries: any = [];
-  function walk(directory: PathLike, prefix = '') {
+  function walk(directory: string, prefix = '') {
     noLinks(fs, directory);
     for (const name of fs.readdirSync(directory).sort()) {
       const rel = prefix + name;

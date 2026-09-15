@@ -46,7 +46,7 @@ let WEBUI_START_TIMEOUT_MS = 6 * 60 * 1000;
 function readJson(file: PathOrFileDescriptor) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return {}; }
 }
-function writeJson(file: PathLike, data: unknown) {
+function writeJson(file: string, data: unknown) {
   let dir = path.dirname(file);
   fs.mkdirSync(dir, { recursive:true });
   let tmp = file + '.' + process.pid + '.tmp';

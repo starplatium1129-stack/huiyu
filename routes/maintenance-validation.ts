@@ -14,7 +14,7 @@ function readJson(source: PathOrFileDescriptor) {
 }
 
 
-function writeFileAtomic(source: PathLike, content: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
+function writeFileAtomic(source: string, content: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
   let dir = path.dirname(source);
   fs.mkdirSync(dir, { recursive:true });
   let temporary = path.join(dir, '.' + path.basename(source) + '.' + process.pid + '.' + Date.now() + '.tmp');
