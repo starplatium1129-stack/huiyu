@@ -94,6 +94,7 @@
     "audit:prompts": "node scripts/maintenance/audit-prompts.js",
     "workflow": "node scripts/workflow.js",
     "wf": "node scripts/workflow.js",
+    "office:health": "node scripts/maintenance/office-health.js",
     "scenes:build": "node scripts/maintenance/build-scenes.js",
     "scenes:pin": "node scripts/maintenance/pin-scene-prompts.js --check",
     "scenes:pin-capture": "node scripts/maintenance/pin-scene-prompts.js --capture",
