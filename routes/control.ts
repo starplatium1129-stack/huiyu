@@ -266,7 +266,7 @@ function createControlRouter(config: any, gatewayRef: () => unknown, dependencie
   //    /api/logs）与服务启停+模式切换路由（/api/service/*、/api/mode）已拆至
   //    routes/control/{status,services}.js —— ctx 承载共享闭包，watchdog 下方创建后回填
   //    （子模块路由在请求期才读 ctx.watchdog，注册期为 null 无碍）。──
-  let ctx = {
+  let ctx: any = {
     config: config,
     gatewayRef: gatewayRef,
     state: state,

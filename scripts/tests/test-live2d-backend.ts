@@ -244,7 +244,7 @@ test('原生后端：高频凝视 latest-wins，桥繁忙时只保留最新目�
   const releases: { (value: unknown): void; (): void; new(): unknown; }[] = [];
   bridge.setGaze = (x, y) => {
     bridge.calls.setGaze.push([x, y]);
-    return new Promise(resolve => releases.push(resolve));
+    return new Promise((resolve: any) => releases.push(resolve));
   };
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
@@ -503,12 +503,12 @@ function createStubBridge() {
     async hitTest(x: unknown, y: unknown) { calls.hitTest.push([x, y]); return { areas: [] }; },
     async destroy() { calls.destroy.push([]); },
 
-    onReady(listener: unknown) { listeners.ready.push(listener); return nextId++; },
-    onMotionStarted(listener: unknown) { listeners.motionStarted.push(listener); return nextId++; },
-    onMotionFailed(listener: unknown) { listeners.motionFailed.push(listener); return nextId++; },
-    onHitTest(listener: unknown) { listeners.hitTest.push(listener); return nextId++; },
-    onEntranceFinished(listener: unknown) { listeners.entranceFinished.push(listener); return nextId++; },
-    onStopped(listener: unknown) { listeners.stopped.push(listener); return nextId++; },
+    onReady(listener: any) { listeners.ready.push(listener); return nextId++; },
+    onMotionStarted(listener: any) { listeners.motionStarted.push(listener); return nextId++; },
+    onMotionFailed(listener: any) { listeners.motionFailed.push(listener); return nextId++; },
+    onHitTest(listener: any) { listeners.hitTest.push(listener); return nextId++; },
+    onEntranceFinished(listener: any) { listeners.entranceFinished.push(listener); return nextId++; },
+    onStopped(listener: any) { listeners.stopped.push(listener); return nextId++; },
     off(id: unknown) {
       offCalls.push(id);
       listeners.ready.splice(0, listeners.ready.length);

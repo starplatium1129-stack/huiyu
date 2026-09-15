@@ -8,7 +8,7 @@ const { releasePolicy, decodePack, readPack, verifyTree }: typeof import('./reso
 const { fileMatches }: typeof import('./resource-install-copy') = require('./resource-install-copy');
 const { sourceUrl, response, fetchMetadata, rangeStart }: typeof import('./resource-download-http') = require('./resource-download-http');
 
-async function downloadEntry(ctx: any, release: unknown, pack: string, parts: string, entry: any, signal: unknown, timeoutMs: unknown) {
+async function downloadEntry(ctx: any, release: unknown, pack: string, parts: string, entry: any, signal: any, timeoutMs: unknown) {
   const target = child(pack, entry.path);
   if (fileMatches(ctx, target, entry)) {
     await event(ctx, 'download-reused', { path: entry.path }, signal);
@@ -67,7 +67,7 @@ async function downloadEntry(ctx: any, release: unknown, pack: string, parts: st
   }
   return publishEntry(ctx, partial, target, entry, signal);
 }
-async function publishEntry(ctx: any, partial: string, target: string, entry: any, signal: unknown) {
+async function publishEntry(ctx: any, partial: string, target: string, entry: any, signal: any) {
   cancelled(signal);
   mkdir(ctx.io, path.dirname(target));
   noLinks(ctx.io, partial);

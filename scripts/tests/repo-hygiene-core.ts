@@ -48,7 +48,7 @@ function gitErrorMessage(error: any) {
   return stderr || error.message;
 }
 
-function runGit(repositoryRoot: string, args: unknown[]|readonly string[], options: any = {}) {
+function runGit(repositoryRoot: string, args: any, options: any = {}) {
   try {
     return execFileSync('git', args, {
       cwd: repositoryRoot,

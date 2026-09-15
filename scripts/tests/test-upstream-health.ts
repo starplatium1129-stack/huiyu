@@ -40,7 +40,7 @@ test('requestJson：解析 JSON、保留 raw、非 2xx 不 throw', async () => {
     res.writeHead(404);
     res.end();
   });
-  await listen(server).then(async function (baseUrl) {
+  await listen(server).then(async function (baseUrl: any) {
     try {
       const ok = await health.requestJson(baseUrl, '/api/ps', null, 2000);
       assert.equal(ok.status, 200);
@@ -79,7 +79,7 @@ test('requestJson：POST body 与响应体上限', async () => {
     res.writeHead(404);
     res.end();
   });
-  await listen(server).then(async function (baseUrl) {
+  await listen(server).then(async function (baseUrl: any) {
     try {
       const posted = await health.requestJson(baseUrl, '/api/generate', { model: 'm', keep_alive: 0 }, 2000);
       assert.equal(posted.status, 200);
@@ -106,7 +106,7 @@ test('pingSd/pingTts/pingComfy 判定口径', async () => {
     res.writeHead(404);
     res.end();
   });
-  await listen(server).then(async function (baseUrl) {
+  await listen(server).then(async function (baseUrl: any) {
     try {
       assert.equal(await health.pingSd(baseUrl, 1500), true, 'SD 2xx must be online');
       assert.equal(await health.pingTts(baseUrl, 1500), true, 'TTS /docs 404 must fall back to /');
@@ -154,7 +154,7 @@ test('pingOllamaDetail：/api/ps 汇总模型与显存，非 2xx 回落 /api/tag
     res.writeHead(404);
     res.end();
   });
-  await listen(server).then(async function (baseUrl) {
+  await listen(server).then(async function (baseUrl: any) {
     try {
       const detail = await health.pingOllamaDetail(baseUrl, 1500);
       assert.equal(detail.online, true);
@@ -184,7 +184,7 @@ test('bounded transports reject partial responses and enforce a total deadline',
     const timer = setInterval(() => res.write(' '), 15);
     res.on('close', () => clearInterval(timer));
   });
-  const base = await listen(server);
+  const base: any = await listen(server);
   try {
     await assert.rejects(health.requestJson(base, '/partial', null, 500), /aborted|reset|hang up/i);
     await assert.rejects(comfy.requestComfy({ COMFY_HOST:base }, 'GET', '/partial', null, 500), (error: any) => error.code === 'COMFY_UNAVAILABLE');
@@ -200,7 +200,7 @@ test('requestJson preserves an explicitly supplied false JSON payload', async ()
     let body = ''; req.on('data', chunk => { body += chunk; });
     req.on('end', () => res.end(JSON.stringify({ method:req.method, body })));
   });
-  const base = await listen(server);
+  const base: any = await listen(server);
   try { assert.deepEqual((await health.requestJson(base, '/', false, 500)).data, { method:'POST', body:'false' }); }
   finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
 });

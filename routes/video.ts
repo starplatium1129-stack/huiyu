@@ -336,7 +336,7 @@ function createVideoService(config: any, dependencies: any) {
     // 动态超时：预估时长 × 3（下限 10 分钟）替代固定 45 分钟——卡死时
     // 不用再硬等 45 分钟才失败（2026-08-17 可观测性审计）。
     let estimatedSeconds = estimateH3Seconds(input);
-    let job = {
+    let job: any = {
       id:id,
       owner:owner,
       input:input,
@@ -426,7 +426,7 @@ function createVideoService(config: any, dependencies: any) {
 // 结果文件 Range 流式下发（支持视频拖动进度条）。
 
 
-function createVideoRouter(config: unknown, dependencies: any) {
+function createVideoRouter(config: any, dependencies: any) {
   let router = express.Router();
   let service = dependencies && dependencies.videoService
     ? dependencies.videoService

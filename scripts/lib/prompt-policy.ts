@@ -147,7 +147,7 @@ function auMetadataIssues(scene: any) {
   const storyHasAu = /\bAU\b/i.test(String(scene.story || ''));
   const categoryHasAu = /AU|Active_Sync|\u540c\u4eba/i.test(String(scene.category || ''));
   const tags = new Set((scene.tags || []).map(tokenKey));
-  const tagHasAu = [...tags].some((tag) => /_au$/.test(tag));
+  const tagHasAu = [...tags].some((tag: any) => /_au$/.test(tag));
   const issues = [];
   if (storyHasAu && !categoryHasAu && !tagHasAu) issues.push('AU story needs AU category or *_au metadata tag');
   if (tagHasAu && !storyHasAu && !categoryHasAu) issues.push('AU metadata tag needs an AU story/category marker');

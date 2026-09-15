@@ -24,7 +24,7 @@ function maintenanceReadBarrier(options: unknown) {
     let size = 0;
     let bufferError: Error|null = null;
     let ended = false;
-    res.writeHead = function (statusCode: unknown, statusMessage: unknown, headers: string|unknown[]|{ [s: string]: unknown; }|ArrayLike<unknown>) {
+    res.writeHead = function (statusCode: unknown, statusMessage: unknown, headers: any) {
       res.statusCode = statusCode;
       if (typeof statusMessage === 'string') res.statusMessage = statusMessage;
       else headers = statusMessage;
@@ -40,14 +40,14 @@ function maintenanceReadBarrier(options: unknown) {
       return res;
     };
     res.flushHeaders = () => {};
-    res.write = (chunk: unknown, encoding: number|undefined, callback: unknown) => {
+    res.write = (chunk: any, encoding: number|undefined, callback: unknown) => {
       if (ended || res.destroyed) return false;
       // Copy buffers: the producer may reuse a chunk after its write callback.
       const bytes = Buffer.from(chunk, typeof encoding === 'string' ? encoding : undefined);
       size += bytes.length;
       if (size > 64 * 1024 * 1024) { bufferError = new Error('受保护文件超过维护读取缓冲上限'); chunks = []; }
       else if (!bufferError) chunks.push(bytes);
-      const done = typeof encoding === 'function' ? encoding : callback;
+      const done: any = typeof encoding === 'function' ? encoding : callback;
       if (done) process.nextTick(done);
       return true;
     };

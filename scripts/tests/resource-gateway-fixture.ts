@@ -55,7 +55,7 @@ async function request(stack: { baseUrl: string; }, url: string, body?: any, hea
     req.end(body === undefined ? undefined : JSON.stringify(body));
   });
 }
-async function startAndSettle(stack: { gateway: { services: { resources: { settled: () => unknown; }; }; }; }, action: unknown, releaseId?: unknown) {
+async function startAndSettle(stack: any, action: unknown, releaseId?: unknown) {
   const started: any = await request(stack, '/api/resources/tasks', { action, ...(releaseId ? { releaseId } : {}) });
   assert.equal(started.status, 202, started.text);
   await stack.gateway.services.resources.settled();

@@ -236,10 +236,10 @@ test('生成不跟随链接、不进入排除域，无法合规表示的文件�
 test('不支持 schemaVersion、坏条目与坏 JSON 不得无条件成功', (t) => {
   const fx = buildFixture(t);
   const manifest = generateManifest({ root: fx.root });
-  const v2 = verifyManifestEntries({ root: fx.root, manifest: { ...manifest, schemaVersion: 2 } });
+  const v2: any = verifyManifestEntries({ root: fx.root, manifest: { ...manifest, schemaVersion: 2 } });
   assert.equal(v2.ok, false);
   assert.equal(v2.errors[0].code, 'unsupported-schema');
-  const badEntries = verifyManifestEntries({ root: fx.root, manifest: { schemaVersion: 1, entries: 'nope' } });
+  const badEntries: any = verifyManifestEntries({ root: fx.root, manifest: { schemaVersion: 1, entries: 'nope' } });
   assert.equal(badEntries.errors[0].code, 'bad-manifest');
   const badField = verifyManifestEntries({ root: fx.root, manifest: { schemaVersion: 1, entries: [{ path: 'assets/alpha.txt', bytes: '1', sha256: 'zz' }] } });
   assert.ok(badField.errors.some((e: any) => e.code === 'bad-entry'));
@@ -302,7 +302,7 @@ test('排除域大小写与 root 内 junction 别名不能读取内容', (t) => 
   cases.push('assets/runtime-alias/private.txt');
   for (const rel of cases) {
     const { io, calls } = recordingFs();
-    const result = verifyManifestEntries({ root: fx.root, io, manifest: { schemaVersion: 1, entries: [{ path: rel, bytes: 8, sha256: sha256('excluded') }] } });
+    const result: any = verifyManifestEntries({ root: fx.root, io, manifest: { schemaVersion: 1, entries: [{ path: rel, bytes: 8, sha256: sha256('excluded') }] } });
     assert.equal(result.ok, false, rel);
     assert.equal(result.errors[0].code, 'out-of-scope');
     assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), rel);
@@ -327,13 +327,13 @@ test('含未核验项的清单保留条目核验数量但整体退出失败', (t
   fs.symlinkSync(fx.outside, path.join(fx.root, 'assets/link'), process.platform === 'win32' ? 'junction' : 'dir');
   const manifest = generateManifest({ root: fx.root });
   assert.equal(manifest.unverified.length, 1);
-  const result = verifyManifestEntries({ root: fx.root, manifest });
+  const result: any = verifyManifestEntries({ root: fx.root, manifest });
   assert.equal(result.ok, false);
   assert.equal(result.totals.verified, 4);
   assert.equal(result.errors[0].code, 'unverified-items');
   const file = writeManifest(fx.root, manifest);
   assert.equal(cli(['--root', fx.root, '--manifest', file]).status, 1);
-  const malformed = verifyManifestEntries({ root: fx.root, manifest: { ...manifest, unverified: {} } });
+  const malformed: any = verifyManifestEntries({ root: fx.root, manifest: { ...manifest, unverified: {} } });
   assert.equal(malformed.ok, false);
   assert.equal(malformed.errors[0].code, 'bad-manifest');
 });

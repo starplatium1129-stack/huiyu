@@ -72,7 +72,7 @@ function waitFor(predicate: { (): boolean; (): boolean; (): boolean; (): boolean
 }
 
 test('tunnel auto-restarts after cloudflared exits unexpectedly', function (t) {
-  var fixture = makeManager();
+  var fixture: any = makeManager();
   var manager = fixture.manager;
   t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();
@@ -85,7 +85,7 @@ test('tunnel auto-restarts after cloudflared exits unexpectedly', function (t) {
 });
 
 test('restart attempts reset after a registered connection', function (t) {
-  var fixture = makeManager();
+  var fixture: any = makeManager();
   var manager = fixture.manager;
   var config = fixture.config;
   t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
@@ -105,7 +105,7 @@ test('restart attempts reset after a registered connection', function (t) {
 });
 
 test('stop prevents further auto-restarts', function (t) {
-  var fixture = makeManager();
+  var fixture: any = makeManager();
   var manager = fixture.manager;
   t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();

@@ -313,7 +313,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
     return batch;
   }
 
-  async function concat(batch: { concat: { path: string; mime: string; }; shots: unknown[]; id: string; }) {
+  async function concat(batch: any) {
     if (batch.concat) return batch.concat;
     let succeeded = batch.shots.filter(function (s: { status: string; }) { return s.status === 'succeeded'; });
     if (succeeded.length < 2) {

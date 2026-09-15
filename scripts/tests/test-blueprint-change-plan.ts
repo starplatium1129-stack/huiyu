@@ -85,7 +85,7 @@ function planError(fn: any, substring?: string|undefined) {
   substring || 'BlueprintChangePlanError');
 }
 
-function deepFreeze(value: { [x: string]: unknown; frieren?: string; saber?: string; marin?: string; holo?: string; }) {
+function deepFreeze(value: any) {
   if (value && typeof value === 'object' && !Object.isFrozen(value)) {
     Object.freeze(value);
     for (const key of Object.keys(value)) deepFreeze(value[key]);

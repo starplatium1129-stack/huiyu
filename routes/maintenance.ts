@@ -88,7 +88,7 @@ function restoreSnapshot(snapshot: unknown[]) {
  * 保存失败 + 回滚也失败 = 数据处于半写状态。原先两处 catch 都是空的，
  * 客户端只看到"保存失败"，完全不知道盘上已经被改了一半。
  */
-function attemptRollback(snapshot: unknown, label: string) {
+function attemptRollback(snapshot: any, label: string) {
   if (!snapshot) return { ok:true };
   try {
     restoreSnapshot(snapshot);
@@ -152,7 +152,7 @@ function trackChild(child: any) {
 }
 
 function killActiveChildren() {
-  activeChildren.forEach(function (child) { processTree.killProcessTree(child); });
+  activeChildren.forEach(function (child: any) { processTree.killProcessTree(child); });
   activeChildren.clear();
 }
 

@@ -20,7 +20,7 @@ let sharedClient: typeof import('../../server/comfy-client') = require('../../se
 
 let serviceError = errors.serviceError;
 let requestComfy = sharedClient.requestComfy;
-async function requestComfyJson(config: unknown, method: string, pathname: string, body: { unload_models: boolean; free_memory: boolean; }|null, timeoutMs: number) {
+async function requestComfyJson(config: any, method: string, pathname: string, body: { unload_models: boolean; free_memory: boolean; }|null, timeoutMs: number) {
   return sharedClient.requestComfyJson(config, method, pathname, body, timeoutMs);
 }
 

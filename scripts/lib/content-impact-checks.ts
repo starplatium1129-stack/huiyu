@@ -62,7 +62,7 @@ function outcome(id: string, scope: string|unknown[], issues = [], unknown = [])
 }
 
 function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>) {
-  const issues = [], unknown = [];
+  const issues: any = [], unknown = [];
   for (const key of keys) {
     const [kind, , id] = JSON.parse(key);
     const domain = { blueprint: 'blueprints', scene: 'scenes', character: 'popular', outfit: 'popular' }[kind];
@@ -89,7 +89,7 @@ function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>
   return outcome('record-equality', [...keys], issues, unknown);
 }
 
-function relationCheck(snapshots: { [s: string]: unknown; }|ArrayLike<unknown>, keys?: Set<unknown>|undefined) {
+function relationCheck(snapshots: any, keys?: Set<unknown>|undefined) {
   const unknown = [];
   for (const snapshot of Object.values(snapshots)) {
     if (!snapshot.groups[`${snapshot.domain}:source`]?.complete) unknown.push(`${snapshot.domain}: source relationship coverage incomplete`);

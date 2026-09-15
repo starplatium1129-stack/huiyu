@@ -28,7 +28,7 @@ function writeFileAtomic(source: PathLike, content: string|NodeJS.ArrayBufferVie
 }
 
 
-function writeJson(source: unknown, data: unknown) {
+function writeJson(source: any, data: unknown) {
   writeFileAtomic(source, JSON.stringify(data, null, 2) + '\n');
 }
 

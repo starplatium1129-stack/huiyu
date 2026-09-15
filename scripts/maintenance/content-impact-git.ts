@@ -63,7 +63,7 @@ function collectGitHistory(root: PathLike, base: string) {
       settings.push('-c', `${key}=${key.endsWith('.required') ? 'false' : ''}`);
     }
     const tracked = nulRecords(run(['ls-files', '-v', '-z', '--']));
-    const trackedPaths = tracked.map((line: string|unknown[]) => {
+    const trackedPaths = tracked.map((line: any) => {
       if (!/^[A-Za-z?] /.test(line)) throw new Error('Unrecognized tracked-file state');
       const file = safeRelative(line.slice(2));
       if (line[0] !== 'H') result.unknown.push(`${file}: Git flag ${line[0]}; diff cannot prove full worktree coverage`);

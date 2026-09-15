@@ -94,7 +94,7 @@ function safeComfyResource(config: unknown, kind: string, file: string) {
 // 2026-08-18：探测本机可用的 ESRGAN 超分模型（按优先顺序），返回文件名或 null。
 // 供 upstream 无 WebUI 时的本地真 super-res hires（generation.js 原生 Comfy 链路）。
 // 复用共享模块 routes/superres.js（WAI 与 Anima 两条链路同一份清单与探测逻辑）。
-function availableSuperRes(config: unknown) {
+function availableSuperRes(config: any) {
   return superres.availableSuperRes(config);
 }
 function normalizeCheckpointName(value: string) {
@@ -378,7 +378,7 @@ function createGenerationRouter(config: any, dependencies: any) {
   router.get('/api/generation/status', async function (req, res) {
     let webui = await probeWebUI(config);
     let comfyOnline = await comfy.probe().catch(function () { return false; });
-    let data = status();
+    let data: any = status();
     data.online = webui.online || comfyOnline;
     data.webuiOnline = webui.online;
     data.comfyFallbackOnline = comfyOnline;

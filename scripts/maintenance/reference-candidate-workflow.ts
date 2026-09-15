@@ -8,7 +8,7 @@ const { publishReferenceCandidates }: typeof import('../lib/reference-candidate-
 
 function parse(args: string|string[]|[unknown,...unknown[]], env: any) {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) return { help: true };
-  const [action, ...rest] = args;
+  const [action, ...rest]: any = args;
   if (!['inspect', 'review', 'publish', 'full'].includes(action)) throw new Error('Choose inspect, review, publish or full');
   const allowed = {
     inspect: ['root', 'from'], review: ['root', 'from', 'decisions', 'out'],

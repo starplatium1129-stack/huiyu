@@ -735,7 +735,7 @@ async function run() {
       ]
     });
     assert(multimodal.value, 'multimodal user messages from read_image must be accepted');
-    var multimodalParts = multimodal.value.messages.filter(function (m: any) { return Array.isArray(m.content); });
+    var multimodalParts: any = multimodal.value.messages.filter(function (m: any) { return Array.isArray(m.content); });
     assert(multimodalParts.length === 1, 'multimodal content arrays must survive validation');
     assert(
       multimodalParts[0].content.some(function (p: any) { return p.type === 'image_url' && p.image_url.url.startsWith('data:image/png;base64,'); }),

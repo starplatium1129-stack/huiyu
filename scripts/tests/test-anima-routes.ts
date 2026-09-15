@@ -409,7 +409,7 @@ test('Anima runtime TTL removes an unconsumed result file', async function () {
     prefix:'aics-anima-ttl-',
     token:'anima-ttl-token-0123456789abcdef0123456789',
     prepare:prepareComfyResources,
-    createServices:function (context: { config: Record<string,unknown>; }) {
+    createServices:function (context: any) {
       return {
         anima:createAnimaService(context.config, { jobTtlMs:1000, cancelPollIntervalMs:10 })
       };
@@ -584,7 +584,7 @@ test('Anima cancellation failure releases the pending slot after a bounded timeo
     prefix:'aics-anima-cancel-timeout-',
     token:'anima-cancel-token-0123456789abcdef012345',
     prepare:prepareComfyResources,
-    createServices:function (context: { config: Record<string,unknown>; }) {
+    createServices:function (context: any) {
       return {
         anima:createAnimaService(context.config, { cancelPollIntervalMs:10, cancelTimeoutMs:100 })
       };

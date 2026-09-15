@@ -764,7 +764,7 @@ async function run() {
 
   // ── P5/P6/P8 网关：分镜批量（逐镜排队 + 尾帧衔接 + 拼接）───────────────
   var fakeFfmpeg = async function (args: string|unknown[]) {
-    var out = args[args.length - 1];
+    var out: any = args[args.length - 1];
     if (String(out).endsWith('.png')) {
       fs.writeFileSync(out, Buffer.from(tinyPngBase64, 'base64'));
     } else if (String(out).endsWith('.mp4')) {

@@ -46,7 +46,7 @@ function makePng(width: number, height: number) {
   ihdr.writeUInt32BE(height, 4);
   ihdr[8] = 8; // bit depth
   ihdr[9] = 2; // color type RGB
-  function chunk(type: WithImplicitCoercion<string>, data: string|unknown[]|Buffer<ArrayBuffer>|Uint8Array<ArrayBufferLike>) {
+  function chunk(type: WithImplicitCoercion<string>, data: any) {
     const name = Buffer.from(type, 'ascii');
     const len = Buffer.alloc(4);
     len.writeUInt32BE(data.length);
@@ -249,7 +249,7 @@ test('opLooksDone is source-relative: mole add darkens, mole remove lightens, cl
     const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
     const ihdr = Buffer.alloc(13);
     ihdr.writeUInt32BE(w, 0); ihdr.writeUInt32BE(h, 4); ihdr[8] = 8; ihdr[9] = 2;
-    function chunk(type: WithImplicitCoercion<string>, data: string|unknown[]|Buffer<ArrayBuffer>|Uint8Array<ArrayBufferLike>) {
+    function chunk(type: WithImplicitCoercion<string>, data: any) {
       const name = Buffer.from(type, 'ascii');
       const len = Buffer.alloc(4); len.writeUInt32BE(data.length);
       let crc = 0xffffffff;

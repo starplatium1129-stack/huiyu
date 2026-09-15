@@ -43,7 +43,7 @@ function inputVersion(record: any) {
 
 function reviewState(record: string[], integrity: string, decisionFile: any, manifestSha256: unknown, runId: unknown) {
   if (!decisionFile) return { status: 'pending', authenticity: 'unverified' };
-  const decision = decisionFile.records[record.key];
+  const decision: any = decisionFile.records[record.key];
   if (!decision) return { status: 'pending', authenticity: 'unverified' };
   if (!object(decision) || !['pass', 'fail'].includes(decision.verdict) || typeof decision.reviewedAt !== 'string'
     || !Number.isFinite(Date.parse(decision.reviewedAt))) return { status: 'invalid', reason: 'Invalid explicit human decision metadata', authenticity: 'unverified' };

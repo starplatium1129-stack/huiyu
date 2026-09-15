@@ -18,7 +18,7 @@ function isPlainObject(value: unknown) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
-function hasOwn(value: unknown, key: unknown) {
+function hasOwn(value: unknown, key: any) {
   return Object.prototype.hasOwnProperty.call(value, key);
 }
 

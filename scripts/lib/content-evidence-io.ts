@@ -32,7 +32,7 @@ function evidenceReader(root: PathLike, label: unknown) {
     }
     return current;
   };
-  const read = (file: unknown, limit: number) => {
+  const read = (file: any, limit: number) => {
     const target = resolve(file);
     const stat = fs.statSync(target);
     if (!stat.isFile() || stat.size > limit) throw new Error('Expected a bounded ordinary evidence file');
@@ -58,7 +58,7 @@ function evidenceReader(root: PathLike, label: unknown) {
       }
       return item.value;
     },
-    fingerprint(file: unknown, limit: number|undefined) {
+    fingerprint(file: any, limit: number|undefined) {
       this.bytes(file, limit);
       const item = cache.get(file);
       // Keep hashes, not all image buffers, for the final stability check.

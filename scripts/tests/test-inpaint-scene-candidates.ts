@@ -43,7 +43,7 @@ function makePng(width: number, height: number, spot: any) {
   ihdr.writeUInt32BE(height, 4);
   ihdr[8] = 8;
   ihdr[9] = 2;
-  function chunk(type: WithImplicitCoercion<string>, data: string|unknown[]|Uint8Array<ArrayBufferLike>|Buffer<ArrayBuffer>) {
+  function chunk(type: WithImplicitCoercion<string>, data: any) {
     const name = Buffer.from(type, 'ascii');
     const len = Buffer.alloc(4);
     len.writeUInt32BE(data.length);

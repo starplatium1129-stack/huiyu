@@ -233,7 +233,7 @@ test('actual gateway early barrier protects gzip/br and showcase across a real w
     stack = await (require('./gateway-test-stack') as typeof import('./gateway-test-stack')).start({
       runtimeRoot: f.options.runtimeRoot, cleanupRuntime: false,
       env: { AICS_APP_ROOT: f.options.rootDir, AICS_RESOURCE_CONFIG: '', AICS_RESOURCE_MANAGEMENT: '0' },
-      configureConfig(config: unknown) {
+      configureConfig(config: any) {
         Object.assign(config, { ROOT_DIR: f.options.rootDir, RUNTIME_ROOT: f.options.runtimeRoot,
           ASSETS_ROOT: io.path.join(f.options.rootDir, 'assets'), LIVE2D_ROOT: io.path.join(f.options.rootDir, 'assets/live2d'),
           CHARACTER_REF_ROOT: '', SCENE_SHOWCASE_DIR: showcase, DESKTOP_PACKAGED: false,

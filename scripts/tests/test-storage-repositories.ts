@@ -111,7 +111,7 @@ function stateOf(fixture: any) {
 }
 
 test('settings repository: typed draw-engine round-trip with injected storage', () => {
-  const storage = createLocalStorage();
+  const storage: any = createLocalStorage();
   const repository = createSettingsRepository(storage);
   assert.strictEqual(repository.get(DRAW_ENGINE_SETTING), null);
   repository.set(DRAW_ENGINE_SETTING, 'anima');

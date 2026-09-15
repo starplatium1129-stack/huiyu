@@ -81,7 +81,7 @@ function auditContentEvidence(options: any) {
     result.manifest = { file: manifestFile, sha256: manifestSha256 };
     if (options.expectManifestSha256 && options.expectManifestSha256 !== manifestSha256) throw new Error('Explicit manifest SHA-256 does not match');
     const records = candidates.json(manifestFile);
-    const marker = candidates.json(nearby('candidate-run.json'));
+    const marker: any = candidates.json(nearby('candidate-run.json'));
     if (!object(marker) || marker.kind !== 'generation-candidates' || marker.schemaVersion !== 1 || !UUID.test(marker.runId)
       || typeof marker.generator !== 'string') throw new Error('Invalid candidate run marker');
     if (!Array.isArray(records) || records.length > 100000) throw new Error('Invalid candidate manifest container');

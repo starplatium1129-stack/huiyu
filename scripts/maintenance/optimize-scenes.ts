@@ -83,7 +83,7 @@ function cameraIntent(scene: any) {
   return '';
 }
 
-function cameraTags(scene: any, tags: unknown) {
+function cameraTags(scene: any, tags: any) {
   const intent = cameraIntent(scene);
   let normalized = [...tags];
   if (intent === 'wide') {

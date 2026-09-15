@@ -135,7 +135,7 @@ function sumBytes(entries: unknown[]) {
   return entries.reduce((acc: unknown, e: any) => acc + e.bytes, 0);
 }
 
-function identityOf(entries: string|unknown[]) {
+function identityOf(entries: any) {
   return {
     contentIdentity: manifestContentIdentity({ entries }),
     entryCount: entries.length,

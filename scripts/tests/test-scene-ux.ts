@@ -95,7 +95,7 @@ assert.strictEqual(sceneUx.restoreHistoryStory({ story:sceneStory.story }, scene
   'a compatible history scene must retain its original story');
 
 const memory = new Map();
-const storage = { getItem:(key: unknown) => memory.has(key) ? memory.get(key) : null, setItem:(key: unknown, value: unknown) => memory.set(key, value) };
+const storage: any = { getItem:(key: unknown) => memory.has(key) ? memory.get(key) : null, setItem:(key: unknown, value: unknown) => memory.set(key, value) };
 sceneUx.rememberRecent(scenes[0], storage);
 sceneUx.rememberRecent(scenes[1], storage);
 sceneUx.rememberRecent(scenes[0], storage);

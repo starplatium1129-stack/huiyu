@@ -105,7 +105,7 @@ for (const [index, name] of F.entries.entries()) {
   });
 
   test(`${name}: interruption preserves job and resumes without a second submission`, async t => {
-    const f = F.fixture(t), mock = await F.mockGateway(t), controller = new AbortController();
+    const f = F.fixture(t), mock: any = await F.mockGateway(t), controller = new AbortController();
     mock.state.mode = 'running'; mock.state.onPoll = () => controller.abort(new Error('test interruption'));
     const result = await run(index, f, mock, [], { signal: controller.signal });
     assert.equal(result.exitCode, 130);
@@ -292,7 +292,7 @@ test('batch-specific manifests remain consumable by the existing manual review a
 });
 
 test('hard-killed CLI leaves a resumable job and its stale lock recovers without duplicate POST', { timeout: 15000 }, async t => {
-  const f = F.fixture(t), mock = await F.mockGateway(t);
+  const f = F.fixture(t), mock: any = await F.mockGateway(t);
   mock.state.mode = 'running';
   const guardFile = path.join(f.temporary, 'child-probe.cjs');
   fs.writeFileSync(guardFile, `

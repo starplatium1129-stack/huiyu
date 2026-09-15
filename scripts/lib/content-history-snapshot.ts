@@ -159,7 +159,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
     const group = `${domain}:source`;
     result.groups[group] = { complete: true, rows: [] };
     try {
-      const value = json(file);
+      const value: any = json(file);
       if (domain === 'characters') {
         if (!validRows(value)) throw new Error('invalid profile IDs');
         entities(group, file, value);

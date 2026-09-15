@@ -388,7 +388,7 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
     res.statusCode = req.url === '/system_stats' ? 200 : 404;
     res.end('{}');
   });
-  var base = await listen(health);
+  var base: any = await listen(health);
   function invoke(action: string) {
     return new Promise(function (resolve, reject) {
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',

@@ -537,8 +537,8 @@ test('useControlActions.doStart stops after a real config API failure', async ()
 });
 
 test('useControlStatus stopPolling aborts isolated in-flight status and logs requests', async () => {
-  const statusSignals: unknown[] = [];
-  const logSignals: unknown[] = [];
+  const statusSignals: any = [];
+  const logSignals: any = [];
   const waitForAbort = (signal: AbortSignal|undefined, bucket: unknown[]) => new Promise((_resolve, reject) => {
     bucket.push(signal);
     signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });

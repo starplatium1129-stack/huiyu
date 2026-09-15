@@ -220,7 +220,7 @@ function formatImpactReport(result: any) {
   ];
   const blocks = [header];
   const add = (build: { (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): string[]; (): unknown; (): unknown; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown[]; (): unknown; }) => {
-    try { const block = build(); if (block.length) blocks.push(block); } catch { blocks.push(['（该节渲染异常；完整结果使用 --json 查看）']); }
+    try { const block: any = build(); if (block.length) blocks.push(block); } catch { blocks.push(['（该节渲染异常；完整结果使用 --json 查看）']); }
   };
   add(() => issueSection('必改 mustChange', result.mustChange));
   add(() => issueSection('需复验 revalidate', result.revalidate));

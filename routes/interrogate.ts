@@ -250,7 +250,7 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
   }
 }
 
-function createInterrogateRouter(config: unknown) {
+function createInterrogateRouter(config: any) {
   let router = express.Router();
   let limit = security.rateLimit({ capacity: 12, refillMs: 5000, label: '反推' });
 

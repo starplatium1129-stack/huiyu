@@ -93,7 +93,7 @@ ${body}
     return result.value
   }
 
-  invoke(command: any, payload = {}, timeoutMs = 30_000) {
+  invoke(command: any, payload: any = {}, timeoutMs = 30_000) {
     return this.executeAsync(`
 const command = arguments[0]
 const payload = arguments[1]
