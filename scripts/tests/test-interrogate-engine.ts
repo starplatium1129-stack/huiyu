@@ -82,7 +82,7 @@ async function run() {
     });
 
     var image = await generateTestImage();
-    var r = await engine.interrogateTag(image, { config: REAL_CONFIG, threshold: 0.35 });
+    var r: any = await engine.interrogateTag(image, { config: REAL_CONFIG, threshold: 0.35 });
     check('真实推理: ok=true / engine=wd14 / tags 非空', function () {
       assert.equal(r.ok, true);
       assert.equal(r.engine, 'wd14');

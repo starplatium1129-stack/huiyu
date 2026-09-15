@@ -147,7 +147,7 @@ for (const position of ['before-compression', 'after-compression']) {
 
   for (const [encoding, extension] of [['identity', ''], ['gzip', '.gz'], ['br', '.br']]) {
     test(position + ': real ' + encoding + ' file stream is fenced across another process write and SIGKILL', async () => {
-      const f = createFixture();
+      const f: any = createFixture();
       const app = await application(f, position);
       const createReadStream = io.fs.createReadStream;
       const started = deferred();
@@ -213,7 +213,7 @@ for (const position of ['before-compression', 'after-compression']) {
 }
 
 test('actual gateway early barrier protects gzip/br and showcase across a real writer SIGKILL', async () => {
-  const f = createFixture();
+  const f: any = createFixture();
   const previousEnv = { AICS_DATA_ROOT: process.env.AICS_DATA_ROOT, AICS_APP_ROOT: process.env.AICS_APP_ROOT };
   let stack: any;
   let worker;

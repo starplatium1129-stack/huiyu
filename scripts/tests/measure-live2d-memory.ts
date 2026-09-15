@@ -104,7 +104,7 @@ async function main() {
     const result = {
       baseUrl,
       sampledAt: new Date().toISOString(),
-      processes: processes.map((proc) => ({
+      processes: processes.map((proc: any) => ({
         type: proc.type,
         cpuTime: proc.cpuTime,
         privateMemoryMB: typeof proc.privateMemoryUsage === 'number'

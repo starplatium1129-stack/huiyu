@@ -99,7 +99,7 @@ test('gateway WebSocket：仅本机可升级，持令牌的远程连接也不能
     configureConfig(config: any) { config.DISABLE_TUNNEL = false; config.CLOUDFLARED_PATH = __filename; },
     spawn(command: any, args: any, options: any) {
       fs.writeSync(options.stdio[1], 'https://' + tunnelHost + '\nRegistered tunnel connection\n');
-      const child = new EventEmitter();
+      const child: any = new EventEmitter();
       child.pid = null; // 隔离假进程，清理不得触碰真实 PID。
       child.unref = function () {};
       return child;

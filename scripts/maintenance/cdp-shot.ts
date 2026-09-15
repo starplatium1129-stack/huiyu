@@ -20,8 +20,8 @@ async function main() {
   console.log('VIEWPORT:', JSON.stringify(page.viewportSize()))
 
   const state = await page.evaluate(() => {
-    const host = document.querySelector('#live2dHost')
-    const stage = document.querySelector('.portrait-stage')
+    const host: any = document.querySelector('#live2dHost')
+    const stage: any = document.querySelector('.portrait-stage')
     const main = document.querySelector('.portrait-main')
     const cvs = host ? host.querySelector('canvas') : null
     const before = stage ? getComputedStyle(stage, '::before') : null

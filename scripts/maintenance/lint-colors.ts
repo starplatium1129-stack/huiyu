@@ -67,7 +67,7 @@ function stripComments(content: string) {
   }).join('\n');
 }
 
-function scanFile(filepath: PathOrFileDescriptor) {
+function scanFile(filepath: any) {
   try {
     var content = stripComments(fs.readFileSync(filepath, 'utf8'));
   } catch (e) { return []; }

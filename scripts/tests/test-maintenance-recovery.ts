@@ -218,7 +218,7 @@ test('SIGKILL during recovery leaves a journal that a second recovery can resume
 });
 
 test('a real registered writer surviving owner SIGKILL prevents recovery until it exits', async () => {
-  const f = createFixture();
+  const f: any = createFixture();
   // A sibling avoids Windows Job Object teardown killing every descendant together.
   const participant = spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], { stdio: 'ignore', windowsHide: true });
   const closed = once(participant, 'exit');

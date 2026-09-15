@@ -31,7 +31,7 @@ function flush(ms: any = 20) {
 
 test('rotate keeps prev/last rotation semantics', async () => {
   const calls = [];
-  const cmp = useCompareSnapshots({
+  const cmp: any = useCompareSnapshots({
     build: async (url) => { await flush(5); calls.push(url); return { url, tag: url } },
   });
 

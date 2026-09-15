@@ -33,7 +33,7 @@ async function main() {
 
   // 3. switch to nene via the top bar char switch
   const switched = await page.evaluate(() => {
-    const btn = document.querySelector('.companion-char-switch button[title*="绫地宁宁"], .companion-char-switch button:not(.active)')
+    const btn: any = document.querySelector('.companion-char-switch button[title*="绫地宁宁"], .companion-char-switch button:not(.active)')
     if (!btn) return 'NO_SWITCH_BTN'
     btn.click()
     return 'clicked'
@@ -41,8 +41,8 @@ async function main() {
   console.log('SWITCH:', switched)
   await page.waitForTimeout(4000)
   const after = await page.evaluate(() => {
-    const stage = document.querySelector('.portrait-stage')
-    const host = document.querySelector('#live2dHost')
+    const stage: any = document.querySelector('.portrait-stage')
+    const host: any = document.querySelector('#live2dHost')
     return {
       character: stage ? stage.dataset.character : null,
       backend: host ? host.dataset.backend : null,
@@ -54,12 +54,12 @@ async function main() {
 
   // 4. switch back to natsume
   await page.evaluate(() => {
-    const btn = document.querySelector('.companion-char-switch button[title*="四季夏目"]')
+    const btn: any = document.querySelector('.companion-char-switch button[title*="四季夏目"]')
     if (btn) btn.click()
   })
   await page.waitForTimeout(4000)
   const back = await page.evaluate(() => {
-    const stage = document.querySelector('.portrait-stage')
+    const stage: any = document.querySelector('.portrait-stage')
     return { character: stage ? stage.dataset.character : null, ready: stage ? stage.classList.contains('live2d-ready') : false }
   })
   console.log('BACK_TO_NATSUME:', JSON.stringify(back))

@@ -359,7 +359,7 @@ function createVideoService(config: any, dependencies: any) {
   }
 
   function get(id: any, owner: any) {
-    let job = jobs.get(String(id || ''));
+    let job: any = jobs.get(String(id || ''));
     return job && job.owner === owner ? job : null;
   }
 

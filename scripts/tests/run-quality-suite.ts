@@ -50,7 +50,7 @@ function printExcerpt(output: string, file: string) {
 /** 跑单个 node 脚本（捕获输出）。返回 {ok, duration, output}。 */
 function runStep(name: any, file: string, args: any, timeout: number) {
   const started = Date.now();
-  const result = spawnSync(process.execPath, [file, ...(args || [])], {
+  const result: any = spawnSync(process.execPath, [file, ...(args || [])], {
     cwd: root,
     timeout,
     maxBuffer: CAPTURE_MAX_BUFFER,
@@ -119,7 +119,7 @@ function runUnitSuite({ verbose = false }: any = {}) {
     });
     return result.status ?? 1;
   }
-  const result = spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...files], {
+  const result: any = spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...files], {
     cwd: root,
     timeout: SUITE_TIMEOUT_MS.unit,
     maxBuffer: CAPTURE_MAX_BUFFER,
@@ -146,7 +146,7 @@ function runUnitSuite({ verbose = false }: any = {}) {
  *  故整串命令 + shell:true；script 名全部来自本文件内部常量，无注入面。 */
 function runNpmScript(script: any, timeout: any = 300_000) {
   const started = Date.now();
-  const result = spawnSync(`npm run ${script}`, {
+  const result: any = spawnSync(`npm run ${script}`, {
     cwd: root,
     timeout,
     maxBuffer: CAPTURE_MAX_BUFFER,

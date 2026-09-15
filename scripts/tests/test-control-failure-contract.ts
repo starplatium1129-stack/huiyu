@@ -188,7 +188,7 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     await close(weightMock.server);
     weightMock = null;
 
-    var tunnelChild = new events.EventEmitter();
+    var tunnelChild: any = new events.EventEmitter();
     tunnelChild.unref = function () {};
     tunnelStack = await gatewayTestStack.start({
       runtimeRoot:path.join(temporaryRoot, 'tunnel'),

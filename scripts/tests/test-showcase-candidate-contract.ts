@@ -548,7 +548,7 @@ test('scene candidate audit can reuse an earlier attempt seed without overwritin
 test('single-character scene candidates use the audited short prompt and correct Anima binding', () => {
   const scenes: typeof import('../../data/scenes.json') = require('../../data/scenes.json');
   const singles = scenes.filter(item => item.char === 'nene' || item.char === 'natsume');
-  const candidates = sceneGen.planScenes(singles, 1);
+  const candidates: any = sceneGen.planScenes(singles, 1);
   // 既有生成健康检查逐条隔离「safe 提示词含显式词」的错标场景。
   // 2026-09-09 已按用户要求将明确成人源改正为 R18；下方仍构造错标副本
   // 验证拦截，不能为了让测试通过而要求生产数据继续保留错误评级。
@@ -569,7 +569,7 @@ test('single-character scene candidates use the audited short prompt and correct
     assert.strictEqual(source!.mature, true, `${id} must remain behind the mature boundary`);
   }
   const wronglyRated = { ...singles.find(scene => scene.id === 'sc122'), rating: 'All', mature: false };
-  const rejected = sceneGen.planScenes([wronglyRated], 1);
+  const rejected: any = sceneGen.planScenes([wronglyRated], 1);
   assert.strictEqual(rejected.length, 0, 'an explicit source mislabeled All must never be planned');
   assert.strictEqual(rejected.skipped.length, 1, 'the leak guard must report the rejected source');
   for (const item of candidates.skipped) {

@@ -14,7 +14,7 @@ const script = path.resolve(__dirname, '../maintenance/check-content-impact.js')
 const run = (f: any, ...args: (string|undefined)[]) => checkContentImpact(parse(['--root', f.root, '--base', f.base, ...args]));
 
 test('default preview never runs predicates; known text delta executes only proved stable IDs', (t) => {
-  const f = fixture(t);
+  const f: any = fixture(t);
   f.changeBlueprint({ prompt: 'a neutral updated object' });
   const before = snapshot(f.root);
   const preview = run(f);
@@ -32,7 +32,7 @@ test('default preview never runs predicates; known text delta executes only prov
 });
 
 test('selected record structural or projection failures return failure rather than empty success', (t) => {
-  const f = fixture(t);
+  const f: any = fixture(t);
   f.changeBlueprint({ prompt: 'changed' });
   f.write('data/scene-blueprints.json', { version: 2, blueprints: f.blueprints });
   const result = run(f, '--execute');
@@ -58,7 +58,7 @@ test('unknown paths and public contracts automatically execute full supported st
 });
 
 test('unrecognized explicit paths beneath a known domain cannot hide behind a proved text delta', (t) => {
-  const f = fixture(t);
+  const f: any = fixture(t);
   f.changeBlueprint({ prompt: 'changed neutral object' });
   const result = run(f, '--execute', '--path', 'data/blueprints/never-registered.json');
   assert.equal(result.selection.mode, 'full');
@@ -123,7 +123,7 @@ test('full structural fallback also has zero write/process effects; ownership de
 
 test('help and plan read nothing, parameters fail closed, CLI returns distinct preview/failure/full-required codes', (t) => {
   for (const args of [[], ['--base', '--write'], ['--execute', '--execute', '--base', 'HEAD'], ['--full', '--scene', 'sc001'], ['--base', 'HEAD;bad']]) assert.throws(() => parse(args));
-  const f = fixture(t);
+  const f: any = fixture(t);
   f.changeBlueprint({ prompt: 'updated object' });
   const before = snapshot(f.root);
   for (const [extra, code] of [[[], 0], [['--execute'], 3]]) {
@@ -139,7 +139,7 @@ test('help and plan read nothing, parameters fail closed, CLI returns distinct p
 });
 
 test('execution never invokes a builder or write API and checks only temporary data', (t) => {
-  const f = fixture(t);
+  const f: any = fixture(t);
   f.changeBlueprint({ prompt: 'updated object' });
   const before = snapshot(f.root);
   const mocks = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'copyFileSync']

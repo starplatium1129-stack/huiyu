@@ -494,7 +494,7 @@ async function run() {
     api:{ baseUrl:'http://example.com/v1', model:'model-a', apiKey:'secret' },
     messages:[{ role:'user', content:'hello' }]
   }).error, 'remote compatible APIs must require HTTPS');
-  var compatibleValidation = chatRoute.validateChatBody({
+  var compatibleValidation: any = chatRoute.validateChatBody({
     character:'nene',
     provider:'api',
     api:{ baseUrl:'https://api.example.com/v1', model:'model-a', apiKey:'secret' },
@@ -1014,10 +1014,10 @@ test('public API requests pin DNS, bypass proxy DNS and do not follow redirects'
       assert.equal(error, null);
       assert.deepEqual(addresses, [{ address:'8.8.8.8', family:4 }]);
     });
-    const request = new EventEmitter();
+    const request: any = new EventEmitter();
     request.setTimeout = () => {};
     request.end = () => {
-      const response = new PassThrough();
+      const response: any = new PassThrough();
       response.statusCode = 302;
       response.headers = { location:'http://127.0.0.1/private' };
       onResponse(response);

@@ -294,7 +294,7 @@ test('原生后端：渲染线程 stopped 转发 onModelError（带 reason，可
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
 
-  const errors: { message: string; }[] = [];
+  const errors: any = [];
   session.onModelError((error) => errors.push(error));
   assert(bridge._stoppedListeners.length > 0, '连接期应订阅 onStopped');
   bridge._stoppedListeners.forEach((listener) => listener({ reason: 'render frame failed: surface error' }));

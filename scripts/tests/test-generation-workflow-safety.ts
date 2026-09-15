@@ -351,7 +351,7 @@ test('interrupted image writes leave only staging bytes and recover using the sa
   const f = F.fixture(t), mock = await F.mockGateway(t);
   const original = fs.writeFileSync;
   let injected = false;
-  fs.writeFileSync = (file, value, ...args) => {
+  fs.writeFileSync = (file, value: any, ...args) => {
     if (!injected && String(file).includes(`${path.sep}images${path.sep}`) && String(file).endsWith('.tmp')) {
       injected = true;
       original(file, value.subarray(0, 20), ...args);

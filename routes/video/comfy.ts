@@ -132,7 +132,7 @@ async function materializeResult(config: { COMFY_HOST: string|URL; }, job: { id:
         finish(serviceError(502, 'INVALID_RESULT', 'ComfyUI 返回的视频格式无效'));
       }
     });
-    upstreamResponse.on('error', function (error: Error|null) {
+    upstreamResponse.on('error', function (error: any) {
       finish(error && error.code ? error
         : serviceError(502, 'COMFY_RESULT_ERROR', 'ComfyUI 视频读取失败'));
     });

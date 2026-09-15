@@ -23,7 +23,7 @@ function gitEnvironment() {
   return { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_NO_LAZY_FETCH: '1', GIT_TERMINAL_PROMPT: '0', GIT_NO_REPLACE_OBJECTS: '1', GIT_ALLOW_PROTOCOL: '' };
 }
 
-function nulRecords(raw: string|NonSharedBuffer) {
+function nulRecords(raw: any) {
   if (raw && !raw.endsWith('\0')) throw new Error('Git output missing NUL terminator');
   return raw ? raw.slice(0, -1).split('\0') : [];
 }

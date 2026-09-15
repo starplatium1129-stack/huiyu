@@ -6,7 +6,7 @@ const { test }: typeof import('node:test') = require('node:test');
 test("Quick create tests passed against the production TypeScript module", () => {
 const memory = new Map();
 const storage = { getItem:(key: any) => memory.has(key) ? memory.get(key) : null, setItem:(key: any, value: any) => memory.set(key, value) };
-const saved = quick.writeQuickCreate({
+const saved: any = quick.writeQuickCreate({
   savedAt:Date.UTC(2026, 6, 22),
   checkpoint:'models/anime-v1.safetensors',
   sampler:'DPM++ 2M',

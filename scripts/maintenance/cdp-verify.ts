@@ -13,7 +13,7 @@ async function main() {
   if (!page) { console.log('NO_COMPANION_PAGE'); await browser.close(); return }
 
   const state = await page.evaluate(() => {
-    const host = document.querySelector('#live2dHost')
+    const host: any = document.querySelector('#live2dHost')
     const stage: any = document.querySelector('.portrait-stage')
     const r = stage.getBoundingClientRect()
     return {

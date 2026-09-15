@@ -420,7 +420,7 @@ test('纯函数直接核验内存对象：篡改 totals/candidate 与输入不�
   const packSnapshot = JSON.stringify(packManifest);
   const deltaSnapshot = JSON.stringify(delta);
 
-  const okResult = verifyDeltaPackContent({ baseManifest, packManifest, delta });
+  const okResult: any = verifyDeltaPackContent({ baseManifest, packManifest, delta });
   assert.equal(okResult.ok, true, JSON.stringify(okResult.errors));
   assert.equal(okResult.compatibility!.candidate.actual.files, 2);
 

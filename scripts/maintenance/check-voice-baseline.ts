@@ -85,7 +85,7 @@ async function main() {
     process.stdout.write('live ' + line.id + ' ... ');
     try {
       const result = await requestTts(line);
-      const metrics = quality.analyzeWav(result.buffer);
+      const metrics: any = quality.analyzeWav(result.buffer);
       metrics.firstByteMs = result.firstByteMs;
       metrics.totalMs = result.totalMs;
       const gate = quality.assertVoiceQuality(metrics, baseline.thresholds);

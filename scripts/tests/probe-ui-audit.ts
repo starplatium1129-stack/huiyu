@@ -22,7 +22,7 @@ async function probeStoryBox(page: any) {
   await page.waitForLoadState('networkidle').catch(() => {});
   await page.waitForTimeout(1600);
   return page.evaluate(() => {
-    const ta = document.querySelector('textarea.story-input');
+    const ta: any = document.querySelector('textarea.story-input');
     if (!ta) return { found: false };
     const r = ta.getBoundingClientRect();
     const style = getComputedStyle(ta);

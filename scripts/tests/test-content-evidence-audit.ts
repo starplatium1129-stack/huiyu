@@ -96,7 +96,7 @@ test('missing assets cannot be certified from declared hashes or review verdicts
 });
 
 test('changed candidate record or input version invalidates prior approval, even with identical image bytes', (t) => {
-  const f = fixture(t);
+  const f: any = fixture(t);
   f.record.updatedAt = '2026-09-04T00:00:00Z';
   f.exportRecords();
   let result = audit(f.options);

@@ -71,7 +71,7 @@ function testDualEnhancementPayload() {
         adModel:'face_yolov8s.pt'
       }
   });
-  const payload = result.payload;
+  const payload: any = result.payload;
 
   assert(payload.prompt.split(/\bBREAK\b/).length === 3, 'dual regional prompt must contain base, left, and right scopes');
   assert(payload.prompt.indexOf('<lora:ayachi_nene_v15:0.55>') < payload.prompt.indexOf('BREAK'), 'dual LoRAs must live in the shared base scope in Attention mode');

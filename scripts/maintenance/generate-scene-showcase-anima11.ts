@@ -98,7 +98,7 @@ function nearestAnimaSize(scene: any, modelId: any = ANIMA_MODEL_ID) {
   })[0];
 }
 function animaProfileFor(loraIds: any, modelId: any = ANIMA_MODEL_ID) {
-  const base = modelId === ANIMA_MODEL_ID ? profileById(ANIMA_PROFILE_ID)
+  const base: any = modelId === ANIMA_MODEL_ID ? profileById(ANIMA_PROFILE_ID)
     : (presets.model_profiles || []).find((profile: any) => profile.model_id === modelId && profile.engine === 'anima');
   if (!base || !animaConstants.MODELS[modelId]) throw new Error(`unsupported Anima model: ${modelId}`);
   const contract = (loraIds || []).map((id: any) => (loraById(id).prompt_contract || {}));

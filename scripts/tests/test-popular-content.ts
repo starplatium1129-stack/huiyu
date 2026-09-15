@@ -972,7 +972,7 @@ test('persistence round-trip: popular subject/outfit/blueprint/noLora survive pa
      artistInfluences: ['legacy artist ignored'],
      artistStyleIds: ['kantoku', 'rella', 'unknown-third'],
   };
-  var parsed = persistence.parsePromptBuilderDraft(draft);
+  var parsed: any = persistence.parsePromptBuilderDraft(draft);
   assert.ok(parsed, 'draft must parse');
   assert.strictEqual(parsed.subject, 'popular');
   assert.strictEqual(parsed.characterId, 'raiden_shogun');
@@ -999,12 +999,12 @@ test('persistence round-trip: popular subject/outfit/blueprint/noLora survive pa
     blueprintId: null,
     noLora: true,
   };
-  var parsedStoryless = persistence.parsePromptBuilderDraft(storyless);
+  var parsedStoryless: any = persistence.parsePromptBuilderDraft(storyless);
   assert.ok(parsedStoryless, 'storyless popular draft must restore');
   assert.strictEqual(parsedStoryless.subject, 'popular');
   assert.strictEqual(parsedStoryless.kreaStyleId, undefined);
 
-  var legacy = persistence.parsePromptBuilderDraft({ updatedAt: 1, sceneId: 'sc001', story: 'old' });
+  var legacy: any = persistence.parsePromptBuilderDraft({ updatedAt: 1, sceneId: 'sc001', story: 'old' });
   assert.ok(legacy, 'legacy draft must parse');
   assert.strictEqual(legacy.subject, 'studio', 'legacy draft must default to studio');
   assert.strictEqual(legacy.characterId, undefined);

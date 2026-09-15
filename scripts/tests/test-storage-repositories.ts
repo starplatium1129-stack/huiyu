@@ -229,7 +229,7 @@ for (const [label, failure] of [
 test('comparison marks update together without deleting images or touching prompts', async () => {
   const fixture = createArtworkFixture();
   await fixture.repository.patchArtworks([{ id: 1, patch: { reviewState: 'preferred', favorite: true } }, { id: 2, patch: { reviewState: 'candidate' } }]);
-  const history = fixture.values.get(ARTWORK_HISTORY_KEY);
+  const history: any = fixture.values.get(ARTWORK_HISTORY_KEY);
   assert.strictEqual(history![0].reviewState, 'preferred');
   assert.strictEqual(history![1].reviewState, 'candidate');
   assert.deepStrictEqual(history!.map((item: any) => item.prompt), ['one', 'two']);
@@ -252,7 +252,7 @@ test('background generation preserves comparison choices and concurrent new imag
     fixture.repository.appendArtwork({ id: 3, prompt: 'new image' }),
     fixture.repository.appendArtwork({ id: 4, prompt: 'another image' }),
   ]);
-  const history = fixture.values.get(ARTWORK_HISTORY_KEY);
+  const history: any = fixture.values.get(ARTWORK_HISTORY_KEY);
   assert.deepStrictEqual(history!.map((item: any) => item.id), [1, 2, 3, 4]);
   assert.strictEqual(history![0].reviewState, 'preferred');
   await assert.rejects(fixture.repository.appendArtwork({ id: 3, prompt: 'duplicate' }));
