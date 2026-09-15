@@ -2,6 +2,8 @@
 
 当前总优先级见 [未来规划](../docs/roadmap.md)。
 
+- [008：TypeScript 迁移修复](008-typescript-migration-repair.md)：**阻塞级、进行中**。`63889f4` 系自动化 codemod 产物，注入的错误类型导致 node/tests 两个项目共 15,880 个类型错误、构建无法产出；已落 WIP 检查点于 `codex/ts-migration-repair-20260915`，剩余按 B1–B7 批次续做。
+
 - [007：UI 细节打磨与分批审核](007-ui-detail-polish-and-review.md)：U0–U5 已有批次验收，后续玻璃、工作台阅读与导航动效已完成浏览器范围验证；保留后续补丁同步、U6 真机验收及未覆盖状态。原始启动任务只作历史。
 
 - [006：工作流与内容数据治理](006-workflow-and-content-governance.md)：部分实施；复用已有条件审计、证据/影响报告、稳定分片和资源候选工具，继续完成蓝图保存事务、分发生命周期及剩余治理。
