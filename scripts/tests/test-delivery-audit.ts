@@ -97,7 +97,7 @@ function snapshotTree(root: any) {
     return [name, fs.statSync(p).isDirectory() ? null : fs.readFileSync(p).toString('hex')];
   }));
 }
-function fixture(t: any) {
+function fixture(t: any): any {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-delivery-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const d = { schemaVersion: 1, commit, baseline: 'c'.repeat(40), scope: 'isolated office CPU', environment: { platform: 'win32', node: 'v24.18.0' }, build: { manifestSha256: hash }, fullGate: { status: 'passed', log: 'gate.log' } };

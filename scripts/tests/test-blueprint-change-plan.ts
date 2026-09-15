@@ -40,7 +40,7 @@ function bp(id: string, characterId: string|undefined, extra: { title: string; }
   }, extra);
 }
 
-function baseState() {
+function baseState(): any {
   const frierenGroup = [bp('frieren_1', 'frieren', { title: '魔女旅人' }), bp('frieren_2', 'frieren')];
   const fateGroup = [bp('fate_1', 'saber')];
   const shards = {

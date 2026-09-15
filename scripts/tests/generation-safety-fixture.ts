@@ -15,7 +15,10 @@ const writeJson = (file: any, value: any) => {
   fs.writeFileSync(file, JSON.stringify(value, null, 2));
 };
 
-function fixture(t: any) {
+// 返回的是测试夹具：各调用方会按自己的场景往上挂 gateway / source / target / from / options 等字段，
+// 形状不固定（原 JS 里本就没有任何类型）。这里显式放宽，避免 codemod 从**某一次**返回字面量
+// 反推出的窄结构类型把所有后续用法都判成非法。
+function fixture(t: any): any {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'office-generation-'));
   const root = path.join(temporary, 'project');
   const output = path.join(temporary, 'candidates');

@@ -67,7 +67,7 @@ async function waitFor(check: { (): Promise<any>; (): Promise<""|"active">; (): 
   throw new Error('Timed out waiting for ' + description);
 }
 
-function baseConfig(rootDir: string, runtime: any) {
+function baseConfig(rootDir: string, runtime: any): any {
   return {
     ROOT_DIR:rootDir,
     RUNTIME:runtime,
