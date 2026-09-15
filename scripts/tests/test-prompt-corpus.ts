@@ -59,7 +59,7 @@ function charOf(scene: { char: string; }) {
   return 'nene'
 }
 
-function profileOf(id: string) {
+function profileOf(id: string): any {
   return presets.model_profiles.find(profile => profile.id === id) || null
 }
 

@@ -533,7 +533,7 @@ test('回滚注入失败必须如实报告失败，不得称恢复成功', (t) =
   assert.equal(applyBlueprintWrite(prepared, {}).ok, true);
 
   let calls = 0;
-  const attemptRollbackLike = () => {
+  const attemptRollbackLike = (): any => {
     try {
       restoreSnapshot(snapshot, () => {
         calls += 1;
