@@ -32,7 +32,7 @@ function seededRng(seed: any) {
   };
 }
 
-function makeOptions(overrides = {}) {
+function makeOptions(overrides: any = {}) {
   return {
     char: 'nene',
     tags: tagsData.map(t => ({ en: t.en, cat: t.cat })),

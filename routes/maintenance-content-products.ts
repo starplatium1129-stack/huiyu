@@ -7,7 +7,7 @@ const { VERSIONED_FILES }: typeof import('../scripts/lib/data-version') = requir
 const { prepareBlueprintWrite, applyBlueprintWrite }: typeof import('../scripts/lib/blueprint-write') = require('../scripts/lib/blueprint-write');
 const recoveryFs: typeof import('../scripts/lib/maintenance-recovery-fs') = require('../scripts/lib/maintenance-recovery-fs');
 
-function prepareBlueprints(rootDir: any, blueprints: any, previous = []) {
+function prepareBlueprints(rootDir: any, blueprints: any, previous: any = []) {
   const popular: typeof import('../scripts/lib/popular-store') = require('../scripts/lib/popular-store');
   if (path.resolve(popular.shardsDir) !== path.resolve(rootDir, 'data', 'popular')) throw new Error('热门角色数据根与维护根不一致');
   const { characters } = popular.loadPopularShards();

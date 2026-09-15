@@ -28,7 +28,7 @@ function stat(file: any) {
   try { return fs.lstatSync(file, { bigint: true }); }
   catch (error) { if (runtimeErrorCode(error) === 'ENOENT') return null; throw error; }
 }
-function safePath(file: any, kind = 'file', allowMissing = true) {
+function safePath(file: any, kind: any = 'file', allowMissing: any = true) {
   const abs = path.resolve(file);
   const parsed = path.parse(abs);
   let cursor = parsed.root;
@@ -68,7 +68,7 @@ function syncDirectory(dir: any) {
   const fd = fs.openSync(dir, 'r');
   try { fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
 }
-function readBytes(file: any, allowMissing = false) {
+function readBytes(file: any, allowMissing: any = false) {
   const before = safePath(file, 'file', allowMissing);
   if (!before) return null;
   const fd = fs.openSync(file, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
@@ -94,7 +94,7 @@ function snapshotFiles(files: any) {
     return { file, exists: content !== null, content };
   });
 }
-function atomicWrite(file: any, bytes: any, createParents = false) {
+function atomicWrite(file: any, bytes: any, createParents: any = false) {
   if (createParents) ensureDirectory(path.dirname(file));
   safePath(path.dirname(file), 'directory', false);
   const old = safePath(file);
@@ -164,7 +164,7 @@ function targetPath(ctx: any, source: any) {
   }
   throw failure('MAINTENANCE_UNSUPPORTED_SCOPE', '未授权的恢复范围；外部样张必须显式配置 showcaseRoot：' + file);
 }
-function readKey(ctx: any, create = false) {
+function readKey(ctx: any, create: any = false) {
   const file = path.join(ctx.stateDir, 'key');
   if (create) {
     ensureDirectory(ctx.stateDir);

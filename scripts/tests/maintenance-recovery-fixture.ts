@@ -24,7 +24,7 @@ function createFixture() {
   const options = { rootDir, runtimeRoot: path.join(rootDir, 'runtime') };
   return { base, options, files: names.map(name => path.join(rootDir, name)), cleanup: () => fs.rmSync(base, { recursive: true, force: true }) };
 }
-function tree(directory: string, excludeRuntime = false, output: any = {}, prefix = '') {
+function tree(directory: string, excludeRuntime: any = false, output: any = {}, prefix: any = '') {
   if (!fs.existsSync(directory)) return output;
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     if (excludeRuntime && entry.name === 'runtime') continue;
@@ -36,7 +36,7 @@ function tree(directory: string, excludeRuntime = false, output: any = {}, prefi
   }
   return output;
 }
-async function spawnWorker(fixture: any, mode = 'hold') {
+async function spawnWorker(fixture: any, mode: any = 'hold') {
   const child = fork(path.join(__dirname, 'maintenance-recovery-worker.js'), [mode, JSON.stringify(fixture.options)], { silent: true, windowsHide: true });
   let stderr = '';
   child.stderr!.on('data', chunk => { stderr += chunk; });

@@ -144,7 +144,7 @@ function runUnitSuite({ verbose = false }: any = {}) {
 
 /** 跑一个 npm script。Node 24 禁止 spawnSync 直呼 .cmd（EINVAL），
  *  故整串命令 + shell:true；script 名全部来自本文件内部常量，无注入面。 */
-function runNpmScript(script: any, timeout = 300_000) {
+function runNpmScript(script: any, timeout: any = 300_000) {
   const started = Date.now();
   const result = spawnSync(`npm run ${script}`, {
     cwd: root,

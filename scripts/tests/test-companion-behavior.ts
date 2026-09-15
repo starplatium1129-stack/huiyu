@@ -8,7 +8,7 @@ const {
 }: typeof import('../../src/utils/companionBehavior.ts') = require('../../src/utils/companionBehavior.ts');
 const { resolveCompanionPresence }: typeof import('../../src/utils/companionPresence.ts') = require('../../src/utils/companionPresence.ts');
 
-function minutesAgo(minutes: number, from = Date.now()) {
+function minutesAgo(minutes: number, from: any = Date.now()) {
   return from - minutes * 60_000;
 }
 

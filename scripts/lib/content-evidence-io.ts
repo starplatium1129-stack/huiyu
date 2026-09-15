@@ -42,7 +42,7 @@ function evidenceReader(root: PathLike, label: any) {
   };
   return {
     root: base,
-    bytes(file: string, limit = 16 * 1024 * 1024) {
+    bytes(file: string, limit: any = 16 * 1024 * 1024) {
       evidencePath(file);
       if (!cache.has(file)) {
         try { const value = read(file, limit); cache.set(file, { value, sha256: hash(value), bytes: value.length, status: 'read', limit }); }

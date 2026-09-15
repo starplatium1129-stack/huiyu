@@ -3,10 +3,10 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const { test }: typeof import('node:test') = require('node:test');
 const { resolveSceneChangeSet, previewSceneChanges }: typeof import('../lib/scene-change-set') = require('../lib/scene-change-set');
 const { isSceneId, formatSceneId, missingSceneIdRanges }: typeof import('../lib/scene-id') = require('../lib/scene-id');
-const scene = (id: any, title = id) => ({ id, title, char: 'fixture' });
+const scene = (id: any, title: any = id) => ({ id, title, char: 'fixture' });
 const current = () => ({ scenes: [scene('sc001'), scene('sc002'), scene('sc999')],
   blueprints: [], tags: [{ tag: 'fixture' }], curation: { curatedSceneIds: ['sc002'] } });
-const delta = (upsert = [], remove = []) => ({ version: 1, scenes: { upsert, remove } });
+const delta = (upsert: any = [], remove: any = []) => ({ version: 1, scenes: { upsert, remove } });
 
 test('only explicitly selected IDs change; delta values detach from submitted objects', () => {
   const before = current();

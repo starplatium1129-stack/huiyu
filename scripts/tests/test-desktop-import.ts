@@ -7,7 +7,7 @@ const {
   MAX_IMPORT_BATCH,
 }: typeof import('../../src/utils/desktopImportCore.ts') = require('../../src/utils/desktopImportCore.ts');
 
-function file(name: string, size = 100, type = 'image/png', blob = new Blob(['x'], { type })) {
+function file(name: string, size: any = 100, type: any = 'image/png', blob: any = new Blob(['x'], { type })) {
   return { name, size, type, blob };
 }
 

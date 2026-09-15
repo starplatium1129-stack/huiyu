@@ -25,7 +25,7 @@ function powershell(script: any, options: any = {}) {
   return String(result.stdout || '').trim()
 }
 
-function powershellJson(script: any, options = {}) {
+function powershellJson(script: any, options: any = {}) {
   const output = powershell(script, options)
   if (!output) return null
   try {

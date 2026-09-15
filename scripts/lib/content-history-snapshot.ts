@@ -21,7 +21,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
     if (!validate(value)) throw new Error(`${file}: invalid container/IDs`);
     return value;
   };
-  const validRows = (rows: any, scene = false) => Array.isArray(rows) && rows.every((row: any) => object(row) && (scene ? canonicalSceneId(row.id) : validId(row.id)));
+  const validRows = (rows: any, scene: any = false) => Array.isArray(rows) && rows.every((row: any) => object(row) && (scene ? canonicalSceneId(row.id) : validId(row.id)));
   const put = (group: string|string[], file: string, kind: string|string[], id: any, value: any, extra: Record<string, any> = {}) => {
     const row: any = { group, file, domain, role: group.includes(':derived:') ? 'derived' : 'source', kind, id, value, ...extra };
     row.key = keyFor(kind, id, kind.includes('outfit') ? row.characterId : null);

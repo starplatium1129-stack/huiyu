@@ -14,7 +14,7 @@ const popularPublisher: typeof import('../maintenance/publish-popular-showcase')
 
 const modules = F.entries.map(name => require(`../maintenance/${name}`));
 const records = (f: any) => JSON.parse(fs.readFileSync(path.join(f.output, 'generation-manifest.json'), 'utf8'));
-async function run(index: any, f: any, mock: any, args = [], deps = {}) {
+async function run(index: any, f: any, mock: any, args: any = [], deps: any = {}) {
   return (await F.guarded(f, () => modules[index].main([...f.args, '--gateway', mock.origin, ...args],
     { env: f.env, fetchImpl: mock.fetchImpl, pollMs: 1, timeoutMs: 250, ...deps }))).result;
 }
@@ -387,7 +387,7 @@ test('payload snapshots retain the pre-fix prompts, bindings, dimensions and sam
     assert.equal(F.sha(JSON.stringify(modules[0].buildPayload(f.character, f.character.outfits[0], persId, 123))), hash);
   }
   const tasks = modules[1].collectAllSceneTasks({}, modules[1].loadInputs({ root: f.root }));
-  const payload = (task: any, characterId = task.characterId) => modules[1].buildPayload({ ...task, characterId, seed: 123 });
+  const payload = (task: any, characterId: any = task.characterId) => modules[1].buildPayload({ ...task, characterId, seed: 123 });
   assert.equal(F.sha(JSON.stringify(payload(tasks[0]))), '593aeb1db0b7f402d3e40b481da899e6320e89bf2fffb2c3639796ee8f154ca6');
   for (const [character, hash] of Object.entries({
     nene: '75a003ccdf092e76e84993be6605247683045d6615ac1b2f555da703e0cdc9dc',

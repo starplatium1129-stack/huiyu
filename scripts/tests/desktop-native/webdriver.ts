@@ -27,7 +27,7 @@ function freePort() {
   })
 }
 
-function requestJson(port: any, method: any, pathname: any, body: any, timeoutMs = 30_000) {
+function requestJson(port: any, method: any, pathname: any, body: any, timeoutMs: any = 30_000) {
   return new Promise((resolve, reject) => {
     const payload = body == null ? null : Buffer.from(JSON.stringify(body))
     const request = http.request({
@@ -70,7 +70,7 @@ constructor(options: any) {
     this.capabilities = options.capabilities || {}
   }
 
-  endpoint(suffix = '') {
+  endpoint(suffix: any = '') {
     return `/session/${encodeURIComponent(this.sessionId)}${suffix}`
   }
 
@@ -79,11 +79,11 @@ constructor(options: any) {
     return response?.value
   }
 
-  execute(script: any, args = []) {
+  execute(script: any, args: any = []) {
     return this.command('POST', '/execute/sync', { script, args })
   }
 
-  async executeAsync(body: any, args = [], timeoutMs = 30_000) {
+  async executeAsync(body: any, args: any = [], timeoutMs: any = 30_000) {
     await this.command('POST', '/timeouts', { script: timeoutMs })
     const script = `
 const done = arguments[arguments.length - 1]
@@ -96,7 +96,7 @@ ${body}
     return result.value
   }
 
-  invoke(command: any, payload: any = {}, timeoutMs = 30_000) {
+  invoke(command: any, payload: any = {}, timeoutMs: any = 30_000) {
     return this.executeAsync(`
 const command = arguments[0]
 const payload = arguments[1]
@@ -130,7 +130,7 @@ return await window.__TAURI__.core.invoke(command, payload)
     return filePath
   }
 
-  async waitFor(description: any, predicateBody: any, args = [], options: any = {}) {
+  async waitFor(description: any, predicateBody: any, args: any = [], options: any = {}) {
     const timeoutMs = options.timeoutMs || 30_000
     const intervalMs = options.intervalMs || 100
     const started = Date.now()

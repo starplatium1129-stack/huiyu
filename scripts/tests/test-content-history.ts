@@ -14,7 +14,7 @@ const { formatImpactReport }: typeof import('../lib/content-impact-format') = re
 const { fixture, git, snapshot }: typeof import('./content-history-fixture') = require('./content-history-fixture');
 const script = path.resolve(__dirname, '../maintenance/report-content-impact.js');
 const run = (f: any, ...args: (string|undefined)[]) => report(parse(['--root', f.root, '--base', f.base, ...args]));
-const entity = (result: any, kind: string, id: string, role = 'source') => result.history.entities.find((r: { kind: string; id: string; role: string; }) => r.kind === kind && r.id === id && r.role === role);
+const entity = (result: any, kind: string, id: string, role: any = 'source') => result.history.entities.find((r: { kind: string; id: string; role: string; }) => r.kind === kind && r.id === id && r.role === role);
 
 test('explicit base tracks committed changes, scoped IDs, both owners/outfits and separate source/derived records', (t) => {
   const f = fixture(t);

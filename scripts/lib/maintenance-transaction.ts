@@ -5,7 +5,7 @@ const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-re
 const backups: typeof import('./maintenance-recovery-backup') = require('./maintenance-recovery-backup');
 const { acquireMaintenanceLease }: typeof import('./maintenance-lease') = require('./maintenance-lease');
 
-function prepareMaintenanceTransaction(lease: any, options: any, snapshot: any, label = 'content') {
+function prepareMaintenanceTransaction(lease: any, options: any, snapshot: any, label: any = 'content') {
   lease.assertOwned();
   const ctx = io.context(options);
   for (const item of snapshot) {
@@ -37,7 +37,7 @@ function rollbackMaintenanceTransaction(lease: any, options: any) {
     return { ok: false, error: runtimeErrorMessage(error), dataIntegrity: 'INCONSISTENT' };
   }
 }
-async function withMaintenanceTransaction(options: any, capture: () => any, task: any, label = 'content') {
+async function withMaintenanceTransaction(options: any, capture: () => any, task: any, label: any = 'content') {
   const lease = acquireMaintenanceLease(options);
   try {
     const snapshot = capture();

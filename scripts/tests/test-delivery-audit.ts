@@ -103,7 +103,7 @@ function fixture(t: any): any {
   const d = { schemaVersion: 1, commit, baseline: 'c'.repeat(40), scope: 'isolated office CPU', environment: { platform: 'win32', node: 'v24.18.0' }, build: { manifestSha256: hash }, fullGate: { status: 'passed', log: 'gate.log' } };
   const write = (file: any, value: any) => fs.writeFileSync(path.join(root, file), JSON.stringify(value));
   write('evidence.json', d);
-  return { root, d, write, run: (extra = {}) => report({ root, evidence: 'evidence.json', require: [], builds: [], ...extra }) };
+  return { root, d, write, run: (extra: any = {}) => report({ root, evidence: 'evidence.json', require: [], builds: [], ...extra }) };
 }
 test('同提交跨两个隔离环境交接；办公机通过不等于设备通过，零写入', t => {
   const office = fixture(t), main = fixture(t);

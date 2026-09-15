@@ -15,7 +15,7 @@ function scanImages(root: any) {
   noLinks(root);
   if (!fs.statSync(root).isDirectory()) throw new Error('Reference source must be a directory');
   const files: any = [];
-  function visit(directory: any, prefix = '') {
+  function visit(directory: any, prefix: any = '') {
     for (const name of fs.readdirSync(directory).sort()) {
       const file = path.join(directory, name);
       const rel = prefix + name;

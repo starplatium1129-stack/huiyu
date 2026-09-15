@@ -61,7 +61,7 @@ async function application(f: any, position: string) {
   await once(server, 'listening');
   return {
     source, body, started, finish,
-    get(url = '/data/scenes.json', headers = {}, method = 'GET', onResponse = () => {}) {
+    get(url: any = '/data/scenes.json', headers: any = {}, method: any = 'GET', onResponse: any = () => {}) {
       return new Promise((resolve, reject) => {
         const request = http.request({ hostname: '127.0.0.1', port: server.address!().port, path: url, headers, method, agent: false }, response => {
           onResponse(response);
@@ -240,7 +240,7 @@ test('actual gateway early barrier protects gzip/br and showcase across a real w
           RESOURCE_CONFIG_PATH: '', RESOURCE_MANAGEMENT: false });
       },
     });
-    const request = (url: string, encoding: string, headers = {}) => new Promise((resolve, reject) => {
+    const request = (url: string, encoding: string, headers: any = {}) => new Promise((resolve, reject) => {
       const req = http.get(stack.baseUrl + url, { agent: false, headers: { 'accept-encoding': encoding, ...headers } }, res => {
         const chunks: any = [];
         res.on('data', chunk => chunks.push(chunk));

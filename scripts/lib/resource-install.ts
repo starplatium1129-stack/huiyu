@@ -13,7 +13,7 @@ function forgetJournal(ctx: any) { unlink(ctx.io, child(ctx.store, 'pending.json
 function verifyBefore(ctx: any, journal: any) {
   if (journal.before.current) verifyVersion(ctx, journal.before.current);
 }
-function result(ctx: any, state: any, action: any, extra = {}) {
+function result(ctx: any, state: any, action: any, extra: any = {}) {
   return { ok: true, kind: 'resource-install-result', action, state,
     installedRoot: state.current ? child(ctx.store, 'versions/' + state.current.identity) : null, ...extra };
 }

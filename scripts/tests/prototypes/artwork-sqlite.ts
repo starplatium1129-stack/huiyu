@@ -8,7 +8,7 @@ const path: typeof import('node:path') = require('node:path');
 
 const digest = (value: any) => createHash('sha256').update(value).digest('hex');
 
-function openArtworkCandidate(root: any, fault = () => {}) {
+function openArtworkCandidate(root: any, fault: any = () => {}) {
   fs.mkdirSync(path.join(root, 'media'), { recursive: true });
   const db = new DatabaseSync(path.join(root, 'candidate.sqlite'));
   if (db.prepare('PRAGMA user_version').get!().user_version! > 1) {

@@ -89,7 +89,7 @@ function writeManifestFile(root: any, manifest: any, name: any) {
   return path.join(root, 'artifacts', name);
 }
 
-function mutateManifest(fx: any, mutator: any, name = 'bad.json') {
+function mutateManifest(fx: any, mutator: any, name: any = 'bad.json') {
   const manifest = JSON.parse(fs.readFileSync(fx.manifest, 'utf8'));
   return writeManifestFile(fx.root, mutator(manifest), name);
 }

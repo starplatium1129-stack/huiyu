@@ -6,7 +6,7 @@ const {
   EVENT_NOTIFY_TITLE,
 }: typeof import('../../src/utils/companionEvents.ts') = require('../../src/utils/companionEvents.ts');
 
-function snapshot(overrides = {}) {
+function snapshot(overrides: any = {}) {
   return {
     imageCount: 0,
     services: { sdOnline: true, ttsOnline: true, ollamaOnline: true },

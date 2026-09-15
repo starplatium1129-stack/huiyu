@@ -44,7 +44,7 @@ function noiseBuffer(seconds: number, amplitude: number, seed: number) {
   return out;
 }
 
-function sineBuffer(seconds: number, freq = 440, amplitude = 0.3) {
+function sineBuffer(seconds: number, freq: any = 440, amplitude: any = 0.3) {
   const out = new Float32Array(Math.round(seconds * RATE));
   for (let i = 0; i < out.length; i++) out[i] = Math.sin((2 * Math.PI * freq * i) / RATE) * amplitude;
   return out;

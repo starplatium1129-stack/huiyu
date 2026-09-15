@@ -27,7 +27,7 @@ const { useControlStatus }: typeof import('../../src/composables/useControlStatu
 
 const root = path.resolve(__dirname, '..', '..');
 
-function jsonResponse(body: any, status = 200, headers = {}) {
+function jsonResponse(body: any, status: any = 200, headers: any = {}) {
   return new Response(JSON.stringify(body), {
     status,
     headers: { 'Content-Type': 'application/json', ...headers },
@@ -43,7 +43,7 @@ function pendingFetch(signals: any) {
   });
 }
 
-function controlStatus(overrides = {}) {
+function controlStatus(overrides: any = {}) {
   return {
     ok: true,
     running: true,

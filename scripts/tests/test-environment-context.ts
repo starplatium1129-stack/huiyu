@@ -7,7 +7,7 @@ const {
   slotLabel,
 }: typeof import('../../src/utils/environmentContext.ts') = require('../../src/utils/environmentContext.ts');
 
-function at(hour: number|undefined, minute = 0, day = 3) {
+function at(hour: number|undefined, minute: any = 0, day: any = 3) {
   // 2026-08-05 是周三（weekday），2026-08-08 是周六（weekend）
   return new Date(2026, 7, day, hour, minute, 0, 0);
 }

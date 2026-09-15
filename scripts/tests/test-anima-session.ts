@@ -69,7 +69,7 @@ function fakeClient(routes: any) {
   };
 }
 
-function baseOptions(overrides = {}) {
+function baseOptions(overrides: any = {}) {
   return {
     getCharacter: () => 'nene',
     isPopular: () => false,
@@ -86,7 +86,7 @@ function baseOptions(overrides = {}) {
   };
 }
 
-function statusPayload(overrides = {}) {
+function statusPayload(overrides: any = {}) {
   return {
     ok: true, online: true,
     models: [

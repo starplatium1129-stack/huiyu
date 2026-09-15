@@ -72,7 +72,7 @@ function snapshot(root: any): any {
   });
 }
 
-function writeManifest(root: any, manifest: any, name = 'manifest.json') {
+function writeManifest(root: any, manifest: any, name: any = 'manifest.json') {
   const dir = path.join(root, 'artifacts');
   fs.mkdirSync(dir, { recursive: true });
   const file = path.join(dir, name);
@@ -350,7 +350,7 @@ test('Windows 大小写别名不能重复计为已核验资源', { skip: process
 
 // ——— G7：资源清单差异比较 ———
 
-function manifestOf(entries: any, extra = {}) {
+function manifestOf(entries: any, extra: any = {}) {
   return { schemaVersion: 1, kind: 'resource-manifest', generatedAt: '2026-01-01T00:00:00.000Z', ...extra, entries };
 }
 

@@ -58,7 +58,7 @@ function validateReference(ctx: any, ref: any) {
   if (JSON.stringify(expected) !== JSON.stringify(ref)) fail('APPROVAL_REQUIRED', 'Installed receipt differs from the independently approved release');
   return ref;
 }
-function packageIdentity(manifestBytes: any, deltaBytes = null) {
+function packageIdentity(manifestBytes: any, deltaBytes: any = null) {
   return digest(JSON.stringify([digest(manifestBytes), deltaBytes === null ? null : digest(deltaBytes)]));
 }
 function parse(bytes: any) {
@@ -81,7 +81,7 @@ function inventory(ctx: any, root: any, declared: any) {
     const segments = rel.split('/');
     while (segments.length > 1) { segments.pop(); directories.add(segments.join('/')); }
   }
-  const visit = (dir: any, prefix = '') => {
+  const visit = (dir: any, prefix: any = '') => {
     noLinks(ctx.io, dir);
     for (const name of ctx.io.readdirSync(dir)) {
       const rel = prefix + name;
@@ -99,7 +99,7 @@ function inventory(ctx: any, root: any, declared: any) {
   visit(root);
   if (seen.size !== declared.size) fail('CONTENT_INVALID', 'Resource tree is incomplete');
 }
-function verifyTree(ctx: any, root: any, value: any, metadata = ['manifest.json']) {
+function verifyTree(ctx: any, root: any, value: any, metadata: any = ['manifest.json']) {
   const normalized = manifest(value);
   inventory(ctx, root, new Set([...metadata, ...normalized.entries.map((e: any) => e.path)]));
   // Reuse the existing verifier for all bytes/hash checks, after stronger install path checks.

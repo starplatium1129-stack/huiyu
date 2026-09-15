@@ -137,7 +137,7 @@ function createIsolatedFixture(options: any) {
   }
 }
 
-function verifySourceSnapshot(fixture: any, expected = fixture.sourceSnapshot) {
+function verifySourceSnapshot(fixture: any, expected: any = fixture.sourceSnapshot) {
   const actual = snapshotFiles(fixture.electronSource, fixture.sourceRelativeFiles)
   const mismatches = []
   for (const relative of fixture.sourceRelativeFiles.map((value: any) => value.replace(/\\/g, '/'))) {

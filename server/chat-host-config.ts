@@ -10,7 +10,7 @@ function chatHostConfigPath(config: ChatConfigLocation) {
 }
 
 // Chat and video share invalidation. File identity is part of the cache key.
-function createHostConfigStore(io = fs) {
+function createHostConfigStore(io: any = fs) {
   const cache = new Map<string, { signature: string; value: HostChatConfig }>();
   function readHostConfig(config: ChatConfigLocation) {
     const file = chatHostConfigPath(config);

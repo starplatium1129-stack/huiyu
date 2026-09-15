@@ -15,7 +15,7 @@ const SHA = /^[a-f0-9]{64}$/;
 const uuid = /^[a-f0-9-]{36}$/;
 const jsonHash = (value: any) => hash(JSON.stringify(value));
 
-function bytes(file: any, max = 64 * 1024 * 1024) {
+function bytes(file: any, max: any = 64 * 1024 * 1024) {
   noLinks(file);
   const stat = fs.statSync(file);
   if (!stat.isFile() || stat.nlink !== 1 || stat.size > max) throw new Error('Expected a bounded, ordinary file: ' + file);

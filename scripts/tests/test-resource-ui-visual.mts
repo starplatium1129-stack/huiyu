@@ -18,7 +18,7 @@ const initial = () => ({ ok: true, configured: true, managementEnabled: true, bu
     { id: 'portraits', label: '角色立绘 · 秋日收藏', kind: 'full', source: 'offline', identity: 'b'.repeat(64), downloaded: false },
     { id: 'portraits-hd', label: '高清资源 · 秋日收藏', kind: 'delta', source: 'http', identity: 'c'.repeat(64), downloaded: false },
   ] })
-const task = (action: any, state = 'running') => ({ id: 'e58ce240-61d8-4a71-a496-bcbd4e74a7d5', action,
+const task = (action: any, state: any = 'running') => ({ id: 'e58ce240-61d8-4a71-a496-bcbd4e74a7d5', action,
   releaseId: 'portraits', resumeAction: null, state, phase: 'copy-progress', bytes: 30, total: 100,
   startedAt: 1, finishedAt: 0, error: null })
 let server, browser

@@ -11,7 +11,7 @@ const CODE_ROOT = path.resolve(__dirname, '..', '..');
 const hash = (value: any) => crypto.createHash('sha256').update(value).digest('hex');
 const now = () => new Date().toISOString();
 
-function parseArgs(args: any, extra = {}, env = process.env) {
+function parseArgs(args: any, extra: any = {}, env: any = process.env) {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) {
     return { help: true, plan: args.includes('--plan') };
   }
@@ -41,7 +41,7 @@ function parseArgs(args: any, extra = {}, env = process.env) {
   return opts;
 }
 
-function help(script: any, extra = '') {
+function help(script: any, extra: any = '') {
   console.log(`${path.basename(script)} --output <candidate directory> ${extra}\n` +
     '[--root <data root>] [--gateway <url>] [--concurrency <1-32>] [--dry-run] [--retry-unknown]\n' +
     '--help/--plan: usage only, no target reads. --dry-run: read inputs and print plan; no writes or requests.\n' +
@@ -70,7 +70,7 @@ function noLinks(file: any) {
   return path.resolve(file);
 }
 
-function assertOutput(opts: any, protectedPaths = []) {
+function assertOutput(opts: any, protectedPaths: any = []) {
   const output = noLinks(opts.output);
   for (const root of new Set([CODE_ROOT, opts.root])) {
     const archive = path.join(root, 'scripts', 'archive', 'generation-candidates');

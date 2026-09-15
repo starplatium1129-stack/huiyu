@@ -16,7 +16,7 @@ async function fixture(run: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atelier-compression-'));
   const assets = path.join(root, 'external-assets');
   fs.mkdirSync(assets); fs.mkdirSync(path.join(root, 'data'));
-  const write = (file: PathOrFileDescriptor, value = '{"version":1}', compressed = true) => {
+  const write = (file: PathOrFileDescriptor, value: any = '{"version":1}', compressed: any = true) => {
     fs.mkdirSync(path.dirname(file), { recursive:true }); fs.writeFileSync(file, value);
     if (compressed) { fs.writeFileSync(file + '.br', zlib.brotliCompressSync(Buffer.from(value))); fs.writeFileSync(file + '.gz', zlib.gzipSync(value)); }
   };

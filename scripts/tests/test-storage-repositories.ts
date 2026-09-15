@@ -24,7 +24,7 @@ const {
 const { thumbKey }: typeof import('../../src/utils/imageThumb.ts') = require('../../src/utils/imageThumb.ts');
 const keys: typeof import('../../src/utils/storageKeys.ts') = require('../../src/utils/storageKeys.ts');
 
-function createLocalStorage(initial = {}) {
+function createLocalStorage(initial: any = {}) {
   const values = new Map(Object.entries(initial));
   return {
     values,

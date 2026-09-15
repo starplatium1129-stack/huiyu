@@ -76,7 +76,7 @@ async function fixtureHttp(t: any) {
   f.policy.sources.fixture = { kind: 'http', approved: true, loopbackFixture: true,
     baseUrl: 'http://127.0.0.1:' + server.address!().port + '/' };
   for (const id of ['full', 'delta']) f.policy.releases[id].sourceId = 'fixture';
-  f.download = (extra = {}) => createResourceDownloader(f.options(extra));
+  f.download = (extra: any = {}) => createResourceDownloader(f.options(extra));
   return { ...f, state, files };
 }
 async function cancelPartial(f: any) {

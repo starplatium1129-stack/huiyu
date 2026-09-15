@@ -109,7 +109,7 @@ function fixture(t: any) {
   write('data/character-reference-view.json', { a: { outfits: [{ outfitId: 'dress' }] } });
   return { root, write, characters, blueprints };
 }
-const options = (root: any, extra = {}) => ({ root, paths: [], character: 'a', ...extra });
+const options = (root: any, extra: any = {}) => ({ root, paths: [], character: 'a', ...extra });
 test('reference 声明统计、显式服装及路径多角色过滤，CLI/工作流零写入', (t) => {
   const f = fixture(t);
   f.write('data/character-reference-view.json', {
@@ -244,7 +244,7 @@ test('默认服装 CLI 与工作流成功/错误均零写入，文本含独立�
   }
 });
 const themeFile = 'src/assets/css/director/tokens.css';
-function themeFixture(t: any, css = '.pb { --accent: pink; }') {
+function themeFixture(t: any, css: any = '.pb { --accent: pink; }') {
   const f = fixture(t);
   f.write('data/characters.json', [{ id: 'a' }, { id: 'nene' }]);
   f.write(themeFile, null);

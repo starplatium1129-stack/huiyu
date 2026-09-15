@@ -23,7 +23,7 @@ function snapshot(root: any): any {
     return entry.isDirectory() ? snapshot(target) : [[target, fs.readFileSync(target).toString('hex')]];
   });
 }
-function approve(f: any, name: any, kind: any, targetManifest: any, sourceId = 'media') {
+function approve(f: any, name: any, kind: any, targetManifest: any, sourceId: any = 'media') {
   const folder = path.join(f.packs, name);
   const raw = fs.readFileSync(path.join(folder, 'manifest.json'));
   const delta = kind === 'delta' ? fs.readFileSync(path.join(folder, 'delta.json')) : null;
@@ -61,9 +61,9 @@ function fixture(t: any, { large = false }: any = {}) {
   approve(f, 'base', 'full', old);
   approve(f, 'full', 'full', next);
   approve(f, 'delta', 'delta', next);
-  f.options = (extra = {}) => ({ userDataRoot: user, protectedRoots: [program, artwork], policy,
+  f.options = (extra: any = {}) => ({ userDataRoot: user, protectedRoots: [program, artwork], policy,
     access: { isLocalStudioHost: () => true, isAuthorized: () => true }, ...extra });
-  f.installer = (extra = {}) => createResourceInstaller(f.options(extra));
+  f.installer = (extra: any = {}) => createResourceInstaller(f.options(extra));
   f.config = () => {
     const file = path.join(base, 'config.json');
     write(file, JSON.stringify({ userDataRoot: user, protectedRoots: [program, artwork], policy }));

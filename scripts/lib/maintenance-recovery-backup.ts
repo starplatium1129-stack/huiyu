@@ -72,7 +72,7 @@ function readBackup(options: any, id: any, expectedHash?: any) {
   return { directory, id, sha256, manifest, entries };
 }
 
-function restoreEntries(options: any, entries: any, assertOwned = () => {}) {
+function restoreEntries(options: any, entries: any, assertOwned: any = () => {}) {
   const ctx = io.context(options);
   // Validate the entire scope before the first mutation, then each path again on use.
   for (const item of entries) io.targetPath(ctx, item.file);

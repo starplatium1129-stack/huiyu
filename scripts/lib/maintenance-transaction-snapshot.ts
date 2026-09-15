@@ -3,7 +3,7 @@
 const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-recovery-fs');
 const { VERSIONED_FILES }: typeof import('./data-version') = require('./data-version');
 
-function captureMaintenanceSnapshot(options: any, store: any, deletedIds = []) {
+function captureMaintenanceSnapshot(options: any, store: any, deletedIds: any = []) {
   const ctx = io.context(options);
   if (!io.samePath(store.shardsDir, io.path.join(ctx.rootDir, 'data/scenes'))) throw io.failure('MAINTENANCE_PATH', '场景存储根与事务根不符');
   const files = VERSIONED_FILES.flatMap(name => ['', '.gz', '.br'].map(ext => io.path.join(ctx.rootDir, 'data', name + ext)));

@@ -2,14 +2,14 @@
 const { keyFor }: typeof import('./content-history-snapshot') = require('./content-history-snapshot');
 const { validId }: typeof import('./content-history-reader') = require('./content-history-reader');
 
-function target(kind: string, id: string, characterId = null) {
+function target(kind: string, id: string, characterId: any = null) {
   return { kind, id, ...(characterId === null ? {} : { characterId }), key: keyFor(kind, id, characterId) };
 }
 
 function relations(row: any, snapshots: any, unknown: string[]) {
   const value = row.value;
   const output: any = [];
-  const add = (kind: string, id: string, characterId = null, via = '') => {
+  const add = (kind: string, id: string, characterId: any = null, via: any = '') => {
     if (validId(id)) output.push({ ...target(kind, id, characterId), via });
   };
   if (row.kind === 'blueprint') {

@@ -1,7 +1,7 @@
 'use strict';
 const { fixture: baseFixture, git }: typeof import('./content-history-fixture') = require('./content-history-fixture');
 
-function fixture(t: any, withGit = true) {
+function fixture(t: any, withGit: any = true) {
   const f = baseFixture(t, false);
   for (const character of f.characters) {
     Object.assign(character, { displayName: 'Neutral example', originalName: 'Example', franchise: 'Fixture',

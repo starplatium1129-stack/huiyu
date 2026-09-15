@@ -14,7 +14,7 @@ function sortValue(value: any): any {
   if (!object(value)) return value;
   return Object.fromEntries(Object.keys(value).sort().map(key => [key, sortValue(value[key])]));
 }
-function relative(value: any, allowRoot = false) {
+function relative(value: any, allowRoot: any = false) {
   if (typeof value !== 'string' || !value || /[\x00-\x1f:]/.test(value)
     || path.posix.isAbsolute(value) || path.win32.isAbsolute(value)) throw Error('路径必须为 root 内相对路径');
   const result = value.replaceAll('\\', '/');
@@ -39,7 +39,7 @@ function rootPath(value: any) {
 }
 // Reject links even when they point inside root: aliases could bypass exclusions,
 // introduce cycles, or make a saved evidence file part of its own source identity.
-function resolveSafe(root: any, value: any, allowMissing = false) {
+function resolveSafe(root: any, value: any, allowMissing: any = false) {
   const name = relative(value, true);
   let current = root;
   for (const part of name === '.' ? [] : name.split('/')) {
@@ -74,7 +74,7 @@ function fileEntry(root: any, name: any) {
     return { path: name, status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'unsafe-or-unreadable', message: runtimeErrorMessage(error) };
   } finally { if (fd !== undefined) fs.closeSync(fd); }
 }
-function readJson(root: any, name: any, dedicated = false) {
+function readJson(root: any, name: any, dedicated: any = false) {
   name = dedicated ? evidencePath(name) : relative(name);
   const entry = fileEntry(root, name);
   if (entry.status !== 'file') throw Error(`${name}: ${entry.message}`);

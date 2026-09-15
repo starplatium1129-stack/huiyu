@@ -18,7 +18,7 @@ interface DevelopmentOptions {
 }
 
 /** Rebuild before restarting; a failed check leaves the last working gateway running. */
-export async function startDevelopment(root = defaultRoot, options: DevelopmentOptions = {}) {
+export async function startDevelopment(root: any = defaultRoot, options: DevelopmentOptions = {}) {
   root = path.resolve(root);
   const build = options.build || (() => buildProjects(root).some(result => !result.cached));
   const start = options.start || (() => spawn(process.execPath, [path.join(root, 'server.js')], {

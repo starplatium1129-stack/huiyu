@@ -28,7 +28,7 @@ function payload(snapshot: any) {
 }
 function snapshot(root: any, input: any) {
   const selection = selectors(input), entries = [], names = new Set();
-  function visit(name: any, kind: any, selectedRoot = false) {
+  function visit(name: any, kind: any, selectedRoot: any = false) {
     if (excluded(name)) return;
     if (names.has(name.toLowerCase())) throw Error(`路径大小写冲突: ${name}`);
     names.add(name.toLowerCase());

@@ -44,7 +44,7 @@ function seed() {
   return { options: { rootDir, runtimeRoot: path.join(rootDir, 'runtime') }, scenes, blueprints, write, cleanup: () => fs.rmSync(rootDir, { recursive: true, force: true }) };
 }
 
-async function start(fixture: any, mode = 'success') {
+async function start(fixture: any, mode: any = 'success') {
   const child = fork(__filename, [fixture.options.rootDir, mode], { silent: true, windowsHide: true });
   let errors = '';
   child.stderr!.on('data', chunk => { errors += chunk; });
@@ -53,7 +53,7 @@ async function start(fixture: any, mode = 'success') {
   const base = 'http://127.0.0.1:' + message.port;
   return {
     child, message, closed,
-    async request(url: any, body?: any, headers = {}) {
+    async request(url: any, body?: any, headers: any = {}) {
       const response = await fetch(base + url, body === undefined ? { headers } : { method: 'POST', headers: { 'content-type': 'application/json', ...headers }, body: JSON.stringify(body) });
       return { status: response.status, body: await response.json() };
     },

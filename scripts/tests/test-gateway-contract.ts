@@ -7,7 +7,7 @@ test('远程同一身份不能借原生 SD 写接口绕过应用分级和方法�
   const previous = process.env.AICS_ADULT_REMOTE;
   process.env.AICS_ADULT_REMOTE = '0';
   const remote = { 'x-token': stack.config.TOKEN, 'x-forwarded-for': '198.51.100.8' };
-  async function request(route: any, method: any, headers: any, body = {}) {
+  async function request(route: any, method: any, headers: any, body: any = {}) {
     const response = await fetch(stack.baseUrl + route, {
       method, headers: { ...headers, 'content-type': 'application/json' },
       ...(method === 'GET' || method === 'HEAD' ? {} : { body: JSON.stringify(body) }),
@@ -58,7 +58,7 @@ test('SD 代理：超过 15 秒的生成正常返回，复用连接不累积超�
     sockets.add(req.socket);
     res.once('finish', () => timeoutListeners.push(req.socket.listenerCount('timeout')));
   });
-  function request(path: any, method = 'GET') {
+  function request(path: any, method: any = 'GET') {
     return new Promise((resolve, reject) => {
       const req = http.request(stack.baseUrl + path, { method, agent }, (res) => {
         let body = '';

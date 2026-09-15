@@ -27,7 +27,7 @@ function resourceFixture(t: any) {
     RESOURCE_CONFIG_PATH: configPath, RESOURCE_MANAGEMENT: true, RUNTIME: { outputs: f.artwork } };
   f.make = make;
   f.gatewayConfig = config;
-  f.stack = async (overrides = {}) => {
+  f.stack = async (overrides: any = {}) => {
     const stack: any = await stackTools.start({ env: { AICS_APP_ROOT: f.program }, configureConfig(gateway: any) {
       Object.assign(gateway, config, { RUNTIME: gateway.RUNTIME, LIVE2D_ROOT: path.join(f.program, 'assets/live2d') }, overrides);
     } });
@@ -36,7 +36,7 @@ function resourceFixture(t: any) {
   };
   return f;
 }
-async function request(stack: { baseUrl: string; }, url: string, body?: any, headers = {}) {
+async function request(stack: { baseUrl: string; }, url: string, body?: any, headers: any = {}) {
   // Native HTTP preserves test Host/path headers; fetch may normalize or replace them.
   return new Promise((resolve, reject) => {
     const req = http.request(stack.baseUrl + url, { method: body === undefined ? 'GET' : 'POST',

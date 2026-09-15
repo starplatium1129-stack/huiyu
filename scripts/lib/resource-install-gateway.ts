@@ -76,7 +76,7 @@ function createResourceManager(gateway: any) {
       return { snapshot, modelGroups };
     } catch (error) { snapshot = null; issue = publicError(error); return null; }
   }
-  function status(fresh = false) {
+  function status(fresh: any = false) {
     if (!active && (fresh || (config && !config.unchanged()))) refresh();
     if (!active && snapshot) mount();
     const recoveryRequired = Boolean(issue && ['PENDING_TRANSACTION', 'BUSY', 'STATE_CONFLICT'].includes(issue.code))

@@ -19,7 +19,7 @@ function git(root: string, ...args: string[]) {
   return result.stdout.trim();
 }
 
-function fixture(t: any, withGit = true) {
+function fixture(t: any, withGit: any = true) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'content-history-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const write = (file: string, value: string|Uint8Array<ArrayBufferLike>|Uint8ClampedArray<ArrayBufferLike>|Uint16Array<ArrayBufferLike>|Uint32Array<ArrayBufferLike>|Int8Array<ArrayBufferLike>|Int16Array<ArrayBufferLike>|Int32Array<ArrayBufferLike>|BigUint64Array<ArrayBufferLike>|BigInt64Array<ArrayBufferLike>|Float16Array<ArrayBufferLike>|Float32Array<ArrayBufferLike>|Float64Array<ArrayBufferLike>|DataView<ArrayBufferLike>|({ id: string; char: string; prompt: string; rating: string; mature: boolean; }|undefined)[]|{ id: string; name: string; }[]) => {
@@ -57,7 +57,7 @@ function fixture(t: any, withGit = true) {
   write('data/scenes/one.2.json', scenes.slice(2));
   write('data/curation.json', { curatedSceneIds: ['sc001'], signatureSceneIds: [], personaCoreSceneIds: ['sc001'] });
   write('data/retired-scenes.json', { records: [{ id: 'sc099', reason: 'retired' }] });
-  const sceneProducts = (rows = scenes, core = ['sc001']) => {
+  const sceneProducts = (rows: any = scenes, core: any = ['sc001']) => {
     const ordered = [...rows].sort((a, b) => Number(a.id.slice(2)) - Number(b.id.slice(2)));
     write('data/scenes.json', ordered);
     const groups = { nene: ordered.filter((r) => r.char !== 'natsume' && r.char !== 'triad'),

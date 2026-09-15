@@ -25,7 +25,7 @@ globalThis.document = new Proxy({
 });
 const { useCompareSnapshots }: typeof import('../../src/composables/useCompareSnapshots.ts') = require('../../src/composables/useCompareSnapshots.ts');
 
-function flush(ms = 20) {
+function flush(ms: any = 20) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 

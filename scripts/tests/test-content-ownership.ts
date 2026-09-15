@@ -35,7 +35,7 @@ function snapshot(root: any): any {
     return e.isDirectory() ? snapshot(p) : [[p, fs.readFileSync(p).toString('base64')]];
   });
 }
-function cli(root: any, args = [], workflow = false) {
+function cli(root: any, args: any = [], workflow: any = false) {
   return spawnSync(process.execPath, [path.join(repo, workflow ? 'scripts/workflow.js' : 'scripts/maintenance/report-content-ownership.js'), ...(workflow ? ['audit:ownership'] : []), '--root', root, ...args], { encoding: 'utf8' });
 }
 test('all domains report real sources/products and batch ownership without accepting quality', (t) => {

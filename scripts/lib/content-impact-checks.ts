@@ -26,7 +26,7 @@ const FIELD_VALIDATION = {
   references: { rules: ['scripts/contracts/character-reference-standards.schema.json', 'scripts/contracts/character-reference-view.schema.json', 'content-impact-references.js:compareReferenceProjection'], unknown: ['Assets/review authenticity', 'Writer dependency completeness'] },
 };
 
-function selectExecution(report: any, forceFull = false, context: any) {
+function selectExecution(report: any, forceFull: any = false, context: any) {
   const reasons = [];
   if (forceFull) reasons.push('Explicit --full');
   if (!report || report.gitHistory?.status !== 'compared') reasons.push('No proved historical comparison');
@@ -57,7 +57,7 @@ function selectExecution(report: any, forceFull = false, context: any) {
     fullGate: 'required-not-run', wholeLibrary: 'not-validated' };
 }
 
-function outcome(id: string, scope: string|any[], issues = [], unknown = []) {
+function outcome(id: string, scope: string|any[], issues: any = [], unknown: any = []) {
   return { id, scope, executed: true, status: issues.length ? 'failed' : unknown.length ? 'unknown' : 'passed', issues, unknown };
 }
 

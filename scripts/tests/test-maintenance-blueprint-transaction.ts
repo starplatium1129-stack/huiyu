@@ -58,7 +58,7 @@ function seed() {
   }
 }
 
-function bytes(dir = root, result: any = {}) {
+function bytes(dir: any = root, result: any = {}) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.name === 'runtime' || entry.isSymbolicLink()) continue;
     const file = path.join(dir, entry.name);
@@ -68,7 +68,7 @@ function bytes(dir = root, result: any = {}) {
   return result;
 }
 
-async function app(run: any, packaged = false) {
+async function app(run: any, packaged: any = false) {
   const server = express().use(createMaintenanceRouter({
     ROOT_DIR: root, RUNTIME_ROOT: path.join(root, 'runtime'), SCENE_SHOWCASE_DIR: null, DESKTOP_PACKAGED: packaged,
   }).router).listen(0, '127.0.0.1');
@@ -86,7 +86,7 @@ async function app(run: any, packaged = false) {
 
 const stateUrl = '/api/maintenance/scenes-state';
 const changesUrl = '/api/maintenance/scenes/changes';
-const delta = (baseVersion?: any, scenes = [], blueprints?: any) => ({ baseVersion, changeSet: {
+const delta = (baseVersion?: any, scenes: any = [], blueprints?: any) => ({ baseVersion, changeSet: {
   version: 1, scenes: { upsert: scenes, remove: [] },
   ...(blueprints ? { blueprints: { upsert: blueprints, remove: [] } } : {}),
 } });

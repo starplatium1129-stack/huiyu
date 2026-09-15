@@ -13,7 +13,7 @@ function temp(t: any) {
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   return root;
 }
-function fixture(t: any, gitEnabled = true) {
+function fixture(t: any, gitEnabled: any = true) {
   const root = temp(t);
   const write = (name: string, value: string|NodeJS.ArrayBufferView<ArrayBufferLike>) => {
     fs.mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
@@ -33,7 +33,7 @@ function fixture(t: any, gitEnabled = true) {
   const initial = { scope: 'isolated fixture only', source: [{ path: 'src', kind: 'tree' }], build: [{ path: 'dist', kind: 'tree' }],
     gates: { 'checks.source': ['source'], 'checks.bundle': ['build'], 'checks.office': ['source', 'build'] } };
   const baselinePath = `${EVIDENCE_DIR}/baseline.json`, officePath = `${EVIDENCE_DIR}/office.json`, resultPath = `${EVIDENCE_DIR}/results.json`;
-  function office(extra = {}) {
+  function office(extra: any = {}) {
     const baseline = capture(root, { ...initial, ...extra }); saveJson(root, baselinePath, baseline);
     const checks: any = {};
     for (const key of ['source', 'bundle', 'office']) {
@@ -45,7 +45,7 @@ function fixture(t: any, gitEnabled = true) {
     return document;
   }
   return { root, write, git, initial, baselinePath, officePath, resultPath, office,
-    audit: (evidence = officePath, extra = {}) => report({ root, evidence, require: [], builds: [], ...extra }) };
+    audit: (evidence: any = officePath, extra: any = {}) => report({ root, evidence, require: [], builds: [], ...extra }) };
 }
 function tree(root: string) {
   const output: any = {};

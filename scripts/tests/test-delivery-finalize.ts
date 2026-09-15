@@ -13,7 +13,7 @@ const CLI = path.resolve(__dirname, '../maintenance/capture-delivery.js');
 const FINAL = `${EVIDENCE_DIR}/final.json`;
 const MAIN = ['installation', 'deviceAcceptance', 'modelAcceptance'];
 const run = (args: any) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', windowsHide: true });
-function commit(f: any, paths = ['src']) {
+function commit(f: any, paths: any = ['src']) {
   f.git('add', '--', ...paths);
   f.git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgSign=false',
     '-c', 'core.hooksPath=.git/no-hooks', 'commit', '--allow-empty', '-m', 'isolated finalize fixture');
@@ -39,7 +39,7 @@ function tested(f: any, { bound = true, crlf = false, prepare = () => {} }: any 
 function finalize(f: any, t: any, b: any) {
   return capture(f.root, { baseline: t.evidence, record: t.record, finalizeCommit: b });
 }
-function assertPending(f: any, file = FINAL) {
+function assertPending(f: any, file: any = FINAL) {
   const r = f.audit(file, { 'check-head': true });
   assert.equal(r.exitCode, 3, JSON.stringify(r.errors));
   assert.equal(r.repositoryHead.status, 'matched');

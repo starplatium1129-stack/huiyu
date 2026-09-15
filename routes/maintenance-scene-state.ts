@@ -38,7 +38,7 @@ function sceneContentVersion(root: any) {
 }
 
 // 调用方持有保存锁；内容和基线一起返回，避免客户端先读旧产物再领取新版本。
-function readSceneState(root: any, store: any, sceneWrite: any, options = { rootDir: root }, lease?: any) {
+function readSceneState(root: any, store: any, sceneWrite: any, options: any = { rootDir: root }, lease?: any) {
   const token = maintenanceReadToken(options, lease);
   const version = sceneContentVersion(root);
   const integrity = sceneWrite.verifyShardIntegrity();

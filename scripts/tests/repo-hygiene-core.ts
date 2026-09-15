@@ -128,7 +128,7 @@ function validateAllowance(entry: any, index: number) {
   return entry;
 }
 
-function normalizeAllowances(allowances = []) {
+function normalizeAllowances(allowances: any = []) {
   if (!Array.isArray(allowances)) throw new Error('Debt allowances must be an array');
   const lookup = new Map();
   for (let index = 0; index < allowances.length; index += 1) {
@@ -218,7 +218,7 @@ function textViolation(kind: string, message: string, source: string, index: num
   return { kind, message, ...location };
 }
 
-function scanText(bytes: NodeJS.AllowSharedBufferSource|undefined, expectedEol: string, relativePath = '') {
+function scanText(bytes: NodeJS.AllowSharedBufferSource|undefined, expectedEol: string, relativePath: any = '') {
   let source;
   try {
     source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);

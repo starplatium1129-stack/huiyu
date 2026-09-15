@@ -13,7 +13,7 @@ const CLI = path.resolve(__dirname, '../maintenance/capture-delivery.js');
 const AUDIT = path.resolve(__dirname, '../maintenance/audit-delivery.js');
 const MAIN = ['installation', 'deviceAcceptance', 'modelAcceptance'];
 const run = (args: any) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', windowsHide: true });
-function mainResults(root: any, fields = MAIN, baseline = `${EVIDENCE_DIR}/office.json`) {
+function mainResults(root: any, fields: any = MAIN, baseline: any = `${EVIDENCE_DIR}/office.json`) {
   const value: any = { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(root, baseline))) };
   for (const field of fields) {
     const name = `${EVIDENCE_DIR}/${field}.log`;
@@ -24,7 +24,7 @@ function mainResults(root: any, fields = MAIN, baseline = `${EVIDENCE_DIR}/offic
   fs.writeFileSync(path.join(root, file), JSON.stringify(value));
   return file;
 }
-const audit = (root: any, evidence: any, extra = {}) => report({ root, evidence, require: [], builds: [], ...extra });
+const audit = (root: any, evidence: any, extra: any = {}) => report({ root, evidence, require: [], builds: [], ...extra });
 function writeResults(f: any, value: any) {
   f.write(f.resultPath, { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(f.root, f.baselinePath))), ...value });
 }

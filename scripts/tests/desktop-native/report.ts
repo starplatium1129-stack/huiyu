@@ -226,7 +226,7 @@ constructor(options: any) {
     return item
   }
 
-  failure(id: any, kind: any, message: any, details = {}) {
+  failure(id: any, kind: any, message: any, details: any = {}) {
     const item = { id, kind, message, at: now(), details }
     const index = this.report.failures.findIndex((entry: any) => entry.id === id && entry.kind === kind)
     if (index >= 0) this.report.failures[index] = item

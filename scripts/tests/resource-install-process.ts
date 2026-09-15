@@ -4,7 +4,7 @@ const { fork }: typeof import('node:child_process') = require('node:child_proces
 const path: typeof import('node:path') = require('node:path');
 
 // Shared fixture driver. Importing it never registers or executes another test suite.
-function killAt(config: string, phase: string, action = 'install', releaseId = 'delta') {
+function killAt(config: string, phase: string, action: any = 'install', releaseId: any = 'delta') {
   return new Promise((resolve, reject) => {
     const worker = fork(path.join(__dirname, 'resource-install-worker.js'), [config, phase, action, releaseId],
       { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });

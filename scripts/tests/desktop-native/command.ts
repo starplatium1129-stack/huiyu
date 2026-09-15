@@ -62,14 +62,14 @@ function commandText(command: string, args: readonly string[]) {
   return [command, ...args].map(quoteArg).join(' ')
 }
 
-function executableWorks(candidate: PathLike|string[], versionArgs = ['--version']) {
+function executableWorks(candidate: PathLike|string[], versionArgs: any = ['--version']) {
   if (!candidate) return false
   if ((candidate.includes('\\') || candidate.includes('/')) && !fs.existsSync(candidate)) return false
   const result = spawnSync(candidate, versionArgs, { stdio: 'ignore', windowsHide: true, timeout: 15_000 })
   return result.status === 0
 }
 
-function findExecutable(name: string, candidates = []) {
+function findExecutable(name: string, candidates: any = []) {
   const suffix = process.platform === 'win32' ? '.exe' : ''
   const home = os.homedir()
   const defaults = name === 'cargo'

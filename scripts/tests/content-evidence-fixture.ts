@@ -43,7 +43,7 @@ function fixture(t: any) {
     status: 'succeeded', review: { verdict: 'pending', recordId }, createdAt: '2026-09-01T00:00:00Z',
     sources, recipeSource, inputVersion, payload, payloadSha256: jsonHash(payload), image,
     asset: { path: image, bytes: imageBytes.length, sha256: hash(imageBytes) } };
-  const exportRecords = (records = [record]) => {
+  const exportRecords = (records: any = [record]) => {
     for (const item of records) put(candidateRoot, `records/${item.candidateId}.json`, item);
     put(candidateRoot, 'generation-manifest.json', records);
   };

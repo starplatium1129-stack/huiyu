@@ -76,7 +76,7 @@ function parseArgs(argv: any) {
   return output
 }
 
-function commandVersion(executable: any, args = ['--version']) {
+function commandVersion(executable: any, args: any = ['--version']) {
   if (!executable) return null
   const result = spawnSync(executable, args, { encoding: 'utf8', windowsHide: true, timeout: 20_000 })
   if (result.status !== 0) return null
@@ -195,7 +195,7 @@ function httpRequest(url: any, options: any = {}) {
   })
 }
 
-async function waitFor(description: any, predicate: any, timeoutMs = 30_000, intervalMs = 100) {
+async function waitFor(description: any, predicate: any, timeoutMs: any = 30_000, intervalMs: any = 100) {
   const started = Date.now()
   let lastError: any = null
   while (Date.now() - started < timeoutMs) {
@@ -391,7 +391,7 @@ async function uninstallProduct(evidence: any, installed: any) {
   evidence.result('uninstall', 'PASS', { exitCode: 0, installLocationRemoved: true, registryRemoved: true })
 }
 
-async function startProductSession(context: any, tag: any, appArgs = []) {
+async function startProductSession(context: any, tag: any, appArgs: any = []) {
   const existing = processesByExecutable(context.installed.executable)
   if (existing.length) throw new Error(`installed product is already running before ${tag}; refusing to kill an unowned process`)
   const userDataFolder = path.join(context.fixture.localAppData, 'WebView2', `${tag}-${Date.now()}`)
@@ -439,7 +439,7 @@ async function gatewayHealthy(port: any) {
   }
 }
 
-async function waitCompanionReady(product: any, expectVisible = true) {
+async function waitCompanionReady(product: any, expectVisible: any = true) {
   await product.session.waitFor('Companion /companion route', `
 return location.pathname.replace(/\\/+$/, '') === '/companion' && Boolean(window.companionDesktop)
 `, [], { timeoutMs: 60_000 })
@@ -455,7 +455,7 @@ async function live2dState(session: any) {
   return session.invoke('aics_live2d_get_state')
 }
 
-async function quitProduct(product: any, context: any, resultId = 'normal-exit') {
+async function quitProduct(product: any, context: any, resultId: any = 'normal-exit') {
   const port = await gatewayPort(context.fixture).catch(() => null)
   const ownedBeforeQuit = processTree(product.pid)
   const ownedPids = new Set(ownedBeforeQuit.map((item: any) => item.pid))
@@ -590,7 +590,7 @@ function rectError(a: any, b: any) {
   return { edges, max: Math.max(...Object.values(edges)) }
 }
 
-async function rectMeasurement(product: any, includeHwnd = true) {
+async function rectMeasurement(product: any, includeHwnd: any = true) {
   const dom = await domSnapshot(product.session)
   const desktopState = await product.session.executeAsync('return await window.companionDesktop.getState()', [], 10_000)
   const native = await live2dState(product.session)
@@ -614,7 +614,7 @@ async function rectMeasurement(product: any, includeHwnd = true) {
   }
 }
 
-async function waitRectAligned(product: any, timeoutMs = 200, operationAt = Date.now()) {
+async function waitRectAligned(product: any, timeoutMs: any = 200, operationAt: any = Date.now()) {
   let measurement = null
   while (Date.now() - operationAt <= timeoutMs) {
     measurement = await rectMeasurement(product, false)

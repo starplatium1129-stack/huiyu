@@ -12,7 +12,7 @@ const { runMaintenanceNode }: typeof import('../lib/maintenance-transaction-proc
 const { createFixture, tree, spawnWorker }: typeof import('./maintenance-recovery-fixture') = require('./maintenance-recovery-fixture');
 const { fs, path } = io;
 
-async function crashed(fixture: any, mode = 'hold') {
+async function crashed(fixture: any, mode: any = 'hold') {
   const worker = await spawnWorker(fixture, mode);
   assert.equal(worker.message.status, 'ready');
   await worker.stop();

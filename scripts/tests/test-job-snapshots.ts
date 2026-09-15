@@ -11,7 +11,7 @@ function tempDir() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'aics-job-snap-'));
 }
 
-function sampleJob(overrides = {}) {
+function sampleJob(overrides: any = {}) {
   return Object.assign({
     id: 'v-1730000000-ab12',
     owner: 'local',

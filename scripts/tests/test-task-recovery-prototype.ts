@@ -39,7 +39,7 @@ function fixture(t: TestContext) {
     requestHash: digest('fixture-parameters'), engine: 'comfy', backendFingerprint: fingerprint,
     deadline: 61_000,
   };
-  function accepted(overrides = {}) {
+  function accepted(overrides: any = {}) {
     const job = journal.create({ ...input, ...overrides }, timestamp);
     recovery.markSubmitting(job.id);
     recovery.acknowledge(job.id, `upstream-${job.id}`);
