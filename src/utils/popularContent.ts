@@ -1,3 +1,6 @@
+import type { AdultEligibility, PopularOutfit, PopularCharacter } from '../types/character'
+export type { AdultEligibility, PopularOutfit, PopularCharacter } from '../types/character'
+
 // 热门角色无 LoRA 创作模式 —— 数据解析、资格门控与结构化输入构建。
 // 纯 TS 无 DOM：数据经 sceneStore 单例加载后传入，本模块只做派生与门控。
 // 命名遵循 src/utils/ 既有风格（promptPolicy / sceneInference）。
@@ -25,42 +28,6 @@ import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
 import { inferBlueprintLighting, existingBlueprintDecisions } from './blueprintLighting.ts'
 import { blueprintNegative, compositionTokens, parseCompositionIntent } from './blueprintComposition.ts'
-
-export type AdultEligibility = 'adult' | 'unknown' | 'underage'
-
-export interface PopularOutfit {
-  id: string
-  name: string
-  prose: string
-  tokens: string[]
-  default?: boolean
-}
-
-export interface PopularCharacter {
-  id: string
-  displayName: string
-  originalName: string
-  franchise: string
-  aliases: string[]
-  identityProse: string
-  identityTokens: string[]
-  exactTokens: string[]
-  exactPrefixes: string[]
-  recommendedEngine: string
-  supportedEngines: string[]
-  adultEligibility: AdultEligibility
-  outfits: PopularOutfit[]
-  /** 角色专属官方原画师或精选推荐画师风格 ID 列表。 */
-  curatedArtistStyles?: string[]
-  /**
-   * Character DNA 锁（2026-09-06 v2 升级落地）：三分类视觉基因契约。
-   * must：角色不可丢失的核心特征（预留策展层，编译器不强制）；
-   * flexible：允许随场景变化的元素（预留策展层）；
-   * avoid：禁止作为常驻身份锚定的元素（编译器从 identity 标签流过滤，
-   * 防止 C.C. 印记/花火面具/式和服类死绑回归；场景蓝图按需使用不受限）。
-   */
-  dnaLock?: { must: string[]; flexible: string[]; avoid: string[] }
-}
 
 export type DrawSubject =
   | { kind: 'studio' }

@@ -1,48 +1,8 @@
+import type { CharacterIdentity, CharacterPortrait, CharacterLora, CharacterProfile, CharacterScene } from '../types/character'
+export type { CharacterIdentity, CharacterPortrait, CharacterLora, CharacterProfile, CharacterScene } from '../types/character'
+
 import type { Scene } from '@/stores/sceneStore'
 export { popularPortraitSrc, isPopularPortraitPending } from './popularPortraitSource.ts'
-
-export interface CharacterIdentity {
-  role?: string
-  age?: string
-  occupation?: string
-  faction?: string
-}
-
-export interface CharacterPortrait {
-  image?: string
-  alt?: string
-}
-
-export interface CharacterLora {
-  name?: string
-  trigger_words?: string[]
-  recommended_scene?: string[]
-}
-
-export interface CharacterProfile {
-  id: string
-  name: string
-  icon: string
-  source: string
-  alias: string[]
-  /** heroine（站内角色，进角色空间）/ popular（热门出图角色，仅档案）。 */
-  type?: string
-  voice: string
-  tags: string[]
-  bg_story: string
-  personality: string[]
-  likes: string[]
-  identity?: CharacterIdentity
-  portrait?: CharacterPortrait
-  lora?: CharacterLora
-}
-
-export interface CharacterScene {
-  id: string
-  title: string
-  story: string
-  char: string
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null

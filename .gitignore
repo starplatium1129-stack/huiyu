@@ -32,6 +32,21 @@ __pycache__/
 # services 运行时编译产物（npm run build:runtime 从 .ts 生成，不入库）
 services/**/*.js
 services/**/*.d.ts
+# TypeScript is the source of truth; build:runtime produces these legacy entrypoints.
+/server.js
+/server/**/*.js
+/routes/**/*.js
+/scripts/**/*.js
+/scripts/**/*.mjs
+/tools/*.js
+/assets/theme-bootstrap.js
+/docs/guides/prompts/*.js
+/eslint.config.mjs
+/poc/audit-stability-apply.cjs
+/poc/live2d-compare/probe.mjs
+/poc/live2d-compare/probe2.mjs
+/poc/live2d-compare/shot.mjs
+/poc/live2d-compare/probe-types.js
 workspace/
 
 # 旧版运行文件（启动时会自动迁移到 runtime/）

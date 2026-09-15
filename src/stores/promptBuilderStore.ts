@@ -1,3 +1,6 @@
+import type { Scene } from '../types/scene'
+export type { Scene } from '../types/scene'
+
 import { defineStore } from 'pinia'
 import { historyFromResultContext } from '@/utils/resultContext'
 import { ref, reactive, computed, type Ref } from 'vue'
@@ -28,16 +31,6 @@ import { normalizeArtistStyleIds } from '@/config/artistStyles'
 
 export type CharKey = 'nene' | 'natsume' | 'triad'
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
-
-export interface Scene {
-  id: string; title: string; story?: string; prompt?: string; tags?: string[]; visualDescription?: string
-  char?: string; category?: string; season?: string; series?: string
-  rating?: string; mature?: boolean; lora?: string; time?: string; timeOfDay?: string
-  lighting?: string; camera?: string; negative?: string
-  location?: string; weather?: string; emotion?: string
-  recommendedSize?: string; animaCaption?: string
-  usage?: string[]; [k: string]: unknown
-}
 
 export interface HistoryEntry {
   id: number; timestamp: number; character: CharKey

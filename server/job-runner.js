@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * server/job-runner.js — 长任务注册表公共原语（2026-08-21 收口）。
  *
@@ -13,51 +12,52 @@
  * 迁移约定：引擎代码继续直接读写 registry.jobs 这个 Map（jobs.set/get/delete/
  * forEach 原样保留），因此注册表替换是零行为差异的。
  */
-
-var TERMINAL_STATUSES = Object.freeze(['succeeded', 'failed', 'cancelled']);
-
+let TERMINAL_STATUSES = Object.freeze(['succeeded', 'failed', 'cancelled']);
 function isTerminalStatus(status) {
-  return TERMINAL_STATUSES.indexOf(status) !== -1;
+    return TERMINAL_STATUSES.indexOf(status) !== -1;
 }
-
 function createJobRegistry() {
-  var jobs = new Map();
-  var closed = false;
-
-  return {
-    jobs: jobs,
-    isClosed: function () { return closed; },
-    close: function () { closed = true; },
-    /** queued/running/cancelling 视为占用并发额度（anima 与 video 判定口径一致） */
-    pendingCount: function () {
-      var count = 0;
-      jobs.forEach(function (job) {
-        if (job.status === 'queued' || job.status === 'running' || job.status === 'cancelling') count += 1;
-      });
-      return count;
-    },
-    /**
-     * 挂定时器并记录句柄到 job[slot]；同槽位重挂自动清旧（schedulePoll 重排语义），
-     * 回调触发前先置空句柄。unref 语义必须显式声明：gc/孤儿清理用 unref:true，
-     * 而轮询定时器保持默认（不 unref，与迁移前行为一致）。
-     */
-    armTimer: function (job, slot, delayMs, fn, options) {
-      this.clearTimer(job, slot);
-      job[slot] = setTimeout(function () {
-        job[slot] = null;
-        fn();
-      }, delayMs);
-      if (options && options.unref && typeof job[slot].unref === 'function') job[slot].unref();
-      return job[slot];
-    },
-    clearTimer: function (job, slot) {
-      if (job[slot]) { clearTimeout(job[slot]); job[slot] = null; }
-    }
-  };
+    let jobs = new Map();
+    let closed = false;
+    return {
+        jobs: jobs,
+        isClosed: function () { return closed; },
+        close: function () { closed = true; },
+        /** queued/running/cancelling 视为占用并发额度（anima 与 video 判定口径一致） */
+        pendingCount: function () {
+            let count = 0;
+            jobs.forEach(function (job) {
+                if (job.status === 'queued' || job.status === 'running' || job.status === 'cancelling')
+                    count += 1;
+            });
+            return count;
+        },
+        /**
+         * 挂定时器并记录句柄到 job[slot]；同槽位重挂自动清旧（schedulePoll 重排语义），
+         * 回调触发前先置空句柄。unref 语义必须显式声明：gc/孤儿清理用 unref:true，
+         * 而轮询定时器保持默认（不 unref，与迁移前行为一致）。
+         */
+        armTimer: function (job, slot, delayMs, fn, options) {
+            this.clearTimer(job, slot);
+            const timer = setTimeout(function () {
+                job[slot] = null;
+                fn();
+            }, delayMs);
+            job[slot] = timer;
+            if (options && options.unref && typeof timer.unref === 'function')
+                timer.unref();
+            return timer;
+        },
+        clearTimer: function (job, slot) {
+            if (job[slot]) {
+                clearTimeout(job[slot]);
+                job[slot] = null;
+            }
+        }
+    };
 }
-
 module.exports = {
-  createJobRegistry: createJobRegistry,
-  isTerminalStatus: isTerminalStatus,
-  TERMINAL_STATUSES: TERMINAL_STATUSES
+    createJobRegistry: createJobRegistry,
+    isTerminalStatus: isTerminalStatus,
+    TERMINAL_STATUSES: TERMINAL_STATUSES
 };

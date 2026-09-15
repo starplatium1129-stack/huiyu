@@ -17,6 +17,8 @@
 
 协作执行规则单独见 [AGENTS.md](../AGENTS.md)。
 
+源码维护与构建见 [TypeScript 开发与维护](guides/engineering/typescript-development.md)，包含类型归属、缓存、开发重启和验证入口。
+
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
 ## 当前审计与待办

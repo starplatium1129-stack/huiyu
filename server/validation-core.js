@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * server/validation-core.js —— 成人内容 fail-closed 门控的单一实现（2026-08-28
  * 工程审计 P1-6）。此前 assertAdultAllowed 在 routes/anima/validation.js、
@@ -14,24 +13,18 @@
  * - 授权：adultEnabled 必须显式 === true，请求体自报不单独构成远程授权；
  * - 远程/隧道默认拒绝，AICS_ADULT_REMOTE=1 显式开启后按原双门放行。
  */
-
-var security = require('./security');
-
-var ADULT_ELIGIBLE_CHARACTERS = Object.freeze(new Set(['nene', 'natsume']));
-
+let security = require('./security');
+let ADULT_ELIGIBLE_CHARACTERS = Object.freeze(new Set(['nene', 'natsume']));
 // 成人锚点正则：与内容契约的 nene_r18 / natsume_r18 门控词同源。
 // 服务端二次门控用（明言避免前端绕过），四个家族共用同一份。
-var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
-
-var ADULT_NOT_ELIGIBLE_MESSAGE = '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。';
-var ADULT_NOT_ENABLED_MESSAGE = '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。';
-var ADULT_REMOTE_NOT_ALLOWED_MESSAGE = '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。';
-
+let ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
+let ADULT_NOT_ELIGIBLE_MESSAGE = '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。';
+let ADULT_NOT_ENABLED_MESSAGE = '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。';
+let ADULT_REMOTE_NOT_ALLOWED_MESSAGE = '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。';
 /** 提示词是否命中成人锚点（词边界语义；"xnsfw" 这类粘连词不误报）。 */
 function detectAdultIntent(prompt) {
-  return ADULT_PROMPT_RE.test(String(prompt || ''));
+    return ADULT_PROMPT_RE.test(String(prompt || ''));
 }
-
 /**
  * 成人目标角色推断（白名单匹配前的归一化输入）。
  * 优先级：显式 character 字段 → LoRA ID（v18 双家族）→ prompt r18 锚点。
@@ -41,54 +34,59 @@ function detectAdultIntent(prompt) {
  * @returns {string} 归一化角色 ID，推断不出时为空串
  */
 function inferAdultTargetChar(body, options) {
-  var explicit = String((body && body.character) || '').toLowerCase();
-  if (explicit) return explicit;
-  var prompt = String((body && body.prompt) || '');
-  if (options && options.useLoras && Array.isArray(body.loras)) {
-    var hasNene = body.loras.some(function (l) { return String((l && l.id) || '').toUpperCase() === 'L_NENE_V18_WD14'; });
-    var hasNatsume = body.loras.some(function (l) { return String((l && l.id) || '').toUpperCase() === 'L_NAT_V18_WD14'; });
-    if (hasNene) return 'nene';
-    if (hasNatsume) return 'natsume';
-  }
-  if (/nene_r18/i.test(prompt)) return 'nene';
-  if (/natsume_r18/i.test(prompt)) return 'natsume';
-  return '';
+    let input = body || {};
+    let explicit = String(input.character || '').toLowerCase();
+    if (explicit)
+        return explicit;
+    let prompt = String(input.prompt || '');
+    if (options && options.useLoras && Array.isArray(input.loras)) {
+        let hasNene = input.loras.some(function (l) { return String((l && l.id) || '').toUpperCase() === 'L_NENE_V18_WD14'; });
+        let hasNatsume = input.loras.some(function (l) { return String((l && l.id) || '').toUpperCase() === 'L_NAT_V18_WD14'; });
+        if (hasNene)
+            return 'nene';
+        if (hasNatsume)
+            return 'natsume';
+    }
+    if (/nene_r18/i.test(prompt))
+        return 'nene';
+    if (/natsume_r18/i.test(prompt))
+        return 'natsume';
+    return '';
 }
-
 /**
  * 双门纯判定：角色白名单 + adultEnabled 传输层授权。
  * @returns {null | {reason: 'CHARACTER_NOT_ELIGIBLE'|'NOT_ENABLED', message: string}}
  *   null = 放行。desktop-tools 等返回值形态的调用方按 reason 映射自己的 code。
  */
 function evaluateAdultAccess(targetChar, adultEnabled) {
-  if (!ADULT_ELIGIBLE_CHARACTERS.has(String(targetChar || '').toLowerCase())) {
-    return { reason: 'CHARACTER_NOT_ELIGIBLE', message: ADULT_NOT_ELIGIBLE_MESSAGE };
-  }
-  if (adultEnabled !== true) {
-    return { reason: 'NOT_ENABLED', message: ADULT_NOT_ENABLED_MESSAGE };
-  }
-  return null;
+    if (!ADULT_ELIGIBLE_CHARACTERS.has(String(targetChar || '').toLowerCase())) {
+        return { reason: 'CHARACTER_NOT_ELIGIBLE', message: ADULT_NOT_ELIGIBLE_MESSAGE };
+    }
+    if (adultEnabled !== true) {
+        return { reason: 'NOT_ENABLED', message: ADULT_NOT_ENABLED_MESSAGE };
+    }
+    return null;
 }
-
 /**
  * 远程门：isLocal 缺省/true 视为本机放行（内部重放路径不持 req）；
  * 远程/隧道默认拒绝，AICS_ADULT_REMOTE=1 后放行。
  * @returns {null | {code: 'ADULT_REMOTE_NOT_ALLOWED', message: string}}
  */
 function evaluateAdultRemote(isLocal) {
-  if (isLocal !== false) return null;
-  if (security.adultRemoteEnabled()) return null;
-  return { code: 'ADULT_REMOTE_NOT_ALLOWED', message: ADULT_REMOTE_NOT_ALLOWED_MESSAGE };
+    if (isLocal !== false)
+        return null;
+    if (security.adultRemoteEnabled())
+        return null;
+    return { code: 'ADULT_REMOTE_NOT_ALLOWED', message: ADULT_REMOTE_NOT_ALLOWED_MESSAGE };
 }
-
 module.exports = {
-  ADULT_ELIGIBLE_CHARACTERS: ADULT_ELIGIBLE_CHARACTERS,
-  ADULT_PROMPT_RE: ADULT_PROMPT_RE,
-  ADULT_NOT_ELIGIBLE_MESSAGE: ADULT_NOT_ELIGIBLE_MESSAGE,
-  ADULT_NOT_ENABLED_MESSAGE: ADULT_NOT_ENABLED_MESSAGE,
-  ADULT_REMOTE_NOT_ALLOWED_MESSAGE: ADULT_REMOTE_NOT_ALLOWED_MESSAGE,
-  detectAdultIntent: detectAdultIntent,
-  inferAdultTargetChar: inferAdultTargetChar,
-  evaluateAdultAccess: evaluateAdultAccess,
-  evaluateAdultRemote: evaluateAdultRemote,
+    ADULT_ELIGIBLE_CHARACTERS: ADULT_ELIGIBLE_CHARACTERS,
+    ADULT_PROMPT_RE: ADULT_PROMPT_RE,
+    ADULT_NOT_ELIGIBLE_MESSAGE: ADULT_NOT_ELIGIBLE_MESSAGE,
+    ADULT_NOT_ENABLED_MESSAGE: ADULT_NOT_ENABLED_MESSAGE,
+    ADULT_REMOTE_NOT_ALLOWED_MESSAGE: ADULT_REMOTE_NOT_ALLOWED_MESSAGE,
+    detectAdultIntent: detectAdultIntent,
+    inferAdultTargetChar: inferAdultTargetChar,
+    evaluateAdultAccess: evaluateAdultAccess,
+    evaluateAdultRemote: evaluateAdultRemote,
 };

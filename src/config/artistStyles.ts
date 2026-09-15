@@ -1,4 +1,4 @@
-import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import type { ArchiveIconName } from '../components/visual/icons/types.ts'
 import { resolveDrawCapabilities } from '../utils/drawCapabilities.ts'
 
 // Curated artist tags verified against the current Danbooru artist records and

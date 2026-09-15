@@ -3,6 +3,7 @@
     "target": "ES2022",
     "module": "CommonJS",
     "strict": true,
+    "noEmitOnError": true,
     "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

@@ -1,6 +1,6 @@
 # 统一工作流手册
 
-> 维护日期：2026-09-15。命令注册与默认参数以 scripts/workflow.js 为准；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
+> 维护日期：2026-09-15。命令注册与默认参数以 scripts/workflow.ts 源码为准，运行入口 scripts/workflow.js 由构建生成；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
 
 ## 先查入口
 
@@ -34,6 +34,9 @@
 | 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（已纳入 check 与 CI，候选须人工复核） |
 | 查看内容覆盖差额 | `npm run wf -- audit:coverage`（只读报告：热门服装→参考登记、角色→主题选择器；`--json` 机器可读；信息性，不作为门禁失败依据） |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
+| 检查办公机工程入口 | `npm run wf -- office:health`（只检查目录与入口，不代替工具链验证） |
+| 只读严格检查 TypeScript | `npm run wf -- check:typescript`（服务、网关、工具与独立浏览器脚本） |
+| 验证构建和开发重启行为 | `npm run wf -- check:typescript-build`（中性隔离夹具） |
 | 按当前改动验证 | `npm run wf -- gate:quick` |
 | 跨域/构建链等全量验证 | `npm run wf -- gate:full` |
 | 检查本机桌面打包能力 | `npm run wf -- desktop:doctor --json`（只检测，不安装） |
@@ -270,7 +273,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | check:quick | npm run check 的全部已注册并行检查 |
 | check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build |
 | gate:full | npm run check（内含 typecheck:app/typecheck）+ vitest + unit + contract + build，全量入口 |
-| build:web / build:runtime | 前端与预算/预压；服务 TypeScript 编译 |
+| build:web / build:runtime | 前端与预算/预压；服务、网关、维护/测试及独立浏览器脚本的严格检查与编译 |
 | check:style-debt | 样式字面值、颜色、动画和双主题全局/角色令牌对比度；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
 | check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |

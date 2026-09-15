@@ -17,26 +17,24 @@
  * `msg` 作为 `error` 的镜像保留在失败信封里 —— 只为兼容可能还在用旧字段的
  * 分享链接页面缓存；新代码不要读它。前端已全部改读 `error`。
  */
-
 function fail(res, status, error, extra) {
-  var body = Object.assign({ ok:false, error:String(error || '请求无法处理') }, extra || {});
-  // 旧字段镜像，见文件头注释
-  body.msg = body.error;
-  return res.status(status).json(body);
+    let body = Object.assign({ ok: false, error: String(error || '请求无法处理') }, extra || {});
+    // 旧字段镜像，见文件头注释
+    body.msg = body.error;
+    return res.status(status).json(body);
 }
-
 function ok(res, payload) {
-  return res.json(Object.assign({ ok:true }, payload || {}));
+    return res.json(Object.assign({ ok: true }, payload || {}));
 }
-
 /**
  * 从上游/内部错误里挑一个合适的 HTTP 状态。
  * 4xx 原样透传（那是客户端的问题），其余归到 fallback。
  */
 function statusFor(error, fallback) {
-  var status = Number(error && (error.status || error.statusCode));
-  if (Number.isInteger(status) && status >= 400 && status < 500) return status;
-  return fallback || 500;
+    let detail = error;
+    let status = Number(detail && (detail.status || detail.statusCode));
+    if (Number.isInteger(status) && status >= 400 && status < 500)
+        return status;
+    return fallback || 500;
 }
-
-module.exports = { ok:ok, fail:fail, statusFor:statusFor };
+module.exports = { ok: ok, fail: fail, statusFor: statusFor };

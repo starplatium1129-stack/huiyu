@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * server/upstream-health.js — 本机上游 JSON 请求与健康探测收口（P3）。
  *
@@ -14,79 +13,76 @@
  * 面向公网的上游请求（带代理/信封语义）继续走 services/http-client.ts；
  * 这里只服务本机回环上游，不走代理。
  */
-
-var requestBuffered = require('./buffered-request').requestBuffered;
-
-var MAX_JSON_BYTES = 8 * 1024 * 1024;
-
+let requestBuffered = require('./buffered-request').requestBuffered;
+let MAX_JSON_BYTES = 8 * 1024 * 1024;
 async function requestJson(baseUrl, apiPath, body, timeoutMs, maxBytes) {
-  const target = new URL(apiPath, baseUrl);
-  const payload = body === null || body === undefined ? null : JSON.stringify(body);
-  const response = await requestBuffered(target, {
-    method: payload === null ? 'GET' : 'POST', body: payload,
-    headers: payload === null ? {} : { 'Content-Type':'application/json', 'Content-Length':Buffer.byteLength(payload) },
-    timeoutMs: timeoutMs || 4000, maxBytes: maxBytes || MAX_JSON_BYTES,
-    makeError(kind, error) { return error || new Error(kind === 'tooLarge' ? 'response too large' : kind === 'aborted' ? 'upstream response aborted' : kind); },
-  });
-  const raw = response.body.toString('utf8');
-  let data = null;
-  try { data = raw ? JSON.parse(raw) : null; } catch {}
-  return { status: response.status, data, raw };
+    const target = new URL(apiPath, baseUrl);
+    const payload = body === null || body === undefined ? null : JSON.stringify(body);
+    const response = await requestBuffered(target, {
+        method: payload === null ? 'GET' : 'POST', body: payload,
+        headers: payload === null ? {} : { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+        timeoutMs: timeoutMs || 4000, maxBytes: maxBytes || MAX_JSON_BYTES,
+        makeError(kind, error) { return error || new Error(kind === 'tooLarge' ? 'response too large' : kind === 'aborted' ? 'upstream response aborted' : kind); },
+    });
+    const raw = response.body.toString('utf8');
+    let data = null;
+    try {
+        data = raw ? JSON.parse(raw) : null;
+    }
+    catch { }
+    return { status: response.status, data, raw };
 }
-
 function reachable(status) {
-  return status >= 200 && status < 500;
+    return status >= 200 && status < 500;
 }
-
 function pingSd(urlStr, timeoutMs) {
-  return requestJson(urlStr, '/sdapi/v1/sd-models', null, timeoutMs || 2500)
-    .then(function (r) { return reachable(r.status); })
-    .catch(function () { return false; });
-}
-
-function pingTts(urlStr, timeoutMs) {
-  return requestJson(urlStr, '/docs', null, timeoutMs || 2500)
-    .then(function (r) { return reachable(r.status); })
-    .catch(function () {
-      return requestJson(urlStr, '/', null, timeoutMs || 2500)
+    return requestJson(urlStr, '/sdapi/v1/sd-models', null, timeoutMs || 2500)
         .then(function (r) { return reachable(r.status); })
         .catch(function () { return false; });
+}
+function pingTts(urlStr, timeoutMs) {
+    return requestJson(urlStr, '/docs', null, timeoutMs || 2500)
+        .then(function (r) { return reachable(r.status); })
+        .catch(function () {
+        return requestJson(urlStr, '/', null, timeoutMs || 2500)
+            .then(function (r) { return reachable(r.status); })
+            .catch(function () { return false; });
     });
 }
-
 function pingComfy(urlStr, timeoutMs) {
-  return requestJson(urlStr, '/system_stats', null, timeoutMs || 2500)
-    .then(function (r) { return r.status >= 200 && r.status < 300; })
-    .catch(function () { return false; });
+    return requestJson(urlStr, '/system_stats', null, timeoutMs || 2500)
+        .then(function (r) { return r.status >= 200 && r.status < 300; })
+        .catch(function () { return false; });
 }
-
 function pingOllamaDetail(urlStr, timeoutMs) {
-  return requestJson(urlStr, '/api/ps', null, timeoutMs || 3000)
-    .then(function (r) {
-      if (!(r.status >= 200 && r.status < 300)) return { online: false, models: [], vram: 0 };
-      var models = Array.isArray(r.data && r.data.models) ? r.data.models : [];
-      var vram = 0;
-      models.forEach(function (m) {
-        var size = Number(m.size_vram || m.size || 0);
-        if (Number.isFinite(size)) vram += size;
-      });
-      return {
-        online: true,
-        models: models.map(function (m) { return String(m.name || m.model || ''); }).filter(Boolean),
-        vram: vram
-      };
+    return requestJson(urlStr, '/api/ps', null, timeoutMs || 3000)
+        .then(function (r) {
+        if (!(r.status >= 200 && r.status < 300))
+            return { online: false, models: [], vram: 0 };
+        let rawModels = r.data && r.data.models;
+        let models = Array.isArray(rawModels) ? rawModels : [];
+        let vram = 0;
+        models.forEach(function (m) {
+            let size = Number(m.size_vram || m.size || 0);
+            if (Number.isFinite(size))
+                vram += size;
+        });
+        return {
+            online: true,
+            models: models.map(function (m) { return String(m.name || m.model || ''); }).filter(Boolean),
+            vram: vram
+        };
     })
-    .catch(function () {
-      return requestJson(urlStr, '/api/tags', null, timeoutMs || 3000)
-        .then(function (r) { return { online: r.status === 200, models: [], vram: 0 }; })
-        .catch(function () { return { online: false, models: [], vram: 0 }; });
+        .catch(function () {
+        return requestJson(urlStr, '/api/tags', null, timeoutMs || 3000)
+            .then(function (r) { return { online: r.status === 200, models: [], vram: 0 }; })
+            .catch(function () { return { online: false, models: [], vram: 0 }; });
     });
 }
-
 module.exports = {
-  requestJson: requestJson,
-  pingSd: pingSd,
-  pingTts: pingTts,
-  pingComfy: pingComfy,
-  pingOllamaDetail: pingOllamaDetail,
+    requestJson: requestJson,
+    pingSd: pingSd,
+    pingTts: pingTts,
+    pingComfy: pingComfy,
+    pingOllamaDetail: pingOllamaDetail,
 };

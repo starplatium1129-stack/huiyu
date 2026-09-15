@@ -1,6 +1,6 @@
 // 导演台：情绪、镜头、光照、构图、色彩情调静态定义
 
-import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import type { ArchiveIconName } from '../components/visual/icons/types.ts'
 
 export interface ChoiceDef { id: string; iconName: ArchiveIconName; name: string; en: string; prompt?: string }
 export interface ColorMoodDef { id: string; iconName: ArchiveIconName; name: string; en: string; colors: string[]; desc: string; prompt: string }

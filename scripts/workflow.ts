@@ -1,0 +1,531 @@
+#!/usr/bin/env node
+'use strict';
+
+/**
+ * scripts/workflow.js — 统一工作流入口
+ *
+ * 解决：maintenance 脚本分散、入口难发现、参数不统一。
+ * 用法：
+ *   node scripts/workflow.js --help
+ *   node scripts/workflow.js <group> --help
+ *   node scripts/workflow.js <group>:<action> [options]
+ *   npm run workflow -- <group>:<action> [options]
+ *
+ * 设计：薄封装，不接管业务逻辑，仅做发现、校验与转发，
+ * 保持对现有脚本的完全兼容（直接 node 旧脚本仍可用）。
+ *
+ * 运行条件元数据（计划 006 W1，2026-09-13）：
+ *   每个注册项的 run 字段是 help / plan / audit:workflows 共用的结构化描述，
+ *   只用于展示与审计，runner 不据此拦截或改写执行（无运行时策略）。
+ *   - nature：默认（不带开关）行为的 facet，多值；枚举见 scripts/lib/workflow-runner.js EFFECTS
+ *   - machine：运行环境要求，多值；枚举见 MACHINES
+ *   - switches：显式开关改变的行为（值同样用 EFFECTS）；runner 级 --plan/--help 不在此列
+ *   - resume：idempotent（重跑覆盖/等价）| checkpoint（按已完成条目断点续跑）| na
+ *   - evidence：结论的核实位置（文件:行）；unknown：未核实点，不猜
+ *   - notes：已确证但待主任务处理的缺陷登记（不改执行）
+ *   复合（steps）工作流的 nature 必须覆盖各子步骤，不得只标 read-only；
+ *   audit:workflows 校验以上全部约束。
+ */
+
+const path = (require('path') as typeof import('path'));
+
+const ROOT = path.resolve(__dirname, '..');
+
+const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
+  ...(require('./lib/workflows-content-checks') as typeof import('./lib/workflows-content-checks')),
+  'maintenance:recover': {
+    desc: '预览已中断维护事务的精确文件恢复；显式apply绑定预览后执行',
+    cmd: ['node', 'scripts/maintenance/recover-maintenance.js'], required: ['--root'], docs: 'docs/workflow.md',
+    opts: '--root <项目根> [--runtime-root <运行目录>] [--showcase-root <可信样张根>] [--backup <备份ID>] [--apply --recovery-plan <保存的预览JSON>]',
+    run: { nature: ['read-only', 'preview'], machine: ['node'], switches: { '--apply': ['writes-source', 'writes-product', 'delete', 'guard'] },
+      resume: 'checkpoint', evidence: 'scripts/maintenance/recover-maintenance.js:1',
+      unknown: ['实际断电、磁盘故障和主力机恢复仍需设备验收'],
+      notes: ['活进程/未知锁不抢占；预览绑定源根、journal和文件状态；只恢复声明目标，保留恢复前备份；失败保持拒绝读写'] },
+  },
+  'audit:workflow-conditions': { desc: '只读运行条件与复合副作用覆盖报告', cmd: ['node', 'scripts/maintenance/report-workflow-conditions.js'],
+    opts: '--json；--root <隔离目录>；--domain <工作流分组>', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/report-workflow-conditions.js:1', unknown: ['元数据与路径存在性不证明实际执行成功'] } },
+  'audit:ownership': { desc: '只读内容归属报告：权威源、派生文件与读写边界', cmd: ['node', 'scripts/maintenance/report-content-ownership.js'],
+    opts: '--json；--consistency；--root <隔离目录>；--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'], '--consistency': ['read-only', 'guard'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-ownership.js:1', unknown: ['默认浅层结构与职责；--consistency 核对已实现的源/产物投影，未覆盖字段保持 unknown；内容、图片质量及外部样张未验收'] } },
+  'capture:delivery': { desc: '捕获交付输入、绑定实际结果及最终提交；默认只读输出', cmd: ['node', 'scripts/maintenance/capture-delivery.js'],
+    opts: '--scope <说明> --source-file/tree <路径> --build-file/tree <路径>；或 --baseline <证据JSON> [--record <结果JSON>] [--machine office|main] [--finalize-commit <完整SHA>]；--gate <字段=source,build>；--save <runtime/delivery-evidence/新文件.json>；--root <根>；--json', docs: 'docs/workflow.md',
+    needs: 'Node；提交身份核验需要本地 Git；结果与日志必须来自实际执行',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--save': ['writes-product'], '--finalize-commit': ['read-only', 'guard'] }, resume: 'na', evidence: 'scripts/maintenance/capture-delivery.js:1', unknown: ['只绑定明确选择的输入、构建与日志字节；不执行门禁，不认证日志语义，不替代安装、模型和设备验收'], notes: ['--save 仅新建专用证据，拒绝覆盖；最终提交关联保留执行前 HEAD'] } },
+  'audit:delivery': { desc: '只读交付证据审计：比较交付标识，区分错误与待验', cmd: ['node', 'scripts/maintenance/audit-delivery.js'],
+    opts: '--evidence <JSON>；--compare-evidence <root内相对JSON路径>（可重复）；--require <gate.path>（可重复）；--expect-commit <SHA>；--check-head（需本地 Git，只比较 HEAD commit，不覆盖 dirty working tree，不查询远端）；--check-worktree（需本地 Git，独立检查未提交/未跟踪文件，dirty 或不可用退出 1）；--expect-build <field=SHA256>（可重复）；--verify-file <相对root路径>（可重复）；--expect-file-sha256 <相对root路径=64位SHA256>（可重复）；--root <隔离目录>；--json', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'], '--check-head': ['read-only'], '--check-worktree': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/audit-delivery.js:1', unknown: ['自动重算 tracking 的选定输入/构建/日志，变化使相关通过项 stale；旧无 tracking 通过项为 unknown；不证明日志语义或真实设备/模型验收'] } },
+  'audit:impact': { desc: '只读变更影响报告：角色/服装、场景与显式路径；未知范围单列', cmd: ['node', 'scripts/maintenance/report-content-impact.js'],
+    opts: '--character <id> [--outfit <id>] 或 --scene <scNNN/sc1000+> 或 --path <仓库相对路径>（可重复）；--git-diff；--base <本地commit/ref>；--showcase-manifest <root内相对路径>（可重复）；--root <隔离目录>；--json', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'], '--base': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-impact.js:1', unknown: ['历史对照保留删除/重命名及旧新关系；增量检查仅输出计划，未知/公共约束仍需 full；真实内容和设备未验收'] } },
+  'audit:resource-manifest': { desc: '只读本地资源清单生成、校验与差异比较：root/assets 路径、字节、SHA-256，零写入', cmd: ['node', 'scripts/maintenance/report-resource-manifest.js'],
+    opts: '--root <目录>；--manifest <root内JSON>（校验模式：重复/非法/越界路径、缺失、字节与哈希）；--manifest <旧JSON> --compare-manifest <新JSON>（差异比较：按精确路径输出新增/移除/改变/未改变，只读两份清单不读实际资产）', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--manifest': ['guard'], '--compare-manifest': ['guard'] }, resume: 'na', evidence: 'scripts/maintenance/report-resource-manifest.js:1', unknown: ['哈希一致只证明字节相同；文件存在不代表内容已交付、图片质量或审核通过；校验只核对已列条目，不发现未登记文件；差异比较不含未核验项与结构错误时才可宣称已列条目一致，仍不证明目录覆盖完整或内容已审核'] } },
+  'resource:pack': { desc: '离线资源候选包暂存导出：默认预览零写入；--apply 经清单核验后复制到 root 内新候选目录（不覆盖旧包，不是发布/安装入口）；--base-manifest 增量模式只复制差异项', cmd: ['node', 'scripts/maintenance/stage-resource-pack.js'],
+    opts: '--manifest <root内JSON> --name <包名>；[--base-manifest <root内旧JSON>]（与 --manifest 同用：增量候选，只复制 added/changed，写 manifest.json 与 delta.json，不是完整可安装包）；--root <目录>；--apply（仅 Windows 实际复制；其他平台可预览）', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product'], '--base-manifest': ['guard'] }, resume: 'na', evidence: 'scripts/maintenance/stage-resource-pack.js:1', unknown: ['候选包通过字节核验仅表示复制内容与清单一致，不代表图片质量、审核或部署完成；目标必须不存在（不覆盖旧包），写入范围限 --root 内 scripts/archive/resource-packs；预览仍会读取清单与源文件；增量候选只含差异项，不是完整可安装包，不能当作已安装更新'] } },
+  'resource:verify-delta': { desc: '只读增量候选包与基线兼容核验：结构/身份/数量重算与候选实际字节，全程零写入', cmd: ['node', 'scripts/maintenance/verify-resource-pack.js'],
+    opts: '--base-manifest <root内JSON> --pack <root内候选目录>；--root <目录>', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/verify-resource-pack.js:1', unknown: ['核验通过仅表示相对于给定基线可重建声明目标且候选已列字节匹配；不是数字签名、可信来源、当前安装状态或质量验收；不发现候选包未登记文件；基线资产不被读取（removed 文件可已不存在）'] } },
+  'resource:install': { desc: '导入已审批的离线/已下载资源包；默认预览', cmd: ['node', 'scripts/maintenance/manage-resource-install.js', 'import'], required: ['--config', '--release'],
+    opts: '--config <可信本地JSON> --release <已配置ID> [--apply]', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product', 'delete'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/manage-resource-install.js:1', unknown: ['程序/页面接线及真实安装升级待验收'], notes: ['仅写专用用户资源库；清理仅本工具暂存文件；保留旧版本和用户作品；哈希不替代来源审批'] } },
+  'resource:download': { desc: '下载已审批来源的候选资源包，可取消/续传；默认预览', cmd: ['node', 'scripts/maintenance/manage-resource-install.js', 'download'], required: ['--config', '--release'],
+    opts: '--config <可信本地JSON> --release <已配置ID> [--apply]', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['network-download', 'writes-product', 'delete'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/manage-resource-install.js:1', unknown: ['真实托管/带宽和资源审核待确定'], notes: ['--apply 需要已审批网络来源；下载不自动安装；仅清理本工具暂存文件'] } },
+  'resource:recover': { desc: '恢复专用资源库未完成事务；默认预览', cmd: ['node', 'scripts/maintenance/manage-resource-install.js', 'recover'], required: ['--config'],
+    opts: '--config <可信本地JSON> [--apply]', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product', 'delete'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/manage-resource-install.js:1', unknown: ['仅隔离进程中断验证，断电和真实设备仍待验收'] } },
+  'resource:rollback': { desc: '恢复已保留的上一资源版本；默认预览', cmd: ['node', 'scripts/maintenance/manage-resource-install.js', 'rollback'], required: ['--config'],
+    opts: '--config <可信本地JSON> [--apply]', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product', 'delete'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/manage-resource-install.js:1', unknown: ['必须有可核验旧版本；不回滚应用或用户作品'] } },
+  'resource:installed': { desc: '核对专用资源库已安装字节及待恢复状态', cmd: ['node', 'scripts/maintenance/manage-resource-install.js', 'status'], required: ['--config'],
+    opts: '--config <可信本地JSON>', docs: 'docs/workflow.md',
+    run: { nature: ['guard', 'writes-product', 'delete'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/lib/resource-install.js:1', unknown: ['状态核验会获取并释放专用锁，不是零写入审计；不证明图片质量'] } },
+  'showcase:review-sheets': { desc: '从候选审核目录生成逐图查看用联系表', cmd: ['python', 'scripts/maintenance/build-scene-manual-audit-sheets.py'], required: ['--audit'], docs: 'docs/workflow.md',
+    run: { nature: ['writes-product'], machine: ['python-pillow'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-scene-manual-audit-sheets.py:134-162', unknown: [], notes: ['输出写在 --audit 目录下，通常在仓库外'] } },
+  'showcase:manual-review': { desc: '汇总明确人工决定；缺少决定的图片保持 pending', cmd: ['node', 'scripts/maintenance/build-scene-manual-review.js'], required: ['--manifest', '--decisions'], docs: 'docs/workflow.md',
+    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-scene-manual-review.js:41-66', unknown: [] } },
+  'showcase:scene-publish': { desc: '旧独立场景发布器：校验逐图审核后预览；--apply 写新版本', cmd: ['node', 'scripts/maintenance/publish-scene-showcase-anima11.js'], required: ['--from', '--source', '--target'], docs: 'docs/workflow.md',
+    run: { nature: ['preview'], machine: ['node', 'python-pillow'], switches: { '--apply': ['writes-release'], '--force': ['delete', 'writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/publish-scene-showcase-anima11.js:506-509,511-555', unknown: [] } },
+  'showcase:rating-refresh': { desc: '仅刷新发布清单分级，默认预览；--apply 写新版本', cmd: ['node', 'scripts/maintenance/publish-rating-refresh.js'], required: ['--source', '--target'], docs: 'docs/workflow.md',
+    run: { nature: ['preview'], machine: ['node'], switches: { '--apply': ['writes-release'], '--force': ['delete', 'writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/publish-rating-refresh.js:193-213', unknown: [] } },
+  'reference:repair-urls': { desc: '参考 URL 迁移修复并备份；先传 --dry-run 核对清单', cmd: ['node', 'scripts/maintenance/repair-character-reference-urls.js'], docs: 'docs/workflow.md',
+    run: { nature: ['writes-source'], machine: ['node'], switches: { '--dry-run': ['preview'] }, resume: 'idempotent', evidence: 'scripts/maintenance/repair-character-reference-urls.js:80,139-142,191-192', unknown: [] } },
+  'models:download-h3': { desc: '下载 H3 可选模型（大文件；--models-root 指定目录）', cmd: ['node', 'scripts/maintenance/download-minimax-h3.js'], required: ['--models-root'], docs: 'docs/workflow.md',
+    run: { nature: ['network-download', 'writes-product'], machine: ['node', 'network'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/download-minimax-h3.js:51-54,72,104', unknown: [], notes: ['约 44GB；中断文件重跑从零重下，已完成文件跳过'] } },
+  'desktop:verify-gateway': { desc: '按安装包资源映射隔离验证网关和桌宠页面', cmd: ['node', 'scripts/maintenance/verify-desktop-gateway.js'], docs: 'docs/desktop-deployment.md',
+    run: { nature: ['isolated-fixture', 'service'], machine: ['windows', 'node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/verify-desktop-gateway.js:47-85', unknown: [] } },
+  'desktop:doctor': { desc: '检查 Windows 桌面打包工具链与 Cubism SDK', cmd: ['node', 'scripts/maintenance/desktop-build-environment.js'], docs: 'docs/desktop-deployment.md',
+    run: { nature: ['read-only'], machine: ['windows', 'node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/desktop-build-environment.js:39-64', unknown: [] } },
+  'desktop:storage-benchmark': { desc: '用临时库和私有浏览器比较 IndexedDB 与 SQLite 原型，不访问用户数据', cmd: ['node', 'scripts/tests/prototypes/benchmark-artwork-storage.js'], docs: 'plans/005-desktop-architecture-consolidation.md',
+    run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-artwork-storage.js:56-135', unknown: [] } },
+  'desktop:package-local': { desc: '跳过压缩生成本机测试安装包', cmd: ['npm', 'run', 'package:tauri', '--', '--config', 'tauri.local.json'], docs: 'docs/desktop-deployment.md',
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.package:tauri; scripts/maintenance/run-tauri.js:17', unknown: [] } },
+  'brand:build': { desc: '从手绘 SVG 母版生成绘遇字标、网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md',
+    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-brand-assets.js:17-26', unknown: [] } },
+  'docs:check': { desc: '检查文档文件链接与旧地址映射', cmd: ['node', 'scripts/maintenance/check-doc-links.js'], docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/check-doc-links.js:38', unknown: [] } },
+  'audit:workflows': { desc: '只读审计注册入口、npm 脚本、文档及复合依赖', builtin: 'audit', docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/lib/workflow-runner.js:7-21', unknown: [] } },
+  'check:workflows': { desc: '工作流执行与门禁路由回归测试', cmd: ['node', 'scripts/tests/test-workflow-runner.js'], docs: 'docs/workflow.md',
+    run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-workflow-runner.js:13-108', unknown: [] } },
+  'dev:web': { desc: '启动前端开发服务', cmd: ['npm', 'run', 'dev'], docs: 'docs/workflow.md',
+    run: { nature: ['service'], machine: ['node'], switches: {}, resume: 'na', evidence: 'package.json scripts.dev', unknown: [] } },
+  'dev:server': { desc: '监视 TypeScript 变更，通过检查后重启网关', cmd: ['npm', 'run', 'dev:server'], docs: 'docs/workflow.md',
+    run: { nature: ['service', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/dev-server.mts', unknown: [], notes: ['检查失败保留上一版网关；源码和产物一致时复用构建；网关仍按原行为自愈缺失数据'] } },
+  'office:health': { desc: '检查办公机工程目录与维护入口', cmd: ['node', 'scripts/maintenance/office-health.js'], docs: 'docs/workflow.md',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/office-health.ts', unknown: ['目录存在不代表工具链或真实设备验收通过'] } },
+  'check:typescript': { desc: '只读严格检查服务、网关、工具和独立浏览器脚本', cmd: ['node', 'scripts/build-node.mts', '--check'], docs: 'docs/workflow.md',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/build-node.mts', unknown: [] } },
+  'check:typescript-build': { desc: '隔离验证 TypeScript 构建、缓存和开发重启行为', cmd: ['node', '--test', 'scripts/tests/test-typescript-build.js', 'scripts/tests/test-typescript-development.js'], docs: 'docs/workflow.md',
+    run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-typescript-build.ts; scripts/tests/test-typescript-development.ts', unknown: [] } },
+  'installer:modern': {
+    desc: '构建现代原生安装器（--preview --capture 可安全预览，不安装）',
+    cmd: ['node', 'scripts/maintenance/build-modern-installer.js'],
+    docs: 'docs/guides/desktop/game-installer.md',
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'], '--capture': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-modern-installer.js:10-13,44-70', unknown: ['--capture 截图落盘位置未逐行核实'] },
+  },
+  'installer:bundle': {
+    desc: '仅重打包已构建的桌面程序并签名（只改安装界面时使用）',
+    cmd: ['node', 'scripts/maintenance/release-desktop-update.js', '--bundle-only'],
+    docs: 'docs/guides/desktop/game-installer.md',
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--publish': ['publish-remote'], '--bump': ['writes-source'] }, resume: 'idempotent', evidence: 'scripts/maintenance/release-desktop-update.js:33-39,76-86,215-242', unknown: [], notes: ['--publish 推送 GitHub Releases（外部发布）；需 updater 签名私钥'] },
+  },
+  'installer:build': {
+    desc: '构建二游风格原生安装界面（固定版本 Tauri 模板）',
+    cmd: ['node', 'scripts/maintenance/build-game-installer.js'],
+    docs: 'docs/guides/desktop/game-installer.md',
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-game-installer.js:75-106', unknown: ['capture 模式隐藏启动界面截屏的完整生命周期未逐行核实'] },
+  },
+  'installer:preview': {
+    desc: '编译安全界面预览（不安装、不提权；--page=welcome|directory|install|finish|maintenance）',
+    cmd: ['node', 'scripts/maintenance/build-game-installer.js', '--preview'],
+    docs: 'docs/guides/desktop/game-installer.md',
+    run: { nature: ['writes-product'], machine: ['windows', 'windows-toolchain'], switches: { '--capture': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-game-installer.js:122-124', unknown: [] },
+  },
+  'data:build': {
+    desc: '聚合场景分片 -> scenes.json（热门角色见 popular:build）',
+    cmd: ['node', 'scripts/maintenance/build-scenes.js'],
+    docs: 'docs/maintenance.md#文件职责',
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-scenes.js:15-42', unknown: [], notes: ['默认构建写聚合并同步 src/stores/sceneStore.ts 的 DATA_VERSION（build-scenes.js:31-42）；--check 不写版本：产物缺失自愈重建（fresh clone，:15-22），齐全但与源不一致报错退出 1（:24-27）'] },
+  },
+  'popular:build': {
+    desc: '聚合热门角色分片 -> popular-characters.json',
+    cmd: ['node', 'scripts/maintenance/build-popular.js'],
+    docs: 'docs/maintenance.md#文件职责',
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-popular.js:12-37', unknown: [], notes: ['默认构建同步 DATA_VERSION（build-popular.js:26-37）；--check 不写版本：产物缺失自愈重建（:14-17），齐全但与源不一致报错退出 1（:18-21）'] },
+  },
+  'popular:split': {
+    desc: 'popular→分片（仅写分片文件，不重建聚合；如需重建用 popular:import）',
+    cmd: ['node', 'scripts/maintenance/split-popular.js', '--write'],
+    docs: 'docs/maintenance.md',
+    run: { nature: ['guard'], machine: ['node'], switches: { '--write': ['writes-source'] }, resume: 'idempotent', evidence: 'scripts/maintenance/split-popular.js:4-6', unknown: [], notes: ['缺 --write 直接拒绝退出 1；注册命令已固定 --write'] },
+  },
+  'popular:import': {
+    desc: 'popular→分片+重建聚合（popular:split 超集，从聚合文件导入；改分片用 build）',
+    cmd: ['npm', 'run', 'popular:import'],
+    docs: 'docs/maintenance.md',
+    run: { nature: ['writes-source', 'writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.popular:import（split-popular --write && build-popular）', unknown: [], notes: ['从聚合反向覆盖分片，先核对 diff'] },
+  },
+  'blueprints:build': {
+    desc: '聚合场景蓝图分片 -> scene-blueprints.json',
+    cmd: ['node', 'scripts/maintenance/build-blueprints.js'],
+    docs: 'docs/maintenance.md#文件职责',
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-blueprints.js:24-49', unknown: [], notes: ['默认构建同步 DATA_VERSION（build-blueprints.js:38-49）；--check 不写版本：产物缺失自愈重建（:26-29），齐全但与源不一致报错退出 1（:30-33）'] },
+  },
+  'blueprints:split': {
+    desc: 'blueprints→分片（仅写分片文件，不重建聚合；如需重建用 blueprints:import）',
+    cmd: ['node', 'scripts/maintenance/split-blueprints.js', '--write'],
+    docs: 'docs/maintenance.md',
+    run: { nature: ['guard'], machine: ['node'], switches: { '--write': ['writes-source'] }, resume: 'idempotent', evidence: 'scripts/maintenance/split-blueprints.js:11-13', unknown: [] },
+  },
+  'blueprints:import': {
+    desc: 'blueprints→分片+重建聚合（blueprints:split 超集，从聚合文件导入；改分片用 build）',
+    cmd: ['npm', 'run', 'blueprints:import'],
+    docs: 'docs/maintenance.md',
+    run: { nature: ['writes-source', 'writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.blueprints:import（split-blueprints --write && build-blueprints）', unknown: [] },
+  },
+  'data:import': {
+    desc: 'scenes.json -> 分片 + 重建聚合（覆盖写入）',
+    cmd: ['npm', 'run', 'scenes:import'],
+    docs: 'docs/maintenance.md',
+    run: { nature: ['writes-source', 'writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.scenes:import（split-scenes --write && build-scenes）', unknown: [], notes: ['writeSceneShards 按 ID 排序重切全部分组，中间插入/退役会移动后续批次条目（计划 006 D5）'] },
+  },
+  'data:normalize': {
+    desc: '分类评级 + 规范标签 + 校验',
+    cmd: ['npm', 'run', 'scenes:normalize'],
+    docs: 'package.json',
+    run: { nature: ['writes-source'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.scenes:normalize（classify-scene-ratings --write && optimize-scenes --write && validate-scenes）', unknown: [], notes: ['末段 validate-scenes 只读；分级脚本只维护分级元数据不改写 negative；定稿保护拦截受保护字段'] },
+  },
+  'data:validate': {
+    desc: '内容契约 + DATA_VERSION 校验',
+    cmd: ['node', 'scripts/maintenance/validate-content-contracts.js'],
+    docs: 'docs/maintenance.md',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/validate-content-contracts.js:15', unknown: [] },
+  },
+  'data:apply': {
+    desc: '合并 refine-map chunks (替代 4 个 apply-*.js)',
+    cmd: ['node', 'scripts/maintenance/apply-chunks.js'],
+    docs: 'scripts/maintenance/apply-chunks.js:1',
+    opts: '--target popular|scenes --chunks 1-17',
+    run: { nature: ['writes-source'], machine: ['node'], switches: { '--help': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/apply-chunks.js:110,147', unknown: ['--target/--chunks 合法性由脚本自校验，注册表未声明 required'] },
+  },
+  'reference:register': {
+    desc: '登记尚无参考资产的角色形态（standards/view 形态集合对账，pending 占位不制造断链）',
+    cmd: ['node', 'scripts/maintenance/register-pending-reference-outfits.js'],
+    docs: 'scripts/maintenance/register-pending-reference-outfits.js:1',
+    opts: '[--dry-run] [--ids=a,b,c] 默认处理所有「standards 空 + view 已有形态」的角色；登记后仍需 reference:render 候选出图、人工验收及发布',
+    run: { nature: ['writes-source'], machine: ['node'], switches: { '--dry-run': ['preview'] }, resume: 'idempotent', evidence: 'scripts/maintenance/register-pending-reference-outfits.js:108-114', unknown: [], notes: ['默认（无 --dry-run）即写 standards 与 view；pending 不算已交付资产'] },
+  },
+  'reference:render': {
+    desc: '参考库四视角待审核候选出图（MiaoMiao v1.6，832x1216，默认并发3）',
+    cmd: ['node', 'scripts/maintenance/render-all-outfits-references.js'],
+    docs: 'docs/workflow.md#参考库',
+    required: ['--output'],
+    opts: '--output <候选目录> [--ids=a,b,c] [--root <数据根>] [--gateway <url>] [--concurrency <n>] [--dry-run] [--retry-unknown]',
+    needs: '实际生成需 Anima gateway，默认 http://127.0.0.1:3000；预览无需网关',
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'], '--retry-unknown': ['external-model', 'writes-product'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/render-all-outfits-references.js:1; scripts/lib/generation-candidates.js:1', unknown: ['真实模型及画面审核未执行'], notes: ['只生成隔离候选，review 保持 pending；已知 job 恢复，未知提交需显式 retry-unknown；不回填活跃库'] },
+  },
+  'reference:audit': {
+    desc: '纯视觉审核 4并发 (Gemini)',
+    cmd: ['node', 'scripts/maintenance/pure-vision-audit.js'],
+    docs: 'docs/workflow.md#参考库',
+    opts: '[--force] [--keys char/outfit/pers,...] 强制重审指定项',
+    run: { nature: ['external-model', 'writes-product'], machine: ['vision-api', 'node'], switches: { '--force': ['external-model', 'writes-product'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/pure-vision-audit.js:47-48', unknown: [], notes: ['视觉后端=本地 CLIProxyAPI 127.0.0.1:8317/v1（gemini-3.7-flash-high，回退 8000）'] },
+  },
+  'reference:repair': {
+    desc: '定向修复未通过项（每项3次重渲染+重审）',
+    cmd: ['node', 'scripts/maintenance/fine-tuned-repair.js'],
+    docs: 'docs/workflow.md#参考库',
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/fine-tuned-repair.js:35,41,184', unknown: [] },
+  },
+  'reference:design': {
+    desc: '三视图设计图批量渲染（增量默认跑 pending，--all 重跑）',
+    cmd: ['node', 'scripts/maintenance/render-design-sheets.js'],
+    docs: 'docs/workflow.md#参考库',
+    opts: '[--chars=a,b] [--outfits=x,y] [--views=f,s,b] [--all] [--dry-run] [--limit=N]',
+    needs: 'ComfyUI http://127.0.0.1:8188（--disable-smart-memory）',
+    run: { nature: ['external-model', 'writes-product', 'writes-source'], machine: ['comfyui', 'node'], switches: { '--dry-run': ['preview'], '--limit': ['external-model'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/render-design-sheets.js:48,302-306,366', unknown: [], notes: ['出图后回填 view.json url（writes-source）'] },
+  },
+  ...(require('./lib/workflows-reference-candidates') as typeof import('./lib/workflows-reference-candidates')).referenceCandidateWorkflows,
+  'showcase:generate': {
+    desc: 'Anima 热门角色 × 蓝图候选出图',
+    cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js'],
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    required: ['--output'],
+    opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys popular:角色:蓝图 --model anima-miaomiao-v1.2 --concurrency 3',
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-popular-showcase-anima11.js:16-18,44-49', unknown: [], notes: ['写仓库外 ../AI/Reviews/... 候选目录；assertIsolated 拒写公共 showcase'] },
+  },
+  'showcase:batch-miaomiao': {
+    desc: 'MiaoMiao v1.2 场景待审核候选生成（832x1216/1216x832，默认并发3）',
+    cmd: ['node', 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js'],
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    required: ['--output'],
+    opts: '--output <候选目录> [--force] [--character <id>] [--limit <n>] [--root <数据根>] [--gateway <url>] [--concurrency <n>] [--dry-run] [--retry-unknown]',
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--force': ['external-model', 'writes-product'], '--dry-run': ['preview'], '--retry-unknown': ['external-model', 'writes-product'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js:1; scripts/lib/generation-candidates.js:1', unknown: ['真实模型及画面审核未执行'], notes: ['默认网关3000；隔离候选保持 pending，不自动发布；已知 job 可恢复'] },
+  },
+  'showcase:scene-candidates': {
+    desc: '独立场景 MiaoMiao v1.2 候选生成（仅指定 ID，不发布）',
+    cmd: ['node', 'scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.2'],
+    docs: 'docs/workflow.md#样张',
+    required: ['--output', '--ids'],
+    opts: '--output <候选目录> --ids sc001,sc002 [--concurrency 1] [--dry-run]',
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-scene-showcase-anima11.js:71-77,269-285', unknown: [] },
+  },
+  'showcase:fill-gaps': {
+    docs: 'docs/workflow.md',
+    desc: '只读样张清单并生成缺口待审核候选（MiaoMiao v1.2，沿用蓝图画幅，默认并发3）',
+    cmd: ['node', 'scripts/maintenance/render-showcase-gaps.js'],
+    required: ['--output'],
+    opts: '--output <候选目录> [--manifest <源manifest>] [--only <角色id列表>] [--concurrency <n>] [--gateway <url>] [--root <数据根>] [--redo-mine] [--dry-run] [--retry-unknown]',
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'], '--retry-unknown': ['external-model', 'writes-product'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/render-showcase-gaps.js:1; scripts/lib/generation-candidates.js:1', unknown: ['真实模型及画面审核未执行'], notes: ['预览零写入，显式隔离候选目录；review 保持 pending，不回填活跃 manifest'] },
+  },
+  'showcase:audit': {
+    required: ['--manifest', '--out'],
+    desc: '批量审核 popular showcase (Gemini 4并发，rella)',
+    cmd: ['node', 'scripts/maintenance/audit-showcase-rella.js'],
+    docs: 'scripts/maintenance/audit-showcase-rella.js:1',
+    run: { nature: ['external-model', 'writes-product'], machine: ['vision-api', 'node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/audit-showcase-rella.js:44-48', unknown: [] },
+  },
+  'showcase:audit:scene': {
+    required: ['--manifest'],
+    desc: '批量审核 scene showcase (Gemini 4并发，scene 版)',
+    cmd: ['node', 'scripts/maintenance/audit-scene-showcase-run.js'],
+    docs: 'scripts/maintenance/audit-scene-showcase-run.js:1',
+    run: { nature: ['external-model', 'writes-product'], machine: ['vision-api', 'node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/audit-scene-showcase-run.js:93-113', unknown: [] },
+  },
+  'showcase:publish': {
+    required: ['--from', '--source', '--target'],
+    desc: '预览审核通过的样张发布（--apply 写入版本目录）',
+    cmd: ['node', 'scripts/maintenance/publish-popular-showcase.js'],
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    run: { nature: ['preview'], machine: ['node', 'python-pillow'], switches: { '--apply': ['writes-release', 'writes-source'], '--force': ['delete', 'writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/publish-popular-showcase.js:9-12,24-27', unknown: [], notes: ['--apply 除新版本目录外还写仓库内 assets/characters/popular-<id>.png 立绘'] },
+  },
+  'showcase:batch': {
+    desc: '统一批量调度（替代 8 个 run-batch-* 脚本）',
+    cmd: ['node', 'scripts/maintenance/run-batch.js'],
+    docs: 'scripts/maintenance/run-batch.js:1',
+    opts: '--source popular|scenes --batch-size 10 --concurrency 3',
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'], '--help': ['read-only'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/run-batch.js:35-54,165-166', unknown: ['实际副作用取决于被调度的 generate 脚本'] },
+  },
+  'showcase:full': {
+    desc: '样张链路：generate -> audit -> 发布预览（--output / --source / --target 必填）',
+    cmd: null,
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
+    steps: ['showcase:generate', 'showcase:audit', 'showcase:publish'],
+    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'vision-api', 'node', 'python-pillow'], switches: {}, resume: 'checkpoint', evidence: 'scripts/workflow.js:200-205; scripts/lib/workflow-runner.js:37-53', unknown: [], notes: ['复合：生成与审核实际执行，发布步仅预览（--apply 被 plan() 参数白名单拒绝）'] },
+  },
+  'check:quick': {
+    desc: '并行质量门 npm run check（注册项全跑；与 gate:quick 区别：本命令全量并行，gate:quick 按改动面积只跑相关）',
+    cmd: ['npm', 'run', 'check'],
+    docs: 'AGENTS.md#实施与交付',
+    run: { nature: ['read-only', 'self-heal-missing'], machine: ['node'], switches: { '--list': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/run-check-parallel.js:22-57', unknown: [], notes: ['22 步全部 --check/validate；例外：fresh clone 产物缺失时 ensureAll 落盘自愈'] },
+  },
+  'gate:quick': {
+    desc: '按改动类型分层门禁（ui|server|data|all；与 check:quick 区别：只跑改动相关面积，更快，缺省自动检测 git 改动）',
+    cmd: ['node', 'scripts/maintenance/gate-quick.js'],
+    opts: '[ui|server|data|all] [--verbose] [--all]',
+    docs: 'docs/workflow.md',
+    run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:65-118,174-189', unknown: ['实际范围由 Git 变更或位置参数决定，此处列可能发生的行为'], notes: ['scripts/config 等变更会升级 full 并执行构建；data 面积含三个 --check 构建守卫；纯文档改动跳过'] },
+  },
+  'gate:full': {
+    desc: '全量门禁：check（内含双 typecheck）+ vitest + unit + contract + 打包预算（横切重构/提交前）',
+    cmd: ['node', 'scripts/maintenance/gate-quick.js', 'full'],
+    docs: 'docs/workflow.md',
+    run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:174-189; scripts/maintenance/run-check-parallel.js:22-25', unknown: [], notes: ['typecheck:app/typecheck 已包含在 check 编排内（run-check-parallel.js:24-25），不单独重复执行；末步真实执行 npm run build（vite+预算+预压）'] },
+  },
+  'check:full': {
+    desc: '完整校验：check + frontend + unit + contract',
+    cmd: ['npm', 'run', 'validate'],
+    docs: 'AGENTS.md',
+    run: { nature: ['read-only', 'self-heal-missing'], machine: ['node'], switches: {}, resume: 'na', evidence: 'package.json scripts.validate', unknown: [], notes: ['不含 build（与 gate:full 的区别）'] },
+  },
+  'check:content': {
+    desc: '仅内容契约 + DATA_VERSION',
+    cmd: ['npm', 'run', 'test:content'],
+    docs: 'scripts/maintenance/validate-content-contracts.js:1',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'package.json scripts.test:content', unknown: [] },
+  },
+  'build:web': {
+    desc: '前端构建 + 预算 + 预压',
+    cmd: ['npm', 'run', 'build'],
+    docs: 'AGENTS.md#实施与交付',
+    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.build（vite build && check-bundle-budget && precompress）', unknown: [] },
+  },
+  'build:runtime': {
+    desc: '严格检查并编译服务、网关、工具和浏览器脚本；复用未变产物',
+    cmd: ['npm', 'run', 'build:runtime'],
+    docs: 'package.json',
+    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.build:runtime', unknown: [] },
+  },
+  'deploy:desktop': {
+    desc: '桌面增量部署（跳过构建）',
+    cmd: ['deploy-desktop.bat', '-SkipBuild'],
+    docs: 'docs/desktop-deployment.md',
+    run: {
+      nature: ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], machine: ['windows'],
+      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
+      evidence: 'deploy-desktop.bat:18,22; scripts/maintenance/deploy-desktop-quick.ps1:20-28,114-122,178-184,290-296; scripts/lib/workflow-runner.js:178-182',
+      unknown: [],
+      notes: [
+        '-SkipBuild 只跳过 npm run build（ps1:114-122）；数据聚合仍每次重建并写 data 产物（ps1:178-184），随后清 WebView2 缓存、修剪陈旧 chunk、验证反推依赖并启动桌面端（ps1:213-225,264-296）。',
+        'bat 固定附加 -Cleanup（清安装目录源端删除型残留）再转发其余开关（bat:18）；非管理员时经 UAC 透传全部参数重启自身，需用户点「是」（ps1:52-70）；runner 强制 Windows 且仅接受无值开关（workflow-runner.js:178-182）。',
+        '开关标签描述可能副作用，不抵消默认标签：-UseInstaller 改跑 runtime/desktop-updates 最新 *-setup.exe（前置：先 package:tauri 产出安装包，缺失退出 1；跳过本地构建及数据刷新，ps1:106,157-169）；-QuietInstall 仅随 -UseInstaller 静默安装（ps1:72,163-164）；-NoRestart 结束不启动；-StartupRepair 仅修 1.6.0 文档/图标/快捷方式，与 -UseInstaller 互斥（ps1:43,76-103）；-InstallDir <路径> 只能直接运行 bat。数据刷新可能写 DATA_VERSION。',
+      ],
+    },
+  },
+  'deploy:desktop:full': {
+    desc: '桌面完整部署（前端构建 + 复制 + 清缓存 + 验证 + 重启）',
+    cmd: ['deploy-desktop.bat'],
+    docs: 'docs/desktop-deployment.md',
+    run: {
+      nature: ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], machine: ['windows'],
+      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
+      evidence: 'deploy-desktop.bat:18,22; scripts/maintenance/deploy-desktop-quick.ps1:20-28,114-119,178-184,186-211,290-296',
+      unknown: [],
+      notes: [
+        '默认完整增量：npm run build → 停应用 → 清残留 → 刷新数据产物并复制 → 清 WebView2 缓存 + 验证依赖 → 启动（ps1:113-296）；增量模式要求安装目录已存在（ps1:108-111）。',
+        'bat 固定附加 -Cleanup 再转发其余开关（bat:18）；非管理员时经 UAC 透传全部参数重启自身，需用户点「是」（ps1:52-70）；runner 强制 Windows 且仅接受无值开关（workflow-runner.js:178-182）。',
+        '开关标签描述可能副作用，不抵消默认标签：-UseInstaller 改跑 runtime/desktop-updates 最新 *-setup.exe（前置：先 package:tauri 产出安装包，缺失退出 1；跳过本地构建及数据刷新，ps1:106,157-169）；-QuietInstall 仅随 -UseInstaller 静默安装（ps1:72,163-164）；-NoRestart 结束不启动；-StartupRepair 仅修 1.6.0 文档/图标/快捷方式，与 -UseInstaller 互斥（ps1:43,76-103）；-InstallDir <路径> 只能直接运行 bat。数据刷新可能写 DATA_VERSION。',
+      ],
+    },
+  },
+  // ── check: 单项门禁（可单独跑或组合）──────────────────────────────
+  'check:monolith': {
+    desc: '600 行红线只降不升门禁（以 monolith-baseline.json 为准）',
+    cmd: ['node', 'scripts/tests/test-monolith-budget.js'],
+    docs: 'scripts/tests/test-monolith-budget.js:1',
+    opts: '[--update-baseline] 重新生成基线（体量真降后用）',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: { '--update-baseline': ['writes-baseline'] }, resume: 'na', evidence: 'scripts/tests/test-monolith-budget.js:141-147', unknown: [] },
+  },
+  'check:contrast': {
+    desc: '双主题全局与角色强调色对比度门禁（WCAG AA）',
+    cmd: ['node', 'scripts/maintenance/check-contrast.js', '--check'],
+    docs: 'AGENTS.md#质量红线',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/check-contrast.js:288', unknown: [] },
+  },
+  'check:animations': {
+    desc: 'GPU 合成属性门禁（禁 left/top/width/height 补间）',
+    cmd: ['npm', 'run', 'lint:animations', '--', '--check'],
+    docs: 'AGENTS.md#质量红线',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/lint-animations.js:207-220', unknown: [] },
+  },
+  'check:ref-urls': {
+    desc: '参考库 URL 断链门禁（按当前索引，pending 不算已发布）',
+    cmd: ['node', 'scripts/maintenance/check-ref-urls.js'],
+    opts: '[--root <完整项目根>]；优先级 --root > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根；--help/--plan 零目标读取',
+    docs: 'scripts/maintenance/check-ref-urls.js:1',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: { '--root': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/check-ref-urls.js:93', unknown: [], notes: ['URL 存在性检查与网关共用素材根解析；素材根缺失可用 AICS_REFERENCE_AUDIT_MODE=structure（仅结构，须注明）'] },
+  },
+  'check:pinned-scenes': {
+    desc: '定稿场景字节级保护门禁（100 条手工定稿）',
+    cmd: ['node', 'scripts/tests/test-pinned-scene-prompts.js'],
+    docs: 'AGENTS.md#质量红线',
+    run: { nature: ['read-only', 'guard', 'isolated-fixture'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/test-pinned-scene-prompts.js:17,35-53', unknown: [], notes: ['门禁本体只读；自带测试使用临时夹具'] },
+  },
+  'check:rewrite': {
+    desc: '批量改写完整性门禁（覆盖率/模板签名/跨条目雷同）',
+    cmd: ['node', 'scripts/tests/test-prompt-rewrite-integrity.js'],
+    docs: 'AGENTS.md#质量红线',
+    opts: '[--delivery <交付文件>] 复检指定交付；[--baseline <commit>] 换基线；[--targeted] 精确修复模式',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/test-prompt-rewrite-integrity.js:206-217,246-278,281-292', unknown: [], notes: ['默认基线 b1ccfc0，经 git show 读取基线数据，需本地 Git；无 --delivery 时对当前工作区数据层全量复查'] },
+  },
+  'check:popular': {
+    desc: '热门角色与提示词契约',
+    cmd: ['node', 'scripts/tests/test-popular-content.js'],
+    docs: 'scripts/tests/test-popular-content.js:1',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/tests/test-popular-content.js:933-945', unknown: [] },
+  },
+  'check:anima-routes': {
+    desc: 'Anima 接口与生成边界契约',
+    cmd: ['node', 'scripts/tests/test-anima-routes.js'],
+    docs: 'scripts/tests/test-anima-routes.js:1',
+    run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-anima-routes.js:107-119,647-661', unknown: [] },
+  },
+  'check:frontend': {
+    desc: '前端单测（vitest，stores/utils/composables 主战场）',
+    cmd: ['npm', 'run', 'test:frontend'],
+    docs: 'vitest.config.ts',
+    run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'na', evidence: 'package.json scripts.test:frontend', unknown: [] },
+  },
+  'check:style-debt': {
+    desc: '样式债聚合门禁（style-debt + style-literals + contrast + colors + animations）',
+    cmd: ['npm', 'run', 'test:style-debt'],
+    docs: 'package.json',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'package.json scripts.test:style-debt', unknown: [] },
+  },
+  'check:bundle': {
+    desc: '打包预算门禁（路由与依赖闭包，build:web 隐含）',
+    cmd: ['node', 'scripts/maintenance/check-bundle-budget.js'],
+    docs: 'AGENTS.md#实施与交付',
+    run: { nature: ['read-only', 'guard'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/check-bundle-budget.js:198-201', unknown: [] },
+  },
+  // ── backup / runtime: 磁盘债治理 ────────────────────────────────
+  'backup:git': {
+    desc: 'git bundle 本地第二副本（v2 增量链：锚点×2 + 增量×10）',
+    cmd: ['node', 'scripts/maintenance/git-bundle-backup.js'],
+    docs: 'scripts/maintenance/git-bundle-backup.js:1',
+    opts: '[--keep N] 增量保留份数（默认 10）',
+    run: { nature: ['writes-product', 'delete'], machine: ['node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/git-bundle-backup.js:61-129', unknown: [], notes: ['清理超量旧 bundle；不能替代 push/异地副本'] },
+  },
+  'runtime:clean': {
+    desc: '实验孤儿目录清理（dry-run 默认、白名单保护、30 天 mtime 门槛）',
+    cmd: ['node', 'scripts/maintenance/clean-runtime-experiments.js'],
+    docs: 'scripts/maintenance/clean-runtime-experiments.js:1',
+    opts: '[--prune] 真删  [--days N] 改门槛',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--prune': ['delete'] }, resume: 'idempotent', evidence: 'scripts/maintenance/clean-runtime-experiments.js:31-43,121-143', unknown: [], notes: ['--prune 仅删已收编实验目录（KNOWN_EXPERIMENTS/tmp-*）且超 --days（默认 30）；白名单与未识别目录永不删'] },
+  },
+  'comfy:start': {
+    desc: '启动本机 ComfyUI（reference/showcase 链路依赖前置，--disable-smart-memory）',
+    cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/start-comfyui.ps1'],
+    docs: 'scripts/maintenance/start-comfyui.ps1:1',
+    needs: 'ComfyUI 已安装且权重就位',
+    run: { nature: ['service'], machine: ['windows'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/start-comfyui.ps1:51', unknown: [] },
+  },
+  // ── test: 套件入口 ────────────────────────────────────────────────
+  'test:contract': {
+    desc: '契约测试套件（内容/接口/热门/Anima 等聚合）',
+    cmd: ['npm', 'run', 'test:contract'],
+    docs: 'package.json',
+    run: { nature: ['isolated-fixture', 'self-heal-missing'], machine: ['node'], switches: { '--all': ['read-only'], '--verbose': ['read-only'] }, resume: 'na', evidence: 'scripts/tests/quality-test-inventory.js:94-121; scripts/tests/run-quality-suite.js:176', unknown: [] },
+  },
+  'test:e2e:critical': {
+    desc: '关键 e2e 套件：主流程、双主题/设备、角色及办公机回归（用例数以执行结果为准）',
+    cmd: ['npm', 'run', 'test:e2e:critical:run'],
+    docs: 'package.json',
+    needs: 'playwright 浏览器已安装（npx playwright install）；已有前端构建产物',
+    run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser', 'build-present'], switches: {}, resume: 'na', evidence: 'package.json scripts.test:e2e:critical:run', unknown: [], notes: ['注册入口为无 build 的 :run 脚本，复用已有 dist（npm 脚本 test:e2e:critical 才先 build）；生成链路用模拟上游；浏览器测试期间不得重建共享 dist'] },
+  },
+  'test:e2e:performance': {
+    desc: '独立单 worker 绘图页冷/热进入与首次操作测量',
+    cmd: ['npm', 'run', 'test:e2e:performance'],
+    docs: 'docs/workflow.md',
+    needs: '已完成 build；运行时不要并行构建或执行其他浏览器测试',
+    run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser', 'build-present'], switches: {}, resume: 'na', evidence: 'playwright.performance.config.ts:7', unknown: [] },
+  },
+  'audit:orphans': {
+    desc: '探测 scripts/maintenance/ 下零引用的孤儿脚本（只读，列清单不删）',
+    cmd: ['node', 'scripts/maintenance/detect-orphan-scripts.js'],
+    docs: 'scripts/maintenance/detect-orphan-scripts.js:1',
+    opts: '[--json] 机器可读输出；[--check] 孤儿候选非零时失败',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--check': ['guard'], '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/detect-orphan-scripts.js:90-144', unknown: [] },
+  },
+  'character:onboard': {
+    desc: '一站式新角色接入（档案/标准/粒子/参考图/样张/DATA_VERSION）',
+    cmd: ['npm', 'run', 'character:onboard'],
+    docs: 'docs/guides/characters/character-onboarding-workflow.md',
+    run: { nature: ['writes-source', 'external-model', 'writes-product'], machine: ['gateway', 'node', 'python-pillow'], switches: { '--skip-render': ['writes-source'], '--deploy': ['writes-release'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/workflow-onboard-popular-character.js:23-348', unknown: [], notes: ['--skip-render 跳过出图但不能据此声明资产完成；--deploy 走 deploy-desktop-quick.ps1 -NoRestart'] },
+  },
+  'audit:coverage': {
+    desc: '只读差额报告：热门服装→参考登记、角色→主题选择器覆盖差额（信息性，不作为门禁失败依据）',
+    cmd: ['node', 'scripts/maintenance/report-content-coverage.js'],
+    opts: '[--json] 机器可读输出；[--root <目录>] 指定隔离夹具根（默认仓库根）；[--character <规范ID>] [--outfit <角色内ID>] 筛选范围（outfit 须与 character 同用）',
+    docs: 'docs/workflow.md',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'], '--character': ['read-only'], '--outfit': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/report-content-coverage.js:1', unknown: [], notes: ['结构错误（清单缺文件/重复 ID/批次数不符）退出 1；覆盖差额只报告恒退出 0，不自动登记/补图/改主题', '筛选数量按所选范围重算并输出 scope；结构检查仍为全库，素材存在性只核对所选范围；未知角色/服装或 outfit 缺 character 退出 2'] },
+  },
+};
+
+const { main } = (require('./lib/workflow-runner') as typeof import('./lib/workflow-runner'));
+if (require.main === module) process.exitCode = main(process.argv.slice(2), WORKFLOWS, ROOT);
+export = { WORKFLOWS };
