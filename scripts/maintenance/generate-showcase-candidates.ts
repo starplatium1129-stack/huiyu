@@ -58,7 +58,7 @@ const { artistStyleProse, artistTagsForEngine }: typeof import('../../src/config
 const kreaRecipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
 const qualityPromptContract: typeof import('./quality-prompt-contract.js') = require('./quality-prompt-contract.js');
 
-const genConst = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
+const genConst: any = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
 const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
@@ -93,7 +93,7 @@ const DEFAULT_LORA_STRENGTH = 0.85;
 // against the store source so they cannot drift.
 // 2026-09-05 审计 P1-05：natsume 行同步 store 的 52ed8a39 版（对齐自训 LoRA 标准特征），
 // 此前脚本仍停留在旧词组（very_long_black_hair/golden_yellow_eyes/two_red_hairclips/no_hair_ribbon）。
-const STUDIO_CHAR_PROMPT = Object.freeze({
+const STUDIO_CHAR_PROMPT: any = Object.freeze({
   nene: '1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons',
   natsume: '1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, hairclip',
 });
@@ -119,7 +119,7 @@ const ARTIST_NEUTRAL_SUBJECT = Object.freeze({
  * matches the already-generated history; see ATTEMPT_4_OVERRIDES for the
  * corrected contract (character's own right eye / viewer-left cheek).
  */
-const REVIEW_OVERRIDES = Object.freeze({
+const REVIEW_OVERRIDES: any = Object.freeze({
   'artist:bunbun': {
     reviewReason: '与 baseline 太接近且服装纽扣崩；换 seed + WAI 权重 tag (bunbun:1.2)，negative 压制纽扣/扣具',
     seedOffset: 1,
@@ -224,7 +224,7 @@ const REVIEW_OVERRIDES = Object.freeze({
  * corrected contract (character's own right eye / viewer-left cheek) lives in
  * ATTEMPT_4_OVERRIDES.
  */
-const ATTEMPT_3_OVERRIDES = Object.freeze({
+const ATTEMPT_3_OVERRIDES: any = Object.freeze({
   'artist:so-bin': {
     reviewReason: '与 baseline 区分不足；保持 WAI 原始画师 tag 兼容，(so-bin:1.3) 权重强化 + 暗黑厚涂笔触，场景仍为白衬衫+敞开外套+白天城市，换 seed',
     seedOffset: 31,
@@ -289,7 +289,7 @@ const ATTEMPT_3_OVERRIDES = Object.freeze({
  * contract. `supersedes` points at the key's latest prior attempt, and the seed
  * is fresh vs every prior attempt for that key.
  */
-const ATTEMPT_4_OVERRIDES = Object.freeze({
+const ATTEMPT_4_OVERRIDES: any = Object.freeze({
   'latest-lora:natsume:sd:fullbody': {
     reviewReason: '2026-08-12 历史误判修正：夏目痣在人物自身右眼下（正面图为观察者左侧）；强化 mole under right eye + viewer-left cheek beauty mark + 两枚红发夹，无额外发带，完整旗袍站姿含鞋；negative 压制人物左眼/双侧/缺痣/缺发夹/白发带/跪坐/裁脚；960x1536 提升全身脸部微特征清晰度，换 seed',
     seedOffset: 41,
@@ -312,38 +312,38 @@ const ATTEMPT_4_OVERRIDES = Object.freeze({
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function splitList(value) { return String(value || '').split(',').map(item => item.trim()).filter(Boolean); }
-function readJson(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-function stableSeed(key) {
+function splitList(value: any) { return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean); }
+function readJson(file: any) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
+function stableSeed(key: any) {
   const digest = crypto.createHash('sha256').update(`showcase-candidates-2026-08-12:${key}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, file);
 }
-function shouldReuse(record, imagePath, force) {
+function shouldReuse(record: any, imagePath: any, force: any) {
   if (force || !record || record.status !== 'succeeded' || !record.image) return false;
   if (!fs.existsSync(imagePath)) return false;
   try { return fs.statSync(imagePath).size > 1000; } catch (error) { return false; }
 }
-function profileById(id) {
-  const profile = (presets.model_profiles || []).find(item => item.id === id);
+function profileById(id: any) {
+  const profile = (presets.model_profiles || []).find((item: any) => item.id === id);
   if (!profile) throw new Error(`presets.json missing profile ${id}`);
   return profile;
 }
-function loraMetaById(id) {
-  const meta = (loraData || []).find(item => item.id === id);
+function loraMetaById(id: any) {
+  const meta = (loraData || []).find((item: any) => item.id === id);
   if (!meta) throw new Error(`loras.json missing LoRA ${id}`);
   return meta;
 }
-function appendNegative(negative, tokens, engine, profile) {
+function appendNegative(negative: any, tokens: any, engine: any, profile: any) {
   if (!tokens || !tokens.length) return negative;
   const extra = engine === 'anima' && profile
     ? formatPromptForEngine(tokens.join(', '), 'anima', profile.exact_tokens, profile.exact_prefixes)
@@ -356,7 +356,7 @@ function appendNegative(negative, tokens, engine, profile) {
  * default and any explicit --output are validated at plan time and at write
  * time. The realpath resolution keeps `..`-style tricks from bypassing it.
  */
-function assertNotShowcase(outputDir) {
+function assertNotShowcase(outputDir: any) {
   const resolved = path.resolve(outputDir);
   const candidates = [
     path.resolve(SCENE_SHOWCASE_DIR),
@@ -372,13 +372,13 @@ function assertNotShowcase(outputDir) {
 
 // ── image mechanical inspection (magic + dimensions, no visual judgement) ───
 
-function pngInfo(buffer) {
+function pngInfo(buffer: any) {
   const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
   if (buffer.length < 24 || !buffer.subarray(0, 8).equals(sig)) return null;
   if (buffer.toString('ascii', 12, 16) !== 'IHDR') return null;
   return { mime: 'image/png', width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
 }
-function jpegInfo(buffer) {
+function jpegInfo(buffer: any) {
   if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8) return null;
   let offset = 2;
   while (offset + 9 < buffer.length) {
@@ -396,7 +396,7 @@ function jpegInfo(buffer) {
   }
   return { mime: 'image/jpeg', width: 0, height: 0 };
 }
-function webpInfo(buffer) {
+function webpInfo(buffer: any) {
   if (buffer.length < 30 || buffer.toString('ascii', 0, 4) !== 'RIFF' || buffer.toString('ascii', 8, 12) !== 'WEBP') return null;
   const tag = buffer.toString('ascii', 12, 16);
   if (tag === 'VP8X') {
@@ -413,7 +413,7 @@ function webpInfo(buffer) {
   }
   return { mime: 'image/webp', width: 0, height: 0 };
 }
-function imageInfo(buffer) {
+function imageInfo(buffer: any) {
   return pngInfo(buffer) || jpegInfo(buffer) || webpInfo(buffer) || null;
 }
 
@@ -421,8 +421,8 @@ function imageInfo(buffer) {
 
 function waiProfile() { return profileById(WAI_PROFILE_ID); }
 
-function buildArtistPrompt(artistTag, override) {
-  const profile = waiProfile();
+function buildArtistPrompt(artistTag: any, override: any) {
+  const profile: any = waiProfile();
   const artists = override && override.artistTag
     ? [override.artistTag]
     : (artistTag ? [artistTag] : []);
@@ -444,7 +444,7 @@ function buildArtistPrompt(artistTag, override) {
 }
 
 // 双引擎画师 prompt：Anima 用 @artist 原生标签；Krea2 用自然语言风格短语。
-function buildArtistPromptFor(engine, artistId) {
+function buildArtistPromptFor(engine: any, artistId: any) {
   if (engine === 'krea2') {
     const plan = createPromptPlan({
       subjectProse: 'A young adult woman with long brown hair and amber eyes',
@@ -470,9 +470,9 @@ function buildArtistPromptFor(engine, artistId) {
   return { prompt: rendered.prompt, negative };
 }
 
-function buildStudioPrompt({ engine, characterId, composition, loraId, override }) {
+function buildStudioPrompt({ engine, characterId, composition, loraId, override }: any) {
   const charPrompt = STUDIO_CHAR_PROMPT[characterId];
-  const loraMeta = loraId ? loraMetaById(loraId) : null;
+  const loraMeta: any = loraId ? loraMetaById(loraId) : null;
   const closeup = composition === 'closeup';
   const scene = closeup
     ? { rating: 'ALL', prompt: 'close_up' }
@@ -490,7 +490,7 @@ function buildStudioPrompt({ engine, characterId, composition, loraId, override 
     : (closeup ? ['close_up'] : ['full_body']);
 
   if (engine === 'sd') {
-    const profile = waiProfile();
+    const profile: any = waiProfile();
     const plan = createPromptPlan({
       profile,
       identity: charPrompt,
@@ -513,7 +513,7 @@ function buildStudioPrompt({ engine, characterId, composition, loraId, override 
   const contract = loraMeta && loraMeta.prompt_contract
     ? { tokens: loraMeta.prompt_contract.exact_tokens || [], prefixes: loraMeta.prompt_contract.exact_prefixes || [] }
     : { tokens: [], prefixes: [] };
-  const profile = Object.assign({}, base, {
+  const profile: any = Object.assign({}, base, {
     exact_tokens: [...new Set([...(base.exact_tokens || []), ...contract.tokens])],
     exact_prefixes: [...new Set([...(base.exact_prefixes || []), ...contract.prefixes])],
   });
@@ -534,7 +534,7 @@ function buildStudioPrompt({ engine, characterId, composition, loraId, override 
   return { prompt, negative };
 }
 
-function buildPopularPrompt(character, blueprint, profile, override) {
+function buildPopularPrompt(character: any, blueprint: any, profile: any, override: any) {
   const outfit = popularContent.defaultOutfit(character);
   const decisions = popularContent.inferBlueprintDecisions(blueprint);
   const result = popularContent.buildPopularPromptPlan({
@@ -560,16 +560,16 @@ function buildPopularPrompt(character, blueprint, profile, override) {
 
 // ── batch planning ─────────────────────────────────────────────────────────
 
-function artistBatch(seedBase) {
+function artistBatch(seedBase: any) {
   const artists = [...artistCatalog.ARTIST_STYLE_OPTIONS];
   const size = waiProfile().size.match(/(\d+)\s*[x×]\s*(\d+)/i);
   const width = size ? Number(size[1]) : 1024;
   const height = size ? Number(size[2]) : 1344;
-  const records = [];
+  const records: any[] = [];
   records.push({ key: 'no-artist', artistId: '', displayName: 'no-artist baseline' });
-  artists.forEach(artist => records.push({ key: artist.id, artistId: artist.id, displayName: artist.name }));
-  return records.map(record => {
-    const { prompt, negative } = buildArtistPrompt(record.artistId ? record.artistId : null);
+  artists.forEach((artist: any) => records.push({ key: artist.id, artistId: artist.id, displayName: artist.name }));
+  return records.map((record: any) => {
+    const { prompt, negative } = buildArtistPrompt(record.artistId ? record.artistId : null, undefined);
     return {
       batch: 'artist',
       key: `artist:${record.key}`,
@@ -593,21 +593,21 @@ function artistBatch(seedBase) {
 }
 
 /** 默认衣装样张必须选同衣装的全年龄场景，不能因排序选中成人条目。 */
-function characterDefaultBlueprint(blueprints, characterId, outfitId) {
-  const match = blueprints.find(bp => bp.characterId === characterId && !bp.adult && bp.outfitId === outfitId)
-    || blueprints.find(bp => !bp.characterId && !bp.adult);
+function characterDefaultBlueprint(blueprints: any, characterId: any, outfitId: any) {
+  const match = blueprints.find((bp: any) => bp.characterId === characterId && !bp.adult && bp.outfitId === outfitId)
+    || blueprints.find((bp: any) => !bp.characterId && !bp.adult);
   if (!match) throw new Error(`no safe default-outfit blueprint for ${characterId}`);
   return match;
 }
 
-function popularBatch(seedBase) {
+function popularBatch(seedBase: any) {
   const characters = popularContent.parsePopularCharacters(popularData);
   const blueprints = popularContent.parseSceneBlueprints(blueprintData);
   const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
   if (!profile) throw new Error('anima_aesthetic_v11 profile missing');
-  return characters.map(character => {
+  return characters.map((character: any) => {
     const blueprint = characterDefaultBlueprint(blueprints, character.id, popularContent.defaultOutfit(character).id);
-    const { prompt, negative, outfit } = buildPopularPrompt(character, blueprint, profile);
+    const { prompt, negative, outfit } = buildPopularPrompt(character, blueprint, profile, undefined);
     const model = animaConst.MODELS[ANIMA_AESTHETIC_ID];
     const size = blueprint.recommendedSize.match(/(\d+)\s*[x×]\s*(\d+)/i);
     return {
@@ -637,7 +637,7 @@ function popularBatch(seedBase) {
   });
 }
 
-function latestLoraBatch(seedBase) {
+function latestLoraBatch(seedBase: any) {
   const charConfigs = [
     { characterId: 'nene', label: '绫地宁宁', sdLoraId: 'L_NENE_V18_WD14', animaLoraId: 'L_NENE_V21_ANIMA' },
     { characterId: 'natsume', label: '四季夏目', sdLoraId: 'L_NAT_V18_WD14', animaLoraId: 'L_NAT_V21_ANIMA' },
@@ -646,7 +646,7 @@ function latestLoraBatch(seedBase) {
     ['sd', 'wai', WAI_MODEL_ID, genConst.CHECKPOINT, 30, 6, 'Euler a', 'normal'],
     ['anima', 'anima', ANIMA_AESTHETIC_ID, animaConst.MODELS[ANIMA_AESTHETIC_ID].file, 24, 3.0, 'res_multistep', 'simple'],
   ];
-  const loraFileFor = (loraId) => {
+  const loraFileFor = (loraId: any) => {
     const genLora = genConst.LORAS[loraId];
     if (genLora) return genLora.file;
     const animaLora = animaConst.LORAS[loraId];
@@ -657,11 +657,11 @@ function latestLoraBatch(seedBase) {
     ['closeup', '近景身份', 1024, 1024],
     ['fullbody', '官方服装/全身', 832, 1216],
   ];
-  const records = [];
-  charConfigs.forEach(config => {
-    engineSpecs.forEach(([engine, engineLabel, modelId, checkpoint, steps, cfg, sampler, scheduler]) => {
+  const records: any[] = [];
+  charConfigs.forEach((config: any) => {
+    engineSpecs.forEach(([engine, engineLabel, modelId, checkpoint, steps, cfg, sampler, scheduler]: any) => {
       const loraId = engine === 'sd' ? config.sdLoraId : config.animaLoraId;
-      compositionSpecs.forEach(([composition, compoLabel, width, height]) => {
+      compositionSpecs.forEach(([composition, compoLabel, width, height]: any) => {
         const { prompt, negative } = buildStudioPrompt({ engine, characterId: config.characterId, composition, loraId });
         records.push({
           batch: 'latest-lora',
@@ -688,16 +688,16 @@ function latestLoraBatch(seedBase) {
   return records;
 }
 
-function reviewOverrideJobs(basePlan) {
-  const byKey = new Map(basePlan.map(candidate => [candidate.key, candidate]));
-  return Object.keys(REVIEW_OVERRIDES).map(key => {
+function reviewOverrideJobs(basePlan: any) {
+  const byKey = new Map(basePlan.map((candidate: any) => [candidate.key, candidate]));
+  return Object.keys(REVIEW_OVERRIDES).map((key: any) => {
     const base = byKey.get(key);
     if (!base) throw new Error(`review override key ${key} is not part of the candidate plan`);
     return buildAttemptTwo(base, REVIEW_OVERRIDES[key]);
   });
 }
 
-function rebuildWithOverride(base, override) {
+function rebuildWithOverride(base: any, override: any) {
   if (base.batch === 'artist') {
     const { prompt, negative } = buildArtistPrompt(base.artistId || null, override);
     return Object.assign({}, base, { prompt, negative });
@@ -705,7 +705,7 @@ function rebuildWithOverride(base, override) {
   if (base.batch === 'popular') {
     const characters = popularContent.parsePopularCharacters(popularData);
     const blueprints = popularContent.parseSceneBlueprints(blueprintData);
-    const character = popularContent.findCharacter(characters, base.subject);
+    const character: any = popularContent.findCharacter(characters, base.subject);
     const blueprint = popularContent.findBlueprint(blueprints, base.sceneId)
       || characterDefaultBlueprint(blueprints, base.subject, popularContent.defaultOutfit(character).id);
     const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
@@ -725,7 +725,7 @@ function rebuildWithOverride(base, override) {
   throw new Error(`review override not supported for batch ${base.batch}`);
 }
 
-function buildReviewAttempt(base, override, attempt, supersedes) {
+function buildReviewAttempt(base: any, override: any, attempt: any, supersedes: any) {
   const rebuilt = rebuildWithOverride(base, override);
   return Object.assign({}, rebuilt, {
     attempt,
@@ -741,11 +741,11 @@ function buildReviewAttempt(base, override, attempt, supersedes) {
   });
 }
 
-function buildAttemptTwo(base, override) {
+function buildAttemptTwo(base: any, override: any) {
   return buildReviewAttempt(base, override, 2, `${base.key}@attempt-1`);
 }
 
-function buildAttemptThree(base, override) {
+function buildAttemptThree(base: any, override: any) {
   // supersedes the key's attempt-2 when that key has one, otherwise attempt-1.
   const supersedes = REVIEW_OVERRIDES[base.key]
     ? `${base.key}@attempt-2`
@@ -753,25 +753,25 @@ function buildAttemptThree(base, override) {
   return buildReviewAttempt(base, override, 3, supersedes);
 }
 
-function buildAttemptFour(base, override) {
+function buildAttemptFour(base: any, override: any) {
   // supersedes the key's latest prior attempt: attempt-3 when that key has one,
   // otherwise attempt-2 when present, otherwise attempt-1.
   const prior = ATTEMPT_3_OVERRIDES[base.key] ? 3 : REVIEW_OVERRIDES[base.key] ? 2 : 1;
   return buildReviewAttempt(base, override, 4, `${base.key}@attempt-${prior}`);
 }
 
-function reviewAttemptThreeJobs(basePlan) {
-  const byKey = new Map(basePlan.map(candidate => [candidate.key, candidate]));
-  return Object.keys(ATTEMPT_3_OVERRIDES).map(key => {
+function reviewAttemptThreeJobs(basePlan: any) {
+  const byKey = new Map(basePlan.map((candidate: any) => [candidate.key, candidate]));
+  return Object.keys(ATTEMPT_3_OVERRIDES).map((key: any) => {
     const base = byKey.get(key);
     if (!base) throw new Error(`attempt-3 key ${key} is not part of the candidate plan`);
     return buildAttemptThree(base, ATTEMPT_3_OVERRIDES[key]);
   });
 }
 
-function reviewAttemptFourJobs(basePlan) {
-  const byKey = new Map(basePlan.map(candidate => [candidate.key, candidate]));
-  return Object.keys(ATTEMPT_4_OVERRIDES).map(key => {
+function reviewAttemptFourJobs(basePlan: any) {
+  const byKey = new Map(basePlan.map((candidate: any) => [candidate.key, candidate]));
+  return Object.keys(ATTEMPT_4_OVERRIDES).map((key: any) => {
     const base = byKey.get(key);
     if (!base) throw new Error(`attempt-4 key ${key} is not part of the candidate plan`);
     return buildAttemptFour(base, ATTEMPT_4_OVERRIDES[key]);
@@ -787,7 +787,7 @@ function kreaProfile() {
   return resolveModelProfile(presets.model_profiles, KREA_MODEL_ID, 'krea2');
 }
 
-function nearestSize(engine, blueprint) {
+function nearestSize(engine: any, blueprint: any) {
   const explicit = String(blueprint.recommendedSize || '');
   const match = explicit.match(/^(\d+)\s*[x×]\s*(\d+)$/i);
   const desired = match ? [Number(match[1]), Number(match[2])] : [832, 1216];
@@ -796,21 +796,21 @@ function nearestSize(engine, blueprint) {
     : ['832x1216', '1024x1024', '1216x832'];
   const ratio = desired[0] / desired[1];
   const nearest = sizes
-    .map(size => {
+    .map((size: any) => {
       const [w, h] = size.split('x').map(Number);
       return { size, w, h, delta: Math.abs(w / h - ratio) };
     })
-    .sort((a, b) => a.delta - b.delta)[0];
+    .sort((a: any, b: any) => a.delta - b.delta)[0];
   return { width: nearest.w, height: nearest.h };
 }
 
-function popularGridBatch(seedBase) {
+function popularGridBatch(seedBase: any) {
   const characters = popularContent.parsePopularCharacters(popularData);
   const blueprints = popularContent.parseSceneBlueprints(blueprintData);
   const animaProfile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
   const krea = kreaProfile();
   if (!animaProfile || !krea) throw new Error('anima_aesthetic_v11 / krea2_turbo_fp8 profile missing');
-  const records = [];
+  const records: any[] = [];
   for (const character of characters) {
     // 角色感知：只枚举该角色的专属原型场景 + 通用成人蓝图（fail-closed）。
     const eligible = popularContent.eligibleBlueprints(blueprints, character, { adultEnabled: true });
@@ -881,12 +881,12 @@ function popularGridBatch(seedBase) {
   return records;
 }
 
-function artistGridBatch(seedBase) {
+function artistGridBatch(seedBase: any) {
   const artists = [...artistCatalog.ARTIST_STYLE_OPTIONS];
-  const records = [];
+  const records: any[] = [];
   for (const engine of ['anima', 'krea2']) {
     const entries = [{ key: 'no-artist', artistId: '', displayName: 'no-artist baseline' }]
-      .concat(artists.map(artist => ({ key: artist.id, artistId: artist.id, displayName: artist.name })));
+      .concat(artists.map((artist: any) => ({ key: artist.id, artistId: artist.id, displayName: artist.name })));
     for (const entry of entries) {
       const { prompt, negative } = buildArtistPromptFor(engine, entry.artistId || null);
       const width = engine === 'krea2' ? 1024 : 832;
@@ -920,20 +920,20 @@ function artistGridBatch(seedBase) {
   return records;
 }
 
-function planAllBatches(seedBase) {
+function planAllBatches(seedBase: any) {
   const base = [
     ...artistBatch(seedBase),
     ...popularBatch(seedBase),
     ...latestLoraBatch(seedBase),
     ...popularGridBatch(seedBase),
     ...artistGridBatch(seedBase),
-  ].map(candidate => Object.assign({}, candidate, {
+  ].map((candidate: any) => Object.assign({}, candidate, {
     attempt: 1,
     recordId: `${candidate.key}@attempt-1`,
   }));
   const withTwo = base.concat(reviewOverrideJobs(base));
   const withThree = withTwo.concat(reviewAttemptThreeJobs(base));
-  return withThree.concat(reviewAttemptFourJobs(base)).map(candidate => Object.assign({}, candidate, {
+  return withThree.concat(reviewAttemptFourJobs(base)).map((candidate: any) => Object.assign({}, candidate, {
     promptHealth: qualityPromptContract.inspectCandidatePrompt(candidate),
   }));
 }
@@ -945,11 +945,11 @@ function planAllBatches(seedBase) {
  * keys instead of every attempt (the existing `--keys` behaviour of including
  * all attempts stays intact when `--attempt` is absent).
  */
-function filterPlanned(planned, filters) {
+function filterPlanned(planned: any, filters: any) {
   const batch = (filters && filters.batch) || [];
   const keys = (filters && filters.keys) || [];
   const attempts = (filters && filters.attempts) || [];
-  return planned.filter(candidate =>
+  return planned.filter((candidate: any) =>
     (!batch.length || batch.includes(candidate.batch))
     && (!keys.length || keys.includes(candidate.key))
     && (!attempts.length || attempts.includes(candidate.attempt)));
@@ -957,7 +957,7 @@ function filterPlanned(planned, filters) {
 
 // ── gateway job runner ─────────────────────────────────────────────────────
 
-async function gatewayJson(base, pathname, options) {
+async function gatewayJson(base: any, pathname: any, options: any) {
   const url = base.replace(/\/$/, '') + pathname;
   const response = await fetch(url, Object.assign({ cache: 'no-store' }, options || {}));
   let data = null;
@@ -965,7 +965,7 @@ async function gatewayJson(base, pathname, options) {
   return { response, data };
 }
 
-async function submitCandidate(base, candidate) {
+async function submitCandidate(base: any, candidate: any) {
   const body = { prompt: candidate.prompt, negative: candidate.negative };
   let routeBase;
   if (candidate.engine === 'krea2') {
@@ -1011,14 +1011,14 @@ async function submitCandidate(base, candidate) {
   const deadline = Date.now() + 15 * 60 * 1000;
   let current = job;
   while (Date.now() < deadline) {
-    const state = await gatewayJson(base, `${pollBase}/${encodeURIComponent(current.id)}`);
+    const state = await gatewayJson(base, `${pollBase}/${encodeURIComponent(current.id)}`, undefined);
     const polled = state.response.ok && state.data && state.data.ok ? state.data.job : null;
     if (polled) current = polled;
     if (current.status === 'failed' || current.status === 'cancelled') {
       return { ok: false, error: `job failed: ${current.error || current.status} (${current.code || ''})` };
     }
     if (current.status === 'succeeded' && current.resultUrl) break;
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise<any>((resolve: any) => setTimeout(resolve, 2000));
   }
   if (current.status !== 'succeeded' || !current.resultUrl) {
     return { ok: false, error: `job timed out: ${current.status}` };
@@ -1038,10 +1038,10 @@ async function submitCandidate(base, candidate) {
 
 // ── main ───────────────────────────────────────────────────────────────────
 
-function recordIdOf(candidate) {
+function recordIdOf(candidate: any) {
   return candidate.recordId || `${candidate.key}@attempt-${candidate.attempt || 1}`;
 }
-function imageRelFor(candidate) {
+function imageRelFor(candidate: any) {
   const base = candidate.key.replace(/[:\/\\]/g, '_');
   const attemptSuffix = candidate.attempt > 1 ? `_attempt-${candidate.attempt}` : '';
   return `images/${candidate.batch}/${base}${attemptSuffix}.png`;
@@ -1078,7 +1078,7 @@ async function main() {
   console.log(`output: ${output}`);
   console.log(`planned ${planned.length} candidates, selected ${selected.length}`);
 
-  const records = new Map(manifest.map(record => [record.recordId || `${record.key}@attempt-${record.attempt || 1}`, record]));
+  const records = new Map(manifest.map((record: any) => [record.recordId || `${record.key}@attempt-${record.attempt || 1}`, record]));
   let generated = 0;
   let reused = 0;
   let failed = 0;
@@ -1087,7 +1087,7 @@ async function main() {
     const candidate = selected[index];
     if (generated + reused >= limit) break;
     const recordId = recordIdOf(candidate);
-    const previous = records.get(recordId);
+    const previous: any = records.get(recordId);
     const previousImage = previous && previous.image ? path.join(output, previous.image.split('/').join(path.sep)) : '';
     if (shouldReuse(previous, previousImage, force)) {
       console.log(`[reuse] ${candidate.key}@attempt-${candidate.attempt} -> ${previous.image}`);
@@ -1096,7 +1096,7 @@ async function main() {
     }
 
     console.log(`[generate] ${candidate.key}@attempt-${candidate.attempt} seed ${candidate.seed} ${candidate.width}x${candidate.height}${candidate.reviewReason ? ` :: ${candidate.reviewReason}` : ''}`);
-    const result = await submitCandidate(gateway, candidate);
+    const result: any = await submitCandidate(gateway, candidate);
     const imageRel = imageRelFor(candidate);
     const imageFile = path.join(output, imageRel.split('/').join(path.sep));
 
@@ -1143,9 +1143,9 @@ async function main() {
     console.log(`[ok] ${candidate.key}@attempt-${candidate.attempt} -> ${imageRel} (${result.buffer.length} bytes, ${info.width}x${info.height}, ${info.mime})`);
   }
 
-  const normalized = [...records.values()].map(record =>
+  const normalized = [...records.values()].map((record: any) =>
     record.attempt ? record : Object.assign({}, record, { attempt: 1 }))
-    .sort((a, b) => (a.recordId || a.key).localeCompare(b.recordId || b.key));
+    .sort((a: any, b: any) => (a.recordId || a.key).localeCompare(b.recordId || b.key));
   writeJsonAtomic(manifestPath, normalized);
   console.log(JSON.stringify({ output, generated, reused, failed }, null, 2));
 
@@ -1155,11 +1155,11 @@ async function main() {
 
 // ── mechanical verification + review index ─────────────────────────────────
 
-function verifyOutput(output) {
+function verifyOutput(output: any) {
   const manifestPath = path.join(output, MANIFEST_NAME);
   if (!fs.existsSync(manifestPath)) throw new Error('no manifest to verify');
   const manifest = readJson(manifestPath);
-  const entries = [];
+  const entries: any[] = [];
   let checked = 0;
   for (const record of manifest) {
     const entry = {
@@ -1188,7 +1188,7 @@ function verifyOutput(output) {
     let mime = '';
     if (entry.pathExists) {
       const buffer = fs.readFileSync(file);
-      const info = imageInfo(buffer);
+      const info: any = imageInfo(buffer);
       mime = info ? info.mime : '';
       entry.mime = mime;
       entry.magicWidth = info ? info.width : 0;
@@ -1205,8 +1205,8 @@ function verifyOutput(output) {
     entries.push(entry);
   }
   // Mark attempt-1 entries superseded when a later attempt succeeded.
-  const superseding = new Map(entries.filter(entry => entry.attempt > 1).map(entry => [entry.key, entry.recordId]));
-  entries.forEach(entry => {
+  const superseding = new Map(entries.filter((entry: any) => entry.attempt > 1).map((entry: any) => [entry.key, entry.recordId]));
+  entries.forEach((entry: any) => {
     if (entry.attempt === 1 && superseding.has(entry.key)) entry.supersededBy = superseding.get(entry.key);
   });
   const reviewIndex = {
@@ -1215,10 +1215,10 @@ function verifyOutput(output) {
     purpose: 'candidate set for main-thread visual review; mechanical checks only, no visual pass claimed',
     totals: {
       planned: manifest.length,
-      succeeded: manifest.filter(record => record.status === 'succeeded').length,
-      failed: manifest.filter(record => record.status === 'failed').length,
-      mechanicalPass: entries.filter(entry => entry.mechanicalPass).length,
-      attempts: entries.reduce((acc, entry) => { acc[entry.attempt] = (acc[entry.attempt] || 0) + 1; return acc; }, {}),
+      succeeded: manifest.filter((record: any) => record.status === 'succeeded').length,
+      failed: manifest.filter((record: any) => record.status === 'failed').length,
+      mechanicalPass: entries.filter((entry: any) => entry.mechanicalPass).length,
+      attempts: entries.reduce((acc: any, entry: any) => { acc[entry.attempt] = (acc[entry.attempt] || 0) + 1; return acc; }, {}),
     },
     entries,
   };
@@ -1227,12 +1227,12 @@ function verifyOutput(output) {
   return { checked, total: manifest.length, pass: reviewIndex.totals.mechanicalPass };
 }
 
-function escapeHtml(value) {
+function escapeHtml(value: any) {
   return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function writeContactSheet(output, reviewIndex) {
-  const rows = reviewIndex.entries.map(entry => {
+function writeContactSheet(output: any, reviewIndex: any) {
+  const rows = reviewIndex.entries.map((entry: any) => {
     const attemptBadge = entry.attempt > 3
       ? `<span class="attempt4">attempt-4 · 右眼痣修正重出</span>`
       : entry.attempt > 2
@@ -1256,7 +1256,7 @@ function writeContactSheet(output, reviewIndex) {
       entry.supersedes ? ['supersedes', entry.supersedes] : null,
       entry.supersededBy ? ['supersededBy', entry.supersededBy] : null,
       ['generatedAt', entry.generatedAt],
-    ].filter(Boolean).map(([label, value]) => `<div class="meta"><span>${escapeHtml(label)}</span><code>${escapeHtml(String(value))}</code></div>`).join('');
+    ].filter(Boolean).map(([label, value]: any) => `<div class="meta"><span>${escapeHtml(label)}</span><code>${escapeHtml(String(value))}</code></div>`).join('');
     const reasonBlock = entry.reviewReason
       ? `<div class="reason">审核覆盖：${escapeHtml(entry.reviewReason)}</div>` : '';
     const promptBlock = entry.prompt
@@ -1297,7 +1297,7 @@ pre.neg{color:#b08a8a}
   writeJsonAtomic2(path.join(output, CONTACT_SHEET_NAME), html);
 }
 
-function writeJsonAtomic2(file, content) {
+function writeJsonAtomic2(file: any, content: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, content, 'utf8');
@@ -1305,7 +1305,7 @@ function writeJsonAtomic2(file, content) {
 }
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

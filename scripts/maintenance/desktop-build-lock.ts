@@ -32,7 +32,7 @@ function canonicalWorkspace(workspaceRoot: string): string {
   return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
 }
 
-function desktopBuildLockPath(workspaceRoot: string, lockRoot = path.join(os.tmpdir(), 'aics-desktop-build-locks')): string {
+function desktopBuildLockPath(workspaceRoot: string, lockRoot: any = path.join(os.tmpdir(), 'aics-desktop-build-locks')): string {
   const workspace = canonicalWorkspace(workspaceRoot);
   const digest = crypto.createHash('sha256').update(workspace).digest('hex').slice(0, 24);
   return path.join(lockRoot, `${digest}.lock`);
@@ -84,7 +84,7 @@ function clearStaleLock(lockPath: string, staleMs: number): boolean {
 }
 
 function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise<any>((resolve: any) => setTimeout(resolve, ms));
 }
 
 async function acquireDesktopBuildLock(options: LockOptions): Promise<() => boolean> {

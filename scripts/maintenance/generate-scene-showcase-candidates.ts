@@ -18,7 +18,7 @@ const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('
 const promptCompiler: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const promptConstants: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
-const generationConstants = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
+const generationConstants: any = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
 const animaConstants = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 const animaGenerationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
 const { buildShortPrompt }: typeof import('./short-prompt-builder.js') = require('./short-prompt-builder.js');
@@ -39,7 +39,7 @@ const WAI_PROFILE_ID = 'wai_illustrious_v17';
 const CHAR_PROMPT = Object.freeze({
   triad: '2girls',
 });
-const ANIMA_LORA_BY_CHARACTER = Object.freeze({
+const ANIMA_LORA_BY_CHARACTER: any = Object.freeze({
   nene: 'L_NENE_V21_ANIMA',
   natsume: 'L_NAT_V21_ANIMA',
 });
@@ -48,59 +48,59 @@ const WAI_LORA_BY_CHARACTER = Object.freeze({
   natsume: 'L_NAT_V18_WD14',
 });
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function splitList(value) {
-  return String(value || '').split(',').map(item => item.trim()).filter(Boolean);
+function splitList(value: any) {
+  return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean);
 }
-function readJson(file) {
+function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, file);
 }
-function stableSeed(sceneId, attempt) {
+function stableSeed(sceneId: any, attempt: any) {
   const digest = crypto.createHash('sha256').update(`scene-showcase-current-2026-08-12:${sceneId}:${attempt}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;
 }
-function assertIsolated(output) {
+function assertIsolated(output: any) {
   const resolved = path.resolve(output);
   if (resolved === SHOWCASE_ROOT || resolved.startsWith(SHOWCASE_ROOT + path.sep)) {
     throw new Error(`refusing to write candidates into public showcase: ${resolved}`);
   }
   return resolved;
 }
-function profileById(id) {
-  const profile = (presets.model_profiles || []).find(item => item.id === id);
+function profileById(id: any) {
+  const profile = (presets.model_profiles || []).find((item: any) => item.id === id);
   if (!profile) throw new Error(`presets.json missing profile ${id}`);
   return profile;
 }
-function loraById(id) {
-  const lora = loraData.find(item => item.id === id);
+function loraById(id: any) {
+  const lora = loraData.find((item: any) => item.id === id);
   if (!lora) throw new Error(`loras.json missing ${id}`);
   return lora;
 }
-function optionPrompt(options, id) {
-  return (options.find(item => item.id === id) || {}).prompt || '';
+function optionPrompt(options: any, id: any) {
+  return (options.find((item: any) => item.id === id) || {}).prompt || '';
 }
-function nearestAnimaSize(scene) {
+function nearestAnimaSize(scene: any) {
   const desired = sceneInference.sceneRecommendedSize(scene);
   const sizes = animaConstants.MODELS[ANIMA_MODEL_ID].sizes;
   if (sizes.includes(desired)) return desired;
   const [desiredWidth, desiredHeight] = desired.split('x').map(Number);
   const ratio = desiredWidth / desiredHeight;
-  return [...sizes].sort((left, right) => {
+  return [...sizes].sort((left: any, right: any) => {
     const [lw, lh] = left.split('x').map(Number);
     const [rw, rh] = right.split('x').map(Number);
     return Math.abs(lw / lh - ratio) - Math.abs(rw / rh - ratio);
   })[0];
 }
-function waiSize(scene) {
+function waiSize(scene: any) {
   const explicit = sceneInference.sceneRecommendedSize(scene);
   const match = explicit.match(/^(\d+)x(\d+)$/);
   if (!match) return { width: 832, height: 1216 };
@@ -108,7 +108,7 @@ function waiSize(scene) {
   const height = Math.max(512, Math.min(2048, Math.round(Number(match[2]) / 64) * 64));
   return { width, height };
 }
-function animaProfileFor(loraId) {
+function animaProfileFor(loraId: any) {
   const base = profileById(ANIMA_PROFILE_ID);
   const contract = loraById(loraId).prompt_contract || {};
   return Object.assign({}, base, {
@@ -116,7 +116,7 @@ function animaProfileFor(loraId) {
     exact_prefixes: [...new Set([...(base.exact_prefixes || []), ...(contract.exact_prefixes || [])])],
   });
 }
-function inferredDirectives(scene) {
+function inferredDirectives(scene: any) {
   const shot = sceneInference.sceneShot(scene);
   const lighting = sceneInference.sceneLighting(scene);
   const composition = sceneInference.sceneComposition(scene);
@@ -129,11 +129,11 @@ function inferredDirectives(scene) {
     compositionPrompt: composition ? optionPrompt(promptConstants.COMPOSITION, composition) : '',
   };
 }
-function buildAnimaCandidate(scene, attempt, seedAttempt = attempt) {
+function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attempt) {
   const characterId = scene.char;
   const loraId = ANIMA_LORA_BY_CHARACTER[characterId];
   if (!loraId) throw new Error(`scene ${scene.id} has unsupported Anima character ${characterId}`);
-  const profile = animaProfileFor(loraId);
+  const profile: any = animaProfileFor(loraId);
   const directives = inferredDirectives(scene);
   const built = buildShortPrompt(scene, characterId);
   if (!built.health.ok) {
@@ -183,8 +183,8 @@ function buildAnimaCandidate(scene, attempt, seedAttempt = attempt) {
     inferred: directives,
   };
 }
-function buildDualCandidate(scene, attempt, seedAttempt = attempt) {
-  const profile = profileById(WAI_PROFILE_ID);
+function buildDualCandidate(scene: any, attempt: any, seedAttempt: any = attempt) {
+  const profile: any = profileById(WAI_PROFILE_ID);
   const directives = inferredDirectives(scene);
   const scenePrompt = promptPolicy.sceneTemplateText(scene, {
     char: 'triad',
@@ -211,7 +211,7 @@ function buildDualCandidate(scene, attempt, seedAttempt = attempt) {
     { id: WAI_LORA_BY_CHARACTER.nene, strength: 0.52 },
     { id: WAI_LORA_BY_CHARACTER.natsume, strength: 0.52 },
   ];
-  const tags = loras.map(item => `<lora:${path.basename(generationConstants.LORAS[item.id].file, '.safetensors')}:${item.strength}>`);
+  const tags = loras.map((item: any) => `<lora:${path.basename(generationConstants.LORAS[item.id].file, '.safetensors')}:${item.strength}>`);
   const negative = promptPolicy.assembleNegative(profile, scene, 'sd', {
     shot: directives.shot,
     character: 'triad',
@@ -230,12 +230,12 @@ function buildDualCandidate(scene, attempt, seedAttempt = attempt) {
     inferred: directives,
   };
 }
-function planScenes(selectedScenes, attempt, seedAttempt = attempt) {
+function planScenes(selectedScenes: any, attempt: any, seedAttempt: any = attempt) {
   // 2026-08-16 审计：单条场景（评级与显式词不一致等）不再让整批计划爆炸——逐条
   // 隔离，失败的跳过并记入非枚举属性 skipped（含原因），其余正常规划。生产批量
   // 生成与契约测试都不再被一条坏数据卡死；不一致场景清单由调用方/测试核对。
-  const candidates = [];
-  const skipped = [];
+  const candidates: any[] = [];
+  const skipped: any[] = [];
   for (const scene of selectedScenes) {
     try {
       candidates.push(scene.char === 'triad'
@@ -251,7 +251,7 @@ function planScenes(selectedScenes, attempt, seedAttempt = attempt) {
   return candidates;
 }
 
-function applyBaselineContract(candidate, baseline) {
+function applyBaselineContract(candidate: any, baseline: any) {
   if (!baseline || baseline.status !== 'succeeded') {
     throw new Error(`missing succeeded baseline for ${candidate.sceneId}`);
   }
@@ -289,7 +289,7 @@ function applyBaselineContract(candidate, baseline) {
   });
 }
 
-async function gatewayJson(base, pathname, options) {
+async function gatewayJson(base: any, pathname: any, options: any) {
   let response;
   try {
     response = await fetch(base.replace(/\/$/, '') + pathname, Object.assign({ cache: 'no-store' }, options || {}));
@@ -300,7 +300,7 @@ async function gatewayJson(base, pathname, options) {
   try { data = await response.json(); } catch (error) { /* keep null */ }
   return { response, data };
 }
-function buildSubmissionBody(candidate) {
+function buildSubmissionBody(candidate: any) {
   const anima = candidate.engine === 'anima';
   const body = {
     prompt: candidate.prompt, negative: candidate.negative,
@@ -321,7 +321,7 @@ function buildSubmissionBody(candidate) {
   }
   return body;
 }
-async function submitCandidate(base, candidate) {
+async function submitCandidate(base: any, candidate: any) {
   const anima = candidate.engine === 'anima';
   const route = anima ? '/api/anima/jobs' : '/api/generation/jobs';
   const body = buildSubmissionBody(candidate);
@@ -335,13 +335,13 @@ async function submitCandidate(base, candidate) {
   let job = submitted.data.job;
   const deadline = Date.now() + 15 * 60 * 1000;
   while (Date.now() < deadline) {
-    const state = await gatewayJson(base, `${route}/${encodeURIComponent(job.id)}`);
+    const state = await gatewayJson(base, `${route}/${encodeURIComponent(job.id)}`, undefined);
     if (state.response?.ok && state.data?.ok && state.data.job) job = state.data.job;
     if (job.status === 'failed' || job.status === 'cancelled') {
       return { ok: false, error: `job failed: ${job.error || job.status} (${job.code || ''})`, jobId: job.id };
     }
     if (job.status === 'succeeded' && job.resultUrl) break;
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise<any>((resolve: any) => setTimeout(resolve, 2000));
   }
   if (job.status !== 'succeeded' || !job.resultUrl) return { ok: false, error: `job timed out: ${job.status}`, jobId: job.id };
   const result = await fetch(base.replace(/\/$/, '') + job.resultUrl, { cache: 'no-store' });
@@ -367,15 +367,15 @@ async function main() {
   const limit = Math.max(1, Number(argument('--limit', '9999')) || 9999);
   const force = process.argv.includes('--force');
   const dryRun = process.argv.includes('--dry-run');
-  const selectedScenes = ids.length ? ids.map(id => scenes.find(scene => scene.id === id)) : scenes;
-  const missing = ids.filter((id, index) => !selectedScenes[index]);
+  const selectedScenes = ids.length ? ids.map((id: any) => scenes.find((scene: any) => scene.id === id)) : scenes;
+  const missing = ids.filter((id: any, index: any) => !selectedScenes[index]);
   if (missing.length) throw new Error(`unknown scene ids: ${missing.join(', ')}`);
   const manifestPath = path.join(output, MANIFEST_NAME);
   const existing = fs.existsSync(manifestPath) ? readJson(manifestPath) : [];
-  const records = new Map(existing.map(record => [record.recordId, record]));
+  const records = new Map(existing.map((record: any) => [record.recordId, record]));
   let planned = planScenes(selectedScenes, attempt, seedAttempt);
   if (baselineAttempt) {
-    planned = planned.map(candidate => applyBaselineContract(
+    planned = planned.map((candidate: any) => applyBaselineContract(
       candidate,
       records.get(`scene:${candidate.sceneId}@attempt-${baselineAttempt}`),
     ));
@@ -400,7 +400,7 @@ async function main() {
       continue;
     }
     console.log(`[generate] ${candidate.recordId} ${candidate.engine} ${candidate.width}x${candidate.height} seed ${candidate.seed}`);
-    const result = await submitCandidate(gateway, candidate);
+    const result: any = await submitCandidate(gateway, candidate);
     if (!result.ok) {
       records.set(candidate.recordId, Object.assign({}, candidate, {
         status: 'failed', error: result.error, jobId: result.jobId || '', image: '', generatedAt: new Date().toISOString(),
@@ -421,13 +421,13 @@ async function main() {
     console.log(`[ok] ${candidate.recordId} -> ${imageRel} (${result.buffer.length} bytes)`);
     generated += 1;
   }
-  const normalized = [...records.values()].sort((left, right) => left.sceneId.localeCompare(right.sceneId) || left.attempt - right.attempt);
+  const normalized = [...records.values()].sort((left: any, right: any) => left.sceneId.localeCompare(right.sceneId) || left.attempt - right.attempt);
   writeJsonAtomic(manifestPath, normalized);
   console.log(JSON.stringify({ output, planned: planned.length, generated, reused, failed }, null, 2));
 }
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

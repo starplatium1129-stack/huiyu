@@ -12,7 +12,7 @@ const path: typeof import('path') = require('path');
 import type { ExecFileSyncOptionsWithStringEncoding } from 'node:child_process';
 type HookCommand = (command: string, args: string[], options: ExecFileSyncOptionsWithStringEncoding) => string;
 
-function migrateHooks(root = path.resolve(__dirname, '../..'), run: HookCommand = execFileSync) {
+function migrateHooks(root: any = path.resolve(__dirname, '../..'), run: HookCommand = execFileSync) {
   const options: ExecFileSyncOptionsWithStringEncoding = { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true };
   let configured;
   try {

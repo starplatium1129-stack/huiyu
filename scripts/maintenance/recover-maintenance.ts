@@ -6,7 +6,7 @@ const path: typeof import('node:path') = require('node:path');
 const { readJson }: typeof import('../lib/maintenance-recovery-fs') = require('../lib/maintenance-recovery-fs');
 const { previewMaintenanceRecovery, applyMaintenanceRecovery }: typeof import('../lib/maintenance-recovery') = require('../lib/maintenance-recovery');
 
-function main(argv = process.argv.slice(2)) {
+function main(argv: any = process.argv.slice(2)) {
   if (argv.includes('--help') || argv.includes('--plan')) {
     process.stdout.write('Usage: node scripts/maintenance/recover-maintenance.js --root <root> [--runtime-root <runtime>] [--showcase-root <trusted-root>] [--backup <id>]\n'
       + 'Default: read-only JSON recovery plan on stdout; no files or directories are created.\n'
@@ -15,7 +15,7 @@ function main(argv = process.argv.slice(2)) {
       + 'Exit: 0 success/executable preview, 1 blocked/conflict/failure, 2 invalid arguments.\n');
     return 0;
   }
-  const values = {};
+  const values: Record<string, any> = {};
   try {
     for (let index = 0; index < argv.length; index++) {
       const key = argv[index];

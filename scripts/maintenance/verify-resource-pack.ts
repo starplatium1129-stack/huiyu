@@ -55,7 +55,7 @@ const HELP = [
   '核验通过不是数字签名、可信来源、当前安装状态或质量验收。',
 ].join('\n');
 
-function main(args = process.argv.slice(2)) {
+function main(args: any = process.argv.slice(2)) {
   let root = path.resolve(__dirname, '..', '..');
   let baseManifestPath = null;
   let packPath = null;

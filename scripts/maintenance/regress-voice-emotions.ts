@@ -12,7 +12,7 @@ const text = '今日もお疲れさまでした。ここで少し休んでいき
 const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-voice-emotions-'));
 
 function request(method: string, pathname: string|URL, payload: { voice: string; language: string; text: string; emotion: string; referenceEmotion: string; consistency: string; speed: number; }|null) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve: any, reject: any) => {
     const target = new URL(pathname, baseUrl);
     const body = payload == null ? null : JSON.stringify(payload);
     const req = http.request(target, {
@@ -21,9 +21,9 @@ function request(method: string, pathname: string|URL, payload: { voice: string;
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(body),
       },
-    }, response => {
+    }, (response: any) => {
       const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
-      response.on('data', chunk => chunks.push(chunk));
+      response.on('data', (chunk: any) => chunks.push(chunk));
       response.on('end', () => resolve({ status: response.statusCode, body: Buffer.concat(chunks) }));
     });
     req.setTimeout(6 * 60 * 1000, () => req.destroy(new Error('request timeout')));
@@ -34,7 +34,7 @@ function request(method: string, pathname: string|URL, payload: { voice: string;
 
 async function jsonRequest(method: string, pathname: string, payload: { voice: string; translation: boolean; }|undefined) {
   const response = await request(method, pathname, payload);
-  let data = {};
+  let data: Record<string, any> = {};
   try { data = JSON.parse(response.body.toString('utf8') || '{}'); } catch {}
   if (response.status < 200 || response.status >= 300) {
     throw new Error(`${pathname} ${response.status}: ${data.error || response.body.toString('utf8').slice(0, 300)}`);
@@ -43,9 +43,9 @@ async function jsonRequest(method: string, pathname: string, payload: { voice: s
 }
 
 async function main() {
-  const status = await jsonRequest('GET', '/api/tts-status');
+  const status = await jsonRequest('GET', '/api/tts-status', undefined);
   if (!status.online) throw new Error('GPT-SoVITS is offline');
-  const results = [];
+  const results: any[] = [];
 
   for (const voice of ['nene', 'natsume']) {
     await jsonRequest('POST', '/api/voice/prepare', { voice, translation: false });
@@ -65,7 +65,7 @@ async function main() {
       const file = path.join(outputDir, `${voice}-${emotion}.wav`);
       fs.writeFileSync(file, response.body);
       const audio = wavQuality.analyzeWav(response.body);
-      const issues = wavQuality.assertVoiceQuality(audio);
+      const issues = wavQuality.assertVoiceQuality(audio, undefined);
       results.push({
         voice,
         emotion,
@@ -83,7 +83,7 @@ async function main() {
   console.log(`Real GPT-SoVITS emotion clips written outside the repository: ${outputDir}`);
 }
 
-main().catch(error => {
+main().catch((error: any) => {
   console.error(error.stack || error);
   process.exitCode = 1;
 });

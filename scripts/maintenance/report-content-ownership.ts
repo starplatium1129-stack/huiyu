@@ -10,7 +10,7 @@ const { localReader }: typeof import('../lib/content-history-reader') = require(
 const { inspectDomain, summarizeConsistency }: typeof import('../lib/content-impact-consistency') = require('../lib/content-impact-consistency');
 const { FIELD_VALIDATION }: typeof import('../lib/content-impact-checks') = require('../lib/content-impact-checks');
 const object = (v: unknown) => v !== null && typeof v === 'object' && !Array.isArray(v);
-const records = (v) => Array.isArray(v) && v.every(object);
+const records = (v: any) => Array.isArray(v) && v.every(object);
 const DOMAINS = {
   'scene-ratings': { fields: 'data/scenes rating/mature/category/usage：分级及使用元数据，不属于提示词正文', readers: ['scripts/maintenance/classify-scene-ratings.js', 'scripts/maintenance/validate-scenes.js'], writers: ['人工维护 scripts/lib/manual-scene-ratings.js', 'classify-scene-ratings.js --write'], boundary: '人工表覆盖 policy 与成熟标记，pinned 优先保留；人工审核语义与真实画面仍未验证；结构可读取不代表内容质量通过' },
   characters: { fields: 'id/name/alias/voice（缺省回落 speech）/tags/bg_story/personality/likes/identity/portrait/lora：详情与聊天设定档案；详情解析不输出 traits/visual_dna/accent_color；traits 另由提示词组装消费', readers: ['src/stores/sceneStore.ts（原始记录入 store）', 'src/utils/characterProfiles.ts parseCharacterProfiles → src/views/CharacterView.vue（只渲染解析器输出的显式字段）', 'src/utils/characterSettingMemory.ts parseRecord（聊天设定记忆取 bg_story/personality/likes/speech/identity）', 'src/composables/prompt/usePromptAssembly.ts currentTraits（读取 traits 并参与提示词组装）', 'scripts/maintenance/validate-content-contracts.js（契约校验）', 'scripts/maintenance/report-content-coverage.js（仅读 accent_color 做主题覆盖报告，不与 tokens.css 比对）'], writers: ['人工维护 data/characters.json', '保存链 scripts/lib/scene-write.js cleanOrphanedSceneRefs（POST /api/maintenance/scenes 后自动清洗 lora.recommended_scene 悬空引用）'], boundary: '稳定角色 ID，与热门分片角色 id 同名对齐；详情页只渲染解析器输出的显式字段，JSON 字段存在不代表详情页展示；普通档案文字按资料维护验收，涉及提示词输入的字段变更仍需编译与真实画面复验' },
@@ -24,7 +24,7 @@ const DOMAINS = {
   showcase: { fields: '外部 manifest entries 的 id/char/type/rating/provenance：样张与审核声明', readers: ['scripts/maintenance/publish-scene-showcase-anima11.js'], writers: ['showcase:manual-review', 'showcase:scene-publish'], boundary: '外部清单位置与资产状态未知；不扫描外部路径或图片；发布/真实审核需对应机器' },
 };
 
-const FIELD_CONTRACTS = {
+const FIELD_CONTRACTS: any = {
   popular: { source: 'data/popular/manifest.json + declared shards: characters[]', derived: ['data/popular-characters.json'],
     rule: 'popular-store.loadPopularShards/writePopularAggregate: concatenate records in manifest/file order, wrap {version:1, characters}; all record fields copied',
     implementation: ['scripts/lib/popular-store.js'], unknown: ['browser parse-field losses', 'compressed files', 'DATA_VERSION'] },
@@ -44,7 +44,7 @@ const FIELD_CONTRACTS = {
     implementation: ['scripts/lib/scene-store.js', 'src/stores/sceneStore.ts'], unknown: ['historical qualityGate/review validity', 'rendered ordering'] },
 };
 
-function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, consistency = false } = {}) {
+function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, consistency = false }: any = {}) {
   if (domain && !Object.hasOwn(DOMAINS, domain)) throw new Error('Unknown domain: ' + domain);
   const base = fs.realpathSync(root);
   const inside = (target: string) => { const rel = path.relative(base, target); return !path.isAbsolute(rel) && rel !== '..' && !rel.startsWith('..' + path.sep); };
@@ -59,20 +59,20 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
     }
     return target;
   }
-  function inspect(file, role: undefined, validate, text = false) {
-    const row = { path: file, role, status: role, quality: 'unverified' };
-    let value;
+  function inspect(file: any, role: undefined, validate: any, text: any = false) {
+    const row: any = { path: file, role, status: role, quality: 'unverified' };
+    let value: any;
     try {
       const target = safe(file);
       if (!fs.statSync(target).isFile()) throw new Error('Not a regular file');
       const raw = fs.readFileSync(target, 'utf8');
       value = text ? raw : JSON.parse(raw);
       if (!validate(value)) throw new Error('Invalid structure');
-      row.observedFields = text ? [...new Set(raw.match(/--character-[a-z-]+/g) || [])].sort() : Object.keys(value).filter((key) => !Array.isArray(value) || Number.isNaN(Number(key)));
+      row.observedFields = text ? [...new Set(raw.match(/--character-[a-z-]+/g) || [])].sort() : Object.keys(value).filter((key: any) => !Array.isArray(value) || Number.isNaN(Number(key)));
       const items = Array.isArray(value) ? value : value.characters || value.blueprints || value.records;
       if (Array.isArray(items)) {
         row.count = items.length;
-        row.entityFields = [...new Set(items.flatMap((item) => object(item) ? Object.keys(item) : []))].sort();
+        row.entityFields = [...new Set(items.flatMap((item: any) => object(item) ? Object.keys(item) : []))].sort();
       }
     } catch (error) {
       row.status = runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'invalid';
@@ -81,19 +81,19 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
     }
     return { row, value };
   }
-  const domains = Object.entries(DOMAINS).filter(([id]) => !domain || id === domain).map(([id, meta]) => {
+  const domains = Object.entries(DOMAINS).filter(([id]: any) => !domain || id === domain).map(([id, meta]: any) => {
     const result = { domain: id, ...meta, fieldContract: FIELD_CONTRACTS[id] || { status: 'unknown', reason: '未追踪本域全部字段的 source/derived 映射；不把独立用途的同名字段视为镜像' },
       consistency: { status: 'not-run', reason: 'Use --consistency for pure JSON/field projection checks' },
       fieldValidation: { status: 'not-run', ...(FIELD_VALIDATION[id] || { rules: [], unknown: ['No complete exported field predicate for this domain'] }),
         execution: 'scripts/maintenance/check-content-impact.js --full --execute; partial field coverage remains explicit' },
       readWriteCoverage: { status: 'partial', completeness: 'unknown', basis: 'Only listed implementation readers/writers; no exhaustive dependency claim' },
       machine: { report: '办公机/CI：Node，本地只读', contentAcceptance: '内容/图片质量仍待对应主力机或人工验收' }, entries: [] };
-    const add = (...args) => { const item = inspect(...args); result.entries.push(item.row); return item; };
+    const add = (...args: any[]) => { const item = inspect(...args); result.entries.push(item.row); return item; };
     if (['popular', 'scenes', 'blueprints'].includes(id)) {
       const directory = 'data/' + id;
       const key = id === 'popular' ? 'characters' : 'blueprints';
-      const shape = id === 'scenes' ? records : (v) => object(v) && records(v[key]);
-      const validManifest = (v) => object(v) && Array.isArray(v.files) && v.files.length > 0 && v.files.every((e: { file: string; }) => object(e) && typeof e.file === 'string' && /^[^/\\:]+\.json$/.test(e.file) && e.file !== 'manifest.json') && new Set(v.files.map((e) => e.file)).size === v.files.length;
+      const shape = id === 'scenes' ? records : (v: any) => object(v) && records(v[key]);
+      const validManifest = (v: any) => object(v) && Array.isArray(v.files) && v.files.length > 0 && v.files.every((e: { file: string; }) => object(e) && typeof e.file === 'string' && /^[^/\\:]+\.json$/.test(e.file) && e.file !== 'manifest.json') && new Set(v.files.map((e: any) => e.file)).size === v.files.length;
       const manifest = add(directory + '/manifest.json', 'source', validManifest).value;
       if (manifest) for (const entry of manifest.files) {
         let files = [entry.file];
@@ -113,20 +113,20 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
       add('data/' + product, 'product', shape);
       if (id === 'scenes') {
         for (const file of ['scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json', 'scenes-core.json']) add('data/' + file, 'product', records);
-        add('data/scenes-index.json', 'product', (v) => object(v) && object(v.shards) && Number.isInteger(v.total));
+        add('data/scenes-index.json', 'product', (v: any) => object(v) && object(v.shards) && Number.isInteger(v.total));
       }
     } else if (id === 'scene-ratings') {
       add('scripts/lib/manual-scene-ratings.js', 'source', (raw: string) => { parseManualRatings(raw); return true; }, true);
-      add('scripts/maintenance/classify-scene-ratings.js', 'source', (raw) => raw.trim().length > 0, true);
+      add('scripts/maintenance/classify-scene-ratings.js', 'source', (raw: any) => raw.trim().length > 0, true);
       const scenes = reportOwnership({ root: base, domain: 'scenes' }).domains[0];
-      result.entries.push(...scenes.entries.filter((e) => e.logicalGroup).map((e) => ({ ...e, role: 'product', status: e.status === 'source' ? 'product' : e.status, fields: ['rating', 'mature', 'category', 'usage'] })));
-      result.entries.push(...scenes.entries.filter((e) => e.path === 'data/scenes/manifest.json'));
+      result.entries.push(...scenes.entries.filter((e: any) => e.logicalGroup).map((e: any) => ({ ...e, role: 'product', status: e.status === 'source' ? 'product' : e.status, fields: ['rating', 'mature', 'category', 'usage'] })));
+      result.entries.push(...scenes.entries.filter((e: any) => e.path === 'data/scenes/manifest.json'));
     } else if (id === 'characters') add('data/characters.json', 'source', records);
-    else if (id === 'curation') add('data/curation.json', 'source', (v) => object(v) && ['curatedSceneIds', 'signatureSceneIds', 'personaCoreSceneIds'].every((key) => Array.isArray(v[key]) && v[key].every((x) => typeof x === 'string')));
-    else if (id === 'retired') add('data/retired-scenes.json', 'source', (v) => object(v) && records(v.records) && v.records.every((r) => typeof r.id === 'string'));
+    else if (id === 'curation') add('data/curation.json', 'source', (v: any) => object(v) && ['curatedSceneIds', 'signatureSceneIds', 'personaCoreSceneIds'].every((key: any) => Array.isArray(v[key]) && v[key].every((x: any) => typeof x === 'string')));
+    else if (id === 'retired') add('data/retired-scenes.json', 'source', (v: any) => object(v) && records(v.records) && v.records.every((r: any) => typeof r.id === 'string'));
     else if (id === 'references') {
-      add('data/character-reference-standards.json', 'source', (v) => object(v) && records(v.characters) && records(v.perspectives));
-      add('data/character-reference-view.json', 'product', (v: ArrayLike<unknown>|{ [s: string]: unknown; }) => object(v) && Object.values(v).every((r) => object(r) && records(r.outfits)));
+      add('data/character-reference-standards.json', 'source', (v: any) => object(v) && records(v.characters) && records(v.perspectives));
+      add('data/character-reference-view.json', 'product', (v: ArrayLike<unknown>|{ [s: string]: unknown; }) => object(v) && Object.values(v).every((r: any) => object(r) && records(r.outfits)));
     } else if (id === 'themes') add('src/assets/css/director/tokens.css', 'source', (v: string|string[]) => v.includes('--character-') && v.includes('{') && v.includes('}'), true);
     else result.entries.push({ path: null, role: 'source', status: 'external-unknown', reason: '外部样张 manifest 未定位；未读取外部文件', quality: 'unverified' });
     if (consistency) {
@@ -147,9 +147,9 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
     + '不证明字段语义、审核真实性或图片质量；局部通过不等于全库通过。' };
 }
 
-function main(args = process.argv.slice(2)) {
+function main(args: any = process.argv.slice(2)) {
   try {
-    const opts = {};
+    const opts: Record<string, any> = {};
     for (let i = 0; i < args.length; i++) {
       const arg = args[i];
       if (['--json', '--help', '--plan', '--consistency'].includes(arg)) opts[arg.slice(2)] = true;
@@ -159,8 +159,8 @@ function main(args = process.argv.slice(2)) {
     if (opts.domain && !Object.hasOwn(DOMAINS, opts.domain)) throw new Error('Unknown domain: ' + opts.domain);
     if (opts.help || opts.plan) { console.log('audit:ownership [--json] [--consistency] [--root <directory>] [--domain <' + Object.keys(DOMAINS).join('|') + '>]：只读归属报告；--consistency 比较已实现字段投影，不执行构建；unknown/mismatch 退出 1。预览不读取目标'); return 0; }
     const report = reportOwnership(opts);
-    console.log(opts.json ? JSON.stringify(report, null, 2) : report.domains.map((d) => `${d.domain}: ${d.fields}\n${d.entries.map((e) => `  ${e.status} ${e.path || '(external)'}${e.reason ? ' — ' + e.reason : ''}`).join('\n')}\n读取者: ${d.readers.join(', ')}\n写入入口(未执行): ${d.writers.join(', ')}\n字段映射: ${JSON.stringify(d.fieldContract)}\n一致性: ${JSON.stringify(d.consistency)}\n边界: ${d.boundary}\n机器: ${d.machine.report}; ${d.machine.contentAcceptance}`).join('\n\n') + '\n' + report.scope);
-    return report.domains.some((d) => d.entries.some((e) => ['missing', 'invalid'].includes(e.status))
+    console.log(opts.json ? JSON.stringify(report, null, 2) : report.domains.map((d: any) => `${d.domain}: ${d.fields}\n${d.entries.map((e: any) => `  ${e.status} ${e.path || '(external)'}${e.reason ? ' — ' + e.reason : ''}`).join('\n')}\n读取者: ${d.readers.join(', ')}\n写入入口(未执行): ${d.writers.join(', ')}\n字段映射: ${JSON.stringify(d.fieldContract)}\n一致性: ${JSON.stringify(d.consistency)}\n边界: ${d.boundary}\n机器: ${d.machine.report}; ${d.machine.contentAcceptance}`).join('\n\n') + '\n' + report.scope);
+    return report.domains.some((d: any) => d.entries.some((e: any) => ['missing', 'invalid'].includes(e.status))
       || (opts.consistency && ['unknown', 'mismatch'].includes(d.consistency.status))) ? 1 : 0;
   } catch (error) { console.error(runtimeErrorMessage(error)); return 2; }
 }

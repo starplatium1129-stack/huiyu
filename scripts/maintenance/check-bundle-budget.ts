@@ -36,30 +36,30 @@ const DEFAULT_BUDGETS = Object.freeze({
   routeClosureJavaScript: 580 * 1024,
 });
 
-function routeEntries(manifest) {
+function routeEntries(manifest: any) {
   return Object.entries(manifest)
-    .map(([key, entry]) => ({ key, ...entry }))
-    .filter(entry => entry.isDynamicEntry === true && (
+    .map(([key, entry]: any) => ({ key, ...entry }))
+    .filter((entry: any) => entry.isDynamicEntry === true && (
       /^src\/views\/.+\.vue$/.test(entry.src || entry.key)
       || (!entry.src && /View$/.test(entry.name || ''))
     ));
 }
 
-function lazyChunks(manifest) {
+function lazyChunks(manifest: any) {
   return Object.entries(manifest)
-    .map(([key, entry]) => ({ key, ...entry }))
-    .filter(entry => entry.isDynamicEntry === true && !/^src\/views\/.+\.vue$/.test(entry.src || entry.key));
+    .map(([key, entry]: any) => ({ key, ...entry }))
+    .filter((entry: any) => entry.isDynamicEntry === true && !/^src\/views\/.+\.vue$/.test(entry.src || entry.key));
 }
 
-function entryEntry(manifest) {
+function entryEntry(manifest: any) {
   return Object.entries(manifest)
-    .map(([key, entry]) => ({ key, ...entry }))
-    .find(entry => entry.isEntry === true) || null;
+    .map(([key, entry]: any) => ({ key, ...entry }))
+    .find((entry: any) => entry.isEntry === true) || null;
 }
 
 // 静态 import 闭包（不含 dynamicImports）：从起点沿 imports BFS 收集全部
 // manifest key。闭包大小只统计 .js 产物（CSS 已有独立预算），去重后求和。
-function staticClosureKeys(manifest, startKey) {
+function staticClosureKeys(manifest: any, startKey: any) {
   const seen = new Set([startKey]);
   const queue = [startKey];
   while (queue.length) {
@@ -75,29 +75,29 @@ function staticClosureKeys(manifest, startKey) {
   return [...seen];
 }
 
-function staticClosureSize(manifest, startKey, sizeOf) {
-  return staticClosureKeys(manifest, startKey).reduce((total, key) => {
+function staticClosureSize(manifest: any, startKey: any, sizeOf: any) {
+  return staticClosureKeys(manifest, startKey).reduce((total: any, key: any) => {
     const file = manifest[key] && manifest[key].file;
     return file && /\.js$/.test(file) ? total + sizeOf(file) : total;
   }, 0);
 }
 
-function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
-  const routes = routeEntries(manifest).map(entry => {
+function evaluateManifest(manifest: any, sizeOf: any, budgets: any = DEFAULT_BUDGETS) {
+  const routes = routeEntries(manifest).map((entry: any) => {
     const cssFiles = [...new Set(entry.css || [])];
     return {
       route: entry.name || path.basename(entry.src || entry.key, '.vue'),
       file: entry.file,
       javascript: sizeOf(entry.file),
-      css: cssFiles.reduce((total, file) => total + sizeOf(file), 0),
+      css: cssFiles.reduce((total: any, file: any) => total + sizeOf(file), 0),
       // 2026-09-06 审计 P2-03：路由自身 chunk + 全部静态共享依赖（去重）。
       // 路由 javascript 变小而闭包变大 = 代码被搬进同步共享块，同样算回涨。
       closureJavaScript: staticClosureSize(manifest, entry.key, sizeOf),
     };
   });
 
-  const warnings = [];
-  const violations = [];
+  const warnings: any[] = [];
+  const violations: any[] = [];
   for (const route of routes) {
     if (route.javascript > budgets.routeJavaScript) {
       violations.push(`${route.route} JavaScript ${route.javascript} > ${budgets.routeJavaScript}`);
@@ -118,17 +118,17 @@ function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
   return { routes, violations, warnings };
 }
 
-function kib(bytes) {
+function kib(bytes: any) {
   return `${(bytes / 1024).toFixed(1)} KiB`;
 }
 
-function run(distDir = path.resolve(__dirname, '../../dist')) {
+function run(distDir: any = path.resolve(__dirname, '../../dist')) {
   const manifestPath = path.join(distDir, '.vite', 'manifest.json');
   if (!fs.existsSync(manifestPath)) {
     throw new Error(`Vite manifest missing: ${manifestPath}`);
   }
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  const sizeOf = file => fs.statSync(path.join(distDir, file)).size;
+  const sizeOf = (file: any) => fs.statSync(path.join(distDir, file)).size;
   const result = evaluateManifest(manifest, sizeOf);
   if (result.routes.length < 12) {
     throw new Error(`Expected at least 12 lazy route chunks, found ${result.routes.length}`);
@@ -138,7 +138,7 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
   }
 
   // 非路由动态块（wl-live2d 等）只监控大小上限，不设路由级预算
-  const lazy = lazyChunks(manifest).map(entry => ({
+  const lazy = lazyChunks(manifest).map((entry: any) => ({
     key: entry.key,
     file: entry.file,
     javascript: fs.statSync(path.join(distDir, entry.file)).size,
@@ -146,17 +146,17 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
   // 2026-08-27 审计：懒块此前只有硬上限，90% 告警只覆盖路由预算，
   // wl-live2d 实测 92.3% 时静默逼近悬崖 —— 口径对齐路由块的告警线。
   const lazyWarnings = lazy
-    .filter(entry => entry.javascript > DEFAULT_BUDGETS.lazyChunk * 0.9)
-    .map(entry => `${path.basename(entry.key)} lazy JavaScript ${kib(entry.javascript)} > 90% of ${kib(DEFAULT_BUDGETS.lazyChunk)}`);
+    .filter((entry: any) => entry.javascript > DEFAULT_BUDGETS.lazyChunk * 0.9)
+    .map((entry: any) => `${path.basename(entry.key)} lazy JavaScript ${kib(entry.javascript)} > 90% of ${kib(DEFAULT_BUDGETS.lazyChunk)}`);
   const lazyViolations = lazy
-    .filter(entry => entry.javascript > DEFAULT_BUDGETS.lazyChunk)
-    .map(entry => `${entry.key} JavaScript ${entry.javascript} > ${DEFAULT_BUDGETS.lazyChunk}`);
+    .filter((entry: any) => entry.javascript > DEFAULT_BUDGETS.lazyChunk)
+    .map((entry: any) => `${entry.key} JavaScript ${entry.javascript} > ${DEFAULT_BUDGETS.lazyChunk}`);
   if (lazyViolations.length) {
     throw new Error(`Lazy chunk budget exceeded:\n${lazyViolations.join('\n')}`);
   }
 
   const entry = entryEntry(manifest);
-  const entryCssBytes = entry ? (entry.css || []).reduce((total, file) => total + sizeOf(file), 0) : 0;
+  const entryCssBytes = entry ? (entry.css || []).reduce((total: any, file: any) => total + sizeOf(file), 0) : 0;
   if (entryCssBytes > DEFAULT_BUDGETS.entryCss) {
     throw new Error(`Entry CSS budget exceeded: ${(entry.css || []).join(', ')} = ${entryCssBytes} > ${DEFAULT_BUDGETS.entryCss}`
       + '\n字体声明走 src/assets/fonts.ts 异步 chunk，勿在 main.ts 同步 import @fontsource 或大样式。');
@@ -172,10 +172,10 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     result.entryClosureJavaScript = entryClosure;
   }
 
-  const largestJs = [...result.routes].sort((a, b) => b.javascript - a.javascript)[0];
-  const largestCss = [...result.routes].sort((a, b) => b.css - a.css)[0];
-  const largestLazy = lazy.sort((a, b) => b.javascript - a.javascript)[0];
-  const largestClosure = [...result.routes].sort((a, b) => b.closureJavaScript - a.closureJavaScript)[0];
+  const largestJs = [...result.routes].sort((a: any, b: any) => b.javascript - a.javascript)[0];
+  const largestCss = [...result.routes].sort((a: any, b: any) => b.css - a.css)[0];
+  const largestLazy = lazy.sort((a: any, b: any) => b.javascript - a.javascript)[0];
+  const largestClosure = [...result.routes].sort((a: any, b: any) => b.closureJavaScript - a.closureJavaScript)[0];
   console.log(
     `Route bundle budget passed: ${result.routes.length} routes; `
     + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `

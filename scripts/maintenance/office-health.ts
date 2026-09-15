@@ -26,7 +26,7 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 
 check('workflow command', Boolean(packageJson.scripts && packageJson.scripts.workflow), '维护工作流入口');
 check('quality command', Boolean(packageJson.scripts && packageJson.scripts.validate), '完整验证入口');
 
-const failed = checks.filter((item) => !item.passed);
+const failed = checks.filter((item: any) => !item.passed);
 for (const item of checks) {
   console.log(`${item.passed ? '✔' : '✘'} ${item.name}: ${item.detail}`);
 }

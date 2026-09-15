@@ -4,26 +4,26 @@ const { isDeepStrictEqual: equal }: typeof import('node:util') = require('node:u
 const { object, validId, canonicalSceneId }: typeof import('./content-history-reader') = require('./content-history-reader');
 
 const TIERS = ['curatedSceneIds', 'signatureSceneIds', 'personaCoreSceneIds'];
-const PRODUCTS = { popular: 'data/popular-characters.json', blueprints: 'data/scene-blueprints.json', scenes: 'data/scenes.json' };
-const ENTITY = { popular: 'character', blueprints: 'blueprint', scenes: 'scene', characters: 'profile', curation: 'curation', retired: 'retired' };
-const keyFor = (kind: string|string[], id: never, characterId = null) => JSON.stringify([kind, characterId, id]);
+const PRODUCTS: Record<string, string> = { popular: 'data/popular-characters.json', blueprints: 'data/scene-blueprints.json', scenes: 'data/scenes.json' };
+const ENTITY: Record<string, string> = { popular: 'character', blueprints: 'blueprint', scenes: 'scene', characters: 'profile', curation: 'curation', retired: 'retired' };
+const keyFor = (kind: string|string[], id: unknown, characterId: unknown = null) => JSON.stringify([kind, characterId, id]);
 
-function loadDomain(reader: { json: (arg0: string) => unknown; read: (arg0: string) => { (): unknown; new(): unknown; raw: unknown; }; list: (arg0: string) => unknown; }, domain: PropertyKey) {
-  const result = { domain, complete: true, rows: [], groups: {}, metadata: {}, unknown: [], issues: [], checks: [], files: [] };
+function loadDomain(reader: { json: (file: string) => any; read: (file: string) => any; list: (dir: string) => string[]; }, domain: string) {
+  const result: any = { domain, complete: true, rows: [], groups: {}, metadata: {}, unknown: [], issues: [], checks: [], files: [] };
   const issue = (file: string, reason: string) => result.issues.push({ file, reason });
   const unknown = (file: string, reason: string) => { result.complete = false; result.unknown.push(`${file}: ${reason}`); };
   const json = (file: string) => {
     if (!result.files.includes(file)) result.files.push(file);
     return reader.json(file);
   };
-  const read = (file: string, validate: { (v: unknown): unknown; (v: unknown): v is never[]; (v: unknown): v is never; (value: null): value is never; (arg0: unknown): unknown; }) => {
+  const read = (file: string, validate: (v: unknown) => boolean): any => {
     const value = json(file);
     if (!validate(value)) throw new Error(`${file}: invalid container/IDs`);
     return value;
   };
-  const validRows = (rows: unknown[], scene = false) => Array.isArray(rows) && rows.every((row) => object(row) && (scene ? canonicalSceneId(row.id) : validId(row.id)));
-  const put = (group: string|string[], file: string, kind: string|string[], id: never, value: never, extra = {}) => {
-    const row = { group, file, domain, role: group.includes(':derived:') ? 'derived' : 'source', kind, id, value, ...extra };
+  const validRows = (rows: unknown, scene = false) => Array.isArray(rows) && rows.every((row: any) => object(row) && (scene ? canonicalSceneId(row.id) : validId(row.id)));
+  const put = (group: string|string[], file: string, kind: string|string[], id: unknown, value: unknown, extra: Record<string, unknown> = {}) => {
+    const row: any = { group, file, domain, role: group.includes(':derived:') ? 'derived' : 'source', kind, id, value, ...extra };
     row.key = keyFor(kind, id, kind.includes('outfit') ? row.characterId : null);
     result.rows.push(row);
     result.groups[group] ||= { complete: true, rows: [] };
@@ -41,7 +41,7 @@ function loadDomain(reader: { json: (arg0: string) => unknown; read: (arg0: stri
   const metadata = (file: string, value: { [s: string]: unknown; }|ArrayLike<unknown>, omit: string|string[]) => {
     result.metadata[file] = Object.fromEntries(Object.entries(value).filter(([key]) => !omit.includes(key)));
   };
-  const product = (file: string, expected: unknown, validate: { (v: unknown): v is never[]; (v: unknown): v is never[]; (v: unknown): v is never[]; }, rowSelector = (v: unknown) => v) => {
+  const product = (file: string, expected: unknown, validate: (v: unknown) => boolean, rowSelector: (v: any) => any = (v: any) => v) => {
     try {
       const actual = read(file, validate);
       const group = `${domain}:derived:${file}`;
@@ -68,15 +68,15 @@ function loadDomain(reader: { json: (arg0: string) => unknown; read: (arg0: stri
     const sourceGroup = `${domain}:source`;
     result.groups[sourceGroup] = { complete: true, rows: [] };
     const recordsKey = domain === 'popular' ? 'characters' : 'blueprints';
-    const shape = domain === 'scenes' ? (v: unknown) => validRows(v, true) : (v: { [x: string]: unknown; }|null) => object(v) && validRows(v[recordsKey]);
+    const shape = domain === 'scenes' ? (v: unknown) => validRows(v, true) : (v: any) => object(v) && validRows(v[recordsKey]);
     let sourceComplete = true;
-    const sourceRows = [];
+    const sourceRows: any[] = [];
     try {
       const manifestFile = `${directory}/manifest.json`;
-      const manifest = read(manifestFile, (v: { files: unknown[]; }|null) => object(v) && Array.isArray(v.files)
-        && v.files.every((e: { file: string; }|null) => object(e) && typeof e.file === 'string' && /^[^/\\:\x00]+\.json$/.test(e.file)
+      const manifest = read(manifestFile, (v: unknown) => object(v) && Array.isArray((v as any).files)
+        && (v as any).files.every((e: any) => object(e) && typeof e.file === 'string' && /^[^/\\:\x00]+\.json$/.test(e.file)
           && e.file !== 'manifest.json' && e.file !== '..json')
-        && new Set(v.files.map((e: { file: unknown; }) => e.file)).size === v.files.length);
+        && new Set((v as any).files.map((e: any) => e.file)).size === (v as any).files.length);
       result.metadata[manifestFile] = manifest;
       if (!manifest.files.length) issue(manifestFile, 'empty source manifest is not accepted by the store builder');
       const names = reader.list(directory);
@@ -87,13 +87,13 @@ function loadDomain(reader: { json: (arg0: string) => unknown; read: (arg0: stri
           if (domain === 'scenes') {
             const stem = entry.file.slice(0, -5);
             const batches = names.filter((file: string) => file.startsWith(`${stem}.`) && /^\d+\.json$/.test(file.slice(stem.length + 1)))
-              .sort((a: string|unknown[], b: string|unknown[]) => Number(a.slice(stem.length + 1, -5)) - Number(b.slice(stem.length + 1, -5)));
+              .sort((a: string, b: string) => Number(a.slice(stem.length + 1, -5)) - Number(b.slice(stem.length + 1, -5)));
             if (batches.length) {
               files = batches;
               if (names.includes(entry.file) || batches.some((file: string, i: number) => file !== `${stem}.${i + 1}.json`)) throw new Error('ambiguous source: batch gap/noncanonical number or single file coexists');
             }
           }
-          const loaded = [];
+          const loaded: any[] = [];
           for (const name of files) {
             managed.add(name);
             const file = `${directory}/${name}`;
@@ -123,9 +123,9 @@ function loadDomain(reader: { json: (arg0: string) => unknown; read: (arg0: stri
     }
     if (domain === 'scenes') sourceRows.sort((a, b) => Number(a.id.slice(2)) - Number(b.id.slice(2)));
     const expected = sourceComplete ? domain === 'scenes' ? sourceRows : { version: domain === 'popular' ? 1 : 2, [recordsKey]: sourceRows } : undefined;
-    product(PRODUCTS[domain], expected, shape, (value) => domain === 'scenes' ? value : value[recordsKey]);
+    product(PRODUCTS[domain], expected, shape, (value: any) => domain === 'scenes' ? value : value[recordsKey]);
     if (domain === 'scenes') {
-      const grouped = { nene: [], natsume: [], shared: [] };
+      const grouped: Record<string, any[]> = { nene: [], natsume: [], shared: [] };
       const seen = new Set();
       for (const scene of sourceRows) {
         if (seen.has(scene.id)) continue;
@@ -133,9 +133,9 @@ function loadDomain(reader: { json: (arg0: string) => unknown; read: (arg0: stri
         grouped[scene.char === 'natsume' ? 'natsume' : scene.char === 'triad' ? 'shared' : 'nene'].push(scene);
       }
       for (const [group, rows] of Object.entries(grouped)) product(`data/scenes-${group}.json`, sourceComplete ? rows : undefined, shape);
-      let coreIds;
+      let coreIds: any;
       try {
-        const curation = read('data/curation.json', (v: { [x: string]: unknown[]; }|null) => object(v) && TIERS.every((tier) => Array.isArray(v[tier]) && v[tier].every(canonicalSceneId)));
+        const curation = read('data/curation.json', (v: unknown) => object(v) && TIERS.every((tier) => Array.isArray((v as any)[tier]) && (v as any)[tier].every(canonicalSceneId)));
         result.metadata['data/curation.json'] = curation;
         coreIds = curation.personaCoreSceneIds.slice(0, 2000).filter((id: unknown) => seen.has(id));
       } catch (error) { unknown('data/curation.json', runtimeErrorMessage(error)); }
@@ -185,9 +185,9 @@ function loadDomain(reader: { json: (arg0: string) => unknown; read: (arg0: stri
         const value = json(file);
         if (!object(value)) throw new Error('invalid reference container');
         const characters = role === 'source' ? value.characters : Object.entries(value).map(([id, row]) => ({ ...row, id }));
-        if (!validRows(characters) || characters.some((row) => !Array.isArray(row.outfits)
-          || row.outfits.some((outfit: { id: string; outfitId: string; references: ({ id: string; }|null)[]; }|null) => !object(outfit) || !validId(role === 'source' ? outfit.id : outfit.outfitId)
-            || (role === 'derived' && (!Array.isArray(outfit.references) || outfit.references.some((ref: { id: string; }|null) => !object(ref) || !validId(ref.id))))))) throw new Error('invalid reference character/outfit records');
+        if (!validRows(characters) || characters.some((row: any) => !Array.isArray(row.outfits)
+          || row.outfits.some((outfit: any) => !object(outfit) || !validId(role === 'source' ? outfit.id : outfit.outfitId)
+            || (role === 'derived' && (!Array.isArray(outfit.references) || outfit.references.some((ref: any) => !object(ref) || !validId(ref.id))))))) throw new Error('invalid reference character/outfit records');
         if (role === 'source') {
           if (!validRows(value.perspectives)) throw new Error('invalid perspective IDs');
           for (const perspective of value.perspectives) put(group, file, 'perspective', perspective.id, perspective);

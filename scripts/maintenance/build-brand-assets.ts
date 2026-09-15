@@ -20,7 +20,7 @@ async function buildBrandAssets() {
   fs.writeFileSync(path.join(ROOT, 'assets/favicon.svg'), icon);
   const directory = path.join(ROOT, 'desktop-tauri/src-tauri/icons');
   const sizes = [16, 24, 32, 48, 64, 128, 256];
-  const entries = [];
+  const entries: any[] = [];
   for (const size of sizes) {
     const png = await sharp(Buffer.from(icon), { density: 384 }).resize(size, size).png().toBuffer();
     if ([32, 64, 128, 256].includes(size)) fs.writeFileSync(path.join(directory, `icon-${size}.png`), png);
@@ -29,7 +29,7 @@ async function buildBrandAssets() {
   const header = Buffer.alloc(6 + entries.length * 16);
   header.writeUInt16LE(1, 2); header.writeUInt16LE(entries.length, 4);
   let offset = header.length;
-  entries.forEach((png, index) => {
+  entries.forEach((png: any, index: any) => {
     const entry = 6 + index * 16;
     header[entry] = header[entry + 1] = sizes[index] === 256 ? 0 : sizes[index];
     header.writeUInt16LE(1, entry + 4); header.writeUInt16LE(32, entry + 6);
@@ -46,6 +46,6 @@ async function buildBrandAssets() {
 
 if (require.main === module) {
   if (process.argv.includes('--help')) console.log('Build HUIYU assets from assets/brand-mark.svg. No arguments.');
-  else buildBrandAssets().catch(error => { console.error(error); process.exitCode = 1; });
+  else buildBrandAssets().catch((error: any) => { console.error(error); process.exitCode = 1; });
 }
 export = { buildBrandAssets };

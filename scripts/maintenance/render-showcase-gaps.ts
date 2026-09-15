@@ -26,7 +26,7 @@ const safety: typeof import('../lib/generation-candidates') = require('../lib/ge
 const MODEL_ID = 'anima-miaomiao-v1.2';
 const ENGINE = 'anima';
 
-function resolveManifest(opts) {
+function resolveManifest(opts: any) {
   if (opts.manifest) return safety.noLinks(path.resolve(opts.manifest));
   const { resolveSceneShowcaseDir }: typeof import('../../server/config') = require('../../server/config');
   const workspace = opts.env.AI_WORKSPACE_ROOT || path.resolve(opts.root, '..', 'AI');
@@ -41,7 +41,7 @@ function resolveManifest(opts) {
   return safety.noLinks(path.join(directory, 'manifest.json'));
 }
 
-function loadInputs(opts) {
+function loadInputs(opts: any) {
   const input = safety.snapshot(opts.root, ['data/popular-characters.json', 'data/scene-blueprints.json', 'data/presets.json', 'data/tags.json']);
   const manifestFile = resolveManifest(opts);
   const bytes = fs.readFileSync(manifestFile);
@@ -51,7 +51,7 @@ function loadInputs(opts) {
   return { ...input, manifest, manifestFile };
 }
 
-function collectTasks(opts, input) {
+function collectTasks(opts: any, input: any) {
   const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
   const { resolveModelProfile }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
   const { parsePresetCatalog }: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
@@ -62,21 +62,21 @@ function collectTasks(opts, input) {
   const profile = resolveModelProfile(catalog.modelProfiles, MODEL_ID, ENGINE);
   if (!profile) throw new Error(`找不到引擎 ${ENGINE} 的模型 profile，拒绝执行`);
   const tagsData = input.data['data/tags.json'];
-  const matureTokenSet = new Set(tagsData.filter(t => t.cat === 'Mature').map(t => String(t.en).trim().toLowerCase().replace(/\s+/g, '_')));
+  const matureTokenSet = new Set(tagsData.filter((t: any) => t.cat === 'Mature').map((t: any) => String(t.en).trim().toLowerCase().replace(/\s+/g, '_')));
   const manifest = input.manifest;
-  const have = new Set(manifest.entries.filter(e => e.type === 'popular').map(e => e.id));
-  const only = opts.only ? opts.only.split(',').map(s => s.trim()).filter(Boolean) : null;
+  const have = new Set(manifest.entries.filter((e: any) => e.type === 'popular').map((e: any) => e.id));
+  const only = opts.only ? opts.only.split(',').map((s: any) => s.trim()).filter(Boolean) : null;
   const decisionCache = new Map();
-  function decisionsOf(bp) {
+  function decisionsOf(bp: any) {
     if (!decisionCache.has(bp.id)) decisionCache.set(bp.id, popular.inferBlueprintDecisions(bp));
     return decisionCache.get(bp.id);
   }
   /** 与 UI 一致的装配参数（usePopularPromptAssembly 对齐）。 */
-  function buildPlan(character, bp) {
+  function buildPlan(character: any, bp: any) {
     const d = decisionsOf(bp);
     return popular.buildPopularPromptPlan({
       character,
-      outfit: character.outfits.find(o => o.id === bp.outfitId) || character.outfits[0],
+      outfit: character.outfits.find((o: any) => o.id === bp.outfitId) || character.outfits[0],
       blueprint: bp,
       engine: ENGINE,
       profile,
@@ -89,19 +89,19 @@ function collectTasks(opts, input) {
       artist: 'rella',
     });
   }
-  const tasks = [];
+  const tasks: any[] = [];
   for (const character of characters) {
     if (only && !only.includes(character.id)) continue;
-    const own = blueprints.filter(b => b.characterId === character.id);
+    const own = blueprints.filter((b: any) => b.characterId === character.id);
     for (const bp of own) {
       const entryId = `pc_${character.id}_${bp.id}`;
-      const existing = manifest.entries.find(e => e.id === entryId && e.type === 'popular');
+      const existing = manifest.entries.find((e: any) => e.id === entryId && e.type === 'popular');
       if (opts['redo-mine']) {
         // 原有指纹筛选只决定候选选择，不赋予覆盖或审核权限。
         if (!existing || !/(?:gap-render|fill-gaps 批量补齐)/.test(existing.provenance?.review?.notes || existing.provenance?.notes || '')) continue;
       } else if (have.has(entryId)) continue;
       const [w, h] = String(bp.recommendedSize || '832x1216').split('x').map(Number);
-      const plan = buildPlan(character, bp);
+      const plan: any = buildPlan(character, bp);
       let prompt = plan.prompt;
       if (!prompt.includes('@rella')) prompt = `@rella, ${prompt}`;
       const baseSeed = seedFor(entryId, 1);
@@ -109,11 +109,11 @@ function collectTasks(opts, input) {
         key: `popular:${character.id}:${bp.id}`,
         metadata: { batch: 'popular', engine: ENGINE, characterId: character.id,
           blueprintId: bp.id, blueprintTitle: bp.title,
-          outfitId: (character.outfits.find(o => o.id === bp.outfitId) || character.outfits[0])?.id,
+          outfitId: (character.outfits.find((o: any) => o.id === bp.outfitId) || character.outfits[0])?.id,
           title: `${character.displayName} / ${bp.title}`, story: bp.description || '', category: '热门角色',
           displayName: character.displayName, rating: bp.adult ? 'R18' : 'All', adult: !!bp.adult,
           intendedEntryId: entryId, sourceManifest: input.manifestFile },
-        payload: attempt => ({
+        payload: (attempt: any) => ({
           modelId: MODEL_ID, prompt, negative: plan.negative,
           width: w || 832, height: h || 1216, steps: 30,
           cfg: 4.5, teaCache: true, teaCacheThresh: 0.08,
@@ -125,12 +125,12 @@ function collectTasks(opts, input) {
   return tasks;
 }
 
-function seedFor(entryId, attempt) {
-  const hash = [...entryId].reduce((a, ch) => a + ch.charCodeAt(0) * 31, 0);
+function seedFor(entryId: any, attempt: any) {
+  const hash = [...entryId].reduce((a: any, ch: any) => a + ch.charCodeAt(0) * 31, 0);
   return 70000000 + (hash + attempt * 7919) % 90000000;
 }
 
-async function main(args = process.argv.slice(2), deps = {}) {
+async function main(args: any = process.argv.slice(2), deps: any = {}) {
   const opts = safety.parseArgs(args, { only: 'value', 'redo-mine': 'flag', manifest: 'value' }, deps.env || process.env);
   if (opts.help) return safety.help(__filename, '[--only a,b] [--redo-mine] [--manifest <source manifest>]');
   const input = loadInputs(opts);

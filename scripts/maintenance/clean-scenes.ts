@@ -7,13 +7,13 @@ const { loadSceneShards, writeSceneSet }: typeof import('../lib/scene-store') = 
 const write = process.argv.includes('--write');
 
 // ── 配置 ──
-const CHARACTER_DNA = {
+const CHARACTER_DNA: any = {
   nene:   ['hair_ribbon'],
   natsume:['mole_under_eye'],
   triad:  ['2girls', 'mole_under_eye', 'hair_ribbon']
 };
 
-const TAG_MAP = {
+const TAG_MAP: any = {
   'naki-bokuro': 'mole_under_eye',
   'naki_bokuro': 'mole_under_eye',
   'close-up': 'close_up'
@@ -42,11 +42,11 @@ const TAG_EXCLUDE = new Set([
 const PLACEHOLDER_PATTERN = /\{(?:intimacy_intensity|interaction_target|sensory_feedback)\}/g;
 
 // ── 辅助函数 ──
-function normalize(t) {
+function normalize(t: any) {
   return t.toLowerCase().replace(/[\s-]+/g, '_').trim();
 }
 
-function isVisualTag(t) {
+function isVisualTag(t: any) {
   // 排除带权重语法 (xxx:1.2)、纯数字、太短的
   if (t.includes(':') || t.includes('(')) return false;
   if (/^\d+$/.test(t)) return false;
@@ -54,21 +54,21 @@ function isVisualTag(t) {
   return true;
 }
 
-function extractPromptTokens(prompt) {
+function extractPromptTokens(prompt: any) {
   // 从 prompt 字符串中提取标准 snake_case token
   return prompt.split(',')
-    .map(t => t.trim())
+    .map((t: any) => t.trim())
     .filter(Boolean)
-    .map(t => {
+    .map((t: any) => {
       // 去掉权重语法 (token:1.2) → token
       const m = t.match(/^\(?([^:)]+)/);
       return m ? m[1].trim() : t;
     })
     .map(normalize)
-    .filter(t => isVisualTag(t) && !TAG_EXCLUDE.has(t) && !BLACKLIST.has(t) && !t.includes('{'));
+    .filter((t: any) => isVisualTag(t) && !TAG_EXCLUDE.has(t) && !BLACKLIST.has(t) && !t.includes('{'));
 }
 
-function normalizePromptToken(token) {
+function normalizePromptToken(token: any) {
   const breakMarker = 'AICSBREAKTOKEN';
   token = token.replace(/_BREAK_/gi, breakMarker).replace(/\s+BREAK\s+/gi, breakMarker);
   // 将空格分隔的 multi-word token 转为 snake_case，保留权重语法
@@ -86,16 +86,16 @@ const raw = loadSceneShards().scenes;
 
 let stats = { dedup: 0, dna: 0, mapped: 0, blacklisted: 0, commaSplit: 0, tagSync: 0, promptNorm: 0, placeholders: 0 };
 
-const cleaned = raw.map(scene => {
+const cleaned = raw.map((scene: any) => {
   let tags = (scene.tags || []).slice();
 
   // 1. 拆分逗号分隔的多标签
-  const expanded = [];
-  tags.forEach(t => {
+  const expanded: any[] = [];
+  tags.forEach((t: any) => {
     if (!t) return;
     if (t.includes(',')) {
       stats.commaSplit++;
-      t.split(',').map(s => s.trim()).filter(Boolean).forEach(s => expanded.push(s));
+      t.split(',').map((s: any) => s.trim()).filter(Boolean).forEach((s: any) => expanded.push(s));
     } else {
       expanded.push(t);
     }
@@ -103,13 +103,13 @@ const cleaned = raw.map(scene => {
   tags = expanded;
 
   // 2. 标准化 + 映射 + 黑名单
-  tags = tags.map(t => {
+  tags = tags.map((t: any) => {
     const norm = normalize(t);
     if (TAG_MAP[norm]) { stats.mapped++; return TAG_MAP[norm]; }
     return norm;
   });
   const beforeBL = tags.length;
-  tags = tags.filter(t => !BLACKLIST.has(t));
+  tags = tags.filter((t: any) => !BLACKLIST.has(t));
   stats.blacklisted += beforeBL - tags.length;
 
   // 3. 去重
@@ -120,7 +120,7 @@ const cleaned = raw.map(scene => {
   // 4. 注入角色 DNA
   const charKey = (scene.char || '').toLowerCase();
   const dna = CHARACTER_DNA[charKey] || [];
-  dna.forEach(d => {
+  dna.forEach((d: any) => {
     if (!tags.includes(d)) { tags.unshift(d); stats.dna++; }
   });
 
@@ -128,7 +128,7 @@ const cleaned = raw.map(scene => {
   let prompt = scene.prompt || '';
   if (prompt) {
     prompt = prompt.replace(/_BREAK_/gi, ' BREAK ');
-    const tokens = prompt.split(',').map(t => t.trim()).filter(Boolean);
+    const tokens = prompt.split(',').map((t: any) => t.trim()).filter(Boolean);
     const normalized = tokens.map(normalizePromptToken);
     const newPrompt = normalized.join(', ');
     if (newPrompt !== prompt) { stats.promptNorm++; prompt = newPrompt; }
@@ -137,7 +137,7 @@ const cleaned = raw.map(scene => {
   // 6. 从已标准化的 prompt 同步缺失标签到 tags
   if (prompt) {
     const promptTokens = extractPromptTokens(prompt);
-    promptTokens.forEach(t => {
+    promptTokens.forEach((t: any) => {
       if (!tags.includes(t)) { tags.push(t); stats.tagSync++; }
     });
   }

@@ -55,7 +55,7 @@ function scanDir(dir: string) {
   let files = 0;
   const stack = [dir];
   while (stack.length) {
-    const cur = stack.pop();
+    const cur: any = stack.pop();
     let entries;
     try { entries = fs.readdirSync(cur, { withFileTypes: true }); } catch { continue; }
     for (const ent of entries) {
@@ -83,9 +83,9 @@ function main() {
     console.log('[clean-runtime-experiments] runtime/ 不存在，无事可做');
     return;
   }
-  const reclaimable = [];
-  const active = [];
-  const unknown = [];
+  const reclaimable: any[] = [];
+  const active: any[] = [];
+  const unknown: any[] = [];
 
   for (const name of fs.readdirSync(RUNTIME, { withFileTypes: true })) {
     if (!name.isDirectory()) continue;
@@ -99,12 +99,12 @@ function main() {
     reclaimable.push(entry);
   }
 
-  const total = reclaimable.reduce((s, e) => s + e.bytes, 0);
+  const total = reclaimable.reduce((s: any, e: any) => s + e.bytes, 0);
   console.log(`[clean-runtime-experiments] 模式=${PRUNE ? 'PRUNE（真删）' : 'DRY-RUN（仅报告）'} 门槛=${DAYS} 天`);
 
   if (reclaimable.length) {
     console.log(`\n可回收（${reclaimable.length} 个，合计 ${fmtMB(total)}）：`);
-    for (const e of reclaimable.sort((a, b) => b.bytes - a.bytes)) {
+    for (const e of reclaimable.sort((a: any, b: any) => b.bytes - a.bytes)) {
       console.log(`  - ${e.name.padEnd(32)} ${fmtMB(e.bytes).padStart(9)}  最后活动 ${e.ageDays}`);
     }
   } else {

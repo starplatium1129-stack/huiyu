@@ -19,21 +19,21 @@ function pathDomain(file: string) {
     'data/character-reference-standards.json': 'references', 'data/character-reference-view.json': 'references' }[file] || null;
 }
 
-function fieldDiff(before: unknown, after: unknown, prefix = '') {
+function fieldDiff(before: unknown, after: unknown, prefix: any = '') {
   if (equal(before, after)) return [];
   if (!before || !after || typeof before !== 'object' || typeof after !== 'object' || Array.isArray(before) || Array.isArray(after)) return [prefix || '/'];
-  return [...new Set([...Object.keys(before), ...Object.keys(after)])].sort().flatMap((field) =>
+  return [...new Set([...Object.keys(before), ...Object.keys(after)])].sort().flatMap((field: any) =>
     fieldDiff(before[field], after[field], `${prefix}/${field.replace(/~/g, '~0').replace(/\//g, '~1')}`));
 }
 
-function historyImpact(opts: { base: string; character: null|undefined; outfit: unknown; scene: unknown; paths: unknown; root: PathLike; showcaseManifests: string|unknown[]; }, captureSnapshots: (arg0: { before: {}; after: {}; currentReader: { side: unknown; list(directory: string): unknown[]; evidence: Map<unknown,unknown>; read(file: string): unknown; json(file: string): unknown; verify(): string[]; }; }) => void) {
-  const result = { version: 2, readOnly: true,
+function historyImpact(opts: { base: string; character: null|undefined; outfit: unknown; scene: unknown; paths: unknown; root: PathLike; showcaseManifests: string|unknown[]; }, captureSnapshots: (arg0: { before: Record<string, any>; after: Record<string, any>; currentReader: { side: unknown; list(directory: string): unknown[]; evidence: Map<unknown,unknown>; read(file: string): unknown; json(file: string): unknown; verify(): string[]; }; }) => void) {
+  const result: any = { version: 2, readOnly: true,
     input: { base: opts.base, character: opts.character || null, outfit: opts.outfit || null, scene: opts.scene || null, paths: opts.paths || [] },
     mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [], affected: [], consistency: [] };
   const add = (level: string, domain: string, object: string, reason: string) => result[level].push({ domain, object, reason });
   const recommend = (name: string) => {
     const definition = WORKFLOWS[name];
-    if (definition && !result.recommendations.some((entry) => entry.name === name)) result.recommendations.push({ name,
+    if (definition && !result.recommendations.some((entry: any) => entry.name === name)) result.recommendations.push({ name,
       argv: ['node', 'scripts/workflow.js', name], nature: definition.run.nature, executed: false });
   };
   const { result: git, baseReader } = collectGitHistory(opts.root, opts.base);
@@ -70,8 +70,8 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
     result.incrementalPlan = buildPlan(result, [], ['Working-tree reader unavailable']);
     return result;
   }
-  const before = {};
-  const after = {};
+  const before: Record<string, any> = {};
+  const after: Record<string, any> = {};
   for (const domain of domains) {
     before[domain] = inspectDomain(baseReader, domain);
     after[domain] = inspectDomain(currentReader, domain);
@@ -84,8 +84,8 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
       }
     }
   }
-  const oldRows = Object.values(before).flatMap((s) => s.rows);
-  const newRows = Object.values(after).flatMap((s) => s.rows);
+  const oldRows = Object.values(before).flatMap((s: any) => s.rows);
+  const newRows = Object.values(after).flatMap((s: any) => s.rows);
   const edges = new Map();
   for (const [side, snapshots, rows] of [['base', before, oldRows], ['working-tree', after, newRows]]) {
     for (const row of rows) {
@@ -94,14 +94,14 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
     }
   }
   const seeds = new Set();
-  const globalReasons = [];
+  const globalReasons: any[] = [];
   for (const domain of domains) {
     const left = before[domain];
     const right = after[domain];
     for (const group of new Set([...Object.keys(left.groups), ...Object.keys(right.groups)])) {
       const oldGroup = left.groups[group] || { complete: false, rows: [] };
       const newGroup = right.groups[group] || { complete: false, rows: [] };
-      const keys = new Set([...oldGroup.rows, ...newGroup.rows].map((row) => row.key));
+      const keys = new Set([...oldGroup.rows, ...newGroup.rows].map((row: any) => row.key));
       for (const key of keys) {
         const old = oldGroup.rows.filter((row: { key: unknown; }) => row.key === key);
         const current = newGroup.rows.filter((row: { key: unknown; }) => row.key === key);
@@ -129,7 +129,7 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
       const afterKeys = newGroup.rows.map((row: { key: unknown; }) => row.key);
       if (!equal(beforeKeys, afterKeys)) {
         globalReasons.push(`${group}: global ID set/order requires full comparison`);
-        const movedKeys = [...new Set([...beforeKeys, ...afterKeys])].filter((key) => beforeKeys.indexOf(key) !== afterKeys.indexOf(key));
+        const movedKeys = [...new Set([...beforeKeys, ...afterKeys])].filter((key: any) => beforeKeys.indexOf(key) !== afterKeys.indexOf(key));
         result.history.ordering.push({ domain, group, beforeKeys, afterKeys, affectedKeys: movedKeys,
           status: oldGroup.complete && newGroup.complete ? 'requires-full-check' : 'unknown' });
         for (const key of movedKeys) seeds.add(key);
@@ -164,20 +164,20 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
   // Include both former and current relation endpoints as context, without
   // recursively treating an unchanged parent as a change to all its children.
   const contexts = new Map();
-  for (const row of [...oldRows, ...newRows].filter((r) => affected.has(r.key))) {
+  for (const row of [...oldRows, ...newRows].filter((r: any) => affected.has(r.key))) {
     for (const edge of edges.get(row).targets) contexts.set(edge.key, edge);
     result.unknown.push(...edges.get(row).unknown.map((message: unknown) => `${edges.get(row).side}: ${message}`));
   }
-  const proofTargets = [];
+  const proofTargets: any[] = [];
   for (const key of new Set([...affected, ...contexts.keys()])) {
-    const old = oldRows.filter((row) => row.key === key);
-    const current = newRows.filter((row) => row.key === key);
+    const old = oldRows.filter((row: any) => row.key === key);
+    const current = newRows.filter((row: any) => row.key === key);
     const identity = current[0] || old[0] || contexts.get(key);
     if (!identity) { result.unknown.push(`${key}: explicit target not found in either snapshot`); continue; }
     const locations = (rows: unknown[], side: string, role: string) => rows.filter((r: { role: string; }) => r.role === role).map((r: { file: unknown; }) => ({ file: r.file, side }));
-    const item = { ...target(identity.kind, identity.id, identity.characterId || null),
+    const item: any = { ...target(identity.kind, identity.id, identity.characterId || null),
       impact: affected.has(key) ? 'revalidate' : 'related-context',
-      oldRelations: old.flatMap((row) => edges.get(row).targets), newRelations: current.flatMap((row) => edges.get(row).targets),
+      oldRelations: old.flatMap((row: any) => edges.get(row).targets), newRelations: current.flatMap((row: any) => edges.get(row).targets),
       sources: [...locations(old, 'base', 'source'), ...locations(current, 'working-tree', 'source')],
       derived: [...locations(old, 'base', 'derived'), ...locations(current, 'working-tree', 'derived')] };
     result.affected.push(item);

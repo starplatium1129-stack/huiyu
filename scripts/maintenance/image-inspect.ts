@@ -57,7 +57,7 @@ const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // base64 后 ≈20MB，对齐 opencod
 
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp']);
 
-const TASKS = {
+const TASKS: any = {
   describe:
     '请详细、准确地描述这张图片的内容：主体、人物、场景、构图、色彩、光照、风格与氛围；' +
     '画面中的文字请一并转录。请用中文回答。',
@@ -122,14 +122,14 @@ function printHelp() {
   node scripts/maintenance/image-inspect.js a.png b.png --mode group -p "对比两张图并说明差异"`);
 }
 
-function parseArgs(argv) {
+function parseArgs(argv: any) {
   const opts = {
     task: 'describe', mode: 'each', model: null, prompt: null, expect: null,
     out: null, json: false, maxTokens: 4000, timeoutMs: 180000, help: false,
     noFallback: false, concurrency: 1, paths: [],
   };
   for (let i = 0; i < argv.length; i++) {
-    const a = argv[i];
+    const a: any = argv[i];
     const next = () => argv[++i];
     switch (a) {
       case '-t': case '--task': opts.task = next(); break;
@@ -155,8 +155,8 @@ function parseArgs(argv) {
   return opts;
 }
 
-function collectImages(inputs) {
-  const files = [];
+function collectImages(inputs: any) {
+  const files: any[] = [];
   for (const p of inputs) {
     if (!fs.existsSync(p)) { console.error(`[错误] 路径不存在: ${p}`); continue; }
     const st = fs.statSync(p);
@@ -166,7 +166,7 @@ function collectImages(inputs) {
         if (!IMAGE_EXT.has(path.extname(f).toLowerCase())) continue;
         if (fs.statSync(full).isFile()) files.push({ file: full, size: fs.statSync(full).size });
       }
-      files.sort((a, b) => a.file.localeCompare(b.file));
+      files.sort((a: any, b: any) => a.file.localeCompare(b.file));
     } else if (st.isFile()) {
       files.push({ file: p, size: st.size });
     }
@@ -174,8 +174,8 @@ function collectImages(inputs) {
   return files;
 }
 
-function httpJson(method, urlPath, body, opts, base) {
-  return new Promise((resolve, reject) => {
+function httpJson(method: any, urlPath: any, body: any, opts: any, base: any) {
+  return new Promise<any>((resolve: any, reject: any) => {
     const url = new URL((base || DEFAULT_BASE_URL) + urlPath);
     const payload = body ? JSON.stringify(body) : null;
     const req = http.request({
@@ -185,9 +185,9 @@ function httpJson(method, urlPath, body, opts, base) {
         'Authorization': `Bearer ${DEFAULT_API_KEY}`,
         ...(payload ? { 'Content-Length': Buffer.byteLength(payload) } : {}),
       },
-    }, res => {
+    }, (res: any) => {
       let d = '';
-      res.on('data', c => d += c);
+      res.on('data', (c: any) => d += c);
       res.on('end', () => {
         let json = null;
         try { json = JSON.parse(d); } catch { /* raw below */ }
@@ -203,7 +203,7 @@ function httpJson(method, urlPath, body, opts, base) {
   });
 }
 
-async function chatCompletion(messages, opts, model, base) {
+async function chatCompletion(messages: any, opts: any, model: any, base: any) {
   return httpJson('POST', '/chat/completions', {
     model,
     messages,
@@ -211,29 +211,29 @@ async function chatCompletion(messages, opts, model, base) {
   }, opts, base);
 }
 
-function imageUrl(file) {
+function imageUrl(file: any) {
   const ext = path.extname(file).toLowerCase().replace('.', '');
   const mime = ext === 'jpg' ? 'jpeg' : ext;
   return 'data:image/' + mime + ';base64,' + fs.readFileSync(file).toString('base64');
 }
 
-function isConnectionError(err) {
+function isConnectionError(err: any) {
   return /ECONNREFUSED|ECONNRESET|EPIPE|ETIMEDOUT|ENETUNREACH|EAI_AGAIN|超时/.test(err);
 }
 
-async function fetchModelId(base, opts) {
+async function fetchModelId(base: any, opts: any) {
   const j = await httpJson('GET', '/models', null, opts, base);
   const id = j && j.data && j.data[0] && j.data[0].id;
   if (!id) throw new Error(`${base} 的 /v1/models 未返回模型`);
   return id;
 }
 
-async function attemptBackend(base, model, messages, opts, file) {
-  let lastErr = null;
+async function attemptBackend(base: any, model: any, messages: any, opts: any, file: any) {
+  let lastErr: any = null;
   for (let attempt = 0; attempt < 2; attempt++) {
     if (attempt > 0) {
       console.error(`[重试 ${attempt}] ${file || 'group'}（等待 2s）`);
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise<any>((r: any) => setTimeout(r, 2000));
     }
     try {
       const j = await chatCompletion(messages, opts, model, base);
@@ -250,7 +250,7 @@ async function attemptBackend(base, model, messages, opts, file) {
   return { ok: false, content: null, model, error: lastErr.message };
 }
 
-async function requestWithRetry(messages, opts, model, file) {
+async function requestWithRetry(messages: any, opts: any, model: any, file: any) {
   const r1 = await attemptBackend(DEFAULT_BASE_URL, model, messages, opts, file);
   if (r1.ok || opts.noFallback || !isConnectionError(r1.error)) return r1;
   if (FALLBACK_BASE_URL === DEFAULT_BASE_URL) return r1;
@@ -266,12 +266,12 @@ async function requestWithRetry(messages, opts, model, file) {
   }
 }
 
-function buildTextAndImages(prompt, files, labeled) {
+function buildTextAndImages(prompt: any, files: any, labeled: any) {
   const text = labeled
     ? `${prompt}\n\n本次共 ${files.length} 张图片，请严格按编号逐一分析，不要遗漏。`
     : prompt;
   const content = [{ type: 'text', text }];
-  files.forEach((f, i) => {
+  files.forEach((f: any, i: any) => {
     content.push({
       type: 'image_url',
       image_url: { url: imageUrl(f.file) },
@@ -309,23 +309,23 @@ async function main() {
     process.exit(2);
   }
   const model = opts.model || DEFAULT_MODEL;
-  const results = [];
-  const skipped = [];
+  const results: any[] = [];
+  const skipped: any[] = [];
 
   if (opts.mode === 'group') {
-    const tooBig = files.find(f => f.size > MAX_IMAGE_BYTES);
+    const tooBig = files.find((f: any) => f.size > MAX_IMAGE_BYTES);
     if (tooBig) {
       console.error(`[错误] group 模式图片过大（>${MAX_IMAGE_BYTES / 1024 / 1024}MB）: ${tooBig.file}`);
       process.exit(2);
     }
     console.error(`[识图] ${files.length} 张图 → ${model}（group）`);
     const content = buildTextAndImages(finalPrompt, files, true);
-    const r = await requestWithRetry([{ role: 'user', content }], opts, model, files.map(f => f.file).join('; '));
+    const r = await requestWithRetry([{ role: 'user', content }], opts, model, files.map((f: any) => f.file).join('; '));
     results.push({
       mode: 'group',
       model: r.model,
       prompt: taskPrompt,
-      files: files.map(f => f.file),
+      files: files.map((f: any) => f.file),
       ok: r.ok,
       content: r.content,
       error: r.error || null,
@@ -334,7 +334,7 @@ async function main() {
     const n = Math.max(1, Math.min(8, Math.floor(opts.concurrency) || 1));
     if (n > 1) console.error(`[并发] ${n} 路并行请求（each 模式）`);
     const resultsArr = new Array(files.length);
-    const runOne = async (f, i) => {
+    const runOne = async (f: any, i: any) => {
       if (f.size > MAX_IMAGE_BYTES) {
         console.error(`[跳过] 图片过大（>${MAX_IMAGE_BYTES / 1024 / 1024}MB）: ${f.file}`);
         skipped.push(f.file);
@@ -370,9 +370,9 @@ async function main() {
     }
   }
   if (opts.out) {
-    const md = results.map(r => {
+    const md = results.map((r: any) => {
       const title = r.mode === 'group'
-        ? `## Group（${r.files.length} 张图）\n\n${r.files.map(f => `- \`${f}\``).join('\n')}`
+        ? `## Group（${r.files.length} 张图）\n\n${r.files.map((f: any) => `- \`${f}\``).join('\n')}`
         : `## ${r.file}`;
       return `${title}\n\n${r.ok ? r.content : `> 失败：${r.error}`}\n`;
     }).join('\n');
@@ -380,13 +380,13 @@ async function main() {
     console.error(`[已写入] ${opts.out}`);
   }
 
-  const failed = results.filter(r => !r.ok).length;
+  const failed = results.filter((r: any) => !r.ok).length;
   if (skipped.length) console.error(`[跳过] ${skipped.length} 张（图片过大）`);
   process.exit(failed ? 1 : 0);
 }
 
 if (require.main === module) {
-  main().catch(function (error) { console.error('[错误]', error.message); process.exit(1); });
+  main().catch(function (error: any) { console.error('[错误]', error.message); process.exit(1); });
 }
 
 export = {

@@ -24,7 +24,7 @@ function decodePng8(buffer: unknown[]) {
   let width = 0;
   let height = 0;
   let channels = 0;
-  const idatChunks = [];
+  const idatChunks: any[] = [];
 
   while (offset + 12 <= buffer.length) {
     const length = buffer.readUInt32BE(offset);

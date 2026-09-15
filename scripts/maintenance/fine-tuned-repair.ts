@@ -42,7 +42,7 @@ function saveReport() {
   fs.writeFileSync(REPORT_FILE, JSON.stringify(auditReport, null, 2), 'utf8');
 }
 
-const TAILORED_PERSPECTIVE_PROMPTS = {
+const TAILORED_PERSPECTIVE_PROMPTS: any = {
   ref_01_face_closeup: {
     guide: "此图是否为标准的角色【面部与微表情特写】（头部或脸部特写，平视，85mm浅景深）？画面中是否单人、五官清晰、无崩坏、无双人或分身、无漫画分格？",
     suffix: "tight headshot portrait, extreme close-up on face, chin to forehead framing, 85mm macro lens, face focus, eye level straight-on, expressive detailed eyes, soft cinematic portrait lighting",
@@ -65,12 +65,12 @@ const TAILORED_PERSPECTIVE_PROMPTS = {
   }
 };
 
-function runVisionInspect(imagePath, promptGuide) {
-  return new Promise((resolve) => {
+function runVisionInspect(imagePath: any, promptGuide: any) {
+  return new Promise<any>((resolve: any) => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;
     
-    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error, stdout, stderr) => {
+    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error: any, stdout: any, stderr: any) => {
       const output = (stdout || '') + (stderr || '');
       let passed = false;
       const conclusionMatch = output.match(/【审核结论】[：:]\s*(通过|不通过)/);
@@ -91,7 +91,7 @@ function runVisionInspect(imagePath, promptGuide) {
   });
 }
 
-function buildFineTunedPrompt(char, outfit, persId) {
+function buildFineTunedPrompt(char: any, outfit: any, persId: any) {
   const pConfig = TAILORED_PERSPECTIVE_PROMPTS[persId];
   const isNude = outfit.id === 'nsfw_nude' || outfit.name.includes('全裸') || outfit.name.includes('纯粹');
 
@@ -126,7 +126,7 @@ function buildFineTunedPrompt(char, outfit, persId) {
   };
 }
 
-async function renderImage(char, outfit, persId, targetPath) {
+async function renderImage(char: any, outfit: any, persId: any, targetPath: any) {
   const { prompt, negative } = buildFineTunedPrompt(char, outfit, persId);
   const payload = {
     modelId: 'anima-miaomiao-v1.2',
@@ -168,7 +168,7 @@ async function renderImage(char, outfit, persId, targetPath) {
   let jobState = null;
 
   while (Date.now() < deadline) {
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise<any>((r: any) => setTimeout(r, 2000));
     const queryRes = await fetch(`${BASE}/api/anima/jobs/${encodeURIComponent(jobId)}`);
     const queryJson = await queryRes.json();
     if (queryRes.ok && queryJson.ok && queryJson.job) {
@@ -186,16 +186,16 @@ async function renderImage(char, outfit, persId, targetPath) {
 }
 
 async function runFineTunedRepair() {
-  const validKeys = [];
-  standards.characters.forEach(c => {
-    c.outfits.forEach(o => {
-      standards.perspectives.forEach(p => {
+  const validKeys: any[] = [];
+  standards.characters.forEach((c: any) => {
+    c.outfits.forEach((o: any) => {
+      standards.perspectives.forEach((p: any) => {
         validKeys.push(c.id + '/' + o.id + '/' + p.id);
       });
     });
   });
 
-  const pendingFailedKeys = validKeys.filter(k => auditReport[k] && !auditReport[k].passed);
+  const pendingFailedKeys = validKeys.filter((k: any) => auditReport[k] && !auditReport[k].passed);
   console.log(`================================================`);
   console.log(`[Fine-Tuned Repair Engine] 启动 98 张顽固未通过项定向微调修复`);
   console.log(`待修复总数: ${pendingFailedKeys.length} 张`);
@@ -205,9 +205,9 @@ async function runFineTunedRepair() {
   for (let i = 0; i < pendingFailedKeys.length; i++) {
     const key = pendingFailedKeys[i];
     const [charId, outfitId, persId] = key.split('/');
-    const char = standards.characters.find(c => c.id === charId);
+    const char = standards.characters.find((c: any) => c.id === charId);
     if (!char) continue;
-    const outfit = char.outfits.find(o => o.id === outfitId);
+    const outfit = char.outfits.find((o: any) => o.id === outfitId);
     if (!outfit) continue;
     const targetPath = path.join(OUT_BASE, charId, outfitId, `${persId}.png`);
     const pConfig = TAILORED_PERSPECTIVE_PROMPTS[persId];
@@ -231,7 +231,7 @@ async function runFineTunedRepair() {
         }
       } catch (err) {
         console.warn(`  ⚠️ 异常: ${runtimeErrorMessage(err)}`);
-        await new Promise(r => setTimeout(r, 3000));
+        await new Promise<any>((r: any) => setTimeout(r, 3000));
       }
     }
 

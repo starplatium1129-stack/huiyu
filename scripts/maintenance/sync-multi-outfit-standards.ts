@@ -187,8 +187,8 @@ function buildMultiOutfitMatrix() {
     // 2026-08-29 审计 P0-1：幽灵形态（磁盘无任何参考图资产）不得写入 standards/view，
     // 否则 check-ref-urls 断链门禁报红；形态仍保留在 popular-characters.json 供出图提示词使用。
     const assetBackedOutfits = formattedOutfits.filter((o: { id: string; }) => {
-      if (PERSPECTIVES.every((persp) => fs.existsSync(path.join(OUT_BASE, p.id, o.id, `${persp.id}.png`)))) return true;
-      return PERSPECTIVES.every((persp) => fs.existsSync(path.join(OUT_BASE, p.id, `${persp.id}.png`)));
+      if (PERSPECTIVES.every((persp: any) => fs.existsSync(path.join(OUT_BASE, p.id, o.id, `${persp.id}.png`)))) return true;
+      return PERSPECTIVES.every((persp: any) => fs.existsSync(path.join(OUT_BASE, p.id, `${persp.id}.png`)));
     });
 
     allCharacters.push({
@@ -213,14 +213,14 @@ function buildMultiOutfitMatrix() {
   fs.writeFileSync(STANDARDS_FILE, JSON.stringify(standardsData, null, 2) + '\n', 'utf8');
 
   // 构建 TS 运行时契约
-  const tsRecord = {};
+  const tsRecord: Record<string, any> = {};
   for (const c of allCharacters) {
     tsRecord[c.id] = {
       characterId: c.id,
       displayName: c.displayName,
       source: c.source,
       identityProse: c.identityProse,
-      outfits: c.outfits.map(o => {
+      outfits: c.outfits.map((o: any) => {
         const outfitDir = path.join(OUT_BASE, c.id, o.id);
         const hasCustomDir = fs.existsSync(outfitDir);
         return {
@@ -230,7 +230,7 @@ function buildMultiOutfitMatrix() {
           isNsfw: Boolean(o.isNsfw),
           prose: o.prose,
           references: [
-            ...PERSPECTIVES.map(p => ({
+            ...PERSPECTIVES.map((p: any) => ({
               id: p.id,
               name: p.name,
               shotType: p.shotType,
@@ -243,7 +243,7 @@ function buildMultiOutfitMatrix() {
             })),
             // 2026-08-31 设计图基线占位：pending 无 url（图未生成），前端渲染占位卡、
             // check-ref-urls 门禁跳过；批量出图后去掉 pending 填 url。
-            ...DESIGN_PERSPECTIVES.map(p => ({
+            ...DESIGN_PERSPECTIVES.map((p: any) => ({
               id: p.id,
               name: p.name,
               shotType: p.shotType,
@@ -260,7 +260,7 @@ function buildMultiOutfitMatrix() {
   }
 
   // 合并写入（不整库覆盖）：本脚本只重建热门角色子集，合并保留其余角色条目。
-  let existing = {};
+  let existing: Record<string, any> = {};
   try { existing = JSON.parse(fs.readFileSync(VIEW_JSON_FILE, 'utf8')); } catch {}
   const merged = Object.assign(existing, tsRecord);
   fs.writeFileSync(VIEW_JSON_FILE, JSON.stringify(merged, null, 2), 'utf8');

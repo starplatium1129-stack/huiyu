@@ -10,13 +10,13 @@ const ROOT = path.resolve(__dirname, '../..');
 const INSTALLER = path.join(ROOT, 'desktop-tauri/src-tauri/installer');
 const TEMPLATE_HASH = '20f4ecc730defb71f1342eaeaec4021df13be3d843abba0effe88ea5835fa079';
 
-function replaceOnce(source, from, to) {
+function replaceOnce(source: any, from: any, to: any) {
   if (source.split(from).length !== 2) throw new Error(`Installer template anchor drift: ${from.slice(0, 65)}`);
   return source.replace(from, to);
 }
 
-function customizeTemplate(source, background, uiFile) {
-  const escapePath = value => value.replace(/\$/g, '$$$$');
+function customizeTemplate(source: any, background: any, uiFile: any) {
+  const escapePath = (value: any) => value.replace(/\$/g, '$$$$');
   let output = replaceOnce(source, '; Installer pages, must be ordered as they appear',
     `!define GAME_BACKGROUND "${escapePath(background)}"\n!define GAME_ASSET_DIR "${escapePath(path.dirname(background))}"\n!include "${escapePath(uiFile)}"\n\n; Installer pages, must be ordered as they appear`);
   output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绘遇 · 安装旅程"');
@@ -30,7 +30,7 @@ function customizeTemplate(source, background, uiFile) {
   output = replaceOnce(output, 'Function .onInstSuccess', 'Function .onInstSuccess\n  System::Call \'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)\'');
   // Rename only an existing shortcut targeting this installation. Preserve the
   // user's no-shortcut choice and never overwrite an unrelated named shortcut.
-  const migrateShortcut = location => `
+  const migrateShortcut = (location: any) => `
   !insertmacro IsShortcutTarget "${location}\\\${PRODUCTNAME}.lnk" "$INSTDIR\\\${MAINBINARYNAME}.exe"
   Pop $0
   \${If} $0 = 1
@@ -61,7 +61,7 @@ function customizeTemplate(source, background, uiFile) {
   return output;
 }
 
-async function bitmap(source, destination, width = 1920, height = 1200) {
+async function bitmap(source: any, destination: any, width: any = 1920, height: any = 1200) {
   const { data } = await sharp(source).resize(width, height).removeAlpha().raw().toBuffer({ resolveWithObject: true });
   const stride = Math.ceil(width * 3 / 4) * 4;
   const bmp = Buffer.alloc(54 + stride * height);
@@ -75,7 +75,7 @@ async function bitmap(source, destination, width = 1920, height = 1200) {
   fs.writeFileSync(destination, bmp);
 }
 
-async function buildGameInstaller({ preview = false, capture = false, page = 'welcome' } = {}) {
+async function buildGameInstaller({ preview = false, capture = false, page = 'welcome' }: any = {}) {
   const vendor = fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.11.4.nsi'));
   if (crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
   const generated = path.join(INSTALLER, 'generated');
@@ -107,8 +107,8 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
       try {
         let window;
         for (let attempt = 0; attempt < 10 && !window; attempt++) {
-          window = windows.windowsForProcess(pid).find(item => item.ClassName === '#32770');
-          if (!window) await new Promise(resolve => setTimeout(resolve, 100));
+          window = windows.windowsForProcess(pid).find((item: any) => item.ClassName === '#32770');
+          if (!window) await new Promise<any>((resolve: any) => setTimeout(resolve, 100));
         }
         if (!window) throw new Error('Installer preview window did not appear');
         windows.captureWindow(window.Hwnd, path.join(ROOT, 'runtime', `installer-${page}-preview.png`));
@@ -121,6 +121,6 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
 if (require.main === module) {
   const args = process.argv.slice(2);
   if (args.includes('--help')) console.log('Build native game-style installer UI. Options: --preview [--capture] [--page=welcome|directory|install|finish|maintenance]');
-  else buildGameInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find(arg => arg.startsWith('--page='))?.slice(7) || 'welcome' }).catch(error => { console.error(error.message); process.exitCode = 1; });
+  else buildGameInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find((arg: any) => arg.startsWith('--page='))?.slice(7) || 'welcome' }).catch((error: any) => { console.error(error.message); process.exitCode = 1; });
 }
 export = { buildGameInstaller, customizeTemplate };

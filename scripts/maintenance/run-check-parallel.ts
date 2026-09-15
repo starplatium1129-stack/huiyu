@@ -77,7 +77,7 @@ function next() {
   const capture = (chunk: Buffer | string) => { output += chunk; };
   child.stdout.on('data', capture);
   child.stderr.on('data', capture);
-  child.on('close', (code) => {
+  child.on('close', (code: any) => {
     const ms = Date.now() - startedAt;
     results.set(name, { code: code ?? 1, ms, output });
     finished += 1;
@@ -89,7 +89,7 @@ function next() {
 }
 
 function report() {
-  const failures = STEPS.filter(([name]) => (results.get(name)?.code ?? 1) !== 0);
+  const failures = STEPS.filter(([name]: any) => (results.get(name)?.code ?? 1) !== 0);
   const wallMs = wallTime();
   console.log('');
   if (failures.length) {
@@ -103,9 +103,9 @@ function report() {
     process.exit(1);
   }
   const slowest = [...results.entries()]
-    .sort((a, b) => b[1].ms - a[1].ms)
+    .sort((a: any, b: any) => b[1].ms - a[1].ms)
     .slice(0, 3)
-    .map(([name, r]) => `${name} ${(r.ms / 1000).toFixed(1)}s`)
+    .map(([name, r]: any) => `${name} ${(r.ms / 1000).toFixed(1)}s`)
     .join(', ');
   console.log(`✅ 全部 ${STEPS.length} 步通过 · 总耗时 ${(wallMs / 1000).toFixed(1)}s · 最慢三步：${slowest}`);
 }

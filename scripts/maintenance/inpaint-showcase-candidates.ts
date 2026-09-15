@@ -121,7 +121,7 @@ const DENOISE_CONFIGS = Object.freeze([
 // Anima source: eyes ≈ (440,192) viewer-left / (537,192) viewer-right; wrong-side
 // mole at ≈ (539,213) under viewer-right eye; correct-side target under
 // viewer-left eye at ≈ (442,212).
-const INPAINT_CONFIG = Object.freeze({
+const INPAINT_CONFIG: any = Object.freeze({
   'latest-lora:natsume:sd:fullbody': {
     engine: 'sd',
     checkpoint: 'waiIllustriousSDXL_v170.safetensors',
@@ -212,35 +212,35 @@ const INPAINT_CONFIG = Object.freeze({
 
 const KEYS = Object.freeze(Object.keys(INPAINT_CONFIG));
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function splitList(value) {
+function splitList(value: any) {
   return String(value || '')
     .split(',')
-    .map(part => part.trim())
+    .map((part: any) => part.trim())
     .filter(Boolean);
 }
-function readJson(file) {
+function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, file);
 }
-function writeTextAtomic(file, content) {
+function writeTextAtomic(file: any, content: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, content, 'utf8');
   fs.renameSync(temporary, file);
 }
-function isRecord(value) {
+function isRecord(value: any) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
-function imageInfo(buffer) {
+function imageInfo(buffer: any) {
   if (!Buffer.isBuffer(buffer) || buffer.length < 24) return null;
   if (buffer.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
     return { mime: 'image/png', width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
@@ -248,13 +248,13 @@ function imageInfo(buffer) {
   if (buffer.subarray(0, 2).equals(Buffer.from([255, 216, 255]))) return { mime: 'image/jpeg', width: 0, height: 0 };
   return null;
 }
-function sha256(buffer) {
+function sha256(buffer: any) {
   return crypto.createHash('sha256').update(buffer).digest('hex');
 }
-function escapeHtml(value) {
+function escapeHtml(value: any) {
   return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-function assertNotShowcase(dir) {
+function assertNotShowcase(dir: any) {
   const resolved = path.resolve(dir);
   const showcase = path.resolve(SCENE_SHOWCASE_DIR);
   const rel = path.relative(showcase, resolved);
@@ -265,11 +265,11 @@ function assertNotShowcase(dir) {
 
 // ── plan helpers ────────────────────────────────────────────────────────────
 
-function sourceRecordFor(manifest, key) {
-  return manifest.find(record => record.recordId === `${key}@attempt-4`);
+function sourceRecordFor(manifest: any, key: any) {
+  return manifest.find((record: any) => record.recordId === `${key}@attempt-4`);
 }
 
-function validateSourceRecord(record, outputDir) {
+function validateSourceRecord(record: any, outputDir: any) {
   if (!record) throw new Error('missing attempt-4 source record in manifest');
   if (record.status !== 'succeeded') {
     throw new Error(`attempt-4 source for ${record.key} is not succeeded (${record.status})`);
@@ -287,16 +287,16 @@ function validateSourceRecord(record, outputDir) {
   return { buffer, file, hash };
 }
 
-function attemptFiveRecordId(key) {
+function attemptFiveRecordId(key: any) {
   return `${key}@attempt-5`;
 }
 
-function outputImageRel(key) {
+function outputImageRel(key: any) {
   const safe = key.replace(/[:\/\\]/g, '_');
   return `images/latest-lora/${safe}_attempt-5-inpaint.png`;
 }
 
-function shouldReuse(record, imageFile, force) {
+function shouldReuse(record: any, imageFile: any, force: any) {
   if (force) return false;
   if (!record || record.status !== 'succeeded' || !record.image) return false;
   if (!fs.existsSync(imageFile)) return false;
@@ -310,10 +310,10 @@ function shouldReuse(record, imageFile, force) {
 
 // ── preview generation ──────────────────────────────────────────────────────
 
-function generatePreviews(outputDir, sourceRecords) {
+function generatePreviews(outputDir: any, sourceRecords: any) {
   const previewDir = path.join(outputDir, 'inpaint-previews');
   fs.mkdirSync(previewDir, { recursive: true });
-  const made = [];
+  const made: any[] = [];
   for (const key of KEYS) {
     const record = sourceRecords[key];
     if (!record) continue;
@@ -351,7 +351,7 @@ print(${JSON.stringify(outFile)})
 }
 
 let _python = '';
-function setPython(value) {
+function setPython(value: any) {
   _python = value || 'python';
 }
 function pythonBin() {
@@ -360,8 +360,8 @@ function pythonBin() {
 
 // ── ComfyUI client ──────────────────────────────────────────────────────────
 
-function comfyJson(base, method, pathname, body, timeoutMs) {
-  return new Promise((resolve, reject) => {
+function comfyJson(base: any, method: any, pathname: any, body: any, timeoutMs: any) {
+  return new Promise<any>((resolve: any, reject: any) => {
     const url = new URL(base.replace(/\/$/, '') + pathname);
     const client = url.protocol === 'https:' ? (require('https') as typeof import('https')) : (require('http') as typeof import('http'));
     const payload = body === undefined || body === null ? null : Buffer.from(JSON.stringify(body));
@@ -371,9 +371,9 @@ function comfyJson(base, method, pathname, body, timeoutMs) {
       headers: Object.assign({ Accept: 'application/json' }, payload ? {
         'Content-Type': 'application/json', 'Content-Length': payload.length,
       } : {}),
-    }, response => {
-      const chunks = [];
-      response.on('data', chunk => chunks.push(chunk));
+    }, (response: any) => {
+      const chunks: any[] = [];
+      response.on('data', (chunk: any) => chunks.push(chunk));
       response.on('end', () => {
         const rawBuffer = Buffer.concat(chunks);
         const raw = rawBuffer.toString('utf8');
@@ -389,7 +389,7 @@ function comfyJson(base, method, pathname, body, timeoutMs) {
   });
 }
 
-async function uploadImage(comfyBase, filename, buffer) {
+async function uploadImage(comfyBase: any, filename: any, buffer: any) {
   const boundary = `----aics${Date.now()}${Math.floor(Math.random() * 1e6)}`;
   const prefix = Buffer.from(
     `--${boundary}\r\nContent-Disposition: form-data; name="image"; filename="${filename}"\r\nContent-Type: image/png\r\n\r\n`,
@@ -398,7 +398,7 @@ async function uploadImage(comfyBase, filename, buffer) {
   const payload = Buffer.concat([prefix, buffer, suffix]);
   const url = new URL(comfyBase.replace(/\/$/, '') + '/upload/image');
   const client = url.protocol === 'https:' ? (require('https') as typeof import('https')) : (require('http') as typeof import('http'));
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve: any, reject: any) => {
     const request = client.request({
       hostname: url.hostname, port: url.port, method: 'POST', timeout: 60000,
       path: url.pathname + '?overwrite=true',
@@ -406,9 +406,9 @@ async function uploadImage(comfyBase, filename, buffer) {
         'Content-Type': `multipart/form-data; boundary=${boundary}`,
         'Content-Length': payload.length,
       },
-    }, response => {
-      const chunks = [];
-      response.on('data', chunk => chunks.push(chunk));
+    }, (response: any) => {
+      const chunks: any[] = [];
+      response.on('data', (chunk: any) => chunks.push(chunk));
       response.on('end', () => {
         const raw = Buffer.concat(chunks).toString('utf8');
         let data = null;
@@ -430,7 +430,7 @@ async function uploadImage(comfyBase, filename, buffer) {
  * server-returned name for LoadImage and (b) derive it ourselves when the
  * response is empty: if the target exists, append the counter ComfyUI uses.
  */
-function resolveUploadName(requested, uploaded) {
+function resolveUploadName(requested: any, uploaded: any) {
   const serverName = uploaded && uploaded.data && uploaded.data.name;
   if (serverName) return serverName;
   // no JSON (defensive): replicate ComfyUI's rename so the LoadImage node still
@@ -438,7 +438,7 @@ function resolveUploadName(requested, uploaded) {
   return requested;
 }
 
-async function submitAndWait(comfyBase, workflow) {
+async function submitAndWait(comfyBase: any, workflow: any) {
   const submitted = await comfyJson(comfyBase, 'POST', '/prompt', { prompt: workflow, client_id: `aics-inpaint-${process.pid}` }, 30000);
   if (submitted.status < 200 || submitted.status >= 300 || !submitted.data || !submitted.data.prompt_id) {
     throw new Error(`ComfyUI prompt submission failed (HTTP ${submitted.status}): ${submitted.raw || JSON.stringify(submitted.data)}`);
@@ -452,20 +452,20 @@ async function submitAndWait(comfyBase, workflow) {
       const status = entry.status && entry.status.status_str;
       if (status === 'error' || status === 'failed') {
         const messages = (entry.status && entry.status.messages || [])
-          .filter(([, value]) => value && value.exception_message)
-          .map(([, value]) => value.exception_message);
+          .filter(([, value]: any) => value && value.exception_message)
+          .map(([, value]: any) => value.exception_message);
         throw new Error(`ComfyUI execution failed for ${promptId}: ${messages.join(' | ') || JSON.stringify(entry.status)}`);
       }
       if (status === 'success') {
         return { promptId, entry };
       }
     }
-    await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
+    await new Promise<any>((resolve: any) => setTimeout(resolve, POLL_INTERVAL_MS));
   }
   throw new Error(`ComfyUI execution timed out for ${promptId}`);
 }
 
-async function fetchOutputImage(comfyBase, image) {
+async function fetchOutputImage(comfyBase: any, image: any) {
   const query = `?filename=${encodeURIComponent(image.filename)}&subfolder=${encodeURIComponent(image.subfolder || '')}&type=output`;
   const response = await comfyJson(comfyBase, 'GET', '/view' + query, null, 60000);
   if (response.status < 200 || response.status >= 300) {
@@ -476,9 +476,9 @@ async function fetchOutputImage(comfyBase, image) {
 
 // ── workflow builder (mirrors routes/generation.js + routes/anima.js) ──────
 
-function modelNodes(cfg, graph, startId) {
+function modelNodes(cfg: any, graph: any, startId: any) {
   let next = startId;
-  const node = (classType, inputs) => {
+  const node = (classType: any, inputs: any) => {
     const id = String(next);
     next += 1;
     graph[id] = { class_type: classType, inputs };
@@ -506,10 +506,10 @@ function modelNodes(cfg, graph, startId) {
   return { model: [lora, 0], pos, neg, vae: [vae, 0], next };
 }
 
-function buildOpWorkflow(cfg, op, denoiseConfig, prompt, negative, sourceImageName, maskImageName, crop) {
-  const graph = {};
+function buildOpWorkflow(cfg: any, op: any, denoiseConfig: any, prompt: any, negative: any, sourceImageName: any, maskImageName: any, crop: any) {
+  const graph: Record<string, any> = {};
   let next = 1;
-  const add = (classType, inputs) => {
+  const add = (classType: any, inputs: any) => {
     const id = String(next);
     next += 1;
     graph[id] = { class_type: classType, inputs };
@@ -581,8 +581,8 @@ function buildOpWorkflow(cfg, op, denoiseConfig, prompt, negative, sourceImageNa
 
 // ── mask generation ─────────────────────────────────────────────────────────
 
-function buildMaskArgs(op) {
-  const args = [];
+function buildMaskArgs(op: any) {
+  const args: any[] = [];
   for (const shape of op.mask) {
     if (shape.kind === 'ellipse') {
       args.push('--ellipse', String(shape.cx), String(shape.cy), String(shape.rx), String(shape.ry), String(shape.feather));
@@ -593,7 +593,7 @@ function buildMaskArgs(op) {
   return args;
 }
 
-function generateMask(outputDir, key, op, denoiseConfig) {
+function generateMask(outputDir: any, key: any, op: any, denoiseConfig: any) {
   const safeKey = key.replace(/[:\/\\]/g, '_');
   const maskDir = path.join(outputDir, 'inpaint-masks');
   fs.mkdirSync(maskDir, { recursive: true });
@@ -610,7 +610,7 @@ function generateMask(outputDir, key, op, denoiseConfig) {
 
 // ── feature heuristics (bounded retry gate) ────────────────────────────────
 
-function sampleRegion(buffer, cx, cy, radius) {
+function sampleRegion(buffer: any, cx: any, cy: any, radius: any) {
   // decode PNG, sample mean luminance in a radius circle; returns {mean, min}
   const image = decodePng8(buffer);
   if (!image || radius < 0) return null;
@@ -631,7 +631,7 @@ function sampleRegion(buffer, cx, cy, radius) {
   return count ? { count, min, mean: sum / count } : null;
 }
 
-function countRedPixels(buffer, x0, y0, x1, y1) {
+function countRedPixels(buffer: any, x0: any, y0: any, x1: any, y1: any) {
   const image = decodePng8(buffer);
   if (!image) return 0;
   let count = 0;
@@ -646,7 +646,7 @@ function countRedPixels(buffer, x0, y0, x1, y1) {
   return count;
 }
 
-function opLooksDone(op, outputBuffer, sourceBuffer) {
+function opLooksDone(op: any, outputBuffer: any, sourceBuffer: any) {
   // compare the OUTPUT against the op's INPUT (stage source): a mole removed
   // must lighten the mask core, a mole added must darken it, hairclips must add
   // red pixels. Relative-to-source checks are robust to the tiny feature sizes.
@@ -668,10 +668,10 @@ function opLooksDone(op, outputBuffer, sourceBuffer) {
     // bleeds red into individual mask boxes, so judge a single band spanning the
     // mask centers instead. op.clipBand (full-image coords) overrides the derived
     // band when a flower sits directly beside the clip zone.
-    const ellipses = op.mask.filter(shape => shape.kind === 'ellipse');
+    const ellipses = op.mask.filter((shape: any) => shape.kind === 'ellipse');
     if (!ellipses.length) return false;
-    const xs = ellipses.map(shape => shape.cx);
-    const ys = ellipses.map(shape => shape.cy);
+    const xs = ellipses.map((shape: any) => shape.cx);
+    const ys = ellipses.map((shape: any) => shape.cy);
     const band = op.clipBand || {
       x0: Math.min(...xs) - 17,
       y0: Math.min(...ys) - 14,
@@ -698,14 +698,14 @@ function opLooksDone(op, outputBuffer, sourceBuffer) {
 
 // ── manifest + review index ─────────────────────────────────────────────────
 
-function buildAttemptFiveRecord(key, sourceRecord, config, results, workflowFiles) {
+function buildAttemptFiveRecord(key: any, sourceRecord: any, config: any, results: any, workflowFiles: any) {
   const source = sourceRecord;
   const finalOutput = results[results.length - 1];
   const inpaint = {
     sourceRecordId: source.recordId,
     engine: config.engine,
     workflowFiles,
-    operations: results.map(result => ({
+    operations: results.map((result: any) => ({
       id: result.op.id,
       kind: result.op.kind,
       denoiseConfig: result.denoiseConfig.id,
@@ -757,10 +757,10 @@ function buildAttemptFiveRecord(key, sourceRecord, config, results, workflowFile
   return record;
 }
 
-function verifyAndIndex(outputDir) {
+function verifyAndIndex(outputDir: any) {
   const manifestPath = path.join(outputDir, MANIFEST_NAME);
   const manifest = readJson(manifestPath);
-  const entries = [];
+  const entries: any[] = [];
   for (const record of manifest) {
     const entry = {
       batch: record.batch, key: record.key, subject: record.subject,
@@ -789,7 +789,7 @@ function verifyAndIndex(outputDir) {
     let mime = '';
     if (entry.pathExists) {
       const buffer = fs.readFileSync(file);
-      const info = imageInfo(buffer);
+      const info: any = imageInfo(buffer);
       mime = info ? info.mime : '';
       entry.mime = mime;
       entry.magicWidth = info ? info.width : 0;
@@ -805,8 +805,8 @@ function verifyAndIndex(outputDir) {
     entry.mechanicalPass = Boolean(entry.pathExists && entry.nonEmpty && entry.expectedMimeOk && dimsOk);
     entries.push(entry);
   }
-  const superseding = new Map(entries.filter(entry => entry.attempt > 1).map(entry => [entry.key, entry.recordId]));
-  entries.forEach(entry => {
+  const superseding = new Map(entries.filter((entry: any) => entry.attempt > 1).map((entry: any) => [entry.key, entry.recordId]));
+  entries.forEach((entry: any) => {
     if (entry.attempt === 1 && superseding.has(entry.key)) entry.supersededBy = superseding.get(entry.key);
   });
   const reviewIndex = {
@@ -815,10 +815,10 @@ function verifyAndIndex(outputDir) {
     purpose: 'candidate set for main-thread visual review; mechanical checks only, no visual pass claimed',
     totals: {
       planned: manifest.length,
-      succeeded: manifest.filter(record => record.status === 'succeeded').length,
-      failed: manifest.filter(record => record.status === 'failed').length,
-      mechanicalPass: entries.filter(entry => entry.mechanicalPass).length,
-      attempts: entries.reduce((acc, entry) => { acc[entry.attempt] = (acc[entry.attempt] || 0) + 1; return acc; }, {}),
+      succeeded: manifest.filter((record: any) => record.status === 'succeeded').length,
+      failed: manifest.filter((record: any) => record.status === 'failed').length,
+      mechanicalPass: entries.filter((entry: any) => entry.mechanicalPass).length,
+      attempts: entries.reduce((acc: any, entry: any) => { acc[entry.attempt] = (acc[entry.attempt] || 0) + 1; return acc; }, {}),
     },
     entries,
   };
@@ -827,8 +827,8 @@ function verifyAndIndex(outputDir) {
   return reviewIndex;
 }
 
-function writeContactSheet(outputDir, reviewIndex) {
-  const rows = reviewIndex.entries.map(entry => {
+function writeContactSheet(outputDir: any, reviewIndex: any) {
+  const rows = reviewIndex.entries.map((entry: any) => {
     const attemptBadge = entry.attempt === 5
       ? '<span class="attempt5">attempt-5 · inpaint 局部修复</span>'
       : entry.attempt > 3
@@ -854,7 +854,7 @@ function writeContactSheet(outputDir, reviewIndex) {
       entry.supersedes ? ['supersedes', entry.supersedes] : null,
       entry.supersededBy ? ['supersededBy', entry.supersededBy] : null,
       ['generatedAt', entry.generatedAt],
-    ].filter(Boolean).map(([label, value]) => `<div class="meta"><span>${escapeHtml(label)}</span><code>${escapeHtml(String(value))}</code></div>`).join('');
+    ].filter(Boolean).map(([label, value]: any) => `<div class="meta"><span>${escapeHtml(label)}</span><code>${escapeHtml(String(value))}</code></div>`).join('');
     const reasonBlock = entry.reviewReason
       ? `<div class="reason">审核覆盖：${escapeHtml(entry.reviewReason)}</div>` : '';
     const inpaintBlock = entry.inpaint
@@ -900,13 +900,13 @@ pre.neg{color:#b08a8a}
 
 // ── runner ──────────────────────────────────────────────────────────────────
 
-async function runKey(config, manifest, key, outputDir, comfyBase, force) {
+async function runKey(config: any, manifest: any, key: any, outputDir: any, comfyBase: any, force: any) {
   const sourceRecord = sourceRecordFor(manifest, key);
   const validated = validateSourceRecord(sourceRecord, outputDir);
   const outImageRel = outputImageRel(key);
   const outImageFile = path.join(outputDir, outImageRel.split('/').join(path.sep));
   const recordId = attemptFiveRecordId(key);
-  const existing = manifest.find(record => record.recordId === recordId);
+  const existing = manifest.find((record: any) => record.recordId === recordId);
   if (shouldReuse(existing, outImageFile, force)) {
     console.log(`[reuse] ${key} -> ${outImageRel} (${existing.sha256})`);
     return { key, status: 'reused', record: existing };
@@ -915,8 +915,8 @@ async function runKey(config, manifest, key, outputDir, comfyBase, force) {
   const workflowDir = path.join(outputDir, 'workflows', key.replace(/[:\/\\]/g, '_'));
   fs.mkdirSync(workflowDir, { recursive: true });
 
-  const results = [];
-  const workflowFiles = [];
+  const results: any[] = [];
+  const workflowFiles: any[] = [];
   let currentBuffer = validated.buffer;
   const runId = `${Date.now()}-${process.pid}`;
 
@@ -946,7 +946,7 @@ async function runKey(config, manifest, key, outputDir, comfyBase, force) {
         + index * 7919 + attemptIndex * 104729;
       const workflow = buildOpWorkflow(config, op, denoiseConfig, op.prompt, op.negative, sourceName, maskName, op.crop);
       // seed must be patched into the workflow AFTER build (build uses 0)
-      const sampleNode = Object.keys(workflow).find(id => workflow[id].class_type === 'KSampler');
+      const sampleNode: any = Object.keys(workflow).find((id: any) => workflow[id].class_type === 'KSampler');
       workflow[sampleNode].inputs.seed = seed;
       let promptId = `${key.replace(/[:\/\\]/g, '_')}-${op.id}-${denoiseConfig.id}`;
       const workflowFile = path.join(workflowDir, `${op.id}_${denoiseConfig.id}.json`);
@@ -957,7 +957,7 @@ async function runKey(config, manifest, key, outputDir, comfyBase, force) {
       let outputBuffer;
       try {
         const promptResult = await submitAndWait(comfyBase, workflow);
-        const outputNode = Object.keys(workflow).find(id => workflow[id].class_type === 'SaveImage');
+        const outputNode: any = Object.keys(workflow).find((id: any) => workflow[id].class_type === 'SaveImage');
         const images = promptResult.entry.outputs && promptResult.entry.outputs[outputNode]
           && promptResult.entry.outputs[outputNode].images;
         if (!Array.isArray(images) || !images.length) {
@@ -1024,13 +1024,13 @@ async function main() {
   if (!fs.existsSync(manifestPath)) throw new Error(`manifest not found: ${manifestPath}`);
   const manifest = readJson(manifestPath);
 
-  const sourceRecords = {};
-  const plan = [];
+  const sourceRecords: Record<string, any> = {};
+  const plan: any[] = [];
   for (const key of keys) {
     const source = sourceRecordFor(manifest, key);
     const validated = validateSourceRecord(source, outputDir);
     sourceRecords[key] = Object.assign({}, source, { file: validated.file });
-    plan.push({ key, recordId: attemptFiveRecordId(key), source: source.recordId, ops: INPAINT_CONFIG[key].ops.map(op => op.id) });
+    plan.push({ key, recordId: attemptFiveRecordId(key), source: source.recordId, ops: INPAINT_CONFIG[key].ops.map((op: any) => op.id) });
   }
 
   generatePreviews(outputDir, sourceRecords);
@@ -1046,7 +1046,7 @@ async function main() {
     throw new Error(`ComfyUI not reachable at ${comfyBase} (HTTP ${stats.status})`);
   }
 
-  const outcomes = [];
+  const outcomes: any[] = [];
   for (const key of keys) {
     outcomes.push(await runKey(INPAINT_CONFIG[key], manifest, key, outputDir, comfyBase, force));
   }
@@ -1055,34 +1055,34 @@ async function main() {
   const current = readJson(manifestPath);
   for (const outcome of outcomes) {
     if (outcome.status === 'generated') {
-      const idx = current.findIndex(record => record.recordId === outcome.record.recordId);
+      const idx = current.findIndex((record: any) => record.recordId === outcome.record.recordId);
       if (idx >= 0) current.splice(idx, 1);
       current.push(outcome.record);
     }
   }
   const normalized = current
-    .map(record => (record.attempt ? record : Object.assign({}, record, { attempt: 1 })))
-    .sort((a, b) => (a.recordId || a.key).localeCompare(b.recordId || b.key));
+    .map((record: any) => (record.attempt ? record : Object.assign({}, record, { attempt: 1 })))
+    .sort((a: any, b: any) => (a.recordId || a.key).localeCompare(b.recordId || b.key));
   writeJsonAtomic(manifestPath, normalized);
 
   const reviewIndex = verifyAndIndex(outputDir);
   console.log(JSON.stringify({
     output: outputDir,
     comfy: comfyBase,
-    outcomes: outcomes.map(outcome => ({
+    outcomes: outcomes.map((outcome: any) => ({
       key: outcome.key,
       status: outcome.status,
       recordId: outcome.record ? outcome.record.recordId : '',
       image: outcome.record ? outcome.record.image : '',
       sha256: outcome.record ? outcome.record.sha256 : '',
-      operations: outcome.results ? outcome.results.map(r => ({ id: r.op.id, config: r.denoiseConfig.id, heuristic: r.heuristic, promptId: r.promptId })) : [],
+      operations: outcome.results ? outcome.results.map((r: any) => ({ id: r.op.id, config: r.denoiseConfig.id, heuristic: r.heuristic, promptId: r.promptId })) : [],
     })),
     reviewIndex: reviewIndex.totals,
   }, null, 2));
 }
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

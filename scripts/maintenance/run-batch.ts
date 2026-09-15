@@ -33,7 +33,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const opts = {
+  const opts: any = {
     source: null, // popular | scenes
     batchSize: null,
     concurrency: null,
@@ -98,7 +98,7 @@ function printHelp() {
 `);
 }
 
-function readFailedList(source) {
+function readFailedList(source: any) {
   const file = source === 'popular' ? 'runtime/failed-popular-keys.txt' : 'runtime/failed-scene-ids.txt';
   const full = path.join(ROOT, file);
   if (!fs.existsSync(full)) {
@@ -106,7 +106,7 @@ function readFailedList(source) {
     process.exitCode = 1;
     return [];
   }
-  return fs.readFileSync(full, 'utf8').split('\n').map(s => s.trim()).filter(Boolean);
+  return fs.readFileSync(full, 'utf8').split('\n').map((s: any) => s.trim()).filter(Boolean);
 }
 
 function main() {
@@ -129,9 +129,9 @@ function main() {
   const batchSize = opts.batchSize != null ? opts.batchSize : defaultBatchSize;
   const concurrency = opts.concurrency != null ? opts.concurrency : defaultConcurrency;
 
-  let items = [];
-  if (opts.keys) items = opts.keys.split(',').map(s => s.trim()).filter(Boolean);
-  else if (opts.ids) items = opts.ids.split(',').map(s => s.trim()).filter(Boolean);
+  let items: any[] = [];
+  if (opts.keys) items = opts.keys.split(',').map((s: any) => s.trim()).filter(Boolean);
+  else if (opts.ids) items = opts.ids.split(',').map((s: any) => s.trim()).filter(Boolean);
   else items = readFailedList(opts.source);
 
   if (!items.length) {
@@ -147,7 +147,7 @@ function main() {
   const keyFlag = isPopular ? '--keys' : '--ids';
 
   // popular 不分批，scenes 分批
-  const batches = batchSize > 0 ? Array.from({ length: Math.ceil(items.length / batchSize) }, (_, i) => items.slice(i * batchSize, (i + 1) * batchSize)) : [items];
+  const batches = batchSize > 0 ? Array.from({ length: Math.ceil(items.length / batchSize) }, (_: any, i: any) => items.slice(i * batchSize, (i + 1) * batchSize)) : [items];
 
   for (let bi = 0; bi < batches.length; bi++) {
     const batch = batches[bi];

@@ -16,7 +16,7 @@ const check = process.argv.includes('--check');
 
 const pinnedPath = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT
   || path.resolve(__dirname, '..', '..'), 'data', 'prompt-pinned-scenes.json');
-let pinnedScenes = {};
+let pinnedScenes: Record<string, any> = {};
 try {
   pinnedScenes = JSON.parse(fs.readFileSync(pinnedPath, 'utf8')).scenes || {};
 } catch {}
@@ -87,13 +87,13 @@ function cameraTags(scene: { camera: unknown; }, tags: unknown) {
   const intent = cameraIntent(scene);
   let normalized = [...tags];
   if (intent === 'wide') {
-    normalized = normalized.filter((tag) => !['close_up', 'face_focus', 'medium_shot', 'upper_body'].includes(key(tag)));
+    normalized = normalized.filter((tag: any) => !['close_up', 'face_focus', 'medium_shot', 'upper_body'].includes(key(tag)));
     normalized.push('wide_shot', 'full_body');
   } else if (intent === 'close') {
-    normalized = normalized.filter((tag) => !['medium_shot', 'wide_shot', 'full_body', 'long_shot'].includes(key(tag)));
+    normalized = normalized.filter((tag: any) => !['medium_shot', 'wide_shot', 'full_body', 'long_shot'].includes(key(tag)));
     normalized.push('close_up');
   } else if (intent === 'medium') {
-    normalized = normalized.filter((tag) => !['close_up', 'face_focus', 'wide_shot', 'full_body', 'long_shot'].includes(key(tag)));
+    normalized = normalized.filter((tag: any) => !['close_up', 'face_focus', 'wide_shot', 'full_body', 'long_shot'].includes(key(tag)));
     normalized.push('medium_shot');
   }
   const set = new Set(dedupe(normalized));
@@ -105,9 +105,9 @@ function optimizePrompt(prompt: unknown) {
   const prepared = String(prompt || '')
     .replace(/\{[^}]+\}/g, '')
     .replace(/_break_/gi, 'BREAK');
-  return prepared.split(/\s*,?\s*\bBREAK\b\s*,?\s*/i).map((segment) => {
+  return prepared.split(/\s*,?\s*\bBREAK\b\s*,?\s*/i).map((segment: any) => {
     const seen = new Set();
-    return segment.split(',').map((token) => {
+    return segment.split(',').map((token: any) => {
       const trimmed = token.trim();
       const leading = trimmed.match(/^[([]/)?.[0] || '';
       const trailing = trimmed.match(/[)\]]$/)?.[0] || '';
@@ -141,9 +141,9 @@ function optimizePromptCamera(scene: unknown, prompt: string) {
         ? new Set(['close_up', 'face_focus', 'wide_shot', 'full_body', 'long_shot'])
         : new Set();
   if (!blocked.size) return prompt;
-  return String(prompt || '').split(/\s+BREAK\s+/i).map((segment) => segment.split(',')
-    .map((item) => item.trim())
-    .filter((item) => !blocked.has(key(item)))
+  return String(prompt || '').split(/\s+BREAK\s+/i).map((segment: any) => segment.split(',')
+    .map((item: any) => item.trim())
+    .filter((item: any) => !blocked.has(key(item)))
     .join(', ')).join(' BREAK ');
 }
 
@@ -151,8 +151,8 @@ function optimizeNegative(scene: { negative: unknown; rating: string; }) {
   const policyTokens = new Set([
     'nsfw', 'nude', 'explicit', 'child', 'loli', 'underage', 'school_uniform', 'gym_uniform'
   ]);
-  const custom = String(scene.negative || '').split(',').map((item) => item.trim())
-    .filter((item) => item && !policyTokens.has(key(item)));
+  const custom = String(scene.negative || '').split(',').map((item: any) => item.trim())
+    .filter((item: any) => item && !policyTokens.has(key(item)));
   // 2026-08-15 用户裁定（与 classify-scene-ratings.normalizeNegative 同源）：
   // 裸体压制(nsfw/nude/explicit)只保留在 All 评级；R15 与 R18 一样剥离，
   // 并统一补未成年保护 token。R15 分支此前漏同步该裁定，导致与 classify
@@ -163,7 +163,7 @@ function optimizeNegative(scene: { negative: unknown; rating: string; }) {
   return dedupe([...baseNegative, ...custom, ...ratingTokens]).join(', ');
 }
 
-function optimize(scene: { id: string; auditRevision: unknown; tags: unknown; rating: string; prompt: unknown; }) {
+function optimize(scene: { id: string; auditRevision: unknown; tags: unknown; rating: string; prompt: unknown; }) : any {
   // Direct-vision revisions deliberately use weighted natural-language groups
   // (for example, fixed prop counts and left/right character assignments).
   // The legacy comma-token normalizer would split those groups and silently
@@ -179,7 +179,7 @@ function optimize(scene: { id: string; auditRevision: unknown; tags: unknown; ra
   prompt = optimizePromptCamera(scene, prompt);
   if (scene.rating === 'R18') prompt = ensureAdultPrompt(prompt);
   if (scene.id === 'sc064') {
-    prompt = prompt.split(',').map((item) => item.trim()).filter((item) => !['looking_at_viewer', 'looking_back'].includes(key(item))).join(', ');
+    prompt = prompt.split(',').map((item: any) => item.trim()).filter((item: any) => !['looking_at_viewer', 'looking_back'].includes(key(item))).join(', ');
   }
   return { ...scene, tags, prompt, negative };
 }
@@ -187,7 +187,7 @@ function optimize(scene: { id: string; auditRevision: unknown; tags: unknown; ra
 const previous = loadSceneShards();
 const scenes = previous.scenes;
 const optimized = scenes.map(optimize);
-const issues = [];
+const issues: any[] = [];
 const ids = new Set();
 // 门禁检查真实持久化数据，不检查优化器在内存里自动修正后的副本。
 for (const scene of check ? scenes : optimized) {
@@ -197,23 +197,23 @@ for (const scene of check ? scenes : optimized) {
   if (/\{[^}]+\}/.test(scene.prompt)) issues.push(`${scene.id}: unresolved prompt placeholder`);
   if (scene.char === 'triad' && !scene.tags.includes('2girls')) issues.push(`${scene.id}: dual scene missing 2girls`);
   if (scene.char !== 'triad' && scene.tags.includes('2girls')) issues.push(`${scene.id}: solo scene contains 2girls`);
-  const effective = renderedScene(scene);
+  const effective: any = renderedScene(scene);
   const isPinned = Boolean(pinnedScenes[scene.id]);
   if (!isPinned) {
     if (scene.rating === 'All' && !/(^|, )nsfw(,|$)/.test(effective.negative)) issues.push(`${scene.id}: All scene lacks nsfw exclusion`);
     if (scene.rating === 'R15' && /(^|, )nsfw(,|$)/.test(effective.negative)) issues.push(`${scene.id}: R15 negative blocks the intended suggestive rating`);
-    adultSafetyIssues(effective).forEach((issue) => issues.push(`${scene.id}: ${issue}`));
+    adultSafetyIssues(effective).forEach((issue: any) => issues.push(`${scene.id}: ${issue}`));
   }
-  framingConflicts(effective).forEach((issue) => issues.push(`${scene.id}: conflicting framing ${issue}`));
-  poseConflicts(effective).forEach((issue) => issues.push(`${scene.id}: conflicting pose ${issue}`));
-  gazeConflicts(effective).forEach((issue) => issues.push(`${scene.id}: conflicting gaze ${issue}`));
+  framingConflicts(effective).forEach((issue: any) => issues.push(`${scene.id}: conflicting framing ${issue}`));
+  poseConflicts(effective).forEach((issue: any) => issues.push(`${scene.id}: conflicting pose ${issue}`));
+  gazeConflicts(effective).forEach((issue: any) => issues.push(`${scene.id}: conflicting gaze ${issue}`));
 }
 
-const changed = optimized.reduce((count, scene, index) => count + (JSON.stringify(scene) !== JSON.stringify(scenes[index]) ? 1 : 0), 0);
+const changed = optimized.reduce((count: any, scene: any, index: any) => count + (JSON.stringify(scene) !== JSON.stringify(scenes[index]) ? 1 : 0), 0);
 console.log(`scenes=${optimized.length} changed=${changed} issues=${issues.length}`);
-issues.forEach((issue) => console.error(issue));
+issues.forEach((issue: any) => console.error(issue));
 if (write) {
-  sceneWrite.applySceneChanges(optimized, previous, { retiredIds: sceneWrite.readRetiredSceneIds() });
+  sceneWrite.applySceneChanges(optimized, previous, { retiredIds: sceneWrite.readRetiredSceneIds(undefined) });
   writeAggregate(optimized);
 }
 // 可机械改写不等于有缺陷；提示词改写须独立真实渲染，不能由门禁强迫执行。

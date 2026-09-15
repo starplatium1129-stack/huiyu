@@ -1,7 +1,9 @@
 import { errorMessage as runtimeErrorMessage } from '../scripts/lib/runtime-errors';
+import type { Normalized } from '../server/chat-types';
 'use strict';
 
 import { Response } from 'express-serve-static-core';
+import type { GatewayConfig } from '../server/config-types';
 
 let { normalizeMultimodalContent }: typeof import('./chat-content') = require('./chat-content');
 
@@ -21,7 +23,7 @@ let createOllamaService = (require('../services/ollama-service') as typeof impor
 // 站主配好的 API，而 GET 接口永远不回传 apiKey。
 let { readHostConfig, writeHostConfig, deleteHostConfig }: typeof import('../server/chat-host-config') = require('../server/chat-host-config');
 
-function hostConfigPublic(config: unknown) {
+function hostConfigPublic(config: GatewayConfig) {
   let stored = readHostConfig(config);
   if (!stored) return { configured:false };
   return {
@@ -39,7 +41,7 @@ function chatCharacterPrompt(character: string, context: { userProfile: { callNa
 
 
 
-function normalizeToolMessage(raw: { role: unknown; tool_calls: string|unknown[]; content: unknown; reasoning_content: unknown; tool_call_id: unknown; }) {
+function normalizeToolMessage(raw: any) {
   let role = String(raw && raw.role || '');
   if (role === 'assistant') {
     if (!Array.isArray(raw.tool_calls) || !raw.tool_calls.length || raw.tool_calls.length > 8) {
@@ -61,7 +63,7 @@ function normalizeToolMessage(raw: { role: unknown; tool_calls: string|unknown[]
       if (argsText.length > 4000) return { error:'工具调用参数过长' };
       toolCalls.push({ id:id, type:'function', function:{ name:name, arguments:argsText } });
     }
-    let message = { role:'assistant', content:content, tool_calls:toolCalls };
+    let message: any = { role:'assistant', content:content, tool_calls:toolCalls };
     if (reasoningContent) message.reasoning_content = reasoningContent;
     return { message:message };
   }
@@ -75,9 +77,22 @@ function normalizeToolMessage(raw: { role: unknown; tool_calls: string|unknown[]
   return { error:'工具消息角色无效' };
 }
 
-function validateChatBody(body: { character: unknown; provider: string; model: unknown; messages: unknown; companionTools: boolean; userProfile: unknown; memories: unknown; hostConfig: boolean; api: unknown; reasoning: unknown; webSearch: boolean; }) {
+/** 归一化后的聊天请求体；字段由校验逻辑保证存在。 */
+type ChatValidationValue = {
+  character: string;
+  provider: 'local' | 'api';
+  model: string;
+  api: null | { hostConfig: true } | { baseUrl: string; pathname: string; model: string; apiKey: string; vendor: string };
+  webSearch: boolean;
+  companionTools: boolean;
+  reasoning: string;
+  messages: unknown[];
+};
+
+/** 校验结果：要么带 error，要么带 value，二者互斥。 */
+function validateChatBody(body: any): Normalized<ChatValidationValue> {
   let character = String(body && body.character || 'nene');
-  let provider = body && body.provider === 'api' ? 'api' : 'local';
+  let provider: ChatValidationValue['provider'] = body && body.provider === 'api' ? 'api' : 'local';
   let requestedModel = String(body && body.model || '');
   let rawMessages = body && body.messages;
   let companionTools = body && body.companionTools === true;
@@ -92,8 +107,8 @@ function validateChatBody(body: { character: unknown; provider: string; model: u
 
   // 工具消息（assistant tool_calls / role:tool）不参与裁剪：它们来自最近的
   // 工具循环（数量少、在对话尾部），且必须与配套消息相邻才能被上游接受。
-  let toolMessages = [];
-  let textSource = [];
+  let toolMessages: any[] = [];
+  let textSource: any[] = [];
   for (let i = 0; i < rawMessages.length; i += 1) {
     let role = String(rawMessages[i] && rawMessages[i].role || '');
     if (role === 'tool' || (role === 'assistant' && Array.isArray(rawMessages[i].tool_calls) && rawMessages[i].tool_calls.length)) {
@@ -108,7 +123,7 @@ function validateChatBody(body: { character: unknown; provider: string; model: u
   // 普通消息裁剪（原有逻辑）：user/assistant 文本消息。多模态 user 消息
   // （content 数组，含图片）单独校验且不参与裁剪——数量少、体积受
   // express.json body 上限约束。
-  let kept = [];
+  let kept: any[] = [];
   let used = 0;
   let count = 0;
   for (let j = textSource.length - 1; j >= 0 && count < 24; j -= 1) {
@@ -132,7 +147,7 @@ function validateChatBody(body: { character: unknown; provider: string; model: u
   }
   if (!kept.length && !toolMessages.length) return { error:'对话记录必须包含有效的消息' };
 
-  let api = null;
+  let api: ChatValidationValue['api'] = null;
   let useHostConfig = body && body.hostConfig === true;
   if (provider === 'api') {
     if (useHostConfig) {
@@ -140,7 +155,7 @@ function validateChatBody(body: { character: unknown; provider: string; model: u
       api = { hostConfig:true };
     } else {
       let apiValidation = validateCompatibleApi(body && body.api);
-      if (apiValidation.error) return { error:apiValidation.error };
+      if (apiValidation.error !== undefined) return { error:apiValidation.error };
       api = apiValidation.value;
     }
   }
@@ -162,7 +177,10 @@ function validateChatBody(body: { character: unknown; provider: string; model: u
   };
 }
 
-function validateCompatibleApi(input: { baseUrl: unknown; model: unknown; apiKey: unknown; }) {
+/** 归一化后的兼容 API 配置。 */
+type CompatibleApiValue = { baseUrl: string; pathname: string; model: string; apiKey: string; vendor: string };
+
+function validateCompatibleApi(input: any): Normalized<CompatibleApiValue> {
   let baseUrl = String(input && input.baseUrl || '').trim();
   let model = String(input && input.model || '').trim();
   let apiKey = String(input && input.apiKey || '').trim();
@@ -199,7 +217,7 @@ function validateCompatibleApi(input: { baseUrl: unknown; model: unknown; apiKey
   };
 }
 
-function compatibleContent(event: { choices: unknown[]; }) {
+function compatibleContent(event: any) {
   let choice = event && Array.isArray(event.choices) ? event.choices[0] : null;
   if (!choice) return '';
   if (choice.delta && typeof choice.delta.content === 'string') return choice.delta.content;
@@ -208,7 +226,7 @@ function compatibleContent(event: { choices: unknown[]; }) {
 }
 
 /** 思考过程增量（DeepSeek reasoning_content / OpenAI 兼容 reasoning）。 */
-function compatibleReasoning(event: { choices: unknown[]; }) {
+function compatibleReasoning(event: any) {
   let choice = event && Array.isArray(event.choices) ? event.choices[0] : null;
   if (!choice) return '';
   if (choice.delta) {
@@ -230,7 +248,7 @@ function buildWebSearchParams(api: { model: string; vendor: string; }) {
   return {};
 }
 
-async function streamCompatibleApi(input: { api: unknown; publicOnly: boolean; messages: unknown; reasoning: string; webSearch: unknown; companionTools: unknown; signal: unknown; }, handlers: { onStart?: unknown; onToolCall?: unknown; onReasoning?: unknown; onToken?: unknown; onDone?: unknown; }, gatewayConfig: unknown) {
+async function streamCompatibleApi(input: any, handlers: any, gatewayConfig: GatewayConfig) {
   handlers = handlers || {};
   let api = input.api;
   // 访客模式（hostConfig:true）：从站主托管配置注入 baseUrl/model/key，
@@ -311,7 +329,7 @@ async function streamCompatibleApi(input: { api: unknown; publicOnly: boolean; m
   // 下一轮必须回传 reasoning_content，否则上游 400。
   let toolCallsByIndex = Object.create(null);
   let reasoningText = '';
-  function accumulateToolCalls(event: { choices: unknown[]; }) {
+  function accumulateToolCalls(event: any) {
     let choice = event && Array.isArray(event.choices) ? event.choices[0] : null;
     let deltas = choice && Array.isArray(choice.delta && choice.delta.tool_calls)
       ? choice.delta.tool_calls
@@ -412,7 +430,7 @@ async function streamCompatibleApi(input: { api: unknown; publicOnly: boolean; m
   if (handlers.onDone) await handlers.onDone();
 }
 
-async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; model: string; apiKey: string; vendor: string; }|undefined, signal: AbortSignal) {
+async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; model: string; apiKey: string; vendor: string; }, signal: AbortSignal) {
   let modelsPath = api.pathname.replace(/\/chat\/completions$/, '/models');
   let result = await httpClient.request(api.baseUrl, modelsPath, {
     method:'GET',
@@ -437,7 +455,7 @@ async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; mo
   try { data = JSON.parse(body.toString('utf8')); } catch (error) {
     throw new httpClient.UpstreamError('模型列表不是有效 JSON', {
       code:'INVALID_JSON',
-      detail:String(error && error.message || error)
+      detail:runtimeErrorMessage(error)
     });
   }
   let rawModels = Array.isArray(data && data.data)
@@ -457,7 +475,7 @@ async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; mo
 function writeEvent(res: Response<unknown,Record<string,unknown>,number>, event: { type: string; model?: unknown; queueWaitMs?: unknown; content?: unknown; error?: unknown; }) {
   if (res.destroyed || res.writableEnded) return Promise.reject(httpClient.abortError());
   if (res.write(JSON.stringify(event) + '\n')) return Promise.resolve();
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     function cleanup() {
       res.removeListener('drain', onDrain);
       res.removeListener('close', onClose);
@@ -469,7 +487,10 @@ function writeEvent(res: Response<unknown,Record<string,unknown>,number>, event:
   });
 }
 
-function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown; OLLAMA_KEEP_ALIVE: unknown; OLLAMA_NUM_PREDICT: unknown; OLLAMA_NUM_CTX: unknown; }, dependencies: { ollama?: unknown; }) {
+/** 注入的 Ollama 客户端；缺省时工厂按 config 自行创建。 */
+type ChatDependencies = { ollama?: ReturnType<typeof createOllamaService> };
+
+function createChatRouter(config: GatewayConfig, dependencies?: ChatDependencies) {
   dependencies = dependencies || {};
   let router = express.Router();
   let service = dependencies.ollama || createOllamaService({
@@ -481,8 +502,8 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
   });
 
   router.get('/api/chat-status', async function (req, res) {
-    let data = await service.status().catch(function (error: { message: unknown; }) {
-      return { online:false, model:'', models:[], error:error.message };
+    let data = await service.status().catch(function (error) {
+      return { online:false, model:'', models:[], error:runtimeErrorMessage(error) };
     });
     res.setHeader('Cache-Control', 'no-store');
     res.json(data);
@@ -490,7 +511,7 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
 
   router.post('/api/chat-provider/test', security.localOnly, express.json({ limit:'8kb' }), async function (req, res) {
     let validation = validateCompatibleApi(req.body);
-    if (validation.error) return envelope.fail(res, 400, validation.error);
+    if (validation.error !== undefined) return envelope.fail(res, 400, validation.error);
     let controller = new AbortController();
     req.once('aborted', function () { controller.abort(); });
     // 客户端在模型列表拉取完成前断开（如关面板）也要中止，避免 15s 探测白跑
@@ -501,7 +522,7 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
     } catch (error) {
       if (httpClient.isAbortError(error)) return;
       envelope.fail(res, envelope.statusFor(error, 502), runtimeErrorMessage(error) || 'API 连接测试失败', {
-        detail:error.detail || ''
+        detail:(error as any).detail || ''
       });
     }
   });
@@ -514,7 +535,7 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
 
   router.post('/api/chat-provider/host-config', security.localOnly, express.json({ limit:'8kb' }), function (req, res) {
     let validation = validateCompatibleApi(req.body);
-    if (validation.error) return envelope.fail(res, 400, validation.error);
+    if (validation.error !== undefined) return envelope.fail(res, 400, validation.error);
     writeHostConfig(config, {
       baseUrl:validation.value.baseUrl,
       pathname:validation.value.pathname,
@@ -535,7 +556,7 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
 
   router.post('/api/chat', chatLimit, express.json({ limit:'14mb' }), function (req, res) {
     let validation = validateChatBody(req.body);
-    if (validation.error) return envelope.fail(res, 400, validation.error);
+    if (validation.error !== undefined) return envelope.fail(res, 400, validation.error);
 
     // 2026-08-16 审计：桌宠本地工具（list/read/write_file/run_command）只对本机会话
     // 放行——远程隧道访客即使置 companionTools:true 也不附加工具 schema，
@@ -553,7 +574,7 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
       if (!res.writableEnded) abort();
     });
 
-    let chatService = validation.value.provider === 'api'
+    let chatService: any = validation.value.provider === 'api'
       ? { streamChat:function (input: unknown, handlers: unknown) { return streamCompatibleApi(input, handlers, config); } }
       : service;
     chatService.streamChat({
@@ -565,7 +586,7 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
       reasoning:validation.value.reasoning,
       messages:validation.value.messages,
       signal:controller.signal,
-      publicOnly:!security.isDirectLocalRequest(req) && !(validation.value.api && validation.value.api.hostConfig)
+      publicOnly:!security.isDirectLocalRequest(req) && !(validation.value.api && (validation.value.api as { hostConfig?: boolean }).hostConfig)
     }, {
       onStart:async function (meta: { queueWaitMs: unknown; model: unknown; }) {
         res.status(200);
@@ -596,13 +617,13 @@ function createChatRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown;
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       let fallback = validation.value.provider === 'api' ? '聊天 API 暂不可用' : 'Ollama 暂不可用';
       if (!res.headersSent) {
-        envelope.fail(res, envelope.statusFor(error, 503), error.message || fallback, {
-          detail:error.detail || ''
+        envelope.fail(res, envelope.statusFor(error, 503), runtimeErrorMessage(error) || fallback, {
+          detail:(error as any).detail || ''
         });
         return;
       }
       if (!res.writableEnded) {
-        writeEvent(res, { type:'error', error:error.message || '聊天流中断' })
+        writeEvent(res, { type:'error', error:runtimeErrorMessage(error) || '聊天流中断' })
           .catch(function () {})
           .finally(function () { if (!res.writableEnded) res.end(); });
       }

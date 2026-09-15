@@ -14,7 +14,7 @@ function round(value: number) {
 }
 
 function timedRequest(method: string, pathname: string|URL, payload: { text?: string; voice?: string; translation?: boolean; }|null|undefined, origin: string|undefined) {
-  return new Promise(function (resolve, reject) {
+  return new Promise<any>(function (resolve: any, reject: any) {
     var target = new URL(pathname, origin || baseUrl);
     var body = payload == null ? null : JSON.stringify(payload);
     var transport = target.protocol === 'https:' ? https : http;
@@ -29,9 +29,9 @@ function timedRequest(method: string, pathname: string|URL, payload: { text?: st
         'Content-Type':'application/json',
         'Content-Length':Buffer.byteLength(body)
       }
-    }, function (response) {
+    }, function (response: any) {
       headersAt = performance.now();
-      response.on('data', function (chunk) {
+      response.on('data', function (chunk: any) {
         if (!firstByteAt) firstByteAt = performance.now();
         bytes += chunk.length;
         chunks.push(chunk);
@@ -57,8 +57,8 @@ function timedRequest(method: string, pathname: string|URL, payload: { text?: st
 }
 
 async function jsonRequest(method: string, pathname: string, payload: { text?: string; voice?: string; translation?: boolean; }|undefined) {
-  var result = await timedRequest(method, pathname, payload);
-  var data = {};
+  var result = await timedRequest(method, pathname, payload, undefined);
+  var data: Record<string, any> = {};
   try { data = JSON.parse(result.body.toString('utf8') || '{}'); } catch (error) {}
   result.data = data;
   if (result.status < 200 || result.status >= 300) {
@@ -82,7 +82,7 @@ function metric(label: string, result: unknown) {
     output.rms = audio.rms;
     output.peak = audio.peak;
     output.silence = audio.silenceRatio;
-    output.quality_issues = wavQuality.assertVoiceQuality(audio).join(', ');
+    output.quality_issues = wavQuality.assertVoiceQuality(audio, undefined).join(', ');
   } catch (error) {}
   return output;
 }
@@ -98,7 +98,7 @@ function voicePayload(voice: string, text: string, emotion: string) {
 }
 
 async function main() {
-  var status = await jsonRequest('GET', '/api/tts-status');
+  var status = await jsonRequest('GET', '/api/tts-status', undefined);
   console.log('Voice status:', JSON.stringify({
     online:status.data.online,
     voices:status.data.voices,
@@ -106,7 +106,7 @@ async function main() {
   }));
   if (!status.data.online) throw new Error('GPT-SoVITS is not online');
 
-  var results = [];
+  var results: any[] = [];
   var coldTranslation = await jsonRequest('POST', '/api/translate', {
     text:'今天也辛苦了。先休息一下吧。'
   });
@@ -126,7 +126,7 @@ async function main() {
   });
   results.push(metric('prepare natsume', prepareNatsume));
   var natsume = await timedRequest('POST', '/api/tts',
-    voicePayload('natsume', '今日もお疲れさま。少し休んだら？', 'gentle'));
+    voicePayload('natsume', '今日もお疲れさま。少し休んだら？', 'gentle'), undefined);
   results.push(metric('TTS natsume prepared', natsume));
 
   var prepareNene = await jsonRequest('POST', '/api/voice/prepare', {
@@ -135,15 +135,15 @@ async function main() {
   });
   results.push(metric('prepare nene switch', prepareNene));
   var neneSwitch = await timedRequest('POST', '/api/tts',
-    voicePayload('nene', '今日もお疲れさまでした。少し休んでくださいね。', 'gentle'));
+    voicePayload('nene', '今日もお疲れさまでした。少し休んでくださいね。', 'gentle'), undefined);
   results.push(metric('TTS nene prepared', neneSwitch));
   var neneWarm = await timedRequest('POST', '/api/tts',
-    voicePayload('nene', '私がそばにいますから、安心してください。', 'gentle'));
+    voicePayload('nene', '私がそばにいますから、安心してください。', 'gentle'), undefined);
   results.push(metric('TTS nene warm', neneWarm));
 
   if (directVoiceUrl) {
     var config = (require('../../server/config') as typeof import('../../server/config')).loadGatewayConfig(path.resolve(__dirname, '..', '..'), process.env);
-    var profile = config.VOICE_PROFILES.nene;
+    var profile: any = config.VOICE_PROFILES.nene;
     for (var mode = 0; mode <= 3; mode += 1) {
       var direct = await timedRequest('POST', '/tts', {
         text:'私がそばにいますから、安心してください。',
@@ -193,7 +193,7 @@ async function main() {
   ];
   for (var i = 0; i < sceneLines.length; i += 1) {
     var segment = await timedRequest('POST', '/api/tts',
-      voicePayload('nene', sceneLines[i], i === 2 ? 'shy' : 'gentle'));
+      voicePayload('nene', sceneLines[i], i === 2 ? 'shy' : 'gentle'), undefined);
     if (!sceneFirstByte) sceneFirstByte = sceneStarted + segment.firstByteMs;
     sceneBytes += segment.bytes;
   }
@@ -209,7 +209,7 @@ async function main() {
   console.table(results);
 }
 
-main().catch(function (error) {
+main().catch(function (error: any) {
   console.error(error.stack || error);
   process.exitCode = 1;
 });

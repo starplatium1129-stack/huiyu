@@ -43,8 +43,8 @@ const required = [
 const timeValues = new Set(['morning', 'afternoon', 'sunset', 'evening', 'night', 'late_night', 'dawn', 'all_day']);
 const charValues = new Set(['nene', 'natsume', 'triad']);
 const ratingValues = new Set(['All', 'R15', 'R18']);
-const promptTrigger = { nene: 'ayachi_nene', natsume: 'shiki_natsume' };
-const promptLora = { nene: '', natsume: '' };
+const promptTrigger: any = { nene: 'ayachi_nene', natsume: 'shiki_natsume' };
+const promptLora: any = { nene: '', natsume: '' };
 const driftMarkers = [
   '\u4e03\u7eea', '\u3059\u3054\u3044', '\u9b45\u9b54', '\u732b\u8033', 'Devon', '\u758f\u53f2',
   '\u94f6\u8272\u53d1\u4e1d', '\u6e7f\u900f\u7684\u94f6\u8272\u957f\u53d1', '\u7c89\u8272\u957f\u53d1', '\u7c89\u53d1'
@@ -59,7 +59,7 @@ function readJson(source: PathOrFileDescriptor, label: string, errors: string[])
   }
 }
 
-function hasRepeatedNgram(value: unknown, size = 12) {
+function hasRepeatedNgram(value: unknown, size: any = 12) {
   const compact = String(value || '').replace(/\s+/g, '');
   const counts = new Map();
   for (let index = 0; index <= compact.length - size; index += 1) {
@@ -71,8 +71,8 @@ function hasRepeatedNgram(value: unknown, size = 12) {
   return false;
 }
 
-const errors = [];
-let scenes = [];
+const errors: any[] = [];
+let scenes: any[] = [];
 try {
   scenes = loadSceneShards().scenes;
 } catch (error) {
@@ -90,11 +90,11 @@ const curationData = readJson(curationSource, 'curation.json', errors);
 const retiredData = readJson(retiredSource, 'retired-scenes.json', errors);
 const pinnedData = readJson(pinnedSource, 'prompt-pinned-scenes.json', errors);
 const pinnedScenes = pinnedData && pinnedData.scenes ? pinnedData.scenes : {};
-const ids = new Set();
+const ids: any = new Set();
 
 if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
 
-(Array.isArray(scenes) ? scenes : []).forEach((scene, index) => {
+(Array.isArray(scenes) ? scenes : []).forEach((scene: any, index: any) => {
   const label = scene && scene.id ? scene.id : 'index ' + index;
   if (!scene || typeof scene !== 'object') {
     errors.push(label + ': scene must be an object');
@@ -171,7 +171,7 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.prompt === 'string' && /\{[^}]+\}/.test(scene.prompt)) {
     errors.push(label + ': unresolved prompt placeholder');
   }
-  const effective = renderedScene(scene);
+  const effective: any = renderedScene(scene);
   if (typeof scene.negative === 'string') {
     const negativeTokens = effective.negative.split(',').map(tokenKey).filter(Boolean);
     for (const token of ['text', 'watermark', 'signature', 'bad_hands', 'extra_fingers', 'missing_fingers']) {
@@ -191,17 +191,17 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
           if (!negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative prompt missing ' + token);
         }
       }
-      const overlap = [...scenePositiveKeys(effective)].filter((token) => negativeTokens.includes(token));
+      const overlap = [...scenePositiveKeys(effective)].filter((token: any) => negativeTokens.includes(token));
       if (overlap.length) {
         errors.push(label + ': positive/negative token overlap: ' + [...new Set(overlap)].join(', '));
       }
     }
   }
-  if (!isPinned) adultSafetyIssues(effective).forEach((issue) => errors.push(label + ': ' + issue));
-  framingConflicts(effective).forEach((issue) => errors.push(label + ': conflicting framing ' + issue));
-  poseConflicts(effective).forEach((issue) => errors.push(label + ': conflicting pose ' + issue));
-  gazeConflicts(effective).forEach((issue) => errors.push(label + ': conflicting gaze ' + issue));
-  auMetadataIssues(scene).forEach((issue) => errors.push(label + ': ' + issue));
+  if (!isPinned) adultSafetyIssues(effective).forEach((issue: any) => errors.push(label + ': ' + issue));
+  framingConflicts(effective).forEach((issue: any) => errors.push(label + ': conflicting framing ' + issue));
+  poseConflicts(effective).forEach((issue: any) => errors.push(label + ': conflicting pose ' + issue));
+  gazeConflicts(effective).forEach((issue: any) => errors.push(label + ': conflicting gaze ' + issue));
+  auMetadataIssues(scene).forEach((issue: any) => errors.push(label + ': ' + issue));
   if (Array.isArray(scene.character) && typeof scene.prompt === 'string') {
     for (const character of scene.character) {
       const trigger = promptTrigger[character];
@@ -224,7 +224,7 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
 });
 
 const retiredRecords = retiredData && Array.isArray(retiredData.records) ? retiredData.records : [];
-const retiredIds = new Set();
+const retiredIds: any = new Set();
 for (const record of retiredRecords) {
   if (!record || !isSceneId(record.id)) {
     errors.push('retired-scenes.json contains an invalid id');
@@ -276,7 +276,7 @@ if (personaCoreSceneIds !== undefined) {
     errors.push('curation.json personaCoreSceneIds must be an array');
   } else {
     const coreSeen = new Set();
-    personaCoreSceneIds.forEach((sceneId, index) => {
+    personaCoreSceneIds.forEach((sceneId: any, index: any) => {
       if (typeof sceneId !== 'string' || !sceneId.trim()) {
         errors.push('curation.json personaCoreSceneIds[' + index + '] must be a non-empty string');
         return;
@@ -297,8 +297,8 @@ for (const [intent, aliases] of Object.entries(searchAliases)) {
     errors.push('curation.json search alias must be a non-empty array: ' + intent);
     continue;
   }
-  const candidates = [intent].concat(aliases).map((item) => String(item).toLowerCase());
-  if (!scenes.some((scene) => candidates.some((candidate) => curationText(scene).includes(candidate)))) {
+  const candidates = [intent].concat(aliases).map((item: any) => String(item).toLowerCase());
+  if (!scenes.some((scene: any) => candidates.some((candidate: any) => curationText(scene).includes(candidate)))) {
     errors.push('curation.json search alias returns no scenes: ' + intent);
   }
 }
@@ -309,9 +309,9 @@ for (const rail of moodRails) {
     continue;
   }
   const terms = String(rail.query).toLowerCase().split(/\s+/).filter(Boolean);
-  const hasMatch = scenes.some((scene) => {
+  const hasMatch = scenes.some((scene: any) => {
     const text = curationText(scene);
-    return terms.every((term) => text.includes(term));
+    return terms.every((term: any) => text.includes(term));
   });
   if (!hasMatch) errors.push(label + ': curation query returns no scenes: ' + rail.query);
 }
@@ -321,7 +321,7 @@ const expectedCharacters = {
   natsume: ['black_hair', 'long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip']
 };
 for (const [id, traits] of Object.entries(expectedCharacters)) {
-  const character = Array.isArray(characters) ? characters.find((item) => item.id === id) : null;
+  const character = Array.isArray(characters) ? characters.find((item: any) => item.id === id) : null;
   if (!character) {
     errors.push('characters.json missing ' + id);
     continue;
@@ -336,7 +336,7 @@ for (const [id, traits] of Object.entries(expectedCharacters)) {
     continue;
   }
   for (const sceneId of recommendations) {
-    const scene = scenes.find((item) => item.id === sceneId);
+    const scene = scenes.find((item: any) => item.id === sceneId);
     if (!scene) {
       errors.push(id + ': recommended scene does not exist: ' + sceneId);
       continue;

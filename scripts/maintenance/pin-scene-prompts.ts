@@ -84,13 +84,13 @@ function newestSourceByScene() {
 }
 
 function pick(entry: { [x: string]: unknown; }) {
-  const out = {};
+  const out: Record<string, any> = {};
   for (const f of PIN_FIELDS) out[f] = entry[f];
   return out;
 }
 
 function diffFields(current: { [x: string]: unknown; }, target: unknown) {
-  const drift = [];
+  const drift: any[] = [];
   for (const f of PIN_FIELDS) {
     if (JSON.stringify(current[f]) !== JSON.stringify(target[f])) drift.push(f);
   }
@@ -105,7 +105,7 @@ function gitScene(commit: unknown, id: unknown) {
 function loadShards() {
   const manifest = JSON.parse(fs.readFileSync(path.join(SHARDS_DIR, 'manifest.json'), 'utf8'));
   const { expandShardFiles }: typeof import('../lib/scene-store') = require('../lib/scene-store');
-  const shards = [];
+  const shards: any[] = [];
   for (const entry of manifest.files) {
     // 批次感知：存在 base.1.json 时按批次展开，否则读单文件
     for (const file of expandShardFiles(entry)) {
@@ -130,7 +130,7 @@ function indexShards(shards: { file: unknown; arr: unknown; }[]) {
 
 // ── 主流程 ────────────────────────────────────────────────────────────────
 const mode = process.argv[2] || '--report';
-const source = process.argv.find(arg => arg.startsWith('--source='))?.slice(9) || 'auto';
+const source = process.argv.find((arg: any) => arg.startsWith('--source='))?.slice(9) || 'auto';
 
 function readBaseline() {
   const payload = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
@@ -168,7 +168,7 @@ function resolveTargets() {
 
 try {
 if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto', 'baseline', 'history'].includes(source)
-    || process.argv.slice(3).some(arg => !/^--source=(auto|baseline|history)$/.test(arg))) {
+    || process.argv.slice(3).some((arg: any) => !/^--source=(auto|baseline|history)$/.test(arg))) {
   console.error(`usage: node ${path.basename(__filename)} [--report|--apply|--capture|--check] [--source=auto|baseline|history]`);
   process.exitCode = 2;
 } else if (mode === '--check') {
@@ -199,9 +199,9 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto',
   // its current fields must not require historical Git objects or drop entries.
   const previous = fs.existsSync(BASELINE_PATH) ? readBaseline() : null;
   const sources = previous
-    ? new Map(Object.entries(previous).map(([id, entry]) => [id, entry.pinSource]))
-    : new Map([...newestSourceByScene()].map(([id, commit]) => [id, PNG_AUTHORED.has(id) ? ['png-reference'] : [commit]]));
-  const scenes = {};
+    ? new Map(Object.entries(previous).map(([id, entry]: any) => [id, entry.pinSource]))
+    : new Map([...newestSourceByScene()].map(([id, commit]: any) => [id, PNG_AUTHORED.has(id) ? ['png-reference'] : [commit]]));
+  const scenes: Record<string, any> = {};
   for (const [id] of sources) {
     const hit = entries.get(id);
     if (!hit) throw new Error(`受保护场景 ${id} 不存在于分片`);
@@ -224,7 +224,7 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto',
   const { targets, origin } = resolveTargets();
   // Validate the entire operation before changing any shard.
   for (const [id] of targets) if (!entries.has(id)) throw new Error(`受保护场景 ${id} 不存在于分片；未写入任何场景`);
-  const applied = [];
+  const applied: any[] = [];
   let drifted = 0;
   for (const [id, version] of targets) {
     const hit = entries.get(id);
@@ -242,7 +242,7 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto',
     }
   }
   if (mode === '--apply') {
-    const touchedFiles = new Set(applied.map((line) => entries.get(line.slice(0, line.indexOf(' <'))).file));
+    const touchedFiles = new Set(applied.map((line: any) => entries.get(line.slice(0, line.indexOf(' <'))).file));
     for (const { file, arr } of shards) {
       if (touchedFiles.has(file)) fs.writeFileSync(path.join(SHARDS_DIR, file), JSON.stringify(arr, null, 2) + '\n');
     }

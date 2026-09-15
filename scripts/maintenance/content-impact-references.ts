@@ -14,11 +14,11 @@ function compareReferenceProjection(standards: unknown, view: { [s: string]: unk
   const result = { file: 'data/character-reference-view.json', status: 'unknown', scope: 'reference-mirror-fields',
     sourceFiles: ['data/character-reference-standards.json'], issues: [],
     untracked: ['URL/fileName/pending/review and asset existence', 'popular-to-standards generation: hard-coded heroines, asset filtering and merge writers'] };
-  const idRows = (rows: unknown[], key: string) => Array.isArray(rows) && rows.every((row) => object(row) && typeof row[key] === 'string' && row[key].trim())
-    && new Set(rows.map((row) => row[key])).size === rows.length;
+  const idRows = (rows: unknown[], key: string) => Array.isArray(rows) && rows.every((row: any) => object(row) && typeof row[key] === 'string' && row[key].trim())
+    && new Set(rows.map((row: any) => row[key])).size === rows.length;
   if (!object(standards) || !idRows(standards.characters, 'id') || !idRows(standards.perspectives, 'id') || !object(view)
     || standards.characters.some((c: { outfits: unknown; }) => !idRows(c.outfits, 'id'))
-    || Object.values(view).some((c) => !object(c) || !idRows(c.outfits, 'outfitId') || c.outfits.some((o: { references: unknown; }) => !idRows(o.references, 'id')))) {
+    || Object.values(view).some((c: any) => !object(c) || !idRows(c.outfits, 'outfitId') || c.outfits.some((o: { references: unknown; }) => !idRows(o.references, 'id')))) {
     result.reason = 'invalid or duplicate reference identities; no partial mirror accepted';
     return result;
   }
@@ -70,7 +70,7 @@ function referenceImpact(opts: { root: PathLike; character: unknown; outfit: unk
   for (const characterId of selected) {
     // An explicit outfit restricts its explicit character, not other path-selected characters.
     const outfit = characterId === opts.character ? opts.outfit : null;
-    const emit = (outfitId: unknown, status: string, references = null, reason = '') => {
+    const emit = (outfitId: unknown, status: string, references: any = null, reason: any = '') => {
       const item = { characterId, outfitId, status, total: references?.length ?? null,
         pendingCount: references ? references.filter((r: { pending: boolean; url: string; }) => r.pending === true || typeof r.url !== 'string' || !r.url.trim()).length : null,
         urlDeclaredCount: references ? references.filter((r: { url: string; }) => typeof r.url === 'string' && Boolean(r.url.trim())).length : null,
@@ -84,11 +84,11 @@ function referenceImpact(opts: { root: PathLike; character: unknown; outfit: unk
     if (failure) { emit(outfit || null, 'unknown', null, failure); continue; }
     if (!Object.hasOwn(view, characterId)) { emit(outfit || null, 'missing', null, '角色未登记'); continue; }
     const forms = view[characterId]?.outfits;
-    if (!Array.isArray(forms) || forms.some((f) => !object(f) || typeof f.outfitId !== 'string' || !f.outfitId.trim())
-      || new Set(forms.map((f) => f.outfitId)).size !== forms.length) {
+    if (!Array.isArray(forms) || forms.some((f: any) => !object(f) || typeof f.outfitId !== 'string' || !f.outfitId.trim())
+      || new Set(forms.map((f: any) => f.outfitId)).size !== forms.length) {
       emit(outfit || null, 'unknown', null, '服装登记缺失、损坏或重复'); continue;
     }
-    const matches = forms.filter((f) => !outfit || f.outfitId === outfit);
+    const matches = forms.filter((f: any) => !outfit || f.outfitId === outfit);
     if (!matches.length) emit(outfit || null, outfit ? 'missing' : 'empty', null, '无所选服装登记');
     for (const form of matches) {
       const target = `${characterId}/${form.outfitId}`;

@@ -39,7 +39,7 @@ function requestTts(line: { voice: unknown; language: unknown; text: unknown; em
     consistency: line.consistency || 'locked',
     speed: line.speed == null ? 1 : line.speed
   });
-  return new Promise(function (resolve, reject) {
+  return new Promise<any>(function (resolve: any, reject: any) {
     const started = Date.now();
     let firstByteMs = 0;
     const req = http.request({
@@ -51,9 +51,9 @@ function requestTts(line: { voice: unknown; language: unknown; text: unknown; em
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(body)
       }
-    }, function (res) {
+    }, function (res: any) {
       const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
-      res.on('data', function (chunk) {
+      res.on('data', function (chunk: any) {
         if (!firstByteMs) firstByteMs = Date.now() - started;
         chunks.push(chunk);
       });
@@ -79,7 +79,7 @@ function requestTts(line: { voice: unknown; language: unknown; text: unknown; em
 async function main() {
   if (write && !fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
   const nextEntries = Object.assign({}, metricsDoc.entries || {});
-  const failures = [];
+  const failures: any[] = [];
 
   for (const line of baseline.lines) {
     process.stdout.write('live ' + line.id + ' ... ');
@@ -139,7 +139,7 @@ async function main() {
   console.log('Live voice baseline passed for ' + baseline.lines.length + ' lines');
 }
 
-main().catch(function (error) {
+main().catch(function (error: any) {
   console.error(error);
   process.exit(1);
 });

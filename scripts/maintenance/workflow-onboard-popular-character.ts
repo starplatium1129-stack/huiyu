@@ -54,7 +54,7 @@ function computeContentVersion() {
     'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
     'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json',
     'popular-characters.json', 'scene-blueprints.json'
-  ].forEach(name => {
+  ].forEach((name: any) => {
     const p = path.join(DATA_DIR, name);
     hash.update(name + '=' + fs.readFileSync(p, 'utf8').length + ';');
     hash.update(fs.readFileSync(p));
@@ -71,7 +71,7 @@ function syncDataVersion() {
   return expected;
 }
 
-async function submitAnimaJob(payload) {
+async function submitAnimaJob(payload: any) {
   const res = await fetch(`${COMMS_BASE}/api/anima/jobs`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -85,7 +85,7 @@ async function submitAnimaJob(payload) {
   return data.job.id;
 }
 
-async function pollJob(jobId, timeoutMs = 120000) {
+async function pollJob(jobId: any, timeoutMs: any = 120000) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     const res = await fetch(`${COMMS_BASE}/api/anima/jobs/${jobId}`);
@@ -101,12 +101,12 @@ async function pollJob(jobId, timeoutMs = 120000) {
         throw new Error(`Job failed: ${data.job.error || 'unknown error'}`);
       }
     }
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise<any>((r: any) => setTimeout(r, 1200));
   }
   throw new Error(`Polling timeout for job ${jobId}`);
 }
 
-async function renderImage({ prompt, negative, width = 832, height = 1216, steps = 28, cfg = 4.5, seed }) {
+async function renderImage({ prompt, negative, width = 832, height = 1216, steps = 28, cfg = 4.5, seed }: any) {
   const jobId = await submitAnimaJob({
     modelId: 'anima-miaomiao-v1.2',
     prompt,
@@ -122,12 +122,12 @@ async function renderImage({ prompt, negative, width = 832, height = 1216, steps
   return await pollJob(jobId);
 }
 
-function convertShowcase(srcPng, dstBig, dstThumb) {
+function convertShowcase(srcPng: any, dstBig: any, dstThumb: any) {
   const cmd = `python scripts/maintenance/convert-showcase-image.py "${srcPng}" "${dstBig}" "${dstThumb}"`;
   execSync(cmd, { cwd: ROOT, stdio: 'pipe' });
 }
 
-async function runPipeline(charId, opts = {}) {
+async function runPipeline(charId: any, opts: any = {}) {
   console.log(`\n========================================================`);
   console.log(`🚀 启动角色一站式接入流水线: ${charId}`);
   console.log(`========================================================\n`);
@@ -141,7 +141,7 @@ async function runPipeline(charId, opts = {}) {
     throw new Error(`角色未在 popular-characters.json 中找到: ${charId}`);
   }
 
-  const charBlueprints = blueprints.filter(b => b.characterId === charId);
+  const charBlueprints = blueprints.filter((b: any) => b.characterId === charId);
   console.log(`[1/6 契约检查] 角色: ${character.displayName} (${character.id})，服装: ${character.outfits.length} 套，专属蓝图: ${charBlueprints.length} 个`);
 
   // Step 2: 规范与 TS 契约同步
@@ -164,10 +164,10 @@ async function runPipeline(charId, opts = {}) {
   if (!opts.skipRender) {
     console.log(`\n[4/6 参考资产库渲染] 检查 4 视角资产...`);
     const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
-    const stdChar = standards.characters.find(c => c.id === charId);
+    const stdChar = standards.characters.find((c: any) => c.id === charId);
     const refBaseDir = path.join(refRoot, charId);
 
-    const PERSPECTIVE_CONFIGS = {
+    const PERSPECTIVE_CONFIGS: any = {
       ref_01_face_closeup: {
         suffix: "face and eyes extreme close-up portrait, 85mm f/1.4 shallow depth of field, soft bokeh, expressive anime eyes, looking at viewer, subtle gentle expression, soft cinematic studio key light, highly detailed facial features and skin texture",
         negSuffix: "full body, upper body, hands, extra limbs, blurry face, bad eyes, lowres",
@@ -264,7 +264,7 @@ async function runPipeline(charId, opts = {}) {
       console.log(`  [渲染样张 ${i + 1}/${charBlueprints.length}] ${bp.title} (adult: ${Boolean(bp.adult)})...`);
       const plan = popular.buildPopularPromptPlan({
         character,
-        outfit: character.outfits.find(o => o.id === bp.outfitId) || character.outfits[0],
+        outfit: character.outfits.find((o: any) => o.id === bp.outfitId) || character.outfits[0],
         blueprint: bp,
         engine: 'anima',
         adultEnabled: true,
@@ -323,13 +323,13 @@ async function runPipeline(charId, opts = {}) {
         }
       };
 
-      const existingIdx = manifest.entries.findIndex(e => e.id === entryId);
+      const existingIdx = manifest.entries.findIndex((e: any) => e.id === entryId);
       if (existingIdx >= 0) manifest.entries[existingIdx] = newEntry;
       else manifest.entries.push(newEntry);
     }
 
     manifest.counts = manifest.counts || {};
-    manifest.counts.popular = manifest.entries.filter(e => e.type === 'popular').length;
+    manifest.counts.popular = manifest.entries.filter((e: any) => e.type === 'popular').length;
     manifest.entryCount = manifest.entries.length;
     fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
   }
@@ -380,7 +380,7 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(err => {
+  main().catch((err: any) => {
     console.error('Pipeline failed:', err);
     process.exit(1);
   });

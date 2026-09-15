@@ -3,13 +3,13 @@
 // + 显式评级 + LoRA 质量控制词 + Anima 画师词 + 氛围 + 三质量词。
 const promptContract: typeof import('./quality-prompt-contract.js') = require('./quality-prompt-contract.js');
 
-const CHAR_PROMPT = {
+const CHAR_PROMPT: any = {
   nene: ['ayachi_nene', '1girl', 'solo', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'pink_hair_ribbons'],
   natsume: ['shiki_natsume', '1girl', 'solo', 'very_long_black_hair', 'golden_yellow_eyes', 'two_red_hairclips', 'mole_under_eye', 'no_hair_ribbon'],
 };
 
 // canonical 服装词映射：tag 匹配 → LoRA canonical 词（仅存在于 contract 的词）。
-const CANONICAL_OUTFIT = {
+const CANONICAL_OUTFIT: any = {
   nene: [
     [/school_uniform|sailor/, 'nene_school_uniform'],
     [/sailor_uniform/, 'nene_sailor_uniform'],
@@ -30,7 +30,7 @@ const CANONICAL_OUTFIT = {
   ],
 };
 
-const OUTFIT_DETAILS = {
+const OUTFIT_DETAILS: any = {
   nene_school_uniform: ['blazer', 'yellow_bowtie', 'plaid_skirt', 'black_thighhighs'],
   nene_sailor_uniform: ['grey_sailor_collar', 'black_shirt', 'sailor_shirt'],
   nene_red_cardigan_uniform: ['cardigan', 'white_shirt', 'pleated_skirt', 'black_skirt'],
@@ -48,7 +48,7 @@ const OUTFIT_DETAILS = {
 };
 
 // tag 类别权重：越靠前越核心（0 = 必保留）
-const PRIORITY = {
+const PRIORITY: any = {
   hair_ribbon: 0, ahoge: 0, mole_under_eye: 0, two_red_hairclips: 0, no_hair_ribbon: 0,
   looking_at_viewer: 1, eye_contact: 1, smile: 1, gentle_smile: 1, shy_smile: 1,
   blush: 2, shy: 2, heavy_blush: 2, panicked: 2, open_mouth: 2, happy: 2, smile_face: 2,
@@ -64,7 +64,7 @@ const PRIORITY = {
   medium_shot: 7, upper_body: 7, close_up: 7, full_body: 7, three_quarter_view: 7,
 };
 
-const AMBIENCE = {
+const AMBIENCE: any = {
   window: 'window_light, soft_lighting',
   golden: 'golden_hour, rim_light',
   back: 'backlit, rim_light',
@@ -95,7 +95,7 @@ function fallbackLighting(scene: { timeOfDay: unknown; time: unknown; tags: unkn
 }
 
 function structuredSceneTokens(scene: { timeOfDay: unknown; location: unknown; weather: unknown; }) {
-  const locationMap = {
+  const locationMap: any = {
     教室: 'classroom',
     天台: 'rooftop',
     卧室: 'bedroom',
@@ -105,7 +105,7 @@ function structuredSceneTokens(scene: { timeOfDay: unknown; location: unknown; w
     海边: 'beach',
     室内场景: 'indoor',
   };
-  const weatherMap = {
+  const weatherMap: any = {
     晴: 'clear_sky',
     雨: 'rain',
     雪: 'snow',
@@ -122,7 +122,7 @@ function sourceTokens(scene: { prompt: unknown; tags: unknown; }) {
   const prompt = String(scene.prompt || '')
     .replace(/<lora:[^>]+>/gi, '')
     .split(',')
-    .map(token => token.trim())
+    .map((token: any) => token.trim())
     .filter(Boolean);
   return [
     ...structuredSceneTokens(scene),
@@ -138,7 +138,7 @@ function canonicalFor(characterId: string|number, tags: unknown[]) {
   return '';
 }
 
-const CATEGORY_LIMITS = Object.freeze({
+const CATEGORY_LIMITS: any = Object.freeze({
   emotion: 1,
   action: 1,
   place: 2,
@@ -159,8 +159,8 @@ function buildShortPrompt(scene: { lighting: unknown; time: unknown; timeOfDay: 
   const tags = sourceTokens(scene);
   const canonical = canonicalFor(characterId, tags);
   const skip = new Set(anchors.map(normalizeKey));
-  const sceneTokens = [];
-  const structuralSupport = [];
+  const sceneTokens: any[] = [];
+  const structuralSupport: any[] = [];
   for (const tag of tags) {
     const key = normalizeKey(tag);
     if (skip.has(key)) continue;
@@ -172,12 +172,12 @@ function buildShortPrompt(scene: { lighting: unknown; time: unknown; timeOfDay: 
     }
     sceneTokens.push({ key, tag, priority: PRIORITY[key] !== undefined ? PRIORITY[key] : 5 });
   }
-  sceneTokens.sort((a, b) => a.priority - b.priority);
-  const lighting = pickLighting([
+  sceneTokens.sort((a: any, b: any) => a.priority - b.priority);
+  const lighting: any = pickLighting([
     scene.lighting,
     scene.time,
     scene.timeOfDay,
-    ...tags.filter(tag => /light|lighting|moon|sun|dusk|dawn|night|candle|lantern|fire|光|灯|月|夕|夜/i.test(String(tag))),
+    ...tags.filter((tag: any) => /light|lighting|moon|sun|dusk|dawn|night|candle|lantern|fire|光|灯|月|夕|夜/i.test(String(tag))),
   ].filter(Boolean).join(' ')) || fallbackLighting(scene);
   const ambience = AMBIENCE[lighting] || '';
   const isAdult = String(scene.rating || '').toUpperCase() === 'R18' || scene.mature === true;
@@ -194,9 +194,9 @@ function buildShortPrompt(scene: { lighting: unknown; time: unknown; timeOfDay: 
     ...promptContract.QUALITY_TOKENS,
   ].filter(Boolean))];
   const sceneBudget = Math.max(0, MAX_TOKEN_COUNT - fixedTokens.length);
-  const picked = [];
+  const picked: any[] = [];
   const seen = new Set();
-  const counts = {};
+  const counts: Record<string, any> = {};
   let entityCount = 0;
   let actionEmotionCount = 0;
   // 类别配额：保证地点/天气/道具不被表情词挤掉（sc021 教训）。
@@ -218,7 +218,7 @@ function buildShortPrompt(scene: { lighting: unknown; time: unknown; timeOfDay: 
     if (isActionEmotion) actionEmotionCount += 1;
     picked.push(item.tag);
   }
-  const support = [];
+  const support: any[] = [];
   const occupied = new Set([...fixedTokens, ...picked].map(normalizeKey));
   for (const tag of structuralSupport) {
     if (fixedTokens.length + picked.length + support.length >= MIN_TOKEN_COUNT) break;

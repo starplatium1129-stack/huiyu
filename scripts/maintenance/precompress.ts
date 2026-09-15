@@ -29,7 +29,7 @@ const MIN_BYTES = 1024;
 
 function walk(dir: string): string[] {
   if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry: any) => {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) return walk(full);
     return [full];
@@ -112,7 +112,7 @@ function artifactMatchesSource(artifact: string) {
  * 只扫 TARGET_DIRS，不越界（审计 2026-09-05 P2-06）。
  */
 function listStaleArtifacts() {
-  const stale = [];
+  const stale: any[] = [];
   for (const dir of TARGET_DIRS) {
     for (const file of walk(path.join(ROOT, dir))) {
       if (!/\.(?:br|gz)$/i.test(file)) continue;
@@ -131,7 +131,7 @@ function main() {
   let rawTotal = 0;
   let brTotal = 0;
   let gzTotal = 0;
-  const missing = [];
+  const missing: any[] = [];
 
   if (!checkOnly) {
     const stale = listStaleArtifacts();
@@ -173,11 +173,11 @@ function main() {
     if (missing.length || stale.length) {
       if (missing.length) {
         console.error('预压产物缺失或内容陈旧（跑 npm run precompress 重建并清理孤儿）:');
-        missing.slice(0, 10).forEach((f) => console.error('  - ' + f));
+        missing.slice(0, 10).forEach((f: any) => console.error('  - ' + f));
       }
       if (stale.length) {
         console.error('孤儿/陈旧预压产物（源已删除或低于阈值，跑 npm run precompress 清理）:');
-        stale.slice(0, 10).forEach((f) => console.error('  - ' + path.relative(ROOT, f)));
+        stale.slice(0, 10).forEach((f: any) => console.error('  - ' + path.relative(ROOT, f)));
       }
       process.exit(1);
     }

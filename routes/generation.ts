@@ -1,4 +1,5 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
+import type { GatewayConfig } from '../server/config-types';
 'use strict';
 
 import { ParamsDictionary, Request } from 'express-serve-static-core';
@@ -23,7 +24,7 @@ let MAX_UPSTREAM_JSON_BYTES = 8 * 1024 * 1024;
 let WEB_JOB_TTL_MS = 2 * 60 * 60 * 1000;
 let CHECKPOINT = 'waiIllustriousSDXL_v170.safetensors';
 let OUTPUT_PREFIX = 'wai_app';
-let LORAS = Object.freeze({
+let LORAS: Record<string, { file: string; character: string; min: number; max: number }> = Object.freeze({
   L_NENE_V18_WD14: { file:'ayachi_nene_v18_wd14.safetensors', character:'nene', min:0.65, max:1 },
   L_NAT_V18_WD14: { file:'shiki_natsume_v18_wd14.safetensors', character:'natsume', min:0.65, max:1 }
 });
@@ -32,7 +33,7 @@ let WEBUI_UPSCALERS = new Set(['Auto', 'Remacri', 'Latent', 'Latent (nearest-exa
 // Comfy 本地真超分模型见 routes/superres.js（Remacri 优先，按优先级探测 upscale_models）。
 let COMFY_SUPERRES_FILES = superres.COMFY_SUPERRES_FILES;
 let SUPER_RES_UPSALERS = superres.SUPER_RES_UPSALERS;
-let SAMPLERS = Object.freeze({
+let SAMPLERS: Record<string, { sampler: string; scheduler: string }> = Object.freeze({
   'DPM++ 2M': { sampler:'dpmpp_2m', scheduler:'normal' },
   'DPM++ 2M Karras': { sampler:'dpmpp_2m', scheduler:'karras' },
   'Euler a': { sampler:'euler_ancestral', scheduler:'normal' },
@@ -46,7 +47,7 @@ let ALLOWED = new Set([
 
 // 成人门控常量与纯判定收口在 server/validation-core.js（2026-08-28 审计 P1-6，
 // 此前 4 处实现漂移），此处保留家族组装（本机直连全放行 + LoRA 推断路径）。
-function assertAdultAllowed(req, body: { character?: unknown; prompt?: unknown; loras?: Array<{ id?: unknown; }>; }|null|undefined) {
+function assertAdultAllowed(req: express.Request | null, body: any) {
   if (!validationCore.detectAdultIntent(body.prompt)) return;
   let hasLocalBypass = req && security.isDirectLocalRequest(req);
   if (hasLocalBypass) return;

@@ -4,21 +4,21 @@ const path = (require('node:path') as typeof import('node:path'));
 const root = path.resolve(__dirname, '../..');
 
 function documents(dir: string): string[] {
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry: any) => {
     const file = path.join(dir, entry.name);
     return entry.isDirectory() ? documents(file) : /\.(md|html)$/.test(entry.name) ? [file] : [];
   });
 }
 function check() {
   const files = [...documents(path.join(root, 'docs')), ...documents(path.join(root, 'plans')),
-    ...['README.md', 'README_zh.md', 'DESIGN.md', 'AGENTS.md', 'STARTUP.md'].map(file => path.join(root, file))];
+    ...['README.md', 'README_zh.md', 'DESIGN.md', 'AGENTS.md', 'STARTUP.md'].map((file: any) => path.join(root, file))];
   const errors: string[] = [];
-  const appPaths = new Set([...fs.readFileSync(path.join(root, 'src/router/index.ts'), 'utf8').matchAll(/path:\s*['"]([^'"]*)['"]/g)].map(match => '/' + match[1].replace(/^\//, '')));
+  const appPaths = new Set([...fs.readFileSync(path.join(root, 'src/router/index.ts'), 'utf8').matchAll(/path:\s*['"]([^'"]*)['"]/g)].map((match: any) => '/' + match[1].replace(/^\//, '')));
   let links = 0;
   for (const file of files) {
     const text = fs.readFileSync(file, 'utf8').replace(/```[\s\S]*?```/g, '').replace(/`[^`\n]+`/g, '');
-    const urls = [...text.matchAll(/\]\(([^\s)]+)(?:\s+"[^"]*")?\)/g)].map(match => match[1]);
-    urls.push(...[...text.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)].map(match => match[1]));
+    const urls = [...text.matchAll(/\]\(([^\s)]+)(?:\s+"[^"]*")?\)/g)].map((match: any) => match[1]);
+    urls.push(...[...text.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)].map((match: any) => match[1]));
     for (let url of urls) {
       if (/^(?:[\w+.-]+:|\/\/|#)/.test(url)) continue;
       url = url.replace(/^<|>$/g, '').split(/[?#]/)[0];

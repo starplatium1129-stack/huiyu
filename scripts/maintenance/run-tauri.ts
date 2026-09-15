@@ -30,7 +30,7 @@ type RunTauriOptions = {
   env?: NodeJS.ProcessEnv;
 };
 
-function tauriEnvironment(root = ROOT) {
+function tauriEnvironment(root: any = ROOT) {
   return desktopBuildEnvironment(root);
 }
 
@@ -50,7 +50,7 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
   // 2026-08-29 updater 落地：设置了签名私钥时忽略 --no-sign（package:tauri 默认带它），
   // 否则 build 不产出 .sig，updater 发布流程拿不到签名。
   if (process.env.TAURI_SIGNING_PRIVATE_KEY || process.env.TAURI_SIGNING_PRIVATE_KEY_PATH) {
-    args = args.filter((a) => a !== '--no-sign');
+    args = args.filter((a: any) => a !== '--no-sign');
   }
   const mode = args.shift();
   if (!mode || !['dev', 'build'].includes(mode)) {
@@ -85,9 +85,9 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
 }
 
 if (require.main === module) {
-  runTauri(process.argv.slice(2)).then((status) => {
+  runTauri(process.argv.slice(2)).then((status: any) => {
     process.exitCode = status;
-  }).catch((error) => {
+  }).catch((error: any) => {
     console.error(`[tauri] CLI failed: ${error.stack || error.message}`);
     process.exitCode = 1;
   });

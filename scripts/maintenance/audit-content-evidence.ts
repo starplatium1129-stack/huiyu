@@ -14,10 +14,10 @@ Sources and recipe files are read only when explicitly allowed. Default audits; 
 0=all selected evidence matches, 1=invalid evidence/bytes, 2=arguments, 3=pending/unknown/stale.
 File bytes, structure, decision bindings and publication evidence are separate; image quality and reviewer authenticity remain unverified.`;
 
-function parse(args) {
+function parse(args: any) {
   if (args.includes('--help') || args.includes('--plan')) return { help: true };
-  const opts = { root: path.resolve(__dirname, '../..'), sources: [] };
-  const names = { '--root': 'root', '--candidate-root': 'candidateRoot', '--manifest': 'manifest', '--source': 'sources',
+  const opts: any = { root: path.resolve(__dirname, '../..'), sources: [] };
+  const names: any = { '--root': 'root', '--candidate-root': 'candidateRoot', '--manifest': 'manifest', '--source': 'sources',
     '--recipe': 'recipe', '--decisions': 'decisions', '--publication': 'publication', '--published-root': 'publishedRoot', '--expect-manifest-sha256': 'expectManifestSha256' };
   const seen = new Set();
   for (let i = 0; i < args.length; i++) {
@@ -41,14 +41,14 @@ function parse(args) {
   return opts;
 }
 
-function main(args = process.argv.slice(2)) {
-  let opts;
+function main(args: any = process.argv.slice(2)) {
+  let opts: any;
   try { opts = parse(args); } catch (error) { console.log(JSON.stringify({ error: runtimeErrorMessage(error), exitCode: 2 })); return 2; }
   if (opts.help) { console.log(HELP); return 0; }
   const result = auditContentEvidence(opts);
   console.log(opts.json ? JSON.stringify(result, null, 2) : [
     `Candidate evidence: ${result.status}; structure=${result.structure.status}`,
-    ...result.items.map((item) => `${item.key}: source=${item.source.status}; payload=${item.payload.status}; file=${item.asset.status}; review=${item.review.status}; publication=${item.publication.status}`),
+    ...result.items.map((item: any) => `${item.key}: source=${item.source.status}; payload=${item.payload.status}; file=${item.asset.status}; review=${item.review.status}; publication=${item.publication.status}`),
     ...result.errors, ...result.unknown,
     'Image quality/reviewer authenticity: unverified. No publication performed.',
   ].join('\n'));

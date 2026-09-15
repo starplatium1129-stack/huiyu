@@ -94,25 +94,25 @@ function isReferenced(content: string, basename: string) {
 function main() {
   const asJson = process.argv.includes('--json');
   const scripts = fs.readdirSync(MAINT, { withFileTypes: true })
-    .filter(ent => ent.isFile() && /\.(?:[cm]?[jt]s|ps1|py)$/.test(ent.name) && !isGenerated(path.join(MAINT, ent.name)))
-    .map(ent => ent.name)
+    .filter((ent: any) => ent.isFile() && /\.(?:[cm]?[jt]s|ps1|py)$/.test(ent.name) && !isGenerated(path.join(MAINT, ent.name)))
+    .map((ent: any) => ent.name)
     .sort();
 
   const corpusFiles = collectCorpus();
   // 预读语料，缓存 {path: content}
-  const corpus = [];
+  const corpus: any[] = [];
   for (const f of corpusFiles) {
     // 跳过 maintenance/ 自身目录下的文件（它们互相引用算有效，但自引用不算）
     const c = readText(f);
     if (c != null) corpus.push({ path: f, content: c });
   }
 
-  const orphans = [];
-  const referenced = [];
+  const orphans: any[] = [];
+  const referenced: any[] = [];
   for (const name of scripts) {
     const self = path.join(MAINT, name);
     let found = false;
-    let refs = [];
+    let refs: any[] = [];
     // 2026-09-05 审计 P3：Node 的 require 支持 ./desktop-build-lock 这类无扩展名
     // 导入，仅按完整 basename 匹配会把真实引用误报为孤儿（desktop-build-lock.js、
     // runtime-generated-files.js 即此类误报）。补一条"无扩展名 stem"token 匹配：

@@ -16,14 +16,14 @@ const path: typeof import('path') = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const SHOWCASE_ROOT = path.resolve(ROOT, '..', 'AI', 'SceneShowcase');
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function readJson(file) {
+function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
@@ -41,11 +41,11 @@ if (!fs.existsSync(targetManifestFile)) throw new Error(`target has no manifest.
 const legacy = readJson(legacyManifestFile);
 const target = readJson(targetManifestFile);
 
-const legacyPopular = (legacy.entries || []).filter(e => isRecord(e) && e.type === 'popular');
-const targetPopularIds = new Set((target.entries || []).filter(e => isRecord(e) && e.type === 'popular').map(e => e.id));
+const legacyPopular = (legacy.entries || []).filter((e: any) => isRecord(e) && e.type === 'popular');
+const targetPopularIds = new Set((target.entries || []).filter((e: any) => isRecord(e) && e.type === 'popular').map((e: any) => e.id));
 
 // 旧条目中尚未出现在新版的 popular 条目（按 id 去重）
-const merged = legacyPopular.filter(e => !targetPopularIds.has(e.id));
+const merged = legacyPopular.filter((e: any) => !targetPopularIds.has(e.id));
 console.log(`legacy popular: ${legacyPopular.length} | already in target: ${legacyPopular.length - merged.length} | to merge: ${merged.length}`);
 
 if (apply) {
@@ -68,9 +68,9 @@ if (apply) {
 
   // 合并 manifest 条目并重算统计
   const entries = [...(target.entries || []), ...merged];
-  const typeCounts = { scene: 0, artist: 0, popular: 0, lora: 0 };
+  const typeCounts: any = { scene: 0, artist: 0, popular: 0, lora: 0 };
   for (const e of entries) if (isRecord(e) && typeCounts[e.type] !== undefined) typeCounts[e.type] += 1;
-  const counts = { All: 0, R15: 0, R18: 0 };
+  const counts: any = { All: 0, R15: 0, R18: 0 };
   for (const e of entries) {
     if (!isRecord(e)) continue;
     const rating = e.rating === 'R15' || e.rating === 'R18' ? e.rating : 'All';
@@ -87,6 +87,6 @@ if (apply) {
   console.log('final entries:', entries.length, '| typeCounts:', JSON.stringify(typeCounts));
 }
 
-function isRecord(v) {
+function isRecord(v: any) {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
 }

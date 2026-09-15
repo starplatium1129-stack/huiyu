@@ -37,28 +37,28 @@ const IMAGE_QUALITY = 94;
 const THUMB_BOX = '480x640';
 const THUMB_QUALITY = 85;
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function readJson(file) {
+function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, file);
 }
-function isRecord(value) {
+function isRecord(value: any) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
-function cleanMeta(value) {
-  return Object.fromEntries(Object.entries(value).filter(([, v]) => v !== undefined && v !== null && String(v) !== ''));
+function cleanMeta(value: any) {
+  return Object.fromEntries(Object.entries(value).filter(([, v]: any) => v !== undefined && v !== null && String(v) !== ''));
 }
 
 /** 只发布审核通过的候选（audit-results.json verdict pass 的最新 attempt）。 */
-function loadPassedRecords(from, auditPath) {
+function loadPassedRecords(from: any, auditPath: any) {
   const records = readJson(from);
   const audit = fs.existsSync(auditPath) ? readJson(auditPath) : {};
   const best = new Map();
@@ -67,12 +67,12 @@ function loadPassedRecords(from, auditPath) {
     const prev = best.get(r.key);
     if (!prev || r.attempt > prev.attempt) best.set(r.key, r);
   }
-  const passed = [];
+  const passed: any[] = [];
   for (const rec of best.values()) {
     const entry = audit[rec.recordId];
     if (entry && entry.ok && entry.verdict === 'pass') passed.push(rec);
   }
-  passed.sort((a, b) => a.characterId.localeCompare(b.characterId) || a.blueprintId.localeCompare(b.blueprintId));
+  passed.sort((a: any, b: any) => a.characterId.localeCompare(b.characterId) || a.blueprintId.localeCompare(b.blueprintId));
   return passed;
 }
 
@@ -80,13 +80,13 @@ function loadLoraVersions() {
   try {
     const loras = readJson(path.join(ROOT, 'data', 'loras.json'));
     const list = Array.isArray(loras) ? loras : (loras.data || []);
-    const versions = {};
+    const versions: Record<string, any> = {};
     for (const lora of list) if (lora && lora.id && lora.version !== undefined) versions[lora.id] = String(lora.version);
     return versions;
   } catch (error) { return {}; }
 }
 
-function popularEntry(record, audit, loraVersions, displayNameByChar) {
+function popularEntry(record: any, audit: any, loraVersions: any, displayNameByChar: any) {
   const subject = record.characterId;
   const blueprint = record.blueprintId;
   const id = `pc_${subject}_${blueprint}`;
@@ -128,17 +128,17 @@ function popularEntry(record, audit, loraVersions, displayNameByChar) {
   };
 }
 
-function buildManifest(sourceManifest, popularEntries, context) {
+function buildManifest(sourceManifest: any, popularEntries: any, context: any) {
   const sourceEntries = (sourceManifest.entries || [])
-    .filter(entry => isRecord(entry))
-    .map(entry => (entry.type ? entry : Object.assign({}, entry, { type: 'scene' })));
-  const incoming = new Set(popularEntries.map(entry => entry.id));
+    .filter((entry: any) => isRecord(entry))
+    .map((entry: any) => (entry.type ? entry : Object.assign({}, entry, { type: 'scene' })));
+  const incoming = new Set(popularEntries.map((entry: any) => entry.id));
   // 旧 pc_* 测试样张全部删除；artist/lora 保留；scene 保留。
-  const kept = sourceEntries.filter(entry => entry.type !== 'popular' && !incoming.has(entry.id));
+  const kept = sourceEntries.filter((entry: any) => entry.type !== 'popular' && !incoming.has(entry.id));
   const entries = [...kept, ...popularEntries];
-  const typeCounts = { scene: 0, artist: 0, popular: 0, lora: 0 };
+  const typeCounts: any = { scene: 0, artist: 0, popular: 0, lora: 0 };
   for (const entry of entries) if (typeCounts[entry.type] !== undefined) typeCounts[entry.type] += 1;
-  const counts = { All: 0, R15: 0, R18: 0 };
+  const counts: any = { All: 0, R15: 0, R18: 0 };
   for (const entry of entries) {
     const rating = entry.rating === 'R15' || entry.rating === 'R18' ? entry.rating : 'All';
     counts[rating] += 1;
@@ -156,7 +156,7 @@ function buildManifest(sourceManifest, popularEntries, context) {
   };
 }
 
-function resolveDirArg(showcaseRoot, value, label, mustExist) {
+function resolveDirArg(showcaseRoot: any, value: any, label: any, mustExist: any) {
   const raw = value || '';
   const explicitPath = path.isAbsolute(raw) || /^[a-zA-Z]:[\\/]/.test(raw);
   const candidate = explicitPath ? path.resolve(raw) : path.join(path.resolve(showcaseRoot), raw);
@@ -166,11 +166,11 @@ function resolveDirArg(showcaseRoot, value, label, mustExist) {
   }
   return path.resolve(candidate);
 }
-function isSameOrChild(child, parent) {
+function isSameOrChild(child: any, parent: any) {
   const rel = path.relative(parent, child);
   return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
 }
-function validateTarget(showcaseRoot, sourceDir, targetDir) {
+function validateTarget(showcaseRoot: any, sourceDir: any, targetDir: any) {
   const root = path.resolve(showcaseRoot);
   const source = path.resolve(sourceDir);
   const target = path.resolve(targetDir);
@@ -186,7 +186,7 @@ function validateTarget(showcaseRoot, sourceDir, targetDir) {
   if (isSameOrChild(root, target)) throw new Error(`absolute --target must not contain --source or the showcase root: ${target}`);
   return target;
 }
-function sourcePathFor(record, from) {
+function sourcePathFor(record: any, from: any) {
   const rel = record.image || '';
   if (!rel) throw new Error(`succeeded record has no image: ${record.recordId || record.key}`);
   const label = record.recordId || record.key;
@@ -200,7 +200,7 @@ function sourcePathFor(record, from) {
   }
   return resolved;
 }
-function convertImages(python, sourceFile, imageOut, thumbOut) {
+function convertImages(python: any, sourceFile: any, imageOut: any, thumbOut: any) {
   const result = spawnSync(python, [
     path.join(ROOT, 'scripts', 'maintenance', 'convert-showcase-image.py'),
     sourceFile, imageOut, thumbOut,
@@ -214,12 +214,12 @@ function convertImages(python, sourceFile, imageOut, thumbOut) {
   }
 }
 
-function verifyTarget(tempDir, manifest) {
+function verifyTarget(tempDir: any, manifest: any) {
   const { parseShowcaseManifest }: typeof import('../../src/utils/showcaseManifest.ts') = require('../../src/utils/showcaseManifest.ts');
   const { isShowcaseAssetPath }: typeof import('../../server/showcase-assets.js') = require('../../server/showcase-assets.js');
   const parsed = parseShowcaseManifest(manifest);
   if (parsed.entries.length !== manifest.entries.length) throw new Error(`manifest lost entries: ${parsed.entries.length} != ${manifest.entries.length}`);
-  const ids = new Set(parsed.entries.map(entry => entry.id));
+  const ids = new Set(parsed.entries.map((entry: any) => entry.id));
   if (ids.size !== parsed.entries.length) throw new Error('manifest ids are not unique');
   if (parsed.sceneCount !== manifest.sceneCount) throw new Error('sceneCount mismatch');
   if (parsed.entryCount !== manifest.entryCount) throw new Error('entryCount mismatch');
@@ -234,7 +234,7 @@ function verifyTarget(tempDir, manifest) {
   }
 }
 
-function switchTarget(tempDir, targetDir, force, renameSync = fs.renameSync, rmSync = fs.rmSync) {
+function switchTarget(tempDir: any, targetDir: any, force: any, renameSync: any = fs.renameSync, rmSync: any = fs.rmSync) {
   const backupDir = path.join(path.dirname(targetDir), `.${path.basename(targetDir)}.backup-${process.pid}`);
   const targetExists = fs.existsSync(targetDir);
   if (targetExists) {
@@ -258,10 +258,10 @@ function switchTarget(tempDir, targetDir, force, renameSync = fs.renameSync, rmS
 
 /** 每角色立绘：数据顺序第一张「通过审核 + 竖构图（高>宽）」的 SFW 候选；
  *  无竖图 SFW 时回退竖图任意，再回退数据顺序第一张。 */
-function pickPortraits(passed, blueprints) {
+function pickPortraits(passed: any, blueprints: any) {
   const order = new Map();
   const bpList = Array.isArray(blueprints) ? blueprints : (blueprints.blueprints || []);
-  bpList.forEach((bp, index) => order.set(bp.id, index));
+  bpList.forEach((bp: any, index: any) => order.set(bp.id, index));
   const byCharacter = new Map();
   for (const rec of passed) {
     if (!byCharacter.has(rec.characterId)) byCharacter.set(rec.characterId, []);
@@ -269,10 +269,10 @@ function pickPortraits(passed, blueprints) {
   }
   const portraits = new Map();
   for (const [characterId, list] of byCharacter) {
-    const sorter = (a, b) => (order.get(a.blueprintId) ?? 999) - (order.get(b.blueprintId) ?? 999);
+    const sorter = (a: any, b: any) => (order.get(a.blueprintId) ?? 999) - (order.get(b.blueprintId) ?? 999);
     const sorted = list.sort(sorter);
-    const vertical = (r) => Number(r.width) > 0 && Number(r.height) > Number(r.width);
-    const sfwVertical = sorted.filter(r => !r.adult && vertical(r));
+    const vertical = (r: any) => Number(r.width) > 0 && Number(r.height) > Number(r.width);
+    const sfwVertical = sorted.filter((r: any) => !r.adult && vertical(r));
     const anyVertical = sorted.filter(vertical);
     const picked = (sfwVertical.length ? sfwVertical : anyVertical.length ? anyVertical : sorted)[0];
     portraits.set(characterId, picked);
@@ -299,12 +299,12 @@ async function main() {
   const portraits = pickPortraits(passed, blueprints);
   const loraVersions = loadLoraVersions();
   const popularData = readJson(path.join(ROOT, 'data', 'popular-characters.json'));
-  const displayNameByChar = {};
+  const displayNameByChar: Record<string, any> = {};
   for (const character of (popularData.characters || [])) {
     displayNameByChar[character.id] = character.displayName || character.id;
   }
   const audit = readJson(auditPath);
-  const entries = passed.map(record => popularEntry(record, audit, loraVersions, displayNameByChar));
+  const entries = passed.map((record: any) => popularEntry(record, audit, loraVersions, displayNameByChar));
 
   const sourceManifest = readJson(path.join(sourceDir, 'manifest.json'));
   const manifest = buildManifest(sourceManifest, entries, {
@@ -317,7 +317,7 @@ async function main() {
     sceneCount: manifest.sceneCount, entryCount: manifest.entryCount,
     typeCounts: manifest.typeCounts, counts: manifest.counts,
     popularEntries: entries.length,
-    portraits: [...portraits.entries()].map(([c, r]) => `${c} -> ${r.blueprintId}${r.adult ? ' (R18)' : ''}`),
+    portraits: [...portraits.entries()].map(([c, r]: any) => `${c} -> ${r.blueprintId}${r.adult ? ' (R18)' : ''}`),
   };
   if (!apply) {
     console.log('[dry-run] ' + JSON.stringify(summary, null, 2));
@@ -337,7 +337,7 @@ async function main() {
       }
     }
     for (const record of passed) {
-      const entry = entries.find(e => e.provenance && e.provenance.recordId === record.recordId);
+      const entry = entries.find((e: any) => e.provenance && e.provenance.recordId === record.recordId);
       if (!entry) throw new Error(`missing entry for ${record.recordId}`);
       convertImages(
         python,
@@ -374,7 +374,7 @@ export = {
 };
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

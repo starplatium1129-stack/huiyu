@@ -15,7 +15,7 @@ var resolveContentRoot = (require('../lib/content-contract-root') as typeof impo
  * 缺文件按缺失报错，不回退读取生产数据。校验规则代码（popularContent /
  * kreaStyleRecipes 等 TS 模块）仍按代码仓库 require，与该根无关。
  */
-var ROOT = resolveContentRoot();
+var ROOT = resolveContentRoot(undefined);
 
 /**
  * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存。
@@ -55,10 +55,10 @@ function readJson(relative: string) {
 }
 
 function validateContent(data: { characters?: unknown; loras?: unknown; scenes?: unknown; }, fileExists: { (relative: unknown): boolean; (arg0: unknown): unknown; }) {
-  var errors = [];
-  var characters = data.characters;
-  var loras = data.loras;
-  var scenes = data.scenes;
+  var errors: any[] = [];
+  var characters: any = data.characters;
+  var loras: any = data.loras;
+  var scenes: any = data.scenes;
   fileExists = fileExists || function () { return true; };
   if (!Array.isArray(characters) || !characters.length) errors.push('characters.json must contain at least one character');
   if (!Array.isArray(loras) || !loras.length) errors.push('loras.json must contain at least one LoRA');
@@ -73,7 +73,7 @@ function validateContent(data: { characters?: unknown; loras?: unknown; scenes?:
     if (!/^[a-z][a-z0-9_-]*$/.test(character.id || '')) errors.push(label + '.id must be a stable lowercase key');
     if (characterIds.has(character.id)) errors.push(label + '.id is duplicated: ' + character.id);
     characterIds.add(character.id);
-    ['name', 'source', 'speech'].forEach(function (key) {
+    ['name', 'source', 'speech'].forEach(function (key: any) {
       if (typeof character[key] !== 'string' || !character[key].trim()) errors.push(label + '.' + key + ' is required');
     });
     if (!character.portrait || typeof character.portrait.image !== 'string') errors.push(label + '.portrait.image is required');
@@ -91,7 +91,7 @@ function validateContent(data: { characters?: unknown; loras?: unknown; scenes?:
   var loraIds = new Set();
   var loraNames = new Set();
   var sceneIds = new Set(scenes.map(function (scene: { id: unknown; }) { return scene && scene.id; }).filter(Boolean));
-  loras.forEach(function (lora: { id: unknown; name: unknown; strength: {}; compatible_models: string|unknown[]; test_scene: unknown; }, index: string) {
+  loras.forEach(function (lora: { id: unknown; name: unknown; strength: Record<string, any>; compatible_models: string|unknown[]; test_scene: unknown; }, index: string) {
     var label = 'loras[' + index + ']';
     if (!lora || typeof lora !== 'object') { errors.push(label + ' must be an object'); return; }
     if (!lora.id || loraIds.has(lora.id)) errors.push(label + '.id is missing or duplicated');
@@ -107,7 +107,7 @@ function validateContent(data: { characters?: unknown; loras?: unknown; scenes?:
     });
   });
 
-  characterLoras.forEach(function (name) {
+  characterLoras.forEach(function (name: any) {
     if (!loraNames.has(name)) errors.push('character references unknown LoRA: ' + name);
   });
   scenes.forEach(function (scene: { char: unknown; character: unknown; }, index: string) {
@@ -124,8 +124,8 @@ function validateSceneShards(data: { scenes?: unknown; }) {
   var errors: string[] = [];
   var scenes = data.scenes;
   if (!Array.isArray(scenes)) return errors;
-  var byId = new Map(scenes.map(function (scene) { return [scene.id, scene]; }));
-  var shards = ['nene', 'natsume', 'shared'].map(function (char) {
+  var byId = new Map(scenes.map(function (scene: any) { return [scene.id, scene]; }));
+  var shards = ['nene', 'natsume', 'shared'].map(function (char: any) {
     var file = 'scenes-' + char + '.json';
     try {
       var items = readJson('data/' + file);
@@ -137,8 +137,8 @@ function validateSceneShards(data: { scenes?: unknown; }) {
     }
   });
   var seen = new Set();
-  shards.forEach(function (shard) {
-    shard.items.forEach(function (scene) {
+  shards.forEach(function (shard: any) {
+    shard.items.forEach(function (scene: any) {
       if (!scene || !scene.id) { errors.push(shard.file + ' contains an item without id'); return; }
       if (seen.has(scene.id)) { errors.push(scene.id + ' appears in multiple browser shards'); return; }
       seen.add(scene.id);
@@ -171,7 +171,7 @@ function validateSceneShards(data: { scenes?: unknown; }) {
           errors.push('scenes-core.json[' + position + '] does not match index tier id ' + id);
         }
       });
-      if (coreFile.some(function (scene) { return !byId.has(scene.id); })) {
+      if (coreFile.some(function (scene: any) { return !byId.has(scene.id); })) {
         errors.push('scenes-core.json references scenes outside scenes.json');
       }
     }
@@ -184,33 +184,33 @@ function validateSceneShards(data: { scenes?: unknown; }) {
 }
 
 function validatePopularContent() {
-  var errors = [];
+  var errors: any[] = [];
   try {
     var popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
     var recipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
     var characters = popular.parsePopularCharacters(readJson('data/popular-characters.json'));
     var blueprints = popular.parseSceneBlueprints(readJson('data/scene-blueprints.json'));
     if (characters.length < 1) errors.push('popular-characters.json must contain at least one character');
-    characters.forEach(function (character) {
-      var defaults = character.outfits.filter(function (outfit) { return outfit.default; });
+    characters.forEach(function (character: any) {
+      var defaults = character.outfits.filter(function (outfit: any) { return outfit.default; });
       if (defaults.length !== 1) errors.push(character.id + ' must have exactly one default outfit');
       // 全字段污染扫描：identityProse/aliases/exactPrefixes/outfit prose+tokens 都覆盖。
-      popular.scanCharacterPollution(character).forEach(function (leak) {
+      popular.scanCharacterPollution(character).forEach(function (leak: any) {
         errors.push('pollution: ' + leak);
       });
     });
     if (blueprints.length < 20) errors.push('scene-blueprints.json must contain at least 20 blueprints');
-    var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
+    var adultBlueprints = blueprints.filter(function (blueprint: any) { return blueprint.adult; });
     if (adultBlueprints.length < 1) errors.push('scene-blueprints.json should keep at least one adult-only blueprint gated by adultEligibility');
-    var nonAdult = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
-    nonAdult.forEach(function (character) {
-      adultBlueprints.forEach(function (blueprint) {
+    var nonAdult = characters.filter(function (character: any) { return character.adultEligibility !== 'adult'; });
+    nonAdult.forEach(function (character: any) {
+      adultBlueprints.forEach(function (blueprint: any) {
         if (popular.blueprintEligible(blueprint, character, { adultEnabled: true })) {
           errors.push(character.id + ' must never reach adult blueprint ' + blueprint.id + ' (fail closed)');
         }
       });
     });
-    (blueprints || []).forEach(function (blueprint) {
+    (blueprints || []).forEach(function (blueprint: any) {
       var text = JSON.stringify(blueprint);
       if (popular.scanStudioTokenLeaks(text).length) {
         errors.push('blueprint ' + blueprint.id + ' must not reference nene/natsume tokens');
@@ -220,7 +220,7 @@ function validatePopularContent() {
       }
       // kreaStyleHint / animaStyleHint：命中配方时，成人配方只允许挂在成人蓝图上
       // （成人蓝图对非 adult 角色 fail closed，hint 随蓝图一起被拦下）。
-      ['kreaStyleHint', 'animaStyleHint'].forEach(function (key) {
+      ['kreaStyleHint', 'animaStyleHint'].forEach(function (key: any) {
         var hint = blueprint[key];
         if (typeof hint !== 'string' || !hint.trim()) return;
         var recipe = recipes.findStyleRecipe(recipes.KREA_STYLE_RECIPES, hint);
@@ -232,18 +232,18 @@ function validatePopularContent() {
     // 配方本体契约：至少 8 个通用配方 + 独立显式的成人配方；成人配方只对 adult
     // 角色 + 成熟内容开关同时放行（unknown/underage 永远不可达）。
     var allRecipes = recipes.KREA_STYLE_RECIPES;
-    var common = allRecipes.filter(function (recipe) { return !recipe.adult; });
-    var adultRecipes = allRecipes.filter(function (recipe) { return recipe.adult; });
+    var common = allRecipes.filter(function (recipe: any) { return !recipe.adult; });
+    var adultRecipes = allRecipes.filter(function (recipe: any) { return recipe.adult; });
     if (common.length < 8) errors.push('kreaStyleRecipes must ship at least 8 common recipes, got ' + common.length);
     if (adultRecipes.length < 1) errors.push('kreaStyleRecipes must ship explicit adult-only recipes');
-    allRecipes.forEach(function (recipe) {
+    allRecipes.forEach(function (recipe: any) {
       if (!recipe.lead || !recipe.lead.trim()) errors.push('kreaStyleRecipes.' + recipe.id + ' must have a lead phrase');
       if (/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(recipe.lead + ' ' + (recipe.medium || ''))) {
         errors.push('kreaStyleRecipes.' + recipe.id + ' must not reference studio LoRA tokens');
       }
     });
-    nonAdult.forEach(function (character) {
-      adultRecipes.forEach(function (recipe) {
+    nonAdult.forEach(function (character: any) {
+      adultRecipes.forEach(function (recipe: any) {
         if (recipes.recipeEligible(recipe, character, { adultEnabled: true })) {
           errors.push(character.id + ' must never reach adult style recipe ' + recipe.id + ' (fail closed)');
         }
@@ -272,7 +272,7 @@ function checkPrecompressArtifacts() {
   var dataDir = path.join(ROOT, 'data');
   if (!fs.existsSync(dataDir)) return errors;
   function walk(dir: PathLike) {
-    fs.readdirSync(dir, { withFileTypes: true }).forEach(function (entry) {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(function (entry: any) {
       var full = path.join(dir, entry.name);
       if (entry.isDirectory()) { walk(full); return; }
       var packed = /^(.*)\.(br|gz)$/.exec(entry.name);
@@ -320,7 +320,7 @@ function checkReferenceViewUrls() {
   // 当 AICS_DATA_ROOT 命中时必须把它对齐到 ROOT，避免两套根各查各的。
   var result = (require('./check-ref-urls') as typeof import('./check-ref-urls')).auditReferenceView(view, ROOT,
     Object.assign({}, process.env, { AICS_APP_ROOT: ROOT }));
-  var errors = result.errors.map(function (error) { return 'character-reference-view: ' + error; });
+  var errors = result.errors.map(function (error: any) { return 'character-reference-view: ' + error; });
   if (result.missing) errors.push('参考图缺失 ' + result.missing + '/' + result.total
     + '；素材根目录: ' + (result.refRoot || '(未配置)') + '。先确认素材路径与同步，不自动改写索引。');
   return errors;
@@ -346,9 +346,9 @@ function checkSceneRatingInterlock(data: { scenes?: unknown; }) {
 
 function main() {
   // 核心数据逐文件装载：缺文件/坏 JSON 输出定位到具体路径，不允许异常后继续报告成功。
-  var data = {};
+  var data: Record<string, any> = {};
   var loadErrors: string[] = [];
-  [['characters', 'data/characters.json'], ['loras', 'data/loras.json'], ['scenes', 'data/scenes.json']].forEach(function (entry) {
+  [['characters', 'data/characters.json'], ['loras', 'data/loras.json'], ['scenes', 'data/scenes.json']].forEach(function (entry: any) {
     try {
       data[entry[0]] = readJson(entry[1]);
     } catch (error) {
@@ -372,7 +372,7 @@ function main() {
   errors = errors.concat(checkReferenceViewUrls());
   errors = errors.concat(checkDataVersion());
   if (errors.length) {
-    console.error(errors.map(function (error) { return '  - ' + error; }).join('\n'));
+    console.error(errors.map(function (error: any) { return '  - ' + error; }).join('\n'));
     process.exitCode = 1;
     return;
   }

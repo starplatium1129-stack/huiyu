@@ -14,7 +14,7 @@ async function main() {
 
   const state = await page.evaluate(() => {
     const host = document.querySelector('#live2dHost')
-    const stage = document.querySelector('.portrait-stage')
+    const stage: any = document.querySelector('.portrait-stage')
     const r = stage.getBoundingClientRect()
     return {
       backend: host ? host.dataset.backend : null,
@@ -37,4 +37,4 @@ async function main() {
   await browser.close()
 }
 
-main().catch((e) => { console.error('ERR:', e); process.exit(1) })
+main().catch((e: any) => { console.error('ERR:', e); process.exit(1) })

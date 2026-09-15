@@ -29,15 +29,15 @@ const DEFAULT_DIR = path.join(
 );
 const DEFAULT_MANIFEST = path.join(DEFAULT_DIR, 'generation-manifest.json');
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function splitList(value) {
-  return String(value || '').split(',').map(item => item.trim()).filter(Boolean);
+function splitList(value: any) {
+  return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean);
 }
-function runInspect(imageFile, timeoutMs, prompt) {
-  return new Promise(resolve => {
+function runInspect(imageFile: any, timeoutMs: any, prompt: any) {
+  return new Promise<any>((resolve: any) => {
     const args = [path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js'), imageFile, '-t', 'audit', '--json'];
     if (prompt) args.push('-p', prompt);
     const child = spawn(
@@ -47,17 +47,17 @@ function runInspect(imageFile, timeoutMs, prompt) {
     );
     let stdout = '';
     let stderr = '';
-    child.stdout.on('data', chunk => { stdout += chunk; });
-    child.stderr.on('data', chunk => { stderr += chunk; });
+    child.stdout.on('data', (chunk: any) => { stdout += chunk; });
+    child.stderr.on('data', (chunk: any) => { stderr += chunk; });
     const timer = setTimeout(() => {
       child.kill();
       resolve({ file: imageFile, ok: false, error: 'inspect timeout' });
     }, timeoutMs);
-    child.on('error', error => {
+    child.on('error', (error: any) => {
       clearTimeout(timer);
       resolve({ file: imageFile, ok: false, error: error.message });
     });
-    child.on('close', code => {
+    child.on('close', (code: any) => {
       clearTimeout(timer);
       try {
         const data = JSON.parse(stdout);
@@ -79,7 +79,7 @@ async function main() {
   const auditPrompt = argument('--prompt', '');
 
   const records = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  let selected = records.filter(record => record.status === 'succeeded');
+  let selected = records.filter((record: any) => record.status === 'succeeded');
   if (latestOnly) {
     const best = new Map();
     for (const record of selected) {
@@ -88,7 +88,7 @@ async function main() {
     }
     selected = [...best.values()];
   }
-  if (ids.length) selected = selected.filter(record => ids.includes(record.sceneId));
+  if (ids.length) selected = selected.filter((record: any) => ids.includes(record.sceneId));
 
   const outputPath = path.join(dir, 'audit-results.json');
   const existing = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, 'utf8')) : {};
@@ -125,24 +125,24 @@ async function main() {
 }
 
 /** 轻量归类：硬伤关键词判 fail；其余 pass（复核由人终审）。 */
-function classify(result) {
+function classify(result: any) {
   if (!result || !result.content) return 'unknown';
   const text = String(result.content);
   if (text.includes('不通过')) return 'fail';
   if (text.includes('需复核') || text.includes('需注意')) return 'review';
   return 'pass';
 }
-function summarize(result) {
+function summarize(result: any) {
   if (!result || !result.content) return '';
   const text = String(result.content);
-  const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
-  const conclusion = lines.find(line => line.includes('结论')) || '';
-  const issues = lines.filter(line => /^\d+[\.、]/.test(line) || line.startsWith('- ')).slice(0, 6);
+  const lines = text.split('\n').map((line: any) => line.trim()).filter(Boolean);
+  const conclusion = lines.find((line: any) => line.includes('结论')) || '';
+  const issues = lines.filter((line: any) => /^\d+[\.、]/.test(line) || line.startsWith('- ')).slice(0, 6);
   return [conclusion, ...issues].join('\n');
 }
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

@@ -16,10 +16,10 @@ function parse(args: string|string[]|[unknown,...unknown[]], env: { AICS_DATA_RO
     full: ['root', 'output', 'source', 'target', 'gateway', 'ids', 'keys', 'concurrency', 'review', 'decisions', 'out', 'dry-run', 'retry-unknown'],
   }[action];
   const flags = ['apply', 'dry-run', 'retry-unknown'];
-  const options = { action };
+  const options: any = { action };
   for (let i = 0; i < rest.length; i++) {
-    const match = /^--([a-z-]+)(?:=(.*))?$/.exec(rest[i]);
-    const name = match?.[1];
+    const match: any = /^--([a-z-]+)(?:=(.*))?$/.exec(rest[i]);
+    const name: any = match?.[1];
     if (!allowed.includes(name) || Object.hasOwn(options, name)) throw new Error('Invalid or duplicate option: ' + rest[i]);
     if (flags.includes(name)) {
       if (match[2] !== undefined) throw new Error('Flag does not take a value: --' + name);
@@ -47,15 +47,15 @@ function inspectedSummary(inspection: { schemaVersion?: number; kind: unknown; r
 function reviewCandidates(options: { action: unknown; }|{ help: boolean; }, inspection: { schemaVersion?: number; kind?: string; runId?: unknown; manifestSha256?: string; sourceRoot?: string; items?: { key: unknown; recordId: unknown; inputVersion: unknown; recordSha256: string; sha256: unknown; image: unknown; intendedReferencePath: unknown; integrity: string; reason: string; review: string; }[]; records?: unknown[]; directory: unknown; sourceFile?: string; review?: string; }) {
   const decisionsFile = path.resolve(options.decisions);
   if (!R.within(inspection.directory, decisionsFile)) throw new Error('Keep the explicit decisions file in the candidate directory');
-  const input = R.bytes(decisionsFile);
+  const input: any = R.bytes(decisionsFile);
   const review = R.collectReview(inspection, JSON.parse(input), { file: path.basename(decisionsFile), sha256: hash(input) });
   const out = R.saveReview(inspection, options.out || path.join(inspection.directory, 'manual-review.json'), review);
   return { out, review };
 }
 
-async function main(args = process.argv.slice(2), deps = {}) {
+async function main(args: any = process.argv.slice(2), deps: any = {}) {
   const env = deps.env || process.env;
-  const options = parse(args, env);
+  const options: any = parse(args, env);
   if (options.help) {
     console.log('reference-candidate-workflow.js inspect --from <reference-generation-manifest.json> [--root <project>]\n'
       + 'review --from <manifest> --decisions <candidate/decisions.json> --out <candidate/manual-review.json>\n'
@@ -93,7 +93,7 @@ async function main(args = process.argv.slice(2), deps = {}) {
   }
   const inspection = R.inspectCandidates(options);
   if (options.action === 'inspect') {
-    const result = { ...inspectedSummary(inspection), exitCode: inspection.items.every(item => item.integrity === 'pass') ? 0 : 1 };
+    const result = { ...inspectedSummary(inspection), exitCode: inspection.items.every((item: any) => item.integrity === 'pass') ? 0 : 1 };
     console.log(JSON.stringify(result, null, 2));
     return result;
   }

@@ -10,7 +10,7 @@ async function main(args: string|unknown[]) {
   if (args.length !== 3) throw new Error('Expected source root, fresh gateway staging root, and profile');
   await applyResourceProfile({ root: args[0], gatewayRoot: args[1], profile: args[2] });
 }
-if (require.main === module) main(process.argv.slice(2)).catch(error => {
+if (require.main === module) main(process.argv.slice(2)).catch((error: any) => {
   console.error(error.message); process.exitCode = 1;
 });
 export = { main };

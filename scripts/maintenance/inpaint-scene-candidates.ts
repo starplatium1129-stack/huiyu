@@ -83,7 +83,7 @@ const DENOISE_CONFIGS = Object.freeze([
 // x550-660 y549-635, hands start below y635. The mask covers only the wrapper
 // so the clean palms and fingers are preserved verbatim (verified against the
 // grid preview, 2026-08-12).
-const SCENE_INPAINT_CONFIG = Object.freeze({
+const SCENE_INPAINT_CONFIG: any = Object.freeze({
   'scene:sc037': {
     sourceAttempt: 8,
     width: 832,
@@ -208,41 +208,41 @@ const SCENE_INPAINT_CONFIG = Object.freeze({
 const KEYS = Object.freeze(Object.keys(SCENE_INPAINT_CONFIG));
 const ATTEMPT = 9;
 
-function attemptFor(key) {
+function attemptFor(key: any) {
   const cfg = SCENE_INPAINT_CONFIG[key];
   return cfg && Number.isInteger(cfg.attempt) ? cfg.attempt : ATTEMPT;
 }
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function splitList(value) {
+function splitList(value: any) {
   return String(value || '')
     .split(',')
-    .map(part => part.trim())
+    .map((part: any) => part.trim())
     .filter(Boolean);
 }
-function readJson(file) {
+function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, file);
 }
-function imageInfo(buffer) {
+function imageInfo(buffer: any) {
   if (!Buffer.isBuffer(buffer) || buffer.length < 24) return null;
   if (buffer.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
     return { mime: 'image/png', width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
   }
   return null;
 }
-function sha256(buffer) {
+function sha256(buffer: any) {
   return crypto.createHash('sha256').update(buffer).digest('hex');
 }
-function assertNotShowcase(dir) {
+function assertNotShowcase(dir: any) {
   const resolved = path.resolve(dir);
   const showcase = path.resolve(SCENE_SHOWCASE_DIR);
   const rel = path.relative(showcase, resolved);
@@ -252,7 +252,7 @@ function assertNotShowcase(dir) {
 }
 
 let _python = '';
-function setPython(value) {
+function setPython(value: any) {
   _python = value || 'python';
 }
 function pythonBin() {
@@ -261,12 +261,12 @@ function pythonBin() {
 
 // ── source records ─────────────────────────────────────────────────────────
 
-function sourceRecordFor(manifest, key) {
+function sourceRecordFor(manifest: any, key: any) {
   const attempt = SCENE_INPAINT_CONFIG[key].sourceAttempt;
-  return manifest.find(record => record.recordId === `${key}@attempt-${attempt}`);
+  return manifest.find((record: any) => record.recordId === `${key}@attempt-${attempt}`);
 }
 
-function validateSourceRecord(key, record, outputDir) {
+function validateSourceRecord(key: any, record: any, outputDir: any) {
   const cfg = SCENE_INPAINT_CONFIG[key];
   if (!record) throw new Error(`missing attempt-${cfg.sourceAttempt} source record for ${key}`);
   if (record.status !== 'succeeded') {
@@ -286,16 +286,16 @@ function validateSourceRecord(key, record, outputDir) {
   return { buffer, file, hash };
 }
 
-function attemptRecordId(key) {
+function attemptRecordId(key: any) {
   return `${key}@attempt-${attemptFor(key)}`;
 }
 
-function outputImageRel(key) {
+function outputImageRel(key: any) {
   const sceneId = key.split(':')[1];
   return `images/${sceneId}/attempt-${attemptFor(key)}.png`;
 }
 
-function shouldReuse(key, record, imageFile, force) {
+function shouldReuse(key: any, record: any, imageFile: any, force: any) {
   const cfg = SCENE_INPAINT_CONFIG[key];
   if (force) return false;
   if (!record || record.status !== 'succeeded' || !record.image) return false;
@@ -310,11 +310,11 @@ function shouldReuse(key, record, imageFile, force) {
 
 // ── previews ───────────────────────────────────────────────────────────────
 
-function generatePreviews(outputDir, key, sourceFile) {
+function generatePreviews(outputDir: any, key: any, sourceFile: any) {
   const cfg = SCENE_INPAINT_CONFIG[key];
   const previewDir = path.join(outputDir, 'inpaint-scene-previews');
   fs.mkdirSync(previewDir, { recursive: true });
-  const made = [];
+  const made: any[] = [];
   for (const op of cfg.ops) {
     const safeKey = key.replace(/[:\/\\]/g, '_');
     const outFile = path.join(previewDir, `${safeKey}_${op.id}_grid.png`);
@@ -351,8 +351,8 @@ print(${JSON.stringify(outFile)})
 
 // ── ComfyUI client (mirrors inpaint-showcase-candidates.js) ────────────────
 
-function comfyJson(base, method, pathname, body, timeoutMs) {
-  return new Promise((resolve, reject) => {
+function comfyJson(base: any, method: any, pathname: any, body: any, timeoutMs: any) {
+  return new Promise<any>((resolve: any, reject: any) => {
     const url = new URL(base.replace(/\/$/, '') + pathname);
     const client = url.protocol === 'https:' ? (require('https') as typeof import('https')) : (require('http') as typeof import('http'));
     const payload = body === undefined || body === null ? null : Buffer.from(JSON.stringify(body));
@@ -362,9 +362,9 @@ function comfyJson(base, method, pathname, body, timeoutMs) {
       headers: Object.assign({ Accept: 'application/json' }, payload ? {
         'Content-Type': 'application/json', 'Content-Length': payload.length,
       } : {}),
-    }, response => {
-      const chunks = [];
-      response.on('data', chunk => chunks.push(chunk));
+    }, (response: any) => {
+      const chunks: any[] = [];
+      response.on('data', (chunk: any) => chunks.push(chunk));
       response.on('end', () => {
         const rawBuffer = Buffer.concat(chunks);
         const raw = rawBuffer.toString('utf8');
@@ -380,7 +380,7 @@ function comfyJson(base, method, pathname, body, timeoutMs) {
   });
 }
 
-async function uploadImage(comfyBase, filename, buffer) {
+async function uploadImage(comfyBase: any, filename: any, buffer: any) {
   const boundary = `----aics${Date.now()}${Math.floor(Math.random() * 1e6)}`;
   const prefix = Buffer.from(
     `--${boundary}\r\nContent-Disposition: form-data; name="image"; filename="${filename}"\r\nContent-Type: image/png\r\n\r\n`,
@@ -389,7 +389,7 @@ async function uploadImage(comfyBase, filename, buffer) {
   const payload = Buffer.concat([prefix, buffer, suffix]);
   const url = new URL(comfyBase.replace(/\/$/, '') + '/upload/image');
   const client = url.protocol === 'https:' ? (require('https') as typeof import('https')) : (require('http') as typeof import('http'));
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve: any, reject: any) => {
     const request = client.request({
       hostname: url.hostname, port: url.port, method: 'POST', timeout: 60000,
       path: url.pathname + '?overwrite=true',
@@ -397,9 +397,9 @@ async function uploadImage(comfyBase, filename, buffer) {
         'Content-Type': `multipart/form-data; boundary=${boundary}`,
         'Content-Length': payload.length,
       },
-    }, response => {
-      const chunks = [];
-      response.on('data', chunk => chunks.push(chunk));
+    }, (response: any) => {
+      const chunks: any[] = [];
+      response.on('data', (chunk: any) => chunks.push(chunk));
       response.on('end', () => {
         const raw = Buffer.concat(chunks).toString('utf8');
         let data = null;
@@ -414,12 +414,12 @@ async function uploadImage(comfyBase, filename, buffer) {
   });
 }
 
-function resolveUploadName(requested, uploaded) {
+function resolveUploadName(requested: any, uploaded: any) {
   const serverName = uploaded && uploaded.data && uploaded.data.name;
   return serverName || requested;
 }
 
-async function submitAndWait(comfyBase, workflow) {
+async function submitAndWait(comfyBase: any, workflow: any) {
   const submitted = await comfyJson(comfyBase, 'POST', '/prompt', { prompt: workflow, client_id: `aics-scene-inpaint-${process.pid}` }, 30000);
   if (submitted.status < 200 || submitted.status >= 300 || !submitted.data || !submitted.data.prompt_id) {
     throw new Error(`ComfyUI prompt submission failed (HTTP ${submitted.status}): ${submitted.raw || JSON.stringify(submitted.data)}`);
@@ -433,18 +433,18 @@ async function submitAndWait(comfyBase, workflow) {
       const status = entry.status && entry.status.status_str;
       if (status === 'error' || status === 'failed') {
         const messages = (entry.status && entry.status.messages || [])
-          .filter(([, value]) => value && value.exception_message)
-          .map(([, value]) => value.exception_message);
+          .filter(([, value]: any) => value && value.exception_message)
+          .map(([, value]: any) => value.exception_message);
         throw new Error(`ComfyUI execution failed for ${promptId}: ${messages.join(' | ') || JSON.stringify(entry.status)}`);
       }
       if (status === 'success') return { promptId, entry };
     }
-    await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
+    await new Promise<any>((resolve: any) => setTimeout(resolve, POLL_INTERVAL_MS));
   }
   throw new Error(`ComfyUI execution timed out for ${promptId}`);
 }
 
-async function fetchOutputImage(comfyBase, image) {
+async function fetchOutputImage(comfyBase: any, image: any) {
   const query = `?filename=${encodeURIComponent(image.filename)}&subfolder=${encodeURIComponent(image.subfolder || '')}&type=output`;
   const response = await comfyJson(comfyBase, 'GET', '/view' + query, null, 60000);
   if (response.status < 200 || response.status >= 300) {
@@ -455,9 +455,9 @@ async function fetchOutputImage(comfyBase, image) {
 
 // ── workflow builder (mirrors routes/anima.js Anima chain) ─────────────────
 
-function modelNodes(cfg, graph, startId) {
+function modelNodes(cfg: any, graph: any, startId: any) {
   let next = startId;
-  const node = (classType, inputs) => {
+  const node = (classType: any, inputs: any) => {
     const id = String(next);
     next += 1;
     graph[id] = { class_type: classType, inputs };
@@ -475,10 +475,10 @@ function modelNodes(cfg, graph, startId) {
   return { model: [lora, 0], pos, neg, vae: [vae, 0], next };
 }
 
-function buildOpWorkflow(cfg, op, denoiseConfig, prompt, negative, sourceImageName, maskImageName, crop) {
-  const graph = {};
+function buildOpWorkflow(cfg: any, op: any, denoiseConfig: any, prompt: any, negative: any, sourceImageName: any, maskImageName: any, crop: any) {
+  const graph: Record<string, any> = {};
   let next = 1;
-  const add = (classType, inputs) => {
+  const add = (classType: any, inputs: any) => {
     const id = String(next);
     next += 1;
     graph[id] = { class_type: classType, inputs };
@@ -545,8 +545,8 @@ function buildOpWorkflow(cfg, op, denoiseConfig, prompt, negative, sourceImageNa
 
 // ── mask generation ─────────────────────────────────────────────────────────
 
-function buildMaskArgs(op) {
-  const args = [];
+function buildMaskArgs(op: any) {
+  const args: any[] = [];
   for (const shape of op.mask) {
     if (shape.kind === 'ellipse') {
       args.push('--ellipse', String(shape.cx), String(shape.cy), String(shape.rx), String(shape.ry), String(shape.feather));
@@ -557,7 +557,7 @@ function buildMaskArgs(op) {
   return args;
 }
 
-function generateMask(outputDir, key, op, denoiseConfig) {
+function generateMask(outputDir: any, key: any, op: any, denoiseConfig: any) {
   const cfg = SCENE_INPAINT_CONFIG[key];
   const safeKey = key.replace(/[:\/\\]/g, '_');
   const maskDir = path.join(outputDir, 'inpaint-scene-masks');
@@ -575,9 +575,9 @@ function generateMask(outputDir, key, op, denoiseConfig) {
 
 // ── bounded retry gate: mean luminance delta inside the mask core ───────────
 
-function maskCoreDelta(outputBuffer, sourceBuffer, shape) {
+function maskCoreDelta(outputBuffer: any, sourceBuffer: any, shape: any) {
   if (!shape || shape.kind !== 'ellipse') return null;
-  const probe = (buffer) => {
+  const probe = (buffer: any) => {
     const image = decodePng8(buffer);
     if (!image || shape.rx <= 0 || shape.ry <= 0) return null;
     let count = 0;
@@ -600,11 +600,11 @@ function maskCoreDelta(outputBuffer, sourceBuffer, shape) {
   return Math.abs(output.sum / output.count - source.sum / source.count);
 }
 
-function opLooksDone(op, outputBuffer, sourceBuffer) {
+function opLooksDone(op: any, outputBuffer: any, sourceBuffer: any) {
   // Material/prop replacement ops have no reliable local feature detector;
   // gate on "the masked region actually changed" so an unchanged region
   // triggers the one fixed true-inpaint fallback instead of silently passing.
-  const shape = op.mask.find(item => item.kind === 'ellipse');
+  const shape = op.mask.find((item: any) => item.kind === 'ellipse');
   if (!shape) return true;
   const delta = maskCoreDelta(outputBuffer, sourceBuffer, shape);
   if (delta === null) return false;
@@ -613,13 +613,13 @@ function opLooksDone(op, outputBuffer, sourceBuffer) {
 
 // ── manifest record ─────────────────────────────────────────────────────────
 
-function buildAttemptRecord(key, sourceRecord, config, results, workflowFiles) {
+function buildAttemptRecord(key: any, sourceRecord: any, config: any, results: any, workflowFiles: any) {
   const finalOutput = results[results.length - 1];
   const inpaint = {
     sourceRecordId: sourceRecord.recordId,
     engine: config.engine,
     workflowFiles,
-    operations: results.map(result => ({
+    operations: results.map((result: any) => ({
       id: result.op.id,
       denoiseConfig: result.denoiseConfig.id,
       mode: result.denoiseConfig.mode,
@@ -671,14 +671,14 @@ function buildAttemptRecord(key, sourceRecord, config, results, workflowFiles) {
 
 // ── runner ──────────────────────────────────────────────────────────────────
 
-async function runKey(key, manifest, outputDir, comfyBase, force) {
+async function runKey(key: any, manifest: any, outputDir: any, comfyBase: any, force: any) {
   const config = SCENE_INPAINT_CONFIG[key];
   const sourceRecord = sourceRecordFor(manifest, key);
   const validated = validateSourceRecord(key, sourceRecord, outputDir);
   const outImageRel = outputImageRel(key);
   const outImageFile = path.join(outputDir, outImageRel.split('/').join(path.sep));
   const recordId = attemptRecordId(key);
-  const existing = manifest.find(record => record.recordId === recordId);
+  const existing = manifest.find((record: any) => record.recordId === recordId);
   if (shouldReuse(key, existing, outImageFile, force)) {
     console.log(`[reuse] ${key} -> ${outImageRel} (${existing.sha256})`);
     return { key, status: 'reused', record: existing };
@@ -687,8 +687,8 @@ async function runKey(key, manifest, outputDir, comfyBase, force) {
   const workflowDir = path.join(outputDir, 'workflows', 'scene', key.replace(/[:\/\\]/g, '_'));
   fs.mkdirSync(workflowDir, { recursive: true });
 
-  const results = [];
-  const workflowFiles = [];
+  const results: any[] = [];
+  const workflowFiles: any[] = [];
   let currentBuffer = validated.buffer;
   const runId = `${Date.now()}-${process.pid}`;
 
@@ -697,7 +697,7 @@ async function runKey(key, manifest, outputDir, comfyBase, force) {
     const stageBuffer = currentBuffer;
     let done = false;
     const denoiseConfigs = op.denoiseOrder
-      ? op.denoiseOrder.map(id => DENOISE_CONFIGS.find(item => item.id === id)).filter(Boolean)
+      ? op.denoiseOrder.map((id: any) => DENOISE_CONFIGS.find((item: any) => item.id === id)).filter(Boolean)
       : DENOISE_CONFIGS;
     for (let attemptIndex = 0; attemptIndex < denoiseConfigs.length && !done; attemptIndex += 1) {
       const denoiseConfig = denoiseConfigs[attemptIndex];
@@ -717,7 +717,7 @@ async function runKey(key, manifest, outputDir, comfyBase, force) {
       const seed = (sourceRecord.actualSeed ?? sourceRecord.seed)
         + index * 7919 + attemptIndex * 104729;
       const workflow = buildOpWorkflow(config, op, denoiseConfig, op.prompt, op.negative, sourceName, maskName, op.crop);
-      const sampleNode = Object.keys(workflow).find(id => workflow[id].class_type === 'KSampler');
+      const sampleNode: any = Object.keys(workflow).find((id: any) => workflow[id].class_type === 'KSampler');
       workflow[sampleNode].inputs.seed = seed;
       const workflowFile = path.join(workflowDir, `${op.id}_${denoiseConfig.id}.json`);
       writeJsonAtomic(workflowFile, workflow);
@@ -728,7 +728,7 @@ async function runKey(key, manifest, outputDir, comfyBase, force) {
       let promptId = `${key.replace(/[:\/\\]/g, '_')}-${op.id}-${denoiseConfig.id}`;
       try {
         const promptResult = await submitAndWait(comfyBase, workflow);
-        const outputNode = Object.keys(workflow).find(id => workflow[id].class_type === 'SaveImage');
+        const outputNode: any = Object.keys(workflow).find((id: any) => workflow[id].class_type === 'SaveImage');
         const images = promptResult.entry.outputs && promptResult.entry.outputs[outputNode]
           && promptResult.entry.outputs[outputNode].images;
         if (!Array.isArray(images) || !images.length) {
@@ -793,13 +793,13 @@ async function main() {
   if (!fs.existsSync(manifestPath)) throw new Error(`manifest not found: ${manifestPath}`);
   const manifest = readJson(manifestPath);
 
-  const plan = [];
-  const previews = [];
+  const plan: any[] = [];
+  const previews: any[] = [];
   for (const key of keys) {
     const source = sourceRecordFor(manifest, key);
     const validated = validateSourceRecord(key, source, outputDir);
     previews.push(...generatePreviews(outputDir, key, validated.file));
-    plan.push({ key, recordId: attemptRecordId(key), source: source ? source.recordId : '', ops: SCENE_INPAINT_CONFIG[key].ops.map(op => op.id) });
+    plan.push({ key, recordId: attemptRecordId(key), source: source ? source.recordId : '', ops: SCENE_INPAINT_CONFIG[key].ops.map((op: any) => op.id) });
   }
 
   if (dryRun) {
@@ -812,7 +812,7 @@ async function main() {
     throw new Error(`ComfyUI not reachable at ${comfyBase} (HTTP ${stats.status})`);
   }
 
-  const outcomes = [];
+  const outcomes: any[] = [];
   for (const key of keys) {
     outcomes.push(await runKey(key, manifest, outputDir, comfyBase, force));
   }
@@ -820,32 +820,32 @@ async function main() {
   const current = readJson(manifestPath);
   for (const outcome of outcomes) {
     if (outcome.status === 'generated') {
-      const idx = current.findIndex(record => record.recordId === outcome.record.recordId);
+      const idx = current.findIndex((record: any) => record.recordId === outcome.record.recordId);
       if (idx >= 0) current.splice(idx, 1);
       current.push(outcome.record);
     }
   }
   const normalized = current
-    .map(record => (record.attempt ? record : Object.assign({}, record, { attempt: 1 })))
-    .sort((a, b) => (a.recordId || a.key || '').localeCompare(b.recordId || b.key || ''));
+    .map((record: any) => (record.attempt ? record : Object.assign({}, record, { attempt: 1 })))
+    .sort((a: any, b: any) => (a.recordId || a.key || '').localeCompare(b.recordId || b.key || ''));
   writeJsonAtomic(manifestPath, normalized);
 
   console.log(JSON.stringify({
     output: outputDir,
     comfy: comfyBase,
-    outcomes: outcomes.map(outcome => ({
+    outcomes: outcomes.map((outcome: any) => ({
       key: outcome.key,
       status: outcome.status,
       recordId: outcome.record ? outcome.record.recordId : '',
       image: outcome.record ? outcome.record.image : '',
       sha256: outcome.record ? outcome.record.sha256 : '',
-      operations: outcome.results ? outcome.results.map(r => ({ id: r.op.id, config: r.denoiseConfig.id, heuristic: r.heuristic, promptId: r.promptId })) : [],
+      operations: outcome.results ? outcome.results.map((r: any) => ({ id: r.op.id, config: r.denoiseConfig.id, heuristic: r.heuristic, promptId: r.promptId })) : [],
     })),
   }, null, 2));
 }
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

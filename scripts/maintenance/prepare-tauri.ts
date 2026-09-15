@@ -48,9 +48,9 @@ function sha256(filePath: PathOrFileDescriptor) {
   return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
 }
 
-function download(url: string|URL|RequestOptions|undefined, destination: PathLike, redirects = 0) {
-  return new Promise((resolve, reject) => {
-    const request = https.get(url, (response) => {
+function download(url: string|URL|RequestOptions|undefined, destination: PathLike, redirects: any = 0) {
+  return new Promise<any>((resolve: any, reject: any) => {
+    const request = https.get(url, (response: any) => {
       if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
         response.resume();
         if (redirects >= MAX_REDIRECTS) {
@@ -79,7 +79,7 @@ function download(url: string|URL|RequestOptions|undefined, destination: PathLik
   });
 }
 
-async function ensureNodeSidecar(options = {}) {
+async function ensureNodeSidecar(options: any = {}) {
   const sidecarDir = options.sidecarDir || SIDECAR_DIR;
   const sidecarPath = options.sidecarPath || SIDECAR_PATH;
   const downloadFile = options.downloadFile || download;
@@ -133,7 +133,7 @@ async function ensureNodeSidecar(options = {}) {
   }
 }
 
-async function prepareTauri(options = {}) {
+async function prepareTauri(options: any = {}) {
   await (require('./build-game-installer') as typeof import('./build-game-installer')).buildGameInstaller();
   const root = options.root || ROOT;
   const webDir = options.webDir || path.join(root, 'desktop-tauri', 'web');
@@ -165,7 +165,7 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch((error) => {
+  main().catch((error: any) => {
     console.error(`[tauri] prepare failed: ${error.stack || error.message}`);
     process.exitCode = 1;
   });

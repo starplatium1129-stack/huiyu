@@ -34,8 +34,8 @@ const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
 
 const argv = process.argv.slice(2);
 const dryRun = argv.includes('--dry-run');
-const idsArg = argv.find((a) => a.startsWith('--ids='));
-const onlyIds = idsArg ? new Set(idsArg.slice('--ids='.length).split(',').map((s) => s.trim()).filter(Boolean)) : null;
+const idsArg = argv.find((a: any) => a.startsWith('--ids='));
+const onlyIds = idsArg ? new Set(idsArg.slice('--ids='.length).split(',').map((s: any) => s.trim()).filter(Boolean)) : null;
 
 const readJson = (file: PathOrFileDescriptor) => JSON.parse(fs.readFileSync(file, 'utf8'));
 
@@ -58,11 +58,11 @@ function main() {
     return;
   }
 
-  const report = [];
+  const report: any[] = [];
   for (const character of targets) {
     const viewChar = view[character.id];
     const popChar = popularById.get(character.id);
-    const outfits = [];
+    const outfits: any[] = [];
 
     for (const vo of viewChar.outfits) {
       const popOutfit = (popChar?.outfits || []).find((o: { id: unknown; }) => o.id === vo.outfitId);
@@ -95,7 +95,7 @@ function main() {
       displayName: character.displayName,
       outfits: outfits.length,
       perspectivesPerOutfit: perspectives.length,
-      driftedFromPopular: outfits.filter((o) => !(popChar?.outfits || []).some((p: { id: unknown; }) => p.id === o.id)).map((o) => o.id),
+      driftedFromPopular: outfits.filter((o: any) => !(popChar?.outfits || []).some((p: { id: unknown; }) => p.id === o.id)).map((o: any) => o.id),
     });
   }
 
@@ -104,7 +104,7 @@ function main() {
     const drift = r.driftedFromPopular.length ? ` ⚠ 与 popular 命名漂移: ${r.driftedFromPopular.join(', ')}` : '';
     console.log(`  - ${r.id} (${r.displayName}): ${r.outfits} 套形态 × ${r.perspectivesPerOutfit} 视角${drift}`);
   }
-  const total = report.reduce((sum, r) => sum + r.outfits * r.perspectivesPerOutfit, 0);
+  const total = report.reduce((sum: any, r: any) => sum + r.outfits * r.perspectivesPerOutfit, 0);
   console.log(`[register-pending] 合计登记 ${total} 条视角条目（全部 pending，渲染后由 sync 回填 url）`);
 
   if (dryRun) {

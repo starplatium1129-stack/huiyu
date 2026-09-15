@@ -14,7 +14,7 @@ function parseManualRatings(raw: string) {
   const text = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '').trim();
   const match = text.match(/^(?:['"]use strict['"];\s*)?module\.exports\s*=\s*\{([\s\S]*)\};?$/);
   if (!match) throw new Error('Invalid manual ratings table');
-  const result = {};
+  const result: Record<string, any> = {};
   const body = match[1].trim().replace(/,\s*$/, '');
   const entries = body ? body.split(',') : [];
   for (const entry of entries) {
@@ -138,10 +138,10 @@ function normalizeUsage(scene: { usage: unknown; }, rating: string) {
  * 评级以样张实际画面为准（露点/性行为=R18，半裸/内衣/强暗示=R15，否则 All），
  * 覆盖 ratingFor 的 tag 推导与 R18 强制保留逻辑；只列入降级项。
  */
-function main(args = process.argv.slice(2)) {
+function main(args: any = process.argv.slice(2)) {
 const json = args.includes('--json') || args.includes('--explain');
 try {
-  if (new Set(args).size !== args.length || args.some((a) => !['--check', '--write', '--json', '--explain'].includes(a))) throw new Error('Unknown or duplicate argument');
+  if (new Set(args).size !== args.length || args.some((a: any) => !['--check', '--write', '--json', '--explain'].includes(a))) throw new Error('Unknown or duplicate argument');
   const write = args.includes('--write');
   if (write && (json || args.includes('--check'))) throw new Error('Read-only diagnostics cannot be combined with --write');
   const root = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '../..'));
@@ -162,9 +162,9 @@ const ids = new Set(scenes.map((scene: { id: unknown; }) => scene.id));
 for (const addition of additions) if (!ids.has(addition.id)) scenes.push(addition);
 
 let changed = 0;
-const changes = [];
+const changes: any[] = [];
 const sources = { pinned: 0, manual: 0, 'existing-mature': 0, policy: 0 };
-const totals = { All: 0, R15: 0, R18: 0 };
+const totals: any = { All: 0, R15: 0, R18: 0 };
 for (const scene of scenes) {
   if (pinnedScenes[scene.id]) {
     sources.pinned++;
@@ -188,7 +188,7 @@ for (const scene of scenes) {
 }
 
 if (write) {
-  sceneWrite.applySceneChanges(scenes, previous, { retiredIds: sceneWrite.readRetiredSceneIds() });
+  sceneWrite.applySceneChanges(scenes, previous, { retiredIds: sceneWrite.readRetiredSceneIds(undefined) });
   writeAggregate(scenes);
 }
 console.log(json ? JSON.stringify({ totals, changedCount: changed, changes, sources, visualReview: 'unverified' }) : 'ratings: All=' + totals.All + ' R15=' + totals.R15 + ' R18=' + totals.R18 + ' changed=' + changed + (write ? ' written' : ''));

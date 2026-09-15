@@ -14,32 +14,32 @@ const sources: typeof import('./style-sources') = require('./style-sources');
 const css = sources.read(sources.DESIGN_SYSTEM);
 const lightCss = sources.read('src/assets/css/light-theme.css');
 
-function hexToRgb(hex) {
+function hexToRgb(hex: any) {
   const value = hex.replace('#', '');
-  const full = value.length === 3 ? value.split('').map((c) => c + c).join('') : value;
+  const full = value.length === 3 ? value.split('').map((c: any) => c + c).join('') : value;
   return [parseInt(full.slice(0, 2), 16), parseInt(full.slice(2, 4), 16), parseInt(full.slice(4, 6), 16)];
 }
 
-function luminance(rgb) {
-  const [r, g, b] = rgb.map((channel) => {
+function luminance(rgb: any) {
+  const [r, g, b] = rgb.map((channel: any) => {
     const c = channel / 255;
     return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
   });
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-function ratio(fg, bg) {
+function ratio(fg: any, bg: any) {
   const l1 = luminance(fg);
   const l2 = luminance(bg);
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 
 // 精确匹配选择器，避免 :root 误取 :root[data-theme] 或嵌套规则。
-function block(selector, source = css) {
-  const map = {};
+function block(selector: any, source: any = css) {
+  const map: Record<string, any> = {};
   const clean = source.replace(/\/\*[^]*?\*\//g, '');
   for (const rule of clean.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
-    if (!rule[1].split(',').map(s => s.trim()).includes(selector)) continue;
+    if (!rule[1].split(',').map((s: any) => s.trim()).includes(selector)) continue;
     for (const match of rule[2].matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) map[match[1]] = match[2].trim();
   }
   if (!Object.keys(map).length) throw new Error('Missing CSS token block: ' + selector);
@@ -60,7 +60,7 @@ const TEXT_TOKENS = [
 ];
 
 // 解开 var(--x) 别名链,拿到最终字面值
-function resolve(tokens, name, depth) {
+function resolve(tokens: any, name: any, depth: any) {
   const raw = tokens[name];
   if (!raw) return null;
   if ((depth || 0) > 8) return null;
@@ -73,8 +73,8 @@ function resolve(tokens, name, depth) {
 const SURFACES = ['--bg-deep', '--bg-base', '--bg-surface', '--bg-elevated'];
 
 // 括号内的逗号属于 var/color-mix 参数，不能用单个正则截断。
-function splitArgs(value) {
-  const parts = []; let depth = 0, start = 0;
+function splitArgs(value: any) {
+  const parts: any[] = []; let depth = 0, start = 0;
   for (let i = 0; i < value.length; i++) {
     if (value[i] === '(') depth++;
     if (value[i] === ')') depth--;
@@ -83,10 +83,10 @@ function splitArgs(value) {
   parts.push(value.slice(start).trim());
   return parts;
 }
-function compositeSurface(tokens, name, parentRgb, depth = 0) {
+function compositeSurface(tokens: any, name: any, parentRgb: any, depth: any = 0) {
   return resolveColor(tokens, tokens[name], parentRgb, depth);
 }
-function resolveColor(tokens, expr, parentRgb, depth = 0) {
+function resolveColor(tokens: any, expr: any, parentRgb: any, depth: any = 0) {
   if (!expr || depth > 16) return null;
   const value = expr.replace(/!important/g, '').trim();
   const alias = value.match(/^var\((.*)\)$/);
@@ -97,18 +97,18 @@ function resolveColor(tokens, expr, parentRgb, depth = 0) {
   if (value === 'transparent') return parentRgb || null;
   const hex = value.match(/^#([\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i);
   if (hex) {
-    const full = hex[1].length <= 4 ? [...hex[1]].map(c => c + c).join('') : hex[1];
+    const full = hex[1].length <= 4 ? [...hex[1]].map((c: any) => c + c).join('') : hex[1];
     const rgb = hexToRgb('#' + full.slice(0, 6));
     const alpha = full.length === 8 ? parseInt(full.slice(6), 16) / 255 : 1;
     if (alpha < 1 && !parentRgb) return null;
-    return rgb.map((c, i) => c * alpha + (parentRgb?.[i] || 0) * (1 - alpha));
+    return rgb.map((c: any, i: any) => c * alpha + (parentRgb?.[i] || 0) * (1 - alpha));
   }
   const rgba = value.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)\s*(?:[,/]\s*([\d.]+)(%)?)?\s*\)$/);
   if (rgba) {
     const rgb = rgba.slice(1, 4).map(Number);
     const alpha = rgba[4] === undefined ? 1 : Number(rgba[4]) / (rgba[5] ? 100 : 1);
-    if (rgb.some(c => !Number.isFinite(c) || c > 255) || !Number.isFinite(alpha) || alpha > 1 || (alpha < 1 && !parentRgb)) return null;
-    return rgb.map((c, i) => c * alpha + (parentRgb?.[i] || 0) * (1 - alpha));
+    if (rgb.some((c: any) => !Number.isFinite(c) || c > 255) || !Number.isFinite(alpha) || alpha > 1 || (alpha < 1 && !parentRgb)) return null;
+    return rgb.map((c: any, i: any) => c * alpha + (parentRgb?.[i] || 0) * (1 - alpha));
   }
   const mix = value.match(/^color-mix\((.*)\)$/);
   if (mix) {
@@ -117,19 +117,19 @@ function resolveColor(tokens, expr, parentRgb, depth = 0) {
     const weighted = first.match(/^(.*)\s+([\d.]+)%$/);
     if (!weighted || !Number.isFinite(Number(weighted[2])) || Number(weighted[2]) > 100) return null;
     const weight = Number(weighted[2]) / 100;
-    const a = resolveColor(tokens, weighted[1], parentRgb, depth + 1);
-    const b = resolveColor(tokens, second, parentRgb, depth + 1);
-    return a && b ? a.map((c, i) => c * weight + b[i] * (1 - weight)) : null;
+    const a: any = resolveColor(tokens, weighted[1], parentRgb, depth + 1);
+    const b: any = resolveColor(tokens, second, parentRgb, depth + 1);
+    return a && b ? a.map((c: any, i: any) => c * weight + b[i] * (1 - weight)) : null;
   }
   return null;
 }
 
 function characterThemes() {
   const director = sources.read('src/assets/css/director/tokens.css');
-  const registered = new Set((require('../../data/popular-onboarding.json') as typeof import('../../data/popular-onboarding.json')).characters.map(c => c.id));
+  const registered = new Set((require('../../data/popular-onboarding.json') as typeof import('../../data/popular-onboarding.json')).characters.map((c: any) => c.id));
   const onboarding = block('.pb[data-onboarding-theme="true"]', director);
-  const selectors = [...new Set([...director.matchAll(/\.pb\[data-character="[^"]+"\]/g)].map(m => m[0]))];
-  return themes.flatMap(([theme, tokens]) => selectors.map(selector => [theme + ' / ' + selector, {
+  const selectors = [...new Set([...director.matchAll(/\.pb\[data-character="[^"]+"\]/g)].map((m: any) => m[0]))];
+  return themes.flatMap(([theme, tokens]: any) => selectors.map((selector: any) => [theme + ' / ' + selector, {
     ...tokens, ...block('.pb', director),
     ...(registered.has(selector.match(/data-character="([^"]+)"/)[1]) ? onboarding : {}),
     ...block(selector, director),
@@ -148,10 +148,10 @@ function run() {
     for (const surfaceToken of SURFACES) {
       const bg = compositeSurface(tokens, surfaceToken, deep);
       if (!bg) { failures++; console.error(themeName + ': 无法解析 ' + surfaceToken); continue; }
-      const hex = '#' + bg.map((c) => Math.round(c).toString(16).padStart(2, '0')).join('');
+      const hex = '#' + bg.map((c: any) => Math.round(c).toString(16).padStart(2, '0')).join('');
       console.log('\n=== ' + themeName + ' theme / ' + surfaceToken + ' (合成后 ' + hex + ') ===');
       for (const name of TEXT_TOKENS) {
-        const raw = resolve(tokens, name);
+        const raw = resolve(tokens, name, undefined);
         const fg = compositeSurface(tokens, name, bg);
         if (!fg) { failures++; console.error('FAIL 无法解析 ' + name + ': ' + raw); continue; }
         const value = ratio(fg, bg);
@@ -187,7 +187,7 @@ function run() {
     const bg = compositeSurface(tokens, '--bg-elevated', deep) || deep;
     console.log('\n=== ' + themeName + ' theme / 非文字图形 3:1 (--bg-elevated) ===');
     for (const name of NON_TEXT_TOKENS) {
-      const raw = resolve(tokens, name);
+      const raw = resolve(tokens, name, undefined);
       const fg = compositeSurface(tokens, name, bg);
       if (!fg) { nonTextFailures++; console.error('FAIL 无法解析 ' + name); continue; }
       const value = ratio(fg, bg);
@@ -211,13 +211,13 @@ function run() {
   let sfcChecks = 0;
   let sfcFailures = 0;
   let sfcExempt = 0;
-  const sfcSurfaces = SURFACES.map((name) => ({ name, bg: compositeSurface(dark, name, hexToRgb(dark['--bg-deep'])) })).filter((s) => s.bg);
+  const sfcSurfaces = SURFACES.map((name: any) => ({ name, bg: compositeSurface(dark, name, hexToRgb(dark['--bg-deep'])) })).filter((s: any) => s.bg);
 
   // 从声明值里解析出可计算的颜色。除字面 hex 外，也解析 rgba() / rgb() /
   // color-mix() / var() 令牌 —— 半透明白字（rgba(255,255,255,.6)）是组件里最常见的
   // 漏网写法，不合成到落点上根本看不出它压线不过。
   const SKIP_VALUES = new Set(['transparent', 'inherit', 'initial', 'unset', 'currentColor', 'none']);
-  function declColor(raw, parentRgb) {
+  function declColor(raw: any, parentRgb: any) {
     const value = raw.replace(/!important/g, '').trim();
     if (!value || SKIP_VALUES.has(value)) return null;
     return resolveColor(dark, value, parentRgb);
@@ -230,7 +230,7 @@ function run() {
       const styleBody = styleMatch[1];
       for (const rule of styleBody.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
         const ruleBody = rule[2];
-        const ownBackgrounds = [];
+        const ownBackgrounds: any[] = [];
         let ownBgUnknown = false; // 规则自身声明了底色但解析不动（动态 var/渐变/图像）
         for (const bg of ruleBody.matchAll(/(?:^|;)\s*(?:background(?:-color)?|backdrop)\s*:\s*([^;}]+)/g)) {
           const rgb = declColor(bg[1], hexToRgb(dark['--bg-deep']));
@@ -248,11 +248,11 @@ function run() {
           if (!/^(#|rgb|hsl|color-mix|var\()/i.test(rawValue)) continue;
           if (exempt || ownBgUnknown) continue; // 落点未知或已声明豁免 —— 不猜、不错杀
           const line = baseLine + styleBody.slice(0, rule.index + rule[1].length + 2 + decl.index).split('\n').length;
-          const candidates = sfcSurfaces.map((s) => ({ name: s.name, bg: s.bg })).concat(
-            ownBackgrounds.map((bg, i) => ({ name: '规则自身背景#' + (i + 1), bg }))
+          const candidates = sfcSurfaces.map((s: any) => ({ name: s.name, bg: s.bg })).concat(
+            ownBackgrounds.map((bg: any, i: any) => ({ name: '规则自身背景#' + (i + 1), bg }))
           );
           // 前景色随落点合成（alpha 值要在具体背景上才算得准），解析不动的跳过
-          const results = [];
+          const results: any[] = [];
           for (const c of candidates) {
             const fg = declColor(rawValue, c.bg);
             if (fg) results.push(ratio(fg, c.bg));

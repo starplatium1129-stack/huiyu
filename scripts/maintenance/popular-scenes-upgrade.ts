@@ -18,7 +18,7 @@ const path: typeof import('path') = require('path');
 const FILE = path.resolve(__dirname, '..', '..', 'data', 'scene-blueprints.json');
 
 // ── ① 名场面策展（43 角色 × 恰好 1 个原作标志性瞬间）────────────────────────
-const ICONIC = {
+const ICONIC: any = {
   alisa_mikhailovna_kujou: 'alya_classroom_window_blush',     // 窗边俄语低语=本篇招牌
   artoria_pendragon: 'artoria_moonlit_city',                  // 「请问，你是我的御主吗？」
   chen_arknights: 'chen_arknights_lungmen_patrol',            // 龙门近卫局巡街
@@ -65,7 +65,7 @@ const ICONIC = {
 };
 
 // ── ② 日常补标（分类不含「日常」字样但内容确属日常生活的场景）───────────────
-const DAILY_EXTRA = {
+const DAILY_EXTRA: any = {
   dusk_arknights: ['dusk_arknights_tea_and_ink', 'dusk_arknights_rain_courtyard'],   // 煮茶研墨 / 檐下听雨
   exusiai_arknights: ['exusiai_arknights_wing_rest'],                                 // 长椅小憩
   laevatain_arknights: ['laevatain_arknights_icecream_break', 'laevatain_arknights_canteen_hotpot'],
@@ -87,7 +87,7 @@ const SPECIAL_TAG_ONLY = [
   'skadi_arknights_r18_cabin_rope',        // 半脱作战服
 ];
 // 需要定向补强特殊元素的场景：tokens 追加 + nsfwProse 追加一句
-const SPECIAL_ENHANCE = {
+const SPECIAL_ENHANCE: any = {
   dusk_arknights_r18_studio_scrolls: {
     tokens: ['barefoot', '5_toes', 'detailed_toes', 'detailed_feet', 'foot_focus'],
     prose: 'The eye travels down the unrolled scrolls to her elegantly outstretched feet, ink-washed toes curling softly as candlelight traces their delicate lines.',
@@ -141,7 +141,7 @@ const SPECIAL_ENHANCE = {
 const SPECIAL_HEURISTIC_RE = /feet|toe|sole|foot_|footjob|collar|leash|bondag|blindfold|shibari|handcuff|pantyhose|exhibit|public_|voyeur|toys|vibrator|femdom|facesitt|edging|orgasm_denial|spank|pegging|anal|deepthroat|throat|armpit|navel|thigh_focus|leg_focus|back_focus|nape|bandage|tail_wrap|wing_focus|halo_focus|belly_focus|hand_focus|glove_focus|tail_coil/i;
 
 // ── ④ 风格 hint 修复（adult-sensual 不是合法配方 id，会被当自由短语拼进提示词开头）──
-const HINT_FIX = {
+const HINT_FIX: any = {
   sakurajima_mai_r18_hotel: 'r18_elegant_boudoir',
   sakurajima_mai_r18_pantyhose: 'r18_sensual_cg',
   frieren_r18_inn_bath: 'r18_sensual_cg',
@@ -231,21 +231,21 @@ const PROSE_FALLBACK = [
   'Balanced ambient gradients and fine atmospheric depth lift the composition to poster-quality finish.',
 ];
 
-function pickProseSentence(blueprint) {
+function pickProseSentence(blueprint: any) {
   const haystack = [blueprint.lighting, blueprint.timeOfDay, blueprint.mood].join(' ');
   for (const [re, variants] of PROSE_TEMPLATES) {
     if (re.test(haystack)) return variants[hashId(blueprint.id) % variants.length];
   }
   return PROSE_FALLBACK[hashId(blueprint.id) % PROSE_FALLBACK.length];
 }
-function hashId(id) {
+function hashId(id: any) {
   let h = 0;
   for (let i = 0; i < id.length; i += 1) h = (h * 31 + id.charCodeAt(i)) >>> 0;
   return h;
 }
 
 // ── ⑥ 海梦 cosplay 新场景（补服装覆盖缺口）──────────────────────────────────
-const MARIN_COSPLAY_SCENE = {
+const MARIN_COSPLAY_SCENE: any = {
   id: 'kitagawa_marin_backstage_cosplay',
   title: '漫展后台·开幕前的最后调整',
   category: '现代日常',
@@ -276,7 +276,7 @@ const MARIN_COSPLAY_SCENE = {
 
 // 氛围句全集（幂等检测用；须在执行循环前定义）
 const PROSE_ALL_SENTENCES = [...new Set([
-  ...PROSE_TEMPLATES.flatMap(([, v]) => v), ...PROSE_FALLBACK,
+  ...PROSE_TEMPLATES.flatMap(([, v]: any) => v), ...PROSE_FALLBACK,
 ])];
 
 // ── ⑦ 否定式词条/短语出清（2026-08-24 词条语义研究产物）─────────────────────
@@ -287,7 +287,7 @@ const PROSE_ALL_SENTENCES = [...new Set([
 const REMOVE_NEGATION_TOKENS = [
   'no_opponent', 'no_customers', 'no_visitors', 'no_walkers', 'no_colleagues',
 ];
-const TOKEN_REPLACEMENTS = {
+const TOKEN_REPLACEMENTS: any = {
   crowd_implied: 'crowd', // 灯会想要画面内人群，implied（画外暗示）语义偏弱
 };
 // prose 否定短语 → 正向改写（顺序执行：长规则在前，兜底在后；保持连接词语法）
@@ -342,13 +342,13 @@ const PROSE_ARTIFACT_RULES = [
 // 「no other people」等在负面槽位不可靠且与已有 plain 形式（crowd/bystanders）冗余；
 // 个别蓝图存在自相矛盾项（yui 网球场正向要空场、负面却禁 empty/deserted）。
 const NEGATIVE_DROP_RE = /^no /i;
-const NEGATIVE_DROP_BY_ID = {
+const NEGATIVE_DROP_BY_ID: any = {
   yui_tennis_court_afternoon: ['empty scene', 'deserted'],
   // 灯会场景需要背景人群：压制 crowd 会抵消正向 tag；保留 2girls/multiple girls 防分身
   dusk_arknights_lantern_festival: ['crowd', 'bystanders'],
 };
 // 定向 prose 修正（兜底规则无法覆盖的场景语义冲突）
-const TARGETED_PROSE = {
+const TARGETED_PROSE: any = {
   dusk_arknights_lantern_festival: [
     ['with the whole place to herself', 'amid the lively festival crowd around her'],
   ],
@@ -363,19 +363,19 @@ const report = { iconic: 0, dailyAuto: 0, dailyExtra: 0, specialTag: 0, specialE
   hintFix: 0, removedQuality: 0, qualityTokens: 0, proseUpgraded: 0, sizeBump: 0,
   negTokens: 0, negProse: 0, negNegative: 0, inserted: [] };
 
-const byId = new Map(blueprints.map(b => [b.id, b]));
+const byId = new Map(blueprints.map((b: any) => [b.id, b]));
 
 // --refresh-prose：否定改写曾产生中间态病句；此模式把三个散文字段回滚到
 // git HEAD 原文后重新套用全部改写规则，保证结果只依赖「原文+规则」。
 if (process.argv.includes('--refresh-prose')) {
   const { execSync }: typeof import('child_process') = require('child_process');
   const headJson = JSON.parse(execSync('git show HEAD:data/scene-blueprints.json', { maxBuffer: 2e8 }).toString());
-  const headById = new Map(headJson.blueprints.map(b => [b.id, b]));
+  const headById = new Map(headJson.blueprints.map((b: any) => [b.id, b]));
   let refreshed = 0;
   for (const b of blueprints) {
-    const head = headById.get(b.id);
+    const head: any = headById.get(b.id);
     if (!head) continue;
-    ['promptProse', 'nsfwProse', 'description'].forEach((field) => {
+    ['promptProse', 'nsfwProse', 'description'].forEach((field: any) => {
       if (typeof head[field] === 'string' && head[field] !== b[field]) {
         b[field] = head[field];
         refreshed += 1;
@@ -385,7 +385,7 @@ if (process.argv.includes('--refresh-prose')) {
   console.log('[refresh-prose] 从 HEAD 回滚散文字段:', refreshed);
 }
 
-function addTag(b, tag) {
+function addTag(b: any, tag: any) {
   if (!Array.isArray(b.coverageTags)) b.coverageTags = [];
   if (!b.coverageTags.includes(tag)) {
     b.coverageTags.push(tag);
@@ -396,7 +396,7 @@ function addTag(b, tag) {
 
 // ⑥ 海梦 cosplay 场景插入（幂等）
 if (!byId.has(MARIN_COSPLAY_SCENE.id)) {
-  const anchor = blueprints.findIndex(b => b.id === 'kitagawa_marin_convention');
+  const anchor = blueprints.findIndex((b: any) => b.id === 'kitagawa_marin_convention');
   const insertAt = anchor >= 0 ? anchor + 1 : blueprints.length;
   blueprints.splice(insertAt, 0, JSON.parse(JSON.stringify(MARIN_COSPLAY_SCENE)));
   byId.set(MARIN_COSPLAY_SCENE.id, MARIN_COSPLAY_SCENE);
@@ -416,7 +416,7 @@ for (const b of blueprints) {
     if (enhance) {
       addTag(b, 'special_nsfw');
       b.nsfwTokens = b.nsfwTokens || [];
-      enhance.tokens.forEach(t => { if (!b.nsfwTokens.includes(t)) b.nsfwTokens.push(t); });
+      enhance.tokens.forEach((t: any) => { if (!b.nsfwTokens.includes(t)) b.nsfwTokens.push(t); });
       if (!(b.nsfwProse || '').includes(enhance.prose.slice(0, 40))) {
         b.nsfwProse = `${(b.nsfwProse || '').trim()} ${enhance.prose}`.trim();
         report.specialEnhance += 1;
@@ -436,14 +436,14 @@ for (const b of blueprints) {
   // ⑤a 壁纸质感层：先出清装配层专属质量词/玄学词，再补具体光影环境 tag（全量）
   b.promptTokens = b.promptTokens || [];
   const beforeClean = b.promptTokens.length;
-  b.promptTokens = b.promptTokens.filter(t => !REMOVE_TOKENS.includes(String(t).toLowerCase()));
-  if (b.nsfwTokens) b.nsfwTokens = b.nsfwTokens.filter(t => !REMOVE_TOKENS.includes(String(t).toLowerCase()));
+  b.promptTokens = b.promptTokens.filter((t: any) => !REMOVE_TOKENS.includes(String(t).toLowerCase()));
+  if (b.nsfwTokens) b.nsfwTokens = b.nsfwTokens.filter((t: any) => !REMOVE_TOKENS.includes(String(t).toLowerCase()));
   if (b.promptTokens.length < beforeClean) report.removedQuality += 1;
   const before = b.promptTokens.length;
-  QUALITY_TOKENS.forEach(t => { if (!b.promptTokens.includes(t)) b.promptTokens.push(t); });
+  QUALITY_TOKENS.forEach((t: any) => { if (!b.promptTokens.includes(t)) b.promptTokens.push(t); });
   if (b.promptTokens.length > before) report.qualityTokens += 1;
   // ⑤b 壁纸氛围散文（仅原型场景；成人场景 nsfwProse 已丰富且受句子预算约束）
-  if (!b.adult && !PROSE_ALL_SENTENCES.some(s => (b.promptProse || '').includes(s))) {
+  if (!b.adult && !PROSE_ALL_SENTENCES.some((s: any) => (b.promptProse || '').includes(s))) {
     b.promptProse = `${b.promptProse.trim()} ${pickProseSentence(b)}`.replace(/\s+/g, ' ').trim();
     report.proseUpgraded += 1;
   }
@@ -451,23 +451,23 @@ for (const b of blueprints) {
   if (b.recommendedSize === '832x1216') { b.recommendedSize = '1152x1536'; report.sizeBump += 1; }
   else if (b.recommendedSize === '1216x832') { b.recommendedSize = '1536x1152'; report.sizeBump += 1; }
   // ⑦a 否定式 tag 出清/替换（promptTokens + nsfwTokens）
-  [b.promptTokens, b.nsfwTokens].forEach((list, idx) => {
+  [b.promptTokens, b.nsfwTokens].forEach((list: any, idx: any) => {
     if (!Array.isArray(list)) return;
-    const cleaned = list.filter(t => !REMOVE_NEGATION_TOKENS.includes(String(t).toLowerCase()))
-      .map(t => TOKEN_REPLACEMENTS[t] || t);
-    const changed = cleaned.length !== list.length || cleaned.some((t, i) => t !== list[i]);
+    const cleaned = list.filter((t: any) => !REMOVE_NEGATION_TOKENS.includes(String(t).toLowerCase()))
+      .map((t: any) => TOKEN_REPLACEMENTS[t] || t);
+    const changed = cleaned.length !== list.length || cleaned.some((t: any, i: any) => t !== list[i]);
     if (changed) {
       if (idx === 0) b.promptTokens = cleaned; else b.nsfwTokens = cleaned;
       report.negTokens += 1;
     }
   });
   // ⑦b prose 否定短语正向改写 + 伪影修复
-  ['promptProse', 'nsfwProse', 'description'].forEach((field) => {
+  ['promptProse', 'nsfwProse', 'description'].forEach((field: any) => {
     let text = b[field];
     if (!text) return;
     const before = text;
-    PROSE_NEGATION_RULES.forEach(([re, to]) => { text = text.replace(re, to); });
-    PROSE_ARTIFACT_RULES.forEach(([re, to]) => { text = text.replace(re, to); });
+    PROSE_NEGATION_RULES.forEach(([re, to]: any) => { text = text.replace(re, to); });
+    PROSE_ARTIFACT_RULES.forEach(([re, to]: any) => { text = text.replace(re, to); });
     if (text !== before) {
       b[field] = text.replace(/\s{2,}/g, ' ').replace(/\s+([,.;])/g, '$1');
       report.negProse += 1;
@@ -484,7 +484,7 @@ for (const b of blueprints) {
   if (Array.isArray(b.negativeTokens)) {
     const beforeNeg = b.negativeTokens.length;
     const dropSet = new Set(NEGATIVE_DROP_BY_ID[b.id] || []);
-    b.negativeTokens = b.negativeTokens.filter(t => !NEGATIVE_DROP_RE.test(t) && !dropSet.has(t));
+    b.negativeTokens = b.negativeTokens.filter((t: any) => !NEGATIVE_DROP_RE.test(t) && !dropSet.has(t));
     if (b.negativeTokens.length !== beforeNeg) report.negNegative += 1;
   }
 }

@@ -7,29 +7,51 @@ const path: typeof import('node:path') = require('node:path');
 const os: typeof import('node:os') = require('node:os');
 const { randomUUID, createHash }: typeof import('node:crypto') = require('node:crypto');
 
+interface LockOwner { host: string; pid: number; token: string; }
+interface ResourceContext {
+  io: typeof fs;
+  userRoot: string;
+  store: string;
+  policy: unknown;
+  access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
+  onEvent?: (event: { phase: string; [key: string]: unknown }) => unknown;
+  freeBytes?: () => number;
+}
+interface ContextOptions {
+  userDataRoot: string;
+  io?: typeof fs;
+  protectedRoots?: string[];
+  policy?: unknown;
+  access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
+  onEvent?: (event: { phase: string; [key: string]: unknown }) => unknown;
+  freeBytes?: () => number;
+}
+
 const STORE_NAME = 'resource-library-v1';
 const MARKER = { schemaVersion: 1, kind: 'aics-resource-library' };
 const MAX_JSON = 16 * 1024 * 1024;
 
 class ResourceError extends Error {
-  constructor(code, message, details) {
+  code: string;
+  details?: unknown;
+  constructor(code: string, message: string, details?: unknown) {
     super(message);
     this.name = 'ResourceError';
     this.code = code;
     if (details !== undefined) this.details = details;
   }
 }
-function fail(code, message, details) { throw new ResourceError(code, message, details); }
-function digest(bytes) { return createHash('sha256').update(bytes).digest('hex'); }
-function samePath(a, b) {
-  const normalize = value => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
+function fail(code: string, message: string, details?: unknown): never { throw new ResourceError(code, message, details); }
+function digest(bytes: string | Uint8Array): string { return createHash('sha256').update(bytes).digest('hex'); }
+function samePath(a: string, b: string): boolean {
+  const normalize = (value: string) => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
   return normalize(a) === normalize(b);
 }
-function within(root, target) {
+function within(root: string, target: string): boolean {
   const rel = path.relative(root, target);
   return rel === '' || (rel !== '..' && !rel.startsWith('..' + path.sep) && !path.isAbsolute(rel));
 }
-function relativePath(value) {
+function relativePath(value: string): string {
   if (typeof value !== 'string' || !value || /[\\:\x00-\x1f\x7f<>"|?*]/.test(value)
     || path.posix.normalize(value) !== value || value.startsWith('/')) fail('UNSAFE_PATH', 'Expected a relative POSIX path');
   const segments = value.split('/');
@@ -38,14 +60,14 @@ function relativePath(value) {
       || /^(con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³])(?:\.|$)/i.test(segment)) {
       fail('UNSAFE_PATH', 'Windows path alias or reserved name rejected');
     }
-    const decoded = segment.replace(/%([\da-f]{2})/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+    const decoded = segment.replace(/%([\da-f]{2})/gi, (_: string, hex: string) => String.fromCharCode(parseInt(hex, 16)));
     if (decoded !== segment && (/[\\/:\x00-\x1f\x7f]/.test(decoded) || decoded === '.' || decoded === '..')) {
       fail('UNSAFE_PATH', 'Encoded path separator or traversal rejected');
     }
   }
   return value;
 }
-function child(root, rel) {
+function child(root: string, rel: string): string {
   relativePath(rel);
   const target = path.join(root, ...rel.split('/'));
   if (!within(root, target) || samePath(root, target)) fail('UNSAFE_PATH', 'Path escapes dedicated root');
@@ -53,7 +75,8 @@ function child(root, rel) {
 }
 
 // Check every existing ancestor, including the selected root. Missing leaves do not bypass this.
-function noLinks(io, target, { missing = false, hardlinks = false } = {}) {
+function noLinks(io: typeof fs, target: string, options: { missing?: boolean; hardlinks?: boolean } = {}): import('node:fs').Stats | null {
+  const { missing = false, hardlinks = false } = options;
   const absolute = path.resolve(target);
   if (/^(\\\\|\/\/)/.test(absolute)) fail('UNSAFE_PATH', 'Network filesystem roots are not supported');
   const volume = path.parse(absolute).root;
@@ -73,14 +96,15 @@ function noLinks(io, target, { missing = false, hardlinks = false } = {}) {
   }
   return stat;
 }
-function mkdir(io, target) {
+function mkdir(io: typeof fs, target: string): void {
   noLinks(io, target, { missing: true });
   io.mkdirSync(target, { recursive: true });
-  if (!noLinks(io, target).isDirectory()) fail('UNSAFE_PATH', 'Expected a directory');
+  const existingStat = noLinks(io, target);
+  if (!existingStat || !existingStat.isDirectory()) fail('UNSAFE_PATH', 'Expected a directory');
 }
-function readBytes(io, target, max = MAX_JSON, hardlinks = false) {
+function readBytes(io: typeof fs, target: string, max: number = MAX_JSON, hardlinks: boolean = false): Buffer {
   const st = noLinks(io, target, { hardlinks });
-  if (!st.isFile() || st.size > max) fail('METADATA_INVALID', 'Metadata must be a bounded ordinary file');
+  if (!st || !st.isFile() || st.size > max) fail('METADATA_INVALID', 'Metadata must be a bounded ordinary file');
   const fd = io.openSync(target, 'r');
   try {
     const opened = io.fstatSync(fd);
@@ -91,21 +115,21 @@ function readBytes(io, target, max = MAX_JSON, hardlinks = false) {
     return bytes;
   } finally { io.closeSync(fd); }
 }
-function readJson(io, target, optional = false, hardlinks = false) {
+function readJson(io: typeof fs, target: string, optional: boolean = false, hardlinks: boolean = false): any {
   try { return JSON.parse(readBytes(io, target, MAX_JSON, hardlinks).toString('utf8')); } catch (error) {
     if (optional && runtimeErrorCode(error) === 'ENOENT') return null;
     if (error instanceof SyntaxError) fail('METADATA_INVALID', 'Invalid JSON: ' + target);
     throw error;
   }
 }
-function flushDir(io, target) {
+function flushDir(io: typeof fs, target: string): void {
   // Node cannot portably FlushFileBuffers on a Windows directory. File bytes are fsynced;
   // process interruption is covered, sudden power loss still requires native device acceptance.
   if (process.platform === 'win32') return;
   const fd = io.openSync(target, 'r');
   try { io.fsyncSync(fd); } finally { io.closeSync(fd); }
 }
-function writeAll(io, fd, bytes) {
+function writeAll(io: typeof fs, fd: number, bytes: Buffer) {
   let offset = 0;
   while (offset < bytes.length) {
     const written = io.writeSync(fd, bytes, offset, bytes.length - offset);
@@ -113,7 +137,7 @@ function writeAll(io, fd, bytes) {
     offset += written;
   }
 }
-function writeAtomic(io, target, bytes) {
+function writeAtomic(io: typeof fs, target: string, bytes: Buffer): void {
   noLinks(io, target, { missing: true });
   const tmp = path.join(path.dirname(target), '.' + path.basename(target) + '.' + randomUUID() + '.tmp');
   const fd = io.openSync(tmp, 'wx', 0o600);
@@ -127,8 +151,8 @@ function writeAtomic(io, target, bytes) {
   io.renameSync(tmp, target);
   flushDir(io, path.dirname(target));
 }
-function writeJson(io, target, value) { writeAtomic(io, target, Buffer.from(JSON.stringify(value) + '\n')); }
-function cleanAtomicTemps(io, directory, names) {
+function writeJson(io: typeof fs, target: string, value: unknown): void { writeAtomic(io, target, Buffer.from(JSON.stringify(value) + '\n')); }
+function cleanAtomicTemps(io: typeof fs, directory: string, names: string[]): void {
   noLinks(io, directory);
   for (const name of io.readdirSync(directory)) {
     const owned = names.some(base => name.startsWith('.' + base + '.')
@@ -136,27 +160,27 @@ function cleanAtomicTemps(io, directory, names) {
     if (owned) unlink(io, child(directory, name));
   }
 }
-function unlink(io, target) {
+function unlink(io: typeof fs, target: string): void {
   if (noLinks(io, target, { missing: true })) {
     io.unlinkSync(target);
     flushDir(io, path.dirname(target));
   }
 }
-function cancelled(signal) {
+function cancelled(signal?: AbortSignal): void {
   if (signal?.aborted) fail('CANCELLED', 'Operation cancelled; verified files and previous installation are retained');
 }
-async function event(ctx, phase, details = {}, signal) {
+async function event(ctx: ResourceContext, phase: string, details: Record<string, unknown> = {}, signal?: AbortSignal): Promise<void> {
   cancelled(signal);
   if (ctx.onEvent) await ctx.onEvent({ phase, ...details });
-  await new Promise(resolve => setImmediate(resolve));
+  await new Promise((resolve) => setImmediate(resolve));
   cancelled(signal);
 }
-function access(ctx) {
+function access(ctx: ResourceContext): void {
   if (ctx.access?.isLocalStudioHost?.() !== true || ctx.access?.isAuthorized?.() !== true) {
     fail('ACCESS_DENIED', 'A positively identified local studio and authorized caller are required');
   }
 }
-function context(options = {}) {
+function context(options: Partial<ContextOptions> = {}): ResourceContext {
   if (typeof options.userDataRoot !== 'string' || !path.isAbsolute(options.userDataRoot)) fail('CONFIG_REQUIRED', 'An absolute userDataRoot is required');
   const io = options.io || fs;
   const userRoot = path.resolve(options.userDataRoot);
@@ -166,11 +190,12 @@ function context(options = {}) {
     if (typeof root !== 'string' || !path.isAbsolute(root)) fail('CONFIG_REQUIRED', 'protectedRoots must be absolute paths');
     if (within(root, store) || within(store, root)) fail('PROTECTED_ROOT', 'Resource storage overlaps application/artwork storage');
   }
-  if (!noLinks(io, userRoot).isDirectory()) fail('CONFIG_REQUIRED', 'userDataRoot must already be a directory');
+  const userStat = noLinks(io, userRoot);
+  if (!userStat || !userStat.isDirectory()) fail('CONFIG_REQUIRED', 'userDataRoot must already be a directory');
   return { io, userRoot, store, policy: JSON.parse(JSON.stringify(options.policy || {})), access: options.access,
     onEvent: options.onEvent, freeBytes: options.freeBytes };
 }
-function initialize(ctx) {
+function initialize(ctx: ResourceContext): void {
   access(ctx);
   const { io, store } = ctx;
   const st = noLinks(io, store, { missing: true });
@@ -185,7 +210,7 @@ function initialize(ctx) {
   } else if (JSON.stringify(existing) !== JSON.stringify(MARKER)) fail('UNOWNED_ROOT', 'Resource ownership marker is invalid');
   mkdir(io, child(store, 'locks'));
 }
-function ensureSpace(ctx, bytes) {
+function ensureSpace(ctx: ResourceContext, bytes: number): void {
   if (!Number.isSafeInteger(bytes) || bytes < 0) fail('SIZE_INVALID', 'Invalid required byte count');
   let available;
   if (ctx.freeBytes) available = BigInt(ctx.freeBytes());
@@ -195,7 +220,7 @@ function ensureSpace(ctx, bytes) {
   }
   if (available < BigInt(bytes)) fail('ENOSPC', 'Not enough free space; previous installation is retained', { required: bytes, available: available.toString() });
 }
-function alive(owner) {
+function alive(owner: LockOwner): boolean {
   if (!owner || owner.host !== os.hostname() || !Number.isInteger(owner.pid) || owner.pid <= 0
     || !/^[\da-f-]{36}$/.test(owner.token || '')) fail('LOCK_UNCERTAIN', 'Lock owner cannot be established safely');
   try { process.kill(owner.pid, 0); return true; } catch (error) {
@@ -207,7 +232,7 @@ function alive(owner) {
 // Publish a fully written claim with an exclusive hard link: no empty-owner crash window.
 // Stale takeover is itself locked by the old nonce, preventing two recoverers from unlinking
 // a new owner's lock. A killed reaper is handled by the same bounded protocol.
-function lockFile(ctx, name = 'writer', depth = 0) {
+function lockFile(ctx: ResourceContext, name: string = 'writer', depth: number = 0): () => void {
   if (depth > 8) fail('LOCK_UNCERTAIN', 'Too many interrupted lock recoveries');
   const { io } = ctx;
   const target = child(ctx.store, 'locks/' + name + '.json');
@@ -237,13 +262,13 @@ function lockFile(ctx, name = 'writer', depth = 0) {
         if (now?.token === old.token && !alive(now)) io.unlinkSync(target);
       } finally { releaseReaper(); }
     }
-    fail('BUSY', 'Resource lock changed during recovery');
+    throw fail('BUSY', 'Resource lock changed during recovery');
   } finally {
     // Claim and lock deliberately share an inode until this finally finishes.
     if (noLinks(io, claim, { missing: true, hardlinks: true })) io.unlinkSync(claim);
   }
 }
-async function locked(ctx, fn) {
+async function locked(ctx: ResourceContext, fn: () => unknown): Promise<unknown> {
   initialize(ctx);
   const release = lockFile(ctx);
   try { return await fn(); } finally { release(); }

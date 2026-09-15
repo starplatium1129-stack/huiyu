@@ -37,4 +37,4 @@ async function main() {
   await browser.close()
 }
 
-main().catch((e) => { console.error('ERR:', e); process.exit(1) })
+main().catch((e: any) => { console.error('ERR:', e); process.exit(1) })

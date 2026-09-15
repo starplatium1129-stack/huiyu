@@ -34,7 +34,7 @@ const SEED_BASE = 20260809;
 const SEED_STEP = 997;
 const SEED_COUNT = 3;
 
-const REPAIR_MODELS = Object.freeze({
+const REPAIR_MODELS: any = Object.freeze({
   nene: Object.freeze({
     loraId: 'L_NENE_V21_ANIMA',
     loraStrength: 0.85,
@@ -47,7 +47,7 @@ const REPAIR_MODELS = Object.freeze({
   }),
 });
 
-function argument(name: string, fallback = '') {
+function argument(name: string, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
@@ -76,9 +76,9 @@ function loadSceneIndex() {
   return scenes;
 }
 
-function buildSeeds(extra = 0) {
+function buildSeeds(extra: any = 0) {
   if (!Number.isInteger(extra) || extra < 0) throw new Error('--extra 必须是非负整数');
-  return Array.from({ length: SEED_COUNT }, (_unused, index) =>
+  return Array.from({ length: SEED_COUNT }, (_unused: any, index: any) =>
     SEED_BASE + (index + extra) * SEED_STEP);
 }
 
@@ -92,7 +92,7 @@ function manualParameterValue(raw: string, name: string) {
   return value;
 }
 
-function resolveRepairConfig(sceneCharacter: string, options = {}) {
+function resolveRepairConfig(sceneCharacter: string, options: any = {}) {
   const base = REPAIR_MODELS[sceneCharacter];
   if (!base) throw new Error(`不支持的场景角色：${sceneCharacter}`);
   const loraId = String(options.loraId || base.loraId);
@@ -167,7 +167,7 @@ async function submit(gateway: string, body: { prompt: string; negative: string;
       return { ok: false, error: `${job.status}: ${job.error || job.code || ''}` };
     }
     if (job.status === 'succeeded' && job.resultUrl) break;
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise<any>((resolve: any) => setTimeout(resolve, 2000));
   }
   if (job.status !== 'succeeded' || !job.resultUrl) return { ok: false, error: `timeout ${job.status}` };
   const image = await fetch(base + job.resultUrl, { cache: 'no-store' });
@@ -207,7 +207,7 @@ async function main() {
     character: scene._character,
     rating: scene.rating,
   });
-  const plan = {
+  const plan: any = {
     scene: sceneId,
     rating: scene.rating || 'ALL',
     outputDir,
@@ -263,7 +263,7 @@ async function main() {
       cfg,
     };
     console.log(`[generate] ${sceneId} seed ${seed}`);
-    const result = await submit(gateway, body);
+    const result: any = await submit(gateway, body);
     if (!result.ok) {
       console.log(`[failed] seed ${seed}: ${result.error}`);
       failed += 1;
@@ -291,7 +291,7 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

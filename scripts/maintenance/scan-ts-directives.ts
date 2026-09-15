@@ -33,7 +33,7 @@ const FORBIDDEN = [
 
 function walk(dir: string): string[] {
   if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry: any) => {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) return entry.name === 'archive' ? [] : walk(full);
     return EXTENSIONS.test(full) ? [full] : [];
@@ -66,7 +66,7 @@ function main() {
   for (const dir of TARGET_DIRS) {
     for (const file of walk(path.join(ROOT, dir))) {
       const lines = fs.readFileSync(file, 'utf8').split(/\r?\n/);
-      lines.forEach((line, index) => {
+      lines.forEach((line: any, index: any) => {
         for (const directive of FORBIDDEN) {
           if (line.includes(directive)) {
             violations.push(path.relative(ROOT, file) + ':' + (index + 1) + ' — ' + directive);
@@ -75,13 +75,13 @@ function main() {
       });
     }
   }
-  const runtimeFiles = RUNTIME_DIRS.flatMap(dir => walk(path.join(ROOT, dir)))
-    .concat(['server.ts', 'eslint.config.mts', 'assets/theme-bootstrap.ts'].map(file => path.join(ROOT, file)))
-    .filter(file => fs.existsSync(file) && !file.endsWith('.d.ts'));
+  const runtimeFiles = RUNTIME_DIRS.flatMap((dir: any) => walk(path.join(ROOT, dir)))
+    .concat(['server.ts', 'eslint.config.mts', 'assets/theme-bootstrap.ts'].map((file: any) => path.join(ROOT, file)))
+    .filter((file: any) => fs.existsSync(file) && !file.endsWith('.d.ts'));
   for (const file of runtimeFiles) violations.push(...runtimeDirectives(fs.readFileSync(file, 'utf8'), file));
   if (violations.length) {
     console.error('TypeScript 源码内发现静默绕过门禁的指令（一律禁止入库）:');
-    violations.forEach((v) => console.error('  - ' + v));
+    violations.forEach((v: any) => console.error('  - ' + v));
     process.exit(1);
   }
   console.log('TypeScript directive scan passed: frontend, runtime, tooling and tests are checked.');

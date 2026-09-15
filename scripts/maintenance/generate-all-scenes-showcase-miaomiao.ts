@@ -22,16 +22,16 @@ const MODEL_ID = 'anima-miaomiao-v1.2';
 const PROFILE_ID = 'anima_miaomiao_v12';
 const ARTIST_TAG = 'rella';
 
-function resolveProfile(presets) {
-  const profile = (presets.model_profiles || []).find(item => item.id === PROFILE_ID || item.id === 'anima_base_v10');
+function resolveProfile(presets: any) {
+  const profile = (presets.model_profiles || []).find((item: any) => item.id === PROFILE_ID || item.id === 'anima_base_v10');
   if (!profile) throw new Error(`presets.json missing profile for anima`);
   return profile;
 }
 
-function collectAllSceneTasks(opts, input) {
+function collectAllSceneTasks(opts: any, input: any) {
   const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
   const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
-  const tasks = [];
+  const tasks: any[] = [];
   const popularRaw = input.data['data/popular-characters.json'];
   const characters = popularContent.parsePopularCharacters(popularRaw);
   const blueprintsRaw = input.data['data/scene-blueprints.json'];
@@ -41,7 +41,7 @@ function collectAllSceneTasks(opts, input) {
   // 1. 热门角色场景蓝图（必须走 buildPopularPromptPlan 保证角色DNA）
   for (const character of characters) {
     if (opts.character && character.id !== opts.character) continue;
-    const owned = blueprints.filter(bp => bp.characterId === character.id);
+    const owned = blueprints.filter((bp: any) => bp.characterId === character.id);
 
     for (const bp of owned) {
       const isHorizontal = bp.recommendedSize && (bp.recommendedSize.includes('1536x1152') || bp.recommendedSize.includes('1216x832') || bp.recommendedSize.includes('1344x768'));
@@ -105,7 +105,7 @@ function collectAllSceneTasks(opts, input) {
     const scenes = input.data['data/scenes.json'];
     for (const sc of scenes) {
       if (opts.character && sc.char !== opts.character) continue;
-      if (tasks.some(t => t.id === sc.id)) continue;
+      if (tasks.some((t: any) => t.id === sc.id)) continue;
 
       const isHorizontal = sc.recommendedSize && (sc.recommendedSize.includes('1536x1152') || sc.recommendedSize.includes('1216x832') || sc.recommendedSize.includes('1344x768'));
       const width = isHorizontal ? 1216 : 832;
@@ -134,7 +134,7 @@ function collectAllSceneTasks(opts, input) {
   return tasks;
 }
 
-function buildPayload(task) {
+function buildPayload(task: any) {
   const payload = {
     modelId: MODEL_ID,
     prompt: task.prompt,
@@ -162,14 +162,14 @@ function buildPayload(task) {
   return payload;
 }
 
-function loadInputs(opts) {
+function loadInputs(opts: any) {
   const names = ['data/popular-characters.json', 'data/scene-blueprints.json', 'data/presets.json'];
   if (fs.existsSync(safety.noLinks(path.join(opts.root, 'data/scenes.json')))) names.push('data/scenes.json');
   return safety.snapshot(opts.root, names);
 }
 
-function candidateTasks(tasks) {
-  return tasks.map(task => ({
+function candidateTasks(tasks: any) {
+  return tasks.map((task: any) => ({
     key: task.type === 'popular' ? `popular:${task.characterId}:${task.id}` : `scene:${task.id}`,
     metadata: { batch: task.type || 'scene', engine: 'anima', characterId: task.characterId,
       blueprintId: task.type === 'popular' ? task.id : undefined,
@@ -184,7 +184,7 @@ function candidateTasks(tasks) {
   }));
 }
 
-async function main(args = process.argv.slice(2), deps = {}) {
+async function main(args: any = process.argv.slice(2), deps: any = {}) {
   const opts = safety.parseArgs(args, { force: 'flag', character: 'value', limit: 'value' }, deps.env || process.env);
   if (opts.help) return safety.help(__filename, '[--force] [--character <id>] [--limit <n>]');
   opts.limit = Number(opts.limit || 0);

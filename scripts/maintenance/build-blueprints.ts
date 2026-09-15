@@ -20,7 +20,7 @@ const { syncDataVersion }: typeof import('../lib/data-version') = require('../li
 const ROOT = path.resolve(__dirname, '..', '..');
 const check = process.argv.includes('--check');
 const { blueprints, sources } = loadBlueprintShards();
-const counts = sources.map(({ entry, blueprints: items }) => entry.file + '=' + items.length).join(', ');
+const counts = sources.map(({ entry, blueprints: items }: any) => entry.file + '=' + items.length).join(', ');
 
 if (check) {
   if (!aggregateIsCurrent()) {

@@ -72,7 +72,7 @@ function scanFile(filepath: PathOrFileDescriptor) {
     var content = stripComments(fs.readFileSync(filepath, 'utf8'));
   } catch (e) { return []; }
 
-  var warnings = [];
+  var warnings: any[] = [];
   var lines = content.split('\n');
 
   if (filepath.endsWith('.css')) {
@@ -116,9 +116,9 @@ function scanFile(filepath: PathOrFileDescriptor) {
 
 function main() {
   var root = path.join(__dirname, '..', '..');
-  var allWarnings = [];
+  var allWarnings: any[] = [];
 
-  scanDirs.forEach(function (dir) {
+  scanDirs.forEach(function (dir: any) {
     var dirPath = path.join(root, dir);
     if (!fs.existsSync(dirPath)) return;
     walkDir(dirPath);
@@ -126,7 +126,7 @@ function main() {
 
   function walkDir(dirPath: PathLike) {
     var entries = fs.readdirSync(dirPath, { withFileTypes: true });
-    entries.forEach(function (entry) {
+    entries.forEach(function (entry: any) {
       if (entry.name.startsWith('.') || entry.name === 'node_modules') return;
       var full = path.join(dirPath, entry.name);
       if (entry.isDirectory()) {
@@ -138,8 +138,8 @@ function main() {
     });
   }
 
-  var counts = {};
-  allWarnings.forEach(function (w) {
+  var counts: Record<string, any> = {};
+  allWarnings.forEach(function (w: any) {
     var key = path.relative(root, w.file);
     counts[key] = (counts[key] || 0) + 1;
   });
@@ -151,11 +151,11 @@ function main() {
 
   console.log('  ⚠️  ' + allWarnings.length + ' hardcoded hex color(s) found:\n');
   var keys = Object.keys(counts).sort();
-  keys.forEach(function (f) {
+  keys.forEach(function (f: any) {
     console.log('  ' + f + ' (' + counts[f] + ')');
     allWarnings
-      .filter(function (w) { return path.relative(root, w.file) === f; })
-      .forEach(function (w) {
+      .filter(function (w: any) { return path.relative(root, w.file) === f; })
+      .forEach(function (w: any) {
         console.log('    L' + w.line + ': ' + w.hex + '  →  ' + w.text);
       });
     console.log('');

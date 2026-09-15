@@ -69,7 +69,7 @@ function entryFullyOnDisk(entry: { references: unknown; outfitId: unknown; }, ci
 
 // A 类：目录内前缀名漂移 -> 重命名为目录式规范名
 function repairDriftedFiles(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
-  const renames = [];
+  const renames: any[] = [];
   for (const [cid, profile] of Object.entries(view)) {
     for (const outfit of profile.outfits || []) {
       for (const ref of outfit.references || []) {
@@ -88,16 +88,16 @@ function repairDriftedFiles(view: ArrayLike<unknown>|{ [s: string]: unknown; }) 
 
 // B+C 类：view 按 outfitId 去重并剔除幽灵形态；返回 { view, removed, deduped }
 function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
-  const removed = [];
-  const deduped = [];
-  const survivingIds = {};
+  const removed: any[] = [];
+  const deduped: any[] = [];
+  const survivingIds: Record<string, any> = {};
   for (const [cid, profile] of Object.entries(view)) {
     const groups = new Map();
     for (const outfit of profile.outfits || []) {
       if (!groups.has(outfit.outfitId)) groups.set(outfit.outfitId, []);
       groups.get(outfit.outfitId).push(outfit);
     }
-    const kept = [];
+    const kept: any[] = [];
     for (const [oid, entries] of groups) {
       const valid = entries.filter((entry: unknown) => entryFullyOnDisk(entry, cid));
       if (!valid.length) {
@@ -109,7 +109,7 @@ function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
       const preferred = valid.find((e: { isDefault: unknown; }) => e.isDefault) || valid[0];
       kept.push(preferred);
     }
-    survivingIds[cid] = new Set(kept.map((o) => o.outfitId));
+    survivingIds[cid] = new Set(kept.map((o: any) => o.outfitId));
     profile.outfits = kept;
   }
   return { removed, deduped, survivingIds };
@@ -117,7 +117,7 @@ function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
 
 // standards 与 view 逐 outfitId 对齐（镜像契约：两侧集合必须一致，且各自无重复条目）
 function alignStandards(standards: { characters: unknown; }, survivingIds: { [x: string]: unknown; }) {
-  const removed = [];
+  const removed: any[] = [];
   for (const character of standards.characters) {
     const keep = survivingIds[character.id];
     if (!keep) continue; // view 已无此角色（当前两侧均为 50 角色，不应发生）
@@ -163,13 +163,13 @@ function countBroken(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
 function main() {
   const view = readJson(VIEW_FILE);
   const standards = readJson(STANDARDS_FILE);
-  const beforeRefs = Object.values(view).reduce((n, p) => n + (p.outfits || []).reduce((m: unknown, o: { references: unknown; }) => m + (o.references || []).length, 0), 0);
+  const beforeRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: { references: unknown; }) => m + (o.references || []).length, 0), 0);
 
   const renames = repairDriftedFiles(view);
   const { removed, deduped, survivingIds } = pruneViewOutfits(view);
   const standardsRemoved = alignStandards(standards, survivingIds);
 
-  const afterRefs = Object.values(view).reduce((n, p) => n + (p.outfits || []).reduce((m: unknown, o: { references: unknown; }) => m + (o.references || []).length, 0), 0);
+  const afterRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: { references: unknown; }) => m + (o.references || []).length, 0), 0);
   const stillBroken = countBroken(view);
 
   console.log(`[ref-url-repair] 漂移重命名: ${renames.length}`);

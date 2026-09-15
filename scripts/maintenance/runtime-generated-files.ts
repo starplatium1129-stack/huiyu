@@ -11,7 +11,7 @@ function toPosix(filePath: string) {
 
 function formatDiagnostics(diagnostics: readonly import('typescript').Diagnostic[], root: string) {
   return ts.formatDiagnosticsWithColorAndContext(diagnostics, {
-    getCanonicalFileName: (fileName) => fileName,
+    getCanonicalFileName: (fileName: any) => fileName,
     getCurrentDirectory: () => root,
     getNewLine: () => '\n',
   });
@@ -40,15 +40,15 @@ function getRuntimeGeneratedInventory(root: string) {
   const parsed = parseRuntimeConfig(root);
   const servicesRoot = path.resolve(root, parsed.options.rootDir || 'services');
   const sourceFiles = parsed.fileNames
-    .filter((filePath) => filePath.endsWith('.ts') && !filePath.endsWith('.d.ts') && isInside(servicesRoot, filePath))
+    .filter((filePath: any) => filePath.endsWith('.ts') && !filePath.endsWith('.d.ts') && isInside(servicesRoot, filePath))
     .sort();
 
   if (sourceFiles.length === 0) {
     throw new Error('tsconfig.runtime.json does not include any services TypeScript sources');
   }
 
-  const javascriptFiles = sourceFiles.map((sourceFile) => outputRelative(sourceFile, servicesRoot, '.js'));
-  const declarationFiles = sourceFiles.map((sourceFile) => outputRelative(sourceFile, servicesRoot, '.d.ts'));
+  const javascriptFiles = sourceFiles.map((sourceFile: any) => outputRelative(sourceFile, servicesRoot, '.js'));
+  const declarationFiles = sourceFiles.map((sourceFile: any) => outputRelative(sourceFile, servicesRoot, '.d.ts'));
 
   return {
     parsed,
@@ -60,7 +60,7 @@ function getRuntimeGeneratedInventory(root: string) {
   };
 }
 
-function listGeneratedFiles(directory: string, prefix = ''): string[] {
+function listGeneratedFiles(directory: string, prefix: any = ''): string[] {
   if (!fs.existsSync(directory)) return [];
 
   const files: string[] = [];
@@ -91,16 +91,16 @@ function listTrackedGeneratedFiles(root: string, servicesRoot: string) {
   return result.stdout
     .split('\0')
     .filter(Boolean)
-    .map((relativePath) => path.resolve(root, relativePath))
-    .filter((filePath) => isInside(servicesRoot, filePath))
-    .map((filePath) => toPosix(path.relative(servicesRoot, filePath)))
-    .filter((relativePath) => /\.(?:js|d\.ts)$/.test(relativePath))
+    .map((relativePath: any) => path.resolve(root, relativePath))
+    .filter((filePath: any) => isInside(servicesRoot, filePath))
+    .map((filePath: any) => toPosix(path.relative(servicesRoot, filePath)))
+    .filter((relativePath: any) => /\.(?:js|d\.ts)$/.test(relativePath))
     .sort();
 }
 
 function difference(left: readonly string[], right: readonly string[]) {
   const rightSet = new Set(right);
-  return left.filter((item) => !rightSet.has(item)).sort();
+  return left.filter((item: any) => !rightSet.has(item)).sort();
 }
 
 function auditGeneratedFileSets(expected: readonly string[], onDisk: readonly string[], tracked: readonly string[]) {
@@ -131,7 +131,7 @@ function emitRuntime(root: string, inventory: ReturnType<typeof getRuntimeGenera
 }
 
 function findByteDrift(files: readonly string[], committedRoot: string, emittedRoot: string) {
-  return files.filter((relativePath) => {
+  return files.filter((relativePath: any) => {
     const committed = fs.readFileSync(path.join(committedRoot, relativePath));
     const emitted = fs.readFileSync(path.join(emittedRoot, relativePath));
     return !committed.equals(emitted);

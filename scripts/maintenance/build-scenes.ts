@@ -11,13 +11,13 @@ const path: typeof import('path') = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const check = process.argv.includes('--check');
 const { scenes, sources } = loadSceneShards();
-const counts = sources.map(({ file, scenes: items }) => file + '=' + items.length).join(', ');
+const counts = sources.map(({ file, scenes: items }: any) => file + '=' + items.length).join(', ');
 
 if (check) {
   if (!aggregateIsCurrent(scenes)) {
     // 任一产物缺失（fresh clone / 部分丢失；产物自 2026-08-28 起不入库）→ 自愈重建
     const anyMissing = [aggregatePath, browserShardPath.nene, browserShardPath.natsume,
-      browserShardPath.shared, corePath, indexPath].some((file) => !fs.existsSync(file));
+      browserShardPath.shared, corePath, indexPath].some((file: any) => !fs.existsSync(file));
     if (anyMissing) {
       writeAggregate(scenes);
       console.log('Scene products missing: rebuilt ' + scenes.length + ' scenes (' + counts + ')');

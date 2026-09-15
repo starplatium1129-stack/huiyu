@@ -10,15 +10,15 @@ const { once }: typeof import('node:events') = require('node:events');
 const ROOT = path.resolve(__dirname, '../..');
 
 async function freePort() {
-  const server = net.createServer();
+  const server: any = net.createServer();
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
   const port = server.address().port;
-  await new Promise(resolve => server.close(resolve));
+  await new Promise<any>((resolve: any) => server.close(resolve));
   return port;
 }
 
-async function verifyDesktopGateway({ root = ROOT, logger = console.log } = {}) {
+async function verifyDesktopGateway({ root = ROOT, logger = console.log }: any = {}) {
   const tauri = path.join(root, 'desktop-tauri/src-tauri');
   const config = JSON.parse(fs.readFileSync(path.join(tauri, 'tauri.conf.json'), 'utf8'));
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-installed-gateway-'));
@@ -49,8 +49,8 @@ async function verifyDesktopGateway({ root = ROOT, logger = console.log } = {}) 
     });
     exited = once(child, 'close');
     exited.catch(() => {});
-    child.stdout.on('data', data => { output = (output + data).slice(-16000); });
-    child.stderr.on('data', data => { output = (output + data).slice(-16000); });
+    child.stdout.on('data', (data: any) => { output = (output + data).slice(-16000); });
+    child.stderr.on('data', (data: any) => { output = (output + data).slice(-16000); });
     const base = `http://127.0.0.1:${port}`;
     for (;;) {
       if (child.exitCode !== null) throw new Error(`Packaged gateway exited: ${output}`);
@@ -60,7 +60,7 @@ async function verifyDesktopGateway({ root = ROOT, logger = console.log } = {}) 
         if (response.ok && health.ok && health.app === 'ai-cg-studio' && health.gateway) break;
       } catch { /* Bound readiness retries. */ }
       if (Date.now() - started > 20000) throw new Error(`Packaged gateway readiness timed out: ${output}`);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise<any>((resolve: any) => setTimeout(resolve, 100));
     }
     const readyMs = Date.now() - started;
     for (const route of ['/', '/companion', '/companion-chat', '/docs/INDEX.md']) {
@@ -82,6 +82,6 @@ async function verifyDesktopGateway({ root = ROOT, logger = console.log } = {}) 
 
 if (require.main === module) {
   if (process.argv.includes('--help')) console.log('Verify staged Windows gateway using the exact bundle mapping in an isolated temporary installation.');
-  else verifyDesktopGateway().catch(error => { console.error(error.message); process.exitCode = 1; });
+  else verifyDesktopGateway().catch((error: any) => { console.error(error.message); process.exitCode = 1; });
 }
 export = { verifyDesktopGateway };

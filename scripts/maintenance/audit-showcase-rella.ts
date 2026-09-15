@@ -24,14 +24,14 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_MANIFEST = path.join(ROOT, '..', 'AI', 'Reviews', 'ShowcaseRefresh', '2026-08-15_v33-arknights-rella', 'generation-manifest.json');
 const DEFAULT_OUT = path.join(ROOT, '..', 'AI', 'Reviews', 'ShowcaseRefresh', '2026-08-15_v33-arknights-rella', 'audit-results.json');
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function readJson(file) {
+function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
@@ -40,31 +40,31 @@ function writeJsonAtomic(file, value) {
 
 const characters = readJson(path.join(ROOT, 'data', 'popular-characters.json')).characters;
 
-function expectedFeatures(character, outfitId) {
-  const top = (character.identityTokens || []).filter(t => !['1girl', 'solo', 'arknights'].includes(t)).slice(0, 10).join(' / ');
-  const outfit = (character.outfits || []).find(o => o.id === outfitId)
-    || (character.outfits || []).find(o => o.isDefault) || (character.outfits || [])[0];
+function expectedFeatures(character: any, outfitId: any) {
+  const top = (character.identityTokens || []).filter((t: any) => !['1girl', 'solo', 'arknights'].includes(t)).slice(0, 10).join(' / ');
+  const outfit = (character.outfits || []).find((o: any) => o.id === outfitId)
+    || (character.outfits || []).find((o: any) => o.isDefault) || (character.outfits || [])[0];
   return `${character.displayName}（${character.originalName}）\n身份描述：${character.identityProse}\n关键标识：${top}\n主服装：${outfit ? outfit.prose : '（未定义）'}`;
 }
 
-function buildPrompt(record) {
-  const character = characters.find(c => c.id === record.characterId) || { displayName: record.characterId, identityProse: '', identityTokens: [] };
+function buildPrompt(record: any) {
+  const character = characters.find((c: any) => c.id === record.characterId) || { displayName: record.characterId, identityProse: '', identityTokens: [] };
   const expected = expectedFeatures(character, record.outfitId) + `\n本张实际提交的场景：${record.prompt || record.blueprintTitle}`;
   return `你是画师样张审核员。这是「${record.displayName}」的出图审核（画师 @rella 风格，蓝图「${record.blueprintTitle}」）。\n\n【该角色的预期特征】\n${expected}\n\n请逐项审核并严格按格式输出：\n1) 角色身份：画面中的人物是否确实是「${character.displayName}」本人？必须逐项对照预期特征（发色/瞳色/发型/标志特征/服装），明确回答 是 或 否，并说明依据（若不像，说清被画成了什么/哪里不像）；\n2) 单人主体【判定规则】：a) 若画面出现第二个『同一主角』的完整人物（分身/复制体/镜像克隆/并排双主角），一律判不通过；b) 背景出现的明显不同路人/宾客/顾客（小尺寸、远离主角、非主角同款），属于合理的场景人物，可通过；c) 若画面有镜面元素（镜子/水面倒影/玻璃反光），同一主角的自然镜像可通过，镜中出现另一个完整人物/镜像与主体不一致则判不通过。请明确说明：主角是否仅一人、有无同款分身/复制体、背景路人情况、有无镜面及其合理性；\n3) 肢体与面部：有无崩坏（手/脸/肢体/穿模/结构错误）；\n4) 乱码伪影：有无文字乱码、水印、生成伪影；\n5) 场景契合：场景与蓝图主题是否匹配（蓝图：${record.blueprintTitle}）。\n\n【输出格式】（必须两行开头，后面可加详细说明）\n第一行：结论：通过 / 不通过 / 需注意\n第二行：角色身份：是 / 否\n之后：逐项说明。行内不要使用代码片段符号。`;
 }
 
 /** 新旧对比审核提示词（旧样张已存在时使用）：左图=新生成，右图=线上旧版。 */
-function buildComparePrompt(record) {
-  const character = characters.find(c => c.id === record.characterId) || { displayName: record.characterId, identityProse: '', identityTokens: [] };
+function buildComparePrompt(record: any) {
+  const character = characters.find((c: any) => c.id === record.characterId) || { displayName: record.characterId, identityProse: '', identityTokens: [] };
   const expected = expectedFeatures(character, record.outfitId);
   return `你是画师样张审核员。这是「${record.displayName}」的新旧样张对比审核（画师 @rella 风格，蓝图「${record.blueprintTitle}」）。\n\n【该角色的预期特征】\n${expected}\n\n图中左图=新生成样张，右图=当前线上旧版样张。请逐项对比并严格按格式输出：\n1) 角色身份：两张图是否都正确还原「${character.displayName}」？（发色/瞳色/发型/标志特征/服装），分别回答 是/否；\n2) 单人主体【判定规则】：a) 任一张图若出现第二个『同一主角』的完整人物（分身/复制体/镜像克隆/并排双主角），则该图判不通过；b) 背景出现的明显不同路人/宾客/顾客（小尺寸、远离主角、非主角同款），属于合理的场景人物，可通过；c) 镜面元素（镜子/水面倒影/玻璃反光）：同一主角自然镜像可通过，镜中出现另一个完整人物/镜像与主体不一致则判不通过。请分别说明两图：主角是否仅一人、有无同款分身、背景路人情况、有无镜面及合理性；\n3) 画质对比：哪张完成度更高（线条/光影/细节/背景）？哪张有崩坏/伪影/乱码/水印？\n4) 场景契合：哪张更符合蓝图「${record.blueprintTitle}」的主题与构图？\n5) 表情与氛围：哪张的表情更符合角色性格与场景氛围？\n\n【输出格式】（必须两行开头，后面可加详细说明）\n第一行：结论：新图更好 / 旧图更好 / 差不多 / 新图不通过 / 旧图不通过 / 都不通过\n第二行：角色身份：新=是/否，旧=是/否\n之后：逐项说明。行内不要使用代码片段符号。`;
 }
 
-function parseVerdict(output) {
+function parseVerdict(output: any) {
   const text = String(output || '');
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-  const concl = lines.find(l => l.startsWith('结论'));
-  const identity = lines.find(l => l.startsWith('角色身份'));
+  const lines = text.split('\n').map((l: any) => l.trim()).filter(Boolean);
+  const concl = lines.find((l: any) => l.startsWith('结论'));
+  const identity = lines.find((l: any) => l.startsWith('角色身份'));
   let verdict = 'review';
   if (concl) {
     // 对比模式结论：新图更好/旧图更好/差不多/新图不通过/旧图不通过/都不通过
@@ -95,7 +95,7 @@ function parseVerdict(output) {
   // 不强制 fail（交由 vision 在审核提示词指导下判定），无镜面的双人描述则硬 fail。
   // 对比模式下按「左/新 vs 右/旧」归属：新图双人→skip（保留旧样张），旧图双人→pass（换新图）。
   const multiPattern = /(双人错误|分身错误|复制分身|出现两个|同时存在.{0,10}两个|严重.{0,6}(双人|分身|多人)|两个完整.{0,4}(人物|角色)|多余人物|画面.{0,6}两个|分镜|双格|拼贴|上下两格|双分镜)/i;
-  const multi = text.match(multiPattern);
+  const multi: any = text.match(multiPattern);
   if (multi) {
     const ctx = text.slice(Math.max(0, multi.index - 30), multi.index + 50);
     const negated = /(无|非|不是|不构成|未|仅|只有|不算|没有)/.test(ctx);
@@ -134,10 +134,10 @@ async function main() {
     console.log(`[legacy] loaded ${legacyImages.size} existing showcase samples for comparison`);
   }
 
-  const records = readJson(manifestPath).filter(r => r.status === 'succeeded');
+  const records = readJson(manifestPath).filter((r: any) => r.status === 'succeeded');
   const audit = resume && fs.existsSync(outPath) ? readJson(outPath) : {};
   // resume：只审「未审过(新 attempt / 无记录) + fail + review」，保留 pass/skip 已定案。
-  const pending = records.filter(r => {
+  const pending = records.filter((r: any) => {
     const verdict = audit[r.recordId] && audit[r.recordId].verdict;
     return !verdict || verdict === 'fail' || verdict === 'review';
   });
@@ -148,7 +148,7 @@ async function main() {
   let pass = 0, fail = 0, review = 0, skip = 0;
   let cursor = 0;
 
-  async function inspectOne(record) {
+  async function inspectOne(record: any) {
     const imagePath = path.join(path.dirname(manifestPath), record.image);
     if (!fs.existsSync(imagePath)) {
       audit[record.recordId] = { ok: false, verdict: 'fail', summary: 'image file missing', inspectedAt: new Date().toISOString() };
@@ -193,7 +193,7 @@ async function main() {
   console.log(JSON.stringify({ inspected, pass, fail, review, skip, total: records.length }, null, 2));
 }
 
-main().catch(error => {
+main().catch((error: any) => {
   console.error(error && error.stack || error);
   process.exitCode = 1;
 });

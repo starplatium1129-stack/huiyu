@@ -74,33 +74,33 @@ const IMAGE_QUALITY = 94;
 const THUMB_BOX = '480x640';
 const THUMB_QUALITY = 85;
 
-function argument(name, fallback = '') {
+function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function readJson(file) {
+function readJson(file: any) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
-function writeJsonAtomic(file, value) {
+function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, file);
 }
-function isRecord(value) {
+function isRecord(value: any) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
-function cleanMeta(value) {
+function cleanMeta(value: any) {
   return Object.fromEntries(
-    Object.entries(value).filter(([, v]) => v !== undefined && v !== null && String(v) !== ''),
+    Object.entries(value).filter(([, v]: any) => v !== undefined && v !== null && String(v) !== ''),
   );
 }
-function shortTitle(displayName, fallback) {
+function shortTitle(displayName: any, fallback: any) {
   if (!displayName) return fallback;
   const first = String(displayName).split(' (')[0];
   return first || String(displayName);
 }
-function safeSegment(value, fallback) {
+function safeSegment(value: any, fallback: any) {
   const cleaned = String(value === undefined || value === null ? fallback : value)
     .replace(/[^a-z0-9_]/gi, '_')
     .replace(/^_+|_+$/g, '');
@@ -111,7 +111,7 @@ function safeSegment(value, fallback) {
  * 解析并校验 manual-review.json 的结构。缺文件 / 非 JSON / 字段错一
  * 律抛错 —— 校验不通过时 dry-run 也一样失败。
  */
-function parseReviewData(value) {
+function parseReviewData(value: any) {
   if (!isRecord(value)) throw new Error('manual-review.json must be an object with {version, reviewedAt, records}');
   if (!Number.isFinite(Number(value.version))) {
     throw new Error('manual-review.json must carry a numeric version');
@@ -120,7 +120,7 @@ function parseReviewData(value) {
     throw new Error('manual-review.json must carry reviewedAt');
   }
   if (!isRecord(value.records)) throw new Error('manual-review.json must carry a records map');
-  const records = {};
+  const records: Record<string, any> = {};
   for (const [key, record] of Object.entries(value.records)) {
     if (!isRecord(record)) throw new Error(`review record "${key}" must be an object`);
     if (record.verdict !== 'pass' && record.verdict !== 'fail') {
@@ -145,7 +145,7 @@ function parseReviewData(value) {
   return { version: Number(value.version), reviewedAt: value.reviewedAt, records };
 }
 
-function readReview(reviewPath) {
+function readReview(reviewPath: any) {
   let raw;
   try {
     raw = fs.readFileSync(reviewPath, 'utf8');
@@ -163,7 +163,7 @@ function readReview(reviewPath) {
  * 把审核结论映射到候选记录。只发布明确 pass 且 recordId 对应 succeeded 记录；
  * 缺审 / fail / 结构错误一律不发布（结构错误直接抛错）。
  */
-function planPublished(review, records) {
+function planPublished(review: any, records: any) {
   if (!Array.isArray(records)) throw new Error('candidate manifest must be an array');
   const byRecordId = new Map();
   const byKey = new Map();
@@ -180,8 +180,8 @@ function planPublished(review, records) {
   for (const key of Object.keys(review.records)) {
     if (!byKey.has(key)) throw new Error(`review key not in candidate manifest: ${key}`);
   }
-  const additions = [];
-  const rejected = [];
+  const additions: any[] = [];
+  const rejected: any[] = [];
   for (const [key, verdict] of Object.entries(review.records)) {
     if (verdict.verdict === 'fail') {
       rejected.push(key);
@@ -200,17 +200,17 @@ function planPublished(review, records) {
     additions.push({ key, record, review: verdict });
   }
   const reviewedKeys = new Set(Object.keys(review.records));
-  const unreviewed = [];
+  const unreviewed: any[] = [];
   for (const [key, list] of byKey) {
-    if (!list.some(item => item.status === 'succeeded')) continue;
+    if (!list.some((item: any) => item.status === 'succeeded')) continue;
     if (!reviewedKeys.has(key)) unreviewed.push(key);
   }
-  additions.sort((a, b) => a.key.localeCompare(b.key));
+  additions.sort((a: any, b: any) => a.key.localeCompare(b.key));
   return { additions, rejected, unreviewed };
 }
 
 /** 完整审核门禁：succeeded key 必须全部出现在人工审核里，否则拒绝发布（防部分发布）。 */
-function assertFullReviewCoverage(plan) {
+function assertFullReviewCoverage(plan: any) {
   if (plan.unreviewed.length) {
     throw new Error(
       `manual review must cover every succeeded key — 未审核 ${plan.unreviewed.length} 个: ${plan.unreviewed.join(', ')}`,
@@ -219,7 +219,7 @@ function assertFullReviewCoverage(plan) {
 }
 
 /** 构造发布条目。ID 稳定安全：artist_<artistId|baseline> / pc_<subject> / lora_<char>_<engine>_<comp>。 */
-function entryForRecord({ record, review, key }, loraVersions) {
+function entryForRecord({ record, review, key }: any, loraVersions: any) {
   const batch = record.batch;
   let id;
   let char;
@@ -290,17 +290,17 @@ function entryForRecord({ record, review, key }, loraVersions) {
 }
 
 /** 合并 source 场景条目与新发布条目，重算场景/条目/类型/分级计数。 */
-function buildManifest(sourceManifest, additions, context) {
+function buildManifest(sourceManifest: any, additions: any, context: any) {
   const sourceEntries = (sourceManifest.entries || [])
-    .filter(entry => isRecord(entry))
-    .map(entry => (entry.type ? entry : Object.assign({}, entry, { type: 'scene' })));
-  const incoming = new Set(additions.map(entry => entry.id));
-  const entries = [...sourceEntries.filter(entry => !incoming.has(entry.id)), ...additions];
-  const typeCounts = { scene: 0, artist: 0, popular: 0, lora: 0 };
+    .filter((entry: any) => isRecord(entry))
+    .map((entry: any) => (entry.type ? entry : Object.assign({}, entry, { type: 'scene' })));
+  const incoming = new Set(additions.map((entry: any) => entry.id));
+  const entries = [...sourceEntries.filter((entry: any) => !incoming.has(entry.id)), ...additions];
+  const typeCounts: any = { scene: 0, artist: 0, popular: 0, lora: 0 };
   for (const entry of entries) {
     if (typeCounts[entry.type] !== undefined) typeCounts[entry.type] += 1;
   }
-  const counts = { All: 0, R15: 0, R18: 0 };
+  const counts: any = { All: 0, R15: 0, R18: 0 };
   for (const entry of entries) {
     const rating = entry.rating === 'R15' || entry.rating === 'R18' ? entry.rating : 'All';
     counts[rating] += 1;
@@ -322,7 +322,7 @@ function buildManifest(sourceManifest, additions, context) {
   return manifest;
 }
 
-function resolveDirArg(showcaseRoot, value, label, mustExist) {
+function resolveDirArg(showcaseRoot: any, value: any, label: any, mustExist: any) {
   const raw = value || '';
   const explicitPath = path.isAbsolute(raw) || /^[a-zA-Z]:[\\/]/.test(raw);
   const candidate = explicitPath
@@ -337,7 +337,7 @@ function resolveDirArg(showcaseRoot, value, label, mustExist) {
   return path.resolve(candidate);
 }
 
-function isSameOrChild(child, parent) {
+function isSameOrChild(child: any, parent: any) {
   const rel = path.relative(parent, child);
   return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
 }
@@ -349,7 +349,7 @@ function isSameOrChild(child, parent) {
  *   - 位于 root 内时只允许 root 的直接子目录（命名/默认发布）。
  *   - root 外的绝对 target（测试逃生口）至少不得包含 source 或 root。
  */
-function validateTarget(showcaseRoot, sourceDir, targetDir) {
+function validateTarget(showcaseRoot: any, sourceDir: any, targetDir: any) {
   const root = path.resolve(showcaseRoot);
   const source = path.resolve(sourceDir);
   const target = path.resolve(targetDir);
@@ -374,7 +374,7 @@ function validateTarget(showcaseRoot, sourceDir, targetDir) {
   return target;
 }
 
-function sourcePathFor(record, from) {
+function sourcePathFor(record: any, from: any) {
   const rel = record.image || '';
   if (!rel) throw new Error(`succeeded record has no image: ${record.recordId || record.key}`);
   const label = record.recordId || record.key;
@@ -402,7 +402,7 @@ function loadLoraVersions() {
   try {
     const loras = readJson(path.join(ROOT, 'data', 'loras.json'));
     const list = Array.isArray(loras) ? loras : (loras.data || []);
-    const versions = {};
+    const versions: Record<string, any> = {};
     for (const lora of list) {
       if (lora && lora.id && lora.version !== undefined) versions[lora.id] = String(lora.version);
     }
@@ -412,7 +412,7 @@ function loadLoraVersions() {
   }
 }
 
-function convertImages(python, sourceFile, imageOut, thumbOut) {
+function convertImages(python: any, sourceFile: any, imageOut: any, thumbOut: any) {
   const result = spawnSync(python, [
     path.join(ROOT, 'scripts', 'maintenance', 'convert-showcase-image.py'),
     sourceFile,
@@ -435,14 +435,14 @@ function convertImages(python, sourceFile, imageOut, thumbOut) {
 }
 
 /** 完整验证：manifest 可被生产解析器接受、计数自洽、id 唯一、资产存在且符合白名单。 */
-function verifyTarget(tempDir, manifest, additions) {
+function verifyTarget(tempDir: any, manifest: any, additions: any) {
   const { parseShowcaseManifest }: typeof import('../../src/utils/showcaseManifest.ts') = require('../../src/utils/showcaseManifest.ts');
   const { isShowcaseAssetPath }: typeof import('../../server/showcase-assets.js') = require('../../server/showcase-assets.js');
   const parsed = parseShowcaseManifest(manifest);
   if (parsed.entries.length !== manifest.entries.length) {
     throw new Error(`manifest lost entries during parse: ${parsed.entries.length} != ${manifest.entries.length}`);
   }
-  const ids = new Set(parsed.entries.map(entry => entry.id));
+  const ids = new Set(parsed.entries.map((entry: any) => entry.id));
   if (ids.size !== parsed.entries.length) throw new Error('manifest ids are not unique');
   if (parsed.sceneCount !== manifest.sceneCount) {
     throw new Error(`sceneCount mismatch: parsed ${parsed.sceneCount} != manifest ${manifest.sceneCount}`);
@@ -453,9 +453,9 @@ function verifyTarget(tempDir, manifest, additions) {
   if (parsed.typeCounts.scene !== manifest.sceneCount) {
     throw new Error(`typeCounts.scene (${parsed.typeCounts.scene}) != sceneCount (${manifest.sceneCount})`);
   }
-  const typeSum = Object.values(parsed.typeCounts).reduce((sum, count) => sum + count, 0);
+  const typeSum = Object.values(parsed.typeCounts).reduce((sum: any, count: any) => sum + count, 0);
   if (typeSum !== manifest.entryCount) throw new Error(`typeCounts sum (${typeSum}) != entryCount (${manifest.entryCount})`);
-  const ratingSum = Object.values(parsed.counts).reduce((sum, count) => sum + count, 0);
+  const ratingSum = Object.values(parsed.counts).reduce((sum: any, count: any) => sum + count, 0);
   if (ratingSum !== manifest.entryCount) throw new Error(`counts sum (${ratingSum}) != entryCount (${manifest.entryCount})`);
   for (const entry of parsed.entries) {
     const image = entry.image || `images/${entry.id}.jpg`;
@@ -485,7 +485,7 @@ function verifyTarget(tempDir, manifest, additions) {
  * backup、rename temp→target；任一步失败恢复 backup；全部成功后删除 backup。
  * renameSync/rmSync 可注入以便测试模拟失败。
  */
-function switchTarget(tempDir, targetDir, force, renameSync = fs.renameSync, rmSync = fs.rmSync) {
+function switchTarget(tempDir: any, targetDir: any, force: any, renameSync: any = fs.renameSync, rmSync: any = fs.rmSync) {
   const backupDir = path.join(path.dirname(targetDir), `.${path.basename(targetDir)}.backup-${process.pid}`);
   const targetExists = fs.existsSync(targetDir);
   if (targetExists) {
@@ -535,7 +535,7 @@ async function main() {
   }
 
   // 校验每个 pass 记录源图存在（dry-run 也执行，确保计划真实可发布）。
-  const additions = plan.additions.map(item => {
+  const additions = plan.additions.map((item: any) => {
     const built = entryForRecord(item, loraVersions);
     const source = sourcePathFor(item.record, from);
     if (!fs.existsSync(source)) throw new Error(`missing source image for ${item.key}: ${source}`);
@@ -543,7 +543,7 @@ async function main() {
   });
 
   const sourceManifest = readJson(path.join(sourceDir, 'manifest.json'));
-  const manifest = buildManifest(sourceManifest, additions.map(item => item.entry), {
+  const manifest = buildManifest(sourceManifest, additions.map((item: any) => item.entry), {
     sourceName: path.basename(sourceDir),
     publishedAt: new Date().toISOString(),
   });
@@ -558,7 +558,7 @@ async function main() {
     entryCount: manifest.entryCount,
     typeCounts: manifest.typeCounts,
     counts: manifest.counts,
-    additions: additions.map(item => item.id),
+    additions: additions.map((item: any) => item.id),
     rejected: plan.rejected,
     unreviewed: plan.unreviewed,
   };
@@ -621,7 +621,7 @@ export = {
 };
 
 if (require.main === module) {
-  main().catch(error => {
+  main().catch((error: any) => {
     console.error(error && error.stack || error);
     process.exitCode = 1;
   });

@@ -44,7 +44,7 @@ function modelRoot() {
   return path.resolve(__dirname, '..', '..', '..', 'AI', 'ComfyUI', 'models');
 }
 
-function fileUrl(file) {
+function fileUrl(file: any) {
   var repo = file[2] || DEFAULT_REPO;
   var fileName = encodeURIComponent(file[1]);
   if (MODE_MODELSCOPE) {
@@ -55,9 +55,9 @@ function fileUrl(file) {
   return 'https://' + host + '/' + repo + '/resolve/main/' + file[0] + '/' + fileName;
 }
 
-function download(url, target) {
-  return new Promise(function (resolve, reject) {
-    https.get(url, { headers:{ 'user-agent': 'aics-downloader' } }, function (response) {
+function download(url: any, target: any) {
+  return new Promise<any>(function (resolve: any, reject: any) {
+    https.get(url, { headers:{ 'user-agent': 'aics-downloader' } }, function (response: any) {
       if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
         response.resume();
         download(new URL(response.headers.location, url).toString(), target).then(resolve, reject);
@@ -71,7 +71,7 @@ function download(url, target) {
       var total = Number(response.headers['content-length']) || 0;
       var received = 0;
       var out = fs.createWriteStream(target);
-      response.on('data', function (chunk) {
+      response.on('data', function (chunk: any) {
         received += chunk.length;
         if (total > 0) {
           var percent = Math.floor(received / total * 100);
@@ -84,7 +84,7 @@ function download(url, target) {
         out.close();
         resolve();
       });
-      out.on('error', function (error) {
+      out.on('error', function (error: any) {
         response.destroy();
         reject(error);
       });
@@ -125,7 +125,7 @@ async function run() {
   }
 }
 
-run().catch(function (error) {
+run().catch(function (error: any) {
   console.error(error);
   process.exitCode = 1;
 });

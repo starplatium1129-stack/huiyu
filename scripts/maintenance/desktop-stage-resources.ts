@@ -131,7 +131,7 @@ function collectRuntimeClosure(rootLock: RootLock, logger?: Logger) {
   const closure: Record<string, LockEntry> = {};
   // field 记录来源：常规 dependencies 缺失是硬错误（运行时必崩）；
   // optional/peer 缺失跳过（如 ws 的 bufferutil 可选加速层，有纯 JS 回退）。
-  const queue = RUNTIME_DEPENDENCIES.map((name) => ({ name, parentPath: '', field: 'root' }));
+  const queue = RUNTIME_DEPENDENCIES.map((name: any) => ({ name, parentPath: '', field: 'root' }));
   while (queue.length) {
     const { name, parentPath, field } = queue.shift()!;
     const found = resolve(name, parentPath);
@@ -156,7 +156,7 @@ function collectRuntimeClosure(rootLock: RootLock, logger?: Logger) {
 
 function buildGatewayPackage(rootPkg: RootPackage, rootLock: RootLock, logger?: Logger) {
   const closure = collectRuntimeClosure(rootLock, logger);
-  const dependencies = Object.fromEntries(RUNTIME_DEPENDENCIES.map((name) => {
+  const dependencies = Object.fromEntries(RUNTIME_DEPENDENCIES.map((name: any) => {
     const entry = closure[`node_modules/${name}`];
     if (!entry || typeof entry.version !== 'string') {
       throw new Error(`runtime dependency is missing from package-lock.json: ${name}`);
@@ -326,12 +326,12 @@ function stageResources(options: StageOptions = {}) {
         if (source === 'assets') {
           // 2026-08-29：character-references（~1GB 媒体图）已迁出项目 → AI 工作区，
           // 由网关 /character-references 外部目录服务；此处排除防误回放入包。
-          copyDir(from, to, (filePath) => {
+          copyDir(from, to, (filePath: any) => {
             const rel = path.relative(from, filePath);
             return rel.split(path.sep)[0] !== 'character-references' && !/\.(?:[cm]?ts|map)$/.test(filePath);
           });
         } else {
-          copyDir(from, to, filePath => !/\.(?:[cm]?ts|map)$/.test(filePath));
+          copyDir(from, to, (filePath: any) => !/\.(?:[cm]?ts|map)$/.test(filePath));
         }
       } else {
         fs.mkdirSync(path.dirname(to), { recursive: true });
@@ -369,7 +369,7 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch((error) => {
+  main().catch((error: any) => {
     console.error(`[stage] FAIL ${error.message}`);
     process.exitCode = 1;
   });

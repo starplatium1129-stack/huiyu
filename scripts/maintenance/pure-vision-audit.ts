@@ -27,7 +27,7 @@ const AUDIT_CONCURRENCY = 4;
 
 const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
 
-let auditReport = {};
+let auditReport: Record<string, any> = {};
 if (fs.existsSync(REPORT_FILE)) {
   try {
     auditReport = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
@@ -50,7 +50,7 @@ function saveReport() {
   fs.renameSync(tmp, REPORT_FILE);
 }
 
-const PERSPECTIVE_CONFIGS = {
+const PERSPECTIVE_CONFIGS: any = {
   ref_01_face_closeup: {
     promptGuide: "此图是否为标准的角色【面部与微表情特写】（胸部以上或头部特写，85mm浅景深）？画面中是否单人、五官清晰、无崩坏、无双人或分身、无漫画分格？"
   },
@@ -66,11 +66,11 @@ const PERSPECTIVE_CONFIGS = {
 };
 
 function runVisionInspect(imagePath: string, promptGuide: unknown) {
-  return new Promise((resolve) => {
+  return new Promise<any>((resolve: any) => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;
     
-    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error, stdout, stderr) => {
+    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error: any, stdout: any, stderr: any) => {
       const output = (stdout || '') + (stderr || '');
       let passed = false;
       let reason = output.trim();
@@ -102,14 +102,14 @@ function findActualFile(dir: PathLike, persId: string) {
   if (fs.existsSync(plain)) return plain;
   if (fs.existsSync(dir)) {
     const files = fs.readdirSync(dir);
-    const match = files.find(f => f.includes(persId) && f.endsWith('.png'));
+    const match = files.find((f: any) => f.includes(persId) && f.endsWith('.png'));
     if (match) return path.join(dir, match);
   }
   return plain;
 }
 
 function getAllItems() {
-  const items = [];
+  const items: any[] = [];
   for (const char of standards.characters) {
     for (const outfit of char.outfits) {
       for (const pers of standards.perspectives) {
@@ -170,25 +170,25 @@ async function main() {
     return;
   }
   const force = args.includes('--force');
-  const keysArg = args.find(a => a.startsWith('--keys='));
+  const keysArg = args.find((a: any) => a.startsWith('--keys='));
   const keysValue = keysArg ? keysArg.split('=')[1] : (args.includes('--keys') ? args[args.indexOf('--keys') + 1] : '');
-  const filterKeys = keysValue ? keysValue.split(',').map(s => s.trim()).filter(Boolean) : null;
+  const filterKeys = keysValue ? keysValue.split(',').map((s: any) => s.trim()).filter(Boolean) : null;
 
   const allItems = getAllItems();
   
   while (true) {
     // 找出磁盘上已有但尚未审核的项（默认跳过已审的 pass/fail，避免无限重审）
     // --force 强制重审；--keys 仅审指定前缀；重渲染后推荐 --force --keys <key>
-    const pendingItems = allItems.filter(item => {
+    const pendingItems = allItems.filter((item: any) => {
       if (!force && auditReport[item.key]) return false;
-      if (filterKeys && !filterKeys.some(k => item.key === k || item.key.startsWith(k))) return false;
+      if (filterKeys && !filterKeys.some((k: any) => item.key === k || item.key.startsWith(k))) return false;
       if (!fs.existsSync(item.targetPath)) return false;
       const stat = fs.statSync(item.targetPath);
       return stat.size > 20000;
     });
 
     if (pendingItems.length === 0) {
-      const passedCount = Object.values(auditReport).filter(r => r.passed).length;
+      const passedCount = Object.values(auditReport).filter((r: any) => r.passed).length;
       console.log(`[Pure Auditor] 无待审核项。已审 ${Object.keys(auditReport).length}/${allItems.length}，通过 ${passedCount}。`);
       break;
     }
@@ -205,7 +205,7 @@ async function main() {
       }
     }
 
-    const workers = Array.from({ length: AUDIT_CONCURRENCY }, (_, i) => worker(i + 1));
+    const workers = Array.from({ length: AUDIT_CONCURRENCY }, (_: any, i: any) => worker(i + 1));
     await Promise.all(workers);
     saveReport();
   }

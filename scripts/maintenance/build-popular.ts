@@ -8,7 +8,7 @@ const { syncDataVersion }: typeof import('../lib/data-version') = require('../li
 const ROOT = path.resolve(__dirname, '..', '..');
 const check = process.argv.includes('--check');
 const { characters, sources } = loadPopularShards();
-const counts = sources.map(({ entry, characters: items }) => entry.file + '=' + items.length).join(', ');
+const counts = sources.map(({ entry, characters: items }: any) => entry.file + '=' + items.length).join(', ');
 
 if (check) {
   if (!aggregateIsCurrent()) {

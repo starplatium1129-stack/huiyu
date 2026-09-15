@@ -28,7 +28,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const opts = { target: null, chunks: null, help: false };
+  const opts: any = { target: null, chunks: null, help: false };
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === '--help' || a === '-h') opts.help = true;
@@ -66,7 +66,7 @@ function printHelp() {
 }
 
 function parseChunks(str: string|null, max: number) {
-  if (!str) return Array.from({ length: max }, (_, i) => i + 1);
+  if (!str) return Array.from({ length: max }, (_: any, i: any) => i + 1);
   const out = new Set();
   for (const part of str.split(',')) {
     const p = part.trim();
@@ -78,15 +78,15 @@ function parseChunks(str: string|null, max: number) {
       if (n >= 1 && n <= max) out.add(n);
     }
   }
-  return [...out].sort((a, b) => a - b);
+  return [...out].sort((a: any, b: any) => a - b);
 }
 
-function applyPopular(chunks) {
+function applyPopular(chunks: any) {
   const bpFile = path.join(ROOT, 'data', 'scene-blueprints.json');
   const bpData = JSON.parse(fs.readFileSync(bpFile, 'utf8'));
   const blueprints = bpData.blueprints || bpData;
 
-  const allChunks = {};
+  const allChunks: Record<string, any> = {};
   for (const n of chunks) {
     const file = path.join(__dirname, `refine-map-chunk${n}.js`);
     if (!fs.existsSync(file)) {
@@ -112,8 +112,8 @@ function applyPopular(chunks) {
   console.log(`[apply-chunks popular] 合并 ${chunks.join(',')} → ${merged} 蓝图已更新`);
 }
 
-function applyScenes(chunks) {
-  const allMaps = {};
+function applyScenes(chunks: any) {
+  const allMaps: Record<string, any> = {};
   for (const n of chunks) {
     const file = path.join(__dirname, `refine-map-scenes-chunk${n}.js`);
     if (!fs.existsSync(file)) {
@@ -126,7 +126,7 @@ function applyScenes(chunks) {
   // 实际使用 data/scenes/*.json（跳过 manifest.json 等非场景数组文件）
   const sceneDir = path.join(ROOT, 'data', 'scenes');
   const files = fs.existsSync(sceneDir)
-    ? fs.readdirSync(sceneDir).filter(f => f.endsWith('.json') && f !== 'manifest.json')
+    ? fs.readdirSync(sceneDir).filter((f: any) => f.endsWith('.json') && f !== 'manifest.json')
     : [];
 
   let total = 0;

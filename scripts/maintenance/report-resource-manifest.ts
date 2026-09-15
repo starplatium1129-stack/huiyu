@@ -46,7 +46,7 @@ const HELP = [
   '哈希一致只证明字节一致；文件存在不代表内容已交付、图片质量或审核通过。',
 ].join('\n');
 
-function main(args = process.argv.slice(2)) {
+function main(args: any = process.argv.slice(2)) {
   let root = path.resolve(__dirname, '..', '..');
   let manifestPath = null;
   let compareManifestPath = null;

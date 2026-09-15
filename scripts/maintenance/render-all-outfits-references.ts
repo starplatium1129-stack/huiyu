@@ -14,7 +14,7 @@
 
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
 
-const PERSPECTIVE_CONFIGS = {
+const PERSPECTIVE_CONFIGS: any = {
   ref_01_face_closeup: {
     suffix: "face and eyes extreme close-up portrait, 85mm f/1.4 shallow depth of field, soft bokeh, expressive anime eyes, looking at viewer, subtle gentle expression, soft cinematic studio key light, highly detailed facial features and skin texture",
     negSuffix: "full body, upper body, hands, extra limbs, blurry face, bad eyes, lowres",
@@ -33,7 +33,7 @@ const PERSPECTIVE_CONFIGS = {
   }
 };
 
-function buildPrompt(char, outfit, persId) {
+function buildPrompt(char: any, outfit: any, persId: any) {
   const pConfig = PERSPECTIVE_CONFIGS[persId];
   const isNude = outfit.id === 'nsfw_nude' || outfit.name.includes('全裸') || outfit.name.includes('纯粹');
 
@@ -68,9 +68,9 @@ function buildPrompt(char, outfit, persId) {
 }
 
 // 收集所有待渲染任务
-function collectTasks(standards, opts) {
-  const tasks = [];
-  const only = opts.ids ? new Set(opts.ids.split(',').map(s => s.trim()).filter(Boolean)) : null;
+function collectTasks(standards: any, opts: any) {
+  const tasks: any[] = [];
+  const only = opts.ids ? new Set(opts.ids.split(',').map((s: any) => s.trim()).filter(Boolean)) : null;
   for (const char of standards.characters) {
     if (only && !only.has(char.id)) continue;
     for (const outfit of char.outfits) {
@@ -90,12 +90,12 @@ function collectTasks(standards, opts) {
     }
   }
   if (!opts.keys) return tasks;
-  const selected = new Set(opts.keys.split(',').map(key => key.trim()).filter(Boolean));
-  if (!selected.size || [...selected].some(key => !tasks.some(task => task.key === key))) throw new Error('Unknown reference candidate key');
-  return tasks.filter(task => selected.has(task.key));
+  const selected = new Set(opts.keys.split(',').map((key: any) => key.trim()).filter(Boolean));
+  if (!selected.size || [...selected].some((key: any) => !tasks.some((task: any) => task.key === key))) throw new Error('Unknown reference candidate key');
+  return tasks.filter((task: any) => selected.has(task.key));
 }
 
-function buildPayload(char, outfit, persId, seed) {
+function buildPayload(char: any, outfit: any, persId: any, seed: any) {
   const { prompt, negative } = buildPrompt(char, outfit, persId);
   return {
     modelId: 'anima-miaomiao-v1.6',
@@ -111,10 +111,10 @@ function buildPayload(char, outfit, persId, seed) {
   };
 }
 
-async function main(args = process.argv.slice(2), deps = {}) {
+async function main(args: any = process.argv.slice(2), deps: any = {}) {
   const opts = safety.parseArgs(args, { ids: 'value', keys: 'value', force: 'flag' }, deps.env || process.env);
   if (opts.help) return safety.help(__filename, '[--ids=a,b,c] [--keys <reference keys>] [--force]');
-  const input = safety.snapshot(opts.root, ['data/character-reference-standards.json']);
+  const input: any = safety.snapshot(opts.root, ['data/character-reference-standards.json']);
   const tasks = collectTasks(input.data['data/character-reference-standards.json'], opts);
   return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources, maxAttempts: 5 }, deps);
 }

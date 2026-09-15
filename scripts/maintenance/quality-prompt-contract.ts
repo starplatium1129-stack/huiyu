@@ -13,7 +13,7 @@ const EXPLICIT_ADULT_TOKENS = new Set([
   'nude', 'naked', 'completely_naked', 'fully_nude', 'no_clothes',
   'breasts', 'nipples', 'pussy', 'spread_legs', 'sex', 'explicit',
 ]);
-const IDENTITY_ANCHORS = Object.freeze({
+const IDENTITY_ANCHORS: any = Object.freeze({
   nene: Object.freeze([
     'ayachi_nene', '1girl', 'solo', 'white_hair', 'very_long_hair',
     'low_twintails', 'purple_eyes', 'ahoge', 'pink_hair_ribbons',
@@ -24,7 +24,7 @@ const IDENTITY_ANCHORS = Object.freeze({
     'no_hair_ribbon',
   ]),
 });
-const QUALITY_CONTROL_TOKEN = Object.freeze({
+const QUALITY_CONTROL_TOKEN: any = Object.freeze({
   nene: 'nene_r18',
   natsume: 'natsume_r18',
 });
@@ -67,7 +67,7 @@ const OUTFIT_TOKENS = new Set([
   'slip_dress', 'witch_costume', 'cafe_uniform', 'loose_pajamas',
 ].map(normalizeToken));
 
-const CATEGORY_PATTERNS = Object.freeze({
+const CATEGORY_PATTERNS: any = Object.freeze({
   emotion: /^(?:smile|gentle_smile|shy_smile|smiling|blush|heavy_blush|shy|panicked|open_mouth|happy|in_love|pouting|laughing|tears(?:_.+)?|teary(?:_.+)?|closed_eyes|grinning|content|calm|embarrassed)$/,
   action: /^(?:standing(?:_.+)?|sitting(?:_.+)?|walking(?:_.+)?|leaning(?:_.+)?|lying(?:_.+)?|looking_back|over_shoulder|turning(?:_.+)?|kneeling(?:_.+)?|crouching(?:_.+)?|running(?:_.+)?|holding(?:_.+)?|one_hand_.+|both_hands.+|adjusting_.+|playing(?:_.+)?|reading(?:_.+)?|writing(?:_.+)?|drinking(?:_.+)?|eating(?:_.+)?|sleeping(?:_.+)?|reaching(?:_.+)?|waiting)$/,
   place: /^(?:classroom(?:_.+)?|cafe(?:_.+)?|bedroom(?:_.+)?|street(?:_.+)?|shrine(?:_.+)?|beach(?:_.+)?|library(?:_.+)?|park(?:_.+)?|rooftop(?:_.+)?|kitchen(?:_.+)?|train(?:_.+)?|station(?:_.+)?|river(?:_.+)?|festival(?:_.+)?|garden(?:_.+)?|forest(?:_.+)?|lake(?:_.+)?|sea(?:_.+)?|window(?:_.+)?|door(?:_.+)?|kotatsu|veranda|balcony|pool|onsen|bath|hallway|corridor|stage|auditorium|gym|bathroom|museum|aquarium|greenhouse|temple|pagoda|bridge|tunnel|cliff|valley|cave|campfire|hotel(?:_.+)?|mansion|courtyard|alley|intersection|store|bakery|arcade|movie_theater|theater|bar_counter|wooden_bar_counter|arched_window|photo_studio|locker_room|office|study)$/,
@@ -75,31 +75,31 @@ const CATEGORY_PATTERNS = Object.freeze({
   prop: /^(?:gift(?:_.+)?|game_controller|papers|notes|glass|cup|coffee(?:_.+)?|tea(?:_.+)?|phone|book(?:_.+)?|umbrella|flower|bouquet|sword|staff|wand|broom|bag|backpack|hat|scarf|muffler|gloves|camera|photo(?:_.+)?|frame|charm|talisman|plush|cat|dog|food|cake|sweets|balloon|lantern|fireworks|sparkler|pastry|pillow|sofa|couch|desk|chair|bench|table|bedding|blanket|floor|cushion|basket|brush|ice_cream|cotton_candy|biometric_sensor|shopping_basket)$/,
 });
 
-function normalizeToken(value) {
+function normalizeToken(value: any) {
   return String(value || '')
     .trim()
     .toLowerCase()
     .replace(/[\s-]+/g, '_');
 }
 
-function promptTokens(prompt) {
+function promptTokens(prompt: any) {
   return String(prompt || '')
     .split(/\r?\n/, 1)[0]
     .split(',')
-    .map(token => token.trim())
+    .map((token: any) => token.trim())
     .filter(Boolean);
 }
 
-function categoryOf(token) {
+function categoryOf(token: any) {
   const key = normalizeToken(token);
   return Object.keys(CATEGORY_PATTERNS)
-    .find(category => CATEGORY_PATTERNS[category].test(key)) || '';
+    .find((category: any) => CATEGORY_PATTERNS[category].test(key)) || '';
 }
 
-function isStructuralToken(token, character) {
+function isStructuralToken(token: any, character: any) {
   const key = normalizeToken(token);
   const anchors = IDENTITY_ANCHORS[character] || [];
-  return anchors.some(anchor => normalizeToken(anchor) === key)
+  return anchors.some((anchor: any) => normalizeToken(anchor) === key)
     || QUALITY_TOKENS.includes(key)
     || key === QUALITY_CONTROL_TOKEN[character]
     || key === 'safe'
@@ -113,21 +113,21 @@ function isStructuralToken(token, character) {
     || /(?:^|_)(?:clothes|outfit|uniform|dress|skirt|shirt|sweater|cardigan|apron|coat|swimsuit|yukata|kimono|nightgown|sleepwear|sportswear)$/.test(key);
 }
 
-function inspectShortPrompt(prompt, options = {}) {
+function inspectShortPrompt(prompt: any, options: any = {}) {
   const character = String(options.character || '');
   const rating = String(options.rating || 'ALL').toUpperCase();
   const tokens = promptTokens(prompt);
   const normalized = tokens.map(normalizeToken);
   const tokenSet = new Set(normalized);
-  const errors = [];
-  const warnings = [];
+  const errors: any[] = [];
+  const warnings: any[] = [];
   const anchors = IDENTITY_ANCHORS[character] || [];
-  const missingAnchors = anchors.filter(token => !tokenSet.has(normalizeToken(token)));
+  const missingAnchors = anchors.filter((token: any) => !tokenSet.has(normalizeToken(token)));
   if (missingAnchors.length) errors.push(`缺少角色锚点：${missingAnchors.join(', ')}`);
 
-  const missingQuality = QUALITY_TOKENS.filter(token => !tokenSet.has(token));
+  const missingQuality = QUALITY_TOKENS.filter((token: any) => !tokenSet.has(token));
   if (missingQuality.length) errors.push(`缺少质量词：${missingQuality.join(', ')}`);
-  const qualityCount = normalized.filter(token => QUALITY_TOKENS.includes(token)).length;
+  const qualityCount = normalized.filter((token: any) => QUALITY_TOKENS.includes(token)).length;
   if (qualityCount !== QUALITY_TOKENS.length) {
     errors.push(`质量词必须恰好 ${QUALITY_TOKENS.length} 个，当前 ${qualityCount} 个`);
   }
@@ -139,20 +139,20 @@ function inspectShortPrompt(prompt, options = {}) {
   const expectedRating = rating === 'R18' ? 'nsfw' : 'safe';
   if (!tokenSet.has(expectedRating)) errors.push(`缺少评级词：${expectedRating}`);
   if (rating !== 'R18') {
-    const leaked = normalized.filter(token => EXPLICIT_ADULT_TOKENS.has(token));
+    const leaked = normalized.filter((token: any) => EXPLICIT_ADULT_TOKENS.has(token));
     if (leaked.length) errors.push(`safe prompt 含显式成人词：${[...new Set(leaked)].join(', ')}`);
   }
 
-  const artists = tokens.filter(token => token.startsWith('@'));
-  const invalidArtists = artists.filter(token => !/^@[a-z0-9][a-z0-9 _-]*$/i.test(token));
+  const artists = tokens.filter((token: any) => token.startsWith('@'));
+  const invalidArtists = artists.filter((token: any) => !/^@[a-z0-9][a-z0-9 _-]*$/i.test(token));
   if (invalidArtists.length) errors.push(`画师格式无效：${invalidArtists.join(', ')}`);
   if (options.requireHouseArtists !== false) {
-    const missingArtists = REQUIRED_ARTISTS.filter(token => !tokens.includes(token));
+    const missingArtists = REQUIRED_ARTISTS.filter((token: any) => !tokens.includes(token));
     if (missingArtists.length) errors.push(`缺少画师词：${missingArtists.join(', ')}`);
   }
 
-  const categories = { place: 0, weather: 0, prop: 0, action: 0, emotion: 0, entity: 0 };
-  normalized.forEach(token => {
+  const categories: any = { place: 0, weather: 0, prop: 0, action: 0, emotion: 0, entity: 0 };
+  normalized.forEach((token: any) => {
     if (isStructuralToken(token, character)) return;
     const category = categoryOf(token);
     if (category) categories[category] += 1;
@@ -167,7 +167,7 @@ function inspectShortPrompt(prompt, options = {}) {
   if (categories.emotion > 1) errors.push(`情绪词最多 1 个，当前 ${categories.emotion} 个`);
   if (categories.action > 1) errors.push(`动作词最多 1 个，当前 ${categories.action} 个`);
 
-  const ambienceCount = normalized.filter(token => AMBIENCE_TOKENS.has(token)).length;
+  const ambienceCount = normalized.filter((token: any) => AMBIENCE_TOKENS.has(token)).length;
   if (ambienceCount < 2) errors.push(`氛围/光照词至少 2 个，当前 ${ambienceCount} 个`);
   if (tokens.length < 22 || tokens.length > 26) {
     errors.push(`短提示词必须 22-26 个 token，当前 ${tokens.length} 个`);
@@ -186,21 +186,21 @@ function inspectShortPrompt(prompt, options = {}) {
   };
 }
 
-function inspectCandidatePrompt(candidate) {
+function inspectCandidatePrompt(candidate: any) {
   const engine = String(candidate && candidate.engine || '');
   const prompt = String(candidate && candidate.prompt || '');
   const tokens = promptTokens(prompt);
   const normalized = tokens.map(normalizeToken);
-  const artists = tokens.filter(token => token.startsWith('@'));
-  const warnings = [];
+  const artists = tokens.filter((token: any) => token.startsWith('@'));
+  const warnings: any[] = [];
   if (engine === 'anima') {
-    const invalidArtists = artists.filter(token => !/^@[a-z0-9][a-z0-9 _-]*$/i.test(token));
+    const invalidArtists = artists.filter((token: any) => !/^@[a-z0-9][a-z0-9 _-]*$/i.test(token));
     if (invalidArtists.length) warnings.push(`画师格式无效：${invalidArtists.join(', ')}`);
   }
   if (engine === 'krea2' && (artists.length || /score_\d+|<lora:/i.test(prompt))) {
     warnings.push('Krea 2 不应包含画师 tag、score 或 LoRA 语法');
   }
-  const entityCount = normalized.filter(token => {
+  const entityCount = normalized.filter((token: any) => {
     if (isStructuralToken(token, String(candidate && candidate.characterId || ''))) return false;
     const category = categoryOf(token);
     return category === 'place' || category === 'weather' || category === 'prop';
@@ -213,7 +213,7 @@ function inspectCandidatePrompt(candidate) {
   if (candidate && (candidate.batch === 'popular' || candidate.batch === 'popular-grid')) {
     if (!tokens.length) warnings.push('热门角色候选 prompt 为空');
     if (candidate.adultEligibility !== 'adult'
-      && normalized.some(token => EXPLICIT_ADULT_TOKENS.has(token))) {
+      && normalized.some((token: any) => EXPLICIT_ADULT_TOKENS.has(token))) {
       warnings.push('非成人热门角色含显式成人词');
     }
   }
@@ -226,7 +226,7 @@ function inspectCandidatePrompt(candidate) {
   };
 }
 
-function assertShortPrompt(prompt, options) {
+function assertShortPrompt(prompt: any, options: any) {
   const report = inspectShortPrompt(prompt, options);
   if (!report.ok) {
     const error = new Error(`prompt contract failed: ${report.errors.join('；')}`);
@@ -237,14 +237,14 @@ function assertShortPrompt(prompt, options) {
   return report;
 }
 
-function buildSeedReview(seeds) {
+function buildSeedReview(seeds: any) {
   return {
     version: 1,
     threshold: 90,
     dimensions: [...REVIEW_DIMENSIONS],
-    candidates: seeds.map(seed => ({
+    candidates: seeds.map((seed: any) => ({
       seed,
-      scores: Object.fromEntries(REVIEW_DIMENSIONS.map(dimension => [dimension, null])),
+      scores: Object.fromEntries(REVIEW_DIMENSIONS.map((dimension: any) => [dimension, null])),
       notes: '',
     })),
     qualified: false,
@@ -252,26 +252,26 @@ function buildSeedReview(seeds) {
   };
 }
 
-function evaluateSeedReview(review, expectedSeeds) {
+function evaluateSeedReview(review: any, expectedSeeds: any) {
   const seeds = [...expectedSeeds];
   const candidates = Array.isArray(review && review.candidates) ? review.candidates : [];
-  const bySeed = new Map(candidates.map(candidate => [Number(candidate.seed), candidate]));
-  const scored = seeds.map(seed => {
+  const bySeed = new Map(candidates.map((candidate: any) => [Number(candidate.seed), candidate]));
+  const scored = seeds.map((seed: any) => {
     const candidate = bySeed.get(seed);
     const scores = candidate && candidate.scores && typeof candidate.scores === 'object'
       ? candidate.scores
       : {};
-    const rawValues = REVIEW_DIMENSIONS.map(dimension => scores[dimension]);
-    const values = rawValues.map(value => Number(value));
-    const complete = rawValues.every(value => value !== null && value !== undefined && value !== '')
-      && values.every(value => Number.isFinite(value) && value >= 0 && value <= 20);
-    const total = complete ? values.reduce((sum, value) => sum + value, 0) : null;
+    const rawValues = REVIEW_DIMENSIONS.map((dimension: any) => scores[dimension]);
+    const values = rawValues.map((value: any) => Number(value));
+    const complete = rawValues.every((value: any) => value !== null && value !== undefined && value !== '')
+      && values.every((value: any) => Number.isFinite(value) && value >= 0 && value <= 20);
+    const total = complete ? values.reduce((sum: any, value: any) => sum + value, 0) : null;
     return { seed, complete, total, notes: candidate ? String(candidate.notes || '') : '' };
   });
-  const complete = scored.every(candidate => candidate.complete);
-  const qualified = complete && scored.every(candidate => candidate.total >= 90);
+  const complete = scored.every((candidate: any) => candidate.complete);
+  const qualified = complete && scored.every((candidate: any) => candidate.total >= 90);
   const selected = qualified
-    ? [...scored].sort((left, right) => right.total - left.total || left.seed - right.seed)[0]
+    ? [...scored].sort((left: any, right: any) => right.total - left.total || left.seed - right.seed)[0]
     : null;
   return {
     complete,

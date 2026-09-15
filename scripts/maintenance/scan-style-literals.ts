@@ -6,7 +6,7 @@ const path: typeof import('path') = require('path');
 const sources: typeof import('./style-sources') = require('./style-sources');
 const root = sources.ROOT;
 
-const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+const args = process.argv.slice(2).filter((a: any) => !a.startsWith('--'));
 // 必须覆盖应用真正加载的样式:src/assets/css/*.css + 各 SFC 的 <style> 块。
 // 曾经这里只扫 css/ + tools/ + docs/,而 SPA 一个字节都不加载 css/。
 // 独立发布的审计报告(见 style-sources.STANDALONE_REPORTS)是自带设计系统的
@@ -15,7 +15,7 @@ const targets = args.length
   ? args
   : [...sources.appCssFiles(), ...sources.sfcFiles(),
      ...sources.staticHtmlFiles(), ...sources.legacyDocsCssFiles()]
-    .filter((f) => !sources.isStandaloneReport(f));
+    .filter((f: any) => !sources.isStandaloneReport(f));
 
 // 已在源文件里写注释说明理由的合理例外(根字号基准、品牌图形圆角、
 // iOS 16px 约束、装饰性字形槽、卡内堆叠底层)。总量作为回归预算使用。
@@ -34,7 +34,7 @@ const CHECKS = [
 ];
 
 let grand = 0;
-const rows = [];
+const rows: any[] = [];
 for (const rel of targets) {
   const abs = path.join(root, rel);
   if (!fs.existsSync(abs)) { console.log('  (missing) ' + rel); continue; }
@@ -43,8 +43,8 @@ for (const rel of targets) {
   css = css.replace(/\/\*[\s\S]*?\*\//g, ' ');
   // token 定义行本身就是字面量的合法归宿(--accent-soft: rgba(...)),不算漂移。
   // 只统计"使用点"的字面量。
-  css = css.split('\n').filter((line) => !/^\s*--[\w-]+\s*:/.test(line)).join('\n');
-  const counts = {};
+  css = css.split('\n').filter((line: any) => !/^\s*--[\w-]+\s*:/.test(line)).join('\n');
+  const counts: Record<string, any> = {};
   let total = 0;
   for (const [name, re] of CHECKS) {
     const n = (css.match(re) || []).length;
@@ -54,9 +54,9 @@ for (const rel of targets) {
   grand += total;
 }
 
-rows.sort((a, b) => b[1] - a[1]);
+rows.sort((a: any, b: any) => b[1] - a[1]);
 for (const [rel, total, counts] of rows) {
-  const detail = Object.entries(counts).map(([k, v]) => k + '=' + v).join(' ');
+  const detail = Object.entries(counts).map(([k, v]: any) => k + '=' + v).join(' ');
   console.log('  ' + String(total).padStart(4) + '  ' + rel.padEnd(30) + detail);
 }
 console.log('TOTAL literal occurrences: ' + grand + ' (budget ' + BUDGET + ')');

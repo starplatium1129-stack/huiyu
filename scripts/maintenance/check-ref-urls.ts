@@ -9,7 +9,7 @@ const path: typeof import('path') = require('path');
 const { resolveCharRefRoot }: typeof import('../../server/config') = require('../../server/config');
 const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 
-function auditReferenceView(data: { [s: string]: unknown; }|ArrayLike<unknown>, root: string, env = process.env) {
+function auditReferenceView(data: { [s: string]: unknown; }|ArrayLike<unknown>, root: string, env: any = process.env) {
   const appRoot = path.resolve(env.AICS_APP_ROOT || root);
   const assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
   const refRoot = resolveCharRefRoot(appRoot, env, env.AI_WORKSPACE_ROOT);
@@ -68,7 +68,7 @@ const HELP = [
 ].join('\n');
 
 function parseArgs(args: string|unknown[]) {
-  const parsed = { help: false, plan: false, root: null };
+  const parsed: any = { help: false, plan: false, root: null };
   const seen = new Set();
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -94,7 +94,7 @@ function isDirectory(candidate: PathLike) {
   try { return fs.statSync(candidate).isDirectory(); } catch { return false; }
 }
 
-function main(args = process.argv.slice(2)) {
+function main(args: any = process.argv.slice(2)) {
   const parsed = parseArgs(args);
   if (parsed.error) {
     console.error('错误: ' + parsed.error);

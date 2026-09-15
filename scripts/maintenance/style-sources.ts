@@ -22,10 +22,10 @@ function rel(abs: string) {
   return path.relative(ROOT, abs).split(path.sep).join('/');
 }
 
-function walk(dir: string, test, includeArchive = false) {
+function walk(dir: string, test: any, includeArchive: any = false) {
   const abs = path.isAbsolute(dir) ? dir : path.join(ROOT, dir);
   if (!fs.existsSync(abs)) return [];
-  const out = [];
+  const out: any[] = [];
   for (const entry of fs.readdirSync(abs, { withFileTypes: true })) {
     if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
     const full = path.join(abs, entry.name);
@@ -51,7 +51,7 @@ function sfcFiles() {
 
 /** 仍在服务端直出的静态页（docs/），以及 SPA 入口 */
 function staticHtmlFiles() {
-  const files = [];
+  const files: any[] = [];
   if (fs.existsSync(path.join(ROOT, 'index.html'))) files.push('index.html');
   files.push(...walk('docs', (n: string) => n.endsWith('.html'), true).map(rel).sort());
   return files;
@@ -83,8 +83,8 @@ function sfcTemplate(source: string) {
  * 模板里的内联样式。静态 style="..." 与动态 :style="..." 都要，
  * 因为两者都会绕过 token 体系。
  */
-function inlineStyleAttrs(templateSource) {
-  const out = [];
+function inlineStyleAttrs(templateSource: any) {
+  const out: any[] = [];
   for (const match of templateSource.matchAll(/\s:?style="([^"]*)"/g)) {
     const line = templateSource.slice(0, match.index).split('\n').length;
     out.push({ value: match[1], line, dynamic: match[0].trimStart().startsWith(':') });

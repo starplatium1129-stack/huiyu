@@ -57,7 +57,7 @@ const HELP = [
   '候选包已通过字节核验仅表示复制内容与清单一致；不代表图片质量、审核或部署完成。',
 ].join('\n');
 
-function main(args = process.argv.slice(2)) {
+function main(args: any = process.argv.slice(2)) {
   let root = path.resolve(__dirname, '..', '..');
   let manifestPath = null;
   let baseManifestPath = null;

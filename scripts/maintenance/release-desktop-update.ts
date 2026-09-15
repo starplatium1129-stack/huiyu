@@ -27,7 +27,7 @@ const { resolveNpmInvocation }: typeof import('./desktop-stage-resources') = req
 // 盘符大写归一（2026-08-31 破案）：bash 会话下 __dirname 可能带小写盘符 e:\，
 // 作为 execFileSync 的 cwd 会让 npm/vite 模块 ID 盘符分裂，build 秒失败且零输出。
 // 与工作区记忆配方一致：大写 cwd 一切正常。
-const ROOT = path.resolve(__dirname, '..', '..').replace(/^([a-z]):/i, (_, letter) => letter.toUpperCase() + ':');
+const ROOT = path.resolve(__dirname, '..', '..').replace(/^([a-z]):/i, (_: any, letter: any) => letter.toUpperCase() + ':');
 const KEY_FILE = process.env.TAURI_SIGNING_PRIVATE_KEY_PATH || path.join(ROOT, 'runtime', 'keys', 'aics-updater.key');
 const OUT_DIR = path.join(ROOT, 'runtime', 'desktop-updates');
 const BUNDLE_DIR = path.join(ROOT, 'desktop-tauri', 'src-tauri', 'target', 'release', 'bundle', 'nsis');
@@ -46,7 +46,7 @@ function ghCommand() {
   return process.env.GH_EXECUTABLE || (fs.existsSync(portable) ? portable : 'gh');
 }
 
-function fail(message) {
+function fail(message: any) {
   console.error(`[release-desktop-update] ${message}`);
   process.exit(1);
 }
@@ -54,13 +54,13 @@ function fail(message) {
 const SEMVER = /^(\d+)\.(\d+)\.(\d+)$/;
 
 /** 递增 package.json 与 tauri.conf.json 版本号（客户端当前版本编译自 tauri.conf.json，必须同步）。 */
-function bumpVersion(kind) {
+function bumpVersion(kind: any) {
   if (!['patch', 'minor', 'major'].includes(kind)) fail(`未知 bump 档位: ${kind}（patch|minor|major）`);
   const pkgPath = path.join(ROOT, 'package.json');
   const tauriPath = path.join(ROOT, 'desktop-tauri', 'src-tauri', 'tauri.conf.json');
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
   const conf = JSON.parse(fs.readFileSync(tauriPath, 'utf8'));
-  const match = SEMVER.exec(String(pkg.version || ''));
+  const match: any = SEMVER.exec(String(pkg.version || ''));
   if (!match) fail(`无法解析 package.json version: ${pkg.version}`);
   let major = Number(match[1]);
   let minor = Number(match[2]);
@@ -89,11 +89,11 @@ function bumpVersion(kind) {
   return next;
 }
 
-function releaseTag(version) {
+function releaseTag(version: any) {
   return `v${version}`;
 }
 
-function createManifest(version, signature, exeName, publishedAt = new Date()) {
+function createManifest(version: any, signature: any, exeName: any, publishedAt: any = new Date()) {
   const tag = releaseTag(version);
   return {
     version,
@@ -108,7 +108,7 @@ function createManifest(version, signature, exeName, publishedAt = new Date()) {
   };
 }
 
-function assertPublishReady(version) {
+function assertPublishReady(version: any) {
   if (BUMP_KIND) fail('--publish 不能与 --bump 同时使用：请先构建、提交并推送版本，再用 --skip-build --publish');
   const branch = execFileSync('git', ['branch', '--show-current'], { cwd: ROOT, encoding: 'utf8' }).trim();
   const head = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
@@ -130,11 +130,11 @@ function assertPublishReady(version) {
   return head;
 }
 
-function publishRelease(version, head, files, options = {}) {
+function publishRelease(version: any, head: any, files: any, options: any = {}) {
   const run = options.run || execFileSync;
   const manual = options.manual ?? MANUAL;
   const completeManual = options.completeManual ?? COMPLETE_MANUAL;
-  if (manual && files.some(file => path.basename(file) === 'latest.json' || file.endsWith('.sig'))) throw new Error('手动安装版不能发布自动更新清单或签名');
+  if (manual && files.some((file: any) => path.basename(file) === 'latest.json' || file.endsWith('.sig'))) throw new Error('手动安装版不能发布自动更新清单或签名');
   const tag = releaseTag(version);
   const baseNotes = options.notesFile || path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
@@ -160,7 +160,7 @@ function publishRelease(version, head, files, options = {}) {
   }
   const uploaded = JSON.parse(run(cli, ['release', 'view', tag, '--repo', RELEASE_REPOSITORY, '--json', 'assets'], queryOptions));
   for (const file of files) {
-    const asset = uploaded.assets.find(asset => asset.name === path.basename(file));
+    const asset = uploaded.assets.find((asset: any) => asset.name === path.basename(file));
     if (!asset || asset.size !== fs.statSync(file).size) throw new Error(`发行资产上传不完整：${path.basename(file)}，未晋升发布`);
     if (asset.digest && asset.digest.toLowerCase() !== `sha256:${crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')}`) throw new Error(`发行资产校验失败：${path.basename(file)}，未晋升发布`);
   }
@@ -207,9 +207,9 @@ function main() {
 
   // 找出本次产出的安装包与签名（NSIS：*-setup.exe + .sig）
   const artifacts = fs.readdirSync(BUNDLE_DIR)
-    .filter((f) => f.endsWith(`_${version}_x64-setup.exe`))
-    .map((exe) => ({ exe, sig: `${exe}.sig` }))
-    .filter((a) => MANUAL || fs.existsSync(path.join(BUNDLE_DIR, a.sig)));
+    .filter((f: any) => f.endsWith(`_${version}_x64-setup.exe`))
+    .map((exe: any) => ({ exe, sig: `${exe}.sig` }))
+    .filter((a: any) => MANUAL || fs.existsSync(path.join(BUNDLE_DIR, a.sig)));
   if (!artifacts.length) fail(`${BUNDLE_DIR} 下没有 updater 安装包（*-setup.exe + .sig）`);
   const artifact = artifacts[artifacts.length - 1];
 

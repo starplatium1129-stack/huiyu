@@ -4,7 +4,7 @@ const baseUrl = process.argv[2] || 'http://127.0.0.1:3000'
 const status = await fetch(`${baseUrl}/api/tts-status`).then(response => response.json())
 if (!status.online) throw new Error('GPT-SoVITS is offline')
 
-const directions = {
+const directions: any = {
   neutral: '',
   gentle: '（温柔）',
   happy: '（开心）',

@@ -10,8 +10,8 @@ const { TextDecoder }: typeof import('node:util') = require('node:util');
 const { isSceneId }: typeof import('./scene-id') = require('./scene-id');
 
 const MAX_BYTES = 16 * 1024 * 1024;
-const object = (value: null) => value !== null && typeof value === 'object' && !Array.isArray(value);
-const validId = (value: string) => typeof value === 'string' && value.length > 0 && value.trim() === value;
+const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
+const validId = (value: unknown): value is string => typeof value === 'string' && value.length > 0 && value.trim() === value;
 // Keep the existing three-digit namespace; wider IDs cannot have redundant zeroes.
 const canonicalSceneId = isSceneId;
 const digest = (bytes: string|NodeJS.ArrayBufferView<ArrayBufferLike>) => createHash('sha256').update(bytes).digest('hex');
@@ -26,7 +26,7 @@ function safeRelative(file: string) {
 
 // Preflight before Git reads working files too: a safe leaf can have an unsafe
 // junction parent. Missing/deleted paths are allowed; existing links are not.
-function assertWorktreePaths(root: PathLike, files: unknown) {
+function assertWorktreePaths(root: PathLike, files: string[]) {
   const base = fs.realpathSync(root);
   for (const file of files) {
     let current = base;
@@ -73,7 +73,7 @@ function localReader(root: PathLike) {
   });
 }
 
-function reader(source: { side: unknown; bytes: unknown; list: unknown; }) {
+function reader(source: { side: unknown; bytes: (file: string) => NodeJS.ArrayBufferView<ArrayBufferLike> | string; list: (directory: string) => string[]; }) {
   const cache = new Map();
   const evidence = new Map();
   const directories = new Map();
@@ -111,7 +111,7 @@ function reader(source: { side: unknown; bytes: unknown; list: unknown; }) {
       try { return JSON.parse(item.raw); } catch { throw new Error(`${file}: invalid JSON`); }
     },
     verify() {
-      const errors = [];
+      const errors: string[] = [];
       for (const [directory, names] of directories) {
         try {
           if (JSON.stringify(source.list(directory).sort()) !== JSON.stringify(names)) errors.push(`${directory}: directory membership changed during snapshot read`);

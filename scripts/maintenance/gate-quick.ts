@@ -59,7 +59,7 @@ function runNpmStep(name: string, script: string, timeout: number, verbose: bool
 
 function suiteFiles(names: readonly string[], label: string, { verbose, keepGoing }: GateOptions) {
   return runSuiteFiles(
-    names.map((file) => ({ name: file, file: path.join(testsDir, file) })),
+    names.map((file: any) => ({ name: file, file: path.join(testsDir, file) })),
     { label, timeout: 180_000, verbose, keepGoing },
   );
 }
@@ -136,14 +136,14 @@ function main(argv: string[]) {
     console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 子进程输出直通。');
     return 0;
   }
-  const invalid = argv.filter(arg => !['ui', 'server', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
-  if (invalid.length || argv.filter(arg => !arg.startsWith('--')).length > 1) {
+  const invalid = argv.filter((arg: any) => !['ui', 'server', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
+  if (invalid.length || argv.filter((arg: any) => !arg.startsWith('--')).length > 1) {
     console.error(`无效门禁参数: ${argv.join(' ')}`);
     return 2;
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
-  const areaArg = argv.find((arg) => ['ui', 'server', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
+  const areaArg = argv.find((arg: any) => ['ui', 'server', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
 
   let areas: GateArea[];
   if (areaArg) {

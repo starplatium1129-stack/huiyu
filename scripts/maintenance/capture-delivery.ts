@@ -22,9 +22,9 @@ capture-delivery --baseline runtime/delivery-evidence/<快照>.json [--record ru
 仅 SHA-256 字节身份；.git 与 runtime/delivery-evidence 排除。禁止 symlink/junction/硬链接。
 退出 0=记录操作成功（不等于验收通过），1=内容/路径错误，2=参数错误。
 校验: node scripts/maintenance/audit-delivery.js --evidence <交接JSON> --json`;
-function parse(args) {
-  const result = { root: ROOT, machine: 'office', source: [], build: [], gates: {} };
-  const values = { '--root': 'root', '--scope': 'scope', '--save': 'save', '--baseline': 'baseline', '--record': 'record', '--machine': 'machine', '--finalize-commit': 'finalizeCommit' };
+function parse(args: any) {
+  const result: any = { root: ROOT, machine: 'office', source: [], build: [], gates: {} };
+  const values: any = { '--root': 'root', '--scope': 'scope', '--save': 'save', '--baseline': 'baseline', '--record': 'record', '--machine': 'machine', '--finalize-commit': 'finalizeCommit' };
   const seen = new Set();
   for (let i = 0; i < args.length; i++) {
     const flag = args[i];
@@ -37,7 +37,7 @@ function parse(args) {
       const [field, dependencies, extra] = value.split('=');
       const dependsOn = dependencies?.split(',');
       if (!gatePath(field) || extra !== undefined || !dependsOn?.length || new Set(dependsOn).size !== dependsOn.length
-        || dependsOn.some(k => !['source', 'build'].includes(k)) || Object.hasOwn(result.gates, field)) throw Error('--gate 需要唯一 field=source,build');
+        || dependsOn.some((k: any) => !['source', 'build'].includes(k)) || Object.hasOwn(result.gates, field)) throw Error('--gate 需要唯一 field=source,build');
       result.gates[field] = dependsOn;
     } else {
       if (seen.has(flag)) throw Error(`重复参数: ${flag}`);
@@ -60,7 +60,7 @@ function parse(args) {
   }
   return result;
 }
-function main(args) {
+function main(args: any) {
   let options;
   try { options = parse(args); } catch (error) { console.error(runtimeErrorMessage(error)); return 2; }
   if (options.help) { console.log(HELP); return 0; }
@@ -69,7 +69,7 @@ function main(args) {
     const root = rootPath(options.root), document = capture(root, options);
     if (options.save) saveJson(root, options.save, document);
     console.log(JSON.stringify(document, null, 2));
-    return [document.tracking.source, document.tracking.build].every(v => v.status === 'complete') ? 0 : 1;
+    return [document.tracking.source, document.tracking.build].every((v: any) => v.status === 'complete') ? 0 : 1;
   } catch (error) { console.error(runtimeErrorMessage(error)); return 1; }
 }
 if (require.main === module) process.exitCode = main(process.argv.slice(2));

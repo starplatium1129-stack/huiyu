@@ -26,11 +26,11 @@ Approval and source trust are external decisions: matching hashes alone authoriz
 Never accept this config, filesystem roots or access callbacks from a remote request.
 `;
 
-async function main(argv = process.argv.slice(2)) {
+async function main(argv: any = process.argv.slice(2)) {
   if (argv.includes('--help') || argv.includes('--plan')) { process.stdout.write(HELP); return; }
   const [action, ...rest] = argv;
   if (!['import', 'download', 'recover', 'rollback', 'status'].includes(action)) fail('USAGE', 'Choose a resource lifecycle action; see --help');
-  const flags = {};
+  const flags: Record<string, any> = {};
   for (let index = 0; index < rest.length; index++) {
     const flag = rest[index];
     if (!['--config', '--release', '--apply'].includes(flag) || Object.hasOwn(flags, flag)) fail('USAGE', 'Unknown or duplicate option: ' + flag);
@@ -49,7 +49,7 @@ async function main(argv = process.argv.slice(2)) {
   // inject its existing isLocalStudioHost and authorization checks instead of these callbacks.
   const options = { userDataRoot: config.userDataRoot, protectedRoots: config.protectedRoots,
     policy: config.policy, access: { isLocalStudioHost: () => true, isAuthorized: () => true } };
-  const installer = createResourceInstaller(options);
+  const installer: any = createResourceInstaller(options);
   const controller = new AbortController();
   const cancel = () => controller.abort();
   process.once('SIGINT', cancel);
@@ -69,7 +69,7 @@ async function main(argv = process.argv.slice(2)) {
     process.removeListener('SIGTERM', cancel);
   }
 }
-if (require.main === module) main().catch(error => {
+if (require.main === module) main().catch((error: any) => {
   process.stderr.write(JSON.stringify({ ok: false, code: error.code || 'FAILED', message: error.message,
     rolledBack: error.rolledBack || false, recoveryRequired: error.recoveryRequired || false, details: error.details }) + '\n');
   process.exitCode = error.code === 'CANCELLED' ? 130 : ['USAGE', 'CONFIG_REQUIRED', 'SOURCE_REQUIRED', 'APPROVAL_REQUIRED'].includes(error.code) ? 2 : 1;

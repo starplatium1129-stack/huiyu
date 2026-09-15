@@ -19,15 +19,15 @@
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
-function argument(name: string, fallback = '') {
+function argument(name: string, fallback: any = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
 
-function buildReview(records: unknown[], decisions: { [s: string]: unknown; }|ArrayLike<unknown>, { latestOnly = false, reviewedAt = new Date().toISOString() } = {}) {
+function buildReview(records: unknown[], decisions: { [s: string]: unknown; }|ArrayLike<unknown>, { latestOnly = false, reviewedAt = new Date().toISOString() }: any = {}) {
   if (!Array.isArray(records)) throw new Error('manifest must be an array');
   if (!decisions || typeof decisions !== 'object' || Array.isArray(decisions)) throw new Error('decisions must be an object');
-  const succeeded = records.filter(record => record && record.status === 'succeeded');
+  const succeeded = records.filter((record: any) => record && record.status === 'succeeded');
   const byId = new Map();
   const latest = new Map();
   for (const record of succeeded) {
@@ -44,7 +44,7 @@ function buildReview(records: unknown[], decisions: { [s: string]: unknown; }|Ar
     if (latestOnly && latest.get(key).recordId !== record.recordId) throw new Error(`decision for ${key} is not for the latest successful attempt`);
     recordsOut[key] = { verdict: decision.verdict, recordId: record.recordId, notes: decision.notes || '', reviewedAt };
   }
-  const pending = [...latest.keys()].filter(key => !Object.hasOwn(recordsOut, key));
+  const pending = [...latest.keys()].filter((key: any) => !Object.hasOwn(recordsOut, key));
   return { version: 1, reviewedAt, records: recordsOut, pending };
 }
 
@@ -64,7 +64,7 @@ function main() {
   const temporary = `${outPath}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(output, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, outPath);
-  const counts = { pass: 0, fail: 0 };
+  const counts: any = { pass: 0, fail: 0 };
   for (const entry of Object.values(output.records)) counts[entry.verdict] += 1;
   console.log(JSON.stringify({ out: outPath, reviewed: Object.keys(output.records).length, pending: output.pending.length, counts }, null, 2));
 }
