@@ -40,9 +40,9 @@ test('explicit SFW composition survives core and showcase guards without relaxin
       assert.ok(neg.includes('duplicate'), 'group still prevents accidental clones');
       assert.ok(neg.includes('triptych'), 'group remains one frame');
     }
-    const k = popular.buildPopularPromptPlan({character:c,blueprint:b,outfit:popular.findOutfit(c,b!.outfitId),engine:'krea2',adultEnabled:false});
+    const k = popular.buildPopularPromptPlan({character:c,blueprint:b,outfit:popular.findOutfit(c,b!.outfitId)!,engine:'krea2',adultEnabled:false});
     assert.ok(k && k.prompt.includes(b!.promptProse.split('.')[0]));
-    assert.strictEqual(popular.buildPopularPromptPlan({character:c,blueprint:{...b,adult:true},outfit:popular.findOutfit(c,b!.outfitId),engine:'anima',profile,adultEnabled:false}),null);
+    assert.strictEqual(popular.buildPopularPromptPlan({character:c,blueprint:{...b,adult:true},outfit:popular.findOutfit(c,b!.outfitId)!,engine:'anima',profile,adultEnabled:false}),null);
     assert.strictEqual(policy.compositionIntent({...b,adult:true}), 'single');
   }
   assert.throws(() => policy.parseCompositionIntent('anything'), /Invalid/);
@@ -327,7 +327,7 @@ test('source-audited adult records cannot re-enter SFW planning', function () {
     assert.ok(blueprint && blueprint.adult && blueprint.sampleRating === 'R18', id + ' must retain its reviewed classification');
     const character = characters.find(c => c.id === blueprint.characterId);
     for (const engine of ['anima', 'krea2']) {
-      assert.strictEqual(popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId), blueprint, engine, adultEnabled: false }), null, id + ' must fail closed in ' + engine);
+      assert.strictEqual(popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId)!, blueprint, engine, adultEnabled: false }), null, id + ' must fail closed in ' + engine);
     }
   }
 });
@@ -339,7 +339,7 @@ test('SFW character variants keep intended hairstyles and exclude sexualized jun
   for (const blueprint of blueprints.filter(b => !b.adult && ['katou_megumi', 'yamada_anna'].includes(b.characterId))) {
     const character = blueprint.characterId === megumi!.id ? megumi : anna;
     for (const engine of ['anima', 'krea2']) {
-      const plan = popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId), blueprint, engine, adultEnabled: false });
+      const plan = popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId)!, blueprint, engine, adultEnabled: false });
       assert.ok(plan);
       if (character === anna) assert.ok(!/large[_ ]breasts|voluptuous|full bust|endlessly long|jaw-dropping/i.test(plan.prompt), blueprint.id + ' must remain a nonsexual everyday depiction');
       if (character === megumi && ['casual_ponytail_summer', 'sfw_kitchen_apron'].includes(blueprint.outfitId)) {

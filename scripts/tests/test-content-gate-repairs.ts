@@ -70,7 +70,7 @@ test('Ellen tea-service depth of field is retained in both payloads without dupl
   for (const engine of ['anima', 'krea2']) {
     const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
     const profile = profiles.find(item => item.model_id === model);
-    const plan = popular.buildPopularPromptPlan({ character:c, blueprint:b, outfit:popular.findOutfit(c,b!.outfitId), engine, profile, adultEnabled:false });
+    const plan = popular.buildPopularPromptPlan({ character:c, blueprint:b, outfit:popular.findOutfit(c,b!.outfitId)!, engine, profile, adultEnabled:false });
     assert.ok(plan);
     assert.ok(plan.prompt.includes('depth of field'));
   }
