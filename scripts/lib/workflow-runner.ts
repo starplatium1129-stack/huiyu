@@ -37,7 +37,7 @@ const RESUME_MODES = Object.freeze(['idempotent', 'checkpoint', 'na']);
 const PASSIVE_EFFECTS = Object.freeze(['read-only', 'preview', 'isolated-fixture']);
 
 /** 校验单个注册项的 run 元数据；返回错误消息数组（空 = 合法）。 */
-function validateRun(name: string, def: { run?: unknown; cmd?: string[] | null }) {
+function validateRun(name: string, def: any) {
   const errors: string[] = [];
   const run = def.run;
   if (!isRecord(run)) {

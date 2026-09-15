@@ -17,7 +17,7 @@ const candidates = [
 const executablePath = candidates.find(existsSync);
 const base = process.argv[2] || 'http://127.0.0.1:3000';
 
-async function probeStoryBox(page) {
+async function probeStoryBox(page: any) {
   await page.goto(base + '/prompt-builder?scene=sc001');
   await page.waitForLoadState('networkidle').catch(() => {});
   await page.waitForTimeout(1600);
@@ -44,7 +44,7 @@ async function probeStoryBox(page) {
   });
 }
 
-async function probeSceneList(page) {
+async function probeSceneList(page: any) {
   await page.goto(base + '/prompt-builder');
   await page.waitForLoadState('networkidle').catch(() => {});
   await page.waitForTimeout(1200);
@@ -61,7 +61,7 @@ async function probeSceneList(page) {
   });
 }
 
-async function probeWatermarks(page) {
+async function probeWatermarks(page: any) {
   const out = {};
   for (const path of ['/control', '/training', '/scene-manager', '/lora', '/video-studio', '/prompt-builder']) {
     await page.goto(base + path);
@@ -92,7 +92,7 @@ async function probeWatermarks(page) {
  * 返回 WCAG 对比度（4.5 以下记 low）。用于复核视觉审核的"浅底浅字"类结论。
  * 颜色解析/合成在浏览器侧执行（parseColor + alpha composite）。
  */
-async function probeLightContrast(page) {
+async function probeLightContrast(page: any) {
   const targets = {
     '/control': [
       { name: 'status-tile small', selector: '.status-tile small' },
@@ -120,9 +120,9 @@ async function probeLightContrast(page) {
       document.documentElement.setAttribute('data-theme', 'light');
     });
     await page.waitForTimeout(300);
-    out[path] = await page.evaluate((list) => {
+    out[path] = await page.evaluate((list: any) => {
       /** rgb()/rgba()/hex → [r,g,b,a]（0-255, a 0-1），color(srgb) 与未知格式返回 null */
-      function parseColor(value) {
+      function parseColor(value: any) {
         const rgb = value.match(/rgba?\(([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?\)/);
         if (rgb) return [Number(rgb[1]), Number(rgb[2]), Number(rgb[3]), rgb[4] === undefined ? 1 : Number(rgb[4])];
         const hex = value.match(/^#([\da-f]{2})([\da-f]{2})([\da-f]{2})/i);
@@ -130,18 +130,18 @@ async function probeLightContrast(page) {
         return null;
       }
       /** 半透明前景合成到不透明底色上 */
-      function composite(fg, bg) {
+      function composite(fg: any, bg: any) {
         const a = fg[3];
         return [0, 1, 2].map(i => Math.round(fg[i] * a + bg[i] * (1 - a)));
       }
-      function luminance(rgb) {
-        const [r, g, b] = rgb.map(v => {
+      function luminance(rgb: any) {
+        const [r, g, b] = rgb.map((v: any) => {
           const c = v / 255;
           return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
         });
         return 0.2126 * r + 0.7152 * g + 0.0722 * b;
       }
-      function contrastRatio(fgRgb, bgRgb) {
+      function contrastRatio(fgRgb: any, bgRgb: any) {
         const l1 = luminance(fgRgb);
         const l2 = luminance(bgRgb);
         const [hi, lo] = l1 >= l2 ? [l1, l2] : [l2, l1];

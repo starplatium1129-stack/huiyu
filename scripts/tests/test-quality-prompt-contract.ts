@@ -125,7 +125,7 @@ test('review selection stays incomplete for blank scores and requires all three 
     [20, 19, 19, 19, 19],
     [18, 18, 18, 18, 17],
   ];
-  reviewed.candidates.forEach((candidate, index) => {
+  reviewed.candidates.forEach((candidate: any, index: any) => {
     candidate.scores = {
       lighting: scoreRows[index][0],
       background: scoreRows[index][1],
@@ -156,7 +156,7 @@ test('scene-fix writes selection only after the complete three-seed review passe
     assert.strictEqual(fs.existsSync(files.selection), false);
 
     const review = JSON.parse(fs.readFileSync(files.review, 'utf8'));
-    review.candidates.forEach(candidate => {
+    review.candidates.forEach((candidate: any) => {
       candidate.scores = {
         lighting: 19,
         background: 18,

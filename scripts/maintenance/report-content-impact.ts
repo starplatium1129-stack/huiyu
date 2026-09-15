@@ -326,7 +326,7 @@ function showcaseImpact(opts: any, result: any, add: any) {
       if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) throw new Error('manifest 真实路径超出 --root');
       if (!fs.statSync(real).isFile()) throw new Error('manifest 必须为普通文件');
       const manifest = JSON.parse(fs.readFileSync(real, 'utf8'));
-      const object = (value: null) => value !== null && typeof value === 'object' && !Array.isArray(value);
+      const object = (value: any) => value !== null && typeof value === 'object' && !Array.isArray(value);
       if (!object(manifest) || !Array.isArray(manifest.entries) || manifest.entries.some((entry: any) => !object(entry)
         || !validId(entry.id) || ['type', 'char'].some((key: any) => entry[key] !== undefined && typeof entry[key] !== 'string'))) throw new Error('manifest.entries 必须为含有效 id 与可解析 type/char 的对象数组');
       item.status = 'parsed';

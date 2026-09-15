@@ -23,7 +23,7 @@ function deferred() {
   const promise = new Promise(done => { resolve = done; });
   return { promise, resolve };
 }
-async function application(f: { base?: string; options: unknown; files?: string[]; cleanup?: () => void; }, position: string) {
+async function application(f: any, position: string) {
   const body = Buffer.from(JSON.stringify({ neutral: 'plain test content '.repeat(256) }));
   const source = io.path.join(f.options.rootDir, 'data/scenes.json');
   io.fs.writeFileSync(source, body);
@@ -34,7 +34,7 @@ async function application(f: { base?: string; options: unknown; files?: string[
   const finish = deferred();
   app.use((req, res, next) => req.headers['x-fixture-deny'] ? res.status(403).end('authorization denied') : next());
   const fence = maintenanceReadBarrier(f.options);
-  const callbackProbe = (_req: unknown, res: { setHeader: (arg0: string,arg1: string) => void; write: (arg0: Buffer<ArrayBuffer>,arg1: () => void) => void; end: () => void; }) => {
+  const callbackProbe = (_req: unknown, res: any) => {
     res.setHeader('Content-Type', 'application/json');
     const buffer = Buffer.from('{"copied":true}');
     res.write(buffer, () => { buffer.fill(0); res.end(); });
@@ -215,7 +215,7 @@ for (const position of ['before-compression', 'after-compression']) {
 test('actual gateway early barrier protects gzip/br and showcase across a real writer SIGKILL', async () => {
   const f = createFixture();
   const previousEnv = { AICS_DATA_ROOT: process.env.AICS_DATA_ROOT, AICS_APP_ROOT: process.env.AICS_APP_ROOT };
-  let stack: { baseUrl: unknown; gateway: unknown; close: unknown; root?: string; runtime?: unknown; config?: unknown; upstreams?: Record<string,{ name: string; mock: { server: Server; }; port?: number; url?: string; }>&{ list: { name: string; mock: { server: Server; }; port?: number; url?: string; }[]; close: () => Promise<void>; }; server?: Server<IncomingMessage,ServerResponse>; address?: AddressInfo; };
+  let stack: any;
   let worker;
   try {
     process.env.AICS_DATA_ROOT = f.options.rootDir;

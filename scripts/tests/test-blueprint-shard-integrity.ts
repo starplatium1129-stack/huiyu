@@ -52,7 +52,7 @@ test('blueprint shards: union equals the aggregate, ids unique, order preserved'
 
   assert.strictEqual(union.length, aggregate.blueprints.length,
     'shard union length must equal aggregate length');
-  assert.deepStrictEqual(union.map((b) => b.id), aggregate.blueprints.map((b: { id: unknown; }) => b.id),
+  assert.deepStrictEqual(union.map((b) => b.id), aggregate.blueprints.map((b: any) => b.id),
     'shard union ids must equal aggregate ids in order');
 
   const ids = new Set();
@@ -64,7 +64,7 @@ test('blueprint shards: union equals the aggregate, ids unique, order preserved'
 
 test('blueprint shards: no orphan files exist outside manifest', () => {
   const manifest = readJson('blueprints/manifest.json');
-  const declaredFiles = new Set(manifest.files.map((e: { file: unknown; }) => e.file));
+  const declaredFiles = new Set(manifest.files.map((e: any) => e.file));
   declaredFiles.add('manifest.json');
 
   const diskFiles = fs.readdirSync(shardsDir).filter((name) => name.endsWith('.json'));

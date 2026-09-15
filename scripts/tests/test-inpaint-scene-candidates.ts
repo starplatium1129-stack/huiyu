@@ -35,7 +35,7 @@ const { test }: typeof import('node:test') = require('node:test');
 const inpaint: typeof import('../../scripts/maintenance/inpaint-scene-candidates.js') = require('../../scripts/maintenance/inpaint-scene-candidates.js');
 const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 
-function makePng(width: number, height: number, spot: { kind?: string; cx: unknown; cy: unknown; rx: unknown; ry: unknown; }|null) {
+function makePng(width: number, height: number, spot: any) {
   const zlib: typeof import('zlib') = require('zlib');
   const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
   const ihdr = Buffer.alloc(13);
@@ -79,7 +79,7 @@ function makePng(width: number, height: number, spot: { kind?: string; cx: unkno
   ]);
 }
 
-function workflowTypes(wf: { [x: string]: { class_type: unknown; }; }) {
+function workflowTypes(wf: any) {
   return Object.keys(wf).map(id => wf[id].class_type);
 }
 
@@ -136,8 +136,8 @@ test('every crop/mask coordinate stays inside the per-key source bounds', () => 
 test('ops are position-agnostic and target only the reviewed defects', () => {
   const sc037 = inpaint.SCENE_INPAINT_CONFIG['scene:sc037'];
   const sc280 = inpaint.SCENE_INPAINT_CONFIG['scene:sc280'];
-  assert.deepStrictEqual(sc037.ops.map(op => op.id), ['replace-charm']);
-  assert.deepStrictEqual(sc280.ops.map(op => op.id), ['replace-wrapper', 'replace-wrapper-inpaint', 'replace-wrapper-blend']);
+  assert.deepStrictEqual(sc037.ops.map((op: any) => op.id), ['replace-charm']);
+  assert.deepStrictEqual(sc280.ops.map((op: any) => op.id), ['replace-wrapper', 'replace-wrapper-inpaint', 'replace-wrapper-blend']);
   assert.deepStrictEqual(sc280.ops[1].denoiseOrder, ['inpaint-1.00'],
     'attempt-9 masked-0.70 kept the transparent bag, so the second stage must force the true-inpaint fallback');
   assert.deepStrictEqual(sc280.ops[2].denoiseOrder, ['masked-0.70'],
@@ -229,7 +229,7 @@ test('attempt-9 record contract: recordId, supersedes, provenance, sha256, image
     width: cfg.width, height: cfg.height, seed: 123, actualSeed: 456,
     prompt: 'src prompt', negative: 'src neg',
   };
-  const results = cfg.ops.map((op, index) => ({
+  const results = cfg.ops.map((op: any, index: any) => ({
     op,
     denoiseConfig: inpaint.DENOISE_CONFIGS[index % 2],
     seed: 100 + index,

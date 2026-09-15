@@ -8,16 +8,16 @@ const { HASH, releasePolicy, reference, readPack, targetManifest, verifyTree }: 
 const { equal, readState, verifyVersion, existingVersion, nextState, readJournal }: typeof import('./resource-install-state') = require('./resource-install-state');
 const { copyEntry, fileMatches }: typeof import('./resource-install-copy') = require('./resource-install-copy');
 
-function savedJournal(ctx, journal) { writeJson(ctx.io, child(ctx.store, 'pending.json'), journal); }
-function forgetJournal(ctx) { unlink(ctx.io, child(ctx.store, 'pending.json')); }
-function verifyBefore(ctx, journal) {
+function savedJournal(ctx: any, journal: any) { writeJson(ctx.io, child(ctx.store, 'pending.json'), journal); }
+function forgetJournal(ctx: any) { unlink(ctx.io, child(ctx.store, 'pending.json')); }
+function verifyBefore(ctx: any, journal: any) {
   if (journal.before.current) verifyVersion(ctx, journal.before.current);
 }
-function result(ctx, state, action, extra = {}) {
+function result(ctx: any, state: any, action: any, extra = {}) {
   return { ok: true, kind: 'resource-install-result', action, state,
     installedRoot: state.current ? child(ctx.store, 'versions/' + state.current.identity) : null, ...extra };
 }
-function quarantineFailedTarget(ctx, journal) {
+function quarantineFailedTarget(ctx: any, journal: any) {
   if (journal.kind !== 'install' || [journal.before.current, journal.before.previous]
     .some(ref => ref?.identity === journal.target.identity)) return;
   const target = child(ctx.store, 'versions/' + journal.target.identity);
@@ -34,7 +34,7 @@ function quarantineFailedTarget(ctx, journal) {
 
 // A pointer written before a process exit is accepted only after re-reading all installed
 // bytes. Invalid new bytes restore the independently verified old pointer.
-function finishInterruptedSwitch(ctx, journal, state) {
+function finishInterruptedSwitch(ctx: any, journal: any, state: any) {
   if (!equal(state, nextState(journal))) return null;
   try {
     verifyVersion(ctx, journal.target);
@@ -48,7 +48,7 @@ function finishInterruptedSwitch(ctx, journal, state) {
   forgetJournal(ctx);
   return result(ctx, state, 'recovered');
 }
-async function commit(ctx, journal, signal) {
+async function commit(ctx: any, journal: any, signal: any) {
   cancelled(signal);
   access(ctx);
   const state = readState(ctx);
@@ -79,7 +79,7 @@ async function commit(ctx, journal, signal) {
     throw error;
   }
 }
-async function performInstall(ctx, releaseId, signal) {
+async function performInstall(ctx: any, releaseId: any, signal: any) {
   const release = releasePolicy(ctx, releaseId);
   cancelled(signal);
   let journal = readJournal(ctx);
@@ -143,7 +143,7 @@ async function performInstall(ctx, releaseId, signal) {
     if (!fileMatches(ctx, child(tree, entry.path), entry)) remaining += entry.bytes;
   }
   ensureSpace(ctx, remaining);
-  const candidatePaths = new Set(pack.manifest.entries.map(entry => entry.path));
+  const candidatePaths = new Set(pack.manifest.entries.map((entry: any) => entry.path));
   for (const entry of target.entries) {
     access(ctx);
     const sourceRoot = candidatePaths.has(entry.path) ? pack.root : installed.root;
@@ -167,7 +167,7 @@ async function performInstall(ctx, releaseId, signal) {
   return commit(ctx, journal, signal);
 }
 
-function createResourceInstaller(options) {
+function createResourceInstaller(options: any) {
   const ctx = context(options);
   return {
     root: ctx.store,

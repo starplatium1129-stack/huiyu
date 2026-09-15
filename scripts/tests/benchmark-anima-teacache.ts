@@ -2,7 +2,7 @@
 
 var http: typeof import('http') = require('http');
 
-function postJson(url, payload) {
+function postJson(url: any, payload: any) {
   return new Promise(function (resolve, reject) {
     var u = new URL(url);
     var body = Buffer.from(JSON.stringify(payload));
@@ -16,7 +16,7 @@ function postJson(url, payload) {
         'Content-Length': body.length
       }
     }, function (res) {
-      var chunks = [];
+      var chunks: any = [];
       res.on('data', function (c) { chunks.push(c); });
       res.on('end', function () {
         var raw = Buffer.concat(chunks).toString('utf8');
@@ -29,10 +29,10 @@ function postJson(url, payload) {
   });
 }
 
-function getJson(url) {
+function getJson(url: any) {
   return new Promise(function (resolve, reject) {
     http.get(url, function (res) {
-      var chunks = [];
+      var chunks: any = [];
       res.on('data', function (c) { chunks.push(c); });
       res.on('end', function () {
         var raw = Buffer.concat(chunks).toString('utf8');
@@ -42,7 +42,7 @@ function getJson(url) {
   });
 }
 
-async function waitForPrompt(promptId) {
+async function waitForPrompt(promptId: any) {
   var start = Date.now();
   while (Date.now() - start < 120000) {
     var history = await getJson('http://127.0.0.1:8188/history/' + promptId);
@@ -56,7 +56,7 @@ async function waitForPrompt(promptId) {
   throw new Error('Timeout waiting for prompt ' + promptId);
 }
 
-function buildAnimaPrompt(withTeaCache, thresh) {
+function buildAnimaPrompt(withTeaCache: any, thresh?: any) {
   var wf = {
     '1': { class_type: 'UNETLoader', inputs: { unet_name: 'anima-base-v1.0.safetensors', weight_dtype: 'default' } },
     '2': { class_type: 'CLIPLoader', inputs: { clip_name: 'qwen_3_06b_base.safetensors', type: 'qwen_image' } },

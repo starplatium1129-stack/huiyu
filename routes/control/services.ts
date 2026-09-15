@@ -17,11 +17,11 @@ let express: typeof import('express') = require('express');
 let security: typeof import('../../server/security') = require('../../server/security');
 let envelope: typeof import('../../server/http-envelope') = require('../../server/http-envelope');
 
-function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unknown) => unknown; begin: (arg0: string,arg1: string,arg2: string[]) => unknown; update: (arg0: unknown,arg1: number) => void; finish: (arg0: unknown,arg1: string|null,arg2: string|undefined) => void; }; state: { ttsOnline: unknown; ttsManaged: boolean; sdOnline: unknown; desiredWebui: boolean; webuiManaged: boolean; ollamaModels: { length: string; }; comfyOnline: boolean; desiredComfy: boolean; comfyManaged: boolean; modeBusy: boolean; }; refreshServiceStates: (arg0: boolean|undefined) => Promise<unknown>; controlLog: (arg0: string) => void; config: { TTS_HOST: string; SD_HOST: string; COMFY_HOST: string; }; runManagedScript: (arg0: unknown,arg1: string[],arg2: number) => Promise<unknown>; VOICE_START_SCRIPT: unknown; VOICE_STOP_SCRIPT: unknown; saveManagedDesired: () => void; WEBUI_MANAGER_SCRIPT: unknown; managedScriptArgs: (arg0: string,arg1: string) => unknown; WEBUI_START_TIMEOUT_MS: unknown; unloadOllamaModels: () => Promise<unknown>; COMFY_MANAGER_SCRIPT: unknown; }) {
+function registerServiceRoutes(router: any, ctx: any) {
   let localOnly = security.localOnly;
 
   // POST /api/service/voice
-  router.post('/api/service/voice', localOnly, express.json({ limit:'2kb' }), function(req: { body: { action: unknown; }; }, res) {
+  router.post('/api/service/voice', localOnly, express.json({ limit:'2kb' }), function(req: any, res: any) {
     let action = req.body && req.body.action;
     if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ctx.ops.rejectConflict(res)) return;
@@ -36,7 +36,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
         } else {
           ctx.ops.finish(fastOp, '语音验证失败，请检查 ' + ctx.config.TTS_HOST);
         }
-      }).catch(function (e: { message: unknown; }) { ctx.ops.finish(fastOp, e.message); });
+      }).catch(function (e: any) { ctx.ops.finish(fastOp, e.message); });
       return;
     }
     let operation = ctx.ops.begin('voice-' + action, action === 'start' ? '启动语音服务' : '停止语音服务', [
@@ -46,7 +46,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
     let task = action === 'start'
       ? ctx.runManagedScript(ctx.VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000)
       : ctx.runManagedScript(ctx.VOICE_STOP_SCRIPT, [], 30000);
-    task.then(async function (result: { ok: unknown; error: unknown; }) {
+    task.then(async function (result: any) {
       ctx.ops.update(operation, 1);
       await ctx.refreshServiceStates(true); // 启停后缓存必然过期
       let expected = action === 'start';
@@ -74,7 +74,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
   });
 
   // POST /api/service/webui
-  router.post('/api/service/webui', localOnly, express.json({ limit:'2kb' }), function(req: { body: { action: unknown; }; }, res) {
+  router.post('/api/service/webui', localOnly, express.json({ limit:'2kb' }), function(req: any, res: any) {
     let action = req.body && req.body.action;
     if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ctx.ops.rejectConflict(res)) return;
@@ -89,7 +89,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
         } else {
           ctx.ops.finish(fastOp, 'WebUI 验证失败，请检查 ' + ctx.config.SD_HOST);
         }
-      }).catch(function (e: { message: unknown; }) { ctx.ops.finish(fastOp, e.message); });
+      }).catch(function (e: any) { ctx.ops.finish(fastOp, e.message); });
       return;
     }
     let operation = ctx.ops.begin('webui-' + action, action === 'start' ? '启动绘图服务' : '停止绘图服务', [
@@ -104,7 +104,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
       ctx.WEBUI_MANAGER_SCRIPT,
       ctx.managedScriptArgs('webui', action === 'start' ? 'Start' : 'Stop'),
       action === 'start' ? ctx.WEBUI_START_TIMEOUT_MS : 120000
-    ).then(async function (result: { ok: unknown; message: string; error: unknown; }) {
+    ).then(async function (result: any) {
       if (result.ok && result.message) {
         try {
           let parsed = JSON.parse(result.message);
@@ -140,12 +140,12 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
   });
 
   // POST /api/service/ollama
-  router.post('/api/service/ollama', localOnly, express.json({ limit:'2kb' }), function(req: { body: { action: unknown; }; }, res) {
+  router.post('/api/service/ollama', localOnly, express.json({ limit:'2kb' }), function(req: any, res: any) {
     let action = req.body && req.body.action;
     if (action !== 'unload') return envelope.fail(res, 400, 'action 目前只支持 unload');
     if (ctx.ops.rejectConflict(res)) return;
     let operation = ctx.ops.begin('ollama-unload', '释放聊天模型显存', ['正在卸载 Ollama 模型', '正在验证显存释放结果']);
-    ctx.unloadOllamaModels().then(function (result: { ok: unknown; error: unknown; message: unknown; }) {
+    ctx.unloadOllamaModels().then(function (result: any) {
       if (!result.ok) throw new Error(result.error || 'Ollama 卸载失败');
       ctx.ops.update(operation, 1);
       return ctx.refreshServiceStates().then(function () {
@@ -161,7 +161,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
   });
 
   // POST /api/service/comfy
-  router.post('/api/service/comfy', localOnly, express.json({ limit:'2kb' }), function(req: { body: { action: unknown; }; }, res) {
+  router.post('/api/service/comfy', localOnly, express.json({ limit:'2kb' }), function(req: any, res: any) {
     let action = req.body && req.body.action;
     if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ctx.ops.rejectConflict(res)) return;
@@ -181,7 +181,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
         } else {
           ctx.ops.finish(fastOp, 'ComfyUI 验证失败，请检查端口 ' + ctx.config.COMFY_HOST);
         }
-      }).catch(function (e: { message: unknown; }) { ctx.ops.finish(fastOp, e.message); });
+      }).catch(function (e: any) { ctx.ops.finish(fastOp, e.message); });
       return;
     }
     let operation = ctx.ops.begin('comfy-' + action, action === 'start' ? '启动 ComfyUI' : '停止 ComfyUI', [
@@ -192,7 +192,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
       ctx.state.desiredComfy = false;
       ctx.saveManagedDesired();
     }
-    ctx.runManagedScript(ctx.COMFY_MANAGER_SCRIPT, ctx.managedScriptArgs('comfy', action === 'start' ? 'Start' : 'Stop'), 120000).then(async function (result: { ok: unknown; message: string; error: unknown; }) {
+    ctx.runManagedScript(ctx.COMFY_MANAGER_SCRIPT, ctx.managedScriptArgs('comfy', action === 'start' ? 'Start' : 'Stop'), 120000).then(async function (result: any) {
       if (result.ok && result.message) {
         try {
           let parsed = JSON.parse(result.message);
@@ -221,7 +221,7 @@ function registerServiceRoutes(router, ctx: { ops: { rejectConflict: (arg0: unkn
   });
 
   // POST /api/mode — 绘图优先 / 聊天优先
-  router.post('/api/mode', localOnly, express.json({ limit:'2kb' }), function(req: { body: { mode: unknown; }; }, res) {
+  router.post('/api/mode', localOnly, express.json({ limit:'2kb' }), function(req: any, res: any) {
     let mode = req.body && req.body.mode;
     if (!['draw', 'chat'].includes(mode)) return envelope.fail(res, 400, 'mode 必须是 draw 或 chat');
     if (ctx.ops.rejectConflict(res)) return;

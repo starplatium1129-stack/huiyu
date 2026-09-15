@@ -6,10 +6,10 @@ const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const repo = path.resolve(__dirname, '../..');
-function fixture(t) {
+function fixture(t: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'rating-diagnostic-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const put = (file, value) => { const target = path.join(root, file); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, typeof value === 'string' ? value : JSON.stringify(value)); };
+  const put = (file: any, value: any) => { const target = path.join(root, file); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, typeof value === 'string' ? value : JSON.stringify(value)); };
   const script = fs.readFileSync(path.join(repo, 'scripts/maintenance/classify-scene-ratings.js'), 'utf8');
   put('scripts/maintenance/classify-scene-ratings.js', script);
   put('scripts/lib/scene-store.js', "exports.loadSceneShards = () => ({ scenes: JSON.parse(require('fs').readFileSync(require('path').join(process.env.AICS_DATA_ROOT, 'scenes.json'), 'utf8')) }); exports.writeAggregate = () => { throw Error('unexpected write'); };");
@@ -25,7 +25,7 @@ function fixture(t) {
   const run = (...args) => spawnSync(process.execPath, [path.join(root, 'scripts/maintenance/classify-scene-ratings.js'), ...args], { encoding: 'utf8', env: { ...process.env, AICS_DATA_ROOT: root } });
   return { root, put, rows, run };
 }
-function snapshot(root) {
+function snapshot(root: any) {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap((e) => {
     const target = path.join(root, e.name);
     return e.isDirectory() ? snapshot(target) : [[target, fs.readFileSync(target).toString('base64')]];
@@ -39,7 +39,7 @@ test('JSON and explain show exact fields and precedence with zero writes', (t) =
     assert.equal(result.status, 1, result.stderr);
     const report = JSON.parse(result.stdout);
     assert.equal(report.changedCount, 2);
-    assert.deepEqual(report.changes.map((r) => r.id), ['sc001', 'sc004']);
+    assert.deepEqual(report.changes.map((r: any) => r.id), ['sc001', 'sc004']);
     assert.deepEqual(report.changes[0].expected, { rating: 'R15', mature: false, category: '日常', usage: ['R15'] });
     assert.equal(report.changes[0].source, 'manual');
     assert.equal(report.changes[1].source, 'existing-mature');

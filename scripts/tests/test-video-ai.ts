@@ -165,7 +165,7 @@ async function run() {
     assert.equal((await postRewrite(stackApi.baseUrl, { prompt:'x'.repeat(4001) })).status, 400);
 
     // ── 整批节奏编排 /api/video-ai/polish ─────────────────────────────
-    function polishBody(overrides: { shots: ({ prompt: string; camera: string; }|{ prompt: string; camera?: undefined; })[]; }|undefined) {
+    function polishBody(overrides?: { shots: ({ prompt: string; camera: string; }|{ prompt: string; camera?: any; })[]; }|undefined) {
       return Object.assign({
         shots:[
           { prompt:'她走进咖啡店。', shotSize:'medium', camera:'still', motion:'subtle', dialogue:'' },

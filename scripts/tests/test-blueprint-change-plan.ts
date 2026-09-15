@@ -59,7 +59,7 @@ function baseState() {
   return { manifest, shards, target: [...frierenGroup, ...fateGroup], mapping };
 }
 
-function shardInputs(shards: { [s: string]: unknown; }|ArrayLike<unknown>, textOverrides: { "fate.json": string; }|undefined) {
+function shardInputs(shards: { [s: string]: unknown; }|ArrayLike<unknown>, textOverrides?: { "fate.json": string; }|undefined) {
   const out = {};
   for (const [file, data] of Object.entries(shards)) {
     out[file] = {
@@ -70,7 +70,7 @@ function shardInputs(shards: { [s: string]: unknown; }|ArrayLike<unknown>, textO
   return out;
 }
 
-function plan(state: { manifest: unknown; shards: unknown; target: unknown; mapping: unknown; }, target: unknown, textOverrides: { "fate.json": string; }|undefined) {
+function plan(state: any, target?: unknown, textOverrides?: { "fate.json": string; }|undefined) {
   return planBlueprintChanges({
     manifest: state.manifest,
     shards: shardInputs(state.shards, textOverrides),
@@ -79,7 +79,7 @@ function plan(state: { manifest: unknown; shards: unknown; target: unknown; mapp
   });
 }
 
-function planError(fn, substring: string|undefined) {
+function planError(fn: any, substring?: string|undefined) {
   assert.throws(fn, (error) => error instanceof BlueprintChangePlanError
     && (substring === undefined || error.message.includes(substring)),
   substring || 'BlueprintChangePlanError');
@@ -140,7 +140,7 @@ test('修改单条蓝图：只写对应分片，组内顺序与字段保留，ma
   const shard = JSON.parse(p.writes[0].text);
   assert.equal(shard.version, 2);
   assert.equal(shard.franchise, FRIEREN);
-  assert.deepEqual(shard.blueprints.map((b: { id: unknown; }) => b.id), ['frieren_1', 'frieren_2']);
+  assert.deepEqual(shard.blueprints.map((b: any) => b.id), ['frieren_1', 'frieren_2']);
   assert.equal(shard.blueprints[0].title, '新标题');
   assert.equal(shard.blueprints[1].title, 'frieren_2');
   assert.equal(p.writes[0].text, jsonText(shard));
@@ -155,7 +155,7 @@ test('新增系列：slug 命名、manifest 追加、聚合按 manifest 顺序�
   assert.equal(create.file, MARIN_FILE);
   assert.equal(create.franchise, MARIN);
   assert.equal(create.count, 1);
-  assert.deepEqual(p.manifest.data.files.map((f: { file: unknown; }) => f.file), [FRIEREN_FILE, FATE_FILE, MARIN_FILE]);
+  assert.deepEqual(p.manifest.data.files.map((f: any) => f.file), [FRIEREN_FILE, FATE_FILE, MARIN_FILE]);
   assert.deepEqual(p.manifest.data.files[2], { file: MARIN_FILE, franchise: MARIN, count: 1 });
   assert.equal(p.manifest.changed, true);
   assert.deepEqual(p.aggregate.data.blueprints.map((b) => b.id),
@@ -168,16 +168,16 @@ test('多个新系列按目标首次出现顺序追加；既有系列顺序不�
   const state = baseState();
   const target = [...state.target, bp('h1', 'holo'), bp('m1', 'marin')];
   const p = plan(state, target);
-  assert.deepEqual(p.manifest.data.files.map((f: { file: unknown; }) => f.file),
+  assert.deepEqual(p.manifest.data.files.map((f: any) => f.file),
     [FRIEREN_FILE, FATE_FILE, 'hololive.json', MARIN_FILE]);
 
   const reversed = [...state.target].reverse();
   const p2 = plan(state, reversed);
-  assert.deepEqual(p2.manifest.data.files.map((f: { file: unknown; }) => f.file), [FRIEREN_FILE, FATE_FILE]);
+  assert.deepEqual(p2.manifest.data.files.map((f: any) => f.file), [FRIEREN_FILE, FATE_FILE]);
   // 组内顺序以目标为准：frieren 组反转为写；fate 组只有单条，组内顺序不变则不写
   assert.deepEqual(p2.writes.map((w) => w.file), [FRIEREN_FILE]);
   assert.deepEqual(p2.unchanged.map((u) => u.file), [FATE_FILE]);
-  assert.deepEqual(JSON.parse(p2.writes[0].text).blueprints.map((b: { id: unknown; }) => b.id), ['frieren_2', 'frieren_1']);
+  assert.deepEqual(JSON.parse(p2.writes[0].text).blueprints.map((b: any) => b.id), ['frieren_2', 'frieren_1']);
 });
 
 test('删除组内一条是重写；删除最后一条是删片并移除 manifest 项', () => {
@@ -185,13 +185,13 @@ test('删除组内一条是重写；删除最后一条是删片并移除 manifes
   const partial = plan(state, state.target.filter((b) => b.id !== 'frieren_2'));
   assert.deepEqual(partial.deletes, []);
   assert.deepEqual(partial.writes.map((w) => [w.file, w.count]), [[FRIEREN_FILE, 1]]);
-  assert.deepEqual(partial.manifest.data.files.map((f: { file: unknown; count: unknown; }) => [f.file, f.count]),
+  assert.deepEqual(partial.manifest.data.files.map((f: any) => [f.file, f.count]),
     [[FRIEREN_FILE, 1], [FATE_FILE, 1]]);
   assert.deepEqual(partial.unchanged.map((u) => u.file), [FATE_FILE]);
 
   const emptied = plan(state, state.target.filter((b) => b.id !== 'fate_1'));
   assert.deepEqual(emptied.deletes, [{ file: FATE_FILE, franchise: FATE }]);
-  assert.deepEqual(emptied.manifest.data.files.map((f: { franchise: unknown; }) => f.franchise), [FRIEREN]);
+  assert.deepEqual(emptied.manifest.data.files.map((f: any) => f.franchise), [FRIEREN]);
   assert.deepEqual(emptied.aggregate.data.blueprints.map((b) => b.id), ['frieren_1', 'frieren_2']);
   assert.equal(emptied.manifest.changed, true);
   assert.equal(emptied.dirty, true);
@@ -203,9 +203,9 @@ test('跨系列移动：旧片移除、新片加入；旧系列清空时删片',
   const p = plan(state, moved);
   assert.deepEqual(p.deletes, []);
   assert.deepEqual(p.writes.map((w) => w.file), [FRIEREN_FILE, FATE_FILE]);
-  assert.deepEqual(JSON.parse(p.writes[0].text).blueprints.map((b: { id: unknown; }) => b.id), ['frieren_1']);
-  assert.deepEqual(JSON.parse(p.writes[1].text).blueprints.map((b: { id: unknown; }) => b.id), ['frieren_2', 'fate_1']);
-  assert.deepEqual(p.manifest.data.files.map((f: { file: unknown; count: unknown; }) => [f.file, f.count]),
+  assert.deepEqual(JSON.parse(p.writes[0].text).blueprints.map((b: any) => b.id), ['frieren_1']);
+  assert.deepEqual(JSON.parse(p.writes[1].text).blueprints.map((b: any) => b.id), ['frieren_2', 'fate_1']);
+  assert.deepEqual(p.manifest.data.files.map((f: any) => [f.file, f.count]),
     [[FRIEREN_FILE, 1], [FATE_FILE, 2]]);
 
   const allOut = [
@@ -215,7 +215,7 @@ test('跨系列移动：旧片移除、新片加入；旧系列清空时删片',
   const p2 = plan(state, allOut);
   assert.deepEqual(p2.deletes, [{ file: FATE_FILE, franchise: FATE }]);
   assert.deepEqual(p2.writes.map((w) => w.file), [FRIEREN_FILE]);
-  assert.deepEqual(JSON.parse(p2.writes[0].text).blueprints.map((b: { id: unknown; }) => b.id),
+  assert.deepEqual(JSON.parse(p2.writes[0].text).blueprints.map((b: any) => b.id),
     ['frieren_1', 'frieren_2', 'fate_1']);
 });
 
@@ -329,7 +329,7 @@ test('未知角色与无法确认的 franchise 明确报错，不自动建 unkno
 test('来源分片不齐全、多余分片、franchise 冲突、text/data 不一致、来源 id 问题均拒绝', () => {
   const state = baseState();
   const inputs = shardInputs(state.shards);
-  const planWithShards = (shards: { "orphan.json"?: { text: string; data: { blueprints: never[]; }; }; "fate.json"?: { text: string; data: { version: number; franchise: string; blueprints: ({ id: string; title: string; characterId: string|undefined; category: string; promptTokens: string[]; negativeTokens: never[]; promptProse: string; }&{ title: string; })[]; }; }|{ text: string; data: { version: number; franchise: string; blueprints: ({ id: string; title: string; characterId: string|undefined; category: string; promptTokens: string[]; negativeTokens: never[]; promptProse: string; }&{ title: string; })[]; }; }|{ text: unknown; data: { version: number; franchise: string; blueprints: never[]; }; }|{ text: string; data: { blueprints: never[]; }; }|{ text: string; data: { version: number; franchise: string; blueprints: { characterId: string; }[]; }; }; }) => planBlueprintChanges({
+  const planWithShards = (shards: any) => planBlueprintChanges({
     manifest: state.manifest,
     shards,
     blueprints: state.target,
@@ -453,7 +453,7 @@ test('落盘夹具上真实 blueprint-store 对账：聚合字节一致，重规
   fs.writeFileSync(path.join(shardsDir, 'manifest.json'), p.manifest.text);
 
   const loaded = store.loadBlueprintShards();
-  assert.deepEqual(loaded.blueprints.map((b: { id: unknown; }) => b.id), target.map((b) => b.id));
+  assert.deepEqual(loaded.blueprints.map((b: any) => b.id), target.map((b) => b.id));
   store.writeBlueprintAggregate();
   assert.equal(fs.readFileSync(store.aggregatePath, 'utf8'), p.aggregate.text);
   assert.equal(store.aggregateIsCurrent(), true);
@@ -476,7 +476,7 @@ test('落盘夹具上真实 blueprint-store 对账：聚合字节一致，重规
   assert.equal(p2.dirty, false);
   assert.deepEqual(p2.writes, []);
   assert.deepEqual(p2.deletes, []);
-  assert.deepEqual(p2.unchanged.map((u) => u.file), manifest2.files.map((f: { file: unknown; }) => f.file));
+  assert.deepEqual(p2.unchanged.map((u) => u.file), manifest2.files.map((f: any) => f.file));
 });
 
 test('JSON extension keys and complete blueprint fields survive planning without prototype setters', () => {

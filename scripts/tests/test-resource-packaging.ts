@@ -6,7 +6,7 @@ const sharp: typeof import('sharp') = require('sharp');
 const { fs, path, assert, write, snapshot, fixture }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
 const { applyResourceProfile }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
 
-async function packagingFixture(t) {
+async function packagingFixture(t: any) {
   const f = fixture(t);
   const image = await sharp(randomBytes(1400 * 1800 * 3), { raw: { width: 1400, height: 1800, channels: 3 } }).png().toBuffer();
   write(path.join(f.source, 'assets/characters/popular-fixture.png'), image);

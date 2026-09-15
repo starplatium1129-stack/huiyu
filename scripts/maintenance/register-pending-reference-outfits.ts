@@ -45,7 +45,7 @@ function main() {
   const popular = readJson(POPULAR_FILE);
   const perspectives = standards.perspectives;
 
-  const popularById = new Map((popular.characters || []).map((c: { id: unknown; }) => [c.id, c]));
+  const popularById = new Map((popular.characters || []).map((c: any) => [c.id, c]));
 
   const targets = standards.characters.filter((c: { outfits: string|unknown[]; id: string; }) => {
     if (c.outfits.length > 0) return false;
@@ -65,7 +65,7 @@ function main() {
     const outfits: any[] = [];
 
     for (const vo of viewChar.outfits) {
-      const popOutfit = (popChar?.outfits || []).find((o: { id: unknown; }) => o.id === vo.outfitId);
+      const popOutfit = (popChar?.outfits || []).find((o: any) => o.id === vo.outfitId);
       // popular 无此形态 = 命名漂移或幽灵形态：tokens 退回形态 id 自身，保证 schema minItems 1。
       const tokens = (popOutfit?.tokens || []).length ? popOutfit.tokens : [vo.outfitId];
       outfits.push({
@@ -77,7 +77,7 @@ function main() {
         tokens,
       });
       // view 侧补齐标准视角定义；真实视角与设计图一律 pending，避免制造断链。
-      vo.references = perspectives.map((p: { id: unknown; name: unknown; shotType: unknown; lens: unknown; targetUsage: unknown; }) => ({
+      vo.references = perspectives.map((p: any) => ({
         id: p.id,
         name: p.name,
         shotType: p.shotType,
@@ -95,7 +95,7 @@ function main() {
       displayName: character.displayName,
       outfits: outfits.length,
       perspectivesPerOutfit: perspectives.length,
-      driftedFromPopular: outfits.filter((o: any) => !(popChar?.outfits || []).some((p: { id: unknown; }) => p.id === o.id)).map((o: any) => o.id),
+      driftedFromPopular: outfits.filter((o: any) => !(popChar?.outfits || []).some((p: any) => p.id === o.id)).map((o: any) => o.id),
     });
   }
 

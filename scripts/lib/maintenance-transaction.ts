@@ -5,7 +5,7 @@ const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-re
 const backups: typeof import('./maintenance-recovery-backup') = require('./maintenance-recovery-backup');
 const { acquireMaintenanceLease }: typeof import('./maintenance-lease') = require('./maintenance-lease');
 
-function prepareMaintenanceTransaction(lease: { nonce?: `${string}-${string}-${string}-${string}-${string}`; assertOwned: unknown; setBackup: unknown; addParticipant?: (pid: unknown) => void; participantExited?: (pid: unknown) => void; assertQuiescent?: () => void; beginRollback?: () => void; markInconsistent?: (message: unknown) => void; complete?: (phase: unknown) => void; release?: () => void; }, options: {}|undefined, snapshot: unknown, label = 'content') {
+function prepareMaintenanceTransaction(lease: any, options: any, snapshot: unknown, label = 'content') {
   lease.assertOwned();
   const ctx = io.context(options);
   for (const item of snapshot) {
@@ -16,11 +16,11 @@ function prepareMaintenanceTransaction(lease: { nonce?: `${string}-${string}-${s
   lease.setBackup(directory);
   return directory;
 }
-function commitMaintenanceTransaction(lease: { nonce?: `${string}-${string}-${string}-${string}-${string}`; assertOwned?: () => unknown; setBackup?: (directory: unknown) => { directory: string; id: string; sha256: string; manifest: unknown; entries: unknown; }; addParticipant?: (pid: unknown) => void; participantExited?: (pid: unknown) => void; assertQuiescent?: () => void; beginRollback?: () => void; markInconsistent?: (message: unknown) => void; complete: unknown; release: unknown; }) {
+function commitMaintenanceTransaction(lease: any) {
   lease.complete('committed');
   lease.release();
 }
-function rollbackMaintenanceTransaction(lease: { nonce?: `${string}-${string}-${string}-${string}-${string}`; assertOwned: unknown; setBackup?: (directory: unknown) => { directory: string; id: string; sha256: string; manifest: unknown; entries: unknown; }; addParticipant?: (pid: unknown) => void; participantExited?: (pid: unknown) => void; assertQuiescent?: () => void; beginRollback: unknown; markInconsistent: unknown; complete: unknown; release: unknown; }, options: unknown) {
+function rollbackMaintenanceTransaction(lease: any, options: unknown) {
   if (!lease) return { ok: true };
   try {
     const journal = lease.assertOwned();
@@ -37,7 +37,7 @@ function rollbackMaintenanceTransaction(lease: { nonce?: `${string}-${string}-${
     return { ok: false, error: runtimeErrorMessage(error), dataIntegrity: 'INCONSISTENT' };
   }
 }
-async function withMaintenanceTransaction(options: {}|undefined, capture: () => unknown, task: (arg0: { nonce: `${string}-${string}-${string}-${string}-${string}`; assertOwned: () => unknown; setBackup(directory: unknown): { directory: string; id: string; sha256: string; manifest: unknown; entries: unknown; }; addParticipant(pid: unknown): void; participantExited(pid: unknown): void; assertQuiescent(): void; beginRollback(): void; markInconsistent(message: unknown): void; complete(phase: unknown): void; release(): void; },arg1: string) => unknown, label = 'content') {
+async function withMaintenanceTransaction(options: any, capture: () => unknown, task: any, label = 'content') {
   const lease = acquireMaintenanceLease(options);
   try {
     const snapshot = capture();

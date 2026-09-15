@@ -8,11 +8,11 @@ const { spawnSync }: typeof import('node:child_process') = require('node:child_p
 const { parse, report }: typeof import('../maintenance/report-content-impact') = require('../maintenance/report-content-impact');
 const { formatImpactReport }: typeof import('../lib/content-impact-format') = require('../lib/content-impact-format');
 
-function git(root, ...args) {
+function git(root: any, ...args) {
   const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
 }
-function gitFixture(t) {
+function gitFixture(t: any) {
   const f = sceneFixture(t);
   git(f.root, 'init');
   git(f.root, 'add', '.');
@@ -35,11 +35,11 @@ test('Git staged/unstaged/untracked 与角色场景路径样张组合，索引�
   const r = report(parse(args));
   assert.equal(r.gitChanges.status, 'collected');
   for (const file of ['data/popular/one.json', 'data/blueprints/one.json', 'data/scenes/base.2.json', '未知 file.json']) assert.ok(r.gitChanges.paths.includes(file));
-  assert.deepEqual(r.scenes.map((x) => x.id), ['sc001', 'sc002']);
-  assert.ok(r.revalidate.some((x) => x.domain === 'blueprint'));
-  for (const domain of ['theme', 'workflow']) assert.ok(r.revalidate.some((x) => x.domain === domain));
-  assert.ok(r.unknown.some((x) => x.includes('manual.txt')));
-  assert.ok(r.unknown.some((x) => x.includes('未知 file.json')));
+  assert.deepEqual(r.scenes.map((x: any) => x.id), ['sc001', 'sc002']);
+  assert.ok(r.revalidate.some((x: any) => x.domain === 'blueprint'));
+  for (const domain of ['theme', 'workflow']) assert.ok(r.revalidate.some((x: any) => x.domain === domain));
+  assert.ok(r.unknown.some((x: any) => x.includes('manual.txt')));
+  assert.ok(r.unknown.some((x: any) => x.includes('未知 file.json')));
   assert.equal(r.showcase.manifests[0].entries.length, 1);
   for (const prefix of [[path.resolve(__dirname, '../maintenance/report-content-impact.js')], [path.resolve(__dirname, '../workflow.js'), 'audit:impact']]) {
     const cli = spawnSync(process.execPath, [...prefix, ...args, '--json'], { encoding: 'utf8' });
@@ -92,10 +92,10 @@ test('未启用、帮助及预览不启动 Git；命令失败及不可解析输�
   }
 });
 
-function fixture(t) {
+function fixture(t: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-impact-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const write = (file, value) => {
+  const write = (file: any, value: any) => {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     fs.writeFileSync(path.join(root, file), JSON.stringify(value));
   };
@@ -109,7 +109,7 @@ function fixture(t) {
   write('data/character-reference-view.json', { a: { outfits: [{ outfitId: 'dress' }] } });
   return { root, write, characters, blueprints };
 }
-const options = (root, extra = {}) => ({ root, paths: [], character: 'a', ...extra });
+const options = (root: any, extra = {}) => ({ root, paths: [], character: 'a', ...extra });
 test('reference 声明统计、显式服装及路径多角色过滤，CLI/工作流零写入', (t) => {
   const f = fixture(t);
   f.write('data/character-reference-view.json', {
@@ -120,10 +120,10 @@ test('reference 声明统计、显式服装及路径多角色过滤，CLI/工作
   const before = snapshot(f.root);
   const args = ['--root', f.root, '--character', 'a', '--outfit', 'dress', '--path', 'data/popular/one.json', '--json'];
   const expected = report(parse(args)).referenceEvidence;
-  assert.deepEqual(expected.map((r) => [r.characterId, r.outfitId, r.status]), [['a', 'dress', 'pending'], ['b', 'other', 'empty']]);
+  assert.deepEqual(expected.map((r: any) => [r.characterId, r.outfitId, r.status]), [['a', 'dress', 'pending'], ['b', 'other', 'empty']]);
   assert.deepEqual([expected[0].total, expected[0].pendingCount, expected[0].urlDeclaredCount, expected[0].reviewDeclaredCount], [3, 2, 2, 1]);
   assert.equal(expected[0].reviewStatus, 'declared-unverified');
-  assert.ok(expected.every((r) => r.assetStatus === 'unverified'));
+  assert.ok(expected.every((r: any) => r.assetStatus === 'unverified'));
   const coat = report(options(f.root, { outfit: 'coat' })).referenceEvidence[0];
   assert.equal(coat.status, 'declared-unverified');
   assert.equal(coat.reviewStatus, 'unknown');
@@ -137,7 +137,7 @@ test('reference 声明统计、显式服装及路径多角色过滤，CLI/工作
 
 test('reference 缺角色/服装/references 登记与坏 view 保持未知边界', (t) => {
   const f = fixture(t);
-  const run = (extra) => report(options(f.root, extra)).referenceEvidence[0];
+  const run = (extra?: any) => report(options(f.root, extra)).referenceEvidence[0];
   assert.equal(run().status, 'missing');
   assert.equal(run({ character: 'b' }).status, 'missing');
   assert.equal(run({ outfit: 'absent' }).status, 'missing');
@@ -156,16 +156,16 @@ test('reference 仅读取索引，URL 和配置的素材根不访问', (t) => {
   const f = fixture(t);
   f.write('data/character-reference-view.json', { a: { outfits: [{ outfitId: 'dress', references: [{ url: 'https://invalid.test/image' }] }] } });
   const original = fs.readFileSync;
-  const reads = [];
-  t.mock.method(fs, 'readFileSync', (file, ...args) => { reads.push(String(file)); return original(file, ...args); });
+  const reads: any = [];
+  t.mock.method(fs, 'readFileSync', (file: any, ...args) => { reads.push(String(file)); return original(file, ...args); });
   t.mock.method(globalThis, 'fetch', () => { throw new Error('network forbidden'); });
   const r = report(options(f.root));
   assert.equal(r.referenceEvidence[0].status, 'declared-unverified');
-  assert.ok(reads.every((file) => file.startsWith(f.root)));
-  assert.ok(r.related.some((x) => x.domain === 'reference'));
-  assert.ok(r.revalidate.some((x) => x.domain === 'reference'));
+  assert.ok(reads.every((file: any) => file.startsWith(f.root)));
+  assert.ok(r.related.some((x: any) => x.domain === 'reference'));
+  assert.ok(r.revalidate.some((x: any) => x.domain === 'reference'));
 });
-function defaultsFixture(t, outfits) {
+function defaultsFixture(t: any, outfits: any) {
   const f = fixture(t);
   f.characters[0].outfits = outfits;
   f.blueprints.push({ id: 'implicit', characterId: 'a' });
@@ -182,11 +182,11 @@ test('唯一一致默认解析到非首项，路径覆盖每个所选角色，�
   assert.equal(r.outfitDefaults[0].status, 'explicit');
   assert.equal(r.outfitDefaults[0].defaultOutfit, 'coat');
   assert.deepEqual(r.mustChange, []);
-  const bps = r.revalidate.filter((x) => x.domain === 'blueprint');
-  assert.deepEqual(bps.map((x) => x.object), ['data/blueprints/one.json#a1', 'data/blueprints/one.json#implicit']);
+  const bps = r.revalidate.filter((x: any) => x.domain === 'blueprint');
+  assert.deepEqual(bps.map((x: any) => x.object), ['data/blueprints/one.json#a1', 'data/blueprints/one.json#implicit']);
   assert.match(bps[1].reason, /a\/coat/);
   const all = report(options(root, { character: null, paths: ['data/popular/one.json'] }));
-  assert.deepEqual(all.outfitDefaults.map((x) => [x.id, x.status]), [['a', 'explicit'], ['b', 'unknown']]);
+  assert.deepEqual(all.outfitDefaults.map((x: any) => [x.id, x.status]), [['a', 'explicit'], ['b', 'unknown']]);
 });
 test('双字段冲突、多默认、无默认及默认 ID 缺失或重复均报告必改', (t) => {
   const cases = [
@@ -203,8 +203,8 @@ test('双字段冲突、多默认、无默认及默认 ID 缺失或重复均报�
     const r = report(options(root));
     assert.equal(r.outfitDefaults[0].status, status);
     assert.equal(r.outfitDefaults[0].defaultOutfit, null);
-    assert.ok(r.mustChange.some((x) => x.domain === 'outfit-default'));
-    assert.ok(r.unknown.some((x) => x.includes('#implicit')));
+    assert.ok(r.mustChange.some((x: any) => x.domain === 'outfit-default'));
+    assert.ok(r.unknown.some((x: any) => x.includes('#implicit')));
   }
 });
 test('旧格式、非布尔或部分字段与未知身份不猜默认第一项', (t) => {
@@ -213,8 +213,8 @@ test('旧格式、非布尔或部分字段与未知身份不猜默认第一项',
     const r = report(options(root));
     assert.equal(r.outfitDefaults[0].status, 'unknown');
     assert.equal(r.outfitDefaults[0].defaultOutfit, null);
-    assert.ok(!r.mustChange.some((x) => x.domain === 'outfit-default'));
-    assert.ok(r.unknown.some((x) => x.includes('#implicit') && x.includes('unknown')));
+    assert.ok(!r.mustChange.some((x: any) => x.domain === 'outfit-default'));
+    assert.ok(r.unknown.some((x: any) => x.includes('#implicit') && x.includes('unknown')));
     assert.equal(report(options(root, { character: 'absent' })).outfitDefaults[0].status, 'unknown');
   }
 });
@@ -244,7 +244,7 @@ test('默认服装 CLI 与工作流成功/错误均零写入，文本含独立�
   }
 });
 const themeFile = 'src/assets/css/director/tokens.css';
-function themeFixture(t, css = '.pb { --accent: pink; }') {
+function themeFixture(t: any, css = '.pb { --accent: pink; }') {
   const f = fixture(t);
   f.write('data/characters.json', [{ id: 'a' }, { id: 'nene' }]);
   f.write(themeFile, null);
@@ -257,19 +257,19 @@ test('主题选择器按所选角色/服装关联，忽略注释和声明字符�
     body:has(.pb[data-character])::before { color: red; }
     .pb[data-character="a"], .pb[data-character = 'b'] { --accent: red; content: 'data-character="nene"'; }`);
   const r = report(options(root, { outfit: 'dress' }));
-  assert.deepEqual(r.themes.map((x) => [x.id, x.themeStatus]), [['a', 'explicit']]);
-  for (const level of ['related', 'revalidate']) assert.deepEqual(r[level].filter((x) => x.domain === 'theme').map((x) => x.object), [`${themeFile}#a`]);
+  assert.deepEqual(r.themes.map((x: any) => [x.id, x.themeStatus]), [['a', 'explicit']]);
+  for (const level of ['related', 'revalidate']) assert.deepEqual(r[level].filter((x: any) => x.domain === 'theme').map((x: any) => x.object), [`${themeFile}#a`]);
   assert.deepEqual(r.mustChange, []);
   assert.equal(report(options(root, { character: 'nene' })).themes[0].themeStatus, 'default');
   const all = report(options(root, { character: null, paths: ['data/popular/one.json'] }));
-  assert.deepEqual(all.themes.map((x) => [x.id, x.themeStatus]), [['a', 'explicit'], ['b', 'explicit']]);
+  assert.deepEqual(all.themes.map((x: any) => [x.id, x.themeStatus]), [['a', 'explicit'], ['b', 'explicit']]);
 });
 
 test('canonical 缺主题为 missing，外部热门角色保持 unknown', (t) => {
   const { root } = themeFixture(t);
   const r = report(options(root, { character: null, paths: ['data/popular/one.json'] }));
-  assert.deepEqual(r.themes.map((x) => [x.id, x.themeStatus]), [['a', 'missing'], ['b', 'unknown']]);
-  assert.deepEqual(r.mustChange.filter((x) => x.domain === 'theme').map((x) => x.object), [`${themeFile}#a`]);
+  assert.deepEqual(r.themes.map((x: any) => [x.id, x.themeStatus]), [['a', 'missing'], ['b', 'unknown']]);
+  assert.deepEqual(r.mustChange.filter((x: any) => x.domain === 'theme').map((x: any) => x.object), [`${themeFile}#a`]);
   assert.match(r.themes[1].reason, /外部热门角色/);
 });
 
@@ -310,7 +310,7 @@ test('档案角色不依赖热门登记；显式主题不依赖 canonical 数据
   write('data/characters.json', [{ id: 'archive_only' }]);
   const r = report(options(root, { character: 'archive_only' }));
   assert.equal(r.themes[0].themeStatus, 'missing');
-  assert.ok(r.unknown.some((x) => x.includes('当前热门源中不存在')));
+  assert.ok(r.unknown.some((x: any) => x.includes('当前热门源中不存在')));
   fs.writeFileSync(path.join(root, 'data/characters.json'), '{');
   assert.equal(report(options(root)).themes[0].themeStatus, 'explicit');
 });
@@ -332,7 +332,7 @@ test('主题 CLI/工作流成功与缺主题退出码、帮助预览均零写入
   assert.equal(spawnSync(process.execPath, [path.resolve(__dirname, '../maintenance/report-content-impact.js'), '--root', root, '--character', 'a', '--json']).status, 1);
   assert.deepEqual(snapshot(root), missingBefore);
 });
-function sceneFixture(t) {
+function sceneFixture(t: any) {
   const f = fixture(t);
   const scenes = [{ id: 'sc001', char: 'a' }, { id: 'sc002', char: 'a' }, { id: 'sc003', char: 'b' }];
   f.write('data/scenes/manifest.json', { files: [{ file: 'base.json', character: 'a' }, { file: 'base-extra.json', character: 'b' }] });
@@ -342,33 +342,33 @@ function sceneFixture(t) {
   f.write('data/scenes.json', scenes);
   f.write('data/curation.json', { curatedSceneIds: ['sc001'], signatureSceneIds: ['sc002'], personaCoreSceneIds: ['sc001', 'sc003'] });
   f.write('data/retired-scenes.json', { records: [{ id: 'sc099', reason: 'retired fixture' }] });
-  return { ...f, scenes, run: (args) => report(parse(['--root', f.root, ...args])) };
+  return { ...f, scenes, run: (args: any) => report(parse(['--root', f.root, ...args])) };
 }
 
 test('精选路径选择三层当前 ID 并独立报告源与场景状态', (t) => {
   const { run } = sceneFixture(t);
   const r = run(['--path', 'data/curation.json']);
-  assert.deepEqual(r.scenes.map((s) => s.id), ['sc001', 'sc002', 'sc003']);
+  assert.deepEqual(r.scenes.map((s: any) => s.id), ['sc001', 'sc002', 'sc003']);
   assert.deepEqual(r.mustChange, []);
-  for (const level of ['related', 'revalidate']) assert.ok(r[level].some((x) => x.domain === 'curation-source'));
+  for (const level of ['related', 'revalidate']) assert.ok(r[level].some((x: any) => x.domain === 'curation-source'));
   for (const s of r.scenes) {
     assert.equal(s.aggregate.status, 'current');
     assert.equal(s.retirement.status, 'not-listed');
     assert.equal(Object.keys(s.curation).length, 3);
   }
-  assert.ok(r.unknown.some((x) => x.includes('历史删除记录')));
+  assert.ok(r.unknown.some((x: any) => x.includes('历史删除记录')));
 });
 
 test('退役路径选当前 ID，未知历史不列必改，当前冲突仍报告', (t) => {
   const { run, write } = sceneFixture(t);
   const r = run(['--path', 'data/retired-scenes.json']);
-  assert.deepEqual(r.scenes.map((s) => s.id), ['sc099']);
+  assert.deepEqual(r.scenes.map((s: any) => s.id), ['sc099']);
   assert.equal(r.scenes[0].aggregate.status, 'absent');
   assert.equal(r.scenes[0].retirement.status, 'retired');
   assert.deepEqual(r.mustChange, []);
-  for (const level of ['related', 'revalidate']) for (const domain of ['retired-source', 'retired-scene']) assert.ok(r[level].some((x) => x.domain === domain));
+  for (const level of ['related', 'revalidate']) for (const domain of ['retired-source', 'retired-scene']) assert.ok(r[level].some((x: any) => x.domain === domain));
   write('data/retired-scenes.json', { records: [{ id: 'sc001' }] });
-  assert.ok(run(['--path', 'data/retired-scenes.json']).mustChange.some((x) => x.domain === 'retired-scene'));
+  assert.ok(run(['--path', 'data/retired-scenes.json']).mustChange.some((x: any) => x.domain === 'retired-scene'));
 });
 
 test('显式坏/缺失元数据拒绝部分 ID，CLI/工作流失败且零写入', (t) => {
@@ -383,8 +383,8 @@ test('显式坏/缺失元数据拒绝部分 ID，CLI/工作流失败且零写入
     const before = snapshot(root);
     const r = run(['--path', file]);
     assert.deepEqual(r.scenes, []);
-    assert.ok(r.mustChange.some((x) => x.object === file));
-    assert.ok(r.unknown.some((x) => x.includes(file)));
+    assert.ok(r.mustChange.some((x: any) => x.object === file));
+    assert.ok(r.unknown.some((x: any) => x.includes(file)));
     for (const prefix of [[path.resolve(__dirname, '../maintenance/report-content-impact.js')], [path.resolve(__dirname, '../workflow.js'), 'audit:impact']]) {
       const cli = spawnSync(process.execPath, [...prefix, '--root', root, '--path', file, '--json'], { encoding: 'utf8' });
       assert.equal(cli.status, 1, cli.stderr);
@@ -402,7 +402,7 @@ test('空登记和聚合/manifest/历史路径不猜 ID', (t) => {
     const r = run(['--path', file]);
     assert.deepEqual(r.scenes, []);
     assert.deepEqual(r.mustChange, []);
-    assert.ok(r.unknown.some((x) => x.includes(file)));
+    assert.ok(r.unknown.some((x: any) => x.includes(file)));
   }
 });
 
@@ -426,7 +426,7 @@ test('单场景源/数组聚合与精选层级独立读取，无关场景失配�
   write('data/scenes.json', [scenes[0], scenes[1], { ...scenes[2], extra: true }]);
   const r = run(['--scene', 'sc001']);
   assert.deepEqual(r.mustChange, []);
-  assert.deepEqual(r.scenes.map((s) => s.id), ['sc001']);
+  assert.deepEqual(r.scenes.map((s: any) => s.id), ['sc001']);
   assert.deepEqual(r.scenes[0].sources, [{ file: 'data/scenes/base.1.json', group: 'data/scenes/base.json' }]);
   assert.equal(r.scenes[0].aggregate.status, 'current');
   assert.deepEqual(r.scenes[0].curation, { curatedSceneIds: 'included', signatureSceneIds: 'not-listed', personaCoreSceneIds: 'included' });
@@ -436,15 +436,15 @@ test('单场景源/数组聚合与精选层级独立读取，无关场景失配�
 
 test('逻辑组展开所有批次，实际路径精确匹配，删除/重命名及聚合路径未知', (t) => {
   const { run } = sceneFixture(t);
-  assert.deepEqual(run(['--path', 'data/scenes/base.json']).scenes.map((s) => s.id), ['sc001', 'sc002']);
-  assert.deepEqual(run(['--path', 'data/scenes/base.2.json']).scenes.map((s) => s.id), ['sc002']);
+  assert.deepEqual(run(['--path', 'data/scenes/base.json']).scenes.map((s: any) => s.id), ['sc001', 'sc002']);
+  assert.deepEqual(run(['--path', 'data/scenes/base.2.json']).scenes.map((s: any) => s.id), ['sc002']);
   for (const file of ['base.20.json', 'removed.json', 'manifest.json']) {
     const r = run(['--path', `data/scenes/${file}`]);
     assert.deepEqual(r.scenes, []);
-    assert.ok(r.unknown.some((s) => s.includes(file)));
+    assert.ok(r.unknown.some((s: any) => s.includes(file)));
   }
   assert.deepEqual(run(['--path', 'data/scenes.json']).scenes, []);
-  assert.ok(run(['--path', 'data/scenes/base.1.json']).unknown.some((s) => s.includes('历史删除/重命名')));
+  assert.ok(run(['--path', 'data/scenes/base.1.json']).unknown.some((s: any) => s.includes('历史删除/重命名')));
 });
 
 test('退役登记、活跃冲突与悬空精选分别报告，不推断历史源', (t) => {
@@ -453,11 +453,11 @@ test('退役登记、活跃冲突与悬空精选分别报告，不推断历史�
   assert.equal(retired.scenes[0].retirement.status, 'retired');
   assert.deepEqual(retired.scenes[0].sources, []);
   assert.deepEqual(retired.mustChange, []);
-  assert.ok(retired.unknown.some((s) => s.includes('sc099')));
+  assert.ok(retired.unknown.some((s: any) => s.includes('sc099')));
   write('data/retired-scenes.json', { records: [{ id: 'sc001' }] });
-  assert.ok(run(['--scene', 'sc001']).mustChange.some((s) => s.reason.includes('活跃/退役')));
+  assert.ok(run(['--scene', 'sc001']).mustChange.some((s: any) => s.reason.includes('活跃/退役')));
   write('data/curation.json', { curatedSceneIds: ['sc098'], signatureSceneIds: [], personaCoreSceneIds: [] });
-  assert.ok(run(['--scene', 'sc098']).mustChange.some((s) => s.reason.includes('悬空')));
+  assert.ok(run(['--scene', 'sc098']).mustChange.some((s: any) => s.reason.includes('悬空')));
 });
 
 test('聚合缺失、失配、重复及残留均由目标记录证明', (t) => {
@@ -466,7 +466,7 @@ test('聚合缺失、失配、重复及残留均由目标记录证明', (t) => {
     write('data/scenes.json', values);
     const r = run(['--scene', 'sc001']);
     assert.equal(r.scenes[0].aggregate.status, status);
-    assert.ok(r.recommendations.some((s) => s.name === 'data:build' && s.executed === false));
+    assert.ok(r.recommendations.some((s: any) => s.name === 'data:build' && s.executed === false));
   }
   write('data/scenes.json', [{ id: 'sc098' }]);
   assert.equal(run(['--scene', 'sc098']).scenes[0].aggregate.status, 'stale');
@@ -477,9 +477,9 @@ test('批次缺号、并存和未登记文件不能证明完整源边界', (t) =
   write('data/scenes/base.4.json', [{ id: 'sc004' }]);
   const gap = run(['--path', 'data/scenes/base.json']);
   assert.deepEqual(gap.scenes, []);
-  assert.ok(gap.mustChange.some((s) => s.reason.includes('缺号')));
+  assert.ok(gap.mustChange.some((s: any) => s.reason.includes('缺号')));
   write('data/scenes/base.json', []);
-  assert.ok(run(['--scene', 'sc001']).mustChange.some((s) => s.reason.includes('并存')));
+  assert.ok(run(['--scene', 'sc001']).mustChange.some((s: any) => s.reason.includes('并存')));
   write('data/scenes/unmanaged.json', [{ id: 'sc005' }]);
   assert.equal(run(['--scene', 'sc003']).scenes[0].sourceStatus, 'unknown');
 });
@@ -509,9 +509,9 @@ test('样张 scene/character 精确匹配与安全 review 元数据，不输出�
   const scene = run(['--scene', 'sc001', '--showcase-manifest', 'showcase.json']);
   assert.deepEqual(scene.showcase.manifests[0].entries, [{ index: 0, id: 'sc001', type: 'scene', char: 'b', rating: 'safe', attempt: 2, reviewPresent: true, matchedBy: ['scene'] }]);
   const r = report(options(root, { showcaseManifests: ['showcase.json'] }));
-  assert.deepEqual(r.showcase.manifests[0].entries.map((e) => [e.id, e.reviewPresent]), [['other', true], ['typed', false]]);
+  assert.deepEqual(r.showcase.manifests[0].entries.map((e: any) => [e.id, e.reviewPresent]), [['other', true], ['typed', false]]);
   assert.equal(r.showcase.manifests[0].entries[1].rating, null);
-  for (const level of ['related', 'revalidate']) assert.equal(r[level].filter((e) => e.domain === 'showcase').length, 2);
+  for (const level of ['related', 'revalidate']) assert.equal(r[level].filter((e: any) => e.domain === 'showcase').length, 2);
   assert.doesNotMatch(JSON.stringify(r.showcase), /secret|private-review|image/);
   assert.deepEqual(r.mustChange, []);
 });
@@ -528,7 +528,7 @@ test('未提供或部分/空清单不证明样张缺失，多清单保留各自�
   assert.equal(partial.showcase.status, 'partial');
   assert.equal(partial.showcase.manifests.length, 2);
   assert.deepEqual(partial.mustChange, []);
-  assert.ok(partial.showcase.manifests.every((m) => m.entries.length === 0));
+  assert.ok(partial.showcase.manifests.every((m: any) => m.entries.length === 0));
 });
 
 test('缺失、目录、坏 JSON/entries 清单 fail-closed，混合清单保留有效关联', (t) => {
@@ -540,7 +540,7 @@ test('缺失、目录、坏 JSON/entries 清单 fail-closed，混合清单保留
     assert.equal(r.showcase.status, 'error');
     assert.equal(r.showcase.manifests[1].entries.length, 0);
     assert.equal(r.showcase.manifests[0].entries.length, 1);
-    assert.deepEqual(r.mustChange.map((e) => e.domain), ['showcase-manifest']);
+    assert.deepEqual(r.mustChange.map((e: any) => e.domain), ['showcase-manifest']);
   }
   fs.writeFileSync(path.join(root, 'bad.json'), '{');
   for (const file of ['missing.json', 'data', 'bad.json', '../outside.json']) {
@@ -582,7 +582,7 @@ test('样张 CLI/工作流成功、错误、帮助预览零写入，图片引用
   assert.deepEqual(snapshot(root), before);
 });
 
-function snapshot(root) {
+function snapshot(root: any) {
   return fs.readdirSync(root, { recursive: true }).sort().filter((f) => fs.statSync(path.join(root, f)).isFile()).map((f) => [f, fs.readFileSync(path.join(root, f), 'hex')]);
 }
 test('服装按角色作用域过滤；报告不写入，推荐只来自注册表', (t) => {
@@ -590,9 +590,9 @@ test('服装按角色作用域过滤；报告不写入，推荐只来自注册�
   const before = snapshot(root);
   const result = report(options(root, { outfit: 'dress' }));
   assert.deepEqual(result.mustChange, []);
-  assert.deepEqual(result.revalidate.filter((r) => r.domain === 'blueprint').map((r) => r.object), ['data/blueprints/one.json#a1']);
-  assert.ok(result.revalidate.some((r) => r.domain === 'reference'));
-  assert.ok(result.recommendations.every((r) => !r.executed));
+  assert.deepEqual(result.revalidate.filter((r: any) => r.domain === 'blueprint').map((r: any) => r.object), ['data/blueprints/one.json#a1']);
+  assert.ok(result.revalidate.some((r: any) => r.domain === 'reference'));
+  assert.ok(result.recommendations.every((r: any) => !r.executed));
   assert.deepEqual(snapshot(root), before);
 });
 test('悬空引用和旧聚合明确报告；不要求无关系列重写', (t) => {
@@ -600,26 +600,26 @@ test('悬空引用和旧聚合明确报告；不要求无关系列重写', (t) =
   blueprints[0].outfitId = 'removed';
   write('data/blueprints/one.json', { blueprints });
   const r = report(options(root, { outfit: 'removed' }));
-  assert.ok(r.mustChange.some((x) => x.reason.includes('悬空')));
-  assert.ok(r.mustChange.some((x) => x.reason.includes('失配')));
-  assert.ok(!r.mustChange.some((x) => x.object.endsWith('#b1')));
+  assert.ok(r.mustChange.some((x: any) => x.reason.includes('悬空')));
+  assert.ok(r.mustChange.some((x: any) => x.reason.includes('失配')));
+  assert.ok(!r.mustChange.some((x: any) => x.object.endsWith('#b1')));
 });
 test('路径输入保守匹配分片，删除路径和公共构建器不假定增量安全', (t) => {
   const { root } = fixture(t);
   const r = report(options(root, { character: null, paths: ['data/popular/one.json', 'data/popular/deleted.json', 'scripts/maintenance/build-popular.js'] }));
-  assert.equal(r.related.filter((x) => x.domain === 'popular').length, 2);
-  assert.ok(r.unknown.some((s) => s.includes('deleted.json')));
-  assert.ok(r.recommendations.some((x) => x.name === 'data:validate'));
+  assert.equal(r.related.filter((x: any) => x.domain === 'popular').length, 2);
+  assert.ok(r.unknown.some((s: any) => s.includes('deleted.json')));
+  assert.ok(r.recommendations.some((x: any) => x.name === 'data:validate'));
 });
 test('损坏清单/重复身份不能回退旧产物冒充完整', (t) => {
   const { root, write, characters } = fixture(t);
   characters[1].id = 'a';
   write('data/popular/one.json', { characters });
-  assert.ok(report(options(root)).mustChange.some((r) => r.reason.includes('重复 ID')));
+  assert.ok(report(options(root)).mustChange.some((r: any) => r.reason.includes('重复 ID')));
   write('data/popular/manifest.json', { files: [{ file: '../escape.json', count: 1 }] });
   const r = report(options(root));
-  assert.ok(r.unknown.some((s) => s.includes('不完整')));
-  assert.equal(r.related.filter((x) => x.domain === 'popular').length, 0);
+  assert.ok(r.unknown.some((s: any) => s.includes('不完整')));
+  assert.equal(r.related.filter((x: any) => x.domain === 'popular').length, 0);
 });
 test('参数拒绝未知开关、越界与无角色服装', () => {
   for (const args of [[], ['--outfit', 'x'], ['--path', '../x'], ['--path', 'C:/x'], ['--character'], ['--write']]) assert.throws(() => parse(args));

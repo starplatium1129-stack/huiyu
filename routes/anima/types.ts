@@ -119,10 +119,7 @@ export interface ImageServiceOptions<Input extends ImageJobInput> {
 }
 
 export interface ComfyHistoryEntry {
-  status?: {
-    status_str?: string;
-    messages?: Array<[string, { exception_type?: unknown; exception_message?: unknown }]>;
-  };
+  status?: any;
   outputs?: Record<string, { images?: unknown[] }>;
 }
 export type ComfyHistory = Record<string, ComfyHistoryEntry>;

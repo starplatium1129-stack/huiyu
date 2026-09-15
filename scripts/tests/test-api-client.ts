@@ -27,15 +27,15 @@ const { useControlStatus }: typeof import('../../src/composables/useControlStatu
 
 const root = path.resolve(__dirname, '..', '..');
 
-function jsonResponse(body, status = 200, headers = {}) {
+function jsonResponse(body: any, status = 200, headers = {}) {
   return new Response(JSON.stringify(body), {
     status,
     headers: { 'Content-Type': 'application/json', ...headers },
   });
 }
 
-function pendingFetch(signals: { aborted: unknown; }[]|{ addEventListener: (arg0: string,arg1: () => void,arg2: { once: boolean; }) => void; }[]) {
-  return (_url: unknown, init: { signal: { addEventListener: (arg0: string,arg1: () => void,arg2: { once: boolean; }) => void; }; }) => new Promise((_resolve, reject) => {
+function pendingFetch(signals: any) {
+  return (_url: unknown, init: any) => new Promise((_resolve, reject) => {
     signals.push(init.signal);
     init.signal.addEventListener('abort', () => {
       reject(new DOMException('aborted', 'AbortError'));
@@ -107,7 +107,7 @@ test('provider test keeps ApiClientError error and detail for failed envelopes',
 });
 
 test('host config validates public fields, rejects apiKey leakage, and uses correct clear/save requests', async () => {
-  const calls: { init: { body: unknown; }; }[]|{ url: string; init: RequestInit|undefined; }[] = [];
+  const calls: any = [];
   const responses = [
     jsonResponse({ ok: true, configured: true, model: 'host-model', baseUrl: 'https://host.test/v1' }),
     jsonResponse({ ok: true, configured: false }),
@@ -160,7 +160,7 @@ test('phase 2 timeout baselines keep status short and prepare/translate at least
 });
 
 test('generation API owns the application generation job endpoints with envelope validation', async () => {
-  const calls: { url: unknown; }[] = [];
+  const calls: any = [];
   const client = createApiClient(async (url, init) => {
     calls.push({ url: String(url), init });
     if (calls.length === 1) {
@@ -354,7 +354,7 @@ test('client maps a fetch rejection to network', async () => {
 });
 
 test('client distinguishes timeout from caller abort', async () => {
-  const timeoutSignals: { aborted: unknown; }[] = [];
+  const timeoutSignals: any = [];
   const timeoutClient = createApiClient(pendingFetch(timeoutSignals));
   await assert.rejects(
     timeoutClient.request('/timeout', { timeoutMs: 15 }),
@@ -362,7 +362,7 @@ test('client distinguishes timeout from caller abort', async () => {
   );
   assert.equal(timeoutSignals[0].aborted, true);
 
-  const abortSignals: { aborted: unknown; }[] = [];
+  const abortSignals: any = [];
   const abortClient = createApiClient(pendingFetch(abortSignals));
   const caller = new AbortController();
   const request = abortClient.request('/abort', { signal: caller.signal, timeoutMs: 1_000 });
@@ -392,7 +392,7 @@ test('aborting one concurrent request does not affect another request', async ()
 });
 
 test('client merges JSON headers and does not add content type to GET', async () => {
-  const calls: { init: { body: unknown; }; }[]|{ url: string; init: RequestInit|undefined; }[] = [];
+  const calls: any = [];
   const client = createApiClient(async (url, init) => {
     calls.push({ url: String(url), init });
     return jsonResponse({ ok: true });
@@ -570,9 +570,9 @@ test('useControlStatus stopPolling aborts isolated in-flight status and logs req
 });
 
 test('useControlStatus aborts older same-kind requests and clears protected stale data', async () => {
-  const statusSignals: { aborted: unknown; }[] = [];
-  const logSignals: { aborted: unknown; }[] = [];
-  const waitForAbort = (signal: AbortSignal|undefined, bucket: { aborted: unknown; }[]|(AbortSignal|undefined)[]) => new Promise((_resolve, reject) => {
+  const statusSignals: any = [];
+  const logSignals: any = [];
+  const waitForAbort = (signal: AbortSignal|undefined, bucket: any) => new Promise((_resolve, reject) => {
     bucket.push(signal);
     signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
   });

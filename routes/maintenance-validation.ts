@@ -34,7 +34,7 @@ function writeJson(source: unknown, data: unknown) {
 
 
 // ── 2. 校验与文件工具 ──
-function uniqueActiveIds(values: unknown, activeIds: { has: (arg0: unknown) => unknown; }) {
+function uniqueActiveIds(values: unknown, activeIds: any) {
   let seen = new Set();
   return (Array.isArray(values) ? values : []).filter(function (id) {
     if (!activeIds.has(id) || seen.has(id)) return false;
@@ -44,7 +44,7 @@ function uniqueActiveIds(values: unknown, activeIds: { has: (arg0: unknown) => u
 }
 
 
-function sanitizeCuration(value: unknown, activeIds: { has: (arg0: string) => unknown; }, previous: { personaCoreSceneIds: undefined; }) {
+function sanitizeCuration(value: unknown, activeIds: any, previous?: { personaCoreSceneIds: any; }) {
   let curation = value && typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : {};
   curation.curatedSceneIds = uniqueActiveIds(curation.curatedSceneIds, activeIds);
   curation.signatureSceneIds = uniqueActiveIds(curation.signatureSceneIds, activeIds);

@@ -8,23 +8,23 @@ const { child, readBytes, digest }: typeof import('../scripts/lib/resource-insta
 
 // Bind a published projection and its images to one verified immutable release. This route
 // precedes precompression and generic static handlers so a bad release cannot use an old index.
-function createReferenceResources(config) {
+function createReferenceResources(config: any) {
   const root = config.CHARACTER_REF_EXPLICIT_ROOT || config.CHARACTER_REF_ROOT;
-  let release = null;
+  let release: any = null;
   let blocked = false;
-  let markerBytes = null;
-  let entries;
+  let markerBytes: any = null;
+  let entries: any;
   if (root) {
     try {
       if (!fs.statSync(root).isDirectory()) throw new Error('Reference root unavailable');
       release = resolveReferenceRelease(root, { dataRoot: config.ROOT_DIR });
       if (release) {
         markerBytes = readBytes(fs, path.join(root, 'reference-release.json'));
-        entries = new Map(release.release.files.map(file => [file.path, file]));
+        entries = new Map(release.release.files.map((file: any) => [file.path, file]));
       }
     } catch { blocked = true; }
   }
-  function bytes(file, sha256, max) {
+  function bytes(file: any, sha256: any, max?: any) {
     const value = readBytes(fs, file, max);
     if (digest(value) !== sha256) throw new Error('Reference bytes changed');
     return value;
@@ -35,7 +35,7 @@ function createReferenceResources(config) {
     bytes(path.join(config.ROOT_DIR, 'data/character-reference-view.json'), release.release.sourceViewSha256);
     return bytes(release.viewFile, release.release.viewSha256);
   }
-  return function referenceResources(req, res, next) {
+  return function referenceResources(req: any, res: any, next: any) {
     if (!root || (!release && !blocked)) return next(); // Legacy unversioned handling remains intact.
     let pathname;
     try { pathname = decodeURIComponent(String(req.path)); } catch { return next(); }

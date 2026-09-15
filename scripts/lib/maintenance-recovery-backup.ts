@@ -3,7 +3,7 @@
 const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-recovery-fs');
 const { fs, path, crypto, failure } = io;
 
-function saveSnapshotBackup(snapshot, backupRoot, label, options) {
+function saveSnapshotBackup(snapshot: any, backupRoot: any, label: any, options?: any) {
   if (!Array.isArray(snapshot) || snapshot.length > 20000 || !/^[A-Za-z0-9_-]{1,100}$/.test(label)) throw failure('MAINTENANCE_ARGUMENT', '备份参数无效');
   const ctx = options ? io.context(options) : null;
   if (ctx && !io.samePath(backupRoot, ctx.backupRoot)) throw failure('MAINTENANCE_PATH', '备份必须位于专用 runtime/maintenance-backups');
@@ -37,7 +37,7 @@ function saveSnapshotBackup(snapshot, backupRoot, label, options) {
   return target;
 }
 
-function readBackup(options, id, expectedHash) {
+function readBackup(options: any, id: any, expectedHash?: any) {
   const ctx = io.context(options);
   if (typeof id !== 'string' || !/^[A-Za-z0-9_-]{1,200}$/.test(id)) throw failure('MAINTENANCE_PATH', '备份 ID 必须是专用目录内的单个名称');
   const directory = path.join(ctx.backupRoot, id);
@@ -55,7 +55,7 @@ function readBackup(options, id, expectedHash) {
   io.safePath(path.join(directory, 'files'), 'directory', false);
   const names = new Set();
   const targets = new Set();
-  const entries = manifest.files.map(item => {
+  const entries = manifest.files.map((item: any) => {
     const file = io.targetPath(ctx, item.source);
     if (targets.has(io.keyPath(file)) || typeof item.existed !== 'boolean') throw failure('MAINTENANCE_INVALID_BACKUP', '备份目标重复或格式无效');
     targets.add(io.keyPath(file));
@@ -72,7 +72,7 @@ function readBackup(options, id, expectedHash) {
   return { directory, id, sha256, manifest, entries };
 }
 
-function restoreEntries(options, entries, assertOwned = () => {}) {
+function restoreEntries(options: any, entries: any, assertOwned = () => {}) {
   const ctx = io.context(options);
   // Validate the entire scope before the first mutation, then each path again on use.
   for (const item of entries) io.targetPath(ctx, item.file);

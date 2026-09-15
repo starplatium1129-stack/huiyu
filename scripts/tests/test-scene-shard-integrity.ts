@@ -33,11 +33,11 @@ test('scene shards: browser shards are mutually disjoint', () => {
 test('scene shards: browser shard union equals the aggregate', () => {
   const aggregate = readJson('scenes.json');
   const unionIds = new Set([
-    ...readJson('scenes-nene.json').map((s: { id: unknown; }) => s.id),
-    ...readJson('scenes-natsume.json').map((s: { id: unknown; }) => s.id),
-    ...readJson('scenes-shared.json').map((s: { id: unknown; }) => s.id),
+    ...readJson('scenes-nene.json').map((s: any) => s.id),
+    ...readJson('scenes-natsume.json').map((s: any) => s.id),
+    ...readJson('scenes-shared.json').map((s: any) => s.id),
   ]);
-  const aggregateIds = aggregate.map((s: { id: unknown; }) => s.id);
+  const aggregateIds = aggregate.map((s: any) => s.id);
   assert.strictEqual(new Set(aggregateIds).size, aggregateIds.length,
     'aggregate scenes.json must not contain duplicate ids');
   assert.deepStrictEqual(unionIds, new Set(aggregateIds),
@@ -45,13 +45,13 @@ test('scene shards: browser shard union equals the aggregate', () => {
 });
 
 test('scene shards: core tier is a curated subset backed by curation', () => {
-  const aggregateIds = new Set(readJson('scenes.json').map((s: { id: unknown; }) => s.id));
+  const aggregateIds = new Set(readJson('scenes.json').map((s: any) => s.id));
   const browserIds = new Set([
-    ...readJson('scenes-nene.json').map((s: { id: unknown; }) => s.id),
-    ...readJson('scenes-natsume.json').map((s: { id: unknown; }) => s.id),
-    ...readJson('scenes-shared.json').map((s: { id: unknown; }) => s.id),
+    ...readJson('scenes-nene.json').map((s: any) => s.id),
+    ...readJson('scenes-natsume.json').map((s: any) => s.id),
+    ...readJson('scenes-shared.json').map((s: any) => s.id),
   ]);
-  const coreIds = readJson('scenes-core.json').map((s: { id: unknown; }) => s.id);
+  const coreIds = readJson('scenes-core.json').map((s: any) => s.id);
   const curationIds = readJson('curation.json').personaCoreSceneIds || [];
   assert.deepStrictEqual(coreIds, curationIds.filter((id: unknown) => aggregateIds.has(id)),
     'scenes-core.json must equal personaCoreSceneIds ∩ aggregate');
@@ -65,7 +65,7 @@ test('scene shards: core tier obeys first-paint policy', () => {
   // 政策级断言（区别于上面的一致性断言）：一致性 oracle 只保证产物互洽，
   // 这里把 curation 的策划纪律变成可检查规则。调整阈值 = 修改政策，需评审。
   const aggregate = readJson('scenes.json');
-  const aggregateIds = new Set(aggregate.map((s: { id: unknown; }) => s.id));
+  const aggregateIds = new Set(aggregate.map((s: any) => s.id));
   const curationIds = readJson('curation.json').personaCoreSceneIds || [];
   const core = readJson('scenes-core.json');
 
@@ -84,8 +84,8 @@ test('scene shards: core tier obeys first-paint policy', () => {
 
   // 3) 角色覆盖：聚合中出现的每个角色（含 triad 双人场景）在 core 层至少 1 条。
   //    名单从数据动态推导而非硬编码——新增角色时本断言自动强制策划回顾。
-  const chars = new Set(aggregate.map((s: { char: unknown; }) => s.char).filter(Boolean));
-  const coreChars = new Set(core.map((s: { char: unknown; }) => s.char));
+  const chars = new Set(aggregate.map((s: any) => s.char).filter(Boolean));
+  const coreChars = new Set(core.map((s: any) => s.char));
   const uncovered = [...chars].filter((char) => !coreChars.has(char));
   assert.deepStrictEqual(uncovered, [],
     `以下角色在 core 层无任何场景，首屏精选未覆盖: ${uncovered.join(', ')} —— 在 curation.json personaCoreSceneIds 补充`);
@@ -94,7 +94,7 @@ test('scene shards: core tier obeys first-paint policy', () => {
 test('scene shards: scenes-index.json mirrors the generated files', () => {
   const index = readJson('scenes-index.json');
   const aggregate = readJson('scenes.json');
-  const coreIds = readJson('scenes-core.json').map((s: { id: unknown; }) => s.id);
+  const coreIds = readJson('scenes-core.json').map((s: any) => s.id);
   const counts = {
     nene: readJson('scenes-nene.json').length,
     natsume: readJson('scenes-natsume.json').length,
@@ -106,6 +106,6 @@ test('scene shards: scenes-index.json mirrors the generated files', () => {
     assert.strictEqual(index.shards[char].count, count,
       `index.shards.${char}.count must match the actual shard`);
   }
-  assert.deepStrictEqual(index.orderedIds, aggregate.map((s: { id: unknown; }) => s.id));
+  assert.deepStrictEqual(index.orderedIds, aggregate.map((s: any) => s.id));
   assert.deepStrictEqual(index.tiers.core, coreIds);
 });

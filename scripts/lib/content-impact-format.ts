@@ -8,12 +8,12 @@
 const MAX_ITEMS = 40;
 const TIERS = ['curatedSceneIds', 'signatureSceneIds', 'personaCoreSceneIds'];
 
-const isObject = (v: null) => v !== null && typeof v === 'object' && !Array.isArray(v);
+const isObject = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const rows = (v: unknown) => (Array.isArray(v) ? v : []);
-const field = (row: never, key: string) => ((row && typeof row[key] === 'string' && row[key]) || '');
+const field = (row: any, key: string) => ((row && typeof row[key] === 'string' && row[key]) || '');
 
 // 任意值安全转文字；循环引用等 JSON.stringify 失败时退回 String()，不抛出。
-function text(value: null|undefined) {
+function text(value: any) {
   if (typeof value === 'string') return value;
   if (value === undefined || value === null) return '';
   if (typeof value !== 'object') return String(value);
@@ -25,7 +25,7 @@ function limited(lines: string|unknown[]) {
   return [...lines.slice(0, MAX_ITEMS), `  …（其余 ${lines.length - MAX_ITEMS} 条见 --json）`];
 }
 
-function issueLine(entry: { reason: undefined; }) {
+function issueLine(entry: { reason: any; }) {
   const domain = field(entry, 'domain') || '无域';
   const object = field(entry, 'object') || '（无对象）';
   const reason = entry && entry.reason !== undefined ? text(entry.reason) : '';
@@ -45,7 +45,7 @@ function unknownSection(items: unknown) {
   return [`未知范围 unknown: ${list.length} 条`, ...limited(list.map((item) => `  - ${text(item)}`))];
 }
 
-function recommendationLine(rec: { nature: unknown; argv: unknown; executed: boolean; }) {
+function recommendationLine(rec: any) {
   const name = field(rec, 'name') || '未命名命令';
   const nature = rows(rec && rec.nature).map(text).filter(Boolean).join(', ') || field(rec, 'nature');
   const argv = rows(rec && rec.argv).map(text).filter(Boolean).join(' ');
@@ -59,7 +59,7 @@ function recommendationSection(items: unknown) {
   return [`未执行推荐命令 recommendations: ${list.length} 条`, ...limited(list.map(recommendationLine))];
 }
 
-function gitSection(git: { paths: unknown; }|null) {
+function gitSection(git: any) {
   if (!isObject(git)) return [];
   const lines = [`Git 变更 gitChanges: ${field(git, 'status') || 'unknown'}`];
   const reason = field(git, 'reason');
@@ -72,7 +72,7 @@ function gitSection(git: { paths: unknown; }|null) {
   return lines;
 }
 
-function historySection(history: { entities: unknown; }, git: { reason: null|undefined; changes: unknown; }|null) {
+function historySection(history: any, git: any) {
   if (!isObject(git)) return [];
   const lines = [`历史对照 gitHistory: ${field(git, 'status') || 'unknown'} · ${field(git, 'baseCommit') || '未解析基线'} → 当前工作树`];
   if (git.reason) lines.push(`  ${text(git.reason)}`);
@@ -83,7 +83,7 @@ function historySection(history: { entities: unknown; }, git: { reason: null|und
   return limited(lines);
 }
 
-function incrementalSection(plan: { acceptance: null|undefined; incrementalChecks: unknown; fullChecks: unknown; }|null) {
+function incrementalSection(plan: any) {
   if (!isObject(plan)) return [];
   const lines = [`增量检查计划: ${field(plan, 'mode') || 'unknown'}（预览；未执行）`,
     `  全库状态: ${field(plan, 'wholeLibrary') || 'unknown'}`, `  ${text(plan.acceptance)}`];
@@ -173,7 +173,7 @@ function sceneSection(items: unknown) {
   return [`场景 scenes: ${list.length} 项`, ...limited(lines)];
 }
 
-function showcaseSection(showcase: { manifests: unknown; }|null) {
+function showcaseSection(showcase: any) {
   if (!isObject(showcase)) return [];
   const manifests = rows(showcase.manifests);
   if (!manifests.length) return [];
@@ -200,7 +200,7 @@ function showcaseSection(showcase: { manifests: unknown; }|null) {
   return [`样张 showcase: ${field(showcase, 'status') || 'unknown'}`, ...limited(lines)];
 }
 
-function formatImpactReport(result: null|undefined) {
+function formatImpactReport(result: any) {
   if (!isObject(result)) return `只读影响报告\n（报告对象不可解析: ${text(result) || '空'}；完整结果使用 --json 查看）`;
   const input = isObject(result.input) ? result.input : {};
   const target = [];

@@ -9,7 +9,7 @@ const { digest }: typeof import('../lib/resource-install-fs') = require('../lib/
 const { jsonHash }: typeof import('../lib/reference-candidate-review') = require('../lib/reference-candidate-review');
 const { referenceView }: typeof import('./reference-view-fixture') = require('./reference-view-fixture');
 
-function version(f: { base: unknown; source?: string; user?: string; program: unknown; artwork?: string; packs?: string; old?: { schemaVersion: number; kind: string; generatedAt: string; root: unknown; scope: { scanRoot: string; excluded: string[]; followsSymbolicLinks: boolean; pathIdentity: string; coverageNote: string; }; totals: { files: number; bytes: number; unverified: number; }; entries: { path: unknown; bytes: number; sha256: string; }[]; unverified: { path: unknown; kind: unknown; message: unknown; }[]; }; next?: { schemaVersion: number; kind: string; generatedAt: string; root: unknown; scope: { scanRoot: string; excluded: string[]; followsSymbolicLinks: boolean; pathIdentity: string; coverageNote: string; }; totals: { files: number; bytes: number; unverified: number; }; entries: { path: unknown; bytes: number; sha256: string; }[]; unverified: { path: unknown; kind: unknown; message: unknown; }[]; }; policy?: { sources: { media: { kind: string; root: string; approved: boolean; }; }; releases: {}; }; }) {
+function version(f: any) {
   const root = path.join(f.base, 'reference-version');
   write(path.join(root, 'fixture/approved.png'), 'approved reference fixture');
   const view = referenceView({ firstUrl: '/character-references/fixture/approved.png' });
@@ -41,7 +41,7 @@ test('approved reference images and projection route together ahead of stale pre
   assert.equal(cached.status, 304);
   assert.equal((await request(stack, '/character-references/reference-release.json')).status, 404);
   assert.equal((await request(stack, '/character-references/character-reference-view.json')).status, 404);
-  assert.deepEqual(snapshot(f.program).filter(([name]) => !name.endsWith('.gz')), original);
+  assert.deepEqual(snapshot(f.program).filter(([name]: any) => !name.endsWith('.gz')), original);
 });
 
 for (const corruption of ['image', 'index', 'source', 'marker']) test('bad reference ' + corruption + ' blocks both routes without pairing old index/new images', async t => {

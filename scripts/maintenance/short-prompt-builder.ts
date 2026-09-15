@@ -86,7 +86,7 @@ function pickLighting(lighting: string) {
   return '';
 }
 
-function fallbackLighting(scene: { timeOfDay: unknown; time: unknown; tags: unknown; }) {
+function fallbackLighting(scene: any) {
   const time = normalizeKey([scene.timeOfDay, scene.time, ...(scene.tags || [])].filter(Boolean).join(' '));
   if (/night|midnight|moon|夜/.test(time)) return 'moon';
   if (/sunset|dusk|evening|golden|夕|傍晚/.test(time)) return 'golden';
@@ -94,7 +94,7 @@ function fallbackLighting(scene: { timeOfDay: unknown; time: unknown; tags: unkn
   return 'day';
 }
 
-function structuredSceneTokens(scene: { timeOfDay: unknown; location: unknown; weather: unknown; }) {
+function structuredSceneTokens(scene: any) {
   const locationMap: any = {
     教室: 'classroom',
     天台: 'rooftop',
@@ -118,7 +118,7 @@ function structuredSceneTokens(scene: { timeOfDay: unknown; location: unknown; w
   ].filter(Boolean);
 }
 
-function sourceTokens(scene: { prompt: unknown; tags: unknown; }) {
+function sourceTokens(scene: any) {
   const prompt = String(scene.prompt || '')
     .replace(/<lora:[^>]+>/gi, '')
     .split(',')
@@ -154,7 +154,7 @@ const SOURCE_METADATA = new Set([
 const MIN_TOKEN_COUNT = 22;
 const MAX_TOKEN_COUNT = 26;
 
-function buildShortPrompt(scene: { lighting: unknown; time: unknown; timeOfDay: unknown; rating: unknown; mature: boolean; }, characterId: string|number) {
+function buildShortPrompt(scene: any, characterId: string|number) {
   const anchors = CHAR_PROMPT[characterId] || [];
   const tags = sourceTokens(scene);
   const canonical = canonicalFor(characterId, tags);

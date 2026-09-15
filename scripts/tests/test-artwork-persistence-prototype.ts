@@ -7,7 +7,7 @@ const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
 const { openArtworkCandidate, digest }: typeof import('./prototypes/artwork-sqlite') = require('./prototypes/artwork-sqlite');
 
-function fixture(t) {
+function fixture(t: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-storage-prototype-'));
   t.after(() => {
     assert.equal(path.dirname(path.resolve(root)), path.resolve(os.tmpdir()));
@@ -26,7 +26,7 @@ for (const interruption of ['file-published', 'metadata-written', 'committed']) 
   test(`candidate resumes after ${interruption} without changing source`, t => {
     const { root, source } = fixture(t);
     const before = digest(JSON.stringify(source));
-    let candidate = openArtworkCandidate(root, phase => { if (phase === interruption) throw new Error('injected interruption'); });
+    let candidate = openArtworkCandidate(root, (phase: any) => { if (phase === interruption) throw new Error('injected interruption'); });
     try {
       assert.throws(() => candidate.importSnapshot('migration-1', source), /interruption/);
       assert.equal(candidate.count(), interruption === 'committed' ? 1 : 0);

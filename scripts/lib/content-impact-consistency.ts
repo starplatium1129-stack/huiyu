@@ -5,7 +5,7 @@ const { compareReferenceProjection }: typeof import('../maintenance/content-impa
 
 // Only import pure inspection functions. In particular do not import builders,
 // stores with a process-global root, or the production-data contract test suite.
-function inspectDomain(reader: { json: unknown; read?: (arg0: string) => { (): unknown; new(): unknown; raw: unknown; }; list?: (arg0: string) => unknown; }, domain: PropertyKey) {
+function inspectDomain(reader: any, domain: PropertyKey) {
   const snapshot = loadDomain(reader, domain);
   if (domain === 'references') {
     try {
@@ -18,7 +18,7 @@ function inspectDomain(reader: { json: unknown; read?: (arg0: string) => { (): u
   return snapshot;
 }
 
-function summarizeConsistency(snapshot: { domain: unknown; issues: string|unknown[]; complete: unknown; checks: string|unknown[]; groups: ArrayLike<unknown>|{ [s: string]: unknown; }; unknown: unknown; }) {
+function summarizeConsistency(snapshot: any) {
   return { domain: snapshot.domain, status: snapshot.issues.length ? 'mismatch' : !snapshot.complete ? 'unknown'
     : snapshot.checks.length ? 'current' : 'not-derived',
   scope: 'Explicit JSON projections/fields only; no build, rendering or full-library validation',

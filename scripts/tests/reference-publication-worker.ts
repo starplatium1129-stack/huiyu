@@ -3,7 +3,7 @@ const fs: typeof import('node:fs') = require('node:fs');
 const { publishReferenceCandidates }: typeof import('../lib/reference-candidate-publish') = require('../lib/reference-candidate-publish');
 if (require.main === module) {
   const options = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
-  publishReferenceCandidates(options, { onPhase: async phase => {
+  publishReferenceCandidates(options, { onPhase: async (phase: any) => {
     if (phase === process.argv[3]) {
       process.send?.({ phase });
       await new Promise(() => {});

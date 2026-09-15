@@ -27,8 +27,8 @@ function fixture(t: TestContext) {
     async cancelById(id: unknown, key: unknown) { calls.cancel.push({ id, key }); this.state = 'cancelled'; },
     async submit() { calls.submit += 1; throw Error('RECOVERY_MUST_NEVER_SUBMIT'); },
   };
-  let journal;
-  let recovery;
+  let journal: any;
+  let recovery: any;
   function restart() {
     journal = new RecoveryJournal(directory);
     recovery = new RecoveryCoordinator(journal, { comfy: backend }, { now: () => timestamp });

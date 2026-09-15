@@ -62,7 +62,7 @@ let ALLOWED_COMMANDS = Object.freeze(new Set([
  * @param {string} targetChar 归一化后的角色 ID
  * @param {{adultEnabled?: boolean}} [context] 传输层授权上下文
  */
-function assertAdultAllowed(targetChar: string, context: { adultEnabled: unknown; }) {
+function assertAdultAllowed(targetChar: string, context: any) {
   let denial = validationCore.evaluateAdultAccess(targetChar, context && context.adultEnabled);
   if (!denial) return null;
   return {
@@ -114,7 +114,7 @@ function formatEntryName(entry: Dirent<string>) {
   return entry.isDirectory() ? entry.name + '/' : entry.name;
 }
 
-function runTool(workspaceRoot: unknown, name: string, args: { path: unknown; content: unknown; command: unknown; args: unknown[]; character: unknown; description: unknown; outfit: string; mature: boolean; }, context: { adultEnabled?: boolean; signal?: unknown; trustedCommands?: unknown; }) {
+function runTool(workspaceRoot: unknown, name: string, args: any, context?: any) {
   let root = path.resolve(workspaceRoot || '.');
   context = context || {};
   function checkCancelled() {
@@ -122,7 +122,7 @@ function runTool(workspaceRoot: unknown, name: string, args: { path: unknown; co
       throw Object.assign(new Error('工具操作已取消'), { code: 'ABORT_ERR' });
     }
   }
-  function fail(error: { message: unknown; code: unknown; }) {
+  function fail(error: any) {
     let message = String(error instanceof Error ? error.message : error).slice(0, 2000);
     let payload = { ok: false, output: message };
     // 信封对齐（server/http-envelope.js 形状）：error/msg 与 output 同镜像，
@@ -350,7 +350,7 @@ function runTool(workspaceRoot: unknown, name: string, args: { path: unknown; co
   }).then(function (result) { checkCancelled(); return result; }).catch(fail);
 }
 
-function createDesktopToolsRouter(options: { security?: unknown; config?: unknown; }) {
+function createDesktopToolsRouter(options?: any) {
   options = options || {};
   let router = express.Router();
   let security = options.security || (require('../server/security') as typeof import('../server/security'));

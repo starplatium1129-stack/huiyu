@@ -54,7 +54,7 @@ function readJson(relative: string) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, relative), 'utf8'));
 }
 
-function validateContent(data: { characters?: unknown; loras?: unknown; scenes?: unknown; }, fileExists: { (relative: unknown): boolean; (arg0: unknown): unknown; }) {
+function validateContent(data: any, fileExists: any) {
   var errors: any[] = [];
   var characters: any = data.characters;
   var loras: any = data.loras;
@@ -67,7 +67,7 @@ function validateContent(data: { characters?: unknown; loras?: unknown; scenes?:
 
   var characterIds = new Set();
   var characterLoras = new Set();
-  characters.forEach(function (character: { [x: string]: string; id: unknown; portrait: { image: string; }; visual_dna: { signature: unknown; }; traits: string|unknown[]; type: string; lora: { name: unknown; weight: unknown; }; }, index: string) {
+  characters.forEach(function (character: any, index: string) {
     var label = 'characters[' + index + ']';
     if (!character || typeof character !== 'object') { errors.push(label + ' must be an object'); return; }
     if (!/^[a-z][a-z0-9_-]*$/.test(character.id || '')) errors.push(label + '.id must be a stable lowercase key');
@@ -90,8 +90,8 @@ function validateContent(data: { characters?: unknown; loras?: unknown; scenes?:
 
   var loraIds = new Set();
   var loraNames = new Set();
-  var sceneIds = new Set(scenes.map(function (scene: { id: unknown; }) { return scene && scene.id; }).filter(Boolean));
-  loras.forEach(function (lora: { id: unknown; name: unknown; strength: Record<string, any>; compatible_models: string|unknown[]; test_scene: unknown; }, index: string) {
+  var sceneIds = new Set(scenes.map(function (scene: any) { return scene && scene.id; }).filter(Boolean));
+  loras.forEach(function (lora: any, index: string) {
     var label = 'loras[' + index + ']';
     if (!lora || typeof lora !== 'object') { errors.push(label + ' must be an object'); return; }
     if (!lora.id || loraIds.has(lora.id)) errors.push(label + '.id is missing or duplicated');
@@ -110,7 +110,7 @@ function validateContent(data: { characters?: unknown; loras?: unknown; scenes?:
   characterLoras.forEach(function (name: any) {
     if (!loraNames.has(name)) errors.push('character references unknown LoRA: ' + name);
   });
-  scenes.forEach(function (scene: { char: unknown; character: unknown; }, index: string) {
+  scenes.forEach(function (scene: any, index: string) {
     if (!scene || !scene.char) return;
     if (scene.char !== 'triad' && !characterIds.has(scene.char)) errors.push('scenes[' + index + '].char references unknown character: ' + scene.char);
     (Array.isArray(scene.character) ? scene.character : []).forEach(function (id: unknown) {
@@ -120,7 +120,7 @@ function validateContent(data: { characters?: unknown; loras?: unknown; scenes?:
   return errors;
 }
 
-function validateSceneShards(data: { scenes?: unknown; }) {
+function validateSceneShards(data: any) {
   var errors: string[] = [];
   var scenes = data.scenes;
   if (!Array.isArray(scenes)) return errors;
@@ -330,9 +330,9 @@ function checkReferenceViewUrls() {
  * 2026-08-29 产品运营审计 P0-3：经典场景库分级互锁——rating='R18' 与 mature=true
  * 必须行级一致，防止 R18 内容借 All/mature=false 漏进全年龄流（红线 4 内容侧互锁）。
  */
-function checkSceneRatingInterlock(data: { scenes?: unknown; }) {
+function checkSceneRatingInterlock(data: any) {
   var errors: string[] = [];
-  (data.scenes || []).forEach(function (scene: { mature: unknown; rating: string; id: string; }) {
+  (data.scenes || []).forEach(function (scene: any) {
     var mature = Boolean(scene.mature);
     if (scene.rating === 'R18' && !mature) {
       errors.push('scene ' + scene.id + ': rating=R18 但 mature!=true（红线 4 分级互锁）');

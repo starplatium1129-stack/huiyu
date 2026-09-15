@@ -11,7 +11,7 @@ const { fixture }: typeof import('./content-check-fixture') = require('./content
 const { git, snapshot }: typeof import('./content-history-fixture') = require('./content-history-fixture');
 const { parse, checkContentImpact, main }: typeof import('../maintenance/check-content-impact') = require('../maintenance/check-content-impact');
 const script = path.resolve(__dirname, '../maintenance/check-content-impact.js');
-const run = (f: { root: unknown; base: unknown; write?: (file: string,value: string|Uint8Array<ArrayBufferLike>|Uint8ClampedArray<ArrayBufferLike>|Uint16Array<ArrayBufferLike>|Uint32Array<ArrayBufferLike>|Int8Array<ArrayBufferLike>|Int16Array<ArrayBufferLike>|Int32Array<ArrayBufferLike>|BigUint64Array<ArrayBufferLike>|BigInt64Array<ArrayBufferLike>|Float16Array<ArrayBufferLike>|Float32Array<ArrayBufferLike>|Float64Array<ArrayBufferLike>|DataView<ArrayBufferLike>|({ id: string; char: string; prompt: string; rating: string; mature: boolean; }|undefined)[]|{ id: string; name: string; }[]) => void; read?: (file: string) => unknown; characters?: ({ id: string; identityProse: string; outfits: { id: string; prose: string; default: boolean; isDefault: boolean; }[]; }|{ id: string; identityProse: string; outfits: { id: string; default: boolean; isDefault: boolean; }[]; })[]; blueprints?: ({ id: string; characterId: string; outfitId: string; prompt: string; }|{ id: string; characterId: string; prompt: string; outfitId?: undefined; })[]; scenes?: { id: string; char: string; prompt: string; rating: string; mature: boolean; }[]; sceneProducts?: (rows?: { id: string; char: string; prompt: string; rating: string; mature: boolean; }[],core?: string[]) => void; }, ...args: (string|undefined)[]) => checkContentImpact(parse(['--root', f.root, '--base', f.base, ...args]));
+const run = (f: any, ...args: (string|undefined)[]) => checkContentImpact(parse(['--root', f.root, '--base', f.base, ...args]));
 
 test('default preview never runs predicates; known text delta executes only proved stable IDs', (t) => {
   const f = fixture(t);
@@ -25,7 +25,7 @@ test('default preview never runs predicates; known text delta executes only prov
   assert.equal(result.selection.targets.length, 1);
   assert.ok(result.selection.targets[0].includes('bp-a'));
   assert.equal(result.execution.status, 'passed-scoped');
-  assert.ok(result.execution.checks.every((check) => check.executed && check.status === 'passed'));
+  assert.ok(result.execution.checks.every((check: any) => check.executed && check.status === 'passed'));
   assert.equal(result.exitCode, 3, 'global gate is not waived by scoped success');
   assert.equal(result.execution.wholeLibrary, 'not-validated');
   assert.deepEqual(snapshot(f.root), before);
@@ -37,11 +37,11 @@ test('selected record structural or projection failures return failure rather th
   f.write('data/scene-blueprints.json', { version: 2, blueprints: f.blueprints });
   const result = run(f, '--execute');
   assert.equal(result.exitCode, 1);
-  assert.equal(result.execution.checks.find((check) => check.id === 'record-equality').status, 'failed');
+  assert.equal(result.execution.checks.find((check: any) => check.id === 'record-equality').status, 'failed');
   f.changeBlueprint({ prompt: 'changed again', title: '' });
   const invalid = run(f, '--execute');
   assert.equal(invalid.selection.mode, 'full');
-  assert.equal(invalid.execution.checks.find((check) => check.id === 'runtime-field-contracts').status, 'failed');
+  assert.equal(invalid.execution.checks.find((check: any) => check.id === 'runtime-field-contracts').status, 'failed');
 });
 
 test('unknown paths and public contracts automatically execute full supported structure and field checks', (t) => {
@@ -50,11 +50,11 @@ test('unknown paths and public contracts automatically execute full supported st
   f.write('data/untracked-domain.json', { unknown: true });
   const result = run(f, '--execute');
   assert.equal(result.selection.mode, 'full');
-  assert.ok(result.selection.reasons.some((reason) => reason.includes('untracked-domain')));
-  assert.equal(result.execution.checks.filter((check) => check.id.startsWith('structure-and-projection:')).length, 7);
+  assert.ok(result.selection.reasons.some((reason: any) => reason.includes('untracked-domain')));
+  assert.equal(result.execution.checks.filter((check: any) => check.id.startsWith('structure-and-projection:')).length, 7);
   assert.equal(result.execution.status, 'passed-scoped');
   assert.equal(result.exitCode, 3);
-  assert.ok(result.execution.checks.some((check) => check.id === 'existing-reference-view-schema' && check.status === 'passed'));
+  assert.ok(result.execution.checks.some((check: any) => check.id === 'existing-reference-view-schema' && check.status === 'passed'));
 });
 
 test('unrecognized explicit paths beneath a known domain cannot hide behind a proved text delta', (t) => {
@@ -62,7 +62,7 @@ test('unrecognized explicit paths beneath a known domain cannot hide behind a pr
   f.changeBlueprint({ prompt: 'changed neutral object' });
   const result = run(f, '--execute', '--path', 'data/blueprints/never-registered.json');
   assert.equal(result.selection.mode, 'full');
-  assert.ok(result.selection.reasons.some((reason) => reason.includes('never-registered')));
+  assert.ok(result.selection.reasons.some((reason: any) => reason.includes('never-registered')));
   assert.equal(result.exitCode, 3);
 });
 
@@ -74,9 +74,9 @@ test('deletion and rename use old relations, then execute full checks that find 
   f.write('data/popular-characters.json', { version: 1, characters: f.characters.slice(1) });
   const result = run(f, '--execute');
   assert.equal(result.selection.mode, 'full');
-  assert.ok(result.history.affected.some((item) => item.id === 'bp-a'));
+  assert.ok(result.history.affected.some((item: any) => item.id === 'bp-a'));
   assert.ok(result.history.history.entities.some((item: { id: string; change: string; }) => item.id === 'a' && item.change === 'removed'));
-  assert.equal(result.execution.checks.find((check) => check.id === 'source-relationships').status, 'failed');
+  assert.equal(result.execution.checks.find((check: any) => check.id === 'source-relationships').status, 'failed');
   assert.equal(result.exitCode, 1);
 });
 
@@ -89,7 +89,7 @@ test('aggregate ordering cannot take the incremental route; unsupported source b
   fs.unlinkSync(path.join(f.root, 'data/blueprints/one.json'));
   const unknown = run(f, '--execute');
   assert.equal(unknown.selection.mode, 'full');
-  assert.equal(unknown.execution.checks.find((check) => check.id === 'structure-and-projection:blueprints').status, 'unknown');
+  assert.equal(unknown.execution.checks.find((check: any) => check.id === 'structure-and-projection:blueprints').status, 'unknown');
   assert.notEqual(unknown.exitCode, 0);
 });
 
@@ -102,7 +102,7 @@ test('explicit full runs without Git, reuses exact schema and cannot silently dr
   f.write('data/character-reference-standards.json', standards);
   const result = call();
   assert.equal(result.exitCode, 1);
-  assert.equal(result.execution.checks.find((check) => check.id === 'existing-reference-standards-schema').status, 'failed');
+  assert.equal(result.execution.checks.find((check: any) => check.id === 'existing-reference-standards-schema').status, 'failed');
 });
 
 test('full structural fallback also has zero write/process effects; ownership describes field checks without claiming execution', (t) => {

@@ -124,7 +124,7 @@ function categoryFor(scene: { category: string; }, rating: string) {
   return category;
 }
 
-function normalizeUsage(scene: { usage: unknown; }, rating: string) {
+function normalizeUsage(scene: any, rating: string) {
   const usage = (scene.usage || []).filter((item: string) => item !== 'R18' && item !== 'R15' && item !== '全年龄' && item !== '成人向');
   if (rating === 'R18') usage.push('成人向');
   else if (rating === 'R15') usage.push('R15');
@@ -158,7 +158,7 @@ for (const scene of scenes) {
   seen.add(scene.id);
   if (!['All', 'R15', 'R18'].includes(scene.rating) || typeof scene.mature !== 'boolean' || typeof scene.category !== 'string' || !Array.isArray(scene.usage) || !scene.usage.every((v: unknown) => typeof v === 'string')) throw new Error('Invalid or missing rating fields: ' + scene.id);
 }
-const ids = new Set(scenes.map((scene: { id: unknown; }) => scene.id));
+const ids = new Set(scenes.map((scene: any) => scene.id));
 for (const addition of additions) if (!ids.has(addition.id)) scenes.push(addition);
 
 let changed = 0;

@@ -1,5 +1,5 @@
 'use strict';
-type AdultBody = { character?: unknown; prompt?: unknown; loras?: Array<{ id?: unknown }> };
+type AdultBody = { character?: unknown; prompt?: unknown; loras?: any };
 type LoraOptions = { useLoras?: boolean };
 
 

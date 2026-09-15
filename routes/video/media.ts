@@ -19,7 +19,7 @@ let serviceError = errors.serviceError;
 let isPlainObject = errors.isPlainObject;
 
 // ── 目录解析 ────────────────────────────────────────────────────
-function modelRoot(config: { AI_WORKSPACE_ROOT: unknown; ROOT_DIR: string; }) {
+function modelRoot(config: any) {
   return path.resolve(
     config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'),
     'ComfyUI',
@@ -28,7 +28,7 @@ function modelRoot(config: { AI_WORKSPACE_ROOT: unknown; ROOT_DIR: string; }) {
 }
 
 // 首帧图片写入 ComfyUI/input，由 LoadImage 节点按文件名读取。
-function imageInputRoot(config: { AI_WORKSPACE_ROOT: unknown; ROOT_DIR: string; }) {
+function imageInputRoot(config: any) {
   return path.resolve(
     config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'),
     'ComfyUI',
@@ -142,7 +142,7 @@ function resourceAvailable(root: string, kind: string, file: string) {
   try { return fs.statSync(target).isFile(); } catch (error) { return false; }
 }
 
-function modelAvailability(config: unknown, model: { requirements: unknown[]; executable: unknown; }) {
+function modelAvailability(config: unknown, model: any) {
   let root = modelRoot(config);
   let missing = model.requirements.filter(function (requirement: string[]) {
     return !resourceAvailable(root, requirement[0], requirement[1]);
@@ -157,7 +157,7 @@ function modelAvailability(config: unknown, model: { requirements: unknown[]; ex
 }
 
 // ── 输出目录与安全路径 ──────────────────────────────────────────
-function ensureMediaRoot(config: { RUNTIME: { outputs: unknown; }; RUNTIME_ROOT: unknown; ROOT_DIR: string; }) {
+function ensureMediaRoot(config: any) {
   let outputs = config.RUNTIME && config.RUNTIME.outputs
     ? config.RUNTIME.outputs
     : path.join(config.RUNTIME_ROOT || path.join(config.ROOT_DIR, 'runtime'), 'outputs');
@@ -235,7 +235,7 @@ function validateVideoReference(value: unknown) {
   return { filename:filename, subfolder:'', type:'output' };
 }
 
-function videoMimeAndExtension(contentType: unknown, body: { length: number; toString: (arg0: string,arg1: number,arg2: number) => string; subarray: (arg0: number,arg1: number) => { (): unknown; new(): unknown; equals: { (arg0: Buffer<ArrayBuffer>): unknown; new(): unknown; }; }; }, filename: string) {
+function videoMimeAndExtension(contentType: unknown, body: any, filename: string) {
   let mime = String(contentType || '').split(';')[0].trim().toLowerCase();
   let extension = path.extname(filename).slice(1).toLowerCase();
   if ((extension === 'mp4' || extension === 'mov')

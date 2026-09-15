@@ -22,7 +22,7 @@ const CHAR_PROMPT = {
 };
 
 /** 确定性伪随机源（mulberry32）。 */
-function seededRng(seed) {
+function seededRng(seed: any) {
   let state = seed >>> 0;
   return function next() {
     state |= 0; state = state + 0x6D2B79F5 | 0;
@@ -47,14 +47,14 @@ function makeOptions(overrides = {}) {
   };
 }
 
-const promptById = (list, id) => list.find(item => item.id === id)?.prompt || '';
+const promptById = (list: any, id: any) => list.find((item: any) => item.id === id)?.prompt || '';
 
-function drawToPlanInput(draw, char, engine) {
+function drawToPlanInput(draw: any, char: any, engine: any) {
   return {
     identity: CHAR_PROMPT[char] || CHAR_PROMPT.nene,
     artists: artistTagsForEngine(draw.artistStyleIds, engine),
     artistProse: artistStyleProse(draw.artistStyleIds, engine),
-    emotion: draw.emotions.map(id => promptById(EMOTION, id)).filter(Boolean),
+    emotion: draw.emotions.map((id: any) => promptById(EMOTION, id)).filter(Boolean),
     camera: draw.shot ? [promptById(SHOT, draw.shot)] : [],
     lighting: draw.lighting ? [promptById(LIGHTING, draw.lighting)] : [],
     composition: draw.composition ? [promptById(COMPOSITION, draw.composition)] : [],

@@ -57,9 +57,9 @@ globalThis.fetch = async (url, init) => {
   return originalFetch(url, init);
 };
 
-function fakeClient(routes) {
+function fakeClient(routes: any) {
   return {
-    request: async (url, init = {}) => {
+    request: async (url: any, init = {}) => {
       // 模拟 apiClient 的 JSON 序列化（真实客户端在发出前 stringify body）
       const prepared = init.body !== undefined ? { ...init, body: JSON.stringify(init.body) } : init;
       const key = String(url) + '|' + String(prepared.method || 'GET');
@@ -192,8 +192,8 @@ test('refreshBackend 切 Krea 家族时尺寸收敛到底模白名单', async ()
 });
 
 test('generate 离线时只提示不提交；在线时完整走 提交→轮询→结果 生命周期', async () => {
-  const flashes = [];
-  const results = [];
+  const flashes: any = [];
+  const results: any = [];
   let polled = 0;
   const client = fakeClient({
     '/api/anima/jobs|POST': () => ({ ok: true, job: { id: 'j1', status: 'queued', seed: 7, resultAvailable: false, resultUrl: null, error: null, code: null } }),
@@ -203,13 +203,13 @@ test('generate 离线时只提示不提交；在线时完整走 提交→轮询�
       return { ok: true, job: { id: 'j1', status: 'succeeded', seed: 7, resultAvailable: true, resultUrl: '/api/anima/jobs/j1/result', metadata: { id: 'j1', seed: 7, prompt: '1girl', negative: 'bad' }, error: null, code: null } };
     },
   });
-  const offline = useAnimaSession({ ...baseOptions({ client, flash: m => flashes.push(m) }) });
+  const offline = useAnimaSession({ ...baseOptions({ client, flash: (m: any) => flashes.push(m) }) });
   await offline.generate();
   assert.equal(flashes[0], 'Anima ComfyUI 当前未连接');
   assert.equal(offline.state.value.phase, 'idle');
 
   const online = useAnimaSession({
-    ...baseOptions({ client, onResult: r => results.push(r) }),
+    ...baseOptions({ client, onResult: (r: any) => results.push(r) }),
   });
   online.patchState({ online: true });
   await online.generate();
@@ -223,9 +223,9 @@ test('generate 离线时只提示不提交；在线时完整走 提交→轮询�
 });
 
 test('krea2 家族的任务走 /api/creative/jobs', async () => {
-  const calls = [];
+  const calls: any = [];
   const client = fakeClient({
-    '/api/creative/jobs|POST': init => {
+    '/api/creative/jobs|POST': (init: any) => {
       calls.push({ url: '/api/creative/jobs', init });
       return { ok: true, job: { id: 'k1', status: 'queued', seed: 1, resultAvailable: false, resultUrl: null, error: null, code: null } };
     },

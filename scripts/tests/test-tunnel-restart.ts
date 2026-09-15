@@ -59,7 +59,7 @@ function makeManager() {
   return { manager: manager, dir: dir, config: config, children: children };
 }
 
-function waitFor(predicate: { (): boolean; (): boolean; (): boolean; (): boolean; (): unknown; }, timeoutMs: undefined) {
+function waitFor(predicate: { (): boolean; (): boolean; (): boolean; (): boolean; (): unknown; }, timeoutMs: any) {
   var deadline = Date.now() + (timeoutMs || 500);
   return new Promise(function (resolve, reject) {
     function check() {

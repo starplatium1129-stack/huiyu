@@ -21,7 +21,7 @@ function todayKey() {
   return '' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
 }
 
-function readLog(dir, prefix) {
+function readLog(dir: any, prefix: any) {
   return fs.readFileSync(path.join(dir, `${prefix}-${todayKey()}.log`), 'utf8');
 }
 
@@ -62,7 +62,7 @@ test('debug() is silent unless enabled, persists to file when enabled', async ()
 test('retention sweep: 双判据回收——过期按天日志（含旁路 prefix）与过期旁路文件都删除，新鲜文件保留', () => {
   const dir = makeTmpDir();
   const old = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  const key = d => '' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  const key = (d: any) => '' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
   fs.writeFileSync(path.join(dir, 'gateway-' + key(old) + '.log'), 'stale\n', 'utf8');
   fs.writeFileSync(path.join(dir, 'other-' + key(old) + '.log'), 'not-mine\n', 'utf8');
   fs.writeFileSync(path.join(dir, 'comfyui.stderr.log'), 'stale bypass\n', 'utf8');

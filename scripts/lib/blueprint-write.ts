@@ -77,7 +77,7 @@ function derivePaths(rootReal: string) {
   };
 }
 
-function deepFreeze(value: { [x: string]: unknown; kind?: string; rootReal?: unknown; paths?: { dataDir: string; shardsDir: string; manifestPath: string; aggregatePath: string; }; plan?: { manifest: { data: unknown; text: string; changed: boolean; }; aggregate: { data: { version: number; blueprints: unknown[]; }; text: string; }; writes: { file: string; franchise: unknown; count: number; kind: string; data: { version: number; franchise: unknown; blueprints: string|unknown[]; }; text: string; }[]; deletes: { file: unknown; franchise: unknown; }[]; unchanged: { file: unknown; franchise: unknown; count: unknown; }[]; summary: { writes: number; deletes: number; unchanged: number; blueprints: number; franchises: number; }; dirty: boolean; }; snapshotEntries?: { file: string; exists: boolean; content: NonSharedBuffer|null; }[]; summary?: { writes: number; deletes: number; unchanged: number; snapshotEntries: number; dirty: boolean; }|{ writes: unknown; deletes: unknown; manifestWritten: boolean; aggregateWritten: boolean; unchanged: unknown; }; ok?: boolean; written?: unknown; deleted?: unknown; manifestWritten?: boolean; aggregateWritten?: boolean; unchanged?: unknown; }) {
+function deepFreeze(value: any) {
   // Buffer 不可 freeze；apply 使用私有副本核对公开快照是否被改动。
   if (value && typeof value === 'object' && !ArrayBuffer.isView(value) && !Object.isFrozen(value)) {
     Object.freeze(value);
@@ -266,7 +266,7 @@ function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io =
       dirty: plan.dirty,
     },
   });
-  const copyEntry = (entry: { exists: boolean; content: null; file: string; }|{ exists: boolean; content: NonSharedBuffer; file: string; }) => ({ ...entry, content: entry.exists ? Buffer.from(entry.content) : null });
+  const copyEntry = (entry: { exists: boolean; content: any; file: string; }|{ exists: boolean; content: NonSharedBuffer; file: string; }) => ({ ...entry, content: entry.exists ? Buffer.from(entry.content) : null });
   const baselineByPath = new Map(entries.map((entry) => [entry.file, copyEntry(entry)]));
   for (const source of shardEntries) {
     const file = shardAbsPath(paths.shardsDir, source.file);
@@ -278,7 +278,7 @@ function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io =
   return prepared;
 }
 
-function expectFileBytes(absPath: string, expected: Uint8Array<ArrayBufferLike>|Buffer<ArrayBuffer>, io: typeof import("node:fs"), phase: string, code: string|undefined) {
+function expectFileBytes(absPath: string, expected: Uint8Array<ArrayBufferLike>|Buffer<ArrayBuffer>, io: typeof import("node:fs"), phase: string, code?: string|undefined) {
   let st;
   try {
     st = io.lstatSync(absPath);
@@ -415,7 +415,7 @@ function applyBlueprintWrite(prepared: object, { writeFileAtomic, io = nodeFs } 
   }
   const manifestBytes = Buffer.from(plan.manifest.text, 'utf8');
   const aggregateBytes = Buffer.from(plan.aggregate.text, 'utf8');
-  const written = shardWrites.map((item: { abs: unknown; }) => item.abs);
+  const written = shardWrites.map((item: any) => item.abs);
   let manifestWritten = false;
   let aggregateWritten = false;
   if (plan.manifest.changed === true) {
@@ -451,10 +451,10 @@ function applyBlueprintWrite(prepared: object, { writeFileAtomic, io = nodeFs } 
     rootReal: prepared.rootReal,
     paths: derived,
     written,
-    deleted: shardDeletes.map((item: { abs: unknown; }) => item.abs),
+    deleted: shardDeletes.map((item: any) => item.abs),
     manifestWritten,
     aggregateWritten,
-    unchanged: plan.unchanged.map((item: { file: unknown; }) => item.file),
+    unchanged: plan.unchanged.map((item: any) => item.file),
     summary: {
       writes: shardWrites.length,
       deletes: shardDeletes.length,

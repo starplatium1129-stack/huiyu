@@ -9,7 +9,7 @@ const { publicError }: typeof import('../scripts/lib/resource-install-config') =
 const { createResourceStatic }: typeof import('./resources-static') = require('./resources-static');
 const { ID }: typeof import('../scripts/lib/resource-install-policy') = require('../scripts/lib/resource-install-policy');
 
-function createResourcesRouter(config: { PORT: unknown; }) {
+function createResourcesRouter(config: any) {
   const manager = createResourceManager(config);
   const router = express.Router();
   // Reuse the same origin/forwarding/local identity checks as other privileged gateway APIs.

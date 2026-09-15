@@ -12,14 +12,14 @@ const { runMaintenanceNode }: typeof import('../lib/maintenance-transaction-proc
 const { createFixture, tree, spawnWorker }: typeof import('./maintenance-recovery-fixture') = require('./maintenance-recovery-fixture');
 const { fs, path } = io;
 
-async function crashed(fixture, mode = 'hold') {
+async function crashed(fixture: any, mode = 'hold') {
   const worker = await spawnWorker(fixture, mode);
   assert.equal(worker.message.status, 'ready');
   await worker.stop();
   assert.equal(inspectMaintenanceLease(fixture.options).status, 'stale');
   return worker;
 }
-const recover = fixture => applyMaintenanceRecovery(fixture.options, previewMaintenanceRecovery(fixture.options));
+const recover = (fixture: any) => applyMaintenanceRecovery(fixture.options, previewMaintenanceRecovery(fixture.options));
 
 test('free inspection and preview create no runtime; PID/nonce prevent reentry', () => {
   const f = createFixture();
@@ -246,11 +246,11 @@ test('gated child runs as main only after durable PID registration; timeout wait
     const snapshot = io.snapshotFiles(f.files);
     prepareMaintenanceTransaction(lease, f.options, snapshot);
     fs.writeFileSync(script, "const fs = require('node:fs'); const path = require('node:path'); const root = process.env.AICS_DATA_ROOT; const journal = JSON.parse(fs.readFileSync(path.join(root, 'runtime/maintenance-transactions/lease/journal.json'))); if (require.main !== module || !journal.participants.some(p => p.pid === process.pid && p.state === 'running')) process.exit(82); fs.writeFileSync(path.join(root, 'data/scenes/group.json'), 'child-write');");
-    const run = args => runMaintenanceNode(script, args, 300, { rootDir: f.options.rootDir, repoRoot: f.options.rootDir, lease });
+    const run = (args: any) => runMaintenanceNode(script, args, 300, { rootDir: f.options.rootDir, repoRoot: f.options.rootDir, lease });
     assert.equal((await run([])).status, 0);
     fs.appendFileSync(script, 'setInterval(() => {}, 1000);');
     await assert.rejects(() => run([]), /超时/);
-    assert.ok(lease.assertOwned().participants.every(item => item.state === 'exited'));
+    assert.ok(lease.assertOwned().participants.every((item: any) => item.state === 'exited'));
     assert.equal(rollbackMaintenanceTransaction(lease, f.options).ok, true);
     assert.equal(fs.readFileSync(f.files[0], 'utf8'), snapshot[0].content.toString());
   } finally { f.cleanup(); }

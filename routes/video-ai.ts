@@ -104,7 +104,7 @@ let POLISH_SYSTEM_PROMPT = [
 
 let MAX_POLISH_SHOTS = 30;
 
-function validatePolishBody(body: { identity: unknown; shots: string|unknown[]; }) {
+function validatePolishBody(body: any) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return { error:'请求体必须是 JSON 对象' };
   }
@@ -182,7 +182,7 @@ function cleanPolishOutput(parsed: { shots: string|unknown[]; }, value: { identi
   return out;
 }
 
-function validateRewriteBody(body: { prompt?: unknown; identity?: unknown; shotSize?: unknown; camera?: unknown; motion?: unknown; dialogue?: unknown; }) {
+function validateRewriteBody(body: any) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return { error:'请求体必须是 JSON 对象' };
   }
@@ -213,7 +213,7 @@ function validateRewriteBody(body: { prompt?: unknown; identity?: unknown; shotS
 // 保证模型输出再离谱也不会把镜头参数或描述弄坏。
 
 
-async function callCompatibleApi(source: { source: string; model: unknown; api: unknown; vendor: string; host?: undefined; }|{ source: string; model: unknown; host: unknown; api?: undefined; vendor?: undefined; }, messages: { role: string; content: string; }[], signal: AbortSignal) {
+async function callCompatibleApi(source: any, messages: { role: string; content: string; }[], signal: AbortSignal) {
   let result = await httpClient.request(source.api.baseUrl, source.api.pathname, {
     method:'POST',
     headers:source.api.apiKey ? { Authorization:'Bearer ' + source.api.apiKey } : {},
@@ -254,7 +254,7 @@ async function callCompatibleApi(source: { source: string; model: unknown; api: 
 
 // Ollama 走 ollama-service.streamChat（NDJSON 流 + 串行队列 + 模型选择全复用），
 // onToken 累积全文。模型名传空串 = 交给 service 选（OLLAMA_MODEL 或已装第一个）。
-async function callOllama(ollama: { streamChat: (arg0: { model: string; messages: { role: string; content: string; }[]; signal: AbortSignal; },arg1: { onToken: (token: string) => Promise<void>; }) => unknown; }, messages: { role: string; content: string; }[], signal: AbortSignal) {
+async function callOllama(ollama: any, messages: { role: string; content: string; }[], signal: AbortSignal) {
   let fullText = '';
   await ollama.streamChat({ model:'', messages:messages, signal:signal }, {
     onToken:async function (token: string) { fullText += token; }
@@ -265,7 +265,7 @@ async function callOllama(ollama: { streamChat: (arg0: { model: string; messages
   return fullText;
 }
 
-function createVideoAiRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unknown; OLLAMA_KEEP_ALIVE: unknown; OLLAMA_NUM_PREDICT: unknown; OLLAMA_NUM_CTX: unknown; }, dependencies: { ollama?: unknown; }) {
+function createVideoAiRouter(config: any, dependencies: any) {
   dependencies = dependencies || {};
   let router = express.Router();
   let ollama = dependencies.ollama || createOllamaService({
@@ -386,7 +386,7 @@ function createVideoAiRouter(config: { OLLAMA_HOST: unknown; OLLAMA_MODEL: unkno
   });
 
   // 统一 LLM 调用：选源 → 提示词 → 调用 → 返回原始文本。
-  async function callLlm(source: { source: string; model: unknown; api: unknown; vendor: string; host?: undefined; }|{ source: string; model: unknown; host: unknown; api?: undefined; vendor?: undefined; }, messages: { role: string; content: string; }[], signal: AbortSignal) {
+  async function callLlm(source: any, messages: { role: string; content: string; }[], signal: AbortSignal) {
     return source.source === 'api'
       ? await callCompatibleApi(source, messages, signal)
       : await callOllama(ollama, messages, signal);
@@ -510,7 +510,7 @@ var SCRIPT_SYSTEM_PROMPT = [
   '- If a target total duration is given, keep the sum close to it.'
 ].join('\n');
 
-function validateDialogueBody(body: { prompt: unknown; identity: unknown; currentDialogue: unknown; mood: unknown; }) {
+function validateDialogueBody(body: any) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return { error:'请求体必须是 JSON 对象' };
   let prompt = String(body.prompt || '').trim();
   if (!prompt || prompt.length > 4000) return { error:'镜头描述需为 1—4000 字符' };
@@ -605,7 +605,7 @@ function cleanReviewOutput(parsed: { issues: string|unknown[]; }, value: { shots
   return issues;
 }
 
-function validateScriptBody(body: { story: unknown; identity: unknown; shotCount: string|null|undefined; totalSeconds: string|null|undefined; characterLabels: unknown[]; }) {
+function validateScriptBody(body: any) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return { error:'请求体必须是 JSON 对象' };
   let story = String(body.story || '').trim();
   if (!story || story.length > 2000) return { error:'故事梗概需为 1—2000 字符' };
@@ -628,7 +628,7 @@ function validateScriptBody(body: { story: unknown; identity: unknown; shotCount
   return { value:{ story:story, identity:identity, shotCount:shotCount, totalSeconds:totalSeconds, characterLabels:characterLabels } };
 }
 
-function buildScriptUserPrompt(value: { story: string; identity: string; shotCount: number|null; totalSeconds: number|null; characterLabels: unknown; }|undefined) {
+function buildScriptUserPrompt(value: any) {
   let lines = [
     'Identity anchor (for reference only): ' + (value.identity || '(none)'),
   ];

@@ -35,7 +35,7 @@ function baseEnv() {
 }
 
 /** 每个用例一个临时父目录；夹具、探针都放里面，结束时整树删除。 */
-function makeTempRoot(t) {
+function makeTempRoot(t: any) {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-g14-'));
   t.after(() => {
     assert.ok(path.resolve(tempRoot).startsWith(path.resolve(os.tmpdir()) + path.sep));
@@ -44,7 +44,7 @@ function makeTempRoot(t) {
   return tempRoot;
 }
 
-function makeRoot(tempRoot, tag, { refs = [], files = [], viewBody } = {}) {
+function makeRoot(tempRoot: any, tag: any, { refs = [], files = [], viewBody } = {}) {
   const root = path.join(tempRoot, tag);
   fs.mkdirSync(path.join(root, 'data'), { recursive: true });
   const view = viewBody === undefined
@@ -59,17 +59,17 @@ function makeRoot(tempRoot, tag, { refs = [], files = [], viewBody } = {}) {
   return root;
 }
 
-const urlRefs = (count) => Array.from({ length: count }, (_, i) =>
+const urlRefs = (count: any) => Array.from({ length: count }, (_, i) =>
   ({ id: 'r' + (i + 1), url: '/character-references/r' + (i + 1) + '.png' }));
-const refFiles = (count) => Array.from({ length: count }, (_, i) =>
+const refFiles = (count: any) => Array.from({ length: count }, (_, i) =>
   'assets/character-references/r' + (i + 1) + '.png');
 
 /** 好夹具：count 条真实存在的 /character-references/ 引用；stdout 总数即指纹。 */
-function makeGoodRoot(tempRoot, tag, count) {
+function makeGoodRoot(tempRoot: any, tag: any, count: any) {
   return makeRoot(tempRoot, tag, { refs: urlRefs(count), files: refFiles(count) });
 }
 
-function guardSource(protectedPaths) {
+function guardSource(protectedPaths: any) {
   return `
     const fs = require('node:fs');
     const path = require('node:path');
@@ -99,7 +99,7 @@ function guardSource(protectedPaths) {
 }
 
 /** 带探针 spawn CLI：protectedPaths 内零访问，任何 fs 写入即违规（退出 99）。 */
-function runProbed(tempRoot, args, envOverrides, protectedPaths) {
+function runProbed(tempRoot: any, args: any, envOverrides: any, protectedPaths: any) {
   const guard = path.join(tempRoot, 'guard.cjs');
   fs.writeFileSync(guard, guardSource(protectedPaths));
   return spawnSync(process.execPath, ['--require', guard, CLI, ...args], {
@@ -108,9 +108,9 @@ function runProbed(tempRoot, args, envOverrides, protectedPaths) {
   });
 }
 
-function snapshot(root) {
+function snapshot(root: any) {
   const out = {};
-  const walk = (rel) => {
+  const walk = (rel: any) => {
     const abs = path.join(root, rel);
     if (fs.statSync(abs).isDirectory()) {
       out[rel + '/'] = 'dir';

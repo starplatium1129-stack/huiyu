@@ -113,7 +113,7 @@ async function requestJson(pathname: string, options: RequestInit|undefined) {
   return data;
 }
 
-async function requestImage(image: { filename: unknown; subfolder: unknown; type: unknown; }) {
+async function requestImage(image: any) {
   var query = new URLSearchParams({
     filename:String(image.filename || ''),
     subfolder:String(image.subfolder || ''),
@@ -144,7 +144,7 @@ async function waitFor(promptId: string|number|boolean) {
   throw new Error('ComfyUI prompt timed out: ' + promptId);
 }
 
-function workflowFor(group: { sampler: unknown; scheduler: unknown; hires: unknown; purePixel: unknown; vaeOnly: unknown; h2Sampler: unknown; h2Scheduler: unknown; h2TeaCache: boolean; h2Rcas: boolean; label: unknown; }, seed: string) {
+function workflowFor(group: any, seed: string) {
   var workflow = animaRoute.buildWorkflow({
     prompt:PROMPT,
     negative:NEGATIVE,
@@ -279,7 +279,7 @@ async function main() {
       fs.mkdirSync(path.dirname(outputFile), { recursive:true });
       fs.writeFileSync(outputFile, body);
 
-      manifest.records = manifest.records.filter(function (r: { group: unknown; seed: unknown; }) { return !(r.group === job.groupKey && r.seed === job.seed); });
+      manifest.records = manifest.records.filter(function (r: any) { return !(r.group === job.groupKey && r.seed === job.seed); });
       manifest.records.push({
         group:job.groupKey,
         label:job.group.label,

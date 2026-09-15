@@ -29,22 +29,22 @@ function now() {
   return new Date().toISOString()
 }
 
-function ensureDirectory(directory) {
+function ensureDirectory(directory: any) {
   fs.mkdirSync(directory, { recursive: true })
 }
 
-function atomicWrite(filePath, text) {
+function atomicWrite(filePath: any, text: any) {
   ensureDirectory(path.dirname(filePath))
   const temporary = `${filePath}.${process.pid}.tmp`
   fs.writeFileSync(temporary, text, 'utf8')
   fs.renameSync(temporary, filePath)
 }
 
-function writeJson(filePath, value) {
+function writeJson(filePath: any, value: any) {
   atomicWrite(filePath, `${JSON.stringify(value, null, 2)}\n`)
 }
 
-function readJson(filePath, fallback) {
+function readJson(filePath: any, fallback: any) {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'))
   } catch {
@@ -52,7 +52,7 @@ function readJson(filePath, fallback) {
   }
 }
 
-function resolveAiWorkspace(root, configured) {
+function resolveAiWorkspace(root: any, configured?: any) {
   const workspace = path.resolve(
     configured
       || process.env.D10_AI_WORKSPACE
@@ -65,7 +65,7 @@ function resolveAiWorkspace(root, configured) {
   return workspace
 }
 
-function resolveEvidenceDirectory(root, configured) {
+function resolveEvidenceDirectory(root: any, configured: any) {
   if (configured || process.env.D10_EVIDENCE_DIR) {
     return path.resolve(configured || process.env.D10_EVIDENCE_DIR)
   }
@@ -73,7 +73,7 @@ function resolveEvidenceDirectory(root, configured) {
 }
 
 class Evidence {
-  constructor(options) {
+  constructor(options: any) {
     this.root = options.root
     this.directory = resolveEvidenceDirectory(options.root, options.directory)
     this.reportPath = path.join(this.directory, 'report.json')
@@ -107,42 +107,42 @@ class Evidence {
     this.write()
   }
 
-  appendCommand(text) {
+  appendCommand(text: any) {
     ensureDirectory(this.directory)
     fs.appendFileSync(this.commandsPath, text.endsWith('\n') ? text : `${text}\n`, 'utf8')
   }
 
-  commandStart(command) {
+  commandStart(command: any) {
     this.appendCommand(`\n[${now()}] $ ${command}`)
   }
 
-  commandOutput(stream, text) {
+  commandOutput(stream: any, text: any) {
     const normalized = String(text || '').replace(/\r\n/g, '\n')
     if (!normalized) return
     this.appendCommand(normalized.split('\n').filter(Boolean).map(line => `[${stream}] ${line}`).join('\n'))
   }
 
-  commandEnd(command, code, durationMs, error) {
+  commandEnd(command: any, code: any, durationMs: any, error?: any) {
     this.appendCommand(`[${now()}] exit=${code} durationMs=${durationMs} command=${command}${error ? ` error=${error}` : ''}`)
   }
 
-  setEnvironment(value) {
+  setEnvironment(value: any) {
     writeJson(this.environmentPath, value)
     this.report.artifacts.environment = this.environmentPath
     this.write()
   }
 
-  setInstaller(value) {
+  setInstaller(value: any) {
     this.report.installer = value
     this.write()
   }
 
-  setFreeze(value) {
+  setFreeze(value: any) {
     this.report.freeze = value
     this.write()
   }
 
-  beginInstallerCycle(installer, freeze) {
+  beginInstallerCycle(installer: any, freeze: any) {
     const previous = this.report.installer
     const unchanged = previous?.sha256 === installer.sha256
       && previous?.packagingFingerprint?.sha256 === installer.packagingFingerprint?.sha256
@@ -192,62 +192,62 @@ class Evidence {
     return true
   }
 
-  setWorkflow(value) {
+  setWorkflow(value: any) {
     this.report.workflow = value
     this.write()
   }
 
-  setMatrix(section, key, value) {
+  setMatrix(section: any, key: any, value: any) {
     if (!this.report.matrix[section]) this.report.matrix[section] = {}
     this.report.matrix[section][key] = value
     this.write()
   }
 
-  result(id, status, details = {}) {
+  result(id: any, status: any, details = {}) {
     const item = { id, status, at: now(), ...details }
-    const index = this.report.results.findIndex(entry => entry.id === id)
+    const index = this.report.results.findIndex((entry: any) => entry.id === id)
     if (index >= 0) this.report.results[index] = item
     else this.report.results.push(item)
     if (status === 'FAIL' || status === 'BLOCKED') {
       this.failure(id, status, details.message || details.reason || 'No detail supplied', details)
     } else {
       const before = this.report.failures.length
-      this.report.failures = this.report.failures.filter(entry => entry.id !== id)
+      this.report.failures = this.report.failures.filter((entry: any) => entry.id !== id)
       if (this.report.failures.length !== before) writeJson(this.failuresPath, this.report.failures)
     }
     this.write()
     return item
   }
 
-  failure(id, kind, message, details = {}) {
+  failure(id: any, kind: any, message: any, details = {}) {
     const item = { id, kind, message, at: now(), details }
-    const index = this.report.failures.findIndex(entry => entry.id === id && entry.kind === kind)
+    const index = this.report.failures.findIndex((entry: any) => entry.id === id && entry.kind === kind)
     if (index >= 0) this.report.failures[index] = item
     else this.report.failures.push(item)
     writeJson(this.failuresPath, this.report.failures)
     this.write()
   }
 
-  artifact(name, filePath) {
+  artifact(name: any, filePath: any) {
     this.report.artifacts[name] = filePath
     this.write()
   }
 
-  ensureDesktopLog(reason) {
+  ensureDesktopLog(reason: any) {
     if (!fs.existsSync(this.desktopLogPath)) {
       atomicWrite(this.desktopLogPath, `[D-10 harness] Product desktop.log unavailable: ${reason}\n`)
     }
     this.artifact('desktopLog', this.desktopLogPath)
   }
 
-  markScreenshotUnavailable(label, reason) {
+  markScreenshotUnavailable(label: any, reason: any) {
     const directory = path.join(this.directory, 'screenshots', label)
     ensureDirectory(directory)
     atomicWrite(path.join(directory, 'NOT_COVERED.txt'), `${reason}\n`)
   }
 
-  finalize(forcedStatus) {
-    const statuses = this.report.results.map(item => item.status)
+  finalize(forcedStatus?: any) {
+    const statuses = this.report.results.map((item: any) => item.status)
     this.report.overall = forcedStatus
       || (statuses.includes('FAIL') ? 'FAIL' : statuses.includes('BLOCKED') ? 'BLOCKED' : 'PASS')
     this.report.updatedAt = now()

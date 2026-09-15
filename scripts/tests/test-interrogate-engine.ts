@@ -91,7 +91,7 @@ async function run() {
       assert.ok(r.tags.length <= 100, '默认 topN=100 上限');
     });
     check('真实推理: scores 与 tags 一一对应且为概率值', function () {
-      r.tags.forEach(function (t) {
+      r.tags.forEach(function (t: any) {
         assert.ok(Object.prototype.hasOwnProperty.call(r.scores, t), 'score 缺 ' + t);
         assert.ok(r.scores[t] > 0.35 && r.scores[t] <= 1.001, t + ' 概率越界: ' + r.scores[t]);
       });
@@ -107,7 +107,7 @@ async function run() {
     });
     check('真实推理: characterTags 均落在 character 区间且阈值更高', function () {
       assert.ok(Array.isArray(r.characterTags));
-      r.characterTags.forEach(function (t) {
+      r.characterTags.forEach(function (t: any) {
         var idx = tags.names.indexOf(t);
         assert.ok(idx >= tags.characterIndex, t + ' 不在 character 区间');
         assert.ok(r.scores[t] > 0.85, t + ' 低于 character 阈值');
@@ -117,7 +117,7 @@ async function run() {
       // 2026-08-29：tags 只含 general 区间词条；角色名单独走 characterTags，
       // 防止识别出的角色名随大流写入 manualTags 与当前作画角色冲突。
       var characterSet = new Set(r.characterTags);
-      r.tags.forEach(function (t) {
+      r.tags.forEach(function (t: any) {
         assert.ok(!characterSet.has(t), t + ' 不得同时出现在 tags 与 characterTags');
       });
     });

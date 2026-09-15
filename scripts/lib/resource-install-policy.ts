@@ -10,7 +10,7 @@ const HASH = /^[a-f0-9]{64}$/;
 const ID = /^[a-zA-Z0-9_-]{1,64}$/;
 const EXECUTABLE = /\.(exe|dll|com|bat|cmd|ps1|psm1|sh|bash|msi|msp|scr|vbs|vbe|hta|js|mjs|cjs|html|htm|wasm)$/i;
 
-function manifest(value) {
+function manifest(value: any) {
   const result = compareManifests({ oldManifest: value, newManifest: value });
   if (!result.ok) fail('MANIFEST_INVALID', 'Manifest structure is invalid', result.errors);
   const identities = new Set();
@@ -32,9 +32,9 @@ function manifest(value) {
       if (identities.has(segments.join('/'))) fail('MANIFEST_INVALID', 'A file is also used as a directory');
     }
   }
-  return { schemaVersion: 1, kind: 'resource-manifest', entries: value.entries.map(e => ({ path: e.path, bytes: e.bytes, sha256: e.sha256.toLowerCase() })), unverified: [] };
+  return { schemaVersion: 1, kind: 'resource-manifest', entries: value.entries.map((e: any) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256.toLowerCase() })), unverified: [] };
 }
-function releasePolicy(ctx, releaseId) {
+function releasePolicy(ctx: any, releaseId: any) {
   access(ctx);
   if (!ID.test(releaseId || '')) fail('CONFIG_REQUIRED', 'A configured release ID is required');
   const release = ctx.policy.releases?.[releaseId];
@@ -49,22 +49,22 @@ function releasePolicy(ctx, releaseId) {
   if (source.kind === 'offline' && (typeof source.root !== 'string' || !path.isAbsolute(source.root))) fail('SOURCE_REQUIRED', 'Offline source root must be absolute');
   return { ...release, releaseId, source: { ...source } };
 }
-function reference(release) {
+function reference(release: any) {
   return { identity: release.targetIdentity, packageIdentity: release.packageIdentity, releaseId: release.releaseId, sourceId: release.sourceId };
 }
-function validateReference(ctx, ref) {
+function validateReference(ctx: any, ref: any) {
   if (!ref || !HASH.test(ref.identity || '') || !HASH.test(ref.packageIdentity || '')) fail('STATE_INVALID', 'Invalid installed reference');
   const expected = reference(releasePolicy(ctx, ref.releaseId));
   if (JSON.stringify(expected) !== JSON.stringify(ref)) fail('APPROVAL_REQUIRED', 'Installed receipt differs from the independently approved release');
   return ref;
 }
-function packageIdentity(manifestBytes, deltaBytes = null) {
+function packageIdentity(manifestBytes: any, deltaBytes = null) {
   return digest(JSON.stringify([digest(manifestBytes), deltaBytes === null ? null : digest(deltaBytes)]));
 }
-function parse(bytes) {
+function parse(bytes: any) {
   try { return JSON.parse(bytes.toString('utf8')); } catch { fail('METADATA_INVALID', 'Package metadata is not JSON'); }
 }
-function decodePack(manifestBytes, deltaBytes, release) {
+function decodePack(manifestBytes: any, deltaBytes: any, release: any) {
   if (packageIdentity(manifestBytes, deltaBytes) !== release.packageIdentity) fail('PACKAGE_UNAPPROVED', 'Package metadata differs from the approved fingerprint');
   if ((release.kind === 'delta') !== (deltaBytes !== null)) fail('PACKAGE_KIND', 'Full/delta package kind differs from approval');
   const normalized = manifest(parse(manifestBytes));
@@ -73,7 +73,7 @@ function decodePack(manifestBytes, deltaBytes, release) {
   if (delta && delta.newManifest?.contentIdentity !== release.targetIdentity) fail('TARGET_MISMATCH', 'Delta target differs from approval');
   return { manifest: normalized, delta, manifestBytes, deltaBytes };
 }
-function inventory(ctx, root, declared) {
+function inventory(ctx: any, root: any, declared: any) {
   if (!noLinks(ctx.io, root).isDirectory()) fail('UNSAFE_PATH', 'Package/version root is not a directory');
   const seen = new Set();
   const directories = new Set(['assets']);
@@ -81,7 +81,7 @@ function inventory(ctx, root, declared) {
     const segments = rel.split('/');
     while (segments.length > 1) { segments.pop(); directories.add(segments.join('/')); }
   }
-  const visit = (dir, prefix = '') => {
+  const visit = (dir: any, prefix = '') => {
     noLinks(ctx.io, dir);
     for (const name of ctx.io.readdirSync(dir)) {
       const rel = prefix + name;
@@ -99,20 +99,20 @@ function inventory(ctx, root, declared) {
   visit(root);
   if (seen.size !== declared.size) fail('CONTENT_INVALID', 'Resource tree is incomplete');
 }
-function verifyTree(ctx, root, value, metadata = ['manifest.json']) {
+function verifyTree(ctx: any, root: any, value: any, metadata = ['manifest.json']) {
   const normalized = manifest(value);
-  inventory(ctx, root, new Set([...metadata, ...normalized.entries.map(e => e.path)]));
+  inventory(ctx, root, new Set([...metadata, ...normalized.entries.map((e: any) => e.path)]));
   // Reuse the existing verifier for all bytes/hash checks, after stronger install path checks.
   const result = verifyManifestEntries({ root, manifest: normalized, io: ctx.io });
   if (!result.ok) fail('CONTENT_INVALID', 'Resource bytes failed verification', result.errors);
   return result;
 }
-function packRoot(ctx, release) {
+function packRoot(ctx: any, release: any) {
   return release.source.kind === 'offline'
     ? child(path.resolve(release.source.root), release.path)
     : child(ctx.store, 'downloads/' + release.packageIdentity + '/pack');
 }
-function readPack(ctx, release) {
+function readPack(ctx: any, release: any) {
   const root = packRoot(ctx, release);
   noLinks(ctx.io, root);
   const raw = readBytes(ctx.io, child(root, 'manifest.json'));
@@ -122,13 +122,13 @@ function readPack(ctx, release) {
   verifyTree(ctx, root, decoded.manifest, delta === null ? ['manifest.json'] : ['manifest.json', 'delta.json']);
   return { root, ...decoded };
 }
-function targetManifest(pack, base, release) {
+function targetManifest(pack: any, base: any, release: any) {
   if (!pack.delta) return pack.manifest;
   if (!base) fail('BASELINE_REQUIRED', 'Delta installation needs a verified installed baseline');
   const result = verifyDeltaPackContent({ baseManifest: base, packManifest: pack.manifest, delta: pack.delta });
   if (!result.ok) fail('BASELINE_MISMATCH', 'Delta is incompatible with installed baseline', result.errors);
-  const removed = new Set(pack.delta.removed.map(e => e.path));
-  const entries = new Map(base.entries.filter(e => !removed.has(e.path)).map(e => [e.path, e]));
+  const removed = new Set(pack.delta.removed.map((e: any) => e.path));
+  const entries = new Map(base.entries.filter((e: any) => !removed.has(e.path)).map((e: any) => [e.path, e]));
   for (const entry of pack.manifest.entries) entries.set(entry.path, entry);
   const target = manifest({ schemaVersion: 1, entries: [...entries.values()], unverified: [] });
   if (manifestContentIdentity(target) !== release.targetIdentity) fail('TARGET_MISMATCH', 'Reconstructed target differs from approval');

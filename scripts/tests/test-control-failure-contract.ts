@@ -67,7 +67,7 @@ async function waitFor(check: { (): Promise<unknown>; (): Promise<""|"active">; 
   throw new Error('Timed out waiting for ' + description);
 }
 
-function baseConfig(rootDir: string, runtime: { root: unknown; state?: string; logs: unknown; outputs?: string; config?: string; gatewayToken?: string; gatewayPid?: string; gatewayPort?: string; tunnelPid?: string; tunnelLog?: string; gatewayLog?: string; controlLog?: string; }) {
+function baseConfig(rootDir: string, runtime: any) {
   return {
     ROOT_DIR:rootDir,
     RUNTIME:runtime,
@@ -140,7 +140,7 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
   var controlServer = http.createServer(controlApp);
   var controlBase = await listen(controlServer);
   var weightMock = null;
-  var tunnelStack: { gateway: unknown; runtime: unknown; baseUrl: unknown; close: unknown; root?: string; config?: unknown; upstreams?: Record<string,{ name: string; mock: { server: Server; }; port?: number; url?: string; }>&{ list: { name: string; mock: { server: Server; }; port?: number; url?: string; }[]; close: () => Promise<void>; }; server?: Server<typeof IncomingMessage,typeof ServerResponse>; address?: AddressInfo; }|null = null;
+  var tunnelStack: any = null;
 
   try {
     var startedVoice = await postJson(controlBase, '/api/service/voice', { action:'start' });
@@ -329,7 +329,7 @@ test('managed runtime scripts require injected paths and protect external owners
 
 // 模拟“手动启动”的外部 ComfyUI / reForge：真实监听端口 + 健康接口 + 命令行
 // 携带入口脚本名（main.py / launch.py），从而通过脚本的外部进程识别。
-function startFakeService(options: { entryName: unknown; healthPath: unknown; }) {
+function startFakeService(options: any) {
   return new Promise(function (resolve, reject) {
     var entryName = options.entryName;
     var healthPath = options.healthPath;
@@ -373,7 +373,7 @@ function startFakeService(options: { entryName: unknown; healthPath: unknown; })
   });
 }
 
-function waitForExit(child: { exitCode: null; signalCode: unknown; once: (arg0: string,arg1: (value: unknown) => void) => void; }) {
+function waitForExit(child: any) {
   return new Promise(function (resolve) {
     if (child.exitCode !== null || child.signalCode) return resolve();
     child.once('exit', resolve);

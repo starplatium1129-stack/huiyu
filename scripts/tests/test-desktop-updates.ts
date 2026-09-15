@@ -42,7 +42,7 @@ test('自动检查只提示，安装必须由用户点击触发', () => {
   assert.match(updater, /async function install\(\)/);
 });
 
-function releaseFixture(callback) {
+function releaseFixture(callback: any) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-release-test-'));
   try {
     const notes = path.join(directory, 'notes.md');
@@ -54,61 +54,61 @@ function releaseFixture(callback) {
   } finally { fs.rmSync(directory, { recursive: true, force: true }); }
 }
 
-test('手动版先上传草稿并验证资产，再公开但不晋升自动更新 latest', () => releaseFixture(({ directory, notes, files }) => {
-  const calls = [];
-  const run = (_command, args) => {
+test('手动版先上传草稿并验证资产，再公开但不晋升自动更新 latest', () => releaseFixture(({ directory, notes, files }: any) => {
+  const calls: any = [];
+  const run = (_command: any, args: any) => {
     calls.push(args);
     if (args[0] === 'release' && args[1] === 'view' && args.includes('isDraft,body,targetCommitish')) {
       const error = new Error('release not found'); error.stderr = 'release not found'; throw error;
     }
-    if (args.includes('assets')) return JSON.stringify({ assets: files.map(file => ({ name: path.basename(file), size: fs.statSync(file).size })) });
+    if (args.includes('assets')) return JSON.stringify({ assets: files.map((file: any) => ({ name: path.basename(file), size: fs.statSync(file).size })) });
     return '';
   };
   publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run });
-  const create = calls.find(args => args[1] === 'create');
-  const publish = calls.find(args => args[1] === 'edit');
+  const create = calls.find((args: any) => args[1] === 'create');
+  const publish = calls.find((args: any) => args[1] === 'edit');
   assert(create.includes('--draft'));
   assert(create.includes('--notes-file'));
   assert(publish.includes('--latest=false'));
   assert(publish.includes('--draft=false'));
   assert(fs.readFileSync(path.join(directory, 'release-notes-v1.6.0.md'), 'utf8').includes(MANUAL_MARKER));
-  assert(!create.some(value => value.endsWith('latest.json') || value.endsWith('.sig')));
+  assert(!create.some((value: any) => value.endsWith('latest.json') || value.endsWith('.sig')));
 }));
 
-test('资产未上传完整时保留草稿，不公开半成品', () => releaseFixture(({ directory, notes, files }) => {
-  const calls = [];
-  const run = (_command, args) => {
+test('资产未上传完整时保留草稿，不公开半成品', () => releaseFixture(({ directory, notes, files }: any) => {
+  const calls: any = [];
+  const run = (_command: any, args: any) => {
     calls.push(args);
     if (args.includes('isDraft,body,targetCommitish')) return JSON.stringify({ isDraft: true, targetCommitish: 'source-head', body: '' });
     if (args.includes('assets')) return JSON.stringify({ assets: [] });
     return '';
   };
   assert.throws(() => publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run }), /上传不完整/);
-  assert(!calls.some(args => args[1] === 'edit'));
+  assert(!calls.some((args: any) => args[1] === 'edit'));
 }));
 
-test('手动发布不能携带自动更新清单，也不能覆盖已公开的普通版本', () => releaseFixture(({ directory, notes, files }) => {
+test('手动发布不能携带自动更新清单，也不能覆盖已公开的普通版本', () => releaseFixture(({ directory, notes, files }: any) => {
   assert.throws(() => publishRelease('1.6.0', 'source-head', [...files, 'latest.json'], { manual: true }), /不能发布自动更新/);
   const run = () => JSON.stringify({ isDraft: false, body: '# Signed release', targetCommitish: 'source-head' });
   assert.throws(() => publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run }), /已公开发布/);
 }));
 
-test('GitHub 返回的资产摘要不匹配时不得公开', () => releaseFixture(({ directory, notes, files }) => {
-  const calls = [];
-  const run = (_command, args) => {
+test('GitHub 返回的资产摘要不匹配时不得公开', () => releaseFixture(({ directory, notes, files }: any) => {
+  const calls: any = [];
+  const run = (_command: any, args: any) => {
     calls.push(args);
     if (args.includes('isDraft,body,targetCommitish')) return JSON.stringify({ isDraft: true, targetCommitish: 'source-head', body: '' });
-    if (args.includes('assets')) return JSON.stringify({ assets: files.map(file => ({ name: path.basename(file), size: fs.statSync(file).size, digest: 'sha256:wrong' })) });
+    if (args.includes('assets')) return JSON.stringify({ assets: files.map((file: any) => ({ name: path.basename(file), size: fs.statSync(file).size, digest: 'sha256:wrong' })) });
     return '';
   };
   assert.throws(() => publishRelease('1.6.0', 'source-head', files, { manual: true, notesFile: notes, outputDir: directory, run }), /校验失败/);
-  assert(!calls.some(args => args[1] === 'edit'));
+  assert(!calls.some((args: any) => args[1] === 'edit'));
 }));
 
-test('补签必须显式声明且匹配原标签，然后才晋升 latest', () => releaseFixture(({ directory, notes, files }) => {
+test('补签必须显式声明且匹配原标签，然后才晋升 latest', () => releaseFixture(({ directory, notes, files }: any) => {
   const signedFiles = [...files, ...['latest.json', 'setup.exe.sig'].map(name => { const file = path.join(directory, name); fs.writeFileSync(file, 'fixture'); return file; })];
-  const calls = [];
-  const run = (command, args) => {
+  const calls: any = [];
+  const run = (command: any, args: any) => {
     calls.push(args);
     if (command === 'git') return 'source-head\n';
     if (args.includes('isDraft,body,targetCommitish')) return JSON.stringify({ isDraft: false, body: MANUAL_MARKER, targetCommitish: 'source-head' });
@@ -116,7 +116,7 @@ test('补签必须显式声明且匹配原标签，然后才晋升 latest', () =
     return '';
   };
   publishRelease('1.6.0', 'source-head', signedFiles, { manual: false, completeManual: true, notesFile: notes, outputDir: directory, run });
-  assert(calls.find(args => args[1] === 'edit').includes('--latest=true'));
+  assert(calls.find((args: any) => args[1] === 'edit').includes('--latest=true'));
   assert(!fs.readFileSync(path.join(directory, 'release-notes-v1.6.0.md'), 'utf8').includes(MANUAL_MARKER));
 }));
 

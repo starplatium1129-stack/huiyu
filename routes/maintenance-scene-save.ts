@@ -12,25 +12,25 @@ const { readJson, validateTags, sanitizeCuration }: typeof import('./maintenance
 const recoveryFs: typeof import('../scripts/lib/maintenance-recovery-fs') = require('../scripts/lib/maintenance-recovery-fs');
 const { acquireMaintenanceLease, maintenanceReadToken, assertMaintenanceReadToken }: typeof import('../scripts/lib/maintenance-lease') = require('../scripts/lib/maintenance-lease');
 const { prepareMaintenanceTransaction, commitMaintenanceTransaction, rollbackMaintenanceTransaction }: typeof import('../scripts/lib/maintenance-transaction') = require('../scripts/lib/maintenance-transaction');
-const writeFileAtomic = (file, bytes) => recoveryFs.atomicWrite(file, bytes, true);
-const writeJson = (file, value) => writeFileAtomic(file, JSON.stringify(value, null, 2) + '\n');
+const writeFileAtomic = (file: any, bytes: any) => recoveryFs.atomicWrite(file, bytes, true);
+const writeJson = (file: any, value: any) => writeFileAtomic(file, JSON.stringify(value, null, 2) + '\n');
 
-function conflictSummary(current, incoming, baseVersion, currentVersion) {
-  const old = new Map(current.map(scene => [scene.id, scene]));
-  const next = new Set(incoming.map(scene => scene.id));
+function conflictSummary(current: any, incoming: any, baseVersion: any, currentVersion: any) {
+  const old = new Map(current.map((scene: any) => [scene.id, scene]));
+  const next = new Set(incoming.map((scene: any) => scene.id));
   return {
     baseVersion, currentVersion,
-    serverOnlyIds: current.filter(scene => !next.has(scene.id)).map(scene => scene.id),
-    clientNewIds: incoming.filter(scene => !old.has(scene.id)).map(scene => scene.id),
-    changedIds: incoming.filter(scene => old.has(scene.id) && JSON.stringify(old.get(scene.id)) !== JSON.stringify(scene)).map(scene => scene.id),
+    serverOnlyIds: current.filter((scene: any) => !next.has(scene.id)).map((scene: any) => scene.id),
+    clientNewIds: incoming.filter((scene: any) => !old.has(scene.id)).map((scene: any) => scene.id),
+    changedIds: incoming.filter((scene: any) => old.has(scene.id) && JSON.stringify(old.get(scene.id)) !== JSON.stringify(scene)).map((scene: any) => scene.id),
   };
 }
 
 function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged, unavailable,
-  maintenanceSnapshot, runMaintenanceChecks, runNodeScript, syncVersion, timeoutMs }) {
+  maintenanceSnapshot, runMaintenanceChecks, runNodeScript, syncVersion, timeoutMs }: any) {
   const leaseOptions = { rootDir: cfg.ROOT_DIR, runtimeRoot: cfg.RUNTIME_ROOT, showcaseRoot: cfg.SCENE_SHOWCASE_DIR };
 
-  async function save(req, res, mode) {
+  async function save(req: any, res: any, mode: any) {
     if (packaged(cfg)) return unavailable(req, res);
     return sceneWrite.withSceneWriteLock(async () => {
       let snapshot;
@@ -58,7 +58,7 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
         validateCollection(scenes, '场景', MAX_SCENES);
         if (!scenes.length) throw new Error('场景库不能为空');
         if (blueprints !== undefined) validateCollection(blueprints, '蓝图', MAX_BLUEPRINTS);
-        const ids = new Set(scenes.map(scene => scene.id));
+        const ids = new Set(scenes.map((scene: any) => scene.id));
         const retiredIds = sceneWrite.readRetiredSceneIds(path.join(cfg.ROOT_DIR, 'data'));
         for (const scene of scenes) if (retiredIds.has(scene.id)) throw new Error(scene.id + ' 已退役，不能复用已退役身份');
         products.protectPinnedScenes(cfg.ROOT_DIR, state.snapshot.scenes, scenes);
@@ -71,9 +71,9 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
         if (mode === 'preview') return res.json({ ok: true, ...previewSceneChanges(state.snapshot, incoming, state.version) });
         lease = acquireMaintenanceLease(leaseOptions);
         if (state.version !== sceneContentVersion(cfg.ROOT_DIR)) throw Object.assign(new Error('获取保存锁后基线已变化，请重新读取'), { statusCode: 409, code: 'MAINTENANCE_CONFLICT' });
-        const removed = previous.scenes.filter(scene => !ids.has(scene.id)).map(scene => scene.id);
+        const removed = previous.scenes.filter((scene: any) => !ids.has(scene.id)).map((scene: any) => scene.id);
         snapshot = maintenanceSnapshot(removed);
-        const captured = new Set(snapshot.map(entry => entry.file));
+        const captured = new Set(snapshot.map((entry: any) => entry.file));
         for (const name of scenePlan.touchedFiles) {
           const file = path.join(sceneStore.shardsDir, name);
           if (!captured.has(file)) {
@@ -100,13 +100,13 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
         sceneWrite.retireRemovedScenes({
           incomingScenes: scenes, previousScenes: previous.scenes, rootDir: cfg.ROOT_DIR,
           showcaseDir: cfg.SCENE_SHOWCASE_DIR,
-          io: { readJson, writeJson, sanitizeCuration }, log: line => console.log(line),
+          io: { readJson, writeJson, sanitizeCuration }, log: (line: any) => console.log(line),
         });
         sceneWrite.cleanOrphanedSceneRefs({ rootDir: cfg.ROOT_DIR, io: { readJson, writeJson, sanitizeCuration } });
         await runMaintenanceChecks(lease);
         // Normalizers and curation cleanup can change products too. Refresh all companions
         // and DATA_VERSION before the content validator observes this transaction.
-        products.refreshCompressedProducts(cfg.ROOT_DIR, writeFileAtomic, snapshot.map(entry => entry.file));
+        products.refreshCompressedProducts(cfg.ROOT_DIR, writeFileAtomic, snapshot.map((entry: any) => entry.file));
         syncVersion(cfg.ROOT_DIR);
         if (prepared) {
           const result = await runNodeScript('scripts/maintenance/validate-content-contracts.js', [], timeoutMs, lease);
@@ -140,9 +140,9 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
   for (const [url, mode] of [
     ['/api/maintenance/scenes', 'import'], ['/api/maintenance/scenes/import', 'import'],
     ['/api/maintenance/scenes/changes', 'changes'], ['/api/maintenance/scenes/preview', 'preview'],
-  ]) router.post(url, localOnly, express.json({ limit: '20mb' }), (req, res) => save(req, res, mode));
+  ]) router.post(url, localOnly, express.json({ limit: '20mb' }), (req: any, res: any) => save(req, res, mode));
 
-  router.get('/api/maintenance/scenes-state', localOnly, async (req, res) => {
+  router.get('/api/maintenance/scenes-state', localOnly, async (req: any, res: any) => {
     if (packaged(cfg)) return unavailable(req, res);
     return sceneWrite.withSceneWriteLock(() => {
       try {

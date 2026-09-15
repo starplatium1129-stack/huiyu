@@ -9,7 +9,7 @@ async function main() {
   const [configFile, phase, action = 'install', releaseId = 'delta'] = process.argv.slice(2);
   const config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
   const options = { ...config, access: { isLocalStudioHost: () => true, isAuthorized: () => true },
-    onEvent: async (e: { phase: string; bytes: unknown; }) => {
+    onEvent: async (e: any) => {
       if (e.phase !== phase) return;
       process.send({ phase: e.phase, bytes: e.bytes });
       const interval = setInterval(() => {}, 1000);

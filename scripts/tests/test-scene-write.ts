@@ -26,7 +26,7 @@ const shardsDir = path.join(dataDir, 'scenes');
 const sceneWrite: typeof import('../../scripts/lib/scene-write') = require('../../scripts/lib/scene-write');
 const store: typeof import('../../scripts/lib/scene-store') = require('../../scripts/lib/scene-store');
 
-function scene(id: string, char: string, extra: { category?: string; title?: string; }|undefined) {
+function scene(id: string, char: string, extra?: { category?: string; title?: string; }|undefined) {
   return Object.assign({ id, title: '场景 ' + id, char, category: '日常', rating: 'All' }, extra || {});
 }
 
@@ -257,7 +257,7 @@ test('applySceneChanges 新增追加到组内最后批次，不满批不新开�
   const changes = sceneWrite.applySceneChanges(incoming, previous, { retiredIds: new Set() });
   assert.deepEqual(changes.addedIds, ['sc005']);
   assert.deepEqual(changes.touchedFiles, ['nene-core.2.json']);
-  assert.deepEqual(readShard('nene-core.2.json').map((s: { id: unknown; }) => s.id), ['sc004', 'sc005']);
+  assert.deepEqual(readShard('nene-core.2.json').map((s: any) => s.id), ['sc004', 'sc005']);
 });
 
 test('applySceneChanges 批次满员新开下一批次', () => {
@@ -268,8 +268,8 @@ test('applySceneChanges 批次满员新开下一批次', () => {
   // nene-core.2.json 到 4 条超出 batchSize=3 → 新开 .3.json
   const changes = sceneWrite.applySceneChanges(incoming, previous, { retiredIds: new Set() });
   assert.deepEqual(changes.touchedFiles, ['nene-core.2.json', 'nene-core.3.json']);
-  assert.deepEqual(readShard('nene-core.2.json').map((s: { id: unknown; }) => s.id), ['sc004', 'sc005', 'sc006']);
-  assert.deepEqual(readShard('nene-core.3.json').map((s: { id: unknown; }) => s.id), ['sc007']);
+  assert.deepEqual(readShard('nene-core.2.json').map((s: any) => s.id), ['sc004', 'sc005', 'sc006']);
+  assert.deepEqual(readShard('nene-core.3.json').map((s: any) => s.id), ['sc007']);
 });
 
 test('applySceneChanges 单文件组满批升级为批次形态', () => {
@@ -281,8 +281,8 @@ test('applySceneChanges 单文件组满批升级为批次形态', () => {
   const changes = sceneWrite.applySceneChanges(incoming, previous, { retiredIds: new Set() });
   assert.equal(changes.addedIds.length, 3);
   assert.equal(fs.existsSync(path.join(shardsDir, 'shared.json')), false, '单文件必须被 .1 取代');
-  assert.deepEqual(readShard('shared.1.json').map((s: { id: unknown; }) => s.id), ['sc020', 'sc021', 'sc022']);
-  assert.deepEqual(readShard('shared.2.json').map((s: { id: unknown; }) => s.id), ['sc023']);
+  assert.deepEqual(readShard('shared.1.json').map((s: any) => s.id), ['sc020', 'sc021', 'sc022']);
+  assert.deepEqual(readShard('shared.2.json').map((s: any) => s.id), ['sc023']);
   // 升级后的目录仍是完整可读数据
   assert.equal(loadPrevious().scenes.length, incoming.length);
 });
@@ -294,7 +294,7 @@ test('applySceneChanges 下架清空批次保留空文件，后续分片不被�
   const changes = sceneWrite.applySceneChanges(incoming, previous, { retiredIds: new Set() });
   assert.deepEqual(changes.removedIds, ['sc001', 'sc002', 'sc003']);
   assert.deepEqual(readShard('nene-core.1.json'), [], '清空批次保留为 []');
-  assert.deepEqual(readShard('nene-core.2.json').map((s: { id: unknown; }) => s.id), ['sc004']);
+  assert.deepEqual(readShard('nene-core.2.json').map((s: any) => s.id), ['sc004']);
   assert.equal(loadPrevious().scenes.length, incoming.length);
 });
 
@@ -359,7 +359,7 @@ test('cleanOrphanedSceneRefs 清理失效引用且保留无关设置', () => {
     io: {
       readJson: (source: PathOrFileDescriptor) => JSON.parse(fs.readFileSync(source, 'utf8')),
       writeJson: (source: PathOrFileDescriptor, data: unknown) => fs.writeFileSync(source, JSON.stringify(data, null, 2) + '\n'),
-      sanitizeCuration: (value: unknown, activeIds: { has: (arg0: string) => unknown; }) => {
+      sanitizeCuration: (value: unknown, activeIds: any) => {
         const curation = JSON.parse(JSON.stringify(value));
         curation.curatedSceneIds = curation.curatedSceneIds.filter((id: string) => activeIds.has(id));
         curation.recommendationReasons = Object.fromEntries(Object.entries(curation.recommendationReasons)

@@ -7,10 +7,10 @@ const path: typeof import('node:path') = require('node:path');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const { reportOwnership }: typeof import('../maintenance/report-content-ownership') = require('../maintenance/report-content-ownership');
 const repo = path.resolve(__dirname, '../..');
-function fixture(t) {
+function fixture(t: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ownership-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const put = (file, value) => { const p = path.join(root, file); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, typeof value === 'string' ? value : JSON.stringify(value)); };
+  const put = (file: any, value: any) => { const p = path.join(root, file); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, typeof value === 'string' ? value : JSON.stringify(value)); };
   put('data/characters.json', [{ id: 'a', name: 'A' }]);
   put('scripts/lib/manual-scene-ratings.js', "module.exports = { sc001: 'All' };");
   put('scripts/maintenance/classify-scene-ratings.js', '// fixture entry');
@@ -29,13 +29,13 @@ function fixture(t) {
   put('src/assets/css/director/tokens.css', '.pb { --character-accent: red; }');
   return { root, put };
 }
-function snapshot(root) {
+function snapshot(root: any) {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(root, e.name);
     return e.isDirectory() ? snapshot(p) : [[p, fs.readFileSync(p).toString('base64')]];
   });
 }
-function cli(root, args = [], workflow = false) {
+function cli(root: any, args = [], workflow = false) {
   return spawnSync(process.execPath, [path.join(repo, workflow ? 'scripts/workflow.js' : 'scripts/maintenance/report-content-ownership.js'), ...(workflow ? ['audit:ownership'] : []), '--root', root, ...args], { encoding: 'utf8' });
 }
 test('all domains report real sources/products and batch ownership without accepting quality', (t) => {
@@ -54,7 +54,7 @@ test('scene-ratings records manual ownership without accepting review and reject
   const direct = cli(root, ['--domain', 'scene-ratings', '--json']);
   assert.equal(direct.status, 0);
   assert.deepEqual(JSON.parse(direct.stdout), JSON.parse(cli(root, ['--domain', 'scene-ratings', '--json'], true).stdout));
-  assert.ok(JSON.parse(direct.stdout).domains[0].entries.every((e) => e.quality === 'unverified'));
+  assert.ok(JSON.parse(direct.stdout).domains[0].entries.every((e: any) => e.quality === 'unverified'));
   assert.deepEqual(snapshot(root), before);
   for (const raw of ["module.exports = { sc001: 'Unknown' };", "module.exports = { sc001: 'All', sc001: 'R15' };", 'module.exports = { sc001: };']) {
     put('scripts/lib/manual-scene-ratings.js', raw);
@@ -67,23 +67,23 @@ test('updated ownership notes surface key responsibilities in JSON and text outp
   const { root } = fixture(t);
   const report = reportOwnership({ root });
   const byDomain = Object.fromEntries(report.domains.map((d) => [d.domain, d]));
-  assert.ok(byDomain.characters.readers.some((r) => r.includes('characterProfiles.ts')));
-  assert.ok(byDomain.characters.readers.some((r) => r.includes('usePromptAssembly.ts') && r.includes('traits')));
+  assert.ok(byDomain.characters.readers.some((r: any) => r.includes('characterProfiles.ts')));
+  assert.ok(byDomain.characters.readers.some((r: any) => r.includes('usePromptAssembly.ts') && r.includes('traits')));
   assert.ok(byDomain.characters.fields.includes('traits 另由提示词组装消费'));
-  assert.ok(byDomain.characters.readers.some((r) => r.includes('report-content-coverage.js') && r.includes('accent_color')));
-  assert.ok(byDomain.characters.writers.some((w) => w.includes('cleanOrphanedSceneRefs')));
+  assert.ok(byDomain.characters.readers.some((r: any) => r.includes('report-content-coverage.js') && r.includes('accent_color')));
+  assert.ok(byDomain.characters.writers.some((w: any) => w.includes('cleanOrphanedSceneRefs')));
   assert.ok(byDomain.characters.boundary.includes('不代表详情页展示'));
-  assert.ok(byDomain.popular.readers.some((r) => r.includes('parseOutfit')));
-  assert.ok(byDomain.popular.readers.some((r) => r.includes('loadPopularShards') && r.includes('build 与启动自愈')));
+  assert.ok(byDomain.popular.readers.some((r: any) => r.includes('parseOutfit')));
+  assert.ok(byDomain.popular.readers.some((r: any) => r.includes('loadPopularShards') && r.includes('build 与启动自愈')));
   assert.ok(byDomain.popular.boundary.includes('isDefault'));
-  for (const key of ['blueprints:build', 'blueprints:import', 'apply-scene-patch.js']) assert.ok(byDomain.blueprints.writers.some((w) => w.includes(key)));
-  assert.ok(byDomain.blueprints.writers.some((w) => w.includes('blueprint-write.js') && w.includes('分片/manifest/聚合')));
+  for (const key of ['blueprints:build', 'blueprints:import', 'apply-scene-patch.js']) assert.ok(byDomain.blueprints.writers.some((w: any) => w.includes(key)));
+  assert.ok(byDomain.blueprints.writers.some((w: any) => w.includes('blueprint-write.js') && w.includes('分片/manifest/聚合')));
   assert.ok(byDomain.blueprints.boundary.includes('重启自愈'));
-  assert.ok(byDomain.references.writers.some((w) => w.includes('合并写入')));
-  assert.ok(byDomain.references.writers.some((w) => w.includes('双写')));
+  assert.ok(byDomain.references.writers.some((w: any) => w.includes('合并写入')));
+  assert.ok(byDomain.references.writers.some((w: any) => w.includes('双写')));
   assert.ok(byDomain.references.boundary.includes('idx===0') && byDomain.references.boundary.includes('首套'));
   assert.ok(byDomain.references.boundary.includes('机位'));
-  assert.ok(byDomain.themes.readers.some((r) => r.includes('--character-')));
+  assert.ok(byDomain.themes.readers.some((r: any) => r.includes('--character-')));
   assert.ok(byDomain.themes.boundary.includes('accent_color'));
   assert.ok(report.scope.includes('不声称穷尽'));
   const text = cli(root, ['--domain', 'characters']).stdout;

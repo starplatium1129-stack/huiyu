@@ -32,14 +32,14 @@ const MARIN = 'My Dress-Up Darling';
 const MARIN_FILE = 'my-dress-up-darling.json';
 
 let caseSeq = 0;
-function makeRoot(t) {
+function makeRoot(t: any) {
   const root = path.join(BASE_ROOT, 'case-' + (++caseSeq));
   fs.mkdirSync(root, { recursive: true });
   if (t) t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   return root;
 }
 
-function bp(id, characterId, extra) {
+function bp(id: any, characterId: any, extra?: any) {
   return Object.assign({
     id, title: id, characterId, category: '测试',
     promptTokens: ['tag_' + id], negativeTokens: [], promptProse: id + ' 的提示词正文。',
@@ -65,18 +65,18 @@ function baseState() {
   return { manifest, shards, target: [...frierenGroup, ...fateGroup], mapping };
 }
 
-function pathsOf(root) {
+function pathsOf(root: any) {
   const dataDir = path.join(root, 'data');
   const shardsDir = path.join(dataDir, 'blueprints');
   return {
     dataDir, shardsDir,
     manifest: path.join(shardsDir, 'manifest.json'),
     aggregate: path.join(dataDir, 'scene-blueprints.json'),
-    shard: (file) => path.join(shardsDir, file),
+    shard: (file: any) => path.join(shardsDir, file),
   };
 }
 
-function setupBlueprints(root, state, overrides) {
+function setupBlueprints(root: any, state: any, overrides?: any) {
   const options = overrides || {};
   const p = pathsOf(root);
   fs.mkdirSync(p.shardsDir, { recursive: true });
@@ -87,13 +87,13 @@ function setupBlueprints(root, state, overrides) {
     fs.writeFileSync(p.shard(file), text);
   }
   const aggregateText = options.aggregateText !== undefined ? options.aggregateText
-    : jsonText({ version: 2, blueprints: state.manifest.files.flatMap((e) => state.shards[e.file].blueprints) });
+    : jsonText({ version: 2, blueprints: state.manifest.files.flatMap((e: any) => state.shards[e.file].blueprints) });
   fs.writeFileSync(p.aggregate, aggregateText);
   return p;
 }
 
 /** 修改 + 新增 + 删除 的目标：frieren_1 改标题、fate 整片下架、marin 新增。 */
-function mixedTarget(state) {
+function mixedTarget(state: any) {
   return [
     { ...state.target[0], title: '新标题' },
     state.target[1],
@@ -101,7 +101,7 @@ function mixedTarget(state) {
   ];
 }
 
-function shardTextInputs(state, overrides) {
+function shardTextInputs(state: any, overrides?: any) {
   const out = {};
   for (const [file, data] of Object.entries(state.shards)) {
     out[file] = {
@@ -112,34 +112,34 @@ function shardTextInputs(state, overrides) {
   return out;
 }
 
-function recordingIo(log) {
+function recordingIo(log: any) {
   return {
-    realpathSync(p) { log.push(['realpathSync', String(p)]); return fs.realpathSync(p); },
-    lstatSync(p) { log.push(['lstatSync', String(p)]); return fs.lstatSync(p); },
-    readFileSync(p) { log.push(['readFileSync', String(p)]); return fs.readFileSync(p); },
-    unlinkSync(p) { log.push(['unlinkSync', String(p)]); return fs.unlinkSync(p); },
+    realpathSync(p: any) { log.push(['realpathSync', String(p)]); return fs.realpathSync(p); },
+    lstatSync(p: any) { log.push(['lstatSync', String(p)]); return fs.lstatSync(p); },
+    readFileSync(p: any) { log.push(['readFileSync', String(p)]); return fs.readFileSync(p); },
+    unlinkSync(p: any) { log.push(['unlinkSync', String(p)]); return fs.unlinkSync(p); },
   };
 }
 
-function recordingWrite(log, impl) {
-  return (source, content) => {
+function recordingWrite(log: any, impl?: any) {
+  return (source: any, content: any) => {
     log.push(['writeFileAtomic', String(source)]);
     return (impl || defaultWriteFileAtomic)(source, content);
   };
 }
 
-function assertAllOpsInside(log, root) {
+function assertAllOpsInside(log: any, root: any) {
   for (const [, p] of log) {
     assert.ok(p === root || p.startsWith(root + path.sep), 'IO 越出夹具根: ' + p);
   }
 }
 
-function assertNoWrites(log) {
-  assert.deepEqual(log.filter(([op]) => op === 'writeFileAtomic' || op === 'unlinkSync'), []);
+function assertNoWrites(log: any) {
+  assert.deepEqual(log.filter(([op]: any) => op === 'writeFileAtomic' || op === 'unlinkSync'), []);
 }
 
-function pathsOfEntries(entries) {
-  return entries.map((entry) => [path.basename(entry.file), entry.exists]);
+function pathsOfEntries(entries: any) {
+  return entries.map((entry: any) => [path.basename(entry.file), entry.exists]);
 }
 
 test('prepare 只读：零写入零删除、不读未登记分片与其他根、与纯规划器对拍、条目结构正确', (t) => {
@@ -153,14 +153,14 @@ test('prepare 只读：零写入零删除、不读未登记分片与其他根、
   fs.writeFileSync(decoy, 'do not touch');
 
   const target = mixedTarget(state);
-  const log = [];
+  const log: any = [];
   const prepared = prepareBlueprintWrite({
     rootDir: root, blueprints: target, franchiseByCharacter: state.mapping, io: recordingIo(log),
   });
 
   assertNoWrites(log);
   assertAllOpsInside(log, root);
-  assert.ok(!log.some(([, file]) => file === orphanPath), '未登记分片不得被读取');
+  assert.ok(!log.some(([, file]: any) => file === orphanPath), '未登记分片不得被读取');
   assert.equal(fs.existsSync(orphanPath), true, '未登记分片保持原样');
   assert.equal(fs.readFileSync(decoy, 'utf8'), 'do not touch', '其他根不被触碰');
 
@@ -172,7 +172,7 @@ test('prepare 只读：零写入零删除、不读未登记分片与其他根、
     [FATE_FILE, true], [FRIEREN_FILE, true], ['manifest.json', true],
     [MARIN_FILE, false], ['scene-blueprints.json', true],
   ]);
-  const frierenEntry = prepared.snapshotEntries.find((e) => e.file === p.shard(FRIEREN_FILE));
+  const frierenEntry = prepared.snapshotEntries.find((e: any) => e.file === p.shard(FRIEREN_FILE));
   assert.ok(frierenEntry.content.equals(fs.readFileSync(p.shard(FRIEREN_FILE))));
   assert.equal(prepared.summary.writes, 2);
   assert.equal(prepared.summary.deletes, 1);
@@ -195,7 +195,7 @@ test('端到端修改/新增/删除：应用后真实 blueprint-store 聚合一�
   const p = setupBlueprints(root, state);
   const target = mixedTarget(state);
   const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: target, franchiseByCharacter: state.mapping });
-  const log = [];
+  const log: any = [];
   const result = applyBlueprintWrite(prepared, {
     writeFileAtomic: recordingWrite(log), io: recordingIo(log),
   });
@@ -220,7 +220,7 @@ test('端到端修改/新增/删除：应用后真实 blueprint-store 聚合一�
   assert.deepEqual(loaded.blueprints.map((b) => b.id), ['frieren_1', 'frieren_2', 'marin_1']);
   assert.equal(store.aggregateIsCurrent(), true, '真实读取器确认聚合与分片合并字节一致');
 
-  const writeLog2 = [];
+  const writeLog2: any = [];
   const prepared2 = prepareBlueprintWrite({ rootDir: root, blueprints: target, franchiseByCharacter: state.mapping });
   const result2 = applyBlueprintWrite(prepared2, { writeFileAtomic: recordingWrite(writeLog2), io: recordingIo(writeLog2) });
   assert.deepEqual(result2.written, []);
@@ -237,13 +237,13 @@ test('未变分片原始字节保留：非规范格式不因格式差异重写',
   const p = setupBlueprints(root, state, { shardText: { [FATE_FILE]: reformatted } });
   const target = [{ ...state.target[0], title: '只改frieren' }, state.target[1], state.target[2]];
   const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: target, franchiseByCharacter: state.mapping });
-  assert.deepEqual(prepared.plan.unchanged.map((u) => u.file), [FATE_FILE]);
+  assert.deepEqual(prepared.plan.unchanged.map((u: any) => u.file), [FATE_FILE]);
   const before = fs.readFileSync(p.shard(FATE_FILE));
-  const log = [];
+  const log: any = [];
   applyBlueprintWrite(prepared, { writeFileAtomic: recordingWrite(log), io: recordingIo(log) });
   assert.equal(fs.readFileSync(p.shard(FATE_FILE)).equals(before), true, 'unchanged 分片字节不变');
-  assert.ok(log.some(([op, file]) => op === 'readFileSync' && file === p.shard(FATE_FILE)), 'unchanged 源也复核过期基线');
-  assert.ok(!log.some(([op, file]) => ['writeFileAtomic', 'unlinkSync'].includes(op) && file === p.shard(FATE_FILE)));
+  assert.ok(log.some(([op, file]: any) => op === 'readFileSync' && file === p.shard(FATE_FILE)), 'unchanged 源也复核过期基线');
+  assert.ok(!log.some(([op, file]: any) => ['writeFileAtomic', 'unlinkSync'].includes(op) && file === p.shard(FATE_FILE)));
 });
 
 test('仅 manifest 计数修正：只写 manifest，分片与聚合零写', (t) => {
@@ -256,7 +256,7 @@ test('仅 manifest 计数修正：只写 manifest，分片与聚合零写', (t) 
   const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: state.target, franchiseByCharacter: state.mapping });
   assert.equal(prepared.summary.dirty, true);
   assert.equal(prepared.summary.writes, 0);
-  const log = [];
+  const log: any = [];
   const result = applyBlueprintWrite(prepared, { writeFileAtomic: recordingWrite(log), io: recordingIo(log) });
   assert.equal(result.manifestWritten, true);
   assert.equal(result.aggregateWritten, false, '聚合字节已与计划一致，不重写');
@@ -266,7 +266,7 @@ test('仅 manifest 计数修正：只写 manifest，分片与聚合零写', (t) 
   }
   assert.ok(fs.readFileSync(p.aggregate).equals(aggregateBefore));
   assert.equal(JSON.parse(fs.readFileSync(p.manifest, 'utf8')).files[0].count, 2);
-  assert.deepEqual(log.filter(([op]) => op === 'writeFileAtomic').length, 1, '只发生一次写入（manifest）');
+  assert.deepEqual(log.filter(([op]: any) => op === 'writeFileAtomic').length, 1, '只发生一次写入（manifest）');
 });
 
 test('聚合字节漂移（内容同、格式异）被重写为计划字节；其余零写', (t) => {
@@ -275,32 +275,32 @@ test('聚合字节漂移（内容同、格式异）被重写为计划字节；�
   const drifted = JSON.stringify({ version: 2, blueprints: state.target });
   const p = setupBlueprints(root, state, { aggregateText: drifted });
   const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: state.target, franchiseByCharacter: state.mapping });
-  const log = [];
+  const log: any = [];
   const result = applyBlueprintWrite(prepared, { writeFileAtomic: recordingWrite(log), io: recordingIo(log) });
   assert.equal(result.aggregateWritten, true);
   assert.deepEqual(result.written, [p.aggregate]);
   assert.equal(result.manifestWritten, false);
   assert.equal(fs.readFileSync(p.aggregate, 'utf8'), prepared.plan.aggregate.text);
-  assert.deepEqual(log.filter(([op]) => op === 'writeFileAtomic').map(([, file]) => path.basename(file)),
+  assert.deepEqual(log.filter(([op]: any) => op === 'writeFileAtomic').map(([, file]: any) => path.basename(file)),
     ['scene-blueprints.json']);
 });
 
 test('过期计划：源分片、manifest 或聚合准备后漂移 → 零写入拒绝', (t) => {
-  const make = (t) => {
+  const make = (t: any) => {
     const root = makeRoot(t);
     const state = baseState();
     const p = setupBlueprints(root, state);
     const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: mixedTarget(state), franchiseByCharacter: state.mapping });
     return { root, state, p, prepared };
   };
-  const before = (p) => ({
+  const before = (p: any) => ({
     manifest: fs.readFileSync(p.manifest), aggregate: fs.readFileSync(p.aggregate),
     frieren: fs.readFileSync(p.shard(FRIEREN_FILE)), fate: fs.readFileSync(p.shard(FATE_FILE)),
   });
 
   const caseA = make(t);
   fs.appendFileSync(caseA.p.shard(FRIEREN_FILE), ' ');
-  const logA = [];
+  const logA: any = [];
   assert.throws(() => applyBlueprintWrite(caseA.prepared, {
     writeFileAtomic: recordingWrite(logA), io: recordingIo(logA),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'stale');
@@ -312,7 +312,7 @@ test('过期计划：源分片、manifest 或聚合准备后漂移 → 零写入
   const staleManifest = JSON.parse(fs.readFileSync(caseB.p.manifest, 'utf8'));
   staleManifest.note = '准备后被人改过';
   fs.writeFileSync(caseB.p.manifest, jsonText(staleManifest));
-  const logB = [];
+  const logB: any = [];
   assert.throws(() => applyBlueprintWrite(caseB.prepared, {
     writeFileAtomic: recordingWrite(logB), io: recordingIo(logB),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'stale');
@@ -320,7 +320,7 @@ test('过期计划：源分片、manifest 或聚合准备后漂移 → 零写入
 
   const caseC = make(t);
   fs.unlinkSync(caseC.p.aggregate);
-  const logC = [];
+  const logC: any = [];
   assert.throws(() => applyBlueprintWrite(caseC.prepared, {
     writeFileAtomic: recordingWrite(logC), io: recordingIo(logC),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'stale');
@@ -345,7 +345,7 @@ test('目标占用：准备时与准备后都拒绝，绝不覆盖未登记文�
     rootDir: rootB, blueprints: mixedTarget(state), franchiseByCharacter: state.mapping,
   });
   fs.writeFileSync(pB.shard(MARIN_FILE), '{"occupied":true}');
-  const log = [];
+  const log: any = [];
   assert.throws(() => applyBlueprintWrite(prepared, {
     writeFileAtomic: recordingWrite(log), io: recordingIo(log),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'occupied');
@@ -361,11 +361,11 @@ test('junction/符号链接逃逸：分片目录、分片文件、聚合任一�
   const rootA = makeRoot(t);
   fs.mkdirSync(path.join(rootA, 'data'), { recursive: true });
   fs.symlinkSync(pOut.shardsDir, path.join(rootA, 'data', 'blueprints'), 'junction');
-  const logA = [];
+  const logA: any = [];
   assert.throws(() => prepareBlueprintWrite({
     rootDir: rootA, blueprints: state.target, franchiseByCharacter: state.mapping, io: recordingIo(logA),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'boundary');
-  assert.ok(!logA.some(([, file]) => file.startsWith(outside)), '链接目标未被读取');
+  assert.ok(!logA.some(([, file]: any) => file.startsWith(outside)), '链接目标未被读取');
   assert.equal(fs.existsSync(pOut.manifest), true);
 
   // 文件级链接逃逸：本环境（非管理员/未开发者模式）无法创建文件符号链接（EPERM），
@@ -380,11 +380,11 @@ test('junction/符号链接逃逸：分片目录、分片文件、聚合任一�
   const pB = setupBlueprints(rootB, state);
   fs.unlinkSync(pB.shard(FRIEREN_FILE));
   fs.symlinkSync(targetB, pB.shard(FRIEREN_FILE), 'junction');
-  const logB = [];
+  const logB: any = [];
   assert.throws(() => prepareBlueprintWrite({
     rootDir: rootB, blueprints: state.target, franchiseByCharacter: state.mapping, io: recordingIo(logB),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'boundary');
-  assert.ok(!logB.some(([, file]) => file.startsWith(outsideB)), '链接目标未被读取');
+  assert.ok(!logB.some(([, file]: any) => file.startsWith(outsideB)), '链接目标未被读取');
   assert.equal(fs.readFileSync(decoyB, 'utf8'), 'secret');
 
   const outsideC = makeRoot(t);
@@ -396,11 +396,11 @@ test('junction/符号链接逃逸：分片目录、分片文件、聚合任一�
   const pC = setupBlueprints(rootC, state);
   fs.unlinkSync(pC.aggregate);
   fs.symlinkSync(targetC, pC.aggregate, 'junction');
-  const logC = [];
+  const logC: any = [];
   assert.throws(() => prepareBlueprintWrite({
     rootDir: rootC, blueprints: state.target, franchiseByCharacter: state.mapping, io: recordingIo(logC),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'boundary');
-  assert.ok(!logC.some(([, file]) => file.startsWith(outsideC)), '聚合链接目标未被读取');
+  assert.ok(!logC.some(([, file]: any) => file.startsWith(outsideC)), '聚合链接目标未被读取');
   assert.equal(fs.readFileSync(decoyC, 'utf8'), 'secret');
 });
 
@@ -416,7 +416,7 @@ test('准备后篡改：冻结对象不可变；伪造 prepared 重验路径与�
 
   const forgedPlan = JSON.parse(JSON.stringify(prepared.plan));
   forgedPlan.writes[0].file = '../../evil.json';
-  const log = [];
+  const log: any = [];
   assert.throws(() => applyBlueprintWrite({ ...prepared, plan: forgedPlan }, {
     writeFileAtomic: recordingWrite(log), io: recordingIo(log),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'path-validation');
@@ -448,7 +448,7 @@ test('写入/删除阶段故障逐个向上传递：注入第 k 个写入失败�
     const { p, prepared } = build();
     let calls = 0;
     assert.throws(() => applyBlueprintWrite(prepared, {
-      writeFileAtomic: (source, content) => {
+      writeFileAtomic: (source: any, content: any) => {
         calls += 1;
         if (calls === k) throw new Error('注入写入故障 #' + k);
         return defaultWriteFileAtomic(source, content);
@@ -466,7 +466,7 @@ test('写入/删除阶段故障逐个向上传递：注入第 k 个写入失败�
   }
 
   const del = build();
-  const logDel = [];
+  const logDel: any = [];
   const ioFail = recordingIo(logDel);
   ioFail.unlinkSync = (p) => { logDel.push(['unlinkSync', String(p)]); throw new Error('注入删除故障'); };
   assert.throws(() => applyBlueprintWrite(del.prepared, {
@@ -478,18 +478,18 @@ test('写入/删除阶段故障逐个向上传递：注入第 k 个写入失败�
 
   const lie = build();
   assert.throws(() => applyBlueprintWrite(lie.prepared, {
-    writeFileAtomic: (source, content) => defaultWriteFileAtomic(source, content.slice(0, Math.max(1, content.length - 5))),
+    writeFileAtomic: (source: any, content: any) => defaultWriteFileAtomic(source, content.slice(0, Math.max(1, content.length - 5))),
   }), (error) => error instanceof BlueprintWriteError && error.code === 'readback', '写坏字节的适配器在读回核验被拒');
 });
 
-function snapshotPaths(paths) {
-  return paths.map((file) => fs.existsSync(file)
+function snapshotPaths(paths: any) {
+  return paths.map((file: any) => fs.existsSync(file)
     ? { file, exists: true, content: fs.readFileSync(file) }
     : { file, exists: false, content: null });
 }
 
 /** 与 routes/maintenance.js restoreSnapshot 相同语义的测试内副本。 */
-function restoreSnapshot(entries, writeFileAtomic) {
+function restoreSnapshot(entries: any, writeFileAtomic: any) {
   for (const entry of entries) {
     if (entry.exists) writeFileAtomic(entry.file, entry.content);
     else if (fs.existsSync(entry.file)) fs.unlinkSync(entry.file);
@@ -502,7 +502,7 @@ test('统一快照恢复：适配器成功、后续校验失败后按快照恢�
   const p = setupBlueprints(root, state);
   const snapshotList = [p.manifest, p.aggregate, p.shard(FRIEREN_FILE), p.shard(FATE_FILE), p.shard(MARIN_FILE)];
   const snapshot = snapshotPaths(snapshotList);
-  assert.deepEqual(snapshot.filter((e) => e.exists).map((e) => path.basename(e.file)),
+  assert.deepEqual(snapshot.filter((e: any) => e.exists).map((e: any) => path.basename(e.file)),
     ['manifest.json', 'scene-blueprints.json', FRIEREN_FILE, FATE_FILE]);
 
   const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: mixedTarget(state), franchiseByCharacter: state.mapping });
@@ -521,7 +521,7 @@ test('统一快照恢复：适配器成功、后续校验失败后按快照恢�
     }
   }
   const restoredState = JSON.parse(fs.readFileSync(p.aggregate, 'utf8'));
-  assert.deepEqual(restoredState.blueprints.map((b) => b.id), ['frieren_1', 'frieren_2', 'fate_1']);
+  assert.deepEqual(restoredState.blueprints.map((b: any) => b.id), ['frieren_1', 'frieren_2', 'fate_1']);
 });
 
 test('回滚注入失败必须如实报告失败，不得称恢复成功', (t) => {
@@ -574,9 +574,9 @@ test('根外与生产数据零触达：夹具期间环境根之外只读过 ENV_
   const root = makeRoot(t);
   const state = baseState();
   setupBlueprints(root, state);
-  const log = [];
+  const log: any = [];
   prepareBlueprintWrite({ rootDir: root, blueprints: mixedTarget(state), franchiseByCharacter: state.mapping, io: recordingIo(log) });
-  const log2 = [];
+  const log2: any = [];
   applyBlueprintWrite(prepareBlueprintWrite({ rootDir: root, blueprints: mixedTarget(state), franchiseByCharacter: state.mapping }), {
     writeFileAtomic: recordingWrite(log2), io: recordingIo(log2),
   });
@@ -603,7 +603,7 @@ test('快照条目兼容 routes/maintenance 约定：Buffer 内容可直接用�
   const backupDir = path.join(root, 'backup-sim');
   fs.mkdirSync(backupDir, { recursive: true });
   let index = 0;
-  for (const entry of prepared.snapshotEntries.filter((e) => e.exists)) {
+  for (const entry of prepared.snapshotEntries.filter((e: any) => e.exists)) {
     fs.writeFileSync(path.join(backupDir, String(++index).padStart(3, '0') + '-' + path.basename(entry.file)), entry.content);
   }
   assert.equal(fs.readFileSync(path.join(backupDir, '001-manifest.json')).equals(fs.readFileSync(p.manifest)), true);
@@ -614,9 +614,9 @@ test('unchanged source drift invalidates changed and no-op plans before any writ
     const root = makeRoot(t), state = baseState(), p = setupBlueprints(root, state);
     const target = state.target.map((item, i) => changed && i === 0 ? { ...item, title: '修改' } : item);
     const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: target, franchiseByCharacter: state.mapping });
-    assert.ok(prepared.plan.unchanged.some(item => item.file === FATE_FILE));
+    assert.ok(prepared.plan.unchanged.some((item: any) => item.file === FATE_FILE));
     fs.appendFileSync(p.shard(FATE_FILE), '\n');
-    const log = [];
+    const log: any = [];
     assert.throws(() => applyBlueprintWrite(prepared, { io: recordingIo(log), writeFileAtomic: recordingWrite(log) }),
       error => error.code === 'stale');
     assertNoWrites(log);
@@ -626,12 +626,12 @@ test('unchanged source drift invalidates changed and no-op plans before any writ
 test('public snapshot Buffer cannot replace the private baseline; forged copies do no IO', (t) => {
   const root = makeRoot(t), state = baseState(), p = setupBlueprints(root, state);
   const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: mixedTarget(state), franchiseByCharacter: state.mapping });
-  const entry = prepared.snapshotEntries.find(item => item.file === p.shard(FRIEREN_FILE));
+  const entry = prepared.snapshotEntries.find((item: any) => item.file === p.shard(FRIEREN_FILE));
   const original = Buffer.from(entry.content);
   const changed = Buffer.from(original); changed[0] = 32;
   fs.writeFileSync(entry.file, changed);
   changed.copy(entry.content);
-  const log = [];
+  const log: any = [];
   assert.throws(() => applyBlueprintWrite(prepared, { io: recordingIo(log), writeFileAtomic: recordingWrite(log) }),
     error => error.code === 'tampered');
   assert.deepEqual(log, [], 'tampered public buffer rejected before file access');
@@ -649,11 +649,11 @@ test('directory replaced by junction after prepare is rejected before reading it
   const moved = path.join(root, 'original-data');
   fs.renameSync(p.dataDir, moved);
   fs.symlinkSync(external.dataDir, p.dataDir, 'junction');
-  const log = [];
+  const log: any = [];
   assert.throws(() => applyBlueprintWrite(prepared, { io: recordingIo(log), writeFileAtomic: recordingWrite(log) }),
     error => error.code === 'boundary');
   assertNoWrites(log);
-  assert.ok(!log.some(([op]) => op === 'readFileSync'), 'junction parent rejected before file reads');
+  assert.ok(!log.some(([op]: any) => op === 'readFileSync'), 'junction parent rejected before file reads');
   fs.unlinkSync(p.dataDir);
   fs.renameSync(moved, p.dataDir);
 });
@@ -663,7 +663,7 @@ test('writer cannot mutate expected bytes to turn corrupt writes into successful
   const target = mixedTarget(state);
   const prepared = prepareBlueprintWrite({ rootDir: root, blueprints: target, franchiseByCharacter: state.mapping });
   assert.equal(Object.isFrozen(target[0]), false, 'prepare must not freeze caller-owned target objects');
-  assert.throws(() => applyBlueprintWrite(prepared, { writeFileAtomic: (file, bytes) => {
+  assert.throws(() => applyBlueprintWrite(prepared, { writeFileAtomic: (file: any, bytes: any) => {
     bytes[0] = 32;
     defaultWriteFileAtomic(file, bytes);
   } }), error => error.code === 'readback');

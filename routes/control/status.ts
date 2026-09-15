@@ -18,11 +18,11 @@ let diagnostics: typeof import('../../server/diagnostics') = require('../../serv
 let envelope: typeof import('../../server/http-envelope') = require('../../server/http-envelope');
 let upstreamHealth: typeof import('../../server/upstream-health') = require('../../server/upstream-health');
 
-function registerStatusRoutes(router, ctx: { config: { SD_HOST: unknown; DISABLE_TUNNEL: unknown; RUNTIME: { config: unknown; gatewayLog: unknown; tunnelLog: unknown; controlLog: unknown; }; COMFY_HOST: unknown; TTS_HOST: unknown; OLLAMA_HOST: unknown; PORT: string; CLOUDFLARED_PATH: unknown; VOICE_PROFILES: unknown; TOKEN: unknown; SCENE_SHOWCASE_DIR: unknown; }; refreshServiceStates: (arg0: boolean) => Promise<unknown>; gatewayRef: () => unknown; readJson: (arg0: unknown) => unknown; state: { modeBusy: unknown; operation: unknown; controlLogSeq: unknown; controlLogs: string[]; }; startTime: number; watchdog: { status: () => unknown; }; webBuildInfo: (arg0: unknown) => unknown; VOICE_START_SCRIPT: PathLike; VOICE_STOP_SCRIPT: PathLike; WEBUI_MANAGER_SCRIPT: PathLike; COMFY_MANAGER_SCRIPT: PathLike; }) {
+function registerStatusRoutes(router: any, ctx: any) {
   let localOnly = security.localOnly;
 
   // GET /api/sd-status — 导演台 / 出图页连接检测
-  router.get('/api/sd-status', function (req: unknown, res: { setHeader: (arg0: string,arg1: string) => void; json: (arg0: { online: boolean; host: unknown; models: unknown[]|never[]; samplers: unknown[]|never[]; schedulers: unknown[]|never[]; upscalers: unknown[]|never[]; checkpoint?: unknown; error: unknown; }) => void; }) {
+  router.get('/api/sd-status', function (req: unknown, res: any) {
     let host = ctx.config.SD_HOST;
     Promise.all([
       upstreamHealth.requestJson(host, '/sdapi/v1/sd-models', null, 5000).catch(function () { return null; }),
@@ -67,10 +67,10 @@ function registerStatusRoutes(router, ctx: { config: { SD_HOST: unknown; DISABLE
   });
 
   // GET /api/status
-  router.get('/api/status', localOnly, function(req: { query: { fresh: string; }; }, res: { setHeader: (arg0: string,arg1: string) => void; }) {
+  router.get('/api/status', localOnly, function(req: { query: { fresh: string; }; }, res: any) {
     // fresh=1 绕过 WebUI 状态缓存（面板的「重新检测」按钮）。
     // 这个参数以前解析了却从未被使用。
-    ctx.refreshServiceStates(req.query.fresh === '1').then(function(services: { sdOnline: unknown; comfyOnline: unknown; ttsOnline: unknown; ollamaOnline: unknown; ollamaModels: unknown; ollamaVram: unknown; webuiManaged: unknown; comfyManaged: unknown; }) {
+    ctx.refreshServiceStates(req.query.fresh === '1').then(function(services: any) {
       let gw = ctx.gatewayRef ? ctx.gatewayRef() : null;
       let tunnelUrl = gw ? gw.tunnelUrl : '';
       let tunnelStatus = tunnelUrl ? 'active' : (ctx.config.DISABLE_TUNNEL ? 'disabled' : 'waiting');
@@ -109,7 +109,7 @@ function registerStatusRoutes(router, ctx: { config: { SD_HOST: unknown; DISABLE
           comfy: fs.existsSync(ctx.COMFY_MANAGER_SCRIPT)
         }
       });
-    }).catch(function(e: { message: unknown; }) {
+    }).catch(function(e: any) {
       // 探测失败不是 500。三个同族接口（/api/sd-status、/api/tts-status、
       // /api/chat-status）都回 200 + online:false，只有这里回 500，
       // 于是前端 `if (!r.ok) return` 会把整块状态墙冻在上一次的值上，
@@ -142,7 +142,7 @@ function registerStatusRoutes(router, ctx: { config: { SD_HOST: unknown; DISABLE
   // GET /api/share-link — 含 token 的分享链接，仅本机可读。
   // 从 /api/status 拆出来：状态接口会被前端 3 秒轮询一次，
   // 把原始 token 放在里面等于任何拿到链接的人都能反过来提取 token。
-  router.get('/api/share-link', localOnly, function(req: unknown, res: { setHeader: (arg0: string,arg1: string) => void; }) {
+  router.get('/api/share-link', localOnly, function(req: unknown, res: any) {
     let gw = ctx.gatewayRef ? ctx.gatewayRef() : null;
     let tunnelUrl = gw ? gw.tunnelUrl : '';
     res.setHeader('Cache-Control', 'no-store');
@@ -152,7 +152,7 @@ function registerStatusRoutes(router, ctx: { config: { SD_HOST: unknown; DISABLE
   });
 
   // GET /api/diagnostics
-  router.get('/api/diagnostics', localOnly, function(req: unknown, res: { json: (arg0: { timestamp: string; uptime: number; port: unknown; sdHost: unknown; comfyHost: unknown; ttsHost: unknown; ollamaHost: unknown; sceneShowcaseDir: unknown; disableTunnel: boolean; runtimeConfig: unknown; token: { present: boolean; length: number; suffix: string; }; scripts: { voiceStart: unknown; voiceStop: unknown; webui: unknown; comfy: unknown; voiceStartExists: boolean; voiceStopExists: boolean; webuiExists: boolean; comfyExists: boolean; }; nodeVersion: string; platform: NodeJS.Platform; operation: unknown; }) => void; }) {
+  router.get('/api/diagnostics', localOnly, function(req: unknown, res: any) {
     let saved = ctx.readJson(ctx.config.RUNTIME.config);
     // 状态契约（刻意不走 envelope）：无 ok 字段，前端 controlApi.isDiagnostics 按
     // timestamp/port/... 直接校验。
@@ -185,7 +185,7 @@ function registerStatusRoutes(router, ctx: { config: { SD_HOST: unknown; DISABLE
   });
 
   // GET /api/logs — 仅本机；日志过 redactText，避免把隧道 URL / token 原样回出去
-  router.get('/api/logs', localOnly, function(req: { query: { since: string; }; }, res: { setHeader: (arg0: string,arg1: string) => void; json: (arg0: { logs: unknown; total: unknown; operation: unknown; }) => void; }) {
+  router.get('/api/logs', localOnly, function(req: { query: { since: string; }; }, res: any) {
     let since  = parseInt(req.query.since, 10) || 0;
     // 单调序号游标：缓冲首条序号 head = seq - length；客户端落后于裁剪头时从
     // 当前头开始给（被裁掉的行此前已显示过）。total 恒为最新 seq。

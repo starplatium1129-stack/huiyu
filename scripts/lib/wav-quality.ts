@@ -1,10 +1,10 @@
 'use strict';
 
-function readAscii(buffer, offset: number, length: number) {
+function readAscii(buffer: any, offset: number, length: number) {
   return buffer.toString('ascii', offset, offset + length);
 }
 
-function parsePcmWav(input) {
+function parsePcmWav(input: any) {
   var buffer = Buffer.isBuffer(input) ? input : Buffer.from(input || []);
   if (buffer.length < 44 || readAscii(buffer, 0, 4) !== 'RIFF' || readAscii(buffer, 8, 4) !== 'WAVE') {
     throw new Error('invalid RIFF/WAVE audio');
@@ -41,7 +41,7 @@ function parsePcmWav(input) {
   return Object.assign(format, { samples:samples, frames:Math.floor(sampleCount / format.channels) });
 }
 
-function edgeSilenceMs(samples, channels: number, sampleRate: number, fromStart: boolean) {
+function edgeSilenceMs(samples: any, channels: number, sampleRate: number, fromStart: boolean) {
   var silenceThreshold = 32768 * 0.01;
   var frames = Math.floor(samples.length / Math.max(1, channels));
   var silentFrames = 0;
@@ -61,7 +61,7 @@ function edgeSilenceMs(samples, channels: number, sampleRate: number, fromStart:
   return Math.round(silentFrames / sampleRate * 10000) / 10;
 }
 
-function analyzeWav(input) {
+function analyzeWav(input: any) {
   var wav = parsePcmWav(input);
   var sum = 0;
   var sumSquares = 0;
@@ -98,7 +98,7 @@ function analyzeWav(input) {
   };
 }
 
-function assertVoiceQuality(metrics: { durationMs: number; rms: number; clippingRatio: number; dcOffset: number; leadingSilenceMs: number; trailingSilenceMs: number; }, options) {
+function assertVoiceQuality(metrics: { durationMs: number; rms: number; clippingRatio: number; dcOffset: number; leadingSilenceMs: number; trailingSilenceMs: number; }, options?: any) {
   options = options || {};
   var minDurationMs = options.minDurationMs != null ? options.minDurationMs : 180;
   var minRms = options.minRms != null ? options.minRms : 0.005;
@@ -120,7 +120,7 @@ function assertVoiceQuality(metrics: { durationMs: number; rms: number; clipping
   return issues;
 }
 
-function compareToBaseline(metrics: { rms: number; durationMs: number; clippingRatio: number; }, baseline: { rms: number; durationMs: number; clippingRatio: number|null; }, options) {
+function compareToBaseline(metrics: { rms: number; durationMs: number; clippingRatio: number; }, baseline: { rms: number; durationMs: number; clippingRatio: number|null; }, options: any) {
   options = options || {};
   var issues = [];
   if (!baseline || typeof baseline !== 'object') return ['missing baseline metrics'];

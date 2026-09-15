@@ -18,7 +18,7 @@ const initial = () => ({ ok: true, configured: true, managementEnabled: true, bu
     { id: 'portraits', label: '角色立绘 · 秋日收藏', kind: 'full', source: 'offline', identity: 'b'.repeat(64), downloaded: false },
     { id: 'portraits-hd', label: '高清资源 · 秋日收藏', kind: 'delta', source: 'http', identity: 'c'.repeat(64), downloaded: false },
   ] })
-const task = (action, state = 'running') => ({ id: 'e58ce240-61d8-4a71-a496-bcbd4e74a7d5', action,
+const task = (action: any, state = 'running') => ({ id: 'e58ce240-61d8-4a71-a496-bcbd4e74a7d5', action,
   releaseId: 'portraits', resumeAction: null, state, phase: 'copy-progress', bytes: 30, total: 100,
   startedAt: 1, finishedAt: 0, error: null })
 let server, browser
@@ -47,8 +47,8 @@ try {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1 })
       const page = await context.newPage()
       let state = initial()
-      const errors = []
-      const writes = []
+      const errors: any = []
+      const writes: any = []
       page.on('pageerror', error => errors.push(error.message))
       await page.route('**/api/resources/**', route => {
         const request = route.request()
@@ -68,10 +68,10 @@ try {
       await page.getByRole('button', { name: '安装所选版本' }).waitFor()
       await page.screenshot({ path: path.join(output, `${theme}-${width}-ready.png`), fullPage: true })
       const check = await page.evaluate(() => {
-        const rgb = value => (value.match(/[\d.]+/g) || []).slice(0, 3).map(Number)
-        const luminance = values => values.map(v => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4 })
-          .reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0)
-        const contrast = (a, b) => { const x = luminance(a), y = luminance(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05) }
+        const rgb = (value: any) => (value.match(/[\d.]+/g) || []).slice(0, 3).map(Number)
+        const luminance = (values: any) => values.map((v: any) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4 })
+          .reduce((sum: any, value: any, index: any) => sum + value * [0.2126, 0.7152, 0.0722][index], 0)
+        const contrast = (a: any, b: any) => { const x = luminance(a), y = luminance(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05) }
         const failures = []
         let minimum = Infinity
         for (const element of document.querySelectorAll('.resource-library :is(p,span,h2,label,select,button,code,strong)')) {
@@ -104,7 +104,7 @@ try {
       await refresh.focus(); await refresh.press('Enter')
       await page.getByText('资源操作失败', { exact: true }).waitFor()
       await page.screenshot({ path: path.join(output, `${theme}-${width}-failure.png`), fullPage: true })
-      assert.deepEqual(writes.map(item => item.body.action || 'cancel'), ['import', 'cancel', 'recover'])
+      assert.deepEqual(writes.map((item: any) => item.body.action || 'cancel'), ['import', 'cancel', 'recover'])
       assert.deepEqual(errors, [])
       results.push({ theme, width, ...check, interactions: 'import/cancel/recover/keyboard refresh PASS' })
       await context.close()

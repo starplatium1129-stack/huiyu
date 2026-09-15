@@ -25,7 +25,7 @@ let IMAGE_INPUT_PREFIX = constants.IMAGE_INPUT_PREFIX;
 let BATCH_TTL_MS = constants.BATCH_TTL_MS;
 let BATCH_JOB_TTL_MS = constants.BATCH_JOB_TTL_MS;
 
-function createBatchService(config: unknown, videoService: { get: (arg0: unknown,arg1: unknown) => unknown; create: (arg0: unknown,arg1: unknown,arg2: { ttlMs: number; }) => unknown; submit: (arg0: unknown) => unknown; cancel: (arg0: unknown) => unknown; }, dependencies: { batchPollIntervalMs?: unknown; runFfmpeg?: unknown; }) {
+function createBatchService(config: unknown, videoService: any, dependencies: any) {
   dependencies = dependencies || {};
   let batches = new Map();
   let closed = false;
@@ -40,7 +40,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
     });
   };
 
-  function publicShot(shot: { index: unknown; status: unknown; input: { originalPrompt: unknown; dialogue: unknown; shotSize: unknown; camera: unknown; motion: unknown; duration: unknown; seed: unknown; }; attempts: unknown; error: unknown; errorCode: unknown; job: { result: unknown; id: string|number|boolean; }; }) {
+  function publicShot(shot: any) {
     return {
       index:shot.index,
       status:shot.status,
@@ -61,7 +61,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
     };
   }
 
-  function publicBatch(batch: { shots: { length: unknown; filter: (arg0: { (s: { status: string; }): boolean; (s: { status: string; }): boolean; }) => { (): unknown; new(): unknown; length: unknown; }; map: (arg0: (shot: unknown) => { index: unknown; status: unknown; prompt: unknown; dialogue: unknown; shotSize: unknown; camera: unknown; motion: unknown; duration: unknown; seed: unknown; attempts: unknown; error: unknown; code: unknown; resultAvailable: boolean; resultUrl: string|null; }) => unknown; }; id: string|number|boolean; status: unknown; modelId: unknown; aspectRatio: unknown; quality: unknown; steps: unknown; linkLastFrame: unknown; createdAt: unknown; concat: unknown; }) {
+  function publicBatch(batch: any) {
     let total = batch.shots.length;
     let succeeded = batch.shots.filter(function (s: { status: string; }) { return s.status === 'succeeded'; }).length;
     let failed = batch.shots.filter(function (s: { status: string; }) { return s.status === 'failed'; }).length;
@@ -87,7 +87,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
   }
 
   // 从上一镜结果 MP4 抽取尾帧 → 受控输入文件（供下一镜 FL2VA 尾帧 / I2VA 首帧）。
-  async function extractLastFrame(shot: { job: { result: { path: unknown; }; }; index: string; }) {
+  async function extractLastFrame(shot: any) {
     if (!shot.job || !shot.job.result || !shot.job.result.path) return null;
     let name = IMAGE_INPUT_PREFIX + crypto.randomBytes(8).toString('hex') + '.png';
     let root = media.imageInputRoot(config);
@@ -121,7 +121,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
   // linkLastFrame 衔接可能在提交前改写了 image/lastFrame（上一镜尾帧）：
   // 提示词必须按当前输入模式重新组装（官方参考图指令随 I2VA/FL2VA/L2VA 变化），
   // seed 显式传回保证确定性（重抽/重试不换随机种子）。
-  function recomposeInput(input: { originalPrompt: unknown; duration: unknown; camera: unknown; motion: unknown; seed: unknown; quality: unknown; image: unknown; lastFrame: unknown; references: unknown; dialogue: unknown; dialogueLang: unknown; shotSize: unknown; negative: unknown; steps: unknown; }, batch: { modelId: string; aspectRatio: unknown; adultEnabled: boolean; }, config: unknown) {
+  function recomposeInput(input: any, batch: any, config: unknown) {
     let body = {
       prompt:input.originalPrompt,
       modelId:batch.modelId,
@@ -144,12 +144,12 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
     return Object.assign({}, validation.validateInput(body, config));
   }
 
-  function scheduleWatch(batch: { status: string; watchTimer: NodeJS.Timeout|null; shots: unknown[]; owner: unknown; linkLastFrame: unknown; }) {
+  function scheduleWatch(batch: any) {
     if (closed || batch.status === 'cancelled' || batch.watchTimer) return;
     let tick = async function () {
       batch.watchTimer = null;
       if (closed || batch.status === 'cancelled') return;
-      let shot = batch.shots.find(function (s: { job: unknown; status: string; }) {
+      let shot = batch.shots.find(function (s: any) {
         return s.job && (s.status === 'queued' || s.status === 'running');
       });
       if (!shot) return;
@@ -196,7 +196,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
     if (batch.watchTimer.unref) batch.watchTimer.unref();
   }
 
-  async function kick(batch: { id?: string; owner: unknown; status: unknown; modelId?: unknown; aspectRatio?: unknown; quality?: unknown; steps?: unknown; linkLastFrame?: unknown; adultEnabled?: boolean; shots: unknown; createdAt?: number; concat?: null; watchTimer?: null; gcTimer?: null; kicking: unknown; }) {
+  async function kick(batch: any) {
     if (closed || batch.status === 'cancelled' || batch.kicking) return;
     let shot = batch.shots.find(function (s: { status: string; }) { return s.status === 'pending'; });
     if (!shot) {
@@ -226,7 +226,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
     }
   }
 
-  function removeBatch(batch: { id: unknown; owner?: unknown; status?: string; modelId?: unknown; aspectRatio?: unknown; quality?: unknown; steps?: unknown; linkLastFrame?: unknown; adultEnabled?: boolean; shots?: unknown; createdAt?: number; concat: unknown; watchTimer: unknown; gcTimer: unknown; kicking?: boolean; }) {
+  function removeBatch(batch: any) {
     if (batch.watchTimer) clearTimeout(batch.watchTimer);
     if (batch.gcTimer) clearTimeout(batch.gcTimer);
     if (batch.concat && batch.concat.path) {
@@ -235,7 +235,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
     batches.delete(batch.id);
   }
 
-  async function create(owner: unknown, batchInput: { modelId: string|number; aspectRatio: unknown; quality: unknown; steps: unknown; linkLastFrame: unknown; adultEnabled: boolean; shots: unknown[]; }) {
+  async function create(owner: unknown, batchInput: any) {
     let availability = media.modelAvailability(config, MODEL_BY_ID[batchInput.modelId]);
     if (!availability.available) {
       throw serviceError(503, 'VIDEO_MODEL_UNAVAILABLE', '视频模型文件尚未安装', {
@@ -253,7 +253,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
       steps:batchInput.steps,
       linkLastFrame:batchInput.linkLastFrame,
       adultEnabled:batchInput.adultEnabled === true,
-      shots:batchInput.shots.map(function (entry: { input: unknown; }, index: number) {
+      shots:batchInput.shots.map(function (entry: any, index: number) {
         return {
           index:index + 1,
           input:entry.input,
@@ -321,7 +321,7 @@ function createBatchService(config: unknown, videoService: { get: (arg0: unknown
     }
     let root = media.ensureMediaRoot(config);
     let listPath = path.join(root, 'batch_' + batch.id + '.txt');
-    let lines = succeeded.map(function (shot: { job: { result: { path: unknown; }; }; }) {
+    let lines = succeeded.map(function (shot: any) {
       return "file '" + String(shot.job.result.path).replace(/'/g, "'\\''") + "'";
     });
     fs.writeFileSync(listPath, lines.join('\n') + '\n');

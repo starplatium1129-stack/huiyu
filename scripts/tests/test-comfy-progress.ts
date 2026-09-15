@@ -12,7 +12,7 @@ class FakeSocket {
     FakeSocket.instances.push(this);
   }
   on(name: string|number, handler: unknown) { this.handlers[name] = handler; }
-  emit(name: string, value: undefined) { if (this.handlers[name]) this.handlers[name](value); }
+  emit(name: string, value?: any) { if (this.handlers[name]) this.handlers[name](value); }
   close() { this.emit('close'); }
 }
 

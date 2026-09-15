@@ -18,7 +18,7 @@ test('源码修改同 HEAD 自动失效，只影响依赖 source 的门禁；审
   assert.equal(r.freshness.source.status, 'stale'); assert.equal(r.freshness.build.status, 'fresh');
   for (const field of ['checks.source', 'checks.office']) {
     assert.equal(r.freshness.gates[field].effectiveStatus, 'stale');
-    assert.ok(!r.passed.some(e => e.field === field));
+    assert.ok(!r.passed.some((e: any) => e.field === field));
   }
   assert.equal(r.freshness.gates['checks.bundle'].effectiveStatus, 'passed');
   assert.deepEqual(tree(f.root), before);
@@ -33,7 +33,7 @@ test('目录捕获未跟踪新增、忽略新增、删除与重命名，保持�
     const r = f.audit();
     assert.equal(r.exitCode, 1, change); assert.equal(r.handoff.commit.status, 'matched');
     assert.equal(r.freshness.source.status, 'stale');
-    assert.ok(r.freshness.source.changes.some(e => e.status === (change === 'deleted' ? 'removed' : 'added')));
+    assert.ok(r.freshness.source.changes.some((e: any) => e.status === (change === 'deleted' ? 'removed' : 'added')));
   }
 });
 test('已 dirty 的快照仍按确切内容比较，再次 dirty 修改失效', t => {
@@ -52,7 +52,7 @@ test('构建内容变化/新增/丢失自动拒绝旧构建门禁，纯源码门
     const r = f.audit(); assert.equal(r.exitCode, 1);
     assert.equal(r.freshness.gates['checks.bundle'].effectiveStatus, 'stale');
     assert.equal(r.freshness.gates['checks.source'].effectiveStatus, 'passed');
-    assert.ok(!r.passed.some(e => e.field === 'checks.office'));
+    assert.ok(!r.passed.some((e: any) => e.field === 'checks.office'));
   }
 });
 test('明确文件缺失/目录缺失保留 missing，缺失基线永不算 fresh', t => {
@@ -96,7 +96,7 @@ test('根目录输入排除证据及 .git；首次保存、后续报告和时间
   f.write(`${EVIDENCE_DIR}/another.json`, { timestamp: Date.now() });
   fs.utimesSync(path.join(f.root, 'src/main.js'), new Date(0), new Date(0));
   const r = f.audit(); assert.equal(r.freshness.status, 'fresh'); assert.equal(r.exitCode, 3);
-  assert.ok(!document.tracking.source.entries.some(e => e.path.startsWith(EVIDENCE_DIR) || e.path.startsWith('.git/')));
+  assert.ok(!document.tracking.source.entries.some((e: any) => e.path.startsWith(EVIDENCE_DIR) || e.path.startsWith('.git/')));
   const again = capture(f.root, { ...f.initial, source: [{ path: '.', kind: 'tree' }] });
   assert.equal(again.tracking.source.sha256, document.tracking.source.sha256);
 });
@@ -126,7 +126,7 @@ test('junction 越界与证据目录内部别名均失败关闭，不读取链�
     const before = tree(other.root), r = f.audit();
     assert.equal(r.exitCode, 1); assert.equal(r.freshness.source.status, 'unavailable');
     assert.equal(r.freshness.source.problems[0].status, 'unsafe-or-unreadable');
-    assert.ok(!r.freshness.source.current.entries.some(e => e.path.startsWith('src/escape/')));
+    assert.ok(!r.freshness.source.current.entries.some((e: any) => e.path.startsWith('src/escape/')));
     assert.deepEqual(tree(other.root), before);
   }
 });
@@ -160,22 +160,22 @@ test('无追踪旧通过声明明确 unknown，保留原始状态且证据零改
   for (const field of ['checks.office', 'installation', 'deviceAcceptance', 'modelAcceptance']) {
     assert.equal(r.freshness.gates[field].declaredStatus, 'passed');
     assert.equal(r.freshness.gates[field].effectiveStatus, 'unknown');
-    assert.ok(!r.passed.some(e => e.field === field));
+    assert.ok(!r.passed.some((e: any) => e.field === field));
   }
   assert.deepEqual(tree(f.root), before);
 });
 test('坏版本、身份摘要篡改、空依赖、错报告绑定不得继续通过', t => {
   const f = fixture(t), original = f.office();
   const mutations = [
-    d => { d.tracking.schemaVersion = 999; },
-    d => { d.tracking.source.sha256 = '0'.repeat(64); },
-    d => { d.tracking.gates['checks.office'].dependsOn = []; },
-    d => { d.checks.office.report = `${EVIDENCE_DIR}/source.log`; },
-    d => { d.tracking.gates['checks.office'].identities.source = 'f'.repeat(64); },
+    (d: any) => { d.tracking.schemaVersion = 999; },
+    (d: any) => { d.tracking.source.sha256 = '0'.repeat(64); },
+    (d: any) => { d.tracking.gates['checks.office'].dependsOn = []; },
+    (d: any) => { d.checks.office.report = `${EVIDENCE_DIR}/source.log`; },
+    (d: any) => { d.tracking.gates['checks.office'].identities.source = 'f'.repeat(64); },
   ];
   for (const mutate of mutations) {
     const d = structuredClone(original); mutate(d); f.write(f.officePath, d);
-    const r = f.audit(); assert.equal(r.exitCode, 1); assert.ok(!r.passed.some(e => e.field === 'checks.office'));
+    const r = f.audit(); assert.equal(r.exitCode, 1); assert.ok(!r.passed.some((e: any) => e.field === 'checks.office'));
   }
 });
 test('新鲜度人类输出展示陈旧路径与各自环境、安装入口和主力待验', t => {

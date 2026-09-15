@@ -7,7 +7,7 @@ var path: typeof import('path') = require('path');
 var gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
 var video: typeof import('../../routes/video') = require('../../routes/video');
 
-function validBody(overrides: { quality?: string; aspectRatio?: string; workflow?: {}|{}; modelId?: string; duration?: number; prompt?: string; camera?: string; motion?: string; image?: unknown; dialogue?: string; dialogueLang?: string; shotSize?: string; steps?: number; lastFrame?: string; adultEnabled?: boolean; references?: string[]; }|undefined) {
+function validBody(overrides?: any) {
   return Object.assign({
     prompt:'黄昏的电车站，少女回头看向镜头，风吹起发丝，暖色逆光。',
     modelId:'wan2.2-ti2v-5b',
@@ -513,7 +513,7 @@ async function run() {
   // 从真实数据文件取普通/成人蓝图各一，HTTP 用例对数据演进保持鲁棒。
   var realBlueprints = JSON.parse(fs.readFileSync(
     path.join(__dirname, '..', '..', 'data', 'scene-blueprints.json'), 'utf8')).blueprints;
-  var normalBlueprint = realBlueprints.find(function (item: { category: string; description: unknown; }) { return item.category === '现代日常' && /「/.test(item.description || ''); });
+  var normalBlueprint = realBlueprints.find(function (item: any) { return item.category === '现代日常' && /「/.test(item.description || ''); });
   var adultBlueprint = realBlueprints.find(function (item: { category: string; }) { return item.category === '成人' || item.category === '私密写真'; });
   assert.ok(normalBlueprint && adultBlueprint, 'fixture data must contain normal and adult blueprints');
 
@@ -863,7 +863,7 @@ async function run() {
     }
     assert.equal(finalBatch.status, 'done', 'all shots must succeed');
     assert.deepEqual(finalBatch.progress, { total:3, succeeded:3, failed:0 });
-    finalBatch.shots.forEach(function (shot: { status: unknown; attempts: unknown; resultAvailable: unknown; }) {
+    finalBatch.shots.forEach(function (shot: any) {
       assert.equal(shot.status, 'succeeded');
       assert.equal(shot.attempts, 1);
       assert.equal(shot.resultAvailable, true);

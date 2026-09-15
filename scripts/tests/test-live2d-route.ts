@@ -21,7 +21,7 @@ function listen(app: Express) {
     });
   });
 }
-function close(server: { close: (arg0: (value: unknown) => void) => void; }) {
+function close(server: any) {
   return new Promise(function (resolve) { server.close(resolve); });
 }
 

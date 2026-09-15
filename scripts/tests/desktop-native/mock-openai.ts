@@ -4,10 +4,10 @@ import { errorMessage as runtimeErrorMessage } from '../../lib/runtime-errors';
 const http: typeof import('node:http') = require('node:http')
 const { freePort }: typeof import('./webdriver') = require('./webdriver')
 
-function readBody(request) {
+function readBody(request: any) {
   return new Promise((resolve, reject) => {
-    const chunks = []
-    request.on('data', chunk => chunks.push(chunk))
+    const chunks: any = []
+    request.on('data', (chunk: any) => chunks.push(chunk))
     request.on('end', () => {
       try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}')) } catch (error) { reject(error) }
     })
@@ -15,7 +15,7 @@ function readBody(request) {
   })
 }
 
-function responseFor(messages) {
+function responseFor(messages: any) {
   const latest = [...(Array.isArray(messages) ? messages : [])].reverse()
     .find(message => message?.role === 'user')
   const text = typeof latest?.content === 'string' ? latest.content : ''
@@ -33,7 +33,7 @@ function responseFor(messages) {
 
 async function startMockOpenAi() {
   const port = await freePort()
-  const requests = []
+  const requests: any = []
   const server = http.createServer(async (request, response) => {
     if (request.method === 'GET' && request.url === '/v1/models') {
       response.writeHead(200, { 'Content-Type': 'application/json' })

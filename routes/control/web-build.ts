@@ -74,7 +74,7 @@ function webBuildInfo(config: { ROOT_DIR: string; }) {
   };
 }
 
-function runWebBuild(config: { ROOT_DIR: unknown; }, callback: (arg0: { ok: boolean; error: string|null; durationMs?: number; tail?: string; }) => void) {
+function runWebBuild(config: any, callback: any) {
   if (WEB_BUILD_LOCK) {
     callback({ ok:false, error:'已有构建在进行中' });
     return;

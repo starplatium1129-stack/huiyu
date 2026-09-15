@@ -55,7 +55,7 @@ const BUILD_RECORD = 'installer-build.json'
 const INSTALLER_HASH = 'installer.sha256'
 const REQUIRED_DPI = ['100', '125', '150']
 
-function parseArgs(argv) {
+function parseArgs(argv: any) {
   const output = { positional: [] }
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index]
@@ -76,14 +76,14 @@ function parseArgs(argv) {
   return output
 }
 
-function commandVersion(executable, args = ['--version']) {
+function commandVersion(executable: any, args = ['--version']) {
   if (!executable) return null
   const result = spawnSync(executable, args, { encoding: 'utf8', windowsHide: true, timeout: 20_000 })
   if (result.status !== 0) return null
   return String(result.stdout || result.stderr || '').trim()
 }
 
-function cargoInstalledVersion(executable, packageName) {
+function cargoInstalledVersion(executable: any, packageName: any) {
   if (!executable) return null
   const manifest = path.join(path.dirname(path.dirname(path.resolve(executable))), '.crates.toml')
   if (!fs.existsSync(manifest)) return null
@@ -92,7 +92,7 @@ function cargoInstalledVersion(executable, packageName) {
   return line?.slice(prefix.length).split(' ')[0] || null
 }
 
-function npmInvocation(args) {
+function npmInvocation(args: any) {
   const candidates = [
     process.env.npm_execpath,
     path.join(path.dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js'),
@@ -103,7 +103,7 @@ function npmInvocation(args) {
   return { command: process.execPath, args: [cli, ...args] }
 }
 
-function resolveRecordedInvocation(command, args) {
+function resolveRecordedInvocation(command: any, args: any) {
   const normalized = command.toLowerCase().replace(/\.cmd$/u, '').replace(/\.exe$/u, '')
   if (normalized === 'npm') return npmInvocation(args)
   if (normalized === 'cargo') {
@@ -114,7 +114,7 @@ function resolveRecordedInvocation(command, args) {
   return { command, args }
 }
 
-function gitValue(args) {
+function gitValue(args: any) {
   const result = spawnSync('git.exe', args, { cwd: ROOT, encoding: 'utf8', windowsHide: true })
   if (result.status !== 0) return null
   return String(result.stdout || '').trim()
@@ -130,7 +130,7 @@ function freezeSnapshot() {
   }
 }
 
-function writeInstallerRecord(evidence, metadata, freeze) {
+function writeInstallerRecord(evidence: any, metadata: any, freeze: any) {
   evidence.beginInstallerCycle(metadata, freeze)
   const record = { recordedAt: now(), freeze, installer: metadata }
   writeJson(path.join(evidence.directory, BUILD_RECORD), record)
@@ -142,7 +142,7 @@ function writeInstallerRecord(evidence, metadata, freeze) {
   evidence.artifact('installerSha256', path.join(evidence.directory, INSTALLER_HASH))
 }
 
-async function recordCommand(args) {
+async function recordCommand(args: any) {
   const evidence = new Evidence({ root: ROOT, directory: args['evidence-dir'] })
   if (!args.positional.length) throw new Error('--record-command requires a command after --')
   const [displayCommand, ...displayArgs] = args.positional
@@ -178,14 +178,14 @@ async function recordCommand(args) {
   process.exitCode = result.code
 }
 
-function httpRequest(url, options = {}) {
+function httpRequest(url: any, options = {}) {
   return new Promise((resolve, reject) => {
     const target = new URL(url)
     const request = http.request(target, {
       method: options.method || 'GET',
       headers: options.headers || {},
     }, response => {
-      const chunks = []
+      const chunks: any = []
       response.on('data', chunk => chunks.push(chunk))
       response.on('end', () => resolve({ status: response.statusCode || 0, headers: response.headers, body: Buffer.concat(chunks) }))
     })
@@ -195,7 +195,7 @@ function httpRequest(url, options = {}) {
   })
 }
 
-async function waitFor(description, predicate, timeoutMs = 30_000, intervalMs = 100) {
+async function waitFor(description: any, predicate: any, timeoutMs = 30_000, intervalMs = 100) {
   const started = Date.now()
   let lastError = null
   while (Date.now() - started < timeoutMs) {
@@ -210,18 +210,18 @@ async function waitFor(description, predicate, timeoutMs = 30_000, intervalMs = 
   throw new Error(`Timed out waiting for ${description}; last=${lastError?.message || 'false'}`)
 }
 
-function driverCandidates(name) {
+function driverCandidates(name: any) {
   const temporaryTools = path.join(os.tmpdir(), 'opencode', 'd10-tools')
   return name === 'tauri-driver'
     ? [process.env.D10_TAURI_DRIVER, path.join(temporaryTools, 'bin', 'tauri-driver.exe')]
     : [process.env.D10_MSEDGEDRIVER, path.join(temporaryTools, 'msedgedriver.exe')]
 }
 
-function versionNumber(text) {
+function versionNumber(text: any) {
   return String(text || '').match(/\d+\.\d+\.\d+\.\d+/u)?.[0] || null
 }
 
-function verifyBuildRecord(evidence, installerPath) {
+function verifyBuildRecord(evidence: any, installerPath: any) {
   const recordPath = path.join(evidence.directory, BUILD_RECORD)
   const record = readJson(recordPath, null)
   if (!record?.installer) throw new Error(`missing package build record: ${recordPath}`)
@@ -237,7 +237,7 @@ function verifyBuildRecord(evidence, installerPath) {
   return current
 }
 
-function recordWorkflowEvidence(evidence, args) {
+function recordWorkflowEvidence(evidence: any, args: any) {
   const supplied = {
     url: args['workflow-url'] === true ? '' : String(args['workflow-url'] || process.env.D10_WORKFLOW_URL || '').trim(),
     runId: args['workflow-run-id'] === true ? '' : String(args['workflow-run-id'] || process.env.D10_WORKFLOW_RUN_ID || '').trim(),
@@ -292,8 +292,8 @@ function recordWorkflowEvidence(evidence, args) {
   return true
 }
 
-function currentDpiLabel(args, environment) {
-  const primary = environment.displays.find(display => display.primary) || environment.displays[0]
+function currentDpiLabel(args: any, environment: any) {
+  const primary = environment.displays.find((display: any) => display.primary) || environment.displays[0]
   const actual = String(primary?.scalePercent || '')
   const requested = args['dpi-label'] === true || args['dpi-label'] == null ? actual : String(args['dpi-label']).replace('%', '')
   if (!actual) throw new Error('primary display DPI could not be measured')
@@ -301,7 +301,7 @@ function currentDpiLabel(args, environment) {
   return { label: requested, primary }
 }
 
-function markDownstreamBlocked(evidence, reason) {
+function markDownstreamBlocked(evidence: any, reason: any) {
   for (const id of [
     'install', 'migration', 'cold-start', 'hidden-start', 'lifecycle', 'characters', 'overlay-rect',
     'move-resize', 'hide-frame-stop', 'click-motion', 'emotion-no-voice', 'fps-30-165',
@@ -311,12 +311,12 @@ function markDownstreamBlocked(evidence, reason) {
   }
 }
 
-function setMatrixResult(evidence, section, key, status) {
+function setMatrixResult(evidence: any, section: any, key: any, status: any) {
   if (status === 'BLOCKED' && evidence.report.matrix[section]?.[key] === 'PASS') return
   evidence.setMatrix(section, key, status)
 }
 
-function installedExecutable(installLocation) {
+function installedExecutable(installLocation: any) {
   const candidates = [
     path.join(installLocation, 'ai-cg-studio-desktop.exe'),
     path.join(installLocation, 'AI-CG-Studio.exe'),
@@ -328,7 +328,7 @@ function installedExecutable(installLocation) {
     .map(name => path.join(installLocation, name))[0] || null
 }
 
-function buildResourceManifest(installLocation) {
+function buildResourceManifest(installLocation: any) {
   const required = [
     'gateway/server.js',
     'node.exe',
@@ -349,7 +349,7 @@ function buildResourceManifest(installLocation) {
   return { installLocation, items, ok: items.every(item => item.exists) }
 }
 
-async function installProduct(evidence, installer) {
+async function installProduct(evidence: any, installer: any) {
   const before = findUninstallEntry()
   if (before.length) throw new Error(`an existing AI-CG-Studio installation is present; refusing to overwrite it: ${JSON.stringify(before)}`)
   const result = await runCommand(installer, ['/S'], {
@@ -369,7 +369,7 @@ async function installProduct(evidence, installer) {
   return { entry, installLocation, executable }
 }
 
-function parseUninstallCommand(entry) {
+function parseUninstallCommand(entry: any) {
   const raw = String(entry.quietUninstallString || entry.uninstallString || '').trim()
   const quoted = raw.match(/^"([^"]+)"\s*(.*)$/u)
   if (quoted) return { command: quoted[1], args: quoted[2] ? quoted[2].split(/\s+/u) : [] }
@@ -378,7 +378,7 @@ function parseUninstallCommand(entry) {
   return { command: executable[1], args: executable[2] ? executable[2].split(/\s+/u) : [] }
 }
 
-async function uninstallProduct(evidence, installed) {
+async function uninstallProduct(evidence: any, installed: any) {
   const uninstall = parseUninstallCommand(installed.entry)
   const args = uninstall.args.filter(value => value.toUpperCase() !== '/S').concat('/S')
   const result = await runCommand(uninstall.command, args, {
@@ -391,7 +391,7 @@ async function uninstallProduct(evidence, installed) {
   evidence.result('uninstall', 'PASS', { exitCode: 0, installLocationRemoved: true, registryRemoved: true })
 }
 
-async function startProductSession(context, tag, appArgs = []) {
+async function startProductSession(context: any, tag: any, appArgs = []) {
   const existing = processesByExecutable(context.installed.executable)
   if (existing.length) throw new Error(`installed product is already running before ${tag}; refusing to kill an unowned process`)
   const userDataFolder = path.join(context.fixture.localAppData, 'WebView2', `${tag}-${Date.now()}`)
@@ -419,7 +419,7 @@ async function startProductSession(context, tag, appArgs = []) {
   }
 }
 
-async function gatewayPort(fixture) {
+async function gatewayPort(fixture: any) {
   const filePath = path.join(fixture.configRoot, 'desktop-gateway.json')
   const result = await waitFor('desktop gateway port file', () => {
     try {
@@ -430,7 +430,7 @@ async function gatewayPort(fixture) {
   return result.value
 }
 
-async function gatewayHealthy(port) {
+async function gatewayHealthy(port: any) {
   try {
     const response = await httpRequest(`http://127.0.0.1:${port}/api/status`, { timeoutMs: 3_000 })
     return response.status >= 200 && response.status < 500
@@ -439,7 +439,7 @@ async function gatewayHealthy(port) {
   }
 }
 
-async function waitCompanionReady(product, expectVisible = true) {
+async function waitCompanionReady(product: any, expectVisible = true) {
   await product.session.waitFor('Companion /companion route', `
 return location.pathname.replace(/\\/+$/, '') === '/companion' && Boolean(window.companionDesktop)
 `, [], { timeoutMs: 60_000 })
@@ -451,14 +451,14 @@ return host && stage && host.dataset.state === 'ready'
 `, [], { timeoutMs: 35_000, intervalMs: 100 })
 }
 
-async function live2dState(session) {
+async function live2dState(session: any) {
   return session.invoke('aics_live2d_get_state')
 }
 
-async function quitProduct(product, context, resultId = 'normal-exit') {
+async function quitProduct(product: any, context: any, resultId = 'normal-exit') {
   const port = await gatewayPort(context.fixture).catch(() => null)
   const ownedBeforeQuit = processTree(product.pid)
-  const ownedPids = new Set(ownedBeforeQuit.map(item => item.pid))
+  const ownedPids = new Set(ownedBeforeQuit.map((item: any) => item.pid))
   try {
     await product.session.executeAsync(`
 if (!window.companionDesktop?.quit) throw new Error('Companion quit bridge unavailable')
@@ -467,7 +467,7 @@ return await window.companionDesktop.quit()
   } catch {}
   const exited = await waitFor('product and sidecar exit', () => {
     const running = processesByExecutable(context.installed.executable)
-    const remainingOwned = processTree(product.pid).filter(item => ownedPids.has(item.pid))
+    const remainingOwned = processTree(product.pid).filter((item: any) => ownedPids.has(item.pid))
     const listeners = port ? portOwner(port) : []
     return running.length === 0 && remainingOwned.length === 0 && listeners.length === 0
   }, 10_000, 200).then(() => true).catch(() => false)
@@ -480,7 +480,7 @@ return await window.companionDesktop.quit()
   context.evidence.result(resultId, 'PASS', { withinMs: 10_000, gatewayPort: port, ownedBeforeQuit })
 }
 
-function targetSnapshot(fixture) {
+function targetSnapshot(fixture: any) {
   return snapshotFiles(fixture.configRoot, [
     'companion-window.json',
     'companion-preferences.json',
@@ -489,11 +489,11 @@ function targetSnapshot(fixture) {
   ])
 }
 
-function compareSnapshots(expected, actual) {
+function compareSnapshots(expected: any, actual: any) {
   return Object.keys(expected).every(key => expected[key].sha256 === actual[key]?.sha256 && expected[key].bytes === actual[key]?.bytes)
 }
 
-async function exerciseHiddenStart(context) {
+async function exerciseHiddenStart(context: any) {
   const product = await startProductSession(context, 'hidden', ['--hidden'])
   try {
     await waitCompanionReady(product, false)
@@ -501,8 +501,8 @@ async function exerciseHiddenStart(context) {
     await waitFor('hidden gateway health', () => gatewayHealthy(port), 30_000, 250)
     const before = await live2dState(product.session)
     const windows = windowsForProcess(product.pid)
-    const companion = windows.find(item => item.title.includes('Companion'))
-    const overlay = windows.find(item => item.title === 'aics-live2d-overlay')
+    const companion = windows.find((item: any) => item.title.includes('Companion'))
+    const overlay = windows.find((item: any) => item.title === 'aics-live2d-overlay')
     if (before.active !== false) throw new Error(`hidden diagnostic query created overlay: ${JSON.stringify(before)}`)
     if (companion?.visible) throw new Error('Companion HWND is visible during --hidden startup')
     if (overlay?.visible) throw new Error('Live2D overlay HWND is visible during --hidden startup')
@@ -518,7 +518,7 @@ async function exerciseHiddenStart(context) {
   }
 }
 
-async function installEventProbe(session) {
+async function installEventProbe(session: any) {
   await session.executeAsync(`
 window.__d10Events = []
 window.__d10MediaEvents = []
@@ -546,7 +546,7 @@ return true
 `, [], 15_000)
 }
 
-async function domSnapshot(session) {
+async function domSnapshot(session: any) {
   return session.execute(`
 const stage = document.querySelector('.portrait-stage')
 const host = document.querySelector('.live2d-host')
@@ -574,11 +574,11 @@ return {
 `)
 }
 
-function rectEdges(rect) {
+function rectEdges(rect: any) {
   return { left: rect.x, top: rect.y, right: rect.x + rect.width, bottom: rect.y + rect.height }
 }
 
-function rectError(a, b) {
+function rectError(a: any, b: any) {
   const ae = rectEdges(a)
   const be = rectEdges(b)
   const edges = {
@@ -590,11 +590,11 @@ function rectError(a, b) {
   return { edges, max: Math.max(...Object.values(edges)) }
 }
 
-async function rectMeasurement(product, includeHwnd = true) {
+async function rectMeasurement(product: any, includeHwnd = true) {
   const dom = await domSnapshot(product.session)
   const desktopState = await product.session.executeAsync('return await window.companionDesktop.getState()', [], 10_000)
   const native = await live2dState(product.session)
-  const overlay = includeHwnd ? findWindow(product.pid, item => item.title === 'aics-live2d-overlay') : null
+  const overlay = includeHwnd ? findWindow(product.pid, (item: any) => item.title === 'aics-live2d-overlay') : null
   if (!dom.stageRect || !desktopState.bounds || (includeHwnd && !overlay)) {
     throw new Error('rect measurement is missing DOM, desktop bounds, or overlay HWND')
   }
@@ -614,7 +614,7 @@ async function rectMeasurement(product, includeHwnd = true) {
   }
 }
 
-async function waitRectAligned(product, timeoutMs = 200, operationAt = Date.now()) {
+async function waitRectAligned(product: any, timeoutMs = 200, operationAt = Date.now()) {
   let measurement = null
   while (Date.now() - operationAt <= timeoutMs) {
     measurement = await rectMeasurement(product, false)
@@ -629,18 +629,18 @@ async function waitRectAligned(product, timeoutMs = 200, operationAt = Date.now(
   throw new Error(`overlay rect did not align within ${timeoutMs}ms: ${JSON.stringify(measurement)}`)
 }
 
-async function exerciseRectAndLifecycle(context, product, dpiLabel) {
+async function exerciseRectAndLifecycle(context: any, product: any, dpiLabel: any) {
   const initial = await waitRectAligned(product, 500)
   const screenshotDir = path.join(context.evidence.directory, 'screenshots', dpiLabel)
   await product.session.screenshot(path.join(screenshotDir, 'webview-initial.png'))
-  const companion = findWindow(product.pid, item => item.title.includes('Companion'))
+  const companion = findWindow(product.pid, (item: any) => item.title.includes('Companion'))
   if (!companion) throw new Error('Companion HWND not found')
   captureDesktop({ x: companion.x, y: companion.y, width: companion.width, height: companion.height }, path.join(screenshotDir, 'desktop-initial.png'))
   context.evidence.result('overlay-rect', 'PASS', initial)
   context.evidence.setMatrix('dpi', dpiLabel, 'PASS')
 
   const original = { x: companion.x, y: companion.y, width: companion.width, height: companion.height }
-  const display = context.environment.displays.find(item => item.primary) || context.environment.displays[0]
+  const display = context.environment.displays.find((item: any) => item.primary) || context.environment.displays[0]
   const moved = {
     x: Math.max(display.workX, Math.min(display.workX + display.workWidth - original.width, original.x + 120)),
     y: Math.max(display.workY, Math.min(display.workY + display.workHeight - original.height, original.y + 80)),
@@ -673,11 +673,11 @@ async function exerciseRectAndLifecycle(context, product, dpiLabel) {
   return original
 }
 
-async function exerciseMultiDisplay(context, product, originalRect) {
+async function exerciseMultiDisplay(context: any, product: any, originalRect: any) {
   const displays = context.environment.displays
   if (displays.length < 2) return
-  const primary = displays.find(display => display.primary) || displays[0]
-  const secondaries = displays.filter(display => display.device !== primary.device)
+  const primary = displays.find((display: any) => display.primary) || displays[0]
+  const secondaries = displays.filter((display: any) => display.device !== primary.device)
   const moves = []
   let sameDpiCovered = false
   let mixedDpiCovered = false
@@ -690,13 +690,13 @@ async function exerciseMultiDisplay(context, product, originalRect) {
       width,
       height,
     }
-    const currentCompanion = findWindow(product.pid, item => item.title.includes('Companion'))
+    const currentCompanion = findWindow(product.pid, (item: any) => item.title.includes('Companion'))
     if (!currentCompanion) throw new Error(`Companion HWND not found before moving to ${display.device}`)
     const movedAt = setWindowRect(currentCompanion.hwnd, target)
     const measurement = await waitRectAligned(product, 200, movedAt)
     const safeDevice = display.device.replace(/[^a-z0-9]+/giu, '-')
     await product.session.screenshot(path.join(context.evidence.directory, 'screenshots', 'dual-screen', `${safeDevice}-webview.png`))
-    const companion = findWindow(product.pid, item => item.title.includes('Companion'))
+    const companion = findWindow(product.pid, (item: any) => item.title.includes('Companion'))
     if (!companion) throw new Error(`Companion HWND disappeared after moving to ${display.device}`)
     captureDesktop(companion, path.join(context.evidence.directory, 'screenshots', 'dual-screen', `${safeDevice}-desktop.png`))
     const sameDpi = display.scalePercent === primary.scalePercent
@@ -704,7 +704,7 @@ async function exerciseMultiDisplay(context, product, originalRect) {
     mixedDpiCovered ||= !sameDpi
     moves.push({ display, target, measurement, sameDpi })
   }
-  const companion = findWindow(product.pid, item => item.title.includes('Companion'))
+  const companion = findWindow(product.pid, (item: any) => item.title.includes('Companion'))
   if (!companion) throw new Error('Companion HWND disappeared before restoring the primary display')
   const restoredAt = setWindowRect(companion.hwnd, originalRect)
   const restored = await waitRectAligned(product, 200, restoredAt)
@@ -721,7 +721,7 @@ async function exerciseMultiDisplay(context, product, originalRect) {
   })
 }
 
-async function switchCharacter(product, character) {
+async function switchCharacter(product: any, character: any) {
   await product.session.click(`.character-tab[data-character="${character}"]`)
   await product.session.waitFor(`${character} ready`, `
 const page = document.querySelector('.companion-page')
@@ -736,7 +736,7 @@ return page?.getAttribute('data-character') === arguments[0] && stage?.getAttrib
   return { state, dom }
 }
 
-function findModelManifest(installLocation, character) {
+function findModelManifest(installLocation: any, character: any) {
   const directory = path.join(installLocation, 'gateway', 'assets', 'live2d', character)
   const names = fs.readdirSync(directory).filter(name => /model3?\.json$/iu.test(name) || name === 'model.json')
   const filePath = names.includes('model3.json') ? path.join(directory, 'model3.json') : path.join(directory, names[0])
@@ -760,7 +760,7 @@ function findModelManifest(installLocation, character) {
   }
 }
 
-async function exerciseCharactersAndMotion(context, product) {
+async function exerciseCharactersAndMotion(context: any, product: any) {
   const natsume = await switchCharacter(product, 'natsume')
   const nene = await switchCharacter(product, 'nene')
   context.evidence.result('characters', 'PASS', { natsume: natsume.state, nene: nene.state })
@@ -780,7 +780,7 @@ async function exerciseCharactersAndMotion(context, product) {
     sendClick(bounds.x + bounds.width * point.x, bounds.y + bounds.height * point.y)
     const event = await waitFor(`${point.label} hit/motion event`, async () => {
       const events = (await domSnapshot(product.session)).events.slice(before)
-      return events.find(item => item.name === 'aics:live2d:motion-started'
+      return events.find((item: any) => item.name === 'aics:live2d:motion-started'
         || (item.name === 'aics:live2d:hit-test' && Array.isArray(item.payload) && item.payload.length > 0)) || false
     }, 5_000, 100)
     interactions.push({ point, event: event.value })
@@ -798,7 +798,7 @@ async function exerciseCharactersAndMotion(context, product) {
       sendClick(bounds.x + bounds.width * repeatPoint.x, bounds.y + bounds.height * repeatPoint.y)
       const started = await waitFor('multi-variant authored motion', async () => {
         const events = (await domSnapshot(product.session)).events.slice(before)
-        return events.find(item => item.name === 'aics:live2d:motion-started' && item.payload?.group === targetGroup) || false
+        return events.find((item: any) => item.name === 'aics:live2d:motion-started' && item.payload?.group === targetGroup) || false
       }, 6_000, 100)
       const index = Number(started.value.payload.index)
       observedIndexes.add(index)
@@ -816,7 +816,7 @@ async function exerciseCharactersAndMotion(context, product) {
   })
 }
 
-function chatState(baseUrl, active, autoVoice) {
+function chatState(baseUrl: any, active: any, autoVoice: any) {
   return {
     version: 3,
     active,
@@ -829,7 +829,7 @@ function chatState(baseUrl, active, autoVoice) {
   }
 }
 
-async function configureChat(product, mock, active, autoVoice) {
+async function configureChat(product: any, mock: any, active: any, autoVoice: any) {
   await product.session.execute(`
 localStorage.setItem('aics_chat_v1', JSON.stringify(arguments[0]))
 localStorage.setItem('aics_companion_live2d_v1', 'true')
@@ -841,12 +841,12 @@ return true
   await installEventProbe(product.session)
 }
 
-async function sendChat(product, text) {
+async function sendChat(product: any, text: any) {
   await product.session.fill('textarea[aria-label="桌宠聊天输入"]', text)
   await product.session.click('button.companion-send')
 }
 
-async function exerciseNoVoiceEmotion(context, product, mock) {
+async function exerciseNoVoiceEmotion(context: any, product: any, mock: any) {
   await configureChat(product, mock, 'nene', false)
   await sendChat(product, 'd10-no-voice-happy')
   const happy = await product.session.waitFor('mock mood tag drives happy emotion', `
@@ -861,7 +861,7 @@ return stage?.getAttribute('data-emotion') === 'neutral' && send && !send.disabl
   context.evidence.result('emotion-no-voice', 'PASS', { happyInMs: happy.elapsedMs, neutralInMs: neutral.elapsedMs, mockRequests: mock.requests.length })
 }
 
-async function exerciseFps(context, product) {
+async function exerciseFps(context: any, product: any) {
   await product.session.executeAsync(`
 await window.__TAURI__.event.emit('aics:power-mode', true)
 return true
@@ -877,7 +877,7 @@ return true
   context.evidence.result('fps-30-165', 'PASS', { efficiency, quality })
 }
 
-async function downloadPlayedAudio(snapshot, evidence, fileName) {
+async function downloadPlayedAudio(snapshot: any, evidence: any, fileName: any) {
   const play = [...snapshot.mediaEvents].reverse().find(event => event.type === 'playing' || event.type === 'play')
   if (!play?.src) throw new Error('no played audio URL was captured from the real chat voice path')
   const url = new URL(play.src, snapshot.origin).toString()
@@ -888,7 +888,7 @@ async function downloadPlayedAudio(snapshot, evidence, fileName) {
   return { filePath, url, metrics: wavQuality.analyzeWav(response.body), issues: wavQuality.assertVoiceQuality(wavQuality.analyzeWav(response.body)) }
 }
 
-async function exerciseTtsClip(context, product, character, emotion, dpiLabel) {
+async function exerciseTtsClip(context: any, product: any, character: any, emotion: any, dpiLabel: any) {
   await switchCharacter(product, character)
   const beforeMediaCount = (await domSnapshot(product.session)).mediaEvents.length
   await sendChat(product, `d10-tts-${emotion}-${character}`)
@@ -900,7 +900,7 @@ async function exerciseTtsClip(context, product, character, emotion, dpiLabel) {
     const native = await live2dState(product.session)
     samples.push({ atMs: Date.now() - started, mouth: dom.mouth, peak: dom.audioPeak, speaking: dom.speaking, emotion: dom.emotion, nativeMouth: native.mouthLevel, mapped: native.mouthMappedValue })
     if (!openShot && dom.speaking && dom.mouth > 0.04) {
-      const companion = findWindow(product.pid, item => item.title.includes('Companion'))
+      const companion = findWindow(product.pid, (item: any) => item.title.includes('Companion'))
       if (companion) {
         captureDesktop(companion, path.join(context.evidence.directory, 'screenshots', dpiLabel, `${character}-${emotion}-mouth-open.png`))
         openShot = true
@@ -913,7 +913,7 @@ async function exerciseTtsClip(context, product, character, emotion, dpiLabel) {
   await delay(500)
   const closedDom = await domSnapshot(product.session)
   const closedNative = await live2dState(product.session)
-  const companion = findWindow(product.pid, item => item.title.includes('Companion'))
+  const companion = findWindow(product.pid, (item: any) => item.title.includes('Companion'))
   if (companion) captureDesktop(companion, path.join(context.evidence.directory, 'screenshots', dpiLabel, `${character}-${emotion}-mouth-closed.png`))
   const maxMouth = Math.max(...samples.map(sample => sample.mouth))
   const maxNative = Math.max(...samples.map(sample => sample.nativeMouth))
@@ -930,9 +930,9 @@ async function exerciseTtsClip(context, product, character, emotion, dpiLabel) {
   if (maxMappingError > 0.02) throw new Error(`${character}/${emotion} mouth mapping drifted by ${maxMappingError}`)
   const snapshot = await domSnapshot(product.session)
   const clipEvents = snapshot.mediaEvents.slice(beforeMediaCount)
-  const playingEvents = clipEvents.filter(event => event.type === 'playing')
-  const endedEvents = clipEvents.filter(event => event.type === 'ended')
-  const errorEvents = clipEvents.filter(event => event.type === 'error')
+  const playingEvents = clipEvents.filter((event: any) => event.type === 'playing')
+  const endedEvents = clipEvents.filter((event: any) => event.type === 'ended')
+  const errorEvents = clipEvents.filter((event: any) => event.type === 'error')
   if (playingEvents.length !== 1 || endedEvents.length !== 1 || errorEvents.length) {
     throw new Error(`${character}/${emotion} audio lifecycle was not single-play: ${JSON.stringify(clipEvents)}`)
   }
@@ -941,7 +941,7 @@ async function exerciseTtsClip(context, product, character, emotion, dpiLabel) {
   return { character, emotion, maxMouth, maxNative, minMapped, maxMappingError, closedDom, closedNative, audio, clipEvents, samples }
 }
 
-async function exerciseRealTts(context, product, mock, dpiLabel) {
+async function exerciseRealTts(context: any, product: any, mock: any, dpiLabel: any) {
   await configureChat(product, mock, 'nene', true)
   const status = await product.session.executeAsync(`
 const response = await fetch('/api/tts-status', { cache: 'no-store' })
@@ -963,18 +963,18 @@ return { status: response.status, body: await response.json() }
   context.evidence.result('tts-real', 'PASS', { clips: clips.map(clip => ({ character: clip.character, emotion: clip.emotion, maxMouth: clip.maxMouth, minMapped: clip.minMapped, metrics: clip.audio.metrics })) })
 }
 
-function average(values) {
-  return values.reduce((sum, value) => sum + value, 0) / Math.max(1, values.length)
+function average(values: any) {
+  return values.reduce((sum: any, value: any) => sum + value, 0) / Math.max(1, values.length)
 }
 
-function trend(samples, field) {
-  const values = samples.filter(sample => Number.isFinite(sample[field]))
+function trend(samples: any, field: any) {
+  const values = samples.filter((sample: any) => Number.isFinite(sample[field]))
   if (values.length < 4) return null
   const quarter = Math.max(1, Math.floor(values.length / 4))
-  const first = average(values.slice(0, quarter).map(sample => sample[field]))
-  const last = average(values.slice(-quarter).map(sample => sample[field]))
-  const meanT = average(values.map(sample => sample.t))
-  const meanV = average(values.map(sample => sample[field]))
+  const first = average(values.slice(0, quarter).map((sample: any) => sample[field]))
+  const last = average(values.slice(-quarter).map((sample: any) => sample[field]))
+  const meanT = average(values.map((sample: any) => sample.t))
+  const meanV = average(values.map((sample: any) => sample[field]))
   let numerator = 0
   let denominator = 0
   for (const sample of values) {
@@ -984,7 +984,7 @@ function trend(samples, field) {
   return { count: values.length, firstQuarterAvg: first, lastQuarterAvg: last, deltaBytes: last - first, slopeBytesPerMinute: denominator ? numerator / denominator * 60_000 : 0 }
 }
 
-function assertStableTrend(name, stats) {
+function assertStableTrend(name: any, stats: any) {
   if (!stats) throw new Error(`${name} trend is unavailable`)
   const deltaLimit = name === 'Working Set' ? 64 : 128
   const slopeLimit = name === 'Working Set' ? 2 : 8
@@ -995,7 +995,7 @@ function assertStableTrend(name, stats) {
   }
 }
 
-async function exerciseSoak(context, product, originalRect, seconds) {
+async function exerciseSoak(context: any, product: any, originalRect: any, seconds: any) {
   const started = Date.now()
   const samples = []
   let nextSwitch = 60_000
@@ -1016,7 +1016,7 @@ async function exerciseSoak(context, product, originalRect, seconds) {
         const shownAt = sendToggleVisibilityHotkey()
         await waitRectAligned(product, 200, shownAt)
       } else {
-        const companion = findWindow(product.pid, item => item.title.includes('Companion'))
+        const companion = findWindow(product.pid, (item: any) => item.title.includes('Companion'))
         if (companion) {
           const movedAt = setWindowRect(companion.hwnd, { ...originalRect, x: originalRect.x + 40, y: originalRect.y + 30 })
           await waitRectAligned(product, 200, movedAt)
@@ -1054,7 +1054,7 @@ async function exerciseSoak(context, product, originalRect, seconds) {
   context.evidence.result('soak-300s', 'PASS', report)
 }
 
-function copyDesktopLog(evidence, fixture) {
+function copyDesktopLog(evidence: any, fixture: any) {
   const source = path.join(fixture.configRoot, 'desktop.log')
   if (fs.existsSync(source)) {
     fs.copyFileSync(source, evidence.desktopLogPath)
@@ -1065,7 +1065,7 @@ function copyDesktopLog(evidence, fixture) {
   return false
 }
 
-function matrixComplete(evidence) {
+function matrixComplete(evidence: any) {
   const dpi = evidence.report.matrix.dpi
   const tts = evidence.report.matrix.tts
   return REQUIRED_DPI.every(label => dpi[label] === 'PASS')
@@ -1076,7 +1076,7 @@ function matrixComplete(evidence) {
     && evidence.report.matrix.displays.crossDisplay === 'PASS'
 }
 
-async function runAcceptance(args) {
+async function runAcceptance(args: any) {
   const evidence = new Evidence({ root: ROOT, directory: args['evidence-dir'] })
   const acceptanceCommand = 'npm run test:desktop:native'
   const acceptanceStarted = Date.now()

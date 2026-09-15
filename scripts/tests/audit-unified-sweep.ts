@@ -60,14 +60,14 @@ var QUICK_PROMPT =
 
 function readJson(file: PathOrFileDescriptor) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
 
-function writeJson(file: PathLike, value) {
+function writeJson(file: PathLike, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive:true });
   var temporary = file + '.tmp';
   fs.writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n', 'utf8');
   fs.renameSync(temporary, file);
 }
 
-function httpJson(urlPath: string, body: { model: string; messages: { role: string; content: ({ type: string; text: string; image_url?: undefined; }|{ type: string; image_url: { url: string; }; text?: undefined; })[]; }[]|{ role: string; content: { type: string; text: string; }[]; }[]; max_tokens: number; }, timeoutMs: string|number) {
+function httpJson(urlPath: string, body: { model: string; messages: { role: string; content: ({ type: string; text: string; image_url?: any; }|{ type: string; image_url: { url: string; }; text?: any; })[]; }[]|{ role: string; content: { type: string; text: string; }[]; }[]; max_tokens: number; }, timeoutMs: string|number) {
   return new Promise(function (resolve, reject) {
     var url = new URL(inspect.DEFAULT_BASE_URL + urlPath);
     var payload = body ? JSON.stringify(body) : null;
@@ -98,7 +98,7 @@ function httpJson(urlPath: string, body: { model: string; messages: { role: stri
 
 /** 冷却感知重试：429 model_cooldown 时按 reset_seconds 等待后重试；
  *  5xx/超时也重试。最多 maxAttempts 次，最后一次失败原样抛出。 */
-async function withCooldownRetry(fn, maxAttempts: number|undefined) {
+async function withCooldownRetry(fn: any, maxAttempts?: number|undefined) {
   var attempts = maxAttempts || 5;
   for (var attempt = 0; attempt < attempts; attempt++) {
     try {
@@ -136,11 +136,11 @@ async function auditImage(imagePath: string, expectText: string, prompt: string)
 }
 
 /** group 快筛：一次请求合并审多张（quick 阶段专用），输出按图片 N 分行。 */
-async function auditGroup(images, prompt: string) {
+async function auditGroup(images: any, prompt: string) {
   var content = [
     { type:'text', text: (prompt || QUICK_PROMPT) + '\n\n本次共 ' + images.length + ' 张图片，严格按下面给出的图片编号逐一判断，不要遗漏任何一张。' },
   ];
-  images.forEach(function (item, index: number) {
+  images.forEach(function (item: any, index: number) {
     content.push({ type:'text', text: '图片 ' + (index + 1) + ': ' + item.expect });
     content.push({ type:'image_url', image_url:{ url: inspect.imageUrl(item.imagePath) } });
   });
@@ -187,7 +187,7 @@ function parseVerdict(content: string|null) {
   };
 }
 
-function expectFor(scene, record) {
+function expectFor(scene: any, record: any) {
   var parts = ['场景：' + (scene.title || record.sceneId)];
   if (record.mature) parts.push('R18 成人内容');
   else parts.push('safe 非成人');
@@ -231,7 +231,7 @@ async function main() {
     process.exit(2);
   }
   var manifest = readJson(manifestFile);
-  var scenes = new Map(manifest.scenes.map(function (s) { return [s.id, s]; }));
+  var scenes = new Map(manifest.scenes.map(function (s: any) { return [s.id, s]; }));
   var records = manifest.records.filter(function (r: { status: string; }) { return r.status === 'succeeded'; });
   console.log('审核对象: ' + records.length + ' 张（' + manifest.paramGroup + '），stage=' + stage + '，batch=' + (stage === 'full' ? 1 : batchSize) + '，并发=' + concurrency);
 
@@ -239,26 +239,26 @@ async function main() {
   var reportFile = path.join(outDir, 'audit-report.json');
   var report = resume && fs.existsSync(reportFile) ? readJson(reportFile) : { manifest:manifestFile, paramGroup:manifest.paramGroup, stage:stage, results:[] };
 
-  function findResult(r) {
-    return report.results.find(function (x) {
+  function findResult(r: any) {
+    return report.results.find(function (x: any) {
       return x.candidate === r.candidate && x.sceneId === r.sceneId && x.seed === r.seed;
     });
   }
 
   // ---- quick 阶段：group 批量硬伤快筛 ----
   if (stage === 'both' || stage === 'quick') {
-    var quickTodo = records.filter(function (r) {
+    var quickTodo = records.filter(function (r: any) {
       var existing = findResult(r);
       return !existing || existing.quickVerdict === undefined;
     });
     console.log('[quick] 待快筛: ' + quickTodo.length + ' 张（每批 ' + batchSize + ' 张合并一次请求）');
 
-    var quickBatches = [];
+    var quickBatches: any = [];
     for (var qi = 0; qi < quickTodo.length; qi += batchSize) {
       quickBatches.push(quickTodo.slice(qi, qi + batchSize));
     }
     // worker 只负责 API 调用；结果由主线程按序写回，避免并发写同一 report 文件。
-    async function quickCall(items) {
+    async function quickCall(items: any) {
       return auditGroup(items, QUICK_PROMPT);
     }
     var quickNext = 0;
@@ -269,7 +269,7 @@ async function main() {
         quickNext += 1;
         if (bi >= quickBatches.length) return results;
         var batch = quickBatches[bi];
-        var items = batch.map(function (r) {
+        var items = batch.map(function (r: any) {
           var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
           return {
             imagePath: path.join(path.dirname(manifestFile), r.image),
@@ -317,7 +317,7 @@ async function main() {
 
   // ---- full 阶段：只对 quick 通过/需复核（或 quick 未跑时全部）做完整八维 ----
   if (stage === 'both' || stage === 'full') {
-    var fullTodo = records.filter(function (r) {
+    var fullTodo = records.filter(function (r: any) {
       var existing = findResult(r);
       if (existing && existing.ok && existing.verdict) return false; // 已精审
       // quick 已判不通过的直接跳过（硬伤确认，无需精审浪费时间）；
@@ -375,7 +375,7 @@ async function main() {
 
   // 汇总
   var byCandidate = {};
-  report.results.forEach(function (x) {
+  report.results.forEach(function (x: any) {
     if (!byCandidate[x.candidate]) byCandidate[x.candidate] = { epoch:x.epoch, pass:0, review:0, reject:0, fail:0, scores:[] };
     var b = byCandidate[x.candidate];
     if (x.ok) {
@@ -397,11 +397,11 @@ async function main() {
   md += '| 候选 | epoch | 通过 | 需复核 | 不通过 | 失败 | 平均分 |\n|---|---|---|---|---|---|---|\n';
   order.forEach(function (id) {
     var b = byCandidate[id];
-    var avg = b.scores.length ? (b.scores.reduce(function (a, c) { return a + c; }, 0) / b.scores.length).toFixed(1) : '—';
+    var avg = b.scores.length ? (b.scores.reduce(function (a: any, c: any) { return a + c; }, 0) / b.scores.length).toFixed(1) : '—';
     md += '| ' + id + ' | ' + b.epoch + ' | ' + b.pass + ' | ' + b.review + ' | ' + b.reject + ' | ' + b.fail + ' | ' + avg + ' |\n';
   });
   md += '\n## 逐张明细\n\n';
-  report.results.forEach(function (x) {
+  report.results.forEach(function (x: any) {
     md += '### ' + x.candidate + ' · ' + x.sceneId + ' · seed-' + x.seed + (x.mature ? '（R18）' : '') + '\n\n';
     if (x.quickVerdict) md += '- 快筛：' + x.quickVerdict + (x.quickError ? '（错误：' + x.quickError + '）' : '') + '\n';
     var verdictLine = x.ok
@@ -418,7 +418,7 @@ async function main() {
   console.log('\n===== 汇总（' + manifest.paramGroup + '）=====');
   order.forEach(function (id) {
     var b = byCandidate[id];
-    var avg = b.scores.length ? (b.scores.reduce(function (a, c) { return a + c; }, 0) / b.scores.length).toFixed(1) : '—';
+    var avg = b.scores.length ? (b.scores.reduce(function (a: any, c: any) { return a + c; }, 0) / b.scores.length).toFixed(1) : '—';
     console.log(id + ' (e' + b.epoch + '): 通过 ' + b.pass + ' / 需复核 ' + b.review + ' / 不通过 ' + b.reject + ' / 失败 ' + b.fail + ' / 平均分 ' + avg);
   });
   console.log('报告: ' + mdFile);

@@ -58,7 +58,7 @@ let ALLOWED_INPUT_KEYS = new Set([
   'dialogue', 'dialogueLang', 'lastFrame', 'shotSize', 'steps', 'references', 'adultEnabled',
 ]);
 
-function assertAdultAllowed(body: { prompt: unknown; adultEnabled: boolean; }, isLocal: boolean) {
+function assertAdultAllowed(body: any, isLocal: boolean) {
   // 成人锚点正则与双门判定收口在 server/validation-core.js（2026-08-28 审计 P1-6）。
   // 视频侧成人蓝图当前 fail-closed 拒绝（storyboard.js ADULT_BLUEPRINT_UNSUPPORTED），
   // 此处仅对显式 adult prompt 做二次门控，避免前端绕过；无角色白名单（蓝图层负责）。
@@ -76,7 +76,7 @@ function assertAdultAllowed(body: { prompt: unknown; adultEnabled: boolean; }, i
 
 // isLocal 缺省视为本机：内部重放路径（分镜规划/批量重试重校验）不持 req，
 // 成人蓝图在 storyboard 层已 fail-closed，不受该缺省影响。
-function validateInput(body: unknown, config: unknown, options: { isLocal: boolean; }|undefined) {
+function validateInput(body: unknown, config?: unknown, options?: { isLocal: boolean; }|undefined) {
   let isLocal = !options || options.isLocal !== false;
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) {
@@ -337,7 +337,7 @@ let BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFra
 let BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'dialogueLang', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image', 'references']);
 let BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
 
-function validateBatchInput(body: unknown, config: unknown) {
+function validateBatchInput(body: unknown, config?: unknown) {
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) {
     if (!BATCH_BODY_KEYS.has(key)) {
@@ -378,7 +378,7 @@ function validateBatchInput(body: unknown, config: unknown) {
   if (!Array.isArray(body.shots) || body.shots.length < 1 || body.shots.length > constants.MAX_BATCH_SHOTS) {
     throw serviceError(400, 'INVALID_PARAMETER', '分镜数量需为 1—' + constants.MAX_BATCH_SHOTS);
   }
-  let shots = body.shots.map(function (shot: {}, index: number) {
+  let shots = body.shots.map(function (shot: any, index: number) {
     if (!isPlainObject(shot)) {
       throw serviceError(400, 'INVALID_PARAMETER', '第 ' + (index + 1) + ' 个分镜必须是对象');
     }

@@ -36,7 +36,7 @@ function tree(directory: PathLike, excludeRuntime = false, output = {}, prefix =
   }
   return output;
 }
-async function spawnWorker(fixture: { options: unknown; }, mode = 'hold') {
+async function spawnWorker(fixture: any, mode = 'hold') {
   const child = fork(path.join(__dirname, 'maintenance-recovery-worker.js'), [mode, JSON.stringify(fixture.options)], { silent: true, windowsHide: true });
   let stderr = '';
   child.stderr.on('data', chunk => { stderr += chunk; });

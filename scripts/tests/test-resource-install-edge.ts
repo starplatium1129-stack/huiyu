@@ -36,7 +36,7 @@ test('source modification after preflight is rejected and can resume after sourc
   const old = await f.installer().install({ releaseId: 'base' });
   const source = path.join(f.packs, 'delta/assets/a.txt');
   const original = fs.readFileSync(source);
-  await assert.rejects(f.installer({ onEvent: e => {
+  await assert.rejects(f.installer({ onEvent: (e: any) => {
     if (e.phase === 'journal') write(source, Buffer.alloc(original.length, 1));
   } }).install({ releaseId: 'delta' }), code('CONTENT_INVALID'));
   assert.deepEqual((await f.installer().status()).state, old.state);
@@ -48,7 +48,7 @@ test('metadata write failure leaves owned temp files that recovery can safely di
   const f = fixture(t);
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
-  io.renameSync = (from, to) => {
+  io.renameSync = (from: any, to: any) => {
     if (String(to).includes(path.join('tree', 'manifest.json'))) throw Object.assign(new Error('metadata publish interruption'), { code: 'EIO' });
     return fs.renameSync(from, to);
   };
@@ -64,7 +64,7 @@ test('new-version readback corruption before activation can recover without touc
   const f = fixture(t);
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
-  io.renameSync = (from, to) => {
+  io.renameSync = (from: any, to: any) => {
     const result = fs.renameSync(from, to);
     if (String(to).endsWith(f.policy.releases.delta.targetIdentity)) write(path.join(to, 'assets/a.txt'), 'BAD');
     return result;

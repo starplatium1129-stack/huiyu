@@ -10,7 +10,7 @@ const { test }: typeof import('node:test') = require('node:test');
 
 const { loadDebtFromGitRef, scanRepository, sha256 }: typeof import('./repo-hygiene-core') = require('./repo-hygiene-core');
 
-function git(repositoryRoot, args, options = {}) {
+function git(repositoryRoot: any, args: any, options = {}) {
   return execFileSync('git', args, {
     cwd: repositoryRoot,
     encoding: 'utf8',
@@ -20,13 +20,13 @@ function git(repositoryRoot, args, options = {}) {
   }).trim();
 }
 
-function write(repositoryRoot, relativePath, content) {
+function write(repositoryRoot: any, relativePath: any, content: any) {
   const filePath = path.join(repositoryRoot, ...relativePath.split('/'));
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content);
 }
 
-function createRepository(t) {
+function createRepository(t: any) {
   const repositoryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-repo-hygiene-'));
   t.after(() => {
     assert.strictEqual(path.dirname(path.resolve(repositoryRoot)), path.resolve(os.tmpdir()));
@@ -53,8 +53,8 @@ function createRepository(t) {
   return repositoryRoot;
 }
 
-function violationsFor(result, target, relativePath, kind) {
-  return result.violations.filter((violation) => violation.target === target
+function violationsFor(result: any, target: any, relativePath: any, kind: any) {
+  return result.violations.filter((violation: any) => violation.target === target
     && violation.path === relativePath && violation.kind === kind);
 }
 
@@ -89,7 +89,7 @@ test('untracked BOM and every illegal control character are reported', async (t)
   const result = await scanRepository(repositoryRoot);
   assert.equal(violationsFor(result, 'untracked', 'loose.txt', 'bom').length, 1);
   assert.deepEqual(
-    violationsFor(result, 'untracked', 'loose.txt', 'control').map((violation) => violation.message),
+    violationsFor(result, 'untracked', 'loose.txt', 'control').map((violation: any) => violation.message),
     ['illegal control character U+0001', 'illegal control character U+007F'],
   );
 });
@@ -101,7 +101,7 @@ test('every line with trailing whitespace is reported', async (t) => {
   const result = await scanRepository(repositoryRoot);
   assert.deepEqual(
     violationsFor(result, 'untracked', 'trailing.txt', 'trailing-whitespace')
-      .map((violation) => violation.line),
+      .map((violation: any) => violation.line),
     [1, 2, 3],
   );
 });
@@ -128,16 +128,16 @@ test('index uses LF while worktree and untracked scripts use path-specific EOL',
 
   const result = await scanRepository(repositoryRoot);
   assert.deepEqual(
-    violationsFor(result, 'index', 'tool.ps1', 'line-ending').map((violation) => violation.line),
+    violationsFor(result, 'index', 'tool.ps1', 'line-ending').map((violation: any) => violation.line),
     [1, 2],
   );
   assert.equal(violationsFor(result, 'worktree', 'tool.ps1', 'line-ending').length, 0);
   assert.deepEqual(
-    violationsFor(result, 'worktree', 'app.js', 'line-ending').map((violation) => violation.line),
+    violationsFor(result, 'worktree', 'app.js', 'line-ending').map((violation: any) => violation.line),
     [1, 2],
   );
   assert.deepEqual(
-    violationsFor(result, 'untracked', 'local.ps1', 'line-ending').map((violation) => violation.line),
+    violationsFor(result, 'untracked', 'local.ps1', 'line-ending').map((violation: any) => violation.line),
     [1, 2],
   );
 });

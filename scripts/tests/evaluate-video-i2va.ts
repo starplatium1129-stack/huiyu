@@ -48,7 +48,7 @@ async function requestJson(pathname: string, options: RequestInit|undefined) {
   if (!response.ok) throw new Error(pathname + ' returned HTTP ' + response.status + ': ' + text.slice(0, 600));
   return data;
 }
-async function requestMedia(image: { filename: unknown; subfolder: unknown; type: unknown; }, expectedMimePrefix: string) {
+async function requestMedia(image: any, expectedMimePrefix: string) {
   var query = new URLSearchParams({
     filename: String(image.filename || ''),
     subfolder: String(image.subfolder || ''),
@@ -62,7 +62,7 @@ async function requestMedia(image: { filename: unknown; subfolder: unknown; type
   assert(body.length > 0, 'ComfyUI returned empty media');
   return body;
 }
-async function waitFor(promptId: string|number|boolean, outputNode: string, kind: string, timeoutMs: undefined) {
+async function waitFor(promptId: string|number|boolean, outputNode: string, kind: string, timeoutMs?: any) {
   var deadline = Date.now() + (timeoutMs || 15 * 60 * 1000);
   while (Date.now() < deadline) {
     var history = await requestJson('/history/' + encodeURIComponent(promptId), { cache: 'no-store' });
@@ -80,7 +80,7 @@ async function waitFor(promptId: string|number|boolean, outputNode: string, kind
   throw new Error('ComfyUI prompt timed out: ' + promptId);
 }
 
-async function submit(workflow) {
+async function submit(workflow: any) {
   var response = await requestJson('/prompt', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },

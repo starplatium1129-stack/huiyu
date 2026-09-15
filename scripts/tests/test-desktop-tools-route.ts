@@ -27,7 +27,7 @@ const {
 }: typeof import('../../routes/desktop-tools.js') = require('../../routes/desktop-tools.js');
 
 // Existing command lifecycle tests explicitly exercise the operator-enabled profile.
-function runTool(root, name, args, context) {
+function runTool(root: any, name: any, args: any, context?: any) {
   return runToolUntrusted(root, name, args, { trustedCommands: true, ...context });
 }
 
@@ -108,7 +108,7 @@ test('受信任 npm 脚本取消后，包装器下的父子进程均退出', asy
   const root = path.join(parent, 'npm workspace with spaces');
   fs.mkdirSync(root);
   const controller = new AbortController();
-  let pids = [];
+  let pids: any = [];
   try {
     writeProcessTree(root);
     fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify({ scripts: { wait: 'node tree.cjs' } }));
@@ -118,7 +118,7 @@ test('受信任 npm 脚本取消后，包装器下的父子进程均退出', asy
     assert.ok(pids.every(isAlive));
     controller.abort();
     assert.equal((await pending).code, 'ABORT_ERR');
-    await waitFor(() => pids.every(pid => !isAlive(pid)));
+    await waitFor(() => pids.every((pid: any) => !isAlive(pid)));
   } finally {
     controller.abort(); pids.filter(isAlive).forEach(killPid);
     fs.rmSync(parent, { recursive: true, force: true });
@@ -148,7 +148,7 @@ function tempWorkspace() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'aics-tools-'));
 }
 
-async function waitFor(predicate) {
+async function waitFor(predicate: any) {
   const deadline = Date.now() + 7000;
   while (!predicate()) {
     assert.ok(Date.now() < deadline, 'process lifecycle condition did not settle');
@@ -156,11 +156,11 @@ async function waitFor(predicate) {
   }
 }
 
-function isAlive(pid) {
+function isAlive(pid: any) {
   try { process.kill(pid, 0); return true; } catch { return false; }
 }
 
-function writeProcessTree(root) {
+function writeProcessTree(root: any) {
   fs.writeFileSync(path.join(root, 'tree.cjs'), [
     "const fs = require('node:fs');",
     "const child = require('node:child_process').spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], { stdio: 'ignore' });",
@@ -169,7 +169,7 @@ function writeProcessTree(root) {
   ].join('\n'));
 }
 
-function nativeBridge(base) {
+function nativeBridge(base: any) {
   const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/src/shim.rs'), 'utf8');
   const script = source.match(/pub const COMPANION_SHIM_JS: &str = r#"([\s\S]*?)"#;/)?.[1];
   assert.ok(script, 'native bridge source must be available');
@@ -179,7 +179,7 @@ function nativeBridge(base) {
     document: { readyState: 'complete', querySelectorAll: () => [], querySelector: () => null },
     MutationObserver: class { observe() {} disconnect() {} },
     setTimeout: () => 0, clearTimeout: () => {}, console: { log() {}, error() {} },
-    fetch: (url, options) => fetch(base + url, options),
+    fetch: (url: any, options: any) => fetch(base + url, options),
   });
   return window.companionDesktop;
 }
@@ -187,7 +187,7 @@ function nativeBridge(base) {
 test('run_command：取消已启动进程及子进程，不影响其他请求', async () => {
   const root = tempWorkspace();
   const controller = new AbortController();
-  let pids = [];
+  let pids: any = [];
   try {
     writeProcessTree(root);
     const pending = runTool(root, 'run_command', { command: 'node', args: ['tree.cjs'] }, { signal: controller.signal });
@@ -199,7 +199,7 @@ test('run_command：取消已启动进程及子进程，不影响其他请求', 
     const result = await pending;
     assert.equal(result.ok, false);
     assert.equal(result.code, 'ABORT_ERR');
-    await waitFor(() => pids.every(pid => !isAlive(pid)));
+    await waitFor(() => pids.every((pid: any) => !isAlive(pid)));
     assert.deepEqual(await other, { ok: true, output: 'independent' });
   } finally {
     controller.abort();
@@ -236,16 +236,16 @@ test('生产桌面桥取消：真实 HTTP 断开后终止网关内工具进程�
   const server = app.listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
   const controller = new AbortController();
-  let pids = [];
+  let pids: any = [];
   try {
     writeProcessTree(root);
     const bridge = nativeBridge(`http://127.0.0.1:${server.address().port}`);
-    const pending = bridge.runTool('run_command', { command: 'node', args: ['tree.cjs'] }, { signal: controller.signal }).catch(error => error);
+    const pending = bridge.runTool('run_command', { command: 'node', args: ['tree.cjs'] }, { signal: controller.signal }).catch((error: any) => error);
     await waitFor(() => fs.existsSync(path.join(root, 'ready.json')));
     pids = JSON.parse(fs.readFileSync(path.join(root, 'ready.json'), 'utf8'));
     controller.abort();
     assert.equal((await pending).name, 'AbortError');
-    await waitFor(() => pids.every(pid => !isAlive(pid)));
+    await waitFor(() => pids.every((pid: any) => !isAlive(pid)));
   } finally {
     controller.abort();
     pids.filter(isAlive).forEach(killPid);
@@ -433,7 +433,7 @@ test('generate_character_image：仅保存草稿，不虚报图片、任务或�
 test('generate_character_image：草稿写入失败明确返回失败', async (t) => {
   const root = tempWorkspace();
   const originalWrite = fs.writeFileSync;
-  t.mock.method(fs, 'writeFileSync', function (file, ...args) {
+  t.mock.method(fs, 'writeFileSync', function (file: any, ...args) {
     if (String(file).startsWith(path.join(root, 'generated-images'))) throw new Error('draft write failed');
     return originalWrite.call(this, file, ...args);
   });

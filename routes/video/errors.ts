@@ -6,7 +6,7 @@
  * isPlainObject / hasOwn 是请求体校验的通用守卫。
  */
 
-function serviceError(status: unknown, code: unknown, message: string|undefined, detail: unknown) {
+function serviceError(status: unknown, code: unknown, message: string|undefined, detail?: unknown) {
   let error = new Error(message);
   error.status = status;
   error.code = code;

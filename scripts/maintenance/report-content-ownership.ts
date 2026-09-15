@@ -59,7 +59,7 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
     }
     return target;
   }
-  function inspect(file: any, role: undefined, validate: any, text: any = false) {
+  function inspect(file: any, role?: any, validate?: any, text: any = false) {
     const row: any = { path: file, role, status: role, quality: 'unverified' };
     let value: any;
     try {

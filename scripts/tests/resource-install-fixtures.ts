@@ -11,19 +11,19 @@ const { stageResourcePackDelta, manifestContentIdentity }: typeof import('../lib
 const { packageIdentity }: typeof import('../lib/resource-install-policy') = require('../lib/resource-install-policy');
 const { createResourceInstaller }: typeof import('../lib/resource-install') = require('../lib/resource-install');
 
-function write(file, bytes) {
+function write(file: any, bytes: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, bytes);
 }
-function json(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-function snapshot(root) {
+function json(file: any) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
+function snapshot(root: any) {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap(entry => {
     const target = path.join(root, entry.name);
     if (entry.isSymbolicLink()) return [[target, '<link>']];
     return entry.isDirectory() ? snapshot(target) : [[target, fs.readFileSync(target).toString('hex')]];
   });
 }
-function approve(f, name, kind, targetManifest, sourceId = 'media') {
+function approve(f: any, name: any, kind: any, targetManifest: any, sourceId = 'media') {
   const folder = path.join(f.packs, name);
   const raw = fs.readFileSync(path.join(folder, 'manifest.json'));
   const delta = kind === 'delta' ? fs.readFileSync(path.join(folder, 'delta.json')) : null;
@@ -32,7 +32,7 @@ function approve(f, name, kind, targetManifest, sourceId = 'media') {
   f.policy.releases[name] = entry;
   return entry;
 }
-function fixture(t, { large = false } = {}) {
+function fixture(t: any, { large = false } = {}) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-resource-install-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const source = path.join(base, 'source');
@@ -71,8 +71,8 @@ function fixture(t, { large = false } = {}) {
   };
   return f;
 }
-function code(expected) {
-  return error => {
+function code(expected: any) {
+  return (error: any) => {
     assert.ok((Array.isArray(expected) ? expected : [expected]).includes(error.code), 'unexpected error: ' + error.code + ': ' + error.message);
     return true;
   };

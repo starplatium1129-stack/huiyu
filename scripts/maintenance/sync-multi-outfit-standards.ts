@@ -162,7 +162,7 @@ function buildMultiOutfitMatrix() {
 
   for (const p of popularRaw.characters || []) {
     const rawOutfits = p.outfits || [];
-    const formattedOutfits = rawOutfits.map((o: { id: string|string[]; name: string|string[]; default: unknown; prose: unknown; tokens: unknown; }, idx: number) => ({
+    const formattedOutfits = rawOutfits.map((o: any, idx: number) => ({
       id: o.id,
       name: o.name,
       isDefault: o.default || idx === 0,

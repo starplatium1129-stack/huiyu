@@ -128,7 +128,7 @@ function getAllItems() {
   return items;
 }
 
-async function auditSingleItem(item: { key: unknown; char: unknown; outfit: unknown; pers: unknown; targetPath: unknown; }) {
+async function auditSingleItem(item: any) {
   const pConfig = PERSPECTIVE_CONFIGS[item.pers.id];
   const isNude = item.outfit.isNsfw;
   const guide = isNude 

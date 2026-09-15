@@ -97,7 +97,7 @@ function hostAllowed(hostHeader: unknown, port?: unknown, tunnelHost?: string) {
   return false;
 }
 
-function hostGuard(config: { PORT?: unknown }, getTunnelUrl?: () => string): RequestHandler {
+function hostGuard(config: any, getTunnelUrl?: () => string): RequestHandler {
   return function (req, res, next) {
     let tunnelHost = '';
     try { tunnelHost = tunnelHostFromUrl(getTunnelUrl && getTunnelUrl()); } catch (error) {}

@@ -10,7 +10,7 @@ const { terminateTree }: typeof import('./command') = require('./command')
 
 const ELEMENT_KEY = 'element-6066-11e4-a52e-4f735466cecf'
 
-function delay(ms) {
+function delay(ms: any) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
@@ -27,7 +27,7 @@ function freePort() {
   })
 }
 
-function requestJson(port, method, pathname, body, timeoutMs = 30_000) {
+function requestJson(port: any, method: any, pathname: any, body: any, timeoutMs = 30_000) {
   return new Promise((resolve, reject) => {
     const payload = body == null ? null : Buffer.from(JSON.stringify(body))
     const request = http.request({
@@ -37,7 +37,7 @@ function requestJson(port, method, pathname, body, timeoutMs = 30_000) {
       path: pathname,
       headers: payload ? { 'Content-Type': 'application/json', 'Content-Length': payload.length } : {},
     }, response => {
-      const chunks = []
+      const chunks: any = []
       response.on('data', chunk => chunks.push(chunk))
       response.on('end', () => {
         const text = Buffer.concat(chunks).toString('utf8')
@@ -61,7 +61,7 @@ function requestJson(port, method, pathname, body, timeoutMs = 30_000) {
 }
 
 class WebDriverSession {
-  constructor(options) {
+  constructor(options: any) {
     this.port = options.port
     this.sessionId = options.sessionId
     this.capabilities = options.capabilities || {}
@@ -71,16 +71,16 @@ class WebDriverSession {
     return `/session/${encodeURIComponent(this.sessionId)}${suffix}`
   }
 
-  async command(method, suffix, body, timeoutMs) {
+  async command(method: any, suffix: any, body?: any, timeoutMs?: any) {
     const response = await requestJson(this.port, method, this.endpoint(suffix), body, timeoutMs)
     return response?.value
   }
 
-  execute(script, args = []) {
+  execute(script: any, args = []) {
     return this.command('POST', '/execute/sync', { script, args })
   }
 
-  async executeAsync(body, args = [], timeoutMs = 30_000) {
+  async executeAsync(body: any, args = [], timeoutMs = 30_000) {
     await this.command('POST', '/timeouts', { script: timeoutMs })
     const script = `
 const done = arguments[arguments.length - 1]
@@ -93,7 +93,7 @@ ${body}
     return result.value
   }
 
-  invoke(command, payload = {}, timeoutMs = 30_000) {
+  invoke(command: any, payload = {}, timeoutMs = 30_000) {
     return this.executeAsync(`
 const command = arguments[0]
 const payload = arguments[1]
@@ -102,32 +102,32 @@ return await window.__TAURI__.core.invoke(command, payload)
 `, [command, payload], timeoutMs)
   }
 
-  async find(selector) {
+  async find(selector: any) {
     const value = await this.command('POST', '/element', { using: 'css selector', value: selector })
     const id = value?.[ELEMENT_KEY]
     if (!id) throw new Error(`WebDriver element did not return an id: ${selector}`)
     return id
   }
 
-  async click(selector) {
+  async click(selector: any) {
     const id = await this.find(selector)
     await this.command('POST', `/element/${encodeURIComponent(id)}/click`, {})
   }
 
-  async fill(selector, text) {
+  async fill(selector: any, text: any) {
     const id = await this.find(selector)
     await this.command('POST', `/element/${encodeURIComponent(id)}/clear`, {})
     await this.command('POST', `/element/${encodeURIComponent(id)}/value`, { text: String(text), value: [...String(text)] })
   }
 
-  async screenshot(filePath) {
+  async screenshot(filePath: any) {
     const value = await this.command('GET', '/screenshot')
     fs.mkdirSync(path.dirname(filePath), { recursive: true })
     fs.writeFileSync(filePath, Buffer.from(String(value || ''), 'base64'))
     return filePath
   }
 
-  async waitFor(description, predicateBody, args = [], options = {}) {
+  async waitFor(description: any, predicateBody: any, args = [], options = {}) {
     const timeoutMs = options.timeoutMs || 30_000
     const intervalMs = options.intervalMs || 100
     const started = Date.now()
@@ -150,7 +150,7 @@ return await window.__TAURI__.core.invoke(command, payload)
 }
 
 class TauriDriver {
-  constructor(options) {
+  constructor(options: any) {
     this.executable = options.executable
     this.nativeDriver = options.nativeDriver
     this.environment = options.environment
@@ -176,9 +176,9 @@ class TauriDriver {
       windowsHide: true,
       stdio: ['ignore', 'pipe', 'pipe'],
     })
-    this.process.stdout.on('data', chunk => this.evidence?.commandOutput('tauri-driver', String(chunk)))
-    this.process.stderr.on('data', chunk => this.evidence?.commandOutput('tauri-driver', String(chunk)))
-    this.process.on('error', error => this.evidence?.commandOutput('tauri-driver-error', error.message))
+    this.process.stdout.on('data', (chunk: any) => this.evidence?.commandOutput('tauri-driver', String(chunk)))
+    this.process.stderr.on('data', (chunk: any) => this.evidence?.commandOutput('tauri-driver', String(chunk)))
+    this.process.on('error', (error: any) => this.evidence?.commandOutput('tauri-driver-error', error.message))
     const deadline = Date.now() + 20_000
     let lastError = ''
     while (Date.now() < deadline) {
@@ -196,7 +196,7 @@ class TauriDriver {
     throw new Error(`tauri-driver did not become ready: ${lastError}`)
   }
 
-  async createSession(options) {
+  async createSession(options: any) {
     const tauriOptions = {
       application: options.application,
       args: options.args || [],

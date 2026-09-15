@@ -56,14 +56,14 @@ const refRoot = (() => {
 
 // 一个引用「可解析」= 规范名在盘，或前缀名在盘（A 类改名后即落到规范名）。
 // dry-run 不落盘也用同一判定，保证试跑与实跑语义一致。
-function refResolvable(ref: { url: unknown; }, cid: string, outfitId: unknown) {
+function refResolvable(ref: any, cid: string, outfitId: unknown) {
   const target = refUrlToPath(ref.url);
   if (fs.existsSync(target)) return true;
   const prefixed = path.join(path.dirname(target), `${cid}_${outfitId}_${path.basename(target)}`);
   return fs.existsSync(prefixed);
 }
 
-function entryFullyOnDisk(entry: { references: unknown; outfitId: unknown; }, cid: string) {
+function entryFullyOnDisk(entry: any, cid: string) {
   return (entry.references || []).every((ref: unknown) => refResolvable(ref, cid, entry.outfitId));
 }
 
@@ -106,7 +106,7 @@ function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
       }
       if (entries.length > 1) deduped.push(`${cid}/${oid} (${entries.length} -> 1)`);
       // 重复条目间优先保留 default 形态，其余按原始顺序取首个资产齐全者
-      const preferred = valid.find((e: { isDefault: unknown; }) => e.isDefault) || valid[0];
+      const preferred = valid.find((e: any) => e.isDefault) || valid[0];
       kept.push(preferred);
     }
     survivingIds[cid] = new Set(kept.map((o: any) => o.outfitId));
@@ -116,14 +116,14 @@ function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
 }
 
 // standards 与 view 逐 outfitId 对齐（镜像契约：两侧集合必须一致，且各自无重复条目）
-function alignStandards(standards: { characters: unknown; }, survivingIds: { [x: string]: unknown; }) {
+function alignStandards(standards: any, survivingIds: { [x: string]: unknown; }) {
   const removed: any[] = [];
   for (const character of standards.characters) {
     const keep = survivingIds[character.id];
     if (!keep) continue; // view 已无此角色（当前两侧均为 50 角色，不应发生）
     const seen = new Set();
     const before = character.outfits.length;
-    character.outfits = character.outfits.filter((o: { id: unknown; }) => {
+    character.outfits = character.outfits.filter((o: any) => {
       if (!keep.has(o.id) || seen.has(o.id)) return false;
       seen.add(o.id);
       return true;
@@ -163,13 +163,13 @@ function countBroken(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
 function main() {
   const view = readJson(VIEW_FILE);
   const standards = readJson(STANDARDS_FILE);
-  const beforeRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: { references: unknown; }) => m + (o.references || []).length, 0), 0);
+  const beforeRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: any) => m + (o.references || []).length, 0), 0);
 
   const renames = repairDriftedFiles(view);
   const { removed, deduped, survivingIds } = pruneViewOutfits(view);
   const standardsRemoved = alignStandards(standards, survivingIds);
 
-  const afterRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: { references: unknown; }) => m + (o.references || []).length, 0), 0);
+  const afterRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: unknown, o: any) => m + (o.references || []).length, 0), 0);
   const stillBroken = countBroken(view);
 
   console.log(`[ref-url-repair] 漂移重命名: ${renames.length}`);

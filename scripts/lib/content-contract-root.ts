@@ -13,7 +13,7 @@ var REPO_ROOT = path.resolve(__dirname, '..', '..');
  * 调用方必须自备全套布局文件，缺文件按缺失报错，不允许回退读取生产数据。
  * 校验规则代码（src/utils、src/config 的 TS 模块）仍按代码仓库解析，与此根无关。
  */
-function resolveContentRoot(env: NodeJS.ProcessEnv) {
+function resolveContentRoot(env?: NodeJS.ProcessEnv) {
   env = env || process.env;
   return path.resolve(env.AICS_DATA_ROOT || env.AICS_APP_ROOT || REPO_ROOT);
 }

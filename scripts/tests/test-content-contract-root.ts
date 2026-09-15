@@ -36,7 +36,7 @@ function baseEnv() {
   return env;
 }
 
-function runCli(overrides) {
+function runCli(overrides: any) {
   return spawnSync(process.execPath, [CLI], { encoding: 'utf8', env: Object.assign(baseEnv(), overrides) });
 }
 
@@ -79,11 +79,11 @@ test('隔离 CLI 的 fs 调用不读取仓库数据域且不执行写入', (t) =
   assert.deepEqual(snapshot(root), before);
 });
 
-function writeJson(file, value) {
+function writeJson(file: any, value: any) {
   fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n');
 }
 
-function snapshot(root) {
+function snapshot(root: any) {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap((entry) => {
     const full = path.join(root, entry.name);
     if (entry.isSymbolicLink()) return [[full, '<link>']];
@@ -115,7 +115,7 @@ const POPULAR_CHARACTER = {
   }],
 };
 
-function fixtureBlueprint(index, adult) {
+function fixtureBlueprint(index: any, adult: any) {
   return {
     id: 'bp-fixture-' + String(index).padStart(2, '0'),
     title: 'Fixture blueprint ' + index,
@@ -143,7 +143,7 @@ const BLUEPRINTS = Array.from({ length: 21 }, (_, i) => fixtureBlueprint(i + 1, 
  * 构建可通过全部契约检查的完整布局根。sceneCount = characterCount + 1
  * （每个角色一景 + 一景 triad），两套参数产生可区分的成功行与 DATA_VERSION。
  */
-function buildValidFixture(t, options) {
+function buildValidFixture(t: any, options: any) {
   const characterIds = Array.from({ length: options.characterCount }, (_, i) => (i === 0 ? 'hana' : 'hana' + (i + 1)));
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'content-contract-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
@@ -191,7 +191,7 @@ function buildValidFixture(t, options) {
     prompt: 'fixture triad prompt',
   });
 
-  const shard = (char) => scenes.filter((scene) => scene.char === char);
+  const shard = (char: any) => scenes.filter((scene) => scene.char === char);
   writeJson(path.join(dataDir, 'characters.json'), characters);
   writeJson(path.join(dataDir, 'loras.json'), loras);
   writeJson(path.join(dataDir, 'scenes.json'), scenes);
@@ -221,7 +221,7 @@ function buildValidFixture(t, options) {
 }
 
 /** 只有目录、没有任何布局文件的坏根：用于证明选错根按缺失报错而非假通过。 */
-function buildEmptyLayoutRoot(t) {
+function buildEmptyLayoutRoot(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'content-contract-empty-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const root = path.join(base, 'app-root');
@@ -384,7 +384,7 @@ test('validateContent 导出保持无环境参数兼容，既有契约规则保�
   assert.ok(broken.includes('characters.json must contain at least one character'));
   assert.ok(broken.includes('loras.json must contain at least one LoRA'));
   assert.ok(broken.includes('scenes.json must be an array'));
-  assert.ok(broken.some((message) => message.includes('scenes.json must be an array')));
+  assert.ok(broken.some((message: any) => message.includes('scenes.json must be an array')));
 });
 
 test('注册入口 check:content 转发统一根环境并在夹具上通过', (t) => {

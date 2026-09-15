@@ -12,8 +12,8 @@ const { report, state }: typeof import('../maintenance/audit-delivery') = requir
 const CLI = path.resolve(__dirname, '../maintenance/capture-delivery.js');
 const AUDIT = path.resolve(__dirname, '../maintenance/audit-delivery.js');
 const MAIN = ['installation', 'deviceAcceptance', 'modelAcceptance'];
-const run = args => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', windowsHide: true });
-function mainResults(root, fields = MAIN, baseline = `${EVIDENCE_DIR}/office.json`) {
+const run = (args: any) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', windowsHide: true });
+function mainResults(root: any, fields = MAIN, baseline = `${EVIDENCE_DIR}/office.json`) {
   const value = { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(root, baseline))) };
   for (const field of fields) {
     const name = `${EVIDENCE_DIR}/${field}.log`;
@@ -24,8 +24,8 @@ function mainResults(root, fields = MAIN, baseline = `${EVIDENCE_DIR}/office.jso
   fs.writeFileSync(path.join(root, file), JSON.stringify(value));
   return file;
 }
-const audit = (root, evidence, extra = {}) => report({ root, evidence, require: [], builds: [], ...extra });
-function writeResults(f, value) {
+const audit = (root: any, evidence: any, extra = {}) => report({ root, evidence, require: [], builds: [], ...extra });
+function writeResults(f: any, value: any) {
   f.write(f.resultPath, { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(f.root, f.baselinePath))), ...value });
 }
 
@@ -37,10 +37,10 @@ test('办公机 manifest 分开 commit/source/build/environment/install，HEAD �
   assert.equal(document.handoff.environment.office.machine, 'office');
   assert.equal(document.handoff.environment.main.status, 'pending');
   assert.equal(document.handoff.install.entry, 'deploy-desktop.bat');
-  assert.deepEqual(document.handoff.requiredMain.map(v => v.field), MAIN);
+  assert.deepEqual(document.handoff.requiredMain.map((v: any) => v.field), MAIN);
   const r = f.audit(f.officePath, { 'check-head': true });
   assert.equal(r.repositoryHead.status, 'matched'); assert.equal(r.exitCode, 3);
-  assert.ok(r.handoff.requiredMain.every(v => v.status === 'pending'));
+  assert.ok(r.handoff.requiredMain.every((v: any) => v.status === 'pending'));
 });
 test('完整 office→main 临时双仓交接：先保持 pending，再绑定显式主力夹具结果', t => {
   const f = fixture(t), office = f.office(), mainRoot = temp(t);
@@ -61,7 +61,7 @@ test('完整 office→main 临时双仓交接：先保持 pending，再绑定显
   const completedPath = `${EVIDENCE_DIR}/main.json`; saveJson(mainRoot, completedPath, completed);
   const after = tree(mainRoot), r = audit(mainRoot, completedPath);
   assert.equal(r.exitCode, 0, JSON.stringify(r.errors)); assert.equal(r.handoff.status, 'passed');
-  assert.ok(r.handoff.requiredMain.every(v => v.status === 'passed'));
+  assert.ok(r.handoff.requiredMain.every((v: any) => v.status === 'passed'));
   assert.deepEqual(tree(mainRoot), after); assert.equal(f.audit().exitCode, 3);
 });
 test('主力部分结果不补齐模型/设备，变更构建使已通过安装重新陈旧', t => {
@@ -75,7 +75,7 @@ test('主力部分结果不补齐模型/设备，变更构建使已通过安装�
   f.write('dist/index.html', 'changed after partial install fixture');
   const stale = f.audit(name); assert.equal(stale.exitCode, 1);
   assert.equal(stale.freshness.gates.installation.effectiveStatus, 'stale');
-  assert.ok(!stale.passed.some(v => v.field === 'installation'));
+  assert.ok(!stale.passed.some((v: any) => v.field === 'installation'));
 });
 test('办公机不能登记主力通过，手改 manifest 也不会被 audit 接受', t => {
   const f = fixture(t), office = f.office(); const record = mainResults(f.root);
@@ -84,7 +84,7 @@ test('办公机不能登记主力通过，手改 manifest 也不会被 audit 接
   main.handoff.stage = 'office'; main.environment = office.environment;
   f.write(`${EVIDENCE_DIR}/forged-office.json`, main);
   const r = f.audit(`${EVIDENCE_DIR}/forged-office.json`);
-  assert.equal(r.exitCode, 1); assert.ok(!r.passed.some(v => MAIN.includes(v.field)));
+  assert.equal(r.exitCode, 1); assert.ok(!r.passed.some((v: any) => MAIN.includes(v.field)));
 });
 test('主力接收同 HEAD 旧构建或旧源码失败；未知 Git 环境不得补最终提交', t => {
   for (const name of ['src/main.js', 'dist/index.html']) {
@@ -102,7 +102,7 @@ test('缺失/改变的阶段索引文件报错，阶段文件不能覆盖或自�
     const file = document.handoff[field].path;
     fs.unlinkSync(path.join(f.root, file));
     const r = f.audit(); assert.equal(r.exitCode, 1);
-    assert.ok(r.errors.some(v => v.field === 'handoff' && v.message.includes(field)));
+    assert.ok(r.errors.some((v: any) => v.field === 'handoff' && v.message.includes(field)));
   }
   const f = fixture(t); f.office(); f.write(f.resultPath, { schemaVersion: 1, replaced: true });
   assert.equal(f.audit().exitCode, 1);
@@ -194,7 +194,7 @@ test('相同 commit/build 但不同 source 的版本化证据比较失败，不�
   const other = capture(f.root, f.initial), name = `${EVIDENCE_DIR}/different-source.json`; saveJson(f.root, name, other);
   const r = f.audit(name, { comparisons: [f.officePath] });
   assert.equal(r.exitCode, 1); assert.match(r.comparisons[0].message, /source.sha256/);
-  assert.ok(r.handoff.requiredMain.every(v => v.status === 'pending'));
+  assert.ok(r.handoff.requiredMain.every((v: any) => v.status === 'pending'));
 });
 test('未绑定或绑定另一快照的历史成功记录不能嫁接为当前通过', t => {
   const f = fixture(t); saveJson(f.root, f.baselinePath, capture(f.root, f.initial));

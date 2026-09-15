@@ -5,7 +5,7 @@ const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-re
 const { inspectMaintenanceLease, claimRecovery }: typeof import('./maintenance-lease') = require('./maintenance-lease');
 const { readBackup, saveSnapshotBackup, restoreEntries }: typeof import('./maintenance-recovery-backup') = require('./maintenance-recovery-backup');
 
-function previewMaintenanceRecovery(options) {
+function previewMaintenanceRecovery(options: any) {
   const ctx = io.context(options);
   const state = inspectMaintenanceLease(options);
   const conflicts = [];
@@ -23,7 +23,7 @@ function previewMaintenanceRecovery(options) {
   for (const item of backup?.entries || []) {
     try {
       const current = io.fileState(item.file);
-      const savedFinal = terminal ? journal.final?.find(entry => entry.source === item.file) : null;
+      const savedFinal = terminal ? journal.final?.find((entry: any) => entry.source === item.file) : null;
       const desired = terminal ? savedFinal && { exists: savedFinal.exists, sha256: savedFinal.sha256, size: savedFinal.size } : item.expected;
       if (!desired || (terminal && !io.equal(current, desired))) conflicts.push({ code: 'MAINTENANCE_CONFLICT', message: '已完成事务的最终文件发生漂移：' + item.file });
       entries.push({ source: item.file, current, desired, action: terminal ? 'keep' : !item.exists ? 'remove-if-present' : 'restore' });
@@ -41,7 +41,7 @@ function previewMaintenanceRecovery(options) {
   return plan.executable ? io.seal(plan, io.readKey(ctx)) : plan;
 }
 
-function applyMaintenanceRecovery(options, signedPlan) {
+function applyMaintenanceRecovery(options: any, signedPlan: any) {
   const ctx = io.context(options);
   const plan = io.unseal(signedPlan, io.readKey(ctx));
   if (plan.schemaVersion !== 1 || plan.kind !== 'maintenance-recovery-plan' || !plan.executable || plan.conflicts.length
@@ -56,7 +56,7 @@ function applyMaintenanceRecovery(options, signedPlan) {
     for (const item of plan.entries) if (!io.equal(io.fileState(io.targetPath(ctx, item.source)), item.current)) throw io.failure('MAINTENANCE_CONFLICT', '恢复抢锁后当前字节发生变化：' + item.source);
     if (plan.action === 'restore') {
       const backup = readBackup(options, plan.backupId, plan.backupSha256);
-      const snapshot = io.snapshotFiles(plan.entries.map(item => item.source));
+      const snapshot = io.snapshotFiles(plan.entries.map((item: any) => item.source));
       const undoDir = saveSnapshotBackup(snapshot, ctx.backupRoot, 'pre-recovery', options);
       undo = readBackup(options, io.path.basename(undoDir));
       claim.update({ phase: 'recovering', recovery: { pid: process.pid, nonce: claim.nonce, undo: { id: undo.id, sha256: undo.sha256 } } });
@@ -69,7 +69,7 @@ function applyMaintenanceRecovery(options, signedPlan) {
       }
       for (const item of backup.entries) if (!io.equal(io.fileState(item.file), item.expected)) throw io.failure('MAINTENANCE_INCONSISTENT', '恢复后全量字节核验失败');
     }
-    const final = plan.entries.map(item => ({ source: item.source, ...io.fileState(item.source) }));
+    const final = plan.entries.map((item: any) => ({ source: item.source, ...io.fileState(item.source) }));
     claim.update({ phase: 'recovered', noMutation: plan.backupId === null, final });
     claim.releaseRecovered();
     return { ok: true, dataIntegrity: 'restored', transactionId: plan.transactionId, action: plan.action, undoBackup: undo?.id || null, restoredFiles: plan.action === 'restore' ? plan.entries.length : 0 };

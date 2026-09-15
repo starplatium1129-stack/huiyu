@@ -14,13 +14,13 @@ const LABELS = {
 };
 const KIND_LABELS = { untracked: '未跟踪', uncommitted: '未提交' };
 
-const isObject = (v: null) => v !== null && typeof v === 'object' && !Array.isArray(v);
+const isObject = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const label = (status: string) => (typeof status === 'string' && LABELS[status]) || status;
 const statusLabel = (v: string) => (typeof v === 'string' ? label(v) : '缺失');
-const count = (r: never, key: string) => (Array.isArray(r[key]) ? r[key].length : 0);
+const count = (r: any, key: string) => (Array.isArray(r[key]) ? r[key].length : 0);
 
 // 任意值安全转文字；循环引用等 JSON.stringify 失败时退回 String()，不抛出。
-function text(value: null|undefined) {
+function text(value: any) {
   if (typeof value === 'string') return value;
   if (value === undefined || value === null) return '';
   try { return JSON.stringify(value); } catch { return String(value); }
@@ -31,7 +31,7 @@ function short(value: string|unknown[]|null|undefined) {
   return typeof value === 'string' && /^[a-f\d]{40,64}$/i.test(value) ? `${value.slice(0, 12)}…` : text(value);
 }
 
-function entryLine(entry: { status: string; file: unknown; field: unknown; message: unknown; }) {
+function entryLine(entry: any) {
   const head = [
     entry && typeof entry.status === 'string' ? `[${label(entry.status)}]` : '',
     entry && typeof entry.file === 'string' && entry.file ? entry.file : '',
@@ -56,21 +56,21 @@ function pendingTitle(entries: string|unknown[]) {
   return `待验 (${entries.length}；${[...counts].map(([s, n]) => `${label(s)} ${n}`).join('、')}):`;
 }
 
-function comparisonLine(c: { message: unknown; sharedIds: unknown[]; status: unknown; file: unknown; }) {
+function comparisonLine(c: any) {
   const detail = text(c && c.message)
     || (Array.isArray(c && c.sharedIds) && c.sharedIds.length ? `共有标识: ${c.sharedIds.join(', ')}` : '');
   const head = `[${statusLabel(c && c.status)}] ${text(c && c.file)}`;
   return `  ${detail ? `${head} — ${detail}` : head}`;
 }
 
-function headLines(h: { status: unknown; message: null|undefined; commit: unknown; evidenceCommit: unknown; }) {
+function headLines(h: any) {
   const lines = [`仓库 HEAD: [${statusLabel(h.status)}] ${text(h.message) || `状态: ${statusLabel(h.status)}`}`];
   const commits = [h.commit ? `HEAD ${short(h.commit)}` : '', h.evidenceCommit ? `证据 ${short(h.evidenceCommit)}` : ''].filter(Boolean);
   if (commits.length) lines.push(`  ${commits.join(' · ')}`);
   return lines;
 }
 
-function worktreeLines(w: { status: unknown; message: null|undefined; changedFiles: unknown; }) {
+function worktreeLines(w: any) {
   const lines = [`工作树: [${statusLabel(w.status)}] ${text(w.message)}`.trimEnd()];
   const changed = Array.isArray(w.changedFiles) ? w.changedFiles : [];
   for (const c of changed.slice(0, 10)) {
@@ -80,7 +80,7 @@ function worktreeLines(w: { status: unknown; message: null|undefined; changedFil
   return lines;
 }
 
-function recordLine(rec: { commit: unknown; baseline: unknown; scope: unknown; environment: null; file: unknown; }) {
+function recordLine(rec: any) {
   const parts = [];
   if (rec && typeof rec.commit === 'string' && rec.commit) parts.push(`commit ${short(rec.commit)}`);
   if (rec && typeof rec.baseline === 'string' && rec.baseline) parts.push(`baseline ${short(rec.baseline)}`);
@@ -92,19 +92,19 @@ function recordLine(rec: { commit: unknown; baseline: unknown; scope: unknown; e
   return `  ${file}${parts.length ? ` — ${parts.join(' · ')}` : ''}`.trimEnd();
 }
 
-function limitationLine(item: null|undefined) {
+function limitationLine(item: any) {
   const message = text(isObject(item) && item.message !== undefined ? item.message : item);
   const source = isObject(item) ? [item.file, item.field].filter(v => typeof v === 'string' && v).join(' · ') : '';
   return `  - ${message}${source ? `（${source}）` : ''}`;
 }
 
-function recommendationLine(rec: { command: (null|undefined)[]; nature: (null|undefined)[]; name: unknown; }) {
+function recommendationLine(rec: any) {
   const command = Array.isArray(rec && rec.command) ? rec.command.map(text).join(' ') : text(rec && rec.command);
   const nature = Array.isArray(rec && rec.nature) ? rec.nature.map(text).join(', ') : text(rec && rec.nature);
   return `  - ${text(rec && rec.name) || '未命名命令'}${nature ? `（nature: ${nature}）` : ''}: ${command}`;
 }
 
-function formatReport(r: null|undefined) {
+function formatReport(r: any) {
   if (!isObject(r)) return `交付审计状态: 未知\n（报告对象不可解析: ${text(r) || '空'}）`;
   const lines = [];
   const exit = Number.isFinite(r.exitCode) ? `（退出码 ${r.exitCode}）` : '';

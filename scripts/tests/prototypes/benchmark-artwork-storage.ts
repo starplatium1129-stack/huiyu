@@ -12,11 +12,11 @@ const { build }: typeof import('esbuild') = require('esbuild');
 const { openArtworkCandidate }: typeof import('./artwork-sqlite') = require('./artwork-sqlite');
 
 const appRoot = path.resolve(__dirname, '../../..');
-const histories = count => Array.from({ length: count }, (_, index) => ({
+const histories = (count: any) => Array.from({ length: count }, (_, index) => ({
   id: `work-${index}`, image_id: `image-${index}`, favorite: false,
   prompt: 'Synthetic isolated benchmark metadata. '.repeat(8), created_at: 1_700_000_000_000 + index,
 }));
-const timed = action => { const start = performance.now(); action(); return performance.now() - start; };
+const timed = (action: any) => { const start = performance.now(); action(); return performance.now() - start; };
 
 async function main() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-storage-benchmark-'));
@@ -54,7 +54,7 @@ async function main() {
         try {
           const page = await context.newPage();
           await page.goto(`http://127.0.0.1:${server.address().port}`);
-          const indexedDB = await page.evaluate(async ({ history, projects }) => {
+          const indexedDB = await page.evaluate(async ({ history, projects }: any) => {
             const api = window.storageFixture;
             const start = performance.now();
             await api.kvSetMany([
@@ -68,7 +68,7 @@ async function main() {
             const patch30Ms = performance.now() - patchStart;
             const readStart = performance.now();
             const result = await api.kvGet(api.ARTWORK_HISTORY_KEY);
-            return { publishMs, patch30Ms, readAllMs: performance.now() - readStart, count: result.length, favorite: result.filter(entry => entry.favorite).length };
+            return { publishMs, patch30Ms, readAllMs: performance.now() - readStart, count: result.length, favorite: result.filter((entry: any) => entry.favorite).length };
           }, { history, projects });
           const candidate = openArtworkCandidate(path.join(root, `metadata-${count}-${trial}`));
           let sqlite;
@@ -77,7 +77,7 @@ async function main() {
             const patch30Ms = timed(() => { for (let index = 0; index < 30; index += 1) candidate.patch(`work-${index}`, { favorite: true }); });
             let result;
             const readAllMs = timed(() => { result = candidate.history(); });
-            sqlite = { publishMs, patch30Ms, readAllMs, count: result.length, favorite: result.filter(entry => entry.favorite).length };
+            sqlite = { publishMs, patch30Ms, readAllMs, count: result.length, favorite: result.filter((entry: any) => entry.favorite).length };
           } finally { candidate.close(); }
           assert.equal(indexedDB.count, count); assert.equal(sqlite.count, count);
           assert.equal(indexedDB.favorite, 30); assert.equal(sqlite.favorite, 30);

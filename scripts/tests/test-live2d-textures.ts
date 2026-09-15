@@ -9,7 +9,7 @@ const express: typeof import('express') = require('express');
 const { createLive2dTextureService }: typeof import('../../services/live2d-textures') = require('../../services/live2d-textures');
 const { createLive2dRouter }: typeof import('../../routes/live2d') = require('../../routes/live2d');
 
-async function fixture(t) {
+async function fixture(t: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-live2d-textures-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const dir = path.join(root, 'nene');

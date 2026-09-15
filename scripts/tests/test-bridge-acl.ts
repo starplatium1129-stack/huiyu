@@ -38,7 +38,7 @@ function capability(rel: string) {
   return JSON.parse(read(rel));
 }
 
-function permissionIds(cap: { permissions: unknown; }) {
+function permissionIds(cap: any) {
   return new Set((cap.permissions || []).filter((p: string) => p.startsWith('allow-')));
 }
 

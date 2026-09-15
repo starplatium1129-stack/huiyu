@@ -23,11 +23,11 @@ const blueprintStore: typeof import('../lib/blueprint-store') = require('../lib/
 const popularStore: typeof import('../lib/popular-store') = require('../lib/popular-store');
 const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 const { isSceneId }: typeof import('../lib/scene-id') = require('../lib/scene-id');
-const read = name => JSON.parse(fs.readFileSync(path.join(root, name), 'utf8'));
-const write = (name, value) => fs.writeFileSync(path.join(root, name), JSON.stringify(value, null, 2) + '\n');
-const describe = body => JSON.stringify({ ok: body.ok, error: body.error, conflict: body.conflict, count: body.count }).slice(0, 1600);
+const read = (name: any) => JSON.parse(fs.readFileSync(path.join(root, name), 'utf8'));
+const write = (name: any, value: any) => fs.writeFileSync(path.join(root, name), JSON.stringify(value, null, 2) + '\n');
+const describe = (body: any) => JSON.stringify({ ok: body.ok, error: body.error, conflict: body.conflict, count: body.count }).slice(0, 1600);
 
-function copyJson(source, target) {
+function copyJson(source: any, target: any) {
   fs.mkdirSync(target, { recursive: true });
   for (const entry of fs.readdirSync(source, { withFileTypes: true })) {
     if (entry.isSymbolicLink()) continue;
@@ -68,13 +68,13 @@ function bytes(dir = root, result = {}) {
   return result;
 }
 
-async function app(run, packaged = false) {
+async function app(run: any, packaged = false) {
   const server = express().use(createMaintenanceRouter({
     ROOT_DIR: root, RUNTIME_ROOT: path.join(root, 'runtime'), SCENE_SHOWCASE_DIR: null, DESKTOP_PACKAGED: packaged,
   }).router).listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
   const base = 'http://127.0.0.1:' + server.address().port;
-  const request = async (url, body) => {
+  const request = async (url: any, body: any) => {
     const response = await fetch(base + url, body === undefined ? {} : {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
     });
@@ -86,14 +86,14 @@ async function app(run, packaged = false) {
 
 const stateUrl = '/api/maintenance/scenes-state';
 const changesUrl = '/api/maintenance/scenes/changes';
-const delta = (baseVersion, scenes = [], blueprints) => ({ baseVersion, changeSet: {
+const delta = (baseVersion?: any, scenes = [], blueprints?: any) => ({ baseVersion, changeSet: {
   version: 1, scenes: { upsert: scenes, remove: [] },
   ...(blueprints ? { blueprints: { upsert: blueprints, remove: [] } } : {}),
 } });
 
 test('preview validates changes without creating backups or modifying source/products', async () => {
   seed();
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const scene = structuredClone(state.snapshot.scenes[0]);
     scene.story += '（隔离编辑）';
@@ -104,7 +104,7 @@ test('preview validates changes without creating backups or modifying source/pro
     assert.equal(result.status, 200, describe(result.body));
     assert.deepEqual(result.body.updated, [scene.id]);
     assert.deepEqual(result.body.blueprints.updated, [bp.id]);
-    assert.ok(result.body.related.some(item => item.id === scene.id));
+    assert.ok(result.body.related.some((item: any) => item.id === scene.id));
     assert.ok(result.body.unknown.length);
     assert.deepEqual(bytes(), before);
     assert.equal(fs.existsSync(path.join(root, 'runtime')), false);
@@ -113,7 +113,7 @@ test('preview validates changes without creating backups or modifying source/pro
 
 test('HTTP blueprint save persists canonical shards, companions and survives fresh-process rebuild', async () => {
   seed();
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const bp = structuredClone(state.snapshot.blueprints[0]);
     bp.description += ' [office persisted description]';
@@ -149,7 +149,7 @@ test('late failure rolls back new/deleted blueprint shards, scenes, metadata and
   manifest.files.push({ file: 'office-fixture.json', franchise: character.franchise, count: 1 });
   write('data/popular/manifest.json', manifest);
   write('data/popular/office-fixture.json', { version: 1, franchise: character.franchise, characters: [character] });
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const source = blueprintStore.loadBlueprintShards().sources[0];
     // The new fixture character must also own the selected outfit. This test reaches
@@ -172,7 +172,7 @@ test('late failure rolls back new/deleted blueprint shards, scenes, metadata and
 
 test('real content validation failure rolls back a structurally valid but invalid blueprint', async () => {
   seed();
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const bp = structuredClone(state.snapshot.blueprints[0]);
     bp.description += ' official_cg';
@@ -187,7 +187,7 @@ test('real content validation failure rolls back a structurally valid but invali
 
 test('concurrent changes share the same lock and reject stale blueprint/source baselines', async () => {
   seed();
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const bp = state.snapshot.blueprints[0];
     const replies = await Promise.all(['first', 'second'].map(label => request(changesUrl,
@@ -211,13 +211,13 @@ test('sc1000 can be saved, read, retired and never reused; malformed IDs are rej
   const retired = read('data/retired-scenes.json');
   for (let number = 307; number <= 999; number++) retired.records.push({ id: 'sc' + number, reason: 'fixture history' });
   write('data/retired-scenes.json', retired);
-  await app(async request => {
+  await app(async (request: any) => {
     let state = (await request(stateUrl)).body;
     assert.equal(state.nextSceneId, 'sc1000');
     const added = { ...state.snapshot.scenes[0], id: 'sc1000', title: '隔离编号边界' };
     let result = await request(changesUrl, delta(state.version, [added]));
     assert.equal(result.status, 200, describe(result.body));
-    assert.ok(result.body.snapshot.scenes.some(scene => scene.id === 'sc1000'));
+    assert.ok(result.body.snapshot.scenes.some((scene: any) => scene.id === 'sc1000'));
     state = (await request(stateUrl)).body;
     const removal = delta(state.version); removal.changeSet.scenes.remove = ['sc1000'];
     result = await request(changesUrl, removal);
@@ -234,10 +234,10 @@ test('sc1000 can be saved, read, retired and never reused; malformed IDs are rej
 
 test('pinned fields, invalid removals, mixed payloads and packaged writes stay refused', async () => {
   seed();
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const pinId = Object.keys(read('data/prompt-pinned-scenes.json').scenes)[0];
-    const pinned = structuredClone(state.snapshot.scenes.find(scene => scene.id === pinId));
+    const pinned = structuredClone(state.snapshot.scenes.find((scene: any) => scene.id === pinId));
     pinned.prompt += ' forbidden fixture change';
     const before = bytes();
     assert.equal((await request(changesUrl, delta(state.version, [pinned]))).status, 400);
@@ -246,7 +246,7 @@ test('pinned fields, invalid removals, mixed payloads and packaged writes stay r
     assert.equal((await request(changesUrl, { ...delta(state.version), scenes: state.snapshot.scenes })).status, 400);
     assert.deepEqual(bytes(), before);
   });
-  await app(async request => {
+  await app(async (request: any) => {
     for (const url of [changesUrl, '/api/maintenance/scenes/preview', '/api/maintenance/scenes/import']) {
       assert.equal((await request(url, delta(1))).status, 501);
     }
@@ -257,7 +257,7 @@ after(() => fs.rmSync(root, { recursive: true, force: true }));
 
 test('preview rejects a new outfit binding that does not belong to the character', async () => {
   seed();
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const bp = { ...state.snapshot.blueprints[0], outfitId: 'missing_fixture_outfit' };
     const before = bytes();
@@ -271,7 +271,7 @@ test('preview rejects a new outfit binding that does not belong to the character
 
 test('rollback leaves an unrelated newly created source file untouched', async () => {
   seed();
-  await app(async request => {
+  await app(async (request: any) => {
     const state = (await request(stateUrl)).body;
     const scene = { ...state.snapshot.scenes[0], story: state.snapshot.scenes[0].story + ' fixture edit' };
     const before = bytes();

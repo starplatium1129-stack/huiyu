@@ -25,7 +25,7 @@ test('explicit SFW composition survives core and showcase guards without relaxin
   const policy: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
   const generator: typeof import('../maintenance/generate-popular-showcase-anima11.js') = require('../maintenance/generate-popular-showcase-anima11.js');
   const profile = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles.find(p => p.model_id === 'anima-miaomiao-v1.2');
-  const tokens = text => text.split(',').map(t => t.trim().toLowerCase().replaceAll('_', ' '));
+  const tokens = (text: any) => text.split(',').map((t: any) => t.trim().toLowerCase().replaceAll('_', ' '));
   for (const id of ['marcille_donato_sfw_b9_01', 'togawa_sakiko_sfw_b9_06', 'illyasviel_grail_war']) {
     const b = blueprints.find(b => b.id === id), c = characters.find(c => c.id === b.characterId);
     const p = generator.buildCandidate(c, b, profile, 1), neg = tokens(p.negative);
@@ -368,7 +368,7 @@ test('scene coverage: every outfit referenced, >=1 iconic + >=1 daily per charac
       assert.ok(usedOutfits.has(outfit.id),
         character.id + ' outfit ' + outfit.id + ' must be referenced by at least one scene');
     });
-    var hasTag = function (tag) {
+    var hasTag = function (tag: any) {
       return owned.some(function (blueprint) {
         return Array.isArray(blueprint.coverageTags) && blueprint.coverageTags.includes(tag);
       });
@@ -605,7 +605,7 @@ test('adult blueprints compile as explicit adult versions in both engines', func
 
 test('blueprint lighting: explicit emitters outrank prose colors, titles and time-only tags', function () {
   const base = blueprints.find(b => b.id === 'raiden_shogun_narukami_shrine');
-  const decide = fields => popular.inferBlueprintDecisions({ ...base, ...fields }).lighting;
+  const decide = (fields: any) => popular.inferBlueprintDecisions({ ...base, ...fields }).lighting;
   assert.strictEqual(decide({ lighting: 'soft daylight', timeOfDay: 'day', promptProse: 'Saber from Fate/stay night with golden eyes.', sceneTags: [] }), null);
   assert.strictEqual(decide({ lighting: 'blue neon through the window', timeOfDay: 'night', sceneTags: ['night', 'golden_eyes'] }), null);
   assert.strictEqual(decide({ lighting: '月光透过窗户', timeOfDay: 'night', sceneTags: [] }), 'moon');

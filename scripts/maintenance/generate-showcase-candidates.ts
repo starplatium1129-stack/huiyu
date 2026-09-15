@@ -421,7 +421,7 @@ function imageInfo(buffer: any) {
 
 function waiProfile() { return profileById(WAI_PROFILE_ID); }
 
-function buildArtistPrompt(artistTag: any, override: any) {
+function buildArtistPrompt(artistTag: any, override?: any) {
   const profile: any = waiProfile();
   const artists = override && override.artistTag
     ? [override.artistTag]

@@ -24,7 +24,7 @@ const PACKS_REL = path.join('scripts', 'archive', 'resource-packs');
 
 /** 记录型 fs：调用穿透真实 fs 并记录目标路径；hooks 可替换个别操作（模拟源变化/故障）。 */
 function recordingIo(hooks = {}) {
-  const calls = [];
+  const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
     io[op] = (...args) => {
@@ -37,19 +37,19 @@ function recordingIo(hooks = {}) {
   return { io, calls };
 }
 
-function insideRoot(rootReal, target) {
+function insideRoot(rootReal: any, target: any) {
   const rel = path.relative(rootReal, target);
   return rel !== '..' && !rel.startsWith('..' + path.sep) && !path.isAbsolute(rel);
 }
 
-function assertNoAccessOutside(calls, rootReal) {
+function assertNoAccessOutside(calls: any, rootReal: any) {
   for (const call of calls) {
     assert.ok(insideRoot(rootReal, path.resolve(call.target)), `${call.op} 越界访问了 ${call.target}`);
   }
 }
 
 /** 快照目录内容（不跟随链接；链接只记占位）。仅用于本测试创建的夹具目录。 */
-function snapshot(dir) {
+function snapshot(dir: any) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(dir, e.name);
     if (e.isSymbolicLink()) return [[p, '<link>']];
@@ -57,7 +57,7 @@ function snapshot(dir) {
   });
 }
 
-function buildFixture(t) {
+function buildFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const root = path.join(base, 'root');
@@ -75,21 +75,21 @@ function buildFixture(t) {
   return { base, root, outside, assets: path.join(root, 'assets'), manifest: path.join(root, 'artifacts/manifest.json') };
 }
 
-function destPath(root, name) {
+function destPath(root: any, name: any) {
   return path.join(root, PACKS_REL, name);
 }
 
-function cli(args) {
+function cli(args: any) {
   return spawnSync(process.execPath, [path.join(repo, 'scripts', 'maintenance', 'stage-resource-pack.js'), ...args], { encoding: 'utf8' });
 }
 
-function writeManifestFile(root, manifest, name) {
+function writeManifestFile(root: any, manifest: any, name: any) {
   const file = path.join(root, 'artifacts', name);
   fs.writeFileSync(file, typeof manifest === 'string' ? manifest : JSON.stringify(manifest));
   return path.join(root, 'artifacts', name);
 }
 
-function mutateManifest(fx, mutator, name = 'bad.json') {
+function mutateManifest(fx: any, mutator: any, name = 'bad.json') {
   const manifest = JSON.parse(fs.readFileSync(fx.manifest, 'utf8'));
   return writeManifestFile(fx.root, mutator(manifest), name);
 }
@@ -112,7 +112,7 @@ test('预览零写入：不创建目标与 packs 目录，源夹具不变，计�
   assert.equal(plan.manifestPath, 'artifacts/manifest.json');
   assert.deepEqual(plan.totals, { files: 3, bytes: 1 + 4 + 13 });
   assert.equal(plan.verification.verified, 3);
-  assert.deepEqual(plan.entries.map((e) => e.path), ['assets/alpha.txt', 'assets/dir/bravo.bin', 'assets/dir/charlie.txt']);
+  assert.deepEqual(plan.entries.map((e: any) => e.path), ['assets/alpha.txt', 'assets/dir/bravo.bin', 'assets/dir/charlie.txt']);
   assert.equal(fs.existsSync(path.join(fx.root, 'scripts')), false, '预览不得创建 scripts 树');
   assert.deepEqual(snapshot(fx.root), before, '预览零写入');
 });
@@ -166,7 +166,7 @@ test('同名目标拒绝：空目录、已有文件与链接形态均不覆盖',
     const parsed = JSON.parse(r.stdout);
     assert.equal(parsed.ok, false);
     if (mode.includes('--apply')) assert.equal(parsed.destinationCreated, false);
-    assert.ok(parsed.errors.some((e) => e.code === 'destination-exists'));
+    assert.ok(parsed.errors.some((e: any) => e.code === 'destination-exists'));
     assert.deepEqual(fs.readdirSync(destPath(fx.root, 'taken')), [], '既有空目录未被写入');
   }
   fs.writeFileSync(path.join(destPath(fx.root, 'taken'), 'keep.txt'), 'keep');
@@ -178,20 +178,20 @@ test('同名目标拒绝：空目录、已有文件与链接形态均不覆盖',
   const linkResult = cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'link-dest', '--apply']);
   assert.equal(linkResult.status, 1);
   // dest 本身是链接：祖先链检查先拒绝（link-in-destination-chain），同样不覆盖、不写入
-  const linkErrors = JSON.parse(linkResult.stdout).errors.map((e) => e.code);
-  assert.ok(linkErrors.some((c) => c === 'destination-exists' || c === 'link-in-destination-chain'), JSON.stringify(linkErrors));
+  const linkErrors = JSON.parse(linkResult.stdout).errors.map((e: any) => e.code);
+  assert.ok(linkErrors.some((c: any) => c === 'destination-exists' || c === 'link-in-destination-chain'), JSON.stringify(linkErrors));
   assert.equal(fs.readdirSync(fx.outside).sort().join(','), 'secret.txt', '链接目标未被写入');
 });
 
 test('坏清单拒绝：核验失败/坏格式/不支持版本均不写入目标', (t) => {
   const fx = buildFixture(t);
   const cases = {
-    'wrong-hash.json': (m) => ({ ...m, entries: m.entries.map((e) => (e.path === 'assets/alpha.txt' ? { ...e, sha256: 'f'.repeat(64) } : e)) }),
-    'schema-v2.json': (m) => ({ ...m, schemaVersion: 2 }),
-    'unverified.json': (m) => ({ ...m, unverified: [{ path: 'assets/lnk', kind: 'symlink', message: '不跟随' }] }),
-    'duplicate.json': (m) => ({ ...m, entries: [...m.entries, m.entries[0]] }),
-    'out-of-scope.json': (m) => ({ ...m, entries: [...m.entries, { path: 'data/characters.json', bytes: 2, sha256: 'a'.repeat(64) }] }),
-    'illegal-path.json': (m) => ({ ...m, entries: [...m.entries, { path: 'assets/..\\evil.txt', bytes: 2, sha256: 'a'.repeat(64) }] }),
+    'wrong-hash.json': (m: any) => ({ ...m, entries: m.entries.map((e: any) => (e.path === 'assets/alpha.txt' ? { ...e, sha256: 'f'.repeat(64) } : e)) }),
+    'schema-v2.json': (m: any) => ({ ...m, schemaVersion: 2 }),
+    'unverified.json': (m: any) => ({ ...m, unverified: [{ path: 'assets/lnk', kind: 'symlink', message: '不跟随' }] }),
+    'duplicate.json': (m: any) => ({ ...m, entries: [...m.entries, m.entries[0]] }),
+    'out-of-scope.json': (m: any) => ({ ...m, entries: [...m.entries, { path: 'data/characters.json', bytes: 2, sha256: 'a'.repeat(64) }] }),
+    'illegal-path.json': (m: any) => ({ ...m, entries: [...m.entries, { path: 'assets/..\\evil.txt', bytes: 2, sha256: 'a'.repeat(64) }] }),
     'broken.json': '{ not json',
   };
   for (const [name, mutator] of Object.entries(cases)) {
@@ -221,7 +221,7 @@ test('排除域/越界/目标链 junction 拒绝：不写链接目标，不读�
     assert.equal(r.status, 1, `apply=${apply}`);
     const parsed = JSON.parse(r.stdout);
     assert.equal(parsed.ok, false);
-    assert.ok(parsed.errors.some((e) => e.code === 'link-in-destination-chain'), JSON.stringify(parsed.errors));
+    assert.ok(parsed.errors.some((e: any) => e.code === 'link-in-destination-chain'), JSON.stringify(parsed.errors));
     if (apply) assert.equal(parsed.destinationCreated, false);
   }
   assert.deepEqual(snapshot(fx.outside), outsideBefore, '链接目标零写入');
@@ -232,7 +232,7 @@ test('排除域/越界/目标链 junction 拒绝：不写链接目标，不读�
   fs.symlinkSync(fx2.outside, path.join(fx2.root, 'scripts/archive/resource-packs'), process.platform === 'win32' ? 'junction' : 'dir');
   const r2 = cli(['--root', fx2.root, '--manifest', 'artifacts/manifest.json', '--name', 'deep-jailbreak', '--apply']);
   assert.equal(r2.status, 1);
-  assert.ok(JSON.parse(r2.stdout).errors.some((e) => e.code === 'link-in-destination-chain'));
+  assert.ok(JSON.parse(r2.stdout).errors.some((e: any) => e.code === 'link-in-destination-chain'));
   assert.deepEqual(snapshot(fx2.outside), [[path.join(fx2.outside, 'secret.txt'), Buffer.from('outside secret').toString('base64')]], '深层 junction 目标零写入');
 });
 
@@ -241,7 +241,7 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
   const alpha = path.join(fx.root, 'assets', 'alpha.txt');
   let alphaReads = 0;
   const { io, calls } = recordingIo({
-    readFileSync: (p, ...rest) => {
+    readFileSync: (p: any, ...rest) => {
       if (path.resolve(String(p)) === path.resolve(alpha)) {
         alphaReads++;
         if (alphaReads === 2) {
@@ -255,7 +255,7 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
   const result = stageResourcePack({ root: fx.root, name: 'pack-change', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(alphaReads, 2, '核验与复制各读取一次');
   assert.equal(result.ok, false);
-  assert.ok(result.errors.some((e) => e.path === 'assets/alpha.txt' && e.code === 'hash-mismatch'), JSON.stringify(result.errors));
+  assert.ok(result.errors.some((e: any) => e.path === 'assets/alpha.txt' && e.code === 'hash-mismatch'), JSON.stringify(result.errors));
   assert.equal(result.destinationCreated, false);
   assert.ok(result.stagingPath, '报告暂存目录路径');
   const stagingAbs = path.join(fx.root, result.stagingPath);
@@ -268,14 +268,14 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
 test('候选写入失败：不发布最终包，已复制候选保留在暂存目录', (t) => {
   const fx = buildFixture(t);
   const { io } = recordingIo({
-    writeFileSync: (p, ...rest) => {
+    writeFileSync: (p: any, ...rest) => {
       if (String(p).endsWith(path.join('assets', 'dir', 'bravo.bin'))) throw Object.assign(new Error('模拟写入失败'), { code: 'EIO' });
       return fs.writeFileSync(p, ...rest);
     },
   });
   const result = stageResourcePack({ root: fx.root, name: 'pack-wfail', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
-  assert.ok(result.errors.some((e) => e.path === 'assets/dir/bravo.bin' && e.code === 'write-error'));
+  assert.ok(result.errors.some((e: any) => e.path === 'assets/dir/bravo.bin' && e.code === 'write-error'));
   assert.equal(result.destinationCreated, false);
   const stagingAbs = path.join(fx.root, result.stagingPath);
   assert.equal(fs.existsSync(path.join(stagingAbs, 'assets/alpha.txt')), true, '已成功候选保留');
@@ -293,7 +293,7 @@ test('发布冲突（rename 失败/目标冲突）：不报告成功，完整暂
   });
   const result = stageResourcePack({ root: fx.root, name: 'pack-conflict', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
-  assert.ok(result.errors.some((e) => e.code === 'publish-failed'));
+  assert.ok(result.errors.some((e: any) => e.code === 'publish-failed'));
   assert.equal(result.destinationCreated, false);
   const stagingAbs = path.join(fx.root, result.stagingPath);
   assert.equal(fs.existsSync(path.join(stagingAbs, 'manifest.json')), true, '完整暂存保留');
@@ -308,7 +308,7 @@ test('成功导出后同名重跑被拒绝（不覆盖旧包）', (t) => {
   const packBefore = snapshot(destPath(fx.root, 'once'));
   const rerun = cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'once', '--apply']);
   assert.equal(rerun.status, 1);
-  assert.ok(JSON.parse(rerun.stdout).errors.some((e) => e.code === 'destination-exists'));
+  assert.ok(JSON.parse(rerun.stdout).errors.some((e: any) => e.code === 'destination-exists'));
   assert.deepEqual(snapshot(destPath(fx.root, 'once')), packBefore, '旧包未被动过');
 });
 
@@ -376,7 +376,7 @@ test('预览与成功导出全程零越界访问（记录型 fs 证明）', (t) 
   const staged = stageResourcePack({ root: fx.root, name: 'audit-pack', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(staged.ok, true);
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  const writes = calls.filter((c) => c.op === 'writeFileSync' || c.op === 'renameSync' || c.op === 'mkdirSync' || c.op === 'mkdtempSync');
+  const writes = calls.filter((c: any) => c.op === 'writeFileSync' || c.op === 'renameSync' || c.op === 'mkdirSync' || c.op === 'mkdtempSync');
   assert.ok(writes.length > 0, 'apply 确实发生了写入');
   for (const call of writes) {
     assert.ok(call.target.includes(path.join('scripts', 'archive', 'resource-packs')), `写入目标应限于候选目录: ${call.target}`);
@@ -389,14 +389,14 @@ test('非 Windows 只读预览可用，apply 明确拒绝且零写入', (t) => {
   const result = stageResourcePack({ root: fx.root, name: 'unix', manifestPath: 'artifacts/manifest.json', io, platform: 'linux' });
   assert.equal(result.ok, false);
   assert.equal(result.errors[0].code, 'unsupported-platform');
-  assert.ok(calls.every((c) => !['mkdirSync','mkdtempSync','writeFileSync','renameSync'].includes(c.op)));
+  assert.ok(calls.every((c: any) => !['mkdirSync','mkdtempSync','writeFileSync','renameSync'].includes(c.op)));
   assert.equal(planResourcePack({ root: fx.root, name: 'unix', manifestPath: 'artifacts/manifest.json' }).ok, true);
 });
 
 test('清单磁盘写入损坏或合法但丢条目均不得发布', (t) => {
   for (const corrupt of ['{broken', JSON.stringify({ schemaVersion: 1, entries: [] })]) {
     const fx = buildFixture(t);
-    const { io } = recordingIo({ writeFileSync: (p, value, ...rest) => {
+    const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest) => {
       if (String(p).endsWith('manifest.json')) return fs.writeFileSync(p, corrupt, ...rest);
       return fs.writeFileSync(p, value, ...rest);
     } });
@@ -410,39 +410,39 @@ test('清单磁盘写入损坏或合法但丢条目均不得发布', (t) => {
 
 test('候选副本读回内容损坏不得发布', (t) => {
   const fx = buildFixture(t);
-  const { io } = recordingIo({ writeFileSync: (p, value, ...rest) => {
+  const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest) => {
     return fs.writeFileSync(p, String(p).endsWith('alpha.txt') ? Buffer.from('Z') : value, ...rest);
   } });
   const result = stageResourcePack({ root: fx.root, name: 'badcopy', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.equal(result.destinationCreated, false);
-  assert.ok(result.errors.some((e) => e.code === 'copy-verify-failed'));
+  assert.ok(result.errors.some((e: any) => e.code === 'copy-verify-failed'));
 });
 
 test('源核验后内部目录变成排除域 junction，复制前拒绝读取', (t) => {
   const fx = buildFixture(t);
   const excluded = path.join(fx.root, 'assets/character-references');
   let swapped = false;
-  const { io } = recordingIo({ mkdtempSync: (prefix) => {
+  const { io } = recordingIo({ mkdtempSync: (prefix: any) => {
     const dir = fs.mkdtempSync(prefix);
     fs.renameSync(path.join(fx.root, 'assets/dir'), path.join(excluded, 'saved-dir'));
     fs.symlinkSync(path.join(excluded, 'saved-dir'), path.join(fx.root, 'assets/dir'), process.platform === 'win32' ? 'junction' : 'dir');
     swapped = true;
     return dir;
-  }, readFileSync: (p, ...rest) => {
+  }, readFileSync: (p: any, ...rest) => {
     if (swapped && String(p).startsWith(path.join(fx.root, 'assets/dir') + path.sep)) throw new Error('排除目标被读取');
     return fs.readFileSync(p, ...rest);
   } });
   const result = stageResourcePack({ root: fx.root, name: 'changed-alias', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
-  assert.ok(result.errors.some((e) => e.code === 'out-of-scope'));
+  assert.ok(result.errors.some((e: any) => e.code === 'out-of-scope'));
   assert.equal(result.destinationCreated, false);
 });
 
 test('源核验期间目标祖先出现 junction，首次写入前拒绝', (t) => {
   const fx = buildFixture(t);
   let inserted = false;
-  const { io, calls } = recordingIo({ readFileSync: (p, ...rest) => {
+  const { io, calls } = recordingIo({ readFileSync: (p: any, ...rest) => {
     const value = fs.readFileSync(p, ...rest);
     if (!inserted && String(p).endsWith(path.join('assets', 'dir', 'charlie.txt'))) {
       fs.mkdirSync(path.join(fx.root, 'scripts'));
@@ -454,22 +454,22 @@ test('源核验期间目标祖先出现 junction，首次写入前拒绝', (t) =
   const before = snapshot(fx.outside);
   const result = stageResourcePack({ root: fx.root, name: 'changed-parent', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
-  assert.ok(result.errors.some((e) => e.code === 'link-in-destination-chain'));
-  assert.ok(calls.every((c) => !['mkdirSync','mkdtempSync','writeFileSync','renameSync'].includes(c.op)));
+  assert.ok(result.errors.some((e: any) => e.code === 'link-in-destination-chain'));
+  assert.ok(calls.every((c: any) => !['mkdirSync','mkdtempSync','writeFileSync','renameSync'].includes(c.op)));
   assert.deepEqual(snapshot(fx.outside), before);
 });
 
 test('Windows 发布瞬间出现同名空目录也不能被替换', { skip: process.platform !== 'win32' }, (t) => {
   const fx = buildFixture(t);
   const dest = destPath(fx.root, 'race');
-  const { io } = recordingIo({ renameSync: (from, to) => {
+  const { io } = recordingIo({ renameSync: (from: any, to: any) => {
     fs.mkdirSync(to);
     return fs.renameSync(from, to);
   } });
   const result = stageResourcePack({ root: fx.root, name: 'race', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.equal(result.destinationCreated, false);
-  assert.ok(result.errors.some((e) => e.code === 'publish-failed'));
+  assert.ok(result.errors.some((e: any) => e.code === 'publish-failed'));
   assert.deepEqual(fs.readdirSync(dest), []);
   assert.ok(result.stagingPath);
 });

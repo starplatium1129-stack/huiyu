@@ -4,7 +4,7 @@ const { test }: typeof import('node:test') = require('node:test');
 const assert: typeof import('assert') = require('assert');
 const { createServiceWatchdog }: typeof import('../../services/service-watchdog.js') = require('../../services/service-watchdog.js');
 
-function fakeService(name: string, state: { online: unknown; managed: unknown; failRestart?: unknown; }) {
+function fakeService(name: string, state: any) {
   const calls = { probe: 0, restart: 0 };
   return {
     name,

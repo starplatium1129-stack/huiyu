@@ -10,19 +10,19 @@ const { validateState, versionRoot, verifyVersion }: typeof import('./resource-i
 const { releasePolicy }: typeof import('./resource-install-policy') = require('./resource-install-policy');
 const { sourceUrl }: typeof import('./resource-download-http') = require('./resource-download-http');
 
-function object(value) { return value !== null && typeof value === 'object' && !Array.isArray(value); }
-function parse(bytes, description) {
+function object(value: any) { return value !== null && typeof value === 'object' && !Array.isArray(value); }
+function parse(bytes: any, description: any) {
   try { return JSON.parse(bytes.toString('utf8')); }
   catch { fail('METADATA_INVALID', description + ' is not valid JSON'); }
 }
-function protectedPaths(value) {
+function protectedPaths(value: any) {
   if (value === undefined) return [];
   if (!Array.isArray(value) || value.some(root => typeof root !== 'string' || !path.isAbsolute(root))) {
     fail('CONFIG_REQUIRED', 'protectedRoots must be an array of absolute application/artwork paths');
   }
   return value;
 }
-function configuration(options, io) {
+function configuration(options: any, io: any) {
   let config = options;
   let evidence = null;
   if (options.configPath !== undefined) {
@@ -51,7 +51,7 @@ function configuration(options, io) {
   return { ctx, evidence };
 }
 
-function idle(ctx) {
+function idle(ctx: any) {
   // Presence alone blocks mounting, even if pending.json is null, damaged, or a directory.
   // Never turn an uncertain/in-progress installation into a usable root by parsing it loosely.
   if (noLinks(ctx.io, child(ctx.store, 'pending.json'), { missing: true })) {
@@ -64,7 +64,7 @@ function idle(ctx) {
     fail('BUSY', 'Resource writer/claim/recovery lock exists; read-only resolution does not reclaim locks');
   }
 }
-function controls(ctx) {
+function controls(ctx: any) {
   access(ctx);
   const stat = noLinks(ctx.io, ctx.store, { missing: true });
   if (!stat) return { marker: null, current: null };
@@ -78,10 +78,10 @@ function controls(ctx) {
   const current = noLinks(ctx.io, file, { missing: true }) ? readBytes(ctx.io, file) : null;
   return { marker, current };
 }
-function unchanged(before, after) {
+function unchanged(before: any, after: any) {
   return before === null ? after === null : after !== null && before.equals(after);
 }
-function stable(ctx, before, evidence) {
+function stable(ctx: any, before: any, evidence: any) {
   const after = controls(ctx);
   if (!unchanged(before.marker, after.marker) || !unchanged(before.current, after.current)) {
     fail('STATE_CONFLICT', 'Installed state changed during verification; retry a fresh read-only snapshot');
@@ -91,7 +91,7 @@ function stable(ctx, before, evidence) {
   }
   access(ctx);
 }
-function absentPointer(ctx) {
+function absentPointer(ctx: any) {
   // A missing pointer is not proof that a formerly installed library was never installed.
   for (const name of ['versions', 'transactions']) {
     const dir = child(ctx.store, name);
@@ -105,8 +105,8 @@ function absentPointer(ctx) {
 // A serving allowlist, not a file executor or general-purpose path resolver. All manifest
 // entries are verified even if excluded here. SVG/CSS/HTML/scripts, fonts, arbitrary JSON,
 // source data, and package metadata are intentionally not public resource overrides.
-function serviceable(rel) {
-  if (!rel.startsWith('assets/') || rel.split('/').some(part => part.startsWith('.'))
+function serviceable(rel: any) {
+  if (!rel.startsWith('assets/') || rel.split('/').some((part: any) => part.startsWith('.'))
     || /^assets\/character-references(?:\/|$)/i.test(rel)) return false;
   if (/\.(?:png|jpe?g|webp|avif|gif|ico|mp3|ogg|wav|flac|m4a|mp4|webm)$/i.test(rel)) return true;
   return rel.startsWith('assets/live2d/') && (/\.(?:moc3?|mtn)$/i.test(rel)
@@ -166,9 +166,9 @@ function resolveInstalledResourceRoots(options = {}) {
     if (!metadata[index].equals(readBytes(ctx.io, file))) fail('STATE_CONFLICT', 'Installed metadata changed during verification');
   });
   stable(ctx, before, evidence);
-  const entries = Object.freeze(verified.manifest.entries.filter(entry => serviceable(entry.path))
-    .map(entry => Object.freeze({ ...entry })).sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
-  const relativePaths = Object.freeze(entries.map(entry => entry.path));
+  const entries = Object.freeze(verified.manifest.entries.filter((entry: any) => serviceable(entry.path))
+    .map((entry: any) => Object.freeze({ ...entry })).sort((a: any, b: any) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
+  const relativePaths = Object.freeze(entries.map((entry: any) => entry.path));
   return Object.freeze({ status: 'verified', versionRoot: verified.root,
     assetsRoot: relativePaths.length ? child(verified.root, 'assets') : null,
     identity: state.current.identity, sequence: state.sequence, relativePaths,

@@ -9,9 +9,9 @@ const recoveryFs: typeof import('../scripts/lib/maintenance-recovery-fs') = requ
 const { maintenanceReadToken, assertMaintenanceReadToken }: typeof import('../scripts/lib/maintenance-lease') = require('../scripts/lib/maintenance-lease');
 
 // 编辑基线包含源文件；浏览器缓存的 DATA_VERSION 不能保护尚未聚合的源修改。
-function sourceFiles(root) {
-  const files = [];
-  function visit(dir) {
+function sourceFiles(root: any) {
+  const files: any = [];
+  function visit(dir: any) {
     if (!fs.existsSync(dir)) return;
     recoveryFs.safePath(dir, 'directory', false);
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -24,7 +24,7 @@ function sourceFiles(root) {
   return files.sort();
 }
 
-function sceneContentVersion(root) {
+function sceneContentVersion(root: any) {
   const hash = crypto.createHash('sha256');
   const files = VERSIONED_FILES.flatMap(name => ['', '.gz', '.br'].map(ext => path.join(root, 'data', name + ext)))
     .concat(['retired-scenes.json', 'prompt-pinned-scenes.json'].map(name => path.join(root, 'data', name)),
@@ -38,14 +38,14 @@ function sceneContentVersion(root) {
 }
 
 // 调用方持有保存锁；内容和基线一起返回，避免客户端先读旧产物再领取新版本。
-function readSceneState(root, store, sceneWrite, options = { rootDir: root }, lease) {
+function readSceneState(root: any, store: any, sceneWrite: any, options = { rootDir: root }, lease?: any) {
   const token = maintenanceReadToken(options, lease);
   const version = sceneContentVersion(root);
   const integrity = sceneWrite.verifyShardIntegrity();
   if (!integrity.ok) throw new Error(integrity.problems.join('\n'));
   const loaded = store.loadSceneShards();
   const dataDir = path.join(root, 'data');
-  const read = name => JSON.parse(fs.readFileSync(path.join(dataDir, name), 'utf8'));
+  const read = (name: any) => JSON.parse(fs.readFileSync(path.join(dataDir, name), 'utf8'));
   const retiredIds = sceneWrite.readRetiredSceneIds(dataDir);
   let blueprints = read('scene-blueprints.json');
   if (fs.existsSync(path.join(dataDir, 'blueprints', 'manifest.json'))) {
@@ -61,7 +61,7 @@ function readSceneState(root, store, sceneWrite, options = { rootDir: root }, le
   };
   if (version !== sceneContentVersion(root)) throw new Error('读取期间内容发生变化，请重新读取');
   let nextSceneId = null;
-  try { nextSceneId = sceneWrite.allocateSceneId(loaded.scenes.map(scene => scene.id), retiredIds); }
+  try { nextSceneId = sceneWrite.allocateSceneId(loaded.scenes.map((scene: any) => scene.id), retiredIds); }
   catch (error) {
     if (runtimeErrorCode(error) !== 'SCENE_ID_EXHAUSTED') throw error;
   }

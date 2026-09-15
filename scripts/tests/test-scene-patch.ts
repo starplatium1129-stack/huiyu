@@ -7,12 +7,12 @@ const os: typeof import('node:os') = require('node:os');
 const zlib: typeof import('node:zlib') = require('node:zlib');
 const patch: typeof import('../maintenance/apply-scene-patch') = require('../maintenance/apply-scene-patch');
 
-function fixture(t) {
+function fixture(t: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-scene-patch-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   return root;
 }
-function write(file, data) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, typeof data === 'string' ? data : JSON.stringify(data)); }
+function write(file: any, data: any) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, typeof data === 'string' ? data : JSON.stringify(data)); }
 const pinned = { sc001: { prompt: 'locked' } };
 test('scene patch: isolated CLI dry-run only writes explicitly requested report', t => {
   const root = fixture(t), input = sources(root);
@@ -27,7 +27,7 @@ test('scene patch: isolated CLI dry-run only writes explicitly requested report'
   write(patchFile, [{ type: 'scene', id: 'sc001', changes: { story: 'candidate' } }]);
   const snapshot = () => fs.readdirSync(root, { recursive: true }).filter(file => fs.statSync(path.join(root, file)).isFile()).map(file => [file, fs.readFileSync(path.join(root, file)).toString('base64')]);
   const before = snapshot();
-  const run = extra => (require('node:child_process') as typeof import('node:child_process')).spawnSync(process.execPath, [script, '--patch', patchFile, ...extra], { cwd: root, env: { ...process.env, AICS_DATA_ROOT: root }, encoding: 'utf8' });
+  const run = (extra: any) => (require('node:child_process') as typeof import('node:child_process')).spawnSync(process.execPath, [script, '--patch', patchFile, ...extra], { cwd: root, env: { ...process.env, AICS_DATA_ROOT: root }, encoding: 'utf8' });
   const dry = run([]); assert.equal(dry.status, 0, dry.stderr); assert.deepEqual(snapshot(), before);
   const reportRun = run(['--out', output]); assert.equal(reportRun.status, 0, reportRun.stderr);
   const report = JSON.parse(fs.readFileSync(output, 'utf8'));
@@ -75,9 +75,9 @@ test('scene patch: rebuild failure restores source compression and readable back
   const directory = path.join(root, 'runtime/maintenance-backups');
   const backup = path.join(directory, fs.readdirSync(directory)[0]);
   const manifest = JSON.parse(fs.readFileSync(path.join(backup, 'manifest.json'), 'utf8'));
-  for (const item of manifest.files.filter(item => item.existed)) assert.deepEqual(fs.readFileSync(path.join(backup, 'files', item.backup)), fs.readFileSync(path.join(root, item.source)));
+  for (const item of manifest.files.filter((item: any) => item.existed)) assert.deepEqual(fs.readFileSync(path.join(backup, 'files', item.backup)), fs.readFileSync(path.join(root, item.source)));
 });
-function sources(root) {
+function sources(root: any) {
   return [
     { type: 'scene', file: path.join(root, 'data/scenes/shared.json'), data: [{ id: 'sc001', prompt: 'locked', story: 'old' }, { id: 'sc002', prompt: 'ordinary' }] },
     { type: 'blueprint', file: path.join(root, 'data/blueprints/example.json'), data: { version: 2, franchise: 'example', extra: 'preserved', blueprints: [{ id: 'example_scene', title: 'original', promptProse: 'unchanged prose' }] } },

@@ -35,7 +35,7 @@ function hostConfigPublic(config: GatewayConfig) {
   };
 }
 
-function chatCharacterPrompt(character: string, context: { userProfile: { callName: string; relationship: string; note: string; }|null|undefined; memories: string[]|undefined; }) {
+function chatCharacterPrompt(character: string, context?: { userProfile: { callName: string; relationship: string; note: string; }|null|undefined; memories: string[]|undefined; }) {
   return chatPrompts.buildCharacterPrompt(character, context);
 }
 
@@ -248,7 +248,7 @@ function buildWebSearchParams(api: { model: string; vendor: string; }) {
   return {};
 }
 
-async function streamCompatibleApi(input: any, handlers: any, gatewayConfig: GatewayConfig) {
+async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: GatewayConfig) {
   handlers = handlers || {};
   let api = input.api;
   // 访客模式（hostConfig:true）：从站主托管配置注入 baseUrl/model/key，
@@ -334,7 +334,7 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig: Gat
     let deltas = choice && Array.isArray(choice.delta && choice.delta.tool_calls)
       ? choice.delta.tool_calls
       : (choice && Array.isArray(choice.message && choice.message.tool_calls)
-        ? choice.message.tool_calls.map(function (call: { id: unknown; function: unknown; }) {
+        ? choice.message.tool_calls.map(function (call: any) {
           return { id:call && call.id, function:call && call.function };
         }) : null);
     if (!deltas) return;
@@ -430,7 +430,7 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig: Gat
   if (handlers.onDone) await handlers.onDone();
 }
 
-async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; model: string; apiKey: string; vendor: string; }, signal: AbortSignal) {
+async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; model: string; apiKey: string; vendor: string; }, signal?: AbortSignal) {
   let modelsPath = api.pathname.replace(/\/chat\/completions$/, '/models');
   let result = await httpClient.request(api.baseUrl, modelsPath, {
     method:'GET',
@@ -461,7 +461,7 @@ async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; mo
   let rawModels = Array.isArray(data && data.data)
     ? data.data
     : Array.isArray(data && data.models) ? data.models : [];
-  let models = rawModels.map(function (item: { id: unknown; name: unknown; }) {
+  let models = rawModels.map(function (item: any) {
     return String(item && (item.id || item.name) || '').trim();
   }).filter(Boolean).slice(0, 200);
   return {
@@ -472,7 +472,7 @@ async function inspectCompatibleApi(api: { baseUrl: string; pathname: string; mo
   };
 }
 
-function writeEvent(res: Response<unknown,Record<string,unknown>,number>, event: { type: string; model?: unknown; queueWaitMs?: unknown; content?: unknown; error?: unknown; }) {
+function writeEvent(res: Response<unknown,Record<string,unknown>,number>, event: any) {
   if (res.destroyed || res.writableEnded) return Promise.reject(httpClient.abortError());
   if (res.write(JSON.stringify(event) + '\n')) return Promise.resolve();
   return new Promise<void>(function (resolve, reject) {
@@ -588,7 +588,7 @@ function createChatRouter(config: GatewayConfig, dependencies?: ChatDependencies
       signal:controller.signal,
       publicOnly:!security.isDirectLocalRequest(req) && !(validation.value.api && (validation.value.api as { hostConfig?: boolean }).hostConfig)
     }, {
-      onStart:async function (meta: { queueWaitMs: unknown; model: unknown; }) {
+      onStart:async function (meta: any) {
         res.status(200);
         res.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
         res.setHeader('Cache-Control', 'no-store');

@@ -19,7 +19,7 @@ let OUTPUT_FILENAME_PREFIX = constants.OUTPUT_FILENAME_PREFIX;
 // （双时钟，steps 4 极速 / 8 标准，shift_video 12 / shift_audio 3）→
 // BasicGuider + SamplerCustomAdvanced → MiniMaxH3AVDecodeT8 → CreateVideo → SaveVideo。
 // 输出契约不变（SaveVideo 节点 11、aics_video 前缀）。真机实测 2.5× 提速。
-function buildH3T8Workflow(input: { modelId?: string; references?: unknown; image?: unknown; lastFrame?: unknown; prompt?: unknown; width?: unknown; height?: unknown; frames?: unknown; steps?: unknown; seed?: unknown; fps?: unknown; }) {
+function buildH3T8Workflow(input: any) {
   // Ref2VA / Hybrid：有参考图（角色卡）时按 T8 枚举（大写）传参；
   // 参考图 + 首/尾帧 → Hybrid（参考身份 + 关键帧构图），仅参考 → Ref2VA。
   let hasReferences = Array.isArray(input.references) && input.references.length > 0;
@@ -131,7 +131,7 @@ function buildH3T8Workflow(input: { modelId?: string; references?: unknown; imag
 // SamplerCustomAdvanced + VAEDecode + VAEDecodeAudio + CreateVideo + SaveVideo。
 // 20 步 → 8 步蒸馏采样（官方推荐 8 或 4 步）。SaveVideo 固定在节点 11，
 // 与任务结果读取（outputs['11'].videos）契约一致。
-function buildH3Workflow(input: { modelId?: string; prompt?: unknown; width?: unknown; height?: unknown; frames?: unknown; seed?: unknown; steps?: unknown; fps?: unknown; image?: unknown; lastFrame?: unknown; }) {
+function buildH3Workflow(input: any) {
   let graph = {
     '1': { class_type:'UNETLoader', inputs:{
       unet_name:'minimax_h3_fl2va_pruned_int8_convrot.safetensors',
@@ -212,7 +212,7 @@ function buildH3Workflow(input: { modelId?: string; prompt?: unknown; width?: un
   return graph;
 }
 
-function buildWanWorkflow(input: { modelId?: string; prompt?: unknown; negative?: unknown; width?: unknown; height?: unknown; frames?: unknown; seed?: unknown; steps?: unknown; cfg?: unknown; fps?: unknown; }) {
+function buildWanWorkflow(input: any) {
   return {
     '1': { class_type:'UNETLoader', inputs:{
       unet_name:'wan2.2_ti2v_5B_fp16.safetensors',
@@ -262,7 +262,7 @@ function buildWanWorkflow(input: { modelId?: string; prompt?: unknown; negative?
  * 按模型族分派工作流。options.t8Available 由编排层注入（探测缓存在那里），
  * 保持本模块无状态、可独立单测。
  */
-function buildWorkflow(input: { modelId: string; }, options: { t8Available: unknown; }) {
+function buildWorkflow(input: { modelId: string; }, options: any) {
   let t8Available = Boolean(options && options.t8Available);
   if (input.modelId === 'minimax-h3') {
     return t8Available ? buildH3T8Workflow(input) : buildH3Workflow(input);

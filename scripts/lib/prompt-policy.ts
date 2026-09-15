@@ -63,14 +63,14 @@ function promptTokenKeys(prompt: unknown) {
   return splitPromptSegments(prompt).flat().map(tokenKey).filter(Boolean);
 }
 
-function scenePositiveKeys(scene: { tags: unknown[]; prompt: unknown; }) {
+function scenePositiveKeys(scene: any) {
   return new Set([
     ...(Array.isArray(scene && scene.tags) ? scene.tags.map(tokenKey) : []),
     ...promptTokenKeys(scene && scene.prompt)
   ].filter(Boolean));
 }
 
-function ratingFor(scene: { title: unknown; story: unknown; }) {
+function ratingFor(scene: any) {
   const keys = scenePositiveKeys(scene);
   const story = [scene && scene.title, scene && scene.story].join(' ').toLowerCase();
   if ([...R18_TAGS].some((tag) => keys.has(tag)) || R18_STORY.some((pattern) => pattern.test(story))) return 'R18';
@@ -90,7 +90,7 @@ function framingConflicts(scene: unknown) {
   return conflicts;
 }
 
-function poseConflicts(scene: { char: string; prompt: unknown; }) {
+function poseConflicts(scene: any) {
   const poseGroups = {
     standing: ['standing'],
     sitting: ['sitting', 'sitting_on_bed', 'sitting_on_chair', 'sitting_on_sofa', 'sitting_on_floor',
@@ -114,7 +114,7 @@ function poseConflicts(scene: { char: string; prompt: unknown; }) {
   return active.length > 1 ? [active.join(' + ')] : [];
 }
 
-function gazeConflicts(scene: { prompt: unknown; }) {
+function gazeConflicts(scene: any) {
   const conflicts = [];
   const segments = splitPromptSegments(scene && scene.prompt);
   for (let index = 0; index < segments.length; index += 1) {
@@ -126,7 +126,7 @@ function gazeConflicts(scene: { prompt: unknown; }) {
   return conflicts;
 }
 
-function adultSafetyIssues(scene: { rating: string; prompt: unknown; negative: unknown; }) {
+function adultSafetyIssues(scene: any) {
   if (!scene || scene.rating !== 'R18') return [];
   const issues = [];
   const positive = scenePositiveKeys(scene);
@@ -142,7 +142,7 @@ function adultSafetyIssues(scene: { rating: string; prompt: unknown; negative: u
   return issues;
 }
 
-function auMetadataIssues(scene: { story: unknown; category: unknown; tags: unknown; }) {
+function auMetadataIssues(scene: any) {
   if (!scene) return [];
   const storyHasAu = /\bAU\b/i.test(String(scene.story || ''));
   const categoryHasAu = /AU|Active_Sync|\u540c\u4eba/i.test(String(scene.category || ''));

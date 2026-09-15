@@ -14,7 +14,7 @@ const Ajv: typeof import('ajv') = require('ajv');
 const ajv = new Ajv({ allErrors: true });
 const validateView = ajv.compile((require('../contracts/character-reference-view.schema.json') as typeof import('../contracts/character-reference-view.schema.json')));
 
-async function fixture(t) {
+async function fixture(t: any) {
   const f = F.fixture(t);
   f.gateway = await F.mockGateway(t);
   f.source = path.join(f.temporary, 'old-library');
@@ -31,12 +31,12 @@ async function fixture(t) {
   f.inspection = R.inspectCandidates({ from: f.from, root: f.root });
   f.options = { from: f.from, root: f.root, source: f.source, target: f.target,
     review: path.join(f.output, 'manual-review.json') };
-  f.decision = verdict => {
+  f.decision = (verdict: any) => {
     const item = f.inspection.items[0];
     return { [item.key]: { verdict, recordId: item.recordId, sha256: item.sha256,
       inputVersion: item.inputVersion, reviewedAt: '2026-09-15T01:00:00.000Z', notes: 'synthetic fixture decision' } };
   };
-  f.review = verdict => {
+  f.review = (verdict: any) => {
     const review = R.collectReview(f.inspection, verdict ? f.decision(verdict) : {}, { file: 'decisions.json', sha256: 'a'.repeat(64) });
     R.saveReview(f.inspection, f.options.review, review);
     return review;
@@ -209,7 +209,7 @@ test('publication refuses overlap, pre-existing destinations and a missing index
 test('a late input change leaves the active library intact and never exposes a partial target', async t => {
   const f = await fixture(t); f.review('pass');
   const original = F.tree(f.source);
-  await assert.rejects(P.publishReferenceCandidates({ ...f.options, apply: true }, { onPhase: phase => {
+  await assert.rejects(P.publishReferenceCandidates({ ...f.options, apply: true }, { onPhase: (phase: any) => {
     if (phase === 'prepared') fs.writeFileSync(path.join(f.output, f.inspection.items[0].image), 'changed');
   } }), /inputs changed/);
   assert.equal(fs.existsSync(f.target), false);
@@ -241,11 +241,11 @@ test('a competing process cannot steal a live publication lock', async t => {
   const f = await fixture(t); f.review('pass');
   const optionsFile = path.join(f.temporary, 'competing-options.json');
   F.writeJson(optionsFile, { ...f.options, apply: true });
-  const published = await P.publishReferenceCandidates({ ...f.options, apply: true }, { onPhase: async phase => {
+  const published = await P.publishReferenceCandidates({ ...f.options, apply: true }, { onPhase: async (phase: any) => {
     if (phase !== 'prepared') return;
     const result = await new Promise((resolve, reject) => {
       const worker = fork(path.join(__dirname, 'reference-publication-worker.js'), [optionsFile, 'never'], { stdio: ['ignore', 'ignore', 'ignore', 'ipc'] });
-      let result;
+      let result: any;
       const timer = setTimeout(() => { worker.kill('SIGKILL'); reject(new Error('Competing publisher timed out')); }, 30000);
       worker.on('message', message => { result = message; });
       worker.on('error', error => { clearTimeout(timer); reject(error); });

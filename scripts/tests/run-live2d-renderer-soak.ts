@@ -146,7 +146,7 @@ function trend(samples: unknown[], field: string) {
   const quarter = Math.max(1, Math.floor(values.length / 4))
   const first = average(values.slice(0, quarter).map((sample: { [x: string]: unknown }) => sample[field]))
   const last = average(values.slice(-quarter).map((sample: { [x: string]: unknown }) => sample[field]))
-  const meanT = average(values.map((sample: { t: unknown }) => sample.t))
+  const meanT = average(values.map((sample: any) => sample.t))
   const meanV = average(values.map((sample: { [x: string]: unknown }) => sample[field]))
   let numerator = 0
   let denominator = 0
@@ -288,13 +288,13 @@ function validate(result: unknown) {
       `resource counter mismatch total=${summary.total_creations} counted=${countedCreations}; log=${result.logPath}`,
     )
   }
-  if (!result.samples.some((sample: { workingSetBytes: unknown }) => Number.isFinite(sample.workingSetBytes))) {
+  if (!result.samples.some((sample: any) => Number.isFinite(sample.workingSetBytes))) {
     throw new Error(`no Working Set samples; log=${result.logPath}`)
   }
   const gpuSamples = result.samples.filter((sample: { gpuScope: string }) => sample.gpuScope === 'process')
   const minimumGpuSamples = seconds >= 60 ? 4 : 2
-  const dedicatedSamples = gpuSamples.filter((sample: { gpuDedicatedBytes: unknown }) => Number.isFinite(sample.gpuDedicatedBytes))
-  const sharedSamples = gpuSamples.filter((sample: { gpuSharedBytes: unknown }) => Number.isFinite(sample.gpuSharedBytes))
+  const dedicatedSamples = gpuSamples.filter((sample: any) => Number.isFinite(sample.gpuDedicatedBytes))
+  const sharedSamples = gpuSamples.filter((sample: any) => Number.isFinite(sample.gpuSharedBytes))
   if (dedicatedSamples.length < minimumGpuSamples || sharedSamples.length < minimumGpuSamples) {
     throw new Error(`GPU dedicated/shared counters unavailable; log=${result.logPath}`)
   }
@@ -303,7 +303,7 @@ function validate(result: unknown) {
     summary,
     sampleCount: result.samples.length,
     gpuSampleCount: gpuSamples.length,
-    gpuScopes: [...new Set(gpuSamples.map((sample: { gpuScope: unknown }) => sample.gpuScope))],
+    gpuScopes: [...new Set(gpuSamples.map((sample: any) => sample.gpuScope))],
     workingSet: trend(result.samples, 'workingSetBytes'),
     privateBytes: trend(result.samples, 'privateBytes'),
     gpuDedicated: trend(result.samples, 'gpuDedicatedBytes'),
@@ -314,7 +314,7 @@ function validate(result: unknown) {
   const steadyStart = firstSampleTime + (switchEvery * 2 + 10) * 1000
   const steadySamples = result.samples
     .filter((sample: { t: number }) => sample.t >= steadyStart)
-    .map((sample: { gpuDedicatedBytes: unknown; gpuSharedBytes: unknown }) => ({
+    .map((sample: any) => ({
       ...sample,
       gpuTotalBytes: Number.isFinite(sample.gpuDedicatedBytes) && Number.isFinite(sample.gpuSharedBytes)
         ? sample.gpuDedicatedBytes + sample.gpuSharedBytes

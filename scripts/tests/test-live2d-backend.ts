@@ -378,7 +378,7 @@ test('原生后端：相同帧率不重复发送，失败后允许下一次重�
 
 test('原生后端：失败帧可重试，迟到的旧失败不清除新帧缓存', async () => {
   const bridge = createStubBridge();
-  const failures: ((arg0: Error) => void)[] = [];
+  const failures: any = [];
   bridge.setFrame = frame => {
     bridge.calls.setFrame.push([frame]);
     return new Promise((_, reject) => failures.push(reject));

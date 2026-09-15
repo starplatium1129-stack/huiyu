@@ -53,7 +53,7 @@ function isNonNegativeInt(value: unknown) {
   return Number.isSafeInteger(value) && value >= 0;
 }
 
-function identityRecordErrors(record: { path: string; contentIdentity: string; entryCount: unknown; totalBytes: unknown; }, field: string, errors: { source: string; code: string; message: string; }[]) {
+function identityRecordErrors(record: any, field: string, errors: { source: string; code: string; message: string; }[]) {
   if (!record || typeof record !== 'object' || Array.isArray(record)) {
     errors.push({ source: 'pack-delta', code: 'bad-delta-metadata', message: `delta.${field} 必须是身份记录对象（path/contentIdentity/entryCount/totalBytes）` });
     return;
@@ -73,7 +73,7 @@ function identityRecordErrors(record: { path: string; contentIdentity: string; e
 }
 
 /** delta 元数据形态检查：kind/schemaVersion、身份记录、totals、removed 条目、candidate。 */
-function checkDeltaMetadataForm(delta: { schemaVersion: number; kind: string; baseManifest: unknown; newManifest: unknown; totals: { [x: string]: unknown; }; removed: unknown[]; candidate: { files: unknown; bytes: unknown; zeroAssets: unknown; }; }) {
+function checkDeltaMetadataForm(delta: any) {
   const errors = [];
   if (!delta || typeof delta !== 'object' || Array.isArray(delta)) {
     errors.push({ source: 'pack-delta', code: 'bad-delta-metadata', message: 'delta 元数据必须是 JSON 对象' });
@@ -99,7 +99,7 @@ function checkDeltaMetadataForm(delta: { schemaVersion: number; kind: string; ba
   if (!Array.isArray(delta.removed)) {
     errors.push({ source: 'pack-delta', code: 'bad-delta-metadata', message: 'delta.removed 必须是数组' });
   } else {
-    delta.removed.forEach((item: { path: string; bytes: unknown; sha256: string; }, index: unknown) => {
+    delta.removed.forEach((item: any, index: unknown) => {
       if (!item || typeof item !== 'object' || Array.isArray(item)) {
         errors.push({ source: 'pack-delta', code: 'bad-delta-metadata', message: `delta.removed[${index}] 必须是对象（path/bytes/sha256）` });
         return;
@@ -132,7 +132,7 @@ function checkDeltaMetadataForm(delta: { schemaVersion: number; kind: string; ba
 }
 
 function sumBytes(entries: unknown[]) {
-  return entries.reduce((acc: unknown, e: { bytes: unknown; }) => acc + e.bytes, 0);
+  return entries.reduce((acc: unknown, e: any) => acc + e.bytes, 0);
 }
 
 function identityOf(entries: string|unknown[]) {
@@ -169,8 +169,8 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
 
   const baseEntries = baseManifest.entries;
   const packEntries = packManifest.entries;
-  const baseByPath = new Map(baseEntries.map((e: { path: unknown; }) => [e.path, e]));
-  const packByPath = new Map(packEntries.map((e: { path: unknown; }) => [e.path, e]));
+  const baseByPath = new Map(baseEntries.map((e: any) => [e.path, e]));
+  const packByPath = new Map(packEntries.map((e: any) => [e.path, e]));
 
   // 基线身份：contentIdentity/entryCount/totalBytes 与 delta.baseManifest 相符
   const baseIdentity = identityOf(baseEntries);
@@ -186,7 +186,7 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
 
   // removed 逐项核验：存在于基线、bytes/sha256 相符、路径唯一、不得同时在候选中
   const removedPaths = new Set();
-  delta.removed.forEach((item: { path: unknown; bytes: unknown; sha256: string; }, index: unknown) => {
+  delta.removed.forEach((item: any, index: unknown) => {
     if (removedPaths.has(item.path)) {
       errors.push({ source: 'pack-delta', path: item.path, code: 'duplicate-removed-path', message: `delta.removed[${index}] 路径重复` });
       return;
@@ -332,7 +332,7 @@ function resolveInsideRootPath(rootReal: string, relOrAbs: string, flag: string)
 /** 读取 root 内 JSON 文件：真实路径边界检查先于读取（junction/坏路径越界抛 UsageError）。
  *  allowMissing 时 ENOENT 返回 { missing: true }（由调用方决定内容级处理）；其余读取
  *  失败抛 UsageError。JSON 解析失败记入 parseError，由调用方按内容问题处理。 */
-function readJsonFile({ absPath, flag, rootReal, io, allowMissing = false }) {
+function readJsonFile({ absPath, flag, rootReal, io, allowMissing = false }: any) {
   const boundary = resolveRealpathBoundary(io, absPath, rootReal);
   if (!boundary.ok) throw new UsageError(`${flag} ${boundary.message}`);
   let raw;
@@ -350,7 +350,7 @@ function readJsonFile({ absPath, flag, rootReal, io, allowMissing = false }) {
 }
 
 /** 候选目录解析：必须在 root 内、存在且为目录、真实路径不越出 root（junction 逃逸拒绝）。 */
-function resolvePackDir({ rootReal, packPath, io }) {
+function resolvePackDir({ rootReal, packPath, io }: any) {
   const packAbs = resolveInsideRootPath(rootReal, packPath, '--pack');
   const boundary = resolveRealpathBoundary(io, packAbs, rootReal);
   if (!boundary.ok) throw new UsageError(`--pack ${boundary.message}`);

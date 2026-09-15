@@ -7,7 +7,7 @@ const { object }: typeof import('./content-history-reader') = require('./content
 const { hash, jsonHash, SHA, evidencePath, evidenceReader, explicitSource }: typeof import('./content-evidence-io') = require('./content-evidence-io');
 const { UUID, validateRecord, inputVersion, reviewState, validateDecisions }: typeof import('./content-evidence-contract') = require('./content-evidence-contract');
 
-function sourceEvidence(record: { sources: unknown[]; recipeSource: unknown; }, reader: { root: unknown; bytes: unknown; fingerprint?: (file: unknown,limit: number|undefined) => { bytes: unknown; sha256: unknown; }; json?: (file: string) => unknown; list?: (directory: string) => unknown[]; evidence?: () => ({ scope: unknown; file: unknown; status: unknown; sha256: unknown; bytes: unknown; }|{ scope: unknown; file: unknown; kind: string; sha256: string; })[]; verify?: () => string[]; }, options: { sources: unknown; recipe: unknown; }) {
+function sourceEvidence(record: any, reader: any, options: any) {
   const files = [];
   for (const [role, declaration, allowed] of [
     ...record.sources.map((source: unknown) => ['source', source, options.sources || []]),
@@ -29,7 +29,7 @@ function sourceEvidence(record: { sources: unknown[]; recipeSource: unknown; }, 
   coverage: 'Only explicitly declared and allowed files; no claim of complete generator dependencies' };
 }
 
-function assetEvidence(reader: { root?: string; bytes?: (file: unknown,limit?: number) => unknown; fingerprint: unknown; json?: (file: string) => unknown; list?: (directory: string) => unknown[]; evidence?: () => ({ scope: unknown; file: unknown; status: unknown; sha256: unknown; bytes: unknown; }|{ scope: unknown; file: unknown; kind: string; sha256: string; })[]; verify?: () => string[]; }, file: string, declared: never) {
+function assetEvidence(reader: any, file: string, declared: any) {
   try {
     const { bytes, sha256 } = reader.fingerprint(file, 64 * 1024 * 1024);
     return { status: !declared ? 'unverified' : declared.sha256 === sha256 && declared.bytes === bytes ? 'verified' : 'mismatch',
@@ -37,7 +37,7 @@ function assetEvidence(reader: { root?: string; bytes?: (file: unknown,limit?: n
   } catch (error) { return { status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'invalid', file, reason: runtimeErrorMessage(error), imageQuality: 'unverified' }; }
 }
 
-function publicationState(record: { key: string|number; runId: unknown; recordId: unknown; inputVersion: unknown; asset: { sha256: unknown; bytes: unknown; }; }, item: { key?: unknown; recordId?: unknown; recordSha256: unknown; inputVersion?: unknown; structure?: string; generation?: unknown; source?: { status: string; files: { role: unknown; file: unknown; expectedSha256: unknown; status: string; }[]; coverage: string; }; payload?: { status: string; actualSha256: string; expectedSha256: unknown; }; version?: { status: string; reason: string; expected?: undefined; actual?: undefined; rule?: undefined; }|{ status: string; expected: string; actual: unknown; rule: string; reason?: undefined; }; asset?: { status: string; file: string; bytes: unknown; sha256: unknown; imageQuality: string; reason?: undefined; }|{ status: string; file: string; reason: string; imageQuality: string; bytes?: undefined; sha256?: undefined; }; freshness?: string; review: unknown; }, publication: { schemaVersion: number; kind: string; records: { [x: string]: unknown; }|null; runId: unknown; manifestSha256: unknown; reviewSha256: unknown; }|null, publishedReader: { root: string; bytes(file: unknown,limit?: number): unknown; fingerprint(file: unknown,limit: number|undefined): { bytes: unknown; sha256: unknown; }; json(file: string): unknown; list(directory: string): unknown[]; evidence(): ({ scope: unknown; file: unknown; status: unknown; sha256: unknown; bytes: unknown; }|{ scope: unknown; file: unknown; kind: string; sha256: string; })[]; verify(): string[]; }|null, bindings: { manifestSha256: unknown; decisionSha256: unknown; }) {
+function publicationState(record: any, item: any, publication: any, publishedReader: any, bindings: any) {
   if (!publication) return { status: 'not-provided', activation: 'unknown' };
   if (!object(publication) || publication.schemaVersion !== 1 || publication.kind !== 'content-publication-evidence' || !object(publication.records)) {
     return { status: 'unknown', reason: 'Unsupported publication format; use its dedicated release audit', activation: 'unknown' };
@@ -59,7 +59,7 @@ function publicationState(record: { key: string|number; runId: unknown; recordId
   reason: 'Only explicit local receipt/bytes verified; no publication performed or service activation inferred' };
 }
 
-function auditContentEvidence(options: { candidateRoot: unknown; root: PathLike; publishedRoot: PathLike; manifest: string; expectManifestSha256: string; decisions: string; publication: string; }) {
+function auditContentEvidence(options: any) {
   const result = { schemaVersion: 1, kind: 'content-evidence-audit', readOnly: true, executed: true,
     structure: { status: 'unknown' }, items: [], errors: [], unknown: [], evidence: [], exitCode: 3,
     acceptance: { imageQuality: 'unverified', reviewerAuthenticity: 'unverified', publicationPerformed: false, wholeLibrary: 'not-validated' } };

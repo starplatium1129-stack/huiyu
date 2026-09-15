@@ -99,7 +99,7 @@ function diffFields(current: { [x: string]: unknown; }, target: unknown) {
 
 function gitScene(commit: unknown, id: unknown) {
   const raw = execFileSync('git', ['show', `${commit}:data/scenes.json`], { cwd: ROOT, maxBuffer: 5e8, stdio: 'pipe' }).toString();
-  return JSON.parse(raw).find((s: { id: unknown; }) => s.id === id) || null;
+  return JSON.parse(raw).find((s: any) => s.id === id) || null;
 }
 
 function loadShards() {
@@ -117,7 +117,7 @@ function loadShards() {
 }
 
 /** 当前受保护条目索引（同一份分片实例，供 apply 原地修改后统一落盘）：id -> {file, arr, entry} */
-function indexShards(shards: { file: unknown; arr: unknown; }[]) {
+function indexShards(shards: any) {
   const out = new Map();
   for (const { file, arr } of shards) {
     for (const entry of arr) if (entry && entry.id) {

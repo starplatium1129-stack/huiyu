@@ -71,7 +71,7 @@ function extractDialogues(description: unknown) {
   return matches.slice(0, 2).map(function (raw) { return raw.slice(1, -1); });
 }
 
-function characterNameOf(blueprint: { description: unknown; characterId: unknown; }) {
+function characterNameOf(blueprint: any) {
   let prefix = String(blueprint.description || '').match(TITLE_PREFIX_RE);
   if (prefix) {
     let parts = prefix[1].split('·');
@@ -83,7 +83,7 @@ function characterNameOf(blueprint: { description: unknown; characterId: unknown
 
 // 每镜中文描述：交给 validation.js 组装三段式（文案自带动作/镜头词时控制器句
 // 自动让位，见 prose.js 冲突守卫），因此这里放心写自然叙事句。
-function shotPrompt(beat: string, ctx: { name: unknown; location: unknown; action: unknown; lighting: unknown; mood: unknown; timeOfDay: unknown; intent: unknown; }) {
+function shotPrompt(beat: string, ctx: any) {
   if (beat === 'establishing') {
     return ctx.location + '全景定场。' + ctx.timeOfDay + '，' + ctx.lighting
       + '，' + ctx.mood + '的氛围铺满画面，' + ctx.name + '的身影静静出现在场景之中。';
@@ -102,7 +102,7 @@ function shotPrompt(beat: string, ctx: { name: unknown; location: unknown; actio
     + '的光线归于平静，只余' + ctx.mood + '的余韵。';
 }
 
-function buildStoryboard(blueprint: { description: unknown; location: unknown; title: unknown; action: unknown; lighting: unknown; mood: unknown; timeOfDay: unknown; promptProse: unknown; id: unknown; characterId: unknown; }, options: {}) {
+function buildStoryboard(blueprint: any, options: any) {
   let opts = options || {};
   let dialogues = extractDialogues(blueprint.description);
   let ctx = {
@@ -145,7 +145,7 @@ function buildStoryboard(blueprint: { description: unknown; location: unknown; t
 }
 
 // 校验 + fail-closed 门控的唯一入口：不存在 / 数据文件不可读 / 成人类 → null + reason。
-function resolveStoryboard(config: { ROOT_DIR: string; }, blueprintId: string|number, options: {}) {
+function resolveStoryboard(config: { ROOT_DIR: string; }, blueprintId: string|number, options: any) {
   if (!blueprintId || typeof blueprintId !== 'string') {
     return { error:'INVALID_PARAMETER', message:'blueprintId 需为字符串' };
   }

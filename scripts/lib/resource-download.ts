@@ -8,7 +8,7 @@ const { releasePolicy, decodePack, readPack, verifyTree }: typeof import('./reso
 const { fileMatches }: typeof import('./resource-install-copy') = require('./resource-install-copy');
 const { sourceUrl, response, fetchMetadata, rangeStart }: typeof import('./resource-download-http') = require('./resource-download-http');
 
-async function downloadEntry(ctx: { io: unknown; userRoot?: string; store?: string; policy?: unknown; access?: unknown; onEvent?: unknown; freeBytes?: unknown; }, release: unknown, pack: string, parts: string, entry: { path?: unknown; bytes: unknown; sha256: unknown; }, signal: unknown, timeoutMs: unknown) {
+async function downloadEntry(ctx: any, release: unknown, pack: string, parts: string, entry: any, signal: unknown, timeoutMs: unknown) {
   const target = child(pack, entry.path);
   if (fileMatches(ctx, target, entry)) {
     await event(ctx, 'download-reused', { path: entry.path }, signal);
@@ -67,7 +67,7 @@ async function downloadEntry(ctx: { io: unknown; userRoot?: string; store?: stri
   }
   return publishEntry(ctx, partial, target, entry, signal);
 }
-async function publishEntry(ctx: { io: { renameSync: (arg0: string,arg1: string) => void; }; }, partial: string, target: string, entry: { path: unknown; }, signal: unknown) {
+async function publishEntry(ctx: any, partial: string, target: string, entry: any, signal: unknown) {
   cancelled(signal);
   mkdir(ctx.io, path.dirname(target));
   noLinks(ctx.io, partial);
@@ -77,7 +77,7 @@ async function publishEntry(ctx: { io: { renameSync: (arg0: string,arg1: string)
   flushDir(ctx.io, path.dirname(target));
   await event(ctx, 'downloaded', { path: entry.path }, signal);
 }
-function createResourceDownloader(options: {}|undefined) {
+function createResourceDownloader(options: any) {
   const ctx = context(options);
   const timeoutMs = options.timeoutMs || 30000;
   return {

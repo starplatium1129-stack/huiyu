@@ -22,7 +22,7 @@ const assert: typeof import('node:assert') = require('node:assert');
 
 const ROOT = path.resolve(__dirname, '../..');
 
-function read(relPath) {
+function read(relPath: any) {
   const owners = {
     'src/views/GalleryView.vue': ['src/composables/gallery/useGalleryWorkspace.ts', 'src/composables/gallery/galleryMutations.ts'],
     'src/views/SceneExplorerView.vue': ['src/composables/scene/useSceneExplorerWorkspace.ts'],
@@ -41,7 +41,7 @@ function read(relPath) {
  * 注意：本文件的注释里不要连写斜杠星号或星号斜杠——那会提前闭合注释块，
  * 正是下面这个函数要处理的那类问题。
  */
-function stripComments(source) {
+function stripComments(source: any) {
   let out = ''
   let i = 0
   let quote = null // 当前所处的字符串引号
@@ -87,7 +87,7 @@ function stripComments(source) {
  * 是正确行为（用户真的换了底模，风格 LoRA 本来就该重置），全文件级匹配会把
  * 正常的写法也判成回潮。
  */
-function extractFunction(source, name) {
+function extractFunction(source: any, name: any) {
   const start = source.search(new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`));
   if (start < 0) return '';
   const open = source.indexOf('{', start);
@@ -110,7 +110,7 @@ const CHECKS = [
     file: 'src/components/ConfirmDialog.vue',
     why: 'Enter 被 document 级 keydown 抢先 preventDefault 后调 ok()，会让「默认聚焦取消」'
       + '这道防线失效——焦点在取消上按 Enter 仍然执行删除。必须留给浏览器原生按钮语义。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return !/e\.key\s*===\s*'Enter'[\s\S]{0,120}ok\(\s*\)/.test(code);
     },
@@ -120,7 +120,7 @@ const CHECKS = [
     file: 'src/composables/generation/useAnimaSession.ts',
     why: '每 15 秒无条件套用底模 defaults 会把用户手调的 CFG/Steps 静默改回默认值，'
       + '并清空已选风格 LoRA。defaults 只在底模真的变了时才该套用。',
-    assert(source) {
+    assert(source: any) {
       // 只看心跳函数：applyModel 里的重置是正确行为（用户真的换了底模）
       const body = stripComments(extractFunction(source, 'refreshBackend'));
       if (!body) return false;
@@ -133,7 +133,7 @@ const CHECKS = [
     file: 'src/composables/prompt/usePromptTagTools.ts',
     why: '从 Danbooru 复制「blue_hair, smile, twintails」回车只得到一条垃圾词条，'
       + '而批量粘贴正是「提示词自主权」最高频的动作。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /split\(\s*\/\[?[^\/]*[,，][^\/]*\]?\/\s*\)/.test(code);
     },
@@ -142,7 +142,7 @@ const CHECKS = [
     id: 'P0-4 清空词条必须经过确认',
     file: 'src/components/director/DirectorTagWorkbench.vue',
     why: '角色厨手工攒的 40+ 词条是本项目最高成本的手工资产，一次误点不能全灭。',
-    assert(source) {
+    assert(source: any) {
       const body = stripComments(extractFunction(source, 'clearTags'));
       if (!body) return false;
       // 清空动作必须排在确认之后：先看得到确认，再看到赋值
@@ -155,7 +155,7 @@ const CHECKS = [
     id: 'P0-5 出图队列必须持久化',
     file: 'src/utils/storageKeys.ts',
     why: '队列只活在视图作用域时，切页或刷新就整组蒸发且没有任何解释。',
-    assert(source) {
+    assert(source: any) {
       return /SD_QUEUE_SNAPSHOT_KEY/.test(source);
     },
   },
@@ -164,7 +164,7 @@ const CHECKS = [
     file: 'data/presets.json',
     why: '默认开 hires_fix 又不在默认模式暴露开关，等于每次出图都悄悄多跑一个二阶段，'
       + '用户看不到开关、也无从知道为什么慢。',
-    assert(source) {
+    assert(source: any) {
       const parsed = JSON.parse(source);
       // 注意取值在 model_profiles 而非 presets：promptModelProfile.ts 的
       // set('hiresFix', profile.hires_fix) 读的是底模档，且 promptPolicy 对
@@ -175,14 +175,14 @@ const CHECKS = [
       if (!profiles.length) return false;
       // 任何底模档都不该默认开启二阶段：它把分钟级任务再拉长一截，而默认模式
       // 里连开关都看不见（开关外层 v-if 要求 expert 模式）。
-      return !profiles.some(profile => profile && profile.hires_fix === true);
+      return !profiles.some((profile: any) => profile && profile.hires_fix === true);
     },
   },
   {
     id: 'P0-7 作品册必须在 KeepAlive 激活时刷新',
     file: 'src/views/GalleryView.vue',
     why: '保存成功却在作品册里看不到刚存的图，用户会判定「保存失败」并重复保存或重画。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /onActivated\s*\(/.test(code);
     },
@@ -191,7 +191,7 @@ const CHECKS = [
     id: 'P0-8 作品删除必须走软删',
     file: 'src/views/GalleryView.vue',
     why: '硬删会同时清掉 IndexedDB 原图与缩略图，误删不可恢复。回收站保留 30 天。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /softDeleteArtwork/.test(code) && !/artworkRepository\.deleteArtwork/.test(code);
     },
@@ -201,7 +201,7 @@ const CHECKS = [
     file: 'src/composables/generation/useSDGenerate.ts',
     why: '后端给不出进度时兜成 0 会被读成「卡在 0%」。可空才能让 UI 走 indeterminate，'
       + '同时守住「不做匀速假增量」这条诚实纪律。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /ref<number\s*\|\s*null>\(null\)/.test(code);
     },
@@ -211,7 +211,7 @@ const CHECKS = [
     file: 'src/components/GlobalSearch.vue',
     why: '`!r` 会把每个非空条目判为非对象而丢掉，「作品」分组永远为空——'
       + '用户搜不到旧作会误判「那张图没了」。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return !/=>\s*!r\s*&&/.test(code);
     },
@@ -221,7 +221,7 @@ const CHECKS = [
     file: 'src/assets/css/companion.css',
     why: '死值 min-height 在宽扁窗（如 700x500）里超过视口高度，而两层 overflow:hidden '
       + '会把底部对话条永久裁掉，既不能输入也关不掉窗。',
-    assert(source) {
+    assert(source: any) {
       return /min-height:\s*min\(\s*560px\s*,\s*100dvh\s*\)/.test(source);
     },
   },
@@ -230,7 +230,7 @@ const CHECKS = [
     file: 'src/views/SceneExplorerView.vue',
     why: '刷新或从别处返回时白搜一次。只同步 q 这一个参数：character / scene 是'
       + '别的页面带进来的深链参数，把本页筛选全写进 query 会和它们互相覆盖。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /route\.query\.q/.test(code) && /router\.replace/.test(code);
     },
@@ -241,7 +241,7 @@ const CHECKS = [
     why: '本地反推此前只能走文件选择器，而真要用的那一刻，图往往已经在剪贴板里'
       + '（刚截的图、从参考站复制的），多一趟「打开对话框找文件」纯属多余。'
       + '监听器要挂在可聚焦的元素上——浏览器只把 paste 派发给焦点元素。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /@paste="onInterrogatePaste"/.test(code) && /function onInterrogatePaste/.test(code);
     },
@@ -255,8 +255,8 @@ const CHECKS = [
       + '注意别误伤：max-width:760px 作为布局宽度或 img sizes 是正常用法，'
       + '只有跟在 @media / matchMedia 后面的才是断点。',
     assert() {
-      const offenders = [];
-      const walk = (dir) => {
+      const offenders: any = [];
+      const walk = (dir: any) => {
         for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
           if (entry.isDirectory()) {
             if (entry.name !== 'node_modules') walk(path.join(dir, entry.name));
@@ -283,7 +283,7 @@ const CHECKS = [
     why: '批量失败、轮询报错会在几秒内连发好几条，没有上限时整屏都是提示条，'
       + '把正在操作的内容全挡住。挤掉多余提示时不能牺牲带内联动作的那几条——'
       + '那是删除后的撤销入口，清掉等于把撤销机会弄丢。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /MAX_VISIBLE/.test(code) && /trimToasts/.test(code) && /!\s*t\.action/.test(code);
     },
@@ -293,7 +293,7 @@ const CHECKS = [
     file: 'src/components/director/DirectorResultTools.vue',
     why: '生成中这些按钮被禁用时，悬停冒出来的仍是功能介绍——用户面对「点不动 '
       + '+ 一堆功能说明」只会以为是软件坏了。禁用态必须优先讲为什么点不了。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /BUSY_HINT/.test(code) && /:title="generationBusy \? BUSY_HINT/.test(code);
     },
@@ -305,7 +305,7 @@ const CHECKS = [
       + '一遍 chunk。预热过的会命中 HTTP 缓存，这是「/chat 是全程最慢一步」里'
       + '最容易修的一半——以 LIVE2D_PATHS 为由跳过预热，等于把最需要预热的那条路'
       + '恰好排除掉。（整页刷新本身是 CSP 设计的必然代价，不要为了快而删掉它。）',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return !/if\s*\(\s*LIVE2D_PATHS\.has\(path\)\s*\)\s*return/.test(code);
     },
@@ -315,7 +315,7 @@ const CHECKS = [
     file: 'src/views/GalleryView.vue',
     why: '攒到几百张之后，「找某一张旧作」是最高频也最痛苦的动作，而此前只有'
       + '「收藏 + 项目」两个控件，找一张图只能靠翻页。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source).replace(/<!--[\s\S]*?-->/g, '');
       return /searchQuery/.test(code) && /type="search"/.test(code);
     },
@@ -327,7 +327,7 @@ const CHECKS = [
       + '本页被 KeepAlive 缓存，从 Remix 回来时 URL 是干净的 /gallery，在 '
       + 'onActivated 里照着它恢复反而会清掉用户当前的筛选，比不做更糟。'
       + '写回必须走 replace（不污染后退栈）。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       const sync = stripComments(extractFunction(source, 'syncFiltersToQuery'));
       if (!sync) return false;
@@ -341,7 +341,7 @@ const CHECKS = [
     why: '调参调乱了没有回头路。实现上有个必踩的坑：applyModelProfileToParams '
       + '会跳过用户碰过的字段，不先清 sdParamsTouched 就调 applyModelProfile，'
       + '「恢复默认」点下去界面纹丝不动，用户只会判定按钮坏了。顺序不能颠倒。',
-    assert(source) {
+    assert(source: any) {
       // 自带函数体提取：本函数带返回类型注解，通用的 extractFunction 匹配不到
       const code = stripComments(source);
       const start = code.search(/function\s+resetParamsToProfile\s*\(/);
@@ -370,12 +370,12 @@ const CHECKS = [
     why: '原先 CFG 只有 8 档、Steps 只有 6 档下拉，想跑 CFG 6.5 做 A/B 对比做不到；'
       + '而同项目的 AnimaQuickPanel 早就是 number + min/max/step，两条出图路体验割裂。'
       + '改成 select 会立刻退回「只能挑预设值」。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       const cfg = code.match(/<(input|select)\b[^>]*params\.cfg[^>]*>/);
       const steps = code.match(/<(input|select)\b[^>]*params\.steps[^>]*>/);
       if (!cfg || !steps) return false;
-      const isNumberInput = tag => tag[1] === 'input' && /type="number"/.test(tag[0]);
+      const isNumberInput = (tag: any) => tag[1] === 'input' && /type="number"/.test(tag[0]);
       // 自由输入带来了「被清空 / 填 999」的可能，必须有夹取与回退
       return isNumberInput(cfg) && isNumberInput(steps) && /function normalize\(/.test(code);
     },
@@ -386,7 +386,7 @@ const CHECKS = [
     why: 'Steps / CFG / 尺寸此前只是裸 <span>，读屏播报「编辑框 数字」，听不出这一格'
       + '是什么。必须用 label[for] 关联控件 id；id 还要用 useId 生成——硬编码 id 在'
       + '面板多实例时会重复，反而让标签指向错的控件。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /useId/.test(code) && /:for="idOf\(/.test(code) && /:id="idOf\(/.test(code);
     },
@@ -396,7 +396,7 @@ const CHECKS = [
     file: 'src/components/AppNav.vue',
     why: '同一页面曾同时叫导航「色调脚本」、h1「色彩情绪」、hero「色彩剧本」——'
       + '按其中任何一个名字在全局搜索里都可能搜不到它。导航、页面标题必须同一个名字。',
-    assert(source) {
+    assert(source: any) {
       const nav = stripComments(source).match(/id:\s*'color-script',\s*label:\s*'([^']+)'/);
       if (!nav) return false;
       const page = stripComments(read('src/views/ColorScriptView.vue'))
@@ -410,7 +410,7 @@ const CHECKS = [
     file: 'src/components/GuestGuide.vue',
     why: '展示条件原为 (isNonLocal || forcedGuest)，而本项目单人本机部署，'
       + 'isNonLocal 恒为假——主人自己永远看不到引导，docs/ 在应用内也没有入口。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       // 不得再拿「非本机」当作展示前提
       return !/isNonLocal/.test(code);
@@ -421,7 +421,7 @@ const CHECKS = [
     file: 'src/components/director/GenerationActionBar.vue',
     why: '原先唯一的校验发生在点击之后，用户只有 2.5 秒读一句「请先选择场景或填写故事」。'
       + '条件不满足时必须禁用按钮、并把原因常驻在按钮旁——只禁用不说明，用户会以为软件坏了。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /blockedReason/.test(code) && /:disabled="[^"]*blockedReason/.test(code);
     },
@@ -432,7 +432,7 @@ const CHECKS = [
     why: '点场景卡的意图是「用这个场景开始」，不是「立刻出图」。带上 &generate=1 '
       + '会在落地瞬间启动一次分钟级任务，既没预览也没确认，用户只能干等或者'
       + '手忙脚乱地取消。只有「调整后生成 / 画这个场景」这类写明动作的按钮才该带它。',
-    assert(source) {
+    assert(source: any) {
       // 先剥 HTML 注释：注释里会复述这个参数名，不剥会把解释文字误判成代码
       const code = stripComments(source).replace(/<!--[\s\S]*?-->/g, '');
       return !/prompt-builder\?[^`'"\s]*generate=1/.test(code);
@@ -444,7 +444,7 @@ const CHECKS = [
     why: '搜索覆盖 15 个页面 + 场景 + 作品，是本项目最强的捷径，但只有 '
       + 'Ctrl/Cmd+K 与 `/` 两个键盘入口时，纯鼠标流用户永远发现不了它。'
       + '导航里必须有一个点得着的按钮。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /openGlobalSearch/.test(code) && /nav-search/.test(code);
     },
@@ -454,7 +454,7 @@ const CHECKS = [
     file: 'src/components/GlobalSearch.vue',
     why: '搜索面板挂在路由之外的 App.vue，导航按钮在路由之内，没有父子关系，'
       + '只能经单例通道唤起。若这条 watch 被删，按钮会变成点了没反应的死按钮。',
-    assert(source) {
+    assert(source: any) {
       const code = stripComments(source);
       return /watch\(\s*openRequest/.test(code) && /openPanel\(/.test(code);
     },
@@ -465,7 +465,7 @@ const CHECKS = [
     why: '清几百张废稿是真实高频场景。批量路径若绕过确认，一次误点就整组消失；'
       + '若只改数组而不 revokeObjectURL，相当于在 LRU 大图工程上捅一个洞——'
       + '删掉的卡片 blob 全部泄漏，几百张图白占内存。顺序必须是确认→软删→释放。',
-    assert(source) {
+    assert(source: any) {
       const body = stripComments(extractFunction(source, 'bulkDeleteAction'));
       if (!body) return false;
       const confirmAt = body.search(/await\s+confirmAction/);

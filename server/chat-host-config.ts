@@ -19,7 +19,7 @@ function createHostConfigStore(io = fs) {
       const signature = [stat.mtimeMs, stat.ctimeMs, stat.size, stat.ino].join(':');
       const cached = cache.get(file);
       if (cached?.signature === signature) return { ...cached.value };
-      const parsed: { baseUrl?: unknown; pathname?: unknown; model?: unknown; apiKey?: unknown } | null = JSON.parse(io.readFileSync(file, 'utf8'));
+      const parsed = JSON.parse(io.readFileSync(file, 'utf8'));
       const baseUrl = String(parsed?.baseUrl || '').trim();
       const model = String(parsed?.model || '').trim();
       const apiKey = String(parsed?.apiKey || '').trim();

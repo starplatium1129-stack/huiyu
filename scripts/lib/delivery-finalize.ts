@@ -5,13 +5,13 @@ const { validateSnapshot }: typeof import('./delivery-identity') = require('./de
 const { get, set, state, MAIN_FIELDS }: typeof import('./delivery-state') = require('./delivery-state');
 const { COMMIT, ancestor, sourceProof }: typeof import('./delivery-git-proof') = require('./delivery-git-proof');
 
-function reference(root, entry) {
+function reference(root: any, entry: any) {
   if (!object(entry)) throw Error('finalize 缺少证据文件索引');
   const read = readJson(root, entry.path, true);
   if (read.entry.sha256 !== entry.sha256 || read.entry.bytes !== entry.bytes) throw Error(`finalize 证据文件缺失/改变: ${entry.path}`);
   return read;
 }
-function resultFor(root, entry, baseline) {
+function resultFor(root: any, entry: any, baseline: any) {
   const read = reference(root, entry), value = read.value;
   if (value.schemaVersion !== 1 || typeof value.baselineSha256 !== 'string'
     || value.baselineSha256.toLowerCase() !== baseline.entry.sha256) throw Error('finalize 结果未绑定执行前快照');
@@ -20,7 +20,7 @@ function resultFor(root, entry, baseline) {
   return read;
 }
 // Walk only the explicitly linked, immutable delivery chain; no latest-file scan.
-function lineage(root, first) {
+function lineage(root: any, first: any) {
   const nodes = [], seen = new Set(); let current = first;
   while (current) {
     if (nodes.length >= 64 || seen.has(current.entry.path)) throw Error('finalize 证据链循环或超过 64 阶段');
@@ -39,10 +39,10 @@ function lineage(root, first) {
   }
   return nodes;
 }
-function gateFingerprint(value, binding) {
+function gateFingerprint(value: any, binding: any) {
   return { valueSha256: sha256(canonical(value)), bindingSha256: sha256(canonical(binding)) };
 }
-function origins(root, nodes, appended) {
+function origins(root: any, nodes: any, appended: any) {
   // Lazy import keeps the freshness -> commit relation dependency acyclic.
   const { bindGate }: typeof import('./delivery-freshness') = require('./delivery-freshness');
   const first = nodes[0], tested = structuredClone(first.value);
@@ -61,7 +61,7 @@ function origins(root, nodes, appended) {
   }
   const candidates = [
     ...(appended ? [{ record: appended, executionCommit: first.value.commit }] : []),
-    ...nodes.filter(node => node.record),
+    ...nodes.filter((node: any) => node.record),
   ];
   const result = {};
   for (const [field, binding] of Object.entries(tested.tracking.gates)) {
@@ -79,7 +79,7 @@ function origins(root, nodes, appended) {
   }
   return result;
 }
-function createFinalization(root, document, baseline, resultRecord, finalCommit, repo) {
+function createFinalization(root: any, document: any, baseline: any, resultRecord: any, finalCommit: any, repo: any) {
   if (!COMMIT.test(finalCommit) || repo.commit !== finalCommit) throw Error('显式 finalCommit 必须等于当前 HEAD');
   const nodes = lineage(root, baseline), original = nodes.at(-1);
   ancestor(root, original.value.commit, finalCommit);
@@ -98,7 +98,7 @@ function createFinalization(root, document, baseline, resultRecord, finalCommit,
     worktree: { baseline: original.value.handoff.commit.worktree, final: repo.worktree,
       source: 'matches-final-commit', sourceIndex: 'matches-final-commit', scope: 'selected-source-only' } };
 }
-function inspectFinalization(root, document) {
+function inspectFinalization(root: any, document: any) {
   const value = document.finalization;
   if (value === undefined) return null;
   const result = { status: 'invalid' };
@@ -122,7 +122,7 @@ function inspectFinalization(root, document) {
   } catch (error) { result.message = runtimeErrorMessage(error); }
   return result;
 }
-function isReboundGate(document, field, verdict) {
+function isReboundGate(document: any, field: any, verdict: any) {
   const origin = verdict?.status === 'matched' ? verdict.gates?.[field] : null, value = get(document, field);
   if (!origin || MAIN_FIELDS.includes(field) || value?.commit !== origin.executionCommit) return false;
   const actual = gateFingerprint(value, document.tracking.gates[field]);

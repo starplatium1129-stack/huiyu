@@ -290,7 +290,7 @@ if (personaCoreSceneIds !== undefined) {
 for (const sceneId of Object.keys(recommendationReasons)) {
   if (!ids.has(sceneId)) errors.push('curation.json recommendation reason references missing scene: ' + sceneId);
 }
-const curationText = (scene: { id: unknown; title: unknown; story: unknown; emotion: unknown; char: unknown; category: unknown; season: unknown; timeOfDay: unknown; location: unknown; weather: unknown; camera: unknown; lighting: unknown; tags: unknown; }) => [scene.id, scene.title, scene.story, scene.emotion, scene.char, scene.category, scene.season,
+const curationText = (scene: any) => [scene.id, scene.title, scene.story, scene.emotion, scene.char, scene.category, scene.season,
   scene.timeOfDay, scene.location, scene.weather, scene.camera, scene.lighting].concat(scene.tags || []).join(' ').toLowerCase();
 for (const [intent, aliases] of Object.entries(searchAliases)) {
   if (!Array.isArray(aliases) || !aliases.length) {
@@ -326,7 +326,7 @@ for (const [id, traits] of Object.entries(expectedCharacters)) {
     errors.push('characters.json missing ' + id);
     continue;
   }
-  const actual = new Set((character.traits || []).map((trait: { tag: unknown; }) => trait.tag));
+  const actual = new Set((character.traits || []).map((trait: any) => trait.tag));
   for (const trait of traits) if (!actual.has(trait)) errors.push(id + ': missing visual trait ' + trait);
   if (!character.lora || !character.lora.name) errors.push(id + ': missing LoRA binding');
 

@@ -31,13 +31,13 @@ const EDGES = {
   running: new Set(['running', 'cancelling', 'succeeded', 'failed', 'cancelled', 'interrupted']),
   cancelling: new Set(['cancelling', 'cancelled', 'interrupted']),
 };
-const digest = value => createHash('sha256').update(value).digest('hex');
-const copy = value => JSON.parse(JSON.stringify(value));
-const token = value => typeof value === 'string' && /^[\w-]{1,160}$/.test(value);
-const hash = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
-const time = value => Number.isSafeInteger(value) && value >= 0;
+const digest = (value: any) => createHash('sha256').update(value).digest('hex');
+const copy = (value: any) => JSON.parse(JSON.stringify(value));
+const token = (value: any) => typeof value === 'string' && /^[\w-]{1,160}$/.test(value);
+const hash = (value: any) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
+const time = (value: any) => Number.isSafeInteger(value) && value >= 0;
 
-function assertRecord(record, previous) {
+function assertRecord(record: any, previous: any) {
   if (!record || Object.keys(record).sort().join() !== [...FIELDS].sort().join()) throw Error('INVALID_RECORD_FIELDS');
   if (!token(record.id) || !token(record.requestKey) || !hash(record.ownerHash)
     || !hash(record.requestHash) || !hash(record.backendFingerprint)) throw Error('INVALID_IDENTITY');
@@ -64,7 +64,7 @@ function assertRecord(record, previous) {
 }
 
 class RecoveryJournal {
-  constructor(directory) {
+  constructor(directory: any) {
     this.file = path.join(path.resolve(directory), 'task-recovery.jsonl');
     this.records = new Map();
     this.sequence = 0;
@@ -107,16 +107,16 @@ class RecoveryJournal {
     if (this.error) throw Error(`JOURNAL_BLOCKED:${this.error}`);
   }
 
-  assertUnique(record) {
+  assertUnique(record: any) {
     for (const other of this.records.values()) {
       if (other.id !== record.id && other.ownerHash === record.ownerHash
         && other.requestKey === record.requestKey) throw Error('DUPLICATE_REQUEST_KEY');
     }
   }
 
-  get(id) { return this.records.has(id) ? copy(this.records.get(id)) : null; }
+  get(id: any) { return this.records.has(id) ? copy(this.records.get(id)) : null; }
 
-  write(record) {
+  write(record: any) {
     this.assertHealthy();
     const previous = this.records.get(record.id);
     assertRecord(record, previous);
@@ -142,7 +142,7 @@ class RecoveryJournal {
     return copy(record);
   }
 
-  create(input, now) {
+  create(input: any, now: any) {
     this.assertHealthy();
     for (const existing of this.records.values()) {
       if (existing.ownerHash !== input.ownerHash || existing.requestKey !== input.requestKey) continue;
@@ -159,13 +159,13 @@ class RecoveryJournal {
     });
   }
 
-  change(id, patch, now) {
+  change(id: any, patch: any, now: any) {
     const current = this.get(id);
     if (!current) throw Error('UNKNOWN_JOB');
     return this.write({ ...current, ...patch, revision: current.revision + 1, updatedAt: Math.max(now, current.updatedAt) });
   }
 
-  cleanupCandidates(now, retentionMs) {
+  cleanupCandidates(now: any, retentionMs: any) {
     this.assertHealthy();
     // Preview only. Unknown upstream state and pending result delivery are never
     // treated as permission to delete files or remove an idempotency tombstone.
@@ -176,7 +176,7 @@ class RecoveryJournal {
 }
 
 class RecoveryCoordinator {
-  constructor(journal, adapters, options = {}) {
+  constructor(journal: any, adapters: any, options = {}) {
     this.journal = journal;
     this.adapters = adapters;
     this.now = options.now || Date.now;
@@ -185,12 +185,12 @@ class RecoveryCoordinator {
     this.inflight = new Map();
   }
 
-  markSubmitting(id) {
+  markSubmitting(id: any) {
     // The real submitter must durably record this BEFORE any upstream request.
     return this.journal.change(id, { state: 'submitting' }, this.now());
   }
 
-  acknowledge(id, upstreamId) {
+  acknowledge(id: any, upstreamId: any) {
     const current = this.journal.get(id);
     if (!current) throw Error('UNKNOWN_JOB');
     // A late submit acknowledgement identifies the backend but must not clear
@@ -200,7 +200,7 @@ class RecoveryCoordinator {
     }, this.now());
   }
 
-  requestCancel(id) {
+  requestCancel(id: any) {
     this.journal.assertHealthy();
     const current = this.journal.get(id);
     if (!current) throw Error('UNKNOWN_JOB');
@@ -212,18 +212,18 @@ class RecoveryCoordinator {
     }, this.now());
   }
 
-  reconcile(id) {
+  reconcile(id: any) {
     if (this.inflight.has(id)) return this.inflight.get(id);
     const task = Promise.resolve().then(() => this.run(id)).finally(() => this.inflight.delete(id));
     this.inflight.set(id, task);
     return task;
   }
 
-  interrupt(id, code) {
+  interrupt(id: any, code: any) {
     return this.journal.change(id, { state: 'interrupted', code }, this.now());
   }
 
-  async run(id) {
+  async run(id: any) {
     this.journal.assertHealthy();
     let current = this.journal.get(id);
     if (!current) throw Error('UNKNOWN_JOB');

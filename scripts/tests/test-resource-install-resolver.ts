@@ -12,19 +12,19 @@ const { emptyState }: typeof import('../lib/resource-install-state') = require('
 const { resolveInstalledResourceRoots }: typeof import('../lib/resource-install-resolver') = require('../lib/resource-install-resolver');
 const { killAt }: typeof import('./resource-install-process') = require('./resource-install-process');
 
-function readOnlyIo(onRead) {
+function readOnlyIo(onRead?: any) {
   const io = Object.create(fs);
-  const reads = [];
-  const writes = [];
+  const reads: any = [];
+  const writes: any = [];
   const opened = new Map();
-  const denied = op => (...args) => { writes.push([op, ...args]); throw new Error('Unexpected mutation: ' + op); };
+  const denied = (op: any) => (...args) => { writes.push([op, ...args]); throw new Error('Unexpected mutation: ' + op); };
   for (const name of Object.keys(fs)) {
     if (/^(?:append|chmod|chown|copy|cp|fchmod|fchown|fdatasync|fsync|ftruncate|futimes|lchmod|lchown|link|lutimes|mkdir|mkdtemp|rename|rm|rmdir|symlink|truncate|unlink|utimes|write)/.test(name)) {
       io[name] = denied(name);
     }
   }
   io.createWriteStream = denied('createWriteStream');
-  io.openSync = (file, flags, ...rest) => {
+  io.openSync = (file: any, flags: any, ...rest) => {
     if (flags !== 'r' && flags !== fs.constants.O_RDONLY) return denied('openSync')(file, flags);
     const fd = fs.openSync(file, flags, ...rest);
     opened.set(fd, String(file));
@@ -41,9 +41,9 @@ function readOnlyIo(onRead) {
   }
   return { io, reads, writes };
 }
-function tree(root) {
-  const dirs = [];
-  const visit = dir => {
+function tree(root: any) {
+  const dirs: any = [];
+  const visit = (dir: any) => {
     dirs.push(dir);
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (entry.isDirectory() && !entry.isSymbolicLink()) visit(path.join(dir, entry.name));
@@ -52,7 +52,7 @@ function tree(root) {
   visit(root);
   return { dirs, files: snapshot(root) };
 }
-function checked(f, { options = {}, error, onRead, injectedMutation = false } = {}) {
+function checked(f: any, { options = {}, error, onRead, injectedMutation = false } = {}) {
   const adapter = readOnlyIo(onRead);
   const before = tree(f.base);
   const program = snapshot(f.program);
@@ -67,7 +67,7 @@ function checked(f, { options = {}, error, onRead, injectedMutation = false } = 
   if (!injectedMutation) assert.deepEqual(tree(f.base), before, 'read-only resolution changed files/directories');
   return { result, reads: adapter.reads };
 }
-function noNetwork(t) {
+function noNetwork(t: any) {
   const unexpected = () => { throw new Error('Resolver attempted a network request'); };
   t.mock.method(http, 'get', unexpected);
   t.mock.method(http, 'request', unexpected);
@@ -75,7 +75,7 @@ function noNetwork(t) {
   t.mock.method(https, 'request', unexpected);
   t.mock.method(globalThis, 'fetch', unexpected);
 }
-function mediaPack(f) {
+function mediaPack(f: any) {
   const files = {
     'assets/characters/preview.webp': 'synthetic image fixture',
     'assets/characters/thumbs/preview.png': 'synthetic thumbnail fixture',
@@ -163,9 +163,9 @@ test('validated media snapshot has exact URL-relative allowlist, identity and im
   ]);
   assert.equal(Object.isFrozen(result), true);
   assert.equal(Object.isFrozen(result.relativePaths), true);
-  const byteReads = new Set(reads.filter(read => read.op === 'readFileSync').map(read => read.file));
+  const byteReads = new Set(reads.filter((read: any) => read.op === 'readFileSync').map((read: any) => read.file));
   for (const entry of manifest.entries) assert.ok(byteReads.has(path.join(result.versionRoot, entry.path)), entry.path);
-  assert.ok(reads.every(read => !read.file?.startsWith(f.source)), 'resolver read removable source data');
+  assert.ok(reads.every((read: any) => !read.file?.startsWith(f.source)), 'resolver read removable source data');
 });
 
 test('trusted configPath works after removable media disappears; config cannot supply callbacks or IO', async t => {
@@ -250,11 +250,11 @@ test('source/release approval and pinned identities remain required for installe
   await f.installer().install({ releaseId: 'base' });
   const original = structuredClone(f.policy);
   for (const [change, error] of [
-    [p => { p.sources.media.approved = false; }, 'SOURCE_REQUIRED'],
-    [p => { delete p.sources.media; }, 'SOURCE_REQUIRED'],
-    [p => { p.releases.base.approved = false; }, 'APPROVAL_REQUIRED'],
-    [p => { p.releases.base.packageIdentity = '0'.repeat(64); }, 'APPROVAL_REQUIRED'],
-    [p => { p.releases.base.targetIdentity = '0'.repeat(64); }, 'APPROVAL_REQUIRED'],
+    [(p: any) => { p.sources.media.approved = false; }, 'SOURCE_REQUIRED'],
+    [(p: any) => { delete p.sources.media; }, 'SOURCE_REQUIRED'],
+    [(p: any) => { p.releases.base.approved = false; }, 'APPROVAL_REQUIRED'],
+    [(p: any) => { p.releases.base.packageIdentity = '0'.repeat(64); }, 'APPROVAL_REQUIRED'],
+    [(p: any) => { p.releases.base.targetIdentity = '0'.repeat(64); }, 'APPROVAL_REQUIRED'],
   ]) {
     const policy = structuredClone(original);
     change(policy);
@@ -326,7 +326,7 @@ test('installed asset junction and metadata hardlink fail closed before external
   fs.renameSync(assets, saved);
   fs.symlinkSync(f.artwork, assets, 'junction');
   const { reads } = checked(f, { error: 'UNSAFE_LINK' });
-  assert.ok(reads.filter(read => read.op === 'readFileSync').every(read => !read.file.startsWith(f.artwork)));
+  assert.ok(reads.filter((read: any) => read.op === 'readFileSync').every((read: any) => !read.file.startsWith(f.artwork)));
   fs.unlinkSync(assets);
   fs.renameSync(saved, assets);
   fs.linkSync(path.join(installed.installedRoot, 'receipt.json'), path.join(f.base, 'receipt-alias.json'));
@@ -392,7 +392,7 @@ for (const fault of ['state-switch', 'pending-appears', 'lock-appears', 'manifes
       access: { isLocalStudioHost: () => true, isAuthorized: () => allowed } };
     const expected = { 'state-switch': 'STATE_CONFLICT', 'pending-appears': 'PENDING_TRANSACTION', 'lock-appears': 'BUSY',
       'manifest-changes': 'STATE_CONFLICT', 'config-revoked': 'CONFIG_CHANGED', 'access-revoked': 'ACCESS_DENIED' };
-    checked(f, { options, error: expected[fault], injectedMutation: true, onRead: (op, file) => {
+    checked(f, { options, error: expected[fault], injectedMutation: true, onRead: (op: any, file: any) => {
       if (fired || op !== 'readFileSync' || file !== path.join(installed.installedRoot, 'assets/a.txt')) return;
       fired = true;
       if (fault === 'state-switch') write(path.join(f.installer().root, 'current.json'), JSON.stringify({ ...installed.state, sequence: 2 }));

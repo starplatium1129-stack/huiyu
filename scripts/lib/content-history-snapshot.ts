@@ -52,7 +52,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
       result.checks.push({ file, status, comparison: 'JSON structure, values and array order',
         serialization: expected === undefined ? 'unknown' : raw === JSON.stringify(expected, null, 2) + '\n' ? 'current' : 'different',
         scope: 'domain-projection', sourceFiles: [...new Set([`data/${domain}/manifest.json`,
-          ...result.rows.filter((row) => row.role === 'source').map((row) => row.file),
+          ...result.rows.filter((row: any) => row.role === 'source').map((row: any) => row.file),
           ...(file === 'data/scenes-core.json' ? ['data/curation.json'] : [])])] });
       if (status === 'mismatch') issue(file, 'source/derived projection mismatch; current snapshot, not attributed to this change');
       if (status === 'unknown') unknown(file, 'source projection could not be proved');

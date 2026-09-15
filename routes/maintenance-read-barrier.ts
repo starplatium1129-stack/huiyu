@@ -51,7 +51,7 @@ function maintenanceReadBarrier(options: unknown) {
       if (done) process.nextTick(done);
       return true;
     };
-    res.end = (chunk: null|undefined, encoding: unknown, callback: unknown) => {
+    res.end = (chunk: any, encoding: unknown, callback: unknown) => {
       if (ended) return res;
       const done = typeof chunk === 'function' ? chunk : typeof encoding === 'function' ? encoding : callback;
       if (typeof chunk === 'function') chunk = undefined;

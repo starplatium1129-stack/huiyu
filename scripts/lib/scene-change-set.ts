@@ -4,15 +4,15 @@ const { isSceneId }: typeof import('./scene-id') = require('./scene-id');
 const MAX_SCENES = 10000;
 const MAX_BLUEPRINTS = 2000;
 
-function invalid(message) {
+function invalid(message: any) {
   throw Object.assign(new Error(message), { statusCode: 400 });
 }
 
-function object(value) {
+function object(value: any) {
   return value && typeof value === 'object' && !Array.isArray(value);
 }
 
-function validateCollection(items, kind, maximum) {
+function validateCollection(items: any, kind: any, maximum: any) {
   if (!Array.isArray(items) || items.length > maximum) invalid(kind + ' 数据格式或数量超出限制');
   const seen = new Set();
   for (const item of items) {
@@ -30,24 +30,24 @@ function validateCollection(items, kind, maximum) {
   }
 }
 
-function applyCollection(current, change, kind, maximum) {
+function applyCollection(current: any, change: any, kind: any, maximum: any) {
   if (!object(change) || Object.keys(change).some(key => !['upsert', 'remove'].includes(key))) invalid(kind + ' 变更集格式错误');
   validateCollection(change.upsert, kind, maximum);
   if (!Array.isArray(change.remove) || change.remove.length > maximum) invalid(kind + ' remove 必须为 ID 数组');
-  const currentIds = new Set(current.map(item => item.id));
+  const currentIds = new Set(current.map((item: any) => item.id));
   const removed = new Set();
-  const updates = new Map(change.upsert.map(item => [item.id, item]));
+  const updates = new Map(change.upsert.map((item: any) => [item.id, item]));
   for (const id of change.remove) {
     if (typeof id !== 'string' || !currentIds.has(id) || removed.has(id) || updates.has(id)) invalid(kind + ' 删除 ID 不存在、重复或同时更新：' + id);
     removed.add(id);
   }
-  const result = current.filter(item => !removed.has(item.id)).map(item => updates.get(item.id) || item);
+  const result = current.filter((item: any) => !removed.has(item.id)).map((item: any) => updates.get(item.id) || item);
   for (const item of change.upsert) if (!currentIds.has(item.id)) result.push(item);
   validateCollection(result, kind, maximum);
   return structuredClone(result);
 }
 
-function resolveSceneChangeSet(current, changeSet) {
+function resolveSceneChangeSet(current: any, changeSet: any) {
   if (!object(changeSet) || changeSet.version !== 1
     || Object.keys(changeSet).some(key => !['version', 'scenes', 'blueprints', 'tags', 'curation'].includes(key))) invalid('不支持的场景变更集；需要 version: 1');
   const result = {
@@ -61,17 +61,17 @@ function resolveSceneChangeSet(current, changeSet) {
   return result;
 }
 
-function collectionDiff(before, after) {
-  const old = new Map(before.map(item => [item.id, item]));
-  const incoming = new Set(after.map(item => item.id));
+function collectionDiff(before: any, after: any) {
+  const old = new Map(before.map((item: any) => [item.id, item]));
+  const incoming = new Set(after.map((item: any) => item.id));
   return {
-    added: after.filter(item => !old.has(item.id)).map(item => item.id),
-    updated: after.filter(item => old.has(item.id) && JSON.stringify(old.get(item.id)) !== JSON.stringify(item)).map(item => item.id),
-    removed: before.filter(item => !incoming.has(item.id)).map(item => item.id),
+    added: after.filter((item: any) => !old.has(item.id)).map((item: any) => item.id),
+    updated: after.filter((item: any) => old.has(item.id) && JSON.stringify(old.get(item.id)) !== JSON.stringify(item)).map((item: any) => item.id),
+    removed: before.filter((item: any) => !incoming.has(item.id)).map((item: any) => item.id),
   };
 }
 
-function previewSceneChanges(current, next, version) {
+function previewSceneChanges(current: any, next: any, version: any) {
   const scenes = collectionDiff(current.scenes, next.scenes);
   const blueprints = collectionDiff(current.blueprints, next.blueprints || current.blueprints);
   const affected = new Set([...scenes.added, ...scenes.updated, ...scenes.removed]);

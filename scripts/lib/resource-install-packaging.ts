@@ -9,14 +9,14 @@ const { noLinks, child, within, readBytes, digest, writeAtomic }: typeof import(
 
 // Profile generation runs only inside a fresh desktop staging directory. Every original URL
 // remains available offline; base changes only popular portraits, never thumbnails/brand/Live2D.
-async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }) {
+async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: any) {
   if (!['full', 'base'].includes(profile)) throw new Error('Resource profile must be full or base');
   root = path.resolve(root); gatewayRoot = path.resolve(gatewayRoot);
   const source = path.join(root, 'assets');
   const target = path.join(gatewayRoot, 'assets');
   if (within(source, target) || within(target, source) || within(gatewayRoot, root)) throw new Error('Profile output overlaps source assets');
   noLinks(fs, source); noLinks(fs, target);
-  const entries: { rel: string; sourceBytes: unknown; }[] = [];
+  const entries: any = [];
   function walk(directory: PathLike, prefix = '') {
     noLinks(fs, directory);
     for (const name of fs.readdirSync(directory).sort()) {

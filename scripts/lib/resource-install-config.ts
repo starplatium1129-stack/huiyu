@@ -8,14 +8,14 @@ const { sourceUrl }: typeof import('./resource-download-http') = require('./reso
 
 // Operator-owned environment selects this file. Saved application settings and HTTP input
 // cannot select roots, approve sources, grant management access, or replace callbacks.
-function loadResourceConfiguration(gateway) {
+function loadResourceConfiguration(gateway: any) {
   const file = gateway.RESOURCE_CONFIG_PATH;
   if (!file) return null;
   if (typeof file !== 'string' || !path.isAbsolute(file)) fail('CONFIG_REQUIRED', 'Resource configuration must be absolute');
   const bytes = readBytes(fs, file);
   let value;
   try { value = JSON.parse(bytes.toString('utf8')); } catch { fail('CONFIG_REQUIRED', 'Invalid resource configuration'); }
-  const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const object = (value: any) => value !== null && typeof value === 'object' && !Array.isArray(value);
   if (!object(value) || !object(value.policy) || !object(value.policy.sources)
     || !object(value.policy.releases) || !Array.isArray(value.protectedRoots)) {
     fail('CONFIG_REQUIRED', 'Explicit policy and protectedRoots are required');
@@ -65,7 +65,7 @@ const MESSAGES = {
   INTERRUPTED: '操作因网关重启中断，可继续恢复。',
   MANAGEMENT_DISABLED: '本机资源管理尚未启用，基础展示仍可使用。',
 };
-function publicError(error) {
+function publicError(error: any) {
   const code = typeof error?.code === 'string' && /^[A-Z][A-Z0-9_]{0,50}$/.test(error.code) ? error.code : 'RESOURCE_FAILED';
   return { code, message: MESSAGES[code] || '资源操作未通过检查，请核对本地配置与资源包。' };
 }

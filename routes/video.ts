@@ -126,7 +126,7 @@ function buildWorkflow(input: { modelId: string|number; }) {
   return workflows.buildWorkflow(input, { t8Available:t8Available });
 }
 
-function requestOwner(req) {
+function requestOwner(req: any) {
   if (security.isDirectLocalRequest(req)) return 'local';
   let cookie = String(req.headers.cookie || '').match(/(?:^|;\s*)aics_token=([^;]+)/);
   let token = req.headers['x-token'] || cookie && cookie[1] || req.query && req.query.token || '';
@@ -139,7 +139,7 @@ function outputReference(entry: { outputs: { [x: string]: unknown; }; }) {
   return Array.isArray(values) && values.length ? values[0] : null;
 }
 
-function createVideoService(config: { RUNTIME_ROOT: unknown; ROOT_DIR: string; COMFY_HOST: string|URL|undefined; }, dependencies: { jobTtlMs?: unknown; pollIntervalMs?: unknown; }) {
+function createVideoService(config: any, dependencies: any) {
   dependencies = dependencies || {};
   // 任务注册表骨架（Map + pendingCount + closed 标志）收口到 server/job-runner.js；
   // poll/cancel 状态机保持本路由引擎专属实现（分镜 batches 是另一套形状，不套用）。
@@ -165,7 +165,7 @@ function createVideoService(config: { RUNTIME_ROOT: unknown; ROOT_DIR: string; C
 
   let pendingCount = registry.pendingCount;
 
-  function publicJob(job: { createdAt: number; status: string; estimatedSeconds: number; id: string|number|boolean; input: { modelId: unknown; originalPrompt: unknown; width: unknown; height: unknown; duration: unknown; fps: unknown; seed: unknown; }; result: unknown; error: unknown; errorCode: unknown; }) {
+  function publicJob(job: any) {
     // 进度由时间外推（elapsed/预估），不再用固定 0.12 假值误导等待；
     // 上限 90% 保留采样完成后的编码/落盘余量，succeeded 才归 1。
     let elapsedSeconds = Math.round((Date.now() - job.createdAt) / 1000);
@@ -195,7 +195,7 @@ function createVideoService(config: { RUNTIME_ROOT: unknown; ROOT_DIR: string; C
     };
   }
 
-  function removeJob(job: { id: unknown; owner?: unknown; input: unknown; status?: string; createdAt?: number; estimatedSeconds?: number; deadline?: number; upstreamId?: string; result: unknown; error?: null; errorCode?: null; pollTimer: unknown; gcTimer: unknown; pollFailures?: number; }) {
+  function removeJob(job: any) {
     if (job.pollTimer) clearTimeout(job.pollTimer);
     if (job.gcTimer) clearTimeout(job.gcTimer);
     if (job.result && job.result.path) {
@@ -216,7 +216,7 @@ function createVideoService(config: { RUNTIME_ROOT: unknown; ROOT_DIR: string; C
     }, delay);
   }
 
-  function failJob(job: { status: string; errorCode: unknown; error: unknown; pollTimer: string|number|NodeJS.Timeout|null|undefined; }, error: unknown, fallbackCode: string|undefined) {
+  function failJob(job: any, error: unknown, fallbackCode?: string|undefined) {
     if (job.status === 'cancelled') return;
     job.status = 'failed';
     job.errorCode = error && error.code || fallbackCode || 'VIDEO_FAILED';
@@ -227,7 +227,7 @@ function createVideoService(config: { RUNTIME_ROOT: unknown; ROOT_DIR: string; C
     job.pollTimer = null;
   }
 
-  async function poll(job: { status?: unknown; pollTimer?: string|number|NodeJS.Timeout|null|undefined; upstreamId?: unknown; deadline?: unknown; estimatedSeconds?: unknown; result?: unknown; error?: unknown; errorCode?: unknown; pollFailures?: unknown; id?: string; }) {
+  async function poll(job: any) {
     if (registry.isClosed() || job.status !== 'running' || !job.upstreamId) return;
     if (Date.now() > job.deadline) {
       failJob(job, serviceError(504, 'VIDEO_TIMEOUT',
@@ -325,7 +325,7 @@ function createVideoService(config: { RUNTIME_ROOT: unknown; ROOT_DIR: string; C
     schedulePoll(job, 0);
   }
 
-  function create(input: { frames: number; steps: number; }, owner: unknown, opts: { ttlMs: unknown; }) {
+  function create(input: { frames: number; steps: number; }, owner: unknown, opts: any) {
     if (pendingCount() >= MAX_PENDING) {
       throw serviceError(429, 'VIDEO_QUEUE_FULL', '视频队列已满，请等待当前任务完成');
     }
@@ -426,7 +426,7 @@ function createVideoService(config: { RUNTIME_ROOT: unknown; ROOT_DIR: string; C
 // 结果文件 Range 流式下发（支持视频拖动进度条）。
 
 
-function createVideoRouter(config: unknown, dependencies: { videoService: unknown; batchService: unknown; t8Available: boolean; }) {
+function createVideoRouter(config: unknown, dependencies: any) {
   let router = express.Router();
   let service = dependencies && dependencies.videoService
     ? dependencies.videoService

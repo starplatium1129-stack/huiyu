@@ -13,8 +13,8 @@ const scenePublisher: typeof import('../maintenance/publish-scene-showcase-anima
 const popularPublisher: typeof import('../maintenance/publish-popular-showcase') = require('../maintenance/publish-popular-showcase');
 
 const modules = F.entries.map(name => require(`../maintenance/${name}`));
-const records = f => JSON.parse(fs.readFileSync(path.join(f.output, 'generation-manifest.json'), 'utf8'));
-async function run(index, f, mock, args = [], deps = {}) {
+const records = (f: any) => JSON.parse(fs.readFileSync(path.join(f.output, 'generation-manifest.json'), 'utf8'));
+async function run(index: any, f: any, mock: any, args = [], deps = {}) {
   return (await F.guarded(f, () => modules[index].main([...f.args, '--gateway', mock.origin, ...args],
     { env: f.env, fetchImpl: mock.fetchImpl, pollMs: 1, timeoutMs: 250, ...deps }))).result;
 }
@@ -68,7 +68,7 @@ for (const [index, name] of F.entries.entries()) {
     assert.equal(result.gateway, 'http://127.0.0.1:3000');
     assert.equal(writes.length, 0); assert.equal(requests, 0);
     assert.deepEqual(F.tree(f.temporary), before);
-    assert.ok(result.tasks.every(r => r.inputVersion.length === 64 && r.payload.prompt));
+    assert.ok(result.tasks.every((r: any) => r.inputVersion.length === 64 && r.payload.prompt));
   });
 
   test(`${name}: mock generation is pending, input-bound, immutable and resumable`, async t => {
@@ -84,7 +84,7 @@ for (const [index, name] of F.entries.entries()) {
       assert.equal(record.review.reviewedAt, undefined); assert.equal(record.actualSeed, 123);
       assert.ok(record.createdAt && record.updatedAt && record.generatedAt && record.jobId);
       assert.equal(record.gateway, mock.origin); assert.equal(record.inputVersion.length, 64);
-      assert.ok(record.sources.every(s => s.sha256.length === 64 && s.bytes > 0));
+      assert.ok(record.sources.every((s: any) => s.sha256.length === 64 && s.bytes > 0));
       assert.equal(record.asset.sha256, F.sha(fs.readFileSync(path.join(f.output, record.image))));
       assert.deepEqual(record.payload, mock.state.posts[first.indexOf(record)]);
       assert.equal(record.payloadSha256, F.sha(JSON.stringify(record.payload)));
@@ -99,7 +99,7 @@ for (const [index, name] of F.entries.entries()) {
     assert.equal(F.sha(fs.readFileSync(reviewFile)), reviewHash);
     assert.deepEqual(F.tree(f.root), sourceBefore); assert.deepEqual(F.tree(path.dirname(f.manifest)), activeBefore);
     assert.equal(fs.existsSync(path.join(f.output, 'manifest.json')), false);
-    assert.deepEqual(buildReview(first, {}).pending.sort(), first.map(r => r.key).sort());
+    assert.deepEqual(buildReview(first, {}).pending.sort(), first.map((r: any) => r.key).sort());
     const published = planPublished(buildReview(first, {}), first);
     assert.equal(published.additions.length, 0); assert.throws(() => assertFullReviewCoverage(published), /未审核/);
   });
@@ -179,8 +179,8 @@ test('failed jobs and malformed/foreign result bodies never become successful or
     assert.equal((await run(2, f, mock)).exitCode, 1);
     const saved = records(f);
     assert.equal(saved.length, 2); assert.equal(mock.state.posts.length, 2);
-    assert.ok(saved.every(r => r.status === 'failed' && r.review.verdict === 'pending' && !r.asset));
-    assert.ok(saved.every(r => r.jobId && r.error));
+    assert.ok(saved.every((r: any) => r.status === 'failed' && r.review.verdict === 'pending' && !r.asset));
+    assert.ok(saved.every((r: any) => r.jobId && r.error));
     assert.equal(fs.existsSync(path.join(f.output, 'manifest.json')), false);
   }
 });
@@ -279,8 +279,8 @@ test('batch-specific manifests remain consumable by the existing manual review a
   const scenes = JSON.parse(fs.readFileSync(sceneFile, 'utf8'));
   const popular = JSON.parse(fs.readFileSync(popularFile, 'utf8'));
   assert.equal(scenes.length, 1); assert.equal(popular.length, 1);
-  assert.ok(scenes.every(r => r.batch === 'scene'));
-  assert.ok(popular.every(r => r.batch === 'popular'));
+  assert.ok(scenes.every((r: any) => r.batch === 'scene'));
+  assert.ok(popular.every((r: any) => r.batch === 'popular'));
   assert.equal(fs.existsSync(scenePublisher.sourcePathFor(scenes[0], sceneFile)), true);
   assert.equal(fs.existsSync(popularPublisher.sourcePathFor(popular[0], popularFile)), true);
   assert.deepEqual(popularPublisher.loadPassedRecords(popularFile, path.join(f.output, 'missing-audit.json')), []);
@@ -387,7 +387,7 @@ test('payload snapshots retain the pre-fix prompts, bindings, dimensions and sam
     assert.equal(F.sha(JSON.stringify(modules[0].buildPayload(f.character, f.character.outfits[0], persId, 123))), hash);
   }
   const tasks = modules[1].collectAllSceneTasks({}, modules[1].loadInputs({ root: f.root }));
-  const payload = (task, characterId = task.characterId) => modules[1].buildPayload({ ...task, characterId, seed: 123 });
+  const payload = (task: any, characterId = task.characterId) => modules[1].buildPayload({ ...task, characterId, seed: 123 });
   assert.equal(F.sha(JSON.stringify(payload(tasks[0]))), '593aeb1db0b7f402d3e40b481da899e6320e89bf2fffb2c3639796ee8f154ca6');
   for (const [character, hash] of Object.entries({
     nene: '75a003ccdf092e76e84993be6605247683045d6615ac1b2f555da703e0cdc9dc',

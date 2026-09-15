@@ -49,7 +49,7 @@ function writeTextAtomic(source: PathLike, content: string) {
   }
 }
 
-function sceneNumber(scene: { id: unknown; }) {
+function sceneNumber(scene: any) {
   const match = String(scene && scene.id || '').match(/^sc(\d+)$/);
   return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
 }

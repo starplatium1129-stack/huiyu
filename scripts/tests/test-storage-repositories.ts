@@ -28,13 +28,13 @@ function createLocalStorage(initial = {}) {
   const values = new Map(Object.entries(initial));
   return {
     values,
-    getItem: key => values.get(key) ?? null,
-    setItem: (key, value) => values.set(key, value),
-    removeItem: key => values.delete(key),
+    getItem: (key: any) => values.get(key) ?? null,
+    setItem: (key: any, value: any) => values.set(key, value),
+    removeItem: (key: any) => values.delete(key),
   };
 }
 
-function filesUnder(directory) {
+function filesUnder(directory: any) {
   const result = [];
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const full = path.join(directory, entry.name);
@@ -70,7 +70,7 @@ function createArtworkFixture(failure = {}) {
     ['img_1', { id: 'img_1', blob: new Blob(['one'], { type: 'image/png' }), name: 'one.png', type: 'image/png', size: 3, created_at: 1 }],
     ['img_2', { id: 'img_2', blob: new Blob(['two'], { type: 'image/png' }), name: 'two.png', type: 'image/png', size: 3, created_at: 2 }],
   ]);
-  const imageReads = [];
+  const imageReads: any = [];
   const values = new Map([
     [ARTWORK_HISTORY_KEY, history],
     [ARTWORK_PROJECTS_KEY, projects],
@@ -78,30 +78,30 @@ function createArtworkFixture(failure = {}) {
   ]);
   const failOnce = new Set(failure.failOnce || []);
   const kv = {
-    async get(key) { return values.get(key) ?? null; },
-    async set(key, value) {
+    async get(key: any) { return values.get(key) ?? null; },
+    async set(key: any, value: any) {
       const marker = `set:${key}`;
       if (failOnce.delete(marker)) throw new Error(`${marker} injected failure`);
       values.set(key, value);
     },
-    async remove(key) {
+    async remove(key: any) {
       const marker = `remove:${key}`;
       if (failOnce.delete(marker)) throw new Error(`${marker} injected failure`);
       values.delete(key);
     },
   };
   const images = {
-    async get(id) { imageReads.push(id); return imageRecords.get(id) ?? null; },
-    async putRecord(record) { imageRecords.set(record.id, { ...record, size: record.blob.size, type: record.type || record.blob.type }); return record.id; },
-    async deleteMany(ids) {
+    async get(id: any) { imageReads.push(id); return imageRecords.get(id) ?? null; },
+    async putRecord(record: any) { imageRecords.set(record.id, { ...record, size: record.blob.size, type: record.type || record.blob.type }); return record.id; },
+    async deleteMany(ids: any) {
       if (failOnce.delete('delete:images')) throw new Error('delete:images injected failure');
-      ids.forEach(id => imageRecords.delete(id));
+      ids.forEach((id: any) => imageRecords.delete(id));
     },
   };
   return { values, imageRecords, imageReads, repository: createArtworkRepository({ kv, images }) };
 }
 
-function stateOf(fixture) {
+function stateOf(fixture: any) {
   return {
     history: fixture.values.get(ARTWORK_HISTORY_KEY),
     projects: fixture.values.get(ARTWORK_PROJECTS_KEY),
@@ -232,7 +232,7 @@ test('comparison marks update together without deleting images or touching promp
   const history = fixture.values.get(ARTWORK_HISTORY_KEY);
   assert.strictEqual(history[0].reviewState, 'preferred');
   assert.strictEqual(history[1].reviewState, 'candidate');
-  assert.deepStrictEqual(history.map(item => item.prompt), ['one', 'two']);
+  assert.deepStrictEqual(history.map((item: any) => item.prompt), ['one', 'two']);
   assert.strictEqual(fixture.imageRecords.size, 2);
 });
 
@@ -253,7 +253,7 @@ test('background generation preserves comparison choices and concurrent new imag
     fixture.repository.appendArtwork({ id: 4, prompt: 'another image' }),
   ]);
   const history = fixture.values.get(ARTWORK_HISTORY_KEY);
-  assert.deepStrictEqual(history.map(item => item.id), [1, 2, 3, 4]);
+  assert.deepStrictEqual(history.map((item: any) => item.id), [1, 2, 3, 4]);
   assert.strictEqual(history[0].reviewState, 'preferred');
   await assert.rejects(fixture.repository.appendArtwork({ id: 3, prompt: 'duplicate' }));
 });

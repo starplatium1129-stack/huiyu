@@ -13,8 +13,8 @@ const { collectGitHistory }: typeof import('../maintenance/content-impact-git') 
 const { formatImpactReport }: typeof import('../lib/content-impact-format') = require('../lib/content-impact-format');
 const { fixture, git, snapshot }: typeof import('./content-history-fixture') = require('./content-history-fixture');
 const script = path.resolve(__dirname, '../maintenance/report-content-impact.js');
-const run = (f: { root: unknown; base: unknown; write?: (file: string,value: string|Uint8Array<ArrayBufferLike>|Uint8ClampedArray<ArrayBufferLike>|Uint16Array<ArrayBufferLike>|Uint32Array<ArrayBufferLike>|Int8Array<ArrayBufferLike>|Int16Array<ArrayBufferLike>|Int32Array<ArrayBufferLike>|BigUint64Array<ArrayBufferLike>|BigInt64Array<ArrayBufferLike>|Float16Array<ArrayBufferLike>|Float32Array<ArrayBufferLike>|Float64Array<ArrayBufferLike>|DataView<ArrayBufferLike>|({ id: string; char: string; prompt: string; rating: string; mature: boolean; }|undefined)[]|{ id: string; name: string; }[]) => void; read?: (file: string) => unknown; characters?: ({ id: string; identityProse: string; outfits: { id: string; prose: string; default: boolean; isDefault: boolean; }[]; }|{ id: string; identityProse: string; outfits: { id: string; default: boolean; isDefault: boolean; }[]; })[]; blueprints?: ({ id: string; characterId: string; outfitId: string; prompt: string; }|{ id: string; characterId: string; prompt: string; outfitId?: undefined; })[]; scenes?: { id: string; char: string; prompt: string; rating: string; mature: boolean; }[]; sceneProducts?: (rows?: { id: string; char: string; prompt: string; rating: string; mature: boolean; }[],core?: string[]) => void; }, ...args: (string|undefined)[]) => report(parse(['--root', f.root, '--base', f.base, ...args]));
-const entity = (result: { version?: number; readOnly?: boolean; input?: { character: unknown; outfit: unknown; scene: unknown; paths: unknown; }; mustChange?: never[]; revalidate?: never[]; related?: never[]; unknown?: never[]; recommendations?: never[]; history?: unknown; }, kind: string, id: string, role = 'source') => result.history.entities.find((r: { kind: string; id: string; role: string; }) => r.kind === kind && r.id === id && r.role === role);
+const run = (f: any, ...args: (string|undefined)[]) => report(parse(['--root', f.root, '--base', f.base, ...args]));
+const entity = (result: any, kind: string, id: string, role = 'source') => result.history.entities.find((r: { kind: string; id: string; role: string; }) => r.kind === kind && r.id === id && r.role === role);
 
 test('explicit base tracks committed changes, scoped IDs, both owners/outfits and separate source/derived records', (t) => {
   const f = fixture(t);
@@ -40,7 +40,7 @@ test('explicit base tracks committed changes, scoped IDs, both owners/outfits an
   assert.ok(result.incrementalPlan.incrementalChecks.length > 0);
   assert.equal(result.incrementalPlan.executed, false);
   assert.equal(result.incrementalPlan.wholeLibrary, 'not-validated');
-  assert.ok(result.evidence.files.every((r: { sha256: unknown; }) => r.sha256));
+  assert.ok(result.evidence.files.every((r: any) => r.sha256));
   assert.deepEqual(snapshot(f.root), before);
 });
 
@@ -54,9 +54,9 @@ test('deleted source records survive in old relationships; unchanged stale aggre
   assert.equal(entity(result, 'character', 'a').change, 'removed');
   assert.equal(entity(result, 'outfit', 'dress').change, 'removed');
   assert.ok(result.affected.some((r: { id: string; impact: string; }) => r.id === 'bp-a' && r.impact === 'revalidate'));
-  assert.ok(result.mustChange.some((r) => r.object === 'data/popular-characters.json'));
-  assert.ok(result.mustChange.some((r) => r.reason.includes('dangling characterId')));
-  assert.ok(!result.mustChange.some((r) => r.object.includes('bp-unrelated')));
+  assert.ok(result.mustChange.some((r: any) => r.object === 'data/popular-characters.json'));
+  assert.ok(result.mustChange.some((r: any) => r.reason.includes('dangling characterId')));
+  assert.ok(!result.mustChange.some((r: any) => r.object.includes('bp-unrelated')));
   assert.ok(!entity(result, 'character', 'a', 'derived'));
 });
 
@@ -85,7 +85,7 @@ test('aggregate-only changes are identified by derived stable ID and preserve so
   const result = run(f);
   assert.equal(entity(result, 'blueprint', 'bp-a'), undefined);
   assert.equal(entity(result, 'blueprint', 'bp-a', 'derived').change, 'modified');
-  assert.ok(result.mustChange.some((r) => r.object === 'data/scene-blueprints.json'));
+  assert.ok(result.mustChange.some((r: any) => r.object === 'data/scene-blueprints.json'));
   assert.ok(result.affected.find((r: { id: string; }) => r.id === 'bp-a').sources.some((r: { side: string; }) => r.side === 'working-tree'));
 });
 
@@ -132,10 +132,10 @@ test('missing base products, invalid JSON and deleted shard without manifest upd
   const result = run(f);
   assert.equal(entity(result, 'blueprint', 'bp-a').change, 'unresolved-removal');
   assert.equal(entity(result, 'blueprint', 'bp-a', 'derived').change, 'unresolved-addition');
-  assert.ok(result.unknown.some((r) => r.includes('base:') && r.includes('missing')));
+  assert.ok(result.unknown.some((r: any) => r.includes('base:') && r.includes('missing')));
   assert.equal(result.incrementalPlan.mode, 'full');
   f.write('data/blueprints/one.json', '{');
-  assert.ok(run(f).unknown.some((r) => r.includes('invalid JSON')));
+  assert.ok(run(f).unknown.some((r: any) => r.includes('invalid JSON')));
 });
 
 test('unknown paths, manifest order changes and global builders require full, never a partial PASS', (t) => {
@@ -144,9 +144,9 @@ test('unknown paths, manifest order changes and global builders require full, ne
   f.write('data/custom.json', { unknown: true });
   const result = run(f);
   assert.equal(result.incrementalPlan.mode, 'full');
-  assert.ok(result.unknown.some((r) => r.includes('custom-contract.js')));
-  assert.ok(result.unknown.some((r) => r.includes('data/custom.json')));
-  assert.ok(result.recommendations.every((r) => r.executed === false));
+  assert.ok(result.unknown.some((r: any) => r.includes('custom-contract.js')));
+  assert.ok(result.unknown.some((r: any) => r.includes('data/custom.json')));
+  assert.ok(result.recommendations.every((r: any) => r.executed === false));
   assert.equal(result.incrementalPlan.wholeLibrary, 'not-validated');
 });
 
@@ -206,7 +206,7 @@ test('junction escape is rejected without reading external data and no write API
     return spawn(command, args, options);
   });
   const result = run(f, '--path', 'data/blueprints/manifest.json');
-  assert.ok(result.unknown.some((r) => /junction|symbolic/.test(r)));
+  assert.ok(result.unknown.some((r: any) => /junction|symbolic/.test(r)));
   assert.equal(result.incrementalPlan.mode, 'full');
   t.mock.restoreAll();
   assert.deepEqual(snapshot(outside), before);
@@ -254,7 +254,7 @@ test('ordering-only and index-only changes identify stable IDs without inventing
   const indexResult = run(f);
   assert.ok(indexResult.history.metadata.some((r: { file: string; }) => r.file === 'data/scenes-index.json'));
   assert.ok(indexResult.affected.some((r: { kind: string; id: string; }) => r.kind === 'scene' && r.id === 'sc1000'));
-  assert.ok(indexResult.mustChange.some((r) => r.object === 'data/scenes-index.json'));
+  assert.ok(indexResult.mustChange.some((r: any) => r.object === 'data/scenes-index.json'));
 });
 
 test('assume-unchanged cannot be used as evidence that the working tree has no impact', (t) => {
@@ -263,7 +263,7 @@ test('assume-unchanged cannot be used as evidence that the working tree has no i
   f.write('data/blueprints/one.json', { blueprints: [] });
   const before = snapshot(f.root);
   const result = run(f);
-  assert.ok(result.unknown.some((r) => r.includes('Git flag h')));
+  assert.ok(result.unknown.some((r: any) => r.includes('Git flag h')));
   assert.equal(result.incrementalPlan.mode, 'full');
   assert.equal(result.incrementalPlan.wholeLibrary, 'not-validated');
   assert.deepEqual(snapshot(f.root), before);

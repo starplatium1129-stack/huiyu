@@ -74,21 +74,21 @@ function prepareCandidates() {
   assert(fs.existsSync(V18_SOURCE), 'production v18 Natsume LoRA is missing');
   return CANDIDATES.map(copyCandidate);
 }
-function promptFor(scene: { id?: string; label?: string; safe?: unknown; prompt?: unknown; }, engine: string) {
+function promptFor(scene: any, engine: string) {
   var identity = engine === 'anima'
     ? 'shiki_natsume, very long black hair, golden yellow eyes, two red hairclips, mole under eye'
     : 'shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye';
   var safety = scene.safe ? 'safe' : 'explicit, natsume_r18';
   return [engine === 'anima' ? 'masterpiece, best quality, score_7' : 'masterpiece, best quality, amazing quality', safety, '1girl, solo', identity, scene.prompt].join(', ');
 }
-function negativeFor(scene: { id?: string; label?: string; safe?: unknown; prompt?: string; }, engine: string) {
+function negativeFor(scene: any, engine: string) {
   var common = engine === 'anima'
     ? 'worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration'
     : 'worst quality, low quality, bad anatomy, bad hands, extra fingers, extra limbs, duplicate, text, watermark, logo';
   return scene.safe ? common + ', nsfw, nude, explicit, underwear, extra person' : common + ', extra person, duplicate';
 }
 function sdPrompt(scene: { id: string; label: string; safe: boolean; prompt: string; }) { return promptFor(scene, 'sd') + ', <lora:shiki_natsume_v18_wd14:0.85>'; }
-function imagePath(candidate: { id: unknown; epoch?: string; step?: string; source?: PathLike; file?: string; sha256?: string; }, scene: { id: unknown; label?: string; safe?: boolean; prompt?: string; }, seed: string|number, engine: string) { return path.join('images', candidate.id, scene.id, 'seed-' + seed + '-' + engine + '.png').replace(/\\/g, '/'); }
+function imagePath(candidate: any, scene: any, seed: string|number, engine: string) { return path.join('images', candidate.id, scene.id, 'seed-' + seed + '-' + engine + '.png').replace(/\\/g, '/'); }
 async function generateSd(scene: { id: string; label: string; safe: boolean; prompt: string; }, seed: number) {
   var data = await jsonRequest(SD, '/sdapi/v1/txt2img', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({
     prompt:sdPrompt(scene), negative_prompt:negativeFor(scene, 'sd'), width:WIDTH, height:HEIGHT, steps:30, cfg_scale:6, sampler_name:'Euler a', seed:seed, batch_size:1, n_iter:1, restore_faces:false, enable_hr:false,
@@ -98,7 +98,7 @@ async function generateSd(scene: { id: string; label: string; safe: boolean; pro
   assert(/^[A-Za-z0-9+/=]+$/.test(encoded), 'SD returned invalid image data');
   return { body:Buffer.from(encoded, 'base64'), metadata:{ checkpoint:'waiIllustriousSDXL_v170', lora:'L_NAT_V18_WD14', prompt:sdPrompt(scene), negative:negativeFor(scene, 'sd'), seed:seed } };
 }
-function workflow(candidate: { epoch: unknown; id: string; file: unknown; }, scene: { id: string; }, seed: string) {
+function workflow(candidate: any, scene: { id: string; }, seed: string) {
   var nodes = {
     '1':{ class_type:'UNETLoader', inputs:{ unet_name:'anima-base-v1.0.safetensors', weight_dtype:'default' } },
     '2':{ class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
@@ -128,7 +128,7 @@ async function waitFor(promptId: string|number|boolean) {
   }
   throw new Error('ComfyUI prompt timed out: ' + promptId);
 }
-async function generateAnima(candidate: { epoch: unknown; step?: string; id?: string; source?: PathLike; file: unknown; sha256?: string; }, scene: { id: string; label: string; safe: boolean; prompt: string; }, seed: number) {
+async function generateAnima(candidate: any, scene: { id: string; label: string; safe: boolean; prompt: string; }, seed: number) {
   var submitted = await jsonRequest(COMFY, '/prompt', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ prompt:workflow(candidate, scene, seed), client_id:CLIENT_ID }) });
   assert(submitted && submitted.prompt_id, 'ComfyUI returned no prompt id');
   var image = await waitFor(submitted.prompt_id);
@@ -152,7 +152,7 @@ async function main() {
       var sd = await generateSd(scene, seed); fs.mkdirSync(path.dirname(baselineFile), { recursive:true }); fs.writeFileSync(baselineFile, sd.body);
       sdRecord = { key:key('wai_v18', 'sd'), candidate:'wai_v18', engine:'sd', sceneId:scene.id, seed:seed, image:path.relative(OUTPUT_ROOT, baselineFile).replace(/\\/g, '/'), bytes:sd.body.length, sha256:sha256(sd.body), metadata:sd.metadata, status:'succeeded' };
     }
-    manifest.records = manifest.records.filter(function (item: { key: unknown; }) { return item.key !== sdRecord.key; }).concat(sdRecord);
+    manifest.records = manifest.records.filter(function (item: any) { return item.key !== sdRecord.key; }).concat(sdRecord);
     writeJson(manifestFile, manifest);
   }
   for (var candidate of candidates) for (var scene2 of SCENES) for (var seed2 of SEEDS) {

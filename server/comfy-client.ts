@@ -111,7 +111,7 @@ async function requestComfyJson<T = unknown>(config: ComfyConfig, method: string
     throw comfyError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 返回了无效 JSON', { upstreamStatus: response.status });
   }
   if (response.status < 200 || response.status >= 300) {
-    const upstream = data as { error?: { message?: unknown; type?: unknown } } | null;
+    const upstream = data as { error?: any } | null;
     const reason = upstream && upstream.error && (upstream.error.message || upstream.error.type);
     throw comfyError(502, 'COMFY_UPSTREAM_ERROR', 'ComfyUI 请求失败' + (reason ? '：' + String(reason).slice(0, 1000) : ''), {
       upstreamStatus: response.status,

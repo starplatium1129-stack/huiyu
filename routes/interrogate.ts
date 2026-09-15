@@ -181,11 +181,11 @@ async function tryWebUIInterrogate(config: { [x: string]: string|URL; }, imageBa
   return null;
 }
 
-function comfyInputRoot(config: { COMFY_HOST?: string|URL; AI_WORKSPACE_ROOT?: unknown; ROOT_DIR?: unknown; }) {
+function comfyInputRoot(config: any) {
   return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'input');
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function comfyOutputRoot(config: { AI_WORKSPACE_ROOT: unknown; ROOT_DIR: string; }) {
+function comfyOutputRoot(config: any) {
   return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'output');
 }
 async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBase64: WithImplicitCoercion<string>, threshold: number, mode: string) {

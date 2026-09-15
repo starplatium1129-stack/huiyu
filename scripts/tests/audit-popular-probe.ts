@@ -23,7 +23,7 @@ var MANIFEST = path.join(PROBE_ROOT, 'manifest.json');
 var MODEL = inspect.DEFAULT_MODEL;
 
 function readJson(file: PathOrFileDescriptor) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-function writeJson(file: PathLike, value) {
+function writeJson(file: PathLike, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   var temporary = file + '.tmp';
   fs.writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n', 'utf8');
@@ -96,7 +96,7 @@ async function main() {
   var report = fs.existsSync(reportFile) ? readJson(reportFile) : { manifest: MANIFEST, model: MODEL, strict: strict, results: [] };
   // 离线重解析：修复正则后对已有 parse-fail 记录直接重解析，不重新请求。
   var repaired = 0;
-  report.results.forEach(function (x) {
+  report.results.forEach(function (x: any) {
     if (x.verdict !== 'parse-fail' || !x.content) return;
     var parsed = parseResult(x.content, strict);
     if (parsed.verdict === 'parse-fail') return;
@@ -108,7 +108,7 @@ async function main() {
 
   for (var i = 0; i < records.length; i++) {
     var r = records[i];
-    if (report.results.some(function (x) { return x.characterId === r.characterId && x.engine === r.engine; })) continue;
+    if (report.results.some(function (x: any) { return x.characterId === r.characterId && x.engine === r.engine; })) continue;
     var imagePath = path.join(PROBE_ROOT, r.image);
     if (!fs.existsSync(imagePath)) { console.error('[缺失] ' + imagePath); continue; }
     var character = byId[r.characterId] || { identityProse: r.characterId };
@@ -135,7 +135,7 @@ async function main() {
   var md = '#' + (strict ? 'Krea 2 热门角色严格八维审核' : 'Krea 2 热门角色识别审核') + '\n\n- 模型: ' + MODEL + '\n- 图片: ' + PROBE_ROOT + '\n\n';
   md += '## 结果\n\n| 角色 | 结论' + (strict ? '（总分/80）' : '') + ' | 备注 |\n|---|---|---|\n';
   var stats = {};
-  report.results.forEach(function (x) {
+  report.results.forEach(function (x: any) {
     var label = x.ok ? (x.verdict || 'parse-fail') : '失败';
     stats[label] = (stats[label] || 0) + 1;
     var scoreLabel = x.sceneFit !== null && x.sceneFit !== undefined ? String(x.sceneFit) : '-';
@@ -143,7 +143,7 @@ async function main() {
     md += '| ' + x.characterId + ' | ' + label + (strict ? '（' + scoreLabel + '）' : '') + ' | ' + firstLine.slice(0, 70) + ' |\n';
   });
   md += '\n统计：' + JSON.stringify(stats) + '\n\n## 逐张详情\n\n';
-  report.results.forEach(function (x) {
+  report.results.forEach(function (x: any) {
     md += '### ' + x.characterId + '（' + x.engine + '）· ' + (x.ok ? x.verdict : '失败') + '\n\n';
     md += x.ok ? x.content + '\n' : '错误：' + x.error + '\n';
   });

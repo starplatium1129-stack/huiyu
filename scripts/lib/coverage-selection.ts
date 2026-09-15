@@ -39,7 +39,7 @@ function parseSelectionArgs(argv: string|string[]) {
 }
 
 /** 汇总身份全集：characters.json、热门分片行、standards、view 中出现过的角色/服装。 */
-function collectKnownIds({ characters, popularCharacters = [], popularRows, standards, view }) {
+function collectKnownIds({ characters, popularCharacters = [], popularRows, standards, view }: any) {
   const characterIds = new Set();
   const outfitsByCharacter = new Map();
   const addOutfit = (id: unknown, outfitId: unknown) => {
@@ -57,7 +57,7 @@ function collectKnownIds({ characters, popularCharacters = [], popularRows, stan
 /** 校验所选角色/服装存在；未知则抛出带定位信息的参数错误。
  *  aliasMap（normalize 别名 → 规范 ID）可选，仅用于给旧别名一个可行动的提示，
  *  不做自动改写。 */
-function assertSelectionKnown(selection: { character: unknown; outfit: unknown; }, known: { characterIds: { has: (arg0: unknown) => unknown; }; outfitsByCharacter: { get: (arg0: unknown) => { (): unknown; new(): unknown; has: { (arg0: unknown): unknown; new(): unknown; }; }; }; }, aliasMap: { get: (arg0: unknown) => unknown; }) {
+function assertSelectionKnown(selection: any, known: any, aliasMap: any) {
   const { character, outfit } = selection;
   if (!known.characterIds.has(character)) {
     const suggestion = aliasMap?.get(character);
@@ -70,7 +70,7 @@ function assertSelectionKnown(selection: { character: unknown; outfit: unknown; 
 }
 
 /** 所选范围在 view 中声明的参考 URL 集合；调用方仍需校验 URL 所属条目。 */
-function collectScopedRefUrls({ view, character, outfit }) {
+function collectScopedRefUrls({ view, character, outfit }: any) {
   const urls = new Set();
   for (const record of view) {
     if (record.id !== character) continue;
@@ -83,8 +83,8 @@ function collectScopedRefUrls({ view, character, outfit }) {
 }
 
 /** 包装 fileExists：范围外 URL 直接返回 null（未核实），不调用底层实现。 */
-function scopeFileExists(fileExists: (arg0: unknown) => unknown, scopedUrls: { has: (arg0: unknown) => unknown; }, selection: { character: unknown; outfit: unknown; }) {
-  return (url: unknown, owner: { id: unknown; outfitId: unknown; }) => {
+function scopeFileExists(fileExists: any, scopedUrls: any, selection?: any) {
+  return (url: unknown, owner: any) => {
     if (selection && (!owner || owner.id !== selection.character
       || (selection.outfit && owner.outfitId !== selection.outfit))) return null;
     return scopedUrls.has(url) ? fileExists(url) : null;
@@ -92,7 +92,7 @@ function scopeFileExists(fileExists: (arg0: unknown) => unknown, scopedUrls: { h
 }
 
 /** scope 元数据：机器可读地声明局部报告的口径。 */
-function describeScope(selection: { outfit: unknown; character: unknown; }) {
+function describeScope(selection: any) {
   return {
     mode: selection.outfit ? 'character-outfit' : 'character',
     character: selection.character,
@@ -107,9 +107,9 @@ function describeScope(selection: { outfit: unknown; character: unknown; }) {
  *  结构性字段（mirrorErrors、duplicate*、duplicateRegistrations）保留全库结果；
  *  verifiedImage 已由范围化 fileExists 保证只统计所选范围真实核对过的图片。
  *  主题只保留所选角色自身的状态；staleAlias/nonCharacter 属全库信息，局部不列出。 */
-function filterReportToScope(report: { reference: unknown; themes: unknown; version: unknown; structuralErrors: unknown; }, selection: { character: unknown; outfit: unknown; }) {
+function filterReportToScope(report: any, selection: any) {
   const { character, outfit } = selection;
-  const inScope = (row: { id: unknown; outfitId: unknown; }) => row.id === character && (!outfit || row.outfitId === outfit);
+  const inScope = (row: any) => row.id === character && (!outfit || row.outfitId === outfit);
   const reference = report.reference;
   const scopedReference = {
     missingRegistration: reference.missingRegistration.filter(inScope),
@@ -127,7 +127,7 @@ function filterReportToScope(report: { reference: unknown; themes: unknown; vers
   const scopedThemes = {
     explicit: themes.explicit.filter((id: unknown) => id === character),
     defaultAllowed: themes.defaultAllowed.filter((id: unknown) => id === character),
-    missingTheme: themes.missingTheme.filter((row: { id: unknown; }) => row.id === character),
+    missingTheme: themes.missingTheme.filter((row: any) => row.id === character),
     staleAlias: [],
     nonCharacter: [],
     dupCharacters: themes.dupCharacters,

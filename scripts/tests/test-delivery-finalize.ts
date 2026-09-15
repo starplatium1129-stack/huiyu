@@ -12,14 +12,14 @@ const { formatReport }: typeof import('../lib/delivery-report-format') = require
 const CLI = path.resolve(__dirname, '../maintenance/capture-delivery.js');
 const FINAL = `${EVIDENCE_DIR}/final.json`;
 const MAIN = ['installation', 'deviceAcceptance', 'modelAcceptance'];
-const run = args => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', windowsHide: true });
-function commit(f, paths = ['src']) {
+const run = (args: any) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', windowsHide: true });
+function commit(f: any, paths = ['src']) {
   f.git('add', '--', ...paths);
   f.git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgSign=false',
     '-c', 'core.hooksPath=.git/no-hooks', 'commit', '--allow-empty', '-m', 'isolated finalize fixture');
   return f.git('rev-parse', 'HEAD');
 }
-function tested(f, { bound = true, crlf = false, prepare = () => {} } = {}) {
+function tested(f: any, { bound = true, crlf = false, prepare = () => {} } = {}) {
   const a = f.git('rev-parse', 'HEAD');
   f.write('src/main.js', `module.exports = 42;${crlf ? '\r\n' : '\n'}`);
   prepare();
@@ -36,16 +36,16 @@ function tested(f, { bound = true, crlf = false, prepare = () => {} } = {}) {
   if (bound) saveJson(f.root, f.officePath, capture(f.root, { baseline: f.baselinePath, record: f.resultPath }));
   return { a, baseline, log, evidence: bound ? f.officePath : f.baselinePath, record: bound ? undefined : f.resultPath };
 }
-function finalize(f, t, b) {
+function finalize(f: any, t: any, b: any) {
   return capture(f.root, { baseline: t.evidence, record: t.record, finalizeCommit: b });
 }
-function assertPending(f, file = FINAL) {
+function assertPending(f: any, file = FINAL) {
   const r = f.audit(file, { 'check-head': true });
   assert.equal(r.exitCode, 3, JSON.stringify(r.errors));
   assert.equal(r.repositoryHead.status, 'matched');
   assert.equal(r.handoff.finalization.status, 'matched');
   assert.equal(r.freshness.gates['checks.office'].effectiveStatus, 'passed');
-  assert.ok(r.handoff.requiredMain.every(item => item.status === 'pending'));
+  assert.ok(r.handoff.requiredMain.every((item: any) => item.status === 'pending'));
   return r;
 }
 
@@ -153,15 +153,15 @@ test('新增/删除实际提交后可 finalize，中文/空格/= 路径按字节
   const f = fixture(t), data = tested(f, { prepare() {
     f.write('src/中文 name=one.js', 'module.exports = 7;\n'); fs.unlinkSync(path.join(f.root, 'src/remove.js'));
   } }), b = commit(f), d = finalize(f, data, b);
-  assert.ok(d.finalization.sourceProof.files.some(e => e.path === 'src/中文 name=one.js'));
-  assert.ok(!d.finalization.sourceProof.files.some(e => e.path === 'src/remove.js'));
+  assert.ok(d.finalization.sourceProof.files.some((e: any) => e.path === 'src/中文 name=one.js'));
+  assert.ok(!d.finalization.sourceProof.files.some((e: any) => e.path === 'src/remove.js'));
   saveJson(f.root, FINAL, d); assertPending(f);
 });
 
 test('Git 文本 CRLF/LF 映射单独证明；测试工作树原始字节不变', t => {
   const f = fixture(t); f.write('.gitattributes', '* text eol=crlf\n');
   const data = tested(f, { crlf: true }), b = commit(f, ['src', '.gitattributes']);
-  const before = tree(f.root), d = finalize(f, data, b), file = d.finalization.sourceProof.files.find(e => e.path === 'src/main.js');
+  const before = tree(f.root), d = finalize(f, data, b), file = d.finalization.sourceProof.files.find((e: any) => e.path === 'src/main.js');
   assert.equal(file.representation, 'git-crlf-to-lf'); assert.notEqual(file.blobSha256, file.sourceSha256);
   assert.equal(d.tracking.source.sha256, data.baseline.tracking.source.sha256); assert.deepEqual(tree(f.root), before);
   saveJson(f.root, FINAL, d); assertPending(f);
@@ -177,18 +177,18 @@ test('不运行自定义 Git filter，也不接受其隐式字节转换', t => {
 test('finalize 元数据、结果索引或原日志被改动，audit 拒绝旧提交通过关联', t => {
   const f = fixture(t), data = tested(f), b = commit(f), d = finalize(f, data, b);
   for (const mutate of [
-    v => { v.finalization.baselineHead = b; },
-    v => { v.finalization.finalCommit = data.a; },
-    v => { v.finalization.gates['checks.office'].executionCommit = b; },
-    v => { v.finalization.sourceProof.files[0].oid = 'f'.repeat(40); },
-    v => { v.finalization.evidence.sha256 = '0'.repeat(64); },
-    v => { v.checks.office.status = 'passed'; v.checks.office.extra = 'changed result'; },
+    (v: any) => { v.finalization.baselineHead = b; },
+    (v: any) => { v.finalization.finalCommit = data.a; },
+    (v: any) => { v.finalization.gates['checks.office'].executionCommit = b; },
+    (v: any) => { v.finalization.sourceProof.files[0].oid = 'f'.repeat(40); },
+    (v: any) => { v.finalization.evidence.sha256 = '0'.repeat(64); },
+    (v: any) => { v.checks.office.status = 'passed'; v.checks.office.extra = 'changed result'; },
   ]) {
     const altered = structuredClone(d); mutate(altered); f.write(FINAL, altered);
-    const r = f.audit(FINAL); assert.equal(r.exitCode, 1); assert.ok(!r.passed.some(v => v.field === 'checks.office'));
+    const r = f.audit(FINAL); assert.equal(r.exitCode, 1); assert.ok(!r.passed.some((v: any) => v.field === 'checks.office'));
   }
   f.write(FINAL, d); f.write(data.log, 'changed log');
-  const r = f.audit(FINAL); assert.equal(r.exitCode, 1); assert.ok(!r.passed.some(v => v.field === 'checks.office'));
+  const r = f.audit(FINAL); assert.equal(r.exitCode, 1); assert.ok(!r.passed.some((v: any) => v.field === 'checks.office'));
   assert.throws(() => finalize(f, data, b), /陈旧|改变/);
 });
 
@@ -196,7 +196,7 @@ test('finalize 不能把 pending 设备字段改成源 HEAD 的通过', t => {
   const f = fixture(t), data = tested(f), b = commit(f), d = finalize(f, data, b);
   for (const field of MAIN) d[field] = { status: 'passed', commit: data.a, report: data.log };
   f.write(FINAL, d); const r = f.audit(FINAL);
-  assert.equal(r.exitCode, 1); assert.ok(!r.passed.some(v => MAIN.includes(v.field)));
+  assert.equal(r.exitCode, 1); assert.ok(!r.passed.some((v: any) => MAIN.includes(v.field)));
 });
 
 test('finalize help/plan 不读取目标或启动 Git；参数/路径错误无保存', t => {

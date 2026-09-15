@@ -27,7 +27,7 @@ test('pinned scenes: baseline exists and is non-trivial', () => {
   }
 });
 
-function withShallowFixture(run) {
+function withShallowFixture(run: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-pinned-shallow-'));
   const shard = path.join(root, 'data/scenes/fixture.json');
   const baseline = path.join(root, 'data/prompt-pinned-scenes.json');
@@ -36,14 +36,14 @@ function withShallowFixture(run) {
   fs.writeFileSync(path.join(root, 'data/scenes/manifest.json'), JSON.stringify({ files: [{ file: 'fixture.json' }] }));
   fs.writeFileSync(shard, JSON.stringify([{ id: 'sc033', ...fields, story: 'keep story' }]));
   fs.writeFileSync(baseline, JSON.stringify({ scenes: { sc033: { ...fields, pinSource: ['png-reference'] } } }));
-  function invoke(args) {
-    const output = [];
+  function invoke(args: any) {
+    const output: any = [];
     const state = { argv: ['node', tool, ...args], exitCode: 0 };
     vm.runInNewContext(fs.readFileSync(tool, 'utf8'), {
       __dirname: path.join(root, 'scripts/maintenance'), __filename: tool, process: state,
-      require(name) {
+      require(name: any) {
         if (name === 'child_process') return { execFileSync() { throw new Error('missing historical commit'); } };
-        if (name === '../lib/scene-store') return { expandShardFiles: entry => [entry.file] };
+        if (name === '../lib/scene-store') return { expandShardFiles: (entry: any) => [entry.file] };
         return require(name);
       },
       console: { log: (...args) => output.push(args.join(' ')), warn: (...args) => output.push(args.join(' ')), error: (...args) => output.push(args.join(' ')) },
@@ -53,7 +53,7 @@ function withShallowFixture(run) {
   try { run({ invoke, shard, baseline, fields }); } finally { fs.rmSync(root, { recursive: true, force: true }); }
 }
 
-test('pinned report explains shallow-history fallback without modifying data', () => withShallowFixture(({ invoke, shard, baseline }) => {
+test('pinned report explains shallow-history fallback without modifying data', () => withShallowFixture(({ invoke, shard, baseline }: any) => {
   const before = [fs.readFileSync(shard, 'utf8'), fs.readFileSync(baseline, 'utf8')];
   const report = invoke(['--report']);
   assert.equal(report.code, 0);
@@ -62,7 +62,7 @@ test('pinned report explains shallow-history fallback without modifying data', (
   assert.equal(invoke(['--report', '--source=history']).code, 1);
 }));
 
-test('pinned shallow apply requires an explicit baseline target and preserves metadata', () => withShallowFixture(({ invoke, shard, baseline, fields }) => {
+test('pinned shallow apply requires an explicit baseline target and preserves metadata', () => withShallowFixture(({ invoke, shard, baseline, fields }: any) => {
   fs.writeFileSync(shard, JSON.stringify([{ id: 'sc033', ...fields, prompt: 'drift', mature: true, story: 'keep story' }]));
   const before = fs.readFileSync(shard, 'utf8');
   const baselineBefore = fs.readFileSync(baseline, 'utf8');
@@ -77,7 +77,7 @@ test('pinned shallow apply requires an explicit baseline target and preserves me
   assert.equal(invoke(['--check']).code, 0);
 }));
 
-test('pinned capture in shallow checkout preserves membership and provenance', () => withShallowFixture(({ invoke, shard, baseline, fields }) => {
+test('pinned capture in shallow checkout preserves membership and provenance', () => withShallowFixture(({ invoke, shard, baseline, fields }: any) => {
   fs.writeFileSync(shard, JSON.stringify([{ id: 'sc033', ...fields, prompt: 'new reviewed fixture' }]));
   assert.equal(invoke(['--capture']).code, 0);
   const saved = JSON.parse(fs.readFileSync(baseline, 'utf8')).scenes;
@@ -86,7 +86,7 @@ test('pinned capture in shallow checkout preserves membership and provenance', (
   assert.equal(saved.sc033.prompt, 'new reviewed fixture');
 }));
 
-test('pinned mutations fail before writing when a protected entry is missing or duplicated', () => withShallowFixture(({ invoke, shard, baseline, fields }) => {
+test('pinned mutations fail before writing when a protected entry is missing or duplicated', () => withShallowFixture(({ invoke, shard, baseline, fields }: any) => {
   const originalBaseline = fs.readFileSync(baseline, 'utf8');
   fs.writeFileSync(shard, '[]');
   assert.equal(invoke(['--capture']).code, 1);
@@ -96,7 +96,7 @@ test('pinned mutations fail before writing when a protected entry is missing or 
   assert.equal(invoke(['--check']).code, 1);
 }));
 
-test('pinned empty baseline is rejected instead of passing an empty check', () => withShallowFixture(({ invoke, baseline }) => {
+test('pinned empty baseline is rejected instead of passing an empty check', () => withShallowFixture(({ invoke, baseline }: any) => {
   fs.writeFileSync(baseline, '{"scenes":{}}');
   assert.equal(invoke(['--check']).code, 1);
   assert.equal(invoke(['--capture']).code, 1);

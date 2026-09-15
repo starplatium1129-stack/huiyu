@@ -8,10 +8,10 @@ const crypto: typeof import('node:crypto') = require('node:crypto');
 const gateway: typeof import('./generation-gateway') = require('./generation-gateway');
 
 const CODE_ROOT = path.resolve(__dirname, '..', '..');
-const hash = value => crypto.createHash('sha256').update(value).digest('hex');
+const hash = (value: any) => crypto.createHash('sha256').update(value).digest('hex');
 const now = () => new Date().toISOString();
 
-function parseArgs(args, extra = {}, env = process.env) {
+function parseArgs(args: any, extra = {}, env = process.env) {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) {
     return { help: true, plan: args.includes('--plan') };
   }
@@ -41,7 +41,7 @@ function parseArgs(args, extra = {}, env = process.env) {
   return opts;
 }
 
-function help(script, extra = '') {
+function help(script: any, extra = '') {
   console.log(`${path.basename(script)} --output <candidate directory> ${extra}\n` +
     '[--root <data root>] [--gateway <url>] [--concurrency <1-32>] [--dry-run] [--retry-unknown]\n' +
     '--help/--plan: usage only, no target reads. --dry-run: read inputs and print plan; no writes or requests.\n' +
@@ -52,12 +52,12 @@ function help(script, extra = '') {
   return { exitCode: 0 };
 }
 
-function inside(file, root) {
+function inside(file: any, root: any) {
   const relative = path.relative(path.resolve(root), path.resolve(file));
   return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
 }
 
-function noLinks(file) {
+function noLinks(file: any) {
   let current = path.resolve(file);
   for (;;) {
     let stat;
@@ -70,7 +70,7 @@ function noLinks(file) {
   return path.resolve(file);
 }
 
-function assertOutput(opts, protectedPaths = []) {
+function assertOutput(opts: any, protectedPaths = []) {
   const output = noLinks(opts.output);
   for (const root of new Set([CODE_ROOT, opts.root])) {
     const archive = path.join(root, 'scripts', 'archive', 'generation-candidates');
@@ -90,7 +90,7 @@ function assertOutput(opts, protectedPaths = []) {
   return output;
 }
 
-function snapshot(root, names) {
+function snapshot(root: any, names: any) {
   const data = {}, sources = [];
   for (const name of names) {
     const file = noLinks(path.resolve(root, name));
@@ -102,7 +102,7 @@ function snapshot(root, names) {
   return { data, sources };
 }
 
-function atomic(file, value) {
+function atomic(file: any, value: any) {
   noLinks(file);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${crypto.randomUUID()}.tmp`;
@@ -110,7 +110,7 @@ function atomic(file, value) {
   fs.renameSync(temporary, file);
 }
 
-function lockDirectory(output) {
+function lockDirectory(output: any) {
   const file = noLinks(path.join(output, '.generation.lock'));
   if (fs.existsSync(file)) {
     const owner = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -124,7 +124,7 @@ function lockDirectory(output) {
   return () => fs.unlinkSync(file);
 }
 
-function openStore(opts, script, protectedPaths) {
+function openStore(opts: any, script: any, protectedPaths: any) {
   const output = assertOutput(opts, protectedPaths);
   const markerFile = path.join(output, 'candidate-run.json');
   noLinks(markerFile);
@@ -146,7 +146,7 @@ function openStore(opts, script, protectedPaths) {
       atomic(markerFile, marker);
     }
     const directory = noLinks(path.join(output, 'records'));
-    const records = [];
+    const records: any = [];
     if (fs.existsSync(directory)) for (const name of fs.readdirSync(directory)) {
       if (!name.endsWith('.json')) continue; // Interrupted atomic writes remain available for inspection.
       const record = JSON.parse(fs.readFileSync(noLinks(path.join(directory, name)), 'utf8'));
@@ -159,18 +159,18 @@ function openStore(opts, script, protectedPaths) {
           record.image !== `images/${record.candidateId}.png`) throw new Error(`invalid or forged candidate record: ${name}`);
       records.push(record);
     }
-    records.sort((a, b) => a.attempt - b.attempt || a.createdAt.localeCompare(b.createdAt));
+    records.sort((a: any, b: any) => a.attempt - b.attempt || a.createdAt.localeCompare(b.createdAt));
     const manifestFile = noLinks(path.join(output, 'generation-manifest.json'));
     const flush = () => {
       atomic(manifestFile, records);
       // Existing audit/publish tools accept explicit manifests but expect one batch type.
       // Keep these beside the full ledger so image paths remain relative to the same root.
       for (const batch of ['reference', 'popular', 'scene']) {
-        const selected = records.filter(record => record.batch === batch);
+        const selected = records.filter((record: any) => record.batch === batch);
         if (selected.length) atomic(path.join(output, `${batch}-generation-manifest.json`), selected);
       }
     };
-    const save = record => {
+    const save = (record: any) => {
       record.updatedAt = now();
       atomic(path.join(directory, `${record.candidateId}.json`), record);
       flush();
@@ -180,7 +180,7 @@ function openStore(opts, script, protectedPaths) {
   } catch (error) { unlock(); throw error; }
 }
 
-function validAsset(store, record) {
+function validAsset(store: any, record: any) {
   try {
     const file = noLinks(path.join(store.output, record.image));
     const bytes = fs.readFileSync(file);
@@ -189,7 +189,7 @@ function validAsset(store, record) {
   } catch { return false; }
 }
 
-function writeImage(store, record, image) {
+function writeImage(store: any, record: any, image: any) {
   const file = noLinks(path.join(store.output, record.image));
   fs.mkdirSync(path.dirname(file), { recursive: true });
   if (fs.existsSync(file)) {
@@ -212,10 +212,10 @@ function writeImage(store, record, image) {
   store.save(record);
 }
 
-async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, pollMs = 2000, timeoutMs = 600000, protectedPaths = [] }, deps = {}) {
+async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, pollMs = 2000, timeoutMs = 600000, protectedPaths = [] }: any, deps = {}) {
   const recipeSource = { path: script, sha256: hash(fs.readFileSync(script)) };
   const seen = new Set();
-  const plans = tasks.map(task => {
+  const plans = tasks.map((task: any) => {
     if (!task.key || seen.has(task.key)) throw new Error(`missing or duplicate task key: ${task.key}`);
     seen.add(task.key);
     const firstPayload = task.payload(1);
@@ -225,7 +225,7 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
   });
   if (opts.dryRun) {
     const result = { mode: 'preview', gateway: opts.gateway, output: opts.output, count: plans.length,
-      tasks: plans.map(p => ({ key: p.task.key, inputVersion: p.inputVersion, payload: p.firstPayload })), exitCode: 0 };
+      tasks: plans.map((p: any) => ({ key: p.task.key, inputVersion: p.inputVersion, payload: p.firstPayload })), exitCode: 0 };
     console.log(JSON.stringify(result, null, 2));
     return result;
   }
@@ -233,7 +233,7 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
   const result = { succeeded: 0, reused: 0, failed: 0, interrupted: false, output: store.output, exitCode: 0 };
   let cursor = 0;
   try {
-    async function work(plan) {
+    async function work(plan: any) {
       const { task, inputVersion } = plan;
       let record = [...store.records].reverse().find(r => r.key === task.key && r.inputVersion === inputVersion && r.gateway === opts.gateway);
       if (record?.status === 'succeeded' && !validAsset(store, record)) {
@@ -252,7 +252,7 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
       for (let retry = 1; retry <= maxAttempts; retry++) {
         if (deps.signal?.aborted) { result.interrupted = true; return; }
         if (!record) {
-          const attempt = Math.max(0, ...store.records.filter(r => r.key === task.key).map(r => r.attempt)) + 1;
+          const attempt = Math.max(0, ...store.records.filter((r: any) => r.key === task.key).map((r: any) => r.attempt)) + 1;
           const candidateId = crypto.randomUUID();
           const recordId = `${task.key}@attempt-${attempt}-${candidateId}`;
           const payload = retry === 1 ? plan.firstPayload : task.payload(retry);
@@ -297,14 +297,14 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
   } finally { store.close(); }
 }
 
-function runCli(main) {
+function runCli(main: any) {
   const controller = new AbortController();
   const stop = () => controller.abort(new Error('generation interrupted'));
   process.once('SIGINT', stop);
   process.once('SIGTERM', stop);
-  return main(process.argv.slice(2), { signal: controller.signal }).then(result => {
+  return main(process.argv.slice(2), { signal: controller.signal }).then((result: any) => {
     process.exitCode = result?.exitCode || 0;
-  }).catch(error => {
+  }).catch((error: any) => {
     console.error(error.message || error);
     process.exitCode = 1;
   }).finally(() => {

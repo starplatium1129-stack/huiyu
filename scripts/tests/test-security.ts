@@ -42,7 +42,7 @@ for (const method of ['all', 'async', 'entry']) {
   });
 }
 
-function mockReq(overrides: { secure: boolean; headers?: undefined; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|{ headers: { 'x-forwarded-proto': string; }; secure?: undefined; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|{ secure?: undefined; headers?: undefined; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|undefined) {
+function mockReq(overrides?: { secure: boolean; headers?: any; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|{ headers: { 'x-forwarded-proto': string; }; secure?: any; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|{ secure?: any; headers?: any; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|undefined) {
   return Object.assign({
     socket: { remoteAddress: '127.0.0.1' },
     headers: {},
@@ -60,15 +60,15 @@ function mockRes() {
     body: null,
     redirected: null,
     status(code: number) { this.statusCode = code; return this; },
-    json(body: null) { this.body = body; return this; },
-    send(body: null) { this.body = body; return this; },
+    json(body: any) { this.body = body; return this; },
+    send(body: any) { this.body = body; return this; },
     setHeader(key: string|number, value: unknown) { this.headers[key] = value; },
-    redirect(code: number, url: null) { this.statusCode = code; this.redirected = url; },
+    redirect(code: number, url: any) { this.statusCode = code; this.redirected = url; },
   };
   return res;
 }
 
-function runMiddleware(mw: RequestHandler<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, req: { socket: { remoteAddress: string; }; headers: {}; query: {}; path: string; originalUrl: string; secure: boolean; }) {
+function runMiddleware(mw: RequestHandler<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, req: { socket: { remoteAddress: string; }; headers: any; query: any; path: string; originalUrl: string; secure: boolean; }) {
   return new Promise(function (resolve) {
     const res = mockRes();
     let nextCalled = false;

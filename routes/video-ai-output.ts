@@ -23,7 +23,7 @@ function extractJsonObject(text: string) {
 
 // 字段清洗：枚举白名单之外一律回退输入原值；prompt 为空回退原描述，
 // 保证模型输出再离谱也不会把镜头参数或描述弄坏。
-function cleanRewriteOutput(parsed: { prompt: unknown; shotSize: string|null|undefined; camera: unknown; motion: unknown; dialogue: unknown; }, original: { prompt: unknown; camera: unknown; motion: unknown; }) {
+function cleanRewriteOutput(parsed: any, original: any) {
   let out = {
     prompt:original.prompt,
     shotSize:null,

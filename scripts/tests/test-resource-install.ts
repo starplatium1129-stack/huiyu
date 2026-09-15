@@ -91,12 +91,12 @@ test('cancellation persists progress, and recover rehashes/reuses completed file
   const f = fixture(t, { large: true });
   const old = await f.installer().install({ releaseId: 'base' });
   const controller = new AbortController();
-  await assert.rejects(f.installer({ onEvent: e => {
+  await assert.rejects(f.installer({ onEvent: (e: any) => {
     if (e.phase === 'copied') controller.abort();
   } }).install({ releaseId: 'delta', signal: controller.signal }), code('CANCELLED'));
   assert.deepEqual((await f.installer().status()).state, old.state);
-  const phases = [];
-  const recovered = await f.installer({ onEvent: e => phases.push(e.phase) }).recover();
+  const phases: any = [];
+  const recovered = await f.installer({ onEvent: (e: any) => phases.push(e.phase) }).recover();
   assert.equal(recovered.state.current.identity, f.policy.releases.delta.targetIdentity);
   assert.ok(phases.includes('copy-reused'));
 });
@@ -104,7 +104,7 @@ test('cancellation persists progress, and recover rehashes/reuses completed file
 test('mid-file cancellation never exposes a partial installation', async t => {
   const f = fixture(t, { large: true });
   const controller = new AbortController();
-  await assert.rejects(f.installer({ onEvent: e => {
+  await assert.rejects(f.installer({ onEvent: (e: any) => {
     if (e.phase === 'copy-progress' && e.path === 'assets/new.bin') controller.abort();
   } }).install({ releaseId: 'full', signal: controller.signal }), code('CANCELLED'));
   assert.equal((await f.installer().status()).state.current, null);
@@ -123,10 +123,10 @@ test('injected ENOSPC while writing a resource is recoverable', async t => {
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
   const files = new Map();
-  io.openSync = (file, ...args) => {
+  io.openSync = (file: any, ...args) => {
     const fd = fs.openSync(file, ...args); files.set(fd, String(file)); return fd;
   };
-  io.writeSync = (fd, ...args) => {
+  io.writeSync = (fd: any, ...args) => {
     if (files.get(fd)?.endsWith('.part')) throw Object.assign(new Error('injected full disk'), { code: 'ENOSPC' });
     return fs.writeSync(fd, ...args);
   };
@@ -138,7 +138,7 @@ test('injected ENOSPC while writing a resource is recoverable', async t => {
 test('post-switch failure restores old pointer, retains versions, then resumes', async t => {
   const f = fixture(t);
   const old = await f.installer().install({ releaseId: 'base' });
-  await assert.rejects(f.installer({ onEvent: e => {
+  await assert.rejects(f.installer({ onEvent: (e: any) => {
     if (e.phase === 'switched') throw Object.assign(new Error('injected final check failure'), { code: 'INJECTED' });
   } }).install({ releaseId: 'delta' }), e => e.code === 'INJECTED' && e.rolledBack === true);
   assert.deepEqual((await f.installer().status()).state, old.state);
@@ -150,7 +150,7 @@ test('current pointer write failure leaves a resumable prepared version', async 
   const f = fixture(t);
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
-  io.renameSync = (from, to) => {
+  io.renameSync = (from: any, to: any) => {
     if (path.basename(to) === 'current.json') throw Object.assign(new Error('injected access failure'), { code: 'EACCES' });
     return fs.renameSync(from, to);
   };
@@ -162,11 +162,11 @@ test('current pointer write failure leaves a resumable prepared version', async 
 
 test('concurrent imports conflict without stealing a live same-process lock', async t => {
   const f = fixture(t);
-  let entered;
+  let entered: any;
   let resume;
   const started = new Promise(resolve => { entered = resolve; });
   const gate = new Promise(resolve => { resume = resolve; });
-  const running = f.installer({ onEvent: async e => { if (e.phase === 'journal') { entered(); await gate; } } }).install({ releaseId: 'base' });
+  const running = f.installer({ onEvent: async (e: any) => { if (e.phase === 'journal') { entered(); await gate; } } }).install({ releaseId: 'base' });
   await started;
   try { await assert.rejects(f.installer().install({ releaseId: 'base' }), code('BUSY')); }
   finally { resume(); }
@@ -197,7 +197,7 @@ test('runtime authorization revocation interrupts import and preserves old versi
   const old = await f.installer().install({ releaseId: 'base' });
   let authorized = true;
   await assert.rejects(f.installer({ access: { isLocalStudioHost: () => true, isAuthorized: () => authorized },
-    onEvent: e => { if (e.phase === 'copied') authorized = false; }
+    onEvent: (e: any) => { if (e.phase === 'copied') authorized = false; }
   }).install({ releaseId: 'delta' }), code('ACCESS_DENIED'));
   assert.deepEqual((await f.installer().status()).state, old.state);
 });
@@ -241,7 +241,7 @@ test('application and artwork roots cannot be selected as resource destinations'
 test('CLI help is zero-read, preview writes nothing, explicit import and status work', t => {
   const f = fixture(t);
   const cli = path.resolve(__dirname, '../maintenance/manage-resource-install.js');
-  const run = args => spawnSync(process.execPath, [cli, ...args], { encoding: 'utf8' });
+  const run = (args: any) => spawnSync(process.execPath, [cli, ...args], { encoding: 'utf8' });
   assert.equal(run(['--help', '--config', 'does-not-exist.json']).status, 0);
   const config = f.config();
   const preview = run(['import', '--config', config, '--release', 'base']);

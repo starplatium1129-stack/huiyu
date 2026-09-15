@@ -12,7 +12,7 @@ const zlib: typeof import('node:zlib') = require('node:zlib');
 const express: typeof import('express') = require('express');
 const { precompressed }: typeof import('../../server/precompressed') = require('../../server/precompressed');
 
-async function fixture(run: { ({ assets,write,get }: { assets: unknown; write: unknown; get: unknown; }): Promise<void>; ({ assets,write,get }: { assets: unknown; write: unknown; get: unknown; }): Promise<void>; ({ root,assets,write,get }: { root: unknown; assets: unknown; write: unknown; get: unknown; }): Promise<void>; (arg0: { root: string; assets: string; write: (file: PathOrFileDescriptor,value?: string,compressed?: boolean) => void; get: (url: unknown,accept: unknown) => Promise<unknown>; }): unknown; }) {
+async function fixture(run: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atelier-compression-'));
   const assets = path.join(root, 'external-assets');
   fs.mkdirSync(assets); fs.mkdirSync(path.join(root, 'data'));
@@ -41,7 +41,7 @@ async function fixture(run: { ({ assets,write,get }: { assets: unknown; write: u
   finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); fs.rmSync(root, { recursive:true, force:true }); }
 }
 
-test('compression negotiation respects quality, exclusions, and existing Vary values', async () => fixture(async ({ assets, write, get }) => {
+test('compression negotiation respects quality, exclusions, and existing Vary values', async () => fixture(async ({ assets, write, get }: any) => {
   write(path.join(assets, 'sample.json'));
   const gzip = await get('/assets/sample.json', 'br;q=0, gzip;q=1');
   assert.equal(gzip.headers['content-encoding'], 'gzip');
@@ -51,7 +51,7 @@ test('compression negotiation respects quality, exclusions, and existing Vary va
   assert.equal(plain.headers['content-encoding'], undefined); assert.equal(plain.body, '{"version":1}');
 }));
 
-test('stale or missing compressed variants fall back without serving old content', async () => fixture(async ({ assets, write, get }) => {
+test('stale or missing compressed variants fall back without serving old content', async () => fixture(async ({ assets, write, get }: any) => {
   const file = path.join(assets, 'sample.json'); write(file); fs.unlinkSync(file + '.br');
   assert.equal((await get('/assets/sample.json', 'br, gzip')).headers['content-encoding'], 'gzip');
   fs.writeFileSync(file, '{"version":2}'); const future = new Date(Date.now() + 3000); fs.utimesSync(file, future, future);
@@ -60,7 +60,7 @@ test('stale or missing compressed variants fall back without serving old content
   fs.unlinkSync(file); assert.equal((await get('/assets/sample.json', 'gzip')).status, 404);
 }));
 
-test('compressed assets keep source boundaries and mutable-data cache policy', async () => fixture(async ({ root, assets, write, get }) => {
+test('compressed assets keep source boundaries and mutable-data cache policy', async () => fixture(async ({ root, assets, write, get }: any) => {
   write(path.join(root, 'assets', 'sample.json'), '{"wrong":true}'); write(path.join(assets, 'sample.json'), '{"right":true}');
   assert.equal((await get('/assets/sample.json', 'br')).body, '{"right":true}');
   write(path.join(assets, '.hidden', 'secret.json'));

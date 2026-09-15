@@ -69,7 +69,7 @@ function runStep(name: unknown, file: string, args: unknown, timeout: number) {
  * 逐文件跑一组 node 脚本并输出摘要。
  * entries: { name, file, args? }[]；返回非零退出码（有失败时）。
  */
-function runSuiteFiles(entries: string|unknown[], { label, timeout, verbose = false, keepGoing = false }: { label: string; timeout: unknown; verbose: boolean; keepGoing: boolean; }) {
+function runSuiteFiles(entries: string|unknown[], { label, timeout, verbose = false, keepGoing = false }: any) {
   const passed = [];
   const failed = [];
   const started = Date.now();

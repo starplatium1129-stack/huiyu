@@ -154,7 +154,7 @@ test('conditions: main --json and text render the real registry read-only', t =>
   const parsed = JSON.parse(logs.join('\n'));
   assert.equal(parsed.schemaVersion, 1);
   assert.equal(parsed.executionStatus, 'not-run');
-  const deploy = parsed.commands.find(row => row.name === 'deploy:desktop');
+  const deploy = parsed.commands.find((row: any) => row.name === 'deploy:desktop');
   assert.deepEqual(deploy.switches['-UseInstaller'], ['writes-release', 'delete', 'service']);
   assert.ok(Array.isArray(deploy.notes) && deploy.notes.length > 0);
   assert.equal(deploy.needs, null);

@@ -59,7 +59,7 @@ const pingTts = upstreamHealth.pingTts;
 const pingComfy = upstreamHealth.pingComfy;
 const pingOllamaDetail = upstreamHealth.pingOllamaDetail;
 
-function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; AI_WORKSPACE_ROOT?: unknown; SCRIPTS_ROOT?: unknown; RUNTIME_ROOT?: unknown; RUNTIME?: unknown; SD_HOST?: unknown; COMFY_HOST?: unknown; TTS_HOST?: unknown; OLLAMA_HOST?: unknown; VOICE_PROFILES?: unknown; SELF_HEALING_INTERVAL_MS?: unknown; TRANSLATION_PYTHON?: unknown; TRANSLATION_SCRIPT?: unknown; }, gatewayRef: () => unknown, dependencies: { writeJson?: unknown; runScriptAsync?: unknown; refreshServiceStates?: unknown; translation?: unknown; }) {
+function createControlRouter(config: any, gatewayRef: () => unknown, dependencies: any) {
   dependencies = dependencies || {};
   let router = express.Router();
   let persistConfig = typeof dependencies.writeJson === 'function' ? dependencies.writeJson : writeJson;
@@ -146,7 +146,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
   // 不缓存的话面板一开就永久重叠 spawn PowerShell。缓存 + in-flight 去重 + fresh=1 强制刷新。
   let WEBUI_STATUS_TTL = 15000;
   let webuiStatusCache = { at:0, managed:false, comfy:false };
-  let webuiStatusInflight: null = null;
+  let webuiStatusInflight: any = null;
 
   function readWebuiManaged(force: boolean) {
     if (!fs.existsSync(WEBUI_MANAGER_SCRIPT)) return Promise.resolve(state.webuiManaged);
@@ -156,7 +156,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
     if (webuiStatusInflight) return webuiStatusInflight;
 
     webuiStatusInflight = runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Status'), 15000)
-      .then(function (status: { ok: unknown; message: string; }) {
+      .then(function (status: any) {
         webuiStatusCache.at = Date.now();
         if (status.ok && status.message) {
           try {
@@ -182,7 +182,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
     let cacheFresh = Date.now() - webuiStatusCache.at < WEBUI_STATUS_TTL;
     if (!force && cacheFresh) return Promise.resolve(webuiStatusCache.comfy);
     return runManagedScript(COMFY_MANAGER_SCRIPT, managedScriptArgs('comfy', 'Status'), 15000)
-      .then(function (status: { ok: unknown; message: string; }) {
+      .then(function (status: any) {
         webuiStatusCache.at = Date.now();
         if (status.ok && status.message) {
           try { webuiStatusCache.comfy = !!JSON.parse(status.message).managed; }
@@ -196,7 +196,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
       });
   }
 
-  async function refreshServiceStates(force: undefined) {
+  async function refreshServiceStates(force?: any) {
     if (typeof dependencies.refreshServiceStates === 'function') {
       let supplied = await dependencies.refreshServiceStates(force) || {};
       state.sdOnline = !!supplied.sdOnline;
@@ -393,7 +393,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
       return envelope.fail(res, 501, '桌面应用模式下无法重新构建前端（源码不在安装包内）。' +
         '请在源码开发模式中执行 npm run build。', { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
     }
-    runWebBuild(config, function (result) {
+    runWebBuild(config, function (result: any) {
       let payload = Object.assign({ durationMs:result.durationMs, error:result.error, tail:result.tail }, { webBuild:webBuildInfo(config) });
       if (!result.ok) return envelope.fail(res, 500, result.error || '前端构建失败', payload);
       return envelope.ok(res, payload);
@@ -411,7 +411,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
         probe: function () { return pingSd(config.SD_HOST, 2500); },
         restart: function () {
           return runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Start'), WEBUI_START_TIMEOUT_MS)
-            .then(function (result: { ok: unknown; error: unknown; }) { return { ok:!!result.ok, error:result.error }; });
+            .then(function (result: any) { return { ok:!!result.ok, error:result.error }; });
         },
         shouldManage: function () { return state.desiredWebui; },
         recoverOnStart: function () { return state.desiredWebui; }
@@ -421,7 +421,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
         probe: function () { return pingComfy(config.COMFY_HOST, 2500); },
         restart: function () {
           return runManagedScript(COMFY_MANAGER_SCRIPT, managedScriptArgs('comfy', 'Start'), 120000)
-            .then(function (result: { ok: unknown; error: unknown; }) { return { ok:!!result.ok, error:result.error }; });
+            .then(function (result: any) { return { ok:!!result.ok, error:result.error }; });
         },
         shouldManage: function () { return state.desiredComfy; },
         recoverOnStart: function () { return state.desiredComfy; }
@@ -431,7 +431,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
         probe: function () { return pingTts(config.TTS_HOST, 2500); },
         restart: function () {
           return runManagedScript(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000)
-            .then(function (result: { ok: unknown; error: unknown; }) { return { ok: !!result.ok, error: result.error }; });
+            .then(function (result: any) { return { ok: !!result.ok, error: result.error }; });
         },
         shouldManage: function () {
           if (state.ttsManaged) return true;
@@ -447,7 +447,7 @@ function createControlRouter(config: { [x: string]: string; ROOT_DIR: unknown; A
           if (!dependencies.translation) return Promise.resolve({ ok: false, error: '翻译服务不可用' });
           return dependencies.translation.prepare()
             .then(function () { return { ok: true }; })
-            .catch(function (error: { message: unknown; }) {
+            .catch(function (error: any) {
               return { ok: false, error: (error && error.message) || '翻译服务重启失败' };
             });
         },

@@ -46,7 +46,7 @@ function staticOptions(maxAge: number): NonNullable<Parameters<typeof express.st
     dotfiles:'deny',
     index:false,
     maxAge:maxAge,
-    setHeaders:function (res: { setHeader: (arg0: string,arg1: string) => void; }, filePath: string) {
+    setHeaders:function (res: any, filePath: string) {
       if (/\.(?:html|json)$/i.test(filePath)) {
         res.setHeader('Cache-Control', 'no-cache');
       }
@@ -487,7 +487,7 @@ function startGateway(options?: GatewayOptions) {
       + ' sd=' + config.SD_HOST + ' tts=' + config.TTS_HOST + ' ollama=' + config.OLLAMA_HOST);
     // 公网分享不再随网关自动开启：默认仅本机，由控制面板显式启动。
     // 需要开机即分享时设 AUTO_TUNNEL=1。
-    let saved: { autoTunnel?: unknown } = {};
+    let saved = {};
     try { saved = JSON.parse(fs.readFileSync(config.RUNTIME.config, 'utf8')); } catch (error) {}
     let autoTunnel = process.env.AUTO_TUNNEL === '1' || saved.autoTunnel === true;
     if (autoTunnel) gateway.startTunnel();

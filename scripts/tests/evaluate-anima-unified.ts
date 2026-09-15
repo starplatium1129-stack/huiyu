@@ -106,7 +106,7 @@ async function requestJson(pathname: string, options: RequestInit|undefined) {
   return data;
 }
 
-async function requestImage(image: { filename: unknown; subfolder: unknown; type: unknown; }) {
+async function requestImage(image: any) {
   var query = new URLSearchParams({
     filename:String(image.filename || ''),
     subfolder:String(image.subfolder || ''),
@@ -174,7 +174,7 @@ function animaNegative(scene: unknown) {
 
 function buildScenes() {
   var library = readJson(path.join(ROOT, 'data', 'scenes.json'));
-  var byId = new Map(library.map(function (scene: { id: unknown; }) { return [scene.id, scene]; }));
+  var byId = new Map(library.map(function (scene: any) { return [scene.id, scene]; }));
   return SCENES.map(function (id) {
     var scene = byId.get(id);
     assert(scene, 'Unknown scene id: ' + id);
@@ -199,7 +199,7 @@ function checkedCandidates() {
   });
 }
 
-function workflowFor(scene: { prompt: unknown; negative: unknown; id: unknown; }, candidate: { file: unknown; id: unknown; }, seed: string, group: { steps: unknown; cfg: unknown; sampler: unknown; scheduler: unknown; label: unknown; }, modelId: string) {
+function workflowFor(scene: any, candidate: any, seed: string, group: any, modelId: string) {
   var workflow = animaRoute.buildWorkflow({
     prompt:scene.prompt,
     negative:scene.negative,
@@ -311,7 +311,7 @@ async function main() {
       fs.mkdirSync(path.dirname(outputFile), { recursive:true });
       fs.writeFileSync(outputFile, body);
 
-      manifest.records = manifest.records.filter(function (item: { candidate: unknown; sceneId: unknown; seed: unknown; }) {
+      manifest.records = manifest.records.filter(function (item: any) {
         return !(item.candidate === candidate.id && item.sceneId === scene.id && item.seed === seed);
       });
       manifest.records.push({

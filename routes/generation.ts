@@ -66,7 +66,7 @@ function assertAdultAllowed(req: express.Request | null, body: any) {
   throw error(403, 'ADULT_NOT_ENABLED', denial.message);
 }
 
-function error(status: number, code: string, message: string|undefined, detail: { status: number|undefined; data: unknown; }|undefined) {
+function error(status: number, code: string, message: string|undefined, detail?: any) {
   let e = new Error(message); e.status = status; e.code = code; e.detail = detail; return e;
 }
 function plain(o: unknown) { return Boolean(o) && typeof o === 'object' && !Array.isArray(o); }
@@ -76,13 +76,13 @@ function number(v: unknown, name: string, min: number, max: number, integer: boo
   }
   return v;
 }
-function owner(req) {
+function owner(req: any) {
   if (security.isDirectLocalRequest(req)) return 'local';
   let cookie = String(req.headers.cookie || '').match(/(?:^|;\s*)aics_token=([^;]+)/);
   let token = req.headers['x-token'] || cookie && cookie[1] || req.query && req.query.token || '';
   return crypto.createHash('sha256').update(String(token)).digest('hex');
 }
-function comfyModelsRoot(config: { AI_WORKSPACE_ROOT: unknown; }, kind: string) {
+function comfyModelsRoot(config: any, kind: string) {
   return path.resolve(config.AI_WORKSPACE_ROOT || '', 'ComfyUI', 'models', kind);
 }
 function safeComfyResource(config: unknown, kind: string, file: string) {
@@ -106,7 +106,7 @@ function normalizeCheckpointName(value: string) {
 function isWaiCheckpoint(value: string) {
   return normalizeCheckpointName(value) === normalizeCheckpointName(CHECKPOINT);
 }
-function comfyResourcesAvailable(config: unknown, input: { prompt?: unknown; cleanPrompt?: unknown; loraTags?: { name: string; weight: number; }[]; negative?: unknown; profile?: unknown; modelId?: string; character?: unknown; loras: unknown; width?: number; height?: number; steps?: number; cfg?: number; seed?: number; sampler?: unknown; scheduler?: unknown; webuiScheduler?: unknown; comfyUnsupported?: boolean; hiresFix?: boolean; hiresScale?: number; hiresUpscaler?: unknown; hiresSteps?: number; denoisingStrength?: number; faceDetailer?: boolean; }) {
+function comfyResourcesAvailable(config: unknown, input: any) {
   if (!safeComfyResource(config, 'checkpoints', CHECKPOINT)) return false;
   return (input.loras || []).every(function (lora: { file: string; }) { return safeComfyResource(config, 'loras', lora.file); });
 }
@@ -114,11 +114,11 @@ function validateWaiResources(config: unknown, input: unknown) {
   if (!comfyResourcesAvailable(config, input)) throw error(503, 'COMFY_RESOURCES_UNAVAILABLE', 'WAI checkpoint 或所选 LoRA 资源不可用');
 }
 function freezeLoras(loras: unknown) {
-  return Object.freeze((loras || []).map(function (lora: { id: unknown; strength: unknown; }) { return Object.freeze({ id:lora.id, strength:lora.strength }); }));
+  return Object.freeze((loras || []).map(function (lora: any) { return Object.freeze({ id:lora.id, strength:lora.strength }); }));
 }
-function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, maybeBody: undefined) {
+function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, maybeBody?: any) {
   let req = null;
-  let body: { prompt?: unknown; negative?: unknown; modelId?: unknown; loras?: unknown; width?: unknown; height?: unknown; sampler?: unknown; scheduler?: unknown; seed?: unknown; profile?: unknown; character?: unknown; steps?: unknown; cfg?: unknown; hiresFix?: unknown; hiresScale?: unknown; hiresUpscaler?: unknown; hiresSteps?: unknown; denoisingStrength?: unknown; faceDetailer?: unknown; }|undefined;
+  let body: any;
   if (maybeBody !== undefined || (reqOrBody && reqOrBody.socket && reqOrBody.headers)) {
     req = reqOrBody;
     body = maybeBody;
@@ -138,7 +138,7 @@ function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,R
     let spec = LORAS[item.id];
      return { id:item.id, strength:number(item.strength, 'loraStrength', 0, 2, false), file:spec.file };
   });
-  let ids = loras.map(function (item: { id: unknown; }) { return item.id; });
+  let ids = loras.map(function (item: any) { return item.id; });
   if (new Set(ids).size !== ids.length) throw error(400, 'INVALID_PARAMETER', 'LoRA 不得重复');
   let dual = ids.length === 2 && DUAL_LORA_IDS.every(function (id) { return ids.indexOf(id) !== -1; });
   loras = loras.map(function (item: { id: string|number; }) {
@@ -191,10 +191,10 @@ function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,R
   return input;
 }
 
-function buildWorkflow(input: { loras: unknown[]; cleanPrompt: unknown; prompt: string; negative: string; width: number; height: number; seed: unknown; steps: unknown; cfg: unknown; sampler: string|number; scheduler: unknown; hiresFix: unknown; comfyHires: unknown; superResModel: unknown; hiresScale: number; hiresSteps: unknown; denoisingStrength: unknown; }) {
+function buildWorkflow(input: any) {
   let model = '1'; let clip = '1'; let vae = '1';
   let graph = { '1': { class_type:'CheckpointLoaderSimple', inputs:{ ckpt_name:CHECKPOINT } } };
-  input.loras.forEach(function (lora: { file: unknown; strength: unknown; }, index: number) {
+  input.loras.forEach(function (lora: any, index: number) {
     let id = String(2 + index);
     graph[id] = { class_type:'LoraLoader', inputs:{ model:[model, 0], clip:[clip, 1], lora_name:lora.file, strength_model:lora.strength, strength_clip:lora.strength } };
     model = id; clip = id;
@@ -230,7 +230,7 @@ function buildWorkflow(input: { loras: unknown[]; cleanPrompt: unknown; prompt: 
   return graph;
 }
 
-function requestJson(config: { [x: string]: string|URL; }, hostKey: string, method: string, pathname: string, body: { prompt?: unknown; negative_prompt?: unknown; width?: unknown; height?: unknown; cfg_scale?: unknown; steps?: unknown; sampler_name?: unknown; seed?: unknown; batch_size?: number; n_iter?: number; send_images?: boolean; save_images?: boolean; override_settings?: { sd_model_checkpoint: string; }; override_settings_restore_afterwards?: boolean; }|null, timeout: number) {
+function requestJson(config: { [x: string]: string|URL; }, hostKey: string, method: string, pathname: string, body: any, timeout: number) {
   return new Promise(function (resolve, reject) {
     let target; try { target = new URL(config[hostKey]); } catch (e) { reject(error(502, 'UPSTREAM_CONFIG_INVALID', '上游地址无效')); return; }
     target.pathname = pathname; target.search = '';
@@ -269,7 +269,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
 let WEBUI_PROBE_TTL_MS = 3000;
 let webuiProbeCache = { key:'', at:0, value:null, pending:null };
 
-function probeWebUI(config: { SD_HOST: unknown; }, options: { fresh: unknown; }|undefined) {
+function probeWebUI(config: any, options?: any) {
   let key = String(config.SD_HOST || '');
   let now = Date.now();
   if (webuiProbeCache.key === key && webuiProbeCache.pending) return webuiProbeCache.pending;
@@ -328,11 +328,11 @@ async function doProbeWebUI(config: { [x: string]: string|URL; }) {
   }
 }
 
-function publicJob(job: { id: unknown; owner?: string; input: unknown; provider: unknown; status: unknown; result: unknown; error: unknown; code: unknown; metadata: unknown; }) {
+function publicJob(job: any) {
   return { id:job.id, status:job.status, provider:job.provider, seed:job.input.seed, resultAvailable:Boolean(job.result), resultUrl:job.result ? '/api/generation/jobs/' + encodeURIComponent(job.id) + '/result' : null, metadata:Object.assign({}, job.metadata, { provider:job.provider }), error:job.error || null, code:job.code || null };
 }
 
-function createWebUIJob(config: { [x: string]: string|URL; }, input: { prompt: unknown; cleanPrompt: unknown; loraTags: { name: string; weight: number; }[]; negative: unknown; profile: unknown; modelId: string; character: unknown; loras: unknown; width: number; height: number; steps: number; cfg: number; seed: number; sampler: unknown; scheduler: unknown; webuiScheduler: unknown; comfyUnsupported: boolean; hiresFix: boolean; hiresScale: number; hiresUpscaler: unknown; hiresSteps: number; denoisingStrength: number; faceDetailer: boolean; }&{ autoHires: boolean; hiresFix: boolean; comfyHires: boolean; comfyUnsupported: boolean; }, ownerId: string) {
+function createWebUIJob(config: { [x: string]: string|URL; }, input: any, ownerId: string) {
   let id = crypto.randomBytes(18).toString('hex');
    let webJob = { id:id, owner:ownerId, input:input, provider:'webui', status:'running', result:null, error:null, code:null, metadata:{ engine:'sd', provider:'webui', id:id, modelId:input.modelId, profileId:input.profile, loras:freezeLoras(input.loras), loraId:input.loras[0] && input.loras[0].id || null, loraStrength:input.loras[0] && input.loras[0].strength || null, width:input.width, height:input.height, steps:input.steps, cfg:input.cfg, sampler:input.sampler, scheduler:input.scheduler, seed:input.seed, hiresFix:Boolean(input.hiresFix), hiresUpscaler:input.hiresFix ? input.hiresUpscaler : null, hiresScale:input.hiresFix ? input.hiresScale : null } };
    let payload = { prompt:input.prompt, negative_prompt:input.negative, width:input.width, height:input.height, cfg_scale:input.cfg, steps:input.steps, sampler_name:input.sampler, seed:input.seed, batch_size:1, n_iter:1, send_images:true, save_images:false,
@@ -351,7 +351,7 @@ function createWebUIJob(config: { [x: string]: string|URL; }, input: { prompt: u
   return webJob;
 }
 
-function createGenerationRouter(config: Record<string,unknown>, dependencies: { waiComfy?: unknown; }) {
+function createGenerationRouter(config: Record<string,unknown>, dependencies: any) {
   dependencies = dependencies || {};
   let comfy = dependencies.waiComfy || anima.createAnimaService(config, { buildWorkflow:buildWorkflow, validateResources:function (input: unknown) { validateWaiResources(config, input); }, outputPrefix:OUTPUT_PREFIX, outputNodeId:'10', mediaNamespace:'wai', engine:'sd', routeBase:'/api/generation' });
   // 任务注册表骨架收口到 server/job-runner.js（2026-08-21）：WebUI 分支的
@@ -361,7 +361,7 @@ function createGenerationRouter(config: Record<string,unknown>, dependencies: { 
   // 2026-08-16 审计：WebUI 出图任务此前只进 Map 从不回收（内存无上限泄漏）。
   // 统一走 trackWebJob：TTL 后删除（含释放 result Buffer），与 Comfy 分支的
   // gcTimer 对齐；结果送达后 result=null 已由取图端点处理。
-  function trackWebJob(webJob: { [x: string]: unknown; id?: unknown; owner?: string; input?: unknown; provider?: string; status?: string; result?: unknown; error?: null; code?: null; metadata?: { engine: string; provider: string; id: string; modelId: unknown; profileId: unknown; loras: unknown; loraId: unknown; loraStrength: unknown; width: unknown; height: unknown; steps: unknown; cfg: unknown; sampler: unknown; scheduler: unknown; seed: unknown; hiresFix: boolean; hiresUpscaler: unknown; hiresScale: unknown; }; }) {
+  function trackWebJob(webJob: any) {
     jobs.set(webJob.id, webJob);
     registry.armTimer(webJob, 'gcTimer', WEB_JOB_TTL_MS, function () {
       if (webJob.result) webJob.result = null;

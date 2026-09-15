@@ -788,7 +788,7 @@ test('scene-showcase route serves approved assets and blocks everything else ove
   });
   const PORT = stack.address.port;
   const LOCAL = { Host: '127.0.0.1:' + PORT };
-  function request(pathname: string, port: undefined) {
+  function request(pathname: string, port?: any) {
     return new Promise((resolve, reject) => {
       const req = http.request({
         host: '127.0.0.1',

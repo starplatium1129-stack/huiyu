@@ -5,14 +5,14 @@ var gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-tes
 var generation: typeof import('../../routes/generation') = require('../../routes/generation');
 
 async function json(response: Response) { return response.json(); }
-async function post(base: string, body: { prompt: string; negative: string; loras: { id: string; strength: number; }[]; width: number; height: number; steps: number; cfg: number; seed: number; sampler: string; scheduler: string; }&{ sampler: string; }, token: undefined) {
+async function post(base: string, body: { prompt: string; negative: string; loras: { id: string; strength: number; }[]; width: number; height: number; steps: number; cfg: number; seed: number; sampler: string; scheduler: string; }&{ sampler: string; }, token?: any) {
   return fetch(base + '/api/generation/jobs', { method:'POST', headers:{ 'content-type':'application/json', ...(token ? { 'x-token':token } : {}) }, body:JSON.stringify(body) });
 }
 
 async function run() {
   var valid = generation.validateInput({ prompt:'1girl, solo', negative:'bad', loras:[{ id:'L_NENE_V18_WD14', strength:0.85 }], width:832, height:1216, steps:28, cfg:5.5, seed:12, sampler:'DPM++ 2M', scheduler:'Karras' });
   var dual = generation.validateInput({ prompt:'2girls', loras:[{ id:'L_NENE_V18_WD14', strength:0.52 }, { id:'L_NAT_V18_WD14', strength:0.62 }], width:832, height:1216 });
-  assert.deepEqual(dual.loras.map(function (item: { strength: unknown; }) { return item.strength; }), [0.52, 0.62]);
+  assert.deepEqual(dual.loras.map(function (item: any) { return item.strength; }), [0.52, 0.62]);
   assert.throws(function () { generation.validateInput({ prompt:'x', loras:[{ id:'L_NENE_V18_WD14', strength:0.52 }], width:832, height:1216 }); }, /超出允许范围/);
   assert.throws(function () { generation.validateInput({ prompt:'x', loras:[{ id:'L_NENE_V18_WD14', strength:0.52 }, { id:'L_NENE_V18_WD14', strength:0.52 }], width:832, height:1216 }); }, /不得重复/);
   var requestBody = { prompt:'1girl, solo, <lora:ayachi_nene_v18_wd14:0.85>', negative:'bad', loras:[{ id:'L_NENE_V18_WD14', strength:0.85 }], width:832, height:1216, steps:28, cfg:5.5, seed:12, sampler:'DPM++ 2M', scheduler:'Karras' };

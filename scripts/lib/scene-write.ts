@@ -35,7 +35,7 @@ function readRetiredSceneIds(dataDir: string) {
     || data.records.some((record: { id: string; }) => !record || typeof record.id !== 'string' || !record.id.trim())) {
     throw new Error('retired-scenes.json 格式无效，停止场景写入');
   }
-  return new Set(data.records.map((record: { id: unknown; }) => record.id));
+  return new Set(data.records.map((record: any) => record.id));
 }
 
 /** 写入侧确认稳定 ID：活跃及退役身份都参与分配，不复用旧身份。 */
@@ -74,9 +74,9 @@ function verifyShardIntegrity() {
     }
   }
   if (problems.length) return { ok: false, problems };
-  const declared = new Set((manifest.files || []).map((entry: { file: unknown; }) => entry.file));
+  const declared = new Set((manifest.files || []).map((entry: any) => entry.file));
   const declaredPrefixes = new Set((manifest.files || []).map((entry: { file: string; }) => groupPrefix(entry.file)));
-  const characterOf = new Map((manifest.files || []).map((entry: { file: unknown; character: unknown; }) => [entry.file, entry.character]));
+  const characterOf = new Map((manifest.files || []).map((entry: any) => [entry.file, entry.character]));
 
   const seenIds = new Map();
   for (const entry of manifest.files || []) {
@@ -182,7 +182,7 @@ function groupFileOrder(entry: { file: string; }, workingFiles: unknown[]|Map<un
  * @param {{ retiredIds?: Set<string>, planOnly?: boolean }} options 保存前已读出的退役 ID；planOnly 不写入
  * @returns {{ addedIds:string[], updatedIds:string[], removedIds:string[], touchedFiles:string[] }}
  */
-function applySceneChanges(incoming: unknown, previous: { sources: unknown; manifest: { files?: unknown; batchSize?: unknown; }; }, options: {}) {
+function applySceneChanges(incoming: unknown, previous: any, options?: any) {
   const integrity = verifyShardIntegrity();
   if (!integrity.ok) throw new Error('场景分片完整性检查失败: ' + integrity.problems.join('; '));
   const options_ = options || {};
@@ -205,7 +205,7 @@ function applySceneChanges(incoming: unknown, previous: { sources: unknown; mani
     for (const scene of scenes) idMap.set(String(scene.id), { file, scene });
   }
 
-  function appendToGroup(entry: { file?: unknown; batchSize?: unknown; }, scene: { id: unknown; }) {
+  function appendToGroup(entry: any, scene: any) {
     if (!entry) throw new Error('manifest does not declare a shard for scene ' + String(scene.id));
     const base = groupPrefix(entry.file);
     const order = groupFileOrder(entry, working);
@@ -247,7 +247,7 @@ function applySceneChanges(incoming: unknown, previous: { sources: unknown; mani
 
   function removeFrom(file: unknown, id: string) {
     const scenes = working.get(file);
-    const index = scenes.findIndex((scene: { id: unknown; }) => String(scene.id) === id);
+    const index = scenes.findIndex((scene: any) => String(scene.id) === id);
     if (index >= 0) scenes.splice(index, 1);
     touched.add(file);
   }
@@ -275,7 +275,7 @@ function applySceneChanges(incoming: unknown, previous: { sources: unknown; mani
         appendToGroup(previous.manifest.files.find((entry: { file: string; }) => entry.file === store.targetFile(scene)), scene);
       } else {
         const scenes = working.get(prev.file);
-        const index = scenes.findIndex((item: { id: unknown; }) => String(item.id) === id);
+        const index = scenes.findIndex((item: any) => String(item.id) === id);
         scenes[index] = scene;
         touched.add(prev.file);
       }
@@ -315,7 +315,7 @@ function applySceneChanges(incoming: unknown, previous: { sources: unknown; mani
  * io 由调用方注入（routes/maintenance-validation 的 readJson/writeJson/sanitizeCuration），
  * 保持与原实现完全相同的落盘格式。
  */
-function cleanOrphanedSceneRefs(options: { rootDir: unknown; io: unknown; }) {
+function cleanOrphanedSceneRefs(options: any) {
   const { rootDir, io } = options;
   const activeIds = new Set(store.loadSceneShards().scenes.map((scene) => scene.id));
   const dataDir = path.join(rootDir, 'data');
@@ -360,16 +360,16 @@ function cleanOrphanedSceneRefs(options: { rootDir: unknown; io: unknown; }) {
  * 把本次保存中消失的场景登记进 retired-scenes.json（退役 ID 永不复用），
  * 并删除对应样张图与 showcase manifest 条目。
  */
-function retireRemovedScenes(options: { incomingScenes: unknown; previousScenes: unknown; rootDir: unknown; showcaseDir: unknown; io: unknown; log: unknown; }) {
+function retireRemovedScenes(options: any) {
   const { incomingScenes, previousScenes, rootDir, showcaseDir, io, log } = options;
-  const incomingIds = new Set(incomingScenes.map((scene: { id: unknown; }) => scene.id));
+  const incomingIds = new Set(incomingScenes.map((scene: any) => scene.id));
   const retiredPath = path.join(rootDir, 'data', 'retired-scenes.json');
   const data = io.readJson(retiredPath);
   const retiredRecords = data.records || [];
-  const retiredIds = new Set(retiredRecords.map((record: { id: unknown; }) => record.id));
+  const retiredIds = new Set(retiredRecords.map((record: any) => record.id));
   const added: never[] = [];
 
-  previousScenes.forEach((scene: { id: unknown; }) => {
+  previousScenes.forEach((scene: any) => {
     if (!incomingIds.has(scene.id) && !retiredIds.has(scene.id)) {
       retiredRecords.push({ id: scene.id, retiredAt: new Date().toISOString().split('T')[0], reason: '在场景管理中下架' });
       added.push(scene.id);
@@ -394,7 +394,7 @@ function retireRemovedScenes(options: { incomingScenes: unknown; previousScenes:
       if (fs.existsSync(manifestPath)) {
         const manifest = io.readJson(manifestPath);
         if (manifest && Array.isArray(manifest.entries)) {
-          manifest.entries = manifest.entries.filter((entry: { id: unknown; }) => entry.id !== sceneId);
+          manifest.entries = manifest.entries.filter((entry: any) => entry.id !== sceneId);
           manifest.entryCount = manifest.entries.length;
           manifest.sceneCount = manifest.entries.length;
           io.writeJson(manifestPath, manifest);

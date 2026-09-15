@@ -30,7 +30,7 @@ const ajv = new Ajv({ allErrors: true });
 const validateStandards = ajv.compile(standardsSchema);
 const validateView = ajv.compile(viewSchema);
 
-const PERSPECTIVE_IDS = standards.perspectives.map((p) => p.id);
+const PERSPECTIVE_IDS = standards.perspectives.map((p: any) => p.id);
 
 test('character reference standards: passes JSON Schema contract', () => {
   const ok = validateStandards(standards);
@@ -43,7 +43,7 @@ test('character reference view: passes JSON Schema contract', () => {
 });
 
 test('character reference view: character set mirrors standards (both directions)', () => {
-  const standardsIds = standards.characters.map((c) => c.id).sort();
+  const standardsIds = standards.characters.map((c: any) => c.id).sort();
   const viewIds = Object.keys(view).sort();
   assert.deepEqual(viewIds, standardsIds,
     'view.json 的角色集合必须与 standards.json 双向一致（孤儿/缺失都是漂移）');
@@ -55,8 +55,8 @@ test('character reference view: character set mirrors standards (both directions
 
 test('character reference view: outfit set mirrors standards (both directions)', () => {
   for (const character of standards.characters) {
-    const standardsOutfits = character.outfits.map((o) => o.id).sort();
-    const viewOutfits = view[character.id].outfits.map((o) => o.outfitId).sort();
+    const standardsOutfits = character.outfits.map((o: any) => o.id).sort();
+    const viewOutfits = view[character.id].outfits.map((o: any) => o.outfitId).sort();
     assert.deepEqual(viewOutfits, standardsOutfits,
       `${character.id}: 服装形态集合双向不一致`);
   }
@@ -64,7 +64,7 @@ test('character reference view: outfit set mirrors standards (both directions)',
 
 test('character reference view: exactly one default outfit per character, mirrored flags', () => {
   for (const character of standards.characters) {
-    const defaults = character.outfits.filter((o) => o.isDefault === true);
+    const defaults = character.outfits.filter((o: any) => o.isDefault === true);
     // 2026-08-31：无参考资产的角色（sync 幽灵形态过滤后 outfits 为空，待 reference:render
     // 渲染 4 视角资产后由 sync 填充）允许 0 个 default；有资产时仍必须恰好 1 套。
     assert.ok(defaults.length <= 1,
@@ -74,7 +74,7 @@ test('character reference view: exactly one default outfit per character, mirror
         `${character.id}: 有资产的角色必须恰好一套 isDefault 服装`);
     }
     for (const outfit of character.outfits) {
-      const viewOutfit = view[character.id].outfits.find((o) => o.outfitId === outfit.id);
+      const viewOutfit = view[character.id].outfits.find((o: any) => o.outfitId === outfit.id);
       assert.equal(viewOutfit.isDefault, outfit.isDefault === true,
         `${character.id}/${outfit.id}: isDefault 镜像不一致`);
       assert.equal(viewOutfit.isNsfw, outfit.isNsfw === true,
@@ -86,11 +86,11 @@ test('character reference view: exactly one default outfit per character, mirror
 test('character reference view: references are the canonical perspectives in order, fields mirrored', () => {
   for (const character of standards.characters) {
     for (const outfit of view[character.id].outfits) {
-      const ids = outfit.references.map((r) => r.id);
+      const ids = outfit.references.map((r: any) => r.id);
       assert.deepEqual(ids, PERSPECTIVE_IDS,
         `${character.id}/${outfit.outfitId}: 参考视角必须恰为 standards 定义的标准视角且顺序稳定`);
       for (const reference of outfit.references) {
-        const standard = standards.perspectives.find((p) => p.id === reference.id);
+        const standard = standards.perspectives.find((p: any) => p.id === reference.id);
         for (const field of ['name', 'shotType', 'lens', 'targetUsage']) {
           assert.deepEqual(reference[field], standard[field],
             `${character.id}/${outfit.outfitId}/${reference.id}: ${field} 与 standards 视角定义漂移`);
@@ -135,7 +135,7 @@ test('reference asset audit shares gateway roots, rejects missing URLs and direc
   fs.mkdirSync(custom); fs.mkdirSync(legacy, { recursive: true });
   fs.writeFileSync(path.join(custom, 'face.png'), 'fixture');
   fs.writeFileSync(path.join(legacy, 'face.png'), 'fixture');
-  const view = refs => ({ example: { outfits: [{ outfitId: 'default', references: refs }] } });
+  const view = (refs: any) => ({ example: { outfits: [{ outfitId: 'default', references: refs }] } });
   const modern = view([{ url: '/character-references/face.png' }, { pending: true }]);
   assert.equal(resolveCharRefRoot(temp, {}, ''), legacy);
   assert.equal(auditReferenceView(modern, temp, {}).missing, 0);

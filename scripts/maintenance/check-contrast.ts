@@ -83,10 +83,10 @@ function splitArgs(value: any) {
   parts.push(value.slice(start).trim());
   return parts;
 }
-function compositeSurface(tokens: any, name: any, parentRgb: any, depth: any = 0) {
+function compositeSurface(tokens: any, name: any, parentRgb?: any, depth: any = 0) {
   return resolveColor(tokens, tokens[name], parentRgb, depth);
 }
-function resolveColor(tokens: any, expr: any, parentRgb: any, depth: any = 0) {
+function resolveColor(tokens: any, expr: any, parentRgb?: any, depth: any = 0) {
   if (!expr || depth > 16) return null;
   const value = expr.replace(/!important/g, '').trim();
   const alias = value.match(/^var\((.*)\)$/);

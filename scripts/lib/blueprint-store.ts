@@ -34,7 +34,7 @@ function readJson(source: string) {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
 }
 
-function jsonText(value: { version?: number; blueprints?: unknown; franchise?: unknown; files?: unknown }) {
+function jsonText(value: any) {
   return JSON.stringify(value, null, 2) + '\n';
 }
 

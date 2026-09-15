@@ -11,7 +11,7 @@ const { VERSIONED_FILES }: typeof import('../lib/data-version') = require('../li
 
 function seed() {
   const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-recovery-http-'));
-  function write(name, value) {
+  function write(name: any, value: any) {
     const file = path.join(rootDir, name);
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n');
@@ -44,7 +44,7 @@ function seed() {
   return { options: { rootDir, runtimeRoot: path.join(rootDir, 'runtime') }, scenes, blueprints, write, cleanup: () => fs.rmSync(rootDir, { recursive: true, force: true }) };
 }
 
-async function start(fixture, mode = 'success') {
+async function start(fixture: any, mode = 'success') {
   const child = fork(__filename, [fixture.options.rootDir, mode], { silent: true, windowsHide: true });
   let errors = '';
   child.stderr.on('data', chunk => { errors += chunk; });
@@ -53,7 +53,7 @@ async function start(fixture, mode = 'success') {
   const base = 'http://127.0.0.1:' + message.port;
   return {
     child, message, closed,
-    async request(url, body, headers = {}) {
+    async request(url: any, body?: any, headers = {}) {
       const response = await fetch(base + url, body === undefined ? { headers } : { method: 'POST', headers: { 'content-type': 'application/json', ...headers }, body: JSON.stringify(body) });
       return { status: response.status, body: await response.json() };
     },
@@ -61,7 +61,7 @@ async function start(fixture, mode = 'success') {
   };
 }
 
-async function serve(rootDir, mode) {
+async function serve(rootDir: any, mode: any) {
   process.env.AICS_DATA_ROOT = rootDir;
   process.env.AICS_APP_ROOT = rootDir;
   const express: typeof import('express') = require('express');
@@ -87,8 +87,8 @@ async function serve(rootDir, mode) {
   app.use((require('compression') as typeof import('compression'))({ threshold: 0 }));
   const router = express.Router();
   registerSceneMaintenance({ router, cfg, sceneStore: store, localOnly: helpers.maintenanceLocalOnly,
-    packaged: value => value.DESKTOP_PACKAGED, unavailable: (_req, res) => res.status(501).json({ ok: false, code: 'DESKTOP_MAINTENANCE_UNAVAILABLE' }),
-    maintenanceSnapshot: removed => captureMaintenanceSnapshot(leaseOptions, store, removed),
+    packaged: (value: any) => value.DESKTOP_PACKAGED, unavailable: (_req: any, res: any) => res.status(501).json({ ok: false, code: 'DESKTOP_MAINTENANCE_UNAVAILABLE' }),
+    maintenanceSnapshot: (removed: any) => captureMaintenanceSnapshot(leaseOptions, store, removed),
     async runMaintenanceChecks() {
       // Content validators are not under test: neutral fixtures exercise the real
       // planners, file writes, transaction journal, compression and rollback.
@@ -103,7 +103,7 @@ async function serve(rootDir, mode) {
       }
     },
     runNodeScript: async () => ({ status: 0 }),
-    syncVersion: root => {
+    syncVersion: (root: any) => {
       const version = (require('../lib/data-version') as typeof import('../lib/data-version')).expectedDataVersion(root);
       io.atomicWrite(path.join(root, 'src/stores/sceneStore.ts'), 'export const DATA_VERSION = ' + version + ';\n');
     }, timeoutMs: 1000,

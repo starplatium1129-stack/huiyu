@@ -384,7 +384,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     }
     let frozenInput = Object.freeze(Object.assign({}, input));
     let metadataLoras = frozenInput.loras
-      ? Object.freeze(frozenInput.loras.map(function (lora: { id: unknown; strength: unknown; }) { return Object.freeze({ id:lora.id, strength:lora.strength }); }))
+      ? Object.freeze(frozenInput.loras.map(function (lora: any) { return Object.freeze({ id:lora.id, strength:lora.strength }); }))
       : Object.freeze(frozenInput.loraId ? [Object.freeze({ id:frozenInput.loraId, strength:frozenInput.loraStrength })] : []);
     let job: ImageJob<Input> = {
       id:id,

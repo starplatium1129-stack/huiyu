@@ -8,7 +8,7 @@ let fs: typeof import('fs') = require('fs');
 
 
 // 结果文件 Range 流式下发（支持视频拖动进度条）。
-function streamVideo(req: { headers: { range: unknown; }; }, res: { setHeader: (arg0: string,arg1: string) => void; status: (arg0: number) => { (): unknown; new(): unknown; setHeader: { (arg0: string,arg1: string): void; new(): unknown; }; }; end: () => void; }, result: { path: PathLike; mime: unknown; }) {
+function streamVideo(req: any, res: any, result: any) {
   let stat = fs.statSync(result.path);
   let range = String(req.headers.range || '');
   res.setHeader('Accept-Ranges', 'bytes');

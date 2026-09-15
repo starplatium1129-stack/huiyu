@@ -52,7 +52,7 @@ const sizes = new Map([
 ]);
 
 assert.strictEqual(routeEntries(manifest).length, 3, 'named facade-free view chunks must still belong to route budgets');
-const passing = evaluateManifest(manifest, file => sizes.get(file));
+const passing = evaluateManifest(manifest, (file: any) => sizes.get(file));
 assert.deepStrictEqual(passing.violations, []);
 assert.strictEqual(passing.routes.find(route => route.route === 'ChatView').css, 34 * 1024);
 assert.strictEqual(passing.routes.find(route => route.route === 'PromptBuilderView').javascript, 120 * 1024);
@@ -65,13 +65,13 @@ assert.strictEqual(passing.routes.find(route => route.route === 'HomeView').clos
 
 const failing = evaluateManifest(
   manifest,
-  file => file === '_app/HomeView.js' ? DEFAULT_BUDGETS.routeJavaScript + 1 : sizes.get(file),
+  (file: any) => file === '_app/HomeView.js' ? DEFAULT_BUDGETS.routeJavaScript + 1 : sizes.get(file),
 );
 assert(failing.violations.some(message => message.includes('HomeView JavaScript')));
 
 // 「路由变小、代码搬进同步共享块」的造假必须被闭包预算抓住：路由自身 80 KiB
 // 远低于 routeJavaScript，但共享块撑大后闭包越线。
-const smuggled = evaluateManifest(manifest, file => file === '_app/heavy.js' ? DEFAULT_BUDGETS.routeClosureJavaScript : sizes.get(file));
+const smuggled = evaluateManifest(manifest, (file: any) => file === '_app/heavy.js' ? DEFAULT_BUDGETS.routeClosureJavaScript : sizes.get(file));
 assert(smuggled.violations.some(message => message.includes('ChatView static closure')),
   'moving route code into a synchronously shared chunk must trip the closure budget');
 

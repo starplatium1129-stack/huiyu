@@ -17,31 +17,31 @@ function compareReferenceProjection(standards: unknown, view: { [s: string]: unk
   const idRows = (rows: unknown[], key: string) => Array.isArray(rows) && rows.every((row: any) => object(row) && typeof row[key] === 'string' && row[key].trim())
     && new Set(rows.map((row: any) => row[key])).size === rows.length;
   if (!object(standards) || !idRows(standards.characters, 'id') || !idRows(standards.perspectives, 'id') || !object(view)
-    || standards.characters.some((c: { outfits: unknown; }) => !idRows(c.outfits, 'id'))
-    || Object.values(view).some((c: any) => !object(c) || !idRows(c.outfits, 'outfitId') || c.outfits.some((o: { references: unknown; }) => !idRows(o.references, 'id')))) {
+    || standards.characters.some((c: any) => !idRows(c.outfits, 'id'))
+    || Object.values(view).some((c: any) => !object(c) || !idRows(c.outfits, 'outfitId') || c.outfits.some((o: any) => !idRows(o.references, 'id')))) {
     result.reason = 'invalid or duplicate reference identities; no partial mirror accepted';
     return result;
   }
   const check = (location: string, actual: unknown, expected: unknown) => {
     if (!equal(actual, expected)) result.issues.push({ file: result.file, location, reason: 'reference source/derived field mismatch' });
   };
-  check('character-ids', Object.keys(view).sort(), standards.characters.map((c: { id: unknown; }) => c.id).sort());
+  check('character-ids', Object.keys(view).sort(), standards.characters.map((c: any) => c.id).sort());
   for (const character of standards.characters) {
     const actual = view[character.id];
     if (!actual) continue;
     check(`${character.id}/characterId`, actual.characterId, character.id);
     for (const field of ['displayName', 'source', 'identityProse']) check(`${character.id}/${field}`, actual[field], character[field]);
-    check(`${character.id}/outfit-ids`, actual.outfits.map((o: { outfitId: unknown; }) => o.outfitId).sort(), character.outfits.map((o: { id: unknown; }) => o.id).sort());
+    check(`${character.id}/outfit-ids`, actual.outfits.map((o: any) => o.outfitId).sort(), character.outfits.map((o: any) => o.id).sort());
     const defaults = character.outfits.filter((o: { isDefault: boolean; }) => o.isDefault === true);
     if (defaults.length !== (character.outfits.length ? 1 : 0)) result.issues.push({ file: result.sourceFiles[0], location: character.id, reason: 'reference default outfit count is invalid' });
     for (const outfit of character.outfits) {
-      const projection = actual.outfits.find((o: { outfitId: unknown; }) => o.outfitId === outfit.id);
+      const projection = actual.outfits.find((o: any) => o.outfitId === outfit.id);
       if (!projection) continue;
       for (const [target, source] of [['outfitName', 'name'], ['prose', 'prose']]) check(`${character.id}/${outfit.id}/${target}`, projection[target], outfit[source]);
       for (const field of ['isDefault', 'isNsfw']) check(`${character.id}/${outfit.id}/${field}`, projection[field], outfit[field] === true);
-      check(`${character.id}/${outfit.id}/perspective-ids`, projection.references.map((r: { id: unknown; }) => r.id), standards.perspectives.map((p: { id: unknown; }) => p.id));
+      check(`${character.id}/${outfit.id}/perspective-ids`, projection.references.map((r: any) => r.id), standards.perspectives.map((p: any) => p.id));
       for (const reference of projection.references) {
-        const perspective = standards.perspectives.find((p: { id: unknown; }) => p.id === reference.id);
+        const perspective = standards.perspectives.find((p: any) => p.id === reference.id);
         if (!perspective) continue;
         for (const field of ['name', 'shotType', 'lens', 'targetUsage']) check(`${character.id}/${outfit.id}/${reference.id}/${field}`, reference[field], perspective[field]);
       }
@@ -52,7 +52,7 @@ function compareReferenceProjection(standards: unknown, view: { [s: string]: unk
 }
 
 // Index declarations only. Never resolve reference URLs or asset roots.
-function referenceImpact(opts: { root: PathLike; character: unknown; outfit: unknown; }, selected: { size: unknown; }, result: { referenceEvidence: { characterId: unknown; outfitId: unknown; status: string; total: unknown; pendingCount: unknown; urlDeclaredCount: unknown; reviewDeclaredCount: unknown; reviewStatus: string; assetStatus: string; reason: string; }[]; unknown: string[]; }, add: (arg0: string,arg1: string,arg2: string,arg3: string) => void) {
+function referenceImpact(opts: any, selected: any, result: any, add: any) {
   const file = 'data/character-reference-view.json';
   result.referenceEvidence = [];
   if (!selected.size) return;
@@ -95,7 +95,7 @@ function referenceImpact(opts: { root: PathLike; character: unknown; outfit: unk
       add('related', 'reference', target, '参考 view 显式登记关联');
       add('revalidate', 'reference', target, 'view 登记关联；未核实标准镜像、URL、图片或审核状态');
       if (!Object.hasOwn(form, 'references')) emit(form.outfitId, 'missing', null, 'references 未登记');
-      else if (!Array.isArray(form.references) || form.references.some((r: { pending: undefined; url: null|undefined; }) => !object(r)
+      else if (!Array.isArray(form.references) || form.references.some((r: { pending: any; url: any; }) => !object(r)
         || (r.pending !== undefined && typeof r.pending !== 'boolean') || (r.url !== undefined && r.url !== null && typeof r.url !== 'string'))) {
         emit(form.outfitId, 'unknown', null, 'references 损坏，未统计部分记录');
       } else emit(form.outfitId, 'empty', form.references, '仅统计索引声明；未验证素材根、资产存在性或审核真实性');

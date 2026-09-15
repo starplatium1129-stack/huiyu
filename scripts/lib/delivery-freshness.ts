@@ -5,7 +5,7 @@ const { HASH, compareSnapshot }: typeof import('./delivery-identity') = require(
 const { get, state, gatePath, MAIN_FIELDS }: typeof import('./delivery-state') = require('./delivery-state');
 const { isReboundGate }: typeof import('./delivery-finalize') = require('./delivery-finalize');
 
-function inspectTracking(root, document) {
+function inspectTracking(root: any, document: any) {
   const record = document.tracking;
   if (record === undefined) return { status: 'unknown', message: '旧记录没有输入追踪；历史通过声明的新鲜度未知', gates: {} };
   if (!object(record) || record.schemaVersion !== 1 || record.algorithm !== 'sha256' || !object(record.gates)
@@ -17,10 +17,10 @@ function inspectTracking(root, document) {
     : [source, build].some(v => v.status !== 'fresh') ? 'stale' : 'fresh';
   return { status, source, build, gates: {} };
 }
-function reportPaths(value) {
+function reportPaths(value: any) {
   return [...new Set(['log', 'transcript', 'report'].map(k => value?.[k]).filter(v => typeof v === 'string' && v))].sort();
 }
-function inspectGate(root, document, freshness, field) {
+function inspectGate(root: any, document: any, freshness: any, field: any) {
   const declaredStatus = state(get(document, field));
   const result = { status: 'unknown', declaredStatus, effectiveStatus: declaredStatus, reports: [] };
   const binding = document.tracking?.gates?.[field];
@@ -33,18 +33,18 @@ function inspectGate(root, document, freshness, field) {
     else {
       if (!object(binding) || !Array.isArray(binding.dependsOn) || !binding.dependsOn.length
         || new Set(binding.dependsOn).size !== binding.dependsOn.length
-        || binding.dependsOn.some(k => !['source', 'build'].includes(k))
+        || binding.dependsOn.some((k: any) => !['source', 'build'].includes(k))
         || !object(binding.identities) || !['office', 'main'].includes(binding.machine)) throw Error('门禁依赖绑定格式错误');
       if (MAIN_FIELDS.includes(field) && (binding.machine !== 'main' || !['source', 'build'].every(k => binding.dependsOn.includes(k)))) throw Error('主力机验收必须绑定 source/build 与 main 机器');
       if (get(document, field)?.machine !== undefined && get(document, field).machine !== binding.machine) throw Error('结果声明机器与身份绑定机器矛盾');
       result.dependsOn = binding.dependsOn;
       result.machine = binding.machine;
-      result.status = binding.dependsOn.every(key => HASH.test(binding.identities[key])
+      result.status = binding.dependsOn.every((key: any) => HASH.test(binding.identities[key])
         && binding.identities[key] === document.tracking[key]?.sha256 && freshness[key]?.status === 'fresh') ? 'fresh' : 'stale';
       if (result.status === 'stale') result.message = '执行时绑定的输入/构建身份已改变或不可用，须复验';
       if (!Array.isArray(binding.reports)) throw Error('缺少报告文件绑定列表');
       const expectedPaths = reportPaths(get(document, field));
-      const recordedPaths = binding.reports.map(entry => relative(entry.path));
+      const recordedPaths = binding.reports.map((entry: any) => relative(entry.path));
       if (canonical(recordedPaths) !== canonical(expectedPaths)) throw Error('结果的日志/报告引用与已绑定文件不一致');
       for (const entry of binding.reports) {
         if (entry.status !== 'file' || !HASH.test(entry.sha256) || !Number.isSafeInteger(entry.bytes)) throw Error('报告文件身份不完整');
@@ -63,10 +63,10 @@ function inspectGate(root, document, freshness, field) {
   Object.defineProperty(freshness.gates, field, { value: result, enumerable: true, configurable: true, writable: true });
   return result;
 }
-function bindGate(root, value, dependsOn, identities, machine) {
+function bindGate(root: any, value: any, dependsOn: any, identities: any, machine: any) {
   const reports = reportPaths(value).map(name => fileEntry(root, relative(name)));
   if (reports.some(v => v.status !== 'file')) throw Error('结果引用的日志/报告缺失、不安全或不可读');
   if (state(value) === 'passed' && !reports.length) throw Error('通过结果必须提供 root 内实际 log/transcript/report 文件');
-  return { dependsOn, identities: Object.fromEntries(dependsOn.map(k => [k, identities[k].sha256])), machine, reports };
+  return { dependsOn, identities: Object.fromEntries(dependsOn.map((k: any) => [k, identities[k].sha256])), machine, reports };
 }
 export = { inspectTracking, inspectGate, bindGate };

@@ -9,13 +9,13 @@ const zlib: typeof import('node:zlib') = require('node:zlib');
 
 const CODE_ROOT = path.resolve(__dirname, '..', '..');
 const entries = ['render-all-outfits-references.js', 'generate-all-scenes-showcase-miaomiao.js', 'render-showcase-gaps.js'];
-const sha = value => crypto.createHash('sha256').update(value).digest('hex');
-const writeJson = (file, value) => {
+const sha = (value: any) => crypto.createHash('sha256').update(value).digest('hex');
+const writeJson = (file: any, value: any) => {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(value, null, 2));
 };
 
-function fixture(t) {
+function fixture(t: any) {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'office-generation-'));
   const root = path.join(temporary, 'project');
   const output = path.join(temporary, 'candidates');
@@ -48,7 +48,7 @@ function fixture(t) {
     env: { AI_WORKSPACE_ROOT: path.join(temporary, 'AI'), SCENE_SHOWCASE_DIR: path.dirname(manifest) } };
 }
 
-function tree(root) {
+function tree(root: any) {
   const out = {};
   if (!fs.existsSync(root)) return out;
   for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
@@ -62,12 +62,12 @@ function tree(root) {
 
 // Synthetic PNG with real chunks, checksums and compressed pixel bytes; no generated art.
 function png() {
-  function crc(bytes) {
+  function crc(bytes: any) {
     let c = -1;
     for (const b of bytes) { c ^= b; for (let i = 0; i < 8; i++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1)); }
     return (c ^ -1) >>> 0;
   }
-  function chunk(type, body) {
+  function chunk(type: any, body: any) {
     const data = Buffer.concat([Buffer.from(type), body]);
     const length = Buffer.alloc(4), checksum = Buffer.alloc(4);
     length.writeUInt32BE(body.length); checksum.writeUInt32BE(crc(data));
@@ -79,11 +79,11 @@ function png() {
     chunk('IDAT', zlib.deflateSync(Buffer.from([0, 80, 100, 120]))), chunk('IEND', Buffer.alloc(0))]);
 }
 
-async function mockGateway(t) {
+async function mockGateway(t: any) {
   const state = { posts: [], gets: [], mode: 'success', onPoll: null, images: 0 };
   const image = png();
   const server = http.createServer(async (req, res) => {
-    const json = value => { res.setHeader('content-type', 'application/json'); res.end(JSON.stringify(value)); };
+    const json = (value: any) => { res.setHeader('content-type', 'application/json'); res.end(JSON.stringify(value)); };
     if (req.method === 'POST') {
       let body = ''; for await (const part of req) body += part;
       state.posts.push(JSON.parse(body));
@@ -113,15 +113,15 @@ async function mockGateway(t) {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
   t.after(() => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); }));
-  return { state, origin, image, fetchImpl: (url, init) => {
+  return { state, origin, image, fetchImpl: (url: any, init: any) => {
     if (new URL(url).origin !== origin) throw new Error(`non-mock network forbidden: ${url}`);
     return fetch(url, init);
   } };
 }
 
-async function guarded(f, action, { preview = false } = {}) {
-  const original = {}, writes = [];
-  const under = (value, base) => typeof value === 'string' && (path.resolve(value) === base || path.resolve(value).startsWith(base + path.sep));
+async function guarded(f: any, action: any, { preview = false } = {}) {
+  const original = {}, writes: any = [];
+  const under = (value: any, base: any) => typeof value === 'string' && (path.resolve(value) === base || path.resolve(value).startsWith(base + path.sep));
   const methods = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'rmdirSync', 'copyFileSync', 'cpSync', 'truncateSync'];
   for (const method of methods) {
     original[method] = fs[method];

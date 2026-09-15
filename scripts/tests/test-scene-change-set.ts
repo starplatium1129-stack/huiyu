@@ -3,7 +3,7 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const { test }: typeof import('node:test') = require('node:test');
 const { resolveSceneChangeSet, previewSceneChanges }: typeof import('../lib/scene-change-set') = require('../lib/scene-change-set');
 const { isSceneId, formatSceneId, missingSceneIdRanges }: typeof import('../lib/scene-id') = require('../lib/scene-id');
-const scene = (id, title = id) => ({ id, title, char: 'fixture' });
+const scene = (id: any, title = id) => ({ id, title, char: 'fixture' });
 const current = () => ({ scenes: [scene('sc001'), scene('sc002'), scene('sc999')],
   blueprints: [], tags: [{ tag: 'fixture' }], curation: { curatedSceneIds: ['sc002'] } });
 const delta = (upsert = [], remove = []) => ({ version: 1, scenes: { upsert, remove } });
@@ -13,7 +13,7 @@ test('only explicitly selected IDs change; delta values detach from submitted ob
   const changes = delta([scene('sc002', 'updated'), scene('sc1000')], ['sc999']);
   const frozen = JSON.stringify({ before, changes });
   const saved = resolveSceneChangeSet(before, changes);
-  assert.deepEqual(saved.scenes.map(item => item.id), ['sc001', 'sc002', 'sc1000']);
+  assert.deepEqual(saved.scenes.map((item: any) => item.id), ['sc001', 'sc002', 'sc1000']);
   assert.equal(saved.scenes[1].title, 'updated');
   assert.equal(saved.tags, undefined);
   assert.equal(saved.curation, undefined);

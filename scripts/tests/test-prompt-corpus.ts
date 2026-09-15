@@ -64,7 +64,7 @@ function profileOf(id: string) {
 }
 
 /** 镜像 usePromptAssembly.modelProfile：把选中 LoRA 的 prompt_contract 并入 profile。 */
-function animaProfile(profile, scene: unknown) {
+function animaProfile(profile: any, scene: unknown) {
   const char = charOf(scene)
   const loraId = char === 'nene' ? 'L_NENE_V21_ANIMA' : char === 'natsume' ? 'L_NAT_V21_ANIMA' : ''
   const contract = loras.find(lora => lora.id === loraId)?.prompt_contract
@@ -82,7 +82,7 @@ function contractExactTokens(scene: { char: string; }) {
   return new Set((contract?.exact_tokens || []).map(token => String(token).toLowerCase()))
 }
 
-function planFor(scene: unknown, profile, engine: string) {
+function planFor(scene: unknown, profile: any, engine: string) {
   const char = charOf(scene)
   const effective = engine === 'anima' ? animaProfile(profile, scene) : profile
   const shot = infer.sceneShot(scene)

@@ -61,7 +61,7 @@ function pingComfy(urlStr: string|URL|undefined, timeoutMs?: number) {
 }
 
 function pingOllamaDetail(urlStr: string|URL|undefined, timeoutMs?: number) {
-  return requestJson<{ models?: Array<{ size_vram?: unknown; size?: unknown; name?: unknown; model?: unknown }> }>(urlStr, '/api/ps', null, timeoutMs || 3000)
+  return requestJson<{ models?: any }>(urlStr, '/api/ps', null, timeoutMs || 3000)
     .then(function (r) {
       if (!(r.status >= 200 && r.status < 300)) return { online: false, models: [], vram: 0 };
       let rawModels = r.data && r.data.models;

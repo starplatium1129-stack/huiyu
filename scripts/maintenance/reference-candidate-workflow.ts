@@ -6,7 +6,7 @@ const { CODE_ROOT, hash, runCli }: typeof import('../lib/generation-candidates')
 const R: typeof import('../lib/reference-candidate-review') = require('../lib/reference-candidate-review');
 const { publishReferenceCandidates }: typeof import('../lib/reference-candidate-publish') = require('../lib/reference-candidate-publish');
 
-function parse(args: string|string[]|[unknown,...unknown[]], env: { AICS_DATA_ROOT: unknown; AICS_APP_ROOT: unknown; }) {
+function parse(args: string|string[]|[unknown,...unknown[]], env: any) {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) return { help: true };
   const [action, ...rest] = args;
   if (!['inspect', 'review', 'publish', 'full'].includes(action)) throw new Error('Choose inspect, review, publish or full');
@@ -39,12 +39,12 @@ function parse(args: string|string[]|[unknown,...unknown[]], env: { AICS_DATA_RO
   return options;
 }
 
-function inspectedSummary(inspection: { schemaVersion?: number; kind: unknown; runId: unknown; manifestSha256: unknown; sourceRoot?: string; items: unknown; records?: unknown[]; directory?: string; sourceFile?: string; review?: string; }) {
+function inspectedSummary(inspection: any) {
   return { kind: inspection.kind, runId: inspection.runId, manifestSha256: inspection.manifestSha256,
     items: inspection.items, review: 'pending', explanation: 'Integrity checks do not assess image quality or constitute human approval.' };
 }
 
-function reviewCandidates(options: { action: unknown; }|{ help: boolean; }, inspection: { schemaVersion?: number; kind?: string; runId?: unknown; manifestSha256?: string; sourceRoot?: string; items?: { key: unknown; recordId: unknown; inputVersion: unknown; recordSha256: string; sha256: unknown; image: unknown; intendedReferencePath: unknown; integrity: string; reason: string; review: string; }[]; records?: unknown[]; directory: unknown; sourceFile?: string; review?: string; }) {
+function reviewCandidates(options: any, inspection: any) {
   const decisionsFile = path.resolve(options.decisions);
   if (!R.within(inspection.directory, decisionsFile)) throw new Error('Keep the explicit decisions file in the candidate directory');
   const input: any = R.bytes(decisionsFile);

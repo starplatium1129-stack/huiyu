@@ -52,7 +52,7 @@ test('popular shards: union equals the aggregate, ids unique, order preserved', 
 
   assert.strictEqual(union.length, aggregate.characters.length,
     'shard union length must equal aggregate length');
-  assert.deepStrictEqual(union.map((c) => c.id), aggregate.characters.map((c: { id: unknown; }) => c.id),
+  assert.deepStrictEqual(union.map((c) => c.id), aggregate.characters.map((c: any) => c.id),
     'shard union ids must equal aggregate ids in order');
 
   const ids = new Set();

@@ -290,7 +290,7 @@ function loadSources(root: string) {
   if (!Array.isArray(manifest?.files) || !manifest.files.length) throw new Error('manifest.files 必须为非空数组');
   const seenFiles = new Set();
   const seenCharacters = new Set();
-  const sources = manifest.files.map((entry: { file: string; count: unknown; }) => {
+  const sources = manifest.files.map((entry: any) => {
     if (typeof entry?.file !== 'string' || !entry.file) throw new Error('manifest 条目缺 file');
     const source = path.resolve(shardsRoot, entry.file);
     const relative = path.relative(shardsRoot, source);

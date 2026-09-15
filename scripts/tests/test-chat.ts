@@ -8,11 +8,11 @@ var http: typeof import('http') = require('http');
 var gatewayTestStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
 var root = path.resolve(__dirname, '..', '..');
 
-function assert(condition, message) {
+function assert(condition: any, message: any) {
   if (!condition) throw new Error('[chat] ' + message);
 }
 
-function listen(server) {
+function listen(server: any) {
   return new Promise(function (resolve, reject) {
     server.once('error', reject);
     server.listen(0, '127.0.0.1', function () {
@@ -21,7 +21,7 @@ function listen(server) {
   });
 }
 
-function close(server) {
+function close(server: any) {
   return new Promise(function (resolve) {
     if (!server || !server.listening) return resolve();
     if (typeof server.closeAllConnections === 'function') server.closeAllConnections();
@@ -29,7 +29,7 @@ function close(server) {
   });
 }
 
-async function postJson(url, payload) {
+async function postJson(url: any, payload: any) {
   var response = await fetch(url, {
     method:'POST',
     headers:{ 'Content-Type':'application/json' },
@@ -44,7 +44,7 @@ async function postJson(url, payload) {
 // 模拟公网访客（localOnly 判定：本机 socket + 无转发头才放行）。
 // 公网请求需要 token；用 X-Token 头（query token 会 302 种 cookie，
 // fetch 跟随后不带 cookie 反而 401）。
-async function postJsonWithHost(url, payload, forwardedFor) {
+async function postJsonWithHost(url: any, payload: any, forwardedFor?: any) {
   var response = await fetch(url, {
     method:'POST',
     headers:{
@@ -60,8 +60,8 @@ async function postJsonWithHost(url, payload, forwardedFor) {
   return { status:response.status, body:body, json:json };
 }
 
-function readNdjson(body) {
-  return body.trim().split('\n').filter(Boolean).map(function (line) { return JSON.parse(line); });
+function readNdjson(body: any) {
+  return body.trim().split('\n').filter(Boolean).map(function (line: any) { return JSON.parse(line); });
 }
 
 function createMockAiServer() {
@@ -76,7 +76,7 @@ function createMockAiServer() {
     compatibleAuth:''
   };
   var server = http.createServer(function (req, res) {
-    var chunks = [];
+    var chunks: any = [];
     req.on('data', function (chunk) { chunks.push(chunk); });
     req.on('end', function () {
       var body = {};
@@ -193,9 +193,9 @@ function createMockAiServer() {
   return { server:server, state:state };
 }
 
-async function consumeVoice(service, input) {
+async function consumeVoice(service: any, input: any) {
   return service.stream(input, {
-    onResponse:async function (result) {
+    onResponse:async function (result: any) {
       for await (var chunk of result.response) void chunk;
     }
   });
@@ -566,7 +566,7 @@ async function run() {
   assert(liveStatus.models.nene.available, 'Nene Live2D model and all references must exist');
   var neneManifest = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'live2d', 'nene', 'nene.model3.json'), 'utf8'));
   ['Hair', 'Head', 'Face', 'LeftChest', 'RightChest', 'Skirt', 'Body'].forEach(function (name) {
-    assert(neneManifest.HitAreas.some(function (area) { return area.Name === name; }), 'Nene model must expose source hit area ' + name);
+    assert(neneManifest.HitAreas.some(function (area: any) { return area.Name === name; }), 'Nene model must expose source hit area ' + name);
   });
   ['TapHair', 'TapHead', 'TapFace', 'TapLeftChest', 'TapRightChest', 'TapSkirt', 'TapBody'].forEach(function (group) {
     var motions = neneManifest.FileReferences.Motions[group];
@@ -583,8 +583,8 @@ async function run() {
       model:'model-a',
       keepAlive:'1m'
     });
-    var outputs = [];
-    function runChat(model) {
+    var outputs: any = [];
+    function runChat(model: any) {
       return ollama.streamChat({
         model:model,
         messages:[{ role:'user', content:'test' }]
@@ -597,7 +597,7 @@ async function run() {
     assert(mock.state.unloaded.includes('model-a'), 'switching models must unload the previous model');
     assert(outputs.join('') === '你好。你好。', 'split NDJSON chunks must be reconstructed');
 
-    var compatibleOutput = [];
+    var compatibleOutput: any = [];
     var localApi = chatRoute.validateCompatibleApi({
       baseUrl:mockBase + '/v1',
       model:'compatible-model',
@@ -613,7 +613,7 @@ async function run() {
       api:localApi.value,
       messages:[{ role:'system', content:'persona' }, { role:'user', content:'hello' }]
     }, {
-      onToken:function (content) { compatibleOutput.push(content); }
+      onToken:function (content: any) { compatibleOutput.push(content); }
     });
     assert(compatibleOutput.join('') === '你好', 'compatible API SSE must preserve Chinese characters split across UTF-8 chunks');
     assert(!compatibleOutput.join('').includes('\uFFFD'), 'compatible API output must not contain replacement characters');
@@ -621,8 +621,8 @@ async function run() {
     assert(mock.state.compatiblePayloads[0].messages[0].content === 'persona', 'compatible APIs must receive the character system prompt');
 
     // ---- 桌宠本地工具（companionTools）：tools 注入 + tool_calls 增量事件 ----
-    var toolCalls = [];
-    var toolTokens = [];
+    var toolCalls: any = [];
+    var toolTokens: any = [];
     var toolApi = chatRoute.validateCompatibleApi({
       baseUrl:mockBase + '/v1',
       model:'tool-call-model',
@@ -633,17 +633,17 @@ async function run() {
       messages:[{ role:'system', content:'persona' }, { role:'user', content:'看看工作区' }],
       companionTools:true
     }, {
-      onToken:function (content) { toolTokens.push(content); },
-      onToolCall:function (call) { toolCalls.push(call); }
+      onToken:function (content: any) { toolTokens.push(content); },
+      onToolCall:function (call: any) { toolCalls.push(call); }
     });
     var toolPayload = mock.state.compatiblePayloads[mock.state.compatiblePayloads.length - 1];
     assert(
-      Array.isArray(toolPayload.tools) && toolPayload.tools.some(function (t) {
+      Array.isArray(toolPayload.tools) && toolPayload.tools.some(function (t: any) {
         return t.type === 'function' && t.function && t.function.name === 'list_files';
       }),
       'companionTools must inject the local tool schemas into the upstream request'
     );
-    assert(!toolPayload.tools.some(function (t) {
+    assert(!toolPayload.tools.some(function (t: any) {
       return t.function && !['list_files', 'read_file', 'write_file', 'run_command', 'read_image', 'get_workspace_info', 'capture_screen', 'generate_character_image'].includes(t.function.name);
     }), 'only the whitelisted companion tools may be advertised');
     assert(toolCalls.length === 1, 'split tool_calls deltas must accumulate into one event');
@@ -654,8 +654,8 @@ async function run() {
     assert(toolTokens.join('') === '让我看看工作区里有什么。', 'text tokens must still stream alongside tool calls');
 
     // ---- 思考模式（thinking）：reasoning_content 增量事件 + 参数注入 ----
-    var reasoningChunks = [];
-    var thinkingTokens = [];
+    var reasoningChunks: any = [];
+    var thinkingTokens: any = [];
     var thinkingApi = chatRoute.validateCompatibleApi({
       baseUrl:mockBase + '/v1',
       model:'thinking-model',
@@ -666,8 +666,8 @@ async function run() {
       messages:[{ role:'system', content:'persona' }, { role:'user', content:'想一下' }],
       reasoning:'high'
     }, {
-      onReasoning:function (content) { reasoningChunks.push(content); },
-      onToken:function (content) { thinkingTokens.push(content); }
+      onReasoning:function (content: any) { reasoningChunks.push(content); },
+      onToken:function (content: any) { thinkingTokens.push(content); }
     });
     assert(reasoningChunks.join('') === '让我想想再想想', 'reasoning_content deltas must stream as reasoning events');
     assert(thinkingTokens.join('') === '答案是 42', 'final content must still stream after reasoning');
@@ -738,7 +738,7 @@ async function run() {
     var multimodalParts = multimodal.value.messages.filter(function (m) { return Array.isArray(m.content); });
     assert(multimodalParts.length === 1, 'multimodal content arrays must survive validation');
     assert(
-      multimodalParts[0].content.some(function (p) { return p.type === 'image_url' && p.image_url.url.startsWith('data:image/png;base64,'); }),
+      multimodalParts[0].content.some(function (p: any) { return p.type === 'image_url' && p.image_url.url.startsWith('data:image/png;base64,'); }),
       'image_url parts must be preserved'
     );
     var badImage = chatRoute.validateChatBody({
@@ -753,7 +753,7 @@ async function run() {
     assert(/data URL/.test(badImage.error), 'rejection message must explain the data URL rule');
 
     var abortController = new AbortController();
-    var resolveStarted;
+    var resolveStarted: any;
     var started = new Promise(function (resolve) { resolveStarted = resolve; });
     var cancelled = ollama.streamChat({
       model:'model-b',
@@ -860,7 +860,7 @@ async function run() {
     });
     var trimmedEvents = readNdjson(trimmedChat.body);
     assert(
-      trimmedChat.status === 200 && trimmedEvents.some(function (event) {
+      trimmedChat.status === 200 && trimmedEvents.some(function (event: any) {
         return event.type === 'token';
       }),
       'an over-budget conversation must be trimmed and forwarded, not rejected',
@@ -891,9 +891,9 @@ async function run() {
     });
     var jsonEvents = readNdjson(jsonCompletion.body);
     assert(
-      jsonCompletion.status === 200 && jsonEvents.some(function (event) {
+      jsonCompletion.status === 200 && jsonEvents.some(function (event: any) {
         return event.type === 'token' && event.content === 'non-stream reply';
-      }) && jsonEvents.some(function (event) { return event.type === 'done'; }),
+      }) && jsonEvents.some(function (event: any) { return event.type === 'done'; }),
       'compatible chat must convert a non-stream OpenAI response into gateway NDJSON events',
     );
 
@@ -904,8 +904,8 @@ async function run() {
     });
     var malformedEvents = readNdjson(malformedSse.body);
     assert(
-      malformedSse.status === 200 && malformedEvents.some(function (event) { return event.type === 'error'; })
-        && !malformedEvents.some(function (event) { return event.type === 'done'; }),
+      malformedSse.status === 200 && malformedEvents.some(function (event: any) { return event.type === 'error'; })
+        && !malformedEvents.some(function (event: any) { return event.type === 'done'; }),
       'a malformed compatible SSE stream must end with a gateway error event rather than false success',
     );
 
@@ -943,7 +943,7 @@ async function run() {
     });
     var hostEvents = readNdjson(hostChat.body);
     assert(
-      hostChat.status === 200 && hostEvents.some(function (event) { return event.type === 'token'; })
+      hostChat.status === 200 && hostEvents.some(function (event: any) { return event.type === 'token'; })
         && providerMock.state.compatibleAuth === 'Bearer host-secret-key',
       'hostConfig chat must stream via the stored host key without the visitor supplying one',
     );
@@ -1006,11 +1006,11 @@ test('public API requests pin DNS, bypass proxy DNS and do not follow redirects'
     resolutions += 1;
     return [{ address:resolutions === 1 ? '8.8.8.8' : '127.0.0.1', family:4 }];
   });
-  t.mock.method(https, 'request', (target, options, onResponse) => {
+  t.mock.method(https, 'request', (target: any, options: any, onResponse: any) => {
     requests += 1;
     assert.equal(target.hostname, 'custom.example');
     assert.equal(options.agent, false);
-    options.lookup(target.hostname, { all:true }, (error, addresses) => {
+    options.lookup(target.hostname, { all:true }, (error: any, addresses: any) => {
       assert.equal(error, null);
       assert.deepEqual(addresses, [{ address:'8.8.8.8', family:4 }]);
     });

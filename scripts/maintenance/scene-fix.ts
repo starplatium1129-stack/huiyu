@@ -56,7 +56,7 @@ function readJson(file: PathOrFileDescriptor) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function writeJsonAtomic(file: PathLike, value: { selectedAt: string; rule: string; }&{ complete: boolean; qualified: boolean; threshold: number; candidates: { seed: unknown; complete: boolean; total: number|null; notes: string; }[]; selectedSeed: unknown; }) {
+function writeJsonAtomic(file: PathLike, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
@@ -148,7 +148,7 @@ function evaluateReview(outputDir: string, seeds: number[]) {
   return evaluation;
 }
 
-async function submit(gateway: string, body: { prompt: string; negative: string; modelId: unknown; loraId: string; loraStrength: unknown; character: string; width: number; height: number; seed: number; steps: number; cfg: number; }) {
+async function submit(gateway: string, body: any) {
   const base = gateway.replace(/\/$/, '');
   const res = await fetch(base + '/api/anima/jobs', {
     method: 'POST',

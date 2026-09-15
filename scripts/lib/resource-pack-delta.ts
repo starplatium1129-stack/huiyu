@@ -150,7 +150,7 @@ function planResourcePackDelta({ root, name, manifestPath, baseManifestPath, io 
 }
 
 /** 增量模式的候选包元数据：manifest.json（仅实际复制条目）+ delta.json（差异记录）。 */
-function deltaMetadataFiles({ plan, destAbs, rootReal }: { plan: { entries: PackEntry[]; manifestPath: string; baseManifestPath: string; delta: { totals: unknown; baseManifest: unknown; newManifest: unknown; removed: unknown } }; destAbs: string; rootReal: string }) {
+function deltaMetadataFiles({ plan, destAbs, rootReal }: any) {
   const bytes = sumEntryBytes(plan.entries);
   const packManifest = {
     schemaVersion: SCHEMA_VERSION,
@@ -170,7 +170,7 @@ function deltaMetadataFiles({ plan, destAbs, rootReal }: { plan: { entries: Pack
       coverageNote: `增量候选包的 manifest.json 仅列实际复制的 added/changed 项，不代表基线全集；${BYTE_ONLY_NOTE}`,
     },
     totals: { files: plan.entries.length, bytes, unverified: 0 },
-    entries: plan.entries.map((e: { path: unknown; bytes: unknown; sha256: unknown; }) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
+    entries: plan.entries.map((e: any) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
     unverified: [],
   };
   const deltaJson = {

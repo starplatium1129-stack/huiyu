@@ -8,12 +8,12 @@ const { capture }: typeof import('../lib/delivery-handoff') = require('../lib/de
 const { EVIDENCE_DIR, saveJson, sha256 }: typeof import('../lib/delivery-paths') = require('../lib/delivery-paths');
 const { report }: typeof import('../maintenance/audit-delivery') = require('../maintenance/audit-delivery');
 
-function temp(t: { after: (arg0: () => void) => void; }) {
+function temp(t: any) {
   const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'aics-delivery-tracking-')));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   return root;
 }
-function fixture(t: { after: (arg0: () => void) => void; }, gitEnabled = true) {
+function fixture(t: any, gitEnabled = true) {
   const root = temp(t);
   const write = (name: string, value: string|NodeJS.ArrayBufferView<ArrayBufferLike>) => {
     fs.mkdirSync(path.dirname(path.join(root, name)), { recursive: true });

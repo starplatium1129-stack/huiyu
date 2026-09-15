@@ -47,7 +47,7 @@ function seedFixture() {
   fs.writeFileSync(path.join(dataDir, 'scene-blueprints.json'), JSON.stringify({ version: 2, blueprints: [] }, null, 2) + '\n');
 }
 
-function buildApp(desktopPackaged) {
+function buildApp(desktopPackaged: any) {
   const { router } = createMaintenanceRouter({
     ROOT_DIR: root,
     RUNTIME_ROOT: path.join(root, 'runtime'),
@@ -59,9 +59,9 @@ function buildApp(desktopPackaged) {
   return app;
 }
 
-let server;
-let baseUrl;
-async function startApp(desktopPackaged) {
+let server: any;
+let baseUrl: any;
+async function startApp(desktopPackaged: any) {
   await new Promise((resolve) => {
     server = buildApp(desktopPackaged).listen(0, '127.0.0.1', resolve);
   });
@@ -73,12 +73,12 @@ async function stopApp() {
   server = null;
 }
 
-async function get(pathname) {
+async function get(pathname: any) {
   const response = await fetch(baseUrl + pathname);
   return { status: response.status, body: await response.json() };
 }
 
-async function post(pathname, body) {
+async function post(pathname: any, body: any) {
   const response = await fetch(baseUrl + pathname, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -98,7 +98,7 @@ function loadScenesFromShards() {
 }
 
 /** 克隆现有场景为新 ID：字段全部合法（过 validate 链），只换 id 与标题。 */
-function cloneScene(source, newId) {
+function cloneScene(source: any, newId: any) {
   const copy = JSON.parse(JSON.stringify(source));
   copy.id = newId;
   copy.title = source.title + '（副本）';
@@ -152,7 +152,7 @@ test('旧基线全量保存被 409 拒绝并给出可解释差异', async () => 
     // 内容版本哈希只覆盖浏览器可见产物——与客户端读取视图一致。
     const shardFile = path.join(shardsDir, 'nene-core.1.json');
     const shard = JSON.parse(fs.readFileSync(shardFile, 'utf8'));
-    shard.find((scene) => scene.id === 'sc001').story += '（服务器侧修订）';
+    shard.find((scene: any) => scene.id === 'sc001').story += '（服务器侧修订）';
     fs.writeFileSync(shardFile, JSON.stringify(shard, null, 2) + '\n');
     store.writeAggregate(store.loadSceneShards().scenes);
     const result = await post('/api/maintenance/scenes', { scenes, baseVersion: stale });
@@ -163,7 +163,7 @@ test('旧基线全量保存被 409 拒绝并给出可解释差异', async () => 
     assert.ok(result.body.conflict.changedIds.includes('sc001'), JSON.stringify(result.body.conflict));
     // 拒绝后落盘内容保持服务器侧修订
     const after = JSON.parse(fs.readFileSync(shardFile, 'utf8'));
-    assert.ok(after.find((scene) => scene.id === 'sc001').story.includes('（服务器侧修订）'));
+    assert.ok(after.find((scene: any) => scene.id === 'sc001').story.includes('（服务器侧修订）'));
   } finally {
     await stopApp();
   }
@@ -188,9 +188,9 @@ test('正确基线保存走增量落盘：无关分片字节不变', async () =>
     assert.equal(after['shared.json'], before['shared.json'], '无关分片必须字节不变');
     // 新增落在目标组的最后批次；聚合产物同步重建
     const shard = JSON.parse(fs.readFileSync(path.join(shardsDir, 'nene-core.1.json'), 'utf8'));
-    assert.ok(shard.find((scene) => scene.id === 'sc002').story.includes('（本轮编辑修订）'));
+    assert.ok(shard.find((scene: any) => scene.id === 'sc002').story.includes('（本轮编辑修订）'));
     const aggregate = JSON.parse(fs.readFileSync(path.join(dataDir, 'scenes.json'), 'utf8'));
-    assert.ok(aggregate.some((scene) => scene.id === 'sc307'), '聚合产物必须包含新增场景');
+    assert.ok(aggregate.some((scene: any) => scene.id === 'sc307'), '聚合产物必须包含新增场景');
     assert.equal(typeof result.body.version, 'number');
     assert.notEqual(result.body.version, baseVersion, '内容变化后版本必须推进');
     assert.deepEqual(result.body.snapshot.scenes, loadScenesFromShards(), '回执必须包含规范化后的实际快照');
@@ -208,7 +208,7 @@ test('下架场景登记退役，写入侧分配不再复用该 ID', async () =>
     assert.equal(result.status, 200, JSON.stringify(result.body).slice(0, 400));
     assert.deepEqual(result.body.removed, ['sc307']);
     const retired = JSON.parse(fs.readFileSync(path.join(dataDir, 'retired-scenes.json'), 'utf8'));
-    assert.ok(retired.records.some((record) => record.id === 'sc307' && record.reason), '下架必须登记退役');
+    assert.ok(retired.records.some((record: any) => record.id === 'sc307' && record.reason), '下架必须登记退役');
     const state = await get('/api/maintenance/scenes-state');
     assert.equal(state.body.nextSceneId, 'sc308', '退役 ID 不得被复用');
   } finally {
@@ -286,7 +286,7 @@ test('聚合写入后失败会撤销新批次并恢复全部浏览器产物', as
   // 缩小仅夹具的批次容量，确保新增场景产生一个此前不存在的分片。
   const manifestPath = path.join(shardsDir, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  manifest.files.forEach(entry => { entry.batchSize = 1; });
+  manifest.files.forEach((entry: any) => { entry.batchSize = 1; });
   fs.writeFileSync(manifestPath, JSON.stringify(manifest));
   await startApp(false);
   const writeAggregate = store.writeAggregate;
@@ -413,7 +413,7 @@ test('旧请求缺省 personaCoreSceneIds 保留现存核心精选，显式空�
 });
 
 /** 独立隔离根：全部数据输入同根复制，专供 validate-scenes CLI 夹具运行。 */
-function makeValidateFixture(fixtureRoot) {
+function makeValidateFixture(fixtureRoot: any) {
   const fixtureData = path.join(fixtureRoot, 'data');
   const fixtureShards = path.join(fixtureData, 'scenes');
   fs.mkdirSync(fixtureShards, { recursive: true });
@@ -426,7 +426,7 @@ function makeValidateFixture(fixtureRoot) {
   return path.join(fixtureData, 'curation.json');
 }
 
-function runValidateScenes(fixtureRoot) {
+function runValidateScenes(fixtureRoot: any) {
   return new Promise((resolve) => {
     const { spawn }: typeof import('child_process') = require('child_process');
     const child = spawn(process.execPath, ['scripts/maintenance/validate-scenes.js'], {

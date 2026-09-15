@@ -89,7 +89,7 @@ function destinationAbsPath(rootReal: string, name: string) {
  * 真实目录（非符号链接/junction，realpath 与字面路径一致，仍在 root 内）；最终路径
  * 不得存在（含空目录、文件与链接）。返回 { ok, rootReal, destAbs, errors }。
  */
-function checkDestination({ root, name, io = nodeFs }) {
+function checkDestination({ root, name, io = nodeFs }: any) {
   validatePackName(name);
   const rootReal = resolveRootReal(root, io);
   const destAbs = destinationAbsPath(rootReal, name);
@@ -144,7 +144,7 @@ function checkDestination({ root, name, io = nodeFs }) {
  * （退出 1）。核验复用 verifyManifestEntries：不支持格式、重复/越界、排除域、
  * 非空 unverified、缺失、错大小/错哈希全部在此被拒。
  */
-function loadVerifiedManifest({ rootReal, manifestPath, io }) {
+function loadVerifiedManifest({ rootReal, manifestPath, io }: any) {
   if (!manifestPath || typeof manifestPath !== 'string') throw new UsageError('--manifest 缺失或不是字符串');
   const resolved = path.resolve(rootReal, manifestPath);
   // 与 resource-manifest 的 isInsideRoot 同语义（跨盘符时 path.relative 返回绝对路径，须拒绝）
@@ -171,10 +171,10 @@ function loadVerifiedManifest({ rootReal, manifestPath, io }) {
   return { ok: true, manifest, verification, manifestRel: rel, errors: [] };
 }
 
-function planTotals(loaded: { ok: boolean; manifest: null; verification: null; manifestRel: string; errors: { code: string; message: string; }[]; }|{ ok: boolean; manifest: unknown; verification: { schemaVersion: number; kind: string; root: unknown; ok: boolean; totals: { listed: number; uniquePaths: number; verified: number; failedPaths: number; errorCount: number; }; errors: unknown[]; }; manifestRel: string; errors: unknown[]; }) {
+function planTotals(loaded: any) {
   if (!loaded.ok || !loaded.manifest || !Array.isArray(loaded.manifest.entries)) return { files: 0, bytes: 0 };
   // 核验通过时条目无重复，字节数直接对已核验条目求和
-  return { files: loaded.manifest.entries.length, bytes: loaded.manifest.entries.reduce((acc: unknown, e: { bytes: unknown; }) => acc + e.bytes, 0) };
+  return { files: loaded.manifest.entries.length, bytes: loaded.manifest.entries.reduce((acc: unknown, e: any) => acc + e.bytes, 0) };
 }
 
 /**
@@ -197,7 +197,7 @@ function planResourcePack({ root, name, manifestPath, io = nodeFs } = {}) {
     destination: relFromRoot(dest.rootReal, dest.destAbs),
     totals: planTotals(loaded),
     verification: loaded.verification ? { verified: loaded.verification.totals.verified, errorCount: loaded.verification.totals.errorCount } : null,
-    entries: loaded.ok ? loaded.manifest.entries.map((e: { path: unknown; bytes: unknown; sha256: unknown; }) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })) : null,
+    entries: loaded.ok ? loaded.manifest.entries.map((e: any) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })) : null,
     errors,
     notes: [
       '预览模式零写入；--apply 将把上列已核验文件复制到目标新目录（目标必须不存在，不覆盖任何旧包）。',
@@ -207,7 +207,7 @@ function planResourcePack({ root, name, manifestPath, io = nodeFs } = {}) {
 }
 
 /** 复制单个条目到暂存目录并读回核验；任何失败推入 errors 并返回 false（快速终止）。 */
-function copyEntryVerified({ rootReal, staging, entry, io, errors }) {
+function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
   const srcAbs = path.join(rootReal, ...entry.path.split('/'));
   const boundary = resolveRealpathBoundary(io, srcAbs, rootReal);
   if (!boundary.ok) {
@@ -260,8 +260,8 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }) {
 }
 
 /** 全包模式的候选包元数据：manifest.json 与源清单条目逐条一致。 */
-function fullPackMetadata({ plan, destAbs, rootReal }) {
-  const bytes = plan.entries.reduce((acc: unknown, e: { bytes: unknown; }) => acc + e.bytes, 0);
+function fullPackMetadata({ plan, destAbs, rootReal }: any) {
+  const bytes = plan.entries.reduce((acc: unknown, e: any) => acc + e.bytes, 0);
   const packManifest = {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-manifest',
@@ -278,7 +278,7 @@ function fullPackMetadata({ plan, destAbs, rootReal }) {
       coverageNote: BYTE_ONLY_NOTE,
     },
     totals: { files: plan.entries.length, bytes, unverified: 0 },
-    entries: plan.entries.map((e: { path: unknown; bytes: unknown; sha256: unknown; }) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
+    entries: plan.entries.map((e: any) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
     unverified: [],
   };
   return [{ name: 'manifest.json', object: packManifest, mismatchCode: 'manifest-write-mismatch' }];
@@ -291,7 +291,7 @@ function fullPackMetadata({ plan, destAbs, rootReal }) {
  * 复核暂存树，全部成功后才原子改名为最终包名并做发布后验收。失败不报告成功；
  * 暂存目录保留并在结果中给出路径。不修改源清单与源文件，不添加未列条目。
  */
-function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultKind, buildMetadata }) {
+function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultKind, buildMetadata }: any) {
   const base = {
     schemaVersion: SCHEMA_VERSION,
     kind: resultKind,

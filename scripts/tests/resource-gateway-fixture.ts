@@ -7,7 +7,7 @@ const { generateManifest }: typeof import('../lib/resource-manifest') = require(
 const { stageResourcePack }: typeof import('../lib/resource-pack') = require('../lib/resource-pack');
 const stackTools: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
 
-function resourceFixture(t: { after: (arg0: () => Promise<void>) => void; }) {
+function resourceFixture(t: any) {
   const f = fixture(t);
   const make = (id: string, contents: { [s: string]: unknown; }|ArrayLike<unknown>) => {
     for (const [rel, bytes] of Object.entries(contents)) write(path.join(f.source, rel), bytes);
@@ -27,7 +27,7 @@ function resourceFixture(t: { after: (arg0: () => Promise<void>) => void; }) {
   f.make = make;
   f.gatewayConfig = config;
   f.stack = async (overrides = {}) => {
-    const stack = await stackTools.start({ env: { AICS_APP_ROOT: f.program }, configureConfig(gateway: { RUNTIME: unknown; }) {
+    const stack = await stackTools.start({ env: { AICS_APP_ROOT: f.program }, configureConfig(gateway: any) {
       Object.assign(gateway, config, { RUNTIME: gateway.RUNTIME, LIVE2D_ROOT: path.join(f.program, 'assets/live2d') }, overrides);
     } });
     t.after(async () => { await stack.gateway.services.resources.close(); await stack.close(); });
@@ -35,7 +35,7 @@ function resourceFixture(t: { after: (arg0: () => Promise<void>) => void; }) {
   };
   return f;
 }
-async function request(stack: { baseUrl: string; }, url: string, body: { releaseId?: unknown; action: unknown; }|undefined, headers = {}) {
+async function request(stack: { baseUrl: string; }, url: string, body?: any, headers = {}) {
   // Native HTTP preserves test Host/path headers; fetch may normalize or replace them.
   return new Promise((resolve, reject) => {
     const req = http.request(stack.baseUrl + url, { method: body === undefined ? 'GET' : 'POST',
@@ -54,13 +54,13 @@ async function request(stack: { baseUrl: string; }, url: string, body: { release
     req.end(body === undefined ? undefined : JSON.stringify(body));
   });
 }
-async function startAndSettle(stack: { gateway: { services: { resources: { settled: () => unknown; }; }; }; }, action: unknown, releaseId: unknown) {
+async function startAndSettle(stack: { gateway: { services: { resources: { settled: () => unknown; }; }; }; }, action: unknown, releaseId?: unknown) {
   const started = await request(stack, '/api/resources/tasks', { action, ...(releaseId ? { releaseId } : {}) });
   assert.equal(started.status, 202, started.text);
   await stack.gateway.services.resources.settled();
   return (await request(stack, '/api/resources/status')).data;
 }
-async function downloadSource(t: { after: (arg0: () => Promise<unknown>) => void; }, f: { make: (arg0: string,arg1: { 'assets/characters/large.webp': Buffer<ArrayBuffer>; }) => void; packs: string; policy: { sources: { network: { kind: string; approved: boolean; loopbackFixture: boolean; baseUrl: string; }; }; releases: { network: { sourceId: string; }; }; }; config: () => void; }) {
+async function downloadSource(t: any, f: any) {
   const big = Buffer.alloc(2 * 1024 * 1024, 93);
   f.make('network', { 'assets/characters/large.webp': big });
   const requests: { url: string|undefined; range: string|undefined; }[] = [];

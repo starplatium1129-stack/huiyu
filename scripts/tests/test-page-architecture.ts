@@ -23,10 +23,10 @@ const path: typeof import('path') = require('path');
 const root = path.resolve(__dirname, '..', '..');
 const src = path.join(root, 'src');
 
-function read(rel) {
+function read(rel: any) {
   return fs.readFileSync(path.join(root, rel), 'utf8');
 }
-function exists(rel) {
+function exists(rel: any) {
   return fs.existsSync(path.join(root, rel));
 }
 
@@ -66,7 +66,7 @@ assert(
 // Vue 用 @click / v-on 绑定；出现 onclick= 说明是拼接字符串塞进 v-html，会被 CSP 拦。
 const inlineHandlerRe = /\son(?:click|change|input|submit|keydown|keyup|focus|blur|error)\s*=\s*["'][^"']/i;
 
-function walk(dir) {
+function walk(dir: any) {
   const out = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
@@ -77,7 +77,7 @@ function walk(dir) {
 }
 
 const srcFiles = walk(src);
-const vueFiles = srcFiles.filter(f => f.endsWith('.vue'));
+const vueFiles = srcFiles.filter((f: any) => f.endsWith('.vue'));
 assert(vueFiles.length >= 15, `expected the SPA to ship views + components, found ${vueFiles.length}`);
 
 for (const file of vueFiles) {

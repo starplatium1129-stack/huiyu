@@ -6,7 +6,7 @@ const crypto: typeof import('node:crypto') = require('node:crypto');
 const hash = (value: string|Buffer<ArrayBuffer>|NodeJS.ArrayBufferView<ArrayBufferLike>) => crypto.createHash('sha256').update(value).digest('hex');
 const jsonHash = (value: { sources?: { path: string; sha256: string; bytes: number; }[]; recipeSource?: { path: string; sha256: string; }; key?: string; metadata?: { batch: string; engine: string; characterId: string; charName: string; outfitId: string; outfitName: string; persId: string; persName: string; intendedReferencePath: string; }; recipe?: { prompt: string; width: number; height: number; }; prompt?: string; width?: number; height?: number; seed?: number; schemaVersion?: number; generator?: string; runId?: `${string}-${string}-${string}-${string}-${string}`; candidateId?: `${string}-${string}-${string}-${string}-${string}`; recordId?: string; attempt?: number; status?: string; review?: { verdict: string; recordId: string; }; createdAt?: string; inputVersion?: string; payload?: { prompt: string; width: number; height: number; seed: number; }; payloadSha256?: string; image?: string; asset?: { path: string; bytes: number; sha256: string; }; batch?: string; engine?: string; characterId?: string; charName?: string; outfitId?: string; outfitName?: string; persId?: string; persName?: string; intendedReferencePath?: string; }) => hash(JSON.stringify(value));
 
-function fixture(t: { after: (arg0: () => void) => void; }) {
+function fixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'content-evidence-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const root = path.join(base, 'source');

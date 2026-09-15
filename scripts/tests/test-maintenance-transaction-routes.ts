@@ -12,7 +12,7 @@ const { seed, start }: typeof import('./maintenance-transaction-route-fixture') 
 const stateUrl = '/api/maintenance/scenes-state';
 const changesUrl = '/api/maintenance/scenes/changes';
 
-function changes(f, version) {
+function changes(f: any, version: any) {
   return { baseVersion: version, changeSet: { version: 1,
     scenes: { upsert: [{ ...f.scenes[0], id: 'sc002', title: 'New neutral fixture' }], remove: [] },
     blueprints: { upsert: [{ ...f.blueprints[0], id: 'fixture_c', characterId: 'gamma' }], remove: ['fixture_b'] },
@@ -92,7 +92,7 @@ test('real HTTP writer SIGKILL: other process read/save/preview/static and start
     assert.equal((await reader.request('/data/scenes.json', undefined, { 'accept-encoding': 'gzip' })).body.code, 'MAINTENANCE_RECOVERY_REQUIRED');
     const plan = previewMaintenanceRecovery(f.options);
     assert.equal(plan.executable, true, JSON.stringify(plan.conflicts));
-    assert.ok(plan.entries.some(item => item.source.endsWith('nene-core.2.json') && item.desired.exists === false));
+    assert.ok(plan.entries.some((item: any) => item.source.endsWith('nene-core.2.json') && item.desired.exists === false));
     assert.equal(applyMaintenanceRecovery(f.options, plan).ok, true);
     assert.deepEqual(tree(f.options.rootDir, true), original);
     assert.equal((await reader.request(stateUrl)).status, 200);

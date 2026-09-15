@@ -59,7 +59,7 @@ test('cross-entry signature detection flags templated deliveries', () => {
 
 const ROOT = path.resolve(__dirname, '..', '..');
 
-function tokenize(text) {
+function tokenize(text: any) {
   if (!text) return new Set();
   return new Set(
     String(text)
@@ -70,7 +70,7 @@ function tokenize(text) {
   );
 }
 
-function jaccardSimilarity(setA, setB) {
+function jaccardSimilarity(setA: any, setB: any) {
   if (!setA.size && !setB.size) return 0;
   let intersection = 0;
   for (const item of setA) {
@@ -80,7 +80,7 @@ function jaccardSimilarity(setA, setB) {
   return union === 0 ? 0 : intersection / union;
 }
 
-function retentionRate(oldSet, newSet) {
+function retentionRate(oldSet: any, newSet: any) {
   if (!oldSet.size) return 0;
   let kept = 0;
   for (const item of oldSet) {
@@ -97,16 +97,16 @@ const SIGNATURE_GROUP_LIMIT = 0.20;
 const PAIRWISE_DUPE_LIMIT = 0.80;
 const PAIRWISE_MIN_TOKENS = 6;
 
-function proseTokensOf(item) {
+function proseTokensOf(item: any) {
   const prose = item.promptProse || item.nsfwProse || item.animaCaption || '';
   return [...tokenize(prose)];
 }
 
-function signatureOf(tokens) {
+function signatureOf(tokens: any) {
   return tokens.slice(0, 3).sort().join('+');
 }
 
-function crossEntryAudit(deliveryMap) {
+function crossEntryAudit(deliveryMap: any) {
   const errors = [];
   const warnings = [];
   const pairDupes = [];
@@ -155,9 +155,9 @@ function crossEntryAudit(deliveryMap) {
   return { errors, warnings, pairDupes, maxRatio, maxSignature: maxGroup ? maxGroup[0] : null };
 }
 
-function getBaselineData(baselineCommit) {
-  const git = args => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
-  const readList = (aggregate, directory, key) => {
+function getBaselineData(baselineCommit: any) {
+  const git = (args: any) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+  const readList = (aggregate: any, directory: any, key?: any) => {
     let data;
     try { data = JSON.parse(git(['show', `${baselineCommit}:${aggregate}`])); }
     catch {
@@ -193,7 +193,7 @@ function getBaselineData(baselineCommit) {
       map.set(sc.id, {
         id: sc.id,
         type: 'scene',
-        tokens: (sc.prompt || '').split(',').map(s => s.trim()).filter(Boolean),
+        tokens: (sc.prompt || '').split(',').map((s: any) => s.trim()).filter(Boolean),
         prose: sc.animaCaption || '',
         char: sc.char
       });
@@ -233,8 +233,8 @@ function main() {
     // 默认对当前仓库中修改的数据进行全量复查
     const bpList = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/scene-blueprints.json'), 'utf8')).blueprints;
     const scList = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/scenes.json'), 'utf8'));
-    bpList.forEach(bp => deliveryMap.set(bp.id, bp));
-    scList.forEach(sc => deliveryMap.set(sc.id, sc));
+    bpList.forEach((bp: any) => deliveryMap.set(bp.id, bp));
+    scList.forEach((sc: any) => deliveryMap.set(sc.id, sc));
   }
 
   const baseline = getBaselineData(baselineCommit);
@@ -248,7 +248,7 @@ function main() {
     totalChecked++;
     const baseItem = baseline ? baseline.get(id) : null;
 
-    const newTokens = delItem.promptTokens || delItem.nsfwTokens || (delItem.prompt ? delItem.prompt.split(',').map(s => s.trim()) : []);
+    const newTokens = delItem.promptTokens || delItem.nsfwTokens || (delItem.prompt ? delItem.prompt.split(',').map((s: any) => s.trim()) : []);
     const newProse = delItem.promptProse || delItem.nsfwProse || delItem.animaCaption || '';
 
     const newTokensSet = tokenize(newTokens.join(' '));

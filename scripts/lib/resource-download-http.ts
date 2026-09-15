@@ -4,7 +4,7 @@ const http: typeof import('node:http') = require('node:http');
 const https: typeof import('node:https') = require('node:https');
 const { fail, ResourceError, relativePath, cancelled }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
-function sourceUrl(release, relative) {
+function sourceUrl(release: any, relative: any) {
   const source = release.source;
   let base;
   try { base = new URL(source.baseUrl); } catch { fail('SOURCE_REQUIRED', 'A valid configured source baseUrl is required'); }
@@ -23,12 +23,12 @@ function sourceUrl(release, relative) {
   if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) fail('UNSAFE_SOURCE', 'URL left its approved source directory');
   return url;
 }
-function response(url, { headers = {}, signal, timeoutMs = 30000 } = {}) {
+function response(url: any, { headers = {}, signal, timeoutMs = 30000 } = {}) {
   cancelled(signal);
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail('CONFIG_REQUIRED', 'timeoutMs must be 1..60000');
   return new Promise((resolve, reject) => {
     const client = url.protocol === 'https:' ? https : http;
-    let activeResponse;
+    let activeResponse: any;
     // Own the connection and abort listener. Passing signal through the pooled HTTP socket can
     // leave a late abort on a released socket while an asynchronous progress callback is paused.
     const request = client.get(url, { headers: { 'accept-encoding': 'identity', ...headers }, agent: false }, incoming => {
@@ -45,7 +45,7 @@ function response(url, { headers = {}, signal, timeoutMs = 30000 } = {}) {
         reject(new ResourceError('HTTP_ENCODING', 'Encoded response cannot be checked against resource byte ranges'));
       } else resolve(incoming);
     });
-    const stop = error => { activeResponse?.destroy(error); request.destroy(error); };
+    const stop = (error: any) => { activeResponse?.destroy(error); request.destroy(error); };
     const abort = () => stop(new ResourceError('CANCELLED', 'Download cancelled; partial bytes are retained'));
     signal?.addEventListener('abort', abort, { once: true });
     request.once('close', () => signal?.removeEventListener('abort', abort));
@@ -55,13 +55,13 @@ function response(url, { headers = {}, signal, timeoutMs = 30000 } = {}) {
     if (signal?.aborted) abort();
   });
 }
-function contentLength(res) {
+function contentLength(res: any) {
   const length = res.headers['content-length'];
   if (length === undefined) return null;
   if (!/^\d+$/.test(length) || !Number.isSafeInteger(Number(length))) fail('HTTP_SIZE', 'Invalid Content-Length');
   return Number(length);
 }
-async function fetchMetadata(url, options = {}) {
+async function fetchMetadata(url: any, options = {}) {
   const maxBytes = options.maxBytes || 16 * 1024 * 1024;
   const res = await response(url, options);
   try {
@@ -80,7 +80,7 @@ async function fetchMetadata(url, options = {}) {
     return Buffer.concat(chunks);
   } finally { res.destroy(); }
 }
-function rangeStart(res, offset, total, previousEtag) {
+function rangeStart(res: any, offset: any, total: any, previousEtag: any) {
   const length = contentLength(res);
   if (res.statusCode === 200) {
     if (length !== null && length !== total) fail('HTTP_SIZE', 'Full response length differs from manifest');

@@ -6,15 +6,15 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 
 // All generated records live here. It is excluded from BOTH content identities.
 const EVIDENCE_DIR = 'runtime/delivery-evidence';
-const object = v => v !== null && typeof v === 'object' && !Array.isArray(v);
-const sha256 = value => createHash('sha256').update(value).digest('hex');
-const canonical = value => JSON.stringify(sortValue(value));
-function sortValue(value) {
+const object = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
+const sha256 = (value: any) => createHash('sha256').update(value).digest('hex');
+const canonical = (value: any) => JSON.stringify(sortValue(value));
+function sortValue(value: any) {
   if (Array.isArray(value)) return value.map(sortValue);
   if (!object(value)) return value;
   return Object.fromEntries(Object.keys(value).sort().map(key => [key, sortValue(value[key])]));
 }
-function relative(value, allowRoot = false) {
+function relative(value: any, allowRoot = false) {
   if (typeof value !== 'string' || !value || /[\x00-\x1f:]/.test(value)
     || path.posix.isAbsolute(value) || path.win32.isAbsolute(value)) throw Error('路径必须为 root 内相对路径');
   const result = value.replaceAll('\\', '/');
@@ -22,24 +22,24 @@ function relative(value, allowRoot = false) {
   if (result.split('/').some(v => !v || v === '.' || v === '..' || /[. ]$/.test(v))) throw Error('路径含不安全或不规范的分段');
   return result;
 }
-const within = (parent, child) => child === parent || child.startsWith(`${parent}/`);
-function excluded(name) {
+const within = (parent: any, child: any) => child === parent || child.startsWith(`${parent}/`);
+function excluded(name: any) {
   const lower = name.toLowerCase();
   return within(EVIDENCE_DIR, lower) || lower.split('/').includes('.git');
 }
-function evidencePath(value) {
+function evidencePath(value: any) {
   const name = relative(value);
   if (!within(EVIDENCE_DIR, name.toLowerCase()) || name.toLowerCase() === EVIDENCE_DIR) throw Error(`证据必须位于 ${EVIDENCE_DIR}/`);
   return name;
 }
-function rootPath(value) {
+function rootPath(value: any) {
   const root = fs.realpathSync(value);
   if (!fs.statSync(root).isDirectory()) throw Error('root 不是目录');
   return root;
 }
 // Reject links even when they point inside root: aliases could bypass exclusions,
 // introduce cycles, or make a saved evidence file part of its own source identity.
-function resolveSafe(root, value, allowMissing = false) {
+function resolveSafe(root: any, value: any, allowMissing = false) {
   const name = relative(value, true);
   let current = root;
   for (const part of name === '.' ? [] : name.split('/')) {
@@ -55,7 +55,7 @@ function resolveSafe(root, value, allowMissing = false) {
   }
   return current;
 }
-function fileEntry(root, name) {
+function fileEntry(root: any, name: any) {
   let fd;
   try {
     const file = resolveSafe(root, name);
@@ -74,7 +74,7 @@ function fileEntry(root, name) {
     return { path: name, status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'unsafe-or-unreadable', message: runtimeErrorMessage(error) };
   } finally { if (fd !== undefined) fs.closeSync(fd); }
 }
-function readJson(root, name, dedicated = false) {
+function readJson(root: any, name: any, dedicated = false) {
   name = dedicated ? evidencePath(name) : relative(name);
   const entry = fileEntry(root, name);
   if (entry.status !== 'file') throw Error(`${name}: ${entry.message}`);
@@ -84,7 +84,7 @@ function readJson(root, name, dedicated = false) {
   if (!object(value)) throw Error(`记录必须为 JSON 对象: ${name}`);
   return { value, entry };
 }
-function saveJson(root, name, value) {
+function saveJson(root: any, name: any, value: any) {
   name = evidencePath(name);
   if (!name.endsWith('.json')) throw Error('--save 必须为 .json 文件');
   resolveSafe(root, name, true);

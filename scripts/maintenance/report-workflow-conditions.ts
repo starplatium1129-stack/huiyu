@@ -60,7 +60,7 @@ function reportConditions({ root = path.resolve(__dirname, '../..'), domain, reg
   });
   return { schemaVersion: 1, ok: commands.every((row: any) => !row.errors.length), commands, executionStatus: 'not-run' };
 }
-function formatConditionRow(row: { name: unknown; errors: unknown[]; nature: unknown[]; switches: unknown; needs: string|null; notes: unknown[]|null; unknown: unknown[]; }) {
+function formatConditionRow(row: any) {
   const lines = [`${row.name}: ${row.errors.length ? row.errors.join('; ') : 'metadata valid'}; not-run`];
   lines.push(`  默认: ${Array.isArray(row.nature) ? row.nature.join(', ') : '未声明'}`);
   const switches = row.switches;

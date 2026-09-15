@@ -29,7 +29,7 @@ if (process.env.VOICE_BASELINE_LIVE !== '1') {
   process.exit(0);
 }
 
-function requestTts(line: { voice: unknown; language: unknown; text: unknown; emotion: unknown; consistency: unknown; speed: null; }) {
+function requestTts(line: any) {
   const body = JSON.stringify({
     voice: line.voice,
     language: line.language,

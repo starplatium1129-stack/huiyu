@@ -20,7 +20,7 @@ const { customizeTemplate }: typeof import('../maintenance/build-game-installer'
 test('desktop SDK discovery supports the workspace and does not ignore an explicit broken path', () => {
   const root = path.resolve('fixture-root');
   const local = path.join(root, 'runtime/desktop-build-sdk/CubismSdkForNative-5-r.5');
-  assert.equal(resolveSdkRoot(root, {}, candidate => candidate.startsWith(local)), local);
+  assert.equal(resolveSdkRoot(root, {}, (candidate: any) => candidate.startsWith(local)), local);
   const explicit = path.resolve('explicit-sdk');
   assert.equal(resolveSdkRoot(root, { LIVE2D_CUBISM_SDK_DIR: explicit }, () => false), explicit);
   assert.equal(resolveSdkRoot(root, {}, () => false), '');
@@ -29,7 +29,7 @@ test('desktop SDK discovery supports the workspace and does not ignore an explic
 test('game installer preserves upstream install and maintenance behavior', () => {
   const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/installer/vendor/tauri-2.11.4.nsi'), 'utf8');
   const themed = customizeTemplate(source, 'C:\\preview\\art.bmp', 'C:\\preview\\game-ui.nsh');
-  const sections = text => text.slice(text.indexOf('Section EarlyChecks'));
+  const sections = (text: any) => text.slice(text.indexOf('Section EarlyChecks'));
   let payload = sections(themed);
   assert.equal((payload.match(/"\$INSTDIR\\huiyu-icon.ico" 0/g) || []).length, 3);
   payload = payload.replaceAll(' "" "$INSTDIR\\huiyu-icon.ico" 0', '')
@@ -55,7 +55,7 @@ test('game installer preserves upstream install and maintenance behavior', () =>
     assert.equal(themed.match(definition)?.[0], source.match(definition)?.[0], key);
   }
   for (const name of ['.onInit', 'PageLeaveReinstall', 'RunMainBinary']) {
-    const block = text => text.slice(text.indexOf(`Function ${name}`), text.indexOf('FunctionEnd', text.indexOf(`Function ${name}`)));
+    const block = (text: any) => text.slice(text.indexOf(`Function ${name}`), text.indexOf('FunctionEnd', text.indexOf(`Function ${name}`)));
     assert.equal(block(themed), block(source), name);
   }
   assert.match(themed, /Page custom GameDirectory GameDirectoryLeave/);
@@ -63,7 +63,7 @@ test('game installer preserves upstream install and maintenance behavior', () =>
   assert.throws(() => customizeTemplate(source.replace('!insertmacro MUI_PAGE_WELCOME', '; removed'), 'a', 'b'), /anchor drift/);
 });
 
-function write(filePath, content) {
+function write(filePath: any, content: any) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content);
 }
@@ -108,7 +108,7 @@ function createFixture() {
   return root;
 }
 
-function remove(root) {
+function remove(root: any) {
   fs.rmSync(root, { recursive: true, force: true });
 }
 
@@ -229,7 +229,7 @@ test('workspace lock never steals an old lock from a live owner', async () => {
 });
 
 test('runTauri holds the lock across build, verification, preparation and CLI', async () => {
-  const events = [];
+  const events: any = [];
   await runTauri(['build', '--no-bundle'], {
     root: 'fixture-root',
     npmCommand: 'npm',

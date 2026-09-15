@@ -9,7 +9,7 @@ var animaRoute: typeof import('../../routes/anima.js') = require('../../routes/a
 var createAnimaService = animaRoute.createAnimaService;
 var gatewayTestStack: typeof import('./gateway-test-stack.js') = require('./gateway-test-stack.js');
 
-function request(port: string, options: { method?: unknown; path: unknown; body?: unknown; headers?: unknown; }) {
+function request(port: string, options: any) {
   return new Promise(function (resolve, reject) {
     var body = options.body === undefined ? null : Buffer.from(typeof options.body === 'string' ? options.body : JSON.stringify(options.body));
     var headers = Object.assign({ Host:'127.0.0.1:' + port }, options.headers || {});
@@ -39,7 +39,7 @@ function request(port: string, options: { method?: unknown; path: unknown; body?
   });
 }
 
-function postJson(port: string|number, pathname: string, payload: { prompt?: string|{ '1': { class_type: string; inputs: { path: string; }; }; }; modelId?: string; width?: number; height?: number; styleLoraId?: string; seed?: number; detailBoost?: boolean; negative?: string; loraId?: string; loraStrength?: number; character?: string|null; teaCache?: boolean; image?: string; }, headers: undefined) {
+function postJson(port: string|number, pathname: string, payload: { prompt?: string|{ '1': { class_type: string; inputs: { path: string; }; }; }; modelId?: string; width?: number; height?: number; styleLoraId?: string; seed?: number; detailBoost?: boolean; negative?: string; loraId?: string; loraStrength?: number; character?: string|null; teaCache?: boolean; image?: string; }, headers?: any) {
   return request(port, {
     method:'POST',
     path:pathname,
@@ -59,7 +59,7 @@ async function mockFault(port: number|undefined, faults: { historyTransient?: nu
   assert.strictEqual(response.status, 200);
 }
 
-async function waitForJob(port: string|number, id: string|number|boolean, predicate: { (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (job: { status: string; }): boolean; (arg0: unknown): unknown; }, routeBase: string|undefined) {
+async function waitForJob(port: string|number, id: string|number|boolean, predicate: any, routeBase?: string|undefined) {
   var last = null;
   var jobPath = (routeBase || '/api/anima/jobs/') + encodeURIComponent(id);
   for (var i = 0; i < 80; i += 1) {
@@ -72,7 +72,7 @@ async function waitForJob(port: string|number, id: string|number|boolean, predic
   throw new Error('job did not reach expected state: ' + JSON.stringify(last));
 }
 
-function validJob(overrides: { detailBoost?: boolean; modelId?: string; profileId?: string; loraId?: string|null; loraStrength?: undefined; character?: string|null; prompt?: string; seed?: number; width?: number; height?: number; initImage?: unknown; maskPrompt?: string; denoisingStrength?: number; growMaskBy?: number; maskThreshold?: number; maskImage?: unknown; hiresFix?: boolean; hiresScale?: number; }|undefined) {
+function validJob(overrides?: any) {
   return Object.assign({
     prompt:'ayachi_nene, 1girl, solo, cafe',
     negative:'worst quality, low quality',
@@ -142,7 +142,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(status.status, 200);
     assert.strictEqual(status.json.ok, true);
     assert.strictEqual(status.json.online, true);
-    assert.ok(Array.isArray(status.json.models) && status.json.models.every(function (model: { id: unknown; }) { return model.id; }));
+    assert.ok(Array.isArray(status.json.models) && status.json.models.every(function (model: any) { return model.id; }));
     var yumeInStatus = status.json.models.find(function (model: { id: string; }) { return model.id === 'anima-yume-v1.0'; });
     assert.ok(yumeInStatus, 'AnimaYume must be discoverable after review sign-off');
     assert.strictEqual(yumeInStatus.family, 'anima');
@@ -391,7 +391,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
 
     await mockFault(comfy.port, {});
     var finalState = await mockState(comfy.port);
-    assert.ok(finalState.calls.every(function (call: { path: string; method: string; body: { delete: unknown; }; }) {
+    assert.ok(finalState.calls.every(function (call: any) {
       if (call.path === '/interrupt') return false;
       if (call.path === '/queue' && call.method === 'POST') return call.body && Array.isArray(call.body.delete);
       return true;
@@ -449,7 +449,7 @@ test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing c
     assert.ok(natsume && natsume.available && !natsume.preview, 'natsume v21 must be discoverable and no longer experimental');
     assert.ok(!status.json.loras.some(function (lora: { id: string; }) { return lora.id === 'L_NAT_V19_ANIMA_PREVIEW'; }), 'superseded preview must not remain selectable');
     assert.ok(!status.json.loras.some(function (lora: { id: string; }) { return lora.id === 'L_NAT_V20_ANIMA'; }), 'superseded natsume v20 must not remain selectable');
-    assert.ok(status.json.characters.some(function (character: { id: string; preview: unknown; }) { return character.id === 'natsume' && !character.preview; }));
+    assert.ok(status.json.characters.some(function (character: any) { return character.id === 'natsume' && !character.preview; }));
 
     var natsumeJob = await postJson(port, '/api/anima/jobs', validJob({
       prompt:'shiki_natsume, 1girl, solo, natsume_cafe_uniform',

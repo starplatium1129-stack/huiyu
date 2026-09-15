@@ -11,11 +11,11 @@ const R: typeof import('./reference-candidate-review') = require('./reference-ca
 const MARKER = 'reference-release.json';
 const VIEW = 'character-reference-view.json';
 
-function scanImages(root) {
+function scanImages(root: any) {
   noLinks(root);
   if (!fs.statSync(root).isDirectory()) throw new Error('Reference source must be a directory');
-  const files = [];
-  function visit(directory, prefix = '') {
+  const files: any = [];
+  function visit(directory: any, prefix = '') {
     for (const name of fs.readdirSync(directory).sort()) {
       const file = path.join(directory, name);
       const rel = prefix + name;
@@ -37,19 +37,19 @@ function scanImages(root) {
     if (keys.has(key)) throw new Error('Reference paths collide on Windows');
     keys.add(key);
   }
-  return files.sort((a, b) => a.path.localeCompare(b.path));
+  return files.sort((a: any, b: any) => a.path.localeCompare(b.path));
 }
 
-function seal(release) {
+function seal(release: any) {
   return R.jsonHash({ files: release.files, viewSha256: release.viewSha256,
     sourceStandardsSha256: release.sourceStandardsSha256, sourceViewSha256: release.sourceViewSha256,
     candidateManifestSha256: release.candidateManifestSha256, reviewSha256: release.reviewSha256,
     baseIdentity: release.baseIdentity, ...(release.approvals ? { approvals: release.approvals } : {}) });
 }
 
-function validateView(view, files) {
+function validateView(view: any, files: any) {
   if (!view || typeof view !== 'object' || Array.isArray(view)) throw new Error('Invalid reference view');
-  const available = new Set(files.map(file => file.path));
+  const available = new Set(files.map((file: any) => file.path));
   for (const character of Object.values(view)) {
     for (const outfit of character?.outfits || []) {
       for (const reference of outfit.references || []) {
@@ -61,7 +61,7 @@ function validateView(view, files) {
   }
 }
 
-function resolveReferenceRelease(directory, { dataRoot = CODE_ROOT } = {}) {
+function resolveReferenceRelease(directory: any, { dataRoot = CODE_ROOT } = {}) {
   const root = path.resolve(directory);
   const marker = path.join(root, MARKER);
   noLinks(marker);
@@ -81,7 +81,7 @@ function resolveReferenceRelease(directory, { dataRoot = CODE_ROOT } = {}) {
   return { referenceRoot: root, viewFile, identity: release.identity, release };
 }
 
-function paths(options, inspection) {
+function paths(options: any, inspection: any) {
   const source = noLinks(path.resolve(options.source));
   const target = noLinks(path.resolve(options.target));
   if (R.within(source, target) || R.within(target, source)
@@ -94,7 +94,7 @@ function paths(options, inspection) {
   return { source, target };
 }
 
-function preparePublication(options) {
+function preparePublication(options: any) {
   const inspection = R.inspectCandidates(options);
   const review = R.json(path.resolve(options.review));
   const items = R.attachReview(inspection, review);
@@ -103,13 +103,13 @@ function preparePublication(options) {
   const originals = scanImages(selected.source);
   const sourceView = R.bytes(path.join(inspection.sourceRoot, 'data', VIEW));
   const view = base ? R.json(base.viewFile) : JSON.parse(sourceView);
-  const additions = items.filter(item => item.integrity === 'pass' && item.review === 'pass');
-  const approvals = new Map((base?.release.approvals || []).map(approval => [approval.key, approval]));
+  const additions = items.filter((item: any) => item.integrity === 'pass' && item.review === 'pass');
+  const approvals = new Map((base?.release.approvals || []).map((approval: any) => [approval.key, approval]));
   for (const item of additions) {
     const record = inspection.records.find(record => record.recordId === item.recordId);
     const outfits = view[record.characterId]?.outfits;
     const matches = Array.isArray(outfits) ? outfits.filter(outfit => outfit.outfitId === record.outfitId) : [];
-    const refs = matches.length === 1 && Array.isArray(matches[0].references) ? matches[0].references.filter(reference => reference.id === record.persId) : [];
+    const refs = matches.length === 1 && Array.isArray(matches[0].references) ? matches[0].references.filter((reference: any) => reference.id === record.persId) : [];
     if (refs.length !== 1) throw new Error('Candidate target is absent or ambiguous in the current reference index: ' + item.key);
     Object.assign(refs[0], { url: '/character-references/' + item.intendedReferencePath,
       fileName: path.posix.basename(item.intendedReferencePath), pending: false });
@@ -118,7 +118,7 @@ function preparePublication(options) {
       recordId: item.recordId, inputVersion: item.inputVersion, sha256: item.sha256,
       review: review.records[item.key], candidateManifestSha256: inspection.manifestSha256 });
   }
-  const planned = new Map(originals.map(file => [file.path, file]));
+  const planned = new Map(originals.map((file: any) => [file.path, file]));
   for (const item of additions) {
     const record = inspection.records.find(record => record.recordId === item.recordId);
     planned.set(item.intendedReferencePath, { path: item.intendedReferencePath, bytes: record.asset.bytes, sha256: item.sha256 });
@@ -138,12 +138,12 @@ function preparePublication(options) {
     ready: items.length > 0 && additions.length === items.length };
 }
 
-async function publishReferenceCandidates(options, deps = {}) {
+async function publishReferenceCandidates(options: any, deps = {}) {
   const plan = preparePublication(options);
   const summary = { mode: options.apply ? 'publish' : 'preview', target: plan.target, identity: plan.release.identity,
     candidates: plan.items.length, approved: plan.additions.length, ready: plan.ready,
-    pending: plan.items.filter(item => item.review === 'pending').map(item => item.key),
-    rejected: plan.items.filter(item => item.integrity !== 'pass' || item.review === 'fail' || item.review === 'stale').map(item => item.key),
+    pending: plan.items.filter((item: any) => item.review === 'pending').map((item: any) => item.key),
+    rejected: plan.items.filter((item: any) => item.integrity !== 'pass' || item.review === 'fail' || item.review === 'stale').map((item: any) => item.key),
     activation: 'Configure the gateway reference root explicitly; the active library and source indexes are unchanged.' };
   if (!options.apply) return { ...summary, exitCode: plan.ready ? 0 : 3 };
   if (!plan.ready) throw new Error('Every selected reference candidate must have current, explicit human approval');

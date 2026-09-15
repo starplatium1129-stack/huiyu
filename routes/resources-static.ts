@@ -5,7 +5,7 @@ const path: typeof import('node:path') = require('node:path');
 const security: typeof import('../server/security') = require('../server/security');
 const { child, readBytes, digest, fail }: typeof import('../scripts/lib/resource-install-fs') = require('../scripts/lib/resource-install-fs');
 
-function resourcePath(raw) {
+function resourcePath(raw: any) {
   const pathname = String(raw || '').split('?')[0];
   if (!/^\/assets(?:\/|$)/i.test(pathname)) return null;
   if (/%(?:2f|5c|25|00)/i.test(pathname)) return null;
@@ -16,13 +16,13 @@ function resourcePath(raw) {
   // Both existing aliases refer to exactly the same manifest namespace.
   return value.slice(1).replace(/^assets\/live2d-current\//, 'assets/live2d/');
 }
-function checkedBytes(root, entry) {
+function checkedBytes(root: any, entry: any) {
   const bytes = readBytes(fs, child(root, entry.path), entry.bytes);
   if (bytes.length !== entry.bytes || digest(bytes) !== entry.sha256) fail('CONTENT_INVALID', 'Installed bytes changed');
   return bytes;
 }
-function createResourceStatic(manager) {
-  return function resources(req, res, next) {
+function createResourceStatic(manager: any) {
+  return function resources(req: any, res: any, next: any) {
     if (!/^(GET|HEAD)$/.test(req.method) || !security.isDirectLocalRequest(req)
       || !security.hostAllowed(req.headers.host, 0, '')) return next();
     const rel = resourcePath(req.originalUrl);
@@ -30,12 +30,12 @@ function createResourceStatic(manager) {
     const mounted = manager.mount();
     if (!mounted) return next();
     const { snapshot, modelGroups } = mounted;
-    const entries = new Map(snapshot.entries.map(entry => [entry.path, entry]));
+    const entries = new Map(snapshot.entries.map((entry: any) => [entry.path, entry]));
     const entry = entries.get(rel);
     if (!entry) return next();
     try {
       if (rel.startsWith('assets/live2d/')) {
-        const group = modelGroups.find(group => group.paths.includes(rel));
+        const group = modelGroups.find((group: any) => group.paths.includes(rel));
         if (!group) return next();
         // Check the entire dependency group before serving any part; reject hybrid models.
         for (const dependency of group.paths) checkedBytes(snapshot.versionRoot, entries.get(dependency));

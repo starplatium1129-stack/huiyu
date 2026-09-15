@@ -7,28 +7,28 @@ const path: typeof import('node:path') = require('node:path');
 const crypto: typeof import('node:crypto') = require('node:crypto');
 const { VERSIONED_FILES }: typeof import('./data-version') = require('./data-version');
 
-function failure(code, message) {
+function failure(code: any, message: any) {
   return Object.assign(new Error(message), { code, statusCode: 409, recoveryRequired: true });
 }
-const keyPath = value => process.platform === 'win32' ? value.toLowerCase() : value;
-const samePath = (a, b) => keyPath(path.resolve(a)) === keyPath(path.resolve(b));
-function within(parent, file) {
+const keyPath = (value: any) => process.platform === 'win32' ? value.toLowerCase() : value;
+const samePath = (a: any, b: any) => keyPath(path.resolve(a)) === keyPath(path.resolve(b));
+function within(parent: any, file: any) {
   const relative = path.relative(keyPath(path.resolve(parent)), keyPath(path.resolve(file)));
   return relative !== '' && relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative);
 }
-function canonical(value) {
+function canonical(value: any) {
   if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
   if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
   return JSON.stringify(value);
 }
-const digest = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
-const equal = (a, b) => canonical(a) === canonical(b);
+const digest = (bytes: any) => crypto.createHash('sha256').update(bytes).digest('hex');
+const equal = (a: any, b: any) => canonical(a) === canonical(b);
 
-function stat(file) {
+function stat(file: any) {
   try { return fs.lstatSync(file, { bigint: true }); }
   catch (error) { if (runtimeErrorCode(error) === 'ENOENT') return null; throw error; }
 }
-function safePath(file, kind = 'file', allowMissing = true) {
+function safePath(file: any, kind = 'file', allowMissing = true) {
   const abs = path.resolve(file);
   const parsed = path.parse(abs);
   let cursor = parsed.root;
@@ -52,23 +52,23 @@ function safePath(file, kind = 'file', allowMissing = true) {
   if (kind !== 'directory') throw failure('MAINTENANCE_PATH', '目标不能是文件系统根');
   return stat(abs);
 }
-function directoryIdentity(file) {
+function directoryIdentity(file: any) {
   const info = safePath(file, 'directory', false);
   return { path: keyPath(path.resolve(file)), dev: String(info.dev), ino: String(info.ino) };
 }
-function ensureDirectory(file) {
+function ensureDirectory(file: any) {
   if (safePath(file, 'directory')) return;
   ensureDirectory(path.dirname(file));
   try { fs.mkdirSync(file); } catch (error) { if (runtimeErrorCode(error) !== 'EEXIST') throw error; }
   safePath(file, 'directory', false);
 }
-function syncDirectory(dir) {
+function syncDirectory(dir: any) {
   // Windows does not expose directory fsync through Node. File contents are flushed.
   if (process.platform === 'win32') return;
   const fd = fs.openSync(dir, 'r');
   try { fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
 }
-function readBytes(file, allowMissing = false) {
+function readBytes(file: any, allowMissing = false) {
   const before = safePath(file, 'file', allowMissing);
   if (!before) return null;
   const fd = fs.openSync(file, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
@@ -81,20 +81,20 @@ function readBytes(file, allowMissing = false) {
     return bytes;
   } finally { fs.closeSync(fd); }
 }
-function fileState(file) {
+function fileState(file: any) {
   const bytes = readBytes(file, true);
   if (bytes === null) return { exists: false, sha256: null, size: 0 };
   return { exists: true, sha256: digest(bytes), size: bytes.length };
 }
-function snapshotFiles(files) {
+function snapshotFiles(files: any) {
   const seen = new Set();
-  return files.filter(file => { const key = keyPath(path.resolve(file)); if (seen.has(key)) return false; seen.add(key); return true; }).map(file => {
+  return files.filter((file: any) => { const key = keyPath(path.resolve(file)); if (seen.has(key)) return false; seen.add(key); return true; }).map((file: any) => {
     file = path.resolve(file);
     const content = readBytes(file, true);
     return { file, exists: content !== null, content };
   });
 }
-function atomicWrite(file, bytes, createParents = false) {
+function atomicWrite(file: any, bytes: any, createParents = false) {
   if (createParents) ensureDirectory(path.dirname(file));
   safePath(path.dirname(file), 'directory', false);
   const old = safePath(file);
@@ -112,13 +112,13 @@ function atomicWrite(file, bytes, createParents = false) {
     if (owned) { try { fs.unlinkSync(temp); } catch { /* Only this call's temporary file. */ } }
   }
 }
-function removeFile(file) {
+function removeFile(file: any) {
   if (!safePath(file)) return;
   fs.unlinkSync(file);
   syncDirectory(path.dirname(file));
 }
-function writeJson(file, value) { atomicWrite(file, JSON.stringify(value, null, 2) + '\n'); }
-function readJson(file) {
+function writeJson(file: any, value: any) { atomicWrite(file, JSON.stringify(value, null, 2) + '\n'); }
+function readJson(file: any) {
   const bytes = readBytes(file);
   if (bytes.length > 32 * 1024 * 1024) throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据过大');
   try { return JSON.parse(bytes.toString('utf8')); }
@@ -148,7 +148,7 @@ function context(options = {}) {
   return { rootDir, root, runtimeRoot, showcaseRoot, stateDir, leaseDir: path.join(stateDir, 'lease'), backupRoot: path.join(runtimeRoot, 'maintenance-backups') };
 }
 const DATA_NAMES = new Set([...VERSIONED_FILES, 'retired-scenes.json']);
-function targetPath(ctx, source) {
+function targetPath(ctx: any, source: any) {
   if (typeof source !== 'string' || !path.isAbsolute(source)) throw failure('MAINTENANCE_PATH', '备份 source 必须是绝对路径');
   const file = path.resolve(source);
   const relative = path.relative(ctx.rootDir, file).replace(/\\/g, '/');
@@ -164,7 +164,7 @@ function targetPath(ctx, source) {
   }
   throw failure('MAINTENANCE_UNSUPPORTED_SCOPE', '未授权的恢复范围；外部样张必须显式配置 showcaseRoot：' + file);
 }
-function readKey(ctx, create = false) {
+function readKey(ctx: any, create = false) {
   const file = path.join(ctx.stateDir, 'key');
   if (create) {
     ensureDirectory(ctx.stateDir);
@@ -179,8 +179,8 @@ function readKey(ctx, create = false) {
   if (key.length !== 32) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护签名密钥不完整，拒绝恢复');
   return key;
 }
-function seal(value, key) { return { ...value, hmacSha256: crypto.createHmac('sha256', key).update(canonical(value)).digest('hex') }; }
-function unseal(value, key) {
+function seal(value: any, key: any) { return { ...value, hmacSha256: crypto.createHmac('sha256', key).update(canonical(value)).digest('hex') }; }
+function unseal(value: any, key: any) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw failure('MAINTENANCE_INVALID_JOURNAL', '签名记录格式无效');
   const { hmacSha256, ...body } = value;
   const expected = seal(body, key).hmacSha256;

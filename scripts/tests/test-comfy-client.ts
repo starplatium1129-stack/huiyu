@@ -5,7 +5,7 @@ const http: typeof import('node:http') = require('node:http');
 const comfy: typeof import('../../server/comfy-client') = require('../../server/comfy-client');
 
 test('orphan sweep recognizes native queue metadata and excludes this process new prompts', async () => {
-  let submitted: { extra_data: { custom: unknown; }; };
+  let submitted: any;
   const cancelled: unknown = [];
   const server = http.createServer(async (req, res) => {
     let raw = '';

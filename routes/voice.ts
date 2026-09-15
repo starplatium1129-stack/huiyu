@@ -9,7 +9,7 @@ let envelope: typeof import('../server/http-envelope') = require('../server/http
 let createTranslationService = (require('../services/translation-service') as typeof import('../services/translation-service')).createTranslationService;
 let createTtsService = (require('../services/tts-service') as typeof import('../services/tts-service')).createTtsService;
 
-function waitForDrain(res: { removeListener: (arg0: string,arg1: { (): void; (): void; }) => void; once: (arg0: string,arg1: { (): void; (): void; }) => void; }) {
+function waitForDrain(res: any) {
   return new Promise(function (resolve, reject) {
     function cleanup() {
       res.removeListener('drain', onDrain);
@@ -82,7 +82,7 @@ function cacheTtsAudio(key: string, buffer: string|unknown[]|Buffer<ArrayBuffer>
   }
 }
 
-function createVoiceRouter(config: { TRANSLATE_URL: unknown; TRANSLATE_PORT: unknown; TRANSLATION_PYTHON: unknown; TRANSLATION_SCRIPT: unknown; TRANSLATION_LOG: unknown; TTS_HOST: unknown; VOICE_PROFILES: unknown; }, dependencies: { translation?: unknown; tts?: unknown; }) {
+function createVoiceRouter(config: any, dependencies: any) {
   dependencies = dependencies || {};
   let router = express.Router();
   let translation = dependencies.translation || createTranslationService({
@@ -112,7 +112,7 @@ function createVoiceRouter(config: { TRANSLATE_URL: unknown; TRANSLATE_PORT: unk
     req.once('aborted', function () { controller.abort(); });
     res.once('close', function () { if (!res.writableEnded) controller.abort(); });
 
-    translation.translate(text, controller.signal).then(function (result: { translation: unknown; segments: unknown; }) {
+    translation.translate(text, controller.signal).then(function (result: any) {
       if (controller.signal.aborted || res.writableEnded) return;
       envelope.ok(res, {
         sourceLanguage:'zh',
@@ -127,11 +127,11 @@ function createVoiceRouter(config: { TRANSLATE_URL: unknown; TRANSLATE_PORT: unk
   });
 
   router.get('/api/tts-status', function (req, res) {
-    tts.status().then(function (data: { translation: unknown; }) {
+    tts.status().then(function (data: any) {
       data.translation = translation.status();
       res.setHeader('Cache-Control', 'no-store');
       res.json(data);
-    }).catch(function (error: { message: unknown; }) {
+    }).catch(function (error: any) {
       res.setHeader('Cache-Control', 'no-store');
       res.json({
         online:false,
@@ -185,7 +185,7 @@ function createVoiceRouter(config: { TRANSLATE_URL: unknown; TRANSLATE_PORT: unk
 
     tts.stream(req.body, {
       signal:controller.signal,
-      onResponse:async function (result: { contentType: unknown; queueWaitMs: unknown; response: unknown; }) {
+      onResponse:async function (result: any) {
         if (controller.signal.aborted) throw httpClient.abortError();
         res.status(200);
         res.setHeader('Content-Type', result.contentType || 'audio/wav');
@@ -286,7 +286,7 @@ function createVoiceRouter(config: { TRANSLATE_URL: unknown; TRANSLATE_PORT: unk
     let sharedController = new AbortController();
     let generation = tts.stream(body, {
       signal: sharedController.signal,
-      onResponse:async function (result: { response: unknown; }) {
+      onResponse:async function (result: any) {
         if (sharedController.signal.aborted) throw httpClient.abortError();
         for await (let chunk of result.response) { chunks.push(Buffer.from(chunk)); }
         if (sharedController.signal.aborted) throw httpClient.abortError();

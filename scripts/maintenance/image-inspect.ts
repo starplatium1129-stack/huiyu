@@ -203,7 +203,7 @@ function httpJson(method: any, urlPath: any, body: any, opts: any, base: any) {
   });
 }
 
-async function chatCompletion(messages: any, opts: any, model: any, base: any) {
+async function chatCompletion(messages: any, opts: any, model: any, base?: any) {
   return httpJson('POST', '/chat/completions', {
     model,
     messages,

@@ -7,7 +7,7 @@ const path: typeof import('node:path') = require('node:path')
 const { test }: typeof import('node:test') = require('node:test')
 const { Evidence }: typeof import('./desktop-native/report') = require('./desktop-native/report')
 
-function installer(sha, fingerprint) {
+function installer(sha: any, fingerprint: any) {
   return {
     path: `C:\\fixture\\${sha}.exe`,
     sha256: sha,
@@ -40,7 +40,7 @@ test('a new installer cycle cannot inherit prior PASS evidence or artifacts', ()
     fs.writeFileSync(path.join(directory, 'migration.json'), '{}')
 
     assert.equal(evidence.beginInstallerCycle(first, { head: '1'.repeat(40) }), false)
-    assert.equal(evidence.report.results.find(item => item.id === 'install')?.status, 'PASS')
+    assert.equal(evidence.report.results.find((item: any) => item.id === 'install')?.status, 'PASS')
 
     const second = installer('c'.repeat(64), 'd'.repeat(64))
     assert.equal(evidence.beginInstallerCycle(second, { head: '2'.repeat(40) }), true)

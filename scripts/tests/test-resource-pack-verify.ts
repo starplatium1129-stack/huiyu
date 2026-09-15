@@ -26,13 +26,13 @@ const PACKS_REL = 'scripts/archive/resource-packs';
 const OLD_MANIFEST = 'artifacts/old.json';
 const NEW_MANIFEST = 'artifacts/new.json';
 
-function packRel(name) {
+function packRel(name: any) {
   return `${PACKS_REL}/${name}`;
 }
 
 /** 记录型 fs：调用穿透真实 fs 并记录目标路径；hooks 可替换个别操作。 */
 function recordingIo(hooks = {}) {
-  const calls = [];
+  const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync', 'rmSync', 'unlinkSync']) {
     io[op] = (...args) => {
@@ -45,19 +45,19 @@ function recordingIo(hooks = {}) {
   return { io, calls };
 }
 
-function insideRoot(rootReal, target) {
+function insideRoot(rootReal: any, target: any) {
   const rel = path.relative(rootReal, target);
   return rel !== '..' && !rel.startsWith('..' + path.sep) && !path.isAbsolute(rel);
 }
 
-function assertNoAccessOutside(calls, rootReal) {
+function assertNoAccessOutside(calls: any, rootReal: any) {
   for (const call of calls) {
     assert.ok(insideRoot(rootReal, path.resolve(call.target)), `${call.op} 越界访问了 ${call.target}`);
   }
 }
 
 /** 快照目录内容（不跟随链接）。仅用于本测试创建的夹具目录。 */
-function snapshot(dir) {
+function snapshot(dir: any) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(dir, e.name);
     if (e.isSymbolicLink()) return [[p, '<link>']];
@@ -71,7 +71,7 @@ function snapshot(dir) {
  *  v2（新清单 artifacts/new.json）：alpha.txt 改为 'A2-changed'（changed）、bravo 不变
  *  （unchanged）、golf.txt 已删除（removed）、charlie.txt 新增（added）
  */
-function buildTwoStateFixture(t) {
+function buildTwoStateFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-verify-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const root = path.join(base, 'root');
@@ -89,7 +89,7 @@ function buildTwoStateFixture(t) {
 }
 
 /** 仅删除夹具：v1 有 alpha+golf，v2 只剩 alpha。 */
-function buildRemovalFixture(t) {
+function buildRemovalFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-verify-rm-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const root = path.join(base, 'root');
@@ -104,7 +104,7 @@ function buildRemovalFixture(t) {
 }
 
 /** 零差异夹具：old/new 内容身份相同（仅 generatedAt 不同）。 */
-function buildZeroDiffFixture(t) {
+function buildZeroDiffFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-pack-verify-zero-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const root = path.join(base, 'root');
@@ -117,7 +117,7 @@ function buildZeroDiffFixture(t) {
 }
 
 /** 在夹具内用 G13 导出器生成候选包（仅 Windows，与现有 pack 测试同一平台假设）。 */
-function exportDeltaPack(root, name, { base = OLD_MANIFEST, manifest = NEW_MANIFEST } = {}) {
+function exportDeltaPack(root: any, name: any, { base = OLD_MANIFEST, manifest = NEW_MANIFEST } = {}) {
   const result = stageResourcePackDelta({ root, name, manifestPath: manifest, baseManifestPath: base });
   assert.equal(result.ok, true, JSON.stringify(result.errors));
   assert.equal(result.destinationCreated, true);
@@ -125,18 +125,18 @@ function exportDeltaPack(root, name, { base = OLD_MANIFEST, manifest = NEW_MANIF
 }
 
 /** 以 mutator 变换候选包内元数据文件；mutator 可返回新对象或就地修改后返回 undefined。 */
-function editPackJson(packAbs, name, mutator) {
+function editPackJson(packAbs: any, name: any, mutator: any) {
   const file = path.join(packAbs, name);
   const parsed = JSON.parse(fs.readFileSync(file, 'utf8'));
   const result = mutator(parsed);
   fs.writeFileSync(file, JSON.stringify(result === undefined ? parsed : result));
 }
 
-function verify(root, base, pack, io) {
+function verify(root: any, base: any, pack: any, io?: any) {
   return verifyDeltaPack({ root, baseManifestPath: base, packPath: pack, ...(io ? { io } : {}) });
 }
 
-function cli(args) {
+function cli(args: any) {
   return spawnSync(process.execPath, [path.join(repo, 'scripts', 'maintenance', 'verify-resource-pack.js'), ...args], { encoding: 'utf8' });
 }
 
@@ -161,9 +161,9 @@ test('往返：四类差异候选包核验通过，基线资产零访问、全�
   assert.notEqual(result.compatibility.identities.base.contentIdentity, result.compatibility.identities.target.contentIdentity);
   assert.ok(result.scope.coverageNote.includes('不是数字签名'), '结果声明正确性边界');
 
-  assert.equal(calls.filter((c) => ['writeFileSync', 'mkdirSync', 'mkdtempSync', 'renameSync', 'rmSync', 'unlinkSync'].includes(c.op)).length, 0, '记录型 fs 证明零写入');
+  assert.equal(calls.filter((c: any) => ['writeFileSync', 'mkdirSync', 'mkdtempSync', 'renameSync', 'rmSync', 'unlinkSync'].includes(c.op)).length, 0, '记录型 fs 证明零写入');
   const assetsAbs = path.join(fs.realpathSync(fx.root), 'assets');
-  const baseAssetCalls = calls.filter((c) => {
+  const baseAssetCalls = calls.filter((c: any) => {
     const resolved = path.resolve(c.target);
     return resolved === assetsAbs || resolved.startsWith(assetsAbs + path.sep);
   });
@@ -212,7 +212,7 @@ test('错基线：换用新清单或其他清单作为基线即身份失配拒�
   assert.ok(wrong.errors.some((e) => e.code === 'base-identity-mismatch'), JSON.stringify(wrong.errors));
 
   const parsed = JSON.parse(fs.readFileSync(path.join(fx.root, OLD_MANIFEST), 'utf8'));
-  parsed.entries = parsed.entries.map((e, i) => (i === 0 ? { ...e, sha256: 'e'.repeat(64) } : e));
+  parsed.entries = parsed.entries.map((e: any, i: any) => (i === 0 ? { ...e, sha256: 'e'.repeat(64) } : e));
   fs.writeFileSync(path.join(fx.root, 'artifacts/flipped.json'), JSON.stringify(parsed));
   const flipped = verify(fx.root, 'artifacts/flipped.json', packRel('delta-ok'));
   assert.equal(flipped.ok, false);
@@ -225,9 +225,9 @@ test('错基线：换用新清单或其他清单作为基线即身份失配拒�
 
 test('篡改 delta 目标身份/数量：重建结果与 delta.newManifest 不符即拒绝', (t) => {
   const cases = [
-    ['identity', (d) => { d.newManifest.contentIdentity = 'f'.repeat(64); }, 'target-identity-mismatch'],
-    ['entrycount', (d) => { d.newManifest.entryCount += 1; }, 'target-entrycount-mismatch'],
-    ['totalbytes', (d) => { d.newManifest.totalBytes += 1; }, 'target-totalbytes-mismatch'],
+    ['identity', (d: any) => { d.newManifest.contentIdentity = 'f'.repeat(64); }, 'target-identity-mismatch'],
+    ['entrycount', (d: any) => { d.newManifest.entryCount += 1; }, 'target-entrycount-mismatch'],
+    ['totalbytes', (d: any) => { d.newManifest.totalBytes += 1; }, 'target-totalbytes-mismatch'],
   ];
   for (const [label, mutate, code] of cases) {
     const fx = buildTwoStateFixture(t);
@@ -243,12 +243,12 @@ test('篡改 delta 目标身份/数量：重建结果与 delta.newManifest 不�
 
 test('removed 逐项核验：重复、不存在、身份不符、与候选重叠均拒绝', (t) => {
   const cases = [
-    ['duplicate', ({ delta }) => { delta.removed.push({ ...delta.removed[0] }); }, 'duplicate-removed-path'],
-    ['ghost', ({ delta }) => { delta.removed.push({ path: 'assets/ghost.txt', bytes: 1, sha256: 'a'.repeat(64) }); }, 'removed-not-in-baseline'],
-    ['sha', ({ delta }) => { delta.removed[0].sha256 = 'f'.repeat(64); }, 'removed-identity-mismatch'],
-    ['bytes', ({ delta }) => { delta.removed[0].bytes += 1; }, 'removed-identity-mismatch'],
-    ['overlap', ({ root, packAbs, delta }) => {
-      const bravo = JSON.parse(fs.readFileSync(path.join(root, OLD_MANIFEST), 'utf8')).entries.find((e) => e.path === 'assets/dir/bravo.bin');
+    ['duplicate', ({ delta }: any) => { delta.removed.push({ ...delta.removed[0] }); }, 'duplicate-removed-path'],
+    ['ghost', ({ delta }: any) => { delta.removed.push({ path: 'assets/ghost.txt', bytes: 1, sha256: 'a'.repeat(64) }); }, 'removed-not-in-baseline'],
+    ['sha', ({ delta }: any) => { delta.removed[0].sha256 = 'f'.repeat(64); }, 'removed-identity-mismatch'],
+    ['bytes', ({ delta }: any) => { delta.removed[0].bytes += 1; }, 'removed-identity-mismatch'],
+    ['overlap', ({ root, packAbs, delta }: any) => {
+      const bravo = JSON.parse(fs.readFileSync(path.join(root, OLD_MANIFEST), 'utf8')).entries.find((e: any) => e.path === 'assets/dir/bravo.bin');
       delta.removed.push({ ...delta.removed[0], path: 'assets/dir/bravo.bin' });
       const manifest = JSON.parse(fs.readFileSync(path.join(packAbs, 'manifest.json'), 'utf8'));
       manifest.entries.push({ ...bravo });
@@ -276,11 +276,11 @@ test('候选多余同内容项：与基线同路径同内容的条目不能冒�
   const fx = buildTwoStateFixture(t);
   exportDeltaPack(fx.root, 'delta-ok');
   const packAbs = path.join(fx.root, PACKS_REL, 'delta-ok');
-  const bravo = JSON.parse(fs.readFileSync(path.join(fx.root, OLD_MANIFEST), 'utf8')).entries.find((e) => e.path === 'assets/dir/bravo.bin');
-  editPackJson(packAbs, 'manifest.json', (m) => ({ ...m, entries: [...m.entries, { ...bravo }] }));
+  const bravo = JSON.parse(fs.readFileSync(path.join(fx.root, OLD_MANIFEST), 'utf8')).entries.find((e: any) => e.path === 'assets/dir/bravo.bin');
+  editPackJson(packAbs, 'manifest.json', (m: any) => ({ ...m, entries: [...m.entries, { ...bravo }] }));
   fs.mkdirSync(path.join(packAbs, 'assets/dir'), { recursive: true });
   fs.writeFileSync(path.join(packAbs, 'assets/dir/bravo.bin'), Buffer.from([0, 1, 2, 255]));
-  editPackJson(packAbs, 'delta.json', (d) => {
+  editPackJson(packAbs, 'delta.json', (d: any) => {
     d.candidate.files += 1;
     d.candidate.bytes += bravo.bytes;
   });
@@ -319,13 +319,13 @@ test('元数据坏/缺/不支持版本：全部内容级拒绝（退出 1），�
   assert.equal(cli(['--root', fx.root, '--base-manifest', OLD_MANIFEST, '--pack', packRel('full-pack')]).status, 1);
 
   const cases = [
-    ['missing-delta', (packAbs) => fs.rmSync(path.join(packAbs, 'delta.json')), 'missing-delta-json'],
-    ['broken-delta', (packAbs) => fs.writeFileSync(path.join(packAbs, 'delta.json'), '{ broken'), 'bad-delta-json'],
-    ['schema', (packAbs) => editPackJson(packAbs, 'delta.json', (d) => ({ ...d, schemaVersion: 2 })), 'unsupported-delta-schema'],
-    ['kind', (packAbs) => editPackJson(packAbs, 'delta.json', (d) => ({ ...d, kind: 'resource-manifest' })), 'bad-delta-kind'],
-    ['totals', (packAbs) => editPackJson(packAbs, 'delta.json', (d) => ({ ...d, totals: null })), 'bad-delta-metadata'],
-    ['removed-type', (packAbs) => editPackJson(packAbs, 'delta.json', (d) => ({ ...d, removed: 'nope' })), 'bad-delta-metadata'],
-    ['candidate-type', (packAbs) => editPackJson(packAbs, 'delta.json', (d) => ({ ...d, candidate: [] })), 'bad-delta-metadata'],
+    ['missing-delta', (packAbs: any) => fs.rmSync(path.join(packAbs, 'delta.json')), 'missing-delta-json'],
+    ['broken-delta', (packAbs: any) => fs.writeFileSync(path.join(packAbs, 'delta.json'), '{ broken'), 'bad-delta-json'],
+    ['schema', (packAbs: any) => editPackJson(packAbs, 'delta.json', (d: any) => ({ ...d, schemaVersion: 2 })), 'unsupported-delta-schema'],
+    ['kind', (packAbs: any) => editPackJson(packAbs, 'delta.json', (d: any) => ({ ...d, kind: 'resource-manifest' })), 'bad-delta-kind'],
+    ['totals', (packAbs: any) => editPackJson(packAbs, 'delta.json', (d: any) => ({ ...d, totals: null })), 'bad-delta-metadata'],
+    ['removed-type', (packAbs: any) => editPackJson(packAbs, 'delta.json', (d: any) => ({ ...d, removed: 'nope' })), 'bad-delta-metadata'],
+    ['candidate-type', (packAbs: any) => editPackJson(packAbs, 'delta.json', (d: any) => ({ ...d, candidate: [] })), 'bad-delta-metadata'],
   ];
   for (const [label, mutate, code] of cases) {
     const fresh = buildTwoStateFixture(t);
@@ -339,8 +339,8 @@ test('元数据坏/缺/不支持版本：全部内容级拒绝（退出 1），�
   }
 
   const manifestCases = [
-    ['missing-manifest', (packAbs) => fs.rmSync(path.join(packAbs, 'manifest.json')), 'missing-pack-manifest'],
-    ['broken-manifest', (packAbs) => fs.writeFileSync(path.join(packAbs, 'manifest.json'), '{ broken'), 'bad-pack-manifest'],
+    ['missing-manifest', (packAbs: any) => fs.rmSync(path.join(packAbs, 'manifest.json')), 'missing-pack-manifest'],
+    ['broken-manifest', (packAbs: any) => fs.writeFileSync(path.join(packAbs, 'manifest.json'), '{ broken'), 'bad-pack-manifest'],
   ];
   for (const [label, mutate, code] of manifestCases) {
     const fresh = buildTwoStateFixture(t);
@@ -367,19 +367,19 @@ test('基线清单坏 JSON 与坏路径：可定位拒绝且不读取坏路径�
   const badPath = verify(fx.root, 'artifacts/badpath.json', packRel('delta-ok'), io);
   assert.equal(badPath.ok, false);
   assert.ok(badPath.errors.some((e) => e.source === 'base-manifest' && e.code === 'illegal-path' && String(e.path).includes('evil')), JSON.stringify(badPath.errors));
-  assert.ok(calls.every((c) => !String(c.target).includes('evil')), '坏路径不得触发任何 fs 访问');
+  assert.ok(calls.every((c: any) => !String(c.target).includes('evil')), '坏路径不得触发任何 fs 访问');
 });
 
 test('候选清单坏路径：结构拒绝，坏路径零 fs 访问', (t) => {
   const fx = buildTwoStateFixture(t);
   exportDeltaPack(fx.root, 'delta-ok');
   const packAbs = path.join(fx.root, PACKS_REL, 'delta-ok');
-  editPackJson(packAbs, 'manifest.json', (m) => ({ ...m, entries: [...m.entries, { path: 'assets/..\\evil.txt', bytes: 1, sha256: 'a'.repeat(64) }] }));
+  editPackJson(packAbs, 'manifest.json', (m: any) => ({ ...m, entries: [...m.entries, { path: 'assets/..\\evil.txt', bytes: 1, sha256: 'a'.repeat(64) }] }));
   const { io, calls } = recordingIo();
   const result = verify(fx.root, OLD_MANIFEST, packRel('delta-ok'), io);
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e) => e.source === 'pack-manifest' && e.code === 'illegal-path'), JSON.stringify(result.errors));
-  assert.ok(calls.every((c) => !String(c.target).includes('evil')), '坏路径不得触发任何 fs 访问');
+  assert.ok(calls.every((c: any) => !String(c.target).includes('evil')), '坏路径不得触发任何 fs 访问');
 });
 
 test('junction：候选目录逃逸 root 退出 2；候选内条目 junction 越界拒绝且不读链接目标', (t) => {
@@ -400,13 +400,13 @@ test('junction：候选目录逃逸 root 退出 2；候选内条目 junction 越
   // 候选内条目是指向 root 外的 junction：磁盘核验拒绝且不读取目标内容
   const packAbs = path.join(fx.root, PACKS_REL, 'delta-ok');
   fs.symlinkSync(fx.outside, path.join(packAbs, 'assets', 'lnk'), 'junction');
-  editPackJson(packAbs, 'manifest.json', (m) => ({ ...m, entries: [...m.entries, { path: 'assets/lnk', bytes: 5, sha256: 'a'.repeat(64) }] }));
+  editPackJson(packAbs, 'manifest.json', (m: any) => ({ ...m, entries: [...m.entries, { path: 'assets/lnk', bytes: 5, sha256: 'a'.repeat(64) }] }));
   fs.writeFileSync(path.join(fx.outside, 'secret.txt'), 'outside secret');
   const { io, calls } = recordingIo();
   const result = verify(fx.root, OLD_MANIFEST, packRel('delta-ok'), io);
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e) => e.source === 'pack-files' && e.code === 'realpath-outside-root' && e.path === 'assets/lnk'), JSON.stringify(result.errors));
-  assert.ok(calls.every((c) => !String(c.target).includes('secret.txt')), 'junction 目标内容不得被读取');
+  assert.ok(calls.every((c: any) => !String(c.target).includes('secret.txt')), 'junction 目标内容不得被读取');
   assert.equal(fs.readFileSync(path.join(fx.outside, 'secret.txt'), 'utf8'), 'outside secret', '外部夹具内容未被改动');
 });
 
@@ -468,7 +468,7 @@ test('工作流注册转发 resource:verify-delta（G15 独占注册）', (t) =>
   assert.equal(forwarded.kind, 'resource-pack-delta-verification');
   assert.equal(forwarded.ok, true);
 
-  editPackJson(path.join(fx.root, PACKS_REL, 'delta-ok'), 'delta.json', (d) => ({ ...d, totals: { ...d.totals, changed: 99 } }));
+  editPackJson(path.join(fx.root, PACKS_REL, 'delta-ok'), 'delta.json', (d: any) => ({ ...d, totals: { ...d.totals, changed: 99 } }));
   const failing = spawnSync(process.execPath, [path.join(repo, 'scripts', 'workflow.js'), 'resource:verify-delta', '--root', fx.root, '--base-manifest', OLD_MANIFEST, '--pack', packRel('delta-ok')], { encoding: 'utf8' });
   assert.equal(failing.status, 1, failing.stdout);
   assert.equal(JSON.parse(failing.stdout).ok, false);
@@ -484,7 +484,7 @@ test('基线与候选分别合法但重建目标含 Windows 大小写冲突必�
   const added = { ...entry, path: 'assets/ALPHA.txt', sha256: 'b'.repeat(64) };
   const baseManifest = { schemaVersion: 1, entries: [entry] };
   const packManifest = { schemaVersion: 1, entries: [added] };
-  const record = (entries) => ({ path: 'manifest.json', contentIdentity: manifestContentIdentity({ entries }), entryCount: entries.length, totalBytes: entries.length });
+  const record = (entries: any) => ({ path: 'manifest.json', contentIdentity: manifestContentIdentity({ entries }), entryCount: entries.length, totalBytes: entries.length });
   const delta = { schemaVersion: 1, kind: 'resource-pack-delta', baseManifest: record([entry]), newManifest: record([entry, added]), totals: { added: 1, changed: 0, removed: 0, unchanged: 1 }, removed: [], candidate: { files: 1, bytes: 1, zeroAssets: false } };
   const result = verifyDeltaPackContent({ baseManifest, packManifest, delta });
   assert.equal(result.ok, false);
@@ -497,8 +497,8 @@ test('候选目录真实路径越界在 stat 和读取前拒绝', (t) => {
   fs.symlinkSync(fx.outside, path.join(fx.root, 'escaped-pack'), 'junction');
   const { io, calls } = recordingIo();
   assert.throws(() => verifyDeltaPack({ root: fx.root, baseManifestPath: OLD_MANIFEST, packPath: 'escaped-pack', io }), /root 外/);
-  assert.ok(calls.filter((c) => c.op === 'statSync').every((c) => c.target === fs.realpathSync(fx.root)));
-  assert.ok(calls.every((c) => c.op !== 'readFileSync'));
+  assert.ok(calls.filter((c: any) => c.op === 'statSync').every((c: any) => c.target === fs.realpathSync(fx.root)));
+  assert.ok(calls.every((c: any) => c.op !== 'readFileSync'));
 });
 
 test('候选元数据真实路径离开包目录即使仍在 root 内也不得读取', (t) => {
@@ -507,11 +507,11 @@ test('候选元数据真实路径离开包目录即使仍在 root 内也不得�
   const packAbs = path.join(fx.root, packRel('metadata-scope'));
   for (const filename of ['manifest.json', 'delta.json']) {
     const target = path.join(packAbs, filename);
-    const { io, calls } = recordingIo({ realpathSync: (p, ...rest) => {
+    const { io, calls } = recordingIo({ realpathSync: (p: any, ...rest) => {
       if (String(p) === target) return fs.realpathSync(path.join(fx.root, OLD_MANIFEST));
       return fs.realpathSync(p, ...rest);
     } });
     assert.throws(() => verifyDeltaPack({ root: fx.root, baseManifestPath: OLD_MANIFEST, packPath: packRel('metadata-scope'), io }), /root 外/);
-    assert.ok(calls.every((c) => c.op !== 'readFileSync' || c.target !== target));
+    assert.ok(calls.every((c: any) => c.op !== 'readFileSync' || c.target !== target));
   }
 });

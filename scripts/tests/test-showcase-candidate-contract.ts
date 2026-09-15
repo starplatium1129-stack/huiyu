@@ -389,19 +389,19 @@ test('CLI attempt filter: --attempt 3 selects only the six attempt-3 candidates'
   const plan = gen.planAllBatches(20260812);
   const all3 = gen.filterPlanned(plan, { attempts: [3] });
   assert.strictEqual(all3.length, 6);
-  assert.ok(all3.every(item => item.attempt === 3));
+  assert.ok(all3.every((item: any) => item.attempt === 3));
   const keys = Object.keys(gen.ATTEMPT_3_OVERRIDES);
   const keysPlus3 = gen.filterPlanned(plan, { keys, attempts: [3] });
   assert.strictEqual(keysPlus3.length, 6);
-  assert.deepStrictEqual(keysPlus3.map(item => item.recordId).sort(), keys.map(key => `${key}@attempt-3`).sort());
+  assert.deepStrictEqual(keysPlus3.map((item: any) => item.recordId).sort(), keys.map(key => `${key}@attempt-3`).sort());
   // --keys without --attempt still includes every attempt for those keys.
   const keysAll = gen.filterPlanned(plan, { keys: ['artist:so-bin', 'popular:makima'] });
   assert.strictEqual(keysAll.length, 4, 'so-bin/makima have attempt-1 + attempt-3 each');
-  assert.ok(keysAll.some(item => item.attempt === 1) && keysAll.some(item => item.attempt === 3));
+  assert.ok(keysAll.some((item: any) => item.attempt === 1) && keysAll.some((item: any) => item.attempt === 3));
   const keysChain = gen.filterPlanned(plan, { keys: ['latest-lora:nene:sd:fullbody'] });
   assert.strictEqual(keysChain.length, 3, 'nene sd fullbody has attempt-1/2/3');
   // No attempt-1/2 is selected when --attempt 3 is applied.
-  assert.ok(all3.every(item => item.attempt === 3 && !item.supersedes.includes('attempt-3')));
+  assert.ok(all3.every((item: any) => item.attempt === 3 && !item.supersedes.includes('attempt-3')));
   const empty = gen.filterPlanned(plan, {});
   assert.strictEqual(empty.length, plan.length, 'no filter returns the whole plan');
 });
@@ -410,21 +410,21 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
   const plan = gen.planAllBatches(20260812);
   const all4 = gen.filterPlanned(plan, { attempts: [4] });
   assert.strictEqual(all4.length, 2);
-  assert.ok(all4.every(item => item.attempt === 4));
+  assert.ok(all4.every((item: any) => item.attempt === 4));
   const keys = Object.keys(gen.ATTEMPT_4_OVERRIDES);
   const keysPlus4 = gen.filterPlanned(plan, { keys, attempts: [4] });
   assert.strictEqual(keysPlus4.length, 2);
-  assert.deepStrictEqual(keysPlus4.map(item => item.recordId).sort(), keys.map(key => `${key}@attempt-4`).sort());
+  assert.deepStrictEqual(keysPlus4.map((item: any) => item.recordId).sort(), keys.map(key => `${key}@attempt-4`).sort());
   // --keys without --attempt still includes every attempt for those keys.
   const animaChain = gen.filterPlanned(plan, { keys: ['latest-lora:natsume:anima:fullbody'] });
   assert.strictEqual(animaChain.length, 3, 'natsume anima fullbody has attempt-1/2/4');
-  assert.deepStrictEqual(animaChain.map(item => item.attempt).sort(), [1, 2, 4], 'anima fullbody chain = attempt-1/2/4');
+  assert.deepStrictEqual(animaChain.map((item: any) => item.attempt).sort(), [1, 2, 4], 'anima fullbody chain = attempt-1/2/4');
   const sdChain = gen.filterPlanned(plan, { keys: ['latest-lora:natsume:sd:fullbody'] });
   assert.strictEqual(sdChain.length, 4, 'natsume sd fullbody has attempt-1/2/3/4');
   // A combined filter selects only attempt-4 records for the attempt-4 keys.
   const mixed = gen.filterPlanned(plan, { keys, attempts: [1, 4] });
   assert.strictEqual(mixed.length, 4, 'attempt-1 + attempt-4 for the two keys');
-  assert.ok(mixed.every(item => item.attempt === 1 || item.attempt === 4));
+  assert.ok(mixed.every((item: any) => item.attempt === 1 || item.attempt === 4));
 });
 
 test('artist batch: curated artists + 1 no-artist baseline, one artist tag each', () => {
@@ -580,7 +580,7 @@ test('single-character scene candidates use the audited short prompt and correct
   }
   assert.strictEqual(candidates.length, singles.length - candidates.skipped.length,
     `planned + skipped must cover all ${singles.length} singles`);
-  assert.ok(candidates.skipped.every(item => item.sceneId && item.reason),
+  assert.ok(candidates.skipped.every((item: any) => item.sceneId && item.reason),
     'skipped entries must carry scene id and reason');
   for (const candidate of candidates) {
     const tagLine = candidate.prompt.split('\n')[0];
@@ -608,7 +608,7 @@ test('single-character scene candidates use the audited short prompt and correct
   assert.strictEqual(nene.generationCharacter, 'nene');
   assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene');
 
-  const sc122Skipped = rejected.skipped.find(item => item.sceneId === 'sc122');
+  const sc122Skipped = rejected.skipped.find((item: any) => item.sceneId === 'sc122');
   assert.ok(sc122Skipped, 'the deliberately misrated sc122 copy must be isolated');
   assert.ok(sc122Skipped.reason.includes('显式成人词'), `skip reason must explain: ${sc122Skipped.reason}`);
 

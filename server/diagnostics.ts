@@ -3,7 +3,7 @@
 import { errorMessage } from '../scripts/lib/runtime-errors';
 interface LogTail { path: string; available: boolean; text: string; bytes?: number; truncated?: boolean; error?: string }
 interface DiagnosticsOptions {
-  logs?: { control?: unknown; gateway?: unknown; tunnel?: unknown };
+  logs?: any;
   exportedAt?: unknown; appVersion?: unknown; nodeVersion?: unknown; platform?: unknown;
   control?: unknown; gateway?: unknown; tunnel?: unknown; showcase?: unknown; config?: unknown; token?: unknown;
 }

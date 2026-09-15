@@ -26,13 +26,13 @@ const FIELD_VALIDATION = {
   references: { rules: ['scripts/contracts/character-reference-standards.schema.json', 'scripts/contracts/character-reference-view.schema.json', 'content-impact-references.js:compareReferenceProjection'], unknown: ['Assets/review authenticity', 'Writer dependency completeness'] },
 };
 
-function selectExecution(report: { gitHistory: { status: string; paths: unknown; }; unknown: unknown; evidence: { files: unknown; }; input: { paths: unknown; }; history: { metadata: string|unknown[]; ordering: string|unknown[]; entities: string|unknown[]; }; affected: unknown; }, forceFull = false, context: { before: unknown; after: unknown; }) {
+function selectExecution(report: any, forceFull = false, context: any) {
   const reasons = [];
   if (forceFull) reasons.push('Explicit --full');
   if (!report || report.gitHistory?.status !== 'compared') reasons.push('No proved historical comparison');
   if (report) {
     reasons.push(...report.unknown);
-    const knownPaths = new Set((report.evidence?.files || []).map((entry: { file: unknown; }) => entry.file));
+    const knownPaths = new Set((report.evidence?.files || []).map((entry: any) => entry.file));
     for (const snapshots of [context?.before, context?.after]) for (const snapshot of Object.values(snapshots || {})) {
       for (const [file, value] of Object.entries(snapshot.metadata)) if (file.endsWith('/manifest.json')) {
         for (const entry of value.files || []) knownPaths.add(path.posix.join(path.posix.dirname(file), entry.file));
@@ -51,7 +51,7 @@ function selectExecution(report: { gitHistory: { status: string; paths: unknown;
     if (!report.history.entities.length) reasons.push('No record delta proved; explicit targets or an empty diff do not prove a full baseline');
   }
   const mode = reasons.length ? 'full' : 'incremental';
-  const targets = (report?.affected || []).filter((row: { impact: string; }) => row.impact === 'revalidate').map((row: { key: unknown; }) => row.key);
+  const targets = (report?.affected || []).filter((row: { impact: string; }) => row.impact === 'revalidate').map((row: any) => row.key);
   return { mode, reasons: [...new Set(reasons)], targets: mode === 'incremental' ? [...new Set(targets)] : null,
     predicateScope: mode === 'full' ? 'all supported structural domains' : 'enumerated stable IDs; complete indexes read for proof',
     fullGate: 'required-not-run', wholeLibrary: 'not-validated' };
@@ -69,7 +69,7 @@ function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>
     if (!domain) { unknown.push(`${key}: no record projection predicate`); continue; }
     const snapshot = snapshots[domain];
     if (!snapshot?.complete) { unknown.push(`${key}: incomplete source/derived index`); continue; }
-    const source = snapshot.rows.filter((row: { role: string; key: unknown; }) => row.role === 'source' && row.key === key);
+    const source = snapshot.rows.filter((row: any) => row.role === 'source' && row.key === key);
     if (source.length !== 1) { issues.push({ key, reason: 'Source identity is absent or ambiguous' }); continue; }
     const value = source[0].value;
     for (const [group, data] of Object.entries(snapshot.groups).filter(([name]) => name.includes(':derived:'))) {
@@ -81,24 +81,24 @@ function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>
           ? snapshot.metadata['data/curation.json'].personaCoreSceneIds.slice(0, 2000).filter((v: unknown) => v === id).length
           : Number(file === `data/scenes-${owner}.json`);
       }
-      const actual = data.rows.filter((row: { key: unknown; }) => row.key === key);
+      const actual = data.rows.filter((row: any) => row.key === key);
       if (!data.complete) unknown.push(`${file}: incomplete projection`);
-      else if (actual.length !== count || actual.some((row: { value: unknown; }) => !equal(row.value, value))) issues.push({ key, file, reason: 'Selected source/derived record mismatch' });
+      else if (actual.length !== count || actual.some((row: any) => !equal(row.value, value))) issues.push({ key, file, reason: 'Selected source/derived record mismatch' });
     }
   }
   return outcome('record-equality', [...keys], issues, unknown);
 }
 
-function relationCheck(snapshots: { [s: string]: unknown; }|ArrayLike<unknown>, keys: Set<unknown>|undefined) {
+function relationCheck(snapshots: { [s: string]: unknown; }|ArrayLike<unknown>, keys?: Set<unknown>|undefined) {
   const unknown = [];
   for (const snapshot of Object.values(snapshots)) {
     if (!snapshot.groups[`${snapshot.domain}:source`]?.complete) unknown.push(`${snapshot.domain}: source relationship coverage incomplete`);
-    for (const row of snapshot.rows.filter((row: { role: string; key: unknown; }) => row.role === 'source' && (!keys || keys.has(row.key)))) relations(row, snapshots, unknown);
+    for (const row of snapshot.rows.filter((row: any) => row.role === 'source' && (!keys || keys.has(row.key)))) relations(row, snapshots, unknown);
   }
   return outcome('source-relationships', keys ? [...keys] : 'all supported source IDs', relationshipIssues(snapshots, { keys }), [...new Set(unknown)]);
 }
 
-function runtimeFieldChecks(snapshots: { [s: string]: unknown; }|ArrayLike<unknown>, keys: Set<unknown>|undefined) {
+function runtimeFieldChecks(snapshots: { [s: string]: unknown; }|ArrayLike<unknown>, keys?: Set<unknown>|undefined) {
   const issues = [], unknown = [], coverage = [];
   let parsers;
   try { parsers = (require('../../src/utils/popularContent.ts') as typeof import('../../src/utils/popularContent.ts')); }
@@ -130,7 +130,7 @@ function runtimeFieldChecks(snapshots: { [s: string]: unknown; }|ArrayLike<unkno
   return { ...outcome('runtime-field-contracts', keys ? [...keys] : 'all supported source rows', issues, unknown), coverage };
 }
 
-function fullFieldChecks(reader: { json: (arg0: string) => unknown; }, snapshots: { [x: string]: { rows: unknown; }; }) {
+function fullFieldChecks(reader: any, snapshots: any) {
   const checks = [];
   // The exported validator is pure. Do not call its CLI or private I/O helpers.
   try {
@@ -145,20 +145,20 @@ function fullFieldChecks(reader: { json: (arg0: string) => unknown; }, snapshots
       const schema = require(`../contracts/character-reference-${name}.schema.json`);
       const validate = new Ajv({ allErrors: true }).compile(schema);
       const valid = validate(reader.json(`data/character-reference-${name}.json`));
-      checks.push(outcome(`existing-reference-${name}-schema`, 'all declared schema fields', valid ? [] : validate.errors.map((error: { instancePath: unknown; schemaPath: unknown; message: unknown; }) => ({
+      checks.push(outcome(`existing-reference-${name}-schema`, 'all declared schema fields', valid ? [] : validate.errors.map((error: any) => ({
         path: error.instancePath, schemaPath: error.schemaPath, reason: error.message,
       }))));
     } catch (error) { checks.push(outcome(`existing-reference-${name}-schema`, 'reference fields', [], [runtimeErrorMessage(error)])); }
   }
   const unknown = [];
   for (const domain of ['characters', 'popular', 'blueprints', 'scenes']) {
-    const fields = [...new Set((snapshots[domain]?.rows || []).filter((row: { role: string; }) => row.role === 'source').flatMap((row: { value: {}; }) => Object.keys(row.value)))];
+    const fields = [...new Set((snapshots[domain]?.rows || []).filter((row: { role: string; }) => row.role === 'source').flatMap((row: { value: any; }) => Object.keys(row.value)))];
     unknown.push({ domain, observedFields: fields.sort(), semanticCoverage: 'unknown beyond explicit exported predicates and JSON projections' });
   }
   return { checks, fields: unknown, ruleRoot: CODE_ROOT };
 }
 
-function executePredicates(selection: { mode: string; targets: Iterable<unknown>|null|undefined; }, context: { currentReader: { side: unknown; list(directory: string): unknown[]; evidence: Map<unknown,unknown>; read(file: string): unknown; json(file: string): unknown; verify(): string[]; }; after: unknown; }, root: PathLike) {
+function executePredicates(selection: { mode: string; targets: Iterable<unknown>|null|undefined; }, context: any, root: PathLike) {
   const reader = context?.currentReader || localReader(root);
   const snapshots = { ...(context?.after || {}) };
   const checks = [];

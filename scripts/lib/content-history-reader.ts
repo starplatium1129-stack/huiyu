@@ -73,7 +73,7 @@ function localReader(root: PathLike) {
   });
 }
 
-function reader(source: { side: unknown; bytes: (file: string) => NodeJS.ArrayBufferView<ArrayBufferLike> | string; list: (directory: string) => string[]; }) {
+function reader(source: any) {
   const cache = new Map();
   const evidence = new Map();
   const directories = new Map();

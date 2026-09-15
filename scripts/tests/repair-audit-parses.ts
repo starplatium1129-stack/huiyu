@@ -34,7 +34,7 @@ function main() {
   var report = readJson(file);
   var fixed = 0;
   var stillFail = 0;
-  report.results.forEach(function (x: { verdict: string; content: unknown; score: number; }) {
+  report.results.forEach(function (x: any) {
     if (x.verdict !== 'parse-fail' || !x.content) return;
     var parsed = parseVerdict(x.content);
     if (parsed.verdict === 'parse-fail') { stillFail += 1; return; }

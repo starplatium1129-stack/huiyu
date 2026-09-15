@@ -7,7 +7,7 @@ test('远程同一身份不能借原生 SD 写接口绕过应用分级和方法�
   const previous = process.env.AICS_ADULT_REMOTE;
   process.env.AICS_ADULT_REMOTE = '0';
   const remote = { 'x-token': stack.config.TOKEN, 'x-forwarded-for': '198.51.100.8' };
-  async function request(route, method, headers, body = {}) {
+  async function request(route: any, method: any, headers: any, body = {}) {
     const response = await fetch(stack.baseUrl + route, {
       method, headers: { ...headers, 'content-type': 'application/json' },
       ...(method === 'GET' || method === 'HEAD' ? {} : { body: JSON.stringify(body) }),
@@ -23,7 +23,7 @@ test('远程同一身份不能借原生 SD 写接口绕过应用分级和方法�
       assert.equal(denied.status, 403, route);
       assert.equal(denied.body.code, 'SD_NATIVE_LOCAL_ONLY');
     }
-    assert.equal(stack.upstreams.sd.mock.state.calls.filter(call => call.method === 'POST').length, 0);
+    assert.equal(stack.upstreams.sd.mock.state.calls.filter((call: any) => call.method === 'POST').length, 0);
     assert.equal((await request('/sdapi/v1/options', 'GET', remote)).status, 200);
     assert.equal((await request('/sdapi/v1/samplers', 'POST', remote)).status, 405);
     assert.equal((await request('/sdapi/v1/options', 'DELETE', {})).status, 405);
@@ -31,7 +31,7 @@ test('远程同一身份不能借原生 SD 写接口绕过应用分级和方法�
     const local = await request('/sdapi/v1/txt2img', 'POST', {}, { prompt: 'ordinary fixture' });
     assert.equal(local.status, 200);
     assert.equal(local.body.images.length, 1);
-    assert.equal(stack.upstreams.sd.mock.state.calls.filter(call => call.method === 'POST' && call.path === '/sdapi/v1/txt2img').length, 1);
+    assert.equal(stack.upstreams.sd.mock.state.calls.filter((call: any) => call.method === 'POST' && call.path === '/sdapi/v1/txt2img').length, 1);
     const burst = await Promise.all(Array.from({ length: 24 }, () => request('/api/generation/jobs', 'POST', remote, { prompt: 'ordinary fixture' })));
     const throttled = burst.find(response => response.status === 429 && response.body.code === 'RATE_LIMITED');
     assert.ok(throttled, 'application generation still enforces its rate limit');
@@ -51,14 +51,14 @@ test('SD 代理：超过 15 秒的生成正常返回，复用连接不累积超�
   const http: typeof import('node:http') = require('node:http');
   const stack = await (require('./gateway-test-stack') as typeof import('./gateway-test-stack')).start();
   const agent = new http.Agent({ keepAlive:true, maxSockets:1 });
-  const timeoutListeners = [];
+  const timeoutListeners: any = [];
   const sockets = new Set();
   stack.server.on('request', (req, res) => {
     if (!req.url.startsWith('/sdapi/')) return;
     sockets.add(req.socket);
     res.once('finish', () => timeoutListeners.push(req.socket.listenerCount('timeout')));
   });
-  function request(path, method = 'GET') {
+  function request(path: any, method = 'GET') {
     return new Promise((resolve, reject) => {
       const req = http.request(stack.baseUrl + path, { method, agent }, (res) => {
         let body = '';
@@ -96,8 +96,8 @@ test('gateway WebSocket：仅本机可升级，持令牌的远程连接也不能
   const tunnelHost = 'gateway-contract.trycloudflare.com';
   const stack = await (require('./gateway-test-stack') as typeof import('./gateway-test-stack')).start({
     token,
-    configureConfig(config) { config.DISABLE_TUNNEL = false; config.CLOUDFLARED_PATH = __filename; },
-    spawn(command, args, options) {
+    configureConfig(config: any) { config.DISABLE_TUNNEL = false; config.CLOUDFLARED_PATH = __filename; },
+    spawn(command: any, args: any, options: any) {
       fs.writeSync(options.stdio[1], 'https://' + tunnelHost + '\nRegistered tunnel connection\n');
       const child = new EventEmitter();
       child.pid = null; // 隔离假进程，清理不得触碰真实 PID。
@@ -111,7 +111,7 @@ test('gateway WebSocket：仅本机可升级，持令牌的远程连接也不能
     const accept = crypto.createHash('sha1').update(req.headers['sec-websocket-key'] + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64');
     socket.end('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ' + accept + '\r\n\r\n');
   });
-  function upgrade(headers) {
+  function upgrade(headers: any) {
     return new Promise((resolve) => {
       const req = http.request(stack.baseUrl + '/sdapi/v1/progress', {
         headers: { Connection:'Upgrade', Upgrade:'websocket', 'Sec-WebSocket-Version':'13', 'Sec-WebSocket-Key':'dGhlIHNhbXBsZSBub25jZQ==', ...headers },
@@ -161,11 +161,11 @@ var gatewayTestStack: typeof import('./gateway-test-stack') = require('./gateway
 
 var PORT = 0;
 var TOKEN = 'contract-token-0123456789abcdef0123456789ab';
-var LOCAL = null;
+var LOCAL: any = null;
 // 隧道请求的形状：socket 来自 127.0.0.1（cloudflared），但带转发头。
-var TUNNELED = null;
+var TUNNELED: any = null;
 
-function request(options) {
+function request(options: any) {
   return new Promise(function (resolve, reject) {
     var req = http.request({
       host:'127.0.0.1',
@@ -174,7 +174,7 @@ function request(options) {
       path:options.path,
       headers:options.headers || {}
     }, function (res) {
-      var chunks = [];
+      var chunks: any = [];
       res.on('data', function (chunk) { chunks.push(chunk); });
       res.on('end', function () {
         var body = Buffer.concat(chunks).toString('utf8');
@@ -189,7 +189,7 @@ function request(options) {
   });
 }
 
-function postJson(pathname, payload, headers) {
+function postJson(pathname: any, payload: any, headers?: any) {
   var body = JSON.stringify(payload);
   return request({
     method:'POST',
@@ -200,7 +200,7 @@ function postJson(pathname, payload, headers) {
   });
 }
 
-function upgradeRequest(headers) {
+function upgradeRequest(headers: any) {
   return new Promise(function (resolve) {
     var req = http.request({
       host:'127.0.0.1',

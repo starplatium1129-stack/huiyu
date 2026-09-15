@@ -7,7 +7,7 @@ const COMMIT = /^[a-f\d]{40}$/;
 const MAX_BLOB = 64 * 1024 * 1024;
 
 // No shell, filters, refresh/index writes, replacement objects or lazy fetches.
-function git(root, args, input) {
+function git(root: any, args: any, input?: any) {
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));
   const result = spawnSync('git', ['--no-optional-locks', '--no-replace-objects', '-c', 'core.fsmonitor=false', ...args], {
     cwd: root, input, env: { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_TERMINAL_PROMPT: '0', GIT_NO_LAZY_FETCH: '1' },
@@ -16,23 +16,23 @@ function git(root, args, input) {
   if (result.error || result.status !== 0) throw Error(result.error?.message || result.stderr?.toString().trim() || 'Git 只读证明失败');
   return result.stdout;
 }
-function assertRoot(root) {
+function assertRoot(root: any) {
   if (fs.realpathSync(git(root, ['rev-parse', '--show-toplevel']).toString().trim()) !== root) throw Error('finalize root 必须为 Git 工作树根');
 }
-function ancestor(root, before, after) {
+function ancestor(root: any, before: any, after: any) {
   if (!COMMIT.test(before) || !COMMIT.test(after)) throw Error('finalize 需要完整 Git SHA-1');
   if (git(root, ['rev-parse', '--verify', `${after}^{commit}`]).toString().trim() !== after) throw Error('最终提交不存在');
   git(root, ['merge-base', '--is-ancestor', before, after]);
 }
-function nulRecords(buffer) {
+function nulRecords(buffer: any) {
   const value = buffer.toString('utf8');
   if (!value) return [];
   if (!value.endsWith('\0') || !Buffer.from(value).equals(buffer)) throw Error('Git 路径输出无效');
   return value.slice(0, -1).split('\0');
 }
-const chosen = (selection, name) => !excluded(name) && selection.some(s =>
+const chosen = (selection: any, name: any) => !excluded(name) && selection.some((s: any) =>
   s.path === name || (s.kind === 'tree' && (s.path === '.' || within(s.path, name))));
-function commitFiles(root, commit, selection) {
+function commitFiles(root: any, commit: any, selection: any) {
   const result = [];
   for (const line of nulRecords(git(root, ['ls-tree', '-r', '-l', '-z', '--full-tree', commit]))) {
     const match = /^(\d{6}) (blob|commit) ([a-f\d]{40})\s+(\d+|-)\t([\s\S]+)$/.exec(line);
@@ -46,7 +46,7 @@ function commitFiles(root, commit, selection) {
   }
   return result.sort((a, b) => a.path < b.path ? -1 : 1);
 }
-function indexFiles(root, selection) {
+function indexFiles(root: any, selection: any) {
   const result = [];
   for (const line of nulRecords(git(root, ['ls-files', '--stage', '-z']))) {
     const match = /^(\d{6}) ([a-f\d]{40}) (\d)\t([\s\S]+)$/.exec(line);
@@ -58,7 +58,7 @@ function indexFiles(root, selection) {
   }
   return result.sort((a, b) => a.path < b.path ? -1 : 1);
 }
-function attributes(root, names) {
+function attributes(root: any, names: any) {
   const values = nulRecords(git(root, ['check-attr', '--cached', '-z', '--stdin', 'text', 'filter', 'working-tree-encoding', 'ident'], `${names.join('\0')}\0`));
   if (values.length !== names.length * 12) throw Error('Git attributes 输出不完整');
   const result = new Map();
@@ -69,7 +69,7 @@ function attributes(root, names) {
   }
   return result;
 }
-function blobs(root, files, visit) {
+function blobs(root: any, files: any, visit: any) {
   // Bound each batch, instead of starting a process per source file.
   for (let i = 0; i < files.length;) {
     const batch = []; let bytes = 0;
@@ -89,15 +89,15 @@ function blobs(root, files, visit) {
     if (offset !== output.length) throw Error('Git blob 输出含额外内容');
   }
 }
-function sourceProof(root, commit, source) {
+function sourceProof(root: any, commit: any, source: any) {
   assertRoot(root); validateSnapshot(source);
   if (!COMMIT.test(commit) || source.status !== 'complete') throw Error('源码/最终提交身份不可用');
-  const files = commitFiles(root, commit, source.selectors), recorded = source.entries.filter(e => e.status === 'file');
-  if (canonical(files.map(e => e.path)) !== canonical(recorded.map(e => e.path))) throw Error('最终提交未包含完整受审源码集合（新增/删除未提交或存在未跟踪输入）');
+  const files = commitFiles(root, commit, source.selectors), recorded = source.entries.filter((e: any) => e.status === 'file');
+  if (canonical(files.map(e => e.path)) !== canonical(recorded.map((e: any) => e.path))) throw Error('最终提交未包含完整受审源码集合（新增/删除未提交或存在未跟踪输入）');
   const index = indexFiles(root, source.selectors), expectedIndex = files.map(({ path, mode, oid }) => ({ path, mode, oid }));
   if (canonical(index) !== canonical(expectedIndex)) throw Error('受审源码索引与最终提交不一致');
-  const byName = new Map(recorded.map(e => [e.path, e])), proof = [], attrs = attributes(root, files.map(e => e.path));
-  blobs(root, files, (item, content) => {
+  const byName = new Map(recorded.map((e: any) => [e.path, e])), proof: any = [], attrs = attributes(root, files.map(e => e.path));
+  blobs(root, files, (item: any, content: any) => {
     const entry = byName.get(item.path), blobSha256 = sha256(content);
     let representation = 'exact';
     if (entry.sha256 !== blobSha256 || entry.bytes !== content.length) {

@@ -26,14 +26,14 @@ const {
   collectScopedRefUrls, scopeFileExists, filterReportToScope,
 }: typeof import('../lib/coverage-selection') = require('../lib/coverage-selection');
 
-function writeJson(file, value) {
+function writeJson(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(value, null, 2));
 }
 
 /** 标准夹具：char_x(o1 已登记有图/o2 已登记缺图/o3 pending/o9 未登记)、
  *  char_y(o4 未登记)、char_k(旧别名宿主)、nene(默认主题)。 */
-function makeBaseFixture(dir) {
+function makeBaseFixture(dir: any) {
   const popularA = {
     version: 1, franchise: 'A',
     characters: [
@@ -86,20 +86,20 @@ function makeBaseFixture(dir) {
   return dir;
 }
 
-function loadFixtureData(dir) {
-  const readJson = (file) => JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+function loadFixtureData(dir: any) {
+  const readJson = (file: any) => JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
   const manifest = readJson('data/popular/manifest.json');
-  const sources = manifest.files.map((entry) => ({
+  const sources = manifest.files.map((entry: any) => ({
     entry,
     characters: readJson(path.join('data/popular', entry.file)).characters,
   }));
-  const rows = sources.flatMap(({ entry, characters }) =>
-    characters.flatMap((character) => (character.outfits || []).map((outfit) => ({ id: character.id, outfitId: outfit.id, file: entry.file }))));
+  const rows = sources.flatMap(({ entry, characters }: any) =>
+    characters.flatMap((character: any) => (character.outfits || []).map((outfit: any) => ({ id: character.id, outfitId: outfit.id, file: entry.file }))));
   const standards = readJson('data/character-reference-standards.json').characters
-    .map((c) => ({ id: c.id, outfitIds: c.outfits.map((o) => o.id) }));
+    .map((c: any) => ({ id: c.id, outfitIds: c.outfits.map((o: any) => o.id) }));
   const view = Object.entries(readJson('data/character-reference-view.json')).map(([id, profile]) => ({
     id,
-    outfits: profile.outfits.map((o) => ({ outfitId: o.outfitId, references: o.references })),
+    outfits: profile.outfits.map((o: any) => ({ outfitId: o.outfitId, references: o.references })),
   }));
   return { sources, rows, standards, view, characters: readJson('data/characters.json') };
 }
@@ -135,7 +135,7 @@ test('reference analysis separates missing registration, pending, missing image 
       { outfitId: 'phantom', references: [{ id: 'r', url: '', pending: true }] },
     ],
   }];
-  const exists = (url) => (url.includes('shot') ? true : url.includes('gone') ? false : null);
+  const exists = (url: any) => (url.includes('shot') ? true : url.includes('gone') ? false : null);
   const result = analyseReferences({ popular, standards, view, fileExists: exists });
   assert.deepEqual(result.missingRegistration, [{ id: 'a', outfitId: 'gone', source: 'p.json', related: 'data/character-reference-standards.json 无此形态' }]);
   assert.deepEqual(result.pending, [{ id: 'a', outfitId: 'draft', source: 'data/character-reference-view.json', pending: 1, total: 1 }]);
@@ -173,7 +173,7 @@ test('structural errors: duplicate ids, broken mirror, and manifest count mismat
       standards: data.standards,
       view: data.view,
       selectors: [],
-      popularAliasMap: popularAliasMapOf(data.sources.flatMap(({ characters }) => characters)),
+      popularAliasMap: popularAliasMapOf(data.sources.flatMap(({ characters }: any) => characters)),
       fileExists: () => null,
     });
     assert.ok(report.structuralErrors.some((message) => message.includes('热门分片跨文件重复角色 ID: char_x')), '未报告跨文件重复角色');
@@ -200,13 +200,13 @@ test('CLI reports coverage gaps as exit 0 and is deterministic across reruns', (
     const first = run();
     assert.equal(first.status, 0, `覆盖率差额不应导致失败：${first.stderr}`);
     const parsed = JSON.parse(first.stdout);
-    assert.deepEqual(parsed.reference.missingRegistration.map((row) => `${row.id}/${row.outfitId}`).sort(),
+    assert.deepEqual(parsed.reference.missingRegistration.map((row: any) => `${row.id}/${row.outfitId}`).sort(),
       ['char_k/k1', 'char_x/o9', 'char_y/o4'].sort());
-    const pendingRow = parsed.reference.pending.find((row) => row.id === 'char_x' && row.outfitId === 'o3');
+    const pendingRow = parsed.reference.pending.find((row: any) => row.id === 'char_x' && row.outfitId === 'o3');
     assert.equal(pendingRow.pending, 1);
-    const stale = parsed.themes.staleAlias.find((row) => row.selector === 'historia_reiss');
+    const stale = parsed.themes.staleAlias.find((row: any) => row.selector === 'historia_reiss');
     assert.equal(stale.suggestion, 'char_k');
-    assert.deepEqual(parsed.themes.missingTheme.map((row) => row.id).sort(), ['char_y']);
+    assert.deepEqual(parsed.themes.missingTheme.map((row: any) => row.id).sort(), ['char_y']);
     assert.deepEqual(parsed.themes.defaultAllowed, ['nene']);
     // 结果可复跑：两次输出逐字节一致。
     const second = run();
@@ -267,7 +267,7 @@ test('mixed pending and completed references still audit every completed image',
       { id: 'missing', url: '/assets/missing.png' },
       { id: 'offline', url: '/assets/offline.png' },
     ] }] }],
-    fileExists: (url) => url.includes('ok') ? true : url.includes('missing') ? false : null,
+    fileExists: (url: any) => url.includes('ok') ? true : url.includes('missing') ? false : null,
   });
   assert.equal(result.pending[0].pending, 2);
   assert.equal(result.verifiedImage, 1);
@@ -289,19 +289,19 @@ test('duplicate registrations are structural errors before Map/Set normalization
 test('CLI rejects count mismatch, same-shard empty duplicate characters and malformed roots independently', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-coverage-'));
   try {
-    const mutate = (file, fn) => {
+    const mutate = (file: any, fn: any) => {
       const target = path.join(dir, file);
       writeJson(target, fn(JSON.parse(fs.readFileSync(target, 'utf8'))));
     };
     const cases = [
-      () => mutate('data/popular/manifest.json', (v) => { v.files[0].count = 99; return v; }),
+      () => mutate('data/popular/manifest.json', (v: any) => { v.files[0].count = 99; return v; }),
       () => {
-        mutate('data/popular/a.json', (v) => { v.characters.push({ id: 'char_x', outfits: [] }); return v; });
-        mutate('data/popular/manifest.json', (v) => { v.files[0].count++; return v; });
+        mutate('data/popular/a.json', (v: any) => { v.characters.push({ id: 'char_x', outfits: [] }); return v; });
+        mutate('data/popular/manifest.json', (v: any) => { v.files[0].count++; return v; });
       },
       () => mutate('data/character-reference-standards.json', () => ({})),
       () => mutate('data/character-reference-view.json', () => ([])),
-      () => mutate('data/popular/manifest.json', (v) => { v.files[0].file = '../outside.json'; return v; }),
+      () => mutate('data/popular/manifest.json', (v: any) => { v.files[0].file = '../outside.json'; return v; }),
     ];
     for (const change of cases) {
       makeBaseFixture(dir);
@@ -343,16 +343,16 @@ test('--root ignores ambient resource roots and never executes fixture config', 
 
 /** 筛选夹具：标准夹具追加 char_z（z1/z2 均已登记；z1 实图在位、z2 URL 缺文件），
  *  并落盘 char_x/o1 实图。char_z 故意不进 characters.json，验证身份全集含热门分片。 */
-function makeScopedFixture(dir) {
+function makeScopedFixture(dir: any) {
   makeBaseFixture(dir);
-  const mutate = (file, fn) => {
+  const mutate = (file: any, fn: any) => {
     const target = path.join(dir, file);
     writeJson(target, fn(JSON.parse(fs.readFileSync(target, 'utf8'))));
   };
-  mutate('data/popular/a.json', (v) => { v.characters.push({ id: 'char_z', displayName: 'Z', aliases: [], outfits: [{ id: 'z1' }, { id: 'z2' }] }); return v; });
-  mutate('data/popular/manifest.json', (v) => { v.files[0].count = 3; return v; });
-  mutate('data/character-reference-standards.json', (v) => { v.characters.push({ id: 'char_z', outfits: [{ id: 'z1' }, { id: 'z2' }] }); return v; });
-  mutate('data/character-reference-view.json', (v) => {
+  mutate('data/popular/a.json', (v: any) => { v.characters.push({ id: 'char_z', displayName: 'Z', aliases: [], outfits: [{ id: 'z1' }, { id: 'z2' }] }); return v; });
+  mutate('data/popular/manifest.json', (v: any) => { v.files[0].count = 3; return v; });
+  mutate('data/character-reference-standards.json', (v: any) => { v.characters.push({ id: 'char_z', outfits: [{ id: 'z1' }, { id: 'z2' }] }); return v; });
+  mutate('data/character-reference-view.json', (v: any) => {
     v.char_z = { outfits: [
       { outfitId: 'z1', references: [{ id: 'ref_z1', url: '/character-references/char_z/z1/ref_z1.png', pending: false }] },
       { outfitId: 'z2', references: [{ id: 'ref_z2', url: '/character-references/char_z/z2/ref_z2.png', pending: false }] },
@@ -369,9 +369,9 @@ function makeScopedFixture(dir) {
   return dir;
 }
 
-function snapshotTree(dir) {
-  const entries = [];
-  const walk = (current, prefix) => {
+function snapshotTree(dir: any) {
+  const entries: any = [];
+  const walk = (current: any, prefix: any) => {
     for (const item of fs.readdirSync(current, { withFileTypes: true })) {
       const rel = prefix ? `${prefix}/${item.name}` : item.name;
       if (item.isDirectory()) walk(path.join(current, item.name), rel);
@@ -407,15 +407,15 @@ test('scoped pure pipeline: recording fileExists proves unselected references ar
       '/character-references/char_z/z1/ref_z1.png',
       '/character-references/char_z/z2/ref_z2.png',
     ]);
-    const calls = [];
+    const calls: any = [];
     const report = buildReport({
       characters: data.characters,
       popularRows: data.rows,
       standards: data.standards,
       view: data.view,
       selectors: [],
-      popularAliasMap: popularAliasMapOf(data.sources.flatMap(({ characters }) => characters)),
-      fileExists: scopeFileExists((url) => { calls.push(url); return true; }, scopedUrls),
+      popularAliasMap: popularAliasMapOf(data.sources.flatMap(({ characters }: any) => characters)),
+      fileExists: scopeFileExists((url: any) => { calls.push(url); return true; }, scopedUrls),
     });
     // char_x 的 o1/o2 URL 已登记且非 pending，全库模式会核对；筛选 char_z 后不得触碰。
     assert.deepEqual(calls.sort(), [
@@ -427,7 +427,7 @@ test('scoped pure pipeline: recording fileExists proves unselected references ar
     assert.deepEqual(scoped.reference.missingImage, []);
     // 无关角色不出现在局部条目中。
     for (const key of ['missingRegistration', 'pending', 'missingImage', 'unverifiedImage', 'referenceOnlyForms']) {
-      assert.ok(scoped.reference[key].every((row) => row.id === 'char_z'), `${key} 混入无关角色`);
+      assert.ok(scoped.reference[key].every((row: any) => row.id === 'char_z'), `${key} 混入无关角色`);
     }
     // 结构字段保留全库结果，scope 元数据可机读。
     assert.deepEqual(scoped.structuralErrors, report.structuralErrors);
@@ -452,11 +452,11 @@ test('CLI --character lists only that character with recomputed counts and scope
     assert.equal(report.version, 1);
     assert.equal(report.scope.character, 'char_x');
     assert.equal(report.scope.outfit, null);
-    assert.deepEqual(report.reference.missingRegistration.map((row) => `${row.id}/${row.outfitId}`), ['char_x/o9']);
-    assert.deepEqual(report.reference.pending.map((row) => row.outfitId), ['o3']);
-    assert.deepEqual(report.reference.missingImage.map((row) => row.outfitId), ['o2']);
+    assert.deepEqual(report.reference.missingRegistration.map((row: any) => `${row.id}/${row.outfitId}`), ['char_x/o9']);
+    assert.deepEqual(report.reference.pending.map((row: any) => row.outfitId), ['o3']);
+    assert.deepEqual(report.reference.missingImage.map((row: any) => row.outfitId), ['o2']);
     assert.equal(report.reference.verifiedImage, 1);
-    assert.deepEqual(report.reference.referenceOnlyForms.map((row) => row.outfitId), ['ghost_form']);
+    assert.deepEqual(report.reference.referenceOnlyForms.map((row: any) => row.outfitId), ['ghost_form']);
     assert.deepEqual(report.themes.explicit, ['char_x']);
     assert.deepEqual(report.themes.missingTheme, []);
     assert.deepEqual(report.themes.defaultAllowed, []);
@@ -476,13 +476,13 @@ test('CLI --outfit narrows to one outfit including missing-registration, pending
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-coverage-'));
   try {
     makeScopedFixture(dir);
-    const run = (outfit) => JSON.parse(spawnSync(process.execPath,
+    const run = (outfit: any) => JSON.parse(spawnSync(process.execPath,
       [REPORT, '--json', '--root', dir, '--character', 'char_x', '--outfit', outfit],
       { encoding: 'utf8', timeout: 20000, windowsHide: true }).stdout);
     const missing = run('o9');
     assert.equal(missing.scope.mode, 'character-outfit');
     assert.equal(missing.scope.outfit, 'o9');
-    assert.deepEqual(missing.reference.missingRegistration.map((row) => row.outfitId), ['o9']);
+    assert.deepEqual(missing.reference.missingRegistration.map((row: any) => row.outfitId), ['o9']);
     assert.equal(missing.reference.pending.length, 0);
     assert.equal(missing.reference.verifiedImage, 0);
     const pending = run('o3');
@@ -491,7 +491,7 @@ test('CLI --outfit narrows to one outfit including missing-registration, pending
     ]);
     assert.equal(pending.reference.verifiedImage, 0);
     const ghost = run('ghost_form');
-    assert.deepEqual(ghost.reference.referenceOnlyForms.map((row) => row.outfitId), ['ghost_form']);
+    assert.deepEqual(ghost.reference.referenceOnlyForms.map((row: any) => row.outfitId), ['ghost_form']);
     assert.equal(ghost.reference.missingRegistration.length, 0);
     const o1 = run('o1');
     assert.equal(o1.reference.verifiedImage, 1);
@@ -510,7 +510,7 @@ test('scoped run with absent reference root reports unverified, never verified',
       { encoding: 'utf8', timeout: 20000, windowsHide: true });
     assert.equal(result.status, 0, result.stderr);
     const report = JSON.parse(result.stdout);
-    assert.deepEqual(report.reference.unverifiedImage.map((row) => row.outfitId).sort(), ['o1', 'o2']);
+    assert.deepEqual(report.reference.unverifiedImage.map((row: any) => row.outfitId).sort(), ['o1', 'o2']);
     assert.equal(report.reference.verifiedImage, 0);
     assert.equal(report.reference.missingImage.length, 0);
   } finally {
@@ -524,17 +524,17 @@ test('full-library structural errors stay visible and fail the scoped run', () =
     makeScopedFixture(dir);
     // 无关角色 nene 的镜像破坏：不应因筛选 char_x 而被掩盖。
     const standards = JSON.parse(fs.readFileSync(path.join(dir, 'data/character-reference-standards.json'), 'utf8'));
-    standards.characters.find((c) => c.id === 'nene').outfits.push({ id: 'mirror_drift' });
+    standards.characters.find((c: any) => c.id === 'nene').outfits.push({ id: 'mirror_drift' });
     fs.writeFileSync(path.join(dir, 'data/character-reference-standards.json'), JSON.stringify(standards));
     const result = spawnSync(process.execPath, [REPORT, '--json', '--root', dir, '--character', 'char_x'],
       { encoding: 'utf8', timeout: 20000, windowsHide: true });
     assert.equal(result.status, 1);
     const report = JSON.parse(result.stdout);
-    assert.ok(report.structuralErrors.some((m) => m.includes('镜像破坏') && m.includes('nene') && m.includes('mirror_drift')),
+    assert.ok(report.structuralErrors.some((m: any) => m.includes('镜像破坏') && m.includes('nene') && m.includes('mirror_drift')),
       '全域镜像错误应保留');
     assert.ok(report.scope.structuralChecksScope === 'all');
     // 局部条目照常列出，不被结构错误吞掉。
-    assert.deepEqual(report.reference.missingRegistration.map((row) => `${row.id}/${row.outfitId}`), ['char_x/o9']);
+    assert.deepEqual(report.reference.missingRegistration.map((row: any) => `${row.id}/${row.outfitId}`), ['char_x/o9']);
     // 人类输出注明全域错误不一定由所选对象造成。
     const human = spawnSync(process.execPath, [REPORT, '--root', dir, '--character', 'char_x'],
       { encoding: 'utf8', timeout: 20000, windowsHide: true });
@@ -594,7 +594,7 @@ test('scoped CLI runs are read-only: fixture tree unchanged and unfiltered outpu
     assert.equal(full.status, 0, full.stderr);
     const parsed = JSON.parse(full.stdout);
     assert.equal('scope' in parsed, false);
-    assert.deepEqual(parsed.reference.missingRegistration.map((row) => `${row.id}/${row.outfitId}`).sort(),
+    assert.deepEqual(parsed.reference.missingRegistration.map((row: any) => `${row.id}/${row.outfitId}`).sort(),
       ['char_k/k1', 'char_x/o9', 'char_y/o4'].sort());
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -618,14 +618,14 @@ test('selection isolates owners even when unselected outfits and characters shar
     const report = buildReport({
       characters: [{ id: 'a' }, { id: 'b' }, { id: 'b' }], popularRows, standards, view,
       selectors: [], popularAliasMap: new Map(),
-      fileExists: scopeFileExists(value => { calls.push(value); return true; },
+      fileExists: scopeFileExists((value: any) => { calls.push(value); return true; },
         collectScopedRefUrls({ view, ...selection }), selection),
     });
     const scoped = filterReportToScope(report, selection);
     assert.equal(calls.length, outfit ? 1 : 2, 'only selected owners may inspect a shared URL');
     assert.equal(scoped.reference.verifiedImage, calls.length);
     assert.deepEqual(scoped.themes.dupCharacters, ['b'], 'all-domain structural details stay visible');
-    assert.ok(scoped.structuralErrors.some(message => message.includes('重复角色 ID: b')));
+    assert.ok(scoped.structuralErrors.some((message: any) => message.includes('重复角色 ID: b')));
   }
 });
 

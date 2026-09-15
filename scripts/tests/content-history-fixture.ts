@@ -19,7 +19,7 @@ function git(root: string, ...args: string[]) {
   return result.stdout.trim();
 }
 
-function fixture(t: { after: (arg0: () => void) => void; }, withGit = true) {
+function fixture(t: any, withGit = true) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'content-history-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const write = (file: string, value: string|Uint8Array<ArrayBufferLike>|Uint8ClampedArray<ArrayBufferLike>|Uint16Array<ArrayBufferLike>|Uint32Array<ArrayBufferLike>|Int8Array<ArrayBufferLike>|Int16Array<ArrayBufferLike>|Int32Array<ArrayBufferLike>|BigUint64Array<ArrayBufferLike>|BigInt64Array<ArrayBufferLike>|Float16Array<ArrayBufferLike>|Float32Array<ArrayBufferLike>|Float64Array<ArrayBufferLike>|DataView<ArrayBufferLike>|({ id: string; char: string; prompt: string; rating: string; mature: boolean; }|undefined)[]|{ id: string; name: string; }[]) => {

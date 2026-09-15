@@ -19,11 +19,11 @@ const { spawnSync }: typeof import('node:child_process') = require('node:child_p
 const { generateManifest, verifyManifest, verifyManifestEntries, checkManifestPath, compareManifests, compareManifestFiles }: typeof import('../lib/resource-manifest') = require('../lib/resource-manifest');
 
 const repo = path.resolve(__dirname, '..', '..');
-const sha256 = (value) => crypto.createHash('sha256').update(value).digest('hex');
+const sha256 = (value: any) => crypto.createHash('sha256').update(value).digest('hex');
 
 /** 记录型 fs：调用穿透真实 fs，同时记录目标路径，用于证明越界用例零越界访问。 */
 function recordingFs() {
-  const calls = [];
+  const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'readdirSync', 'realpathSync', 'readFileSync']) {
     io[op] = (...args) => {
@@ -34,20 +34,20 @@ function recordingFs() {
   return { io, calls };
 }
 
-function insideRoot(rootReal, target) {
+function insideRoot(rootReal: any, target: any) {
   const rel = path.relative(rootReal, target);
   // 记录器允许 realpathSync(root) 本身（target === rootReal）；清单路径的严格
   // 内含判断由被测代码的 isInsideRoot 负责。
   return rel !== '..' && !rel.startsWith('..' + path.sep) && !path.isAbsolute(rel);
 }
 
-function assertNoAccessOutside(calls, rootReal) {
+function assertNoAccessOutside(calls: any, rootReal: any) {
   for (const call of calls) {
     assert.ok(insideRoot(rootReal, path.resolve(call.target)), `${call.op} 越界访问了 ${call.target}`);
   }
 }
 
-function buildFixture(t) {
+function buildFixture(t: any) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'resource-manifest-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const root = path.join(base, 'root');
@@ -64,7 +64,7 @@ function buildFixture(t) {
   return { base, root, outside, secretAbs: path.join(outside, 'secret.txt') };
 }
 
-function snapshot(root) {
+function snapshot(root: any) {
   return fs.readdirSync(root, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(root, e.name);
     if (e.isSymbolicLink()) return [[p, '<link>']];
@@ -72,7 +72,7 @@ function snapshot(root) {
   });
 }
 
-function writeManifest(root, manifest, name = 'manifest.json') {
+function writeManifest(root: any, manifest: any, name = 'manifest.json') {
   const dir = path.join(root, 'artifacts');
   fs.mkdirSync(dir, { recursive: true });
   const file = path.join(dir, name);
@@ -80,7 +80,7 @@ function writeManifest(root, manifest, name = 'manifest.json') {
   return file;
 }
 
-function cli(args) {
+function cli(args: any) {
   return spawnSync(process.execPath, [path.join(repo, 'scripts', 'maintenance', 'report-resource-manifest.js'), ...args], { encoding: 'utf8' });
 }
 
@@ -195,7 +195,7 @@ test('编码与原始越界路径先于 fs 访问被拒绝，不返回任何文�
   assert.ok(result.errors.every((e) => ['illegal-path', 'out-of-scope'].includes(e.code)));
   assert.ok(result.errors.every((e) => e.actual === undefined));
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  assert.ok(calls.every((c) => c.op !== 'readFileSync'), '越界用例不得读取任何文件内容');
+  assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), '越界用例不得读取任何文件内容');
 });
 
 test('junction 越界在校验中被拒且不读取链接目标', (t) => {
@@ -211,7 +211,7 @@ test('junction 越界在校验中被拒且不读取链接目标', (t) => {
   assert.equal(err.path, 'assets/lnk/secret.txt');
   assert.ok(!('actual' in err) && !('expected' in err));
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  assert.ok(calls.every((c) => c.op !== 'readFileSync'), 'junction 越界不得读取目标内容');
+  assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), 'junction 越界不得读取目标内容');
   assert.deepEqual(snapshot(fx.outside), before);
 });
 
@@ -230,7 +230,7 @@ test('生成不跟随链接、不进入排除域，无法合规表示的文件�
   assert.equal(kinds['assets/p%2Fq.txt'], 'unrepresentable-path');
   assert.ok(manifest.totals.unverified >= 2);
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
-  assert.ok(calls.every((c) => !String(c.target).includes('character-references')), '排除域不得被遍历或读取');
+  assert.ok(calls.every((c: any) => !String(c.target).includes('character-references')), '排除域不得被遍历或读取');
 });
 
 test('不支持 schemaVersion、坏条目与坏 JSON 不得无条件成功', (t) => {
@@ -305,8 +305,8 @@ test('排除域大小写与 root 内 junction 别名不能读取内容', (t) => 
     const result = verifyManifestEntries({ root: fx.root, io, manifest: { schemaVersion: 1, entries: [{ path: rel, bytes: 8, sha256: sha256('excluded') }] } });
     assert.equal(result.ok, false, rel);
     assert.equal(result.errors[0].code, 'out-of-scope');
-    assert.ok(calls.every((c) => c.op !== 'readFileSync'), rel);
-    assert.ok(calls.filter((c) => c.op === 'statSync').every((c) => c.target === fs.realpathSync(fx.root)), '拒绝目标之前不得 stat 目标');
+    assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), rel);
+    assert.ok(calls.filter((c: any) => c.op === 'statSync').every((c: any) => c.target === fs.realpathSync(fx.root)), '拒绝目标之前不得 stat 目标');
   }
 });
 
@@ -318,7 +318,7 @@ test('扫描根 junction 不跟随、不遍历、不哈希', (t) => {
   fs.symlinkSync(path.join(root, 'payload'), path.join(root, 'assets'), process.platform === 'win32' ? 'junction' : 'dir');
   const { io, calls } = recordingFs();
   assert.throws(() => generateManifest({ root, io }), /符号链接/);
-  assert.ok(calls.every((c) => !['readFileSync', 'readdirSync'].includes(c.op)));
+  assert.ok(calls.every((c: any) => !['readFileSync', 'readdirSync'].includes(c.op)));
   assert.equal(cli(['--root', root]).status, 2);
 });
 
@@ -350,11 +350,11 @@ test('Windows 大小写别名不能重复计为已核验资源', { skip: process
 
 // ——— G7：资源清单差异比较 ———
 
-function manifestOf(entries, extra = {}) {
+function manifestOf(entries: any, extra = {}) {
   return { schemaVersion: 1, kind: 'resource-manifest', generatedAt: '2026-01-01T00:00:00.000Z', ...extra, entries };
 }
 
-function ent(rel, content) {
+function ent(rel: any, content: any) {
   return { path: rel, bytes: Buffer.byteLength(content), sha256: sha256(content) };
 }
 
@@ -433,7 +433,7 @@ test('G7 纯比较：结构错误阻止差异计算并标明来源清单', () =>
   for (const [side, bad, code] of cases) {
     const result = compareManifests({ oldManifest: side === 'old' ? bad : good, newManifest: side === 'new' ? bad : good });
     assert.equal(result.ok, false, code);
-    const err = result.errors.find((e) => e.code === code);
+    const err = result.errors.find((e: any) => e.code === code);
     assert.ok(err, `${code} 应出现: ${JSON.stringify(result.errors)}`);
     assert.equal(err.side, side, code);
     assert.deepEqual(result.totals, { added: 0, removed: 0, changed: 0, unchanged: 0 }, code);
@@ -447,7 +447,7 @@ test('G7 纯比较：非空 unverified 保留已列条目差异但不构成完�
   const plain = manifestOf(entries);
   const sameListed = compareManifests({ oldManifest: unverifiedOld, newManifest: plain });
   assert.equal(sameListed.ok, false);
-  const unv = sameListed.errors.find((e) => e.code === 'unverified-items');
+  const unv = sameListed.errors.find((e: any) => e.code === 'unverified-items');
   assert.ok(unv);
   assert.equal(unv.side, 'old');
   assert.equal(unv.count, 1);
@@ -487,9 +487,9 @@ test('G7 文件级比较：只读取两份指定清单，不访问实际资产�
   assert.equal(result.changed[0].after.sha256, sha256('changed!'));
 
   const rootReal = fs.realpathSync(fx.root);
-  const reads = calls.filter((c) => c.op === 'readFileSync').map((c) => path.resolve(c.target));
+  const reads = calls.filter((c: any) => c.op === 'readFileSync').map((c: any) => path.resolve(c.target));
   assert.deepEqual(reads.sort(), [path.resolve(oldFile), path.resolve(newFile)].sort(), 'readFileSync 只指向两份清单');
-  assert.ok(calls.every((c) => !path.resolve(c.target).startsWith(path.join(rootReal, 'assets'))), '比较不得访问 assets 下任何路径');
+  assert.ok(calls.every((c: any) => !path.resolve(c.target).startsWith(path.join(rootReal, 'assets'))), '比较不得访问 assets 下任何路径');
   assertNoAccessOutside(calls, rootReal);
   assert.equal(fs.readFileSync(oldFile, 'utf8'), oldJson, '旧清单未被改动');
   assert.equal(fs.readFileSync(newFile, 'utf8'), newJson, '新清单未被改动');
@@ -500,7 +500,7 @@ test('G7 CLI：差异模式退出码契约、参数错误与 help/plan 零读取
   const manifest = generateManifest({ root: fx.root });
   writeManifest(fx.root, manifest, 'cli-old.json');
   writeManifest(fx.root, manifest, 'cli-same.json');
-  const diffArgs = (a, b) => ['--root', fx.root, '--manifest', `artifacts/${a}`, '--compare-manifest', `artifacts/${b}`];
+  const diffArgs = (a: any, b: any) => ['--root', fx.root, '--manifest', `artifacts/${a}`, '--compare-manifest', `artifacts/${b}`];
 
   const identical = cli(diffArgs('cli-old.json', 'cli-same.json'));
   assert.equal(identical.status, 0);
@@ -520,7 +520,7 @@ test('G7 CLI：差异模式退出码契约、参数错误与 help/plan 零读取
   assert.equal(diff.ok, true);
   assert.equal(diff.identical, false);
   assert.deepEqual(diff.totals, { added: 1, removed: 1, changed: 1, unchanged: 2 });
-  assert.deepEqual(diff.changed.map((e) => e.path), ['assets/alpha.txt']);
+  assert.deepEqual(diff.changed.map((e: any) => e.path), ['assets/alpha.txt']);
   assert.equal(diff.changed[0].before.sha256, sha256('A'));
   assert.equal(diff.changed[0].after.sha256, sha256('AA'));
 

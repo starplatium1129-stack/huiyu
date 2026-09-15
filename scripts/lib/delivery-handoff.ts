@@ -6,13 +6,13 @@ const { get, set, state, gatePath, MAIN_FIELDS }: typeof import('./delivery-stat
 const { inspectTracking, inspectGate, bindGate }: typeof import('./delivery-freshness') = require('./delivery-freshness');
 const { createFinalization, inspectFinalization }: typeof import('./delivery-finalize') = require('./delivery-finalize');
 
-const environment = machine => ({ machine, platform: process.platform, node: process.version, arch: process.arch });
+const environment = (machine: any) => ({ machine, platform: process.platform, node: process.version, arch: process.arch });
 const mainRequirements = [
   { field: 'installation', machine: 'main', action: '通过 deploy-desktop.bat 安装并保留实际结果' },
   { field: 'deviceAcceptance', machine: 'main', action: '原生桌面、4K、Windows 150% 缩放验收' },
   { field: 'modelAcceptance', machine: 'main', action: '实际模型/GPU 调用与真实画面验收' },
 ];
-function handoff(document, repo, officeEnvironment, machine, previous) {
+function handoff(document: any, repo: any, officeEnvironment: any, machine: any, previous?: any) {
   return { schemaVersion: 1, from: 'office', to: 'main', stage: machine,
     commit: repo,
     source: { sha256: document.tracking.source.sha256, status: document.tracking.source.status },
@@ -23,7 +23,7 @@ function handoff(document, repo, officeEnvironment, machine, previous) {
     ...(previous ? { previous } : {}),
   };
 }
-function capture(root, options) {
+function capture(root: any, options: any) {
   const machine = options.machine || 'office';
   if (!['office', 'main'].includes(machine)) throw Error('machine 必须为 office/main');
   if (options.finalizeCommit && (!options.baseline || machine !== 'office')) throw Error('finalize 需要办公机 baseline');
@@ -97,7 +97,7 @@ function capture(root, options) {
   // This is a declared result plus immutable file references, never a gate runner.
   return document;
 }
-function inspectHandoff(root, document, freshness, options = {}) {
+function inspectHandoff(root: any, document: any, freshness: any, options = {}) {
   const value = document.handoff;
   if (value === undefined) return null;
   const result = { status: 'pending', errors: [], pending: [], source: freshness.source, build: freshness.build };
@@ -115,7 +115,7 @@ function inspectHandoff(root, document, freshness, options = {}) {
     result.stage = value.stage;
     result.environment = value.environment;
     result.install = value.install;
-    result.requiredMain = value.requiredMain.map(item => ({ ...item, status: state(document[item.field]) }));
+    result.requiredMain = value.requiredMain.map((item: any) => ({ ...item, status: state(document[item.field]) }));
     const repo = repository(root);
     result.commit = { expected: document.commit ?? null, actual: repo.commit,
       status: !repo.commit || !document.commit ? 'unknown' : document.commit === repo.commit ? 'matched' : 'mismatch' };
@@ -136,7 +136,7 @@ function inspectHandoff(root, document, freshness, options = {}) {
       const checked = inspectGate(root, document, freshness, field);
       if (checked.status === 'invalid') result.errors.push(`${field}: ${checked.message}`);
       if (checked.effectiveStatus !== 'passed') result.pending.push(`${field}: ${checked.effectiveStatus}`);
-      result.requiredMain.find(item => item.field === field).status = checked.effectiveStatus;
+      result.requiredMain.find((item: any) => item.field === field).status = checked.effectiveStatus;
     }
   } catch (error) { result.errors.push(runtimeErrorMessage(error)); }
   result.status = result.errors.length ? 'failed' : result.pending.length ? 'pending' : 'passed';

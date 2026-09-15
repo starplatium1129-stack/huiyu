@@ -50,7 +50,7 @@ function createFakeIndexedDB(transactionDelay: number|undefined) {
         if (shouldFail) api.failNextWrite = false;
         const tx = { error: null, oncomplete: null, onerror: null, onabort: null, abort() {} };
         const store = {
-          put(record: { key: unknown; id: unknown; }) { operations.push(() => records.set(record.key ?? record.id, record)); },
+          put(record: any) { operations.push(() => records.set(record.key ?? record.id, record)); },
           delete(key: unknown) { operations.push(() => records.delete(key)); },
           clear() { operations.push(() => records.clear()); },
           get(key: unknown) {

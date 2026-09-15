@@ -7,10 +7,10 @@ const { fs, path, assert, write, snapshot, fixture, code }: typeof import('./res
 const { createResourceDownloader }: typeof import('../lib/resource-download') = require('../lib/resource-download');
 const { killAt }: typeof import('./resource-install-process') = require('./resource-install-process');
 
-async function fixtureHttp(t) {
+async function fixtureHttp(t: any) {
   const f = fixture(t, { large: true });
   const files = new Map();
-  const walk = (directory, prefix) => {
+  const walk = (directory: any, prefix: any) => {
     for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
       const file = path.join(directory, entry.name);
       if (entry.isDirectory()) walk(file, prefix + entry.name + '/');
@@ -56,7 +56,7 @@ async function fixtureHttp(t) {
     }
     if (!big) { res.end(bytes); return; }
     let cursor = offset;
-    let timer;
+    let timer: any;
     const send = () => {
       if (res.destroyed) return;
       if (cursor >= bytes.length) { res.end(); return; }
@@ -78,13 +78,13 @@ async function fixtureHttp(t) {
   f.download = (extra = {}) => createResourceDownloader(f.options(extra));
   return { ...f, state, files };
 }
-async function cancelPartial(f) {
+async function cancelPartial(f: any) {
   const controller = new AbortController();
-  await assert.rejects(f.download({ onEvent: e => {
+  await assert.rejects(f.download({ onEvent: (e: any) => {
     if (e.phase === 'download-progress' && e.path === 'assets/new.bin') controller.abort();
   } }).download({ releaseId: 'full', signal: controller.signal }), code('CANCELLED'));
 }
-const assetRequests = f => f.state.requests.filter(request => request.url.endsWith('/assets/new.bin'));
+const assetRequests = (f: any) => f.state.requests.filter((request: any) => request.url.endsWith('/assets/new.bin'));
 
 test('loopback download produces a verified offline package; install remains explicit and repeat has no network', async t => {
   const f = await fixtureHttp(t);
@@ -112,7 +112,7 @@ test('cancel and resume send Range/If-Range and rehash final bytes', async t => 
   const f = await fixtureHttp(t);
   await cancelPartial(f);
   const result = await f.download().download({ releaseId: 'full' });
-  const resumed = assetRequests(f).find(request => request.range);
+  const resumed = assetRequests(f).find((request: any) => request.range);
   assert.match(resumed.range, /^bytes=[1-9]\d*-$/);
   assert.equal(resumed.ifRange, '"fixture-v1"');
   assert.equal(fs.statSync(path.join(result.packRoot, 'assets/new.bin')).size, 3 * 1024 * 1024);
@@ -124,7 +124,7 @@ test('ignored range restarts instead of appending a full response to partial dat
   f.state.mode = 'ignore-range';
   const downloaded = await f.download().download({ releaseId: 'full' });
   assert.equal(fs.statSync(path.join(downloaded.packRoot, 'assets/new.bin')).size, 3 * 1024 * 1024);
-  assert.ok(assetRequests(f).some(request => request.range));
+  assert.ok(assetRequests(f).some((request: any) => request.range));
 });
 
 test('invalid Content-Range is rejected; valid retry recovers unchanged partial data', async t => {
@@ -150,7 +150,7 @@ test('disconnected response retains bytes and retries with a range', async t => 
   f.state.mode = 'disconnect-once';
   await assert.rejects(f.download().download({ releaseId: 'full' }));
   assert.equal((await f.download().download({ releaseId: 'full' })).action, 'downloaded');
-  assert.ok(assetRequests(f).some(request => request.range));
+  assert.ok(assetRequests(f).some((request: any) => request.range));
 });
 
 test('killed download process resumes from durable partial bytes and reclaims its stale lock', async t => {
@@ -216,8 +216,8 @@ test('download ENOSPC keeps installed resources and permits retry', async t => {
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
   const files = new Map();
-  io.openSync = (file, ...args) => { const fd = fs.openSync(file, ...args); files.set(fd, String(file)); return fd; };
-  io.writeSync = (fd, ...args) => {
+  io.openSync = (file: any, ...args) => { const fd = fs.openSync(file, ...args); files.set(fd, String(file)); return fd; };
+  io.writeSync = (fd: any, ...args) => {
     if (files.get(fd)?.endsWith('.part')) throw Object.assign(new Error('injected disk full'), { code: 'ENOSPC' });
     return fs.writeSync(fd, ...args);
   };
@@ -229,12 +229,12 @@ test('download ENOSPC keeps installed resources and permits retry', async t => {
 test('download and installation share a lock; cancellation releases it without losing the old install', async t => {
   const f = await fixtureHttp(t);
   const old = await f.installer().install({ releaseId: 'base' });
-  let entered;
+  let entered: any;
   let resume;
   const started = new Promise(resolve => { entered = resolve; });
   const gate = new Promise(resolve => { resume = resolve; });
   const controller = new AbortController();
-  const running = f.download({ onEvent: async e => {
+  const running = f.download({ onEvent: async (e: any) => {
     if (e.phase === 'download-progress') { entered(); await gate; }
   } }).download({ releaseId: 'full', signal: controller.signal });
   const rejected = assert.rejects(running, code('CANCELLED'));

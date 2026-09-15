@@ -76,7 +76,7 @@ function snapshotFiles(files: string[]) {
 }
 
 function restoreSnapshot(snapshot: unknown[]) {
-  snapshot.forEach(function (item: { exists: unknown; file: string; content: string|Buffer<ArrayBuffer>; }) {
+  snapshot.forEach(function (item: any) {
     if (item.exists) writeFileAtomic(item.file, item.content);
     else recoveryFs.removeFile(item.file);
   });
@@ -115,7 +115,7 @@ function attemptRollback(snapshot: unknown, label: string) {
 // 判定「直连本机」的逻辑只保留 server/security.js 一份，避免副本再次漂移。
 let isDirectLocalRequest = (require('../server/security') as typeof import('../server/security')).isDirectLocalRequest;
 
-function maintenanceLocalOnly(req, res, next: () => void) {
+function maintenanceLocalOnly(req: any, res: any, next: () => void) {
   if (!isDirectLocalRequest(req)) return envelope.fail(res, 403, '维护操作仅允许在本机执行');
   next();
 }
@@ -125,14 +125,14 @@ function maintenanceLocalOnly(req, res, next: () => void) {
  * npm/系统 node 也读不了包内文件 —— 内容维护链路整体不可用。
  * 标志由 Tauri 壳仅在打包模式注入（main_shared.rs gateway_env → config.DESKTOP_PACKAGED）。
  */
-function isDesktopPackagedMode(cfg: { DESKTOP_PACKAGED: unknown; }) {
+function isDesktopPackagedMode(cfg: any) {
   return Boolean(cfg && cfg.DESKTOP_PACKAGED);
 }
 
 const DESKTOP_MAINTENANCE_UNAVAILABLE = '桌面应用模式下场景内容编辑不可用（数据位于只读的应用包内）。' +
   '请在源码开发模式（npm run dev / npm start）中编辑场景内容。';
 
-function desktopMaintenanceUnavailable(req: Request<{},unknown,unknown,ParsedQs,Record<string,unknown>>, res) {
+function desktopMaintenanceUnavailable(req: Request<{},unknown,unknown,ParsedQs,Record<string,unknown>>, res: any) {
   return envelope.fail(res, 501, DESKTOP_MAINTENANCE_UNAVAILABLE, { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
 }
 
@@ -157,7 +157,7 @@ function killActiveChildren() {
 }
 
 // ── 3. 路由：scenes/tags/curation ── · ── 4. 路由：showcase/home-hero ── · ── 5. 路由：run/backups ──
-function createMaintenanceRouter(cfg: { ROOT_DIR: string; RUNTIME_ROOT: string; SCENE_SHOWCASE_DIR: unknown; }) {
+function createMaintenanceRouter(cfg: any) {
   let router = express.Router();
   const leaseOptions = { rootDir: cfg.ROOT_DIR, runtimeRoot: cfg.RUNTIME_ROOT, showcaseRoot: cfg.SCENE_SHOWCASE_DIR };
   if (!isDesktopPackagedMode(cfg)) maintenanceReadToken(leaseOptions);
@@ -317,7 +317,7 @@ async function runMaintenanceChecks(lease: unknown) {
       if (!/^(sc\d{3}|pc_[a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+)$/.test(id)) return envelope.fail(res, 400, '需要合法场景或蓝图 ID');
       let scenes = sceneStore.loadSceneShards().scenes;
       let scene = scenes.find(function (item) { return item.id === id; });
-      let popularBlueprint: { characterId: string; id: string; title: string; description: unknown; adult: unknown; }|null = null;
+      let popularBlueprint: any = null;
       let popularCharacter = null;
 
       if (!scene) {
@@ -332,7 +332,7 @@ async function runMaintenanceChecks(lease: unknown) {
             return b.id === id || ('pc_' + b.characterId + '_' + b.id) === id;
           });
           if (popularBlueprint) {
-            popularCharacter = popList.find(function (c: { id: unknown; }) { return c.id === popularBlueprint.characterId; });
+            popularCharacter = popList.find(function (c: any) { return c.id === popularBlueprint.characterId; });
           }
         }
       }

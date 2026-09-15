@@ -61,16 +61,16 @@ function requestComfyStream(config: { COMFY_HOST: string|URL; }, method: string,
 
 // 取首个数据块用于魔数嗅探（ftyp/EBML 只需前 12 字节），随后回到暂停模式，
 // 校验通过后由 pipe 恢复流动；响应立即结束时返回 null（等价于空 body）。
-function firstResponseChunk(response: { pause: () => void; off: (arg0: string,arg1: { (chunk: unknown): void; (): void; (error: unknown): void; }) => void; on: (arg0: string,arg1: { (chunk: unknown): void; (): void; (error: unknown): void; }) => void; }) {
+function firstResponseChunk(response: any) {
   return new Promise(function (resolve, reject) {
     let settled = false;
-    let onData = function (chunk: null|undefined) {
+    let onData = function (chunk: any) {
       response.pause();
       done(null, chunk);
     };
     let onEnd = function () { done(null, null); };
-    let onError = function (error: null) { done(error); };
-    var done = function (error: null, chunk: null|undefined) {
+    let onError = function (error: any) { done(error); };
+    var done = function (error: any, chunk?: any) {
       if (settled) return;
       settled = true;
       response.off('data', onData);
@@ -114,7 +114,7 @@ async function materializeResult(config: { COMFY_HOST: string|URL; }, job: { id:
     let out = fs.createWriteStream(temporary, { flags:'wx' });
     let total = head.length;
     let settled = false;
-    let finish = function (error: Error|null, value: unknown) {
+    let finish = function (error: Error|null, value?: unknown) {
       if (settled) return;
       settled = true;
       if (error) {

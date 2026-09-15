@@ -5,7 +5,7 @@ const fs: typeof import('node:fs') = require('node:fs')
 const path: typeof import('node:path') = require('node:path')
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process')
 
-function powershell(script, options = {}) {
+function powershell(script: any, options = {}) {
   const utf8Script = `[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)\n${script}`
   const result = spawnSync('powershell.exe', [
     '-NoProfile',
@@ -25,7 +25,7 @@ function powershell(script, options = {}) {
   return String(result.stdout || '').trim()
 }
 
-function powershellJson(script, options = {}) {
+function powershellJson(script: any, options = {}) {
   const output = powershell(script, options)
   if (!output) return null
   try {
@@ -205,7 +205,7 @@ $displays = @([D10DisplayApi]::GetDisplays() | ForEach-Object {
   return powershellJson(script)
 }
 
-function windowsForProcess(pid) {
+function windowsForProcess(pid: any) {
   const script = `
 $ErrorActionPreference = 'Stop'
 Add-Type -TypeDefinition @'
@@ -217,11 +217,11 @@ ${WINDOW_API}
   return value?.windows || []
 }
 
-function findWindow(pid, matcher) {
-  return windowsForProcess(pid).find(window => matcher(window)) || null
+function findWindow(pid: any, matcher: any) {
+  return windowsForProcess(pid).find((window: any) => matcher(window)) || null
 }
 
-function setWindowRect(hwnd, rect) {
+function setWindowRect(hwnd: any, rect: any) {
   const script = `
 $ErrorActionPreference = 'Stop'
 Add-Type -TypeDefinition @'
@@ -234,7 +234,7 @@ if (-not $ok) { throw 'SetWindowPos failed' }
   return Number(powershell(script))
 }
 
-function sendClick(x, y) {
+function sendClick(x: any, y: any) {
   const script = `
 $ErrorActionPreference = 'Stop'
 Add-Type -TypeDefinition @'
@@ -266,7 +266,7 @@ Start-Sleep -Milliseconds 30
   return Number(powershell(script))
 }
 
-function captureDesktop(rect, filePath) {
+function captureDesktop(rect: any, filePath: any) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   const escaped = filePath.replace(/'/g, "''")
   const script = `
@@ -287,7 +287,7 @@ try {
 
 // Isolated native UI previews may be hidden. Paint briefly without activation,
 // capture only the selected HWND, then restore its original visibility.
-function captureWindow(hwnd, filePath) {
+function captureWindow(hwnd: any, filePath: any) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   const escaped = filePath.replace(/'/g, "''");
   return powershell(`
@@ -326,7 +326,7 @@ try {
 `);
 }
 
-function processesByExecutable(executable) {
+function processesByExecutable(executable: any) {
   const escaped = path.resolve(executable).replace(/'/g, "''")
   const script = `
 $target = [IO.Path]::GetFullPath('${escaped}')
@@ -340,7 +340,7 @@ $items = @(Get-CimInstance Win32_Process | Where-Object {
   return powershellJson(script)?.processes || []
 }
 
-function processTree(rootPid) {
+function processTree(rootPid: any) {
   const script = `
 $all = @(Get-CimInstance Win32_Process | ForEach-Object { [pscustomobject]@{ pid = $_.ProcessId; parentPid = $_.ParentProcessId; name = $_.Name; executablePath = $_.ExecutablePath } })
 $ids = New-Object System.Collections.Generic.HashSet[int]
@@ -358,7 +358,7 @@ $items = @($all | Where-Object { $ids.Contains([int]$_.pid) })
   return powershellJson(script)?.processes || []
 }
 
-function sampleProcess(pid) {
+function sampleProcess(pid: any) {
   const script = `
 $ErrorActionPreference = 'Stop'
 $targetPid = ${Number(pid)}
@@ -382,7 +382,7 @@ try {
   return powershellJson(script)
 }
 
-function sampleProcessTree(rootPid) {
+function sampleProcessTree(rootPid: any) {
   const script = `
 $ErrorActionPreference = 'Stop'
 $rootPid = ${Number(rootPid)}
@@ -488,7 +488,7 @@ foreach ($registryPath in $paths) {
   return powershellJson(script)?.entries || []
 }
 
-function portOwner(port) {
+function portOwner(port: any) {
   const script = `
 $items = @(Get-NetTCPConnection -LocalPort ${Number(port)} -State Listen -ErrorAction SilentlyContinue | ForEach-Object {
   [pscustomobject]@{ pid = $_.OwningProcess; address = $_.LocalAddress; port = $_.LocalPort }
@@ -498,8 +498,8 @@ $items = @(Get-NetTCPConnection -LocalPort ${Number(port)} -State Listen -ErrorA
   return powershellJson(script)?.listeners || []
 }
 
-function terminateOwnedPids(pids) {
-  const unique = [...new Set(pids.map(Number).filter(pid => Number.isInteger(pid) && pid > 0))]
+function terminateOwnedPids(pids: any) {
+  const unique = [...new Set(pids.map(Number).filter((pid: any) => Number.isInteger(pid) && pid > 0))]
   if (!unique.length) return
   const list = unique.join(',')
   powershell(`$ids = @(${list}); foreach ($id in $ids) { Stop-Process -Id $id -Force -ErrorAction SilentlyContinue }`)

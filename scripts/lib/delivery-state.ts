@@ -1,15 +1,15 @@
 'use strict';
 const { object }: typeof import('./delivery-paths') = require('./delivery-paths');
-const get = (value, key) => key.split('.').reduce((a, k) => object(a) && Object.hasOwn(a, k) ? a[k] : undefined, value);
+const get = (value: any, key: any) => key.split('.').reduce((a: any, k: any) => object(a) && Object.hasOwn(a, k) ? a[k] : undefined, value);
 const MAIN_FIELDS = ['installation', 'deviceAcceptance', 'modelAcceptance'];
-const gatePath = value => typeof value === 'string' && /^(fullGate|gate|checks\.[a-zA-Z][a-zA-Z\d_]*)$/.test(value);
-function set(value, key, record) {
+const gatePath = (value: any) => typeof value === 'string' && /^(fullGate|gate|checks\.[a-zA-Z][a-zA-Z\d_]*)$/.test(value);
+function set(value: any, key: any, record: any) {
   const parts = key.split('.');
   if (!(gatePath(key) || MAIN_FIELDS.includes(key))) throw Error(`不支持的门禁字段: ${key}`);
   if (parts.length === 2) { value[parts[0]] ||= {}; value[parts[0]][parts[1]] = record; }
   else value[key] = record;
 }
-function state(v) {
+function state(v: any) {
   if (!object(v)) return 'unknown';
   const raw = v.status ?? v.result;
   const states = { pass: 'passed', passed: 'passed', fail: 'failed', failed: 'failed', unknown: 'unknown', unrun: 'unrun', 'not-run': 'unrun', pending: 'pending', skipped: 'unrun' };

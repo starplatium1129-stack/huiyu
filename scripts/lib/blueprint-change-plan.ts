@@ -67,7 +67,7 @@ function franchiseSlug(franchise: unknown) {
 }
 
 /** 与 blueprint-store.jsonText 相同的序列化格式（2 空格缩进 + 结尾换行）。 */
-function jsonText(value: { version: number; franchise?: unknown; blueprints: unknown; }) {
+function jsonText(value: any) {
   return JSON.stringify(value, null, 2) + '\n';
 }
 
@@ -90,12 +90,12 @@ const WINDOWS_RESERVED_STEMS = new Set([
   'lpt1', 'lpt2', 'lpt3', 'lpt4', 'lpt5', 'lpt6', 'lpt7', 'lpt8', 'lpt9',
 ]);
 
-function isMapping(value: null) {
+function isMapping(value: any) {
   return value instanceof Map
     || (value !== null && typeof value === 'object' && !Array.isArray(value));
 }
 
-function mappingLookup(mapping: { [x: string]: unknown; has: (arg0: string) => unknown; get: (arg0: string) => unknown; }, key: string) {
+function mappingLookup(mapping: any, key: string) {
   if (mapping instanceof Map) {
     return { has: mapping.has(key), value: mapping.get(key) };
   }
@@ -105,7 +105,7 @@ function mappingLookup(mapping: { [x: string]: unknown; has: (arg0: string) => u
 // ── 输入校验 ────────────────────────────────────────────────────────────
 
 /** 校验 manifest 结构；返回通过校验的条目（引用原对象，不复制不改写）。 */
-function validateManifest(manifest: { files: { forEach: (arg0: (entry: unknown,index: string) => void) => void; }; }, problems: string[]) {
+function validateManifest(manifest: any, problems: string[]) {
   if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
     problems.push('manifest 必须是解析对象');
     return [];
@@ -117,7 +117,7 @@ function validateManifest(manifest: { files: { forEach: (arg0: (entry: unknown,i
   const entries: unknown[] = [];
   const fileByLower = new Map();
   const franchiseSeen = new Set();
-  manifest.files.forEach((entry: { file: unknown; franchise: unknown; }, index: string) => {
+  manifest.files.forEach((entry: any, index: string) => {
     const at = 'manifest.files[' + index + ']';
     if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
       problems.push(at + ' 必须是对象');
@@ -222,7 +222,7 @@ function validateShards(shards: { [x: string]: unknown; }|null, entries: unknown
     result.set(file, { text, data });
   }
   for (const file of provided.keys()) {
-    if (!entries.some((entry: { file: unknown; }) => entry.file === file)) {
+    if (!entries.some((entry: any) => entry.file === file)) {
       problems.push('shards 包含未在 manifest 声明的分片: ' + JSON.stringify(file));
     }
   }
@@ -291,7 +291,7 @@ function planWrite(file: string, franchise: unknown, group: string|unknown[], ki
 }
 
 function buildPlan(manifest: unknown, entries: unknown[], shardMap: Map<unknown,unknown>, groups: Map<unknown,unknown>, problems: string[]) {
-  const existingByFranchise = new Map(entries.map((entry: { franchise: unknown; }) => [entry.franchise, entry]));
+  const existingByFranchise = new Map(entries.map((entry: any) => [entry.franchise, entry]));
   const nextFiles = [];
   const writes = [];
   const deletes = [];
@@ -371,7 +371,7 @@ function buildPlan(manifest: unknown, entries: unknown[], shardMap: Map<unknown,
  * 规划一次蓝图分片变更；输入不合法时抛出 BlueprintChangePlanError（.problems 为
  * 全部问题的数组）。纯函数：零 require、不读环境、不改输入、不落盘。
  */
-function planBlueprintChanges(input: { manifest: unknown; shards: unknown; franchiseByCharacter: null; blueprints: unknown; }) {
+function planBlueprintChanges(input: any) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new BlueprintChangePlanError(['planBlueprintChanges 的输入必须是单个对象参数']);
   }

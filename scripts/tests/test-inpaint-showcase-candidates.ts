@@ -122,8 +122,8 @@ test('all crop/mask coordinates stay inside the 960x1536 source bounds', () => {
 test('ops are side-agnostic: prompt must not encode left/right, the mask decides position', () => {
   const sd = inpaint.INPAINT_CONFIG['latest-lora:natsume:sd:fullbody'];
   const anima = inpaint.INPAINT_CONFIG['latest-lora:natsume:anima:fullbody'];
-  assert.deepStrictEqual(sd.ops.map(op => op.id), ['add-hairclips', 'add-mole']);
-  assert.deepStrictEqual(anima.ops.map(op => op.id), ['remove-wrong-mole', 'add-mole']);
+  assert.deepStrictEqual(sd.ops.map((op: any) => op.id), ['add-hairclips', 'add-mole']);
+  assert.deepStrictEqual(anima.ops.map((op: any) => op.id), ['remove-wrong-mole', 'add-mole']);
   for (const cfg of [sd, anima]) {
     for (const op of cfg.ops) {
       // no "left/right/viewer-side" tokens: the mask alone decides position
@@ -132,14 +132,14 @@ test('ops are side-agnostic: prompt must not encode left/right, the mask decides
     }
   }
   // The remove op targets the wrong-side mole region only via the mask.
-  const remove = anima.ops.find(op => op.id === 'remove-wrong-mole');
+  const remove = anima.ops.find((op: any) => op.id === 'remove-wrong-mole');
   assert.ok(/smooth clean cheek|no beauty mark/i.test(remove.prompt));
   assert.ok(/mole|beauty mark/i.test(remove.negative));
-  const addMoleAnima = anima.ops.find(op => op.id === 'add-mole');
+  const addMoleAnima = anima.ops.find((op: any) => op.id === 'add-mole');
   assert.ok(/single tiny beauty mark directly under the eye/i.test(addMoleAnima.prompt));
-  const addMoleSd = sd.ops.find(op => op.id === 'add-mole');
+  const addMoleSd = sd.ops.find((op: any) => op.id === 'add-mole');
   assert.ok(/single tiny beauty mark directly under the eye/i.test(addMoleSd.prompt));
-  const clips = sd.ops.find(op => op.id === 'add-hairclips');
+  const clips = sd.ops.find((op: any) => op.id === 'add-hairclips');
   assert.ok(/exactly two small parallel red hairclips/i.test(clips.prompt));
   assert.ok(/red flower|ribbon/i.test(clips.negative), 'hairclip negative must suppress flower/ribbon');
   assert.strictEqual(clips.mask.length, 2, 'exactly two clip masks');
@@ -206,7 +206,7 @@ test('buildOpWorkflow mirrors the production model chains and official inpaint n
   assert.strictEqual(composite.inputs.resize_source, false);
 });
 
-function sdwfTypes(wf: { [x: string]: { class_type: unknown; }; }) {
+function sdwfTypes(wf: any) {
   return Object.keys(wf).map(id => wf[id].class_type);
 }
 
@@ -296,7 +296,7 @@ test('attempt-5 record contract: recordId, supersedes, provenance, sha256', () =
     prompt: 'src prompt', negative: 'src neg', width: W, height: H,
     checkpoint: cfg.checkpoint, loraId: 'L_NAT_V18_WD14', loraStrength: 0.85,
   };
-  const results = cfg.ops.map((op, index) => ({
+  const results = cfg.ops.map((op: any, index: any) => ({
     op,
     denoiseConfig: inpaint.DENOISE_CONFIGS[index % 2],
     seed: 100 + index,

@@ -5,7 +5,7 @@ const { spawnSync }: typeof import('node:child_process') = require('node:child_p
 const { object, canonical, sha256, relative, within, excluded, resolveSafe, fileEntry }: typeof import('./delivery-paths') = require('./delivery-paths');
 const HASH = /^[a-f\d]{64}$/;
 
-function selectors(input) {
+function selectors(input: any) {
   if (!Array.isArray(input) || !input.length) throw Error('必须明确选择至少一个文件或目录');
   const result = input.map(item => {
     if (!object(item) || !['file', 'tree'].includes(item.kind)) throw Error('选择项需要 file/tree kind');
@@ -22,13 +22,13 @@ function selectors(input) {
 }
 // Only paths, types and bytes enter identities. No timestamps, root, environment,
 // Git status or commit: a docs-only commit need not invalidate an unrelated gate.
-function payload(snapshot) {
+function payload(snapshot: any) {
   return { version: 1, algorithm: 'sha256', selectors: snapshot.selectors,
-    entries: snapshot.entries.map(({ path, status, bytes, sha256 }) => ({ path, status, ...(status === 'file' ? { bytes, sha256 } : {}) })) };
+    entries: snapshot.entries.map(({ path, status, bytes, sha256 }: any) => ({ path, status, ...(status === 'file' ? { bytes, sha256 } : {}) })) };
 }
-function snapshot(root, input) {
+function snapshot(root: any, input: any) {
   const selection = selectors(input), entries = [], names = new Set();
-  function visit(name, kind, selectedRoot = false) {
+  function visit(name: any, kind: any, selectedRoot = false) {
     if (excluded(name)) return;
     if (names.has(name.toLowerCase())) throw Error(`路径大小写冲突: ${name}`);
     names.add(name.toLowerCase());
@@ -60,7 +60,7 @@ function snapshot(root, input) {
   result.sha256 = sha256(canonical(payload(result)));
   return result;
 }
-function validateSnapshot(record) {
+function validateSnapshot(record: any) {
   if (!object(record) || !HASH.test(record.sha256) || !Array.isArray(record.entries)) throw Error('内容身份记录缺失或格式错误');
   if (canonical(selectors(record.selectors)) !== canonical(record.selectors)) throw Error('选择项不是规范化列表');
   const seen = new Set();
@@ -69,24 +69,24 @@ function validateSnapshot(record) {
     if (!object(entry)) throw Error('文件身份条目格式错误');
     const name = relative(entry.path, true), lower = name.toLowerCase();
     if (excluded(name) || seen.has(lower) || (previous && previous >= name)) throw Error('文件身份含排除路径、重复或乱序条目');
-    if (!record.selectors.some(s => s.path === name || (s.kind === 'tree' && (s.path === '.' || within(s.path, name))))) throw Error('文件不属于明确选择的输入');
+    if (!record.selectors.some((s: any) => s.path === name || (s.kind === 'tree' && (s.path === '.' || within(s.path, name))))) throw Error('文件不属于明确选择的输入');
     seen.add(lower); previous = name;
     if (!['file', 'directory', 'empty', 'missing', 'unsafe-or-unreadable', 'not-directory'].includes(entry.status)) throw Error('文件身份状态不支持');
     if (entry.status === 'file' && (!HASH.test(entry.sha256) || !Number.isSafeInteger(entry.bytes) || entry.bytes < 0)) throw Error('文件哈希或大小错误');
   }
-  if (!record.entries.length || !record.selectors.every(s => record.entries.some(e => e.path === s.path))) throw Error('身份清单遗漏选择项');
-  const status = record.entries.every(e => ['file', 'directory'].includes(e.status)) ? 'complete' : 'incomplete';
+  if (!record.entries.length || !record.selectors.every((s: any) => record.entries.some((e: any) => e.path === s.path))) throw Error('身份清单遗漏选择项');
+  const status = record.entries.every((e: any) => ['file', 'directory'].includes(e.status)) ? 'complete' : 'incomplete';
   if (record.status !== status || record.sha256 !== sha256(canonical(payload(record)))) throw Error('身份摘要与清单不一致');
 }
-function compareSnapshot(root, recorded) {
+function compareSnapshot(root: any, recorded: any) {
   try {
     validateSnapshot(recorded);
     const current = snapshot(root, recorded.selectors), changes = [];
-    const old = new Map(recorded.entries.map(e => [e.path, e]));
+    const old = new Map(recorded.entries.map((e: any) => [e.path, e]));
     const now = new Map(current.entries.map(e => [e.path, e]));
     for (const name of [...new Set([...old.keys(), ...now.keys()])].sort()) {
       const before = old.get(name), after = now.get(name);
-      const identity = entry => entry && canonical(payload({ selectors: [], entries: [entry] }).entries[0]);
+      const identity = (entry: any) => entry && canonical(payload({ selectors: [], entries: [entry] }).entries[0]);
       if (identity(before) !== identity(after)) changes.push({ path: name, status: !before ? 'added' : !after || after.status === 'missing' ? 'removed' : 'changed', before, after });
     }
     const status = recorded.status !== 'complete' || current.status !== 'complete' ? 'unavailable'
@@ -95,9 +95,9 @@ function compareSnapshot(root, recorded) {
       problems: current.entries.filter(e => !['file', 'directory'].includes(e.status)), current };
   } catch (error) { return { status: 'invalid', message: runtimeErrorMessage(error), changes: [] }; }
 }
-function repository(root) {
+function repository(root: any) {
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));
-  function git(args) {
+  function git(args: any) {
     const result = spawnSync('git', args, { cwd: root, env: { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_TERMINAL_PROMPT: '0' },
       encoding: 'utf8', windowsHide: true, timeout: 10000, maxBuffer: 8 * 1024 * 1024 });
     if (result.error || result.status !== 0) throw Error(result.error?.message || result.stderr?.trim() || 'Git 不可用');

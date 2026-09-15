@@ -65,7 +65,7 @@ const exemptFile = exemptArg >= 0 && process.argv[exemptArg + 1]
   ? path.resolve(process.argv[exemptArg + 1])
   : path.join(__dirname, 'fixtures', 'scene-story-exemptions.json');
 try {
-  exempts = new Set(JSON.parse(fs.readFileSync(exemptFile, 'utf8')).map(x => x.id + '#' + x.label));
+  exempts = new Set(JSON.parse(fs.readFileSync(exemptFile, 'utf8')).map((x: any) => x.id + '#' + x.label));
 } catch (e) { /* 豁免文件缺失则全量校验 */ }
 
 // 定稿保护感知（AGENTS.md 红线 8）：prompt-pinned-scenes.json 中的渲染字段为

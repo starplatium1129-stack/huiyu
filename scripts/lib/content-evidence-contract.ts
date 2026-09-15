@@ -11,13 +11,13 @@ const METADATA = {
   'generate-all-scenes-showcase-miaomiao.js': ['batch', 'engine', 'characterId', 'blueprintId', 'blueprintTitle', 'sceneId', 'outfitId', 'adult', 'title', 'story', 'category', 'rating', 'checkpoint', 'intendedEntryId'],
 };
 
-function validateRecord(record: { schemaVersion: number; runId: unknown; generator: unknown; candidateId: string; key: string; attempt: unknown; recordId: string; status: string; batch: string; inputVersion: string; payloadSha256: string; payload: null; sources: unknown[]; recipeSource: { sha256: string; path: unknown; }|null; image: string; review: { verdict: string; recordId: unknown; reviewedAt: unknown; }; publishedAt: unknown; asset: { path: unknown; sha256: string; bytes: unknown; }|null|undefined; }|null, marker: { runId: unknown; generator: unknown; }) {
+function validateRecord(record: any, marker: any) {
   if (!object(record) || record.schemaVersion !== 1 || record.runId !== marker.runId || record.generator !== marker.generator
     || !UUID.test(record.candidateId) || !validId(record.key) || !Number.isSafeInteger(record.attempt) || record.attempt < 1
     || record.recordId !== `${record.key}@attempt-${record.attempt}-${record.candidateId}`
     || !STATES.includes(record.status) || !['reference', 'popular', 'scene'].includes(record.batch)
     || !SHA.test(record.inputVersion) || !SHA.test(record.payloadSha256) || !object(record.payload)
-    || !Array.isArray(record.sources) || !record.sources.length || record.sources.some((source: { path: unknown; sha256: string; bytes: unknown; }|null) => !object(source)
+    || !Array.isArray(record.sources) || !record.sources.length || record.sources.some((source: any) => !object(source)
       || typeof source.path !== 'string' || !SHA.test(source.sha256) || !Number.isSafeInteger(source.bytes) || source.bytes < 0)
     || !object(record.recipeSource) || !SHA.test(record.recipeSource.sha256) || typeof record.recipeSource.path !== 'string'
     || record.image !== `images/${record.candidateId}.png`
@@ -25,7 +25,7 @@ function validateRecord(record: { schemaVersion: number; runId: unknown; generat
     throw new Error('Invalid candidate identity, container, source declarations or inline review state');
   }
   evidencePath(record.image);
-  if (new Set(record.sources.map((source: { path: unknown; }) => source.path)).size !== record.sources.length) throw new Error('Duplicate candidate source declarations');
+  if (new Set(record.sources.map((source: any) => source.path)).size !== record.sources.length) throw new Error('Duplicate candidate source declarations');
   if (record.asset !== undefined && (!object(record.asset) || record.asset.path !== record.image
     || !SHA.test(record.asset.sha256) || !Number.isSafeInteger(record.asset.bytes) || record.asset.bytes <= 0)) throw new Error('Invalid candidate asset evidence');
 }
@@ -41,7 +41,7 @@ function inputVersion(record: object) {
     rule: 'generation-candidates.runCandidates: sources/recipeSource/key/metadata/recipe without seed' };
 }
 
-function reviewState(record: string[], integrity: string, decisionFile: { records: { [x: string]: unknown; }; manifestSha256: unknown; runId: unknown; }, manifestSha256: unknown, runId: unknown) {
+function reviewState(record: string[], integrity: string, decisionFile: any, manifestSha256: unknown, runId: unknown) {
   if (!decisionFile) return { status: 'pending', authenticity: 'unverified' };
   const decision = decisionFile.records[record.key];
   if (!decision) return { status: 'pending', authenticity: 'unverified' };
@@ -55,7 +55,7 @@ function reviewState(record: string[], integrity: string, decisionFile: { record
     reason: stale ? 'Candidate, source, request or asset changed; decision requires revalidation' : 'Explicit decision bindings match; audit does not authenticate the reviewer or image quality' };
 }
 
-function validateDecisions(value: { schemaVersion: number; kind: string; runId: string; manifestSha256: string; records: null; }|null) {
+function validateDecisions(value: { schemaVersion: number; kind: string; runId: string; manifestSha256: string; records: any; }|null) {
   if (!object(value) || value.schemaVersion !== 1 || !['content-human-review', 'reference-human-review'].includes(value.kind)
     || !UUID.test(value.runId) || !SHA.test(value.manifestSha256) || !object(value.records)) throw new Error('Unsupported human-decision file');
   return value;

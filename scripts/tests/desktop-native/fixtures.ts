@@ -12,15 +12,15 @@ const MIGRATED_JSON = [
   'ai-workspace.json',
 ]
 
-function sha256(input) {
+function sha256(input: any) {
   return crypto.createHash('sha256').update(input).digest('hex')
 }
 
-function canonicalForComparison(value) {
+function canonicalForComparison(value: any) {
   return path.resolve(value).replace(/[\\/]+$/u, '').toLowerCase()
 }
 
-function assertInside(root, candidate, label) {
+function assertInside(root: any, candidate: any, label: any) {
   const resolvedRoot = path.resolve(root)
   const resolved = path.resolve(candidate)
   const relative = path.relative(resolvedRoot, resolved)
@@ -30,7 +30,7 @@ function assertInside(root, candidate, label) {
   return resolved
 }
 
-function assertNotRealUserPath(candidate, label) {
+function assertNotRealUserPath(candidate: any, label: any) {
   const appData = process.env.APPDATA
   const localAppData = process.env.LOCALAPPDATA
   const profileRoots = [appData, localAppData].filter(Boolean).map(canonicalForComparison)
@@ -44,32 +44,32 @@ function assertNotRealUserPath(candidate, label) {
   }
 }
 
-function writeBytes(filePath, data) {
+function writeBytes(filePath: any, data: any) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, data)
 }
 
-function writeJson(filePath, value) {
+function writeJson(filePath: any, value: any) {
   writeBytes(filePath, Buffer.from(JSON.stringify(value), 'utf8'))
 }
 
-function makeReadOnly(filePath) {
+function makeReadOnly(filePath: any) {
   fs.chmodSync(filePath, 0o444)
 }
 
-function makeWritable(filePath) {
+function makeWritable(filePath: any) {
   fs.chmodSync(filePath, 0o644)
 }
 
-function snapshotFiles(directory, relativeFiles) {
-  return Object.fromEntries(relativeFiles.map(relative => {
+function snapshotFiles(directory: any, relativeFiles: any) {
+  return Object.fromEntries(relativeFiles.map((relative: any) => {
     const filePath = path.join(directory, relative)
     const data = fs.readFileSync(filePath)
     return [relative.replace(/\\/g, '/'), { bytes: data.length, sha256: sha256(data) }]
   }))
 }
 
-function createIsolatedFixture(options) {
+function createIsolatedFixture(options: any) {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-d10-round1-'))
   const appData = assertInside(tempRoot, path.join(tempRoot, 'AppData', 'Roaming'), 'APPDATA')
   const localAppData = assertInside(tempRoot, path.join(tempRoot, 'AppData', 'Local'), 'LOCALAPPDATA')
@@ -137,10 +137,10 @@ function createIsolatedFixture(options) {
   }
 }
 
-function verifySourceSnapshot(fixture, expected = fixture.sourceSnapshot) {
+function verifySourceSnapshot(fixture: any, expected = fixture.sourceSnapshot) {
   const actual = snapshotFiles(fixture.electronSource, fixture.sourceRelativeFiles)
   const mismatches = []
-  for (const relative of fixture.sourceRelativeFiles.map(value => value.replace(/\\/g, '/'))) {
+  for (const relative of fixture.sourceRelativeFiles.map((value: any) => value.replace(/\\/g, '/'))) {
     if (actual[relative]?.sha256 !== expected[relative]?.sha256 || actual[relative]?.bytes !== expected[relative]?.bytes) {
       mismatches.push({ relative, expected: expected[relative], actual: actual[relative] })
     }
@@ -148,7 +148,7 @@ function verifySourceSnapshot(fixture, expected = fixture.sourceSnapshot) {
   return { ok: mismatches.length === 0, actual, mismatches }
 }
 
-function verifyMigration(fixture) {
+function verifyMigration(fixture: any) {
   const files = []
   for (const name of MIGRATED_JSON) {
     const source = path.join(fixture.electronSource, name)
@@ -179,7 +179,7 @@ function verifyMigration(fixture) {
   }
 }
 
-function mutateSourceFixture(fixture, name, value) {
+function mutateSourceFixture(fixture: any, name: any, value: any) {
   const filePath = assertInside(fixture.tempRoot, path.join(fixture.electronSource, name), 'controlled migration mutation')
   makeWritable(filePath)
   writeJson(filePath, value)
@@ -187,7 +187,7 @@ function mutateSourceFixture(fixture, name, value) {
   return snapshotFiles(fixture.electronSource, fixture.sourceRelativeFiles)
 }
 
-function removeFixture(fixture) {
+function removeFixture(fixture: any) {
   assertInside(fixture.tempRoot, fixture.appData, 'cleanup APPDATA')
   assertInside(fixture.tempRoot, fixture.localAppData, 'cleanup LOCALAPPDATA')
   assertInside(fixture.tempRoot, fixture.workspace, 'cleanup AI workspace')
@@ -195,7 +195,7 @@ function removeFixture(fixture) {
   fs.rmSync(fixture.tempRoot, { recursive: true, force: true })
 }
 
-function safetyFailureInjection(tempRoot) {
+function safetyFailureInjection(tempRoot: any) {
   let rejected = false
   try {
     assertInside(tempRoot, process.env.APPDATA || os.homedir(), 'deliberate real-path probe')

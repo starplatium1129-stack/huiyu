@@ -75,7 +75,7 @@ function dedupe(values: unknown[]) {
   });
 }
 
-function cameraIntent(scene: { camera: unknown; }) {
+function cameraIntent(scene: any) {
   const camera = String(scene.camera || '');
   if (/\u8fdc\u666f|\u5168\u8eab|\u5168\u666f|wide|full.?body/i.test(camera)) return 'wide';
   if (/\u7279\u5199|\u8fd1\u666f|close/i.test(camera)) return 'close';
@@ -83,7 +83,7 @@ function cameraIntent(scene: { camera: unknown; }) {
   return '';
 }
 
-function cameraTags(scene: { camera: unknown; }, tags: unknown) {
+function cameraTags(scene: any, tags: unknown) {
   const intent = cameraIntent(scene);
   let normalized = [...tags];
   if (intent === 'wide') {
@@ -147,7 +147,7 @@ function optimizePromptCamera(scene: unknown, prompt: string) {
     .join(', ')).join(' BREAK ');
 }
 
-function optimizeNegative(scene: { negative: unknown; rating: string; }) {
+function optimizeNegative(scene: any) {
   const policyTokens = new Set([
     'nsfw', 'nude', 'explicit', 'child', 'loli', 'underage', 'school_uniform', 'gym_uniform'
   ]);
@@ -163,7 +163,7 @@ function optimizeNegative(scene: { negative: unknown; rating: string; }) {
   return dedupe([...baseNegative, ...custom, ...ratingTokens]).join(', ');
 }
 
-function optimize(scene: { id: string; auditRevision: unknown; tags: unknown; rating: string; prompt: unknown; }) : any {
+function optimize(scene: any) : any {
   // Direct-vision revisions deliberately use weighted natural-language groups
   // (for example, fixed prop counts and left/right character assignments).
   // The legacy comma-token normalizer would split those groups and silently

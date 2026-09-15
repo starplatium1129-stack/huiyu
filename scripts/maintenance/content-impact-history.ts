@@ -26,7 +26,7 @@ function fieldDiff(before: unknown, after: unknown, prefix: any = '') {
     fieldDiff(before[field], after[field], `${prefix}/${field.replace(/~/g, '~0').replace(/\//g, '~1')}`));
 }
 
-function historyImpact(opts: { base: string; character: null|undefined; outfit: unknown; scene: unknown; paths: unknown; root: PathLike; showcaseManifests: string|unknown[]; }, captureSnapshots: (arg0: { before: Record<string, any>; after: Record<string, any>; currentReader: { side: unknown; list(directory: string): unknown[]; evidence: Map<unknown,unknown>; read(file: string): unknown; json(file: string): unknown; verify(): string[]; }; }) => void) {
+function historyImpact(opts: any, captureSnapshots: any) {
   const result: any = { version: 2, readOnly: true,
     input: { base: opts.base, character: opts.character || null, outfit: opts.outfit || null, scene: opts.scene || null, paths: opts.paths || [] },
     mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [], affected: [], consistency: [] };
@@ -103,8 +103,8 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
       const newGroup = right.groups[group] || { complete: false, rows: [] };
       const keys = new Set([...oldGroup.rows, ...newGroup.rows].map((row: any) => row.key));
       for (const key of keys) {
-        const old = oldGroup.rows.filter((row: { key: unknown; }) => row.key === key);
-        const current = newGroup.rows.filter((row: { key: unknown; }) => row.key === key);
+        const old = oldGroup.rows.filter((row: any) => row.key === key);
+        const current = newGroup.rows.filter((row: any) => row.key === key);
         if (old.length === 1 && current.length === 1 && equal(old[0].value, current[0].value) && old[0].file === current[0].file) continue;
         const row = current[0] || old[0];
         seeds.add(key);
@@ -118,15 +118,15 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
         const newRelations = current.flatMap((r: unknown) => edges.get(r).targets);
         const changedFields = old.length === 1 && current.length === 1 ? fieldDiff(old[0].value, current[0].value) : ['/'];
         result.history.entities.push({ ...target(row.kind, row.id, row.characterId || null), domain, role: row.role, group, change, changedFields,
-          before: old.map((r: { file: unknown; }) => ({ file: r.file, side: 'base' })), after: current.map((r: { file: unknown; }) => ({ file: r.file, side: 'working-tree' })),
+          before: old.map((r: any) => ({ file: r.file, side: 'base' })), after: current.map((r: any) => ({ file: r.file, side: 'working-tree' })),
           beforeComplete: oldGroup.complete, afterComplete: newGroup.complete, oldRelations, newRelations,
           removedRelations: oldRelations.filter((r: unknown) => !newRelations.some((n: unknown) => equal(n, r))),
           addedRelations: newRelations.filter((r: unknown) => !oldRelations.some((n: unknown) => equal(n, r))) });
         if (change === 'ambiguous' || change.startsWith('unresolved')) result.unknown.push(`${domain}/${row.id}: ${change}; no authoritative absence inferred`);
         if (change !== 'modified' || !equal(oldRelations, newRelations)) globalReasons.push(`${domain}/${row.id}: identity, location or relation membership changed`);
       }
-      const beforeKeys = oldGroup.rows.map((row: { key: unknown; }) => row.key);
-      const afterKeys = newGroup.rows.map((row: { key: unknown; }) => row.key);
+      const beforeKeys = oldGroup.rows.map((row: any) => row.key);
+      const afterKeys = newGroup.rows.map((row: any) => row.key);
       if (!equal(beforeKeys, afterKeys)) {
         globalReasons.push(`${group}: global ID set/order requires full comparison`);
         const movedKeys = [...new Set([...beforeKeys, ...afterKeys])].filter((key: any) => beforeKeys.indexOf(key) !== afterKeys.indexOf(key));
@@ -156,7 +156,7 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
   while (grew) {
     grew = false;
     for (const row of [...oldRows, ...newRows]) {
-      if (!affected.has(row.key) && edges.get(row).targets.some((edge: { key: unknown; }) => affected.has(edge.key))) {
+      if (!affected.has(row.key) && edges.get(row).targets.some((edge: any) => affected.has(edge.key))) {
         affected.add(row.key); grew = true;
       }
     }
@@ -174,7 +174,7 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
     const current = newRows.filter((row: any) => row.key === key);
     const identity = current[0] || old[0] || contexts.get(key);
     if (!identity) { result.unknown.push(`${key}: explicit target not found in either snapshot`); continue; }
-    const locations = (rows: unknown[], side: string, role: string) => rows.filter((r: { role: string; }) => r.role === role).map((r: { file: unknown; }) => ({ file: r.file, side }));
+    const locations = (rows: unknown[], side: string, role: string) => rows.filter((r: { role: string; }) => r.role === role).map((r: any) => ({ file: r.file, side }));
     const item: any = { ...target(identity.kind, identity.id, identity.characterId || null),
       impact: affected.has(key) ? 'revalidate' : 'related-context',
       oldRelations: old.flatMap((row: any) => edges.get(row).targets), newRelations: current.flatMap((row: any) => edges.get(row).targets),
@@ -210,23 +210,23 @@ function historyImpact(opts: { base: string; character: null|undefined; outfit: 
   return result;
 }
 
-function buildPlan(result: { version?: number; readOnly?: boolean; input?: { base: unknown; character: unknown; outfit: unknown; scene: unknown; paths: unknown; }; mustChange?: never[]; revalidate?: never[]; related?: never[]; unknown: unknown; recommendations?: never[]; affected?: never[]; consistency: unknown; history?: unknown; }, targets: unknown[], globalReasons: string[]) {
+function buildPlan(result: any, targets: unknown[], globalReasons: string[]) {
   const unknown = [...result.unknown];
   const reasons = [...new Set([...globalReasons, ...unknown])];
   const byGroup = result.history.entities;
-  const proven = byGroup.filter((change: { domain: string; beforeComplete: unknown; afterComplete: unknown; change: string; }) => ['popular', 'scenes', 'blueprints'].includes(change.domain)
+  const proven = byGroup.filter((change: any) => ['popular', 'scenes', 'blueprints'].includes(change.domain)
     && change.beforeComplete && change.afterComplete && change.change !== 'ambiguous'
-    && result.consistency.filter((entry: { domain: unknown; }) => entry.domain === change.domain).length === 2
-    && result.consistency.filter((entry: { domain: unknown; }) => entry.domain === change.domain).every((entry: { groups: unknown[]; }) => entry.groups.every((group: { complete: unknown; }) => group.complete)));
+    && result.consistency.filter((entry: any) => entry.domain === change.domain).length === 2
+    && result.consistency.filter((entry: any) => entry.domain === change.domain).every((entry: { groups: unknown[]; }) => entry.groups.every((group: any) => group.complete)));
   const full = reasons.length > 0;
   return { version: 1, preview: true, executed: false, mode: full ? 'full' : 'incremental',
     wholeLibrary: 'not-validated', baselineAcceptance: 'unknown (a commit identifies input, not a previously passed gate)',
     incrementalChecks: proven.length ? [{ id: 'source-derived-record-equality', nature: ['read-only'], scope: 'only enumerated stable IDs',
-      targets: [...new Set(proven.map((item: { key: unknown; }) => item.key))], status: 'preview',
+      targets: [...new Set(proven.map((item: any) => item.key))], status: 'preview',
       proof: 'Both manifests/containers were read; source and derived records are kept separate; record equality is independent of other IDs. Global ordering/count/version predicates remain full.',
       evidence: 'history.entities + consistency + evidence.files; no reuse after input hashes change' }] : [],
     dependencyChecks: targets.length ? [{ id: 'old-and-new-relationship-closure', nature: ['read-only'], status: unknown.length ? 'requires-full' : 'preview',
-      targets: targets.map((row: { key: unknown; }) => row.key), proof: 'Union of dependency edges from both snapshots, including former owners/outfits; unknown edges prevent claiming complete incremental coverage' }] : [],
+      targets: targets.map((row: any) => row.key), proof: 'Union of dependency edges from both snapshots, including former owners/outfits; unknown edges prevent claiming complete incremental coverage' }] : [],
     fullChecks: full ? [{ id: 'full-content-contracts', status: 'required-not-run', reasons }] : [],
     safety: 'No execution entry is provided. Registered recommendations may rebuild data; inspect their nature and isolate/authorize separately.',
     acceptance: 'A scoped equality/relationship pass never means all content, assets or rendering passed' };

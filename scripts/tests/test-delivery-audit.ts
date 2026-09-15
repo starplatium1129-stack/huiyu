@@ -15,10 +15,10 @@ test('比较同提交同构建；重复参数、状态隔离及组合检查零�
   f.write('other.json', { ...f.d, environment: { platform: 'other' }, installation: { status: 'passed' } });
   const before = snapshotTree(f.root);
   const r = report(parse(['--root', f.root, '--evidence', 'evidence.json', '--compare-evidence', 'other.json', '--compare-evidence', 'other.json', '--check-head', '--check-worktree', '--verify-file', 'other.json']));
-  assert.deepEqual(r.comparisons.map(v => v.status), ['matched', 'matched']);
+  assert.deepEqual(r.comparisons.map((v: any) => v.status), ['matched', 'matched']);
   assert.equal(r.repositoryHead.status, 'matched');
   assert.equal(r.repositoryWorktree.status, 'dirty');
-  assert.ok(r.pending.some(v => v.field === 'installation'));
+  assert.ok(r.pending.some((v: any) => v.field === 'installation'));
   assert.equal(r.verifiedFiles[0].status, 'exists');
   assert.deepEqual(snapshotTree(f.root), before);
   assert.equal(f.run().comparisons, undefined);
@@ -79,7 +79,7 @@ test('比较拒绝缺失、坏 JSON、绝对/父目录/junction 越界；help/pl
     assert.equal(r.status, 0, r.stderr);
   }
 });
-function gitFixture(t) {
+function gitFixture(t: any) {
   const f = fixture(t);
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));
   const git = (...args) => {
@@ -91,17 +91,17 @@ function gitFixture(t) {
   git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgSign=false', 'commit', '--allow-empty', '-m', 'fixture');
   return { ...f, git, head: git('rev-parse', '--verify', 'HEAD^{commit}') };
 }
-function snapshotTree(root) {
+function snapshotTree(root: any) {
   return Object.fromEntries(fs.readdirSync(root, { recursive: true }).sort().map(name => {
     const p = path.join(root, name);
     return [name, fs.statSync(p).isDirectory() ? null : fs.readFileSync(p).toString('hex')];
   }));
 }
-function fixture(t) {
+function fixture(t: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-delivery-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const d = { schemaVersion: 1, commit, baseline: 'c'.repeat(40), scope: 'isolated office CPU', environment: { platform: 'win32', node: 'v24.18.0' }, build: { manifestSha256: hash }, fullGate: { status: 'passed', log: 'gate.log' } };
-  const write = (file, value) => fs.writeFileSync(path.join(root, file), JSON.stringify(value));
+  const write = (file: any, value: any) => fs.writeFileSync(path.join(root, file), JSON.stringify(value));
   write('evidence.json', d);
   return { root, d, write, run: (extra = {}) => report({ root, evidence: 'evidence.json', require: [], builds: [], ...extra }) };
 }
@@ -110,8 +110,8 @@ test('同提交跨两个隔离环境交接；办公机通过不等于设备通�
   const before = fs.readFileSync(path.join(office.root, 'evidence.json'));
   const r = office.run({ commit, builds: [`build.manifestSha256=${hash}`] });
   assert.equal(r.exitCode, 3);
-  assert.deepEqual(r.pending.map(v => v.field), ['tracking', 'fullGate', 'installation', 'deviceAcceptance', 'modelAcceptance']);
-  assert.ok(r.recommendations.every(v => v.executed === false));
+  assert.deepEqual(r.pending.map((v: any) => v.field), ['tracking', 'fullGate', 'installation', 'deviceAcceptance', 'modelAcceptance']);
+  assert.ok(r.recommendations.every((v: any) => v.executed === false));
   assert.deepEqual(fs.readFileSync(path.join(office.root, 'evidence.json')), before);
   main.d.scope = 'isolated main-machine record fixture';
   for (const key of ['installation', 'deviceAcceptance', 'modelAcceptance']) main.d[key] = { status: 'passed', report: `${key}.log` };
@@ -136,7 +136,7 @@ test('必要门禁缺失/失败与引用缺失分开报告', t => {
   f.d.fullGate.status = 'failed'; f.write('evidence.json', f.d);
   assert.equal(f.run().exitCode, 1);
   f.d.fullGate = { status: 'passed' }; f.write('evidence.json', f.d);
-  assert.ok(f.run().pending.some(v => v.field === 'fullGate'));
+  assert.ok(f.run().pending.some((v: any) => v.field === 'fullGate'));
 });
 test('单项旧提交或旧构建验收不覆盖当前交付', t => {
   const f = fixture(t);
@@ -159,7 +159,7 @@ test('基线、日期、源哈希及 deployment 不冒充最终提交/构建/安
   f.d.sourceHashes = { 'source.js': hash }; f.d.deployment = { mismatch: [], checkedAt: '2026-09-13' };
   f.write('evidence.json', f.d);
   const r = f.run();
-  assert.ok(['commit', 'build', 'installation'].every(k => r.pending.some(v => v.field === k)));
+  assert.ok(['commit', 'build', 'installation'].every(k => r.pending.some((v: any) => v.field === k)));
   assert.equal(f.run({ commit }).exitCode, 1);
 });
 test('隔离 root 拒绝越界及损坏输入，帮助/预览不读取证据', t => {
@@ -187,7 +187,7 @@ test('显式文件匹配、重复参数、大小写哈希及零写入；不自�
   const digest = createHash('sha256').update(fs.readFileSync(path.join(f.root, 'artifact=one.bin'))).digest('hex');
   const options = parse(['--root', f.root, '--evidence', 'evidence.json', '--verify-file', 'artifact=one.bin', '--verify-file', 'evidence.json', '--expect-file-sha256', `artifact=one.bin=${digest.toUpperCase()}`, '--expect-file-sha256', `artifact=one.bin=${digest}`]);
   const r = report(options);
-  assert.deepEqual(r.verifiedFiles.map(v => v.status), ['exists', 'exists', 'matched', 'matched']);
+  assert.deepEqual(r.verifiedFiles.map((v: any) => v.status), ['exists', 'exists', 'matched', 'matched']);
   assert.equal(r.verifiedFiles[2].actualSha256, digest);
   assert.equal(r.errors.length, 0);
   assert.equal(r.exitCode, 3);
@@ -200,7 +200,7 @@ test('错哈希、缺文件与目录分别报错，继续报告全部显式目�
   fs.mkdirSync(path.join(f.root, 'folder'));
   const r = f.run({ verifyFiles: ['missing.log', 'folder'], fileHashes: [`evidence.json=${'0'.repeat(64)}`, `missing.bin=${hash}`] });
   assert.equal(r.exitCode, 1);
-  assert.deepEqual(r.verifiedFiles.map(v => v.status), ['missing', 'not-file', 'mismatch', 'missing']);
+  assert.deepEqual(r.verifiedFiles.map((v: any) => v.status), ['missing', 'not-file', 'mismatch', 'missing']);
   assert.equal(r.errors.length, 4);
   assert.match(r.verifiedFiles[2].actualSha256, /^[a-f\d]{64}$/);
 });
@@ -210,8 +210,8 @@ test('拒绝绝对路径、父目录逃逸及 junction/symlink 真实路径越�
   fs.symlinkSync(other.root, path.join(f.root, 'escape'), process.platform === 'win32' ? 'junction' : 'dir');
   const r = f.run({ verifyFiles: [path.join(other.root, 'evidence.json'), '../outside', 'escape/evidence.json', 'C:relative'] });
   assert.equal(r.exitCode, 1);
-  assert.deepEqual(r.verifiedFiles.map(v => v.status), Array(4).fill('outside-root'));
-  assert.ok(r.verifiedFiles.every(v => v.actualSha256 === undefined));
+  assert.deepEqual(r.verifiedFiles.map((v: any) => v.status), Array(4).fill('outside-root'));
+  assert.ok(r.verifiedFiles.every((v: any) => v.actualSha256 === undefined));
 });
 
 test('文件核验 CLI JSON；直接及工作流 help/plan 不访问不存在的 root 和目标', t => {
@@ -239,7 +239,7 @@ test('HEAD 匹配解析回执最终提交；dirty 工作树不算验收且整个
   assert.equal(r.repositoryHead.commit, f.head);
   assert.equal(r.repositoryHead.evidenceCommit, f.head);
   assert.equal(r.exitCode, 3); // HEAD does not prove missing device acceptance.
-  assert.ok(r.limitations.some(v => v.message.includes('不覆盖 dirty working tree')));
+  assert.ok(r.limitations.some((v: any) => v.message.includes('不覆盖 dirty working tree')));
   assert.deepEqual(snapshotTree(f.root), before);
   assert.equal(f.run().repositoryHead, undefined);
 });
@@ -282,7 +282,7 @@ test('HEAD CLI 可解析；直接及工作流帮助/预览完全不启动子进�
   }
 });
 
-function cleanWorktree(t) {
+function cleanWorktree(t: any) {
   const f = gitFixture(t);
   f.git('add', 'evidence.json');
   f.git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgSign=false', 'commit', '-m', 'track evidence');
@@ -308,7 +308,7 @@ test('worktree clean 与未提交修改、暂存修改独立报告，包含索�
     assert.equal(r.repositoryWorktree.status, 'dirty');
     assert.equal(r.repositoryWorktree.changedFiles[0].kind, 'uncommitted');
     assert.equal(r.repositoryWorktree.changedFiles[0].raw, `${staged ? 'M ' : ' M'} evidence.json`);
-    assert.ok(r.errors.some(v => v.field === 'repositoryWorktree'));
+    assert.ok(r.errors.some((v: any) => v.field === 'repositoryWorktree'));
     assert.deepEqual(snapshotTree(f.root), dirtyBefore);
   }
 });
@@ -363,7 +363,7 @@ test('worktree 命令失败及损坏状态 fail closed，校验精确只读命�
     assert.equal(run.status, 1, run.stderr);
     const r = JSON.parse(run.stdout);
     assert.equal(r.repositoryWorktree.status, 'unavailable');
-    assert.ok(r.errors.some(v => v.field === 'repositoryWorktree'));
+    assert.ok(r.errors.some((v: any) => v.field === 'repositoryWorktree'));
   }
 });
 

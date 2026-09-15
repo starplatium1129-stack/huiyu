@@ -109,7 +109,7 @@ function sha256(bytes: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
   return crypto.createHash('sha256').update(bytes).digest('hex');
 }
 
-function validateAllowance(entry: never, index: number) {
+function validateAllowance(entry: any, index: number) {
   if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
     throw new Error(`Debt allowance ${index} must be an object`);
   }
@@ -367,7 +367,7 @@ function unknownViolation(target: string, relativePath: string) {
   };
 }
 
-function appendBlobViolations(result: { repositoryRoot?: string; counts?: { index: number; worktree: number; untracked: number; }; violations: unknown; allowed: unknown; }, target: string, relativePath: string|undefined, bytes: NonSharedBuffer, allowanceLookup: Map<unknown,unknown>) {
+function appendBlobViolations(result: any, target: string, relativePath: string|undefined, bytes: NonSharedBuffer, allowanceLookup: Map<unknown,unknown>) {
   const violations = scanText(bytes, expectedLineEnding(target, relativePath), relativePath);
   if (violations.length === 0) return;
   const digest = sha256(bytes);
@@ -390,7 +390,7 @@ function repositoryPath(repositoryRoot: string, relativePath: string) {
   return absolutePath;
 }
 
-function readWorktreeBlob(repositoryRoot: string, relativePath: string, target: string, result: { violations: { target: string; path: unknown; kind: string; message: string; }[]; }) {
+function readWorktreeBlob(repositoryRoot: string, relativePath: string, target: string, result: any) {
   const absolutePath = repositoryPath(repositoryRoot, relativePath);
   let stat;
   try {
@@ -415,7 +415,7 @@ function readWorktreeBlob(repositoryRoot: string, relativePath: string, target: 
   }
 }
 
-function scanWorktreeTarget(repositoryRoot: string, relativePaths: unknown[], target: string, allowanceLookup: Map<unknown,unknown>, result: { repositoryRoot?: string; counts: unknown; violations: unknown; allowed?: never[]; }) {
+function scanWorktreeTarget(repositoryRoot: string, relativePaths: unknown[], target: string, allowanceLookup: Map<unknown,unknown>, result: any) {
   for (const relativePath of relativePaths) {
     const bytes = readWorktreeBlob(repositoryRoot, relativePath, target, result);
     if (bytes === null) continue;
@@ -430,7 +430,7 @@ function scanWorktreeTarget(repositoryRoot: string, relativePaths: unknown[], ta
 }
 
 function sortViolations(violations: unknown[]) {
-  violations.sort((left: { target: string; path: number; line: unknown; column: unknown; kind: number; }, right: { target: string; path: number; line: unknown; column: unknown; kind: number; }) => {
+  violations.sort((left: any, right: any) => {
     const targetDifference = TARGET_ORDER.get(left.target) - TARGET_ORDER.get(right.target);
     if (targetDifference !== 0) return targetDifference;
     const pathDifference = compareStrings(left.path, right.path);
@@ -466,7 +466,7 @@ async function scanRepository(startPath: string, options = {}) {
   const textIndexEntries = [];
   for (const relativePath of [...entriesByPath.keys()].sort(compareStrings)) {
     const entries = entriesByPath.get(relativePath);
-    const stages = [...new Set(entries.map((entry: { stage: unknown; }) => entry.stage))].sort();
+    const stages = [...new Set(entries.map((entry: any) => entry.stage))].sort();
     if (stages.some((stage) => stage !== 0)) {
       result.violations.push({
         target: 'index',
@@ -534,7 +534,7 @@ async function scanRepository(startPath: string, options = {}) {
   return result;
 }
 
-function formatViolation(violation: { line: unknown; column: unknown; target: unknown; path: unknown; message: unknown; }) {
+function formatViolation(violation: any) {
   const line = violation.line ? `:${violation.line}` : '';
   const column = violation.column ? `:${violation.column}` : '';
   return `${violation.target}:${violation.path}${line}${column}: ${violation.message}`;

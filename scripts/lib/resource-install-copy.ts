@@ -5,7 +5,7 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 const { child, noLinks, mkdir, ensureSpace, writeAll, event, cancelled, fail, digest, flushDir, unlink }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
 const CHUNK = 512 * 1024;
-function fileMatches(ctx: { io: { openSync: (arg0: string,arg1: string) => unknown; fstatSync: (arg0: unknown) => unknown; readSync: (arg0: unknown,arg1: Buffer<ArrayBuffer>,arg2: number,arg3: number,arg4: null) => unknown; closeSync: (arg0: unknown) => void; }; }, file: string, entry: { bytes: number; sha256: string; }) {
+function fileMatches(ctx: any, file: string, entry: { bytes: number; sha256: string; }) {
   const st = noLinks(ctx.io, file, { missing: true });
   if (!st) return false;
   if (!st.isFile()) fail('UNSAFE_FILE', 'Expected an ordinary resource file');
@@ -27,7 +27,7 @@ function fileMatches(ctx: { io: { openSync: (arg0: string,arg1: string) => unkno
     return total === entry.bytes && hash.digest('hex') === entry.sha256;
   } finally { ctx.io.closeSync(fd); }
 }
-async function copyEntry(ctx: { io: { openSync: (arg0: string,arg1: string,arg2: number|undefined) => unknown; fstatSync: (arg0: unknown) => unknown; readSync: (arg0: unknown,arg1: Buffer<ArrayBuffer>,arg2: number,arg3: number,arg4: null) => unknown; fsyncSync: (arg0: unknown) => void; closeSync: (arg0: unknown) => void; renameSync: (arg0: string,arg1: string) => void; }; }, { sourceRoot, tree, parts, entry, signal }: unknown) {
+async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: unknown) {
   cancelled(signal);
   const target = child(tree, entry.path);
   if (fileMatches(ctx, target, entry)) {

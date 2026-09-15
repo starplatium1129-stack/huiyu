@@ -12,8 +12,8 @@ const { child, noLinks, readJson, writeJson, mkdir, initialize, lockFile, fail }
 
 const ACTIONS = ['import', 'download', 'recover', 'rollback'];
 const ACTIVE = ['running', 'cancelling'];
-function taskFile(ctx) { return child(ctx.store, 'gateway/task.json'); }
-function savedTask(ctx) {
+function taskFile(ctx: any) { return child(ctx.store, 'gateway/task.json'); }
+function savedTask(ctx: any) {
   const value = readJson(fs, taskFile(ctx), true);
   if (!value) return null;
   if (!/^[a-f\d-]{36}$/.test(value.id || '') || !ACTIONS.includes(value.action)
@@ -31,17 +31,17 @@ function savedTask(ctx) {
 
 // One bounded task record; lifecycle journals/verified partial files remain the recovery source
 // of truth. GET/startup never initialize storage. Only explicit local mutations create it.
-function createResourceManager(gateway) {
-  let config = null;
-  let snapshot = null;
-  let issue = null;
-  let task = null;
-  let active = null;
+function createResourceManager(gateway: any) {
+  let config: any = null;
+  let snapshot: any = null;
+  let issue: any = null;
+  let task: any = null;
+  let active: any = null;
   let closed = false;
   let settled = Promise.resolve();
-  let modelGroups = [];
+  let modelGroups: any = [];
   let previousAvailable = false;
-  let lastInstalled = null;
+  let lastInstalled: any = null;
 
   function refresh() {
     if (active) return;
@@ -85,11 +85,11 @@ function createResourceManager(gateway) {
       busy: Boolean(active), mounted: Boolean(snapshot && !active),
       current: snapshot ? { identity: snapshot.identity, releaseId: snapshot.releaseId, files: snapshot.verifiedFiles } : active ? lastInstalled : null,
       canRollback: previousAvailable, recoveryRequired, issue,
-      releases: (config?.releases || []).map(release => ({ ...release,
+      releases: (config?.releases || []).map((release: any) => ({ ...release,
         downloaded: release.source === 'http' && cachePresent(release.id) })),
       task: task ? structuredClone(task) : null };
   }
-  function cachePresent(id) {
+  function cachePresent(id: any) {
     try {
       const release = releasePolicy(config.ctx, id);
       const file = child(config.ctx.store, 'downloads/' + release.packageIdentity + '/complete.json');
@@ -97,7 +97,7 @@ function createResourceManager(gateway) {
     } catch { return false; }
   }
   function save() { writeJson(fs, taskFile(config.ctx), task); }
-  function start(action, releaseId, localAuthorized) {
+  function start(action: any, releaseId: any, localAuthorized: any) {
     if (closed || localAuthorized !== true) fail('ACCESS_DENIED', 'Local authorization required');
     if (gateway.RESOURCE_MANAGEMENT !== true) fail('MANAGEMENT_DISABLED', 'Operator must enable management');
     if (active) fail('BUSY', 'A resource task is active');
@@ -134,7 +134,7 @@ function createResourceManager(gateway) {
     const options = { ...config.options,
       access: { isLocalStudioHost: () => localAuthorized === true,
         isAuthorized: () => !closed && gateway.RESOURCE_MANAGEMENT === true && operationConfig.unchanged() },
-      onEvent: event => {
+      onEvent: (event: any) => {
         task.phase = event.phase;
         task.bytes = Number.isSafeInteger(event.bytes) ? event.bytes : 0;
         task.total = Number.isSafeInteger(event.total) ? event.total : 0;
@@ -160,7 +160,7 @@ function createResourceManager(gateway) {
     });
     return accepted;
   }
-  function cancel(id, localAuthorized) {
+  function cancel(id: any, localAuthorized: any) {
     if (localAuthorized !== true || !config?.unchanged() || !gateway.RESOURCE_MANAGEMENT) fail('ACCESS_DENIED', 'Local authorization required');
     if (!task || task.id !== id) fail('TASK_NOT_FOUND', 'Task not found');
     if (active) { task.state = 'cancelling'; active.abort(); }
@@ -168,7 +168,7 @@ function createResourceManager(gateway) {
   }
   refresh();
   return { status, start, cancel, mount,
-    invalidate(error) { snapshot = null; issue = publicError(error); },
+    invalidate(error: any) { snapshot = null; issue = publicError(error); },
     close() { closed = true; active?.abort(); return settled; },
     settled() { return settled; } };
 }

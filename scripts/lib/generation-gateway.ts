@@ -68,7 +68,7 @@ function validatePng(buffer: unknown[]|Buffer<ArrayBuffer>) {
   return { mime: 'image/png', width, height };
 }
 
-async function readBody(response: { headers: { get: (arg0: string) => unknown; }; body: unknown; }, limit: number) {
+async function readBody(response: any, limit: number) {
   if (Number(response.headers.get('content-length')) > limit) throw new Error('response exceeds size limit');
   const parts = [];
   let size = 0;
@@ -84,15 +84,15 @@ function definitive(message: string|undefined) {
   return Object.assign(new Error(message), { definitive: true });
 }
 
-async function generate(record: { jobId: string|number|boolean; status: string; gateway: string|URL; payload: unknown; resultUrl: string; provider: unknown; actualSeed: unknown; seed: unknown; }, save: (arg0: unknown) => void, options = {}) {
+async function generate(record: any, save: any, options = {}) {
   const { signal, fetchImpl = globalThis.fetch, pollMs = 2000, timeoutMs = 600000 } = options;
   const signalForRequest = () => AbortSignal.any([...(signal ? [signal] : []), AbortSignal.timeout(Math.min(timeoutMs, 30000))]);
-  async function request(url: string, init: undefined) {
+  async function request(url: string, init?: any) {
     const response = await fetchImpl(url, { ...init, redirect: 'error', signal: signalForRequest() });
     if (!response.ok) throw new Error(`gateway HTTP ${response.status}`);
     return response;
   }
-  async function json(url: string, init: { method: string; headers: { 'Content-Type': string; }; body: string; }|undefined) {
+  async function json(url: string, init?: { method: string; headers: { 'Content-Type': string; }; body: string; }|undefined) {
     const response = await request(url, init);
     const data = JSON.parse((await readBody(response, 1024 * 1024)).toString('utf8'));
     if (!data || typeof data !== 'object' || data.ok === false) throw new Error('invalid gateway JSON response');

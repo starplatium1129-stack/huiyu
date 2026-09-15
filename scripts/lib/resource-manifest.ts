@@ -268,7 +268,7 @@ function generateManifest({ root, io = nodeFs }: ManifestOptions) {
  */
 function parseManifestStructure(manifest: ManifestObject) {
   const errors: unknown[] = [];
-  const push = (error: { code?: string; message?: string; count?: unknown; path?: string; }) => errors.push(error);
+  const push = (error: any) => errors.push(error);
   const empty = () => ({ errors, listed: 0, byPath: new Map(), invalidPaths: new Set() });
   if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
     push({ code: 'bad-manifest', message: '清单必须是 JSON 对象' });
@@ -335,7 +335,7 @@ function parseManifestStructure(manifest: ManifestObject) {
 /** 清单条目内容核验（不可信数据）：先结构，再边界，最后 stat/字节/哈希。 */
 function verifyEntries(rootReal: string, manifest: ManifestObject, io: typeof import("node:fs")) {
   const { errors, listed, byPath, invalidPaths } = parseManifestStructure(manifest);
-  const push = (error: { path: unknown; code: string|undefined; message: string|undefined; expected?: unknown; actual?: string|number; }) => errors.push(error);
+  const push = (error: any) => errors.push(error);
   for (const [rel, record] of byPath) {
     if (invalidPaths.has(rel)) continue;
     const abs = path.join(rootReal, ...rel.split('/'));

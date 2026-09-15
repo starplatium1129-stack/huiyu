@@ -5,8 +5,8 @@ const { child, readBytes, digest }: typeof import('./resource-install-fs') = req
 
 // Overlay an entire model dependency graph or none of it. Never fill holes in a new
 // model with old textures/physics. Unknown schemas stay on the bundled model.
-function completeLive2dPaths(root, entries, io) {
-  const byPath = new Map(entries.map(entry => [entry.path, entry]));
+function completeLive2dPaths(root: any, entries: any, io: any) {
+  const byPath = new Map(entries.map((entry: any) => [entry.path, entry]));
   const groups = [];
   for (const entry of entries) {
     if (!entry.path.startsWith('assets/live2d/') || !/\.model3\.json$/i.test(entry.path)) continue;
