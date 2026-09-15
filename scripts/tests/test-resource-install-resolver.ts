@@ -53,7 +53,7 @@ function tree(root: any) {
   visit(root);
   return { dirs, files: snapshot(root) };
 }
-function checked(f: any, { options = {}, error, onRead, injectedMutation = false } = {}) {
+function checked(f: any, { options = {}, error, onRead, injectedMutation = false }: any = {}) {
   const adapter = readOnlyIo(onRead);
   const before = tree(f.base);
   const program = snapshot(f.program);

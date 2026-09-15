@@ -100,8 +100,8 @@ function poseConflicts(scene: any) {
     kneeling: ['kneeling', 'all_fours']
   };
   const activeFor = (keys: Set<any>) => Object.entries(poseGroups)
-    .filter(([, tags]) => tags.some((tag) => keys.has(tag)))
-    .map(([name]) => name);
+    .filter(([, tags]: any) => tags.some((tag) => keys.has(tag)))
+    .map(([name]: any) => name);
   if ((scene && scene.char === 'triad') || /\bBREAK\b/i.test(String(scene && scene.prompt || ''))) {
     const conflicts: string[] = [];
     splitPromptSegments(scene && scene.prompt).forEach((segment, index) => {

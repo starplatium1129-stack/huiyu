@@ -23,7 +23,7 @@ function sourceUrl(release: any, relative: any) {
   if (url.origin !== base!.origin || !url.pathname.startsWith(base!.pathname)) fail('UNSAFE_SOURCE', 'URL left its approved source directory');
   return url;
 }
-function response(url: any, { headers = {}, signal, timeoutMs = 30000 } = {}) {
+function response(url: any, { headers = {}, signal, timeoutMs = 30000 }: any = {}) {
   cancelled(signal);
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail('CONFIG_REQUIRED', 'timeoutMs must be 1..60000');
   return new Promise((resolve, reject) => {

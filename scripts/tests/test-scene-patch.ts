@@ -32,9 +32,9 @@ test('scene patch: isolated CLI dry-run only writes explicitly requested report'
   const reportRun = run(['--out', output]); assert.equal(reportRun.status, 0, reportRun.stderr);
   const report = JSON.parse(fs.readFileSync(output, 'utf8'));
   assert.equal(report.dryRun, true); assert.equal(report.changed, 1); assert.equal(report.schemaVersion, 1);
-  assert.deepEqual(snapshot().filter(([file]) => file !== 'report.json'), before);
+  assert.deepEqual(snapshot().filter(([file]: any) => file !== 'report.json'), before);
   const rejected = run(['--out', input[0].file + '.gz']); assert.equal(rejected.status, 1);
-  assert.deepEqual(snapshot().filter(([file]) => file !== 'report.json'), before);
+  assert.deepEqual(snapshot().filter(([file]: any) => file !== 'report.json'), before);
   const failed = run(['--apply', '--out', output]); assert.equal(failed.status, 1);
   const failureReport = JSON.parse(fs.readFileSync(output, 'utf8'));
   assert.equal(failureReport.writeStatus, 'rolled-back'); assert.equal(failureReport.rollbackCapability.restored, true);

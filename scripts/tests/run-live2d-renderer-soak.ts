@@ -195,7 +195,7 @@ function runRenderer() {
     String(fps),
   ]
   const childEnv = Object.fromEntries(
-    Object.entries(process.env).filter(([name]) => !name.toUpperCase().startsWith('L2D_')),
+    Object.entries(process.env).filter(([name]: any) => !name.toUpperCase().startsWith('L2D_')),
   )
   childEnv.WGPU_BACKEND = 'dx12'
   const child = spawn(EXE, args, {

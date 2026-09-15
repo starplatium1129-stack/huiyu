@@ -39,7 +39,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
     }
   };
   const metadata = (file: string, value: { [s: string]: any; }|ArrayLike<any>, omit: string|string[]) => {
-    result.metadata[file] = Object.fromEntries(Object.entries(value).filter(([key]) => !omit.includes(key)));
+    result.metadata[file] = Object.fromEntries(Object.entries(value).filter(([key]: any) => !omit.includes(key)));
   };
   const product = (file: string, expected: any, validate: (v: any) => boolean, rowSelector: (v: any) => any = (v: any) => v) => {
     try {
@@ -142,7 +142,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
       const byId = new Map(sourceRows.map((row) => [row.id, row]));
       product('data/scenes-core.json', sourceComplete && coreIds ? coreIds.map((id: any) => byId.get(id)) : undefined, shape);
       const index = sourceComplete && coreIds ? { version: 1, total: sourceRows.length,
-        shards: Object.fromEntries(Object.entries(grouped).map(([key, rows]) => [key, { file: `scenes-${key}.json`, count: rows.length }])),
+        shards: Object.fromEntries(Object.entries(grouped).map(([key, rows]: any) => [key, { file: `scenes-${key}.json`, count: rows.length }])),
         tiers: { core: coreIds }, orderedIds: sourceRows.map((row) => row.id) } : undefined;
       // Index contains global ordering/count constraints, not scene records.
       try {
@@ -184,7 +184,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
       try {
         const value: any = json(file);
         if (!object(value)) throw new Error('invalid reference container');
-        const characters: any = role === 'source' ? value.characters : Object.entries(value).map(([id, row]) => ({ ...row, id }));
+        const characters: any = role === 'source' ? value.characters : Object.entries(value).map(([id, row]: any) => ({ ...row, id }));
         if (!validRows(characters) || characters.some((row: any) => !Array.isArray(row.outfits)
           || row.outfits.some((outfit: any) => !object(outfit) || !validId(role === 'source' ? outfit.id : outfit.outfitId)
             || (role === 'derived' && (!Array.isArray(outfit.references) || outfit.references.some((ref: any) => !object(ref) || !validId(ref.id))))))) throw new Error('invalid reference character/outfit records');

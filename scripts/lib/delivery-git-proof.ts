@@ -8,7 +8,7 @@ const MAX_BLOB = 64 * 1024 * 1024;
 
 // No shell, filters, refresh/index writes, replacement objects or lazy fetches.
 function git(root: any, args: any, input?: any) {
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));
+  const env = Object.fromEntries(Object.entries(process.env).filter(([key]: any) => !/^GIT_/i.test(key)));
   const result = spawnSync('git', ['--no-optional-locks', '--no-replace-objects', '-c', 'core.fsmonitor=false', ...args], {
     cwd: root, input, env: { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_TERMINAL_PROMPT: '0', GIT_NO_LAZY_FETCH: '1' },
     windowsHide: true, timeout: 10000, maxBuffer: MAX_BLOB + 1024 * 1024,
@@ -94,7 +94,7 @@ function sourceProof(root: any, commit: any, source: any) {
   if (!COMMIT.test(commit) || source.status !== 'complete') throw Error('源码/最终提交身份不可用');
   const files = commitFiles(root, commit, source.selectors), recorded = source.entries.filter((e: any) => e.status === 'file');
   if (canonical(files.map(e => e.path)) !== canonical(recorded.map((e: any) => e.path))) throw Error('最终提交未包含完整受审源码集合（新增/删除未提交或存在未跟踪输入）');
-  const index = indexFiles(root, source.selectors), expectedIndex = files.map(({ path, mode, oid }) => ({ path, mode, oid }));
+  const index = indexFiles(root, source.selectors), expectedIndex = files.map(({ path, mode, oid }: any) => ({ path, mode, oid }));
   if (canonical(index) !== canonical(expectedIndex)) throw Error('受审源码索引与最终提交不一致');
   const byName = new Map(recorded.map((e: any) => [e.path, e])), proof: any = [], attrs = attributes(root, files.map(e => e.path));
   blobs(root, files, (item: any, content: any) => {

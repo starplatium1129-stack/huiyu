@@ -49,7 +49,7 @@ function reviewState(record: string[], integrity: string, decisionFile: any, man
     || !Number.isFinite(Date.parse(decision.reviewedAt))) return { status: 'invalid', reason: 'Invalid explicit human decision metadata', authenticity: 'unverified' };
   const binding = { recordId: record.recordId, recordSha256: jsonHash(record), sha256: record.asset?.sha256, inputVersion: record.inputVersion };
   const stale = decisionFile.manifestSha256 !== manifestSha256 || decisionFile.runId !== runId
-    || Object.entries(binding).some(([key, value]) => !value || decision[key] !== value) || integrity !== 'current';
+    || Object.entries(binding).some(([key, value]: any) => !value || decision[key] !== value) || integrity !== 'current';
   return { status: stale ? 'stale' : decision.verdict === 'pass' ? 'approved' : 'rejected',
     verdict: decision.verdict, reviewedAt: decision.reviewedAt, authenticity: 'unverified',
     reason: stale ? 'Candidate, source, request or asset changed; decision requires revalidation' : 'Explicit decision bindings match; audit does not authenticate the reviewer or image quality' };

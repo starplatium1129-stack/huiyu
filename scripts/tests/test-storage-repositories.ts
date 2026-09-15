@@ -105,7 +105,7 @@ function stateOf(fixture: any) {
   return {
     history: fixture.values.get(ARTWORK_HISTORY_KEY),
     projects: fixture.values.get(ARTWORK_PROJECTS_KEY),
-    thumbnails: [...fixture.values.entries()].filter(([key]) => key.startsWith('thumb:')),
+    thumbnails: [...fixture.values.entries()].filter(([key]: any) => key.startsWith('thumb:')),
     images: [...fixture.imageRecords.keys()].sort(),
   };
 }

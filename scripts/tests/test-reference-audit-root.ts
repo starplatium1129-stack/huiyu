@@ -44,7 +44,7 @@ function makeTempRoot(t: any) {
   return tempRoot;
 }
 
-function makeRoot(tempRoot: any, tag: any, { refs = [], files = [], viewBody } = {}) {
+function makeRoot(tempRoot: any, tag: any, { refs = [], files = [], viewBody }: any = {}) {
   const root = path.join(tempRoot, tag);
   fs.mkdirSync(path.join(root, 'data'), { recursive: true });
   const view = viewBody === undefined

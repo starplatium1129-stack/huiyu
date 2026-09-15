@@ -81,7 +81,7 @@ test('比较拒绝缺失、坏 JSON、绝对/父目录/junction 越界；help/pl
 });
 function gitFixture(t: any) {
   const f = fixture(t);
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));
+  const env = Object.fromEntries(Object.entries(process.env).filter(([key]: any) => !/^GIT_/i.test(key)));
   const git = (...args) => {
     const r = spawnSync('git', args, { cwd: f.root, env, encoding: 'utf8' });
     assert.equal(r.status, 0, r.stderr);

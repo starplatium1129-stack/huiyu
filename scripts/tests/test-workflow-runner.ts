@@ -14,7 +14,7 @@ type CommandCall = [string, string[]];
 type HookCall = string[];
 
 function hasPreviewExecutionSwitch(run: { switches?: Record<string, WorkflowEffect[]> }) {
-  return Object.entries(run.switches || {}).some(([flag, effects]) =>
+  return Object.entries(run.switches || {}).some(([flag, effects]: any) =>
     !['--json', '--help', '--plan'].includes(flag)
     && effects.some((effect: WorkflowEffect) => ['guard', 'writes-source', 'writes-product', 'writes-release'].includes(effect)));
 }

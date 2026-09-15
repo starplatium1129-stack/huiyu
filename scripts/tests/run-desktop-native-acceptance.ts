@@ -257,7 +257,7 @@ function recordWorkflowEvidence(evidence: any, args: any) {
     return complete
   }
 
-  const missing = Object.entries(supplied).filter(([, value]) => !value).map(([key]) => key)
+  const missing = Object.entries(supplied).filter(([, value]: any) => !value).map(([key]: any) => key)
   if (missing.length) throw new Error(`self-hosted workflow evidence is incomplete: missing ${missing.join(', ')}`)
   if (!/^\d+$/u.test(supplied.runId)) throw new Error(`self-hosted workflow run id is invalid: ${supplied.runId}`)
   if (!/^[0-9a-f]{40}$/u.test(supplied.commitSha)) throw new Error('self-hosted workflow commit SHA must contain 40 hexadecimal characters')
@@ -742,7 +742,7 @@ function findModelManifest(installLocation: any, character: any) {
   const filePath = names.includes('model3.json') ? path.join(directory, 'model3.json') : path.join(directory, names[0])
   const manifest = JSON.parse(fs.readFileSync(filePath, 'utf8'))
   const motions = manifest.FileReferences?.Motions || manifest.fileReferences?.motions || {}
-  const durations = Object.fromEntries(Object.entries(motions).map(([group, items]) => [group, (Array.isArray(items) ? items : []).map(item => {
+  const durations = Object.fromEntries(Object.entries(motions).map(([group, items]: any) => [group, (Array.isArray(items) ? items : []).map(item => {
     const relative = item.File || item.file
     if (!relative) return 5
     try {
@@ -755,7 +755,7 @@ function findModelManifest(installLocation: any, character: any) {
   })]))
   return {
     filePath,
-    groups: Object.fromEntries(Object.entries(motions).map(([group, items]) => [group, Array.isArray(items) ? items.length : 0])),
+    groups: Object.fromEntries(Object.entries(motions).map(([group, items]: any) => [group, Array.isArray(items) ? items.length : 0])),
     durations,
   }
 }
@@ -786,12 +786,12 @@ async function exerciseCharactersAndMotion(context: any, product: any) {
     interactions.push({ point, event: event.value })
     await delay(600)
   }
-  const multiGroups = Object.entries(manifest.groups).filter(([group, count]) => /^Tap/u.test(group) && count > 1)
+  const multiGroups = Object.entries(manifest.groups).filter(([group, count]: any) => /^Tap/u.test(group) && count > 1)
   const observedIndexes = new Set()
   if (multiGroups.length) {
     const pointByGroup: any = { TapFace: points[0], TapHead: points[1], TapBody: points[2], TapSkirt: points[3] }
-    const [targetGroup] = multiGroups.find(([group]) => pointByGroup[group]) || []
-    if (!targetGroup) throw new Error(`no physical stage point is defined for authored multi-variant groups: ${multiGroups.map(([group]) => group).join(', ')}`)
+    const [targetGroup] = multiGroups.find(([group]: any) => pointByGroup[group]) || []
+    if (!targetGroup) throw new Error(`no physical stage point is defined for authored multi-variant groups: ${multiGroups.map(([group]: any) => group).join(', ')}`)
     const repeatPoint = pointByGroup[targetGroup]
     for (let attempt = 0; attempt < 8; attempt += 1) {
       const before = (await domSnapshot(product.session)).events.length

@@ -72,7 +72,7 @@ function recordEquality(snapshots: { [x: string]: any; }, keys: Set<any>) {
     const source = snapshot.rows.filter((row: any) => row.role === 'source' && row.key === key);
     if (source.length !== 1) { issues.push({ key, reason: 'Source identity is absent or ambiguous' }); continue; }
     const value = source[0].value;
-    for (const [group, data] of Object.entries(snapshot.groups).filter(([name]) => name.includes(':derived:'))) {
+    for (const [group, data] of Object.entries(snapshot.groups).filter(([name]: any) => name.includes(':derived:'))) {
       const file = group.slice(group.indexOf(':derived:') + 9);
       let count = 1;
       if (domain === 'scenes' && file !== PRODUCTS.scenes) {

@@ -96,7 +96,7 @@ function compareSnapshot(root: any, recorded: any) {
   } catch (error) { return { status: 'invalid', message: runtimeErrorMessage(error), changes: [] }; }
 }
 function repository(root: any) {
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));
+  const env = Object.fromEntries(Object.entries(process.env).filter(([key]: any) => !/^GIT_/i.test(key)));
   function git(args: any) {
     const result = spawnSync('git', args, { cwd: root, env: { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_TERMINAL_PROMPT: '0' },
       encoding: 'utf8', windowsHide: true, timeout: 10000, maxBuffer: 8 * 1024 * 1024 });

@@ -42,8 +42,8 @@ async function spawnWorker(fixture: any, mode = 'hold') {
   child.stderr!.on('data', chunk => { stderr += chunk; });
   const closed = once(child, 'exit');
   const message = await Promise.race([
-    once(child, 'message').then(([value]) => value),
-    closed.then(([code]) => { throw new Error('fixture exited before ready: ' + code + ' ' + stderr); }),
+    once(child, 'message').then(([value]: any) => value),
+    closed.then(([code]: any) => { throw new Error('fixture exited before ready: ' + code + ' ' + stderr); }),
   ]);
   return { child, message, closed, async stop() { if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL'); await closed; } };
 }

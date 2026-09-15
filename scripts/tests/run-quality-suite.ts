@@ -108,7 +108,7 @@ function runSuiteFiles(entries: string|any[], { label, timeout, verbose = false,
 }
 
 /** unit 套件：单进程 node --test 聚合跑全部文件（保持既有并发=4）。 */
-function runUnitSuite({ verbose = false } = {}) {
+function runUnitSuite({ verbose = false }: any = {}) {
   const files = QUALITY_TEST_SUITES.unit.map((file) => path.join(root, 'scripts', 'tests', file));
   const started = Date.now();
   if (verbose) {

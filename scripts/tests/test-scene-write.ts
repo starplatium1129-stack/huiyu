@@ -363,7 +363,7 @@ test('cleanOrphanedSceneRefs 清理失效引用且保留无关设置', () => {
         const curation = JSON.parse(JSON.stringify(value));
         curation.curatedSceneIds = curation.curatedSceneIds.filter((id: string) => activeIds.has(id));
         curation.recommendationReasons = Object.fromEntries(Object.entries(curation.recommendationReasons)
-          .filter(([id]) => activeIds.has(id)));
+          .filter(([id]: any) => activeIds.has(id)));
         return curation;
       },
     },

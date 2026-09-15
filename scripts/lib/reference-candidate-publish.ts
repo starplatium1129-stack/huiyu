@@ -61,7 +61,7 @@ function validateView(view: any, files: any) {
   }
 }
 
-function resolveReferenceRelease(directory: any, { dataRoot = CODE_ROOT } = {}) {
+function resolveReferenceRelease(directory: any, { dataRoot = CODE_ROOT }: any = {}) {
   const root = path.resolve(directory);
   const marker = path.join(root, MARKER);
   noLinks(marker);

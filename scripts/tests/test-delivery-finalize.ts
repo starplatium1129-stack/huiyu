@@ -19,7 +19,7 @@ function commit(f: any, paths = ['src']) {
     '-c', 'core.hooksPath=.git/no-hooks', 'commit', '--allow-empty', '-m', 'isolated finalize fixture');
   return f.git('rev-parse', 'HEAD');
 }
-function tested(f: any, { bound = true, crlf = false, prepare = () => {} } = {}) {
+function tested(f: any, { bound = true, crlf = false, prepare = () => {} }: any = {}) {
   const a = f.git('rev-parse', 'HEAD');
   f.write('src/main.js', `module.exports = 42;${crlf ? '\r\n' : '\n'}`);
   prepare();

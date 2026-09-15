@@ -66,7 +66,7 @@ function fixture(t: any, withGit = true) {
     const coreIds = core.filter((id) => ordered.some((row) => row.id === id));
     write('data/scenes-core.json', coreIds.map((id) => ordered.find((row) => row.id === id)));
     write('data/scenes-index.json', { version: 1, total: rows.length,
-      shards: Object.fromEntries(Object.entries(groups).map(([key, rows]) => [key, { file: `scenes-${key}.json`, count: rows.length }])),
+      shards: Object.fromEntries(Object.entries(groups).map(([key, rows]: any) => [key, { file: `scenes-${key}.json`, count: rows.length }])),
       tiers: { core: coreIds }, orderedIds: ordered.map((row) => row.id) });
   };
   sceneProducts();

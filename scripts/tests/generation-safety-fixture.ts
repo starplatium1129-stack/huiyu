@@ -122,7 +122,7 @@ async function mockGateway(t: any) {
   } };
 }
 
-async function guarded(f: any, action: any, { preview = false } = {}) {
+async function guarded(f: any, action: any, { preview = false }: any = {}) {
   const original: any = {}, writes: any = [];
   const under = (value: any, base: any) => typeof value === 'string' && (path.resolve(value) === base || path.resolve(value).startsWith(base + path.sep));
   const methods = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'rmdirSync', 'copyFileSync', 'cpSync', 'truncateSync'];

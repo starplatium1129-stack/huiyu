@@ -147,7 +147,7 @@ function identityOf(entries: any) {
  * 纯核验（不触 fs、不读环境）。任一侧清单结构错误或 delta 形态错误即拒绝，不在此
  * 基础上继续深层比对（不可信条目集合不产出可信结论）。返回结果对象，不抛内容性错误。
  */
-function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
+function verifyDeltaPackContent({ baseManifest, packManifest, delta }: any = {}) {
   const errors = [];
   const struct: any = compareManifests({ oldManifest: baseManifest, newManifest: packManifest });
   for (const e of struct.errors) {
@@ -370,7 +370,7 @@ function resolvePackDir({ rootReal, packPath, io }: any) {
  * 越界/缺失/不是目录抛 UsageError（退出 2）；元数据缺失/损坏/结构错误/身份失配等
  * 内容问题汇入结果 errors（退出 1）。全程零写入。
  */
-function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs } = {}) {
+function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs }: any = {}) {
   const rootReal = resolveRootReal(root, io);
   const baseAbs = resolveInsideRootPath(rootReal, baseManifestPath, '--base-manifest');
   const { packAbs, packRel } = resolvePackDir({ rootReal, packPath, io });

@@ -181,7 +181,7 @@ function planTotals(loaded: any) {
  * 预览计划（零写入，但会读取清单并核验源文件）：校验包名/root/目标边界与清单内容，
  * 输出将复制的条目、目标路径与核验摘要。--help/--plan 的零读取由 CLI 层保证。
  */
-function planResourcePack({ root, name, manifestPath, io = nodeFs } = {}) {
+function planResourcePack({ root, name, manifestPath, io = nodeFs }: any = {}) {
   const dest = checkDestination({ root, name, io });
   const loaded = loadVerifiedManifest({ rootReal: dest.rootReal, manifestPath, io });
   const errors = [...dest.errors, ...loaded.errors];
@@ -432,7 +432,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
  * 暂存导出（--apply，仅 Windows）：复用预览的全部检查，经通用 applyPackPlan 协议
  * 完成复制与发布；全包 manifest.json 与源清单条目逐条一致。
  */
-function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = process.platform } = {}) {
+function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = process.platform }: any = {}) {
   const plan = planResourcePack({ root, name, manifestPath, io });
   return applyPackPlan({ plan, io, platform, resultKind: 'resource-pack-result', buildMetadata: fullPackMetadata });
 }

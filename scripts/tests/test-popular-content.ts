@@ -90,15 +90,15 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
       expectedSceneCount >= 10 ? (entry.id === 'yukinoshita_haruno' ? 5 : 4) : 0,
       entry.id + ' adult scene count must follow its eligibility');
     for (const blueprint of owned) {
-      const outfit = character.outfits.find(o => o.id === blueprint.outfitId);
+      const outfit: any = character.outfits.find(o => o.id === blueprint.outfitId);
       assert.ok(outfit, blueprint.id + ' must resolve an outfit');
       if (blueprint.adult) {
         assert.strictEqual(character.adultEligibility, 'adult');
         assert.strictEqual(blueprint.sampleRating, 'R18');
       }
-      for (const engine of ['anima', 'krea2']) {
+      for (const engine of ['anima', 'krea2'] as const) {
         const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
-        const profile = resolveModelProfile(catalog.modelProfiles, model, engine);
+        const profile: any = resolveModelProfile(catalog.modelProfiles, model, engine);
         const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
         assert.ok(plan, blueprint.id + ' must compile for ' + engine);
         assert.strictEqual(plan.adult, blueprint.adult);
@@ -137,11 +137,11 @@ test('batch five: six migrated adult characters each have six SFW plus four R18 
     assert.strictEqual(owned.filter(b => b.adult).length, 4, id + ' needs four adult scenes');
     for (const blueprint of owned) {
       if (blueprint.adult) assert.strictEqual(blueprint.sampleRating, 'R18');
-      const outfit = character.outfits.find(o => o.id === blueprint.outfitId);
+      const outfit: any = character.outfits.find(o => o.id === blueprint.outfitId);
       assert.ok(outfit, blueprint.id + ' must resolve its exact outfit');
-      for (const engine of ['anima', 'krea2']) {
+      for (const engine of ['anima', 'krea2'] as const) {
         const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
-        const profile = resolveModelProfile(catalog.modelProfiles, model, engine);
+        const profile: any = resolveModelProfile(catalog.modelProfiles, model, engine);
         const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
         assert.ok(plan, blueprint.id + ' must compile for ' + engine);
         assert.strictEqual(plan.adult, blueprint.adult);
@@ -178,9 +178,9 @@ test('popular data: preserve existing catalog, unique ids, exactly one default o
   });
     // 2026-08-21 exactTokens 括号消歧按 Anima 官方空格规则（A/B 实测还原度不降）：
     // `rem (re zero)` 而非 Danbooru 下划线形式——Anima tokenizer 不做下划线转换。
-    assert.strictEqual(popular.findCharacter!(characters, 'rem_rezero').exactTokens[0], 'rem (re zero)', 'rem must use the space-form disambiguated tag');
-  assert.strictEqual(popular.findCharacter!(characters, 'emilia_rezero').exactTokens[0], 'emilia (re zero)', 'emilia must use the space-form disambiguated tag');
-  assert.strictEqual(popular.findCharacter!(characters, 'kisara_engage_kiss').exactTokens[0], 'kisara (engage kiss)', 'kisara must use the space-form disambiguated tag');
+    assert.strictEqual(popular.findCharacter!(characters, 'rem_rezero')!.exactTokens[0], 'rem (re zero)', 'rem must use the space-form disambiguated tag');
+  assert.strictEqual(popular.findCharacter!(characters, 'emilia_rezero')!.exactTokens[0], 'emilia (re zero)', 'emilia must use the space-form disambiguated tag');
+  assert.strictEqual(popular.findCharacter!(characters, 'kisara_engage_kiss')!.exactTokens[0], 'kisara (engage kiss)', 'kisara must use the space-form disambiguated tag');
 var adults = characters.filter(function (character) { return character.adultEligibility === 'adult'; });
   var nonAdults = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
   assert.ok(adults.length >= 1, 'at least one clearly-adult character must be available for adult blueprints');
@@ -298,7 +298,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
       }), null, character.id + ' must fail closed when building an adult blueprint');
     });
   });
-  var adult = characters.find(function (character) { return character.adultEligibility === 'adult'; });
+  var adult = characters.find(function (character) { return character.adultEligibility === 'adult'; })!;
   assert.strictEqual(popular.blueprintEligible(adultBlueprints[0], adult, { adultEnabled: true }), true);
   assert.strictEqual(popular.blueprintEligible(adultBlueprints[0], adult, { adultEnabled: false }), false,
     'adult gate must require the mature-content switch as well');
@@ -323,22 +323,22 @@ test('blueprints: adult ⇔ sampleRating=R18 interlock', function () {
 
 test('source-audited adult records cannot re-enter SFW planning', function () {
   for (const id of ['raiden_shogun_tenshukaku', 'raiden_shogun_convenience', 'haruno_record_player_melancholy']) {
-    const blueprint = blueprints.find(b => b.id === id);
+    const blueprint = blueprints.find(b => b.id === id)!;
     assert.ok(blueprint && blueprint.adult && blueprint.sampleRating === 'R18', id + ' must retain its reviewed classification');
-    const character = characters.find(c => c.id === blueprint.characterId);
-    for (const engine of ['anima', 'krea2']) {
+    const character = characters.find(c => c.id === blueprint.characterId)!;
+    for (const engine of ['anima', 'krea2'] as const) {
       assert.strictEqual(popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId)!, blueprint, engine, adultEnabled: false }), null, id + ' must fail closed in ' + engine);
     }
   }
 });
 
 test('SFW character variants keep intended hairstyles and exclude sexualized junior-high body cues', function () {
-  const megumi = characters.find(c => c.id === 'katou_megumi');
-  const anna = characters.find(c => c.id === 'yamada_anna');
+  const megumi = characters.find(c => c.id === 'katou_megumi')!;
+  const anna = characters.find(c => c.id === 'yamada_anna')!;
   assert.ok(anna!.identityProse.includes('junior-high'), 'keep the stated school-age identity; do not age it up');
-  for (const blueprint of blueprints.filter(b => !b.adult && ['katou_megumi', 'yamada_anna'].includes(b.characterId))) {
+  for (const blueprint of blueprints.filter(b => !b.adult && ['katou_megumi', 'yamada_anna'].includes(b.characterId!))) {
     const character = blueprint.characterId === megumi!.id ? megumi : anna;
-    for (const engine of ['anima', 'krea2']) {
+    for (const engine of ['anima', 'krea2'] as const) {
       const plan = popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId)!, blueprint, engine, adultEnabled: false });
       assert.ok(plan);
       if (character === anna) assert.ok(!/large[_ ]breasts|voluptuous|full bust|endlessly long|jaw-dropping/i.test(plan.prompt), blueprint.id + ' must remain a nonsexual everyday depiction');
@@ -427,7 +427,7 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
       const character = characters.find(item => item.id === blueprint.characterId);
       const outfit = popular.findOutfit(character, blueprint.outfitId);
       const profiles = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
-      for (const engine of ['anima', 'krea2']) {
+      for (const engine of ['anima', 'krea2'] as const) {
         const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
         const profile = profiles.find(item => item.model_id === model);
         const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: false });

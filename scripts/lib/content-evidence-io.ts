@@ -71,8 +71,8 @@ function evidenceReader(root: PathLike, label: any) {
       return [...directories.get(directory)];
     },
     evidence() {
-      return [...[...cache].map(([file, item]) => ({ scope: label, file, status: item.status, sha256: item.sha256 || null, bytes: item.bytes ?? null })),
-        ...[...directories].map(([file, names]) => ({ scope: label, file, kind: 'directory', sha256: jsonHash(names) }))];
+      return [...[...cache].map(([file, item]: any) => ({ scope: label, file, status: item.status, sha256: item.sha256 || null, bytes: item.bytes ?? null })),
+        ...[...directories].map(([file, names]: any) => ({ scope: label, file, kind: 'directory', sha256: jsonHash(names) }))];
     },
     verify() {
       const changed = [];

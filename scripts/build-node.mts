@@ -102,7 +102,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
     const lock = path.join(root, 'package-lock.json');
     const fingerprint = digest(JSON.stringify({ compiler: ts.version, options: parsed.options,
       builder: digest(fs.readFileSync(fileURLToPath(import.meta.url))),
-      sources: [...localSources].sort(([a], [b]) => a.localeCompare(b)),
+      sources: [...localSources].sort(([a]: any, [b]: any) => a.localeCompare(b)),
       config: fs.readFileSync(path.join(root, PROJECTS[project]), 'utf8'),
       dependencies: fs.existsSync(lock) ? digest(fs.readFileSync(lock)) : null }));
     const recordFile = path.join(root, '.cache', 'typescript-build', `${project}.json`);
@@ -165,7 +165,7 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
         throw new Error(`${project}: source/output inventory is incomplete`);
       }
       pending.push({ project, recordFile, previous, contents, record: { version: 1, fingerprint,
-        outputs: Object.fromEntries([...contents].map(([file, text]) => [file, digest(text)])) } });
+        outputs: Object.fromEntries([...contents].map(([file, text]: any) => [file, digest(text)])) } });
     }
     results.push({ project, sources: parsed.fileNames.length, outputs: options.check ? 0 : contents.size, cached: false });
   }

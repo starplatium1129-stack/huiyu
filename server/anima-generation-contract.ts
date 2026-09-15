@@ -63,7 +63,7 @@ const CHARACTER_LORA_BINDINGS = Object.freeze({
 
 function requiredCharacterForLora(loraId: any) {
   return Object.entries(CHARACTER_LORA_BINDINGS)
-    .find(([, binding]) => binding === loraId)?.[0] || '';
+    .find(([, binding]: any) => binding === loraId)?.[0] || '';
 }
 
 function validateTunableNumber(value: any, name: string|number) {

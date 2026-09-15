@@ -49,7 +49,7 @@ async function start(fixture: any, mode = 'success') {
   let errors = '';
   child.stderr!.on('data', chunk => { errors += chunk; });
   const closed = once(child, 'exit');
-  const [message] = await Promise.race([once(child, 'message'), closed.then(([code]) => { throw new Error('HTTP fixture exited ' + code + ': ' + errors); })]);
+  const [message] = await Promise.race([once(child, 'message'), closed.then(([code]: any) => { throw new Error('HTTP fixture exited ' + code + ': ' + errors); })]);
   const base = 'http://127.0.0.1:' + message.port;
   return {
     child, message, closed,

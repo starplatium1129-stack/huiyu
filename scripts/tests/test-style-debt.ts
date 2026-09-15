@@ -245,5 +245,5 @@ test('contrast: parses real theme overrides, nested mixes and alpha without sile
   assert.equal(resolveColor({}, 'unsupported(blue)'), null);
   assert.equal(resolveColor({}, 'rgba(..,0,0,1)'), null);
   assert.equal(resolveColor({}, 'color-mix(in srgb, #fff ..%, #000)'), null);
-  assert.ok(characterThemes().some(([name]) => name.startsWith('light /')));
+  assert.ok(characterThemes().some(([name]: any) => name.startsWith('light /')));
 });

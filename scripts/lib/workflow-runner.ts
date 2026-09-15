@@ -157,10 +157,10 @@ function main(argv: string[], registry: WorkflowRegistry, root: string, run: Wor
     const search = name === 'search';
     if (help || search || (name && !registry[name] && Object.keys(registry).some(k => k.startsWith(name + ':')))) {
       const query = search ? raw.join(' ').toLowerCase() : '';
-      const entries = Object.entries(registry).filter(([k, v]) => search ? `${k} ${v.desc}`.toLowerCase().includes(query) : !name || name.startsWith('-') || k === name || k.startsWith(name + ':'));
+      const entries = Object.entries(registry).filter(([k, v]: any) => search ? `${k} ${v.desc}`.toLowerCase().includes(query) : !name || name.startsWith('-') || k === name || k.startsWith(name + ':'));
       if (!entries.length) throw new Error(`没有匹配工作流: ${name} ${query}`);
       console.log('用法: npm run wf -- <命令> [参数]；search <关键词>；--plan 只预览；audit:workflows --json 只读审计');
-      for (const [k, v] of entries.sort(([a], [b]) => a.localeCompare(b))) {
+      for (const [k, v] of entries.sort(([a]: any, [b]: any) => a.localeCompare(b))) {
         console.log(`${k.padEnd(25)} ${v.desc}`);
         if (k === name) console.log(JSON.stringify({ command: v.cmd, steps: v.steps, required: v.required, options: v.opts, docs: v.docs, needs: v.needs, run: v.run }, null, 2));
       }
@@ -175,8 +175,8 @@ function main(argv: string[], registry: WorkflowRegistry, root: string, run: Wor
       const [cmd, cmdArgs] = invocation(def, args);
       // 保留默认与各开关说明的区别，不将 --apply 错标成仅预览，也不猜组合开关优先级。
       const conditions = preview && def.run
-        ? Object.entries(def.run.switches || {}).filter(([flag]) => cmdArgs.some(arg => arg === flag || arg.startsWith(flag + '=')))
-          .map(([flag, effects]) => `[${flag}: ${effects.join(', ')}]`) : [];
+        ? Object.entries(def.run.switches || {}).filter(([flag]: any) => cmdArgs.some(arg => arg === flag || arg.startsWith(flag + '=')))
+          .map(([flag, effects]: any) => `[${flag}: ${effects.join(', ')}]`) : [];
       const tags = preview && def.run ? ` [默认: ${(def.run.nature || []).join(', ')}]${conditions.length ? ' ' + conditions.join(' ') : ''}` : '';
       console.error(`${preview ? '[预览]' : '[执行]'} ${step}: ${JSON.stringify([cmd, ...cmdArgs])}${tags}`);
       if (preview) continue;

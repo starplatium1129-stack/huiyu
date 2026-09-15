@@ -70,7 +70,7 @@ function migrateLegacyRuntime(projectRoot: string, paths: ReturnType<typeof crea
     ['.tunnel_pid', paths.tunnelPid],
     ['tunnel.log', paths.tunnelLog]
   ];
-  fileMap.forEach(([legacyName, target]) => moveLegacyFile(path.join(projectRoot, legacyName), target));
+  fileMap.forEach(([legacyName, target]: any) => moveLegacyFile(path.join(projectRoot, legacyName), target));
   moveLegacyOutputs(path.join(projectRoot, 'friend_outputs'), paths.outputs);
 }
 

@@ -32,7 +32,7 @@ function approve(f: any, name: any, kind: any, targetManifest: any, sourceId = '
   f.policy.releases[name] = entry;
   return entry;
 }
-function fixture(t: any, { large = false } = {}) {
+function fixture(t: any, { large = false }: any = {}) {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-resource-install-'));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));
   const source = path.join(base, 'source');

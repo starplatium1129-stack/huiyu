@@ -180,7 +180,7 @@ function shardAbsPath(shardsDir: string, file: string) {
  * 只读准备一次蓝图写入。输入不合法或规划器拒绝时抛错
  * （输入校验问题为 BlueprintChangePlanError，携带 .problems）。
  */
-function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io = nodeFs } = {}) {
+function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io = nodeFs }: any = {}) {
   if (typeof rootDir !== 'string' || !rootDir.trim()) {
     throw new BlueprintWriteError('rootDir 缺失或不是非空字符串', 'argument');
   }
@@ -308,7 +308,7 @@ function expectFileBytes(absPath: string, expected: Uint8Array<ArrayBufferLike>|
  * 应用已准备计划。prepared 必须是同一模块 prepare 返回的原始对象，不能序列化
  * 后重建；公开 Buffer 改动与全部源基线漂移在第一次写入前整体拒绝。
  */
-function applyBlueprintWrite(prepared: any, { writeFileAtomic, io = nodeFs } = {}) {
+function applyBlueprintWrite(prepared: any, { writeFileAtomic, io = nodeFs }: any = {}) {
   const write = writeFileAtomic || defaultWriteFileAtomic;
   if (typeof write !== 'function') {
     throw new BlueprintWriteError('writeFileAtomic 必须是 (source, content) 函数', 'argument');

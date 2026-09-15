@@ -19,7 +19,7 @@ function fixture(t: any, gitEnabled = true) {
     fs.mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
     fs.writeFileSync(path.join(root, name), typeof value === 'string' ? value : JSON.stringify(value));
   };
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));
+  const env = Object.fromEntries(Object.entries(process.env).filter(([key]: any) => !/^GIT_/i.test(key)));
   const git = (...args) => {
     const r = spawnSync('git', args, { cwd: root, env, encoding: 'utf8', windowsHide: true });
     assert.equal(r.status, 0, r.stderr); return r.stdout.trim();

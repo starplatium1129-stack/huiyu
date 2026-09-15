@@ -112,7 +112,7 @@ function crossEntryAudit(deliveryMap: any) {
   const pairDupes = [];
 
   const entries = [...deliveryMap.entries()]
-    .map(([id, item]) => ({ id, tokens: proseTokensOf(item) }))
+    .map(([id, item]: any) => ({ id, tokens: proseTokensOf(item) }))
     .filter(e => e.tokens.length > 0);
 
   // ① 前 3 token 签名分组占比
@@ -123,7 +123,7 @@ function crossEntryAudit(deliveryMap: any) {
     groups.get(sig).push(e.id);
   }
   const ranked = [...groups.entries()]
-    .filter(([, ids]) => ids.length >= 2)
+    .filter(([, ids]: any) => ids.length >= 2)
     .sort((a, b) => b[1].length - a[1].length);
   const maxGroup = ranked[0];
   const maxRatio = maxGroup ? maxGroup[1].length / entries.length : 0;

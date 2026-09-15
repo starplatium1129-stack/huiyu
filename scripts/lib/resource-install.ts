@@ -171,11 +171,11 @@ function createResourceInstaller(options: any) {
   const ctx = context(options);
   return {
     root: ctx.store,
-    async install({ releaseId, signal } = {}) {
+    async install({ releaseId, signal }: any = {}) {
       releasePolicy(ctx, releaseId); // Fail closed before creating a directory or lock.
       return locked(ctx, () => performInstall(ctx, releaseId, signal));
     },
-    async recover({ signal } = {}) {
+    async recover({ signal }: any = {}) {
       access(ctx);
       return locked(ctx, async () => {
         const journal = readJournal(ctx);
@@ -190,7 +190,7 @@ function createResourceInstaller(options: any) {
         return commit(ctx, journal, signal);
       });
     },
-    async rollback({ signal } = {}) {
+    async rollback({ signal }: any = {}) {
       access(ctx);
       return locked(ctx, async () => {
         if (readJournal(ctx)) fail('PENDING_TRANSACTION', 'Recover the pending transaction first');
@@ -220,7 +220,7 @@ function createResourceInstaller(options: any) {
           pending: pending ? { kind: pending.kind, phase: pending.phase, releaseId: pending.releaseId || null } : null, previous });
       });
     },
-    plan({ releaseId } = {}) {
+    plan({ releaseId }: any = {}) {
       const release = releasePolicy(ctx, releaseId);
       return { ok: true, mode: 'preview', releaseId, sourceId: release.sourceId, sourceKind: release.source.kind,
         kind: release.kind, targetIdentity: release.targetIdentity, store: ctx.store,

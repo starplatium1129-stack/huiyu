@@ -53,7 +53,7 @@ function pendingTitle(entries: string|any[]) {
   const counts = new Map();
   for (const e of entries) if (e && typeof e.status === 'string') counts.set(e.status, (counts.get(e.status) || 0) + 1);
   if (counts.size < 2) return `待验 (${entries.length}):`;
-  return `待验 (${entries.length}；${[...counts].map(([s, n]) => `${label(s)} ${n}`).join('、')}):`;
+  return `待验 (${entries.length}；${[...counts].map(([s, n]: any) => `${label(s)} ${n}`).join('、')}):`;
 }
 
 function comparisonLine(c: any) {

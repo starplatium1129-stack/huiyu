@@ -82,7 +82,7 @@ function createResourceDownloader(options: any) {
   const timeoutMs = options.timeoutMs || 30000;
   return {
     root: ctx.store,
-    async download({ releaseId, signal } = {}) {
+    async download({ releaseId, signal }: any = {}) {
       const release = releasePolicy(ctx, releaseId);
       if (release.source.kind !== 'http') fail('SOURCE_REQUIRED', 'Download requires a configured HTTP source');
       sourceUrl(release, 'manifest.json'); // Validate transport before any disk/network mutation.

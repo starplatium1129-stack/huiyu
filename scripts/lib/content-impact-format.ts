@@ -125,7 +125,7 @@ function referenceSection(items: any) {
     if (typeof (row && row.total) === 'number') {
       bits.push(`共 ${row.total} 条`);
       const counts = [['pendingCount', 'pending'], ['urlDeclaredCount', 'URL 声明'], ['reviewDeclaredCount', 'review 声明']]
-        .filter(([key]) => typeof row[key] === 'number').map(([key, label]) => `${label} ${row[key]}`);
+        .filter(([key]: any) => typeof row[key] === 'number').map(([key, label]: any) => `${label} ${row[key]}`);
       if (counts.length) bits.push(counts.join('、'));
     }
     if (row && row.reviewStatus !== undefined) bits.push(`review: ${text(row.reviewStatus) || 'unknown'}`);

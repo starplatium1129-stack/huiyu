@@ -14,7 +14,7 @@ function read(relativePath: string) {
 }
 
 test('quality gates cover every deterministic test exactly once', () => {
-  const assigned = Object.entries(QUALITY_TEST_SUITES).flatMap(([suite, files]) => files.map((file) => ({ suite, file })));
+  const assigned = Object.entries(QUALITY_TEST_SUITES).flatMap(([suite, files]: any) => files.map((file) => ({ suite, file })));
   const discovered = fs.readdirSync(testsRoot)
     .filter((file) => /^test-.*\.js$/.test(file))
     .filter((file) => file !== 'test-quality-gates.js')

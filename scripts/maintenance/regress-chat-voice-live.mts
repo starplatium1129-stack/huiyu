@@ -22,7 +22,7 @@ const browser = await chromium.launch({
 
 for (const character of ['nene', 'natsume']) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, colorScheme: 'dark' })
-  await context.addInitScript(({ active }) => {
+  await context.addInitScript(({ active }: any) => {
     localStorage.setItem('aics_theme', 'dark')
     localStorage.setItem('aics_chat_v1', JSON.stringify({
       version: 3,

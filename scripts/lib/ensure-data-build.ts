@@ -60,7 +60,7 @@ function refreshPrecompressed(files: string[]) {
   }
 }
 
-function ensureScenesBuilt({ onlyIfMissing = false } = {}) {
+function ensureScenesBuilt({ onlyIfMissing = false }: any = {}) {
   if (onlyIfMissing && fs.existsSync(scenesAggregatePath)) return { rebuilt: false };
   const { scenes } = loadSceneShards();
   if (scenesIsCurrent(scenes)) return { rebuilt: false };
@@ -76,7 +76,7 @@ function ensureScenesBuilt({ onlyIfMissing = false } = {}) {
   return { rebuilt: true, count: scenes.length };
 }
 
-function ensurePopularBuilt({ onlyIfMissing = false } = {}) {
+function ensurePopularBuilt({ onlyIfMissing = false }: any = {}) {
   if (onlyIfMissing && fs.existsSync(popularAggregatePath)) return { rebuilt: false };
   if (popularIsCurrent()) return { rebuilt: false };
   const count = writePopularAggregate();
@@ -84,7 +84,7 @@ function ensurePopularBuilt({ onlyIfMissing = false } = {}) {
   return { rebuilt: true, count };
 }
 
-function ensureBlueprintsBuilt({ onlyIfMissing = false } = {}) {
+function ensureBlueprintsBuilt({ onlyIfMissing = false }: any = {}) {
   if (onlyIfMissing && fs.existsSync(blueprintsAggregatePath)) return { rebuilt: false };
   if (blueprintsIsCurrent()) return { rebuilt: false };
   loadBlueprintShards(); // 分片损坏会在此抛出（见下方注释）；聚合由 writeBlueprintAggregate 内部自取
@@ -99,7 +99,7 @@ function ensureBlueprintsBuilt({ onlyIfMissing = false } = {}) {
  *  - onlyIfMissing（门禁/测试套件）：产物缺失（fresh clone）才构建，
  *    已构建但陈旧时不动手——"改源忘重建"必须继续由 --check 门禁报红，
  *    自愈不能把守卫静默抹掉。 */
-function ensureAll({ onlyIfMissing = false } = {}) {
+function ensureAll({ onlyIfMissing = false }: any = {}) {
   const scenes = ensureScenesBuilt({ onlyIfMissing });
   const popular = ensurePopularBuilt({ onlyIfMissing });
   const blueprints = ensureBlueprintsBuilt({ onlyIfMissing });

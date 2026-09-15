@@ -117,7 +117,7 @@ function buildZeroDiffFixture(t: any) {
 }
 
 /** 在夹具内用 G13 导出器生成候选包（仅 Windows，与现有 pack 测试同一平台假设）。 */
-function exportDeltaPack(root: any, name: any, { base = OLD_MANIFEST, manifest = NEW_MANIFEST } = {}) {
+function exportDeltaPack(root: any, name: any, { base = OLD_MANIFEST, manifest = NEW_MANIFEST }: any = {}) {
   const result = stageResourcePackDelta({ root, name, manifestPath: manifest, baseManifestPath: base });
   assert.equal(result.ok, true, JSON.stringify(result.errors));
   assert.equal(result.destinationCreated, true);

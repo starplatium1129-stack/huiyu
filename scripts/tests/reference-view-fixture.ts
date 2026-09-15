@@ -1,7 +1,7 @@
 'use strict';
 
 // Neutral runtime projection with the same shape as the published view contract.
-function referenceView({ firstUrl = '', retainedUrl = '' } = {}) {
+function referenceView({ firstUrl = '', retainedUrl = '' }: any = {}) {
   const perspectives = ['ref_01_face_closeup', 'ref_02_half_medium', 'ref_03_full_dynamic', 'ref_04_back_rear'];
   return { fixture: { characterId: 'fixture', displayName: 'Fixture', source: 'Test',
     identityProse: 'An adult test character.', outfits: [{ outfitId: 'coat', outfitName: 'Blue coat',

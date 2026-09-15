@@ -389,7 +389,7 @@ function verifyManifestEntries({ root, manifest, io = nodeFs }: any) {
   const errorPaths = new Set(errors.map((e) => (e as { path?: string }).path).filter((e): e is string => Boolean(e)));
   // verified/failedPaths 只统计结构合法的唯一路径；bad-entry 等无 path 或路径未入
   // 索引的结构错误只计入 errorCount，不虚增 verified，也不使 verified 变负。
-  const failedPaths = [...byPath].filter(([rel]) => errorPaths.has(rel)).map(([rel]) => rel);
+  const failedPaths = [...byPath].filter(([rel]: any) => errorPaths.has(rel)).map(([rel]: any) => rel);
   return {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-manifest-verification',
