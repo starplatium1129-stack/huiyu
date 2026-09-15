@@ -22,7 +22,7 @@ function fieldDiff(before, after, prefix = '') {
     fieldDiff(before[field], after[field], `${prefix}/${field.replace(/~/g, '~0').replace(/\//g, '~1')}`));
 }
 
-function historyImpact(opts) {
+function historyImpact(opts, captureSnapshots) {
   const result = { version: 2, readOnly: true,
     input: { base: opts.base, character: opts.character || null, outfit: opts.outfit || null, scene: opts.scene || null, paths: opts.paths || [] },
     mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [], affected: [], consistency: [] };
@@ -201,6 +201,8 @@ function historyImpact(opts) {
   result.incrementalPlan = buildPlan(result, proofTargets, globalReasons);
   recommend('data:validate');
   if (result.incrementalPlan.mode === 'full') recommend('check:content');
+  // Internal handoff only: raw records must never become part of the JSON report.
+  if (captureSnapshots) captureSnapshots({ before, after, currentReader });
   return result;
 }
 

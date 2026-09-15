@@ -1,13 +1,16 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useSceneManagerWorkspace } from './useSceneManagerWorkspace'
+import type { SceneMaintenanceDeps } from './useSceneMaintenance'
+import type { SceneMaintenanceSnapshot, SceneDraft } from '@/types/api'
 
 const mock = vi.hoisted(() => ({
   getState: vi.fn(), load: vi.fn(), reload: vi.fn(), confirm: vi.fn(),
-  maintenanceDeps: null as unknown as { baseVersion: () => number | null },
+  saveChanges: vi.fn(), preview: vi.fn(),
+  maintenanceDeps: null as unknown as SceneMaintenanceDeps,
 }))
-vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { getScenesState: mock.getState } }))
+vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { getScenesState: mock.getState, saveSceneChanges: mock.saveChanges, previewSceneChanges: mock.preview } }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({
   load: mock.load, reload: mock.reload, popularCharacters: [], sceneBlueprints: [],
   scenes: [{ id: 'sc001', title: 'stale cache' }], tags: [], curation: {},
@@ -15,15 +18,22 @@ vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: mock.confirm }))
 vi.mock('@/composables/useFocusTrap', () => ({ useFocusTrap: vi.fn() }))
 vi.mock('vue-router', () => ({ onBeforeRouteLeave: vi.fn() }))
-vi.mock('./useSceneTagManager', () => ({ useSceneTagManager: () => ({}) }))
-vi.mock('./useSceneImportExport', () => ({ useSceneImportExport: () => ({}) }))
 vi.mock('./useSceneShowcaseUpload', () => ({ useSceneShowcaseUpload: () => ({ loadHomeHeroes: vi.fn() }) }))
-vi.mock('./useSceneMaintenance', () => ({ useSceneMaintenance: (deps: typeof mock.maintenanceDeps) => {
-  mock.maintenanceDeps = deps
-  return { saving: ref(false), desktopPackaged: ref(false) }
-} }))
+vi.mock('./useSceneMaintenance', async importOriginal => {
+  const original = await importOriginal<typeof import('./useSceneMaintenance')>()
+  return { useSceneMaintenance: (deps: SceneMaintenanceDeps) => {
+    mock.maintenanceDeps = deps
+    return original.useSceneMaintenance(deps)
+  } }
+})
+const snapshot = (): SceneMaintenanceSnapshot => ({ scenes: [{ id: 'sc002', title: 'current', char: 'nene', story: 'fixture', tags: [], usage: [], rating: 'All',
+  category: 'fixture', lora: '', emotion: '', season: '', time: '', timeOfDay: '', location: '', weather: '', camera: '', lighting: '', storyJa: '', prompt: '', negative: '' } satisfies SceneDraft], tags: [], curation: {}, blueprints: [] })
 let wrapper: ReturnType<typeof mount> | undefined
-afterEach(() => { wrapper?.unmount(); vi.clearAllMocks() })
+beforeEach(() => {
+  mock.confirm.mockResolvedValue(true)
+  mock.getState.mockResolvedValue({ ok: true, version: 7, nextSceneId: 'sc1000', snapshot: snapshot() })
+})
+afterEach(() => { wrapper?.unmount(); vi.resetAllMocks() })
 function setup() {
   let workspace!: ReturnType<typeof useSceneManagerWorkspace>
   wrapper = mount(defineComponent({ setup() { workspace = useSceneManagerWorkspace(); return () => null } }))
@@ -53,5 +63,92 @@ describe('scene editor snapshot loading', () => {
     expect(mock.maintenanceDeps.baseVersion()).toBeNull()
     expect(workspace.loadError.value).toBe('offline')
     expect(mock.load).not.toHaveBeenCalled()
+    workspace.dirty.value = true
+    expect(workspace.canSave.value).toBe(false)
+  })
+  it('keeps immutable full baselines separate from the API response and edited draft', async () => {
+    const data = snapshot()
+    data.curation.reviewSceneIds = ['sc002']
+    mock.getState.mockResolvedValue({ version: 7, snapshot: data })
+    const workspace = setup()
+    await flushPromises()
+    const baseline = mock.maintenanceDeps.baselineSnapshot()!
+    expect(Object.isFrozen(baseline.scenes[0])).toBe(true)
+    expect(Object.isFrozen(baseline.curation.reviewSceneIds)).toBe(true)
+    data.scenes[0].title = 'changed response object'
+    expect(workspace.scenes.value[0].title).toBe('current')
+    workspace.scenes.value[0].title = 'edited draft'
+    expect(baseline.scenes[0].title).toBe('current')
+  })
+  it('adopts the normalized receipt as the next complete baseline', async () => {
+    const workspace = setup()
+    await flushPromises()
+    const saved = snapshot()
+    saved.scenes[0].title = 'normalized'
+    mock.saveChanges.mockResolvedValue({ ok: true, count: 1, backup: 'fixture', version: 8, snapshot: saved })
+    workspace.scenes.value[0].title = 'edited'
+    workspace.dirty.value = true
+    await workspace.saveToProject()
+    expect(mock.maintenanceDeps.baseVersion()).toBe(8)
+    expect(mock.maintenanceDeps.baselineSnapshot()!.scenes[0].title).toBe('normalized')
+    workspace.scenes.value[0].title = 'second edit'
+    workspace.dirty.value = true
+    await workspace.saveToProject()
+    expect(mock.saveChanges.mock.calls[1][0]).toMatchObject({ baseVersion: 8, changeSet: { scenes: { upsert: [{ id: 'sc002', title: 'second edit' }], remove: [] } } })
+  })
+  it('retains a form opened and edited while a project save is running', async () => {
+    const workspace = setup()
+    await flushPromises()
+    let resolve!: (value: unknown) => void
+    mock.saveChanges.mockReturnValueOnce(new Promise(done => { resolve = done }))
+    workspace.scenes.value[0].title = 'submitted'
+    workspace.dirty.value = true
+    const save = workspace.saveToProject()
+    workspace.openEditModal('sc002')
+    workspace.editing.value!.title = 'still typing'
+    resolve({ ok: true, count: 1, backup: 'fixture', version: 8, snapshot: snapshot() })
+    await save
+    expect(workspace.editing.value!.title).toBe('still typing')
+    expect(workspace.scenes.value[0].title).toBe('submitted')
+    expect(workspace.dirty.value).toBe(true)
+    expect(mock.maintenanceDeps.baseVersion()).toBe(7)
+  })
+  it('does not replace new edits made during a reload', async () => {
+    const workspace = setup()
+    await flushPromises()
+    let resolve!: (value: unknown) => void
+    mock.getState.mockReturnValueOnce(new Promise(done => { resolve = done }))
+    const reload = workspace.loadFromStore(true)
+    await flushPromises()
+    workspace.scenes.value[0].title = 'edited while loading'
+    resolve({ version: 99, snapshot: snapshot() })
+    await reload
+    expect(workspace.scenes.value[0].title).toBe('edited while loading')
+    expect(mock.maintenanceDeps.baseVersion()).toBe(7)
+    expect(workspace.dirty.value).toBe(true)
+  })
+  it('allocates distinct sc1000+ copies using the server lower bound', async () => {
+    const workspace = setup()
+    await flushPromises()
+    await Promise.all([workspace.duplicateScene('sc002'), workspace.duplicateScene('sc002')])
+    expect(workspace.scenes.value.map(s => s.id)).toEqual(['sc002', 'sc1000', 'sc1001'])
+    expect(mock.maintenanceDeps.baseVersion()).toBe(7)
+  })
+  it('creates unique blueprint IDs and does not reuse a removed baseline identity', async () => {
+    const data = snapshot()
+    data.blueprints = [{ id: 'bp_001', title: 'one' }, { id: 'bp_003', title: 'three' }] as never
+    mock.getState.mockResolvedValue({ version: 7, snapshot: data })
+    const workspace = setup()
+    await flushPromises()
+    mock.maintenanceDeps.blueprints.value.shift()
+    workspace.openBlueprintAddModal()
+    expect(workspace.bpEditing.value!.id).toBe('bp_002')
+    workspace.bpEditing.value!.title = 'two'
+    workspace.bpEditing.value!.characterId = 'nene'
+    workspace.bpPromptTokensInput.value = 'fixture'
+    workspace.bpNegativeTokensInput.value = 'fixture'
+    workspace.saveBlueprint()
+    workspace.openBlueprintAddModal()
+    expect(workspace.bpEditing.value!.id).toBe('bp_004')
   })
 })

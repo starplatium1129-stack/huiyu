@@ -45,11 +45,13 @@ function relations(row, snapshots, unknown) {
   return output;
 }
 
-function relationshipIssues(snapshots) {
+function relationshipIssues(snapshots, { keys } = {}) {
   const issues = [];
+  const selected = (row) => !keys || keys.has(row.key);
   const popular = snapshots.popular?.groups['popular:source'];
   const blueprints = snapshots.blueprints?.groups['blueprints:source'];
   if (popular?.complete) for (const character of popular.rows.filter((r) => r.kind === 'character')) {
+    if (!selected(character) && !(character.value.outfits || []).some((o) => keys?.has(keyFor('outfit', o.id, character.id)))) continue;
     const outfits = character.value.outfits;
     if (!Array.isArray(outfits)) continue;
     const complete = outfits.length && outfits.every((o) => typeof o.default === 'boolean' && typeof o.isDefault === 'boolean');
@@ -61,6 +63,7 @@ function relationshipIssues(snapshots) {
   }
   if (popular?.complete && blueprints?.complete) {
     for (const bp of blueprints.rows) {
+      if (!selected(bp)) continue;
       const candidates = popular.rows.filter((r) => r.kind === 'character' && r.id === bp.value.characterId);
       if (!candidates.length) issues.push({ domain: 'blueprints', file: bp.file, id: bp.id, reason: 'dangling characterId' });
       else if (candidates.length === 1 && validId(bp.value.outfitId) && Array.isArray(candidates[0].value.outfits)
@@ -74,6 +77,7 @@ function relationshipIssues(snapshots) {
     const group = snapshots[domain]?.groups[`${domain}:source`];
     if (!group?.complete) continue;
     for (const row of group.rows) {
+      if (!selected(row)) continue;
       const exists = scenes.rows.some((scene) => scene.id === row.id);
       if ((domain === 'curation' && !exists) || (domain === 'retired' && exists)) issues.push({ domain, file: row.file, id: row.id,
         reason: domain === 'curation' ? 'curation references absent scene' : 'retired ID is still active' });

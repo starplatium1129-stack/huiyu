@@ -159,6 +159,7 @@
 
       <div class="control-work-grid">
       <!-- 本机生成服务配置 -->
+      <ResourceLibraryPanel />
       <section id="control-services" class="panel-card service-config-panel">
         <div class="panel-kicker">02 / 连接设置</div>
         <h2 class="panel-heading">服务地址与声线</h2>
@@ -307,6 +308,7 @@ import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
+import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import { useControlNavigation } from '@/composables/useControlNavigation'
 import { useToast } from '@/composables/useToast'
@@ -386,6 +388,7 @@ async function confirmServiceAction(service: string, action: string): Promise<vo
 const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
   { id: 'control-overview', label: '运行概览', icon: 'eye' },
   { id: 'control-resources', label: '服务与显存', icon: 'model' },
+  { id: 'control-library', label: '离线资源库', icon: 'image' },
   { id: 'control-services', label: '连接与声线', icon: 'gear' },
   { id: 'control-share', label: '分享与访问', icon: 'upload' },
   { id: 'control-logs', label: '运行日志', icon: 'book' },

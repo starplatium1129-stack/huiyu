@@ -10,6 +10,22 @@ const { WORKFLOWS } = require('../workflow');
 const { classifyFiles, main: gate } = require('../maintenance/gate-quick');
 const root = path.resolve(__dirname, '../..');
 
+function hasPreviewExecutionSwitch(run) {
+  return Object.entries(run.switches || {}).some(([flag, effects]) =>
+    !['--json', '--help', '--plan'].includes(flag)
+    && effects.some(effect => ['guard', 'writes-source', 'writes-product', 'writes-release'].includes(effect)));
+}
+
+test('preview declarations allow read-only execution guards without inventing write effects', () => {
+  assert.equal(hasPreviewExecutionSwitch({ switches: { '--execute': ['read-only', 'guard'] } }), true);
+  assert.equal(hasPreviewExecutionSwitch({ switches: { '--apply': ['writes-product'] } }), true);
+  assert.equal(hasPreviewExecutionSwitch({ switches: {} }), false);
+  assert.equal(hasPreviewExecutionSwitch({ switches: { '--json': ['read-only'], '--plan': ['preview'] } }), false);
+  assert.equal(hasPreviewExecutionSwitch({ switches: { '--json': ['guard'] } }), false);
+  assert.ok(WORKFLOWS['check:impact'].run.nature.every(effect => ['preview', 'read-only'].includes(effect)));
+  assert.equal(hasPreviewExecutionSwitch(WORKFLOWS['check:impact'].run), true);
+});
+
 test('postinstall preserves custom hooks and only removes the absent legacy override', () => {
   const { migrateHooks } = require('../maintenance/install-git-hooks');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-hooks-'));
@@ -225,12 +241,12 @@ test('run metadata stays semantically consistent with the registry', () => {
       assert.ok(!['installer:', 'desktop:', 'deploy:'].some((prefix) => name.startsWith(prefix)) || run.machine.includes('windows'), `${name}: 安装/部署类需声明 windows`);
     }
     // 默认 preview 的入口，默认行为不得包含写入；写入只能出现在开关里。
-    // 发布器 --apply 写发布产物（writes-release）；候选暂存类 --apply 写生成产物（writes-product，G10）。
+    // 发布器显式 apply 写入；只读检查器显式 execute 仅做 guard。两者都不能默认写入。
     if (nature.includes('preview') && nature.every((effect) => ['read-only', 'preview'].includes(effect))) {
       assert.ok(!nature.includes('writes-release'), `${name}: 默认预览不得声明默认写入`);
       assert.ok(
-        Object.values(run.switches || {}).some((effects) => effects.includes('writes-release') || effects.includes('writes-product')),
-        `${name}: 预览类入口缺少写入开关描述（writes-release/writes-product）`
+        hasPreviewExecutionSwitch(run),
+        `${name}: 预览入口缺少实际执行开关（只读 guard 或显式写入）`
       );
     }
     // 复合工作流的 nature 必须与其子步骤有交集（不能凭空弱化）。

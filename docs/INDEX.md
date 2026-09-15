@@ -21,9 +21,10 @@
 
 ## 当前审计与待办
 
-- [剩余任务与验收顺序](roadmap.md)：后续补丁桌面同步、蓝图保存事务、资源分发、剩余治理、真实模型/设备及暂停事项；已完成项不重复列入。
+- [剩余任务与验收顺序](roadmap.md)：桌面同步、真实资源与设备验收、完整语义覆盖及暂停事项；已接通的办公机工程不重复列入。
 - [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：U0–U5 及后续浏览器打磨已有记录，保留 U6 后续补丁交付、真机验收和未覆盖状态；原启动任务属于历史。
-- [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：部分切片已实施，按文末状态表复用现成工具，剩余任务从 roadmap 进入。
+- [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：保存事务、资源生命周期、审核发布、历史检查和交付绑定已接通，按文末状态表核对边界。
+- [办公机工程交付（2026-09-15）](archive/audits/office-engineering-completion-2026-09-15.md)：本批实现、最终验证、提交证据和主力机待验范围。
 - [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局/接口与计划内评估已完成；拟议的新增存储/恢复方案不等于已接入生产，现有行为保留，原生设备验收单列。
 
 - [六份盘点报告汇总复核](research/engineering/six-task-review-2026-09-13.md)与[GLM Flash 分批任务](guides/engineering/glm-flash-next-batches.md)：状态校准、立绘缺失误报修正、蓝图保存风险和后续实施边界。

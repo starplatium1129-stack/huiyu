@@ -6,7 +6,8 @@
 .hint-sm { color:var(--text-muted); font-size:var(--fs-label-sm); }
 .id-code { font-size:var(--fs-mono-xs); }
 .sm-head { position:relative; top:auto; z-index:var(--z-sticky); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-5); flex-wrap:wrap; }
-.sm-head-actions { display:flex; gap:var(--s-2); flex-shrink:0; }
+.sm-head-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); flex-shrink:0; max-width:100%; }
+.sm-head-actions .btn:disabled, .import-actions .btn:disabled { color:var(--text-disabled); opacity:1; }
 .maintenance-state { display:inline-flex; align-items:center; gap:var(--s-2); margin-top:var(--s-2); padding:4px 12px; border-radius:var(--r-pill); background:color-mix(in srgb,var(--success) 10%,transparent); color:var(--success-text); font-size:var(--fs-label-sm); }
 .maintenance-state.dirty { background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning-text); }
 .maintenance-state span { color:var(--text-muted); font-size:var(--fs-label-xs); }
@@ -58,7 +59,7 @@ tr:hover td { background:var(--bg-elevated); }
 
 .import-input { width:100%; min-height:200px; padding:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font:400 var(--fs-label) var(--font-mono); line-height:var(--lh-body); resize:vertical; outline:none; }
 .import-input:focus { border-color:var(--accent); }
-.import-actions { display:flex; gap:var(--s-2); margin:var(--s-3) 0; }
+.import-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); margin:var(--s-3) 0; }
 .import-result { padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); font-size:var(--fs-label-sm); line-height:var(--lh-loose); }
 .msg-ok { color:var(--success-text); margin:0 0 4px; } .msg-warn { color:var(--warning-text); margin:0 0 4px; } .msg-danger { color:var(--danger-text); margin:0 0 4px; }
 

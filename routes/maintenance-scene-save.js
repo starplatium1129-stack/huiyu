@@ -1,15 +1,18 @@
 'use strict';
 
 const path = require('node:path');
-const fs = require('node:fs');
 const express = require('express');
 const envelope = require('../server/http-envelope');
 const { sceneContentVersion, readSceneState } = require('./maintenance-scene-state');
 const sceneWrite = require('../scripts/lib/scene-write');
 const { MAX_SCENES, MAX_BLUEPRINTS, validateCollection, resolveSceneChangeSet, previewSceneChanges } = require('../scripts/lib/scene-change-set');
 const products = require('./maintenance-content-products');
-const { readJson, writeJson, writeFileAtomic, validateTags, sanitizeCuration } = require('./maintenance-validation');
-const { saveSnapshotBackup } = require('./maintenance-backup');
+const { readJson, validateTags, sanitizeCuration } = require('./maintenance-validation');
+const recoveryFs = require('../scripts/lib/maintenance-recovery-fs');
+const { acquireMaintenanceLease, maintenanceReadToken, assertMaintenanceReadToken } = require('../scripts/lib/maintenance-lease');
+const { prepareMaintenanceTransaction, commitMaintenanceTransaction, rollbackMaintenanceTransaction } = require('../scripts/lib/maintenance-transaction');
+const writeFileAtomic = (file, bytes) => recoveryFs.atomicWrite(file, bytes, true);
+const writeJson = (file, value) => writeFileAtomic(file, JSON.stringify(value, null, 2) + '\n');
 
 function conflictSummary(current, incoming, baseVersion, currentVersion) {
   const old = new Map(current.map(scene => [scene.id, scene]));
@@ -23,15 +26,16 @@ function conflictSummary(current, incoming, baseVersion, currentVersion) {
 }
 
 function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged, unavailable,
-  maintenanceSnapshot, attemptRollback, runMaintenanceChecks, runNodeScript, syncVersion, timeoutMs }) {
-  const backupRoot = path.join(cfg.RUNTIME_ROOT, 'maintenance-backups');
+  maintenanceSnapshot, runMaintenanceChecks, runNodeScript, syncVersion, timeoutMs }) {
+  const leaseOptions = { rootDir: cfg.ROOT_DIR, runtimeRoot: cfg.RUNTIME_ROOT, showcaseRoot: cfg.SCENE_SHOWCASE_DIR };
 
   async function save(req, res, mode) {
     if (packaged(cfg)) return unavailable(req, res);
     return sceneWrite.withSceneWriteLock(async () => {
       let snapshot;
-      let mutationStarted = false;
+      let lease;
       try {
+        const readToken = maintenanceReadToken(leaseOptions);
         if (path.resolve(sceneStore.shardsDir) !== path.resolve(cfg.ROOT_DIR, 'data', 'scenes')) throw new Error('场景数据根与维护根不一致');
         const body = req.body || {};
         const baseVersion = body.baseVersion;
@@ -40,7 +44,7 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
             code: 'SCENE_BASE_VERSION_REQUIRED', conflict: { currentVersion: sceneContentVersion(cfg.ROOT_DIR) },
           });
         }
-        const state = readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite);
+        const state = readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite, leaseOptions);
         if (baseVersion !== state.version) {
           const incoming = mode === 'import' ? (Array.isArray(body.scenes) ? body.scenes : []) : (body.changeSet?.scenes?.upsert || []);
           const conflict = conflictSummary(state.snapshot.scenes, Array.isArray(incoming) ? incoming : [], baseVersion, state.version);
@@ -62,15 +66,17 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
         const prepared = blueprints !== undefined ? products.prepareBlueprints(cfg.ROOT_DIR, blueprints, state.snapshot.blueprints) : null;
         const previous = sceneStore.loadSceneShards();
         const scenePlan = sceneWrite.applySceneChanges(scenes, previous, { retiredIds, planOnly: true });
+        assertMaintenanceReadToken(leaseOptions, readToken);
         if (mode === 'preview') return res.json({ ok: true, ...previewSceneChanges(state.snapshot, incoming, state.version) });
+        lease = acquireMaintenanceLease(leaseOptions);
+        if (state.version !== sceneContentVersion(cfg.ROOT_DIR)) throw Object.assign(new Error('获取保存锁后基线已变化，请重新读取'), { statusCode: 409, code: 'MAINTENANCE_CONFLICT' });
         const removed = previous.scenes.filter(scene => !ids.has(scene.id)).map(scene => scene.id);
         snapshot = maintenanceSnapshot(removed);
         const captured = new Set(snapshot.map(entry => entry.file));
         for (const name of scenePlan.touchedFiles) {
           const file = path.join(sceneStore.shardsDir, name);
           if (!captured.has(file)) {
-            const exists = fs.existsSync(file);
-            snapshot.push({ file, exists, content: exists ? fs.readFileSync(file) : null });
+            snapshot.push(...recoveryFs.snapshotFiles([file]));
             captured.add(file);
           }
         }
@@ -82,9 +88,9 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
             if (!captured.has(entry.file)) { snapshot.push(entry); captured.add(entry.file); }
           }
         }
+        snapshot = products.includeCompressedSnapshots(snapshot);
         if (state.version !== sceneContentVersion(cfg.ROOT_DIR)) throw Object.assign(new Error('准备保存时内容发生变化，请重新读取'), { statusCode: 409, conflict: { baseVersion, currentVersion: sceneContentVersion(cfg.ROOT_DIR) } });
-        const backup = saveSnapshotBackup(snapshot, backupRoot, prepared ? 'content-blueprints' : 'content');
-        mutationStarted = true;
+        const backup = prepareMaintenanceTransaction(lease, leaseOptions, snapshot, prepared ? 'content-blueprints' : 'content');
         const changes = sceneWrite.applySceneChanges(scenes, previous, { retiredIds });
         sceneStore.writeAggregate(scenes);
         if (tags !== undefined) writeJson(path.join(cfg.ROOT_DIR, 'data', 'tags.json'), tags);
@@ -96,16 +102,19 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
           io: { readJson, writeJson, sanitizeCuration }, log: line => console.log(line),
         });
         sceneWrite.cleanOrphanedSceneRefs({ rootDir: cfg.ROOT_DIR, io: { readJson, writeJson, sanitizeCuration } });
-        await runMaintenanceChecks();
+        await runMaintenanceChecks(lease);
         // Normalizers and curation cleanup can change products too. Refresh all companions
         // and DATA_VERSION before the content validator observes this transaction.
-        products.refreshCompressedProducts(cfg.ROOT_DIR, writeFileAtomic);
+        products.refreshCompressedProducts(cfg.ROOT_DIR, writeFileAtomic, snapshot.map(entry => entry.file));
         syncVersion(cfg.ROOT_DIR);
         if (prepared) {
-          const result = await runNodeScript('scripts/maintenance/validate-content-contracts.js', [], timeoutMs);
+          const result = await runNodeScript('scripts/maintenance/validate-content-contracts.js', [], timeoutMs, lease);
           if (result.status !== 0) throw new Error((result.stderr || result.stdout || '蓝图内容契约校验失败').trim().slice(-1200));
         }
-        const saved = readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite);
+        const saved = readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite, leaseOptions, lease);
+        products.protectPinnedScenes(cfg.ROOT_DIR, state.snapshot.scenes, saved.snapshot.scenes);
+        commitMaintenanceTransaction(lease);
+        lease = undefined;
         return res.json({
           ok: true, count: saved.snapshot.scenes.length,
           blueprintCount: blueprints !== undefined ? saved.snapshot.blueprints.length : undefined,
@@ -115,11 +124,12 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
           submission: mode, message: '内容已保存并通过校验',
         });
       } catch (error) {
-        const rollback = attemptRollback(mutationStarted ? snapshot : undefined, 'scenes');
-        return res.status(rollback.ok ? (error.statusCode || 400) : 500).json({
-          ok: false, error: error.message, conflict: error.conflict, rolledBack: rollback.ok,
+        const rollback = lease ? rollbackMaintenanceTransaction(lease, leaseOptions) : { ok: !error.recoveryRequired };
+        return res.status(error.statusCode || (rollback.ok ? 400 : 500)).json({
+          ok: false, error: error.message, code: error.code, conflict: error.conflict, rolledBack: rollback.ok,
           dataIntegrity: rollback.ok ? 'restored' : 'INCONSISTENT',
-          recovery: rollback.ok ? undefined : '自动回滚也失败了（' + rollback.error + '）。请从本次 content 备份恢复，恢复前不要继续保存。',
+          recoveryRequired: !rollback.ok, transactionId: error.transactionId || lease?.nonce,
+          recovery: rollback.ok ? undefined : '维护事务尚未完整结束，请先使用恢复工具核验。' + (rollback.error || ''),
         });
       }
     });
@@ -136,8 +146,8 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
     return sceneWrite.withSceneWriteLock(() => {
       try {
         res.set('Cache-Control', 'no-store');
-        res.json({ ok: true, ...readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite) });
-      } catch (error) { envelope.fail(res, 500, error.message || '读取场景状态失败'); }
+        res.json({ ok: true, ...readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite, leaseOptions) });
+      } catch (error) { envelope.fail(res, error.statusCode || 500, error.message || '读取场景状态失败', { code: error.code, recoveryRequired: Boolean(error.recoveryRequired) }); }
     });
   });
 }

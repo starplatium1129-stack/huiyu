@@ -1,10 +1,18 @@
 'use strict';
 var { saveSnapshotBackup } = require('./maintenance-backup');
-var { sanitizeCuration, validateTags, decodeJpegDataUrl, readJson, writeFileAtomic, writeJson } = require('./maintenance-validation');
+var { sanitizeCuration, validateTags, decodeJpegDataUrl, readJson } = require('./maintenance-validation');
+const recoveryFs = require('../scripts/lib/maintenance-recovery-fs');
+const { acquireMaintenanceLease, maintenanceReadToken, inspectMaintenanceLease } = require('../scripts/lib/maintenance-lease');
+const { prepareMaintenanceTransaction, commitMaintenanceTransaction, rollbackMaintenanceTransaction, withMaintenanceTransaction } = require('../scripts/lib/maintenance-transaction');
+const { runMaintenanceNode } = require('../scripts/lib/maintenance-transaction-process');
+const { maintenanceReadBarrier } = require('./maintenance-read-barrier');
+const products = require('./maintenance-content-products');
+const { captureMaintenanceSnapshot } = require('../scripts/lib/maintenance-transaction-snapshot');
+const writeFileAtomic = (file, bytes) => recoveryFs.atomicWrite(file, bytes, true);
+const writeJson = (file, value) => writeFileAtomic(file, JSON.stringify(value, null, 2) + '\n');
 
 var fs = require('fs');
 var path = require('path');
-var cp = require('child_process');
 var express = require('express');
 var envelope = require('../server/http-envelope');
 var processTree = require('../server/process-tree');
@@ -18,7 +26,6 @@ var processTree = require('../server/process-tree');
 // ── 6. 进程管理 ──
 
 // ── 0. 常量 ──
-var MAINT_LOG_CAP = 64 * 1024; // 子进程 stdout/stderr 截断上限，避免多话脚本撑爆内存
 var MAINT_TIMEOUT_MS = 120000; // 维护脚本默认超时 120s
 
 // 维护脚本名映射（script 文件名）——与任务表一一对应，集中在顶部便于总览
@@ -48,7 +55,7 @@ function syncSceneStoreDataVersion(rootDir) {
   if (fs.existsSync(storePath)) {
     var storeSource = fs.readFileSync(storePath, 'utf8');
     storeSource = storeSource.replace(/DATA_VERSION\s*=\s*\d+/, 'DATA_VERSION = ' + expected);
-    fs.writeFileSync(storePath, storeSource, 'utf8');
+    writeFileAtomic(storePath, storeSource);
   }
   return expected;
 }
@@ -60,23 +67,13 @@ function syncSceneStoreDataVersion(rootDir) {
 
 
 function snapshotFiles(files) {
-  return Array.from(new Set(files)).map(function (file) {
-    var exists = fs.existsSync(file);
-    return { file:file, exists:exists, content:exists ? fs.readFileSync(file) : null };
-  });
+  return recoveryFs.snapshotFiles(files);
 }
 
 function restoreSnapshot(snapshot) {
-  if (snapshot.shardsDir) {
-    var original = new Set(snapshot.map(function (item) { return item.file; }));
-    fs.readdirSync(snapshot.shardsDir).filter(function (name) { return name.endsWith('.json'); }).forEach(function (name) {
-      var file = path.join(snapshot.shardsDir, name);
-      if (!original.has(file)) fs.unlinkSync(file);
-    });
-  }
   snapshot.forEach(function (item) {
     if (item.exists) writeFileAtomic(item.file, item.content);
-    else if (fs.existsSync(item.file)) fs.unlinkSync(item.file);
+    else recoveryFs.removeFile(item.file);
   });
 }
 
@@ -157,90 +154,42 @@ function killActiveChildren() {
 // ── 3. 路由：scenes/tags/curation ── · ── 4. 路由：showcase/home-hero ── · ── 5. 路由：run/backups ──
 function createMaintenanceRouter(cfg) {
   var router = express.Router();
+  const leaseOptions = { rootDir: cfg.ROOT_DIR, runtimeRoot: cfg.RUNTIME_ROOT, showcaseRoot: cfg.SCENE_SHOWCASE_DIR };
+  if (!isDesktopPackagedMode(cfg)) maintenanceReadToken(leaseOptions);
   var sceneStore = require('../scripts/lib/scene-store');
+
+  if (!isDesktopPackagedMode(cfg)) router.use(['/data', '/scene-showcase'], maintenanceReadBarrier(leaseOptions));
+  if (!isDesktopPackagedMode(cfg)) router.use('/api/maintenance/home-hero', (req, res, next) =>
+    req.method === 'GET' ? maintenanceReadBarrier(leaseOptions)(req, res, next) : next());
+  router.get('/api/maintenance/recovery-status', maintenanceLocalOnly, function (req, res) {
+    if (isDesktopPackagedMode(cfg)) return desktopMaintenanceUnavailable(req, res);
+    const state = inspectMaintenanceLease(leaseOptions);
+    res.set('Cache-Control', 'no-store');
+    return res.json({ ok: state.status === 'free', status: state.status, recoveryRequired: state.recoveryRequired,
+      code: state.code, transactionId: state.journal?.nonce, phase: state.journal?.phase, backup: state.journal?.backup?.id });
+  });
 
   var SCENE_SHOWCASE_DIR = cfg.SCENE_SHOWCASE_DIR;
   var MAINTENANCE_BACKUP_DIR = path.join(cfg.RUNTIME_ROOT, 'maintenance-backups');
 
   function maintenanceSnapshot(deletedIds) {
-    var dataDir = path.join(cfg.ROOT_DIR, 'data');
-    var files = [
-      ...require('../scripts/lib/data-version').VERSIONED_FILES.flatMap(function (name) {
-        return ['', '.gz', '.br'].map(function (suffix) { return path.join(dataDir, name + suffix); });
-      }),
-      path.join(cfg.ROOT_DIR, 'src', 'stores', 'sceneStore.ts'),
-      path.join(sceneStore.shardsDir, 'manifest.json'),
-      path.join(dataDir, 'retired-scenes.json'),
-      path.join(dataDir, 'characters.json'),
-      path.join(dataDir, 'loras.json'),
-      path.join(dataDir, 'curation.json'),
-      path.join(dataDir, 'tags.json')
-    ];
-    var shardInfo = sceneStore.loadSceneShards();
-    shardInfo.sources.forEach(function (item) { files.push(item.source); });
-    if (SCENE_SHOWCASE_DIR) {
-      files.push(path.join(SCENE_SHOWCASE_DIR, 'manifest.json'));
-      (deletedIds || []).forEach(function (id) {
-        ['jpg', 'png', 'webp'].forEach(function (ext) {
-          files.push(path.join(SCENE_SHOWCASE_DIR, 'images', id + '.' + ext));
-          files.push(path.join(SCENE_SHOWCASE_DIR, 'thumbs', id + '.' + ext));
-        });
-      });
-    }
-    var snapshot = snapshotFiles(files);
-    snapshot.shardsDir = sceneStore.shardsDir;
-    return snapshot;
+    return captureMaintenanceSnapshot(leaseOptions, sceneStore, deletedIds);
   }
 
-  function runNodeScript(script, args, timeoutMs) {
-  return new Promise(function (resolve, reject) {
-    var child = trackChild(cp.spawn(process.execPath, [script].concat(args || []), {
-      cwd:path.join(__dirname, '..'), windowsHide:true,
-      env: { ...process.env, AICS_DATA_ROOT:cfg.ROOT_DIR, AICS_APP_ROOT:cfg.ROOT_DIR }
-    }));
-    var stdout = '';
-    var stderr = '';
-    var settled = false;
-    var effectiveTimeout = timeoutMs || MAINT_TIMEOUT_MS;
+  function runNodeScript(script, args, timeoutMs, lease) {
+    return runMaintenanceNode(script, args || [], timeoutMs || MAINT_TIMEOUT_MS, {
+      rootDir: cfg.ROOT_DIR, repoRoot: path.join(__dirname, '..'), lease, trackChild, killChild: processTree.killProcessTree,
+    });
+  }
 
-    var timer = setTimeout(function () {
-      if (settled) return;
-      settled = true;
-      // 脚本可能又 spawn 了子进程（如 validate 链），只 kill 本体会让它们
-      // 变孤儿继续写文件；连树一起收。
-      processTree.killProcessTree(child);
-      reject(new Error(path.basename(script) + ' 执行超时（' + Math.round(effectiveTimeout / 1000) + ' 秒）'));
-    }, effectiveTimeout);
-
-    child.stdout.on('data', function (chunk) {
-      if (stdout.length < MAINT_LOG_CAP) stdout += String(chunk);
-    });
-    child.stderr.on('data', function (chunk) {
-      if (stderr.length < MAINT_LOG_CAP) stderr += String(chunk);
-    });
-    child.on('error', function (error) {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      reject(error);
-    });
-    child.on('close', function (code) {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      resolve({ status:code, stdout:stdout, stderr:stderr });
-    });
-  });
-}
-
-async function runMaintenanceChecks() {
+async function runMaintenanceChecks(lease) {
   var commands = [
     ['scripts/maintenance/classify-scene-ratings.js', ['--write']],
     ['scripts/maintenance/optimize-scenes.js', ['--write']],
     ['scripts/maintenance/validate-scenes.js', []]
   ];
   for (var i = 0; i < commands.length; i += 1) {
-    var result = await runNodeScript(commands[i][0], commands[i][1], MAINT_TIMEOUT_MS);
+    var result = await runNodeScript(commands[i][0], commands[i][1], MAINT_TIMEOUT_MS, lease);
     if (result.status !== 0) {
       throw new Error((result.stderr || result.stdout || '维护校验失败').trim().slice(-1200));
     }
@@ -355,8 +304,10 @@ async function runMaintenanceChecks() {
 
   router.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'26mb' }), function (req, res) {
     var snapshot;
+    let lease;
     try {
       if (!SCENE_SHOWCASE_DIR) return envelope.fail(res, 503, '尚未找到 SceneShowcase 目录');
+      lease = acquireMaintenanceLease(leaseOptions);
       var id = String(req.body && req.body.id || '').trim();
       if (!/^(sc\d{3}|pc_[a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+)$/.test(id)) return envelope.fail(res, 400, '需要合法场景或蓝图 ID');
       var scenes = sceneStore.loadSceneShards().scenes;
@@ -387,7 +338,6 @@ async function runMaintenanceChecks() {
       if (buffer.length > 15 * 1024 * 1024 || thumbBuffer.length > 3 * 1024 * 1024) return envelope.fail(res, 413, '原图必须在 15MB 以内，缩略图必须在 3MB 以内');
       var imageDir = path.join(SCENE_SHOWCASE_DIR, 'images');
       var thumbDir = path.join(SCENE_SHOWCASE_DIR, 'thumbs');
-      fs.mkdirSync(imageDir, { recursive:true }); fs.mkdirSync(thumbDir, { recursive:true });
       var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'manifest.json');
       var affected = [manifestPath];
       ['jpg', 'png', 'webp'].forEach(function (ext) {
@@ -395,7 +345,7 @@ async function runMaintenanceChecks() {
         affected.push(path.join(thumbDir, id + '.' + ext));
       });
       snapshot = snapshotFiles(affected);
-      var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, 'showcase-' + id);
+      var backupDir = prepareMaintenanceTransaction(lease, leaseOptions, snapshot, 'showcase-' + id);
       writeFileAtomic(path.join(imageDir, id + '.jpg'), buffer);
       writeFileAtomic(path.join(thumbDir, id + '.jpg'), thumbBuffer);
       ['png', 'webp'].forEach(function (ext) {
@@ -438,25 +388,30 @@ async function runMaintenanceChecks() {
       manifest.counts = manifest.counts || {};
       manifest.counts.popular = manifest.entries.filter(function (e) { return e.type === 'popular'; }).length;
       writeJson(manifestPath, manifest);
+      commitMaintenanceTransaction(lease);
+      lease = undefined;
       res.json({ ok:true, file:entry.image, thumb:entry.thumb, backup:path.basename(backupDir), message:'样张与轻量缩略图已安全保存，旧版本已备份' });
     } catch (error) {
-      var rollback = attemptRollback(snapshot, 'showcase');
-      res.status(rollback.ok ? 400 : 500).json({
+      var rollback = lease ? rollbackMaintenanceTransaction(lease, leaseOptions) : { ok: !error.recoveryRequired };
+      lease = undefined;
+      res.status(error.statusCode || (rollback.ok ? 400 : 500)).json({
         ok:false,
-        error:error.message,
+        error:error.message, code:error.code, recoveryRequired:!rollback.ok,
         rolledBack:rollback.ok,
         dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT',
         recovery:rollback.ok ? undefined
           : '自动回滚也失败了（' + rollback.error + '）。样张目录可能只写了一半，'
             + '请用 runtime 备份目录里最近一份 showcase-* 手动恢复。'
       });
-    }
+    } finally { if (lease) rollbackMaintenanceTransaction(lease, leaseOptions); }
   });
 
   router.post('/api/maintenance/home-hero', maintenanceLocalOnly, express.json({ limit:'26mb' }), function (req, res) {
     var snapshot;
+    let lease;
     try {
       if (!SCENE_SHOWCASE_DIR) return envelope.fail(res, 503, '尚未找到 SceneShowcase 目录');
+      lease = acquireMaintenanceLease(leaseOptions);
       var character = String(req.body && req.body.character || '');
       if (!/^(nene|natsume)$/.test(character)) return envelope.fail(res, 400, '首页主视觉角色无效');
       var action = String(req.body && req.body.action || 'replace');
@@ -464,7 +419,7 @@ async function runMaintenanceChecks() {
       var imagePath = path.join(root, character + '.jpg');
       var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'home-hero.json');
       snapshot = snapshotFiles([imagePath, manifestPath]);
-      var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, 'home-hero-' + character);
+      var backupDir = prepareMaintenanceTransaction(lease, leaseOptions, snapshot, 'home-hero-' + character);
       var manifest = readHomeHeroManifest();
       if (action === 'reset') {
         if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
@@ -483,11 +438,14 @@ async function runMaintenanceChecks() {
       writeJson(manifestPath, manifest);
       // 写盘成功后立即失效缓存，维护端保存后立刻能读到新配置
       homeHeroCache.at = 0;
+      commitMaintenanceTransaction(lease);
+      lease = undefined;
       res.json({ ok:true, character:character, action:action, backup:path.basename(backupDir), message:action === 'reset' ? '已恢复内置首页主视觉' : '首页主视觉已保存' });
     } catch (error) {
-      var rollback = attemptRollback(snapshot, 'home-hero');
-      res.status(rollback.ok ? 400 : 500).json({ ok:false, error:error.message, rolledBack:rollback.ok, dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT' });
-    }
+      var rollback = lease ? rollbackMaintenanceTransaction(lease, leaseOptions) : { ok: !error.recoveryRequired };
+      lease = undefined;
+      res.status(error.statusCode || (rollback.ok ? 400 : 500)).json({ ok:false, error:error.message, code:error.code, recoveryRequired:!rollback.ok, rolledBack:rollback.ok, dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT' });
+    } finally { if (lease) rollbackMaintenanceTransaction(lease, leaseOptions); }
   });
 
   // ── 5. 路由：run/backups ── 维护脚本一键执行（SCRIPT_NAMES / MAINTENANCE_TASKS 已上移顶部常量区）
@@ -507,14 +465,22 @@ async function runMaintenanceChecks() {
     var args = MAINTENANCE_TASKS[task].args;
     var result;
     try {
-      result = await sceneWrite.withSceneWriteLock(async function () {
-        var output = await runNodeScript(script, args, MAINT_TIMEOUT_MS);
-        if (output.status === 0 && (task === 'classify' || task === 'optimize')) syncSceneStoreDataVersion(cfg.ROOT_DIR);
-        return output;
-      });
+      result = await sceneWrite.withSceneWriteLock(() => withMaintenanceTransaction(leaseOptions,
+        () => maintenanceSnapshot([]), async lease => {
+          const before = sceneStore.loadSceneShards().scenes;
+          var output = await runNodeScript(script, args, MAINT_TIMEOUT_MS, lease);
+          if (output.status !== 0) throw Object.assign(new Error((output.stderr || output.stdout || '维护校验失败').trim().slice(-1200)), { statusCode: 400 });
+          if (task === 'classify' || task === 'optimize') {
+            products.refreshCompressedProducts(cfg.ROOT_DIR, writeFileAtomic);
+            syncSceneStoreDataVersion(cfg.ROOT_DIR);
+          }
+          products.protectPinnedScenes(cfg.ROOT_DIR, before, sceneStore.loadSceneShards().scenes);
+          return output;
+        }, 'maintenance-' + task));
     } catch (error) {
-      return res.status(504).json({
+      return res.status(error.statusCode || 504).json({
         ok:false,
+        code:error.code, recoveryRequired:Boolean(error.recoveryRequired), rolledBack:error.rolledBack, dataIntegrity:error.dataIntegrity,
         task:task,
         label:MAINTENANCE_TASKS[task].label,
         output:'执行出错：' + error.message,

@@ -4,16 +4,19 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { VERSIONED_FILES } = require('../scripts/lib/data-version');
+const recoveryFs = require('../scripts/lib/maintenance-recovery-fs');
+const { maintenanceReadToken, assertMaintenanceReadToken } = require('../scripts/lib/maintenance-lease');
 
 // 编辑基线包含源文件；浏览器缓存的 DATA_VERSION 不能保护尚未聚合的源修改。
 function sourceFiles(root) {
   const files = [];
   function visit(dir) {
     if (!fs.existsSync(dir)) return;
+    recoveryFs.safePath(dir, 'directory', false);
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const file = path.join(dir, entry.name);
       if (entry.isDirectory()) visit(file);
-      else if (entry.isFile() && entry.name.endsWith('.json')) files.push(file);
+      else if (entry.name.endsWith('.json')) { recoveryFs.safePath(file, 'file', false); files.push(file); }
     }
   }
   for (const name of ['scenes', 'blueprints', 'popular']) visit(path.join(root, 'data', name));
@@ -22,10 +25,11 @@ function sourceFiles(root) {
 
 function sceneContentVersion(root) {
   const hash = crypto.createHash('sha256');
-  const files = [...VERSIONED_FILES, 'retired-scenes.json', 'prompt-pinned-scenes.json']
-    .map(name => path.join(root, 'data', name)).concat(sourceFiles(root));
+  const files = VERSIONED_FILES.flatMap(name => ['', '.gz', '.br'].map(ext => path.join(root, 'data', name + ext)))
+    .concat(['retired-scenes.json', 'prompt-pinned-scenes.json'].map(name => path.join(root, 'data', name)),
+      path.join(root, 'src/stores/sceneStore.ts'), sourceFiles(root));
   for (const file of files) {
-    const bytes = fs.existsSync(file) ? fs.readFileSync(file) : null;
+    const bytes = recoveryFs.readBytes(file, true);
     hash.update(JSON.stringify([path.relative(root, file), bytes ? bytes.length : null]));
     if (bytes) hash.update(bytes);
   }
@@ -33,7 +37,8 @@ function sceneContentVersion(root) {
 }
 
 // 调用方持有保存锁；内容和基线一起返回，避免客户端先读旧产物再领取新版本。
-function readSceneState(root, store, sceneWrite) {
+function readSceneState(root, store, sceneWrite, options = { rootDir: root }, lease) {
+  const token = maintenanceReadToken(options, lease);
   const version = sceneContentVersion(root);
   const integrity = sceneWrite.verifyShardIntegrity();
   if (!integrity.ok) throw new Error(integrity.problems.join('\n'));
@@ -59,6 +64,7 @@ function readSceneState(root, store, sceneWrite) {
   catch (error) {
     if (error.code !== 'SCENE_ID_EXHAUSTED') throw error;
   }
+  assertMaintenanceReadToken(options, token, lease);
   return { version, snapshot, nextSceneId, sceneCount: loaded.scenes.length, retiredCount: retiredIds.size };
 }
 

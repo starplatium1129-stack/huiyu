@@ -284,6 +284,8 @@ function publishStage(tempStage, stage, logger) {
 
 function stageResources(options = {}) {
   const root = options.root || ROOT;
+  const resourceProfile = options.resourceProfile || process.env.AICS_DESKTOP_RESOURCE_PROFILE || 'full';
+  if (!['full', 'base'].includes(resourceProfile)) throw new Error('Resource profile must be full or base');
   const stage = options.stage || STAGE;
   const logger = options.logger || console.log;
   const installDependencies = options.installDependencies || installGatewayDependencies;
@@ -319,6 +321,8 @@ function stageResources(options = {}) {
       logger(`[stage] ${source} -> resources/${target}`);
     }
 
+    execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root,
+      path.join(tempStage, 'gateway'), resourceProfile], { windowsHide: true, stdio: 'pipe' });
     const rootPkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
     const rootLock = JSON.parse(fs.readFileSync(path.join(root, 'package-lock.json'), 'utf8'));
     const gateway = buildGatewayPackage(rootPkg, rootLock, logger);

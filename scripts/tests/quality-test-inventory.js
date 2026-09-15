@@ -23,6 +23,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-content-ownership.js',
     'test-content-history.js',
     'test-content-consistency.js',
+    'test-content-impact-check.js',
+    'test-content-evidence-audit.js',
     'test-content-contract-root.js',
     'test-blueprint-change-plan.js',
     'test-blueprint-write.js',
@@ -86,6 +88,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-delivery-handoff.js',
     'test-delivery-finalize.js',
     'test-generation-workflow-safety.js',
+    'test-reference-candidate-workflow.js',
     'test-scene-prose-contract.js',
     'test-quick-create.js',
     'test-resource-manifest.js', // G5 资源清单生成/校验：稳定排序、字节哈希、越界/junction 拒绝、零写入与退出码契约
@@ -93,6 +96,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-resource-pack-delta.js', // G13 增量候选包：只复制 added/changed、旧清单结构核验零旧资产访问、delta.json 身份与零差异候选
     'test-resource-pack-verify.js', // G15 增量候选包兼容核验：基线身份/removed 逐项/重建目标/候选字节，零写入与旧资产零访问
     'test-resource-install.js',
+    'test-resource-packaging.js',
     'test-resource-install-recovery.js',
     'test-resource-install-edge.js',
     'test-resource-install-resolver.js',
@@ -118,6 +122,12 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-wav-quality.js',
   ]),
   contract: Object.freeze([
+    'test-maintenance-recovery.js',
+    'test-maintenance-recovery-boundaries.js',
+    'test-maintenance-read-barrier.js',
+    'test-maintenance-transaction-routes.js',
+    'test-resource-gateway.js',
+    'test-resource-reference-gateway.js',
     'test-maintenance-blueprint-transaction.js',
     'test-anima-routes.js',
     'test-desktop-tools-route.js',

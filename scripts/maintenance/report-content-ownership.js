@@ -7,6 +7,7 @@ const path = require('path');
 const { parseManualRatings } = require('./classify-scene-ratings');
 const { localReader } = require('../lib/content-history-reader');
 const { inspectDomain, summarizeConsistency } = require('../lib/content-impact-consistency');
+const { FIELD_VALIDATION } = require('../lib/content-impact-checks');
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const records = (v) => Array.isArray(v) && v.every(object);
 const DOMAINS = {
@@ -82,6 +83,9 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
   const domains = Object.entries(DOMAINS).filter(([id]) => !domain || id === domain).map(([id, meta]) => {
     const result = { domain: id, ...meta, fieldContract: FIELD_CONTRACTS[id] || { status: 'unknown', reason: '未追踪本域全部字段的 source/derived 映射；不把独立用途的同名字段视为镜像' },
       consistency: { status: 'not-run', reason: 'Use --consistency for pure JSON/field projection checks' },
+      fieldValidation: { status: 'not-run', ...(FIELD_VALIDATION[id] || { rules: [], unknown: ['No complete exported field predicate for this domain'] }),
+        execution: 'scripts/maintenance/check-content-impact.js --full --execute; partial field coverage remains explicit' },
+      readWriteCoverage: { status: 'partial', completeness: 'unknown', basis: 'Only listed implementation readers/writers; no exhaustive dependency claim' },
       machine: { report: '办公机/CI：Node，本地只读', contentAcceptance: '内容/图片质量仍待对应主力机或人工验收' }, entries: [] };
     const add = (...args) => { const item = inspect(...args); result.entries.push(item.row); return item; };
     if (['popular', 'scenes', 'blueprints'].includes(id)) {

@@ -1,11 +1,17 @@
 import { ref, type Ref } from 'vue'
 import { downloadBlob } from '@/utils/downloadBlob'
 import type { SceneDraft, TagRecord, CurationData } from '@/types/api'
+import type { SceneBlueprint } from '@/utils/popularContent'
+import { confirmAction } from '@/composables/useConfirm'
+import { isSceneId } from '@/utils/sceneId'
+import { MAX_SCENES, MAX_SCENE_REQUEST_BYTES, parseSceneSnapshot } from '@/utils/sceneChanges'
 
 export interface SceneImportExportDeps {
   scenes: Ref<SceneDraft[]>
   tags: Ref<TagRecord[]>
   curation: Ref<CurationData>
+  blueprints: Ref<SceneBlueprint[]>
+  canImport?: () => boolean
   markDirty: (message: string) => void
   esc: (s: string) => string
   errorMessage: (error: unknown, fallback: string) => string
@@ -24,13 +30,15 @@ export function useSceneImportExport(deps: SceneImportExportDeps) {
 
   const importInput = ref('')
   const importResult = ref('')
+  const fullImportLoaded = ref(false)
+  const importing = ref(false)
 
   function exportJSON() {
-    if (!scenes.value.length) return
     const payload = {
       scenes: scenes.value,
       tags: tags.value,
       curation: curation.value,
+      blueprints: deps.blueprints.value,
       exportedAt: new Date().toISOString(),
       version: 1 as const,
     }
@@ -40,7 +48,9 @@ export function useSceneImportExport(deps: SceneImportExportDeps) {
   }
 
   function importScenes() {
+    if (importing.value || deps.canImport?.() === false) return
     const input = importInput.value.trim()
+    if (new TextEncoder().encode(input).byteLength > MAX_SCENE_REQUEST_BYTES) { importResult.value = '<p class="msg-danger">导入 JSON 不能超过 20 MB</p>'; return }
     if (!input) { importResult.value = '<p class="msg-danger">请粘贴 JSON</p>'; return }
     let parsed: unknown
     try { parsed = JSON.parse(input) } catch (e) { importResult.value = '<p class="msg-danger">JSON 错误：' + esc(errorMessage(e, '无法解析')) + '</p>'; return }
@@ -69,7 +79,6 @@ export function useSceneImportExport(deps: SceneImportExportDeps) {
 
     const VALID_CHAR = new Set(['nene', 'natsume', 'triad', 'both'])
     const VALID_RATING = new Set(['All', 'R15', 'R18'])
-    const ID_RE = /^sc\d{3}$/
 
     const existingIds = new Set(scenes.value.map(s => s.id))
     const seenImportIds = new Set<string>()
@@ -78,11 +87,12 @@ export function useSceneImportExport(deps: SceneImportExportDeps) {
     rawScenes.forEach((item, idx) => {
       if (!item || typeof item !== 'object') { errors.push('#' + idx + ' 不是对象'); return }
       const raw = item as Record<string, unknown>
-      const id = String((raw.id ?? '')).trim()
+      const id = typeof raw.id === 'string' ? raw.id : ''
       // 前置校验：id 格式
       if (!id) { errors.push('#' + idx + ' 缺少 id'); return }
-      if (!ID_RE.test(id)) { errors.push('#' + idx + ' ' + esc(id) + ' id 格式非法，需 /^sc\\d{3}$/'); return }
+      if (!isSceneId(id)) { errors.push('#' + idx + ' ' + esc(id) + ' ID 非法，需 sc001–sc999 或 sc1000 起的安全整数编号'); return }
       if (existingIds.has(id) || seenImportIds.has(id)) { skipped.push(id); return }
+      if (scenes.value.length >= MAX_SCENES) { errors.push('场景数量不能超过 ' + MAX_SCENES); return }
 
       const title = String(raw.title ?? '').trim()
       const story = String(raw.story ?? '').trim()
@@ -152,5 +162,24 @@ export function useSceneImportExport(deps: SceneImportExportDeps) {
     if (success.length) markDirty('批量导入已通过基础检查，等待保存到项目')
   }
 
-  return { importInput, importResult, importScenes, exportJSON }
+  async function loadFullSnapshot() {
+    if (importing.value || deps.canImport?.() === false) return
+    importing.value = true
+    try {
+      const snapshot = parseSceneSnapshot(importInput.value)
+      if (!(await confirmAction(`载入完整快照将替换当前内存草稿（${snapshot.scenes.length} 个场景、${snapshot.blueprints.length} 个蓝图）。项目文件尚不修改；请先导出需保留的草稿。继续？`))) return
+      if (deps.canImport?.() === false) return
+      scenes.value = snapshot.scenes
+      tags.value = snapshot.tags
+      curation.value = snapshot.curation
+      deps.blueprints.value = snapshot.blueprints
+      fullImportLoaded.value = true
+      markDirty('已载入完整快照草稿，请先查看影响预览再保存或全量导入')
+      importResult.value = '<p class="msg-ok">完整快照已载入草稿。普通保存仍只提交差异；“全量导入到项目”使用明确的完整导入入口。</p>'
+    } catch (error) {
+      importResult.value = '<p class="msg-danger">完整快照未载入：' + esc(errorMessage(error, '请检查 JSON')) + '</p>'
+    } finally { importing.value = false }
+  }
+
+  return { importInput, importResult, importScenes, exportJSON, fullImportLoaded, importing, loadFullSnapshot }
 }

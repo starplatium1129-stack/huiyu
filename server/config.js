@@ -135,6 +135,9 @@ function loadGatewayConfig(rootDir, env) {
     AI_WORKSPACE_ROOT:workspaceRoot,
     // Operator environment only: request bodies and saved app settings cannot enable commands.
     DESKTOP_TRUSTED_COMMANDS:env.AICS_DESKTOP_COMMANDS === 'trusted',
+    // No runtime/config.json fallback: only the operator environment selects/approves resources.
+    RESOURCE_CONFIG_PATH:env.AICS_RESOURCE_CONFIG || '',
+    RESOURCE_MANAGEMENT:env.AICS_RESOURCE_MANAGEMENT === 'trusted',
     RUNTIME:runtime,
     RUNTIME_ROOT:runtime.root,
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),
@@ -164,6 +167,7 @@ function loadGatewayConfig(rootDir, env) {
     LIVE2D_ROOT:path.join(assetsRoot, 'live2d'),
     SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR || saved.sceneShowcaseDir, workspaceRoot),
     CHARACTER_REF_ROOT:resolveCharRefRoot(appRoot, env, workspaceRoot),
+    CHARACTER_REF_EXPLICIT_ROOT:env.AICS_CHARACTER_REF_ROOT ? path.resolve(env.AICS_CHARACTER_REF_ROOT) : '',
     DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
     // 桌面打包模式（Tauri 壳仅在打包模式注入，见 main_shared.rs gateway_env）：
     // 场景内容维护链路（scenes/run/build-web）返回 501，展示类不受限。

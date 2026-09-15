@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const store = require('./scene-store');
+const recoveryFs = require('./maintenance-recovery-fs');
 
 const shardsDir = store.shardsDir;
 
@@ -297,10 +298,10 @@ function applySceneChanges(incoming, previous, options) {
   for (const file of touched) {
     const scenes = working.get(file);
     if (scenes) {
-      store.writeTextAtomic(path.join(shardsDir, file), store.jsonText(store.sortScenes(scenes)));
+      recoveryFs.atomicWrite(path.join(shardsDir, file), store.jsonText(store.sortScenes(scenes)));
     } else {
       // 单文件升级为批次形态：原 base.json 已被 .1.json 取代
-      try { fs.unlinkSync(path.join(shardsDir, file)); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+      recoveryFs.removeFile(path.join(shardsDir, file));
     }
   }
   return changes;

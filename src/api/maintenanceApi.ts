@@ -8,6 +8,9 @@ import type {
   MaintenanceFailure,
   MaintenanceRunResult,
   SceneDraft,
+  SceneChangesPayload,
+  SceneChangesPreview,
+  SceneMaintenanceSnapshot,
   SceneSaveResult,
   ScenesStateResult,
   ShowcaseSaveResult,
@@ -61,6 +64,9 @@ export interface BackupListResult {
 export interface MaintenanceApi {
   buildWeb(options?: MaintenanceCallOptions): Promise<MaintenanceBuildWebResult>
   saveScenes(payload: SaveScenesPayload, options?: MaintenanceCallOptions): Promise<SceneSaveResult>
+  importScenesSnapshot(payload: SceneMaintenanceSnapshot & { baseVersion: number }, options?: MaintenanceCallOptions): Promise<SceneSaveResult>
+  saveSceneChanges(payload: SceneChangesPayload, options?: MaintenanceCallOptions): Promise<SceneSaveResult>
+  previewSceneChanges(payload: SceneChangesPayload, options?: MaintenanceCallOptions): Promise<SceneChangesPreview>
   getScenesState(options?: MaintenanceCallOptions): Promise<ScenesStateResult>
   run(task: string, options?: MaintenanceCallOptions): Promise<MaintenanceRunResult>
   saveShowcase(payload: SaveShowcasePayload, options?: MaintenanceCallOptions): Promise<ShowcaseSaveResult>
@@ -92,6 +98,22 @@ function isSceneSnapshot(value: unknown): boolean {
   return Array.isArray(snapshot.scenes) && Array.isArray(snapshot.tags)
     && Array.isArray(snapshot.blueprints) && !!snapshot.curation
     && typeof snapshot.curation === 'object' && !Array.isArray(snapshot.curation)
+}
+
+function isStringList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'string')
+}
+
+function isChangeImpact(value: unknown): boolean {
+  return isObject(value) && isStringList(value.added) && isStringList(value.updated) && isStringList(value.removed)
+}
+
+function isScenePreview(value: ApiResponseObject): boolean {
+  return value.ok === true && Number.isSafeInteger(value.baseVersion) && Number.isSafeInteger(value.version)
+    && isChangeImpact(value) && isChangeImpact(value.blueprints)
+    && isStringList(value.checks) && isStringList(value.unknown)
+    && Array.isArray(value.related) && value.related.every(item => isObject(item)
+      && typeof item.kind === 'string' && typeof item.id === 'string' && typeof item.reason === 'string')
 }
 
 function isScenesState(value: ApiResponseObject): boolean {
@@ -149,12 +171,33 @@ export function createMaintenanceApi(client: ApiClient = apiClient): Maintenance
       })
     },
 
+    importScenesSnapshot(payload: SceneMaintenanceSnapshot & { baseVersion: number }, options: MaintenanceCallOptions = {}) {
+      return client.request<SceneSaveResult>('/api/maintenance/scenes/import', {
+        method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+        timeoutMs: MAINTENANCE_API_TIMEOUTS.scenes, validate: isSceneSave,
+      })
+    },
+
     getScenesState(options: MaintenanceCallOptions = {}) {
       return client.request<ScenesStateResult>('/api/maintenance/scenes-state', {
         cache: 'no-store',
         signal: options.signal,
         timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
         validate: isScenesState,
+      })
+    },
+
+    saveSceneChanges(payload: SceneChangesPayload, options: MaintenanceCallOptions = {}) {
+      return client.request<SceneSaveResult>('/api/maintenance/scenes/changes', {
+        method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+        timeoutMs: MAINTENANCE_API_TIMEOUTS.scenes, validate: isSceneSave,
+      })
+    },
+
+    previewSceneChanges(payload: SceneChangesPayload, options: MaintenanceCallOptions = {}) {
+      return client.request<SceneChangesPreview>('/api/maintenance/scenes/preview', {
+        method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+        timeoutMs: MAINTENANCE_API_TIMEOUTS.scenes, validate: isScenePreview,
       })
     },
 

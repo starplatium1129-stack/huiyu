@@ -191,7 +191,7 @@ export type CurationTier = 'normal' | 'review' | 'curated' | 'signature'
  *
  * 索引签名保留：`data/scenes/*.json` 里还有一批只被维护脚本读的字段
  * （sourceAudit、attempt 之类），编辑器要能原样读写回去而不丢字段 ——
- * 保存是全量覆盖写，丢字段等于静默删数据。
+ * 变更集中的 upsert 仍保存完整记录，丢字段等于静默删数据。
  */
 export interface SceneDraft {
   id: string
@@ -246,11 +246,42 @@ export interface SceneMaintenanceSnapshot {
   blueprints: import('./sceneBlueprint').SceneBlueprint[]
 }
 
-/** POST /api/maintenance/scenes */
+export interface SceneChangeSet {
+  version: 1
+  scenes: { upsert: SceneDraft[]; remove: string[] }
+  blueprints?: { upsert: import('./sceneBlueprint').SceneBlueprint[]; remove: string[] }
+  tags?: TagRecord[]
+  curation?: CurationData
+}
+
+export interface SceneChangesPayload {
+  baseVersion: number
+  changeSet: SceneChangeSet
+}
+
+export interface SceneChangeImpact {
+  added: string[]
+  updated: string[]
+  removed: string[]
+}
+
+/** POST /api/maintenance/scenes/preview: read-only structural impact. */
+export interface SceneChangesPreview extends SceneChangeImpact {
+  ok: true
+  baseVersion: number
+  version: number
+  blueprints: SceneChangeImpact
+  related: Array<{ kind: string; id: string; reason: string }>
+  checks: string[]
+  unknown: string[]
+}
+
+/** POST /api/maintenance/scenes/changes (also returned by legacy/full import). */
 export interface SceneSaveResult {
   ok: true
   count: number
   tagCount?: number
+  blueprintCount?: number
   backup: string
   /** 保存后服务端内容版本；作为下一次保存的读取基线。 */
   version: number

@@ -1,9 +1,12 @@
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch, type Ref } from 'vue'
 import { ApiClientError } from '@/api/client'
 import { maintenanceApi } from '@/api/maintenanceApi'
 import type { BackupEntry } from '@/api/maintenanceApi'
-import type { SceneDraft, TagRecord, CurationData } from '@/types/api'
+import type { SceneDraft, TagRecord, CurationData, SceneChangesPreview, SceneMaintenanceSnapshot } from '@/types/api'
 import type { SceneBlueprint } from '@/utils/popularContent'
+import { buildSceneChangeSet, cloneSceneSnapshot, hasSceneChanges, sceneContentKey } from '@/utils/sceneChanges'
+import { isSceneId } from '@/utils/sceneId'
+import { confirmAction } from '@/composables/useConfirm'
 
 export interface SceneMaintenanceDeps {
   scenes: Ref<SceneDraft[]>
@@ -13,12 +16,15 @@ export interface SceneMaintenanceDeps {
   blueprints: Ref<SceneBlueprint[]>
   /** 宿主持有的脏标记（编辑/导入/标签/策展/蓝图任一改动置位）。 */
   dirty: Ref<boolean>
+  loading: Ref<boolean>
   /** 宿主持有的维护提示通道（保存进度/备份编号/桌面只读提示共用）。 */
   maintenanceHint: Ref<string>
-  /** 页面加载/上次保存时锁定的内容基线版本；null 时保存会被服务端 409 拒绝。 */
+  /** 同一响应取得的不可变完整快照和版本；缺少任一项都禁止写入。 */
   baseVersion: () => number | null
-  /** 保存成功后采纳服务端回执版本，作为下一次保存的基线。 */
-  adoptSceneStateVersion: (version: number) => void
+  baselineSnapshot: () => SceneMaintenanceSnapshot | null
+  adoptSceneState: (version: number, snapshot: SceneMaintenanceSnapshot) => void
+  /** Includes open editor forms so edits not yet applied to the list are protected too. */
+  editSessionKey?: () => string
   /** 保存成功后作废共享缓存（其他页面正拿着写回前的旧副本）。 */
   invalidateSceneCache: () => void
 }
@@ -33,8 +39,7 @@ const TOOLS: Array<{ id: string; iconName: 'palette' | 'success' | 'filter' | 'g
 /**
  * 场景管理页「维护任务」簇（2026-08-22 自 SceneManagerView 下沉）。
  *
- * 草稿落盘（saveScenes 分阶段进度文案 + 备份编号回执 + 共享缓存作废）、
- * 四个维护工具（lint/校验/评级/规范化，输出 sc### 高亮）、备份历史读取。
+ * 基于不可变基线的变更集保存、只读影响预览、维护工具和备份历史。
  * 桌面打包模式探测（data 只读、保存与维护任务禁用）在此自持。
  */
 export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
@@ -50,7 +55,78 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   const backupsError = ref('')
   const backupsExpanded = ref(false)
   /** 桌面打包模式：data 在只读应用包内，场景保存与维护任务不可用 */
-  const desktopPackaged = ref(false)
+  const desktopPackaged = ref(!!window.companionDesktop)
+  const importConfirming = ref(false)
+  const needsReload = ref(false)
+  const preview = shallowRef<SceneChangesPreview | null>(null)
+  const previewing = ref(false)
+  const previewError = ref('')
+  const previewInvalidated = ref(false)
+  const previewEmpty = ref(false)
+  const previewCompanions = ref<string[]>([])
+  let previewController: AbortController | null = null
+  let previewRequest = 0
+
+  const canPreview = computed(() => !deps.loading.value && !saving.value && !previewing.value
+    && !toolRunning.value && !desktopPackaged.value && !importConfirming.value && !needsReload.value && deps.baselineSnapshot() !== null
+    && Number.isSafeInteger(deps.baseVersion()))
+  const canSave = computed(() => canPreview.value && dirty.value)
+  const currentSnapshot = (): SceneMaintenanceSnapshot => ({
+    scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value,
+  })
+
+  function invalidatePreview() {
+    previewInvalidated.value ||= preview.value !== null || previewing.value
+    previewRequest++
+    previewController?.abort()
+    previewController = null
+    preview.value = null
+    previewing.value = false
+    previewError.value = ''
+    previewEmpty.value = false
+    previewCompanions.value = []
+  }
+  // Invalidate synchronously: an old response must never become the current draft's preview.
+  watch([scenes, tags, curation, blueprints, deps.baseVersion, deps.baselineSnapshot, deps.loading, desktopPackaged, () => deps.editSessionKey?.() ?? ''],
+    invalidatePreview, { deep: true, flush: 'sync' })
+  watch([deps.baseVersion, deps.baselineSnapshot], () => { needsReload.value = false }, { flush: 'sync' })
+  onBeforeUnmount(invalidatePreview)
+
+  const previewGroups = computed(() => {
+    const impact = preview.value
+    if (!impact) return []
+    const baseline = deps.baselineSnapshot()
+    const collections = [
+      { key: 'scenes', label: '场景', impact, records: [...(baseline?.scenes ?? []), ...scenes.value] },
+      { key: 'blueprints', label: '蓝图', impact: impact.blueprints, records: [...(baseline?.blueprints ?? []), ...blueprints.value] },
+    ]
+    return collections.flatMap(collection => {
+      const titles = new Map(collection.records.map(item => [item.id, item.title]))
+      return (['added', 'updated', 'removed'] as const).map(action => ({
+        key: `${collection.key}-${action}`,
+        label: `${collection.label} · ${{ added: '新增', updated: '修改', removed: '退役 / 移除' }[action]}`,
+        items: collection.impact[action].map(id => ({ id, title: titles.get(id) || '未提供标题' })),
+      }))
+    })
+  })
+
+  function prepareSubmission() {
+    if (needsReload.value) throw new Error('请先导出本地草稿，再重新读取并合并后保存')
+    const baseVersion = deps.baseVersion()
+    const baseline = deps.baselineSnapshot()
+    if (baseVersion === null || !Number.isSafeInteger(baseVersion) || !baseline) {
+      throw new Error('缺少完整读取基线。请先导出本地草稿，再重新读取并合并改动')
+    }
+    const snapshot = cloneSceneSnapshot(currentSnapshot())
+    const changeSet = buildSceneChangeSet(baseline, snapshot)
+    if (!hasSceneChanges(changeSet)) {
+      dirty.value = false
+      maintenanceHint.value = '没有需要保存的变更'
+      return null
+    }
+    if (!snapshot.scenes.length) throw new Error('场景库不能为空，请保留至少一个场景；当前草稿仍可导出')
+    return { snapshot, baseline, editKey: deps.editSessionKey?.() ?? '', payload: { baseVersion, changeSet } }
+  }
 
   function errorMessage(error: unknown, fallback: string) {
     if (error instanceof Error && error.message) return error.message
@@ -70,68 +146,101 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   function conflictMessage(error: unknown): string | null {
     if (!(error instanceof ApiClientError) || !error.responseBody) return null
     const conflict = (error.responseBody as { conflict?: { serverOnlyIds?: string[]; changedIds?: string[]; clientNewIds?: string[]; baseVersion?: number; currentVersion?: number | null } }).conflict
-    if (!conflict) return null
+    if (!conflict && error.status !== 409) return null
     const parts: string[] = []
-    if (conflict.serverOnlyIds?.length) parts.push('服务器多出 ' + conflict.serverOnlyIds.join(', '))
-    if (conflict.changedIds?.length) parts.push('同 ID 内容有差异 ' + conflict.changedIds.join(', '))
-    if (conflict.clientNewIds?.length) parts.push('本次新增 ' + conflict.clientNewIds.join(', '))
+    if (conflict?.serverOnlyIds?.length) parts.push('服务器多出 ' + conflict.serverOnlyIds.join(', '))
+    if (conflict?.changedIds?.length) parts.push('同 ID 内容有差异 ' + conflict.changedIds.join(', '))
+    if (conflict?.clientNewIds?.length) parts.push('本次新增 ' + conflict.clientNewIds.join(', '))
     const detail = parts.length ? '；差异：' + parts.join('；') : ''
     return '保存已拒绝：场景库在本次编辑期间被更新'
-      + (typeof conflict.baseVersion === 'number' && typeof conflict.currentVersion === 'number'
+      + (typeof conflict?.baseVersion === 'number' && typeof conflict.currentVersion === 'number'
         ? `（读取基线 ${conflict.baseVersion}，当前 ${conflict.currentVersion}）` : '')
       + '。请先导出本地草稿，再点「重新读取」并合并改动' + detail
   }
 
-  async function saveToProject() {
-    if (!dirty.value || saving.value || toolRunning.value || desktopPackaged.value) return
-    saving.value = true
-    savingPhase.value = '正在写入分片…'
-    maintenanceHint.value = '正在保存并检查…'
-    let phaseTimers: ReturnType<typeof setTimeout>[] = []
-    phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在同步标签与策展…' }, 350))
-    phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在校验场景…' }, 750))
-    phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在更新版本…' }, 1150))
+  async function previewChanges() {
+    if (deps.loading.value || saving.value || previewing.value || toolRunning.value || desktopPackaged.value || importConfirming.value) return
+    invalidatePreview()
+    previewInvalidated.value = false
+    const request = previewRequest
     try {
-      // 脏检查快照只含内容；baseVersion 在保存后必然变化，不能参与比较
-      const serialize = () => JSON.stringify({
-        scenes: scenes.value,
-        tags: tags.value,
-        curation: curation.value,
-        blueprints: blueprints.value,
-      })
-      const snapshot = serialize()
-      const data = await maintenanceApi.saveScenes({
-        ...JSON.parse(snapshot),
-        baseVersion: deps.baseVersion() ?? undefined,
-      })
-      savingPhase.value = '正在更新版本…'
-      const editedDuringSave = serialize() !== snapshot
+      const submission = prepareSubmission()
+      if (!submission) { previewEmpty.value = true; return }
+      const controller = new AbortController()
+      previewController = controller
+      previewing.value = true
+      const result = await maintenanceApi.previewSceneChanges(submission.payload, { signal: controller.signal })
+      if (request !== previewRequest) return
+      if (result.baseVersion !== submission.payload.baseVersion || result.version !== submission.payload.baseVersion) {
+        throw new Error('预览版本与读取基线不一致，请先导出草稿，再重新读取并合并')
+      }
+      preview.value = result
+      previewCompanions.value = [
+        ...(submission.payload.changeSet.tags !== undefined ? ['标签库有修改'] : []),
+        ...(submission.payload.changeSet.curation !== undefined ? ['策展有修改'] : []),
+      ]
+    } catch (error) {
+      if (request === previewRequest) {
+        previewError.value = conflictMessage(error) ?? maintenanceErrorMessage(error, '读取影响预览失败，请重试')
+        if (error instanceof ApiClientError && error.status === 409) needsReload.value = true
+      }
+    } finally {
+      if (request === previewRequest) { previewing.value = false; previewController = null }
+    }
+  }
+
+  async function persistSceneDraft(mode: 'changes' | 'import') {
+    if (!dirty.value || deps.loading.value || saving.value || previewing.value || toolRunning.value || desktopPackaged.value || importConfirming.value) return
+    invalidatePreview()
+    try {
+      const submission = prepareSubmission()
+      if (!submission) return
+      if (mode === 'import') {
+        importConfirming.value = true
+        if (!(await confirmAction(`全量导入当前草稿到项目？将写入 ${submission.snapshot.scenes.length} 个场景、${submission.snapshot.blueprints.length} 个蓝图，退役 ${submission.payload.changeSet.scenes.remove.length} 个场景。此操作会创建备份。`))) return
+        if (sceneContentKey(currentSnapshot()) !== sceneContentKey(submission.snapshot)
+          || deps.baseVersion() !== submission.payload.baseVersion || deps.baselineSnapshot() !== submission.baseline
+          || (deps.editSessionKey?.() ?? '') !== submission.editKey) throw new Error('确认期间草稿已变化，请重新查看预览并导入')
+        importConfirming.value = false
+      }
+      saving.value = true
+      savingPhase.value = '正在提交变更并校验…'
+      maintenanceHint.value = '正在保存并检查…'
+      const data = mode === 'import'
+        ? await maintenanceApi.importScenesSnapshot({ ...submission.snapshot, baseVersion: submission.payload.baseVersion })
+        : await maintenanceApi.saveSceneChanges(submission.payload)
+      const editedDuringSave = sceneContentKey(currentSnapshot()) !== sceneContentKey(submission.snapshot)
+        || deps.baseVersion() !== submission.payload.baseVersion || deps.baselineSnapshot() !== submission.baseline
+        || (deps.editSessionKey?.() ?? '') !== submission.editKey
       if (!editedDuringSave) {
-        scenes.value = data.snapshot.scenes
-        tags.value = data.snapshot.tags
-        curation.value = data.snapshot.curation
-        blueprints.value = data.snapshot.blueprints
-        deps.adoptSceneStateVersion(data.version)
+        const saved = cloneSceneSnapshot(data.snapshot)
+        scenes.value = saved.scenes
+        tags.value = saved.tags
+        curation.value = saved.curation
+        blueprints.value = saved.blueprints
+        deps.adoptSceneState(data.version, data.snapshot)
       }
       dirty.value = editedDuringSave
+      needsReload.value = editedDuringSave
       maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
         + (editedDuringSave ? '；保存期间有新修改，已保留草稿。请先导出，再重新读取并合并后保存' : '')
       // 作废共享缓存：其他页面正拿着写回前的旧副本
       deps.invalidateSceneCache()
     } catch (e) {
+      if (e instanceof ApiClientError && e.status === 409) needsReload.value = true
       maintenanceHint.value = '保存未完成：' + (conflictMessage(e) ?? maintenanceErrorMessage(e, '请重试'))
     } finally {
-      phaseTimers.forEach(clearTimeout)
       saving.value = false
-      // 保留最后阶段文案短暂可见后清空
-      setTimeout(() => { if (!saving.value) savingPhase.value = '' }, 1200)
+      importConfirming.value = false
+      savingPhase.value = ''
     }
   }
 
   async function runTool(taskId: string) {
-    if (toolRunning.value || saving.value || desktopPackaged.value) return
+    if (deps.loading.value || toolRunning.value || saving.value || previewing.value || desktopPackaged.value || importConfirming.value) return
     const tool = TOOLS.find(t => t.id === taskId)
     if (!tool) return
+    invalidatePreview()
     toolRunning.value = true
     toolResultTitle.value = tool.iconName + ' ' + tool.label
     toolResult.value = { ok: true, output: '...' }
@@ -165,7 +274,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   const highlightedToolOutput = computed(() => {
     const src = toolResult.value?.output || ''
     const safe = String(src || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    return safe.replace(/(sc\d{3})/g, '<span class="hl-id">$1</span>')
+    return safe.replace(/\bsc\d+\b/g, id => isSceneId(id) ? `<span class="hl-id">${id}</span>` : id)
   })
   // 模板兼容别名
   const highlightedOutput = highlightedToolOutput
@@ -175,7 +284,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
       window.companionDesktop.isPackaged().then(packaged => {
         desktopPackaged.value = packaged
         if (packaged) maintenanceHint.value = '桌面应用模式：场景内容位于只读应用包内，保存与维护任务不可用'
-      }).catch(() => { /* 查询失败保持可用，服务端仍有 501 兜底 */ })
+      }).catch(() => { maintenanceHint.value = '无法确认桌面写入状态，已保持只读，请重新读取' })
     }
   })
 
@@ -191,7 +300,11 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
     backupsError,
     backupsExpanded,
     desktopPackaged,
-    saveToProject,
+    saveToProject: () => persistSceneDraft('changes'),
+    importSnapshotToProject: () => persistSceneDraft('import'),
+    importConfirming,
+    canSave, canPreview, preview, previewing, previewError, previewInvalidated, previewEmpty,
+    previewCompanions, previewGroups, previewChanges,
     runTool,
     loadBackups,
     formatBackupTime,

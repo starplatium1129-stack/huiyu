@@ -40,7 +40,7 @@
 | 检查安装包网关资源完整性 | `npm run wf -- desktop:verify-gateway`（需要已暂存资源；隔离目录真实启动，打包前自动执行） |
 | 生成本机测试安装包 | `npm run wf -- desktop:package-local`（跳过压缩，不安装） |
 
-所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 不接受公共参数，定向操作请分别调用子步骤。只读审计覆盖注册文件、npm 入口、文档存在性、复合依赖循环和 run 元数据合法性，不代表模型、账户、外部服务或桌面安装已经验收。
+所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 由专用候选入口处理公共参数和人工审核待验状态。只读审计覆盖注册文件、npm 入口、文档存在性、复合依赖循环和 run 元数据合法性，不代表模型、账户、外部服务或桌面安装已经验收。
 
 ### 内容覆盖差额报告
 
@@ -118,7 +118,19 @@
 3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
 4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。CLI 数据根为 `--root <完整项目根>` > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根，view 与审计 appRoot 对齐，显式外部素材配置保留；直接 `--help` / `--plan` 零目标读取。参数/根错误退出 2，缺失或损坏 view、审计问题退出 1。
 
-`reference:full` 的旧 render → audit → repair 尚未适配隔离候选的审核/发布。它不共享参数，而 render 现在要求 output，因此当前会在执行前拒绝；请分别使用显式候选入口。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
+`reference:audit` / `reference:repair` 仍用于旧活跃参考库的视觉检查/定向修复，不能用于新候选目录，也不能替代下面的人工决定。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
+
+### 参考库候选审核与版本发布
+
+`reference:full --output <候选目录> --source <现有参考库目录> --target <新版本目录> [--root <项目根>]` 生成或续跑候选，再核对记录、实际 PNG 字节和生成时的源版本。缺少人工审核返回 3（pending）；结构通过不表示画面合格。`--dry-run` 仅规划生成，不写盘、不调用模型；工作流 `--plan` 连目标数据也不读取。
+
+`reference:inspect --from <候选目录/reference-generation-manifest.json>` 输出最新候选的 key、recordId、图片 sha256、inputVersion 和完整性状态。将真实看过图片的决定写入候选目录内的 decisions.json：每个 key 对应 `{ "verdict": "pass", "recordId": "实际记录ID", "sha256": "实际图片哈希", "inputVersion": "实际输入版本", "reviewedAt": "实际审核时间ISO", "notes": "审核意见" }`，verdict 也可为 fail。调用 `reference:review --from <清单> --decisions <决定JSON> --out <候选目录/manual-review.json>`，只新建审核记录，拒绝覆盖。漏审保持 pending；源、图片、记录或重试版本变化后，旧决定失效。审核文件记录人工声明，不认证声明真实性。
+
+`reference:publish --from <候选清单> --review <审核JSON> --source <现有库目录> --target <新目录> [--root <项目根>]` 默认只读预览。只有显式 `--apply` 且全部所选候选均具备当前有效人工通过决定时，才复制保留旧资源、加入批准图片及对应 view 投影，在完整核验后原子发布新目录。目标已存在且身份一致时幂等返回；不同内容拒绝覆盖。失败不改旧库或项目源索引，保留专用暂存供排查；进程中断后重试会回收已死亡进程的锁，活进程/未知锁拒绝抢占。断电持久性仍需设备验收。
+
+新版本含 reference-release.json 和 character-reference-view.json，前者绑定所有图片、投影、源标准/view、候选和审核哈希。显式将网关参考库根配置为该版本并重启后，由版本解析器核验再同时提供图片和索引；损坏或源版本不匹配拒绝接入。回滚重新选用保留的旧目录。本入口不自动改配置、不安装、不将待审核图片写入活跃库。
+
+`reference:full` 可附 `--review <审核JSON>`，或 `--decisions <决定JSON> --out <新审核JSON>` 走到发布预览；始终不自动 apply。需要重试画面时用 `reference:retry --output <原候选目录> --keys <reference:角色:服装:机位,...>`，沿用原配方生成新记录并重新人工审核，不继承旧通过状态。
 
 旧参考库 URL 迁移使用 `reference:repair-urls --dry-run` 预览；核对后移除 `--dry-run` 才会修改文件并生成备份。日常断链检查仍用 `check:ref-urls`。
 
@@ -152,6 +164,16 @@
 `audit:impact` 的 `referenceEvidence` 按所选角色/服装统计参考 view 的显式 references：total、pendingCount（pending=true 或缺非空 URL）、urlDeclaredCount、reviewDeclaredCount。pending 优先于 declared-unverified；空数组为 empty，缺角色/服装/references 为 missing，坏或缺 view 为 unknown，未知计数为 null。reviewStatus 仅区分字段声明与 unknown，assetStatus 始终 unverified。显式 outfit 仅过滤对应 character，路径带入其他角色保留全部服装。保留 reference 关联与复验；不访问 URL、图片或素材根，不把声明当成资产或审核通过。
 
 ## 内容归属只读报告
+
+### 历史影响的实际检查与候选证据
+
+`check:impact --base <本地commit/ref> --execute --json` 根据旧新源关系选择实际执行的只读检查；不带 execute 只预览，help/plan 零目标读取。只有可证明身份、关系、清单和顺序不变的受支持场景/蓝图记录字段变化才走 incremental；删除、重命名、未知路径、公共实现或不完整关系回退 full。`--full --execute` 无需 Git 即可检查七个已支持结构域。它复用现有解析器、参考 schema、内容纯函数和源/产物对照，不运行可能自愈写入的 builder。
+
+输出分别记录 selection、execution.executed、逐检查状态及未知字段。局部或已支持完整结构域通过均不等于完整内容 gate：DATA_VERSION、压缩伴生物与未导出的语义规则仍保留完整门禁要求，退出 3；实际失败退出 1，参数错误退出 2，预览退出 0。读到文件或目录成员变化时返回 incomplete，不能用混合快照认证通过。`audit:ownership` 的 fieldValidation/readWriteCoverage 只说明规则与覆盖，不代表已执行这些检查。
+
+`audit:content-evidence --root <源根> --candidate-root <候选根> --manifest <候选根相对清单> --source <源根相对源文件> --recipe <源根相对生成器> [--decisions <候选根相对审核JSON>] --json` 只读取明确允许的输入、原生候选账本和资产。source 可重复；旧机器路径不自动重定位。它分开报告结构、生成状态、源/请求/输入版本、实际文件字节、审核绑定和发布证据；源、图片或记录变化使旧审核 stale，遗漏新 attempt 或损坏字节不会被历史 pass 掩盖。
+
+人工审核接受 reference-human-review 或 content-human-review 的版本化记录，绑定 runId、manifestSha256 及逐条 recordId/recordSha256/sha256/inputVersion/reviewedAt；缺决定保持 pending，匹配仅证明声明绑定，不证明审核者实际看过画面。额外 `--publication <候选根相对回执> --published-root <明确目录>` 可核对 content-publication-evidence 回执及对应发布字节；专用 reference-release 由参考版本解析器核验，不冒充格式兼容。退出 0 仅表示所选明确证据匹配，1 为失败，2 为参数错误，3 为未知/过期/待验。入口从不生成、审核画面、修改清单、复制资产或激活资源。
 
 `node scripts/workflow.js audit:ownership --json` 读取当前根目录结构，报告人物档案、热门身份/服装、场景、蓝图、精选、退役、参考标准/view、主题及外部样张的字段职责、读取者、写入边界和机器条件。`--root <隔离目录>` 可替换数据根；`--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>` 仅检查指定域。
 
@@ -195,9 +217,13 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 办公机工程阶段入口（2026-09-15）
 
-本阶段提交后端与维护工具，前端保存界面、资源服务接线和主力机验收继续保留待办。不能据此运行真实生成、安装或发布。
+本阶段衔接后端、场景管理界面、资源服务及维护工具；工程验证在办公机隔离环境执行，真实模型、资产质量和主力机安装/设备验收分别留存。
 
-场景维护新增 `/api/maintenance/scenes/preview`、`/changes` 与独立 `/import`；旧 `/scenes` 全量请求保持兼容。预览与变更集接收 `{baseVersion, changeSet:{version:1, scenes:{upsert:[],remove:[]}, blueprints?, tags?, curation?}}`。upsert 是完整记录，未知字段保留，remove 只能列现有 ID，旧基线返回 409。保存复用同一进程锁和一次备份，同步场景/蓝图源分片、聚合、现有压缩伴生文件与 DATA_VERSION；失败恢复精确计划路径。后端支持 sc1000 及后续规范安全整数编号，已退役 ID 不复用；前端编号及变更集界面迁移仍待接线。安装版源库写入继续拒绝，跨进程保存及断电恢复未完成。
+场景维护使用 `/api/maintenance/scenes/preview`、`/changes` 与独立 `/import`；旧 `/scenes` 全量请求保持兼容。预览与变更集接收 `{baseVersion, changeSet:{version:1, scenes:{upsert:[],remove:[]}, blueprints?, tags?, curation?}}`。upsert 是完整记录，未知字段保留，remove 只能列现有 ID，旧基线返回 409。普通界面保存仅提交实际变更，完整导入单独确认；读取和保存使用同一完整快照及基线，冲突保留草稿，在途编辑不被旧回执覆盖。预览显示新增、修改、退役、相关引用及未知检查范围，不冒充真实画面验收。前后端均支持 sc1000+ 规范安全整数，已退役 ID 不复用；安装版源库写入仍返回 501。
+
+保存同步场景/蓝图源分片、聚合、现有压缩伴生文件与 DATA_VERSION。进程内队列结合持久化跨进程 lease/journal 和精确文件备份；活进程或未能证明已退出的进程不被抢锁。保存中或存在未恢复事务时，受保护内容读取拒绝返回半写状态。`/api/maintenance/recovery-status` 是本机只读状态入口；损坏元数据不会被自动清除。实际断电和文件系统持久性仍需设备验收。
+
+`maintenance:recover --root <项目根> [--runtime-root <运行目录>] [--showcase-root <可信样张根>]` 默认只读预览，恢复计划输出 stdout。保存该 JSON 后，显式 `--apply --recovery-plan <保存的预览JSON>` 才恢复；执行时重新核对签名、根身份、备份/当前字节、PID 与事务 nonce。`--plan` 是工作流保留的零执行预览，不能用来传恢复文件；`--help` 与裸 `--plan` 均不读取目标。活进程、未知状态、损坏 journal 或漂移计划拒绝恢复，失败保留精确回滚记录。退出 0 为可用预览或恢复成功，1 为阻塞/冲突/失败，2 为参数错误。
 
 `audit:impact --base <本地commit/ref>` 对照历史与当前源/产物，保留删除、重命名、旧新角色/服装关系和字节证据；`audit:ownership --consistency` 核对热门角色、蓝图、场景分组/core/index 与已覆盖参考字段镜像。未知约束明确保留，增量报告仅生成计划，不执行命令；不能将局部相等视为全库通过。impact 参数错误退出 2、已证明问题退出 1；ownership 显式一致性检查的 unknown/mismatch 退出 1。
 
@@ -207,9 +233,19 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 资源生命周期入口共用 `--config <可信本地JSON>`：`resource:install`、`resource:download` 另需 `--release <已配置ID>`；`resource:recover`、`resource:rollback` 复用已登记事务/旧版本。四者默认预览，显式 `--apply` 才写入；下载仅存候选，不自动安装。配置包含已存在的 userDataRoot、应用/作品 protectedRoots、独立审核的来源与发布 policy，固定使用 userDataRoot 下 resource-library-v1。支持完整/增量包、哈希核对、取消、已知事务恢复和旧版保留；不提供默认托管，不以哈希相同代替来源批准，不执行包中代码。
 
-`resource:installed` 核对实际安装字节、pending 与旧版健康，会短暂获取并释放专用锁，不能描述为零写入审计。Ctrl+C 请求取消；CLI 参数问题退出 2、内容/操作失败退出 1、取消退出 130。`resource-install-resolver` 提供可信调用方使用的只读启动快照，当前尚未接入网关/页面；没有安装或权限未知时不自动下载、修复或放宽访问。
+`resource:installed` 核对实际安装字节、pending 与旧版健康，会短暂获取并释放专用锁，不能描述为零写入审计。Ctrl+C 请求取消；CLI 参数问题退出 2、内容/操作失败退出 1、取消退出 130。网关已接入只读启动解析与控制室“离线资源库”面板；没有安装、配置未知或资源失效时使用随包基础资源，不自动下载、修复或放宽访问。
 
-`reference:render`、`showcase:batch-miaomiao`、`showcase:fill-gaps` 经工作流调用均需 `--output <隔离候选目录>`，包括预览；底层直接脚本的 dry-run 可省略 output。网关优先级为 `--gateway > GATEWAY_URL > BASE > AICS_COMMS_BASE > http://127.0.0.1:3000`。候选 review 始终 pending；已知 job 恢复，响应丢失的未知提交需核对后显式 `--retry-unknown`。真实人工审核及发布继续使用各自入口，旧 reference:full 尚未接通。
+### 资源库的本机接入
+
+启动环境中的 `AICS_RESOURCE_CONFIG=<可信本地JSON绝对路径>` 显式选择资源配置；`AICS_RESOURCE_MANAGEMENT=trusted` 独立允许本机管理。HTTP 请求和普通应用设置不能选择文件、授予权限或审批来源。配置沿用上面的 userDataRoot/protectedRoots/policy，并额外保护应用、资源、作品输出和参考库根。配置字节变化立即撤销当前操作授权，需重新检查后再操作。未配置时基础页面仍可运行。
+
+`GET /api/resources/status[?refresh=1]` 返回已批准版本、安装状态、任务和恢复提示，不新建资源库；`POST /api/resources/tasks` 只接受 `{action, releaseId?}`，action 为 import/download/recover/rollback，版本仅从本地已批准策略中选择。`POST /api/resources/tasks/<id>/cancel` 取消在途操作。所有管理接口沿用本机来源、Host 与转发检查；状态不暴露本地配置或磁盘绝对路径。下载不自动安装，页面打开不触发下载，响应丢失后只查询状态而不重复写入。
+
+任务回执保存在专用资源库，重启将未完成任务显示为 interrupted；恢复按钮使用原操作和已验证暂存，旧版本保留可回退。已安装允许清单中的媒体覆盖对应本机资源路径，每次返回前复核字节；Live2D 按完整模型依赖组采用或整组回退，避免新模型混用旧纹理。配置/版本/字节损坏时回退随包基础资源。远程资源服务仍沿用原有分级与访问边界，不挂载本机扩展库。
+
+桌面暂存入口支持 `AICS_DESKTOP_RESOURCE_PROFILE=full|base`，默认 full 保持既有资产字节。base 只在 stageResources 新建并复制的隔离暂存目录缩小符合条件的热门立绘，保留原 URL、缩略图、品牌、占位与完整 Live2D；原资产和已安装程序不修改。内部 desktop-resource-profile 子步骤不作为独立安装入口。输出 resource-layers.json 记录随包/原始/可选字节与首次必要下载量；夹具压缩结果不代表真实包体或画质收益。正式安装仍只用 deploy-desktop.bat，并按主力机实际资源验收。
+
+`reference:render`、`showcase:batch-miaomiao`、`showcase:fill-gaps` 经工作流调用均需 `--output <隔离候选目录>`，包括预览；底层直接脚本的 dry-run 可省略 output。网关优先级为 `--gateway > GATEWAY_URL > BASE > AICS_COMMS_BASE > http://127.0.0.1:3000`。候选 review 始终 pending；已知 job 恢复，响应丢失的未知提交需核对后显式 `--retry-unknown`。参考库 full 使用上面的独立人工审核与发布预览；真实模型/画面及激活验收按对应机器执行。
 
 ## 门禁与构建
 

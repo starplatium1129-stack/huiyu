@@ -14,14 +14,15 @@
         <h1 class="title">场景维护</h1>
         <div class="maintenance-state" :class="{ dirty: dirty }">
           <strong id="maintenanceTitle">{{ loading ? '正在读取场景档案' : (loadError ? '场景档案暂不可用' : (dirty ? '有尚未保存的修改' : '已同步')) }}</strong>
-          <span v-if="!desktopPackaged" id="maintenanceHint">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
+          <span v-if="!desktopPackaged" id="maintenanceHint" role="status" aria-live="polite">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
           <span v-if="saving && savingPhase" class="saving-phase">{{ savingPhase }}</span>
         </div>
       </div>
       <div class="sm-head-actions">
-        <button class="btn btn-ghost" type="button" :disabled="loading || saving || desktopPackaged || toolRunning" @click="loadFromStore(true)">重新读取</button>
-        <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="!scenes.length"><ArchiveIcon name="download" /> 导出 JSON</button>
-        <button class="btn btn-primary" type="button" :disabled="!dirty || saving || desktopPackaged" :title="desktopPackaged ? '桌面应用模式不支持保存场景内容' : ''" @click="saveToProject">
+        <button class="btn btn-ghost" type="button" :disabled="loading || saving || desktopPackaged || toolRunning || previewing" @click="loadFromStore(true)">重新读取</button>
+        <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="loading"><ArchiveIcon name="download" /> 导出 JSON</button>
+        <button class="btn btn-ghost" type="button" :disabled="!canPreview" @click="tab = 'tools'; previewChanges()"><ArchiveIcon name="eye" /> 影响预览</button>
+        <button class="btn btn-primary" type="button" :disabled="!canSave" :title="desktopPackaged ? '桌面应用模式不支持保存场景内容' : ''" @click="saveToProject">
           {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '保存到项目') }}
         </button>
       </div>
@@ -250,18 +251,22 @@
       <!-- 导入 -->
       <template v-if="tab==='import'">
         <p class="note">粘贴单个或多个场景 JSON（数组或对象），校验后加入列表。记得保存到项目。</p>
-        <textarea v-model="importInput" class="import-input" rows="10" placeholder='[{ "id":"sc999", "title":"…", "story":"…", "char":"nene" }]'></textarea>
+        <textarea v-model="importInput" class="import-input" aria-label="场景导入 JSON" rows="10" placeholder='[{ "id":"sc1000", "title":"…", "story":"…", "char":"nene", "rating":"All" }]'></textarea>
         <div class="import-actions">
-          <button class="btn btn-primary" type="button" :disabled="desktopPackaged" @click="importScenes">校验并导入</button>
+          <button class="btn btn-primary" type="button" :disabled="desktopPackaged || importing || toolRunning" @click="importScenes">校验并导入</button>
+          <button class="btn btn-ghost" type="button" :disabled="desktopPackaged || importing || toolRunning" @click="loadFullSnapshot">载入完整快照草稿</button>
           <button class="btn btn-ghost" type="button" @click="importInput=''; importResult=''">清空</button>
         </div>
         <div v-if="importResult" class="import-result" v-html="importResult"></div>
+        <p class="note">普通导入仅追加新场景。完整快照须含场景、蓝图、标签和策展，载入时替换内存草稿；保存前可用顶部“影响预览”核对退役及引用。</p>
+        <button v-if="fullImportLoaded" class="btn btn-danger" type="button" :disabled="!canSave || importing" @click="importSnapshotToProject">全量导入到项目</button>
       </template>
 
       <!-- 维护工具 -->
       <template v-if="tab==='tools'">
+        <SceneImpactPreview :preview="preview" :groups="previewGroups" :companions="previewCompanions" :busy="previewing" :enabled="canPreview" :error="previewError" :invalidated="previewInvalidated" :empty="previewEmpty" @preview="previewChanges" />
         <div class="tool-grid">
-          <button v-for="t in TOOLS" :key="t.id" class="sm-tool-card" type="button" :disabled="toolRunning || desktopPackaged" :title="desktopPackaged ? '桌面应用模式不支持维护任务' : ''" @click="runTool(t.id)">
+          <button v-for="t in TOOLS" :key="t.id" class="sm-tool-card" type="button" :disabled="toolRunning || desktopPackaged || saving || previewing" :title="desktopPackaged ? '桌面应用模式不支持维护任务' : ''" @click="runTool(t.id)">
             <div class="sm-tool-icon"><ArchiveIcon :name="t.iconName" /></div>
             <div class="sm-tool-label">{{ t.label }}</div>
             <div class="sm-tool-desc">{{ t.desc }}</div>
@@ -271,7 +276,7 @@
           <div class="tool-result-head">
             <strong>{{ toolResultTitle }}</strong>
             <span class="badge" :class="toolResult.ok ? 'badge-success' : 'badge-danger'">{{ toolResult.ok ? '通过' : '有问题' }}</span>
-            <span v-if="!toolResult.ok" class="tool-error-hint">可按上方高亮的 scXXX 定位失败场景</span>
+            <span v-if="!toolResult.ok" class="tool-error-hint">可按高亮的完整场景编号定位失败场景</span>
           </div>
           <pre class="tool-output" v-html="highlightedOutput"></pre>
         </div>
@@ -510,8 +515,11 @@ import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import MaintenanceCatalog from '@/components/maintenance/MaintenanceCatalog.vue'
+import SceneImpactPreview from '@/components/maintenance/SceneImpactPreview.vue'
 import { useSceneManagerWorkspace } from "@/composables/scene/useSceneManagerWorkspace"
 const {
+canSave, canPreview, preview, previewing, previewError, previewInvalidated, previewEmpty,
+previewCompanions, previewGroups, previewChanges, fullImportLoaded, importing, loadFullSnapshot, importSnapshotToProject,
  tagModalEl,bpModalEl,modalEl,showcaseFileEl,heroFileEl,tab, scenes, loading, loadError, saving, dirty,
 desktopPackaged, maintenanceHint, savingPhase, exportJSON, saveToProject, loadFromStore,
 stats, TABS, recordCounts, sceneRecords, openAddModal, openEditModal,

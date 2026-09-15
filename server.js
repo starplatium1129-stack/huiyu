@@ -16,12 +16,16 @@ var createChatRouter = require('./routes/chat').createChatRouter;
 var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
 var createMaintenanceRouter = require('./routes/maintenance').createMaintenanceRouter;
+var isDesktopPackagedMode = require('./routes/maintenance').isDesktopPackagedMode;
+var maintenanceReadBarrier = require('./routes/maintenance-read-barrier').maintenanceReadBarrier;
 var createControlRouter = require('./routes/control').createControlRouter;
 var createAnimaRouter = require('./routes/anima').createAnimaRouter;
 var createGenerationRouter = require('./routes/generation').createGenerationRouter;
 var createInterrogateRouter = require('./routes/interrogate').createInterrogateRouter;
 var createVideoRouter = require('./routes/video').createVideoRouter;
 var showcaseAssets = require('./server/showcase-assets');
+var createResourcesRouter = require('./routes/resources').createResourcesRouter;
+var createReferenceResources = require('./routes/resources-reference').createReferenceResources;
 
 var ONE_DAY = 24 * 60 * 60 * 1000;
 var ONE_WEEK = 7 * ONE_DAY;
@@ -66,6 +70,18 @@ function createGateway(options) {
   var tunnelManager = null;
   app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }));
   app.use(security.tokenAuth(config.TOKEN));
+  // Fence mutable content before any installed projection, precompressed file or
+  // ordinary static handler can return bytes from a maintenance transaction.
+  if (!isDesktopPackagedMode(config)) {
+    app.use(['/data', '/scene-showcase'], maintenanceReadBarrier({ rootDir: config.ROOT_DIR,
+      runtimeRoot: config.RUNTIME_ROOT, showcaseRoot: config.SCENE_SHOWCASE_DIR }));
+  }
+  var resources = createResourcesRouter(config);
+  app.use(resources.router);
+  // Installed allowlist precedes bundled/precompressed media. Request authorization is still
+  // evaluated here; no policy/configuration paths are exposed by the management API.
+  app.use(resources.staticMiddleware);
+  app.use(createReferenceResources(config));
   app.use('/docs', require('./server/docs').redirectLegacyDocs);
   app.use(precompressed(config.ROOT_DIR, { assetsRoot: config.ASSETS_ROOT }));
   // 流式响应（聊天 NDJSON / SSE）不进 zlib 缓冲：compression 默认攒满才吐，
@@ -348,6 +364,7 @@ function createGateway(options) {
   });
 
   function close() {
+    resources.close();
     voice.close();
     if (anima && typeof anima.close === 'function') anima.close();
     if (generation && typeof generation.close === 'function') generation.close();
@@ -404,6 +421,7 @@ function createGateway(options) {
     app:app,
     config:config,
     services:{
+      resources:resources.manager,
       chat:chat.service,
       tts:voice.tts,
       translation:voice.translation,

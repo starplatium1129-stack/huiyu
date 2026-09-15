@@ -5,6 +5,7 @@ const path = require('node:path');
 const zlib = require('node:zlib');
 const { VERSIONED_FILES } = require('../scripts/lib/data-version');
 const { prepareBlueprintWrite, applyBlueprintWrite } = require('../scripts/lib/blueprint-write');
+const recoveryFs = require('../scripts/lib/maintenance-recovery-fs');
 
 function prepareBlueprints(rootDir, blueprints, previous = []) {
   const popular = require('../scripts/lib/popular-store');
@@ -34,14 +35,16 @@ function applyBlueprints(prepared, writeFileAtomic) {
 }
 
 // Only refresh companions already present. Fresh checkouts do not require compression.
-function refreshCompressedProducts(rootDir, writeFileAtomic) {
-  for (const name of VERSIONED_FILES) {
-    const file = path.join(rootDir, 'data', name);
-    const bytes = fs.readFileSync(file);
+function refreshCompressedProducts(rootDir, writeFileAtomic, files) {
+  const captured = files && new Set(files);
+  for (const file of new Set(files ? files.filter(file => file.endsWith('.json')) : VERSIONED_FILES.map(name => path.join(rootDir, 'data', name)))) {
+    const bytes = recoveryFs.readBytes(file, true);
     for (const ext of ['gz', 'br']) {
       const companion = file + '.' + ext;
-      if (!fs.existsSync(companion)) continue;
-      const old = fs.readFileSync(companion);
+      if (captured && !captured.has(companion)) continue;
+      const old = recoveryFs.readBytes(companion, true);
+      if (old === null) continue;
+      if (bytes === null) { recoveryFs.removeFile(companion); continue; }
       try {
         const decoded = ext === 'gz' ? zlib.gunzipSync(old) : zlib.brotliDecompressSync(old);
         if (decoded.equals(bytes)) continue;
@@ -52,6 +55,15 @@ function refreshCompressedProducts(rootDir, writeFileAtomic) {
       writeFileAtomic(companion, packed);
     }
   }
+}
+
+function includeCompressedSnapshots(snapshot) {
+  const files = snapshot.map(item => item.file);
+  for (const item of snapshot) {
+    if (!item.file.endsWith('.json')) continue;
+    for (const ext of ['gz', 'br']) if (recoveryFs.safePath(item.file + '.' + ext)) files.push(item.file + '.' + ext);
+  }
+  return recoveryFs.snapshotFiles(files);
 }
 
 function protectPinnedScenes(rootDir, previous, incoming) {
@@ -70,4 +82,4 @@ function protectPinnedScenes(rootDir, previous, incoming) {
   }
 }
 
-module.exports = { prepareBlueprints, applyBlueprints, refreshCompressedProducts, protectPinnedScenes };
+module.exports = { prepareBlueprints, applyBlueprints, refreshCompressedProducts, includeCompressedSnapshots, protectPinnedScenes };

@@ -8,12 +8,14 @@ import { copyWithFeedback } from '@/composables/useCopyFeedback';
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { maintenanceApi } from '@/api/maintenanceApi';
 import { useSceneStore } from '@/stores/sceneStore';
-import type { CurationData,SceneDraft,TagRecord,} from '@/types/api';
+import type { CurationData,SceneDraft,TagRecord,SceneMaintenanceSnapshot } from '@/types/api';
 import { nextCopyId } from '@/utils/copyId';
 import { highlightSearchText as hl } from '@/utils/highlightSearchText';
 import { blueprintMaintenanceRecord,sceneMaintenanceRecord } from '@/utils/maintenanceRecords';
 import type { SceneBlueprint } from '@/utils/popularContent';
-import { computed,onBeforeUnmount,onMounted,ref } from 'vue';
+import { cloneSceneSnapshot, freezeSceneSnapshot, MAX_BLUEPRINTS, sceneContentKey } from '@/utils/sceneChanges';
+import { isSceneId } from '@/utils/sceneId';
+import { computed,onBeforeUnmount,onMounted,ref,shallowRef } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useSceneManagerWorkspace() {
@@ -36,6 +38,8 @@ export function useSceneManagerWorkspace() {
     const blueprints = ref<SceneBlueprint[]>([]);
     const tags = ref<TagRecord[]>([]);
     const curation = ref<CurationData>({});
+    const sceneStateVersion = ref<number | null>(null);
+    const sceneBaseline = shallowRef<SceneMaintenanceSnapshot | null>(null);
     /** 脏标记与维护提示为跨簇共享通道（编辑/导入/标签/策展 → 保存/离开守卫）。 */
     const dirty = ref(false);
     const maintenanceHint = ref('所有改动已同步');
@@ -66,32 +70,50 @@ export function useSceneManagerWorkspace() {
     });
     const { showcaseFileEl, heroFileEl, imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle, showcaseFeedback, showcaseError, showcaseVersion, uploadBusy, selectedHeroId, selectedHeroTitle, homeHeroes, allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl, previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero, loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked } = showcase;
     // ── 场景编辑弹层 + CRUD + 策展（已下沉 useSceneEditorModal）───────────────
-    const { editing, editingId, curationTierValue, curationReason, tagsInput, usageInput, triedSave, formHint, curationTier, updateCharacterDefaults, onCurationTierChange, openAddModal, openEditModal, closeModal, saveScene, deleteScene, duplicateScene, copyJson } = useSceneEditorModal({ scenes, curation, markDirty, nextSceneId: allocateNextSceneId });
+    const { editing, editingId, curationTierValue, curationReason, tagsInput, usageInput, triedSave, formHint, curationTier, updateCharacterDefaults, onCurationTierChange, openAddModal, openEditModal, closeModal, saveScene, deleteScene, duplicateScene, copyJson } = useSceneEditorModal({ scenes, curation, markDirty, nextSceneId: allocateNextSceneId, allocationError: message => { maintenanceHint.value = message; } });
     const recordCounts = computed<Record<string, number>>(() => ({ scenes: scenes.value.length, blueprints: blueprints.value.length, tags: tags.value.length }));
     const characterNames = computed(() => new Map(sceneStore.popularCharacters.map(character => [character.id, character.displayName])));
     const sceneRecords = computed(() => scenes.value.map(scene => sceneMaintenanceRecord(scene, charLabel(scene.char), curationTier(scene.id))));
     const blueprintRecords = computed(() => blueprints.value.map(blueprint => blueprintMaintenanceRecord(blueprint, characterNames.value.get(blueprint.characterId || '') || charLabel(blueprint.characterId))));
     // ── 导入 / 导出（已下沉 useSceneImportExport）─────────────────────────────
-    const { importInput, importResult, importScenes, exportJSON } = useSceneImportExport({
+    const { importInput, importResult, importScenes, exportJSON, fullImportLoaded, importing, loadFullSnapshot } = useSceneImportExport({
         scenes,
         tags,
         curation,
+        blueprints,
+        canImport: () => !loading.value && !desktopPackaged.value && !toolRunning.value,
         markDirty,
         esc,
         errorMessage,
     });
     // ── 维护任务：落盘/工具/备份/桌面只读探测（已下沉 useSceneMaintenance）────
-    const { TOOLS, saving, savingPhase, toolRunning, toolResult, toolResultTitle, backups, backupsLoading, backupsError, backupsExpanded, desktopPackaged, saveToProject, runTool, loadBackups, formatBackupTime, highlightedOutput } = useSceneMaintenance({
+    const maintenance = useSceneMaintenance({
         scenes,
         tags,
         curation,
         blueprints,
         dirty,
+        loading,
         maintenanceHint,
         baseVersion: () => sceneStateVersion.value,
-        adoptSceneStateVersion: (version) => { sceneStateVersion.value = version; },
+        baselineSnapshot: () => sceneBaseline.value,
+        adoptSceneState,
+        editSessionKey,
         invalidateSceneCache: () => { sceneStore.loaded = false; },
     });
+    const { TOOLS, saving, savingPhase, toolRunning, toolResult, toolResultTitle, backups, backupsLoading, backupsError, backupsExpanded, desktopPackaged, saveToProject, runTool, loadBackups, formatBackupTime, highlightedOutput, previewing, importConfirming } = maintenance;
+    function editSessionKey() {
+        return sceneContentKey({
+            scene: editing.value ? { value: editing.value, tags: tagsInput.value, usage: usageInput.value, tier: curationTierValue.value, reason: curationReason.value } : null,
+            blueprint: bpEditing.value ? serializeBlueprintModal() : null,
+            tag: tagModalOpen.value ? tagForm.value : null,
+        });
+    }
+    function adoptSceneState(version: number, snapshot: SceneMaintenanceSnapshot) {
+        sceneBaseline.value = freezeSceneSnapshot(snapshot);
+        sceneStateVersion.value = version;
+        fullImportLoaded.value = false;
+    }
     function blankBlueprint(): SceneBlueprint {
         return {
             id: '', title: '', category: '', description: '', characterId: '',
@@ -116,9 +138,12 @@ export function useSceneManagerWorkspace() {
         });
     }
     function openBlueprintAddModal() {
-        const max = blueprints.value.reduce((m, b) => Math.max(m, String(b.id || '').length), 0);
+        if (blueprints.value.length >= MAX_BLUEPRINTS) { maintenanceHint.value = `蓝图数量不能超过 ${MAX_BLUEPRINTS}`; return; }
+        const occupied = new Set([...blueprints.value, ...(sceneBaseline.value?.blueprints ?? [])].map(b => b.id));
+        let number = 1;
+        while (occupied.has('bp_' + String(number).padStart(3, '0'))) number++;
         bpEditing.value = blankBlueprint();
-        bpEditing.value.id = 'bp_' + String(max + 1).padStart(3, '0');
+        bpEditing.value.id = 'bp_' + String(number).padStart(3, '0');
         bpEditingId.value = '';
         bpSceneTagsInput.value = '';
         bpPromptTokensInput.value = '';
@@ -158,6 +183,8 @@ export function useSceneManagerWorkspace() {
         const e = bpEditing.value;
         if (!e)
             return;
+        if (bpEditingId.value && e.id !== bpEditingId.value) { bpFormHint.value = '已有蓝图不能更换 ID'; return; }
+        if (!bpEditingId.value && blueprints.value.length >= MAX_BLUEPRINTS) { bpFormHint.value = `蓝图数量不能超过 ${MAX_BLUEPRINTS}`; return; }
         if (!e.id.trim() || !e.title.trim() || !e.characterId?.trim()) {
             bpFormHint.value = '请补齐 ID、标题和角色';
             return;
@@ -194,6 +221,7 @@ export function useSceneManagerWorkspace() {
         markDirty('有蓝图等待删除');
     }
     function duplicateBlueprint(id: string) {
+        if (blueprints.value.length >= MAX_BLUEPRINTS) { maintenanceHint.value = `蓝图数量不能超过 ${MAX_BLUEPRINTS}`; return; }
         const source = blueprints.value.find(b => b.id === id);
         if (!source)
             return;
@@ -287,22 +315,33 @@ export function useSceneManagerWorkspace() {
     /**
      * 可写编辑器通过同一响应读取内容与版本；打包桌面仅加载只读展示数据。
      */
+    let reloadRunning = false;
     async function loadFromStore(force = false) {
-        if (saving.value) return;
+        if (reloadRunning || saving.value || toolRunning.value || previewing.value || importConfirming.value) return;
+        reloadRunning = true;
+        try {
         if (dirty.value && !(await confirmAction('重新读取会丢弃本地未保存修改。请先导出需要保留的草稿，确认继续？'))) return;
+        if (saving.value || toolRunning.value || previewing.value || importConfirming.value) return;
         loading.value = true;
-        sceneStateVersion.value = null;
+        const draftBefore = sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() });
         try {
             const packaged = window.companionDesktop ? await window.companionDesktop.isPackaged() : false;
+            desktopPackaged.value = packaged;
             if (!packaged) {
                 // 共享角色元数据仍供标签与详情使用；可写内容只采用下面的原子快照。
                 await (force ? sceneStore.reload() : sceneStore.load());
                 const state = await maintenanceApi.getScenesState();
-                scenes.value = state.snapshot.scenes;
-                blueprints.value = state.snapshot.blueprints;
-                tags.value = state.snapshot.tags;
-                curation.value = state.snapshot.curation;
-                sceneStateVersion.value = state.version;
+                if (sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() }) !== draftBefore) {
+                    dirty.value = true;
+                    maintenanceHint.value = '读取期间有新编辑，已保留草稿与原基线。请先导出，再重新读取并合并';
+                    return;
+                }
+                const snapshot = cloneSceneSnapshot(state.snapshot);
+                scenes.value = snapshot.scenes;
+                blueprints.value = snapshot.blueprints;
+                tags.value = snapshot.tags;
+                curation.value = snapshot.curation;
+                adoptSceneState(state.version, state.snapshot);
                 dirty.value = false;
                 loadError.value = '';
                 maintenanceHint.value = '已读取最新场景快照';
@@ -320,22 +359,27 @@ export function useSceneManagerWorkspace() {
             curation.value = JSON.parse(JSON.stringify(sceneStore.curation)) as CurationData;
             loadError.value = '';
             // 打包桌面不建立可写基线。
+            sceneStateVersion.value = null;
+            sceneBaseline.value = null;
             dirty.value = false;
         }
         catch (err) {
+            sceneStateVersion.value = null;
+            sceneBaseline.value = null;
             loadError.value = errorMessage(err, '场景数据加载失败');
         }
         finally {
             loading.value = false;
         }
+        } finally { reloadRunning = false; }
     }
-    /** 写入侧状态：保存基线版本 + 下一个稳定场景 ID（排除活跃+已退役）。 */
-    const sceneStateVersion = ref<number | null>(null);
     /** 服务端分配下一个稳定场景 ID；失败返回 null，禁止猜测退役 ID。 */
     async function allocateNextSceneId(): Promise<string | null> {
+        if (loading.value || desktopPackaged.value || !sceneBaseline.value) return null;
         try {
             const state = await maintenanceApi.getScenesState();
             if (!state.nextSceneId) maintenanceHint.value = '场景 ID 已用尽，无法新增或复制';
+            else if (!isSceneId(state.nextSceneId)) { maintenanceHint.value = '服务端返回的场景编号不规范，请重新读取'; return null; }
             return state.nextSceneId;
         }
         catch {
@@ -349,6 +393,12 @@ export function useSceneManagerWorkspace() {
         await loadHomeHeroes();
     });
     return {
+        canSave: maintenance.canSave, canPreview: maintenance.canPreview,
+        preview: maintenance.preview, previewing, previewError: maintenance.previewError,
+        previewInvalidated: maintenance.previewInvalidated, previewEmpty: maintenance.previewEmpty,
+        previewCompanions: maintenance.previewCompanions, previewGroups: maintenance.previewGroups,
+        previewChanges: maintenance.previewChanges, importSnapshotToProject: maintenance.importSnapshotToProject,
+        fullImportLoaded, importing, loadFullSnapshot,
 tagModalEl,
 bpModalEl,
 modalEl,

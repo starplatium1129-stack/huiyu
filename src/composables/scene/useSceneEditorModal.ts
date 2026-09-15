@@ -2,6 +2,8 @@ import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import { ref, type Ref } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
 import type { SceneDraft, CurationData } from '@/types/api'
+import { allocateSceneId, isSceneId } from '@/utils/sceneId'
+import { MAX_SCENES } from '@/utils/sceneChanges'
 
 export interface SceneEditorModalDeps {
   scenes: Ref<SceneDraft[]>
@@ -9,6 +11,7 @@ export interface SceneEditorModalDeps {
   markDirty: (message: string) => void
   /** 向服务端申请下一个稳定场景 ID（排除活跃+已退役）；null 时禁止分配，避免重用已退役身份。 */
   nextSceneId: () => Promise<string | null>
+  allocationError?: (message: string) => void
 }
 
 /** 策展层级 → curation.json 里对应的数组字段 */
@@ -85,16 +88,17 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
   const allocatedIds = new Set<string>()
   async function allocateId(): Promise<string | null> {
     try {
+      if (scenes.value.length >= MAX_SCENES) throw new Error(`场景数量已达到 ${MAX_SCENES} 上限`)
       const candidate = await deps.nextSceneId()
-      if (!candidate || !/^sc\d{3}$/.test(candidate)) return null
-      let number = Number(candidate.slice(2))
-      const occupied = new Set([...allocatedIds, ...scenes.value.map(scene => scene.id)])
-      while (number <= 999 && occupied.has('sc' + String(number).padStart(3, '0'))) number++
-      if (number > 999) return null
-      const id = 'sc' + String(number).padStart(3, '0')
+      if (!candidate) return null
+      const id = allocateSceneId(candidate, new Set([...allocatedIds, ...scenes.value.map(scene => scene.id)]))
       allocatedIds.add(id)
       return id
-    } catch { return null }
+    } catch (error) {
+      formHint.value = error instanceof Error ? error.message : '无法分配场景编号，请重新读取'
+      deps.allocationError?.(formHint.value)
+      return null
+    }
   }
 
   async function openAddModal() {
@@ -154,8 +158,12 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
     triedSave.value = true
     const e = editing.value
     if (!e) return
+    if (!isSceneId(e.id)) { formHint.value = 'ID 需为 sc001–sc999 或 sc1000 起的安全整数编号'; return }
+    if (editingId.value && e.id !== editingId.value) { formHint.value = '已有场景不能更换 ID'; return }
+    if (!editingId.value && scenes.value.length >= MAX_SCENES) { formHint.value = `场景数量不能超过 ${MAX_SCENES}`; return }
     if (!e.title?.trim() || !e.story?.trim()) { formHint.value = '请先补齐标题和故事'; return }
     if (curationTierValue.value === 'signature' && !curationReason.value.trim()) { formHint.value = '招牌场景必须填写推荐理由'; return }
+    if (editingId.value && serializeModal() === modalSnapshot.value) { void closeModal(); return }
     e.character = e.char === 'triad' ? ['nene', 'natsume'] : [e.char]
     e.tags = tagsInput.value.split(',').map((t: string) => t.trim()).filter(Boolean)
     e.usage = usageInput.value.split(',').map((t: string) => t.trim()).filter(Boolean)

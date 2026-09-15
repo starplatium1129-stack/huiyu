@@ -89,7 +89,10 @@ function collectTasks(standards, opts) {
       }
     }
   }
-  return tasks;
+  if (!opts.keys) return tasks;
+  const selected = new Set(opts.keys.split(',').map(key => key.trim()).filter(Boolean));
+  if (!selected.size || [...selected].some(key => !tasks.some(task => task.key === key))) throw new Error('Unknown reference candidate key');
+  return tasks.filter(task => selected.has(task.key));
 }
 
 function buildPayload(char, outfit, persId, seed) {
@@ -109,8 +112,8 @@ function buildPayload(char, outfit, persId, seed) {
 }
 
 async function main(args = process.argv.slice(2), deps = {}) {
-  const opts = safety.parseArgs(args, { ids: 'value' }, deps.env || process.env);
-  if (opts.help) return safety.help(__filename, '[--ids=a,b,c]');
+  const opts = safety.parseArgs(args, { ids: 'value', keys: 'value', force: 'flag' }, deps.env || process.env);
+  if (opts.help) return safety.help(__filename, '[--ids=a,b,c] [--keys <reference keys>] [--force]');
   const input = safety.snapshot(opts.root, ['data/character-reference-standards.json']);
   const tasks = collectTasks(input.data['data/character-reference-standards.json'], opts);
   return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources, maxAttempts: 5 }, deps);

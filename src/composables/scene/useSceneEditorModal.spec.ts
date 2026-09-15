@@ -35,4 +35,28 @@ describe('scene draft ID allocation', () => {
     await exhausted.editor.openAddModal()
     expect(exhausted.editor.editing.value).toBeNull()
   })
+  it('crosses sc999 and preserves the complete expanded ID in the editor', async () => {
+    const { scenes, editor } = setup(vi.fn(async () => 'sc999'))
+    await editor.duplicateScene('sc001')
+    await editor.duplicateScene('sc001')
+    expect(scenes.value.map(s => s.id)).toEqual(['sc001', 'sc999', 'sc1000'])
+    expect(editor.editing.value!.id).toBe('sc1000')
+  })
+  it('uses the last safe ID once and reports exhaustion on another allocation', async () => {
+    const { scenes, editor } = setup(vi.fn(async () => 'sc9007199254740991'))
+    await editor.duplicateScene('sc001')
+    await editor.duplicateScene('sc001')
+    expect(scenes.value).toHaveLength(2)
+    expect(editor.formHint.value).toContain('上限')
+  })
+  it.each(['sc000', 'sc0001', 'sc9007199254740992'])('rejects manually entered noncanonical %s', async id => {
+    const { scenes, editor } = setup()
+    await editor.openAddModal()
+    editor.editing.value!.id = id
+    editor.editing.value!.title = 'fixture'
+    editor.editing.value!.story = 'fixture'
+    editor.saveScene()
+    expect(scenes.value).toHaveLength(1)
+    expect(editor.formHint.value).toContain('安全整数')
+  })
 })

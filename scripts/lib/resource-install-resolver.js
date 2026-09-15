@@ -165,11 +165,14 @@ function resolveInstalledResourceRoots(options = {}) {
     if (!metadata[index].equals(readBytes(ctx.io, file))) fail('STATE_CONFLICT', 'Installed metadata changed during verification');
   });
   stable(ctx, before, evidence);
-  const relativePaths = Object.freeze(verified.manifest.entries.map(entry => entry.path).filter(serviceable).sort());
+  const entries = Object.freeze(verified.manifest.entries.filter(entry => serviceable(entry.path))
+    .map(entry => Object.freeze({ ...entry })).sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
+  const relativePaths = Object.freeze(entries.map(entry => entry.path));
   return Object.freeze({ status: 'verified', versionRoot: verified.root,
     assetsRoot: relativePaths.length ? child(verified.root, 'assets') : null,
     identity: state.current.identity, sequence: state.sequence, relativePaths,
-    verifiedFiles: verified.manifest.entries.length });
+    releaseId: state.current.releaseId, previousIdentity: state.previous?.identity || null,
+    entries, verifiedFiles: verified.manifest.entries.length });
 }
 
 module.exports = { resolveInstalledResourceRoots };

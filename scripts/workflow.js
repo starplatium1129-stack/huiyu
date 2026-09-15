@@ -32,6 +32,16 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  ...require('./lib/workflows-content-checks'),
+  'maintenance:recover': {
+    desc: '预览已中断维护事务的精确文件恢复；显式apply绑定预览后执行',
+    cmd: ['node', 'scripts/maintenance/recover-maintenance.js'], required: ['--root'], docs: 'docs/workflow.md',
+    opts: '--root <项目根> [--runtime-root <运行目录>] [--showcase-root <可信样张根>] [--backup <备份ID>] [--apply --recovery-plan <保存的预览JSON>]',
+    run: { nature: ['read-only', 'preview'], machine: ['node'], switches: { '--apply': ['writes-source', 'writes-product', 'delete', 'guard'] },
+      resume: 'checkpoint', evidence: 'scripts/maintenance/recover-maintenance.js:1',
+      unknown: ['实际断电、磁盘故障和主力机恢复仍需设备验收'],
+      notes: ['活进程/未知锁不抢占；预览绑定源根、journal和文件状态；只恢复声明目标，保留恢复前备份；失败保持拒绝读写'] },
+  },
   'audit:workflow-conditions': { desc: '只读运行条件与复合副作用覆盖报告', cmd: ['node', 'scripts/maintenance/report-workflow-conditions.js'],
     opts: '--json；--root <隔离目录>；--domain <工作流分组>', docs: 'docs/workflow.md',
     run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/report-workflow-conditions.js:1', unknown: ['元数据与路径存在性不证明实际执行成功'] } },
@@ -232,13 +242,7 @@ const WORKFLOWS = {
     needs: 'ComfyUI http://127.0.0.1:8188（--disable-smart-memory）',
     run: { nature: ['external-model', 'writes-product', 'writes-source'], machine: ['comfyui', 'node'], switches: { '--dry-run': ['preview'], '--limit': ['external-model'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/render-design-sheets.js:48,302-306,366', unknown: [], notes: ['出图后回填 view.json url（writes-source）'] },
   },
-  'reference:full': {
-    desc: '参考库旧复合链（候选审核/发布接线未完成，当前拒绝直接执行）',
-    cmd: null,
-    docs: 'docs/workflow.md#参考库',
-    steps: ['reference:render', 'reference:audit', 'reference:repair'],
-    run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'vision-api', 'node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/lib/workflow-runner.js:1', unknown: ['旧 audit/repair 与新隔离候选的审核发布链尚未适配'], notes: ['复合链不共享参数，render 必需 output 导致执行前拒绝；请分别使用显式候选入口'] },
-  },
+  ...require('./lib/workflows-reference-candidates').referenceCandidateWorkflows,
   'showcase:generate': {
     desc: 'Anima 热门角色 × 蓝图候选出图',
     cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js'],
