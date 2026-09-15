@@ -1,11 +1,11 @@
 # 008 — TypeScript 迁移修复（机械阶段已完成，逐文件阶段进行中）
 
-- **Status**: IN_PROGRESS — 自动化可判定部分已做完并收敛，剩余需逐点现场修复
+- **Status**: IN_PROGRESS — 机械规则已跑完并收敛，剩余 1,776 个需逐点现场修复（见「本会话（第二轮）」）
 - **Branch**: `codex/ts-migration-repair-20260915`
-- **Commit**: 机械阶段 6 个检查点，最新一个为「类成员补声明 + 逻辑表达式回溯」（见 `git log --oneline`）
+- **Commit**: 机械阶段 10 个检查点，最新一个为「视频校验常量表键断言」（见 `git log --oneline`）
 - **Severity**: BLOCKER — 构建、测试、桌面打包、CI 全链路不可用
 - **Category**: Build / TypeScript 迁移
-- **剩余规模**: 2,518 个类型错误（node 516 + tests 2,002），跨 241 个 `.ts` 文件
+- **剩余规模**: 1,776 个类型错误（node 323 + tests 1,453），跨 223 个 `.ts` 文件
 
 ## 进度快照（均为官方门禁命令实测）
 
@@ -13,7 +13,10 @@
 | --- | --- | --- | --- | --- |
 | 迁移后原始基线 | 5,395 | 10,485 | 15,880 | 0% |
 | 前次 WIP `b0ceaf8` | 3,087 | 8,223 | 11,310 | 29% |
-| 机械修复（本会话，6 个检查点） | **516** | **2,002** | **2,518** | **84%** |
+| 机械修复（第一轮，6 个检查点） | 516 | 2,002 | 2,518 | 84% |
+| 本会话（第二轮，4 个检查点） | **323** | **1,453** | **1,776** | **89%** |
+
+`services` / `browser` 两个项目实测 PASS（exit 0），`node` / `tests` 仍红。
 
 ## ⚠️ 官方门禁的真实覆盖范围（本轮更正）
 
@@ -99,6 +102,37 @@ codemod 注入了什么**——它是「这段代码原来长什么样」的权�
   且实参标注恰为 `PathLike` → 收窄为 `string`。依据 `node_modules/@types/node/path.d.ts:110`：
   `function dirname(path: string): string`——`path.dirname/join` 只收 `string`，而原 JS 传的都是字符串。
 
+## 第二轮新增规则（本会话，均属 A–I 之后的增量）
+
+工具同在 `scripts/archive/ts-repair/`。**每一条都实测过净收益，负收益的已回滚并在下面记录**，不要凭直觉重做。
+
+| # | 脚本 | 规则 | 实测净收益 |
+| --- | --- | --- | --- |
+| J | `fix-truthiness.mjs` | TS18047/18048/2531/2532/2722：在报点表达式末尾插 `!` | node −64 / tests −303 |
+| K | `fix-signature-annotations.mjs` | TS7019 rest 参补 `: any[]`；TS7023/7024 补返回类型 `: any` | −38 |
+| L | `fix-unknown-annotations.mjs` | 类型位置的 `unknown` 关键字 → `any`，**保留容器结构**（`Map<unknown,unknown>` → `Map<any,any>`） | −272（本轮最大单项） |
+| M | `fix-decl-nonnull.mjs` | 把 `!` 加在**声明处**（`const b = arr.find(...)!`）而不是每个使用点；带伪造标注时删标注 + 初始化式加 `!` | −43 |
+| — | `routes/video/validation.ts` 手工 | TS7053：常量表下标加 `as keyof typeof TABLE`（每个取用点后都紧跟运行时守卫） | −15 |
+
+### 关于 `find()` 的 `!` vs 显式守卫（原「未决」项，本会话已定）
+
+采用 `!`。理由是**行为等价**：迁移前 JS 里 `arr.find(...)` 未命中返回 undefined，紧接着 `.x` 就抛
+TypeError；`!` 的编译产物与之一模一样。而 `if (!b) throw ...` 会改变抛错时机与消息，属于改行为。
+且对象字面量简写（`{character: c}`）的报点落在**属性名**上，逐使用点补 `!` 根本覆盖不全——
+加在声明处才是一次到位。
+
+### L 的判定依据（为什么可以放心把 unknown 全改掉）
+
+只作用于迁移生成的文件（有同名原始 `.js`、且不在 `ba50cef` 的手写 TS 清单里）。原始 `.js` 里
+**没有任何类型标注**，所以 `.ts` 上出现的 `unknown` 全部是 codemod 注入的，不是人写的意图。
+典型现场 `scripts/lib/blueprint-change-plan.ts:118`：
+```ts
+const entries: unknown[] = [];          // 原 JS：const entries = [];
+function validateShards(shards: any, entries: unknown[], problems: string[]) { ... }
+for (const entry of entries) { entry.file }   // 'entry' is of type 'unknown'
+```
+这类占修复前残留错误的约 63%。外部载荷用宽松类型是本项目既定标准，勿再质疑。
+
 ## ⚠️ 已确认的坑（勿重蹈）
 
 1. **ANSI 颜色码会骗过 grep**：TS 诊断带颜色码，把 `error` 与 `TS2339` 隔开，对**未去色**日志
@@ -124,16 +158,34 @@ codemod 注入了什么**——它是「这段代码原来长什么样」的权�
     `scripts/` 仍红，`server`/`routes` 的 JS 也不会被重新生成。
 11. **不能靠拆分构建项目来隔离脚本债务**：TS 会连带检查被 `import` 的文件，而 `routes/chat.ts` 正 import 了
     `scripts/lib/runtime-errors`，所以拆出 `scripts/` 并不能让网关先绿。已评估并放弃。
+12. **「所有类型字面量形参一律放宽为 any」是负收益**：实测 772 处编辑换来 node +22 / tests −24（净 ≈0），
+    且严重损害类型质量。只放宽「成员含退化类型」的也不行（367 处编辑净 −3）。
+    **结论：伪造标注不能靠「看起来像伪造就放宽」来批量处理，必须由诊断驱动。**
+13. **`never` 不能跟着 `unknown` 一起改成 `any`**：实测 4 处编辑让 node/tests 各 +4。迁移文件里少量 `never`
+    承担了收窄/穷尽检查的作用。规则 L 明确只处理 `unknown`。
+14. **不要把 `!` 规则扩展到 TS2345/TS2322**：这两码的报点常常落在**赋值左侧**（`out.x = v` 报在 `x`），
+    插 `!` 会产出 `out.x! = v` 这种非法赋值目标（TS2364）。`fix-truthiness.mjs` 里已加注释锁死。
+15. **TS2353 的目标绝大多数不是类型字面量**：`fix-excess-property.mjs` 实测 171 条全部跳过
+    （目标是命名接口或 `string[]` 等），不要再从这个方向入手。
+16. **TS7053 的下标对象大多不是简单标识符**：`fix-index-signature.mjs` 实测 79 条全部跳过
+    （是 `this.x[k]`、`QUALITIES[q].sizes[k]` 这类），`typeof` 取不到类型。这条规则只在
+    `routes/video/validation.ts` 手工落地成功，见上表。
 
 ## 剩余批次（按价值排序，含实测残留）
 
+### 当前残留（第二轮机械规则收敛后实测）
+
 | 批次 | 范围 | 残留 | 文件数 | 备注 |
 | --- | --- | --- | --- | --- |
-| R1 | `scripts/tests/**`（tests 项目） | 1,559 | 131 | 最大一块。热点：`test-popular-content.ts` 150、`test-reference-candidate-workflow.ts` 136、`test-live2d-backend.ts` 73、`test-blueprint-write.ts` 49 |
-| R2 | `scripts/lib/**` | 476 | 34 | `content-history-snapshot.ts` 46、`content-evidence-contract.ts` 40、`blueprint-write.ts` 38、`content-impact-checks.ts` 36、`blueprint-change-plan.ts` 34 |
-| R3 | `scripts/maintenance/**` | 291 | 49 | `publish-showcase-refresh.ts` 38、`publish-scene-showcase-anima11.ts` 34 |
-| R4 | `routes/**`（发货路径） | ~96 | 16 | `routes/video/*` 48、`video-ai.ts` 23、`video.ts` 16、`generation.ts` 14、`interrogate.ts` 8、`maintenance.ts` 8 |
-| R5 | `server.ts` + `server/**` | 4 | 3 | 主要是路由工厂签名的下游症状 |
+| R1 | `scripts/tests/**`（tests 项目） | **1,196** | 126 | 仍是最大一块。热点：`test-reference-candidate-workflow.ts`、`test-popular-content.ts`、`test-live2d-backend.ts` |
+| R2 | `scripts/lib/**` | **258** | 24 | `content-history-snapshot.ts`、`resource-pack-verify.ts`、`blueprint-write.ts`、`content-impact-checks.ts` |
+| R3 | `scripts/maintenance/**` | **251** | 48 | `publish-showcase-refresh.ts`、`publish-scene-showcase-anima11.ts` |
+| R4 | `routes/**`（发货路径） | **69** | 15 | `routes/video/*`、`generation.ts`、`desktop-tools.ts`、`maintenance.ts` |
+| R5 | `server.ts` + `server/**` | **2** | 2 | 路由工厂签名的下游症状，几乎已清 |
+
+主因分布（两项目合计）：TS2345 402、TS2339 412、TS2353 171、TS2322 156、TS18046 132、TS7053 88。
+第二轮的 `unknown` 治理吃掉了一大块，剩下的基本都是**需要看现场判断**的形状不符，机械规则的边际
+收益已经很低——继续推进应按 R1–R5 分片并行（分片生成见下）。
 
 ### R1–R5 的主要错误形态（已抽样确认，不是猜测）
 
@@ -226,11 +278,19 @@ Windows 下 node 解析不了 git-bash 的 `/tmp`。）
 - 用户已拍板：**修复迁移**（保留 TS 为唯一真源）／**修绿后再取消跟踪**生成 JS／**一路推到桌面验收**。
 - 已排除的替代路线：回滚迁移提交、分层收割、拆分构建项目（理由见坑 11）。
 - 本会话补充决策：机械修复只改「由 `63889f4` 从 `.js` 迁移生成」的 `.ts`；工具落到
-  `scripts/archive/ts-repair/`（gitignored）；`find()` 的 `!` vs 显式守卫不由脚本代决，留给用户/逐文件判断。
+  `scripts/archive/ts-repair/`（gitignored）。
+- 第二轮决策（原未决项已定）：`find()` 等一律用 `!`，且优先加在**声明处**而非使用点；理由见上。
+  同理，外部载荷一律放宽到 `any`，运行时守卫原样保留。
 
 ## 未决 / 阻塞
 
-- **模型配额 429**：并行工作器全部无法启动，配额 **2026-09-16 02:37 UTC+8** 重置。
+- **并行分片已备好，只差配额**：`node scripts/archive/ts-repair/make-shards.mjs 6` 会按当前残留把文件切成
+  6 个误差数均衡的分片（`.cache/ts-repair/shards/s1..s6.txt`，每片约 346 错）。配套验收脚本
+  `count-shard.sh <分片清单>` 只统计该片文件、写自己的日志，可多人并行不互相踩。
+  工作器契约见 `CONTRACT.md`，提示词要点：不得 `@ts-ignore`、不得改分片外文件、不得执行 git。
+- **模型配额 429（第二轮仍然命中）**：6 个工作器全部启动时即报
+  `Free usage limit reached until 2026-09-16T02:37Z`，本轮因此全程单会话推进。
+  这是当前唯一阻塞并行化的因素，配额恢复后按上面的分片直接开即可。
   本会话因此改为单会话推进，靠「可判定规则 + tsc 快速反馈（node 项目约 5 秒）」批量化，才把
   11,310 压到 2,518。剩余部分建议在配额恢复后按 R1–R5 分片并行（文件归属已切分好，
   见 `.cache/tswork/A1..A7.txt` 与 `scripts/archive/ts-repair/CONTRACT.md`）。
