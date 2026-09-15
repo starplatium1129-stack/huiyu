@@ -70,7 +70,7 @@ export interface TagMeta {
  * 改过 data/*.json 后 `npm run validate` 会提示这里该改成什么。
  * 以前是手动计数（曾到 15），现在由内容锁定，不会再出现"改数据忘升版本"。
  */
-export const DATA_VERSION = 3372813673
+export const DATA_VERSION = 1207814563
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function fetchJson<T>(file: string, version: number): Promise<T> {
