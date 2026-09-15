@@ -762,7 +762,7 @@ function verifyAndIndex(outputDir: any) {
   const manifest = readJson(manifestPath);
   const entries: any[] = [];
   for (const record of manifest) {
-    const entry = {
+    const entry: any = {
       batch: record.batch, key: record.key, subject: record.subject,
       sceneId: record.sceneId, characterId: record.characterId, artistId: record.artistId,
       displayName: record.displayName, engine: record.engine, provider: record.provider,

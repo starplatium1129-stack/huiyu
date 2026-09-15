@@ -45,7 +45,7 @@ function getJson(url: any) {
 async function waitForPrompt(promptId: any) {
   var start = Date.now();
   while (Date.now() - start < 120000) {
-    var history = await getJson('http://127.0.0.1:8188/history/' + promptId);
+    var history: any = await getJson('http://127.0.0.1:8188/history/' + promptId);
     if (history && history[promptId]) {
       var status = history[promptId].status;
       var outputs = history[promptId].outputs;
@@ -57,7 +57,7 @@ async function waitForPrompt(promptId: any) {
 }
 
 function buildAnimaPrompt(withTeaCache: any, thresh?: any) {
-  var wf = {
+  var wf: any = {
     '1': { class_type: 'UNETLoader', inputs: { unet_name: 'anima-base-v1.0.safetensors', weight_dtype: 'default' } },
     '2': { class_type: 'CLIPLoader', inputs: { clip_name: 'qwen_3_06b_base.safetensors', type: 'qwen_image' } },
     '3': { class_type: 'VAELoader', inputs: { vae_name: 'qwen_image_vae.safetensors' } },
@@ -107,7 +107,7 @@ function buildAnimaPrompt(withTeaCache: any, thresh?: any) {
 async function run() {
   console.log('--- 1. Testing Standard Anima (30 steps, res_multistep) ---');
   var promptStandard = buildAnimaPrompt(false);
-  var resStd = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptStandard, client_id: 'bench' });
+  var resStd: any = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptStandard, client_id: 'bench' });
   console.log('Submitted standard prompt:', resStd.prompt_id);
   var t0 = Date.now();
   await waitForPrompt(resStd.prompt_id);
@@ -116,7 +116,7 @@ async function run() {
 
   console.log('\n--- 2. Testing TeaCache Anima (30 steps, thresh=0.08) ---');
   var promptTea = buildAnimaPrompt(true, 0.08);
-  var resTea = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptTea, client_id: 'bench' });
+  var resTea: any = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptTea, client_id: 'bench' });
   console.log('Submitted TeaCache prompt:', resTea.prompt_id);
   var t1 = Date.now();
   await waitForPrompt(resTea.prompt_id);

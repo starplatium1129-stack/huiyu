@@ -14,7 +14,7 @@ const AUDIT = path.resolve(__dirname, '../maintenance/audit-delivery.js');
 const MAIN = ['installation', 'deviceAcceptance', 'modelAcceptance'];
 const run = (args: any) => spawnSync(process.execPath, [CLI, ...args], { encoding: 'utf8', windowsHide: true });
 function mainResults(root: any, fields = MAIN, baseline = `${EVIDENCE_DIR}/office.json`) {
-  const value = { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(root, baseline))) };
+  const value: any = { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(root, baseline))) };
   for (const field of fields) {
     const name = `${EVIDENCE_DIR}/${field}.log`;
     fs.writeFileSync(path.join(root, name), 'isolated acceptance fixture; no real installation, GPU or model call');

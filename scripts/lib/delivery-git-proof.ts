@@ -98,7 +98,7 @@ function sourceProof(root: any, commit: any, source: any) {
   if (canonical(index) !== canonical(expectedIndex)) throw Error('受审源码索引与最终提交不一致');
   const byName = new Map(recorded.map((e: any) => [e.path, e])), proof: any = [], attrs = attributes(root, files.map(e => e.path));
   blobs(root, files, (item: any, content: any) => {
-    const entry = byName.get(item.path), blobSha256 = sha256(content);
+    const entry: any = byName.get(item.path), blobSha256 = sha256(content);
     let representation = 'exact';
     if (entry.sha256 !== blobSha256 || entry.bytes !== content.length) {
       const a = attrs.get(item.path), raw = fs.readFileSync(resolveSafe(root, item.path));

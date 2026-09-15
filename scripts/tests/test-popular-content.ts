@@ -68,7 +68,7 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
   const { resolveModelProfile }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
   const catalog = persistence.parsePresetCatalog((require('../../data/presets.json') as typeof import('../../data/presets.json')));
   assert.strictEqual(onboardingIds.size, 36);
-  const counts = {};
+  const counts: any = {};
   for (const entry of remainingOnboarding) {
     counts[entry.batch] = (counts[entry.batch] || 0) + 1;
     const character = characters.find(c => c.id === entry.id);
@@ -231,7 +231,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
     'preserve existing scenes alongside the complete adult onboarding batches');
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
-  var byCharacter = {};
+  var byCharacter: any = {};
   blueprints.forEach(function (blueprint) {
     var text = JSON.stringify(blueprint);
     assert.ok(!/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(text), blueprint.id + ' must not reference studio LoRA tokens');
@@ -242,7 +242,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
   });
   // 每个角色 10、11、13 或 15 个场景：10=6 原型+4 成人（43 既有角色 + 6 第五批 + 36 第六至九批）、11=7 原型+4 成人（67 角色）、
   // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、15=未花专属双场景扩容（1 角色）。
-  var sceneDist = {};
+  var sceneDist: any = {};
   Object.entries(byCharacter).forEach(function (entry) {
     const additionCount = coverageRepairs.additions.filter(item => item.characterId === entry[0]).length;
     if (additionCount) {
@@ -255,7 +255,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
     else assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must preserve its existing scene count, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  const expectedSceneDist = {
+  const expectedSceneDist: any = {
     10: 43 + legacyAdultIds.size + onboardingIds.size - extendedOnboardingIds.size,
     11: 66 + extendedOnboardingIds.size,
     13: 6,
@@ -271,7 +271,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4、5 或 6 个带 characterId 的成人场景。
-  var adultDist = {};
+  var adultDist: any = {};
   Object.entries(byCharacter).forEach(function (entry) {
     var adultOwned = blueprints.filter(function (blueprint) { return blueprint.characterId === entry[0] && blueprint.adult; });
     if (sfwOnlyIds.has(entry[0])) {
@@ -1048,15 +1048,15 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(withLora.loraId, 'L_NENE_V21_ANIMA');
   assert.throws(function () {
     animaRoute.validateInput({ prompt: 'x', modelId: 'anima-aesthetic-v1.1', loraId: 'unknown', width: 832, height: 1216 });
-  }, function (error) { return error && error.code === 'UNKNOWN_LORA'; });
+  }, function (error: any) { return error && error.code === 'UNKNOWN_LORA'; });
   assert.throws(function () {
     animaRoute.validateInput({
       prompt: 'x', modelId: 'anima-aesthetic-v1.1', loraId: 'L_NAT_V21_ANIMA', width: 832, height: 1216, character: 'nene',
     });
-  }, function (error) { return error && error.code === 'INCOMPATIBLE_CHARACTER'; });
+  }, function (error: any) { return error && error.code === 'INCOMPATIBLE_CHARACTER'; });
   assert.throws(function () {
     animaRoute.validateInput({ prompt: 'x', modelId: 'anima-base-v1.0', width: 832, height: 1216 });
-  }, function (error) { return error && error.code === 'UNKNOWN_LORA'; }, 'non-noLora anima model must still require a LoRA');
+  }, function (error: any) { return error && error.code === 'UNKNOWN_LORA'; }, 'non-noLora anima model must still require a LoRA');
 
   // Hires.fix workflow validation
   var hiresInput = animaRoute.validateInput({

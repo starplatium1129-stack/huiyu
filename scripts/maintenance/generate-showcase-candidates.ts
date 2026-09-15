@@ -966,7 +966,7 @@ async function gatewayJson(base: any, pathname: any, options: any) {
 }
 
 async function submitCandidate(base: any, candidate: any) {
-  const body = { prompt: candidate.prompt, negative: candidate.negative };
+  const body: any = { prompt: candidate.prompt, negative: candidate.negative };
   let routeBase;
   if (candidate.engine === 'krea2') {
     routeBase = '/api/creative/jobs';
@@ -1162,7 +1162,7 @@ function verifyOutput(output: any) {
   const entries: any[] = [];
   let checked = 0;
   for (const record of manifest) {
-    const entry = {
+    const entry: any = {
       batch: record.batch, key: record.key, subject: record.subject,
       sceneId: record.sceneId, characterId: record.characterId, artistId: record.artistId,
       displayName: record.displayName, engine: record.engine, provider: record.provider,

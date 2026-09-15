@@ -173,7 +173,7 @@ test('原生后端：会话回传模型句柄，motion/expression 委托桥', as
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
   assert.equal(session.kind, 'native');
 
-  let loaded = null;
+  let loaded: any = null;
   session.onModelLoaded((handle) => { loaded = handle; });
   assert(loaded, 'setCharacter 成功后应立即回传模型句柄');
   await loaded.motion('TapHead', undefined, 3);
@@ -188,7 +188,7 @@ test('原生后端：会话回传模型句柄，motion/expression 委托桥', as
 });
 
 test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', async () => {
-  const bridge = createStubBridge();
+  const bridge: any = createStubBridge();
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/natsume.moc3', canvasWidth: 420, canvasHeight: 610, character: 'natsume' });
 
@@ -263,7 +263,7 @@ test('原生后端：原生 HitArea 事件回传（作者分区命中）', async
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
 
-  const hits: unknown = [];
+  const hits: any = [];
   const unsubscribe = session.onNativeHitTest((areas) => hits.push(areas));
   assert(bridge._hitTestListeners.length > 0, '应订阅 onHitTest');
   bridge._hitTestListeners.forEach((listener) => listener(['Head', 'Body']));
@@ -279,7 +279,7 @@ test('原生后端：onMotionFailed 转发 busy 拒绝（同一互动播放中�
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
 
-  const failures: unknown = [];
+  const failures: any = [];
   const unsubscribe = session.onMotionFailed((info) => failures.push(info));
   bridge._motionFailedListeners.forEach((listener) => listener({ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }));
   assert.deepEqual(failures, [{ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }]);
@@ -323,7 +323,7 @@ test('原生后端：销毁时 off 全部订阅并调用 bridge.destroy', async 
 // ---------- 桥形状校验（契约防漂移） ----------
 
 test('Live2DNativeBridge 契约：命令与事件方法齐全', () => {
-  const bridge = createStubBridge();
+  const bridge: any = createStubBridge();
   const commands = ['setCharacter', 'setFrame', 'setMaxFps', 'playMotion', 'setExpression', 'setMouthLevel', 'setEmotion', 'setGaze', 'hitTest', 'destroy'];
   const events = ['onReady', 'onMotionStarted', 'onMotionFailed', 'onHitTest', 'onEntranceFinished', 'onStopped', 'off'];
   for (const name of commands) {
@@ -401,7 +401,7 @@ test('原生后端：失败帧可重试，迟到的旧失败不清除新帧缓�
 test('原生后端：销毁幂等，旧句柄和会话不能再发命令', async () => {
   const bridge = createStubBridge();
   const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
-  let handle;
+  let handle: any;
   session.onModelLoaded(model => { handle = model; });
   session.destroy();
   session.destroy();
@@ -423,7 +423,7 @@ test('原生后端：点击查询拒绝不会产生未处理异常', async () =>
   const bridge = createStubBridge();
   bridge.hitTest = async () => { throw new Error('closed'); };
   const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
-  let handle;
+  let handle: any;
   session.onModelLoaded(model => { handle = model; });
   assert.deepEqual(handle.hitTest(0.5, 0.5), []);
   await new Promise(resolve => setImmediate(resolve));
@@ -432,7 +432,7 @@ test('原生后端：点击查询拒绝不会产生未处理异常', async () =>
 
 test('native texture quality is sent only to bridges that advertise support', async () => {
   for (const supported of [false, true]) {
-    const bridge = createStubBridge();
+    const bridge: any = createStubBridge();
     bridge.supportsTextureQuality = supported;
     const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.model3.json', canvasWidth: 420, canvasHeight: 610, character: 'nene', textureScale: 4 });
     assert.deepEqual(bridge.calls.setCharacter[0][1], supported ? { character: 'nene', textureScale: 4 } : { character: 'nene' });

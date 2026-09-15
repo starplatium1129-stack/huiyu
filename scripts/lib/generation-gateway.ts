@@ -14,7 +14,7 @@ function gatewayUrl(explicit: unknown, env = process.env) {
   return url.href.replace(/\/+$/, '');
 }
 
-function crc32(bytes: unknown) {
+function crc32(bytes: any) {
   let crc = 0xffffffff;
   for (const byte of bytes) {
     crc ^= byte;
@@ -24,11 +24,11 @@ function crc32(bytes: unknown) {
 }
 
 // Structural/byte validation, never a visual or human review. The gateway emits PNG.
-function validatePng(buffer: unknown[]|Buffer<ArrayBuffer>) {
+function validatePng(buffer: any) {
   if (buffer.length < 57 || buffer.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') {
     throw new Error('invalid PNG signature or truncated image');
   }
-  let offset = 8, width, height, depth, color, ended = false;
+  let offset = 8, width, height, depth: any, color, ended = false;
   const compressed = [];
   while (offset + 12 <= buffer.length) {
     const size = buffer.readUInt32BE(offset);

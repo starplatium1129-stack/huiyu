@@ -22,7 +22,7 @@ function reportPaths(value: any) {
 }
 function inspectGate(root: any, document: any, freshness: any, field: any) {
   const declaredStatus = state(get(document, field));
-  const result = { status: 'unknown', declaredStatus, effectiveStatus: declaredStatus, reports: [] };
+  const result: any = { status: 'unknown', declaredStatus, effectiveStatus: declaredStatus, reports: [] };
   const binding = document.tracking?.gates?.[field];
   try {
     if (freshness.status === 'invalid') throw Error('追踪身份记录不可用');

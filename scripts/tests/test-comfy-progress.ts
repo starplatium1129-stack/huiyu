@@ -21,7 +21,7 @@ test('ComfyUI progress monitor filters by prompt id and maps sampling steps', ()
   const a = { status: 'running', progress: null, currentNode: null };
   const b = { status: 'running', progress: null, currentNode: null };
   const monitor = progress.createComfyProgressMonitor({ COMFY_HOST: 'http://127.0.0.1:8188' }, 'client-1', { WebSocket: FakeSocket });
-  const socket = FakeSocket.instances[0];
+  const socket: any = FakeSocket.instances[0];
   monitor.watch('prompt-a', a);
   monitor.watch('prompt-b', b);
 
@@ -41,7 +41,7 @@ test('progress monitor ignores malformed and unrelated events and closes cleanly
   FakeSocket.instances = [];
   const job = { status: 'running', progress: null };
   const monitor = progress.createComfyProgressMonitor({ COMFY_HOST: 'http://127.0.0.1:8188' }, 'client-2', { WebSocket: FakeSocket });
-  const socket = FakeSocket.instances[0];
+  const socket: any = FakeSocket.instances[0];
   monitor.watch('prompt-a', job);
   socket.emit('message', 'not-json');
   socket.emit('message', JSON.stringify({ type: 'progress', data: { prompt_id: 'other', value: 9, max: 10 } }));

@@ -158,7 +158,7 @@ function cleanPolishOutput(parsed: { shots: string|unknown[]; }, value: { identi
   });
   if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.shots)) return out;
   for (let i = 0; i < parsed.shots.length; i += 1) {
-    let item = parsed.shots[i];
+    let item: any = parsed.shots[i];
     if (!item || typeof item !== 'object') continue;
     let index = Number(item.index);
     if (!Number.isInteger(index) || index < 0 || index >= out.length) continue;
@@ -346,7 +346,7 @@ function createVideoAiRouter(config: any, dependencies: any) {
         : await callOllama(ollama, messages, controller.signal);
       let shot = cleanRewriteOutput(extractJsonObject(content), value);
       envelope.ok(res, { source:source.source, model:source.model, shot:shot });
-    } catch (error) {
+    } catch (error: any) {
       if (httpClient.isAbortError(error)) return;
       envelope.fail(res, envelope.statusFor(error, 502), runtimeErrorMessage(error) || 'AI 整理失败', {
         detail:error.detail || ''
@@ -377,7 +377,7 @@ function createVideoAiRouter(config: any, dependencies: any) {
         : await callOllama(ollama, messages, controller.signal);
       let shots = cleanPolishOutput(extractJsonObject(content), value);
       envelope.ok(res, { source:source.source, model:source.model, shots:shots });
-    } catch (error) {
+    } catch (error: any) {
       if (httpClient.isAbortError(error)) return;
       envelope.fail(res, envelope.statusFor(error, 502), runtimeErrorMessage(error) || 'AI 编排失败', {
         detail:error.detail || ''
@@ -407,7 +407,7 @@ function createVideoAiRouter(config: any, dependencies: any) {
         { role:'user', content:buildDialogueUserPrompt(value) }
       ], controller.signal);
       envelope.ok(res, { source:source.source, model:source.model, options:cleanDialogueOutput(extractJsonObject(content)) });
-    } catch (error) {
+    } catch (error: any) {
       if (httpClient.isAbortError(error)) return;
       envelope.fail(res, envelope.statusFor(error, 502), runtimeErrorMessage(error) || 'AI 台词失败', { detail:error.detail || '' });
     }
@@ -428,7 +428,7 @@ function createVideoAiRouter(config: any, dependencies: any) {
         { role:'user', content:buildReviewUserPrompt(value) }
       ], controller.signal);
       envelope.ok(res, { source:source.source, model:source.model, issues:cleanReviewOutput(extractJsonObject(content), value) });
-    } catch (error) {
+    } catch (error: any) {
       if (httpClient.isAbortError(error)) return;
       envelope.fail(res, envelope.statusFor(error, 502), runtimeErrorMessage(error) || 'AI 质检失败', { detail:error.detail || '' });
     }
@@ -449,7 +449,7 @@ function createVideoAiRouter(config: any, dependencies: any) {
         { role:'user', content:buildScriptUserPrompt(value) }
       ], controller.signal);
       envelope.ok(res, { source:source.source, model:source.model, shots:cleanScriptOutput(extractJsonObject(content)) });
-    } catch (error) {
+    } catch (error: any) {
       if (httpClient.isAbortError(error)) return;
       envelope.fail(res, envelope.statusFor(error, 502), runtimeErrorMessage(error) || 'AI 脚本失败', { detail:error.detail || '' });
     }
@@ -535,7 +535,7 @@ function cleanDialogueOutput(parsed: { options: string|unknown[]; }) {
   let options = [];
   if (parsed && typeof parsed === 'object' && Array.isArray(parsed.options)) {
     for (let i = 0; i < parsed.options.length && options.length < 3; i += 1) {
-      let item = parsed.options[i];
+      let item: any = parsed.options[i];
       if (!item || typeof item !== 'object') continue;
       let text = String(item.text || '').trim();
       if (!text || text.length > 60) continue;
@@ -552,7 +552,7 @@ function validateReviewBody(body: { shots: string|unknown[]; }) {
   }
   let shots = [];
   for (let i = 0; i < body.shots.length; i += 1) {
-    let shot = body.shots[i];
+    let shot: any = body.shots[i];
     if (!shot || typeof shot !== 'object') return { error:'第 ' + (i + 1) + ' 个分镜必须是对象' };
     let prompt = String(shot.prompt || '').trim();
     if (!prompt || prompt.length > 4000) return { error:'第 ' + (i + 1) + ' 个分镜描述需为 1—4000 字符' };
@@ -584,7 +584,7 @@ function cleanReviewOutput(parsed: { issues: string|unknown[]; }, value: { shots
   let issues: { index: number; severity: string; field: string; message: string; suggestion: string; }[] = [];
   if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.issues)) return issues;
   for (let i = 0; i < parsed.issues.length; i += 1) {
-    let item = parsed.issues[i];
+    let item: any = parsed.issues[i];
     if (!item || typeof item !== 'object') continue;
     let index = Number(item.index);
     if (!Number.isInteger(index) || index < 0 || index >= value.shots.length) continue;
@@ -648,7 +648,7 @@ function cleanScriptOutput(parsed: { shots: string|unknown[]; }) {
   let shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; duration: number; }[] = [];
   if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.shots)) return shots;
   for (let i = 0; i < parsed.shots.length && shots.length < 20; i += 1) {
-    let item = parsed.shots[i];
+    let item: any = parsed.shots[i];
     if (!item || typeof item !== 'object') continue;
     let prompt = String(item.prompt || '').trim();
     if (!prompt || prompt.length > 4000) continue;

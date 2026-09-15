@@ -129,7 +129,7 @@ function run(distDir: any = path.resolve(__dirname, '../../dist')) {
   }
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const sizeOf = (file: any) => fs.statSync(path.join(distDir, file)).size;
-  const result = evaluateManifest(manifest, sizeOf);
+  const result: any = evaluateManifest(manifest, sizeOf);
   if (result.routes.length < 12) {
     throw new Error(`Expected at least 12 lazy route chunks, found ${result.routes.length}`);
   }

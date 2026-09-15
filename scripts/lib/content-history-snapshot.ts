@@ -182,9 +182,9 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
       const group = role === 'source' ? 'references:source' : `references:derived:${file}`;
       result.groups[group] = { complete: true, rows: [] };
       try {
-        const value = json(file);
+        const value: any = json(file);
         if (!object(value)) throw new Error('invalid reference container');
-        const characters = role === 'source' ? value.characters : Object.entries(value).map(([id, row]) => ({ ...row, id }));
+        const characters: any = role === 'source' ? value.characters : Object.entries(value).map(([id, row]) => ({ ...row, id }));
         if (!validRows(characters) || characters.some((row: any) => !Array.isArray(row.outfits)
           || row.outfits.some((outfit: any) => !object(outfit) || !validId(role === 'source' ? outfit.id : outfit.outfitId)
             || (role === 'derived' && (!Array.isArray(outfit.references) || outfit.references.some((ref: any) => !object(ref) || !validId(ref.id))))))) throw new Error('invalid reference character/outfit records');

@@ -100,7 +100,7 @@ function main(args: any = process.argv.slice(2)) {
     }
     console.log(JSON.stringify(result, null, 2));
     return result.ok ? 0 : 1;
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof UsageError) {
       console.error(`错误: ${err.message}`);
       return 2;

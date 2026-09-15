@@ -62,7 +62,7 @@ async function probeSceneList(page: any) {
 }
 
 async function probeWatermarks(page: any) {
-  const out = {};
+  const out: any = {};
   for (const path of ['/control', '/training', '/scene-manager', '/lora', '/video-studio', '/prompt-builder']) {
     await page.goto(base + path);
     await page.waitForLoadState('networkidle').catch(() => {});
@@ -111,7 +111,7 @@ async function probeLightContrast(page: any) {
       { name: 'action buttons', selector: '.scene-manager table button, .sm-actions button, [class*="action"] button' },
     ],
   };
-  const out = {};
+  const out: any = {};
   for (const [path, list] of Object.entries(targets)) {
     await page.goto(base + path);
     await page.waitForLoadState('networkidle').catch(() => {});

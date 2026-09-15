@@ -37,7 +37,7 @@ var CLIENT_ID = 'aics-anima-unified-' + crypto.randomUUID();
 // 无需逐张等待完成再提交下一张。默认 4 个 in-flight，避免队列无界增长。
 var CONCURRENCY = 4;
 
-var PARAM_GROUPS = {
+var PARAM_GROUPS: any = {
   default: { label:'24s_cfg3', steps:24, cfg:3, sampler:'res_multistep', scheduler:'simple' },
   official: { label:'30s_cfg45_ersde', steps:30, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform' },
 };
@@ -147,7 +147,7 @@ function spaced(token: string) {
   return token.replace(/_/g, ' ');
 }
 
-function animaPrompt(scene: unknown) {
+function animaPrompt(scene: any) {
   var safety = scene.mature ? 'nsfw' : 'safe';
   var story = String(scene.story || '').trim();
   var body = String(scene.prompt || '')
@@ -161,7 +161,7 @@ function animaPrompt(scene: unknown) {
     story, body].filter(Boolean).join(', ');
 }
 
-function animaNegative(scene: unknown) {
+function animaNegative(scene: any) {
   var tail = String(scene.negative || '')
     .replace(/<lora:[^>]+>/gi, '')
     .replace(/[\r\n]+/g, ' ')
@@ -176,7 +176,7 @@ function buildScenes() {
   var library = readJson(path.join(ROOT, 'data', 'scenes.json'));
   var byId = new Map(library.map(function (scene: any) { return [scene.id, scene]; }));
   return SCENES.map(function (id) {
-    var scene = byId.get(id);
+    var scene: any = byId.get(id);
     assert(scene, 'Unknown scene id: ' + id);
     return {
       id:id,
@@ -292,7 +292,7 @@ async function main() {
       var index = next;
       next += 1;
       if (index >= pending.length) return;
-      var job = pending[index];
+      var job: any = pending[index];
       var candidate = job.candidate;
       var scene = job.scene;
       var seed = job.seed;

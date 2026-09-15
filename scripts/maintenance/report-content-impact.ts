@@ -254,7 +254,7 @@ function themeImpact(opts: { root: PathLike; }, selected: any, result: any, add:
     canonical = new Set(records.map((row: any) => row.id));
   } catch (error) { dataError = `data/characters.json: 不可解析（${runtimeErrorMessage(error)}）`; }
   result.themes = [...selected].map((id: any) => {
-    const theme = { id, file, canonical: canonical ? canonical.has(id) : null, themeStatus: 'unknown', reason: '' };
+    const theme: any = { id, file, canonical: canonical ? canonical.has(id) : null, themeStatus: 'unknown', reason: '' };
     if (cssError) theme.reason = cssError;
     else if (selectors.has(id)) {
       theme.themeStatus = 'explicit';
@@ -315,7 +315,7 @@ function showcaseImpact(opts: any, result: any, add: any) {
     return;
   }
   for (const file of files) {
-    const item = { file, status: 'unknown', entries: [] };
+    const item: any = { file, status: 'unknown', entries: [] };
     result.showcase.manifests.push(item);
     try {
       const normalized = file.replace(/\\/g, '/');

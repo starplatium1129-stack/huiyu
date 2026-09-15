@@ -10,7 +10,7 @@ const delta = (upsert = [], remove = []) => ({ version: 1, scenes: { upsert, rem
 
 test('only explicitly selected IDs change; delta values detach from submitted objects', () => {
   const before = current();
-  const changes = delta([scene('sc002', 'updated'), scene('sc1000')], ['sc999']);
+  const changes: any = delta([scene('sc002', 'updated'), scene('sc1000')], ['sc999']);
   const frozen = JSON.stringify({ before, changes });
   const saved = resolveSceneChangeSet(before, changes);
   assert.deepEqual(saved.scenes.map((item: any) => item.id), ['sc001', 'sc002', 'sc1000']);

@@ -33,7 +33,7 @@ function capture(root: any, options: any) {
     const source = snapshot(root, options.source), build = snapshot(root, options.build);
     const gates = options.gates || { 'checks.office': ['source', 'build'] };
     if (!object(gates) || !Object.keys(gates).length || !options.scope?.trim()) throw Error('必须提供 scope 与明确门禁');
-    const document = { schemaVersion: 1, kind: 'office-main-handoff', capturedAt: new Date().toISOString(),
+    const document: any = { schemaVersion: 1, kind: 'office-main-handoff', capturedAt: new Date().toISOString(),
       ...(repo.commit ? { commit: repo.commit } : {}), scope: options.scope, environment: environment(machine),
       build: { manifestSha256: build.sha256 }, tracking: { schemaVersion: 1, algorithm: 'sha256', source, build, gates: {} } };
     for (const [field, dependsOn] of Object.entries(gates)) {
@@ -97,10 +97,10 @@ function capture(root: any, options: any) {
   // This is a declared result plus immutable file references, never a gate runner.
   return document;
 }
-function inspectHandoff(root: any, document: any, freshness: any, options = {}) {
+function inspectHandoff(root: any, document: any, freshness: any, options: any = {}) {
   const value = document.handoff;
   if (value === undefined) return null;
-  const result = { status: 'pending', errors: [], pending: [], source: freshness.source, build: freshness.build };
+  const result: any = { status: 'pending', errors: [], pending: [], source: freshness.source, build: freshness.build };
   try {
     if (!object(value) || value.schemaVersion !== 1 || value.from !== 'office' || value.to !== 'main'
       || !['office', 'main'].includes(value.stage)) throw Error('handoff 格式或方向不支持');
@@ -133,7 +133,7 @@ function inspectHandoff(root: any, document: any, freshness: any, options = {}) 
       if (result.finalization.status !== 'matched') result.errors.push(`finalize: ${result.finalization.message}`);
     }
     for (const field of MAIN_FIELDS) {
-      const checked = inspectGate(root, document, freshness, field);
+      const checked: any = inspectGate(root, document, freshness, field);
       if (checked.status === 'invalid') result.errors.push(`${field}: ${checked.message}`);
       if (checked.effectiveStatus !== 'passed') result.pending.push(`${field}: ${checked.effectiveStatus}`);
       result.requiredMain.find((item: any) => item.field === field).status = checked.effectiveStatus;

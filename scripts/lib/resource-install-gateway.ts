@@ -142,7 +142,7 @@ function createResourceManager(gateway: any) {
       } };
     const accepted = structuredClone(task);
     settled = new Promise(resolve => setImmediate(resolve)).then(async () => {
-      const installer = createResourceInstaller(options);
+      const installer: any = createResourceInstaller(options);
       const request = { releaseId, signal: controller.signal };
       if (action === 'download' || resumeAction === 'download') await createResourceDownloader(options).download(request);
       else if (action === 'import' || resumeAction === 'import') await installer.install(request);

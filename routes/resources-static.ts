@@ -31,7 +31,7 @@ function createResourceStatic(manager: any) {
     if (!mounted) return next();
     const { snapshot, modelGroups } = mounted;
     const entries = new Map(snapshot.entries.map((entry: any) => [entry.path, entry]));
-    const entry = entries.get(rel);
+    const entry: any = entries.get(rel);
     if (!entry) return next();
     try {
       if (rel.startsWith('assets/live2d/')) {

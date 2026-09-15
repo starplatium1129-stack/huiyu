@@ -97,7 +97,7 @@ function loadFixtureData(dir: any) {
     characters.flatMap((character: any) => (character.outfits || []).map((outfit: any) => ({ id: character.id, outfitId: outfit.id, file: entry.file }))));
   const standards = readJson('data/character-reference-standards.json').characters
     .map((c: any) => ({ id: c.id, outfitIds: c.outfits.map((o: any) => o.id) }));
-  const view = Object.entries(readJson('data/character-reference-view.json')).map(([id, profile]) => ({
+  const view = Object.entries(readJson('data/character-reference-view.json')).map(([id, profile]: any) => ({
     id,
     outfits: profile.outfits.map((o: any) => ({ outfitId: o.outfitId, references: o.references })),
   }));

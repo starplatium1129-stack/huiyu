@@ -31,7 +31,7 @@ function packRel(name: any) {
 }
 
 /** 记录型 fs：调用穿透真实 fs 并记录目标路径；hooks 可替换个别操作。 */
-function recordingIo(hooks = {}) {
+function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync', 'rmSync', 'unlinkSync']) {

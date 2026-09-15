@@ -82,7 +82,7 @@ function contractExactTokens(scene: { char: string; }) {
   return new Set((contract?.exact_tokens || []).map(token => String(token).toLowerCase()))
 }
 
-function planFor(scene: unknown, profile: any, engine: string) {
+function planFor(scene: any, profile: any, engine: string) {
   const char = charOf(scene)
   const effective = engine === 'anima' ? animaProfile(profile, scene) : profile
   const shot = infer.sceneShot(scene)

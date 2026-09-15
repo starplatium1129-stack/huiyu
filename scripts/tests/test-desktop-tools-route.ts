@@ -173,7 +173,7 @@ function nativeBridge(base: any) {
   const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/src/shim.rs'), 'utf8');
   const script = source.match(/pub const COMPANION_SHIM_JS: &str = r#"([\s\S]*?)"#;/)?.[1];
   assert.ok(script, 'native bridge source must be available');
-  const window = { __TAURI__: { core: { invoke: async () => ({}) }, event: { listen: async () => () => {}, emit: async () => {} } } };
+  const window: any = { __TAURI__: { core: { invoke: async () => ({}) }, event: { listen: async () => () => {}, emit: async () => {} } } };
   vm.runInNewContext(script, {
     window, location: { pathname: '/prompt-builder' },
     document: { readyState: 'complete', querySelectorAll: () => [], querySelector: () => null },

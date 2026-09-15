@@ -48,8 +48,8 @@ function relations(row: any, snapshots: any, unknown: string[]) {
 function relationshipIssues(snapshots: { [x: string]: { groups: { [x: string]: unknown; }; }; popular: { groups: { [x: string]: unknown; }; }; blueprints: { groups: { [x: string]: unknown; }; }; scenes: { groups: { [x: string]: unknown; }; }; }, { keys } = {}) {
   const issues = [];
   const selected = (row: any) => !keys || keys.has(row.key);
-  const popular = snapshots.popular?.groups['popular:source'];
-  const blueprints = snapshots.blueprints?.groups['blueprints:source'];
+  const popular: any = snapshots.popular?.groups['popular:source'];
+  const blueprints: any = snapshots.blueprints?.groups['blueprints:source'];
   if (popular?.complete) for (const character of popular.rows.filter((r: { kind: string; }) => r.kind === 'character')) {
     if (!selected(character) && !(character.value.outfits || []).some((o: any) => keys?.has(keyFor('outfit', o.id, character.id)))) continue;
     const outfits = character.value.outfits;
@@ -72,9 +72,9 @@ function relationshipIssues(snapshots: { [x: string]: { groups: { [x: string]: u
       }
     }
   }
-  const scenes = snapshots.scenes?.groups['scenes:source'];
+  const scenes: any = snapshots.scenes?.groups['scenes:source'];
   if (scenes?.complete) for (const domain of ['curation', 'retired']) {
-    const group = snapshots[domain]?.groups[`${domain}:source`];
+    const group: any = snapshots[domain]?.groups[`${domain}:source`];
     if (!group?.complete) continue;
     for (const row of group.rows) {
       if (!selected(row)) continue;

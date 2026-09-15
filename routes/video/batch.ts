@@ -122,7 +122,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
   // 提示词必须按当前输入模式重新组装（官方参考图指令随 I2VA/FL2VA/L2VA 变化），
   // seed 显式传回保证确定性（重抽/重试不换随机种子）。
   function recomposeInput(input: any, batch: any, config: unknown) {
-    let body = {
+    let body: any = {
       prompt:input.originalPrompt,
       modelId:batch.modelId,
       aspectRatio:batch.aspectRatio,
@@ -212,7 +212,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
       shot.status = 'queued';
       await videoService.submit(job);
       scheduleWatch(batch);
-    } catch (error) {
+    } catch (error: any) {
       shot.status = 'failed';
       shot.error = error && error.message || '分镜提交失败';
       shot.errorCode = error && error.code || 'BATCH_SUBMIT_FAILED';
@@ -243,7 +243,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
       });
     }
     let id = crypto.randomBytes(18).toString('hex');
-    let batch = {
+    let batch: any = {
       id:id,
       owner:owner,
       status:'running',
@@ -282,7 +282,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
     batch.status = 'cancelled';
     if (batch.watchTimer) { clearTimeout(batch.watchTimer); batch.watchTimer = null; }
     for (let i = 0; i < batch.shots.length; i += 1) {
-      let shot = batch.shots[i];
+      let shot: any = batch.shots[i];
       if (shot.status === 'pending') shot.status = 'cancelled';
       else if (shot.status === 'queued' || shot.status === 'running') {
         if (shot.job) {
@@ -299,7 +299,7 @@ function createBatchService(config: unknown, videoService: any, dependencies: an
   }
 
   async function retryShot(batch: { shots: { [x: string]: unknown; }; status: string; }, index: string|number) {
-    let shot = batch.shots[index];
+    let shot: any = batch.shots[index];
     if (!shot) throw serviceError(404, 'SHOT_NOT_FOUND', '分镜不存在');
     if (shot.status !== 'failed' && shot.status !== 'cancelled') {
       throw serviceError(409, 'BATCH_SHOT_NOT_RETRYABLE', '只有失败或取消的分镜可以重抽');

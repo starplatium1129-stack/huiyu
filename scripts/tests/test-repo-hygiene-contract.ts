@@ -10,7 +10,7 @@ const { test }: typeof import('node:test') = require('node:test');
 
 const { loadDebtFromGitRef, scanRepository, sha256 }: typeof import('./repo-hygiene-core') = require('./repo-hygiene-core');
 
-function git(repositoryRoot: any, args: any, options = {}) {
+function git(repositoryRoot: any, args: any, options: any = {}) {
   return execFileSync('git', args, {
     cwd: repositoryRoot,
     encoding: 'utf8',
@@ -149,7 +149,7 @@ test('ignored files are excluded from the untracked scan', async (t) => {
   write(repositoryRoot, 'ignored.txt', Buffer.from('\ufeffbad\u0001  \r\n', 'utf8'));
 
   const result = await scanRepository(repositoryRoot);
-  assert.equal(result.violations.some((violation) => violation.path === 'ignored.txt'), false);
+  assert.equal(result.violations.some((violation: any) => violation.path === 'ignored.txt'), false);
 });
 
 test('unknown extensions fail instead of guessing text or binary', async (t) => {
@@ -159,7 +159,7 @@ test('unknown extensions fail instead of guessing text or binary', async (t) => 
 
   const result = await scanRepository(repositoryRoot);
   assert.equal(violationsFor(result, 'untracked', 'mystery.quux', 'unknown-file-type').length, 1);
-  assert.equal(result.violations.some((violation) => violation.path === 'known.png'), false);
+  assert.equal(result.violations.some((violation: any) => violation.path === 'known.png'), false);
 });
 
 test('unmerged index entries fail explicitly', async (t) => {
@@ -221,7 +221,7 @@ test('Git baseline allowances cannot bless new or edited debt', async (t) => {
 
   const unchanged = await scanRepository(repositoryRoot, { allowances });
   assert.equal(unchanged.violations.length, 0);
-  assert.ok(unchanged.allowed.some((entry) => entry.path === 'legacy.js'));
+  assert.ok(unchanged.allowed.some((entry: any) => entry.path === 'legacy.js'));
 
   write(repositoryRoot, 'new.js', 'new debt  \n');
   git(repositoryRoot, ['add', '--', 'new.js']);

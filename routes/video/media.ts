@@ -79,7 +79,7 @@ function readImageSize(file: PathLike) {
   }
 }
 
-function parseImageHeaderSize(buffer: unknown[]|Buffer<ArrayBuffer>) {
+function parseImageHeaderSize(buffer: any) {
   if (buffer.length >= 24 && buffer[0] === 0x89 && buffer[1] === 0x50
     && buffer[2] === 0x4e && buffer[3] === 0x47) {
     return { width:buffer.readUInt32BE(16), height:buffer.readUInt32BE(20) };
@@ -88,7 +88,7 @@ function parseImageHeaderSize(buffer: unknown[]|Buffer<ArrayBuffer>) {
     let offset = 2;
     while (offset + 9 < buffer.length) {
       if (buffer[offset] !== 0xff) { offset += 1; continue; }
-      let marker = buffer[offset + 1];
+      let marker: any = buffer[offset + 1];
       if (marker === 0xd8 || (marker >= 0xd0 && marker <= 0xd7) || marker === 0x01) { offset += 2; continue; }
       let length = buffer.readUInt16BE(offset + 2);
       if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
@@ -218,7 +218,7 @@ function decodePathValue(value: unknown) {
   return decoded;
 }
 
-function validateVideoReference(value: unknown) {
+function validateVideoReference(value: any) {
   if (!isPlainObject(value)) throw serviceError(400, 'INVALID_RESULT', 'ComfyUI 视频描述无效');
   let type = String(value.type || 'output').toLowerCase();
   let filename = decodePathValue(value.filename);

@@ -12,7 +12,7 @@ function set(value: any, key: any, record: any) {
 function state(v: any) {
   if (!object(v)) return 'unknown';
   const raw = v.status ?? v.result;
-  const states = { pass: 'passed', passed: 'passed', fail: 'failed', failed: 'failed', unknown: 'unknown', unrun: 'unrun', 'not-run': 'unrun', pending: 'pending', skipped: 'unrun' };
+  const states: any = { pass: 'passed', passed: 'passed', fail: 'failed', failed: 'failed', unknown: 'unknown', unrun: 'unrun', 'not-run': 'unrun', pending: 'pending', skipped: 'unrun' };
   let s = typeof raw === 'string' ? (Object.hasOwn(states, raw.toLowerCase()) ? states[raw.toLowerCase()] : 'unknown') : typeof v.passed === 'boolean' ? (v.passed ? 'passed' : 'failed') : 'unknown';
   if (['failed', 'unexpected', 'runnerErrors'].some(k => typeof v[k] === 'number' && v[k] > 0) || (typeof v.exitCode === 'number' && v.exitCode !== 0)) s = 'failed';
   if (s === 'passed' && (v.skipped > 0 || v.flaky > 0)) s = 'pending';

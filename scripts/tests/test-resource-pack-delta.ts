@@ -24,7 +24,7 @@ const repo = path.resolve(__dirname, '..', '..');
 const PACKS_REL = path.join('scripts', 'archive', 'resource-packs');
 
 /** 记录型 fs：调用穿透真实 fs 并记录目标路径；hooks 可替换个别操作（模拟元数据写坏等）。 */
-function recordingIo(hooks = {}) {
+function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
@@ -118,15 +118,15 @@ function writeMutatedManifest(root: any, sourceRel: any, name: any, mutator: any
 test('增量预览：四类差异分类正确，候选只含 added/changed，预览零写入', (t) => {
   const fx = buildDeltaFixture(t);
   const before = snapshot(fx.root);
-  const plan = planResourcePackDelta({ root: fx.root, name: 'dplan', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest });
+  const plan: any = planResourcePackDelta({ root: fx.root, name: 'dplan', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest });
   assert.equal(plan.ok, true, JSON.stringify(plan.errors));
   assert.equal(plan.kind, 'resource-pack-delta-plan');
   assert.equal(plan.mode, 'preview');
   assert.deepEqual(plan.delta.totals, { added: 1, removed: 1, changed: 1, unchanged: 1 });
-  assert.deepEqual(plan.entries.map((e) => e.path), ['assets/alpha.txt', 'assets/charlie.txt'], '候选只含 added/changed 且按路径稳定排序');
-  const alpha = plan.entries.find((e) => e.path === 'assets/alpha.txt');
+  assert.deepEqual(plan.entries.map((e: any) => e.path), ['assets/alpha.txt', 'assets/charlie.txt'], '候选只含 added/changed 且按路径稳定排序');
+  const alpha = plan.entries.find((e: any) => e.path === 'assets/alpha.txt');
   assert.equal(alpha.bytes, 'A2-changed'.length, 'changed 条目携带新清单字节');
-  assert.deepEqual(plan.delta.removed.map((r) => r.path), ['assets/golf.txt']);
+  assert.deepEqual(plan.delta.removed.map((r: any) => r.path), ['assets/golf.txt']);
   assert.equal(plan.delta.baseManifest.path, 'artifacts/old.json');
   assert.equal(plan.delta.newManifest.path, 'artifacts/new.json');
   assert.match(plan.delta.baseManifest.contentIdentity, /^[0-9a-f]{64}$/);
@@ -187,18 +187,18 @@ test('增量导出：只复制 added/changed，unchanged/removed 不进包，man
 test('旧清单仅结构核验：removed 旧资产零 fs 访问，旧记录与新磁盘不符不影响比较', (t) => {
   const fx = buildDeltaFixture(t);
   const { io, calls } = recordingIo();
-  const plan = planResourcePackDelta({ root: fx.root, name: 'no-old-reads', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
+  const plan: any = planResourcePackDelta({ root: fx.root, name: 'no-old-reads', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
   assert.equal(plan.ok, true, '旧清单条目与磁盘不符（alpha 已改、golf 已删）仍可比较，证明未对旧清单做磁盘核验');
   const golfAbs = path.join(fx.root, 'assets', 'golf.txt');
   assert.ok(calls.every((c: any) => path.resolve(c.target) !== path.resolve(golfAbs)), 'removed 旧资产不得被 stat/read');
   const oldAlpha = JSON.parse(fs.readFileSync(path.join(fx.root, fx.oldManifest), 'utf8')).entries.find((e: any) => e.path === 'assets/alpha.txt');
-  assert.notEqual(oldAlpha.sha256, plan.entries.find((e) => e.path === 'assets/alpha.txt').sha256, '夹具前提：changed 条目新旧哈希不同');
+  assert.notEqual(oldAlpha.sha256, plan.entries.find((e: any) => e.path === 'assets/alpha.txt').sha256, '夹具前提：changed 条目新旧哈希不同');
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
 });
 
 test('仅删除的差异：零资产候选，removed 记录保留旧 bytes/sha256，不删除任何资源', (t) => {
   const fx = buildRemovalFixture(t);
-  const plan = planResourcePackDelta({ root: fx.root, name: 'rm-plan', manifestPath: 'artifacts/new.json', baseManifestPath: 'artifacts/old.json' });
+  const plan: any = planResourcePackDelta({ root: fx.root, name: 'rm-plan', manifestPath: 'artifacts/new.json', baseManifestPath: 'artifacts/old.json' });
   assert.equal(plan.ok, true, JSON.stringify(plan.errors));
   assert.deepEqual(plan.delta.totals, { added: 0, removed: 1, changed: 0, unchanged: 1 });
   assert.deepEqual(plan.entries, []);
@@ -220,7 +220,7 @@ test('零差异：generatedAt 不影响身份与分类，输出零资产候选�
   const withOtherTime = { ...manifest, generatedAt: '2000-01-01T00:00:00.000Z' };
   assert.equal(manifestContentIdentity(withOtherTime), manifestContentIdentity(manifest), '时间戳不影响内容身份');
   const samePath = writeMutatedManifest(fx.root, fx.newManifest, 'same.json', () => withOtherTime);
-  const plan = planResourcePackDelta({ root: fx.root, name: 'zero', manifestPath: fx.newManifest, baseManifestPath: samePath });
+  const plan: any = planResourcePackDelta({ root: fx.root, name: 'zero', manifestPath: fx.newManifest, baseManifestPath: samePath });
   assert.equal(plan.ok, true, JSON.stringify(plan.errors));
   assert.deepEqual(plan.delta.totals, { added: 0, removed: 0, changed: 0, unchanged: 3 });
   assert.deepEqual(plan.entries, []);
@@ -360,7 +360,7 @@ test('发布后 delta 元数据损坏不得报告候选包验收成功', (t) => 
     fs.renameSync(from, to);
     fs.writeFileSync(path.join(to, 'delta.json'), '{}');
   } });
-  const result = stageResourcePackDelta({ root: fx.root, name: 'after-publish', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
+  const result: any = stageResourcePackDelta({ root: fx.root, name: 'after-publish', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
   assert.equal(result.ok, false);
   assert.equal(result.destinationCreated, true);
   assert.equal(result.finalVerification.ok, false);

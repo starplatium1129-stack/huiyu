@@ -31,10 +31,10 @@ function registerStatusRoutes(router: any, ctx: any) {
       upstreamHealth.requestJson(host, '/sdapi/v1/upscalers', null, 5000).catch(function () { return null; }),
       upstreamHealth.requestJson(host, '/sdapi/v1/options', null, 5000).catch(function () { return null; })
     ]).then(function (parts) {
-      let modelsRes = parts[0];
+      let modelsRes: any = parts[0];
       let online = !!(modelsRes && modelsRes.status >= 200 && modelsRes.status < 300);
       let models = online && Array.isArray(modelsRes.data)
-        ? modelsRes.data.map(function (m) { return m.title || m.model_name || m.name || ''; }).filter(Boolean)
+        ? modelsRes.data.map(function (m: any) { return m.title || m.model_name || m.name || ''; }).filter(Boolean)
         : [];
       let samplers = parts[1] && Array.isArray(parts[1].data)
         ? parts[1].data.map(function (s) { return s.name || s; }).filter(Boolean)
@@ -45,7 +45,7 @@ function registerStatusRoutes(router: any, ctx: any) {
       let upscalers = parts[3] && Array.isArray(parts[3].data)
         ? parts[3].data.map(function (s) { return s.name || s; }).filter(Boolean)
         : [];
-      let options = parts[4] && parts[4].data && typeof parts[4].data === 'object' ? parts[4].data : {};
+      let options: any = parts[4] && parts[4].data && typeof parts[4].data === 'object' ? parts[4].data : {};
       res.setHeader('Cache-Control', 'no-store');
       // 状态契约（刻意不走 envelope）：无 ok 字段，前端 mediaStatusApi.isSDStatus
       // 直接按 online/models/... 校验；探活同族端点（tts/chat-status）同形状。

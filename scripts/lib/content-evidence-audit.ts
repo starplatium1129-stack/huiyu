@@ -14,7 +14,7 @@ function sourceEvidence(record: any, reader: any, options: any) {
     ['recipe', record.recipeSource, options.recipe ? [options.recipe] : []],
   ]) {
     const file = explicitSource(reader.root, declaration.path, allowed);
-    const item = { role, file, expectedSha256: declaration.sha256, status: 'unknown' };
+    const item: any = { role, file, expectedSha256: declaration.sha256, status: 'unknown' };
     files.push(item);
     if (!file) { item.reason = 'Path was not explicitly allowed by --source/--recipe; not read'; continue; }
     try {
@@ -42,7 +42,7 @@ function publicationState(record: any, item: any, publication: any, publishedRea
   if (!object(publication) || publication.schemaVersion !== 1 || publication.kind !== 'content-publication-evidence' || !object(publication.records)) {
     return { status: 'unknown', reason: 'Unsupported publication format; use its dedicated release audit', activation: 'unknown' };
   }
-  const receipt = publication.records[record.key];
+  const receipt: any = publication.records[record.key];
   if (!receipt) return { status: 'not-listed', activation: 'unknown' };
   if (!object(receipt) || typeof receipt.publishedAt !== 'string' || !Number.isFinite(Date.parse(receipt.publishedAt))
     || !SHA.test(receipt.sha256) || !Number.isSafeInteger(receipt.bytes) || receipt.bytes <= 0) return { status: 'invalid', activation: 'unknown' };
@@ -60,7 +60,7 @@ function publicationState(record: any, item: any, publication: any, publishedRea
 }
 
 function auditContentEvidence(options: any) {
-  const result = { schemaVersion: 1, kind: 'content-evidence-audit', readOnly: true, executed: true,
+  const result: any = { schemaVersion: 1, kind: 'content-evidence-audit', readOnly: true, executed: true,
     structure: { status: 'unknown' }, items: [], errors: [], unknown: [], evidence: [], exitCode: 3,
     acceptance: { imageQuality: 'unverified', reviewerAuthenticity: 'unverified', publicationPerformed: false, wholeLibrary: 'not-validated' } };
   const readers = [];
@@ -122,7 +122,7 @@ function auditContentEvidence(options: any) {
       const asset = assetEvidence(candidates, nearby(record.image), record.asset);
       const freshness = source.status === 'stale' ? 'stale'
         : source.status === 'verified' && payload.status === 'verified' && version.status === 'verified' && asset.status === 'verified' ? 'current' : 'unknown';
-      const item = { key: record.key, recordId: record.recordId, recordSha256: jsonHash(record), inputVersion: record.inputVersion,
+      const item: any = { key: record.key, recordId: record.recordId, recordSha256: jsonHash(record), inputVersion: record.inputVersion,
         structure: 'passed', generation: record.status, source, payload, version, asset, freshness,
         review: reviewState(record, record.status === 'succeeded' ? freshness : 'unknown', decisions, manifestSha256, marker.runId) };
       item.publication = publicationState(record, item, publication, published, { manifestSha256, decisionSha256 });
@@ -138,11 +138,11 @@ function auditContentEvidence(options: any) {
     if (['approved', 'rejected'].includes(item.review.status)) item.review.status = 'stale';
     if (item.publication.status === 'evidence-verified') item.publication.status = 'stale';
   }
-  const failed = result.errors.length || result.items.some((item) => item.payload.status === 'mismatch' || item.version.status === 'mismatch'
+  const failed = result.errors.length || result.items.some((item: any) => item.payload.status === 'mismatch' || item.version.status === 'mismatch'
     || ['mismatch', 'invalid'].includes(item.asset.status) || (item.generation === 'succeeded' && item.asset.status === 'missing')
     || ['invalid', 'rejected'].includes(item.review.status) || item.publication.status === 'invalid'
     || ['mismatch', 'missing', 'invalid'].includes(item.publication.asset?.status));
-  const unresolved = result.unknown.length || !result.items.length || result.items.some((item) => item.freshness !== 'current'
+  const unresolved = result.unknown.length || !result.items.length || result.items.some((item: any) => item.freshness !== 'current'
     || item.generation !== 'succeeded' || item.review.status !== 'approved'
     || !['not-provided', 'evidence-verified'].includes(item.publication.status));
   result.exitCode = failed ? 1 : unresolved ? 3 : 0;

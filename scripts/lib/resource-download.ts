@@ -33,7 +33,7 @@ async function downloadEntry(ctx: any, release: unknown, pack: string, parts: st
   ensureSpace(ctx, entry.bytes - offset + 65536);
   const etag = typeof saved?.etag === 'string' && /^"[^\r\n]*"$/.test(saved.etag) ? saved.etag : null;
   const headers = offset ? { range: 'bytes=' + offset + '-', ...(etag ? { 'if-range': etag } : {}) } : {};
-  const res = await response(sourceUrl(release, entry.path), { signal, headers, timeoutMs });
+  const res: any = await response(sourceUrl(release, entry.path), { signal, headers, timeoutMs });
   let fd;
   try {
     const start = rangeStart(res, offset, entry.bytes, offset ? etag : null);

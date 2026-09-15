@@ -35,7 +35,7 @@ function fixture(t: any, gitEnabled = true) {
   const baselinePath = `${EVIDENCE_DIR}/baseline.json`, officePath = `${EVIDENCE_DIR}/office.json`, resultPath = `${EVIDENCE_DIR}/results.json`;
   function office(extra = {}) {
     const baseline = capture(root, { ...initial, ...extra }); saveJson(root, baselinePath, baseline);
-    const checks = {};
+    const checks: any = {};
     for (const key of ['source', 'bundle', 'office']) {
       const log = `${EVIDENCE_DIR}/${key}.log`; write(log, 'isolated fixture result; no real gate or device was run');
       checks[key] = { status: 'passed', report: log };
@@ -48,7 +48,7 @@ function fixture(t: any, gitEnabled = true) {
     audit: (evidence = officePath, extra = {}) => report({ root, evidence, require: [], builds: [], ...extra }) };
 }
 function tree(root: string) {
-  const output = {};
+  const output: any = {};
   function visit(dir: string) {
     for (const name of fs.readdirSync(path.join(root, dir)).sort()) {
       const rel = dir ? `${dir}/${name}` : name, full = path.join(root, rel), stat = fs.lstatSync(full);

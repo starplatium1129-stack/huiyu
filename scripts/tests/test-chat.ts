@@ -79,7 +79,7 @@ function createMockAiServer() {
     var chunks: any = [];
     req.on('data', function (chunk) { chunks.push(chunk); });
     req.on('end', function () {
-      var body = {};
+      var body: any = {};
       try { body = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}'); } catch (error) {}
       if (req.url === '/api/tags') {
         res.setHeader('Content-Type', 'application/json');
@@ -575,7 +575,7 @@ async function run() {
   });
   assert(liveStatus.models.natsume.available, 'Natsume Live2D model and all references must exist');
 
-  var mock = createMockAiServer();
+  var mock: any = createMockAiServer();
   var mockBase = await listen(mock.server);
   try {
     var ollama = (require('../../services/ollama-service') as typeof import('../../services/ollama-service')).createOllamaService({
@@ -636,7 +636,7 @@ async function run() {
       onToken:function (content: any) { toolTokens.push(content); },
       onToolCall:function (call: any) { toolCalls.push(call); }
     });
-    var toolPayload = mock.state.compatiblePayloads[mock.state.compatiblePayloads.length - 1];
+    var toolPayload: any = mock.state.compatiblePayloads[mock.state.compatiblePayloads.length - 1];
     assert(
       Array.isArray(toolPayload.tools) && toolPayload.tools.some(function (t: any) {
         return t.type === 'function' && t.function && t.function.name === 'list_files';
@@ -701,9 +701,9 @@ async function run() {
       ]
     });
     assert(toolRound.value, 'tool messages must be accepted when companionTools is enabled');
-    var toolMessages = toolRound.value.messages.filter(function (m) { return m.role === 'tool' || Array.isArray(m.tool_calls); });
+    var toolMessages = toolRound.value.messages.filter(function (m: any) { return m.role === 'tool' || Array.isArray(m.tool_calls); });
     assert(toolMessages.length === 2, 'tool messages must survive validation untouched');
-    var toolCallMsg = toolRound.value.messages.find(function (m) { return Array.isArray(m.tool_calls); });
+    var toolCallMsg: any = toolRound.value.messages.find(function (m: any) { return Array.isArray(m.tool_calls); });
     assert(
       toolCallMsg && toolCallMsg.reasoning_content === '我先想想',
       'V4 reasoning_content must round-trip through validation alongside tool_calls'
@@ -735,7 +735,7 @@ async function run() {
       ]
     });
     assert(multimodal.value, 'multimodal user messages from read_image must be accepted');
-    var multimodalParts = multimodal.value.messages.filter(function (m) { return Array.isArray(m.content); });
+    var multimodalParts = multimodal.value.messages.filter(function (m: any) { return Array.isArray(m.content); });
     assert(multimodalParts.length === 1, 'multimodal content arrays must survive validation');
     assert(
       multimodalParts[0].content.some(function (p: any) { return p.type === 'image_url' && p.image_url.url.startsWith('data:image/png;base64,'); }),
@@ -790,7 +790,7 @@ async function run() {
     ]);
     assert(mock.state.maxActiveVoice === 1, 'GPT-SoVITS streams must remain serialized until audio ends');
     await consumeVoice(tts, { voice:'nene', text:'綾地寧々です。', language:'ja', emotion:'shy', referenceEmotion:'gentle', consistency:'locked', speed:1 });
-    var lockedPayload = mock.state.voicePayloads[mock.state.voicePayloads.length - 1];
+    var lockedPayload: any = mock.state.voicePayloads[mock.state.voicePayloads.length - 1];
     assert(lockedPayload.ref_audio_path === 'nene-gentle.wav', 'locked voice must keep the turn reference even when the sentence emotion changes');
     assert(lockedPayload.text.includes('あやち ねね') && lockedPayload.text_split_method === 'cut5', 'Japanese speech must normalize character names and preserve the complete sentence');
     assert(lockedPayload.seed === 1234 && lockedPayload.top_k === 15 && lockedPayload.streaming_mode === false, 'short sentence synthesis must use deterministic identity settings instead of ineffective audio streaming');

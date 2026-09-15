@@ -123,22 +123,22 @@ function preparePublication(options: any) {
     const record = inspection.records.find(record => record.recordId === item.recordId);
     planned.set(item.intendedReferencePath, { path: item.intendedReferencePath, bytes: record.asset.bytes, sha256: item.sha256 });
   }
-  const files = [...planned.values()].sort((a, b) => a.path.localeCompare(b.path));
-  if (new Set(files.map(file => file.path.toLowerCase())).size !== files.length) throw new Error('Publication paths collide on Windows');
+  const files = [...planned.values()].sort((a: any, b: any) => a.path.localeCompare(b.path));
+  if (new Set(files.map((file: any) => file.path.toLowerCase())).size !== files.length) throw new Error('Publication paths collide on Windows');
   validateView(view, files);
   const viewBytes = Buffer.from(JSON.stringify(view, null, 2) + '\n');
-  const release = { schemaVersion: 1, kind: 'reference-release', files,
+  const release: any = { schemaVersion: 1, kind: 'reference-release', files,
     viewSha256: hash(viewBytes), sourceStandardsSha256: hash(R.bytes(inspection.sourceFile)),
     sourceViewSha256: hash(sourceView), candidateManifestSha256: inspection.manifestSha256,
     reviewSha256: hash(R.bytes(path.resolve(options.review))), baseIdentity: base?.identity || R.jsonHash(originals),
-    approvals: [...approvals.values()].sort((a, b) => a.key.localeCompare(b.key)),
+    approvals: [...approvals.values()].sort((a: any, b: any) => a.key.localeCompare(b.key)),
     createdAt: new Date().toISOString() };
   release.identity = seal(release);
   return { ...selected, inspection, items, originals, additions, viewBytes, release,
     ready: items.length > 0 && additions.length === items.length };
 }
 
-async function publishReferenceCandidates(options: any, deps = {}) {
+async function publishReferenceCandidates(options: any, deps: any = {}) {
   const plan = preparePublication(options);
   const summary = { mode: options.apply ? 'publish' : 'preview', target: plan.target, identity: plan.release.identity,
     candidates: plan.items.length, approved: plan.additions.length, ready: plan.ready,

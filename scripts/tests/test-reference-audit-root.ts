@@ -109,7 +109,7 @@ function runProbed(tempRoot: any, args: any, envOverrides: any, protectedPaths: 
 }
 
 function snapshot(root: any) {
-  const out = {};
+  const out: any = {};
   const walk = (rel: any) => {
     const abs = path.join(root, rel);
     if (fs.statSync(abs).isDirectory()) {

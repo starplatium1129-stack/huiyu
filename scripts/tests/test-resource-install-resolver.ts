@@ -2,10 +2,11 @@
 
 // All writes below are fixture preparation/fault injection in unique temporary directories.
 // The resolver receives an IO adapter which rejects every mutation and records every read.
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const http: typeof import('node:http') = require('node:http');
 const https: typeof import('node:https') = require('node:https');
-const { fs, path, assert, write, json, snapshot, approve, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const { fs, path, write, json, snapshot, approve, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { stageResourcePack }: typeof import('../lib/resource-pack') = require('../lib/resource-pack');
 const { generateManifest }: typeof import('../lib/resource-manifest') = require('../lib/resource-manifest');
 const { emptyState }: typeof import('../lib/resource-install-state') = require('../lib/resource-install-state');
@@ -147,7 +148,7 @@ test('validated media snapshot has exact URL-relative allowlist, identity and im
   const f = fixture(t);
   const manifest = mediaPack(f);
   const installed = await f.installer().install({ releaseId: 'media' });
-  const { result, reads } = checked(f);
+  const { result, reads }: any = checked(f);
   assert.equal(result.status, 'verified');
   assert.equal(result.then, undefined);
   assert.equal(result.versionRoot, installed.installedRoot);
@@ -177,7 +178,7 @@ test('trusted configPath works after removable media disappears; config cannot s
   const config = json(configPath);
   write(configPath, JSON.stringify({ ...config, access: { isAuthorized: true }, io: { bad: true } }));
   fs.rmSync(f.source, { recursive: true });
-  const { result } = checked(f, { options: { userDataRoot: undefined, policy: undefined, configPath } });
+  const { result }: any = checked(f, { options: { userDataRoot: undefined, policy: undefined, configPath } });
   assert.equal(result.versionRoot, installed.installedRoot);
 });
 
@@ -204,7 +205,7 @@ test('delta snapshot uses the reconstructed full installed manifest and preserve
   const f = fixture(t);
   const old = await f.installer().install({ releaseId: 'base' });
   const next = await f.installer().install({ releaseId: 'delta' });
-  const { result } = checked(f);
+  const { result }: any = checked(f);
   assert.equal(result.identity, next.state.current.identity);
   assert.equal(result.verifiedFiles, f.next.entries.length);
   assert.equal(fs.readFileSync(path.join(old.installedRoot, 'assets/a.txt'), 'utf8'), 'OLD');
@@ -218,7 +219,7 @@ test('empty installed manifest is verified but supplies no static mount', async 
   assert.equal(stageResourcePack({ root: f.source, name: 'empty', manifestPath: 'empty.json' }).ok, true);
   approve(f, 'empty', 'full', manifest);
   await f.installer().install({ releaseId: 'empty' });
-  const { result } = checked(f);
+  const { result }: any = checked(f);
   assert.equal(result.status, 'verified');
   assert.equal(result.assetsRoot, null);
   assert.deepEqual(result.relativePaths, []);
@@ -390,7 +391,7 @@ for (const fault of ['state-switch', 'pending-appears', 'lock-appears', 'manifes
     let allowed = true;
     const options = { configPath, userDataRoot: undefined, policy: undefined,
       access: { isLocalStudioHost: () => true, isAuthorized: () => allowed } };
-    const expected = { 'state-switch': 'STATE_CONFLICT', 'pending-appears': 'PENDING_TRANSACTION', 'lock-appears': 'BUSY',
+    const expected: any = { 'state-switch': 'STATE_CONFLICT', 'pending-appears': 'PENDING_TRANSACTION', 'lock-appears': 'BUSY',
       'manifest-changes': 'STATE_CONFLICT', 'config-revoked': 'CONFIG_CHANGED', 'access-revoked': 'ACCESS_DENIED' };
     checked(f, { options, error: expected[fault], injectedMutation: true, onRead: (op: any, file: any) => {
       if (fired || op !== 'readFileSync' || file !== path.join(installed.installedRoot, 'assets/a.txt')) return;

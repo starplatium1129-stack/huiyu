@@ -121,9 +121,9 @@ function inspectCandidates({ from, root = CODE_ROOT }: any) {
 function collectReview(inspection: any, decisions: any, decisionSource: any) {
   if (!decisions || typeof decisions !== 'object' || Array.isArray(decisions)) throw new Error('Decisions must be an object keyed by reference identity');
   const items = new Map(inspection.items.map((item: any) => [item.key, item]));
-  const reviewed = {};
+  const reviewed: any = {};
   for (const [key, decision] of Object.entries(decisions)) {
-    const item = items.get(key);
+    const item: any = items.get(key);
     if (!item || item.integrity !== 'pass' || !decision || !['pass', 'fail'].includes(decision.verdict)
         || decision.recordId !== item.recordId || decision.sha256 !== item.sha256
         || decision.inputVersion !== item.inputVersion || typeof decision.reviewedAt !== 'string'

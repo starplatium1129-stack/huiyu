@@ -125,7 +125,7 @@ function readJson(file: any) {
   catch { throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据不是有效 JSON：' + file); }
 }
 
-function context(options = {}) {
+function context(options: any = {}) {
   if (!options.rootDir) throw failure('MAINTENANCE_ARGUMENT', '必须明确指定 rootDir');
   const rootDir = path.resolve(options.rootDir);
   const root = directoryIdentity(rootDir);

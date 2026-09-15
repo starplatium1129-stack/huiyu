@@ -243,7 +243,7 @@ test('a competing process cannot steal a live publication lock', async t => {
   F.writeJson(optionsFile, { ...f.options, apply: true });
   const published = await P.publishReferenceCandidates({ ...f.options, apply: true }, { onPhase: async (phase: any) => {
     if (phase !== 'prepared') return;
-    const result = await new Promise((resolve, reject) => {
+    const result: any = await new Promise((resolve, reject) => {
       const worker = fork(path.join(__dirname, 'reference-publication-worker.js'), [optionsFile, 'never'], { stdio: ['ignore', 'ignore', 'ignore', 'ipc'] });
       let result: any;
       const timer = setTimeout(() => { worker.kill('SIGKILL'); reject(new Error('Competing publisher timed out')); }, 30000);

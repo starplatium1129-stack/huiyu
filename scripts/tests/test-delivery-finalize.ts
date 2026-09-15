@@ -30,7 +30,7 @@ function tested(f: any, { bound = true, crlf = false, prepare = () => {} } = {})
     { cwd: f.root, encoding: 'utf8', windowsHide: true });
   assert.equal(check.status, 0, check.stderr);
   const log = `${EVIDENCE_DIR}/executed-gate.log`; f.write(log, check.stdout);
-  const value = { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(f.root, f.baselinePath))), commit: a, checks: {} };
+  const value: any = { schemaVersion: 1, baselineSha256: sha256(fs.readFileSync(path.join(f.root, f.baselinePath))), commit: a, checks: {} };
   for (const name of ['source', 'bundle', 'office']) value.checks[name] = { status: 'passed', commit: a, report: log };
   f.write(f.resultPath, value);
   if (bound) saveJson(f.root, f.officePath, capture(f.root, { baseline: f.baselinePath, record: f.resultPath }));
@@ -50,7 +50,7 @@ function assertPending(f: any, file = FINAL) {
 }
 
 test('dirty HEAD=A 实际运行隔离门禁后只提交到 B；finalize 保留原始结果与日志且零写入', t => {
-  const f = fixture(t), data = tested(f), b = commit(f), before = tree(f.root);
+  const f = fixture(t), data = tested(f), b = commit(f), before: any = tree(f.root);
   assert.notEqual(b, data.a); assert.equal(data.baseline.handoff.commit.worktree, 'dirty');
   assert.throws(() => capture(f.root, { baseline: data.evidence }), /HEAD/);
   const d = finalize(f, data, b);

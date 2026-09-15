@@ -90,13 +90,13 @@ function firstResponseChunk(response: any) {
 async function materializeResult(config: { COMFY_HOST: string|URL; }, job: { id: string; }, output: unknown) {
   let reference = media.validateVideoReference(output);
   let query = '?filename=' + encodeURIComponent(reference.filename) + '&type=output';
-  let upstream = await requestComfyStream(config, 'GET', '/view' + query, 120000);
+  let upstream: any = await requestComfyStream(config, 'GET', '/view' + query, 120000);
   let upstreamResponse = upstream.response;
   if (upstream.status < 200 || upstream.status >= 300) {
     upstreamResponse.resume();
     throw serviceError(502, 'COMFY_RESULT_ERROR', 'ComfyUI 视频读取失败');
   }
-  let head = await firstResponseChunk(upstreamResponse);
+  let head: any = await firstResponseChunk(upstreamResponse);
   let info = head ? media.videoMimeAndExtension(upstream.headers['content-type'], head, reference.filename) : null;
   if (!info || !head || !head.length) {
     upstreamResponse.resume();

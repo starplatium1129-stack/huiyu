@@ -203,7 +203,7 @@ class Evidence {
     this.write()
   }
 
-  result(id: any, status: any, details = {}) {
+  result(id: any, status: any, details: any = {}) {
     const item = { id, status, at: now(), ...details }
     const index = this.report.results.findIndex((entry: any) => entry.id === id)
     if (index >= 0) this.report.results[index] = item

@@ -46,7 +46,7 @@ async function startMockOpenAi() {
       return
     }
     try {
-      const body = await readBody(request)
+      const body: any = await readBody(request)
       const content = responseFor(body.messages)
       requests.push({ at: new Date().toISOString(), body, content })
       response.writeHead(200, {

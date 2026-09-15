@@ -4,7 +4,7 @@
 // 不产生新判定、不补齐未启用的检查、不执行推荐命令；未知/未运行/待验/失败/通过
 // 沿用条目自身的 status 分别标注，完整数值与结构始终以 --json 为准。
 
-const LABELS = {
+const LABELS: any = {
   passed: '通过', failed: '失败', pending: '待验', unknown: '未知', unrun: '未运行',
   exists: '存在', matched: '一致', mismatch: '不匹配', missing: '缺失',
   'not-file': '非普通文件', 'outside-root': '越出 root', error: '错误',
@@ -12,7 +12,7 @@ const LABELS = {
   fresh: '有效', stale: '已陈旧', invalid: '无效', added: '新增', removed: '删除', changed: '改变',
   empty: '空目录', 'unsafe-or-unreadable': '不安全或不可读', 'not-directory': '非目录',
 };
-const KIND_LABELS = { untracked: '未跟踪', uncommitted: '未提交' };
+const KIND_LABELS: any = { untracked: '未跟踪', uncommitted: '未提交' };
 
 const isObject = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const label = (status: string) => (typeof status === 'string' && LABELS[status]) || status;

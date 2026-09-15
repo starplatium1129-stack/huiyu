@@ -135,7 +135,7 @@ function collectAllSceneTasks(opts: any, input: any) {
 }
 
 function buildPayload(task: any) {
-  const payload = {
+  const payload: any = {
     modelId: MODEL_ID,
     prompt: task.prompt,
     negative: task.negative,

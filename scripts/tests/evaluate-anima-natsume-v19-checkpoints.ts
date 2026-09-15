@@ -99,7 +99,7 @@ async function generateSd(scene: { id: string; label: string; safe: boolean; pro
   return { body:Buffer.from(encoded, 'base64'), metadata:{ checkpoint:'waiIllustriousSDXL_v170', lora:'L_NAT_V18_WD14', prompt:sdPrompt(scene), negative:negativeFor(scene, 'sd'), seed:seed } };
 }
 function workflow(candidate: any, scene: { id: string; }, seed: string) {
-  var nodes = {
+  var nodes: any = {
     '1':{ class_type:'UNETLoader', inputs:{ unet_name:'anima-base-v1.0.safetensors', weight_dtype:'default' } },
     '2':{ class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
     '3':{ class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },

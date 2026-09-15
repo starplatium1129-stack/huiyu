@@ -41,7 +41,7 @@ function report(o: any) {
   const add = (bucket: any, file: any, field: any, message: any, status: any) => r[bucket].push({ file, field, message, ...(status ? { status } : {}) });
   if (o['check-worktree']) {
     const env = Object.fromEntries(Object.entries(process.env).filter(([key]: any) => !/^GIT_/i.test(key)));
-    const worktree = r.repositoryWorktree = { root, status: 'unavailable', changedFiles: [] };
+    const worktree: any = r.repositoryWorktree = { root, status: 'unavailable', changedFiles: [] };
     try {
       const result = spawnSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], {
         cwd: root, env: { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_TERMINAL_PROMPT: '0' },
@@ -251,7 +251,7 @@ function report(o: any) {
   const required = [...new Set([...selected, ...tracked])];
   if (!required.length) add('pending', file, 'gates', '没有识别到必要门禁；请用 --require 指定已有字段', 'unknown');
   function check(field: any) {
-    const v = get(d, field), declared = state(v), validity = inspectGate(root, d, freshness, field), s = validity.effectiveStatus;
+    const v = get(d, field), declared = state(v), validity: any = inspectGate(root, d, freshness, field), s = validity.effectiveStatus;
     add(['failed', 'stale'].includes(s) ? 'errors' : s === 'passed' ? 'passed' : 'pending', file, field,
       `记录状态: ${declared}${s !== declared ? `；有效状态: ${s}；${validity.message || '需复验'}` : ''}`, s);
     if (validity.status === 'invalid') add('errors', file, `${field}.tracking`, validity.message, 'invalid');

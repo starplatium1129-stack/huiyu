@@ -63,7 +63,7 @@ function origins(root: any, nodes: any, appended: any) {
     ...(appended ? [{ record: appended, executionCommit: first.value.commit }] : []),
     ...nodes.filter((node: any) => node.record),
   ];
-  const result = {};
+  const result: any = {};
   for (const [field, binding] of Object.entries(tested.tracking.gates)) {
     if (MAIN_FIELDS.includes(field)) continue;
     const value = get(tested, field), candidate = candidates.find(node => get(node.record.value, field) !== undefined);
@@ -101,7 +101,7 @@ function createFinalization(root: any, document: any, baseline: any, resultRecor
 function inspectFinalization(root: any, document: any) {
   const value = document.finalization;
   if (value === undefined) return null;
-  const result = { status: 'invalid' };
+  const result: any = { status: 'invalid' };
   try {
     if (!object(value) || value.schemaVersion !== 1 || value.finalCommit !== document.commit) throw Error('finalize 身份或版本无效');
     const first = reference(root, value.evidence), nodes = lineage(root, first), original = nodes.at(-1);

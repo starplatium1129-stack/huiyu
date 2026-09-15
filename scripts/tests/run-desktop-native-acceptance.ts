@@ -56,7 +56,7 @@ const INSTALLER_HASH = 'installer.sha256'
 const REQUIRED_DPI = ['100', '125', '150']
 
 function parseArgs(argv: any) {
-  const output = { positional: [] }
+  const output: any = { positional: [] }
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index]
     if (value === '--') {
@@ -157,7 +157,7 @@ async function recordCommand(args: any) {
     ...process.env,
     [pathKey]: [cargo ? path.dirname(cargo) : '', process.env[pathKey] || ''].filter(Boolean).join(path.delimiter),
   }
-  const result = await runCommand(invocation.command, invocation.args, {
+  const result: any = await runCommand(invocation.command, invocation.args, {
     cwd: ROOT,
     env: environment,
     evidence,
@@ -178,7 +178,7 @@ async function recordCommand(args: any) {
   process.exitCode = result.code
 }
 
-function httpRequest(url: any, options = {}) {
+function httpRequest(url: any, options: any = {}) {
   return new Promise((resolve, reject) => {
     const target = new URL(url)
     const request = http.request(target, {
@@ -197,7 +197,7 @@ function httpRequest(url: any, options = {}) {
 
 async function waitFor(description: any, predicate: any, timeoutMs = 30_000, intervalMs = 100) {
   const started = Date.now()
-  let lastError = null
+  let lastError: any = null
   while (Date.now() - started < timeoutMs) {
     try {
       const value = await predicate()
@@ -352,7 +352,7 @@ function buildResourceManifest(installLocation: any) {
 async function installProduct(evidence: any, installer: any) {
   const before = findUninstallEntry()
   if (before.length) throw new Error(`an existing AI-CG-Studio installation is present; refusing to overwrite it: ${JSON.stringify(before)}`)
-  const result = await runCommand(installer, ['/S'], {
+  const result: any = await runCommand(installer, ['/S'], {
     cwd: path.dirname(installer), evidence, display: `${installer} /S`, timeoutMs: 10 * 60_000, windowsHide: false,
   })
   if (result.code !== 0) throw new Error(`NSIS /S install exited with ${result.code}`)
@@ -381,7 +381,7 @@ function parseUninstallCommand(entry: any) {
 async function uninstallProduct(evidence: any, installed: any) {
   const uninstall = parseUninstallCommand(installed.entry)
   const args = uninstall.args.filter(value => value.toUpperCase() !== '/S').concat('/S')
-  const result = await runCommand(uninstall.command, args, {
+  const result: any = await runCommand(uninstall.command, args, {
     cwd: path.dirname(uninstall.command), evidence, display: `${uninstall.command} ${args.join(' ')}`,
     timeoutMs: 10 * 60_000, windowsHide: false,
   })
@@ -432,7 +432,7 @@ async function gatewayPort(fixture: any) {
 
 async function gatewayHealthy(port: any) {
   try {
-    const response = await httpRequest(`http://127.0.0.1:${port}/api/status`, { timeoutMs: 3_000 })
+    const response: any = await httpRequest(`http://127.0.0.1:${port}/api/status`, { timeoutMs: 3_000 })
     return response.status >= 200 && response.status < 500
   } catch {
     return false
@@ -789,7 +789,7 @@ async function exerciseCharactersAndMotion(context: any, product: any) {
   const multiGroups = Object.entries(manifest.groups).filter(([group, count]) => /^Tap/u.test(group) && count > 1)
   const observedIndexes = new Set()
   if (multiGroups.length) {
-    const pointByGroup = { TapFace: points[0], TapHead: points[1], TapBody: points[2], TapSkirt: points[3] }
+    const pointByGroup: any = { TapFace: points[0], TapHead: points[1], TapBody: points[2], TapSkirt: points[3] }
     const [targetGroup] = multiGroups.find(([group]) => pointByGroup[group]) || []
     if (!targetGroup) throw new Error(`no physical stage point is defined for authored multi-variant groups: ${multiGroups.map(([group]) => group).join(', ')}`)
     const repeatPoint = pointByGroup[targetGroup]
@@ -881,7 +881,7 @@ async function downloadPlayedAudio(snapshot: any, evidence: any, fileName: any) 
   const play = [...snapshot.mediaEvents].reverse().find(event => event.type === 'playing' || event.type === 'play')
   if (!play?.src) throw new Error('no played audio URL was captured from the real chat voice path')
   const url = new URL(play.src, snapshot.origin).toString()
-  const response = await httpRequest(url, { timeoutMs: 4 * 60_000 })
+  const response: any = await httpRequest(url, { timeoutMs: 4 * 60_000 })
   if (response.status < 200 || response.status >= 300) throw new Error(`played audio download returned ${response.status}`)
   const filePath = path.join(evidence.directory, 'audio', fileName)
   fs.writeFileSync(filePath, response.body)
@@ -1166,7 +1166,7 @@ async function runAcceptance(args: any) {
     }
     let ttsOnline = false
     try {
-      const response = await httpRequest(`${process.env.D10_TTS_HOST || 'http://127.0.0.1:9880'}/openapi.json`, { timeoutMs: 2_000 })
+      const response: any = await httpRequest(`${process.env.D10_TTS_HOST || 'http://127.0.0.1:9880'}/openapi.json`, { timeoutMs: 2_000 })
       ttsOnline = response.status >= 200 && response.status < 500
     } catch {}
     if (!ttsOnline) blockers.push('Real GPT-SoVITS is offline; fake WAV substitution is prohibited.')
@@ -1279,7 +1279,7 @@ async function runAcceptance(args: any) {
 }
 
 async function main() {
-  const args = parseArgs(process.argv.slice(2))
+  const args: any = parseArgs(process.argv.slice(2))
   if (args['record-command']) await recordCommand(args)
   else await runAcceptance(args)
 }

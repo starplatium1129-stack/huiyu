@@ -1,6 +1,6 @@
 'use strict';
 
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const { fs, path, assert, write, json, approve, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
 const { generateManifest }: typeof import('../lib/resource-manifest') = require('../lib/resource-manifest');
 const { stageResourcePackDelta }: typeof import('../lib/resource-pack-delta') = require('../lib/resource-pack-delta');

@@ -11,7 +11,7 @@ test('documentation links and destinations remain valid', () => {
 });
 
 test('old document URLs keep their query and only redirect known reads', () => {
-  const calls: unknown = [];
+  const calls: any = [];
   const res = { redirect: (...args) => calls.push(args) };
   redirectLegacyDocs({ method: 'GET', path: '/art-direction.html', url: '/art-direction.html?v=2' }, res, () => assert.fail('known path'));
   assert.deepEqual(calls, [[308, '/docs/guides/art/art-direction.html?v=2']]);

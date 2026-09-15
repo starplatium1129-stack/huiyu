@@ -78,7 +78,7 @@ function createControlRouter(config: any, gatewayRef: () => unknown, dependencie
   let WEBUI_CONTROLNET_ROOT = path.join(voiceRoot, 'Data', 'Models', 'ControlNet');
   let runtimeRoot = config.RUNTIME_ROOT || (config.RUNTIME && config.RUNTIME.root) || path.join(rootDir, 'runtime');
 
-  let state = {
+  let state: any = {
     operation: null,
     modeBusy: false,
     webuiManaged: false,
@@ -247,7 +247,7 @@ function createControlRouter(config: any, gatewayRef: () => unknown, dependencie
   }
 
   async function unloadOllamaModels() {
-    let listed = await upstreamHealth.requestJson(config.OLLAMA_HOST, '/api/ps', null, 4000).catch(function () { return null; });
+    let listed: any = await upstreamHealth.requestJson(config.OLLAMA_HOST, '/api/ps', null, 4000).catch(function () { return null; });
     if (!listed || listed.status >= 300) return { ok:false, error:'Ollama 未响应' };
     let models = Array.isArray(listed.data && listed.data.models) ? listed.data.models : [];
     if (!models.length) return { ok:true, message:'Ollama 没有已加载的模型' };
@@ -299,7 +299,7 @@ function createControlRouter(config: any, gatewayRef: () => unknown, dependencie
       if (!enableTunnel) {
         return envelope.ok(res, { message:'公网分享已保持关闭（开关未开启）' });
       }
-      let gw = gatewayRef ? gatewayRef() : null;
+      let gw: any = gatewayRef ? gatewayRef() : null;
       if (gw && typeof gw.startTunnel === 'function') gw.startTunnel();
       // 记住偏好：下次启动网关时自动开分享
       try {
@@ -317,7 +317,7 @@ function createControlRouter(config: any, gatewayRef: () => unknown, dependencie
   // POST /api/stop — 停止公网隧道（不动网关与生成服务）
   router.post('/api/stop', localOnly, express.json({ limit:'2kb' }), function(req, res) {
     try {
-      let gw = gatewayRef ? gatewayRef() : null;
+      let gw: any = gatewayRef ? gatewayRef() : null;
       if (gw && typeof gw.stopTunnel === 'function') gw.stopTunnel();
       // 记住偏好：下次不再自动开分享，否则重启后又会“自己打开”
       try {

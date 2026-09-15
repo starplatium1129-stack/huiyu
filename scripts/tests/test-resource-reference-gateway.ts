@@ -1,8 +1,9 @@
 'use strict';
 
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const { gzipSync }: typeof import('node:zlib') = require('node:zlib');
-const { fs, path, assert, write, snapshot }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const { fs, path, write, snapshot }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { resourceFixture, request }: typeof import('./resource-gateway-fixture') = require('./resource-gateway-fixture');
 const { scanImages, resolveReferenceRelease }: typeof import('../lib/reference-candidate-publish') = require('../lib/reference-candidate-publish');
 const { digest }: typeof import('../lib/resource-install-fs') = require('../lib/resource-install-fs');
@@ -15,7 +16,7 @@ function version(f: any) {
   const view = referenceView({ firstUrl: '/character-references/fixture/approved.png' });
   const viewBytes = Buffer.from(JSON.stringify(view));
   write(path.join(root, 'character-reference-view.json'), viewBytes);
-  const release = { schemaVersion: 1, kind: 'reference-release', files: scanImages(root),
+  const release: any = { schemaVersion: 1, kind: 'reference-release', files: scanImages(root),
     viewSha256: digest(viewBytes), sourceStandardsSha256: digest(fs.readFileSync(path.join(f.program, 'data/character-reference-standards.json'))),
     sourceViewSha256: digest(fs.readFileSync(path.join(f.program, 'data/character-reference-view.json'))),
     candidateManifestSha256: 'a'.repeat(64), reviewSha256: 'b'.repeat(64), baseIdentity: 'c'.repeat(64) };
@@ -32,12 +33,12 @@ test('approved reference images and projection route together ahead of stale pre
   const original = snapshot(f.program);
   write(path.join(f.program, 'data/character-reference-view.json.gz'), gzipSync('{"wrong":"old-gzip"}'));
   const stack = await f.stack({ CHARACTER_REF_ROOT: v.root });
-  const index = await request(stack, '/data/character-reference-view.json', undefined, { 'accept-encoding': 'gzip' });
+  const index: any = await request(stack, '/data/character-reference-view.json', undefined, { 'accept-encoding': 'gzip' });
   assert.deepEqual(index.data, v.view);
   assert.equal(index.headers['cache-control'], 'private, no-cache');
-  const image = await request(stack, '/character-references/fixture/approved.png');
+  const image: any = await request(stack, '/character-references/fixture/approved.png');
   assert.equal(image.text, 'approved reference fixture');
-  const cached = await request(stack, '/data/character-reference-view.json', undefined, { 'if-none-match': index.headers.etag });
+  const cached: any = await request(stack, '/data/character-reference-view.json', undefined, { 'if-none-match': index.headers.etag });
   assert.equal(cached.status, 304);
   assert.equal((await request(stack, '/character-references/reference-release.json')).status, 404);
   assert.equal((await request(stack, '/character-references/character-reference-view.json')).status, 404);
@@ -52,7 +53,7 @@ for (const corruption of ['image', 'index', 'source', 'marker']) test('bad refer
   write(file, '{"changed":true}');
   const stack = await f.stack({ CHARACTER_REF_ROOT: v.root });
   for (const url of ['/data/character-reference-view.json', '/character-references/fixture/approved.png']) {
-    const response = await request(stack, url);
+    const response: any = await request(stack, url);
     assert.equal(response.status, 503); assert.equal(response.data.code, 'REFERENCE_RELEASE_INVALID');
     assert.equal(response.text.includes(f.base), false);
   }

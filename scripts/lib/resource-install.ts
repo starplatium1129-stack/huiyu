@@ -64,7 +64,7 @@ async function commit(ctx: any, journal: any, signal: any) {
     cancelled(signal);
     forgetJournal(ctx);
     return result(ctx, next, journal.kind === 'rollback' ? 'rolled-back' : 'installed');
-  } catch (error) {
+  } catch (error: any) {
     const current = readState(ctx);
     if (equal(current, next)) {
       try {
@@ -83,7 +83,7 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
   const release = releasePolicy(ctx, releaseId);
   cancelled(signal);
   let journal = readJournal(ctx);
-  const before = readState(ctx);
+  const before: any = readState(ctx);
   if (journal) {
     if (journal.kind !== 'install' || journal.releaseId !== releaseId || journal.packageIdentity !== release.packageIdentity) {
       fail('PENDING_TRANSACTION', 'Recover the existing transaction before starting another release');
@@ -108,7 +108,7 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
       return commit(ctx, journal, signal);
     }
   }
-  const installed = before.current ? verifyVersion(ctx, before.current) : null;
+  const installed: any = before.current ? verifyVersion(ctx, before.current) : null;
   const pack = readPack(ctx, release);
   if (!journal && before.current?.identity === release.targetIdentity) {
     if (pack.delta) {
@@ -179,7 +179,7 @@ function createResourceInstaller(options: any) {
       access(ctx);
       return locked(ctx, async () => {
         const journal = readJournal(ctx);
-        const state = readState(ctx);
+        const state: any = readState(ctx);
         if (!journal) {
           if (state.current) verifyVersion(ctx, state.current);
           return result(ctx, state, 'nothing-to-recover');
@@ -194,7 +194,7 @@ function createResourceInstaller(options: any) {
       access(ctx);
       return locked(ctx, async () => {
         if (readJournal(ctx)) fail('PENDING_TRANSACTION', 'Recover the pending transaction first');
-        const before = readState(ctx);
+        const before: any = readState(ctx);
         if (!before.previous) fail('NO_PREVIOUS_VERSION', 'No previous resource installation is retained');
         verifyVersion(ctx, before.previous);
         const journal = { schemaVersion: 1, id: randomUUID(), kind: 'rollback', phase: 'prepared',
@@ -207,7 +207,7 @@ function createResourceInstaller(options: any) {
       access(ctx);
       if (!noLinks(ctx.io, ctx.store, { missing: true })) return { ok: true, action: 'not-installed', state: null, installedRoot: null };
       return locked(ctx, async () => {
-        const state = readState(ctx);
+        const state: any = readState(ctx);
         const current = state.current ? verifyVersion(ctx, state.current) : null;
         const pending = readJournal(ctx);
         let previous = null;

@@ -49,7 +49,7 @@ function fixture(t: any) {
 }
 
 function tree(root: any) {
-  const out = {};
+  const out: any = {};
   if (!fs.existsSync(root)) return out;
   for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
     const file = path.join(root, entry.name);
@@ -120,7 +120,7 @@ async function mockGateway(t: any) {
 }
 
 async function guarded(f: any, action: any, { preview = false } = {}) {
-  const original = {}, writes: any = [];
+  const original: any = {}, writes: any = [];
   const under = (value: any, base: any) => typeof value === 'string' && (path.resolve(value) === base || path.resolve(value).startsWith(base + path.sep));
   const methods = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'rmdirSync', 'copyFileSync', 'cpSync', 'truncateSync'];
   for (const method of methods) {

@@ -54,7 +54,7 @@ test('registered storage keys appear as literals only in their canonical modules
   const files = listSourceFiles(srcRoot);
   assert.ok(files.length > 100, 'src 源文件扫描数异常，检查目录结构');
 
-  const violations: unknown = [];
+  const violations: any = [];
   for (const file of files) {
     const relative = path.relative(root, file).replace(/\\/g, '/');
     if (relative.endsWith('.spec.ts')) continue;

@@ -137,7 +137,7 @@ try {
 
 function average(values: unknown[]) {
   if (!values.length) return null
-  return values.reduce((sum: unknown, value: unknown) => sum + value, 0) / values.length
+  return values.reduce((sum: any, value: any) => sum + value, 0) / values.length
 }
 
 function trend(samples: unknown[], field: string) {
@@ -239,7 +239,7 @@ function runRenderer() {
   })
 }
 
-function validate(result: unknown) {
+function validate(result: any) {
   const summary = parseSummary(result.output)
   if (result.code !== 0) throw new Error(`renderer_soak exit=${result.code} signal=${result.signal || 'none'}`)
   if (!summary) throw new Error(`missing L2D_SOAK_SUMMARY; log=${result.logPath}`)
@@ -279,10 +279,10 @@ function validate(result: unknown) {
     )
   }
   const resourceCounters = Object.values(summary.resources || {})
-  if (!resourceCounters.length || resourceCounters.some((value) => !Number.isInteger(value) || value < 0)) {
+  if (!resourceCounters.length || resourceCounters.some((value: any) => !Number.isInteger(value) || value < 0)) {
     throw new Error(`invalid resource creation counters; log=${result.logPath}`)
   }
-  const countedCreations = resourceCounters.reduce((sum, value) => sum + value, 0)
+  const countedCreations = resourceCounters.reduce((sum: any, value: any) => sum + value, 0)
   if (countedCreations !== summary.total_creations) {
     throw new Error(
       `resource counter mismatch total=${summary.total_creations} counted=${countedCreations}; log=${result.logPath}`,
@@ -299,7 +299,7 @@ function validate(result: unknown) {
     throw new Error(`GPU dedicated/shared counters unavailable; log=${result.logPath}`)
   }
 
-  const report = {
+  const report: any = {
     summary,
     sampleCount: result.samples.length,
     gpuSampleCount: gpuSamples.length,

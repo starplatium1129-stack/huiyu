@@ -204,7 +204,7 @@ function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io =
   const aggregateEntry = readRealFile(paths.aggregatePath, io, '蓝图聚合（' + paths.aggregatePath + '）', true);
 
   const declared = Array.isArray(manifest && manifest.files) ? manifest.files : [];
-  const shardInputs = {};
+  const shardInputs: any = {};
   const shardEntries = [];
   for (const entry of declared) {
     const file = entry && entry.file;
@@ -243,12 +243,12 @@ function prepareBlueprintWrite({ rootDir, blueprints, franchiseByCharacter, io =
       }
       entries.push({ file: abs, exists: false, content: null });
     } else {
-      const source = requirePlanSource(shardEntries, write.file, 'plan.writes');
+      const source: any = requirePlanSource(shardEntries, write.file, 'plan.writes');
       entries.push({ file: abs, exists: true, content: source.entry.content });
     }
   }
   for (const remove of plan.deletes) {
-    const source = requirePlanSource(shardEntries, remove.file, 'plan.deletes');
+    const source: any = requirePlanSource(shardEntries, remove.file, 'plan.deletes');
     entries.push({ file: shardAbsPath(paths.shardsDir, remove.file), exists: true, content: source.entry.content });
   }
 
@@ -306,7 +306,7 @@ function expectFileBytes(absPath: string, expected: Uint8Array<ArrayBufferLike>|
  * 应用已准备计划。prepared 必须是同一模块 prepare 返回的原始对象，不能序列化
  * 后重建；公开 Buffer 改动与全部源基线漂移在第一次写入前整体拒绝。
  */
-function applyBlueprintWrite(prepared: object, { writeFileAtomic, io = nodeFs } = {}) {
+function applyBlueprintWrite(prepared: any, { writeFileAtomic, io = nodeFs } = {}) {
   const write = writeFileAtomic || defaultWriteFileAtomic;
   if (typeof write !== 'function') {
     throw new BlueprintWriteError('writeFileAtomic 必须是 (source, content) 函数', 'argument');

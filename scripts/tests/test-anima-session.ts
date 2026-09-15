@@ -59,9 +59,9 @@ globalThis.fetch = async (url, init) => {
 
 function fakeClient(routes: any) {
   return {
-    request: async (url: any, init = {}) => {
+    request: async (url: any, init: any = {}) => {
       // 模拟 apiClient 的 JSON 序列化（真实客户端在发出前 stringify body）
-      const prepared = init.body !== undefined ? { ...init, body: JSON.stringify(init.body) } : init;
+      const prepared: any = init.body !== undefined ? { ...init, body: JSON.stringify(init.body) } : init;
       const key = String(url) + '|' + String(prepared.method || 'GET');
       if (!routes[key]) throw new Error('unexpected request: ' + key);
       return routes[key](prepared);

@@ -39,7 +39,7 @@ async function auditImage(imagePath: string, expectText: string, strict: boolean
     { type: 'text', text: prompt },
     { type: 'image_url', image_url: { url: inspect.imageUrl(imagePath) } },
   ];
-  var lastErr = null;
+  var lastErr: any = null;
   for (var attempt = 0; attempt < 2; attempt++) {
     if (attempt > 0) await new Promise(function (r) { setTimeout(r, 2000); });
     try {
@@ -82,9 +82,9 @@ async function main() {
   var manifest = readJson(MANIFEST);
   var characters = popular.parsePopularCharacters(readJson(path.join(ROOT, 'data', 'popular-characters.json')));
   var blueprints = popular.parseSceneBlueprints(readJson(path.join(ROOT, 'data', 'scene-blueprints.json')));
-  var byId = {};
+  var byId: any = {};
   characters.forEach(function (c) { byId[c.id] = c; });
-  var bpByChar = {};
+  var bpByChar: any = {};
   blueprints.forEach(function (bp) { if (bp.characterId && !bpByChar[bp.characterId]) bpByChar[bp.characterId] = bp; });
 
   var records = manifest.records.filter(function (r: { status: string; }) { return r.status === 'succeeded'; });
@@ -134,7 +134,7 @@ async function main() {
   // 汇总
   var md = '#' + (strict ? 'Krea 2 热门角色严格八维审核' : 'Krea 2 热门角色识别审核') + '\n\n- 模型: ' + MODEL + '\n- 图片: ' + PROBE_ROOT + '\n\n';
   md += '## 结果\n\n| 角色 | 结论' + (strict ? '（总分/80）' : '') + ' | 备注 |\n|---|---|---|\n';
-  var stats = {};
+  var stats: any = {};
   report.results.forEach(function (x: any) {
     var label = x.ok ? (x.verdict || 'parse-fail') : '失败';
     stats[label] = (stats[label] || 0) + 1;

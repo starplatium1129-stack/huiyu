@@ -38,7 +38,7 @@ async function main() {
     'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
   ].find(file => fs.existsSync(file));
   let browser;
-  const report = {
+  const report: any = {
     environment: { node: process.version, platform: process.platform, architecture: process.arch },
     method: 'Three sequential trials per size, fresh private browser context and SQLite directory. No network IPC for SQLite. Durability policies differ; timings do not establish a production speedup.',
     metadata: [], media: [],
@@ -75,7 +75,7 @@ async function main() {
           try {
             const publishMs = timed(() => candidate.publishMetadata(history, projects, []));
             const patch30Ms = timed(() => { for (let index = 0; index < 30; index += 1) candidate.patch(`work-${index}`, { favorite: true }); });
-            let result;
+            let result: any;
             const readAllMs = timed(() => { result = candidate.history(); });
             sqlite = { publishMs, patch30Ms, readAllMs, count: result.length, favorite: result.filter((entry: any) => entry.favorite).length };
           } finally { candidate.close(); }

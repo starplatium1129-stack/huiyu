@@ -278,7 +278,7 @@ const skipped = { existing: 0, missingTokens: 0 };
 for (const profile of Object.values(view)) {
   const charId = profile.characterId;
   if (charsFilter && !charsFilter.includes(charId)) continue;
-  const stdChar = stdByChar.get(charId);
+  const stdChar: any = stdByChar.get(charId);
   const identityProse = (stdChar && stdChar.identityProse || '').trim();
   const identity = (stdChar && (stdChar.identityTokens || []).join(', ')).trim();
   for (const o of profile.outfits || []) {

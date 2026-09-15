@@ -47,7 +47,7 @@ var PROMPT = [
 
 var NEGATIVE = 'worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration';
 
-var GROUPS = {
+var GROUPS: any = {
   A: { label:'A_rm_simple', sampler:'res_multistep', scheduler:'simple', hires:false },
   B: { label:'B_euler_simple', sampler:'euler_ancestral', scheduler:'simple', hires:false },
   C: { label:'C_euler_hires', sampler:'euler_ancestral', scheduler:'simple', hires:true },
@@ -245,7 +245,7 @@ async function main() {
   }
 
   if (process.argv.includes('--dry-run')) {
-    console.log(JSON.stringify({ outputRoot:outputRoot, pending:pending.map(function (j) { return j.groupKey + ':' + j.seed; }) }, null, 2));
+    console.log(JSON.stringify({ outputRoot:outputRoot, pending:pending.map(function (j: any) { return j.groupKey + ':' + j.seed; }) }, null, 2));
     return;
   }
 
@@ -263,7 +263,7 @@ async function main() {
       var index = next;
       next += 1;
       if (index >= pending.length) return;
-      var job = pending[index];
+      var job: any = pending[index];
       var workflow = workflowFor(job.group, job.seed);
       var startedAt = new Date().toISOString();
       var submitted = await requestJson('/prompt', {

@@ -84,7 +84,7 @@ test('quality routes deliver actual WebP, honor conditional requests and return 
   const h = await fixture(t);
   const app = express();
   app.use(createLive2dRouter({ LIVE2D_ROOT: h.root }).router);
-  const server = await new Promise(resolve => { const listening = app.listen(0, '127.0.0.1', () => resolve(listening)); });
+  const server: any = await new Promise(resolve => { const listening = app.listen(0, '127.0.0.1', () => resolve(listening)); });
   t.after(() => new Promise(resolve => server.close(resolve)));
   const base = `http://127.0.0.1:${server.address().port}`;
   const model = await (await fetch(base + '/api/live2d-model/nene/compact')).json();

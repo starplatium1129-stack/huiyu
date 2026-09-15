@@ -123,7 +123,7 @@ function serviceable(rel: any) {
  * @throws {Error} Coded errors for missing/invalid config, access, pending/busy/bad/changed state.
  * This verifies current bytes at startup, not future bytes or per-request access permission.
  */
-function resolveInstalledResourceRoots(options = {}) {
+function resolveInstalledResourceRoots(options: any = {}) {
   if (!object(options) || (options.configPath === undefined && options.userDataRoot === undefined)) {
     fail('CONFIG_REQUIRED', 'Explicit resource configuration is required');
   }
@@ -138,7 +138,7 @@ function resolveInstalledResourceRoots(options = {}) {
     stable(ctx, before, evidence);
     return null;
   }
-  const state = validateState(ctx, parse(before.current, 'Installed state'));
+  const state: any = validateState(ctx, parse(before.current, 'Installed state'));
   for (const ref of [state.current, state.previous].filter(Boolean)) {
     const release = releasePolicy(ctx, ref.releaseId);
     // URL construction is a pure configuration check. No HTTP request, DNS or source stat.

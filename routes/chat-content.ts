@@ -8,7 +8,7 @@ function normalizeMultimodalContent(parts: string|unknown[]) {
   let normalized = [];
   let imageCount = 0;
   for (let i = 0; i < parts.length; i += 1) {
-    let part = parts[i] || {};
+    let part: any = parts[i] || {};
     if (part.type === 'text') {
       let text = String(part.text || '').trim();
       if (!text || text.length > 1200) return { error:'多模态文本过长' };

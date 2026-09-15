@@ -29,7 +29,7 @@ async function fixture(run: any) {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const get = (url: unknown, accept: unknown) => new Promise((resolve, reject) => {
     http.get({ host:'127.0.0.1', port:server.address().port, path:url, headers:{ 'Accept-Encoding':accept } }, res => {
-      const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = []; res.on('data', c => chunks.push(c));
+      const chunks: any = []; res.on('data', c => chunks.push(c));
       res.on('end', () => {
         const bytes = Buffer.concat(chunks), encoding = res.headers['content-encoding'];
         const body = encoding === 'br' ? zlib.brotliDecompressSync(bytes) : encoding === 'gzip' ? zlib.gunzipSync(bytes) : bytes;

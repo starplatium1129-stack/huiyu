@@ -154,7 +154,7 @@ function validateManifest(manifest: any, problems: string[]) {
 }
 
 /** 校验分片输入与 manifest 一一对应；返回 Map<file, { text, data }>。 */
-function validateShards(shards: { [x: string]: unknown; }|null, entries: unknown[], problems: string[]) {
+function validateShards(shards: any, entries: unknown[], problems: string[]) {
   let provided;
   if (shards instanceof Map) {
     provided = shards;
@@ -242,7 +242,7 @@ function validateTarget(blueprints: unknown[], mapping: unknown, mappingUsable: 
     return groups;
   }
   const idSeen = new Map();
-  blueprints.forEach((bp, index) => {
+  blueprints.forEach((bp: any, index) => {
     const at = '目标 blueprints[' + index + ']';
     if (!bp || typeof bp !== 'object' || Array.isArray(bp)) {
       problems.push(at + ' 必须是对象');
@@ -302,13 +302,13 @@ function buildPlan(manifest: unknown, entries: unknown[], shardMap: Map<unknown,
   const newFileByLower = new Map();
 
   for (const entry of entries) {
-    const group = groups.get(entry.franchise);
+    const group: any = groups.get(entry.franchise);
     if (!group) {
       deletes.push({ file: entry.file, franchise: entry.franchise });
       continue;
     }
     nextFiles.push({ ...entry, count: group.length });
-    const source = shardMap.get(entry.file);
+    const source: any = shardMap.get(entry.file);
     if (JSON.stringify(source.data.blueprints) === JSON.stringify(group)) {
       unchanged.push({ file: entry.file, franchise: entry.franchise, count: group.length });
     } else {

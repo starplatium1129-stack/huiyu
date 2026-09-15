@@ -15,9 +15,9 @@ function parseArgs(args: any, extra = {}, env = process.env) {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) {
     return { help: true, plan: args.includes('--plan') };
   }
-  const spec = { root: 'value', output: 'value', gateway: 'value', 'dry-run': 'flag',
+  const spec: any = { root: 'value', output: 'value', gateway: 'value', 'dry-run': 'flag',
     concurrency: 'value', 'retry-unknown': 'flag', ...extra };
-  const parsed = {};
+  const parsed: any = {};
   for (let i = 0; i < args.length; i++) {
     const match = /^(--[a-z-]+)(?:=(.*))?$/.exec(args[i]);
     const name = match?.[1].slice(2);
@@ -91,7 +91,7 @@ function assertOutput(opts: any, protectedPaths = []) {
 }
 
 function snapshot(root: any, names: any) {
-  const data = {}, sources = [];
+  const data: any = {}, sources = [];
   for (const name of names) {
     const file = noLinks(path.resolve(root, name));
     if (!inside(file, root)) throw new Error('input outside selected root');
@@ -212,7 +212,7 @@ function writeImage(store: any, record: any, image: any) {
   store.save(record);
 }
 
-async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, pollMs = 2000, timeoutMs = 600000, protectedPaths = [] }: any, deps = {}) {
+async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, pollMs = 2000, timeoutMs = 600000, protectedPaths = [] }: any, deps: any = {}) {
   const recipeSource = { path: script, sha256: hash(fs.readFileSync(script)) };
   const seen = new Set();
   const plans = tasks.map((task: any) => {
@@ -269,7 +269,7 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
           writeImage(store, record, image);
           result.succeeded++;
           return;
-        } catch (error) {
+        } catch (error: any) {
           record.status = deps.signal?.aborted ? (record.jobId ? 'interrupted' : 'submission-unknown')
             : error.definitive ? 'failed' : record.jobId ? 'recoverable' : 'submission-unknown';
           record.error = String(runtimeErrorMessage(error) || error);

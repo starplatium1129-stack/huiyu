@@ -17,7 +17,7 @@ assert.strictEqual(manager.update(first, 1), true, 'current operation must accep
 assert.strictEqual(first.message, '启动服务', 'progress must use the current stage label');
 
 let responseCode = 0;
-let responseBody = null;
+let responseBody: any = null;
 const response = {
   status(code: number) { responseCode = code; return this; },
   json(body: unknown) { responseBody = body; return this; }

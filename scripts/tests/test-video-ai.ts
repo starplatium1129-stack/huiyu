@@ -25,7 +25,7 @@ var DEAD_OLLAMA_URL = 'http://127.0.0.1:9';
 function createApiMock() {
   var state = { requests:[], replies:[] };
   var server = http.createServer(function (req, res) {
-    var chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
+    var chunks: any = [];
     req.on('data', function (chunk) { chunks.push(chunk); });
     req.on('end', function () {
       var body = {};
@@ -87,7 +87,7 @@ async function run() {
   }
 
   // ── 2. API 源：host-config 托管 + OpenAI 兼容 mock ────────────────────
-  var apiMock = createApiMock();
+  var apiMock: any = createApiMock();
   var apiPort = await listen(apiMock.server);
   var stackApi = await gatewayStack.start({
     prefix:'video-ai-api-',
@@ -124,7 +124,7 @@ async function run() {
     assert.equal(ok.shot.dialogue, '');
 
     // 请求体断言：Bearer、非流式、提示词结构（system 规则 + user 输入）
-    var req = apiMock.state.requests[0];
+    var req: any = apiMock.state.requests[0];
     assert.equal(req.headers.authorization, 'Bearer sk-test-key');
     assert.equal(req.body.stream, false);
     assert.equal(req.body.model, 'mock-rewrite');

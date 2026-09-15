@@ -79,7 +79,7 @@ function validateTags(tags: unknown[]) {
   if (!Array.isArray(tags) || tags.length > 2000) throw new Error('Tag 数据格式错误或数量超出限制');
   let ids = new Set();
   let names = new Set();
-  tags.forEach(function (tag) {
+  tags.forEach(function (tag: any) {
     let id = String(tag && tag.id || '').trim();
     let name = String(tag && tag.en || '').trim();
     let category = String(tag && tag.cat || '').trim();

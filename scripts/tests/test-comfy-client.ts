@@ -6,7 +6,7 @@ const comfy: typeof import('../../server/comfy-client') = require('../../server/
 
 test('orphan sweep recognizes native queue metadata and excludes this process new prompts', async () => {
   let submitted: any;
-  const cancelled: unknown = [];
+  const cancelled: any = [];
   const server = http.createServer(async (req, res) => {
     let raw = '';
     for await (const chunk of req) raw += chunk;
@@ -27,7 +27,7 @@ test('orphan sweep recognizes native queue metadata and excludes this process ne
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const config = { COMFY_HOST: `http://127.0.0.1:${server.address().port}` };
   try {
-    const body = { prompt: {}, client_id: 'owner', extra_data: { custom: 'kept' } };
+    const body: any = { prompt: {}, client_id: 'owner', extra_data: { custom: 'kept' } };
     await comfy.requestComfyJson(config, 'POST', '/prompt', body);
     assert.equal(submitted.extra_data.custom, 'kept');
     assert.equal(body.extra_data.aics_session_id, undefined, 'do not mutate caller payload');
@@ -42,6 +42,6 @@ test('non-JSON cancellation response preserves HTTP status for fallback', async 
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   try {
     await assert.rejects(comfy.requestComfyJson({ COMFY_HOST: `http://127.0.0.1:${server.address().port}` }, 'POST', '/cancel'),
-      error => error.detail.upstreamStatus === 404);
+      (error: any) => error.detail.upstreamStatus === 404);
   } finally { await new Promise(resolve => server.close(resolve)); }
 });

@@ -10,12 +10,12 @@ const { mutualGroupOf, isManualR18Tags }: typeof import('../../src/utils/promptP
 const tagsData: typeof import('../../data/tags.json') = require('../../data/tags.json');
 
 // 与采样器同源的身份 token（断言用）：随机结果绝不能污染角色身份
-const IDENTITY_TOKENS = {
+const IDENTITY_TOKENS: any = {
   nene: new Set(['1girl', 'solo', 'ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'pink_hair_ribbons']),
   natsume: new Set(['1girl', 'solo', 'shiki_natsume', 'very_long_black_hair', 'golden_yellow_eyes', 'two_red_hairclips', 'mole_under_eye', 'no_hair_ribbon']),
   triad: new Set(['2girls', '1girl', 'solo']),
 };
-const CHAR_PROMPT = {
+const CHAR_PROMPT: any = {
   nene: '1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons',
   natsume: '1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon',
   triad: '2girls',

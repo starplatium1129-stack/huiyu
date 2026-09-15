@@ -23,7 +23,7 @@ const repo = path.resolve(__dirname, '..', '..');
 const PACKS_REL = path.join('scripts', 'archive', 'resource-packs');
 
 /** 记录型 fs：调用穿透真实 fs 并记录目标路径；hooks 可替换个别操作（模拟源变化/故障）。 */
-function recordingIo(hooks = {}) {
+function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
@@ -104,7 +104,7 @@ test('包名校验：合法名接受，路径片段与特殊字符拒绝', () =>
 test('预览零写入：不创建目标与 packs 目录，源夹具不变，计划含条目与核验摘要', (t) => {
   const fx = buildFixture(t);
   const before = snapshot(fx.root);
-  const plan = planResourcePack({ root: fx.root, name: 'plan1', manifestPath: 'artifacts/manifest.json' });
+  const plan: any = planResourcePack({ root: fx.root, name: 'plan1', manifestPath: 'artifacts/manifest.json' });
   assert.equal(plan.ok, true);
   assert.equal(plan.kind, 'resource-pack-plan');
   assert.equal(plan.mode, 'preview');

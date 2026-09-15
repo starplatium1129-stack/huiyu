@@ -167,7 +167,7 @@ function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,R
     loraTags.push({ name:tagName, weight:tagWeight });
   }
   let cleanPrompt = body.prompt.replace(/<lora:[^>]+>/gi, '').replace(/,\s*,/g, ',').replace(/^\s*,|,\s*$/g, '').trim();
-  let input = {
+  let input: any = {
     prompt:body.prompt.trim(), cleanPrompt:cleanPrompt, loraTags:loraTags, negative:typeof body.negative === 'string' ? body.negative.trim() : '',
     profile:typeof body.profile === 'string' ? body.profile : '', modelId:'waiIllustriousSDXL_v170', character:body.character || '',
     loras:loras, width:width, height:height, steps:number(body.steps === undefined ? 28 : body.steps, 'steps', 1, 60, true),
@@ -193,7 +193,7 @@ function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,R
 
 function buildWorkflow(input: any) {
   let model = '1'; let clip = '1'; let vae = '1';
-  let graph = { '1': { class_type:'CheckpointLoaderSimple', inputs:{ ckpt_name:CHECKPOINT } } };
+  let graph: any = { '1': { class_type:'CheckpointLoaderSimple', inputs:{ ckpt_name:CHECKPOINT } } };
   input.loras.forEach(function (lora: any, index: number) {
     let id = String(2 + index);
     graph[id] = { class_type:'LoraLoader', inputs:{ model:[model, 0], clip:[clip, 1], lora_name:lora.file, strength_model:lora.strength, strength_clip:lora.strength } };
@@ -240,7 +240,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
       headers:Object.assign({ Accept:'application/json' }, payload ? { 'Content-Type':'application/json', 'Content-Length':payload.length } : {}) }, function (res) {
       // 2026-08-16 审计：响应体必须设上限，防止上游（本机 SD）返回超大 JSON 时
       // 网关内存被无界撑高（之前 chunks 无限累加）；超过即掐断并按错误处理。
-      let chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = []; let size = 0;
+      let chunks: any = []; let size = 0;
       res.on('data', function (c) {
         size += c.length;
         if (size > MAX_UPSTREAM_JSON_BYTES) {
@@ -301,7 +301,7 @@ async function doProbeWebUI(config: { [x: string]: string|URL; }) {
       requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/upscalers', null, 3000).catch(function () { return []; }),
       requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/sd-models', null, 3000).catch(function () { return []; }),
     ]);
-    let options = probeResults[0];
+    let options: any = probeResults[0];
     let samplerList = probeResults[1];
     let schedulerList = probeResults[2];
     let upscalerList = probeResults[3];
@@ -334,13 +334,13 @@ function publicJob(job: any) {
 
 function createWebUIJob(config: { [x: string]: string|URL; }, input: any, ownerId: string) {
   let id = crypto.randomBytes(18).toString('hex');
-   let webJob = { id:id, owner:ownerId, input:input, provider:'webui', status:'running', result:null, error:null, code:null, metadata:{ engine:'sd', provider:'webui', id:id, modelId:input.modelId, profileId:input.profile, loras:freezeLoras(input.loras), loraId:input.loras[0] && input.loras[0].id || null, loraStrength:input.loras[0] && input.loras[0].strength || null, width:input.width, height:input.height, steps:input.steps, cfg:input.cfg, sampler:input.sampler, scheduler:input.scheduler, seed:input.seed, hiresFix:Boolean(input.hiresFix), hiresUpscaler:input.hiresFix ? input.hiresUpscaler : null, hiresScale:input.hiresFix ? input.hiresScale : null } };
-   let payload = { prompt:input.prompt, negative_prompt:input.negative, width:input.width, height:input.height, cfg_scale:input.cfg, steps:input.steps, sampler_name:input.sampler, seed:input.seed, batch_size:1, n_iter:1, send_images:true, save_images:false,
+   let webJob: any = { id:id, owner:ownerId, input:input, provider:'webui', status:'running', result:null, error:null, code:null, metadata:{ engine:'sd', provider:'webui', id:id, modelId:input.modelId, profileId:input.profile, loras:freezeLoras(input.loras), loraId:input.loras[0] && input.loras[0].id || null, loraStrength:input.loras[0] && input.loras[0].strength || null, width:input.width, height:input.height, steps:input.steps, cfg:input.cfg, sampler:input.sampler, scheduler:input.scheduler, seed:input.seed, hiresFix:Boolean(input.hiresFix), hiresUpscaler:input.hiresFix ? input.hiresUpscaler : null, hiresScale:input.hiresFix ? input.hiresScale : null } };
+   let payload: any = { prompt:input.prompt, negative_prompt:input.negative, width:input.width, height:input.height, cfg_scale:input.cfg, steps:input.steps, sampler_name:input.sampler, seed:input.seed, batch_size:1, n_iter:1, send_images:true, save_images:false,
      override_settings:{ sd_model_checkpoint:CHECKPOINT }, override_settings_restore_afterwards:true };
   if (input.webuiScheduler) payload.scheduler = input.webuiScheduler;
   if (input.hiresFix) { payload.enable_hr=true; payload.hr_scale=input.hiresScale; payload.hr_upscaler=input.hiresUpscaler; payload.hr_second_pass_steps=input.hiresSteps; payload.denoising_strength=input.denoisingStrength; }
   if (input.faceDetailer) payload.alwayson_scripts = { ADetailer:{ args:[true, false, { ad_model:'face_yolov8s.pt', ad_prompt:'detailed eyes, clean face, character-accurate facial features', ad_negative_prompt:'deformed face, asymmetrical eyes, cross-eyed', is_api:true }, { ad_model:'hand_yolov8n.pt', ad_prompt:'detailed hands, five fingers, natural fingers', ad_negative_prompt:'extra fingers, missing fingers, fused fingers, malformed hands', is_api:true }] } };
-  void requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/txt2img', payload, 20 * 60 * 1000).then(function (result) {
+  void requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/txt2img', payload, 20 * 60 * 1000).then(function (result: any) {
     if (webJob.status === 'cancelled') return;
     if (!result || !Array.isArray(result.images) || !result.images[0]) throw error(502, 'SD_NO_IMAGE', 'WebUI 未返回图片');
     webJob.result = Buffer.from(String(result.images[0]), 'base64'); webJob.mime='image/png'; webJob.status='succeeded';
@@ -351,7 +351,7 @@ function createWebUIJob(config: { [x: string]: string|URL; }, input: any, ownerI
   return webJob;
 }
 
-function createGenerationRouter(config: Record<string,unknown>, dependencies: any) {
+function createGenerationRouter(config: any, dependencies: any) {
   dependencies = dependencies || {};
   let comfy = dependencies.waiComfy || anima.createAnimaService(config, { buildWorkflow:buildWorkflow, validateResources:function (input: unknown) { validateWaiResources(config, input); }, outputPrefix:OUTPUT_PREFIX, outputNodeId:'10', mediaNamespace:'wai', engine:'sd', routeBase:'/api/generation' });
   // 任务注册表骨架收口到 server/job-runner.js（2026-08-21）：WebUI 分支的

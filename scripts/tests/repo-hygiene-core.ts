@@ -41,14 +41,14 @@ function compareStrings(left: number, right: number) {
   return 0;
 }
 
-function gitErrorMessage(error: unknown) {
+function gitErrorMessage(error: any) {
   const stderr = Buffer.isBuffer(error.stderr)
     ? error.stderr.toString('utf8').trim()
     : String(error.stderr || '').trim();
   return stderr || error.message;
 }
 
-function runGit(repositoryRoot: string, args: unknown[]|readonly string[], options = {}) {
+function runGit(repositoryRoot: string, args: unknown[]|readonly string[], options: any = {}) {
   try {
     return execFileSync('git', args, {
       cwd: repositoryRoot,
@@ -183,7 +183,7 @@ async function loadDebtFromGitRef(startPath: string, reference: string) {
     candidates.push({ relativePath, objectId: metadata[2].toLowerCase() });
   }
   // 批量读取（单进程），替代逐 blob spawn
-  const blobs = await catFileBatch(repositoryRoot, candidates.map((c) => c.objectId));
+  const blobs: any = await catFileBatch(repositoryRoot, candidates.map((c) => c.objectId));
   const allowances = [];
   for (const candidate of candidates) {
     const bytes = blobs.get(candidate.objectId);
@@ -310,13 +310,13 @@ function expectedLineEnding(target: string, relativePath: string) {
 function catFileBatch(repositoryRoot: string, objectIds: unknown[]) {
   const unique = [...new Set(objectIds.map((id: string) => id.toLowerCase()))];
   if (unique.length === 0) return Promise.resolve(new Map());
-  const child = spawn('git', ['cat-file', '--batch'], {
+  const child: any = spawn('git', ['cat-file', '--batch'], {
     cwd: repositoryRoot,
     stdio: ['pipe', 'pipe', 'pipe'],
     windowsHide: true,
     maxBuffer: MAX_GIT_OUTPUT,
   });
-  const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
+  const chunks: any = [];
   let stderr = '';
   child.stdout.on('data', (chunk: unknown) => chunks.push(chunk));
   child.stderr.on('data', (chunk: string) => { stderr += chunk; });
@@ -444,7 +444,7 @@ function sortViolations(violations: unknown[]) {
   });
 }
 
-async function scanRepository(startPath: string, options = {}) {
+async function scanRepository(startPath: string, options: any = {}) {
   const repositoryRoot = resolveRepositoryRoot(startPath);
   const allowanceLookup = normalizeAllowances(options.allowances || []);
   const result = {
@@ -498,7 +498,7 @@ async function scanRepository(startPath: string, options = {}) {
   }
 
   // 索引侧文本 blob 一次性批量读取（替代逐文件 spawn cat-file 的主要瓶颈）
-  const indexBlobs = await catFileBatch(
+  const indexBlobs: any = await catFileBatch(
     repositoryRoot,
     textIndexEntries.map((entry) => entry.objectId),
   );
@@ -527,7 +527,7 @@ async function scanRepository(startPath: string, options = {}) {
   scanWorktreeTarget(repositoryRoot, untrackedPaths, 'untracked', allowanceLookup, result);
 
   sortViolations(result.violations);
-  result.allowed.sort((left, right) => {
+  result.allowed.sort((left: any, right: any) => {
     const pathDifference = compareStrings(left.path, right.path);
     return pathDifference || TARGET_ORDER.get(left.target) - TARGET_ORDER.get(right.target);
   });

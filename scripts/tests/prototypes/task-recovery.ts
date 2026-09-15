@@ -25,7 +25,7 @@ const IMMUTABLE = [
   'id', 'ownerHash', 'requestKey', 'requestHash', 'engine', 'backendFingerprint',
   'createdAt', 'deadline',
 ];
-const EDGES = {
+const EDGES: any = {
   prepared: new Set(['submitting', 'cancelled', 'interrupted']),
   submitting: new Set(['running', 'cancelling', 'interrupted']),
   running: new Set(['running', 'cancelling', 'succeeded', 'failed', 'cancelled', 'interrupted']),
@@ -176,7 +176,7 @@ class RecoveryJournal {
 }
 
 class RecoveryCoordinator {
-  constructor(journal: any, adapters: any, options = {}) {
+  constructor(journal: any, adapters: any, options: any = {}) {
     this.journal = journal;
     this.adapters = adapters;
     this.now = options.now || Date.now;

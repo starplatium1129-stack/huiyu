@@ -26,7 +26,7 @@ function loadDicts() {
     for (const name of ['EXACT_MEANINGS', 'WORD_MEANINGS', 'WD14_ZH']) {
       const m = src.match(new RegExp('const ' + name + ': Record<string, string> = \\{([\\s\\S]*?)\\n\\}'))
       if (!m) continue
-      const dict = {}
+      const dict: any = {}
       for (const line of m[1].split('\n')) {
         for (const pair of line.split(',')) {
           const kv = pair.match(/^\s*(?:'([^']*)'|"([^"]*)"|([a-z0-9_+]+)):\s*'([^']*)'/)
@@ -38,7 +38,7 @@ function loadDicts() {
   }
   return dicts
 }
-const [EXACT, WORD, WD14] = loadDicts()
+const [EXACT, WORD, WD14]: any = loadDicts()
 
 function cleanTag(t: string) {
   let raw = String(t || '').trim()

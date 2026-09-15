@@ -61,9 +61,9 @@ function contentLength(res: any) {
   if (!/^\d+$/.test(length) || !Number.isSafeInteger(Number(length))) fail('HTTP_SIZE', 'Invalid Content-Length');
   return Number(length);
 }
-async function fetchMetadata(url: any, options = {}) {
+async function fetchMetadata(url: any, options: any = {}) {
   const maxBytes = options.maxBytes || 16 * 1024 * 1024;
-  const res = await response(url, options);
+  const res: any = await response(url, options);
   try {
     if (res.statusCode !== 200) fail('HTTP_STATUS', 'Metadata request failed: ' + res.statusCode);
     const declared = contentLength(res);

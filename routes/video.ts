@@ -84,7 +84,7 @@ async function probeT8Nodes(config: unknown) {
   try {
     // object_info 返回 { <nodeName>: {...} }；必须确认节点键真实存在
     // （mock 对任意路径返回 200 {} 时不得误判为可用）。
-    let data = await comfy.requestComfyJson(config, 'GET', '/object_info/MiniMaxH3DualClockSamplerT8', null, 10000);
+    let data: any = await comfy.requestComfyJson(config, 'GET', '/object_info/MiniMaxH3DualClockSamplerT8', null, 10000);
     setT8Available(Boolean(data && data.MiniMaxH3DualClockSamplerT8));
     if (t8Available) {
       console.log('[video] T8 双时钟采样路径可用（4 步加速 LoRA + DualClock）');
@@ -134,7 +134,7 @@ function requestOwner(req: any) {
 }
 
 function outputReference(entry: { outputs: { [x: string]: unknown; }; }) {
-  let output = entry && entry.outputs && entry.outputs[OUTPUT_NODE_ID];
+  let output: any = entry && entry.outputs && entry.outputs[OUTPUT_NODE_ID];
   let values = output && (output.images || output.videos);
   return Array.isArray(values) && values.length ? values[0] : null;
 }
@@ -216,7 +216,7 @@ function createVideoService(config: any, dependencies: any) {
     }, delay);
   }
 
-  function failJob(job: any, error: unknown, fallbackCode?: string|undefined) {
+  function failJob(job: any, error: any, fallbackCode?: string|undefined) {
     if (job.status === 'cancelled') return;
     job.status = 'failed';
     job.errorCode = error && error.code || fallbackCode || 'VIDEO_FAILED';
@@ -236,7 +236,7 @@ function createVideoService(config: any, dependencies: any) {
       return;
     }
     try {
-      let history = await comfy.requestComfyJson(
+      let history: any = await comfy.requestComfyJson(
         config,
         'GET',
         '/history/' + encodeURIComponent(job.upstreamId),
@@ -276,7 +276,7 @@ function createVideoService(config: any, dependencies: any) {
       job.status = 'succeeded';
       job.error = null;
       job.errorCode = null;
-    } catch (error) {
+    } catch (error: any) {
       job.pollFailures += 1;
       if (error && (error.code === 'INVALID_RESULT' || error.code === 'COMFY_NO_VIDEO')) {
         failJob(job, error);
@@ -297,7 +297,7 @@ function createVideoService(config: any, dependencies: any) {
         missing:availability.missing,
       });
     }
-    let response = await comfy.requestComfyJson(config, 'POST', '/prompt', {
+    let response: any = await comfy.requestComfyJson(config, 'POST', '/prompt', {
       prompt:buildWorkflow(job.input),
       client_id:clientId,
     }, 20000);
@@ -465,7 +465,7 @@ function createVideoRouter(config: unknown, dependencies: any) {
         id:id,
         label:quality.label,
         summary:quality.summary,
-        sizes:Object.keys(quality.sizes).reduce(function (sizes, aspectId) {
+        sizes:Object.keys(quality.sizes).reduce(function (sizes: any, aspectId) {
           sizes[aspectId] = quality.sizes[aspectId].width + ' × ' + quality.sizes[aspectId].height;
           return sizes;
         }, {}),
@@ -531,7 +531,7 @@ function createVideoRouter(config: unknown, dependencies: any) {
   router.post('/api/video/jobs', jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
     try { await ensureT8Probe(config); } catch (error) { /* 探测失败沿用旧值，提交照常 */ }
     let input;
-    try { input = validateInput(req.body, config, { isLocal: security.isDirectLocalRequest(req) }); } catch (error) {
+    try { input = validateInput(req.body, config, { isLocal: security.isDirectLocalRequest(req) }); } catch (error: any) {
       return envelope.fail(res, runtimeErrorStatus(error) || 400, runtimeErrorMessage(error), {
         code:runtimeErrorCode(error),
         detail:error.detail,
@@ -541,7 +541,7 @@ function createVideoRouter(config: unknown, dependencies: any) {
     try {
       job = service.create(input, requestOwner(req));
       await service.submit(job);
-    } catch (error) {
+    } catch (error: any) {
       if (job) await service.cancel(job);
       return envelope.fail(res, runtimeErrorStatus(error) || 502,
         runtimeErrorStatus(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
@@ -605,7 +605,7 @@ function createVideoRouter(config: unknown, dependencies: any) {
     let batchInput;
     try {
       batchInput = validateBatchInput(req.body, config);
-    } catch (error) {
+    } catch (error: any) {
       return envelope.fail(res, runtimeErrorStatus(error) || 400, runtimeErrorMessage(error), {
         code:runtimeErrorCode(error),
         detail:error.detail,
@@ -614,7 +614,7 @@ function createVideoRouter(config: unknown, dependencies: any) {
     let batch;
     try {
       batch = await batchService.create(requestOwner(req), batchInput);
-    } catch (error) {
+    } catch (error: any) {
       return envelope.fail(res, runtimeErrorStatus(error) || 502,
         runtimeErrorStatus(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
         { code:runtimeErrorCode(error) || 'BATCH_SUBMIT_FAILED', detail:error.detail });

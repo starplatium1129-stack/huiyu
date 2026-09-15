@@ -1,6 +1,6 @@
 'use strict';
 
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const { fs, path, assert, write, json, snapshot, approve, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
 const { packageIdentity }: typeof import('../lib/resource-install-policy') = require('../lib/resource-install-policy');
@@ -140,7 +140,7 @@ test('post-switch failure restores old pointer, retains versions, then resumes',
   const old = await f.installer().install({ releaseId: 'base' });
   await assert.rejects(f.installer({ onEvent: (e: any) => {
     if (e.phase === 'switched') throw Object.assign(new Error('injected final check failure'), { code: 'INJECTED' });
-  } }).install({ releaseId: 'delta' }), e => e.code === 'INJECTED' && e.rolledBack === true);
+  } }).install({ releaseId: 'delta' }), (e: any) => e.code === 'INJECTED' && e.rolledBack === true);
   assert.deepEqual((await f.installer().status()).state, old.state);
   assert.equal((await f.installer().recover()).action, 'installed');
   assert.equal(fs.existsSync(old.installedRoot), true);

@@ -56,7 +56,7 @@ function snapshot(root: any, input: any) {
     if (item.kind === 'tree' && entries[start]?.status === 'directory' && !entries.slice(start).some(e => e.status === 'file')) entries[start].status = 'empty';
   }
   entries.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
-  const result = { selectors: selection, entries, status: entries.every(v => ['file', 'directory'].includes(v.status)) ? 'complete' : 'incomplete' };
+  const result: any = { selectors: selection, entries, status: entries.every(v => ['file', 'directory'].includes(v.status)) ? 'complete' : 'incomplete' };
   result.sha256 = sha256(canonical(payload(result)));
   return result;
 }
@@ -83,16 +83,16 @@ function compareSnapshot(root: any, recorded: any) {
     validateSnapshot(recorded);
     const current = snapshot(root, recorded.selectors), changes = [];
     const old = new Map(recorded.entries.map((e: any) => [e.path, e]));
-    const now = new Map(current.entries.map(e => [e.path, e]));
+    const now = new Map(current.entries.map((e: any) => [e.path, e]));
     for (const name of [...new Set([...old.keys(), ...now.keys()])].sort()) {
-      const before = old.get(name), after = now.get(name);
+      const before = old.get(name), after: any = now.get(name);
       const identity = (entry: any) => entry && canonical(payload({ selectors: [], entries: [entry] }).entries[0]);
       if (identity(before) !== identity(after)) changes.push({ path: name, status: !before ? 'added' : !after || after.status === 'missing' ? 'removed' : 'changed', before, after });
     }
     const status = recorded.status !== 'complete' || current.status !== 'complete' ? 'unavailable'
       : recorded.sha256 === current.sha256 ? 'fresh' : 'stale';
     return { status, expectedSha256: recorded.sha256, actualSha256: current.sha256, changes,
-      problems: current.entries.filter(e => !['file', 'directory'].includes(e.status)), current };
+      problems: current.entries.filter((e: any) => !['file', 'directory'].includes(e.status)), current };
   } catch (error) { return { status: 'invalid', message: runtimeErrorMessage(error), changes: [] }; }
 }
 function repository(root: any) {

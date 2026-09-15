@@ -128,7 +128,7 @@ test('duplicate IDs, missing ledger entries, forged inline approvals and hidden 
   f.put(`records/${id}.json`, next);
   const result = audit(f.options);
   assert.equal(result.exitCode, 1);
-  assert.ok(result.errors.some((error) => error.includes('omits authoritative')));
+  assert.ok(result.errors.some((error: any) => error.includes('omits authoritative')));
 });
 
 test('latest attempt is audited and cannot inherit an earlier attempt decision', (t) => {
@@ -230,7 +230,7 @@ test('input drift during verification makes an otherwise approved result stale',
   });
   const result = audit(f.options);
   assert.equal(result.items[0].review.status, 'stale');
-  assert.ok(result.unknown.some((message) => message.includes('changed during audit')));
+  assert.ok(result.unknown.some((message: any) => message.includes('changed during audit')));
   assert.equal(result.exitCode, 3);
 });
 

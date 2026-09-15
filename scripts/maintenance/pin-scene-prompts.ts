@@ -89,7 +89,7 @@ function pick(entry: { [x: string]: unknown; }) {
   return out;
 }
 
-function diffFields(current: { [x: string]: unknown; }, target: unknown) {
+function diffFields(current: { [x: string]: unknown; }, target: any) {
   const drift: any[] = [];
   for (const f of PIN_FIELDS) {
     if (JSON.stringify(current[f]) !== JSON.stringify(target[f])) drift.push(f);

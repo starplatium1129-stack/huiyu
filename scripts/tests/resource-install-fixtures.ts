@@ -57,7 +57,7 @@ function fixture(t: any, { large = false } = {}) {
   assert.equal(stageResourcePack({ root: source, name: 'full', manifestPath: 'next.json' }).ok, true);
   assert.equal(stageResourcePackDelta({ root: source, name: 'delta', manifestPath: 'next.json', baseManifestPath: 'old.json' }).ok, true);
   const policy = { sources: { media: { kind: 'offline', root: packs, approved: true } }, releases: {} };
-  const f = { base, source, user, program, artwork, packs, old, next, policy };
+  const f: any = { base, source, user, program, artwork, packs, old, next, policy };
   approve(f, 'base', 'full', old);
   approve(f, 'full', 'full', next);
   approve(f, 'delta', 'delta', next);

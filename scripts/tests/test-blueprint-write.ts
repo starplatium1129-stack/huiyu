@@ -102,7 +102,7 @@ function mixedTarget(state: any) {
 }
 
 function shardTextInputs(state: any, overrides?: any) {
-  const out = {};
+  const out: any = {};
   for (const [file, data] of Object.entries(state.shards)) {
     out[file] = {
       text: (overrides && overrides[file] !== undefined) ? overrides[file] : jsonText(data),
@@ -540,7 +540,7 @@ test('回滚注入失败必须如实报告失败，不得称恢复成功', (t) =
         throw new Error('注入回滚故障');
       });
       return { ok: true };
-    } catch (error) {
+    } catch (error: any) {
       return { ok: false, error: String(error && error.message || error) };
     }
   };
@@ -618,7 +618,7 @@ test('unchanged source drift invalidates changed and no-op plans before any writ
     fs.appendFileSync(p.shard(FATE_FILE), '\n');
     const log: any = [];
     assert.throws(() => applyBlueprintWrite(prepared, { io: recordingIo(log), writeFileAtomic: recordingWrite(log) }),
-      error => error.code === 'stale');
+      (error: any) => error.code === 'stale');
     assertNoWrites(log);
   }
 });
@@ -633,12 +633,12 @@ test('public snapshot Buffer cannot replace the private baseline; forged copies 
   changed.copy(entry.content);
   const log: any = [];
   assert.throws(() => applyBlueprintWrite(prepared, { io: recordingIo(log), writeFileAtomic: recordingWrite(log) }),
-    error => error.code === 'tampered');
+    (error: any) => error.code === 'tampered');
   assert.deepEqual(log, [], 'tampered public buffer rejected before file access');
   original.copy(entry.content);
   const forged = { ...prepared, snapshotEntries: [] };
   assert.throws(() => applyBlueprintWrite(forged, { io: recordingIo(log), writeFileAtomic: recordingWrite(log) }),
-    error => error.code === 'path-validation');
+    (error: any) => error.code === 'path-validation');
   assert.deepEqual(log, []);
 });
 
@@ -651,7 +651,7 @@ test('directory replaced by junction after prepare is rejected before reading it
   fs.symlinkSync(external.dataDir, p.dataDir, 'junction');
   const log: any = [];
   assert.throws(() => applyBlueprintWrite(prepared, { io: recordingIo(log), writeFileAtomic: recordingWrite(log) }),
-    error => error.code === 'boundary');
+    (error: any) => error.code === 'boundary');
   assertNoWrites(log);
   assert.ok(!log.some(([op]: any) => op === 'readFileSync'), 'junction parent rejected before file reads');
   fs.unlinkSync(p.dataDir);
@@ -666,5 +666,5 @@ test('writer cannot mutate expected bytes to turn corrupt writes into successful
   assert.throws(() => applyBlueprintWrite(prepared, { writeFileAtomic: (file: any, bytes: any) => {
     bytes[0] = 32;
     defaultWriteFileAtomic(file, bytes);
-  } }), error => error.code === 'readback');
+  } }), (error: any) => error.code === 'readback');
 });

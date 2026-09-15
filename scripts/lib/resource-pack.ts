@@ -416,7 +416,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
         ? [...plan.notes, `候选包已通过字节核验并写入 ${plan.destination}；可用 audit:resource-manifest --root <包目录> --manifest manifest.json 复核。`]
         : [...plan.notes, '候选包已写到目标位置但发布后核验失败，不要作为可用候选包使用。'],
     };
-  } catch (err) {
+  } catch (err: any) {
     return {
       ...base,
       ok: false,

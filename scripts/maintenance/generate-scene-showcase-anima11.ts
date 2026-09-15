@@ -183,7 +183,7 @@ async function gatewayJson(base: any, pathname: any, options: any) {
   return { response, data };
 }
 function buildSubmissionBody(candidate: any) {
-  const body = {
+  const body: any = {
     prompt: candidate.prompt, negative: candidate.negative,
     modelId: candidate.modelId, width: candidate.width, height: candidate.height,
     steps: candidate.steps, cfg: candidate.cfg, seed: candidate.seed,

@@ -2,7 +2,8 @@
 
 const http: typeof import('node:http') = require('node:http');
 const { once }: typeof import('node:events') = require('node:events');
-const { fixture, write, fs, path, approve, assert }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const { fixture, write, fs, path, approve }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { generateManifest }: typeof import('../lib/resource-manifest') = require('../lib/resource-manifest');
 const { stageResourcePack }: typeof import('../lib/resource-pack') = require('../lib/resource-pack');
 const stackTools: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
@@ -27,7 +28,7 @@ function resourceFixture(t: any) {
   f.make = make;
   f.gatewayConfig = config;
   f.stack = async (overrides = {}) => {
-    const stack = await stackTools.start({ env: { AICS_APP_ROOT: f.program }, configureConfig(gateway: any) {
+    const stack: any = await stackTools.start({ env: { AICS_APP_ROOT: f.program }, configureConfig(gateway: any) {
       Object.assign(gateway, config, { RUNTIME: gateway.RUNTIME, LIVE2D_ROOT: path.join(f.program, 'assets/live2d') }, overrides);
     } });
     t.after(async () => { await stack.gateway.services.resources.close(); await stack.close(); });
@@ -55,7 +56,7 @@ async function request(stack: { baseUrl: string; }, url: string, body?: any, hea
   });
 }
 async function startAndSettle(stack: { gateway: { services: { resources: { settled: () => unknown; }; }; }; }, action: unknown, releaseId?: unknown) {
-  const started = await request(stack, '/api/resources/tasks', { action, ...(releaseId ? { releaseId } : {}) });
+  const started: any = await request(stack, '/api/resources/tasks', { action, ...(releaseId ? { releaseId } : {}) });
   assert.equal(started.status, 202, started.text);
   await stack.gateway.services.resources.settled();
   return (await request(stack, '/api/resources/status')).data;

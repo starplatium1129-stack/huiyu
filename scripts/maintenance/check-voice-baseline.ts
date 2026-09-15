@@ -52,7 +52,7 @@ function requestTts(line: any) {
         'Content-Length': Buffer.byteLength(body)
       }
     }, function (res: any) {
-      const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
+      const chunks: any = [];
       res.on('data', function (chunk: any) {
         if (!firstByteMs) firstByteMs = Date.now() - started;
         chunks.push(chunk);
@@ -114,7 +114,7 @@ async function main() {
           totalMs: result.totalMs
         };
       }
-    } catch (error) {
+    } catch (error: any) {
       failures.push({ id: line.id, error: String(error && error.message || error) });
       console.log('ERROR');
     }

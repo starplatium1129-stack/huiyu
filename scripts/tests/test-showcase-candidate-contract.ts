@@ -64,13 +64,13 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const artistVariants = artistCount + 1;
   // 2026-08-15 扩容后角色场景数不再均匀（12 角色 10 场景 + 6 角色 9 场景，另有
   // 3 条通用成人蓝图），grid 按每角色实际拥有数 + 通用数逐角色派生，避免硬编码漂移。
-  const perCharScenes = sceneBlueprints.reduce((acc, bp) => {
+  const perCharScenes = sceneBlueprints.reduce((acc: any, bp) => {
     if (bp.characterId) acc[bp.characterId] = (acc[bp.characterId] || 0) + 1;
     return acc;
   }, {});
   const genericSceneCount = sceneBlueprints.filter(bp => !bp.characterId).length;
   const popularGrid = Object.values(perCharScenes)
-    .reduce((sum, owned) => sum + (owned + genericSceneCount), 0) * 2;
+    .reduce((sum, owned: any) => sum + (owned + genericSceneCount), 0) * 2;
   const expectedAttempt1 = artistVariants + popularCount + 8 + popularGrid + artistVariants * 2;
   // 明细：artistVariants 张画师（29 画师 + no-artist，含 3 个重点画师追加轮）
   //       + popularCount popular（角色专属场景）+ 8 latest-lora（nene/natsume × sd/anima × closeup/fullbody）

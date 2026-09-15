@@ -125,7 +125,7 @@ async function start() {
   server.on('upgrade', gateway.handleUpgrade);
 
   // 未捕获异常不该静默带走整个 mock 栈
-  process.on('unhandledRejection', function (reason) {
+  process.on('unhandledRejection', function (reason: any) {
     console.error('  ❌ mock stack unhandled rejection:', reason && reason.stack || reason);
   });
 

@@ -11,7 +11,7 @@ function prepareBlueprints(rootDir: any, blueprints: any, previous = []) {
   const popular: typeof import('../scripts/lib/popular-store') = require('../scripts/lib/popular-store');
   if (path.resolve(popular.shardsDir) !== path.resolve(rootDir, 'data', 'popular')) throw new Error('热门角色数据根与维护根不一致');
   const { characters } = popular.loadPopularShards();
-  const oldById = new Map(previous.map(blueprint => [blueprint.id, blueprint]));
+  const oldById = new Map(previous.map((blueprint: any) => [blueprint.id, blueprint]));
   const charactersById = new Map(characters.map(character => [character.id, character]));
   const franchiseByCharacter = new Map();
   for (const character of characters) {
@@ -19,7 +19,7 @@ function prepareBlueprints(rootDir: any, blueprints: any, previous = []) {
     franchiseByCharacter.set(character.id, character.franchise);
   }
   for (const blueprint of blueprints) {
-    const old = oldById.get(blueprint.id);
+    const old: any = oldById.get(blueprint.id);
     // Preserve unchanged legacy bindings; new or edited bindings must name a real outfit.
     if (old && old.characterId === blueprint.characterId && old.outfitId === blueprint.outfitId) continue;
     const character = charactersById.get(blueprint.characterId);
@@ -72,9 +72,9 @@ function protectPinnedScenes(rootDir: any, previous: any, incoming: any) {
   const current = new Map(previous.map((scene: any) => [scene.id, scene]));
   const next = new Map(incoming.map((scene: any) => [scene.id, scene]));
   for (const id of Object.keys(pins)) {
-    const before = current.get(id);
+    const before: any = current.get(id);
     if (!before) continue;
-    const after = next.get(id);
+    const after: any = next.get(id);
     if (!after) throw new Error('定稿场景不能在普通保存中删除：' + id);
     for (const key of ['prompt', 'negative', 'animaCaption', 'recommendedSize', 'rating', 'mature']) {
       if (JSON.stringify(before[key]) !== JSON.stringify(after[key])) throw new Error('定稿保护拒绝修改 ' + id + '.' + key);

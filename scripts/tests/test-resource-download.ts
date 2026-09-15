@@ -1,6 +1,6 @@
 'use strict';
 
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const http: typeof import('node:http') = require('node:http');
 const { once }: typeof import('node:events') = require('node:events');
 const { fs, path, assert, write, snapshot, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
@@ -36,7 +36,7 @@ async function fixtureHttp(t: any) {
     if (big && state.mode === 'corrupt') bytes = Buffer.alloc(bytes.length, 88);
     let offset = 0;
     let status = 200;
-    const headers = { etag: state.etag, 'content-type': 'application/octet-stream' };
+    const headers: any = { etag: state.etag, 'content-type': 'application/octet-stream' };
     if (big && req.headers.range && state.mode !== 'ignore-range' && state.mode !== 'if-range-restart') {
       offset = Number(/^bytes=(\d+)-$/.exec(req.headers.range)?.[1]);
       status = 206;
@@ -87,7 +87,7 @@ async function cancelPartial(f: any) {
 const assetRequests = (f: any) => f.state.requests.filter((request: any) => request.url.endsWith('/assets/new.bin'));
 
 test('loopback download produces a verified offline package; install remains explicit and repeat has no network', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   const downloaded = await f.download().download({ releaseId: 'full' });
   assert.equal(downloaded.installed, false);
   assert.equal((await f.installer().status()).state.current, null);
@@ -99,17 +99,17 @@ test('loopback download produces a verified offline package; install remains exp
 });
 
 test('HTTP delta download uses existing installed baseline and preserves old files', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   const old = await f.installer().install({ releaseId: 'base' });
   await f.download().download({ releaseId: 'delta' });
   const next = await f.installer().install({ releaseId: 'delta' });
   assert.equal(fs.existsSync(path.join(next.installedRoot, 'assets/removed.txt')), false);
   assert.equal(fs.existsSync(path.join(old.installedRoot, 'assets/removed.txt')), true);
-  assert.ok(f.state.requests.every(request => !request.url.endsWith('/assets/keep.bin')));
+  assert.ok(f.state.requests.every((request: any) => !request.url.endsWith('/assets/keep.bin')));
 });
 
 test('cancel and resume send Range/If-Range and rehash final bytes', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   await cancelPartial(f);
   const result = await f.download().download({ releaseId: 'full' });
   const resumed = assetRequests(f).find((request: any) => request.range);
@@ -119,7 +119,7 @@ test('cancel and resume send Range/If-Range and rehash final bytes', async t => 
 });
 
 test('ignored range restarts instead of appending a full response to partial data', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   await cancelPartial(f);
   f.state.mode = 'ignore-range';
   const downloaded = await f.download().download({ releaseId: 'full' });
@@ -128,7 +128,7 @@ test('ignored range restarts instead of appending a full response to partial dat
 });
 
 test('invalid Content-Range is rejected; valid retry recovers unchanged partial data', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   await cancelPartial(f);
   f.state.mode = 'bad-range';
   await assert.rejects(f.download().download({ releaseId: 'full' }), code('HTTP_RANGE'));
@@ -137,7 +137,7 @@ test('invalid Content-Range is rejected; valid retry recovers unchanged partial 
 });
 
 test('ETag mismatch in 206 is rejected; full 200 response safely replaces partial bytes', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   await cancelPartial(f);
   f.state.etag = '"fixture-v2"';
   await assert.rejects(f.download().download({ releaseId: 'full' }), code('HTTP_RANGE'));
@@ -146,7 +146,7 @@ test('ETag mismatch in 206 is rejected; full 200 response safely replaces partia
 });
 
 test('disconnected response retains bytes and retries with a range', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   f.state.mode = 'disconnect-once';
   await assert.rejects(f.download().download({ releaseId: 'full' }));
   assert.equal((await f.download().download({ releaseId: 'full' })).action, 'downloaded');
@@ -154,7 +154,7 @@ test('disconnected response retains bytes and retries with a range', async t => 
 });
 
 test('killed download process resumes from durable partial bytes and reclaims its stale lock', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   await killAt(f.config(), 'download-progress', 'download', 'full');
   // The first progress event may be a small file; any completed/partial entry is revalidated.
   assert.equal((await f.download().download({ releaseId: 'full' })).action, 'downloaded');
@@ -162,7 +162,7 @@ test('killed download process resumes from durable partial bytes and reclaims it
 });
 
 test('corrupt response never activates resources; retry succeeds without disturbing old install', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   const old = await f.installer().install({ releaseId: 'base' });
   f.state.mode = 'corrupt';
   await assert.rejects(f.download().download({ releaseId: 'full' }), code('CONTENT_INVALID'));
@@ -172,7 +172,7 @@ test('corrupt response never activates resources; retry succeeds without disturb
 });
 
 test('completed cache is checked against disk and repairs corrupt files on an explicit retry', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   const downloaded = await f.download().download({ releaseId: 'full' });
   write(path.join(downloaded.packRoot, 'assets/new.bin'), Buffer.alloc(3 * 1024 * 1024, 9));
   const count = assetRequests(f).length;
@@ -181,17 +181,17 @@ test('completed cache is checked against disk and repairs corrupt files on an ex
 });
 
 test('metadata fingerprint, metadata limits and redirects fail closed without following new locations', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   for (const [mode, expected] of [['bad-metadata', 'PACKAGE_UNAPPROVED'], ['oversize-metadata', 'HTTP_SIZE'], ['redirect', 'REDIRECT_REJECTED']]) {
     f.state.mode = mode;
     await assert.rejects(f.download().download({ releaseId: 'full' }), code(expected));
   }
-  assert.ok(f.state.requests.every(request => request.url.endsWith('/manifest.json')));
+  assert.ok(f.state.requests.every((request: any) => request.url.endsWith('/manifest.json')));
   assert.equal((await f.installer().status()).state.current, null);
 });
 
 test('encoding, 404 and timeout do not report downloaded/installed success', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   for (const [mode, expected] of [['encoded', 'HTTP_ENCODING'], ['not-found', 'HTTP_STATUS'], ['timeout', 'HTTP_TIMEOUT']]) {
     f.state.mode = mode;
     await assert.rejects(f.download({ timeoutMs: 250 }).download({ releaseId: 'full' }), code(expected));
@@ -201,7 +201,7 @@ test('encoding, 404 and timeout do not report downloaded/installed success', asy
 });
 
 test('missing approvals and unapproved non-loopback HTTP sources cause zero network requests', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   f.policy.releases.full.approved = false;
   await assert.rejects(f.download().download({ releaseId: 'full' }), code('APPROVAL_REQUIRED'));
   f.policy.releases.full.approved = true;
@@ -212,7 +212,7 @@ test('missing approvals and unapproved non-loopback HTTP sources cause zero netw
 });
 
 test('download ENOSPC keeps installed resources and permits retry', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
   const files = new Map();
@@ -227,7 +227,7 @@ test('download ENOSPC keeps installed resources and permits retry', async t => {
 });
 
 test('download and installation share a lock; cancellation releases it without losing the old install', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   const old = await f.installer().install({ releaseId: 'base' });
   let entered: any;
   let resume;
@@ -247,7 +247,7 @@ test('download and installation share a lock; cancellation releases it without l
 });
 
 test('junction in download partial storage is rejected without writing artwork', async t => {
-  const f = await fixtureHttp(t);
+  const f: any = await fixtureHttp(t);
   await cancelPartial(f);
   const directory = path.join(f.download().root, 'downloads', f.policy.releases.full.packageIdentity);
   const parts = path.join(directory, 'parts');

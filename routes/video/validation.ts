@@ -76,7 +76,7 @@ function assertAdultAllowed(body: any, isLocal: boolean) {
 
 // isLocal 缺省视为本机：内部重放路径（分镜规划/批量重试重校验）不持 req，
 // 成人蓝图在 storyboard 层已 fail-closed，不受该缺省影响。
-function validateInput(body: unknown, config?: unknown, options?: { isLocal: boolean; }|undefined) {
+function validateInput(body: any, config?: unknown, options?: { isLocal: boolean; }|undefined) {
   let isLocal = !options || options.isLocal !== false;
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) {
@@ -337,7 +337,7 @@ let BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFra
 let BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'dialogueLang', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image', 'references']);
 let BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
 
-function validateBatchInput(body: unknown, config?: unknown) {
+function validateBatchInput(body: any, config?: unknown) {
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) {
     if (!BATCH_BODY_KEYS.has(key)) {

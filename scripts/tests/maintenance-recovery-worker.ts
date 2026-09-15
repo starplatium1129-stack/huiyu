@@ -40,7 +40,7 @@ if (lease) {
     io.atomicWrite(files[5], 'partial-compression');
     io.atomicWrite(files[7], 'DATA_VERSION = 999;');
     for (const file of options.additionalFiles || []) io.atomicWrite(file, 'partial-external-showcase', true);
-    } catch (error) {
+    } catch (error: any) {
       // A Windows reader can deny atomic replacement of its open file. Pause
       // before rollback so SIGKILL still exercises the real partial transaction.
       if (mode !== 'stream-race' || process.platform !== 'win32' || !['EPERM', 'EBUSY'].includes(runtimeErrorCode(error))

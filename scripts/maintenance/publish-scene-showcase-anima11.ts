@@ -201,7 +201,7 @@ function loadLoraVersions() {
 
 function buildSceneEntry(scene: any, record: any, review: any, loraVersions: any) {
   const seed = record.actualSeed ?? record.seed;
-  const meta = { engine: record.engine || 'anima', model: record.modelId, checkpoint: record.checkpoint };
+  const meta: any = { engine: record.engine || 'anima', model: record.modelId, checkpoint: record.checkpoint };
   if (record.loraId) {
     meta.loraId = record.loraId;
     meta.loraVersion = (loraVersions && loraVersions[record.loraId]) || '';
@@ -260,7 +260,7 @@ function buildManifest(scenes: any, sourceManifest: any, additions: any, context
     const rating = entry.rating === 'R15' || entry.rating === 'R18' ? entry.rating : 'All';
     counts[rating] += 1;
   }
-  const manifest = {
+  const manifest: any = {
     version: 4,
     source: context.sourceName,
     sourceAudit: sourceManifest.sourceAudit || '',

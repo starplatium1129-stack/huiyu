@@ -9,7 +9,7 @@ const installed = new WeakSet();
 // or release a verified immutable buffer to it when it runs upstream. writeHead and
 // flushHeaders must be deferred too, so an aborted read can replace the response.
 function maintenanceReadBarrier(options: unknown) {
-  return function barrier(req: { method: string; }, res: object, next: () => void) {
+  return function barrier(req: { method: string; }, res: any, next: () => void) {
     if (!['GET', 'HEAD'].includes(req.method) || installed.has(res)) return next();
     let token;
     try { token = maintenanceReadToken(options); }
@@ -20,7 +20,7 @@ function maintenanceReadBarrier(options: unknown) {
     if (res.headersSent) return res.destroy(new Error('维护读取屏障必须在响应头发出前挂载'));
     installed.add(res);
     const original = { write: res.write, end: res.end, writeHead: res.writeHead, flushHeaders: res.flushHeaders };
-    let chunks: readonly Uint8Array<ArrayBufferLike>[]|Buffer<unknown>[] = [];
+    let chunks: any = [];
     let size = 0;
     let bufferError: Error|null = null;
     let ended = false;

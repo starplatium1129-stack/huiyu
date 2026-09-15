@@ -238,7 +238,7 @@ function main(argv: any = process.argv.slice(2)) {
   const changed = plan.results.filter((item: any) => Object.keys(item.diff).length);
   console.log(`[apply-scene-patch] 补丁 ${entries.length} 条 | 实际变更 ${changed.length} | 源分片 ${plan.writes.length}`);
   for (const item of changed) console.log(JSON.stringify(item));
-  let outcome = { applied: false, outcome: args.apply ? 'planned' : 'dry-run' };
+  let outcome: any = { applied: false, outcome: args.apply ? 'planned' : 'dry-run' };
   const report = () => ({ createdAt: new Date().toISOString(), dryRun: !args.apply, entries: entries.length, changed: changed.length, results: plan.results, ...outcome,
     ...changeSetReport(plan, { sources, entries, pinned, derivedFiles, apply: args.apply, outcome }) });
   if (args.out) writeTextAtomic(path.resolve(args.out), jsonText(report()));

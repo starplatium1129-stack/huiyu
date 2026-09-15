@@ -168,8 +168,8 @@ function groupFileOrder(entry: { file: string; }, workingFiles: unknown[]|Map<un
   const base = groupPrefix(entry.file);
   const names = workingFiles ? [...workingFiles.keys()] : fs.readdirSync(shardsDir);
   const batch = names
-    .filter((name) => name.startsWith(base + '.') && /^\.\d+\.json$/.test(name.slice(base.length)))
-    .sort((a, b) => Number(a.slice(base.length + 1, -5)) - Number(b.slice(base.length + 1, -5)));
+    .filter((name: any) => name.startsWith(base + '.') && /^\.\d+\.json$/.test(name.slice(base.length)))
+    .sort((a: any, b: any) => Number(a.slice(base.length + 1, -5)) - Number(b.slice(base.length + 1, -5)));
   if (batch.length) return batch;
   return names.includes(entry.file) ? [entry.file] : [];
 }
@@ -182,7 +182,7 @@ function groupFileOrder(entry: { file: string; }, workingFiles: unknown[]|Map<un
  * @param {{ retiredIds?: Set<string>, planOnly?: boolean }} options 保存前已读出的退役 ID；planOnly 不写入
  * @returns {{ addedIds:string[], updatedIds:string[], removedIds:string[], touchedFiles:string[] }}
  */
-function applySceneChanges(incoming: unknown, previous: any, options?: any) {
+function applySceneChanges(incoming: any, previous: any, options?: any) {
   const integrity = verifyShardIntegrity();
   if (!integrity.ok) throw new Error('场景分片完整性检查失败: ' + integrity.problems.join('; '));
   const options_ = options || {};
@@ -216,7 +216,7 @@ function applySceneChanges(incoming: unknown, previous: any, options?: any) {
       touched.add(entry.file);
       return;
     }
-    const last = order[order.length - 1];
+    const last: any = order[order.length - 1];
     const lastScenes = working.get(last);
     if (lastScenes.length >= batchSize) {
       // 满批：单文件形态先升级为批次形态（内容原样搬进 .1），新场景进下一个批次

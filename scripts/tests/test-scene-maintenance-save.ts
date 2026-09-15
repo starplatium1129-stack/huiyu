@@ -450,7 +450,7 @@ test('validate-scenes 对坏核心精选夹具返回非零并指出字段、ID �
     // 坏值全部落在夹具副本上：重复项、退役 ID（sc148）、非字符串项
     curation.personaCoreSceneIds = [firstCoreId, 'sc148', firstCoreId, 42];
     fs.writeFileSync(curationPath, JSON.stringify(curation, null, 2) + '\n');
-    const bad = await runValidateScenes(fixtureRoot);
+    const bad: any = await runValidateScenes(fixtureRoot);
     assert.notEqual(bad.status, 0, '坏夹具必须返回非零：' + bad.output.slice(-800));
     assert.ok(bad.output.includes('personaCoreSceneIds'), '错误必须指出字段名：' + bad.output.slice(-800));
     assert.ok(bad.output.includes('sc148'), '错误必须指出退役 ID');
@@ -459,18 +459,18 @@ test('validate-scenes 对坏核心精选夹具返回非零并指出字段、ID �
     for (const invalid of [null, 'sc001', { id: 'sc001' }]) {
       curation.personaCoreSceneIds = invalid;
       fs.writeFileSync(curationPath, JSON.stringify(curation));
-      const invalidResult = await runValidateScenes(fixtureRoot);
+      const invalidResult: any = await runValidateScenes(fixtureRoot);
       assert.notEqual(invalidResult.status, 0);
       assert.ok(invalidResult.output.includes('personaCoreSceneIds must be an array'));
     }
     // 空数组与缺省保持兼容：两者都必须通过
     curation.personaCoreSceneIds = [];
     fs.writeFileSync(curationPath, JSON.stringify(curation, null, 2) + '\n');
-    const emptied = await runValidateScenes(fixtureRoot);
+    const emptied: any = await runValidateScenes(fixtureRoot);
     assert.equal(emptied.status, 0, '空数组必须保持兼容：' + emptied.output.slice(-800));
     delete curation.personaCoreSceneIds;
     fs.writeFileSync(curationPath, JSON.stringify(curation, null, 2) + '\n');
-    const absent = await runValidateScenes(fixtureRoot);
+    const absent: any = await runValidateScenes(fixtureRoot);
     assert.equal(absent.status, 0, '字段缺省必须保持兼容：' + absent.output.slice(-800));
   } finally {
     fs.rmSync(fixtureRoot, { recursive: true, force: true });

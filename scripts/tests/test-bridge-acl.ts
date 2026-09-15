@@ -42,7 +42,7 @@ function permissionIds(cap: any) {
   return new Set((cap.permissions || []).filter((p: string) => p.startsWith('allow-')));
 }
 
-function snakeToKebab(name: unknown) {
+function snakeToKebab(name: any) {
   return name.replace(/_/g, '-');
 }
 

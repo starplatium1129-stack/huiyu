@@ -23,7 +23,7 @@ test('neutral HTTP preview is zero-write; save updates source, products, compres
   const f = seed();
   const app = await start(f);
   try {
-    const before = tree(f.options.rootDir);
+    const before: any = tree(f.options.rootDir);
     const state = await app.request(stateUrl);
     assert.equal(state.status, 200, JSON.stringify(state.body));
     const delta = changes(f, state.body.version);

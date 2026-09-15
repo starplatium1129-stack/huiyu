@@ -23,7 +23,7 @@ const assert: typeof import('node:assert') = require('node:assert');
 const ROOT = path.resolve(__dirname, '../..');
 
 function read(relPath: any) {
-  const owners = {
+  const owners: any = {
     'src/views/GalleryView.vue': ['src/composables/gallery/useGalleryWorkspace.ts', 'src/composables/gallery/galleryMutations.ts'],
     'src/views/SceneExplorerView.vue': ['src/composables/scene/useSceneExplorerWorkspace.ts'],
   };

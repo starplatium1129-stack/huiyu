@@ -94,7 +94,7 @@ async function run() {
     assert.equal(comfyJob.provider, 'comfy');
     var comfyCalls = await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'));
     var comfyGraph = comfyCalls.calls.find(function (call: { path: string; }) { return call.path === '/prompt'; }).body.prompt;
-    assert.equal(Object.values(comfyGraph).filter(function (node) { return node && node.class_type === 'CLIPTextEncode' && String(node.inputs.text).includes('<lora:'); }).length, 0);
+    assert.equal(Object.values(comfyGraph).filter(function (node: any) { return node && node.class_type === 'CLIPTextEncode' && String(node.inputs.text).includes('<lora:'); }).length, 0);
     assert.equal((await fetch(base + '/prompt')).status, 404);
     assert.equal((await fetch(base + '/history/x')).status, 404);
     assert.equal((await fetch(base + '/view')).status, 404);
@@ -109,7 +109,7 @@ async function run() {
       assert.equal(hiresOfflineJob.metadata.hiresUpscaler, 'Remacri', 'Auto hires on Comfy resolves to Remacri super-res when installed');
      var hiresPrompts = await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'));
       var comfyHiresGraph = hiresPrompts.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).at(-1).body.prompt;
-      assert.equal(Object.values(comfyHiresGraph).some(function (node) { return node && node.class_type === 'UpscaleModelLoader'; }), true, 'Comfy hires graph must contain UpscaleModelLoader for super-res');
+      assert.equal(Object.values(comfyHiresGraph).some(function (node: any) { return node && node.class_type === 'UpscaleModelLoader'; }), true, 'Comfy hires graph must contain UpscaleModelLoader for super-res');
 
     var capabilityFallback = await post(base, Object.assign({}, requestBody, { sampler:'DPM++ SDE' }));
     assert.equal(capabilityFallback.status, 503);

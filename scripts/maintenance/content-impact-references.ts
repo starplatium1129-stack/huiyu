@@ -10,8 +10,8 @@ const { isDeepStrictEqual: equal }: typeof import('node:util') = require('node:u
 
 // Pure mirror contract. URL/pending/review and actual assets depend on other
 // writers and the filesystem; they are deliberately not inferred from prose.
-function compareReferenceProjection(standards: unknown, view: { [s: string]: unknown; }|ArrayLike<unknown>) {
-  const result = { file: 'data/character-reference-view.json', status: 'unknown', scope: 'reference-mirror-fields',
+function compareReferenceProjection(standards: any, view: any) {
+  const result: any = { file: 'data/character-reference-view.json', status: 'unknown', scope: 'reference-mirror-fields',
     sourceFiles: ['data/character-reference-standards.json'], issues: [],
     untracked: ['URL/fileName/pending/review and asset existence', 'popular-to-standards generation: hard-coded heroines, asset filtering and merge writers'] };
   const idRows = (rows: unknown[], key: string) => Array.isArray(rows) && rows.every((row: any) => object(row) && typeof row[key] === 'string' && row[key].trim())

@@ -65,7 +65,7 @@ async function application(f: any, position: string) {
       return new Promise((resolve, reject) => {
         const request = http.request({ hostname: '127.0.0.1', port: server.address().port, path: url, headers, method, agent: false }, response => {
           onResponse(response);
-          const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
+          const chunks: any = [];
           response.on('data', chunk => chunks.push(chunk));
           response.once('error', reject);
           response.once('end', () => resolve({ status: response.statusCode, headers: response.headers, body: Buffer.concat(chunks) }));
@@ -78,7 +78,7 @@ async function application(f: any, position: string) {
     async close() { finish.resolve(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); },
   };
 }
-function decode(response: unknown) {
+function decode(response: any) {
   if (response.headers['content-encoding'] === 'gzip') return zlib.gunzipSync(response.body);
   if (response.headers['content-encoding'] === 'br') return zlib.brotliDecompressSync(response.body);
   return response.body;
@@ -91,27 +91,27 @@ for (const position of ['before-compression', 'after-compression']) {
     try {
       const initial = tree(f.base);
       for (const [encoding, extension] of [['gzip', '.gz'], ['br', '.br']]) {
-        const response = await app.get(undefined, { 'accept-encoding': encoding });
+        const response: any = await app.get(undefined, { 'accept-encoding': encoding });
         assert.equal(response.status, 200);
         assert.equal(response.headers['content-encoding'], encoding);
         assert.deepEqual(response.body, io.fs.readFileSync(app.source + extension), 'serve the actual precompressed sibling');
         assert.deepEqual(decode(response), app.body);
-        const head = await app.get(undefined, { 'accept-encoding': encoding }, 'HEAD');
+        const head: any = await app.get(undefined, { 'accept-encoding': encoding }, 'HEAD');
         assert.equal(head.status, 200);
         assert.equal(head.body.length, 0);
       }
       assert.deepEqual(tree(f.base), initial, 'normal reads create no metadata');
       io.fs.unlinkSync(app.source + '.gz');
       io.fs.unlinkSync(app.source + '.br');
-      const dynamic = await app.get(undefined, { 'accept-encoding': 'gzip' });
+      const dynamic: any = await app.get(undefined, { 'accept-encoding': 'gzip' });
       assert.equal(dynamic.headers['content-encoding'], 'gzip');
       assert.deepEqual(decode(dynamic), app.body);
-      const plain = await app.get(undefined, { 'accept-encoding': 'identity' });
+      const plain: any = await app.get(undefined, { 'accept-encoding': 'identity' });
       assert.deepEqual(plain.body, app.body);
-      const cached = await app.get(undefined, { 'accept-encoding': 'identity', 'if-none-match': plain.headers.etag });
+      const cached: any = await app.get(undefined, { 'accept-encoding': 'identity', 'if-none-match': plain.headers.etag });
       assert.equal(cached.status, 304);
       assert.equal(cached.body.length, 0);
-      const range = await app.get(undefined, { 'accept-encoding': 'identity', range: 'bytes=0-15' });
+      const range: any = await app.get(undefined, { 'accept-encoding': 'identity', range: 'bytes=0-15' });
       assert.equal(range.status, 206);
       assert.deepEqual(range.body, app.body.subarray(0, 16));
       assert.match(range.headers['content-range'], /^bytes 0-15\//);
@@ -127,14 +127,14 @@ for (const position of ['before-compression', 'after-compression']) {
     try {
       let sent = false;
       const reading = app.get('/data/delayed.json', { 'accept-encoding': 'gzip' }, 'GET', () => { sent = true; });
-      const res = await app.started.promise;
+      const res: any = await app.started.promise;
       const lease = acquireMaintenanceLease(f.options);
       lease.release();
       await new Promise(resolve => setImmediate(resolve));
       assert.equal(sent, false, 'headers must remain private until the read fence passes');
       assert.equal(res.headersSent, false);
       app.finish.resolve();
-      const rejected = await reading;
+      const rejected: any = await reading;
       assert.equal(rejected.status, 409);
       assert.equal(rejected.headers['content-encoding'], undefined);
       assert.equal(rejected.headers.etag, undefined);
@@ -152,7 +152,7 @@ for (const position of ['before-compression', 'after-compression']) {
       const createReadStream = io.fs.createReadStream;
       const started = deferred();
       let paused: ReadStream;
-      let streamClosed;
+      let streamClosed: any;
       let worker;
       let reading;
       try {
@@ -181,22 +181,22 @@ for (const position of ['before-compression', 'after-compression']) {
           assert.ok(io.samePath(worker.message.writeBlocked.target, app.source + extension));
         }
         assert.equal(io.fs.readFileSync(f.files[0], 'utf8'), 'partial-source', 'real source writes precede the checkpoint, even when Windows blocks replacement of an open product');
-        const active = await app.get(undefined, { 'accept-encoding': 'gzip' });
+        const active: any = await app.get(undefined, { 'accept-encoding': 'gzip' });
         assert.equal(active.status, 409);
         assert.equal(JSON.parse(decode(active)).code, 'MAINTENANCE_BUSY');
         await worker.stop();
         assert.equal(sent, false, 'not even a success header is sent from the paused file');
         paused.resume();
-        const rejected = await reading;
+        const rejected: any = await reading;
         await streamClosed;
         assert.equal(rejected.status, 409);
         assert.equal(rejected.headers['content-encoding'], undefined, 'discard compressed chunks and old encoding together');
         assert.equal(JSON.parse(rejected.body).code, 'MAINTENANCE_RECOVERY_REQUIRED');
-        const stale = await app.get(undefined, { 'accept-encoding': 'gzip' });
+        const stale: any = await app.get(undefined, { 'accept-encoding': 'gzip' });
         assert.equal(stale.status, 409);
         assert.equal(applyMaintenanceRecovery(f.options, previewMaintenanceRecovery(f.options)).ok, true);
         assert.deepEqual(tree(f.options.rootDir, true), original);
-        const recovered = await app.get(undefined, { 'accept-encoding': encoding });
+        const recovered: any = await app.get(undefined, { 'accept-encoding': encoding });
         assert.equal(recovered.status, 200);
         assert.deepEqual(decode(recovered), app.body);
       } finally {
@@ -242,7 +242,7 @@ test('actual gateway early barrier protects gzip/br and showcase across a real w
     });
     const request = (url: string, encoding: string, headers = {}) => new Promise((resolve, reject) => {
       const req = http.get(stack.baseUrl + url, { agent: false, headers: { 'accept-encoding': encoding, ...headers } }, res => {
-        const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
+        const chunks: any = [];
         res.on('data', chunk => chunks.push(chunk));
         res.once('error', reject);
         res.once('end', () => resolve({ status: res.statusCode, headers: res.headers, body: Buffer.concat(chunks) }));
@@ -251,7 +251,7 @@ test('actual gateway early barrier protects gzip/br and showcase across a real w
       req.once('error', reject);
     });
     for (const encoding of ['identity', 'gzip', 'br']) {
-      const response = await request('/data/scenes.json', encoding);
+      const response: any = await request('/data/scenes.json', encoding);
       assert.equal(response.status, 200);
       assert.deepEqual(decode(response), body);
       if (encoding !== 'identity') assert.deepEqual(response.body, io.fs.readFileSync(encoding === 'gzip' ? f.files[5] : f.files[6]));
@@ -263,14 +263,14 @@ test('actual gateway early barrier protects gzip/br and showcase across a real w
     assert.equal(worker.message.status, 'ready');
     assert.equal((await request('/data/scenes.json', 'gzip', { Host: 'evil.invalid' })).status, 421, 'host authorization remains ahead of the barrier');
     for (const encoding of ['identity', 'gzip', 'br']) {
-      const response = await request('/data/scenes.json', encoding);
+      const response: any = await request('/data/scenes.json', encoding);
       assert.equal(response.status, 409);
       assert.equal(JSON.parse(decode(response)).code, 'MAINTENANCE_BUSY');
     }
     assert.equal((await request('/scene-showcase/images/sc001.jpg', 'identity')).status, 409);
     await worker.stop();
     for (const encoding of ['identity', 'gzip', 'br']) {
-      const response = await request('/data/scenes.json', encoding);
+      const response: any = await request('/data/scenes.json', encoding);
       assert.equal(response.status, 409);
       assert.equal(JSON.parse(decode(response)).code, 'MAINTENANCE_RECOVERY_REQUIRED');
     }

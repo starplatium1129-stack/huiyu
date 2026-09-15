@@ -110,7 +110,7 @@ function waiSize(scene: any) {
 }
 function animaProfileFor(loraId: any) {
   const base = profileById(ANIMA_PROFILE_ID);
-  const contract = loraById(loraId).prompt_contract || {};
+  const contract: any = loraById(loraId).prompt_contract || {};
   return Object.assign({}, base, {
     exact_tokens: [...new Set([...(base.exact_tokens || []), ...(contract.exact_tokens || [])])],
     exact_prefixes: [...new Set([...(base.exact_prefixes || []), ...(contract.exact_prefixes || [])])],
@@ -241,7 +241,7 @@ function planScenes(selectedScenes: any, attempt: any, seedAttempt: any = attemp
       candidates.push(scene.char === 'triad'
         ? buildDualCandidate(scene, attempt, seedAttempt)
         : buildAnimaCandidate(scene, attempt, seedAttempt));
-    } catch (error) {
+    } catch (error: any) {
       const message = String((error && error.message) || error);
       skipped.push({ sceneId: scene.id, title: scene.title, reason: message });
       console.warn(`[scene-showcase-candidates] 跳过场景 ${scene.id}（${scene.title}）：${message}`);
@@ -302,7 +302,7 @@ async function gatewayJson(base: any, pathname: any, options: any) {
 }
 function buildSubmissionBody(candidate: any) {
   const anima = candidate.engine === 'anima';
-  const body = {
+  const body: any = {
     prompt: candidate.prompt, negative: candidate.negative,
     modelId: candidate.modelId, width: candidate.width, height: candidate.height,
     steps: candidate.steps, cfg: candidate.cfg, seed: candidate.seed,
@@ -391,7 +391,7 @@ async function main() {
   let failed = 0;
   for (const candidate of planned) {
     if (generated + reused >= limit) break;
-    const previous = records.get(candidate.recordId);
+    const previous: any = records.get(candidate.recordId);
     const imageRel = `images/${candidate.sceneId}/attempt-${attempt}.png`;
     const imageFile = path.join(output, imageRel.split('/').join(path.sep));
     if (!force && previous?.status === 'succeeded' && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {

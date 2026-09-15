@@ -56,7 +56,7 @@ function assertRegisteredLocalStorageWrites() {
   assert.deepStrictEqual(unknown, [], 'every literal aics_* localStorage write must be registered');
 }
 
-function createArtworkFixture(failure = {}) {
+function createArtworkFixture(failure: any = {}) {
   const history = [
     { id: 1, image_id: 'img_1', prompt: 'one' },
     { id: 2, image_id: 'img_2', prompt: 'two' },

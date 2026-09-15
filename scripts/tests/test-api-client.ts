@@ -214,7 +214,7 @@ test('generation API timeout baselines keep status/job probes short and creation
 });
 
 test('translate caller abort maps to aborted and passes the caller signal through', async () => {
-  let requestSignal;
+  let requestSignal: any;
   const client = createApiClient(async (_url, init) => {
     requestSignal = init.signal;
     return new Promise((_resolve, reject) => {
@@ -416,7 +416,7 @@ test('client merges JSON headers and does not add content type to GET', async ()
 test('client removes the caller listener and clears its timeout after success', async () => {
   let addCount = 0;
   let removeCount = 0;
-  let requestSignal;
+  let requestSignal: any;
   const callerSignal = {
     aborted: false,
     addEventListener(event: unknown, listener: unknown) {
@@ -491,7 +491,7 @@ test('maintenanceApi requires an atomic content snapshot and supports exhausted 
 });
 
 test('useControlActions.doStart stops after a real config API failure', async () => {
-  const calls: unknown = [];
+  const calls: any = [];
   const toasts: { message: string; isError: boolean|undefined; }[] = [];
   let startedPolling = 0;
   let statusPolls = 0;
@@ -565,8 +565,8 @@ test('useControlStatus stopPolling aborts isolated in-flight status and logs req
     status.stopPolling();
   }
   await Promise.resolve();
-  assert.equal(statusSignals.every(signal => signal.aborted), true);
-  assert.equal(logSignals.every(signal => signal.aborted), true);
+  assert.equal(statusSignals.every((signal: any) => signal.aborted), true);
+  assert.equal(logSignals.every((signal: any) => signal.aborted), true);
 });
 
 test('useControlStatus aborts older same-kind requests and clears protected stale data', async () => {

@@ -29,7 +29,7 @@ function buildH3T8Workflow(input: any) {
       : input.image ? 'I2VA'
         : input.lastFrame ? 'L2VA'
           : 'T2VA';
-  let graph = {
+  let graph: any = {
     '1': { class_type:'UNETLoader', inputs:{
       unet_name:'minimax_h3_fl2va_pruned_int8_convrot.safetensors',
       weight_dtype:'default',
@@ -132,7 +132,7 @@ function buildH3T8Workflow(input: any) {
 // 20 步 → 8 步蒸馏采样（官方推荐 8 或 4 步）。SaveVideo 固定在节点 11，
 // 与任务结果读取（outputs['11'].videos）契约一致。
 function buildH3Workflow(input: any) {
-  let graph = {
+  let graph: any = {
     '1': { class_type:'UNETLoader', inputs:{
       unet_name:'minimax_h3_fl2va_pruned_int8_convrot.safetensors',
       weight_dtype:'default',

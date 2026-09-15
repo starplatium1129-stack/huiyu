@@ -187,10 +187,10 @@ test('bounded transports reject partial responses and enforce a total deadline',
   const base = await listen(server);
   try {
     await assert.rejects(health.requestJson(base, '/partial', null, 500), /aborted|reset|hang up/i);
-    await assert.rejects(comfy.requestComfy({ COMFY_HOST:base }, 'GET', '/partial', null, 500), error => error.code === 'COMFY_UNAVAILABLE');
+    await assert.rejects(comfy.requestComfy({ COMFY_HOST:base }, 'GET', '/partial', null, 500), (error: any) => error.code === 'COMFY_UNAVAILABLE');
     const start = Date.now();
     await assert.rejects(health.requestJson(base, '/trickle', null, 90), /timeout/);
-    await assert.rejects(comfy.requestComfy({ COMFY_HOST:base }, 'GET', '/trickle', null, 90), error => error.code === 'COMFY_TIMEOUT');
+    await assert.rejects(comfy.requestComfy({ COMFY_HOST:base }, 'GET', '/trickle', null, 90), (error: any) => error.code === 'COMFY_TIMEOUT');
     assert.ok(Date.now() - start < 1500, 'trickled data must not keep a probe pending indefinitely');
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
 });

@@ -15,7 +15,7 @@ async function main() {
       const interval = setInterval(() => {}, 1000);
       try { await new Promise(() => {}); } finally { clearInterval(interval); }
     } };
-  const resource = action === 'download' ? createResourceDownloader(options) : createResourceInstaller(options);
+  const resource: any = action === 'download' ? createResourceDownloader(options) : createResourceInstaller(options);
   await resource[action]({ releaseId });
 }
 if (require.main === module && process.argv[2]) main().catch(error => {

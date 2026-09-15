@@ -22,7 +22,7 @@ function request(method: string, pathname: string|URL, payload: { voice: string;
         'Content-Length': Buffer.byteLength(body),
       },
     }, (response: any) => {
-      const chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
+      const chunks: any = [];
       response.on('data', (chunk: any) => chunks.push(chunk));
       response.on('end', () => resolve({ status: response.statusCode, body: Buffer.concat(chunks) }));
     });

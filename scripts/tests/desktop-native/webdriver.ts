@@ -72,7 +72,7 @@ class WebDriverSession {
   }
 
   async command(method: any, suffix: any, body?: any, timeoutMs?: any) {
-    const response = await requestJson(this.port, method, this.endpoint(suffix), body, timeoutMs)
+    const response: any = await requestJson(this.port, method, this.endpoint(suffix), body, timeoutMs)
     return response?.value
   }
 
@@ -127,7 +127,7 @@ return await window.__TAURI__.core.invoke(command, payload)
     return filePath
   }
 
-  async waitFor(description: any, predicateBody: any, args = [], options = {}) {
+  async waitFor(description: any, predicateBody: any, args = [], options: any = {}) {
     const timeoutMs = options.timeoutMs || 30_000
     const intervalMs = options.intervalMs || 100
     const started = Date.now()
@@ -205,7 +205,7 @@ class TauriDriver {
         additionalBrowserArguments: ['--autoplay-policy=no-user-gesture-required'],
       },
     }
-    const response = await requestJson(this.port, 'POST', '/session', {
+    const response: any = await requestJson(this.port, 'POST', '/session', {
       capabilities: {
         alwaysMatch: {
           browserName: 'wry',

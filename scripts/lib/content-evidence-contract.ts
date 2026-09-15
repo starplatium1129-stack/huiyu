@@ -5,7 +5,7 @@ const UUID = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/;
 const STATES = ['planned', 'succeeded', 'failed', 'invalid-asset', 'interrupted', 'submission-unknown', 'recoverable', 'submitting', 'submitted', 'running', 'downloading'];
 // Exact metadata insertion order in the three current generation adapters.
 // Unknown generators keep version derivation unknown; never execute their recipe.
-const METADATA = {
+const METADATA: any = {
   'render-all-outfits-references.js': ['batch', 'engine', 'characterId', 'charName', 'outfitId', 'outfitName', 'persId', 'persName', 'intendedReferencePath'],
   'render-showcase-gaps.js': ['batch', 'engine', 'characterId', 'blueprintId', 'blueprintTitle', 'outfitId', 'title', 'story', 'category', 'displayName', 'rating', 'adult', 'intendedEntryId', 'sourceManifest'],
   'generate-all-scenes-showcase-miaomiao.js': ['batch', 'engine', 'characterId', 'blueprintId', 'blueprintTitle', 'sceneId', 'outfitId', 'adult', 'title', 'story', 'category', 'rating', 'checkpoint', 'intendedEntryId'],
@@ -30,7 +30,7 @@ function validateRecord(record: any, marker: any) {
     || !SHA.test(record.asset.sha256) || !Number.isSafeInteger(record.asset.bytes) || record.asset.bytes <= 0)) throw new Error('Invalid candidate asset evidence');
 }
 
-function inputVersion(record: object) {
+function inputVersion(record: any) {
   const keys = Object.hasOwn(METADATA, record.generator) ? METADATA[record.generator] : null;
   if (!keys) return { status: 'unknown', reason: 'Generator metadata mapping is not implemented' };
   const metadata = Object.fromEntries(keys.filter((key: PropertyKey) => Object.hasOwn(record, key)).map((key: string|number) => [key, record[key]]));

@@ -45,7 +45,7 @@ function main(args: any = process.argv.slice(2)) {
   let opts: any;
   try { opts = parse(args); } catch (error) { console.log(JSON.stringify({ error: runtimeErrorMessage(error), exitCode: 2 })); return 2; }
   if (opts.help) { console.log(HELP); return 0; }
-  const result = auditContentEvidence(opts);
+  const result: any = auditContentEvidence(opts);
   console.log(opts.json ? JSON.stringify(result, null, 2) : [
     `Candidate evidence: ${result.status}; structure=${result.structure.status}`,
     ...result.items.map((item: any) => `${item.key}: source=${item.source.status}; payload=${item.payload.status}; file=${item.asset.status}; review=${item.review.status}; publication=${item.publication.status}`),

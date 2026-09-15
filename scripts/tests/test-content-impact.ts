@@ -708,7 +708,7 @@ test('G8 超长列表截断并注明剩余数量与 --json 入口', () => {
   assert.equal(Number(note[1]), 100 - shown);
 });
 test('G8 异常兜底：非对象报告与怪异条目不抛错、不冒充可读结果', () => {
-  const circular = {}; circular.self = circular;
+  const circular: any = {}; circular.self = circular;
   for (const input of [null, undefined, 42, 'x', []]) {
     const out = formatImpactReport(input);
     assert.equal(typeof out, 'string');

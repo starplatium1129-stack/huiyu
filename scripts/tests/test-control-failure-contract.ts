@@ -146,7 +146,7 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     var startedVoice = await postJson(controlBase, '/api/service/voice', { action:'start' });
     assert(startedVoice.status === 200 && startedVoice.json && startedVoice.json.pending,
       'voice start must acknowledge the asynchronous control operation');
-    var failedVoice = await waitFor(async function () {
+    var failedVoice: any = await waitFor(async function () {
       var status = await getJson(controlBase, '/api/status');
       return status.json.operation && status.json.operation.status === 'failed' ? status.json.operation : null;
     }, 'voice startup timeout failure');
@@ -180,7 +180,7 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
 
     weightMock.state.rejectGpt = false;
     await tts.prepare('nene');
-    var sovitsRequests = weightMock.state.paths.filter(function (pathname) {
+    var sovitsRequests = weightMock.state.paths.filter(function (pathname: any) {
       return pathname.startsWith('/set_sovits_weights');
     });
     assert.strictEqual(sovitsRequests.length, 2,
@@ -277,7 +277,7 @@ test('control contract: ComfyUI start/stop uses managed ownership and shared ope
     var start = await postJson(base, '/api/service/comfy', { action:'start' });
     assert.strictEqual(start.status, 200);
     assert.strictEqual(start.json.pending, true);
-    var ready = await waitFor(async function () {
+    var ready: any = await waitFor(async function () {
       var status = await getJson(base, '/api/status');
       return status.json.operation && status.json.operation.status === 'completed' ? status.json : null;
     }, 'mock ComfyUI start');
@@ -286,7 +286,7 @@ test('control contract: ComfyUI start/stop uses managed ownership and shared ope
     assert.ok(calls[0].args.includes('-AIWorkspaceRoot') && calls[0].args.includes('-RuntimeRoot'));
     var stop = await postJson(base, '/api/service/comfy', { action:'stop' });
     assert.strictEqual(stop.status, 200);
-    var stopped = await waitFor(async function () {
+    var stopped: any = await waitFor(async function () {
       var status = await getJson(base, '/api/status');
       return status.json.operation && status.json.operation.status === 'completed' ? status.json : null;
     }, 'mock ComfyUI stop');
@@ -401,10 +401,10 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
     });
   }
   try {
-    var status = await invoke('Status');
+    var status: any = await invoke('Status');
     assert.strictEqual(status.state, 'external-running');
     assert.strictEqual(status.managed, false);
-    var stopped = await invoke('Stop');
+    var stopped: any = await invoke('Stop');
     assert.strictEqual(stopped.state, 'external-or-stopped');
     assert.strictEqual(stopped.managed, false);
     var stillUp = await getJson(base, '/system_stats');
@@ -417,7 +417,7 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
 
 test('managed-comfyui Stop closes a recognized externally started ComfyUI', WINDOWS_POWERSHELL_TEST, async () => {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-stop-'));
-  var fake = await startFakeService({ entryName:'main.py', healthPath:'/system_stats' });
+  var fake: any = await startFakeService({ entryName:'main.py', healthPath:'/system_stats' });
   var base = 'http://127.0.0.1:' + fake.port;
   function invoke(action: string) {
     return new Promise(function (resolve, reject) {
@@ -431,9 +431,9 @@ test('managed-comfyui Stop closes a recognized externally started ComfyUI', WIND
     });
   }
   try {
-    var status = await invoke('Status');
+    var status: any = await invoke('Status');
     assert.strictEqual(status.state, 'external-running');
-    var stopped = await invoke('Stop');
+    var stopped: any = await invoke('Stop');
     assert.strictEqual(stopped.state, 'stopped');
     assert.strictEqual(stopped.managed, false);
     await waitForExit(fake.child);
@@ -448,7 +448,7 @@ test('managed-comfyui Stop closes a recognized externally started ComfyUI', WIND
 
 test('managed-webui Stop closes a recognized externally started reForge', WINDOWS_POWERSHELL_TEST, async () => {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-webui-stop-'));
-  var fake = await startFakeService({ entryName:'launch.py', healthPath:'/sdapi/v1/sd-models' });
+  var fake: any = await startFakeService({ entryName:'launch.py', healthPath:'/sdapi/v1/sd-models' });
   var base = 'http://127.0.0.1:' + fake.port;
   function invoke(action: string) {
     return new Promise(function (resolve, reject) {
@@ -463,9 +463,9 @@ test('managed-webui Stop closes a recognized externally started reForge', WINDOW
     });
   }
   try {
-    var status = await invoke('Status');
+    var status: any = await invoke('Status');
     assert.strictEqual(status.state, 'external-running');
-    var stopped = await invoke('Stop');
+    var stopped: any = await invoke('Stop');
     assert.strictEqual(stopped.state, 'stopped');
     assert.strictEqual(stopped.managed, false);
     await waitForExit(fake.child);

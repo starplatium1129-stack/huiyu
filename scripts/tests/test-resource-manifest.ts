@@ -138,21 +138,21 @@ test('校验发现文件缺失与字节/哈希不匹配', (t) => {
   const fx = buildFixture(t);
   const manifest = generateManifest({ root: fx.root });
   const wrongSize = { ...manifest, entries: manifest.entries.map((e) => (e.path === 'assets/alpha.txt' ? { ...e, bytes: 99 } : e)) };
-  const sizeError = verifyManifestEntries({ root: fx.root, manifest: wrongSize }).errors.find((e) => e.code === 'size-mismatch');
+  const sizeError: any = verifyManifestEntries({ root: fx.root, manifest: wrongSize }).errors.find((e: any) => e.code === 'size-mismatch');
   assert.equal(sizeError.path, 'assets/alpha.txt');
   assert.equal(sizeError.expected, 99);
   assert.equal(sizeError.actual, 1);
 
   const wrongHash = { ...manifest, entries: manifest.entries.map((e) => (e.path === 'assets/alpha.txt' ? { ...e, sha256: 'f'.repeat(64) } : e)) };
-  const hashError = verifyManifestEntries({ root: fx.root, manifest: wrongHash }).errors.find((e) => e.code === 'hash-mismatch');
+  const hashError: any = verifyManifestEntries({ root: fx.root, manifest: wrongHash }).errors.find((e: any) => e.code === 'hash-mismatch');
   assert.equal(hashError.path, 'assets/alpha.txt');
   assert.equal(hashError.actual, sha256('A'));
 
   fs.unlinkSync(path.join(fx.root, 'assets/alpha.txt'));
   const result = verifyManifestEntries({ root: fx.root, manifest });
-  const missing = result.errors.find((e) => e.code === 'missing');
+  const missing: any = result.errors.find((e: any) => e.code === 'missing');
   assert.equal(missing.path, 'assets/alpha.txt');
-  assert.ok(result.errors.every((e) => e.code !== 'hash-mismatch'));
+  assert.ok(result.errors.every((e: any) => e.code !== 'hash-mismatch'));
 });
 
 test('重复路径被拒绝且该路径计入失败', (t) => {
@@ -161,7 +161,7 @@ test('重复路径被拒绝且该路径计入失败', (t) => {
   const duplicated = { ...manifest, entries: [...manifest.entries, manifest.entries[0]] };
   const result = verifyManifestEntries({ root: fx.root, manifest: duplicated });
   assert.equal(result.ok, false);
-  const dup = result.errors.find((e) => e.code === 'duplicate-path');
+  const dup: any = result.errors.find((e: any) => e.code === 'duplicate-path');
   assert.equal(dup.path, 'assets/alpha.txt');
   assert.equal(result.totals.listed, 5);
   assert.equal(result.totals.uniquePaths, 4);
@@ -192,8 +192,8 @@ test('编码与原始越界路径先于 fs 访问被拒绝，不返回任何文�
   const result = verifyManifestEntries({ root: fx.root, manifest, io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.length >= cases.length);
-  assert.ok(result.errors.every((e) => ['illegal-path', 'out-of-scope'].includes(e.code)));
-  assert.ok(result.errors.every((e) => e.actual === undefined));
+  assert.ok(result.errors.every((e: any) => ['illegal-path', 'out-of-scope'].includes(e.code)));
+  assert.ok(result.errors.every((e: any) => e.actual === undefined));
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
   assert.ok(calls.every((c: any) => c.op !== 'readFileSync'), '越界用例不得读取任何文件内容');
 });
@@ -206,7 +206,7 @@ test('junction 越界在校验中被拒且不读取链接目标', (t) => {
   const before = snapshot(fx.outside);
   const { io, calls } = recordingFs();
   const result = verifyManifestEntries({ root: fx.root, manifest, io });
-  const err = result.errors.find((e) => e.code === 'realpath-outside-root');
+  const err: any = result.errors.find((e: any) => e.code === 'realpath-outside-root');
   assert.ok(err, JSON.stringify(result.errors));
   assert.equal(err.path, 'assets/lnk/secret.txt');
   assert.ok(!('actual' in err) && !('expected' in err));
@@ -242,7 +242,7 @@ test('不支持 schemaVersion、坏条目与坏 JSON 不得无条件成功', (t)
   const badEntries = verifyManifestEntries({ root: fx.root, manifest: { schemaVersion: 1, entries: 'nope' } });
   assert.equal(badEntries.errors[0].code, 'bad-manifest');
   const badField = verifyManifestEntries({ root: fx.root, manifest: { schemaVersion: 1, entries: [{ path: 'assets/alpha.txt', bytes: '1', sha256: 'zz' }] } });
-  assert.ok(badField.errors.some((e) => e.code === 'bad-entry'));
+  assert.ok(badField.errors.some((e: any) => e.code === 'bad-entry'));
   assert.equal(badField.totals.verified, 0);
 
   fs.mkdirSync(path.join(fx.root, 'artifacts'), { recursive: true });
@@ -345,7 +345,7 @@ test('Windows 大小写别名不能重复计为已核验资源', { skip: process
   assert.equal(result.ok, false);
   assert.equal(result.totals.verified, 0);
   assert.equal(result.totals.failedPaths, 2);
-  assert.ok(result.errors.every((e) => e.code === 'duplicate-path'));
+  assert.ok(result.errors.every((e: any) => e.code === 'duplicate-path'));
 });
 
 // ——— G7：资源清单差异比较 ———
@@ -361,14 +361,14 @@ function ent(rel: any, content: any) {
 test('G7 纯比较：新增/移除/改变/未改变按路径稳定输出，输入乱序不影响结果', () => {
   const oldEntries = [ent('assets/a.txt', 'A'), ent('assets/c.txt', 'C3'), ent('assets/dir/b.bin', 'BB'), ent('assets/gone.txt', 'GGGG')];
   const newEntries = [ent('assets/a.txt', 'A'), ent('assets/c.txt', 'CCCCCCCC'), ent('assets/dir/b.bin', 'BX'), ent('assets/new.txt', 'N')];
-  const result = compareManifests({ oldManifest: manifestOf(oldEntries), newManifest: manifestOf(newEntries) });
+  const result: any = compareManifests({ oldManifest: manifestOf(oldEntries), newManifest: manifestOf(newEntries) });
   assert.equal(result.kind, 'resource-manifest-diff');
   assert.equal(result.ok, true);
   assert.equal(result.identical, false);
   assert.deepEqual(result.totals, { added: 1, removed: 1, changed: 2, unchanged: 1 });
   assert.deepEqual(result.added, [newEntries[3]]);
   assert.deepEqual(result.removed, [oldEntries[3]]);
-  assert.deepEqual(result.changed.map((e) => e.path), ['assets/c.txt', 'assets/dir/b.bin']);
+  assert.deepEqual(result.changed.map((e: any) => e.path), ['assets/c.txt', 'assets/dir/b.bin']);
   assert.deepEqual(result.changed[0].before, { bytes: 2, sha256: sha256('C3') });
   assert.deepEqual(result.changed[0].after, { bytes: 8, sha256: sha256('CCCCCCCC') });
   assert.equal(result.changed[1].before.bytes, result.changed[1].after.bytes, '同大小改哈希也算内容改变');
@@ -431,7 +431,7 @@ test('G7 纯比较：结构错误阻止差异计算并标明来源清单', () =>
     ['old', manifestOf([{ path: 'assets/..\\evil.txt', bytes: 1, sha256: sha256('A') }]), 'illegal-path'],
   ];
   for (const [side, bad, code] of cases) {
-    const result = compareManifests({ oldManifest: side === 'old' ? bad : good, newManifest: side === 'new' ? bad : good });
+    const result: any = compareManifests({ oldManifest: side === 'old' ? bad : good, newManifest: side === 'new' ? bad : good });
     assert.equal(result.ok, false, code);
     const err = result.errors.find((e: any) => e.code === code);
     assert.ok(err, `${code} 应出现: ${JSON.stringify(result.errors)}`);
@@ -445,7 +445,7 @@ test('G7 纯比较：非空 unverified 保留已列条目差异但不构成完�
   const entries = [ent('assets/a.txt', 'A')];
   const unverifiedOld = manifestOf(entries, { unverified: [{ path: 'assets/link', kind: 'symlink', message: '不跟随' }] });
   const plain = manifestOf(entries);
-  const sameListed = compareManifests({ oldManifest: unverifiedOld, newManifest: plain });
+  const sameListed: any = compareManifests({ oldManifest: unverifiedOld, newManifest: plain });
   assert.equal(sameListed.ok, false);
   const unv = sameListed.errors.find((e: any) => e.code === 'unverified-items');
   assert.ok(unv);
@@ -476,14 +476,14 @@ test('G7 文件级比较：只读取两份指定清单，不访问实际资产�
   const newJson = fs.readFileSync(newFile, 'utf8');
 
   const { io, calls } = recordingFs();
-  const result = compareManifestFiles({ root: fx.root, manifestPath: oldFile, compareManifestPath: newFile, io });
+  const result: any = compareManifestFiles({ root: fx.root, manifestPath: oldFile, compareManifestPath: newFile, io });
   assert.equal(result.kind, 'resource-manifest-diff');
   assert.equal(result.ok, true);
   assert.equal(result.oldManifestPath, 'artifacts/diff-old.json');
   assert.equal(result.newManifestPath, 'artifacts/diff-new.json');
   assert.deepEqual(result.totals, { added: 0, removed: 1, changed: 1, unchanged: 2 });
-  assert.deepEqual(result.removed.map((e) => e.path), ['assets/alpha.txt']);
-  assert.deepEqual(result.changed.map((e) => e.path), ['assets/dir/bravo.bin']);
+  assert.deepEqual(result.removed.map((e: any) => e.path), ['assets/alpha.txt']);
+  assert.deepEqual(result.changed.map((e: any) => e.path), ['assets/dir/bravo.bin']);
   assert.equal(result.changed[0].after.sha256, sha256('changed!'));
 
   const rootReal = fs.realpathSync(fx.root);

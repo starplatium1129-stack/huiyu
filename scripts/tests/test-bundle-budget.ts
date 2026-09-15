@@ -59,7 +59,7 @@ assert.strictEqual(passing.routes.find(route => route.route === 'PromptBuilderVi
 
 // 2026-09-06 审计 P2-03：静态闭包 = 自身 + 静态 imports 去重求和；无 imports 的
 // 路由闭包等于自身，命名块（无 src）与 src 路由走同一套口径。
-const chatView = passing.routes.find(route => route.route === 'ChatView');
+const chatView: any = passing.routes.find(route => route.route === 'ChatView');
 assert.strictEqual(chatView.closureJavaScript, (80 + 300) * 1024, 'closure must include statically imported shared chunks');
 assert.strictEqual(passing.routes.find(route => route.route === 'HomeView').closureJavaScript, 40 * 1024);
 

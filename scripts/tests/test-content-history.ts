@@ -233,7 +233,7 @@ test('clean filters/external diff hooks cannot execute; Git commands have safe e
   const before = snapshot(f.root);
   const result = run(f);
   assert.equal(result.gitHistory.status, 'compared');
-  assert.ok(commands.find((args) => args.includes('diff')).includes('filter.fixture.clean='));
+  assert.ok(commands.find((args: any) => args.includes('diff')).includes('filter.fixture.clean='));
   assert.equal(fs.existsSync(path.join(f.root, 'FILTER_RAN')), false);
   assert.deepEqual(snapshot(f.root), before);
 });

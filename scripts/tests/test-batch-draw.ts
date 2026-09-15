@@ -90,7 +90,7 @@ test('cancel：当前张完成后停止，剩余任务标记 cancelled', async (
 });
 
 test('随机 seed（-1）逐张保持随机不锁定', async () => {
-  const seeds: unknown = [];
+  const seeds: any = [];
   const batch = useBatchDraw({
     run: async (input) => { seeds.push(input.seed); return { ok: true }; },
   });
@@ -117,7 +117,7 @@ test('running 中重复 start 被拒绝', async () => {
 });
 
 test('runner 回传 resultUrl 时落到任务上，reset 释放', async () => {
-  const revoked: unknown = [];
+  const revoked: any = [];
   const originalRevoke = URL.revokeObjectURL;
   URL.revokeObjectURL = (url) => { revoked.push(url); };
   try {
@@ -161,7 +161,7 @@ test('retryFailed 只重跑失败/已取消张，seed 与候选序号原样保�
   assert.equal(batch.progress.value.succeeded, 3);
   assert.equal(batch.progress.value.failed, 0);
   // 最后一次调用应是失败张的原样重放：scene-0 / seed 2000 / 候选 1
-  const last = calls[calls.length - 1];
+  const last: any = calls[calls.length - 1];
   assert.deepEqual(
     { id: last.sceneId, seed: last.seed, variant: last.variant },
     { id: 'scene-0', seed: 2000, variant: 1 },
@@ -207,7 +207,7 @@ test('执行中状态响应式更新；不能 reset 绕过并发保护', async (
 
 test('重试使用初次任务素材而非修改后的目录', async () => {
   let attempt = 0;
-  const texts: unknown = [];
+  const texts: any = [];
   const items = scenes(1);
   const batch = useBatchDraw({ run: async input => { texts.push(input.scene.prose); return { ok: ++attempt > 1 }; } });
   await batch.start(items, 1, 42);
@@ -227,7 +227,7 @@ test('取消不宣称全部入册，并保留未执行计数', async () => {
 
 test('销毁后不启动下一张，晚到的预览被释放', async () => {
   let release;
-  const revoked: unknown = [];
+  const revoked: any = [];
   const previous = URL.revokeObjectURL;
   URL.revokeObjectURL = url => revoked.push(url);
   try {

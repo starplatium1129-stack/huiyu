@@ -67,7 +67,7 @@ function recordEquality(snapshots: { [x: string]: unknown; }, keys: Set<unknown>
     const [kind, , id] = JSON.parse(key);
     const domain = { blueprint: 'blueprints', scene: 'scenes', character: 'popular', outfit: 'popular' }[kind];
     if (!domain) { unknown.push(`${key}: no record projection predicate`); continue; }
-    const snapshot = snapshots[domain];
+    const snapshot: any = snapshots[domain];
     if (!snapshot?.complete) { unknown.push(`${key}: incomplete source/derived index`); continue; }
     const source = snapshot.rows.filter((row: any) => row.role === 'source' && row.key === key);
     if (source.length !== 1) { issues.push({ key, reason: 'Source identity is absent or ambiguous' }); continue; }

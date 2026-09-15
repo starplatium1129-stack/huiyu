@@ -2,7 +2,7 @@
 
 import { PathLike } from 'node:fs';
 
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const { fork }: typeof import('node:child_process') = require('node:child_process');
 const { fs, path, assert, write, json, snapshot, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
 const { killAt }: typeof import('./resource-install-process') = require('./resource-install-process');
@@ -55,8 +55,8 @@ createResourceInstaller({...config, access:{isLocalStudioHost:()=>true,isAuthori
       worker.on('exit', codeValue => codeValue === 0 ? resolve(message) : reject(new Error(JSON.stringify(message))));
     });
     const outputs = await Promise.all([run(), run(), run()]);
-    assert.ok(outputs.some(value => value?.ok));
-    assert.ok(outputs.every(value => value?.ok || value?.code === 'BUSY'));
+    assert.ok(outputs.some((value: any) => value?.ok));
+    assert.ok(outputs.every((value: any) => value?.ok || value?.code === 'BUSY'));
     assert.equal((await f.installer().status()).state.sequence, 2);
   });
 

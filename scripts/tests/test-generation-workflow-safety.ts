@@ -186,7 +186,7 @@ test('failed jobs and malformed/foreign result bodies never become successful or
 });
 
 test('retry seed and attempt provenance report the actual second candidate', async t => {
-  const f = F.fixture(t), mock = await F.mockGateway(t);
+  const f = F.fixture(t), mock: any = await F.mockGateway(t);
   mock.state.mode = 'retry-once';
   assert.equal((await run(2, f, mock)).exitCode, 0);
   const saved = records(f);

@@ -1,6 +1,6 @@
 'use strict';
 
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const { randomBytes }: typeof import('node:crypto') = require('node:crypto');
 const sharp: typeof import('sharp') = require('sharp');
 const { fs, path, assert, write, snapshot, fixture }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');

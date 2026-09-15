@@ -124,7 +124,7 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
           added: changes.addedIds, updated: changes.updatedIds, removed: changes.removedIds,
           submission: mode, message: '内容已保存并通过校验',
         });
-      } catch (error) {
+      } catch (error: any) {
         const rollback = lease ? rollbackMaintenanceTransaction(lease, leaseOptions) : { ok: !error.recoveryRequired };
         return res.status(runtimeErrorStatus(error, 'statusCode') || (rollback.ok ? 400 : 500)).json({
           ok: false, error: runtimeErrorMessage(error), code: runtimeErrorCode(error), conflict: error.conflict, rolledBack: rollback.ok,
@@ -148,7 +148,7 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
       try {
         res.set('Cache-Control', 'no-store');
         res.json({ ok: true, ...readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite, leaseOptions) });
-      } catch (error) { envelope.fail(res, runtimeErrorStatus(error, 'statusCode') || 500, runtimeErrorMessage(error) || '读取场景状态失败', { code: runtimeErrorCode(error), recoveryRequired: Boolean(error.recoveryRequired) }); }
+      } catch (error: any) { envelope.fail(res, runtimeErrorStatus(error, 'statusCode') || 500, runtimeErrorMessage(error) || '读取场景状态失败', { code: runtimeErrorCode(error), recoveryRequired: Boolean(error.recoveryRequired) }); }
     });
   });
 }

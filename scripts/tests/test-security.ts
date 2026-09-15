@@ -115,10 +115,10 @@ test('本机权限：拒绝外站浏览器来源，保留桌面、Vite 与原生
 
 test('tokenAuth：本机放行、远程拒绝、token 放行', async () => {
   const auth = security.tokenAuth('secret-token-value-32chars-aaaaaa');
-  const local = await runMiddleware(auth, mockReq({ path: '/api/health' }));
+  const local: any = await runMiddleware(auth, mockReq({ path: '/api/health' }));
   assert.equal(local.nextCalled, true, 'local loopback must bypass token');
 
-  const denied = await runMiddleware(auth, mockReq({
+  const denied: any = await runMiddleware(auth, mockReq({
     socket: { remoteAddress: '8.8.8.8' },
     path: '/api/health',
     originalUrl: '/api/health',
@@ -126,7 +126,7 @@ test('tokenAuth：本机放行、远程拒绝、token 放行', async () => {
   assert.equal(denied.nextCalled, false);
   assert.equal(denied.res.statusCode, 401);
 
-  const allowed = await runMiddleware(auth, mockReq({
+  const allowed: any = await runMiddleware(auth, mockReq({
     socket: { remoteAddress: '8.8.8.8' },
     path: '/api/health',
     headers: { 'x-token': 'secret-token-value-32chars-aaaaaa' },
@@ -136,21 +136,21 @@ test('tokenAuth：本机放行、远程拒绝、token 放行', async () => {
 
 test('maintenanceLocalOnly：远程 403、本机放行', async () => {
   const localOnly = maintenance._test.maintenanceLocalOnly;
-  const remoteMaintenance = await runMiddleware(localOnly, mockReq({
+  const remoteMaintenance: any = await runMiddleware(localOnly, mockReq({
     socket: { remoteAddress: '8.8.8.8' },
     path: '/api/maintenance/scenes',
   }));
   assert.equal(remoteMaintenance.nextCalled, false);
   assert.equal(remoteMaintenance.res.statusCode, 403);
 
-  const localMaintenance = await runMiddleware(localOnly, mockReq({ path: '/api/maintenance/scenes' }));
+  const localMaintenance: any = await runMiddleware(localOnly, mockReq({ path: '/api/maintenance/scenes' }));
   assert.equal(localMaintenance.nextCalled, true);
 });
 
 test('token 首访：清理 URL、禁缓存，HTTPS 回源也设置 Secure cookie', async () => {
   const token = 'test-token-0123456789abcdef';
   for (const transport of [{ secure: true }, { headers: { 'x-forwarded-proto': 'https' } }, {}]) {
-    const result = await runMiddleware(security.tokenAuth(token), mockReq({
+    const result: any = await runMiddleware(security.tokenAuth(token), mockReq({
       socket: { remoteAddress: '8.8.8.8' }, query: { token },
       originalUrl: '/gallery?filter=recent&token=' + token,
       ...transport,
@@ -188,27 +188,27 @@ test('hostAllowed：DNS rebinding 阻断与隧道放行', () => {
 
 test('localOnly 单一来源：转发头/伪造 ip 拒绝，control/maintenance 复用同一份', async () => {
   const sharedLocalOnly = security.localOnly;
-  const forwardedControl = await runMiddleware(sharedLocalOnly, mockReq({
+  const forwardedControl: any = await runMiddleware(sharedLocalOnly, mockReq({
     path: '/api/config',
     headers: { 'x-forwarded-for': '9.9.9.9' },
   }));
   assert.equal(forwardedControl.nextCalled, false, 'loopback socket + x-forwarded-for (tunnel) must NOT count as local');
   assert.equal(forwardedControl.res.statusCode, 403);
 
-  const cfControl = await runMiddleware(sharedLocalOnly, mockReq({
+  const cfControl: any = await runMiddleware(sharedLocalOnly, mockReq({
     path: '/api/config',
     headers: { 'cf-connecting-ip': '9.9.9.9' },
   }));
   assert.equal(cfControl.nextCalled, false, 'cf-connecting-ip must NOT count as local');
 
-  const spoofedIp = await runMiddleware(sharedLocalOnly, mockReq({
+  const spoofedIp: any = await runMiddleware(sharedLocalOnly, mockReq({
     path: '/api/config',
     ip: '127.0.0.1',
     socket: { remoteAddress: '8.8.8.8' },
   }));
   assert.equal(spoofedIp.nextCalled, false, 'localOnly must use socket address, not req.ip');
 
-  const directControl = await runMiddleware(sharedLocalOnly, mockReq({ path: '/api/config' }));
+  const directControl: any = await runMiddleware(sharedLocalOnly, mockReq({ path: '/api/config' }));
   assert.equal(directControl.nextCalled, true, 'direct loopback must pass');
 
   const control: typeof import('../../routes/control') = require('../../routes/control');
@@ -260,7 +260,7 @@ test('CSP：按路由收紧，非聊天页无 unsafe-eval，字体本地化后�
   assert.ok(!builderScript.includes("'unsafe-inline'"), 'prompt-builder handlers migrated — no script unsafe-inline');
   assert.ok(!builderScript.includes("'unsafe-eval'"), 'prompt-builder must not get eval');
 
-  const headers = await runMiddleware(security.responseHeaders, mockReq({ path: '/control' }));
+  const headers: any = await runMiddleware(security.responseHeaders, mockReq({ path: '/control' }));
   assert.equal(headers.nextCalled, true);
   const headerScript = scriptSrcDirective(headers.res.headers['Content-Security-Policy']);
   assert.ok(headerScript.includes("'self'"));
@@ -290,7 +290,7 @@ test('adult 传输锚点：本机放行、远程默认拒绝、显式开启后�
   assert.equal(assertAdultAllowed(mockReq(), adultBody), undefined);
   // 远程 + 缺省（AICS_ADULT_REMOTE 未开）：即使 body 自报 adultEnabled:true 也拒绝
   const remoteReq = mockReq({ socket: { remoteAddress: '8.8.8.8' } });
-  assert.throws(() => assertAdultAllowed(remoteReq, adultBody), (err) => err.code === 'ADULT_REMOTE_NOT_ALLOWED');
+  assert.throws(() => assertAdultAllowed(remoteReq, adultBody), (err: any) => err.code === 'ADULT_REMOTE_NOT_ALLOWED');
   // 远程 + 服务端显式开启：回到原有双门校验路径（body 标志齐备则放行）
   const previous = process.env.AICS_ADULT_REMOTE;
   process.env.AICS_ADULT_REMOTE = '1';
@@ -298,7 +298,7 @@ test('adult 传输锚点：本机放行、远程默认拒绝、显式开启后�
     assert.equal(assertAdultAllowed(remoteReq, adultBody), undefined);
     assert.throws(
       () => assertAdultAllowed(remoteReq, { ...adultBody, adultEnabled: false }),
-      (err) => err.code === 'ADULT_NOT_ENABLED',
+      (err: any) => err.code === 'ADULT_NOT_ENABLED',
       '显式开启后仍要求 body.adultEnabled === true',
     );
   } finally {

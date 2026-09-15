@@ -120,7 +120,7 @@ function createVoiceRouter(config: any, dependencies: any) {
         translation:result.translation,
         segments:result.segments || []
       });
-    }).catch(function (error: unknown) {
+    }).catch(function (error: any) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) envelope.fail(res, 503, error.message || '本地日语翻译暂不可用。');
     });
@@ -196,7 +196,7 @@ function createVoiceRouter(config: any, dependencies: any) {
         await relayAudio(result.response, res);
         if (!res.writableEnded) res.end();
       }
-    }).catch(function (error: unknown) {
+    }).catch(function (error: any) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
         // 队列已满是 503（客户端可重试），不是 502（上游坏了）
@@ -258,7 +258,7 @@ function createVoiceRouter(config: any, dependencies: any) {
         return relayBufferedAudio(audio);
       }).then(function () {
         if (!res.writableEnded) res.end();
-      }).catch(function (error: unknown) {
+      }).catch(function (error: any) {
         if (httpClient.isAbortError(error) || controller.signal.aborted) {
           // 共享的生成被首个请求取消时，等待方不能悬挂连接：给一个明确的失败。
           if (!res.headersSent) res.status(502).end();
@@ -278,7 +278,7 @@ function createVoiceRouter(config: any, dependencies: any) {
       return;
     }
 
-    let chunks: readonly Uint8Array<ArrayBufferLike>[]|Buffer<unknown>[] = [];
+    let chunks: any = [];
     // 2026-08-16 审计：共享生成改用独立 AbortController——此前挂在首个请求的
     // controller 上，首个访客断开会连带 abort 共享生成，所有等待方拿 502 且白耗
     // 一次 GPU。独立信号让生成照常完成并入缓存（重播直接命中）；单句成本有界
@@ -307,7 +307,7 @@ function createVoiceRouter(config: any, dependencies: any) {
       return relayBufferedAudio(audio);
     }).then(function () {
       if (!res.writableEnded) res.end();
-    }).catch(function (error: unknown) {
+    }).catch(function (error: any) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
         let status = error.code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);

@@ -27,7 +27,7 @@ function fileMatches(ctx: any, file: string, entry: { bytes: number; sha256: str
     return total === entry.bytes && hash.digest('hex') === entry.sha256;
   } finally { ctx.io.closeSync(fd); }
 }
-async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: unknown) {
+async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: any) {
   cancelled(signal);
   const target = child(tree, entry.path);
   if (fileMatches(ctx, target, entry)) {

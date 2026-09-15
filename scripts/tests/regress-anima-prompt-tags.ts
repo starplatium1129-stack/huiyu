@@ -95,7 +95,7 @@ async function main() {
     { id:'warm-space', prompt:warmSpacePrompt },
     { id:'quality-space', prompt:qualitySpacePrompt }
   ];
-  var manifest = {
+  var manifest: any = {
     startedAt:startedAt,
     gateway:gateway,
     modelId:'anima-base-v1.0',

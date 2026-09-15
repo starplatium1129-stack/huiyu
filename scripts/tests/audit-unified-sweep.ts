@@ -37,7 +37,7 @@ var DEFAULT_MANIFEST = path.join(AI_ROOT, 'Reviews', 'AnimaUnifiedSweep', '2026-
 
 // 角色身份锚点：审核「身份特征还原」维度的判定基准（expectFor 使用）。
 // --character natsume 切换为夏目；不传默认宁宁（向后兼容）。
-var CHARACTER_EXPECT = {
+var CHARACTER_EXPECT: any = {
   nene: '绫地宁宁（ayachi_nene，白发/紫瞳/呆毛/粉色发带，宁宁）',
   natsume: '四季夏目（shiki_natsume，黑色长直发/金黄瞳/红色发夹/泪痣，夏目）',
 };
@@ -103,7 +103,7 @@ async function withCooldownRetry(fn: any, maxAttempts?: number|undefined) {
   for (var attempt = 0; attempt < attempts; attempt++) {
     try {
       return await fn();
-    } catch (e) {
+    } catch (e: any) {
       var message = String((e && e.message) || e);
       var cooldown = message.match(/reset_seconds"?\s*[:=]\s*"?(\d+)/);
       var waitSeconds = cooldown ? Number(cooldown[1]) + 5 : (/HTTP 5\d\d/.test(message) || /timeout/.test(message) || /ECONN|EPIPE|ETIMEDOUT/.test(message) ? 3 : 0);
@@ -291,7 +291,7 @@ async function main() {
       var verdicts = res.ok ? parseGroupVerdicts(res.content, batch.length) : [];
       for (var vi = 0; vi < batch.length; vi++) {
         var r = batch[vi];
-        var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
+        var scene: any = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
         var existing = findResult(r);
         var entry = existing || {
           candidate:r.candidate, epoch:r.epoch, sceneId:r.sceneId, sceneTitle:scene.title, mature:r.mature, seed:r.seed,
@@ -307,7 +307,7 @@ async function main() {
       }
       writeJson(reportFile, report);
     });
-    var quickCounts = {};
+    var quickCounts: any = {};
     report.results.forEach(function (x: { quickVerdict: string|number; }) {
       if (!x.quickVerdict) return;
       quickCounts[x.quickVerdict] = (quickCounts[x.quickVerdict] || 0) + 1;
@@ -355,7 +355,7 @@ async function main() {
     fullCollected.forEach(function (item) {
       var r = item.record;
       var res = item.res;
-      var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
+      var scene: any = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
       var existing = findResult(r);
       var entry = existing || {
         candidate:r.candidate, epoch:r.epoch, sceneId:r.sceneId, sceneTitle:scene.title, mature:r.mature, seed:r.seed,
@@ -374,7 +374,7 @@ async function main() {
   }
 
   // 汇总
-  var byCandidate = {};
+  var byCandidate: any = {};
   report.results.forEach(function (x: any) {
     if (!byCandidate[x.candidate]) byCandidate[x.candidate] = { epoch:x.epoch, pass:0, review:0, reject:0, fail:0, scores:[] };
     var b = byCandidate[x.candidate];

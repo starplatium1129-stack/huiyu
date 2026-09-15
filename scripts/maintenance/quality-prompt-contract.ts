@@ -257,7 +257,7 @@ function evaluateSeedReview(review: any, expectedSeeds: any) {
   const candidates = Array.isArray(review && review.candidates) ? review.candidates : [];
   const bySeed = new Map(candidates.map((candidate: any) => [Number(candidate.seed), candidate]));
   const scored = seeds.map((seed: any) => {
-    const candidate = bySeed.get(seed);
+    const candidate: any = bySeed.get(seed);
     const scores = candidate && candidate.scores && typeof candidate.scores === 'object'
       ? candidate.scores
       : {};

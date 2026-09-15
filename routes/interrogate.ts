@@ -72,7 +72,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
       path: target.pathname, method: method, timeout: timeout || 8000,
       headers: Object.assign({ Accept: 'application/json' }, payload ? { 'Content-Type': 'application/json', 'Content-Length': payload.length } : {})
     }, function (res) {
-      let chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = []; let size = 0;
+      let chunks: any = []; let size = 0;
       res.on('data', function (c) { size += c.length; if (size > 4 * 1024 * 1024) { req.destroy(serviceError(502, 'UPSTREAM_RESPONSE_TOO_LARGE', '上游响应过大')); return; } chunks.push(c); });
       res.on('end', function () {
         let raw = Buffer.concat(chunks).toString('utf8'); let data;
@@ -108,13 +108,13 @@ function heuristicTagFallback(threshold: number) {
   let filtered = base.filter(function (i) { return i.score >= threshold; });
   return {
     tags: filtered.map(function (i) { return i.tag; }),
-    scores: filtered.reduce(function (acc, i) { acc[i.tag] = i.score; return acc; }, {}),
+    scores: filtered.reduce(function (acc: any, i) { acc[i.tag] = i.score; return acc; }, {}),
     caption: 'a girl with long hair, soft window lighting, indoor scene, detailed eyes, school uniform, pleated skirt, depth of field'
   };
 }
 
 // 基于真实 WD14 tags 派生 Krea2 自然语言描述（非独立 caption 模型，如实标注 derived）
-let CAPTION_PHRASE = {
+let CAPTION_PHRASE: any = {
   '1girl': 'a girl', '1boy': 'a boy', 'solo': 'alone',
   'long_hair': 'long hair', 'short_hair': 'short hair', 'very_long_hair': 'very long hair',
   'blonde_hair': 'blonde hair', 'brown_hair': 'brown hair', 'black_hair': 'black hair',
@@ -158,7 +158,7 @@ function captionFromTags(tags: unknown[]|undefined) {
     phrases.push(String(tag).replace(/_/g, ' '));
   });
   if (!subject) subject = 'a character';
-  let seen = {}; let uniq: string[] = [];
+  let seen: any = {}; let uniq: string[] = [];
   phrases.forEach(function (p) { if (!seen[p]) { seen[p] = 1; uniq.push(p); } });
   return subject + ', ' + uniq.join(', ');
 }
@@ -166,13 +166,13 @@ function captionFromTags(tags: unknown[]|undefined) {
 async function tryWebUIInterrogate(config: { [x: string]: string|URL; }, imageBase64: string, threshold: number) {
   // 1) 扩展 wd14 tagger: POST /tagger/v1/interrogate  {image, threshold, model}
   try {
-    let r = await requestJson(config, 'SD_HOST', 'POST', '/tagger/v1/interrogate', { image: imageBase64, threshold: threshold, model: 'wd-v1-4-moat-tagger-v2' }, 12000);
+    let r: any = await requestJson(config, 'SD_HOST', 'POST', '/tagger/v1/interrogate', { image: imageBase64, threshold: threshold, model: 'wd-v1-4-moat-tagger-v2' }, 12000);
     if (r && Array.isArray(r.tags)) return { tags: r.tags, scores: r.scores || {} };
     if (r && r.caption) return { tags: String(r.caption).split(',').map(function (s) { return s.trim(); }).filter(Boolean), scores: {} };
   } catch (e) { /* 扩展未装，继续 */ }
   // 2) 原生 SD interrogate: POST /sdapi/v1/interrogate
   try {
-    let r2 = await requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/interrogate', { image: imageBase64, model: 'wd14' }, 12000);
+    let r2: any = await requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/interrogate', { image: imageBase64, model: 'wd14' }, 12000);
     if (r2 && typeof r2.caption === 'string') {
       let tags = r2.caption.split(',').map(function (s: string) { return s.trim(); }).filter(Boolean);
       return { tags: tags, scores: {} };
@@ -191,7 +191,7 @@ function comfyOutputRoot(config: any) {
 async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBase64: WithImplicitCoercion<string>, threshold: number, mode: string) {
   if (mode !== 'tag') return null; // caption 仍走启发式，后续可接 JoyCaption/Florence2
   try {
-    let info = await requestJson(config, 'COMFY_HOST', 'GET', '/object_info', null, 5000);
+    let info: any = await requestJson(config, 'COMFY_HOST', 'GET', '/object_info', null, 5000);
     // WD14Tagger 节点名在 pysssss 实现为 "WD14Tagger|pysssss"
     let hasWD = info && (info['WD14Tagger|pysssss'] || info['WD14Tagger']);
     if (!hasWD) return null;
@@ -216,7 +216,7 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
         path: query, method: 'GET', timeout: 60000,
         headers: { Accept: 'application/json' }
       }, function (res) {
-        let chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = []; res.on('data', function (c) { chunks.push(c); });
+        let chunks: any = []; res.on('data', function (c) { chunks.push(c); });
         res.on('end', function () {
           let raw = Buffer.concat(chunks).toString('utf8');
           if (res.statusCode < 200 || res.statusCode >= 300) return reject(new Error('WD14 tag failed ' + res.statusCode + ' ' + raw.slice(0, 300)));
@@ -241,7 +241,7 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
     // WD14 返回逗号分隔，部分实现为换行；统一按逗号切
     let tags = tagText.split(',').map(function (s) { return s.trim().replace(/\s+/g, '_'); }).filter(Boolean);
     // 阈值已在节点侧过滤，这里仅做兜底去重
-    let uniq = {}; tags.forEach(function (t) { uniq[t.toLowerCase()] = t; });
+    let uniq: any = {}; tags.forEach(function (t) { uniq[t.toLowerCase()] = t; });
     tags = Object.values(uniq);
     return { tags: tags, scores: {}, caption: tags.join(', ') };
   } catch (e) {
@@ -286,7 +286,7 @@ function createInterrogateRouter(config: unknown) {
       }
 
       // 1) 本地 WebUI 优先（纯本机，不走 8317）
-      let webuiResult = await tryWebUIInterrogate(config, imageBase64, threshold).catch(function () { return null; });
+      let webuiResult: any = await tryWebUIInterrogate(config, imageBase64, threshold).catch(function () { return null; });
       if (webuiResult && webuiResult.tags && webuiResult.tags.length) {
         return envelope.ok(res, {
           engine: 'webui',

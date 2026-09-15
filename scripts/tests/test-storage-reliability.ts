@@ -34,7 +34,7 @@ function delay(ms: number|undefined) {
  */
 function createFakeIndexedDB(transactionDelay: number|undefined) {
   const databases = new Map();
-  const api = { failNextWrite: false };
+  const api: any = { failNextWrite: false };
 
   function databaseFor(name: string) {
     if (databases.has(name)) return databases.get(name);
@@ -48,7 +48,7 @@ function createFakeIndexedDB(transactionDelay: number|undefined) {
         const operations: { (): Map<unknown,unknown>; (): boolean; (): void; }[] = [];
         const shouldFail = mode === 'readwrite' && api.failNextWrite;
         if (shouldFail) api.failNextWrite = false;
-        const tx = { error: null, oncomplete: null, onerror: null, onabort: null, abort() {} };
+        const tx: any = { error: null, oncomplete: null, onerror: null, onabort: null, abort() {} };
         const store = {
           put(record: any) { operations.push(() => records.set(record.key ?? record.id, record)); },
           delete(key: unknown) { operations.push(() => records.delete(key)); },

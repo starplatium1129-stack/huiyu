@@ -78,7 +78,7 @@ function parseArgs(args: string|unknown[]) {
       if (arg === '--help') parsed.help = true; else parsed.plan = true;
     } else if (arg === '--root') {
       if (seen.has('--root')) return { error: '重复参数: --root' };
-      const value = args[i + 1];
+      const value: any = args[i + 1];
       if (!value || value.startsWith('--')) return { error: '参数缺值: --root <完整项目根>' };
       seen.add('--root');
       parsed.root = value;

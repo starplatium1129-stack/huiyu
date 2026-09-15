@@ -50,7 +50,7 @@ function applyCollection(current: any, change: any, kind: any, maximum: any) {
 function resolveSceneChangeSet(current: any, changeSet: any) {
   if (!object(changeSet) || changeSet.version !== 1
     || Object.keys(changeSet).some(key => !['version', 'scenes', 'blueprints', 'tags', 'curation'].includes(key))) invalid('不支持的场景变更集；需要 version: 1');
-  const result = {
+  const result: any = {
     scenes: applyCollection(current.scenes, changeSet.scenes, '场景', MAX_SCENES),
   };
   if (!result.scenes.length) invalid('场景库不能为空');

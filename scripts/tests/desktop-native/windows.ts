@@ -5,7 +5,7 @@ const fs: typeof import('node:fs') = require('node:fs')
 const path: typeof import('node:path') = require('node:path')
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process')
 
-function powershell(script: any, options = {}) {
+function powershell(script: any, options: any = {}) {
   const utf8Script = `[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)\n${script}`
   const result = spawnSync('powershell.exe', [
     '-NoProfile',

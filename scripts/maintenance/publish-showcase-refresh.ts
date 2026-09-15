@@ -250,14 +250,14 @@ function entryForRecord({ record, review, key }: any, loraVersions: any) {
     throw new Error(`unsupported batch ${JSON.stringify(batch)} for key ${key}`);
   }
   const seed = record.actualSeed ?? record.seed;
-  const meta = { engine: record.engine, model: record.modelId, checkpoint: record.checkpoint };
+  const meta: any = { engine: record.engine, model: record.modelId, checkpoint: record.checkpoint };
   if (record.loraId) {
     meta.loraId = record.loraId;
     meta.loraVersion = (loraVersions && loraVersions[record.loraId]) || '';
   }
   if (seed !== undefined && seed !== null && Number.isFinite(Number(seed))) meta.seed = Math.trunc(Number(seed));
   const attempt = Math.max(1, Number(record.attempt) || 1);
-  const entry = {
+  const entry: any = {
     id,
     title: shortTitle(record.displayName, id),
     story: '',
@@ -305,7 +305,7 @@ function buildManifest(sourceManifest: any, additions: any, context: any) {
     const rating = entry.rating === 'R15' || entry.rating === 'R18' ? entry.rating : 'All';
     counts[rating] += 1;
   }
-  const manifest = {
+  const manifest: any = {
     version: 4,
     source: context.sourceName,
     sourceAudit: sourceManifest.sourceAudit || '',

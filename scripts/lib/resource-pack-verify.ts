@@ -49,7 +49,7 @@ const VERIFY_SCOPE = Object.freeze({
   coverageNote: '这不是数字签名、可信来源、当前安装状态或质量验收；不发现候选包未登记文件；基线资产不被读取（removed 文件可已不存在）；空候选与仅删除候选可合法通过，通过不代表已安装更新',
 });
 
-function isNonNegativeInt(value: unknown) {
+function isNonNegativeInt(value: any) {
   return Number.isSafeInteger(value) && value >= 0;
 }
 
@@ -149,7 +149,7 @@ function identityOf(entries: string|unknown[]) {
  */
 function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
   const errors = [];
-  const struct = compareManifests({ oldManifest: baseManifest, newManifest: packManifest });
+  const struct: any = compareManifests({ oldManifest: baseManifest, newManifest: packManifest });
   for (const e of struct.errors) {
     errors.push({ ...e, source: e.side === 'old' ? 'base-manifest' : 'pack-manifest' });
   }
@@ -192,7 +192,7 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
       return;
     }
     removedPaths.add(item.path);
-    const baseEntry = baseByPath.get(item.path);
+    const baseEntry: any = baseByPath.get(item.path);
     if (!baseEntry) {
       errors.push({ source: 'pack-delta', path: item.path, code: 'removed-not-in-baseline', message: `delta.removed[${index}] 不存在于基线清单` });
       return;
@@ -207,7 +207,7 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
 
   // 候选与基线同路径同内容的条目不能冒充 changed
   for (const [rel, entry] of packByPath) {
-    const baseEntry = baseByPath.get(rel);
+    const baseEntry: any = baseByPath.get(rel);
     if (baseEntry && baseEntry.bytes === entry.bytes && baseEntry.sha256.toLowerCase() === entry.sha256.toLowerCase()) {
       errors.push({ source: 'pack-delta', path: rel, code: 'unchanged-as-changed', message: '候选条目与基线同路径同内容，不能作为差异项复制进候选' });
     }
@@ -223,7 +223,7 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
     if (!baseByPath.has(rel)) targetEntries.push(entry);
   }
   // 分别合法的基线/候选合并后也可能产生 Windows 大小写路径冲突。
-  const targetStructure = compareManifests({ oldManifest: baseManifest, newManifest: { schemaVersion: SCHEMA_VERSION, entries: targetEntries } });
+  const targetStructure: any = compareManifests({ oldManifest: baseManifest, newManifest: { schemaVersion: SCHEMA_VERSION, entries: targetEntries } });
   for (const error of targetStructure.errors) {
     errors.push({ ...error, source: 'pack-delta', message: '重建目标清单不合法: ' + error.message });
   }
@@ -239,13 +239,13 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta } = {}) {
   }
 
   // 按实际集合关系重算四类数量并与 delta.totals 逐项一致
-  const recomputed = { added: 0, removed: 0, changed: 0, unchanged: 0 };
+  const recomputed: any = { added: 0, removed: 0, changed: 0, unchanged: 0 };
   for (const [rel, baseEntry] of baseByPath) {
     if (removedPaths.has(rel)) {
       recomputed.removed++;
       continue;
     }
-    const after = packByPath.get(rel);
+    const after: any = packByPath.get(rel);
     if (!after) {
       recomputed.unchanged++;
     } else if (after.bytes !== baseEntry.bytes || after.sha256.toLowerCase() !== baseEntry.sha256.toLowerCase()) {
@@ -380,7 +380,7 @@ function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs } = {})
   // 不能因「解析成功」默认通过。
   let baseManifest = null;
   let haveBase = false;
-  const baseRead = readJsonFile({ absPath: baseAbs, flag: '--base-manifest', rootReal, io });
+  const baseRead: any = readJsonFile({ absPath: baseAbs, flag: '--base-manifest', rootReal, io });
   if (baseRead.parseError) {
     errors.push({ source: 'base-manifest', code: 'bad-base-manifest', message: `基线清单 JSON 解析失败: ${baseRead.parseError.message}` });
   } else {
@@ -390,7 +390,7 @@ function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs } = {})
 
   let packManifest = null;
   let havePack = false;
-  const manifestRead = readJsonFile({ absPath: path.join(packAbs, 'manifest.json'), flag: '候选 manifest.json', rootReal: packAbs, io, allowMissing: true });
+  const manifestRead: any = readJsonFile({ absPath: path.join(packAbs, 'manifest.json'), flag: '候选 manifest.json', rootReal: packAbs, io, allowMissing: true });
   if (manifestRead.missing) {
     errors.push({ source: 'pack-manifest', path: 'manifest.json', code: 'missing-pack-manifest', message: `候选包内缺少 manifest.json（${packRel}/manifest.json），不是可核验的候选包` });
   } else if (manifestRead.parseError) {
@@ -402,7 +402,7 @@ function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs } = {})
 
   let delta = null;
   let haveDelta = false;
-  const deltaRead = readJsonFile({ absPath: path.join(packAbs, 'delta.json'), flag: '候选 delta.json', rootReal: packAbs, io, allowMissing: true });
+  const deltaRead: any = readJsonFile({ absPath: path.join(packAbs, 'delta.json'), flag: '候选 delta.json', rootReal: packAbs, io, allowMissing: true });
   if (deltaRead.missing) {
     errors.push({ source: 'pack-delta', path: 'delta.json', code: 'missing-delta-json', message: '候选包内缺少 delta.json：本入口仅核验增量候选，缺 delta.json 的全包不能按增量候选核验' });
   } else if (deltaRead.parseError) {
@@ -412,7 +412,7 @@ function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs } = {})
     haveDelta = true;
   }
 
-  let compatibility = null;
+  let compatibility: any = null;
   if (haveBase && havePack && haveDelta) {
     const contentResult = verifyDeltaPackContent({ baseManifest, packManifest, delta });
     errors.push(...contentResult.errors);

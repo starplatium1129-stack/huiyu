@@ -58,7 +58,7 @@ function seed() {
   }
 }
 
-function bytes(dir = root, result = {}) {
+function bytes(dir = root, result: any = {}) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.name === 'runtime' || entry.isSymbolicLink()) continue;
     const file = path.join(dir, entry.name);
@@ -287,7 +287,7 @@ test('rollback leaves an unrelated newly created source file untouched', async (
       assert.equal(result.status, 400, describe(result.body));
       assert.equal(result.body.dataIntegrity, 'restored');
       assert.equal(fs.readFileSync(newFile, 'utf8'), 'unrelated session bytes');
-      const actual = bytes(); delete actual[path.relative(root, newFile)];
+      const actual: any = bytes(); delete actual[path.relative(root, newFile)];
       assert.deepEqual(actual, before);
     } finally { products.refreshCompressedProducts = refresh; }
   });

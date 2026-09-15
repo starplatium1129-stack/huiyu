@@ -34,14 +34,14 @@ let processTree: typeof import('../server/process-tree') = require('../server/pr
 let MAINT_TIMEOUT_MS = 120000; // 维护脚本默认超时 120s
 
 // 维护脚本名映射（script 文件名）——与任务表一一对应，集中在顶部便于总览
-let SCRIPT_NAMES = {
+let SCRIPT_NAMES: any = {
   'lint-colors': 'lint-colors.js',
   'validate': 'validate-scenes.js',
   'classify': 'classify-scene-ratings.js',
   'optimize': 'optimize-scenes.js'
 };
 // 维护任务表——供 /api/maintenance/run 校验与执行，args 为脚本参数，label/desc 供前端展示
-let MAINTENANCE_TASKS = {
+let MAINTENANCE_TASKS: any = {
   'lint-colors': { args:[], label:'检查硬编码颜色', desc:'扫描所有 HTML/CSS 中的 #XXXXXX 颜色，确保已替换为设计 token' },
   'validate':    { args:[], label:'完整场景校验', desc:'按模块检查场景数据：ID 唯一性、字段完整性、评级一致性' },
   'classify':    { args:['--write'], label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
@@ -93,7 +93,7 @@ function attemptRollback(snapshot: unknown, label: string) {
   try {
     restoreSnapshot(snapshot);
     return { ok:true };
-  } catch (error) {
+  } catch (error: any) {
     let detail = String(error && error.message || error);
     console.error('  ❌ 回滚失败（' + label + '），数据可能不一致:', detail);
     return { ok:false, error:detail };
@@ -144,7 +144,7 @@ function desktopMaintenanceUnavailable(req: Request<{},unknown,unknown,ParsedQs,
  */
 let activeChildren = new Set();
 
-function trackChild(child: unknown) {
+function trackChild(child: any) {
   activeChildren.add(child);
   child.once('close', function () { activeChildren.delete(child); });
   child.once('error', function () { activeChildren.delete(child); });
@@ -194,7 +194,7 @@ async function runMaintenanceChecks(lease: unknown) {
     ['scripts/maintenance/validate-scenes.js', []]
   ];
   for (let i = 0; i < commands.length; i += 1) {
-    let result = await runNodeScript(commands[i][0], commands[i][1], MAINT_TIMEOUT_MS, lease);
+    let result: any = await runNodeScript(commands[i][0], commands[i][1], MAINT_TIMEOUT_MS, lease);
     if (result.status !== 0) {
       throw new Error((result.stderr || result.stdout || '维护校验失败').trim().slice(-1200));
     }
@@ -213,7 +213,7 @@ async function runMaintenanceChecks(lease: unknown) {
     if (!SCENE_SHOWCASE_DIR) return fallback;
     let now = Date.now();
     if (homeHeroCache.manifest && now - homeHeroCache.at < HOME_HERO_CACHE_TTL_MS) {
-      let hit = homeHeroCache.manifest;
+      let hit: any = homeHeroCache.manifest;
       return Object.assign({}, hit, { entries: Object.assign({}, hit.entries) });
     }
     // 当前版本目录可能还没有 home-hero.json（发布流程先建目录后写 home 立绘；
@@ -269,7 +269,7 @@ async function runMaintenanceChecks(lease: unknown) {
           });
         } catch (e) { /* 跳过损坏的备份 */ }
       });
-      entries.sort(function (a, b) {
+      entries.sort(function (a: any, b: any) {
         let ta = Date.parse(a.createdAt) || 0;
         let tb = Date.parse(b.createdAt) || 0;
         if (tb !== ta) return tb - ta;
@@ -287,7 +287,7 @@ async function runMaintenanceChecks(lease: unknown) {
   // 访客只能看到打包进 dist 的默认旧立绘——"公网首页还是老图"的根源。
   router.get('/api/maintenance/home-hero', function (req, res) {
     let manifest = readHomeHeroManifest();
-    let entries = {};
+    let entries: any = {};
     Object.keys(manifest.entries || {}).forEach(function (character) {
       if (!/^(nene|natsume)$/.test(character)) return;
       let entry = manifest.entries[character];
@@ -396,7 +396,7 @@ async function runMaintenanceChecks(lease: unknown) {
       commitMaintenanceTransaction(lease);
       lease = undefined;
       res.json({ ok:true, file:entry.image, thumb:entry.thumb, backup:path.basename(backupDir), message:'样张与轻量缩略图已安全保存，旧版本已备份' });
-    } catch (error) {
+    } catch (error: any) {
       let rollback = lease ? rollbackMaintenanceTransaction(lease, leaseOptions) : { ok: !error.recoveryRequired };
       lease = undefined;
       res.status(runtimeErrorStatus(error, 'statusCode') || (rollback.ok ? 400 : 500)).json({
@@ -446,7 +446,7 @@ async function runMaintenanceChecks(lease: unknown) {
       commitMaintenanceTransaction(lease);
       lease = undefined;
       res.json({ ok:true, character:character, action:action, backup:path.basename(backupDir), message:action === 'reset' ? '已恢复内置首页主视觉' : '首页主视觉已保存' });
-    } catch (error) {
+    } catch (error: any) {
       let rollback = lease ? rollbackMaintenanceTransaction(lease, leaseOptions) : { ok: !error.recoveryRequired };
       lease = undefined;
       res.status(runtimeErrorStatus(error, 'statusCode') || (rollback.ok ? 400 : 500)).json({ ok:false, error:runtimeErrorMessage(error), code:runtimeErrorCode(error), recoveryRequired:!rollback.ok, rolledBack:rollback.ok, dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT' });
@@ -473,7 +473,7 @@ async function runMaintenanceChecks(lease: unknown) {
       result = await sceneWrite.withSceneWriteLock(() => withMaintenanceTransaction(leaseOptions,
         () => maintenanceSnapshot([]), async (lease: unknown) => {
           const before = sceneStore.loadSceneShards().scenes;
-          let output = await runNodeScript(script, args, MAINT_TIMEOUT_MS, lease);
+          let output: any = await runNodeScript(script, args, MAINT_TIMEOUT_MS, lease);
           if (output.status !== 0) throw Object.assign(new Error((output.stderr || output.stdout || '维护校验失败').trim().slice(-1200)), { statusCode: 400 });
           if (task === 'classify' || task === 'optimize') {
             products.refreshCompressedProducts(cfg.ROOT_DIR, writeFileAtomic);
@@ -482,7 +482,7 @@ async function runMaintenanceChecks(lease: unknown) {
           products.protectPinnedScenes(cfg.ROOT_DIR, before, sceneStore.loadSceneShards().scenes);
           return output;
         }, 'maintenance-' + task));
-    } catch (error) {
+    } catch (error: any) {
       return res.status(runtimeErrorStatus(error, 'statusCode') || 504).json({
         ok:false,
         code:runtimeErrorCode(error), recoveryRequired:Boolean(error.recoveryRequired), rolledBack:error.rolledBack, dataIntegrity:error.dataIntegrity,

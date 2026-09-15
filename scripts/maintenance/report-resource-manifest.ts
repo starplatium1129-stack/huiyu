@@ -68,7 +68,7 @@ function main(args: any = process.argv.slice(2)) {
   }
   try {
     if (manifestPath && compareManifestPath) {
-      const result = compareManifestFiles({ root, manifestPath, compareManifestPath });
+      const result: any = compareManifestFiles({ root, manifestPath, compareManifestPath });
       console.log(JSON.stringify(result, null, 2));
       return result.ok ? 0 : 1;
     }
@@ -83,7 +83,7 @@ function main(args: any = process.argv.slice(2)) {
     const manifest = generateManifest({ root });
     console.log(JSON.stringify(manifest, null, 2));
     return manifest.unverified.length ? 1 : 0;
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof UsageError) {
       console.error(`错误: ${err.message}`);
       return 2;

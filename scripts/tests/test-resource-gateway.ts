@@ -1,6 +1,6 @@
 'use strict';
 
-const { test }: typeof import('node:test') = require('node:test');
+const test: typeof import('node:test')['test'] = require('node:test').test;
 const { fs, path, assert, write, snapshot }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
 const { resourceFixture, request, startAndSettle, downloadSource }: typeof import('./resource-gateway-fixture') = require('./resource-gateway-fixture');
 const { createResourceManager }: typeof import('../lib/resource-install-gateway') = require('../lib/resource-install-gateway');
@@ -58,7 +58,7 @@ test('installed resource bytes/metadata never leak through remote or arbitrary-p
   assert.equal((await request(stack, '/api/resources/status', undefined, { Host: 'evil.invalid' })).status, 421);
   assert.equal((await request(stack, '/api/resources/tasks', { action: 'import', releaseId: 'images-old', path: f.artwork })).status, 400);
   assert.equal((await request(stack, '/api/resources/tasks', { action: 'download', releaseId: 'images-old', url: 'http://127.0.0.1/' })).status, 400);
-  const state = await request(stack, '/api/resources/status');
+  const state: any = await request(stack, '/api/resources/status');
   for (const privatePath of [f.user, f.source, f.program, f.artwork]) assert.equal(state.text.includes(privatePath.replaceAll('\\', '\\\\')), false);
   for (const url of ['/assets/manifest.json', '/assets/receipt.json', '/assets/../resource-library-v1/current.json', '/assets/%2e%2e/current.json']) {
     assert.notEqual((await request(stack, url)).status, 200, url);
@@ -95,7 +95,7 @@ test('HTTP task cancel, resume and explicit install work across manager restart 
   const source = await downloadSource(t, f);
   const stack = await f.stack();
   assert.equal(source.requests.length, 0);
-  const started = await request(stack, '/api/resources/tasks', { action: 'download', releaseId: 'network' });
+  const started: any = await request(stack, '/api/resources/tasks', { action: 'download', releaseId: 'network' });
   assert.equal(started.status, 202);
   assert.equal((await request(stack, '/api/resources/tasks', { action: 'import', releaseId: 'images-old' })).status, 409);
   for (let i = 0; i < 100 && !source.requests.some(req => req.url.endsWith('large.webp')); i++) await new Promise(resolve => setTimeout(resolve, 10));

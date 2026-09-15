@@ -45,7 +45,7 @@ function loadResourceConfiguration(gateway: any) {
   return { file, bytes, options, ctx, releases, unchanged };
 }
 
-const MESSAGES = {
+const MESSAGES: any = {
   CONFIG_REQUIRED: '尚未配置可信的本地资源库。',
   CONFIG_CHANGED: '资源配置已变化，请重新检查后操作。',
   PROTECTED_ROOT: '资源目录与程序或作品目录重叠，请调整本地配置。',

@@ -61,7 +61,7 @@ function main() {
   const report: any[] = [];
   for (const character of targets) {
     const viewChar = view[character.id];
-    const popChar = popularById.get(character.id);
+    const popChar: any = popularById.get(character.id);
     const outfits: any[] = [];
 
     for (const vo of viewChar.outfits) {

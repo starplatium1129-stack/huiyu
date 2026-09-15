@@ -379,7 +379,7 @@ test('cleanOrphanedSceneRefs 清理失效引用且保留无关设置', () => {
 });
 
 test('withSceneWriteLock 串行化并发写入且单个失败不阻塞后续', async () => {
-  const order: unknown = [];
+  const order: any = [];
   const first = sceneWrite.withSceneWriteLock(async () => {
     await new Promise((resolve) => setTimeout(resolve, 20));
     order.push('first');

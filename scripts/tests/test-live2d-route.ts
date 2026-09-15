@@ -30,7 +30,7 @@ async function run() {
   var real = createLive2dRouter({ LIVE2D_ROOT:'/nonexistent/live2d-root' });
   var app = express();
   app.use(real.router);
-  var live = await listen(app);
+  var live: any = await listen(app);
   try {
     var empty = await json(await fetch(live.base + '/api/live2d-status'));
     assert.equal(empty.available, false, 'missing model directory degrades to unavailable');
@@ -48,7 +48,7 @@ async function run() {
   } });
   var app2 = express();
   app2.use(stub.router);
-  var live2 = await listen(app2);
+  var live2: any = await listen(app2);
   try {
     var withStub = await json(await fetch(live2.base + '/api/live2d-status'));
     assert.equal(withStub.available, true);

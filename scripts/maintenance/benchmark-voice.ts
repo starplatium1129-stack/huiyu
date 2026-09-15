@@ -21,7 +21,7 @@ function timedRequest(method: string, pathname: string|URL, payload: { text?: st
     var started = performance.now();
     var headersAt = 0;
     var firstByteAt = 0;
-    var chunks: unknown[]|readonly Uint8Array<ArrayBufferLike>[] = [];
+    var chunks: any = [];
     var bytes = 0;
     var request = transport.request(target, {
       method:method,
@@ -68,8 +68,8 @@ async function jsonRequest(method: string, pathname: string, payload: { text?: s
   return result;
 }
 
-function metric(label: string, result: unknown) {
-  var output = {
+function metric(label: string, result: any) {
+  var output: any = {
     label:label,
     headers_ms:result.headersMs,
     first_audio_ms:result.firstByteMs,

@@ -30,7 +30,7 @@ function parse(argv: string|string[]) {
   return { ...opts, full: !!flags['--full'], execute: !!flags['--execute'], root: path.resolve(opts.root) };
 }
 
-function checkContentImpact(opts: { help: boolean; }|{ full: boolean; execute: boolean; root: string; paths: never[]; showcaseManifests: never[]; help?: any; }) {
+function checkContentImpact(opts: any) {
   let context: any;
   const history: any = opts.base ? historyImpact(opts, (value: any) => { context = value; }) : null;
   const selection = selectExecution(history, opts.full, context);

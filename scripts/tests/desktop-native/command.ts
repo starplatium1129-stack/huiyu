@@ -93,7 +93,7 @@ function terminateTree(pid: number|undefined) {
   }
 }
 
-function runCommand(command: string, args: readonly string[], options = {}) {
+function runCommand(command: string, args: readonly string[], options: any = {}) {
   const display = options.display || commandText(command, args)
   const evidence = options.evidence
   evidence?.commandStart(display)
@@ -156,7 +156,7 @@ function walkFiles(target: PathLike, root: string, output: unknown[]) {
 function packagingFingerprint(root: string) {
   const files: unknown[] = []
   for (const relative of PACKAGING_INPUTS) walkFiles(path.join(root, relative), root, files)
-  files.sort((a, b) => a.relative.localeCompare(b.relative, 'en'))
+  files.sort((a: any, b: any) => a.relative.localeCompare(b.relative, 'en'))
   const aggregate = crypto.createHash('sha256')
   let totalBytes = 0
   for (const file of files) {

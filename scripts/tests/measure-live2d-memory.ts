@@ -62,7 +62,7 @@ async function main() {
     const client = await browser.newBrowserCDPSession();
     const info = await client.send('SystemInfo.getProcessInfo');
     const processes = info.processInfo;
-    const byType = {};
+    const byType: any = {};
     let totalMB = 0;
     let hasPrivateMemory = false;
     for (const proc of processes) {
@@ -113,7 +113,7 @@ async function main() {
       })),
       webview2TotalMB: hasPrivateMemory ? Math.round(totalMB * 10) / 10 : null,
       perTypeMB: hasPrivateMemory
-        ? Object.fromEntries(Object.entries(byType).map(([type, mb]) => [type, Math.round(mb * 10) / 10]))
+        ? Object.fromEntries(Object.entries(byType).map(([type, mb]: any) => [type, Math.round(mb * 10) / 10]))
         : null,
       jsHeapMB,
       processWorkingSetMB,

@@ -60,7 +60,7 @@ function baseState() {
 }
 
 function shardInputs(shards: { [s: string]: unknown; }|ArrayLike<unknown>, textOverrides?: { "fate.json": string; }|undefined) {
-  const out = {};
+  const out: any = {};
   for (const [file, data] of Object.entries(shards)) {
     out[file] = {
       text: (textOverrides && textOverrides[file]) || jsonText(data),
@@ -151,7 +151,7 @@ test('新增系列：slug 命名、manifest 追加、聚合按 manifest 顺序�
   const state = baseState();
   const target = [...state.target, bp('marin_1', 'marin')];
   const p = plan(state, target);
-  const create = p.writes.find((w) => w.kind === 'create');
+  const create: any = p.writes.find((w) => w.kind === 'create');
   assert.equal(create.file, MARIN_FILE);
   assert.equal(create.franchise, MARIN);
   assert.equal(create.count, 1);
@@ -328,7 +328,7 @@ test('未知角色与无法确认的 franchise 明确报错，不自动建 unkno
 
 test('来源分片不齐全、多余分片、franchise 冲突、text/data 不一致、来源 id 问题均拒绝', () => {
   const state = baseState();
-  const inputs = shardInputs(state.shards);
+  const inputs: any = shardInputs(state.shards);
   const planWithShards = (shards: any) => planBlueprintChanges({
     manifest: state.manifest,
     shards,
@@ -336,7 +336,7 @@ test('来源分片不齐全、多余分片、franchise 冲突、text/data 不一
     franchiseByCharacter: state.mapping,
   });
 
-  const missing = { ...inputs };
+  const missing: any = { ...inputs };
   delete missing[FATE_FILE];
   planError(() => planWithShards(missing), '不齐全');
 
@@ -403,7 +403,7 @@ test('计划应用到内存后重读：manifest/分片/聚合一致，unchanged 
   ];
   const p = plan(state, target);
   const original = shardInputs(state.shards);
-  const files = new Map(Object.entries(original).map(([file, shard]) => [file, shard.text]));
+  const files = new Map(Object.entries(original).map(([file, shard]: any) => [file, shard.text]));
   for (const d of p.deletes) files.delete(d.file);
   for (const w of p.writes) files.set(w.file, w.text);
 
@@ -462,7 +462,7 @@ test('落盘夹具上真实 blueprint-store 对账：聚合字节一致，重规
   }
 
   const manifest2 = JSON.parse(fs.readFileSync(path.join(shardsDir, 'manifest.json'), 'utf8'));
-  const shards2 = {};
+  const shards2: any = {};
   for (const entry of manifest2.files) {
     const text2 = fs.readFileSync(path.join(shardsDir, entry.file), 'utf8');
     shards2[entry.file] = { text: text2, data: JSON.parse(text2) };

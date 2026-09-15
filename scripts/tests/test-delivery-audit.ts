@@ -468,7 +468,7 @@ test('异常兜底：缺失定位、非对象报告与怪异值不抛错、不�
   assert.ok(fallback.startsWith('交付审计状态: 失败（退出码 1）'), fallback);
   assert.ok(fallback.includes('boom'));
   assert.ok(!fallback.includes('通过 ('));
-  const circular = {}; circular.self = circular;
+  const circular: any = {}; circular.self = circular;
   for (const input of [null, undefined, 42, 'x', [], {}, circular]) {
     const out = formatReport(input);
     assert.equal(typeof out, 'string');

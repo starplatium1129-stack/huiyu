@@ -119,7 +119,7 @@ function pruneViewOutfits(view: ArrayLike<unknown>|{ [s: string]: unknown; }) {
 function alignStandards(standards: any, survivingIds: { [x: string]: unknown; }) {
   const removed: any[] = [];
   for (const character of standards.characters) {
-    const keep = survivingIds[character.id];
+    const keep: any = survivingIds[character.id];
     if (!keep) continue; // view 已无此角色（当前两侧均为 50 角色，不应发生）
     const seen = new Set();
     const before = character.outfits.length;

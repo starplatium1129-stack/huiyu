@@ -124,7 +124,7 @@ function runTool(workspaceRoot: unknown, name: string, args: any, context?: any)
   }
   function fail(error: any) {
     let message = String(error instanceof Error ? error.message : error).slice(0, 2000);
-    let payload = { ok: false, output: message };
+    let payload: any = { ok: false, output: message };
     // 信封对齐（server/http-envelope.js 形状）：error/msg 与 output 同镜像，
     // 新代码读 error；output 保留 —— 它会作为 tool 消息回传给对话模型。
     payload.error = message;
@@ -382,7 +382,7 @@ function createDesktopToolsRouter(options?: any) {
     }).catch(function (error) {
       if (res.destroyed) return;
       let err = error instanceof Error ? error : new Error(String(error));
-      let extra = { output: String(err.message).slice(0, 2000) };
+      let extra: any = { output: String(err.message).slice(0, 2000) };
       if (err.code) extra.code = err.code;
       envelope.fail(res, envelope.statusFor(err, 500), err.message, extra);
     }).finally(function () {
