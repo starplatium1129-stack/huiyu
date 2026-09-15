@@ -242,7 +242,10 @@ communicative purpose are a layout defect.
 Desktop is the primary creation environment. Responsive order is stage first,
 then story/scene, then detailed decisions. On small screens, controls become a
 single column, primary actions stay reachable, and tap targets should be at least
-`40px` high; mobile compatibility must not shrink or weaken the desktop stage.
+`44 × 44 CSS px` for shared buttons and navigation on coarse pointers. This is a
+project touch target, not an Apple platform point conversion. Expand controls in
+normal layout without overlapping neighboring targets; retain desktop text size
+on narrow screens. Mobile compatibility must not weaken the desktop stage.
 
 Scene discovery must expose search and the most useful filters near the results.
 Do not require a friend who has never used the site to understand the taxonomy
@@ -268,6 +271,9 @@ cards. Motion uses the existing `150ms` and `240ms` timings; page and character
 transitions may be slightly slower, but never delay an action.
 
 Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
+System transparency, increased contrast, and forced colors must update material
+fallbacks live, including native dialog backdrops, without changing the saved
+manual preference. Restoring the system setting restores the user's own choice.
 
 ## Shapes
 

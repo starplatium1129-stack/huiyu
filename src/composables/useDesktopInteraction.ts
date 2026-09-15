@@ -21,6 +21,8 @@ export function initializeDesktopPreferences() {
   const dark = matchMedia('(prefers-color-scheme: dark)')
   const reduce = matchMedia('(prefers-reduced-motion: reduce)')
   const contrast = matchMedia('(prefers-contrast: more)')
+  const transparency = matchMedia('(prefers-reduced-transparency: reduce)')
+  const forcedColors = matchMedia('(forced-colors: active)')
   const { theme, setTheme } = useTheme()
   let applyingTheme = false
   let reading = false
@@ -42,15 +44,16 @@ export function initializeDesktopPreferences() {
     const root = document.documentElement
     root.dataset.motion = motionMode.value
     root.dataset.reducedMotion = String(motionMode.value === 'reduce' || motionMode.value === 'system' && reduce.matches)
-    root.dataset.reducedGlass = String(reducedGlass.value || contrast.matches)
-    root.dataset.fluidEffects = reducedGlass.value || contrast.matches ? 'low' : 'full'
+    const lowGlass = reducedGlass.value || contrast.matches || transparency.matches || forcedColors.matches
+    root.dataset.reducedGlass = String(lowGlass)
+    root.dataset.fluidEffects = lowGlass ? 'low' : 'full'
     window.dispatchEvent(new Event('atelier:motion-preference'))
   }
   read(); save(); apply()
   watch([themeMode, motionMode, reducedGlass], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
   // Existing sun/moon controls are an explicit choice and cancel system-following.
   watch(theme, value => { if (!applyingTheme) themeMode.value = value }, { flush: 'sync' })
-  for (const query of [dark, reduce, contrast]) query.addEventListener('change', apply)
+  for (const query of [dark, reduce, contrast, transparency, forcedColors]) query.addEventListener('change', apply)
   window.addEventListener('storage', event => { if (event.key === KEY || event.key === null) { read(); apply() } })
 }
 

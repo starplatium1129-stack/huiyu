@@ -90,7 +90,7 @@ it('applies explicit appearance choices and keeps the legacy theme toggle author
   localStorage.clear()
   const queries = new Map<string, MediaQueryList>()
   vi.spyOn(window, 'matchMedia').mockImplementation(query => {
-    const media = Object.assign(new EventTarget(), { matches: query.includes('reduced-motion'), media: query, onchange: null, addListener() {}, removeListener() {} }) as MediaQueryList
+    const media = Object.assign(new EventTarget(), { matches: query.includes('reduced-motion') || query.includes('reduced-transparency'), media: query, onchange: null, addListener() {}, removeListener() {} }) as MediaQueryList
     queries.set(query, media)
     return media
   })
@@ -98,11 +98,33 @@ it('applies explicit appearance choices and keeps the legacy theme toggle author
   const preferences = useDesktopPreferences()
   expect(preferences.themeMode.value).toBe('system')
   expect(document.documentElement.dataset.reducedMotion).toBe('true')
+  expect(preferences.reducedGlass.value).toBe(false)
+  expect(document.documentElement.dataset.reducedGlass).toBe('true')
+  const changeMedia = (query: string, matches: boolean) => {
+    const media = queries.get(query)!
+    expect(media).toBeDefined()
+    Object.assign(media, { matches })
+    media.dispatchEvent(new Event('change'))
+  }
+  changeMedia('(prefers-reduced-transparency: reduce)', false)
+  expect(document.documentElement.dataset.fluidEffects).toBe('full')
+  for (const query of ['(prefers-reduced-transparency: reduce)', '(prefers-contrast: more)', '(forced-colors: active)']) {
+    changeMedia(query, true)
+    expect(document.documentElement.dataset.reducedGlass).toBe('true')
+    expect(document.documentElement.dataset.fluidEffects).toBe('low')
+    expect(preferences.reducedGlass.value).toBe(false)
+    expect(JSON.parse(localStorage.getItem('atelier-desktop-appearance-v1')!).reducedGlass).toBe(false)
+    changeMedia(query, false)
+    expect(document.documentElement.dataset.reducedGlass).toBe('false')
+  }
   preferences.setMotionMode('full')
   expect(document.documentElement.dataset.reducedMotion).toBe('false')
   preferences.setMotionMode('reduce')
   expect(document.documentElement.dataset.reducedMotion).toBe('true')
   preferences.setReducedGlass(true)
+  expect(document.documentElement.dataset.fluidEffects).toBe('low')
+  changeMedia('(prefers-reduced-transparency: reduce)', true)
+  changeMedia('(prefers-reduced-transparency: reduce)', false)
   expect(document.documentElement.dataset.fluidEffects).toBe('low')
   useTheme().setTheme('dark')
   expect(preferences.themeMode.value).toBe('dark')

@@ -15,13 +15,13 @@
           role="alertdialog"
           aria-modal="true"
           :aria-label="state.title"
-          @keydown.tab.capture="trapTab"
+          :aria-describedby="state.message ? messageId : undefined"
         >
           <span class="confirm-icon" aria-hidden="true">
             <ArchiveIcon :name="state.danger ? 'warning' : 'info'" />
           </span>
           <h2 class="confirm-title">{{ state.title }}</h2>
-          <p v-if="state.message" class="confirm-message">{{ state.message }}</p>
+          <p v-if="state.message" :id="messageId" class="confirm-message">{{ state.message }}</p>
           <div class="confirm-actions">
             <button
               ref="cancelBtn"
@@ -44,10 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onUnmounted, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { useFluidSurface } from '@/composables/useFluidSurface'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const surface = useFluidSurface('.confirm-panel')
 
@@ -55,49 +56,23 @@ const state = useConfirmState()
 const panel = ref<HTMLElement | null>(null)
 const cancelBtn = ref<HTMLButtonElement | null>(null)
 const confirmBtn = ref<HTMLButtonElement | null>(null)
-let restoreFocusTo: HTMLElement | null = null
+const messageId = useId()
+const initialFocus = computed(() => state.value.danger ? cancelBtn.value : confirmBtn.value)
 
 function cancel() { resolveConfirm(false) }
 function ok() { resolveConfirm(true) }
 
-// 破坏性操作默认聚焦取消键，Enter 手滑不会直接执行删除
-watch(() => state.value.visible, async (visible) => {
-  if (visible) {
-    document.body.classList.add('overlay-open')
-    restoreFocusTo = document.activeElement as HTMLElement | null
-    await nextTick()
-    ;(state.value.danger ? cancelBtn : confirmBtn).value?.focus()
-  } else {
-    document.body.classList.remove('overlay-open')
-    restoreFocusTo?.focus?.()
-    restoreFocusTo = null
-  }
-})
+// 与下层弹窗共用焦点栈和滚动锁；破坏性操作默认聚焦取消。
+useFocusTrap(panel, () => state.value.visible, { onEscape: cancel, initialFocus })
 
-function trapTab(e: KeyboardEvent) {
-  const order = [cancelBtn.value, confirmBtn.value].filter(Boolean) as HTMLButtonElement[]
-  if (order.length < 2) return
-  const first = order[0]
-  const last = order[order.length - 1]
-  const active = document.activeElement
-  if (e.shiftKey && active === first) { e.preventDefault(); last.focus() }
-  else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus() }
-  else if (!order.includes(active as HTMLButtonElement)) { e.preventDefault(); first.focus() }
-}
+// 新请求可替换仍显示的确认框；每次都重新选择安全默认项。
+watch(state, (current) => {
+  if (current.visible) initialFocus.value?.focus({ preventScroll: true })
+}, { flush: 'post' })
 
-/**
- * 只拦截 Escape。Enter 一律交给浏览器原生按钮语义：激活**当前焦点**的那个按钮。
- * 原先这里自己 preventDefault() 再 ok()，导致焦点停在「取消」上按 Enter 仍然执行删除，
- * 与「破坏性操作默认聚焦取消键」的设计直接冲突（2026-08-30 UX 审计 P0-1）。
- */
-function onKeydown(e: KeyboardEvent) {
-  if (!state.value.visible || e.isComposing || e.keyCode === 229) return
-  if (e.key === 'Escape') { e.preventDefault(); cancel() }
-}
-document.addEventListener('keydown', onKeydown)
+// Enter 交给浏览器激活当前焦点按钮；卸载则安全取消未完成的请求。
 onUnmounted(() => {
-  document.body.classList.remove('overlay-open')
-  document.removeEventListener('keydown', onKeydown)
+  cancel()
 })
 </script>
 

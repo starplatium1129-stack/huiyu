@@ -1,6 +1,20 @@
 /* Actual backdrop refraction is restricted to structural chrome, never reading panels. */
 :root { --fluid-glass-filter: none; }
 .fluid-glass-definitions { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+:root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) {
+  --glass-fill: var(--bg-surface);
+  --glass-fill-strong: var(--bg-elevated);
+  --nav-bg: var(--bg-surface);
+}
+:root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) dialog::backdrop {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+:root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) body :is(.nav-links, .local-status-panel, .card, .card-info, .card-create) {
+  background: var(--bg-surface);
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
 /* Match the workbench chrome rule's specificity so its static blur cannot hide
    an installed lens. The generated filter only affects the backdrop. */
 :root body [data-fluid-refracted],

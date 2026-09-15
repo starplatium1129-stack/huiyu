@@ -13,7 +13,7 @@
         <label v-if="zoomAvailable">界面缩放 · {{ Math.round(zoom * 100) }}%<input type="range" min="75" max="200" step="5" :value="zoom * 100" aria-label="界面缩放" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)"><button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button></label>
         <p v-if="zoomError" role="status">{{ zoomError }}</p>
         <label class="appearance-check"><input type="checkbox" :checked="reducedGlass" @change="setReducedGlass(($event.target as HTMLInputElement).checked)"><span>降低玻璃效果<small>使用更稳定的底色，减少透光与背景干扰。</small></span></label>
-        <p class="appearance-note">偏好自动保存在此设备。系统的高对比度设置会优先保证文字可读。</p>
+        <p class="appearance-note">偏好自动保存在此设备。系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
       </div>
       <dl v-else class="appearance-shortcuts">
         <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>

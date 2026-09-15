@@ -1,4 +1,3 @@
-import { useConfirmState } from './useConfirm.ts'
 import { ref, watch, onActivated, onDeactivated, onUnmounted, nextTick, type Ref } from 'vue'
 
 /**
@@ -16,13 +15,19 @@ import { ref, watch, onActivated, onDeactivated, onUnmounted, nextTick, type Ref
 const FOCUSABLE = [
   'button:not([disabled])',
   'a[href]',
-  'input:not([disabled])',
+  'input:not([disabled]):not([type="hidden"])',
   'textarea:not([disabled])',
   'select:not([disabled])',
   '[tabindex]:not([tabindex="-1"])',
 ].join(',')
 
-const trapStack: symbol[] = []
+interface ActiveTrap {
+  owner: symbol
+  returnFocus: Ref<HTMLElement | null>
+  focus: () => void
+}
+
+const trapStack: ActiveTrap[] = []
 const scrollLocks = new Set<symbol>()
 let previouslyLocked = false
 
@@ -41,22 +46,60 @@ export function useFocusTrap(
   options: FocusTrapOptions = {},
 ) {
   const { onEscape, lockScroll = true, initialFocus } = options
-  const confirmation = useConfirmState()
   /** 打开前的焦点位置，关闭后要还回去 */
   const returnFocus = ref<HTMLElement | null>(null)
   const attached = ref(true)
   const owner = Symbol('focus-trap')
   let fallbackRoot: HTMLElement | null = null
+  let activeRoot: HTMLElement | null = null
+  const trap: ActiveTrap = { owner, returnFocus, focus: focusInitial }
+
+  function isActive() {
+    if (!attached.value || !isOpen() || trapStack.at(-1)?.owner !== owner) return false
+    // showModal 的原生顶层不在自定义栈中；让它接管焦点、Tab 和 Escape。
+    // 通过当前焦点识别原生模态，保留其内部自定义弹层的键盘行为。
+    const nativeModal = document.activeElement?.closest('dialog:modal')
+    if (nativeModal) return !!root.value && nativeModal.contains(root.value)
+    return !document.querySelector('dialog:modal')
+  }
+
+  function isAvailable(el: HTMLElement) {
+    const style = getComputedStyle(el)
+    return el.isConnected && !el.matches(':disabled') && !el.closest('[inert], [hidden]')
+      && style.visibility !== 'hidden' && style.visibility !== 'collapse'
+      && el.getClientRects().length > 0
+  }
 
   function focusableIn(container: HTMLElement): HTMLElement[] {
     return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE))
-      // offsetParent 为 null = 被隐藏；但当前焦点元素要保留，否则 Tab 会跳丢
-      .filter(el => !el.closest('[inert], [hidden]') && getComputedStyle(el).visibility !== 'hidden'
-        && (el.getClientRects().length > 0 || el.offsetParent !== null || el === document.activeElement))
+      .filter(el => el.tabIndex >= 0 && isAvailable(el))
+  }
+
+  function focusRoot(container: HTMLElement) {
+    if (!container.hasAttribute('tabindex')) {
+      container.setAttribute('tabindex', '-1')
+      fallbackRoot = container
+    }
+    container.focus({ preventScroll: true })
+  }
+
+  function focusInitial() {
+    const container = root.value
+    if (!container || !isActive()) return
+    activeRoot = container
+    const preferred = initialFocus?.value
+    const target = preferred && container.contains(preferred) && isAvailable(preferred)
+      ? preferred : focusableIn(container)[0]
+    if (target) target.focus({ preventScroll: true })
+    else focusRoot(container)
+  }
+
+  function onFocusin(event: FocusEvent) {
+    if (isActive() && root.value && !root.value.contains(event.target as Node)) focusInitial()
   }
 
   function onKeydown(event: KeyboardEvent) {
-    if (!attached.value || !isOpen() || trapStack.at(-1) !== owner || confirmation.value.visible || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+    if (!isActive() || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
 
     if (event.key === 'Escape' && onEscape) {
       event.preventDefault()
@@ -68,29 +111,41 @@ export function useFocusTrap(
     const container = root.value
     if (!container) return
     const focusable = focusableIn(container)
-    if (!focusable.length) { event.preventDefault(); return }
+    if (!focusable.length) { event.preventDefault(); focusRoot(container); return }
 
     const first = focusable[0]
     const last = focusable[focusable.length - 1]
-    if (event.shiftKey && document.activeElement === first) {
+    if (!focusable.includes(document.activeElement as HTMLElement)) {
+      // 空弹层的根节点、被移除或禁用的控件都不在当前 Tab 顺序中。
+      event.preventDefault(); (event.shiftKey ? last : first).focus()
+    } else if (event.shiftKey && document.activeElement === first) {
       event.preventDefault(); last.focus()
     } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault(); first.focus()
-    } else if (!container.contains(document.activeElement)) {
-      // 焦点已经在弹层外（例如刚打开还没聚焦）——拉回来
       event.preventDefault(); first.focus()
     }
   }
 
   document.addEventListener('keydown', onKeydown)
+  document.addEventListener('focusin', onFocusin)
 
   function release(restoreFocus: boolean) {
-    const top = trapStack.at(-1) === owner
-    const index = trapStack.indexOf(owner)
-    if (index >= 0) trapStack.splice(index, 1)
+    const top = trapStack.at(-1) === trap
+    const index = trapStack.indexOf(trap)
+    if (index >= 0) {
+      // 父弹层先关闭时，仍打开的子弹层应继承它的返回点。
+      const container = root.value ?? activeRoot
+      for (const nested of trapStack.slice(index + 1)) {
+        if (container?.contains(nested.returnFocus.value)) nested.returnFocus.value = returnFocus.value
+      }
+      trapStack.splice(index, 1)
+    }
     if (scrollLocks.delete(owner) && !scrollLocks.size && !previouslyLocked) document.body.classList.remove('overlay-open')
-    if (restoreFocus && top && returnFocus.value?.isConnected) returnFocus.value.focus({ preventScroll: true })
+    if (restoreFocus && top) {
+      if (returnFocus.value && isAvailable(returnFocus.value)) returnFocus.value.focus({ preventScroll: true })
+      else trapStack.at(-1)?.focus()
+    }
     returnFocus.value = null
+    activeRoot = null
     if (fallbackRoot) { fallbackRoot.removeAttribute('tabindex'); fallbackRoot = null }
   }
 
@@ -98,22 +153,13 @@ export function useFocusTrap(
     if (open === wasOpen) return
     if (open) {
       returnFocus.value = document.activeElement as HTMLElement | null
-      trapStack.push(owner)
+      trapStack.push(trap)
       if (lockScroll) {
         if (!scrollLocks.size) previouslyLocked = document.body.classList.contains('overlay-open')
         scrollLocks.add(owner)
         document.body.classList.add('overlay-open')
       }
-      nextTick(() => {
-        if (!attached.value || !isOpen() || trapStack.at(-1) !== owner) return
-        const target = initialFocus?.value
-          ?? (root.value ? focusableIn(root.value)[0] : null)
-        if (target) target.focus({ preventScroll: true })
-        else if (root.value) {
-          if (!root.value.hasAttribute('tabindex')) { root.value.setAttribute('tabindex', '-1'); fallbackRoot = root.value }
-          root.value.focus({ preventScroll: true })
-        }
-      })
+      nextTick(focusInitial)
     } else {
       release(attached.value)
     }
@@ -123,7 +169,8 @@ export function useFocusTrap(
 
   onUnmounted(() => {
     document.removeEventListener('keydown', onKeydown)
-    release(false)
+    document.removeEventListener('focusin', onFocusin)
+    release(attached.value)
   })
 
   return { returnFocus }
