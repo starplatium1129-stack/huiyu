@@ -83,7 +83,7 @@ function buildSeeds(extra: any = 0) {
 }
 
 function manualParameterValue(raw: string, name: string) {
-  const expected = generationContract.MANUAL_REPAIR_PRESET[name];
+  const expected = (generationContract.MANUAL_REPAIR_PRESET as Record<string, any>)[name];
   if (raw === '') throw new Error(`手工修复必须显式传 --${name} ${expected}`);
   const value = Number(raw);
   if (!generationContract.validateTunableNumber(value, name) || value !== expected) {

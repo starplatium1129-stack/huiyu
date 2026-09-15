@@ -332,7 +332,7 @@ function applyBlueprintWrite(prepared: any, { writeFileAtomic, io = nodeFs }: an
   const derived = derivePaths(prepared.rootReal);
   const paths = prepared.paths || {};
   for (const key of Object.keys(derived)) {
-    if (paths[key] !== derived[key]) {
+    if (paths[key] !== (derived as Record<string, any>)[key]) {
       throw new BlueprintWriteError('prepared.paths.' + key + ' 与 rootReal 推导不一致（拒绝篡改）: '
         + JSON.stringify(paths[key]) + ' != ' + JSON.stringify(derived[key]), 'path-validation', paths[key]);
     }

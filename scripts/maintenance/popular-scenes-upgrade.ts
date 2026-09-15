@@ -234,7 +234,7 @@ const PROSE_FALLBACK = [
 function pickProseSentence(blueprint: any) {
   const haystack = [blueprint.lighting, blueprint.timeOfDay, blueprint.mood].join(' ');
   for (const [re, variants] of PROSE_TEMPLATES) {
-    if (re.test(haystack)) return variants[hashId(blueprint.id) % variants.length];
+    if (re.test(haystack)) return (variants as Record<string, any>)[hashId(blueprint.id) % variants.length];
   }
   return PROSE_FALLBACK[hashId(blueprint.id) % PROSE_FALLBACK.length];
 }

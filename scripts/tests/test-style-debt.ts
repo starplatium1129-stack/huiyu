@@ -234,7 +234,7 @@ test('contrast: parses real theme overrides, nested mixes and alpha without sile
   assert.equal(block(':root', css)['--ink'], '#fff');
   assert.throws(() => block('.missing', css), /Missing CSS token block/);
   assert.equal(themes.length, 2);
-  assert.notEqual(themes[0][1]['--text-primary'], themes[1][1]['--text-primary']);
+  assert.notEqual((themes[0][1] as Record<string, any>)['--text-primary'], (themes[1][1] as Record<string, any>)['--text-primary']);
   const mix = resolveColor({ '--a': '#ffffff', '--b': '#000000' }, 'color-mix(in srgb, var(--a) 40%, var(--b))');
   assert.deepEqual(mix, [102, 102, 102]);
   assert.equal(ratio([0, 0, 0], [255, 255, 255]), 21);

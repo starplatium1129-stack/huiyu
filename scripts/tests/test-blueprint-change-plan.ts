@@ -63,7 +63,7 @@ function shardInputs(shards: { [s: string]: any; }|ArrayLike<any>, textOverrides
   const out: any = {};
   for (const [file, data] of Object.entries(shards)) {
     out[file] = {
-      text: (textOverrides && textOverrides[file]) || jsonText(data),
+      text: (textOverrides && (textOverrides as Record<string, any>)[file]) || jsonText(data),
       data,
     };
   }

@@ -56,8 +56,8 @@ function validatePng(buffer: any) {
     }
     offset = end;
   }
-  const channels = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[color];
-  const depths = { 0: [1, 2, 4, 8, 16], 2: [8, 16], 3: [1, 2, 4, 8], 4: [8, 16], 6: [8, 16] }[color];
+  const channels = ({ 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 } as Record<string, any>)[color];
+  const depths = ({ 0: [1, 2, 4, 8, 16], 2: [8, 16], 3: [1, 2, 4, 8], 4: [8, 16], 6: [8, 16] } as Record<string, any>)[color];
   if (!ended || !compressed.length || !depths?.includes(depth)) throw new Error('incomplete or unsupported PNG');
   const row = Math.ceil(width * channels * depth / 8) + 1;
   const expected = row * height;

@@ -28,7 +28,7 @@ function recordingFs() {
   for (const op of ['statSync', 'readdirSync', 'realpathSync', 'readFileSync']) {
     io[op] = (...args) => {
       calls.push({ op, target: String(args[0]) });
-      return fs[op](...args);
+      return (fs as Record<string, any>)[op](...args);
     };
   }
   return { io, calls };

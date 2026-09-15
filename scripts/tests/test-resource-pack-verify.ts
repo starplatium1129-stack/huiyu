@@ -39,7 +39,7 @@ function recordingIo(hooks: any = {}) {
       calls.push({ op, target: String(args[0]) });
       const hook = hooks[op];
       if (hook) return hook(...args);
-      return fs[op](...args);
+      return (fs as Record<string, any>)[op](...args);
     };
   }
   return { io, calls };

@@ -44,7 +44,7 @@ function decodePng8(buffer: any[]) {
       const compression = buffer[dataStart + 10];
       const filter = buffer[dataStart + 11];
       const interlace = buffer[dataStart + 12];
-      channels = { 0: 1, 2: 3, 4: 2, 6: 4 }[colorType] || 0;
+      channels = ({ 0: 1, 2: 3, 4: 2, 6: 4 } as Record<string, any>)[colorType] || 0;
       if (!width || !height || bitDepth !== 8 || !channels
         || compression !== 0 || filter !== 0 || interlace !== 0) {
         return null;

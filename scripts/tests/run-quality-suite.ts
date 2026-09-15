@@ -169,7 +169,7 @@ function main(argv: string[]) {
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
-  const files = QUALITY_TEST_SUITES[suiteName];
+  const files = (QUALITY_TEST_SUITES as Record<string, any>)[suiteName];
   const entries = files.map((file: string) => ({ name: file, file: path.join(root, 'scripts', 'tests', file) }));
   if (suiteName === 'unit' || suiteName === 'contract') {
     // 数据聚合产物不入库（2026-08-28）：unit（test-prompt-corpus 直读 scenes.json）
@@ -177,7 +177,7 @@ function main(argv: string[]) {
     // onlyIfMissing：陈旧态留给 --check 门禁报红，不在测试里静默自愈。
     try {
       const ensured = (require('../lib/ensure-data-build') as typeof import('../lib/ensure-data-build')).ensureAll({ onlyIfMissing: true });
-      const rebuilt = ['scenes', 'popular'].filter((face) => ensured[face].rebuilt);
+      const rebuilt = ['scenes', 'popular'].filter((face) => (ensured as Record<string, any>)[face].rebuilt);
       if (rebuilt.length) console.log(`↻ [data-build] 产物缺失，已构建: ${rebuilt.join(' + ')}`);
     } catch (error) {
       console.error(`✘ [data-build] 产物自愈构建失败: ${runtimeErrorMessage(error)}`);
@@ -187,7 +187,7 @@ function main(argv: string[]) {
   if (suiteName === 'unit') return runUnitSuite({ verbose });
   return runSuiteFiles(entries, {
     label: suiteName,
-    timeout: SUITE_TIMEOUT_MS[suiteName],
+    timeout: (SUITE_TIMEOUT_MS as Record<string, any>)[suiteName],
     verbose,
     keepGoing,
   });

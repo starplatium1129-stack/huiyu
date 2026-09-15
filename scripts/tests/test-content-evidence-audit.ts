@@ -211,7 +211,7 @@ test('publication bindings and published bytes are checked separately; absent ro
 
 test('explicit rejected human decision remains rejected; invalid decision structure fails without writing review', (t) => {
   const f = fixture(t);
-  f.decisions.records[f.record.key].verdict = 'fail';
+  (f.decisions.records as Record<string, any>)[f.record.key].verdict = 'fail';
   f.put('decisions.json', f.decisions);
   assert.equal(audit(f.options).items[0].review.status, 'rejected');
   assert.equal(audit(f.options).exitCode, 1);

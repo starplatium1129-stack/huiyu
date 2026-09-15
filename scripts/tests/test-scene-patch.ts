@@ -113,7 +113,7 @@ test('scene patch: metadata-only patch to a pinned scene does not alter protecte
   const plan = patch.planPatches(input, [{ type: 'scene', id: 'sc001', changes: { story: 'reviewed metadata' } }], pinned);
   assert.equal(plan.writes[0].data[0].prompt, 'locked');
   assert.equal(plan.writes[0].data[0].story, 'reviewed metadata');
-  assert.equal(input[0].data[0].story, 'old');
+  assert.equal((input[0].data as Record<string, any>)[0].story, 'old');
 });
 
 test('scene patch: invalid types, IDs, duplicate entries and prototype fields are rejected', () => {

@@ -246,7 +246,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
   Object.entries(byCharacter).forEach(function (entry) {
     const additionCount = coverageRepairs.additions.filter(item => item.characterId === entry[0]).length;
     if (additionCount) {
-      assert.strictEqual(entry[1], coverageRepairs.baselineCounts[entry[0]] + additionCount, entry[0] + ' must add only its declared wardrobe scenes');
+      assert.strictEqual(entry[1], (coverageRepairs.baselineCounts as Record<string, any>)[entry[0]] + additionCount, entry[0] + ' must add only its declared wardrobe scenes');
     }
     else if (onboardingIds.has(entry[0])) {
       const onboardingEntry = remainingOnboarding.find(item => item.id === entry[0]);
@@ -502,7 +502,7 @@ test('negation-free prompts: no invented no_* tags, prose carries positive solit
         blueprint.id + ' must not carry negation-style tag ' + token);
     });
     ['promptProse', 'nsfwProse'].forEach(function (field) {
-      var text = blueprint[field] || '';
+      var text = (blueprint as Record<string, any>)[field] || '';
       assert.ok(!/\bno (?:other )?(?:people|customers|visitors|walkers|colleagues|opponent)\b|\bnobody else\b|\bno one else\b/i.test(text),
         blueprint.id + ' ' + field + ' must not use negation phrasing');
     });

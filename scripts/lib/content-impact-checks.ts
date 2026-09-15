@@ -65,7 +65,7 @@ function recordEquality(snapshots: { [x: string]: any; }, keys: Set<any>) {
   const issues: any = [], unknown = [];
   for (const key of keys) {
     const [kind, , id] = JSON.parse(key);
-    const domain = { blueprint: 'blueprints', scene: 'scenes', character: 'popular', outfit: 'popular' }[kind];
+    const domain = ({ blueprint: 'blueprints', scene: 'scenes', character: 'popular', outfit: 'popular' } as Record<string, any>)[kind];
     if (!domain) { unknown.push(`${key}: no record projection predicate`); continue; }
     const snapshot: any = snapshots[domain];
     if (!snapshot?.complete) { unknown.push(`${key}: incomplete source/derived index`); continue; }

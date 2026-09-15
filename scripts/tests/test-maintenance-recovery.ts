@@ -282,12 +282,12 @@ test('CLI defaults to zero-write preview and requires explicit apply plus plan',
 test('CLI --help and bare --plan do not inspect targets even with apply arguments', () => {
   const { main }: typeof import('../maintenance/recover-maintenance') = require('../maintenance/recover-maintenance');
   const operations = ['readFileSync', 'lstatSync', 'statSync', 'realpathSync', 'openSync', 'mkdirSync', 'renameSync'];
-  const originals = new Map(operations.map(name => [name, fs[name]]));
+  const originals = new Map(operations.map(name => [name, (fs as Record<string, any>)[name]]));
   const stdout = process.stdout.write;
   let output = '';
   let accessed = false;
   try {
-    for (const name of operations) fs[name] = () => { accessed = true; throw new Error('CLI description accessed filesystem: ' + name); };
+    for (const name of operations) (fs as Record<string, any>)[name] = () => { accessed = true; throw new Error('CLI description accessed filesystem: ' + name); };
     process.stdout.write = text => { output += text; return true; };
     for (const flag of ['--help', '--plan']) {
       assert.equal(main([flag]), 0);
@@ -298,7 +298,7 @@ test('CLI --help and bare --plan do not inspect targets even with apply argument
     assert.match(output, /--recovery-plan/);
     assert.match(output, /no operation is executed/);
   } finally {
-    for (const [name, original] of originals) fs[name] = original;
+    for (const [name, original] of originals) (fs as Record<string, any>)[name] = original;
     process.stdout.write = stdout;
   }
 });

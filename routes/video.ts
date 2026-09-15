@@ -460,7 +460,7 @@ function createVideoRouter(config: any, dependencies: any) {
         : '已降级：原生采样器（速度约慢 1 倍）；提交任务时会自动重新探测',
     };
     let qualities = Object.keys(QUALITIES).map(function (id) {
-      let quality = QUALITIES[id];
+      let quality = (QUALITIES as Record<string, any>)[id];
       return {
         id:id,
         label:quality.label,

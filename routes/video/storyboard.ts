@@ -132,7 +132,7 @@ function buildStoryboard(blueprint: any, options: any) {
       camera: plan.camera,
       motion: plan.motion,
       duration: 3,
-      firstFramePrompt: proseBase ? proseBase + ' ' + BEAT_FRAMING[plan.beat] : null,
+      firstFramePrompt: proseBase ? proseBase + ' ' + (BEAT_FRAMING as Record<string, any>)[plan.beat] : null,
     };
   });
   return {
@@ -152,7 +152,7 @@ function resolveStoryboard(config: { ROOT_DIR: string; }, blueprintId: string|nu
   let byId = loadBlueprints(config);
   let blueprint = byId ? byId[blueprintId] : null;
   if (!blueprint) return { error:'UNKNOWN_BLUEPRINT', message:'未知场景蓝图' };
-  if (ADULT_CATEGORIES[blueprint.category]) {
+  if ((ADULT_CATEGORIES as Record<string, any>)[blueprint.category]) {
     return { error:'ADULT_BLUEPRINT_UNSUPPORTED', message:'成人蓝图暂不支持自动剧本（视频链路成人门控未接入）' };
   }
   return { storyboard: buildStoryboard(blueprint, options) };

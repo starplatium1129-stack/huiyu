@@ -35,7 +35,7 @@ function readOnlyIo(onRead?: any) {
     io[name] = (...args) => {
       const file = typeof args[0] === 'number' ? opened.get(args[0]) : String(args[0]);
       reads.push({ op: name, file });
-      const value = fs[name](...args);
+      const value = (fs as Record<string, any>)[name](...args);
       if (onRead) onRead(name, file);
       return value;
     };

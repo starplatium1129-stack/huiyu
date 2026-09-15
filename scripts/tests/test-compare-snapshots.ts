@@ -17,11 +17,11 @@ globalThis.document = new Proxy({
   activeElement: null,
   body: { classList: { add: noop, remove: noop } },
   createElement: () => new Proxy({ style: {} }, {
-    get: (target, prop) => (prop in target ? target[prop] : noop),
+    get: (target, prop) => (prop in target ? (target as Record<string, any>)[prop] : noop),
     set: () => true,
   }),
 }, {
-  get: (target, prop) => (prop in target ? target[prop] : noop),
+  get: (target, prop) => (prop in target ? (target as Record<string, any>)[prop] : noop),
 });
 const { useCompareSnapshots }: typeof import('../../src/composables/useCompareSnapshots.ts') = require('../../src/composables/useCompareSnapshots.ts');
 

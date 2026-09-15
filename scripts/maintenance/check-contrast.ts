@@ -141,7 +141,7 @@ function run() {
   let failures = 0;
 
   for (const [themeName, tokens] of themes) {
-    const deepRaw = tokens['--bg-deep'];
+    const deepRaw = (tokens as Record<string, any>)['--bg-deep'];
     if (!/^#/.test(deepRaw || '')) { failures++; console.error(themeName + ': 背景无法解析'); continue; }
     const deep = hexToRgb(deepRaw);
 

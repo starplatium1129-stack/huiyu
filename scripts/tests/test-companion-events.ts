@@ -54,8 +54,8 @@ test('reset 后重新建基线，不重复播报历史事件', () => {
 
 test('事件路由与通知标题完整覆盖全部事件', () => {
   for (const event of ['sd-done', 'service-back', 'service-down']) {
-    assert.ok(EVENT_ROUTE[event], `${event} 应有跳转路由`);
-    assert.ok(EVENT_NOTIFY_TITLE[event], `${event} 应有通知标题`);
+    assert.ok((EVENT_ROUTE as Record<string, any>)[event], `${event} 应有跳转路由`);
+    assert.ok((EVENT_NOTIFY_TITLE as Record<string, any>)[event], `${event} 应有通知标题`);
   }
   assert.equal(EVENT_ROUTE['sd-done'], '/gallery');
   assert.equal(EVENT_ROUTE['service-down'], '/control');

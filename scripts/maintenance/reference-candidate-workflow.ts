@@ -10,11 +10,11 @@ function parse(args: string|string[]|[any,...any[]], env: any) {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) return { help: true };
   const [action, ...rest]: any = args;
   if (!['inspect', 'review', 'publish', 'full'].includes(action)) throw new Error('Choose inspect, review, publish or full');
-  const allowed = {
+  const allowed = ({
     inspect: ['root', 'from'], review: ['root', 'from', 'decisions', 'out'],
     publish: ['root', 'from', 'review', 'source', 'target', 'apply'],
     full: ['root', 'output', 'source', 'target', 'gateway', 'ids', 'keys', 'concurrency', 'review', 'decisions', 'out', 'dry-run', 'retry-unknown'],
-  }[action];
+  } as Record<string, any>)[action];
   const flags = ['apply', 'dry-run', 'retry-unknown'];
   const options: any = { action };
   for (let i = 0; i < rest.length; i++) {

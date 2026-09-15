@@ -427,7 +427,7 @@ test('scoped pure pipeline: recording fileExists proves unselected references ar
     assert.deepEqual(scoped.reference.missingImage, []);
     // 无关角色不出现在局部条目中。
     for (const key of ['missingRegistration', 'pending', 'missingImage', 'unverifiedImage', 'referenceOnlyForms']) {
-      assert.ok(scoped.reference[key].every((row: any) => row.id === 'char_z'), `${key} 混入无关角色`);
+      assert.ok((scoped.reference as Record<string, any>)[key].every((row: any) => row.id === 'char_z'), `${key} 混入无关角色`);
     }
     // 结构字段保留全库结果，scope 元数据可机读。
     assert.deepEqual(scoped.structuralErrors, report.structuralErrors);

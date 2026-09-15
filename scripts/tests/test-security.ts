@@ -62,7 +62,7 @@ function mockRes() {
     status(code: number) { this.statusCode = code; return this; },
     json(body: any) { this.body = body; return this; },
     send(body: any) { this.body = body; return this; },
-    setHeader(key: string|number, value: any) { this.headers[key] = value; },
+    setHeader(key: string|number, value: any) { (this.headers as Record<string, any>)[key] = value; },
     redirect(code: number, url: any) { this.statusCode = code; this.redirected = url; },
   };
   return res;

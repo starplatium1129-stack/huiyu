@@ -84,7 +84,7 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
   const domains = Object.entries(DOMAINS).filter(([id]: any) => !domain || id === domain).map(([id, meta]: any) => {
     const result = { domain: id, ...meta, fieldContract: FIELD_CONTRACTS[id] || { status: 'unknown', reason: '未追踪本域全部字段的 source/derived 映射；不把独立用途的同名字段视为镜像' },
       consistency: { status: 'not-run', reason: 'Use --consistency for pure JSON/field projection checks' },
-      fieldValidation: { status: 'not-run', ...(FIELD_VALIDATION[id] || { rules: [], unknown: ['No complete exported field predicate for this domain'] }),
+      fieldValidation: { status: 'not-run', ...((FIELD_VALIDATION as Record<string, any>)[id] || { rules: [], unknown: ['No complete exported field predicate for this domain'] }),
         execution: 'scripts/maintenance/check-content-impact.js --full --execute; partial field coverage remains explicit' },
       readWriteCoverage: { status: 'partial', completeness: 'unknown', basis: 'Only listed implementation readers/writers; no exhaustive dependency claim' },
       machine: { report: '办公机/CI：Node，本地只读', contentAcceptance: '内容/图片质量仍待对应主力机或人工验收' }, entries: [] };
@@ -109,7 +109,7 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
         }
         for (const file of files) { const item = add(directory + '/' + file, 'source', shape); item.row.logicalGroup = entry.file; }
       }
-      const product = { popular: 'popular-characters.json', scenes: 'scenes.json', blueprints: 'scene-blueprints.json' }[id];
+      const product = ({ popular: 'popular-characters.json', scenes: 'scenes.json', blueprints: 'scene-blueprints.json' } as Record<string, any>)[id];
       add('data/' + product, 'product', shape);
       if (id === 'scenes') {
         for (const file of ['scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json', 'scenes-core.json']) add('data/' + file, 'product', records);
