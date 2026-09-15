@@ -113,7 +113,7 @@ function comfyResourcesAvailable(config: unknown, input: any) {
 function validateWaiResources(config: unknown, input: unknown) {
   if (!comfyResourcesAvailable(config, input)) throw error(503, 'COMFY_RESOURCES_UNAVAILABLE', 'WAI checkpoint 或所选 LoRA 资源不可用');
 }
-function freezeLoras(loras: unknown) {
+function freezeLoras(loras: any) {
   return Object.freeze((loras || []).map(function (lora: any) { return Object.freeze({ id:lora.id, strength:lora.strength }); }));
 }
 function validate(reqOrBody: Request<ParamsDictionary,unknown,unknown,ParsedQs,Record<string,unknown>>, maybeBody?: any) {

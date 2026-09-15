@@ -23,7 +23,7 @@ function createScriptRunner(options: any) {
   options = options || {};
   let rootDir = options.rootDir || process.cwd();
 
-  function runScriptAsync(scriptPath: PathLike, args: unknown, timeoutMs: unknown) {
+  function runScriptAsync(scriptPath: PathLike, args: any, timeoutMs: any) {
     return new Promise(function (resolve) {
       if (!fs.existsSync(scriptPath)) {
         resolve({ ok:false, error:'脚本未安装：' + path.basename(scriptPath) });

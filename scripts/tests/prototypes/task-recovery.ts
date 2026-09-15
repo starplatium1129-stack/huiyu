@@ -64,7 +64,13 @@ function assertRecord(record: any, previous: any) {
 }
 
 class RecoveryJournal {
-  constructor(directory: any) {
+    error!: any;
+  file!: any;
+  head!: any;
+  length!: any;
+  records!: any;
+  sequence!: any;
+constructor(directory: any) {
     this.file = path.join(path.resolve(directory), 'task-recovery.jsonl');
     this.records = new Map();
     this.sequence = 0;
@@ -176,7 +182,13 @@ class RecoveryJournal {
 }
 
 class RecoveryCoordinator {
-  constructor(journal: any, adapters: any, options: any = {}) {
+    adapters!: any;
+  cancelRetryMs!: any;
+  cancelTimeoutMs!: any;
+  inflight!: any;
+  journal!: any;
+  now!: any;
+constructor(journal: any, adapters: any, options: any = {}) {
     this.journal = journal;
     this.adapters = adapters;
     this.now = options.now || Date.now;

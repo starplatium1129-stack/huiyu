@@ -48,7 +48,7 @@ function printExcerpt(output: string, file: string) {
 }
 
 /** 跑单个 node 脚本（捕获输出）。返回 {ok, duration, output}。 */
-function runStep(name: unknown, file: string, args: unknown, timeout: number) {
+function runStep(name: unknown, file: string, args: any, timeout: number) {
   const started = Date.now();
   const result = spawnSync(process.execPath, [file, ...(args || [])], {
     cwd: root,

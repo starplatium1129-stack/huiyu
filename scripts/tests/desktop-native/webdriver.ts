@@ -61,7 +61,10 @@ function requestJson(port: any, method: any, pathname: any, body: any, timeoutMs
 }
 
 class WebDriverSession {
-  constructor(options: any) {
+    capabilities!: any;
+  port!: any;
+  sessionId!: any;
+constructor(options: any) {
     this.port = options.port
     this.sessionId = options.sessionId
     this.capabilities = options.capabilities || {}
@@ -150,7 +153,14 @@ return await window.__TAURI__.core.invoke(command, payload)
 }
 
 class TauriDriver {
-  constructor(options: any) {
+    environment!: any;
+  evidence!: any;
+  executable!: any;
+  nativeDriver!: any;
+  nativePort!: any;
+  port!: any;
+  process!: any;
+constructor(options: any) {
     this.executable = options.executable
     this.nativeDriver = options.nativeDriver
     this.environment = options.environment

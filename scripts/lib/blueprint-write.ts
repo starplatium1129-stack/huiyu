@@ -54,7 +54,9 @@ const WINDOWS_RESERVED_STEMS = new Set([
 ]);
 
 class BlueprintWriteError extends Error {
-  constructor(message: string|undefined, code: string, filePath: string|undefined) {
+    code!: any;
+  filePath!: any;
+constructor(message: string|undefined, code: string, filePath: string|undefined) {
     super(message);
     this.name = 'BlueprintWriteError';
     this.code = code;

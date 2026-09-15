@@ -73,7 +73,14 @@ function resolveEvidenceDirectory(root: any, configured: any) {
 }
 
 class Evidence {
-  constructor(options: any) {
+    desktopLogPath!: any;
+  directory!: any;
+  environmentPath!: any;
+  failuresPath!: any;
+  report!: any;
+  reportPath!: any;
+  root!: any;
+constructor(options: any) {
     this.root = options.root
     this.directory = resolveEvidenceDirectory(options.root, options.directory)
     this.reportPath = path.join(this.directory, 'report.json')

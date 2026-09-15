@@ -72,7 +72,8 @@ function jsonText(value: any) {
 }
 
 class BlueprintChangePlanError extends Error {
-  constructor(problems: unknown[]) {
+    problems!: any;
+constructor(problems: unknown[]) {
     super('蓝图变更规划失败: ' + problems.join('；'));
     this.name = 'BlueprintChangePlanError';
     this.problems = Object.freeze(problems.slice());

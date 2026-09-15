@@ -114,7 +114,7 @@ function formatEntryName(entry: Dirent<string>) {
   return entry.isDirectory() ? entry.name + '/' : entry.name;
 }
 
-function runTool(workspaceRoot: unknown, name: string, args: any, context?: any) {
+function runTool(workspaceRoot: any, name: string, args: any, context?: any) {
   let root = path.resolve(workspaceRoot || '.');
   context = context || {};
   function checkCancelled() {

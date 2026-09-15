@@ -39,7 +39,7 @@ function readRetiredSceneIds(dataDir: string) {
 }
 
 /** 写入侧确认稳定 ID：活跃及退役身份都参与分配，不复用旧身份。 */
-function allocateSceneId(activeIds: unknown, retiredIds: unknown) {
+function allocateSceneId(activeIds: any, retiredIds: any) {
   return (require('./scene-id') as typeof import('./scene-id')).nextSceneId(activeIds || [], retiredIds || []);
 }
 

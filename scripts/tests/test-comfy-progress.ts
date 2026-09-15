@@ -5,7 +5,9 @@ var test: typeof import('node:test') = require('node:test');
 var progress: typeof import('../../server/comfy-progress') = require('../../server/comfy-progress');
 
 class FakeSocket {
-  static instances = [];
+    handlers!: any;
+  url!: any;
+static instances = [];
   constructor(url: unknown) {
     this.url = url;
     this.handlers = {};
