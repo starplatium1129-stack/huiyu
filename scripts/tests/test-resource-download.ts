@@ -3,7 +3,8 @@
 const test: typeof import('node:test')['test'] = require('node:test').test;
 const http: typeof import('node:http') = require('node:http');
 const { once }: typeof import('node:events') = require('node:events');
-const { fs, path, assert, write, snapshot, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const { fs, path, write, snapshot, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { createResourceDownloader }: typeof import('../lib/resource-download') = require('../lib/resource-download');
 const { killAt }: typeof import('./resource-install-process') = require('./resource-install-process');
 

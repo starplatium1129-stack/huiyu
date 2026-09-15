@@ -1,7 +1,8 @@
 'use strict';
 
 const test: typeof import('node:test')['test'] = require('node:test').test;
-const { fs, path, assert, write, snapshot }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const { fs, path, write, snapshot }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { resourceFixture, request, startAndSettle, downloadSource }: typeof import('./resource-gateway-fixture') = require('./resource-gateway-fixture');
 const { createResourceManager }: typeof import('../lib/resource-install-gateway') = require('../lib/resource-install-gateway');
 const { loadGatewayConfig }: typeof import('../../server/config') = require('../../server/config');

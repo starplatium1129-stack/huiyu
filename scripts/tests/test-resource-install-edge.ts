@@ -1,7 +1,8 @@
 'use strict';
 
 const test: typeof import('node:test')['test'] = require('node:test').test;
-const { fs, path, assert, write, json, approve, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const { fs, path, write, json, approve, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { generateManifest }: typeof import('../lib/resource-manifest') = require('../lib/resource-manifest');
 const { stageResourcePackDelta }: typeof import('../lib/resource-pack-delta') = require('../lib/resource-pack-delta');
 const { killAt }: typeof import('./resource-install-process') = require('./resource-install-process');

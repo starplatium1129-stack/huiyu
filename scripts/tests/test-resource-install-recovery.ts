@@ -4,7 +4,8 @@ import { PathLike } from 'node:fs';
 
 const test: typeof import('node:test')['test'] = require('node:test').test;
 const { fork }: typeof import('node:child_process') = require('node:child_process');
-const { fs, path, assert, write, json, snapshot, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const { fs, path, write, json, snapshot, fixture, code }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
+const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { killAt }: typeof import('./resource-install-process') = require('./resource-install-process');
 
 if (require.main === module) {
