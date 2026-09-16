@@ -35,16 +35,33 @@ Problem:
 
 Actions:
 
-- Create `server/app.ts`
-- Create `server/middleware/`
-- Move initialization logic into modules
-- Keep `server.ts` only as startup entry
+Create:
+
+```
+server/
+├── app.ts
+├── bootstrap.ts
+├── middleware/
+│   ├── security.ts
+│   ├── compression.ts
+│   └── static.ts
+```
+
+Move:
+
+- express app creation
+- middleware mounting
+- static resource handling
+- router registration
+
+Keep `server.ts` only responsible for process startup.
 
 Acceptance:
 
-- server.ts reduced significantly
-- Type checking passes
-- Gateway tests pass
+- server.ts reduced below 150 lines
+- Existing API paths unchanged
+- npm run typecheck passes
+- npm run test:gateway passes
 
 ---
 
@@ -52,13 +69,16 @@ Acceptance:
 
 Priority: P0
 
-Actions:
+Current risk:
 
-Refactor routes into:
+New features keep adding routes, making business logic difficult to locate.
+
+Refactor:
 
 ```
 routes/
-  feature/
+  generation/
+    index.ts
     controller.ts
     service.ts
     schema.ts
@@ -66,9 +86,22 @@ routes/
 
 Requirements:
 
-- Request validation
-- Unified response format
-- Unified error handling
+- Controller handles HTTP only
+- Service handles business logic
+- Schema validates input
+- Errors use unified system
+
+Acceptance:
+
+All API responses follow:
+
+```json
+{
+  "success": true,
+  "data": {},
+  "error": null
+}
+```
 
 ---
 
@@ -80,12 +113,30 @@ Create:
 
 ```
 server/errors/
-  AppError.ts
-  ErrorCode.ts
-  handler.ts
+├── AppError.ts
+├── ErrorCode.ts
+└── handler.ts
 ```
 
-Replace uncontrolled errors with structured errors.
+Replace:
+
+```
+throw new Error()
+```
+
+with structured errors.
+
+Required codes:
+
+- AI_PROVIDER_OFFLINE
+- MODEL_NOT_FOUND
+- INVALID_REQUEST
+- GENERATION_FAILED
+- STORAGE_ERROR
+
+Acceptance:
+
+Frontend can display meaningful error messages without parsing strings.
 
 ---
 
@@ -95,19 +146,27 @@ Replace uncontrolled errors with structured errors.
 
 Priority: P0
 
-Create abstraction:
+Create:
 
 ```
-providers/
-  provider.ts
+services/providers/
+└── provider.ts
 ```
 
-Required methods:
+Interface:
 
-- generate()
-- cancel()
-- status()
-- healthCheck()
+```ts
+interface AIProvider {
+ generate()
+ cancel()
+ status()
+ healthCheck()
+}
+```
+
+Purpose:
+
+Business logic should not know whether the backend is SD, ComfyUI, or another engine.
 
 ---
 
@@ -115,11 +174,22 @@ Required methods:
 
 Priority: P1
 
-Move SD communication into:
+Create:
 
 ```
 providers/stable-diffusion.ts
 ```
+
+Move:
+
+- API request handling
+- model query
+- generation request
+- error conversion
+
+Acceptance:
+
+Generation workflow works without route knowing SD details.
 
 ---
 
@@ -127,11 +197,18 @@ providers/stable-diffusion.ts
 
 Priority: P1
 
-Move ComfyUI workflow and websocket logic into:
+Create:
 
 ```
 providers/comfyui.ts
 ```
+
+Move:
+
+- workflow submission
+- websocket progress
+- queue status
+- cancel handling
 
 ---
 
@@ -141,14 +218,21 @@ providers/comfyui.ts
 
 Priority: P1
 
-Create schemas for:
+Create:
 
-- Scene
-- Character
-- Blueprint
-- Prompt
+```
+schemas/
+├── scene.schema.ts
+├── character.schema.ts
+├── blueprint.schema.ts
+└── prompt.schema.ts
+```
 
-Validate runtime data before loading.
+Validate:
+
+- required fields
+- data version
+- type consistency
 
 ---
 
@@ -156,15 +240,25 @@ Validate runtime data before loading.
 
 Priority: P2
 
-Avoid direct JSON access from business code.
+Problem:
+
+Business code directly reading JSON increases coupling.
 
 Create:
 
 ```
 services/data/
-  sceneRepository.ts
-  characterRepository.ts
+├── sceneRepository.ts
+├── characterRepository.ts
+└── promptRepository.ts
 ```
+
+Provide methods:
+
+- get()
+- search()
+- filter()
+- update()
 
 ---
 
@@ -174,16 +268,19 @@ services/data/
 
 Priority: P1
 
-Recommended structure:
+Create:
 
 ```
 src/modules/
-  studio/
-  gallery/
-  character/
-  voice/
-  video/
+├── studio/
+├── gallery/
+├── character/
+├── voice/
+├── video/
+└── live2d/
 ```
+
+Move related components into domains.
 
 ---
 
@@ -191,12 +288,17 @@ src/modules/
 
 Priority: P1
 
-Separate global state by domain:
+Separate:
 
-- scene
-- generation
-- character
-- settings
+```
+stores/
+├── scene.store.ts
+├── generation.store.ts
+├── character.store.ts
+├── settings.store.ts
+```
+
+Avoid one global store becoming a dependency center.
 
 ---
 
@@ -206,14 +308,28 @@ Separate global state by domain:
 
 Priority: P1
 
-Add automatic conversion:
+Create:
 
 ```
-source image
- -> webp
- -> thumbnail
- -> preview
+scripts/image-pipeline/
 ```
+
+Pipeline:
+
+```
+Original
+ ↓
+Optimized WebP
+ ↓
+Thumbnail
+ ↓
+Preview
+```
+
+Goals:
+
+- reduce package size
+- improve gallery loading
 
 ---
 
@@ -223,9 +339,12 @@ Priority: P2
 
 Track:
 
-- JS size
-- CSS size
+- initial JS
 - route chunks
+- CSS size
+- asset size
+
+Generate report after build.
 
 ---
 
@@ -243,9 +362,12 @@ config/env.ts
 
 Manage:
 
-- Tokens
-- Hosts
-- Runtime settings
+- tokens
+- hosts
+- runtime flags
+- feature switches
+
+No direct scattered `process.env` usage.
 
 ---
 
@@ -253,36 +375,86 @@ Manage:
 
 Priority: P1
 
-Detect accidental commits of:
+Check commits for:
 
 - API keys
-- Tokens
-- Passwords
+- access tokens
+- passwords
+
+Add git hook or CI check.
+
+---
+
+# Phase 7: Product Data Improvements
+
+## TASK-015: Generation history system
+
+Priority: P2
+
+Record:
+
+- prompt
+- model
+- seed
+- timestamp
+- output image
+
+Create:
+
+```
+generation-history/
+```
+
+Purpose:
+
+Allow users to reproduce previous works.
+
+---
+
+## TASK-016: Prompt version management
+
+Priority: P2
+
+Support:
+
+```
+Prompt v1
+Prompt v2
+Prompt v3
+```
+
+Store changes instead of overwriting.
 
 ---
 
 # Execution Order
 
-## Sprint 1
+## Sprint 1: Stability
 
 - TASK-001
 - TASK-003
 - TASK-007
 - TASK-013
 
-## Sprint 2
+## Sprint 2: Architecture
 
+- TASK-002
 - TASK-004
 - TASK-005
 - TASK-006
-- TASK-009
 
-## Sprint 3
+## Sprint 3: Maintainability
 
 - TASK-008
+- TASK-009
+- TASK-010
+
+## Sprint 4: Productization
+
 - TASK-011
-- TASK-012
+- TASK-015
+- TASK-016
 
 ---
 
-This document will be expanded after deeper file-level audits.
+This document will continue expanding after deeper file-level audits.
