@@ -447,6 +447,19 @@ async function main() {
       assert.ok(String(served.headers['cache-control'] || '').includes('no-cache'),
         '/data/' + publicData[pd] + ' must revalidate mutable data');
     }
+    let identityData: any = await request({
+      path:'/data/scenes.json',
+      headers:Object.assign({ 'Accept-Encoding':'br;q=0, gzip;q=0' }, LOCAL)
+    });
+    assert.ok(identityData.headers.etag, 'identity mutable data must expose an ETag');
+    let identity304: any = await request({
+      path:'/data/scenes.json',
+      headers:Object.assign({
+        'Accept-Encoding':'br;q=0, gzip;q=0',
+        'If-None-Match':identityData.headers.etag
+      }, LOCAL)
+    });
+    assert.strictEqual(identity304.status, 304, 'identity mutable data must honor If-None-Match');
 
     // ---- P-3: 带 hash 的产物永久缓存，SPA 外壳不缓存 ----
     let distApp = path.join(__dirname, '..', '..', 'dist', '_app');
@@ -478,10 +491,22 @@ async function main() {
         'precompressed response must keep the original content type');
       assert.ok(String(brotli.headers.vary || '').indexOf('Accept-Encoding') !== -1,
         'precompressed response must Vary on Accept-Encoding');
+      assert.ok(brotli.headers.etag, 'brotli mutable data must expose an ETag');
+      let brotli304: any = await request({
+        path:'/data/scenes.json',
+        headers:Object.assign({ 'Accept-Encoding':'br', 'If-None-Match':brotli.headers.etag }, LOCAL)
+      });
+      assert.strictEqual(brotli304.status, 304, 'brotli mutable data must honor If-None-Match');
 
       let gzipped: any = await request({ path:'/data/scenes.json', headers:Object.assign({ 'Accept-Encoding':'gzip' }, LOCAL) });
       assert.strictEqual(gzipped.headers['content-encoding'], 'gzip', 'gzip must be the fallback');
       assert.ok(brotli.body.length < gzipped.body.length, 'brotli must be smaller than gzip');
+      assert.ok(gzipped.headers.etag, 'gzip mutable data must expose an ETag');
+      let gzip304: any = await request({
+        path:'/data/scenes.json',
+        headers:Object.assign({ 'Accept-Encoding':'gzip', 'If-None-Match':gzipped.headers.etag }, LOCAL)
+      });
+      assert.strictEqual(gzip304.status, 304, 'gzip mutable data must honor If-None-Match');
 
       let identity: any = await request({ path:'/data/scenes.json', headers:Object.assign({ 'Accept-Encoding':'identity' }, LOCAL) });
       assert.strictEqual(identity.status, 200, 'clients without br/gzip must still get the file');

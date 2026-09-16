@@ -23,11 +23,15 @@ async function fixture(run: any) {
   app.use((req, res, next) => { res.vary('Origin'); next(); });
   app.use(precompressed(root, { assetsRoot:assets }));
   app.use('/assets', express.static(assets, { dotfiles:'deny' }));
-  app.use('/data', (req, res, next) => { if (!(require('../../server/public-data') as typeof import('../../server/public-data')).includes(req.path.slice(1))) return res.sendStatus(404); next(); }, express.static(path.join(root, 'data')));
+  app.use('/data', (req, res, next) => {
+    if (!(require('../../server/public-data') as typeof import('../../server/public-data')).includes(req.path.slice(1))) return res.sendStatus(404);
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+  }, express.static(path.join(root, 'data')));
   const server = http.createServer(app);
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', () => resolve()));
-  const get = (url: any, accept: any) => new Promise((resolve, reject) => {
-    http.get({ host:'127.0.0.1', port:(server.address!() as import('node:net').AddressInfo).port, path:url, headers:{ 'Accept-Encoding':accept } }, res => {
+  const get = (url: any, accept: any, extraHeaders: Record<string, string> = {}) => new Promise((resolve, reject) => {
+    http.get({ host:'127.0.0.1', port:(server.address!() as import('node:net').AddressInfo).port, path:url, headers:{ ...extraHeaders, 'Accept-Encoding':accept } }, res => {
       const chunks: any = []; res.on('data', c => chunks.push(c));
       res.on('end', () => {
         const bytes = Buffer.concat(chunks), encoding = res.headers['content-encoding'];
@@ -70,4 +74,38 @@ test('compressed assets keep source boundaries and mutable-data cache policy', a
   assert.equal((await get('/data/scenes.json', 'br')).headers['cache-control'], 'no-cache');
   write(path.join(root, 'data', 'private.json'));
   assert.equal((await get('/data/private.json', 'br')).status, 404);
+}));
+
+test('mutable data negotiates ETag consistently for br, gzip, and identity', async () => fixture(async ({ root, write, get }: any) => {
+  const file = path.join(root, 'data', 'scenes.json');
+  write(file, '{"revision":"old"}');
+
+  const br = await get('/data/scenes.json', 'br');
+  assert.equal(br.headers['content-encoding'], 'br');
+  assert.equal(br.headers['cache-control'], 'no-cache');
+  assert.ok(br.headers.etag, 'brotli response must expose an ETag');
+  const br304 = await get('/data/scenes.json', 'br', { 'If-None-Match': br.headers.etag });
+  assert.equal(br304.status, 304);
+  assert.equal(br304.body, '');
+
+  const gzip = await get('/data/scenes.json', 'gzip');
+  assert.equal(gzip.headers['content-encoding'], 'gzip');
+  assert.equal(gzip.headers['cache-control'], 'no-cache');
+  assert.ok(gzip.headers.etag, 'gzip response must expose an ETag');
+  const gzip304 = await get('/data/scenes.json', 'gzip', { 'If-None-Match': gzip.headers.etag });
+  assert.equal(gzip304.status, 304);
+  assert.equal(gzip304.body, '');
+
+  const identity = await get('/data/scenes.json', 'br;q=0, gzip;q=0');
+  assert.equal(identity.headers['content-encoding'], undefined);
+  assert.equal(identity.headers['cache-control'], 'no-cache');
+  assert.ok(identity.headers.etag, 'identity response must expose an ETag');
+  const identity304 = await get('/data/scenes.json', 'br;q=0, gzip;q=0', { 'If-None-Match': identity.headers.etag });
+  assert.equal(identity304.status, 304);
+
+  write(file, '{"revision":"new"}');
+  const changed = await get('/data/scenes.json', 'br', { 'If-None-Match': br.headers.etag });
+  assert.equal(changed.status, 200);
+  assert.equal(changed.body, '{"revision":"new"}');
+  assert.notEqual(changed.headers.etag, br.headers.etag);
 }));
