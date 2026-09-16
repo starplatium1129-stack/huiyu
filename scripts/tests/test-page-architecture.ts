@@ -142,7 +142,7 @@ assert(
   'docs navigation must link to current SPA routes, not deleted tools/*.html pages',
 );
 assert(
-  docsNav.includes("href:'prompt-builder'") && docsStatus.includes("d + 'control"),
+  /href:\s*'prompt-builder'/.test(docsNav) && /d\s*\+\s*'control/.test(docsStatus),
   'docs navigation and local status actions must expose current creation/control routes',
 );
 

@@ -29,7 +29,7 @@ let KREA_STYLE_LORAS: Readonly<Record<string, { file: string; trigger: string }>
 function decodePathValue(value: any) {
   let decoded = String(value || '');
   for (let i = 0; i < 3; i += 1) {
-    var next;
+    let next;
     try { next = decodeURIComponent(decoded); } catch (error) { throw serviceError(400, 'INVALID_RESULT', '结果路径编码无效'); }
     if (next === decoded) break;
     decoded = next;

@@ -82,7 +82,7 @@ test('比较拒绝缺失、坏 JSON、绝对/父目录/junction 越界；help/pl
 function gitFixture(t: any) {
   const f = fixture(t);
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]: any) => !/^GIT_/i.test(key)));
-  const git = (...args) => {
+  const git = (...args: any[]) => {
     const r = spawnSync('git', args, { cwd: f.root, env, encoding: 'utf8' });
     assert.equal(r.status, 0, r.stderr);
     return r.stdout.trim();
@@ -93,8 +93,9 @@ function gitFixture(t: any) {
 }
 function snapshotTree(root: any) {
   return Object.fromEntries(fs.readdirSync(root, { recursive: true }).sort().map(name => {
-    const p = path.join(root, name);
-    return [name, fs.statSync(p).isDirectory() ? null : fs.readFileSync(p).toString('hex')];
+    const relative = String(name);
+    const p = path.join(root, relative);
+    return [relative, fs.statSync(p).isDirectory() ? null : fs.readFileSync(p).toString('hex')];
   }));
 }
 function fixture(t: any): any {

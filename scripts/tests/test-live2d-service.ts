@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathOrFileDescriptor } from 'node:fs';
 
 const { test }: typeof import('node:test') = require('node:test');
 
@@ -12,7 +11,7 @@ const live2d: typeof import('../../services/live2d-service') = require('../../se
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-live2d-'));
 
-function write(filePath: PathOrFileDescriptor, body: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
+function write(filePath: string, body: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, body);
 }

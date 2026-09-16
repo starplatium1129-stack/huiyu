@@ -1,12 +1,12 @@
 'use strict';
 
-var http: typeof import('http') = require('http');
+let http: typeof import('http') = require('http');
 
 function postJson(url: any, payload: any) {
   return new Promise(function (resolve, reject) {
-    var u = new URL(url);
-    var body = Buffer.from(JSON.stringify(payload));
-    var req = http.request({
+    let u = new URL(url);
+    let body = Buffer.from(JSON.stringify(payload));
+    let req = http.request({
       hostname: u.hostname,
       port: u.port,
       path: u.pathname + u.search,
@@ -16,10 +16,10 @@ function postJson(url: any, payload: any) {
         'Content-Length': body.length
       }
     }, function (res) {
-      var chunks: any = [];
+      let chunks: any = [];
       res.on('data', function (c) { chunks.push(c); });
       res.on('end', function () {
-        var raw = Buffer.concat(chunks).toString('utf8');
+        let raw = Buffer.concat(chunks).toString('utf8');
         try { resolve(JSON.parse(raw)); } catch (e) { resolve(raw); }
       });
     });
@@ -32,10 +32,10 @@ function postJson(url: any, payload: any) {
 function getJson(url: any) {
   return new Promise(function (resolve, reject) {
     http.get(url, function (res) {
-      var chunks: any = [];
+      let chunks: any = [];
       res.on('data', function (c) { chunks.push(c); });
       res.on('end', function () {
-        var raw = Buffer.concat(chunks).toString('utf8');
+        let raw = Buffer.concat(chunks).toString('utf8');
         try { resolve(JSON.parse(raw)); } catch (e) { resolve(raw); }
       });
     }).on('error', reject);
@@ -43,12 +43,12 @@ function getJson(url: any) {
 }
 
 async function waitForPrompt(promptId: any) {
-  var start = Date.now();
+  let start = Date.now();
   while (Date.now() - start < 120000) {
-    var history: any = await getJson('http://127.0.0.1:8188/history/' + promptId);
+    let history: any = await getJson('http://127.0.0.1:8188/history/' + promptId);
     if (history && history[promptId]) {
-      var status = history[promptId].status;
-      var outputs = history[promptId].outputs;
+      let status = history[promptId].status;
+      let outputs = history[promptId].outputs;
       return { status: status, outputs: outputs, duration: (Date.now() - start) / 1000 };
     }
     await new Promise(function (r) { setTimeout(r, 300); });
@@ -57,7 +57,7 @@ async function waitForPrompt(promptId: any) {
 }
 
 function buildAnimaPrompt(withTeaCache: any, thresh?: any) {
-  var wf: any = {
+  let wf: any = {
     '1': { class_type: 'UNETLoader', inputs: { unet_name: 'anima-base-v1.0.safetensors', weight_dtype: 'default' } },
     '2': { class_type: 'CLIPLoader', inputs: { clip_name: 'qwen_3_06b_base.safetensors', type: 'qwen_image' } },
     '3': { class_type: 'VAELoader', inputs: { vae_name: 'qwen_image_vae.safetensors' } },
@@ -106,21 +106,21 @@ function buildAnimaPrompt(withTeaCache: any, thresh?: any) {
 
 async function run() {
   console.log('--- 1. Testing Standard Anima (30 steps, res_multistep) ---');
-  var promptStandard = buildAnimaPrompt(false);
-  var resStd: any = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptStandard, client_id: 'bench' });
+  let promptStandard = buildAnimaPrompt(false);
+  let resStd: any = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptStandard, client_id: 'bench' });
   console.log('Submitted standard prompt:', resStd.prompt_id);
-  var t0 = Date.now();
+  let t0 = Date.now();
   await waitForPrompt(resStd.prompt_id);
-  var stdTime = (Date.now() - t0) / 1000;
+  let stdTime = (Date.now() - t0) / 1000;
   console.log('Standard finished in ' + stdTime.toFixed(2) + 's');
 
   console.log('\n--- 2. Testing TeaCache Anima (30 steps, thresh=0.08) ---');
-  var promptTea = buildAnimaPrompt(true, 0.08);
-  var resTea: any = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptTea, client_id: 'bench' });
+  let promptTea = buildAnimaPrompt(true, 0.08);
+  let resTea: any = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptTea, client_id: 'bench' });
   console.log('Submitted TeaCache prompt:', resTea.prompt_id);
-  var t1 = Date.now();
+  let t1 = Date.now();
   await waitForPrompt(resTea.prompt_id);
-  var teaTime = (Date.now() - t1) / 1000;
+  let teaTime = (Date.now() - t1) / 1000;
   console.log('TeaCache finished in ' + teaTime.toFixed(2) + 's');
 
   console.log('\n--- Summary ---');

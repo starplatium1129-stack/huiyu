@@ -66,9 +66,9 @@ async function main() {
     let totalMB = 0;
     let hasPrivateMemory = false;
     for (const proc of processes) {
-      if (typeof proc.privateMemoryUsage !== 'number') continue;
+      if (typeof (proc as any).privateMemoryUsage !== 'number') continue;
       hasPrivateMemory = true;
-      const mb = proc.privateMemoryUsage / (1024 * 1024);
+      const mb = (proc as any).privateMemoryUsage / (1024 * 1024);
       totalMB += mb;
       if (!byType[proc.type]) byType[proc.type] = 0;
       byType[proc.type] += mb;
@@ -80,7 +80,7 @@ async function main() {
     let jsHeapMB = null;
     try {
       jsHeapMB = await page.evaluate(() => {
-        const memory = performance.memory;
+        const memory = (performance as any).memory;
         return memory && typeof memory.usedJSHeapSize === 'number'
           ? Math.round((memory.usedJSHeapSize / (1024 * 1024)) * 10) / 10
           : null;

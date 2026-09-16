@@ -25,13 +25,13 @@ function objectBody(value: any): JsonObject {
  * 每个 mock 都记录收到的请求，并可通过 /__mock/* 注入故障，供 E2E 断言。
  */
 
-var http: typeof import('http') = require('http');
+let http: typeof import('http') = require('http');
 
 /** 44 字节 WAV 头 + 一小段静音采样。useVoice 会拒收 < 64 字节的响应。 */
 function silentWav(sampleCount: number) {
-  var samples = Math.max(64, Number(sampleCount) || 512);
-  var dataBytes = samples * 2;
-  var buffer = Buffer.alloc(44 + dataBytes);
+  let samples = Math.max(64, Number(sampleCount) || 512);
+  let dataBytes = samples * 2;
+  let buffer = Buffer.alloc(44 + dataBytes);
   buffer.write('RIFF', 0, 'ascii');
   buffer.writeUInt32LE(36 + dataBytes, 4);
   buffer.write('WAVE', 8, 'ascii');
@@ -46,17 +46,17 @@ function silentWav(sampleCount: number) {
   buffer.write('data', 36, 'ascii');
   buffer.writeUInt32LE(dataBytes, 40);
   // 一点极低振幅的波形，避免播放器把纯零当损坏文件
-  for (var i = 0; i < samples; i += 1) {
+  for (let i = 0; i < samples; i += 1) {
     buffer.writeInt16LE(Math.round(Math.sin(i / 12) * 24), 44 + i * 2);
   }
   return buffer;
 }
 
 /** 1×1 PNG。前端只把它转成 blob URL 塞进 <img>，内容无关紧要。 */
-var PNG_1X1 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk' +
+let PNG_1X1 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk' +
   'YPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
 /** Minimal ISO BMFF-shaped payload: enough for gateway signature/range tests. */
-var MP4_MINIMAL = Buffer.concat([
+let MP4_MINIMAL = Buffer.concat([
   Buffer.from([0, 0, 0, 20]),
   Buffer.from('ftyp', 'ascii'),
   Buffer.from('isom', 'ascii'),
@@ -68,8 +68,8 @@ var MP4_MINIMAL = Buffer.concat([
 
 function readBody(req: IncomingMessage, limitBytes?: number): Promise<Buffer> {
   return new Promise<Buffer>(function (resolve, reject) {
-    var chunks: Buffer[] = [];
-    var size = 0;
+    let chunks: Buffer[] = [];
+    let size = 0;
     req.on('data', function (chunk: Buffer) {
       size += chunk.length;
       if (size > (limitBytes || 8 * 1024 * 1024)) {
@@ -85,13 +85,13 @@ function readBody(req: IncomingMessage, limitBytes?: number): Promise<Buffer> {
 }
 
 async function readJsonBody(req: IncomingMessage): Promise<Record<string, any>> {
-  var raw = await readBody(req);
+  let raw = await readBody(req);
   if (!raw.length) return {};
   try { return JSON.parse(raw.toString('utf8')) as Record<string, any>; } catch (error) { return {}; }
 }
 
 function sendJson(res: ServerResponse, status: number, payload: any) {
-  var body = JSON.stringify(payload);
+  let body = JSON.stringify(payload);
   res.writeHead(status, {
     'Content-Type':'application/json; charset=utf-8',
     'Content-Length':Buffer.byteLength(body)
@@ -111,7 +111,7 @@ function delay(ms: number) {
  * 转发了什么"，而不是只断言 UI 文案。
  */
 function createMockServer(name: string, handler: (ctx: MockContext) => any) {
-  var state = {
+  let state = {
     name:name,
     calls: [] as any[],
     faults: {} as Record<string, any>,
@@ -129,8 +129,8 @@ function createMockServer(name: string, handler: (ctx: MockContext) => any) {
     if (state.calls.length > 200) state.calls.shift();
   }
 
-  var server = http.createServer(function (req: IncomingMessage, res: ServerResponse) {
-    var pathname = String(req.url || '/').split('?')[0];
+  let server = http.createServer(function (req: IncomingMessage, res: ServerResponse) {
+    let pathname = String(req.url || '/').split('?')[0];
 
     // ---- 控制面：清空记录 / 注入故障 / 读回记录 ----
     if (pathname === '/__mock/state' && req.method === 'GET') {
@@ -154,7 +154,7 @@ function createMockServer(name: string, handler: (ctx: MockContext) => any) {
 
     Promise.resolve()
       .then(function () {
-        var needsBody = req.method === 'POST' || req.method === 'PUT';
+        let needsBody = req.method === 'POST' || req.method === 'PUT';
         return needsBody ? readJsonBody(req) : null;
       })
       .then(async function (body) {
@@ -175,8 +175,8 @@ function createMockServer(name: string, handler: (ctx: MockContext) => any) {
 // ── SD WebUI ────────────────────────────────────────────────────────────────
 function createSdMock() {
   return createMockServer('sd', async function (ctx) {
-    var res = ctx.res;
-    var faults = ctx.state.faults;
+    let res = ctx.res;
+    let faults = ctx.state.faults;
 
     if (faults.offline) { res.writeHead(503); res.end(); return; }
 
@@ -219,9 +219,9 @@ function createSdMock() {
       if (faults.txt2imgStatus) {
         return sendJson(res, Number(faults.txt2imgStatus), { error:String(faults.txt2imgError || 'mock failure') });
       }
-      var body = objectBody(ctx.body);
-      var seed = Number(body.seed);
-      var resolved = Number.isFinite(seed) && seed >= 0 ? seed : 918273645;
+      let body = objectBody(ctx.body);
+      let seed = Number(body.seed);
+      let resolved = Number.isFinite(seed) && seed >= 0 ? seed : 918273645;
       return sendJson(res, 200, {
         images:[PNG_1X1],
         parameters:body,
@@ -236,12 +236,12 @@ function createSdMock() {
 // ── ComfyUI ──────────────────────────────────────────────────────────────────
 // 只模拟服务端 anima-service 会使用的内部端点；浏览器永远不应直接命中它。
 function createComfyMock() {
-  var jobs = new Map();
-  var historyCalls = new Map();
-  var nextId = 0;
+  let jobs = new Map();
+  let historyCalls = new Map();
+  let nextId = 0;
   return createMockServer('comfy', async function (ctx) {
-    var res = ctx.res;
-    var faults = ctx.state.faults;
+    let res = ctx.res;
+    let faults = ctx.state.faults;
 
     if (ctx.path === '/system_stats') {
       if (faults.offline) return sendJson(res, 503, { error:'mock Comfy offline' });
@@ -252,22 +252,22 @@ function createComfyMock() {
       if (faults.promptStatus) {
         return sendJson(res, Number(faults.promptStatus), { error:String(faults.promptError || 'mock prompt failure') });
       }
-      var promptId = 'mock-comfy-' + (++nextId);
+      let promptId = 'mock-comfy-' + (++nextId);
       jobs.set(promptId, { createdAt:Date.now(), body:ctx.body, removed:false, interrupted:false });
       return sendJson(res, 200, { prompt_id:promptId });
     }
 
     if (ctx.path === '/queue' && ctx.req.method === 'GET') {
       if (faults.queueStatus) return sendJson(res, Number(faults.queueStatus), { error:'mock queue failure' });
-      var now = Date.now();
-      var renderWindow = Math.max(0, Number(faults.renderMs) || 50);
-      var queueWindow = Math.min(renderWindow, Math.max(0, Number(faults.queueMs) || 10));
-      var running: any[][] = [];
-      var pending: any[][] = [];
+      let now = Date.now();
+      let renderWindow = Math.max(0, Number(faults.renderMs) || 50);
+      let queueWindow = Math.min(renderWindow, Math.max(0, Number(faults.queueMs) || 10));
+      let running: any[][] = [];
+      let pending: any[][] = [];
       jobs.forEach(function (job, promptId) {
         if (job.removed || job.interrupted) return;
-        var item = [0, promptId, job.body && job.body.prompt, {}, []];
-        var age = now - job.createdAt;
+        let item = [0, promptId, job.body && job.body.prompt, {}, []];
+        let age = now - job.createdAt;
         if (age < queueWindow) pending.push(item);
         else if (age < renderWindow) running.push(item);
       });
@@ -275,13 +275,13 @@ function createComfyMock() {
     }
 
     if (ctx.path === '/queue' && ctx.req.method === 'POST') {
-      var body = objectBody(ctx.body);
-      var deleted = Array.isArray(body.delete) ? body.delete : [];
-      var deleteNow = Date.now();
-      var deleteRenderWindow = Math.max(0, Number(faults.renderMs) || 50);
-      var deleteQueueWindow = Math.min(deleteRenderWindow, Math.max(0, Number(faults.queueMs) || 10));
+      let body = objectBody(ctx.body);
+      let deleted = Array.isArray(body.delete) ? body.delete : [];
+      let deleteNow = Date.now();
+      let deleteRenderWindow = Math.max(0, Number(faults.renderMs) || 50);
+      let deleteQueueWindow = Math.min(deleteRenderWindow, Math.max(0, Number(faults.queueMs) || 10));
       deleted.forEach(function (promptId) {
-        var job = jobs.get(String(promptId));
+        let job = jobs.get(String(promptId));
         if (job && deleteNow - job.createdAt < deleteQueueWindow) job.removed = true;
       });
       return sendJson(res, 200, { deleted:deleted });
@@ -291,11 +291,11 @@ function createComfyMock() {
       return sendJson(res, 200, { unload_models: true, free_memory: true });
     }
 
-    var cancelMatch = ctx.path.match(/^\/api\/jobs\/([^/]+)\/cancel$/);
+    let cancelMatch = ctx.path.match(/^\/api\/jobs\/([^/]+)\/cancel$/);
     if (cancelMatch && ctx.req.method === 'POST') {
       if (faults.cancelStatus) return sendJson(res, Number(faults.cancelStatus), { error:'mock cancel failure' });
-      var cancelPromptId = decodeURIComponent(cancelMatch[1]);
-      var cancelledJob = jobs.get(cancelPromptId);
+      let cancelPromptId = decodeURIComponent(cancelMatch[1]);
+      let cancelledJob = jobs.get(cancelPromptId);
       if (!cancelledJob || cancelledJob.removed || cancelledJob.interrupted) {
         return sendJson(res, 200, { cancelled:false });
       }
@@ -304,23 +304,23 @@ function createComfyMock() {
     }
 
     if (ctx.path === '/interrupt' && ctx.req.method === 'POST') {
-      var interruptPromptId = objectBody(ctx.body).prompt_id;
+      let interruptPromptId = objectBody(ctx.body).prompt_id;
       if (!interruptPromptId) return sendJson(res, 400, { error:'prompt_id required' });
-      var interrupted = jobs.get(String(interruptPromptId));
+      let interrupted = jobs.get(String(interruptPromptId));
       if (!interrupted || interrupted.removed) return sendJson(res, 200, { interrupted:false, prompt_id:interruptPromptId });
       interrupted.interrupted = true;
       return sendJson(res, 200, { interrupted:true, prompt_id:interruptPromptId });
     }
 
-    var historyMatch = ctx.path.match(/^\/history\/([^/]+)$/);
+    let historyMatch = ctx.path.match(/^\/history\/([^/]+)$/);
     if (historyMatch) {
-      var promptIdFromPath = decodeURIComponent(historyMatch[1]);
-      var callsForJob = (historyCalls.get(promptIdFromPath) || 0) + 1;
+      let promptIdFromPath = decodeURIComponent(historyMatch[1]);
+      let callsForJob = (historyCalls.get(promptIdFromPath) || 0) + 1;
       historyCalls.set(promptIdFromPath, callsForJob);
-      var transient = Math.max(0, Number(faults.historyTransient) || 0);
+      let transient = Math.max(0, Number(faults.historyTransient) || 0);
       if (callsForJob <= transient) return sendJson(res, 503, { error:'mock transient history failure' });
       if (faults.historyStatus) return sendJson(res, Number(faults.historyStatus), { error:'mock history failure' });
-      var job = jobs.get(promptIdFromPath);
+      let job = jobs.get(promptIdFromPath);
       if (!job || job.removed) return sendJson(res, 200, {});
       if (job.interrupted) {
         return sendJson(res, 200, {
@@ -332,14 +332,14 @@ function createComfyMock() {
           [promptIdFromPath]: { status:{ status_str:'error', messages:[['execution_error', faults.executionError]] } }
         });
       }
-      var renderMs = Math.max(0, Number(faults.renderMs) || 50);
+      let renderMs = Math.max(0, Number(faults.renderMs) || 50);
       if (Date.now() - job.createdAt < renderMs) return sendJson(res, 200, {});
-        var graph = job.body && job.body.prompt;
-        var prefix = 'anima_app';
-        var mediaKind = 'image';
-        var outputNode = String(faults.resultNode || '10');
+        let graph = job.body && job.body.prompt;
+        let prefix = 'anima_app';
+        let mediaKind = 'image';
+        let outputNode = String(faults.resultNode || '10');
         if (graph && typeof graph === 'object') Object.keys(graph).some(function (id) {
-          var node = graph[id];
+          let node = graph[id];
           if (node && node.class_type === 'SaveImage' && node.inputs && typeof node.inputs.filename_prefix === 'string') {
             prefix = node.inputs.filename_prefix;
             outputNode = String(faults.resultNode || id);
@@ -353,7 +353,7 @@ function createComfyMock() {
           }
           return false;
         });
-        var image = faults.resultImage && typeof faults.resultImage === 'object'
+        let image = faults.resultImage && typeof faults.resultImage === 'object'
           ? faults.resultImage
           : { filename:prefix + (mediaKind === 'video' ? '_mock.mp4' : '_mock.png'), subfolder:'', type:'output' };
        return sendJson(res, 200, {
@@ -366,7 +366,7 @@ function createComfyMock() {
 
     if (ctx.path === '/view') {
       if (faults.viewStatus) return sendJson(res, Number(faults.viewStatus), { error:'mock view failure' });
-      var requestedUrl = new URL(ctx.req.url || '/', 'http://127.0.0.1');
+      let requestedUrl = new URL(ctx.req.url || '/', 'http://127.0.0.1');
       if (/\.mp4$/i.test(requestedUrl.searchParams.get('filename') || '')) {
         res.writeHead(200, {
           'Content-Type':'video/mp4',
@@ -375,7 +375,7 @@ function createComfyMock() {
         });
         return res.end(MP4_MINIMAL);
       }
-      var imageBody = Buffer.from(PNG_1X1, 'base64');
+      let imageBody = Buffer.from(PNG_1X1, 'base64');
       res.writeHead(200, {
         'Content-Type':'image/png',
         'Content-Length':imageBody.length,
@@ -395,8 +395,8 @@ function createComfyMock() {
 // ── Ollama ──────────────────────────────────────────────────────────────────
 function createOllamaMock() {
   return createMockServer('ollama', async function (ctx) {
-    var res = ctx.res;
-    var faults = ctx.state.faults;
+    let res = ctx.res;
+    let faults = ctx.state.faults;
 
     if (ctx.path === '/api/tags') {
       if (faults.offline) { res.writeHead(503); res.end(); return; }
@@ -420,14 +420,14 @@ function createOllamaMock() {
         return sendJson(res, Number(faults.chatStatus), { error:String(faults.chatError || 'mock chat failure') });
       }
       // 逐句流式返回，让配音管线（SentenceBuffer）真的被触发
-      var reply = String(faults.reply ||
+      let reply = String(faults.reply ||
         '今天也辛苦了。要不要先休息一下？如果你愿意，我可以陪你安静待一会儿。');
       res.writeHead(200, {
         'Content-Type':'application/x-ndjson; charset=utf-8',
         'Cache-Control':'no-store'
       });
-      var chars = Array.from(reply);
-      for (var i = 0; i < chars.length; i += 3) {
+      let chars = Array.from(reply);
+      for (let i = 0; i < chars.length; i += 3) {
         res.write(JSON.stringify({
           model:objectBody(ctx.body).model || 'qwen3:8b',
           message:{ role:'assistant', content:chars.slice(i, i + 3).join('') },
@@ -449,8 +449,8 @@ function createOllamaMock() {
 // ── GPT-SoVITS ──────────────────────────────────────────────────────────────
 function createTtsMock() {
   return createMockServer('tts', async function (ctx) {
-    var res = ctx.res;
-    var faults = ctx.state.faults;
+    let res = ctx.res;
+    let faults = ctx.state.faults;
 
     if (ctx.path === '/docs' || ctx.path === '/') {
       if (faults.offline) { res.destroy(); return; }
@@ -470,7 +470,7 @@ function createTtsMock() {
         res.end();
         return;
       }
-      var wav = silentWav(1024);
+      let wav = silentWav(1024);
       res.writeHead(200, { 'Content-Type':'audio/wav', 'Content-Length':wav.length });
       res.end(wav);
       return;
@@ -483,8 +483,8 @@ function createTtsMock() {
 // ── 中日翻译常驻服务 ─────────────────────────────────────────────────────────
 function createTranslateMock() {
   return createMockServer('translate', async function (ctx) {
-    var res = ctx.res;
-    var faults = ctx.state.faults;
+    let res = ctx.res;
+    let faults = ctx.state.faults;
 
     if (ctx.path === '/health') {
       if (faults.offline) { res.destroy(); return; }
@@ -494,7 +494,7 @@ function createTranslateMock() {
       if (faults.translateStatus) {
         return sendJson(res, Number(faults.translateStatus), { error:'mock translate failure' });
       }
-      var text = String(objectBody(ctx.body).text || '');
+      let text = String(objectBody(ctx.body).text || '');
       // 固定前缀 + 原文长度，方便断言"译文真的来自上游"而不是前端兜底
       return sendJson(res, 200, {
         translation:'[JA] ' + text,

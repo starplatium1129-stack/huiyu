@@ -60,6 +60,6 @@ test('未知角色回退默认台词', () => {
 
 test('slotLabel 覆盖全部时间片', () => {
   for (const slot of ['late-night', 'early-morning', 'morning', 'noon', 'afternoon', 'evening', 'night']) {
-    assert.ok(slotLabel(slot), `${slot} 应有中文标签`);
+    assert.ok(slotLabel(slot as any), `${slot} 应有中文标签`);
   }
 });

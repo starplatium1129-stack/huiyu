@@ -5,12 +5,12 @@ const path: typeof import('node:path') = require('node:path');
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
-const { main, plan, audit, invocation, validateRun, EFFECTS, MACHINES }: typeof import('../lib/workflow-runner') = require('../lib/workflow-runner');
+const { main, plan, audit, invocation, validateRun, EFFECTS, MACHINES }: any = require('../lib/workflow-runner');
 const { WORKFLOWS }: typeof import('../workflow') = require('../workflow');
 const { classifyFiles, main: gate }: typeof import('../maintenance/gate-quick') = require('../maintenance/gate-quick');
-import type { WorkflowRun, WorkflowRegistry, WorkflowEffect, WorkflowCommandResult, WorkflowCommandRunner } from '../lib/workflow-types';
+import type { WorkflowRun, WorkflowRegistry, WorkflowEffect, WorkflowCommandRunner } from '../lib/workflow-types';
 const root = path.resolve(__dirname, '../..');
-type CommandCall = [string, string[]];
+type CommandCall = any[];
 type HookCall = string[];
 
 function hasPreviewExecutionSwitch(run: { switches?: Record<string, WorkflowEffect[]> }) {
@@ -137,12 +137,12 @@ test('every registered entry carries valid run metadata', () => {
 });
 
 test('audit rejects missing, malformed and understated compound metadata', () => {
-  assert.ok(audit({ a: { cmd: ['node', 'a.js'] } }, root).errors.some((message) => message.includes('缺少 run')));
+  assert.ok(audit({ a: { cmd: ['node', 'a.js'] } }, root).errors.some((message: any) => message.includes('缺少 run')));
   const readModeCompound = {
     render: { cmd: ['node', 'r.js'], run: { nature: ['external-model', 'writes-product'], machine: ['node'], switches: {}, resume: 'checkpoint', evidence: 'r.js:1' } },
     full: { steps: ['render'], run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'x:1' } },
   };
-  assert.ok(audit(readModeCompound, root).errors.some((message) => message.includes('遗漏子步骤行为')));
+  assert.ok(audit(readModeCompound, root).errors.some((message: any) => message.includes('遗漏子步骤行为')));
   const badEnum = { a: { cmd: ['node', 'a.js'], run: { nature: ['magic'], machine: ['mainframe'], switches: { 'x': ['read-only'] }, resume: 'sometimes', evidence: '' } } };
   const messages = audit(badEnum, root).errors.join('\n');
   for (const fragment of ['未知 nature "magic"', '未知 machine "mainframe"', '开关名必须以 -- 开头', 'resume 必须是', 'run.evidence 必须指向核实位置']) {
@@ -156,7 +156,7 @@ test('metadata is descriptive only: execution path never consults run', () => {
     winOnly: { cmd: ['node', 'x.js'], run: { nature: ['writes-product'], machine: ['windows'], switches: {}, resume: 'na', evidence: 'x.js:1' } },
   } as any as WorkflowRegistry;
   const calls: CommandCall[] = [];
-  assert.equal(main(['winOnly'], registry, root, (...args) => { calls.push(args); return { status: 0 }; }), 0);
+  assert.equal(main(['winOnly'], registry, root, (...args: any[]) => { calls.push(args); return { status: 0 }; }), 0);
   assert.equal(calls.length, 1);
   assert.equal(calls[0][0], process.execPath);
   assert.deepEqual(calls[0][1], ['x.js']);
@@ -223,22 +223,22 @@ test('audit accepts truly passive composites and rejects missing child write eff
   assert.deepEqual(audit(registry, root).errors, []);
   registry.read.run = { ...run, nature: ['read-only', 'writes-product'] };
   registry.all.run = { ...run, nature: ['read-only', 'guard'] };
-  assert.ok(audit(registry, root).errors.some(message => message.includes('遗漏子步骤行为 writes-product')));
+  assert.ok(audit(registry, root).errors.some((message: any) => message.includes('遗漏子步骤行为 writes-product')));
 });
 
 test('metadata lists must be arrays so valid audit entries remain renderable', () => {
   const run = { nature: 'read-only', machine: ['node'], switches: {}, resume: 'na', evidence: 'fixture:1' };
-  assert.ok(validateRun('bad', { cmd: ['node', 'fixture.js'], run }).some(message => message.includes('nature 必须是数组')));
+  assert.ok(validateRun('bad', { cmd: ['node', 'fixture.js'], run }).some((message: any) => message.includes('nature 必须是数组')));
 });
 
 test('run metadata stays semantically consistent with the registry', () => {
   for (const [name, def] of Object.entries(WORKFLOWS)) {
-    const run = def.run;
-    const nature = run.nature || [];
+    const run: any = def.run;
+    const nature: any = run.nature || [];
     // 生成/出图入口必须声明对应的机器条件。
     if (nature.includes('external-model')) {
       assert.ok(nature.includes('gateway') === false || run.machine.includes('gateway'), `${name}: external-model 需声明 gateway`);
-      assert.ok(run.machine.some((m) => ['gateway', 'comfyui', 'vision-api'].includes(m)), `${name}: external-model 需声明 gateway/comfyui/vision-api 之一`);
+      assert.ok(run.machine.some((m: any) => ['gateway', 'comfyui', 'vision-api'].includes(m)), `${name}: external-model 需声明 gateway/comfyui/vision-api 之一`);
     }
     if (nature.includes('writes-release') && !run.machine.includes('windows') && !name.startsWith('showcase:')) {
       // 非 Windows 工具链的发布产物（安装包）需要 windows 声明；showcase 版本目录除外。
@@ -246,7 +246,7 @@ test('run metadata stays semantically consistent with the registry', () => {
     }
     // 默认 preview 的入口，默认行为不得包含写入；写入只能出现在开关里。
     // 发布器显式 apply 写入；只读检查器显式 execute 仅做 guard。两者都不能默认写入。
-    if (nature.includes('preview') && nature.every((effect) => ['read-only', 'preview'].includes(effect))) {
+    if (nature.includes('preview') && nature.every((effect: any) => ['read-only', 'preview'].includes(effect))) {
       assert.ok(!nature.includes('writes-release'), `${name}: 默认预览不得声明默认写入`);
       assert.ok(
         hasPreviewExecutionSwitch(run),
@@ -256,7 +256,7 @@ test('run metadata stays semantically consistent with the registry', () => {
     // 复合工作流的 nature 必须与其子步骤有交集（不能凭空弱化）。
     if (def.steps) {
       const childEffects = new Set(def.steps.flatMap((step) => WORKFLOWS[step]?.run?.nature || []));
-      assert.ok(nature.some((effect) => childEffects.has(effect)), `${name}: 复合 nature 与子步骤无交集`);
+      assert.ok(nature.some((effect: any) => childEffects.has(effect)), `${name}: 复合 nature 与子步骤无交集`);
     }
     // 枚举引用健全。
     for (const effect of nature) assert.ok(EFFECTS.includes(effect));
@@ -301,4 +301,3 @@ test('single-dash metadata is limited to batch alphabetic flags', () => {
     assert.ok(validateRun('batch', { ...def, run: { ...def.run, switches: { [flag]: ['writes-release'] } } }).length > 0);
   }
 });
-

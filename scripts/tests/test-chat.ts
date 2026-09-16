@@ -2,41 +2,41 @@
 const { test }: typeof import('node:test') = require('node:test');
 
 test('chat', async () => {
-var fs: typeof import('fs') = require('fs');
-var path: typeof import('path') = require('path');
-var http: typeof import('http') = require('http');
-var gatewayTestStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
-var root = path.resolve(__dirname, '..', '..');
+let fs: typeof import('fs') = require('fs');
+let path: typeof import('path') = require('path');
+let http: typeof import('http') = require('http');
+let gatewayTestStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
+let root = path.resolve(__dirname, '..', '..');
 
 function assert(condition: any, message: any) {
   if (!condition) throw new Error('[chat] ' + message);
 }
 
-function listen(server: any) {
-  return new Promise(function (resolve, reject) {
+function listen(server: any): Promise<string> {
+  return new Promise<string>(function (resolve, reject) {
     server.once('error', reject);
     server.listen(0, '127.0.0.1', function () {
-      resolve('http://127.0.0.1:' + server.address().port);
+      resolve('http://127.0.0.1:' + (server.address() as import('node:net').AddressInfo).port);
     });
   });
 }
 
 function close(server: any) {
   return new Promise(function (resolve) {
-    if (!server || !server.listening) return resolve();
+    if (!server || !server.listening) return resolve(undefined);
     if (typeof server.closeAllConnections === 'function') server.closeAllConnections();
-    server.close(function () { resolve(); });
+    server.close(function () { resolve(undefined); });
   });
 }
 
 async function postJson(url: any, payload: any) {
-  var response = await fetch(url, {
+  let response = await fetch(url, {
     method:'POST',
     headers:{ 'Content-Type':'application/json' },
     body:JSON.stringify(payload)
   });
-  var body = await response.text();
-  var json = null;
+  let body = await response.text();
+  let json = null;
   try { json = JSON.parse(body); } catch (error) {}
   return { status:response.status, body:body, json:json };
 }
@@ -45,7 +45,7 @@ async function postJson(url: any, payload: any) {
 // 公网请求需要 token；用 X-Token 头（query token 会 302 种 cookie，
 // fetch 跟随后不带 cookie 反而 401）。
 async function postJsonWithHost(url: any, payload: any, forwardedFor?: any) {
-  var response = await fetch(url, {
+  let response = await fetch(url, {
     method:'POST',
     headers:{
       'Content-Type':'application/json',
@@ -54,8 +54,8 @@ async function postJsonWithHost(url: any, payload: any, forwardedFor?: any) {
     },
     body:JSON.stringify(payload)
   });
-  var body = await response.text();
-  var json = null;
+  let body = await response.text();
+  let json = null;
   try { json = JSON.parse(body); } catch (error) {}
   return { status:response.status, body:body, json:json };
 }
@@ -65,7 +65,7 @@ function readNdjson(body: any) {
 }
 
 function createMockAiServer() {
-  var state = {
+  let state: any = {
     activeChat:0,
     maxActiveChat:0,
     activeVoice:0,
@@ -75,11 +75,11 @@ function createMockAiServer() {
     compatiblePayloads:[],
     compatibleAuth:''
   };
-  var server = http.createServer(function (req, res) {
-    var chunks: any = [];
+  let server = http.createServer(function (req, res) {
+    let chunks: any = [];
     req.on('data', function (chunk) { chunks.push(chunk); });
     req.on('end', function () {
-      var body: any = {};
+      let body: any = {};
       try { body = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}'); } catch (error) {}
       if (req.url === '/api/tags') {
         res.setHeader('Content-Type', 'application/json');
@@ -158,8 +158,8 @@ function createMockAiServer() {
           return;
         }
         res.setHeader('Content-Type', 'text/event-stream');
-        var utf8Event = Buffer.from('data: {"choices":[{"delta":{"content":"你好"}}]}\n\ndata: [DONE]\n\n', 'utf8');
-        var chineseStart = utf8Event.indexOf(Buffer.from('你', 'utf8'));
+        let utf8Event = Buffer.from('data: {"choices":[{"delta":{"content":"你好"}}]}\n\ndata: [DONE]\n\n', 'utf8');
+        let chineseStart = utf8Event.indexOf(Buffer.from('你', 'utf8'));
         res.write(utf8Event.subarray(0, chineseStart + 1));
         setTimeout(function () {
           res.end(utf8Event.subarray(chineseStart + 1));
@@ -196,49 +196,49 @@ function createMockAiServer() {
 async function consumeVoice(service: any, input: any) {
   return service.stream(input, {
     onResponse:async function (result: any) {
-      for await (var chunk of result.response) void chunk;
+      for await (let chunk of result.response) void chunk;
     }
   });
 }
 
 async function run() {
   // 网站角色房间与 Companion 是独立视图，只共享最小会话编排。
-  var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
-  var companionHtml = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
+  let html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
+  let companionHtml = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
   companionHtml += '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useCompanionWorkspace.ts'), 'utf8');
   // 2026-08-22 行为运行时（30s 心跳：syncReminders + reconcileAutoListen）自
   // CompanionView 下沉，tick 哨兵随之迁移；同轮语音输入簇（按住说话/Space
   // 保持/唤醒会话/auto-listen gating）下沉 useCompanionSpeechInput。
-  var companionBehavior = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionBehaviorRuntime.ts'), 'utf8');
-  var companionSpeech = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionSpeechInput.ts'), 'utf8');
+  let companionBehavior = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionBehaviorRuntime.ts'), 'utf8');
+  let companionSpeech = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionSpeechInput.ts'), 'utf8');
   // d674a99 将角色房间会话核心迁入 chat/ 子目录（与 useChatConversation 等同层）
-  var roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useCharacterRoomSession.ts'), 'utf8');
-  var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
-  var chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
-  var characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
-  var voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
-  var voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
-  var live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
+  let roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useCharacterRoomSession.ts'), 'utf8');
+  let apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
+  let chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
+  let characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
+  let voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
+  let voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
+  let live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
   // 双后端抽象后 wl-live2d 专属逻辑（运行库导入/模型创建/画布布局）在
   // browserBackend；源码哨兵断言检查两者合并，防止单侧重构回退。
-  var live2dBrowserBackend = fs.readFileSync(path.join(root, 'src', 'live2d', 'browserBackend.ts'), 'utf8');
-  var live2dStageModule = live2dModule + '\n' + live2dBrowserBackend;
-  var live2dSubmodules = fs.readdirSync(path.join(root, 'src', 'composables', 'live2d')).filter(function (name) { return name.endsWith('.ts'); }).map(function (name) { return fs.readFileSync(path.join(root, 'src', 'composables', 'live2d', name), 'utf8'); }).join('\n');
-  var live2dAggregated = live2dModule + '\n' + live2dBrowserBackend + '\n' + live2dSubmodules;
-  var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
-  var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
-  var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
-  var chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatStorage.ts'), 'utf8');
-  var characterConfig = fs.readFileSync(path.join(root, 'src', 'config', 'characters.ts'), 'utf8');
-  var chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatProvider.ts'), 'utf8');
-  var chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatConversation.ts'), 'utf8');
-  var userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
-  var memoryPanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatMemoryPanel.vue'), 'utf8');
-  var characterPrompts = fs.readFileSync(path.join(root, 'server', 'chat-character-prompts.js'), 'utf8');
-  var securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
-  var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
-  var chatRouteSource = fs.readFileSync(path.join(root, 'routes', 'chat.js'), 'utf8');
-  var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
+  let live2dBrowserBackend = fs.readFileSync(path.join(root, 'src', 'live2d', 'browserBackend.ts'), 'utf8');
+  let live2dStageModule = live2dModule + '\n' + live2dBrowserBackend;
+  let live2dSubmodules = fs.readdirSync(path.join(root, 'src', 'composables', 'live2d')).filter(function (name) { return name.endsWith('.ts'); }).map(function (name) { return fs.readFileSync(path.join(root, 'src', 'composables', 'live2d', name), 'utf8'); }).join('\n');
+  let live2dAggregated = live2dModule + '\n' + live2dBrowserBackend + '\n' + live2dSubmodules;
+  let chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
+  let mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
+  let streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
+  let chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatStorage.ts'), 'utf8');
+  let characterConfig = fs.readFileSync(path.join(root, 'src', 'config', 'characters.ts'), 'utf8');
+  let chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatProvider.ts'), 'utf8');
+  let chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatConversation.ts'), 'utf8');
+  let userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
+  let memoryPanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatMemoryPanel.vue'), 'utf8');
+  let characterPrompts = fs.readFileSync(path.join(root, 'server', 'chat-character-prompts.js'), 'utf8');
+  let securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
+  let voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
+  let chatRouteSource = fs.readFileSync(path.join(root, 'routes', 'chat.js'), 'utf8');
+  let serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
   assert(html.includes('chat-page'), 'chat view must render the character room shell');
   assert(companionHtml.includes('companion-page'), 'companion view must render its own desktop shell');
@@ -440,9 +440,9 @@ async function run() {
     'long conversations must be trimmed from the oldest messages instead of being rejected'
   );
 
-  var utils: typeof import('../../src/utils/stream.ts') = require('../../src/utils/stream.ts');
-  var chatStatus: typeof import('../../src/utils/chatStatus.ts') = require('../../src/utils/chatStatus.ts');
-  var parsedStatus = chatStatus.parseChatStatus({
+  let utils: typeof import('../../src/utils/stream.ts') = require('../../src/utils/stream.ts');
+  let chatStatus: typeof import('../../src/utils/chatStatus.ts') = require('../../src/utils/chatStatus.ts');
+  let parsedStatus = chatStatus.parseChatStatus({
     online:true,
     model:'model-a',
     models:[{ name:'model-a', parameters:'7B' }, null, { name:4 }]
@@ -455,24 +455,24 @@ async function run() {
     Object.assign(new Error('upstream failed'), { detail:'timeout' }),
     'fallback'
   ) === 'upstream failed：timeout', 'stream errors must preserve safe detail text');
-  var sentences = new utils.SentenceBuffer({ minimumLength:6 });
+  let sentences = new utils.SentenceBuffer({ minimumLength:6 });
   assert(sentences.push('嗯。').length === 0, 'short sentence should wait for the next boundary');
   assert(sentences.push('今天过得怎么样？')[0] === '嗯。今天过得怎么样？', 'short sentence should merge without being lost');
   assert(sentences.push('最后一句', true)[0] === '最后一句', 'flush must emit the remaining sentence');
-  var firstSentences = new utils.SentenceBuffer({ minimumLength:12, firstThreshold:8 });
+  let firstSentences = new utils.SentenceBuffer({ minimumLength:12, firstThreshold:8 });
   assert(firstSentences.push('嗯嗯嗯嗯。').length === 0, 'first sentence below firstThreshold should still wait');
   assert(firstSentences.push('今天也辛苦啦！')[0] === '嗯嗯嗯嗯。今天也辛苦啦！', 'under-threshold first sentence must merge with the next');
-  var firstFast = new utils.SentenceBuffer({ minimumLength:12, firstThreshold:8 });
+  let firstFast = new utils.SentenceBuffer({ minimumLength:12, firstThreshold:8 });
   assert(firstFast.push('今天过得怎么样？')[0] === '今天过得怎么样？', 'first sentence reaching firstThreshold must emit immediately');
   assert(firstFast.push('很好。').length === 0, 'later short sentences must still wait for the normal minimum');
   assert(firstFast.push('', true)[0] === '很好。', 'flush must still emit a short later sentence');
-  var dialogue = utils.extractSpokenDialogue('（稍微有点慌乱）诶、和我一起看吗……');
+  let dialogue = utils.extractSpokenDialogue('（稍微有点慌乱）诶、和我一起看吗……');
   assert(dialogue.text === '诶、和我一起看吗……', 'roleplay directions must not enter spoken dialogue');
   assert(JSON.stringify(dialogue.directions) === JSON.stringify(['稍微有点慌乱']), 'roleplay directions must remain available for emotion selection');
   assert(utils.inferEmotion(dialogue.directions.join(' '), 'nene') === 'shy', 'nervous stage directions must select a shy delivery');
 
-  var wav = new ArrayBuffer(48);
-  var wavView = new DataView(wav);
+  let wav = new ArrayBuffer(48);
+  let wavView = new DataView(wav);
   wavView.setUint32(0, 0x52494646, false);
   wavView.setUint32(8, 0x57415645, false);
   wavView.setUint32(12, 0x666d7420, false);
@@ -481,8 +481,8 @@ async function run() {
   utils.fixWavHeader(wav);
   assert(wavView.getUint32(4, true) === 40 && wavView.getUint32(40, true) === 4, 'WAV sizes must be repaired');
 
-  var chatRoute: typeof import('../../routes/chat') = require('../../routes/chat');
-  var crypto: typeof import('crypto') = require('crypto');
+  let chatRoute: typeof import('../../routes/chat') = require('../../routes/chat');
+  let crypto: typeof import('crypto') = require('crypto');
   assert(chatRoute.validateChatBody({
     character:'nene',
     messages:[{ role:'user', content:'你好' }]
@@ -494,7 +494,7 @@ async function run() {
     api:{ baseUrl:'http://example.com/v1', model:'model-a', apiKey:'secret' },
     messages:[{ role:'user', content:'hello' }]
   }).error, 'remote compatible APIs must require HTTPS');
-  var compatibleValidation: any = chatRoute.validateChatBody({
+  let compatibleValidation: any = chatRoute.validateChatBody({
     character:'nene',
     provider:'api',
     api:{ baseUrl:'https://api.example.com/v1', model:'model-a', apiKey:'secret' },
@@ -504,13 +504,13 @@ async function run() {
     compatibleValidation.value!.api!.pathname === '/v1/chat/completions',
     'compatible API base paths must preserve the /v1 prefix'
   );
-  var deepseekValidation = chatRoute.validateCompatibleApi({
+  let deepseekValidation = chatRoute.validateCompatibleApi({
     baseUrl:'https://api.deepseek.com',
     model:'deepseek-v4-flash',
     apiKey:'secret'
   });
   assert(deepseekValidation.value!.vendor === 'deepseek', 'official DeepSeek endpoints must receive the role-chat optimization');
-  var opencodeValidation = chatRoute.validateCompatibleApi({
+  let opencodeValidation = chatRoute.validateCompatibleApi({
     baseUrl:'https://opencode.ai/zen/v1',
     model:'deepseek-v4-flash-free',
     apiKey:'secret'
@@ -520,7 +520,7 @@ async function run() {
       && opencodeValidation.value!.pathname === '/zen/v1/chat/completions',
     'OpenCode Zen must use its OpenAI-compatible chat endpoint'
   );
-  var opencodeGoValidation = chatRoute.validateCompatibleApi({
+  let opencodeGoValidation = chatRoute.validateCompatibleApi({
     baseUrl:'https://opencode.ai/zen/go/v1',
     model:'deepseek-v4-flash',
     apiKey:'secret'
@@ -541,10 +541,10 @@ async function run() {
   assert(!chatRoute.chatCharacterPrompt('nene').includes('未成年人性内容'), 'character prompts must not contain generic content-review boilerplate');
   assert(crypto.createHash('sha256').update(chatRoute.chatCharacterPrompt('nene')).digest('hex') === '39001ea39f6a3f64e9cb70d43e24575df997ee7bff31b09c35dfb359ed93bb5c', 'Nene base prompt must remain byte-for-byte stable');
   assert(crypto.createHash('sha256').update(chatRoute.chatCharacterPrompt('natsume')).digest('hex') === 'd404be246def4b4b03df275eaa3882a6a9ce091ff1309a130811f35414fc3275', 'Natsume base prompt must remain byte-for-byte stable');
-  var profiledPrompt = chatRoute.chatCharacterPrompt('nene', { userProfile:{ callName:'小林', relationship:'confidant', note:'夜间工作，希望先听我说完。' } });
+  let profiledPrompt = chatRoute.chatCharacterPrompt('nene', { userProfile:{ callName:'小林', relationship:'confidant', note:'夜间工作，希望先听我说完。' } });
   assert(profiledPrompt.includes('【用户档案（用户自述') && profiledPrompt.includes('• 希望称呼：小林') && profiledPrompt.includes('• 关系定位：知己'), 'profile facts must be layered into the prompt');
   assert(profiledPrompt.indexOf('【用户档案') < profiledPrompt.indexOf('【对话判断与表达控制】'), 'untrusted profile facts must precede final behavior rules');
-  var profiledValidation = chatRoute.validateChatBody({
+  let profiledValidation = chatRoute.validateChatBody({
     character:'natsume',
     userProfile:{ callName:'阿澈', relationship:'lover', note:'喜欢苦咖啡。' },
     messages:[{ role:'user', content:'你好' }]
@@ -552,38 +552,38 @@ async function run() {
   assert(profiledValidation.value!.messages[0].content.includes('• 希望称呼：阿澈'), 'validated user profile must reach the system prompt');
   assert(chatRoute.validateChatBody({ character:'nene', userProfile:{ relationship:'invalid' }, messages:[{ role:'user', content:'x' }] }).error, 'unknown relationship must fail closed');
   assert(chatRoute.validateChatBody({ character:'nene', userProfile:{ callName:'x'.repeat(41) }, messages:[{ role:'user', content:'x' }] }).error, 'overlong profile fields must be rejected');
-  var memoryValidation = chatRoute.validateChatBody({
+  let memoryValidation = chatRoute.validateChatBody({
     character:'nene', memories:['用户每周五晚上会玩 MMORPG。'], messages:[{ role:'user', content:'周五做什么？' }]
   });
   assert(memoryValidation.value!.messages[0].content.includes('【长期记忆（用户确认过的本机事实') && memoryValidation.value!.messages[0].content.includes('用户每周五晚上会玩 MMORPG。'), 'validated memory facts must reach the system prompt');
   assert(chatRoute.validateChatBody({ character:'nene', memories:['1','2','3','4','5'], messages:[{ role:'user', content:'x' }] }).error, 'memory injection count must be bounded');
 
-  var live2dService = (require('../../services/live2d-service') as typeof import('../../services/live2d-service')).createLive2dService({
+  let live2dService = (require('../../services/live2d-service') as typeof import('../../services/live2d-service')).createLive2dService({
     rootDir:path.join(root, 'assets', 'live2d'),
     characters:['nene', 'natsume']
   });
-  var liveStatus = live2dService.status();
+  let liveStatus = live2dService.status();
   assert(liveStatus.models.nene.available, 'Nene Live2D model and all references must exist');
-  var neneManifest = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'live2d', 'nene', 'nene.model3.json'), 'utf8'));
+  let neneManifest = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'live2d', 'nene', 'nene.model3.json'), 'utf8'));
   ['Hair', 'Head', 'Face', 'LeftChest', 'RightChest', 'Skirt', 'Body'].forEach(function (name) {
     assert(neneManifest.HitAreas.some(function (area: any) { return area.Name === name; }), 'Nene model must expose source hit area ' + name);
   });
   ['TapHair', 'TapHead', 'TapFace', 'TapLeftChest', 'TapRightChest', 'TapSkirt', 'TapBody'].forEach(function (group) {
-    var motions = neneManifest.FileReferences.Motions[group];
+    let motions = neneManifest.FileReferences.Motions[group];
     assert(Array.isArray(motions) && motions.length === 1, 'Nene model must expose source motion group ' + group);
     assert(!motions[0].Sound, group + ' must not conflict with AI voice playback');
   });
   assert(liveStatus.models.natsume.available, 'Natsume Live2D model and all references must exist');
 
-  var mock: any = createMockAiServer();
-  var mockBase = await listen(mock.server);
+  let mock: any = createMockAiServer();
+  let mockBase = await listen(mock.server);
   try {
-    var ollama = (require('../../services/ollama-service') as typeof import('../../services/ollama-service')).createOllamaService({
+    let ollama = (require('../../services/ollama-service') as typeof import('../../services/ollama-service')).createOllamaService({
       host:mockBase,
       model:'model-a',
       keepAlive:'1m'
     });
-    var outputs: any = [];
+    let outputs: any = [];
     function runChat(model: any) {
       return ollama.streamChat({
         model:model,
@@ -597,14 +597,14 @@ async function run() {
     assert(mock.state.unloaded.includes('model-a'), 'switching models must unload the previous model');
     assert(outputs.join('') === '你好。你好。', 'split NDJSON chunks must be reconstructed');
 
-    var compatibleOutput: any = [];
-    var localApi = chatRoute.validateCompatibleApi({
+    let compatibleOutput: any = [];
+    let localApi = chatRoute.validateCompatibleApi({
       baseUrl:mockBase + '/v1',
       model:'compatible-model',
       apiKey:'local-secret'
     });
     assert(localApi.value, 'loopback compatible APIs may use HTTP');
-    var compatibleStatus = await chatRoute.inspectCompatibleApi(localApi.value);
+    let compatibleStatus = await chatRoute.inspectCompatibleApi(localApi.value);
     assert(
       compatibleStatus.online && compatibleStatus.models.includes('compatible-model-fast'),
       'compatible API diagnostics must authenticate and discover models'
@@ -621,9 +621,9 @@ async function run() {
     assert(mock.state.compatiblePayloads[0].messages[0].content === 'persona', 'compatible APIs must receive the character system prompt');
 
     // ---- 桌宠本地工具（companionTools）：tools 注入 + tool_calls 增量事件 ----
-    var toolCalls: any = [];
-    var toolTokens: any = [];
-    var toolApi = chatRoute.validateCompatibleApi({
+    let toolCalls: any = [];
+    let toolTokens: any = [];
+    let toolApi = chatRoute.validateCompatibleApi({
       baseUrl:mockBase + '/v1',
       model:'tool-call-model',
       apiKey:'local-secret'
@@ -636,7 +636,7 @@ async function run() {
       onToken:function (content: any) { toolTokens.push(content); },
       onToolCall:function (call: any) { toolCalls.push(call); }
     });
-    var toolPayload: any = mock.state.compatiblePayloads[mock.state.compatiblePayloads.length - 1];
+    let toolPayload: any = mock.state.compatiblePayloads[mock.state.compatiblePayloads.length - 1];
     assert(
       Array.isArray(toolPayload.tools) && toolPayload.tools.some(function (t: any) {
         return t.type === 'function' && t.function && t.function.name === 'list_files';
@@ -654,9 +654,9 @@ async function run() {
     assert(toolTokens.join('') === '让我看看工作区里有什么。', 'text tokens must still stream alongside tool calls');
 
     // ---- 思考模式（thinking）：reasoning_content 增量事件 + 参数注入 ----
-    var reasoningChunks: any = [];
-    var thinkingTokens: any = [];
-    var thinkingApi = chatRoute.validateCompatibleApi({
+    let reasoningChunks: any = [];
+    let thinkingTokens: any = [];
+    let thinkingApi = chatRoute.validateCompatibleApi({
       baseUrl:mockBase + '/v1',
       model:'thinking-model',
       apiKey:'local-secret'
@@ -672,14 +672,14 @@ async function run() {
     assert(reasoningChunks.join('') === '让我想想再想想', 'reasoning_content deltas must stream as reasoning events');
     assert(thinkingTokens.join('') === '答案是 42', 'final content must still stream after reasoning');
     assert(
-      chatRouteSource.includes("input.reasoning === 'low' ? { reasoning_effort:'high' } : { reasoning_effort:'max' }"),
+      /input\.reasoning === 'low'\s*\?\s*\{\s*reasoning_effort\s*:\s*'high'\s*\}\s*:\s*\{\s*reasoning_effort\s*:\s*'max'\s*\}/.test(chatRouteSource),
       'deepseek V4 must map low→high effort and medium/high→max effort with thinking enabled/disabled'
     );
     assert(
-      chatRouteSource.includes('reasoning_effort:input.reasoning'),
+      /reasoning_effort\s*:\s*input\.reasoning/.test(chatRouteSource),
       'opencode endpoints must receive the OpenAI reasoning_effort parameter'
     );
-    var badReasoning = chatRoute.validateChatBody({
+    let badReasoning = chatRoute.validateChatBody({
       character:'nene',
       provider:'api',
       api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
@@ -689,7 +689,7 @@ async function run() {
     assert(badReasoning.error, 'unknown reasoning levels must be rejected');
 
     // validateChatBody：tool 消息接受、未知工具拒绝、reasoning_content 回传
-    var toolRound = chatRoute.validateChatBody({
+    let toolRound = chatRoute.validateChatBody({
       character:'nene',
       provider:'api',
       api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
@@ -701,14 +701,14 @@ async function run() {
       ]
     });
     assert(toolRound.value, 'tool messages must be accepted when companionTools is enabled');
-    var toolMessages = toolRound.value!.messages.filter(function (m: any) { return m.role === 'tool' || Array.isArray(m.tool_calls); });
+    let toolMessages = toolRound.value!.messages.filter(function (m: any) { return m.role === 'tool' || Array.isArray(m.tool_calls); });
     assert(toolMessages.length === 2, 'tool messages must survive validation untouched');
-    var toolCallMsg: any = toolRound.value!.messages.find(function (m: any) { return Array.isArray(m.tool_calls); });
+    let toolCallMsg: any = toolRound.value!.messages.find(function (m: any) { return Array.isArray(m.tool_calls); });
     assert(
       toolCallMsg && toolCallMsg.reasoning_content === '我先想想',
       'V4 reasoning_content must round-trip through validation alongside tool_calls'
     );
-    var badTool = chatRoute.validateChatBody({
+    let badTool = chatRoute.validateChatBody({
       character:'nene',
       provider:'api',
       api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
@@ -720,7 +720,7 @@ async function run() {
     assert(badTool.error, 'unknown tool names must be rejected by validation');
 
     // validateChatBody：多模态 user 消息（read_image 结果）接受，非法图片 URL 拒绝
-    var multimodal = chatRoute.validateChatBody({
+    let multimodal = chatRoute.validateChatBody({
       character:'nene',
       provider:'api',
       api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
@@ -735,13 +735,13 @@ async function run() {
       ]
     });
     assert(multimodal.value, 'multimodal user messages from read_image must be accepted');
-    var multimodalParts: any = multimodal.value!.messages.filter(function (m: any) { return Array.isArray(m.content); });
+    let multimodalParts: any = multimodal.value!.messages.filter(function (m: any) { return Array.isArray(m.content); });
     assert(multimodalParts.length === 1, 'multimodal content arrays must survive validation');
     assert(
       multimodalParts[0].content.some(function (p: any) { return p.type === 'image_url' && p.image_url.url.startsWith('data:image/png;base64,'); }),
       'image_url parts must be preserved'
     );
-    var badImage = chatRoute.validateChatBody({
+    let badImage = chatRoute.validateChatBody({
       character:'nene',
       provider:'api',
       api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
@@ -750,12 +750,12 @@ async function run() {
       ]
     });
     assert(badImage.error, 'remote image URLs must be rejected');
-    assert(/data URL/.test(badImage.error), 'rejection message must explain the data URL rule');
+    assert(/data URL/.test(badImage.error as any), 'rejection message must explain the data URL rule');
 
-    var abortController = new AbortController();
-    var resolveStarted: any;
-    var started = new Promise(function (resolve) { resolveStarted = resolve; });
-    var cancelled = ollama.streamChat({
+    let abortController = new AbortController();
+    let resolveStarted: any;
+    let started = new Promise(function (resolve) { resolveStarted = resolve; });
+    let cancelled = ollama.streamChat({
       model:'model-b',
       messages:[{ role:'user', content:'cancel' }],
       signal:abortController.signal
@@ -768,11 +768,11 @@ async function run() {
     });
     await started;
     abortController.abort();
-    var cancelError = await cancelled;
+    let cancelError = await cancelled;
     assert(cancelError && cancelError.name === 'AbortError', 'aborting a chat must cancel the upstream stream');
     assert(ollama.queueStatus().active === 0, 'cancelled chat must release the Ollama queue');
 
-    var tts = (require('../../services/tts-service') as typeof import('../../services/tts-service')).createTtsService({
+    let tts = (require('../../services/tts-service') as typeof import('../../services/tts-service')).createTtsService({
       host:mockBase,
       profiles:{
         nene:{
@@ -790,57 +790,57 @@ async function run() {
     ]);
     assert(mock.state.maxActiveVoice === 1, 'GPT-SoVITS streams must remain serialized until audio ends');
     await consumeVoice(tts, { voice:'nene', text:'綾地寧々です。', language:'ja', emotion:'shy', referenceEmotion:'gentle', consistency:'locked', speed:1 });
-    var lockedPayload: any = mock.state.voicePayloads[mock.state.voicePayloads.length - 1];
+    let lockedPayload: any = mock.state.voicePayloads[mock.state.voicePayloads.length - 1];
     assert(lockedPayload.ref_audio_path === 'nene-gentle.wav', 'locked voice must keep the turn reference even when the sentence emotion changes');
     assert(lockedPayload.text.includes('あやち ねね') && lockedPayload.text_split_method === 'cut5', 'Japanese speech must normalize character names and preserve the complete sentence');
     assert(lockedPayload.seed === 1234 && lockedPayload.top_k === 15 && lockedPayload.streaming_mode === false, 'short sentence synthesis must use deterministic identity settings instead of ineffective audio streaming');
-    var ttsModule: typeof import('../../services/tts-service') = require('../../services/tts-service');
+    let ttsModule: typeof import('../../services/tts-service') = require('../../services/tts-service');
     assert(ttsModule.normalizeSpeechText('  四季夏目\nありがとう。 ', 'ja') === 'しき なつめ。ありがとう。', 'speech normalization must keep every sentence and stabilize character-name pronunciation');
     assert(ttsModule.normalizeSpeechText('\u30fb\u30c6\u30b9\u30c8', 'ja') === '\u30c6\u30b9\u30c8', 'speech normalization must remove the Windows-incompatible Japanese middle dot');
   } finally {
     await close(mock.server);
   }
 
-  var providerMock = createMockAiServer();
-  var providerBase = await listen(providerMock.server);
-  var gatewayStack = await gatewayTestStack.start({ token:'test-token' });
-  var gatewayBase = gatewayStack.baseUrl;
+  let providerMock = createMockAiServer();
+  let providerBase = await listen(providerMock.server);
+  let gatewayStack = await gatewayTestStack.start({ token:'test-token' });
+  let gatewayBase = gatewayStack.baseUrl;
   try {
-    var healthResponse = await fetch(gatewayBase + '/api/health');
-    var health = await healthResponse.json();
+    let healthResponse = await fetch(gatewayBase + '/api/health');
+    let health = await healthResponse.json();
     assert(health.ok && health.capabilities.chat && health.capabilities.tts, 'gateway health must expose conversation capabilities');
 
     // SPA 路由由 index.html 承载；同时确认 /chat 的 CSP 放行了 Live2D 所需的 unsafe-eval
-    var chatResponse = await fetch(gatewayBase + '/chat');
+    let chatResponse = await fetch(gatewayBase + '/chat');
     assert(chatResponse.ok, 'chat route must be served by the SPA fallback');
-    var chatCsp = chatResponse.headers.get('content-security-policy') || '';
+    let chatCsp = chatResponse.headers.get('content-security-policy') || '';
     assert(chatCsp.includes("'unsafe-eval'"), 'chat route CSP must allow the Live2D renderer');
-    var companionResponse = await fetch(gatewayBase + '/companion');
+    let companionResponse = await fetch(gatewayBase + '/companion');
     assert(companionResponse.ok, 'companion route must be served by the SPA fallback');
-    var companionCsp = companionResponse.headers.get('content-security-policy') || '';
+    let companionCsp = companionResponse.headers.get('content-security-policy') || '';
     assert(companionCsp.includes("'unsafe-eval'"), 'companion route CSP must allow the Live2D renderer');
-    var homeResponse = await fetch(gatewayBase + '/');
+    let homeResponse = await fetch(gatewayBase + '/');
     assert(homeResponse.ok, 'home route must be served');
-    var homeCsp = homeResponse.headers.get('content-security-policy') || '';
+    let homeCsp = homeResponse.headers.get('content-security-policy') || '';
     assert(!homeCsp.includes("'unsafe-eval'"), 'unsafe-eval must stay scoped to the chat route');
 
     // 设计系统只剩 src/assets/css 一份（css/ 下的分叉副本已删除）
-    var cssResponse = await fetch(gatewayBase + '/src/assets/css/design-system.css', {
+    let cssResponse = await fetch(gatewayBase + '/src/assets/css/design-system.css', {
       headers:{ 'Accept-Encoding':'gzip' }
     });
     assert((cssResponse.headers.get('cache-control') || '').includes('max-age=86400'), 'versioned CSS and JS should use a one-day browser cache');
     assert(cssResponse.headers.get('content-encoding') === 'gzip', 'text assets larger than 1 KB should be compressed');
-    var lightCssResponse = await fetch(gatewayBase + '/src/assets/css/light-theme.css');
+    let lightCssResponse = await fetch(gatewayBase + '/src/assets/css/light-theme.css');
     assert(lightCssResponse.ok && (await lightCssResponse.text()).includes(':root[data-theme="light"]'), 'documentation must receive the shared light theme');
     assert((await fetch(gatewayBase + '/src/assets/css/home.css')).status === 404, 'documentation styles must not expose unrelated source files');
 
-    var dataResponse = await fetch(gatewayBase + '/data/scenes.json');
+    let dataResponse = await fetch(gatewayBase + '/data/scenes.json');
     assert((dataResponse.headers.get('cache-control') || '').includes('immutable'), 'data files are cached immutable; freshness is versioned by ?v=DATA_VERSION and enforced by validate-content-contracts');
 
-    var assetResponse = await fetch(gatewayBase + '/assets/logo.svg');
+    let assetResponse = await fetch(gatewayBase + '/assets/logo.svg');
     assert((assetResponse.headers.get('cache-control') || '').includes('no-cache'), 'runtime image assets should use no-cache ETag revalidation');
 
-    var badChat = await fetch(gatewayBase + '/api/chat', {
+    let badChat = await fetch(gatewayBase + '/api/chat', {
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
       body:JSON.stringify({ character:'bad', messages:[] })
@@ -848,17 +848,17 @@ async function run() {
     assert(badChat.status === 400, 'chat route must reject invalid input without contacting Ollama');
 
     // 超长对话（>12000 字 / >24 条）必须从旧到新平滑裁剪并照常转发，不能 400 打断
-    var longMessages = [];
-    for (var li = 0; li < 30; li += 1) {
+    let longMessages = [];
+    for (let li = 0; li < 30; li += 1) {
       longMessages.push({ role: li % 2 ? 'assistant' : 'user', content: '长对话填充。'.repeat(120) });
     }
     longMessages.push({ role:'user', content:'最近的这条消息一定要被保留' });
-    var trimmedChat = await postJson(gatewayBase + '/api/chat', {
+    let trimmedChat = await postJson(gatewayBase + '/api/chat', {
       character:'nene', provider:'api',
       api:{ baseUrl:providerBase + '/v1', model:'json-model', apiKey:'local-secret' },
       messages:longMessages
     });
-    var trimmedEvents = readNdjson(trimmedChat.body);
+    let trimmedEvents = readNdjson(trimmedChat.body);
     assert(
       trimmedChat.status === 200 && trimmedEvents.some(function (event: any) {
         return event.type === 'token';
@@ -866,7 +866,7 @@ async function run() {
       'an over-budget conversation must be trimmed and forwarded, not rejected',
     );
 
-    var emptyModels = await postJson(gatewayBase + '/api/chat-provider/test', {
+    let emptyModels = await postJson(gatewayBase + '/api/chat-provider/test', {
       baseUrl:providerBase + '/v1', model:'compatible-model', apiKey:'empty-list-key'
     });
     assert(
@@ -875,7 +875,7 @@ async function run() {
       'compatible provider test must report an empty model list without treating the API as offline',
     );
 
-    var rejectedCredentials = await postJson(gatewayBase + '/api/chat-provider/test', {
+    let rejectedCredentials = await postJson(gatewayBase + '/api/chat-provider/test', {
       baseUrl:providerBase + '/v1', model:'compatible-model', apiKey:'rejected-key'
     });
     assert(
@@ -884,12 +884,12 @@ async function run() {
       'compatible provider authentication failures must keep the 401 status and never leak the API key',
     );
 
-    var jsonCompletion = await postJson(gatewayBase + '/api/chat', {
+    let jsonCompletion = await postJson(gatewayBase + '/api/chat', {
       character:'nene', provider:'api',
       api:{ baseUrl:providerBase + '/v1', model:'json-model', apiKey:'local-secret' },
       messages:[{ role:'user', content:'hello' }]
     });
-    var jsonEvents = readNdjson(jsonCompletion.body);
+    let jsonEvents = readNdjson(jsonCompletion.body);
     assert(
       jsonCompletion.status === 200 && jsonEvents.some(function (event: any) {
         return event.type === 'token' && event.content === 'non-stream reply';
@@ -897,12 +897,12 @@ async function run() {
       'compatible chat must convert a non-stream OpenAI response into gateway NDJSON events',
     );
 
-    var malformedSse = await postJson(gatewayBase + '/api/chat', {
+    let malformedSse = await postJson(gatewayBase + '/api/chat', {
       character:'nene', provider:'api',
       api:{ baseUrl:providerBase + '/v1', model:'malformed-sse-model', apiKey:'local-secret' },
       messages:[{ role:'user', content:'hello' }]
     });
-    var malformedEvents = readNdjson(malformedSse.body);
+    let malformedEvents = readNdjson(malformedSse.body);
     assert(
       malformedSse.status === 200 && malformedEvents.some(function (event: any) { return event.type === 'error'; })
         && !malformedEvents.some(function (event: any) { return event.type === 'done'; }),
@@ -910,46 +910,46 @@ async function run() {
     );
 
     // ── 站主 API 配置托管：访客只使用、看不到密钥 ──
-    var hostBefore = await fetch(gatewayBase + '/api/chat-provider/host-config');
-    var hostBeforeJson = await hostBefore.json();
+    let hostBefore = await fetch(gatewayBase + '/api/chat-provider/host-config');
+    let hostBeforeJson = await hostBefore.json();
     assert(hostBefore.status === 200 && hostBeforeJson.configured === false, 'host config must start unconfigured');
 
-    var hostSave = await postJson(gatewayBase + '/api/chat-provider/host-config', {
+    let hostSave = await postJson(gatewayBase + '/api/chat-provider/host-config', {
       baseUrl:providerBase + '/v1', model:'json-model', apiKey:'host-secret-key'
     });
-    var hostSaveJson = hostSave.json;
+    let hostSaveJson = hostSave.json;
     assert(
       hostSave.status === 200 && hostSaveJson.configured === true && !hostSave.body.includes('host-secret-key'),
       'saving host config must succeed locally and never echo the API key',
     );
 
-    var hostAfter = await fetch(gatewayBase + '/api/chat-provider/host-config');
-    var hostAfterBody = await hostAfter.text();
+    let hostAfter = await fetch(gatewayBase + '/api/chat-provider/host-config');
+    let hostAfterBody = await hostAfter.text();
     assert(
       hostAfter.status === 200 && hostAfterBody.includes('json-model') && !hostAfterBody.includes('host-secret-key'),
       'reading host config must expose model but never the API key',
     );
 
     // 公网视角（非本机 Host）写入必须被拒绝
-    var remoteWrite = await postJsonWithHost(gatewayBase + '/api/chat-provider/host-config', {
+    let remoteWrite = await postJsonWithHost(gatewayBase + '/api/chat-provider/host-config', {
       baseUrl:providerBase + '/v1', model:'evil', apiKey:'evil-key'
     }, 'evil.example.com');
     assert(remoteWrite.status === 421 || remoteWrite.status === 403, 'remote host must not be able to write host config');
 
     // 访客聊天：hostConfig 标记 → 上游必须收到站主密钥
-    var hostChat = await postJsonWithHost(gatewayBase + '/api/chat', {
+    let hostChat = await postJsonWithHost(gatewayBase + '/api/chat', {
       character:'nene', provider:'api', hostConfig:true,
       messages:[{ role:'user', content:'hello' }]
     });
-    var hostEvents = readNdjson(hostChat.body);
+    let hostEvents = readNdjson(hostChat.body);
     assert(
       hostChat.status === 200 && hostEvents.some(function (event: any) { return event.type === 'token'; })
         && providerMock.state.compatibleAuth === 'Bearer host-secret-key',
       'hostConfig chat must stream via the stored host key without the visitor supplying one',
     );
 
-    var privateCallsBefore = providerMock.state.compatiblePayloads.length;
-    var privateChat = await postJsonWithHost(gatewayBase + '/api/chat', {
+    let privateCallsBefore = providerMock.state.compatiblePayloads.length;
+    let privateChat = await postJsonWithHost(gatewayBase + '/api/chat', {
       character:'nene', provider:'api',
       api:{ baseUrl:providerBase + '/v1', model:'json-model' },
       messages:[{ role:'user', content:'private service must not be contacted' }]
@@ -958,8 +958,8 @@ async function run() {
     assert(providerMock.state.compatiblePayloads.length === privateCallsBefore,
       'forbidden remote target must receive no request');
 
-    var hostClear = await fetch(gatewayBase + '/api/chat-provider/host-config', { method:'DELETE' });
-    var hostClearJson = await hostClear.json();
+    let hostClear = await fetch(gatewayBase + '/api/chat-provider/host-config', { method:'DELETE' });
+    let hostClearJson = await hostClear.json();
     assert(hostClear.status === 200 && hostClearJson.configured === false, 'clearing host config must reset to unconfigured');
   } finally {
     await gatewayStack.close();
@@ -987,9 +987,9 @@ test('remote API target policy rejects private DNS, mapped IPs and mixed answers
   const target = new URL('https://custom.example/v1');
   for (const addresses of [[], [{ address:'127.0.0.1', family:4 }],
     [{ address:'8.8.8.8', family:4 }, { address:'10.0.0.1', family:4 }]]) {
-    await assert.rejects(resolvePublicAddress(target, async () => addresses), { status:403 });
+    await assert.rejects(resolvePublicAddress(target, (async () => addresses) as any), { status:403 });
   }
-  assert.deepEqual(await resolvePublicAddress(target, async () => [{ address:'8.8.8.8', family:4 }]),
+  assert.deepEqual(await resolvePublicAddress(target, (async () => [{ address:'8.8.8.8', family:4 }]) as any),
     { address:'8.8.8.8', family:4 });
 });
 

@@ -41,7 +41,7 @@ const {
 // isLocalStudioHost 默认读取 window.location（浏览器全局）；node:test 下补最小桩，
 // 语义取「本机直连」：hostname 命中 LOCAL_HOSTNAMES 即提前返回，不会触碰其余字段。
 if (typeof globalThis.window === 'undefined') {
-  globalThis.window = { location: { hostname: '127.0.0.1', protocol: 'http:' } };
+  (globalThis as any).window = { location: { hostname: '127.0.0.1', protocol: 'http:' } };
 }
 
 // node 没有 URL.createObjectURL / revokeObjectURL，成功路径需要桩
@@ -52,7 +52,7 @@ URL.revokeObjectURL = URL.revokeObjectURL || (() => {});
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async (url, init) => {
   if (String(url).includes('/result')) {
-    return new Response(new Blob([1, 2, 3]), { headers: { 'content-type': 'image/png' } });
+    return new Response(new Blob([new Uint8Array([1, 2, 3])]), { headers: { 'content-type': 'image/png' } });
   }
   return originalFetch(url, init);
 };
@@ -128,17 +128,17 @@ test('resolveInpaintRequestBinding keeps character LoRA coherent and selects no-
 
 test('animaRequestPayload 按白名单收敛：空 lora / styleLora / seed 不发送', () => {
   assert.deepEqual(
-    animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', loraId: null, loraStrength: null, width: 832, height: 1216, steps: 24, cfg: 3, character: null }),
+    animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', loraId: null, loraStrength: null, width: 832, height: 1216, steps: 24, cfg: 3, character: null } as any),
     { prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null, adultEnabled: true },
   );
   assert.deepEqual(
-    animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', loraId: 'L', loraStrength: 0.5, styleLoraId: 'S', width: 832, height: 1216, steps: 24, cfg: 3, seed: 42, character: null }),
+    animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', loraId: 'L', loraStrength: 0.5, styleLoraId: 'S', width: 832, height: 1216, steps: 24, cfg: 3, seed: 42, character: null } as any),
     { prompt: 'x', negative: 'y', modelId: 'm', loraId: 'L', loraStrength: 0.5, styleLoraId: 'S', width: 832, height: 1216, steps: 24, cfg: 3, seed: 42, character: null, adultEnabled: true },
   );
   // 成人内容传输层授权（2026-08-22 双门控）：请求显式 false 时载荷省略该字段
   //（服务端默认未授权，fail-closed），本机判定不得覆盖调用方意图。
   assert.deepEqual(
-    animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null, adultEnabled: false }),
+    animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null, adultEnabled: false } as any),
     { prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null },
   );
 });

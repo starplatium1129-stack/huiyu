@@ -71,7 +71,7 @@ function createArtworkFixture(failure: any = {}) {
     ['img_2', { id: 'img_2', blob: new Blob(['two'], { type: 'image/png' }), name: 'two.png', type: 'image/png', size: 3, created_at: 2 }],
   ]);
   const imageReads: any = [];
-  const values = new Map([
+  const values: any = new Map<any, any>([
     [ARTWORK_HISTORY_KEY, history],
     [ARTWORK_PROJECTS_KEY, projects],
     ...thumbnails,
@@ -124,7 +124,7 @@ test('settings repository: typed draw-engine round-trip with injected storage', 
 });
 
 test('settings repository: typed scalar definitions preserve exact legacy bytes', () => {
-  const cases = [
+  const cases: any[] = [
     [THEME_SETTING, [['dark', 'dark'], ['light', 'light']], [[null, null], ['invalid', null], ['1', null]]],
     [INTERFACE_SOUND_SETTING, [[true, '1'], [false, '0']], [[null, false], ['', false], ['true', false]]],
     [TUNNEL_ENABLED_SETTING, [[true, ''], [false, '1']], [[null, true], ['0', true], ['off', true]]],

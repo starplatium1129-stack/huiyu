@@ -107,7 +107,7 @@ function testDualEnhancementPayload() {
 // ── 模型 profile 与能力协商（迁移到 src/utils/promptPolicy.ts） ──────────
 function testProfilesAndCapabilities() {
   const policy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
-  const profiles = [
+  const profiles: any[] = [
     {
       id: 'actual', name: 'Actual', match: ['actualModel'],
       quality_prefix: 'quality',
@@ -183,7 +183,7 @@ async function testFailedQueueJobIsRetained() {
     isBusy: () => false
   });
 
-  queue.enqueue({ title: 'one', prompt: 'p', negative: '', size: '832x1216', seed: -1 });
+  queue.enqueue({ title: 'one', prompt: 'p', negative: '', size: '832x1216', seed: -1 } as any);
   await new Promise(resolve => setTimeout(resolve, 10));
 
   assert.strictEqual(queue.paused.value, true, 'a failed job must pause the queue');
@@ -199,7 +199,7 @@ async function testFailedQueueJobIsRetained() {
     isBusy: () => true
   });
   for (let i = 0; i < 10; i += 1) {
-    full.enqueue({ title: 'j' + i, prompt: 'p', negative: '', size: '832x1216', seed: -1 });
+    full.enqueue({ title: 'j' + i, prompt: 'p', negative: '', size: '832x1216', seed: -1 } as any);
   }
   assert(full.total.value <= 8, 'queue must not exceed its limit');
 }

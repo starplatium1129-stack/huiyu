@@ -233,7 +233,7 @@ const PROSE_FALLBACK = [
 
 function pickProseSentence(blueprint: any) {
   const haystack = [blueprint.lighting, blueprint.timeOfDay, blueprint.mood].join(' ');
-  for (const [re, variants] of PROSE_TEMPLATES) {
+  for (const [re, variants] of PROSE_TEMPLATES as [RegExp, string[]][]) {
     if (re.test(haystack)) return (variants as Record<string, any>)[hashId(blueprint.id) % variants.length];
   }
   return PROSE_FALLBACK[hashId(blueprint.id) % PROSE_FALLBACK.length];
@@ -361,7 +361,7 @@ const data = JSON.parse(raw);
 const blueprints = data.blueprints;
 const report = { iconic: 0, dailyAuto: 0, dailyExtra: 0, specialTag: 0, specialEnhance: 0,
   hintFix: 0, removedQuality: 0, qualityTokens: 0, proseUpgraded: 0, sizeBump: 0,
-  negTokens: 0, negProse: 0, negNegative: 0, inserted: [] };
+  negTokens: 0, negProse: 0, negNegative: 0, inserted: [] as string[] };
 
 const byId = new Map(blueprints.map((b: any) => [b.id, b]));
 

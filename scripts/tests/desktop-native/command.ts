@@ -62,7 +62,7 @@ function commandText(command: string, args: readonly string[]) {
   return [command, ...args].map(quoteArg).join(' ')
 }
 
-function executableWorks(candidate: PathLike|string[], versionArgs: any = ['--version']) {
+function executableWorks(candidate: string, versionArgs: any = ['--version']) {
   if (!candidate) return false
   if ((candidate.includes('\\') || candidate.includes('/')) && !fs.existsSync(candidate)) return false
   const result = spawnSync(candidate, versionArgs, { stdio: 'ignore', windowsHide: true, timeout: 15_000 })
@@ -139,7 +139,7 @@ function runCommand(command: string, args: readonly string[], options: any = {})
   })
 }
 
-function walkFiles(target: PathLike, root: string, output: any[]) {
+function walkFiles(target: string, root: string, output: any[]) {
   if (!fs.existsSync(target)) return
   const stat = fs.statSync(target)
   if (stat.isFile()) {
@@ -180,7 +180,7 @@ function locateInstaller(root: string) {
   return installers[0] || null
 }
 
-function installerMetadata(root: string, installerPath: PathLike) {
+function installerMetadata(root: string, installerPath: string) {
   const stat = fs.statSync(installerPath)
   return {
     path: installerPath,

@@ -5,7 +5,8 @@ const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const crypto: typeof import('node:crypto') = require('node:crypto');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
-const sharp: typeof import('sharp') = require('sharp');
+type Sharp = (input?: any, options?: any) => any;
+const sharp: Sharp = require('sharp');
 const ROOT = path.resolve(__dirname, '../..');
 const INSTALLER = path.join(ROOT, 'desktop-tauri/src-tauri/installer');
 const TEMPLATE_HASH = '20f4ecc730defb71f1342eaeaec4021df13be3d843abba0effe88ea5835fa079';
@@ -94,7 +95,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
   fs.writeFileSync(path.join(generated, 'installer.nsi'), customizeTemplate(vendor.toString('utf8'), background, uiFile));
   if (preview) {
     if (!['welcome', 'directory', 'finish', 'install', 'maintenance'].includes(page)) throw new Error('Unknown preview page');
-    const compiler = path.join(process.env.LOCALAPPDATA, 'tauri/NSIS/makensis.exe');
+    const compiler = path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe');
     const result = spawnSync(compiler, ['/INPUTCHARSET', 'UTF8', '/V2', `/DGAME_BACKGROUND=${background}`, `/DGAME_ASSET_DIR=${generated}`, `/DGAME_UI=${uiFile}`, `/DGAME_PREVIEW_PAGE=${page}`, path.join(INSTALLER, 'preview.nsi')], {
       cwd: generated, stdio: 'inherit', windowsHide: true,
     });

@@ -65,7 +65,7 @@ async function startApp(desktopPackaged: any) {
   await new Promise((resolve) => {
     server = buildApp(desktopPackaged).listen(0, '127.0.0.1', resolve);
   });
-  baseUrl = 'http://127.0.0.1:' + server.address().port;
+  baseUrl = 'http://127.0.0.1:' + (server.address() as import('node:net').AddressInfo).port;
 }
 async function stopApp() {
   if (!server) return;
@@ -247,7 +247,7 @@ test('桌面打包模式拒绝保存与状态查询', async () => {
 });
 
 test('夹具数据在保存链的维护校验后仍然完整', async () => {
-  const { status, output } = await new Promise((resolve) => {
+  const { status, output } = await new Promise<any>((resolve) => {
     const { spawn }: typeof import('child_process') = require('child_process');
     const child = spawn(process.execPath, ['scripts/maintenance/validate-scenes.js'], {
       cwd: REPO,
@@ -257,7 +257,7 @@ test('夹具数据在保存链的维护校验后仍然完整', async () => {
     let out = '';
     child.stdout.on('data', (chunk) => { out += chunk; });
     child.stderr.on('data', (chunk) => { out += chunk; });
-    child.on('close', (code) => resolve({ status: code, output: out }));
+    child.on('close', (code: any) => resolve({ status: code, output: out }));
   });
   assert.equal(status, 0, output.slice(-2000));
 });
@@ -325,7 +325,7 @@ test('相同基线的两个并发保存仅有一个成功，状态读取与保�
     ]);
     assert.deepEqual(results.map(result => result.status).sort(), [200, 409]);
     const state = await get('/api/maintenance/scenes-state');
-    const saved = results.find!(result => result.status === 200).body;
+    const saved = results.find(result => result.status === 200)!.body;
     assert.equal(state.body.version, saved.version);
     assert.deepEqual(state.body.snapshot, saved.snapshot);
   } finally { await stopApp(); }

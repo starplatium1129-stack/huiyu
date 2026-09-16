@@ -58,7 +58,7 @@ console.log('✓ 4. 宁宁专属好感度配置兼容良好');
 for (const [character, group] of [['natsume', 'TapFoot'], ['nene', 'TapLeftChest'], ['nene', 'TapRightChest']]) {
   assert.strictEqual(pickAffectionMotion(character, group, 15, () => 0), null);
   assert.strictEqual(pickAffectionMotion(character, group, 99, () => 0), null);
-  assert.strictEqual(pickAffectionMotion!(character, group, 100, () => 0).entry.equalIntimacy, 100);
+  assert.strictEqual(pickAffectionMotion!(character as any, group as any, 100, () => 0)!.entry.equalIntimacy, 100);
 }
 console.log('✓ 5. 整组锁定时不返回候选，达到门槛后解锁');
 console.log('\nAll 5 tests passed successfully!');

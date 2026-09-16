@@ -109,7 +109,7 @@ test('full structural fallback also has zero write/process effects; ownership de
   const f = fixture(t, false);
   const before = snapshot(f.root);
   const mocks = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'copyFileSync']
-    .map((name) => t.mock.method(fs, name, () => { throw new Error(`Unexpected write: ${name}`); }));
+    .map((name) => t.mock.method(fs, name as any, () => { throw new Error(`Unexpected write: ${name}`); }));
   const proc = t.mock.method(cp, 'spawnSync', () => { throw new Error('No process in full checks'); });
   const result = checkContentImpact(parse(['--root', f.root, '--full', '--execute']));
   assert.equal(result.execution.status, 'passed-scoped');
@@ -126,7 +126,7 @@ test('help and plan read nothing, parameters fail closed, CLI returns distinct p
   const f: any = fixture(t);
   f.changeBlueprint({ prompt: 'updated object' });
   const before = snapshot(f.root);
-  for (const [extra, code] of [[[], 0], [['--execute'], 3]]) {
+  for (const [extra, code] of [[[], 0], [['--execute'], 3]] as any[]) {
     const output = cp.spawnSync(process.execPath, [script, '--root', f.root, '--base', f.base, '--json', ...extra], { encoding: 'utf8' });
     assert.equal(output.status, code, output.stderr || output.stdout);
     assert.equal(JSON.parse(output.stdout).execution.executed, code === 3);
@@ -143,7 +143,7 @@ test('execution never invokes a builder or write API and checks only temporary d
   f.changeBlueprint({ prompt: 'updated object' });
   const before = snapshot(f.root);
   const mocks = ['writeFileSync', 'appendFileSync', 'mkdirSync', 'renameSync', 'unlinkSync', 'rmSync', 'copyFileSync']
-    .map((name) => t.mock.method(fs, name, () => { throw new Error(`Unexpected write: ${name}`); }));
+    .map((name) => t.mock.method(fs, name as any, () => { throw new Error(`Unexpected write: ${name}`); }));
   const spawn = cp.spawnSync;
   const proc = t.mock.method(cp, 'spawnSync', (command: any, args: readonly string[], options: SpawnSyncOptionsWithStringEncoding) => {
     assert.equal(command, 'git');

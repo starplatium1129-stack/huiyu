@@ -4,11 +4,11 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
-import type { WorkflowRun, WorkflowRegistry, WorkflowDefinition } from '../lib/workflow-types';
+import type { WorkflowRun, WorkflowDefinition } from '../lib/workflow-types';
 type TestContext = import('node:test').TestContext;
 type WorkflowReportRegistry = import('../lib/workflow-types').RegisteredWorkflows;
 const registryFixture = (value: any): WorkflowReportRegistry => value as WorkflowReportRegistry;
-const { reportConditions, formatConditions, formatConditionRow, main }: typeof import('../maintenance/report-workflow-conditions') = require('../maintenance/report-workflow-conditions');
+const { reportConditions, formatConditions, formatConditionRow, main }: any = require('../maintenance/report-workflow-conditions');
 function fixture(t: TestContext) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'workflow-conditions-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
@@ -37,8 +37,8 @@ test('conditions: nested composite effects and missing steps are detected', t =>
 });
 test('conditions: help and plan never spawn or inspect root', t => {
   const cp: typeof import('node:child_process') = require('node:child_process');
-  for (const method of ['spawnSync', 'spawn', 'execSync', 'execFileSync']) t.mock.method(cp, method, () => assert.fail('child process'));
-  const spied = ['realpathSync', 'statSync', 'readFileSync'].map(m => t.mock.method(fs, m, () => assert.fail('fs.' + m + ' must not be called by help/plan')));
+  for (const method of ['spawnSync', 'spawn', 'execSync', 'execFileSync']) t.mock.method(cp, method as any, () => assert.fail('child process'));
+  const spied = ['realpathSync', 'statSync', 'readFileSync'].map(m => t.mock.method(fs, m as any, () => assert.fail('fs.' + m + ' must not be called by help/plan')));
   for (const flag of ['--help', '--plan']) assert.equal(main([flag, '--root', 'missing-root']), 0);
   for (const spy of spied) assert.equal(spy.mock.callCount(), 0);
 });
@@ -109,7 +109,7 @@ test('conditions: batch single-dash switches render, node entries reject them', 
   const base = definition();
   const bad = reportConditions({ root, registry: { 'test:a': { ...base, run: { ...base.run, switches: { '-SkipBuild': ['read-only'] } } } } });
   assert.equal(bad.ok, false);
-  assert.ok(bad.commands[0].errors.some(error => error.includes('开关名必须以 -- 开头')));
+  assert.ok(bad.commands[0].errors.some((error: any) => error.includes('开关名必须以 -- 开头')));
 });
 test('conditions: illegal switch metadata is reported and copied as-is', t => {
   const root = fixture(t);
@@ -123,7 +123,7 @@ test('conditions: illegal switch metadata is reported and copied as-is', t => {
   for (const { switches, error } of cases) {
     const result = reportConditions({ root, registry: { 'test:a': { ...base, run: { ...base.run, switches } } } });
     assert.equal(result.ok, false);
-    assert.ok(result.commands[0].errors.some(item => item.includes(error)), `missing "${error}" in ${JSON.stringify(result.commands[0].errors)}`);
+    assert.ok(result.commands[0].errors.some((item: any) => item.includes(error)), `missing "${error}" in ${JSON.stringify(result.commands[0].errors)}`);
     assert.deepEqual(result.commands[0].switches, switches);
   }
 });
@@ -144,7 +144,7 @@ test('conditions: --domain filtering and unknown domain rejection unchanged', t 
   const root = fixture(t);
   const registry = { 'test:a': definition(), 'other:b': definition() };
   const filtered = reportConditions({ root, registry: registryFixture(registry), domain: 'test' });
-  assert.deepEqual(filtered.commands.map(row => row.name), ['test:a']);
+  assert.deepEqual(filtered.commands.map((row: any) => row.name), ['test:a']);
   assert.throws(() => reportConditions({ root, registry, domain: 'nope' }), /Unknown domain/);
 });
 test('conditions: main --json and text render the real registry read-only', t => {
@@ -166,4 +166,3 @@ test('conditions: main --json and text render the real registry read-only', t =>
   assert.match(text, /^ {2}默认: writes-source, writes-product, writes-release, delete, service$/m);
   assert.match(text, /^ {2}说明: /m);
 });
-

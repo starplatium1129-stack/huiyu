@@ -52,8 +52,8 @@ async function main() {
       hostFilter: hostStyle ? hostStyle.filter : null,
       companionDesktop: document.documentElement.classList.contains('companion-desktop'),
       companionUiHidden: document.documentElement.classList.contains('companion-ui-hidden'),
-      live2dEnabledHint: document.querySelector('.avatar-status') ? document.querySelector!('.avatar-status').textContent : null,
-      interactionHint: document.querySelector('.live2d-interaction-hint') ? document.querySelector!('.live2d-interaction-hint').textContent : null,
+      live2dEnabledHint: document.querySelector('.avatar-status') ? document.querySelector('.avatar-status')!.textContent : null,
+      interactionHint: document.querySelector('.live2d-interaction-hint') ? document.querySelector('.live2d-interaction-hint')!.textContent : null,
     }
   })
   console.log('DOM_STATE:', JSON.stringify(state, null, 2))

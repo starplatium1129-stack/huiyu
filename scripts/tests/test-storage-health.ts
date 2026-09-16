@@ -1,7 +1,7 @@
 'use strict';
 
 import assert = require('node:assert/strict');
-var health: typeof import('../../src/utils/storageHealth.ts') = require('../../src/utils/storageHealth.ts');
+let health: typeof import('../../src/utils/storageHealth.ts') = require('../../src/utils/storageHealth.ts');
 
 const { test }: typeof import('node:test') = require('node:test');
 
@@ -19,18 +19,18 @@ const mixed: any[] = good.concat([
   { id:10, timestamp:400, image_id:123 }
 ]);
 
-var validated = health.validateHistoryEntry(good[0]);
+let validated = health.validateHistoryEntry(good[0]);
 assert.strictEqual(validated.ok, true);
 
-var badId = health.validateHistoryEntry({ timestamp:1 });
+let badId = health.validateHistoryEntry({ timestamp:1 });
 assert.strictEqual(badId.ok, false);
 assert.ok(badId.reasons.indexOf('missing_id') !== -1);
 
-var partition = health.quarantinePartition(mixed);
+let partition = health.quarantinePartition(mixed);
 assert.strictEqual(partition.good.length, 3);
 assert.strictEqual(partition.bad.length, 5);
 
-var report = health.inspectStorageHealth(mixed, ['img_a', 'img_orphan'], {
+let report = health.inspectStorageHealth(mixed, ['img_a', 'img_orphan'], {
   quota:{ usage:50, quota:100 }
 });
 assert.strictEqual(report.historyCount, 3);
@@ -41,7 +41,7 @@ assert.deepStrictEqual(report.orphanImageIds, ['img_orphan']);
 assert.strictEqual(report.quota?.ratio, 0.5);
 assert.strictEqual(report.ok, false);
 
-var clean = health.inspectStorageHealth(good, ['img_a', 'img_b']);
+let clean = health.inspectStorageHealth(good, ['img_a', 'img_b']);
 assert.strictEqual(clean.ok, true);
 assert.strictEqual(clean.missingImageIds.length, 0);
 assert.strictEqual(clean.orphanImageIds.length, 0);
@@ -51,7 +51,7 @@ assert.deepStrictEqual(health.estimateStorageQuota({ usage:10, quota:40 }), {
   usage:10, quota:40, ratio:0.25
 });
 
-var summary = health.summarizeStorageHealth(report);
+let summary = health.summarizeStorageHealth(report);
 assert.ok(summary.indexOf('3 条历史') !== -1);
 assert.ok(summary.indexOf('隔离') !== -1);
 assert.strictEqual(health.HISTORY_QUARANTINE_KEY, 'aics_pb_history_quarantine');

@@ -28,7 +28,7 @@ const FATE_FILE = 'fate.json';
 const MARIN = 'My Dress-Up Darling';
 const MARIN_FILE = 'my-dress-up-darling.json';
 
-function bp(id: string, characterId: string|undefined, extra: { title: string; }|undefined) {
+function bp(id: string, characterId?: string, extra?: any) {
   return Object.assign({
     id,
     title: id,
@@ -130,7 +130,7 @@ test('未变化分片保留原始字节：格式不同的原始文本不触发�
 
 test('修改单条蓝图：只写对应分片，组内顺序与字段保留，manifest 计数不变', () => {
   const state = baseState();
-  const target = state.target.map((item) => item.id === 'frieren_1' ? { ...item, title: '新标题' } : item);
+  const target = state.target.map((item: any) => item.id === 'frieren_1' ? { ...item, title: '新标题' } : item);
   const p = plan(state, target);
   assert.equal(p.dirty, true);
   assert.deepEqual(p.writes.map((w) => [w.file, w.kind, w.count]), [[FRIEREN_FILE, 'update', 2]]);
@@ -182,14 +182,14 @@ test('多个新系列按目标首次出现顺序追加；既有系列顺序不�
 
 test('删除组内一条是重写；删除最后一条是删片并移除 manifest 项', () => {
   const state = baseState();
-  const partial = plan(state, state.target.filter((b) => b.id !== 'frieren_2'));
+  const partial = plan(state, state.target.filter((b: any) => b.id !== 'frieren_2'));
   assert.deepEqual(partial.deletes, []);
   assert.deepEqual(partial.writes.map((w) => [w.file, w.count]), [[FRIEREN_FILE, 1]]);
   assert.deepEqual(partial.manifest.data.files.map((f: any) => [f.file, f.count]),
     [[FRIEREN_FILE, 1], [FATE_FILE, 1]]);
   assert.deepEqual(partial.unchanged.map((u) => u.file), [FATE_FILE]);
 
-  const emptied = plan(state, state.target.filter((b) => b.id !== 'fate_1'));
+  const emptied = plan(state, state.target.filter((b: any) => b.id !== 'fate_1'));
   assert.deepEqual(emptied.deletes, [{ file: FATE_FILE, franchise: FATE }]);
   assert.deepEqual(emptied.manifest.data.files.map((f: any) => f.franchise), [FRIEREN]);
   assert.deepEqual(emptied.aggregate.data.blueprints.map((b) => b.id), ['frieren_1', 'frieren_2']);
@@ -199,7 +199,7 @@ test('删除组内一条是重写；删除最后一条是删片并移除 manifes
 
 test('跨系列移动：旧片移除、新片加入；旧系列清空时删片', () => {
   const state = baseState();
-  const moved = state.target.map((b) => b.id === 'frieren_2' ? { ...b, characterId: 'saber' } : b);
+  const moved = state.target.map((b: any) => b.id === 'frieren_2' ? { ...b, characterId: 'saber' } : b);
   const p = plan(state, moved);
   assert.deepEqual(p.deletes, []);
   assert.deepEqual(p.writes.map((w) => w.file), [FRIEREN_FILE, FATE_FILE]);
@@ -209,7 +209,7 @@ test('跨系列移动：旧片移除、新片加入；旧系列清空时删片',
     [[FRIEREN_FILE, 1], [FATE_FILE, 2]]);
 
   const allOut = [
-    ...state.target.filter((b) => b.id !== 'fate_1'),
+    ...state.target.filter((b: any) => b.id !== 'fate_1'),
     { ...state.target[2], characterId: 'frieren' },
   ];
   const p2 = plan(state, allOut);
@@ -381,7 +381,7 @@ test('来源分片不齐全、多余分片、franchise 冲突、text/data 不一
 
 test('冻结输入：规划器不修改任何输入，输出与未冻结时一致', () => {
   const state = baseState();
-  const target = state.target.map((item) => item.id === 'frieren_1' ? { ...item, title: '改' } : item);
+  const target = state.target.map((item: any) => item.id === 'frieren_1' ? { ...item, title: '改' } : item);
   target.push(bp('marin_1', 'marin'));
   const baseline = plan(state, target);
   const frozen = planBlueprintChanges({
@@ -483,7 +483,7 @@ test('JSON extension keys and complete blueprint fields survive planning without
   const state = baseState();
   Object.defineProperty(state.manifest, '__proto__', { value: { note: 'manifest metadata' }, enumerable: true });
   Object.defineProperty(state.manifest.files[0], '__proto__', { value: { note: 'entry metadata' }, enumerable: true });
-  const target = state.target.map((item, index) => index ? item : {
+  const target = state.target.map((item: any, index: number) => index ? item : {
     ...item, outfitId: 'canonical', rating: 'R18', mature: true,
     arbitrary: { unicode: '原文', list: [false, 0, null, ''], nested: { value: '保留' } },
     ...JSON.parse('{"__proto__":{"note":"blueprint metadata"}}'),

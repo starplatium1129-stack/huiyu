@@ -1,4 +1,3 @@
-import type { PathLike } from 'node:fs';
 import { errorMessage as runtimeErrorMessage } from '../scripts/lib/runtime-errors';
 'use strict';
 

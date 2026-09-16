@@ -137,7 +137,7 @@ function readBaseline() {
   if (!payload.scenes || Array.isArray(payload.scenes) || !Object.keys(payload.scenes).length) {
     throw new Error('定稿基线为空或格式错误，不能降级或覆盖');
   }
-  for (const [id, entry] of Object.entries(payload.scenes)) {
+  for (const [id, entry] of Object.entries<any>(payload.scenes)) {
     if (!entry || typeof entry !== 'object' || !Array.isArray(entry.pinSource) || !entry.pinSource.length) {
       throw new Error(`定稿基线 ${id} 缺少有效来源`);
     }
@@ -179,7 +179,7 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto',
     const baseline = readBaseline();
     const entries = indexShards(loadShards());
     let bad = 0;
-    for (const [id, want] of Object.entries(baseline)) {
+    for (const [id, want] of Object.entries<any>(baseline)) {
       const hit = entries.get(id);
       if (!hit) { console.error(`[FAIL] ${id}: 场景已被删除`); bad += 1; continue; }
       const drift = diffFields(pick(hit.entry), want);

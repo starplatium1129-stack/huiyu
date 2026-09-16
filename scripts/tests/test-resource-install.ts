@@ -125,11 +125,11 @@ test('injected ENOSPC while writing a resource is recoverable', async t => {
   const io = Object.create(fs);
   const files = new Map();
   io.openSync = (file: any, ...args: any[]) => {
-    const fd = fs.openSync(file, ...args); files.set(fd, String(file)); return fd;
+    const fd = (fs.openSync as any)(file, ...args); files.set(fd, String(file)); return fd;
   };
   io.writeSync = (fd: any, ...args: any[]) => {
     if (files.get(fd)?.endsWith('.part')) throw Object.assign(new Error('injected full disk'), { code: 'ENOSPC' });
-    return fs.writeSync(fd, ...args);
+    return (fs.writeSync as any)(fd, ...args);
   };
   await assert.rejects(f.installer({ io }).install({ releaseId: 'delta' }), code('ENOSPC'));
   assert.deepEqual((await f.installer().status()).state, old.state);

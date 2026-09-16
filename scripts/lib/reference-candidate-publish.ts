@@ -50,7 +50,7 @@ function seal(release: any) {
 function validateView(view: any, files: any) {
   if (!view || typeof view !== 'object' || Array.isArray(view)) throw new Error('Invalid reference view');
   const available = new Set(files.map((file: any) => file.path));
-  for (const character of Object.values(view)) {
+  for (const character of Object.values<any>(view)) {
     for (const outfit of character?.outfits || []) {
       for (const reference of outfit.references || []) {
         if (reference.pending || !reference.url?.startsWith('/character-references/')) continue;
@@ -77,7 +77,7 @@ function resolveReferenceRelease(directory: any, { dataRoot = CODE_ROOT }: any =
   const sourceView = path.join(dataRoot, 'data', VIEW);
   if (hash(R.bytes(sourceView)) !== release.sourceViewSha256
       || hash(R.bytes(path.join(dataRoot, R.SOURCE))) !== release.sourceStandardsSha256) throw new Error('Reference release belongs to a different source version');
-  validateView(JSON.parse(viewBytes), files);
+  validateView(JSON.parse(viewBytes.toString('utf8')), files);
   return { referenceRoot: root, viewFile, identity: release.identity, release };
 }
 
@@ -102,7 +102,7 @@ function preparePublication(options: any) {
   const base = resolveReferenceRelease(selected.source, { dataRoot: inspection.sourceRoot });
   const originals = scanImages(selected.source);
   const sourceView = R.bytes(path.join(inspection.sourceRoot, 'data', VIEW));
-  const view = base ? R.json(base.viewFile) : JSON.parse(sourceView);
+  const view = base ? R.json(base.viewFile) : JSON.parse(sourceView.toString('utf8'));
   const additions = items.filter((item: any) => item.integrity === 'pass' && item.review === 'pass');
   const approvals = new Map((base?.release.approvals || []).map((approval: any) => [approval.key, approval]));
   for (const item of additions) {
@@ -158,7 +158,7 @@ async function publishReferenceCandidates(options: any, deps: any = {}) {
   if (owner.kind !== 'reference-publication-staging' || owner.schemaVersion !== 1) throw new Error('Invalid publication staging owner');
   const locks = noLinks(path.join(store, 'locks'));
   fs.mkdirSync(locks, { recursive: true });
-  const unlock = lockFile({ io: fs, store }, hash(plan.target));
+  const unlock = lockFile({ io: fs, store } as any, hash(plan.target));
   try {
     if (fs.existsSync(plan.target)) {
       const existing = resolveReferenceRelease(plan.target, { dataRoot: plan.inspection.sourceRoot });

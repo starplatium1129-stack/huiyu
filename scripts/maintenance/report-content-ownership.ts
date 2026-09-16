@@ -88,7 +88,7 @@ function reportOwnership({ root = path.resolve(__dirname, '../..'), domain, cons
         execution: 'scripts/maintenance/check-content-impact.js --full --execute; partial field coverage remains explicit' },
       readWriteCoverage: { status: 'partial', completeness: 'unknown', basis: 'Only listed implementation readers/writers; no exhaustive dependency claim' },
       machine: { report: '办公机/CI：Node，本地只读', contentAcceptance: '内容/图片质量仍待对应主力机或人工验收' }, entries: [] };
-    const add = (...args: any[]) => { const item = inspect(...args); result.entries.push(item.row); return item; };
+    const add = (file: any, role?: any, validate?: any, text: any = false) => { const item = inspect(file, role, validate, text); result.entries.push(item.row); return item; };
     if (['popular', 'scenes', 'blueprints'].includes(id)) {
       const directory = 'data/' + id;
       const key = id === 'popular' ? 'characters' : 'blueprints';

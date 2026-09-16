@@ -11,7 +11,7 @@ const emotions = ['neutral', 'gentle', 'happy', 'shy', 'serious', 'sad'];
 const text = '今日もお疲れさまでした。ここで少し休んでいきませんか。';
 const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-voice-emotions-'));
 
-function request(method: string, pathname: string|URL, payload: { voice: string; language: string; text: string; emotion: string; referenceEmotion: string; consistency: string; speed: number; }|null) {
+function request(method: string, pathname: string|URL, payload: any) {
   return new Promise<any>((resolve: any, reject: any) => {
     const target = new URL(pathname, baseUrl);
     const body = payload == null ? null : JSON.stringify(payload);
@@ -32,7 +32,7 @@ function request(method: string, pathname: string|URL, payload: { voice: string;
   });
 }
 
-async function jsonRequest(method: string, pathname: string, payload: { voice: string; translation: boolean; }|undefined) {
+async function jsonRequest(method: string, pathname: string, payload?: any) {
   const response = await request(method, pathname, payload);
   let data: Record<string, any> = {};
   try { data = JSON.parse(response.body.toString('utf8') || '{}'); } catch {}

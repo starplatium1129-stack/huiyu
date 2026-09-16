@@ -71,7 +71,7 @@ function sweep() {
   // v1 旧命名（aics-2026-*.bundle，纯全量）：新链锚点凑齐 ANCHOR_KEEP 份后整体退役，
   // 过渡期保留最近的 (ANCHOR_KEEP - 链上锚点数) 份兜底
   const legacy = names.filter((f: any) => !f.startsWith('aics-full-') && !f.startsWith('aics-inc-'));
-  const drop = new Set();
+  const drop = new Set<string>();
   // 锚点保留最近 ANCHOR_KEEP 份
   for (const name of anchors.slice(0, Math.max(0, anchors.length - ANCHOR_KEEP))) drop.add(name);
   const legacyKeep = anchors.length >= ANCHOR_KEEP ? 0 : Math.max(0, ANCHOR_KEEP - anchors.length);

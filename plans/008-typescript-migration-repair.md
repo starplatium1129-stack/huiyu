@@ -1,13 +1,38 @@
-# 008 — TypeScript 迁移修复（机械阶段已完成，逐文件阶段进行中）
+# 008 — TypeScript 迁移修复（本机收尾完成，外置素材/实机验收待补）
 
-- **Status**: IN_PROGRESS — 机械规则已跑到收敛，剩余 1,095 个需逐点现场修复
+- **Status**: LOCAL_COMPLETE — 类型、构建、测试与 NSIS 打包已通过；参考素材目录与安装器实机验收仍需在目标环境完成
 - **Branch**: 已 fast-forward 到 `main`（工作分支 `codex/ts-migration-repair-20260915` 与 main 同一提交）
 - **Commit**: 机械阶段 20 个检查点，最新为「索引签名规则后的收敛」（见 `git log --oneline`）
 - **Severity**: BLOCKER — 构建、测试、桌面打包、CI 全链路不可用
 - **Category**: Build / TypeScript 迁移
-- **剩余规模**: 1,095 个类型错误（node 216 + tests 879）
+- **剩余规模**: 0 个类型错误（node 0 + tests 0）
 
-## 进度快照（均为官方门禁命令实测）
+## 2026-09-16 收尾结果
+
+- 官方门禁：`services`、`browser`、`node`、`tests` 全部 exit 0；`typecheck:app`、lint、单体体量、TypeScript 指令扫描、生成物守卫全部通过。
+- 行为验证：`test:frontend` 783/783、`test:unit` 1036 用例、`test:contract` 33/33 通过；`test:check` 通过。
+- 产物链路：TypeScript 强制重建通过；已取消跟踪 448 个迁移生成 JS/MJS，保留 3 个 Live2D vendor JS 与 `poc/audit-stability-apply.cjs`；前端 `npm run build` 与 NSIS `npm run package:tauri` 均通过。
+- 当前综合 `npm run check` 仅剩 `content-contracts` / `ref-urls`：本机未配置 `AICS_CHARACTER_REF_ROOT`，因此 2534 个外置参考图声明无法做文件存在性核验。未修改索引或用 pending 掩盖缺图。
+- 未执行：安装器启动、UAC、Windows 实机/双屏 DPI、Live2D 原生与真实模型出图验收；这些需要目标机器和外部素材/服务。
+
+## 已完成
+
+- [x] TypeScript 迁移收敛：`node`、`tests` 类型错误均为 0；`services`、`browser`、`node`、`tests` 四个官方项目检查全部通过。
+- [x] 迁移生成物治理：强制重建通过，448 个生成的 JS/MJS 已取消 Git 跟踪；保留 3 个 Live2D vendor JS 与 `poc/audit-stability-apply.cjs` 例外。
+- [x] 工程质量门禁：`typecheck:app`、ESLint、单体体量、TypeScript 指令扫描、生成物守卫、仓库卫生与 `test:check` 均通过。
+- [x] 行为回归：前端 783/783、单元 1036、契约 33/33 全部通过。
+- [x] 产物验证：前端生产构建、数据预压缩、桌面资源暂存与 NSIS 安装器打包均通过；隔离网关验证 PASS。
+- [x] 本计划已按当前实测结果更新，历史迁移快照与最终结果已区分。
+
+## 待完成
+
+- [ ] 在目标环境提供外置参考素材根目录并配置 `AICS_CHARACTER_REF_ROOT`，重新执行 `content-contracts` 与 `ref-urls`，完成 2534 个参考图声明的文件存在性核验；不得通过修改索引或标记 pending 绕过。
+- [ ] 在上述检查变绿后，补跑一次完整的 `npm run validate` 作为端到端收口证据（其前端、单元、契约子套件已单独通过）。
+- [ ] 启动 NSIS 安装器完成 UAC、实际安装、启动与升级/卸载验收。
+- [ ] 在 Windows 目标设备完成桌面工作室/伴侣端、Live2D 原生、100%/125%/150% 缩放及双屏场景验收并留存证据。
+- [ ] 接通可用的外部模型与服务，完成真实生成链路及渲染画面核对；当前证据覆盖类型、构建、测试和隔离网关，不等同于真实出图验收。
+
+## 进度快照（迁移过程历史快照；最终结果见上方收尾结果）
 
 | 阶段 | node | tests | 合计 | 完成度 |
 | --- | --- | --- | --- | --- |
@@ -16,8 +41,9 @@
 | 机械修复（第一轮，6 个检查点） | 516 | 2,002 | 2,518 | 84% |
 | 第二轮（规则 J/K/L/M） | 323 | 1,453 | 1,776 | 89% |
 | 第三轮（规则 Q/S/T/U/V/P，当前） | **216** | **879** | **1,095** | **93%** |
+| 本次逐文件修复与收尾 | **0** | **0** | **0** | **100%** |
 
-`services` / `browser` 两个项目实测 PASS（exit 0），`node` / `tests` 仍红。
+四个官方项目最终均实测 PASS（exit 0）。
 
 ## ⚠️ 官方门禁的真实覆盖范围（本轮更正）
 
@@ -41,8 +67,8 @@ export const PROJECTS = {
 | --- | --- |
 | services | **PASS（exit 0）** |
 | browser | **PASS（exit 0）** |
-| node | FAIL exit 1，516 |
-| tests | FAIL exit 1，2,002 |
+| node | **PASS（exit 0）** |
+| tests | **PASS（exit 0）** |
 
 原始诊断主因分布：TS7006 隐式 any 1,527、TS2339 属性不存在 1,279、TS18046 unknown 627、TS2345 569、TS2554 347。
 
@@ -328,11 +354,11 @@ Windows 下 node 解析不了 git-bash 的 `/tmp`。）
   本会话因此改为单会话推进，靠「可判定规则 + tsc 快速反馈（node 项目约 5 秒）」批量化，才把
   11,310 压到 2,518。剩余部分建议在配额恢复后按 R1–R5 分片并行（文件归属已切分好，
   见 `.cache/tswork/A1..A7.txt` 与 `scripts/archive/ts-repair/CONTRACT.md`）。
-- **`git push` 仍未成功（main 已 fast-forward，本地领先远端 23 个提交）**：实测报
-  `fatal: could not read Username for 'https://github.com': terminal prompts disabled`。
-  `origin` 是 HTTPS（`https://github.com/starplatium1129-stack/huiyu.git`），
-  `credential.helper = helper-selector` 在非交互环境下无法弹窗取凭证。**即凭证/交互问题，不是代理问题**——
-  需要用户在交互终端完成一次认证（或配置可用的凭证助手）。提交本身已安全落在本地分支（7 个检查点，未推）。
+- **`git push` 已成功**：`main` 已 fast-forward 并推送到 origin，`origin/main` = `51ceee9`，与本地一致。
+  期间出现过 `fatal: could not read Username for 'https://github.com': terminal prompts disabled`
+  ——`origin` 是 HTTPS + `credential.helper = helper-selector`，非交互环境下**有时**取不到缓存凭证。
+  症状是静默失败或挂起，重跑一次通常即可。**这是凭证/交互问题，不是代理问题。**
+  排查时先用 `git ls-remote origin main` 核实远端真实位置，不要只看 push 的退出码（`| tail` 会把它吃掉）。
 - **行为验证缺口**：`build:runtime` 仍不可能通过，因此当前所有改动**只有类型层面证据，没有任何运行时验证**。
   控制流守恒已抽检（`if/return/throw/assert/process.exit` 增删基本持平），全仓 `@ts-*` 抑制数为 0、
   6 个提交内不含任何 `.js`——但不等于行为不变。

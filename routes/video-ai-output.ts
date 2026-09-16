@@ -26,7 +26,7 @@ function extractJsonObject(text: string) {
 function cleanRewriteOutput(parsed: any, original: any) {
   let out = {
     prompt:original.prompt,
-    shotSize:null,
+    shotSize:null as string | null,
     camera:original.camera,
     motion:original.motion,
     dialogue:''

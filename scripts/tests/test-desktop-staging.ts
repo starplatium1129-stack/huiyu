@@ -13,7 +13,7 @@ const {
   withDesktopBuildLock,
 }: typeof import('../maintenance/desktop-build-lock') = require('../maintenance/desktop-build-lock');
 const { resolveNpmInvocation, stageResources }: typeof import('../maintenance/desktop-stage-resources') = require('../maintenance/desktop-stage-resources');
-const { runTauri }: typeof import('../maintenance/run-tauri') = require('../maintenance/run-tauri');
+const { runTauri }: any = require('../maintenance/run-tauri');
 const { resolveSdkRoot }: typeof import('../maintenance/desktop-build-environment') = require('../maintenance/desktop-build-environment');
 const { customizeTemplate }: typeof import('../maintenance/build-game-installer') = require('../maintenance/build-game-installer');
 
@@ -141,7 +141,7 @@ test('production stage uses exact runtime outputs and atomic replacement', () =>
     });
 
     assert.equal(installCalls, 1);
-    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(stage, 'gateway/docs/redirects.json'))), { '/docs/old': '/docs/new' });
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(stage, 'gateway/docs/redirects.json'), 'utf8')), { '/docs/old': '/docs/new' });
     assert.deepEqual(result.runtimeJavaScriptFiles, ['fixture.js']);
     assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'fixture.js')), true);
     assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'fixture.ts')), false);
@@ -234,19 +234,19 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
     root: 'fixture-root',
     npmCommand: 'npm',
     checkEnvironment: () => { events.push('environment'); },
-    withLock: async (options, callback) => {
+    withLock: async (options: any, callback: any) => {
       events.push('lock');
       const result = await callback();
       events.push('unlock');
       return result;
     },
-    runCommand: (command, args) => {
+    runCommand: (command: any, args: any) => {
       events.push(`${command}:${args.join(' ')}`);
       return 0;
     },
     prepareTauri: async () => { events.push('prepare'); },
     tauriCli: 'tauri-cli.js',
-    spawnTauri: (command, args) => {
+    spawnTauri: (command: any, args: any) => {
       events.push(`${command}:${args.join(' ')}`);
       return 0;
     },

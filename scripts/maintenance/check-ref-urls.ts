@@ -14,7 +14,7 @@ function auditReferenceView(data: { [s: string]: any; }|ArrayLike<any>, root: st
   const assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
   const refRoot = resolveCharRefRoot(appRoot, env, env.AI_WORKSPACE_ROOT);
   const structureOnly = env.AICS_REFERENCE_AUDIT_MODE === 'structure';
-  const result = { total: 0, missing: 0, pending: 0, unverified: 0, refRoot, errors: [] };
+  const result = { total: 0, missing: 0, pending: 0, unverified: 0, refRoot, errors: [] as string[] };
   for (const [id, profile] of Object.entries(data)) {
     const seen = new Set();
     for (const outfit of profile.outfits || []) {

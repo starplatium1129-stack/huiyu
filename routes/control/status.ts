@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 /**
  * routes/control/status.js —— 只读状态/诊断路由（2026-08-31 审计 P1-10 拆分）

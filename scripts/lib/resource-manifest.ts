@@ -472,7 +472,7 @@ function compareManifests({ oldManifest, newManifest }: any) {
   const result: {
     added: ManifestEntry[];
     removed: ManifestEntry[];
-    changed: Array<{ path: string; before: ManifestEntry; after: ManifestEntry }>;
+    changed: Array<{ path: string; before: Omit<ManifestEntry, 'path'>; after: Omit<ManifestEntry, 'path'> }>;
     [key: string]: any;
   } = {
     schemaVersion: SCHEMA_VERSION,
@@ -490,14 +490,14 @@ function compareManifests({ oldManifest, newManifest }: any) {
   if (blocking(oldStructure.errors) || blocking(newStructure.errors)) return result;
   const added: ManifestEntry[] = [];
   const removed: ManifestEntry[] = [];
-  const changed: Array<{ path: string; before: ManifestEntry; after: ManifestEntry }> = [];
+  const changed: Array<{ path: string; before: Omit<ManifestEntry, 'path'>; after: Omit<ManifestEntry, 'path'> }> = [];
   let unchanged = 0;
   for (const [rel, before] of oldStructure.byPath) {
     const after = newStructure.byPath.get(rel);
     if (!after) {
       removed.push({ path: rel, bytes: before.bytes, sha256: before.sha256 });
     } else if (after.bytes !== before.bytes || after.sha256.toLowerCase() !== before.sha256.toLowerCase()) {
-      changed.push({ path: rel, before: { path: rel, bytes: before.bytes, sha256: before.sha256 }, after: { path: rel, bytes: after.bytes, sha256: after.sha256 } });
+      changed.push({ path: rel, before: { bytes: before.bytes, sha256: before.sha256 }, after: { bytes: after.bytes, sha256: after.sha256 } });
     } else {
       unchanged++;
     }

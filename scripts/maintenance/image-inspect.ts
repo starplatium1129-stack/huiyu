@@ -126,7 +126,7 @@ function parseArgs(argv: any) {
   const opts = {
     task: 'describe', mode: 'each', model: null, prompt: null, expect: null,
     out: null, json: false, maxTokens: 4000, timeoutMs: 180000, help: false,
-    noFallback: false, concurrency: 1, paths: [],
+    noFallback: false, concurrency: 1, paths: [] as string[],
   };
   for (let i = 0; i < argv.length; i++) {
     const a: any = argv[i];
@@ -270,7 +270,7 @@ function buildTextAndImages(prompt: any, files: any, labeled: any) {
   const text = labeled
     ? `${prompt}\n\n本次共 ${files.length} 张图片，请严格按编号逐一分析，不要遗漏。`
     : prompt;
-  const content = [{ type: 'text', text }];
+  const content: any[] = [{ type: 'text', text }];
   files.forEach((f: any, i: any) => {
     content.push({
       type: 'image_url',

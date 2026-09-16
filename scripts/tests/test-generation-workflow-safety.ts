@@ -123,7 +123,7 @@ for (const [index, name] of F.entries.entries()) {
 }
 
 test('gateway resolution has explicit precedence and rejects unsafe or empty configuration', () => {
-  const env = { GATEWAY_URL: 'http://127.0.0.1:3101/', BASE: 'http://127.0.0.1:3102', AICS_COMMS_BASE: 'http://127.0.0.1:3103' };
+  const env: any = { GATEWAY_URL: 'http://127.0.0.1:3101/', BASE: 'http://127.0.0.1:3102', AICS_COMMS_BASE: 'http://127.0.0.1:3103' };
   assert.equal(gatewayUrl('http://localhost:3999/', env), 'http://localhost:3999');
   assert.equal(gatewayUrl(undefined, env), 'http://127.0.0.1:3101');
   delete env.GATEWAY_URL; assert.equal(gatewayUrl(undefined, env), 'http://127.0.0.1:3102');

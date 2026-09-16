@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 
 

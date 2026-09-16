@@ -45,7 +45,7 @@ function seed() {
 }
 
 async function start(fixture: any, mode: any = 'success') {
-  const child = fork(__filename, [fixture.options.rootDir, mode], { silent: true, windowsHide: true });
+  const child = fork(__filename, [fixture.options.rootDir, mode], { silent: true, windowsHide: true } as any);
   let errors = '';
   child.stderr!.on('data', chunk => { errors += chunk; });
   const closed = once(child, 'exit');
@@ -119,7 +119,7 @@ async function serve(rootDir: any, mode: any) {
   app.use('/data', express.static(path.join(rootDir, 'data')));
   const server = app.listen(0, '127.0.0.1');
   await once(server, 'listening');
-  process.send!({ port: server.address!().port });
+  process.send!({ port: (server.address!() as import('node:net').AddressInfo).port });
 }
 if (require.main === module) serve(process.argv[2], process.argv[3]).catch(error => { process.stderr.write(error.stack + '\n'); process.exit(1); });
 export = { seed, start };

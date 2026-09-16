@@ -1,8 +1,5 @@
 'use strict';
 
-import { ReadStream } from 'node:fs';
-import { Server,IncomingMessage,ServerResponse } from 'node:http';
-import { AddressInfo } from 'node:net';
 
 const { test }: typeof import('node:test') = require('node:test');
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
@@ -19,7 +16,7 @@ const io: typeof import('../lib/maintenance-recovery-fs') = require('../lib/main
 const { createFixture, spawnWorker, tree }: typeof import('./maintenance-recovery-fixture') = require('./maintenance-recovery-fixture');
 
 function deferred() {
-  let resolve;
+  let resolve: any;
   const promise = new Promise(done => { resolve = done; });
   return { promise, resolve };
 }
@@ -53,7 +50,7 @@ async function application(f: any, position: string) {
     res.writeHead(200, 'OK', { 'Content-Type': 'application/json', 'ETag': '"old"' });
     res.flushHeaders();
     res.write('{"old":');
-    started.resolve!(res);
+    started.resolve(res);
     finish.promise.then(() => res.end('true}'));
   });
   app.use('/data', express.static(io.path.join(f.options.rootDir, 'data')));
@@ -62,8 +59,8 @@ async function application(f: any, position: string) {
   return {
     source, body, started, finish,
     get(url: any = '/data/scenes.json', headers: any = {}, method: any = 'GET', onResponse: any = () => {}) {
-      return new Promise((resolve, reject) => {
-        const request = http.request({ hostname: '127.0.0.1', port: server.address!().port, path: url, headers, method, agent: false }, response => {
+      return new Promise<any>((resolve, reject) => {
+        const request = http.request({ hostname: '127.0.0.1', port: (server.address() as any).port, path: url, headers, method, agent: false }, response => {
           onResponse(response);
           const chunks: any = [];
           response.on('data', chunk => chunks.push(chunk));
@@ -75,7 +72,7 @@ async function application(f: any, position: string) {
         request.end();
       });
     },
-    async close() { finish.resolve!(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); },
+    async close() { finish.resolve(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); },
   };
 }
 function decode(response: any) {
@@ -133,7 +130,7 @@ for (const position of ['before-compression', 'after-compression']) {
       await new Promise(resolve => setImmediate(resolve));
       assert.equal(sent, false, 'headers must remain private until the read fence passes');
       assert.equal(res.headersSent, false);
-      app.finish.resolve!();
+      app.finish.resolve();
       const rejected: any = await reading;
       assert.equal(rejected.status, 409);
       assert.equal(rejected.headers['content-encoding'], undefined);
@@ -151,20 +148,20 @@ for (const position of ['before-compression', 'after-compression']) {
       const app = await application(f, position);
       const createReadStream = io.fs.createReadStream;
       const started = deferred();
-      let paused: ReadStream;
+      let paused: any = null;
       let streamClosed: any;
-      let worker;
-      let reading;
+      let worker: any;
+      let reading: any;
       try {
         const original = tree(f.options.rootDir, true);
         io.fs.createReadStream = (file, options) => {
           const selected = io.samePath(String(file), app.source + extension) && !paused;
-          const stream = createReadStream(file, selected ? { ...options, highWaterMark: 8 } : options);
+          const stream = createReadStream(file, selected ? { ...(options as any), highWaterMark: 8 } : options);
           if (selected) {
             paused = stream;
             streamClosed = once(stream, 'close');
             streamClosed.catch(() => {});
-            stream.once('data', () => { stream.pause(); started.resolve!(); });
+            stream.once('data', () => { stream.pause(); started.resolve(); });
           }
           return stream;
         };
@@ -240,7 +237,7 @@ test('actual gateway early barrier protects gzip/br and showcase across a real w
           RESOURCE_CONFIG_PATH: '', RESOURCE_MANAGEMENT: false });
       },
     });
-    const request = (url: string, encoding: string, headers: any = {}) => new Promise((resolve, reject) => {
+    const request = (url: string, encoding: string, headers: any = {}) => new Promise<any>((resolve, reject) => {
       const req = http.get(stack.baseUrl + url, { agent: false, headers: { 'accept-encoding': encoding, ...headers } }, res => {
         const chunks: any = [];
         res.on('data', chunk => chunks.push(chunk));

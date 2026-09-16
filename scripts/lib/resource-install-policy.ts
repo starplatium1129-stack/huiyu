@@ -13,7 +13,7 @@ const EXECUTABLE = /\.(exe|dll|com|bat|cmd|ps1|psm1|sh|bash|msi|msp|scr|vbs|vbe|
 function manifest(value: any) {
   const result = compareManifests({ oldManifest: value, newManifest: value });
   if (!result.ok) fail('MANIFEST_INVALID', 'Manifest structure is invalid', result.errors);
-  const identities = new Set();
+  const identities = new Set<string>();
   let total = 0;
   for (const entry of value.entries) {
     relativePath(entry.path);
@@ -74,7 +74,7 @@ function decodePack(manifestBytes: any, deltaBytes: any, release: any) {
   return { manifest: normalized, delta, manifestBytes, deltaBytes };
 }
 function inventory(ctx: any, root: any, declared: any) {
-  if (!noLinks!(ctx.io, root).isDirectory()) fail('UNSAFE_PATH', 'Package/version root is not a directory');
+  if (!noLinks(ctx.io, root)?.isDirectory()) fail('UNSAFE_PATH', 'Package/version root is not a directory');
   const seen = new Set();
   const directories = new Set(['assets']);
   for (const rel of declared) {

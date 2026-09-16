@@ -18,7 +18,7 @@ function readOnlyIo(onRead?: any) {
   const reads: any = [];
   const writes: any = [];
   const opened = new Map();
-  const denied = (op: any) => (...args) => { writes.push([op, ...args]); throw new Error('Unexpected mutation: ' + op); };
+  const denied = (op: any) => (...args: any[]) => { writes.push([op, ...args]); throw new Error('Unexpected mutation: ' + op); };
   for (const name of Object.keys(fs)) {
     if (/^(?:append|chmod|chown|copy|cp|fchmod|fchown|fdatasync|fsync|ftruncate|futimes|lchmod|lchown|link|lutimes|mkdir|mkdtemp|rename|rm|rmdir|symlink|truncate|unlink|utimes|write)/.test(name)) {
       io[name] = denied(name);
@@ -32,7 +32,7 @@ function readOnlyIo(onRead?: any) {
     return fd;
   };
   for (const name of ['lstatSync', 'statSync', 'realpathSync', 'readdirSync', 'readFileSync', 'readSync']) {
-    io[name] = (...args) => {
+    io[name] = (...args: any[]) => {
       const file = typeof args[0] === 'number' ? opened.get(args[0]) : String(args[0]);
       reads.push({ op: name, file });
       const value = (fs as Record<string, any>)[name](...args);
@@ -58,7 +58,7 @@ function checked(f: any, { options = {}, error, onRead, injectedMutation = false
   const before = tree(f.base);
   const program = snapshot(f.program);
   const artwork = snapshot(f.artwork);
-  let result;
+  let result: any;
   const run = () => { result = resolveInstalledResourceRoots({ ...f.options(), ...options, io: adapter.io }); };
   if (error) assert.throws(run, code(error));
   else run();
@@ -256,7 +256,7 @@ test('source/release approval and pinned identities remain required for installe
     [(p: any) => { p.releases.base.approved = false; }, 'APPROVAL_REQUIRED'],
     [(p: any) => { p.releases.base.packageIdentity = '0'.repeat(64); }, 'APPROVAL_REQUIRED'],
     [(p: any) => { p.releases.base.targetIdentity = '0'.repeat(64); }, 'APPROVAL_REQUIRED'],
-  ]) {
+  ] as any[]) {
     const policy = structuredClone(original);
     change(policy);
     checked(f, { options: { policy }, error });

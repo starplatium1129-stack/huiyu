@@ -1,4 +1,3 @@
-import { PathLike } from 'node:fs';
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
 'use strict';
 const path: typeof import('node:path') = require('node:path');

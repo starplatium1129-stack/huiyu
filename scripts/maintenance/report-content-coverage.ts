@@ -127,8 +127,8 @@ function analyseReferences({ popular, standards, view, fileExists }: any) {
       }
     }
   }
-  const standardsMap = new Map(standards.map((c: any) => [c.id, new Set(c.outfitIds)]));
-  const viewMap = new Map(view.map((c: any) => [c.id, c.outfits]));
+  const standardsMap = new Map<string, Set<string>>(standards.map((c: any) => [c.id, new Set(c.outfitIds)]));
+  const viewMap = new Map<string, any[]>(view.map((c: any) => [c.id, c.outfits]));
 
   const missingRegistration: any[] = [];
   const pending: any[] = [];

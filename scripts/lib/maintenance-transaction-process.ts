@@ -4,14 +4,14 @@ const cp: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
 const { failure }: typeof import('./maintenance-recovery-fs') = require('./maintenance-recovery-fs');
 
-function runMaintenanceNode(script: any, args: any, timeoutMs: any, { rootDir, repoRoot, lease, trackChild = child => child, killChild = child => child.kill() }: any) {
+function runMaintenanceNode(script: any, args: any, timeoutMs: any, { rootDir, repoRoot, lease, trackChild = (child: any) => child, killChild = (child: any) => child.kill() }: any) {
   if (!lease) throw failure('MAINTENANCE_RECOVERY_REQUIRED', '维护子进程必须由持久化事务启动');
   lease.assertOwned();
   return new Promise((resolve, reject) => {
     const child = trackChild(cp.fork(path.join(__dirname, 'maintenance-transaction-child.js'), [path.resolve(repoRoot, script), ...args], {
       cwd: repoRoot, windowsHide: true, silent: true,
       env: { ...process.env, AICS_DATA_ROOT: rootDir, AICS_APP_ROOT: rootDir },
-    }));
+    } as any));
     let registered = false;
     let failureError: any = null;
     let stdout = '';

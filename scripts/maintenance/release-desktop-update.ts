@@ -228,7 +228,7 @@ function main() {
     return;
   }
   // Sign the distributed wrapper, never reuse the embedded NSIS signature.
-  const signerEnv = { ...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE, TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '' };
+  const signerEnv: NodeJS.ProcessEnv = { ...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE, TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '' };
   delete signerEnv.TAURI_SIGNING_PRIVATE_KEY;
   execFileSync(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'signer', 'sign', executable], {
     cwd: ROOT, stdio: 'inherit', windowsHide: true,

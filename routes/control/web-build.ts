@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 /**
  * routes/control/web-build.js —— 前端构建状态与触发（2026-08-29 审计 P1-10
@@ -39,7 +38,7 @@ function newestSourceMtime(rootDir: string) {
   };
   for (let i = 0; i < BUILD_SOURCE_GLOBS.length; i += 1) {
     let target = path.join(rootDir, BUILD_SOURCE_GLOBS[i]);
-    var stat;
+    let stat;
     try { stat = fs.statSync(target); } catch (error) { continue; }
     if (stat.isDirectory()) walk(target);
     else if (stat.mtimeMs > newest) newest = stat.mtimeMs;

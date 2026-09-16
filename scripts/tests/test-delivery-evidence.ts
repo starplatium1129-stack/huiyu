@@ -111,7 +111,7 @@ test('范围外文档及只含文档的新提交不使代码门禁陈旧，交�
 test('字面越界、绝对路径、ADS、重复和覆盖重叠选择项拒绝', t => {
   const f = fixture(t);
   for (const name of ['../outside', 'src/../outside', 'C:relative', 'C:/absolute', '/absolute', '\\server\share', 'src/file:stream', 'src/file.']) {
-    assert.throws(() => snapshot(f.root, [{ path: name, kind: 'file' }]), undefined, name);
+    assert.throws(() => snapshot(f.root, [{ path: name, kind: 'file' }]), () => true, name);
   }
   for (const items of [
     [{ path: 'src', kind: 'tree' }, { path: 'src/main.js', kind: 'file' }],

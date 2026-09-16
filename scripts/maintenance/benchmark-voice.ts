@@ -1,29 +1,29 @@
 'use strict';
 
-var http: typeof import('http') = require('http');
-var https: typeof import('https') = require('https');
-var path: typeof import('path') = require('path');
-var performance = (require('perf_hooks') as typeof import('perf_hooks')).performance;
-var wavQuality: typeof import('../lib/wav-quality') = require('../lib/wav-quality');
+let http: typeof import('http') = require('http');
+let https: typeof import('https') = require('https');
+let path: typeof import('path') = require('path');
+let performance = (require('perf_hooks') as typeof import('perf_hooks')).performance;
+let wavQuality: typeof import('../lib/wav-quality') = require('../lib/wav-quality');
 
-var baseUrl = process.argv[2] || 'http://127.0.0.1:3000';
-var directVoiceUrl = process.argv[3] || '';
+let baseUrl = process.argv[2] || 'http://127.0.0.1:3000';
+let directVoiceUrl = process.argv[3] || '';
 
 function round(value: number) {
   return Math.round(value * 10) / 10;
 }
 
-function timedRequest(method: string, pathname: string|URL, payload: { text?: string; voice?: string; translation?: boolean; }|null|undefined, origin: string|undefined) {
+function timedRequest(method: string, pathname: string|URL, payload: any, origin: string|undefined) {
   return new Promise<any>(function (resolve: any, reject: any) {
-    var target = new URL(pathname, origin || baseUrl);
-    var body = payload == null ? null : JSON.stringify(payload);
-    var transport = target.protocol === 'https:' ? https : http;
-    var started = performance.now();
-    var headersAt = 0;
-    var firstByteAt = 0;
-    var chunks: any = [];
-    var bytes = 0;
-    var request = transport.request(target, {
+    let target = new URL(pathname, origin || baseUrl);
+    let body = payload == null ? null : JSON.stringify(payload);
+    let transport = target.protocol === 'https:' ? https : http;
+    let started = performance.now();
+    let headersAt = 0;
+    let firstByteAt = 0;
+    let chunks: any = [];
+    let bytes = 0;
+    let request = transport.request(target, {
       method:method,
       headers:body === null ? {} : {
         'Content-Type':'application/json',
@@ -37,7 +37,7 @@ function timedRequest(method: string, pathname: string|URL, payload: { text?: st
         chunks.push(chunk);
       });
       response.on('end', function () {
-        var ended = performance.now();
+        let ended = performance.now();
         resolve({
           status:response.statusCode,
           headersMs:round(headersAt - started),
@@ -56,9 +56,9 @@ function timedRequest(method: string, pathname: string|URL, payload: { text?: st
   });
 }
 
-async function jsonRequest(method: string, pathname: string, payload: { text?: string; voice?: string; translation?: boolean; }|undefined) {
-  var result = await timedRequest(method, pathname, payload, undefined);
-  var data: Record<string, any> = {};
+async function jsonRequest(method: string, pathname: string, payload: any) {
+  let result = await timedRequest(method, pathname, payload, undefined);
+  let data: Record<string, any> = {};
   try { data = JSON.parse(result.body.toString('utf8') || '{}'); } catch (error) {}
   result.data = data;
   if (result.status < 200 || result.status >= 300) {
@@ -69,7 +69,7 @@ async function jsonRequest(method: string, pathname: string, payload: { text?: s
 }
 
 function metric(label: string, result: any) {
-  var output: any = {
+  let output: any = {
     label:label,
     headers_ms:result.headersMs,
     first_audio_ms:result.firstByteMs,
@@ -77,7 +77,7 @@ function metric(label: string, result: any) {
     kib:round(result.bytes / 1024)
   };
   try {
-    var audio = wavQuality.analyzeWav(result.body);
+    let audio = wavQuality.analyzeWav(result.body);
     output.duration_ms = audio.durationMs;
     output.rms = audio.rms;
     output.peak = audio.peak;
@@ -98,7 +98,7 @@ function voicePayload(voice: string, text: string, emotion: string) {
 }
 
 async function main() {
-  var status = await jsonRequest('GET', '/api/tts-status', undefined);
+  let status = await jsonRequest('GET', '/api/tts-status', undefined);
   console.log('Voice status:', JSON.stringify({
     online:status.data.online,
     voices:status.data.voices,
@@ -106,46 +106,46 @@ async function main() {
   }));
   if (!status.data.online) throw new Error('GPT-SoVITS is not online');
 
-  var results: any[] = [];
-  var coldTranslation = await jsonRequest('POST', '/api/translate', {
+  let results: any[] = [];
+  let coldTranslation = await jsonRequest('POST', '/api/translate', {
     text:'今天也辛苦了。先休息一下吧。'
   });
   results.push(metric('translation cold', coldTranslation));
-  var cachedTranslation = await jsonRequest('POST', '/api/translate', {
+  let cachedTranslation = await jsonRequest('POST', '/api/translate', {
     text:'今天也辛苦了。先休息一下吧。'
   });
   results.push(metric('translation cached', cachedTranslation));
-  var warmTranslation = await jsonRequest('POST', '/api/translate', {
+  let warmTranslation = await jsonRequest('POST', '/api/translate', {
     text:'不用着急，我会在这里陪着你。'
   });
   results.push(metric('translation warm', warmTranslation));
 
-  var prepareNatsume = await jsonRequest('POST', '/api/voice/prepare', {
+  let prepareNatsume = await jsonRequest('POST', '/api/voice/prepare', {
     voice:'natsume',
     translation:true
   });
   results.push(metric('prepare natsume', prepareNatsume));
-  var natsume = await timedRequest('POST', '/api/tts',
+  let natsume = await timedRequest('POST', '/api/tts',
     voicePayload('natsume', '今日もお疲れさま。少し休んだら？', 'gentle'), undefined);
   results.push(metric('TTS natsume prepared', natsume));
 
-  var prepareNene = await jsonRequest('POST', '/api/voice/prepare', {
+  let prepareNene = await jsonRequest('POST', '/api/voice/prepare', {
     voice:'nene',
     translation:true
   });
   results.push(metric('prepare nene switch', prepareNene));
-  var neneSwitch = await timedRequest('POST', '/api/tts',
+  let neneSwitch = await timedRequest('POST', '/api/tts',
     voicePayload('nene', '今日もお疲れさまでした。少し休んでくださいね。', 'gentle'), undefined);
   results.push(metric('TTS nene prepared', neneSwitch));
-  var neneWarm = await timedRequest('POST', '/api/tts',
+  let neneWarm = await timedRequest('POST', '/api/tts',
     voicePayload('nene', '私がそばにいますから、安心してください。', 'gentle'), undefined);
   results.push(metric('TTS nene warm', neneWarm));
 
   if (directVoiceUrl) {
-    var config = (require('../../server/config') as typeof import('../../server/config')).loadGatewayConfig(path.resolve(__dirname, '..', '..'), process.env);
-    var profile: any = config.VOICE_PROFILES.nene;
-    for (var mode = 0; mode <= 3; mode += 1) {
-      var direct = await timedRequest('POST', '/tts', {
+    let config = (require('../../server/config') as typeof import('../../server/config')).loadGatewayConfig(path.resolve(__dirname, '..', '..'), process.env);
+    let profile: any = config.VOICE_PROFILES.nene;
+    for (let mode = 0; mode <= 3; mode += 1) {
+      let direct = await timedRequest('POST', '/tts', {
         text:'私がそばにいますから、安心してください。',
         text_lang:'ja',
         ref_audio_path:profile.references.gentle.refAudioPath,
@@ -161,8 +161,8 @@ async function main() {
       }, directVoiceUrl);
       results.push(metric('direct TTS mode ' + mode, direct));
     }
-    for (var minChunk of [8, 12]) {
-      var lowLatency = await timedRequest('POST', '/tts', {
+    for (let minChunk of [8, 12]) {
+      let lowLatency = await timedRequest('POST', '/tts', {
         text:'私がそばにいますから、安心してください。',
         text_lang:'ja',
         ref_audio_path:profile.references.gentle.refAudioPath,
@@ -183,21 +183,21 @@ async function main() {
     }
   }
 
-  var sceneStarted = performance.now();
-  var sceneFirstByte = 0;
-  var sceneBytes = 0;
-  var sceneLines = [
+  let sceneStarted = performance.now();
+  let sceneFirstByte = 0;
+  let sceneBytes = 0;
+  let sceneLines = [
     '今日は一緒に来てくれて、ありがとうございます。',
     'この景色を見ていると、不思議と落ち着きますね。',
     'もう少しだけ、ここにいてもいいですか？'
   ];
-  for (var i = 0; i < sceneLines.length; i += 1) {
-    var segment = await timedRequest('POST', '/api/tts',
+  for (let i = 0; i < sceneLines.length; i += 1) {
+    let segment = await timedRequest('POST', '/api/tts',
       voicePayload('nene', sceneLines[i], i === 2 ? 'shy' : 'gentle'), undefined);
     if (!sceneFirstByte) sceneFirstByte = sceneStarted + segment.firstByteMs;
     sceneBytes += segment.bytes;
   }
-  var sceneEnded = performance.now();
+  let sceneEnded = performance.now();
   results.push({
     label:'scene 3 segments sequential',
     headers_ms:'-',

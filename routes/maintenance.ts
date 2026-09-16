@@ -1,7 +1,7 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
 'use strict';
 
-import { Request,Response } from 'express-serve-static-core';
+import { Request } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
 
 let { saveSnapshotBackup }: typeof import('./maintenance-backup') = require('./maintenance-backup');
@@ -468,7 +468,7 @@ async function runMaintenanceChecks(lease: any) {
 
     let script = 'scripts/maintenance/' + (SCRIPT_NAMES[task] || task + '.js');
     let args = MAINTENANCE_TASKS[task].args;
-    let result;
+    let result: any;
     try {
       result = await sceneWrite.withSceneWriteLock(() => withMaintenanceTransaction(leaseOptions,
         () => maintenanceSnapshot([]), async (lease: any) => {

@@ -1,5 +1,3 @@
-import type { PathLike } from 'node:fs';
-import type { RequestOptions } from 'node:http';
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
@@ -48,7 +46,7 @@ function sha256(filePath: PathOrFileDescriptor) {
   return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
 }
 
-function download(url: string|URL|RequestOptions|undefined, destination: PathLike, redirects: any = 0) {
+function download(url: string, destination: string, redirects: any = 0) {
   return new Promise<any>((resolve: any, reject: any) => {
     const request = https.get(url, (response: any) => {
       if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {

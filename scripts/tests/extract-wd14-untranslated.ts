@@ -13,7 +13,7 @@ const fs: typeof import('fs') = require('fs')
 const WD14_CSV = process.env.AICS_WD14_MODEL_DIR
   ? fs.readdirSync(process.env.AICS_WD14_MODEL_DIR)
       .filter(f => /\.onnx$/i.test(f))
-      .map(base => (require('path') as typeof import('path')).join(process.env.AICS_WD14_MODEL_DIR, base.slice(0, -5) + '.csv'))
+      .map(base => (require('path') as typeof import('path')).join(process.env.AICS_WD14_MODEL_DIR!, base.slice(0, -5) + '.csv'))
       .find(p => fs.existsSync(p))
   : 'E:/code/2/lora/AI/ComfyUI/custom_nodes/ComfyUI-WD14-Tagger/models/wd-v1-4-moat-tagger-v2.csv'
 if (!WD14_CSV || !fs.existsSync(WD14_CSV)) { console.error('找不到 WD14 CSV，请设置 AICS_WD14_MODEL_DIR'); process.exit(1) }

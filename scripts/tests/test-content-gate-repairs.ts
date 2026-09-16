@@ -3,15 +3,15 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const test: typeof import('node:test') = require('node:test');
 const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
 const repairs: typeof import('./fixtures/scene-coverage-repairs.json') = require('./fixtures/scene-coverage-repairs.json');
-const characters = popular.parsePopularCharacters((require('../../data/popular-characters.json') as typeof import('../../data/popular-characters.json')));
-const blueprints = popular.parseSceneBlueprints((require('../../data/scene-blueprints.json') as typeof import('../../data/scene-blueprints.json')));
-const profiles = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
+const characters: any[] = popular.parsePopularCharacters((require('../../data/popular-characters.json') as typeof import('../../data/popular-characters.json')));
+const blueprints: any[] = popular.parseSceneBlueprints((require('../../data/scene-blueprints.json') as typeof import('../../data/scene-blueprints.json')));
+const profiles: any[] = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
 test('all characters have an owned SFW blueprint for their exact default outfit', () => {
   const missing = characters.filter(c => !blueprints.some(b => b.characterId === c.id && !b.adult && b.outfitId === popular.defaultOutfit(c).id));
   assert.deepEqual(missing.map(c => c.id), []);
 });
 test('all wardrobe coverage gaps are reported together, not masked by the first character', () => {
-  const missing = characters.flatMap(c => c.outfits.filter(o => !blueprints.some(b => b.characterId === c.id && b.outfitId === o.id)).map(o => c.id + '/' + o.id));
+  const missing = characters.flatMap((c: any) => c.outfits.filter((o: any) => !blueprints.some((b: any) => b.characterId === c.id && b.outfitId === o.id)).map((o: any) => c.id + '/' + o.id));
   assert.deepEqual(missing, []);
 });
 test('eleven authored coverage additions preserve exact binding and compile in both engines', () => {
@@ -33,7 +33,7 @@ test('eleven authored coverage additions preserve exact binding and compile in b
       const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
       const profile = profiles.find(p => p.model_id === model);
       assert.ok(profile, model);
-      const plan = popular.buildPopularPromptPlan({ character: c, blueprint: b, outfit, engine, profile, adultEnabled: false });
+    const plan = popular.buildPopularPromptPlan({ character: c, blueprint: b, outfit, engine: engine as any, profile, adultEnabled: false });
       assert.ok(plan, entry.id + ':' + engine);
       assert.equal(plan.adult, false);
       assert.ok(plan.prompt.includes(b.promptProse.split('.')[0]), entry.id);
@@ -48,7 +48,7 @@ test('season and festival stay with their scenes and do not pollute reusable out
     ['murasame', 'festival_red_yukata_no_fan', 'murasame_festival_goldfish_scooping_joy', 'festival'],
   ]) {
     const c = characters.find(x => x.id === cid);
-    assert.ok(!popular.findOutfit!(c, oid).tokens.includes(token));
+    assert.ok(!popular.findOutfit!(c, oid)!.tokens.includes(token));
     assert.ok(blueprints.find!(b => b.id === bid).promptTokens.includes(token));
     assert.deepEqual(popular.scanCharacterPollution(c), []);
   }
@@ -70,7 +70,7 @@ test('Ellen tea-service depth of field is retained in both payloads without dupl
   for (const engine of ['anima', 'krea2']) {
     const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
     const profile = profiles.find(item => item.model_id === model);
-    const plan = popular.buildPopularPromptPlan({ character:c, blueprint:b, outfit:popular.findOutfit(c,b!.outfitId)!, engine, profile, adultEnabled:false });
+    const plan = popular.buildPopularPromptPlan({ character:c, blueprint:b, outfit:popular.findOutfit(c,b!.outfitId)!, engine: engine as any, profile, adultEnabled:false });
     assert.ok(plan);
     assert.ok(plan.prompt.includes('depth of field'));
   }

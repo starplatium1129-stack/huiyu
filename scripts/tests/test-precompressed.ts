@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathOrFileDescriptor } from 'node:fs';
 
 const { test }: typeof import('node:test') = require('node:test');
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
@@ -16,7 +15,7 @@ async function fixture(run: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atelier-compression-'));
   const assets = path.join(root, 'external-assets');
   fs.mkdirSync(assets); fs.mkdirSync(path.join(root, 'data'));
-  const write = (file: PathOrFileDescriptor, value: any = '{"version":1}', compressed: any = true) => {
+  const write = (file: string, value: any = '{"version":1}', compressed: any = true) => {
     fs.mkdirSync(path.dirname(file), { recursive:true }); fs.writeFileSync(file, value);
     if (compressed) { fs.writeFileSync(file + '.br', zlib.brotliCompressSync(Buffer.from(value))); fs.writeFileSync(file + '.gz', zlib.gzipSync(value)); }
   };
@@ -26,9 +25,9 @@ async function fixture(run: any) {
   app.use('/assets', express.static(assets, { dotfiles:'deny' }));
   app.use('/data', (req, res, next) => { if (!(require('../../server/public-data') as typeof import('../../server/public-data')).includes(req.path.slice(1))) return res.sendStatus(404); next(); }, express.static(path.join(root, 'data')));
   const server = http.createServer(app);
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', () => resolve()));
   const get = (url: any, accept: any) => new Promise((resolve, reject) => {
-    http.get({ host:'127.0.0.1', port:server.address!().port, path:url, headers:{ 'Accept-Encoding':accept } }, res => {
+    http.get({ host:'127.0.0.1', port:(server.address!() as import('node:net').AddressInfo).port, path:url, headers:{ 'Accept-Encoding':accept } }, res => {
       const chunks: any = []; res.on('data', c => chunks.push(c));
       res.on('end', () => {
         const bytes = Buffer.concat(chunks), encoding = res.headers['content-encoding'];

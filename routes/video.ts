@@ -1,8 +1,6 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
 'use strict';
 
-import { Request } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 
 let { streamVideo }: typeof import('./video-stream') = require('./video-stream');
 
@@ -544,7 +542,7 @@ function createVideoRouter(config: any, dependencies: any) {
     } catch (error: any) {
       if (job) await service.cancel(job);
       return envelope.fail(res, runtimeErrorStatus(error) || 502,
-        runtimeErrorStatus!(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
+        (runtimeErrorStatus(error) ?? 0) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
         { code:runtimeErrorCode(error) || 'VIDEO_SUBMIT_FAILED', detail:error.detail });
     }
     res.status(202);
@@ -616,7 +614,7 @@ function createVideoRouter(config: any, dependencies: any) {
       batch = await batchService.create(requestOwner(req), batchInput);
     } catch (error: any) {
       return envelope.fail(res, runtimeErrorStatus(error) || 502,
-        runtimeErrorStatus!(error) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
+        (runtimeErrorStatus(error) ?? 0) >= 500 ? '视频生成环境尚未就绪' : runtimeErrorMessage(error),
         { code:runtimeErrorCode(error) || 'BATCH_SUBMIT_FAILED', detail:error.detail });
     }
     res.status(202);

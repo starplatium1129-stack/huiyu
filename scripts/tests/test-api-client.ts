@@ -34,7 +34,7 @@ function jsonResponse(body: any, status: any = 200, headers: any = {}) {
   });
 }
 
-function pendingFetch(signals: any) {
+function pendingFetch(signals: any): any {
   return (_url: any, init: any) => new Promise((_resolve, reject) => {
     signals.push(init.signal);
     init.signal.addEventListener('abort', () => {
@@ -114,7 +114,7 @@ test('host config validates public fields, rejects apiKey leakage, and uses corr
   ];
   const client = createApiClient(async (url, init) => {
     calls.push({ url: String(url), init });
-    return responses.shift();
+    return responses.shift()!;
   });
   const api = createChatApi(client);
   const saved = await api.saveHostConfig({ baseUrl: 'https://host.test/v1', model: 'host-model', apiKey: 'secret' });
@@ -218,7 +218,7 @@ test('translate caller abort maps to aborted and passes the caller signal throug
   const client = createApiClient(async (_url, init) => {
     requestSignal = init!.signal;
     return new Promise((_resolve, reject) => {
-      init!.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+      init!.signal!.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
     });
   });
   const controller = new AbortController();
@@ -348,7 +348,7 @@ test('client maps a fetch rejection to network', async () => {
   await assert.rejects(client.request('/network'), error => {
     assert.ok(error instanceof ApiClientError);
     assert.equal(error.kind, 'network');
-    assert.match(error.detail, /socket closed/);
+    assert.match(error.detail!, /socket closed/);
     return true;
   });
 });
@@ -379,7 +379,7 @@ test('aborting one concurrent request does not affect another request', async ()
   const client = createApiClient((url, init) => new Promise((resolve, reject) => {
     const key = String(url);
     pending.set(key, { resolve, signal: init!.signal });
-    init!.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
+    init!.signal!.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true });
   }));
   const firstController = new AbortController();
   const first = client.request('/first', { signal: firstController.signal, timeoutMs: 1_000 });
@@ -434,7 +434,7 @@ test('client removes the caller listener and clears its timeout after success', 
     requestSignal = init!.signal;
     return jsonResponse({ ok: true });
   });
-  await client.request('/cleanup', { signal: callerSignal, timeoutMs: 15 });
+  await client.request('/cleanup', { signal: callerSignal as any, timeoutMs: 15 });
   await new Promise(resolve => setTimeout(resolve, 30));
   assert.equal(addCount, 1);
   assert.equal(removeCount, 1);
@@ -457,7 +457,7 @@ test('maintenanceApi preserves desktop 501 code and rollback metadata', async ()
       recovery: '从 content-* 备份恢复',
     }, 500),
   ];
-  const api = createMaintenanceApi(createApiClient(async () => responses.shift()));
+  const api = createMaintenanceApi(createApiClient((async () => responses.shift()!) as any));
   await assert.rejects(api.buildWeb(), error => {
     assert.ok(error instanceof ApiClientError);
     assert.equal(error.status, 501);
@@ -483,11 +483,11 @@ test('maintenanceApi requires an atomic content snapshot and supports exhausted 
     jsonResponse({ ok: true, version: 9, nextSceneId: 'sc002', sceneCount: 1, retiredCount: 0 }),
     jsonResponse({ ok: true, count: 1, backup: 'old' }),
   ];
-  const api = createMaintenanceApi(createApiClient(async () => responses.shift()));
+  const api = createMaintenanceApi(createApiClient((async () => responses.shift()!) as any));
   assert.equal((await api.getScenesState()).nextSceneId, null);
-  assert.deepEqual((await api.saveScenes({ scenes: [], baseVersion: 7 })).snapshot, snapshot);
+  assert.deepEqual((await api.saveScenes({ scenes: [], baseVersion: 7 } as any)).snapshot, snapshot);
   await assert.rejects(api.getScenesState(), error => error instanceof ApiClientError);
-  await assert.rejects(api.saveScenes({ scenes: [], baseVersion: 8 }), error => error instanceof ApiClientError);
+  await assert.rejects(api.saveScenes({ scenes: [], baseVersion: 8 } as any), error => error instanceof ApiClientError);
 });
 
 test('useControlActions.doStart stops after a real config API failure', async () => {
@@ -520,14 +520,14 @@ test('useControlActions.doStart stops after a real config API failure', async ()
     value: { getItem: () => null, setItem: () => {} },
   });
   try {
-    const actions = useControlActions(status, {
+    const actions = useControlActions(status as any, {
       showToast: (message, isError) => toasts.push({ message, isError }),
       control: api,
     });
     await actions.doStart();
   } finally {
     if (previousStorage) Object.defineProperty(globalThis, 'localStorage', previousStorage);
-    else delete globalThis.localStorage;
+    else delete (globalThis as any).localStorage;
   }
   assert.deepEqual(calls, ['/api/config']);
   assert.equal(startedPolling, 0);
@@ -546,9 +546,9 @@ test('useControlStatus stopPolling aborts isolated in-flight status and logs req
   const status = useControlStatus({
     showToast: () => {},
     api: {
-      getStatus: options => waitForAbort(options!.signal, statusSignals),
-      getLogs: (_since, options) => waitForAbort(options!.signal, logSignals),
-    },
+      getStatus: (options: any) => waitForAbort(options!.signal, statusSignals) as any,
+      getLogs: (_since: any, options: any) => waitForAbort(options!.signal, logSignals) as any,
+    } as any,
   });
   status.startPolling();
   // 控制室打开后立即检测；下一拍等待在途请求，停止时仍释放两个独立信号。
@@ -580,12 +580,12 @@ test('useControlStatus aborts older same-kind requests and clears protected stal
   const status = useControlStatus({
     showToast: () => {},
     api: {
-      getStatus: options => waitForAbort(options!.signal, statusSignals),
-      getLogs: (_since, options) => protectedFailures
+      getStatus: (options: any) => waitForAbort(options!.signal, statusSignals) as any,
+      getLogs: (_since: any, options: any) => (protectedFailures
         ? Promise.reject(new ApiClientError('forbidden', { kind: 'http', status: 403 }))
-        : waitForAbort(options!.signal, logSignals),
+        : waitForAbort(options!.signal, logSignals)) as any,
       getShareLink: () => Promise.reject(new ApiClientError('bad host', { kind: 'http', status: 421 })),
-    },
+    } as any,
   });
 
   const firstStatus = status.pollStatus();

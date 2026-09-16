@@ -4,7 +4,7 @@ const { test }: typeof import('node:test') = require('node:test');
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
-const sharp: typeof import('sharp') = require('sharp');
+const sharp: typeof import('sharp').default = require('sharp');
 const express: typeof import('express') = require('express');
 const { createLive2dTextureService }: typeof import('../../services/live2d-textures') = require('../../services/live2d-textures');
 const { createLive2dRouter }: typeof import('../../routes/live2d') = require('../../routes/live2d');
@@ -86,14 +86,14 @@ test('quality routes deliver actual WebP, honor conditional requests and return 
   app.use(createLive2dRouter({ LIVE2D_ROOT: h.root }).router);
   const server: any = await new Promise(resolve => { const listening = app.listen(0, '127.0.0.1', () => resolve(listening)); });
   t.after(() => new Promise(resolve => server.close(resolve)));
-  const base = `http://127.0.0.1:${server.address().port}`;
+  const base = `http://127.0.0.1:${(server.address() as import('node:net').AddressInfo).port}`;
   const model = await (await fetch(base + '/api/live2d-model/nene/compact')).json();
   const response = await fetch(base + model.FileReferences.Textures[0]);
   assert.equal(response.status, 200);
-  assert.match(response.headers.get('content-type'), /image\/webp/);
+  assert.match(response.headers.get('content-type')!, /image\/webp/);
   const bytes = Buffer.from(await response.arrayBuffer());
   assert.equal((await sharp(bytes).metadata()).width, 8);
-  assert.equal((await fetch(base + model.FileReferences.Textures[0], { headers: { 'If-None-Match': response.headers.get('etag') } })).status, 304);
+  assert.equal((await fetch(base + model.FileReferences.Textures[0], { headers: { 'If-None-Match': response.headers.get('etag')! } })).status, 304);
   for (const url of ['/api/live2d-model/nene/constructor', '/api/live2d-texture/nene/compact/99.webp', '/api/live2d-texture/nene/compact/0.png']) {
     const rejected = await fetch(base + url);
     assert.equal(rejected.status, 404);

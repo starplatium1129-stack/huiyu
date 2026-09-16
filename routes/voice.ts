@@ -10,7 +10,7 @@ let createTranslationService = (require('../services/translation-service') as ty
 let createTtsService = (require('../services/tts-service') as typeof import('../services/tts-service')).createTtsService;
 
 function waitForDrain(res: any) {
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     function cleanup() {
       res.removeListener('drain', onDrain);
       res.removeListener('close', onClose);

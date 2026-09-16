@@ -1,8 +1,5 @@
 'use strict';
 
-import { RequestHandler, Response } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 
 /**
  * 安全中间件测试 — 已迁移到 node:test。
@@ -25,7 +22,7 @@ for (const method of ['all', 'async', 'entry']) {
     const zip = new AdmZip();
     zip.addFile('linked/fixture.txt', Buffer.from('archive fixture'));
     const extract = async (target: string) => {
-      if (method === 'async') await new Promise((resolve, reject) => zip.extractAllToAsync(target, true, false, error => error ? reject(error) : resolve()));
+      if (method === 'async') await new Promise<void>((resolve, reject) => zip.extractAllToAsync(target, true, false, error => error ? reject(error) : resolve()));
       else if (method === 'entry') zip.extractEntryTo('linked/fixture.txt', target, true, true);
       else zip.extractAllTo(target, true);
     };
@@ -42,7 +39,7 @@ for (const method of ['all', 'async', 'entry']) {
   });
 }
 
-function mockReq(overrides?: { secure: boolean; headers?: any; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|{ headers: { 'x-forwarded-proto': string; }; secure?: any; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|{ secure?: any; headers?: any; socket: { remoteAddress: string; }; query: { token: string; }; originalUrl: string; }|undefined) {
+function mockReq(overrides?: any): any {
   return Object.assign({
     socket: { remoteAddress: '127.0.0.1' },
     headers: {},
@@ -68,7 +65,7 @@ function mockRes() {
   return res;
 }
 
-function runMiddleware(mw: RequestHandler<ParamsDictionary,any,any,ParsedQs,Record<string,any>>, req: { socket: { remoteAddress: string; }; headers: any; query: any; path: string; originalUrl: string; secure: boolean; }) {
+function runMiddleware(mw: any, req: any) {
   return new Promise(function (resolve) {
     const res = mockRes();
     let nextCalled = false;

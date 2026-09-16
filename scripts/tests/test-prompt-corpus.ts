@@ -94,8 +94,8 @@ function planFor(scene: any, profile: any, engine: string) {
   return compiler.createPromptPlan({
     profile: effective,
     identity: CHAR_PROMPT[char],
-    controls: policy.characterControlTokens(scene, char, activeLoras),
-    scenePrompt: policy.sceneTemplateText(scene, { char, shot: null, engine, profile: effective }),
+    controls: policy.characterControlTokens(scene, char as any, activeLoras as any),
+    scenePrompt: policy.sceneTemplateText(scene, { char, shot: null, engine: engine as any, profile: effective } as any),
     emotion: [],
     camera: shot ? [SHOT_PROMPT[shot] || ''] : [],
     lighting: lighting ? [LIGHT_PROMPT[lighting] || ''] : [],

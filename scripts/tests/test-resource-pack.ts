@@ -27,7 +27,7 @@ function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
-    io[op] = (...args) => {
+    io[op] = (...args: any[]) => {
       calls.push({ op, target: String(args[0]) });
       const hook = hooks[op];
       if (hook) return hook(...args);
@@ -97,7 +97,7 @@ function mutateManifest(fx: any, mutator: any, name: any = 'bad.json') {
 test('包名校验：合法名接受，路径片段与特殊字符拒绝', () => {
   for (const good of ['pack1', 'Pack_2', 'a-b-c', 'x'.repeat(64)]) assert.equal(validatePackName(good), good);
   for (const bad of ['../evil', 'a/b', 'a\\b', '', '.', '..', 'has space', '中文名', '-'.repeat(65), null, 42]) {
-    assert.throws(() => validatePackName(bad), /--name/, JSON.stringify(bad));
+    assert.throws(() => validatePackName(bad as any), /--name/, JSON.stringify(bad));
   }
 });
 
@@ -258,7 +258,7 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
   assert.ok(result.errors.some((e: any) => e.path === 'assets/alpha.txt' && e.code === 'hash-mismatch'), JSON.stringify(result.errors));
   assert.equal(result.destinationCreated, false);
   assert.ok(result.stagingPath, '报告暂存目录路径');
-  const stagingAbs = path.join(fx.root, result.stagingPath);
+  const stagingAbs = path.join(fx.root, result.stagingPath!);
   assert.equal(fs.existsSync(stagingAbs), true, '失败候选暂存保留');
   assert.equal(fs.existsSync(destPath(fx.root, 'pack-change')), false, '最终包未发布');
   assert.ok(result.notes.join('\n').includes('不是可用候选包'));
@@ -270,14 +270,14 @@ test('候选写入失败：不发布最终包，已复制候选保留在暂存�
   const { io } = recordingIo({
     writeFileSync: (p: any, ...rest: any[]) => {
       if (String(p).endsWith(path.join('assets', 'dir', 'bravo.bin'))) throw Object.assign(new Error('模拟写入失败'), { code: 'EIO' });
-      return fs.writeFileSync(p, ...rest);
+      return (fs.writeFileSync as any)(p, ...rest);
     },
   });
   const result = stageResourcePack({ root: fx.root, name: 'pack-wfail', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.path === 'assets/dir/bravo.bin' && e.code === 'write-error'));
   assert.equal(result.destinationCreated, false);
-  const stagingAbs = path.join(fx.root, result.stagingPath);
+  const stagingAbs = path.join(fx.root, result.stagingPath!);
   assert.equal(fs.existsSync(path.join(stagingAbs, 'assets/alpha.txt')), true, '已成功候选保留');
   assert.equal(fs.existsSync(path.join(stagingAbs, 'assets/dir/bravo.bin')), false);
   assert.equal(fs.existsSync(path.join(stagingAbs, 'manifest.json')), false, '残缺暂存不写包清单');
@@ -295,7 +295,7 @@ test('发布冲突（rename 失败/目标冲突）：不报告成功，完整暂
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.code === 'publish-failed'));
   assert.equal(result.destinationCreated, false);
-  const stagingAbs = path.join(fx.root, result.stagingPath);
+  const stagingAbs = path.join(fx.root, result.stagingPath!);
   assert.equal(fs.existsSync(path.join(stagingAbs, 'manifest.json')), true, '完整暂存保留');
   assert.equal(verifyManifest({ root: stagingAbs, manifestPath: 'manifest.json' }).ok, true, '暂存内容本身完整，但仍未发布');
   assert.equal(fs.existsSync(destPath(fx.root, 'pack-conflict')), false);

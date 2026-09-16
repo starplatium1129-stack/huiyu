@@ -43,7 +43,7 @@ if (lease) {
     } catch (error: any) {
       // A Windows reader can deny atomic replacement of its open file. Pause
       // before rollback so SIGKILL still exercises the real partial transaction.
-      if (mode !== 'stream-race' || process.platform !== 'win32' || !['EPERM', 'EBUSY'].includes(runtimeErrorCode(error))
+      if (mode !== 'stream-race' || process.platform !== 'win32' || !['EPERM', 'EBUSY'].includes(String(runtimeErrorCode(error)))
         || !error.dest || !options.readOpenTarget || !io.samePath(error.dest, options.readOpenTarget)) throw error;
       writeBlocked = { code: runtimeErrorCode(error), target: error.dest };
     }

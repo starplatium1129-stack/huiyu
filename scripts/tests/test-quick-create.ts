@@ -17,7 +17,7 @@ const saved: any = quick.writeQuickCreate({
   hiresFix:true,
   hiresUpscaler:'Latent',
   hiresScale:'1.5'
-}, storage);
+} as any, storage);
 
 assert(saved, 'successful settings must be writable');
 assert.strictEqual(saved.size, '832×1216', 'size must use the UI separator');

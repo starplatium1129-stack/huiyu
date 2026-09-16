@@ -14,8 +14,8 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'aics_theme';
-  var DEFAULT_THEME = 'dark';
+  let STORAGE_KEY = 'aics_theme';
+  let DEFAULT_THEME = 'dark';
 
   function getTheme() {
     try { return localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME; } catch (e) { return DEFAULT_THEME; }
@@ -28,20 +28,20 @@
   /* ---------- toggle 按钮 ---------- */
 
   function renderIcon(btn: HTMLElement) {
-    var t = getTheme();
+    let t = getTheme();
     btn.innerHTML = t === 'dark'
       ? '<span class="theme-toggle-icon">🌙</span>'
       : '<span class="theme-toggle-icon">☀️</span>';
   }
 
   function buildToggle() {
-    var btn = document.createElement('button');
+    let btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'theme-toggle';
     btn.setAttribute('aria-label', '切换主题');
     btn.addEventListener('click', function () {
-      var cur = getTheme();
-      var next = cur === 'dark' ? 'light' : 'dark';
+      let cur = getTheme();
+      let next = cur === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
       applyTheme(next);
       renderIcon(btn);
@@ -50,7 +50,7 @@
   }
 
   function injectToggle() {
-    var host = document.querySelector('.nav-links') || document.querySelector('.nav-inner');
+    let host = document.querySelector('.nav-links') || document.querySelector('.nav-inner');
     if (!host || document.querySelector('.theme-toggle')) return;
     const toggle = buildToggle();
     host.appendChild(toggle);

@@ -31,8 +31,8 @@ let MAX_IMAGE_BYTES = 12 * 1024 * 1024; // base64前 12M ≈ dataURL 16M
 let ALLOWED_MODE = new Set(['tag', 'caption']);
 let DEFAULT_THRESHOLD = 0.35;
 
-function serviceError(status: number, code: string, message: string|undefined) {
-  let e: any = new Error(message); e.status = status; e.code = code; return e;
+function serviceError(status: number, code: string, message: string|undefined, detail?: any) {
+  let e: any = new Error(message); e.status = status; e.code = code; if (detail) e.detail = detail; return e;
 }
 function isPlainObject(v: any) { return Boolean(v) && typeof v === 'object' && !Array.isArray(v); }
 
@@ -67,7 +67,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
     target.pathname = pathname; target.search = '';
     let payload = body == null ? null : Buffer.from(JSON.stringify(body));
     let client = target.protocol === 'https:' ? https : http;
-    var req = client.request({
+    let req = client.request({
       protocol: target.protocol, hostname: target.hostname, port: target.port,
       path: target.pathname, method: method, timeout: timeout || 8000,
       headers: Object.assign({ Accept: 'application/json' }, payload ? { 'Content-Type': 'application/json', 'Content-Length': payload.length } : {})
@@ -139,7 +139,7 @@ function captionFromTags(tags: any[]|undefined) {
   let top = (tags || []).slice(0, 10);
   let subject = '';
   let phrases: string[] = [];
-  top.forEach(function (tag: string|string[]) {
+  top.forEach(function (tag: any) {
     let known = CAPTION_PHRASE[tag];
     if (known) {
       if (tag === '1girl' || tag === '1boy' || tag === 'solo') {
@@ -183,10 +183,6 @@ async function tryWebUIInterrogate(config: { [x: string]: string|URL; }, imageBa
 
 function comfyInputRoot(config: any) {
   return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'input');
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function comfyOutputRoot(config: any) {
-  return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'output');
 }
 async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBase64: WithImplicitCoercion<string>, threshold: number, mode: string) {
   if (mode !== 'tag') return null; // caption 仍走启发式，后续可接 JoyCaption/Florence2

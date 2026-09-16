@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 /**
  * 纯并行视觉审核器（Pure Vision Auditor）：
@@ -69,12 +68,12 @@ function runVisionInspect(imagePath: string, promptGuide: any) {
   return new Promise<any>((resolve: any) => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;
-    
+
     execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error: any, stdout: any, stderr: any) => {
       const output = (stdout || '') + (stderr || '');
       let passed = false;
       let reason = output.trim();
-      
+
       const conclusionMatch = output.match(/【审核结论】[：:]\s*(通过|不通过)/);
       if (conclusionMatch) {
         passed = (conclusionMatch[1] === '通过');
@@ -131,12 +130,12 @@ function getAllItems() {
 async function auditSingleItem(item: any) {
   const pConfig = PERSPECTIVE_CONFIGS[item.pers.id];
   const isNude = item.outfit.isNsfw;
-  const guide = isNude 
+  const guide = isNude
     ? `${pConfig.promptGuide} 特别注意：此图为全裸形态，请确认画面为纯粹裸体，无浴袍、泳装或内衣遮挡。`
     : pConfig.promptGuide;
 
   console.log(`🔍 [审核] [${item.char.displayName}] - [${item.outfit.name}] - [${item.pers.name}]...`);
-  
+
   const result = await runVisionInspect(item.targetPath, guide);
   if (result.passed) {
     console.log(`  ✓ 判定通过: ${item.key}`);
@@ -175,7 +174,7 @@ async function main() {
   const filterKeys = keysValue ? keysValue.split(',').map((s: any) => s.trim()).filter(Boolean) : null;
 
   const allItems = getAllItems();
-  
+
   while (true) {
     // 找出磁盘上已有但尚未审核的项（默认跳过已审的 pass/fail，避免无限重审）
     // --force 强制重审；--keys 仅审指定前缀；重渲染后推荐 --force --keys <key>
@@ -198,7 +197,7 @@ async function main() {
     console.log(`================================================\n`);
 
     let cursor = 0;
-    async function worker() {
+    async function worker(_id?: number) {
       while (cursor < pendingItems.length) {
         const item = pendingItems[cursor++];
         await auditSingleItem(item);

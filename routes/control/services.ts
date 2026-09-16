@@ -1,7 +1,5 @@
 'use strict';
 
-import { IncomingMessage,NextFunction } from 'connect';
-import { ServerResponse } from 'node:http';
 
 /**
  * routes/control/services.js —— 服务启停与模式切换路由（2026-08-31 审计 P1-10 拆分）

@@ -7,7 +7,7 @@ if (require.main === module) {
   const args = process.argv.slice(3);
   const disconnected = () => process.exit(70);
   process.once('disconnect', disconnected);
-  process.once('message', message => {
+  process.once('message', (message: any) => {
     if (!message || message.type !== 'start') return process.exit(71);
     process.argv = [process.execPath, script, ...args];
     if (process.channel) process.channel.unref();

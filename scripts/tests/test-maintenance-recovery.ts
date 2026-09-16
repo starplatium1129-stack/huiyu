@@ -247,7 +247,7 @@ test('gated child runs as main only after durable PID registration; timeout wait
     prepareMaintenanceTransaction(lease, f.options, snapshot);
     fs.writeFileSync(script, "const fs = require('node:fs'); const path = require('node:path'); const root = process.env.AICS_DATA_ROOT; const journal = JSON.parse(fs.readFileSync(path.join(root, 'runtime/maintenance-transactions/lease/journal.json'))); if (require.main !== module || !journal.participants.some(p => p.pid === process.pid && p.state === 'running')) process.exit(82); fs.writeFileSync(path.join(root, 'data/scenes/group.json'), 'child-write');");
     const run = (args: any) => runMaintenanceNode(script, args, 300, { rootDir: f.options.rootDir, repoRoot: f.options.rootDir, lease });
-    assert.equal((await run([])).status, 0);
+    assert.equal((await run([]) as any).status, 0);
     fs.appendFileSync(script, 'setInterval(() => {}, 1000);');
     await assert.rejects(() => run([]), /超时/);
     assert.ok(lease.assertOwned().participants.every((item: any) => item.state === 'exited'));

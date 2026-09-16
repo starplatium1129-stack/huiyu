@@ -37,7 +37,7 @@ function createRepository(t: any) {
         fs.rmSync(repositoryRoot, { recursive: true, force: true });
         return;
       } catch (error) {
-        const retriable = ['ENOTEMPTY', 'EBUSY', 'EPERM'].includes(runtimeErrorCode(error));
+        const retriable = ['ENOTEMPTY', 'EBUSY', 'EPERM'].includes(String(runtimeErrorCode(error)));
         if (attempt >= 5 || !retriable) throw error;
         Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100);
       }

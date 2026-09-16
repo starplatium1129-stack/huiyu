@@ -1,13 +1,13 @@
 'use strict';
 
-var assert: typeof import('assert') = require('assert');
-var test: typeof import('node:test') = require('node:test');
-var progress: typeof import('../../server/comfy-progress') = require('../../server/comfy-progress');
+let assert: typeof import('assert') = require('assert');
+let test: typeof import('node:test') = require('node:test');
+let progress: typeof import('../../server/comfy-progress') = require('../../server/comfy-progress');
 
 class FakeSocket {
     handlers!: any;
   url!: any;
-static instances = [];
+  static instances: any[] = [];
   constructor(url: any) {
     this.url = url;
     this.handlers = {};
@@ -20,8 +20,8 @@ static instances = [];
 
 test('ComfyUI progress monitor filters by prompt id and maps sampling steps', () => {
   FakeSocket.instances = [];
-  const a = { status: 'running', progress: null, currentNode: null };
-  const b = { status: 'running', progress: null, currentNode: null };
+  const a: any = { status: 'running', progress: null, currentNode: null };
+  const b: any = { status: 'running', progress: null, currentNode: null };
   const monitor = progress.createComfyProgressMonitor({ COMFY_HOST: 'http://127.0.0.1:8188' }, 'client-1', { WebSocket: FakeSocket });
   const socket: any = FakeSocket.instances[0];
   monitor.watch('prompt-a', a);

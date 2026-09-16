@@ -550,7 +550,7 @@ test('unknown ids and malformed selection fail as parameter errors without a rep
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-coverage-'));
   try {
     makeScopedFixture(dir);
-    const run = (...args) => spawnSync(process.execPath, [REPORT, '--json', '--root', dir, ...args],
+    const run = (...args: any[]) => spawnSync(process.execPath, [REPORT, '--json', '--root', dir, ...args],
       { encoding: 'utf8', timeout: 20000, windowsHide: true });
     const unknownChar = run('--character', 'nope');
     assert.equal(unknownChar.status, 2);

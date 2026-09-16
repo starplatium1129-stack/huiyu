@@ -129,7 +129,7 @@ function runTool(workspaceRoot: any, name: string, args: any, context?: any) {
     // 新代码读 error；output 保留 —— 它会作为 tool 消息回传给对话模型。
     payload.error = message;
     payload.msg = message;
-    if (error instanceof Error && error.code) payload.code = error.code;
+    if (error instanceof Error && (error as any).code) payload.code = (error as any).code;
     return payload;
   }
   return Promise.resolve().then(function () {

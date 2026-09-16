@@ -15,12 +15,12 @@ function temp(t: any) {
 }
 function fixture(t: any, gitEnabled: any = true) {
   const root = temp(t);
-  const write = (name: string, value: string|NodeJS.ArrayBufferView<ArrayBufferLike>) => {
+  const write = (name: string, value: any) => {
     fs.mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
     fs.writeFileSync(path.join(root, name), typeof value === 'string' ? value : JSON.stringify(value));
   };
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]: any) => !/^GIT_/i.test(key)));
-  const git = (...args) => {
+  const git = (...args: any[]) => {
     const r = spawnSync('git', args, { cwd: root, env, encoding: 'utf8', windowsHide: true });
     assert.equal(r.status, 0, r.stderr); return r.stdout.trim();
   };

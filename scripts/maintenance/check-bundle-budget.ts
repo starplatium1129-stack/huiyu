@@ -83,7 +83,7 @@ function staticClosureSize(manifest: any, startKey: any, sizeOf: any) {
 }
 
 function evaluateManifest(manifest: any, sizeOf: any, budgets: any = DEFAULT_BUDGETS) {
-  const routes = routeEntries(manifest).map((entry: any) => {
+  const routes: any[] = routeEntries(manifest).map((entry: any) => {
     const cssFiles = [...new Set(entry.css || [])];
     return {
       route: entry.name || path.basename(entry.src || entry.key, '.vue'),

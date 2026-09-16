@@ -22,7 +22,7 @@ const recoveryFs: typeof import('./maintenance-recovery-fs') = require('./mainte
 const shardsDir = store.shardsDir;
 
 /** 读取已退役场景 ID 集合；文件缺失视为空（fresh clone）。 */
-function readRetiredSceneIds(dataDir: string) {
+function readRetiredSceneIds(dataDir?: string) {
   const dir = dataDir || path.join(shardsDir, '..');
   let data;
   try {
@@ -195,7 +195,7 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
     if (!working.has(source.file)) working.set(source.file, source.scenes.slice());
     entryOf.set(source.file, source.entry);
   }
-  const touched = new Set();
+  const touched = new Set<string>();
   const addedIds = [];
   const updatedIds = [];
   const removedIds = [];
@@ -367,7 +367,7 @@ function retireRemovedScenes(options: any) {
   const data = io.readJson(retiredPath);
   const retiredRecords = data.records || [];
   const retiredIds = new Set(retiredRecords.map((record: any) => record.id));
-  const added: never[] = [];
+  const added: any[] = [];
 
   previousScenes.forEach((scene: any) => {
     if (!incomingIds.has(scene.id) && !retiredIds.has(scene.id)) {
@@ -410,7 +410,7 @@ function retireRemovedScenes(options: any) {
 /** 单进程内串行化场景保存：两个并发 POST 不再交错写分片。
  *  前一个任务失败不阻塞后一个（队列吞掉 rejection，结果由调用方自己处理）。 */
 let sceneWriteQueue = Promise.resolve();
-function withSceneWriteLock(task: ((value: void) => void|PromiseLike<void>)|null|undefined) {
+function withSceneWriteLock<T>(task: () => T | PromiseLike<T>): Promise<T> {
   const run = sceneWriteQueue.then(task, task);
   sceneWriteQueue = run.then(() => {}, () => {});
   return run;

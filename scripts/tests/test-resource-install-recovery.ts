@@ -70,7 +70,7 @@ createResourceInstaller({...config, access:{isLocalStudioHost:()=>true,isAuthori
     const before = snapshot(outside);
     const opened: string[] = [];
     const io = Object.create(fs);
-    io.openSync = (file: PathLike, ...args: any[]) => { opened.push(String(file)); return fs.openSync(file, ...args); };
+    io.openSync = (file: PathLike, ...args: any[]) => { opened.push(String(file)); return (fs.openSync as any)(file, ...args); };
     await assert.rejects(f.installer({ io }).install({ releaseId: 'base' }), code('UNSAFE_LINK'));
     assert.ok(opened.every(file => !file.startsWith(outside)));
     assert.deepEqual(snapshot(outside), before);

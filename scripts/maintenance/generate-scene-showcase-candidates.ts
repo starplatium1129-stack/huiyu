@@ -147,13 +147,13 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
     : built.prompt;
   const generationCharacter = animaGenerationContract.requiredCharacterForLora(loraId);
   if (!generationCharacter) throw new Error(`scene ${scene.id} has unsupported Anima LoRA ${loraId}`);
-  var negative = promptPolicy.assembleNegative(profile, scene, 'anima', {
+  let negative = promptPolicy.assembleNegative(profile, scene, 'anima', {
     shot: directives.shot,
     character: characterId,
   });
   // Anima 长标签流在高 CFG 下稳定，但低 CFG/res_multistep 下偶发多格拼图：
   // 统一追加分屏/漫画格压制，生产路径与候选集同时受益。
-  var ANIMA_PANEL_SUPPRESS = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body';
+  let ANIMA_PANEL_SUPPRESS = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body';
   if (negative) negative = negative + ', ' + ANIMA_PANEL_SUPPRESS;
   else negative = ANIMA_PANEL_SUPPRESS;
   // 单人场景强化"只有一个人"：Anima 低 CFG 下 intimate/POV 场景偶发自动补第二人。

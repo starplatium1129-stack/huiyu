@@ -308,7 +308,7 @@ function outfitDefault(rows: any, id: any) {
 }
 
 function showcaseImpact(opts: any, result: any, add: any) {
-  const files = [...new Set(opts.showcaseManifests || [])];
+  const files: string[] = [...new Set<string>(opts.showcaseManifests || [])];
   result.showcase = { status: 'unknown', manifests: [] };
   if (!files.length) {
     result.unknown.push('样张清单在外部/未提供');

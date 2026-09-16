@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
@@ -37,7 +36,7 @@ function tree(directory: string, excludeRuntime: any = false, output: any = {}, 
   return output;
 }
 async function spawnWorker(fixture: any, mode: any = 'hold') {
-  const child = fork(path.join(__dirname, 'maintenance-recovery-worker.js'), [mode, JSON.stringify(fixture.options)], { silent: true, windowsHide: true });
+  const child = fork(path.join(__dirname, 'maintenance-recovery-worker.js'), [mode, JSON.stringify(fixture.options)], { silent: true, windowsHide: true } as any);
   let stderr = '';
   child.stderr!.on('data', chunk => { stderr += chunk; });
   const closed = once(child, 'exit');

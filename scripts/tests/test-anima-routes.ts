@@ -1,34 +1,34 @@
 'use strict';
 
-var assert: typeof import('assert') = require('assert');
-var fs: typeof import('fs') = require('fs');
-var http: typeof import('http') = require('http');
-var path: typeof import('path') = require('path');
-var test: typeof import('node:test') = require('node:test');
-var animaRoute: typeof import('../../routes/anima.js') = require('../../routes/anima.js');
-var createAnimaService = animaRoute.createAnimaService;
-var gatewayTestStack: typeof import('./gateway-test-stack.js') = require('./gateway-test-stack.js');
+let assert: typeof import('assert') = require('assert');
+let fs: typeof import('fs') = require('fs');
+let http: typeof import('http') = require('http');
+let path: typeof import('path') = require('path');
+let test: typeof import('node:test') = require('node:test');
+let animaRoute: typeof import('../../routes/anima.js') = require('../../routes/anima.js');
+let createAnimaService = animaRoute.createAnimaService;
+let gatewayTestStack: typeof import('./gateway-test-stack.js') = require('./gateway-test-stack.js');
 
-function request(port: string, options: any) {
+function request(port: number | string, options: any): Promise<any> {
   return new Promise(function (resolve, reject) {
-    var body = options.body === undefined ? null : Buffer.from(typeof options.body === 'string' ? options.body : JSON.stringify(options.body));
-    var headers = Object.assign({ Host:'127.0.0.1:' + port }, options.headers || {});
+    let body = options.body === undefined ? null : Buffer.from(typeof options.body === 'string' ? options.body : JSON.stringify(options.body));
+    let headers = Object.assign({ Host:'127.0.0.1:' + port }, options.headers || {});
     if (body) {
       headers['Content-Type'] = headers['Content-Type'] || 'application/json';
       headers['Content-Length'] = body.length;
     }
-    var req = http.request({
+    let req = http.request({
       host:'127.0.0.1',
       port:port,
       method:options.method || 'GET',
       path:options.path,
       headers:headers
     }, function (res) {
-      var chunks: any = [];
+      let chunks: any = [];
       res.on('data', function (chunk) { chunks.push(chunk); });
       res.on('end', function () {
-        var raw = Buffer.concat(chunks);
-        var json = null;
+        let raw = Buffer.concat(chunks);
+        let json = null;
         try { json = JSON.parse(raw.toString('utf8')); } catch (error) {}
         resolve({ status:res.statusCode, headers:res.headers, body:raw, json:json });
       });
@@ -39,7 +39,7 @@ function request(port: string, options: any) {
   });
 }
 
-function postJson(port: string|number, pathname: string, payload: { prompt?: string|{ '1': { class_type: string; inputs: { path: string; }; }; }; modelId?: string; width?: number; height?: number; styleLoraId?: string; seed?: number; detailBoost?: boolean; negative?: string; loraId?: string; loraStrength?: number; character?: string|null; teaCache?: boolean; image?: string; }, headers?: any) {
+function postJson(port: number | string, pathname: string, payload: any, headers?: any) {
   return request(port, {
     method:'POST',
     path:pathname,
@@ -48,22 +48,22 @@ function postJson(port: string|number, pathname: string, payload: { prompt?: str
   });
 }
 
-async function mockState(port: string|number|undefined) {
-  var response: any = await request(port, { path:'/__mock/state' });
+async function mockState(port: number | string | undefined) {
+  let response: any = await request(port!, { path:'/__mock/state' });
   assert.strictEqual(response.status, 200);
   return response.json;
 }
 
-async function mockFault(port: number|undefined, faults: { historyTransient?: number; renderMs?: number; resultImage?: { filename: string; subfolder: string; type: string; }|{ filename: string; subfolder: string; type: string; }; resultNode?: string; cancelStatus?: number; queueStatus?: number; }) {
-  var response: any = await postJson(port, '/__mock/fault', faults);
+async function mockFault(port: number | string | undefined, faults: any) {
+  let response: any = await postJson(port!, '/__mock/fault', faults);
   assert.strictEqual(response.status, 200);
 }
 
-async function waitForJob(port: string|number, id: string|number|boolean, predicate: any, routeBase?: string|undefined) {
-  var last = null;
-  var jobPath = (routeBase || '/api/anima/jobs/') + encodeURIComponent(id);
-  for (var i = 0; i < 80; i += 1) {
-    var response: any = await request(port, { path:jobPath });
+async function waitForJob(port: number | string, id: any, predicate: any, routeBase?: string|undefined) {
+  let last = null;
+  let jobPath = (routeBase || '/api/anima/jobs/') + encodeURIComponent(id);
+  for (let i = 0; i < 80; i += 1) {
+    let response: any = await request(port, { path:jobPath });
     assert.strictEqual(response.status, 200);
     last = response.json && response.json.job;
     if (predicate(last)) return last;
@@ -89,7 +89,7 @@ function validJob(overrides?: any) {
 }
 
 function prepareComfyResources(context: any) {
-  var root = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
+  let root = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
   [
     ['diffusion_models', 'anima-base-v1.0.safetensors'],
     ['diffusion_models', 'anima-aesthetic-v1.1.safetensors'],
@@ -103,14 +103,14 @@ function prepareComfyResources(context: any) {
     ['loras', 'ayachi_nene_v21_anima.safetensors'],
     ['loras', 'shiki_natsume_v21_anima.safetensors']
   ].forEach(function (item) {
-    var directory = path.join(root, item[0]);
+    let directory = path.join(root, item[0]);
     fs.mkdirSync(directory, { recursive:true });
     fs.writeFileSync(path.join(directory, item[1]), 'authorized-fixture');
   });
 }
 
 test('Anima routes enforce application job and result boundaries over real HTTP', async function () {
-  var stack = await gatewayTestStack.start({
+  let stack = await gatewayTestStack.start({
     prefix:'aics-anima-route-',
     token:'anima-contract-token-0123456789abcdef0123456789',
     prepare:function (context: { runtime: { outputs: string; }; }) {
@@ -119,50 +119,50 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
       fs.writeFileSync(path.join(context.runtime.outputs, 'anima', 'orphan-startup.png'), 'orphan');
     }
   });
-  var runtime = stack.runtime;
-  var comfy = stack.upstreams.comfy;
-  var gateway: any = stack.gateway;
-  var port = stack.address.port;
+  let runtime = stack.runtime;
+  let comfy = stack.upstreams.comfy;
+  let gateway: any = stack.gateway;
+  let port = stack.address.port;
   assert.strictEqual(fs.existsSync(path.join(runtime.outputs, 'anima', 'orphan-startup.png')), false,
     'gateway startup must remove orphan Anima result files');
 
   try {
-    var remote = { 'x-forwarded-for':'8.8.8.8' };
-    var unauthorized: any = await request(port, { path:'/api/anima/status', headers:remote });
+    let remote = { 'x-forwarded-for':'8.8.8.8' };
+    let unauthorized: any = await request(port, { path:'/api/anima/status', headers:remote });
     assert.strictEqual(unauthorized.status, 401, 'remote Anima requests need a token');
 
-    var blockedPaths = ['/comfy/prompt', '/comfy/history/abc', '/comfy/queue', '/comfy/interrupt', '/comfy/view?filename=x.png', '/history', '/queue', '/interrupt', '/view'];
-    for (var i = 0; i < blockedPaths.length; i += 1) {
-      var blocked: any = await request(port, { path:blockedPaths[i] });
+    let blockedPaths = ['/comfy/prompt', '/comfy/history/abc', '/comfy/queue', '/comfy/interrupt', '/comfy/view?filename=x.png', '/history', '/queue', '/interrupt', '/view'];
+    for (let i = 0; i < blockedPaths.length; i += 1) {
+      let blocked: any = await request(port, { path:blockedPaths[i] });
       assert.strictEqual(blocked.status, 404, blockedPaths[i] + ' must not be exposed');
       assert.ok(blocked.json && blocked.json.ok === false, blockedPaths[i] + ' must return an error envelope');
     }
 
-    var status: any = await request(port, { path:'/api/anima/status' });
+    let status: any = await request(port, { path:'/api/anima/status' });
     assert.strictEqual(status.status, 200);
     assert.strictEqual(status.json.ok, true);
     assert.strictEqual(status.json.online, true);
     assert.ok(Array.isArray(status.json.models) && status.json.models.every(function (model: any) { return model.id; }));
-    var yumeInStatus = status.json.models.find(function (model: { id: string; }) { return model.id === 'anima-yume-v1.0'; });
+    let yumeInStatus = status.json.models.find(function (model: { id: string; }) { return model.id === 'anima-yume-v1.0'; });
     assert.ok(yumeInStatus, 'AnimaYume must be discoverable after review sign-off');
     assert.strictEqual(yumeInStatus.family, 'anima');
     assert.strictEqual(yumeInStatus.available, true, 'Yume fixture must mark the model available');
     assert.strictEqual(yumeInStatus.capabilities.noLora, true, 'Yume keeps no-LoRA creative mode');
     assert.ok(status.json.loras.some(function (lora: { id: string; }) { return lora.id === 'L_NENE_V21_ANIMA'; }));
     assert.ok(status.json.models.every(function (model: { family: string; }) { return model.family === 'anima'; }), 'Anima status must not expose Krea models');
-    var creativeStatus: any = await request(port, { path:'/api/creative/status' });
+    let creativeStatus: any = await request(port, { path:'/api/creative/status' });
     assert.ok(creativeStatus.json.models.some(function (model: { id: string; }) { return model.id === 'krea2-turbo-fp8'; }), 'creative status must expose Krea');
-    var unavailableStyle: any = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene.', modelId:'krea2-turbo-fp8', width:1024, height:1024, styleLoraId:'rainywindow' });
+    let unavailableStyle: any = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene.', modelId:'krea2-turbo-fp8', width:1024, height:1024, styleLoraId:'rainywindow' });
     assert.strictEqual(unavailableStyle.status, 503, 'unavailable Krea Style LoRA must remain a resource error');
     assert.strictEqual(unavailableStyle.json.code, 'KREA_STYLE_LORA_UNAVAILABLE');
-    var kreaOnAnima: any = await postJson(port, '/api/anima/jobs', { prompt:'x', modelId:'krea2-turbo-fp8', width:1024, height:1024 });
+    let kreaOnAnima: any = await postJson(port, '/api/anima/jobs', { prompt:'x', modelId:'krea2-turbo-fp8', width:1024, height:1024 });
     assert.strictEqual(kreaOnAnima.status, 400);
     assert.strictEqual(kreaOnAnima.json.code, 'WRONG_ROUTE_FAMILY');
-    var animaOnCreative: any = await postJson(port, '/api/creative/jobs', validJob());
+    let animaOnCreative: any = await postJson(port, '/api/creative/jobs', validJob());
     assert.strictEqual(animaOnCreative.status, 400);
     assert.strictEqual(animaOnCreative.json.code, 'WRONG_ROUTE_FAMILY');
     assert.strictEqual((await request(port, { path:'/api/creative/status' })).json.pending, 0, 'rejected cross-family submissions must not create jobs');
-    var creativeJob: any = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene.', modelId:'krea2-turbo-fp8', width:1024, height:1536, seed:9001 });
+    let creativeJob: any = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene.', modelId:'krea2-turbo-fp8', width:1024, height:1536, seed:9001 });
     assert.strictEqual(creativeJob.status, 202);
     assert.strictEqual(creativeJob.json.job.metadata.steps, 12);
     assert.strictEqual(creativeJob.json.job.metadata.cfg, 1);
@@ -174,11 +174,11 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     // 2026-08-23 链路替换：实测增强链路与原 euler 标准链路出图时间一致，原链路退役。
     // 默认 Krea 图必须无条件产出 Krea2T-Enhancer + er_sde + ImageSharpenKJ 增强图；
     // detailBoost 开关随标准链路一并退役，任何家族传参都按未知参数拒绝（fail closed）。
-    var detailJob: any = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene with rising steam.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9002 });
+    let detailJob: any = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene with rising steam.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9002 });
     assert.strictEqual(detailJob.status, 202);
     await waitForJob(port, detailJob.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; }, '/api/creative/jobs/');
-    var detailState = await mockState(comfy.port);
-    var detailPrompt = detailState.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop().body.prompt;
+    let detailState = await mockState(comfy.port);
+    let detailPrompt = detailState.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop().body.prompt;
     assert.strictEqual(detailPrompt['14'].class_type, 'ComfyUI-Krea2T-Enhancer', 'default Krea graph must chain the T-Enhancer patch');
     assert.strictEqual(detailPrompt['14'].inputs.enabled, true);
     assert.strictEqual(detailPrompt['7'].inputs.model[0], '14', 'KSampler must sample through the enhancer');
@@ -187,24 +187,24 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(detailPrompt['15'].inputs.method, 'rcas');
     assert.strictEqual(detailPrompt['10'].inputs.images[0], '15', 'SaveImage must persist the sharpened image');
 
-    var retiredDetailBoost: any = await postJson(port, '/api/creative/jobs', { prompt:'A quiet library at noon.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9003, detailBoost:false });
+    let retiredDetailBoost: any = await postJson(port, '/api/creative/jobs', { prompt:'A quiet library at noon.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9003, detailBoost:false });
     assert.strictEqual(retiredDetailBoost.status, 400);
     assert.strictEqual(retiredDetailBoost.json.code, 'UNKNOWN_PARAMETER');
 
-    var animaDetailBoost: any = await postJson(port, '/api/anima/jobs', validJob({ detailBoost:true }));
+    let animaDetailBoost: any = await postJson(port, '/api/anima/jobs', validJob({ detailBoost:true }));
     assert.strictEqual(animaDetailBoost.status, 400);
     assert.strictEqual(animaDetailBoost.json.code, 'UNKNOWN_PARAMETER');
     assert.ok(!status.json.loras.some(function (lora: { id: string; }) { return lora.id === 'L_NENE_V19_ANIMA'; }), 'superseded v19 must not remain selectable');
 
-    var arbitraryWorkflow: any = await postJson(port, '/api/anima/jobs', { prompt:{ '1':{ class_type:'ReadFile', inputs:{ path:'C:/secret' } } } });
+    let arbitraryWorkflow: any = await postJson(port, '/api/anima/jobs', { prompt:{ '1':{ class_type:'ReadFile', inputs:{ path:'C:/secret' } } } });
     assert.strictEqual(arbitraryWorkflow.status, 400, 'raw workflow graph must be rejected');
     assert.ok(['INVALID_PARAMETER', 'MISSING_PARAMETER'].includes(arbitraryWorkflow.json.code));
 
-    var unknownKey: any = await postJson(port, '/api/anima/jobs', Object.assign(validJob(), { workflow:{} }));
+    let unknownKey: any = await postJson(port, '/api/anima/jobs', Object.assign(validJob(), { workflow:{} }));
     assert.strictEqual(unknownKey.status, 400);
     assert.strictEqual(unknownKey.json.code, 'UNKNOWN_PARAMETER');
 
-    var unknownModel: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'unknown-model' }));
+    let unknownModel: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'unknown-model' }));
     assert.strictEqual(unknownModel.status, 400);
     assert.strictEqual(unknownModel.json.code, 'UNKNOWN_MODEL');
     for (const modelId of ['constructor', '__proto__', 'toString']) {
@@ -212,34 +212,34 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
       assert.strictEqual(invalidCatalogKey.status, 400);
       assert.strictEqual(invalidCatalogKey.json.code, 'UNKNOWN_MODEL');
     }
-    var browserProfile: any = await postJson(port, '/api/anima/jobs', validJob({ profileId:'anima_base_v10' }));
+    let browserProfile: any = await postJson(port, '/api/anima/jobs', validJob({ profileId:'anima_base_v10' }));
     assert.strictEqual(browserProfile.status, 400, 'profile metadata must be derived by the server, not accepted from the browser');
     assert.strictEqual(browserProfile.json.code, 'UNKNOWN_PARAMETER');
     // 2026-08-15 用户决策：AnimaYume 正式接入（无 LoRA 创作模式 + 显式 LoRA 兼容两条路径都要通）。
-    var yumeBare: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v1.0', loraId:null, loraStrength:undefined, character:null }));
+    let yumeBare: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v1.0', loraId:null, loraStrength:undefined, character:null }));
     assert.strictEqual(yumeBare.status, 202, 'AnimaYume no-LoRA mode must be accepted after review sign-off');
     assert.strictEqual(yumeBare.json.job.metadata.profileId, 'anima_yume_v10');
-    var yumeWithLora: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v1.0' }));
+    let yumeWithLora: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v1.0' }));
     assert.strictEqual(yumeWithLora.status, 202, 'AnimaYume must accept declared-compatible character LoRA');
     assert.strictEqual(yumeWithLora.json.job.metadata.loraId, 'L_NENE_V21_ANIMA');
-    var unknownYume: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v2.0' }));
+    let unknownYume: any = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v2.0' }));
     assert.strictEqual(unknownYume.status, 400, 'unknown models must stay rejected');
     assert.strictEqual(unknownYume.json.code, 'UNKNOWN_MODEL');
-    var yumeBareJobId = yumeBare.json.job.id;
-    var yumeLoraJobId = yumeWithLora.json.job.id;
+    let yumeBareJobId = yumeBare.json.job.id;
+    let yumeLoraJobId = yumeWithLora.json.job.id;
 
-    var unknownLora: any = await postJson(port, '/api/anima/jobs', validJob({ loraId:'ayachi_nene_v18_wd14' }));
+    let unknownLora: any = await postJson(port, '/api/anima/jobs', validJob({ loraId:'ayachi_nene_v18_wd14' }));
     assert.strictEqual(unknownLora.status, 400);
     assert.strictEqual(unknownLora.json.code, 'UNKNOWN_LORA');
 
-    var wrongCharacter: any = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume' }));
+    let wrongCharacter: any = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume' }));
     assert.strictEqual(wrongCharacter.status, 400);
     assert.strictEqual(wrongCharacter.json.code, 'INCOMPATIBLE_CHARACTER');
 
-    var oversized: any = await postJson(port, '/api/anima/jobs', validJob({ prompt:'x'.repeat(70000) }));
+    let oversized: any = await postJson(port, '/api/anima/jobs', validJob({ prompt:'x'.repeat(70000) }));
     assert.strictEqual(oversized.status, 413, 'oversized Anima JSON must be rejected before service submission');
 
-    var created: any = await postJson(port, '/api/anima/jobs', validJob());
+    let created: any = await postJson(port, '/api/anima/jobs', validJob());
     assert.strictEqual(created.status, 202);
     assert.strictEqual(created.json.ok, true);
     assert.ok(created.json.job && created.json.job.id);
@@ -248,16 +248,16 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(created.json.job.metadata.width, 832);
     assert.strictEqual(created.json.job.metadata.height, 1216);
     assert.strictEqual(created.json.job.prompt_id, undefined, 'Comfy prompt id must not cross the application boundary');
-    var jobId = created.json.job.id;
+    let jobId = created.json.job.id;
 
-    var state = await mockState(comfy.port);
-    var freeCalls = state.calls.filter(function (call: { path: string; }) { return call.path === '/free'; });
+    let state = await mockState(comfy.port);
+    let freeCalls = state.calls.filter(function (call: { path: string; }) { return call.path === '/free'; });
     assert.strictEqual(freeCalls.length, 2, 'Anima ⇄ Krea2 family switches must unload Comfy models only when crossing families');
-    var promptCalls = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; });
+    let promptCalls = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; });
     assert.strictEqual(promptCalls.length, 5, 'base + krea + enhanced krea + two Yume must each reach Comfy once');
-    var yumePromptCalls = promptCalls.filter(function (call: { body: { prompt: { [x: string]: { inputs: { unet_name: string; }; }; }; }; }) { return call.body.prompt['1'].inputs.unet_name === 'AnimaYume_v10_final_base.safetensors'; });
+    let yumePromptCalls = promptCalls.filter(function (call: { body: { prompt: { [x: string]: { inputs: { unet_name: string; }; }; }; }; }) { return call.body.prompt['1'].inputs.unet_name === 'AnimaYume_v10_final_base.safetensors'; });
     assert.strictEqual(yumePromptCalls.length, 2, 'both Yume jobs (bare and with LoRA) must load the Yume checkpoint');
-    var animaPromptCall = promptCalls.find(function (call: { body: { prompt: { [x: string]: { inputs: { unet_name: string; }; }; }; }; }) { return call.body.prompt['1'].inputs.unet_name === 'anima-base-v1.0.safetensors'; });
+    let animaPromptCall = promptCalls.find(function (call: { body: { prompt: { [x: string]: { inputs: { unet_name: string; }; }; }; }; }) { return call.body.prompt['1'].inputs.unet_name === 'anima-base-v1.0.safetensors'; });
     assert.ok(animaPromptCall && animaPromptCall.body && animaPromptCall.body.prompt);
     assert.strictEqual(animaPromptCall.body.workflow, undefined);
     assert.deepStrictEqual(Object.keys(animaPromptCall.body.prompt).sort(), ['1','10','13','2','3','35','4','5','6','7','8','9'], 'workflow must include AnimaTeaCache node');
@@ -271,35 +271,35 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(animaPromptCall.body.prompt['1'].class_type, 'UNETLoader');
     assert.strictEqual(animaPromptCall.body.prompt['1'].inputs.unet_name, 'anima-base-v1.0.safetensors');
 
-    var succeeded = await waitForJob(port, jobId, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
+    let succeeded = await waitForJob(port, jobId, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
     assert.ok(succeeded.resultUrl && succeeded.resultUrl.indexOf('/api/anima/jobs/' + jobId + '/result') !== -1);
-    var result: any = await request(port, { path:succeeded.resultUrl });
+    let result: any = await request(port, { path:succeeded.resultUrl });
     assert.strictEqual(result.status, 200);
     assert.strictEqual(result.headers['content-type'], 'image/png');
     assert.strictEqual(result.body[0], 137);
     // Yume jobs also complete; consume their results so the runtime output dir drains.
-    var yumeJobIds = [yumeBareJobId, yumeLoraJobId];
-    for (var idx = 0; idx < yumeJobIds.length; idx += 1) {
-      var yumeJob = await waitForJob(port, yumeJobIds[idx], function (job: { status: string; }) { return job && job.status === 'succeeded'; });
+    let yumeJobIds = [yumeBareJobId, yumeLoraJobId];
+    for (let idx = 0; idx < yumeJobIds.length; idx += 1) {
+      let yumeJob = await waitForJob(port, yumeJobIds[idx], function (job: { status: string; }) { return job && job.status === 'succeeded'; });
       assert.ok(yumeJob.resultUrl);
-      var yumeResult: any = await request(port, { path:yumeJob.resultUrl });
+      let yumeResult: any = await request(port, { path:yumeJob.resultUrl });
       assert.strictEqual(yumeResult.status, 200);
     }
     // Enhanced Krea job also completes; consume its result so nothing lingers.
-    var detailDone = await waitForJob(port, detailJob.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; }, '/api/creative/jobs/');
+    let detailDone = await waitForJob(port, detailJob.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; }, '/api/creative/jobs/');
     assert.ok(detailDone.resultUrl);
-    var detailResult: any = await request(port, { path:detailDone.resultUrl });
+    let detailResult: any = await request(port, { path:detailDone.resultUrl });
     assert.strictEqual(detailResult.status, 200);
     await new Promise(function (resolve) { setTimeout(resolve, 20); });
     assert.ok(fs.readdirSync(path.join(runtime.outputs, 'anima')).length > 0, 'results remain available until TTL or explicit deletion');
-    var consumedAgain: any = await request(port, { path:succeeded.resultUrl });
+    let consumedAgain: any = await request(port, { path:succeeded.resultUrl });
     assert.strictEqual(consumedAgain.status, 200, 'result download must be retryable');
     assert.deepStrictEqual(consumedAgain.body, result.body);
     await request(port, { method:'DELETE', path:'/api/anima/jobs/' + succeeded.id });
     assert.strictEqual((await request(port, { path:succeeded.resultUrl })).status, 404, 'explicit deletion removes the result');
 
     await mockFault(comfy.port, { historyTransient:2, renderMs:10 });
-    var transientJob: any = await postJson(port, '/api/anima/jobs', validJob({ seed:4243 }));
+    let transientJob: any = await postJson(port, '/api/anima/jobs', validJob({ seed:4243 }));
     assert.strictEqual(transientJob.status, 202);
     await waitForJob(port, transientJob.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
     state = await mockState(comfy.port);
@@ -308,54 +308,54 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
 
     await mockFault(comfy.port, { renderMs:5000 });
     state = await mockState(comfy.port);
-    var promptCountBeforeCancel = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).length;
-    var expectedCancelPromptId = 'mock-comfy-' + (promptCountBeforeCancel + 1);
-    var cancelResponse: any = await postJson(port, '/api/anima/jobs', validJob({ seed:4244 }));
+    let promptCountBeforeCancel = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).length;
+    let expectedCancelPromptId = 'mock-comfy-' + (promptCountBeforeCancel + 1);
+    let cancelResponse: any = await postJson(port, '/api/anima/jobs', validJob({ seed:4244 }));
     assert.strictEqual(cancelResponse.status, 202);
-    var cancelId = cancelResponse.json.job.id;
-    var cancelled: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + cancelId });
+    let cancelId = cancelResponse.json.job.id;
+    let cancelled: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + cancelId });
     assert.strictEqual(cancelled.status, 202, 'cancellation stays pending until upstream termination is confirmed');
     assert.strictEqual(cancelled.json.job.status, 'cancelling');
-    var cancelledFinal = await waitForJob(port, cancelId, function (job: { status: string; }) { return job && job.status === 'cancelled'; });
+    let cancelledFinal = await waitForJob(port, cancelId, function (job: { status: string; }) { return job && job.status === 'cancelled'; });
     assert.strictEqual(cancelledFinal.status, 'cancelled');
     state = await mockState(comfy.port);
-    var targetedCancelCalls = state.calls.filter(function (call: { path: string; }) {
+    let targetedCancelCalls = state.calls.filter(function (call: { path: string; }) {
       return call.path === '/api/jobs/' + expectedCancelPromptId + '/cancel';
     });
     assert.strictEqual(targetedCancelCalls.length, 1, 'cancellation must use the matching Comfy job id');
 
     await mockFault(comfy.port, { renderMs:5000 });
-    var jobA: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6001 }));
-    var jobB: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6002 }));
+    let jobA: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6001 }));
+    let jobB: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6002 }));
     assert.strictEqual(jobA.status, 202);
     assert.strictEqual(jobB.status, 202);
-    var cancelledA: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + jobA.json.job.id });
+    let cancelledA: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + jobA.json.job.id });
     assert.strictEqual(cancelledA.status, 202);
     await waitForJob(port, jobA.json.job.id, function (job: { status: string; }) { return job && job.status === 'cancelled'; });
     await mockFault(comfy.port, { renderMs:0 });
-    var successB = await waitForJob(port, jobB.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
+    let successB = await waitForJob(port, jobB.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
     assert.strictEqual(successB.status, 'succeeded', 'cancelling A must not cancel B');
 
     await mockFault(comfy.port, { renderMs:5000 });
-    var maxJobs = [];
-    for (var maxIndex = 0; maxIndex < 4; maxIndex += 1) {
-      var maxJob: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6100 + maxIndex }));
+    let maxJobs = [];
+    for (let maxIndex = 0; maxIndex < 4; maxIndex += 1) {
+      let maxJob: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6100 + maxIndex }));
       assert.strictEqual(maxJob.status, 202);
       maxJobs.push(maxJob.json.job.id);
     }
-    var full: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6199 }));
+    let full: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6199 }));
     assert.strictEqual(full.status, 429, 'MAX_PENDING must include all queued/running jobs');
-    var cancelOne: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + maxJobs[0] });
+    let cancelOne: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + maxJobs[0] });
     assert.strictEqual(cancelOne.status, 202);
-    var stillFull: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6200 }));
+    let stillFull: any = await postJson(port, '/api/anima/jobs', validJob({ seed:6200 }));
     assert.strictEqual(stillFull.status, 429, 'cancelling jobs must continue occupying MAX_PENDING');
     await waitForJob(port, maxJobs[0], function (job: { status: string; }) { return job && job.status === 'cancelled'; });
     await mockFault(comfy.port, { renderMs:0 });
-    for (var remainingIndex = 1; remainingIndex < maxJobs.length; remainingIndex += 1) {
+    for (let remainingIndex = 1; remainingIndex < maxJobs.length; remainingIndex += 1) {
       await waitForJob(port, maxJobs[remainingIndex], function (job: { status: string; }) { return job && job.status === 'succeeded'; });
     }
 
-    var unsafeRefs = [
+    let unsafeRefs = [
       { filename:'C:\\secret.png', subfolder:'', type:'output' },
       { filename:'%2e%2e%2fsecret.png', subfolder:'', type:'output' },
       { filename:'safe.png', subfolder:'input', type:'output' },
@@ -365,12 +365,12 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
       { filename:'safe.png', subfolder:'junction-link', type:'output' }
     ];
     state = await mockState(comfy.port);
-    var viewsBeforeUnsafe = state.calls.filter(function (call: { path: string; }) { return call.path === '/view'; }).length;
-    for (var r = 0; r < unsafeRefs.length; r += 1) {
+    let viewsBeforeUnsafe = state.calls.filter(function (call: { path: string; }) { return call.path === '/view'; }).length;
+    for (let r = 0; r < unsafeRefs.length; r += 1) {
       await mockFault(comfy.port, { renderMs:0, resultImage:unsafeRefs[r] });
-      var unsafeJob: any = await postJson(port, '/api/anima/jobs', validJob({ seed:5000 + r }));
+      let unsafeJob: any = await postJson(port, '/api/anima/jobs', validJob({ seed:5000 + r }));
       assert.strictEqual(unsafeJob.status, 202);
-      var failed = await waitForJob(port, unsafeJob.json.job.id, function (job: { status: string; }) { return job && (job.status === 'failed' || job.status === 'cancelled'); });
+      let failed = await waitForJob(port, unsafeJob.json.job.id, function (job: { status: string; }) { return job && (job.status === 'failed' || job.status === 'cancelled'); });
       assert.strictEqual(failed.status, 'failed', 'unsafe result reference must fail closed');
     }
     state = await mockState(comfy.port);
@@ -378,19 +378,19 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
       'unsafe result references must not be forwarded to Comfy view');
 
     await mockFault(comfy.port, { renderMs:0, resultNode:'11' });
-    var wrongNode: any = await postJson(port, '/api/anima/jobs', validJob({ seed:7001 }));
+    let wrongNode: any = await postJson(port, '/api/anima/jobs', validJob({ seed:7001 }));
     assert.strictEqual(wrongNode.status, 202);
-    var wrongNodeFailed = await waitForJob(port, wrongNode.json.job.id, function (job: { status: string; }) { return job && job.status === 'failed'; });
+    let wrongNodeFailed = await waitForJob(port, wrongNode.json.job.id, function (job: { status: string; }) { return job && job.status === 'failed'; });
     assert.strictEqual(wrongNodeFailed.code, 'COMFY_NO_IMAGE', 'only SaveImage node 10 may provide results');
 
     await mockFault(comfy.port, { renderMs:0, resultNode:'10', resultImage:{ filename:'other_prefix.png', subfolder:'', type:'output' } });
-    var wrongPrefix: any = await postJson(port, '/api/anima/jobs', validJob({ seed:7002 }));
+    let wrongPrefix: any = await postJson(port, '/api/anima/jobs', validJob({ seed:7002 }));
     assert.strictEqual(wrongPrefix.status, 202);
-    var wrongPrefixFailed = await waitForJob(port, wrongPrefix.json.job.id, function (job: { status: string; }) { return job && job.status === 'failed'; });
+    let wrongPrefixFailed = await waitForJob(port, wrongPrefix.json.job.id, function (job: { status: string; }) { return job && job.status === 'failed'; });
     assert.strictEqual(wrongPrefixFailed.code, 'INVALID_RESULT', 'only anima_app result files may be consumed');
 
     await mockFault(comfy.port, {});
-    var finalState = await mockState(comfy.port);
+    let finalState = await mockState(comfy.port);
     assert.ok(finalState.calls.every(function (call: any) {
       if (call.path === '/interrupt') return false;
       if (call.path === '/queue' && call.method === 'POST') return call.body && Array.isArray(call.body.delete);
@@ -405,7 +405,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
   }
 });
 test('Anima runtime TTL removes an unconsumed result file', async function () {
-  var stack = await gatewayTestStack.start({
+  let stack = await gatewayTestStack.start({
     prefix:'aics-anima-ttl-',
     token:'anima-ttl-token-0123456789abcdef0123456789',
     prepare:prepareComfyResources,
@@ -415,17 +415,17 @@ test('Anima runtime TTL removes an unconsumed result file', async function () {
       };
     }
   });
-  var runtime = stack.runtime;
-  var port = stack.address.port;
+  let runtime = stack.runtime;
+  let port = stack.address.port;
   try {
-    var created: any = await postJson(port, '/api/anima/jobs', validJob({ seed:8001 }));
+    let created: any = await postJson(port, '/api/anima/jobs', validJob({ seed:8001 }));
     assert.strictEqual(created.status, 202);
     await waitForJob(port, created.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
-    var resultRoot = path.join(runtime.outputs, 'anima');
+    let resultRoot = path.join(runtime.outputs, 'anima');
     assert.ok(fs.readdirSync(resultRoot).length > 0, 'unconsumed result must exist before TTL');
     await new Promise(function (resolve) { setTimeout(resolve, 1500); });
     assert.strictEqual(fs.readdirSync(resultRoot).length, 0, 'TTL must delete the unconsumed runtime result');
-    var expired: any = await request(port, { path:'/api/anima/jobs/' + created.json.job.id });
+    let expired: any = await request(port, { path:'/api/anima/jobs/' + created.json.job.id });
     assert.strictEqual(expired.status, 404, 'TTL must remove the expired job record');
   } finally {
     await stack.close();
@@ -433,25 +433,25 @@ test('Anima runtime TTL removes an unconsumed result file', async function () {
 });
 
 test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing character boundaries', async function () {
-  var stack = await gatewayTestStack.start({
+  let stack = await gatewayTestStack.start({
     prefix:'aics-anima-natsume-v20-',
     token:'anima-natsume-v20-token-0123456789abcdef012345',
     prepare:function (context: { config: { AI_WORKSPACE_ROOT: string; }; }) {
       prepareComfyResources(context);
     }
   });
-  var port = stack.address.port;
-  var comfy = stack.upstreams.comfy;
+  let port = stack.address.port;
+  let comfy = stack.upstreams.comfy;
   try {
-    var status: any = await request(port, { path:'/api/anima/status' });
+    let status: any = await request(port, { path:'/api/anima/status' });
     assert.strictEqual(status.status, 200);
-    var natsume = status.json.loras.find(function (lora: { id: string; }) { return lora.id === 'L_NAT_V21_ANIMA'; });
+    let natsume = status.json.loras.find(function (lora: { id: string; }) { return lora.id === 'L_NAT_V21_ANIMA'; });
     assert.ok(natsume && natsume.available && !natsume.preview, 'natsume v21 must be discoverable and no longer experimental');
     assert.ok(!status.json.loras.some(function (lora: { id: string; }) { return lora.id === 'L_NAT_V19_ANIMA_PREVIEW'; }), 'superseded preview must not remain selectable');
     assert.ok(!status.json.loras.some(function (lora: { id: string; }) { return lora.id === 'L_NAT_V20_ANIMA'; }), 'superseded natsume v20 must not remain selectable');
     assert.ok(status.json.characters.some(function (character: any) { return character.id === 'natsume' && !character.preview; }));
 
-    var natsumeJob: any = await postJson(port, '/api/anima/jobs', validJob({
+    let natsumeJob: any = await postJson(port, '/api/anima/jobs', validJob({
       prompt:'shiki_natsume, 1girl, solo, natsume_cafe_uniform',
       loraId:'L_NAT_V21_ANIMA', character:'natsume'
     }));
@@ -459,20 +459,20 @@ test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing c
     assert.strictEqual(natsumeJob.json.job.character, 'natsume');
     assert.strictEqual(natsumeJob.json.job.loraId, 'L_NAT_V21_ANIMA');
     await waitForJob(port, natsumeJob.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
-    var state = await mockState(comfy.port);
-    var promptCall = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop();
+    let state = await mockState(comfy.port);
+    let promptCall = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop();
     assert.strictEqual(promptCall.body.prompt['4'].inputs.lora_name, 'shiki_natsume_v21_anima.safetensors');
 
-    var neneJob: any = await postJson(port, '/api/anima/jobs', validJob({ loraId:'L_NAT_V21_ANIMA' }));
+    let neneJob: any = await postJson(port, '/api/anima/jobs', validJob({ loraId:'L_NAT_V21_ANIMA' }));
     assert.strictEqual(neneJob.status, 400);
     assert.strictEqual(neneJob.json.code, 'INCOMPATIBLE_CHARACTER');
-    var natsumeNene: any = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume' }));
+    let natsumeNene: any = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume' }));
     assert.strictEqual(natsumeNene.status, 400);
     assert.strictEqual(natsumeNene.json.code, 'INCOMPATIBLE_CHARACTER');
-    var triad: any = await postJson(port, '/api/anima/jobs', validJob({ character:'triad', loraId:'L_NAT_V21_ANIMA' }));
+    let triad: any = await postJson(port, '/api/anima/jobs', validJob({ character:'triad', loraId:'L_NAT_V21_ANIMA' }));
     assert.strictEqual(triad.status, 400);
     assert.strictEqual(triad.json.code, 'INCOMPATIBLE_CHARACTER');
-    var unknownPath: any = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume', loraId:'C:\\secret\\preview.safetensors' }));
+    let unknownPath: any = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume', loraId:'C:\\secret\\preview.safetensors' }));
     assert.strictEqual(unknownPath.status, 400);
     assert.strictEqual(unknownPath.json.code, 'UNKNOWN_LORA');
   } finally {
@@ -481,22 +481,22 @@ test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing c
 });
 
 test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a negative encode', async function () {
-  var stack = await gatewayTestStack.start({
+  let stack = await gatewayTestStack.start({
     prefix:'aics-anima-nolora-',
     token:'anima-nolora-token-0123456789abcdef01234',
     prepare:prepareComfyResources,
   });
-  var port = stack.address.port;
-  var comfy = stack.upstreams.comfy;
+  let port = stack.address.port;
+  let comfy = stack.upstreams.comfy;
   try {
-    var status: any = await request(port, { path:'/api/anima/status' });
+    let status: any = await request(port, { path:'/api/anima/status' });
     assert.strictEqual(status.status, 200);
-    var aesthetic = status.json.models.find(function (model: { id: string; }) { return model.id === 'anima-aesthetic-v1.1'; });
+    let aesthetic = status.json.models.find(function (model: { id: string; }) { return model.id === 'anima-aesthetic-v1.1'; });
     assert.ok(aesthetic, 'anima-aesthetic-v1.1 must be discoverable');
     assert.strictEqual(aesthetic.capabilities.noLora, true, 'no-LoRA capability must be advertised for aesthetic');
     assert.strictEqual(aesthetic.capabilities.characterIdentity, true, 'character identity capability stays a server fact');
 
-    var noLora: any = await postJson(port, '/api/anima/jobs', {
+    let noLora: any = await postJson(port, '/api/anima/jobs', {
       prompt:'raiden_shogun, 1girl, solo, flower field',
       negative:'worst quality, low quality',
       modelId:'anima-aesthetic-v1.1',
@@ -510,11 +510,11 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(noLora.json.job.metadata.profileId, 'anima_aesthetic_v11');
     await waitForJob(port, noLora.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
 
-    var state = await mockState(comfy.port);
-    var promptCall = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop();
-    var graph = promptCall.body.prompt;
+    let state = await mockState(comfy.port);
+    let promptCall = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop();
+    let graph = promptCall.body.prompt;
     assert.strictEqual(graph['1'].inputs.unet_name, 'anima-aesthetic-v1.1.safetensors');
-    var classes = Object.keys(graph).map(function (id) { return graph[id].class_type; });
+    let classes = Object.keys(graph).map(function (id) { return graph[id].class_type; });
     assert.ok(!classes.includes('LoraLoader'), 'no-LoRA workflow must not load a LoRA');
     assert.strictEqual(graph['2'].inputs.clip_name, 'qwen_3_06b_base.safetensors');
     assert.strictEqual(graph['4'].inputs.text.indexOf('raiden_shogun') !== -1, true);
@@ -529,7 +529,7 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(graph['35'].class_type, 'ImageSharpenKJ', 'no-LoRA text-to-image must also end with the RCAS sharpener');
     assert.deepStrictEqual(graph['10'].inputs.images, ['35', 0]);
 
-    var disabledTeaCache: any = await postJson(port, '/api/anima/jobs', {
+    let disabledTeaCache: any = await postJson(port, '/api/anima/jobs', {
       prompt:'ayachi_nene, 1girl',
       negative:'worst quality',
       modelId:'anima-base-v1.0',
@@ -547,12 +547,12 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(promptCall.body.prompt['13'], undefined, 'disabled teaCache must omit node 13');
     assert.strictEqual(promptCall.body.prompt['8'].inputs.model[0], '4', 'KSampler must connect directly to LoraLoader when teaCache is false');
 
-    var loraOnNoLora: any = await postJson(port, '/api/anima/jobs', {
+    let loraOnNoLora: any = await postJson(port, '/api/anima/jobs', {
       prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NENE_V21_ANIMA', loraStrength:0.85,
       width:832, height:1216, character:'nene'
     });
     assert.strictEqual(loraOnNoLora.status, 202, 'aesthetic still accepts its authorized LoRA path');
-    var wrongChar: any = await postJson(port, '/api/anima/jobs', {
+    let wrongChar: any = await postJson(port, '/api/anima/jobs', {
       prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NAT_V21_ANIMA',
       width:832, height:1216, character:'nene'
     });
@@ -560,17 +560,17 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(wrongChar.json.code, 'INCOMPATIBLE_CHARACTER');
 
     // 无 LoRA 模式 fail closed：loraStrength 无 loraId、非空 character 都是自相矛盾参数。
-    var strengthNoLora: any = await postJson(port, '/api/anima/jobs', {
+    let strengthNoLora: any = await postJson(port, '/api/anima/jobs', {
       prompt:'x', modelId:'anima-aesthetic-v1.1', loraStrength:0.85, width:832, height:1216
     });
     assert.strictEqual(strengthNoLora.status, 400);
     assert.strictEqual(strengthNoLora.json.code, 'INVALID_PARAMETER');
-    var characterNoLora: any = await postJson(port, '/api/anima/jobs', {
+    let characterNoLora: any = await postJson(port, '/api/anima/jobs', {
       prompt:'x', modelId:'anima-aesthetic-v1.1', character:'nene', width:832, height:1216
     });
     assert.strictEqual(characterNoLora.status, 400);
     assert.strictEqual(characterNoLora.json.code, 'INVALID_PARAMETER');
-    var nullCharacter: any = await postJson(port, '/api/anima/jobs', {
+    let nullCharacter: any = await postJson(port, '/api/anima/jobs', {
       prompt:'x', modelId:'anima-aesthetic-v1.1', character:null, width:832, height:1216
     });
     assert.strictEqual(nullCharacter.status, 202, 'character=null must be accepted and ignored in no-LoRA mode');
@@ -580,7 +580,7 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
 });
 
 test('Anima cancellation failure releases the pending slot after a bounded timeout', async function () {
-  var stack = await gatewayTestStack.start({
+  let stack = await gatewayTestStack.start({
     prefix:'aics-anima-cancel-timeout-',
     token:'anima-cancel-token-0123456789abcdef012345',
     prepare:prepareComfyResources,
@@ -590,17 +590,17 @@ test('Anima cancellation failure releases the pending slot after a bounded timeo
       };
     }
   });
-  var port = stack.address.port;
-  var comfy = stack.upstreams.comfy;
+  let port = stack.address.port;
+  let comfy = stack.upstreams.comfy;
   try {
     await mockFault(comfy.port, { renderMs:5000, cancelStatus:503, queueStatus:503 });
-    var created: any = await postJson(port, '/api/anima/jobs', validJob({ seed:8101 }));
+    let created: any = await postJson(port, '/api/anima/jobs', validJob({ seed:8101 }));
     assert.strictEqual(created.status, 202);
-    var cancelled: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + created.json.job.id });
+    let cancelled: any = await request(port, { method:'DELETE', path:'/api/anima/jobs/' + created.json.job.id });
     assert.strictEqual(cancelled.status, 202);
-    var failed = await waitForJob(port, created.json.job.id, function (job: { status: string; }) { return job && job.status === 'failed'; });
+    let failed = await waitForJob(port, created.json.job.id, function (job: { status: string; }) { return job && job.status === 'failed'; });
     assert.strictEqual(failed.code, 'ANIMA_CANCEL_FAILED');
-    var status: any = await request(port, { path:'/api/anima/status' });
+    let status: any = await request(port, { path:'/api/anima/status' });
     assert.strictEqual(status.json.pending, 0, 'failed cancellation must not occupy MAX_PENDING forever');
   } finally {
     await stack.close();
@@ -608,24 +608,24 @@ test('Anima cancellation failure releases the pending slot after a bounded timeo
 });
 
 test('Anima size contract: anima-base-v1.0 accepts 960x1536, anima-aesthetic-v1.1 rejects it', async function () {
-  var stack = await gatewayTestStack.start({
+  let stack = await gatewayTestStack.start({
     prefix:'aics-anima-960x1536-',
     token:'anima-960x1536-token-0123456789abcdef012345',
     prepare:prepareComfyResources,
   });
-  var port = stack.address.port;
+  let port = stack.address.port;
   try {
     // 960x1536 (area 1,474,560) is whitelisted for anima-base-v1.0 only; used by
     // the latest-lora natsume fullbody attempt-4 candidates (WAI + Anima share
     // the same size so the two routes can be compared).
-    var baseJob: any = await postJson(port, '/api/anima/jobs', validJob({ width:960, height:1536, seed:9601 }));
+    let baseJob: any = await postJson(port, '/api/anima/jobs', validJob({ width:960, height:1536, seed:9601 }));
     assert.strictEqual(baseJob.status, 202, 'anima-base-v1.0 must accept 960x1536');
     assert.strictEqual(baseJob.json.job.metadata.width, 960);
     assert.strictEqual(baseJob.json.job.metadata.height, 1536);
     await waitForJob(port, baseJob.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
 
     // anima-aesthetic-v1.1 keeps its original sizes list: 960x1536 must fail closed.
-    var aesthetic: any = await postJson(port, '/api/anima/jobs', {
+    let aesthetic: any = await postJson(port, '/api/anima/jobs', {
       prompt:'raiden_shogun, 1girl, solo, flower field',
       negative:'worst quality, low quality',
       modelId:'anima-aesthetic-v1.1',
@@ -641,15 +641,15 @@ test('Anima size contract: anima-base-v1.0 accepts 960x1536, anima-aesthetic-v1.
 });
 
 test('Anima input cleanup deletes expired unreferenced uploads but preserves active inputs', function () {
-  var root = fs.mkdtempSync(path.join((require('os') as typeof import('os')).tmpdir(), 'aics-anima-input-cleanup-'));
-  var config = { ROOT_DIR:root, AI_WORKSPACE_ROOT:root };
-  var inputRoot = path.join(root, 'ComfyUI', 'input');
+  let root = fs.mkdtempSync(path.join((require('os') as typeof import('os')).tmpdir(), 'aics-anima-input-cleanup-'));
+  let config = { ROOT_DIR:root, AI_WORKSPACE_ROOT:root };
+  let inputRoot = path.join(root, 'ComfyUI', 'input');
   fs.mkdirSync(inputRoot, { recursive:true });
-  var stale = 'aics_anima_input_aaaaaaaaaaaaaaaa.png';
-  var active = 'aics_anima_input_bbbbbbbbbbbbbbbb.png';
-  var fresh = 'aics_anima_input_cccccccccccccccc.png';
+  let stale = 'aics_anima_input_aaaaaaaaaaaaaaaa.png';
+  let active = 'aics_anima_input_bbbbbbbbbbbbbbbb.png';
+  let fresh = 'aics_anima_input_cccccccccccccccc.png';
   [stale, active, fresh].forEach(function (name) { fs.writeFileSync(path.join(inputRoot, name), 'fixture'); });
-  var old = new Date(Date.now() - 2 * 60 * 60 * 1000);
+  let old = new Date(Date.now() - 2 * 60 * 60 * 1000);
   fs.utimesSync(path.join(inputRoot, stale), old, old);
   fs.utimesSync(path.join(inputRoot, active), old, old);
   try {
@@ -663,23 +663,23 @@ test('Anima input cleanup deletes expired unreferenced uploads but preserves act
 });
 
 test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentNoiseMask workflow', async function () {
-  var stack = await gatewayTestStack.start({
+  let stack = await gatewayTestStack.start({
     prefix:'aics-anima-inpaint-',
     token:'anima-inpaint-token-0123456789abcdef012345',
     prepare:prepareComfyResources,
   });
-  var port = stack.address.port;
-  var comfy = stack.upstreams.comfy;
+  let port = stack.address.port;
+  let comfy = stack.upstreams.comfy;
   try {
     // 1. Upload mock base64 image (1x1 transparent PNG)
-    var samplePngBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
-    var uploadRes: any = await postJson(port, '/api/anima/images', { image: samplePngBase64 });
+    let samplePngBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+    let uploadRes: any = await postJson(port, '/api/anima/images', { image: samplePngBase64 });
     assert.strictEqual(uploadRes.status, 200);
     assert.ok(uploadRes.json.ok);
     assert.ok(uploadRes.json.name.startsWith('aics_anima_input_'));
 
     // 2. Submit Inpaint job with maskPrompt
-    var inpaintJob: any = await postJson(port, '/api/anima/jobs', validJob({
+    let inpaintJob: any = await postJson(port, '/api/anima/jobs', validJob({
       initImage: uploadRes.json.name,
       maskPrompt: 'clothes, dress',
       denoisingStrength: 0.85,
@@ -691,9 +691,9 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.strictEqual(inpaintJob.status, 202);
     await waitForJob(port, inpaintJob.json.job.id, function (job: { status: string; }) { return job && job.status === 'succeeded'; });
 
-    var state = await mockState(comfy.port);
-    var promptCall = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop();
-    var graph = promptCall.body.prompt;
+    let state = await mockState(comfy.port);
+    let promptCall = state.calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).pop();
+    let graph = promptCall.body.prompt;
     assert.strictEqual(graph['15'].class_type, 'LoadImage');
     assert.strictEqual(graph['15'].inputs.image, uploadRes.json.name);
     assert.strictEqual(graph['19'].class_type, 'ResizeAndPadImage');
@@ -713,7 +713,7 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.strictEqual(graph['35'], undefined, 'inpaint must NOT sharpen: pixel-faithful composite wins over global post-processing');
 
     // 自定义识别阈值必须透传到 CLIPSeg 节点
-    var thresholdJob: any = await postJson(port, '/api/anima/jobs', validJob({
+    let thresholdJob: any = await postJson(port, '/api/anima/jobs', validJob({
       initImage: uploadRes.json.name,
       maskPrompt: 'clothes, dress',
       maskThreshold: 0.6,
@@ -729,8 +729,8 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.strictEqual(graph['16'].class_type, 'AP_CLIPSeg_TextMask');
     assert.strictEqual(graph['16'].inputs.threshold, 0.6, 'caller-provided maskThreshold must reach AP_CLIPSeg_TextMask');
 
-    var maskUpload: any = await postJson(port, '/api/anima/images', { image: samplePngBase64 });
-    var paintedMaskJob: any = await postJson(port, '/api/anima/jobs', validJob({
+    let maskUpload: any = await postJson(port, '/api/anima/images', { image: samplePngBase64 });
+    let paintedMaskJob: any = await postJson(port, '/api/anima/jobs', validJob({
       initImage: uploadRes.json.name,
       maskImage: maskUpload.json.name,
       width: 1024,
@@ -757,7 +757,7 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.deepStrictEqual(graph['10'].inputs.images, ['30', 0]);
 
     // 手绘遮罩叠加 hires：最终结果必须在解码前对合成图做 hires，不能复用旧的高分潜空间路径
-    var hiresWithMask: any = await postJson(port, '/api/anima/jobs', validJob({
+    let hiresWithMask: any = await postJson(port, '/api/anima/jobs', validJob({
       initImage: uploadRes.json.name,
       maskImage: maskUpload.json.name,
       width: 832,
@@ -777,7 +777,7 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.strictEqual(graph['33'].inputs.scheduler, 'sgm_uniform', 'hires-on-inpaint 2nd pass must use the turned-on sgm_uniform scheduler');
     assert.strictEqual(graph['33'].inputs.sampler_name, 'res_multistep', 'hires-on-inpaint 2nd pass keeps the decoupled res_multistep sampler');
 
-    var unaligned: any = await postJson(port, '/api/anima/jobs', validJob({
+    let unaligned: any = await postJson(port, '/api/anima/jobs', validJob({
       initImage: uploadRes.json.name,
       maskPrompt: 'clothes',
       width: 1001,

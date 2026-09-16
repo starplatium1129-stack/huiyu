@@ -242,7 +242,7 @@ test('audit uses no write/process/network operations, and CLI prints matching st
   assert.equal(output.status, 0, output.stderr || output.stdout);
   assert.equal(JSON.parse(output.stdout).items[0].review.status, 'approved');
   const mocks = ['writeFileSync', 'appendFileSync', 'renameSync', 'mkdirSync', 'rmSync', 'unlinkSync', 'copyFileSync']
-    .map((method) => t.mock.method(fs, method, () => { throw new Error(`Unexpected ${method}`); }));
+    .map((method) => t.mock.method(fs, method as any, () => { throw new Error(`Unexpected ${method}`); }));
   const proc = t.mock.method(cp, 'spawnSync', () => { throw new Error('No process allowed'); });
   const http = t.mock.method((require('node:http') as typeof import('node:http')), 'request', () => { throw new Error('No network allowed'); });
   assert.equal(audit(f.options).exitCode, 0);

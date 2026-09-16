@@ -1,4 +1,3 @@
-import type { PathLike } from 'node:fs';
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
 'use strict';
 
@@ -56,7 +55,7 @@ const WINDOWS_RESERVED_STEMS = new Set([
 class BlueprintWriteError extends Error {
     code!: any;
   filePath!: any;
-constructor(message: string|undefined, code: string, filePath: string|undefined) {
+constructor(message: string|undefined, code: string, filePath?: string) {
     super(message);
     this.name = 'BlueprintWriteError';
     this.code = code;
@@ -334,7 +333,7 @@ function applyBlueprintWrite(prepared: any, { writeFileAtomic, io = nodeFs }: an
   for (const key of Object.keys(derived)) {
     if (paths[key] !== (derived as Record<string, any>)[key]) {
       throw new BlueprintWriteError('prepared.paths.' + key + ' 与 rootReal 推导不一致（拒绝篡改）: '
-        + JSON.stringify(paths[key]) + ' != ' + JSON.stringify(derived[key]), 'path-validation', paths[key]);
+        + JSON.stringify(paths[key]) + ' != ' + JSON.stringify((derived as Record<string, any>)[key]), 'path-validation', paths[key]);
     }
   }
   const shardsDir = derived.shardsDir;

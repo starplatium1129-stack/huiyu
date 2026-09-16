@@ -18,31 +18,31 @@ import { PathOrFileDescriptor } from 'node:fs';
  *                    已成功记录且图片在盘上会自动跳过）。
  */
 
-var crypto: typeof import('crypto') = require('crypto');
-var fs: typeof import('fs') = require('fs');
-var path: typeof import('path') = require('path');
-var animaRoute: typeof import('../../routes/anima') = require('../../routes/anima');
+let crypto: typeof import('crypto') = require('crypto');
+let fs: typeof import('fs') = require('fs');
+let path: typeof import('path') = require('path');
+let animaRoute: any = require('../../routes/anima');
 
-var ROOT = path.resolve(__dirname, '..', '..');
-var AI_ROOT = path.resolve(ROOT, '..', 'AI');
-var COMFY = process.env.COMFY_HOST || 'http://127.0.0.1:8188';
-var LORA_ROOT = path.join(AI_ROOT, 'ComfyUI', 'models', 'loras');
-var SCENES = ['sc261', 'sc268', 'sc269', 'sc002', 'sc105', 'sc014', 'sc006'];
-var SEEDS = [20260812, 20260813, 20260814];
-var WIDTH = 1216;
-var HEIGHT = 832;
-var LORA_STRENGTH = 0.85;
-var CLIENT_ID = 'aics-anima-unified-' + crypto.randomUUID();
+let ROOT = path.resolve(__dirname, '..', '..');
+let AI_ROOT = path.resolve(ROOT, '..', 'AI');
+let COMFY = process.env.COMFY_HOST || 'http://127.0.0.1:8188';
+let LORA_ROOT = path.join(AI_ROOT, 'ComfyUI', 'models', 'loras');
+let SCENES = ['sc261', 'sc268', 'sc269', 'sc002', 'sc105', 'sc014', 'sc006'];
+let SEEDS = [20260812, 20260813, 20260814];
+let WIDTH = 1216;
+let HEIGHT = 832;
+let LORA_STRENGTH = 0.85;
+let CLIENT_ID = 'aics-anima-unified-' + crypto.randomUUID();
 // 并发提交窗口：ComfyUI /prompt 入队后立即返回 prompt_id，GPU 队列自行排队，
 // 无需逐张等待完成再提交下一张。默认 4 个 in-flight，避免队列无界增长。
-var CONCURRENCY = 4;
+let CONCURRENCY = 4;
 
-var PARAM_GROUPS: any = {
+let PARAM_GROUPS: any = {
   default: { label:'24s_cfg3', steps:24, cfg:3, sampler:'res_multistep', scheduler:'simple' },
   official: { label:'30s_cfg45_ersde', steps:30, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform' },
 };
 
-var CANDIDATES = [
+let CANDIDATES = [
   { id:'u_e04', epoch:4, step:168, file:'ayachi_nene_v20_anima_unified_e04.safetensors' },
   { id:'u_e08', epoch:8, step:336, file:'ayachi_nene_v20_anima_unified_e08.safetensors' },
   { id:'u_e12', epoch:12, step:504, file:'ayachi_nene_v20_anima_unified_e12.safetensors' },
@@ -52,17 +52,17 @@ var CANDIDATES = [
 ];
 
 function paramsGroup() {
-  var raw = process.argv.find(function (a) { return a.startsWith('--params='); });
-  var value = raw ? raw.split('=')[1] : (process.argv.includes('--params') ? process.argv[process.argv.indexOf('--params') + 1] : 'default');
-  var group = PARAM_GROUPS[value];
+  let raw = process.argv.find(function (a) { return a.startsWith('--params='); });
+  let value = raw ? raw.split('=')[1] : (process.argv.includes('--params') ? process.argv[process.argv.indexOf('--params') + 1] : 'default');
+  let group = PARAM_GROUPS[value];
   if (!group) throw new Error('Unknown --params group: ' + value + ' (default|official)');
   return group;
 }
 
 function concurrencyFromArgs() {
-  var raw = process.argv.find(function (a) { return a.startsWith('--concurrency='); });
-  var value = raw ? raw.split('=')[1] : (process.argv.includes('--concurrency') ? process.argv[process.argv.indexOf('--concurrency') + 1] : String(CONCURRENCY));
-  var n = Number(value);
+  let raw = process.argv.find(function (a) { return a.startsWith('--concurrency='); });
+  let value = raw ? raw.split('=')[1] : (process.argv.includes('--concurrency') ? process.argv[process.argv.indexOf('--concurrency') + 1] : String(CONCURRENCY));
+  let n = Number(value);
   if (!Number.isInteger(n) || n < 1 || n > 32) throw new Error('--concurrency must be an integer 1..32, got: ' + value);
   return n;
 }
@@ -75,9 +75,9 @@ function readJson(file: PathOrFileDescriptor) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function writeJson(file: PathLike, value: any) {
+function writeJson(file: string, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive:true });
-  var temporary = file + '.tmp';
+  let temporary = file + '.tmp';
   fs.writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n', 'utf8');
   fs.renameSync(temporary, file);
 }
@@ -91,45 +91,45 @@ function sha256File(file: PathOrFileDescriptor) {
 }
 
 function comfyUrl(pathname: string|URL) {
-  var base = new URL(COMFY);
+  let base = new URL(COMFY);
   assert(base.protocol === 'http:' || base.protocol === 'https:', 'COMFY_HOST protocol is invalid');
   assert(['127.0.0.1', 'localhost', '::1'].includes(base.hostname), 'Sweep only allows a local ComfyUI host');
   return new URL(pathname, base).toString();
 }
 
 async function requestJson(pathname: string, options: RequestInit|undefined) {
-  var response = await fetch(comfyUrl(pathname), options);
-  var text = await response.text();
-  var data = null;
+  let response = await fetch(comfyUrl(pathname), options);
+  let text = await response.text();
+  let data = null;
   try { data = text ? JSON.parse(text) : null; } catch (error) {}
   if (!response.ok) throw new Error(pathname + ' returned HTTP ' + response.status + ': ' + text.slice(0, 1000));
   return data;
 }
 
 async function requestImage(image: any) {
-  var query = new URLSearchParams({
+  let query = new URLSearchParams({
     filename:String(image.filename || ''),
     subfolder:String(image.subfolder || ''),
     type:String(image.type || 'output'),
   });
-  var response = await fetch(comfyUrl('/view?' + query.toString()), { cache:'no-store' });
-  var mime = String(response.headers.get('content-type') || '');
+  let response = await fetch(comfyUrl('/view?' + query.toString()), { cache:'no-store' });
+  let mime = String(response.headers.get('content-type') || '');
   assert(response.ok && mime.startsWith('image/'), 'ComfyUI result was not an image: HTTP ' + response.status + ' ' + mime);
-  var body = Buffer.from(await response.arrayBuffer());
+  let body = Buffer.from(await response.arrayBuffer());
   assert(body.length > 0, 'ComfyUI returned an empty image');
   return body;
 }
 
-async function waitFor(promptId: string|number|boolean) {
-  var deadline = Date.now() + 20 * 60 * 1000;
+async function waitFor(promptId: string|number) {
+  let deadline = Date.now() + 20 * 60 * 1000;
   while (Date.now() < deadline) {
-    var history = await requestJson('/history/' + encodeURIComponent(promptId), { cache:'no-store' });
-    var entry = history && history[promptId];
+    let history = await requestJson('/history/' + encodeURIComponent(promptId), { cache:'no-store' });
+    let entry = history && history[promptId];
     if (entry) {
-      var messages = entry.status && entry.status.messages || [];
-      var failed = messages.find(function (message: string[]) { return message && message[0] === 'execution_error'; });
+      let messages = entry.status && entry.status.messages || [];
+      let failed = messages.find(function (message: string[]) { return message && message[0] === 'execution_error'; });
       if (failed) throw new Error('ComfyUI execution failed: ' + JSON.stringify(failed));
-      var images = entry.outputs && entry.outputs['10'] && entry.outputs['10'].images;
+      let images = entry.outputs && entry.outputs['10'] && entry.outputs['10'].images;
       if (Array.isArray(images) && images[0]) return images[0];
     }
     await new Promise(function (resolve) { setTimeout(resolve, 1000); });
@@ -148,9 +148,9 @@ function spaced(token: string) {
 }
 
 function animaPrompt(scene: any) {
-  var safety = scene.mature ? 'nsfw' : 'safe';
-  var story = String(scene.story || '').trim();
-  var body = String(scene.prompt || '')
+  let safety = scene.mature ? 'nsfw' : 'safe';
+  let story = String(scene.story || '').trim();
+  let body = String(scene.prompt || '')
     .replace(/<lora:[^>]+>/gi, '')
     .replace(/[\r\n]+/g, ' ')
     .replace(/_BREAK_/gi, ' BREAK ')
@@ -162,7 +162,7 @@ function animaPrompt(scene: any) {
 }
 
 function animaNegative(scene: any) {
-  var tail = String(scene.negative || '')
+  let tail = String(scene.negative || '')
     .replace(/<lora:[^>]+>/gi, '')
     .replace(/[\r\n]+/g, ' ')
     .replace(/_BREAK_/gi, ' BREAK ')
@@ -173,10 +173,10 @@ function animaNegative(scene: any) {
 }
 
 function buildScenes() {
-  var library = readJson(path.join(ROOT, 'data', 'scenes.json'));
-  var byId = new Map(library.map(function (scene: any) { return [scene.id, scene]; }));
+  let library = readJson(path.join(ROOT, 'data', 'scenes.json'));
+  let byId = new Map(library.map(function (scene: any) { return [scene.id, scene]; }));
   return SCENES.map(function (id) {
-    var scene: any = byId.get(id);
+    let scene: any = byId.get(id);
     assert(scene, 'Unknown scene id: ' + id);
     return {
       id:id,
@@ -190,7 +190,7 @@ function buildScenes() {
 
 function checkedCandidates() {
   return CANDIDATES.map(function (candidate) {
-    var file = path.join(LORA_ROOT, candidate.file);
+    let file = path.join(LORA_ROOT, candidate.file);
     assert(fs.existsSync(file), 'Missing unified LoRA: ' + file);
     return Object.assign({}, candidate, {
       bytes:fs.statSync(file).size,
@@ -199,8 +199,8 @@ function checkedCandidates() {
   });
 }
 
-function workflowFor(scene: any, candidate: any, seed: string, group: any, modelId: string) {
-  var workflow = animaRoute.buildWorkflow({
+function workflowFor(scene: any, candidate: any, seed: number, group: any, modelId: string) {
+  let workflow = animaRoute.buildWorkflow({
     prompt:scene.prompt,
     negative:scene.negative,
     modelId:modelId,
@@ -223,25 +223,25 @@ function workflowFor(scene: any, candidate: any, seed: string, group: any, model
 }
 
 async function main() {
-  var group = paramsGroup();
-  var modelId = 'anima-base-v1.0';
-  var modelRaw = process.argv.find(function (a) { return a.startsWith('--model='); });
+  let group = paramsGroup();
+  let modelId = 'anima-base-v1.0';
+  let modelRaw = process.argv.find(function (a) { return a.startsWith('--model='); });
   if (modelRaw) modelId = modelRaw.split('=')[1];
   else if (process.argv.includes('--model')) modelId = process.argv[process.argv.indexOf('--model') + 1];
   if (!['anima-base-v1.0', 'anima-aesthetic-v1.1'].includes(modelId)) {
     throw new Error('Unknown --model: ' + modelId + ' (anima-base-v1.0|anima-aesthetic-v1.1)');
   }
-  var onlyRaw = process.argv.find(function (a) { return a.startsWith('--only='); });
-  var only: string|string[]|null = null;
+  let onlyRaw = process.argv.find(function (a) { return a.startsWith('--only='); });
+  let only: string|string[]|null = null;
   if (onlyRaw) only = onlyRaw.split('=')[1].split(',').map(function (s) { return s.trim(); }).filter(Boolean);
   else if (process.argv.includes('--only')) only = process.argv[process.argv.indexOf('--only') + 1].split(',').map(function (s) { return s.trim(); }).filter(Boolean);
 
-  var scenes = buildScenes();
-  var candidates = checkedCandidates().filter(function (c) { return !only || only.includes(c.id); });
-  var modelTag = modelId === 'anima-aesthetic-v1.1' ? '_aesthetic' : '';
-  var outputRoot = path.join(AI_ROOT, 'Reviews', 'AnimaUnifiedSweep', '2026-08-13_' + group.label + modelTag);
-  var manifestFile = path.join(outputRoot, 'manifest.json');
-  var manifest = fs.existsSync(manifestFile) ? readJson(manifestFile) : {
+  let scenes = buildScenes();
+  let candidates = checkedCandidates().filter(function (c) { return !only || only.includes(c.id); });
+  let modelTag = modelId === 'anima-aesthetic-v1.1' ? '_aesthetic' : '';
+  let outputRoot = path.join(AI_ROOT, 'Reviews', 'AnimaUnifiedSweep', '2026-08-13_' + group.label + modelTag);
+  let manifestFile = path.join(outputRoot, 'manifest.json');
+  let manifest = fs.existsSync(manifestFile) ? readJson(manifestFile) : {
     version:1,
     purpose:'Unified sweep: ayachi_nene_v20_anima_scientific_unified epochs on the extended scene matrix',
     comfy:COMFY,
@@ -263,20 +263,20 @@ async function main() {
   }
 
   fs.mkdirSync(outputRoot, { recursive:true });
-  var total = 0;
-  var concurrency = concurrencyFromArgs();
+  let total = 0;
+  let concurrency = concurrencyFromArgs();
 
   // 先收集所有待生成任务（跳过已成功且图片在盘上的记录），
   // 再用并发窗口提交：ComfyUI 入队即返回，GPU 队列自行串行执行，
   // 避免"提交→等完成→下载→再提交"的串行往返浪费。
-  var pending: any[] = [];
-  for (var candidateIndex = 0; candidateIndex < candidates.length; candidateIndex += 1) {
-    var candidate = candidates[candidateIndex];
-    for (var sceneIndex = 0; sceneIndex < scenes.length; sceneIndex += 1) {
-      var scene = scenes[sceneIndex];
-      for (var seedIndex = 0; seedIndex < SEEDS.length; seedIndex += 1) {
-        var seed = SEEDS[seedIndex];
-        var existing = manifest.records.find(function (item: { candidate: string; sceneId: string; seed: number; status: string; }) {
+  let pending: any[] = [];
+  for (let candidateIndex = 0; candidateIndex < candidates.length; candidateIndex += 1) {
+    let candidate = candidates[candidateIndex];
+    for (let sceneIndex = 0; sceneIndex < scenes.length; sceneIndex += 1) {
+      let scene = scenes[sceneIndex];
+      for (let seedIndex = 0; seedIndex < SEEDS.length; seedIndex += 1) {
+        let seed = SEEDS[seedIndex];
+        let existing = manifest.records.find(function (item: { candidate: string; sceneId: string; seed: number; status: string; }) {
           return item.candidate === candidate.id && item.sceneId === scene.id && item.seed === seed && item.status === 'succeeded';
         });
         if (existing && fs.existsSync(path.join(outputRoot, existing.image))) continue;
@@ -286,28 +286,28 @@ async function main() {
   }
   console.log('待生成: ' + pending.length + ' 张，并发窗口: ' + concurrency);
 
-  var next = 0;
+  let next = 0;
   async function runOne() {
     while (true) {
-      var index = next;
+      let index = next;
       next += 1;
       if (index >= pending.length) return;
-      var job: any = pending[index];
-      var candidate = job.candidate;
-      var scene = job.scene;
-      var seed = job.seed;
-      var workflow = workflowFor(scene, candidate, seed, group, modelId);
-      var startedAt = new Date().toISOString();
-      var submitted = await requestJson('/prompt', {
+      let job: any = pending[index];
+      let candidate = job.candidate;
+      let scene = job.scene;
+      let seed = job.seed;
+      let workflow = workflowFor(scene, candidate, seed, group, modelId);
+      let startedAt = new Date().toISOString();
+      let submitted = await requestJson('/prompt', {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
         body:JSON.stringify({ prompt:workflow, client_id:CLIENT_ID }),
       });
       assert(submitted && submitted.prompt_id, 'ComfyUI did not return prompt_id');
-      var image = await waitFor(submitted.prompt_id);
-      var body = await requestImage(image);
-      var relative = path.join('images', scene.id, 'seed-' + seed + '-' + candidate.id + '.png');
-      var outputFile = path.join(outputRoot, relative);
+      let image = await waitFor(submitted.prompt_id);
+      let body = await requestImage(image);
+      let relative = path.join('images', scene.id, 'seed-' + seed + '-' + candidate.id + '.png');
+      let outputFile = path.join(outputRoot, relative);
       fs.mkdirSync(path.dirname(outputFile), { recursive:true });
       fs.writeFileSync(outputFile, body);
 
@@ -341,8 +341,8 @@ async function main() {
     }
   }
 
-  var workers = [];
-  for (var w = 0; w < Math.min(concurrency, pending.length || 1); w += 1) {
+  let workers = [];
+  for (let w = 0; w < Math.min(concurrency, pending.length || 1); w += 1) {
     workers.push(runOne());
   }
   await Promise.all(workers);

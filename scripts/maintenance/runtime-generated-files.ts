@@ -77,7 +77,7 @@ function listGeneratedFiles(directory: string, prefix: any = ''): string[] {
 }
 
 function listTrackedGeneratedFiles(root: string, servicesRoot: string) {
-  const servicesRelative = toPosix(path.relative(root, servicesRoot));
+  const servicesRelative = toPosix(path.relative(root, servicesRoot)) || '.';
   const result = spawnSync('git', ['ls-files', '-z', '--', servicesRelative], {
     cwd: root,
     encoding: 'utf8',

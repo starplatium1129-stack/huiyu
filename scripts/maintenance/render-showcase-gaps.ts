@@ -62,7 +62,7 @@ function collectTasks(opts: any, input: any) {
   const profile = resolveModelProfile(catalog.modelProfiles, MODEL_ID, ENGINE);
   if (!profile) throw new Error(`找不到引擎 ${ENGINE} 的模型 profile，拒绝执行`);
   const tagsData = input.data['data/tags.json'];
-  const matureTokenSet = new Set(tagsData.filter((t: any) => t.cat === 'Mature').map((t: any) => String(t.en).trim().toLowerCase().replace(/\s+/g, '_')));
+  const matureTokenSet = new Set<string>(tagsData.filter((t: any) => t.cat === 'Mature').map((t: any) => String(t.en).trim().toLowerCase().replace(/\s+/g, '_')));
   const manifest = input.manifest;
   const have = new Set(manifest.entries.filter((e: any) => e.type === 'popular').map((e: any) => e.id));
   const only = opts.only ? opts.only.split(',').map((s: any) => s.trim()).filter(Boolean) : null;
@@ -87,7 +87,7 @@ function collectTasks(opts: any, input: any) {
       adultEnabled: true,
       style: resolveStyleRecipe(KREA_STYLE_RECIPES, 'anima', bp, null, character, { adultEnabled: true }),
       artist: 'rella',
-    });
+    } as any);
   }
   const tasks: any[] = [];
   for (const character of characters) {

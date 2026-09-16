@@ -2,7 +2,6 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 /**
  * render-design-sheets.js — 角色三视图设计图（character sheet）批量渲染
@@ -275,7 +274,7 @@ const stdByChar = new Map((standards.characters || []).map((c: any) => [c.id, c]
 const tasks: any[] = [];
 const skipped = { existing: 0, missingTokens: 0 };
 
-for (const profile of Object.values(view)) {
+for (const profile of Object.values<any>(view)) {
   const charId = profile.characterId;
   if (charsFilter && !charsFilter.includes(charId)) continue;
   const stdChar: any = stdByChar.get(charId);
@@ -345,7 +344,7 @@ log(`=== 完成: 本次 ${slice.length} 成功 ${ok} 失败 ${failCount} ===`);
 // ── 后处理：view.json pending→url + 重建预压缩产物 ─────────────────────────
 try {
   let filled = 0;
-  for (const profile of Object.values(view)) {
+  for (const profile of Object.values<any>(view)) {
     for (const o of profile.outfits || []) {
       for (const ref of o.references || []) {
         if (!ref.id || !String(ref.id).startsWith('ref_design_') || !ref.pending) continue;

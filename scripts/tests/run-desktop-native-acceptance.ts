@@ -98,7 +98,7 @@ function npmInvocation(args: any) {
     path.join(path.dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js'),
     'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
   ].filter(Boolean)
-  const cli = candidates.find(candidate => fs.existsSync(candidate))
+  const cli = candidates.find(candidate => candidate && fs.existsSync(candidate))
   if (!cli) throw new Error('npm CLI could not be located')
   return { command: process.execPath, args: [cli, ...args] }
 }

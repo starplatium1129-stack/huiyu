@@ -1,26 +1,20 @@
 import type { ImageGenerationConfig, ImageJobInput, ImageServiceOptions, ImageJob, ImageModelDefinition, ImageLoraDefinition, ComfyHistory, PromptSubmission } from './anima/types';
 import type { ComfyQueueResponse } from '../server/comfy-types';
-import { errorField } from '../scripts/lib/runtime-errors';
-import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
+import { errorField, errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
 'use strict';
 
 import { Request,ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
 
-let crypto: typeof import('crypto') = require('crypto');
-let express: typeof import('express') = require('express');
-let fs: typeof import('fs') = require('fs');
-let path: typeof import('path') = require('path');
-let security: typeof import('../server/security') = require('../server/security');
-let envelope: typeof import('../server/http-envelope') = require('../server/http-envelope');
-let generationContract: typeof import('../server/anima-generation-contract') = require('../server/anima-generation-contract');
-let comfyClient: typeof import('../server/comfy-client') = require('../server/comfy-client');
+let crypto: typeof import('crypto') = require('crypto'); let express: typeof import('express') = require('express');
+let fs: typeof import('fs') = require('fs'); let path: typeof import('path') = require('path');
+let security: typeof import('../server/security') = require('../server/security'); let envelope: typeof import('../server/http-envelope') = require('../server/http-envelope');
+let generationContract: typeof import('../server/anima-generation-contract') = require('../server/anima-generation-contract'); let comfyClient: typeof import('../server/comfy-client') = require('../server/comfy-client');
 let comfyProgress: typeof import('../server/comfy-progress') = require('../server/comfy-progress');
 // P3 收口：ComfyUI 探活统一走 server/upstream-health
 let upstreamHealth: typeof import('../server/upstream-health') = require('../server/upstream-health');
 // 2026-08-21 收口：模型/LoRA/角色白名单数据表外移；任务注册表骨架统一
-let modelCatalog: typeof import('../server/anima-model-catalog') = require('../server/anima-model-catalog');
-let jobRunner: typeof import('../server/job-runner') = require('../server/job-runner');
+let modelCatalog: typeof import('../server/anima-model-catalog') = require('../server/anima-model-catalog'); let jobRunner: typeof import('../server/job-runner') = require('../server/job-runner');
 let superres: typeof import('./superres') = require('./superres');
 
 // ══ 2026-08-27 P1-b 样板拆分（照 routes/video/）：五个子模块承接原内联实现，

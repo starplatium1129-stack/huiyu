@@ -1,7 +1,6 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 const fs: typeof import('node:fs') = require('node:fs');
 const childProcess: typeof import('node:child_process') = require('node:child_process');
@@ -29,14 +28,14 @@ function nulRecords(raw: any) {
 }
 
 // All arguments are an argv array. No shell, remote commands, checkout or index refresh.
-function collectGitHistory(root: PathLike, base: string) {
+function collectGitHistory(root: string, base: string) {
   const result: any = { status: 'error', base: base || null, baseCommit: null, headCommit: null,
     comparison: 'base-commit-to-working-tree', changes: [], paths: [], raw: [], unknown: [] };
   try {
     validateRevision(base);
     const settings = ['-c', 'core.fsmonitor=false', '-c', 'gc.auto=0', '-c', 'maintenance.auto=false'];
     const env = gitEnvironment();
-    const run = (args: any[], allowed: any = [0], record: any = true, binary: any = false) => {
+    const run = (args: any[], allowed: any = [0], record: any = true, binary: any = false): any => {
       const output = childProcess.spawnSync('git', [...settings, ...args], {
         cwd: root, env, timeout: 15000, maxBuffer: MAX_BYTES, windowsHide: true, shell: false,
       });
@@ -119,7 +118,7 @@ function collectGitHistory(root: PathLike, base: string) {
 
 // NUL records preserve spaces, quotes and newlines. Disable rename detection so
 // both old and new names remain in the conservative path set.
-function collectGitChanges(root: PathLike) {
+function collectGitChanges(root: string) {
   const result: any = { status: 'error', raw: [], paths: [], reason: '' };
   try {
     const env = gitEnvironment();

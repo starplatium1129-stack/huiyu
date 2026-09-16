@@ -73,6 +73,7 @@ function resolveEvidenceDirectory(root: any, configured: any) {
 }
 
 class Evidence {
+  commandsPath!: any;
     desktopLogPath!: any;
   directory!: any;
   environmentPath!: any;

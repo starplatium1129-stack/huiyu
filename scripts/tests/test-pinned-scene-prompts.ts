@@ -41,12 +41,13 @@ function withShallowFixture(run: any) {
     const state = { argv: ['node', tool, ...args], exitCode: 0 };
     vm.runInNewContext(fs.readFileSync(tool, 'utf8'), {
       __dirname: path.join(root, 'scripts/maintenance'), __filename: tool, process: state,
+      exports: {}, module: { exports: {} },
       require(name: any) {
         if (name === 'child_process') return { execFileSync() { throw new Error('missing historical commit'); } };
         if (name === '../lib/scene-store') return { expandShardFiles: (entry: any) => [entry.file] };
         return require(name);
       },
-      console: { log: (...args) => output.push(args.join(' ')), warn: (...args) => output.push(args.join(' ')), error: (...args) => output.push(args.join(' ')) },
+      console: { log: (...args: any[]) => output.push(args.join(' ')), warn: (...args: any[]) => output.push(args.join(' ')), error: (...args: any[]) => output.push(args.join(' ')) },
     }, { filename: tool });
     return { code: state.exitCode, output: output.join('\n') };
   }

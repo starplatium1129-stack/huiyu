@@ -23,7 +23,7 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('node:path') = require('node:path');
 
 const root = path.resolve(__dirname, '..', '..');
-const read = (...parts) => fs.readFileSync(path.join(root, ...parts), 'utf8');
+const read = (...parts: any[]) => fs.readFileSync(path.join(root, ...parts), 'utf8');
 
 const control = read('routes', 'control.js');
 const controlServices = read('routes', 'control', 'services.js');
@@ -46,7 +46,7 @@ function assert(condition: boolean, message: string) {
 
 // ─── 网关：Ollama 显存自动释放 + 常驻翻译服务 ───
 assert(/keep_alive\s*:\s*keepAlive/.test(ollamaService), 'gateway must pass keep_alive so Ollama unloads idle models from VRAM');
-assert(gatewayConfig.includes("OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m'"), 'gateway must default Ollama keep_alive to 10 minutes');
+assert(/OLLAMA_KEEP_ALIVE:\s*env\.OLLAMA_KEEP_ALIVE \|\| '10m'/.test(gatewayConfig), 'gateway must default Ollama keep_alive to 10 minutes');
 assert(/num_ctx\s*:\s*numContext/.test(ollamaService), 'gateway must cap Ollama context window to limit VRAM usage');
 assert(/async function unload/.test(ollamaService) && ollamaService.includes('activeModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
 assert(translationService.includes('ensureServer') && translationService.includes("'--serve'"), 'gateway must manage a persistent translation server');
@@ -70,7 +70,7 @@ assert(controlRoutes.includes("'/api/service/voice'"), 'control routes must expo
 assert(controlRoutes.includes("'/api/service/webui'"), 'control routes must expose webui start/stop endpoint');
 assert(controlRoutes.includes("'/api/service/ollama'"), 'control routes must expose ollama unload endpoint');
 assert(controlRoutes.includes("'/api/mode'"), 'control routes must expose one-click mode switching');
-assert(controlRoutes.includes('unloadOllamaModels') && controlRoutes.includes('keep_alive:0'), 'control routes must unload Ollama models via keep_alive=0');
+assert(controlRoutes.includes('unloadOllamaModels') && /keep_alive\s*:\s*0/.test(controlRoutes), 'control routes must unload Ollama models via keep_alive=0');
 assert(controlRoutes.includes('/api/ps'), 'control routes must read Ollama loaded models and VRAM usage');
 assert(controlRoutes.includes('autoStartVoice'), 'voice auto-start must remain an explicit preference');
 assert(controlRoutes.includes('runScriptAsync'), 'control routes must run long service scripts asynchronously');

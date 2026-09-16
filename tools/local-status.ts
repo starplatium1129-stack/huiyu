@@ -6,15 +6,15 @@
   'use strict';
   const currentScript = document.currentScript;
   if (!(currentScript instanceof HTMLScriptElement)) return;
-  var studioRoot = new URL('../', currentScript.src).pathname;
+  let studioRoot = new URL('../', currentScript.src).pathname;
 
-  var SERVICE_DEFS = [
+  let SERVICE_DEFS = [
     { id:'draw', label:'绘图', detail:'SD WebUI', icon:'◇' },
     { id:'chat', label:'对话', detail:'Ollama', icon:'◌' },
     { id:'voice', label:'语音', detail:'GPT-SoVITS', icon:'⌁' }
   ] as const;
   type ServiceId = typeof SERVICE_DEFS[number]['id'];
-  var state = {
+  let state = {
     gateway:false,
     services:{
       draw:{ online:false, label:'正在检测' },
@@ -22,11 +22,11 @@
       voice:{ online:false, label:'正在检测' }
     }
   };
-  var refreshTimer = 0;
+  let refreshTimer = 0;
 
   function fetchJson(url: string, timeout?: number): Promise<unknown> {
-    var controller = new AbortController();
-    var timer = window.setTimeout(function () { controller.abort(); }, timeout || 2200);
+    let controller = new AbortController();
+    let timer = window.setTimeout(function () { controller.abort(); }, timeout || 2200);
     return fetch(url, { cache:'no-store', signal:controller.signal })
       .then(function (response) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -37,7 +37,7 @@
 
   function statusMarkup() {
     return SERVICE_DEFS.map(function (service) {
-      var current = state.services[service.id];
+      let current = state.services[service.id];
       return '<div class="local-service" data-service="' + service.id + '" data-state="' + (current.online ? 'online' : 'sleep') + '">' +
         '<span class="local-service-icon" aria-hidden="true">' + service.icon + '</span>' +
         '<span><strong>' + service.label + '</strong><small>' + service.detail + '</small></span>' +
@@ -47,23 +47,23 @@
   }
 
   function render() {
-    var host = document.querySelector('.local-status');
+    let host = document.querySelector('.local-status');
     if (!host) return;
-    var panel = host.querySelector('.local-status-panel');
+    let panel = host.querySelector('.local-status-panel');
     if (panel) {
-      var rows = panel.querySelector('.local-status-services');
+      let rows = panel.querySelector('.local-status-services');
       if (rows) rows.innerHTML = statusMarkup();
-      var summary = panel.querySelector('.local-status-summary');
-      var onlineCount = SERVICE_DEFS.filter(function (service) { return state.services[service.id].online; }).length;
+      let summary = panel.querySelector('.local-status-summary');
+      let onlineCount = SERVICE_DEFS.filter(function (service) { return state.services[service.id].online; }).length;
       if (summary) {
         summary.textContent = state.gateway
           ? (onlineCount ? onlineCount + ' 项服务已就绪；其余会在需要时唤醒。' : '网关在线，生成服务目前都在休眠。')
           : '本机网关没有响应，请从控制台重新启动。';
       }
     }
-    var trigger = host.querySelector<HTMLButtonElement>('.local-status-trigger');
+    let trigger = host.querySelector<HTMLButtonElement>('.local-status-trigger');
     if (trigger) {
-      var count = SERVICE_DEFS.filter(function (service) { return state.services[service.id].online; }).length;
+      let count = SERVICE_DEFS.filter(function (service) { return state.services[service.id].online; }).length;
       trigger.dataset.state = state.gateway ? (count ? 'online' : 'idle') : 'offline';
       const copy = trigger.querySelector('.local-status-copy');
       if (copy) copy.textContent = state.gateway ? '本机 ' + count + '/3' : '本机离线';
@@ -77,7 +77,7 @@
 
   function normalizeResult(result: PromiseSettledResult<unknown>, id: ServiceId) {
     if (result.status !== 'fulfilled') return { online:false, label:'未启动' };
-    var data = record(result.value);
+    let data = record(result.value);
     if (id === 'draw') return { online:true, label:'可绘制' };
     if (id === 'chat') {
       return data.online && Array.isArray(data.models) && data.models.length
@@ -110,10 +110,10 @@
   }
 
   function init() {
-    var nav = document.querySelector('.nav-links');
+    let nav = document.querySelector('.nav-links');
     if (!nav || nav.querySelector('.local-status')) return;
-    var d = studioRoot;
-    var host = document.createElement('div');
+    let d = studioRoot;
+    let host = document.createElement('div');
     host.className = 'local-status';
     host.innerHTML =
       '<button class="local-status-trigger" type="button" aria-expanded="false" aria-controls="localStatusPanel">' +
@@ -129,7 +129,7 @@
           '<a href="' + d + 'control">打开控制台</a>' +
         '</div>' +
       '</section>';
-    var more = nav.querySelector('.nav-more');
+    let more = nav.querySelector('.nav-more');
     if (more) more.insertAdjacentElement('afterend', host);
     else nav.appendChild(host);
 
@@ -141,7 +141,7 @@
       trigger.setAttribute('aria-expanded', 'false');
     };
     trigger.addEventListener('click', function () {
-      var opening = panel.hidden;
+      let opening = panel.hidden;
       panel.hidden = !opening;
       trigger.setAttribute('aria-expanded', opening ? 'true' : 'false');
       if (opening) refresh();
@@ -167,7 +167,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.AICLocalStatus = { refresh:refresh };
+  (window as Window & { AICLocalStatus?: { refresh: () => Promise<void> } }).AICLocalStatus = { refresh:refresh };
 })();
-
-interface Window { AICLocalStatus?: { refresh: () => Promise<void> } }

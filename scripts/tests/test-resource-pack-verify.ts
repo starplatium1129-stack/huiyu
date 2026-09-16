@@ -35,7 +35,7 @@ function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync', 'rmSync', 'unlinkSync']) {
-    io[op] = (...args) => {
+    io[op] = (...args: any[]) => {
       calls.push({ op, target: String(args[0]) });
       const hook = hooks[op];
       if (hook) return hook(...args);
@@ -229,7 +229,7 @@ test('篡改 delta 目标身份/数量：重建结果与 delta.newManifest 不�
     ['entrycount', (d: any) => { d.newManifest.entryCount += 1; }, 'target-entrycount-mismatch'],
     ['totalbytes', (d: any) => { d.newManifest.totalBytes += 1; }, 'target-totalbytes-mismatch'],
   ];
-  for (const [label, mutate, code] of cases) {
+  for (const [label, mutate, code] of cases as any[]) {
     const fx = buildTwoStateFixture(t);
     exportDeltaPack(fx.root, 'delta-ok');
     editPackJson(path.join(fx.root, PACKS_REL, 'delta-ok'), 'delta.json', mutate);
@@ -259,7 +259,7 @@ test('removed 逐项核验：重复、不存在、身份不符、与候选重叠
       delta.candidate.bytes += bravo.bytes;
     }, 'removed-in-candidate'],
   ];
-  for (const [label, mutate, code] of cases) {
+  for (const [label, mutate, code] of cases as any[]) {
     const fresh = buildTwoStateFixture(t);
     exportDeltaPack(fresh.root, 'delta-ok');
     const packAbs = path.join(fresh.root, PACKS_REL, 'delta-ok');
@@ -327,7 +327,7 @@ test('元数据坏/缺/不支持版本：全部内容级拒绝（退出 1），�
     ['removed-type', (packAbs: any) => editPackJson(packAbs, 'delta.json', (d: any) => ({ ...d, removed: 'nope' })), 'bad-delta-metadata'],
     ['candidate-type', (packAbs: any) => editPackJson(packAbs, 'delta.json', (d: any) => ({ ...d, candidate: [] })), 'bad-delta-metadata'],
   ];
-  for (const [label, mutate, code] of cases) {
+  for (const [label, mutate, code] of cases as any[]) {
     const fresh = buildTwoStateFixture(t);
     exportDeltaPack(fresh.root, 'delta-ok');
     mutate(path.join(fresh.root, PACKS_REL, 'delta-ok'));
@@ -342,7 +342,7 @@ test('元数据坏/缺/不支持版本：全部内容级拒绝（退出 1），�
     ['missing-manifest', (packAbs: any) => fs.rmSync(path.join(packAbs, 'manifest.json')), 'missing-pack-manifest'],
     ['broken-manifest', (packAbs: any) => fs.writeFileSync(path.join(packAbs, 'manifest.json'), '{ broken'), 'bad-pack-manifest'],
   ];
-  for (const [label, mutate, code] of manifestCases) {
+  for (const [label, mutate, code] of manifestCases as any[]) {
     const fresh = buildTwoStateFixture(t);
     exportDeltaPack(fresh.root, 'delta-ok');
     mutate(path.join(fresh.root, PACKS_REL, 'delta-ok'));
@@ -426,11 +426,11 @@ test('纯函数直接核验内存对象：篡改 totals/candidate 与输入不�
 
   const totalsTampered = verifyDeltaPackContent({ baseManifest, packManifest, delta: { ...delta, totals: { ...delta.totals, added: 99 } } });
   assert.equal(totalsTampered.ok, false);
-  assert.ok(totalsTampered.errors.some((e) => e.code === 'totals-mismatch' && e.kind === 'added'), JSON.stringify(totalsTampered.errors));
+  assert.ok(totalsTampered.errors.some((e: any) => e.code === 'totals-mismatch' && e.kind === 'added'), JSON.stringify(totalsTampered.errors));
 
   const candidateTampered = verifyDeltaPackContent({ baseManifest, packManifest, delta: { ...delta, candidate: { ...delta.candidate, files: 5 } } });
   assert.equal(candidateTampered.ok, false);
-  assert.ok(candidateTampered.errors.some((e) => e.code === 'candidate-mismatch' && e.field === 'files'), JSON.stringify(candidateTampered.errors));
+  assert.ok(candidateTampered.errors.some((e: any) => e.code === 'candidate-mismatch' && e.field === 'files'), JSON.stringify(candidateTampered.errors));
 
   assert.equal(JSON.stringify(baseManifest), baseSnapshot, '纯函数不修改基线输入');
   assert.equal(JSON.stringify(packManifest), packSnapshot, '纯函数不修改候选清单输入');
@@ -488,7 +488,7 @@ test('基线与候选分别合法但重建目标含 Windows 大小写冲突必�
   const delta = { schemaVersion: 1, kind: 'resource-pack-delta', baseManifest: record([entry]), newManifest: record([entry, added]), totals: { added: 1, changed: 0, removed: 0, unchanged: 1 }, removed: [], candidate: { files: 1, bytes: 1, zeroAssets: false } };
   const result = verifyDeltaPackContent({ baseManifest, packManifest, delta });
   assert.equal(result.ok, false);
-  assert.ok(result.errors.some((e) => e.code === 'duplicate-path' && e.source === 'pack-delta'));
+  assert.ok(result.errors.some((e: any) => e.code === 'duplicate-path' && e.source === 'pack-delta'));
 });
 
 test('候选目录真实路径越界在 stat 和读取前拒绝', (t) => {

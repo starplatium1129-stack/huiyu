@@ -172,7 +172,7 @@ test('retryFailed 只重跑失败/已取消张，seed 与候选序号原样保�
 });
 
 test('支持 character 类型通用实体：avatarUrl 与 subtitle 正确落任务', async () => {
-  const characters = [
+  const characters: any[] = [
     { id: 'kaltsit', title: '凯尔希', subtitle: '明日方舟', avatarUrl: '/thumb/kaltsit.webp', kind: 'character' },
     { id: 'raiden', title: '雷电将军', subtitle: '原神', avatarUrl: '/thumb/raiden.webp', kind: 'character' },
   ];
@@ -221,8 +221,8 @@ test('取消不宣称全部入册，并保留未执行计数', async () => {
   const batch = useBatchDraw({ onFlash: message => messages.push(message), run: async () => { batch.cancel(); return { ok: true }; } });
   await batch.start(scenes(2), 1, 42);
   assert.equal(batch.progress.value.cancelled, 1);
-  assert.match(messages.at(-1), /未执行/);
-  assert.doesNotMatch(messages.at(-1), /全部入册/);
+  assert.match(messages.at(-1)!, /未执行/);
+  assert.doesNotMatch(messages.at(-1)!, /全部入册/);
 });
 
 test('销毁后不启动下一张，晚到的预览被释放', async () => {

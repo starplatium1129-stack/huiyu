@@ -52,7 +52,7 @@ test('changed source and corrupted candidate media cannot be silently accepted',
     candidate.importSnapshot('migration-1', source);
     assert.throws(() => candidate.importSnapshot('migration-1', { ...source, history: [{ ...source.history[0], favorite: true }] }), /Source changed/);
     assert.throws(() => candidate.importSnapshot('migration-2', source), /already belongs/);
-    fs.writeFileSync(path.join(root, 'media', digest(source.images[0].bytes)), 'corrupt');
+    fs.writeFileSync(path.join(root, 'media', digest(source.images[0]!.bytes)), 'corrupt');
     assert.throws(() => candidate.importSnapshot('migration-1', source), /corrupt/);
     assert.equal(candidate.count(), 1);
   } finally { candidate.close(); }
@@ -76,7 +76,7 @@ test('unsupported schemas keep their original version and data', t => {
   const { root } = fixture(t);
   const { DatabaseSync }: typeof import('node:sqlite') = require('node:sqlite');
   const database = path.join(root, 'candidate.sqlite');
-  let db = new DatabaseSync(database);
+  let db: any = new DatabaseSync(database);
   db.exec('PRAGMA user_version=2; CREATE TABLE newer(value TEXT); INSERT INTO newer VALUES(\'preserved\')');
   db.close();
   assert.throws(() => openArtworkCandidate(root), /Unsupported/);

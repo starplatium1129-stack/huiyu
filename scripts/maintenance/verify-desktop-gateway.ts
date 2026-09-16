@@ -27,7 +27,7 @@ async function verifyDesktopGateway({ root = ROOT, logger = console.log }: any =
   let output = '';
   try {
     for (const [source, destination] of Object.entries(config.bundle.resources)) {
-      const target = path.resolve(temporary, destination);
+      const target = path.resolve(temporary, String(destination));
       if (!target.startsWith(temporary + path.sep)) throw new Error('Bundle destination escapes installation');
       fs.cpSync(path.join(tauri, source), target, { recursive: true });
     }

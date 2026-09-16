@@ -99,7 +99,7 @@ function createResourceDownloader(options: any) {
             return { ok: true, kind: 'resource-download-result', action: 'already-downloaded', releaseId,
               packRoot: existing.root, installed: false, files: existing.manifest.entries.length };
           } catch (error) {
-            if (!['CONTENT_INVALID', 'PACKAGE_UNAPPROVED', 'TARGET_MISMATCH', 'METADATA_INVALID'].includes(runtimeErrorCode(error))) throw error;
+            if (!['CONTENT_INVALID', 'PACKAGE_UNAPPROVED', 'TARGET_MISMATCH', 'METADATA_INVALID'].includes(String(runtimeErrorCode(error)))) throw error;
             unlink(ctx.io, complete); // Re-fetch approved metadata and repair only corrupt cache files.
           }
         }

@@ -45,16 +45,16 @@ function createFakeIndexedDB(transactionDelay: number|undefined) {
       close: () => {},
       set onversionchange(_fn: any) { /* 忽略 */ },
       transaction(_storeName: any, mode: string) {
-        const operations: { (): Map<any,any>; (): boolean; (): void; }[] = [];
+        const operations: any[] = [];
         const shouldFail = mode === 'readwrite' && api.failNextWrite;
         if (shouldFail) api.failNextWrite = false;
         const tx: any = { error: null, oncomplete: null, onerror: null, onabort: null, abort() {} };
-        const store = {
+        const store: any = {
           put(record: any) { operations.push(() => records.set(record.key ?? record.id, record)); },
           delete(key: any) { operations.push(() => records.delete(key)); },
           clear() { operations.push(() => records.clear()); },
           get(key: any) {
-            const request = { result: undefined, error: null, onsuccess: null, onerror: null };
+            const request: any = { result: undefined, error: null, onsuccess: null, onerror: null };
             setTimeout(() => {
               request.result = records.get(key);
               if (request.onsuccess) request.onsuccess();
@@ -62,7 +62,7 @@ function createFakeIndexedDB(transactionDelay: number|undefined) {
             return request;
           },
           getAll() {
-            const request = { result: undefined, error: null, onsuccess: null, onerror: null };
+            const request: any = { result: undefined, error: null, onsuccess: null, onerror: null };
             setTimeout(() => {
               request.result = [...records.values()];
               if (request.onsuccess) request.onsuccess();
@@ -88,7 +88,7 @@ function createFakeIndexedDB(transactionDelay: number|undefined) {
   }
 
   api.open = function () {
-    const request = { result: null, error: null, onupgradeneeded: null, onsuccess: null, onerror: null, onblocked: null };
+    const request: any = { result: null, error: null, onupgradeneeded: null, onsuccess: null, onerror: null, onblocked: null };
     setTimeout(() => {
       request.result = databaseFor('db');
       if (request.onupgradeneeded) request.onupgradeneeded();
@@ -101,8 +101,8 @@ function createFakeIndexedDB(transactionDelay: number|undefined) {
 
 /** 装好浏览器全局后再 require 目标模块（模块在导入时读取 globalThis.indexedDB） */
 function loadStores(indexedDB: IDBFactory) {
-  globalThis.indexedDB = indexedDB;
-  if (!globalThis.window) globalThis.window = globalThis;
+  (globalThis as any).indexedDB = indexedDB;
+  if (!(globalThis as any).window) (globalThis as any).window = globalThis;
   for (const key of Object.keys(require.cache)) {
     if (key.includes('useKVStore') || key.includes('useImageStore')) delete require.cache[key];
   }

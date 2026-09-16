@@ -12,6 +12,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-page-architecture.js',
     'test-monolith-budget.js',
     'test-runtime-generated.js',
+    'test-typescript-build.js',
+    'test-typescript-development.js',
     'test-storage-key-hygiene.js',
     'test-style-debt.js',
     'test-bridge-acl.js',
@@ -20,6 +22,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
   ]),
   unit: Object.freeze([
     'test-workflow-conditions.js',
+    'test-runtime-errors.js',
     'test-content-ownership.js',
     'test-content-history.js',
     'test-content-consistency.js',

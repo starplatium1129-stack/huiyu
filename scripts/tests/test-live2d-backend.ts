@@ -126,7 +126,7 @@ test('selectLive2DBackend：native 无桥 → 回退 browser 并带原因', () =
   const selection = selectLive2DBackend('native', () => undefined);
   assert.equal(selection.effectiveKind, 'browser');
   assert.equal(selection.backend.kind, 'browser');
-  assert.match(selection.fallbackReason, /回退/);
+  assert.match(selection.fallbackReason!, /回退/);
 });
 
 test('selectLive2DBackend：native 有桥 → 原生后端', () => {
@@ -242,7 +242,7 @@ test('凝视轨迹：坐标归一化、边界钳制与连续回中', () => {
 test('原生后端：高频凝视 latest-wins，桥繁忙时只保留最新目标', async () => {
   const bridge = createStubBridge();
   const releases: { (value: any): void; (): void; new(): any; }[] = [];
-  bridge.setGaze = (x, y) => {
+  bridge.setGaze = (x: any, y: any) => {
     bridge.calls.setGaze.push([x, y]);
     return new Promise((resolve: any) => releases.push(resolve));
   };
@@ -252,10 +252,10 @@ test('原生后端：高频凝视 latest-wins，桥繁忙时只保留最新目�
   session.sendGaze!(0.2, 0.2);
   session.sendGaze!(0.7, -0.4);
   assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.1]], '首个请求未完成时不堆积桥调用');
-  releases.shift!()();
+  releases.shift()!();
   await new Promise(resolve => setImmediate(resolve));
   assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.1], [0.7, -0.4]], '完成后只发送最新目标');
-  releases.shift!()();
+  releases.shift()!();
 });
 
 test('原生后端：原生 HitArea 事件回传（作者分区命中）', async () => {
@@ -266,11 +266,11 @@ test('原生后端：原生 HitArea 事件回传（作者分区命中）', async
   const hits: any = [];
   const unsubscribe = session.onNativeHitTest!((areas) => hits.push(areas));
   assert(bridge._hitTestListeners.length > 0, '应订阅 onHitTest');
-  bridge._hitTestListeners.forEach((listener) => listener(['Head', 'Body']));
+  bridge._hitTestListeners.forEach((listener: any) => listener(['Head', 'Body']));
   assert.deepEqual(hits, [['Head', 'Body']]);
 
   unsubscribe();
-  bridge._hitTestListeners.forEach((listener) => listener(['Skirt']));
+  bridge._hitTestListeners.forEach((listener: any) => listener(['Skirt']));
   assert.equal(hits.length, 1, '退订后不再回传');
 });
 
@@ -281,11 +281,11 @@ test('原生后端：onMotionFailed 转发 busy 拒绝（同一互动播放中�
 
   const failures: any = [];
   const unsubscribe = session.onMotionFailed!((info) => failures.push(info));
-  bridge._motionFailedListeners.forEach((listener) => listener({ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }));
+  bridge._motionFailedListeners.forEach((listener: any) => listener({ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }));
   assert.deepEqual(failures, [{ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }]);
 
   unsubscribe();
-  bridge._motionFailedListeners.forEach((listener) => listener({ group: 'TapSkirt', index: 0, reason: 'x' }));
+  bridge._motionFailedListeners.forEach((listener: any) => listener({ group: 'TapSkirt', index: 0, reason: 'x' }));
   assert.equal(failures.length, 1, '退订后不再回传');
 });
 
@@ -297,7 +297,7 @@ test('原生后端：渲染线程 stopped 转发 onModelError（带 reason，可
   const errors: any = [];
   session.onModelError((error) => errors.push(error));
   assert(bridge._stoppedListeners.length > 0, '连接期应订阅 onStopped');
-  bridge._stoppedListeners.forEach((listener) => listener({ reason: 'render frame failed: surface error' }));
+  bridge._stoppedListeners.forEach((listener: any) => listener({ reason: 'render frame failed: surface error' }));
   assert.equal(errors.length, 1);
   assert.equal(errors[0].name, 'NATIVE_RENDER_STOPPED');
   assert.match(errors[0].message, /渲染线程已停止/);
@@ -305,7 +305,7 @@ test('原生后端：渲染线程 stopped 转发 onModelError（带 reason，可
 
   // 销毁后 stopped 事件不再派发
   session.destroy();
-  bridge._stoppedListeners.forEach((listener) => listener({ reason: 'late' }));
+  bridge._stoppedListeners.forEach((listener: any) => listener({ reason: 'late' }));
   assert.equal(errors.length, 1, '销毁后不再派发');
 });
 
@@ -362,7 +362,7 @@ test('原生后端：取消挂起连接立即清理，迟到响应不影响重�
 test('原生后端：相同帧率不重复发送，失败后允许下一次重试', async () => {
   const bridge = createStubBridge();
   let reject;
-  bridge.setMaxFps = fps => {
+  bridge.setMaxFps = (fps: any) => {
     bridge.calls.setMaxFps.push([fps]);
     return new Promise((_, fail) => { reject = fail; });
   };
@@ -379,7 +379,7 @@ test('原生后端：相同帧率不重复发送，失败后允许下一次重�
 test('原生后端：失败帧可重试，迟到的旧失败不清除新帧缓存', async () => {
   const bridge = createStubBridge();
   const failures: any = [];
-  bridge.setFrame = frame => {
+  bridge.setFrame = (frame: any) => {
     bridge.calls.setFrame.push([frame]);
     return new Promise((_, reject) => failures.push(reject));
   };
@@ -414,7 +414,7 @@ test('原生后端：销毁幂等，旧句柄和会话不能再发命令', async
   assert.equal(await handle.motion('TapHead'), false);
   assert.equal(await handle.expression('school'), false);
   assert.deepEqual(handle.hitTest(0.5, 0.5), []);
-  for (const [name, calls] of Object.entries(bridge.calls)) {
+  for (const [name, calls] of Object.entries<any>(bridge.calls)) {
     assert.equal(calls.length, ['setCharacter', 'destroy'].includes(name) ? 1 : 0, name);
   }
 });
@@ -460,8 +460,8 @@ test('native pause clears queued samples, closes the mouth and blocks hidden gaz
   session.destroy();
 });
 
-function createStubBridge() {
-  const calls = {
+function createStubBridge(): any {
+  const calls: Record<string, any[]> = {
     setCharacter: [],
     setFrame: [],
     setMaxFps: [],
@@ -473,7 +473,7 @@ function createStubBridge() {
     hitTest: [],
     destroy: [],
   };
-  const listeners = {
+  const listeners: Record<string, any[]> = {
     ready: [],
     motionStarted: [],
     motionFailed: [],
@@ -483,7 +483,7 @@ function createStubBridge() {
   };
   let nextId = 1;
   const offCalls: any[] = [];
-  const bridge = {
+  const bridge: any = {
     isNativeLive2D: true,
     calls,
     _readyListeners: listeners.ready,

@@ -99,9 +99,9 @@ function fixture(t: any) {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     fs.writeFileSync(path.join(root, file), JSON.stringify(value));
   };
-  const characters = [{ id: 'a', outfits: [{ id: 'dress' }, { id: 'coat' }] }, { id: 'b', outfits: [{ id: 'dress' }] }];
-  const blueprints = [{ id: 'a1', characterId: 'a', outfitId: 'dress' }, { id: 'a2', characterId: 'a', outfitId: 'coat' }, { id: 'b1', characterId: 'b', outfitId: 'dress' }];
-  for (const [domain, key, rows, aggregate, version] of [['popular', 'characters', characters, 'popular-characters', 1], ['blueprints', 'blueprints', blueprints, 'scene-blueprints', 2]]) {
+  const characters: any[] = [{ id: 'a', outfits: [{ id: 'dress' }, { id: 'coat' }] }, { id: 'b', outfits: [{ id: 'dress' }] }];
+  const blueprints: any[] = [{ id: 'a1', characterId: 'a', outfitId: 'dress' }, { id: 'a2', characterId: 'a', outfitId: 'coat' }, { id: 'b1', characterId: 'b', outfitId: 'dress' }];
+  for (const [domain, key, rows, aggregate, version] of [['popular', 'characters', characters, 'popular-characters', 1], ['blueprints', 'blueprints', blueprints, 'scene-blueprints', 2]] as any[]) {
     write(`data/${domain}/manifest.json`, { files: [{ file: 'one.json', count: rows.length }] });
     write(`data/${domain}/one.json`, { [key]: rows });
     write(`data/${aggregate}.json`, { version, [key]: rows });
@@ -376,7 +376,7 @@ test('显式坏/缺失元数据拒绝部分 ID，CLI/工作流失败且零写入
   for (const [file, bad] of [
     ['data/curation.json', { curatedSceneIds: ['sc001'], signatureSceneIds: [null], personaCoreSceneIds: [] }],
     ['data/retired-scenes.json', { records: [{ id: 'sc099' }, {}] }],
-  ]) for (const value of [bad, {}, null, 'broken', undefined]) {
+  ] as any[]) for (const value of [bad, {}, null, 'broken', undefined]) {
     if (value === undefined) fs.unlinkSync(path.join(root, file));
     else if (value === 'broken') fs.writeFileSync(path.join(root, file), '{');
     else write(file, value);
@@ -570,7 +570,7 @@ test('样张 CLI/工作流成功、错误、帮助预览零写入，图片引用
   const before = snapshot(root);
   for (const prefix of [[path.resolve(__dirname, '../maintenance/report-content-impact.js')], [path.resolve(__dirname, '../workflow.js'), 'audit:impact']]) {
     const args = [...prefix, '--root', root, '--character', 'a', '--showcase-manifest'];
-    for (const [file, status] of [['showcase.json', 0], ['absent.json', 1], ['../escape.json', 2]]) {
+    for (const [file, status] of [['showcase.json', 0], ['absent.json', 1], ['../escape.json', 2]] as any[]) {
       const r = spawnSync(process.execPath, [...args, file, '--json'], { encoding: 'utf8' });
       assert.equal(r.status, status, r.stdout || r.stderr);
       const value = JSON.parse(r.stdout);
@@ -583,7 +583,7 @@ test('样张 CLI/工作流成功、错误、帮助预览零写入，图片引用
 });
 
 function snapshot(root: any) {
-  return fs.readdirSync(root, { recursive: true }).sort().filter((f) => fs.statSync(path.join(root, f)).isFile()).map((f) => [f, fs.readFileSync(path.join(root, f), 'hex')]);
+  return fs.readdirSync(root, { recursive: true }).sort().filter((f) => fs.statSync(path.join(root, String(f))).isFile()).map((f) => [String(f), fs.readFileSync(path.join(root, String(f)), 'hex')]);
 }
 test('服装按角色作用域过滤；报告不写入，推荐只来自注册表', (t) => {
   const { root } = fixture(t);

@@ -1,8 +1,8 @@
 'use strict';
 
-var path: typeof import('path') = require('path');
+let path: typeof import('path') = require('path');
 
-var REPO_ROOT = path.resolve(__dirname, '..', '..');
+let REPO_ROOT = path.resolve(__dirname, '..', '..');
 
 /**
  * G11：内容契约校验统一数据根。

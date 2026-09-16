@@ -177,7 +177,7 @@ test('help/plan never read target or spawn; CLI/text report remain zero-write in
   f.write('data/blueprints/one.json', { blueprints: f.blueprints.map((r) => r.id === 'bp-a' ? { ...r, prompt: 'edited' } : r) });
   const before = snapshot(f.root);
   for (const json of [true, false]) {
-    const output = cp.spawnSync(process.execPath, [script, '--root', f.root, '--base', f.base, ...(json ? ['--json'] : [])], { encoding: 'utf8' });
+    const output = cp.spawnSync(process.execPath, [script, '--root', f.root, '--base', f.base!, ...(json ? ['--json'] : [])], { encoding: 'utf8' });
     assert.equal(output.status, 1); // intentionally stale aggregate
     assert.ok(json ? JSON.parse(output.stdout).readOnly : output.stdout.includes('历史对照'));
   }
@@ -201,10 +201,10 @@ test('junction escape is rejected without reading external data and no write API
     return read(file, ...args);
   });
   const spawn = cp.spawnSync;
-  t.mock.method(cp, 'spawnSync', (command: string, args: string|readonly string[], options: SpawnSyncOptionsWithStringEncoding) => {
+  t.mock.method(cp, 'spawnSync', ((command: any, args: any, options: any) => {
     assert.ok(!args.includes('diff'), 'Git must not read work files beneath the junction');
     return spawn(command, args, options);
-  });
+  }) as any);
   const result = run(f, '--path', 'data/blueprints/manifest.json');
   assert.ok(result.unknown.some((r: any) => /junction|symbolic/.test(r)));
   assert.equal(result.incrementalPlan.mode, 'full');
@@ -220,7 +220,7 @@ test('clean filters/external diff hooks cannot execute; Git commands have safe e
   fs.appendFileSync(path.join(f.root, 'data/blueprints/one.json'), '\n');
   const original = cp.spawnSync;
   const commands: any[] = [];
-  t.mock.method(cp, 'spawnSync', (command: any, args: readonly string[], options: SpawnSyncOptionsWithStringEncoding) => {
+  t.mock.method(cp, 'spawnSync', ((command: any, args: any, options: any) => {
     assert.equal(command, 'git');
     assert.equal(options.shell, false);
     assert.equal(options.env.GIT_NO_LAZY_FETCH, '1');
@@ -229,7 +229,7 @@ test('clean filters/external diff hooks cannot execute; Git commands have safe e
     assert.ok(!args.some((arg: string) => ['fetch', 'pull', 'push', 'checkout', 'update-index'].includes(arg)));
     commands.push(args);
     return original(command, args, options);
-  });
+  }) as any);
   const before = snapshot(f.root);
   const result = run(f);
   assert.equal(result.gitHistory.status, 'compared');
@@ -271,13 +271,13 @@ test('assume-unchanged cannot be used as evidence that the working tree has no i
 
 test('partial/invalid Git NUL output is discarded and base blobs retain exact byte hashes', (t) => {
   const f = fixture(t);
-  const read = collectGitHistory(f.root, f.base).baseReader!.read('data/blueprints/one.json');
+  const read = collectGitHistory(f.root, f.base!).baseReader!.read('data/blueprints/one.json');
   assert.equal(read.sha256, (require('node:crypto') as typeof import('node:crypto')).createHash('sha256').update(fs.readFileSync(path.join(f.root, 'data/blueprints/one.json'))).digest('hex'));
   const spawn = cp.spawnSync;
   for (const stdout of [Buffer.from('M\0data/blueprints/one.json\0D\0missing-terminator'), Buffer.from('R100\0data/blueprints/one.json\0../escape\0'), Buffer.from([255, 0])]) {
-    const mock = t.mock.method(cp, 'spawnSync', (command: string, args: string|readonly string[], options: SpawnSyncOptionsWithStringEncoding) => args.includes('diff')
-      ? { status: 0, stdout, stderr: Buffer.alloc(0) } : spawn(command, args, options));
-    const result = collectGitHistory(f.root, f.base).result;
+    const mock = t.mock.method(cp, 'spawnSync', ((command: any, args: any, options: any) => args.includes('diff')
+      ? { status: 0, stdout, stderr: Buffer.alloc(0) } : spawn(command, args, options)) as any);
+    const result = collectGitHistory(f.root, f.base!).result;
     assert.equal(result.status, 'error');
     assert.deepEqual(result.paths, []);
     assert.deepEqual(result.changes, []);
@@ -291,8 +291,8 @@ test('pure record comparisons are preview-only and formatter does not mutate res
   f.write('data/blueprints/one.json', { blueprints: f.blueprints });
   f.write('data/scene-blueprints.json', { version: 2, blueprints: f.blueprints });
   const original = snapshot(f.root);
-  const methods = ['writeFileSync', 'appendFileSync', 'renameSync', 'unlinkSync', 'mkdirSync', 'rmSync'];
-  const mocks = methods.map((method) => t.mock.method(fs, method, () => { throw new Error(`Unexpected ${method}`); }));
+  const methods = ['writeFileSync', 'appendFileSync', 'renameSync', 'unlinkSync', 'mkdirSync', 'rmSync'] as const;
+  const mocks = methods.map((method) => t.mock.method(fs, method, (() => { throw new Error(`Unexpected ${method}`); }) as any));
   const result = run(f);
   assert.equal(result.mustChange.length, 0);
   assert.equal(result.incrementalPlan.incrementalChecks[0].status, 'preview');

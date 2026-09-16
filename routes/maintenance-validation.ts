@@ -1,4 +1,3 @@
-import type { PathLike } from 'node:fs';
 'use strict';
 
 import { PathOrFileDescriptor } from 'node:fs';

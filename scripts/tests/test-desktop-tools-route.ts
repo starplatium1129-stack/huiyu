@@ -49,8 +49,8 @@ test('默认文件工具拒绝外向目录链接，允许内部链接与新文�
       ['list_files', { path: 'outward' }],
       ['write_file', { path: 'outward/new/deep.txt', content: 'must not write' }],
     ]) {
-      const denied = await runToolUntrusted(root, name, args);
-      assert.equal(denied.ok, false, name);
+      const denied = await runToolUntrusted(root, name as any, args as any);
+      assert.equal(denied.ok, false, String(name));
       assert.match(denied.output, /工作区外/);
     }
     assert.equal(fs.existsSync(path.join(outside, 'new')), false);
@@ -71,7 +71,7 @@ test('通用命令必须由操作员启用，模型参数不能声明信任', as
     const args = { command: 'node', args: ['--version'], trustedCommands: true };
     const direct = await runToolUntrusted(root, 'run_command', args);
     assert.equal(direct.code, 'TRUSTED_EXECUTION_REQUIRED');
-    const response = await fetch(`http://127.0.0.1:${server.address!().port}/api/desktop-tools`, {
+    const response = await fetch(`http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}/api/desktop-tools`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ name: 'run_command', args, trustedCommands: true, commandMode: 'trusted' }),
     });
@@ -132,7 +132,7 @@ test('工具路由沿用注入的网关工作区，进程环境不能覆盖它',
   const server = app.listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
   try {
-    const response = await fetch(`http://127.0.0.1:${server.address!().port}/api/desktop-tools`, {
+      const response = await fetch(`http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}/api/desktop-tools`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ name: 'get_workspace_info', args: {} }),
     });
@@ -239,7 +239,7 @@ test('生产桌面桥取消：真实 HTTP 断开后终止网关内工具进程�
   let pids: any = [];
   try {
     writeProcessTree(root);
-    const bridge = nativeBridge(`http://127.0.0.1:${server.address!().port}`);
+    const bridge = nativeBridge(`http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}`);
     const pending = bridge.runTool('run_command', { command: 'node', args: ['tree.cjs'] }, { signal: controller.signal }).catch((error: any) => error);
     await waitFor(() => fs.existsSync(path.join(root, 'ready.json')));
     pids = JSON.parse(fs.readFileSync(path.join(root, 'ready.json'), 'utf8'));
@@ -433,9 +433,9 @@ test('generate_character_image：仅保存草稿，不虚报图片、任务或�
 test('generate_character_image：草稿写入失败明确返回失败', async (t) => {
   const root = tempWorkspace();
   const originalWrite = fs.writeFileSync;
-  t.mock.method(fs, 'writeFileSync', function (file: any, ...args: any[]) {
+  t.mock.method(fs, 'writeFileSync', function (this: any, file: any, ...args: any[]) {
     if (String(file).startsWith(path.join(root, 'generated-images'))) throw new Error('draft write failed');
-    return originalWrite.call(this, file, ...args);
+    return (originalWrite as any).call(this, file, ...args);
   });
   try {
     const result = await runTool(root, 'generate_character_image', { character: 'natsume', description: '海边' });
@@ -524,7 +524,7 @@ test('HTTP 装配：/api/desktop-tools 本机可用、代理头拒绝、缺工�
   app.use(createDesktopToolsRouter());
   const server = app.listen(0, '127.0.0.1');
   await new Promise((resolve) => server.once('listening', resolve));
-  const base = `http://127.0.0.1:${server.address!().port}`;
+  const base = `http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}`;
   try {
     fs.writeFileSync(path.join(root, 'hello.txt'), 'hi');
 

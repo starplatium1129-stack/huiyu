@@ -1,7 +1,6 @@
 'use strict';
 
 import { TimeLike } from 'node:fs';
-import { URL } from 'node:url';
 
 /**
  * server/logger.js 保留期清理契约测试（2026-08-28 补，审计 P1-11）。
@@ -25,7 +24,7 @@ const path: typeof import('path') = require('path');
 const { createLogger }: typeof import('../../server/logger') = require('../../server/logger');
 function dateKey(d: Date) { return String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); }
 
-function touch(full: string|number|Buffer<ArrayBufferLike>|URL, mtime: TimeLike) {
+function touch(full: string, mtime: TimeLike) {
   fs.writeFileSync(full, 'x');
   if (mtime) fs.utimesSync(full, mtime, mtime);
 }

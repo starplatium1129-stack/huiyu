@@ -10,8 +10,8 @@ const P: typeof import('../lib/reference-candidate-publish') = require('../lib/r
 const cli: typeof import('../maintenance/reference-candidate-workflow') = require('../maintenance/reference-candidate-workflow');
 const generator: typeof import('../maintenance/render-all-outfits-references') = require('../maintenance/render-all-outfits-references');
 const { referenceView }: typeof import('./reference-view-fixture') = require('./reference-view-fixture');
-const Ajv: typeof import('ajv') = require('ajv');
-const ajv = new Ajv({ allErrors: true });
+const Ajv: any = require('ajv');
+const ajv: any = new Ajv({ allErrors: true });
 const validateView = ajv.compile((require('../contracts/character-reference-view.schema.json') as typeof import('../contracts/character-reference-view.schema.json')));
 
 async function fixture(t: any) {
@@ -243,18 +243,18 @@ test('a competing process cannot steal a live publication lock', async t => {
   F.writeJson(optionsFile, { ...f.options, apply: true });
   const published = await P.publishReferenceCandidates({ ...f.options, apply: true }, { onPhase: async (phase: any) => {
     if (phase !== 'prepared') return;
-    const result: any = await new Promise((resolve, reject) => {
+    const result: any = await new Promise<any>((resolve, reject) => {
       const worker = fork(path.join(__dirname, 'reference-publication-worker.js'), [optionsFile, 'never'], { stdio: ['ignore', 'ignore', 'ignore', 'ipc'] });
       let result: any;
       const timer = setTimeout(() => { worker.kill('SIGKILL'); reject(new Error('Competing publisher timed out')); }, 30000);
-      worker.on('message', message => { result = message; });
+      worker.on('message', (message: any) => { result = message; });
       worker.on('error', error => { clearTimeout(timer); reject(error); });
       worker.on('exit', () => { clearTimeout(timer); resolve(result); });
     });
     assert.equal(result.code, 'BUSY');
     assert.equal(fs.existsSync(f.target), false);
   } });
-  assert.equal(P.resolveReferenceRelease!(f.target, { dataRoot: f.root }).identity, published.identity);
+  assert.equal(P.resolveReferenceRelease!(f.target, { dataRoot: f.root })!.identity, published.identity);
 });
 
 test('process death after staging recovers the stale lock and publishes without changing the old library', async t => {
@@ -267,16 +267,16 @@ test('process death after staging recovers the stale lock and publishes without 
     let reached = false, errorText = '';
     worker.stderr!.on('data', bytes => { errorText += bytes; });
     const timer = setTimeout(() => { worker.kill('SIGKILL'); reject(new Error('Publication worker timed out: ' + errorText)); }, 30000);
-    worker.on('message', message => {
+    worker.on('message', (message: any) => {
       if (message.phase === 'prepared') { reached = true; worker.kill('SIGKILL'); }
       else if (message.error) { clearTimeout(timer); reject(new Error(message.error)); }
     });
     worker.on('error', error => { clearTimeout(timer); reject(error); });
-    worker.on('exit', () => { clearTimeout(timer); reached ? resolve() : reject(new Error('Worker exited before staging: ' + errorText)); });
+    worker.on('exit', () => { clearTimeout(timer); reached ? resolve(undefined) : reject(new Error('Worker exited before staging: ' + errorText)); });
   });
   assert.equal(fs.existsSync(f.target), false);
   assert.deepEqual(F.tree(f.source), original);
   const retried = await P.publishReferenceCandidates({ ...f.options, apply: true });
-  assert.equal(P.resolveReferenceRelease!(f.target, { dataRoot: f.root }).identity, retried.identity);
+  assert.equal(P.resolveReferenceRelease!(f.target, { dataRoot: f.root })!.identity, retried.identity);
   assert.deepEqual(F.tree(f.source), original);
 });

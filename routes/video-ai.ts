@@ -153,7 +153,7 @@ function buildPolishUserPrompt(value: { identity: string; shots: { prompt: strin
 
 // 清洗编排输出：index 对齐 + 字段白名单；非法/越界条目整体跳过（保持原值）。
 function cleanPolishOutput(parsed: { shots: string|any[]; }, value: { identity: string; shots: { prompt: string; shotSize: string|null; camera: string; motion: string; dialogue: string; }[]; }|undefined) {
-  let out = value!.shots.map(function () {
+  let out: { shotSize: string | null; camera: string | null; motion: string | null; dialogue: string | null }[] = value!.shots.map(function () {
     return { shotSize:null, camera:null, motion:null, dialogue:null };
   });
   if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.shots)) return out;
@@ -459,7 +459,7 @@ function createVideoAiRouter(config: any, dependencies: any) {
 }
 
 // ── 台词润色 / 质量检查 / 全自动脚本（2026-08-17 短片流水线扩展）─────────
-var DIALOGUE_SYSTEM_PROMPT = [
+let DIALOGUE_SYSTEM_PROMPT = [
   'You are a dialogue writer for an anime video shot.',
   'Write short natural spoken lines based on the shot description and character context.',
   '',
@@ -475,7 +475,7 @@ var DIALOGUE_SYSTEM_PROMPT = [
   '- If the shot does not need dialogue, still give 3 short fitting lines - never return empty options.'
 ].join('\n');
 
-var REVIEW_SYSTEM_PROMPT = [
+let REVIEW_SYSTEM_PROMPT = [
   'You are a quality inspector for an anime video storyboard.',
   'Review each shot for problems and reply with ONLY a JSON object:',
   '{"issues":[{"index":0,"severity":"warn","field":"camera","message":"...","suggestion":"..."}]}',
@@ -492,7 +492,7 @@ var REVIEW_SYSTEM_PROMPT = [
   '"message" is a short Chinese explanation; "suggestion" is a concrete fix (max 60 chars each).'
 ].join('\n');
 
-var SCRIPT_SYSTEM_PROMPT = [
+let SCRIPT_SYSTEM_PROMPT = [
   'You are a director turning a story synopsis into an anime video shot list.',
   'Reply with ONLY a JSON object:',
   '{"shots":[{"prompt":"...","shotSize":"medium","camera":"still","motion":"natural","dialogue":"...","duration":5}, ...]}',

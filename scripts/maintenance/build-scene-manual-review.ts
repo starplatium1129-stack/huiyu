@@ -65,7 +65,7 @@ function main() {
   fs.writeFileSync(temporary, `${JSON.stringify(output, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, outPath);
   const counts: any = { pass: 0, fail: 0 };
-  for (const entry of Object.values(output.records)) counts[entry.verdict] += 1;
+  for (const entry of Object.values<any>(output.records)) counts[entry.verdict] += 1;
   console.log(JSON.stringify({ out: outPath, reviewed: Object.keys(output.records).length, pending: output.pending.length, counts }, null, 2));
 }
 

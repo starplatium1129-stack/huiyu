@@ -87,7 +87,7 @@ function collectAllSceneTasks(opts: any, input: any) {
         story: bp.description || '',
         category: bp.category || '热门角色',
         characterId: character.id,
-        rating: bp.adult || bp.rating === 'R18' ? 'R18' : (bp.rating === 'R15' ? 'R15' : 'All'),
+        rating: bp.adult || (bp as any).rating === 'R18' ? 'R18' : ((bp as any).rating === 'R15' ? 'R15' : 'All'),
         type: 'popular',
         prompt: fullPrompt,
         negative: fullNegative,

@@ -1,5 +1,4 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
-import type { GatewayConfig } from '../server/config-types';
 'use strict';
 
 import { ParamsDictionary, Request } from 'express-serve-static-core';
@@ -47,7 +46,7 @@ let ALLOWED = new Set([
 
 // 成人门控常量与纯判定收口在 server/validation-core.js（2026-08-28 审计 P1-6，
 // 此前 4 处实现漂移），此处保留家族组装（本机直连全放行 + LoRA 推断路径）。
-function assertAdultAllowed(req: express.Request | null, body: any) {
+function assertAdultAllowed(req: Request | null, body: any) {
   if (!validationCore.detectAdultIntent(body.prompt)) return;
   let hasLocalBypass = req && security.isDirectLocalRequest(req);
   if (hasLocalBypass) return;
@@ -160,7 +159,7 @@ function validate(reqOrBody: Request<ParamsDictionary,any,any,ParsedQs,Record<st
   let loraTagPattern = /<lora:([^:>]+):([^>]+)>/gi;
   let tagMatch;
   while ((tagMatch = loraTagPattern.exec(body.prompt)) !== null) {
-    var tagName = String(tagMatch[1]).trim();
+    let tagName = String(tagMatch[1]).trim();
     let tagWeight = Number(tagMatch[2]);
     let matchingLora = loras.find(function (lora: { file: string; }) { return path.basename(lora.file, path.extname(lora.file)).toLowerCase() === tagName.toLowerCase(); });
     if (!matchingLora || !Number.isFinite(tagWeight) || Math.abs(tagWeight - matchingLora.strength) > 0.0001) comfyUnsupported = true;
@@ -236,7 +235,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
     target.pathname = pathname; target.search = '';
     let payload = body == null ? null : Buffer.from(JSON.stringify(body));
     let client = target.protocol === 'https:' ? https : http;
-    var req = client.request({ protocol:target.protocol, hostname:target.hostname, port:target.port, path:target.pathname, method:method, timeout:timeout || 10000,
+    let req = client.request({ protocol:target.protocol, hostname:target.hostname, port:target.port, path:target.pathname, method:method, timeout:timeout || 10000,
       headers:Object.assign({ Accept:'application/json' }, payload ? { 'Content-Type':'application/json', 'Content-Length':payload.length } : {}) }, function (res) {
       // 2026-08-16 审计：响应体必须设上限，防止上游（本机 SD）返回超大 JSON 时
       // 网关内存被无界撑高（之前 chunks 无限累加）；超过即掐断并按错误处理。
@@ -267,7 +266,7 @@ function requestJson(config: { [x: string]: string|URL; }, hostKey: string, meth
 // 下线时路由决策必须立刻看到（否则 faceDetailer 任务会被送进注定失败的 WebUI
 // 异步失败，而不是立即 503，见 test-generation-routes.js 的离线路径断言）。
 let WEBUI_PROBE_TTL_MS = 3000;
-let webuiProbeCache = { key:'', at:0, value:null, pending:null };
+let webuiProbeCache: { key: string; at: number; value: any; pending: any } = { key:'', at:0, value:null, pending:null };
 
 function probeWebUI(config: any, options?: any) {
   let key = String(config.SD_HOST || '');
@@ -394,7 +393,7 @@ function createGenerationRouter(config: any, dependencies: any) {
       if (autoHiresAvailable) hiresUpscalers.push('Auto');
       if (data.comfyFallbackOnline && comfySuperRes) hiresUpscalers.push('Remacri');
       if (data.comfyFallbackOnline || webui.upscalers.indexOf('Latent') !== -1) hiresUpscalers.push('Latent','Latent (nearest-exact)');
-      if (data.webuiOnline) webui.upscalers.forEach(function (name) { if (WEBUI_UPSCALERS.has(name) && hiresUpscalers.indexOf(name) === -1) hiresUpscalers.push(name); });
+      if (data.webuiOnline) webui.upscalers.forEach(function (name: string) { if (WEBUI_UPSCALERS.has(name) && hiresUpscalers.indexOf(name) === -1) hiresUpscalers.push(name); });
       data.capabilities = { basic:Boolean(data.comfyFallbackOnline || data.webuiOnline), hires:Boolean(data.comfyFallbackOnline || data.webuiOnline), hiresUpscalers:hiresUpscalers, faceDetailer:Boolean(data.webuiOnline), superResModel:data.comfyFallbackOnline ? comfySuperRes : null };
     data.samplers = webui.samplers;
     data.schedulers = webui.schedulers;

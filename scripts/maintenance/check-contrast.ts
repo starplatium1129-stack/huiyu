@@ -183,7 +183,7 @@ function run() {
   const NON_TEXT_TOKENS = ['--success', '--warning', '--danger', '--info'];
   let nonTextFailures = 0;
   for (const [themeName, tokens] of themes) {
-    const deep = hexToRgb(tokens['--bg-deep']);
+    const deep = hexToRgb((tokens as Record<string, any>)['--bg-deep']);
     const bg = compositeSurface(tokens, '--bg-elevated', deep) || deep;
     console.log('\n=== ' + themeName + ' theme / 非文字图形 3:1 (--bg-elevated) ===');
     for (const name of NON_TEXT_TOKENS) {

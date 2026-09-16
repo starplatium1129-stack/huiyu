@@ -105,9 +105,9 @@ test('artist style catalog is unique, allowlisted, limited, and model-native', (
 test('artist token previews match the compiled catalog for both tag engines', () => {
   for (const option of artistCatalog.ARTIST_STYLE_OPTIONS) {
     for (const [engine, preview] of [['sd', option.waiTag], ['anima', option.animaTag]]) {
-      const artists = artistStyles.artistTagsForEngine([option.id], engine);
+      const artists = artistStyles.artistTagsForEngine([option.id], engine as any);
       assert.deepStrictEqual(artists, [preview], `${engine} preview differs for ${option.id}`);
-      const output = compiler.renderPromptPlan(compiler.createPromptPlan({ identity: '1girl', artists }), engine);
+      const output = compiler.renderPromptPlan(compiler.createPromptPlan({ identity: '1girl', artists }), engine as any);
       assert.strictEqual(output.prompt, `1girl, ${preview}`);
     }
   }
@@ -312,7 +312,7 @@ test('Anima profiles do not bind one character and LoRA contracts own exact cont
   assert(assemblySource.includes('selectedLoraId.value'), 'assembly must resolve the contract from the selected service LoRA id');
   assert(assemblySource.includes("pb.char === 'triad' ? '' : String(selectedLoraId.value || '')"));
   assert(!assemblySource.includes('Object.values(controlLoraIds.value)'));
-  const animaProfiles = presets.model_profiles.filter(profile => profile.engine === 'anima');
+  const animaProfiles: any[] = presets.model_profiles.filter(profile => profile.engine === 'anima');
   for (const profile of animaProfiles) {
     assert.strictEqual(profile.lora_id, undefined);
     assert.strictEqual(profile.lora_name, undefined);

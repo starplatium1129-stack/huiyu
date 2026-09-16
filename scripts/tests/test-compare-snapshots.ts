@@ -11,17 +11,17 @@ const assert: typeof import('node:assert') = require('node:assert');
 // useCompareSnapshots 内部经 useFocusTrap 注册 keydown 监听——Node 无 DOM。
 // @vue/runtime-dom 在模块加载期会探测/创建元素，桩必须能吸收任意调用。
 const noop = () => {};
-globalThis.document = new Proxy({
+(globalThis as any).document = new Proxy({
   addEventListener: noop,
   removeEventListener: noop,
   activeElement: null,
   body: { classList: { add: noop, remove: noop } },
   createElement: () => new Proxy({ style: {} }, {
-    get: (target, prop) => (prop in target ? (target as Record<string, any>)[prop] : noop),
+    get: (target, prop) => (prop in target ? (target as any)[prop] : noop),
     set: () => true,
   }),
 }, {
-  get: (target, prop) => (prop in target ? (target as Record<string, any>)[prop] : noop),
+  get: (target, prop) => (prop in target ? (target as any)[prop] : noop),
 });
 const { useCompareSnapshots }: typeof import('../../src/composables/useCompareSnapshots.ts') = require('../../src/composables/useCompareSnapshots.ts');
 

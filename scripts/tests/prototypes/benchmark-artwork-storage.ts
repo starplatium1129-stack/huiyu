@@ -32,7 +32,7 @@ async function main() {
     response.setHeader('Content-Type', request.url === '/fixture.js' ? 'application/javascript' : 'text/html');
     response.end(request.url === '/fixture.js' ? bundle.outputFiles[0].text : '<!doctype html><script src="/fixture.js"></script>');
   });
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  await new Promise<void>(resolve => { server.listen(0, '127.0.0.1', () => resolve()); });
   const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || [
     'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
     'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -50,12 +50,12 @@ async function main() {
       for (let trial = 0; trial < 3; trial += 1) {
         const history = histories(count);
         const projects = [{ id: 'project', history_ids: history.slice(0, 10).map(entry => entry.id) }];
-        const context = await browser.newContext();
+        const context: any = await browser.newContext();
         try {
-          const page = await context.newPage();
-          await page.goto(`http://127.0.0.1:${server.address!().port}`);
-          const indexedDB = await page.evaluate(async ({ history, projects }: any) => {
-            const api = window.storageFixture;
+          const page: any = await context.newPage();
+          await page.goto(`http://127.0.0.1:${(server.address() as any).port}`);
+          const indexedDB: any = await page.evaluate(async ({ history, projects }: any) => {
+            const api = (window as any).storageFixture;
             const start = performance.now();
             await api.kvSetMany([
               { key: api.ARTWORK_HISTORY_KEY, value: history },
@@ -86,12 +86,12 @@ async function main() {
       }
     }
     for (let trial = 0; trial < 3; trial += 1) {
-      const context = await browser.newContext();
+      const context: any = await browser.newContext();
       try {
-        const page = await context.newPage();
-        await page.goto(`http://127.0.0.1:${server.address!().port}`);
-        const indexedDB = await page.evaluate(async () => {
-          const api = window.storageFixture;
+        const page: any = await context.newPage();
+        await page.goto(`http://127.0.0.1:${(server.address() as any).port}`);
+        const indexedDB: any = await page.evaluate(async () => {
+          const api = (window as any).storageFixture;
           const images = Array.from({ length: 64 }, (_, index) => ({
             id: `image-${index}`, blob: new Blob([new Uint8Array(256 * 1024).fill(index)]),
             thumbnail: 'data:image/jpeg;base64,' + globalThis.btoa(String.fromCharCode(...new Uint8Array(16 * 1024).fill(index))),
@@ -119,7 +119,7 @@ async function main() {
         try {
           const publishMs = timed(() => candidate.importSnapshot('benchmark', { history: [], projects: [], trash: [], images }));
           let bytes = 0;
-          const readAllMs = timed(() => { for (const image of images) bytes += candidate.readImage!(image.id).length; });
+          const readAllMs = timed(() => { for (const image of images) bytes += candidate.readImage(image.id)?.length || 0; });
           sqlite = { publishMs, readAllMs, bytes };
         } finally { candidate.close(); }
         assert.equal(indexedDB.bytes, 64 * 272 * 1024); assert.equal(sqlite.bytes, indexedDB.bytes);

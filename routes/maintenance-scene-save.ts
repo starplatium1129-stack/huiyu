@@ -75,7 +75,7 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
         snapshot = maintenanceSnapshot(removed);
         const captured = new Set(snapshot.map((entry: any) => entry.file));
         for (const name of scenePlan.touchedFiles) {
-          const file = path.join(sceneStore.shardsDir, name);
+          const file = path.join(sceneStore.shardsDir, String(name));
           if (!captured.has(file)) {
             snapshot.push(...recoveryFs.snapshotFiles([file]));
             captured.add(file);

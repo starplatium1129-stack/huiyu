@@ -82,7 +82,7 @@ const LIGHT_KW = [
 
 function pickLighting(lighting: string) {
   const hay = String(lighting || '').toLowerCase();
-  for (const [re, key] of LIGHT_KW) if (re.test(hay)) return key;
+  for (const [re, key] of LIGHT_KW as [RegExp, string][]) if (re.test(hay)) return key;
   return '';
 }
 

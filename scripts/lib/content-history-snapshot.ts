@@ -6,7 +6,7 @@ const { object, validId, canonicalSceneId }: typeof import('./content-history-re
 const TIERS = ['curatedSceneIds', 'signatureSceneIds', 'personaCoreSceneIds'];
 const PRODUCTS: Record<string, string> = { popular: 'data/popular-characters.json', blueprints: 'data/scene-blueprints.json', scenes: 'data/scenes.json' };
 const ENTITY: Record<string, string> = { popular: 'character', blueprints: 'blueprint', scenes: 'scene', characters: 'profile', curation: 'curation', retired: 'retired' };
-const keyFor = (kind: string|string[], id: any, characterId: any = null) => JSON.stringify([kind, characterId, id]);
+const keyFor = (kind: string, id: any, characterId: any = null) => JSON.stringify([kind, characterId, id]);
 
 function loadDomain(reader: { json: (file: string) => any; read: (file: string) => any; list: (dir: string) => string[]; }, domain: string) {
   const result: any = { domain, complete: true, rows: [], groups: {}, metadata: {}, unknown: [], issues: [], checks: [], files: [] };
@@ -22,7 +22,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
     return value;
   };
   const validRows = (rows: any, scene: any = false) => Array.isArray(rows) && rows.every((row: any) => object(row) && (scene ? canonicalSceneId(row.id) : validId(row.id)));
-  const put = (group: string|string[], file: string, kind: string|string[], id: any, value: any, extra: Record<string, any> = {}) => {
+  const put = (group: string, file: string, kind: string, id: any, value: any, extra: Record<string, any> = {}) => {
     const row: any = { group, file, domain, role: group.includes(':derived:') ? 'derived' : 'source', kind, id, value, ...extra };
     row.key = keyFor(kind, id, kind.includes('outfit') ? row.characterId : null);
     result.rows.push(row);
@@ -155,7 +155,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
       } catch (error) { unknown('data/scenes-index.json', runtimeErrorMessage(error)); }
     }
   } else if (['characters', 'curation', 'retired'].includes(domain)) {
-    const file = { characters: 'data/characters.json', curation: 'data/curation.json', retired: 'data/retired-scenes.json' }[domain];
+    const file = ({ characters: 'data/characters.json', curation: 'data/curation.json', retired: 'data/retired-scenes.json' } as Record<string, string>)[domain]!;
     const group = `${domain}:source`;
     result.groups[group] = { complete: true, rows: [] };
     try {
@@ -208,7 +208,7 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
     }
   } else unknown(domain, 'untracked domain');
 
-  for (const [group, data] of Object.entries(result.groups)) {
+  for (const [group, data] of Object.entries<any>(result.groups)) {
     const keys = new Set();
     for (const row of data.rows) {
       if (keys.has(row.key)) { issue(row.file, `${row.kind} ${row.id}: duplicate stable ID (${group})`); data.complete = false; }

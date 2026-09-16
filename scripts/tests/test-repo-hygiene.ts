@@ -14,7 +14,7 @@ const {
 const root = path.resolve(__dirname, '..', '..');
 const debtFixture = path.join(root, 'scripts', 'fixtures', 'repo-text-hygiene-debt.json');
 
-function mergeAllowances(...groups) {
+function mergeAllowances(...groups: any[]) {
   const entries = new Map();
   for (const group of groups) {
     for (const entry of group) entries.set(`${entry.path}\0${entry.sha256}`, entry);

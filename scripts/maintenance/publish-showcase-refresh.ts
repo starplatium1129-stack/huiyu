@@ -121,7 +121,7 @@ function parseReviewData(value: any) {
   }
   if (!isRecord(value.records)) throw new Error('manual-review.json must carry a records map');
   const records: Record<string, any> = {};
-  for (const [key, record] of Object.entries(value.records)) {
+  for (const [key, record] of Object.entries<any>(value.records)) {
     if (!isRecord(record)) throw new Error(`review record "${key}" must be an object`);
     if (record.verdict !== 'pass' && record.verdict !== 'fail') {
       throw new Error(`review record "${key}" verdict must be 'pass' or 'fail', got ${JSON.stringify(record.verdict)}`);
@@ -182,7 +182,7 @@ function planPublished(review: any, records: any) {
   }
   const additions: any[] = [];
   const rejected: any[] = [];
-  for (const [key, verdict]: [string, any] of Object.entries(review.records)) {
+  for (const [key, verdict] of Object.entries<any>(review.records)) {
     if (verdict.verdict === 'fail') {
       rejected.push(key);
       continue;
@@ -503,7 +503,7 @@ function switchTarget(tempDir: any, targetDir: any, force: any, renameSync: any 
       try {
         renameSync(backupDir, targetDir);
       } catch (restoreError) {
-        runtimeErrorMessage(error) = `${runtimeErrorMessage(error)}\n  additionally failed to restore backup ${backupDir}: ${runtimeErrorMessage(restoreError)}`;
+        (error as any).message = `${runtimeErrorMessage(error)}\n  additionally failed to restore backup ${backupDir}: ${runtimeErrorMessage(restoreError)}`;
       }
     }
     throw error;

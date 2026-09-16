@@ -16,13 +16,14 @@ function fixture(t: any) {
   put('scripts/lib/scene-write.js', "exports.applySceneChanges = () => { throw Error('unexpected write'); };");
   put('scripts/lib/prompt-policy.js', "exports.ratingFor = () => 'All';");
   put('scripts/lib/manual-scene-ratings.js', "module.exports = { sc001: 'R15' };");
+  put('scripts/lib/runtime-errors.js', "exports.errorMessage = error => error && error.message ? String(error.message) : String(error);");
   const pinned = Object.fromEntries([...script.matchAll(/id: '(sc\d+)'/g)].map((m) => [m[1], {}]));
   pinned.sc003 = {};
   put('data/prompt-pinned-scenes.json', { scenes: pinned });
   const rows = [1, 2, 3, 4].map((n) => ({ id: 'sc00' + n, rating: 'All', mature: false, category: '日常', usage: [] }));
   rows[3].mature = true;
   put('scenes.json', rows);
-  const run = (...args) => spawnSync(process.execPath, [path.join(root, 'scripts/maintenance/classify-scene-ratings.js'), ...args], { encoding: 'utf8', env: { ...process.env, AICS_DATA_ROOT: root } });
+  const run = (...args: any[]) => spawnSync(process.execPath, [path.join(root, 'scripts/maintenance/classify-scene-ratings.js'), ...args], { encoding: 'utf8', env: { ...process.env, AICS_DATA_ROOT: root } });
   return { root, put, rows, run };
 }
 function snapshot(root: any): any {

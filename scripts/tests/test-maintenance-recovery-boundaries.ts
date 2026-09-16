@@ -8,11 +8,11 @@ const { inspectMaintenanceLease, acquireMaintenanceLease, claimRecovery }: typeo
 const { createFixture, tree, spawnWorker }: typeof import('./maintenance-recovery-fixture') = require('./maintenance-recovery-fixture');
 const { fs, path } = io;
 
-async function crash(f: { base: string; options: { rootDir: string; runtimeRoot: string; }; files: string[]; cleanup: () => void; }) { const worker = await spawnWorker(f); await worker.stop(); return worker; }
+async function crash(f: any) { const worker = await spawnWorker(f); await worker.stop(); return worker; }
 
 for (const target of ['backup-directory', 'backup-file-hardlink', 'target-hardlink', 'plan-link']) {
   test('rejects ' + target + ' without changing source or outside bytes', async () => {
-    const f = createFixture();
+    const f: any = createFixture();
     try {
       const worker = await crash(f);
       const plan = previewMaintenanceRecovery(f.options);
@@ -41,7 +41,7 @@ for (const target of ['backup-directory', 'backup-file-hardlink', 'target-hardli
 }
 
 test('explicit showcase root recovers only listed external files; omission and a replacement root are refused', async () => {
-  const f = createFixture();
+  const f: any = createFixture();
   try {
     const showcaseRoot = path.join(f.base, 'showcase');
     fs.mkdirSync(path.join(showcaseRoot, 'images'), { recursive: true });
@@ -71,7 +71,7 @@ test('explicit showcase root recovers only listed external files; omission and a
 });
 
 test('unlisted backup ID and root traversal never select arbitrary backups', async () => {
-  const f = createFixture();
+  const f: any = createFixture();
   try {
     await crash(f);
     for (const backupId of ['../../other', '/absolute', 'another-transaction']) {
@@ -87,7 +87,7 @@ test('unlisted backup ID and root traversal never select arbitrary backups', asy
 });
 
 test('a real live recovery claim cannot be stolen by another recovery attempt', async () => {
-  const f = createFixture();
+  const f: any = createFixture();
   try {
     await crash(f);
     const plan = previewMaintenanceRecovery(f.options);

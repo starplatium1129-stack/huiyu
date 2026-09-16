@@ -1,7 +1,7 @@
 'use strict';
 
-var defaults: typeof import('../../tests/e2e/mock-ports.json') = require('../../tests/e2e/mock-ports.json');
-var offset = Number(process.env.AICS_E2E_PORT_OFFSET || 0);
+let defaults: typeof import('../../tests/e2e/mock-ports.json') = require('../../tests/e2e/mock-ports.json');
+let offset = Number(process.env.AICS_E2E_PORT_OFFSET || 0);
 if (!Number.isInteger(offset) || offset < 0 || offset > 50000) {
   throw new Error('AICS_E2E_PORT_OFFSET must be an integer between 0 and 50000');
 }

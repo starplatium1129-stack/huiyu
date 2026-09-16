@@ -11,8 +11,9 @@ let COMFY_SUPERRES_FILES = ['4x_foolhardy_Remacri.safetensors', 'R-ESRGAN 4x+ An
 let SUPER_RES_UPSALERS = new Set(['Remacri', 'R-ESRGAN 4x+ Anime6B', 'R-ESRGAN 4x+']);
 
 function safeComfyResource(config: { AI_WORKSPACE_ROOT?: string }, kind: string, file: string) {
+  let root: string;
   try {
-    var root = path.resolve(config.AI_WORKSPACE_ROOT || '', 'ComfyUI', 'models', kind);
+    root = path.resolve(config.AI_WORKSPACE_ROOT || '', 'ComfyUI', 'models', kind);
   } catch (e) {
     return false;
   }

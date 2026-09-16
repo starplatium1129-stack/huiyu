@@ -749,7 +749,7 @@ function buildAttemptFiveRecord(key: any, sourceRecord: any, config: any, result
     provider: 'comfy',
     actualSeed: source.actualSeed ?? source.seed,
     seed: source.actualSeed ?? source.seed,
-    postprocess: { kind: 'inpaint', sourceRecordId: source.recordId, ...inpaint },
+    postprocess: { kind: 'inpaint', ...inpaint },
     inpaint,
   });
   delete record.infotexts;

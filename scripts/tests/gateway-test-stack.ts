@@ -1,19 +1,19 @@
 'use strict';
 
-import { Server, IncomingMessage, ServerResponse, RequestListener } from 'node:http';
+import { Server, RequestListener } from 'node:http';
 import { AddressInfo } from 'node:net';
 
-var fs: typeof import('fs') = require('fs');
-var http: typeof import('http') = require('http');
-var os: typeof import('os') = require('os');
-var path: typeof import('path') = require('path');
-var createGateway = require(path.join(__dirname, '..', '..', 'server.js')).createGateway;
-var loadGatewayConfig = require(path.join(__dirname, '..', '..', 'server', 'config.js')).loadGatewayConfig;
-var runtimePaths = require(path.join(__dirname, '..', 'lib', 'runtime-paths.js'));
-var mocks: typeof import('./mock-upstreams.js') = require('./mock-upstreams.js');
+let fs: typeof import('fs') = require('fs');
+let http: typeof import('http') = require('http');
+let os: typeof import('os') = require('os');
+let path: typeof import('path') = require('path');
+let createGateway = require(path.join(__dirname, '..', '..', 'server.js')).createGateway;
+let loadGatewayConfig = require(path.join(__dirname, '..', '..', 'server', 'config.js')).loadGatewayConfig;
+let runtimePaths = require(path.join(__dirname, '..', 'lib', 'runtime-paths.js'));
+let mocks: typeof import('./mock-upstreams.js') = require('./mock-upstreams.js');
 
-var ROOT = path.join(__dirname, '..', '..');
-var DEFAULT_TOKEN = 'gateway-fixture-token-0123456789abcdef012345';
+let ROOT = path.join(__dirname, '..', '..');
+let DEFAULT_TOKEN = 'gateway-fixture-token-0123456789abcdef012345';
 
 type MockEntry = { name: string; mock: { server: Server }; port?: number; url?: string };
 type Upstreams = Record<string, MockEntry> & { list: MockEntry[]; close: () => Promise<void> };
@@ -27,9 +27,9 @@ function closeServer(server: Server | null) {
 }
 
 function removeFixtureRoot(root: string) {
-  var tempRoot = fs.realpathSync.native(os.tmpdir());
-  var resolved = fs.realpathSync.native(path.resolve(root));
-  var relative = path.relative(tempRoot, resolved);
+  let tempRoot = fs.realpathSync.native(os.tmpdir());
+  let resolved = fs.realpathSync.native(path.resolve(root));
+  let relative = path.relative(tempRoot, resolved);
   if (!relative || relative === '..' || relative.startsWith('..' + path.sep) || path.isAbsolute(relative)) {
     throw new Error('Refusing to remove non-temporary fixture root: ' + root);
   }
@@ -37,7 +37,7 @@ function removeFixtureRoot(root: string) {
 }
 
 async function startMockUpstreams() {
-  var entries: MockEntry[] = [
+  let entries: MockEntry[] = [
     { name:'sd', mock:mocks.createSdMock() },
     { name:'comfy', mock:mocks.createComfyMock() },
     { name:'ollama', mock:mocks.createOllamaMock() },
@@ -45,28 +45,28 @@ async function startMockUpstreams() {
     { name:'translate', mock:mocks.createTranslateMock() }
   ];
   try {
-    for (var i = 0; i < entries.length; i += 1) {
-      var address = await mocks.listen(entries[i].mock.server, 0, '127.0.0.1') as AddressInfo;
+    for (let i = 0; i < entries.length; i += 1) {
+      let address = await mocks.listen(entries[i].mock.server, 0, '127.0.0.1') as AddressInfo;
       entries[i].port = address.port;
       entries[i].url = 'http://127.0.0.1:' + address.port;
     }
   } catch (error) {
-    for (var c = 0; c < entries.length; c += 1) await closeServer(entries[c].mock.server);
+    for (let c = 0; c < entries.length; c += 1) await closeServer(entries[c].mock.server);
     throw error;
   }
 
-  var upstreams: Upstreams = {} as Upstreams;
+  let upstreams: Upstreams = {} as Upstreams;
   entries.forEach(function (entry) { upstreams[entry.name] = entry; });
   upstreams.list = entries;
   upstreams.close = async function () {
-    for (var i = entries.length - 1; i >= 0; i -= 1) await closeServer(entries[i].mock.server);
+    for (let i = entries.length - 1; i >= 0; i -= 1) await closeServer(entries[i].mock.server);
   };
   return upstreams;
 }
 
 function buildConfig(runtime: { root: string; }, upstreams: Upstreams, options: { token?: string; env?: Record<string, string> } = {}) {
   options = options || {};
-  var env = Object.assign({
+  let env = Object.assign({
     AICS_APP_ROOT:ROOT,
     AI_WORKSPACE_ROOT:path.join(runtime.root, 'workspace'),
     AICS_RUNTIME_ROOT:runtime.root,
@@ -83,7 +83,7 @@ function buildConfig(runtime: { root: string; }, upstreams: Upstreams, options: 
     TRANSLATION_PYTHON:path.join(runtime.root, 'fixture-python.exe'),
     TRANSLATION_SCRIPT:path.join(runtime.root, 'fixture-translate.py')
   }, options.env || {});
-  var config = loadGatewayConfig(ROOT, env);
+  let config = loadGatewayConfig(ROOT, env);
   // The fixture owns the actual listener, so the OS chooses an ephemeral port.
   config.PORT = 0;
   return config;
@@ -91,29 +91,29 @@ function buildConfig(runtime: { root: string; }, upstreams: Upstreams, options: 
 
 async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; prefix?: string; token?: string; env?: Record<string,string>; [key: string]: any } = {}) {
   options = options || {};
-  var ownsTemporaryRoot = !options.runtimeRoot;
-  var temporaryRoot = ownsTemporaryRoot
+  let ownsTemporaryRoot = !options.runtimeRoot;
+  let temporaryRoot = ownsTemporaryRoot
     ? fs.mkdtempSync(path.join(os.tmpdir(), options.prefix || 'aics-gateway-test-'))
     : path.resolve(options.runtimeRoot || '');
-  var cleanupRuntime = options.cleanupRuntime === true || (ownsTemporaryRoot && options.cleanupRuntime !== false);
-  var runtime = runtimePaths.createRuntimePaths(temporaryRoot);
-  var upstreams: Upstreams | null = null;
-  var gateway: { app: RequestListener; handleUpgrade: (...args: any[]) => void; close: () => void; }|null = null;
-  var server: Server | null = null;
-  var closed = false;
+  let cleanupRuntime = options.cleanupRuntime === true || (ownsTemporaryRoot && options.cleanupRuntime !== false);
+  let runtime = runtimePaths.createRuntimePaths(temporaryRoot);
+  let upstreams: Upstreams | null = null;
+  let gateway: { app: RequestListener; handleUpgrade: (...args: any[]) => void; close: () => void; }|null = null;
+  let server: Server | null = null;
+  let closed = false;
 
   try {
     upstreams = await startMockUpstreams();
-    var config = buildConfig(runtime, upstreams, options);
+    let config = buildConfig(runtime, upstreams, options);
     if (typeof options.configureConfig === 'function') options.configureConfig(config, runtime, upstreams);
     if (typeof options.prepare === 'function') {
       await options.prepare({ root:temporaryRoot, runtime:runtime, config:config, upstreams:upstreams });
     }
 
-    var services = typeof options.createServices === 'function'
+    let services = typeof options.createServices === 'function'
       ? (await options.createServices({ root:temporaryRoot, runtime:runtime, config:config, upstreams:upstreams }) || {})
       : (options.services || {});
-    var control = Object.assign({
+    let control = Object.assign({
       // Fixture routes must never launch PowerShell or another managed process.
       runScriptAsync:function () {
         return Promise.resolve({ ok:false, error:'fixture process execution disabled' });
@@ -127,7 +127,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
     });
     server = http.createServer(gateway!.app);
     server.on('upgrade', gateway!.handleUpgrade);
-    var address = await new Promise<AddressInfo>(function (resolve, reject) {
+    let address = await new Promise<AddressInfo>(function (resolve, reject) {
       server!.once('error', reject);
       server!.listen(0, '127.0.0.1', function () { resolve(server!.address() as AddressInfo); });
     });
@@ -146,7 +146,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
        close:async function () {
          if (closed) return;
          closed = true;
-         var errors = [];
+         let errors = [];
          try { if (gateway) gateway.close(); } catch (error) { errors.push(error); }
          try { await closeServer(server); } catch (error) { errors.push(error); }
          try { if (upstreams) await upstreams.close(); } catch (error) { errors.push(error); }

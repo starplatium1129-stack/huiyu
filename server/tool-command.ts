@@ -4,7 +4,7 @@ let fs: typeof import('fs') = require('fs');
 let path: typeof import('path') = require('path');
 
 /** Windows npm/npx are command wrappers. Run their JavaScript CLI without a shell. */
-function resolveToolCommand(command: string, args: ConcatArray<string>) {
+function resolveToolCommand(command: string, args: string[]) {
   let name = command.replace(/\.(?:exe|cmd)$/i, '').toLowerCase();
   if (process.platform !== 'win32' || (name !== 'npm' && name !== 'npx')) return { command: command, args: args };
   let directories = [path.dirname(process.execPath)].concat(String(process.env.PATH || process.env.Path || '').split(path.delimiter));

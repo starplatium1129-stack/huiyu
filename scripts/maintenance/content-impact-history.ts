@@ -1,7 +1,6 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 const { isDeepStrictEqual: equal }: typeof import('node:util') = require('node:util');
 const { collectGitHistory }: typeof import('./content-impact-git') = require('./content-impact-git');
@@ -48,10 +47,10 @@ function historyImpact(opts: any, captureSnapshots: any) {
   }
   result.unknown.push(...git.unknown);
   const paths = [...new Set([...git.paths, ...(opts.paths || [])])];
-  const direct = new Set(paths.map(pathDomain).filter(Boolean));
+  const direct = new Set<string>(paths.map(pathDomain).filter(Boolean) as string[]);
   if (opts.character) direct.add('popular');
   if (opts.scene) direct.add('scenes');
-  const domains = new Set(direct);
+  const domains = new Set<string>(direct);
   if (direct.has('blueprints')) domains.add('popular');
   if (direct.has('references')) domains.add('popular');
   if (direct.has('popular')) for (const domain of ['blueprints', 'references', 'scenes']) domains.add(domain);
@@ -87,7 +86,7 @@ function historyImpact(opts: any, captureSnapshots: any) {
   const oldRows = Object.values(before).flatMap((s: any) => s.rows);
   const newRows = Object.values(after).flatMap((s: any) => s.rows);
   const edges = new Map();
-  for (const [side, snapshots, rows] of [['base', before, oldRows], ['working-tree', after, newRows]]) {
+  for (const [side, snapshots, rows] of [['base', before, oldRows], ['working-tree', after, newRows]] as [string, any, any[]][]) {
     for (const row of rows) {
       const unknown: string[] = [];
       edges.set(row, { side, targets: relations(row, snapshots, unknown), unknown });

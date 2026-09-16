@@ -41,7 +41,7 @@ const merged = backup.mergeBackupRecords(
   [{ id:1, timestamp:30, prompt:'imported' }, { id:3, timestamp:40 }]
 );
 assert.deepEqual(merged.map(item => item.id), [3, 1, 2]);
-assert.equal(merged.find!(item => item.id === 1).prompt, 'imported');
+assert.equal(merged.find(item => item.id === 1)!.prompt, 'imported');
 
 const legacyMerged = backup.mergeBackupRecords(
   [{ timestamp:50, prompt:'legacy local' }],
@@ -98,7 +98,7 @@ test('Backup storage-key inventory: live keys collected, dead keys cleaned, rest
   ]);
   const fakeStorage = {
     length: stored.size,
-    key: (index: string|number) => [...stored.keys()][index] ?? null,
+    key: (index: string|number) => [...stored.keys()][Number(index)] ?? null,
     getItem: (key: string) => stored.get(key) ?? null,
     setItem: (key: string, value: string) => { stored.set(key, value) },
     removeItem: (key: string) => { stored.delete(key) },

@@ -457,7 +457,7 @@ function buildArtistPromptFor(engine: any, artistId: any) {
     const rendered = renderPromptPlan(plan, 'krea2', kreaProfile());
     return { prompt: rendered.prompt, negative: '' };
   }
-  const base = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
+  const base = resolveModelProfile(presets.model_profiles as any, ANIMA_AESTHETIC_ID, 'anima');
   const plan = createPromptPlan({
     profile: base,
     identity: ARTIST_NEUTRAL_SUBJECT.identity,
@@ -603,7 +603,7 @@ function characterDefaultBlueprint(blueprints: any, characterId: any, outfitId: 
 function popularBatch(seedBase: any) {
   const characters = popularContent.parsePopularCharacters(popularData);
   const blueprints = popularContent.parseSceneBlueprints(blueprintData);
-  const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
+  const profile = resolveModelProfile(presets.model_profiles as any, ANIMA_AESTHETIC_ID, 'anima');
   if (!profile) throw new Error('anima_aesthetic_v11 profile missing');
   return characters.map((character: any) => {
     const blueprint = characterDefaultBlueprint(blueprints, character.id, popularContent.defaultOutfit(character).id);
@@ -708,7 +708,7 @@ function rebuildWithOverride(base: any, override: any) {
     const character: any = popularContent.findCharacter(characters, base.subject);
     const blueprint = popularContent.findBlueprint(blueprints, base.sceneId)
       || characterDefaultBlueprint(blueprints, base.subject, popularContent.defaultOutfit(character).id);
-    const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
+    const profile = resolveModelProfile(presets.model_profiles as any, ANIMA_AESTHETIC_ID, 'anima');
     const { prompt, negative } = buildPopularPrompt(character, blueprint, profile, override);
     return Object.assign({}, base, { prompt, negative });
   }
@@ -784,7 +784,7 @@ function reviewAttemptFourJobs(basePlan: any) {
 // 画师：12 画师 + no-artist baseline × {anima, krea2}。
 
 function kreaProfile() {
-  return resolveModelProfile(presets.model_profiles, KREA_MODEL_ID, 'krea2');
+  return resolveModelProfile(presets.model_profiles as any, KREA_MODEL_ID, 'krea2');
 }
 
 function nearestSize(engine: any, blueprint: any) {
@@ -807,7 +807,7 @@ function nearestSize(engine: any, blueprint: any) {
 function popularGridBatch(seedBase: any) {
   const characters = popularContent.parsePopularCharacters(popularData);
   const blueprints = popularContent.parseSceneBlueprints(blueprintData);
-  const animaProfile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
+  const animaProfile = resolveModelProfile(presets.model_profiles as any, ANIMA_AESTHETIC_ID, 'anima');
   const krea = kreaProfile();
   if (!animaProfile || !krea) throw new Error('anima_aesthetic_v11 / krea2_turbo_fp8 profile missing');
   const records: any[] = [];
@@ -815,7 +815,7 @@ function popularGridBatch(seedBase: any) {
     // 角色感知：只枚举该角色的专属原型场景 + 通用成人蓝图（fail-closed）。
     const eligible = popularContent.eligibleBlueprints(blueprints, character, { adultEnabled: true });
     for (const blueprint of eligible) {
-      for (const engine of ['anima', 'krea2']) {
+      for (const engine of ['anima', 'krea2'] as const) {
         const profile = engine === 'anima' ? animaProfile : krea;
         const decisions = popularContent.inferBlueprintDecisions(blueprint);
         const style = kreaRecipes.resolveStyleRecipe(

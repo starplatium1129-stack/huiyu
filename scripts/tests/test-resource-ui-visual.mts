@@ -37,7 +37,7 @@ try {
     } }], server: { host: '127.0.0.1', port: 0, strictPort: true,
       watch: { ignored: ['**/desktop-tauri/**', '**/runtime/**'] } }, logLevel: 'error' })
   await server.listen()
-  const origin = `http://127.0.0.1:${server.httpServer!.address!().port}`
+  const origin = `http://127.0.0.1:${(server.httpServer!.address!() as import('node:net').AddressInfo).port}`
   const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || (process.platform === 'win32'
     ? ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe'].find(file => fs.existsSync(file)) : undefined)
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
@@ -46,7 +46,7 @@ try {
     for (const width of [1280, 390]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1 })
       const page = await context.newPage()
-      let state = initial()
+      let state: any = initial()
       const errors: any = []
       const writes: any = []
       page.on('pageerror', error => errors.push(error.message))
@@ -77,7 +77,7 @@ try {
         for (const element of document.querySelectorAll('.resource-library :is(p,span,h2,label,select,button,code,strong)')) {
           if (!element.textContent.trim() || !element.getBoundingClientRect().height) continue
           const style = getComputedStyle(element)
-          let ancestor = element!!!!!, background
+          let ancestor: Element | null = element, background
           while (ancestor) {
             const color = getComputedStyle(ancestor).backgroundColor
             if (color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') { background = color; break }

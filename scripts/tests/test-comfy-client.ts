@@ -24,8 +24,8 @@ test('orphan sweep recognizes native queue metadata and excludes this process ne
       res.end('{}');
     }
   });
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  const config = { COMFY_HOST: `http://127.0.0.1:${server.address!().port}` };
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', () => resolve()));
+  const config = { COMFY_HOST: `http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}` };
   try {
     const body: any = { prompt: {}, client_id: 'owner', extra_data: { custom: 'kept' } };
     await comfy.requestComfyJson(config, 'POST', '/prompt', body);
@@ -39,9 +39,9 @@ test('orphan sweep recognizes native queue metadata and excludes this process ne
 
 test('non-JSON cancellation response preserves HTTP status for fallback', async () => {
   const server = http.createServer((req, res) => { res.writeHead(404); res.end('Not Found'); });
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', () => resolve()));
   try {
-    await assert.rejects(comfy.requestComfyJson({ COMFY_HOST: `http://127.0.0.1:${server.address!().port}` }, 'POST', '/cancel'),
+    await assert.rejects(comfy.requestComfyJson({ COMFY_HOST: `http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}` }, 'POST', '/cancel'),
       (error: any) => error.detail.upstreamStatus === 404);
   } finally { await new Promise(resolve => server.close(resolve)); }
 });

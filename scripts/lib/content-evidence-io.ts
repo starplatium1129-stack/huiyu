@@ -9,7 +9,7 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 const { TextDecoder }: typeof import('node:util') = require('node:util');
 const { safeRelative }: typeof import('./content-history-reader') = require('./content-history-reader');
 const hash = (value: string|NodeJS.ArrayBufferView<ArrayBufferLike>|NonSharedBuffer) => createHash('sha256').update(value).digest('hex');
-const jsonHash = (value: string[]) => hash(JSON.stringify(value));
+const jsonHash = (value: any) => hash(JSON.stringify(value));
 const SHA = /^[a-f0-9]{64}$/;
 
 function evidencePath(file: string) {

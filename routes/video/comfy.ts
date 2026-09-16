@@ -20,7 +20,7 @@ let sharedClient: typeof import('../../server/comfy-client') = require('../../se
 
 let serviceError = errors.serviceError;
 let requestComfy = sharedClient.requestComfy;
-async function requestComfyJson(config: any, method: string, pathname: string, body: { unload_models: boolean; free_memory: boolean; }|null, timeoutMs: number) {
+async function requestComfyJson(config: any, method: string, pathname: string, body?: any, timeoutMs?: number) {
   return sharedClient.requestComfyJson(config, method, pathname, body, timeoutMs);
 }
 
@@ -70,7 +70,7 @@ function firstResponseChunk(response: any) {
     };
     let onEnd = function () { done(null, null); };
     let onError = function (error: any) { done(error); };
-    var done = function (error: any, chunk?: any) {
+    let done = function (error: any, chunk?: any) {
       if (settled) return;
       settled = true;
       response.off('data', onData);

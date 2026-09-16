@@ -95,6 +95,8 @@ export default tseslint.config(
       'dist/**', 'node_modules/**', 'assets/vendor/**', 'docs/**', 'test-results/**',
       // services/*.d.ts 是 build:runtime 生成产物，不参与 lint
       'services/*.d.ts', 'services/*.js',
+      'server.js', 'server/**/*.js', 'routes/**/*.js', 'scripts/**/*.js', 'scripts/**/*.mjs',
+      'tools/**/*.js', 'assets/theme-bootstrap.js', 'eslint.config.mjs',
       'scripts/archive/**',
     ],
   },
@@ -178,14 +180,14 @@ export default tseslint.config(
   },
   {
     // 浏览器域：前端源码与组件
-    files: ['src/**/*'],
+    files: ['src/**/*', 'tools/**/*.ts'],
     languageOptions: {
       globals: { ...SHARED_RUNTIME_GLOBALS, ...BROWSER_ONLY_GLOBALS },
     },
   },
   {
     // Node 域：网关、路由、服务层与维护脚本
-    files: ['server.js', 'routes/**', 'services/**', 'scripts/**'],
+    files: ['server.ts', 'server/**', 'routes/**', 'services/**', 'scripts/**'],
     languageOptions: {
       globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS },
     },
@@ -203,7 +205,7 @@ export default tseslint.config(
   {
     // CDP 调试脚本在 page.evaluate 回调里编写浏览器侧代码：
     // 对这些文件补回浏览器全局，避免 no-undef 误报。
-    files: ['scripts/maintenance/cdp-*.js'],
+    files: ['scripts/maintenance/cdp-*.ts'],
     languageOptions: {
       globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS, ...BROWSER_ONLY_GLOBALS },
     },
@@ -228,7 +230,7 @@ export default tseslint.config(
     // 单体回涨（TrainingView 1638 行 / training-service 1669 行 / control.js
     // 1060 行等已越过项目自设的 600 行拆分红线）。拆分排期见
     // docs/archive/audits/engineering-audit-2026-08-28.html §08；存量 warn 数量只降不升。
-    files: ['src/**/*.{ts,vue}', 'routes/**/*.js', 'services/**/*.{js,ts}', 'server.js'],
+    files: ['src/**/*.{ts,vue}', 'routes/**/*.ts', 'services/**/*.ts', 'server.ts'],
     rules: {
       'max-lines': ['warn', { max: 1000, skipBlankLines: true, skipComments: true }],
     },

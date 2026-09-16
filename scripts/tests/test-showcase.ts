@@ -379,8 +379,8 @@ test('showcase asset allowlist rejects traversal, absolute urls, backslashes and
   for (const item of blocked) {
     assert.strictEqual(isShowcaseAssetPath(item), false, `blocked path must be rejected: ${JSON.stringify(item)}`);
   }
-  assert.strictEqual(isShowcaseAssetPath(null), false);
-  assert.strictEqual(isShowcaseAssetPath(undefined), false);
+assert.strictEqual(isShowcaseAssetPath(null as any), false);
+assert.strictEqual(isShowcaseAssetPath(undefined as any), false);
 });
 
 test('showcase publish helper gates on manual review and builds per-batch entries', () => {

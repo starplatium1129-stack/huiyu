@@ -1,10 +1,10 @@
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
-const sharp: typeof import('sharp') = require('sharp');
+type Sharp = (input?: any, options?: any) => any;
+const sharp: Sharp = require('sharp');
 const { noLinks, child, within, readBytes, digest, writeAtomic }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
 // Profile generation runs only inside a fresh desktop staging directory. Every original URL
@@ -23,6 +23,9 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: any
       const rel = prefix + name;
       const file = child(directory, name);
       const stat = noLinks(fs, file);
+      // TypeScript sources and source maps are build inputs, not distributable assets;
+      // the desktop stage deliberately excludes them from the gateway payload.
+      if (/\.(?:[cm]?ts|map)$/i.test(rel)) continue;
       if (rel.toLowerCase() === 'character-references' || rel.toLowerCase().startsWith('character-references/')) continue;
       if (stat!.isDirectory()) walk(file, rel + '/');
       else entries.push({ rel, sourceBytes: stat!.size });

@@ -1,6 +1,5 @@
 'use strict';
 
-import { Server,IncomingMessage,ServerResponse } from 'node:http';
 
 /**
  * server/upstream-health 测试 — node:test。
@@ -12,10 +11,10 @@ const assert: typeof import('node:assert/strict') = require('node:assert/strict'
 const http: typeof import('node:http') = require('node:http');
 const health: typeof import('../../server/upstream-health') = require('../../server/upstream-health');
 
-function listen(server: Server<IncomingMessage,ServerResponse>) {
+function listen(server: any) {
   return new Promise(function (resolve) {
     server.listen(0, '127.0.0.1', function () {
-      resolve('http://127.0.0.1:' + server.address!().port);
+      resolve('http://127.0.0.1:' + (server.address!() as import('node:net').AddressInfo).port);
     });
   });
 }

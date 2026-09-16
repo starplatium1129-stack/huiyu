@@ -73,7 +73,7 @@ async function app(run: any, packaged: any = false) {
     ROOT_DIR: root, RUNTIME_ROOT: path.join(root, 'runtime'), SCENE_SHOWCASE_DIR: null, DESKTOP_PACKAGED: packaged,
   }).router).listen(0, '127.0.0.1');
   await new Promise(resolve => server.once('listening', resolve));
-  const base = 'http://127.0.0.1:' + server.address!().port;
+  const base = 'http://127.0.0.1:' + (server.address!() as import('node:net').AddressInfo).port;
   const request = async (url: any, body: any) => {
     const response = await fetch(base + url, body === undefined ? {} : {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
@@ -86,7 +86,7 @@ async function app(run: any, packaged: any = false) {
 
 const stateUrl = '/api/maintenance/scenes-state';
 const changesUrl = '/api/maintenance/scenes/changes';
-const delta = (baseVersion?: any, scenes: any = [], blueprints?: any) => ({ baseVersion, changeSet: {
+const delta: any = (baseVersion?: any, scenes: any = [], blueprints?: any) => ({ baseVersion, changeSet: {
   version: 1, scenes: { upsert: scenes, remove: [] },
   ...(blueprints ? { blueprints: { upsert: blueprints, remove: [] } } : {}),
 } });
@@ -196,7 +196,7 @@ test('concurrent changes share the same lock and reject stale blueprint/source b
     const saved = replies.find(reply => reply.status === 200).body;
     assert.equal((await request(stateUrl)).body.version, saved.version);
     const source = blueprintStore.loadBlueprintShards().sources[0];
-    const raw = JSON.parse(fs.readFileSync(source.source)); raw.blueprints[0].description += ' source-only';
+    const raw = JSON.parse(fs.readFileSync(source!.source, 'utf8')); raw.blueprints[0].description += ' source-only';
     fs.writeFileSync(source.source, JSON.stringify(raw));
     const readBack = (await request(stateUrl)).body;
     assert.match(readBack.snapshot.blueprints[0].description, /source-only/);

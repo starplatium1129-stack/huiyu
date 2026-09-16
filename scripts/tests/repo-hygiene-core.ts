@@ -20,7 +20,7 @@ const TEXT_EXTENSIONS = new Set([
   '.bat', '.c', '.cc', '.cfg', '.cjs', '.cmd', '.conf', '.cpp', '.css', '.csv',
   '.h', '.hpp', '.html', '.ini', '.java', '.js', '.json', '.json5', '.jsx',
   '.lock', '.md', '.mjs', '.mts', '.properties', '.ps1', '.py', '.rs', '.sh',
-  '.sql', '.svg', '.toml', '.ts', '.tsx', '.txt', '.vue', '.wgsl', '.xml',
+  '.sql', '.svg', '.toml', '.ts', '.tsx', '.cts', '.txt', '.vue', '.wgsl', '.xml',
   '.yaml', '.yml', '.nsi', '.nsh', '.cs', '.xaml', '.manifest',
 ]);
 const BINARY_EXTENSIONS = new Set([
@@ -35,7 +35,7 @@ const TEXT_FILENAMES = new Set([
   'dockerfile', 'license', 'makefile',
 ]);
 
-function compareStrings(left: number, right: number) {
+function compareStrings(left: string, right: string) {
   if (left < right) return -1;
   if (left > right) return 1;
   return 0;
@@ -71,7 +71,7 @@ function resolveRepositoryRoot(startPath: string) {
   return path.resolve(repositoryRoot);
 }
 
-function splitNullTerminated(output: string) {
+function splitNullTerminated(output: string | Buffer) {
   const source = output.toString('utf8');
   if (source && !source.endsWith('\0')) {
     throw new Error('Git returned malformed non-NUL-terminated path output');
@@ -195,7 +195,7 @@ async function loadDebtFromGitRef(startPath: string, reference: string) {
   return allowances;
 }
 
-function positionAt(source: string[], targetIndex: number) {
+function positionAt(source: string, targetIndex: number) {
   let line = 1;
   let column = 1;
   for (let index = 0; index < targetIndex; index += 1) {
@@ -240,7 +240,7 @@ function scanText(bytes: NodeJS.AllowSharedBufferSource|undefined, expectedEol: 
 
   const controlPattern = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/g;
   for (const match of source.matchAll(controlPattern)) {
-    const code = match[0].codePointAt!(0).toString(16).toUpperCase().padStart(4, '0');
+    const code = match[0].codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0');
     violations.push(textViolation(
       'control',
       `illegal control character U+${code}`,
@@ -315,7 +315,7 @@ function catFileBatch(repositoryRoot: string, objectIds: any[]) {
     stdio: ['pipe', 'pipe', 'pipe'],
     windowsHide: true,
     maxBuffer: MAX_GIT_OUTPUT,
-  });
+  } as any);
   const chunks: any = [];
   let stderr = '';
   child.stdout.on('data', (chunk: any) => chunks.push(chunk));
@@ -367,7 +367,7 @@ function unknownViolation(target: string, relativePath: string) {
   };
 }
 
-function appendBlobViolations(result: any, target: string, relativePath: string|undefined, bytes: NonSharedBuffer, allowanceLookup: Map<any,any>) {
+function appendBlobViolations(result: any, target: string, relativePath: string, bytes: any, allowanceLookup: Map<any,any>) {
   const violations = scanText(bytes, expectedLineEnding(target, relativePath), relativePath);
   if (violations.length === 0) return;
   const digest = sha256(bytes);
@@ -431,7 +431,7 @@ function scanWorktreeTarget(repositoryRoot: string, relativePaths: any[], target
 
 function sortViolations(violations: any[]) {
   violations.sort((left: any, right: any) => {
-    const targetDifference = TARGET_ORDER.get!(left.target) - TARGET_ORDER.get!(right.target);
+    const targetDifference = (TARGET_ORDER.get(left.target) ?? 0) - (TARGET_ORDER.get(right.target) ?? 0);
     if (targetDifference !== 0) return targetDifference;
     const pathDifference = compareStrings(left.path, right.path);
     if (pathDifference !== 0) return pathDifference;
@@ -450,8 +450,8 @@ async function scanRepository(startPath: string, options: any = {}) {
   const result = {
     repositoryRoot,
     counts: { index: 0, worktree: 0, untracked: 0 },
-    violations: [],
-    allowed: [],
+    violations: [] as any[],
+    allowed: [] as any[],
   };
 
   const indexEntries = parseIndexEntries(runGit(repositoryRoot, ['ls-files', '--stage', '-z']));
@@ -529,7 +529,7 @@ async function scanRepository(startPath: string, options: any = {}) {
   sortViolations(result.violations);
   result.allowed.sort((left: any, right: any) => {
     const pathDifference = compareStrings(left.path, right.path);
-    return pathDifference || TARGET_ORDER.get!(left.target) - TARGET_ORDER.get!(right.target);
+    return pathDifference || ((TARGET_ORDER.get(left.target) ?? 0) - (TARGET_ORDER.get(right.target) ?? 0));
   });
   return result;
 }

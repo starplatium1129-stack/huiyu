@@ -32,7 +32,7 @@ function responseFor(messages: any) {
 }
 
 async function startMockOpenAi() {
-  const port = await freePort()
+  const port = await freePort() as number
   const requests: any = []
   const server = http.createServer(async (request, response) => {
     if (request.method === 'GET' && request.url === '/v1/models') {
@@ -67,9 +67,9 @@ async function startMockOpenAi() {
       response.end(JSON.stringify({ error: runtimeErrorMessage(error) }))
     }
   })
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     server.once('error', reject)
-    server.listen(port, '127.0.0.1', resolve)
+    server.listen(port, '127.0.0.1', () => resolve())
   })
   return {
     port,

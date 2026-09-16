@@ -5,7 +5,7 @@ const { compareReferenceProjection }: typeof import('../maintenance/content-impa
 
 // Only import pure inspection functions. In particular do not import builders,
 // stores with a process-global root, or the production-data contract test suite.
-function inspectDomain(reader: any, domain: PropertyKey) {
+function inspectDomain(reader: any, domain: string) {
   const snapshot = loadDomain(reader, domain);
   if (domain === 'references') {
     try {

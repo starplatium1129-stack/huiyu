@@ -32,7 +32,8 @@ let RATING_NAMES = ['general', 'sensitive', 'questionable', 'explicit'];
 
 // ── 懒加载原生依赖（缺失时优雅降级） ────────────────────────────────
 let ort: typeof import("onnxruntime-node")|null = null;
-let sharp: typeof import("sharp")|null = null;
+type Sharp = (input?: any, options?: any) => any;
+let sharp: Sharp|null = null;
 let nativeLoadError: string|null = null;
 function loadNative() {
   if (nativeLoadError) return null;
@@ -44,7 +45,7 @@ function loadNative() {
     return null;
   }
   try {
-    sharp = (require('sharp') as typeof import('sharp'));
+    sharp = (require('sharp') as Sharp);
   } catch (e) {
     nativeLoadError = 'sharp 不可用: ' + runtimeErrorMessage(e);
     return null;
@@ -142,7 +143,7 @@ async function getSession(engine: NonNullable<ReturnType<typeof loadNative>>, mo
  * 图像预处理：等比缩放 + 白底居中 → RGB → BGR float32 [448*448*3]
  * 与 pysssss 节点逐位一致（sharp fit:contain 等价于「resize 到最长边 + 白边填充」）。
  */
-async function preprocess(sharpLib: typeof import("sharp"), imageBuffer: Buffer) {
+async function preprocess(sharpLib: Sharp, imageBuffer: Buffer) {
   let image = sharpLib(imageBuffer).rotate().toColourspace('srgb');
   let meta = await image.metadata();
   if (!meta.width || !meta.height) throw new Error('无法读取图片尺寸');

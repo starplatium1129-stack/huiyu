@@ -19,5 +19,5 @@ test('generic lighting cannot replace the atmosphere of a single-sentence scene'
 });
 test('truncated clauses and absent prose are rejected', () => {
   assert.equal(hasAtmosphericSceneProse('In a quiet room at dusk she stands beside a wooden table with an open sketchbook and a pencil, as warm light crosses the floor and'), false);
-  for (const value of ['', null, undefined, 12, 'She smiles. Warm light.']) assert.equal(hasAtmosphericSceneProse(value), false);
+  for (const value of ['', null, undefined, 12, 'She smiles. Warm light.']) assert.equal(hasAtmosphericSceneProse(value as any), false);
 });

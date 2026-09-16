@@ -33,9 +33,9 @@ function selectExecution(report: any, forceFull: any = false, context: any) {
   if (report) {
     reasons.push(...report.unknown);
     const knownPaths = new Set((report.evidence?.files || []).map((entry: any) => entry.file));
-    for (const snapshots of [context?.before, context?.after]) for (const snapshot of Object.values(snapshots || {})) {
-      for (const [file, value] of Object.entries(snapshot.metadata)) if (file.endsWith('/manifest.json')) {
-        for (const entry of value.files || []) knownPaths.add(path.posix.join(path.posix.dirname(file), entry.file));
+    for (const snapshots of [context?.before, context?.after]) for (const snapshot of Object.values<any>(snapshots || {})) {
+      for (const [file, value] of Object.entries<any>(snapshot.metadata)) if (file.endsWith('/manifest.json')) {
+        for (const entry of (value as any).files || []) knownPaths.add(path.posix.join(path.posix.dirname(file), entry.file));
       }
     }
     for (const file of new Set([...(report.gitHistory?.paths || []), ...(report.input?.paths || [])])) {
@@ -72,7 +72,7 @@ function recordEquality(snapshots: { [x: string]: any; }, keys: Set<any>) {
     const source = snapshot.rows.filter((row: any) => row.role === 'source' && row.key === key);
     if (source.length !== 1) { issues.push({ key, reason: 'Source identity is absent or ambiguous' }); continue; }
     const value = source[0].value;
-    for (const [group, data] of Object.entries(snapshot.groups).filter(([name]: any) => name.includes(':derived:'))) {
+    for (const [group, data] of Object.entries<any>(snapshot.groups).filter(([name]: any) => name.includes(':derived:'))) {
       const file = group.slice(group.indexOf(':derived:') + 9);
       let count = 1;
       if (domain === 'scenes' && file !== PRODUCTS.scenes) {
@@ -91,7 +91,7 @@ function recordEquality(snapshots: { [x: string]: any; }, keys: Set<any>) {
 
 function relationCheck(snapshots: any, keys?: Set<any>|undefined) {
   const unknown = [];
-  for (const snapshot of Object.values(snapshots)) {
+  for (const snapshot of Object.values<any>(snapshots)) {
     if (!snapshot.groups[`${snapshot.domain}:source`]?.complete) unknown.push(`${snapshot.domain}: source relationship coverage incomplete`);
     for (const row of snapshot.rows.filter((row: any) => row.role === 'source' && (!keys || keys.has(row.key)))) relations(row, snapshots, unknown);
   }
@@ -141,7 +141,7 @@ function fullFieldChecks(reader: any, snapshots: any) {
   } catch (error) { checks.push(outcome('existing-core-field-contract', 'core fields', [], [runtimeErrorMessage(error)])); }
   for (const name of ['standards', 'view']) {
     try {
-      const Ajv: typeof import('ajv') = require('ajv');
+      const Ajv: any = require('ajv');
       const schema = require(`../contracts/character-reference-${name}.schema.json`);
       const validate = new Ajv({ allErrors: true }).compile(schema);
       const valid = validate(reader.json(`data/character-reference-${name}.json`));

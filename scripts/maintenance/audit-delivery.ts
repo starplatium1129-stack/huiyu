@@ -103,7 +103,7 @@ function report(o: any) {
       } else result.status = 'exists';
       add('passed', request.file, 'verifiedFiles', result.status, undefined);
     } catch (e) {
-      result.status ||= ['ENOENT', 'ENOTDIR'].includes(runtimeErrorCode(e)) ? 'missing' : 'error';
+      result.status ||= ['ENOENT', 'ENOTDIR'].includes(String(runtimeErrorCode(e))) ? 'missing' : 'error';
       result.message = runtimeErrorMessage(e);
       add('errors', request.file, 'verifiedFiles', runtimeErrorMessage(e), result.status);
     }
@@ -223,7 +223,7 @@ function report(o: any) {
   const ids = Object.entries(build).filter(([k]: any) => /Sha256$/.test(k) && !/source|snapshot|baseline/i.test(k));
   if (text(d.browser?.distIndexSha256BeforeAndAfter)) ids.push(['browser.distIndexSha256BeforeAndAfter', d.browser.distIndexSha256BeforeAndAfter]);
   if (!ids.length) add('pending', file, 'build', '缺少构建产物哈希；日志或源哈希不能代替构建标识', 'unknown');
-  for (const [k, v] of ids) add(/^[a-f\d]{64}$/i.test(v) ? 'passed' : 'errors', file, `build.${k}`, String(v), undefined);
+  for (const [k, v] of ids) add(/^[a-f\d]{64}$/i.test(String(v)) ? 'passed' : 'errors', file, `build.${k}`, String(v), undefined);
   for (const expected of o.builds || []) {
     const [field, hash] = expected.split('=');
     if (get(d, field) !== hash) add('errors', file, field, '构建证据与显式预期哈希不匹配或缺失', undefined);

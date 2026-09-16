@@ -254,7 +254,7 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
   // 访客模式（hostConfig:true）：从站主托管配置注入 baseUrl/model/key，
   // 前端始终拿不到密钥
   if (api && api.hostConfig === true) {
-    let host = readHostConfig(gatewayConfig);
+    let host = gatewayConfig ? readHostConfig(gatewayConfig) : null;
     if (!host) {
       throw new httpClient.UpstreamError('站主尚未配置 API，请在控制面板的聊天设置中保存', {
         code:'HOST_CONFIG_MISSING',
@@ -382,7 +382,7 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
       if (!line.startsWith('data:')) continue;
       let payload = line.slice(5).trim();
       if (!payload || payload === '[DONE]') continue;
-      var event;
+      let event;
       try { event = JSON.parse(payload); } catch (error) {
         malformedSse = true;
         continue;

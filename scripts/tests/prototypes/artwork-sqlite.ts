@@ -10,7 +10,7 @@ const digest = (value: any) => createHash('sha256').update(value).digest('hex');
 
 function openArtworkCandidate(root: any, fault: any = () => {}) {
   fs.mkdirSync(path.join(root, 'media'), { recursive: true });
-  const db = new DatabaseSync(path.join(root, 'candidate.sqlite'));
+  const db: any = new DatabaseSync(path.join(root, 'candidate.sqlite'));
   if (db.prepare('PRAGMA user_version').get!().user_version! > 1) {
     db.close();
     throw new Error('Unsupported candidate schema version');
@@ -84,7 +84,7 @@ function openArtworkCandidate(root: any, fault: any = () => {}) {
     importSnapshot, publishMetadata,
     state: (id: any) => db.prepare('SELECT state FROM migrations WHERE id=?').get(id)?.state,
     count: () => db.prepare('SELECT count(*) AS n FROM artwork').get!().n,
-    history: () => db.prepare('SELECT body FROM artwork ORDER BY rowid').all().map(row => JSON.parse(row.body)),
+    history: () => db.prepare('SELECT body FROM artwork ORDER BY rowid').all().map((row: any) => JSON.parse(row.body)),
     patch: (id: any, patch: any) => transaction(() => {
       const current = db.prepare('SELECT body FROM artwork WHERE id=?').get(id);
       if (!current) throw new Error('Artwork not found');

@@ -64,7 +64,7 @@ function origins(root: any, nodes: any, appended: any) {
     ...nodes.filter((node: any) => node.record),
   ];
   const result: any = {};
-  for (const [field, binding] of Object.entries(tested.tracking.gates)) {
+  for (const [field, binding] of Object.entries<any>(tested.tracking.gates)) {
     if (MAIN_FIELDS.includes(field)) continue;
     const value = get(tested, field), candidate = candidates.find(node => get(node.record.value, field) !== undefined);
     if (binding.machine !== 'office') throw Error('finalize 只能关联办公机门禁');
@@ -86,7 +86,7 @@ function createFinalization(root: any, document: any, baseline: any, resultRecor
   ancestor(root, baseline.value.commit, finalCommit);
   const appended = resultRecord ? resultFor(root, resultRecord.entry, baseline) : null;
   const gates = origins(root, nodes, appended);
-  for (const [field, origin] of Object.entries(gates)) {
+  for (const [field, origin] of Object.entries<any>(gates)) {
     const actual = gateFingerprint(get(document, field), document.tracking.gates[field]);
     if (actual.valueSha256 !== origin.valueSha256 || actual.bindingSha256 !== origin.bindingSha256) throw Error(`finalize 不得重写已测结果: ${field}`);
   }

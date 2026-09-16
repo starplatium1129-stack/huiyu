@@ -50,7 +50,7 @@ function sineBuffer(seconds: number, freq: any = 440, amplitude: any = 0.3) {
   return out;
 }
 
-function concat(...buffers) {
+function concat(...buffers: any[]) {
   const total = buffers.reduce((sum, b) => sum + b.length, 0);
   const out = new Float32Array(total);
   let offset = 0;

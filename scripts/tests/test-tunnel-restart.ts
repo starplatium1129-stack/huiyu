@@ -8,17 +8,17 @@
  *   3. 手动 stop 后 → 不再自动拉起
  */
 
-var test: typeof import('node:test') = require('node:test');
-var assert: typeof import('node:assert') = require('node:assert');
-var path: typeof import('path') = require('path');
-var fs: typeof import('fs') = require('fs');
-var os: typeof import('os') = require('os');
+let test: typeof import('node:test') = require('node:test');
+let assert: typeof import('node:assert') = require('node:assert');
+let path: typeof import('path') = require('path');
+let fs: typeof import('fs') = require('fs');
+let os: typeof import('os') = require('os');
 
-var { createTunnelManager }: typeof import('../../server/tunnel') = require('../../server/tunnel');
+let { createTunnelManager }: typeof import('../../server/tunnel') = require('../../server/tunnel');
 
-var { EventEmitter }: typeof import('node:events') = require('node:events');
+let { EventEmitter }: typeof import('node:events') = require('node:events');
 
-function FakeChild() {
+function FakeChild(this: any) {
   EventEmitter.call(this);
   // No real PID: cleanup must never signal an unrelated host process.
   this.pid = null;
@@ -26,14 +26,14 @@ function FakeChild() {
 }
 FakeChild.prototype = Object.create(EventEmitter.prototype);
 FakeChild.prototype.constructor = FakeChild;
-function fakeSpawn() {
-  return new FakeChild();
+function fakeSpawn(): any {
+  return new (FakeChild as any)();
 }
 
 function makeManager() {
-  var children: any[] = [];
-  var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tunnel-test-'));
-  var config = {
+  let children: any[] = [];
+  let dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tunnel-test-'));
+  let config = {
     DISABLE_TUNNEL: false,
     CLOUDFLARED_PATH: __filename,  // 必须真实存在，否则 start() 直接 return
     PORT: 3197,
@@ -43,14 +43,14 @@ function makeManager() {
     },
   };
   fs.writeFileSync(config.RUNTIME.tunnelLog, '');
-  var manager = createTunnelManager({
+  let manager = createTunnelManager({
     config: config,
     restartBaseMs:10,
     restartMaxMs:20,
     restartLimit:3,
     pollIntervalMs:10,
     spawn: function () {
-      var child = fakeSpawn();
+      let child = fakeSpawn();
       children.push(child);
       return child;
     },
@@ -59,9 +59,9 @@ function makeManager() {
   return { manager: manager, dir: dir, config: config, children: children };
 }
 
-function waitFor(predicate: { (): boolean; (): boolean; (): boolean; (): boolean; (): any; }, timeoutMs: any) {
-  var deadline = Date.now() + (timeoutMs || 500);
-  return new Promise(function (resolve, reject) {
+function waitFor(predicate: () => any, timeoutMs: any = 500): Promise<void> {
+  let deadline = Date.now() + (timeoutMs || 500);
+  return new Promise<void>(function (resolve, reject) {
     function check() {
       if (predicate()) return resolve();
       if (Date.now() >= deadline) return reject(new Error('condition timed out'));
@@ -72,8 +72,8 @@ function waitFor(predicate: { (): boolean; (): boolean; (): boolean; (): boolean
 }
 
 test('tunnel auto-restarts after cloudflared exits unexpectedly', function (t) {
-  var fixture: any = makeManager();
-  var manager = fixture.manager;
+  let fixture: any = makeManager();
+  let manager = fixture.manager;
   t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();
   assert.strictEqual(fixture.children.length, 1, 'first spawn');
@@ -85,9 +85,9 @@ test('tunnel auto-restarts after cloudflared exits unexpectedly', function (t) {
 });
 
 test('restart attempts reset after a registered connection', function (t) {
-  var fixture: any = makeManager();
-  var manager = fixture.manager;
-  var config = fixture.config;
+  let fixture: any = makeManager();
+  let manager = fixture.manager;
+  let config = fixture.config;
   t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();
   // 第一次崩溃 → 计划重连
@@ -105,17 +105,17 @@ test('restart attempts reset after a registered connection', function (t) {
 });
 
 test('stop prevents further auto-restarts', function (t) {
-  var fixture: any = makeManager();
-  var manager = fixture.manager;
+  let fixture: any = makeManager();
+  let manager = fixture.manager;
   t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();
   manager.stop();
-  var attemptsBefore = fixture.children.length;
+  let attemptsBefore = fixture.children.length;
   fixture.children[0].emit('exit', 1);
   return new Promise(function (resolve) {
     setTimeout(function () {
       assert.strictEqual(fixture.children.length, attemptsBefore, 'no respawn after manual stop');
-      resolve();
+      resolve(undefined);
     }, 50);
   });
 });

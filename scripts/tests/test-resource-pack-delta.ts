@@ -28,7 +28,7 @@ function recordingIo(hooks: any = {}) {
   const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'lstatSync', 'readdirSync', 'realpathSync', 'readFileSync', 'mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync']) {
-    io[op] = (...args) => {
+    io[op] = (...args: any[]) => {
       calls.push({ op, target: String(args[0]) });
       const hook = hooks[op];
       if (hook) return hook(...args);

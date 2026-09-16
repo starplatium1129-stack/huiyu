@@ -46,7 +46,7 @@ function sha256Hex(buffer: string|NodeJS.ArrayBufferView<ArrayBufferLike>) {
   return createHash('sha256').update(buffer).digest('hex');
 }
 
-function relFromRoot(rootReal: string, abs: string|undefined) {
+function relFromRoot(rootReal: string, abs: string) {
   return path.relative(rootReal, abs).split(path.sep).join('/');
 }
 
@@ -214,7 +214,7 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
     errors.push({ path: entry.path, code: boundary.code, message: `复制前真实路径边界检查失败: ${boundary.message}` });
     return false;
   }
-  const sourceScope = checkManifestPath(relFromRoot(rootReal, boundary.realTarget));
+  const sourceScope = checkManifestPath(relFromRoot(rootReal, boundary.realTarget!));
   if (!sourceScope.ok) {
     errors.push({ path: entry.path, code: 'out-of-scope', message: '复制时源真实目标进入排除域或离开 assets，未读取' });
     return false;

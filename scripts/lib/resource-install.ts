@@ -96,7 +96,7 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
     let existing;
     try { existing = existingVersion(ctx, release.targetIdentity); }
     catch (error) {
-      if (!['CONTENT_INVALID', 'INSTALLED_TAMPERED', 'UNLISTED_FILE'].includes(runtimeErrorCode(error))) throw error;
+      if (!['CONTENT_INVALID', 'INSTALLED_TAMPERED', 'UNLISTED_FILE'].includes(String(runtimeErrorCode(error)))) throw error;
       quarantineFailedTarget(ctx, journal);
       existing = existingVersion(ctx, release.targetIdentity);
     }

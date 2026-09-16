@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 /**
  * 存储键卫生扫描 —— 防止已登记的存储键再次以字面量散落到各处。

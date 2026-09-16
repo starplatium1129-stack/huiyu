@@ -661,7 +661,7 @@ function buildAttemptRecord(key: any, sourceRecord: any, config: any, results: a
     provider: 'comfy',
     actualSeed: sourceRecord.actualSeed ?? sourceRecord.seed,
     seed: sourceRecord.actualSeed ?? sourceRecord.seed,
-    postprocess: { kind: 'inpaint', sourceRecordId: sourceRecord.recordId, ...inpaint },
+    postprocess: { kind: 'inpaint', ...inpaint },
     inpaint,
   });
   delete record.infotexts;

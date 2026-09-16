@@ -2,7 +2,6 @@ import type { ChildProcessWithoutNullStreams } from 'node:child_process';
 import { errorMessage as runtimeErrorMessage } from '../../scripts/lib/runtime-errors';
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 /**
  * routes/control/script-runner.js —— 控制面 PowerShell 脚本执行器
@@ -48,7 +47,7 @@ function createScriptRunner(options: any) {
         clearTimeout(timer);
         resolve(result);
       }
-      var timer = setTimeout(function () {
+      let timer = setTimeout(function () {
         // child.kill() 在 Windows 上只终止 powershell.exe 本体，
         // 会把它启动的 SD WebUI / GPT-SoVITS 孤立掉。整棵树一起收。
         processTree.killProcessTree(child);

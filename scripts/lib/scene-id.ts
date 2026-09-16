@@ -8,7 +8,7 @@ function isSceneId(value: any) {
 }
 
 function formatSceneId(number: any) {
-  if (typeof number !== 'number' || !Number.isSafeInteger(number)) throw new Error('场景编号必须是正安全整数');
+  if (typeof number !== 'number' || !Number.isSafeInteger(number) || number < 1) throw new Error('场景编号必须是正安全整数');
   return 'sc' + String(number).padStart(3, '0');
 }
 

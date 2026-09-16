@@ -3,8 +3,6 @@
 type LoggerOptions = { dir?: string; prefix?: string; retainDays?: number; maxBytes?: number; dailyBytesLimit?: number; debug?: boolean };
 type Logger = { info(message: string, detail?: any): void; warn(message: string, detail?: any): void; error(message: string, detail?: any): void; debug(message: string): void };
 
-/* eslint-disable no-console -- console 输出是本模块的职责（终端/sidecar 可见性契约），文件行另落 */
-
 /**
  * server/logger.js — 网关最小日志设施（2026-08-21 收口）。
  *
@@ -115,9 +113,9 @@ function createLogger(options?: LoggerOptions): Logger {
     try { size = fs.statSync(full).size; } catch (error) { return; }
     if (size <= dailyBytesLimit) return;
     dailyPaused = true;
-    console.error('[logger] 当日日志 ' + path.basename(full) + ' 已达 ' +
+    process.stderr.write('[logger] 当日日志 ' + path.basename(full) + ' 已达 ' +
       (size / 1024 / 1024).toFixed(1) + 'MB（单日上限 ' + (dailyBytesLimit / 1024 / 1024).toFixed(0) +
-      'MB），今日落盘暂停、仅保留终端输出；疑似刷屏 bug，次日自动恢复。');
+      'MB），今日落盘暂停、仅保留终端输出；疑似刷屏 bug，次日自动恢复。\n');
   }
 
   function write(level: 'info' | 'warn' | 'error' | 'debug', message: string, detail?: any) {
@@ -133,13 +131,13 @@ function createLogger(options?: LoggerOptions): Logger {
     }
     if (level === 'debug') {
       if (!debugEnabled) return;
-      console.log('  [debug] ' + message);
+      process.stdout.write('  [debug] ' + message + '\n');
     } else if (level === 'warn') {
-      console.warn(message);
+      process.stderr.write(message + '\n');
     } else if (level === 'error') {
-      console.error(message);
+      process.stderr.write(message + '\n');
     } else {
-      console.log(message);
+      process.stdout.write(message + '\n');
     }
     if (!dir) return;
     if (dailyPaused) return;

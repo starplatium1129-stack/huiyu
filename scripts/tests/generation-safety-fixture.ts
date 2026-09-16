@@ -83,7 +83,7 @@ function png() {
 }
 
 async function mockGateway(t: any) {
-  const state = { posts: [], gets: [], mode: 'success', onPoll: null, images: 0 };
+  const state: any = { posts: [], gets: [], mode: 'success', onPoll: null, images: 0 };
   const image = png();
   const server = http.createServer(async (req, res) => {
     const json = (value: any) => { res.setHeader('content-type', 'application/json'); res.end(JSON.stringify(value)); };
@@ -113,8 +113,8 @@ async function mockGateway(t: any) {
     res.setHeader('content-type', state.mode === 'html' ? 'text/html' : 'image/png');
     res.end(state.mode === 'bad-image' ? Buffer.from('<html>invalid</html>') : state.mode === 'truncated' ? image.subarray(0, 45) : image);
   });
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  const origin = `http://127.0.0.1:${server.address!().port}`;
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', () => resolve()));
+  const origin = `http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}`;
   t.after(() => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); }));
   return { state, origin, image, fetchImpl: (url: any, init: any) => {
     if (new URL(url).origin !== origin) throw new Error(`non-mock network forbidden: ${url}`);

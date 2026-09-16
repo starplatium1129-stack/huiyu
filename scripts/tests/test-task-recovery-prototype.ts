@@ -20,7 +20,7 @@ function fixture(t: TestContext) {
     fs.rmSync(resolved, { recursive: true, force: true });
   });
   let timestamp = 1_000;
-  const calls = { query: 0, cancel: [], submit: 0 };
+  const calls: any = { query: 0, cancel: [], submit: 0 };
   const backend = {
     fingerprint, idempotentCancel: true, state: 'running',
     async queryById() { calls.query += 1; return { state: this.state }; },
@@ -72,8 +72,8 @@ test('durable cancel intent during an in-flight completion query prevents result
   const f = fixture(t);
   const id = f.accepted();
   let release;
-  let entered: (value: any) => void;
-  const started = new Promise(resolve => { entered = resolve; });
+  let entered: () => void;
+  const started = new Promise<void>(resolve => { entered = () => resolve(); });
   f.backend.queryById = () => { entered(); return new Promise(resolve => { release = resolve; }); };
   const recovery = f.recovery.reconcile(id);
   await started;
@@ -176,7 +176,7 @@ test('corrupt or torn journal blocks all backend side effects and preserves the 
       let contents;
       if (damage === 'torn') contents = lines.join('\n') + '\n{"payload":';
       else {
-        const last = JSON.parse(lines.at(-1));
+        const last = JSON.parse(lines.at(-1)!);
         if (damage === 'checksum') last.payload.record.state = 'succeeded';
         if (damage === 'sequence') last.payload.sequence += 2;
         if (damage === 'schema') last.payload.record.prompt = 'unexpected-private-field';

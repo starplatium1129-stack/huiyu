@@ -1,66 +1,64 @@
 'use strict';
 
-import { Server,IncomingMessage,ServerResponse } from 'node:http';
-import { AddressInfo } from 'node:net';
 
 const { test }: typeof import('node:test') = require('node:test');
 
-var assert: typeof import('assert') = require('assert');
-var events: typeof import('events') = require('events');
-var express: typeof import('express') = require('express');
-var fs: typeof import('fs') = require('fs');
-var http: typeof import('http') = require('http');
-var net: typeof import('net') = require('net');
-var os: typeof import('os') = require('os');
-var path: typeof import('path') = require('path');
-var childProcess: typeof import('child_process') = require('child_process');
-var createControlRouter = (require('../../routes/control') as typeof import('../../routes/control')).createControlRouter;
-var createTtsService = (require('../../services/tts-service') as typeof import('../../services/tts-service')).createTtsService;
-var runtimePaths: typeof import('../lib/runtime-paths') = require('../lib/runtime-paths');
-var gatewayTestStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
+let assert: typeof import('assert') = require('assert');
+let events: typeof import('events') = require('events');
+let express: typeof import('express') = require('express');
+let fs: typeof import('fs') = require('fs');
+let http: typeof import('http') = require('http');
+let net: typeof import('net') = require('net');
+let os: typeof import('os') = require('os');
+let path: typeof import('path') = require('path');
+let childProcess: typeof import('child_process') = require('child_process');
+let createControlRouter = (require('../../routes/control') as typeof import('../../routes/control')).createControlRouter;
+let createTtsService = (require('../../services/tts-service') as typeof import('../../services/tts-service')).createTtsService;
+let runtimePaths: typeof import('../lib/runtime-paths') = require('../lib/runtime-paths');
+let gatewayTestStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
 
-var projectRoot = path.resolve(__dirname, '..', '..');
-var WINDOWS_POWERSHELL_TEST = process.platform === 'win32'
+let projectRoot = path.resolve(__dirname, '..', '..');
+let WINDOWS_POWERSHELL_TEST = process.platform === 'win32'
   ? {}
   : { skip:'requires Windows PowerShell process ownership semantics' };
 
-function listen(server: Server<IncomingMessage,ServerResponse>) {
-  return new Promise(function (resolve, reject) {
+function listen(server: any): Promise<string> {
+  return new Promise<string>(function (resolve, reject) {
     server.once('error', reject);
     server.listen(0, '127.0.0.1', function () {
-      resolve('http://127.0.0.1:' + server.address!().port);
+      resolve('http://127.0.0.1:' + (server.address!() as import('node:net').AddressInfo).port);
     });
   });
 }
 
-function close(server: Server<IncomingMessage,ServerResponse>) {
+function close(server: any) {
   return new Promise(function (resolve) {
-    if (!server || !server.listening) return resolve();
-    server.close(function () { resolve(); });
+    if (!server || !server.listening) return resolve(undefined);
+    server.close(function () { resolve(undefined); });
   });
 }
 
 async function postJson(baseUrl: any, pathname: string, payload: { action?: string; sdHost?: string; }) {
-  var response = await fetch(baseUrl + pathname, {
+  let response = await fetch(baseUrl + pathname, {
     method:'POST',
     headers:{ 'Content-Type':'application/json' },
     body:JSON.stringify(payload)
   });
-  var body = await response.text();
-  var json = null;
+  let body = await response.text();
+  let json = null;
   try { json = JSON.parse(body); } catch (error) {}
   return { status:response.status, body:body, json:json };
 }
 
 async function getJson(baseUrl: any, pathname: string) {
-  var response = await fetch(baseUrl + pathname);
+  let response = await fetch(baseUrl + pathname);
   return { status:response.status, json:await response.json() };
 }
 
 async function waitFor(check: any, description: string) {
-  var deadline = Date.now() + 3000;
+  let deadline = Date.now() + 3000;
   while (Date.now() < deadline) {
-    var value = await check();
+    let value = await check();
     if (value) return value;
     await new Promise(function (resolve) { setTimeout(resolve, 25); });
   }
@@ -101,8 +99,8 @@ function baseConfig(rootDir: string, runtime: any): any {
 }
 
 function createWeightMock() {
-  var state = { paths:[], rejectGpt:true };
-  var server = http.createServer(function (req, res) {
+  let state: any = { paths:[], rejectGpt:true };
+  let server = http.createServer(function (req, res) {
     state.paths.push(req.url || '');
     if ((req.url || '').startsWith('/set_gpt_weights') && state.rejectGpt) {
       res.statusCode = 500;
@@ -115,13 +113,13 @@ function createWeightMock() {
 }
 
 test('control-failure-contract: timeout, config rollback, voice weights, tunnel exit', async () => {
-  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-control-failure-'));
-  var controlRuntime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'control'));
-  var controlConfig = baseConfig(projectRoot, controlRuntime);
-  var controlProbeServer = http.createServer(function (req, res) { res.end('ok'); });
+  let temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-control-failure-'));
+  let controlRuntime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'control'));
+  let controlConfig = baseConfig(projectRoot, controlRuntime);
+  let controlProbeServer = http.createServer(function (req, res) { res.end('ok'); });
   controlConfig.TTS_HOST = await listen(controlProbeServer);
-  var failConfigWrite = false;
-  var controlRouter = createControlRouter(controlConfig, function () {
+  let failConfigWrite = false;
+  let controlRouter = createControlRouter(controlConfig, function () {
     return { tunnelUrl:'', startTunnel:function () {}, stopTunnel:function () {} };
   }, {
     runScriptAsync:async function () {
@@ -130,31 +128,31 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     refreshServiceStates:async function () {
       return { sdOnline:false, ttsOnline:false, ollamaOnline:false, ollamaModels:[], ollamaVram:0, webuiManaged:false };
     },
-    writeJson:function (file: PathOrFileDescriptor, data: any) {
+    writeJson:function (file: string, data: any) {
       if (failConfigWrite) throw new Error('simulated config write failure');
       fs.writeFileSync(file, JSON.stringify(data), 'utf8');
     }
   });
-  var controlApp = express();
+  let controlApp = express();
   controlApp.use(controlRouter);
-  var controlServer = http.createServer(controlApp);
-  var controlBase = await listen(controlServer);
-  var weightMock = null;
-  var tunnelStack: any = null;
+  let controlServer = http.createServer(controlApp);
+  let controlBase = await listen(controlServer);
+  let weightMock = null;
+  let tunnelStack: any = null;
 
   try {
-    var startedVoice = await postJson(controlBase, '/api/service/voice', { action:'start' });
+    let startedVoice = await postJson(controlBase, '/api/service/voice', { action:'start' });
     assert(startedVoice.status === 200 && startedVoice.json && startedVoice.json.pending,
       'voice start must acknowledge the asynchronous control operation');
-    var failedVoice: any = await waitFor(async function () {
-      var status = await getJson(controlBase, '/api/status');
+    let failedVoice: any = await waitFor(async function () {
+      let status = await getJson(controlBase, '/api/status');
       return status.json.operation && status.json.operation.status === 'failed' ? status.json.operation : null;
     }, 'voice startup timeout failure');
     assert(failedVoice.error.includes('timeout'), 'voice startup timeout must be exposed in the operation result');
 
     failConfigWrite = true;
-    var previousSdHost = controlConfig.SD_HOST;
-    var failedConfig = await postJson(controlBase, '/api/config', { sdHost:'http://127.0.0.1:7999' });
+    let previousSdHost = controlConfig.SD_HOST;
+    let failedConfig = await postJson(controlBase, '/api/config', { sdHost:'http://127.0.0.1:7999' });
     assert(failedConfig.status === 500 && failedConfig.json && !failedConfig.json.ok,
       'config write failure must return the standard error envelope');
     assert.strictEqual(controlConfig.SD_HOST, previousSdHost,
@@ -163,8 +161,8 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     await close(controlServer);
 
     weightMock = createWeightMock();
-    var weightBase = await listen(weightMock.server);
-    var tts = createTtsService({
+    let weightBase = await listen(weightMock.server);
+    let tts = createTtsService({
       host:weightBase,
       profiles:{
         nene:{
@@ -173,14 +171,14 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
         }
       }
     });
-    var firstFailure = await tts.prepare('nene').then(function () { return null; }, function (error) { return error; });
+    let firstFailure = await tts.prepare('nene').then(function () { return null; }, function (error) { return error; });
     assert(firstFailure, 'a rejected GPT weight switch must reject voice preparation');
     assert.strictEqual((await tts.status()).activeVoice, '',
       'a partial weight switch must not mark a voice as active');
 
     weightMock.state.rejectGpt = false;
     await tts.prepare('nene');
-    var sovitsRequests = weightMock.state.paths.filter(function (pathname: any) {
+    let sovitsRequests = weightMock.state.paths.filter(function (pathname: any) {
       return pathname.startsWith('/set_sovits_weights');
     });
     assert.strictEqual(sovitsRequests.length, 2,
@@ -188,12 +186,12 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     await close(weightMock.server);
     weightMock = null;
 
-    var tunnelChild: any = new events.EventEmitter();
+    let tunnelChild: any = new events.EventEmitter();
     tunnelChild.unref = function () {};
     tunnelStack = await gatewayTestStack.start({
       runtimeRoot:path.join(temporaryRoot, 'tunnel'),
       spawn:function () { return tunnelChild; },
-      configureConfig:function (config: { DISABLE_TUNNEL: boolean; CLOUDFLARED_PATH: PathOrFileDescriptor; }) {
+      configureConfig:function (config: { DISABLE_TUNNEL: boolean; CLOUDFLARED_PATH: string; }) {
         config.DISABLE_TUNNEL = false;
         config.CLOUDFLARED_PATH = path.join(temporaryRoot, 'cloudflared-test.exe');
         fs.writeFileSync(config.CLOUDFLARED_PATH, '', 'utf8');
@@ -202,15 +200,15 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     tunnelStack.gateway.startTunnel();
     fs.writeFileSync(tunnelStack.runtime.tunnelLog,
       'https://stable-test.trycloudflare.com\nRegistered tunnel connection\n', 'utf8');
-    var readyTunnel = await waitFor(async function () {
-      var status = await getJson(tunnelStack.baseUrl, '/api/status');
+    let readyTunnel = await waitFor(async function () {
+      let status = await getJson(tunnelStack.baseUrl, '/api/status');
       return status.json.tunnelStatus === 'active' ? 'active' : '';
     }, 'tunnel ready status');
     assert.strictEqual(readyTunnel, 'active');
 
     tunnelChild.emit('exit', 1);
-    var stoppedTunnel = await waitFor(async function () {
-      var status = await getJson(tunnelStack.baseUrl, '/api/status');
+    let stoppedTunnel = await waitFor(async function () {
+      let status = await getJson(tunnelStack.baseUrl, '/api/status');
       return status.json.tunnelStatus === 'waiting' ? 'cleared' : '';
     }, 'tunnel exit status cleanup');
     assert(stoppedTunnel, 'tunnel exit must remove the stale public URL from the real status route');
@@ -227,12 +225,12 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
 });
 
 test('gateway test stack preserves caller-owned runtime roots by default', async () => {
-  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-gateway-owned-root-'));
-  var runtimeRoot = path.join(temporaryRoot, 'runtime');
+  let temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-gateway-owned-root-'));
+  let runtimeRoot = path.join(temporaryRoot, 'runtime');
   fs.mkdirSync(runtimeRoot, { recursive:true });
-  var marker = path.join(runtimeRoot, 'caller-owned.txt');
+  let marker = path.join(runtimeRoot, 'caller-owned.txt');
   fs.writeFileSync(marker, 'keep\n', 'utf8');
-  var stack = null;
+  let stack = null;
   try {
     stack = await gatewayTestStack.start({ runtimeRoot:runtimeRoot });
     await stack.close();
@@ -245,18 +243,18 @@ test('gateway test stack preserves caller-owned runtime roots by default', async
 });
 
 test('control contract: ComfyUI start/stop uses managed ownership and shared operations', async () => {
-  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-control-'));
-  var runtime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'control'));
-  var config = baseConfig(projectRoot, runtime);
+  let temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-control-'));
+  let runtime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'control'));
+  let config = baseConfig(projectRoot, runtime);
   config.AI_WORKSPACE_ROOT = path.join(temporaryRoot, 'AI workspace');
-  var comfyOnline = false;
-  var desiredComfyDuringStop = null;
-  var calls: { args: string|string[]; }[] = [];
-  var router = createControlRouter(config, function () { return { tunnelUrl:'' }; }, {
+  let comfyOnline = false;
+  let desiredComfyDuringStop = null;
+  let calls: any[] = [];
+  let router = createControlRouter(config, function () { return { tunnelUrl:'' }; }, {
     runScriptAsync:async function (script: string, args: string|string[]) {
       calls.push({ script:script, args:args });
       if (path.basename(script) === 'managed-comfyui.ps1') {
-        var action = args[args.indexOf('-Action') + 1];
+        let action = args[args.indexOf('-Action') + 1];
         if (action === 'Stop') {
           desiredComfyDuringStop = JSON.parse(fs.readFileSync(runtime.config, 'utf8')).managedServices.comfy;
         }
@@ -269,25 +267,25 @@ test('control contract: ComfyUI start/stop uses managed ownership and shared ope
       return { sdOnline:false, comfyOnline:comfyOnline, ttsOnline:false, ollamaOnline:false, ollamaModels:[], ollamaVram:0, webuiManaged:false, comfyManaged:comfyOnline };
     }
   });
-  var app = express();
+  let app = express();
   app.use(router);
-  var server = http.createServer(app);
-  var base = await listen(server);
+  let server = http.createServer(app);
+  let base = await listen(server);
   try {
-    var start = await postJson(base, '/api/service/comfy', { action:'start' });
+    let start = await postJson(base, '/api/service/comfy', { action:'start' });
     assert.strictEqual(start.status, 200);
     assert.strictEqual(start.json.pending, true);
-    var ready: any = await waitFor(async function () {
-      var status = await getJson(base, '/api/status');
+    let ready: any = await waitFor(async function () {
+      let status = await getJson(base, '/api/status');
       return status.json.operation && status.json.operation.status === 'completed' ? status.json : null;
     }, 'mock ComfyUI start');
     assert.strictEqual(ready.comfyOnline, true);
     assert.strictEqual(ready.comfyManaged, true);
     assert.ok(calls[0].args.includes('-AIWorkspaceRoot') && calls[0].args.includes('-RuntimeRoot'));
-    var stop = await postJson(base, '/api/service/comfy', { action:'stop' });
+    let stop = await postJson(base, '/api/service/comfy', { action:'stop' });
     assert.strictEqual(stop.status, 200);
-    var stopped: any = await waitFor(async function () {
-      var status = await getJson(base, '/api/status');
+    let stopped: any = await waitFor(async function () {
+      let status = await getJson(base, '/api/status');
       return status.json.operation && status.json.operation.status === 'completed' ? status.json : null;
     }, 'mock ComfyUI stop');
     assert.strictEqual(stopped.comfyOnline, false);
@@ -302,8 +300,8 @@ test('control contract: ComfyUI start/stop uses managed ownership and shared ope
 });
 
 test('managed runtime scripts require injected paths and protect external ownership', () => {
-  var comfy = fs.readFileSync(path.join(projectRoot, 'scripts', 'lib', 'managed-comfyui.ps1'), 'utf8');
-  var webui = fs.readFileSync(path.join(projectRoot, 'scripts', 'lib', 'managed-webui.ps1'), 'utf8');
+  let comfy = fs.readFileSync(path.join(projectRoot, 'scripts', 'lib', 'managed-comfyui.ps1'), 'utf8');
+  let webui = fs.readFileSync(path.join(projectRoot, 'scripts', 'lib', 'managed-webui.ps1'), 'utf8');
   assert.ok(comfy.includes('$AIWorkspaceRoot') && comfy.includes('$RuntimeRoot') && comfy.includes('$ComfyHost'));
   assert.ok(webui.includes('$PackageRoot') && webui.includes('$RuntimeRoot') && webui.includes('$WebuiHost'));
   assert.ok(comfy.includes('Test-ManagedProcess') && comfy.includes('taskkill.exe /PID'));
@@ -331,15 +329,15 @@ test('managed runtime scripts require injected paths and protect external owners
 // 携带入口脚本名（main.py / launch.py），从而通过脚本的外部进程识别。
 function startFakeService(options: any) {
   return new Promise(function (resolve, reject) {
-    var entryName = options.entryName;
-    var healthPath = options.healthPath;
-    var freePortProbe = net.createServer();
+    let entryName = options.entryName;
+    let healthPath = options.healthPath;
+    let freePortProbe = net.createServer();
     freePortProbe.once('error', reject);
     freePortProbe.listen(0, '127.0.0.1', function () {
-      var port = freePortProbe.address!().port;
+      let port = (freePortProbe.address!() as import('node:net').AddressInfo).port;
       freePortProbe.close(function () {
-        var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-fake-' + entryName + '-'));
-        var helper = path.join(dir, 'fake.js');
+        let dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-fake-' + entryName + '-'));
+        let helper = path.join(dir, 'fake.js');
         fs.writeFileSync(helper, [
           "var http = require('http');",
           "var port = Number(process.argv[2]);",
@@ -350,11 +348,11 @@ function startFakeService(options: any) {
           "server.listen(port, '127.0.0.1', function () { console.log('READY ' + port); });"
         ].join('\n'), 'utf8');
         // node <helper> <port> main.py|launch.py：入口脚本名挂在命令行末位
-        var child = childProcess.spawn(process.execPath, [helper, String(port), entryName], {
+        let child = childProcess.spawn(process.execPath, [helper, String(port), entryName], {
           stdio:['ignore', 'pipe', 'ignore'],
           windowsHide:true
         });
-        var timer = setTimeout(function () {
+        let timer = setTimeout(function () {
           child.kill();
           reject(new Error('fake service did not become ready'));
         }, 4000);
@@ -375,20 +373,20 @@ function startFakeService(options: any) {
 
 function waitForExit(child: any) {
   return new Promise(function (resolve) {
-    if (child.exitCode !== null || child.signalCode) return resolve();
+    if (child.exitCode !== null || child.signalCode) return resolve(undefined);
     child.once('exit', resolve);
   });
 }
 
 test('managed-comfyui Stop refuses to kill an unrelated process on the configured port', WINDOWS_POWERSHELL_TEST, async () => {
-  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-script-'));
+  let temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-script-'));
   // 端口被与本项目无关的进程占用（这里就是测试进程自己）：命令行不含 main.py，
   // Stop 必须视之为不可识别并保持不碰。
-  var health = http.createServer(function (req, res) {
+  let health = http.createServer(function (req, res) {
     res.statusCode = req.url === '/system_stats' ? 200 : 404;
     res.end('{}');
   });
-  var base: any = await listen(health);
+  let base: any = await listen(health);
   function invoke(action: string) {
     return new Promise(function (resolve, reject) {
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
@@ -401,13 +399,13 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
     });
   }
   try {
-    var status: any = await invoke('Status');
+    let status: any = await invoke('Status');
     assert.strictEqual(status.state, 'external-running');
     assert.strictEqual(status.managed, false);
-    var stopped: any = await invoke('Stop');
+    let stopped: any = await invoke('Stop');
     assert.strictEqual(stopped.state, 'external-or-stopped');
     assert.strictEqual(stopped.managed, false);
-    var stillUp = await getJson(base, '/system_stats');
+    let stillUp = await getJson(base, '/system_stats');
     assert.strictEqual(stillUp.status, 200, 'an unrelated process must survive a ComfyUI Stop');
   } finally {
     await close(health);
@@ -416,9 +414,9 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
 });
 
 test('managed-comfyui Stop closes a recognized externally started ComfyUI', WINDOWS_POWERSHELL_TEST, async () => {
-  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-stop-'));
-  var fake: any = await startFakeService({ entryName:'main.py', healthPath:'/system_stats' });
-  var base = 'http://127.0.0.1:' + fake.port;
+  let temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-stop-'));
+  let fake: any = await startFakeService({ entryName:'main.py', healthPath:'/system_stats' });
+  let base = 'http://127.0.0.1:' + fake.port;
   function invoke(action: string) {
     return new Promise(function (resolve, reject) {
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
@@ -431,13 +429,13 @@ test('managed-comfyui Stop closes a recognized externally started ComfyUI', WIND
     });
   }
   try {
-    var status: any = await invoke('Status');
+    let status: any = await invoke('Status');
     assert.strictEqual(status.state, 'external-running');
-    var stopped: any = await invoke('Stop');
+    let stopped: any = await invoke('Stop');
     assert.strictEqual(stopped.state, 'stopped');
     assert.strictEqual(stopped.managed, false);
     await waitForExit(fake.child);
-    var stillUp = await fetch(base + '/system_stats').then(function () { return true; }, function () { return false; });
+    let stillUp = await fetch(base + '/system_stats').then(function () { return true; }, function () { return false; });
     assert.strictEqual(stillUp, false, 'a recognized external ComfyUI must be closed by Stop');
   } finally {
     if (fake.child.exitCode === null) fake.child.kill();
@@ -447,9 +445,9 @@ test('managed-comfyui Stop closes a recognized externally started ComfyUI', WIND
 });
 
 test('managed-webui Stop closes a recognized externally started reForge', WINDOWS_POWERSHELL_TEST, async () => {
-  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-webui-stop-'));
-  var fake: any = await startFakeService({ entryName:'launch.py', healthPath:'/sdapi/v1/sd-models' });
-  var base = 'http://127.0.0.1:' + fake.port;
+  let temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-webui-stop-'));
+  let fake: any = await startFakeService({ entryName:'launch.py', healthPath:'/sdapi/v1/sd-models' });
+  let base = 'http://127.0.0.1:' + fake.port;
   function invoke(action: string) {
     return new Promise(function (resolve, reject) {
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
@@ -463,13 +461,13 @@ test('managed-webui Stop closes a recognized externally started reForge', WINDOW
     });
   }
   try {
-    var status: any = await invoke('Status');
+    let status: any = await invoke('Status');
     assert.strictEqual(status.state, 'external-running');
-    var stopped: any = await invoke('Stop');
+    let stopped: any = await invoke('Stop');
     assert.strictEqual(stopped.state, 'stopped');
     assert.strictEqual(stopped.managed, false);
     await waitForExit(fake.child);
-    var stillUp = await fetch(base + '/sdapi/v1/sd-models').then(function () { return true; }, function () { return false; });
+    let stillUp = await fetch(base + '/sdapi/v1/sd-models').then(function () { return true; }, function () { return false; });
     assert.strictEqual(stillUp, false, 'a recognized external reForge must be closed by Stop');
   } finally {
     if (fake.child.exitCode === null) fake.child.kill();

@@ -49,7 +49,7 @@ function imageInputAvailable(config: any, name: string) {
 
 // ── 魔数嗅探与尺寸解析 ──────────────────────────────────────────
 // 魔数识别：只信任解码后的真实格式，不信任客户端声称的 type。
-function sniffImageExtension(buffer: string|any[]) {
+function sniffImageExtension(buffer: Buffer) {
   if (buffer.length >= 8 && buffer[0] === 0x89 && buffer[1] === 0x50
     && buffer[2] === 0x4e && buffer[3] === 0x47) return 'png';
   if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return 'jpg';
@@ -208,7 +208,7 @@ function removeInputImage(config: any, name: string) {
 function decodePathValue(value: any) {
   let decoded = String(value || '');
   for (let i = 0; i < 3; i += 1) {
-    var next;
+    let next;
     try { next = decodeURIComponent(decoded); } catch (error) {
       throw serviceError(400, 'INVALID_RESULT', '结果路径编码无效');
     }

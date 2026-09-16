@@ -26,7 +26,7 @@ function recordingFs() {
   const calls: any = [];
   const io = Object.create(fs);
   for (const op of ['statSync', 'readdirSync', 'realpathSync', 'readFileSync']) {
-    io[op] = (...args) => {
+    io[op] = (...args: any[]) => {
       calls.push({ op, target: String(args[0]) });
       return (fs as Record<string, any>)[op](...args);
     };
@@ -185,7 +185,7 @@ test('编码与原始越界路径先于 fs 访问被拒绝，不返回任何文�
   for (const p of cases) {
     const check = checkManifestPath(p);
     assert.equal(check.ok, false, p);
-    assert.ok(['illegal-path', 'out-of-scope'].includes(check.code), `${p} → ${check.code}`);
+    assert.ok(['illegal-path', 'out-of-scope'].includes(String(check.code)), `${p} → ${check.code}`);
   }
   const manifest = { schemaVersion: 1, entries: cases.map((p) => ({ path: p, bytes: 1, sha256: sha256('A') })) };
   const { io, calls } = recordingFs();

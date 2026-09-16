@@ -19,7 +19,7 @@ async function fixtureHttp(t: any) {
     }
   };
   walk(f.packs, '/');
-  const state = { mode: 'normal', requests: [], etag: '"fixture-v1"' };
+  const state: any = { mode: 'normal', requests: [], etag: '"fixture-v1"' };
   const server = http.createServer((req, res) => {
     state.requests.push({ url: req.url, range: req.headers.range, ifRange: req.headers['if-range'] });
     let bytes = files.get(req.url);
@@ -74,7 +74,7 @@ async function fixtureHttp(t: any) {
   await once(server, 'listening');
   t.after(() => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); }));
   f.policy.sources.fixture = { kind: 'http', approved: true, loopbackFixture: true,
-    baseUrl: 'http://127.0.0.1:' + server.address!().port + '/' };
+    baseUrl: 'http://127.0.0.1:' + (server.address!() as import('node:net').AddressInfo).port + '/' };
   for (const id of ['full', 'delta']) f.policy.releases[id].sourceId = 'fixture';
   f.download = (extra: any = {}) => createResourceDownloader(f.options(extra));
   return { ...f, state, files };
@@ -217,10 +217,10 @@ test('download ENOSPC keeps installed resources and permits retry', async t => {
   const old = await f.installer().install({ releaseId: 'base' });
   const io = Object.create(fs);
   const files = new Map();
-  io.openSync = (file: any, ...args: any[]) => { const fd = fs.openSync(file, ...args); files.set(fd, String(file)); return fd; };
+  io.openSync = (file: any, ...args: any[]) => { const fd = (fs.openSync as any)(file, ...args); files.set(fd, String(file)); return fd; };
   io.writeSync = (fd: any, ...args: any[]) => {
     if (files.get(fd)?.endsWith('.part')) throw Object.assign(new Error('injected disk full'), { code: 'ENOSPC' });
-    return fs.writeSync(fd, ...args);
+    return (fs.writeSync as any)(fd, ...args);
   };
   await assert.rejects(f.download({ io }).download({ releaseId: 'full' }), code('ENOSPC'));
   assert.deepEqual((await f.installer().status()).state, old.state);

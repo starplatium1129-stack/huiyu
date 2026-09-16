@@ -46,7 +46,7 @@ for (const rel of targets) {
   css = css.split('\n').filter((line: any) => !/^\s*--[\w-]+\s*:/.test(line)).join('\n');
   const counts: Record<string, any> = {};
   let total = 0;
-  for (const [name, re] of CHECKS) {
+  for (const [name, re] of CHECKS as [string, RegExp][]) {
     const n = (css.match(re) || []).length;
     if (n) { counts[name] = n; total += n; }
   }

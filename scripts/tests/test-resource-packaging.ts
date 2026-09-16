@@ -2,7 +2,7 @@
 
 const test: typeof import('node:test')['test'] = require('node:test').test;
 const { randomBytes }: typeof import('node:crypto') = require('node:crypto');
-const sharp: typeof import('sharp') = require('sharp');
+const sharp: typeof import('sharp').default = require('sharp');
 const { fs, path, write, snapshot, fixture }: typeof import('./resource-install-fixtures') = require('./resource-install-fixtures');
 const assert: typeof import('./resource-install-fixtures')['assert'] = require('./resource-install-fixtures').assert;
 const { applyResourceProfile }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');

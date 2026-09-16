@@ -11,22 +11,22 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  *     rating 四键齐全、scores 与 tags 一一对应。
  */
 
-var assert: typeof import('assert/strict') = require('assert/strict');
-var path: typeof import('path') = require('path');
-var engine: typeof import('../../server/interrogate-engine') = require('../../server/interrogate-engine');
+let assert: typeof import('assert/strict') = require('assert/strict');
+let path: typeof import('path') = require('path');
+let engine: typeof import('../../server/interrogate-engine') = require('../../server/interrogate-engine');
 
-var ROOT = path.resolve(__dirname, '..', '..');
-var EMPTY_CONFIG = { AI_WORKSPACE_ROOT: path.join(ROOT, 'runtime', 'models', 'interrogate-empty'), ROOT_DIR: ROOT };
-var REAL_CONFIG = { AI_WORKSPACE_ROOT: path.join(ROOT, '..', 'AI'), ROOT_DIR: ROOT };
+let ROOT = path.resolve(__dirname, '..', '..');
+let EMPTY_CONFIG = { AI_WORKSPACE_ROOT: path.join(ROOT, 'runtime', 'models', 'interrogate-empty'), ROOT_DIR: ROOT };
+let REAL_CONFIG = { AI_WORKSPACE_ROOT: path.join(ROOT, '..', 'AI'), ROOT_DIR: ROOT };
 
 async function generateTestImage() {
   // 用 sharp 生成一张 512x768 渐变图（有颜色差异，WD14 可反推出 general 标签）
-  var sharp: typeof import('sharp') = require('sharp');
-  var width = 512, height = 768;
-  var data = Buffer.alloc(width * height * 3);
-  for (var y = 0; y < height; y++) {
-    for (var x = 0; x < width; x++) {
-      var o = (y * width + x) * 3;
+  let sharp: typeof import('sharp').default = require('sharp');
+  let width = 512, height = 768;
+  let data = Buffer.alloc(width * height * 3);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      let o = (y * width + x) * 3;
       data[o] = Math.floor(255 * x / width);          // R 渐变
       data[o + 1] = Math.floor(255 * y / height);     // G 渐变
       data[o + 2] = 180;                              // B 固定
@@ -36,14 +36,14 @@ async function generateTestImage() {
 }
 
 async function run() {
-  var failures = 0;
+  let failures = 0;
   async function check(name: string, fn: any) {
     try { await fn(); console.log('  ✔ ' + name); }
     catch (e) { failures++; console.error('  ✘ ' + name + ' — ' + runtimeErrorMessage(e)); }
   }
 
   // 1) 降级路径（恒成立，CI 无模型也过）
-  var probeEmpty = engine.probe(EMPTY_CONFIG);
+  let probeEmpty = engine.probe(EMPTY_CONFIG);
   check('probe(无模型) available=false', function () {
     assert.equal(probeEmpty.available, false);
     assert.equal(typeof probeEmpty.reason, 'string');
@@ -52,18 +52,18 @@ async function run() {
     assert.equal(engine.findModel(EMPTY_CONFIG), null);
   });
   check('interrogateTag(无模型) ok=false 且降级原因明确', async function () {
-    var r = await engine.interrogateTag(Buffer.from([1, 2, 3]), { config: EMPTY_CONFIG });
+    let r = await engine.interrogateTag(Buffer.from([1, 2, 3]), { config: EMPTY_CONFIG });
     assert.equal(r.ok, false);
     assert.ok(r.reason && r.reason.length > 0);
   });
 
   // 2) 真实模型路径（本机有权重时执行；无则跳过打印）
-  var model = engine.findModel(REAL_CONFIG);
+  let model = engine.findModel(REAL_CONFIG);
   if (!model) {
     console.log('  ↪ 本机无 WD14 模型，跳过真实推理断言（仅降级路径验证）');
   } else {
     console.log('  模型: ' + model.modelName + ' (' + Math.round(model.bytes / 1024 / 1024) + 'MB) @ ' + model.dir);
-    var tags = engine.loadTags(model.csvPath);
+    let tags = engine.loadTags(model.csvPath);
 
     check('标签表契约: 9083 行 / general@4 / character@6951', function () {
       assert.equal(tags.names.length, 9083);
@@ -74,15 +74,15 @@ async function run() {
       assert.equal(tags.names[tags.characterIndex], 'hatsune_miku');
     });
 
-    var probeReal = engine.probe(REAL_CONFIG);
+    let probeReal = engine.probe(REAL_CONFIG);
     check('probe(有模型) available=true 且模型元信息完整', function () {
       assert.equal(probeReal.available, true);
       assert.equal(probeReal.model, model!.modelName);
       assert.ok(probeReal.modelPath && probeReal.modelBytes > 0);
     });
 
-    var image = await generateTestImage();
-    var r: any = await engine.interrogateTag(image, { config: REAL_CONFIG, threshold: 0.35 });
+    let image = await generateTestImage();
+    let r: any = await engine.interrogateTag(image, { config: REAL_CONFIG, threshold: 0.35 });
     check('真实推理: ok=true / engine=wd14 / tags 非空', function () {
       assert.equal(r.ok, true);
       assert.equal(r.engine, 'wd14');
@@ -102,13 +102,13 @@ async function run() {
         assert.ok(r.rating[k] >= 0 && r.rating[k] <= 1, k + ' 概率越界: ' + r.rating[k]);
       });
       // WD14 的 rating 是独立 sigmoid（非互斥 softmax），主导评级应有明显置信度
-      var maxRating = Math.max(r.rating.general, r.rating.sensitive, r.rating.questionable, r.rating.explicit);
+      let maxRating = Math.max(r.rating.general, r.rating.sensitive, r.rating.questionable, r.rating.explicit);
       assert.ok(maxRating > 0.5, '无主导评级');
     });
     check('真实推理: characterTags 均落在 character 区间且阈值更高', function () {
       assert.ok(Array.isArray(r.characterTags));
       r.characterTags.forEach(function (t: any) {
-        var idx = tags.names.indexOf(t);
+        let idx = tags.names.indexOf(t);
         assert.ok(idx >= tags.characterIndex, t + ' 不在 character 区间');
         assert.ok(r.scores[t] > 0.85, t + ' 低于 character 阈值');
       });
@@ -116,7 +116,7 @@ async function run() {
     check('真实推理: tags 与 characterTags 彻底分离（角色名不混入 tags）', function () {
       // 2026-08-29：tags 只含 general 区间词条；角色名单独走 characterTags，
       // 防止识别出的角色名随大流写入 manualTags 与当前作画角色冲突。
-      var characterSet = new Set(r.characterTags);
+      let characterSet = new Set(r.characterTags);
       r.tags.forEach(function (t: any) {
         assert.ok(!characterSet.has(t), t + ' 不得同时出现在 tags 与 characterTags');
       });

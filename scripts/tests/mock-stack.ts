@@ -16,26 +16,26 @@
  *     存在（不 stat 文件），所以假路径足够让 /api/tts-status 报 voices.nene=true。
  */
 
-var fs: typeof import('fs') = require('fs');
-var os: typeof import('os') = require('os');
-var path: typeof import('path') = require('path');
-var createGateway = require(path.join(__dirname, '..', '..', 'server.js')).createGateway;
-var loadGatewayConfig = require(path.join(__dirname, '..', '..', 'server', 'config.js')).loadGatewayConfig;
-var runtimePaths = require(path.join(__dirname, '..', 'lib', 'runtime-paths.js'));
-var mocks: typeof import('./mock-upstreams') = require('./mock-upstreams');
+let fs: typeof import('fs') = require('fs');
+let os: typeof import('os') = require('os');
+let path: typeof import('path') = require('path');
+let createGateway = require(path.join(__dirname, '..', '..', 'server.js')).createGateway;
+let loadGatewayConfig = require(path.join(__dirname, '..', '..', 'server', 'config.js')).loadGatewayConfig;
+let runtimePaths = require(path.join(__dirname, '..', 'lib', 'runtime-paths.js'));
+let mocks: typeof import('./mock-upstreams') = require('./mock-upstreams');
 
-var PORTS: typeof import('../lib/e2e-ports') = require('../lib/e2e-ports');
-var COMFY_PORT = Number(process.env.AICS_MOCK_COMFY_PORT || PORTS.comfy || (PORTS.translate + 1));
-var ROOT_DIR = path.join(__dirname, '..', '..');
-var TOKEN = 'mock-stack-token-0123456789abcdef0123';
+let PORTS: typeof import('../lib/e2e-ports') = require('../lib/e2e-ports');
+let COMFY_PORT = Number(process.env.AICS_MOCK_COMFY_PORT || PORTS.comfy || (PORTS.translate + 1));
+let ROOT_DIR = path.join(__dirname, '..', '..');
+let TOKEN = 'mock-stack-token-0123456789abcdef0123';
 
 function isolatedRuntime() {
-  var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-e2e-runtime-'));
+  let dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-e2e-runtime-'));
   return runtimePaths.createRuntimePaths(dir);
 }
 
 function buildConfig(runtime: { root: string; logs: string; }) {
-  var config = loadGatewayConfig(ROOT_DIR, {
+  let config = loadGatewayConfig(ROOT_DIR, {
     AICS_RUNTIME_ROOT:runtime.root,
     AI_WORKSPACE_ROOT:path.join(runtime.root, 'AI workspace'),
     AICS_DISABLE_LEGACY_RUNTIME_MIGRATION:'1',
@@ -80,12 +80,12 @@ function buildConfig(runtime: { root: string; logs: string; }) {
   // 指向不存在的路径，translation-service 会直接拒绝而不是拉起 python.exe
   config.TRANSLATION_PYTHON = path.join(runtime.root, 'no-such-python.exe');
   config.TRANSLATION_SCRIPT = path.join(runtime.root, 'no-such-script.py');
-  var previewLoraRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
+  let previewLoraRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
   fs.mkdirSync(previewLoraRoot, { recursive:true });
   fs.writeFileSync(path.join(previewLoraRoot, 'ayachi_nene_v21_anima.safetensors'), 'e2e-nene-v21-fixture');
   fs.writeFileSync(path.join(previewLoraRoot, 'shiki_natsume_v21_anima.safetensors'), 'e2e-natsume-v21-fixture');
   // Anima 无 LoRA 底模资源：让 /api/anima/status 报 anima-aesthetic 可用（engineOnline 依赖 available）。
-  var animaModelRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
+  let animaModelRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
   fs.mkdirSync(path.join(animaModelRoot, 'diffusion_models'), { recursive:true });
   fs.mkdirSync(path.join(animaModelRoot, 'text_encoders'), { recursive:true });
   fs.mkdirSync(path.join(animaModelRoot, 'vae'), { recursive:true });
@@ -102,8 +102,8 @@ function buildConfig(runtime: { root: string; logs: string; }) {
 }
 
 async function start() {
-  var runtime = isolatedRuntime();
-  var upstreams = [
+  let runtime = isolatedRuntime();
+  let upstreams = [
     { name:'sd', port:PORTS.sd, mock:mocks.createSdMock() },
     { name:'comfy', port:COMFY_PORT, mock:mocks.createComfyMock() },
     { name:'ollama', port:PORTS.ollama, mock:mocks.createOllamaMock() },
@@ -111,14 +111,14 @@ async function start() {
     { name:'translate', port:PORTS.translate, mock:mocks.createTranslateMock() }
   ];
 
-  for (var i = 0; i < upstreams.length; i += 1) {
+  for (let i = 0; i < upstreams.length; i += 1) {
     await mocks.listen(upstreams[i].mock.server, upstreams[i].port);
     console.log('  🧪 mock ' + upstreams[i].name + ' → http://127.0.0.1:' + upstreams[i].port);
   }
 
-  var config = buildConfig(runtime);
-  var gateway = createGateway({ config:config });
-  var server = gateway.app.listen(config.PORT, config.HOST, function () {
+  let config = buildConfig(runtime);
+  let gateway = createGateway({ config:config });
+  let server = gateway.app.listen(config.PORT, config.HOST, function () {
     console.log('  🔗 mock gateway → http://127.0.0.1:' + config.PORT);
     console.log('  🗂 isolated runtime → ' + runtime.root);
   });

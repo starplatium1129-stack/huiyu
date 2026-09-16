@@ -13,13 +13,13 @@ function killAt(config: string, phase: string, action: any = 'install', releaseI
     worker.stderr!.on('data', data => { stderr += data; });
     const timeout = setTimeout(() => { worker.kill('SIGKILL'); reject(new Error('Worker did not reach ' + phase + ': ' + stderr)); }, 30000);
     worker.on('error', error => { clearTimeout(timeout); reject(error); });
-    worker.on('message', message => {
+    worker.on('message', (message: any) => {
       if (message.error) { worker.kill('SIGKILL'); reject(new Error(message.error + ': ' + message.message)); }
       else if (message.phase === phase) { reached = true; worker.kill('SIGKILL'); }
     });
     worker.on('exit', () => {
       clearTimeout(timeout);
-      if (reached) resolve();
+      if (reached) resolve(undefined);
       else reject(new Error('Worker exited before ' + phase + ': ' + stderr));
     });
   });

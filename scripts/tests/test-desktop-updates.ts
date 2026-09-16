@@ -136,6 +136,6 @@ test('发行版本在 npm、Tauri 与 Rust 元数据中一致', () => {
   assert.equal(config.version, pkg.version);
   assert.equal(lock.version, pkg.version);
   assert.equal(lock.packages[''].version, pkg.version);
-  assert.equal(/\[package\][\s\S]*?\nversion = "([^"]+)"/.exec!(cargo)[1], pkg.version);
-  assert.equal(/name = "ai-cg-studio-desktop"\r?\nversion = "([^"]+)"/.exec!(cargoLock)[1], pkg.version);
+  assert.equal(/\[package\][\s\S]*?\nversion = "([^"]+)"/.exec(cargo)![1], pkg.version);
+  assert.equal(/name = "ai-cg-studio-desktop"\r?\nversion = "([^"]+)"/.exec(cargoLock)![1], pkg.version);
 });

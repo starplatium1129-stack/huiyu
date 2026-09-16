@@ -69,7 +69,7 @@ test('batch plan expands consistently with the curated artist catalog', () => {
     return acc;
   }, {});
   const genericSceneCount = sceneBlueprints.filter(bp => !bp.characterId).length;
-  const popularGrid = Object.values(perCharScenes)
+  const popularGrid = (Object.values(perCharScenes) as any[])
     .reduce((sum, owned: any) => sum + (owned + genericSceneCount), 0) * 2;
   const expectedAttempt1 = artistVariants + popularCount + 8 + popularGrid + artistVariants * 2;
   // 明细：artistVariants 张画师（29 画师 + no-artist，含 3 个重点画师追加轮）
@@ -511,7 +511,7 @@ test('latest-lora batch: production ids/files/strength/checkpoint for SD v18 + A
     ['latest-lora:natsume:anima:fullbody', ['L_NAT_V21_ANIMA', animaConst.LORAS.L_NAT_V21_ANIMA.file, animaConst.MODELS['anima-aesthetic-v1.1'].file]],
   ]);
   for (const item of lora) {
-    const [loraId, file, checkpoint] = expected.get(item.key);
+    const [loraId, file, checkpoint] = expected.get(item.key)!;
     assert.ok(expected.has(item.key), `unexpected key ${item.key}`);
     assert.strictEqual(item.loraId, loraId);
     assert.strictEqual(item.loraFile, file);
@@ -603,7 +603,7 @@ test('single-character scene candidates use the audited short prompt and correct
       `${candidate.sceneId} safe/nsfw conflict`);
   }
 
-  const nene = candidates.find(item => item.characterId === 'nene');
+  const nene = candidates.find((item: any) => item.characterId === 'nene');
   assert.strictEqual(nene.loraId, 'L_NENE_V21_ANIMA');
   assert.strictEqual(nene.generationCharacter, 'nene');
   assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene');
@@ -612,7 +612,7 @@ test('single-character scene candidates use the audited short prompt and correct
   assert.ok(sc122Skipped, 'the deliberately misrated sc122 copy must be isolated');
   assert.ok(sc122Skipped.reason.includes('显式成人词'), `skip reason must explain: ${sc122Skipped.reason}`);
 
-  const natsume = candidates.find(item => item.characterId === 'natsume');
+  const natsume = candidates.find((item: any) => item.characterId === 'natsume');
   assert.strictEqual(natsume.loraId, 'L_NAT_V21_ANIMA');
   assert.strictEqual(natsume.generationCharacter, 'natsume');
   assert.strictEqual(sceneGen.buildSubmissionBody(natsume).character, 'natsume');

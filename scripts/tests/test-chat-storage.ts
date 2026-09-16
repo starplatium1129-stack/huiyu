@@ -196,7 +196,7 @@ test('Chat archive round-trip: trim overflow, export/import, markdown and restor
   const fresh = archive.emptyChatArchive(ids);
   assert.deepStrictEqual(fresh.archived, { nene: [], natsume: [] });
 
-  const messages = [
+  const messages: any[] = [
     { role: 'user', content: '第一句', mid: 'm1', stopped: false },
     { role: 'assistant', content: '第二句', mid: 'm2', stopped: false },
     { role: 'assistant', content: '重复句', mid: 'm2', stopped: false },
@@ -215,7 +215,7 @@ test('Chat archive round-trip: trim overflow, export/import, markdown and restor
   );
 
   // 超限消息来自 trim：前 20 条进归档，剩下 20 条留在会话
-  const overflow = Array.from({ length: 25 }, (_, index) => ({
+  const overflow: any[] = Array.from({ length: 25 }, (_, index) => ({
     role: index % 2 ? 'assistant' : 'user',
     content: `old-${index}`,
     mid: `m-old-${index}`,
@@ -234,7 +234,7 @@ test('Chat archive round-trip: trim overflow, export/import, markdown and restor
   assert.strictEqual(mergedDup.archived.nene.length, 25, 'merging identical archives must not duplicate');
 
   // 并回当前对话：按 mid 去重、保持归档顺序
-  const history = [
+  const history: any[] = [
     { role: 'user', content: 'current', mid: 'm-current', stopped: false },
     { role: 'assistant', content: 'old-0', mid: 'm-old-0', stopped: false },
   ];

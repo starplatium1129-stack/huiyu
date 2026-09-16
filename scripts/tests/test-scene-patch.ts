@@ -21,11 +21,12 @@ test('scene patch: isolated CLI dry-run only writes explicitly requested report'
   const script = path.join(root, 'scripts/maintenance/apply-scene-patch.js');
   write(script, fs.readFileSync(require.resolve('../maintenance/apply-scene-patch'), 'utf8'));
   write(path.join(root, 'scripts/lib/data-version.js'), 'exports.syncDataVersion = () => { throw new Error("unexpected rebuild"); };');
+  write(path.join(root, 'scripts/lib/runtime-errors.js'), 'exports.errorMessage = error => error && error.message ? String(error.message) : String(error);');
   write(path.join(root, 'scripts/lib/scene-store.js'), `module.exports = { loadSceneShards: () => ({sources: [{source: ${JSON.stringify(input[0].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/scenes.json'))}, browserShardPath: {}, corePath: ${JSON.stringify(path.join(root, 'data/core.json'))}, indexPath: ${JSON.stringify(path.join(root, 'data/index.json'))} };`);
   write(path.join(root, 'scripts/lib/blueprint-store.js'), `module.exports = { loadBlueprintShards: () => ({sources: [{source: ${JSON.stringify(input[1].file)}}]}), aggregatePath: ${JSON.stringify(path.join(root, 'data/blueprints.json'))} };`);
   const patchFile = path.join(root, 'patch.json'), output = path.join(root, 'report.json');
   write(patchFile, [{ type: 'scene', id: 'sc001', changes: { story: 'candidate' } }]);
-  const snapshot = () => fs.readdirSync(root, { recursive: true }).filter(file => fs.statSync(path.join(root, file)).isFile()).map(file => [file, fs.readFileSync(path.join(root, file)).toString('base64')]);
+  const snapshot = () => fs.readdirSync(root, { recursive: true }).filter(file => fs.statSync(path.join(root, String(file))).isFile()).map(file => [String(file), fs.readFileSync(path.join(root, String(file))).toString('base64')]);
   const before = snapshot();
   const run = (extra: any) => (require('node:child_process') as typeof import('node:child_process')).spawnSync(process.execPath, [script, '--patch', patchFile, ...extra], { cwd: root, env: { ...process.env, AICS_DATA_ROOT: root }, encoding: 'utf8' });
   const dry = run([]); assert.equal(dry.status, 0, dry.stderr); assert.deepEqual(snapshot(), before);
@@ -121,7 +122,7 @@ test('scene patch: invalid types, IDs, duplicate entries and prototype fields ar
   for (const entries of [{}, [null], [{ ...item, type: 'other' }], [{ ...item, id: '../escape' }], [{ ...item, changes: [] }], [item, item], [{ ...item, changes: { id: 'sc003' } }], JSON.parse('[{"type":"scene","id":"sc002","changes":{"__proto__":{"polluted":true}}}]')]) {
     assert.throws(() => patch.validatePatch(entries));
   }
-  assert.equal({}.polluted, undefined);
+  assert.equal(({} as any).polluted, undefined);
 });
 
 test('scene patch: absent source IDs reject the whole plan without modifying input', t => {

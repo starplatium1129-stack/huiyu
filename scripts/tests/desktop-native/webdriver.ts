@@ -153,6 +153,7 @@ return await window.__TAURI__.core.invoke(command, payload)
 }
 
 class TauriDriver {
+  closed!: any;
     environment!: any;
   evidence!: any;
   executable!: any;

@@ -1,6 +1,5 @@
 'use strict';
 
-import { PathLike } from 'node:fs';
 
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
 const fs: typeof import('node:fs') = require('node:fs');
@@ -22,7 +21,7 @@ function git(root: string, ...args: string[]) {
 function fixture(t: any, withGit: any = true) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'content-history-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const write = (file: string, value: string|Uint8Array<ArrayBufferLike>|Uint8ClampedArray<ArrayBufferLike>|Uint16Array<ArrayBufferLike>|Uint32Array<ArrayBufferLike>|Int8Array<ArrayBufferLike>|Int16Array<ArrayBufferLike>|Int32Array<ArrayBufferLike>|BigUint64Array<ArrayBufferLike>|BigInt64Array<ArrayBufferLike>|Float16Array<ArrayBufferLike>|Float32Array<ArrayBufferLike>|Float64Array<ArrayBufferLike>|DataView<ArrayBufferLike>|({ id: string; char: string; prompt: string; rating: string; mature: boolean; }|undefined)[]|{ id: string; name: string; }[]) => {
+  const write = (file: string, value: any) => {
     const destination = path.join(root, file);
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     fs.writeFileSync(destination, typeof value === 'string' ? value : JSON.stringify(value, null, 2) + '\n');
@@ -63,8 +62,8 @@ function fixture(t: any, withGit: any = true) {
     const groups = { nene: ordered.filter((r) => r.char !== 'natsume' && r.char !== 'triad'),
       natsume: ordered.filter((r) => r.char === 'natsume'), shared: ordered.filter((r) => r.char === 'triad') };
     for (const [group, rows] of Object.entries(groups)) write(`data/scenes-${group}.json`, rows);
-    const coreIds = core.filter((id) => ordered.some((row) => row.id === id));
-    write('data/scenes-core.json', coreIds.map((id) => ordered.find((row) => row.id === id)));
+    const coreIds = core.filter((id: any) => ordered.some((row) => row.id === id));
+    write('data/scenes-core.json', coreIds.map((id: any) => ordered.find((row) => row.id === id)));
     write('data/scenes-index.json', { version: 1, total: rows.length,
       shards: Object.fromEntries(Object.entries(groups).map(([key, rows]: any) => [key, { file: `scenes-${key}.json`, count: rows.length }])),
       tiers: { core: coreIds }, orderedIds: ordered.map((row) => row.id) });

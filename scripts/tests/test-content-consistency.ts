@@ -8,7 +8,7 @@ const { reportOwnership }: typeof import('../maintenance/report-content-ownershi
 const { localReader }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 const { inspectDomain, summarizeConsistency }: typeof import('../lib/content-impact-consistency') = require('../lib/content-impact-consistency');
 const { fixture, snapshot }: typeof import('./content-history-fixture') = require('./content-history-fixture');
-const inspect = (f: any, domain: PropertyKey) => summarizeConsistency(inspectDomain(localReader(f.root), domain));
+const inspect = (f: any, domain: string) => summarizeConsistency(inspectDomain(localReader(f.root), domain));
 const script = path.resolve(__dirname, '../maintenance/report-content-ownership.js');
 
 test('popular and blueprint record fields/version/order are actual projections, formatting is separate', (t) => {

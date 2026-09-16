@@ -248,7 +248,7 @@ function switchTarget(tempDir: any, targetDir: any, force: any, renameSync: any 
   } catch (error) {
     if (targetExists) {
       try { renameSync(backupDir, targetDir); } catch (restoreError) {
-        runtimeErrorMessage(error) = `${runtimeErrorMessage(error)}\n  additionally failed to restore backup ${backupDir}: ${runtimeErrorMessage(restoreError)}`;
+        (error as any).message = `${runtimeErrorMessage(error)}\n  additionally failed to restore backup ${backupDir}: ${runtimeErrorMessage(restoreError)}`;
       }
     }
     throw error;

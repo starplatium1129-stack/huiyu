@@ -68,7 +68,7 @@ function capture(root: any, options: any) {
   const declaredFields = [...['fullGate', 'gate', ...MAIN_FIELDS].filter(k => results[k] !== undefined),
     ...Object.keys(object(results.checks) ? results.checks : {}).map(k => `checks.${k}`)];
   for (const field of declaredFields) if (!Object.hasOwn(original.tracking.gates, field)) throw Error(`结果字段未在 baseline 声明: ${field}`);
-  for (const [field, binding] of Object.entries(original.tracking.gates)) {
+  for (const [field, binding] of Object.entries<any>(original.tracking.gates)) {
     const value = get(results, field);
     if (value === undefined) {
       const checked = inspectGate(root, original, freshness, field);

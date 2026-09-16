@@ -22,8 +22,8 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
 const root = path.resolve(__dirname, '..', '..');
-const read = (...parts) => fs.readFileSync(path.join(root, ...parts), 'utf8');
-const exists = (...parts) => fs.existsSync(path.join(root, ...parts));
+const read = (...parts: any[]) => fs.readFileSync(path.join(root, ...parts), 'utf8');
+const exists = (...parts: any[]) => fs.existsSync(path.join(root, ...parts));
 const persistence: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
 
 function fail(message: string) {

@@ -31,7 +31,7 @@ function within(root: any, file: any) {
 function relativeImage(value: any) {
   if (typeof value !== 'string' || value.includes('\\') || value.includes('%') || value.includes(':')) throw new Error('Unsafe reference image path');
   const parts = value.split('/');
-  if (parts.length < 2 || !/\.(png|webp|jpg|jpeg)$/i.test(parts.at(-1))
+  if (parts.length < 2 || !/\.(png|webp|jpg|jpeg)$/i.test(parts.at(-1)!)
       || parts.some(part => !/^[a-zA-Z0-9][a-zA-Z0-9_.-]*$/.test(part) || part === '..' || /[. ]$/.test(part)
         || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(part))) throw new Error('Unsafe reference image path: ' + value);
   return value;
@@ -122,7 +122,7 @@ function collectReview(inspection: any, decisions: any, decisionSource: any) {
   if (!decisions || typeof decisions !== 'object' || Array.isArray(decisions)) throw new Error('Decisions must be an object keyed by reference identity');
   const items = new Map(inspection.items.map((item: any) => [item.key, item]));
   const reviewed: any = {};
-  for (const [key, decision] of Object.entries(decisions)) {
+  for (const [key, decision] of Object.entries<any>(decisions)) {
     const item: any = items.get(key);
     if (!item || item.integrity !== 'pass' || !decision || !['pass', 'fail'].includes(decision.verdict)
         || decision.recordId !== item.recordId || decision.sha256 !== item.sha256

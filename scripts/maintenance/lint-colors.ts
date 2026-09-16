@@ -1,18 +1,17 @@
 'use strict';
 
-import { PathOrFileDescriptor } from 'node:fs';
 
 // 设计 token 统一检查：扫描 HTML <style> 块和 CSS 文件中未被 token 替代的硬编码颜色
 // 用法: node scripts/maintenance/lint-colors.js
 // npm 快捷: npm run lint:colors
 
-var fs: typeof import('fs') = require('fs');
-var path: typeof import('path') = require('path');
+let fs: typeof import('fs') = require('fs');
+let path: typeof import('path') = require('path');
 
-var HEX_RE = /(?<!#)(?:#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/g;
+let HEX_RE = /(?<!#)(?:#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/g;
 
 // 允许存在的 hex 值（data URLs, design token 初始值, 显式忽略）
-var ALLOWED = new Set([
+let ALLOWED = new Set([
   '#fff', '#FFF', '#000',
   '#f4a6d7', '#f2bb68', '#bba7ff', '#b895ff', '#e7e4ff', '#8b6258',
   '#90d9ff', '#3f93c1',
@@ -53,13 +52,13 @@ var ALLOWED = new Set([
 // 把 HomeView/CharacterView 的硬编码渐变当"允许"收了进来。
 // 独立发布的审计报告(style-sources.STANDALONE_REPORTS,自带设计系统的静态文档)
 // 显式豁免 —— 不被应用加载,不参与应用颜色门槛。
-var sources: typeof import('./style-sources') = require('./style-sources');
-var scanDirs = ['src', 'docs', 'css'];
+let sources: typeof import('./style-sources') = require('./style-sources');
+let scanDirs = ['src', 'docs', 'css'];
 
 // 注释里的 hex 是文档示例（常常正是在解释为什么某个值不合格），不是漂移。
 // 逐行把注释内容抹成空格，保留行号与行数。
 function stripComments(content: string) {
-  var out = content.replace(/\/\*[\s\S]*?\*\//g, function (block: string) {
+  let out = content.replace(/\/\*[\s\S]*?\*\//g, function (block: string) {
     return block.replace(/[^\n]/g, ' ');
   });
   return out.split('\n').map(function (line: string) {
@@ -68,18 +67,19 @@ function stripComments(content: string) {
 }
 
 function scanFile(filepath: any) {
+  let content: string;
   try {
-    var content = stripComments(fs.readFileSync(filepath, 'utf8'));
+    content = stripComments(fs.readFileSync(filepath, 'utf8'));
   } catch (e) { return []; }
 
-  var warnings: any[] = [];
-  var lines = content.split('\n');
+  let warnings: any[] = [];
+  let lines = content.split('\n');
 
   if (filepath.endsWith('.css')) {
     // Scan entire file
     lines.forEach(function (line: string, i: number) {
-      var lineno = i + 1;
-      var matches = line.match(HEX_RE);
+      let lineno = i + 1;
+      let matches = line.match(HEX_RE);
       if (!matches) return;
       // Skip token definitions
       if (/^\s*--\w/.test(line)) return;
@@ -92,9 +92,9 @@ function scanFile(filepath: any) {
     });
   } else if (filepath.endsWith('.html') || filepath.endsWith('.vue')) {
     // Extract <style> blocks（.vue 与 .html 同一形态）
-    var inStyle = false;
+    let inStyle = false;
     lines.forEach(function (line: string, i: number) {
-      var lineno = i + 1;
+      let lineno = i + 1;
       if (/<style\b/i.test(line)) { inStyle = true; return; }
       if (/<\/style>/i.test(line)) { inStyle = false; return; }
       if (!inStyle) return;
@@ -102,7 +102,7 @@ function scanFile(filepath: any) {
       if (/^\s*--\w/.test(line)) return;
       // Skip color-mix(), rgba(), and data URL comments
       if (/color-mix\(|rgba\(|data:image/.test(line)) return;
-      var matches = line.match(HEX_RE);
+      let matches = line.match(HEX_RE);
       if (!matches) return;
       matches.forEach(function (m: string) {
         if (ALLOWED.has(m)) return;
@@ -115,20 +115,20 @@ function scanFile(filepath: any) {
 }
 
 function main() {
-  var root = path.join(__dirname, '..', '..');
-  var allWarnings: any[] = [];
+  let root = path.join(__dirname, '..', '..');
+  let allWarnings: any[] = [];
 
   scanDirs.forEach(function (dir: any) {
-    var dirPath = path.join(root, dir);
+    let dirPath = path.join(root, dir);
     if (!fs.existsSync(dirPath)) return;
     walkDir(dirPath);
   });
 
-  function walkDir(dirPath: PathLike) {
-    var entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  function walkDir(dirPath: string) {
+    let entries = fs.readdirSync(dirPath, { withFileTypes: true });
     entries.forEach(function (entry: any) {
       if (entry.name.startsWith('.') || entry.name === 'node_modules') return;
-      var full = path.join(dirPath, entry.name);
+      let full = path.join(dirPath, entry.name);
       if (entry.isDirectory()) {
         if (entry.name !== 'vendor' && entry.name !== 'archive') walkDir(full);
       } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css') || entry.name.endsWith('.vue')) {
@@ -138,9 +138,9 @@ function main() {
     });
   }
 
-  var counts: Record<string, any> = {};
+  let counts: Record<string, any> = {};
   allWarnings.forEach(function (w: any) {
-    var key = path.relative(root, w.file);
+    let key = path.relative(root, w.file);
     counts[key] = (counts[key] || 0) + 1;
   });
 
@@ -150,7 +150,7 @@ function main() {
   }
 
   console.log('  ⚠️  ' + allWarnings.length + ' hardcoded hex color(s) found:\n');
-  var keys = Object.keys(counts).sort();
+  let keys = Object.keys(counts).sort();
   keys.forEach(function (f: any) {
     console.log('  ' + f + ' (' + counts[f] + ')');
     allWarnings

@@ -36,7 +36,7 @@ function resourceFixture(t: any) {
   };
   return f;
 }
-async function request(stack: { baseUrl: string; }, url: string, body?: any, headers: any = {}) {
+async function request(stack: { baseUrl: string; }, url: string, body?: any, headers: any = {}): Promise<any> {
   // Native HTTP preserves test Host/path headers; fetch may normalize or replace them.
   return new Promise((resolve, reject) => {
     const req = http.request(stack.baseUrl + url, { method: body === undefined ? 'GET' : 'POST',
@@ -87,7 +87,7 @@ async function downloadSource(t: any, f: any) {
   });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   t.after(() => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); }));
-  f.policy.sources.network = { kind: 'http', approved: true, loopbackFixture: true, baseUrl: `http://127.0.0.1:${server.address!().port}/` };
+  f.policy.sources.network = { kind: 'http', approved: true, loopbackFixture: true, baseUrl: `http://127.0.0.1:${(server.address!() as import('node:net').AddressInfo).port}/` };
   f.policy.releases.network.sourceId = 'network'; f.config();
   return { requests, server };
 }

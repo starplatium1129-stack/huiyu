@@ -129,16 +129,16 @@ test('runtime configuration revocation cancels authorization during an active do
 test('SIGKILL during a gateway-managed download retains task/partial state and resumes through the real API', async t => {
   const f = resourceFixture(t); const source = await downloadSource(t, f);
   const config = path.join(f.base, 'gateway-worker.json'); write(config, JSON.stringify(f.gatewayConfig));
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     const child = fork(path.join(__dirname, 'resource-gateway-worker.js'), [config], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
     let ready = false;
     const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('Worker timeout')); }, 15000);
     child.on('error', reject);
-    child.on('message', message => {
+    child.on('message', (message: any) => {
       if (message.ready) { ready = true; child.kill('SIGKILL'); }
       else if (message.error) { child.kill('SIGKILL'); reject(new Error(JSON.stringify(message.error))); }
     });
-    child.on('exit', () => { clearTimeout(timer); if (ready) resolve(); else reject(new Error('Worker exited too early')); });
+    child.on('exit', () => { clearTimeout(timer); if (ready) resolve(undefined); else reject(new Error('Worker exited too early')); });
   });
   const stack = await f.stack();
   const status = (await request(stack, '/api/resources/status')).data;

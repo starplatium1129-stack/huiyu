@@ -156,7 +156,7 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta }: any = {})
   const formErrors = checkDeltaMetadataForm(delta);
   errors.push(...formErrors);
 
-  const result = {
+  const result: any = {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-pack-delta-verification',
     ok: false,
@@ -169,8 +169,8 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta }: any = {})
 
   const baseEntries = baseManifest.entries;
   const packEntries = packManifest.entries;
-  const baseByPath = new Map(baseEntries.map((e: any) => [e.path, e]));
-  const packByPath = new Map(packEntries.map((e: any) => [e.path, e]));
+  const baseByPath = new Map<string, any>(baseEntries.map((e: any) => [e.path, e]));
+  const packByPath = new Map<string, any>(packEntries.map((e: any) => [e.path, e]));
 
   // 基线身份：contentIdentity/entryCount/totalBytes 与 delta.baseManifest 相符
   const baseIdentity = identityOf(baseEntries);
@@ -361,7 +361,7 @@ function resolvePackDir({ rootReal, packPath, io }: any) {
     throw new UsageError(`--pack 候选目录不可访问: ${runtimeErrorMessage(err)}`);
   }
   if (!st.isDirectory()) throw new UsageError(`--pack 不是目录: ${packPath}`);
-  return { packAbs: boundary.realTarget, packRel: relFromRoot(rootReal, packAbs) };
+  return { packAbs: boundary.realTarget!, packRel: relFromRoot(rootReal, packAbs) };
 }
 
 /**

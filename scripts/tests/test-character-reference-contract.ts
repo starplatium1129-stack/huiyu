@@ -16,17 +16,17 @@ const assert: typeof import('assert') = require('assert');
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const test: typeof import('node:test') = require('node:test');
-const Ajv: typeof import('ajv') = require('ajv');
+const Ajv: any = require('ajv');
 
 const root = path.resolve(__dirname, '..', '..');
-const readJson = (...parts) => JSON.parse(fs.readFileSync(path.join(root, ...parts), 'utf8'));
+const readJson = (...parts: any[]) => JSON.parse(fs.readFileSync(path.join(root, ...parts), 'utf8'));
 
 const standards = readJson('data', 'character-reference-standards.json');
-const view = readJson('data', 'character-reference-view.json');
+const view: any = readJson('data', 'character-reference-view.json');
 const standardsSchema = readJson('scripts', 'contracts', 'character-reference-standards.schema.json');
 const viewSchema = readJson('scripts', 'contracts', 'character-reference-view.schema.json');
 
-const ajv = new Ajv({ allErrors: true });
+const ajv: any = new (Ajv as any)({ allErrors: true });
 const validateStandards = ajv.compile(standardsSchema);
 const validateView = ajv.compile(viewSchema);
 
@@ -108,7 +108,7 @@ test('character reference view: identityProse mirrors standards', () => {
 });
 
 test('character reference view: urls use external /character-references/ prefix (2026-08-29 迁移)', () => {
-  for (const character of Object.values(view)) {
+  for (const character of Object.values(view) as any[]) {
     for (const outfit of character.outfits || []) {
       for (const ref of outfit.references || []) {
         // 2026-08-31 设计图基线占位：pending 无 url（图未生成），跳过；生成后填 url 走外部前缀。

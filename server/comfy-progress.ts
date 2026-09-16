@@ -7,7 +7,7 @@ import type { ComfyConfig, ProgressJob, ProgressOptions, ProgressSocket } from '
  * The monitor is deliberately best-effort: history polling remains authoritative
  * for completion, while this channel only enriches the public job state.
  */
-let WebSocket: typeof import('ws') = require('ws');
+let WebSocket: new (url: string) => ProgressSocket = require('ws');
 
 function websocketUrl(host: string|URL, clientId: string|number|boolean) {
   let target = new URL(host);
