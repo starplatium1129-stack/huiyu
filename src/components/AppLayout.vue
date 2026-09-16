@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import '@/assets/css/workspace-layout.css'
 import { useRouteTransition } from '@/composables/useRouteTransition'
 import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import AppNav from './AppNav.vue'

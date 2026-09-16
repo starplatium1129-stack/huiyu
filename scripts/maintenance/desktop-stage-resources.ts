@@ -197,6 +197,10 @@ function resolveNpmInvocation() {
     ? process.env.npm_execpath
     : path.join(path.dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js');
   if (fs.existsSync(npmCli)) return { command: process.execPath, args: [npmCli] };
+  if (process.platform === 'win32') {
+    const commonCli = path.join(process.env.ProgramFiles || 'C:\\Program Files', 'nodejs', 'node_modules', 'npm', 'bin', 'npm-cli.js');
+    if (fs.existsSync(commonCli)) return { command: process.execPath, args: [commonCli] };
+  }
   return { command: process.platform === 'win32' ? 'npm.cmd' : 'npm', args: [] };
 }
 
@@ -376,6 +380,7 @@ if (require.main === module) {
 }
 
 export = {
+  RUNTIME_DEPENDENCIES,
   buildGatewayPackage,
   copyDir,
   isRuntimeServiceFile,

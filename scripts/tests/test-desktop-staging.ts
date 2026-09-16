@@ -284,3 +284,54 @@ test('updater verifies distributed bytes and rejects tampering', () => {
     assert.throws(() => verifyUpdaterSignature(file, signature, pub), /signature verification failed/);
   } finally { remove(root); }
 });
+
+test('runtime gateway dependencies required in source code match RUNTIME_DEPENDENCIES whitelist', () => {
+  const { RUNTIME_DEPENDENCIES }: any = require('../maintenance/desktop-stage-resources');
+  const rootDir = path.resolve(__dirname, '../..');
+  const rootPackage = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
+  const rootDeps = new Set(Object.keys(rootPackage.dependencies || {}));
+  const builtins = new Set(require('node:module').builtinModules.map((m: string) => m.replace(/^node:/, '')));
+
+  // 1. Every package in RUNTIME_DEPENDENCIES must be declared in root package.json dependencies
+  for (const dep of RUNTIME_DEPENDENCIES) {
+    assert.ok(rootDeps.has(dep), `RUNTIME_DEPENDENCIES '${dep}' must exist in root package.json dependencies`);
+  }
+
+  // 2. Scan server.ts, server/, routes/, services/
+  function walkFiles(dir: string): string[] {
+    const absDir = path.join(rootDir, dir);
+    if (!fs.existsSync(absDir)) return [];
+    const entries: string[] = [];
+    for (const ent of fs.readdirSync(absDir, { withFileTypes: true })) {
+      const rel = path.join(dir, ent.name);
+      if (ent.isDirectory()) entries.push(...walkFiles(rel));
+      else if (/\.(?:ts|js)$/.test(ent.name) && !ent.name.endsWith('.d.ts')) entries.push(path.join(rootDir, rel));
+    }
+    return entries;
+  }
+
+  const scanTargets = [path.join(rootDir, 'server.ts'), ...walkFiles('server'), ...walkFiles('routes'), ...walkFiles('services')];
+  const requiredPkgs = new Set<string>();
+  const whitelistSet = new Set(RUNTIME_DEPENDENCIES);
+  const transitiveOrTypeOnly = new Set(['express-serve-static-core', 'qs']);
+
+  for (const file of scanTargets) {
+    const content = fs.readFileSync(file, 'utf8');
+    for (const match of content.matchAll(/(?:require\(['"]|from\s+['"])([^'"]+)['"]/g)) {
+      const spec = match[1];
+      if (spec.startsWith('.') || spec.startsWith('/') || spec.startsWith('@/')) continue;
+      const pkg = spec.startsWith('@') ? spec.split('/').slice(0, 2).join('/') : spec.split('/')[0];
+      const cleanPkg = pkg.replace(/^node:/, '');
+      if (builtins.has(cleanPkg)) continue;
+      if (transitiveOrTypeOnly.has(cleanPkg)) continue;
+      requiredPkgs.add(cleanPkg);
+    }
+  }
+
+  for (const pkg of requiredPkgs) {
+    assert.ok(
+      whitelistSet.has(pkg),
+      `Server source code requires '${pkg}', but it is missing from RUNTIME_DEPENDENCIES in scripts/maintenance/desktop-stage-resources.ts!`,
+    );
+  }
+});
