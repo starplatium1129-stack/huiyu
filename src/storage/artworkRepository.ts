@@ -398,13 +398,19 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     const trash = await readTrash()
     if (!trash.length) return { purged: 0 }
     const deadline = Date.now() - ARTWORK_TRASH_RETENTION_DAYS * 24 * 60 * 60 * 1000
-    const expired = trash.filter(entry => Number(entry.deletedAt) < deadline)
+    // 刚好到保留期限仍可恢复；非法时间戳保守地保留，避免清理误删快照。
+    const expired = trash.filter(entry => {
+      const deletedAt = Number(entry.deletedAt)
+      return Number.isFinite(deletedAt) && deletedAt < deadline
+    })
     if (!expired.length) return { purged: 0 }
 
     const historySnapshot = await kv.get(ARTWORK_HISTORY_KEY)
     const history = arrayValue(historySnapshot) ?? []
     const expiredIds = new Set(expired.map(entry => entry.id))
     const survivingTrash = trash.filter(entry => !expiredIds.has(entry.id))
+    // imageIds 只是软删当时的“独占”快照，不能代替可恢复 historyEntries
+    // 的引用；两者都要保护，才能覆盖共享图在多个墓碑间转移的时序。
     const entryImageIds = (entry: TrashEntry) => unique([
       ...(Array.isArray(entry.imageIds) ? entry.imageIds : []),
       ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),

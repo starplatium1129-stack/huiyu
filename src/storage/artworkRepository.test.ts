@@ -52,6 +52,7 @@ function makeImages(initial: StoredImageRecord[] = []) {
 }
 
 const fakeBlob = new Blob(['x'], { type: 'image/png' })
+const DAY = 24 * 60 * 60 * 1000
 
 /** 组装一份「2 条历史 + 1 个项目引用其中一条」的仓库 */
 function makeRepo() {
@@ -73,6 +74,33 @@ function makeRepo() {
 
 function historyIds(kv: ReturnType<typeof makeKv>): string[] {
   return (kv.store.get(KV.history) as Array<{ id: string }>).map(h => h.id)
+}
+
+function makeTimedSharedRepo() {
+  const epoch = 1_800_000_000_000
+  const dateNow = vi.spyOn(Date, 'now').mockReturnValue(epoch)
+  const kv = makeKv({
+    [KV.history]: [
+      { id: 'A', image_id: 'shared' },
+      { id: 'B', image_id: 'shared' },
+    ],
+    [KV.projects]: [],
+  })
+  const images = makeImages([
+    { id: 'shared', blob: fakeBlob, name: 'shared.png', type: 'image/png', size: 1, created_at: 1 },
+  ])
+  kv.store.set(thumbKey('shared'), { data: 'tiny' })
+  const repo = createArtworkRepository({
+    kv: kv.adapter,
+    images: images.adapter,
+  })
+  return {
+    repo,
+    kv,
+    images,
+    setDay: (day: number) => { dateNow.mockReturnValue(epoch + day * DAY) },
+    restoreClock: () => dateNow.mockRestore(),
+  }
 }
 
 describe('artworkRepository 软删 / 恢复', () => {
@@ -202,6 +230,68 @@ describe('artworkRepository 软删 / 恢复', () => {
 })
 
 describe('artworkRepository 惰性清理', () => {
+  it('purge：完整共享引用时序在旧墓碑到期后仍可恢复新墓碑', async () => {
+    const { repo, kv, images, setDay, restoreClock } = makeTimedSharedRepo()
+    try {
+      await repo.softDeleteArtwork('A')
+      await repo.softDeleteArtwork('B')
+      setDay(20)
+      await expect(repo.restoreArtwork('A')).resolves.toEqual({ restored: true })
+      await repo.softDeleteArtwork('A')
+
+      setDay(31)
+      expect(await repo.purgeExpiredTrash()).toEqual({ purged: 1 })
+      expect(historyIds(kv)).toEqual([])
+      expect(images.store.has('shared')).toBe(true)
+      expect(kv.store.has(thumbKey('shared'))).toBe(true)
+      expect((kv.store.get(KV.trash) as Array<{ id: string }>).map(item => item.id)).toEqual(['A'])
+
+      await expect(repo.restoreArtwork('A')).resolves.toEqual({ restored: true })
+      expect(historyIds(kv)).toEqual(['A'])
+      expect(images.store.has('shared')).toBe(true)
+    } finally {
+      restoreClock()
+    }
+  })
+
+  it('purge：到期边界仍保留，成功清理后重复执行无副作用', async () => {
+    const epoch = 1_800_000_000_000
+    const dateNow = vi.spyOn(Date, 'now').mockReturnValue(epoch)
+    const kv = makeKv({
+      [KV.history]: [],
+      [KV.trash]: [{
+        id: 'boundary',
+        deletedAt: epoch,
+        historyEntries: [{ id: 'boundary', image_id: 'img-boundary' }],
+        projectRefs: [],
+        imageIds: ['img-boundary'],
+      }],
+    })
+    const images = makeImages([
+      { id: 'img-boundary', blob: fakeBlob, name: 'boundary.png', type: 'image/png', size: 1, created_at: 1 },
+    ])
+    kv.store.set(thumbKey('img-boundary'), { data: 'tiny' })
+    const repo = createArtworkRepository({ kv: kv.adapter, images: images.adapter })
+    try {
+      dateNow.mockReturnValue(epoch + ARTWORK_TRASH_RETENTION_DAYS * DAY)
+      expect(await repo.purgeExpiredTrash()).toEqual({ purged: 0 })
+      expect(images.store.has('img-boundary')).toBe(true)
+      expect(kv.store.has(thumbKey('img-boundary'))).toBe(true)
+      expect(kv.store.get(KV.trash)).toHaveLength(1)
+
+      dateNow.mockReturnValue(epoch + (ARTWORK_TRASH_RETENTION_DAYS + 1) * DAY)
+      expect(await repo.purgeExpiredTrash()).toEqual({ purged: 1 })
+      expect(images.adapter.deleteMany).toHaveBeenCalledTimes(1)
+      expect(await repo.purgeExpiredTrash()).toEqual({ purged: 0 })
+      expect(images.adapter.deleteMany).toHaveBeenCalledTimes(1)
+      expect(images.store.has('img-boundary')).toBe(false)
+      expect(kv.store.has(thumbKey('img-boundary'))).toBe(false)
+      expect(kv.store.get(KV.trash)).toEqual([])
+    } finally {
+      dateNow.mockRestore()
+    }
+  })
+
   it('purge：较新的 trash history 引用会保护共享原图与缩略图', async () => {
     const day = 24 * 60 * 60 * 1000
     const shared = { id: 'img-shared', blob: fakeBlob, name: 'shared.png', type: 'image/png', size: 1, created_at: 1 }
@@ -216,7 +306,8 @@ describe('artworkRepository 惰性清理', () => {
         {
           id: 'young-trash', deletedAt: Date.now() - 11 * day,
           historyEntries: [{ id: 'young-trash', image_id: 'img-shared' }],
-          projectRefs: [], imageIds: ['img-shared'],
+          // 即使软删时的独占快照为空，恢复快照仍是合法引用来源。
+          projectRefs: [], imageIds: [],
         },
       ],
     })
@@ -228,6 +319,24 @@ describe('artworkRepository 惰性清理', () => {
     expect(images.store.has('img-shared')).toBe(true)
     expect(kv.store.has(thumbKey('img-shared'))).toBe(true)
     expect((kv.store.get(KV.trash) as Array<{ id: string }>).map(item => item.id)).toEqual(['young-trash'])
+  })
+
+  it('purge：缩略图删除失败时保留墓碑并可重试', async () => {
+    const { repo, kv, images } = makeRepo()
+    await repo.softDeleteArtwork('a1')
+    const day = 24 * 60 * 60 * 1000
+    ;(kv.store.get(KV.trash) as Array<{ deletedAt: number }>)[0].deletedAt = Date.now() - 31 * day
+    kv.store.set(thumbKey('img-a'), { data: 'tiny' })
+    kv.adapter.remove.mockRejectedValueOnce(new Error('缩略图存储暂时不可用'))
+
+    await expect(repo.purgeExpiredTrash()).rejects.toThrow('缩略图存储暂时不可用')
+    expect(kv.store.get(KV.trash)).toHaveLength(1)
+    expect(images.store.has('img-a')).toBe(false)
+    expect(kv.store.has(thumbKey('img-a'))).toBe(true)
+
+    await expect(repo.purgeExpiredTrash()).resolves.toEqual({ purged: 1 })
+    expect(kv.store.get(KV.trash)).toEqual([])
+    expect(kv.store.has(thumbKey('img-a'))).toBe(false)
   })
 
   it('purge：图片删除失败时保留 trash，下一次清理可重试', async () => {
@@ -248,6 +357,7 @@ describe('artworkRepository 惰性清理', () => {
     const { repo, kv, images } = makeRepo()
     await repo.softDeleteArtwork('a1')
     await repo.softDeleteArtwork('b2')
+    kv.store.set(thumbKey('img-b'), { data: 'tiny-b' })
     const day = 24 * 60 * 60 * 1000
     const trash = kv.store.get(KV.trash) as Array<{ id: string; deletedAt: number }>
     trash.find(t => t.id === 'a1')!.deletedAt = Date.now() - (ARTWORK_TRASH_RETENTION_DAYS + 1) * day
@@ -260,6 +370,7 @@ describe('artworkRepository 惰性清理', () => {
     expect(images.store.has('img-a')).toBe(false)
     expect(images.store.has('img-b')).toBe(true)
     expect(kv.store.has(thumbKey('img-a'))).toBe(false)
+    expect(kv.store.has(thumbKey('img-b'))).toBe(true)
     const rest = kv.store.get(KV.trash) as Array<{ id: string }>
     expect(rest.map(t => t.id)).toEqual(['b2'])
   })
