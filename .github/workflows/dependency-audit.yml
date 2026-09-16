@@ -24,19 +24,71 @@ jobs:
         with:
           node-version: 24.18.0
           cache: npm
-      - name: Install dependencies
+      - name: Install locked dependency tree without lifecycle scripts
         id: install
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Audit runtime dependencies
-        run: npm audit --omit=dev --audit-level=high
+        id: audit-runtime
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          npm audit --omit=dev --audit-level=high --json > dependency-audit-runtime.json
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit "$status"
       - name: Audit full dependency tree
-        if: always() && steps.install.outcome == 'success'
-        run: npm audit --json --audit-level=high > dependency-audit.json
+        id: audit-full
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          npm audit --audit-level=high --json > dependency-audit.json
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit "$status"
+      - name: Write dependency audit metadata
+        if: always()
+        env:
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          RUNTIME_EXIT_CODE: ${{ steps.audit-runtime.outputs.exit_code || 'not-run' }}
+          FULL_EXIT_CODE: ${{ steps.audit-full.outputs.exit_code || 'not-run' }}
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const crypto = require('node:crypto');
+          const { execFileSync } = require('node:child_process');
+          const lock = fs.readFileSync('package-lock.json');
+          const npm = execFileSync('npm', ['--version'], { encoding: 'utf8' }).trim();
+          fs.writeFileSync('dependency-audit-metadata.json', JSON.stringify({
+            commit: process.env.GITHUB_SHA,
+            packageLockSha256: crypto.createHash('sha256').update(lock).digest('hex'),
+            node: process.version,
+            npm,
+            scannedAt: new Date().toISOString(),
+            installOutcome: process.env.INSTALL_OUTCOME,
+            exitCodes: {
+              runtime: process.env.RUNTIME_EXIT_CODE,
+              full: process.env.FULL_EXIT_CODE,
+            },
+          }, null, 2) + '\n');
+          NODE
+      - name: Enforce high-severity audit result
+        if: always()
+        run: |
+          test "${{ steps.install.outcome }}" = "success"
+          test "${{ steps.audit-runtime.outputs.exit_code }}" = "0"
+          test "${{ steps.audit-full.outputs.exit_code }}" = "0"
       - name: Preserve dependency audit evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: dependency-audit
-          path: dependency-audit.json
-          if-no-files-found: ignore
+          path: |
+            dependency-audit-runtime.json
+            dependency-audit.json
+            dependency-audit-metadata.json
+          if-no-files-found: warn
           retention-days: 14

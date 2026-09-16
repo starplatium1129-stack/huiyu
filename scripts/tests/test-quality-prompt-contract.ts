@@ -11,7 +11,13 @@ const promptContract: typeof import('../maintenance/quality-prompt-contract.js')
 const shortBuilder: typeof import('../maintenance/short-prompt-builder.js') = require('../maintenance/short-prompt-builder.js');
 const sceneFix: typeof import('../maintenance/scene-fix.js') = require('../maintenance/scene-fix.js');
 const anima: typeof import('../../routes/anima.js') = require('../../routes/anima.js');
-const scenes: typeof import('../../data/scenes.json') = require('../../data/scenes.json');
+type Scene = import('../../src/types/scene.ts').Scene;
+function readSceneData(): Scene[] {
+  const raw: unknown = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'scenes.json'), 'utf8'));
+  if (!Array.isArray(raw)) throw new Error('scenes.json 必须是数组');
+  return raw as Scene[];
+}
+const scenes: Scene[] = readSceneData();
 
 const VALID_NENE_PROMPT = [
   'ayachi_nene', '1girl', 'solo', 'white_hair', 'very_long_hair',

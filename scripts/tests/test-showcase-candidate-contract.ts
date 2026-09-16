@@ -26,10 +26,23 @@ const fs: typeof import('fs') = require('fs');
 const os: typeof import('os') = require('os');
 const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
+const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
+type Scene = import('../../src/types/scene.ts').Scene;
+type PopularCharacter = import('../../src/types/character.ts').PopularCharacter;
+type SceneBlueprint = import('../../src/types/sceneBlueprint.ts').SceneBlueprint;
+type PopularData = { characters: PopularCharacter[] };
+type BlueprintData = { blueprints: SceneBlueprint[] };
+const ROOT = path.resolve(__dirname, '..', '..');
+function readData(file: string): unknown {
+  return JSON.parse(fs.readFileSync(path.join(ROOT, file), 'utf8'));
+}
+function readSceneData(): Scene[] {
+  return requireDataRecords(readData('data/scenes.json'), 'scenes.json') as unknown as Scene[];
+}
 
 test('standalone MiaoMiao selection reaches profile, checkpoint and submission without losing character LoRA', () => {
   const generator: typeof import('../maintenance/generate-scene-showcase-anima11.js') = require('../maintenance/generate-scene-showcase-anima11.js');
-  const scene = (require('../../data/scenes.json') as typeof import('../../data/scenes.json')).find(scene => scene.id === 'sc002');
+  const scene = readSceneData().find(scene => scene.id === 'sc002');
   const candidate = generator.buildAnimaCandidate(scene, 1, 1, { modelId: 'anima-miaomiao-v1.2' });
   const model = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants.MODELS[candidate.modelId];
   assert.strictEqual(candidate.profileId, 'anima_miaomiao_v12');
@@ -42,11 +55,11 @@ test('standalone MiaoMiao selection reaches profile, checkpoint and submission w
 
 const gen: typeof import('../../scripts/maintenance/generate-showcase-candidates.js') = require('../../scripts/maintenance/generate-showcase-candidates.js');
 const sceneGen: typeof import('../../scripts/maintenance/generate-scene-showcase-candidates.js') = require('../../scripts/maintenance/generate-scene-showcase-candidates.js');
-const popularData: typeof import('../../data/popular-characters.json') = require('../../data/popular-characters.json');
+const popularData = readData('data/popular-characters.json') as PopularData;
 // 2026-08-16 审计：热门角色由 18 扩容到 33 后，本文件多处硬编码 18 漂移；
 // 统一改为数据派生计数，契约意图（全覆盖）不变。
-const popularCount = (Array.isArray(popularData) ? popularData : (popularData && popularData.characters) || []).length;
-const sceneBlueprints = (require('../../data/scene-blueprints.json') as typeof import('../../data/scene-blueprints.json')).blueprints;
+const popularCount = popularData.characters.length;
+const sceneBlueprints = (readData('data/scene-blueprints.json') as BlueprintData).blueprints;
 const artistCatalog: typeof import('../../src/config/artistStyleCatalog.ts') = require('../../src/config/artistStyleCatalog.ts');
 const artistStyles: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
 const genConst = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
@@ -465,7 +478,7 @@ test('artist batch: curated artists + 1 no-artist baseline, one artist tag each'
 });
 
 test(`popular batch covers all ${popularCount} characters with default outfit and safe blueprint`, () => {
-  const characters = popularData.characters || popularData;
+  const characters = popularData.characters;
   assert.strictEqual(characters.length, popularCount);
   const popular = gen.popularBatch(20260812);
   assert.strictEqual(popular.length, popularCount);
@@ -538,7 +551,7 @@ test('studio char prompt constants mirror promptBuilderStore.ts (drift guard)', 
 });
 
 test('scene candidate audit can reuse an earlier attempt seed without overwriting its record', () => {
-  const scene = (require('../../data/scenes.json') as typeof import('../../data/scenes.json')).find(item => item.id === 'sc001');
+  const scene = readSceneData().find(item => item.id === 'sc001');
   const candidate = sceneGen.buildAnimaCandidate(scene, 5, 1);
   assert.strictEqual(candidate.recordId, 'scene:sc001@attempt-5');
   assert.strictEqual(candidate.seedAttempt, 1);
@@ -546,7 +559,7 @@ test('scene candidate audit can reuse an earlier attempt seed without overwritin
 });
 
 test('single-character scene candidates use the audited short prompt and correct Anima binding', () => {
-  const scenes: typeof import('../../data/scenes.json') = require('../../data/scenes.json');
+  const scenes = readSceneData();
   const singles = scenes.filter(item => item.char === 'nene' || item.char === 'natsume');
   const candidates: any = sceneGen.planScenes(singles, 1);
   // 既有生成健康检查逐条隔离「safe 提示词含显式词」的错标场景。
@@ -619,7 +632,7 @@ test('single-character scene candidates use the audited short prompt and correct
 });
 
 test('dual-character scene candidates keep the existing WAI dual-LoRA path', () => {
-  const scenes: typeof import('../../data/scenes.json') = require('../../data/scenes.json');
+  const scenes = readSceneData();
   const dualScenes = scenes.filter(item => item.char === 'triad');
   const candidates = sceneGen.planScenes(dualScenes, 1);
   assert.strictEqual(candidates.length, 6);
@@ -630,7 +643,7 @@ test('dual-character scene candidates keep the existing WAI dual-LoRA path', () 
 });
 
 test('scene candidate baseline mode changes only positive prompt direction', () => {
-  const scene = (require('../../data/scenes.json') as typeof import('../../data/scenes.json')).find(item => item.id === 'sc001');
+  const scene = readSceneData().find(item => item.id === 'sc001');
   const current = sceneGen.buildAnimaCandidate(scene, 5, 5);
   const baseline = {
     status: 'succeeded', recordId: 'scene:sc001@attempt-1', attempt: 1,
@@ -653,7 +666,7 @@ test('scene candidate baseline mode changes only positive prompt direction', () 
 });
 
 test('scene baseline mode restores the baseline LoRA character binding', () => {
-  const scene = (require('../../data/scenes.json') as typeof import('../../data/scenes.json')).find(item => item.id === 'sc001');
+  const scene = readSceneData().find(item => item.id === 'sc001');
   const current = sceneGen.buildAnimaCandidate(scene, 5, 5);
   const baseline = {
     status: 'succeeded', recordId: 'scene:sc001@attempt-1', attempt: 1,

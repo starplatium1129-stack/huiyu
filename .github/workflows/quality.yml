@@ -124,3 +124,17 @@ jobs:
             test-results
           if-no-files-found: ignore
           retention-days: 7
+
+  quality-summary:
+    name: Quality Summary
+    if: always()
+    needs: [checks, unit, contract, e2e]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every quality lane to pass
+        run: |
+          test "${{ needs.checks.result }}" = "success"
+          test "${{ needs.unit.result }}" = "success"
+          test "${{ needs.contract.result }}" = "success"
+          test "${{ needs.e2e.result }}" = "success"

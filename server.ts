@@ -225,10 +225,10 @@ function createGateway(options: GatewayOptions = {}) {
   // 这类个人内容，以及 data/scenes/*.json（build-scenes.js 的输入，共 893KB，
   // 客户端从不读取）。
   let PUBLIC_DATA_FILES: typeof import('./server/public-data') = require('./server/public-data');
-  // 客户端统一经 sceneStore 带 ?v=DATA_VERSION 读取，版本号变即换 URL，
-  // 因此这里可以放心给一年 immutable 缓存；改动 data/*.json 只需升版本号。
-  // 之前是 no-cache：scenes.json 230KB gzip 等 6 个文件每次刷新都重传。
-  let NO_CACHE_DATA_FILES = ['character-reference-view.json'];
+  // data/ 下的公开 JSON 是维护链路的可变内容，统一 no-cache + ETag：
+  // 没变时仍返回 304，变更后同一 URL 不会被 immutable 缓存冻结。带内容哈希的
+  // SPA _app 资源继续走 immutable；数据版本 query 只保留给强制刷新兜底。
+  let NO_CACHE_DATA_FILES = PUBLIC_DATA_FILES;
   app.use('/data', function (req, res, next) {
     let name = req.path.replace(/^\//, '');
     if (PUBLIC_DATA_FILES.indexOf(name) === -1) return res.status(404).end();

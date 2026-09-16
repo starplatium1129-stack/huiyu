@@ -104,7 +104,10 @@ describe('artworkRepository 软删 / 恢复', () => {
     const setMany = vi.fn(async (entries: Array<{ key: string; value: unknown }>) => {
       for (const entry of entries) kv.store.set(entry.key, entry.value)
     })
-    const repo = createArtworkRepository({ kv: { ...kv.adapter, setMany } })
+    const images = makeImages([
+      { id: 'img-a', blob: fakeBlob, name: 'a.png', type: 'image/png', size: 1, created_at: 1 },
+    ])
+    const repo = createArtworkRepository({ kv: { ...kv.adapter, setMany }, images: images.adapter })
     await repo.softDeleteArtwork('a1')
     await repo.restoreArtwork('a1')
     expect(kv.adapter.set).not.toHaveBeenCalled()
@@ -175,6 +178,19 @@ describe('artworkRepository 软删 / 恢复', () => {
     expect(result.restored).toBe(false)
   })
 
+  it('restore 原图缺失：保留 trash 且不报告完整恢复成功', async () => {
+    const { repo, kv, images } = makeRepo()
+    await repo.softDeleteArtwork('a1')
+    images.store.delete('img-a')
+
+    await expect(repo.restoreArtwork('a1')).resolves.toEqual({
+      restored: false,
+      missingImageIds: ['img-a'],
+    })
+    expect(kv.store.get(KV.trash)).toHaveLength(1)
+    expect(historyIds(kv)).toEqual(['b2'])
+  })
+
   it('同 id 重复软删：trash 只保留一条快照', async () => {
     const { repo, kv } = makeRepo()
     await repo.softDeleteArtwork('a1')
@@ -186,6 +202,48 @@ describe('artworkRepository 软删 / 恢复', () => {
 })
 
 describe('artworkRepository 惰性清理', () => {
+  it('purge：较新的 trash history 引用会保护共享原图与缩略图', async () => {
+    const day = 24 * 60 * 60 * 1000
+    const shared = { id: 'img-shared', blob: fakeBlob, name: 'shared.png', type: 'image/png', size: 1, created_at: 1 }
+    const kv = makeKv({
+      [KV.history]: [],
+      [KV.trash]: [
+        {
+          id: 'old-trash', deletedAt: Date.now() - 31 * day,
+          historyEntries: [{ id: 'old-trash', image_id: 'img-shared' }],
+          projectRefs: [], imageIds: ['img-shared'],
+        },
+        {
+          id: 'young-trash', deletedAt: Date.now() - 11 * day,
+          historyEntries: [{ id: 'young-trash', image_id: 'img-shared' }],
+          projectRefs: [], imageIds: ['img-shared'],
+        },
+      ],
+    })
+    const images = makeImages([shared])
+    kv.store.set(thumbKey('img-shared'), { data: 'tiny' })
+    const repo = createArtworkRepository({ kv: kv.adapter, images: images.adapter })
+
+    expect(await repo.purgeExpiredTrash()).toEqual({ purged: 1 })
+    expect(images.store.has('img-shared')).toBe(true)
+    expect(kv.store.has(thumbKey('img-shared'))).toBe(true)
+    expect((kv.store.get(KV.trash) as Array<{ id: string }>).map(item => item.id)).toEqual(['young-trash'])
+  })
+
+  it('purge：图片删除失败时保留 trash，下一次清理可重试', async () => {
+    const { repo, kv, images } = makeRepo()
+    await repo.softDeleteArtwork('a1')
+    const day = 24 * 60 * 60 * 1000
+    ;(kv.store.get(KV.trash) as Array<{ id: string; deletedAt: number }>)[0].deletedAt = Date.now() - 31 * day
+    images.adapter.deleteMany.mockRejectedValueOnce(new Error('IDB 暂时不可用'))
+
+    await expect(repo.purgeExpiredTrash()).rejects.toThrow('IDB 暂时不可用')
+    expect(kv.store.get(KV.trash)).toHaveLength(1)
+    expect(images.store.has('img-a')).toBe(true)
+    await expect(repo.purgeExpiredTrash()).resolves.toEqual({ purged: 1 })
+    expect(images.store.has('img-a')).toBe(false)
+  })
+
   it('purge：只真删超期条目的独占图片，仍被引用的图片保留', async () => {
     const { repo, kv, images } = makeRepo()
     await repo.softDeleteArtwork('a1')

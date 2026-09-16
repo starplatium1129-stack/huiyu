@@ -8,8 +8,8 @@ function invalid(message: any) {
   throw Object.assign(new Error(message), { statusCode: 400 });
 }
 
-function object(value: any) {
-  return value && typeof value === 'object' && !Array.isArray(value);
+function object(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
 function validateCollection(items: any, kind: any, maximum: any) {

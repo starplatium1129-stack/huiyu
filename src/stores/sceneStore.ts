@@ -46,10 +46,10 @@ export interface TagMeta {
 /**
  * 静态数据的缓存版本号。
  *
- * 服务端对 /data/*.json 已按 immutable 缓存，浏览器靠 ?v= 换 URL 拿新数据，
- * 因此这个值必须与 data/*.json 的内容一一对应：Vite 的
- * virtual:data-version 会用同一套数据内容哈希注入，validate-content-contracts.js
- * 负责校验数据与版本计算仍可用。改过 data/*.json 后不需要改写本文件。
+ * 运行时数据由维护链路更新，服务端用 no-cache + ETag 协商新鲜度；?v= 仍作为
+ * 强制刷新时的兜底版本。Vite 的 virtual:data-version 会用同一套数据内容哈希
+ * 注入，validate-content-contracts.js 负责校验数据与版本计算仍可用。
+ * 改过 data/*.json 后不需要改写本文件。
  */
 export { DATA_VERSION }
 
@@ -110,6 +110,8 @@ export const useSceneStore = defineStore('scenes', () => {
   const version = ref(DATA_VERSION)
   /** 最近一次加载中失败的元数据文件（可选资源失败在此可见，不阻塞完成） */
   const metaFailedFiles = ref<Set<string>>(new Set())
+  /** 每次 force 加载都开启新的数据代际；旧响应只能完成自己的 promise，不能发布状态。 */
+  let loadEpoch = 0
 
   /** 活跃加载数：loading 反映"任意入口在途"，避免多目标并发时先完成者提前熄灯。 */
   let activeLoads = 0
@@ -145,67 +147,108 @@ export const useSceneStore = defineStore('scenes', () => {
     { file: 'scene-blueprints.json', required: true, lite: false, parse: (raw) => parseSceneBlueprints(requireDataCollection(raw, 'blueprints')), apply: (d) => { sceneBlueprints.value = d as SceneBlueprint[] } },
   ]
 
-  /** 已成功资源的解析结果：重试只补失败项，不重复请求已成功资源；force 时逐项重取。 */
-  const metaOk = new Map<string, unknown>()
-  let metaLoaded = false
-  /** 在途元数据加载的持有者：finally 里比对持有者身份清槽，避免自引用 promise。 */
-  let metaInflight: { promise: Promise<void> } | null = null
+  interface MetaCacheEntry { epoch: number; data: unknown }
+  interface MetaLoadResult { file: string; required: boolean; ok: boolean; error?: unknown }
+  interface MetaInflightEntry { epoch: number; promise: Promise<MetaLoadResult> }
 
-  async function runMetaLoad(force: boolean, lite = false): Promise<void> {
-    const v = version.value
-    const failedNow = new Set<string>()
-    const requiredFailures: string[] = []
-    const specs = lite ? META_SPECS.filter((spec) => spec.lite) : META_SPECS
-    await Promise.all(specs.map(async (spec) => {
-      if (!force && metaOk.has(spec.file)) {
-        spec.apply(metaOk.get(spec.file))
-        return
-      }
+  /** 只缓存当前代际的成功解析结果；旧代际完成后不可污染新代际。 */
+  const metaOk = new Map<string, MetaCacheEntry>()
+  const metaInflight = new Map<string, MetaInflightEntry>()
+  const metaFailuresByEpoch = new Map<number, Set<string>>()
+  let metaLoadedEpoch: number | null = null
+
+  function publishMetaResult(epoch: number, result: MetaLoadResult) {
+    if (epoch !== loadEpoch) return
+    const failures = metaFailuresByEpoch.get(epoch) || new Set<string>()
+    if (result.ok) failures.delete(result.file)
+    else failures.add(result.file)
+    metaFailuresByEpoch.set(epoch, failures)
+    metaFailedFiles.value = new Set(failures)
+  }
+
+  function loadMetaSpec(
+    spec: MetaSpec,
+    epoch: number,
+    requestVersion: number,
+    force: boolean,
+  ): Promise<MetaLoadResult> {
+    const cached = metaOk.get(spec.file)
+    if (!force && cached?.epoch === epoch) {
+      if (epoch === loadEpoch) spec.apply(cached.data)
+      const result = { file: spec.file, required: spec.required, ok: true }
+      publishMetaResult(epoch, result)
+      return Promise.resolve(result)
+    }
+
+    const existing = metaInflight.get(spec.file)
+    if (!force && existing?.epoch === epoch) return existing.promise
+
+    const entry: MetaInflightEntry = { epoch, promise: Promise.resolve({ file: spec.file, required: spec.required, ok: false }) }
+    entry.promise = (async () => {
       try {
-        const parsed = spec.parse(await fetchJson(spec.file, v))
-        metaOk.set(spec.file, parsed)
-        spec.apply(parsed)
-      } catch (e) {
-        // 失败资源清除成功缓存以便重试；已应用到视图的旧数据保持不动
-        metaOk.delete(spec.file)
-        failedNow.add(spec.file)
-        if (spec.required) requiredFailures.push(`${spec.file}: ${(e as Error)?.message ?? e}`)
+        const parsed = spec.parse(await fetchJson(spec.file, requestVersion))
+        // The response may belong to a previous force load. Let that caller
+        // finish, but never publish its data into the current store.
+        if (epoch === loadEpoch) {
+          metaOk.set(spec.file, { epoch, data: parsed })
+          spec.apply(parsed)
+        }
+        const result = { file: spec.file, required: spec.required, ok: true }
+        publishMetaResult(epoch, result)
+        return result
+      } catch (error) {
+        // Only the current epoch may invalidate its own successful cache.
+        if (epoch === loadEpoch) metaOk.delete(spec.file)
+        const result = { file: spec.file, required: spec.required, ok: false, error }
+        publishMetaResult(epoch, result)
+        return result
+      } finally {
+        if (metaInflight.get(spec.file) === entry) metaInflight.delete(spec.file)
       }
-    }))
-    metaFailedFiles.value = failedNow
+    })()
+    metaInflight.set(spec.file, entry)
+    return entry.promise
+  }
+
+  async function loadMeta(force = false, lite = false): Promise<void> {
+    const epoch = loadEpoch
+    const requestVersion = version.value
+    if (!force && metaLoadedEpoch === epoch) return
+    const specs = lite ? META_SPECS.filter((spec) => spec.lite) : META_SPECS
+    const results = await Promise.all(specs.map((spec) => loadMetaSpec(spec, epoch, requestVersion, force)))
+    if (epoch !== loadEpoch) return
+
+    const requiredFailures = results
+      .filter((result) => result.required && !result.ok)
+      .map((result) => `${result.file}: ${(result.error as Error)?.message ?? result.error}`)
+    metaLoadedEpoch = META_SPECS.every((spec) => metaOk.get(spec.file)?.epoch === epoch) ? epoch : null
     if (requiredFailures.length) {
       throw new Error(`必需数据加载失败：${requiredFailures.join('；')}`)
     }
   }
 
-  function loadMeta(force = false, lite = false): Promise<void> {
-    if (!force && metaLoaded) return Promise.resolve()
-    if (!force && metaInflight) return metaInflight.promise
-    const entry: { promise: Promise<void> } = { promise: Promise.resolve() }
-    entry.promise = runMetaLoad(force, lite)
-      .then(() => { metaLoaded = META_SPECS.every((spec) => metaOk.has(spec.file)) })
-      .finally(() => { if (metaInflight === entry) metaInflight = null })
-    metaInflight = entry
-    return entry.promise
-  }
-
   // ── 分片层：逐分片缓存 + 在途去重 ─────────────────────────────────────
 
-  let shardCache: Partial<Record<ShardChar, Scene[]>> = {}
+  interface ShardCacheEntry { epoch: number; list: Scene[] }
+  interface ShardInflightEntry { epoch: number; promise: Promise<Scene[]> }
+  let shardCache: Partial<Record<ShardChar, ShardCacheEntry>> = {}
   let coreLoaded = false
-  const shardInflight = new Map<ShardChar, { promise: Promise<Scene[]> }>()
+  const shardInflight = new Map<ShardChar, ShardInflightEntry>()
 
-  function loadShard(char: ShardChar): Promise<Scene[]> {
+  function loadShard(char: ShardChar, epoch = loadEpoch, requestVersion = version.value): Promise<Scene[]> {
     const cached = shardCache[char]
-    if (cached) return Promise.resolve(cached)
+    if (cached?.epoch === epoch) return Promise.resolve(cached.list)
     const existing = shardInflight.get(char)
-    if (existing) return existing.promise
-    const entry: { promise: Promise<Scene[]> } = { promise: Promise.resolve([]) }
-    entry.promise = fetchJson<Scene[]>(SHARD_FILES[char], version.value)
+    if (existing?.epoch === epoch) return existing.promise
+    const entry: ShardInflightEntry = { epoch, promise: Promise.resolve([]) }
+    entry.promise = fetchJson<Scene[]>(SHARD_FILES[char], requestVersion)
       .then((list) => {
-        shardCache[char] = requireDataRecords(list, SHARD_FILES[char]) as Scene[]
-        loadedShards.value = new Set([...loadedShards.value, char])
-        return shardCache[char] as Scene[]
+        const parsed = requireDataRecords(list, SHARD_FILES[char]) as Scene[]
+        if (epoch === loadEpoch) {
+          shardCache[char] = { epoch, list: parsed }
+          loadedShards.value = new Set([...loadedShards.value, char])
+        }
+        return parsed
       })
       .finally(() => { if (shardInflight.get(char) === entry) shardInflight.delete(char) })
     shardInflight.set(char, entry)
@@ -226,11 +269,16 @@ export const useSceneStore = defineStore('scenes', () => {
    * work 收到 isCurrent 守卫：目标未被更新意图取代且仍是该键最新一次工作。
    * 旧响应（慢网/强制重载竞态）一律不得覆盖新意图的视图与错误态。
    */
-  function beginTargetLoad(key: string, work: (isCurrent: () => boolean) => Promise<Scene[]>): Promise<void> {
+  function beginTargetLoad(
+    key: string,
+    work: (isCurrent: () => boolean, epoch: number, requestVersion: number) => Promise<Scene[]>,
+  ): Promise<void> {
     viewTarget = key
     const existing = inflightByKey.get(key)
     if (existing) return existing.promise
     const seq = ++workSeq
+    const epoch = loadEpoch
+    const requestVersion = version.value
     latestSeqByKey.set(key, seq)
     const isCurrent = () => viewTarget === key && latestSeqByKey.get(key) === seq
     beginLoad()
@@ -238,7 +286,7 @@ export const useSceneStore = defineStore('scenes', () => {
     const entry: { promise: Promise<void> } = { promise: Promise.resolve() }
     entry.promise = (async () => {
       try {
-        const list = await work(isCurrent)
+        const list = await work(isCurrent, epoch, requestVersion)
         if (isCurrent()) scenes.value = list
       } catch (e) {
         if (isCurrent()) {
@@ -253,6 +301,21 @@ export const useSceneStore = defineStore('scenes', () => {
     return entry.promise
   }
 
+  function beginNewEpoch() {
+    loadEpoch += 1
+    version.value += 1
+    loaded.value = false
+    coreLoaded = false
+    shardCache = {}
+    loadedShards.value = new Set()
+    metaOk.clear()
+    metaLoadedEpoch = null
+    metaFailuresByEpoch.clear()
+    metaFailedFiles.value = new Set()
+    // Do not cancel or clear old transports here. Their completion handlers
+    // still run, but their epoch guards make the result harmless.
+  }
+
   function resolveShard(char: string): ShardChar {
     return char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'
   }
@@ -261,13 +324,15 @@ export const useSceneStore = defineStore('scenes', () => {
   function loadCharacter(char: string, force = false): Promise<void> {
     const shard = resolveShard(char)
     if (force) {
-      shardCache[shard] = undefined
-      loadedShards.value = new Set()
+      beginNewEpoch()
       inflightByKey.delete(`char:${shard}`)
     }
-    return beginTargetLoad(`char:${shard}`, async () => {
-      await loadMeta()
-      const [shared, target] = await Promise.all([loadShard('shared'), loadShard(shard)])
+    return beginTargetLoad(`char:${shard}`, async (_isCurrent, epoch, requestVersion) => {
+      await loadMeta(false)
+      const [shared, target] = await Promise.all([
+        loadShard('shared', epoch, requestVersion),
+        loadShard(shard, epoch, requestVersion),
+      ])
       return mergeScenes(shared, target)
     })
   }
@@ -275,18 +340,17 @@ export const useSceneStore = defineStore('scenes', () => {
   /** 只加载默认"人设核心"视图所需的数据（index + shared + core 精选子集）。 */
   function loadCore(force = false): Promise<void> {
     if (force) {
-      shardCache = {}
-      loadedShards.value = new Set()
+      beginNewEpoch()
       inflightByKey.delete('core')
     }
-    return beginTargetLoad('core', async (isCurrent) => {
-      await loadMeta()
+    return beginTargetLoad('core', async (_isCurrent, epoch, requestVersion) => {
+      await loadMeta(false)
       const [shared, core] = await Promise.all([
-        loadShard('shared'),
-        fetchJson<Scene[]>(CORE_FILE, version.value),
+        loadShard('shared', epoch, requestVersion),
+        fetchJson<Scene[]>(CORE_FILE, requestVersion),
       ])
       const list = mergeScenes(shared, Array.isArray(core) ? core : [])
-      if (isCurrent()) coreLoaded = true
+      if (epoch === loadEpoch) coreLoaded = true
       return list
     })
   }
@@ -294,10 +358,14 @@ export const useSceneStore = defineStore('scenes', () => {
   function ensureCharacter(char: string): Promise<void> {
     if (loaded.value) return Promise.resolve()
     const shard = resolveShard(char)
-    if (loadedShards.value.has(shard)) {
+    const cached = shardCache[shard]
+    const shared = shardCache.shared
+    if (loadedShards.value.has(shard)
+      && cached?.epoch === loadEpoch
+      && shared?.epoch === loadEpoch) {
       // 目标分片已在手：直接用 shared + 目标分片重建视图，不发请求。
       viewTarget = `char:${shard}`
-      scenes.value = mergeScenes(shardCache.shared || [], shardCache[shard] || [])
+      scenes.value = mergeScenes(shared.list, cached.list)
       return Promise.resolve()
     }
     return loadCharacter(char)
@@ -313,31 +381,25 @@ export const useSceneStore = defineStore('scenes', () => {
    * @param force 场景管理保存后需要读回落盘结果时传 true
    */
   function load(force = false): Promise<void> {
-    if (loaded.value && !force) return Promise.resolve()
     if (force) {
-      version.value += 1
-      shardCache = {}
-      loadedShards.value = new Set()
+      beginNewEpoch()
       inflightByKey.delete('full')
     }
-    return beginTargetLoad('full', async (isCurrent) => {
-      await loadMeta(force)
+    if (loaded.value && !force) return Promise.resolve()
+    return beginTargetLoad('full', async (_isCurrent, epoch, requestVersion) => {
+      await loadMeta(false)
       const [shared, nene, natsume] = await Promise.all([
-        loadShard('shared'),
-        loadShard('nene'),
-        loadShard('natsume'),
+        loadShard('shared', epoch, requestVersion),
+        loadShard('nene', epoch, requestVersion),
+        loadShard('natsume', epoch, requestVersion),
       ])
-      if (isCurrent()) loaded.value = true
+      if (epoch === loadEpoch) loaded.value = true
       return mergeScenes(shared, nene, natsume)
     })
   }
 
   /** 场景管理写回 data/ 之后调用 */
   function reload() {
-    loaded.value = false
-    shardCache = {}
-    loadedShards.value = new Set()
-    metaLoaded = false
     return load(true)
   }
 
@@ -348,12 +410,12 @@ export const useSceneStore = defineStore('scenes', () => {
    * 它只代表"重元数据也齐了"的全量完成态。
    */
   function loadHome(): Promise<void> {
-    return beginTargetLoad('home', async () => {
+    return beginTargetLoad('home', async (_isCurrent, epoch, requestVersion) => {
       await loadMeta(false, true)
       const [shared, nene, natsume] = await Promise.all([
-        loadShard('shared'),
-        loadShard('nene'),
-        loadShard('natsume'),
+        loadShard('shared', epoch, requestVersion),
+        loadShard('nene', epoch, requestVersion),
+        loadShard('natsume', epoch, requestVersion),
       ])
       return mergeScenes(shared, nene, natsume)
     })

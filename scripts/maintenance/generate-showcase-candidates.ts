@@ -61,9 +61,11 @@ const qualityPromptContract: typeof import('./quality-prompt-contract.js') = req
 const genConst: any = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
 const animaConst = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 
+const ROOT = path.resolve(__dirname, '..', '..');
+const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
-const popularData: typeof import('../../data/popular-characters.json') = require('../../data/popular-characters.json');
-const blueprintData: typeof import('../../data/scene-blueprints.json') = require('../../data/scene-blueprints.json');
+const popularData: unknown = readJson(path.join(ROOT, 'data', 'popular-characters.json'));
+const blueprintData: unknown = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
 const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
 
 const { createPromptPlan, renderPromptPlan } = promptCompiler;
@@ -71,8 +73,6 @@ const {
   assembleNegative, formatPromptForEngine, resolveModelProfile, profileRatingTag,
 } = promptPolicy;
 
-const ROOT = path.resolve(__dirname, '..', '..');
-const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', '2026-08-12_artist_popular_latest-lora');
 const SCENE_SHOWCASE_DIR = path.resolve(AI_ROOT, 'SceneShowcase');
 const MANIFEST_NAME = 'generation-manifest.json';
@@ -317,7 +317,13 @@ function argument(name: any, fallback: any = '') {
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
 function splitList(value: any) { return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean); }
-function readJson(file: any) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
+function readJson(file: string): any {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (error) {
+    throw new Error(`读取 ${path.relative(ROOT, file)} 失败：${error instanceof Error ? error.message : String(error)}`);
+  }
+}
 function stableSeed(key: any) {
   const digest = crypto.createHash('sha256').update(`showcase-candidates-2026-08-12:${key}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;

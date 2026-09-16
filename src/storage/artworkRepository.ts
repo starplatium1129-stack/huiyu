@@ -341,7 +341,7 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     return { deleted: true }
   }
 
-  async function restoreArtworkNow(id: string | number): Promise<{ restored: boolean }> {
+  async function restoreArtworkNow(id: string | number): Promise<{ restored: boolean; missingImageIds?: string[] }> {
     const targetId = comparableId(id)
     if (!targetId) throw new Error('作品 ID 无效')
 
@@ -354,6 +354,17 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
       kv.get(ARTWORK_PROJECTS_KEY),
     ])
     const history = arrayValue(historySnapshot) ?? []
+    const requiredImageIds = unique([
+      ...(Array.isArray(entry.imageIds) ? entry.imageIds : []),
+      ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),
+    ])
+    const missingImageIds: string[] = []
+    if (images.get) {
+      for (const image of requiredImageIds) {
+        if (!(await images.get(image))) missingImageIds.push(image)
+      }
+    }
+    if (missingImageIds.length) return { restored: false, missingImageIds }
     // 同 id 已存在（恢复过一次的重复点击）：幂等成功
     const exists = history.some(item => recordId(item) === targetId)
 
@@ -380,8 +391,8 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
 
   /**
    * 懒清理：真删超期软删条目的图片与缩略图。只删「当前 history 无人引用」
-   * 的 image（恢复过的条目 image 已回到 history，purge 自然跳过——虽然正常
-   * 流程恢复时 trash 条目已移除，这里是防御性兜底）。
+   * 的 image。当前作品和仍未过期的 trash 快照都会保护其 historyEntries 与
+   * imageIds 引用；恢复过的条目正常已移出 trash，这里仍保持防御性兜底。
    */
   async function purgeExpiredTrashNow(): Promise<{ purged: number }> {
     const trash = await readTrash()
@@ -392,17 +403,23 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
 
     const historySnapshot = await kv.get(ARTWORK_HISTORY_KEY)
     const history = arrayValue(historySnapshot) ?? []
-    const liveImageIds = new Set(unique(history.map(imageId)))
-
-    for (const entry of expired) {
-      const removable = (entry.imageIds || []).filter(image => !liveImageIds.has(image))
-      if (removable.length) {
-        await images.deleteMany(removable)
-        for (const image of removable) await kv.remove?.(thumbKey(image))
-      }
-    }
     const expiredIds = new Set(expired.map(entry => entry.id))
-    await writeTrash(trash.filter(entry => !expiredIds.has(entry.id)))
+    const survivingTrash = trash.filter(entry => !expiredIds.has(entry.id))
+    const entryImageIds = (entry: TrashEntry) => unique([
+      ...(Array.isArray(entry.imageIds) ? entry.imageIds : []),
+      ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),
+    ])
+    const protectedImageIds = new Set([
+      ...unique(history.map(imageId)),
+      ...survivingTrash.flatMap(entryImageIds),
+    ])
+    const expiredImageIds = unique(expired.flatMap(entryImageIds))
+    const removable = expiredImageIds.filter(image => !protectedImageIds.has(image))
+    if (removable.length) {
+      await images.deleteMany(removable)
+      for (const image of removable) await kv.remove?.(thumbKey(image))
+    }
+    await writeTrash(survivingTrash)
     return { purged: expired.length }
   }
 
@@ -410,7 +427,7 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     return enqueue(() => softDeleteArtworkNow(id))
   }
 
-  function restoreArtwork(id: string | number): Promise<{ restored: boolean }> {
+  function restoreArtwork(id: string | number): Promise<{ restored: boolean; missingImageIds?: string[] }> {
     return enqueue(() => restoreArtworkNow(id))
   }
 
@@ -500,7 +517,7 @@ export async function softDeleteArtwork(id: string | number): Promise<{ deleted:
 }
 
 /** 从回收站恢复一条软删作品（历史条目 + 项目引用增量补回）。 */
-export async function restoreArtwork(id: string | number): Promise<{ restored: boolean }> {
+export async function restoreArtwork(id: string | number): Promise<{ restored: boolean; missingImageIds?: string[] }> {
   return artworkRepository.restoreArtwork(id)
 }
 

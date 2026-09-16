@@ -40,6 +40,36 @@ function scene(id: string, extra: Record<string, unknown> = {}) {
   return { id, title: id, ...extra }
 }
 
+function response(value: Json): Response {
+  return { ok: true, status: 200, json: async () => structuredClone(value) } as Response
+}
+
+function deferred<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void
+  const promise = new Promise<T>((done) => { resolve = done })
+  return { promise, resolve }
+}
+
+function revisionData(file: string, revision: string): Json {
+  if (file === 'scenes-shared.json') return [scene('sc001', { title: `${revision}-shared` })]
+  if (file === 'scenes-nene.json') return [scene('sc002', { title: `${revision}-nene` })]
+  if (file === 'scenes-natsume.json') return [scene('sc003', { title: `${revision}-natsume` })]
+  if (file === 'scenes-core.json') return [scene('sc004', { title: `${revision}-core` })]
+  if (file === 'curation.json') return { revision }
+  if (file === 'scenes-index.json') return { version: 1, total: 3 }
+  if (file === 'characters.json') return [{ id: 'char-1', name: revision }]
+  if (file === 'popular-characters.json') return { characters: [] }
+  if (file === 'scene-blueprints.json') return {
+    blueprints: [{
+      id: 'bp-1', title: 'Blueprint', category: 'daily', description: 'A fixture blueprint',
+      location: 'room', action: 'sit', timeOfDay: 'day', lighting: 'soft', camera: 'portrait',
+      mood: 'calm', sceneTags: [], promptProse: 'A fixture scene', promptTokens: ['fixture'],
+      negativeTokens: [], recommendedSize: '832x1216', adult: false,
+    }],
+  }
+  return []
+}
+
 beforeEach(() => {
   calls.length = 0
   routes = {}
@@ -89,6 +119,102 @@ describe('sceneStore · 全量加载', () => {
     const versions = new Set(calls.map(u => u.split('v=')[1]))
     expect(versions.has(String(DATA_VERSION))).toBe(true)
     expect(versions.has(String(DATA_VERSION + 1))).toBe(true)
+  })
+
+  it('轻载与完整加载重叠时，完整入口必须补齐必需元数据', async () => {
+    const gate = deferred<void>()
+    const heldLite = new Set(['curation.json', 'scenes-index.json', 'popular-characters.json'])
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL) => {
+      const url = String(input)
+      calls.push(url)
+      const file = url.replace(/^\/data\//, '').replace(/\?.*$/, '')
+      if (heldLite.has(file)) await gate.promise
+      return response(revisionData(file, 'new'))
+    }))
+    const store = useSceneStore()
+    const home = store.loadHome()
+    const full = store.load()
+    gate.resolve()
+    await Promise.all([home, full])
+
+    expect(store.loaded).toBe(true)
+    expect(store.characters).toEqual([{ id: 'char-1', name: 'new' }])
+    expect(store.sceneBlueprints).toHaveLength(1)
+    expect(calls.filter(url => url.includes('curation.json')).length).toBe(1)
+  })
+
+  it('force 刷新不加入旧分片请求，旧分片完成后也不能污染新缓存', async () => {
+    const oldShared = deferred<Response>()
+    const oldNene = deferred<Response>()
+    let oldShardRequests = 0
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL) => {
+      const url = String(input)
+      calls.push(url)
+      const parsed = new URL(url, 'http://localhost')
+      const file = parsed.pathname.replace(/^\/data\//, '')
+      const revision = parsed.searchParams.get('v') === String(DATA_VERSION) ? 'old' : 'new'
+      if (revision === 'old' && file === 'scenes-shared.json') {
+        oldShardRequests += 1
+        return oldShared.promise
+      }
+      if (revision === 'old' && file === 'scenes-nene.json') {
+        oldShardRequests += 1
+        return oldNene.promise
+      }
+      return response(revisionData(file, revision))
+    }))
+    const store = useSceneStore()
+    const initial = store.loadCharacter('nene')
+    for (let attempt = 0; attempt < 20 && oldShardRequests < 2; attempt += 1) {
+      await new Promise(resolve => setImmediate(resolve))
+    }
+    expect(oldShardRequests).toBe(2)
+
+    const refreshed = store.reload()
+    for (let attempt = 0; attempt < 20; attempt += 1) {
+      if (calls.some(url => url.includes(`scenes-nene.json?v=${DATA_VERSION + 1}`))) break
+      await new Promise(resolve => setImmediate(resolve))
+    }
+    expect(calls.some(url => url.includes(`scenes-nene.json?v=${DATA_VERSION + 1}`))).toBe(true)
+    oldShared.resolve(response(revisionData('scenes-shared.json', 'old')))
+    oldNene.resolve(response(revisionData('scenes-nene.json', 'old')))
+    await Promise.all([initial, refreshed])
+
+    expect(store.loaded).toBe(true)
+    expect(store.scenes.find(item => item.id === 'sc002')?.title).toBe('new-nene')
+    expect(store.loadedShards).toEqual(new Set(['shared', 'nene', 'natsume']))
+  })
+
+  it('旧代际元数据晚到时，不能覆盖刷新后已发布的新值', async () => {
+    const oldMetadata: Array<{ file: string; resolve: (value: Response) => void }> = []
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL) => {
+      const url = String(input)
+      calls.push(url)
+      const parsed = new URL(url, 'http://localhost')
+      const file = parsed.pathname.replace(/^\/data\//, '')
+      const revision = parsed.searchParams.get('v') === String(DATA_VERSION) ? 'old' : 'new'
+      if (revision === 'old' && !/^scenes-(?:shared|nene|natsume)\.json$/.test(file)) {
+        const pending = deferred<Response>()
+        oldMetadata.push({ file, resolve: pending.resolve })
+        return pending.promise
+      }
+      return response(revisionData(file, revision))
+    }))
+    const store = useSceneStore()
+    const initial = store.load()
+    for (let attempt = 0; attempt < 20 && oldMetadata.length < 8; attempt += 1) {
+      await new Promise(resolve => setImmediate(resolve))
+    }
+    expect(oldMetadata.length).toBe(8)
+
+    await store.reload()
+    expect(store.characters).toEqual([{ id: 'char-1', name: 'new' }])
+    expect(store.curation).toEqual({ revision: 'new' })
+
+    for (const pending of oldMetadata) pending.resolve(response(revisionData(pending.file, 'old')))
+    await initial
+    expect(store.characters).toEqual([{ id: 'char-1', name: 'new' }])
+    expect(store.curation).toEqual({ revision: 'new' })
   })
 })
 

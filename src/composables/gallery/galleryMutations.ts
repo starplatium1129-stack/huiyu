@@ -140,22 +140,31 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
 export async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;
     let restored = 0;
+    let missingImages = 0;
     for (const id of ids) {
         try {
-            if ((await artworkRepository.restoreArtwork(id)).restored)
+            const result = await artworkRepository.restoreArtwork(id);
+            if (result.restored)
                 restored += 1;
+            else if (result.missingImageIds?.length)
+                missingImages += 1;
         }
         catch { /* 逐条继续，不因一条失败放弃其余 */ }
     }
     await loadGalleryStorage();
-    showToast(restored ? `已把 ${restored} 幅放回展墙` : '这些作品已不在回收站，无法恢复', restored ? 'success' : 'warning');
+    showToast(restored
+        ? `已把 ${restored} 幅放回展墙${missingImages ? `，${missingImages} 幅因原图缺失未恢复` : ''}`
+        : missingImages ? `${missingImages} 幅原图已缺失，无法完整恢复；回收站快照仍保留` : '这些作品已不在回收站，无法恢复',
+    restored ? 'success' : 'warning');
 }
 export async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;
     try {
         const result = await artworkRepository.restoreArtwork(item.id);
         if (!result.restored) {
-            showToast('这条作品已不在回收站，无法恢复', 'warning');
+            showToast(result.missingImageIds?.length
+                ? '原图已缺失，无法完整恢复；回收站快照仍保留'
+                : '这条作品已不在回收站，无法恢复', 'warning');
             return;
         }
         await loadGalleryStorage();

@@ -66,6 +66,8 @@ test('compressed assets keep source boundaries and mutable-data cache policy', a
   assert.notEqual((await get('/assets/.hidden/secret.json', 'br')).status, 200);
   write(path.join(root, 'data', 'character-reference-view.json'));
   assert.equal((await get('/data/character-reference-view.json', 'br')).headers['cache-control'], 'no-cache');
+  write(path.join(root, 'data', 'scenes.json'));
+  assert.equal((await get('/data/scenes.json', 'br')).headers['cache-control'], 'no-cache');
   write(path.join(root, 'data', 'private.json'));
   assert.equal((await get('/data/private.json', 'br')).status, 404);
 }));

@@ -835,7 +835,8 @@ async function run() {
     assert((await fetch(gatewayBase + '/src/assets/css/home.css')).status === 404, 'documentation styles must not expose unrelated source files');
 
     let dataResponse = await fetch(gatewayBase + '/data/scenes.json');
-    assert((dataResponse.headers.get('cache-control') || '').includes('immutable'), 'data files are cached immutable; freshness is versioned by ?v=DATA_VERSION and enforced by validate-content-contracts');
+    assert((dataResponse.headers.get('cache-control') || '').includes('no-cache'), 'mutable data files must revalidate through ETag instead of immutable caching');
+    assert(dataResponse.headers.get('etag'), 'mutable data files must expose an ETag for zero-byte revalidation');
 
     let assetResponse = await fetch(gatewayBase + '/assets/logo.svg');
     assert((assetResponse.headers.get('cache-control') || '').includes('no-cache'), 'runtime image assets should use no-cache ETag revalidation');

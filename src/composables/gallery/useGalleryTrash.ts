@@ -31,7 +31,9 @@ async function restoreTrashItem(id: string | number) {
       delete trashThumbs[id]
       await loadGalleryStorage()
     } else {
-      showToast('这条作品已不在回收站，无法恢复', 'warning')
+      showToast(result.missingImageIds?.length
+        ? '原图已缺失，无法完整恢复；回收站快照仍保留'
+        : '这条作品已不在回收站，无法恢复', 'warning')
       await loadTrash()
     }
   } catch (e) {

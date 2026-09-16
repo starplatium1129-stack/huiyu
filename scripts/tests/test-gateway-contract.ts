@@ -438,11 +438,14 @@ async function main() {
     let publicData = [
       'scenes.json', 'scenes-index.json', 'scenes-core.json',
       'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
-      'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'
+      'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json',
+      'popular-characters.json', 'scene-blueprints.json', 'character-reference-view.json'
     ];
     for (let pd = 0; pd < publicData.length; pd++) {
       let served: any = await request({ path:'/data/' + publicData[pd], headers:LOCAL });
       assert.strictEqual(served.status, 200, '/data/' + publicData[pd] + ' must stay served');
+      assert.ok(String(served.headers['cache-control'] || '').includes('no-cache'),
+        '/data/' + publicData[pd] + ' must revalidate mutable data');
     }
 
     // ---- P-3: 带 hash 的产物永久缓存，SPA 外壳不缓存 ----
@@ -512,7 +515,7 @@ async function main() {
     assert.strictEqual(buildWeb.status, 501, 'desktop packaged mode must refuse build-web with 501');
     console.log('Gateway contract tests passed: tunnel localOnly, host validation, ' +
       'rebinding guard, WS upgrade auth, error envelopes, api 404, sdapi allowlist, ' +
-      'data allowlist, immutable assets, precompressed serving, desktop mode 501');
+      'data allowlist, mutable-data revalidation, immutable assets, precompressed serving, desktop mode 501');
   } finally {
     if (desktopStack) await desktopStack.close();
     await stack.close();

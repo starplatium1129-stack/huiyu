@@ -1,10 +1,16 @@
 'use strict';
 const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+const fs: typeof import('node:fs') = require('node:fs');
+const path: typeof import('node:path') = require('node:path');
 const test: typeof import('node:test') = require('node:test');
 const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
 const repairs: typeof import('./fixtures/scene-coverage-repairs.json') = require('./fixtures/scene-coverage-repairs.json');
-const characters: any[] = popular.parsePopularCharacters((require('../../data/popular-characters.json') as typeof import('../../data/popular-characters.json')));
-const blueprints: any[] = popular.parseSceneBlueprints((require('../../data/scene-blueprints.json') as typeof import('../../data/scene-blueprints.json')));
+const ROOT = path.resolve(__dirname, '..', '..');
+function readData(file: string): unknown {
+  return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', file), 'utf8'));
+}
+const characters: any[] = popular.parsePopularCharacters(readData('popular-characters.json'));
+const blueprints: any[] = popular.parseSceneBlueprints(readData('scene-blueprints.json'));
 const profiles: any[] = (require('../../data/presets.json') as typeof import('../../data/presets.json')).model_profiles;
 test('all characters have an owned SFW blueprint for their exact default outfit', () => {
   const missing = characters.filter(c => !blueprints.some(b => b.characterId === c.id && !b.adult && b.outfitId === popular.defaultOutfit(c).id));

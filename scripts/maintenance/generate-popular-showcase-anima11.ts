@@ -24,14 +24,14 @@ const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts')
 const animaConstants = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 const animaGenerationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
 
-const popularData: typeof import('../../data/popular-characters.json') = require('../../data/popular-characters.json');
-const blueprintData: typeof import('../../data/scene-blueprints.json') = require('../../data/scene-blueprints.json');
-const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
-
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
 const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', '2026-08-14_v18-popular-all-rella');
+const popularData: unknown = readJson(path.join(ROOT, 'data', 'popular-characters.json'));
+const blueprintData: unknown = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
+const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
+
 const MANIFEST_NAME = 'generation-manifest.json';
 const ANIMA_MODEL_ID = argument('--model', 'anima-miaomiao-v1.2');
 const ANIMA_PROFILE_ID = (presets.model_profiles || []).find((item: any) => item.model_id === ANIMA_MODEL_ID)?.id;
@@ -44,8 +44,12 @@ function argument(name: any, fallback: any = '') {
 function splitList(value: any) {
   return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean);
 }
-function readJson(file: any) {
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
+function readJson(file: string): any {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (error) {
+    throw new Error(`读取 ${path.relative(ROOT, file)} 失败：${error instanceof Error ? error.message : String(error)}`);
+  }
 }
 function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });

@@ -18,19 +18,21 @@ const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('
 const promptCompiler: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const promptConstants: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
+const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
 const generationConstants: any = (require('../../routes/generation.js') as typeof import('../../routes/generation.js')).constants;
 const animaConstants = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 const animaGenerationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
 const { buildShortPrompt }: typeof import('./short-prompt-builder.js') = require('./short-prompt-builder.js');
 
-const scenes: typeof import('../../data/scenes.json') = require('../../data/scenes.json');
-const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
-const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
-
+type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
 const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'SceneShowcaseRefresh', '2026-08-12_current-prompts');
+const scenes: Scene[] = readSceneData(path.join(ROOT, 'data', 'scenes.json'));
+const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
+const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
+
 const MANIFEST_NAME = 'generation-manifest.json';
 const ANIMA_MODEL_ID = 'anima-base-v1.0';
 const ANIMA_PROFILE_ID = 'anima_base_v10';
@@ -55,8 +57,15 @@ function argument(name: any, fallback: any = '') {
 function splitList(value: any) {
   return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean);
 }
-function readJson(file: any) {
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
+function readJson(file: string): any {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (error) {
+    throw new Error(`读取 ${path.relative(ROOT, file)} 失败：${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+function readSceneData(file: string): Scene[] {
+  return requireDataRecords(readJson(file), path.basename(file)) as unknown as Scene[];
 }
 function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });

@@ -26,17 +26,19 @@ const path: typeof import('path') = require('path');
 
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
+const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
 const animaConstants = (require('../../routes/anima.js') as typeof import('../../routes/anima.js')).constants;
 const animaGenerationContract: typeof import('../../server/anima-generation-contract.js') = require('../../server/anima-generation-contract.js');
 
-const scenes: typeof import('../../data/scenes.json') = require('../../data/scenes.json');
-const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
-const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
-
+type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
 const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'SceneShowcaseRefresh', '2026-08-14_v16-anima11-rella');
+const scenes: Scene[] = readSceneData(path.join(ROOT, 'data', 'scenes.json'));
+const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
+const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
+
 const MANIFEST_NAME = 'generation-manifest.json';
 const ANIMA_MODEL_ID = 'anima-aesthetic-v1.1';
 const ANIMA_PROFILE_ID = 'anima_aesthetic_v11';
@@ -55,8 +57,15 @@ function argument(name: any, fallback: any = '') {
 function splitList(value: any) {
   return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean);
 }
-function readJson(file: any) {
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
+function readJson(file: string): any {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (error) {
+    throw new Error(`读取 ${path.relative(ROOT, file)} 失败：${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+function readSceneData(file: string): Scene[] {
+  return requireDataRecords(readJson(file), path.basename(file)) as unknown as Scene[];
 }
 function writeJsonAtomic(file: any, value: any) {
   fs.mkdirSync(path.dirname(file), { recursive: true });

@@ -1,21 +1,27 @@
 'use strict';
 
 let assert: typeof import('assert') = require('assert');
+let fs: typeof import('fs') = require('fs');
+let path: typeof import('path') = require('path');
 let test: typeof import('node:test') = require('node:test');
 let popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
 let recipes: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
 let persistence: typeof import('../../src/utils/promptBuilderPersistence.ts') = require('../../src/utils/promptBuilderPersistence.ts');
 let animaRoute: typeof import('../../routes/anima.js') = require('../../routes/anima.js');
 
-let characterData: typeof import('../../data/popular-characters.json') = require('../../data/popular-characters.json');
-let blueprintData: typeof import('../../data/scene-blueprints.json') = require('../../data/scene-blueprints.json');
+let ROOT = path.resolve(__dirname, '..', '..');
+function readData(file: string): unknown {
+  return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', file), 'utf8'));
+}
+let characterData: unknown = readData('popular-characters.json');
+let blueprintData: unknown = readData('scene-blueprints.json');
 
 let coverageRepairs: typeof import('./fixtures/scene-coverage-repairs.json') = require('./fixtures/scene-coverage-repairs.json');
 let { hasAtmosphericSceneProse }: typeof import('./scene-prose-contract') = require('./scene-prose-contract');
 let characters = popular.parsePopularCharacters(characterData);
 let blueprints = popular.parseSceneBlueprints(blueprintData);
 
-let sfwOnlyIds = new Set(characterData.characters.filter(c => c.adultEligibility !== 'adult').map(c => c.id));
+let sfwOnlyIds = new Set(characters.filter(c => c.adultEligibility !== 'adult').map(c => c.id));
 let legacyAdultIds = new Set(['shiina_mashiro', 'izumi_sagiri', 'takarada_rikka', 'hayasaka_ai', 'arima_kana', 'hori_kyouko']);
 let remainingOnboarding = (require('../../data/popular-onboarding.json') as typeof import('../../data/popular-onboarding.json')).characters;
 let onboardingIds = new Set(remainingOnboarding.map(c => c.id));

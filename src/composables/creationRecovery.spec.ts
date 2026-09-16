@@ -14,7 +14,14 @@ import type { ReferenceCard } from '@/components/video/useReferenceCards'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY } from '@/utils/storageKeys'
 
 const io = vi.hoisted(() => ({ put: vi.fn(), get: vi.fn(), remove: vi.fn(), upload: vi.fn(), fetchJob: vi.fn(), kvGet: vi.fn(), kvSet: vi.fn(), kvSetMany: vi.fn(), kv: new Map<string, unknown>() }))
-vi.mock('@/composables/useImageStore', () => ({ imgPut: io.put, imgGet: io.get, imgDelete: io.remove }))
+vi.mock('@/composables/useImageStore', () => ({
+  imgPut: io.put,
+  imgGet: io.get,
+  imgDelete: io.remove,
+  imgGetRecord: io.get,
+  imgPutRecord: io.put,
+  imgDeleteMany: io.remove,
+}))
 vi.mock('@/composables/useKVStore', () => ({ kvGet: io.kvGet, kvSet: io.kvSet, kvSetMany: io.kvSetMany }))
 vi.mock('@/storage/artworkMutation', () => ({ withArtworkMutation: (work: () => Promise<unknown>) => work() }))
 vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: vi.fn(), thumbKey: (id: string) => id }))
@@ -59,6 +66,9 @@ describe('创作状态交接回归', () => {
     const pb = usePromptBuilderStore()
     const entry = await pb.commitHistoryEntry({ blob: new Blob(['image']), prompt: 'A quiet landscape' })
     expect(entry).not.toBeNull()
+    io.get.mockResolvedValue({
+      id: entry!.image_id, blob: new Blob(['image']), name: 'image.png', type: 'image/png', size: 5, created_at: Date.now(),
+    })
     io.kv.set(ARTWORK_PROJECTS_KV_KEY, [{ id: 'project', name: '作品项目', history_ids: [entry!.id] }])
     io.kvSetMany.mockClear()
     await pb.removeHistoryEntry(entry!.id)
