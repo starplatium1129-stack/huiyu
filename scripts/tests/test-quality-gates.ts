@@ -94,6 +94,25 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.match(quality, /AICS_HYGIENE_BASE_REF/);
   assert.doesNotMatch(quality, /npm run test:live\b|regress-anima|test:live2d-native/);
   assert.doesNotMatch(quality, /npm run test:live2d-native/);
+  const summary = quality.slice(quality.indexOf('  quality-summary:'));
+  assert.ok(summary.length > 0, 'quality workflow must expose a final summary job');
+  assert.match(summary, /if: always\(\)/);
+  assert.match(summary, /needs: \[checks, unit, contract, e2e\]/);
+  for (const lane of ['checks', 'unit', 'contract', 'e2e']) {
+    assert.match(summary, new RegExp(`needs\\.${lane}\\.result|${lane.toUpperCase()}_RESULT`),
+      `quality summary must inspect ${lane} result`);
+  }
+  const audit = read('.github/workflows/dependency-audit.yml');
+  assert.match(audit, /npm ci --ignore-scripts/);
+  assert.match(audit, /dependency-audit-runtime\.json/);
+  assert.match(audit, /dependency-audit\.json/);
+  assert.match(audit, /dependency-audit-runtime\.stderr/);
+  assert.match(audit, /dependency-audit\.stderr/);
+  assert.match(audit, /AUDIT_COMMAND_FAILED/);
+  assert.match(audit, /exitCodes/);
+  assert.match(audit, /diagnostics/);
+  assert.match(audit, /steps\.audit-runtime\.outputs\.exit_code/);
+  assert.match(audit, /steps\.audit-full\.outputs\.exit_code/);
   assert.match(native, /self-hosted, Windows, X64, live2d-cubism/);
   assert.match(native, /github\.ref == 'refs\/heads\/main'/);
   assert.match(native, /persist-credentials: false/);

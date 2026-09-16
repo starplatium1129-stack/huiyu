@@ -133,8 +133,14 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Require every quality lane to pass
+        env:
+          CHECKS_RESULT: ${{ needs.checks.result }}
+          UNIT_RESULT: ${{ needs.unit.result }}
+          CONTRACT_RESULT: ${{ needs.contract.result }}
+          E2E_RESULT: ${{ needs.e2e.result }}
         run: |
-          test "${{ needs.checks.result }}" = "success"
-          test "${{ needs.unit.result }}" = "success"
-          test "${{ needs.contract.result }}" = "success"
-          test "${{ needs.e2e.result }}" = "success"
+          printf 'checks=%s unit=%s contract=%s e2e=%s\n' "$CHECKS_RESULT" "$UNIT_RESULT" "$CONTRACT_RESULT" "$E2E_RESULT"
+          test "$CHECKS_RESULT" = "success"
+          test "$UNIT_RESULT" = "success"
+          test "$CONTRACT_RESULT" = "success"
+          test "$E2E_RESULT" = "success"

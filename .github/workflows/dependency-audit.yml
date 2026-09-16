@@ -34,8 +34,22 @@ jobs:
         shell: bash
         run: |
           set +e
-          npm audit --omit=dev --audit-level=high --json > dependency-audit-runtime.json
+          npm audit --omit=dev --audit-level=high --json > dependency-audit-runtime.json 2> dependency-audit-runtime.stderr
           status=$?
+          if [ ! -s dependency-audit-runtime.json ]; then
+            AUDIT_OUTPUT=dependency-audit-runtime.json AUDIT_ERROR=dependency-audit-runtime.stderr AUDIT_EXIT_CODE="$status" node <<'NODE'
+          const fs = require('node:fs');
+          const detail = fs.readFileSync(process.env.AUDIT_ERROR, 'utf8').trim();
+          fs.writeFileSync(process.env.AUDIT_OUTPUT, JSON.stringify({
+            error: {
+              code: 'AUDIT_COMMAND_FAILED',
+              exitCode: Number(process.env.AUDIT_EXIT_CODE),
+              message: detail || 'npm audit produced no JSON output',
+            },
+          }, null, 2) + '\n');
+          NODE
+            status=1
+          fi
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
           exit "$status"
       - name: Audit full dependency tree
@@ -45,8 +59,22 @@ jobs:
         shell: bash
         run: |
           set +e
-          npm audit --audit-level=high --json > dependency-audit.json
+          npm audit --audit-level=high --json > dependency-audit.json 2> dependency-audit.stderr
           status=$?
+          if [ ! -s dependency-audit.json ]; then
+            AUDIT_OUTPUT=dependency-audit.json AUDIT_ERROR=dependency-audit.stderr AUDIT_EXIT_CODE="$status" node <<'NODE'
+          const fs = require('node:fs');
+          const detail = fs.readFileSync(process.env.AUDIT_ERROR, 'utf8').trim();
+          fs.writeFileSync(process.env.AUDIT_OUTPUT, JSON.stringify({
+            error: {
+              code: 'AUDIT_COMMAND_FAILED',
+              exitCode: Number(process.env.AUDIT_EXIT_CODE),
+              message: detail || 'npm audit produced no JSON output',
+            },
+          }, null, 2) + '\n');
+          NODE
+            status=1
+          fi
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
           exit "$status"
       - name: Write dependency audit metadata
@@ -73,7 +101,19 @@ jobs:
               runtime: process.env.RUNTIME_EXIT_CODE,
               full: process.env.FULL_EXIT_CODE,
             },
+            diagnostics: {
+              runtime: readDiagnostic('dependency-audit-runtime.stderr'),
+              full: readDiagnostic('dependency-audit.stderr'),
+            },
           }, null, 2) + '\n');
+          function readDiagnostic(file) {
+            try {
+              const text = fs.readFileSync(file, 'utf8').trim();
+              return text ? text.slice(-4000) : null;
+            } catch {
+              return null;
+            }
+          }
           NODE
       - name: Enforce high-severity audit result
         if: always()
@@ -89,6 +129,8 @@ jobs:
           path: |
             dependency-audit-runtime.json
             dependency-audit.json
+            dependency-audit-runtime.stderr
+            dependency-audit.stderr
             dependency-audit-metadata.json
           if-no-files-found: warn
           retention-days: 14
