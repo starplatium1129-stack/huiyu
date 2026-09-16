@@ -84,7 +84,7 @@ test('updated ownership notes surface key responsibilities in JSON and text outp
   assert.ok(byDomain.references.boundary.includes('idx===0') && byDomain.references.boundary.includes('首套'));
   assert.ok(byDomain.references.boundary.includes('机位'));
   assert.ok(byDomain.themes.readers.some((r: any) => r.includes('--character-')));
-  assert.ok(byDomain.themes.boundary.includes('accent_color'));
+  assert.ok(byDomain.themes.readers.some((r: any) => r.includes('accent_color')));
   assert.ok(report.scope.includes('不声称穷尽'));
   const text = cli(root, ['--domain', 'characters']).stdout;
   assert.ok(text.includes('characterProfiles.ts'));

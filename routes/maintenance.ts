@@ -55,14 +55,10 @@ let expectedDataVersion = (require('../scripts/lib/data-version') as typeof impo
 let sceneWrite: typeof import('../scripts/lib/scene-write') = require('../scripts/lib/scene-write');
 
 function syncSceneStoreDataVersion(rootDir: string) {
-  let expected = expectedDataVersion(rootDir);
-  let storePath = path.join(rootDir, 'src', 'stores', 'sceneStore.ts');
-  if (fs.existsSync(storePath)) {
-    let storeSource = fs.readFileSync(storePath, 'utf8');
-    storeSource = storeSource.replace(/DATA_VERSION\s*=\s*\d+/, 'DATA_VERSION = ' + expected);
-    writeFileAtomic(storePath, storeSource);
-  }
-  return expected;
+  // Kept as a transaction callback for the maintenance route API. The client
+  // version now comes from Vite's virtual:data-version module, so a data save
+  // must never dirty the hand-written sceneStore.ts source file.
+  return expectedDataVersion(rootDir);
 }
 
 

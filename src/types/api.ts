@@ -32,6 +32,19 @@ export interface ProviderTestResult { ok: true; models: string[] }
 export interface TtsStatus { online: boolean; voices: Record<string, boolean>; translation?: { ready: boolean }; activeVoice?: string; error?: string }
 export interface VoicePrepareResult { ok: true; voice: string; translation: boolean; prepareMs?: number }
 export interface TranslateResult { sourceLanguage?: string; targetLanguage?: string; translation: string; segments?: unknown[] }
+/** Runtime request DTOs are optional at the boundary because malformed JSON is
+ * still possible; handlers validate before invoking the service. */
+export interface TranslateRequest { text?: string }
+export interface VoicePrepareRequest { voice?: string; translation?: boolean }
+export interface TtsRequest {
+  voice?: string
+  text?: string
+  language?: string
+  emotion?: string
+  referenceEmotion?: string
+  consistency?: string
+  speed?: number
+}
 export interface Live2DStatusResponse { models: Record<string, unknown> }
 export interface SDStatusResponse { online: boolean; checkpoint: string; models: string[]; samplers: string[]; schedulers: string[]; upscalers: string[] }
 

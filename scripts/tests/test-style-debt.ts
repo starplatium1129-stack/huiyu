@@ -41,12 +41,23 @@ function bindsOnlyCustomProps(source: string, identifier: string) {
   // （如 '0' : '0.55'）会被误判成对象键，导致合法写法误报。
   const keys = [...match[1].matchAll(/(?:^|\n|\{)\s*(?:'([^']+)'|"([^"]+)"|([\w-]+))\s*:/g)]
     .map((m) => m[1] || m[2] || m[3]);
-  return keys.length > 0 && keys.every((k) => k.startsWith('--'));
+  if (keys.length > 0) return keys.every((k) => k.startsWith('--'));
+  // A computed style carrier may delegate to a pure helper. Verify the called
+  // helper's returned object by its own custom-property keys instead of
+  // rejecting a valid indirection as ordinary inline styling.
+  const call = match[1].trim().match(/^([A-Za-z_$][\w$]*)\s*\(/);
+  if (!call) return false;
+  const helper = call[1];
+  const helperStart = source.search(new RegExp(`(?:function\\s+${helper}\\s*\\(|(?:const|let|var)\\s+${helper}\\s*=)`));
+  if (helperStart < 0) return false;
+  const helperSource = source.slice(helperStart, helperStart + 6000);
+  const helperKeys = [...helperSource.matchAll(/['"](--[\w-]+)['"]\s*:/g)].map((m) => m[1]);
+  return helperKeys.length > 0 && helperKeys.every((k) => k.startsWith('--'));
 }
 
 // 2026-08-22 自定义属性载体随簇下沉 composable 后，定义点可能不在 SFC 本体：
-// 按 SFC 的相对/别名导入把候选模块源码拼进搜索范围（只追一层，覆盖
-// 「const { x } = useY()」解构与直接 import 两种形态；找不到定义仍按违规报）。
+// 按 SFC 的相对/别名导入把候选模块源码拼进搜索范围（最多追两层，覆盖
+// 「const { x } = useY()」解构与纯函数 style carrier；找不到定义仍按违规报）。
 function styleCarrierSearchScope(absPath: string, source: string) {
   const chunks = [source];
   for (const m of source.matchAll(/import\s+(?:[^'"]*?\sfrom\s+)?['"]([^'"]+)['"]/g)) {
@@ -57,6 +68,20 @@ function styleCarrierSearchScope(absPath: string, source: string) {
     else continue;
     for (const ext of ['.ts', '.js']) {
       try { chunks.push(fs.readFileSync(resolved + ext, 'utf8')); break } catch { /* 试下一个扩展名 */ }
+    }
+  }
+  // Follow one additional import layer so a composable can delegate to a pure
+  // custom-property helper without turning the SFC binding into a false alarm.
+  for (const imported of chunks.slice(1)) {
+    for (const m of imported.matchAll(/import\s+(?:[^'"]*?\sfrom\s+)?['"]([^'"]+)['"]/g)) {
+      const spec = m[1];
+      const resolved = spec.startsWith('./') || spec.startsWith('../')
+        ? path.join(path.dirname(absPath), spec)
+        : spec.startsWith('@/') ? path.join(root, 'src', spec.slice(2)) : null;
+      if (!resolved) continue;
+      for (const ext of ['.ts', '.js']) {
+        try { chunks.push(fs.readFileSync(resolved + ext, 'utf8')); break; } catch { /* 试下一个扩展名 */ }
+      }
     }
   }
   return chunks.join('\n');

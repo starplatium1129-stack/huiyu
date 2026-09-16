@@ -21,7 +21,6 @@ const products: typeof import('../../routes/maintenance-content-products') = req
 const sceneStore: typeof import('../lib/scene-store') = require('../lib/scene-store');
 const blueprintStore: typeof import('../lib/blueprint-store') = require('../lib/blueprint-store');
 const popularStore: typeof import('../lib/popular-store') = require('../lib/popular-store');
-const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 const { isSceneId }: typeof import('../lib/scene-id') = require('../lib/scene-id');
 const read = (name: any) => JSON.parse(fs.readFileSync(path.join(root, name), 'utf8'));
 const write = (name: any, value: any) => fs.writeFileSync(path.join(root, name), JSON.stringify(value, null, 2) + '\n');
@@ -50,7 +49,7 @@ function seed() {
     fs.writeFileSync(file, 'fixture placeholder; no image quality assertion');
   }
   sceneStore.writeAggregate(sceneStore.loadSceneShards().scenes);
-  fs.writeFileSync(path.join(root, 'src/stores/sceneStore.ts'), 'export const DATA_VERSION = ' + expectedDataVersion(root) + ';\n');
+  fs.writeFileSync(path.join(root, 'src/stores/sceneStore.ts'), "import { DATA_VERSION } from 'virtual:data-version'; export { DATA_VERSION };\n");
   for (const name of ['scene-blueprints.json', 'scenes.json', 'curation.json']) {
     const raw = fs.readFileSync(path.join(root, 'data', name));
     fs.writeFileSync(path.join(root, 'data', name + '.gz'), zlib.gzipSync(raw));
@@ -128,7 +127,7 @@ test('HTTP blueprint save persists canonical shards, companions and survives fre
       const packed = fs.readFileSync(path.join(root, 'data/scene-blueprints.json.' + ext));
       assert.deepEqual(ext === 'gz' ? zlib.gunzipSync(packed) : zlib.brotliDecompressSync(packed), raw);
     }
-    assert.match(fs.readFileSync(path.join(root, 'src/stores/sceneStore.ts'), 'utf8'), new RegExp(String(expectedDataVersion(root))));
+    assert.match(fs.readFileSync(path.join(root, 'src/stores/sceneStore.ts'), 'utf8'), /virtual:data-version/);
     const rebuilt = spawnSync(process.execPath, ['-e', "require('./scripts/lib/blueprint-store').writeBlueprintAggregate()"], {
       cwd: REPO, env: { ...process.env, AICS_DATA_ROOT: root }, encoding: 'utf8',
     });

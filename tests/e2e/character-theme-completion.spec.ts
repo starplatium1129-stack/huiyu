@@ -6,10 +6,9 @@ import { textContrast } from './helpers/contrast'
  *
  * 覆盖真实选角、标准表面与实际控件对比度；复用已构建产物，不调用生成模型。
  *
- * 覆盖：audit:coverage 报告的 8 位 missingTheme 角色。accent 期望值与
- * src/assets/css/director/tokens.css 的 G6 补齐块一致，取值均来自
- * data/characters.json 各角色声明的 accent_color；krista_lenz 复用
- * historia_reiss 既有规则（别名兼容，色值不变）。
+ * 覆盖：audit:coverage 报告的 8 位角色。accent 期望值由运行时主题目录与
+ * data/characters.json 的声明共同解析；krista_lenz 保留历史调校值和旧别名
+ * 兼容语义，但不再生成角色级 CSS 选择器。
  *
  * 流程约束：角色一律经真实路由 `?popular=<id>`（usePromptDeepLink 与点击
  * 选择同路径）或界面点击进入，由应用自行写入 data-character；用例不直接
@@ -146,13 +145,13 @@ for (const theme of THEMES) {
   }
 }
 
-test('[dark] krista_lenz 与旧别名 historia_reiss 在编译后样式中共用规则', async ({ page }) => {
+test('[dark] canonical character themes use the runtime resolver without per-character CSS rules', async ({ page }) => {
   await page.addInitScript(value => localStorage.setItem('aics_theme', value), 'dark')
   await page.goto('/prompt-builder?popular=krista_lenz')
   await expect(page.locator('.pb')).toHaveAttribute('data-character', 'krista_lenz')
 
-  // 兼容要求：编译产物同时保留规范 ID 与旧别名的选择器（同一条规则），别名不失效。
-  const sharedRule = await page.evaluate(() => {
+  // 主题值来自运行时 inline custom properties；入口 CSS 不再为每个角色生成选择器。
+  const hasCharacterSpecificRule = await page.evaluate(() => {
     for (const sheet of Array.from(document.styleSheets)) {
       let rules: CSSRuleList
       try { rules = sheet.cssRules } catch { continue }
@@ -160,14 +159,17 @@ test('[dark] krista_lenz 与旧别名 historia_reiss 在编译后样式中共用
         if (!(rule instanceof CSSStyleRule)) continue
         const selector = rule.selectorText
         if (selector?.includes('data-character="krista_lenz"')
-          && selector.includes('data-character="historia_reiss"')) return selector
+          || selector?.includes('data-character="historia_reiss"')) return true
       }
     }
-    return null
+    return false
   })
-  expect(sharedRule, 'krista_lenz 与 historia_reiss 应共用同一规则').toBeTruthy()
+  expect(hasCharacterSpecificRule, '角色主题不应回到逐角色 CSS 选择器').toBe(false)
+  await expect.poll(async () => page.locator('.pb').evaluate(element =>
+    element instanceof HTMLElement ? element.style.getPropertyValue('--character-accent') : ''))
+    .toBe('#eab308')
 
-  // 别名色值语义不变：krista_lenz 的 accent 与既有 historia 规则同值（#eab308）。
+  // 保留旧别名的主题目录兼容值：canonical accent 语义仍为 #eab308。
   await expect.poll(async () => {
     const actual = await readProbeColor(page, 'var(--character-accent)')
     const expected = await readProbeColor(page, '#eab308')

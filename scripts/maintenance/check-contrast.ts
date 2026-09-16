@@ -126,15 +126,19 @@ function resolveColor(tokens: any, expr: any, parentRgb?: any, depth: any = 0) {
 
 function characterThemes() {
   const director = sources.read('src/assets/css/director/tokens.css');
-  const registered = new Set((require('../../data/popular-onboarding.json') as typeof import('../../data/popular-onboarding.json')).characters.map((c: any) => c.id));
-  const onboarding = block('.pb[data-onboarding-theme="true"]', director);
-  const selectors = [...new Set([...director.matchAll(/\.pb\[data-character="[^"]+"\]/g)].map((m: any) => m[0]))];
-  return themes.flatMap(([theme, tokens]: any) => selectors.map((selector: any) => [theme + ' / ' + selector, {
-    ...tokens, ...block('.pb', director),
-    ...(registered.has(selector.match(/data-character="([^"]+)"/)[1]) ? onboarding : {}),
-    ...block(selector, director),
-    ...(theme === 'light' ? block(':root[data-theme="light"] .pb', lightCss) : {}),
-  }]));
+  const { characterThemeStyle }: typeof import('../../src/utils/characterTheme.ts') = require('../../src/utils/characterTheme.ts');
+  const records = JSON.parse((require('node:fs') as typeof import('node:fs')).readFileSync('data/characters.json', 'utf8'));
+  const base = block('.pb', director);
+  return themes.flatMap(([theme, tokens]: any) => records.map((record: any) => {
+    const id = String(record?.id || '');
+    const inline = characterThemeStyle(id, records);
+    return [theme + ' / .pb[data-character="' + id + '"]', {
+      ...tokens,
+      ...base,
+      ...inline,
+      ...(theme === 'light' ? block(':root[data-theme="light"] .pb', lightCss) : {}),
+    }];
+  }));
 }
 
 function run() {

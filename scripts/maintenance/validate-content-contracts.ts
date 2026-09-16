@@ -19,8 +19,10 @@ let ROOT = resolveContentRoot(undefined);
 /**
  * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存。
  * 这里用数据内容的稳定哈希锁定 DATA_VERSION：任何人改了 data 而忘了
- * 在 sceneStore.ts 升版本号，validate 就会失败，避免客户端吃到旧缓存。
- * 哈希口径统一收口到 scripts/lib/data-version.js（与 build-scenes/build-popular 共用）。
+ * 这里核对应用是否使用 virtual:data-version；该模块在 Vite 构建时从同一份
+ * data 产物计算版本，因此维护脚本不再需要写入 sceneStore.ts。兼容旧版夹具
+ * 中的数值常量校验，避免历史恢复工具失去诊断能力。
+ * 哈希口径统一收口到 scripts/lib/data-version.js（与构建脚本共用）。
  */
 function contentVersion() {
   return expectedDataVersion(ROOT);
@@ -33,18 +35,19 @@ function checkDataVersion() {
   } catch (error) {
     return ['src/stores/sceneStore.ts is missing or unreadable: ' + runtimeErrorMessage(error)];
   }
-  let match = /DATA_VERSION\s*=\s*(\d+)/.exec(storeSource);
-  if (!match) return ['sceneStore.ts is missing DATA_VERSION'];
   let expected;
   try {
     expected = contentVersion();
   } catch (error) {
     return ['DATA_VERSION 计算失败（root=' + ROOT + ' 的 data/ 产物缺失或不可读）: ' + runtimeErrorMessage(error)];
   }
+  if (/from\s+['"]virtual:data-version['"]/.test(storeSource)) return [];
+  let match = /DATA_VERSION\s*=\s*(\d+)/.exec(storeSource);
+  if (!match) return ['sceneStore.ts is missing DATA_VERSION or virtual:data-version'];
   let actual = Number(match[1]);
   if (actual !== expected) {
     return ['DATA_VERSION mismatch: sceneStore.ts has ' + actual + ', data content expects ' + expected
-      + ' (改过 data/*.json 后必须同步升 sceneStore.ts 的 DATA_VERSION，否则客户端命中 immutable 旧缓存)'];
+      + ' (旧版数值实现改过 data/*.json 后必须同步；当前源码应使用 virtual:data-version)'];
   }
   return [];
 }

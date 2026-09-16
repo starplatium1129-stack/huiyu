@@ -35,9 +35,7 @@ if (check) {
   // 同步 DATA_VERSION（与 validate-content-contracts.js 共用哈希口径，避免手 bump 遗漏导致 immutable 缓存漂移）
   try {
     const result = syncDataVersion(ROOT);
-    if (result.wrote) {
-      console.log(`[DATA_VERSION] 已同步至 ${result.version} (src/stores/sceneStore.ts)`);
-    }
+    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${result.version}`);
   } catch (e) {
     console.warn('[DATA_VERSION] 同步跳过:', runtimeErrorMessage(e));
   }

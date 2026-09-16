@@ -148,13 +148,13 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '聚合场景分片 -> scenes.json（热门角色见 popular:build）',
     cmd: ['node', 'scripts/maintenance/build-scenes.js'],
     docs: 'docs/maintenance.md#文件职责',
-    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-scenes.js:15-42', unknown: [], notes: ['默认构建写聚合并同步 src/stores/sceneStore.ts 的 DATA_VERSION（build-scenes.js:31-42）；--check 不写版本：产物缺失自愈重建（fresh clone，:15-22），齐全但与源不一致报错退出 1（:24-27）'] },
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-scenes.js:15-42', unknown: [], notes: ['默认构建写聚合并计算 DATA_VERSION，客户端由 Vite virtual:data-version 注入，不改写 sceneStore.ts；--check 不写版本：产物缺失自愈重建（fresh clone，:15-22），齐全但与源不一致报错退出 1（:24-27）'] },
   },
   'popular:build': {
     desc: '聚合热门角色分片 -> popular-characters.json',
     cmd: ['node', 'scripts/maintenance/build-popular.js'],
     docs: 'docs/maintenance.md#文件职责',
-    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-popular.js:12-37', unknown: [], notes: ['默认构建同步 DATA_VERSION（build-popular.js:26-37）；--check 不写版本：产物缺失自愈重建（:14-17），齐全但与源不一致报错退出 1（:18-21）'] },
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-popular.js:12-37', unknown: [], notes: ['默认构建计算 DATA_VERSION，客户端由 Vite virtual:data-version 注入，不改写 sceneStore.ts；--check 不写版本：产物缺失自愈重建（fresh clone，:14-17），齐全但与源不一致报错退出 1（:18-21）'] },
   },
   'popular:split': {
     desc: 'popular→分片（仅写分片文件，不重建聚合；如需重建用 popular:import）',
@@ -172,7 +172,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '聚合场景蓝图分片 -> scene-blueprints.json',
     cmd: ['node', 'scripts/maintenance/build-blueprints.js'],
     docs: 'docs/maintenance.md#文件职责',
-    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-blueprints.js:24-49', unknown: [], notes: ['默认构建同步 DATA_VERSION（build-blueprints.js:38-49）；--check 不写版本：产物缺失自愈重建（:26-29），齐全但与源不一致报错退出 1（:30-33）'] },
+    run: { nature: ['writes-product', 'writes-source'], machine: ['node'], switches: { '--check': ['self-heal-missing', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-blueprints.js:24-49', unknown: [], notes: ['默认构建计算 DATA_VERSION，客户端由 Vite virtual:data-version 注入，不改写 sceneStore.ts；--check 不写版本：产物缺失自愈重建（:26-29），齐全但与源不一致报错退出 1（:30-33）'] },
   },
   'blueprints:split': {
     desc: 'blueprints→分片（仅写分片文件，不重建聚合；如需重建用 blueprints:import）',

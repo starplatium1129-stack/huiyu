@@ -10,8 +10,8 @@ import { PathOrFileDescriptor } from 'node:fs';
  * 回答两个问题，全部只读：
  *   1. 热门服装 → 参考登记差额：popular 分片里存在、standards/view 未登记的形态；
  *      已登记形态中 pending（无 url）与 url 已填但素材根缺实图的区分。
- *   2. 角色 canonical ID → 主题选择器差额：tokens.css 的 data-character 选择器
- *      相对 characters.json canonical ID 的覆盖；旧别名选择器与待补清单分开。
+ *   2. 角色 canonical ID → 主题覆盖差额：tokens.css 的通用 data-character 契约
+ *      与 characters.json canonical ID 的覆盖；旧别名选择器与待补清单分开。
  *
  * 边界（主任务复核口径，见 docs/guides/engineering/glm-implementation-handoff.md）：
  *   - 覆盖差额是「覆盖待办」，不是悬空引用；本命令不登记服装、不出图、不改主题，
@@ -45,10 +45,8 @@ const {
   collectScopedRefUrls, scopeFileExists, filterReportToScope,
 }: typeof import('../lib/coverage-selection') = require('../lib/coverage-selection');
 
-/** 默认主题归属：tokens.css 的 :root 默认强调色对所有未显式注册角色生效。
- *  现状（2026-09-13）仅 nene 被有意留在默认主题（工程契约「新角色必做主题层」之前的
- *  基础角色），:root 默认色与 characters.json 的 accent_color 不同源，无法由数据推导，
- *  故以显式清单登记，修改须附证据。 */
+/** 兼容旧版静态主题时，默认主题仍只允许工作室角色 nene。动态主题由运行时
+ *  characterTheme.ts 从 characters.json 注入，新增角色不再需要写 tokens.css。 */
 const DEFAULT_THEME_ALLOWED = Object.freeze(['nene']);
 
 function readJson(file: PathOrFileDescriptor) {
@@ -68,6 +66,10 @@ function normalizeAlias(value: any) {
 function extractThemeSelectors(cssText: string) {
   const ids: any[] = [];
   for (const match of String(cssText).matchAll(/data-character="([A-Za-z0-9_-]+)"/g)) ids.push(match[1]);
+  // `*` is an internal sentinel for the selector-free runtime contract:
+  // `.pb[data-character]` covers every canonical character and the actual
+  // color is supplied through inline custom properties.
+  if (/\.pb\s*\[\s*data-character\s*\](?:\s*\{|\s*$)/.test(String(cssText))) ids.push('*');
   return sortedUnique(ids);
 }
 
@@ -80,19 +82,21 @@ function analyseThemes({ characters, selectors, popularAliasMap }: any) {
   const dupCharacters = sortedUnique(charIds.filter((id: any, index: any) => charIds.indexOf(id) !== index));
   const charSet = new Set(charIds);
   const selectorSet = new Set(selectors);
+  const dynamic = selectorSet.has('*');
   const accentById = new Map(characters.map((c: any) => [c.id, c.accent_color]));
 
   const explicit: any[] = [];
   const missingTheme: any[] = [];
   const defaultAllowed: any[] = [];
   for (const id of sortedUnique(charIds)) {
-    if (selectorSet.has(id)) explicit.push(id);
+    if (dynamic || selectorSet.has(id)) explicit.push(id);
     else if (DEFAULT_THEME_ALLOWED.includes(id)) defaultAllowed.push(id);
     else missingTheme.push({ id, accentColor: accentById.get(id) || null, source: 'data/characters.json' });
   }
   const staleAlias: any[] = [];
   const nonCharacter: any[] = [];
   for (const selector of selectors) {
+    if (selector === '*') continue;
     if (charSet.has(selector)) continue;
     const suggestion = popularAliasMap.get(selector);
     if (suggestion) staleAlias.push({ selector, suggestion, matchType: 'alias', note: '待人工确认后改名，不改语义' });

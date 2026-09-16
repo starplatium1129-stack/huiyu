@@ -2,13 +2,37 @@ import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import type { IncomingMessage, ServerResponse } from 'node:http'
+import { createRequire } from 'node:module'
 import { fileURLToPath, URL } from 'node:url'
+
+const runtimeRequire = createRequire(import.meta.url)
+
+/** Resolve the cache-busting version at build time without editing a source store. */
+function dataVersionPlugin(): Plugin {
+  const virtualId = 'virtual:data-version'
+  const resolvedId = '\0' + virtualId
+  return {
+    name: 'virtual-data-version',
+    resolveId(id) { return id === virtualId ? resolvedId : undefined },
+    load(id) {
+      if (id !== resolvedId) return undefined
+      const root = process.cwd()
+      // Fresh checkouts do not carry ignored aggregate products. Rebuild only
+      // missing products here; stale products remain the responsibility of the
+      // content gate and are never silently corrected by a read-only check.
+      runtimeRequire('./scripts/lib/ensure-data-build.js').ensureAll({ onlyIfMissing: true })
+      const version = runtimeRequire('./scripts/lib/data-version.js').expectedDataVersion(root)
+      return `export const DATA_VERSION = ${version}\n`
+    },
+  }
+}
 
 // Express 默认运行在 3000 端口；Vite dev server 在 5173
 // 生产时 Express 直接 serve dist/
 export default defineConfig(async ({ mode }) => {
   const plugins = [
     vue(),
+    dataVersionPlugin(),
     // /assets/ 两头都要服务：SFC 模板里的 /assets/*.svg 会被 plugin-vue 改写成
     // 模块导入（?import），必须由 Vite 转换成 JS；其余（角色立绘等大文件）仍由
     // Express 提供。写进 proxy 表会把 ?import 请求也转给 Express，返回
@@ -86,14 +110,12 @@ export default defineConfig(async ({ mode }) => {
           if (id.includes('node_modules/motion/') || id.includes('node_modules/framer-motion/')) {
             return 'motion'
           }
-          if (id.includes('node_modules/@vueuse/')) {
-            return 'motion'
-          }
           // 共享基础模块单独成块：client/storageKeys/characters 等被入口链与
           // 多个异步块共同引用，不固定时会被 rollup 吸进 live2d 手工块；
           // vite/preload-helper 是所有动态导入 chunk 的公共助手，同样必须
           // 固定——否则入口和所有路由闭包会静态背上整个 live2d 依赖（73KB）。
-          if (id.includes('src/api/client') ||
+          if (id.includes('node_modules/@vueuse/') ||
+              id.includes('src/api/client') ||
               id.includes('src/api/mediaStatusApi') ||
               id.includes('src/utils/storageKeys') ||
               id.includes('src/utils/localDiagnostics') ||

@@ -1,15 +1,26 @@
 'use strict';
 
-import { Response } from 'express-serve-static-core';
+import type { Response } from 'express-serve-static-core';
+import type { TranslateRequest, TtsRequest, VoicePrepareRequest } from '../src/types/api';
+import type { GatewayConfig } from '../server/config-types';
+import { errorCode as runtimeErrorCode, errorField, errorMessage as runtimeErrorMessage } from '../scripts/lib/runtime-errors';
 
 let express: typeof import('express') = require('express');
 let httpClient: typeof import('../services/http-client') = require('../services/http-client');
 let security: typeof import('../server/security') = require('../server/security');
 let envelope: typeof import('../server/http-envelope') = require('../server/http-envelope');
+let typedHandler: typeof import('../server/typed-route').typedHandler = require('../server/typed-route').typedHandler;
 let createTranslationService = (require('../services/translation-service') as typeof import('../services/translation-service')).createTranslationService;
 let createTtsService = (require('../services/tts-service') as typeof import('../services/tts-service')).createTtsService;
 
-function waitForDrain(res: any) {
+type VoiceConfig = Pick<GatewayConfig, 'TRANSLATE_URL' | 'TRANSLATE_PORT' | 'TRANSLATION_PYTHON' | 'TRANSLATION_SCRIPT' | 'TRANSLATION_LOG' | 'TTS_HOST' | 'VOICE_PROFILES'>;
+type TranslationService = ReturnType<typeof createTranslationService>;
+type TtsService = ReturnType<typeof createTtsService>;
+interface VoiceRouterDependencies {
+  translation?: TranslationService;
+  tts?: TtsService;
+}
+function waitForDrain(res: Response) {
   return new Promise<void>(function (resolve, reject) {
     function cleanup() {
       res.removeListener('drain', onDrain);
@@ -22,10 +33,11 @@ function waitForDrain(res: any) {
   });
 }
 
-async function relayAudio(source: any[], res: Response<any,Record<string,any>,number>) {
+async function relayAudio(source: AsyncIterable<unknown> | Iterable<unknown>, res: Response) {
   for await (let chunk of source) {
     if (res.destroyed || res.writableEnded) throw httpClient.abortError();
-    if (!res.write(chunk)) await waitForDrain(res);
+    let data = typeof chunk === 'string' || Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as Uint8Array);
+    if (!res.write(data)) await waitForDrain(res);
   }
 }
 
@@ -34,7 +46,7 @@ async function relayAudio(source: any[], res: Response<any,Record<string,any>,nu
 // GET 端点后浏览器对 PCM WAV 边下边播，播放开始只等"生成完 + 传输首块"。
 // 服务端同时缓存最近生成的音频（按文本哈希）：重播/多访客说同一句直接
 // 回放缓存，不再重复占用 GPU 队列。
-let ttsAudioCache = new Map();
+let ttsAudioCache = new Map<string, Buffer>();
 let TTS_CACHE_MAX_ENTRIES = 60;
 // 2026-08-16 审计：缓存此前只按条数（60）淘汰，单句 WAV 数 MB → 常驻数百 MB。
 // 增加总字节上限（128MB）双阈值淘汰；单条超上限时至少保留最新一条。
@@ -44,7 +56,7 @@ let ttsAudioCacheBytes = 0;
 // 同时听到同一句时，直接共享同一次生成，不再重复占用 GPU 队列。
 // 首个请求断开（signal abort）会连带中止共享生成；等待方会拿到 abort
 // 后走客户端重试路径，不会出现同句双生成。
-let inFlightTts = new Map();
+let inFlightTts = new Map<string, Promise<Buffer>>();
 
 // 与前端 src/utils/stream.ts 的 fixWavHeader 等价：GPT-SoVITS 的 RIFF 长度
 // 字段不可靠，修好后浏览器（含流式解码）才能稳定播放。
@@ -65,9 +77,10 @@ function fixWavHeaderServer(buffer: Buffer<ArrayBuffer>) {
   return buffer;
 }
 
-function cacheTtsAudio(key: string, buffer: string|any[]|Buffer<ArrayBuffer>) {
-  if (ttsAudioCache.has(key)) {
-    ttsAudioCacheBytes -= ttsAudioCache.get(key).length;
+function cacheTtsAudio(key: string, buffer: Buffer) {
+  const previous = ttsAudioCache.get(key);
+  if (previous) {
+    ttsAudioCacheBytes -= previous.length;
     ttsAudioCache.delete(key);
   }
   ttsAudioCache.set(key, buffer);
@@ -77,22 +90,23 @@ function cacheTtsAudio(key: string, buffer: string|any[]|Buffer<ArrayBuffer>) {
     let oldest = ttsAudioCache.keys().next().value;
     if (oldest === undefined) break;
     let removed = ttsAudioCache.get(oldest);
+    if (!removed) break;
     ttsAudioCacheBytes -= removed.length;
     ttsAudioCache.delete(oldest);
   }
 }
 
-function createVoiceRouter(config: any, dependencies: any) {
-  dependencies = dependencies || {};
+function createVoiceRouter(config: VoiceConfig, dependencies?: VoiceRouterDependencies) {
+  const deps = dependencies || {};
   let router = express.Router();
-  let translation = dependencies.translation || createTranslationService({
+  let translation = deps.translation || createTranslationService({
     url:config.TRANSLATE_URL,
     port:config.TRANSLATE_PORT,
     python:config.TRANSLATION_PYTHON,
     script:config.TRANSLATION_SCRIPT,
     logFile:config.TRANSLATION_LOG
   });
-  let tts = dependencies.tts || createTtsService({
+  let tts = deps.tts || createTtsService({
     host:config.TTS_HOST,
     profiles:config.VOICE_PROFILES
   });
@@ -103,7 +117,7 @@ function createVoiceRouter(config: any, dependencies: any) {
   let ttsLimit = security.rateLimit({ capacity:40, refillMs:1000, label:'语音合成' });
   let prepareLimit = security.rateLimit({ capacity:12, refillMs:2000, label:'声线预热' });
 
-  router.post('/api/translate', translateLimit, express.json({ limit:'32kb' }), function (req, res) {
+  router.post('/api/translate', translateLimit, express.json({ limit:'32kb' }), typedHandler<TranslateRequest>(function (req, res) {
     let text = String(req.body && req.body.text || '').trim();
     if (!text || text.length > 2000) {
       return envelope.fail(res, 400, '待翻译中文需在 1—2000 字之间。');
@@ -112,7 +126,7 @@ function createVoiceRouter(config: any, dependencies: any) {
     req.once('aborted', function () { controller.abort(); });
     res.once('close', function () { if (!res.writableEnded) controller.abort(); });
 
-    translation.translate(text, controller.signal).then(function (result: any) {
+    translation.translate(text, controller.signal).then(function (result) {
       if (controller.signal.aborted || res.writableEnded) return;
       envelope.ok(res, {
         sourceLanguage:'zh',
@@ -120,18 +134,17 @@ function createVoiceRouter(config: any, dependencies: any) {
         translation:result.translation,
         segments:result.segments || []
       });
-    }).catch(function (error: any) {
+    }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
-      if (!res.headersSent) envelope.fail(res, 503, error.message || '本地日语翻译暂不可用。');
+      if (!res.headersSent) envelope.fail(res, 503, runtimeErrorMessage(error) || '本地日语翻译暂不可用。');
     });
-  });
+  }));
 
-  router.get('/api/tts-status', function (req, res) {
-    tts.status().then(function (data: any) {
-      data.translation = translation.status();
+  router.get('/api/tts-status', typedHandler(function (_req, res) {
+    tts.status().then(function (data) {
       res.setHeader('Cache-Control', 'no-store');
-      res.json(data);
-    }).catch(function (error: any) {
+      res.json(Object.assign({}, data, { translation:translation.status() }));
+    }).catch(function (error) {
       res.setHeader('Cache-Control', 'no-store');
       res.json({
         online:false,
@@ -139,12 +152,12 @@ function createVoiceRouter(config: any, dependencies: any) {
         voices:{ nene:false, natsume:false },
         queue:tts.queueStatus(),
         translation:translation.status(),
-        error:error.message
+        error:runtimeErrorMessage(error)
       });
     });
-  });
+  }));
 
-  router.post('/api/voice/prepare', prepareLimit, express.json({ limit:'4kb' }), function (req, res) {
+  router.post('/api/voice/prepare', prepareLimit, express.json({ limit:'4kb' }), typedHandler<VoicePrepareRequest>(function (req, res) {
     let voice = String(req.body && req.body.voice || '');
     let needsTranslation = req.body && req.body.translation === true;
     if (!['nene', 'natsume'].includes(voice)) {
@@ -155,7 +168,7 @@ function createVoiceRouter(config: any, dependencies: any) {
     req.once('aborted', function () { controller.abort(); });
     res.once('close', function () { if (!res.writableEnded) controller.abort(); });
     let started = Date.now();
-    let tasks = [tts.prepare(voice, controller.signal)];
+    let tasks: Array<Promise<unknown>> = [tts.prepare(voice, controller.signal)];
     if (needsTranslation) tasks.push(translation.prepare(controller.signal));
 
     Promise.all(tasks).then(function () {
@@ -170,12 +183,12 @@ function createVoiceRouter(config: any, dependencies: any) {
     }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
-        envelope.fail(res, envelope.statusFor(error, 503), error.message || '声线预热失败');
+        envelope.fail(res, envelope.statusFor(error, 503), runtimeErrorMessage(error) || '声线预热失败');
       }
     });
-  });
+  }));
 
-  router.post('/api/tts', ttsLimit, express.json({ limit:'32kb' }), function (req, res) {
+  router.post('/api/tts', ttsLimit, express.json({ limit:'32kb' }), typedHandler<TtsRequest>(function (req, res) {
     let validation = tts.validate(req.body);
     if (validation.error) return envelope.fail(res, validation.status, validation.error);
 
@@ -185,7 +198,7 @@ function createVoiceRouter(config: any, dependencies: any) {
 
     tts.stream(req.body, {
       signal:controller.signal,
-      onResponse:async function (result: any) {
+      onResponse:async function (result) {
         if (controller.signal.aborted) throw httpClient.abortError();
         res.status(200);
         res.setHeader('Content-Type', result.contentType || 'audio/wav');
@@ -196,24 +209,25 @@ function createVoiceRouter(config: any, dependencies: any) {
         await relayAudio(result.response, res);
         if (!res.writableEnded) res.end();
       }
-    }).catch(function (error: any) {
+    }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
         // 队列已满是 503（客户端可重试），不是 502（上游坏了）
-        let status = error.code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
+        let code = runtimeErrorCode(error);
+        let status = code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
         envelope.fail(res,
           status,
-          error.code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
-          { detail:error.detail || error.message, code:error.code || undefined });
+          code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
+          { detail:errorField(error, 'detail') || runtimeErrorMessage(error), code:code || undefined });
       } else if (!res.writableEnded) {
-        res.destroy(error);
+        res.destroy(error instanceof Error ? error : new Error(runtimeErrorMessage(error)));
       }
     });
-  });
+  }));
 
   // 流式播放端点：audio 元素直连（GET），浏览器对 WAV 边下边播。
   // 参数与 POST /api/tts 相同，长文本请走 POST（URL 长度限制）。
-  router.get('/api/tts', ttsLimit, function (req, res) {
+  router.get('/api/tts', ttsLimit, typedHandler(function (req, res) {
     let body = {
       voice:String(req.query.voice || ''),
       text:String(req.query.text || ''),
@@ -241,7 +255,7 @@ function createVoiceRouter(config: any, dependencies: any) {
     req.once('aborted', function () { controller.abort(); });
     res.once('close', function () { if (!res.writableEnded) controller.abort(); });
 
-    function relayBufferedAudio(audio: any) {
+    function relayBufferedAudio(audio: Buffer) {
       if (res.destroyed || res.writableEnded) return;
       res.status(200);
       res.setHeader('Content-Type', 'audio/wav');
@@ -253,12 +267,12 @@ function createVoiceRouter(config: any, dependencies: any) {
 
     let existing = inFlightTts.get(cacheKey);
     if (existing) {
-      existing.then(function (audio: any) {
+      existing.then(function (audio) {
         res.setHeader('X-TTS-Cache', 'hit');
         return relayBufferedAudio(audio);
       }).then(function () {
         if (!res.writableEnded) res.end();
-      }).catch(function (error: any) {
+      }).catch(function (error) {
         if (httpClient.isAbortError(error) || controller.signal.aborted) {
           // 共享的生成被首个请求取消时，等待方不能悬挂连接：给一个明确的失败。
           if (!res.headersSent) res.status(502).end();
@@ -266,19 +280,20 @@ function createVoiceRouter(config: any, dependencies: any) {
           return;
         }
         if (!res.headersSent) {
-          let status = error.code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
+          let code = runtimeErrorCode(error);
+          let status = code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
           envelope.fail(res,
             status,
-            error.code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
-            { detail:error.detail || error.message, code:error.code || undefined });
+            code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
+            { detail:errorField(error, 'detail') || runtimeErrorMessage(error), code:code || undefined });
         } else if (!res.writableEnded) {
-          res.destroy(error);
+          res.destroy(error instanceof Error ? error : new Error(runtimeErrorMessage(error)));
         }
       });
       return;
     }
 
-    let chunks: any = [];
+    let chunks: Buffer[] = [];
     // 2026-08-16 审计：共享生成改用独立 AbortController——此前挂在首个请求的
     // controller 上，首个访客断开会连带 abort 共享生成，所有等待方拿 502 且白耗
     // 一次 GPU。独立信号让生成照常完成并入缓存（重播直接命中）；单句成本有界
@@ -286,7 +301,7 @@ function createVoiceRouter(config: any, dependencies: any) {
     let sharedController = new AbortController();
     let generation = tts.stream(body, {
       signal: sharedController.signal,
-      onResponse:async function (result: any) {
+      onResponse:async function (result) {
         if (sharedController.signal.aborted) throw httpClient.abortError();
         for await (let chunk of result.response) { chunks.push(Buffer.from(chunk)); }
         if (sharedController.signal.aborted) throw httpClient.abortError();
@@ -302,24 +317,25 @@ function createVoiceRouter(config: any, dependencies: any) {
       if (inFlightTts.get(cacheKey) === generation) inFlightTts.delete(cacheKey);
     });
 
-    generation.then(function (audio: any) {
+    generation.then(function (audio) {
       res.setHeader('X-TTS-Cache', 'miss');
       return relayBufferedAudio(audio);
     }).then(function () {
       if (!res.writableEnded) res.end();
-    }).catch(function (error: any) {
+    }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
-        let status = error.code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
+        let code = runtimeErrorCode(error);
+        let status = code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
         envelope.fail(res,
           status,
-          error.code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
-          { detail:error.detail || error.message, code:error.code || undefined });
+          code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
+          { detail:errorField(error, 'detail') || runtimeErrorMessage(error), code:code || undefined });
       } else if (!res.writableEnded) {
-        res.destroy(error);
+        res.destroy(error instanceof Error ? error : new Error(runtimeErrorMessage(error)));
       }
     });
-  });
+  }));
 
   return {
     router:router,

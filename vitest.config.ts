@@ -1,6 +1,25 @@
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vitest/config'
+import { createRequire } from 'node:module'
+import { defineConfig, type Plugin } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
+
+const runtimeRequire = createRequire(import.meta.url)
+
+function dataVersionPlugin(): Plugin {
+  const virtualId = 'virtual:data-version'
+  const resolvedId = '\0' + virtualId
+  return {
+    name: 'virtual-data-version',
+    resolveId(id) { return id === virtualId ? resolvedId : undefined },
+    load(id) {
+      if (id !== resolvedId) return undefined
+      const root = process.cwd()
+      runtimeRequire('./scripts/lib/ensure-data-build.js').ensureAll({ onlyIfMissing: true })
+      const version = runtimeRequire('./scripts/lib/data-version.js').expectedDataVersion(root)
+      return `export const DATA_VERSION = ${version}\n`
+    },
+  }
+}
 
 /**
  * 前端单元测试配置（2026-08-22 引入）。
@@ -8,7 +27,7 @@ import vue from '@vitejs/plugin-vue'
  * 运行：npm run test:frontend（watch 模式加 --）
  */
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), dataVersionPlugin()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

@@ -232,6 +232,7 @@ function themeImpact(opts: { root: PathLike; }, selected: any, result: any, add:
     return fs.readFileSync(real, 'utf8');
   };
   let selectors: Set<any>;
+  let dynamic = false;
   let cssError: string;
   let canonical: any;
   let dataError: string;
@@ -247,6 +248,7 @@ function themeImpact(opts: { root: PathLike; }, selected: any, result: any, add:
       if (normalized.replace(/\[data-character="[A-Za-z0-9_-]+"\]|\[\s*data-character\s*\]/g, '').includes('data-character')) throw new Error('存在无法安全解析的 data-character 选择器');
     });
     if (!css.nodes.some((node: any) => node.type === 'rule' || node.type === 'atrule')) throw new Error('CSS 无可解析规则');
+    dynamic = selectors.has('*');
   } catch (error) { cssError = `${file}: 不可解析（${runtimeErrorMessage(error)}）`; }
   try {
     const records = JSON.parse(readLocal('data/characters.json'));
@@ -256,10 +258,12 @@ function themeImpact(opts: { root: PathLike; }, selected: any, result: any, add:
   result.themes = [...selected].map((id: any) => {
     const theme: any = { id, file, canonical: canonical ? canonical.has(id) : null, themeStatus: 'unknown', reason: '' };
     if (cssError) theme.reason = cssError;
-    else if (selectors.has(id)) {
+    else if (dynamic || selectors.has(id)) {
       theme.themeStatus = 'explicit';
-      theme.selector = `[data-character="${id}"]`;
-      theme.reason = '当前 CSS 有显式角色选择器；不证明层叠、配色或实际画面';
+      theme.selector = dynamic ? '[data-character]' : `[data-character="${id}"]`;
+      theme.reason = dynamic
+        ? '当前 CSS 使用运行时 data-character 主题契约；配色来自 characters.json/运行时令牌，不证明实际画面'
+        : '当前 CSS 有显式角色选择器；不证明层叠、配色或实际画面';
       add('related', 'theme', `${file}#${id}`, theme.reason);
       add('revalidate', 'theme', `${file}#${id}`, '角色主题关联；按实际变更复验双主题、对比度及画面，未执行');
     } else if (DEFAULT_THEME_ALLOWED.includes(id)) {
@@ -458,7 +462,7 @@ function report(opts: any) {
   showcaseImpact(opts, result, add);
   recommend('data:validate');
   if (characterScope) recommend('audit:coverage');
-  result.unknown.push('场景关系仅由 --scene 或明确场景源路径展开，不从热门角色/服装推断；主题仅覆盖所选角色在 tokens.css 的选择器关系，样张仅匹配显式 manifest 与 scene/character 目标，未验证 DATA_VERSION、压缩产物及历史删除/重命名。', '仅比较当前源与聚合的 JSON 内容；不运行推荐命令，不证明增量检查边界或真实渲染质量。');
+  result.unknown.push('场景关系仅由 --scene 或明确场景源路径展开，不从热门角色/服装推断；主题仅覆盖所选角色在 tokens.css 通用选择器与 runtime characterTheme.ts 的关系，样张仅匹配显式 manifest 与 scene/character 目标，未验证 DATA_VERSION、压缩产物及历史删除/重命名。', '仅比较当前源与聚合的 JSON 内容；不运行推荐命令，不证明增量检查边界或真实渲染质量。');
   return result;
 }
 

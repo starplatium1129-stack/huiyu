@@ -2,7 +2,7 @@
   <article
     class="pb journal-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
-    :data-onboarding-theme="hasOnboardingTheme(popularCharacter?.id)"
+    :style="currentCharacterThemeStyle"
     :data-subject="pb.subject.kind"
     :data-director-mode="pb.directorMode"
     :class="{
@@ -217,7 +217,7 @@ const {
 pb,
 displayResultUrl,
 characterShifting,
-hasOnboardingTheme,
+currentCharacterThemeStyle,
 popularCharacter,
 sd,
 animaSession,

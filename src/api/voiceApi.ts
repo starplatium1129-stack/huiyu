@@ -1,5 +1,5 @@
 import { ApiClientError, apiClient, type ApiClient, type ApiResponseObject, type FetchImplementation } from './client.ts'
-import type { TranslateResult, TtsStatus, VoicePrepareResult } from '../types/api.ts'
+import type { TranslateRequest, TranslateResult, TtsRequest, TtsStatus, VoicePrepareRequest, VoicePrepareResult } from '../types/api.ts'
 
 export const VOICE_API_TIMEOUTS = {
   status: 10_000,
@@ -9,11 +9,8 @@ export const VOICE_API_TIMEOUTS = {
 } as const
 
 export interface VoiceCallOptions { signal?: AbortSignal }
-export interface VoicePreparePayload { voice: string; translation: boolean }
-export interface VoiceSynthesisPayload {
-  voice: string; text: string; language: string; emotion: string
-  referenceEmotion: string; consistency: 'locked'; speed: number
-}
+export type VoicePreparePayload = Required<VoicePrepareRequest>
+export type VoiceSynthesisPayload = Required<TtsRequest> & { consistency: 'locked' }
 export interface VoiceAudioResult { blob: Blob; queueWaitMs: number }
 
 /** TTS returns audio, while the shared JSON client handles status and translation. */
@@ -92,8 +89,9 @@ export function createVoiceApi(client: ApiClient = apiClient, fetchAudio: FetchI
       })
     },
     translate(text, options = {}) {
+      const body: TranslateRequest = { text }
       return client.request<TranslateResult>('/api/translate', {
-        method: 'POST', cache: 'no-store', body: { text }, signal: options.signal,
+        method: 'POST', cache: 'no-store', body, signal: options.signal,
         timeoutMs: VOICE_API_TIMEOUTS.translate, validate: isTranslation,
       })
     },

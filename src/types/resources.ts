@@ -1,5 +1,7 @@
 export type ResourceAction = 'import' | 'download' | 'recover' | 'rollback'
 export type ResourceTaskState = 'running' | 'cancelling' | 'completed' | 'failed' | 'cancelled' | 'interrupted'
+export interface ResourceTaskRequest { action: ResourceAction; releaseId?: string }
+export type ResourceCancelRequest = Record<string, never>
 export interface ResourceIssue { code: string; message: string }
 export interface ResourceTask {
   id: string

@@ -1,6 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { THEME_KEY } from '../../src/utils/storageKeys';
+import { characterThemeStyle } from '../../src/utils/characterTheme';
+
+const characterRecords = JSON.parse(readFileSync('data/characters.json', 'utf8')) as Array<{ id: string; accent_color?: string }>;
+const characterThemes = characterRecords
+  .filter(record => typeof record?.id === 'string' && record.id.length > 0)
+  .map(record => ({ id: record.id, style: characterThemeStyle(record.id, characterRecords) }));
 
 // 美术巡检 —— 全局美术校准后的回归网。
 // 检查三类会真实破相的问题:
@@ -195,8 +201,7 @@ for (const theme of THEMES) {
 
 for (const theme of THEMES) {
   test('[' + theme + '] character accent meets AA on computed workspace surfaces', async ({ page }) => {
-    const css = readFileSync('src/assets/css/director/tokens.css', 'utf8');
-    const ids = [...new Set([...css.matchAll(/\.pb\[data-character="([^"]+)"\]/g)].map(m => m[1]))];
+    const ids = characterThemes.map(character => character.id);
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: THEME_KEY, value: theme });
     await page.goto('/prompt-builder');
     await expect(page.locator('.pb').first()).toBeVisible();
@@ -217,19 +222,22 @@ for (const theme of THEMES) {
       document.body.append(host);
       const failures: string[] = [];
       try {
-        for (const id of characters) {
-          host.dataset.character = id;
+        for (const character of characters) {
+          host.dataset.character = character.id;
+          for (const [property, value] of Object.entries(character.style)) {
+            host.style.setProperty(property, String(value));
+          }
           for (const surface of ['--bg-deep', '--bg-base', '--bg-surface', '--bg-elevated']) {
             probe.style.backgroundColor = 'var(' + surface + ')';
             const computed = getComputedStyle(probe);
             const a = luminance(rgb(computed.color)), b = luminance(rgb(computed.backgroundColor));
             const contrast = (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
-            if (contrast < 4.5) failures.push(id + '/' + surface + ': ' + contrast.toFixed(2));
+            if (contrast < 4.5) failures.push(character.id + '/' + surface + ': ' + contrast.toFixed(2));
           }
         }
       } finally { host.remove(); }
       return failures;
-    }, ids);
+    }, characterThemes);
     expect(ids.length).toBeGreaterThan(100);
     expect(failures).toEqual([]);
     await page.screenshot({ path: 'runtime/theme-workspace-' + theme + '.png', fullPage: true });

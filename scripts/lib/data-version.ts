@@ -2,12 +2,12 @@
  * scripts/lib/data-version.js — DATA_VERSION 单一事实源
  *
  * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存；
- * 此处用数据内容的稳定哈希锁定版本号。任何改动 data 产物而忘了同步
- * DATA_VERSION，客户端都会命中 immutable 旧缓存。
+ * 此处用数据内容的稳定哈希锁定版本号。Vite 构建通过 virtual:data-version
+ * 注入这个值，任何改动 data 产物都不会再改写手写的 sceneStore.ts。
  *
  * 调用方：
- *   - scripts/maintenance/build-scenes.js  （构建后同步）
- *   - scripts/maintenance/build-popular.js （构建后同步）
+ *   - scripts/maintenance/build-scenes.js  （构建后计算）
+ *   - scripts/maintenance/build-popular.js （构建后计算）
  *   - scripts/maintenance/validate-content-contracts.js （校验一致性）
  */
 const fs: typeof import('fs') = require('fs');
@@ -33,17 +33,9 @@ function expectedDataVersion(root: string) {
   return Number.parseInt(hash.digest('hex').slice(0, 8), 16);
 }
 
-/** 幂等同步 src/stores/sceneStore.ts 的 DATA_VERSION。返回 { wrote, version }。 */
+/** 兼容旧维护调用方：只计算版本，不再写入 src/stores/sceneStore.ts。 */
 function syncDataVersion(root: string) {
   const version = expectedDataVersion(root);
-  const storeFile = path.join(root, 'src', 'stores', 'sceneStore.ts');
-  const src = fs.readFileSync(storeFile, 'utf8');
-  const match = /DATA_VERSION\s*=\s*(\d+)/.exec(src);
-  if (match && Number(match[1]) !== version) {
-    const next = src.replace(/DATA_VERSION\s*=\s*\d+/, `DATA_VERSION = ${version}`);
-    fs.writeFileSync(storeFile, next, 'utf8');
-    return { wrote: true, version };
-  }
   return { wrote: false, version };
 }
 

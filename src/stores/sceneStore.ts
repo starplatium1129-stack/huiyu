@@ -3,6 +3,7 @@ export type { SceneRecord as Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { DATA_VERSION } from 'virtual:data-version'
 import { requireDataRecords, requireDataCollection } from '@/utils/dataRecords'
 import {
   parsePopularCharacters,
@@ -46,12 +47,11 @@ export interface TagMeta {
  * 静态数据的缓存版本号。
  *
  * 服务端对 /data/*.json 已按 immutable 缓存，浏览器靠 ?v= 换 URL 拿新数据，
- * 因此这个值必须与 data/*.json 的内容一一对应：scripts/maintenance/
- * validate-content-contracts.js 会用数据内容的 sha1 派生期望值并校验，
- * 改过 data/*.json 后 `npm run validate` 会提示这里该改成什么。
- * 以前是手动计数（曾到 15），现在由内容锁定，不会再出现"改数据忘升版本"。
+ * 因此这个值必须与 data/*.json 的内容一一对应：Vite 的
+ * virtual:data-version 会用同一套数据内容哈希注入，validate-content-contracts.js
+ * 负责校验数据与版本计算仍可用。改过 data/*.json 后不需要改写本文件。
  */
-export const DATA_VERSION = 3085448662
+export { DATA_VERSION }
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function fetchJson<T>(file: string, version: number): Promise<T> {

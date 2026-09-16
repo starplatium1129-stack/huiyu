@@ -30,9 +30,7 @@ if (check) {
   // 同步 DATA_VERSION（与 build-scenes 共用哈希口径）
   try {
     const result = syncDataVersion(ROOT);
-    if (result.wrote) {
-      console.log(`[DATA_VERSION] 已同步至 ${result.version} (src/stores/sceneStore.ts)`);
-    }
+    console.log(`[DATA_VERSION] virtual:data-version 将解析为 ${result.version}`);
   } catch (e) {
     console.warn('[DATA_VERSION] 同步跳过:', runtimeErrorMessage(e));
   }

@@ -64,11 +64,18 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.match(scripts.check, /run-check-parallel/);
   const orchestrator = read('scripts/maintenance/run-check-parallel.js');
   assert.ok(orchestrator.includes("npm run test:check"), 'parallel check must include the quality suite');
-  for (const legacyStep of ['design:lint', 'lint:js', 'typecheck', 'scan-style-literals', 'check-contrast',
-    'lint-colors', 'build-scenes.js --check', 'optimize-scenes.js --check',
-    'classify-scene-ratings.js --check', 'validate-scenes.js', 'validate-content-contracts.js']) {
-    assert.ok(orchestrator.includes(legacyStep), `parallel check orchestrator must include ${legacyStep}`);
-  }
+    for (const legacyStep of ['design:lint', 'lint:js', 'typecheck', 'build-scenes.js --check', 'optimize-scenes.js --check',
+        'classify-scene-ratings.js --check', 'validate-scenes.js', 'validate-content-contracts.js']) {
+        assert.ok(orchestrator.includes(legacyStep), `parallel check orchestrator must include ${legacyStep}`);
+    }
+    // test:style-debt 已由 test:check 的质量套件统一执行五项样式门禁；并发编排器
+    // 不得再把其中的四项拆成独立进程，避免一次 check 重复扫描整棵样式树。
+    assert.ok(read('scripts/tests/quality-test-inventory.ts').includes("'test-style-debt.js'"),
+        'quality check suite must own the complete style-debt gate');
+    for (const duplicateStep of ["['style-literals'", "['contrast'", "['colors'", "['animations'"]) {
+        assert.doesNotMatch(orchestrator, new RegExp(duplicateStep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+            `parallel check must not duplicate ${duplicateStep}`);
+    }
   assert.doesNotMatch(scripts.validate, /test:live2d-native|test:live|test:e2e/);
   assert.doesNotMatch(scripts.validate, /build:desktop/);
   assert.match(scripts['test:live'], /regress-anima-prompt-tags\.js/);

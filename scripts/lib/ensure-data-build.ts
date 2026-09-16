@@ -7,8 +7,8 @@
  * scenes-core.json、scenes-index.json、popular-characters.json）不入库：
  * Git 只版本控制语义源（data/scenes/ 组分片、data/popular/*.json、curation.json），
  * 产物由本模块按需重建。构建是确定性的（同源必同字节），因此这里不触碰
- * DATA_VERSION 口径——版本号仍由维护脚本（build-scenes/build-popular）在
- * 数据编辑时同步，自愈重建只会产出与已同步版本号一致的字节。
+ * DATA_VERSION 口径——版本号由 Vite 的 virtual:data-version 按产物内容动态
+ * 解析，自愈重建只会产出与语义源一致的字节，不需要改写任何源码。
  *
  * 调用方：
  *   - 网关启动（server.js）：陈旧即重建，自愈而非报错；

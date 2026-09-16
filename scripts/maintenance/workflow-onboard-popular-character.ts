@@ -10,7 +10,7 @@
  *   3. 头像立绘渲染与点阵粒子场构建（assets/characters/ / assets/particles/）
  *   4. 4 视角电影级标准参考资产库生成（4 视角 × N 套服装 + 私密全裸形态）
  *   5. Showcase 官方样张渲染与大盘注册（SFW + 显式解剖 NSFW × @rella 统一样式）
- *   6. DATA_VERSION 自动哈希对齐与 sceneStore.ts 同步
+ *   6. DATA_VERSION 自动哈希校验（由 Vite virtual:data-version 注入）
  *   7. 质量门禁验证与桌面端一键增量部署
  *
  * 用法:
@@ -19,15 +19,14 @@
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
-const crypto: typeof import('crypto') = require('crypto');
 const { execSync }: typeof import('child_process') = require('child_process');
+const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DATA_DIR = path.join(ROOT, 'data');
 const POPULAR_FILE = path.join(DATA_DIR, 'popular-characters.json');
 const BLUEPRINTS_FILE = path.join(DATA_DIR, 'scene-blueprints.json');
 const STANDARDS_FILE = path.join(DATA_DIR, 'character-reference-standards.json');
-const SCENE_STORE_FILE = path.join(ROOT, 'src', 'stores', 'sceneStore.ts');
 // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences；找不到退回项目 assets。
 const refRoot = (() => {
   const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
@@ -47,27 +46,9 @@ const MANIFEST_FILE = path.join(SHOWCASE_DIR, 'manifest.json');
 // 当前网关端口。优先 AICS_COMMS_BASE 环境变量覆盖，默认回退 3000。
 const COMMS_BASE = process.env.AICS_COMMS_BASE || 'http://127.0.0.1:3000';
 
-function computeContentVersion() {
-  const hash = crypto.createHash('sha1');
-  [
-    'scenes.json', 'scenes-index.json', 'scenes-core.json',
-    'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
-    'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json',
-    'popular-characters.json', 'scene-blueprints.json'
-  ].forEach((name: any) => {
-    const p = path.join(DATA_DIR, name);
-    hash.update(name + '=' + fs.readFileSync(p, 'utf8').length + ';');
-    hash.update(fs.readFileSync(p));
-  });
-  return Number(parseInt(hash.digest('hex').slice(0, 8), 16));
-}
-
 function syncDataVersion() {
-  const expected = computeContentVersion();
-  let storeSource = fs.readFileSync(SCENE_STORE_FILE, 'utf8');
-  storeSource = storeSource.replace(/DATA_VERSION\s*=\s*\d+/, `DATA_VERSION = ${expected}`);
-  fs.writeFileSync(SCENE_STORE_FILE, storeSource, 'utf8');
-  console.log(`[Version Sync] DATA_VERSION 对齐升至: ${expected}`);
+  const expected = expectedDataVersion(ROOT);
+  console.log(`[Version Sync] DATA_VERSION 将由 virtual:data-version 注入: ${expected}`);
   return expected;
 }
 
@@ -387,5 +368,4 @@ if (require.main === module) {
 }
 
 export = { runPipeline, syncDataVersion };
-
 

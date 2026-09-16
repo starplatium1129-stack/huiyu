@@ -80,7 +80,7 @@
 | 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
 | 分类与规范化 | data:normalize | 会写数据，不用于只读文档审计；遵守定稿保护 |
 
-详细文件职责见 [维护手册](maintenance.md#文件职责)。三个聚合构建脚本只在默认构建时同步 DATA_VERSION（写 src/stores/sceneStore.ts）；`--check` 不写版本——产物缺失时自愈重建（fresh clone），齐全但与源不一致时报错退出 1。校验失败需定位来源，不能只改版本掩盖数据漂移。
+详细文件职责见 [维护手册](maintenance.md#文件职责)。三个聚合构建脚本默认计算 DATA_VERSION，客户端由 Vite 的 `virtual:data-version` 在构建时注入，不再改写 `src/stores/sceneStore.ts`；`--check` 不写版本——产物缺失时自愈重建（fresh clone），齐全但与源不一致时报错退出 1。校验失败需定位来源，不能只改版本掩盖数据漂移。
 
 核心精选 `personaCoreSceneIds`：保存时对显式数组稳定去重并剔除非活跃引用，显式非数组报错；旧请求漏字段时，保存链在基线核对后的锁内保留现存核心精选，显式 `[]` 才清空。纯清洗函数没有旧快照时保留缺省；不合并其他策展字段。主校验检查该字段的数组、非空字符串、重复及活跃引用，空数组/缺省兼容；既有首屏预算仍由分片测试负责，不新增核心精选必须属于 curated 的限制。`validate-scenes.js` 的分片和 data 元数据统一采用 `AICS_DATA_ROOT`、`AICS_APP_ROOT`、仓库根的优先级，隔离夹具不再混读生产元数据。
 
@@ -108,13 +108,13 @@
 
 `--scene sc001` 查询单个场景；`--path data/scenes/<逻辑组>.json` 按当前 manifest 展开全部批次，`--path data/scenes/<逻辑组>.2.json` 只选择该实际批次。报告 scenes 列出源/逻辑组、数组聚合比较、curatedSceneIds/signatureSceneIds/personaCoreSceneIds 三层独立成员关系及退役登记。目标重复、聚合失配、悬空精选和活跃/退役冲突列为结构问题；无关场景的聚合内容不比较。源清单不完整、批次缺号/并存、未登记文件会明确报告；未知 ID、删除/重命名、manifest/聚合/元数据路径的历史影响列入 unknown，不从旧聚合猜测源归属。
 
-角色/服装报告的独立 `themes` 数组按所选角色（包括路径展开的角色）列出 `id/file/canonical/themeStatus/reason`。只读解析 root 下 `src/assets/css/director/tokens.css` 的规则选择器，复用 audit:coverage 的选择器提取与默认白名单；注释和声明字符串不算选择器。显式主题为 explicit，列入 related + revalidate；nene 无显式选择器时为 default。CSS 缺失、损坏或存在不支持的选择器语法为 unknown；无显式主题且 canonical 数据缺失/无效、角色属外部热门或身份无法确认时也为 unknown，不列 mustChange。仅当 `data/characters.json` 可证明 canonical 角色缺显式主题且不在默认白名单时为 missing，列 mustChange。显式选择器关系不依赖热门或 canonical 登记；不证明实际 CSS 层叠、配色与渲染。纯场景输入不展开角色主题。
+角色/服装报告的独立 `themes` 数组按所选角色（包括路径展开的角色）列出 `id/file/canonical/themeStatus/reason`。只读解析 root 下 `src/assets/css/director/tokens.css` 的通用 data-character 契约，并结合 runtime `characterTheme.ts` 的数据/调校目录；注释和声明字符串不算选择器。运行时主题为 explicit，列入 related + revalidate；没有通用契约时才按旧版静态选择器与默认白名单判定。CSS/主题目录缺失、损坏或存在不支持的选择器语法为 unknown；仅当 `data/characters.json` 可证明 canonical 角色缺主题契约时为 missing，列 mustChange。主题契约不证明实际 CSS 层叠、配色与渲染。纯场景输入不展开角色主题。
 
 角色/服装报告的独立 `outfitDefaults` 数组覆盖每个所选角色，输出 `id/status/defaultOutfit/defaultIds/isDefaultIds/reasons`。仅当全部服装的 `default` 与 `isDefault` 均为布尔值、集合一致且恰好一个默认项、默认 ID 非空且角色内唯一时为 explicit，`defaultOutfit` 为解析出的 ID；其余结果为 null。可证明的多默认/默认 ID 重复为 ambiguous、两字段冲突为 mismatch、默认 ID 缺失或完整双字段无默认项为 missing，逐条列 mustChange。字段缺失、非布尔、空列表或身份不唯一等无法证明的格式保持 unknown；不猜第一项。部分字段仍可证明的重复/冲突照常报告。省略 outfitId 的蓝图在 revalidate 原因中包含明确的默认 ID，否则同时保留 unknown；显式 outfit 过滤和引用检查不变。
 
 `--showcase-manifest <root内相对路径>` 可重复（建议单个），例如 `node scripts/workflow.js audit:impact --scene sc001 --showcase-manifest reports/showcase.json --json`。独立 `showcase.manifests` 只读解析 JSON 的 entries 数组：显式 scene 匹配 entry.id，显式 character 匹配 entry.char 或 entry.type；路径输入不推断样张目标。匹配项列 related/revalidate，保留 index/id/type/char/rating/attempt、matchedBy 和 reviewPresent（provenance.review 字段是否存在，即使 null 也算存在），不输出 review 内容或图片路径。reviewPresent 不代表审核通过，不读取图片或执行生成/审核/发布。未提供时 unknown“样张清单在外部/未提供”；可读清单整体标记 partial，不证明完整覆盖。无匹配条目保持 unknown，不能列必改。显式文件缺失、非普通文件、JSON/entries 无效或真实路径越界时标记 error 并退出 1；参数中的绝对/越界路径退出 2。每个清单独立处理，坏清单不掩盖有效关联；所有清单均不证明缺失条目。帮助/预览不读取清单，不扫描外部目录。
 
-推荐命令与操作性质来自工作流注册表，全部只列出、不执行；build 可能写数据和版本，不能因出现在报告里就当作只读检查。本批不提供自动增量检查：全域聚合顺序、浏览器分片、样张完整性、DATA_VERSION、压缩产物、历史删除/重命名未覆盖。公共构建器/契约路径建议全量 data:validate；未知路径不宣称影响为空。全域主题与参考覆盖沿用 audit:coverage；真实编译/画面验收仍需后续对应机器执行。
+推荐命令与操作性质来自工作流注册表，全部只列出、不执行；build 可能写数据产物，版本由 `virtual:data-version` 按产物内容解析，不能因出现在报告里就当作只读检查。本批不提供自动增量检查：全域聚合顺序、浏览器分片、样张完整性、DATA_VERSION、压缩产物、历史删除/重命名未覆盖。公共构建器/契约路径建议全量 data:validate；未知路径不宣称影响为空。全域主题与参考覆盖沿用 audit:coverage；真实编译/画面验收仍需后续对应机器执行。
 
 1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。
 2. `reference:render --output <候选目录>` 生成四视角待审核候选；人工验收与发布仍须显式完成。`reference:design` 是独立的三视图设计图入口，行为不等同于候选生成器。
@@ -224,7 +224,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 场景维护使用 `/api/maintenance/scenes/preview`、`/changes` 与独立 `/import`；旧 `/scenes` 全量请求保持兼容。预览与变更集接收 `{baseVersion, changeSet:{version:1, scenes:{upsert:[],remove:[]}, blueprints?, tags?, curation?}}`。upsert 是完整记录，未知字段保留，remove 只能列现有 ID，旧基线返回 409。普通界面保存仅提交实际变更，完整导入单独确认；读取和保存使用同一完整快照及基线，冲突保留草稿，在途编辑不被旧回执覆盖。预览显示新增、修改、退役、相关引用及未知检查范围，不冒充真实画面验收。前后端均支持 sc1000+ 规范安全整数，已退役 ID 不复用；安装版源库写入仍返回 501。
 
-保存同步场景/蓝图源分片、聚合、现有压缩伴生文件与 DATA_VERSION。进程内队列结合持久化跨进程 lease/journal 和精确文件备份；活进程或未能证明已退出的进程不被抢锁。保存中或存在未恢复事务时，受保护内容读取拒绝返回半写状态。`/api/maintenance/recovery-status` 是本机只读状态入口；损坏元数据不会被自动清除。实际断电和文件系统持久性仍需设备验收。
+保存同步场景/蓝图源分片、聚合、现有压缩伴生文件并重新计算 DATA_VERSION；客户端版本由 `virtual:data-version` 注入，不写回 `sceneStore.ts`。进程内队列结合持久化跨进程 lease/journal 和精确文件备份；活进程或未能证明已退出的进程不被抢锁。保存中或存在未恢复事务时，受保护内容读取拒绝返回半写状态。`/api/maintenance/recovery-status` 是本机只读状态入口；损坏元数据不会被自动清除。实际断电和文件系统持久性仍需设备验收。
 
 `maintenance:recover --root <项目根> [--runtime-root <运行目录>] [--showcase-root <可信样张根>]` 默认只读预览，恢复计划输出 stdout。保存该 JSON 后，显式 `--apply --recovery-plan <保存的预览JSON>` 才恢复；执行时重新核对签名、根身份、备份/当前字节、PID 与事务 nonce。`--plan` 是工作流保留的零执行预览，不能用来传恢复文件；`--help` 与裸 `--plan` 均不读取目标。活进程、未知状态、损坏 journal 或漂移计划拒绝恢复，失败保留精确回滚记录。退出 0 为可用预览或恢复成功，1 为阻塞/冲突/失败，2 为参数错误。
 
@@ -315,7 +315,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
 
-桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认跳过前端构建（dist 需已构建，数据聚合产物仍会刷新，并可能写源码中的 DATA_VERSION）；`deploy:desktop:full` 执行完整构建加增量流程；两个入口的默认增量模式都会清 WebView2 缓存并默认重启桌面端。
+桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认跳过前端构建（dist 需已构建，数据聚合产物仍会刷新，版本由 `virtual:data-version` 运行时解析）；`deploy:desktop:full` 执行完整构建加增量流程；两个入口的默认增量模式都会清 WebView2 缓存并默认重启桌面端。
 
 可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` 需直接运行 bat）：`-UseInstaller` 改跑 `runtime/desktop-updates` 最新安装包（前置：先用 `package:tauri` 产出 `*-setup.exe`，缺失退出 1；隐含跳过本地构建）、`-QuietInstall`（仅随 `-UseInstaller` 静默安装）、`-NoRestart`（结束后不启动）、`-StartupRepair`（1.6.0 窄修复，与 `-UseInstaller` 互斥）。非管理员时脚本经 UAC 重启并透传全部参数，需用户确认。依赖/exe 变化的完整安装与 UAC 见 [部署指南](desktop-deployment.md)。
 
