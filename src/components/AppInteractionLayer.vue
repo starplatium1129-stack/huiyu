@@ -67,4 +67,5 @@ onUnmounted(() => {
 .route-loader i { display: block; width: 35%; height: 100%; background: var(--accent); transform: translateX(-110%); }
 .route-loader.active i { animation: route-progress 1.2s ease-in-out infinite; }
 @keyframes route-progress { to { transform: translateX(390%); } }
+@media (prefers-reduced-motion: reduce) { .route-loader { display: none; } }
 </style>

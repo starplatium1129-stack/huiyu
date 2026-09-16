@@ -136,6 +136,7 @@ for (const theme of ['dark', 'light']) {
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
       await page.getByRole('button', { name: '热门角色 · 无需 LoRA', exact: true }).click()
       const trigger = page.getByRole('button', { name: /浏览全部 .* 位角色/ })
+      await expect(trigger).toContainText(/浏览全部 [1-9]\d* 位角色/)
       await trigger.click()
       const dialog = page.locator('.character-browser-dialog')
       await expect(dialog).toBeVisible()

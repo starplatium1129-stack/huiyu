@@ -362,7 +362,7 @@ test('control panel shows service status wall and scheduling controls', async ({
   await page.goto('/control');
 
   await expect(page.locator('.control-rail')).toBeVisible();
-  await expect(page.locator('.control-rail-link')).toHaveCount(5);
+  await expect(page.locator('.control-rail-link')).toHaveCount(6);
   await expect(page.locator('.control-rail-brand')).toContainText('Local control room');
   await expect(page.locator('.control-title')).toBeVisible();
   await expect(page.locator('.status-tile').first()).toBeVisible();

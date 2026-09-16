@@ -703,21 +703,27 @@ for (const theme of ['dark', 'light']) {
   })
 }
 
-test('flow 5 · 场景保存：编辑 → 脏态 → POST 全量场景 + 标签 + 策展', async ({ page }) => {
+test('flow 5 · 场景保存：编辑 → 脏态 → POST 精确场景变更集', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
 
   /**
-   * POST /api/maintenance/scenes 会真的写回 data/scenes/*.json 并跑三个校验脚本。
+   * POST /api/maintenance/scenes/changes 会真的写回 data/scenes/*.json 并跑三个校验脚本。
    * E2E 不该改仓库内容，所以这里拦在网络层，断言送出的载荷 —— 服务端的写盘 /
    * 回滚逻辑由 scripts/tests/test-maintenance.js 覆盖。
-   */
+  */
   let saved: any = null;
-  await page.route('**/api/maintenance/scenes', async route => {
+  await page.route('**/api/maintenance/scenes/changes', async route => {
     saved = route.request().postDataJSON();
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ ok: true, count: saved.scenes.length, backup: '2026-07-28-content', version: 43, snapshot: saved }),
+      body: JSON.stringify({
+        ok: true,
+        count: saved.changeSet.scenes.upsert.length,
+        backup: '2026-07-28-content',
+        version: saved.baseVersion + 1,
+        snapshot: { scenes: saved.changeSet.scenes.upsert, tags: [], blueprints: [], curation: {} },
+      }),
     });
   });
 
@@ -743,19 +749,18 @@ test('flow 5 · 场景保存：编辑 → 脏态 → POST 全量场景 + 标签 
   await expect(page.locator('.maintenance-state')).not.toHaveClass(/dirty/);
   await expect(page.locator('.maintenance-state')).toContainText('备份编号 2026-07-28-content');
 
-  // 载荷：全量场景 + 标签 + 策展，一起送
-  expect(Array.isArray(saved.scenes)).toBeTruthy();
-  expect(saved.scenes.length).toBeGreaterThan(200);
-  expect(Array.isArray(saved.tags)).toBeTruthy();
-  expect(saved.curation).toBeTruthy();
-  const edited = saved.scenes.find((s: any) => s.id === sceneId);
-  expect(edited.title).toBe('E2E 改过的标题');
+  // 载荷：精确变更集中的完整场景记录，避免把整库快照重复写回。
+  expect(Number.isSafeInteger(saved.baseVersion)).toBeTruthy();
+  expect(saved.changeSet.version).toBe(1);
+  expect(saved.changeSet.scenes.remove).toEqual([]);
+  const edited = saved.changeSet.scenes.upsert.find((s: any) => s.id === sceneId);
+  expect(edited?.title).toBe('E2E 改过的标题');
 
   expect(errors).toEqual([]);
 });
 
 test('flow 5b · 场景保存失败：错误如实回显，脏态保留', async ({ page }) => {
-  await page.route('**/api/maintenance/scenes', route => route.fulfill({
+  await page.route('**/api/maintenance/scenes/changes', route => route.fulfill({
     status: 400,
     contentType: 'application/json',
     body: JSON.stringify({ ok: false, error: 'sc001 标记为招牌场景时必须填写推荐理由', rolledBack: true }),
@@ -767,7 +772,9 @@ test('flow 5b · 场景保存失败：错误如实回显，脏态保留', async 
   await page.locator('.modal-card .form-group', { hasText: '标题' }).locator('input').fill('会被拒绝的标题');
   await page.locator('.modal-card').getByRole('button', { name: '保存' }).click();
 
-  await page.getByRole('button', { name: /保存到项目/ }).click();
+  const saveButton = page.getByRole('button', { name: /保存到项目/ });
+  await expect(saveButton).toBeEnabled();
+  await saveButton.click();
   await expect(page.locator('.maintenance-state')).toContainText('推荐理由');
   // 保存失败后必须仍是脏态，否则用户会以为已经存上了
   await expect(page.locator('.maintenance-state')).toHaveClass(/dirty/);

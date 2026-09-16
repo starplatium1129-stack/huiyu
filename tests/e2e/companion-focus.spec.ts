@@ -12,6 +12,8 @@ async function desktopFixture(page: Page, theme: string, failRelay = false) {
       getSettings: async () => ({ openAtLogin: false }),
       getWorkspace: async () => ({ root: '', exists: false }),
       getWindowState: async () => ({ maximized: false, focused: true }),
+      getWindowZoom: async () => 1,
+      setWindowZoom: async (value: number) => value,
       toggleAlwaysOnTop: async () => false, isPackaged: async () => true,
       chatRelay: async () => { if (failRelay) throw new Error('temporary bridge failure') },
     }

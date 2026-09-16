@@ -12,6 +12,7 @@
 - 官方门禁：`services`、`browser`、`node`、`tests` 全部 exit 0；`typecheck:app`、lint、单体体量、TypeScript 指令扫描、生成物守卫全部通过。
 - 行为验证：`test:frontend` 783/783、`test:unit` 1036 用例、`test:contract` 33/33 通过；`test:check` 通过。
 - 产物链路：TypeScript 强制重建通过；已取消跟踪 448 个迁移生成 JS/MJS，保留 3 个 Live2D vendor JS 与 `poc/audit-stability-apply.cjs`；前端 `npm run build` 与 NSIS `npm run package:tauri` 均通过。
+- 后续复验：最新蓝图基线重新预压缩，关键浏览器回归 312/312 通过，NSIS 包已重建并再次通过隔离网关验证；TypeScript 四项目与 `typecheck:app` 仍为 exit 0。
 - 当前综合 `npm run check` 仅剩 `content-contracts` / `ref-urls`：本机未配置 `AICS_CHARACTER_REF_ROOT`，因此 2534 个外置参考图声明无法做文件存在性核验。未修改索引或用 pending 掩盖缺图。
 - 未执行：安装器启动、UAC、Windows 实机/双屏 DPI、Live2D 原生与真实模型出图验收；这些需要目标机器和外部素材/服务。
 
