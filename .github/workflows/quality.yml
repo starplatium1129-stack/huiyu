@@ -13,14 +13,16 @@ concurrency:
   group: quality-${{ github.ref }}
   cancel-in-progress: ${{ github.ref_type != 'tag' }}
 
+env:
+  AICS_HYGIENE_BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+  # 参考媒体按项目契约不入 Git；CI 验证索引结构，本机 gate:full 仍逐文件查验。
+  AICS_REFERENCE_AUDIT_MODE: structure
+
 jobs:
-  validate:
+  checks:
+    name: Static & Quality Checks
     runs-on: ubuntu-latest
-    timeout-minutes: 35
-    env:
-      AICS_HYGIENE_BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
-      # 参考媒体按项目契约不入 Git；CI 验证索引结构，本机 gate:full 仍逐文件查验。
-      AICS_REFERENCE_AUDIT_MODE: structure
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -39,12 +41,68 @@ jobs:
         run: npm run build
       - name: Run static and generated-source checks
         run: npm run check
+
+  unit:
+    name: Unit & Coverage Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
       - name: Run frontend unit tests (coverage thresholds enforced)
         run: npx vitest run --coverage
       - name: Run parallel-safe unit suite
         run: npm run test:unit
+
+  contract:
+    name: Contract & Gateway Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
       - name: Run controlled contract suite
         run: npm run test:contract
+
+  e2e:
+    name: Browser Regression (Critical)
+    needs: [checks, unit, contract]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build SPA
+        run: npm run build
       - name: Cache Playwright browsers
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
