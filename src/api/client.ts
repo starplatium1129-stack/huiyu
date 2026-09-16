@@ -188,16 +188,49 @@ function requestKey(url: string, method: string): string {
 
 export function createApiClient(fetchImplementation: FetchImplementation = defaultFetch): ApiClient {
   const responseCache = new Map<string, CacheEntry>()
-  const inflight = new Map<
-    string,
-    { response: Promise<TransportedResponse>; signal: AbortSignal; generation: number }
-  >()
+  interface InflightEntry {
+    response: Promise<TransportedResponse>
+    controller: AbortController
+    generation: number
+    consumers: number
+    settled: boolean
+    cancelled: boolean
+  }
+  const inflight = new Map<string, InflightEntry>()
   /** 每个 URL 的写入代际（2026-09-10 复核 R1）：写请求成功即自增。
    * 写前发起的 GET 属于旧代，不得回填缓存；写后发起的 GET 属于新代，不得搭乘旧代 inflight。 */
   const generations = new Map<string, number>()
   // Explicit refreshes supersede older reads even without a successful write.
   const readVersions = new Map<string, { version: number; pending: number }>()
   const generationOf = (url: string): number => generations.get(url) ?? 0
+
+  function releaseSharedConsumer(key: string, entry: InflightEntry) {
+    if (entry.consumers > 0) entry.consumers -= 1
+    if (entry.consumers !== 0 || entry.settled) return
+    entry.cancelled = true
+    // A refresh may have replaced this map entry; the old transport still
+    // needs to be cancelled, but must not delete the replacement.
+    if (inflight.get(key) === entry) inflight.delete(key)
+    entry.controller.abort()
+  }
+
+  function trackSharedConsumer(
+    key: string,
+    entry: InflightEntry,
+    callerSignal: AbortSignal | undefined,
+  ): () => void {
+    let released = false
+    const release = () => {
+      if (released) return
+      released = true
+      releaseSharedConsumer(key, entry)
+    }
+    if (callerSignal) callerSignal.addEventListener('abort', release, { once: true })
+    return () => {
+      if (callerSignal) callerSignal.removeEventListener('abort', release)
+      release()
+    }
+  }
 
   /** 搭车等待：共享响应与调用方自己的 abort/timeout 竞速。
    * 只返回传输结果与取消语义，对象隔离与响应契约由各消费者独立执行。 */
@@ -229,8 +262,8 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
       return await Promise.race([shared, guard])
     } catch (error) {
       if (error instanceof ApiClientError) throw error
-      // 发起者取消连带取消共享请求时，原生 AbortError 归一为 aborted；
-      // 其余保持 network 语义，与发起者路径一致
+      // 最后一个共享消费者离开后，底层可能以原生 AbortError 结束；
+      // 其余保持 network 语义，与非共享请求路径一致。
       if ((error as Error)?.name === 'AbortError') {
         throw new ApiClientError('请求已取消', { kind: 'aborted', detail: errorDetail(error) })
       }
@@ -280,17 +313,23 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
 
         // 写后读取不得搭乘写前 inflight：仅同代请求共享传输
         const pending = inflight.get(key)
-        if (pending && !pending.signal.aborted && pending.generation === generation) {
-          const transported = await awaitShared(
-            pending.response,
-            callerSignal,
-            options.timeoutMs ?? DEFAULT_TIMEOUT_MS,
-          )
-          return applyResponseContract<T>(
-            cloneResponse(transported.value),
-            transported.status,
-            validate,
-          )
+        if (pending && !pending.controller.signal.aborted && pending.generation === generation) {
+          pending.consumers += 1
+          const release = trackSharedConsumer(key, pending, callerSignal)
+          try {
+            const transported = await awaitShared(
+              pending.response,
+              callerSignal,
+              options.timeoutMs ?? DEFAULT_TIMEOUT_MS,
+            )
+            return applyResponseContract<T>(
+              cloneResponse(transported.value),
+              transported.status,
+              validate,
+            )
+          } finally {
+            release()
+          }
         }
       }
 
@@ -310,21 +349,27 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
       const controller = new AbortController()
       let abortSource: 'caller' | 'timeout' | null = null
       let timeoutId: ReturnType<typeof setTimeout> | undefined
-
-      const abortFromCaller = () => {
-        if (abortSource !== null) return
-        abortSource = 'caller'
-        controller.abort()
-      }
-      if (callerSignal) callerSignal.addEventListener('abort', abortFromCaller, { once: true })
-
+      let abortFromCaller: (() => void) | undefined
       const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS
-      if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
-        timeoutId = setTimeout(() => {
+
+      // Shared GETs use awaitShared for each consumer. The underlying
+      // controller is aborted only when the last consumer releases it;
+      // non-shared requests keep the original one-caller cancellation path.
+      if (!usesMemoryCache) {
+        abortFromCaller = () => {
           if (abortSource !== null) return
-          abortSource = 'timeout'
+          abortSource = 'caller'
           controller.abort()
-        }, timeoutMs)
+        }
+        if (callerSignal) callerSignal.addEventListener('abort', abortFromCaller, { once: true })
+
+        if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
+          timeoutId = setTimeout(() => {
+            if (abortSource !== null) return
+            abortSource = 'timeout'
+            controller.abort()
+          }, timeoutMs)
+        }
       }
 
       // 发起前先占位 inflight：并发到达的同代 GET 在底层 fetch 未完成前即可搭车。
@@ -336,6 +381,14 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
       }
       const readVersion = readState ? ++readState.version : 0
       if (readState) readState.pending++
+      const entry: InflightEntry = {
+        response: Promise.resolve({ value: {}, status: 0 }),
+        controller,
+        generation,
+        consumers: usesMemoryCache ? 1 : 0,
+        settled: false,
+        cancelled: false,
+      }
       const shared: Promise<TransportedResponse> = (async () => {
         try {
           const response = await fetchImplementation(url, {
@@ -371,19 +424,26 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
           // 共享层到此为止：调用者的 validate 由各消费者在副本上分别执行（R2）
           return { value: parsed, status: response.status }
         } finally {
+          entry.settled = true
           // A cancelled request may finish after its replacement has started.
-          if (inflight.get(key)?.signal === controller.signal) inflight.delete(key)
+          if (inflight.get(key) === entry) inflight.delete(key)
         }
       })()
-      if (usesMemoryCache) inflight.set(key, { response: shared, signal: controller.signal, generation })
+      entry.response = shared
+      if (usesMemoryCache) inflight.set(key, entry)
+      const release = usesMemoryCache ? trackSharedConsumer(key, entry, callerSignal) : undefined
 
       try {
-        const transported = await shared
+        const transported = await (usesMemoryCache
+          ? awaitShared(shared, callerSignal, options.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+          : shared)
         if (usesMemoryCache) {
           const ttl = options.cacheTtlMs
           // 写入期间该 URL 已被作废的旧代读取不回填（R1）；同代并发时只允许最新一次读取
           // 动缓存，避免晚到的旧刷新覆盖或作废新结果。
-          const superseded = generation !== generationOf(url) || readVersion !== readState?.version
+          const superseded = entry.cancelled
+            || generation !== generationOf(url)
+            || readVersion !== readState?.version
           if (!superseded && typeof ttl === 'number' && Number.isFinite(ttl) && ttl > 0) {
             responseCache.set(url, {
               value: transported.value,
@@ -422,7 +482,8 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
           readVersions.delete(url)
         }
         if (timeoutId !== undefined) clearTimeout(timeoutId)
-        if (callerSignal) callerSignal.removeEventListener('abort', abortFromCaller)
+        if (callerSignal && abortFromCaller) callerSignal.removeEventListener('abort', abortFromCaller)
+        release?.()
       }
     },
   }

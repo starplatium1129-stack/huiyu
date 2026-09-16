@@ -73,6 +73,28 @@ describe('apiClient GET inflight 去重与 TTL 缓存', () => {
     expect(calls).toEqual(['/api/ride'])
   })
 
+  it('发起者取消时仍有跟随者，底层共享请求继续完成', async () => {
+    let resolveResponse!: (response: Response) => void
+    let transportSignal!: AbortSignal
+    const fetch = vi.fn((_url: RequestInfo | URL, init?: RequestInit) => new Promise<Response>((resolve, reject) => {
+      resolveResponse = resolve
+      transportSignal = init!.signal!
+      transportSignal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true })
+    }))
+    const client = createApiClient(fetch)
+    const ownerController = new AbortController()
+    const owner = client.request('/api/shared-owner', { signal: ownerController.signal })
+    const follower = client.request('/api/shared-owner')
+
+    ownerController.abort()
+    await expect(owner).rejects.toMatchObject({ kind: 'aborted' })
+    expect(transportSignal.aborted).toBe(false)
+
+    resolveResponse(okResponse({ ok: true, value: 'follower' }))
+    await expect(follower).resolves.toEqual({ ok: true, value: 'follower' })
+    expect(fetch).toHaveBeenCalledOnce()
+  })
+
   it('取消旧状态请求后立即刷新会新建传输，旧请求清理不会破坏新请求去重', async () => {
     const requests: Array<{ init: RequestInit | undefined; resolve: (response: Response) => void }> = []
     const fetch: FetchImplementation = (_input, init) => new Promise((resolve, reject) => {
