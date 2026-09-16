@@ -262,7 +262,8 @@ export const useSceneStore = defineStore('scenes', () => {
   /** 同键强制重载的代际：只有该键最新一次工作才允许回写视图。 */
   let workSeq = 0
   const latestSeqByKey = new Map<string, number>()
-  const inflightByKey = new Map<string, { promise: Promise<void> }>()
+  interface TargetInflightEntry { epoch: number; promise: Promise<void> }
+  const inflightByKey = new Map<string, TargetInflightEntry>()
 
   /**
    * 按目标键启动/加入一个视图加载。同键并发去重；不同键各自成行。
@@ -275,7 +276,8 @@ export const useSceneStore = defineStore('scenes', () => {
   ): Promise<void> {
     viewTarget = key
     const existing = inflightByKey.get(key)
-    if (existing) return existing.promise
+    if (existing?.epoch === loadEpoch) return existing.promise
+    if (existing) inflightByKey.delete(key)
     const seq = ++workSeq
     const epoch = loadEpoch
     const requestVersion = version.value
@@ -283,13 +285,13 @@ export const useSceneStore = defineStore('scenes', () => {
     const isCurrent = () => viewTarget === key && latestSeqByKey.get(key) === seq
     beginLoad()
     error.value = null
-    const entry: { promise: Promise<void> } = { promise: Promise.resolve() }
+    const entry: TargetInflightEntry = { epoch, promise: Promise.resolve() }
     entry.promise = (async () => {
       try {
         const list = await work(isCurrent, epoch, requestVersion)
-        if (isCurrent()) scenes.value = list
+        if (epoch === loadEpoch && isCurrent()) scenes.value = list
       } catch (e) {
-        if (isCurrent()) {
+        if (epoch === loadEpoch && isCurrent()) {
           error.value = String((e as Error)?.message ?? e)
         }
       } finally {

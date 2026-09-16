@@ -46,8 +46,9 @@ function response(value: Json): Response {
 
 function deferred<T>() {
   let resolve!: (value: T | PromiseLike<T>) => void
-  const promise = new Promise<T>((done) => { resolve = done })
-  return { promise, resolve }
+  let reject!: (reason?: unknown) => void
+  const promise = new Promise<T>((done, fail) => { resolve = done; reject = fail })
+  return { promise, resolve, reject }
 }
 
 function revisionData(file: string, revision: string): Json {
@@ -143,6 +144,70 @@ describe('sceneStore · 全量加载', () => {
     expect(calls.filter(url => url.includes('curation.json')).length).toBe(1)
   })
 
+  it('完整加载先启动时，轻载只等待轻资源而不被重资源阻塞', async () => {
+    routes = {
+      'scenes-shared.json': [scene('sc001')],
+      'scenes-nene.json': [scene('sc002')],
+      'scenes-natsume.json': [scene('sc003')],
+      'curation.json': {}, 'scenes-index.json': { version: 1, total: 3 },
+      'characters.json': [{ id: 'char-1' }], 'loras.json': [], 'tags.json': [], 'presets.json': [],
+      'popular-characters.json': { characters: [] },
+      'scene-blueprints.json': revisionData('scene-blueprints.json', 'new'),
+    }
+    const gate = deferred<void>()
+    const heldFullFiles = new Set(['characters.json', 'loras.json', 'tags.json', 'presets.json', 'scene-blueprints.json'])
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL) => {
+      const url = String(input)
+      calls.push(url)
+      const file = url.replace(/^\/data\//, '').replace(/\?.*$/, '')
+      if (heldFullFiles.has(file)) await gate.promise
+      return response(routes[file])
+    }))
+    const store = useSceneStore()
+    const full = store.load()
+    for (let attempt = 0; attempt < 20 && !calls.some(url => url.includes('characters.json')); attempt += 1)
+      await new Promise(resolve => setImmediate(resolve))
+
+    let homeDone = false
+    const home = store.loadHome().then(() => { homeDone = true })
+    try {
+      for (let attempt = 0; attempt < 20 && !homeDone; attempt += 1)
+        await new Promise(resolve => setImmediate(resolve))
+      expect(homeDone).toBe(true)
+      expect(store.loaded).toBe(false)
+    } finally {
+      gate.resolve()
+      await Promise.all([home, full])
+    }
+    expect(store.loaded).toBe(true)
+    expect(store.characters).toEqual([{ id: 'char-1' }])
+    expect(store.sceneBlueprints).toHaveLength(1)
+  })
+
+  it('轻载必需资源失败后，完整加载可以只重试失败资源', async () => {
+    routes = {
+      'scenes-shared.json': [scene('sc001')], 'scenes-nene.json': [scene('sc002')], 'scenes-natsume.json': [scene('sc003')],
+      'curation.json': {}, 'scenes-index.json': { version: 1, total: 3 },
+      'characters.json': [{ id: 'char-1' }], 'loras.json': [], 'tags.json': [], 'presets.json': [],
+      'popular-characters.json': { characters: [] }, 'scene-blueprints.json': { blueprints: [] },
+    }
+    failOnce['popular-characters.json'] = 1
+    stubFetch()
+    const store = useSceneStore()
+
+    await store.loadHome()
+    expect(store.loaded).toBe(false)
+    expect(store.error).toContain('popular-characters.json')
+    await store.load()
+
+    const fetchCount = (file: string) => calls.filter(url => url.split('?')[0].endsWith(`/${file}`)).length
+    expect(store.loaded).toBe(true)
+    expect(store.error).toBe(null)
+    expect(fetchCount('popular-characters.json')).toBe(2)
+    expect(fetchCount('curation.json')).toBe(1)
+    expect(fetchCount('scenes-nene.json')).toBe(1)
+  })
+
   it('force 刷新不加入旧分片请求，旧分片完成后也不能污染新缓存', async () => {
     const oldShared = deferred<Response>()
     const oldNene = deferred<Response>()
@@ -176,13 +241,16 @@ describe('sceneStore · 全量加载', () => {
       await new Promise(resolve => setImmediate(resolve))
     }
     expect(calls.some(url => url.includes(`scenes-nene.json?v=${DATA_VERSION + 1}`))).toBe(true)
+    // 刷新后重新进入同一角色，不能重新加入仍在途的旧代际 promise。
+    const revisited = store.loadCharacter('nene')
     oldShared.resolve(response(revisionData('scenes-shared.json', 'old')))
-    oldNene.resolve(response(revisionData('scenes-nene.json', 'old')))
-    await Promise.all([initial, refreshed])
+    oldNene.reject(new Error('旧代际分片失败'))
+    await Promise.all([initial, refreshed, revisited])
 
     expect(store.loaded).toBe(true)
     expect(store.scenes.find(item => item.id === 'sc002')?.title).toBe('new-nene')
     expect(store.loadedShards).toEqual(new Set(['shared', 'nene', 'natsume']))
+    expect(store.error).toBe(null)
   })
 
   it('旧代际元数据晚到时，不能覆盖刷新后已发布的新值', async () => {
