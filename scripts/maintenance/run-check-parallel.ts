@@ -28,6 +28,8 @@ const STEPS = [
   ['scenes:build', 'node scripts/maintenance/build-scenes.js --check'],
   ['popular:build', 'node scripts/maintenance/build-popular.js --check'],
   ['blueprints:build', 'node scripts/maintenance/build-blueprints.js --check'],
+  ['tags:build', 'node scripts/maintenance/build-tags.js --check'],
+  ['tags:integrity', 'node scripts/tests/test-tag-shards.js'],
   ['scenes:optimize', 'node scripts/maintenance/optimize-scenes.js --check'],
   ['scenes:ratings', 'node scripts/maintenance/classify-scene-ratings.js --check'],
   ['scenes:validate', 'node scripts/maintenance/validate-scenes.js'],

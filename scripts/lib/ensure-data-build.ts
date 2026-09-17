@@ -41,6 +41,13 @@ const {
   writeBlueprintAggregate,
   loadBlueprintShards,
 }: typeof import('./blueprint-store') = require('./blueprint-store');
+const {
+  aggregatePath: tagsAggregatePath,
+  dictionaryPath: tagsDictionaryPath,
+  aggregateIsCurrent: tagsIsCurrent,
+  writeTagAggregate,
+  loadTagShards,
+}: typeof import('./tag-store') = require('./tag-store');
 
 /** 复用 precompress.js 的压缩参数（质量 11 brotli / level 9 gzip / MIN_BYTES），
  *  单一事实源防漂移；缺失（如精简安装）时只跳过刷新，不阻塞重建。 */
@@ -93,7 +100,16 @@ function ensureBlueprintsBuilt({ onlyIfMissing = false }: any = {}) {
   return { rebuilt: true, count };
 }
 
-/** 场景 + 热门角色 + 蓝图三个产物面一起自愈；任一面源分片损坏会抛出，由调用方决定降级策略。
+function ensureTagsBuilt({ onlyIfMissing = false }: any = {}) {
+  if (onlyIfMissing && fs.existsSync(tagsAggregatePath) && fs.existsSync(tagsDictionaryPath)) return { rebuilt: false };
+  if (tagsIsCurrent()) return { rebuilt: false };
+  loadTagShards();
+  const count = writeTagAggregate();
+  refreshPrecompressed([tagsAggregatePath]);
+  return { rebuilt: true, count };
+}
+
+/** 场景 + 热门角色 + 蓝图 + 词条四个产物面一起自愈；任一面源分片损坏会抛出，由调用方决定降级策略。
  *
  *  - 默认（网关启动）：陈旧即重建——运行时必须拿到与语义源一致的数据；
  *  - onlyIfMissing（门禁/测试套件）：产物缺失（fresh clone）才构建，
@@ -103,7 +119,8 @@ function ensureAll({ onlyIfMissing = false }: any = {}) {
   const scenes = ensureScenesBuilt({ onlyIfMissing });
   const popular = ensurePopularBuilt({ onlyIfMissing });
   const blueprints = ensureBlueprintsBuilt({ onlyIfMissing });
-  return { scenes, popular, blueprints };
+  const tags = ensureTagsBuilt({ onlyIfMissing });
+  return { scenes, popular, blueprints, tags };
 }
 
-export = { ensureAll, ensurePopularBuilt, ensureScenesBuilt, ensureBlueprintsBuilt };
+export = { ensureAll, ensurePopularBuilt, ensureScenesBuilt, ensureBlueprintsBuilt, ensureTagsBuilt };
