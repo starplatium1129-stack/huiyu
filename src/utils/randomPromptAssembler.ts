@@ -1,7 +1,7 @@
 import type { ArtistStyleOption } from '../config/artistStyles.ts'
 import { normalizeArtistStyleIds } from '../config/artistStyles.ts'
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '../config/promptConstants.ts'
-import { membersOfMutualGroup, mutualGroupOf } from '../utils/promptPolicy.ts'
+import { membersOfMutualGroup, mutualGroupOf, mutualGroupWithCategory } from '../utils/promptPolicy.ts'
 
 /**
  * 随机灵感采样器（2026-08-29，详见 docs/guides/engineering/random-prompt-assembler-design.md）。
@@ -85,6 +85,34 @@ const OUTDOOR_SCENE = new Set([
 /** 温和身体细节（可随机）；其余 Body 标签（cleavage/no_panties 等）并入 Mature 池。 */
 const BODY_MILD = new Set(['collarbone', 'shoulder_blade', 'bare_shoulders', 'wet_skin', 'water_droplets', 'bare_legs', 'backless', 'bare_streaks', 'wet_hair'])
 
+/** 极端重度/道具约束标签（在常规随机灵感中过滤，优先唯美情调与高级感）。 */
+const MATURE_HARDCORE = new Set([
+  'anal', 'fellatio', 'blowjob', 'cunnilingus', 'facesitting', 'deepthroat',
+  'ball_gag', 'gagged', 'gag', 'spanking', 'dildo', 'vibrator', 'fucking',
+  'creampie', 'cum', 'cum_on_body', 'cum_drip', 'penis', 'multiple_penises',
+  'clitoris', 'labia', 'urethra', 'prostate', 'tentacles', 'pegging', 'bondage',
+  'tied_up', 'rope', 'handcuffs', 'blindfold', 'mating_press', 'sumata',
+])
+
+/** 核心独立主地点（建筑/大型场景，画面中只允许出现一个核心地点，防止空间重叠）。 */
+const PRIMARY_LOCATIONS = new Set([
+  'classroom', 'library', 'bedroom', 'cafe', 'cafe_interior',
+  'home_theater', 'storage_room', 'breakroom', 'kitchen', 'music_room', 'arcade',
+  'garage', 'attic', 'oriental_room', 'workshop', 'convenience_store', 'hotel_room',
+  'fitting_room', 'car_interior', 'lounge', 'bathroom', 'living_room', 'tatami',
+  'safehouse', 'gymnasium', 'swimming_pool', 'art_studio', 'infirmary', 'izakaya', 'steamy_bathroom',
+  'beach', 'shrine', 'train_station', 'school_rooftop', 'rooftop', 'train_platform',
+  'bus_stop', 'sea_wall', 'bridge', 'hotel_balcony', 'train_interior', 'rooftop_fence',
+])
+
+/** 下肢与鞋袜细节（特写近景镜头下自动屏蔽，防止肢体畸变）。 */
+const FOOTWEAR_EXCLUDE = new Set([
+  'boots', 'shoes', 'sneakers', 'heels', 'sandals', 'socks', 'stockings',
+  'thighhighs', 'thigh_highs', 'barefoot', 'bare_feet', 'feet', 'bare_legs',
+  'strappy_heels', 'mary_janes', 'combat_boots', 'ankle_boots', 'brown_boots',
+  'white_tabi', 'asymmetrical_legwear', 'loose_socks', 'frilled_socks',
+])
+
 /** LIGHTING 主光源池（互斥）；back 逆光可叠加。 */
 const LIGHT_MAIN = LIGHTING.filter(option => option.id !== 'back').map(option => option.id)
 
@@ -133,15 +161,24 @@ function chance(probability: number, rng: () => number): boolean {
   return rng() < probability
 }
 
-/** 按现有互斥组语义添加标签：同组旧成员先移除（与 toggleManualTag 一致）。 */
+/** 按互斥组语义添加标签：同组旧成员先移除，且天气与时段大类全局互斥（下雨不能下雪、白天不能夜晚）。 */
 function addWithMutualGroup(target: string[], tag: string): boolean {
   const key = normalizeTag(tag)
   if (!key || target.includes(key)) return false
-  const group = mutualGroupOf(key)
-  if (group) {
-    for (const member of membersOfMutualGroup(group, target)) {
-      const i = target.indexOf(member)
-      if (i >= 0) target.splice(i, 1)
+  const hit = mutualGroupWithCategory(key)
+  if (hit) {
+    if (hit.category === 'weather' || hit.category === 'time') {
+      for (let i = target.length - 1; i >= 0; i--) {
+        const otherHit = mutualGroupWithCategory(target[i])
+        if (otherHit && otherHit.category === hit.category) {
+          target.splice(i, 1)
+        }
+      }
+    } else {
+      for (const member of membersOfMutualGroup(hit.group, target)) {
+        const i = target.indexOf(member)
+        if (i >= 0) target.splice(i, 1)
+      }
     }
   }
   target.push(key)
@@ -160,6 +197,19 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   for (const token of identitySource) exclude.add(normalizeTag(token))
   META_TOKENS.forEach(token => exclude.add(token))
 
+  // 跨角色特征单向隔离：单人抽取时，屏蔽其他主角的标志性外观特征
+  if (!explicitIdentity && options.char !== 'triad') {
+    if (options.char === 'nene') {
+      for (const t of ['shiki_natsume', 'natsume', 'mole_under_eye', 'hairclip', 'two_red_hairclips', 'black_hair', 'yellow_eyes']) {
+        exclude.add(normalizeTag(t))
+      }
+    } else if (options.char === 'natsume') {
+      for (const t of ['ayachi_nene', 'nene', 'white_hair', 'purple_eyes', 'low_twintails', 'pink_hair_ribbons']) {
+        exclude.add(normalizeTag(t))
+      }
+    }
+  }
+
   const byCat = (cat: string): string[] =>
     options.tags.filter(tag => tag.cat === cat).map(tag => normalizeTag(tag.en)).filter(Boolean)
 
@@ -168,7 +218,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   const appearancePool = byCat('Appearance').filter(tag => !exclude.has(tag))
   const stylePool = byCat('Style').filter(tag => !exclude.has(tag))
   const bodyPool = byCat('Body').filter(tag => BODY_MILD.has(tag))
-  const maturePool = byCat('Mature').filter(tag => !exclude.has(tag))
+  const maturePool = byCat('Mature').filter(tag => !exclude.has(tag) && !MATURE_HARDCORE.has(tag))
   const clothingPool = byCat('Clothing').filter(tag => !exclude.has(tag))
 
   const manualTags: string[] = []
@@ -197,6 +247,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   // ── 镜头（100% 抽 1） + 构图（50%） ──────────────────────────────────
   const shot = draw(ALL_SHOT_IDS, 1, rng)[0] ?? null
   const composition = chance(0.5, rng) ? (draw(ALL_COMPOSITION_IDS, 1, rng)[0] ?? null) : null
+  const isCloseUp = shot === 'close'
 
   // ── 光照（主光源 1 个 + 40% 叠逆光） ──────────────────────────────────
   let lighting: string | null = null
@@ -208,7 +259,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     }
   }
 
-  // ── 场景（70% 1 个 / 30% 2 个，室内外互斥） ─────────────────────────
+  // ── 场景（70% 1 个 / 30% 2 个，室内外互斥 + 核心建筑排他） ─────────
   const sceneCount = chance(0.7, rng) ? 1 : 2
   for (const scene of draw(scenePool, sceneCount, rng)) {
     if (!manualTags.length) {
@@ -219,6 +270,8 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     const outdoor = manualTags.some(tag => OUTDOOR_SCENE.has(tag))
     if (INDOOR_SCENE.has(scene) && outdoor) continue
     if (OUTDOOR_SCENE.has(scene) && indoor) continue
+    const hasPrimaryLocation = manualTags.some(tag => PRIMARY_LOCATIONS.has(tag))
+    if (hasPrimaryLocation && PRIMARY_LOCATIONS.has(scene)) continue
     addWithMutualGroup(manualTags, scene)
   }
 
@@ -228,17 +281,23 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     if (action) addWithMutualGroup(manualTags, action)
   }
 
-  // ── 外观（60% 1 个 / 25% 2 个，已排除身份 token） ────────────────────
+  // ── 外观（60% 1 个 / 25% 2 个，已排除身份 token；特写镜头过滤下肢细节） ────
+  const appearanceCandidates = isCloseUp
+    ? appearancePool.filter(tag => !FOOTWEAR_EXCLUDE.has(tag))
+    : appearancePool
   const appearanceCount = chance(0.6, rng) ? 1 : 0
   if (appearanceCount) {
-    for (const item of draw(appearancePool, chance(0.25, rng) ? 2 : 1, rng)) {
+    for (const item of draw(appearanceCandidates, chance(0.25, rng) ? 2 : 1, rng)) {
       addWithMutualGroup(manualTags, item)
     }
   }
 
-  // ── 身体（50% 1 个，仅温和细节） ────────────────────────────────────
+  // ── 身体（50% 1 个，仅温和细节；特写镜头过滤下肢细节） ───────────────
   if (chance(0.5, rng)) {
-    const body = draw(bodyPool, 1, rng)[0]
+    const bodyCandidates = isCloseUp
+      ? bodyPool.filter(tag => !FOOTWEAR_EXCLUDE.has(tag))
+      : bodyPool
+    const body = draw(bodyCandidates, 1, rng)[0]
     if (body) addWithMutualGroup(manualTags, body)
   }
 
