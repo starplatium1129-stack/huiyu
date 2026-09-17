@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import { needsDocumentReload } from './documentPolicy'
 import { createRoutePrefetcher } from './prefetch'
+import { captureScrollAnchor, restoreScrollAnchor } from '@/utils/scrollAnchor'
 export { needsDocumentReload } from './documentPolicy'
 export { prefetchRouteResources } from './prefetch'
 
@@ -11,38 +12,36 @@ export { prefetchRouteResources } from './prefetch'
 const SCROLL_MEMORY_ROUTES = new Set(['/scene-explorer', '/showcase', '/gallery', '/prompt-builder', '/video-studio'])
 const SCROLL_MEMORY_LIMIT = 16
 const routeScrollMemory = new Map<string, { left: number; top: number }>()
-let pendingScrollRestoreFrame = 0
+let cancelRouteScrollRestore: (() => void) | null = null
+
+function cancelPendingScrollRestore() {
+  cancelRouteScrollRestore?.()
+  cancelRouteScrollRestore = null
+}
+
+function currentLocation(): string {
+  return `${window.location.pathname}${window.location.search}${window.location.hash}`
+}
 
 function rememberRouteScroll(path: string) {
   if (typeof window === 'undefined' || !SCROLL_MEMORY_ROUTES.has(path.split(/[?#]/, 1)[0] || '')) return
+  const anchor = captureScrollAnchor()
+  if (!anchor) return
   routeScrollMemory.delete(path)
-  routeScrollMemory.set(path, { left: window.scrollX, top: window.scrollY })
+  routeScrollMemory.set(path, anchor)
   while (routeScrollMemory.size > SCROLL_MEMORY_LIMIT) routeScrollMemory.delete(routeScrollMemory.keys().next().value!)
-}
-
-function cancelPendingScrollRestore() {
-  if (!pendingScrollRestoreFrame || typeof window === 'undefined') return
-  window.cancelAnimationFrame(pendingScrollRestoreFrame)
-  pendingScrollRestoreFrame = 0
 }
 
 /** Retry after async page data expands the document, avoiding a clamped return position. */
 function scheduleScrollRestore(path: string, position: { left: number; top: number }) {
-  if (typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') return
+  // 锚点恢复原语与场景库筛选共用（src/utils/scrollAnchor.ts）；离开目标地址就放弃。
+  // 取消句柄是本模块自己的，不再影响场景库那一路的待恢复锚点。
   cancelPendingScrollRestore()
-  const started = performance.now()
-  const retry = () => {
-    pendingScrollRestoreFrame = 0
-    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`
-    const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
-    if (current !== path) return
-    if (maxTop + 2 < position.top && performance.now() - started < 1500) {
-      pendingScrollRestoreFrame = window.requestAnimationFrame(retry)
-      return
-    }
-    window.scrollTo(position.left, Math.min(position.top, maxTop))
-  }
-  pendingScrollRestoreFrame = window.requestAnimationFrame(retry)
+  cancelRouteScrollRestore = restoreScrollAnchor(position, {
+    shouldContinue: () => currentLocation() === path,
+    onRestored: () => { cancelRouteScrollRestore = null },
+    onAbandoned: () => { cancelRouteScrollRestore = null },
+  })
 }
 
 /**

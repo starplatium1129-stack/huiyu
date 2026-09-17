@@ -6,8 +6,9 @@ import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
 import { buildPreferenceProfile,isPersonaCore,readHiddenScenes,readSceneUsage,sceneUsageScore,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,personalScore as uxPersonalScore,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys';
+import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
 import { watchDebounced } from '@vueuse/core';
-import { computed,nextTick,onMounted,ref,watch } from 'vue';
+import { computed,nextTick,onMounted,onUnmounted,ref,watch } from 'vue';
 import type { LocationQueryRaw } from 'vue-router';
 import { useRoute,useRouter } from 'vue-router';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
@@ -122,6 +123,43 @@ export function useSceneExplorerWorkspace() {
     watchDebounced(searchQuery, (value) => {
         debouncedQuery.value = value;
     }, { debounce: 150, maxWait: 0, immediate: true });
+    /**
+     * 筛选期间的位置锚点（F3.2）：把列表抽短会让文档变矮，浏览器随即把滚动位置钳掉，
+     * 清空筛选后用户就回不到原处（实测 700 → 473）。这里记住塌缩前的位置，等列表长回来再恢复。
+     *
+     * 只在"还没有待恢复锚点"时重新记：清空筛选那一次读到的是已经被钳掉的位置，
+     * 不能拿它当新锚点，否则恢复目标就被自己覆盖掉了。
+     * 用户在筛选状态里自己滚动过（真实手势）就放弃恢复，不把人拽回旧位置。
+     */
+    let filterAnchor: ScrollAnchor | null = null;
+    let stopWatchingUserScroll: (() => void) | null = null;
+    let cancelFilterRestore: (() => void) | null = null;
+    function clearFilterAnchor() {
+        filterAnchor = null;
+        cancelFilterRestore?.();
+        cancelFilterRestore = null;
+        stopWatchingUserScroll?.();
+        stopWatchingUserScroll = null;
+    }
+    function holdFilterAnchor() {
+        if (!filterAnchor) {
+            const captured = captureScrollAnchor();
+            if (!captured)
+                return;
+            filterAnchor = captured;
+            stopWatchingUserScroll = watchForUserScroll(clearFilterAnchor);
+        }
+        // 取消句柄是本组合式函数自己的：筛选随后要写 URL，路由的取消不能连带干掉这一路。
+        // 文档还没长回来时原语会超时放弃并把锚点留着，等下一次筛选变化（例如清空）再试。
+        cancelFilterRestore?.();
+        cancelFilterRestore = restoreScrollAnchor(filterAnchor, {
+            shouldContinue: () => filterAnchor !== null,
+            onRestored: clearFilterAnchor,
+            onAbandoned: () => { cancelFilterRestore = null; },
+        });
+    }
+    watch(debouncedQuery, holdFilterAnchor);
+    onUnmounted(clearFilterAnchor);
     /**
      * 搜索词进 URL（2026-08-30 UX 审计 P2）：刷新或从别处返回时不至于白搜一次。
      *

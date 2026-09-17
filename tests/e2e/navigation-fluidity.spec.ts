@@ -75,6 +75,46 @@ test('explicitly revisiting a cached page restores its window scroll position', 
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThanOrEqual(saved - 2)
 })
 
+test('clearing a scene filter returns to the pre-filter scroll position', async ({ page }) => {
+  await page.goto('/scene-explorer')
+  const cards = page.locator('.scene-grid .stagger-item')
+  await expect(cards.first()).toBeVisible()
+  await page.evaluate(() => window.scrollTo(0, 700))
+  const saved = await page.evaluate(() => window.scrollY)
+  expect(saved).toBeGreaterThan(0)
+
+  // 筛到空结果：列表塌缩、文档变矮，浏览器会把滚动位置钳掉
+  await page.locator('#sceneSearch').fill('zzz-没有这种场景-zzz')
+  await expect(page.locator('.scene-grid')).toHaveCount(0)
+  expect(await page.evaluate(() => window.scrollY)).toBeLessThan(saved)
+
+  // 清空筛选：列表长回来，位置必须回到筛选前，而不是停在被钳掉的地方
+  await page.locator('#sceneSearch').fill('')
+  await expect(cards.first()).toBeVisible()
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThanOrEqual(saved - 2)
+})
+
+test('a deliberate scroll while filtered wins over the remembered position', async ({ page }) => {
+  await page.goto('/scene-explorer')
+  const cards = page.locator('.scene-grid .stagger-item')
+  await expect(cards.first()).toBeVisible()
+  await page.evaluate(() => window.scrollTo(0, 700))
+
+  // 筛到仍有结果的查询：列表变短但没塌空
+  await page.locator('#sceneSearch').fill('宁宁')
+  await expect(cards.first()).toBeVisible()
+  // 真实手势（滚轮）代表"用户自己接管了位置"，之后把位置钉在顶部便于断言
+  await page.mouse.wheel(0, 300)
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await page.waitForTimeout(400)
+
+  await page.locator('#sceneSearch').fill('')
+  await expect(cards.first()).toBeVisible()
+  await page.waitForTimeout(400)
+  // 用户动过位置就不该被拽回筛选前的 700
+  expect(await page.evaluate(() => window.scrollY)).toBeLessThan(200)
+})
+
 test('keep-alive workbench reuses the same active surface after a route round trip', async ({ page }) => {
   await page.goto('/prompt-builder')
   await expect(page.locator('.pb')).toBeVisible()
