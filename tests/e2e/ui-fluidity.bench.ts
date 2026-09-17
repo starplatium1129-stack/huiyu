@@ -264,6 +264,7 @@ async function runS03DecompositionProbe(browser: Browser) {
     probe: ReturnType<typeof summarizeFrameProbe>
     cdp: CdpMetricWindow | null
     layout?: { scrollY: number; documentHeight: number; cardCount: number }
+    glass?: { cardContentVisibility?: string | null }
   }
   const median = (values: number[]): number | null => {
     const clean = values.filter(value => Number.isFinite(value)).sort((a, b) => a - b)
@@ -287,7 +288,7 @@ async function runS03DecompositionProbe(browser: Browser) {
       dropRatio: round(median(samples.map(sample => sample.probe.over1_5xBudgetRatio ?? NaN))),
       p95FrameMs: round(median(samples.map(sample => sample.probe.intervalMs.p95 ?? NaN))),
       endScrollY: round(median(samples.map(sample => sample.layout?.scrollY ?? NaN))),
-      contentVisibility: samples[0]?.glass ? (samples[0].glass as { cardContentVisibility?: string | null }).cardContentVisibility ?? null : null,
+      contentVisibility: samples[0]?.glass?.cardContentVisibility ?? null,
     }
   })
   const med = (label: string) => summary.find(entry => entry.label === label) ?? null
