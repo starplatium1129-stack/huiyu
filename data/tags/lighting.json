@@ -294,6 +294,71 @@
       "cn": "破晓之光",
       "weight": 0.8,
       "related": []
+    },
+    {
+      "id": "tag_745",
+      "cat": "Lighting",
+      "en": "dappled_light",
+      "cn": "树影斑驳的光影",
+      "aliases": [
+        "斑驳树影",
+        "林间碎光",
+        "斑驳光影"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_746",
+      "cat": "Lighting",
+      "en": "neon_lights",
+      "cn": "潮湿雨夜霓虹幻彩",
+      "aliases": [
+        "霓虹辉光",
+        "赛博霓虹",
+        "霓虹彩灯"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_747",
+      "cat": "Lighting",
+      "en": "rim_lighting",
+      "cn": "唯美边缘发光轮廓光",
+      "aliases": [
+        "轮廓光",
+        "发丝光",
+        "边缘光"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_748",
+      "cat": "Lighting",
+      "en": "screen_glow",
+      "cn": "屏幕幽蓝冷光",
+      "aliases": [
+        "手机屏幕光",
+        "显示器荧光",
+        "荧屏光"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_749",
+      "cat": "Lighting",
+      "en": "firelight",
+      "cn": "摇曳的篝火暖光",
+      "aliases": [
+        "篝火",
+        "火光",
+        "壁炉火光"
+      ],
+      "weight": 0.8,
+      "related": []
     }
   ]
 }

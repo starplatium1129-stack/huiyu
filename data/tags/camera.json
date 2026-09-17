@@ -8,7 +8,12 @@
       "cat": "Camera",
       "en": "close-up, upper face",
       "cn": "近景",
-      "aliases": ["close-up", "closeup", "面部近景", "面部特写"],
+      "aliases": [
+        "close-up",
+        "closeup",
+        "面部近景",
+        "面部特写"
+      ],
       "weight": 0.85,
       "related": []
     },
@@ -17,7 +22,11 @@
       "cat": "Camera",
       "en": "medium shot, waist up",
       "cn": "中景",
-      "aliases": ["medium shot", "半身中景", "腰部以上"],
+      "aliases": [
+        "medium shot",
+        "半身中景",
+        "腰部以上"
+      ],
       "weight": 0.85,
       "related": []
     },
@@ -26,7 +35,12 @@
       "cat": "Camera",
       "en": "wide shot, full body",
       "cn": "远景",
-      "aliases": ["wide shot", "full body", "全身远景", "全身大景"],
+      "aliases": [
+        "wide shot",
+        "full body",
+        "全身远景",
+        "全身大景"
+      ],
       "weight": 0.85,
       "related": []
     },
@@ -35,7 +49,11 @@
       "cat": "Camera",
       "en": "extreme close-up",
       "cn": "特写",
-      "aliases": ["macro", "大特写", "微距特写"],
+      "aliases": [
+        "macro",
+        "大特写",
+        "微距特写"
+      ],
       "weight": 0.85,
       "related": []
     },
@@ -44,7 +62,11 @@
       "cat": "Camera",
       "en": "pov",
       "cn": "第一人称视角 (POV)",
-      "aliases": ["point of view", "第一人称", "主视角"],
+      "aliases": [
+        "point of view",
+        "第一人称",
+        "主视角"
+      ],
       "weight": 0.85,
       "related": []
     },
@@ -117,7 +139,13 @@
       "cat": "Camera",
       "en": "blurry foreground, depth of field",
       "cn": "前景虚化与景深",
-      "aliases": ["dof", "bokeh", "depth of field", "虚化", "景深"],
+      "aliases": [
+        "dof",
+        "bokeh",
+        "depth of field",
+        "虚化",
+        "景深"
+      ],
       "weight": 0.85,
       "related": []
     },
@@ -254,6 +282,96 @@
       "cat": "Camera",
       "en": "face_focus",
       "cn": "面部聚焦",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_750",
+      "cat": "Camera",
+      "en": "three_quarter_view",
+      "cn": "四分之三微侧视角",
+      "aliases": [
+        "3/4视角",
+        "微侧脸",
+        "侧身"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_751",
+      "cat": "Camera",
+      "en": "dutch_angle",
+      "cn": "倾斜动态角 (荷兰角)",
+      "aliases": [
+        "荷兰角",
+        "斜角构图",
+        "倾斜构图"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_752",
+      "cat": "Camera",
+      "en": "low_angle",
+      "cn": "气势低角度仰拍",
+      "aliases": [
+        "仰拍视角",
+        "仰角",
+        "仰视构图"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_753",
+      "cat": "Camera",
+      "en": "high_angle",
+      "cn": "俯瞰俯拍视角",
+      "aliases": [
+        "俯拍",
+        "自上而下",
+        "俯瞰视角"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_754",
+      "cat": "Camera",
+      "en": "macro_shot",
+      "cn": "极致细节微距特写",
+      "aliases": [
+        "微距",
+        "局部大特写"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_755",
+      "cat": "Camera",
+      "en": "back_view",
+      "cn": "唯美背影视角",
+      "aliases": [
+        "背影",
+        "后背视角",
+        "背向镜头"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_756",
+      "cat": "Camera",
+      "en": "cowboy_shot",
+      "cn": "七分身中景 (牛仔镜头)",
+      "aliases": [
+        "七分身",
+        "牛仔镜头",
+        "大腿以上"
+      ],
       "weight": 0.8,
       "related": []
     }

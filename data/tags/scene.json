@@ -726,6 +726,260 @@
       "cn": "安全屋",
       "weight": 0.8,
       "related": []
+    },
+    {
+      "id": "tag_724",
+      "cat": "Scene",
+      "en": "rooftop_fence",
+      "cn": "天台铁丝网",
+      "aliases": [
+        "天台铁网",
+        "屋顶铁丝网"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_725",
+      "cat": "Scene",
+      "en": "train_interior",
+      "cn": "电车车厢内景",
+      "aliases": [
+        "电车内",
+        "车厢内景"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_726",
+      "cat": "Scene",
+      "en": "train_platform",
+      "cn": "车站候车月台",
+      "aliases": [
+        "车站月台",
+        "候车月台"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_727",
+      "cat": "Scene",
+      "en": "vending_machine",
+      "cn": "自动贩卖机旁",
+      "aliases": [
+        "贩卖机",
+        "自动售货机"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_728",
+      "cat": "Scene",
+      "en": "shoe_lockers",
+      "cn": "校园鞋柜玄关",
+      "aliases": [
+        "鞋箱",
+        "置物柜"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_729",
+      "cat": "Scene",
+      "en": "art_studio",
+      "cn": "堆满画架的美术画室",
+      "aliases": [
+        "画室",
+        "美术教室"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_730",
+      "cat": "Scene",
+      "en": "infirmary",
+      "cn": "学校保健室 (医务室)",
+      "aliases": [
+        "医务室",
+        "病床",
+        "医务室病床"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_731",
+      "cat": "Scene",
+      "en": "library_aisle",
+      "cn": "幽静图书馆书架间",
+      "aliases": [
+        "书架之间",
+        "图书馆走道"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_732",
+      "cat": "Scene",
+      "en": "sea_wall",
+      "cn": "沿海防波堤",
+      "aliases": [
+        "防波堤",
+        "海滨堤坝",
+        "防浪堤"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_733",
+      "cat": "Scene",
+      "en": "sunflower_field",
+      "cn": "盛夏向日葵花田",
+      "aliases": [
+        "向日葵",
+        "向日葵花海"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_734",
+      "cat": "Scene",
+      "en": "shrine_stairs",
+      "cn": "神社长长石阶",
+      "aliases": [
+        "神社台阶",
+        "鸟居石阶"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_735",
+      "cat": "Scene",
+      "en": "phone_booth",
+      "cn": "雨中微光电话亭",
+      "aliases": [
+        "电话亭",
+        "公用电话"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_736",
+      "cat": "Scene",
+      "en": "festival_stall",
+      "cn": "夏日祭典小吃摊",
+      "aliases": [
+        "祭典摊位",
+        "庙会摊子"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_737",
+      "cat": "Scene",
+      "en": "snowy_bench",
+      "cn": "积雪的公园长椅",
+      "aliases": [
+        "雪中长椅",
+        "雪景公园"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_738",
+      "cat": "Scene",
+      "en": "flower_field",
+      "cn": "漫山遍野花海",
+      "aliases": [
+        "花田",
+        "烂漫花丛"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_739",
+      "cat": "Scene",
+      "en": "coastal_road",
+      "cn": "临海滨海公路",
+      "aliases": [
+        "沿海公路",
+        "海岸大道"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_740",
+      "cat": "Scene",
+      "en": "bridge",
+      "cn": "暮色夕阳长桥",
+      "aliases": [
+        "大桥",
+        "天桥"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_741",
+      "cat": "Scene",
+      "en": "kotatsu",
+      "cn": "日式温暖被炉",
+      "aliases": [
+        "暖桌",
+        "暖炉桌"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_742",
+      "cat": "Scene",
+      "en": "izakaya",
+      "cn": "居酒屋温馨暖帘",
+      "aliases": [
+        "居酒屋包厢",
+        "小酒馆"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_743",
+      "cat": "Scene",
+      "en": "steamy_bathroom",
+      "cn": "水汽弥漫的浴室",
+      "aliases": [
+        "蒸汽浴室",
+        "淋浴间"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_744",
+      "cat": "Scene",
+      "en": "hotel_balcony",
+      "cn": "度假酒店微风阳台",
+      "aliases": [
+        "酒店阳台",
+        "海景阳台"
+      ],
+      "weight": 0.8,
+      "related": []
     }
   ]
 }

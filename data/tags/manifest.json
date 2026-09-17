@@ -18,7 +18,7 @@
       "file": "action.json",
       "category": "Action",
       "label": "动作",
-      "count": 63
+      "count": 87
     },
     {
       "file": "emotion.json",
@@ -30,13 +30,13 @@
       "file": "scene.json",
       "category": "Scene",
       "label": "场景",
-      "count": 90
+      "count": 111
     },
     {
       "file": "lighting.json",
       "category": "Lighting",
       "label": "光照",
-      "count": 36
+      "count": 41
     },
     {
       "file": "appearance.json",
@@ -48,7 +48,7 @@
       "file": "camera.json",
       "category": "Camera",
       "label": "镜头",
-      "count": 31
+      "count": 38
     },
     {
       "file": "style.json",

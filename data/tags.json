@@ -2027,6 +2027,320 @@
     "related": []
   },
   {
+    "id": "tag_700",
+    "cat": "Action",
+    "en": "wariza",
+    "cn": "鸭子坐 (W坐)",
+    "aliases": [
+      "w sitting",
+      "萝莉坐",
+      "鸭子坐"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_701",
+    "cat": "Action",
+    "en": "hug_knees",
+    "cn": "抱膝蜷坐",
+    "aliases": [
+      "fetal position",
+      "抱膝",
+      "抱住双膝"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_702",
+    "cat": "Action",
+    "en": "chin_rest",
+    "cn": "手托下巴 (托腮)",
+    "aliases": [
+      "head rest",
+      "托腮",
+      "手托腮",
+      "发呆托腮"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_703",
+    "cat": "Action",
+    "en": "hands_on_hips",
+    "cn": "双手叉腰",
+    "aliases": [
+      "叉腰",
+      "双手叉腰",
+      "傲娇叉腰"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_704",
+    "cat": "Action",
+    "en": "hands_behind_back",
+    "cn": "双手背在身后",
+    "aliases": [
+      "背手",
+      "双手背手",
+      "背手前倾"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_705",
+    "cat": "Action",
+    "en": "hair_tuck",
+    "cn": "指尖挽发撩发",
+    "aliases": [
+      "撩头发",
+      "挽头发",
+      "撩发",
+      "整理发丝"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_706",
+    "cat": "Action",
+    "en": "all_fours",
+    "cn": "四足伏地 (猫爬)",
+    "aliases": [
+      "crawling",
+      "爬行",
+      "猫爬",
+      "四足着地"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_707",
+    "cat": "Action",
+    "en": "headpat",
+    "cn": "摸头杀 (被摸头)",
+    "aliases": [
+      "摸头",
+      "抚摸头发",
+      "摸摸头"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_708",
+    "cat": "Action",
+    "en": "hugging_from_behind",
+    "cn": "从背后环抱",
+    "aliases": [
+      "背后抱",
+      "背后相拥",
+      "背后抱住"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_709",
+    "cat": "Action",
+    "en": "grabbing_wrist",
+    "cn": "抓紧手腕",
+    "aliases": [
+      "抓手腕",
+      "拉住手腕",
+      "扣紧手腕"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_710",
+    "cat": "Action",
+    "en": "whispering",
+    "cn": "附耳细语",
+    "aliases": [
+      "耳语",
+      "咬耳朵",
+      "贴面轻语"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_711",
+    "cat": "Action",
+    "en": "poking_cheek",
+    "cn": "指尖戳脸颊",
+    "aliases": [
+      "戳脸",
+      "轻戳脸颊",
+      "捏脸"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_712",
+    "cat": "Action",
+    "en": "carrying_bridal_style",
+    "cn": "公主抱",
+    "aliases": [
+      "公主抱",
+      "打横抱起"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_713",
+    "cat": "Action",
+    "en": "leaning_on_shoulder",
+    "cn": "依偎靠在肩上",
+    "aliases": [
+      "靠肩",
+      "头靠肩膀",
+      "依偎靠肩"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_714",
+    "cat": "Action",
+    "en": "arm_in_arm",
+    "cn": "亲密挽着手臂",
+    "aliases": [
+      "挽手臂",
+      "挽手",
+      "手挽手"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_715",
+    "cat": "Action",
+    "en": "adjusting_glasses",
+    "cn": "单手推眼镜",
+    "aliases": [
+      "推眼镜",
+      "扶眼镜",
+      "扶镜框"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_716",
+    "cat": "Action",
+    "en": "waving",
+    "cn": "轻轻挥手打招呼",
+    "aliases": [
+      "挥手",
+      "招手",
+      "挥手告别"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_717",
+    "cat": "Action",
+    "en": "curled_up",
+    "cn": "侧卧蜷缩成一团",
+    "aliases": [
+      "蜷缩",
+      "蜷成一团",
+      "蜷曲入睡"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_718",
+    "cat": "Action",
+    "en": "crossed_legs",
+    "cn": "优雅翘二郎腿",
+    "aliases": [
+      "翘腿",
+      "跷二郎腿",
+      "双腿交叠"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_719",
+    "cat": "Action",
+    "en": "looking_down",
+    "cn": "低头垂眸",
+    "aliases": [
+      "低头",
+      "俯视地面",
+      "垂首"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_720",
+    "cat": "Action",
+    "en": "hand_on_chest",
+    "cn": "手抚心口",
+    "aliases": [
+      "抚胸",
+      "按住胸口",
+      "手放胸前"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_721",
+    "cat": "Action",
+    "en": "tiptoe_kiss",
+    "cn": "踮起脚尖吻",
+    "aliases": [
+      "踮脚吻",
+      "轻吻",
+      "踮脚亲吻"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_722",
+    "cat": "Action",
+    "en": "hair_flip",
+    "cn": "甩头发丝飞舞",
+    "aliases": [
+      "甩头发",
+      "发丝飞舞",
+      "发丝扬起"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_723",
+    "cat": "Action",
+    "en": "toast_in_mouth",
+    "cn": "嘴叼吐司面包奔跑",
+    "aliases": [
+      "咬吐司",
+      "叼面包",
+      "咬面包"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
     "id": "tag_037",
     "cat": "Emotion",
     "en": "smile",
@@ -3255,6 +3569,260 @@
     "related": []
   },
   {
+    "id": "tag_724",
+    "cat": "Scene",
+    "en": "rooftop_fence",
+    "cn": "天台铁丝网",
+    "aliases": [
+      "天台铁网",
+      "屋顶铁丝网"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_725",
+    "cat": "Scene",
+    "en": "train_interior",
+    "cn": "电车车厢内景",
+    "aliases": [
+      "电车内",
+      "车厢内景"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_726",
+    "cat": "Scene",
+    "en": "train_platform",
+    "cn": "车站候车月台",
+    "aliases": [
+      "车站月台",
+      "候车月台"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_727",
+    "cat": "Scene",
+    "en": "vending_machine",
+    "cn": "自动贩卖机旁",
+    "aliases": [
+      "贩卖机",
+      "自动售货机"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_728",
+    "cat": "Scene",
+    "en": "shoe_lockers",
+    "cn": "校园鞋柜玄关",
+    "aliases": [
+      "鞋箱",
+      "置物柜"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_729",
+    "cat": "Scene",
+    "en": "art_studio",
+    "cn": "堆满画架的美术画室",
+    "aliases": [
+      "画室",
+      "美术教室"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_730",
+    "cat": "Scene",
+    "en": "infirmary",
+    "cn": "学校保健室 (医务室)",
+    "aliases": [
+      "医务室",
+      "病床",
+      "医务室病床"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_731",
+    "cat": "Scene",
+    "en": "library_aisle",
+    "cn": "幽静图书馆书架间",
+    "aliases": [
+      "书架之间",
+      "图书馆走道"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_732",
+    "cat": "Scene",
+    "en": "sea_wall",
+    "cn": "沿海防波堤",
+    "aliases": [
+      "防波堤",
+      "海滨堤坝",
+      "防浪堤"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_733",
+    "cat": "Scene",
+    "en": "sunflower_field",
+    "cn": "盛夏向日葵花田",
+    "aliases": [
+      "向日葵",
+      "向日葵花海"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_734",
+    "cat": "Scene",
+    "en": "shrine_stairs",
+    "cn": "神社长长石阶",
+    "aliases": [
+      "神社台阶",
+      "鸟居石阶"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_735",
+    "cat": "Scene",
+    "en": "phone_booth",
+    "cn": "雨中微光电话亭",
+    "aliases": [
+      "电话亭",
+      "公用电话"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_736",
+    "cat": "Scene",
+    "en": "festival_stall",
+    "cn": "夏日祭典小吃摊",
+    "aliases": [
+      "祭典摊位",
+      "庙会摊子"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_737",
+    "cat": "Scene",
+    "en": "snowy_bench",
+    "cn": "积雪的公园长椅",
+    "aliases": [
+      "雪中长椅",
+      "雪景公园"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_738",
+    "cat": "Scene",
+    "en": "flower_field",
+    "cn": "漫山遍野花海",
+    "aliases": [
+      "花田",
+      "烂漫花丛"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_739",
+    "cat": "Scene",
+    "en": "coastal_road",
+    "cn": "临海滨海公路",
+    "aliases": [
+      "沿海公路",
+      "海岸大道"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_740",
+    "cat": "Scene",
+    "en": "bridge",
+    "cn": "暮色夕阳长桥",
+    "aliases": [
+      "大桥",
+      "天桥"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_741",
+    "cat": "Scene",
+    "en": "kotatsu",
+    "cn": "日式温暖被炉",
+    "aliases": [
+      "暖桌",
+      "暖炉桌"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_742",
+    "cat": "Scene",
+    "en": "izakaya",
+    "cn": "居酒屋温馨暖帘",
+    "aliases": [
+      "居酒屋包厢",
+      "小酒馆"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_743",
+    "cat": "Scene",
+    "en": "steamy_bathroom",
+    "cn": "水汽弥漫的浴室",
+    "aliases": [
+      "蒸汽浴室",
+      "淋浴间"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_744",
+    "cat": "Scene",
+    "en": "hotel_balcony",
+    "cn": "度假酒店微风阳台",
+    "aliases": [
+      "酒店阳台",
+      "海景阳台"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
     "id": "tag_064",
     "cat": "Lighting",
     "en": "golden_hour",
@@ -3543,6 +4111,71 @@
     "cat": "Lighting",
     "en": "dawn",
     "cn": "破晓之光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_745",
+    "cat": "Lighting",
+    "en": "dappled_light",
+    "cn": "树影斑驳的光影",
+    "aliases": [
+      "斑驳树影",
+      "林间碎光",
+      "斑驳光影"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_746",
+    "cat": "Lighting",
+    "en": "neon_lights",
+    "cn": "潮湿雨夜霓虹幻彩",
+    "aliases": [
+      "霓虹辉光",
+      "赛博霓虹",
+      "霓虹彩灯"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_747",
+    "cat": "Lighting",
+    "en": "rim_lighting",
+    "cn": "唯美边缘发光轮廓光",
+    "aliases": [
+      "轮廓光",
+      "发丝光",
+      "边缘光"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_748",
+    "cat": "Lighting",
+    "en": "screen_glow",
+    "cn": "屏幕幽蓝冷光",
+    "aliases": [
+      "手机屏幕光",
+      "显示器荧光",
+      "荧屏光"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_749",
+    "cat": "Lighting",
+    "en": "firelight",
+    "cn": "摇曳的篝火暖光",
+    "aliases": [
+      "篝火",
+      "火光",
+      "壁炉火光"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -4065,6 +4698,96 @@
     "cat": "Camera",
     "en": "face_focus",
     "cn": "面部聚焦",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_750",
+    "cat": "Camera",
+    "en": "three_quarter_view",
+    "cn": "四分之三微侧视角",
+    "aliases": [
+      "3/4视角",
+      "微侧脸",
+      "侧身"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_751",
+    "cat": "Camera",
+    "en": "dutch_angle",
+    "cn": "倾斜动态角 (荷兰角)",
+    "aliases": [
+      "荷兰角",
+      "斜角构图",
+      "倾斜构图"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_752",
+    "cat": "Camera",
+    "en": "low_angle",
+    "cn": "气势低角度仰拍",
+    "aliases": [
+      "仰拍视角",
+      "仰角",
+      "仰视构图"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_753",
+    "cat": "Camera",
+    "en": "high_angle",
+    "cn": "俯瞰俯拍视角",
+    "aliases": [
+      "俯拍",
+      "自上而下",
+      "俯瞰视角"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_754",
+    "cat": "Camera",
+    "en": "macro_shot",
+    "cn": "极致细节微距特写",
+    "aliases": [
+      "微距",
+      "局部大特写"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_755",
+    "cat": "Camera",
+    "en": "back_view",
+    "cn": "唯美背影视角",
+    "aliases": [
+      "背影",
+      "后背视角",
+      "背向镜头"
+    ],
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_756",
+    "cat": "Camera",
+    "en": "cowboy_shot",
+    "cn": "七分身中景 (牛仔镜头)",
+    "aliases": [
+      "七分身",
+      "牛仔镜头",
+      "大腿以上"
+    ],
     "weight": 0.8,
     "related": []
   },

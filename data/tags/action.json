@@ -508,6 +508,320 @@
       "cn": "倚靠着",
       "weight": 0.8,
       "related": []
+    },
+    {
+      "id": "tag_700",
+      "cat": "Action",
+      "en": "wariza",
+      "cn": "鸭子坐 (W坐)",
+      "aliases": [
+        "w sitting",
+        "萝莉坐",
+        "鸭子坐"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_701",
+      "cat": "Action",
+      "en": "hug_knees",
+      "cn": "抱膝蜷坐",
+      "aliases": [
+        "fetal position",
+        "抱膝",
+        "抱住双膝"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_702",
+      "cat": "Action",
+      "en": "chin_rest",
+      "cn": "手托下巴 (托腮)",
+      "aliases": [
+        "head rest",
+        "托腮",
+        "手托腮",
+        "发呆托腮"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_703",
+      "cat": "Action",
+      "en": "hands_on_hips",
+      "cn": "双手叉腰",
+      "aliases": [
+        "叉腰",
+        "双手叉腰",
+        "傲娇叉腰"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_704",
+      "cat": "Action",
+      "en": "hands_behind_back",
+      "cn": "双手背在身后",
+      "aliases": [
+        "背手",
+        "双手背手",
+        "背手前倾"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_705",
+      "cat": "Action",
+      "en": "hair_tuck",
+      "cn": "指尖挽发撩发",
+      "aliases": [
+        "撩头发",
+        "挽头发",
+        "撩发",
+        "整理发丝"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_706",
+      "cat": "Action",
+      "en": "all_fours",
+      "cn": "四足伏地 (猫爬)",
+      "aliases": [
+        "crawling",
+        "爬行",
+        "猫爬",
+        "四足着地"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_707",
+      "cat": "Action",
+      "en": "headpat",
+      "cn": "摸头杀 (被摸头)",
+      "aliases": [
+        "摸头",
+        "抚摸头发",
+        "摸摸头"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_708",
+      "cat": "Action",
+      "en": "hugging_from_behind",
+      "cn": "从背后环抱",
+      "aliases": [
+        "背后抱",
+        "背后相拥",
+        "背后抱住"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_709",
+      "cat": "Action",
+      "en": "grabbing_wrist",
+      "cn": "抓紧手腕",
+      "aliases": [
+        "抓手腕",
+        "拉住手腕",
+        "扣紧手腕"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_710",
+      "cat": "Action",
+      "en": "whispering",
+      "cn": "附耳细语",
+      "aliases": [
+        "耳语",
+        "咬耳朵",
+        "贴面轻语"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_711",
+      "cat": "Action",
+      "en": "poking_cheek",
+      "cn": "指尖戳脸颊",
+      "aliases": [
+        "戳脸",
+        "轻戳脸颊",
+        "捏脸"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_712",
+      "cat": "Action",
+      "en": "carrying_bridal_style",
+      "cn": "公主抱",
+      "aliases": [
+        "公主抱",
+        "打横抱起"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_713",
+      "cat": "Action",
+      "en": "leaning_on_shoulder",
+      "cn": "依偎靠在肩上",
+      "aliases": [
+        "靠肩",
+        "头靠肩膀",
+        "依偎靠肩"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_714",
+      "cat": "Action",
+      "en": "arm_in_arm",
+      "cn": "亲密挽着手臂",
+      "aliases": [
+        "挽手臂",
+        "挽手",
+        "手挽手"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_715",
+      "cat": "Action",
+      "en": "adjusting_glasses",
+      "cn": "单手推眼镜",
+      "aliases": [
+        "推眼镜",
+        "扶眼镜",
+        "扶镜框"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_716",
+      "cat": "Action",
+      "en": "waving",
+      "cn": "轻轻挥手打招呼",
+      "aliases": [
+        "挥手",
+        "招手",
+        "挥手告别"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_717",
+      "cat": "Action",
+      "en": "curled_up",
+      "cn": "侧卧蜷缩成一团",
+      "aliases": [
+        "蜷缩",
+        "蜷成一团",
+        "蜷曲入睡"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_718",
+      "cat": "Action",
+      "en": "crossed_legs",
+      "cn": "优雅翘二郎腿",
+      "aliases": [
+        "翘腿",
+        "跷二郎腿",
+        "双腿交叠"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_719",
+      "cat": "Action",
+      "en": "looking_down",
+      "cn": "低头垂眸",
+      "aliases": [
+        "低头",
+        "俯视地面",
+        "垂首"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_720",
+      "cat": "Action",
+      "en": "hand_on_chest",
+      "cn": "手抚心口",
+      "aliases": [
+        "抚胸",
+        "按住胸口",
+        "手放胸前"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_721",
+      "cat": "Action",
+      "en": "tiptoe_kiss",
+      "cn": "踮起脚尖吻",
+      "aliases": [
+        "踮脚吻",
+        "轻吻",
+        "踮脚亲吻"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_722",
+      "cat": "Action",
+      "en": "hair_flip",
+      "cn": "甩头发丝飞舞",
+      "aliases": [
+        "甩头发",
+        "发丝飞舞",
+        "发丝扬起"
+      ],
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_723",
+      "cat": "Action",
+      "en": "toast_in_mouth",
+      "cn": "嘴叼吐司面包奔跑",
+      "aliases": [
+        "咬吐司",
+        "叼面包",
+        "咬面包"
+      ],
+      "weight": 0.8,
+      "related": []
     }
   ]
 }

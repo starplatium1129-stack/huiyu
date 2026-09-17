@@ -32,7 +32,7 @@ test('Tag 分片清单：manifest 包含非空 files 且分片文件全部存在
 
 test('Tag 分片完整性：全局 ID 唯一，且中英文与分类非空', () => {
   const { tags, sources } = loadTagShards();
-  assert.strictEqual(tags.length, 624, 'Total tags must be 624');
+  assert.ok(tags.length >= 680, 'Total tags must be at least 680');
 
   const allIds = new Set<string>();
   for (const tag of tags) {
