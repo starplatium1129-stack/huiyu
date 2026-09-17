@@ -19,13 +19,13 @@
         <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
       </span>
       <p v-if="!pb.manualTags.size" class="manual-tags-empty-hint">
-        暂未激活微调词条。可在下方按分类点选预设、选择官方服装包，或直接搜索/输入 Danbooru 标签回车添加。
+        暂未激活自选词条。可在下方点选预设战袍、装配专属服装包，或搜索与批量输入标签添加。
       </p>
     </div>
     <!-- 全角色通用·特典衣橱预设（无论工作室角色还是热门角色均可一键套用） -->
     <div class="outfit-presets universal-wardrobe-section" aria-label="全角色通用·特典衣橱">
       <div class="outfit-presets-head">
-        <strong>👗 全角色通用 · 特典战袍衣橱</strong>
+        <strong><ArchiveIcon name="wardrobe" /> 全角色通用 · 特典战袍衣橱</strong>
         <span>一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</span>
       </div>
       <div class="outfit-preset-list universal-preset-list">
@@ -41,10 +41,10 @@
       </div>
     </div>
 
-    <div v-if="!pb.isPopular" class="outfit-presets" aria-label="官方服装词包">
+    <div v-if="!pb.isPopular" class="outfit-presets" aria-label="专属角色服装词包">
       <div class="outfit-presets-head">
-        <strong>看板娘专属服装词包</strong>
-        <span>宁宁 / 夏目训练原词，一键快速装配</span>
+        <strong>专属角色服装词包</strong>
+        <span>宁宁 / 夏目官方训练词条，一键装配</span>
       </div>
       <div class="outfit-preset-list">
         <button v-for="bundle in visibleOutfitBundles" :key="bundle.id"
@@ -75,7 +75,7 @@
     </div>
     <p v-else class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
     <div class="tag-browser">
-      <input v-model="tagSearch" class="tag-input" type="search" placeholder="搜索中文或 Danbooru 词条" />
+      <input v-model="tagSearch" class="tag-input" type="search" placeholder="搜索中文含义或 Danbooru 英文标签…" />
       <div class="tag-categories" role="group" aria-label="词条分类">
         <button v-for="cat in tagCategories" :key="cat.id" type="button"
           :class="{ active: tagCategory === cat.id }"
@@ -97,10 +97,10 @@
         在下方输入框手输（那条路径不经过这里的截断）。
       -->
       <p v-if="hiddenTagCount" class="tag-more-hint">
-        还有 {{ hiddenTagCount }} 个匹配词条没显示，继续输入关键词收窄，或在下方直接输入标签回车添加
+        还有 {{ hiddenTagCount }} 个匹配词条未展示，可输入更具体的关键词收窄，或在下方直接粘贴添加
       </p>
     </div>
-    <input class="tag-input" type="text" placeholder="也可以直接输入 Danbooru 标签后回车"
+    <input class="tag-input" type="text" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
       @keydown.enter.prevent="addTag($event)" />
   </div>
 </template>
@@ -143,9 +143,9 @@ async function clearTags() {
   const count = pb.manualTags.size
   if (!count) return
   const ok = await confirmAction({
-    title: `清空这 ${count} 个词条？`,
-    message: '手工添加与本地反推得来的词条会一起清掉，且无法撤销。',
-    confirmLabel: '清空',
+    title: `清空已激活的 ${count} 个词条？`,
+    message: '将移除当前全部自选词条与反推标签，此操作无法撤销。',
+    confirmLabel: '清空词条',
     danger: true,
   })
   if (!ok) return
@@ -221,7 +221,7 @@ async function onInterrogateFile(e: Event) {
     const parts: string[] = []
     if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条${result.model ? '（' + result.model + '）' : ''}`)
     if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
-    if (merged.filtered.length) parts.push(`已自动过滤马赛克/打码词条 ${merged.filtered.length} 个`)
+    if (merged.filtered.length) parts.push(`已自动过滤打码与审核标签 ${merged.filtered.length} 个`)
     if (merged.outfitReplacement.length) {
       const from = merged.replacedOutfitGroup ? `（原${merged.replacedOutfitGroup}）` : ''
       parts.push(`已用参考图服装顶替角色默认服装${from}：${merged.outfitReplacement.slice(0, 3).join('、')}`)
