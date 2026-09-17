@@ -215,7 +215,16 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 - 修复 1（本批引入的体验回归）：F2 的 `.sample-visual { aspect-ratio: var(--sample-ratio, 3 / 4) }` 在缺少尺寸数据时会强行锁 3:4。实测生产 `manifest.json`（2026-09-02_v27-miaomiao，1566 条）**不含任何 `width/height`**，该集合 2285 张缩略图中 84% 为 0.684（438×640）、9% 为 1.46 横构图、仅 5% 是真 3:4，因此绝大多数卡片会出现衬底色留白边；`test-showcase.js` 的“保持每张图原始比例”契约同时失败，且 F0 夹具（同样不含尺寸）的 S03/S04 基线几何会失去可比性。现改为只有 manifest 明确给出尺寸时才加 `sample-visual-measured` 锁比例框，缺失时退回原图自然高度；并补一条 `desktop-ux.spec.ts` 断言覆盖“未声明尺寸不得凭空锁比例”。
 - 修复 2（本批引入的门禁硬错误）：`src/router/index.ts` 的 `prefetchRouteResources` 只导入未使用（`lint:js` error，重导出由独立 `export ... from` 承担）；`tests/e2e/helpers/ui-fluidity-fixture.ts` 直接使用 `window.__AICS_UI_FLUIDITY__` 但未引入应用侧全局声明（`tsconfig.json` 覆盖 `tests/e2e/**`，`npm run typecheck` 报 TS2339，现按同目录 helper 的既有写法做局部收窄）。
 - 未通过（HEAD 既有，非本批）：`scripts/tests/test-api-client.js:374` 期望 `removeCount === 1` 实得 2（`src/api/client.ts` 未被本批改动）；`scripts/tests/test-prompt-compiler.js:77` 期望画师目录 52 位、实得 53 位，来自 `5e0c796`（接入画师 hidulume）未同步该断言与注释。两者在 `main@5e0c796` 上即失败，是否修复由各自批次的负责人决定。
-- 未执行：F0 的 S06–S08、性能基准 3×20 复跑与真实设备负载均未在本轮重跑；本地 1×2 降采样冒烟只用于确认 `intent → shell-ready → primary-ready → settled` 与 `cancelled` 事件链路仍然成立，不作为性能结论。
+- 未执行：F0 的 S06–S08、真实设备负载均未在本轮重跑。
+
+**F0 掉帧判据校准与 S03 重测（2026-09-17，F3 起步）：**
+
+- 问题：`summarizeFrameProbe` 用硬编码的 1.5×16.7ms=25.05ms 判掉帧，与 §4.2「掉帧候选阈值可用静止前台的有效间隔 T 校准」不符。实测本机 T=8.3ms（前台 120Hz），且 F0 原始报告自带的帧间隔 p50 就是 8.4ms —— 采集当时已是 120Hz 前台，该判据自始错配：120Hz 上 16.7ms 已是一次丢帧，却通不过 25.05ms 阈值，S03 因此被低估。
+- 处理：新增 `measureIdleFrameInterval`，在每轮 S03 采样前实测静止间隔 T，判据改为「rAF 间隔 > 1.5T」；报告同时保留 60Hz 参照值，并新增 `runner.display`（实测 T 与反推刷新率）供后续核对。旧判据报告存档为 `runtime/ui-fluidity-f0/ui-fluidity-f0-legacy-60hz-criterion.*`，未删除、未改写。
+- S03 重测（`170cba1`，3×20，120Hz 前台，固定夹具）：60/60 窗口超过 1% 目标；校准候选比例 p50 7.46%、p95 10.17%、max 10.61%（同一批样本的 60Hz 参照为 39/60、p50 1.54%）。帧间隔 p95 中位 16.7ms（120Hz 下一次丢帧）、p95 25.0ms（三次）；`longtask` 计数为 0 —— 该热点不是单次 >50ms 的主线程阻塞，而是每帧更新/渲染开销超出 8.3ms 预算，指向 F3.2 的更新范围与 F3.3 的列表成本。
+- S04 未复现 F2 的 0/60：同一批 60 个样本中 13 次关闭预览后滚动误差 >2 CSS px（众数 67px，最大 211px）。F0 旧报告在「原图自然高度」几何下为 17/60（最大 68px），而 F2 记录的 0/60 是在强锁 3:4 的几何下取得 —— 差异取决于卡片高度是否由图片解码决定，不是本轮修复引入的新回归；S04 仍留给 F3/F4。
+- 导航趋势（同批，工作树含未提交测量改动，只作趋势）：S01 首页→场景库 intent→primary p95 258.4ms、S01 场景库→导演台 69.2ms、S02 导演台→作品册 59.1ms、S02 作品册→导演台 42.4ms。
+- 未执行：本批只改测量口径，未动任何产品渲染路径；F3.2 起才按证据改列表与更新范围。
 
 ### F3 · 滚动与主线程减负
 

@@ -134,13 +134,47 @@ export async function stopFrameProbe(page: Page): Promise<{ frames: number[]; lo
   })
 }
 
-export function summarizeFrameProbe(probe: { frames: number[]; longTasks: number[]; longTaskSupported: boolean } | null) {
+/**
+ * 静止前台的 rAF 有效间隔 T（同一页面、同一显示刷新率、无交互）。
+ * 计划 009 §4.2 要求掉帧判据按 1.5T 校准：60Hz 的 16.7ms 在 120Hz 前台会凭空
+ * 制造候选，所以任何掉帧结论都必须带这一条校准依据。
+ */
+export async function measureIdleFrameInterval(page: Page, sampleMs = 600): Promise<number | null> {
+  return page.evaluate(async duration => {
+    const intervals: number[] = []
+    let last = performance.now()
+    const deadline = last + duration
+    await new Promise<void>(resolve => {
+      const tick = (now: number) => {
+        intervals.push(now - last)
+        last = now
+        if (now >= deadline) resolve()
+        else requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    })
+    if (intervals.length < 5) return null
+    const sorted = [...intervals].sort((a, b) => a - b)
+    return sorted[Math.floor(sorted.length / 2)]
+  }, sampleMs)
+}
+
+export function summarizeFrameProbe(
+  probe: { frames: number[]; longTasks: number[]; longTaskSupported: boolean } | null,
+  idleIntervalMs: number | null = null,
+) {
   const frames = probe?.frames ?? []
   const sorted = [...frames].sort((a, b) => a - b)
   const percentile = (p: number) => sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))] : null
+  const budget = idleIntervalMs && idleIntervalMs > 0 ? idleIntervalMs : null
   return {
     sampleCount: frames.length,
     intervalMs: { p50: percentile(.5), p95: percentile(.95), max: sorted.at(-1) ?? null },
+    frameBudgetMs: budget,
+    refreshRateHz: budget ? Math.round(1000 / budget) : null,
+    // 校准判据：超过 1.5T 才是掉帧候选；T 不可用时留 null，不退回硬编码 60Hz 下结论
+    over1_5xBudgetRatio: budget && frames.length ? frames.filter(frame => frame > budget * 1.5).length / frames.length : null,
+    // 保留 F0 原始 60Hz 参照，便于与既有报告逐项对照，不作为当前判据
     over1_5x16_7Ratio: frames.length ? frames.filter(frame => frame > 25.05).length / frames.length : null,
     longTasks: probe?.longTasks ?? [],
     longTaskSupported: probe?.longTaskSupported ?? false,

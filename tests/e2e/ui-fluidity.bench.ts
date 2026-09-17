@@ -4,6 +4,7 @@ import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs'
 import { installUiFluidityFixture, setUiFluidityMeasurement, UI_FLUIDITY_FIXTURE } from './helpers/ui-fluidity-fixture'
 import {
   clickNavPath,
+  measureIdleFrameInterval,
   measureSpaNavigation,
   startFrameProbe,
   stopFrameProbe,
@@ -64,6 +65,8 @@ async function runS02(page: Page): Promise<{ navigation: NavigationMeasurement[]
 
 async function runS03(page: Page) {
   await enter(page, '/scene-explorer')
+  // 先取静止前台的有效间隔 T，掉帧判据按 1.5T 校准，避免 60Hz 阈值套在 120Hz 前台上
+  const idleIntervalMs = await measureIdleFrameInterval(page)
   await startFrameProbe(page)
   await page.mouse.wheel(0, 2600)
   await page.locator('#sceneSearch').fill('F0 固定场景 2')
@@ -71,14 +74,14 @@ async function runS03(page: Page) {
   await page.waitForTimeout(220)
   await page.locator('#sceneSearch').fill('')
   await page.waitForTimeout(220)
-  const probe = summarizeFrameProbe(await stopFrameProbe(page))
+  const probe = summarizeFrameProbe(await stopFrameProbe(page), idleIntervalMs)
   const state = await page.evaluate(() => ({
     scrollY: window.scrollY,
     documentHeight: document.documentElement.scrollHeight,
     cardCount: document.querySelectorAll('[data-scene-id]').length,
     inputValue: (document.querySelector('#sceneSearch') as HTMLInputElement | null)?.value || '',
   }))
-  return { ...state, probe }
+  return { ...state, idleIntervalMs, probe }
 }
 
 async function runS04(page: Page) {
@@ -175,6 +178,14 @@ function percentile(values: number[], p: number): number | null {
   return sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))]
 }
 
+/** 每轮采样实测的静止前台有效间隔 T 的中位数；显示刷新率由此反推，不猜。 */
+function medianIdleInterval(scroll: Array<{ idleIntervalMs?: number | null }>): number | null {
+  const values = scroll.map(sample => sample.idleIntervalMs).filter((value): value is number => typeof value === 'number' && value > 0)
+  if (!values.length) return null
+  const sorted = values.slice().sort((a, b) => a - b)
+  return sorted[Math.floor(sorted.length / 2)]
+}
+
 function summarizeNavigation(samples: NavigationMeasurement[]) {
   const groups = new Map<string, NavigationMeasurement[]>()
   for (const sample of samples) groups.set(sample.label, [...(groups.get(sample.label) || []), sample])
@@ -216,22 +227,39 @@ function buildIssueList(
       })
     }
   }
-  const scrollCandidates = scroll.filter(sample => (sample.probe.over1_5x16_7Ratio ?? 0) > .01)
+  // 判据优先用实测 T 校准；只有 T 缺失时才退回 F0 的 60Hz 参照，并在证据里标明来源
+  const scrollRatio = (sample: { probe: ReturnType<typeof summarizeFrameProbe> }) => sample.probe.frameBudgetMs
+    ? sample.probe.over1_5xBudgetRatio
+    : sample.probe.over1_5x16_7Ratio
+  const scrollCandidates = scroll.filter(sample => (scrollRatio(sample) ?? 0) > .01)
   if (scrollCandidates.length) {
-    const ratios = scrollCandidates.map(sample => sample.probe.over1_5x16_7Ratio!).sort((a, b) => a - b)
+    const ratios = scrollCandidates.map(sample => scrollRatio(sample)!).sort((a, b) => a - b)
+    const legacyRatios = scrollCandidates.map(sample => sample.probe.over1_5x16_7Ratio ?? 0).sort((a, b) => a - b)
+    const budgets = scroll.map(sample => sample.probe.frameBudgetMs).filter((value): value is number => value !== null)
     const frameP95 = scrollCandidates.map(sample => sample.probe.intervalMs.p95).filter((value): value is number => value !== null)
     issues.push({
       status: 'investigate',
       scenario: 'S03',
-      symptom: '滚动窗口存在超过 1.5× 60Hz 间隔的帧样本',
+      symptom: '滚动窗口存在超过 1.5× 实测静止间隔 T 的掉帧候选',
       evidence: {
         totalSamples: scroll.length,
         candidateSamples: scrollCandidates.length,
         candidateRate: scrollCandidates.length / scroll.length,
-        over1_5x16_7Ratio: {
+        criterion: 'rAF interval > 1.5 × measured idle foreground interval T',
+        calibratedSamples: budgets.length,
+        frameBudgetMs: budgets.length
+          ? { p50: percentile(budgets, .5), min: Math.min(...budgets), max: Math.max(...budgets) }
+          : null,
+        refreshRateHz: budgets.length ? Math.round(1000 / (percentile(budgets, .5) as number)) : null,
+        over1_5xBudgetRatio: {
           p50: ratios[Math.floor(ratios.length * .5)],
           p95: ratios[Math.min(ratios.length - 1, Math.floor(ratios.length * .95))],
           max: ratios.at(-1),
+        },
+        legacyOver1_5x16_7Ratio: {
+          p50: legacyRatios[Math.floor(legacyRatios.length * .5)],
+          p95: legacyRatios[Math.min(legacyRatios.length - 1, Math.floor(legacyRatios.length * .95))],
+          max: legacyRatios.at(-1),
         },
         frameIntervalP95Ms: {
           p50: percentile(frameP95, .5),
@@ -393,6 +421,13 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
       viewport: VIEWPORT,
       deviceScaleFactor: 1,
       motion: 'no-preference',
+      // 刷新率与帧预算来自实测静止间隔，未知时为 null，不假设 60Hz
+      display: {
+        measuredIdleIntervalMs: medianIdleInterval(scroll as Array<{ idleIntervalMs?: number | null }>),
+        refreshRateHz: medianIdleInterval(scroll as Array<{ idleIntervalMs?: number | null }>) !== null
+          ? Math.round(1000 / (medianIdleInterval(scroll as Array<{ idleIntervalMs?: number | null }>) as number))
+          : null,
+      },
       workers: 1,
       command: 'npm run test:e2e:performance',
       config: 'playwright.performance.config.ts',
@@ -403,6 +438,7 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
       enabledBy: 'window.__AICS_UI_FLUIDITY__.enabled',
       phases: ['intent', 'feedback-committed', 'shell-ready', 'primary-ready', 'settled', 'cancelled'],
       budgets: { inputFeedbackP95Ms: 100, warmPrimaryReadyP95Ms: 300, frameInterval60HzMs: 16.7, longTaskMs: 50, dropCandidateRatio: .01 },
+      frameDropCriterion: 'rAF interval > 1.5 × 同轮实测静止前台间隔 T；frameInterval60HzMs 仅作与 F0 原始报告的对照，不作为当前判据',
       sampling: { rounds: ROUND_COUNT, samplesPerScenario: SAMPLE_COUNT, percentile: 'nearest-rank from raw samples' },
     },
     deferredScenarios: [
