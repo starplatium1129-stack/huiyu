@@ -576,6 +576,16 @@ function cleanTag(tag: string): string {
   return raw.toLowerCase().replace(/[\s\-/]+/g, '_')
 }
 
+const PREPOSITION_WORDS = new Set([
+  'of', 'on', 'at', 'in', 'the', 'a', 'an', 'to', 'for', 'with', 'from', 'by', 'into', 'under', 'over', 'behind',
+])
+
+function formatNaturalTitle(tag: string): string {
+  const words = cleanTag(tag).split('_').filter(Boolean)
+  if (!words.length) return String(tag || '').trim()
+  return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+}
+
 /** Returns the catalog Chinese label when present, otherwise a readable token glossary. */
 export function tagMeaning(tag: string, catalogLabel = ''): string {
   const supplied = String(catalogLabel || '').trim()
@@ -592,9 +602,19 @@ export function tagMeaning(tag: string, catalogLabel = ''): string {
   if (WORD_MEANINGS[normalized]) return WORD_MEANINGS[normalized]
 
   const words = normalized.split('_').filter(Boolean)
+  // 如果包含介词短语（如 depth_of_field、standing_on_tiptoe 等未在精选表收录的短语），
+  // 逐词直接拼接必然导致机翻车祸，此时优雅回退为自然英文标题
+  const hasPreposition = words.some(w => PREPOSITION_WORDS.has(w))
+  if (hasPreposition) {
+    return formatNaturalTitle(tag)
+  }
+
   const translated = words.map(word => WORD_MEANINGS[word])
-  if (translated.some(Boolean)) {
+  const translatedCount = translated.filter(Boolean).length
+  // 只有当所有实词均有翻译，或者词数<=3且未翻译单词仅1个时，才进行“ · ”平滑拼接
+  if (translatedCount === words.length || (words.length <= 3 && translatedCount >= words.length - 1 && translatedCount >= 1)) {
     return translated.map((meaning, index) => meaning || words[index]).join(' · ')
   }
-  return '未收录释义'
+
+  return formatNaturalTitle(tag)
 }

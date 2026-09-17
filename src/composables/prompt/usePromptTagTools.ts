@@ -33,7 +33,7 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
   /** chip 里的中文释义；完全未知的词条不占位（字典未就绪时同样不占位） */
   function tagLabel(tag: string): string {
     const meaning = tagMeaning(tag)
-    if (!tagMeaningLookup.value || meaning === '未收录释义') return ''
+    if (!tagMeaningLookup.value || !/[\u4e00-\u9fa5]/.test(meaning)) return ''
     return meaning
   }
 

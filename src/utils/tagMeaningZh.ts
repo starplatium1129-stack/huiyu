@@ -12,4 +12,10 @@
 import { tagMeaningGeneralZh } from './tagMeaningGeneralZh.ts'
 import { tagMeaningCharactersZh } from './tagMeaningCharactersZh.ts'
 import { tagMeaningExtendedZh } from './tagMeaningExtendedZh.ts'
-export const WD14_ZH: Record<string, string> = { ...tagMeaningGeneralZh, ...tagMeaningCharactersZh, ...tagMeaningExtendedZh }
+import { tagMeaningScenesZh } from './tagMeaningScenesZh.ts'
+export const WD14_ZH: Record<string, string> = {
+  ...tagMeaningGeneralZh,
+  ...tagMeaningCharactersZh,
+  ...tagMeaningExtendedZh,
+  ...tagMeaningScenesZh,
+}

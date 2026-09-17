@@ -3727,7 +3727,7 @@
     "id": "tag_472",
     "cat": "Clothing",
     "en": "torn_pantyhose",
-    "cn": "torn · 连裤袜",
+    "cn": "撕裂连裤袜",
     "weight": 0.8,
     "related": []
   },
@@ -3903,7 +3903,7 @@
     "id": "tag_494",
     "cat": "Scene",
     "en": "living_room",
-    "cn": "living · 房间",
+    "cn": "客厅",
     "weight": 0.8,
     "related": []
   },
@@ -3911,7 +3911,7 @@
     "id": "tag_495",
     "cat": "Action",
     "en": "sitting_on_bed",
-    "cn": "坐着 · on · 床",
+    "cn": "坐在床上",
     "weight": 0.8,
     "related": []
   },
@@ -3935,7 +3935,7 @@
     "id": "tag_498",
     "cat": "Clothing",
     "en": "oversized_shirt",
-    "cn": "oversized · 衬衫",
+    "cn": "宽松大衬衫",
     "weight": 0.8,
     "related": []
   },
@@ -3967,7 +3967,7 @@
     "id": "tag_502",
     "cat": "Action",
     "en": "sitting_on_sofa",
-    "cn": "坐着 · on · sofa",
+    "cn": "坐在沙发上",
     "weight": 0.8,
     "related": []
   },
@@ -3975,7 +3975,7 @@
     "id": "tag_503",
     "cat": "Clothing",
     "en": "skirt_lift",
-    "cn": "裙子 · lift",
+    "cn": "掀起裙摆",
     "weight": 0.8,
     "related": []
   },
@@ -3983,7 +3983,7 @@
     "id": "tag_504",
     "cat": "Clothing",
     "en": "black_pantyhose",
-    "cn": "黑色 · 连裤袜",
+    "cn": "黑丝连裤袜",
     "weight": 0.8,
     "related": []
   },
@@ -3999,7 +3999,7 @@
     "id": "tag_506",
     "cat": "Scene",
     "en": "wet_road",
-    "cn": "wet · 道路",
+    "cn": "湿润路面",
     "weight": 0.8,
     "related": []
   },
@@ -4007,7 +4007,7 @@
     "id": "tag_507",
     "cat": "Style",
     "en": "visual_novel_event_cg",
-    "cn": "未收录释义",
+    "cn": "视觉小说事件 CG",
     "weight": 0.8,
     "related": []
   },
@@ -4031,7 +4031,7 @@
     "id": "tag_510",
     "cat": "Action",
     "en": "lying_on_back",
-    "cn": "躺着 · on · 背部",
+    "cn": "仰卧",
     "weight": 0.8,
     "related": []
   },
