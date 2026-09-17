@@ -1,0 +1,198 @@
+{
+  "plan": "009",
+  "batch": "F3（F3.1 定位完成，部分验收）",
+  "testedAt": "2026-09-17T06:53:41.026Z",
+  "commit": {
+    "baseline": "6afdc7d0f7091547123d44e9a21c8d6d661d6166",
+    "testedImplementation": "6a307f64bdcf40c29a757dbefea600e2fc342762",
+    "note": "受测实现含 F0–F2 与径向修复；构建 SHA-256 unknown（未单独登记，属未执行项）",
+    "workingTreeDirty": true
+  },
+  "runner": {
+    "machine": "办公机（Windows x64）",
+    "os": "win32",
+    "browser": "chromium 153.0.4234.32",
+    "viewport": {
+      "width": 1440,
+      "height": 960
+    },
+    "deviceScaleFactor": 1,
+    "refreshRateHz": 120,
+    "measuredIdleIntervalMs": 8.300000000000068,
+    "motion": "no-preference",
+    "workers": 1,
+    "load": "同期另一会话在同一工作区构建，部分轮次出现漂移（已知噪声源）"
+  },
+  "fixture": {
+    "id": "ui-fluidity-f0-v1",
+    "scenes": 48,
+    "showcaseEntries": 36,
+    "image": {
+      "width": 832,
+      "height": 1216,
+      "format": "svg"
+    },
+    "mode": "隔离夹具；不访问生产作品库、不触发生成、不使用真实麦克风"
+  },
+  "sampling": {
+    "baseline": "3×20",
+    "probeRepeats": 3,
+    "statistic": "nearest-rank percentile（基线）；median of repeats（分解探针）",
+    "note": "带 tracing 的样本单列，不混入聚合"
+  },
+  "criterion": {
+    "frameDrop": "rAF interval > 1.5 × 同轮实测静止前台间隔 T；frameInterval60HzMs 仅作与 F0 原始报告的对照，不作为当前判据",
+    "budgetVersion": "F0 冻结口径 + 2026-09-17 校准（改用同轮实测静止间隔 T，1.5×T）",
+    "legacy60HzReference": "rAF 间隔 > 25.05ms，仅用于与旧报告对照，不作判据"
+  },
+  "s03": {
+    "status": "部分验收",
+    "baseline": {
+      "windows": 59,
+      "candidateRate": 100,
+      "candidateRateNote": "全部 60 个窗口中越 1% 目标的比例",
+      "ratioAmongCandidateWindowsP50": 7.14,
+      "ratioAmongCandidateWindowsP95": 9.52,
+      "taskMsP50": 233.9,
+      "scriptMsP50": 2.38,
+      "layoutMsP50": 12.61,
+      "recalcStyleMsP50": 26.17,
+      "longTasks": 0
+    },
+    "legacyCriterionReference": {
+      "windows": 59,
+      "ratioAmongCandidateWindowsP50": 3.17,
+      "note": "60Hz 判据套在 120Hz 前台上，把 S03 低估约 5 倍；只作与旧报告对照"
+    },
+    "decompositionMedians": [
+      {
+        "variant": "scroll-only(svg)",
+        "taskMs": 101.55,
+        "styleMs": 9.51,
+        "layoutMs": 1.98,
+        "dropRatio": 4,
+        "p95FrameMs": 8.5
+      },
+      {
+        "variant": "scroll-only(micro)",
+        "taskMs": 101.45,
+        "styleMs": 10.38,
+        "layoutMs": 1.99,
+        "dropRatio": 4,
+        "p95FrameMs": 8.5
+      },
+      {
+        "variant": "filter-only(svg)",
+        "taskMs": 187.7,
+        "styleMs": 23.47,
+        "layoutMs": 11.4,
+        "dropRatio": 3,
+        "p95FrameMs": 8.5
+      },
+      {
+        "variant": "filter-only(micro)",
+        "taskMs": 183.4,
+        "styleMs": 24.14,
+        "layoutMs": 12.05,
+        "dropRatio": 3,
+        "p95FrameMs": 8.5
+      },
+      {
+        "variant": "full(svg)",
+        "taskMs": 214.42,
+        "styleMs": 25.36,
+        "layoutMs": 12.12,
+        "dropRatio": 9,
+        "p95FrameMs": 25
+      },
+      {
+        "variant": "full(micro)",
+        "taskMs": 203.26,
+        "styleMs": 24.87,
+        "layoutMs": 12.46,
+        "dropRatio": 9,
+        "p95FrameMs": 24.9
+      },
+      {
+        "variant": "full(wide-query)",
+        "taskMs": 159.04,
+        "styleMs": 14.38,
+        "layoutMs": 9.5,
+        "dropRatio": 5,
+        "p95FrameMs": 16.6
+      },
+      {
+        "variant": "full(no-thumb-blur)",
+        "taskMs": 197.34,
+        "styleMs": 20.82,
+        "layoutMs": 12.3,
+        "dropRatio": 8,
+        "p95FrameMs": 16.8
+      },
+      {
+        "variant": "full(lean-cards)",
+        "taskMs": 145.36,
+        "styleMs": 21.25,
+        "layoutMs": 7.55,
+        "dropRatio": 9,
+        "p95FrameMs": 33.3
+      },
+      {
+        "variant": "full(low-glass)",
+        "taskMs": 212.75,
+        "styleMs": 24.48,
+        "layoutMs": 12.18,
+        "dropRatio": 7,
+        "p95FrameMs": 25
+      },
+      {
+        "variant": "full(narrow-only)",
+        "taskMs": 153.48,
+        "styleMs": 15.09,
+        "layoutMs": 8.05,
+        "dropRatio": 5,
+        "p95FrameMs": 16.6
+      },
+      {
+        "variant": "full(cv-auto)",
+        "taskMs": 214.35,
+        "styleMs": 25.09,
+        "layoutMs": 12.53,
+        "dropRatio": 6,
+        "p95FrameMs": 16.7
+      }
+    ],
+    "excludedByControlledComparison": [
+      "图片解码/光栅（1×1 PNG 零解码对照，task 差 <5ms）",
+      "筛选/排序算法（script 全程 2.4ms）",
+      "列表入场动画（.scene-grid.stagger-container > * 已显式 animation:none）",
+      "吸顶玻璃模糊（full(low-glass) 关闭后 computed 为 none，帧结果不变）",
+      "缩略图 filter:blur() 渐变过渡（full(no-thumb-blur) 注入后 computed 为 none）",
+      "卡片重量（full(lean-cards) 摘掉 .sc-body，仅省 style 2.4ms + layout 4.3ms）",
+      "content-visibility（已在 scene-card.css:18 等四处存在，注入同值无余量）",
+      "单纯的列表增删（顶部做同样增删 3.0% / p95 8.5ms）"
+    ],
+    "remaining": "「已滚动 + 文档高度变化」引起的滚动位置跳变与视口重绘；候选 5–9%，代理指标层面残差",
+    "handoffToF7": [
+      "需在无并行构建负载的机器上以 AICS_FLUIDITY_PROBE_REPEAT>=5 重跑分解探针，先压掉漂移",
+      "需要真机 trace/录像与帧候选配对；longtask 为 0 说明不是主线程阻塞",
+      "S04「关闭预览后滚动误差」待重取证：F0 旧口径 17/60、本轮 13/60、F2 记录 0/60 三处不一致",
+      "F3.2–F3.6 若被真机证据判定仍需执行，按\"一次只改一个热点 + 同夹具复测\"重开"
+    ]
+  },
+  "notRun": [
+    "S06 文档策略重载与任务确认",
+    "S07 真实生成/Live2D/语音争用",
+    "S08 后台/最小化/休眠恢复与资源快照",
+    "Windows 安装版与真实 GPU 负载",
+    "构建产物 SHA-256 登记"
+  ],
+  "rollback": "仅诊断基础设施与滚动锚点补充；回退按提交粒度 revert，无数据或格式迁移",
+  "rawResults": [
+    "runtime/ui-fluidity-f0/ui-fluidity-f0.json（3×20 基线）",
+    "runtime/ui-fluidity-f0/ui-fluidity-f0-narrow-mechanism.json（多轮中位数分解探针）",
+    "runtime/ui-fluidity-f0/ui-fluidity-f0-lean-probe.json（卡片重量上限诊断）",
+    "runtime/ui-fluidity-f0/ui-fluidity-f0-cv-probe.json（content-visibility 对照）",
+    "runtime/ui-fluidity-f0/ui-fluidity-f0-legacy-60hz-criterion.json（旧判据存档）"
+  ]
+}

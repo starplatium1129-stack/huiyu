@@ -21,8 +21,8 @@
 | F0 | 可复现的流畅度基线、场景矩阵和测量入口 | 无 | 已验收（办公机；S06–S08 延期） | [F0 原始报告](../runtime/ui-fluidity-f0/ui-fluidity-f0.json)、[代表性 trace](../runtime/ui-fluidity-f0/traces/representative-r0s0.zip) |
 | F1 | 即时反馈、最新导航意图和可中断切换 | F0 | 已验收（办公机；当前趋势非纯净 A/B） | 单测、导航回归与 F0 场景基准通过 |
 | F2 | 热切换、图片就绪和返回现场恢复 | F1；使用 F0 的数据/资源分析 | 已验收（办公机；S03 留给 F3） | S02/S04、预热与图片回归通过 |
-| F3 | 大列表、主线程和滚动掉帧定向优化 | F0；默认接续 F2 | 待执行 | 未运行 |
-| F4 | 一致且不阻碍操作的页面/面板动效 | F1、F3 的关键阻塞已处理 | 待执行 | 未运行 |
+| F3 | 大列表、主线程和滚动掉帧定向优化 | F0；默认接续 F2 | 部分验收（F3.1 完成；S03 残差移交 F7） | [去敏摘要](../docs/evidence/ui-fluidity-f0-f3-2026-09-17.json)、[F3 基线](../runtime/ui-fluidity-f0/ui-fluidity-f0.json)、[分解探针](../runtime/ui-fluidity-f0/ui-fluidity-f0-narrow-mechanism.json) |
+| F4 | 一致且不阻碍操作的页面/面板动效 | F1、F3 的关键阻塞已处理 | 实施中（F4.1 盘点完成） | 见下方 F4 段 |
 | F5 | 长时间使用、后台资源和 Live2D 共存 | F0；默认接续 F4 | 待执行 | 未运行 |
 | F6 | 稳定的行为回归、性能预算和交付记录 | F1–F5 已实现或有明确延期记录 | 待执行 | 未运行 |
 | F7 | 目标 Windows 安装版与真实负载验收 | F6；目标设备和部署条件就绪 | 待执行 | 未运行 |
@@ -278,6 +278,31 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 - 结论：S03 **部分验收**。已知可复现停顿的范围收窄到「已滚动 + 文档高度变化」；主线程无阻塞（`longtask` 为 0、script 2.4ms），图片 / 玻璃 / 缩略图 blur / 卡片重量 / `content-visibility` / 单纯的列表增删均已用对照排除。剩余 5–9% 的掉帧候选是代理指标层面的残差，不做无证据的改动。
 - 唯一已知的剩余杠杆（保留网格最小高度以消除钳位跳变）会带来"结果很少时下方留白"的**视觉变化**，与「不减弱视觉效果和动效」的原则冲突，属产品决策，本轮不做。
 
+**F3 回填（按 §7.2 模板）：**
+
+```text
+批次 / 子批次：F3（F3.1 定位完成；F3.2–F3.6 未执行）
+状态：部分验收
+基线提交 / 受测实现提交 / 构建标识：基线 6a307f6；包含 F0–F2 与径向修复的 170cba1 / 172eb47 / bd2639d；构建为 dist（未单独记录 SHA-256，见"未执行"）
+改动与未改动范围：改动仅限诊断/证据基础设施（tests/e2e/helpers/*、ui-fluidity.bench.ts、playwright.performance.config.ts）与 F2.3 的滚动锚点补充（src/utils/scrollAnchor.ts + 场景库接线）；**未改动任何渲染路径、样式、动效时长或缓存策略**
+场景 / 机器 / 缓存状态 / 数据夹具 / 负载：S01–S05；办公机 Windows x64 / Chromium（headless）/ 1440×960 / DPR 1 / 120Hz 前台 / reducedMotion 默认；固定夹具 48 场景 + 36 样张 + 832×1216 图；空 localStorage/IndexedDB；无生成/麦克风/生产库。**注意：同期另一会话在同一机器上构建，部分轮次出现漂移**
+测试命令、退出状态与日志：`npm run test:e2e:performance`（PASS，单 worker）；`npm run check` 16/17（余 1 项为并行会话的词条套件清单）；`navigation-fluidity.spec.ts` 22/22；`desktop-ux.spec.ts` 9/9；`scrollAnchor.spec.ts` 5/5；`docs:check` 0 断链
+前后指标：S03 校准判据（rAF 间隔 > 1.5×实测 T=8.3ms）下候选比例 p50 7.14% / p95 9.52%（60 窗口全部越 1% 目标）；窗口内 task p50 234ms，其中 script 2.38ms / layout 12.6ms / recalcStyle 26.2ms；longtask 0。位置恢复：清空筛选后落点由 473 回到 ≥698（真实数据）
+双主题 / 键盘 / reduced-motion / 安全边界：本轮未改动 UI，双主题与 reduced-motion 由既有回归覆盖并通过；未触碰 CSP、分级、写任务契约
+未执行项、失败项与原因：F3.2–F3.6（依据 F3.1 对照证据：卡片重量上限 ~7ms、content-visibility 已在代码中存在、图片/玻璃/blur/单纯增删均已排除，继续在无头环境堆变体无法分辨 <2× 差异）；S07 前端夹具需真实负载；构建 SHA-256 未单独登记
+是否保留本改动 / 回退方式：保留诊断基础设施与滚动锚点；回退只需 revert 对应提交，无数据/格式迁移
+远端提交与证据位置：0aa8a41 / 885fa6e / 1332e1a / 170cba1 / 6a307f6 / 86ec1ce / c509d48 / 172eb47 / bd2639d / 7832315 / d67d588；去敏摘要见 docs/evidence/ui-fluidity-f0-f3-2026-09-17.json，原始结果见 runtime/ui-fluidity-f0/ 下 ui-fluidity-f0.json、-f3-baseline.json、-s03-decomposition.json、-lean-probe.json、-cv-probe.json、-narrow-mechanism.json 与 -legacy-60hz-criterion.*
+下一批允许开展的范围：F4（动效统一）；F3 若要继续必须先在安静机器上取得可分辨的证据
+```
+
+**移交 F7 的清单（S03 残差精确定位）：**
+
+- 需在**无并行构建负载**的机器上重跑 `AICS_FLUIDITY_PROBE_REPEAT≥5` 的分解探针，先把 `full(wide-query)` 的漂移压到可复现区间，再谈残差归因。
+- 需要真机 trace/录像与帧候选配对：`frameIntervalP95Ms` 中位 16.7ms（120Hz 丢一帧）在真机上是否可见，只有 F7 能判定；`longtask` 为 0 说明这不是主线程阻塞问题。
+- 待办里仍悬着的一条：S04「关闭预览后滚动误差」，F0 旧口径 17/60、本轮 13/60（众数 67px、max 211px），与 F2 记录的 0/60 不一致 —— 需要在真机与正确几何下重新取证。
+- F3 未做的 F3.2–F3.6 若在真机证据下被判定仍需执行，按"一次只改一个热点 + 同夹具复测"重开。
+
+
 
 ### F4 · 统一动效行为与空间连续性
 
@@ -295,6 +320,31 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 **验收：** S01/S04/S05 在两主题、鼠标/键盘、低效果/减少动态效果下通过；不会为过渡出现空白、文字模糊、焦点跳失或返回方向错误。帧时间与输入延迟不得因“更好看”退化。
 
 **回退：** 局部试点可关闭/撤销并回到现有轻量入场；不要让整个导航依赖某种浏览器专属过渡能力。通过试点后才扩到其他同类组件。
+
+**F4.1 回填（2026-09-17，盘点）：**
+
+| 类别 | 现有实现 | 时长 / 曲线 | 规范状态 |
+| --- | --- | --- | --- |
+| 按压反馈 | `--motion-press` 与各页 `:active` | 120ms + `--ease-out` | 令牌存在，但引用极少 |
+| 同级导航 | [useRouteTransition.ts](../src/composables/useRouteTransition.ts)（WAAPI `translateY(6px)`） | **220ms 硬编码** + `cubic-bezier(.22, 1, .36, 1)` | **例外**：与 `--motion-route` 320ms 不一致，曲线也不在令牌集内 |
+| 层级进入/返回 | `.layer-pop-*`（`design-system.css:1073–1083`） | 进入 `--motion-surface` 260ms、离场 `--motion-hover` 160ms，均 `--ease-out`；位移 14→8px、scale .96/.98 | 令牌化最好的一类，可作基准 |
+| 抽屉/弹窗 | [FluidTransition.vue](../src/components/visual/FluidTransition.vue) + [useFluidSurface.ts](../src/composables/useFluidSurface.ts)（`:css="false"` JS 驱动，`data-fluid-leaving`） | 时长走 CSS 令牌，含 `--ease-drawer` | 机制统一；但浮层选择器清单硬编码在组件 props 默认值里 |
+| 内容更新 | `.stagger-item` / `.stagger-container > *`（20/40/60ms 错峰）、`[data-reveal]`、`skeleton-shimmer`、`facetIn`、showcase `sample-*` | 混合：`--motion-control` 与硬编码 `.22s` | **例外**：`.scene-grid` / `.showcase-grid` / `.gallery-wall` 已显式 `animation:none`（高频筛选不重播），其余仍在错峰入场 |
+
+令牌现状（`design-system.css:221–235`）：时长 `--motion-press` 120 / `hover` 160 / `control` 200 / `surface` 260 / `route` 320 / `route-cut` 420 / `atmosphere` 560；**旧别名 `--t-fast` 150 / `--t-base` 240 / `--t-slow` 300 与新令牌双轨并存**。曲线有 `--ease-out`、`--ease-in-out`、`--ease-drawer`、`--spring-bounce`、`--spring-soft`。
+
+**使用率（全仓 `transition`/`animation` 声明扫描）：只有 4 条引用 `var(--motion-*)`/`var(--t-*)`，58 条硬编码时间值** —— `chat.css` 10、`design-system.css` 9、`companion.css` 8、`director/stage.css` 5 等。样例跨度 0.22s–9s，其中相当一部分是氛围/循环类（ambience 7s/9s、`voice-pulse` 1.1s infinite、`cursor-blink` .8s infinite），属 F5 范围，**不按交互时长统一**。
+
+待最小统一的例外（每项都要过双主题 + reduced-motion 视觉验收）：
+
+1. `useRouteTransition.ts` 的 220ms 与自有曲线 —— 同级导航里唯一不走令牌的一处。
+2. `--t-*` 旧别名与 `--motion-*` 双轨。
+3. `.22s` 在 `facetIn`、`message-in` 等同族动效里与 `--motion-control` 200ms 混用。
+4. 浮层选择器清单硬编码在 `FluidTransition.vue` 的 props 默认值中。
+
+注意：统一时长**会改变动效观感**（例如同级导航 220ms → 320ms）。按「不减弱视觉效果和动效」的原则，这类改动必须先给出可对比的前后观感、经确认后再落，不能只凭"更统一"就改。
+
+
 
 ### F5 · 长时间使用与桌宠/生成共存
 
