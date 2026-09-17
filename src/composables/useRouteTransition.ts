@@ -1,5 +1,6 @@
 import { onDeactivated, onMounted, onUnmounted } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
+import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 
 /** Keep content opaque and release animation effects so fixed toolbars stay viewport-bound. */
 export function useRouteTransition() {
@@ -9,9 +10,15 @@ export function useRouteTransition() {
 
   function onEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
+    const path = el.dataset.routePath || ''
     settle(el)
     el.inert = false
-    if (prefersReducedMotion() || typeof el.animate !== 'function') { done(); return }
+    if (path) markUiFluidityForPath(path, 'shell-ready')
+    if (prefersReducedMotion() || typeof el.animate !== 'function') {
+      if (path) markUiFluidityForPath(path, 'settled')
+      done()
+      return
+    }
     const animation = el.animate(
       [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }],
       { duration: 220, easing: 'cubic-bezier(.22, 1, .36, 1)' },
@@ -24,6 +31,7 @@ export function useRouteTransition() {
       animation.onfinish = null
       animation.oncancel = null
       animation.cancel()
+      if (path) markUiFluidityForPath(path, 'settled')
       done()
     }
     active.set(el, finish)

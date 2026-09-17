@@ -5,7 +5,10 @@ import regression from './playwright.config'
 export default defineConfig({
   ...regression,
   workers: 1,
-  projects: [{ name: 'performance', testMatch: /office-performance\.bench\.ts$/ }],
+  projects: [
+    { name: 'performance', testMatch: /office-performance\.bench\.ts$/ },
+    { name: 'fluidity', testMatch: /ui-fluidity\.bench\.ts$/, use: { trace: 'off' } },
+  ],
   webServer: Array.isArray(regression.webServer) ? regression.webServer[0] : regression.webServer,
   outputDir: 'runtime/office-code-2026-09-11/performance-traces',
 })

@@ -12,7 +12,7 @@
                切到其他页再回来不重新从 IndexedDB 读图，秒开。
                其余页面按需重建（各自 onMounted 拉最新数据）。 -->
           <KeepAlive :include="['GalleryView', 'ShowcaseView', 'PromptBuilderView', 'VideoStudioView']">
-            <component :is="Component" :key="route.path" class="route-view" />
+            <component :is="Component" :key="route.path" class="route-view" :data-route-path="route.fullPath" />
           </KeepAlive>
         </Transition>
       </RouterView>
