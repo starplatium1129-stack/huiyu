@@ -175,6 +175,9 @@ async function runS03DecompositionProbe(browser: Browser) {
     // 同上窄查询，但注入 CSS 关掉 .sc-thumb 的 blur 渐变过渡：验证"重建时 24 张卡同时跑 filter 动画"
     // （filter 非合成器属性，每帧重绘）是否就是叠加掉帧的机制。
     { label: 'full(no-thumb-blur)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: false, noThumbBlur: true },
+    // 诊断上限（视觉会坏，只看不发）：摘掉卡片正文区，量化"每张卡更轻"最多能拿回多少。
+    // 用来决定是否值得为重建成本做结构性改造，而不是凭直觉重构。
+    { label: 'full(lean-cards)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: false, leanCards: true },
     // 同样的 full 序列，但关掉吸顶工具栏/导航的 backdrop-filter（仓库自带降级开关）：
     // 用来验证「滚动 + 内容重绘叠加才掉帧」是否来自玻璃模糊反复重光栅化。
     { label: 'full(low-glass)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: true },
@@ -192,6 +195,11 @@ async function runS03DecompositionProbe(browser: Browser) {
       }
       if (variant.noThumbBlur) {
         await page.addStyleTag({ content: '.sc-thumb { filter:none !important; transition:none !important; }' })
+        await page.waitForTimeout(120)
+      }
+      if (variant.leanCards) {
+        // 诊断用：正文区与折叠区从布局中摘掉。生产上不可能这么做，只用来测"卡片更轻"的收益上限。
+        await page.addStyleTag({ content: '.sc-body { display:none !important; }' })
         await page.waitForTimeout(120)
       }
       const idleIntervalMs = await measureIdleFrameInterval(page)
