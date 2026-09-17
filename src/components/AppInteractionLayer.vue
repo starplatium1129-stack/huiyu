@@ -4,8 +4,8 @@
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { prefetchRoute } from '@/router'
-import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
+import { prefetchRoute, prefetchRouteResources } from '@/router'
+import { announceNavigationIntent, useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { playInterfaceTone } from '@/composables/useInterfaceFeedback'
 
 const { loading } = useNavigationFeedback()
@@ -16,13 +16,28 @@ function intentLink(event: Event): HTMLAnchorElement | null {
   const el = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null
   if (!el || el.target === '_blank' || el.hasAttribute('download')) return null
   const url = new URL(el.href, location.href)
-  if (url.origin !== location.origin || url.pathname === location.pathname) return null
+  const destination = `${url.pathname}${url.search}${url.hash}`
+  const current = `${location.pathname}${location.search}${location.hash}`
+  if (url.origin !== location.origin || destination === current) return null
   return el
 }
 function cancelHover() { clearTimeout(hoverTimer) }
+function routeDestination(el: HTMLAnchorElement): string {
+  const url = new URL(el.href, location.href)
+  return `${url.pathname}${url.search}${url.hash}`
+}
+function canSpeculate() {
+  const connection = (navigator as Navigator & { connection?: Connection }).connection
+  return !connection?.saveData && !/^(slow-)?2g$/.test(connection?.effectiveType ?? '')
+}
 function prefetch(event: Event) {
   const el = intentLink(event)
   if (!el) return
+  if (event.type === 'pointerdown') {
+    const destination = routeDestination(el)
+    announceNavigationIntent(destination)
+    if (canSpeculate()) prefetchRouteResources(destination)
+  }
   const connection = (navigator as Navigator & { connection?: Connection }).connection
   if (connection?.saveData || /^(slow-)?2g$/.test(connection?.effectiveType ?? '')) return
   if (event instanceof PointerEvent && event.type === 'pointerdown' && event.button !== 0) return
@@ -40,6 +55,14 @@ function pointerOut(event: PointerEvent) {
   const el = intentLink(event)
   if (el && (!(event.relatedTarget instanceof Node) || !el.contains(event.relatedTarget))) cancelHover()
 }
+function keyboardActivate(event: KeyboardEvent) {
+  if (event.key !== 'Enter' && event.key !== ' ') return
+  const el = intentLink(event)
+  if (!el) return
+  const destination = routeDestination(el)
+  announceNavigationIntent(destination)
+  if (canSpeculate()) prefetchRouteResources(destination)
+}
 function click(event: MouseEvent) {
   const el = event.target instanceof Element ? event.target.closest('button,a[href],summary') : null
   if (!el || el.matches('[data-interface-sound-toggle],:disabled,[aria-disabled="true"]')) return
@@ -50,6 +73,7 @@ onMounted(() => {
   document.addEventListener('pointerout', pointerOut, { passive: true })
   document.addEventListener('focusin', prefetch)
   document.addEventListener('pointerdown', prefetch, { passive: true })
+  document.addEventListener('keydown', keyboardActivate)
   document.addEventListener('click', click)
 })
 onUnmounted(() => {
@@ -58,6 +82,7 @@ onUnmounted(() => {
   document.removeEventListener('pointerout', pointerOut)
   document.removeEventListener('focusin', prefetch)
   document.removeEventListener('pointerdown', prefetch)
+  document.removeEventListener('keydown', keyboardActivate)
   document.removeEventListener('click', click)
 })
 </script>

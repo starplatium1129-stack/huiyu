@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { installNavigationFeedback, useNavigationFeedback } from './useNavigationFeedback'
+import { announceNavigationIntent, installNavigationFeedback, useNavigationFeedback } from './useNavigationFeedback'
 
 function deferred<T>() {
   let resolve!: (value: T) => void
@@ -41,6 +41,35 @@ it('keeps fast navigation quiet and reports a slow load until it resolves', asyn
   await pending
   expect(state.loading.value).toBe(false)
   expect(state.pendingPath.value).toBe('')
+})
+
+it('exposes activation intent before delayed loading feedback and clears it on settle', async () => {
+  const state = await setup()
+  const intentId = announceNavigationIntent('/first')
+  expect(intentId).not.toBeNull()
+  expect(state.intentPath.value).toBe('/first')
+  expect(state.navigationPhase.value).toBe('intent')
+
+  const pending = state.router.push('/first')
+  await state.firstStarted.promise
+  expect(state.navigationId.value).toBe(intentId)
+  expect(state.navigationPhase.value).toBe('pending')
+  await vi.advanceTimersByTimeAsync(179)
+  expect(state.loading.value).toBe(false)
+  state.first.resolve({})
+  await pending
+  expect(state.intentPath.value).toBe('')
+  expect(state.navigationId.value).toBe(intentId)
+  expect(state.navigationPhase.value).toBe('completed')
+})
+
+it('expires an activation intent when no navigation starts', async () => {
+  const state = await setup()
+  announceNavigationIntent('/first')
+  expect(state.intentPath.value).toBe('/first')
+  await vi.advanceTimersByTimeAsync(1000)
+  expect(state.intentPath.value).toBe('')
+  expect(state.navigationId.value).toBeNull()
 })
 
 it('does not let an older cancelled navigation hide a newer pending route', async () => {

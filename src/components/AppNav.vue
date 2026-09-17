@@ -20,6 +20,7 @@
           :class="{ active: activeId === item.id }"
           :aria-current="activeId === item.id ? 'page' : undefined"
           :data-pending="pendingPath === item.to || undefined"
+          :data-intent="intentRoutePath === item.to || undefined"
           :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
           @click="closeMenu"
         >
@@ -28,7 +29,7 @@
         </RouterLink>
 
         <!-- 归档 · 分组下拉：发现/美学/工坊，5 项主导航之外全部收口 -->
-        <details class="nav-more" :data-active="secondaryActive || undefined" :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined" ref="moreEl">
+        <details class="nav-more" :data-active="secondaryActive || undefined" :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined" :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined" ref="moreEl">
           <!-- 不加 aria-label:它会盖掉可见文字"归档",违反 SC 2.5.3 Label in Name -->
           <summary>更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></summary>
           <div class="nav-more-menu">
@@ -44,6 +45,7 @@
                 :class="{ active: activeId === item.id }"
                 :aria-current="activeId === item.id ? 'page' : undefined"
                 :data-pending="pendingPath === item.to || undefined"
+                :data-intent="intentRoutePath === item.to || undefined"
                 @click="closeMenu"
               >
                 <ArchiveIcon :name="item.icon" />
@@ -106,7 +108,7 @@ import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 
 const route = useRoute()
 const { activeCount } = useTaskCenter()
-const { pendingPath } = useNavigationFeedback()
+const { pendingPath, intentRoutePath } = useNavigationFeedback()
 function openBesideTask(path: string) { return activeCount.value > 0 && needsDocumentReload(route.path, path) && !location.hostname.includes('tauri') }
 const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
@@ -230,7 +232,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.nav-links a[data-pending="true"], .nav-more[data-pending="true"] > summary {
+.nav-links a[data-pending="true"], .nav-links a[data-intent="true"],
+.nav-more[data-pending="true"] > summary, .nav-more[data-intent="true"] > summary {
   outline: 1px solid var(--border-strong);
   outline-offset: -1px;
   background: var(--accent-soft);
