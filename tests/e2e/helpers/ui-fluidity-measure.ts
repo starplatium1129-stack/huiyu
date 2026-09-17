@@ -181,3 +181,69 @@ export function summarizeFrameProbe(
   }
 }
 
+/** CDP 渲染成本窗口：用来区分掉帧是布局/样式重算主导还是脚本主导（F3.1 取证）。 */
+const CDP_METRIC_NAMES = [
+  'TaskDuration', 'ScriptDuration', 'LayoutDuration', 'RecalcStyleDuration',
+  'LayoutCount', 'RecalcStyleCount', 'JSHeapUsedSize', 'Nodes',
+] as const
+
+export type CdpMetricWindow = {
+  taskDurationMs: number
+  scriptDurationMs: number
+  layoutDurationMs: number
+  recalcStyleDurationMs: number
+  layoutCount: number
+  recalcStyleCount: number
+  jsHeapUsedSizeMb: number
+  nodes: number
+  thumbRequests: number
+  /** 布局+样式重算占任务时长的比例；越高越说明代价在渲染而非脚本 */
+  renderShareOfTask: number | null
+}
+
+export async function createCdpMetricWindow(page: Page): Promise<{ stop: () => Promise<CdpMetricWindow | null> }> {
+  const session = await page.context().newCDPSession(page).catch(() => null)
+  if (!session) return { stop: async () => null }
+  try {
+    await session.send('Performance.enable')
+  } catch {
+    await session.detach().catch(() => undefined)
+    return { stop: async () => null }
+  }
+  const read = async (): Promise<Record<string, number>> => {
+    const { metrics } = await session.send('Performance.getMetrics')
+    const map: Record<string, number> = {}
+    for (const metric of metrics) map[metric.name] = metric.value
+    return map
+  }
+  const before = await read()
+  let thumbRequests = 0
+  const onRequest = (request: { url: () => string }) => {
+    if (/\/scene-showcase\/thumbs\//.test(request.url())) thumbRequests += 1
+  }
+  page.on('request', onRequest)
+  return {
+    async stop() {
+      const after = await read()
+      page.off('request', onRequest)
+      await session.detach().catch(() => undefined)
+      const delta = (name: string) => (after[name] ?? 0) - (before[name] ?? 0)
+      const layout = delta('LayoutDuration') * 1000
+      const recalc = delta('RecalcStyleDuration') * 1000
+      const task = delta('TaskDuration') * 1000
+      return {
+        taskDurationMs: task,
+        scriptDurationMs: delta('ScriptDuration') * 1000,
+        layoutDurationMs: layout,
+        recalcStyleDurationMs: recalc,
+        layoutCount: delta('LayoutCount'),
+        recalcStyleCount: delta('RecalcStyleCount'),
+        jsHeapUsedSizeMb: Math.round((after.JSHeapUsedSize ?? 0) / 1048576),
+        nodes: after.Nodes ?? 0,
+        thumbRequests,
+        renderShareOfTask: task > 0 ? (layout + recalc) / task : null,
+      }
+    },
+  }
+}
+

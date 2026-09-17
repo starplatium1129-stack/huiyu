@@ -4,12 +4,14 @@ import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs'
 import { installUiFluidityFixture, setUiFluidityMeasurement, UI_FLUIDITY_FIXTURE } from './helpers/ui-fluidity-fixture'
 import {
   clickNavPath,
+  createCdpMetricWindow,
   measureIdleFrameInterval,
   measureSpaNavigation,
   startFrameProbe,
   stopFrameProbe,
   summarizeFrameProbe,
   waitForPrimary,
+  type CdpMetricWindow,
   type NavigationMeasurement,
   type UiFluidityEvent,
 } from './helpers/ui-fluidity-measure'
@@ -67,6 +69,8 @@ async function runS03(page: Page) {
   await enter(page, '/scene-explorer')
   // 先取静止前台的有效间隔 T，掉帧判据按 1.5T 校准，避免 60Hz 阈值套在 120Hz 前台上
   const idleIntervalMs = await measureIdleFrameInterval(page)
+  // CDP 渲染成本窗口：同一时间窗内区分布局/样式重算与脚本代价（F3.1 取证）
+  const cdpWindow = await createCdpMetricWindow(page)
   await startFrameProbe(page)
   await page.mouse.wheel(0, 2600)
   await page.locator('#sceneSearch').fill('F0 固定场景 2')
@@ -75,13 +79,14 @@ async function runS03(page: Page) {
   await page.locator('#sceneSearch').fill('')
   await page.waitForTimeout(220)
   const probe = summarizeFrameProbe(await stopFrameProbe(page), idleIntervalMs)
+  const cdp = await cdpWindow.stop()
   const state = await page.evaluate(() => ({
     scrollY: window.scrollY,
     documentHeight: document.documentElement.scrollHeight,
     cardCount: document.querySelectorAll('[data-scene-id]').length,
     inputValue: (document.querySelector('#sceneSearch') as HTMLInputElement | null)?.value || '',
   }))
-  return { ...state, idleIntervalMs, probe }
+  return { ...state, idleIntervalMs, probe, cdp }
 }
 
 async function runS04(page: Page) {
@@ -142,6 +147,84 @@ async function runS05(page: Page) {
     clickSequenceMs: (await page.evaluate(() => performance.now())) - before,
     cancelledCount: events.filter(event => event.phase === 'cancelled').length,
     eventPhases: events.map(event => ({ id: event.id, phase: event.phase, path: event.path, at: event.at })),
+  }
+}
+
+/**
+ * S03 窗口分解 + 图片归因。
+ *
+ * 同一固定夹具下跑四种变体，用来把 S03 的掉帧候选归因到具体动作：
+ *   scroll-only(svg)      只滚动，不输入筛选
+ *   scroll-only(micro)    同上，但缩略图换成 1×1 PNG（请求数与 DOM 结构不变，仅解码成本≈0）
+ *   filter-only(svg)      只输入/清空筛选，不滚动
+ *   full(svg)             与 S03 场景一致的完整序列
+ * 浏览器不提供 <50ms 帧的归因 API（LoAF 只覆盖 >50ms），因此用受控实验分解而不是靠 profiler 猜测。
+ */
+async function runS03DecompositionProbe(browser: Browser) {
+  const variants = [
+    { label: 'scroll-only(svg)', wheel: true, filter: false, thumbFormat: 'svg' as const, lowGlass: false },
+    { label: 'scroll-only(micro)', wheel: true, filter: false, thumbFormat: 'micro' as const, lowGlass: false },
+    { label: 'filter-only(svg)', wheel: false, filter: true, thumbFormat: 'svg' as const, lowGlass: false },
+    { label: 'full(svg)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: false },
+    // 同样的 full 序列，但关掉吸顶工具栏/导航的 backdrop-filter（仓库自带降级开关）：
+    // 用来验证「滚动 + 内容重绘叠加才掉帧」是否来自玻璃模糊反复重光栅化。
+    { label: 'full(low-glass)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: true },
+  ]
+  const runs: Array<Record<string, unknown>> = []
+  for (const variant of variants) {
+    const context = await browser.newContext({ viewport: VIEWPORT, reducedMotion: 'no-preference', colorScheme: 'dark' })
+    const page = await context.newPage()
+    try {
+      await installUiFluidityFixture(page, true, { thumbFormat: variant.thumbFormat })
+      await enter(page, '/scene-explorer')
+      if (variant.lowGlass) {
+        await page.evaluate(() => { document.documentElement.dataset.reducedGlass = 'true' })
+        await page.waitForTimeout(120)
+      }
+      const idleIntervalMs = await measureIdleFrameInterval(page)
+      const cdpWindow = await createCdpMetricWindow(page)
+      await startFrameProbe(page)
+      if (variant.wheel) await page.mouse.wheel(0, 2600)
+      if (variant.filter) {
+        await page.locator('#sceneSearch').fill('F0 固定场景 2')
+        await expect(page.locator('.scene-count')).toContainText('已显示')
+        await page.waitForTimeout(220)
+        await page.locator('#sceneSearch').fill('')
+        await page.waitForTimeout(220)
+      } else {
+        await page.waitForTimeout(440)
+      }
+      const probe = summarizeFrameProbe(await stopFrameProbe(page), idleIntervalMs)
+      const cdp = await cdpWindow.stop()
+      // 自证：确认降级开关在窗口结束时仍然生效，避免"开关没生效"被误读成"模糊不是原因"
+      const glass = await page.evaluate(() => ({
+        reducedGlass: document.documentElement.dataset.reducedGlass ?? null,
+        toolbarBackdrop: getComputedStyle(document.querySelector('.scene-toolbar') as Element).backdropFilter,
+      }))
+      runs.push({ ...variant, idleIntervalMs, probe, cdp, glass })
+    } finally {
+      await context.close()
+    }
+  }
+  const pick = (label: string) => runs.find(run => run.label === label) as
+    { probe: ReturnType<typeof summarizeFrameProbe>; cdp: CdpMetricWindow | null } | undefined
+  const svg = pick('scroll-only(svg)')
+  const micro = pick('scroll-only(micro)')
+  const filterOnly = pick('filter-only(svg)')
+  const full = pick('full(svg)')
+  const task = (run: typeof svg) => run?.cdp?.taskDurationMs ?? null
+  return {
+    runs,
+    attribution: {
+      imageCostMs: svg?.cdp && micro?.cdp ? Number((svg.cdp.taskDurationMs - micro.cdp.taskDurationMs).toFixed(2)) : null,
+      scrollOnlyTaskMs: task(svg),
+      filterOnlyTaskMs: task(filterOnly),
+      fullTaskMs: task(full),
+      fullLowGlassTaskMs: task(pick('full(low-glass)')),
+      fullP95FrameMs: full?.probe.intervalMs.p95 ?? null,
+      fullLowGlassP95FrameMs: pick('full(low-glass)')?.probe.intervalMs.p95 ?? null,
+      interpretation: 'imageCostMs = 图片解码/光栅代价（请求数与 DOM 结构相同）；full 与 full(low-glass) 的对比验证吸顶玻璃模糊是否为叠加掉帧来源',
+    },
   }
 }
 
@@ -208,7 +291,7 @@ function summarizeNavigation(samples: NavigationMeasurement[]) {
 
 function buildIssueList(
   navigation: NavigationMeasurement[],
-  scroll: Array<{ probe: ReturnType<typeof summarizeFrameProbe> }>,
+  scroll: Array<{ probe: ReturnType<typeof summarizeFrameProbe>; cdp?: CdpMetricWindow | null; traced?: boolean }>,
   rapid: Array<{ cancelledCount: number }>,
   preview: Array<{ scrollError: number }>,
 ) {
@@ -228,23 +311,26 @@ function buildIssueList(
     }
   }
   // 判据优先用实测 T 校准；只有 T 缺失时才退回 F0 的 60Hz 参照，并在证据里标明来源
+  // 带 tracing 的样本单列：trace 的 snapshots/screenshots 会自己抬高主线程与节点数
+  const scrollClean = scroll.filter(sample => !sample.traced)
   const scrollRatio = (sample: { probe: ReturnType<typeof summarizeFrameProbe> }) => sample.probe.frameBudgetMs
     ? sample.probe.over1_5xBudgetRatio
     : sample.probe.over1_5x16_7Ratio
-  const scrollCandidates = scroll.filter(sample => (scrollRatio(sample) ?? 0) > .01)
+  const scrollCandidates = scrollClean.filter(sample => (scrollRatio(sample) ?? 0) > .01)
   if (scrollCandidates.length) {
     const ratios = scrollCandidates.map(sample => scrollRatio(sample)!).sort((a, b) => a - b)
     const legacyRatios = scrollCandidates.map(sample => sample.probe.over1_5x16_7Ratio ?? 0).sort((a, b) => a - b)
-    const budgets = scroll.map(sample => sample.probe.frameBudgetMs).filter((value): value is number => value !== null)
+    const budgets = scrollClean.map(sample => sample.probe.frameBudgetMs).filter((value): value is number => value !== null)
     const frameP95 = scrollCandidates.map(sample => sample.probe.intervalMs.p95).filter((value): value is number => value !== null)
     issues.push({
       status: 'investigate',
       scenario: 'S03',
       symptom: '滚动窗口存在超过 1.5× 实测静止间隔 T 的掉帧候选',
       evidence: {
-        totalSamples: scroll.length,
+        totalSamples: scrollClean.length,
+        tracedExcludedSamples: scroll.length - scrollClean.length,
         candidateSamples: scrollCandidates.length,
-        candidateRate: scrollCandidates.length / scroll.length,
+        candidateRate: scrollCandidates.length / scrollClean.length,
         criterion: 'rAF interval > 1.5 × measured idle foreground interval T',
         calibratedSamples: budgets.length,
         frameBudgetMs: budgets.length
@@ -269,6 +355,26 @@ function buildIssueList(
       },
       possibleCauses: ['列表响应式更新', '布局/绘制交错', '图片解码尖峰'],
       excludedByFixture: ['生成任务', '媒体输入', '生产图库'],
+      renderCost: (() => {
+        const samples = scrollClean.map(sample => sample.cdp).filter((value): value is CdpMetricWindow => Boolean(value))
+        if (!samples.length) return { status: 'unavailable', reason: 'CDP Performance domain unavailable in this browser' }
+        const pick = (key: keyof CdpMetricWindow) => samples.map(sample => Number(sample[key] ?? 0)).sort((a, b) => a - b)
+        const shares = samples.map(sample => sample.renderShareOfTask).filter((value): value is number => value !== null).sort((a, b) => a - b)
+        const at = (values: number[], p: number) => values[Math.min(values.length - 1, Math.floor(values.length * p))]
+        return {
+          status: 'measured',
+          samples: samples.length,
+          windowMs: 'S03 同窗口（滚动 2600px + 两次筛选输入）',
+          totalWindowTaskMs: { p50: at(pick('taskDurationMs'), .5), p95: at(pick('taskDurationMs'), .95) },
+          scriptMs: { p50: at(pick('scriptDurationMs'), .5), p95: at(pick('scriptDurationMs'), .95) },
+          layoutMs: { p50: at(pick('layoutDurationMs'), .5), p95: at(pick('layoutDurationMs'), .95) },
+          recalcStyleMs: { p50: at(pick('recalcStyleDurationMs'), .5), p95: at(pick('recalcStyleDurationMs'), .95) },
+          layoutCount: { p50: at(pick('layoutCount'), .5), p95: at(pick('layoutCount'), .95) },
+          recalcStyleCount: { p50: at(pick('recalcStyleCount'), .5), p95: at(pick('recalcStyleCount'), .95) },
+          renderShareOfTask: { p50: at(shares, .5), p95: at(shares, .95) },
+          thumbRequests: { p50: at(pick('thumbRequests'), .5), max: Math.max(...pick('thumbRequests')) },
+        }
+      })(),
       nextBatch: 'F3（结合代表性 trace）',
     })
   }
@@ -351,7 +457,7 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
   test.setTimeout(15 * 60 * 1000)
   expect(existsSync('dist/index.html')).toBe(true)
   const navigation: NavigationMeasurement[] = []
-  const scroll: Array<Record<string, unknown>> = []
+  const scroll: Array<{ probe: ReturnType<typeof summarizeFrameProbe>; idleIntervalMs?: number | null; cdp?: CdpMetricWindow | null; traced?: boolean }> = []
   const rapid: Array<Record<string, unknown>> = []
   const preview: Array<{ scrollError: number }> = []
   const scenarios: Array<Record<string, unknown>> = []
@@ -378,7 +484,9 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
         scenarios.push({ round, sample, id: 'S02', ...s02 })
 
         const s03 = await runS03(page)
-        scroll.push(s03)
+        // tracing 会显著抬高主线程与 DOM 节点数（实测 task 324ms vs 213ms、nodes 22522 vs 9747），
+        // 该样本单列，不混入聚合，避免「诊断本身造成掉帧」（计划 F0.6）
+        scroll.push({ ...s03, traced: shouldTrace })
         scenarios.push({ round, sample, id: 'S03', ...s03 })
 
         const s04 = await runS04(page)
@@ -398,6 +506,7 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
   }
 
   const overhead = process.env.AICS_FLUIDITY_SKIP_OVERHEAD === '1' ? { skipped: true } : await runMeasurementOverhead(browser)
+  const s03Decomposition = process.env.AICS_FLUIDITY_SKIP_DECOMPOSITION_PROBE === '1' ? { skipped: true } : await runS03DecompositionProbe(browser)
   const report = {
     schema: 'aics.ui-fluidity.f0.v1',
     plan: '009',
@@ -439,7 +548,7 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
       phases: ['intent', 'feedback-committed', 'shell-ready', 'primary-ready', 'settled', 'cancelled'],
       budgets: { inputFeedbackP95Ms: 100, warmPrimaryReadyP95Ms: 300, frameInterval60HzMs: 16.7, longTaskMs: 50, dropCandidateRatio: .01 },
       frameDropCriterion: 'rAF interval > 1.5 × 同轮实测静止前台间隔 T；frameInterval60HzMs 仅作与 F0 原始报告的对照，不作为当前判据',
-      sampling: { rounds: ROUND_COUNT, samplesPerScenario: SAMPLE_COUNT, percentile: 'nearest-rank from raw samples' },
+      sampling: { rounds: ROUND_COUNT, samplesPerScenario: SAMPLE_COUNT, percentile: 'nearest-rank from raw samples', tracedSamples: '单列，不混入 S03 的帧与渲染成本聚合' },
     },
     deferredScenarios: [
       { id: 'S06', reason: 'document-policy reload and task confirmation require separate controlled navigation environment' },
@@ -448,6 +557,7 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
     ],
     scenarios,
     overhead,
+    s03Decomposition,
     summary: {
       navigation: summarizeNavigation(navigation),
       scroll,
@@ -455,7 +565,7 @@ test('009 F0 fixed-fixture fluidity baseline', async ({ browser }) => {
       preview,
       issues: buildIssueList(
         navigation,
-        scroll as Array<{ probe: ReturnType<typeof summarizeFrameProbe> }>,
+        scroll,
         rapid as Array<{ cancelledCount: number }>,
         preview,
       ),

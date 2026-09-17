@@ -141,7 +141,17 @@ const offlineGenerationStatus = {
   maxPending: 0,
 }
 
-export async function installUiFluidityFixture(page: Page, measurementEnabled = true) {
+/** 1×1 PNG：零解码成本的对照图，仅用于把图片解码/光栅代价从其它渲染代价里分离。 */
+const MICRO_PNG = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==',
+  'base64',
+)
+
+export async function installUiFluidityFixture(
+  page: Page,
+  measurementEnabled = true,
+  options: { thumbFormat?: 'svg' | 'micro' } = {},
+) {
   await page.addInitScript(({ enabled }) => {
     const onceKey = '__aics_ui_fluidity_fixture_ready__'
     if (!sessionStorage.getItem(onceKey)) {
@@ -163,13 +173,13 @@ export async function installUiFluidityFixture(page: Page, measurementEnabled = 
       body: JSON.stringify(fixtureData[file]),
     })
   })
-  await page.route('**/scene-showcase/**', route => route.fulfill({
-    // The manifest handler is registered after this wildcard below, so it wins
-    // in Playwright's reverse route-handler order.
-    status: 200,
-    contentType: 'image/svg+xml',
-    body: imageBody,
-  }))
+  await page.route('**/scene-showcase/**', route => route.fulfill(
+    options.thumbFormat === 'micro'
+      // 1×1 PNG 对照：请求数、DOM 结构与默认 SVG 完全一致，只把解码/光栅成本降到接近 0，
+      // 用来把「图片解码尖峰」从其它渲染代价里分离出来（.sc-band 定比例，固有尺寸不影响布局）。
+      ? { status: 200, contentType: 'image/png', body: MICRO_PNG }
+      : { status: 200, contentType: 'image/svg+xml', body: imageBody },
+  ))
   await page.route('**/scene-showcase/manifest.json*', route => route.fulfill({
     status: 200,
     contentType: 'application/json',

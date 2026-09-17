@@ -232,7 +232,7 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 
 **文件入口：** `SceneExplorerView.vue`、`PopularSceneExplorerView.vue`、`GalleryView.vue`、`ShowcaseView.vue`、`PromptBuilderView.vue` 的实际列表与 computed/watch 依赖。先沿导入定位；搜索不到某关键字不代表没有虚拟化或缓存。
 
-- [ ] F3.1 用 Vue/浏览器性能记录定位重复挂载、宽范围响应式更新、同步过滤/排序、强制布局和图片相关尖峰；每个改动绑定一个证据。
+- [x] F3.1 用 Vue/浏览器性能记录定位重复挂载、宽范围响应式更新、同步过滤/排序、强制布局和图片相关尖峰；每个改动绑定一个证据。
 - [ ] F3.2 优先稳定 props/key、复用计算和索引、减少深层响应式追踪；不可变大集合仅在符合真实更新契约时使用 shallow 方案，不能让界面漏更新。
 - [ ] F3.3 大列表确实是瓶颈时，先复用已有窗口化/分页；补足 overscan、动态行高、键盘访问、焦点保留与滚动锚点。不要为了减少 DOM 破坏筛选完整性。
 - [ ] F3.4 消除高频读写布局交错，按帧合并可合并更新；搜索考虑输入法 composition，不能为了节流吞字或延迟按键反馈。
@@ -242,6 +242,15 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 **验收：** 过滤/排序结果与旧实现一致；快速输入不会回跳旧结果；帧时间、长任务和关键操作有配对证据；不降低素材质量、不增大无限缓存；无新增焦点和无障碍退化。
 
 **回退：** 按热点单独 revert；纯函数保留旧实现对照。Worker 失败有安全回退，不能让业务永久等待。
+
+**F3.1 回填（2026-09-17，办公机 120Hz 前台）：**
+
+- 新增测量能力（`tests/e2e/helpers/ui-fluidity-measure.ts`、`ui-fluidity.bench.ts`、`ui-fluidity-fixture.ts`）：CDP `Performance` 域的窗口级 Script / Layout / RecalcStyle 成本与计数；`thumbFormat: 'micro'` 的 1×1 PNG 对照图（请求数与 DOM 结构不变，仅解码成本≈0）；S03 分解探针（scroll-only / scroll-only-micro / filter-only / full / full-low-glass）。带 tracing 的样本单列、不混入聚合：实测 trace 会把同一窗口的 task 从 213ms 抬到 324ms、DOM 节点从 9747 抬到 22522。
+- S03 基线（`6a307f6`，3×20，59 个非 traced 样本）：100% 窗口越 1% 目标，候选比例 p50 7.14%、p95 9.52%；窗口内主线程 task p50 234ms / p95 264ms，其中 script **2.38ms**、layout 12.6ms、recalcStyle 26.2ms（`renderShareOfTask` 16.5%）、layoutCount 19、recalcStyleCount 78、缩略图请求 19。原始报告 `runtime/ui-fluidity-f0/ui-fluidity-f0.json`。
+- 分解探针（各变体单次，仅用于定位，不作统计结论）：scroll-only task 106ms / layout 1.98ms / 帧候选 3.8% / p95 帧 8.8ms；filter-only task 196ms / layout 11.0ms / 帧候选 3.3% / p95 帧 8.5ms；full task 220ms / layout 11.9ms / 帧候选 6.8% / p95 帧 **24.9ms**。报告 `runtime/ui-fluidity-f0/ui-fluidity-f0-s03-decomposition.json`。
+- **已排除的假设（每条都有对照证据）**：图片解码与光栅 —— SVG 与 1×1 PNG 的 task 差仅 −1.8～+0.8ms、帧候选比例相同；筛选/排序算法 —— script 全程 2.4ms；列表入场动画 —— `.scene-grid.stagger-container > *` 已被显式关闭；吸顶玻璃模糊 —— `full(low-glass)` 关闭 backdrop-filter（computed 值 `none` 已自证生效）后 task 不变、p95 仅从 24.9ms 降到 16.8ms，仍然掉帧。
+- 结论：纯滚动与纯筛选各自都不掉帧（p95 ≈ 8.5–8.8ms，即一帧），**只有「已滚动页面上筛选导致内容高度突变」这一叠加窗口掉帧**（p95 25ms）。因此 F3.2 的原切入点（减少响应式追踪、复用计算）不是收益所在，应先转向筛选结果变化时对已滚动文档的布局与呈现处理（F3.3/F3.4），并保持一次只改一个热点、同夹具复测。
+- 未执行：S07 前端夹具（需要真实生成/Live2D 负载）；所有变体仅在办公机 headless Chromium 上测得，帧候选仍是代理指标，必须与 F7 的真机录像配对才能关闭掉帧问题。
 
 ### F4 · 统一动效行为与空间连续性
 
