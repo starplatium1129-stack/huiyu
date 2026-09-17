@@ -139,7 +139,7 @@
       v-else-if="paged.length === 0"
       kind="filtered"
       title="没有符合当前条件的场景"
-      message="换个关键词或重置筛选，我再帮你翻翻完整档案。"
+      message="可尝试更换关键词或重置筛选，浏览完整场景档案。"
     >
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>

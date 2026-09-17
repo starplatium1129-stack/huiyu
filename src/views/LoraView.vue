@@ -10,8 +10,8 @@
     />
     <div class="lora-title-row">
       <div>
-        <h1 class="title">模型</h1>
-        <p class="subtitle">专属模型凝结着角色的容颜细节与神态气质。出图时由工坊智能调度，在此浏览核心特征与最佳推荐权重。</p>
+        <h1 class="title">角色模型库 (LoRA)</h1>
+        <p class="subtitle">专属 LoRA 模型凝结着角色的容颜细节与神态气质。出图时由工作台智能调度，在此浏览核心特征与最佳推荐权重。</p>
       </div>
     </div>
     <CreativeLibraryNav />

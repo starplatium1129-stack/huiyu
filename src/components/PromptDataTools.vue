@@ -31,11 +31,11 @@
       <div class="utility-label">创作蓝图</div>
       <div class="utility-actions">
         <button class="btn btn-ghost wide" type="button" @click="exportBlueprint"
-          title="将当前导演台的所有场景、故事、提示词与出图参数导出为独立 Blueprint JSON">
+          title="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
           <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
         </button>
         <button class="btn btn-ghost wide" type="button" @click="pickBlueprintFile"
-          title="从 Blueprint JSON 导入并回填导演台配置">
+          title="从蓝图配置文件导入并回填工作台设置">
           <ArchiveIcon name="upload" /> 导入蓝图配置
         </button>
         <input ref="blueprintFileEl" class="sr-only pb-blueprint-file-input" type="file" accept="application/json" @change="onBlueprintFilePicked" />
@@ -44,7 +44,7 @@
       <div class="utility-label">存储维护</div>
       <div class="utility-actions">
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.cleanOrphanImages()"><ArchiveIcon name="broom" /> 清理孤儿图片</button>
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.cleanOrphanImages()"><ArchiveIcon name="broom" /> 清理未引用图片</button>
       </div>
     </div>
   </details>

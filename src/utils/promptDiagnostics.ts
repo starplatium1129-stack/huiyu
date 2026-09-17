@@ -206,16 +206,16 @@ export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): Prompt
   const rawPositiveText = parts.filter(part => part.cls !== 'n').map(part => part.text).join('\n')
   if (isNaturalLanguage) {
     const weights = rawPositiveText.match(/\(([^()\n]*[a-z][^()\n]*):\s*-?\d+(?:\.\d+)?\s*\)/gi) || []
-    if (weights.length) warnings.push(`Krea 散文残留权重语法：${[...new Set(weights)].slice(0, 3).join('、')}`)
+    if (weights.length) warnings.push(`Krea 自然描述中残留权重语法（模型不识别）：${[...new Set(weights)].slice(0, 3).join('、')}`)
     const underscored = rawPositiveText.match(/[a-z0-9]+_[a-z0-9_]+/gi) || []
-    if (underscored.length) warnings.push(`Krea 散文混入下划线 token：${[...new Set(underscored)].slice(0, 3).join('、')}`)
+    if (underscored.length) warnings.push(`Krea 自然描述中混入带下划线的标签词：${[...new Set(underscored)].slice(0, 3).join('、')}`)
     const scoreQuality = rawPositiveText.match(new RegExp(`\\b(?:${QUALITY_WORDS.join('|')}|score_\\d+)\\b`, 'gi')) || []
-    if (scoreQuality.length) warnings.push(`Krea 散文混入 score/质量词：${[...new Set(scoreQuality)].slice(0, 3).join('、')}`)
-    if (negative.length && !capabilities.negative) warnings.push('Krea 分支出现负面词（Krea 负面应恒空，出现即组装 bug）')
+    if (scoreQuality.length) warnings.push(`Krea 自然描述中混入打分/质量词（建议移除）：${[...new Set(scoreQuality)].slice(0, 3).join('、')}`)
+    if (negative.length && !capabilities.negative) warnings.push('Krea 自然语言引擎无需负面词，生成时将自动忽略')
   }
   if (capabilities.promptFormat !== 'danbooru') {
     // 换行是标签流/散文的可审计边界（renderPromptPlan anima 分支），不算非 ASCII 混入。
-    if (/[^\x20-\x7e\n\r]/.test(rawPositiveText)) warnings.push('提示词混入非 ASCII 字符（英文模型将无法理解，视觉描述已按门控丢弃）')
+    if (/[^\x20-\x7e\n\r]/.test(rawPositiveText)) warnings.push('提示词混入非英文字符（绘图模型无法直接理解，生成时已自动过滤）')
   }
   const duplicateNegatives = [...new Set(negative.filter((token, index) => negative.indexOf(token) !== index))]
   if (duplicateNegatives.length) warnings.push(`负面词重复：${duplicateNegatives.slice(0, 3).join('、')}`)

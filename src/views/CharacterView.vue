@@ -66,8 +66,8 @@
               ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
               : `/prompt-builder?char=${encodeURIComponent(current.id)}`">以她开始绘制</RouterLink>
             <RouterLink class="btn btn-ghost" :to="isPopular
-              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
-              : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '看原型场景' : '看核心场景' }}</RouterLink>
+              ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
+              : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '浏览相关场景' : '查看核心场景' }}</RouterLink>
           </div>
           <!-- 简介被 CSS 截断（max-height），展开是真的在露出内容，
            所以必须是可聚焦控件并汇报 aria-expanded；原先只有 @click -->
@@ -148,7 +148,7 @@
                 <span>{{ refItem.url ? '本机暂无参考图' : '待生成' }}</span>
               </div>
               <span class="char-ref-badge">{{ refItem.shotType }}</span>
-              <div v-if="refItem.url && !unavailableReferences.has(refItem.url)" class="char-ref-hover-hint"><ArchiveIcon name="spark" /> 点击放大审查</div>
+              <div v-if="refItem.url && !unavailableReferences.has(refItem.url)" class="char-ref-hover-hint"><ArchiveIcon name="spark" /> 点击查看细节</div>
             </div>
             <div class="char-ref-info">
               <h3 class="char-ref-title">{{ refItem.name }}</h3>

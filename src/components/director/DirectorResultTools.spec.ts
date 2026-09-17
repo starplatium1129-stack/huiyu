@@ -27,7 +27,7 @@ describe('result tools', () => {
   })
   it('retains busy-state explanations and disables changes during generation', () => {
     const wrapper = mount(DirectorResultTools, { props: { ...props, generationBusy: true } })
-    for (const label of ['局部换装', '高清放大 2x', '出视频', '加入分镜']) {
+    for (const label of ['局部换装', '高清放大 2x', '生成短片', '加入分镜']) {
       const button = wrapper.findAll('button').find(item => item.text() === label)!
       expect(button.attributes('disabled')).toBeDefined()
       expect(button.attributes('title')).toContain('生成中')

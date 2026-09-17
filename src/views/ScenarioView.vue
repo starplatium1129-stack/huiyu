@@ -75,8 +75,8 @@
 
           <div class="scene-grid">
             <div class="scene-meta"><div class="label">情绪</div><div class="value">{{ a.emotion }}</div></div>
-            <div class="scene-meta"><div class="label">角色</div><div class="value">{{ currentChar }}</div></div>
-            <div class="scene-meta"><div class="label">Resolution</div><div class="value" :title="resInfo(a.res).dim">{{ a.res }}</div></div>
+            <div class="scene-meta"><div class="label">角色</div><div class="value">{{ currentChar === 'nene' ? '宁宁' : '夏目' }}</div></div>
+            <div class="scene-meta"><div class="label">建议画幅</div><div class="value" :title="resInfo(a.res).dim">{{ a.res }}</div></div>
             <div class="scene-meta"><div class="label">LoRA</div><div class="value">{{ a.lora }}</div></div>
             <div class="scene-meta"><div class="label">锁定参数 <span class="lock-badge">▣</span></div><div class="value value-dense">{{ LOCK_PARAMS }}</div></div>
           </div>
@@ -96,13 +96,13 @@
 
           <div class="neg-section">
             <div class="prompt-label prompt-label-neg">Negative</div>
-            <div class="neg-layer"><div class="neg-layer-label">基础层（永远带）</div><div class="neg-output">{{ BASE_NEG }}</div></div>
+            <div class="neg-layer"><div class="neg-layer-label">基础层（始终生效）</div><div class="neg-output">{{ BASE_NEG }}</div></div>
             <div class="neg-layer"><div class="neg-layer-label">场景特定层</div><div class="neg-output">{{ a.neg }}</div></div>
           </div>
 
           <div class="act-actions">
             <button class="btn btn-primary" type="button" @click="copyPrompt(a)">⧉ 复制本幕 Prompt</button>
-            <RouterLink :to="'/prompt-builder?scenario=' + activeScenario.id" class="btn btn-ghost">→ 去开始绘制</RouterLink>
+            <RouterLink :to="'/prompt-builder?scenario=' + activeScenario.id" class="btn btn-ghost">→ 前往工作台绘制</RouterLink>
           </div>
         </div>
       </div>
@@ -142,7 +142,7 @@ useScrollReveal()
 // 引擎参数由导演台按所选引擎自动锁定（Anima: res_multistep · CFG 4.5 · 30 步；放大二阶段 res_multistep · sgm_uniform）。
 // 2026-08-23 剧本模式激活：清掉 SD 时代的硬编码采样参数与内联 <lora:> 展示
 //（出图深链本就不携带 LoRA——LoRA 由网关受控路线管理，v18 内联标签是误导）。
-const LOCK_PARAMS = '底模参数由导演台按引擎自动锁定'
+const LOCK_PARAMS = '底模参数由工作台按引擎自动锁定'
 const BASE_NEG = 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name'
 const RES_MAP = SCENARIO_RES_MAP
 const CHARACTER_OPTIONS = [...SCENARIO_CHARACTERS] as const
@@ -170,7 +170,7 @@ function renderModules(a: ScenarioAct) {
   const char = currentChar.value
   const modPrompt = substitutePrompt(a.prompt, char)
   const modules = modPrompt.split('\n')
-  modules.push('LoRA 与采样参数由导演台引擎自动管理')
+  modules.push('LoRA 与采样参数由工作台引擎自动管理')
   return modules.map((line, i) => {
     const cls = MODULE_CLASSES[i] || 'm-q'
     const parts = line.split(',').map(tk => {

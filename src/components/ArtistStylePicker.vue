@@ -72,7 +72,7 @@
           <input
             v-model.trim="query"
             type="search"
-            placeholder="搜索画师或作品"
+            placeholder="搜索画师名、中文名或代表作…"
             aria-label="搜索画师或作品"
             autocomplete="off"
           >
@@ -114,7 +114,7 @@
         </button>
       </div>
 
-      <p v-if="!filteredOptions.length" class="artist-style-empty">没有匹配的画师风格。</p>
+      <p v-if="!filteredOptions.length" class="artist-style-empty">未找到匹配的画师风格，可尝试更换关键词或代表作名称。</p>
 
       <!-- Token 预览 -->
       <div v-if="modelTokens" class="artist-style-tokens">

@@ -127,7 +127,7 @@ async function handleStart() {
 
   const selectedPreset = presets.find(preset => preset.id === selectedPresetId.value)
   if (selectedPreset?.isNsfw && !props.adultEnabled) {
-    toast.error('请先在导演台开启成人内容，才能使用该服装预设')
+    toast.error('请先在工作台开启分级内容，才能使用该服装预设')
     return
   }
 

@@ -265,8 +265,8 @@
             <ImageCompareSlider
               :before-src="parentImageUrl || thumbUrls[current!.id]"
               :after-src="viewerUrl"
-              :before-label="parentImageUrl ? '父版本 (原图)' : '缩略预览'"
-              after-label="当前原片"
+              :before-label="parentImageUrl ? '修改前原图' : '缩略图预览'"
+              after-label="当前成片"
             />
           </div>
         </template>

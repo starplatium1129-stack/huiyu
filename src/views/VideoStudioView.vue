@@ -64,7 +64,7 @@
           <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
           <p v-else class="video-queue-empty">
             <ArchiveIcon name="image" />
-            <span>在绘图页生成图片后点击「出视频」即可带到这里；图片将作为首帧，自动锁定角色与场景。</span>
+            <span>在创作工作台生成图片后点击「生成短片」即可带到这里；图片将作为首帧，自动锁定角色与场景。</span>
           </p>
           <p v-if="videoImageUrl" class="video-install-note">
             这张图将作为故事的起点。画幅默认跟随原图，你只需描述接下来发生的动作。
@@ -86,7 +86,7 @@
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
                 <input type="file" accept="image/*" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
                 <ArchiveIcon name="image" />
-                <span>上传首帧，或从绘图页「出视频」带入</span>
+                <span>上传首帧，或从工作台「生成短片」带入</span>
               </label>
               <button v-if="videoImageUrl" class="btn btn-ghost btn-block" type="button" @click="clearFirstFrame">移除首帧</button>
             </div>

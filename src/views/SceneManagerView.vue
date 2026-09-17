@@ -41,7 +41,7 @@
       v-if="!loading && loadError"
       kind="error"
       title="场景档案读取失败"
-      :message="`${loadError} 请确认通过 localhost 访问且文件存在。`"
+      :message="`${loadError} 请确认本地服务正常运行且场景数据完好。`"
     >
       <button class="btn btn-primary" type="button" @click="loadFromStore(true)">重新读取</button>
     </ArchiveStatePanel>

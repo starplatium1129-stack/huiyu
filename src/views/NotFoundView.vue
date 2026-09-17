@@ -11,7 +11,7 @@
     <div class="notfound-actions">
       <RouterLink class="btn btn-primary" to="/">回到首页</RouterLink>
       <RouterLink class="btn btn-ghost" to="/scene-explorer">去场景库</RouterLink>
-      <RouterLink class="btn btn-ghost" to="/prompt-builder">去导演台</RouterLink>
+      <RouterLink class="btn btn-ghost" to="/prompt-builder">去工作台</RouterLink>
     </div>
   </article>
 </template>

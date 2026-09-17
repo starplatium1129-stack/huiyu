@@ -51,7 +51,7 @@
     <section class="style-tips card-info" data-reveal data-reveal-delay="3">
       <h2 class="section-title m-0">使用提示</h2>
       <ul class="tip-list">
-        <li>色板会写入导演台的「色彩情调」，并进入 Prompt。</li>
+        <li>色板会写入工作台的「色彩情调」，并进入 Prompt。</li>
         <li>需要完整色相 / 光照映射时，打开色彩剧本页。</li>
         <li>同一情绪可与场景卡、镜头、光照叠加；冲突时以场景故事为准。</li>
       </ul>

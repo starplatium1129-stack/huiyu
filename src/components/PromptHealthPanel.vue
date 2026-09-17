@@ -55,7 +55,7 @@
       <ul v-if="warnings.length" class="prompt-health-warnings" aria-label="Prompt 优化建议">
         <li v-for="warning in warnings" :key="warning">{{ warning }}</li>
       </ul>
-      <p v-else class="prompt-health-ok">结构解析正常，词条与引擎契约已完美对齐。</p>
+      <p v-else class="prompt-health-ok">提示词编译完成，格式与当前引擎完全匹配。</p>
 
       <div class="preview-actions">
         <button class="btn btn-primary" type="button" @click="emit('copy')">复制完整 Prompt</button>

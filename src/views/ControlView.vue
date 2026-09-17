@@ -148,12 +148,12 @@
           <span>打开控制面板时自动启动语音（显存紧张时不建议开启）</span>
         </ToggleSwitch>
         <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖 GPT-SoVITS。</p>
-         <p v-if="!scripts.webui || !scripts.comfy || !scripts.voiceStart" class="script-hint">
-          部分脚本未找到：
-           <span v-if="!scripts.webui">managed-webui.ps1 </span>
-           <span v-if="!scripts.comfy">managed-comfyui.ps1 </span>
-          <span v-if="!scripts.voiceStart">Start-Voice.ps1 </span>
-          <span v-if="!scripts.voiceStop">Stop-Voice.ps1 </span>
+        <p v-if="!scripts.webui || !scripts.comfy || !scripts.voiceStart" class="script-hint">
+          未检测到部分快捷启停脚本（仅影响一键启动，若服务已手动运行仍可正常连接）：
+          <span v-if="!scripts.webui">WebUI 脚本 </span>
+          <span v-if="!scripts.comfy">ComfyUI 脚本 </span>
+          <span v-if="!scripts.voiceStart">语音启动脚本 </span>
+          <span v-if="!scripts.voiceStop">语音停止脚本 </span>
         </p>
       </section>
 
@@ -381,7 +381,13 @@ const SERVICE_STOP_LABELS: Record<string, string> = {
 async function confirmServiceAction(service: string, action: string): Promise<void> {
   if (action !== 'stop') { serviceAction(service, action); return }
   const label = SERVICE_STOP_LABELS[service] || service
-  if (!(await confirmAction(`停止${label}？正在出图或配音的任务会中断。`))) return
+  const confirmed = await confirmAction({
+    title: `停止${label}？`,
+    message: '停止服务后，正在进行的绘图或语音合成任务将会中断。',
+    confirmLabel: '停止服务',
+    danger: true,
+  })
+  if (!confirmed) return
   serviceAction(service, action)
 }
 

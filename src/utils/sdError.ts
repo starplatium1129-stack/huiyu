@@ -107,7 +107,7 @@ export function classifySDError(error: unknown, backend: SDBackend = 'webui'): S
   }
   if (status === 404) {
     return report('gateway', 'SD 网关不可用',
-      '当前页面未检测到可用的 SD API 网关代理。请从控制面板启动或检查服务。',
+      '当前页面未检测到可用的绘图网关。请检查出图参数中的服务地址，或前往控制面板启动服务。',
       { id: 'open_settings', label: '查看出图参数' }, text, backend)
   }
   if (name === 'NetworkError' || status === 502 || status === 503

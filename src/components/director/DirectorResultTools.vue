@@ -16,7 +16,7 @@
           class="btn btn-ghost"
           type="button"
           :disabled="interrogateBusy"
-          :title="interrogateMode === 'caption' ? '对当前成片本地反推为Prose' : '对当前成片本地反推为Tag，可切人直出'"
+          :title="interrogateMode === 'caption' ? '提取当前画面的自然语言描述（适合 Krea）' : '提取当前画面的特征标签（适合 Anima/SD）'"
           @click="$emit('interrogateCurrent')">
           <ArchiveIcon name="search" />
           <span>{{ interrogateBusy ? '反推中…' : '反推当前图' }}</span>
@@ -68,11 +68,11 @@
           class="btn btn-ghost btn-video-action"
           type="button"
           :disabled="generationBusy"
-          :title="generationBusy ? BUSY_HINT : '将当前成片作为首帧，到视频页生成短片（场景预设自动转视频提示词）'"
+          :title="generationBusy ? BUSY_HINT : '将当前成片作为首帧，前往故事短片生成动画（场景预设自动转视频提示词）'"
           @click="$emit('goVideo')"
         >
           <ArchiveIcon name="play" />
-          <span>出视频</span>
+          <span>生成短片</span>
         </button>
         <button
           v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
@@ -95,7 +95,7 @@
           <ArchiveIcon name="play" />
           <span>去分镜短片（{{ shotsPending }}）</span>
         </button>
-        <button class="btn btn-ghost" type="button" @click="$emit('clearResult')">清除</button>
+        <button class="btn btn-ghost" type="button" title="从画布中移除当前成片（已保存的作品不受影响）" @click="$emit('clearResult')">清除画布画面</button>
           </div>
         </details>
       </div>

@@ -42,7 +42,7 @@ type StudioMode = VideoMode | 'shots'
 
 const modes: Array<{ id: StudioMode; label: string; description: string; ready: boolean; icon: ArchiveIconName }> = [
   { id: 'text', label: '文字成片', description: '一句镜头描述直接生成短片', ready: true, icon: 'play' },
-  { id: 'image', label: '图片动起来', description: '绘图页「出视频」自动带入首帧，锁定角色与场景', ready: true, icon: 'image' },
+  { id: 'image', label: '图片动起来', description: '从工作台「生成短片」自动带入首帧，锁定角色与场景', ready: true, icon: 'image' },
   { id: 'first-last-frame', label: '首尾帧过渡', description: '锁定开始与结束画面', ready: false, icon: 'gallery' },
   { id: 'shots', label: '分镜短片', description: '多镜头批量生成 · 自动尾帧衔接 · 整片拼接', ready: false, icon: 'gallery' },
 ]

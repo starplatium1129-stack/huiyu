@@ -34,7 +34,7 @@
           </div>
 
           <div v-if="pb.directorMode === 'pro'" class="base-model-picker">
-            <label for="baseModel">底模</label>
+            <label for="baseModel">基础模型 (Checkpoint)</label>
             <select v-if="drawEngine === 'sd'" id="baseModel" v-model="pb.sdModelName" :disabled="generationBusy"
               :title="generationBusy ? BUSY_HINT : undefined">
               <option value="">使用 WebUI 当前模型</option>
@@ -43,7 +43,7 @@
             <select v-else id="baseModel" :value="animaState.modelId" :disabled="generationBusy"
               :title="generationBusy ? BUSY_HINT : undefined" @change="selectAnimaModel">
               <option v-for="model in animaState.models" :key="model.id" :value="model.id" :disabled="model.available === false">
-                {{ model.label || model.id }}{{ model.available === false ? ' · 资源缺失' : '' }}
+                {{ model.label || model.id }}{{ model.available === false ? ' · 模型未安装' : '' }}
               </option>
             </select>
           </div>

@@ -53,14 +53,14 @@
           </div>
         </div>
         <div v-if="violations.length" class="art-warn show">
-          [!] 检测到 {{ violations.length }} 个违反美术规范的标签: {{ violations.join(', ') }}
+          <ArchiveIcon name="warning" /> 检测到 {{ violations.length }} 个不建议使用的标签：{{ violations.join('、') }}
         </div>
         <div class="prompt-label">自动翻译 Prompt</div>
         <div class="prompt-code" v-html="colorizedPrompt"></div>
         <div class="result-actions">
           <button class="btn btn-primary" type="button" @click="copyPrompt">⧉ 复制 Prompt</button>
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
-          <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 加载到开始绘制</RouterLink>
+          <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 带入工作台使用</RouterLink>
           <button class="btn btn-ghost" type="button" @click="selected = null"><ArchiveIcon name="refresh" /> 换一个情绪</button>
         </div>
       </div>
@@ -70,13 +70,13 @@
     <p class="note mb-3">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>
     <div class="art-ref">
       <div class="art-ref-card good">
-        <div class="art-ref-title">[+] 推荐使用</div>
+        <div class="art-ref-title"><ArchiveIcon name="success" /> 推荐使用</div>
         <div>
           <span v-for="t in GOOD_TAGS" :key="t" class="art-tag ok">{{ t }}</span>
         </div>
       </div>
       <div class="art-ref-card bad">
-        <div class="art-ref-title">[×] 避免使用</div>
+        <div class="art-ref-title"><ArchiveIcon name="close" /> 避免使用</div>
         <div>
           <span v-for="t in BANNED_TAGS" :key="t" class="art-tag no">{{ t }}</span>
         </div>

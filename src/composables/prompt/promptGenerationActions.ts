@@ -129,7 +129,13 @@ export async function upscaleCurrentResultAction(ctx: Context): Promise<void> {
 }
 export async function resetAllAction(ctx: Context): Promise<void> {
     const { pb, resetBlueprintRotation } = ctx;
-    if (!(await confirmAction('清空当前故事、场景与全部词条，重新开始？此操作不可撤销。')))
+    const confirmed = await confirmAction({
+        title: '重置当前画面配置？',
+        message: '将清空当前的故事、场景与全部自定义词条，重新开始创作。此操作不可撤销。',
+        confirmLabel: '清空重置',
+        danger: true,
+    });
+    if (!confirmed)
         return;
     if (pb.isPopular) {
         pb.setStudioSubject();

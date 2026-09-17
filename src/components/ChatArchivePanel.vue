@@ -1,9 +1,9 @@
 <template>
-  <section class="chat-archive-panel" aria-label="聊天记忆归档">
+  <section class="chat-archive-panel" aria-label="对话历史归档">
     <div class="archive-panel-head">
       <div>
-        <strong>记忆归档</strong>
-        <small>对话超 20 条时，旧消息先存入归档而不是丢弃；可导出、导入或并回对话。</small>
+        <strong>对话归档</strong>
+        <small>对话超过 20 条时，早期消息自动转入本地归档；可随时导出备份或并回当前对话。</small>
       </div>
       <button class="btn btn-ghost btn-sm" type="button" @click="$emit('close')">收起</button>
     </div>
@@ -112,9 +112,15 @@ function restoreCurrent() {
 
 async function clearArchive() {
   if (!totalCount.value) return
-  if (!(await confirmAction('清空全部聊天归档？建议先导出 JSON 或 Markdown。'))) return
+  const confirmed = await confirmAction({
+    title: '清空全部对话归档？',
+    message: '本地保存的历史归档消息将被彻底清空。建议在操作前先导出 JSON 或 Markdown 备份。',
+    confirmLabel: '清空归档',
+    danger: true,
+  })
+  if (!confirmed) return
   props.storage.clearArchive()
-  emit('notice', '聊天归档已清空。', 'info')
+  emit('notice', '对话归档已清空。', 'info')
 }
 </script>
 

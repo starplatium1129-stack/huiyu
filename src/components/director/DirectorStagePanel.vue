@@ -83,7 +83,7 @@
             </button>
             <button class="btn btn-ghost" type="button"
               :disabled="interrogateBusy"
-              :title="(interrogateMode === 'caption' ? '本地反推为自然语言Prose（Krea2）' : '本地反推为Danbooru Tag（Anima/SD）') + '；聚焦此按钮后可直接粘贴图片'"
+              :title="(interrogateMode === 'caption' ? '从图片提取自然语言描述（适合 Krea）' : '从图片提取特征标签（适合 Anima/SD）') + '；也可聚焦后直接粘贴图片'"
               @click="triggerInterrogatePick"
               @paste="onInterrogatePaste">
               <ArchiveIcon name="search" />
@@ -107,7 +107,7 @@
         before-label="换装前原图"
         after-label="换装后成片"
       />
-      <img v-else class="result-image" :src="displayResultUrl" alt="生成的图片" />
+      <img v-else class="result-image" :src="displayResultUrl" alt="当前生成的画面成片" />
       <DirectorResultTools
         v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, savingResult, resultTemporary }"
         @interrogateCurrent="interrogateCurrentImage" @interrogateUpload="triggerInterrogatePick"

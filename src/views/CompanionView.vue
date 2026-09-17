@@ -192,7 +192,7 @@
               class="btn btn-secondary btn-sm"
               @click="inspectClipboardImage"
             >让{{ currentCharacter.name }}看看</button>
-            <button type="button" class="btn btn-primary btn-sm" @click="acceptClipboardCard">{{ clipboardCard.kind === 'image' ? '存入作品册' : '发给角色' }}</button>
+            <button type="button" class="btn btn-primary btn-sm" @click="acceptClipboardCard">{{ clipboardCard.kind === 'image' ? '存入作品册' : `发给${currentCharacter.name}` }}</button>
             <button type="button" class="btn btn-ghost btn-sm" @click="dismissClipboardCard">忽略</button>
           </div>
         </div>

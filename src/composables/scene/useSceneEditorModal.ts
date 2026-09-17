@@ -134,7 +134,13 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
 
   async function closeModal() {
     if (editing.value && modalSnapshot.value && serializeModal() !== modalSnapshot.value) {
-      if (!(await confirmAction('有未保存的修改，确定放弃？'))) return
+      const confirmed = await confirmAction({
+        title: '放弃未保存的修改？',
+        message: '当前编辑的内容尚未保存，离开弹窗将丢失本次修改。',
+        confirmLabel: '放弃修改',
+        danger: true,
+      })
+      if (!confirmed) return
     }
     editing.value = null
     editingId.value = ''

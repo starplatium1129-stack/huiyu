@@ -60,7 +60,7 @@
           <input v-model="steps" :disabled="batchActive || submitting" type="checkbox" :true-value="4" :false-value="8" />
           <span>
             <strong>极速 4 步（整批）</strong>
-            <small>Turbo 蒸馏 4 步采样，约快一倍（实测 fast 5s 130s → 80s），质量略降，适合试镜与长片。</small>
+            <small>采用 Turbo 蒸馏采样，耗时减少约 40%，画质微降，适合快速试镜与连贯长片。</small>
           </span>
         </label>
 
@@ -79,7 +79,7 @@
         <div class="shot-reference-section">
           <div class="shot-reference-header-row">
             <div class="shot-reference-title-group">
-              <span class="field-label">角色参考卡（Ref2VA · 跨镜锁定身份 · 支持多角色 4 视角装配）</span>
+              <span class="field-label">角色参考卡（跨镜锁定形象 · 支持多角色 4 视角装配）</span>
               <span v-if="loadingRefCardIndex !== null" class="shot-ref-loading">
                 <ArchiveIcon name="spark" /> 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 自动装配 4 视角基准图...
               </span>
@@ -112,7 +112,7 @@
                   @change="onCardCharacterSelected(cardIndex, $event)"
                 >
                   <option value="">选择角色预设...</option>
-                  <optgroup label="主站主角">
+                  <optgroup label="专属角色">
                     <option value="nene">绫地宁宁</option>
                     <option value="natsume">四季夏目</option>
                   </optgroup>
@@ -212,14 +212,14 @@
             class="btn btn-ghost"
             type="button"
             :disabled="!storyboardBlueprintId || storyboardBusy || batchActive || submitting"
-            title="选场景蓝图，服务端按起承转合生成四镜剧本（台词取蓝图原文），整体替换当前镜头清单；零 LLM 依赖、即时返回"
+            title="选择场景蓝图，按起承转合即时生成四镜分镜剧本（自动提取经典台词并替换当前清单）"
             @click="runStoryboard"
           ><ArchiveIcon name="gallery" /> {{ storyboardBusy ? '生成中…' : '生成剧本' }}</button>
           <button
             class="btn btn-ghost"
             type="button"
             :disabled="firstFrameBusy || storyboardBusy || batchActive || shots.length === 0 || submitting"
-            title="逐镜走 Krea2 增强链路生成首帧（蓝图散文 + 景别构图句），自动上传回填；已有首帧的镜头跳过；角色身份由参考卡（Ref2VA）锁定"
+            title="逐镜自动生成高质量首帧画面并回填；已有首帧的镜头将自动跳过，角色形象由参考卡锁定"
             @click="generateFirstFrames(shots, aspectRatio)"
           >{{ firstFrameBusy ? `首帧 ${firstFrameProgress}…` : '一键首帧' }}</button>
           <button

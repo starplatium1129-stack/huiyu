@@ -93,7 +93,7 @@
                 <span class="batch-prompt-preview-badge">自动剔除原角色特征，动态注入选中角色 DNA</span>
               </div>
               <p class="batch-prompt-preview-text">
-                {{ currentPromptPreview || '（当前提示词为空，请先在导演台输入故事、选择场景或添加标签）' }}
+                {{ currentPromptPreview || '（当前提示词为空，请先在工作台输入故事、选择场景或添加标签）' }}
               </p>
             </div>
 

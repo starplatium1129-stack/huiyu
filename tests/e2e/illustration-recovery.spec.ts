@@ -132,7 +132,7 @@ failureCase('P1', '404 页插图占位可读且返回入口可用并恢复', asy
   await expect(page.locator('.notfound-chibi-fallback .notfound-fallback-text')).toHaveText('插图暂未加载')
   await expect(page.locator('.notfound-page h1')).toHaveText('页面走丢了')
   await expect(page.locator('.notfound-path')).toContainText('/no-such-page-glm')
-  for (const label of ['回到首页', '去场景库', '去导演台']) {
+  for (const label of ['回到首页', '去场景库', '去工作台']) {
     const link = page.getByRole('link', { name: label })
     await expect(link).toBeVisible()
     await expect(link).toBeEnabled()

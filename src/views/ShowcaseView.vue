@@ -62,8 +62,8 @@
     <ArchiveStatePanel
       v-else-if="!filtered.length"
       :kind="entries.length ? 'filtered' : 'empty'"
-      :title="entries.length ? '这批样张里没有你要的' : '画册还没有收录样张'"
-      :message="entries.length ? '换个关键词或筛选，我再帮你找找看。' : '样张目录已读取，发布样张后可刷新画册查看。'"
+      :title="entries.length ? '没有匹配的参考样张' : '画册暂未收录样张'"
+      :message="entries.length ? '可尝试更换关键词或重置筛选条件，重新检索参考样张。' : '样张目录已读取，发布样张后可刷新画册查看。'"
     >
       <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>

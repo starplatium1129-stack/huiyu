@@ -171,7 +171,13 @@ export function useSceneManagerWorkspace() {
     }
     async function closeBlueprintModal() {
         if (bpEditing.value && bpSnapshot.value && serializeBlueprintModal() !== bpSnapshot.value) {
-            if (!(await confirmAction('蓝图有未保存的修改，确定放弃？')))
+            const confirmed = await confirmAction({
+                title: '放弃未保存的蓝图修改？',
+                message: '当前编辑的蓝图尚未保存，放弃后修改将丢失。',
+                confirmLabel: '放弃修改',
+                danger: true,
+            });
+            if (!confirmed)
                 return;
         }
         bpEditing.value = null;
@@ -306,7 +312,12 @@ export function useSceneManagerWorkspace() {
     onBeforeRouteLeave(async () => {
         if (!dirty.value)
             return true;
-        return confirmAction('场景修改尚未保存到项目，仍要离开吗？');
+        return confirmAction({
+            title: '离开场景管理？',
+            message: '场景修改尚未保存到项目，离开后未保存的改动将丢失。',
+            confirmLabel: '离开页面',
+            danger: true,
+        });
     });
     onMounted(() => {
         window.addEventListener('beforeunload', onBeforeUnload);
@@ -320,7 +331,15 @@ export function useSceneManagerWorkspace() {
         if (reloadRunning || saving.value || toolRunning.value || previewing.value || importConfirming.value) return;
         reloadRunning = true;
         try {
-        if (dirty.value && !(await confirmAction('重新读取会丢弃本地未保存修改。请先导出需要保留的草稿，确认继续？'))) return;
+        if (dirty.value) {
+            const confirmed = await confirmAction({
+                title: '重新读取场景数据？',
+                message: '重新读取将丢弃本地未保存的修改。如有需要请先导出草稿备份。',
+                confirmLabel: '重新读取',
+                danger: true,
+            });
+            if (!confirmed) return;
+        }
         if (saving.value || toolRunning.value || previewing.value || importConfirming.value) return;
         loading.value = true;
         const draftBefore = sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() });

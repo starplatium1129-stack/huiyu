@@ -11,7 +11,7 @@
         @click.stop.prevent="$emit('reset')">恢复默认</button>
     </summary>
     <div class="controls-grid">
-      <div class="ctrl"><label :for="idOf('cfg')">CFG</label>
+      <div class="ctrl"><label :for="idOf('cfg')">相关性 (CFG)</label>
         <input :id="idOf('cfg')" v-model.number="params.cfg" class="input ctrl-num" type="number"
           min="1" max="20" step="0.5" :list="idOf('cfg-presets')"
           title="提示词遵循强度：值越高越贴近提示词，过低画面会漂。常用 5–8，也可直接输入任意值。"
@@ -20,7 +20,7 @@
           <option v-for="v in CFG_PRESETS" :key="v" :value="v"></option>
         </datalist>
       </div>
-      <div class="ctrl"><label :for="idOf('steps')">Steps</label>
+      <div class="ctrl"><label :for="idOf('steps')">步数 (Steps)</label>
         <input :id="idOf('steps')" v-model.number="params.steps" class="input ctrl-num" type="number"
           min="1" max="150" step="1" :list="idOf('steps-presets')"
           title="采样步数：越多细节越足、耗时越长，常用 20-40，也可直接输入任意值。"
@@ -29,12 +29,12 @@
           <option v-for="v in STEPS_PRESETS" :key="v" :value="v"></option>
         </datalist>
       </div>
-      <div class="ctrl"><label :for="idOf('sampler')">Sampler</label>
+      <div class="ctrl"><label :for="idOf('sampler')">采样器 (Sampler)</label>
         <select :id="idOf('sampler')" v-model="params.sampler" title="采样器：决定去噪方式与画面质感。" @change="touch('sampler')">
           <option v-for="sampler in samplerOptions" :key="sampler">{{ sampler }}</option>
         </select>
       </div>
-      <div class="ctrl"><label :for="idOf('scheduler')">Scheduler</label>
+      <div class="ctrl"><label :for="idOf('scheduler')">调度器 (Scheduler)</label>
         <select :id="idOf('scheduler')" v-model="params.scheduler" title="调度器：配合采样器控制去噪节奏，一般保持自动。" @change="touch('scheduler')">
           <option value="">自动</option>
           <option v-for="scheduler in schedulerOptions" :key="scheduler">{{ scheduler }}</option>
@@ -45,17 +45,17 @@
         <label title="由模型 profile 注入的质量前缀，无需手写。">质量前缀</label>
       </div>
       <div class="ctrl toggle-row">
-        <ToggleSwitch v-model="params.negative" label="负面" />
-        <label title="负面提示词，防止常见缺陷。">负面</label>
+        <ToggleSwitch v-model="params.negative" label="负面提示词" />
+        <label title="启用负面提示词，防止常见画面缺陷与多余元素。">负面提示词</label>
       </div>
       <div class="ctrl ctrl-seed">
-        <ToggleSwitch v-model="params.seedLock" class="seed-lock-label" label="锁定 seed"><span>锁定 seed</span></ToggleSwitch>
+        <ToggleSwitch v-model="params.seedLock" class="seed-lock-label" label="固定随机种子 (Seed)"><span>固定随机种子 (Seed)</span></ToggleSwitch>
         <div class="seed-input-wrap">
           <input type="number" v-model.number="params.seed" min="-1" step="1" placeholder="-1"
             aria-label="Seed，填 -1 表示随机">
           <button class="btn btn-ghost btn-mini" type="button" :disabled="resultSeed == null" @click="$emit('reuse-seed')">复用</button>
         </div>
-        <small class="ctrl-hint">{{ params.seedLock ? '将复用固定 seed' : '不锁定时使用随机 seed' }}</small>
+        <small class="ctrl-hint">{{ params.seedLock ? '锁定后复用当前固定 Seed' : '未锁定时每次随机生成 Seed' }}</small>
       </div>
       <div v-if="params.negative" class="ctrl ctrl-full negative-editor">
         <label :for="idOf('negative')">负面提示词</label>

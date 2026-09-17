@@ -443,7 +443,13 @@ export function useCharacterRoomSession() {
   async function clearCharacterConversation() {
     const messages = storage.messages(activeChar.value)
     if (!messages.length) return
-    if (!(await confirmAction('清空当前角色的这段本地对话？此操作无法撤销。'))) return
+    const confirmed = await confirmAction({
+      title: '清空当前对话？',
+      message: '将清空当前角色的本地对话记录并开始新对话，此操作无法撤销。',
+      confirmLabel: '清空对话',
+      danger: true,
+    })
+    if (!confirmed) return
     if (busy.value) abortCurrentRequest(true)
     const mids = messages.map(message => message.mid).filter(Boolean)
     voice.stop({ preserveMessageAudio: true, silent: true })
@@ -458,7 +464,13 @@ export function useCharacterRoomSession() {
       || Object.values(chatMemory.value.byCharacter).some(items => items.length > 0)
       || Object.values(archiveCounts).some(count => count > 0)
     if (!hasMemory) return
-    if (!(await confirmAction('清除宁宁和夏目的全部本地对话、归档与长期记忆？此操作无法撤销。'))) return
+    const confirmed = await confirmAction({
+      title: '重置所有对话与聊天数据？',
+      message: '将彻底清空宁宁与夏目的全部对话记录、历史归档、长期事实记忆，并重置您的个人称呼档案。此操作无法撤销。',
+      confirmLabel: '清空并重置',
+      danger: true,
+    })
+    if (!confirmed) return
     if (busy.value) abortCurrentRequest(true)
     voice.stop({ preserveMessageAudio: false, silent: true })
     storage.clear()
@@ -467,7 +479,7 @@ export function useCharacterRoomSession() {
     const memorySaved = persistChatMemory()
     userProfile.value = { callName: '', relationship: 'atelier_owner', note: '' }
     settingsRepository.remove({ key: CHAT_USER_PROFILE_KEY })
-    if (memorySaved) setError('全部本地聊天记忆已清除。', 'info', 3000)
+    if (memorySaved) setError('全部本地聊天数据已重置。', 'info', 3000)
   }
 
   function onAutoVoiceChange() {
