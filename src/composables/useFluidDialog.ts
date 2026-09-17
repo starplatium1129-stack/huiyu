@@ -12,11 +12,15 @@ import { useFluidSurface } from './useFluidSurface'
 let modalLocks = 0
 let previousOverflow = ''
 let previousPaddingRight = ''
+let previousScrollX = 0
+let previousScrollY = 0
 
 function lockPageScroll() {
   if (modalLocks++ > 0) return
   const root = document.documentElement
   const gutter = window.innerWidth - root.clientWidth
+  previousScrollX = window.scrollX
+  previousScrollY = window.scrollY
   previousOverflow = root.style.overflow
   previousPaddingRight = root.style.paddingRight
   root.style.overflow = 'hidden'
@@ -29,6 +33,17 @@ function unlockPageScroll() {
   const root = document.documentElement
   root.style.overflow = previousOverflow
   root.style.paddingRight = previousPaddingRight
+  const restore = () => {
+    if (window.scrollX !== previousScrollX || window.scrollY !== previousScrollY) {
+      window.scrollTo(previousScrollX, previousScrollY)
+    }
+  }
+  restore()
+  // Native dialog focus restoration can run after the close event and move the
+  // page again; let that focus task settle before the final bounded correction.
+  if (typeof window.requestAnimationFrame === 'function') {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(restore))
+  }
 }
 
 /** Keep native focus containment until exit ends; reopening preserves current motion. */
@@ -37,6 +52,7 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
   let intention = 0
   let locked = false
   let listenerTarget: HTMLDialogElement | null = null
+  let returnFocus: HTMLElement | null = null
   /**
    * 原生 close 事件在本轮任务队列末尾派发。`close(() => open())` 这类同轮重开会在
    * 事件到达前重新 showModal，此时弹窗仍然是打开状态，旧事件不能把重开所需持有的
@@ -45,6 +61,13 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
   function onNativeClose() {
     if (dialog.value?.open) return
     releaseScrollLock()
+    const target = returnFocus
+    returnFocus = null
+    if (!target || !target.isConnected || target.closest('[inert], [hidden]')) return
+    const focus = () => target.focus({ preventScroll: true })
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(() => window.requestAnimationFrame(focus))
+    } else focus()
   }
   function trackClose(el: HTMLDialogElement) {
     if (listenerTarget === el) return
@@ -62,6 +85,7 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
     if (!el) return
     intention++
     if (!el.open) {
+      returnFocus = source && source !== document.body ? source : null
       surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
       el.showModal()
       trackClose(el)
@@ -85,6 +109,7 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
   }
   function dispose() {
     intention++
+    returnFocus = null
     releaseScrollLock()
     // 卸载时 Vue 会先把模板 ref 置空，这里回退到实际打开过的那个元素，
     // 否则会留下一个仍处于 open 状态的游离 dialog 和它的 close 监听。

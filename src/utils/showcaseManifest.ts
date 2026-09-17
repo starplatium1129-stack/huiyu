@@ -49,6 +49,9 @@ export interface ShowcaseEntry {
   /** 相对 showcase 根目录的大图/缩略图路径；缺省时按 id 约定（{id}.jpg）推导 */
   image?: string
   thumb?: string
+  /** Optional source dimensions used to reserve card space before the image decodes. */
+  width?: number
+  height?: number
   /** 生成版本元数据；缺省时 UI 不渲染元数据行 */
   meta?: ShowcaseGenMeta
   /** 完整 prompt / negative；新发布条目保留用于审计，UI 不强制展示 */
@@ -81,6 +84,11 @@ function nonNegativeNumber(value: unknown): number | undefined {
 
 function optionalString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim() ? value.trim() : undefined
+}
+
+function optionalDimension(value: unknown): number | undefined {
+  const number = typeof value === 'number' ? value : Number(value)
+  return Number.isInteger(number) && number > 0 ? number : undefined
 }
 
 function parseMeta(value: unknown): ShowcaseGenMeta | undefined {
@@ -168,6 +176,10 @@ function parseEntry(value: unknown): ShowcaseEntry | null {
   if (image) entry.image = image
   const thumb = optionalString(value.thumb)
   if (thumb) entry.thumb = thumb
+  const width = optionalDimension(value.width)
+  const height = optionalDimension(value.height)
+  if (width !== undefined) entry.width = width
+  if (height !== undefined) entry.height = height
   const meta = parseMeta(value.meta)
   if (meta) entry.meta = meta
   const prompt = optionalString(value.prompt)

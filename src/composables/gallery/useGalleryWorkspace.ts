@@ -13,7 +13,7 @@ import type { LoraMeta,Scene } from '@/stores/sceneStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
 import { blobThumbDataUrl,thumbKey } from '@/utils/imageThumb';
-import { computed,nextTick,onActivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
+import { computed,nextTick,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
 import type { LocationQueryRaw } from 'vue-router';
 import { useRoute,useRouter } from 'vue-router';
 import { dayGroup,formatDate,safeImageUrl } from './galleryHelpers';
@@ -108,6 +108,7 @@ export function useGalleryWorkspace() {
     let viewerObjectUrl = '';
     let viewerLoadToken = 0;
     let unmounted = false;
+    let viewActive = true;
     /* ---------- 派生数据 ---------- */
     const visible = computed(() => {
         let source = favoriteOnly.value ? history.value.filter(i => i.favorite) : history.value.slice();
@@ -304,8 +305,7 @@ export function useGalleryWorkspace() {
         async function worker() {
             while (index < pending.length) {
                 const item = pending[index++];
-                if (unmounted)
-                    return;
+                if (unmounted || !viewActive) return;
                 if (!item.image_id)
                     continue;
                 try {
@@ -326,8 +326,7 @@ export function useGalleryWorkspace() {
         let resolved = false;
         try {
             const blob = item.image_id ? await imgGet(item.image_id) : null;
-            if (unmounted)
-                return;
+            if (unmounted || !viewActive) return;
             if (blob) {
                 cardUrls[item.id] = trackUrl(URL.createObjectURL(blob));
                 resolved = true;
@@ -392,7 +391,7 @@ export function useGalleryWorkspace() {
         pumpCardQueue();
     }
     function pumpCardQueue() {
-        if (unmounted) { cardQueue.length = 0; queuedCardIds.clear(); return; }
+        if (unmounted || !viewActive) { cardQueue.length = 0; queuedCardIds.clear(); return; }
         while (cardWorkers < CARD_CONCURRENCY && cardQueue.length) {
             const item = cardQueue.shift()!;
             cardWorkers += 1;
@@ -411,8 +410,7 @@ export function useGalleryWorkspace() {
      * unobserve 会一直被 IntersectionObserver 强引用——所以每次全量重挂。
      */
     function scanWallCards() {
-        if (!shellEl.value || !visible.value.length)
-            return;
+        if (!viewActive || !shellEl.value || !visible.value.length) return;
         if (!cardObserver) {
             cardObserver = new IntersectionObserver(entries => {
                 for (const entry of entries) {
@@ -636,10 +634,8 @@ export function useGalleryWorkspace() {
      * 列表若真有变化，watch(visible) 会自动补缩略图并重挂观察器。
      */
     let activatedOnce = false;
-    onActivated(() => {
-        if (!activatedOnce) { activatedOnce = true; return; }
-        void loadGalleryStorage().then(compareFromRoute);
-    });
+    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void nextTick(() => { scanWallCards(); if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
+    onDeactivated(() => { viewActive = false; closeViewer(); document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear(); cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear(); });
     onUnmounted(() => {
         unmounted = true;
         viewerLoadToken += 1;
@@ -673,14 +669,12 @@ export function useGalleryWorkspace() {
     const sentinelEl = ref<HTMLElement | null>(null);
     let moreObserver: IntersectionObserver | null = null;
     function loadMoreIfNeeded() {
-        if (!hasMoreToRender.value)
-            return;
+        if (!viewActive || !hasMoreToRender.value) return;
         renderLimit.value = Math.min(renderLimit.value + PAGE_SIZE, visible.value.length);
         // 极端情况：新页仍不足以把哨兵推出视口（如全部同比例小图）。
         // nextTick 后再探测一次，直到哨兵离开视口或加载完毕，保证分页总能继续。
         void nextTick(() => {
-            if (!hasMoreToRender.value || !sentinelEl.value)
-                return;
+            if (!viewActive || !hasMoreToRender.value || !sentinelEl.value) return;
             if (sentinelEl.value.getBoundingClientRect().top < window.innerHeight + 800)
                 loadMoreIfNeeded();
         });

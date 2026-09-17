@@ -111,6 +111,25 @@ describe('modal page scroll lock', () => {
     expect(dialog.open).toBe(false)
     expect(overflow()).toBe('')
   })
+
+  it('restores the page scroll position after closing', () => {
+    const vm = spawn(), dialog = dialogOf(vm)
+    const originalScrollTo = window.scrollTo
+    const originalScrollY = Object.getOwnPropertyDescriptor(window, 'scrollY')
+    let scrollY = 420
+    Object.defineProperty(window, 'scrollY', { configurable: true, get: () => scrollY })
+    window.scrollTo = ((_: number, top: number) => { scrollY = top }) as typeof window.scrollTo
+    try {
+      vm.open(null)
+      scrollY = 0
+      vm.close()
+      flushNativeClose(dialog)
+      expect(scrollY).toBe(420)
+    } finally {
+      window.scrollTo = originalScrollTo
+      if (originalScrollY) Object.defineProperty(window, 'scrollY', originalScrollY)
+    }
+  })
 })
 
 describe('isBackdropClick predicate', () => {

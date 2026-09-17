@@ -94,6 +94,52 @@ test('a failed media load can be retried in place', async ({ page }) => {
   await expect(page.locator('.sample-visual').first()).toBeVisible()
 })
 
+test('showcase thumbnails reserve their declared dimensions before decoding', async ({ page }) => {
+  await installShowcaseFixture(page)
+  await page.goto('/showcase')
+  const visual = page.locator('.sample-visual').first()
+  await expect(visual).toBeVisible()
+  const geometry = await visual.evaluate(element => {
+    const image = element.querySelector('img') as HTMLImageElement | null
+    const style = getComputedStyle(element)
+    const ratio = style.aspectRatio.split('/').map(value => Number(value.trim()))
+    return {
+      aspectRatio: ratio[1] ? ratio[0] / ratio[1] : Number(style.aspectRatio),
+      width: image?.getAttribute('width'),
+      height: image?.getAttribute('height'),
+    }
+  })
+  expect(geometry.aspectRatio).toBeCloseTo(832 / 1216, 3)
+  expect(geometry.width).toBe('832')
+  expect(geometry.height).toBe('1216')
+})
+
+test('showcase thumbnails without declared dimensions keep the image natural ratio', async ({ page }) => {
+  await installShowcaseFixture(page)
+  await page.goto('/showcase')
+  const visual = page.locator('.sample-visual').nth(1)
+  await expect(visual).toBeVisible()
+  await expect(visual.locator('.sample-image-ready')).toHaveCount(1)
+  const geometry = await visual.evaluate(element => {
+    const image = element.querySelector('img') as HTMLImageElement | null
+    const box = element.getBoundingClientRect()
+    const frame = image?.getBoundingClientRect()
+    return {
+      aspectRatio: getComputedStyle(element).aspectRatio,
+      hasDeclaredSize: image?.hasAttribute('width') || image?.hasAttribute('height'),
+      boxWidth: box.width,
+      boxHeight: box.height,
+      imageWidth: frame?.width ?? 0,
+      imageHeight: frame?.height ?? 0,
+    }
+  })
+  // 未声明尺寸不得凭空锁比例，否则 0.684 / 横构图的真实样张会被加留白边
+  expect(geometry.aspectRatio).toBe('auto')
+  expect(geometry.hasDeclaredSize).toBe(false)
+  expect(geometry.imageWidth).toBeCloseTo(geometry.boxWidth, 0)
+  expect(geometry.imageHeight).toBeCloseTo(geometry.boxHeight, 0)
+})
+
 test('character names can be found directly and selected with Enter', async ({ page }) => {
   await page.goto('/popular-scenes')
   await page.getByRole('searchbox', { name: '搜索角色或作品' }).fill('芙莉莲')

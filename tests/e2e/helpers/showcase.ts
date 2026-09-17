@@ -7,7 +7,8 @@ export async function installShowcaseFixture(page: Page, options: { failFirst?: 
     requests++
     if (options.failFirst && requests === 1) return route.fulfill({ status: 503, json: {} })
     return route.fulfill({ json: { entries: [
-      { id: 'sc001', title: '测试场景', char: 'nene', type: 'scene', rating: 'All' },
+      { id: 'sc001', title: '测试场景', char: 'nene', type: 'scene', rating: 'All', width: 832, height: 1216 },
+      // 第二条不带尺寸：真实发布集合的 manifest 就是这样，页面必须退回原图自然比例。
       { id: 'pc_raiden_shogun_raiden_shogun_tenshukaku', title: '雷电将军 · 天守阁内廷', char: 'raiden_shogun', displayName: '雷电将军', type: 'popular', rating: 'All' },
     ] } })
   })

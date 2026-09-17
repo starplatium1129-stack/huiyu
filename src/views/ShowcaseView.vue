@@ -74,9 +74,9 @@
         class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }"
         :data-rating="entry.rating"
       >
-        <button class="sample-visual" type="button" :aria-label="'查看 ' + entry.title + ' 大图'" @click="openViewer(entry.id)">
+        <button class="sample-visual" :class="{ 'sample-visual-measured': hasRatio(entry) }" type="button" :style="{ '--sample-ratio': sampleRatio(entry) }" :aria-label="'查看 ' + entry.title + ' 大图'" @click="openViewer(entry.id)">
           <img v-if="!brokenThumbs.has(entry.id)" class="sample-image" :class="{ 'sample-image-ready': loadedThumbs.has(entry.id) }" :src="thumbSrc(entry)" :alt="entry.title"
-            loading="lazy" decoding="async" @load="markThumbLoaded(entry)" @error="markThumbError(entry)" />
+            :width="entry.width" :height="entry.height" loading="lazy" decoding="async" @load="markThumbLoaded(entry)" @error="markThumbError(entry)" />
           <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span>
           <span class="sample-shade"></span>
           <span class="sample-badges">
@@ -241,6 +241,13 @@ function thumbSrc(entry: ShowcaseEntry) {
 }
 function imgSrc(entry: ShowcaseEntry) {
   return entry.image ? `/scene-showcase/${entry.image}?cv=${imgVersion.value}&v=${viewerVersion.value}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}&v=${viewerVersion.value}`
+}
+/** 只有 manifest 明确给出尺寸时才锁比例框；缺失时保持原图的自然高度，避免留白边 */
+function hasRatio(entry: ShowcaseEntry): boolean {
+  return Boolean(entry.width && entry.height)
+}
+function sampleRatio(entry: ShowcaseEntry): string {
+  return entry.width && entry.height ? `${entry.width} / ${entry.height}` : '3 / 4'
 }
 function markThumbError(entry: ShowcaseEntry) {
   brokenThumbs.value = new Set([...brokenThumbs.value, entry.id])
@@ -484,10 +491,14 @@ onUnmounted(() => {
 @keyframes showcaseSampleIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 .sample:hover { border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .sample-visual { display:block; width:100%; padding:0; border:0; background:var(--art-mat); color:var(--on-art-primary); text-align:left; cursor:zoom-in; position:relative; overflow:hidden; }
+/* 已知尺寸时才预留比例框；未知尺寸退回原图自然高度，保持每张图原始比例 */
+.sample-visual-measured { aspect-ratio:var(--sample-ratio, 3 / 4); }
 .sample-visual:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .sample-image { width:100%; height:auto; display:block; background:var(--art-mat); opacity:0; filter:blur(7px); transition:opacity var(--motion-route) var(--ease-out),filter var(--motion-atmosphere) var(--ease-out),transform var(--motion-route) var(--ease-out); }
+.sample-visual-measured .sample-image { height:100%; object-fit:contain; }
 .sample-image-ready { opacity:1; filter:blur(0); }
 .sample-image-fallback { display:grid; min-height:260px; place-items:center; color:var(--text-muted); font-size:var(--fs-glyph); }
+.sample-visual-measured .sample-image-fallback { height:100%; min-height:0; }
 /* R18 遮罩优先于渐进模糊：未悬停时始终是深模糊 */
 .sample-r18 .sample-image,
 .sample-r18 .sample-image,

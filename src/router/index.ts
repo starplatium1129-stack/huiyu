@@ -5,6 +5,45 @@ import { prefersReducedMotion } from '@/utils/motionPreference'
 import { needsDocumentReload } from './documentPolicy'
 import { createRoutePrefetcher } from './prefetch'
 export { needsDocumentReload } from './documentPolicy'
+export { prefetchRouteResources } from './prefetch'
+
+/** Keep a bounded window-scroll snapshot for explicit SPA returns to cached pages. */
+const SCROLL_MEMORY_ROUTES = new Set(['/scene-explorer', '/showcase', '/gallery', '/prompt-builder', '/video-studio'])
+const SCROLL_MEMORY_LIMIT = 16
+const routeScrollMemory = new Map<string, { left: number; top: number }>()
+let pendingScrollRestoreFrame = 0
+
+function rememberRouteScroll(path: string) {
+  if (typeof window === 'undefined' || !SCROLL_MEMORY_ROUTES.has(path.split(/[?#]/, 1)[0] || '')) return
+  routeScrollMemory.delete(path)
+  routeScrollMemory.set(path, { left: window.scrollX, top: window.scrollY })
+  while (routeScrollMemory.size > SCROLL_MEMORY_LIMIT) routeScrollMemory.delete(routeScrollMemory.keys().next().value!)
+}
+
+function cancelPendingScrollRestore() {
+  if (!pendingScrollRestoreFrame || typeof window === 'undefined') return
+  window.cancelAnimationFrame(pendingScrollRestoreFrame)
+  pendingScrollRestoreFrame = 0
+}
+
+/** Retry after async page data expands the document, avoiding a clamped return position. */
+function scheduleScrollRestore(path: string, position: { left: number; top: number }) {
+  if (typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') return
+  cancelPendingScrollRestore()
+  const started = performance.now()
+  const retry = () => {
+    pendingScrollRestoreFrame = 0
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`
+    const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+    if (current !== path) return
+    if (maxTop + 2 < position.top && performance.now() - started < 1500) {
+      pendingScrollRestoreFrame = window.requestAnimationFrame(retry)
+      return
+    }
+    window.scrollTo(position.left, Math.min(position.top, maxTop))
+  }
+  pendingScrollRestoreFrame = window.requestAnimationFrame(retry)
+}
 
 /**
  * Live2D（PixiJS）编译着色器要用 new Function，需要 CSP 的 'unsafe-eval'。
@@ -49,11 +88,29 @@ const router = createRouter({
   ],
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition
+    cancelPendingScrollRestore()
+    if (savedPosition) {
+      routeScrollMemory.delete(to.fullPath)
+      return savedPosition
+    }
     if (to.path === from.path && !to.hash && !from.hash) return false
     if (to.hash) return { el: to.hash, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }
+    const remembered = routeScrollMemory.get(to.fullPath)
+    if (remembered) {
+      routeScrollMemory.delete(to.fullPath)
+      scheduleScrollRestore(to.fullPath, remembered)
+      return { ...remembered, behavior: 'auto' }
+    }
     return { top: 0 }
   }
+})
+
+// Capture before Vue Router performs the destination scrollBehavior. This is
+// intentionally separate from scrollBehavior, which runs after the old page
+// may already have been moved to the top.
+router.beforeEach((to, from) => {
+  cancelPendingScrollRestore()
+  if (from.path !== to.path) rememberRouteScroll(from.fullPath)
 })
 
 /**
