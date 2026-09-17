@@ -39,6 +39,18 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
     verification: 'curated',
     keywords: ['纵深', '魔法光', '海报', '空间感', '明日方舟'],
   },
+  {
+    id: 'hidulume',
+    name: 'Hidulume',
+    cnName: 'ひづるめ',
+    waiTag: 'hidulume',
+    animaTag: '@hidulume',
+    description: '强透视视线引导、丰富环境纵深与通透空气感光影',
+    masterpiece: '《勇者斗恶龙 III HD-2D》概念艺术、《崩坏：星穹铁道》、《原神》',
+    category: 'cinematic',
+    verification: 'curated',
+    keywords: ['hidulume', 'ひづるめ', 'hidzz', '视线诱导', '透视', '勇者斗恶龙', '星穹铁道', '流萤', '黑塔', '通透', '光影', '纵深', '电影感'],
+  },
 
   // ── 清透少女与顶级 Galgame / 动漫画风 ───────────────────────────
   {
@@ -107,7 +119,7 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
     cnName: '藤原可可亚',
     waiTag: 'fujiwara_cocoa',
     animaTag: '@fujiwara cocoa',
-    description: '《妖狐×仆SS》原作者、极具灵气的哥特清冷与呆萌萌系',
+    description: '《妖狐×仆SS》原作者、极具灵气的哥特清冷与软萌气质',
     masterpiece: '《妖狐×仆SS》、《曾经有些魔法少女与邪恶为敌》',
     category: 'pure',
     verification: 'curated',
@@ -120,7 +132,7 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
     waiTag: 'kazutake_hazano',
     animaTag: '@kazutake hazano',
     description: '《白圣女与黑牧师》原作者、温暖治愈系与圣洁柔和线条',
-    masterpiece: '《白圣女与黑牧师》漫画原作作者',
+    masterpiece: '《白圣女与黑牧师》漫画原作',
     category: 'pure',
     verification: 'curated',
     keywords: ['白圣女', '塞西莉亚', '治愈', '圣洁', '柔和'],

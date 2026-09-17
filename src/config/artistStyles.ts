@@ -49,7 +49,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -91,6 +91,9 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   'wei_w': 'wei_at_w',
   '唯@w': 'wei_at_w',
   '唯@W': 'wei_at_w',
+  'hidulme': 'hidulume',
+  'hidzz': 'hidulume',
+  'ひづるめ': 'hidulume',
 }
 
 function artistDisplayName(id: string): string {
@@ -130,6 +133,7 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   yoneyama_mai: 'cinematic anime illustration with flowing dynamic lines, expressive mood lighting, and a film-like color palette',
   rella: 'ethereal anime illustration with dreamy night glow, luminous colors, and cinematic lighting',
   swav: 'high-impact fantasy poster art with magical lighting and strong spatial depth',
+  hidulume: 'cinematic anime illustration with dynamic eye-tracking visual guidance, wide atmospheric perspective, and luminous translucent airiness',
   kantoku: 'clear and soft Japanese anime style with gentle sunlight, clean lines, and cute girls',
   momoco_haru: 'light novel illustration with glossy watery eyes, bright fair skin, and lively youthful charm',
   ponkan8: 'clear watercolor cel style with bright youthful spring atmosphere',
