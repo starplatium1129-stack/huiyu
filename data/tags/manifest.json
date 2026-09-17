@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "description": "词条分片清单。每个类别一个分片文件，按分类顺序合并为 data/tags.json。",
+  "files": [
+    {
+      "file": "character.json",
+      "category": "Character",
+      "label": "角色",
+      "count": 2
+    },
+    {
+      "file": "clothing.json",
+      "category": "Clothing",
+      "label": "服装",
+      "count": 182
+    },
+    {
+      "file": "action.json",
+      "category": "Action",
+      "label": "动作",
+      "count": 63
+    },
+    {
+      "file": "emotion.json",
+      "category": "Emotion",
+      "label": "情绪",
+      "count": 63
+    },
+    {
+      "file": "scene.json",
+      "category": "Scene",
+      "label": "场景",
+      "count": 90
+    },
+    {
+      "file": "lighting.json",
+      "category": "Lighting",
+      "label": "光照",
+      "count": 36
+    },
+    {
+      "file": "appearance.json",
+      "category": "Appearance",
+      "label": "外观",
+      "count": 30
+    },
+    {
+      "file": "camera.json",
+      "category": "Camera",
+      "label": "镜头",
+      "count": 31
+    },
+    {
+      "file": "style.json",
+      "category": "Style",
+      "label": "画风",
+      "count": 4
+    },
+    {
+      "file": "body.json",
+      "category": "Body",
+      "label": "身体",
+      "count": 13
+    },
+    {
+      "file": "mature.json",
+      "category": "Mature",
+      "label": "成人",
+      "count": 110
+    }
+  ]
+}

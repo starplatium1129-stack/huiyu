@@ -1,0 +1,255 @@
+{
+  "version": 1,
+  "category": "Camera",
+  "label": "镜头",
+  "tags": [
+    {
+      "id": "tag_097",
+      "cat": "Camera",
+      "en": "close-up, upper face",
+      "cn": "近景",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_098",
+      "cat": "Camera",
+      "en": "medium shot, waist up",
+      "cn": "中景",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_099",
+      "cat": "Camera",
+      "en": "wide shot, full body",
+      "cn": "远景",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_100",
+      "cat": "Camera",
+      "en": "extreme close-up",
+      "cn": "特写",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_101",
+      "cat": "Camera",
+      "en": "pov",
+      "cn": "POV",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_102",
+      "cat": "Camera",
+      "en": "low angle, looking up",
+      "cn": "仰视",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_103",
+      "cat": "Camera",
+      "en": "high angle, looking down",
+      "cn": "俯视",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_104",
+      "cat": "Camera",
+      "en": "side view, profile",
+      "cn": "侧面",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_105",
+      "cat": "Camera",
+      "en": "selfie, phone camera",
+      "cn": "自拍",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_106",
+      "cat": "Camera",
+      "en": "centered composition, symmetry",
+      "cn": "居中",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_107",
+      "cat": "Camera",
+      "en": "rule of thirds, off-center composition",
+      "cn": "三分法",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_108",
+      "cat": "Camera",
+      "en": "off-center composition",
+      "cn": "左构图",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_109",
+      "cat": "Camera",
+      "en": "off-center composition",
+      "cn": "右构图",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_110",
+      "cat": "Camera",
+      "en": "blurry foreground, depth of field",
+      "cn": "前景遮挡",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_111",
+      "cat": "Camera",
+      "en": "framed",
+      "cn": "框架构图",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_112",
+      "cat": "Camera",
+      "en": "by window, against window",
+      "cn": "窗边构图",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_411",
+      "cat": "Camera",
+      "en": "close_up",
+      "cn": "近景特写",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_412",
+      "cat": "Camera",
+      "en": "upper_body",
+      "cn": "上半身",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_413",
+      "cat": "Camera",
+      "en": "medium_shot",
+      "cn": "中景",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_414",
+      "cat": "Camera",
+      "en": "full_body",
+      "cn": "全身",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_415",
+      "cat": "Camera",
+      "en": "wide_shot",
+      "cn": "广角远景",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_416",
+      "cat": "Camera",
+      "en": "pov",
+      "cn": "第一人称视角",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_458",
+      "cat": "Camera",
+      "en": "from_behind",
+      "cn": "从背后",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_459",
+      "cat": "Camera",
+      "en": "from_below",
+      "cn": "从下方",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_460",
+      "cat": "Camera",
+      "en": "pov",
+      "cn": "视角",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_485",
+      "cat": "Camera",
+      "en": "profile",
+      "cn": "侧面剪影",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_486",
+      "cat": "Camera",
+      "en": "cinematic_composition",
+      "cn": "电影感构图",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_487",
+      "cat": "Camera",
+      "en": "looking_at_viewer",
+      "cn": "直视镜头",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_505",
+      "cat": "Camera",
+      "en": "over_shoulder",
+      "cn": "回眸过肩",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_515",
+      "cat": "Camera",
+      "en": "close_distance",
+      "cn": "近距离",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_516",
+      "cat": "Camera",
+      "en": "face_focus",
+      "cn": "面部聚焦",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

@@ -1,0 +1,1465 @@
+{
+  "version": 1,
+  "category": "Clothing",
+  "label": "服装",
+  "tags": [
+    {
+      "id": "tag_003",
+      "cat": "Clothing",
+      "en": "school_uniform",
+      "cn": "校服",
+      "weight": 0.8,
+      "related": [
+        "tag_025"
+      ]
+    },
+    {
+      "id": "tag_004",
+      "cat": "Clothing",
+      "en": "sailor_uniform",
+      "cn": "水手服",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_005",
+      "cat": "Clothing",
+      "en": "blazer",
+      "cn": "西装外套",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_006",
+      "cat": "Clothing",
+      "en": "pleated_skirt",
+      "cn": "百褶裙",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_007",
+      "cat": "Clothing",
+      "en": "plaid_skirt",
+      "cn": "格子裙",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_008",
+      "cat": "Clothing",
+      "en": "kimono",
+      "cn": "和服",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_009",
+      "cat": "Clothing",
+      "en": "yukata",
+      "cn": "浴衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_010",
+      "cat": "Clothing",
+      "en": "china_dress",
+      "cn": "旗袍",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_011",
+      "cat": "Clothing",
+      "en": "hanbok",
+      "cn": "韩服",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_012",
+      "cat": "Clothing",
+      "en": "maid",
+      "cn": "女仆",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_013",
+      "cat": "Clothing",
+      "en": "witch",
+      "cn": "魔女",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_014",
+      "cat": "Clothing",
+      "en": "cape",
+      "cn": "斗篷",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_015",
+      "cat": "Clothing",
+      "en": "elf",
+      "cn": "精灵",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_016",
+      "cat": "Clothing",
+      "en": "angel",
+      "cn": "天使",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_017",
+      "cat": "Clothing",
+      "en": "casual_clothes",
+      "cn": "私服",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_018",
+      "cat": "Clothing",
+      "en": "hoodie",
+      "cn": "连帽衫",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_019",
+      "cat": "Clothing",
+      "en": "sweater",
+      "cn": "毛衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_020",
+      "cat": "Clothing",
+      "en": "dress",
+      "cn": "连衣裙",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_021",
+      "cat": "Clothing",
+      "en": "pajamas",
+      "cn": "睡衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_022",
+      "cat": "Clothing",
+      "en": "swimsuit",
+      "cn": "泳装",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_023",
+      "cat": "Clothing",
+      "en": "apron",
+      "cn": "围裙",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_024",
+      "cat": "Clothing",
+      "en": "sportswear",
+      "cn": "运动装",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "cat": "Clothing",
+      "en": "oversized_hoodie",
+      "cn": "宽大卫衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_138"
+    },
+    {
+      "cat": "Clothing",
+      "en": "open_shirt",
+      "cn": "敞开衬衫",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_139"
+    },
+    {
+      "cat": "Clothing",
+      "en": "unbuttoned_shirt",
+      "cn": "解扣衬衫",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_140"
+    },
+    {
+      "cat": "Clothing",
+      "en": "tank_top",
+      "cn": "吊带背心",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_159"
+    },
+    {
+      "cat": "Clothing",
+      "en": "shorts",
+      "cn": "短裤",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_160"
+    },
+    {
+      "cat": "Clothing",
+      "en": "apron_only",
+      "cn": "围裙",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_161"
+    },
+    {
+      "cat": "Clothing",
+      "en": "naked_apron",
+      "cn": "裸体围裙",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_162"
+    },
+    {
+      "cat": "Clothing",
+      "en": "bath_towel",
+      "cn": "浴巾",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_163"
+    },
+    {
+      "cat": "Clothing",
+      "en": "towel_around_body",
+      "cn": "裹身浴巾",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_164"
+    },
+    {
+      "cat": "Clothing",
+      "en": "slipping_towel",
+      "cn": "滑落浴巾",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_165"
+    },
+    {
+      "cat": "Clothing",
+      "en": "open_yukata",
+      "cn": "敞开浴衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_166"
+    },
+    {
+      "cat": "Clothing",
+      "en": "wet_clothes",
+      "cn": "湿衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_167"
+    },
+    {
+      "cat": "Clothing",
+      "en": "transparent_clothing",
+      "cn": "透明衣物",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_185"
+    },
+    {
+      "cat": "Clothing",
+      "en": "see_through_clothing",
+      "cn": "透视衣物",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_186"
+    },
+    {
+      "cat": "Clothing",
+      "en": "camisole",
+      "cn": "吊带背心",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_193"
+    },
+    {
+      "cat": "Clothing",
+      "en": "cafe_uniform",
+      "cn": "咖啡厅制服",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_194"
+    },
+    {
+      "cat": "Clothing",
+      "en": "whipped_cream",
+      "cn": "鲜奶油",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_195"
+    },
+    {
+      "cat": "Clothing",
+      "en": "white_dress",
+      "cn": "白色连衣裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_199"
+    },
+    {
+      "cat": "Clothing",
+      "en": "angel_wings",
+      "cn": "天使翅膀",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_200"
+    },
+    {
+      "cat": "Clothing",
+      "en": "halo",
+      "cn": "光环",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_201"
+    },
+    {
+      "cat": "Clothing",
+      "en": "feather_accessories",
+      "cn": "羽毛饰品",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_202"
+    },
+    {
+      "cat": "Clothing",
+      "en": "thighhighs",
+      "cn": "过膝袜",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_203"
+    },
+    {
+      "cat": "Clothing",
+      "en": "miko_uniform",
+      "cn": "巫女服",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_204"
+    },
+    {
+      "cat": "Clothing",
+      "en": "japanese_clothes",
+      "cn": "和装",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_205"
+    },
+    {
+      "cat": "Clothing",
+      "en": "hakama",
+      "cn": "袴",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_206"
+    },
+    {
+      "cat": "Clothing",
+      "en": "gothic_lolita_dress",
+      "cn": "哥特洛丽塔",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_207"
+    },
+    {
+      "cat": "Clothing",
+      "en": "frills",
+      "cn": "褶边",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_208"
+    },
+    {
+      "cat": "Clothing",
+      "en": "lace_trim",
+      "cn": "蕾丝边",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_209"
+    },
+    {
+      "cat": "Clothing",
+      "en": "bonnet",
+      "cn": "软帽",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_210"
+    },
+    {
+      "cat": "Clothing",
+      "en": "baseball_cap",
+      "cn": "棒球帽",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_211"
+    },
+    {
+      "cat": "Clothing",
+      "en": "choker",
+      "cn": "项圈",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_212"
+    },
+    {
+      "cat": "Clothing",
+      "en": "jacket",
+      "cn": "夹克",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_213"
+    },
+    {
+      "cat": "Clothing",
+      "en": "jeans",
+      "cn": "牛仔裤",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_214"
+    },
+    {
+      "cat": "Clothing",
+      "en": "race_queen",
+      "cn": "赛车女郎",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_237"
+    },
+    {
+      "cat": "Clothing",
+      "en": "bodysuit",
+      "cn": "连体衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_238"
+    },
+    {
+      "cat": "Clothing",
+      "en": "zipper_leotard",
+      "cn": "拉链紧身衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_239"
+    },
+    {
+      "cat": "Clothing",
+      "en": "open_clothes",
+      "cn": "敞开衣服",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_240"
+    },
+    {
+      "cat": "Clothing",
+      "en": "glasses",
+      "cn": "眼镜",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_241"
+    },
+    {
+      "cat": "Clothing",
+      "en": "round_glasses",
+      "cn": "圆框眼镜",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_242"
+    },
+    {
+      "cat": "Clothing",
+      "en": "oversized_sweater",
+      "cn": "宽松毛衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_243"
+    },
+    {
+      "cat": "Clothing",
+      "en": "blanket",
+      "cn": "毛毯",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_244"
+    },
+    {
+      "cat": "Clothing",
+      "en": "furisode",
+      "cn": "振袖",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_245"
+    },
+    {
+      "cat": "Clothing",
+      "en": "obi",
+      "cn": "腰封",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_246"
+    },
+    {
+      "cat": "Clothing",
+      "en": "cheongsam",
+      "cn": "旗袍",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_247"
+    },
+    {
+      "cat": "Clothing",
+      "en": "qipao",
+      "cn": "旗袍",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_248"
+    },
+    {
+      "cat": "Clothing",
+      "en": "witch_hat",
+      "cn": "巫师帽",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_261"
+    },
+    {
+      "cat": "Clothing",
+      "en": "witch_dress",
+      "cn": "魔女服",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_262"
+    },
+    {
+      "cat": "Clothing",
+      "en": "black_dress",
+      "cn": "黑色连衣裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_263"
+    },
+    {
+      "cat": "Clothing",
+      "en": "cheerleader",
+      "cn": "啦啦队",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_270"
+    },
+    {
+      "cat": "Clothing",
+      "en": "crop_top",
+      "cn": "露脐上衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_271"
+    },
+    {
+      "cat": "Clothing",
+      "en": "short_skirt",
+      "cn": "短裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_272"
+    },
+    {
+      "cat": "Clothing",
+      "en": "holding_pom_poms",
+      "cn": "手摇花",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_273"
+    },
+    {
+      "cat": "Clothing",
+      "en": "school_swimsuit",
+      "cn": "死库水",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_274"
+    },
+    {
+      "cat": "Clothing",
+      "en": "one-piece_swimsuit",
+      "cn": "连体泳衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_275"
+    },
+    {
+      "cat": "Clothing",
+      "en": "wet_swimsuit",
+      "cn": "湿泳衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_276"
+    },
+    {
+      "cat": "Clothing",
+      "en": "tight_swimsuit",
+      "cn": "紧身泳衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_277"
+    },
+    {
+      "cat": "Clothing",
+      "en": "dudou",
+      "cn": "肚兜",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_278"
+    },
+    {
+      "cat": "Clothing",
+      "en": "undergarment",
+      "cn": "内衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_279"
+    },
+    {
+      "cat": "Clothing",
+      "en": "overalls",
+      "cn": "背带裤",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_280"
+    },
+    {
+      "cat": "Clothing",
+      "en": "denim_overalls",
+      "cn": "丹宁背带裤",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_281"
+    },
+    {
+      "cat": "Clothing",
+      "en": "one_strap_down",
+      "cn": "单肩带滑落",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_282"
+    },
+    {
+      "cat": "Clothing",
+      "en": "off-shoulder_top",
+      "cn": "一字领上衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_283"
+    },
+    {
+      "cat": "Clothing",
+      "en": "sleeveless",
+      "cn": "无袖",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_284"
+    },
+    {
+      "cat": "Clothing",
+      "en": "umbrella",
+      "cn": "雨伞",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_292"
+    },
+    {
+      "cat": "Clothing",
+      "en": "holding_book",
+      "cn": "拿书",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_293"
+    },
+    {
+      "cat": "Clothing",
+      "en": "holding_ema",
+      "cn": "拿绘马",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_294"
+    },
+    {
+      "cat": "Clothing",
+      "en": "holding_food",
+      "cn": "拿食物",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_295"
+    },
+    {
+      "cat": "Clothing",
+      "en": "loose_clothes",
+      "cn": "宽松衣服",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_316"
+    },
+    {
+      "cat": "Clothing",
+      "en": "underwear",
+      "cn": "内衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_317"
+    },
+    {
+      "cat": "Clothing",
+      "en": "underwear_strap",
+      "cn": "内衣肩带",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_318"
+    },
+    {
+      "cat": "Clothing",
+      "en": "beret",
+      "cn": "贝雷帽",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_330"
+    },
+    {
+      "cat": "Clothing",
+      "en": "off_shoulder_sweater",
+      "cn": "露肩毛衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_331"
+    },
+    {
+      "cat": "Clothing",
+      "en": "knee_high_socks",
+      "cn": "过膝袜",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_332"
+    },
+    {
+      "cat": "Clothing",
+      "en": "holding_spoon",
+      "cn": "拿勺子",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_333"
+    },
+    {
+      "cat": "Clothing",
+      "en": "roomwear",
+      "cn": "居家服",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_334"
+    },
+    {
+      "cat": "Clothing",
+      "en": "coat",
+      "cn": "大衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_335"
+    },
+    {
+      "cat": "Clothing",
+      "en": "trench_coat",
+      "cn": "风衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_336"
+    },
+    {
+      "cat": "Clothing",
+      "en": "turtleneck_sweater",
+      "cn": "高领毛衣",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_337"
+    },
+    {
+      "cat": "Clothing",
+      "en": "boots",
+      "cn": "长靴",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_338"
+    },
+    {
+      "cat": "Clothing",
+      "en": "scarf",
+      "cn": "围巾",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_339"
+    },
+    {
+      "cat": "Clothing",
+      "en": "sharing_scarf",
+      "cn": "共围围巾",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_340"
+    },
+    {
+      "cat": "Clothing",
+      "en": "evening_gown",
+      "cn": "晚礼服",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_341"
+    },
+    {
+      "cat": "Clothing",
+      "en": "backless_dress",
+      "cn": "露背裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_342"
+    },
+    {
+      "cat": "Clothing",
+      "en": "off_shoulder_dress",
+      "cn": "一字领裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_343"
+    },
+    {
+      "cat": "Clothing",
+      "en": "blue_dress",
+      "cn": "蓝色连衣裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_344"
+    },
+    {
+      "cat": "Clothing",
+      "en": "nightgown",
+      "cn": "睡裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_348"
+    },
+    {
+      "cat": "Clothing",
+      "en": "slip_dress",
+      "cn": "吊带裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_349"
+    },
+    {
+      "cat": "Clothing",
+      "en": "satin",
+      "cn": "丝绸",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_350"
+    },
+    {
+      "cat": "Clothing",
+      "en": "off_shoulder",
+      "cn": "露肩",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_351"
+    },
+    {
+      "cat": "Clothing",
+      "en": "blouse",
+      "cn": "衬衫",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_352"
+    },
+    {
+      "cat": "Clothing",
+      "en": "denim_shorts",
+      "cn": "牛仔短裤",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_353"
+    },
+    {
+      "cat": "Clothing",
+      "en": "wet_dress",
+      "cn": "湿裙",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_354"
+    },
+    {
+      "cat": "Clothing",
+      "en": "holding_ice_cream",
+      "cn": "拿冰淇淋",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_355"
+    },
+    {
+      "id": "tag_463",
+      "cat": "Clothing",
+      "en": "towel",
+      "cn": "毛巾",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_464",
+      "cat": "Clothing",
+      "en": "winter_coat",
+      "cn": "冬季外套",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_465",
+      "cat": "Clothing",
+      "en": "tactical_gear",
+      "cn": "战术装备",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_466",
+      "cat": "Clothing",
+      "en": "unzipped",
+      "cn": "拉链拉开",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_467",
+      "cat": "Clothing",
+      "en": "translucent_clothing",
+      "cn": "半透明衣物",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_468",
+      "cat": "Clothing",
+      "en": "torn_clothes",
+      "cn": "撕破的衣物",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_469",
+      "cat": "Clothing",
+      "en": "micro_bikini",
+      "cn": "微型比基尼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_470",
+      "cat": "Clothing",
+      "en": "string_bikini",
+      "cn": "细带比基尼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_471",
+      "cat": "Clothing",
+      "en": "high_slit",
+      "cn": "高开衩",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_472",
+      "cat": "Clothing",
+      "en": "torn_pantyhose",
+      "cn": "撕裂连裤袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_473",
+      "cat": "Clothing",
+      "en": "beach_coverup",
+      "cn": "沙滩罩衫",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_488",
+      "cat": "Clothing",
+      "en": "see_through_clothing",
+      "cn": "透视装",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_498",
+      "cat": "Clothing",
+      "en": "oversized_shirt",
+      "cn": "宽松大衬衫",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_503",
+      "cat": "Clothing",
+      "en": "skirt_lift",
+      "cn": "掀起裙摆",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_504",
+      "cat": "Clothing",
+      "en": "black_pantyhose",
+      "cn": "黑丝连裤袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_512",
+      "cat": "Clothing",
+      "en": "sundress",
+      "cn": "太阳裙",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_581",
+      "cat": "Clothing",
+      "en": "virgin_killer_sweater",
+      "cn": "露背毛衣 (童贞杀手)",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_582",
+      "cat": "Clothing",
+      "en": "backless_sweater",
+      "cn": "露背针织衫",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_583",
+      "cat": "Clothing",
+      "en": "ribbed_sweater",
+      "cn": "罗纹贴身毛衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_584",
+      "cat": "Clothing",
+      "en": "keyhole_sweater",
+      "cn": "胸口开孔毛衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_585",
+      "cat": "Clothing",
+      "en": "bunny_suit",
+      "cn": "兔女郎装",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_586",
+      "cat": "Clothing",
+      "en": "sheer_bunny_suit",
+      "cn": "半透明情趣兔女郎",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_587",
+      "cat": "Clothing",
+      "en": "reverse_bunny_suit",
+      "cn": "逆兔女郎 (反向深V)",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_588",
+      "cat": "Clothing",
+      "en": "sleeveless_bodysuit",
+      "cn": "无袖紧身连体服",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_589",
+      "cat": "Clothing",
+      "en": "latex_catsuit",
+      "cn": "紧身胶衣/皮衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_590",
+      "cat": "Clothing",
+      "en": "triangle_bikini",
+      "cn": "三角杯比基尼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_591",
+      "cat": "Clothing",
+      "en": "front-tie_bikini",
+      "cn": "前系带比基尼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_592",
+      "cat": "Clothing",
+      "en": "bandeau_bikini",
+      "cn": "无肩带抹胸比基尼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_593",
+      "cat": "Clothing",
+      "en": "criss-cross_bikini",
+      "cn": "交叉绑带水着",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_594",
+      "cat": "Clothing",
+      "en": "competitive_swimsuit",
+      "cn": "竞速死库水",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_595",
+      "cat": "Clothing",
+      "en": "highleg_swimsuit",
+      "cn": "高开衩连体水着",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_596",
+      "cat": "Clothing",
+      "en": "santa_costume",
+      "cn": "圣诞装",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_597",
+      "cat": "Clothing",
+      "en": "santa_capelet",
+      "cn": "圣诞短斗篷",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_598",
+      "cat": "Clothing",
+      "en": "succubus_costume",
+      "cn": "小恶魔/魅魔装",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_599",
+      "cat": "Clothing",
+      "en": "sheer_babydoll",
+      "cn": "透明薄纱睡袍 (Babydoll)",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_600",
+      "cat": "Clothing",
+      "en": "open-front_negligee",
+      "cn": "前开襟透肉睡衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_601",
+      "cat": "Clothing",
+      "en": "silk_slip",
+      "cn": "真丝细吊带衬裙",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_602",
+      "cat": "Clothing",
+      "en": "fishnet_thighhighs",
+      "cn": "过膝网眼袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_603",
+      "cat": "Clothing",
+      "en": "torn_thighhighs",
+      "cn": "战损撕裂丝袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_604",
+      "cat": "Clothing",
+      "en": "loose_socks",
+      "cn": "宽松堆堆袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_605",
+      "cat": "Clothing",
+      "en": "frilled_socks",
+      "cn": "荷叶边花边短袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_606",
+      "cat": "Clothing",
+      "en": "asymmetrical_legwear",
+      "cn": "不对称腿袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_607",
+      "cat": "Clothing",
+      "en": "stiletto_heels",
+      "cn": "尖头细高跟",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_608",
+      "cat": "Clothing",
+      "en": "strappy_heels",
+      "cn": "绑带缠踝高跟鞋",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_609",
+      "cat": "Clothing",
+      "en": "mary_janes",
+      "cn": "玛丽珍复古皮鞋",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_610",
+      "cat": "Clothing",
+      "en": "thigh_boots",
+      "cn": "过膝紧身皮靴",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_611",
+      "cat": "Clothing",
+      "en": "combat_boots",
+      "cn": "系带马丁靴",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_612",
+      "cat": "Clothing",
+      "en": "barefoot",
+      "cn": "赤足 / 美足",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_613",
+      "cat": "Clothing",
+      "en": "painted_toenails",
+      "cn": "涂指甲油脚趾",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_614",
+      "cat": "Clothing",
+      "en": "wet_white_shirt",
+      "cn": "湿透白衬衫",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_615",
+      "cat": "Clothing",
+      "en": "bikini_under_clothes",
+      "cn": "内穿比基尼 (若隐若现)",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_616",
+      "cat": "Clothing",
+      "en": "see-through_shirt",
+      "cn": "透光薄衬衫",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_617",
+      "cat": "Clothing",
+      "en": "competition_swimsuit",
+      "cn": "专业竞速死库水",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_618",
+      "cat": "Clothing",
+      "en": "white_competition_swimsuit",
+      "cn": "纯白高开叉竞泳水着",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_619",
+      "cat": "Clothing",
+      "en": "minimal_fabric",
+      "cn": "极少极窄布料",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_620",
+      "cat": "Clothing",
+      "en": "monokini",
+      "cn": "挂脖镂空连体泳衣 (Monokini)",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_621",
+      "cat": "Clothing",
+      "en": "halterneck_swimsuit",
+      "cn": "挂脖系带泳装",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_622",
+      "cat": "Clothing",
+      "en": "side_cutout",
+      "cn": "腰侧大面积镂空",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_623",
+      "cat": "Clothing",
+      "en": "cleavage_cutout",
+      "cn": "胸口开孔镂空",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_624",
+      "cat": "Clothing",
+      "en": "heart_cutout",
+      "cn": "心形开胸镂空",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_625",
+      "cat": "Clothing",
+      "en": "cleavage_opening",
+      "cn": "深邃开胸露乳线",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_626",
+      "cat": "Clothing",
+      "en": "sleeveless_turtleneck",
+      "cn": "无袖修身高领",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_627",
+      "cat": "Clothing",
+      "en": "oversized_jersey",
+      "cn": "宽大男友风运动球衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_628",
+      "cat": "Clothing",
+      "en": "basketball_jersey",
+      "cn": "无袖篮球背心球衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_629",
+      "cat": "Clothing",
+      "en": "sleeveless_jersey",
+      "cn": "无袖透气球衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_630",
+      "cat": "Clothing",
+      "en": "skin-tight",
+      "cn": "极致紧致包裹 / 贴肤",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_631",
+      "cat": "Clothing",
+      "en": "backless_bodysuit",
+      "cn": "大露背紧身连体衣",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

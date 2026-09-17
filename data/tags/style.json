@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "category": "Style",
+  "label": "画风",
+  "tags": [
+    {
+      "id": "tag_120",
+      "cat": "Style",
+      "en": "anime",
+      "cn": "二次元",
+      "weight": 1,
+      "related": []
+    },
+    {
+      "id": "tag_121",
+      "cat": "Style",
+      "en": "visual_novel_cg",
+      "cn": "Galgame CG",
+      "weight": 0.95,
+      "related": []
+    },
+    {
+      "id": "tag_122",
+      "cat": "Style",
+      "en": "game_cg",
+      "cn": "游戏插画",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_507",
+      "cat": "Style",
+      "en": "visual_novel_event_cg",
+      "cn": "视觉小说事件 CG",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

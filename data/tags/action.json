@@ -1,0 +1,513 @@
+{
+  "version": 1,
+  "category": "Action",
+  "label": "动作",
+  "tags": [
+    {
+      "id": "tag_025",
+      "cat": "Action",
+      "en": "standing",
+      "cn": "站",
+      "weight": 0.8,
+      "related": [
+        "tag_003"
+      ]
+    },
+    {
+      "id": "tag_026",
+      "cat": "Action",
+      "en": "sitting",
+      "cn": "坐",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_027",
+      "cat": "Action",
+      "en": "walking",
+      "cn": "走",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_028",
+      "cat": "Action",
+      "en": "running",
+      "cn": "跑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_029",
+      "cat": "Action",
+      "en": "lying",
+      "cn": "躺",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_030",
+      "cat": "Action",
+      "en": "kneeling",
+      "cn": "跪",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_031",
+      "cat": "Action",
+      "en": "stretching",
+      "cn": "伸展",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_032",
+      "cat": "Action",
+      "en": "leaning",
+      "cn": "倚靠",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_033",
+      "cat": "Action",
+      "en": "jumping",
+      "cn": "跳",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_034",
+      "cat": "Action",
+      "en": "arms_crossed",
+      "cn": "抱臂",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_035",
+      "cat": "Action",
+      "en": "hand_on_hip",
+      "cn": "叉腰",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_036",
+      "cat": "Action",
+      "en": "arm_up",
+      "cn": "举手",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_081",
+      "cat": "Action",
+      "en": "lying_on_stomach",
+      "cn": "趴着",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_082",
+      "cat": "Action",
+      "en": "lying_on_back",
+      "cn": "躺着",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_083",
+      "cat": "Action",
+      "en": "squatting",
+      "cn": "蹲下",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_084",
+      "cat": "Action",
+      "en": "leaning_against",
+      "cn": "靠着",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_085",
+      "cat": "Action",
+      "en": "holding_hands",
+      "cn": "牵手",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_086",
+      "cat": "Action",
+      "en": "hugging",
+      "cn": "拥抱",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_087",
+      "cat": "Action",
+      "en": "looking back, over shoulder",
+      "cn": "回头",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "cat": "Action",
+      "en": "sitting_on_lap",
+      "cn": "坐在腿上",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_144"
+    },
+    {
+      "cat": "Action",
+      "en": "straddling_viewer",
+      "cn": "跨坐",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_145"
+    },
+    {
+      "cat": "Action",
+      "en": "clinging_to_viewer",
+      "cn": "紧抱",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_146"
+    },
+    {
+      "cat": "Action",
+      "en": "shivering",
+      "cn": "颤抖",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_147"
+    },
+    {
+      "cat": "Action",
+      "en": "lying_on_couch",
+      "cn": "躺在沙发上",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_173"
+    },
+    {
+      "cat": "Action",
+      "en": "trapping_viewer",
+      "cn": "困住",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_174"
+    },
+    {
+      "cat": "Action",
+      "en": "sitting_on_box",
+      "cn": "坐在箱子上",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_175"
+    },
+    {
+      "cat": "Action",
+      "en": "sitting_on_counter",
+      "cn": "坐在料理台上",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_176"
+    },
+    {
+      "cat": "Action",
+      "en": "leaning_forward",
+      "cn": "前倾",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_196"
+    },
+    {
+      "cat": "Action",
+      "en": "sitting_on_bench",
+      "cn": "坐在长椅上",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_197"
+    },
+    {
+      "cat": "Action",
+      "en": "holding_broom",
+      "cn": "握扫帚",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_216"
+    },
+    {
+      "cat": "Action",
+      "en": "holding_item",
+      "cn": "拿东西",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_217"
+    },
+    {
+      "cat": "Action",
+      "en": "trapped",
+      "cn": "被扶住",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_218"
+    },
+    {
+      "cat": "Action",
+      "en": "close together",
+      "cn": "靠近坐",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_249"
+    },
+    {
+      "cat": "Action",
+      "en": "sharing_blanket",
+      "cn": "共盖毛毯",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_250"
+    },
+    {
+      "cat": "Action",
+      "en": "falling_forward",
+      "cn": "向前扑倒",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_251"
+    },
+    {
+      "cat": "Action",
+      "en": "collapsed",
+      "cn": "瘫倒在桌上",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_264"
+    },
+    {
+      "cat": "Action",
+      "en": "leaning against",
+      "cn": "靠在吧台",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_265"
+    },
+    {
+      "cat": "Action",
+      "en": "propped_up_on_elbow",
+      "cn": "手肘支撑",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_266"
+    },
+    {
+      "cat": "Action",
+      "en": "holding_cup",
+      "cn": "握杯",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_267"
+    },
+    {
+      "cat": "Action",
+      "en": "lying_on_sofa",
+      "cn": "躺在沙发",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_296"
+    },
+    {
+      "cat": "Action",
+      "en": "head_resting",
+      "cn": "枕着",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_297"
+    },
+    {
+      "cat": "Action",
+      "en": "sleeping",
+      "cn": "睡觉",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_298"
+    },
+    {
+      "cat": "Action",
+      "en": "stargazing",
+      "cn": "观星",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_299"
+    },
+    {
+      "cat": "Action",
+      "en": "shopping_basket",
+      "cn": "购物篮",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_300"
+    },
+    {
+      "cat": "Action",
+      "en": "sitting_on_floor",
+      "cn": "坐在地上",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_319"
+    },
+    {
+      "cat": "Action",
+      "en": "drunk",
+      "cn": "微醺",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_320"
+    },
+    {
+      "cat": "Action",
+      "en": "eye_contact",
+      "cn": "对视",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_321"
+    },
+    {
+      "cat": "Action",
+      "en": "feeding",
+      "cn": "喂食",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_356"
+    },
+    {
+      "id": "tag_451",
+      "cat": "Action",
+      "en": "lying_on_bed",
+      "cn": "躺在床上",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_452",
+      "cat": "Action",
+      "en": "sitting_on_desk",
+      "cn": "坐在书桌上",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_453",
+      "cat": "Action",
+      "en": "cross_legged",
+      "cn": "盘腿",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_454",
+      "cat": "Action",
+      "en": "holding",
+      "cn": "拿着",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_455",
+      "cat": "Action",
+      "en": "kiss",
+      "cn": "亲吻",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_456",
+      "cat": "Action",
+      "en": "looking_up",
+      "cn": "仰望",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_457",
+      "cat": "Action",
+      "en": "looking_away",
+      "cn": "移开视线",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_461",
+      "cat": "Action",
+      "en": "shared_umbrella",
+      "cn": "共伞",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_462",
+      "cat": "Action",
+      "en": "under_blanket",
+      "cn": "盖着毯子",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_495",
+      "cat": "Action",
+      "en": "sitting_on_bed",
+      "cn": "坐在床上",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_500",
+      "cat": "Action",
+      "en": "holding_hands",
+      "cn": "牵手",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_502",
+      "cat": "Action",
+      "en": "sitting_on_sofa",
+      "cn": "坐在沙发上",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_509",
+      "cat": "Action",
+      "en": "lying_on_stomach",
+      "cn": "趴着",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_510",
+      "cat": "Action",
+      "en": "lying_on_back",
+      "cn": "仰卧",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_511",
+      "cat": "Action",
+      "en": "leaning_against",
+      "cn": "倚靠着",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

@@ -1,0 +1,887 @@
+{
+  "version": 1,
+  "category": "Mature",
+  "label": "成人",
+  "tags": [
+    {
+      "cat": "Mature",
+      "en": "sensual",
+      "cn": "性感",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_156"
+    },
+    {
+      "id": "tag_363",
+      "cat": "Mature",
+      "en": "naked",
+      "cn": "全裸",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_364",
+      "cat": "Mature",
+      "en": "nude",
+      "cn": "裸体",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_365",
+      "cat": "Mature",
+      "en": "breasts",
+      "cn": "胸部",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_366",
+      "cat": "Mature",
+      "en": "nipple",
+      "cn": "乳头",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_367",
+      "cat": "Mature",
+      "en": "nipples",
+      "cn": "乳头",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_368",
+      "cat": "Mature",
+      "en": "areola",
+      "cn": "乳晕",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_369",
+      "cat": "Mature",
+      "en": "lingerie",
+      "cn": "情趣内衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_370",
+      "cat": "Mature",
+      "en": "lace_lingerie",
+      "cn": "蕾丝内衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_371",
+      "cat": "Mature",
+      "en": "garter_belt",
+      "cn": "吊袜带",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_372",
+      "cat": "Mature",
+      "en": "garter_straps",
+      "cn": "吊带",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_373",
+      "cat": "Mature",
+      "en": "stockings",
+      "cn": "长袜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_374",
+      "cat": "Mature",
+      "en": "panties",
+      "cn": "内裤",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_375",
+      "cat": "Mature",
+      "en": "thong",
+      "cn": "丁字裤",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_376",
+      "cat": "Mature",
+      "en": "bra",
+      "cn": "胸罩",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_377",
+      "cat": "Mature",
+      "en": "midriff",
+      "cn": "露腰",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_379",
+      "cat": "Mature",
+      "en": "bare_abdomen",
+      "cn": "裸露小腹",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_380",
+      "cat": "Mature",
+      "en": "bare_back",
+      "cn": "裸露后背",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_381",
+      "cat": "Mature",
+      "en": "bare_hips",
+      "cn": "裸露臀部",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_382",
+      "cat": "Mature",
+      "en": "bared_chest",
+      "cn": "敞开胸膛",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_383",
+      "cat": "Mature",
+      "en": "neck_kiss",
+      "cn": "颈吻",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_384",
+      "cat": "Mature",
+      "en": "caressing",
+      "cn": "抚摸",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_385",
+      "cat": "Mature",
+      "en": "fondling",
+      "cn": "爱抚",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_387",
+      "cat": "Mature",
+      "en": "erotic",
+      "cn": "情色",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_388",
+      "cat": "Mature",
+      "en": "seductive",
+      "cn": "诱惑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_389",
+      "cat": "Mature",
+      "en": "intimate",
+      "cn": "亲密",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_390",
+      "cat": "Mature",
+      "en": "passionate",
+      "cn": "激情",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_391",
+      "cat": "Mature",
+      "en": "blowjob",
+      "cn": "口交",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_393",
+      "cat": "Mature",
+      "en": "cunnilingus",
+      "cn": "舔阴",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_394",
+      "cat": "Mature",
+      "en": "handjob",
+      "cn": "手交",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_395",
+      "cat": "Mature",
+      "en": "masturbation",
+      "cn": "自慰",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_396",
+      "cat": "Mature",
+      "en": "vaginal",
+      "cn": "阴道",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_397",
+      "cat": "Mature",
+      "en": "anal",
+      "cn": "肛交",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_398",
+      "cat": "Mature",
+      "en": "missionary",
+      "cn": "传教士体位",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_399",
+      "cat": "Mature",
+      "en": "cowgirl",
+      "cn": "骑乘位",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_400",
+      "cat": "Mature",
+      "en": "doggystyle",
+      "cn": "后入式",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_401",
+      "cat": "Mature",
+      "en": "creampie",
+      "cn": "内射",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_402",
+      "cat": "Mature",
+      "en": "bondage",
+      "cn": "束缚",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_403",
+      "cat": "Mature",
+      "en": "handcuffs",
+      "cn": "手铐",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_404",
+      "cat": "Mature",
+      "en": "tied_up",
+      "cn": "被捆绑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_405",
+      "cat": "Mature",
+      "en": "blindfold",
+      "cn": "眼罩",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_406",
+      "cat": "Mature",
+      "en": "spanking",
+      "cn": "打屁股",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_408",
+      "cat": "Mature",
+      "en": "adult",
+      "cn": "成年",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_481",
+      "cat": "Mature",
+      "en": "topless",
+      "cn": "上身裸露",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_482",
+      "cat": "Mature",
+      "en": "undressing",
+      "cn": "脱衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_483",
+      "cat": "Mature",
+      "en": "seductive_look",
+      "cn": "诱惑的眼神",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_484",
+      "cat": "Mature",
+      "en": "passionate_look",
+      "cn": "深情的注视",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_518",
+      "cat": "Mature",
+      "en": "standing_sex",
+      "cn": "站立体位",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_519",
+      "cat": "Mature",
+      "en": "against_wall",
+      "cn": "抵墙",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_520",
+      "cat": "Mature",
+      "en": "legs_up",
+      "cn": "抬腿",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_521",
+      "cat": "Mature",
+      "en": "leg_lock",
+      "cn": "锁腿",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_522",
+      "cat": "Mature",
+      "en": "mating_press",
+      "cn": "种压位",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_523",
+      "cat": "Mature",
+      "en": "spooning",
+      "cn": "侧卧相拥",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_524",
+      "cat": "Mature",
+      "en": "facesitting",
+      "cn": "骑脸",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_525",
+      "cat": "Mature",
+      "en": "sixty_nine",
+      "cn": "六九式",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_526",
+      "cat": "Mature",
+      "en": "paizuri",
+      "cn": "乳交",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_527",
+      "cat": "Mature",
+      "en": "sumata",
+      "cn": "股间",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_528",
+      "cat": "Mature",
+      "en": "footjob",
+      "cn": "足交",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_529",
+      "cat": "Mature",
+      "en": "thighjob",
+      "cn": "腿交",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_530",
+      "cat": "Mature",
+      "en": "large_breasts",
+      "cn": "巨乳",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_531",
+      "cat": "Mature",
+      "en": "medium_breasts",
+      "cn": "中等胸部",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_532",
+      "cat": "Mature",
+      "en": "small_breasts",
+      "cn": "小巧胸部",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_533",
+      "cat": "Mature",
+      "en": "flat_chest",
+      "cn": "平胸",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_534",
+      "cat": "Mature",
+      "en": "puffy_nipples",
+      "cn": "蓬起乳首",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_535",
+      "cat": "Mature",
+      "en": "inverted_nipples",
+      "cn": "内陷乳首",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_536",
+      "cat": "Mature",
+      "en": "underboob",
+      "cn": "下乳",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_537",
+      "cat": "Mature",
+      "en": "pussy",
+      "cn": "阴部",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_538",
+      "cat": "Mature",
+      "en": "labia",
+      "cn": "阴唇",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_539",
+      "cat": "Mature",
+      "en": "clitoris",
+      "cn": "阴蒂",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_540",
+      "cat": "Mature",
+      "en": "anus",
+      "cn": "后庭",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_541",
+      "cat": "Mature",
+      "en": "pubic_hair",
+      "cn": "阴毛",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_542",
+      "cat": "Mature",
+      "en": "armpits",
+      "cn": "腋下",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_543",
+      "cat": "Mature",
+      "en": "sweating",
+      "cn": "流汗",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_544",
+      "cat": "Mature",
+      "en": "after_sex",
+      "cn": "事后",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_545",
+      "cat": "Mature",
+      "en": "ahegao",
+      "cn": "绝顶表情",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_546",
+      "cat": "Mature",
+      "en": "rolling_eyes",
+      "cn": "翻白眼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_547",
+      "cat": "Mature",
+      "en": "orgasm",
+      "cn": "高潮",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_548",
+      "cat": "Mature",
+      "en": "climax",
+      "cn": "极致快感",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_549",
+      "cat": "Mature",
+      "en": "trembling",
+      "cn": "颤抖",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_550",
+      "cat": "Mature",
+      "en": "panting",
+      "cn": "急促喘息",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_551",
+      "cat": "Mature",
+      "en": "moaning",
+      "cn": "呻吟",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_552",
+      "cat": "Mature",
+      "en": "cum",
+      "cn": "白浊",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_553",
+      "cat": "Mature",
+      "en": "cum_in_mouth",
+      "cn": "口中白浊",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_554",
+      "cat": "Mature",
+      "en": "facial",
+      "cn": "颜面白浊",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_555",
+      "cat": "Mature",
+      "en": "ashamed",
+      "cn": "羞愧",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_556",
+      "cat": "Mature",
+      "en": "teasing",
+      "cn": "撩拨",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_557",
+      "cat": "Mature",
+      "en": "smug",
+      "cn": "得意",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_558",
+      "cat": "Mature",
+      "en": "satisfied",
+      "cn": "餍足",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_559",
+      "cat": "Mature",
+      "en": "clothes_pull",
+      "cn": "拽衣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_560",
+      "cat": "Mature",
+      "en": "disheveled_clothes",
+      "cn": "凌乱衣衫",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_561",
+      "cat": "Mature",
+      "en": "clothes_aside",
+      "cn": "拨开衣物",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_562",
+      "cat": "Mature",
+      "en": "bottomless",
+      "cn": "下空",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_563",
+      "cat": "Mature",
+      "en": "rope",
+      "cn": "绳缚",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_564",
+      "cat": "Mature",
+      "en": "shibari",
+      "cn": "日式绑缚",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_565",
+      "cat": "Mature",
+      "en": "vibrator",
+      "cn": "跳蛋",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_566",
+      "cat": "Mature",
+      "en": "magic_wand",
+      "cn": "按摩棒",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_567",
+      "cat": "Mature",
+      "en": "dildo",
+      "cn": "器具",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_568",
+      "cat": "Mature",
+      "en": "ball_gag",
+      "cn": "球状口塞",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_569",
+      "cat": "Mature",
+      "en": "collar",
+      "cn": "项圈",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_570",
+      "cat": "Mature",
+      "en": "leash",
+      "cn": "拴绳",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_571",
+      "cat": "Mature",
+      "en": "nipple_clamps",
+      "cn": "乳夹",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_572",
+      "cat": "Mature",
+      "en": "kissing",
+      "cn": "接吻",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_573",
+      "cat": "Mature",
+      "en": "french_kiss",
+      "cn": "深吻",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_574",
+      "cat": "Mature",
+      "en": "hickey",
+      "cn": "吻痕",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_575",
+      "cat": "Mature",
+      "en": "ear_bite",
+      "cn": "咬耳",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_576",
+      "cat": "Mature",
+      "en": "groping",
+      "cn": "抚摸",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_577",
+      "cat": "Mature",
+      "en": "hugging_from_behind",
+      "cn": "背后拥抱",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_578",
+      "cat": "Mature",
+      "en": "pinned_to_wall",
+      "cn": "按在墙上",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_579",
+      "cat": "Mature",
+      "en": "waist_grab",
+      "cn": "拦腰",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_580",
+      "cat": "Mature",
+      "en": "hand_on_head",
+      "cn": "抚头",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "version": 1,
+  "category": "Lighting",
+  "label": "光照",
+  "tags": [
+    {
+      "id": "tag_064",
+      "cat": "Lighting",
+      "en": "golden_hour",
+      "cn": "黄金时刻",
+      "weight": 0.8,
+      "related": [
+        "tag_052"
+      ]
+    },
+    {
+      "id": "tag_065",
+      "cat": "Lighting",
+      "en": "window_light",
+      "cn": "窗光",
+      "weight": 0.8,
+      "related": [
+        "tag_055"
+      ]
+    },
+    {
+      "id": "tag_066",
+      "cat": "Lighting",
+      "en": "backlighting",
+      "cn": "逆光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_067",
+      "cat": "Lighting",
+      "en": "soft_lighting",
+      "cn": "柔光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_068",
+      "cat": "Lighting",
+      "en": "rim_light",
+      "cn": "轮廓光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_069",
+      "cat": "Lighting",
+      "en": "lens_flare",
+      "cn": "镜头光晕",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_070",
+      "cat": "Lighting",
+      "en": "volumetric_lighting",
+      "cn": "体积光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_071",
+      "cat": "Lighting",
+      "en": "dramatic_lighting",
+      "cn": "戏剧光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_113",
+      "cat": "Lighting",
+      "en": "golden hour, warm lighting, sunset",
+      "cn": "夕阳",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_114",
+      "cat": "Lighting",
+      "en": "window light, soft lighting",
+      "cn": "窗光",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_115",
+      "cat": "Lighting",
+      "en": "backlighting, rim light, silhouette",
+      "cn": "逆光",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_116",
+      "cat": "Lighting",
+      "en": "lantern, warm lighting",
+      "cn": "夜灯",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_117",
+      "cat": "Lighting",
+      "en": "overcast, soft lighting",
+      "cn": "阴天柔光",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_118",
+      "cat": "Lighting",
+      "en": "cityscape, colorful lighting",
+      "cn": "霓虹灯",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_119",
+      "cat": "Lighting",
+      "en": "candlelight",
+      "cn": "烛光",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "cat": "Lighting",
+      "en": "dim_lighting",
+      "cn": "昏暗光线",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_154"
+    },
+    {
+      "cat": "Lighting",
+      "en": "shadows",
+      "cn": "阴影",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_155"
+    },
+    {
+      "cat": "Lighting",
+      "en": "warm_lighting",
+      "cn": "暖光",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_183"
+    },
+    {
+      "cat": "Lighting",
+      "en": "bright",
+      "cn": "明亮",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_184"
+    },
+    {
+      "cat": "Lighting",
+      "en": "backlighting",
+      "cn": "逆光",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_187"
+    },
+    {
+      "cat": "Lighting",
+      "en": "sunbeam",
+      "cn": "耶稣光",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_232"
+    },
+    {
+      "cat": "Lighting",
+      "en": "neon_lighting",
+      "cn": "霓虹灯",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_233"
+    },
+    {
+      "cat": "Lighting",
+      "en": "purple_lighting",
+      "cn": "紫色辉光",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_234"
+    },
+    {
+      "cat": "Lighting",
+      "en": "windy",
+      "cn": "风吹",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_235"
+    },
+    {
+      "cat": "Lighting",
+      "en": "colorful_lighting",
+      "cn": "多彩灯光",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_260"
+    },
+    {
+      "cat": "Lighting",
+      "en": "sunlight",
+      "cn": "阳光",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_290"
+    },
+    {
+      "cat": "Lighting",
+      "en": "window_shadow",
+      "cn": "窗影",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_291"
+    },
+    {
+      "cat": "Lighting",
+      "en": "wind",
+      "cn": "风吹",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_329"
+    },
+    {
+      "id": "tag_435",
+      "cat": "Lighting",
+      "en": "morning_light",
+      "cn": "晨光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_436",
+      "cat": "Lighting",
+      "en": "diffused_light",
+      "cn": "漫射光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_437",
+      "cat": "Lighting",
+      "en": "strong_shadows",
+      "cn": "强烈阴影",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_438",
+      "cat": "Lighting",
+      "en": "soft_shadows",
+      "cn": "柔和阴影",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_439",
+      "cat": "Lighting",
+      "en": "lantern",
+      "cn": "灯笼光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_440",
+      "cat": "Lighting",
+      "en": "blue_hour",
+      "cn": "蓝色时刻",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_441",
+      "cat": "Lighting",
+      "en": "silhouette",
+      "cn": "剪影",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_497",
+      "cat": "Lighting",
+      "en": "dawn",
+      "cn": "破晓之光",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

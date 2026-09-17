@@ -1,0 +1,511 @@
+{
+  "version": 1,
+  "category": "Emotion",
+  "label": "情绪",
+  "tags": [
+    {
+      "id": "tag_037",
+      "cat": "Emotion",
+      "en": "smile",
+      "cn": "微笑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_038",
+      "cat": "Emotion",
+      "en": "laughing",
+      "cn": "大笑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_039",
+      "cat": "Emotion",
+      "en": "blush",
+      "cn": "脸红",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_040",
+      "cat": "Emotion",
+      "en": "shy",
+      "cn": "害羞",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_041",
+      "cat": "Emotion",
+      "en": "surprised",
+      "cn": "惊讶",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_042",
+      "cat": "Emotion",
+      "en": "angry",
+      "cn": "生气",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_043",
+      "cat": "Emotion",
+      "en": "pouting",
+      "cn": "嘟嘴",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_044",
+      "cat": "Emotion",
+      "en": "sad",
+      "cn": "悲伤",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_045",
+      "cat": "Emotion",
+      "en": "crying",
+      "cn": "哭泣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_046",
+      "cat": "Emotion",
+      "en": "wink",
+      "cn": "眨眼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_047",
+      "cat": "Emotion",
+      "en": "closed_eyes",
+      "cn": "闭眼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_048",
+      "cat": "Emotion",
+      "en": "looking_back",
+      "cn": "回眸",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_088",
+      "cat": "Emotion",
+      "en": "happy, smile, joyful",
+      "cn": "开心",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_089",
+      "cat": "Emotion",
+      "en": "in love, gentle smile, soft eyes, blush",
+      "cn": "恋爱",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_090",
+      "cat": "Emotion",
+      "en": "excited, hopeful, sparkling eyes",
+      "cn": "期待",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_091",
+      "cat": "Emotion",
+      "en": "relaxed, gentle smile, calm",
+      "cn": "放松",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_092",
+      "cat": "Emotion",
+      "en": "wistful, looking away",
+      "cn": "想念",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_093",
+      "cat": "Emotion",
+      "en": "teary eyes, pout, vulnerable",
+      "cn": "委屈",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_094",
+      "cat": "Emotion",
+      "en": "serious, determined, focused",
+      "cn": "认真",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_095",
+      "cat": "Emotion",
+      "en": "sleepy, half-closed eyes, drowsy",
+      "cn": "困倦",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "id": "tag_096",
+      "cat": "Emotion",
+      "en": "calm, peaceful, serene",
+      "cn": "平静",
+      "weight": 0.9,
+      "related": []
+    },
+    {
+      "cat": "Emotion",
+      "en": "heavy_blush",
+      "cn": "满脸通红",
+      "weight": 0.9,
+      "related": [],
+      "id": "tag_148"
+    },
+    {
+      "cat": "Emotion",
+      "en": "teary_eyes",
+      "cn": "含泪",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_149"
+    },
+    {
+      "cat": "Emotion",
+      "en": "panicked",
+      "cn": "惊慌",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_150"
+    },
+    {
+      "cat": "Emotion",
+      "en": "cold",
+      "cn": "寒冷",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_151"
+    },
+    {
+      "cat": "Emotion",
+      "en": "shy",
+      "cn": "羞涩",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_177"
+    },
+    {
+      "cat": "Emotion",
+      "en": "open_mouth",
+      "cn": "张嘴",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_198"
+    },
+    {
+      "cat": "Emotion",
+      "en": "subtle_blush",
+      "cn": "微微脸红",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_219"
+    },
+    {
+      "cat": "Emotion",
+      "en": "subtle_smile",
+      "cn": "微微一笑",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_220"
+    },
+    {
+      "cat": "Emotion",
+      "en": "slight_frown",
+      "cn": "微皱眉",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_221"
+    },
+    {
+      "cat": "Emotion",
+      "en": "expressionless",
+      "cn": "面无表情",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_222"
+    },
+    {
+      "cat": "Emotion",
+      "en": "calm",
+      "cn": "平静氛围",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_223"
+    },
+    {
+      "cat": "Emotion",
+      "en": "romantic",
+      "cn": "浪漫氛围",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_224"
+    },
+    {
+      "cat": "Emotion",
+      "en": "cool",
+      "cn": "酷帅",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_225"
+    },
+    {
+      "cat": "Emotion",
+      "en": "cozy",
+      "cn": "温馨氛围",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_252"
+    },
+    {
+      "cat": "Emotion",
+      "en": "gentle_smile",
+      "cn": "温柔微笑",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_301"
+    },
+    {
+      "cat": "Emotion",
+      "en": "worried",
+      "cn": "关心表情",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_302"
+    },
+    {
+      "cat": "Emotion",
+      "en": "peaceful",
+      "cn": "平静表情",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_303"
+    },
+    {
+      "cat": "Emotion",
+      "en": "light smile",
+      "cn": "淡淡微笑",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_304"
+    },
+    {
+      "cat": "Emotion",
+      "en": "exhausted",
+      "cn": "疲惫表情",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_305"
+    },
+    {
+      "cat": "Emotion",
+      "en": "shy",
+      "cn": "害羞表情",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_322"
+    },
+    {
+      "cat": "Emotion",
+      "en": "sleepy",
+      "cn": "困倦眼神",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_323"
+    },
+    {
+      "cat": "Emotion",
+      "en": "cozy",
+      "cn": "温暖氛围",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_324"
+    },
+    {
+      "id": "tag_417",
+      "cat": "Emotion",
+      "en": "happy",
+      "cn": "开心",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_418",
+      "cat": "Emotion",
+      "en": "panicked",
+      "cn": "惊慌",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_419",
+      "cat": "Emotion",
+      "en": "tsundere",
+      "cn": "傲娇",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_420",
+      "cat": "Emotion",
+      "en": "cozy",
+      "cn": "温馨",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_421",
+      "cat": "Emotion",
+      "en": "calm",
+      "cn": "平静",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_422",
+      "cat": "Emotion",
+      "en": "relaxed",
+      "cn": "放松",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_423",
+      "cat": "Emotion",
+      "en": "serious",
+      "cn": "严肃",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_424",
+      "cat": "Emotion",
+      "en": "nervous",
+      "cn": "紧张",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_425",
+      "cat": "Emotion",
+      "en": "embarrassed",
+      "cn": "难为情",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_426",
+      "cat": "Emotion",
+      "en": "smirk",
+      "cn": "得意笑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_427",
+      "cat": "Emotion",
+      "en": "teary_eyes",
+      "cn": "含泪的眼睛",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_428",
+      "cat": "Emotion",
+      "en": "shy_smile",
+      "cn": "害羞的微笑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_429",
+      "cat": "Emotion",
+      "en": "light smile",
+      "cn": "克制的微笑",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_430",
+      "cat": "Emotion",
+      "en": "excited",
+      "cn": "期待",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_431",
+      "cat": "Emotion",
+      "en": "melancholic",
+      "cn": "忧郁",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_432",
+      "cat": "Emotion",
+      "en": "heavy_breathing",
+      "cn": "粗重的呼吸",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_433",
+      "cat": "Emotion",
+      "en": "intense_look",
+      "cn": "炽热的注视",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_434",
+      "cat": "Emotion",
+      "en": "vulnerable_expression",
+      "cn": "脆弱的神情",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_492",
+      "cat": "Emotion",
+      "en": "in_love",
+      "cn": "恋爱中",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_514",
+      "cat": "Emotion",
+      "en": "tears_of_joy",
+      "cn": "喜悦的泪水",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

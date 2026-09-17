@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "category": "Character",
+  "label": "角色",
+  "tags": [
+    {
+      "id": "tag_001",
+      "cat": "Character",
+      "en": "ayachi_nene",
+      "cn": "绫地宁宁",
+      "weight": 1,
+      "related": []
+    },
+    {
+      "id": "tag_002",
+      "cat": "Character",
+      "en": "shiki_natsume",
+      "cn": "四季夏目",
+      "weight": 1,
+      "related": []
+    }
+  ]
+}

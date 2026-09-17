@@ -1,0 +1,731 @@
+{
+  "version": 1,
+  "category": "Scene",
+  "label": "场景",
+  "tags": [
+    {
+      "id": "tag_049",
+      "cat": "Scene",
+      "en": "cherry_blossoms",
+      "cn": "樱花",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_050",
+      "cat": "Scene",
+      "en": "rain",
+      "cn": "雨",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_051",
+      "cat": "Scene",
+      "en": "snow",
+      "cn": "雪",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_052",
+      "cat": "Scene",
+      "en": "sunset",
+      "cn": "日落",
+      "weight": 0.8,
+      "related": [
+        "tag_064"
+      ]
+    },
+    {
+      "id": "tag_053",
+      "cat": "Scene",
+      "en": "night",
+      "cn": "夜晚",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_054",
+      "cat": "Scene",
+      "en": "moonlight",
+      "cn": "月光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_055",
+      "cat": "Scene",
+      "en": "classroom",
+      "cn": "教室",
+      "weight": 0.8,
+      "related": [
+        "tag_065"
+      ]
+    },
+    {
+      "id": "tag_056",
+      "cat": "Scene",
+      "en": "library",
+      "cn": "图书馆",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_057",
+      "cat": "Scene",
+      "en": "school_rooftop",
+      "cn": "天台",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_058",
+      "cat": "Scene",
+      "en": "beach",
+      "cn": "海边",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_059",
+      "cat": "Scene",
+      "en": "shrine",
+      "cn": "神社",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_060",
+      "cat": "Scene",
+      "en": "bedroom",
+      "cn": "卧室",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_061",
+      "cat": "Scene",
+      "en": "cafe",
+      "cn": "咖啡厅",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_062",
+      "cat": "Scene",
+      "en": "park",
+      "cn": "公园",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_063",
+      "cat": "Scene",
+      "en": "train_station",
+      "cn": "车站",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "cat": "Scene",
+      "en": "home_theater",
+      "cn": "影音室",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_152"
+    },
+    {
+      "cat": "Scene",
+      "en": "storage_room",
+      "cn": "冷藏库",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_153"
+    },
+    {
+      "cat": "Scene",
+      "en": "breakroom",
+      "cn": "休息室",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_178"
+    },
+    {
+      "cat": "Scene",
+      "en": "onsen",
+      "cn": "温泉",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_179"
+    },
+    {
+      "cat": "Scene",
+      "en": "kitchen",
+      "cn": "厨房",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_180"
+    },
+    {
+      "cat": "Scene",
+      "en": "indoor",
+      "cn": "室内",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_181"
+    },
+    {
+      "cat": "Scene",
+      "en": "day",
+      "cn": "白天",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_182"
+    },
+    {
+      "cat": "Scene",
+      "en": "bookshelf",
+      "cn": "书架",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_188"
+    },
+    {
+      "cat": "Scene",
+      "en": "greenhouse",
+      "cn": "温室",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_189"
+    },
+    {
+      "cat": "Scene",
+      "en": "music_room",
+      "cn": "音乐教室",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_190"
+    },
+    {
+      "cat": "Scene",
+      "en": "piano",
+      "cn": "钢琴",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_191"
+    },
+    {
+      "cat": "Scene",
+      "en": "daylight",
+      "cn": "日光",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_192"
+    },
+    {
+      "cat": "Scene",
+      "en": "rooftop",
+      "cn": "天台",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_226"
+    },
+    {
+      "cat": "Scene",
+      "en": "mist",
+      "cn": "晨雾",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_227"
+    },
+    {
+      "cat": "Scene",
+      "en": "flowers",
+      "cn": "花丛",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_228"
+    },
+    {
+      "cat": "Scene",
+      "en": "rose",
+      "cn": "蔷薇",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_229"
+    },
+    {
+      "cat": "Scene",
+      "en": "arcade",
+      "cn": "电玩城",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_230"
+    },
+    {
+      "cat": "Scene",
+      "en": "arcade_game",
+      "cn": "街机",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_231"
+    },
+    {
+      "cat": "Scene",
+      "en": "morning",
+      "cn": "清晨",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_236"
+    },
+    {
+      "cat": "Scene",
+      "en": "garage",
+      "cn": "车库",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_253"
+    },
+    {
+      "cat": "Scene",
+      "en": "attic",
+      "cn": "阁楼",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_254"
+    },
+    {
+      "cat": "Scene",
+      "en": "grassy_hill",
+      "cn": "草坡",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_255"
+    },
+    {
+      "cat": "Scene",
+      "en": "fireworks",
+      "cn": "烟花",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_256"
+    },
+    {
+      "cat": "Scene",
+      "en": "oriental_room",
+      "cn": "中式房间",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_257"
+    },
+    {
+      "cat": "Scene",
+      "en": "rainy_day",
+      "cn": "雨天",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_258"
+    },
+    {
+      "cat": "Scene",
+      "en": "afternoon",
+      "cn": "午后",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_259"
+    },
+    {
+      "cat": "Scene",
+      "en": "desk",
+      "cn": "书桌",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_268"
+    },
+    {
+      "cat": "Scene",
+      "en": "cafe_interior",
+      "cn": "咖啡厅内部",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_269"
+    },
+    {
+      "cat": "Scene",
+      "en": "gymnasium",
+      "cn": "体育馆",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_287"
+    },
+    {
+      "cat": "Scene",
+      "en": "swimming_pool",
+      "cn": "泳池",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_288"
+    },
+    {
+      "cat": "Scene",
+      "en": "workshop",
+      "cn": "工作室",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_289"
+    },
+    {
+      "cat": "Scene",
+      "en": "bus_stop",
+      "cn": "公交站台",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_306"
+    },
+    {
+      "cat": "Scene",
+      "en": "convenience_store",
+      "cn": "便利店",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_307"
+    },
+    {
+      "cat": "Scene",
+      "en": "sofa",
+      "cn": "沙发",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_308"
+    },
+    {
+      "cat": "Scene",
+      "en": "telescope",
+      "cn": "望远镜",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_309"
+    },
+    {
+      "cat": "Scene",
+      "en": "street",
+      "cn": "街道",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_310"
+    },
+    {
+      "cat": "Scene",
+      "en": "stars",
+      "cn": "星空",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_311"
+    },
+    {
+      "cat": "Scene",
+      "en": "evening",
+      "cn": "傍晚",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_312"
+    },
+    {
+      "cat": "Scene",
+      "en": "hotel_room",
+      "cn": "酒店房间",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_325"
+    },
+    {
+      "cat": "Scene",
+      "en": "fitting_room",
+      "cn": "试衣间",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_326"
+    },
+    {
+      "cat": "Scene",
+      "en": "car_interior",
+      "cn": "车内",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_327"
+    },
+    {
+      "cat": "Scene",
+      "en": "balcony",
+      "cn": "阳台",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_328"
+    },
+    {
+      "cat": "Scene",
+      "en": "lounge",
+      "cn": "休息室",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_345"
+    },
+    {
+      "cat": "Scene",
+      "en": "snowing",
+      "cn": "下雪",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_346"
+    },
+    {
+      "cat": "Scene",
+      "en": "city_lights",
+      "cn": "城市灯光",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_347"
+    },
+    {
+      "cat": "Scene",
+      "en": "ice_cream_parlor",
+      "cn": "冰淇淋店",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_357"
+    },
+    {
+      "cat": "Scene",
+      "en": "stone_stairs",
+      "cn": "石阶",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_358"
+    },
+    {
+      "cat": "Scene",
+      "en": "autumn_leaves",
+      "cn": "秋叶",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_359"
+    },
+    {
+      "cat": "Scene",
+      "en": "maple_leaves",
+      "cn": "红枫",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_360"
+    },
+    {
+      "cat": "Scene",
+      "en": "rainy_night",
+      "cn": "雨夜",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_361"
+    },
+    {
+      "cat": "Scene",
+      "en": "daytime",
+      "cn": "白天",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_362"
+    },
+    {
+      "id": "tag_407",
+      "cat": "Scene",
+      "en": "solo",
+      "cn": "单人",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_409",
+      "cat": "Scene",
+      "en": "clear_sky",
+      "cn": "晴朗天空",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_410",
+      "cat": "Scene",
+      "en": "indoors",
+      "cn": "室内",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_442",
+      "cat": "Scene",
+      "en": "dawn",
+      "cn": "黎明",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_443",
+      "cat": "Scene",
+      "en": "bed",
+      "cn": "床",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_444",
+      "cat": "Scene",
+      "en": "ocean",
+      "cn": "海洋",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_445",
+      "cat": "Scene",
+      "en": "snowfall",
+      "cn": "下雪",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_446",
+      "cat": "Scene",
+      "en": "festival",
+      "cn": "祭典",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_447",
+      "cat": "Scene",
+      "en": "lantern",
+      "cn": "灯笼",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_448",
+      "cat": "Scene",
+      "en": "late_night",
+      "cn": "深夜",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_449",
+      "cat": "Scene",
+      "en": "night_sky",
+      "cn": "夜空",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_450",
+      "cat": "Scene",
+      "en": "cityscape",
+      "cn": "城市景观",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_489",
+      "cat": "Scene",
+      "en": "cohabitation",
+      "cn": "同居",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_490",
+      "cat": "Scene",
+      "en": "steam",
+      "cn": "蒸汽",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_491",
+      "cat": "Scene",
+      "en": "bathroom",
+      "cn": "浴室",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_493",
+      "cat": "Scene",
+      "en": "autumn",
+      "cn": "秋天",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_494",
+      "cat": "Scene",
+      "en": "living_room",
+      "cn": "客厅",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_496",
+      "cat": "Scene",
+      "en": "overcast",
+      "cn": "阴天",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_499",
+      "cat": "Scene",
+      "en": "tatami",
+      "cn": "榻榻米",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_501",
+      "cat": "Scene",
+      "en": "starry_sky",
+      "cn": "星空",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_506",
+      "cat": "Scene",
+      "en": "wet_road",
+      "cn": "湿润路面",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_508",
+      "cat": "Scene",
+      "en": "winter_breath",
+      "cn": "冬日哈气",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_513",
+      "cat": "Scene",
+      "en": "summer",
+      "cn": "夏天",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_517",
+      "cat": "Scene",
+      "en": "safehouse",
+      "cn": "安全屋",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}

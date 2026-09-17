@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "category": "Appearance",
+  "label": "外观",
+  "tags": [
+    {
+      "id": "tag_072",
+      "cat": "Appearance",
+      "en": "hair_blowing",
+      "cn": "风吹发",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_073",
+      "cat": "Appearance",
+      "en": "petals",
+      "cn": "花瓣",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_074",
+      "cat": "Appearance",
+      "en": "bokeh",
+      "cn": "焦外",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_075",
+      "cat": "Appearance",
+      "en": "lens_flare",
+      "cn": "镜头光晕",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_076",
+      "cat": "Appearance",
+      "en": "dust_motes",
+      "cn": "浮尘",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_077",
+      "cat": "Appearance",
+      "en": "sunbeam",
+      "cn": "阳光",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_078",
+      "cat": "Appearance",
+      "en": "sweat",
+      "cn": "汗水",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_079",
+      "cat": "Appearance",
+      "en": "tear",
+      "cn": "眼泪",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_080",
+      "cat": "Appearance",
+      "en": "ribbon",
+      "cn": "丝带",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "cat": "Appearance",
+      "en": "white_hair",
+      "cn": "白发",
+      "weight": 1,
+      "related": [],
+      "id": "tag_127"
+    },
+    {
+      "cat": "Appearance",
+      "en": "very_long_hair",
+      "cn": "超长发",
+      "weight": 0.9,
+      "related": [],
+      "id": "tag_128"
+    },
+    {
+      "cat": "Appearance",
+      "en": "low_twintails",
+      "cn": "低双马尾",
+      "weight": 0.9,
+      "related": [],
+      "id": "tag_129"
+    },
+    {
+      "cat": "Appearance",
+      "en": "purple_eyes",
+      "cn": "紫瞳",
+      "weight": 0.9,
+      "related": [],
+      "id": "tag_130"
+    },
+    {
+      "cat": "Appearance",
+      "en": "ahoge",
+      "cn": "呆毛",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_131"
+    },
+    {
+      "cat": "Appearance",
+      "en": "heart_shaped_ahoge",
+      "cn": "心形呆毛",
+      "weight": 0.9,
+      "related": [],
+      "id": "tag_132"
+    },
+    {
+      "cat": "Appearance",
+      "en": "black_hair",
+      "cn": "黑发",
+      "weight": 1,
+      "related": [],
+      "id": "tag_133"
+    },
+    {
+      "cat": "Appearance",
+      "en": "long_hair",
+      "cn": "长发",
+      "weight": 0.9,
+      "related": [],
+      "id": "tag_134"
+    },
+    {
+      "cat": "Appearance",
+      "en": "yellow_eyes",
+      "cn": "金瞳",
+      "weight": 0.9,
+      "related": [],
+      "id": "tag_135"
+    },
+    {
+      "cat": "Appearance",
+      "en": "mole_under_eye",
+      "cn": "泪痣",
+      "weight": 0.85,
+      "related": [],
+      "id": "tag_136"
+    },
+    {
+      "cat": "Appearance",
+      "en": "red_ears",
+      "cn": "红耳",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_137"
+    },
+    {
+      "id": "tag_157",
+      "cat": "Appearance",
+      "en": "hair_ribbon",
+      "cn": "发带",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "id": "tag_158",
+      "cat": "Appearance",
+      "en": "hairclip",
+      "cn": "发夹",
+      "weight": 0.85,
+      "related": []
+    },
+    {
+      "cat": "Appearance",
+      "en": "beta_eyes",
+      "cn": "死鱼眼",
+      "weight": 0.8,
+      "related": [],
+      "id": "tag_215"
+    },
+    {
+      "id": "tag_474",
+      "cat": "Appearance",
+      "en": "office_lady",
+      "cn": "职业女性",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_475",
+      "cat": "Appearance",
+      "en": "messy_hair",
+      "cn": "凌乱头发",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_476",
+      "cat": "Appearance",
+      "en": "hair_bun",
+      "cn": "发髻",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_477",
+      "cat": "Appearance",
+      "en": "hair_flower",
+      "cn": "发间花饰",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_478",
+      "cat": "Appearance",
+      "en": "windblown_hair",
+      "cn": "被风吹动的头发",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_479",
+      "cat": "Appearance",
+      "en": "soft_eyes",
+      "cn": "温柔的眼神",
+      "weight": 0.8,
+      "related": []
+    },
+    {
+      "id": "tag_480",
+      "cat": "Appearance",
+      "en": "sparkling eyes",
+      "cn": "明亮的眼睛",
+      "weight": 0.8,
+      "related": []
+    }
+  ]
+}
