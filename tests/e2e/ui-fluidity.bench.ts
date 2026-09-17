@@ -165,7 +165,16 @@ async function runS03DecompositionProbe(browser: Browser) {
     { label: 'scroll-only(svg)', wheel: true, filter: false, thumbFormat: 'svg' as const, lowGlass: false },
     { label: 'scroll-only(micro)', wheel: true, filter: false, thumbFormat: 'micro' as const, lowGlass: false },
     { label: 'filter-only(svg)', wheel: false, filter: true, thumbFormat: 'svg' as const, lowGlass: false },
+    // 补全 2×2：筛选会销毁/重建 24 张卡片，重建即重新解码；用零解码对照判断这份代价是否来自图片
+    { label: 'filter-only(micro)', wheel: false, filter: true, thumbFormat: 'micro' as const, lowGlass: false },
     { label: 'full(svg)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: false },
+    { label: 'full(micro)', wheel: true, filter: true, thumbFormat: 'micro' as const, lowGlass: false },
+    // 决定性对照：查询词匹配全部固定场景，筛选/排序/防抖/写 URL 全部照跑，但列表内容不变
+    // （24 张卡片不销毁不重建）。若掉帧消失 → 代价来自列表增删；若仍在 → 来自同一批卡片的重渲染。
+    { label: 'full(wide-query)', wheel: true, filter: true, filterQuery: 'F0', thumbFormat: 'svg' as const, lowGlass: false },
+    // 同上窄查询，但注入 CSS 关掉 .sc-thumb 的 blur 渐变过渡：验证"重建时 24 张卡同时跑 filter 动画"
+    // （filter 非合成器属性，每帧重绘）是否就是叠加掉帧的机制。
+    { label: 'full(no-thumb-blur)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: false, noThumbBlur: true },
     // 同样的 full 序列，但关掉吸顶工具栏/导航的 backdrop-filter（仓库自带降级开关）：
     // 用来验证「滚动 + 内容重绘叠加才掉帧」是否来自玻璃模糊反复重光栅化。
     { label: 'full(low-glass)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: true },
@@ -181,12 +190,16 @@ async function runS03DecompositionProbe(browser: Browser) {
         await page.evaluate(() => { document.documentElement.dataset.reducedGlass = 'true' })
         await page.waitForTimeout(120)
       }
+      if (variant.noThumbBlur) {
+        await page.addStyleTag({ content: '.sc-thumb { filter:none !important; transition:none !important; }' })
+        await page.waitForTimeout(120)
+      }
       const idleIntervalMs = await measureIdleFrameInterval(page)
       const cdpWindow = await createCdpMetricWindow(page)
       await startFrameProbe(page)
       if (variant.wheel) await page.mouse.wheel(0, 2600)
       if (variant.filter) {
-        await page.locator('#sceneSearch').fill('F0 固定场景 2')
+        await page.locator('#sceneSearch').fill(variant.filterQuery ?? 'F0 固定场景 2')
         await expect(page.locator('.scene-count')).toContainText('已显示')
         await page.waitForTimeout(220)
         await page.locator('#sceneSearch').fill('')
@@ -196,12 +209,23 @@ async function runS03DecompositionProbe(browser: Browser) {
       }
       const probe = summarizeFrameProbe(await stopFrameProbe(page), idleIntervalMs)
       const cdp = await cdpWindow.stop()
-      // 自证：确认降级开关在窗口结束时仍然生效，避免"开关没生效"被误读成"模糊不是原因"
-      const glass = await page.evaluate(() => ({
-        reducedGlass: document.documentElement.dataset.reducedGlass ?? null,
-        toolbarBackdrop: getComputedStyle(document.querySelector('.scene-toolbar') as Element).backdropFilter,
+      // 自证：确认降级开关与注入样式在窗口结束时仍然生效，避免"开关没生效"被误读成"不是原因"
+      const glass = await page.evaluate(() => {
+        const thumb = document.querySelector('.sc-thumb')
+        return {
+          reducedGlass: document.documentElement.dataset.reducedGlass ?? null,
+          toolbarBackdrop: getComputedStyle(document.querySelector('.scene-toolbar') as Element).backdropFilter,
+          thumbFilter: thumb ? getComputedStyle(thumb).filter : null,
+          thumbTransition: thumb ? getComputedStyle(thumb).transitionProperty : null,
+        }
+      })
+      // 自证：记录卡片数与文档高度，确认 wide-query 变体确实没有改变列表内容
+      const layout = await page.evaluate(() => ({
+        cardCount: document.querySelectorAll('[data-scene-id]').length,
+        documentHeight: document.documentElement.scrollHeight,
+        scrollY: window.scrollY,
       }))
-      runs.push({ ...variant, idleIntervalMs, probe, cdp, glass })
+      runs.push({ ...variant, idleIntervalMs, probe, cdp, glass, layout })
     } finally {
       await context.close()
     }
@@ -217,13 +241,21 @@ async function runS03DecompositionProbe(browser: Browser) {
     runs,
     attribution: {
       imageCostMs: svg?.cdp && micro?.cdp ? Number((svg.cdp.taskDurationMs - micro.cdp.taskDurationMs).toFixed(2)) : null,
+      imageCostScrollOnlyMs: svg?.cdp && micro?.cdp ? Number((svg.cdp.taskDurationMs - micro.cdp.taskDurationMs).toFixed(2)) : null,
+      imageCostFilterOnlyMs: pick('filter-only(svg)')?.cdp && pick('filter-only(micro)')?.cdp
+        ? Number((pick('filter-only(svg)')!.cdp!.taskDurationMs - pick('filter-only(micro)')!.cdp!.taskDurationMs).toFixed(2))
+        : null,
+      imageCostFullMs: full?.cdp && pick('full(micro)')?.cdp
+        ? Number((full.cdp.taskDurationMs - pick('full(micro)')!.cdp!.taskDurationMs).toFixed(2))
+        : null,
       scrollOnlyTaskMs: task(svg),
       filterOnlyTaskMs: task(filterOnly),
       fullTaskMs: task(full),
       fullLowGlassTaskMs: task(pick('full(low-glass)')),
       fullP95FrameMs: full?.probe.intervalMs.p95 ?? null,
+      fullMicroP95FrameMs: pick('full(micro)')?.probe.intervalMs.p95 ?? null,
       fullLowGlassP95FrameMs: pick('full(low-glass)')?.probe.intervalMs.p95 ?? null,
-      interpretation: 'imageCostMs = 图片解码/光栅代价（请求数与 DOM 结构相同）；full 与 full(low-glass) 的对比验证吸顶玻璃模糊是否为叠加掉帧来源',
+      interpretation: 'imageCost*Ms = 零解码对照与默认 SVG 的 task 差（请求数与 DOM 结构相同）；full 与 full(low-glass)/full(micro) 的对比分别验证玻璃模糊与图片解码是否为叠加掉帧来源',
     },
   }
 }

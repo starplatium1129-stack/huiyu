@@ -214,7 +214,7 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 - 回归证据：`navigation-fluidity.spec.ts` 桌面项目 20/20、`desktop-ux.spec.ts` 9/9、样张源码契约 10/10；`npm run wf -- gate:full --all` 的 check / vitest / contract（33 过 0 挂）/ build 全部通过，unit 套件 1032 过 / 2 挂（见下，非本批）。
 - 修复 1（本批引入的体验回归）：F2 的 `.sample-visual { aspect-ratio: var(--sample-ratio, 3 / 4) }` 在缺少尺寸数据时会强行锁 3:4。实测生产 `manifest.json`（2026-09-02_v27-miaomiao，1566 条）**不含任何 `width/height`**，该集合 2285 张缩略图中 84% 为 0.684（438×640）、9% 为 1.46 横构图、仅 5% 是真 3:4，因此绝大多数卡片会出现衬底色留白边；`test-showcase.js` 的“保持每张图原始比例”契约同时失败，且 F0 夹具（同样不含尺寸）的 S03/S04 基线几何会失去可比性。现改为只有 manifest 明确给出尺寸时才加 `sample-visual-measured` 锁比例框，缺失时退回原图自然高度；并补一条 `desktop-ux.spec.ts` 断言覆盖“未声明尺寸不得凭空锁比例”。
 - 修复 2（本批引入的门禁硬错误）：`src/router/index.ts` 的 `prefetchRouteResources` 只导入未使用（`lint:js` error，重导出由独立 `export ... from` 承担）；`tests/e2e/helpers/ui-fluidity-fixture.ts` 直接使用 `window.__AICS_UI_FLUIDITY__` 但未引入应用侧全局声明（`tsconfig.json` 覆盖 `tests/e2e/**`，`npm run typecheck` 报 TS2339，现按同目录 helper 的既有写法做局部收窄）。
-- 未通过（HEAD 既有，非本批）：`scripts/tests/test-api-client.js:374` 期望 `removeCount === 1` 实得 2（`src/api/client.ts` 未被本批改动）；`scripts/tests/test-prompt-compiler.js:77` 期望画师目录 52 位、实得 53 位，来自 `5e0c796`（接入画师 hidulume）未同步该断言与注释。两者在 `main@5e0c796` 上即失败，是否修复由各自批次的负责人决定。
+- 未通过（HEAD 既有，非本批，2026-09-17 已修复于 `86ec1ce`）：`scripts/tests/test-api-client.js:374` 是 `addCount` 断言过时（期望 1 实得 2）—— `callerSignal` 上确实需要两个 abort 监听：`trackSharedConsumer` 的 `release` 释放共享传输名额、`awaitShared` 的 `abortListener` 让本次等待立即以 aborted 结束，合并会导致仍被他人持有的传输继续拖着本次调用等待；已改为断言"注册与移除一一对应、且确有注册"的不变量，探针实证两个监听器均在结束后移除、零泄漏。`scripts/tests/test-prompt-compiler.js:77` 期望画师目录 52 位、实得 53 位，来自 `5e0c796` 接入画师 hidulume 时未同步断言与注释，已补齐并追加历史说明。修后完整 unit 套件 1034 过 / 0 挂。
 - 未执行：F0 的 S06–S08、真实设备负载均未在本轮重跑。
 
 **F0 掉帧判据校准与 S03 重测（2026-09-17，F3 起步）：**
@@ -247,9 +247,14 @@ p50/p95 使用全部原始样本计算：每条成功交互路径至少 20 次�
 
 - 新增测量能力（`tests/e2e/helpers/ui-fluidity-measure.ts`、`ui-fluidity.bench.ts`、`ui-fluidity-fixture.ts`）：CDP `Performance` 域的窗口级 Script / Layout / RecalcStyle 成本与计数；`thumbFormat: 'micro'` 的 1×1 PNG 对照图（请求数与 DOM 结构不变，仅解码成本≈0）；S03 分解探针（scroll-only / scroll-only-micro / filter-only / full / full-low-glass）。带 tracing 的样本单列、不混入聚合：实测 trace 会把同一窗口的 task 从 213ms 抬到 324ms、DOM 节点从 9747 抬到 22522。
 - S03 基线（`6a307f6`，3×20，59 个非 traced 样本）：100% 窗口越 1% 目标，候选比例 p50 7.14%、p95 9.52%；窗口内主线程 task p50 234ms / p95 264ms，其中 script **2.38ms**、layout 12.6ms、recalcStyle 26.2ms（`renderShareOfTask` 16.5%）、layoutCount 19、recalcStyleCount 78、缩略图请求 19。原始报告 `runtime/ui-fluidity-f0/ui-fluidity-f0.json`。
-- 分解探针（各变体单次，仅用于定位，不作统计结论）：scroll-only task 106ms / layout 1.98ms / 帧候选 3.8% / p95 帧 8.8ms；filter-only task 196ms / layout 11.0ms / 帧候选 3.3% / p95 帧 8.5ms；full task 220ms / layout 11.9ms / 帧候选 6.8% / p95 帧 **24.9ms**。报告 `runtime/ui-fluidity-f0/ui-fluidity-f0-s03-decomposition.json`。
-- **已排除的假设（每条都有对照证据）**：图片解码与光栅 —— SVG 与 1×1 PNG 的 task 差仅 −1.8～+0.8ms、帧候选比例相同；筛选/排序算法 —— script 全程 2.4ms；列表入场动画 —— `.scene-grid.stagger-container > *` 已被显式关闭；吸顶玻璃模糊 —— `full(low-glass)` 关闭 backdrop-filter（computed 值 `none` 已自证生效）后 task 不变、p95 仅从 24.9ms 降到 16.8ms，仍然掉帧。
-- 结论：纯滚动与纯筛选各自都不掉帧（p95 ≈ 8.5–8.8ms，即一帧），**只有「已滚动页面上筛选导致内容高度突变」这一叠加窗口掉帧**（p95 25ms）。因此 F3.2 的原切入点（减少响应式追踪、复用计算）不是收益所在，应先转向筛选结果变化时对已滚动文档的布局与呈现处理（F3.3/F3.4），并保持一次只改一个热点、同夹具复测。
+- 分解探针（各变体单次，仅用于定位，不作统计结论；报告 `runtime/ui-fluidity-f0/ui-fluidity-f0-s03-decomposition.json`）：
+  - `scroll-only` task 113–122ms / layout 1.9–2.2ms / 帧候选 3.8% / p95 帧 8.5–8.9ms（多次运行稳定）；
+  - `filter-only` task 196–206ms / layout 11.4–11.9ms / 帧候选 3.3–6.7% / p95 帧 8.5–16.7ms；
+  - `full`（滚动 + 窄查询，列表 24→1→24）task 235–267ms / styleRecalc 72–74 / 帧候选 6.8–6.9% / p95 帧 16.6–24.9ms。
+- **决定性对照 `full(wide-query)`**：把查询词换成匹配全部固定场景（筛选、排序、防抖、写 URL 全部照跑，唯一差别是列表不增删卡片），帧候选稳定回到 **3.3–3.4%**、p95 帧 **8.5ms**，与纯滚动同水平；styleRecalc 也从 74 降到 50。→ **掉帧的直接原因是筛选引起的列表增删（卡片销毁/重建 + 文档高度塌缩回弹），不是滚动本身、不是筛选计算本身。**
+- **已排除的机制（每条都有对照证据）**：图片解码/光栅（零解码对照 task 差 −1.8～+4.8ms，`full(micro)` 的 p95 仍在 16.6–24.9ms）；筛选/排序算法（script 全程 2.4ms）；列表入场动画（`.scene-grid.stagger-container > *` 已被显式关闭）；吸顶玻璃模糊（`full(low-glass)` 关闭后 computed 为 `none`，p95 仍 24.9ms）；缩略图 `filter:blur()` 渐变过渡（`full(no-thumb-blur)` 注入后 computed `filter:none`、`transition:none`，p95 仍 24.9ms）。
+- 诚实性说明：单次运行下 `full` 系列的 p95 帧在 16.6 / 24.9ms 之间跳动，"掉帧程度"受运行时噪声影响；能稳定区分的是**是否**掉帧（增删列表 6.8–6.9% vs 不增删 3.3–3.4%），不能据此比较各排除项之间的小差异。分位值需要更多样本才能作为结论。
+- 结论：F3.2 的原切入点（减少响应式追踪、复用计算）收益有限（script 仅 2.4ms），真实目标是**筛选结果增删时的卡片重建与文档高度突变**。候选方向按"最小可测、可回退"排序：①重建时缩减每张卡的派生计算与 DOM/样式重算面（style 33ms + layout 14ms + styleRecalc 72 次是主要可归因成本）；②避免列表塌缩造成的文档高度突变与滚动位置钳制。任何改动都要过双主题 + reduced-motion 视觉审查，并用同夹具复测 `over1_5xBudgetRatio`。
 - 未执行：S07 前端夹具（需要真实生成/Live2D 负载）；所有变体仅在办公机 headless Chromium 上测得，帧候选仍是代理指标，必须与 F7 的真机录像配对才能关闭掉帧问题。
 
 ### F4 · 统一动效行为与空间连续性
