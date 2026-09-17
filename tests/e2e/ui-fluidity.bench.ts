@@ -181,89 +181,138 @@ async function runS03DecompositionProbe(browser: Browser) {
     // 同样的 full 序列，但关掉吸顶工具栏/导航的 backdrop-filter（仓库自带降级开关）：
     // 用来验证「滚动 + 内容重绘叠加才掉帧」是否来自玻璃模糊反复重光栅化。
     { label: 'full(low-glass)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: true },
+    // 只筛不清空：只保留"文档塌缩把滚动位置钳掉"这一次跳变，用来区分两次跳变各自的代价。
+    { label: 'full(narrow-only)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: false, keepFilter: true },
+    // 注意：卡片与作品册**本来就已有** content-visibility:auto（scene-card.css / gallery-view.css）。
+    // 这个变体用来确认"再加也没有余量"，不是新增优化项。
+    { label: 'full(cv-auto)', wheel: true, filter: true, thumbFormat: 'svg' as const, lowGlass: false, contentVisibility: true },
   ]
+  // 同一变体重复多次取中位数：单轮 p95 在 8.5–25ms 之间跳，单轮小差异不能作为结论
+  const repeats = Math.max(1, Number(process.env.AICS_FLUIDITY_PROBE_REPEAT || 3))
   const runs: Array<Record<string, unknown>> = []
   for (const variant of variants) {
-    const context = await browser.newContext({ viewport: VIEWPORT, reducedMotion: 'no-preference', colorScheme: 'dark' })
-    const page = await context.newPage()
-    try {
-      await installUiFluidityFixture(page, true, { thumbFormat: variant.thumbFormat })
-      await enter(page, '/scene-explorer')
-      if (variant.lowGlass) {
-        await page.evaluate(() => { document.documentElement.dataset.reducedGlass = 'true' })
-        await page.waitForTimeout(120)
-      }
-      if (variant.noThumbBlur) {
-        await page.addStyleTag({ content: '.sc-thumb { filter:none !important; transition:none !important; }' })
-        await page.waitForTimeout(120)
-      }
-      if (variant.leanCards) {
-        // 诊断用：正文区与折叠区从布局中摘掉。生产上不可能这么做，只用来测"卡片更轻"的收益上限。
-        await page.addStyleTag({ content: '.sc-body { display:none !important; }' })
-        await page.waitForTimeout(120)
-      }
-      const idleIntervalMs = await measureIdleFrameInterval(page)
-      const cdpWindow = await createCdpMetricWindow(page)
-      await startFrameProbe(page)
-      if (variant.wheel) await page.mouse.wheel(0, 2600)
-      if (variant.filter) {
-        await page.locator('#sceneSearch').fill(variant.filterQuery ?? 'F0 固定场景 2')
-        await expect(page.locator('.scene-count')).toContainText('已显示')
-        await page.waitForTimeout(220)
-        await page.locator('#sceneSearch').fill('')
-        await page.waitForTimeout(220)
-      } else {
-        await page.waitForTimeout(440)
-      }
-      const probe = summarizeFrameProbe(await stopFrameProbe(page), idleIntervalMs)
-      const cdp = await cdpWindow.stop()
-      // 自证：确认降级开关与注入样式在窗口结束时仍然生效，避免"开关没生效"被误读成"不是原因"
-      const glass = await page.evaluate(() => {
-        const thumb = document.querySelector('.sc-thumb')
-        return {
-          reducedGlass: document.documentElement.dataset.reducedGlass ?? null,
-          toolbarBackdrop: getComputedStyle(document.querySelector('.scene-toolbar') as Element).backdropFilter,
-          thumbFilter: thumb ? getComputedStyle(thumb).filter : null,
-          thumbTransition: thumb ? getComputedStyle(thumb).transitionProperty : null,
+    for (let repeat = 0; repeat < repeats; repeat++) {
+      const context = await browser.newContext({ viewport: VIEWPORT, reducedMotion: 'no-preference', colorScheme: 'dark' })
+      const page = await context.newPage()
+      try {
+        await installUiFluidityFixture(page, true, { thumbFormat: variant.thumbFormat })
+        await enter(page, '/scene-explorer')
+        if (variant.lowGlass) {
+          await page.evaluate(() => { document.documentElement.dataset.reducedGlass = 'true' })
+          await page.waitForTimeout(120)
         }
-      })
-      // 自证：记录卡片数与文档高度，确认 wide-query 变体确实没有改变列表内容
-      const layout = await page.evaluate(() => ({
-        cardCount: document.querySelectorAll('[data-scene-id]').length,
-        documentHeight: document.documentElement.scrollHeight,
-        scrollY: window.scrollY,
-      }))
-      runs.push({ ...variant, idleIntervalMs, probe, cdp, glass, layout })
-    } finally {
-      await context.close()
+        if (variant.noThumbBlur) {
+          await page.addStyleTag({ content: '.sc-thumb { filter:none !important; transition:none !important; }' })
+          await page.waitForTimeout(120)
+        }
+        if (variant.leanCards) {
+          // 诊断用：正文区与折叠区从布局中摘掉。生产上不可能这么做，只用来测"卡片更轻"的收益上限。
+          await page.addStyleTag({ content: '.sc-body { display:none !important; }' })
+          await page.waitForTimeout(120)
+        }
+        if (variant.contentVisibility) {
+          // 候选方案的原型：离屏卡片跳过样式/布局/绘制/光栅，屏内渲染结果不变。
+          // contain-intrinsic-size 用 auto 关键字记住上次真实尺寸，避免滚动高度估算漂移。
+          await page.addStyleTag({ content: '.sc { content-visibility:auto; contain-intrinsic-size:auto 360px; }' })
+          await page.waitForTimeout(120)
+        }
+        const idleIntervalMs = await measureIdleFrameInterval(page)
+        const cdpWindow = await createCdpMetricWindow(page)
+        await startFrameProbe(page)
+        if (variant.wheel) await page.mouse.wheel(0, 2600)
+        if (variant.filter) {
+          await page.locator('#sceneSearch').fill(variant.filterQuery ?? 'F0 固定场景 2')
+          await expect(page.locator('.scene-count')).toContainText('已显示')
+          await page.waitForTimeout(220)
+          if (variant.keepFilter) {
+            // 只筛不清空：只发生"文档塌缩把滚动位置钳掉"这一次跳变
+            await page.waitForTimeout(220)
+          } else {
+            await page.locator('#sceneSearch').fill('')
+            await page.waitForTimeout(220)
+          }
+        } else {
+          await page.waitForTimeout(440)
+        }
+        const probe = summarizeFrameProbe(await stopFrameProbe(page), idleIntervalMs)
+        const cdp = await cdpWindow.stop()
+        // 自证：确认降级开关与注入样式在窗口结束时仍然生效，避免"开关没生效"被误读成"不是原因"
+        const glass = await page.evaluate(() => {
+          const thumb = document.querySelector('.sc-thumb')
+          const card = document.querySelector('.sc')
+          return {
+            reducedGlass: document.documentElement.dataset.reducedGlass ?? null,
+            toolbarBackdrop: getComputedStyle(document.querySelector('.scene-toolbar') as Element).backdropFilter,
+            thumbFilter: thumb ? getComputedStyle(thumb).filter : null,
+            thumbTransition: thumb ? getComputedStyle(thumb).transitionProperty : null,
+            cardContentVisibility: card ? getComputedStyle(card).contentVisibility : null,
+          }
+        })
+        // 自证：记录卡片数与文档高度，确认 wide-query 变体确实没有改变列表内容
+        const layout = await page.evaluate(() => ({
+          cardCount: document.querySelectorAll('[data-scene-id]').length,
+          documentHeight: document.documentElement.scrollHeight,
+          scrollY: window.scrollY,
+        }))
+        runs.push({ ...variant, repeat, idleIntervalMs, probe, cdp, glass, layout })
+      } finally {
+        await context.close()
+      }
     }
   }
-  const pick = (label: string) => runs.find(run => run.label === label) as
-    { probe: ReturnType<typeof summarizeFrameProbe>; cdp: CdpMetricWindow | null } | undefined
-  const svg = pick('scroll-only(svg)')
-  const micro = pick('scroll-only(micro)')
-  const filterOnly = pick('filter-only(svg)')
-  const full = pick('full(svg)')
-  const task = (run: typeof svg) => run?.cdp?.taskDurationMs ?? null
+  type ProbeRun = {
+    probe: ReturnType<typeof summarizeFrameProbe>
+    cdp: CdpMetricWindow | null
+    layout?: { scrollY: number; documentHeight: number; cardCount: number }
+  }
+  const median = (values: number[]): number | null => {
+    const clean = values.filter(value => Number.isFinite(value)).sort((a, b) => a - b)
+    if (!clean.length) return null
+    const mid = Math.floor(clean.length / 2)
+    return clean.length % 2 ? clean[mid] : Number(((clean[mid - 1] + clean[mid]) / 2).toFixed(2))
+  }
+  const round = (value: number | null) => value === null ? null : Number(value.toFixed(2))
+  // 每个变体的中位数：只有中位数级的差异才值得当成结论
+  const summary = variants.map(variant => {
+    const samples = runs.filter(run => run.label === variant.label) as unknown as ProbeRun[]
+    return {
+      label: variant.label,
+      samples: samples.length,
+      taskMs: round(median(samples.map(sample => sample.cdp?.taskDurationMs ?? NaN))),
+      scriptMs: round(median(samples.map(sample => sample.cdp?.scriptDurationMs ?? NaN))),
+      styleMs: round(median(samples.map(sample => sample.cdp?.recalcStyleDurationMs ?? NaN))),
+      layoutMs: round(median(samples.map(sample => sample.cdp?.layoutDurationMs ?? NaN))),
+      styleRecalcCount: round(median(samples.map(sample => sample.cdp?.recalcStyleCount ?? NaN))),
+      layoutCount: round(median(samples.map(sample => sample.cdp?.layoutCount ?? NaN))),
+      dropRatio: round(median(samples.map(sample => sample.probe.over1_5xBudgetRatio ?? NaN))),
+      p95FrameMs: round(median(samples.map(sample => sample.probe.intervalMs.p95 ?? NaN))),
+      endScrollY: round(median(samples.map(sample => sample.layout?.scrollY ?? NaN))),
+      contentVisibility: samples[0]?.glass ? (samples[0].glass as { cardContentVisibility?: string | null }).cardContentVisibility ?? null : null,
+    }
+  })
+  const med = (label: string) => summary.find(entry => entry.label === label) ?? null
+  const delta = (a: string, b: string, key: 'taskMs' | 'styleMs' | 'layoutMs' | 'dropRatio' | 'p95FrameMs') => {
+    const left = med(a)?.[key]
+    const right = med(b)?.[key]
+    return left === null || left === undefined || right === null || right === undefined ? null : Number((left - right).toFixed(3))
+  }
   return {
+    repeats,
+    variants: variants.map(variant => variant.label),
     runs,
+    summary,
     attribution: {
-      imageCostMs: svg?.cdp && micro?.cdp ? Number((svg.cdp.taskDurationMs - micro.cdp.taskDurationMs).toFixed(2)) : null,
-      imageCostScrollOnlyMs: svg?.cdp && micro?.cdp ? Number((svg.cdp.taskDurationMs - micro.cdp.taskDurationMs).toFixed(2)) : null,
-      imageCostFilterOnlyMs: pick('filter-only(svg)')?.cdp && pick('filter-only(micro)')?.cdp
-        ? Number((pick('filter-only(svg)')!.cdp!.taskDurationMs - pick('filter-only(micro)')!.cdp!.taskDurationMs).toFixed(2))
-        : null,
-      imageCostFullMs: full?.cdp && pick('full(micro)')?.cdp
-        ? Number((full.cdp.taskDurationMs - pick('full(micro)')!.cdp!.taskDurationMs).toFixed(2))
-        : null,
-      scrollOnlyTaskMs: task(svg),
-      filterOnlyTaskMs: task(filterOnly),
-      fullTaskMs: task(full),
-      fullLowGlassTaskMs: task(pick('full(low-glass)')),
-      fullP95FrameMs: full?.probe.intervalMs.p95 ?? null,
-      fullMicroP95FrameMs: pick('full(micro)')?.probe.intervalMs.p95 ?? null,
-      fullLowGlassP95FrameMs: pick('full(low-glass)')?.probe.intervalMs.p95 ?? null,
-      interpretation: 'imageCost*Ms = 零解码对照与默认 SVG 的 task 差（请求数与 DOM 结构相同）；full 与 full(low-glass)/full(micro) 的对比分别验证玻璃模糊与图片解码是否为叠加掉帧来源',
+      imageCostScrollOnlyMs: delta('scroll-only(svg)', 'scroll-only(micro)', 'taskMs'),
+      imageCostFilterOnlyMs: delta('filter-only(svg)', 'filter-only(micro)', 'taskMs'),
+      imageCostFullMs: delta('full(svg)', 'full(micro)', 'taskMs'),
+      contentVisibilityGain: {
+        taskMs: delta('full(svg)', 'full(cv-auto)', 'taskMs'),
+        styleMs: delta('full(svg)', 'full(cv-auto)', 'styleMs'),
+        layoutMs: delta('full(svg)', 'full(cv-auto)', 'layoutMs'),
+        dropRatio: delta('full(svg)', 'full(cv-auto)', 'dropRatio'),
+        p95FrameMs: delta('full(svg)', 'full(cv-auto)', 'p95FrameMs'),
+      },
+      interpretation: '全部数值都是同变体多次重复的中位数（单轮 p95 会在 8.5–25ms 之间跳，单轮小差异不可作结论）；正数表示前者比后者高',
     },
   }
 }
