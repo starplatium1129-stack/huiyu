@@ -291,7 +291,13 @@ const matchedTags = computed(() => {
   const q = tagSearch.value.trim().toLowerCase()
   return tagCatalog.value
     .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
-    .filter(tag => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
+    .filter(tag => {
+      if (!q) return true
+      if (tag.en.toLowerCase().includes(q)) return true
+      if (tag.cn && tag.cn.toLowerCase().includes(q)) return true
+      const meaning = tagMeaning(tag.en, tag.cn).toLowerCase()
+      return meaning.includes(q)
+    })
     .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
 })
 
