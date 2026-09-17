@@ -436,8 +436,13 @@ test('client removes the caller listener and clears its timeout after success', 
   });
   await client.request('/cleanup', { signal: callerSignal as any, timeoutMs: 15 });
   await new Promise(resolve => setTimeout(resolve, 30));
-  assert.equal(addCount, 1);
-  assert.equal(removeCount, 1);
+  // 同一个 callerSignal 上会注册两个 abort 监听，职责不同且都必须移除：
+  //   1) trackSharedConsumer 的 release  —— 释放共享传输的消费者名额（最后一个消费者离开才中止底层传输）
+  //   2) awaitShared 的 abortListener     —— 只让本次等待立即以 aborted 结束（其他消费者可能仍在用同一传输）
+  // 两个不能合并：只留 release 会让仍被他人持有的传输继续拖着本次调用等待。
+  // 因此这里断言"注册与移除一一对应、且确有注册"的不变量，不把内部监听器数量写死。
+  assert.ok(addCount >= 1, 'caller abort 必须被监听');
+  assert.equal(removeCount, addCount, '每个注册的 abort 监听都必须在请求结束后移除');
   assert.equal(requestSignal.aborted, false, 'cleared timer must not abort a completed request');
 });
 

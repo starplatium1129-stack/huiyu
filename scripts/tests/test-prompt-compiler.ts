@@ -74,8 +74,8 @@ test('prompt compiler renders curated artist styles in each model-native syntax'
 
 test('artist style catalog is unique, allowlisted, limited, and model-native', () => {
   const ids = artistCatalog.ARTIST_STYLE_OPTIONS.map(option => option.id);
-  // 2026-08-30 收录 @gweda/@eufoniuz/@solar_(happymonk)+6 位用户点名画师后为 44 位；2026-08-31 收录明日方舟系 4 位（xiayehongming/huanxiang_heitu/liduke/alchemaniac）后为 48 位；2026-09-05 b9b8eaa0 收录 asano_kyoji/isayama_hajime/yokoyari_mengo/wei_at_w 后为 52 位
-  assert.strictEqual(ids.length, 52);
+  // 2026-08-30 收录 @gweda/@eufoniuz/@solar_(happymonk)+6 位用户点名画师后为 44 位；2026-08-31 收录明日方舟系 4 位（xiayehongming/huanxiang_heitu/liduke/alchemaniac）后为 48 位；2026-09-05 b9b8eaa0 收录 asano_kyoji/isayama_hajime/yokoyari_mengo/wei_at_w 后为 52 位；2026-09-17 5e0c796 收录 hidulume 后为 53 位
+  assert.strictEqual(ids.length, 53);
   assert.strictEqual(new Set(ids).size, ids.length);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['kantoku', 'rella', 'swav', 'unknown']), ['kantoku', 'rella']);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['azure', 'rella']), ['azuuru', 'rella']);
