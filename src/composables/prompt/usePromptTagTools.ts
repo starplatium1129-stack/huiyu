@@ -51,6 +51,21 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     return 'normal'
   }
 
+  /** 别名快速归一化（如 dof -> depth_of_field, jk -> school_uniform） */
+  function resolveTagAlias(inputTag: string): string {
+    const raw = inputTag.toLowerCase().replace(/[\s\-/]+/g, '_')
+    for (const item of ((pb.tags || []) as Array<{ en: string; aliases?: string[] }>)) {
+      if (Array.isArray(item.aliases)) {
+        for (const alias of item.aliases) {
+          if (String(alias).toLowerCase().replace(/[\s\-/]+/g, '_') === raw) {
+            return item.en
+          }
+        }
+      }
+    }
+    return inputTag
+  }
+
   /**
    * 输入框回车加词（2026-08-30 UX 审计 P0-3 重写）。
    *
@@ -58,7 +73,8 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
    *    `blue_hair, smile, twintails` 一次回车应得到 3 个词条，
    *    而不是 1 个垃圾词条 `blue_hair,_smile,_twintails`——批量粘贴
    *    是「提示词自主权」最高频的动作，这条不通等于自主权打折。
-   * ② 用幂等 add 而非 toggle：输入已有词条不再把它删掉。
+   * ② 支持别名自动解析（dof、jk、qipao 自动转为标准 Danbooru 英文）。
+   * ③ 用幂等 add 而非 toggle：输入已有词条不再把它删掉。
    */
   function addTag(e: Event) {
     const input = e.target as HTMLInputElement
@@ -70,7 +86,8 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     let added = 0
     let dup = 0
     for (const tag of parts) {
-      if (pb.addManualTag(tag) === 'duplicate') dup++
+      const canonicalTag = resolveTagAlias(tag)
+      if (pb.addManualTag(canonicalTag) === 'duplicate') dup++
       else added++
     }
     input.value = ''

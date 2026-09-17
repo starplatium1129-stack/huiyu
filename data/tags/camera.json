@@ -8,6 +8,7 @@
       "cat": "Camera",
       "en": "close-up, upper face",
       "cn": "近景",
+      "aliases": ["close-up", "closeup", "面部近景", "面部特写"],
       "weight": 0.85,
       "related": []
     },
@@ -16,6 +17,7 @@
       "cat": "Camera",
       "en": "medium shot, waist up",
       "cn": "中景",
+      "aliases": ["medium shot", "半身中景", "腰部以上"],
       "weight": 0.85,
       "related": []
     },
@@ -24,6 +26,7 @@
       "cat": "Camera",
       "en": "wide shot, full body",
       "cn": "远景",
+      "aliases": ["wide shot", "full body", "全身远景", "全身大景"],
       "weight": 0.85,
       "related": []
     },
@@ -32,6 +35,7 @@
       "cat": "Camera",
       "en": "extreme close-up",
       "cn": "特写",
+      "aliases": ["macro", "大特写", "微距特写"],
       "weight": 0.85,
       "related": []
     },
@@ -39,7 +43,8 @@
       "id": "tag_101",
       "cat": "Camera",
       "en": "pov",
-      "cn": "POV",
+      "cn": "第一人称视角 (POV)",
+      "aliases": ["point of view", "第一人称", "主视角"],
       "weight": 0.85,
       "related": []
     },
@@ -111,7 +116,8 @@
       "id": "tag_110",
       "cat": "Camera",
       "en": "blurry foreground, depth of field",
-      "cn": "前景遮挡",
+      "cn": "前景虚化与景深",
+      "aliases": ["dof", "bokeh", "depth of field", "虚化", "景深"],
       "weight": 0.85,
       "related": []
     },

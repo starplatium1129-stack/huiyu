@@ -6,6 +6,8 @@ export interface TagEntry {
   en: string;
   cn: string;
   weight?: number;
+  aliases?: string[];
+  desc?: string;
   related?: string[];
   [key: string]: unknown;
 }
@@ -42,6 +44,36 @@ const dataDir = path.join(root, 'data');
 const shardsDir = path.join(dataDir, 'tags');
 const manifestPath = path.join(shardsDir, 'manifest.json');
 const aggregatePath = path.join(dataDir, 'tags.json');
+const dictionaryPath = path.join(dataDir, 'tags-dictionary.json');
+
+export interface TagDictionaryOutput {
+  version: number;
+  meanings: Record<string, string>;
+  aliases: Record<string, string>;
+}
+
+function cleanDictKey(raw: string): string {
+  return String(raw || '').trim().toLowerCase().replace(/[\s\-/]+/g, '_');
+}
+
+export function buildTagDictionary(tags: TagEntry[]): TagDictionaryOutput {
+  const meanings: Record<string, string> = {};
+  const aliases: Record<string, string> = {};
+  for (const tag of tags) {
+    if (!tag.en || !tag.cn) continue;
+    const norm = cleanDictKey(tag.en);
+    meanings[norm] = tag.cn;
+    if (Array.isArray(tag.aliases)) {
+      for (const alias of tag.aliases) {
+        const normAlias = cleanDictKey(alias);
+        if (normAlias && normAlias !== norm) {
+          aliases[normAlias] = tag.en;
+        }
+      }
+    }
+  }
+  return { version: 1, meanings, aliases };
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   Character: '角色',
@@ -104,21 +136,26 @@ export function loadTagShards(): { manifest: TagManifest; sources: Array<{ entry
   return { manifest, sources, tags: sources.flatMap((item) => item.tags) };
 }
 
-/** 聚合各分类分片 -> data/tags.json */
+/** 聚合各分类分片 -> data/tags.json 与 data/tags-dictionary.json */
 export function writeTagAggregate(): number {
   const { tags } = loadTagShards();
   writeTextAtomic(aggregatePath, jsonText(tags));
+  const dict = buildTagDictionary(tags);
+  writeTextAtomic(dictionaryPath, jsonText(dict));
   return tags.length;
 }
 
-/** 检查 data/tags.json 聚合结果是否与分片一致 */
+/** 检查 data/tags.json 与 dictionary 聚合结果是否与分片一致 */
 export function aggregateIsCurrent(): boolean {
-  if (!fs.existsSync(aggregatePath) || !fs.existsSync(manifestPath)) return false;
+  if (!fs.existsSync(aggregatePath) || !fs.existsSync(manifestPath) || !fs.existsSync(dictionaryPath)) return false;
   try {
     const { tags } = loadTagShards();
     const current = readJson<TagEntry[]>(aggregatePath);
     if (!Array.isArray(current) || current.length !== tags.length) return false;
-    return jsonText(current) === jsonText(tags);
+    const currentDict = readJson<TagDictionaryOutput>(dictionaryPath);
+    const expectedDict = buildTagDictionary(tags);
+    if (!currentDict || currentDict.version !== expectedDict.version) return false;
+    return jsonText(current) === jsonText(tags) && jsonText(currentDict) === jsonText(expectedDict);
   } catch {
     return false;
   }
@@ -196,6 +233,7 @@ export function writeTagShards(): number {
 
 export {
   aggregatePath,
+  dictionaryPath,
   manifestPath,
   shardsDir,
   categorySlug,

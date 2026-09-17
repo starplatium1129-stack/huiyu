@@ -20,6 +20,13 @@
     "cat": "Clothing",
     "en": "school_uniform",
     "cn": "校服",
+    "aliases": [
+      "jk",
+      "seifuku",
+      "学院制服",
+      "制服",
+      "学生装"
+    ],
     "weight": 0.8,
     "related": [
       "tag_025"
@@ -30,6 +37,11 @@
     "cat": "Clothing",
     "en": "sailor_uniform",
     "cn": "水手服",
+    "aliases": [
+      "serafuku",
+      "水手领",
+      "水手制服"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -78,6 +90,11 @@
     "cat": "Clothing",
     "en": "china_dress",
     "cn": "旗袍",
+    "aliases": [
+      "qipao",
+      "cheongsam",
+      "中式旗袍"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -94,6 +111,11 @@
     "cat": "Clothing",
     "en": "maid",
     "cn": "女仆",
+    "aliases": [
+      "maid uniform",
+      "女仆服",
+      "女仆装"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -102,6 +124,11 @@
     "cat": "Clothing",
     "en": "witch",
     "cn": "魔女",
+    "aliases": [
+      "witch outfit",
+      "女巫",
+      "魔女装"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -1046,6 +1073,11 @@
     "cat": "Clothing",
     "en": "skirt_lift",
     "cn": "掀起裙摆",
+    "aliases": [
+      "提裙",
+      "掀裙子",
+      "拉裙摆"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -1054,6 +1086,11 @@
     "cat": "Clothing",
     "en": "black_pantyhose",
     "cn": "黑丝连裤袜",
+    "aliases": [
+      "黑丝",
+      "黑丝袜",
+      "连裤袜"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -1070,6 +1107,11 @@
     "cat": "Clothing",
     "en": "virgin_killer_sweater",
     "cn": "露背毛衣 (童贞杀手)",
+    "aliases": [
+      "童贞杀手",
+      "大露背毛衣",
+      "露背针织衫"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -1102,6 +1144,11 @@
     "cat": "Clothing",
     "en": "bunny_suit",
     "cn": "兔女郎装",
+    "aliases": [
+      "兔女郎",
+      "兔女郎连体衣",
+      "胶衣兔女郎"
+    ],
     "weight": 0.8,
     "related": []
   },
@@ -3744,6 +3791,12 @@
     "cat": "Camera",
     "en": "close-up, upper face",
     "cn": "近景",
+    "aliases": [
+      "close-up",
+      "closeup",
+      "面部近景",
+      "面部特写"
+    ],
     "weight": 0.85,
     "related": []
   },
@@ -3752,6 +3805,11 @@
     "cat": "Camera",
     "en": "medium shot, waist up",
     "cn": "中景",
+    "aliases": [
+      "medium shot",
+      "半身中景",
+      "腰部以上"
+    ],
     "weight": 0.85,
     "related": []
   },
@@ -3760,6 +3818,12 @@
     "cat": "Camera",
     "en": "wide shot, full body",
     "cn": "远景",
+    "aliases": [
+      "wide shot",
+      "full body",
+      "全身远景",
+      "全身大景"
+    ],
     "weight": 0.85,
     "related": []
   },
@@ -3768,6 +3832,11 @@
     "cat": "Camera",
     "en": "extreme close-up",
     "cn": "特写",
+    "aliases": [
+      "macro",
+      "大特写",
+      "微距特写"
+    ],
     "weight": 0.85,
     "related": []
   },
@@ -3775,7 +3844,12 @@
     "id": "tag_101",
     "cat": "Camera",
     "en": "pov",
-    "cn": "POV",
+    "cn": "第一人称视角 (POV)",
+    "aliases": [
+      "point of view",
+      "第一人称",
+      "主视角"
+    ],
     "weight": 0.85,
     "related": []
   },
@@ -3847,7 +3921,14 @@
     "id": "tag_110",
     "cat": "Camera",
     "en": "blurry foreground, depth of field",
-    "cn": "前景遮挡",
+    "cn": "前景虚化与景深",
+    "aliases": [
+      "dof",
+      "bokeh",
+      "depth of field",
+      "虚化",
+      "景深"
+    ],
     "weight": 0.85,
     "related": []
   },

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptTagTools } from './usePromptTagTools'
 
 /**
@@ -49,6 +50,19 @@ describe('usePromptTagTools · addTag 批量粘贴', () => {
     addTag(inputWith('long hair, blue eyes'))
     expect([...pb.manualTags].sort()).toEqual(['blue_eyes', 'long_hair'])
     expect([...pb.manualTags].some(tag => tag.includes(','))).toBe(false)
+  })
+
+  it('支持常用别名自动归一化解析为规范标签', () => {
+    const sceneStore = useSceneStore()
+    sceneStore.tags = [
+      { id: 'tag_003', cat: 'Clothing', en: 'school_uniform', cn: '校服', aliases: ['jk', 'seifuku'] },
+      { id: 'tag_010', cat: 'Clothing', en: 'china_dress', cn: '旗袍', aliases: ['qipao', 'cheongsam'] },
+    ] as any
+    const pb = usePromptBuilderStore()
+    const { addTag } = usePromptTagTools(pb)
+    addTag(inputWith('jk, qipao'))
+    expect(pb.manualTags.has('school_uniform')).toBe(true)
+    expect(pb.manualTags.has('china_dress')).toBe(true)
   })
 
   it('空输入不产生任何词条', () => {

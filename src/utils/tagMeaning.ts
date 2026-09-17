@@ -564,6 +564,7 @@ const GENERIC_MEANINGS = new Set(['场景词条', '场景成人词', 'v18 训练
 
 // WD14 反推高频词条中英词典（2026-08-29 新增，同 chunk 懒加载）。
 import { WD14_ZH } from './tagMeaningZh'
+import tagDictionary from '../../data/tags-dictionary.json'
 
 function cleanTag(tag: string): string {
   let raw = String(tag || '')
@@ -592,6 +593,10 @@ export function tagMeaning(tag: string, catalogLabel = ''): string {
   if (supplied && !GENERIC_MEANINGS.has(supplied)) return supplied
 
   const normalized = cleanTag(tag)
+  // 分片权威字典优先：分片维护的中文直接作为最高权威单一真相源
+  const fromDict = (tagDictionary.meanings as Record<string, string>)[normalized]
+  if (fromDict) return fromDict
+
   if (EXACT_MEANINGS[normalized]) return EXACT_MEANINGS[normalized]
 
   // WD14 反推高频词整词命中（2026-08-29）：只做整词精确匹配，不参与逐词回退

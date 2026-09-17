@@ -58,3 +58,24 @@ test('Tag 聚合一致性：aggregateIsCurrent 为 true，且聚合产物与分�
   assert.strictEqual(aggregate.length, tags.length);
   assert.deepStrictEqual(aggregate, tags);
 });
+
+test('Tag 权威字典派生：tags-dictionary.json 包含 meanings 与 aliases 且目标有效', () => {
+  const dictFile = path.resolve(__dirname, '../../data/tags-dictionary.json');
+  assert.ok(fs.existsSync(dictFile), 'data/tags-dictionary.json must exist');
+  const dict = readJson<{ version: number; meanings: Record<string, string>; aliases: Record<string, string> }>(dictFile);
+  assert.strictEqual(dict.version, 1);
+  assert.ok(Object.keys(dict.meanings).length >= 600);
+  assert.ok(Object.keys(dict.aliases).length > 0);
+
+  const { tags } = loadTagShards();
+  const allEn = new Set(tags.map(t => t.en));
+
+  for (const [alias, targetEn] of Object.entries(dict.aliases)) {
+    assert.ok(alias, 'Alias key must not be empty');
+    assert.ok(allEn.has(targetEn), `Alias ${alias} targets unknown tag: ${targetEn}`);
+  }
+
+  assert.strictEqual(dict.aliases.jk, 'school_uniform');
+  assert.strictEqual(dict.aliases.qipao, 'china_dress');
+  assert.strictEqual(dict.aliases.dof, 'blurry foreground, depth of field');
+});

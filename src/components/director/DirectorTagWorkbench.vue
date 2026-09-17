@@ -125,7 +125,13 @@ import {
 import { UNIVERSAL_WARDROBE_PRESETS } from '@/config/universalWardrobe'
 import '@/assets/css/director/components/DirectorTagWorkbench.css'
 
-interface TagEntry { en: string; cn: string; cat: string }
+interface TagEntry {
+  en: string
+  cn: string
+  cat: string
+  aliases?: string[]
+  desc?: string
+}
 
 const pb = usePromptBuilderStore()
 const { tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle, addTag } = usePromptTagTools(pb)
@@ -295,6 +301,7 @@ const matchedTags = computed(() => {
       if (!q) return true
       if (tag.en.toLowerCase().includes(q)) return true
       if (tag.cn && tag.cn.toLowerCase().includes(q)) return true
+      if (Array.isArray(tag.aliases) && tag.aliases.some(a => a.toLowerCase().includes(q))) return true
       const meaning = tagMeaning(tag.en, tag.cn).toLowerCase()
       return meaning.includes(q)
     })
