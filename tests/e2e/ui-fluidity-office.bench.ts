@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { platform, release } from 'node:os'
-import { OFFICE_FIXTURE, OFFICE_ROUTES, prepareOffice, previewRoundTrip, visitOfficeRoute } from './helpers/ui-fluidity-office'
+import { OFFICE_FIXTURE, OFFICE_ROUTES, prepareOffice, previewRoundTrip, visitOfficeRoute, armPreviewAnchor, consumePreviewAnchor } from './helpers/ui-fluidity-office'
 import { UI_FLUIDITY_FIXTURE } from './helpers/ui-fluidity-fixture'
 import { measureIdleFrameInterval, startFrameProbe, stopFrameProbe, summarizeFrameProbe } from './helpers/ui-fluidity-measure'
 
@@ -37,16 +37,17 @@ const percentile = (values: number[], p: number) => [...values].sort((a, b) => a
 async function showcaseRoundTrip(page: Page) {
   const trigger = page.locator('.showcase-grid .sample-visual').nth(4)
   await expect(trigger).toBeVisible(); await trigger.scrollIntoViewIfNeeded(); await trigger.focus()
-  // Record only after the automation's own scroll. Earlier S04 sampled too early.
-  const before = await page.evaluate(() => scrollY)
-  await trigger.click(); const viewer = page.locator('dialog.showcase-viewer[open]')
+  const preparedScrollY = await page.evaluate(() => scrollY)
+  await armPreviewAnchor(trigger)
+  await trigger.click(); const activation = await consumePreviewAnchor(trigger)
+  const before = activation.scrollY; const viewer = page.locator('dialog.showcase-viewer[open]')
   await expect(viewer).toBeVisible(); await viewer.locator('#viewerClose').click()
   await expect(viewer).toHaveCount(0)
   await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
   const after = await page.evaluate(() => scrollY)
   await expect(trigger).toBeFocused()
-  expect(Math.abs(after - before)).toBeLessThanOrEqual(2)
-  return { scrollBefore: before, scrollAfter: after, scrollError: Math.abs(after - before) }
+  expect(Math.abs(after - before), JSON.stringify({ preparedScrollY, atActivation: before, after })).toBeLessThanOrEqual(2)
+  return { preparedScrollY, scrollBefore: before, scrollAfter: after, scrollError: Math.abs(after - before) }
 }
 
 for (const theme of ['dark', 'light']) for (const mode of ['full', 'low'] as const) {

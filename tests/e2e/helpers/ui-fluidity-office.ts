@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 import { installUiFluidityFixture } from './ui-fluidity-fixture'
 import { clickNavPath } from './ui-fluidity-measure'
 
@@ -61,15 +61,35 @@ export async function visitOfficeRoute(page: Page, path: string) {
   await expect(page.locator('main h1')).toBeVisible()
 }
 
+/** Snapshot in capture phase, after automation scrolling but before Vue opens the surface. */
+export async function armPreviewAnchor(trigger: Locator) {
+  await trigger.evaluate(el => {
+    el.addEventListener('click', () => {
+      el.setAttribute('data-office-input-y', String(scrollY))
+      el.setAttribute('data-office-input-at', String(performance.now()))
+    }, { capture: true, once: true })
+  })
+}
+export async function consumePreviewAnchor(trigger: Locator) {
+  return trigger.evaluate(el => {
+    const y = el.getAttribute('data-office-input-y'), at = el.getAttribute('data-office-input-at')
+    el.removeAttribute('data-office-input-y'); el.removeAttribute('data-office-input-at')
+    if (y === null || at === null) throw new Error('Preview activation was not observed')
+    return { scrollY: Number(y), at: Number(at) }
+  })
+}
+
 /** Measure after Playwright has scrolled the real trigger into view, not before. */
 export async function previewRoundTrip(page: Page, keyboard = false) {
   const trigger = page.locator('.artwork-button').first()
   await trigger.scrollIntoViewIfNeeded()
   await trigger.focus()
-  const before = await page.evaluate(() => scrollY)
-  const openedAt = await page.evaluate(() => performance.now())
+  const preparedScrollY = await page.evaluate(() => scrollY)
+  await armPreviewAnchor(trigger)
   if (keyboard) await trigger.press('Enter')
   else await trigger.click()
+  const activation = await consumePreviewAnchor(trigger)
+  const before = activation.scrollY
   const viewer = page.locator('.art-viewer.open')
   await expect(viewer).toBeVisible()
   await expect(viewer).toHaveCSS('transform', 'none')
@@ -80,8 +100,8 @@ export async function previewRoundTrip(page: Page, keyboard = false) {
   await expect(trigger).toBeFocused()
   await expect(page.locator('body')).not.toHaveClass(/overlay-open/)
   const after = await page.evaluate(() => ({ scrollY, at: performance.now() }))
-  expect(Math.abs(after.scrollY - before)).toBeLessThanOrEqual(2)
-  return { scrollBefore: before, scrollAfter: after.scrollY, scrollError: Math.abs(after.scrollY - before), openCloseMs: after.at - openedAt }
+  expect(Math.abs(after.scrollY - before), JSON.stringify({ preparedScrollY, atActivation: before, after: after.scrollY })).toBeLessThanOrEqual(2)
+  return { preparedScrollY, scrollBefore: before, scrollAfter: after.scrollY, scrollError: Math.abs(after.scrollY - before), openCloseMs: after.at - activation.at }
 }
 
 /** Conservative on-art text bound: composite the real overlay on both black and
