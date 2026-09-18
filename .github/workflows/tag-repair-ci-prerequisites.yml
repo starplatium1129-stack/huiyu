@@ -1,0 +1,131 @@
+name: Prepare tag repair CI prerequisites
+
+on:
+  push:
+    branches: [codex/tag-inspiration-repair-20260918]
+    paths: [.github/workflows/tag-repair-ci-prerequisites.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 02d5113bb8ee2faaf323d63885bccf8671b3a185
+          persist-credentials: false
+      - name: Publish byte-verified CI prerequisites as Git objects only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64, json, os, pathlib, subprocess, urllib.request
+          repo = 'starplatium1129-stack/huiyu'
+          assert os.environ['GITHUB_REPOSITORY'] == repo
+          parent = '02d5113bb8ee2faaf323d63885bccf8671b3a185'
+          base_tree = '9c0dcefabc2383b0d333a0ea3380d497e297d79a'
+          expected_tree = '9eeb200dd692a093687225b7e5a5ad72f6d24729'
+          expected = {
+              '.github/workflows/quality.yml': '18d32bc6bec1e288704bfefe882f2e6ef6bf2518',
+              'scripts/tests/test-quality-gates.ts': 'bb994a24484cbdf54f77dc47ee20dca504fb6fbe',
+              'scripts/tests/test-delivery-audit.ts': '9c6dca87479320e0721a1423a5b1d697194e4b43',
+          }
+          def git(*args):
+              return subprocess.check_output(['git', *args]).decode().strip()
+          assert git('rev-parse', 'HEAD') == parent
+          assert git('write-tree') == base_tree
+          assert not git('status', '--porcelain')
+          def replace_once(name, old, new):
+              p = pathlib.Path(name)
+              text = p.read_text()
+              assert text.count(old) == 1
+              p.write_text(text.replace(old, new))
+          old = '      - name: Run controlled contract suite\n        run: npm run test:contract'
+          replace_once('.github/workflows/quality.yml', old,
+              '      # Contract tests exercise the real SPA fallback and route-specific CSP.\n'
+              '      # Jobs have isolated checkouts; the checks job cannot supply its dist here.\n'
+              '      - name: Build SPA for route contracts\n        run: npm run build\n' + old)
+          replace_once('scripts/tests/test-delivery-audit.ts',
+              "  git('init', '--template=');\n  git('-c', 'user.name=Fixture'",
+              "  git('init', '--template=');\n"
+              '  // The fixture snapshots .git bytes: automatic maintenance is an unrelated\n'
+              '  // writer and may remove its lock between readdir and stat on newer Git.\n'
+              "  git('config', '--local', 'maintenance.auto', 'false');\n"
+              "  git('config', '--local', 'gc.auto', '0');\n"
+              "  git('-c', 'user.name=Fixture'")
+          guard = r'''
+          test('contract CI builds the SPA before testing fallback and CSP on a clean checkout', () => {
+            const quality = read('.github/workflows/quality.yml');
+            const contract = quality.split('\n  contract:\n')[1]?.split('\n  e2e:\n')[0];
+            assert.ok(contract, 'the isolated contract job must be present');
+            const install = contract.indexOf('run: npm ci');
+            const build = contract.indexOf('run: npm run build');
+            const run = contract.indexOf('run: npm run test:contract');
+            assert.ok(install >= 0 && install < build && build < run,
+              'contract routes require locally built dist; another job cannot supply it');
+            assert.doesNotMatch(contract, /continue-on-error:\s*true|npm run test:contract[^\n]*\|\|/,
+              'route contract failures must remain fatal');
+          });
+          '''
+          p = pathlib.Path('scripts/tests/test-quality-gates.ts')
+          p.write_text(p.read_text() + guard)
+          assert sorted(git('diff', '--name-only').splitlines()) == sorted(expected)
+          for name, sha in expected.items():
+              assert git('hash-object', name) == sha, name
+          subprocess.run(['git', 'diff', '--check'], check=True)
+          subprocess.run(['git', 'add', *expected], check=True)
+          assert git('write-tree') == expected_tree
+          def api(endpoint, data):
+              assert endpoint in ('blobs', 'trees', 'commits')
+              request = urllib.request.Request('https://api.github.com/repos/' + repo + '/git/' + endpoint,
+                  data=json.dumps(data).encode(), method='POST',
+                  headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json',
+                           'Content-Type': 'application/json',
+                           'X-GitHub-Api-Version': '2022-11-28'})
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+          entries = []
+          for name, sha in expected.items():
+              raw = pathlib.Path(name).read_bytes()
+              blob = api('blobs', {'encoding': 'base64', 'content': base64.b64encode(raw).decode()})
+              assert blob['sha'] == sha
+              entries.append({'path': name, 'mode': '100644', 'type': 'blob', 'sha': sha})
+          tree = api('trees', {'base_tree': base_tree, 'tree': entries})
+          assert tree['sha'] == expected_tree
+          message = '''fix(ci): build SPA for route contracts and isolate Git audit fixtures
+
+          The contract job runs in its own clean checkout, so chat/companion
+          fallback and CSP tests cannot use the checks job's dist. Build the SPA
+          before these contracts and guard this dependency without skipping any
+          security assertion or changing application behavior.
+
+          Disable automatic Git maintenance only inside the temporary audit
+          fixture before its first commit. This removes a concurrent Git writer
+          racing strict byte snapshots; preserve the full zero-write assertion.
+
+          Baseline candidate 02d5113: static checks and all 816 frontend tests
+          passed on GitHub; existing nightly matrix and new light/dark random
+          controls passed with screenshot evidence in run 35307411956.
+          Local full contract suite: 34 files passed after a real SPA build.
+          No application, source data, production permissions or thresholds change.
+          '''
+          commit = api('commits', {'tree': expected_tree, 'parents': [parent], 'message': message})
+          result = {'commit': commit['sha'], 'tree': expected_tree, 'parent': parent,
+                    'paths': list(expected), 'refsUpdated': False}
+          destination = pathlib.Path(os.environ['RUNNER_TEMP']) / 'tag-repair-ci-candidate.json'
+          destination.write_text(json.dumps(result, indent=2) + '\n')
+          print('CANDIDATE_COMMIT=' + commit['sha'])
+          print('REFS_UPDATED=false')
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-ci-candidate
+          path: ${{ runner.temp }}/tag-repair-ci-candidate.json
+          retention-days: 1
+          if-no-files-found: error
