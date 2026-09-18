@@ -5,16 +5,19 @@ import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 /** Keep content opaque and release animation effects so fixed toolbars stay viewport-bound. */
 export function useRouteTransition() {
   const active = new Map<HTMLElement, () => void>()
+  const departed = new WeakSet<HTMLElement>()
   function settle(el: HTMLElement) { active.get(el)?.() }
   function settleAll() { for (const finish of [...active.values()]) finish() }
 
   function onEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
     const path = el.dataset.routePath || ''
+    // The same DOM element returning from KeepAlive is not a first entrance.
+    const restored = departed.delete(el)
     settle(el)
     el.inert = false
     if (path) markUiFluidityForPath(path, 'shell-ready')
-    if (prefersReducedMotion() || typeof el.animate !== 'function') {
+    if (restored || prefersReducedMotion() || typeof el.animate !== 'function') {
       if (path) markUiFluidityForPath(path, 'settled')
       done()
       return
@@ -53,6 +56,7 @@ export function useRouteTransition() {
   }
   function onLeave(element: Element, done: () => void) {
     const el = element as HTMLElement
+    departed.add(el)
     // Keep the current page while loading; remove it as soon as the next one is ready.
     el.inert = true
     settle(el)
