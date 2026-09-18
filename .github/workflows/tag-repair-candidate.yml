@@ -1,0 +1,140 @@
+name: Prepare verified tag repair candidate
+
+on:
+  push:
+    branches: [codex/tag-inspiration-repair-20260918]
+    paths: [.github/workflows/tag-repair-candidate.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 8f29335b16f7e44348eddbee0549891e14fdc405
+          persist-credentials: false
+      - name: Verify reviewed patch and create an unreferenced commit object
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64, hashlib, json, lzma, os, pathlib, subprocess, urllib.request
+          repo = 'starplatium1129-stack/huiyu'
+          assert os.environ['GITHUB_REPOSITORY'] == repo
+          base = '8f29335b16f7e44348eddbee0549891e14fdc405'
+          base_tree = 'c254424156e50842a4e40ea509ce8851ff6b41d6'
+          expected_tree = '9c0dcefabc2383b0d333a0ea3380d497e297d79a'
+          allowed = sorted([
+              'data/tags-dictionary.json', 'data/tags/manifest.json',
+              'docs/guides/engineering/random-prompt-assembler-design.md',
+              'docs/workflow.md', 'package.json',
+              'plans/009-ui-fluidity-and-performance.md',
+              'scripts/lib/ensure-data-build.ts', 'scripts/lib/tag-files.ts',
+              'scripts/lib/tag-store.ts', 'scripts/lib/tag-validation.ts',
+              'scripts/tests/resource-gateway-fixture.ts',
+              'scripts/tests/resource-install-fixtures.ts',
+              'scripts/tests/test-random-prompt.ts',
+              'scripts/tests/test-resource-install-edge.ts',
+              'scripts/tests/test-resource-install-resolver.ts',
+              'scripts/tests/test-resource-pack-delta.ts',
+              'scripts/tests/test-resource-pack-verify.ts',
+              'scripts/tests/test-resource-pack.ts',
+              'scripts/tests/test-tag-shards.ts',
+              'src/composables/useRandomInspiration.spec.ts',
+              'src/composables/useRandomInspiration.ts',
+              'src/config/artistStyles.ts', 'src/utils/randomPromptAssembler.ts',
+              'src/utils/randomPromptConstraints.ts',
+              'tests/e2e/random-inspiration.spec.ts',
+          ])
+          def git(*args):
+              return subprocess.check_output(['git', *args]).decode().strip()
+          def api(endpoint, data=None):
+              # Only Git object endpoints, never references, branches, settings or secrets.
+              assert endpoint.split('/')[0] in ('blobs', 'trees', 'commits')
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repo + '/git/' + endpoint,
+                  data=None if data is None else json.dumps(data).encode(),
+                  headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json',
+                           'Content-Type': 'application/json',
+                           'X-GitHub-Api-Version': '2022-11-28'},
+                  method='GET' if data is None else 'POST')
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+          assert git('rev-parse', 'HEAD') == base
+          assert git('write-tree') == base_tree
+          assert not git('status', '--porcelain')
+          parts = []
+          for sha in ['7c9a30d9cf4525b92494a53f6e97eee4a591a89a',
+                      'a66a442029094fbec31fc7fe2fe86e20f2ae54ef',
+                      '38d69d3b03d33b3d9ce52260435745441cbffb53']:
+              blob = api('blobs/' + sha)
+              assert blob['encoding'] == 'base64'
+              raw = base64.b64decode(blob['content'])
+              assert hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest() == sha
+              parts.append(raw)
+          patch = lzma.decompress(b''.join(parts))
+          assert len(patch) == 85630
+          assert hashlib.sha256(patch).hexdigest() == 'b58274b6f8ca6bf06a881b68c9f3242a9d3488750fce355c28c7da15cf59aefe'
+          patch_file = pathlib.Path(os.environ['RUNNER_TEMP']) / 'reviewed-tag-repair.patch'
+          patch_file.write_bytes(patch)
+          subprocess.run(['git', 'apply', '--check', '--unidiff-zero', str(patch_file)], check=True)
+          subprocess.run(['git', 'apply', '--index', '--unidiff-zero', str(patch_file)], check=True)
+          assert sorted(git('diff', '--cached', '--name-only').splitlines()) == allowed
+          assert not git('diff', '--name-only')
+          subprocess.run(['git', 'diff', '--cached', '--check'], check=True)
+          assert git('write-tree') == expected_tree
+          entries = []
+          for name in allowed:
+              raw = pathlib.Path(name).read_bytes()
+              local_sha = git('rev-parse', ':' + name)
+              blob = api('blobs', {'encoding': 'base64', 'content': base64.b64encode(raw).decode()})
+              assert blob['sha'] == local_sha
+              entries.append({'path': name, 'mode': '100644', 'type': 'blob', 'sha': local_sha})
+          tree = api('trees', {'base_tree': base_tree, 'tree': entries})
+          assert tree['sha'] == expected_tree
+          message = '''fix(tags): harden shards and reconnect random inspiration with CI regressions
+
+          Validate shard paths, schemas, identities, aliases and explicit legacy
+          canonical decisions before writing. Preserve all 681 existing tag IDs;
+          publish paired products with synchronous rollback and stale compression
+          invalidation. Keep production platform and content access boundaries.
+
+          Reconnect the lightweight artist pool, reroll only generated artists,
+          scope undo to the active subject, preserve compatible family details,
+          deduplicate sampling and apply framing constraints across entry points.
+          Integrate reviewed compatible lighting/camera details from the catalog.
+
+          Repair Linux resource test fixtures through the existing platform seam,
+          retain real CLI rejection assertions, and replace broken local evidence
+          links. Add real Pinia and light/dark browser regression coverage.
+
+          Local verification: full npm run check (17 steps); frontend coverage
+          112 files / 816 tests; unit suite 1038 passed / 4 skipped; production
+          build and unchanged bundle budgets. Focused resource regressions:
+          89 passed / 2 Windows-only skipped. Browser execution is deferred to
+          GitHub CI because local Chromium policy blocks localhost. No real
+          model, device, deployment or rendered-image acceptance is claimed.
+          '''
+          commit = api('commits', {'tree': expected_tree, 'parents': [base], 'message': message})
+          output = {'commit': commit['sha'], 'tree': expected_tree, 'parent': base,
+                    'paths': allowed, 'refsUpdated': False}
+          destination = pathlib.Path(os.environ['RUNNER_TEMP']) / 'tag-repair-candidate.json'
+          destination.write_text(json.dumps(output, indent=2) + '\n')
+          print('CANDIDATE_COMMIT=' + commit['sha'])
+          print('VERIFIED_TREE=' + expected_tree)
+          print('REFS_UPDATED=false')
+          PY
+      - name: Save verified candidate identity
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-candidate
+          path: ${{ runner.temp }}/tag-repair-candidate.json
+          retention-days: 1
+          if-no-files-found: error
