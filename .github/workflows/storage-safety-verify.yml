@@ -1,0 +1,155 @@
+name: Verify storage safety candidate
+on:
+  push:
+    branches: [codex/storage-safety-20260918]
+    paths: [.github/workflows/storage-safety-verify.yml]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      AICS_REFERENCE_AUDIT_MODE: structure
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: cf279ff65768a92e642191df8bba83702d4989c0
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Reconstruct reviewed source and publish candidate objects only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64, hashlib, json, lzma, os, subprocess, urllib.request
+          from pathlib import Path
+          base = 'cf279ff65768a92e642191df8bba83702d4989c0'
+          base_tree = '9b83dc5ab5c51be26d366054162a059eaeed0bb5'
+          expected_tree = '032289d9868de81a0b1e39c9b877d86885984856'
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+          def api(path, data=None):
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/starplatium1129-stack/huiyu/' + path,
+                  data=None if data is None else json.dumps(data).encode(),
+                  headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json'},
+                  method='GET' if data is None else 'POST')
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  return json.load(response)
+          def blob_hash(value):
+              return hashlib.sha1(b'blob ' + str(len(value)).encode() + b'\0' + value).hexdigest()
+          assert git('rev-parse', 'HEAD').decode().strip() == base
+          assert git('rev-parse', 'HEAD^{tree}').decode().strip() == base_tree
+          assert not git('status', '--porcelain')
+          chunks = ['c79a185ac522ed5ca0b952284da22fd6e38ba53b', 'e59added6d12f0b194c13d6a6ccd3a07e63df89a', 'd3fd2f8bc0e45875f4add1ad4162cabd94247799', '7ada032bb2595242980a1cb199f9df110e7b4512']
+          pieces = []
+          for sha in chunks:
+              result = api('git/blobs/' + sha)
+              value = base64.b64decode(result['content'])
+              assert blob_hash(value) == sha
+              pieces.append(value)
+          compressed = b''.join(pieces)
+          assert hashlib.sha256(compressed).hexdigest() == '248c000b18b81ba961d1e692e3d94e4efe140c3c1d392edefc0188b98f713237'
+          package = json.loads(lzma.decompress(compressed))
+          assert (package['base'], package['baseTree'], package['tree']) == (base, base_tree, expected_tree)
+          allowed = {
+              'docs/project-status.md', 'docs/roadmap.md', 'src/components/PromptDataTools.vue',
+              'src/components/video/useShotFirstFrames.ts', 'src/components/video/useShotWorkspace.ts', 'src/components/video/useVideoFrames.ts',
+              'src/composables/prompt/promptVideoActions.ts', 'src/composables/prompt/useTempResult.ts',
+              'src/composables/useBackup.spec.ts', 'src/composables/useBackup.ts', 'src/composables/useVideoBridge.ts', 'src/main.ts',
+              'src/storage/artworkRepository.test.ts', 'src/storage/artworkRepository.ts', 'src/storage/artworkSession.spec.ts', 'src/storage/artworkSession.ts',
+              'src/stores/promptBuilderStore.ts', 'src/utils/backupExport.spec.ts', 'src/utils/backupExport.ts',
+              'src/utils/desktopImport.ts', 'src/utils/storageReferences.ts', 'tests/e2e/library-concurrency.spec.ts',
+          }
+          assert set(package['files']) == allowed
+          entries = []
+          for name, spec in package['files'].items():
+              old = git('show', base + ':' + name) if spec['baseHash'] else b''
+              if spec['baseHash']:
+                  assert blob_hash(old) == spec['baseHash'], name
+              else:
+                  assert not Path(name).exists(), name
+              parts = []
+              for op in spec['ops']:
+                  if isinstance(op, str):
+                      parts.append(op.encode('utf-8'))
+                  else:
+                      start, count = op
+                      assert start >= 0 and count >= 0 and start + count <= len(old), name
+                      parts.append(old[start:start + count])
+              content = b''.join(parts)
+              assert blob_hash(content) == spec['sha'], name
+              Path(name).parent.mkdir(parents=True, exist_ok=True)
+              Path(name).write_bytes(content)
+              remote = api('git/blobs', {'encoding': 'base64', 'content': base64.b64encode(content).decode()})
+              assert remote['sha'] == spec['sha'], name
+              entries.append({'path': name, 'mode': '100644', 'type': 'blob', 'sha': spec['sha']})
+          subprocess.run(['git', 'add', '--', *sorted(allowed)], check=True)
+          subprocess.run(['git', 'diff', '--cached', '--check'], check=True)
+          assert set(git('diff', '--cached', '--name-only').decode().splitlines()) == allowed
+          assert git('write-tree').decode().strip() == expected_tree
+          assert not git('diff', '--name-only')
+          tree = api('git/trees', {'base_tree': base_tree, 'tree': entries})
+          assert tree['sha'] == expected_tree
+          message = ('fix(storage): protect image cleanup and make backup limits cancellable and symmetric\n\n'
+              'Coordinate destructive maintenance with live documents and image staging.\n'
+              'Recheck only confirmed orphan candidates under the library mutation lock;\n'
+              'preserve project, quarantine, trash, and registered legacy draft references.\n'
+              'Apply the same protection to expired-trash collection and refuse deletion\n'
+              'when current cooperating documents, active staging, or invalid references\n'
+              'make cleanup unsafe. Ordinary saves remain available.\n\n'
+              'Preflight base64 and UTF-8 export size against the existing 512 MiB import\n'
+              'limit, check final bytes, encode one image at a time, and expose progress\n'
+              'and cancellation without publishing partial downloads or success timestamps.\n'
+              'Preserve backup format and user data; do not claim unlimited backup support.\n\n'
+              'Local verification: 843 frontend tests with coverage, official unit suite,\n'
+              'affected typechecks and 88 final focused tests. Full static, contract and\n'
+              'production build passed during this batch; final SHA requires CI verification.\n'
+              'No production library, installation, real model, or device was exercised.')
+          commit = api('git/commits', {'message': message, 'tree': expected_tree, 'parents': [base]})
+          output = Path(os.environ['RUNNER_TEMP']) / 'storage-candidate'
+          output.mkdir()
+          (output / 'candidate.json').write_text(json.dumps({'sha': commit['sha'], 'tree': expected_tree, 'parent': base, 'files': {name: spec['sha'] for name, spec in package['files'].items()}}, indent=2))
+          print('Published candidate object:', commit['sha'], 'tree:', expected_tree, '(no refs updated)')
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: storage-safety-candidate
+          path: ${{ runner.temp }}/storage-candidate/candidate.json
+          if-no-files-found: error
+          retention-days: 2
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Cache Playwright browsers
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npx playwright install --with-deps chromium
+      - name: Verify actual multi-document locks and backup controls
+        run: npx playwright test tests/e2e/library-concurrency.spec.ts --project=desktop
+        env:
+          CI: '1'
+      - name: Upload backup control screenshots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: storage-safety-ui
+          path: test-results/**/*.png
+          if-no-files-found: error
+          retention-days: 2
+      - name: Upload failed browser traces
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: storage-safety-failures
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 2
