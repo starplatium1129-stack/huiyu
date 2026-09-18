@@ -75,6 +75,14 @@ function next() {
   child.on('close', (code: any) => {
     const ms = Date.now() - startedAt;
     results.set(name, { code: code ?? 1, ms, output });
+    // Preserve the first failure as well as the terminal summary in CI artifacts.
+    if (process.env.CI) {
+      const fs: typeof import('node:fs') = require('node:fs');
+      const path: typeof import('node:path') = require('node:path');
+      const directory = path.resolve(__dirname, '..', '..', 'runtime', 'quality-checks');
+      fs.mkdirSync(directory, { recursive: true });
+      fs.writeFileSync(path.join(directory, name.replace(/[^a-zA-Z0-9_-]/g, '-') + '.log'), output, 'utf8');
+    }
     finished += 1;
     const mark = code === 0 ? '✅' : '❌';
     console.log(`  ${mark} ${name} (${(ms / 1000).toFixed(1)}s)`);
