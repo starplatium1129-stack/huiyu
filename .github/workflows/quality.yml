@@ -40,7 +40,18 @@ jobs:
       - name: Build SPA
         run: npm run build
       - name: Run static and generated-source checks
-        run: npm run check
+        run: |
+          set -o pipefail
+          mkdir -p runtime/quality-checks
+          npm run check 2>&1 | tee runtime/quality-checks/check.log
+      - name: Preserve complete static diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: quality-static-results
+          path: runtime/quality-checks
+          if-no-files-found: ignore
+          retention-days: 14
 
   unit:
     name: Unit & Coverage Suite
