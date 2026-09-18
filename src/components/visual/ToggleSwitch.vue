@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { createFluidMotion } from '@/utils/fluidSpring'
 const props = withDefaults(defineProps<{
   modelValue: boolean
@@ -34,12 +34,17 @@ function onChange(event: Event) {
 }
 const knob = ref<HTMLElement | null>(null)
 let motion: ReturnType<typeof createFluidMotion> | undefined
-onMounted(() => {
+function start() {
+  if (motion) return
   motion = createFluidMotion([props.modelValue ? 14 : 0], ([x]) => { if (knob.value) knob.value.style.transform = `translateX(${x}px)` }, 5.5)
   motion.to([props.modelValue ? 14 : 0], true)
-})
+}
+function stop() { motion?.dispose(); motion = undefined }
+onMounted(start)
+onActivated(start)
+onDeactivated(stop)
 watch(() => props.modelValue, value => motion?.to([value ? 14 : 0]))
-onUnmounted(() => motion?.dispose())
+onUnmounted(stop)
 </script>
 
 <style scoped>

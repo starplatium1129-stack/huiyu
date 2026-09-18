@@ -8,6 +8,8 @@ import { OFFICE_FIXTURE, OFFICE_ROUTES, prepareOffice, previewRoundTrip, visitOf
 import { UI_FLUIDITY_FIXTURE } from './helpers/ui-fluidity-fixture'
 import { measureIdleFrameInterval, startFrameProbe, stopFrameProbe, summarizeFrameProbe } from './helpers/ui-fluidity-measure'
 
+declare global { interface Window { __officeFrameCount(): number } }
+
 const OUTPUT = 'runtime/ui-fluidity-office'
 const SAMPLES = 20
 const ROUNDS = 3
@@ -72,7 +74,7 @@ for (const theme of ['dark', 'light']) for (const mode of ['full', 'low'] as con
           routeRoots: document.querySelectorAll('main > .route-view').length,
           mountedImages: document.images.length,
           loadedImages: [...document.images].filter(image => image.complete && image.naturalWidth > 0).length,
-          pendingAnimationFrames: (window as Window & { __officeFrameCount(): number }).__officeFrameCount(),
+          pendingAnimationFrames: window.__officeFrameCount(),
           finiteAnimations: document.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).length,
         }))
         return { gc, jsHeapUsedBytes: read('JSHeapUsedSize'), ...dom, ...view }
@@ -82,8 +84,12 @@ for (const theme of ['dark', 'light']) for (const mode of ['full', 'low'] as con
       let complete = false
       let baseline: Awaited<ReturnType<typeof snapshot>> | null = null
       try {
-        // Three warm round trips keep all four supported views and their lazy panels reachable.
-        for (let warm = 0; warm < 3; warm++) for (const path of OFFICE_ROUTES) await visitOfficeRoute(page, path)
+        // Warm the same four views and previews measured below before the GC baseline.
+        for (let warm = 0; warm < 3; warm++) for (const path of OFFICE_ROUTES) {
+          await visitOfficeRoute(page, path)
+          if (path === '/gallery') await previewRoundTrip(page)
+          if (path === '/showcase') await showcaseRoundTrip(page)
+        }
         baseline = await snapshot(true)
         for (const path of OFFICE_ROUTES) {
           await visitOfficeRoute(page, path)
@@ -111,7 +117,7 @@ for (const theme of ['dark', 'light']) for (const mode of ['full', 'low'] as con
               Object.defineProperty(document, 'hidden', { configurable: true, get: () => true })
               document.dispatchEvent(new Event('visibilitychange'))
               await new Promise(resolve => setTimeout(resolve, 60))
-              return (window as Window & { __officeFrameCount(): number }).__officeFrameCount()
+              return window.__officeFrameCount()
             } finally {
               if (original) Object.defineProperty(document, 'hidden', original)
               else Reflect.deleteProperty(document, 'hidden')

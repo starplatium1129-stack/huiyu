@@ -25,9 +25,7 @@ export interface Live2DStatus {
  * CSS 的 prefers-reduced-motion 关不掉 WebGL ticker，只能在这里判。
  * （拆分 Step 4 自 useLive2D.ts 移入：interactions / parameterFrame / lifecycle 共用）
  */
-export function prefersReducedMotion(): boolean {
-  try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches } catch { return false }
-}
+export { prefersReducedMotion } from '@/utils/motionPreference'
 
 /** Native transparent windows may be visible without an active WebView. */
 export function isStageHidden(ctx: Live2DCtx): boolean {

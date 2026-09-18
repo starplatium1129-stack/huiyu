@@ -18,7 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { useParticleLifecycle } from '@/composables/useParticleLifecycle'
+import { prefersReducedMotion } from '@/utils/motionPreference'
+import { createParticleQuality } from '@/utils/particleQuality'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
 import { loadPortraitCloud, samplePortraitPoints, particleNeedsOutline, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
@@ -125,12 +128,7 @@ function legibleColor(hex: string): string {
 }
 
 let context: CanvasRenderingContext2D | null = null
-let resizeObserver: ResizeObserver | null = null
-let intersectionObserver: IntersectionObserver | null = null
-let themeObserver: MutationObserver | null = null
-let motionMedia: MediaQueryList | null = null
 let stopScheduledFrame: (() => void) | null = null
-let paletteFrame = 0
 let width = 0
 let height = 0
 let dpr = 1
@@ -143,15 +141,15 @@ let pointerActive = false
 let lastFrame = 0
 let lastPhysicsFrame = 0
 let lastAmbientFrame = 0
-let slowFrames = 0
-let qualityScale = 1
+
+const quality = createParticleQuality()
 
 function preferredCount(): number {
   if (reduceMotion.value) return 420
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
   // 760 → 768：对齐断点表的 --bp-sm。档外值会让 760–768 这 8px 区间单独跳一次，
   // 调试时极难看出是哪条规则生效（2026-08-30 UX 审计 P2）
-  const compact = window.matchMedia('(max-width: 768px)').matches
+  const compact = typeof window.matchMedia === 'function' ? window.matchMedia('(max-width: 768px)').matches : innerWidth <= 768
   let count: number
   if (props.density === 'backdrop') count = compact ? 220 : 380
   else if (compact || (memory !== undefined && memory <= 4)) count = 520
@@ -162,11 +160,11 @@ function preferredCount(): number {
   if (portraitCloud) {
     count = Math.max(count, compact ? 2400 : props.density === 'hero' ? 8000 : 6000)
   }
-  return Math.round(count * qualityScale)
+  return Math.round(count * quality.scale)
 }
 
 function readPalette() {
-  if (!host.value) return
+  if (!lifecycle.isActive() || document.hidden || !host.value) return
   darkTheme = (document.documentElement.dataset.theme || 'dark') !== 'light'
   const style = getComputedStyle(host.value)
   particleSurface = style.getPropertyValue('--particle-surface').trim() || '#f0edf4'
@@ -177,19 +175,6 @@ function readPalette() {
     accent: style.getPropertyValue('--particle-accent').trim() || style.getPropertyValue('--accent').trim() || '#ff8fc4',
   }
   draw()
-}
-
-/**
- * 主题切换时所有粒子场会同时触发 MutationObserver。
- * 直接同步 readPalette 会在切换瞬间做 N 次 getComputedStyle（强制 reflow），
- * 这正是深色/浅色切换卡顿的来源之一：合并到下一帧批量执行一次。
- */
-function schedulePaletteRead() {
-  if (paletteFrame) return
-  paletteFrame = requestAnimationFrame(() => {
-    paletteFrame = 0
-    readPalette()
-  })
 }
 
 function targetPosition(point: ParticlePoint): { x: number; y: number } {
@@ -204,7 +189,7 @@ function targetPosition(point: ParticlePoint): { x: number; y: number } {
 }
 
 function setShape(animate = true) {
-  if (!width || !height) return
+  if (!lifecycle.isActive() || document.hidden || !width || !height) return
   const count = Math.max(props.density === 'backdrop' ? 80 : 120, preferredCount())
   let shape: ParticlePoint[]
   if (portraitCloud) {
@@ -306,7 +291,7 @@ function updateAmbient(step: number) {
 }
 
 /**
- * 物理模型逐项对标 Arknights-FlowingPoints 的 CONFIG（2026-08-16 起全站统一，
+ * 物理模型逐项对标 Arknights-FlowingPoints（2026-08-16 用户要求整站统一，
  * 不再区分剪影/抽象形状）：斥力半径 105px 固定、平方衰减力 1.8、恒定回位
  * 弹簧 0.01（慢回流=流动感）、摩擦 0.15/帧；无待机漂移、无点击脉冲、无指针
  * 高光——参考实现均没有这些。step 按帧时长归一（高刷屏不变速）。
@@ -355,6 +340,7 @@ function simulateParticles(now: number): boolean {
 }
 
 function draw() {
+  if (!lifecycle.isActive() || document.hidden) return
   if (!context || !canvas.value) return
   const ctx = context
   ctx.clearRect(0, 0, width, height)
@@ -486,16 +472,8 @@ function draw() {
 }
 
 function renderFrame(now: number) {
-  if (!visible || document.hidden || reduceMotion.value) return
-  if (lastFrame) {
-    const elapsed = now - lastFrame
-    slowFrames = elapsed > 28 ? slowFrames + 1 : Math.max(0, slowFrames - 2)
-    if (slowFrames >= 20 && qualityScale > 0.48) {
-      qualityScale *= 0.7
-      slowFrames = 0
-      setShape(false)
-    }
-  }
+  if (!lifecycle.isActive() || !visible || document.hidden || reduceMotion.value) return
+  if (lastFrame && quality.frame(now - lastFrame)) setShape(false)
   lastFrame = now
   const moving = simulateParticles(now)
   const ambientElapsed = lastAmbientFrame ? Math.min(48, Math.max(1, now - lastAmbientFrame)) : 16.67
@@ -506,7 +484,7 @@ function renderFrame(now: number) {
 }
 
 function startLoop() {
-  if (stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
+  if (!lifecycle.isActive() || !context || stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
   lastFrame = 0
   lastPhysicsFrame = 0
   // 2026-08-15（用户决策：性能充裕，放开帧率）：不再按密度节流（60/45/30fps），
@@ -521,10 +499,11 @@ function stopLoop() {
   lastFrame = 0
   lastPhysicsFrame = 0
   lastAmbientFrame = 0
+  quality.resetHistory()
 }
 
 function resize() {
-  if (!host.value || !canvas.value) return
+  if (!lifecycle.isActive() || document.hidden || !host.value || !canvas.value) return
   const rect = host.value.getBoundingClientRect()
   width = Math.max(1, Math.round(rect.width))
   height = Math.max(1, Math.round(rect.height))
@@ -569,15 +548,11 @@ function onPointerLeave() {
   startLoop()
 }
 
-function onVisibilityChange() {
-  if (document.hidden) stopLoop()
-  else if (visible) startLoop()
-}
-
-function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
-  reduceMotion.value = event.matches
-  if (reduceMotion.value) stopLoop()
+function onMotionPreference() {
+  reduceMotion.value = prefersReducedMotion()
+  stopLoop()
   setShape(false)
+  startLoop()
 }
 
 watch(() => props.shape, () => { if (!portraitCloud) setShape(true) })
@@ -591,6 +566,7 @@ watch(() => props.signal, () => startLoop())
 
 /** 角色剪影点云异步接管：加载完成前维持现有形状，完成后平滑形变成人物轮廓。 */
 async function applyPortrait(id: string) {
+  if (!lifecycle.isActive()) return
   const token = ++portraitToken
   if (!id) {
     portraitCloud = null
@@ -602,7 +578,7 @@ async function applyPortrait(id: string) {
     return
   }
   const cloud = await loadPortraitCloud(id)
-  if (token !== portraitToken) return
+  if (token !== portraitToken || !lifecycle.isActive()) return
   portraitCloud = cloud
   portraitPaints = cloud ? cloud.palette.map(legibleColor) : []
   portraitRaw = cloud ? cloud.palette.slice() : []
@@ -612,36 +588,11 @@ async function applyPortrait(id: string) {
   setShape(true)
 }
 
-onMounted(() => {
-  if (!host.value || !canvas.value) return
-  motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)')
-  onMotionPreference(motionMedia)
-  motionMedia.addEventListener('change', onMotionPreference)
-  resizeObserver = new ResizeObserver(resize)
-  resizeObserver.observe(host.value)
-  intersectionObserver = new IntersectionObserver(([entry]) => {
-    visible = entry?.isIntersecting ?? true
-    if (visible) startLoop()
-    else stopLoop()
-  }, { rootMargin: '120px' })
-  intersectionObserver.observe(host.value)
-  themeObserver = new MutationObserver(schedulePaletteRead)
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-  document.addEventListener('visibilitychange', onVisibilityChange)
-  readPalette()
-  resize()
-  startLoop()
-  if (props.portraitId) void applyPortrait(props.portraitId)
-})
-
-onUnmounted(() => {
-  stopLoop()
-  if (paletteFrame) cancelAnimationFrame(paletteFrame)
-  resizeObserver?.disconnect()
-  intersectionObserver?.disconnect()
-  themeObserver?.disconnect()
-  motionMedia?.removeEventListener('change', onMotionPreference)
-  document.removeEventListener('visibilitychange', onVisibilityChange)
+const lifecycle = useParticleLifecycle(host, {
+  start: startLoop, stop: stopLoop, resize, palette: readPalette, preference: onMotionPreference,
+  visible(value) { visible = value },
+  portrait() { void applyPortrait(props.portraitId) },
+  invalidate() { portraitToken++; pointerActive = false },
 })
 </script>
 
