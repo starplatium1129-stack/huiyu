@@ -1,6 +1,6 @@
 # 009 · 交互流畅度与运行性能分批实施计划
 
-> 创建日期：2026-09-17（Asia/Singapore）。状态：**F0、F1、F2 已完成办公机定向验收，F3–F7 待执行**。
+> 创建日期：2026-09-17（Asia/Singapore）。状态：**F0–F2 已完成办公机定向验收，F3 部分验收，F4.1 盘点完成，F5–F7 待执行**。
 >
 > 编制基线：`main@6afdc7d0f7091547123d44e9a21c8d6d661d6166`。F0 已在办公机执行；Windows 安装版、真实 GPU/Live2D/语音负载仍未验收。已有历史 PASS 不作为本专项成绩。
 >
@@ -18,10 +18,10 @@
 
 | 批次 | 交付结果 | 前置条件 | 当前状态 | 提交 / 证据 |
 | --- | --- | --- | --- | --- |
-| F0 | 可复现的流畅度基线、场景矩阵和测量入口 | 无 | 已验收（办公机；S06–S08 延期） | [F0 原始报告](../runtime/ui-fluidity-f0/ui-fluidity-f0.json)、[代表性 trace](../runtime/ui-fluidity-f0/traces/representative-r0s0.zip) |
+| F0 | 可复现的流畅度基线、场景矩阵和测量入口 | 无 | 已验收（办公机；S06–S08 延期） | F0 原始报告（本机原始证据：`runtime/ui-fluidity-f0/ui-fluidity-f0.json`；[去敏摘要](../docs/evidence/ui-fluidity-f0-f3-2026-09-17.json)）、代表性 trace（本机原始证据：`runtime/ui-fluidity-f0/traces/representative-r0s0.zip`；[去敏摘要](../docs/evidence/ui-fluidity-f0-f3-2026-09-17.json)） |
 | F1 | 即时反馈、最新导航意图和可中断切换 | F0 | 已验收（办公机；当前趋势非纯净 A/B） | 单测、导航回归与 F0 场景基准通过 |
 | F2 | 热切换、图片就绪和返回现场恢复 | F1；使用 F0 的数据/资源分析 | 已验收（办公机；S03 留给 F3） | S02/S04、预热与图片回归通过 |
-| F3 | 大列表、主线程和滚动掉帧定向优化 | F0；默认接续 F2 | 部分验收（F3.1 完成；S03 残差移交 F7） | [去敏摘要](../docs/evidence/ui-fluidity-f0-f3-2026-09-17.json)、[F3 基线](../runtime/ui-fluidity-f0/ui-fluidity-f0.json)、[分解探针](../runtime/ui-fluidity-f0/ui-fluidity-f0-narrow-mechanism.json) |
+| F3 | 大列表、主线程和滚动掉帧定向优化 | F0；默认接续 F2 | 部分验收（F3.1 完成；S03 残差移交 F7） | [去敏摘要](../docs/evidence/ui-fluidity-f0-f3-2026-09-17.json)、F3 基线（本机原始证据：`runtime/ui-fluidity-f0/ui-fluidity-f0.json`；[去敏摘要](../docs/evidence/ui-fluidity-f0-f3-2026-09-17.json)）、分解探针（本机原始证据：`runtime/ui-fluidity-f0/ui-fluidity-f0-narrow-mechanism.json`；[去敏摘要](../docs/evidence/ui-fluidity-f0-f3-2026-09-17.json)） |
 | F4 | 一致且不阻碍操作的页面/面板动效 | F1、F3 的关键阻塞已处理 | 实施中（F4.1 盘点完成） | 见下方 F4 段 |
 | F5 | 长时间使用、后台资源和 Live2D 共存 | F0；默认接续 F4 | 待执行 | 未运行 |
 | F6 | 稳定的行为回归、性能预算和交付记录 | F1–F5 已实现或有明确延期记录 | 待执行 | 未运行 |

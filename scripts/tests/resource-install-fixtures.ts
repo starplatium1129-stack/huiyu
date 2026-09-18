@@ -1,3 +1,4 @@
+// Byte-copy fixtures explicitly exercise the Windows branch; native rename races remain Windows-only.
 'use strict';
 
 // Helpers use only uniquely owned os.tmpdir fixtures; not an independent test entry.
@@ -48,14 +49,14 @@ function fixture(t: any, { large = false }: any = {}) {
   write(path.join(source, 'assets/removed.txt'), 'REMOVED');
   const old = generateManifest({ root: source });
   write(path.join(source, 'old.json'), JSON.stringify(old));
-  assert.equal(stageResourcePack({ root: source, name: 'base', manifestPath: 'old.json' }).ok, true);
+  assert.equal(stageResourcePack({ platform: 'win32', root: source, name: 'base', manifestPath: 'old.json' }).ok, true);
   write(path.join(source, 'assets/a.txt'), 'NEW-CONTENT');
   write(path.join(source, 'assets/new.bin'), large ? Buffer.alloc(3 * 1024 * 1024, 37) : 'NEW ASSET');
   fs.unlinkSync(path.join(source, 'assets/removed.txt'));
   const next = generateManifest({ root: source });
   write(path.join(source, 'next.json'), JSON.stringify(next));
-  assert.equal(stageResourcePack({ root: source, name: 'full', manifestPath: 'next.json' }).ok, true);
-  assert.equal(stageResourcePackDelta({ root: source, name: 'delta', manifestPath: 'next.json', baseManifestPath: 'old.json' }).ok, true);
+  assert.equal(stageResourcePack({ platform: 'win32', root: source, name: 'full', manifestPath: 'next.json' }).ok, true);
+  assert.equal(stageResourcePackDelta({ platform: 'win32', root: source, name: 'delta', manifestPath: 'next.json', baseManifestPath: 'old.json' }).ok, true);
   const policy = { sources: { media: { kind: 'offline', root: packs, approved: true } }, releases: {} };
   const f: any = { base, source, user, program, artwork, packs, old, next, policy };
   approve(f, 'base', 'full', old);

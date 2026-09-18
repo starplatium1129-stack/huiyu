@@ -1,3 +1,4 @@
+// Byte-copy fixtures explicitly exercise the Windows branch; native rename races remain Windows-only.
 'use strict';
 
 const test: typeof import('node:test')['test'] = require('node:test').test;
@@ -14,7 +15,7 @@ test('zero-difference delta is a verified no-op; deletion-only delta installs an
   fs.rmSync(path.join(f.source, 'assets'), { recursive: true });
   fs.cpSync(path.join(f.packs, 'base/assets'), path.join(f.source, 'assets'), { recursive: true });
   write(path.join(f.source, 'same.json'), JSON.stringify(generateManifest({ root: f.source })));
-  assert.equal(stageResourcePackDelta({ root: f.source, name: 'zero', manifestPath: 'same.json', baseManifestPath: 'old.json' }).ok, true);
+  assert.equal(stageResourcePackDelta({ platform: 'win32', root: f.source, name: 'zero', manifestPath: 'same.json', baseManifestPath: 'old.json' }).ok, true);
   approve(f, 'zero', 'delta', f.old);
   const zero = await f.installer().install({ releaseId: 'zero' });
   assert.equal(zero.action, 'already-installed');
@@ -23,7 +24,7 @@ test('zero-difference delta is a verified no-op; deletion-only delta installs an
   fs.mkdirSync(path.join(f.source, 'assets'));
   const empty = generateManifest({ root: f.source });
   write(path.join(f.source, 'empty.json'), JSON.stringify(empty));
-  assert.equal(stageResourcePackDelta({ root: f.source, name: 'empty', manifestPath: 'empty.json', baseManifestPath: 'old.json' }).ok, true);
+  assert.equal(stageResourcePackDelta({ platform: 'win32', root: f.source, name: 'empty', manifestPath: 'empty.json', baseManifestPath: 'old.json' }).ok, true);
   approve(f, 'empty', 'delta', empty);
   const removed = await f.installer().install({ releaseId: 'empty' });
   assert.equal((await f.installer().status()).verifiedFiles, 0);

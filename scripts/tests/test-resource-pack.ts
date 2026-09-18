@@ -1,3 +1,4 @@
+// Byte-copy fixtures explicitly exercise the Windows branch; native rename races remain Windows-only.
 'use strict';
 
 /**
@@ -123,13 +124,13 @@ test('正常导出：结构保留、原文件字节不变、导出后现有 veri
   fs.writeFileSync(path.join(fx.root, 'assets/extra.txt'), 'unlisted');
   const sourceBefore = snapshot(fx.assets);
   const manifestBefore = fs.readFileSync(fx.manifest);
-  const result = cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'pack-ok', '--apply']);
-  assert.equal(result.status, 0, result.stderr);
-  const parsed = JSON.parse(result.stdout);
+  const parsed = stageResourcePack({ root: fx.root, name: 'pack-ok', manifestPath: 'artifacts/manifest.json', platform: 'win32' });
+  assert.equal(parsed.ok, true, JSON.stringify(parsed.errors));
   assert.equal(parsed.kind, 'resource-pack-result');
   assert.equal(parsed.ok, true);
   assert.equal(parsed.destinationCreated, true);
   assert.equal(parsed.stagingPath, null);
+  assert.ok(parsed.finalVerification);
   assert.equal(parsed.finalVerification.ok, true);
   assert.equal(parsed.finalVerification.verified, 3);
 
@@ -252,7 +253,7 @@ test('复制期间源变化：不发布最终包，暂存目录保留并明确�
       return fs.readFileSync(p, ...rest);
     },
   });
-  const result = stageResourcePack({ root: fx.root, name: 'pack-change', manifestPath: 'artifacts/manifest.json', io });
+  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'pack-change', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(alphaReads, 2, '核验与复制各读取一次');
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.path === 'assets/alpha.txt' && e.code === 'hash-mismatch'), JSON.stringify(result.errors));
@@ -273,7 +274,7 @@ test('候选写入失败：不发布最终包，已复制候选保留在暂存�
       return (fs.writeFileSync as any)(p, ...rest);
     },
   });
-  const result = stageResourcePack({ root: fx.root, name: 'pack-wfail', manifestPath: 'artifacts/manifest.json', io });
+  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'pack-wfail', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.path === 'assets/dir/bravo.bin' && e.code === 'write-error'));
   assert.equal(result.destinationCreated, false);
@@ -291,7 +292,7 @@ test('发布冲突（rename 失败/目标冲突）：不报告成功，完整暂
       throw Object.assign(new Error('模拟目标冲突'), { code: 'EPERM' });
     },
   });
-  const result = stageResourcePack({ root: fx.root, name: 'pack-conflict', manifestPath: 'artifacts/manifest.json', io });
+  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'pack-conflict', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.code === 'publish-failed'));
   assert.equal(result.destinationCreated, false);
@@ -303,8 +304,8 @@ test('发布冲突（rename 失败/目标冲突）：不报告成功，完整暂
 
 test('成功导出后同名重跑被拒绝（不覆盖旧包）', (t) => {
   const fx = buildFixture(t);
-  const first = cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'once', '--apply']);
-  assert.equal(first.status, 0, first.stderr);
+  const first = stageResourcePack({ root: fx.root, name: 'once', manifestPath: 'artifacts/manifest.json', platform: 'win32' });
+  assert.equal(first.ok, true, JSON.stringify(first.errors));
   const packBefore = snapshot(destPath(fx.root, 'once'));
   const rerun = cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'once', '--apply']);
   assert.equal(rerun.status, 1);
@@ -328,7 +329,13 @@ test('CLI 退出码契约：help/plan 零读取、参数错误与清单越界', 
 
   const fx = buildFixture(t);
   assert.equal(cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'plan-cli']).status, 0, '预览成功');
-  assert.equal(cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'plan-cli', '--apply']).status, 0, '导出成功');
+  const apply = cli(['--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'plan-cli', '--apply']);
+  assert.equal(apply.status, process.platform === 'win32' ? 0 : 1, apply.stdout + apply.stderr);
+  if (process.platform !== 'win32') {
+    assert.equal(JSON.parse(apply.stdout).errors[0].code, 'unsupported-platform');
+    assert.equal(fs.existsSync(destPath(fx.root, 'plan-cli')), false, 'unsupported CLI must not publish');
+    assert.equal(stageResourcePack({ root: fx.root, name: 'plan-cli', manifestPath: 'artifacts/manifest.json', platform: 'win32' }).ok, true);
+  }
   assert.equal(cli(['--root', path.join(fx.base, 'outside'), '--manifest', path.join(fx.root, 'artifacts', 'manifest.json'), '--name', 'escape']).status, 2, '清单越界（不在指定 root 内）');
   assert.equal(cli(['--root', fx.root, '--manifest', path.join(fx.outside, 'secret.txt'), '--name', 'escape2']).status, 2, '清单指向 root 外文件');
   assert.equal(cli(['--root', missingRoot, '--manifest', 'x.json', '--name', 'p1']).status, 2, 'root 不可用');
@@ -338,12 +345,17 @@ test('CLI 退出码契约：help/plan 零读取、参数错误与清单越界', 
 test('工作流注册入口转发 preview 与 --apply，runner 级 --plan 不执行', (t) => {
   const fx = buildFixture(t);
   const viaWorkflow = spawnSync(process.execPath, [path.join(repo, 'scripts', 'workflow.js'), 'resource:pack', '--root', fx.root, '--manifest', 'artifacts/manifest.json', '--name', 'viaflow', '--apply'], { encoding: 'utf8' });
-  assert.equal(viaWorkflow.status, 0, viaWorkflow.stderr);
+  assert.equal(viaWorkflow.status, process.platform === 'win32' ? 0 : 1, viaWorkflow.stdout + viaWorkflow.stderr);
   const forwarded = JSON.parse(viaWorkflow.stdout);
   assert.equal(forwarded.kind, 'resource-pack-result');
-  assert.equal(forwarded.ok, true);
-  assert.equal(forwarded.destinationCreated, true);
-  assert.equal(verifyManifest({ root: destPath(fx.root, 'viaflow'), manifestPath: 'manifest.json' }).ok, true);
+  assert.equal(forwarded.ok, process.platform === 'win32');
+  assert.equal(forwarded.destinationCreated, process.platform === 'win32');
+  if (process.platform === 'win32') {
+    assert.equal(verifyManifest({ root: destPath(fx.root, 'viaflow'), manifestPath: 'manifest.json' }).ok, true);
+  } else {
+    assert.equal(forwarded.errors[0].code, 'unsupported-platform');
+    assert.equal(fs.existsSync(destPath(fx.root, 'viaflow')), false);
+  }
 
   const fx2 = buildFixture(t);
   const preview = spawnSync(process.execPath, [path.join(repo, 'scripts', 'workflow.js'), 'resource:pack', '--root', fx2.root, '--manifest', 'artifacts/manifest.json', '--name', 'viaflow2', '--plan'], { encoding: 'utf8' });
@@ -373,7 +385,7 @@ test('预览与成功导出全程零越界访问（记录型 fs 证明）', (t) 
   const plan = planResourcePack({ root: fx.root, name: 'audit-plan', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(plan.ok, true);
   assert.equal(fs.existsSync(path.join(fx.root, 'scripts')), false, '预览未创建任何目录');
-  const staged = stageResourcePack({ root: fx.root, name: 'audit-pack', manifestPath: 'artifacts/manifest.json', io });
+  const staged = stageResourcePack({ platform: 'win32', root: fx.root, name: 'audit-pack', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(staged.ok, true);
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
   const writes = calls.filter((c: any) => c.op === 'writeFileSync' || c.op === 'renameSync' || c.op === 'mkdirSync' || c.op === 'mkdtempSync');
@@ -400,7 +412,7 @@ test('清单磁盘写入损坏或合法但丢条目均不得发布', (t) => {
       if (String(p).endsWith('manifest.json')) return fs.writeFileSync(p, corrupt, ...rest);
       return fs.writeFileSync(p, value, ...rest);
     } });
-    const result = stageResourcePack({ root: fx.root, name: 'badmanifest', manifestPath: 'artifacts/manifest.json', io });
+    const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'badmanifest', manifestPath: 'artifacts/manifest.json', io });
     assert.equal(result.ok, false);
     assert.equal(result.destinationCreated, false);
     assert.ok(result.stagingPath);
@@ -413,7 +425,7 @@ test('候选副本读回内容损坏不得发布', (t) => {
   const { io } = recordingIo({ writeFileSync: (p: any, value: any, ...rest: any[]) => {
     return fs.writeFileSync(p, String(p).endsWith('alpha.txt') ? Buffer.from('Z') : value, ...rest);
   } });
-  const result = stageResourcePack({ root: fx.root, name: 'badcopy', manifestPath: 'artifacts/manifest.json', io });
+  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'badcopy', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.equal(result.destinationCreated, false);
   assert.ok(result.errors.some((e: any) => e.code === 'copy-verify-failed'));
@@ -433,7 +445,7 @@ test('源核验后内部目录变成排除域 junction，复制前拒绝读取',
     if (swapped && String(p).startsWith(path.join(fx.root, 'assets/dir') + path.sep)) throw new Error('排除目标被读取');
     return fs.readFileSync(p, ...rest);
   } });
-  const result = stageResourcePack({ root: fx.root, name: 'changed-alias', manifestPath: 'artifacts/manifest.json', io });
+  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'changed-alias', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.code === 'out-of-scope'));
   assert.equal(result.destinationCreated, false);
@@ -452,7 +464,7 @@ test('源核验期间目标祖先出现 junction，首次写入前拒绝', (t) =
     return value;
   } });
   const before = snapshot(fx.outside);
-  const result = stageResourcePack({ root: fx.root, name: 'changed-parent', manifestPath: 'artifacts/manifest.json', io });
+  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'changed-parent', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.code === 'link-in-destination-chain'));
   assert.ok(calls.every((c: any) => !['mkdirSync','mkdtempSync','writeFileSync','renameSync'].includes(c.op)));
@@ -466,7 +478,7 @@ test('Windows 发布瞬间出现同名空目录也不能被替换', { skip: proc
     fs.mkdirSync(to);
     return fs.renameSync(from, to);
   } });
-  const result = stageResourcePack({ root: fx.root, name: 'race', manifestPath: 'artifacts/manifest.json', io });
+  const result = stageResourcePack({ platform: 'win32', root: fx.root, name: 'race', manifestPath: 'artifacts/manifest.json', io });
   assert.equal(result.ok, false);
   assert.equal(result.destinationCreated, false);
   assert.ok(result.errors.some((e: any) => e.code === 'publish-failed'));

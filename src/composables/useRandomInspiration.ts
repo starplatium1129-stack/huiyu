@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { randomPromptPlan, type RandomDraw, type RandomInspirationOptions } from '@/utils/randomPromptAssembler'
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent.ts'
@@ -26,6 +26,22 @@ export function useRandomInspiration() {
 
   /** 撤销快照：仅保留最近一组（掷之前的状态）。 */
   const lastSnapshot = ref<ReturnType<typeof pb.snapshotStyleLayers> | null>(null)
+
+  let generatedArtists = new Set<string>()
+  let snapshotGenerated: string[] = []
+  let applying = false
+
+  // Only this composable's additions are eligible for replacement on a reroll.
+  // A manual picker write conservatively makes the current selection user-owned.
+  watch(() => pb.artistStyleIds, () => {
+    if (!applying) generatedArtists.clear()
+  }, { deep: true, flush: 'sync' })
+
+  watch(() => JSON.stringify([pb.char, pb.sceneId, pb.subject, pb.projectId]), () => {
+    lastSnapshot.value = null
+    snapshotGenerated = []
+    generatedArtists.clear()
+  }, { flush: 'sync' })
 
   /** 自 store 已加载数据提取官方服装（loras.json outfit_guidance，V18 WD14 为事实源）。 */
   function officialOutfitsFor(char: string): Record<string, string[]> {
@@ -74,27 +90,34 @@ export function useRandomInspiration() {
       ? {
           identityExclude,
           includeArtists: includeArtists.value,
-          keepArtists: pb.artistStyleIds,
+          keepArtists: pb.artistStyleIds.filter(id => !generatedArtists.has(id)),
           tags: pb.tags,
         }
       : {
           char: pb.char,
           includeArtists: includeArtists.value,
-          keepArtists: pb.artistStyleIds,
+          keepArtists: pb.artistStyleIds.filter(id => !generatedArtists.has(id)),
           tags: pb.tags,
           officialOutfits: officialOutfitsFor(pb.char),
         }
     const draw: RandomDraw = randomPromptPlan(options)
 
     lastSnapshot.value = pb.snapshotStyleLayers()
-
-    pb.selections.emotion = draw.emotions
-    pb.selections.shot = draw.shot
-    pb.selections.lighting = draw.lighting
-    pb.selections.composition = draw.composition
-    pb.setColorMood(draw.colorMood)
-    pb.manualTags = new Set(draw.manualTags)
-    pb.setArtistStyleIds(draw.artistStyleIds)
+    snapshotGenerated = [...generatedArtists]
+    const retainedArtists = new Set(options.keepArtists)
+    applying = true
+    try {
+      pb.selections.emotion = draw.emotions
+      pb.selections.shot = draw.shot
+      pb.selections.lighting = draw.lighting
+      pb.selections.composition = draw.composition
+      pb.setColorMood(draw.colorMood)
+      pb.manualTags = new Set(draw.manualTags)
+      pb.setArtistStyleIds(draw.artistStyleIds)
+    } finally {
+      applying = false
+    }
+    generatedArtists = new Set(draw.artistStyleIds.filter(id => !retainedArtists.has(id)))
 
     pb.flash('随机灵感已应用，可继续手改或再掷', 2500, 'info')
     return true
@@ -103,7 +126,14 @@ export function useRandomInspiration() {
   /** 撤销上一组（回到掷之前的状态）。 */
   function undo(): boolean {
     if (!lastSnapshot.value) return false
-    pb.restoreStyleLayers(lastSnapshot.value)
+    applying = true
+    try {
+      pb.restoreStyleLayers(lastSnapshot.value)
+    } finally {
+      applying = false
+    }
+    generatedArtists = new Set(snapshotGenerated)
+    snapshotGenerated = []
     lastSnapshot.value = null
     pb.flash('已撤销上一组随机灵感', 2000, 'info')
     return true

@@ -105,7 +105,7 @@ function ensureTagsBuilt({ onlyIfMissing = false }: any = {}) {
   if (tagsIsCurrent()) return { rebuilt: false };
   loadTagShards();
   const count = writeTagAggregate();
-  refreshPrecompressed([tagsAggregatePath]);
+  refreshPrecompressed([tagsAggregatePath, tagsDictionaryPath]);
   return { rebuilt: true, count };
 }
 

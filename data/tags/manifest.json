@@ -68,5 +68,191 @@
       "label": "成人",
       "count": 110
     }
-  ]
+  ],
+  "dictionary": {
+    "duplicates": {
+      "see_through_clothing": {
+        "canonical": "tag_186",
+        "members": [
+          "tag_186",
+          "tag_488"
+        ]
+      },
+      "lying_on_stomach": {
+        "canonical": "tag_081",
+        "members": [
+          "tag_081",
+          "tag_509"
+        ]
+      },
+      "lying_on_back": {
+        "canonical": "tag_082",
+        "members": [
+          "tag_082",
+          "tag_510"
+        ]
+      },
+      "leaning_against": {
+        "canonical": "tag_084",
+        "members": [
+          "tag_084",
+          "tag_265",
+          "tag_511"
+        ]
+      },
+      "holding_hands": {
+        "canonical": "tag_085",
+        "members": [
+          "tag_085",
+          "tag_500"
+        ]
+      },
+      "hugging_from_behind": {
+        "canonical": "tag_708",
+        "members": [
+          "tag_708",
+          "tag_577"
+        ]
+      },
+      "shy": {
+        "canonical": "tag_040",
+        "members": [
+          "tag_040",
+          "tag_177",
+          "tag_322"
+        ]
+      },
+      "teary_eyes": {
+        "canonical": "tag_149",
+        "members": [
+          "tag_149",
+          "tag_427"
+        ]
+      },
+      "panicked": {
+        "canonical": "tag_150",
+        "members": [
+          "tag_150",
+          "tag_418"
+        ]
+      },
+      "calm": {
+        "canonical": "tag_223",
+        "members": [
+          "tag_223",
+          "tag_421"
+        ]
+      },
+      "cozy": {
+        "canonical": "tag_252",
+        "members": [
+          "tag_252",
+          "tag_324",
+          "tag_420"
+        ]
+      },
+      "light_smile": {
+        "canonical": "tag_304",
+        "members": [
+          "tag_304",
+          "tag_429"
+        ]
+      },
+      "dawn": {
+        "canonical": "tag_442",
+        "members": [
+          "tag_442",
+          "tag_497"
+        ]
+      },
+      "lantern": {
+        "canonical": "tag_447",
+        "members": [
+          "tag_447",
+          "tag_439"
+        ]
+      },
+      "backlighting": {
+        "canonical": "tag_066",
+        "members": [
+          "tag_066",
+          "tag_187"
+        ]
+      },
+      "lens_flare": {
+        "canonical": "tag_069",
+        "members": [
+          "tag_069",
+          "tag_075"
+        ]
+      },
+      "sunbeam": {
+        "canonical": "tag_232",
+        "members": [
+          "tag_232",
+          "tag_077"
+        ]
+      },
+      "pov": {
+        "canonical": "tag_101",
+        "members": [
+          "tag_101",
+          "tag_416",
+          "tag_460"
+        ]
+      },
+      "off_center_composition": {
+        "canonical": "tag_108",
+        "members": [
+          "tag_108",
+          "tag_109"
+        ],
+        "meaning": "偏心构图"
+      }
+    },
+    "aliasOverrides": {
+      "qipao": {
+        "target": "tag_010",
+        "shadowed": [
+          "tag_248"
+        ]
+      },
+      "cheongsam": {
+        "target": "tag_010",
+        "shadowed": [
+          "tag_247"
+        ]
+      },
+      "close_up": {
+        "target": "tag_097",
+        "shadowed": [
+          "tag_411"
+        ]
+      },
+      "medium_shot": {
+        "target": "tag_098",
+        "shadowed": [
+          "tag_413"
+        ]
+      },
+      "wide_shot": {
+        "target": "tag_099",
+        "shadowed": [
+          "tag_415"
+        ]
+      },
+      "full_body": {
+        "target": "tag_099",
+        "shadowed": [
+          "tag_414"
+        ]
+      },
+      "bokeh": {
+        "target": "tag_110",
+        "shadowed": [
+          "tag_074"
+        ]
+      }
+    }
+  }
 }

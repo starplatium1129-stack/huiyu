@@ -1,7 +1,8 @@
 import type { ArtistStyleOption } from '../config/artistStyles.ts'
-import { normalizeArtistStyleIds } from '../config/artistStyles.ts'
+import { normalizeArtistStyleIds, ARTIST_STYLE_CANDIDATES } from '../config/artistStyles.ts'
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '../config/promptConstants.ts'
-import { membersOfMutualGroup, mutualGroupWithCategory } from '../utils/promptPolicy.ts'
+import { normalizeKey, mutualGroupWithCategory } from './promptPolicy.ts'
+import { appendRandomTag, compatibleRandomDetail, randomTokens, visibleInRandomShot } from './randomPromptConstraints.ts'
 
 /**
  * 随机灵感采样器（2026-08-29，详见 docs/guides/engineering/random-prompt-assembler-design.md）。
@@ -35,8 +36,8 @@ export interface RandomInspirationOptions {
   tags: ReadonlyArray<{ en: string; cat: string }>
   /** 官方服装（loras.json outfit_guidance，key → token 列表）。 */
   officialOutfits?: Readonly<Record<string, readonly string[]>>
-  /** 画师白名单，缺省 ARTIST_STYLE_OPTIONS。 */
-  artists?: ReadonlyArray<ArtistStyleOption>
+  /** 画师候选，缺省复用轻量白名单；显式空数组表示不采样。 */
+  artists?: ReadonlyArray<Pick<ArtistStyleOption, 'id'>>
 }
 
 export interface RandomDraw {
@@ -74,12 +75,12 @@ const INDOOR_SCENE = new Set([
   'home_theater', 'storage_room', 'breakroom', 'kitchen', 'music_room', 'arcade',
   'garage', 'attic', 'oriental_room', 'workshop', 'convenience_store', 'hotel_room',
   'fitting_room', 'car_interior', 'lounge', 'bathroom', 'living_room', 'tatami',
-  'safehouse', 'gymnasium', 'swimming_pool',
+  'safehouse', 'gymnasium', 'swimming_pool', 'train_interior', 'art_studio', 'infirmary', 'izakaya', 'steamy_bathroom',
 ])
 const OUTDOOR_SCENE = new Set([
   'beach', 'shrine', 'park', 'train_station', 'school_rooftop', 'rooftop', 'grassy_hill',
   'fireworks', 'street', 'bus_stop', 'stone_stairs', 'city_lights', 'cityscape',
-  'balcony', 'ocean', 'wet_road', 'festival', 'greenhouse',
+  'balcony', 'ocean', 'wet_road', 'festival', 'greenhouse', 'hotel_balcony', 'sea_wall', 'bridge', 'rooftop_fence',
 ])
 
 /** 温和身体细节（可随机）；其余 Body 标签（cleavage/no_panties 等）并入 Mature 池。 */
@@ -103,14 +104,6 @@ const PRIMARY_LOCATIONS = new Set([
   'safehouse', 'gymnasium', 'swimming_pool', 'art_studio', 'infirmary', 'izakaya', 'steamy_bathroom',
   'beach', 'shrine', 'train_station', 'school_rooftop', 'rooftop', 'train_platform',
   'bus_stop', 'sea_wall', 'bridge', 'hotel_balcony', 'train_interior', 'rooftop_fence',
-])
-
-/** 下肢与鞋袜细节（特写近景镜头下自动屏蔽，防止肢体畸变）。 */
-const FOOTWEAR_EXCLUDE = new Set([
-  'boots', 'shoes', 'sneakers', 'heels', 'sandals', 'socks', 'stockings',
-  'thighhighs', 'thigh_highs', 'barefoot', 'bare_feet', 'feet', 'bare_legs',
-  'strappy_heels', 'mary_janes', 'combat_boots', 'ankle_boots', 'brown_boots',
-  'white_tabi', 'asymmetrical_legwear', 'loose_socks', 'frilled_socks',
 ])
 
 /** LIGHTING 主光源池（互斥）；back 逆光可叠加。 */
@@ -139,13 +132,9 @@ const ALL_SHOT_IDS = SHOT.map(option => option.id)
 const ALL_COMPOSITION_IDS = COMPOSITION.map(option => option.id)
 const ALL_COLOR_MOOD_IDS = COLOR_MOODS.map(option => option.id)
 
-function normalizeTag(value: string): string {
-  return String(value || '').trim().replace(/\s+/g, '_')
-}
-
 /** 从池中不重复抽取 n 个（洗牌取前 n），池不足时全取。 */
 function draw(pool: readonly string[], count: number, rng: () => number, exclude?: ReadonlySet<string>): string[] {
-  const candidates = pool.filter(item => !exclude || !exclude.has(item))
+  const candidates = [...new Set(pool)].filter(item => !exclude || !exclude.has(item))
   if (!candidates.length) return []
   const result: string[] = []
   const remaining = [...candidates]
@@ -161,57 +150,43 @@ function chance(probability: number, rng: () => number): boolean {
   return rng() < probability
 }
 
-/** 按互斥组语义添加标签：同组旧成员先移除，且天气与时段大类全局互斥（下雨不能下雪、白天不能夜晚）。 */
-function addWithMutualGroup(target: string[], tag: string): boolean {
-  const key = normalizeTag(tag)
-  if (!key || target.includes(key)) return false
-  const hit = mutualGroupWithCategory(key)
-  if (hit) {
-    if (hit.category === 'weather' || hit.category === 'time') {
-      for (let i = target.length - 1; i >= 0; i--) {
-        const otherHit = mutualGroupWithCategory(target[i])
-        if (otherHit && otherHit.category === hit.category) {
-          target.splice(i, 1)
-        }
-      }
-    } else {
-      for (const member of membersOfMutualGroup(hit.group, target)) {
-        const i = target.indexOf(member)
-        if (i >= 0) target.splice(i, 1)
-      }
-    }
-  }
-  target.push(key)
-  return true
-}
-
 export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw {
   const rng = options.rng ?? Math.random
+  const char = options.char ?? 'nene'
   // 热门角色模式：identityExclude（identityTokens+exactTokens+outfit tokens）优先；
   // studio 模式：内置身份查表。两者都归一化后并入排除集。
   const explicitIdentity = options.identityExclude
   const identitySource: Iterable<string> = explicitIdentity
     ? explicitIdentity
-    : (IDENTITY_TOKENS[options.char ?? 'nene'] ?? IDENTITY_TOKENS.nene)
+    : (IDENTITY_TOKENS[char] ?? IDENTITY_TOKENS.nene)
   const exclude = new Set<string>()
-  for (const token of identitySource) exclude.add(normalizeTag(token))
+  for (const token of identitySource) for (const part of randomTokens(token)) exclude.add(normalizeKey(part))
   META_TOKENS.forEach(token => exclude.add(token))
 
   // 跨角色特征单向隔离：单人抽取时，屏蔽其他主角的标志性外观特征
-  if (!explicitIdentity && options.char !== 'triad') {
-    if (options.char === 'nene') {
+  if (!explicitIdentity && char !== 'triad') {
+    if (char === 'nene') {
       for (const t of ['shiki_natsume', 'natsume', 'mole_under_eye', 'hairclip', 'two_red_hairclips', 'black_hair', 'yellow_eyes']) {
-        exclude.add(normalizeTag(t))
+        exclude.add(normalizeKey(t))
       }
-    } else if (options.char === 'natsume') {
+    } else if (char === 'natsume') {
       for (const t of ['ayachi_nene', 'nene', 'white_hair', 'purple_eyes', 'low_twintails', 'pink_hair_ribbons']) {
-        exclude.add(normalizeTag(t))
+        exclude.add(normalizeKey(t))
       }
     }
   }
 
-  const byCat = (cat: string): string[] =>
-    options.tags.filter(tag => tag.cat === cat).map(tag => normalizeTag(tag.en)).filter(Boolean)
+  // One pass, canonical-key deduplication: duplicate source IDs do not bias sampling.
+  const catalog = new Map<string, Map<string, string>>()
+  for (const tag of options.tags) {
+    const pool = catalog.get(tag.cat) ?? new Map<string, string>()
+    for (const token of randomTokens(tag.en)) {
+      const key = normalizeKey(token)
+      if (!exclude.has(key) && !pool.has(key)) pool.set(key, token)
+    }
+    catalog.set(tag.cat, pool)
+  }
+  const byCat = (cat: string): string[] => [...(catalog.get(cat)?.values() ?? [])]
 
   const scenePool = byCat('Scene').filter(tag => !exclude.has(tag))
   const actionPool = byCat('Action').filter(tag => !exclude.has(tag))
@@ -247,7 +222,12 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   // ── 镜头（100% 抽 1） + 构图（50%） ──────────────────────────────────
   const shot = draw(ALL_SHOT_IDS, 1, rng)[0] ?? null
   const composition = chance(0.5, rng) ? (draw(ALL_COMPOSITION_IDS, 1, rng)[0] ?? null) : null
-  const isCloseUp = shot === 'close'
+  const visible = (token: string) => visibleInRandomShot(token, shot)
+  const add = (token: string) => {
+    for (const part of randomTokens(token)) {
+      if (!exclude.has(normalizeKey(part)) && visible(part)) appendRandomTag(manualTags, part)
+    }
+  }
 
   // ── 光照（主光源 1 个 + 40% 叠逆光） ──────────────────────────────────
   let lighting: string | null = null
@@ -255,15 +235,20 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     lighting = draw(LIGHT_MAIN, 1, rng)[0] ?? null
     if (lighting && chance(0.4, rng)) {
       // back 逆光作为可叠加标签进入 manualTags（与主光源不互斥）
-      addWithMutualGroup(manualTags, 'backlighting')
+      add('backlighting')
     }
   }
 
   // ── 场景（70% 1 个 / 30% 2 个，室内外互斥 + 核心建筑排他） ─────────
   const sceneCount = chance(0.7, rng) ? 1 : 2
-  for (const scene of draw(scenePool, sceneCount, rng)) {
+  for (const scene of draw(scenePool.filter(token => {
+    const time = mutualGroupWithCategory(token)
+    const primary = LIGHTING.find(option => option.id === lighting)?.prompt
+    const primaryTime = primary ? mutualGroupWithCategory(primary) : null
+    return time?.category !== 'time' || primaryTime?.category !== 'time' || time.group === primaryTime.group
+  }), sceneCount, rng)) {
     if (!manualTags.length) {
-      addWithMutualGroup(manualTags, scene)
+      add(scene)
       continue
     }
     const indoor = manualTags.some(tag => INDOOR_SCENE.has(tag))
@@ -272,58 +257,54 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     if (OUTDOOR_SCENE.has(scene) && indoor) continue
     const hasPrimaryLocation = manualTags.some(tag => PRIMARY_LOCATIONS.has(tag))
     if (hasPrimaryLocation && PRIMARY_LOCATIONS.has(scene)) continue
-    addWithMutualGroup(manualTags, scene)
+    add(scene)
   }
 
   // ── 动作（60% 抽 1） ────────────────────────────────────────────────
   if (chance(0.6, rng)) {
-    const action = draw(actionPool, 1, rng)[0]
-    if (action) addWithMutualGroup(manualTags, action)
+    const action = draw(actionPool.filter(visible), 1, rng)[0]
+    if (action) add(action)
   }
 
   // ── 外观（60% 1 个 / 25% 2 个，已排除身份 token；特写镜头过滤下肢细节） ────
-  const appearanceCandidates = isCloseUp
-    ? appearancePool.filter(tag => !FOOTWEAR_EXCLUDE.has(tag))
-    : appearancePool
+  const appearanceCandidates = appearancePool.filter(visible)
   const appearanceCount = chance(0.6, rng) ? 1 : 0
   if (appearanceCount) {
     for (const item of draw(appearanceCandidates, chance(0.25, rng) ? 2 : 1, rng)) {
-      addWithMutualGroup(manualTags, item)
+      add(item)
     }
   }
 
   // ── 身体（50% 1 个，仅温和细节；特写镜头过滤下肢细节） ───────────────
   if (chance(0.5, rng)) {
-    const bodyCandidates = isCloseUp
-      ? bodyPool.filter(tag => !FOOTWEAR_EXCLUDE.has(tag))
-      : bodyPool
+    const bodyCandidates = bodyPool.filter(visible)
     const body = draw(bodyCandidates, 1, rng)[0]
-    if (body) addWithMutualGroup(manualTags, body)
+    if (body) add(body)
   }
 
   // ── 风格媒介（30% 1 个，如 visual_novel_event_cg） ───────────────────
   if (chance(0.3, rng)) {
     const style = draw(stylePool, 1, rng)[0]
-    if (style) addWithMutualGroup(manualTags, style)
+    if (style) add(style)
   }
 
   // ── 服装（官方 60% / 通用 40%；triad 与热门角色不抽服装） ─────────────
   const officialOutfits = options.officialOutfits
   const officialKeys = officialOutfits ? Object.keys(officialOutfits) : []
-  if (!explicitIdentity && options.char !== 'triad') {
+  if (!explicitIdentity && char !== 'triad') {
     if (officialKeys.length && chance(0.6, rng)) {
       const key = draw(officialKeys, 1, rng)[0]
       if (key) {
-        const tokens = (officialOutfits?.[key] ?? []).map(normalizeTag)
+        const tokens = (officialOutfits?.[key] ?? []).flatMap(randomTokens).filter(token => !exclude.has(normalizeKey(token)) && visible(token))
         const canonical = tokens[0]
-        if (canonical) addWithMutualGroup(manualTags, canonical)
+        if (canonical) add(canonical)
         // 额外补 0~2 个签名 token（官方套装通常 4~12 个 token，全塞会淹没画面）
         const extras = draw(tokens.slice(1), chance(0.5, rng) ? 2 : 1, rng)
-        for (const extra of extras) addWithMutualGroup(manualTags, extra)
+        for (const extra of extras) add(extra)
       }
     } else if (clothingPool.length) {
-      const generic = draw(clothingPool, 1, rng)[0]
-      if (generic) addWithMutualGroup(manualTags, generic)
+      const generic = draw(clothingPool.filter(visible), 1, rng)[0]
+      if (generic) add(generic)
     }
   }
 
@@ -335,12 +316,12 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     const roll = rng()
     const count = roll < 0.35 ? 1 : roll < 0.65 ? 2 : roll < 0.85 ? 3 : 4
     for (const tag of draw(maturePool, count, rng)) {
-      addWithMutualGroup(manualTags, tag)
+      add(tag)
     }
   }
 
   // ── 画师（默认 0 位；includeArtists 开启后 0~2 位；keepArtists 恒保留） ──
-  const artistPool = options.artists ?? []
+  const artistPool = options.artists ?? ARTIST_STYLE_CANDIDATES
   const keep = normalizeArtistStyleIds(options.keepArtists ?? [])
   const drawn: string[] = []
   if (options.includeArtists && artistPool.length) {
@@ -353,6 +334,14 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     drawn.push(...draw(candidates.map(artist => artist.id), count, rng))
   }
   const artistStyleIds = normalizeArtistStyleIds([...keep, ...drawn])
+
+  for (const category of ['Lighting', 'Camera'] as const) {
+    const pool = byCat(category).filter(token => compatibleRandomDetail(token, category, shot, lighting))
+    if (pool.length && chance(0.35, rng)) {
+      const detail = draw(pool, 1, rng)[0]
+      if (detail) add(detail)
+    }
+  }
 
   return {
     emotions,

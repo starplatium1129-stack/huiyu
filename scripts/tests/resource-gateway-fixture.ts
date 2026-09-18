@@ -1,3 +1,4 @@
+// Byte-copy fixtures explicitly exercise the Windows branch; native rename races remain Windows-only.
 'use strict';
 
 const http: typeof import('node:http') = require('node:http');
@@ -14,7 +15,7 @@ function resourceFixture(t: any) {
     for (const [rel, bytes] of Object.entries(contents)) write(path.join(f.source, rel), bytes);
     const manifest = generateManifest({ root: f.source });
     write(path.join(f.source, id + '.json'), JSON.stringify(manifest));
-    assert.equal(stageResourcePack({ root: f.source, name: id, manifestPath: id + '.json' }).ok, true);
+    assert.equal(stageResourcePack({ platform: 'win32', root: f.source, name: id, manifestPath: id + '.json' }).ok, true);
     approve(f, id, 'full', manifest);
   };
   make('images-old', { 'assets/characters/portrait.png': 'old approved image' });

@@ -1,3 +1,4 @@
+// Byte-copy fixtures explicitly exercise the Windows branch; native rename races remain Windows-only.
 'use strict';
 
 /**
@@ -18,6 +19,7 @@ const path: typeof import('node:path') = require('node:path');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 
 const { manifestContentIdentity, planResourcePackDelta, stageResourcePackDelta }: typeof import('../lib/resource-pack-delta') = require('../lib/resource-pack-delta');
+const { stageResourcePack }: typeof import('../lib/resource-pack') = require('../lib/resource-pack');
 const { generateManifest, verifyManifest }: typeof import('../lib/resource-manifest') = require('../lib/resource-manifest');
 
 const repo = path.resolve(__dirname, '..', '..');
@@ -140,14 +142,15 @@ test('增量导出：只复制 added/changed，unchanged/removed 不进包，man
   const fx = buildDeltaFixture(t);
   const assetsBefore = snapshot(path.join(fx.root, 'assets'));
   const oldBytes = fs.readFileSync(path.join(fx.root, fx.oldManifest));
-  const result = cli(['--root', fx.root, '--manifest', fx.newManifest, '--base-manifest', fx.oldManifest, '--name', 'delta-ok', '--apply']);
-  assert.equal(result.status, 0, result.stdout + result.stderr);
-  const parsed = JSON.parse(result.stdout);
+  const result = stageResourcePackDelta({ root: fx.root, name: 'delta-ok', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, platform: 'win32' });
+  assert.equal(result.ok, true, JSON.stringify(result.errors));
+  const parsed = result;
   assert.equal(parsed.kind, 'resource-pack-delta-result');
   assert.equal(parsed.ok, true);
   assert.equal(parsed.destinationCreated, true);
   assert.equal(parsed.stagingPath, null);
   assert.equal(parsed.baseManifestPath, 'artifacts/old.json');
+  assert.ok(parsed.delta);
   assert.equal(parsed.delta.totals.added, 1);
 
   const pack = destPath(fx.root, 'delta-ok');
@@ -202,8 +205,8 @@ test('仅删除的差异：零资产候选，removed 记录保留旧 bytes/sha25
   assert.equal(plan.ok, true, JSON.stringify(plan.errors));
   assert.deepEqual(plan.delta.totals, { added: 0, removed: 1, changed: 0, unchanged: 1 });
   assert.deepEqual(plan.entries, []);
-  const result = cli(['--root', fx.root, '--manifest', 'artifacts/new.json', '--base-manifest', 'artifacts/old.json', '--name', 'rm-pack', '--apply']);
-  assert.equal(result.status, 0, result.stdout + result.stderr);
+  const result = stageResourcePackDelta({ root: fx.root, name: 'rm-pack', manifestPath: 'artifacts/new.json', baseManifestPath: 'artifacts/old.json', platform: 'win32' });
+  assert.equal(result.ok, true, JSON.stringify(result.errors));
   const pack = destPath(fx.root, 'rm-pack');
   assert.deepEqual(fs.readdirSync(pack).sort(), ['delta.json', 'manifest.json'], '仅删除差异产出零资产候选（无 assets 目录）');
   const deltaJson = JSON.parse(fs.readFileSync(path.join(pack, 'delta.json'), 'utf8'));
@@ -224,8 +227,8 @@ test('零差异：generatedAt 不影响身份与分类，输出零资产候选�
   assert.equal(plan.ok, true, JSON.stringify(plan.errors));
   assert.deepEqual(plan.delta.totals, { added: 0, removed: 0, changed: 0, unchanged: 3 });
   assert.deepEqual(plan.entries, []);
-  const result = cli(['--root', fx.root, '--manifest', fx.newManifest, '--base-manifest', samePath, '--name', 'zero-pack', '--apply']);
-  assert.equal(result.status, 0, result.stdout + result.stderr);
+  const result = stageResourcePackDelta({ root: fx.root, name: 'zero-pack', manifestPath: fx.newManifest, baseManifestPath: samePath, platform: 'win32' });
+  assert.equal(result.ok, true, JSON.stringify(result.errors));
   const pack = destPath(fx.root, 'zero-pack');
   assert.deepEqual(fs.readdirSync(pack).sort(), ['delta.json', 'manifest.json']);
   const deltaJson = JSON.parse(fs.readFileSync(path.join(pack, 'delta.json'), 'utf8'));
@@ -284,7 +287,7 @@ test('两个元数据任一写坏都不发布：暂存保留并给出明确错�
       if (String(p).endsWith(target)) return fs.writeFileSync(p, '{corrupted', ...rest);
       return fs.writeFileSync(p, value, ...rest);
     } });
-    const result = stageResourcePackDelta({ root: fx.root, name: packName, manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
+    const result = stageResourcePackDelta({ platform: 'win32', root: fx.root, name: packName, manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
     assert.equal(result.ok, false, target);
     assert.equal(result.destinationCreated, false, target);
     assert.ok(result.errors.some((e: any) => e.code === code), `${target}: ${JSON.stringify(result.errors)}`);
@@ -295,13 +298,12 @@ test('两个元数据任一写坏都不发布：暂存保留并给出明确错�
 
 test('全包模式兼容：无 --base-manifest 时行为与 G10 相同，结果无增量字段', (t) => {
   const fx = buildDeltaFixture(t);
-  const result = cli(['--root', fx.root, '--manifest', fx.newManifest, '--name', 'fullmode', '--apply']);
-  assert.equal(result.status, 0, result.stderr);
-  const parsed = JSON.parse(result.stdout);
+  const parsed = stageResourcePack({ root: fx.root, name: 'fullmode', manifestPath: fx.newManifest, platform: 'win32' });
+  assert.equal(parsed.ok, true, JSON.stringify(parsed.errors));
   assert.equal(parsed.kind, 'resource-pack-result');
   assert.equal(parsed.totals.files, 3, '全包含新清单全部条目');
-  assert.equal(parsed.baseManifestPath, undefined, '全包结果无 baseManifestPath');
-  assert.equal(parsed.delta, undefined, '全包结果无 delta');
+  assert.equal('baseManifestPath' in parsed, false, '全包结果无 baseManifestPath');
+  assert.equal('delta' in parsed, false, '全包结果无 delta');
   const pack = destPath(fx.root, 'fullmode');
   assert.deepEqual(fs.readdirSync(pack).sort(), ['assets', 'manifest.json'], '全包不写 delta.json');
   assert.deepEqual(fs.readdirSync(path.join(pack, 'assets/dir')), ['bravo.bin']);
@@ -329,7 +331,7 @@ test('增量模式同名目标拒绝与全程零越界访问（记录型 fs 证�
   assert.deepEqual(fs.readdirSync(destPath(fx.root, 'taken')), [], '既有目录未被写入');
 
   const { io, calls } = recordingIo();
-  const staged = stageResourcePackDelta({ root: fx.root, name: 'audit-pack', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
+  const staged = stageResourcePackDelta({ platform: 'win32', root: fx.root, name: 'audit-pack', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
   assert.equal(staged.ok, true, JSON.stringify(staged.errors));
   assertNoAccessOutside(calls, fs.realpathSync(fx.root));
   const writes = calls.filter((c: any) => ['writeFileSync', 'renameSync', 'mkdirSync', 'mkdtempSync'].includes(c.op));
@@ -342,12 +344,17 @@ test('增量模式同名目标拒绝与全程零越界访问（记录型 fs 证�
 test('工作流注册转发增量模式（G13 独占注册）', (t) => {
   const fx = buildDeltaFixture(t);
   const viaWorkflow = spawnSync(process.execPath, [path.join(repo, 'scripts', 'workflow.js'), 'resource:pack', '--root', fx.root, '--manifest', fx.newManifest, '--base-manifest', fx.oldManifest, '--name', 'viaflow-delta', '--apply'], { encoding: 'utf8' });
-  assert.equal(viaWorkflow.status, 0, viaWorkflow.stderr);
+  assert.equal(viaWorkflow.status, process.platform === 'win32' ? 0 : 1, viaWorkflow.stdout + viaWorkflow.stderr);
   const forwarded = JSON.parse(viaWorkflow.stdout);
   assert.equal(forwarded.kind, 'resource-pack-delta-result');
-  assert.equal(forwarded.ok, true);
-  assert.equal(forwarded.destinationCreated, true);
-  assert.equal(verifyManifest({ root: destPath(fx.root, 'viaflow-delta'), manifestPath: 'manifest.json' }).ok, true);
+  assert.equal(forwarded.ok, process.platform === 'win32');
+  assert.equal(forwarded.destinationCreated, process.platform === 'win32');
+  if (process.platform === 'win32') {
+    assert.equal(verifyManifest({ root: destPath(fx.root, 'viaflow-delta'), manifestPath: 'manifest.json' }).ok, true);
+  } else {
+    assert.equal(forwarded.errors[0].code, 'unsupported-platform');
+    assert.equal(fs.existsSync(destPath(fx.root, 'viaflow-delta')), false);
+  }
   const preview = spawnSync(process.execPath, [path.join(repo, 'scripts', 'workflow.js'), 'resource:pack', '--root', fx.root, '--manifest', fx.newManifest, '--base-manifest', fx.oldManifest, '--name', 'viaflow-delta2', '--plan'], { encoding: 'utf8' });
   assert.equal(preview.status, 0);
   assert.ok(preview.stderr.includes('[预览]'), 'runner 级 --plan 只打印，不执行');
@@ -360,7 +367,7 @@ test('发布后 delta 元数据损坏不得报告候选包验收成功', (t) => 
     fs.renameSync(from, to);
     fs.writeFileSync(path.join(to, 'delta.json'), '{}');
   } });
-  const result: any = stageResourcePackDelta({ root: fx.root, name: 'after-publish', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
+  const result: any = stageResourcePackDelta({ platform: 'win32', root: fx.root, name: 'after-publish', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
   assert.equal(result.ok, false);
   assert.equal(result.destinationCreated, true);
   assert.equal(result.finalVerification.ok, false);
@@ -382,8 +389,20 @@ test('unchanged 文件虽不复制仍须通过新清单完整磁盘核验', (t) 
   const fx = buildDeltaFixture(t);
   fs.writeFileSync(path.join(fx.root, 'assets/dir/bravo.bin'), Buffer.from([9, 9, 9, 9]));
   const { io, calls } = recordingIo();
-  const result = stageResourcePackDelta({ root: fx.root, name: 'bad-unchanged', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
+  const result = stageResourcePackDelta({ platform: 'win32', root: fx.root, name: 'bad-unchanged', manifestPath: fx.newManifest, baseManifestPath: fx.oldManifest, io });
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((e: any) => e.code === 'hash-mismatch' && e.path === 'assets/dir/bravo.bin'));
   assert.ok(calls.every((c: any) => !['mkdirSync', 'mkdtempSync', 'writeFileSync', 'renameSync'].includes(c.op)));
+});
+
+
+test('增量 CLI 保留实际宿主平台边界，不接受测试夹具的平台注入', (t) => {
+  const fx = buildDeltaFixture(t);
+  const before = snapshot(fx.root);
+  const result = cli(['--root', fx.root, '--manifest', fx.newManifest, '--base-manifest', fx.oldManifest, '--name', 'actual-platform', '--apply']);
+  assert.equal(result.status, process.platform === 'win32' ? 0 : 1, result.stdout + result.stderr);
+  if (process.platform !== 'win32') {
+    assert.equal(JSON.parse(result.stdout).errors[0].code, 'unsupported-platform');
+    assert.deepEqual(snapshot(fx.root), before, '拒绝后零写入');
+  }
 });

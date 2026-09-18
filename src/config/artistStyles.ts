@@ -52,6 +52,10 @@ const ARTIST_STYLE_IDS = new Set(
   'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume'.split(' '),
 )
 
+/** Lightweight sampling candidates derived from the same whitelist as normalization. */
+export const ARTIST_STYLE_CANDIDATES: ReadonlyArray<Readonly<Pick<ArtistStyleOption, 'id'>>> =
+  Object.freeze([...ARTIST_STYLE_IDS].map(id => Object.freeze({ id })))
+
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
   azure: 'azuuru',
   'azure_(azure_cpt)': 'azuuru',

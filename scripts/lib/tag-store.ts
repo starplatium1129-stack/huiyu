@@ -1,4 +1,5 @@
-import type { PathLike } from 'node:fs';
+import { buildValidatedTagDictionary, validateTagManifest, type TagDictionaryPolicy } from './tag-validation';
+import { checkTagPath, writeTagFiles } from './tag-files';
 
 export interface TagEntry {
   id: string;
@@ -23,6 +24,7 @@ export interface TagManifest {
   version?: number;
   description?: string;
   files: TagManifestEntry[];
+  dictionary?: TagDictionaryPolicy;
 }
 
 export interface TagShardFile {
@@ -52,27 +54,8 @@ export interface TagDictionaryOutput {
   aliases: Record<string, string>;
 }
 
-function cleanDictKey(raw: string): string {
-  return String(raw || '').trim().toLowerCase().replace(/[\s\-/]+/g, '_');
-}
-
-export function buildTagDictionary(tags: TagEntry[]): TagDictionaryOutput {
-  const meanings: Record<string, string> = {};
-  const aliases: Record<string, string> = {};
-  for (const tag of tags) {
-    if (!tag.en || !tag.cn) continue;
-    const norm = cleanDictKey(tag.en);
-    meanings[norm] = tag.cn;
-    if (Array.isArray(tag.aliases)) {
-      for (const alias of tag.aliases) {
-        const normAlias = cleanDictKey(alias);
-        if (normAlias && normAlias !== norm) {
-          aliases[normAlias] = tag.en;
-        }
-      }
-    }
-  }
-  return { version: 1, meanings, aliases };
+export function buildTagDictionary(tags: TagEntry[], policy: TagDictionaryPolicy = {}): TagDictionaryOutput {
+  return buildValidatedTagDictionary(tags, policy);
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -103,23 +86,10 @@ function jsonText(value: unknown): string {
   return JSON.stringify(value, null, 2) + '\n';
 }
 
-function writeTextAtomic(source: PathLike, content: string) {
-  const target = String(source);
-  const temporary = path.join(path.dirname(target), `.${path.basename(target)}.${process.pid}.${Date.now()}.tmp`);
-  try {
-    fs.writeFileSync(temporary, content, 'utf8');
-    fs.renameSync(temporary, target);
-  } catch (error) {
-    try { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); } catch {}
-    throw error;
-  }
-}
-
 function readManifest(): TagManifest {
+  checkTagPath(root, manifestPath);
   const manifest = readJson<TagManifest>(manifestPath);
-  if (!manifest || !Array.isArray(manifest.files) || !manifest.files.length) {
-    throw new Error('data/tags/manifest.json must define a non-empty files array');
-  }
+  validateTagManifest(manifest);
   return manifest;
 }
 
@@ -127,21 +97,26 @@ export function loadTagShards(): { manifest: TagManifest; sources: Array<{ entry
   const manifest = readManifest();
   const sources = manifest.files.map((entry) => {
     const source = path.join(shardsDir, entry.file);
+    checkTagPath(root, source);
     const data = readJson<TagShardFile>(source);
-    if (!data || !Array.isArray(data.tags)) {
-      throw new Error(`${entry.file} root must be { tags: [...] }`);
+    if (!data || data.version !== 1 || data.category !== entry.category || !Array.isArray(data.tags)
+      || data.tags.length !== entry.count || data.tags.some(tag => !tag || tag.cat !== entry.category)) {
+      throw new Error(`${entry.file} version/category/count does not match the manifest`);
     }
     return { entry, source, tags: data.tags };
   });
-  return { manifest, sources, tags: sources.flatMap((item) => item.tags) };
+  const tags = sources.flatMap((item) => item.tags);
+  buildTagDictionary(tags, manifest.dictionary);
+  return { manifest, sources, tags };
 }
 
 /** 聚合各分类分片 -> data/tags.json 与 data/tags-dictionary.json */
 export function writeTagAggregate(): number {
-  const { tags } = loadTagShards();
-  writeTextAtomic(aggregatePath, jsonText(tags));
-  const dict = buildTagDictionary(tags);
-  writeTextAtomic(dictionaryPath, jsonText(dict));
+  const { tags, manifest } = loadTagShards();
+  const dict = buildTagDictionary(tags, manifest.dictionary);
+  const products = [{ path: aggregatePath, content: jsonText(tags) }, { path: dictionaryPath, content: jsonText(dict) }];
+  // A direct tags:build must never leave old compressed bytes eligible for serving.
+  writeTagFiles(root, [...products, ...products.flatMap(file => ['.gz', '.br'].map(suffix => ({ path: file.path + suffix, content: null })))]);
   return tags.length;
 }
 
@@ -149,11 +124,13 @@ export function writeTagAggregate(): number {
 export function aggregateIsCurrent(): boolean {
   if (!fs.existsSync(aggregatePath) || !fs.existsSync(manifestPath) || !fs.existsSync(dictionaryPath)) return false;
   try {
-    const { tags } = loadTagShards();
+    const { tags, manifest } = loadTagShards();
+    checkTagPath(root, aggregatePath);
+    checkTagPath(root, dictionaryPath);
     const current = readJson<TagEntry[]>(aggregatePath);
     if (!Array.isArray(current) || current.length !== tags.length) return false;
     const currentDict = readJson<TagDictionaryOutput>(dictionaryPath);
-    const expectedDict = buildTagDictionary(tags);
+    const expectedDict = buildTagDictionary(tags, manifest.dictionary);
     if (!currentDict || currentDict.version !== expectedDict.version) return false;
     return jsonText(current) === jsonText(tags) && jsonText(currentDict) === jsonText(expectedDict);
   } catch {
@@ -163,71 +140,39 @@ export function aggregateIsCurrent(): boolean {
 
 /** 从已有的 data/tags.json 拆分为各分类分片文件（按 Category 分组） */
 export function writeTagShards(): number {
-  if (!fs.existsSync(aggregatePath)) {
-    throw new Error(`Cannot split missing ${aggregatePath}`);
-  }
+  checkTagPath(root, aggregatePath);
   const tags = readJson<TagEntry[]>(aggregatePath);
-  if (!Array.isArray(tags)) {
-    throw new Error(`data/tags.json must contain an array of tag entries`);
-  }
-
-  if (!fs.existsSync(shardsDir)) {
-    fs.mkdirSync(shardsDir, { recursive: true });
-  }
-
-  // 按分类分组，保留各自原顺序
+  const previous = fs.existsSync(manifestPath) ? readManifest() : null;
+  buildTagDictionary(tags, previous?.dictionary);
   const groups = new Map<string, TagEntry[]>();
   for (const tag of tags) {
-    const cat = String(tag.cat || 'Other').trim();
-    if (!groups.has(cat)) groups.set(cat, []);
-    groups.get(cat)!.push(tag);
+    const items = groups.get(tag.cat) ?? [];
+    items.push(tag);
+    groups.set(tag.cat, items);
   }
-
-  // 既有 manifest 或默认分类排序
-  const manifest: TagManifest = fs.existsSync(manifestPath)
-    ? readJson<TagManifest>(manifestPath)
-    : {
-        version: 1,
-        description: '词条分片清单。每个类别一个分片文件，按分类顺序合并为 data/tags.json。',
-        files: [],
-      };
-
-  const known = new Map<string, TagManifestEntry>(manifest.files.map((entry) => [entry.category, entry]));
-
-  for (const cat of groups.keys()) {
-    if (!known.has(cat)) {
-      const entry: TagManifestEntry = {
-        file: `${categorySlug(cat)}.json`,
-        category: cat,
-        label: CATEGORY_LABELS[cat] || cat,
-      };
+  const manifest: TagManifest = previous
+    ? { ...previous, files: previous.files.filter(entry => groups.has(entry.category)).map(entry => ({ ...entry })) }
+    : { version: 1, description: '词条分片清单。按分类顺序合并为 data/tags.json。', files: [] };
+  for (const [category, items] of groups) {
+    let entry = manifest.files.find(item => item.category === category);
+    if (!entry) {
+      entry = { file: `${categorySlug(category)}.json`, category, label: CATEGORY_LABELS[category] || category };
       manifest.files.push(entry);
-      known.set(cat, entry);
     }
-  }
-
-  for (const [cat, items] of groups) {
-    const entry = known.get(cat)!;
-    const shardContent: TagShardFile = {
-      version: 1,
-      category: cat,
-      label: entry.label || CATEGORY_LABELS[cat] || cat,
-      tags: items,
-    };
     entry.count = items.length;
-    writeTextAtomic(path.join(shardsDir, entry.file), jsonText(shardContent));
   }
-
-  // 清理在聚合中已不存在的分类文件
-  for (const entry of [...manifest.files]) {
-    if (!groups.has(entry.category)) {
-      const file = path.join(shardsDir, entry.file);
-      if (fs.existsSync(file)) fs.unlinkSync(file);
-      manifest.files.splice(manifest.files.indexOf(entry), 1);
-    }
+  validateTagManifest(manifest);
+  const files: Array<{ path: string; content: string | null }> = manifest.files.map(entry => ({
+    path: path.join(shardsDir, entry.file),
+    content: jsonText({ version: 1, category: entry.category, label: entry.label || entry.category, tags: groups.get(entry.category) }),
+  }));
+  for (const entry of previous?.files ?? []) {
+    if (!groups.has(entry.category)) files.push({ path: path.join(shardsDir, entry.file), content: null });
   }
-
-  writeTextAtomic(manifestPath, jsonText(manifest));
+  files.push({ path: manifestPath, content: jsonText(manifest) });
+  for (const file of files) checkTagPath(root, file.path, true);
+  fs.mkdirSync(shardsDir, { recursive: true });
+  writeTagFiles(root, files);
   return tags.length;
 }
 

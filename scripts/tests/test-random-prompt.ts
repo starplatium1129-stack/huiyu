@@ -6,7 +6,7 @@ const { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS }: typeof import('../.
 const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
 const { artistStyleProse, artistTagsForEngine, normalizeArtistStyleIds }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
 const { ARTIST_STYLE_OPTIONS }: typeof import('../../src/config/artistStyleCatalog.ts') = require('../../src/config/artistStyleCatalog.ts');
-const { mutualGroupOf, isManualR18Tags }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
+const { mutualGroupWithCategory, isManualR18Tags }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const tagsData: typeof import('../../data/tags.json') = require('../../data/tags.json');
 
 // 与采样器同源的身份 token（断言用）：随机结果绝不能污染角色身份
@@ -110,14 +110,16 @@ test('身份契约：任意 500 次采样，身份 token 恒不进入 manualTags
 test('互斥组：500 次采样，同掷内不出现互斥冲突（服装/时段/天气 + 室内外）', () => {
   for (let i = 0; i < 500; i += 1) {
     const draw = randomPromptPlan(makeOptions({ rng: seededRng(i * 17 + 3) }));
-    const groups = new Map();
+    const groups = new Map<string, Set<string>>();
     for (const tag of draw.manualTags) {
-      const group = mutualGroupOf(tag);
-      if (!group) continue;
-      groups.set(group, (groups.get(group) || 0) + 1);
+      const hit = mutualGroupWithCategory(tag);
+      if (!hit) continue;
+      const families = groups.get(hit.category) ?? new Set<string>();
+      families.add(hit.group);
+      groups.set(hit.category, families);
     }
-    for (const [group, count] of groups) {
-      assert.ok(count <= 1, `互斥组 ${group} 同掷内出现 ${count} 次`);
+    for (const [category, families] of groups) {
+      assert.ok(families.size <= 1, `${category} mixes conflicting families: ${[...families]}`);
     }
     const indoor = draw.manualTags.some(tag => ['indoor', 'indoors', 'classroom', 'bedroom', 'cafe', 'library', 'living_room', 'kitchen', 'bathroom'].includes(tag));
     const outdoor = draw.manualTags.some(tag => ['beach', 'park', 'street', 'rooftop', 'shrine', 'train_station'].includes(tag));
@@ -126,7 +128,7 @@ test('互斥组：500 次采样，同掷内不出现互斥冲突（服装/时段
 });
 
 test('三引擎健壮性：100 次随机 × sd/anima/krea2 渲染不抛错且语法合规', () => {
-  const KREA_BANNED = /_|@|score_\d+|(?:best_quality|amazing_quality|masterpiece|very_aesthetic|absurdres|newest|highres|highly_detailed)\b|\(\s*[a-z][^)]*:\s*-?\d+(?:\.\d+)?\s*\)/gi;
+  const KREA_BANNED = /_|@|score_\d+|(?:best_quality|amazing_quality|masterpiece|very_aesthetic|absurdres|newest|highres|highly_detailed)\b|\(\s*[a-z][^)]*:\s*-?\d+(?:\.\d+)?\s*\)/i;
   for (let i = 0; i < 100; i += 1) {
     const draw = randomPromptPlan(makeOptions({ includeArtists: true, rng: seededRng(i * 23 + 9) }));
     const plan = createPromptPlan(drawToPlanInput(draw, 'nene', 'sd'));
@@ -150,8 +152,8 @@ test('三引擎健壮性：100 次随机 × sd/anima/krea2 渲染不抛错且语
   }
 });
 
-test('Krea 全标签单点渲染：tags.json 510 个标签逐一注入不抛错且无语法泄漏', () => {
-  const KREA_BANNED = /_|@|score_\d+|\(\s*[a-z][^)]*:\s*-?\d+(?:\.\d+)?\s*\)/gi;
+test('Krea 全标签单点渲染：tags.json 全量标签逐一注入不抛错且无语法泄漏', () => {
+  const KREA_BANNED = /_|@|score_\d+|\(\s*[a-z][^)]*:\s*-?\d+(?:\.\d+)?\s*\)/i;
   let handled = 0;
   for (const tag of tagsData) {
     if (!tag.en) continue;
@@ -227,4 +229,69 @@ test('Mature 评级联动：isManualR18Tags 覆盖词条池 Mature 全部分类�
   }
   assert.equal(isManualR18Tags(['school_uniform'], matureSet), false, '普通词条不触发评级联动');
   assert.equal(isManualR18Tags(['nude'], matureSet), true, '正则白名单词仍触发');
+});
+
+
+const { appendRandomTag, visibleInRandomShot, compatibleRandomDetail }: typeof import('../../src/utils/randomPromptConstraints.ts') = require('../../src/utils/randomPromptConstraints.ts');
+
+test('same-family details survive while conflicting outfit/time/weather families replace one another', () => {
+  const tags: string[] = [];
+  for (const tag of ['school_uniform', 'pleated_skirt', 'night', 'city_lights', 'rain', 'raining']) appendRandomTag(tags, tag);
+  assert.deepEqual(tags, ['school_uniform', 'pleated_skirt', 'night', 'city_lights', 'rain', 'raining']);
+  for (const tag of ['bikini', 'day', 'snow']) appendRandomTag(tags, tag);
+  assert.deepEqual(tags, ['bikini', 'day', 'snow']);
+  appendRandomTag(tags, 'Bikini');
+  assert.equal(tags.length, 3, 'canonical duplicates do not accumulate');
+});
+
+test('real caller defaults have artist candidates, explicit empty lists stay empty', () => {
+  let hits = 0;
+  for (let seed = 0; seed < 80; seed += 1) {
+    const draw = randomPromptPlan({ tags: [], includeArtists: true, rng: seededRng(seed) });
+    hits += draw.artistStyleIds.length > 0 ? 1 : 0;
+    assert.ok(draw.artistStyleIds.length <= 2);
+    const empty = randomPromptPlan({ tags: [], artists: [], includeArtists: true, rng: seededRng(seed) });
+    assert.deepEqual(empty.artistStyleIds, []);
+  }
+  assert.ok(hits > 30, `default artist pool must actually be reachable: ${hits}`);
+});
+
+test('duplicate IDs/spellings do not change random sampling, and compound identity tokens cannot bypass exclusion', () => {
+  const tags = [{ en: 'park', cat: 'Scene' }, { en: 'library', cat: 'Scene' }, { en: 'collarbone', cat: 'Body' }];
+  const repeated = [...tags, ...tags, { en: ' PARK ', cat: 'Scene' }];
+  for (let seed = 0; seed < 60; seed += 1) {
+    assert.deepEqual(randomPromptPlan({ tags, rng: seededRng(seed) }), randomPromptPlan({ tags: repeated, rng: seededRng(seed) }));
+    const draw = randomPromptPlan({ tags: [{ en: 'collarbone, white hair', cat: 'Body' }, { en: 'white hair, park', cat: 'Scene' }],
+      identityExclude: new Set(['collarbone', 'white_hair']), rng: seededRng(seed) });
+    assert.ok(!draw.manualTags.includes('collarbone') && !draw.manualTags.includes('white_hair'));
+    assert.ok(!draw.manualTags.some(tag => tag.includes(',')), 'bundles are individual canonical tokens');
+  }
+});
+
+test('close and generic detail shots filter footwear from generic and official clothing branches', () => {
+  let checked = 0;
+  for (let seed = 0; seed < 300; seed += 1) {
+    const draw = randomPromptPlan({ char: 'nene', tags: [{ en: 'striped_thighhighs', cat: 'Clothing' },
+      { en: 'ankle_boots', cat: 'Appearance' }, { en: 'bare_legs', cat: 'Body' }],
+      officialOutfits: { school: ['nene_school_uniform', 'school_uniform', 'black_thighhighs', 'brown_boots'] }, rng: seededRng(seed) });
+    if (draw.shot !== 'close' && draw.shot !== 'detail') continue;
+    checked += 1;
+    assert.ok(draw.manualTags.every(tag => visibleInRandomShot(tag, draw.shot)), draw.manualTags.join(', '));
+    assert.ok(!draw.manualTags.some(tag => /thighhighs|boots|bare_legs/.test(tag)));
+  }
+  assert.ok(checked > 20, 'must exercise both clothing paths under near framing');
+});
+
+test('new lighting/camera details are reachable and obey their primary-control compatibility', () => {
+  const details = ['dappled_light', 'rim_lighting', 'screen_glow', 'firelight', 'three_quarter_view', 'dutch_angle', 'macro_shot'];
+  const tags = details.map((en, index) => ({ en, cat: index < 4 ? 'Lighting' : 'Camera' }));
+  const seen = new Set<string>();
+  for (let seed = 0; seed < 1200; seed += 1) {
+    const draw = randomPromptPlan({ tags, rng: seededRng(seed) });
+    for (const tag of tags) if (draw.manualTags.includes(tag.en)) {
+      seen.add(tag.en);
+      assert.equal(compatibleRandomDetail(tag.en, tag.cat as 'Lighting' | 'Camera', draw.shot, draw.lighting), true);
+    }
+  }
+  assert.deepEqual([...seen].sort(), [...details].sort());
 });

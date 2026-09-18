@@ -89,7 +89,7 @@
     "test:e2e": "npm run build && npm run test:e2e:all",
     "test:e2e:all": "playwright test",
     "test:e2e:critical": "npm run build && npm run test:e2e:critical:run",
-    "test:e2e:critical:run": "playwright test tests/e2e/studio.spec.ts tests/e2e/flows.spec.ts tests/e2e/a11y-device.spec.ts tests/e2e/anima-quick.spec.ts tests/e2e/interaction-polish.spec.ts tests/e2e/ui-layout.spec.ts tests/e2e/companion-focus.spec.ts tests/e2e/office-code.spec.ts tests/e2e/library-concurrency.spec.ts tests/e2e/workbench-loading.spec.ts",
+    "test:e2e:critical:run": "playwright test tests/e2e/studio.spec.ts tests/e2e/flows.spec.ts tests/e2e/a11y-device.spec.ts tests/e2e/anima-quick.spec.ts tests/e2e/interaction-polish.spec.ts tests/e2e/ui-layout.spec.ts tests/e2e/companion-focus.spec.ts tests/e2e/office-code.spec.ts tests/e2e/library-concurrency.spec.ts tests/e2e/workbench-loading.spec.ts tests/e2e/random-inspiration.spec.ts",
     "test:e2e:performance": "playwright test --config=playwright.performance.config.ts",
     "test:e2e:nightly": "npm run build && npm run test:e2e:nightly:run",
     "test:e2e:nightly:run": "playwright test tests/e2e/theme-audit.spec.ts tests/e2e/capture.spec.ts tests/e2e/particle-atmosphere.spec.ts tests/e2e/particle-narrative.spec.ts tests/e2e/archive-visual-language.spec.ts",

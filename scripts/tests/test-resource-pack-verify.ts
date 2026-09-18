@@ -1,3 +1,4 @@
+// Byte-copy fixtures explicitly exercise the Windows branch; native rename races remain Windows-only.
 'use strict';
 
 /**
@@ -118,7 +119,7 @@ function buildZeroDiffFixture(t: any) {
 
 /** 在夹具内用 G13 导出器生成候选包（仅 Windows，与现有 pack 测试同一平台假设）。 */
 function exportDeltaPack(root: any, name: any, { base = OLD_MANIFEST, manifest = NEW_MANIFEST }: any = {}) {
-  const result = stageResourcePackDelta({ root, name, manifestPath: manifest, baseManifestPath: base });
+  const result = stageResourcePackDelta({ platform: 'win32', root, name, manifestPath: manifest, baseManifestPath: base });
   assert.equal(result.ok, true, JSON.stringify(result.errors));
   assert.equal(result.destinationCreated, true);
   return result;
@@ -311,7 +312,7 @@ test('元数据坏/缺/不支持版本：全部内容级拒绝（退出 1），�
   const fx = buildTwoStateFixture(t);
   exportDeltaPack(fx.root, 'delta-ok');
   // 全包（无 delta.json）按增量核验 → missing-delta-json
-  const full = stageResourcePack({ root: fx.root, name: 'full-pack', manifestPath: NEW_MANIFEST });
+  const full = stageResourcePack({ platform: 'win32', root: fx.root, name: 'full-pack', manifestPath: NEW_MANIFEST });
   assert.equal(full.ok, true, JSON.stringify(full.errors));
   const fullResult = verify(fx.root, OLD_MANIFEST, packRel('full-pack'));
   assert.equal(fullResult.ok, false);

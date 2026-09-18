@@ -1,3 +1,4 @@
+// Byte-copy fixtures explicitly exercise the Windows branch; native rename races remain Windows-only.
 'use strict';
 
 // All writes below are fixture preparation/fault injection in unique temporary directories.
@@ -94,7 +95,7 @@ function mediaPack(f: any) {
   for (const [rel, bytes] of Object.entries(files)) write(path.join(f.source, rel), bytes);
   const manifest = generateManifest({ root: f.source });
   write(path.join(f.source, 'media.json'), JSON.stringify(manifest));
-  assert.equal(stageResourcePack({ root: f.source, name: 'media', manifestPath: 'media.json' }).ok, true);
+  assert.equal(stageResourcePack({ platform: 'win32', root: f.source, name: 'media', manifestPath: 'media.json' }).ok, true);
   approve(f, 'media', 'full', manifest);
   return manifest;
 }
@@ -216,7 +217,7 @@ test('empty installed manifest is verified but supplies no static mount', async 
   const f = fixture(t);
   const manifest = { schemaVersion: 1, entries: [], unverified: [] };
   write(path.join(f.source, 'empty.json'), JSON.stringify(manifest));
-  assert.equal(stageResourcePack({ root: f.source, name: 'empty', manifestPath: 'empty.json' }).ok, true);
+  assert.equal(stageResourcePack({ platform: 'win32', root: f.source, name: 'empty', manifestPath: 'empty.json' }).ok, true);
   approve(f, 'empty', 'full', manifest);
   await f.installer().install({ releaseId: 'empty' });
   const { result }: any = checked(f);
