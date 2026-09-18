@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 import { ref, onScopeDispose } from 'vue'
 import { useTrackedTask } from '@/composables/useTaskCenter'
 import { apiClient } from '@/api/client'
@@ -90,71 +91,73 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
   useTrackedTask(() => ({ kind: 'image', title: '分镜首帧生成', route: '/video-studio?mode=shots', status: taskStatus.value, message: firstFrameProgress.value }), { cancel: cancelFirstFrames })
 
   async function generateFirstFrames(shots: ShotDraft[], aspect: VideoAspect) {
-    if (firstFrameBusy.value) return
-    const pending = shots
-      .map((shot, index) => ({ shot, index }))
-      .filter(item => item.shot.firstFramePrompt && !item.shot.imageName)
-    if (!pending.length) {
-      options.onError('没有待生成首帧的镜头：先用「生成剧本」带出首帧提示词，已有首帧的镜头自动跳过')
-      return
-    }
-    firstFrameBusy.value = true
-    taskStatus.value = 'running'
-    controller = new AbortController()
-    const signal = controller.signal
-    let failed = 0
-    try {
-      for (let i = 0; i < pending.length; i += 1) {
-        signal.throwIfAborted()
-        const { shot } = pending[i]
-        firstFrameProgress.value = `${i + 1}/${pending.length}`
-        try {
-          const size = KREA2_SIZE_BY_ASPECT[aspect]
-          const submit = await apiClient.request<CreativeJobBody>('/api/creative/jobs', {
-            method: 'POST',
-            body: { prompt: shot.firstFramePrompt, modelId: 'krea2-turbo-fp8', ...size },
-            timeoutMs: 30_000,
-            signal,
-            validate: isCreativeJobBody,
-          })
-          activeJob = submit.job.id
-          const resultUrl = await pollCreativeJob(submit.job.id, 240_000, signal)
-          activeJob = ''
-          const response = await fetch(resultUrl, { signal })
-          if (!response.ok) throw new Error('首帧图片读取失败')
-          const blob = await response.blob()
-          const upload = await uploadVideoImage(await blobToBase64(blob), undefined, signal)
-          const imageId = await imgPut(blob).catch(() => '')
+    return withArtworkStaging(async () => {
+      if (firstFrameBusy.value) return
+      const pending = shots
+        .map((shot, index) => ({ shot, index }))
+        .filter(item => item.shot.firstFramePrompt && !item.shot.imageName)
+      if (!pending.length) {
+        options.onError('没有待生成首帧的镜头：先用「生成剧本」带出首帧提示词，已有首帧的镜头自动跳过')
+        return
+      }
+      firstFrameBusy.value = true
+      taskStatus.value = 'running'
+      controller = new AbortController()
+      const signal = controller.signal
+      let failed = 0
+      try {
+        for (let i = 0; i < pending.length; i += 1) {
           signal.throwIfAborted()
-          if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-          shot.imageName = upload.name
-          shot.imageUrl = URL.createObjectURL(blob)
-          // IndexedDB 耐久凭据：草稿恢复与失败重试用（F1/F4）；失败不阻断主链路。
-          shot.imageId = imageId
-        } catch {
-          if (signal.aborted) throw signal.reason
-          if (activeJob) {
-            const id = activeJob
+          const { shot } = pending[i]
+          firstFrameProgress.value = `${i + 1}/${pending.length}`
+          try {
+            const size = KREA2_SIZE_BY_ASPECT[aspect]
+            const submit = await apiClient.request<CreativeJobBody>('/api/creative/jobs', {
+              method: 'POST',
+              body: { prompt: shot.firstFramePrompt, modelId: 'krea2-turbo-fp8', ...size },
+              timeoutMs: 30_000,
+              signal,
+              validate: isCreativeJobBody,
+            })
+            activeJob = submit.job.id
+            const resultUrl = await pollCreativeJob(submit.job.id, 240_000, signal)
             activeJob = ''
-            try { await apiClient.request(`/api/creative/jobs/${encodeURIComponent(id)}`, { method: 'DELETE', timeoutMs: 12_000 }) }
-            catch { throw new Error('当前首帧任务终止未确认，已停止后续生成，请检查任务状态') }
+            const response = await fetch(resultUrl, { signal })
+            if (!response.ok) throw new Error('首帧图片读取失败')
+            const blob = await response.blob()
+            const upload = await uploadVideoImage(await blobToBase64(blob), undefined, signal)
+            const imageId = await imgPut(blob).catch(() => '')
+            signal.throwIfAborted()
+            if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
+            shot.imageName = upload.name
+            shot.imageUrl = URL.createObjectURL(blob)
+            // IndexedDB 耐久凭据：草稿恢复与失败重试用（F1/F4）；失败不阻断主链路。
+            shot.imageId = imageId
+          } catch {
+            if (signal.aborted) throw signal.reason
+            if (activeJob) {
+              const id = activeJob
+              activeJob = ''
+              try { await apiClient.request(`/api/creative/jobs/${encodeURIComponent(id)}`, { method: 'DELETE', timeoutMs: 12_000 }) }
+              catch { throw new Error('当前首帧任务终止未确认，已停止后续生成，请检查任务状态') }
+            }
+            failed += 1
           }
-          failed += 1
         }
+        options.onError(failed ? `${failed} 个镜头首帧生成失败，重按「一键首帧」只补缺` : '')
+        taskStatus.value = failed ? 'failed' : 'succeeded'
+      } catch (error) {
+        if (!signal.aborted) {
+          taskStatus.value = 'failed'
+          options.onError(error instanceof Error ? error.message : '首帧生成失败')
+        }
+      } finally {
+        controller = null
+        activeJob = ''
+        firstFrameBusy.value = false
+        firstFrameProgress.value = ''
       }
-      options.onError(failed ? `${failed} 个镜头首帧生成失败，重按「一键首帧」只补缺` : '')
-      taskStatus.value = failed ? 'failed' : 'succeeded'
-    } catch (error) {
-      if (!signal.aborted) {
-        taskStatus.value = 'failed'
-        options.onError(error instanceof Error ? error.message : '首帧生成失败')
-      }
-    } finally {
-      controller = null
-      activeJob = ''
-      firstFrameBusy.value = false
-      firstFrameProgress.value = ''
-    }
+    })
   }
 
   return { firstFrameBusy, firstFrameProgress, generateFirstFrames, cancelFirstFrames }

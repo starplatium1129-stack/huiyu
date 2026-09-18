@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 import type { Ref } from 'vue'
 import type { HistoryEntry } from '@/stores/promptBuilderStore'
 import { imgGet } from '@/composables/useImageStore'
@@ -76,23 +77,25 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
 
   /** 「加入分镜」：把当前成片入 IndexedDB + 上下文追加到分镜待带入列表。 */
   async function addToShots() {
-    const data = await videoTargetData()
-    if (!data) return
-    const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
-    const ctx = await prepareVideoCtx({
-      ...data,
-      flash,
-      push: async () => {},
+    return withArtworkStaging(async () => {
+      const data = await videoTargetData()
+      if (!data) return
+      const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
+      const ctx = await prepareVideoCtx({
+        ...data,
+        flash,
+        push: async () => {},
+      })
+      if (!ctx) return
+      // F4：存储失败如实回报并回滚（旧语义静默挤掉最旧镜头）。
+      const appended = appendShotsCtx(ctx)
+      if (!appended.ok) {
+        flash('分镜待带入列表写入失败（存储空间不足）：请先到视频页消费或清理已加入的镜头')
+        return
+      }
+      shotsPending.value = appended.count
+      flashAdded(shotsPending.value)
     })
-    if (!ctx) return
-    // F4：存储失败如实回报并回滚（旧语义静默挤掉最旧镜头）。
-    const appended = appendShotsCtx(ctx)
-    if (!appended.ok) {
-      flash('分镜待带入列表写入失败（存储空间不足）：请先到视频页消费或清理已加入的镜头')
-      return
-    }
-    shotsPending.value = appended.count
-    flashAdded(shotsPending.value)
   }
 
   /** 「去分镜短片」：跳转视频页分镜模式，一次性消费已加入的镜头。 */
@@ -110,49 +113,12 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
    * prompt 用该图实际生成时保存的词），追加到分镜待带入列表。
    */
   async function handleHistoryToShots(entry: HistoryEntry) {
-    try {
-      const blob = await imgGet(entry.image_id)
-      if (!blob || !blob.size) { flash('历史图片已失效，无法加入分镜'); return }
-      const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
-      const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
-      const ctx = await prepareVideoCtx({
-        displayUrl: '',
-        animaBlob: blob,
-        prompt: tagsToVideoProse(entry.prompt || entry.story || ''),
-        story: entry.story || '',
-        blueprintId: entry.blueprintId ?? null,
-        characterId: entry.characterId ?? '',
-        // F3：历史条目自带生成时的服装归属，参考卡按同一套服装装配。
-        outfitId: entry.outfitId ?? null,
-        sceneId: entry.scene ?? null,
-        flash,
-        push: async () => {},
-      })
-      if (!ctx) return
-      const appended = appendShotsCtx(ctx)
-      if (!appended.ok) {
-        flash('分镜待带入列表写入失败（存储空间不足）：请先到视频页消费或清理已加入的镜头')
-        return
-      }
-      shotsPending.value = appended.count
-      flashAdded(shotsPending.value)
-    } catch (error) {
-      flash('加入分镜失败')
-      console.warn(error)
-    }
-  }
-
-  /** 历史多选批量加入分镜：逐张重建上下文，成功/失败计数汇总。 */
-  async function handleHistoryToShotsBatch(entries: HistoryEntry[]) {
-    if (!entries.length) return
-    const { prepareVideoCtx, appendShotsCtx, readShotsCtx } = await import('@/composables/useVideoBridge')
-    const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
-    let added = 0
-    let failed = 0
-    for (const entry of entries) {
+    return withArtworkStaging(async () => {
       try {
         const blob = await imgGet(entry.image_id)
-        if (!blob || !blob.size) { failed += 1; continue }
+        if (!blob || !blob.size) { flash('历史图片已失效，无法加入分镜'); return }
+        const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
+        const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
         const ctx = await prepareVideoCtx({
           displayUrl: '',
           animaBlob: blob,
@@ -160,29 +126,70 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
           story: entry.story || '',
           blueprintId: entry.blueprintId ?? null,
           characterId: entry.characterId ?? '',
+          // F3：历史条目自带生成时的服装归属，参考卡按同一套服装装配。
           outfitId: entry.outfitId ?? null,
           sceneId: entry.scene ?? null,
-          flash: () => {},
+          flash,
           push: async () => {},
         })
-        if (!ctx) { failed += 1; continue }
+        if (!ctx) return
         const appended = appendShotsCtx(ctx)
         if (!appended.ok) {
-          // 存储写失败：不再追加后续，已加入的保留，如实汇报
-          flash(`存储空间不足：已加入 ${added} 张，其余未能加入`)
-          shotsPending.value = readShotsCtx().length
+          flash('分镜待带入列表写入失败（存储空间不足）：请先到视频页消费或清理已加入的镜头')
           return
         }
-        added += 1
+        shotsPending.value = appended.count
+        flashAdded(shotsPending.value)
       } catch (error) {
-        failed += 1
+        flash('加入分镜失败')
         console.warn(error)
       }
-    }
-    shotsPending.value = readShotsCtx().length
-    flash(failed
-      ? `已加入分镜 ${added} 张，${failed} 张失败（图片失效）`
-      : `已加入分镜 ${added} 张（当前共 ${shotsPending.value} 镜）`)
+    })
+  }
+
+  /** 历史多选批量加入分镜：逐张重建上下文，成功/失败计数汇总。 */
+  async function handleHistoryToShotsBatch(entries: HistoryEntry[]) {
+    return withArtworkStaging(async () => {
+      if (!entries.length) return
+      const { prepareVideoCtx, appendShotsCtx, readShotsCtx } = await import('@/composables/useVideoBridge')
+      const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
+      let added = 0
+      let failed = 0
+      for (const entry of entries) {
+        try {
+          const blob = await imgGet(entry.image_id)
+          if (!blob || !blob.size) { failed += 1; continue }
+          const ctx = await prepareVideoCtx({
+            displayUrl: '',
+            animaBlob: blob,
+            prompt: tagsToVideoProse(entry.prompt || entry.story || ''),
+            story: entry.story || '',
+            blueprintId: entry.blueprintId ?? null,
+            characterId: entry.characterId ?? '',
+            outfitId: entry.outfitId ?? null,
+            sceneId: entry.scene ?? null,
+            flash: () => {},
+            push: async () => {},
+          })
+          if (!ctx) { failed += 1; continue }
+          const appended = appendShotsCtx(ctx)
+          if (!appended.ok) {
+            // 存储写失败：不再追加后续，已加入的保留，如实汇报
+            flash(`存储空间不足：已加入 ${added} 张，其余未能加入`)
+            shotsPending.value = readShotsCtx().length
+            return
+          }
+          added += 1
+        } catch (error) {
+          failed += 1
+          console.warn(error)
+        }
+      }
+      shotsPending.value = readShotsCtx().length
+      flash(failed
+        ? `已加入分镜 ${added} 张，${failed} 张失败（图片失效）`
+        : `已加入分镜 ${added} 张（当前共 ${shotsPending.value} 镜）`)
+    })
   }
 
   return {

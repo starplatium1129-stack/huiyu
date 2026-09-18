@@ -1,3 +1,4 @@
+import { startArtworkSession, stopArtworkSession } from './storage/artworkSession'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -30,8 +31,22 @@ initializeDesktopPreferences()
 installRouteRecovery(router)
 const stopNavigationFeedback = installNavigationFeedback(router)
 
-createApp(App).use(createPinia()).use(router).mount('#app')
-const stopDesktopInteraction = installDesktopInteraction(router)
-const stopFluidGlass = installFluidGlass()
-const stopDesktopZoom = installDesktopZoom()
-if (import.meta.hot) import.meta.hot.dispose(() => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom(); stopNavigationFeedback() })
+// Join before mounting: a new document must not start writing while another
+// document holds exclusive cleanup access. Browsing still works without locks;
+// mutations/cleanup keep their own fail-closed checks in that environment.
+let disposed = false
+let stopUi = () => {}
+void startArtworkSession().catch(error => console.warn('作品清理保护不可用', error)).then(() => {
+  if (disposed) return
+  createApp(App).use(createPinia()).use(router).mount('#app')
+  const stopDesktopInteraction = installDesktopInteraction(router)
+  const stopFluidGlass = installFluidGlass()
+  const stopDesktopZoom = installDesktopZoom()
+  stopUi = () => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom() }
+})
+if (import.meta.hot) import.meta.hot.dispose(() => {
+  disposed = true
+  stopUi()
+  stopNavigationFeedback()
+  void stopArtworkSession().catch(() => {})
+})

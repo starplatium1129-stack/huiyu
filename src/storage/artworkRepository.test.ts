@@ -17,6 +17,7 @@ import {
   ARTWORK_HISTORY_KV_KEY,
   ARTWORK_PROJECTS_KV_KEY,
   ARTWORK_TRASH_KV_KEY,
+  ARTWORK_HISTORY_QUARANTINE_KEY,
 } from '../utils/storageKeys'
 
 const KV = {
@@ -435,5 +436,24 @@ describe('artworkRepository 写串行化', () => {
     const trash = kv.store.get(KV.trash) as Array<{ id: string }>
     expect(trash.map(t => t.id).sort()).toEqual(['a1', 'b2'])
     expect(historyIds(kv)).toEqual([])
+  })
+})
+
+
+describe('expired trash protects all live reference domains', () => {
+  it('keeps project and quarantine images while deleting only truly unreferenced candidates', async () => {
+    const kv = makeKv({
+      [KV.history]: [],
+      [KV.projects]: [{ id: 'project', cover: { image_id: 'project-image' } }],
+      [ARTWORK_HISTORY_QUARANTINE_KEY]: [{ image_id: 'quarantine-image' }],
+      [KV.trash]: [{ id: 'expired', deletedAt: 1, historyEntries: [], projectRefs: [], imageIds: ['project-image', 'quarantine-image', 'orphan'] }],
+    })
+    const images = makeImages(['project-image', 'quarantine-image', 'orphan'].map(id => ({
+      id, blob: fakeBlob, name: '', type: 'image/png', size: 1, created_at: 1,
+    })))
+    const repo = createArtworkRepository({ kv: kv.adapter, images: images.adapter })
+    expect(await repo.purgeExpiredTrash()).toEqual({ purged: 1 })
+    expect([...images.store.keys()]).toEqual(['project-image', 'quarantine-image'])
+    expect(images.adapter.deleteMany).toHaveBeenCalledWith(['orphan'])
   })
 })

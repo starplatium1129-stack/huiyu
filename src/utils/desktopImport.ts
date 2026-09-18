@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 /**
  * 本地图片导入作品册（IndexedDB 集成层）。
  *
@@ -38,26 +39,28 @@ function measureBlob(blob: Blob): Promise<{ width: number | null; height: number
  * 失败的单张图片记入 skipped，不中断整批。
  */
 export async function importLocalImages(files: readonly ImportSourceFile[]): Promise<ImportResult> {
-  const candidates = filterImageFiles(files)
-  let imported = 0
-  let skipped = 0
-  for (const file of candidates) {
-    let imageId: string | null = null
-    try {
-      imageId = await imgPut(file.blob)
-      const measured = await measureBlob(file.blob)
-      const record = buildImportedRecord(file, imageId, measured)
-      await artworkRepository.appendArtwork(record)
-      const thumbnailId = imageId
-      void blobThumbDataUrl(file.blob).then(dataUrl => {
-        if (dataUrl) return kvSet(thumbKey(thumbnailId), dataUrl).catch(() => {})
-        return undefined
-      }).catch(() => {})
-      imported += 1
-    } catch {
-      if (imageId) await imgDelete(imageId).catch(() => {})
-      skipped += 1
+  return withArtworkStaging(async () => {
+    const candidates = filterImageFiles(files)
+    let imported = 0
+    let skipped = 0
+    for (const file of candidates) {
+      let imageId: string | null = null
+      try {
+        imageId = await imgPut(file.blob)
+        const measured = await measureBlob(file.blob)
+        const record = buildImportedRecord(file, imageId, measured)
+        await artworkRepository.appendArtwork(record)
+        const thumbnailId = imageId
+        void blobThumbDataUrl(file.blob).then(dataUrl => {
+          if (dataUrl) return kvSet(thumbKey(thumbnailId), dataUrl).catch(() => {})
+          return undefined
+        }).catch(() => {})
+        imported += 1
+      } catch {
+        if (imageId) await imgDelete(imageId).catch(() => {})
+        skipped += 1
+      }
     }
-  }
-  return { imported, skipped }
+    return { imported, skipped }
+  })
 }

@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 import { useVideoStore, prepareVideoCtx } from '@/stores/videoStore'
 import type { VideoBridgeTarget, VideoCtxPayload } from '@/stores/videoStore'
 
@@ -30,28 +31,32 @@ export function clearShotsCtx(): void {
 }
 
 export async function bridgeToVideo(target: VideoBridgeTarget): Promise<boolean> {
-  const store = useVideoStore()
-  const ctx = await prepareVideoCtx(target)
-  if (!ctx) return false
-  if (!store.stageImageCtx(ctx)) {
-    target.flash('跨页上下文写入失败')
-    return false
-  }
-  await target.push('/video-studio')
-  return true
+  return withArtworkStaging(async () => {
+    const store = useVideoStore()
+    const ctx = await prepareVideoCtx(target)
+    if (!ctx) return false
+    if (!store.stageImageCtx(ctx)) {
+      target.flash('跨页上下文写入失败')
+      return false
+    }
+    await target.push('/video-studio')
+    return true
+  })
 }
 
 /** 多图带入分镜短片：全部准备完成后一次性跳转（失败单图跳过，不阻塞其余）。 */
 export async function bridgeShotsToVideo(targets: VideoBridgeTarget[]): Promise<boolean> {
-  const store = useVideoStore()
-  const prepared: VideoCtxPayload[] = []
-  for (const target of targets) {
-    const ctx = await prepareVideoCtx(target)
-    if (ctx) prepared.push(ctx)
-  }
-  if (!prepared.length) return false
-  store.consumeShotCtxs()
-  if (!store.stageShotCtxs(prepared)) return false
-  await targets[0].push('/video-studio?mode=shots')
-  return true
+  return withArtworkStaging(async () => {
+    const store = useVideoStore()
+    const prepared: VideoCtxPayload[] = []
+    for (const target of targets) {
+      const ctx = await prepareVideoCtx(target)
+      if (ctx) prepared.push(ctx)
+    }
+    if (!prepared.length) return false
+    store.consumeShotCtxs()
+    if (!store.stageShotCtxs(prepared)) return false
+    await targets[0].push('/video-studio?mode=shots')
+    return true
+  })
 }

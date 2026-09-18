@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 import { createVideoStoryboard,uploadVideoImage,type VideoBatch,type VideoDefaults,type VideoQuality,type VideoStatusResponse,} from '@/api/videoApi';
 import { confirmAction } from '@/composables/useConfirm';
 import { imgPut } from '@/composables/useImageStore';
@@ -306,34 +307,36 @@ export function useShotWorkspace(props: {
         frameInputs.value[index]?.click();
     }
     async function onFramePicked(index: number, event: Event) {
-        const input = event.target as HTMLInputElement;
-        const file = input.files?.[0];
-        input.value = '';
-        if (!file || index >= shots.value.length)
-            return;
-        if (file.size > 20 * 1024 * 1024) {
-            batchError.value = '首帧图片需 ≤20MB';
-            return;
-        }
-        try {
-            const dataUrl = await readBlobAsDataURL(file);
-            const comma = dataUrl.indexOf(',');
-            if (comma < 0)
-                throw new Error('图片编码失败');
-            const upload = await uploadVideoImage(dataUrl.slice(comma + 1));
-            const shot = shots.value[index];
-            if (shot.imageUrl)
-                URL.revokeObjectURL(shot.imageUrl);
-            shot.imageName = upload.name;
-            shot.imageUrl = URL.createObjectURL(file);
-            // IndexedDB 耐久凭据：草稿恢复/失败重试都靠它（服务端受控名会被清理）。
-            shot.imageId = await imgPut(file).catch(() => shot.imageId || '');
-            batchError.value = '';
-        }
-        catch (error) {
-            batchError.value = error instanceof Error ? error.message : '首帧上传失败';
-        }
-    }
+        return withArtworkStaging(async () => {
+          const input = event.target as HTMLInputElement;
+          const file = input.files?.[0];
+          input.value = '';
+          if (!file || index >= shots.value.length)
+              return;
+          if (file.size > 20 * 1024 * 1024) {
+              batchError.value = '首帧图片需 ≤20MB';
+              return;
+          }
+          try {
+              const dataUrl = await readBlobAsDataURL(file);
+              const comma = dataUrl.indexOf(',');
+              if (comma < 0)
+                  throw new Error('图片编码失败');
+              const upload = await uploadVideoImage(dataUrl.slice(comma + 1));
+              const shot = shots.value[index];
+              if (shot.imageUrl)
+                  URL.revokeObjectURL(shot.imageUrl);
+              shot.imageName = upload.name;
+              shot.imageUrl = URL.createObjectURL(file);
+              // IndexedDB 耐久凭据：草稿恢复/失败重试都靠它（服务端受控名会被清理）。
+              shot.imageId = await imgPut(file).catch(() => shot.imageId || '');
+              batchError.value = '';
+          }
+          catch (error) {
+              batchError.value = error instanceof Error ? error.message : '首帧上传失败';
+          }
+      })
+      }
     function clearFrame(index: number) {
         const shot = shots.value[index];
         if (shot?.imageUrl)

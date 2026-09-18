@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
 import type { usePromptBuilderStore, HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
@@ -72,23 +73,25 @@ export function useTempResult(deps: TempResultDeps) {
 
   /** 替换式写入：先读旧记录，新记录落稳后回收旧 blob（不炸主链路）。 */
   async function captureTemp(partial: Omit<TempResultRecord, 'imageId' | 'savedAt'>, blob: Blob, url = deps.displayResultUrl.value, current = ownsResult(url)) {
-    if (!current()) return
-    const mutation = ++tempMutation
-    try {
-      const imageId = await imgPut(blob)
-      if (mutation !== tempMutation || !current()) { void imgDelete(imageId).catch(() => {}); return }
-      const previous = readTempResult()
-      if (!writeTempResult({ ...partial, imageId, savedAt: Date.now() })) {
-        void imgDelete(imageId).catch(() => {})
-        pb.flash('临时成片写入失败（存储空间不足）：可尝试「存入作品册」或下载原图')
-        return
+    return withArtworkStaging(async () => {
+      if (!current()) return
+      const mutation = ++tempMutation
+      try {
+        const imageId = await imgPut(blob)
+        if (mutation !== tempMutation || !current()) { void imgDelete(imageId).catch(() => {}); return }
+        const previous = readTempResult()
+        if (!writeTempResult({ ...partial, imageId, savedAt: Date.now() })) {
+          void imgDelete(imageId).catch(() => {})
+          pb.flash('临时成片写入失败（存储空间不足）：可尝试「存入作品册」或下载原图')
+          return
+        }
+        storedResultUrl.value = url
+        if (previous && previous.imageId !== imageId) void imgDelete(previous.imageId).catch(() => {})
+      } catch (error) {
+        console.warn('[temp-result] capture failed', error)
+        if (current()) pb.flash('临时成片保存失败：请在离开前存入作品册或下载原图')
       }
-      storedResultUrl.value = url
-      if (previous && previous.imageId !== imageId) void imgDelete(previous.imageId).catch(() => {})
-    } catch (error) {
-      console.warn('[temp-result] capture failed', error)
-      if (current()) pb.flash('临时成片保存失败：请在离开前存入作品册或下载原图')
-    }
+    })
   }
 
   /** 入册成功 → 临时记录使命完成（作品册条目自带 blob 副本，回收暂存图）。 */

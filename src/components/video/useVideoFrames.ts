@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 import type { Ref } from 'vue'
 import {
   uploadVideoImage,
@@ -141,42 +142,44 @@ export function useVideoFrames(deps: VideoFramesDeps) {
    * 同时写 IndexedDB 留耐久凭据（F1）：受控名随任务清理，草稿恢复靠 imageId 重上传。
    */
   async function handleFrameFile(event: Event, slot: 'first' | 'last') {
-    const input = event.target as HTMLInputElement
-    const file = input.files?.[0]
-    input.value = ''
-    if (!file) return
-    if (!file.type.startsWith('image/')) {
-      statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'
-      return
-    }
-    const version = slot === 'first' ? ++firstVersion : ++lastVersion
-    const isCurrent = () => version === (slot === 'first' ? firstVersion : lastVersion)
-    pendingUploads++
-    uploadingImage.value = true
-    statusError.value = ''
-    try {
-      const upload = await uploadVideoImage(await blobToBase64(file))
-      const imageId = await imgPut(file).catch(() => '')
-      if (!isCurrent()) return
-      const preview = URL.createObjectURL(file)
-      if (!imageId) statusError.value = '图片可用于本次生成，但本地保存失败，刷新或再次生成前需重新选择图片'
-      if (slot === 'first') {
-        if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-        videoImageUrl.value = preview
-        firstFrameName.value = upload.name
-        videoImageId.value = imageId
-      } else {
-        if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
-        lastFrameUrl.value = preview
-        lastFrameName.value = upload.name
-        lastFrameImageId.value = imageId
+    return withArtworkStaging(async () => {
+      const input = event.target as HTMLInputElement
+      const file = input.files?.[0]
+      input.value = ''
+      if (!file) return
+      if (!file.type.startsWith('image/')) {
+        statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'
+        return
       }
-    } catch (error) {
-      if (isCurrent()) statusError.value = error instanceof Error ? error.message : '图片上传失败'
-    } finally {
-      pendingUploads--
-      uploadingImage.value = pendingUploads > 0
-    }
+      const version = slot === 'first' ? ++firstVersion : ++lastVersion
+      const isCurrent = () => version === (slot === 'first' ? firstVersion : lastVersion)
+      pendingUploads++
+      uploadingImage.value = true
+      statusError.value = ''
+      try {
+        const upload = await uploadVideoImage(await blobToBase64(file))
+        const imageId = await imgPut(file).catch(() => '')
+        if (!isCurrent()) return
+        const preview = URL.createObjectURL(file)
+        if (!imageId) statusError.value = '图片可用于本次生成，但本地保存失败，刷新或再次生成前需重新选择图片'
+        if (slot === 'first') {
+          if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
+          videoImageUrl.value = preview
+          firstFrameName.value = upload.name
+          videoImageId.value = imageId
+        } else {
+          if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
+          lastFrameUrl.value = preview
+          lastFrameName.value = upload.name
+          lastFrameImageId.value = imageId
+        }
+      } catch (error) {
+        if (isCurrent()) statusError.value = error instanceof Error ? error.message : '图片上传失败'
+      } finally {
+        pendingUploads--
+        uploadingImage.value = pendingUploads > 0
+      }
+    })
   }
 
   /**

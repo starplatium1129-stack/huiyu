@@ -1,16 +1,17 @@
+import { withArtworkMutation } from '@/storage/artworkMutation'
+import { withArtworkCleanup } from '@/storage/artworkSession'
+import { buildBackupBlob, MAX_BACKUP_BYTES, BACKUP_SIZE_MESSAGE, type BackupExportProgress } from '@/utils/backupExport'
 import { restoreBackupData } from '@/storage/backupRestore'
 import { downloadBlob } from '@/utils/downloadBlob'
 import { version as appVersion } from '../../package.json'
-import { collectImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
+import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
 import { ref } from 'vue'
 import { kvGet } from '@/composables/useKVStore'
 import { imgList, imgGet, imgDeleteMany } from '@/composables/useImageStore'
 import {
-  createBackup,
   normalizeBackup,
   summarizeBackup,
   type BackupFile,
-  type BackupImage,
   type BackupRecord,
   type BackupSummary,
 } from '@/utils/backupCore'
@@ -46,14 +47,6 @@ export function readLastBackupAt(): number {
   } catch { return 0 }
 }
 
-function blobToDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(String(reader.result || ''))
-    reader.onerror = () => reject(reader.error ?? new Error('读取图片失败'))
-    reader.readAsDataURL(blob)
-  })
-}
 
 function collectSettings(): Record<string, string> {
   // 活键统一登记在 src/utils/storageKeys.ts：精确键 + 训练动态前缀。
@@ -71,53 +64,52 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const pendingName = ref('')
   const lastBackupAt = ref(readLastBackupAt())
   let fileRequest = 0
+  const exportProgress = ref<BackupExportProgress | null>(null)
+  let exportController: AbortController | null = null
+  function cancelExport() { exportController?.abort() }
 
   async function exportBackup(): Promise<void> {
     if (busy.value) return
     busy.value = true
     onFlash('正在整理备份…')
     try {
-      // 导出前清理已确认无写入者的死键（如 aics_sd_settings_v1），
-      // 避免备份文件长期携带废弃内容。
-      const removedDead = cleanDeadLocalKeys(localStorage)
-      const [history, projects, images] = await Promise.all([
-        kvGet<BackupRecord[]>(HISTORY_KEY),
-        kvGet<BackupRecord[]>(PROJECT_KEY),
-        imgList(),
-      ])
-      const encoded: BackupImage[] = []
-      for (const record of images || []) {
-        try {
-          encoded.push({
-            id: record.id,
-            name: record.name,
-            type: record.type,
-            created_at: record.created_at,
-            dataUrl: await blobToDataUrl(record.blob),
-          })
-        } catch { throw new Error(`图片 ${record.id} 无法读取，未生成不完整备份，请重试`) }
-      }
-      const backup = createBackup({
-        appVersion,
-        createdAt: new Date().toISOString(),
-        history: Array.isArray(history) ? history : [],
-        projects: Array.isArray(projects) ? projects : [],
-        settings: collectSettings(),
-        images: encoded,
+      const controller = new AbortController()
+      exportController = controller
+      exportProgress.value = { completed: 0, total: 0 }
+      const snapshot = await withArtworkMutation(async () => {
+        const [history, projects, images] = await Promise.all([
+          kvGet<BackupRecord[]>(HISTORY_KEY), kvGet<BackupRecord[]>(PROJECT_KEY), imgList(),
+        ])
+        if ((history !== null && !Array.isArray(history)) || (projects !== null && !Array.isArray(projects))) {
+          throw new Error('作品记录格式异常，已停止导出，未丢弃损坏记录')
+        }
+        return { history: history ?? [], projects: projects ?? [], images, settings: collectSettings() }
       })
-      const json = JSON.stringify(backup)
-      const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
+      const { blob, summary: info } = await buildBackupBlob({
+        appVersion, createdAt: new Date().toISOString(), history: snapshot.history,
+        projects: snapshot.projects, settings: snapshot.settings,
+      }, snapshot.images, {
+        signal: controller.signal,
+        onProgress: progress => { exportProgress.value = progress },
+      })
+      // Only a complete, importable backup may cause timestamp/dead-key updates.
+      if (controller.signal.aborted) throw new DOMException('已取消备份', 'AbortError')
       const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
       downloadBlob(blob, `aics-backup-${stamp}.json`)
-      const info = summarizeBackup(backup)
+      const removedDead = cleanDeadLocalKeys(localStorage)
       lastBackupAt.value = Date.now()
       try { localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value)) } catch {}
-      onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(json.length / 1024))} KB`
+      onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(blob.size / 1024))} KB`
         + (removedDead ? ` · 已清理 ${removedDead} 个废弃存储键` : ''))
     } catch (e) {
-      console.error('backup export failed', e)
-      onFlash('备份失败：' + errorMessage(e, '请检查浏览器存储'))
+      if (exportController?.signal.aborted) onFlash('已取消备份，未生成文件，原有作品未改动')
+      else {
+        console.error('backup export failed', e)
+        onFlash('备份失败：' + errorMessage(e, '请检查浏览器存储'))
+      }
     } finally {
+      exportController = null
+      exportProgress.value = null
       busy.value = false
     }
   }
@@ -175,8 +167,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     const request = ++fileRequest
     pending.value = null
     pendingName.value = ''
-    if (file.size > 512 * 1024 * 1024) {
-      onFlash('备份文件超过 512 MB，暂不支持直接恢复')
+    if (file.size > MAX_BACKUP_BYTES) {
+      onFlash(BACKUP_SIZE_MESSAGE)
       return null
     }
     try {
@@ -244,21 +236,34 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  /** 清理未被历史引用的图片 */
+  async function readCleanupState() {
+    const [history, projects, trash, quarantine, images] = await Promise.all([
+      kvGet(HISTORY_KEY), kvGet(PROJECT_KEY), kvGet(ARTWORK_TRASH_KV_KEY), kvGet(ARTWORK_HISTORY_QUARANTINE_KEY), imgList(),
+    ])
+    const referenced = collectImageReferences([history, projects, trash, quarantine, ...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)])
+    return { referenced, images }
+  }
+
+  /** Confirmation authorizes only these IDs, never later-created images. Acquire
+   * exclusive document access, then the existing writer lock, and rescan before
+   * deleting. Other tabs' session-only drafts cannot be safely guessed at.
+   */
   async function cleanOrphanImages(): Promise<number> {
     if (busy.value) return 0
     busy.value = true
     try {
-      const [history, projects, trash, quarantine, images] = await Promise.all([
-        kvGet(HISTORY_KEY), kvGet(PROJECT_KEY), kvGet(ARTWORK_TRASH_KV_KEY), kvGet(ARTWORK_HISTORY_QUARANTINE_KEY), imgList(),
-      ])
-      const referenced = collectImageReferences([history, projects, trash, quarantine, ...readSessionImageReferences(sessionStorage)])
-      const orphans = (images || []).filter(record => !referenced.has(String(record.id)))
-      if (!orphans.length) { onFlash('没有需要清理的孤儿图片'); return 0 }
-      if (!window.confirm(`将删除 ${orphans.length} 张未被当前作品、回收站或草稿引用的图片。请先关闭其他创作标签页并导出备份。确定继续吗？`)) return 0
-      await imgDeleteMany(orphans.map(r => r.id))
-      onFlash(`已清理 ${orphans.length} 张孤儿图片`)
-      return orphans.length
+      const snapshot = await readCleanupState()
+      const candidates = new Set(snapshot.images.filter(record => !snapshot.referenced.has(record.id)).map(record => record.id))
+      if (!candidates.size) { onFlash('没有需要清理的孤儿图片'); return 0 }
+      if (!window.confirm(`将检查并清理 ${candidates.size} 张未引用图片。请先备份，并保存草稿、关闭其他绘遇窗口。确认后会重新检查引用；新保存或新建的图片不会按旧名单删除。确定继续吗？`)) return 0
+      const removed = await withArtworkCleanup(async () => {
+        const current = await readCleanupState()
+        const ids = current.images.filter(record => candidates.has(record.id) && !current.referenced.has(record.id)).map(record => record.id)
+        if (ids.length) await imgDeleteMany(ids)
+        return ids.length
+      })
+      onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
+      return removed
     } catch (e) {
       onFlash('清理失败：' + errorMessage(e, '请重试'))
       return 0
@@ -267,5 +272,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { busy, pending, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { busy, exportProgress, cancelExport, pending, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

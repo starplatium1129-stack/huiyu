@@ -1,3 +1,4 @@
+import { withArtworkStaging } from '@/storage/artworkSession'
 import type { Scene } from '../types/scene'
 export type { Scene } from '../types/scene'
 
@@ -561,91 +562,93 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
      */
     parentId?: number | null
   }): Promise<HistoryEntry | null> {
-    let imageId = ''
-    entry = { ...entry, ...historyFromResultContext(entry.context) }
-    try {
-      imageId = await imgPut(entry.blob)
-      void cacheThumbnail(imageId, entry.blob)
-      const measured = await measureBlob(entry.blob)
-      const now = Date.now()
-      // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
-      // removeHistoryEntry 可能误删另一条；加模块级序号保证唯一。
-      const id = historyStore.historyIdSeq(now)
-      const currentSubject = entry.subject === 'popular'
-        ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId }
-        : entry.subject === 'studio' ? { kind: 'studio' as const } : subject.value
-      const isPopular = currentSubject.kind === 'popular'
-      const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null
-      const popBlueprint = isPopular && currentSubject.blueprintId
-        ? sceneBlueprints.value.find(b => b.id === currentSubject.blueprintId)
-        : null
-      const resolvedSceneTitle = isPopular
-        ? (popBlueprint?.title || (popChar ? `${popChar.displayName} 创作` : '热门角色作品'))
-        : (activeScene.value?.title ?? (story.value ? story.value.slice(0, 20) : null))
+    return withArtworkStaging(async () => {
+      let imageId = ''
+      entry = { ...entry, ...historyFromResultContext(entry.context) }
+      try {
+        imageId = await imgPut(entry.blob)
+        void cacheThumbnail(imageId, entry.blob)
+        const measured = await measureBlob(entry.blob)
+        const now = Date.now()
+        // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
+        // removeHistoryEntry 可能误删另一条；加模块级序号保证唯一。
+        const id = historyStore.historyIdSeq(now)
+        const currentSubject = entry.subject === 'popular'
+          ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId }
+          : entry.subject === 'studio' ? { kind: 'studio' as const } : subject.value
+        const isPopular = currentSubject.kind === 'popular'
+        const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null
+        const popBlueprint = isPopular && currentSubject.blueprintId
+          ? sceneBlueprints.value.find(b => b.id === currentSubject.blueprintId)
+          : null
+        const resolvedSceneTitle = isPopular
+          ? (popBlueprint?.title || (popChar ? `${popChar.displayName} 创作` : '热门角色作品'))
+          : (activeScene.value?.title ?? (story.value ? story.value.slice(0, 20) : null))
 
-      const historyEntry: HistoryEntry = {
-        id,
-        timestamp: now,
-        character: entry.character ?? (isPopular ? ((currentSubject.characterId as unknown as CharKey) || char.value) : char.value),
-        // 2026-08-29 修复：队列/批量入册优先用任务入队时快照的 story/scene/sceneTitle
-        // （entry.story ?? …），避免出图期间改了故事导致作品册与成片不符。
-        scene: isPopular ? (currentSubject.blueprintId ?? null) : (entry.scene !== undefined ? entry.scene : sceneId.value),
-        sceneTitle: entry.sceneTitle ?? resolvedSceneTitle,
-        story: entry.story ?? story.value,
-        visualDescription: entry.visualDescription ?? visualDescription.value,
-        prompt: entry.prompt,
-        negative: entry.negative ?? '',
-        seed: entry.seed ?? lastSeed.value ?? -1,
-        emotion: [...(entry.emotion ?? selections.emotion)],
-        shot: entry.shot !== undefined ? entry.shot : selections.shot,
-        lighting: entry.lighting !== undefined ? entry.lighting : selections.lighting,
-        composition: entry.composition !== undefined ? entry.composition : selections.composition,
-        colorMood: entry.colorMood !== undefined ? entry.colorMood : colorMood.value,
-        manual_tags: [...(entry.manual_tags ?? manualTags.value)],
-        // 2026-08-29 修复：热门角色为无 LoRA 创作，lora 相关字段一律落空——
-        // 此前会兜底到 studio 的 loraLine（<ayachi_nene:…>）或残留的 anima loraId。
-        lora: isPopular ? null : ((entry.lora ?? loraLine.value) || null),
-        cfg: entry.cfg ?? sdParams.cfg,
-        steps: entry.steps ?? sdParams.steps,
-        sampler: entry.sampler ?? sdParams.sampler,
-        scheduler: entry.scheduler ?? sdParams.scheduler,
-        checkpoint: entry.model ?? sdModelName.value,
-        size: entry.size ?? lastRecommendedSize.value,
-        engine: entry.engine ?? 'sd',
-        profile: entry.profile ?? '',
-        model: entry.model ?? sdModelName.value,
-        loraId: isPopular ? null : (entry.loraId ?? null),
-        loraStrength: isPopular ? null : (entry.loraStrength ?? null),
-        loras: isPopular ? [] : Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
-        // 2026-08-29 修复：hires/脸部修复参数落库（SD 读面板实值，Anima 读任务元数据）。
-        hiresFix: entry.hiresFix ?? sdParams.hiresFix,
-        hiresScale: entry.hiresScale ?? sdParams.hiresScale,
-        hiresUpscaler: entry.hiresUpscaler ?? sdParams.hiresUpscaler,
-        hiresSteps: entry.hiresSteps ?? sdParams.hiresSteps,
-        hiresDenoise: entry.hiresDenoise ?? sdParams.hiresDenoise,
-        faceDetailer: entry.faceDetailer ?? sdParams.faceDetailer,
-        width: measured.width, height: measured.height,
-        rating: {}, favorite: false, notes: '',
-        image_id: imageId, image_url: '',
-        version: 1, parent_id: entry.parentId ?? null, project: entry.project ?? projectId.value,
-        subject: isPopular ? 'popular' : 'studio',
-        characterId: isPopular ? currentSubject.characterId : undefined,
-        outfitId: isPopular ? currentSubject.outfitId : undefined,
-        blueprintId: isPopular ? currentSubject.blueprintId : undefined,
-        noLora: isPopular,
-        styleLoraId: entry.styleLoraId ?? null,
-        artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
+        const historyEntry: HistoryEntry = {
+          id,
+          timestamp: now,
+          character: entry.character ?? (isPopular ? ((currentSubject.characterId as unknown as CharKey) || char.value) : char.value),
+          // 2026-08-29 修复：队列/批量入册优先用任务入队时快照的 story/scene/sceneTitle
+          // （entry.story ?? …），避免出图期间改了故事导致作品册与成片不符。
+          scene: isPopular ? (currentSubject.blueprintId ?? null) : (entry.scene !== undefined ? entry.scene : sceneId.value),
+          sceneTitle: entry.sceneTitle ?? resolvedSceneTitle,
+          story: entry.story ?? story.value,
+          visualDescription: entry.visualDescription ?? visualDescription.value,
+          prompt: entry.prompt,
+          negative: entry.negative ?? '',
+          seed: entry.seed ?? lastSeed.value ?? -1,
+          emotion: [...(entry.emotion ?? selections.emotion)],
+          shot: entry.shot !== undefined ? entry.shot : selections.shot,
+          lighting: entry.lighting !== undefined ? entry.lighting : selections.lighting,
+          composition: entry.composition !== undefined ? entry.composition : selections.composition,
+          colorMood: entry.colorMood !== undefined ? entry.colorMood : colorMood.value,
+          manual_tags: [...(entry.manual_tags ?? manualTags.value)],
+          // 2026-08-29 修复：热门角色为无 LoRA 创作，lora 相关字段一律落空——
+          // 此前会兜底到 studio 的 loraLine（<ayachi_nene:…>）或残留的 anima loraId。
+          lora: isPopular ? null : ((entry.lora ?? loraLine.value) || null),
+          cfg: entry.cfg ?? sdParams.cfg,
+          steps: entry.steps ?? sdParams.steps,
+          sampler: entry.sampler ?? sdParams.sampler,
+          scheduler: entry.scheduler ?? sdParams.scheduler,
+          checkpoint: entry.model ?? sdModelName.value,
+          size: entry.size ?? lastRecommendedSize.value,
+          engine: entry.engine ?? 'sd',
+          profile: entry.profile ?? '',
+          model: entry.model ?? sdModelName.value,
+          loraId: isPopular ? null : (entry.loraId ?? null),
+          loraStrength: isPopular ? null : (entry.loraStrength ?? null),
+          loras: isPopular ? [] : Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
+          // 2026-08-29 修复：hires/脸部修复参数落库（SD 读面板实值，Anima 读任务元数据）。
+          hiresFix: entry.hiresFix ?? sdParams.hiresFix,
+          hiresScale: entry.hiresScale ?? sdParams.hiresScale,
+          hiresUpscaler: entry.hiresUpscaler ?? sdParams.hiresUpscaler,
+          hiresSteps: entry.hiresSteps ?? sdParams.hiresSteps,
+          hiresDenoise: entry.hiresDenoise ?? sdParams.hiresDenoise,
+          faceDetailer: entry.faceDetailer ?? sdParams.faceDetailer,
+          width: measured.width, height: measured.height,
+          rating: {}, favorite: false, notes: '',
+          image_id: imageId, image_url: '',
+          version: 1, parent_id: entry.parentId ?? null, project: entry.project ?? projectId.value,
+          subject: isPopular ? 'popular' : 'studio',
+          characterId: isPopular ? currentSubject.characterId : undefined,
+          outfitId: isPopular ? currentSubject.outfitId : undefined,
+          blueprintId: isPopular ? currentSubject.blueprintId : undefined,
+          noLora: isPopular,
+          styleLoraId: entry.styleLoraId ?? null,
+          artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
+        }
+        // 2026-08-16 审计：先持久化再提交内存态——此前 kvSet 失败会「内存已入册、
+        // 磁盘没写」，刷新后条目静默丢失且刚写入的图片成为孤儿 blob。
+        history.value = await artworkRepository.appendArtwork(historyEntry)
+        return historyEntry
+      } catch (e) {
+        console.warn('commitHistoryEntry failed', e)
+        // 持久化失败：回收刚写入的孤儿图片，避免无历史引用的 blob 堆积。
+        if (imageId) void imgDelete(imageId).catch(() => {})
+        return null
       }
-      // 2026-08-16 审计：先持久化再提交内存态——此前 kvSet 失败会「内存已入册、
-      // 磁盘没写」，刷新后条目静默丢失且刚写入的图片成为孤儿 blob。
-      history.value = await artworkRepository.appendArtwork(historyEntry)
-      return historyEntry
-    } catch (e) {
-      console.warn('commitHistoryEntry failed', e)
-      // 持久化失败：回收刚写入的孤儿图片，避免无历史引用的 blob 堆积。
-      if (imageId) void imgDelete(imageId).catch(() => {})
-      return null
-    }
+    })
   }
 
   async function removeHistoryEntry(id: number) {

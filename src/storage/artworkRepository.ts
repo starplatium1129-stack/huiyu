@@ -1,5 +1,7 @@
 import { kvGet, kvSet, kvSetMany } from '../composables/useKVStore.ts'
 import { withArtworkMutation } from './artworkMutation.ts'
+import { withArtworkCleanup } from './artworkSession.ts'
+import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '../utils/storageReferences.ts'
 import {
   imgDeleteMany,
   imgGetRecord,
@@ -8,7 +10,7 @@ import {
   type StoredImageRecord,
 } from '../composables/useImageStore.ts'
 import { thumbKey } from '../utils/imageThumb.ts'
-import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY } from '../utils/storageKeys.ts'
+import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY, ARTWORK_HISTORY_QUARANTINE_KEY } from '../utils/storageKeys.ts'
 
 export const ARTWORK_HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 export const ARTWORK_PROJECTS_KEY = ARTWORK_PROJECTS_KV_KEY
@@ -150,8 +152,8 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
 
   // Adapters own their storage isolation; the browser library also serializes across tabs.
   let mutationTail: Promise<void> = Promise.resolve()
-  function enqueue<T>(work: () => Promise<T>): Promise<T> {
-    const operation = mutationTail.then(() => dependencies.kv ? work() : withArtworkMutation(work))
+  function enqueue<T>(work: () => Promise<T>, cleanup = false): Promise<T> {
+    const operation = mutationTail.then(() => dependencies.kv ? work() : cleanup ? withArtworkCleanup(work) : withArtworkMutation(work))
     mutationTail = operation.then(() => undefined, () => undefined)
     return operation
   }
@@ -405,8 +407,9 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     })
     if (!expired.length) return { purged: 0 }
 
-    const historySnapshot = await kv.get(ARTWORK_HISTORY_KEY)
-    const history = arrayValue(historySnapshot) ?? []
+    const [history, projects, quarantine] = await Promise.all([
+      kv.get(ARTWORK_HISTORY_KEY), kv.get(ARTWORK_PROJECTS_KEY), kv.get(ARTWORK_HISTORY_QUARANTINE_KEY),
+    ])
     const expiredIds = new Set(expired.map(entry => entry.id))
     const survivingTrash = trash.filter(entry => !expiredIds.has(entry.id))
     // imageIds 只是软删当时的“独占”快照，不能代替可恢复 historyEntries
@@ -415,9 +418,11 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
       ...(Array.isArray(entry.imageIds) ? entry.imageIds : []),
       ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),
     ])
-    const protectedImageIds = new Set([
-      ...unique(history.map(imageId)),
-      ...survivingTrash.flatMap(entryImageIds),
+    const protectedImageIds = collectImageReferences([
+      history, projects, quarantine, survivingTrash,
+      // Injected adapters own their environment; only the actual browser reads
+      // browser drafts. Cleanup holds the document lease before the library lock.
+      ...(dependencies.kv ? [] : [...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)]),
     ])
     const expiredImageIds = unique(expired.flatMap(entryImageIds))
     const removable = expiredImageIds.filter(image => !protectedImageIds.has(image))
@@ -438,7 +443,7 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
   }
 
   function purgeExpiredTrash(): Promise<{ purged: number }> {
-    return enqueue(() => purgeExpiredTrashNow())
+    return enqueue(() => purgeExpiredTrashNow(), true)
   }
 
   /** 列出回收站全部软删条目（2026-08-31 回收站视图用，含删除时间与首图 id）。 */
