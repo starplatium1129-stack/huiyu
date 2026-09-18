@@ -65,3 +65,18 @@ assert.match(native, /run-live2d-renderer-soak\.js --seconds 300 --switch-every 
 assert.doesNotMatch(native, /pull_request:/);
 
 });
+
+test('nightly screenshots are uploaded from the hidden review directory without silent loss', () => {
+  const root = path.resolve(__dirname, '..', '..');
+  const nightly = fs.readFileSync(path.join(root, '.github', 'workflows', 'nightly-e2e.yml'), 'utf8');
+  const upload = nightly.split('      - name: Upload visual review screenshots\n')[1]?.split('\n      - name:')[0];
+  assert.ok(upload, 'nightly must keep the dedicated screenshot upload step');
+  assert.match(upload, /^\s+if:\s+always\(\)\s*$/m,
+    'screenshots must remain available when another visual assertion fails');
+  assert.match(upload, /^\s+path:\s+\.review-shots\/\*\.png\s*$/m,
+    'hidden-file opt-in must be scoped to generated review PNGs');
+  assert.match(upload, /^\s+include-hidden-files:\s+true\s*$/m,
+    'upload-artifact otherwise excludes the hidden .review-shots directory');
+  assert.match(upload, /^\s+if-no-files-found:\s+error\s*$/m,
+    'missing screenshot evidence must fail instead of silently reporting success');
+});

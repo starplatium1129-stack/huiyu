@@ -150,6 +150,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-scene-story-alignment.js',
     'test-sd-runtime.js',
     'test-scene-shard-integrity.js',
+    'test-tag-shards.js',
     'test-popular-shard-integrity.js',
     'test-blueprint-shard-integrity.js',
     'test-security.js',

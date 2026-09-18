@@ -1,7 +1,7 @@
 import type { ArtistStyleOption } from '../config/artistStyles.ts'
 import { normalizeArtistStyleIds } from '../config/artistStyles.ts'
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '../config/promptConstants.ts'
-import { membersOfMutualGroup, mutualGroupOf, mutualGroupWithCategory } from '../utils/promptPolicy.ts'
+import { membersOfMutualGroup, mutualGroupWithCategory } from '../utils/promptPolicy.ts'
 
 /**
  * 随机灵感采样器（2026-08-29，详见 docs/guides/engineering/random-prompt-assembler-design.md）。
