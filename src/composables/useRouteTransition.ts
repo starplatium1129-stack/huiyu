@@ -19,24 +19,37 @@ export function useRouteTransition() {
       done()
       return
     }
-    const animation = el.animate(
-      [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }],
-      { duration: 220, easing: 'cubic-bezier(.22, 1, .36, 1)' },
-    )
+    let animation: Animation | undefined
     let finished = false
     const finish = () => {
       if (finished) return
       finished = true
       active.delete(el)
-      animation.onfinish = null
-      animation.oncancel = null
-      animation.cancel()
+      if (animation) {
+        animation.onfinish = null
+        animation.oncancel = null
+        try {
+          animation.cancel()
+        } catch {
+          // An optional animation implementation must not strand Vue's enter callback.
+          try { animation.effect = null } catch { /* Best-effort effect release. */ }
+        }
+      }
       if (path) markUiFluidityForPath(path, 'settled')
       done()
     }
-    active.set(el, finish)
-    animation.onfinish = finish
-    animation.oncancel = finish
+    try {
+      animation = el.animate(
+        [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }],
+        { duration: 220, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+      )
+      active.set(el, finish)
+      animation.onfinish = finish
+      animation.oncancel = finish
+    } catch {
+      // Capability detection alone does not guarantee animate() can start.
+      finish()
+    }
   }
   function onLeave(element: Element, done: () => void) {
     const el = element as HTMLElement
@@ -48,16 +61,24 @@ export function useRouteTransition() {
   function onEnterCancelled(element: Element) { settle(element as HTMLElement) }
   function onBeforeEnter(element: Element) { (element as HTMLElement).inert = false }
   function motionChanged() { if (prefersReducedMotion()) settleAll() }
-  let media: MediaQueryList | undefined
+  let removeMediaListener: (() => void) | undefined
   onMounted(() => {
-    media = matchMedia('(prefers-reduced-motion: reduce)')
-    media.addEventListener('change', motionChanged)
+    // The app preference event remains available even without matchMedia.
     window.addEventListener('atelier:motion-preference', motionChanged)
+    if (typeof window.matchMedia !== 'function') return
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', motionChanged)
+      removeMediaListener = () => media.removeEventListener('change', motionChanged)
+    } else if (typeof media.addListener === 'function') {
+      media.addListener(motionChanged)
+      removeMediaListener = () => media.removeListener(motionChanged)
+    }
   })
   onDeactivated(settleAll)
   onUnmounted(() => {
     settleAll()
-    media?.removeEventListener('change', motionChanged)
+    removeMediaListener?.()
     window.removeEventListener('atelier:motion-preference', motionChanged)
   })
   return { onBeforeEnter, onEnter, onLeave, onEnterCancelled }

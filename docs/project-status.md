@@ -73,3 +73,13 @@ A01–A05 的聊天存储、流式合并、远程自配目标边界及绘画工�
 保护适用于更新后的同源应用窗口及已接入的写入路径；更新后需保存工作并重新打开旧窗口。它不承诺控制仍运行旧代码的窗口、浏览器扩展、外部写入器或物理断电。缺少 Web Locks 的环境不执行清理，页面浏览保留原有回退。大型分卷/流式恢复尚未实现，512 MiB 上限未提高，编码优化不等于总内存恒定；真实大图库容量、桌面多窗口与设备验收仍须单列。
 
 验证入口：`src/storage/artworkSession.spec.ts`、`src/utils/backupExport.spec.ts`、`src/composables/useBackup.spec.ts`、`src/storage/artworkRepository.test.ts`，以及 `tests/e2e/library-concurrency.spec.ts` 的原生 Web Locks/IndexedDB、多窗口和双主题取消回归。最终测试状态按本批受测源码/构建及 GitHub Actions 记录核对，不将测试设计计为已通过。外部参考素材继续按 CI 的 structure 范围检查，不记作实物或图像审核。
+
+## 2026-09-18：009 F4 路由动效降级与清理
+
+本批基于 `97ade972753694b8dbf7560c7667f56ec76350fd`，推进 [009 F4.6](../plans/009-ui-fluidity-and-performance.md) 的路由局部批次（F4.6a），不关闭整个 F4。保留现有不透明页面、6px / 220ms 入场、自有缓动、`inert` 与测量阶段，不以缩短动画冒充性能提升。
+
+- **可选能力失败回退**：`animate()` 存在但调用失败时完成 Vue 回调；`cancel()` 失败时尝试解除 effect，即使可选清理也失败仍完成回调。成功、取消与重复回调共享一次性收尾，不将动效失败升级为导航失败。
+- **偏好监听与生命周期**：支持现代与旧版 MediaQueryList 监听；缺少 `matchMedia` 时仍接收应用内减少动态效果事件。保留已有失活/卸载清理，补齐连续导航、离场不可交互、偏好运行中切换和监听移除的回归。
+- **验证边界**：新增 `src/composables/useRouteTransition.spec.ts` 的 22 个定向用例。本环境实际执行 Node 隔离 hook 适配器：同一用例集在原实现 14 过 / 8 失败，在修复实现 22 过 / 0 失败；这不是实际 Vitest、Vue 挂载、浏览器或性能测试。源码哈希与方法见 [验证摘要](evidence/009-f4-route-motion-2026-09-18.json)。
+
+基线 Quality 运行 `35317437516` 的静态、单测及契约执行道通过，浏览器执行道失败；该结果不代表本提交验证结果。新提交的完整门禁与浏览器结果以对应 SHA 的 Actions 为准。本批未改 CI 门槛、提示词、模型参数、存储契约或安装程序；F4 其余动效、双主题/键盘浏览器验收及 F7 真机性能仍按原计划保持待验收。

@@ -1,0 +1,63 @@
+{
+  "plan": "plans/009-ui-fluidity-and-performance.md",
+  "batch": "F4.6a: route-only optional motion fallback and lifecycle regression",
+  "recordedDate": "2026-09-18",
+  "baseCommit": "97ade972753694b8dbf7560c7667f56ec76350fd",
+  "baseSourceBlob": "f26517051d0cddac7e8c74f73d81b926f2252052",
+  "source": "src/composables/useRouteTransition.ts",
+  "test": "src/composables/useRouteTransition.spec.ts",
+  "scope": [
+    "animate() throwing or returning no animation",
+    "best-effort cancel/effect fallback with idempotent Vue completion",
+    "modern, legacy and absent matchMedia subscription",
+    "regressions for existing re-entry, inert, reduced-motion, deactivation and unmount behavior"
+  ],
+  "preserved": [
+    "opaque route",
+    "6px translateY / 220ms / cubic-bezier(.22, 1, .36, 1)",
+    "shell-ready and settled measurement phases",
+    "existing generation, storage and security contracts"
+  ],
+  "localValidation": {
+    "method": "Node built-in test runner with an offline hook-boundary adapter; TypeScript types and import lines stripped, lifecycle/preference/measurement imports replaced with the same stubs used by the spec. The test bodies and production function bodies are unchanged.",
+    "node": "v22.16.0",
+    "actualVitest": false,
+    "actualVueMount": false,
+    "actualBrowser": false,
+    "actualTypeCheck": false,
+    "actualProductionBuild": false,
+    "before": {
+      "tests": 22,
+      "passed": 14,
+      "failed": 8,
+      "exitCode": 1,
+      "sourceSha256": "9eb2bd22734f8a1479d902bd000469e2322a16b85383303b7fbd86ce6c910a24"
+    },
+    "after": {
+      "tests": 22,
+      "passed": 22,
+      "failed": 0,
+      "exitCode": 0,
+      "sourceSha256": "bc918d2f5a359b7c5162c06ae8b5a9700b9cb06b4e7237b1d5195834f3ccc7cc"
+    },
+    "testSha256": "7f8b93edd1bbbbf3f827ce92d1db0931406f9072cf71909c4c2b94b444b27dd5",
+    "gitDiffWhitespaceCheck": "passed"
+  },
+  "baselineCi": {
+    "runId": 35317437516,
+    "appliesTo": "base commit only; not this patch",
+    "staticAndQuality": "success",
+    "unitAndCoverage": "success",
+    "contractAndGateway": "success",
+    "criticalBrowserRegression": "failure",
+    "qualitySummary": "failure"
+  },
+  "fullValidationForPatch": "not run locally; verify Actions for the resulting commit SHA",
+  "notClaimed": [
+    "all of F4 completed",
+    "seven-page or dual-theme browser acceptance",
+    "Windows/WebView2, GPU or actual-model acceptance",
+    "measured frame-time, memory or input-latency improvement"
+  ],
+  "rollback": "Revert this isolated commit; no dependency, data-format, setting or installation migration."
+}
