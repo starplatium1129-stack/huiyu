@@ -43,6 +43,13 @@ describe('009 particle lifecycle ownership', () => {
     }
     expect(hooks.invalidate).toHaveBeenCalledTimes(20); expect(hooks.portrait).toHaveBeenCalledTimes(21)
   })
+  it('ignores observer callbacks from a previous activation after returning', async () => {
+    await mount(); const stale = [...callbacks]
+    shown.value = false; await nextTick(); shown.value = true; await nextTick()
+    const starts = hooks.start.mock.calls.length, resizes = hooks.resize.mock.calls.length
+    stale.forEach(callback => callback())
+    expect(hooks.start).toHaveBeenCalledTimes(starts); expect(hooks.resize).toHaveBeenCalledTimes(resizes); expect(frames.size).toBe(0)
+  })
   it('cancels pending palette reads on hide and only resumes current state', async () => {
     await mount(); callbacks[2](); callbacks[2](); expect(frames.size).toBe(1)
     vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)

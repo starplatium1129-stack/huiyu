@@ -34,3 +34,9 @@
 .viewer-story-on-art { margin: var(--s-5) 0; color: var(--on-art-primary); font-style: italic; }
 .viewer-actions { display: grid; gap: var(--s-2); margin-top: var(--s-5); }
 .viewer-actions .btn { justify-content: center; }
+
+/* On-art controls must not inherit light-page ink on a dark viewing surface. */
+.art-viewer .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success) {
+  color: var(--on-art-primary);
+  border-color: var(--on-art-line);
+}

@@ -117,6 +117,8 @@ export default defineConfig(async ({ mode }) => {
           if (id.includes('node_modules/@vueuse/') ||
               id.includes('src/api/client') ||
               id.includes('src/api/mediaStatusApi') ||
+              // Shared by the entry and Live2D: never pull the heavy chunk into first paint.
+              id.includes('src/utils/motionPreference') ||
               id.includes('src/utils/storageKeys') ||
               id.includes('src/utils/localDiagnostics') ||
               id.includes('src/utils/sdStatus') ||

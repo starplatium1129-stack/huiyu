@@ -13,6 +13,7 @@ interface ParticleLifecycleHooks {
 
 /** Per-field ownership only; rendering still uses the existing shared scheduler. */
 export function useParticleLifecycle(host: Ref<HTMLElement | null>, hooks: ParticleLifecycleHooks) {
+  let generation = 0
   let active = false, paletteFrame: number | null = null
   let resize: ResizeObserver | undefined, intersection: IntersectionObserver | undefined, theme: MutationObserver | undefined
   let removeMedia: (() => void) | undefined
@@ -30,6 +31,8 @@ export function useParticleLifecycle(host: Ref<HTMLElement | null>, hooks: Parti
   function start() {
     if (active || !host.value) return
     active = true
+    const token = ++generation
+    const current = () => active && token === generation
     const media = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null
     if (typeof media?.addEventListener === 'function') {
       media.addEventListener('change', preference)
@@ -38,12 +41,12 @@ export function useParticleLifecycle(host: Ref<HTMLElement | null>, hooks: Parti
       media.addListener(preference); removeMedia = () => media.removeListener(preference)
     }
     if (typeof ResizeObserver === 'function') {
-      resize = new ResizeObserver(() => { if (active && !document.hidden) hooks.resize() })
+      resize = new ResizeObserver(() => { if (current() && !document.hidden) hooks.resize() })
       resize.observe(host.value)
     }
     if (typeof IntersectionObserver === 'function') {
       intersection = new IntersectionObserver(([entry]) => {
-        if (!active) return
+        if (!current()) return
         const visible = entry?.isIntersecting ?? true
         hooks.visible(visible)
         if (visible && !document.hidden) hooks.start()
@@ -52,7 +55,7 @@ export function useParticleLifecycle(host: Ref<HTMLElement | null>, hooks: Parti
       intersection.observe(host.value)
     }
     if (typeof MutationObserver === 'function') {
-      theme = new MutationObserver(palette)
+      theme = new MutationObserver(() => { if (current()) palette() })
       theme.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     }
     window.addEventListener('atelier:motion-preference', preference)
@@ -61,7 +64,7 @@ export function useParticleLifecycle(host: Ref<HTMLElement | null>, hooks: Parti
   }
   function stop() {
     if (!active) return
-    active = false
+    active = false; generation++
     cancelPalette(); hooks.stop(); hooks.invalidate()
     resize?.disconnect(); intersection?.disconnect(); theme?.disconnect(); removeMedia?.()
     resize = undefined; intersection = undefined; theme = undefined; removeMedia = undefined

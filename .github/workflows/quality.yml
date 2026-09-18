@@ -60,9 +60,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run frontend unit tests (coverage thresholds enforced)
-        run: npx vitest run --coverage
+        run: |
+          set -o pipefail
+          mkdir -p runtime/quality-unit
+          npx vitest run --coverage 2>&1 | tee runtime/quality-unit/frontend.log
       - name: Run parallel-safe unit suite
-        run: npm run test:unit
+        run: |
+          set -o pipefail
+          npm run test:unit 2>&1 | tee runtime/quality-unit/node.log
+      - name: Preserve exact unit results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: quality-unit-results
+          path: runtime/quality-unit
+          if-no-files-found: ignore
+          retention-days: 14
 
   contract:
     name: Contract & Gateway Suite
@@ -163,12 +176,17 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Verify actual 009 test discovery
         run: |
+          set -o pipefail
           npx playwright test tests/e2e/navigation-fluidity.spec.ts tests/e2e/ui-fluidity.spec.ts --project=desktop --list | tee runtime/ui-fluidity-office/behavior-list.txt
           npx playwright test --config=playwright.performance.config.ts --project=fluidity-office --list | tee runtime/ui-fluidity-office/measurement-list.txt
       - name: Run 009 behavior without retry masking
-        run: npx playwright test tests/e2e/navigation-fluidity.spec.ts tests/e2e/ui-fluidity.spec.ts --project=desktop --workers=1 --retries=0
+        run: |
+          set -o pipefail
+          npx playwright test tests/e2e/navigation-fluidity.spec.ts tests/e2e/ui-fluidity.spec.ts --project=desktop --workers=1 --retries=0 2>&1 | tee runtime/ui-fluidity-office/behavior.log
       - name: Measure 009 separately on one worker
-        run: npx playwright test --config=playwright.performance.config.ts --project=fluidity-office --retries=0
+        run: |
+          set -o pipefail
+          npx playwright test --config=playwright.performance.config.ts --project=fluidity-office --retries=0 2>&1 | tee runtime/ui-fluidity-office/measurement.log
       - name: Preserve raw measurements and visual evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

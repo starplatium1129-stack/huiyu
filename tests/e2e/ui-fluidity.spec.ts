@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { OFFICE_FIXTURE, OFFICE_ROUTES, prepareOffice, previewRoundTrip, visitOfficeRoute } from './helpers/ui-fluidity-office'
+import { OFFICE_FIXTURE, OFFICE_ROUTES, prepareOffice, previewRoundTrip, visitOfficeRoute, onArtTextContrast } from './helpers/ui-fluidity-office'
 
 for (const theme of ['dark', 'light']) {
   for (const mode of ['full', 'low', 'reduce'] as const) {
@@ -19,6 +19,12 @@ for (const theme of ['dark', 'light']) {
       expect(Math.abs(geometry.width - geometry.viewportWidth)).toBeLessThanOrEqual(1)
       expect(Math.abs(geometry.height - geometry.viewportHeight)).toBeLessThanOrEqual(1)
       expect(geometry.animation).toBe('none'); expect(geometry.transform).toBe(''); expect(geometry.opacity).toBe('')
+      const ratios: number[] = []
+      for (const button of await viewer.locator('.viewer-actions .btn-ghost:not(.btn-danger)').all()) {
+        ratios.push(await button.evaluate(onArtTextContrast))
+      }
+      expect(Math.min(...ratios)).toBeGreaterThanOrEqual(4.5)
+      console.log('009-VIEWER-CONTRAST', JSON.stringify({ theme, mode, lowerBounds: ratios }))
       await page.screenshot({ path: test.info().outputPath(`009-preview-${theme}-${mode}.png`) })
       await page.keyboard.press('Escape')
       await expect(page.locator('.art-viewer')).toBeHidden()
@@ -90,5 +96,60 @@ for (const theme of ['dark', 'light']) {
     await expect(page.locator('.art-viewer.open')).toHaveCSS('transform', 'none')
     await page.keyboard.press('Escape'); await expect(page.locator('.art-viewer')).toBeHidden()
     expect(writes).toEqual([])
+  })
+}
+
+for (const theme of ['dark', 'light']) {
+  test(`009 particles honor app motion and hidden/resume without stale drawing ${theme}`, async ({ page }) => {
+    await page.addInitScript(() => {
+      const clear = CanvasRenderingContext2D.prototype.clearRect
+      CanvasRenderingContext2D.prototype.clearRect = function (...args: Parameters<CanvasRenderingContext2D['clearRect']>) {
+        if (this.canvas.closest('.semantic-particle-field')) this.canvas.dataset.officeDraws = String(Number(this.canvas.dataset.officeDraws || 0) + 1)
+        return clear.apply(this, args)
+      }
+    })
+    const errors: string[] = []; page.on('pageerror', error => errors.push(error.message))
+    const writes = await prepareOffice(page, theme, 'full')
+    // A tiny neutral cloud, never the operator's models or personal artwork.
+    await page.route('**/assets/particles/p_*.json', route => route.fulfill({ json: {
+      id: '009-neutral-cloud', aspect: 1, palette: ['#a8abc0'], grid: { w: 8, h: 8, cells: '0'.repeat(64) },
+    } }))
+    await page.goto('/popular-scenes')
+    const field = page.locator('.pop-hero-field')
+    await expect(field).toHaveClass(/has-canvas/)
+    const canvas = field.locator('canvas')
+    const count = async () => Number(await canvas.getAttribute('data-office-draws') || 0)
+    await expect.poll(count).toBeGreaterThan(0)
+    async function motion(value: string) {
+      await page.evaluate(({ key, theme, value }) => {
+        localStorage.setItem(key, JSON.stringify({ theme, motion: value, reducedGlass: false }))
+        window.dispatchEvent(new StorageEvent('storage', { key }))
+      }, { key: OFFICE_FIXTURE.appearanceKey, theme, value })
+    }
+    await motion('reduce'); await expect(field).toHaveClass(/is-static/)
+    const stopped = await count()
+    // An observation window proves absence of drawing, not a readiness delay.
+    await page.waitForTimeout(120); expect(await count()).toBe(stopped)
+    await page.screenshot({ path: test.info().outputPath(`009-particles-${theme}-reduce.png`) })
+    await motion('full'); await expect(field).not.toHaveClass(/is-static/)
+    await expect.poll(count).toBeGreaterThan(stopped)
+    await page.evaluate(async () => {
+      const original = Object.getOwnPropertyDescriptor(document, 'hidden')
+      try {
+        Object.defineProperty(document, 'hidden', { configurable: true, get: () => true })
+        document.dispatchEvent(new Event('visibilitychange'))
+        const canvas = document.querySelector<HTMLCanvasElement>('.pop-hero-field canvas')!
+        const before = canvas.dataset.officeDraws
+        await new Promise(resolve => setTimeout(resolve, 120))
+        if (canvas.dataset.officeDraws !== before) throw new Error('Hidden particles kept drawing')
+      } finally {
+        if (original) Object.defineProperty(document, 'hidden', original)
+        else Reflect.deleteProperty(document, 'hidden')
+        document.dispatchEvent(new Event('visibilitychange'))
+      }
+    })
+    const resumed = await count(); await expect.poll(count).toBeGreaterThan(resumed)
+    await page.screenshot({ path: test.info().outputPath(`009-particles-${theme}-full.png`) })
+    expect(errors).toEqual([]); expect(writes).toEqual([])
   })
 }

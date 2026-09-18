@@ -83,3 +83,33 @@ export async function previewRoundTrip(page: Page, keyboard = false) {
   expect(Math.abs(after.scrollY - before)).toBeLessThanOrEqual(2)
   return { scrollBefore: before, scrollAfter: after.scrollY, scrollError: Math.abs(after.scrollY - before), openCloseMs: after.at - openedAt }
 }
+
+/** Conservative on-art text bound: composite the real overlay on both black and
+ * white. The darkest foreground over the brightest backdrop is a lower bound
+ * for any underlying page/image. No CSS is changed for the measurement. */
+export function onArtTextContrast(element: Element) {
+  const viewer = element.closest('.art-viewer')
+  if (!viewer) throw new Error('Expected an artwork-viewer descendant')
+  const layers: CSSStyleDeclaration[] = []
+  for (let node: Element | null = element; node; node = node.parentElement) {
+    const style = getComputedStyle(node)
+    if (style.backgroundImage !== 'none' || Number(style.opacity) !== 1) throw new Error('Expected settled, flat overlay layers')
+    layers.unshift(style)
+    if (node === viewer) break
+  }
+  const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })!
+  const luminance = () => [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3).map(value => {
+    const v = value / 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4
+  }).reduce((sum, value, i) => sum + value * [.2126, .7152, .0722][i], 0)
+  const samples = ['black', 'white'].map(base => {
+    ctx.fillStyle = base; ctx.fillRect(0, 0, 1, 1)
+    for (const style of layers) { ctx.fillStyle = style.backgroundColor; ctx.fillRect(0, 0, 1, 1) }
+    const background = luminance()
+    ctx.fillStyle = getComputedStyle(element).color; ctx.fillRect(0, 0, 1, 1)
+    return { background, foreground: luminance() }
+  })
+  const foreground = Math.min(...samples.map(sample => sample.foreground))
+  const background = Math.max(...samples.map(sample => sample.background))
+  return foreground > background ? (foreground + .05) / (background + .05) : 1
+}
