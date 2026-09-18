@@ -59,7 +59,7 @@ for (const theme of ['dark', 'light']) for (const mode of ['basic', 'pro']) {
     await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-${mode}-style.png`), fullPage: true })
 
     await page.getByRole('tab', { name: '提示词', exact: true }).click()
-    const tagSearch = page.getByPlaceholder('搜索中文或 Danbooru 词条', { exact: true })
+    const tagSearch = page.getByRole('searchbox', { name: '搜索词条', exact: true })
     await expect(tagSearch).toBeVisible()
     await tagSearch.fill('sky')
     expect(scripts.has(chunk('director/DirectorTagWorkbench'))).toBe(true)

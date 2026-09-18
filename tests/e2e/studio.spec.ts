@@ -158,7 +158,7 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('#stepTags')).toBeVisible();
   await expect(page.locator('.inspector-section[data-panel="prompt"] > #stepTags')).toHaveCount(1);
   await expect(page.locator('.tag-results button')).toHaveCount(72);
-  await page.getByPlaceholder('搜索中文或 Danbooru 词条').fill('校服');
+  await page.getByRole('searchbox', { name: '搜索词条', exact: true }).fill('校服');
   await expect(page.locator('.tag-results')).toContainText('school_uniform');
   const promptHealth = page.locator('#promptMonitor');
   // 7c3f9fe 起专家模式 Live Preview 默认展开（basic 模式仍折叠）
@@ -264,7 +264,8 @@ test('scene manager protects unsaved changes during internal navigation', async 
   await expect(page).toHaveURL(/\/scene-manager$/);
 
   await page.locator('.nav-links a[href="/scene-explorer"]').click();
-  await page.getByRole('alertdialog').getByRole('button', { name: '确认', exact: true }).click();
+  await page.getByRole('alertdialog', { name: '离开场景管理？', exact: true })
+    .getByRole('button', { name: '离开页面', exact: true }).click();
   await expect(page).toHaveURL(/\/scene-explorer$/);
 });
 

@@ -26,36 +26,55 @@ async function navigateThroughRouter(page: Page, path: string) {
   await expect(page.locator('#app')).not.toBeEmpty()
 }
 
-test('microphone policy follows real documents and grants only voice pages', async ({ page, context }) => {
-  await context.grantPermissions(['microphone'])
-  await page.addInitScript(() => Object.defineProperty(window, '__voiceDocument', { value: crypto.randomUUID() }))
-  const identity = () => page.evaluate(() => (window as unknown as { __voiceDocument: string }).__voiceDocument)
-  const acquire = () => page.evaluate(async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const tracks = stream.getTracks()
-      tracks.forEach(track => track.stop())
-      return { acquired: true, stopped: tracks.every(track => track.readyState === 'ended'), error: '' }
-    } catch (error) { return { acquired: false, stopped: true, error: (error as DOMException).name } }
+// Native media coverage needs the complete Chromium browser, not headless shell.
+// channel is a worker option and must be declared at file scope.
+test.use({ channel: 'chromium' })
+
+test.describe('document microphone permissions', () => {
+  test('microphone policy follows real documents and grants only voice pages', async ({ page, context }) => {
+    await context.grantPermissions(['microphone'])
+    await page.addInitScript(() => Object.defineProperty(window, '__voiceDocument', { value: crypto.randomUUID() }))
+    const identity = () => page.evaluate(() => (window as unknown as { __voiceDocument: string }).__voiceDocument)
+    const microphoneAllowed = () => page.evaluate(() => {
+      type Policy = { allowsFeature: (feature: string) => boolean }
+      const current = document as Document & { permissionsPolicy?: Policy; featurePolicy?: Policy }
+      const policy = current.permissionsPolicy ?? current.featurePolicy
+      if (!policy) throw new Error('Chromium document permissions policy API is required for this regression')
+      return policy.allowsFeature('microphone')
+    })
+    const acquire = () => page.evaluate(async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        const tracks = stream.getTracks()
+        const audioTracks = stream.getAudioTracks().length
+        tracks.forEach(track => track.stop())
+        return { acquired: true, audioTracks, stopped: tracks.every(track => track.readyState === 'ended'), error: '' }
+      } catch (error) { return { acquired: false, stopped: true, error: (error as DOMException).name, message: (error as DOMException).message } }
+    })
+    const response = await page.goto('/gallery')
+    expect(response!.headers()['permissions-policy']).toContain('microphone=()')
+    // Keep both the actual policy and getUserMedia denial as independent assertions.
+    expect(await microphoneAllowed()).toBe(false)
+    expect(await acquire()).toMatchObject({ acquired: false, error: 'NotAllowedError' })
+    const galleryDocument = await identity()
+    await navigateThroughRouter(page, '/companion-chat')
+    await expect.poll(identity).not.toBe(galleryDocument)
+    expect(await microphoneAllowed()).toBe(true)
+    expect(await acquire()).toMatchObject({ acquired: true, audioTracks: 1, stopped: true })
+    const voiceDocument = await identity()
+    await navigateThroughRouter(page, '/gallery')
+    await expect.poll(identity).not.toBe(voiceDocument)
+    expect(await microphoneAllowed()).toBe(false)
+    expect((await acquire()).acquired).toBe(false)
+    for (const path of ['/chat/', '/companion', '/companion-chat?voice=test']) {
+      const documentResponse = await page.goto(path)
+      expect(documentResponse!.headers()['permissions-policy']).toContain('microphone=(self)')
+      expect(documentResponse!.headers()['permissions-policy']).toContain('camera=()')
+      if (path.startsWith('/companion-chat')) expect(documentResponse!.headers()['content-security-policy']).not.toContain("'unsafe-eval'")
+      expect(await microphoneAllowed()).toBe(true)
+      expect(await acquire()).toMatchObject({ acquired: true, audioTracks: 1, stopped: true })
+    }
   })
-  const response = await page.goto('/gallery')
-  expect(response!.headers()['permissions-policy']).toContain('microphone=()')
-  expect(await acquire()).toMatchObject({ acquired: false, error: 'NotAllowedError' })
-  const galleryDocument = await identity()
-  await navigateThroughRouter(page, '/companion-chat')
-  await expect.poll(identity).not.toBe(galleryDocument)
-  expect(await acquire()).toMatchObject({ acquired: true, stopped: true })
-  const voiceDocument = await identity()
-  await navigateThroughRouter(page, '/gallery')
-  await expect.poll(identity).not.toBe(voiceDocument)
-  expect((await acquire()).acquired).toBe(false)
-  for (const path of ['/chat/', '/companion', '/companion-chat?voice=test']) {
-    const documentResponse = await page.goto(path)
-    expect(documentResponse!.headers()['permissions-policy']).toContain('microphone=(self)')
-    expect(documentResponse!.headers()['permissions-policy']).toContain('camera=()')
-    if (path.startsWith('/companion-chat')) expect(documentResponse!.headers()['content-security-policy']).not.toContain("'unsafe-eval'")
-    expect(await acquire()).toMatchObject({ acquired: true, stopped: true })
-  }
 })
 
 for (const storageBlocked of [false, true]) {

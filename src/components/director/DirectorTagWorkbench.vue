@@ -75,7 +75,7 @@
     </div>
     <p v-else class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
     <div class="tag-browser">
-      <input v-model="tagSearch" class="tag-input" type="search" placeholder="搜索中文含义或 Danbooru 英文标签…" />
+      <input v-model="tagSearch" class="tag-input" type="search" aria-label="搜索词条" placeholder="搜索中文含义或 Danbooru 英文标签…" />
       <div class="tag-categories" role="group" aria-label="词条分类">
         <button v-for="cat in tagCategories" :key="cat.id" type="button"
           :class="{ active: tagCategory === cat.id }"
