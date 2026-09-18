@@ -129,10 +129,62 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+  fluidity-office:
+    name: 009 Office Fluidity
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: '1'
+      AICS_E2E_PORT_OFFSET: '400'
+      DISABLE_TUNNEL: '1'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build measured SPA
+        run: |
+          mkdir -p runtime/ui-fluidity-office
+          npm run build > runtime/ui-fluidity-office/build.log 2>&1 || { tail -120 runtime/ui-fluidity-office/build.log; exit 1; }
+          tail -12 runtime/ui-fluidity-office/build.log
+      - name: Cache Playwright browsers
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - name: Install browser runtime
+        run: npx playwright install --with-deps chromium
+      - name: Verify actual 009 test discovery
+        run: |
+          npx playwright test tests/e2e/navigation-fluidity.spec.ts tests/e2e/ui-fluidity.spec.ts --project=desktop --list | tee runtime/ui-fluidity-office/behavior-list.txt
+          npx playwright test --config=playwright.performance.config.ts --project=fluidity-office --list | tee runtime/ui-fluidity-office/measurement-list.txt
+      - name: Run 009 behavior without retry masking
+        run: npx playwright test tests/e2e/navigation-fluidity.spec.ts tests/e2e/ui-fluidity.spec.ts --project=desktop --workers=1 --retries=0
+      - name: Measure 009 separately on one worker
+        run: npx playwright test --config=playwright.performance.config.ts --project=fluidity-office --retries=0
+      - name: Preserve raw measurements and visual evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: ui-fluidity-office
+          path: |
+            runtime/ui-fluidity-office
+            runtime/office-code-2026-09-11/performance-traces
+            test-results
+          if-no-files-found: error
+          retention-days: 14
+
   quality-summary:
     name: Quality Summary
     if: always()
-    needs: [checks, unit, contract, e2e]
+    needs: [checks, unit, contract, e2e, fluidity-office]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -142,9 +194,11 @@ jobs:
           UNIT_RESULT: ${{ needs.unit.result }}
           CONTRACT_RESULT: ${{ needs.contract.result }}
           E2E_RESULT: ${{ needs.e2e.result }}
+          FLUIDITY_RESULT: ${{ needs.fluidity-office.result }}
         run: |
-          printf 'checks=%s unit=%s contract=%s e2e=%s\n' "$CHECKS_RESULT" "$UNIT_RESULT" "$CONTRACT_RESULT" "$E2E_RESULT"
+          printf 'checks=%s unit=%s contract=%s e2e=%s fluidity=%s\n' "$CHECKS_RESULT" "$UNIT_RESULT" "$CONTRACT_RESULT" "$E2E_RESULT" "$FLUIDITY_RESULT"
           test "$CHECKS_RESULT" = "success"
           test "$UNIT_RESULT" = "success"
           test "$CONTRACT_RESULT" = "success"
           test "$E2E_RESULT" = "success"
+          test "$FLUIDITY_RESULT" = "success"

@@ -1,5 +1,5 @@
 <template>
-  <Transition :css="false" :appear="appear" @enter="enter" @leave="leave" @after-leave="surface.dispose">
+  <Transition :css="false" :appear="appear" @before-enter="own" @enter="enter" @leave="leave" @after-leave="surface.dispose">
     <slot />
   </Transition>
 </template>
@@ -10,8 +10,10 @@ const props = withDefaults(defineProps<{ panel?: string; appear?: boolean }>(), 
   appear: false,
 })
 const surface = useFluidSurface(props.panel)
+function own(el: Element) { el.setAttribute('data-fluid-surface', '') }
 function enter(el: Element, done: () => void) {
   const element = el as HTMLElement
+  own(el)
   element.inert = false
   element.removeAttribute('data-fluid-leaving')
   surface.enter(el, done)
@@ -23,3 +25,8 @@ function leave(el: Element, done: () => void) {
   surface.leave(el, done)
 }
 </script>
+<style>
+/* This viewer now has one motion owner. Keep the legacy rule for native dialogs,
+   but never combine its forwards-filled CSS animation with this spring. */
+.art-viewer.open[data-fluid-surface] { animation: none; }
+</style>
