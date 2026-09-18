@@ -27,7 +27,12 @@ function fixture(t: any, gitEnabled: any = true) {
   write('src/main.js', 'module.exports = 1;\n'); write('src/remove.js', 'module.exports = 2;\n');
   write('dist/index.html', '<html>fixture</html>'); write('.gitignore', '/runtime/\n/src/ignored*\n');
   if (gitEnabled) {
-    git('init', '--template='); git('add', '--', 'src/main.js', 'src/remove.js', 'dist/index.html', '.gitignore');
+    git('init', '--template=');
+    // Handoff/evidence/finalize tests snapshot every .git byte. Keep automatic
+    // maintenance from adding/removing locks independently of the command under test.
+    git('config', '--local', 'maintenance.auto', 'false');
+    git('config', '--local', 'gc.auto', '0');
+    git('add', '--', 'src/main.js', 'src/remove.js', 'dist/index.html', '.gitignore');
     git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgSign=false', 'commit', '-m', 'isolated fixture');
   }
   const initial = { scope: 'isolated fixture only', source: [{ path: 'src', kind: 'tree' }], build: [{ path: 'dist', kind: 'tree' }],
