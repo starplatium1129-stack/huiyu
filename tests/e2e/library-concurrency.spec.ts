@@ -19,6 +19,7 @@ type LibraryFixture = {
   }
   ARTWORK_HISTORY_KEY: string
   ARTWORK_TRASH_KEY: string
+  ARTWORK_SESSION_LOCK: string
   kvGet(key: string): Promise<Array<{ id: string; favorite?: boolean }> | null>
   kvSet(key: string, value: unknown): Promise<void>
   restoreBackupData(backup: unknown, replace: boolean): Promise<void>
@@ -203,6 +204,14 @@ test('unsupported lock environments refuse writes instead of silently losing dat
 })
 
 
+async function waitForOnlyThisDocument(page: Page) {
+  // Page.close() precedes cross-process Web Locks cleanup on some Chromium runs.
+  // Observe the native lease release; never retry the destructive operation itself.
+  await expect.poll(() => page.evaluate(async () =>
+    (await navigator.locks.query()).held?.filter(lock => lock.name === window.libraryFixture.ARTWORK_SESSION_LOCK).length || 0,
+  )).toBe(1)
+}
+
 async function seedOrphan(page: Page) {
   await page.evaluate(() => window.libraryFixture.imgPutRecord({
     id: 'cleanup-candidate', blob: new Blob(['image'], { type: 'image/png' }), created_at: 1,
@@ -227,6 +236,7 @@ test('orphan cleanup refuses another live document and succeeds after it closes'
   expect(result.messages.join(' ')).toContain('未删除图片')
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).not.toBeNull()
   await other.close()
+  await waitForOnlyThisDocument(page)
   expect(await page.evaluate(() => window.libraryFixture.useBackup(() => {}).cleanOrphanImages())).toBe(1)
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).toBeNull()
 })
@@ -312,6 +322,7 @@ test('automatic trash purge uses the same cross-document protection as manual cl
   expect(error).toContain('未删除图片')
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).not.toBeNull()
   await other.close()
+  await waitForOnlyThisDocument(page)
   expect(await page.evaluate(() => window.libraryFixture.artworkRepository.purgeExpiredTrash())).toEqual({ purged: 1 })
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).toBeNull()
 })
