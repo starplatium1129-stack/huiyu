@@ -65,9 +65,9 @@ jobs:
           subprocess.run(['git','add',*expected],check=True)
           assert subprocess.check_output(['git','write-tree'],text=True).strip() == '9b83dc5ab5c51be26d366054162a059eaeed0bb5'
           PY
+      - run: npm run build
       - name: Validate browser test discovery
         run: npx playwright test tests/e2e/office-code.spec.ts tests/e2e/studio.spec.ts tests/e2e/workbench-loading.spec.ts --grep 'microphone policy|director separates|scene manager protects|workbench loads' --list
-      - run: npm run build
       - run: npx playwright install --with-deps chromium
       - name: Verify all seven failing cases and the new random controls
         run: |
