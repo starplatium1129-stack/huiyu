@@ -1,0 +1,98 @@
+name: Verify final backup progress layout
+on:
+  push:
+    branches: [codex/storage-safety-20260918]
+    paths: [.github/workflows/storage-safety-ui-final.yml]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 4fbb7d3c11b605db424d8153113f6fdf2cccfc35
+          persist-credentials: false
+      - name: Apply exact reviewed layout change and publish objects without refs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import base64, json, os, subprocess, urllib.request
+          from pathlib import Path
+          base='4fbb7d3c11b605db424d8153113f6fdf2cccfc35'
+          tree='610224fcf350a87b93ae558a5782b05b18435f3b'
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          assert git('rev-parse','HEAD')==base
+          assert not git('status','--porcelain')
+          p=Path('src/components/PromptDataTools.vue');s=p.read_text();old='v-if="backup.exportProgress.value" class="utility-note"'
+          assert s.count(old)==1;s=s.replace(old,'v-if="backup.exportProgress.value" class="utility-note wide"');p.write_text(s)
+          p=Path('tests/e2e/library-concurrency.spec.ts');s=p.read_text()
+          old="    await expect(page.getByRole('button', { name: '取消备份', exact: true })).toBeVisible()\n    await page.screenshot"
+          new="""    await expect(page.getByRole('button', { name: '取消备份', exact: true })).toBeVisible()
+              const progress = page.getByRole('status').filter({ hasText: '正在备份图片：' })
+              await expect(progress).toBeVisible()
+              const progressBox = await progress.boundingBox()
+              const buttonBox = await page.getByRole('button', { name: '取消备份', exact: true }).boundingBox()
+              expect(progressBox).not.toBeNull()
+              expect(buttonBox).not.toBeNull()
+              expect(progressBox!.width).toBeGreaterThanOrEqual(buttonBox!.width - 1)
+              await page.screenshot"""
+          assert s.count(old)==1;s=s.replace(old,new);p.write_text(s)
+          expected={'src/components/PromptDataTools.vue':'a9cbfc8f58faf07cb07b9c6f0122c01dd45b95b9','tests/e2e/library-concurrency.spec.ts':'a02462bd8064d01c2281cf50094879d79d2365f1'}
+          for name,sha in expected.items(): assert git('hash-object',name)==sha,name
+          subprocess.run(['git','add','--',*expected],check=True)
+          subprocess.run(['git','diff','--cached','--check'],check=True)
+          assert git('write-tree')==tree
+          def post(endpoint,data):
+              req=urllib.request.Request('https://api.github.com/repos/starplatium1129-stack/huiyu/'+endpoint,data=json.dumps(data).encode(),headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Content-Type':'application/json','Accept':'application/vnd.github+json'})
+              with urllib.request.urlopen(req,timeout=60) as response:return json.load(response)
+          entries=[]
+          for name,sha in expected.items():
+              result=post('git/blobs',{'content':base64.b64encode(Path(name).read_bytes()).decode(),'encoding':'base64'})
+              assert result['sha']==sha
+              entries.append({'path':name,'mode':'100644','type':'blob','sha':sha})
+          result=post('git/trees',{'base_tree':'032289d9868de81a0b1e39c9b877d86885984856','tree':entries});assert result['sha']==tree
+          commit=post('git/commits',{'tree':tree,'parents':[base],'message':'fix(ui): give cancellable backup progress a full utility row\n\nReuse the existing wide grid utility after real theme screenshots\nshowed the progress text wrapping into half a row. Add a browser\ngeometry assertion while preserving cancellation and no-download checks.\nNo new styles, permissions, model behavior, or data format changes.'})
+          out=Path(os.environ['RUNNER_TEMP'])/'backup-ui-candidate';out.mkdir()
+          (out/'candidate.json').write_text(json.dumps({'sha':commit['sha'],'tree':tree,'parent':base,'files':expected},indent=2))
+          print('Candidate object:',commit['sha'],'(no refs updated)')
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: storage-final-candidate
+          path: ${{ runner.temp }}/backup-ui-candidate/candidate.json
+          retention-days: 2
+          if-no-files-found: error
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npx playwright install --with-deps chromium
+      - name: Verify complete storage browser regressions and both theme layouts
+        run: npx playwright test tests/e2e/library-concurrency.spec.ts --project=desktop
+        env:
+          CI: '1'
+      - name: Upload reviewed final screenshots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: storage-final-ui
+          path: test-results/**/*.png
+          retention-days: 2
+          if-no-files-found: error
+      - name: Upload failures
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: storage-final-failures
+          path: test-results/
+          retention-days: 2
+          if-no-files-found: ignore
