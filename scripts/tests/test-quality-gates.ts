@@ -86,8 +86,8 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.doesNotMatch(scripts['package:tauri'], /prepare:tauri/);
 
   assert.match(quality, /npm run check/);
-  const checkStep = quality.indexOf('run: npm run check');
-  const unitStep = quality.indexOf('run: npm run test:unit');
+  const checkStep = quality.indexOf('npm run check');
+  const unitStep = quality.indexOf('npm run test:unit');
   const contractStep = quality.indexOf('run: npm run test:contract');
   assert.ok(checkStep >= 0 && checkStep < unitStep && unitStep < contractStep,
     'Ubuntu quality workflow must run check, unit, then contract');
@@ -97,8 +97,10 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   const summary = quality.slice(quality.indexOf('  quality-summary:'));
   assert.ok(summary.length > 0, 'quality workflow must expose a final summary job');
   assert.match(summary, /if: always\(\)/);
-  assert.match(summary, /needs: \[checks, unit, contract, e2e\]/);
-  for (const lane of ['checks', 'unit', 'contract', 'e2e']) {
+  const requiredLanes = ['checks', 'unit', 'contract', 'e2e', 'fluidity-office'];
+  const summaryNeeds = summary.match(/needs:\s*\[([^\]]+)\]/)?.[1].split(',').map(lane => lane.trim()) || [];
+  for (const lane of requiredLanes) assert.ok(summaryNeeds.includes(lane), `quality summary must depend on ${lane}`);
+  for (const lane of requiredLanes) {
     assert.match(summary, new RegExp(`needs\\.${lane}\\.result|${lane.toUpperCase()}_RESULT`),
       `quality summary must inspect ${lane} result`);
   }
@@ -137,4 +139,29 @@ test('contract CI builds the SPA before testing fallback and CSP on a clean chec
     'contract routes require locally built dist; another job cannot supply it');
   assert.doesNotMatch(contract, /continue-on-error:\s*true|npm run test:contract[^\n]*\|\|/,
     'route contract failures must remain fatal');
+});
+
+
+test('009 office CI retains isolated single-worker evidence and a mandatory summary result', () => {
+  const quality = read('.github/workflows/quality.yml');
+  const office = quality.split('\n  fluidity-office:\n')[1]?.split('\n  quality-summary:\n')[0];
+  assert.ok(office, '009 must have an independent runner instead of competing with ordinary regression');
+  assert.match(office, /AICS_E2E_PORT_OFFSET:\s*'400'/);
+  assert.match(office, /DISABLE_TUNNEL:\s*'1'/);
+  assert.match(office, /navigation-fluidity\.spec\.ts tests\/e2e\/ui-fluidity\.spec\.ts --project=desktop --list/);
+  assert.match(office, /--project=desktop --workers=1 --retries=0/);
+  assert.match(office, /--config=playwright\.performance\.config\.ts --project=fluidity-office --retries=0/);
+  assert.match(office, /set -o pipefail/);
+  assert.doesNotMatch(office, /continue-on-error:\s*true/);
+  const upload = office.split('      - name: Preserve raw measurements and visual evidence\n')[1];
+  assert.ok(upload, 'raw measurements and screenshots must be retained');
+  assert.match(upload, /if: always\(\)/);
+  assert.match(upload, /runtime\/ui-fluidity-office/);
+  assert.match(upload, /if-no-files-found: error/);
+  const performance = read('playwright.performance.config.ts');
+  assert.match(performance, /workers:\s*1/);
+  assert.match(performance, /name: 'fluidity-office'/);
+  const summary = quality.slice(quality.indexOf('  quality-summary:'));
+  assert.match(summary, /FLUIDITY_RESULT:.*needs\.fluidity-office\.result/);
+  assert.ok(summary.includes('test "$FLUIDITY_RESULT" = "success"'), 'the added lane must not be informational only');
 });
