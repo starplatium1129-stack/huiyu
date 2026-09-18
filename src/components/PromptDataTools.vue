@@ -18,7 +18,7 @@
           title="导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」">
           <ArchiveIcon name="download" /> 导出备份 JSON
         </button>
-        <div v-if="backup.exportProgress.value" class="utility-note" role="status" aria-live="polite">
+        <div v-if="backup.exportProgress.value" class="utility-note wide" role="status" aria-live="polite">
           正在备份图片：{{ backup.exportProgress.value.completed }} / {{ backup.exportProgress.value.total }}
         </div>
         <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消备份</button>
