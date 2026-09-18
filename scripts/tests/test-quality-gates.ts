@@ -125,3 +125,16 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.match(native, /run-live2d-renderer-soak\.js --seconds 300 --switch-every 60/);
   assert.doesNotMatch(native, /pull_request:/);
 });
+
+test('contract CI builds the SPA before testing fallback and CSP on a clean checkout', () => {
+  const quality = read('.github/workflows/quality.yml');
+  const contract = quality.split('\n  contract:\n')[1]?.split('\n  e2e:\n')[0];
+  assert.ok(contract, 'the isolated contract job must be present');
+  const install = contract.indexOf('run: npm ci');
+  const build = contract.indexOf('run: npm run build');
+  const run = contract.indexOf('run: npm run test:contract');
+  assert.ok(install >= 0 && install < build && build < run,
+    'contract routes require locally built dist; another job cannot supply it');
+  assert.doesNotMatch(contract, /continue-on-error:\s*true|npm run test:contract[^\n]*\|\|/,
+    'route contract failures must remain fatal');
+});

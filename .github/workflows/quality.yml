@@ -81,6 +81,10 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      # Contract tests exercise the real SPA fallback and route-specific CSP.
+      # Jobs have isolated checkouts; the checks job cannot supply its dist here.
+      - name: Build SPA for route contracts
+        run: npm run build
       - name: Run controlled contract suite
         run: npm run test:contract
 

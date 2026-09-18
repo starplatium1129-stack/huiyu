@@ -88,6 +88,10 @@ function gitFixture(t: any) {
     return r.stdout.trim();
   };
   git('init', '--template=');
+  // The fixture snapshots .git bytes: automatic maintenance is an unrelated
+  // writer and may remove its lock between readdir and stat on newer Git.
+  git('config', '--local', 'maintenance.auto', 'false');
+  git('config', '--local', 'gc.auto', '0');
   git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgSign=false', 'commit', '--allow-empty', '-m', 'fixture');
   return { ...f, git, head: git('rev-parse', '--verify', 'HEAD^{commit}') };
 }
