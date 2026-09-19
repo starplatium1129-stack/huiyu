@@ -75,4 +75,13 @@ describe('renderPromptPlan krea2', () => {
     const { prompt } = renderPromptPlan(plan, 'krea2', null)
     expect(prompt).not.toContain('no characters, no people, no figures')
   })
+
+  it('把导演台色彩情调写进 Krea 自然语言与 Anima 标签请求', () => {
+    const plan = createPromptPlan({
+      subjectProse: 'A young anime woman with long silver hair',
+      palette: ['pink theme', 'warm light'],
+    })
+    expect(renderPromptPlan(plan, 'krea2', null).prompt).toContain('color palette uses pink theme and warm light')
+    expect(renderPromptPlan(plan, 'anima', null).prompt.split('\n')[0]).toContain('pink theme, warm light')
+  })
 })

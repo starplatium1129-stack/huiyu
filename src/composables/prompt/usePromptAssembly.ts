@@ -191,6 +191,10 @@ export function usePromptAssembly(
   const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
   const artistTags = computed(() => artistTagsForEngine(activeArtistStyleIds.value, engine.value))
   const artistProse = computed(() => artistStyleProse(activeArtistStyleIds.value, engine.value))
+  const colorMoodTokens = computed(() => {
+    const mood = pb.colorMood ? COLOR_MOODS.find(option => option.id === pb.colorMood) : null
+    return mood ? tokenize(mood.prompt) : []
+  })
 
   /** 分块 parts：同序同类输出，供预览、健康检查与 SD 请求共用。 */
   const promptParts = computed<PromptPart[]>(() => {
@@ -250,10 +254,7 @@ export function usePromptAssembly(
     }
 
     // 5) 色彩情调
-    if (pb.colorMood) {
-      const mood = COLOR_MOODS.find(option => option.id === pb.colorMood)
-      if (mood?.prompt) parts.push({ cls: 't', text: format(mood.prompt) })
-    }
+    if (colorMoodTokens.value.length) parts.push({ cls: 't', text: format(colorMoodTokens.value.join(', ')) })
     // 6) 情绪
     if (pb.emotionPrompt) parts.push({ cls: 't', text: format(pb.emotionPrompt) })
     // 7) 镜头
@@ -305,6 +306,7 @@ export function usePromptAssembly(
     emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
     camera: pb.selections.shot ? [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''] : [],
     lighting: pb.selections.lighting ? [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''] : [],
+    palette: colorMoodTokens.value,
     composition: pb.selections.composition ? [COMPOSITION.find(item => item.id === pb.selections.composition)?.prompt || ''] : [],
     manual: [...pb.manualTags],
     negative: effectiveScene.value?.negative || NEGATIVE_DEFAULT,

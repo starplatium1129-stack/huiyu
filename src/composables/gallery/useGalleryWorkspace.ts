@@ -1,5 +1,5 @@
 import { characterName as resolveCharacterName } from './galleryHelpers';
-import { formatTrashTime,hiresLabel,modelName,loraName as resolveLoraName,sceneTitle as resolveSceneTitle,searchHaystack,trashPrompt,} from '@/composables/gallery/galleryHelpers';
+import { artworkIndexById,formatTrashTime,hiresLabel,modelName,loraName as resolveLoraName,sceneTitle as resolveSceneTitle,searchHaystack,trashPrompt,} from '@/composables/gallery/galleryHelpers';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { buildMasonryGroups,useMasonryColumns } from '@/composables/gallery/useMasonryWall';
 import { copyWithFeedback } from '@/composables/useCopyFeedback';
@@ -47,6 +47,7 @@ export function useGalleryWorkspace() {
     const galleryLoading = ref(true);
     const galleryError = ref('');
     const viewerIndex = ref(-1);
+    const viewerItemId = ref<string | number | null>(null);
     const infoOpen = ref(false);
     const compareMode = ref(false);
     const viewerUrl = ref('');
@@ -126,7 +127,10 @@ export function useGalleryWorkspace() {
     });
     const favoriteCount = computed(() => history.value.filter(i => i.favorite).length);
     const countLabel = computed(() => `${visible.value.length} 幅作品`);
-    const current = computed(() => visible.value[viewerIndex.value] || null);
+    const current = computed(() => {
+        const index = artworkIndexById(history.value, viewerItemId.value);
+        return index >= 0 ? history.value[index] : null;
+    });
     /* ---------- 分页渲染：滚动触底递增，避免数百作品全量铺 DOM ----------
        查看器导航仍走完整 visible；分页只约束「展墙渲染多少张」。 */
     const PAGE_SIZE = 60;
@@ -477,6 +481,7 @@ export function useGalleryWorkspace() {
         clearTimeout(releaseViewerTimer);
         const item = visible.value[index];
         if (!item) return;
+        viewerItemId.value = item.id;
         viewerIndex.value = index;
         infoOpen.value = false;
         compareMode.value = false;
@@ -484,6 +489,7 @@ export function useGalleryWorkspace() {
     }
     function closeViewer() {
         viewerLoadToken += 1;
+        viewerItemId.value = null;
         viewerIndex.value = -1;
         infoOpen.value = false;
         compareMode.value = false;
@@ -497,7 +503,8 @@ export function useGalleryWorkspace() {
         initialFocus: closeBtn,
     });
     function step(delta: number) {
-        const next = viewerIndex.value + delta;
+        const activeIndex = artworkIndexById(visible.value, viewerItemId.value);
+        const next = activeIndex + delta;
         if (next >= 0 && next < visible.value.length)
             openViewer(next);
     }
@@ -653,6 +660,13 @@ export function useGalleryWorkspace() {
         revokeAll();
     });
     watch(visible, () => {
+        if (viewerIndex.value >= 0) {
+            const activeIndex = artworkIndexById(visible.value, viewerItemId.value);
+            if (activeIndex < 0)
+                closeViewer();
+            else
+                viewerIndex.value = activeIndex;
+        }
         const ids = new Set(visible.value.map(item => item.id));
         selectedIds.value = new Set([...selectedIds.value].filter(id => ids.has(id)));
         void hydrateThumbs();

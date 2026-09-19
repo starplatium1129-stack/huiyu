@@ -357,6 +357,7 @@ export interface PopularPromptOptions {
   emotion?: string[]
   shot?: string | null
   lighting?: string | null
+  palette?: string[]
   composition?: string | null
   adultEnabled?: boolean
   /** 用户补充的画面描述；只追加，不得替换角色服装。 */
@@ -658,6 +659,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       emotion: emotionTokens,
       camera: shotToken ? [shotToken] : [],
       lighting: kreaLightingTokens,
+      palette: options.palette,
       composition: compositionToken ? [compositionToken] : [],
       manual,
       negative: '',
@@ -710,6 +712,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     emotion: emotionTokens,
     camera: shotToken ? [shotToken] : [],
     lighting: [...lightingTokens, ...moodGrammarTokens].length ? [...new Set([...lightingTokens, ...moodGrammarTokens])] : [],
+    palette: options.palette,
     composition: compositionToken ? [compositionToken] : [],
     manual,
     negative: (blueprint?.negativeTokens || []).join(', '),

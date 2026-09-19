@@ -279,6 +279,24 @@ test('gallery filtering does not retain hidden selections', async ({ page }) => 
   await expect(page.getByRole('button', { name: '移入回收站（0）', exact: true })).toBeDisabled()
 })
 
+test('gallery viewer never retargets actions when its artwork leaves the active filter', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_pb_history', JSON.stringify([
+      { id: 'target-a', timestamp: 200, sceneTitle: '稳定对象甲', prompt: 'prompt A', favorite: true },
+      { id: 'target-b', timestamp: 100, sceneTitle: '稳定对象乙', prompt: 'prompt B', favorite: true },
+    ]))
+  })
+  await page.goto('/gallery')
+  await page.getByRole('button', { name: /收藏 2/ }).click()
+  await page.getByRole('button', { name: '欣赏作品：稳定对象甲', exact: true }).click()
+  const viewer = page.getByRole('dialog', { name: '作品观赏模式' })
+  await expect(viewer.getByRole('heading', { name: '稳定对象甲', exact: true })).toBeVisible()
+  await viewer.getByRole('button', { name: '取消收藏', exact: true }).click()
+  await expect(viewer).toBeHidden()
+  await expect(page.getByRole('button', { name: '欣赏作品：稳定对象乙', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: '欣赏作品：稳定对象甲', exact: true })).toHaveCount(0)
+})
+
 
 test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
   await page.addInitScript(() => {

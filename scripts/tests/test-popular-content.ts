@@ -548,8 +548,11 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
   let visualAnima = popular.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
     visualDescription: 'The girl gently holds a bouquet of flowers, petals drifting onto her shoulder.',
+    palette: ['pink theme', 'warm light'],
   });
   assert.ok(visualAnima!.prompt.includes('bouquet'), 'user visual description must enter the no-LoRA prompt');
+  assert.ok(visualAnima!.prompt.includes('pink theme') && visualAnima!.prompt.includes('warm light'),
+    'director color mood must enter the Anima request');
   assert.ok(visualAnima!.prompt.includes('japanese_clothes') || visualAnima!.prompt.includes('kimono'),
     'user visual description must not replace the selected outfit');
   let fallbackAnima = popular.buildPopularPromptPlan({
@@ -567,6 +570,7 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
 
   let krea = popular.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: null, adultEnabled: true,
+    palette: ['pink theme', 'warm light'],
   });
   assert.ok(krea, 'krea plan must build');
   assert.strictEqual(krea.negative, '', 'Krea must never carry a negative');
@@ -574,6 +578,7 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
   assert.ok(!/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(kreaText), 'krea no studio pollution');
   assert.ok(!/<lora:/i.test(kreaText), 'krea no lora syntax');
   assert.ok(!/official_cg|visual_audited/i.test(kreaText), 'krea no retrieval metadata');
+  assert.ok(kreaText.includes('color palette uses pink theme and warm light'), 'director color mood must enter Krea prose');
   assert.strictEqual((kreaText.match(/flowing purple Japanese robes/gi) || []).length, 1, 'selected outfit must appear exactly once');
   assert.ok(!/completely deserted|not a single other person|no commuters/i.test(kreaText), 'Krea must not force every public scene to be deserted');
 });

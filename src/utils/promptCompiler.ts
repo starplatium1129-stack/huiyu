@@ -16,7 +16,7 @@ export interface PromptCompilerInput {
   profile?: ModelProfile | null; identity?: string; controls?: string[]; scenePrompt?: string
   artists?: string[]; artistProse?: string
   exactTokens?: string[]
-  emotion?: string[]; camera?: string[]; lighting?: string[]; composition?: string[]
+  emotion?: string[]; camera?: string[]; lighting?: string[]; palette?: string[]; composition?: string[]
   manual?: string[]; negative?: string; rating?: string; visualDescription?: string
   style?: string[]; medium?: string; subjectProse?: string; outfitProse?: string; sceneProse?: string
   scene?: PromptSceneContext | null
@@ -300,10 +300,12 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   }
   const direction = naturalList([...camera, ...plan.composition.map(cameraPhrase).filter(Boolean)])
   const atmosphere = naturalList(lighting)
-  if (direction || atmosphere) {
+  const palette = naturalList(plan.palette.map(proseToken).filter(Boolean))
+  if (direction || atmosphere || palette) {
     const clauses: string[] = []
     if (direction) clauses.push(`The composition uses ${direction}`)
     if (atmosphere) clauses.push(`the scene is lit by ${atmosphere}`)
+    if (palette) clauses.push(`the color palette uses ${palette}`)
     parts.push(sentence(clauses.join(', while ')))
   }
   // 2026-08-30 调研 §四/§五.2：媒介词（medium）放散文末尾收尾——官方
@@ -490,7 +492,7 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
     artists: [...new Set(input.artists || [])],
     preserveTokens: [...new Set(input.exactTokens || [])],
     sceneVisualFragments: split(input.scenePrompt), emotion: [...(input.emotion || [])],
-    camera: [...(input.camera || [])], lighting: [...(input.lighting || [])],
+    camera: [...(input.camera || [])], lighting: [...(input.lighting || [])], palette: [...(input.palette || [])],
     composition: [...(input.composition || [])], manual: [...(input.manual || [])],
     negative: split(input.negative), visualDescription: plainEnglish(input.visualDescription),
     style: [...new Set(input.style || [])],
@@ -505,7 +507,7 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
 
 function allTags(plan: PromptPlan, includeStyle = true): string[] {
   const raw = [ ...plan.quality, ...plan.rating, ...plan.identity, ...plan.exactControls, ...plan.artists,
-    ...(includeStyle ? plan.style : []), ...plan.sceneVisualFragments, ...plan.emotion, ...plan.camera, ...plan.lighting,
+    ...(includeStyle ? plan.style : []), ...plan.sceneVisualFragments, ...plan.emotion, ...plan.camera, ...plan.lighting, ...plan.palette,
     ...plan.composition, ...plan.manual ].filter(Boolean)
   return raw.map(tag => {
     const k = normalizeProseKey(tag)

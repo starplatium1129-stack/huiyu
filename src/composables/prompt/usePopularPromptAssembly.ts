@@ -16,9 +16,11 @@ import {
   analyzeParts,
   checkArtDirection,
   resolveModelProfile,
+  tokenize,
   type PromptEngine,
 } from '@/utils/promptPolicy.ts'
 import { plainEnglish } from '@/utils/promptCompiler.ts'
+import { COLOR_MOODS } from '@/config/promptConstants.ts'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
@@ -65,6 +67,10 @@ export function usePopularPromptAssembly(
 
   const adultEnabled = computed(() => pb.showMatureScenes)
   const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
+  const colorMoodTokens = computed(() => {
+    const mood = pb.colorMood ? COLOR_MOODS.find(option => option.id === pb.colorMood) : null
+    return mood ? tokenize(mood.prompt) : []
+  })
   /** 词条池 Mature 分类键集（评级联动单一契约 isManualR18Tags 共用）。 */
   const matureTokenSet = computed(() =>
     new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => tag.en.trim().toLowerCase().replace(/\s+/g, '_'))),
@@ -99,6 +105,7 @@ export function usePopularPromptAssembly(
       emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot,
       lighting: pb.selections.lighting,
+      palette: colorMoodTokens.value,
       composition: pb.selections.composition,
       adultEnabled: adultEnabled.value,
       matureTokens: matureTokenSet.value,

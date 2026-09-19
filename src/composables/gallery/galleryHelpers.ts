@@ -3,6 +3,13 @@ import type { TrashEntry } from '@/storage/artworkRepository'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import type { PopularCharacter } from '@/utils/popularContent'
 
+/** Viewer actions bind to a stable artwork identity, never to a mutable list position. */
+export function artworkIndexById(items: readonly ArtworkRecord[], id: string | number | null): number {
+  if (id === null) return -1
+  const key = String(id)
+  return items.findIndex(item => String(item.id) === key)
+}
+
 export function characterName(value: string | undefined, item: ArtworkRecord | undefined, characters: PopularCharacter[]): string {
   if (value === 'nene') return '绫地宁宁'
   if (value === 'natsume') return '四季夏目'

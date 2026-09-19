@@ -23,7 +23,7 @@ export interface PromptPlan {
   /** 模型原生画师标签：WAI 原始 Danbooru tag / Anima @artist。 */
   artists: string[]
   preserveTokens: string[]
-  sceneVisualFragments: string[]; emotion: string[]; camera: string[]; lighting: string[]
+  sceneVisualFragments: string[]; emotion: string[]; camera: string[]; lighting: string[]; palette: string[]
   composition: string[]; manual: string[]; negative: string[]; visualDescription: string
   /** Krea 风格配方前置短语（lead），渲染时放最前。 */
   style: string[]

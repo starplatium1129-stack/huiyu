@@ -391,3 +391,33 @@ test('late submit response after dispose is cancelled without reviving state', a
   assert.equal(deleted, true);
   assert.notEqual(session.state.value.phase, 'running');
 });
+
+test('in-flight result keeps the submitted prompt and context when the live form changes', async () => {
+  let prompt = 'submitted palette prompt';
+  let context = { characterId: 'task-a', outfitId: 'outfit-a' };
+  const client = fakeClient({
+    '/api/anima/jobs|POST': (init: any) => {
+      assert.equal(JSON.parse(init.body).prompt, 'submitted palette prompt');
+      return { ok: true, job: { id: 'snapshot', status: 'queued', seed: 9 } };
+    },
+    '/api/anima/jobs/snapshot|GET': () => ({
+      ok: true,
+      job: { id: 'snapshot', status: 'succeeded', seed: 9, resultAvailable: true,
+        resultUrl: '/api/anima/jobs/snapshot/result' },
+    }),
+  });
+  const session = useAnimaSession(baseOptions({
+    client,
+    getRequest: () => ({ ...baseOptions().getRequest(), prompt }),
+    getSubmitContext: () => context,
+  }));
+  session.patchState({ online: true });
+  const generation = session.generate();
+  prompt = 'later task prompt';
+  context = { characterId: 'task-b', outfitId: 'outfit-b' };
+  await generation;
+  assert.equal(session.state.value.result?.metadata.prompt, 'submitted palette prompt');
+  assert.equal(session.state.value.resultContext?.characterId, 'task-a');
+  assert.equal(session.state.value.resultContext?.outfitId, 'outfit-a');
+  session.dispose();
+});
