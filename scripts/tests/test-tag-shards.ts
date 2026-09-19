@@ -154,14 +154,30 @@ test('linked source and output paths are rejected without changing previous prod
   const target = path.join(f.root, 'source.json');
   fs.copyFileSync(path.join(f.root, 'data/tags/scene.json'), target);
   fs.unlinkSync(path.join(f.root, 'data/tags/scene.json'));
-  fs.symlinkSync(target, path.join(f.root, 'data/tags/scene.json'));
+  try {
+    fs.symlinkSync(target, path.join(f.root, 'data/tags/scene.json'));
+  } catch (error: any) {
+    if (error?.code === 'EPERM') {
+      t.skip('file symlinks require elevated privilege on Windows');
+      return;
+    }
+    throw error;
+  }
   assert.match(runTag(f.root).stderr, /symbolic link/);
   sentinels(f.root);
   fs.unlinkSync(path.join(f.root, 'data/tags/scene.json'));
   fs.copyFileSync(target, path.join(f.root, 'data/tags/scene.json'));
   const output = path.join(f.root, 'data/tags-dictionary.json');
   fs.renameSync(output, path.join(f.root, 'old-dictionary'));
-  fs.symlinkSync(path.join(f.root, 'old-dictionary'), output);
+  try {
+    fs.symlinkSync(path.join(f.root, 'old-dictionary'), output);
+  } catch (error: any) {
+    if (error?.code === 'EPERM') {
+      t.skip('file symlinks require elevated privilege on Windows');
+      return;
+    }
+    throw error;
+  }
   assert.match(runTag(f.root).stderr, /symbolic link/);
   sentinels(f.root);
 });

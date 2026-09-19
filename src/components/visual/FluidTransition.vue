@@ -4,9 +4,10 @@
   </Transition>
 </template>
 <script setup lang="ts">
-import { useFluidSurface } from '@/composables/useFluidSurface'
+import { useFluidSurface, DEFAULT_FLUID_PANEL_SELECTOR } from '@/composables/useFluidSurface'
+
 const props = withDefaults(defineProps<{ panel?: string; appear?: boolean }>(), {
-  panel: '.story-card, .modal-card, .batch-panel, .shot-script-panel, .pb-compare, .pb-backup-card, .pb-backup-modal, .candidate-compare, .task-center, .art-viewer, .showcase-viewer, .guest-guide-card, [role="dialog"]',
+  panel: DEFAULT_FLUID_PANEL_SELECTOR,
   appear: false,
 })
 const surface = useFluidSurface(props.panel)
