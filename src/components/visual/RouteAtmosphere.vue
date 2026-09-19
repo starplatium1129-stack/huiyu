@@ -7,4 +7,5 @@
 .route-atmosphere i:first-child { width: 70vw; height: 70vw; inset: -35vw auto auto -20vw; background: radial-gradient(circle, var(--character-aura, var(--accent-soft)), transparent 68%); }
 .route-atmosphere i:last-child { width: 65vw; height: 65vw; inset: auto -30vw -35vw auto; background: radial-gradient(circle, var(--character-aura-secondary, var(--accent-glow)), transparent 68%); }
 @media (prefers-reduced-transparency: reduce) { .route-atmosphere { display: none; } }
+:global(:root:is([data-fluid-effects="low"], [data-reduced-glass="true"])) .route-atmosphere { display: none; }
 </style>
