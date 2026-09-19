@@ -14,7 +14,7 @@
 | 修改网站整体的颜色/风格 | 打开 `src/assets/css/design-system.css`，改 `:root` 下的 `--xxx` token 值 |
 | 修改设计 token 后检查遗漏 | 改完 `src/assets/css/design-system.css` 后运行 `npm run lint:colors` |
 | 新建一个页面 | 新增 `src/views/*.vue` → 登记 `src/router/index.ts` → 按需更新 `src/components/AppNav.vue` |
-| 导航栏里加/删/改链接 | 应用导航编辑 `src/components/AppNav.vue`；静态手册导航才使用 `tools/nav.js` |
+| 导航栏里加/删/改链接 | 应用导航编辑 `src/components/AppNav.vue`；静态手册导航才使用 `tools/nav.ts` |
 | 添加一个新的 tag 标签 | 打开场景管理 → Tag 管理 → 新增 Tag → 保存到项目 |
 | 把场景设为精选或招牌 | 编辑场景 → 选择推荐层级 → 填写推荐理由 → 保存到项目 |
 | 运行所有检查确保没问题 | 运行 `npm run wf -- gate:full`；浏览器、实际出图与桌面验收按改动另做 |
@@ -46,7 +46,9 @@
 
 ## 文件职责
 
-| 文件 | 职责 | 是否手动编辑 |
+代码只编辑 .ts/.mts/.cts 源码；表中的 Node/静态页脚本由 `npm run build:runtime` 生成同路径 .js/.mjs/.cjs，生成文件禁止手改。命令仍执行生成文件，注册入口为 `scripts/workflow.ts`。完整对应规则见 [TypeScript 指南](guides/engineering/typescript-development.md#编辑源码)，不另维护全仓清单。
+
+| 编辑入口（源码或权威数据） | 职责 / 执行入口 | 维护方式 |
 | --- | --- | --- |
 | `data/scenes/*.json` | 场景的唯一数据源，按角色 × 系列分片；超过 `manifest.json` 的 `batchSize`（默认 50）条时自动切成 `base.N.json` 批次文件 | 否，网页维护 |
 | `data/scenes/manifest.json` | 声明分片分组、顺序与 `batchSize`；批次文件由 `writeSceneShards` 自动维护，一般无需手改 | 新增角色系列时编辑 |
@@ -60,18 +62,18 @@
 | `data/character-reference-standards.json` | 角色 × 多服装 4 视角参考标准的手写权威源；结构契约 `scripts/contracts/character-reference-standards.schema.json`（ajv，`test:contract` 阶段校验） | 是，改后跑 `node scripts/tests/test-character-reference-contract.js` |
 | `data/character-reference-view.json` | 前端懒加载的参考档案视图；视角字段必须逐字段镜像 standards，由同一契约测试交叉校验（漂移即红） | 否，改 standards 后同步此文件 |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
-| `scripts/lib/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
+| `scripts/lib/scene-store.ts` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `src/utils/sceneUX.ts` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
-| `tools/nav.js`、`tools/local-status.js` | 静态 HTML 手册导航与轻量服务状态；不控制 Vue 应用导航 | 页面入口或服务状态契约变化时编辑 |
+| `tools/nav.ts`、`tools/local-status.ts` | 静态 HTML 手册导航与轻量服务状态；不控制 Vue 应用导航 | 页面入口或服务状态契约变化时编辑 |
 | `src/utils/quickCreate.ts` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
 | `src/utils/storageHealth.ts` | 历史损坏、缺图、孤立图和容量诊断 | 存储体检规则变化时编辑 |
 | `src/utils/sdError.ts` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
 | `src/utils/sdRequest.ts` | 浏览器与维护脚本共用的 SD 请求构建、扩展参数和响应解析 | SD 参数或扩展协议变化时编辑 |
 | `src/utils/backupCore.ts` | 本地备份格式、版本迁移、校验与合并规则 | 备份结构变化时编辑 |
 | `src/views/PromptBuilderView.vue`、`src/stores/promptBuilderStore.ts`、`src/components/` | 导演台编排、状态与独立生命周期组件 | 修改对应职责时编辑 |
-| `server.js` | 只负责组装网关、中间件、静态资源、SD 代理和进程启动 | 新增顶层能力时编辑 |
-| `server/config.js`、`server/security.js` | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
-| `routes/*.js` | HTTP 输入校验、响应格式与客户端断开处理 | API 契约变化时编辑 |
+| `server.ts`（运行 `server.js`） | 只负责组装网关、中间件、静态资源、SD 代理和进程启动 | 新增顶层能力时编辑 |
+| `server/config.ts`、`server/security.ts`（运行对应 .js） | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
+| `routes/*.ts`（运行对应 .js） | HTTP 输入校验、响应格式与客户端断开处理 | API 契约变化时编辑 |
 | `services/*.ts`（源码）/ `*.js`（编译产物） | Ollama、翻译、GPT-SoVITS、Live2D 检查及串行资源调度 | 上游协议或调度策略变化时编辑 |
 | `src/views/ChatView.vue`、`src/composables/chat/useChatStorage.ts`、`useVoice.ts`、`useLive2D.ts` | 角色房间编排、存储、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
 | `src/assets/css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
@@ -86,7 +88,7 @@
 | 热门生成身份 | `data/popular/` 源 → popular:build → 聚合 → `src/utils/popularContent.ts` | 展示档案与生成身份用途独立；不能把两份同名字段机械合并 |
 | 服装 | 热门分片 outfits，经 parseOutfit 解析；工作室服装另见 useDirectorCatalog、promptPolicy 与 promptBuilderStore | 热门服装按角色 ID + 服装 ID 定位；parseOutfit 保留 default，不保留分片 isDefault；参考 view 的 isDefault 属于另一条派生链 |
 | 参考标准与视图 | standards/view；写入者包括 sync-multi-outfit-standards 和 register-pending-reference-outfits | view 是合并投影且登记器会写入，不是纯覆盖产物。镜像契约通过不代表图片存在或已审核 |
-| 角色蓝图 | `data/blueprints/` 源 → blueprints:build → 聚合；运行时按角色解析 outfitId | 当前 UI 保存只写聚合，启动自愈可能按旧分片覆盖；在持久化修复验收前不能把保存回执当作源已更新。见 [待办](roadmap.md#后续工作流与内容数据治理) |
+| 角色蓝图 | `data/blueprints/` 源 → blueprints:build → 聚合；运行时按角色解析 outfitId | UI 保存通过变更集与持久化事务同步源分片、聚合及版本；旧基线返回 409 并保留草稿，存在未恢复事务时读取拒绝半写状态。隔离验证与真实断电边界见 [当前实现](project-status.md) 和 [剩余验收](roadmap.md#后续工作流与内容数据治理)；旧风险证据保留在 [历史复核](research/engineering/six-task-review-2026-09-13.md) |
 
 参考同步有实际数据写入，不能作为档案编辑后的固定必跑步骤：`sync-multi-outfit-standards.js` 根据磁盘四个参考机位是否齐全过滤热门服装，并允许角色级旧机位路径回退；在缺素材根的机器上运行可能写出空形态。名称启发式产生的 isNsfw 与该磁盘过滤是两条独立逻辑，不能据此解释某形态缺失原因。同步中的 `o.default || idx === 0` 无条件将首套标成默认；若其他服装也标 default，需检查输出是否出现双默认，不能称为“仅无标记时兜底”。
 
@@ -102,7 +104,7 @@
 4. `routes/` 只处理 HTTP 契约。上游请求、模型切换和 GPU 队列统一留在 `services/`，方便使用模拟上游做测试。
 5. Ollama 和 GPT-SoVITS 都必须在完整响应结束后才释放串行队列。客户端点击停止、切角色或关闭页面时，应通过 `AbortController` 一直取消到上游请求，避免后台继续占用显存。
 
-`tools/local-status.js` 是静态 HTML 手册共享的轻量状态入口，只探测现有
+`tools/local-status.ts` 是静态 HTML 手册共享的轻量状态入口，只探测现有
 `/api/health`、`/api/chat-status`、`/api/tts-status` 和 SD 代理，不管理进程。
 启动、停止和显存模式切换仍由 `routes/control.js`、共享服务与控制台负责，避免
 每个页面各自实现一套调度逻辑。

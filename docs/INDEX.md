@@ -23,11 +23,12 @@
 
 ## 当前审计与待办
 
-- [桌宠陪伴体验与 Live2D 通用适配（010）](../plans/010-companion-experience-and-live2d-adapter.md)：C0–C7 待执行；复用现有独立聊天窗，分批优化陪伴布局、角色注册、模型 Profile、自动检查与可视化校准；模型来源／自制留待后续讨论。
-- [交互流畅度与运行性能分批计划（009）](../plans/009-ui-fluidity-and-performance.md)：F0–F7 待执行；按基线、导航响应、缓存/返回、滚动、动效、资源、回归和真机验收分批交付，每批都有验收与回退边界。
+- [桌宠陪伴体验与 Live2D 通用适配（010）](../plans/010-companion-experience-and-live2d-adapter.md)：陪伴体验与适配的设计、分批任务及验收边界；复用现有独立聊天窗，分批优化陪伴布局、角色注册、模型 Profile、自动检查与可视化校准；模型来源／自制留待后续讨论。
+- [交互流畅度与运行性能分批计划（009）](../plans/009-ui-fluidity-and-performance.md)：流畅度与性能的测量方法及分批验收边界；按基线、导航响应、缓存/返回、滚动、动效、资源、回归和真机验收分批交付，每批都有验收与回退边界。
 - [剩余任务与验收顺序](roadmap.md)：桌面同步、真实资源与设备验收、完整语义覆盖及暂停事项；已接通的办公机工程不重复列入。
 - [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：U0–U5 及后续浏览器打磨已有记录，保留 U6 后续补丁交付、真机验收和未覆盖状态；原启动任务属于历史。
 - [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：保存事务、资源生命周期、审核发布、历史检查和交付绑定已接通，按文末状态表核对边界。
+- [可维护性增量审查（2026-09-19）](research/engineering/maintainability-optimization-2026-09-19.md)：M01–M10 的固定基线、依据与实施边界；执行结果见项目状态，剩余事项见 roadmap。
 - [工程维护视角全面审计与系统提升（2026-09-16）](archive/audits/engineering-maintainability-audit-2026-09-16.md)：单体预算压线、类型系统割裂、Entry CSS 预算危机、门禁重复计算与全栈架构提升方案。
 - [办公机工程交付（2026-09-15）](archive/audits/office-engineering-completion-2026-09-15.md)：本批实现、最终验证、提交证据和主力机待验范围。
 - [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局/接口与计划内评估已完成；拟议的新增存储/恢复方案不等于已接入生产，现有行为保留，原生设备验收单列。
