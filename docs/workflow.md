@@ -291,6 +291,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | test:contract / test:e2e:critical | 契约套件与关键浏览器回归；test:e2e:critical 工作流走无 build 的 `test:e2e:critical:run` 入口，复用已有构建产物（npm 脚本 `test:e2e:critical` 才先 build） |
 | test:e2e:performance | 已构建产物的单 worker 冷／热进入与首次操作测量；与回归分开执行 |
 
+质量套件可设置 AICS_TEST_REPORT_DIR 为隔离日志目录，保存逐文件状态、失败分类、超时、耗时和 Node 跳过数量；原有单项命令与 fail-fast/--all 语义不变。JSON 与日志按 [报告契约](guides/engineering/maintainability-boundaries.md#测试职责与报告) 接入 capture:delivery；报告不是已执行门禁的替代品。Quality 仍独立构建各 lane，并新增 Node 22.18 的锁定安装、构建和网关烟雾检查。
+
 关键浏览器回归包含 `ui-layout.spec.ts` 的双主题/多尺寸布局与可读性检查。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
 
 `github-reference.spec.ts` 已加入关键回归：统一词条、固定种子候选、配方兼容检查和 PhotoSwipe 试验。图库使用中性本地图片夹具，双主题各 20 次开关；DOM/Blob URL 趋势保留在 `runtime/github-reference/`，双指采用 CDP 模拟，不代表真实模型、实体触屏或 GPU 内存验收。

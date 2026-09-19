@@ -73,6 +73,14 @@ node scripts/build-node.mts --help
 
 桌面暂存复制生成的运行文件，排除 TypeScript 源码和 source map；服务输出继续使用既有清单校验。安装、UAC、WebView2、GPU 和真实模型验收保持原分工，迁移源码不代表这些设备项目已经验收。
 
+## 工具链支持责任
+
+最低运行时保持 package.json 的 Node >=22.18；开发/Quality 与桌面 Node sidecar 均为 24.18.0（.nvmrc、quality.yml、prepare-tauri.ts）。最低版本在 Quality 独立执行锁定安装、生产构建和模拟网关启动/API/ESLint 烟雾测试，结果参与总门禁；不能用开发机 Node 24 的通过代替最低版本验证。
+
+@types/node 26 是声明来源，不是运行时承诺；本轮保留锁文件与依赖版本。引入新 Node API 时需在最低运行时补回归，类型检查本身不能证明该 API 已存在。
+
+ESLint 编辑入口为 eslint.config.mts；eslint.config.js 仅兼容转发到该源码，避免两份配置漂移。生成 JS 不作为源码 lint；浏览器/服务的关键环境误用由 no-restricted-globals 与各 tsc 配置共同检查，正反例在 test-module-boundaries.mts。600 有效行硬门禁仍由 test-monolith-budget.ts 唯一维护，删除过时的 1000 行预警。
+
 ## 参考
 
 - [TypeScript 模块系统与 CommonJS / ESM 互操作](https://www.typescriptlang.org/docs/handbook/modules/reference.html#node16-node18-node20-nodenext)

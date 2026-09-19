@@ -1,5 +1,7 @@
 # HUIYU 可维护性增量优化建议
 
+> 本文保留固定基线的原始审查；“尚未实施”等表述属于审查当时。后续采纳范围与当次验证见 [项目状态](../../project-status.md) 和 [交付证据](../../evidence/maintainability-2026-09-19.json)，剩余测量/设备事项只在 [roadmap](../../roadmap.md) 维护。
+
 > 审查日期：2026-09-19（Asia/Singapore）  
 > 仓库：`starplatium1129-stack/huiyu`  
 > 固定基线：`main@040caa97973242dbca9abc715fefe3cdb534605e`  

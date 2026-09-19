@@ -142,3 +142,11 @@ E3 办公机范围验证快速切角的 Profile 同步、旧原生模型释放�
 契约执行器对 9 个已复核隔离边界的文件默认两路并行，其余 25 个串行；可用 CONTRACT_TEST_JOBS=1 回退原顺序。预压默认两路异步执行，Brotli 11 / gzip 9 与同步接口保持兼容。日志测试已改为等待真实写入完成，减少固定等待引发的偶发失败。
 
 同机对照：34 组契约从 3 分 40 秒降到 2 分 24 秒；预压从 19.353 秒降到 8.470 秒，676 个压缩文件字节一致。最终单次完整门禁 PASS，耗时 4 分 32 秒；详见 [优化记录](research/engineering/validation-performance-2026-09-19.md)与[证据](evidence/validation-performance-2026-09-19.json)。
+
+## 2026-09-19：可维护性增量试点
+
+[M01–M10 审查](research/engineering/maintainability-optimization-2026-09-19.md) 已按增量边界落地：维护入口校准；历史列表与新生成配方分型、只读恢复解析；生成响应逐字段解码；路由 AST 和标题/作品复用行为回归；两域依赖限制；观画 URL 所有权与迟到回调回归；质量元数据、机器可读诊断及 Node 22.18 兼容 lane；PhotoSwipe 的适配/退出约定。没有用户库迁移、提示词或分级字段改写，也没有默认替换查看器。
+
+执行规则见 [可维护性边界](guides/engineering/maintainability-boundaries.md)，当次验证及失败/复验记录见 [交付证据](evidence/maintainability-2026-09-19.json)。同时保留同期 main 的验证/压缩并行优化，将诊断和单文件超时接入既有进程池；未用另一份并行清单覆盖它。验证中发现的隐藏工作区 SPA 入口与粗粒度时间戳测试夹具问题已修复，私有隐藏资产继续拒绝。
+
+真实模型、音频设备、触屏、原生 Live2D/GPU 和安装验收仍按 roadmap；本轮未部署。

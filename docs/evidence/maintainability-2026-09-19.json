@@ -1,0 +1,212 @@
+{
+  "schema": "aics.maintainability.v1",
+  "date": "2026-09-19",
+  "status": "office-passed",
+  "reviewBaseline": "040caa97973242dbca9abc715fefe3cdb534605e",
+  "implementationCommit": "30f51a24bce56e6611d63dc8717e8865e7ed42fd",
+  "integrationBase": "f679729",
+  "scope": {
+    "M01": "Authoritative status links and historical/current distinctions",
+    "M02": "TypeScript editing versus generated execution entries",
+    "M03": "ArtworkRecord history and checked legacy recipe projection",
+    "M04": "Generation wire contracts, numeric error-code compatibility, explicit unknown stage/progress",
+    "M05": "AST imports, rendered headings, stable-ID event behavior and late-callback mutation check",
+    "M06": "History/workbench import direction fixtures; alias, relative, dynamic and require coverage",
+    "M07": "PhotoSwipe owns and releases each created URL once; stale work cannot publish",
+    "M08": "Inventory metadata, per-file timeout and diagnostics integrated with the incoming bounded process pool",
+    "M09": "Documented viewer adapter and exit path; default viewer preserved",
+    "M10": "Effective ESLint source, environment restrictions and minimum Node compatibility lane"
+  },
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "referenceAuditMode": "structure",
+    "upstreams": "isolated local mocks",
+    "subagents": 0
+  },
+  "fullGate": {
+    "status": "passed",
+    "command": "npm run wf -- gate:full --all",
+    "durationSeconds": 284,
+    "log": "runtime/maintainability/gate-integrated.log"
+  },
+  "checks": {
+    "quality": {
+      "status": "passed",
+      "suiteFiles": 18,
+      "durationMs": 26209
+    },
+    "frontend": {
+      "status": "passed",
+      "files": 132,
+      "tests": 963,
+      "durationMs": 8907
+    },
+    "nodeUnit": {
+      "status": "passed",
+      "tests": 1057,
+      "passed": 1055,
+      "skipped": 2,
+      "durationMs": 79180,
+      "skipReasons": [
+        "File symlink unavailable; unconditional junction test remains active",
+        "AI/SceneShowcase actual assets absent in isolated workspace"
+      ]
+    },
+    "contract": {
+      "status": "passed",
+      "groups": 34,
+      "jobs": 2,
+      "durationMs": 151040
+    },
+    "build": {
+      "status": "passed",
+      "durationMs": 18254,
+      "bundleBudget": "passed",
+      "distBytes": 13638639
+    },
+    "minimumNode": {
+      "status": "passed",
+      "version": "22.18.0",
+      "build": "passed",
+      "smokeTests": 47,
+      "includes": [
+        "API",
+        "ESLint boundaries",
+        "gateway startup",
+        "quality reports",
+        "process pool",
+        "precompression"
+      ]
+    },
+    "browser": {
+      "status": "passed",
+      "tests": 6,
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "cyclesPerViewerTheme": 20,
+      "upstreamMocks": true,
+      "visualReview": "Recipe notice and viewer controls reviewed; no style changes"
+    },
+    "docs": {
+      "status": "passed",
+      "localLinks": 1197
+    },
+    "mutation": {
+      "status": "passed",
+      "removedGuard": "PhotoSwipe late decode revision check",
+      "expectedFailures": 1,
+      "restoredTestsPassed": 5
+    }
+  },
+  "attempts": [
+    {
+      "log": "runtime/maintainability/gate-full.log",
+      "status": "failed",
+      "reasons": [
+        "Missing final newline",
+        "Old numeric-ID source assertion",
+        "SPA path under hidden worktree rejected"
+      ],
+      "resolution": "Fixed and targeted tests passed"
+    },
+    {
+      "log": "runtime/maintainability/gate-final.log",
+      "status": "failed",
+      "reasons": [
+        "Test directly wrote registered storage key",
+        "Coarse timestamp made fixture ETag unchanged"
+      ],
+      "resolution": "Use actual UI toggle and explicit fixture timestamp; targeted regressions passed"
+    },
+    {
+      "log": "runtime/maintainability/gate-integrated.log",
+      "status": "passed",
+      "note": "Fresh complete run after integrating the concurrent main change"
+    }
+  ],
+  "deliveryBinding": {
+    "baseline": "runtime/delivery-evidence/maintainability-integrated-baseline.json",
+    "verified": "runtime/delivery-evidence/maintainability-integrated-verified.json",
+    "finalization": "runtime/delivery-evidence/maintainability-delivery.json",
+    "sourceSha256": "cc869ddb48dbe342303082590b12f705790d9755997d3dc62dc142237dbbcf68",
+    "buildSha256": "ad08a9226b87f587f63ad3b742669a5a93b4f96d3b37c479362e1db513513b70",
+    "scope": "selected-source-only; unchanged source/build mapped to implementation commit"
+  },
+  "artifacts": [
+    {
+      "path": "runtime/maintainability/gate-full.log",
+      "sha256": "590623a5eb5fdb9411f161ad66800902d9e597c29e85bfad03f0c70aa6de7ed5",
+      "bytes": 12522
+    },
+    {
+      "path": "runtime/maintainability/gate-final.log",
+      "sha256": "ea4764959435f6dca22b7ae1fc758bd1bff628d540aa57056e90f88c9548ea86",
+      "bytes": 9748
+    },
+    {
+      "path": "runtime/maintainability/gate-integrated.log",
+      "sha256": "bfbd15c528b3d35a3fe12e54baf451e9c72d9542a0b511e99ab6b15a5b4dc064",
+      "bytes": 1740
+    },
+    {
+      "path": "runtime/maintainability/node22-integrated-build.log",
+      "sha256": "8a1a381d576bb3246951f69bbb7b75a8bc9c8e4bb03aa2a3615d66422eca5907",
+      "bytes": 73390
+    },
+    {
+      "path": "runtime/maintainability/node22-integrated-smoke.log",
+      "sha256": "e971b0864f1fa99124114c116a6c39e42fa83089cde87fddf2db5f7c05713e8a",
+      "bytes": 13267
+    },
+    {
+      "path": "runtime/maintainability/browser-integrated.log",
+      "sha256": "21a055774f590842727ba227481f13d9cda183d6da9a522aeebda2b904da1d08",
+      "bytes": 1531
+    },
+    {
+      "path": "runtime/maintainability/lifecycle-mutation.log",
+      "sha256": "75c2cc49693abe1fe9f4eb954f1feb93ae051711cc0f7b0f491fdea470bdd96d",
+      "bytes": 1229
+    },
+    {
+      "path": "runtime/maintainability/focused-final.log",
+      "sha256": "8da71b843df432ed3f60de355f992789b869735e4af53233a8163d37e1a2381a",
+      "bytes": 3395
+    },
+    {
+      "path": "runtime/maintainability/integration-tests.log",
+      "sha256": "cf03f1f6712fd49860623aa2bef7738c0c122c64fa534660e39902349c6e918f",
+      "bytes": 92134
+    },
+    {
+      "path": ".review-shots/github-photoswipe-light.png",
+      "sha256": "377fcbbedf6b95670172610069a4d13293b2edfd9336b7d83ab39f24847377dc",
+      "bytes": 377048
+    },
+    {
+      "path": ".review-shots/github-history-light.png",
+      "sha256": "39eb68513064f6185e8f63e64310ba58eacd7834a81c4180c654043406d7f9b7",
+      "bytes": 515842
+    },
+    {
+      "path": ".review-shots/github-photoswipe-dark.png",
+      "sha256": "a334ee38117aaf0cdfaea38318585018b9a2d8e5e808e741cf16a3fa008bb281",
+      "bytes": 380276
+    },
+    {
+      "path": ".review-shots/github-history-dark.png",
+      "sha256": "61cb3be2ea1c0c2fb09fe9871c51d10cc1b87bc83e9fddb3850bb90ac7950b0a",
+      "bytes": 538248
+    }
+  ],
+  "limitations": [
+    "Logs, screenshots and capture records remain in the isolated workspace runtime; not committed as generated assets",
+    "CI minimum-Node Linux install result not inspected; local Node 22.18 uses the existing locked dependency installation",
+    "No real model, audio device, touch hardware, native Live2D/GPU or desktop installation acceptance",
+    "CI cross-job cache/transfer/wall-clock comparison remains a measured follow-up; no speedup attributed to this maintainability change",
+    "Existing lint warnings and bundle >90% warnings remain; relevant gates returned zero"
+  ]
+}

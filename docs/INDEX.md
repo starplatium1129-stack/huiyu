@@ -17,6 +17,8 @@
 
 协作执行规则单独见 [AGENTS.md](../AGENTS.md)。
 
+试点模块依赖、资源所有权、第三方退出及测试报告见 [可维护性边界](guides/engineering/maintainability-boundaries.md)；[当次验证证据](evidence/maintainability-2026-09-19.json) 保留通过、失败与复验的区别。
+
 源码维护与构建见 [TypeScript 开发与维护](guides/engineering/typescript-development.md)，包含类型归属、缓存、开发重启和验证入口。
 
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
@@ -27,7 +29,7 @@
 - [交互流畅度与运行性能分批计划（009）](../plans/009-ui-fluidity-and-performance.md)：流畅度与性能的测量方法及分批验收边界；按基线、导航响应、缓存/返回、滚动、动效、资源、回归和真机验收分批交付，每批都有验收与回退边界。
 - [剩余任务与验收顺序](roadmap.md)：桌面同步、真实资源与设备验收、完整语义覆盖及暂停事项；已接通的办公机工程不重复列入。
 - [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：U0–U5 及后续浏览器打磨已有记录，保留 U6 后续补丁交付、真机验收和未覆盖状态；原启动任务属于历史。
-- [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：保存事务、资源生命周期、审核发布、历史检查和交付绑定已接通，按文末状态表核对边界。
+- [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：保存事务、资源生命周期、审核发布、历史检查和交付绑定的设计与验收边界。
 - [可维护性增量审查（2026-09-19）](research/engineering/maintainability-optimization-2026-09-19.md)：M01–M10 的固定基线、依据与实施边界；执行结果见项目状态，剩余事项见 roadmap。
 - [工程维护视角全面审计与系统提升（2026-09-16）](archive/audits/engineering-maintainability-audit-2026-09-16.md)：单体预算压线、类型系统割裂、Entry CSS 预算危机、门禁重复计算与全栈架构提升方案。
 - [办公机工程交付（2026-09-15）](archive/audits/office-engineering-completion-2026-09-15.md)：本批实现、最终验证、提交证据和主力机待验范围。
@@ -52,7 +54,7 @@
 
 - [项目状态](project-status.md)：已实现范围与分阶段验证边界；内容数量保留日期，不把旧统计当作新盘点。
 - [页面切换、工作台动效与旧模块清理（2026-09-15）](archive/audits/ui-navigation-and-unused-2026-09-15.md)：导航阶段 41 项浏览器回归与后续删除分别记录；两处旧实现及专属测试已移除，安装版尚未同步。
-- [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：已完成的草稿 ID、快照版本、增量分片、完整性与失败恢复修复；剩余变更集及 ID 格式迁移仍见 roadmap。
+- [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复的历史复审；当前实现与剩余验收分别见项目状态和 roadmap。
 - [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。
 - [全站交互细节优化（2026-09-12）](archive/audits/interaction-detail-polish-2026-09-12.md)：状态联动、菜单/搜索/灯箱焦点、录音、分镜反馈与双主题页面复验。
 - [1.7.1 办公机修复](releases/v1.7.1.md)：独立审计 A01–A05 的修复、浏览器契约整理与发布验收边界。
