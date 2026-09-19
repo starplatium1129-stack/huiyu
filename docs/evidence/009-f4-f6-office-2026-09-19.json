@@ -1,0 +1,60 @@
+{
+  "schema": "aics.009.office-f4-f6.v1",
+  "plan": "009",
+  "batch": "F4-F6 office closeout",
+  "date": "2026-09-19",
+  "implementationCommit": "9d8d1fe204f3be897fd15ff4ae07be2d06b9869c",
+  "build": {
+    "distIndexSha256": "9abd4212c5121d76a537e7863ed67ee63f778c00c4f014931bde5093b3515e60",
+    "routes": 18,
+    "bundleBudget": "passed",
+    "promptBuilderRouteKiB": 139.6,
+    "promptBuilderRouteBudgetKiB": 140
+  },
+  "checks": {
+    "qualitySteps": { "status": "passed", "count": 17, "referenceMode": "structure" },
+    "vitest": { "status": "passed" },
+    "nodeUnit": { "status": "passed", "count": 1045 },
+    "monolith": { "status": "passed", "files": 613, "baselineExemptions": 0 },
+    "fullGate": {
+      "status": "not-passed-environment-timeout",
+      "reason": "test-maintenance-blueprint-transaction.js exceeded the suite's 180 second per-file timeout under current host load; no assertion failed before timeout",
+      "directRerun": { "status": "passed", "tests": 9, "durationMs": 245366 }
+    }
+  },
+  "browser": {
+    "navigationFluidity": { "status": "passed", "tests": 22, "workers": 1 },
+    "rapidSurfaceReversal": { "status": "passed", "tests": 2, "themes": ["light", "dark"] },
+    "showcaseOpenClose": { "status": "passed", "cycles": 20, "maxScrollErrorCssPx": 2 }
+  },
+  "performance": {
+    "fixture": "tests/e2e/ui-fluidity.bench.ts",
+    "samples": { "rounds": 3, "perScenario": 20, "workers": 1 },
+    "firstFullAttempt": {
+      "status": "timeout",
+      "timeoutMinutes": 15,
+      "point": "additional S03 decomposition probe after the main scenarios",
+      "reportWritten": false
+    },
+    "finalMainScenarioRun": {
+      "status": "passed",
+      "durationMinutes": 10.3,
+      "measurementOverheadProbe": "skipped",
+      "s03DecompositionProbe": "skipped",
+      "measuredIdleIntervalMs": 18.5,
+      "estimatedRefreshRateHz": 54,
+      "rapidNavigationSamples": 60,
+      "rapidNavigationFinalPath": "/prompt-builder",
+      "s04Samples": 60,
+      "s04DriftSamples": 0,
+      "s04MaxErrorCssPx": 0,
+      "openIssues": ["S01 host-load-sensitive navigation p95", "S03 frame candidates under a noisy 54 Hz host interval"]
+    },
+    "methodCorrection": "S04 now calls scrollIntoViewIfNeeded before recording scrollBefore; older results mixed Playwright's target auto-scroll with dialog close drift and are not directly comparable"
+  },
+  "boundaries": [
+    "No production generation, microphone, user gallery, installation, GPU or power measurement was used",
+    "The 54 Hz proxy run cannot close the historical 120 Hz S03 residual",
+    "F5 steady GPU/texture memory and F7 Windows/WebView2 checks remain pending"
+  ]
+}

@@ -4,7 +4,7 @@
 
 - [010：桌宠陪伴体验与 Live2D 通用适配](010-companion-experience-and-live2d-adapter.md)：**C0/C1/C4–C7 待执行，C2/C3 已有隔离契约起步**。注册表与 schema v1 Profile 尚未接入生产聊天／语音／记忆／Live2D 运行时，也没有真机验收；模型获取或自制方案留待讨论。
 
-- [009：交互流畅度与运行性能](009-ui-fluidity-and-performance.md)：**F0–F2 已有办公机验收，F3 部分验收，F4 实施中，F5 已有局部实现，F6–F7 待执行**。F4.1/F4.6a、选择指示器后台暂停和低效果氛围降级已落地；S03、完整 S08 及 Windows／真实负载仍未关闭。保留 TypeScript 与品牌，不重复 007/008 已完成工作。
+- [009：交互流畅度与运行性能](009-ui-fluidity-and-performance.md)：**F0–F2 已有办公机验收，F3 部分验收，F4/F6 办公机完成，F5 生命周期完成但真实资源趋势待验，F7 待执行**。S04 修正测量后 0/60；S03、高刷、GPU/纹理/功耗及 Windows 真实负载仍未关闭。保留 TypeScript 与品牌，不重复 007/008 已完成工作。
 
 - [008：TypeScript 迁移修复](008-typescript-migration-repair.md)：**本机收尾完成**。四个官方项目类型检查、前端/单元/契约回归、生产构建与 NSIS 打包均通过；外置参考素材核验、安装器实机、设备和真实模型验收仍待目标环境。
 
