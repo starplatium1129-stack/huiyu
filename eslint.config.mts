@@ -1,3 +1,4 @@
+import { moduleBoundaries } from './scripts/lib/module-boundaries.mts'
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
@@ -5,7 +6,7 @@ import pluginVue from 'eslint-plugin-vue'
 // ── 运行时全局白名单（2026-08-22 环境分离）────────────────────────────────
 // 设计原则：共享运行时（Node 22+ 与现代浏览器都内置的 Web API）放基础层；
 // 仅单侧存在的 API 进各自作用域块。这样后端误用 DOM、前端误用 process
-// 都会被纯 JS 道的 no-undef 静态捕获，而不是等运行时报 ReferenceError。
+// 由 tsc 的环境 lib/types 与下面的 no-restricted-globals 分别把关；生成 JS 不 lint。
 
 // 两边都有的：控制台 / 定时器 / 取消 / URL·Blob·fetch / 编码与类型数组 / 加密 / 性能
 const SHARED_RUNTIME_GLOBALS = {
@@ -111,7 +112,7 @@ export default tseslint.config(
         sourceType: 'module',
       },
       // 基础层只放共享运行时；浏览器/Node 专属 API 走下方作用域块，
-      // 用错环境时由纯 JS 道的 no-undef 兜底捕获。
+      // 源码环境由 tsc 和 no-restricted-globals 校验。
       globals: { ...SHARED_RUNTIME_GLOBALS },
     },
     rules: {
@@ -127,7 +128,7 @@ export default tseslint.config(
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'vue/no-v-html': 'warn',
       // TS 文件的未定义标识符交给 vue-tsc/tsc 把关，这里关闭避免与类型系统打架；
-      // 纯 JS 道（见下方 blocks）单独开启 no-undef。
+      // 生成 JS 不重复检查；关键环境误用另由显式全局限制检查。
       'no-undef': 'off',
       // 模板纯风格规则关闭：项目有自己的一致性，不按 eslint 默认模板风格排版
       'vue/multi-word-component-names': 'off',
@@ -193,16 +194,6 @@ export default tseslint.config(
     },
   },
   {
-    // 纯 JS 道开启未定义标识符检查（TS/Vue 由类型系统把关）
-    files: ['server.js', 'routes/**/*.js', 'services/**/*.js', 'scripts/**/*.js'],
-    languageOptions: {
-      globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS, ...BROWSER_ONLY_GLOBALS },
-    },
-    rules: {
-      'no-undef': 'error',
-    },
-  },
-  {
     // CDP 调试脚本在 page.evaluate 回调里编写浏览器侧代码：
     // 对这些文件补回浏览器全局，避免 no-undef 误报。
     files: ['scripts/maintenance/cdp-*.ts'],
@@ -225,14 +216,22 @@ export default tseslint.config(
       'no-console': 'off',
     },
   },
+  // 体量硬门禁唯一入口：test-monolith-budget.ts（600 有效行），不保留 1000 行旧预警。
   {
-    // 体量上限预警（2026-08-28 审计 P1-13）：warn 级不阻断 CI，用于暴露
-    // 单体回涨（TrainingView 1638 行 / training-service 1669 行 / control.js
-    // 1060 行等已越过项目自设的 600 行拆分红线）。拆分排期见
-    // docs/archive/audits/engineering-audit-2026-08-28.html §08；存量 warn 数量只降不升。
-    files: ['src/**/*.{ts,vue}', 'routes/**/*.ts', 'services/**/*.ts', 'server.ts'],
-    rules: {
-      'max-lines': ['warn', { max: 1000, skipBlankLines: true, skipComments: true }],
-    },
+    files: ['src/**/*.{ts,vue}', 'tools/**/*.ts'],
+    rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer'] },
+  },
+  {
+    files: ['server.ts', 'server/**/*.ts', 'routes/**/*.ts', 'services/**/*.ts'],
+    rules: { 'no-restricted-globals': ['error', 'window', 'document', 'localStorage', 'navigator'] },
+  },
+  {
+    files: ['src/types/**/*.ts', 'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts'],
+    rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer', 'window', 'document', 'localStorage', 'sessionStorage', 'indexedDB', 'navigator'] },
+  },
+  {
+    files: ['src/**/*.{ts,vue}'],
+    plugins: { huiyu: { rules: { 'module-boundaries': moduleBoundaries } } },
+    rules: { 'huiyu/module-boundaries': 'error' },
   },
 )

@@ -7,7 +7,7 @@ const { test }: typeof import('node:test') = require('node:test');
 
 const root = path.resolve(__dirname, '..', '..');
 const testsRoot = path.join(root, 'scripts', 'tests');
-const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
+const { QUALITY_TEST_SUITES, QUALITY_EXTERNAL_TESTS }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
 
 function read(relativePath: string) {
   return fs.readFileSync(path.join(root, relativePath), 'utf8');
@@ -16,8 +16,8 @@ function read(relativePath: string) {
 test('quality gates cover every deterministic test exactly once', () => {
   const assigned = Object.entries(QUALITY_TEST_SUITES).flatMap(([suite, files]: any) => files.map((file: any) => ({ suite, file })));
   const discovered = fs.readdirSync(testsRoot)
-    .filter((file) => /^test-.*\.js$/.test(file))
-    .filter((file) => file !== 'test-quality-gates.js')
+    .filter((file) => /^test-.*\.(?:js|mjs)$/.test(file))
+    .filter((file) => file !== 'test-quality-gates.js' && !QUALITY_EXTERNAL_TESTS.includes(file))
     .sort();
   const assignedNames = assigned.map((entry) => entry.file);
   const duplicates = assignedNames.filter((file, index) => assignedNames.indexOf(file) !== index);
@@ -97,9 +97,9 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   const summary = quality.slice(quality.indexOf('  quality-summary:'));
   assert.ok(summary.length > 0, 'quality workflow must expose a final summary job');
   assert.match(summary, /if: always\(\)/);
-  assert.match(summary, /needs: \[checks, unit, contract, e2e\]/);
-  for (const lane of ['checks', 'unit', 'contract', 'e2e']) {
-    assert.match(summary, new RegExp(`needs\\.${lane}\\.result|${lane.toUpperCase()}_RESULT`),
+  assert.match(summary, /needs: \[checks, unit, contract, e2e, minimum-node\]/);
+  for (const lane of ['checks', 'unit', 'contract', 'e2e', 'minimum-node']) {
+    assert.match(summary, new RegExp(`needs\\.${lane}\\.result|${lane.toUpperCase().replace(/-/g, '_')}_RESULT`),
       `quality summary must inspect ${lane} result`);
   }
   const audit = read('.github/workflows/dependency-audit.yml');

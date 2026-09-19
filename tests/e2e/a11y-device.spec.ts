@@ -78,9 +78,10 @@ test('every route keeps exactly one h1', async ({ page }) => {
     ...layoutRoutes,
     { path: '/companion', name: 'companion' },
     { path: '/control', name: 'control' },
+    ...['scene-manager', 'character', 'color-script', 'lora', 'style'].map(name => ({ path: '/' + name, name })),
   ]) {
     await page.goto(entry.path);
-    await expect(page.locator('h1'), `${entry.name} must have a single h1`).toHaveCount(1);
+    await expect(page.getByRole('heading', { level: 1 }), `${entry.name} must have a single h1`).toHaveCount(1);
   }
 });
 

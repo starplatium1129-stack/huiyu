@@ -1,3 +1,4 @@
+import { sourceImports } from '../lib/source-imports';
 'use strict';
 
 const { test }: typeof import('node:test') = require('node:test');
@@ -49,8 +50,10 @@ assert(
 
 // ── 2. 路由与 view 一一对应 ──────────────────────────────────────────────
 const routerSource = read('src/router/index.ts');
-const viewImports = [...routerSource.matchAll(/import\(['"]@\/views\/([A-Za-z0-9_]+\.vue)['"]\)/g)]
-  .map(m => m[1]);
+const imports = sourceImports(routerSource);
+const views = imports.filter(edge => edge.specifier.startsWith('@/views/') && !edge.typeOnly);
+assert(views.every(edge => edge.dynamic), 'every route view must be lazy-loaded');
+const viewImports = views.map(edge => edge.specifier.slice('@/views/'.length));
 assert(viewImports.length >= 12, `router must lazy-load all views, found ${viewImports.length}`);
 for (const view of viewImports) {
   assert(exists(path.join('src', 'views', view)), `src/views/${view} referenced by router must exist`);
@@ -58,7 +61,7 @@ for (const view of viewImports) {
 // AppLayout 承载共享 chrome
 assert(exists('src/components/AppLayout.vue'), 'AppLayout.vue must exist as the shared shell');
 assert(
-  /@\/components\/AppLayout\.vue/.test(routerSource),
+  imports.some(edge => edge.specifier === '@/components/AppLayout.vue'),
   'router must mount AppLayout as the layout route',
 );
 
@@ -91,13 +94,7 @@ for (const file of vueFiles) {
   assert(/<template>/.test(source), `${rel} must define a <template>`);
 }
 
-// Each main page exposes a human-readable heading; navigation belongs to AppLayout.
-for (const rel of ['PromptBuilder', 'Chat', 'Gallery', 'Showcase', 'SceneExplorer', 'SceneManager', 'Control', 'Character', 'ColorScript', 'Lora', 'Style']) {
-  const view = read('src/views/' + rel + 'View.vue');
-  const heading = rel === 'Control' && /<ControlIntro\b/.test(view)
-    ? read('src/components/ControlIntro.vue') : view;
-  assert(/<h1\b/.test(heading), rel + ' must expose a page heading');
-}
+// Page headings are asserted from rendered accessible roles in a11y-device.spec.ts.
 assert(read('src/components/AppLayout.vue').includes('AppNav'), 'shared layout must retain navigation');
 assert(!/\bany\b/.test(read('src/views/ColorScriptView.vue')), 'ColorScriptView must keep its catalog typed');
 
@@ -317,4 +314,11 @@ assert(
   'ControlView tunnel switch knob must animate via transform translateX and eliminate left transition',
 );
 
+});
+
+test('router import parsing permits equivalent helpers but distinguishes eager imports', () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  assert.deepEqual(sourceImports('const renamed = () => import( /* comment */ "@/views/Page.vue" )'), [{ specifier: '@/views/Page.vue', dynamic: true, typeOnly: false }]);
+  assert.equal(sourceImports('import Renamed from "@/views/Page.vue"')[0].dynamic, false);
+  assert.deepEqual(sourceImports('// import("@/views/Fake.vue")'), []);
 });

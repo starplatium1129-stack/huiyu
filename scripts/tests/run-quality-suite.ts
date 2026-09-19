@@ -1,3 +1,4 @@
+import { classifyFailure, writeQualityReport, type QualityResult } from './quality-report';
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
@@ -17,7 +18,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
-const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
+const { QUALITY_TEST_SUITES, qualityTestMetadata }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
 const { runTestProcessPool }: typeof import('../lib/test-process-pool') = require('../lib/test-process-pool');
 const { contractJobs, planContractTests }: typeof import('./contract-test-policy') = require('./contract-test-policy');
 
@@ -65,7 +66,7 @@ function runStep(name: any, file: string, args: any, timeout: number) {
   else if (result.signal) reason = `signal ${result.signal}`;
   else if (result.status !== 0) reason = `exit ${result.status ?? '?'}`;
   const output = `${result.stdout || ''}\n${result.stderr || ''}`;
-  return { name, ok: !reason, duration, reason, output };
+  return { name, ok: !reason, duration, reason, output, failureKind: classifyFailure(result, output) };
 }
 
 /**
@@ -73,55 +74,33 @@ function runStep(name: any, file: string, args: any, timeout: number) {
  * entries: { name, file, args? }[]；返回非零退出码（有失败时）。
  */
 function runSuiteFiles(entries: string|any[], { label, timeout, verbose = false, keepGoing = false }: any) {
-  const passed = [];
-  const failed = [];
+  const results: QualityResult[] = [];
   const started = Date.now();
   for (const entry of entries) {
-    if (verbose) {
-      const child = spawnSync(process.execPath, [entry.file, ...(entry.args || [])], {
-        cwd: root,
-        stdio: 'inherit',
-        timeout,
-      });
-      const status = child.status ?? 1;
-      if (status === 0) {
-        passed.push(entry.name);
-      } else {
-        failed.push(entry.name);
-        if (!keepGoing) break;
-      }
-      continue;
-    }
-    const step = runStep(entry.name, entry.file, entry.args, timeout);
-    if (step.ok) {
-      passed.push(entry.name);
-      console.log(`✔ ${entry.name} ${formatDuration(step.duration)}`);
-    } else {
-      failed.push(entry.name);
-      console.log(`✘ ${entry.name} ${formatDuration(step.duration)} ${step.reason}`);
-      printExcerpt(step.output, entry.name);
-      if (!keepGoing) break;
-    }
+    const metadata = qualityTestMetadata(path.basename(entry.file));
+    const timeoutMs = entry.timeoutMs ?? metadata.timeoutMs ?? timeout;
+    const step = runStep(entry.name, entry.file, entry.args, timeoutMs);
+    results.push({ name: entry.name, status: step.ok ? 'passed' : 'failed', duration: step.duration,
+      reason: step.reason, failureKind: step.failureKind, output: step.output, timeoutMs, metadata });
+    console.log((step.ok ? '✔' : '✘') + ' ' + entry.name + ' ' + formatDuration(step.duration) + ' ' + step.reason);
+    if (verbose) console.log(step.output.trimEnd());
+    else if (!step.ok) printExcerpt(step.output, entry.name);
+    if (!step.ok && !keepGoing) break;
   }
+  for (const entry of entries.slice(results.length)) results.push({ name: entry.name, status: 'not-run', duration: 0 });
+  const passed = results.filter(r => r.status === 'passed').length;
+  const failed = results.filter(r => r.status === 'failed').length;
+  const skipped = results.filter(r => r.status === 'not-run').length;
   const total = Date.now() - started;
-  const skipped = entries.length - passed.length - failed.length;
-  const verdict = failed.length === 0 ? 'PASS' : 'FAIL';
-  console.log(`sum [${label}]: ${verdict} · ${passed.length} 过 / ${failed.length} 挂${skipped > 0 ? ` · 未跑 ${skipped}` : ''} · ${formatDuration(total)}`);
-  return failed.length === 0 ? 0 : 1;
+  writeQualityReport(label, results, total);
+  console.log('sum [' + label + ']: ' + (failed || skipped ? 'FAIL' : 'PASS') + ' · ' + passed + ' 过 / ' + failed + ' 挂 · 未跑 ' + skipped + ' · ' + formatDuration(total));
+  return failed || skipped ? 1 : 0;
 }
 
 /** unit 套件：单进程 node --test 聚合跑全部文件（保持既有并发=4）。 */
 function runUnitSuite({ verbose = false }: any = {}) {
   const files = QUALITY_TEST_SUITES.unit.map((file) => path.join(root, 'scripts', 'tests', file));
   const started = Date.now();
-  if (verbose) {
-    const result = spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...files], {
-      cwd: root,
-      stdio: 'inherit',
-      timeout: SUITE_TIMEOUT_MS.unit,
-    });
-    return result.status ?? 1;
-  }
   const result: any = spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...files], {
     cwd: root,
     timeout: SUITE_TIMEOUT_MS.unit,
@@ -131,8 +110,11 @@ function runUnitSuite({ verbose = false }: any = {}) {
   const duration = Date.now() - started;
   const output = `${result.stdout || ''}\n${result.stderr || ''}`;
   const ok = !result.error && result.status === 0;
+  writeQualityReport('unit', [{ name: 'node --test (aggregate)', status: ok ? 'passed' : 'failed', duration,
+    output, failureKind: classifyFailure(result, output), timeoutMs: SUITE_TIMEOUT_MS.unit }], duration);
+  if (verbose) console.log(output.trimEnd());
   if (ok) {
-    const passLine = /ℹ (?:pass|tests) (\d+)/.exec(output);
+    const passLine = /[ℹ#] pass (\d+)/.exec(output);
     const count = passLine ? `${passLine[1]} 用例` : '全部文件';
     console.log(`✔ unit 套件 ${count} ${formatDuration(duration)}`);
     return 0;
@@ -154,15 +136,21 @@ async function runContractSuite({ verbose = false, keepGoing = false } = {}): Pr
   const interrupt = () => controller.abort();
   process.once('SIGINT', interrupt); process.once('SIGTERM', interrupt);
   let passed = 0, failed = 0;
+  const results: QualityResult[] = [];
   console.log(`contract: ${plan.parallel.length} isolated files / jobs=${jobs}; ${plan.serial.length} serial files`);
   const onResult = (result: import('../lib/test-process-pool').TestProcessResult) => {
     if (result.ok) passed++; else failed++;
+    const metadata = qualityTestMetadata(result.name);
+    results.push({ name: result.name, status: result.ok ? 'passed' : 'failed', duration: result.duration, output: result.output,
+      reason: result.reason, metadata, timeoutMs: metadata.timeoutMs ?? SUITE_TIMEOUT_MS.contract,
+      failureKind: classifyFailure({ status: result.exitCode ?? (result.ok ? 0 : 1), signal: result.signal,
+        error: result.timedOut ? { code: 'ETIMEDOUT' } : result.errorCode ? { code: result.errorCode } : undefined }, result.output) });
     console.log(`${result.ok ? '✔' : '✘'} ${result.name} ${formatDuration(result.duration)}${result.reason ? ' ' + result.reason : ''}`);
     if (verbose) console.log(result.output.trimEnd());
     else if (!result.ok) printExcerpt(result.output, result.name);
   };
   const run = (names: readonly string[], concurrency: number) => runTestProcessPool(
-    names.map(name => ({ name, file: path.join(root, 'scripts/tests', name) })),
+    names.map(name => ({ name, file: path.join(root, 'scripts/tests', name), timeoutMs: qualityTestMetadata(name).timeoutMs })),
     { cwd: root, jobs: concurrency, timeoutMs: SUITE_TIMEOUT_MS.contract, maxOutputBytes: CAPTURE_MAX_BUFFER, keepGoing, signal: controller.signal, onResult },
   );
   try {
@@ -172,7 +160,15 @@ async function runContractSuite({ verbose = false, keepGoing = false } = {}): Pr
     const ok = !failed && !skipped && !controller.signal.aborted;
     console.log(`sum [contract]: ${ok ? 'PASS' : 'FAIL'} · ${passed} 过 / ${failed} 挂${skipped ? ' · 未跑 ' + skipped : ''} · ${formatDuration(Date.now() - started)}`);
     return ok ? 0 : 1;
-  } finally { process.removeListener('SIGINT', interrupt); process.removeListener('SIGTERM', interrupt); }
+  } catch (error) {
+    results.push({ name: 'contract runner', status: 'failed', duration: 0, failureKind: 'process', reason: runtimeErrorMessage(error) });
+    throw error;
+  } finally {
+    process.removeListener('SIGINT', interrupt); process.removeListener('SIGTERM', interrupt);
+    for (const name of files) if (!results.some(result => result.name === name)) results.push({ name, status: 'not-run', duration: 0 });
+    if (controller.signal.aborted) results.push({ name: 'contract interruption', status: 'failed', duration: 0, failureKind: 'signal', reason: 'INTERRUPTED' });
+    writeQualityReport('contract', results, Date.now() - started);
+  }
 }
 
 /** 跑一个 npm script。Node 24 禁止 spawnSync 直呼 .cmd（EINVAL），
@@ -191,7 +187,9 @@ function runNpmScript(script: any, timeout: any = 300_000) {
   if (result.error) reason = result.error.code === 'ETIMEDOUT' ? `TIMEOUT(${formatDuration(timeout)})` : result.error.message;
   else if (result.signal) reason = `signal ${result.signal}`;
   else if (result.status !== 0) reason = `exit ${result.status ?? '?'}`;
-  return { name: script, ok: !reason, duration, reason, output: `${result.stdout || ''}\n${result.stderr || ''}` };
+  const output = String(result.stdout || '') + '\n' + String(result.stderr || '');
+  writeQualityReport(script, [{ name: script, status: reason ? 'failed' : 'passed', duration, reason, output, failureKind: classifyFailure(result, output), timeoutMs: timeout }], duration);
+  return { name: script, ok: !reason, duration, reason, output };
 }
 
 async function main(argv: string[]) {

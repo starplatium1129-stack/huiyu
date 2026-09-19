@@ -104,6 +104,9 @@ test('mutable data negotiates ETag consistently for br, gzip, and identity', asy
   assert.equal(identity304.status, 304);
 
   write(file, '{"revision":"new"}');
+  // Stat-based ETags need distinct fixture timestamps on coarse-resolution filesystems.
+  const changedTime = new Date(Date.now() + 2000);
+  for (const target of [file, file + '.br', file + '.gz']) fs.utimesSync(target, changedTime, changedTime);
   const changed = await get('/data/scenes.json', 'br', { 'If-None-Match': br.headers.etag });
   assert.equal(changed.status, 200);
   assert.equal(changed.body, '{"revision":"new"}');

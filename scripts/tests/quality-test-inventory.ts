@@ -1,3 +1,4 @@
+const { CONTRACT_ISOLATION }: typeof import('./contract-test-policy') = require('./contract-test-policy');
 'use strict';
 
 const QUALITY_TEST_SUITES = Object.freeze({
@@ -10,6 +11,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-desktop-staging.js',
     'test-e2e-ci-split.js',
     'test-page-architecture.js',
+    'test-module-boundaries.mjs',
     'test-monolith-budget.js',
     'test-runtime-generated.js',
     'test-typescript-build.js',
@@ -25,6 +27,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-precompress-runner.js',
     'test-workflow-conditions.js',
     'test-runtime-errors.js',
+    'test-quality-report.js',
     'test-content-ownership.js',
     'test-content-history.js',
     'test-content-consistency.js',
@@ -164,4 +167,19 @@ const QUALITY_TEST_SUITES = Object.freeze({
   ]),
 });
 
-export = { QUALITY_TEST_SUITES };
+interface TestMetadata {
+  domain: string; environment: string; parallelSafety: 'isolated' | 'serial' | 'unreviewed';
+  resources: readonly string[]; timeoutMs?: number;
+}
+const QUALITY_TEST_METADATA: Readonly<Record<string, TestMetadata>> = Object.freeze({
+  'test-api-client.js': { domain: 'generation-api', environment: 'node', parallelSafety: 'isolated', resources: ['mock-fetch', 'timers'] },
+  'test-module-boundaries.mjs': { domain: 'architecture', environment: 'node', parallelSafety: 'isolated', resources: ['read-only-source'] },
+});
+function qualityTestMetadata(file: string): TestMetadata {
+  const contract = CONTRACT_ISOLATION[file];
+  if (contract) return { domain: 'contract', environment: 'node-loopback', parallelSafety: 'isolated', resources: [contract.fixture] };
+  return QUALITY_TEST_METADATA[file] ?? { domain: 'unclassified', environment: 'node', parallelSafety: 'unreviewed', resources: ['unreviewed'] };
+}
+// Browser visual harness requires its own server; it is not part of deterministic Node lanes.
+const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs']);
+export = { QUALITY_TEST_SUITES, QUALITY_TEST_METADATA, QUALITY_EXTERNAL_TESTS, qualityTestMetadata };

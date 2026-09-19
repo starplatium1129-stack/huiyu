@@ -1,7 +1,7 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 
-export interface TestProcessEntry { name: string; file: string; args?: readonly string[] }
-export interface TestProcessResult { name: string; ok: boolean; duration: number; reason: string; output: string }
+export interface TestProcessEntry { name: string; file: string; args?: readonly string[]; timeoutMs?: number }
+export interface TestProcessResult { name: string; ok: boolean; duration: number; reason: string; output: string; exitCode?: number | null; signal?: NodeJS.Signals | null; errorCode?: string; timedOut?: boolean }
 export interface TestPoolOptions {
   cwd: string;
   jobs: number;
@@ -26,11 +26,14 @@ function killOwnedTree(child: ChildProcess) {
 
 function runNode(entry: TestProcessEntry, options: TestPoolOptions): Promise<TestProcessResult> {
   const started = Date.now();
+  const timeoutMs = entry.timeoutMs ?? options.timeoutMs;
+  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) throw new Error('Test timeout must be positive');
   return new Promise(resolve => {
     const child = spawn(process.execPath, [entry.file, ...(entry.args || [])], {
       cwd: options.cwd, windowsHide: true, detached: process.platform !== 'win32', stdio: ['ignore', 'pipe', 'pipe'],
     });
     let reason = '';
+    let errorCode: string | undefined;
     let size = 0;
     const chunks: Buffer[] = [];
     const max = options.maxOutputBytes ?? 64 * 1024 * 1024;
@@ -40,7 +43,7 @@ function runNode(entry: TestProcessEntry, options: TestPoolOptions): Promise<Tes
       killOwnedTree(child);
     };
     const abort = () => stop('INTERRUPTED');
-    const timer = setTimeout(() => stop(`TIMEOUT(${options.timeoutMs}ms)`), options.timeoutMs);
+    const timer = setTimeout(() => stop(`TIMEOUT(${timeoutMs}ms)`), timeoutMs);
     options.signal?.addEventListener('abort', abort, { once: true });
     if (options.signal?.aborted) abort();
     const capture = (chunk: Buffer) => {
@@ -51,12 +54,12 @@ function runNode(entry: TestProcessEntry, options: TestPoolOptions): Promise<Tes
     };
     child.stdout!.on('data', capture);
     child.stderr!.on('data', capture);
-    child.on('error', error => { reason ||= error.message; });
+    child.on('error', (error: NodeJS.ErrnoException) => { reason ||= error.message; errorCode = error.code; });
     child.on('close', (code, signal) => {
       clearTimeout(timer);
       options.signal?.removeEventListener('abort', abort);
       reason ||= signal ? `signal ${signal}` : code !== 0 ? `exit ${code ?? '?'}` : '';
-      resolve({ name: entry.name, ok: !reason, reason, duration: Date.now() - started, output: Buffer.concat(chunks).toString('utf8') });
+      resolve({ name: entry.name, ok: !reason, reason, exitCode: code, signal, errorCode, timedOut: reason.startsWith('TIMEOUT('), duration: Date.now() - started, output: Buffer.concat(chunks).toString('utf8') });
     });
   });
 }
