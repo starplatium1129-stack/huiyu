@@ -177,7 +177,7 @@ function createGateway(options: GatewayOptions = {}) {
   app.get(['/', '/index.html'], function (req, res) {
     res.setHeader('Cache-Control', 'no-cache');
     let spaEntry = path.join(DIST_DIR, 'index.html');
-    res.sendFile(fs.existsSync(spaEntry) ? spaEntry : path.join(config.ROOT_DIR, 'index.html'));
+    res.sendFile('index.html', { root: fs.existsSync(spaEntry) ? DIST_DIR : config.ROOT_DIR });
   });
   app.use('/css', express.static(path.join(config.ROOT_DIR, 'css'), staticOptions(ONE_DAY)));
   // docs/*.html 引用设计系统的唯一一份实现（src/assets/css）。
@@ -344,7 +344,8 @@ function createGateway(options: GatewayOptions = {}) {
     let ext = path.extname(req.path);
     if (ext && ext !== '.html') return next();
     res.setHeader('Cache-Control', 'no-cache');
-    res.sendFile(spaEntry);
+    // Resolve the fixed entry relative to its root; hidden worktree ancestors are not web paths.
+    res.sendFile('index.html', { root: path.dirname(spaEntry) });
   });
 
   app.use('/api', function (req, res) {

@@ -550,3 +550,29 @@ async function main() {
 await main();
 
 });
+
+test('SPA startup works below a hidden workspace ancestor without serving hidden assets', async () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  const fs: typeof import('node:fs') = require('node:fs');
+  const path: typeof import('node:path') = require('node:path');
+  const stack = await (require('./gateway-test-stack') as typeof import('./gateway-test-stack')).start({
+    prepare({ root, config }: any) {
+      config.ROOT_DIR = path.join(root, '.workspace', 'app');
+      config.ASSETS_ROOT = path.join(config.ROOT_DIR, 'assets');
+      fs.mkdirSync(path.join(config.ROOT_DIR, 'dist'), { recursive: true });
+      fs.mkdirSync(config.ASSETS_ROOT, { recursive: true });
+      fs.writeFileSync(path.join(config.ROOT_DIR, 'dist/index.html'), '<html>isolated SPA fixture</html>');
+      fs.writeFileSync(path.join(config.ASSETS_ROOT, '.private.txt'), 'never expose this');
+    },
+  });
+  try {
+    for (const route of ['/', '/index.html', '/chat', '/companion']) {
+      const response = await fetch(stack.baseUrl + route);
+      assert.equal(response.status, 200, route);
+      assert.match(await response.text(), /isolated SPA fixture/);
+    }
+    const hidden = await fetch(stack.baseUrl + '/assets/.private.txt');
+    assert.equal(hidden.status, 404);
+    assert.equal((await hidden.text()).includes('never expose this'), false);
+  } finally { await stack.close(); }
+});
