@@ -1,0 +1,71 @@
+{
+  "schema": "aics.010.e-office.v1",
+  "plan": "010",
+  "batch": "E1-E3 office integration",
+  "date": "2026-09-19",
+  "implementationCommit": "3c1099ff6c543d6caceb52fd795c4ee40c6077cc",
+  "scope": {
+    "registry": [
+      "Companion, companion chat, full chat, storage, archive, memory, voice binding and Live2D selection consume the companion registry projection",
+      "Legacy nene and natsume IDs and per-character outfits remain compatible",
+      "Unknown or removed IDs are rejected instead of borrowing another character identity"
+    ],
+    "adapter": [
+      "Browser mouth, blink, focus, emotions, hit zones, interactions, entrance, leave and overlay reset consume a compiled avatar profile",
+      "The native bridge receives the same validated profile subset and no longer owns character-specific mouth, blink, emotion or overlay-reset tables",
+      "Missing capabilities degrade independently and are shown in a user-readable capability report"
+    ],
+    "behavior": [
+      "Character switches preserve drafts and per-character outfits, discard stale model work and release the previous native model",
+      "Native visibility, power and bounds events keep their existing interruption and latest-state guards"
+    ]
+  },
+  "checks": {
+    "qualitySteps": { "status": "passed", "count": 17, "referenceMode": "structure", "durationSeconds": 20.1 },
+    "typecheck": { "status": "passed", "projects": ["root", "runtime", "node", "tests", "browser", "app"] },
+    "vitest": { "status": "passed", "files": 122, "tests": 899 },
+    "nodeUnit": { "status": "passed", "tests": 1045 },
+    "contract": { "status": "passed", "groups": 34, "durationMinutes": 4.37 },
+    "rust": {
+      "status": "passed",
+      "adapterTests": 2,
+      "overlayTests": 8,
+      "command": "cargo test --manifest-path desktop-tauri/src-tauri/Cargo.toml <filter>"
+    },
+    "monolith": { "status": "passed", "files": 614, "baselineExemptions": 0 },
+    "build": {
+      "status": "passed",
+      "routes": 18,
+      "bundleBudget": "passed",
+      "companionViewClosureKiB": 558.8,
+      "companionViewClosureBudgetKiB": 580
+    }
+  },
+  "browser": {
+    "companionAndNativeBridge": {
+      "status": "passed",
+      "tests": 15,
+      "themes": ["dark", "light"],
+      "widths": [360, 480],
+      "covers": ["identity", "drafts", "unknown IDs", "capability report", "native profile handoff", "model release", "visibility", "power", "bounds"]
+    },
+    "builtinLive2DAssets": {
+      "status": "passed",
+      "tests": 7,
+      "covers": ["load", "interaction", "outfit memory", "blink", "entrance", "leave", "rapid switch", "browser fallback"]
+    },
+    "visualReview": {
+      "status": "passed",
+      "artifacts": [
+        ".review-shots/companion-capabilities-dark.png",
+        ".review-shots/companion-capabilities-light.png"
+      ]
+    }
+  },
+  "boundaries": [
+    "Built-in profiles remain needs-confirmation because this batch did not capture paired Browser and Native model visuals on the target Windows device",
+    "The native browser test uses an isolated bridge fixture; it does not prove transparent-window, always-on-top, click-through, drag, multi-monitor or DPI behavior",
+    "No production microphone, voice service, installer, model download or deployment was used",
+    "Static model inspection, runtime parameter enumeration, user model import and visual calibration studio remain later 010 batches"
+  ]
+}

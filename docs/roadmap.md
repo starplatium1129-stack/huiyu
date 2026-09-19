@@ -24,7 +24,7 @@
 3. **P3：性能测量后再决定虚拟化与压缩**。TanStack Virtual、fflate 等只有在固定数据集和同机基线证明收益后才进入候选接入；不以增加依赖或提高预算代替测量。
 4. **P4–P6：生成适配、作品到 Remix、Companion**。分别参考 SwarmUI／InvokeAI 的能力与元数据边界，以及 AIRI／Open-LLM-VTuber 的陪伴、语音打断和 Live2D 生命周期；继续落在现有 TypeScript／Express／Tauri 架构和 010 计划内。
 
-任何候选正式接入前必须完成最新源码与维护状态、License／数据许可、最小 Spike、与当前实现的 A/B、TypeScript／Build／Unit／Contract／E2E 门禁；涉及桌面端还需 Windows／Tauri 实机验收。当前开发顺序仍以 E（010 深化）为下一批，本研究不会把 B–D 的办公机完成状态改写为第三方库已接入。
+任何候选正式接入前必须完成最新源码与维护状态、License／数据许可、最小 Spike、与当前实现的 A/B、TypeScript／Build／Unit／Contract／E2E 门禁；涉及桌面端还需 Windows／Tauri 实机验收。E（010 深化）的注册表与 Profile 生产接线已完成办公机范围；后续进入检查器／导入校准与 F 真机验收，本研究不会把办公机测试改写为第三方库已接入或 Windows 已验收。
 
 A 批已完成本地基线核对与文档同步：默认实物模式只被未配置的 2,534 个外部参考文件阻断，办公机 structure 模式下 17 项质量检查、Vitest、1,043 项 Node 单测、34 组契约和构建通过。外部参考文件继续留在 F/V01，不用降级结果宣称实物通过；远端 CI 状态因本机未安装 GitHub CLI 未在本批读取。
 

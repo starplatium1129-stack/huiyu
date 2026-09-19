@@ -2,7 +2,7 @@
 
 当前总优先级见 [未来规划](../docs/roadmap.md)。最新跨计划复核见[下方记录](#2026-09-18-复核)。以下“已完成／已验收”仅指各计划记录的范围，不代表最新 `main` 的全部门禁或真机验收通过。
 
-- [010：桌宠陪伴体验与 Live2D 通用适配](010-companion-experience-and-live2d-adapter.md)：**C0/C1/C4–C7 待执行，C2/C3 已有隔离契约起步**。注册表与 schema v1 Profile 尚未接入生产聊天／语音／记忆／Live2D 运行时，也没有真机验收；模型获取或自制方案留待讨论。
+- [010：桌宠陪伴体验与 Live2D 通用适配](010-companion-experience-and-live2d-adapter.md)：**C2/C3 已完成办公机生产接线，C4/C6 完成部分切片，C1/C5/C7 及 C4 检查器仍待执行**。页面、存储、记忆、音色和 Live2D 已共用陪伴注册表；Browser/Native 消费同一份经校验 Profile 子集并显示能力报告。内置映射仍为 `needs-confirmation`，Windows 真机、模型导入／校准与真实语音口型未验收。
 
 - [009：交互流畅度与运行性能](009-ui-fluidity-and-performance.md)：**F0–F2 已有办公机验收，F3 部分验收，F4/F6 办公机完成，F5 生命周期完成但真实资源趋势待验，F7 待执行**。S04 修正测量后 0/60；S03、高刷、GPU/纹理/功耗及 Windows 真实负载仍未关闭。保留 TypeScript 与品牌，不重复 007/008 已完成工作。
 
