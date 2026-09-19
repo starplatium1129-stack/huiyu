@@ -13,7 +13,7 @@ interface PromptMaterialsInput extends UseDirectorPopularInput {
 
 /** Owns material browsing and selection; scene/character business state stays in the store. */
 export function usePromptMaterials(input: PromptMaterialsInput) {
-  const { pb, sd, sdSize, drawEngine, setDrawEngine, applyRecommendedSize, patchAnimaState, refreshAnimaBackend, voiceStudioRef } = input
+  const { pb, sd, sdSize, drawEngine, setDrawEngine, applyRecommendedSize, patchAnimaState, refreshAnimaBackend, voiceStudioRef, animaState, generationBusy } = input
   const sceneLimit = ref(20)
   const sceneCollection = ref<SceneCollection>('core')
   const hiddenSceneIds = ref(readHiddenScenes())
@@ -48,13 +48,32 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
     popular.syncManagedRoute()
   }
   const currentBlueprintData = computed(() => ({
-    char: pb.char, sceneId: pb.sceneId, story: pb.story,
-    manualTags: Array.from(pb.manualTags), drawEngine: drawEngine.value,
-    sdParams: { ...pb.sdParams }, size: sdSize.value,
+    ...pb.snapshotDraft(),
+    outfitOverride: pb.outfitOverride ? { tokens: [...pb.outfitOverride.tokens], replaced: pb.outfitOverride.replaced } : null,
+    drawEngine: drawEngine.value,
+    size: drawEngine.value === 'sd' ? sdSize.value : `${animaState.value.width}x${animaState.value.height}`,
+    anima: {
+      modelId: animaState.value.modelId, loraId: animaState.value.loraId,
+      loraStrength: animaState.value.loraStrength, styleLoraId: animaState.value.styleLoraId,
+      width: animaState.value.width, height: animaState.value.height,
+      steps: animaState.value.steps, cfg: animaState.value.cfg,
+      sampler: animaState.value.sampler, scheduler: animaState.value.scheduler,
+      seed: animaState.value.seed, hiresFix: animaState.value.hiresFix,
+      hiresScale: animaState.value.hiresScale, hiresDenoise: animaState.value.hiresDenoise,
+      teaCache: animaState.value.teaCache, teaCacheThresh: animaState.value.teaCacheThresh,
+    },
   }))
   async function handleLoadBlueprint(data: Record<string, unknown>) {
+    if (generationBusy.value) { pb.flash('生成进行中，完成或停止后再载入蓝图'); return }
     const { loadBlueprint } = await import('./promptBlueprintActions')
-    loadBlueprint(data, { pb, selectScene, setDrawEngine, sdSize })
+    const result = await loadBlueprint(data, {
+      pb, selectScene, setDrawEngine, sdSize, setDirectorMode,
+      selectPopularSource: popular.selectPopularSource, selectBlueprint: popular.selectBlueprint,
+      applyRecommendedSize, refreshAnimaBackend, animaState, patchAnimaState,
+    })
+    pb.flash(result.applied
+      ? `${result.message}${result.warnings.length ? `（${result.warnings.join('；')}）` : ''}`
+      : `蓝图未载入：${result.message}`)
   }
 
   return {

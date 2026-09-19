@@ -146,9 +146,9 @@ function exportBlueprint() {
     return
   }
   const payload = {
+    ...props.blueprintData,
     schema: 'aics-director-blueprint-v1',
     exportedAt: Date.now(),
-    ...props.blueprintData,
   }
   const json = JSON.stringify(payload, null, 2)
   const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
@@ -167,7 +167,6 @@ async function onBlueprintFilePicked(event: Event) {
     const parsed = JSON.parse(text)
     if (parsed && typeof parsed === 'object') {
       emit('loadBlueprint', parsed as Record<string, unknown>)
-      emit('flash', '蓝图配置已成功载入')
     } else {
       emit('flash', '无效的蓝图文件格式')
     }

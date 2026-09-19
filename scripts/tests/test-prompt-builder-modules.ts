@@ -80,6 +80,11 @@ assert.strictEqual(
   null,
   'empty drafts must not replace current director state',
 );
+assert.strictEqual(
+  persistence.parsePromptBuilderDraft({ updatedAt:1, story:'', sceneId:null, visualDescription:'A red umbrella.' })!.visualDescription,
+  'A red umbrella.',
+  'visual-description-only drafts are valid creative input and must survive reload',
+);
 assert.deepStrictEqual(
   persistence.parseProjectOptions([{ id:7, title:'旧项目' }, null, { id:'' }]),
   [{ id:'7', name:'旧项目' }],
@@ -232,7 +237,8 @@ for (const marker of ['DrawEngine', 'animaModelId']) {
 for (const marker of ['historyGenerationFields', 'engine: meta.engine']) {
   if (!sdQueueSource.includes(marker)) fail('director must wire engine-specific generation metadata: ' + marker);
 }
-if (view.includes('styleLoraId: animaState.value.styleLoraId')) {
+const directorEngineSource = read('src/composables/scene/useDirectorEngine.ts');
+if (directorEngineSource.includes('styleLoraId: animaState.value.styleLoraId')) {
   fail('one-click requests must not submit a hidden Style LoRA selection');
 }
 // Anima 生成生命周期自第十一轮起归 useAnimaSession 组合函数所有：

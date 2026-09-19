@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import { mutualGroupWithCategory } from '@/utils/promptPolicy'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 
@@ -98,6 +99,16 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
   function toggleOutfitBundle(tags: string[]) {
     const next = new Set(pb.manualTags)
     const selected = tags.every(tag => next.has(tag))
+    const incomingOutfitGroups = new Set(tags.flatMap(tag => {
+      const hit = mutualGroupWithCategory(tag)
+      return hit?.category === 'outfit' ? [hit.group] : []
+    }))
+    if (!selected && incomingOutfitGroups.size) {
+      for (const tag of next) {
+        const hit = mutualGroupWithCategory(tag)
+        if (hit?.category === 'outfit' && !incomingOutfitGroups.has(hit.group)) next.delete(tag)
+      }
+    }
     tags.forEach(tag => {
       if (selected) next.delete(tag)
       else next.add(tag)

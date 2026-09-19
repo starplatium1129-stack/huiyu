@@ -45,11 +45,17 @@ export interface PromptDeepLinkDeps {
 export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
   const { pb, sdSize, patchAnimaState, showAllBlueprints } = deps
   let lastHistoryLink = ''
+  let lastContextLink = ''
   let historyRequest = 0
   if (getCurrentScope()) onScopeDispose(() => { historyRequest += 1 })
   function historyKey(q: Record<string, unknown>) {
     const mode = ['remix', 'regen', 'variant'].find(key => typeof q[key] === 'string')
     return mode ? mode + ':' + q[mode] : ''
+  }
+  function contextKey(q: Record<string, unknown>) {
+    const fields = ['scenario', 'popular', 'blueprint', 'scene', 'char', 'mood', 'resume', 'quick']
+      .flatMap(key => typeof q[key] === 'string' ? [[key, q[key]]] : [])
+    return fields.length ? JSON.stringify(fields) : ''
   }
 
   async function applyDeepLink(q: Record<string, unknown>): Promise<boolean> {
@@ -136,6 +142,7 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
       && typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
       pb.setColorMood(q.mood); handled = true
     }
+    if (handled && !historyKey(q)) lastContextLink = contextKey(q)
     return handled
   }
 
@@ -144,14 +151,21 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     const history = historyKey(q)
     if (history) return history !== lastHistoryLink
     lastHistoryLink = ''
+    const context = contextKey(q)
+    if (!context) {
+      lastContextLink = ''
+      return false
+    }
     if (typeof q.popular === 'string') {
       const blueprint = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
-      return pb.subject.kind !== 'popular'
+      if (pb.subject.kind !== 'popular'
         || pb.subject.characterId !== q.popular
-        || pb.subject.blueprintId !== blueprint
+        || pb.subject.blueprintId !== blueprint) return true
     }
-    if (typeof q.scene === 'string') return pb.sceneId !== q.scene
-    return false
+    if (typeof q.scene === 'string' && pb.sceneId !== q.scene) return true
+    if (isCharKey(q.char) && pb.char !== q.char) return true
+    if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood) && pb.colorMood !== q.mood) return true
+    return context !== lastContextLink
   }
 
   return { applyDeepLink, deepLinkNeeded }

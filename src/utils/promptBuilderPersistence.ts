@@ -135,8 +135,10 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
   const story = stringValue(value.story)
   const visualDescription = stringValue(value.visualDescription) || ''
   const sceneId = nullableString(value.sceneId)
+  // 画面描述/手动词条本身就是可生成输入；不能因没有故事或场景而丢弃这类草稿。
+  const hasStandaloneInput = Boolean(visualDescription || stringList(value.manualTags).length)
   // 热门角色无 LoRA 草稿没有 sceneId/story（蓝图驱动场景），单独放行。
-  if (!updatedAt || ((!sceneId && !story) && value.subject !== 'popular')) return null
+  if (!updatedAt || ((!sceneId && !story && !hasStandaloneInput) && value.subject !== 'popular')) return null
 
   const rawSelections = isRecord(value.selections) ? value.selections : null
   const selections = rawSelections

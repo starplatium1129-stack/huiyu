@@ -32,3 +32,25 @@ describe('history links on a reused workbench', () => {
   })
 
 })
+
+describe('context links on a reused workbench', () => {
+  it('replays mood-only changes and does not replay an unchanged link over manual edits', async () => {
+    const scene = { id: 'scene-a' }
+    const pb = {
+      history: [], scenes: [scene], sceneId: 'scene-a', char: 'nene', colorMood: 'calm',
+      subject: { kind: 'studio' },
+      setColorMood: vi.fn((value: string) => { pb.colorMood = value }),
+    }
+    const selectScene = vi.fn((value: typeof scene) => { pb.sceneId = value.id })
+    const api = usePromptDeepLink({ pb, selectScene } as unknown as PromptDeepLinkDeps)
+    const first = { scene: 'scene-a', mood: 'love' }
+    expect(api.deepLinkNeeded(first)).toBe(true)
+    expect(await api.applyDeepLink(first)).toBe(true)
+    expect(pb.colorMood).toBe('love')
+    expect(api.deepLinkNeeded(first)).toBe(false)
+    const next = { scene: 'scene-a', mood: 'sad' }
+    expect(api.deepLinkNeeded(next)).toBe(true)
+    expect(await api.applyDeepLink(next)).toBe(true)
+    expect(pb.colorMood).toBe('sad')
+  })
+})

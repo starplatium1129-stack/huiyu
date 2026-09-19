@@ -320,6 +320,63 @@ test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
   await expect(page.getByRole('button', { name: '移入回收站（1）', exact: true })).toBeEnabled()
 })
 
+test('director blueprint round-trips full decisions and material conflicts', async ({ page }) => {
+  await page.goto('/prompt-builder')
+  await page.waitForTimeout(1800)
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await page.locator('.engine-switch button').first().click()
+  await expect(page.locator('.engine-switch button').first()).toHaveClass(/active/)
+
+  await page.locator('[aria-controls="material-story"]').click()
+  await page.locator('.story-input').fill('蓝图往返故事')
+  await page.locator('#visualDescription').fill('A red umbrella beside a rain-covered window.')
+
+  await page.getByRole('tab', { name: '画面', exact: true }).click()
+  await page.locator('#stepMood > summary').click()
+  await page.locator('.mood-card').filter({ hasText: '忧伤' }).click()
+
+  await page.getByRole('tab', { name: '提示词', exact: true }).click()
+  const tagInput = page.locator('#stepTags > input.tag-input[type="text"]')
+  await tagInput.fill('school_uniform, pleated_skirt')
+  await tagInput.press('Enter')
+  await expect(page.locator('.manual-tag-en')).toContainText(['school_uniform', 'pleated_skirt'])
+
+  await page.locator('.utility-trigger').click()
+  const downloading = page.waitForEvent('download')
+  await page.getByRole('button', { name: '导出当前蓝图 JSON', exact: true }).click()
+  const download = await downloading
+  const payload = JSON.parse(readFileSync((await download.path())!, 'utf8'))
+  expect(payload).toMatchObject({
+    schema: 'aics-director-blueprint-v1', story: '蓝图往返故事',
+    visualDescription: 'A red umbrella beside a rain-covered window.',
+    colorMood: 'sad', directorMode: 'pro', subject: 'studio',
+    selections: { composition: null }, drawEngine: 'sd',
+  })
+  expect(payload.manualTags).toEqual(['school_uniform', 'pleated_skirt'])
+  expect(payload.anima).toEqual(expect.objectContaining({ modelId: expect.any(String) }))
+
+  await tagInput.fill('bikini')
+  await tagInput.press('Enter')
+  await expect(page.locator('.manual-tag-en')).toContainText('bikini')
+  await expect(page.locator('.manual-tag-en').filter({ hasText: 'school_uniform' })).toHaveCount(0)
+  await page.locator('[aria-controls="material-story"]').click()
+  await page.locator('#visualDescription').fill('Changed after export.')
+  await page.getByRole('tab', { name: '画面', exact: true }).click()
+  await page.locator('.mood-card').filter({ hasText: '快乐' }).click()
+
+  await page.locator('.pb-blueprint-file-input').setInputFiles({
+    name: 'director-blueprint.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(payload)),
+  })
+  await expect(page.getByText('蓝图配置已完整载入', { exact: true })).toBeVisible()
+  await page.locator('[aria-controls="material-story"]').click()
+  await expect(page.locator('#visualDescription')).toHaveValue('A red umbrella beside a rain-covered window.')
+  await page.getByRole('tab', { name: '画面', exact: true }).click()
+  await expect(page.locator('.mood-card').filter({ hasText: '忧伤' })).toHaveAttribute('aria-pressed', 'true')
+  await page.getByRole('tab', { name: '提示词', exact: true }).click()
+  await expect(page.locator('.manual-tag-en')).toContainText(['school_uniform', 'pleated_skirt'])
+  await expect(page.locator('.manual-tag-en').filter({ hasText: 'bikini' })).toHaveCount(0)
+})
+
 
 for (const theme of ['dark', 'light']) {
   test(`control configuration shows pending state and allows retry ${theme}`, async ({ page }) => {

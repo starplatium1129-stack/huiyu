@@ -60,8 +60,10 @@ describe('usePromptTagTools · addTag 批量粘贴', () => {
     ] as any
     const pb = usePromptBuilderStore()
     const { addTag } = usePromptTagTools(pb)
-    addTag(inputWith('jk, qipao'))
+    addTag(inputWith('jk'))
     expect(pb.manualTags.has('school_uniform')).toBe(true)
+    pb.manualTags = new Set()
+    addTag(inputWith('qipao'))
     expect(pb.manualTags.has('china_dress')).toBe(true)
   })
 
@@ -102,22 +104,27 @@ describe('promptBuilderStore · addManualTag', () => {
     expect(pb.manualTags.size).toBe(1)
   })
 
-  /**
-   * 锁定**当前实际**的互斥替换行为：同组替换
-   * （school_uniform + pleated_skirt 同属「校服/水手服」，后者顶替前者）。
-   *
-   * ⚠️ 已知契约漂移（2026-08-30 复核发现，未改）：
-   * promptPolicy.mutualGroupWithCategory 的文档与 analyzeParts / interrogateMerge
-   * 的消费方式都把 MUTUAL_EXCLUSION_GROUPS 读作「**组间**互斥、同组可叠加」
-   * （校服 vs 泳装不能共存，school_uniform + pleated_skirt 叠加不冲突）；
-   * 而 store 的 toggle/addManualTag 读作「**同组**替换」，两者语义相反。
-   * 改动会影响全量出图提示词，需先与用户确认再动，故此处只如实固化现状。
-   */
-  it('同组替换（现状固化）：pleated_skirt 顶替同属「校服/水手服」的 school_uniform', () => {
+  it('同组服装细节可叠加，跨组服装才整体替换', () => {
     const pb = usePromptBuilderStore()
     expect(pb.addManualTag('school_uniform')).toBe('added')
-    expect(pb.addManualTag('pleated_skirt')).toBe('replaced')
+    expect(pb.addManualTag('pleated_skirt')).toBe('added')
     expect(pb.manualTags.has('pleated_skirt')).toBe(true)
+    expect(pb.manualTags.has('school_uniform')).toBe(true)
+    expect(pb.addManualTag('triangle_bikini')).toBe('replaced')
+    expect(pb.manualTags.has('triangle_bikini')).toBe(true)
+    expect(pb.manualTags.has('pleated_skirt')).toBe(false)
     expect(pb.manualTags.has('school_uniform')).toBe(false)
+  })
+})
+
+describe('usePromptTagTools · outfit bundles', () => {
+  it('keeps compatible details inside a bundle and removes a conflicting old outfit family', () => {
+    const pb = usePromptBuilderStore()
+    pb.manualTags = new Set(['school_uniform', 'pleated_skirt', 'smile'])
+    const { toggleOutfitBundle } = usePromptTagTools(pb)
+    toggleOutfitBundle(['bikini', 'triangle_bikini', 'barefoot'])
+    expect([...pb.manualTags].sort()).toEqual(['barefoot', 'bikini', 'smile', 'triangle_bikini'])
+    toggleOutfitBundle(['bikini', 'triangle_bikini', 'barefoot'])
+    expect([...pb.manualTags]).toEqual(['smile'])
   })
 })

@@ -7,7 +7,7 @@ import { historyFromResultContext } from '@/utils/resultContext'
 import { ref, reactive, computed, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { mutualGroupOf, membersOfMutualGroup, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
+import { mutualGroupWithCategory, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
 import { imgPut, imgDelete } from '@/composables/useImageStore'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -281,19 +281,25 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setComposition(id: string | null) { selections.composition = id }
   function setColorMood(id: string | null)   { colorMood.value = id }
 
+  /** 同类别不同组才互斥；同组细节（school_uniform + pleated_skirt）可叠加。 */
+  function conflictingManualTags(tag: string, candidates: Iterable<string>): string[] {
+    const incoming = mutualGroupWithCategory(tag)
+    if (!incoming) return []
+    return [...candidates].filter(candidate => {
+      const existing = mutualGroupWithCategory(candidate)
+      return existing?.category === incoming.category && existing.group !== incoming.group
+    })
+  }
+
   function toggleManualTag(tag: string) {
     const next = new Set(manualTags.value)
     if (next.has(tag)) { next.delete(tag); manualTags.value = next; return }
-    // 词条目录级互斥：服装 / 时段 / 天气同组互斥，选新标签替换旧标签
-    let replaced: string[] = []
-    const group = mutualGroupOf(tag)
-    if (group) {
-      replaced = membersOfMutualGroup(group, [...next])
-      replaced.forEach(t => next.delete(t))
-    }
+    // 词条目录级互斥：服装 / 时段 / 天气等类别内，只有不同组互斥。
+    const replaced = conflictingManualTags(tag, next)
+    replaced.forEach(t => next.delete(t))
     next.add(tag)
     manualTags.value = next
-    if (replaced.length) flash(`已用「${tag}」替换同组「${replaced.join('、')}」`)
+    if (replaced.length) flash(`已用「${tag}」替换冲突词条「${replaced.join('、')}」`)
   }
 
   /**
@@ -302,22 +308,18 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
    * 与 toggleManualTag 的唯一区别：**命中已存在的词条时保留，而不是删掉**。
    * 输入框是「加词」语义——用户敲下一个已激活的词条，预期是「确认它还在」，
    * toggle 语义却把它移除，属于静默数据丢失（手工攒的 40+ 词条最容易这么丢）。
-   * 组间互斥顶替逻辑照旧保留（同族换词是明确有用的行为，仍会 flash 提示）。
+   * 组间互斥顶替逻辑保留；同组细节允许叠加，仍会对真正的跨组替换提示。
    *
-   * @returns 'added' 新增 / 'replaced' 顶替同组旧词 / 'duplicate' 已存在未改动
+   * @returns 'added' 新增 / 'replaced' 顶替冲突组旧词 / 'duplicate' 已存在未改动
    */
   function addManualTag(tag: string): 'added' | 'replaced' | 'duplicate' {
     const next = new Set(manualTags.value)
     if (next.has(tag)) return 'duplicate'
-    let replaced: string[] = []
-    const group = mutualGroupOf(tag)
-    if (group) {
-      replaced = membersOfMutualGroup(group, [...next])
-      replaced.forEach(t => next.delete(t))
-    }
+    const replaced = conflictingManualTags(tag, next)
+    replaced.forEach(t => next.delete(t))
     next.add(tag)
     manualTags.value = next
-    if (replaced.length) flash(`已用「${tag}」替换同组「${replaced.join('、')}」`)
+    if (replaced.length) flash(`已用「${tag}」替换冲突词条「${replaced.join('、')}」`)
     return replaced.length ? 'replaced' : 'added'
   }
   function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
