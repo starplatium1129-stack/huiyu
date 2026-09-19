@@ -42,9 +42,9 @@ for (const [width, height, theme] of [[1440, 900, 'dark'], [1280, 800, 'light']]
 test('a portrait result fits the canvas and keeps generation and save actions reachable', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.route('**/api/generation/status', route => route.fulfill({ json: {
-    ok: true, online: true, provider: 'webui', webuiOnline: true,
+    ok: true, online: true, provider: 'webui', webuiOnline: true, comfyFallbackOnline: false, models: [], loras: [], pending: 0, maxPending: 4,
     checkpoint: 'waiIllustriousSDXL_v170.safetensors', samplers: ['Euler a'], schedulers: ['Normal'],
-    capabilities: { basic: true, hires: false, hiresUpscalers: [] },
+    capabilities: { basic: true, hires: false, faceDetailer: false, hiresUpscalers: [] },
   } }))
   await page.route('**/api/generation/jobs', route => route.fulfill({ json: { ok: true, job: {
     id: 'layout-fixture', status: 'succeeded', provider: 'webui', seed: 42,

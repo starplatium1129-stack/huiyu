@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/creative/status', route => route.fulfill({ json: { ok: true, online: false, models: [], loras: [], styleLoras: [] } }))
-  await page.route('**/api/generation/status', route => route.fulfill({ json: { ok: true, online: false, checkpoint: '', samplers: [], schedulers: [], models: [], loras: [] } }))
+  await page.route('**/api/generation/status', route => route.fulfill({ json: { ok: true, online: false, provider: null, webuiOnline: false, comfyFallbackOnline: false, pending: 0, maxPending: 4, capabilities: { basic: false, hires: false, faceDetailer: false, hiresUpscalers: [] }, checkpoint: '', samplers: [], schedulers: [], models: [], loras: [] } }))
 })
 
 async function galleryFixture(page: Page, theme: string) {

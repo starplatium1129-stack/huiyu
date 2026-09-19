@@ -164,7 +164,7 @@ test('generation API owns the application generation job endpoints with envelope
   const client = createApiClient(async (url, init) => {
     calls.push({ url: String(url), init });
     if (calls.length === 1) {
-      return jsonResponse({ ok: true, online: true, checkpoint: 'wai', samplers: ['Euler a'], schedulers: [], capabilities: { hiresUpscalers: ['Auto'] } });
+      return jsonResponse({ ok: true, online: true, provider: 'comfy', webuiOnline: false, comfyFallbackOnline: true, checkpoint: 'wai', samplers: ['Euler a'], schedulers: [], models: [], loras: [], pending: 0, maxPending: 4, capabilities: { basic: true, hires: true, faceDetailer: false, hiresUpscalers: ['Auto'] } });
     }
     if (calls.length === 2) {
       return jsonResponse({ ok: true, job: { id: 'job-1', status: 'queued', provider: 'comfy' } }, 202);
@@ -658,4 +658,15 @@ test('API modules keep operation timeouts within the documented baselines', () =
   assert.ok(MAINTENANCE_API_TIMEOUTS.upload <= 120_000);
   assert.ok(MAINTENANCE_API_TIMEOUTS.buildWeb <= 120_000);
   assert.ok(MAINTENANCE_API_TIMEOUTS.run >= 130_000);
+});
+
+test('generation decoder accepts the current Comfy serializer including cancelling and numeric codes', async () => {
+  const { publicJob }: typeof import('../../routes/anima/job-state') = require('../../routes/anima/job-state');
+  for (const status of ['queued', 'running', 'cancelling', 'succeeded', 'failed', 'cancelled']) {
+    const wire = publicJob({ id: 'fixture', status, createdAt: Date.now(), input: { seed: 0, modelId: 'fixture' }, errorCode: 500 }, '/api/generation');
+    const result = await createGenerationApi(createApiClient(async () => jsonResponse({ ok: true, job: wire }))).getJob('fixture');
+    assert.equal(result.job.status, status);
+    assert.equal(result.job.seed, 0);
+    assert.equal(result.job.code, '500');
+  }
 });
