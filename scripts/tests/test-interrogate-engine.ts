@@ -16,7 +16,8 @@ let path: typeof import('path') = require('path');
 let engine: typeof import('../../server/interrogate-engine') = require('../../server/interrogate-engine');
 
 let ROOT = path.resolve(__dirname, '..', '..');
-let EMPTY_CONFIG = { AI_WORKSPACE_ROOT: path.join(ROOT, 'runtime', 'models', 'interrogate-empty'), ROOT_DIR: ROOT };
+let EMPTY_DIR = path.join(ROOT, 'runtime', 'models', 'interrogate-empty');
+let EMPTY_CONFIG = { AI_WORKSPACE_ROOT: EMPTY_DIR, ROOT_DIR: EMPTY_DIR };
 let REAL_CONFIG = { AI_WORKSPACE_ROOT: path.join(ROOT, '..', 'AI'), ROOT_DIR: ROOT };
 
 async function generateTestImage() {
@@ -43,6 +44,7 @@ async function run() {
   }
 
   // 1) 降级路径（恒成立，CI 无模型也过）
+  engine._resetModelCache();
   let probeEmpty = engine.probe(EMPTY_CONFIG);
   check('probe(无模型) available=false', function () {
     assert.equal(probeEmpty.available, false);
@@ -58,6 +60,7 @@ async function run() {
   });
 
   // 2) 真实模型路径（本机有权重时执行；无则跳过打印）
+  engine._resetModelCache();
   let model = engine.findModel(REAL_CONFIG);
   if (!model) {
     console.log('  ↪ 本机无 WD14 模型，跳过真实推理断言（仅降级路径验证）');

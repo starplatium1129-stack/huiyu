@@ -17,9 +17,7 @@ const path: typeof import('path') = require('path')
 const https: typeof import('https') = require('https')
 
 const USE_OFFICIAL = process.argv.includes('--official')
-const HOST = USE_OFFICIAL ? 'huggingface.co' : 'hf-mirror.com'
-const REPO = 'SmilingWolf/wd-v1-4-moat-tagger-v2'
-
+const USE_MIRROR = process.argv.includes('--mirror')
 const TARGET_DIR = path.resolve(__dirname, '..', '..', 'runtime', 'models', 'interrogate')
 
 const FILES = [
@@ -34,6 +32,17 @@ const FILES = [
     label: 'ONNX 神经网络权重',
   },
 ]
+
+function getFileUrl(remotePath: string): string {
+  if (USE_OFFICIAL) {
+    return `https://huggingface.co/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/${remotePath}`
+  }
+  if (USE_MIRROR) {
+    return `https://hf-mirror.com/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/${remotePath}`
+  }
+  // 默认使用 ModelScope（国内阿里云千兆直连 CDN，免代理、最稳最快）
+  return `https://www.modelscope.cn/models/fireicewolf/wd-v1-4-moat-tagger-v2/resolve/master/${remotePath}`
+}
 
 function downloadFile(url: string, targetPath: string, label: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
@@ -87,8 +96,9 @@ function downloadFile(url: string, targetPath: string, label: string): Promise<v
 }
 
 async function main() {
+  const sourceName = USE_OFFICIAL ? 'HuggingFace 官方' : (USE_MIRROR ? 'HF-Mirror 镜像' : 'ModelScope 魔搭（国内高速）')
   console.log(`=== 绘遇 HUIYU · WD14 反推模型一键下载 ===`)
-  console.log(`下载源: https://${HOST}/${REPO}`)
+  console.log(`下载源: ${sourceName}`)
   console.log(`目标路径: ${TARGET_DIR}\n`)
 
   fs.mkdirSync(TARGET_DIR, { recursive: true })
@@ -101,7 +111,7 @@ async function main() {
       continue
     }
 
-    const url = `https://${HOST}/${REPO}/resolve/main/${file.remotePath}`
+    const url = getFileUrl(file.remotePath)
     console.log(`[正在下载] ${file.label}...`)
     try {
       await downloadFile(url, target, file.label)

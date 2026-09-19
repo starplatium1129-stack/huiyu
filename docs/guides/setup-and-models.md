@@ -1,6 +1,6 @@
 # 全功能开箱与硬件配置、模型资产部署指南
 
-> 本指南帮助新同学从零开箱本项目的全部功能。阐明运行所需的硬件配置门槛、公共开源底座直链，以及本站专属自训 LoRA 的定位与使用方式。
+> 本指南帮助新同学从零开箱本项目的全部功能。阐明运行所需的硬件配置门槛、模型放置的精确目录树、亲测可用的公共开源底座直链，以及本站专属自训 LoRA 的定位与使用方式。
 
 ---
 
@@ -17,88 +17,118 @@
 
 ---
 
-## 二、 模型资产架构：公共开源底座 vs 本站独家自训资产
+## 二、 模型应该放在哪里？（文件目录树）
 
-本项目将模型资产分为两大部分：
+这是新手最常遇到的问题：**文件放错文件夹，系统就探测不到**。请严格参照以下树状结构放置：
 
 ```text
-┌────────────────────────────────────────────────────────────────────────┐
-│                        绘遇 HUIYU 完整模型拼图                         │
-├───────────────────────────────────┬────────────────────────────────────┤
-│   【A. 公共开源底座（开箱人人可下）】   │  【B. 本站独家自训资产（主力机专属）】   │
-│  • WD14 反推模型 (~150MB，免显存)    │  • 绫地宁宁 v21 Anima 专属高精 LoRA   │
-│  • Anima 绘图底模 (MiaoMiao, ~4GB)│  • 四季夏目 v21 Anima 专属高精 LoRA   │
-│  • Qwen 文本编码器 + VAE (~3.5GB) │                                    │
-│  • 158 个热门角色 + 1692 蓝图提示词 │                                    │
-├───────────────────────────────────┼────────────────────────────────────┤
-│  效果：全站功能、反推换装、热门角色 │  效果：看板娘 100% 官方立绘级还原；    │
-│        无 LoRA 模式全部点亮！      │        在主力机上拷入 loras/ 即可。  │
-└───────────────────────────────────┴────────────────────────────────────┘
+你的电脑工作区/
+├── huiyu/                                      # 绘遇项目根目录
+│   └── runtime/
+│       └── models/
+│           └── interrogate/                    # ★ 【反推模型放这里】
+│               ├── wd-v1-4-moat-tagger-v2.onnx # ONNX 神经网络权重
+│               └── wd-v1-4-moat-tagger-v2.csv  # 标签索引表
+│
+└── ComfyUI/                                    # ComfyUI 根目录（或秋叶整合包/Stability Matrix）
+    └── models/
+        ├── diffusion_models/                   # ★ 【绘图底模放这里】
+        │   ├── miaomiaoHarem_anima12.safetensors（推荐款）
+        │   └── anima-base-v1.0.safetensors（官方基座款）
+        │
+        ├── text_encoders/                      # ★ 【文本编码器放这里】
+        │   └── qwen_3_06b_base.safetensors     # Qwen 文本理解核心
+        │
+        ├── vae/                                # ★ 【图像 VAE 放这里】
+        │   └── qwen_image_vae.safetensors      # 潜空间编解码器
+        │
+        └── loras/                              # ★ 【LoRA 放这里】
+            ├── ayachi_nene_v21_anima.safetensors   # 绫地宁宁专属（主力机专属）
+            └── shiki_natsume_v21_anima.safetensors # 四季夏目专属（主力机专属）
 ```
 
-1. **公共开源底座**：任何人克隆代码后，下载这套模型，即可**完整使用绘图、反推、换装与 158 个热门动漫角色**；
-2. **本站自训独家资产**：绫地宁宁与四季夏目的专属 v21 LoRA 是站长在主力机上针对特定画风与人设精细训练的独门特色。目前保存在站长主力机上，未公开发布在 HuggingFace 等外部平台。系统内置了 `noLora: true` 保护机制，即使没有这两个专属 LoRA，系统依然会通过自然语言与角色 DNA 标签进行高质量作画。
+> **提示：ComfyUI 目录自动识别**
+> 本项目网关启动时会自动寻找常见路径（`../AI/ComfyUI/models`、`D:/ComfyUI/models`、`C:/ComfyUI/models` 等）。
+> 如果您的 ComfyUI 安装在自定义路径，只需设置环境变量：`$env:COMFYUI_MODELS_ROOT = "你的ComfyUI路径/models"` 即可。
 
 ---
 
-## 三、 公共开源模型清单（直链与放置路径）
+## 三、 公共开源模型清单（全部实测有效直链）
 
-### 1. 本地真实反推模型（WD14 Tagger，极力推荐！）
-- **体积**：约 150 MB（不占显卡显存，CPU 毫秒级推理）。
-- **存放路径**：`runtime/models/interrogate/`
-- **文件清单与下载源**：
-  - `wd-v1-4-moat-tagger-v2.onnx`（[HF-Mirror 镜像直链](https://hf-mirror.com/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/model.onnx) · [官方直链](https://huggingface.co/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/model.onnx)）
-  - `wd-v1-4-moat-tagger-v2.csv`（[HF-Mirror 镜像直链](https://hf-mirror.com/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/selected_tags.csv) · [官方直链](https://huggingface.co/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/selected_tags.csv)）
-- **一键下载命令**（项目内置）：
+以下模型均为开源社区资产，任何人开箱均可免费下载：
+
+### 1. 本地真实反推模型（WD14 Tagger，仅 ~150MB，免显存）
+- **存放位置**：`huiyu/runtime/models/interrogate/`
+- **下载方式 A（推荐一键下载）**：在项目终端直接执行内置脚本，自动从国内镜像极速下载：
   ```powershell
   npm run workflow -- models:download-wd14
   ```
+- **下载方式 B（浏览器手动下载）**：
+  - [ModelScope 国内千兆直链：model.onnx](https://www.modelscope.cn/models/fireicewolf/wd-v1-4-moat-tagger-v2/resolve/master/model.onnx)（下载后重命名为 `wd-v1-4-moat-tagger-v2.onnx`）
+  - [ModelScope 国内千兆直链：selected_tags.csv](https://www.modelscope.cn/models/fireicewolf/wd-v1-4-moat-tagger-v2/resolve/master/selected_tags.csv)（下载后重命名为 `wd-v1-4-moat-tagger-v2.csv`）
+  - [HuggingFace 官方源（国外）](https://huggingface.co/SmilingWolf/wd-v1-4-moat-tagger-v2)
 
-### 2. Anima 绘图底模（ComfyUI 绘画核心）
-- **存放路径**：`ComfyUI/models/diffusion_models/`
+### 2. Anima 文本编码器与 VAE（必备组件）
+由于 Anima 属于 DiT 架构，必须配备独立的 Text Encoder 与 VAE：
+- **Qwen 文本编码器**（~1.19 GB）：
+  - **存放位置**：`ComfyUI/models/text_encoders/qwen_3_06b_base.safetensors`
+  - [ModelScope 官方国内直链下载](https://www.modelscope.cn/models/circlestone-labs/Anima/resolve/master/split_files/text_encoders/qwen_3_06b_base.safetensors)
+- **Qwen 图像 VAE**（~253 MB）：
+  - **存放位置**：`ComfyUI/models/vae/qwen_image_vae.safetensors`
+  - [ModelScope 官方国内直链下载](https://www.modelscope.cn/models/circlestone-labs/Anima/resolve/master/split_files/vae/qwen_image_vae.safetensors)
+
+### 3. Anima 绘画底模（核心画风）
+- **存放位置**：`ComfyUI/models/diffusion_models/`
 - **推荐底模**：
-  - `miaomiaoHarem_anima12.safetensors`（~4.2 GB，MIAOKA 出品，二次元半厚涂肌肤与唯美光影推荐款）
-  - 或 `miaomiaoHarem_anima16.safetensors`
-  - 下载源：[Civitai](https://civitai.com/models/xxx) 或 HuggingFace 检索 `miaomiaoHarem`。
-
-### 3. Anima 文本编码器与 VAE
-Anima 基于 DiT 架构，必须配备独立的文本编码器与 VAE：
-- **文本编码器**（放 `ComfyUI/models/text_encoders/`）：
-  - `qwen_3_06b_base.safetensors`（~3.1 GB）
-  - [HF-Mirror 镜像直链](https://hf-mirror.com/Comfy-Org/Anima_repackaged/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors)
-- **图像 VAE**（放 `ComfyUI/models/vae/`）：
-  - `qwen_image_vae.safetensors`（~0.3 GB）
-  - [HF-Mirror 镜像直链](https://hf-mirror.com/Comfy-Org/Anima_repackaged/resolve/main/split_files/vae/qwen_image_vae.safetensors)
+  - **MiaoMiao Harem v1.2 / v1.6**（~4.2 GB，MIAOKA 出品，二次元半厚涂肌肤与唯美光影推荐款）：
+    - [Civitai 官方模型主页](https://civitai.com/models/934764/miaomiao-harem)
+  - **Anima Base v1.0**（~4.18 GB，官方纯净基座）：
+    - [ModelScope 官方国内直链下载](https://www.modelscope.cn/models/circlestone-labs/Anima/resolve/master/split_files/diffusion_models/anima-base-v1.0.safetensors)
+  - **Anima Aesthetic v1.1**（~4.18 GB，官方美学增强版）：
+    - [ModelScope 官方国内直链下载](https://www.modelscope.cn/models/circlestone-labs/Anima/resolve/master/split_files/diffusion_models/anima-aesthetic-v1.1.safetensors)
 
 ---
 
 ## 四、 本站专属自训 LoRA 说明
 
 - **文件清单**：
-  - `ayachi_nene_v21_anima.safetensors`（绫地宁宁 v21 专属权重）
-  - `shiki_natsume_v21_anima.safetensors`（四季夏目 v21 专属权重）
+  - `ayachi_nene_v21_anima.safetensors`（绫地宁宁 v21 专属高精权重）
+  - `shiki_natsume_v21_anima.safetensors`（四季夏目 v21 专属高精权重）
 - **存放路径**：`ComfyUI/models/loras/`
-- **使用说明**：
-  - **主力机用户**：若您正在站长的主力机或内网环境下，直接从本地备份目录拷入上述路径，即可点亮 100% 像素级立绘还原；
-  - **开源/外部用户**：无需担心！绘遇支持的 **158 位热门动漫角色**（如《原神》芙宁娜/雷电将军、《葬送的芙莉莲》芙莉莲、《链锯人》玛奇玛、《碧蓝档案》未花等）**完全不需要自训 LoRA**，依托项目内置的数千条角色 DNA 锚点与 Danbooru 矩阵即可高还原度出图！
+- **使用场景与定位**：
+  - **站长主力机环境**：这两款 LoRA 为站长在主力机上基于高质量官方私有数据集深度调优精炼的核心资产，目前仅保存在站长主力机上，未公开发布在外部平台；若在主力机使用，只需拷入上述目录即可获得 100% 像素级立绘还原；
+  - **外部新用户开箱**：完全不影响任何使用！系统原生内置了 `noLora: true` 保护，且系统内收录的 **158 位热门动漫角色**（如芙宁娜、雷电将军、芙莉莲、玛奇玛、圣园未花等）与 **1692 个场景蓝图**，**本来就不需要任何外部 LoRA**，完全依托项目自研的角色 DNA 锚点与标签流矩阵，开箱即可高质量出图！
 
 ---
 
-## 五、 模型与环境一键体检工具
+## 五、 一键环境体检工具
 
-为了方便检查当前机器是否已经配齐所需模型，本项目提供了自动化体检工具：
+配置好或想要排查缺什么模型时，只需在项目根目录运行：
 
 ```powershell
 npm run workflow -- models:check
 ```
 
-运行后，终端会自动扫描您的硬件配置、ComfyUI 目录与项目运行时，输出状态清单：
+控制台会自动检测您的显卡与显存、扫描 ComfyUI 和项目运行时目录，以清晰的绿勾红叉输出报告：
 ```text
-[✔] GPU 显存: RTX 4070 (12282 MB) - 达到黄金推荐档
-[✔] WD14 反推模型: 已就绪 (wd-v1-4-moat-tagger-v2, 153 MB)
-[✔] Anima 绘图底模: 已就绪 (miaomiaoHarem_anima12.safetensors)
-[✔] 文本编码器: 已就绪 (qwen_3_06b_base.safetensors)
-[✔] 图像 VAE: 已就绪 (qwen_image_vae.safetensors)
-[ℹ] 看板娘专属 LoRA: 未检测到（主力机专属资产；当前已自动启用无 LoRA 兼容模式）
+==================================================================
+            绘遇 HUIYU · 硬件环境与模型资产全景体检                
+==================================================================
+
+【1. 硬件配置与推荐档位】
+  • 系统内存 (RAM): 32 GB
+  • 独立显卡 (GPU): NVIDIA GeForce RTX 4070 (12282 MB VRAM)
+  ⭐ 当前定位: 【黄金推荐档】 - 可完全驾驭 Anima 旗舰画质 + 高清修复 + GPT-SoVITS 原声
+
+【2. 本地真实反推引擎 (WD14 Tagger)】
+  [✔ 已就绪] WD14 真实反推模型 (153 MB) @ runtime/models/interrogate
+
+【3. ComfyUI 核心绘图模型 (开源底座)】
+  已找到 ComfyUI models 目录: D:\ComfyUI\models
+  [✔ 已就绪] Anima 绘图底模: MiaoMiao v1.2 (4182 MB)
+  [✔ 已就绪] Qwen 文本编码器 (1192 MB)
+  [✔ 已就绪] 图像 VAE 编解码器 (253 MB)
+
+【4. 本站独家自训 LoRA (绫地宁宁 / 四季夏目)】
+  [ℹ 独家资产提示] 专属 LoRA 为站长主力机精炼资产。非主力机环境原生支持无 LoRA 创作。
 ```
-缺失任何公共开源模型时，体检工具会贴心打印对应的国内高速下载直链。
