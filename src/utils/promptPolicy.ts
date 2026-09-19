@@ -1,7 +1,24 @@
 import { WIDE_TOKENS, CLOSE_TOKENS, MID_TOKENS } from './promptFramingTokens.ts'
 import type { PromptPart, PromptEngine, ModelProfile, LoraMeta } from './promptPolicyTypes.ts'
 export type { PromptPart, PromptEngine, DrawCapabilities, ModelProfile, LoraMeta } from './promptPolicyTypes.ts'
-export { BANNED_TAGS, checkArtDirection, QUALITY_WORDS, QUALITY_TOKENS, QUALITY_OR_SCORE_RE, mutualGroupOf, mutualGroupWithCategory, membersOfMutualGroup, analyzeParts } from './promptDiagnostics.ts'
+import { mutualGroupWithCategory } from './promptDiagnostics.ts'
+export {
+  BANNED_TAGS,
+  checkArtDirection,
+  QUALITY_WORDS,
+  QUALITY_TOKENS,
+  QUALITY_OR_SCORE_RE,
+  mutualGroupOf,
+  mutualGroupWithCategory,
+  membersOfMutualGroup,
+  analyzeParts,
+  FACE_CLOSEUP_TOKENS,
+  FOOTWEAR_AND_LEG_TOKENS,
+  SHOE_TOKENS,
+  BAREFOOT_TOKENS,
+  CLOSED_EYES_TOKENS,
+  GAZE_AND_EYE_DETAIL_TOKENS,
+} from './promptDiagnostics.ts'
 export type { MutualGroupCategory, MutualGroupHit, PromptReport } from './promptDiagnostics.ts'
 import { framingShot, type PromptScene } from './sceneFraming.ts'
 export type { PromptScene } from './sceneFraming.ts'
@@ -609,6 +626,20 @@ export function sceneTemplateText(
   const capabilities = resolveDrawCapabilities(opts.engine || 'sd', opts.profile)
   if (!isDualScene || !capabilities.dualCharacter) {
     template = sanitizeSoloTemplate(template)
+  }
+  // 姿势消解：当 manualTags（如反推采纳）中已有明确姿势时，场景模板中异组旧姿势自动让位
+  if (opts.manualTags?.size) {
+    const manualPose = [...opts.manualTags].map(mutualGroupWithCategory).find(h => h?.category === 'pose')
+    if (manualPose) {
+      template = template
+        .split(',')
+        .map(t => t.trim())
+        .filter(t => {
+          const hit = mutualGroupWithCategory(t)
+          return !(hit?.category === 'pose' && hit.group !== manualPose.group)
+        })
+        .join(', ')
+    }
   }
   return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), framingShot(opts.shot, scene.camera))
 }

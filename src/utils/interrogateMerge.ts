@@ -1,4 +1,15 @@
-import { mutualGroupWithCategory, normalizeKey, tokenize, resolveFramingMode } from './promptPolicy.ts'
+import {
+  mutualGroupWithCategory,
+  normalizeKey,
+  tokenize,
+  resolveFramingMode,
+  FOOTWEAR_AND_LEG_TOKENS,
+  SHOE_TOKENS,
+  BAREFOOT_TOKENS,
+  CLOSED_EYES_TOKENS,
+  GAZE_AND_EYE_DETAIL_TOKENS,
+  QUALITY_TOKENS,
+} from './promptPolicy.ts'
 
 /**
  * 反推词条合并器（2026-08-29，随机灵感/反推优化）。
@@ -44,10 +55,13 @@ const IDENTITY_DOMAINS: IdentityDomain[] = [
   { name: 'subjectCount', label: '主体数量', test: key => SUBJECT_COUNT_RE.test(key) },
 ]
 
-// ── 马赛克/打码类词条：反推命中即自动过滤（2026-08-29 需求） ─────────────
-// NSFW 素材常带官方打码/马赛克，反推出的打码词条会把这些视觉特征带进提示词，
-// 导致新图也带码。uncensored（无码）是正向属性，不在过滤清单。
-const CENSOR_TAGS = new Set([
+// ── 马赛克/打码/元数据与噪点词条：反推命中即自动过滤（2026-08-29 / 2026-09 优化） ─────────────
+// 1. NSFW 素材常带官方打码/马赛克，反推出的打码词条会把这些视觉特征带进提示词；
+// 2. Danbooru 元数据（watermark/signature/artist_name/rating:* 等）非画面视觉意图；
+// 3. 质量词（masterpiece/best_quality 等）与打分词（score_*）出图时由模型 profile 统一管理，反推中多出反致质量词堆叠超标；
+// 4. 画质缺陷标签（bad_anatomy/blurry 等）反推进正向会劣化成图。
+// uncensored（无码）是正向属性，不在过滤清单。
+const CENSOR_OR_ARTIFACT_TAGS = new Set([
   'censored',
   'mosaic_censoring',
   'bar_censor',
@@ -66,12 +80,50 @@ const CENSOR_TAGS = new Set([
   'soap_censor',
   'blank_censor',
   'character_censor',
+  'watermark',
+  'signature',
+  'username',
+  'artist_name',
+  'text',
+  'commentary',
+  'commentary_request',
+  'source_anime',
+  'source_filmmaker',
+  'source_game',
+  'source_picture',
+  'copyright_name',
+  'character_name',
+  'bad_anatomy',
+  'bad_hands',
+  'blurry',
+  'jpeg_artifacts',
+  'lowres',
+  'low_quality',
+  'worst_quality',
+  'poorly_drawn',
+  'poorly_drawn_face',
+  'sketch',
 ])
 
-/** 命中马赛克/打码过滤清单的词条（归一后比较）。 */
+const RATING_TAG_RE = /^rating(?:_safe|_general|_sensitive|_questionable|_explicit|:safe|:general|:sensitive|:questionable|:explicit)$/
+
+/** 立绘/单人物设定图常见留白背景词（若已有具体场景，自动忽略以保护场景环境）。 */
+const STANDALONE_BG_TAGS = new Set([
+  'white_background',
+  'simple_background',
+  'plain_background',
+  'grey_background',
+  'gray_background',
+  'transparent_background',
+])
+
+/** 命中马赛克/打码/元数据过滤清单的词条（归一后比较）。 */
 export function isCensorTag(tag: string): boolean {
   const key = normalizeKey(tag)
-  return key ? CENSOR_TAGS.has(key) : false
+  if (!key) return false
+  if (CENSOR_OR_ARTIFACT_TAGS.has(key) || RATING_TAG_RE.test(key)) return true
+  if (QUALITY_TOKENS.has(key) || /^score_\d+$/i.test(key)) return true
+  return false
 }
 
 /** 词条命中的身份域（无则 null）。 */
@@ -120,6 +172,14 @@ export interface InterrogateMergeResult {
   outfitReplacement: string[]
   /** 被顶替掉的当前服装族名（提示文案用）；无替换时为 null。 */
   replacedOutfitGroup: string | null
+  /**
+   * 因采纳参考图姿势/服装/视线/视角等，需要从现有 manualTags 中自动移除的旧词条。
+   */
+  obsoleteManualTags: string[]
+  /**
+   * 成功还原参考图姿势与服装的具体操作说明。
+   */
+  restorations: string[]
 }
 
 function toKeySet(tokens: ReadonlyArray<string>): Set<string> {
@@ -131,21 +191,24 @@ function toKeySet(tokens: ReadonlyArray<string>): Set<string> {
   return set
 }
 
-/** 三重去重 + 身份域冲突消解后的可叠加词条。 */
+/** 三重去重 + 身份域与全维度冲突消解后的可叠加词条（参考图姿势与服装优先还原）。 */
 export function mergeInterrogatedTags(input: InterrogateMergeInput): InterrogateMergeResult {
   const occupied = toKeySet([...input.identityTokens, ...(input.sceneTokens ?? []), ...input.manualTags])
   const seen = new Set(occupied)
   const accepted: string[] = [], duplicates: string[] = [], filtered: string[] = [], outfitReplacement: string[] = []
   const conflicts: InterrogateTagConflict[] = []
+  const obsoleteManualTags: string[] = []
+  const restorations: string[] = []
   let replacedOutfitGroup: string | null = null
   let incomingOutfit: string | null = null
+  const incomingGroupByCat = new Map<string, string>()
   const selectedFraming = resolveFramingMode(input.shot)
   const conflict = (tag: string, domain: string, reason: string) => conflicts.push({ tag, domain, reason })
 
   for (const raw of input.tags) {
     const key = normalizeKey(raw)
     if (!key) continue
-    if (CENSOR_TAGS.has(key)) { filtered.push(key); continue }
+    if (isCensorTag(key)) { filtered.push(key); continue }
     if (seen.has(key)) { duplicates.push(key); continue }
     seen.add(key)
     const domain = identityDomainOf(key)
@@ -154,7 +217,7 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
       const incompatible = values.filter(value => !(domain.name === 'subjectCount'
         && ((key === 'solo' && ['1girl', '1boy'].includes(value)) || (value === 'solo' && ['1girl', '1boy'].includes(key)))))
       if (incompatible.length) {
-        conflict(key, domain.label, `${domain.label}与当前角色或已采用词条（${incompatible.slice(0, 3).join('、')}）冲突`)
+        conflict(key, domain.label, `${domain.label}与当前角色固有特征（${incompatible.slice(0, 3).join('、')}）冲突`)
         continue
       }
     }
@@ -163,25 +226,153 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
       const fixed = selectedFraming || [...occupied].map(value => resolveFramingMode(null, [value])).find(Boolean)
       if (fixed && fixed !== framing) { conflict(key, '镜头', '景别与当前镜头或已采用词条冲突，已保留当前构图'); continue }
     }
+
+    // ── 镜头可见性：特写镜头下不可见脚部/鞋袜部件 ──
+    const currentFraming = selectedFraming || [...occupied].map(value => resolveFramingMode(null, [value])).find(Boolean)
+    if (currentFraming === 'close' && FOOTWEAR_AND_LEG_TOKENS.has(key)) {
+      conflict(key, '镜头可见性', '特写镜头下脚部与鞋袜不可见，已自动忽略')
+      continue
+    }
+
+    // ── 立绘纯色背景过滤：当前已有具体场景时，自动忽略立绘白底/纯色背景词以保护场景环境 ──
+    const hasActiveScene = Boolean(input.sceneTokens && input.sceneTokens.length > 0)
+    if (hasActiveScene && STANDALONE_BG_TAGS.has(key)) {
+      conflict(key, '场景背景', '当前已选具体场景，已自动忽略参考图立绘留白背景')
+      continue
+    }
+
+    // ── 视线与闭眼：参考图神态优先，清理 manualTags 中的冲突旧词 ──
+    if (CLOSED_EYES_TOKENS.has(key)) {
+      for (const t of input.manualTags) {
+        const k = normalizeKey(t)
+        if (GAZE_AND_EYE_DETAIL_TOKENS.has(k)) {
+          obsoleteManualTags.push(t)
+          occupied.delete(k)
+        }
+      }
+      const remainingGaze = [...occupied].some(t => GAZE_AND_EYE_DETAIL_TOKENS.has(t))
+      if (remainingGaze) {
+        conflict(key, '眼神', '闭眼状态与当前角色/场景设定的直视镜头冲突')
+        continue
+      }
+    }
+    if (GAZE_AND_EYE_DETAIL_TOKENS.has(key)) {
+      for (const t of input.manualTags) {
+        const k = normalizeKey(t)
+        if (CLOSED_EYES_TOKENS.has(k)) {
+          obsoleteManualTags.push(t)
+          occupied.delete(k)
+        }
+      }
+      const remainingClosed = [...occupied].some(t => CLOSED_EYES_TOKENS.has(t))
+      if (remainingClosed) {
+        conflict(key, '眼神', '眼神细节与当前闭眼状态冲突')
+        continue
+      }
+    }
+
+    // ── 赤脚与穿鞋：参考图穿戴优先，清理 manualTags 中的冲突旧词 ──
+    if (BAREFOOT_TOKENS.has(key)) {
+      for (const t of input.manualTags) {
+        const k = normalizeKey(t)
+        if (SHOE_TOKENS.has(k)) {
+          obsoleteManualTags.push(t)
+          occupied.delete(k)
+        }
+      }
+      const remainingShoes = [...occupied].some(t => SHOE_TOKENS.has(t))
+      if (remainingShoes && input.replaceOutfit === false) {
+        conflict(key, '穿戴状态', '赤脚与当前穿鞋状态冲突')
+        continue
+      }
+    }
+    if (SHOE_TOKENS.has(key)) {
+      for (const t of input.manualTags) {
+        const k = normalizeKey(t)
+        if (BAREFOOT_TOKENS.has(k)) {
+          obsoleteManualTags.push(t)
+          occupied.delete(k)
+        }
+      }
+      const remainingBarefoot = [...occupied].some(t => BAREFOOT_TOKENS.has(t))
+      if (remainingBarefoot) {
+        conflict(key, '穿戴状态', '穿鞋与当前赤脚状态冲突')
+        continue
+      }
+    }
+
+    // ── 嘴部表情互斥 ──
+    if (key === 'closed_mouth') {
+      if (input.manualTags.has('open_mouth')) {
+        obsoleteManualTags.push('open_mouth')
+        occupied.delete('open_mouth')
+      } else if (occupied.has('open_mouth')) {
+        conflict(key, '面部表情', '闭嘴与当前张嘴表情冲突')
+        continue
+      }
+    }
+    if (key === 'open_mouth') {
+      if (input.manualTags.has('closed_mouth')) {
+        obsoleteManualTags.push('closed_mouth')
+        occupied.delete('closed_mouth')
+      } else if (occupied.has('closed_mouth')) {
+        conflict(key, '面部表情', '张嘴与当前闭嘴表情冲突')
+        continue
+      }
+    }
+
     const hit = mutualGroupWithCategory(key)
     if (hit) {
-      const prior = [...occupied].map(mutualGroupWithCategory).filter(value => value?.category === hit.category)
       if (hit.category === 'outfit') {
         if (incomingOutfit && incomingOutfit !== hit.group) {
           conflict(key, hit.label, `反推结果包含多套服装，已优先采用「${incomingOutfit}」`)
           continue
         }
         incomingOutfit = hit.group
-      }
-      const foreign = prior.find(value => value?.group !== hit.group)
-      if (foreign) {
-        if (hit.category === 'outfit' && input.replaceOutfit !== false) {
-          outfitReplacement.push(key)
-          replacedOutfitGroup = foreign.group
+      } else {
+        const priorIncoming = incomingGroupByCat.get(hit.category)
+        if (priorIncoming && priorIncoming !== hit.group) {
+          conflict(key, hit.label, `反推结果包含多个${hit.label}，已优先还原首选「${priorIncoming}」`)
           continue
         }
-        conflict(key, hit.label, `${hit.label}冲突：反推出「${hit.group}」，当前已定为「${foreign.group}」`)
-        continue
+        incomingGroupByCat.set(hit.category, hit.group)
+      }
+
+      const prior = [...occupied].map(mutualGroupWithCategory).filter(value => value?.category === hit.category)
+      const foreign = prior.find(value => value?.group !== hit.group)
+
+      if (foreign) {
+        if (hit.category === 'outfit') {
+          if (input.replaceOutfit !== false) {
+            outfitReplacement.push(key)
+            replacedOutfitGroup = foreign.group
+            continue
+          } else {
+            conflict(key, hit.label, `${hit.label}冲突：反推出「${hit.group}」，当前已定为「${foreign.group}」`)
+            continue
+          }
+        } else if (hit.category === 'pose' || hit.category === 'viewpoint' || hit.category === 'angle') {
+          // 姿势、视角、拍摄角度：参考图动作构图优先！最大化还原上传图片！
+          for (const t of input.manualTags) {
+            const match = mutualGroupWithCategory(t)
+            if (match?.category === hit.category && match.group !== hit.group) {
+              obsoleteManualTags.push(t)
+              occupied.delete(normalizeKey(t))
+            }
+          }
+          for (const occ of [...occupied]) {
+            const match = mutualGroupWithCategory(occ)
+            if (match?.category === hit.category && match.group !== hit.group) {
+              occupied.delete(occ)
+            }
+          }
+          if (!restorations.some(r => r.includes(hit.label))) {
+            restorations.push(`已还原参考图${hit.label}「${hit.group}」（替换原「${foreign.group}」）`)
+          }
+        } else {
+          conflict(key, hit.label, `${hit.label}冲突：反推出「${hit.group}」，当前已定为「${foreign.group}」`)
+          continue
+        }
       }
     }
     accepted.push(key)
@@ -193,7 +384,7 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
       if (mutualGroupWithCategory(accepted[i])?.group === incomingOutfit) outfitReplacement.unshift(...accepted.splice(i, 1))
     }
   }
-  return { accepted, duplicates, conflicts, filtered, outfitReplacement, replacedOutfitGroup }
+  return { accepted, duplicates, conflicts, filtered, outfitReplacement, replacedOutfitGroup, obsoleteManualTags, restorations }
 }
 
 /**

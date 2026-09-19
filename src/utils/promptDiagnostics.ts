@@ -58,13 +58,77 @@ const WEATHER_GROUPS: Array<{ name: string; tokens: string[] }> = [
   { name: '晴天', tokens: ['clear_sky', 'sunny', 'sunshine', 'clear_weather'] },
 ]
 
+/** 主体姿势互斥：站姿 vs 坐姿 vs 躺姿 vs 跪姿 vs 蹲姿 */
+export const POSE_GROUPS: Array<{ name: string; tokens: string[] }> = [
+  { name: '站姿', tokens: ['standing', 'standing_up', 'standing_split'] },
+  { name: '坐姿', tokens: ['sitting', 'sitting_on_chair', 'sitting_on_bed', 'sitting_on_floor', 'sitting_on_ground', 'seiza', 'lotus_position', 'cross-legged'] },
+  { name: '躺姿', tokens: ['lying', 'lying_on_back', 'lying_on_side', 'lying_on_stomach'] },
+  { name: '跪姿', tokens: ['kneeling', 'all_fours'] },
+  { name: '蹲姿', tokens: ['squatting'] },
+]
+
+/** 视角朝向互斥：正面 vs 背面 vs 侧面 */
+export const VIEWPOINT_GROUPS: Array<{ name: string; tokens: string[] }> = [
+  { name: '正面视角', tokens: ['front_view', 'straight-on'] },
+  { name: '背面视角', tokens: ['back_view', 'from_behind', 'turned_back', 'looking_back'] },
+  { name: '侧面视角', tokens: ['profile', 'from_side'] },
+]
+
+/** 拍摄角度互斥：俯拍 vs 仰拍 */
+export const ANGLE_GROUPS: Array<{ name: string; tokens: string[] }> = [
+  { name: '俯拍视角', tokens: ['from_above', 'high_angle'] },
+  { name: '仰拍视角', tokens: ['from_below', 'low_angle'] },
+]
+
+/** 空间环境互斥：室内 vs 室外 */
+export const ENVIRONMENT_GROUPS: Array<{ name: string; tokens: string[] }> = [
+  { name: '室内', tokens: ['indoors', 'indoor'] },
+  { name: '室外', tokens: ['outdoors', 'outdoor'] },
+]
+
+export const FACE_CLOSEUP_TOKENS: ReadonlySet<string> = new Set([
+  'face_focus', 'extreme_close_up', 'close_up_detail', 'macro', 'upper_face', 'close_up',
+])
+
+export const FOOTWEAR_AND_LEG_TOKENS: ReadonlySet<string> = new Set([
+  'boots', 'shoes', 'sneakers', 'heels', 'sandals', 'socks', 'stockings',
+  'thighhighs', 'thigh_highs', 'over_knee_socks', 'knee_socks', 'tights',
+  'pantyhose', 'leggings', 'footwear', 'barefoot', 'bare_feet', 'feet',
+  'high_heels', 'loafers', 'slippers',
+])
+
+export const SHOE_TOKENS: ReadonlySet<string> = new Set([
+  'boots', 'shoes', 'sneakers', 'heels', 'sandals', 'high_heels', 'loafers', 'slippers',
+])
+
+export const BAREFOOT_TOKENS: ReadonlySet<string> = new Set([
+  'barefoot', 'bare_feet',
+])
+
+export const CLOSED_EYES_TOKENS: ReadonlySet<string> = new Set([
+  'closed_eyes', 'eyes_closed', 'sleeping',
+])
+
+export const GAZE_AND_EYE_DETAIL_TOKENS: ReadonlySet<string> = new Set([
+  'looking_at_viewer', 'looking_away', 'sparkling_eyes', 'detailed_eyes',
+  'glowing_eyes', 'wide_eyes', 'dilated_pupils', 'sparkling_pupils', 'staring',
+])
+
 function conflictGroups(groups: Array<{ name: string; tokens: string[] }>, tags: string[]): string[] {
   const hit = groups.filter(group => group.tokens.some(token => tags.includes(token)))
   return hit.length > 1 ? hit.map(group => group.name) : []
 }
 
-/** 词条目录级互斥：服装 / 时段 / 天气。UI 层选择新标签时替换同组旧标签。 */
-const MUTUAL_EXCLUSION_GROUPS = [...OUTFIT_FAMILIES, ...TIME_GROUPS, ...WEATHER_GROUPS]
+/** 词条目录级互斥：服装 / 时段 / 天气 / 姿势 / 视角 / 角度 / 环境。 */
+const MUTUAL_EXCLUSION_GROUPS = [
+  ...OUTFIT_FAMILIES,
+  ...TIME_GROUPS,
+  ...WEATHER_GROUPS,
+  ...POSE_GROUPS,
+  ...VIEWPOINT_GROUPS,
+  ...ANGLE_GROUPS,
+  ...ENVIRONMENT_GROUPS,
+]
 
 /** 返回 tag 命中的互斥组名（无则 null） */
 export function mutualGroupOf(tag: string): string | null {
@@ -74,18 +138,26 @@ export function mutualGroupOf(tag: string): string | null {
 }
 
 /** 互斥组类别。 */
-export type MutualGroupCategory = 'outfit' | 'time' | 'weather'
+export type MutualGroupCategory = 'outfit' | 'time' | 'weather' | 'pose' | 'viewpoint' | 'angle' | 'environment'
 
 const CATEGORY_LABEL: Record<MutualGroupCategory, string> = {
   outfit: '服装',
   time: '时段',
   weather: '天气',
+  pose: '姿势',
+  viewpoint: '视角',
+  angle: '拍摄角度',
+  environment: '空间环境',
 }
 
 const MUTUAL_CATEGORY_BY_GROUP: Map<string, MutualGroupCategory> = new Map([
   ...OUTFIT_FAMILIES.map(g => [g.name, 'outfit'] as [string, MutualGroupCategory]),
   ...TIME_GROUPS.map(g => [g.name, 'time'] as [string, MutualGroupCategory]),
   ...WEATHER_GROUPS.map(g => [g.name, 'weather'] as [string, MutualGroupCategory]),
+  ...POSE_GROUPS.map(g => [g.name, 'pose'] as [string, MutualGroupCategory]),
+  ...VIEWPOINT_GROUPS.map(g => [g.name, 'viewpoint'] as [string, MutualGroupCategory]),
+  ...ANGLE_GROUPS.map(g => [g.name, 'angle'] as [string, MutualGroupCategory]),
+  ...ENVIRONMENT_GROUPS.map(g => [g.name, 'environment'] as [string, MutualGroupCategory]),
 ])
 
 export interface MutualGroupHit {

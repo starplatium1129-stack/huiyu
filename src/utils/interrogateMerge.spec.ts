@@ -208,4 +208,99 @@ describe('反推冲突审计回归', () => {
     expect(result.outfitReplacement).toEqual([])
     expect(result.conflicts.map(item => item.tag)).toEqual(['swimsuit'])
   })
+
+  it('姿势最大还原：反推站姿优先采纳，自动将 manualTags 中的旧坐姿列入清理，同批多个姿势优先保留首个', () => {
+    // 1. manualTags 中有 sitting，反推 standing → standing 采纳，sitting 列入淘汰
+    const replaceResult = mergeInterrogatedTags({
+      tags: ['standing', 'smile'],
+      manualTags: new Set(['sitting']),
+      identityTokens: [],
+    })
+    expect(replaceResult.accepted).toEqual(['standing', 'smile'])
+    expect(replaceResult.obsoleteManualTags).toEqual(['sitting'])
+    expect(replaceResult.restorations.some(r => r.includes('姿势'))).toBe(true)
+
+    // 2. 同一批次反推包含多个姿势时，首选置信度最高的姿势，丢弃后续冲突姿势
+    const batch = merge(['sitting', 'standing', 'lying'])
+    expect(batch.accepted).toEqual(['sitting'])
+    expect(batch.conflicts.map(c => c.tag)).toEqual(['standing', 'lying'])
+  })
+
+  it('视线与神态还原：反推闭眼优先采纳，自动清理 manualTags 中的直视词', () => {
+    const eyeResult = mergeInterrogatedTags({
+      tags: ['closed_eyes'],
+      manualTags: new Set(['looking_at_viewer']),
+      identityTokens: [],
+    })
+    expect(eyeResult.accepted).toEqual(['closed_eyes'])
+    expect(eyeResult.obsoleteManualTags).toEqual(['looking_at_viewer'])
+  })
+
+  it('穿戴状态还原：反推赤脚优先采纳，自动清理 manualTags 中的穿鞋词', () => {
+    const barefootResult = mergeInterrogatedTags({
+      tags: ['barefoot'],
+      manualTags: new Set(['boots']),
+      identityTokens: [],
+    })
+    expect(barefootResult.accepted).toEqual(['barefoot'])
+    expect(barefootResult.obsoleteManualTags).toEqual(['boots'])
+  })
+
+  it('镜头可见性：特写镜头下自动忽略脚部与鞋袜部件', () => {
+    const result = mergeInterrogatedTags({
+      tags: ['blush', 'boots', 'thighhighs', 'earrings'],
+      identityTokens: [],
+      manualTags: new Set(),
+      shot: 'close',
+    })
+    expect(result.accepted).toEqual(['blush', 'earrings'])
+    expect(result.conflicts.map(c => c.tag)).toEqual(['boots', 'thighhighs'])
+    expect(result.conflicts.every(c => c.domain === '镜头可见性')).toBe(true)
+  })
+
+  it('视角与拍摄角度还原：反推背面优先采纳，自动清理 manualTags 中的正面视角', () => {
+    const viewResult = mergeInterrogatedTags({
+      tags: ['back_view'],
+      manualTags: new Set(['front_view']),
+      identityTokens: [],
+    })
+    expect(viewResult.accepted).toEqual(['back_view'])
+    expect(viewResult.obsoleteManualTags).toEqual(['front_view'])
+  })
+
+  it('空间环境互斥：室内拒绝室外', () => {
+    const envResult = merge(['outdoors'], ['indoors'])
+    expect(envResult.accepted).toEqual([])
+    expect(envResult.conflicts.some(c => c.tag === 'outdoors' && c.domain === '空间环境')).toBe(true)
+  })
+
+  it('Danbooru 元数据、画质缺陷与多余质量词自动过滤', () => {
+    const result = merge(['watermark', 'rating:safe', 'bad_anatomy', 'masterpiece', 'smile'])
+    expect(result.accepted).toEqual(['smile'])
+    expect(result.filtered).toContain('watermark')
+    expect(result.filtered).toContain('rating:safe')
+    expect(result.filtered).toContain('bad_anatomy')
+    expect(result.filtered).toContain('masterpiece')
+  })
+
+  it('单人物立绘反推保护：有具体场景时自动忽略白底留白背景，无场景时放行', () => {
+    // 1. 有场景（如教室）时，立绘白底词被自动忽略，保护教室环境
+    const inScene = mergeInterrogatedTags({
+      tags: ['white_background', 'simple_background', 'white_dress'],
+      sceneTokens: ['classroom'],
+      manualTags: new Set(),
+      identityTokens: [],
+    })
+    expect(inScene.accepted).toEqual(['white_dress'])
+    expect(inScene.conflicts.map(c => c.tag)).toEqual(['white_background', 'simple_background'])
+
+    // 2. 无场景（纯单人物创作）时，立绘白底词放行
+    const noScene = mergeInterrogatedTags({
+      tags: ['white_background', 'white_dress'],
+      sceneTokens: [],
+      manualTags: new Set(),
+      identityTokens: [],
+    })
+    expect(noScene.accepted).toEqual(['white_background', 'white_dress'])
+  })
 })

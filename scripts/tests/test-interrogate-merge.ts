@@ -122,3 +122,48 @@ test('collectInterrogateContext：studio 用 charPrompt+场景，popular 用角�
   assert.deepEqual(popular.identityTokens, ['frieren', '1girl', 'solo', 'purple_eyes', 'frieren', 'robe', 'white_robe']);
   assert.deepEqual(popular.sceneTokens, ['library', 'sitting']);
 });
+
+test('反推全维度冲突消解与姿势服装最大还原：姿势还原、闭眼眼神、特写可见性与元数据过滤', () => {
+  // 1. 姿势还原：manualTags 中已有 sitting，反推 standing 优先采纳，自动将 sitting 列入淘汰
+  const poseResult = mergeInterrogatedTags({
+    tags: ['standing', 'smile'],
+    manualTags: new Set(['sitting']),
+    identityTokens: NENE_IDENTITY,
+    sceneTokens: [],
+  });
+  assert.deepEqual(poseResult.accepted, ['standing', 'smile']);
+  assert.deepEqual(poseResult.obsoleteManualTags, ['sitting']);
+  assert.ok(poseResult.restorations.some(r => r.includes('姿势')));
+
+  // 2. 闭眼与眼神：反推 closed_eyes 优先采纳，自动将 looking_at_viewer 列入淘汰
+  const eyeResult = mergeInterrogatedTags({
+    tags: ['closed_eyes'],
+    manualTags: new Set(['looking_at_viewer']),
+    identityTokens: NENE_IDENTITY,
+    sceneTokens: [],
+  });
+  assert.deepEqual(eyeResult.accepted, ['closed_eyes']);
+  assert.deepEqual(eyeResult.obsoleteManualTags, ['looking_at_viewer']);
+
+  // 3. 特写镜头可见性：close 镜头拒绝 boots
+  const closeResult = mergeInterrogatedTags({
+    tags: ['boots', 'earrings'],
+    manualTags: new Set(),
+    identityTokens: NENE_IDENTITY,
+    sceneTokens: [],
+    shot: 'close',
+  });
+  assert.deepEqual(closeResult.accepted, ['earrings']);
+  assert.ok(closeResult.conflicts.some(c => c.tag === 'boots' && c.domain === '镜头可见性'));
+
+  // 4. 元数据过滤：watermark / rating:safe 自动过滤
+  const metaResult = mergeInterrogatedTags({
+    tags: ['watermark', 'rating:safe', 'bad_anatomy', 'masterpiece', 'smile'],
+    manualTags: new Set(),
+    identityTokens: [],
+    sceneTokens: [],
+  });
+  assert.deepEqual(metaResult.accepted, ['smile']);
+  assert.ok(metaResult.filtered.includes('watermark'));
+  assert.ok(metaResult.filtered.includes('rating:safe'));
+});

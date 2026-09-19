@@ -689,6 +689,16 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 2026-08-29 需求变更：画师仅来自用户手动选择（artistTags），
   // 蓝图 adultArtistHint 不再自动兜底注入（保持角色原滋原味）。
   const effectiveArtists = (options.artistTags && options.artistTags.length) ? options.artistTags : undefined
+  // 姿势与视角消解：manualTags 中已有明确动作/视角（如反推采纳的站姿）时，
+  // 场景蓝图自带的冲突旧动作（如坐姿）自动让位，确保最大程度还原参考图动作
+  const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
+  const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
+  const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(token => {
+    const hit = mutualGroupWithCategory(token)
+    if (manualPose && hit?.category === 'pose' && hit.group !== manualPose.group) return false
+    if (manualViewpoint && hit?.category === 'viewpoint' && hit.group !== manualViewpoint.group) return false
+    return true
+  })
   const rating = profileRatingTag(profile, { rating: ratingLevel })
   const plan = createPromptPlan({
     profile,
@@ -696,7 +706,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     controls: compositionTokens(exactControls, blueprint),
     artists: effectiveArtists,
     exactTokens: compositionTokens(character.exactTokens || [], blueprint),
-    scenePrompt: compositionTokens(blueprint?.promptTokens || [], blueprint).join(', '),
+    scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
     emotion: emotionTokens,
     camera: shotToken ? [shotToken] : [],
     lighting: [...lightingTokens, ...moodGrammarTokens].length ? [...new Set([...lightingTokens, ...moodGrammarTokens])] : [],

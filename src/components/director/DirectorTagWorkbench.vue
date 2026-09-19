@@ -112,8 +112,7 @@ import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import { confirmAction } from '@/composables/useConfirm'
-import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
-import { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interrogateMerge'
+import { applyInterrogateResult } from '@/composables/prompt/applyInterrogateResult'
 import {
   OUTFIT_BUNDLES,
   OUTFIT_TAG_LABELS,
@@ -185,66 +184,7 @@ async function onInterrogateFile(e: Event) {
     } else {
       interrogateMeta.value = { label: result.engine, title: `引擎：${result.engine}`, fallback: false }
     }
-    if (result.mode === 'caption' && result.caption) {
-      pb.visualDescription = result.caption
-      pb.flash('已反推为自然语言，已填入画面描述（Krea2）')
-      return
-    }
-    // 三重去重（manualTags/身份行/场景行）+ 身份域冲突消解，识别出的角色名单独提示
-    const subject = pb.subject
-    const popularChar = subject.kind === 'popular' ? findCharacter(pb.popularCharacters, subject.characterId) : null
-    const context = collectInterrogateContext(subject.kind === 'popular'
-      ? {
-          kind: 'popular',
-          character: popularChar
-            ? {
-                identityTokens: popularChar.identityTokens,
-                exactTokens: popularChar.exactTokens,
-                outfitTokens: (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
-                aliases: popularChar.aliases,
-              }
-            : null,
-          blueprintTokens: subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId)?.promptTokens ?? [] : [],
-        }
-      : {
-          kind: 'studio',
-          charPrompt: pb.charPrompt,
-          scenePrompt: pb.activeScene?.prompt,
-          sceneTags: pb.activeScene?.tags,
-        })
-    const merged = mergeInterrogatedTags({
-      tags: result.tags || [],
-      manualTags: pb.manualTags,
-      identityTokens: context.identityTokens,
-      sceneTokens: context.sceneTokens,
-    })
-    for (const tag of merged.accepted) pb.toggleManualTag(tag)
-    // 服装跨族：顶替角色默认服装而非追加（追加会被角色服装 tag + 散文淹没，实测）
-    if (subject.kind === 'popular' && merged.outfitReplacement.length) {
-      pb.setOutfitOverride(merged.outfitReplacement, merged.replacedOutfitGroup)
-    }
-    const note = characterConflictNote(result.characterTags, context.identityTokens, context.aliases)
-    const parts: string[] = []
-    if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条${result.model ? '（' + result.model + '）' : ''}`)
-    if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
-    if (merged.filtered.length) parts.push(`已自动过滤打码与审核标签 ${merged.filtered.length} 个`)
-    if (merged.outfitReplacement.length) {
-      const from = merged.replacedOutfitGroup ? `（原${merged.replacedOutfitGroup}）` : ''
-      parts.push(`已用参考图服装顶替角色默认服装${from}：${merged.outfitReplacement.slice(0, 3).join('、')}`)
-    }
-    if (merged.conflicts.length) {
-      // 只列 tag 名（swimsuit）用户看不懂为什么被拦，故优先展示 reason
-      // （含「反推出什么 / 当前是什么 / 怎么改」）。冲突含身份域与互斥组两类。
-      const first = merged.conflicts[0]
-      const detail = merged.conflicts.length === 1
-        ? first.reason
-        : `${first.reason} 等 ${merged.conflicts.length} 项`
-      parts.push(`跳过冲突词条 ${merged.conflicts.length} 个：${detail}`)
-    }
-    if (note) parts.push(note)
-    pb.flash(parts.length ? parts.join('；') : '反推完成，无新增词条')
-    const warning = result.warning
-    if (warning) setTimeout(() => pb.flash(warning), 2600)
+    await applyInterrogateResult(pb, result)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     pb.flash('反推失败：' + msg)

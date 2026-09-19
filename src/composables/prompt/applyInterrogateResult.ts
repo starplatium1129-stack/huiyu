@@ -1,4 +1,4 @@
-import { mutualGroupWithCategory } from '@/utils/promptPolicy'
+import { mutualGroupWithCategory, normalizeKey } from '@/utils/promptPolicy'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 
@@ -45,10 +45,20 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     shot: pb.selections.shot,
     replaceOutfit: subject.kind === 'popular',
   })
-  const next = new Set([...pb.manualTags, ...merged.accepted])
-  // 服装跨族：顶替角色默认服装，而不是追加到 manualTags —— 追加会被角色那 12 个
-  // 服装 tag 与 "She wears ..." 散文淹没，参考图服装根本出不来（2026-08-29 实测）。
-  // 仅 popular 需要：studio（宁宁/夏目）无默认服装注入，反推词直接生效。
+  const next = new Set([...pb.manualTags])
+  // 1. 自动清理与参考图姿势/神态/鞋袜冲突的旧手动词条
+  for (const obsolete of merged.obsoleteManualTags) {
+    next.delete(obsolete)
+    const norm = normalizeKey(obsolete)
+    for (const t of next) {
+      if (normalizeKey(t) === norm) next.delete(t)
+    }
+  }
+  // 2. 注入新采纳的参考图词条（姿势、动作、服饰细节等）
+  for (const acc of merged.accepted) {
+    next.add(acc)
+  }
+  // 3. 服装跨族顶替（popular 模式整体替换 outfit）
   if (subject.kind === 'popular' && merged.outfitReplacement.length) {
     const group = mutualGroupWithCategory(merged.outfitReplacement[0])?.group
     for (const tag of next) { const hit = mutualGroupWithCategory(tag); if (hit?.category === 'outfit' && hit.group !== group) next.delete(tag) }
@@ -57,12 +67,18 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   pb.manualTags = next
   const note = characterConflictNote(characterTags, context.identityTokens, context.aliases)
   const parts: string[] = []
-  if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条，可切人直出`)
-  if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
+  if (merged.restorations.length) {
+    parts.push(merged.restorations.join('；'))
+  }
   if (merged.outfitReplacement.length) {
     const from = merged.replacedOutfitGroup ? `（原${merged.replacedOutfitGroup}）` : ''
-    parts.push(`已用参考图服装顶替角色默认服装${from}：${merged.outfitReplacement.slice(0, 3).join('、')}`)
+    parts.push(`已采用参考图服装顶替角色默认服装${from}：${merged.outfitReplacement.slice(0, 3).join('、')}`)
   }
+  const modelSuffix = typeof (payload as { model?: unknown }).model === 'string' && (payload as { model?: string }).model ? `（${(payload as { model?: string }).model}）` : ''
+  if (merged.accepted.length) parts.push(`已叠加 ${merged.accepted.length} 个参考图词条${modelSuffix}，可切人直出`)
+  if (merged.obsoleteManualTags.length) parts.push(`已自动清理冲突旧词条 ${merged.obsoleteManualTags.length} 个`)
+  if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
+  if (merged.filtered.length) parts.push(`已自动过滤打码与元数据标签 ${merged.filtered.length} 个`)
   if (merged.conflicts.length) {
     // 只列 tag 名（swimsuit）用户看不懂为什么被拦，故优先展示 reason
     // （含「反推出什么 / 当前是什么 / 怎么改」）。冲突含身份域与互斥组两类。
@@ -70,7 +86,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     const detail = merged.conflicts.length === 1
       ? first.reason
       : `${first.reason} 等 ${merged.conflicts.length} 项`
-    parts.push(`跳过冲突词条 ${merged.conflicts.length} 个：${detail}`)
+    parts.push(`跳过身份冲突 ${merged.conflicts.length} 个：${detail}`)
   }
   if (note) parts.push(note)
   pb.flash(parts.length ? parts.join('；') : '反推完成，无新增词条')
