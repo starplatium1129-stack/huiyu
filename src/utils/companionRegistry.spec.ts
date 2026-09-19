@@ -23,6 +23,10 @@ describe('Companion Character Registry (Plan 010 C0/C2)', () => {
     expect(nene?.name).toBe('绫地宁宁')
     expect(nene?.defaultAvatarId).toBe('avatar-nene-default')
 
+    const neneAvatar = getCompanionAvatar('avatar-nene-default')
+    expect(neneAvatar).toBeDefined()
+    expect(neneAvatar?.characterId).toBe('nene')
+
     const natsume = getCompanionCharacter('natsume')
     expect(natsume).toBeDefined()
     expect(natsume?.name).toBe('四季夏目')

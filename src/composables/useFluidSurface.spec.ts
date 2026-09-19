@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { defineComponent, h, ref } from 'vue'
+import { h } from 'vue'
 import {
   useFluidSurface,
   DEFAULT_FLUID_PANEL_SELECTORS,
@@ -53,8 +53,7 @@ describe('useFluidSurface & FluidTransition selectors and motion curves', () => 
     el.className = 'modal-card'
     document.body.appendChild(el)
 
-    let enterDone = false
-    surface.enter(el, () => { enterDone = true })
+    surface.enter(el, () => {})
 
     expect(el.style.opacity).toBeDefined()
     expect(el.style.transform).toBeDefined()
