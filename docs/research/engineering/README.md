@@ -1,6 +1,6 @@
 # 工程研究与复核资料
 
-2026-09-13。以下报告按已核验范围归档，不能把报告交付、文件存在或源码检查当成图片/设备验收。
+以下报告按各自报告日期与已核验范围归档，不能把报告交付、文件存在或源码检查当成图片/设备验收。
 
 | 资料 | 本轮可采纳的内容 | 仍待验证 |
 | --- | --- | --- |
@@ -10,6 +10,7 @@
 | [文案复核](gemini-ui-copy-review.md) / [JSON](gemini-ui-copy-review.json) | 6 项：1 项确认只读提示不匹配、4 项可选建议、1 项误报撤回 | UI 修改与实际使用验证，当前未实施 |
 | [文档证据索引](gemini-doc-evidence-index.md) / [JSON](gemini-doc-evidence-index.json) | 8 份文档的原文、入口和时效核对；撤回假引文 | 不能由历史说明推定当前设备测试通过 |
 | [验收用例](gemini-resource-acceptance.md) / [JSON](gemini-resource-acceptance.json) | 6 项现状与 3 项未来 R1 用例设计，全部明确未执行 | 隔离环境执行及主力机验收 |
+| [GitHub 复用与参考项目调研（2026-09-19）](github-reference-research-2026-09-19.md) | 候选项目、复用边界与 P1–P6 实施顺序；明确先 Spike、再许可/维护状态和门禁 | 尚未正式接入候选依赖；PhotoSwipe、Tag autocomplete、队列/压缩等仍待最小验证与 A/B |
 
 进度与缺口见 [任务状态](gemini-followup-progress.json)。首轮问题记录见 [资产交付复核](gemini-asset-review-2026-09-13.md)。GLM 工程实施见 [W1 复核](glm-w1-review-and-submit-scope.md)。
 
