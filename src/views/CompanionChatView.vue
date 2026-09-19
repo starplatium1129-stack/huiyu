@@ -9,14 +9,14 @@
         <AppearanceButton class="companion-chat-mini" />
         <div class="companion-chat-char-switch" aria-label="切换角色">
           <button
-            v-for="id in CHARACTER_IDS"
-            :key="id"
+            v-for="character in companionCharacters"
+            :key="character.id"
             type="button"
-            :aria-pressed="activeChar === id ? 'true' : 'false'"
-            :class="{ active: activeChar === id }"
-            :title="`切换到${id === 'nene' ? '绫地宁宁' : '四季夏目'}`"
-            @click="switchCharacter(id)"
-          >{{ id === 'nene' ? '宁宁' : '夏目' }}</button>
+            :aria-pressed="activeChar === character.id ? 'true' : 'false'"
+            :class="{ active: activeChar === character.id }"
+            :title="`切换到${character.name}`"
+            @click="switchCharacter(character.id)"
+          >{{ character.shortName }}</button>
         </div>
         <button
           class="companion-chat-mini"
@@ -157,7 +157,11 @@ import { usePolling } from '@/composables/usePolling'
 import { useRouter } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
-import { CHARACTERS } from '@/config/characters'
+import {
+  DEFAULT_COMPANION_CHARACTER_ID,
+  getCompanionCharacterConfig,
+  listCompanionUiCharacters,
+} from '@/utils/companionRegistry'
 import { useChatStorage } from '@/composables/chat/useChatStorage'
 import { useVoiceInput } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
@@ -166,8 +170,7 @@ import { createCompanionBehavior, normalizeCompanionConfig } from '@/utils/compa
 import { COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '@/utils/storageKeys'
 import '@/assets/css/companion.css'
 
-const CHARACTER_IDS = ['nene', 'natsume'] as const
-type CharacterId = (typeof CHARACTER_IDS)[number]
+const companionCharacters = listCompanionUiCharacters()
 
 interface ChatLiveState {
   busy: boolean
@@ -194,9 +197,14 @@ const liveState = reactive<ChatLiveState>({
   ts: 0,
 })
 const activeChar = computed<string>(() =>
-  (liveState.activeChar === 'nene' || liveState.activeChar === 'natsume') ? liveState.activeChar : storage.state.active,
+  getCompanionCharacterConfig(liveState.activeChar) ? liveState.activeChar : storage.state.active,
 )
-const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)
+const currentCharacter = computed(() => {
+  const config = getCompanionCharacterConfig(activeChar.value)
+    || getCompanionCharacterConfig(DEFAULT_COMPANION_CHARACTER_ID)
+  if (!config) throw new Error('No companion character presentation is registered')
+  return config
+})
 
 const inputText = ref('')
 const sending = ref(false)
@@ -280,7 +288,7 @@ function readLive() {
     liveState.busy = Boolean(raw.busy)
     liveState.thinking = Boolean(raw.thinking)
     liveState.speaking = Boolean(raw.speaking)
-    if (typeof raw.activeChar === 'string' && (raw.activeChar === 'nene' || raw.activeChar === 'natsume')) {
+    if (getCompanionCharacterConfig(raw.activeChar)) {
       liveState.activeChar = raw.activeChar
     }
     if (typeof raw.chatReady === 'boolean') liveState.chatReady = raw.chatReady
@@ -317,7 +325,7 @@ function onStop() {
 }
 
 function switchCharacter(id: string) {
-  if (!CHARACTER_IDS.includes(id as CharacterId) || id === activeChar.value) return
+  if (!getCompanionCharacterConfig(id) || id === activeChar.value) return
   if (bridge) {
     void bridge.chatRelay({ command: 'switch-character', character: id }).catch(() => listenerError('角色切换失败，请重试。'))
   } else {

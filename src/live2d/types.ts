@@ -46,6 +46,18 @@ export const NATIVE_CAPABILITY: Live2DCapability = {
   entranceNative: true,
 }
 
+/** Profile subset shared with the native renderer; contains no UI or user data. */
+export interface Live2DRuntimeAdapterConfig {
+  profileId: string
+  mouth?: { id: string; scale: number; range?: [number, number] }
+  blink: readonly string[]
+  focus: readonly string[]
+  emotionParams: Readonly<Record<string, Record<string, number>>>
+  overlaySettle?: { settleMs: number; resetDefaults: Record<string, number> }
+  entranceGroup?: string
+  leaveGroup?: string
+}
+
 /** 统一模型句柄。浏览器实现包装 wl-live2d model，原生实现经桥委托 Rust。 */
 export interface Live2DModelHandle {
   /** 与 wl-live2d 语义一致：模型网格可见性（原生端映射为 overlay 可见性） */
@@ -86,6 +98,8 @@ export interface Live2DConnectOptions {
   canvasHeight: number
   /** 角色 id（原生端决定动作组/情绪映射） */
   character: string
+  /** Validated model-specific bindings compiled from the selected avatar Profile. */
+  adapter?: Live2DRuntimeAdapterConfig
   /** Optional texture downsampling divisor; source atlases remain unchanged. */
   textureScale?: number
 }

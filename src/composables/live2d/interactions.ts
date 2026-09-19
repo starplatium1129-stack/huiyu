@@ -1,38 +1,21 @@
 import { useCompanionAffection } from '@/composables/useCompanionAffection'
-import {
-  INTERACTION_MOTIONS,
-  NATSUME_HIT_AREA_MAP,
-  NATSUME_INTERACTIONS,
-  NATSUME_RESET_PARAMS,
-  type Live2DInteraction,
-} from '@/composables/live2d/constants'
+import type { Live2DInteraction } from '@/composables/live2d/constants'
 import type { Live2DCtx, Live2DStatus } from '@/composables/live2d/context'
 import { prefersReducedMotion } from '@/composables/live2d/context'
 import { isRecord } from '@/composables/live2d/catalog'
+import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 
 /** 分区带映射：舞台归一化坐标（x/y ∈ [0,1]）→ 互动动作。 */
 export function resolveStageInteraction(character: string, x: number, y: number): Live2DInteraction | null {
-  // 夏目：坐姿咖啡馆系模型，按 头/手/胸/裙/腿/脚 分区
-  if (character === 'natsume') {
-    if (y < 0.14) return NATSUME_INTERACTIONS.Head
-    if (y < 0.26) return NATSUME_INTERACTIONS.Hand
-    if (y < 0.38) return NATSUME_INTERACTIONS.Chest
-    if (y < 0.55) return NATSUME_INTERACTIONS.Skirt
-    if (y < 0.72) return NATSUME_INTERACTIONS.Leg
-    return NATSUME_INTERACTIONS.Foot
-  }
-  // These zones follow the full visible model after the canvas is fitted
-  // into the stage: face, chest, skirt, then exposed legs/body.
-  if (y < 0.12) return INTERACTION_MOTIONS.Hair
-  if (y < 0.19) return INTERACTION_MOTIONS.Head
-  if (y < 0.29) return INTERACTION_MOTIONS.Face
-  // Chest motions are intentional, reactive source motions. Keep their
-  // hit bands tight so shoulder, arm, waist and ordinary body taps do not
-  // accidentally invoke them.
-  if (y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50) return INTERACTION_MOTIONS.LeftChest
-  if (y >= 0.29 && y < 0.42 && x >= 0.50 && x <= 0.60) return INTERACTION_MOTIONS.RightChest
-  if (y >= 0.42 && y < 0.57) return INTERACTION_MOTIONS.Skirt
-  return INTERACTION_MOTIONS.Body
+  const profile = resolveCompanionAvatar(character)?.profile
+  if (!profile?.interactions) return null
+  const zone = profile.stageHitZones?.find(candidate => {
+    const maxX = candidate.maxX ?? 1
+    return y >= candidate.minY && y < candidate.maxY
+      && x >= (candidate.minX ?? 0) && (candidate.maxXInclusive || maxX === 1 ? x <= maxX : x < maxX)
+  })
+  if (zone) return profile.interactions[zone.interactionId] ?? null
+  return profile.defaultInteractionId ? profile.interactions[profile.defaultInteractionId] ?? null : null
 }
 
 /**
@@ -43,12 +26,13 @@ export function resolveStageInteraction(character: string, x: number, y: number)
  * 具体分区优先，外框只在没有其他分区命中时兜底（点到角色外的框空白处）。
  */
 export function resolveHitAreaInteraction(character: string, areas: string[]): Live2DInteraction | null {
-  const ordered = character === 'natsume'
-    ? [...areas.filter(area => area !== '外框'), ...areas.filter(area => area === '外框')]
-    : areas
+  const profile = resolveCompanionAvatar(character)?.profile
+  if (!profile?.interactions) return null
+  const fallbacks = new Set(profile.hitAreaFallbacks || [])
+  const ordered = [...areas.filter(area => !fallbacks.has(area)), ...areas.filter(area => fallbacks.has(area))]
   return ordered
-    .map(area => (character === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
-    .map(area => (character === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
+    .map(area => profile.hitAreaMap?.[area] || area)
+    .map(area => profile.interactions?.[area])
     .find((item): item is Live2DInteraction => Boolean(item)) ?? null
 }
 
@@ -83,7 +67,7 @@ export function createInteractionController(
     return resolveStageInteraction(ctx.character.value, x, y)
   }
 
-  function interactionAt(event: MouseEvent): Live2DInteraction {
+  function interactionAt(event: MouseEvent): Live2DInteraction | null {
     // The wl-live2d canvas is scaled and positioned inside the portrait card,
     // so its hitTest coordinates do not line up with the visible DOM stage.
     // Use the measured stage bands for user-facing semantics.
@@ -95,12 +79,10 @@ export function createInteractionController(
     const hitAreas = point && typeof ctx.model?.hitTest === 'function'
       ? ctx.model.hitTest(point.x, point.y)
       : []
-    const interaction = hitAreas
-      .map(area => (ctx.character.value === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
-      .map(area => (ctx.character.value === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
-      .find((item): item is Live2DInteraction => Boolean(item))
+    const interaction = resolveHitAreaInteraction(ctx.character.value, hitAreas)
     if (interaction) return interaction
-    return ctx.character.value === 'natsume' ? NATSUME_INTERACTIONS.Head : INTERACTION_MOTIONS.Head
+    const fallbackId = ctx.adapter?.defaultInteractionId
+    return (fallbackId && ctx.adapter?.interactions[fallbackId]) || null
   }
 
   function stopAudio() {
@@ -160,9 +142,10 @@ export function createInteractionController(
    * 2026-08-16 实证），统一写 0 会让 -1 组的参数落在"显示区间"，叠层
    * 半透明残留成重影。
    */
-  function resetNatsumeOverlayParams() {
-    if (ctx.character.value !== 'natsume' || !ctx.model || ctx.session?.capability.parameterOverride === false) return
-    for (const { id, value } of NATSUME_RESET_PARAMS) {
+  function resetOverlayParams() {
+    const overlay = ctx.adapter?.overlaySettle
+    if (!overlay || !ctx.model || ctx.session?.capability.parameterOverride === false) return
+    for (const [id, value] of Object.entries(overlay.resetDefaults)) {
       try { ctx.model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
     }
   }
@@ -174,15 +157,16 @@ export function createInteractionController(
    * 此后 applyParameters 每帧向隐藏态 smoothstep 缓动。运行库没有读参数
    * 接口时退回一次性硬写（旧行为）。原生端不适用（参数由 Rust 侧回落）。
    */
-  function beginNatsumeOverlaySettle() {
-    if (ctx.character.value !== 'natsume' || !ctx.model || ctx.session?.capability.parameterOverride === false) return
+  function beginOverlaySettle() {
+    const overlay = ctx.adapter?.overlaySettle
+    if (!overlay || !ctx.model || ctx.session?.capability.parameterOverride === false) return
     const read = ctx.model.getParameterValueById
     if (typeof read !== 'function') {
-      resetNatsumeOverlayParams()
+      resetOverlayParams()
       return
     }
     const entries: Array<{ id: string; from: number; to: number }> = []
-    for (const { id, value } of NATSUME_RESET_PARAMS) {
+    for (const [id, value] of Object.entries(overlay.resetDefaults)) {
       const current = read.call(ctx.model, id)
       if (typeof current === 'number' && Number.isFinite(current)) {
         entries.push({ id, from: current, to: value })
@@ -253,9 +237,7 @@ export function createInteractionController(
     }
     if (ctx.nativeHitTestUnsubscribe) { ctx.nativeHitTestUnsubscribe(); ctx.nativeHitTestUnsubscribe = null }
     if (ctx.nativeMotionFailedUnsubscribe) { ctx.nativeMotionFailedUnsubscribe(); ctx.nativeMotionFailedUnsubscribe = null }
-    ctx.interactionHint.value = ctx.character.value === 'natsume'
-      ? '移动鼠标可跟随视线；点击头部、手、胸前、裙子、腿或脚可互动'
-      : '移动鼠标可跟随视线；点击呆毛、头部、脸、身体、两侧或裙摆可互动'
+    ctx.interactionHint.value = ctx.adapter?.interactionHint || '当前模型未配置点击互动'
     // 原生 overlay 位于透明 WebView 下方且不接收鼠标。舞台 DOM 保持完整交互，
     // 点击坐标归一化后交给 Rust 做 Cubism 原生 HitArea 命中。
     if (ctx.session?.capability.hitTestNative) {
@@ -284,12 +266,13 @@ export function createInteractionController(
     }
     ctx.pointerClickHandler = (event) => {
       if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
-      playInteraction(interactionAt(event))
+      const interaction = interactionAt(event)
+      if (interaction) playInteraction(interaction)
     }
     ctx.stageEl.addEventListener('click', ctx.pointerClickHandler)
   }
 
-  return { bind, stopAudio, beginNatsumeOverlaySettle }
+  return { bind, stopAudio, beginOverlaySettle }
 }
 
 function errorMessage(error: unknown): string {

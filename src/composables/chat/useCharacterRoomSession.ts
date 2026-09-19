@@ -1,6 +1,9 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { CHARACTERS } from '@/config/characters'
+import {
+  DEFAULT_COMPANION_CHARACTER_ID,
+  getCompanionCharacterConfig,
+} from '@/utils/companionRegistry'
 import { useChatConversation } from '@/composables/chat/useChatConversation'
 import { useChatStorage, type ChatMessage } from '@/composables/chat/useChatStorage'
 import { useChatProvider } from '@/composables/chat/useChatProvider'
@@ -45,7 +48,7 @@ export function useCharacterRoomSession() {
   const chatListRef = ref<HTMLElement>()
   const characterStageRef = ref<CharacterStageHandle>()
 
-  const activeChar = ref('nene')
+  const activeChar = ref(DEFAULT_COMPANION_CHARACTER_ID)
   const busy = ref(false)
   const voiceActive = ref(false)
   const chatError = ref('')
@@ -126,12 +129,17 @@ export function useCharacterRoomSession() {
   volume.value = storage.state.settings.volume != null ? storage.state.settings.volume : 80
   activeChar.value = storage.state.active
   const requestedCharacter = typeof route.query.character === 'string' ? route.query.character : ''
-  if (requestedCharacter === 'nene' || requestedCharacter === 'natsume') {
+  if (getCompanionCharacterConfig(requestedCharacter)) {
     activeChar.value = requestedCharacter
     storage.setActive(requestedCharacter)
   }
 
-  const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)
+  const currentCharacter = computed(() => {
+    const config = getCompanionCharacterConfig(activeChar.value)
+      || getCompanionCharacterConfig(DEFAULT_COMPANION_CHARACTER_ID)
+    if (!config) throw new Error('No companion character presentation is registered')
+    return config
+  })
 
   const voice = useVoice({
     enabled: () => autoVoice.value,
@@ -236,7 +244,7 @@ export function useCharacterRoomSession() {
   }
 
   function memoryCharacter(value = activeChar.value): ChatMemoryCharacter {
-    return value === 'natsume' ? 'natsume' : 'nene'
+    return getCompanionCharacterConfig(value) ? value : DEFAULT_COMPANION_CHARACTER_ID
   }
 
   const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()])
@@ -305,7 +313,7 @@ export function useCharacterRoomSession() {
     reasoning,
     userProfile,
     recallMemories: (character, query) => {
-      if (character !== 'nene' && character !== 'natsume') return []
+      if (!getCompanionCharacterConfig(character)) return []
       if (!characterSettingCards().length) void loadCharacterSettingCards().catch(() => {})
       // 角色设定记忆（2026-08-28 最小闭环）：从 data/characters.json 既有档案派生
       // 的角色设定卡，优先于会话事实注入——LLM 先对齐人设，再结合长期记忆。
@@ -428,13 +436,14 @@ export function useCharacterRoomSession() {
   }
 
   function switchCharacter(char: string) {
-    if (!CHARACTERS[char] || char === activeChar.value) return
+    const nextCharacter = getCompanionCharacterConfig(char)
+    if (!nextCharacter || char === activeChar.value) return
     if (busy.value) abortCurrentRequest(true)
     storage.setDraft(activeChar.value, inputText.value)
     voice.stop({ preserveMessageAudio: true, silent: true })
     storage.setActive(char)
     activeChar.value = char
-    document.documentElement.style.setProperty('--character-accent', CHARACTERS[char].accent)
+    document.documentElement.style.setProperty('--character-accent', nextCharacter.accent)
     inputText.value = storage.draft(char)
     updateVoiceCapability()
     setError('')

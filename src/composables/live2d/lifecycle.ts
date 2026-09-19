@@ -1,8 +1,5 @@
-import {
-  findLive2DOutfit,
-  findNatsumeOutfit,
-} from '@/config/characters'
 import { selectLive2DBackend } from '@/live2d/createBackend'
+import { compileAdapterProfile } from '@/live2d/adapterProfile'
 import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
 import type {
   Live2DBackendKind,
@@ -13,12 +10,14 @@ import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { live2DTextureScale, normalizeLive2DQuality } from '@/live2d/quality'
 import { isStageHidden, prefersReducedMotion, type Live2DCtx, type Live2DStatus } from '@/composables/live2d/context'
 import {
-  ENTRANCE_GROUP,
   ENTRANCE_MAX_MS,
-  LEAVE_GROUP,
   LEAVE_PLAY_MS,
 } from '@/composables/live2d/constants'
 import { isRecord, readLive2DCatalog, type Live2DModelInfo } from '@/composables/live2d/catalog'
+import {
+  normalizeCompanionOutfit,
+  resolveCompanionAvatar,
+} from '@/utils/companionRegistry'
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
@@ -63,6 +62,18 @@ export function createLifecycleController(
   let runtimeGeneration = 0
   let finishPendingLoad: ((value: boolean) => void) | null = null
   let pendingConnection: AbortController | null = null
+  function selectAdapter(char: string, backendKind = ctx.backendKind.value): boolean {
+    const resolved = resolveCompanionAvatar(char)
+    if (!resolved) {
+      ctx.adapter = null
+      ctx.adapterReport.value = null
+      return false
+    }
+    const compiled = compileAdapterProfile(resolved.profile, backendKind)
+    ctx.adapterReport.value = compiled.ok ? compiled.adapter.report : compiled.report
+    ctx.adapter = compiled.ok ? compiled.adapter : null
+    return compiled.ok
+  }
   function scheduleNativeStoppedRetry() {
     if (ctx.destroyed.value || !ctx.enabled.value) return
     if (nativeRetryTimer) return
@@ -86,11 +97,13 @@ export function createLifecycleController(
     // wl-live2d 只接受 CSS selector，这里保证宿主节点有稳定 id 可选中
     if (!ctx.hostEl.id) ctx.hostEl.id = 'live2dHost'
     ctx.hostSelector = '#' + ctx.hostEl.id
-    ctx.character.value = char || ctx.character.value
+    if (!resolveCompanionAvatar(char)) {
+      setState('static', '静态立绘', '角色或外观未在陪伴注册表登记')
+      return
+    }
+    ctx.character.value = char
     controllers.pointerGaze.bind()
-    ctx.outfit.value = char === 'natsume'
-      ? findNatsumeOutfit(options.outfit || ctx.outfit.value).id
-      : findLive2DOutfit(options.outfit || ctx.outfit.value).id
+    ctx.outfit.value = normalizeCompanionOutfit(char, options.outfit || ctx.outfit.value)
     setState('checking', '检查 Live2D…')
     try {
       const catalog = readLive2DCatalog(await mediaStatusApi.getLive2DStatus())
@@ -100,6 +113,10 @@ export function createLifecycleController(
       ctx.backend = selection.backend
       ctx.backendKind.value = selection.effectiveKind
       ctx.backendFallback.value = selection.fallbackReason
+      if (!selectAdapter(char, selection.effectiveKind)) {
+        setState('static', '静态立绘', `Live2D 适配配置不支持 ${selection.effectiveKind} 后端`)
+        return
+      }
       if (ctx.backendFallback.value) {
         if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
         console.warn('[live2d]', ctx.backendFallback.value)
@@ -121,12 +138,31 @@ export function createLifecycleController(
   }
 
   function modelInfo(char: string) {
-    return ctx.catalog?.models?.[char] ?? null
+    const catalogInfo = ctx.catalog?.models?.[char]
+    const registered = resolveCompanionAvatar(char)
+    return catalogInfo && registered
+      ? { ...catalogInfo, modelUrl: registered.avatar.modelPath }
+      : null
   }
 
   async function setCharacter(char: string) {
     if (ctx.destroyed.value) return
+    if (!resolveCompanionAvatar(char)) {
+      destroyRuntime()
+      ctx.adapter = null
+      ctx.adapterReport.value = null
+      setVisible(false)
+      ctx.interactionHint.value = ''
+      setState('static', '静态立绘', '角色或外观未在陪伴注册表登记')
+      return
+    }
     ctx.character.value = char
+    if (!selectAdapter(char)) {
+      setVisible(false)
+      ctx.interactionHint.value = ''
+      setState('static', '静态立绘', `Live2D 适配配置不支持 ${ctx.backendKind.value} 后端`)
+      return
+    }
     const info = modelInfo(char)
     if (!info?.available || !info?.modelUrl) {
       destroyRuntime()
@@ -189,8 +225,9 @@ export function createLifecycleController(
     ctx.interactionHint.value = ''
     // 告别动作：先播一小段 Leave 再销毁，避免"切换回静态立绘"瞬间硬切。
     // 减少动态效果或动作不可用时直接销毁；告别期间再次点击可立即重载。
-    const playable = ctx.ready.value && ctx.model && typeof ctx.model.motion === 'function' && !prefersReducedMotion()
-      ? ctx.model.motion(LEAVE_GROUP, undefined, 3)
+    const leaveGroup = ctx.adapter?.leaveGroup
+    const playable = leaveGroup && ctx.ready.value && ctx.model && typeof ctx.model.motion === 'function' && !prefersReducedMotion()
+      ? ctx.model.motion(leaveGroup, undefined, 3)
       : null
     const started = isCatchable(playable) ? playable.then((v: unknown) => v === true).catch(() => false) : Promise.resolve(playable === true)
     void started.then((ok: boolean) => {
@@ -253,6 +290,7 @@ export function createLifecycleController(
             canvasWidth: info.canvas?.width || 420,
             canvasHeight: info.canvas?.height || 610,
             character: char,
+            adapter: ctx.adapter || undefined,
           })
         } catch (e) {
           if (!isCurrent()) { finish(false); return }
@@ -262,6 +300,10 @@ export function createLifecycleController(
             const selection = selectLive2DBackend('browser')
             ctx.backend = selection.backend
             ctx.backendKind.value = 'browser'
+            if (!selectAdapter(char, 'browser')) {
+              fallback('Live2D 适配失败', '当前 Profile 不支持原生回退后的浏览器后端')
+              finish(false); return
+            }
             ctx.backendFallback.value = `原生 Live2D 初始化失败，已回退到浏览器渲染：${message}`
             if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
             console.warn('[live2d]', ctx.backendFallback.value)
@@ -274,6 +316,7 @@ export function createLifecycleController(
                 canvasWidth: info.canvas?.width || 420,
                 canvasHeight: info.canvas?.height || 610,
                 character: char,
+                adapter: ctx.adapter || undefined,
               })
             } catch (e2) {
               if (isCurrent()) fallback('Live2D 初始化失败', errorMessage(e2))
@@ -355,13 +398,14 @@ export function createLifecycleController(
     if (typeof motionFn !== 'function') return
     // 浏览器路径：从 wl-live2d 的 motionManager.definitions 探测 Start 组
     // （原生后端由 Rust 接管入场动作，不会走到这里）。
-    if (!(ctx.model.hasMotionGroup?.(ENTRANCE_GROUP) ?? false)) return
+    const entranceGroup = ctx.adapter?.entranceGroup
+    if (!entranceGroup || !(ctx.model.hasMotionGroup?.(entranceGroup) ?? false)) return
     // 模型刚加载完成时 Start 组的动作可能还在预加载，startRandomMotion 会
     // 因组内全部未就绪直接返回 false；这里重试直到登场动作真正启动。
     let attempts = 0
     const tryStart = () => {
       if (attempts++ > 40 || generation !== runtimeGeneration || !ctx.enabled.value || ctx.destroyed.value || !ctx.model) return
-      const result = motionFn.call(ctx.model, ENTRANCE_GROUP, undefined, 2)
+      const result = motionFn.call(ctx.model, entranceGroup, undefined, 2)
       const started = isCatchable(result)
         ? result.then((v: unknown) => v === true).catch(() => false)
         : Promise.resolve(result === true)
@@ -448,15 +492,13 @@ export function createLifecycleController(
   }
 
   async function setOutfit(id: string): Promise<boolean> {
-    // 夏目当前只有源模型自带的咖啡店制服，没有可切换衣装；模型无
-    // Expressions，不得调用 expression（衣装参数由作者 motion 所有）。
-    if (ctx.character.value === 'natsume') {
-      const target = findNatsumeOutfit(id)
-      ctx.outfit.value = target.id
-      return true
-    }
-    const target = findLive2DOutfit(id)
+    const targetId = normalizeCompanionOutfit(ctx.character.value, id)
+    const avatar = resolveCompanionAvatar(ctx.character.value)?.avatar
+    const target = avatar?.outfits?.find(outfit => outfit.id === targetId)
+    if (!target) return false
     ctx.outfit.value = target.id
+    // 无 expression 的外观由模型本身或作者 motion 管理，不伪造换装能力。
+    if (!target.expression) return true
     if (!ctx.ready.value || !ctx.model?.visible) return true
     if (typeof ctx.model.expression !== 'function') {
       setState('degraded', 'Live2D 换装暂不可用', '当前运行库未提供 Expression 接口', true)
@@ -536,6 +578,8 @@ export function createLifecycleController(
   function destroy() {
     ctx.lifecycleToken += 1
     ctx.destroyed.value = true; ctx.enabled.value = false; destroyRuntime()
+    ctx.adapter = null
+    ctx.adapterReport.value = null
     controllers.layoutFit.resetWindowBounds()
     ctx.resizeObserver?.disconnect()
     if (ctx.onResize) window.removeEventListener('resize', ctx.onResize)

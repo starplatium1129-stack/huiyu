@@ -1,19 +1,13 @@
 import type { Live2DCtx } from '@/composables/live2d/context'
 import { prefersReducedMotion } from '@/composables/live2d/context'
-import {
-  BLINK_PARAMS,
-  MOUTH_PARAMS,
-  NATSUME_RESET_PARAMS,
-  OVERLAY_SETTLE_MS,
-  POINTER_FOCUS_PARAMS,
-} from '@/composables/live2d/constants'
+import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 
-export function selectMouthParams(character: string): { id: string; scale: number } {
-  return MOUTH_PARAMS[character] ?? MOUTH_PARAMS.nene
+export function selectMouthParams(character: string): { id: string; scale: number } | undefined {
+  return resolveCompanionAvatar(character)?.profile.parameterBindings.mouth
 }
 
 export function selectBlinkParams(character: string): readonly string[] | undefined {
-  return BLINK_PARAMS[character]
+  return resolveCompanionAvatar(character)?.profile.parameterBindings.blink
 }
 
 /**
@@ -38,7 +32,7 @@ export function createParameterFrame(
       // blinkScheduler / MOUTH_PARAMS 参数 hack 全部退役。情绪推进只有一个
       // 时钟（nativeEmotionTick 的 requestAnimationFrame），口型回调不得再次
       // update emotionRuntime，否则同一帧会被推进两次。
-      if (ctx.speaking) ctx.session.sendMouthLevel?.(ctx.mouthValue.value)
+      if (ctx.speaking && ctx.adapter?.mouth) ctx.session.sendMouthLevel?.(ctx.mouthValue.value)
       if (ctx.stageEl) ctx.stageEl.dataset.blink = '1.000'
       return
     }
@@ -46,8 +40,8 @@ export function createParameterFrame(
       // Cubism motion/physics run before this event. Write with full weight so
       // their idle values cannot overwrite the audio amplitude or emotion.
       if (ctx.speaking) {
-        const mouth = selectMouthParams(ctx.character.value)
-        ctx.model.setParameterValueById(mouth.id, ctx.mouthValue.value * mouth.scale, 1)
+        const mouth = ctx.adapter?.mouth
+        if (mouth) ctx.model.setParameterValueById(mouth.id, ctx.mouthValue.value * mouth.scale, 1)
       }
       // 覆盖式眨眼：双眼参数永远写同一个值（1=睁、0=闭），修掉作者眼曲线
       // 左右眼不同步造成的"单眼 Wink"，并保证定时眨眼（见 blinkScheduler）。
@@ -56,7 +50,9 @@ export function createParameterFrame(
       // Cubism 在本帧参数钩子之前更新动作状态。优先按实际结束交还控制权，
       // 避免短变体结束后仍按整组最长时长放行叠层；旧运行库保留计时兜底。
       const activeGroup = ctx.model.getActiveMotionGroup?.()
-      const inEntrance = now < ctx.entranceUntil && (activeGroup === undefined || activeGroup === 'Start')
+      const entranceGroup = ctx.adapter?.entranceGroup
+      const inEntrance = Boolean(entranceGroup && now < ctx.entranceUntil
+        && (activeGroup === undefined || activeGroup === entranceGroup))
       if (!inEntrance) ctx.entranceUntil = 0
       if (ctx.activeInteraction && activeGroup !== undefined && activeGroup !== ctx.activeInteraction) {
         ctx.activeInteraction = ''
@@ -67,8 +63,8 @@ export function createParameterFrame(
         if (ctx.stageEl) ctx.stageEl.dataset.blink = '1.000'
       } else {
         const blinkValue = ctx.blinkScheduler.update(dt)
-        const blinkIds = selectBlinkParams(ctx.character.value)
-        if (blinkIds) {
+        const blinkIds = ctx.adapter?.blink
+        if (blinkIds?.length) {
           for (const id of blinkIds) ctx.model.setParameterValueById(id, blinkValue, 1)
         }
         if (ctx.stageEl) ctx.stageEl.dataset.blink = blinkValue.toFixed(3)
@@ -87,20 +83,21 @@ export function createParameterFrame(
       const overlayByMotion = inEntrance || interactionPlaying
       if (overlayByMotion) {
         ctx.overlaySettle = null
-      } else if (ctx.overlayWasByMotion && ctx.character.value === 'natsume') {
+      } else if (ctx.overlayWasByMotion && ctx.adapter?.overlaySettle) {
         hooks.beginOverlaySettle()
       }
       ctx.overlayWasByMotion = overlayByMotion
-      if (!overlayByMotion && ctx.character.value === 'natsume') {
+      const overlay = ctx.adapter?.overlaySettle
+      if (!overlayByMotion && overlay) {
         if (ctx.overlaySettle) {
-          const t = Math.min(1, (now - ctx.overlaySettle.start) / OVERLAY_SETTLE_MS)
+          const t = Math.min(1, (now - ctx.overlaySettle.start) / overlay.settleMs)
           const eased = t * t * (3 - 2 * t)
           for (const { id, from, to } of ctx.overlaySettle.entries) {
             try { ctx.model.setParameterValueById(id, from + (to - from) * eased, 1) } catch { /* 参数缺失忽略 */ }
           }
           if (t >= 1) ctx.overlaySettle = null
         } else {
-          for (const { id, value } of NATSUME_RESET_PARAMS) {
+          for (const [id, value] of Object.entries(overlay.resetDefaults)) {
             try { ctx.model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
           }
         }
@@ -121,7 +118,7 @@ export function createParameterFrame(
         // pixi-live2d-display already maps focus to the model's authored eye
         // and head parameters. Do not overwrite those values with SoulLink.
         if (ctx.gaze.active) {
-          for (const id of POINTER_FOCUS_PARAMS) {
+          for (const id of ctx.adapter?.focus || []) {
             delete targets[id]
             delete ctx.emotionCurrent[id]
           }

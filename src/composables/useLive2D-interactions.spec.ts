@@ -3,10 +3,14 @@ import { createLive2DCtx } from './live2d/context'
 import { createInteractionController } from './live2d/interactions'
 import { createParameterFrame } from './live2d/parameterFrame'
 import { useCompanionAffection } from './useCompanionAffection'
+import { compileAdapterProfile, NATSUME_BUILTIN_PROFILE } from '@/live2d/adapterProfile'
 
 function setup() {
   const ctx = createLive2DCtx()
   ctx.character.value = 'natsume'
+  const compiled = compileAdapterProfile(NATSUME_BUILTIN_PROFILE, 'browser')
+  if (!compiled.ok) throw new Error(compiled.report.errors.join(', '))
+  ctx.adapter = compiled.adapter
   ctx.ready.value = true
   const params = new Map<string, number>([['Param59', -0.65], ['Param60', -0.65]])
   let group: string | null | undefined = 'TapSkirt'
@@ -20,7 +24,7 @@ function setup() {
     getNaturalSize: () => ({ width: 420, height: 610 }),
   }
   const interactions = createInteractionController(ctx, { setState: vi.fn(), resumeRendering: vi.fn() })
-  const frame = createParameterFrame(ctx, { beginOverlaySettle: interactions.beginNatsumeOverlaySettle })
+  const frame = createParameterFrame(ctx, { beginOverlaySettle: interactions.beginOverlaySettle })
   return { ctx, params, motion, interactions, frame, setGroup: (value: typeof group) => { group = value } }
 }
 

@@ -1,7 +1,14 @@
 import { reactive, ref } from 'vue'
 import {
-  CHARACTERS, STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
+  STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
 } from '@/config/characters'
+import {
+  DEFAULT_COMPANION_CHARACTER_ID,
+  getCompanionCharacter,
+  getCompanionDefaultOutfit,
+  listCompanionCharacterIds,
+  normalizeCompanionOutfit,
+} from '@/utils/companionRegistry'
 import {
   CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL,
 } from '@/config/chatApi'
@@ -82,12 +89,15 @@ function mergeHistories(local: ChatMessage[], remote: ChatMessage[], snapshots: 
 }
 
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
+  const characterIds = listCompanionCharacterIds()
+  const defaultCharacterId = characterIds[0] || DEFAULT_COMPANION_CHARACTER_ID
+  const defaultOutfits = Object.fromEntries(characterIds.map(id => [id, getCompanionDefaultOutfit(id)]))
   const state = reactive<ChatState>({
     version: STORAGE_VERSION,
     historiesRevision: 0,
-    historiesRevisions: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, 0])),
-    active: 'nene',
-    histories: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, []])),
+    historiesRevisions: Object.fromEntries(characterIds.map(k => [k, 0])),
+    active: defaultCharacterId,
+    histories: Object.fromEntries(characterIds.map(k => [k, []])),
     settings: {
       model: '',
       provider: 'api',
@@ -96,24 +106,25 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       apiKey: CLIPROXY_API_KEY,
       webSearchEnabled: false,
       live2dEnabled: false,
-      live2dOutfit: 'school',
-      live2dOutfits: { nene: 'school', natsume: 'natsume-cafe' },
+      live2dOutfit: defaultOutfits[defaultCharacterId] || '',
+      live2dOutfits: defaultOutfits,
       autoVoice: true,
       volume: 80,
-      drafts: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, ''])),
+      drafts: Object.fromEntries(characterIds.map(k => [k, ''])),
     },
   })
 
   const normalizeOptions = {
-    characterIds: Object.keys(CHARACTERS),
+    characterIds,
     maxMessages: MAX_LOCAL_MESSAGES,
     version: STORAGE_VERSION,
     createMessageId,
+    normalizeOutfit: normalizeCompanionOutfit,
   }
 
   /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
   const neverConfigured = ref(true)
-  const archive = ref<ChatArchive>(emptyChatArchive(Object.keys(CHARACTERS)))
+  const archive = ref<ChatArchive>(emptyChatArchive(characterIds))
   const messageSnapshots = new Map<string, string>()
   function rememberMessages() {
     messageSnapshots.clear()
@@ -126,10 +137,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     try {
       archive.value = normalizeChatArchive(
         JSON.parse(localStorage.getItem(CHAT_ARCHIVE_KEY) || 'null'),
-        Object.keys(CHARACTERS),
+        characterIds,
       )
     } catch {
-      archive.value = emptyChatArchive(Object.keys(CHARACTERS))
+      archive.value = emptyChatArchive(characterIds)
     }
   }
 
@@ -147,7 +158,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         : {}
       const remote = record.histories
       if (!remote || typeof remote !== 'object') return true
-      for (const char of Object.keys(CHARACTERS)) {
+      for (const char of characterIds) {
         const parsedCharRevision = Number(remoteRevisions[char])
         const remoteRevision = Number.isSafeInteger(parsedCharRevision) && parsedCharRevision >= 0
           ? parsedCharRevision
@@ -204,7 +215,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.historiesRevision = persisted.historiesRevision
     state.historiesRevisions = { ...persisted.historiesRevisions }
     state.active = persisted.active
-    for (const char of Object.keys(CHARACTERS)) {
+    for (const char of characterIds) {
       state.histories[char] = persisted.histories[char] || []
       state.settings.drafts[char] = persisted.settings.drafts[char] || ''
     }
@@ -270,7 +281,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       // 先把持久化里的超限消息归档，再走白名单归一化，保证旧消息不丢。
       const rawHistories = raw && typeof raw === 'object' && (raw as Record<string, unknown>).histories
       if (rawHistories && typeof rawHistories === 'object') {
-        for (const char of Object.keys(CHARACTERS)) {
+        for (const char of characterIds) {
           const list = (rawHistories as Record<string, unknown>)[char]
           if (Array.isArray(list) && list.length > MAX_LOCAL_MESSAGES) {
             const overflow = list.slice(0, list.length - MAX_LOCAL_MESSAGES)
@@ -320,8 +331,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   function setActive(char: string) {
-    state.active = char === 'natsume' ? 'natsume' : 'nene'
-    state.settings.live2dOutfit = state.settings.live2dOutfits[state.active] || 'school'
+    if (!characterIds.includes(char)) return
+    state.active = char
+    state.settings.live2dOutfit = state.settings.live2dOutfits[state.active] || getCompanionDefaultOutfit(char)
     save()
   }
   function setModel(model: string) { state.settings.model = String(model || ''); save() }
@@ -337,12 +349,11 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); save() }
   function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }
   function live2dOutfit(char = state.active) {
-    return state.settings.live2dOutfits[char] || (char === 'natsume' ? 'natsume-cafe' : 'school')
+    return state.settings.live2dOutfits[char] || getCompanionDefaultOutfit(char)
   }
   function setLive2dOutfit(char: string, value: string) {
-    if (!CHARACTERS[char]) return
-    const fallback = char === 'natsume' ? 'natsume-cafe' : 'school'
-    const next = String(value || fallback).slice(0, 40)
+    if (!characterIds.includes(char)) return
+    const next = normalizeCompanionOutfit(char, value)
     state.settings.live2dOutfits = { ...state.settings.live2dOutfits, [char]: next }
     if (char === state.active) state.settings.live2dOutfit = next
     save()
@@ -351,7 +362,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function setVolume(v: number) { state.settings.volume = Math.max(0, Math.min(100, Number.isFinite(Number(v)) ? Math.round(Number(v)) : 80)); save() }
   function draft(char = state.active) { return state.settings.drafts[char] || '' }
   function setDraft(char: string, val: string) {
-    if (!CHARACTERS[char]) return
+    if (!characterIds.includes(char)) return
     state.settings.drafts[char] = String(val || '').slice(0, 1200)
     save()
   }
@@ -362,7 +373,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function archiveCount(): Record<string, number>
   function archiveCount(char: string): number
   function archiveCount(char?: string) {
-    const counts = archiveCounts(archive.value, Object.keys(CHARACTERS))
+    const counts = archiveCounts(archive.value, characterIds)
     return char ? counts[char] || 0 : counts
   }
   function exportArchiveJson(): string {
@@ -370,21 +381,21 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   function exportArchiveMarkdown(): string {
     const names: Record<string, string> = {}
-    for (const id of Object.keys(CHARACTERS)) names[id] = CHARACTERS[id].name
+    for (const id of characterIds) names[id] = getCompanionCharacter(id)?.name || id
     return chatArchiveToMarkdown(archive.value, names)
   }
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
   function importArchiveJson(textValue: string): number {
-    const incoming = normalizeChatArchive(JSON.parse(textValue), Object.keys(CHARACTERS))
-    const before = archiveCounts(archive.value, Object.keys(CHARACTERS))
+    const incoming = normalizeChatArchive(JSON.parse(textValue), characterIds)
+    const before = archiveCounts(archive.value, characterIds)
     archive.value = mergeChatArchives(archive.value, incoming)
     saveArchive()
-    const after = archiveCounts(archive.value, Object.keys(CHARACTERS))
+    const after = archiveCounts(archive.value, characterIds)
     return Object.keys(after).reduce((sum, id) => sum + Math.max(0, after[id] - (before[id] || 0)), 0)
   }
   /** 把该角色归档并回当前对话；返回并入条数。 */
   function restoreFromArchive(char = state.active): number {
-    if (!CHARACTERS[char]) return 0
+    if (!characterIds.includes(char)) return 0
     const archived = archive.value.archived[char] || []
     if (!archived.length) return 0
     const history = messages(char)
@@ -400,7 +411,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   function clearArchive(char?: string) {
     if (char) archive.value.archived[char] = []
-    else archive.value = emptyChatArchive(Object.keys(CHARACTERS))
+    else archive.value = emptyChatArchive(characterIds)
     saveArchive()
   }
   function clear(char?: string) {
@@ -409,13 +420,13 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     // the read and the following write are one uninterrupted mutation.
     if (char) mergeRemoteIntoState()
     if (char) { state.histories[char] = [] }
-    else { for (const k of Object.keys(CHARACTERS)) state.histories[k] = [] }
+    else { for (const k of characterIds) state.histories[k] = [] }
     // Advance the tombstone before persisting. A delayed save from a tab that
     // still has the previous revision will then be rejected.
     const nextRevision = Math.max(state.historiesRevision + 1, Date.now())
     state.historiesRevision = nextRevision
     if (char) state.historiesRevisions[char] = Math.max((state.historiesRevisions[char] || 0) + 1, nextRevision)
-    else for (const key of Object.keys(CHARACTERS)) state.historiesRevisions[key] = nextRevision
+    else for (const key of characterIds) state.historiesRevisions[key] = nextRevision
     save(false)
   }
 

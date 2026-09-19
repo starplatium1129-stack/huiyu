@@ -1,6 +1,11 @@
 import { CHAT_MEMORY_KEY } from './storageKeys.ts'
+import {
+  DEFAULT_COMPANION_CHARACTER_ID,
+  isCompanionCharacterId,
+  listCompanionCharacterIds,
+} from './companionRegistry.ts'
 
-export type ChatMemoryCharacter = 'nene' | 'natsume'
+export type ChatMemoryCharacter = string
 
 export interface ChatMemoryItem {
   id: string
@@ -14,14 +19,17 @@ export interface ChatMemoryItem {
 
 export interface ChatMemoryState {
   version: 1
-  byCharacter: Record<ChatMemoryCharacter, ChatMemoryItem[]>
+  byCharacter: Record<string, ChatMemoryItem[]>
 }
 
 const MAX_ITEMS = 200
 const MAX_TEXT = 240
 
 export function emptyChatMemoryState(): ChatMemoryState {
-  return { version: 1, byCharacter: { nene: [], natsume: [] } }
+  return {
+    version: 1,
+    byCharacter: Object.fromEntries(listCompanionCharacterIds().map(id => [id, []])),
+  }
 }
 
 function cleanText(value: unknown): string {
@@ -33,21 +41,24 @@ function memoryId(): string {
   return `memory-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
 }
 
-function normalizeCharacter(value: unknown): ChatMemoryCharacter {
-  return value === 'natsume' ? 'natsume' : 'nene'
+function normalizeCharacter(value: unknown, fallback = DEFAULT_COMPANION_CHARACTER_ID): ChatMemoryCharacter | null {
+  if (isCompanionCharacterId(value)) return value
+  return isCompanionCharacterId(fallback) ? fallback : null
 }
 
 function normalizeItem(value: unknown, fallbackCharacter: ChatMemoryCharacter): ChatMemoryItem | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   const record = value as Record<string, unknown>
-  if (record.character != null && record.character !== 'nene' && record.character !== 'natsume') return null
+  if (record.character != null && !isCompanionCharacterId(record.character)) return null
+  const character = normalizeCharacter(record.character, fallbackCharacter)
+  if (!character) return null
   const text = cleanText(record.text)
   if (!text) return null
   const createdAt = Number(record.createdAt)
   const updatedAt = Number(record.updatedAt)
   return {
     id: cleanText(record.id) || memoryId(),
-    character: normalizeCharacter(record.character ?? fallbackCharacter),
+    character,
     text,
     sourceMid: cleanText(record.sourceMid),
     createdAt: Number.isFinite(createdAt) && createdAt > 0 ? createdAt : Date.now(),
@@ -61,7 +72,7 @@ export function normalizeChatMemoryState(value: unknown): ChatMemoryState {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return state
   const byCharacter = (value as Record<string, unknown>).byCharacter
   if (!byCharacter || typeof byCharacter !== 'object' || Array.isArray(byCharacter)) return state
-  for (const character of ['nene', 'natsume'] as const) {
+  for (const character of listCompanionCharacterIds()) {
     const source = (byCharacter as Record<string, unknown>)[character]
     if (!Array.isArray(source)) continue
     const seen = new Set<string>()
@@ -104,7 +115,7 @@ export function mergeChatMemoryStates(current: ChatMemoryState, incoming: ChatMe
   current = normalizeChatMemoryState(current)
   incoming = normalizeChatMemoryState(incoming)
   const merged = emptyChatMemoryState()
-  for (const character of ['nene', 'natsume'] as const) {
+  for (const character of listCompanionCharacterIds()) {
     const seen = new Set<string>()
     const seenIds = new Set<string>()
     const items = [...current.byCharacter[character], ...incoming.byCharacter[character]]
@@ -129,7 +140,7 @@ export function rememberChatFact(
 ): ChatMemoryItem | null {
   const text = cleanText(textValue)
   if (!text) return null
-  const list = state.byCharacter[character]
+  const list = state.byCharacter[character] ||= []
   const existing = list.find(item => (sourceMid && item.sourceMid === sourceMid) || item.text.toLocaleLowerCase() === text.toLocaleLowerCase())
   if (existing) {
     existing.text = text
@@ -148,7 +159,7 @@ export function rememberChatFact(
 }
 
 export function editChatFact(state: ChatMemoryState, character: ChatMemoryCharacter, id: string, textValue: string): boolean {
-  const item = state.byCharacter[character].find(memory => memory.id === id)
+  const item = state.byCharacter[character]?.find(memory => memory.id === id)
   const text = cleanText(textValue)
   if (!item || !text) return false
   item.text = text
@@ -159,6 +170,7 @@ export function editChatFact(state: ChatMemoryState, character: ChatMemoryCharac
 
 export function removeChatFact(state: ChatMemoryState, character: ChatMemoryCharacter, id: string): boolean {
   const list = state.byCharacter[character]
+  if (!list) return false
   const index = list.findIndex(item => item.id === id)
   if (index < 0) return false
   list.splice(index, 1)
@@ -166,7 +178,7 @@ export function removeChatFact(state: ChatMemoryState, character: ChatMemoryChar
 }
 
 export function isChatFactRemembered(state: ChatMemoryState, character: ChatMemoryCharacter, sourceMid: string): boolean {
-  return Boolean(sourceMid && state.byCharacter[character].some(item => item.sourceMid === sourceMid))
+  return Boolean(sourceMid && state.byCharacter[character]?.some(item => item.sourceMid === sourceMid))
 }
 
 function relevanceTerms(value: string): Set<string> {

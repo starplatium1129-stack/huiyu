@@ -47,9 +47,9 @@ describe('resolveStageInteraction · 分区带映射', () => {
     expect(resolveStageInteraction('nene', 0.45, 0.28)?.group).toBe('TapFace')
   })
 
-  it('未知角色走宁宁分区（兜底语义）', () => {
-    expect(resolveStageInteraction('unknown', 0.5, 0.05)?.group).toBe('TapHair')
-    expect(resolveStageInteraction('unknown', 0.5, 0.9)?.group).toBe('TapBody')
+  it('未知角色不借用宁宁的互动分区', () => {
+    expect(resolveStageInteraction('unknown', 0.5, 0.05)).toBeNull()
+    expect(resolveStageInteraction('unknown', 0.5, 0.9)).toBeNull()
   })
 })
 
@@ -131,8 +131,8 @@ describe('MOUTH / BLINK 参数选择', () => {
     expect(selectMouthParams('natsume')).toEqual({ id: 'ParamMouthForm3', scale: -0.5 })
   })
 
-  it('未知角色口型回退宁宁（安全默认）', () => {
-    expect(selectMouthParams('someone-else')).toEqual({ id: 'ParamMouthOpenY', scale: 1 })
+  it('未知角色不借用宁宁口型参数', () => {
+    expect(selectMouthParams('someone-else')).toBeUndefined()
   })
 
   it('眨眼参数双眼成对：夏目第二只为 ParamEyeLOpen2（作者曲线怪癖）', () => {

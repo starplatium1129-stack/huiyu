@@ -1,11 +1,17 @@
 import { test, expect, type Page } from '@playwright/test'
 import type { Live2DNativeBridge } from '../../src/types/live2dNative'
+import type { Live2DRuntimeAdapterConfig } from '../../src/live2d/types'
 
 type Probe = {
   events: Record<string, (value?: unknown) => void>
   frames: { visible: boolean }[]
   fps: number[]
-  characters: { textureScale?: number }[]
+  characters: Array<{
+    character: string
+    textureScale?: number
+    adapter?: Live2DRuntimeAdapterConfig
+  }>
+  destroyed: number
   snapshot: (value: unknown) => void
 }
 
@@ -14,7 +20,7 @@ async function fixture(page: Page, legacy = false) {
     localStorage.setItem('aics_companion_live2d_v1', 'true')
     localStorage.setItem('aics_live2d_quality_v1', 'compact')
     localStorage.setItem('aics_companion_behavior_v1', JSON.stringify({ enabled: false, dnd: true }))
-    const probe: Probe = { events: {}, frames: [], fps: [], characters: [], snapshot: () => {} }
+    const probe: Probe = { events: {}, frames: [], fps: [], characters: [], destroyed: 0, snapshot: () => {} }
     Object.assign(window, { __live2dProbe: probe })
     const methods: Record<string, unknown> = {
       isDesktop: true,
@@ -35,7 +41,7 @@ async function fixture(page: Page, legacy = false) {
       setFrame: async frame => { probe.frames.push(frame) }, setMaxFps: async fps => { probe.fps.push(fps) },
       playMotion: async () => ({ ok: true }), setExpression: async () => ({ ok: true }),
       setMouthLevel: async () => {}, setEmotion: async () => {}, setGaze: async () => {},
-      hitTest: async () => ({ areas: [] }), destroy: async () => {},
+      hitTest: async () => ({ areas: [] }), destroy: async () => { probe.destroyed += 1 },
       onReady: () => 1, onHitTest: () => 2, onMotionStarted: () => 3,
       onMotionFailed: () => 4, onEntranceFinished: () => 5, onStopped: () => 6, off: () => {},
     } satisfies Live2DNativeBridge
@@ -93,4 +99,27 @@ test('legacy desktop bridge retains original textures and disables unsupported q
   await expect(quality).toBeDisabled()
   await expect(quality).toHaveValue('original')
   expect(await page.evaluate(() => (window as unknown as { __live2dProbe: Probe }).__live2dProbe.characters.every(value => value.textureScale === undefined))).toBe(true)
+})
+
+test('native character switches carry the selected adapter profile and release the previous model', async ({ page }) => {
+  await fixture(page)
+  await page.evaluate(() => {
+    const p = (window as unknown as { __live2dProbe: Probe }).__live2dProbe
+    p.snapshot({ visible: true, onBatteryPower: false, alwaysOnTop: false, ignoreMouseEvents: false, live2dEnabled: true, bounds: { x: 0, y: 0, width: 480, height: 720 } })
+  })
+  await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready')
+  await expect(page.locator('.live2d-capability-report summary')).toContainText('待实机')
+  const probe = () => page.evaluate(() => {
+    const value = (window as unknown as { __live2dProbe: Probe }).__live2dProbe
+    return { characters: value.characters, destroyed: value.destroyed }
+  })
+  await expect.poll(async () => (await probe()).characters.at(-1)?.adapter?.profileId).toBe('profile-nene-v1')
+  expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthOpenY', scale: 1 })
+
+  await page.locator('.companion-char-switch').getByRole('button', { name: '夏目', exact: true }).click()
+  await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'natsume')
+  await expect.poll(async () => (await probe()).characters.at(-1)?.adapter?.profileId).toBe('profile-natsume-v1')
+  expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthForm3', scale: -0.5 })
+  expect((await probe()).characters.at(-1)?.adapter?.blink).toEqual(['ParamEyeLOpen', 'ParamEyeLOpen2'])
+  expect((await probe()).destroyed).toBeGreaterThanOrEqual(1)
 })

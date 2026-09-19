@@ -11,6 +11,10 @@ import type {
 import type { Live2DCatalog } from '@/composables/live2d/catalog'
 import { DEFAULT_LIVE2D_OUTFIT } from '@/config/characters'
 import type { Live2DQuality } from '@/live2d/quality'
+import type {
+  CompiledLive2DAdapter,
+  Live2DAdapterCapabilityReport,
+} from '@/live2d/adapterProfile'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -36,7 +40,7 @@ export function isStageHidden(ctx: Live2DCtx): boolean {
   return document.hidden
 }
 
-export interface NatsumeOverlaySettle {
+export interface Live2DOverlaySettle {
   start: number
   entries: Array<{ id: string; from: number; to: number }>
 }
@@ -60,6 +64,7 @@ export interface Live2DCtx {
   quality: Ref<Live2DQuality>
   backendKind: Ref<Live2DBackendKind>
   backendFallback: Ref<string | null>
+  adapterReport: Ref<Live2DAdapterCapabilityReport | null>
 
   // 元素与选择器（wl-live2d 只接受 CSS selector）
   hostEl: HTMLElement | null
@@ -71,6 +76,7 @@ export interface Live2DCtx {
   backend: Live2DStageBackend | null
   session: Live2DStageSession | null
   model: Live2DModelHandle | null
+  adapter: CompiledLive2DAdapter | null
   loading: Promise<boolean> | null
 
   // 定时器句柄（各子模块自持语义，ctx 存统一取消入口）
@@ -113,7 +119,7 @@ export interface Live2DCtx {
   // 夏目叠层/换装回落（2026-08-23 换装闪回修复）：动作曲线驱动的换装显隐态
   // 在动作结束后向隐藏态 smoothstep 缓动。settle 为 null 表示未在回落；
   // wasByMotion 记录上一帧叠层参数是否由动作曲线持有，用于所有权交接检测。
-  overlaySettle: NatsumeOverlaySettle | null
+  overlaySettle: Live2DOverlaySettle | null
   overlayWasByMotion: boolean
 
   // 原生 overlay
@@ -147,6 +153,7 @@ export function createLive2DCtx(): Live2DCtx {
     quality: ref<Live2DQuality>('original'),
     backendKind: ref<Live2DBackendKind>('browser'),
     backendFallback: ref<string | null>(null),
+    adapterReport: ref<Live2DAdapterCapabilityReport | null>(null),
 
     hostEl: null,
     stageEl: null,
@@ -156,6 +163,7 @@ export function createLive2DCtx(): Live2DCtx {
     backend: null,
     session: null,
     model: null,
+    adapter: null,
     loading: null,
 
     timers: { load: 0, interaction: 0, leave: 0 },

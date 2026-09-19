@@ -3,6 +3,7 @@ export interface ChatStorageOptions {
   maxMessages: number
   version: number
   createMessageId: () => string
+  normalizeOutfit?: (characterId: string, value: unknown) => string
 }
 
 export interface PersistedChatMessage {
@@ -40,7 +41,7 @@ export interface PersistedChatState {
 const NENE_OUTFIT_IDS = new Set(['school', 'casual', 'sleepwear', 'cosplay', 'witch'])
 const NATSUME_OUTFIT_IDS = new Set(['natsume-cafe'])
 
-function normalizedOutfit(character: string, candidate: unknown): string {
+function legacyNormalizedOutfit(character: string, candidate: unknown): string {
   const outfit = text(candidate, 40)
   if (character === 'natsume') {
     return NATSUME_OUTFIT_IDS.has(outfit) ? outfit : 'natsume-cafe'
@@ -124,7 +125,10 @@ export function normalizeChatStorage(
   for (const id of ids) {
     // v3 stored one outfit string. It belonged to the active room, so only
     // use it as the migration fallback for that character.
-    live2dOutfits[id] = normalizedOutfit(id, rawOutfits[id] ?? (id === active ? outfitCandidate : ''))
+    const candidate = rawOutfits[id] ?? (id === active ? outfitCandidate : '')
+    live2dOutfits[id] = options.normalizeOutfit
+      ? options.normalizeOutfit(id, candidate)
+      : legacyNormalizedOutfit(id, candidate)
   }
 
   // API 配置：逐层取用户已保存的值；只有"从未配置过"（三个字段全空）时

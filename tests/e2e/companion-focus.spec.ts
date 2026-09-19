@@ -110,3 +110,39 @@ test('companion chat keeps drafts across status updates and IME confirmation', a
   })
   await expect(input).toHaveValue('这份草稿应当保留')
 })
+
+test('companion chat rejects an unknown live character instead of borrowing another identity', async ({ page }) => {
+  await desktopFixture(page, 'dark')
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_companion_chat_live_v1', JSON.stringify({
+      activeChar: 'removed-character', chatReady: true, busy: false, ts: Date.now(),
+    }))
+  })
+  await page.goto('/companion-chat')
+  await expect(page.locator('.companion-chat-window')).toHaveAttribute('data-character', 'nene')
+  await expect(page.locator('.companion-chat-title')).toContainText('绫地宁宁')
+  await page.evaluate(() => {
+    localStorage.setItem('aics_companion_chat_live_v1', JSON.stringify({
+      activeChar: 'unknown-again', chatReady: true, busy: false, ts: Date.now(),
+    }))
+    window.dispatchEvent(new StorageEvent('storage', { key: 'aics_companion_chat_live_v1' }))
+  })
+  await expect(page.locator('.companion-chat-window')).toHaveAttribute('data-character', 'nene')
+})
+
+for (const theme of ['dark', 'light']) {
+  test(`companion capability report explains pending and unsupported mappings in ${theme} theme`, async ({ page }) => {
+    await desktopFixture(page, theme)
+    await page.goto('/chat')
+    const report = page.locator('.live2d-capability-report')
+    await expect(report.locator('summary')).toContainText('待实机')
+    await report.locator('summary').click()
+    await expect(report.locator('li')).toHaveCount(7)
+    await expect(report).toContainText('口型')
+    await expect(report).toContainText('ParamMouthOpenY')
+    await page.locator('.character-tabs').getByRole('tab', { name: '夏目', exact: true }).click()
+    await expect(page.locator('.character-card')).toHaveAttribute('data-character', 'natsume')
+    await expect(report).toContainText('ParamMouthForm3')
+    await report.screenshot({ path: `.review-shots/companion-capabilities-${theme}.png` })
+  })
+}

@@ -30,6 +30,7 @@ test('Native Companion owns the overlay and Atelier stays browser-only', () => {
 
 test('Native IPC payload and render ownership contracts stay aligned', () => {
   const overlay = read('desktop-tauri/src-tauri/src/live2d_overlay.rs')
+  const adapter = read('desktop-tauri/src-tauri/src/live2d_adapter.rs')
   const renderer = read('desktop-tauri/native-live2d/src/renderer.rs')
   const model = read('desktop-tauri/native-live2d/src/model.rs')
   const mainShared = read('desktop-tauri/src-tauri/src/main_shared.rs')
@@ -38,7 +39,13 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
 
   assert.match(overlay, /app\.emit\("aics:live2d:hit-test", areas\)/)
   assert.doesNotMatch(overlay, /index\.unwrap_or\(0\)/)
-  assert.match(overlay, /if character == "natsume" \{\s*-0\.5 \* level/)
+  assert.match(overlay, /adapter: Live2DAdapterConfig/)
+  assert.match(overlay, /adapter\.validate\(\)/)
+  assert.match(adapter, /pub fn mouth_value\(&self, level: f32\)/)
+  assert.match(adapter, /level\.clamp\(0\.0, 1\.0\) \* mouth\.scale/)
+  assert.match(adapter, /pub fn apply_emotion\(&self, model: &mut Model/)
+  assert.doesNotMatch(overlay, /fn mouth_param_for\(|fn emotion_params\(/,
+    'native parameter mappings must come from the validated adapter profile')
   assert.match(overlay, /ctx\.advance_motion\(dt, app\.as_ref\(\)\)/)
   // 渲染线程退出必须广播 stopped（带 reason），前端才知 overlay 不可用并可重试。
   assert.match(overlay, /"aics:live2d:stopped"/)
@@ -129,7 +136,7 @@ test('Native destroy keeps the overlay thread alive for reuse (long-lived contra
   // destroy 不得触发 stopped 事件（那是线程退出路径的专属）。
   assert.doesNotMatch(overlay, /OverlayCommand::Destroy \{ reply \} => \{[\s\S]{0,900}?emit_stopped/)
   // SetCharacter 复用同一清理函数：重复加载前先清模型态。
-  assert.match(overlay, /OverlayCommand::SetCharacter \{ character, texture_scale, reply \} => \{\s*clear_model_state\(state\)/)
+  assert.match(overlay, /OverlayCommand::SetCharacter \{ character, texture_scale, adapter, reply \} => \{\s*clear_model_state\(state\)/)
   // 单元测试锁定契约：清模型态但保留 window_ready/renderer_attached/cmd_tx。
   assert.match(overlay, /fn destroy_clears_model_state_but_keeps_thread_for_reuse\(\)/)
 })
@@ -156,7 +163,7 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
   assert.match(layoutFit, /session\.setPaused\(!visible\)/)
   assert.match(live2d, /setDesktopWindowBounds/)
   const lifecycle = read('src/composables/live2d/lifecycle.ts')
-  assert.match(lifecycle, /destroyed\.value = true; ctx\.enabled\.value = false; destroyRuntime\(\)\s+controllers\.layoutFit\.resetWindowBounds\(\)/)
+  assert.match(lifecycle, /destroyed\.value = true; ctx\.enabled\.value = false; destroyRuntime\(\)[\s\S]{0,180}?controllers\.layoutFit\.resetWindowBounds\(\)/)
   const companionView = read('src/views/CompanionView.vue')
   const characterStage = read('src/components/ChatCharacterStage.vue')
   assert.match(companionView, /:desktop-window-bounds="desktopWindowBounds"/)
@@ -172,6 +179,8 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
   assert.match(backend, /if \(!destroyed\) callback\(handle\)/)
   assert.match(backend, /bridge\.setMaxFps/)
   assert.match(lifecycle, /原生 Live2D 初始化失败，已回退到浏览器渲染/)
+  assert.match(backend, /adapter: options\.adapter/)
+  assert.match(nativeTypes, /adapter\?: Live2DRuntimeAdapterConfig/)
   assert.doesNotMatch(nativeTypes, /passthrough/)
   assert.match(nativeTypes, /setMaxFps\(fps: number\)/)
 })

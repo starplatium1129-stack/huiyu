@@ -17,7 +17,7 @@ describe('Companion Character Registry (Plan 010 C0/C2)', () => {
     resetCompanionRegistryForTesting()
   })
 
-  it('initializes built-in characters Nene and Natsume with verified profiles', () => {
+  it('initializes built-in characters Nene and Natsume with migrated profiles pending paired evidence', () => {
     const nene = getCompanionCharacter('nene')
     expect(nene).toBeDefined()
     expect(nene?.name).toBe('绫地宁宁')
@@ -33,11 +33,11 @@ describe('Companion Character Registry (Plan 010 C0/C2)', () => {
 
     const neneProfile = getCompanionProfile('profile-nene-v1')
     expect(neneProfile).toBeDefined()
-    expect(neneProfile?.parameterBindings.mouth.id).toBe('ParamMouthOpenY')
+    expect(neneProfile?.parameterBindings.mouth?.id).toBe('ParamMouthOpenY')
 
     const natsumeProfile = getCompanionProfile('profile-natsume-v1')
     expect(natsumeProfile).toBeDefined()
-    expect(natsumeProfile?.parameterBindings.mouth.id).toBe('ParamMouthForm3')
+    expect(natsumeProfile?.parameterBindings.mouth?.id).toBe('ParamMouthForm3')
     expect(natsumeProfile?.overlaySettle?.resetDefaults['Param37']).toBe(-1)
     expect(natsumeProfile?.overlaySettle?.resetDefaults['Param18']).toBe(0)
   })
@@ -54,6 +54,7 @@ describe('Companion Character Registry (Plan 010 C0/C2)', () => {
     const fixtureChar = {
       id: 'fixture_murasame',
       name: '丛雨',
+      shortName: '丛雨',
       defaultAvatarId: 'avatar-murasame-default',
       tags: ['fixture', 'spirit'],
     }

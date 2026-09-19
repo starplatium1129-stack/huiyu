@@ -216,6 +216,8 @@ async function run() {
   let apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   let chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
   let characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
+  let companionRegistry = fs.readFileSync(path.join(root, 'src', 'utils', 'companionRegistry.ts'), 'utf8');
+  let adapterProfile = fs.readFileSync(path.join(root, 'src', 'live2d', 'adapterProfile.ts'), 'utf8');
   let voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
   let voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
   let live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
@@ -224,7 +226,7 @@ async function run() {
   let live2dBrowserBackend = fs.readFileSync(path.join(root, 'src', 'live2d', 'browserBackend.ts'), 'utf8');
   let live2dStageModule = live2dModule + '\n' + live2dBrowserBackend;
   let live2dSubmodules = fs.readdirSync(path.join(root, 'src', 'composables', 'live2d')).filter(function (name) { return name.endsWith('.ts'); }).map(function (name) { return fs.readFileSync(path.join(root, 'src', 'composables', 'live2d', name), 'utf8'); }).join('\n');
-  let live2dAggregated = live2dModule + '\n' + live2dBrowserBackend + '\n' + live2dSubmodules;
+  let live2dAggregated = live2dModule + '\n' + live2dBrowserBackend + '\n' + live2dSubmodules + '\n' + adapterProfile;
   let chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
   let mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
   let streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
@@ -251,7 +253,13 @@ async function run() {
       && roomSession.includes('useVoice'),
     'website chat and companion must share only the character-room session core'
   );
-  assert(characterStageComponent.includes("'nene'") && characterStageComponent.includes("'natsume'") && html.includes('switchCharacter'), 'both characters must be selectable');
+  assert(
+    companionRegistry.includes("characters.set('nene'")
+      && companionRegistry.includes("characters.set('natsume'")
+      && characterStageComponent.includes('listCompanionUiCharacters')
+      && html.includes('switchCharacter'),
+    'both registered companion characters must be selectable'
+  );
   // chat.css 是路由专属样式：由 ChatView 自己 import，随 /chat 的懒加载块下发，
   // 不再进全局包（它曾占 139KB 全局 CSS 的 13%，而只有一个路由用得到）。
   assert(html.includes('assets/css/chat.css'), 'chat styles must be imported by the chat view');
@@ -387,12 +395,13 @@ async function run() {
       && live2dAggregated.includes('worldPoint')
       && live2dAggregated.includes('model.hitTest(point.x, point.y)')
       && live2dAggregated.includes('interactionFromStagePosition')
-      && live2dAggregated.includes('if (y < 0.29) return INTERACTION_MOTIONS.Face')
+      && live2dAggregated.includes('profile.stageHitZones?.find')
+      && live2dAggregated.includes("{ interactionId: 'Face', minY: 0.19, maxY: 0.29 }")
       && live2dAggregated.includes("hint: '碰到了画面左侧胸前，宁宁有点生气'")
       && live2dAggregated.includes("hint: '碰到了画面右侧胸前，宁宁有点生气'")
-      && live2dAggregated.includes('y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50')
-      && live2dAggregated.includes('y >= 0.42 && y < 0.57')
-      && live2dAggregated.includes('return INTERACTION_MOTIONS.Body')
+      && live2dAggregated.includes("{ interactionId: 'LeftChest', minX: 0.40, maxX: 0.50, minY: 0.29, maxY: 0.42 }")
+      && live2dAggregated.includes("{ interactionId: 'Skirt', minY: 0.42, maxY: 0.57 }")
+      && live2dAggregated.includes("{ interactionId: 'Body', minY: 0.57, maxY: 1 }")
       && live2dAggregated.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
       && live2dAggregated.includes('model.motion(interaction.group, undefined, 3)')
       && live2dAggregated.includes("motionPreload: 'ALL'")
@@ -402,7 +411,7 @@ async function run() {
     'Live2D clicks must map source hit areas to authored motions with FORCE priority, report feedback only after startup, and distinguish an active motion from a real failure'
   );
   assert(
-    live2dAggregated.includes('点击呆毛、头部、脸、身体、两侧或裙摆可互动'),
+    adapterProfile.includes('点击呆毛、头部、脸、身体、两侧或裙摆可互动'),
     'Live2D must advertise every packaged source interaction area'
   );
   assert(!/\bany\b/.test(live2dAggregated), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');

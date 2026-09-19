@@ -25,14 +25,14 @@
       <div class="companion-toolbar-actions">
         <div v-if="desktopBridge" class="companion-char-switch" aria-label="切换角色">
           <button
-            v-for="id in CHARACTER_IDS"
-            :key="id"
+            v-for="character in companionCharacters"
+            :key="character.id"
             type="button"
-            :aria-pressed="activeChar === id ? 'true' : 'false'"
-            :class="{ active: activeChar === id }"
-            :title="`切换到${id === 'nene' ? '绫地宁宁' : '四季夏目'}`"
-            @click="switchCharacter(id)"
-          >{{ id === 'nene' ? '宁宁' : '夏目' }}</button>
+            :aria-pressed="activeChar === character.id ? 'true' : 'false'"
+            :class="{ active: activeChar === character.id }"
+            :title="`切换到${character.name}`"
+            @click="switchCharacter(character.id)"
+          >{{ character.shortName }}</button>
         </div>
         <button
           type="button"
@@ -407,7 +407,7 @@ immersive,
 currentCharacter,
 affectionScore,
 affectionInfo,
-CHARACTER_IDS,
+companionCharacters,
 switchCharacter,
 settingsOpen,
 autoVoice,

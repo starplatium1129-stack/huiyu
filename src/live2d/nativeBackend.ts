@@ -56,6 +56,7 @@ async function connectCharacter(bridge: Live2DNativeBridge, options: Live2DConne
     return await Promise.race([
       bridge.setCharacter(options.modelUrl, { character: options.character || 'nene',
         ...(bridge.supportsTextureQuality ? { textureScale: options.textureScale ?? 1 } : {}),
+        ...(options.adapter ? { adapter: options.adapter } : {}),
       }),
       cancelled,
     ])

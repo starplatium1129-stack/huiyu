@@ -2,19 +2,19 @@
   <aside class="character-card" :data-character="activeId">
     <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
       <button
-        v-for="id in CHARACTER_IDS"
-        :id="tabs.tabId(id)"
-        :key="id"
+        v-for="characterDefinition in companionCharacters"
+        :id="tabs.tabId(characterDefinition.id)"
+        :key="characterDefinition.id"
         class="character-tab"
         type="button"
-        :class="{ active: activeId === id }"
-        :data-character="id"
+        :class="{ active: activeId === characterDefinition.id }"
+        :data-character="characterDefinition.id"
         role="tab"
-        :aria-controls="tabs.panelId(id)"
-        :aria-selected="activeId === id ? 'true' : 'false'"
-        :tabindex="tabs.tabIndex(id)"
-        @click="emit('select', id)"
-      >{{ id === 'nene' ? '◉ 宁宁' : '◎ 夏目' }}</button>
+        :aria-controls="tabs.panelId(characterDefinition.id)"
+        :aria-selected="activeId === characterDefinition.id ? 'true' : 'false'"
+        :tabindex="tabs.tabIndex(characterDefinition.id)"
+        @click="emit('select', characterDefinition.id)"
+      >{{ characterDefinition.shortName }}</button>
     </div>
 
     <div
@@ -81,10 +81,10 @@
         @keydown.esc.stop.prevent="closeWardrobe"
       >
         <div
-          v-if="activeId === 'natsume'"
+          v-if="outfitOptions.length <= 1"
           class="wardrobe-trigger wardrobe-static"
           role="status"
-          aria-label="夏目当前只有咖啡店制服，互动动作会触发原生临时图层效果"
+          :aria-label="`${character.name}当前只有${activeOutfitLabel}`"
         >
           <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
           <span class="wardrobe-copy">
@@ -110,11 +110,11 @@
           <span class="wardrobe-chevron" aria-hidden="true">⌄</span>
         </button>
         <div
-          v-if="activeId !== 'natsume' && wardrobeOpen"
+          v-if="outfitOptions.length > 1 && wardrobeOpen"
           :id="`${activeId}-wardrobe-menu`"
           class="wardrobe-menu"
           role="group"
-          aria-label="宁宁服装"
+          :aria-label="`${character.name}服装`"
         >
           <span class="wardrobe-menu-title">选择服装</span>
           <button
@@ -133,6 +133,16 @@
         </div>
       </div>
       <Live2DQualityControl :native="live2d.backendKind.value === 'native'" />
+      <details v-if="live2d.adapterReport.value" class="live2d-capability-report">
+        <summary>{{ capabilitySummary }}</summary>
+        <ul>
+          <li v-for="item in live2d.adapterReport.value.items" :key="item.id" :data-state="item.status">
+            <span>{{ capabilityLabels[item.id] }}</span>
+            <strong>{{ capabilityStatusLabels[item.status] }}</strong>
+            <small>{{ item.reason }}</small>
+          </li>
+        </ul>
+      </details>
     </div>
   </aside>
 </template>
@@ -140,22 +150,26 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import {
-  DEFAULT_LIVE2D_OUTFIT,
-  DEFAULT_NATSUME_OUTFIT,
-  findLive2DOutfit,
-  findNatsumeOutfit,
-  LIVE2D_OUTFITS,
-  NATSUME_OUTFITS,
   type CharacterConfig,
 } from '@/config/characters'
+import {
+  getCompanionDefaultOutfit,
+  getCompanionCharacter,
+  listCompanionCharacterIds,
+  listCompanionOutfits,
+  listCompanionUiCharacters,
+  normalizeCompanionOutfit,
+} from '@/utils/companionRegistry'
 import { useLive2D } from '@/composables/useLive2D'
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useRovingTabs } from '@/composables/useRovingTabs'
-import { createEmotionRuntime, NATSUME_RUNTIME_CONFIG, NENE_RUNTIME_CONFIG } from '@/utils/emotionRuntime'
+import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
 import type { Live2DBackendKind } from '@/live2d/types'
+import type { Live2DAdapterCapabilityItem, Live2DCapabilityStatus } from '@/live2d/adapterProfile'
 
-const CHARACTER_IDS = ['nene', 'natsume'] as const
+const companionCharacters = listCompanionUiCharacters()
+const CHARACTER_IDS = listCompanionCharacterIds()
 
 const props = defineProps<{
   activeId: string
@@ -201,19 +215,18 @@ function closeWardrobe() {
 const live2dInitialized = ref(false)
 // 换装选择按角色记忆（宁宁/夏目共用 storage 单字段，值空间分离）
 const outfitByChar = ref<Record<string, string>>({
-  nene: DEFAULT_LIVE2D_OUTFIT,
-  natsume: DEFAULT_NATSUME_OUTFIT,
+  ...Object.fromEntries(CHARACTER_IDS.map(id => [id, getCompanionDefaultOutfit(id)])),
 })
 function currentOutfitId() {
   return outfitByChar.value[props.activeId] ?? props.outfit
 }
 const outfitOptions = computed(() =>
-  props.activeId === 'natsume' ? NATSUME_OUTFITS : LIVE2D_OUTFITS,
+  listCompanionOutfits(props.activeId),
 )
 const activeOutfitLabel = computed(() => {
   const list = outfitOptions.value
   const found = list.find(option => option.id === currentOutfitId())
-  return found?.label ?? list[0].label
+  return found?.label ?? list[0]?.label ?? '无可用服装'
 })
 
 const live2d = useLive2D((status) => {
@@ -222,6 +235,26 @@ const live2d = useLive2D((status) => {
   avatarDetail.value = status.detail
   avatarRetryable.value = status.retryable
 })
+const capabilityLabels: Record<Live2DAdapterCapabilityItem['id'], string> = {
+  mouth: '口型', blink: '眨眼', focus: '视线', emotions: '情绪', interactions: '互动',
+  'hit-areas': '点击区', 'overlay-reset': '叠层复位',
+}
+const capabilityStatusLabels: Record<Live2DCapabilityStatus, string> = {
+  detected: '已发现', 'needs-confirmation': '待实机', verified: '已验证',
+  unsupported: '未配置', invalid: '配置无效',
+}
+const capabilitySummary = computed(() => {
+  const report = live2d.adapterReport.value
+  if (!report) return '模型能力'
+  const unavailable = report.items.filter(item => item.status === 'unsupported' || item.status === 'invalid').length
+  const pending = report.items.filter(item => item.status === 'detected' || item.status === 'needs-confirmation').length
+  if (report.status === 'invalid') return '模型能力配置无效'
+  if (unavailable || pending) {
+    const parts = [unavailable ? `${unavailable} 项未配置` : '', pending ? `${pending} 项待实机` : ''].filter(Boolean)
+    return `模型能力 · ${parts.join(' · ')}`
+  }
+  return '模型能力 · 已验证'
+})
 const { quality } = useLive2DPreferences()
 watch([quality, live2d.backendKind], ([value, backend]) => {
   const legacyNative = backend === 'native' && window.aicsLive2dNative && !window.aicsLive2dNative.supportsTextureQuality
@@ -229,10 +262,14 @@ watch([quality, live2d.backendKind], ([value, backend]) => {
 }, { immediate: true, flush: 'sync' })
 watch(() => props.volume, value => live2d.setVolume((value ?? 80) / 100), { immediate: true })
 
-const neneRuntime = createEmotionRuntime(NENE_RUNTIME_CONFIG)
-const natsumeRuntime = createEmotionRuntime(NATSUME_RUNTIME_CONFIG)
-function activeRuntime() {
-  return props.activeId === 'natsume' ? natsumeRuntime : neneRuntime
+const emotionRuntimes = new Map<string, EmotionRuntime>()
+for (const definition of companionCharacters) {
+  const runtimeConfig = getEmotionRuntimeConfig(definition.emotionProfileId || '')
+  if (runtimeConfig) emotionRuntimes.set(definition.id, createEmotionRuntime(runtimeConfig))
+}
+function activeRuntime(): EmotionRuntime | null {
+  const definition = getCompanionCharacter(props.activeId)
+  return definition ? emotionRuntimes.get(definition.id) || null : null
 }
 
 const touchResonanceActive = ref(false)
@@ -269,7 +306,7 @@ const avatarActionTitle = computed(() => {
 
 async function handleAvatarAction() {
   if (!live2d.enabled.value) {
-    await activeRuntime().activate()
+    await activeRuntime()?.activate()
     await live2d.enable()
     emit('live2dEnabled', true)
     return
@@ -302,12 +339,12 @@ function setAudioLevel(level: number, peak = level) {
 
 function setEmotion(value: string) {
   emotion.value = value
-  activeRuntime().pushEmotion(value)
+  activeRuntime()?.pushEmotion(value)
   live2d.syncNativeEmotion()
 }
 
 function setUserMessage() {
-  activeRuntime().onUserMessage()
+  activeRuntime()?.onUserMessage()
   live2d.syncNativeEmotion()
 }
 
@@ -347,8 +384,7 @@ watch(live2d.backendKind, applyDesktopPerformanceMode, { flush: 'sync' })
 
 async function handleOutfitChange(next: string) {
   if (outfitBusy.value) return
-  if (props.activeId === 'natsume' && findNatsumeOutfit(next).id !== next) return
-  if (props.activeId === 'nene' && findLive2DOutfit(next).id !== next) return
+  if (normalizeCompanionOutfit(props.activeId, next) !== next) return
   outfitBusy.value = true
   try {
     if (await live2d.setOutfit(next)) {
@@ -364,12 +400,10 @@ async function handleOutfitChange(next: string) {
 watch(() => props.activeId, (id) => {
   wardrobeOpen.value = false
   live2d.attachEmotionRuntime(activeRuntime())
-  const remembered = id === 'natsume'
-    ? findNatsumeOutfit(props.outfit).id
-    : findLive2DOutfit(props.outfit).id
+  const remembered = normalizeCompanionOutfit(id, props.outfit)
   outfitByChar.value = { ...outfitByChar.value, [id]: remembered }
   void (async () => {
-    if (live2d.enabled.value) await activeRuntime().activate()
+    if (live2d.enabled.value) await activeRuntime()?.activate()
     await live2d.setCharacter(id)
     if (props.activeId === id && remembered !== live2d.outfit.value) await live2d.setOutfit(remembered)
   })()
@@ -377,18 +411,10 @@ watch(() => props.activeId, (id) => {
 
 watch(() => props.outfit, (value) => {
   // 外部（storage 恢复/其他标签页）带来的值只认当前角色的值空间
-  if (props.activeId === 'natsume') {
-    const valid = findNatsumeOutfit(value).id
-    if (value !== valid || valid !== currentOutfitId()) {
-      outfitByChar.value = { ...outfitByChar.value, natsume: valid }
-      if (valid !== live2d.outfit.value) void live2d.setOutfit(valid)
-    }
-  } else {
-    const valid = findLive2DOutfit(value).id
-    if (value !== valid || valid !== currentOutfitId()) {
-      outfitByChar.value = { ...outfitByChar.value, nene: valid }
-      if (valid !== live2d.outfit.value) void live2d.setOutfit(valid)
-    }
+  const valid = normalizeCompanionOutfit(props.activeId, value)
+  if (value !== valid || valid !== currentOutfitId()) {
+    outfitByChar.value = { ...outfitByChar.value, [props.activeId]: valid }
+    if (valid !== live2d.outfit.value) void live2d.setOutfit(valid)
   }
 })
 
@@ -403,7 +429,7 @@ watch(() => props.autoLoad, (enabled) => {
     return
   }
   void (async () => {
-    await activeRuntime().activate()
+    await activeRuntime()?.activate()
     await live2d.enable()
   })()
 })
@@ -426,12 +452,10 @@ function resolvedBackendKind(): Live2DBackendKind {
 onMounted(() => {
   if (!live2dHostRef.value || !stageRef.value) return
   live2d.attachEmotionRuntime(activeRuntime())
-  const initialOutfit = props.activeId === 'natsume'
-    ? findNatsumeOutfit(props.outfit).id
-    : findLive2DOutfit(props.outfit).id
+  const initialOutfit = normalizeCompanionOutfit(props.activeId, props.outfit)
   outfitByChar.value = { ...outfitByChar.value, [props.activeId]: initialOutfit }
   void (async () => {
-    if (props.autoLoad) await activeRuntime().activate()
+    if (props.autoLoad) await activeRuntime()?.activate()
     await live2d.init(props.activeId, live2dHostRef.value!, stageRef.value!, {
       autoLoad: props.autoLoad,
       outfit: initialOutfit,
@@ -440,7 +464,7 @@ onMounted(() => {
     live2dInitialized.value = true
     if ((props.autoLoad || pendingAutoLoad) && !live2d.enabled.value) {
       pendingAutoLoad = false
-      await activeRuntime().activate()
+      await activeRuntime()?.activate()
       await live2d.enable()
     }
   })()
@@ -465,3 +489,12 @@ defineExpose({
   releasePointerFocus,
 })
 </script>
+
+<style scoped>
+.live2d-capability-report { margin-top: 8px; color: var(--text-secondary); font-size: 12px; }
+.live2d-capability-report summary { min-height: 32px; cursor: pointer; color: var(--text-primary); }
+.live2d-capability-report ul { display: grid; gap: 6px; margin: 6px 0 0; padding: 0; list-style: none; }
+.live2d-capability-report li { display: grid; grid-template-columns: minmax(4em, auto) auto; gap: 2px 8px; }
+.live2d-capability-report strong { color: var(--text-primary); font-weight: 650; }
+.live2d-capability-report small { grid-column: 1 / -1; color: var(--text-secondary); overflow-wrap: anywhere; }
+</style>

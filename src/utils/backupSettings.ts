@@ -2,9 +2,11 @@ import { CHAT_MEMORY_KEY, isLiveLocalKey } from './storageKeys'
 import { CHAT_ARCHIVE_KEY, mergeChatArchives, normalizeChatArchive, serializeChatArchive } from './chatArchive'
 import { mergeChatMemoryStates, normalizeChatMemoryState } from './chatMemory'
 import { normalizeChatStorage } from './chatStorageCore'
+import { listCompanionCharacterIds, normalizeCompanionOutfit } from './companionRegistry'
 
 /** Validate and merge settings in memory before touching the user's existing storage. */
 export function prepareBackupSettings(current: Record<string, string>, incoming: Record<string, string>, replace: boolean) {
+  const characterIds = listCompanionCharacterIds()
   const result = replace ? {} as Record<string, string> : { ...current }
   for (const [key, value] of Object.entries(incoming)) {
     if (!isLiveLocalKey(key)) continue
@@ -15,11 +17,17 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
       ))
     } else if (!replace && key === CHAT_ARCHIVE_KEY) {
       result[key] = serializeChatArchive(mergeChatArchives(
-        normalizeChatArchive(JSON.parse(current[key] || 'null'), ['nene', 'natsume']),
-        normalizeChatArchive(JSON.parse(value), ['nene', 'natsume']),
+        normalizeChatArchive(JSON.parse(current[key] || 'null'), characterIds),
+        normalizeChatArchive(JSON.parse(value), characterIds),
       ))
     } else if (!replace && key === 'aics_chat_v1') {
-      const options = { characterIds: ['nene', 'natsume'], maxMessages: 20, version: 3, createMessageId: () => `restore-${crypto.randomUUID()}` }
+      const options = {
+        characterIds,
+        maxMessages: 20,
+        version: 3,
+        createMessageId: () => `restore-${crypto.randomUUID()}`,
+        normalizeOutfit: normalizeCompanionOutfit,
+      }
       const old = normalizeChatStorage(JSON.parse(current[key] || 'null'), '', options).state
       const next = normalizeChatStorage(JSON.parse(value), '', options).state
       const merged = { ...next, histories: { ...old.histories } }

@@ -28,7 +28,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     setState,
     resumeRendering: () => lifecycle.resumeRendering(),
   })
-  const parameterFrame = createParameterFrame(ctx, { beginOverlaySettle: interactions.beginNatsumeOverlaySettle })
+  const parameterFrame = createParameterFrame(ctx, { beginOverlaySettle: interactions.beginOverlaySettle })
   const lifecycle = createLifecycleController(
     ctx,
     { pointerGaze, emotionClock, layoutFit, interactions, parameterFrame },
@@ -92,7 +92,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   return {
     ready: ctx.ready, enabled: ctx.enabled, character: ctx.character, loadedCharacter: ctx.loadedCharacter,
     mouthValue: ctx.mouthValue, interactionHint: ctx.interactionHint, outfit: ctx.outfit, quality: ctx.quality,
-    backendKind: ctx.backendKind, backendFallback: ctx.backendFallback,
+    backendKind: ctx.backendKind, backendFallback: ctx.backendFallback, adapterReport: ctx.adapterReport,
     init: lifecycle.init, enable: lifecycle.enable, disable: lifecycle.disable,
     setCharacter: lifecycle.setCharacter, setMouth, setAudioLevel, setVolume, setOutfit: lifecycle.setOutfit, setQuality: lifecycle.setQuality, setSpeaking,
     attachEmotionRuntime, setPaused: lifecycle.setPaused, setMaxFps, recover: lifecycle.recover,

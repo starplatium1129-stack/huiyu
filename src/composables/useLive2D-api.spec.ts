@@ -10,7 +10,7 @@ describe('useLive2D 组合根 · API 冻结契约', () => {
   it('公开 API 与冻结清单逐字一致（2026-08-23 公开契约，消费方零改动承诺）', () => {
     const api = useLive2D()
     expect(Object.keys(api).sort()).toEqual([
-      'attachEmotionRuntime', 'backendFallback', 'backendKind', 'character', 'destroy',
+      'adapterReport', 'attachEmotionRuntime', 'backendFallback', 'backendKind', 'character', 'destroy',
       'disable', 'enable', 'enabled', 'init', 'interactionHint', 'layout',
       'loadedCharacter', 'mouthValue', 'outfit', 'quality', 'ready', 'recover', 'releasePointerFocus',
       'retry', 'setAudioLevel', 'setCharacter', 'setDesktopWindowBounds', 'setGlobalPointer',

@@ -6,13 +6,14 @@ import { useCompanionClipboardImport } from '@/composables/useCompanionClipboard
 import { useCompanionSpeechInput } from '@/composables/useCompanionSpeechInput';
 import { useCompanionPerformance } from '@/composables/useCompanionPerformance';
 import { pickCompanionLine } from '@/config/characters';
+import { listCompanionUiCharacters } from '@/utils/companionRegistry';
 import { resolveCompanionPresence } from '@/utils/companionPresence';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { COMPANION_CHAT_LIVE_KEY,COMPANION_LIVE2D_KEY } from '@/utils/storageKeys';
 import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
-    const CHARACTER_IDS = ['nene', 'natsume'] as const;
+    const companionCharacters = listCompanionUiCharacters();
     const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState } = useCharacterRoomSession();
     const desktopBridge = window.companionDesktop;
     const { getScore, getLevelInfo } = useCompanionAffection();
@@ -489,7 +490,7 @@ export function useCompanionWorkspace() {
 chatListRef,
 characterStageRef,
         activeChar, desktopBridge, onBatteryPower, uiHidden, presence, immersive,
-        currentCharacter, affectionScore, affectionInfo, CHARACTER_IDS, switchCharacter, settingsOpen,
+        currentCharacter, affectionScore, affectionInfo, companionCharacters, switchCharacter, settingsOpen,
         autoVoice, onAutoVoiceChange, behaviorEnabled, dnd, toggleDnd, importInputRef,
         onImportInputChange, alwaysOnTop, togglePin, ignoreMouseEvents, toggleMouseEvents, enterImmersive,
         workspaceExists, workspaceTooltip, workspaceOpen, volume, onVolumeChange, exitImmersive,

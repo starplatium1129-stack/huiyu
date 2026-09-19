@@ -252,6 +252,15 @@ export const NATSUME_RUNTIME_CONFIG: EmotionRuntimeConfig = {
   },
 }
 
+export const EMOTION_RUNTIME_CONFIGS: Readonly<Record<string, EmotionRuntimeConfig>> = {
+  nene: NENE_RUNTIME_CONFIG,
+  natsume: NATSUME_RUNTIME_CONFIG,
+}
+
+export function getEmotionRuntimeConfig(profileId: string): EmotionRuntimeConfig | undefined {
+  return EMOTION_RUNTIME_CONFIGS[profileId]
+}
+
 export function createEmotionRuntime(config: EmotionRuntimeConfig): EmotionRuntime {
   const { emotionVAD, emotionParams, reactionParams, reactionDuration = 1.1, decayRate = 0.02, approachRate = 1.35 } = config
   let soullink: SoullinkRuntime | null = null

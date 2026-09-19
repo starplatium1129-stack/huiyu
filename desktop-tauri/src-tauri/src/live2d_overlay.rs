@@ -12,6 +12,9 @@ use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
 use std::sync::mpsc::{channel, Receiver, Sender, TryRecvError};
 #[path = "live2d_frame_pacing.rs"]
 mod frame_pacing;
+#[path = "live2d_adapter.rs"]
+mod live2d_adapter;
+use live2d_adapter::{apply_overlay_defaults, Live2DAdapterConfig, MouthBinding, OverlaySettler};
 use std::sync::{Arc, Mutex, OnceLock};
 use std::thread;
 use std::time::{Duration, Instant};
@@ -207,6 +210,7 @@ pub enum OverlayCommand {
     SetCharacter {
         character: String,
         texture_scale: u32,
+        adapter: Live2DAdapterConfig,
         reply: tokio::sync::oneshot::Sender<Result<(), String>>,
     },
     PlayMotion {
@@ -242,109 +246,6 @@ pub enum OverlayCommand {
     Destroy {
         reply: tokio::sync::oneshot::Sender<()>,
     },
-}
-
-/// 口型参数映射（浏览器端 MOUTH_PARAMS 的 Rust 侧对应）。
-fn mouth_param_for(character: &str) -> &'static str {
-    match character {
-        "natsume" => "ParamMouthForm3",
-        _ => "ParamMouthOpenY",
-    }
-}
-
-/// 夏目叠层/换装参数回落时长：互动/登场动作结束后，把动作曲线留下的
-/// 换装显隐态向隐藏态 smoothstep 缓动（约 0.5s）。替代单帧硬写——硬写
-/// 让换装部件一帧内消失/回穿，桌宠实机呈现为"闪一下"（2026-08-23）。
-const OVERLAY_SETTLE_SECONDS: f32 = 0.5;
-
-/// 情绪最小执行集：脸红（ParamCheek）+ 眼睛微开合。参数级范围严格受限，
-/// 情绪参数表：与浏览器路径 src/utils/emotionRuntime.ts 的
-/// NENE_RUNTIME_CONFIG / NATSUME_RUNTIME_CONFIG emotionParams 对齐
-/// （值 = 基础强度，最终 = 基础值 × intensity，参数不存在则跳过）。
-fn emotion_params(character: &str, name: &str) -> &'static [(&'static str, f32)] {
-    match character {
-        "natsume" => match name {
-            "shy" => &[
-                ("ParamCheek", 0.7),
-                ("ParamBrowLY", 0.15),
-                ("ParamBrowRY", 0.15),
-            ],
-            "happy" => &[
-                ("ParamCheek", 0.4),
-                ("ParamBrowLAngle", 0.2),
-                ("ParamBrowRAngle", 0.2),
-            ],
-            "sad" => &[
-                ("ParamBrowLY", -0.3),
-                ("ParamBrowRY", -0.3),
-                ("ParamBrowLForm", 0.3),
-                ("ParamBrowRForm", 0.3),
-            ],
-            "serious" => &[
-                ("ParamBrowLForm", -0.3),
-                ("ParamBrowRForm", -0.3),
-                ("ParamBrowLAngle", -0.25),
-                ("ParamBrowRAngle", -0.25),
-            ],
-            "gentle" => &[
-                ("ParamBrowLY", 0.1),
-                ("ParamBrowRY", 0.1),
-                ("ParamCheek", 0.25),
-            ],
-            _ => &[],
-        },
-        _ => match name {
-            "shy" => &[
-                ("ParamCheek", 0.95),
-                ("ParamCheek5", 1.0),
-                ("ParamEyeLSmile", 0.5),
-                ("ParamEyeRSmile", 0.5),
-                ("ParamBrowLY", 0.25),
-                ("ParamBrowRY", 0.25),
-                ("ParamMouthForm", -0.25),
-            ],
-            "happy" => &[
-                ("ParamCheek1", 0.6),
-                ("ParamEyeLSmile", 0.9),
-                ("ParamEyeRSmile", 0.9),
-                ("ParamBrowLAngle", 0.35),
-                ("ParamBrowRAngle", 0.35),
-                ("ParamMouthForm", 0.8),
-            ],
-            "sad" => &[
-                ("ParamCheek7", 1.0),
-                ("ParamBrowLY", -0.55),
-                ("ParamBrowRY", -0.55),
-                ("ParamBrowLForm", 0.6),
-                ("ParamBrowRForm", 0.6),
-                ("ParamMouthForm", -0.65),
-            ],
-            "serious" => &[
-                ("ParamBrowLForm", -0.5),
-                ("ParamBrowRForm", -0.5),
-                ("ParamBrowLAngle", -0.4),
-                ("ParamBrowRAngle", -0.4),
-                ("ParamMouthForm", -0.4),
-            ],
-            "gentle" => &[
-                ("ParamEyeLSmile", 0.65),
-                ("ParamEyeRSmile", 0.65),
-                ("ParamBrowLY", 0.18),
-                ("ParamBrowRY", 0.18),
-                ("ParamMouthForm", 0.45),
-            ],
-            _ => &[],
-        },
-    }
-}
-
-fn mouth_value_for(character: &str, level: f32) -> f32 {
-    let level = level.clamp(0.0, 1.0);
-    if character == "natsume" {
-        -0.5 * level
-    } else {
-        level
-    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -451,15 +352,6 @@ impl BlinkState {
     }
 }
 
-/// 眨眼参数组（对齐前端 `BLINK_PARAMS`）：宁宁 ParamEyeLOpen/ParamEyeROpen，
-/// 夏目 ParamEyeLOpen/ParamEyeLOpen2。
-fn blink_params_for(character: &str) -> &'static [&'static str] {
-    match character {
-        "natsume" => &["ParamEyeLOpen", "ParamEyeLOpen2"],
-        _ => &["ParamEyeLOpen", "ParamEyeROpen"],
-    }
-}
-
 #[derive(Clone, Debug)]
 struct ActiveMotion {
     handle: model::MotionHandle,
@@ -472,16 +364,6 @@ struct ActiveMotion {
 /// 同一互动组正在播放时，重复点击必须拒绝（不能 force 重启）。
 fn would_reject_interaction(active: Option<&ActiveMotion>, group: &str) -> bool {
     matches!(active, Some(active) if active.phase == MotionPhase::Interaction && active.group == group)
-}
-
-/// 逐帧写入情绪表演参数（动作曲线之后覆写，见 step()）。
-fn apply_emotion(model: &mut Model, character: &str, name: &str, intensity: f32) {
-    let intensity = intensity.clamp(0.0, 1.0);
-    for (param, base) in emotion_params(character, name) {
-        if model.parameter_index(param).is_some() {
-            model.set_parameter(param, base * intensity, 1.0);
-        }
-    }
 }
 
 struct RenderContext {
@@ -499,6 +381,8 @@ struct RenderContext {
     emotion: Option<(String, f32)>,
     gaze: (f32, f32),
     character: Option<String>,
+    profile: Option<Live2DAdapterConfig>,
+    overlay_settler: Option<OverlaySettler>,
     hit_area_names: Vec<String>,
     motion_counts: HashMap<String, usize>,
     motion_durations: HashMap<String, Vec<f32>>,
@@ -580,6 +464,8 @@ impl RenderContext {
             emotion: None,
             gaze: (0.0, 0.0),
             character: None,
+            profile: None,
+            overlay_settler: None,
             hit_area_names: Vec::new(),
             motion_counts: HashMap::new(),
             motion_durations: HashMap::new(),
@@ -686,13 +572,21 @@ fn hidden_drawables_for(character: &str) -> Vec<i32> {
 }
 
 impl RenderContext {
-    fn load_model(&mut self, assets_root: &std::path::Path, character: &str, texture_scale: u32) -> Result<(), String> {
+    fn load_model(
+        &mut self,
+        assets_root: &std::path::Path,
+        character: &str,
+        texture_scale: u32,
+        profile: Live2DAdapterConfig,
+    ) -> Result<(), String> {
         if let Some(renderer) = self.renderer.as_mut() {
             renderer.release_model_resources();
         }
         self.model = None;
         self.textures.clear();
         self.character = None;
+        self.profile = None;
+        self.overlay_settler = None;
         self.hit_area_names.clear();
         self.motion_counts.clear();
         self.motion_durations.clear();
@@ -793,6 +687,7 @@ impl RenderContext {
         self.model = Some(m);
         self.textures = textures;
         self.character = Some(character.to_string());
+        self.profile = Some(profile);
         self.hit_area_names = manifest.hit_areas.iter().map(|h| h.name.clone()).collect();
         self.motion_counts = motion_counts;
         self.motion_durations = motion_durations;
@@ -807,20 +702,25 @@ impl RenderContext {
         model.update(dt);
         // 覆写参数必须在 UpdateMotion 之后：动作曲线每帧写回参数，
         // 先写会被动作覆盖（实测 TapHead 播放中口型始终为动作姿态）。
-        let character = self.character.as_deref().unwrap_or("nene");
-        if let Some((name, intensity)) = self.emotion.clone() {
-            apply_emotion(model, character, &name, intensity);
+        if let (Some(profile), Some((name, intensity))) = (self.profile.as_ref(), self.emotion.clone()) {
+            profile.apply_emotion(model, &name, intensity);
         }
-        let param = mouth_param_for(character);
-        if model.parameter_index(param).is_some() {
-            model.set_parameter(param, mouth_value_for(character, self.mouth_level), 0.7);
+        if let Some((param, value)) = self.profile.as_ref().and_then(|profile| profile.mouth_value(self.mouth_level)) {
+            if model.parameter_index(param).is_some() {
+                model.set_parameter(param, value, 0.7);
+            }
         }
         let (gx, gy) = self.gaze;
         if gx != 0.0 || gy != 0.0 {
-            model.set_parameter("ParamAngleX", 30.0 * gx, 0.6);
-            model.set_parameter("ParamAngleY", 30.0 * gy, 0.6);
-            model.set_parameter("ParamEyeBallX", gx, 0.8);
-            model.set_parameter("ParamEyeBallY", gy, 0.8);
+            let focus = self.profile.as_ref().map(|profile| profile.focus.as_slice()).unwrap_or_default();
+            for (id, value, weight) in [
+                ("ParamAngleX", 30.0 * gx, 0.6), ("ParamAngleY", 30.0 * gy, 0.6),
+                ("ParamEyeBallX", gx, 0.8), ("ParamEyeBallY", gy, 0.8),
+            ] {
+                if focus.iter().any(|candidate| candidate == id) {
+                    model.set_parameter(id, value, weight);
+                }
+            }
         }
         // 覆盖式眨眼（2026-08-16 眼睛灰修复）：作者 Idle 眼曲线长期闭/半闭
         // 且左右眼不同步，native 无覆写时眼睛灰暗无神。与浏览器 blinkScheduler
@@ -830,7 +730,7 @@ impl RenderContext {
         let in_entrance = matches!(&self.active_motion, Some(m) if m.phase == MotionPhase::Entrance);
         if !in_entrance {
             let blink_value = self.blink.update(dt);
-            for id in blink_params_for(character) {
+            for id in self.profile.as_ref().map(|profile| profile.blink.as_slice()).unwrap_or_default() {
                 if model.parameter_index(id).is_some() {
                     model.set_parameter(id, blink_value, 1.0);
                 }
@@ -848,8 +748,14 @@ impl RenderContext {
             &self.active_motion,
             Some(m) if m.phase == MotionPhase::Interaction || m.phase == MotionPhase::Entrance
         );
-        if character == "natsume" && !interaction_playing && !model.step_overlay_settle(dt) {
-            model.force_overlay_hidden();
+        if !interaction_playing {
+            let settling = self.overlay_settler.as_mut().is_some_and(|settler| settler.step(model, dt));
+            if !settling {
+                self.overlay_settler = None;
+                if let Some(config) = self.profile.as_ref().and_then(|profile| profile.overlay_settle.as_ref()) {
+                    apply_overlay_defaults(model, config);
+                }
+            }
         }
     }
 
@@ -1112,10 +1018,10 @@ impl RenderContext {
     }
 
     fn start_initial_motion(&mut self, app: Option<&AppHandle>) -> Result<(), String> {
-        if self.motion_counts.contains_key("Start") {
-            let index =
-                self.start_motion("Start", None, model::PRIORITY_NORMAL, MotionPhase::Entrance)?;
-            Self::emit_motion_started(app, "Start", index);
+        let entrance_group = self.profile.as_ref().and_then(|profile| profile.entrance_group.clone());
+        if let Some(group) = entrance_group.filter(|group| self.motion_counts.contains_key(group)) {
+            let index = self.start_motion(&group, None, model::PRIORITY_NORMAL, MotionPhase::Entrance)?;
+            Self::emit_motion_started(app, &group, index);
         } else {
             if let Some(app) = app {
                 let _ = app.emit("aics:live2d:entrance-finished", ());
@@ -1159,11 +1065,10 @@ impl RenderContext {
         // 而非单帧硬写——硬写曾让换装部件一帧内消失回穿（2026-08-23 桌宠
         // 实机"换装闪回"反馈）。回落期间 step() 跳过硬性隐藏守卫，结束后
         // 恢复（防 Idle_6 拉灰）。Idle→Idle 轮换参数本就处于隐藏态，无需回落。
-        if matches!(phase, MotionPhase::Interaction | MotionPhase::Entrance)
-            && self.character.as_deref() == Some("natsume")
-        {
-            if let Some(model) = self.model.as_mut() {
-                model.begin_overlay_settle(OVERLAY_SETTLE_SECONDS);
+        if matches!(phase, MotionPhase::Interaction | MotionPhase::Entrance) {
+            let config = self.profile.as_ref().and_then(|profile| profile.overlay_settle.as_ref());
+            if let (Some(model), Some(config)) = (self.model.as_ref(), config) {
+                self.overlay_settler = OverlaySettler::begin(model, config);
             }
         }
         self.start_idle_motion(app);
@@ -1432,7 +1337,7 @@ fn handle_command(
     cmd: OverlayCommand,
 ) {
     match cmd {
-        OverlayCommand::SetCharacter { character, texture_scale, reply } => {
+        OverlayCommand::SetCharacter { character, texture_scale, adapter, reply } => {
             clear_model_state(state);
             ctx.mouth_level = 0.0;
             state.visible.store(false, Ordering::SeqCst);
@@ -1441,7 +1346,7 @@ fn handle_command(
             }
             let result = (|| {
                 ctx.ensure_surface(hwnd)?;
-                ctx.load_model(assets_root, &character, texture_scale)?;
+                ctx.load_model(assets_root, &character, texture_scale, adapter)?;
                 ctx.start_initial_motion(app)
             })();
             if result.is_ok() {
@@ -1508,7 +1413,9 @@ fn handle_command(
         }
         OverlayCommand::SetMouthLevel(level) => {
             let normalized = level.clamp(0.0, 1.0);
-            let mapped = mouth_value_for(ctx.character.as_deref().unwrap_or(""), normalized);
+            let mapped = ctx.profile.as_ref()
+                .and_then(|profile| profile.mouth_value(normalized).map(|(_, value)| value))
+                .unwrap_or(0.0);
             ctx.mouth_level = normalized;
             state
                 .last_mouth_level
@@ -1569,6 +1476,8 @@ fn handle_command(
             ctx.model = None;
             ctx.textures.clear();
             ctx.character = None;
+            ctx.profile = None;
+            ctx.overlay_settler = None;
             ctx.hit_area_names.clear();
             ctx.motion_counts.clear();
             ctx.motion_durations.clear();
@@ -1585,6 +1494,25 @@ fn handle_command(
 }
 
 // ---------------- 公开 API ----------------
+
+fn selftest_adapter(character: &str) -> Live2DAdapterConfig {
+    let natsume = character == "natsume";
+    Live2DAdapterConfig {
+        profile_id: format!("selftest-{character}"),
+        mouth: Some(MouthBinding {
+            id: if natsume { "ParamMouthForm3" } else { "ParamMouthOpenY" }.into(),
+            scale: if natsume { -0.5 } else { 1.0 },
+            range: None,
+        }),
+        blink: if natsume { vec!["ParamEyeLOpen".into(), "ParamEyeLOpen2".into()] }
+            else { vec!["ParamEyeLOpen".into(), "ParamEyeROpen".into()] },
+        focus: vec!["ParamAngleX".into(), "ParamAngleY".into(), "ParamEyeBallX".into(), "ParamEyeBallY".into()],
+        emotion_params: HashMap::new(),
+        overlay_settle: None,
+        entrance_group: natsume.then(|| "Start".into()),
+        leave_group: Some("Leave".into()),
+    }
+}
 
 /// 启动 overlay 窗口 + 渲染线程（幂等）。
 /// 渲染链路自测：无 Tauri 依赖，直接创建 overlay → 加载模型 → 渲染数帧 → 退出。
@@ -1611,6 +1539,7 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
     tx.send(OverlayCommand::SetCharacter {
         character: "nene".to_string(),
         texture_scale: 1,
+        adapter: selftest_adapter("nene"),
         reply: reply_tx,
     })
     .map_err(|e| format!("selftest: send set_character: {e}"))?;
@@ -1634,9 +1563,10 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
     let cmd = |c: OverlayCommand, timeout_ms: u64| -> Result<Result<(), String>, String> {
         let (r_tx, mut r_rx) = tokio::sync::oneshot::channel::<Result<(), String>>();
         let c = match c {
-            OverlayCommand::SetCharacter { character, texture_scale, .. } => OverlayCommand::SetCharacter {
+            OverlayCommand::SetCharacter { character, texture_scale, adapter, .. } => OverlayCommand::SetCharacter {
                 character,
                 texture_scale,
+                adapter,
                 reply: r_tx,
             },
             OverlayCommand::PlayMotion {
@@ -1752,6 +1682,7 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
             OverlayCommand::SetCharacter {
                 character: "natsume".into(),
                 texture_scale: 1,
+                adapter: selftest_adapter("natsume"),
                 reply: tokio::sync::oneshot::channel().0,
             },
             120000,
@@ -1942,6 +1873,7 @@ pub async fn aics_live2d_set_character(
     model_path: String,
     character: Option<String>,
     texture_scale: Option<u32>,
+    adapter: Option<Live2DAdapterConfig>,
 ) -> Result<serde_json::Value, String> {
     // 白名单：character 只接受已知角色；model_path 忽略（资产由 Rust 从
     // assets_root/live2d/{character} 读取，不接收任意路径）。
@@ -1950,6 +1882,12 @@ pub async fn aics_live2d_set_character(
         return Ok(
             serde_json::json!({ "ok": false, "error": format!("unknown character {character}") }),
         );
+    }
+    let Some(adapter) = adapter else {
+        return Ok(serde_json::json!({ "ok": false, "error": "missing Live2D adapter profile" }));
+    };
+    if let Err(error) = adapter.validate() {
+        return Ok(serde_json::json!({ "ok": false, "error": error }));
     }
     let _ = model_path;
     let texture_scale = texture_scale.unwrap_or(1);
@@ -1964,6 +1902,7 @@ pub async fn aics_live2d_set_character(
         OverlayCommand::SetCharacter {
             character,
             texture_scale,
+            adapter,
             reply: tx,
         },
     )
@@ -2174,7 +2113,7 @@ pub fn aics_live2d_destroy(app: AppHandle) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::{
-        blink_params_for, clear_model_state, followed_overlay_rect, mouth_value_for,
+        clear_model_state, followed_overlay_rect, selftest_adapter,
         reset_runtime_state, try_begin_startup, would_reject_interaction, ActiveMotion,
         BlinkPhase, BlinkState, Live2DOverlayState, MotionPhase, OverlayRect,
     };
@@ -2182,9 +2121,9 @@ mod tests {
 
     #[test]
     fn mouth_intent_uses_character_specific_ranges() {
-        assert_eq!(mouth_value_for("nene", 1.0), 1.0);
-        assert_eq!(mouth_value_for("natsume", 1.0), -0.5);
-        assert_eq!(mouth_value_for("natsume", 2.0), -0.5);
+        assert_eq!(selftest_adapter("nene").mouth_value(1.0), Some(("ParamMouthOpenY", 1.0)));
+        assert_eq!(selftest_adapter("natsume").mouth_value(1.0), Some(("ParamMouthForm3", -0.5)));
+        assert_eq!(selftest_adapter("natsume").mouth_value(2.0), Some(("ParamMouthForm3", -0.5)));
     }
 
     #[test]
@@ -2220,9 +2159,8 @@ mod tests {
 
     #[test]
     fn blink_params_follow_frontend_mapping() {
-        assert_eq!(blink_params_for("natsume"), &["ParamEyeLOpen", "ParamEyeLOpen2"]);
-        assert_eq!(blink_params_for("nene"), &["ParamEyeLOpen", "ParamEyeROpen"]);
-        assert_eq!(blink_params_for("unknown"), &["ParamEyeLOpen", "ParamEyeROpen"]);
+        assert_eq!(selftest_adapter("natsume").blink, ["ParamEyeLOpen", "ParamEyeLOpen2"]);
+        assert_eq!(selftest_adapter("nene").blink, ["ParamEyeLOpen", "ParamEyeROpen"]);
     }
 
     #[test]
