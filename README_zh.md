@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-当前规模与能力边界见 [项目状态](docs/project-status.md)，后续事项见 [未来规划](docs/roadmap.md)。
+当前规模与能力边界见 [项目状态](docs/project-status.md)，硬件要求与模型下载见 [全功能开箱指南](docs/guides/setup-and-models.md)，后续事项见 [未来规划](docs/roadmap.md)。
 
 ## 项目定位
 

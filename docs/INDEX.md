@@ -59,6 +59,7 @@
 
 - [Apple HIG Web 设计规范](guides/design/apple-hig-web-guidelines.md)：官方原则、Web 无障碍底线、组件状态与验收矩阵；已按当前仓库更正双主题与品牌边界，不替代根目录 DESIGN.md。
 - [启动与排错](../STARTUP.md)：干净工作区启动、AI 服务端点、模型目录与本机凭据恢复。
+- [全功能开箱与硬件配置、模型部署指南](guides/setup-and-models.md)：各硬件档位运行能力、公共开源底座直链、自训专属 LoRA 说明与环境体检。
 - [专题指南](guides/README.md)：角色与粒子、提示词、美术、视频、桌面、工程设计。
 - [研究与候选方案](research/README.md)：调研依据与待评估提案。
 - [历史记录](archive/README.md)：审计、批次、实验、故障与过期方案。

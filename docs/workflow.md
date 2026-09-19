@@ -307,7 +307,10 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 服务与桌面部署
 
-环境与本机凭据说明见 [启动与排错](../STARTUP.md)。H3 可选模型下载入口为 `models:download-h3 --models-root <ComfyUI模型目录>`；该操作下载大文件，不属于质量检查或普通安装的自动步骤。
+环境与本机凭据说明见 [启动与排错](../STARTUP.md) 与 [全功能硬件配置与模型开箱指南](guides/setup-and-models.md)。
+- `models:check`：扫描当前硬件显存与 ComfyUI/反推模型就绪状态；
+- `models:download-wd14`：一键从国内高速镜像（hf-mirror）下载本地 WD14 真实反推模型（约 150MB）；
+- `models:download-h3 --models-root <ComfyUI模型目录>`：H3 可选模型下载入口；该操作下载大文件，不属于质量检查或普通安装的自动步骤。
 
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
 
