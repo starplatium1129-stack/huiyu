@@ -3,6 +3,22 @@ import { effectScope } from 'vue'
 import { usePromptDeepLink, type PromptDeepLinkDeps } from './usePromptDeepLink'
 
 describe('history links on a reused workbench', () => {
+  it('keeps a rejected busy-workbench link retryable', async () => {
+    const record = { id: 42 }
+    const applyHistory = vi.fn().mockReturnValueOnce(false)
+    const api = usePromptDeepLink({ pb: { history: [record] }, applyHistory } as unknown as PromptDeepLinkDeps)
+    expect(await api.applyDeepLink({ regen: '42' })).toBe(false)
+    expect(api.deepLinkNeeded({ regen: '42' })).toBe(true)
+    expect(await api.applyDeepLink({ regen: '42' })).toBe(true)
+    expect(api.deepLinkNeeded({ regen: '42' })).toBe(false)
+  })
+  it('accepts imported artwork string IDs without coercing them to a number', async () => {
+    const record = { id: 'imported-artwork-a' }
+    const applyHistory = vi.fn()
+    const api = usePromptDeepLink({ pb: { history: [record] }, applyHistory } as unknown as PromptDeepLinkDeps)
+    expect(await api.applyDeepLink({ regen: record.id })).toBe(true)
+    expect(applyHistory).toHaveBeenCalledWith(record, false)
+  })
   it('loads a new record and does not overwrite edits for an unchanged link', async () => {
     const record = { id: 42 }
     const pb = { history: [] as { id: number }[], loadHistory: vi.fn(async () => { pb.history = [record] }) }

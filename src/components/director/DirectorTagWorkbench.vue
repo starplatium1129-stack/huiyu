@@ -100,13 +100,17 @@
         还有 {{ hiddenTagCount }} 个匹配词条未展示，可输入更具体的关键词收窄，或在下方直接粘贴添加
       </p>
     </div>
-    <input class="tag-input" type="text" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
-      @keydown.enter.prevent="addTag($event)" />
+    <input v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
+      @keydown.enter.prevent="addTag($event); tagInputText = ''" />
+    <datalist id="prompt-tag-suggestions">
+      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="tag.canonicalTag" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
+    </datalist>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { matchesPromptTag } from '@/utils/promptTagDictionary'
 import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -136,6 +140,9 @@ const pb = usePromptBuilderStore()
 const { tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle, addTag } = usePromptTagTools(pb)
 
 const tagSearch = ref('')
+const tagInputText = ref('')
+const inputSuggestions = computed(() => tagInputText.value.trim() && !/[,，、\r\n]/.test(tagInputText.value)
+  ? pb.tagDictionary.entries.filter(tag => matchesPromptTag({ en: tag.canonicalTag, cn: tag.zhLabel, cat: tag.category, aliases: tag.aliases }, tagInputText.value)).slice(0, 12) : [])
 const tagCategory = ref('all')
 
 /**
@@ -237,14 +244,7 @@ const matchedTags = computed(() => {
   const q = tagSearch.value.trim().toLowerCase()
   return tagCatalog.value
     .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
-    .filter(tag => {
-      if (!q) return true
-      if (tag.en.toLowerCase().includes(q)) return true
-      if (tag.cn && tag.cn.toLowerCase().includes(q)) return true
-      if (Array.isArray(tag.aliases) && tag.aliases.some(a => a.toLowerCase().includes(q))) return true
-      const meaning = tagMeaning(tag.en, tag.cn).toLowerCase()
-      return meaning.includes(q)
-    })
+    .filter(tag => matchesPromptTag(tag, q, tagMeaning(tag.en, tag.cn)))
     .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
 })
 

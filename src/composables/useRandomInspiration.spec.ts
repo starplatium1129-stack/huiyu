@@ -23,7 +23,7 @@ it('real store/caller reaches the default artist pool without loading the full c
   expect(pb.artistStyleIds).toEqual([])
   random.includeArtists.value = true
   expect(random.roll()).toBe(true)
-  expect(pb.artistStyleIds).toEqual(['kantoku'])
+  expect(pb.artistStyleIds).toEqual(['nekotomi_chao', 'mika_pikazo'])
 })
 
 it('rerolls replace generated artists while retaining manual choices and the two-artist limit', () => {
@@ -33,12 +33,12 @@ it('rerolls replace generated artists while retaining manual choices and the two
   random.includeArtists.value = true
   const rng = vi.spyOn(Math, 'random').mockReturnValue(0)
   random.roll()
-  expect(pb.artistStyleIds).toEqual(['rella', 'kantoku'])
+  expect(pb.artistStyleIds).toEqual(['rella', 'nekotomi_chao'])
   rng.mockReturnValue(0.4)
   random.roll()
   expect(pb.artistStyleIds[0]).toBe('rella')
   expect(pb.artistStyleIds).toHaveLength(2)
-  expect(pb.artistStyleIds[1]).not.toBe('kantoku')
+  expect(pb.artistStyleIds[1]).not.toBe('nekotomi_chao')
   random.includeArtists.value = false
   random.roll()
   expect(pb.artistStyleIds).toEqual(['rella'])
@@ -102,4 +102,13 @@ it('missing data or missing popular identity causes no state mutation', () => {
   const popular = pb.snapshotStyleLayers()
   expect(random.roll()).toBe(false)
   expect(pb.snapshotStyleLayers()).toEqual(popular)
+})
+
+it('undo restores the recipe exported for the restored inspiration', () => {
+  const random = setup()
+  random.roll(41)
+  random.roll(42)
+  expect(random.lastRecipe.value?.seed).toBe(42)
+  random.undo()
+  expect(random.lastRecipe.value?.seed).toBe(41)
 })

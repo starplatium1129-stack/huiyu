@@ -113,3 +113,17 @@ it('a stopped owner can register a retry after its summary was cleared', async (
   expect(module.useTaskCenter().activeCount.value).toBe(1)
   owner.unmount(); await module.flushTaskSummaries()
 })
+
+it.each(['failed', 'cancelled'] as const)('a retry retains the previous %s summary', async terminal => {
+  const module = await import('./useTaskCenter')
+  const status = ref<'running' | 'failed' | 'cancelled'>('running')
+  const owner = mount(defineComponent({ setup() { module.useTrackedTask(() => ({ kind: 'image', title: '绘图', status: status.value, route: '/prompt-builder' })); return () => h('div') } }))
+  const first = module.useTaskCenter().tasks.value[0].id
+  status.value = terminal; await nextTick()
+  status.value = 'running'; await nextTick()
+  const tasks = module.useTaskCenter().tasks.value
+  expect(tasks).toHaveLength(2)
+  expect(tasks.find(task => task.id === first)?.status).toBe(terminal)
+  expect(module.useTaskCenter().activeCount.value).toBe(1)
+  owner.unmount(); await module.flushTaskSummaries()
+})

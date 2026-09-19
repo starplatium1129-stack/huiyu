@@ -270,6 +270,7 @@
             />
           </div>
         </template>
+        <PhotoSwipeStage v-else-if="gestureViewer && viewerIndex >= 0" :items="visible" :index="viewerIndex" @change="openViewer" @error="gestureViewer = false" />
         <ZoomableImageViewer
           v-else-if="viewerUrl"
           :src="viewerUrl"
@@ -306,6 +307,7 @@
           <div class="viewer-prompt">{{ displayedCurrent.prompt || '未保存 Prompt' }}</div>
         </details>
         <div class="viewer-actions">
+          <button class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" @click="gestureViewer = !gestureViewer">{{ gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
           <button class="btn btn-ghost" type="button"
             :class="{ 'btn-favorite-on': displayedCurrent.favorite }"
             :aria-pressed="!!displayedCurrent.favorite"
@@ -343,7 +345,9 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
-import { ref, watch } from 'vue'
+import { defineAsyncComponent, ref, watch } from 'vue'
+const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
+const gestureViewer = ref(false)
 const searchInput = ref<HTMLInputElement | null>(null)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
@@ -471,6 +475,7 @@ watch(current, value => {
 .viewer-position { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); color:var(--on-art-secondary); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
 .viewer-info { min-width:0; overflow-y:auto; padding:56px var(--s-5) var(--s-6); border-left:1px solid var(--on-art-line); background:var(--art-scrim); }
 .viewer-title { margin:var(--s-3) 0 var(--s-1); color:var(--on-art-primary); font-size:var(--fs-title); line-height:var(--lh-tight); }
+.art-viewer .viewer-kicker { color:var(--on-art-secondary); }
 .viewer-meta { color:var(--on-art-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
 .viewer-facts { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); margin-bottom:var(--s-5); }
 .viewer-fact { min-width:0; padding:var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-md); background:var(--on-art-fill); }
@@ -479,6 +484,8 @@ watch(current, value => {
 .viewer-fact strong { margin-top:var(--s-1); color:var(--on-art-primary); font-size:var(--fs-label-xs); }
 .viewer-details { margin:0 0 var(--s-5); border-top:1px solid var(--on-art-line); }
 .viewer-details summary { padding:var(--s-3) 0; color:var(--on-art-secondary); font-size:var(--fs-label-xs); cursor:pointer; }
+.art-viewer .viewer-actions .btn-ghost { color:var(--on-art-primary); border-color:var(--on-art-line); background:var(--art-scrim); }
+.art-viewer .viewer-actions .btn-danger { color:var(--on-art-primary); }
 .viewer-prompt { max-height:220px; overflow:auto; padding:var(--s-3); border-radius:var(--r-md); background:var(--art-backdrop); color:var(--on-art-secondary); font:400 var(--fs-mono-sm)/1.65 var(--font-mono); white-space:pre-wrap; word-break:break-word; }
 @media (max-width:900px) {
   .art-viewer { grid-template-columns:1fr; }

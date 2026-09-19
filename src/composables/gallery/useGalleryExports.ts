@@ -3,6 +3,8 @@ import { buildArtworkFileName } from '@/utils/artworkFileName'
 import { formatA1111Parameters, injectPngMetadata, isPng } from '@/utils/pngMetadata'
 import { safeImageUrl } from './galleryHelpers'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
+import { getCurrentScope, onScopeDispose, ref, type Ref } from 'vue'
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, 'current' | 'stamp' | 'sceneTitle' | 'characterName' | 'showToast'>
 
@@ -17,7 +19,20 @@ function imageFormat(buffer: ArrayBuffer): { ext: string; mime: string } {
   throw new Error('原图格式无法识别，请重新导入有效图片')
 }
 
-export function useGalleryExports({ current, stamp, sceneTitle, characterName, showToast }: Context): { downloadCurrent: () => Promise<void> } {
+export function useGalleryExports({ current, stamp, sceneTitle, characterName, showToast }: Context): { downloadCurrent: () => Promise<void>; copyPrompt: () => Promise<void>; copiedPrompt: Ref<boolean> } {
+  const copiedPrompt = ref(false)
+  let copyTimer: ReturnType<typeof setTimeout> | undefined
+  let disposed = false
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; clearTimeout(copyTimer) })
+  async function copyPrompt() {
+    const item = current.value
+    if (!item?.prompt) return
+    if (await copyWithFeedback(item.prompt, 'Prompt 已复制') && !disposed && current.value?.id === item.id) {
+      copiedPrompt.value = true
+      clearTimeout(copyTimer)
+      copyTimer = setTimeout(() => { copiedPrompt.value = false }, 2000)
+    }
+  }
   let downloading = false
   async function downloadCurrent() {
     const item = current.value
@@ -85,5 +100,5 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
       downloading = false
     }
   }
-  return { downloadCurrent }
+  return { downloadCurrent, copyPrompt, copiedPrompt }
 }

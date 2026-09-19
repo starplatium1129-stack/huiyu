@@ -2,12 +2,14 @@ import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { TASK_CENTER_KV_KEY as KEY } from '@/utils/storageKeys'
 import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
+import type { GenerationStage } from '@/utils/generationTask'
 
 export type TaskStatus = 'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled' | 'interrupted'
 export interface TaskSummary {
   kind: 'image' | 'batch' | 'video' | 'interrogate'
   title: string
   status: TaskStatus
+  stage?: GenerationStage
   message?: string
   progress?: number | null
   route: string
@@ -96,7 +98,7 @@ export function useTrackedTask(source: () => TaskSummary, controls: TaskControls
       if (restored) { id = restored.id; actions.set(id, controls) }
     }
     if (!id && summary.status !== 'running') { previous = summary.status; return }
-    if (!id || !tasks.value.some(task => task.id === id) || (summary.status === 'running' && previous === 'succeeded')) {
+    if (!id || !tasks.value.some(task => task.id === id) || (summary.status === 'running' && previous !== 'running' && previous !== 'idle')) {
       if (id) { const old = tasks.value.find(task => task.id === id); if (old?.resultRoute && !old.resultRoute.startsWith('/gallery')) updateTask(id, { resultRoute: undefined }); forgetTaskControls(id) }
       id = createTask(summary, controls)
     } else updateTask(id, summary)

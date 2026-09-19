@@ -69,6 +69,7 @@
       </div>
     </div>
 
+    <HistoryRestoreNotice v-if="pb.historyRestoreReport" />
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links" aria-label="绘制区快捷导航">
       <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
     </nav>
@@ -202,6 +203,7 @@ const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/d
 const DirectorInspector = defineAsyncComponent(() => import('@/components/director/DirectorInspector.vue'))
 const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
 const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
+const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
 const DrawingTaskObserver = defineAsyncComponent(() => import('@/components/tasks/DrawingTaskObserver.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))

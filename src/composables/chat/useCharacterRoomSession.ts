@@ -69,6 +69,7 @@ export function useCharacterRoomSession() {
 
   let statusTimer = 0
   let errorTimer = 0
+  let disposed = false
   let roomActionRequest: AbortController | null = null
 
   function setError(message: string, kind = 'error', timeout = 7000) {
@@ -345,6 +346,7 @@ export function useCharacterRoomSession() {
 
   async function refreshVoiceStatus() {
     await voice.refreshAvailability()
+    if (disposed) return
     updateVoiceCapability()
     const voiceId = currentCharacter.value.voice
     if (voice.readyFor(voiceId)) voice.prepare(voiceId, true)
@@ -450,7 +452,8 @@ export function useCharacterRoomSession() {
   }
 
   async function clearCharacterConversation() {
-    const messages = storage.messages(activeChar.value)
+    const targetCharacter = activeChar.value
+    const messages = storage.messages(targetCharacter)
     if (!messages.length) return
     const confirmed = await confirmAction({
       title: '清空当前对话？',
@@ -459,11 +462,12 @@ export function useCharacterRoomSession() {
       danger: true,
     })
     if (!confirmed) return
+    if (disposed || activeChar.value !== targetCharacter) return
     if (busy.value) abortCurrentRequest(true)
     const mids = messages.map(message => message.mid).filter(Boolean)
     voice.stop({ preserveMessageAudio: true, silent: true })
     voice.clearMessages(mids)
-    storage.clear(activeChar.value)
+    storage.clear(targetCharacter)
     setError('已开始新的本地对话。', 'info', 2500)
   }
 
@@ -519,7 +523,9 @@ export function useCharacterRoomSession() {
     // 预热角色设定卡（约几十 KB，失败不影响聊天：recall 走空设定 + 会话事实）。
     void loadCharacterSettingCards().catch(() => {})
     await refreshChatStatus()
+    if (disposed) return
     await refreshVoiceStatus()
+    if (disposed) return
     if (chatProvider.value === 'api') {
       if (useHostConfig.value) {
         setChatStatus(`站主配置 · ${hostApiModel.value || 'API'}`, 'online')
@@ -539,6 +545,7 @@ export function useCharacterRoomSession() {
   })
 
   onUnmounted(() => {
+    disposed = true
     window.removeEventListener('storage', onChatAuxStorage)
     clearInterval(statusTimer)
     stopRoomPolling()

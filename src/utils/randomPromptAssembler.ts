@@ -1,3 +1,4 @@
+import pools from '../config/randomInspirationPools.json' with { type: 'json' }
 import type { ArtistStyleOption } from '../config/artistStyles.ts'
 import { normalizeArtistStyleIds, ARTIST_STYLE_CANDIDATES } from '../config/artistStyles.ts'
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '../config/promptConstants.ts'
@@ -110,22 +111,8 @@ const PRIMARY_LOCATIONS = new Set([
 const LIGHT_MAIN = LIGHTING.filter(option => option.id !== 'back').map(option => option.id)
 
 /** 情绪基调互斥家族：第二情绪不得与第一情绪同族。 */
-const EMOTION_FAMILY: Readonly<Record<string, string>> = {
-  happy: 'happy', joyful: 'happy', relaxed: 'happy',
-  sad: 'sad', moved: 'sad', miss: 'sad', wronged: 'sad',
-  calm: 'calm', gentle: 'calm', sleepy: 'calm',
-  serious: 'serious', nervous: 'serious',
-  love: 'love', shy: 'love', spoiled: 'love', expect: 'love',
-}
-
-/** 色彩情调与情绪弱联动：情绪 → 候选 mood id 池。 */
-const COLOR_MOOD_LINK: Readonly<Record<string, readonly string[]>> = {
-  happy: ['joy', 'love'], joyful: ['joy', 'love'], relaxed: ['calm', 'warmth'],
-  sad: ['sad', 'tension'], moved: ['sad', 'joy'], miss: ['sad', 'tension'], wronged: ['sad'],
-  calm: ['calm', 'warmth'], gentle: ['calm', 'warmth'], sleepy: ['warmth', 'calm'],
-  serious: ['tension'], nervous: ['tension'],
-  love: ['love', 'joy'], shy: ['love', 'joy'], spoiled: ['love', 'joy'], expect: ['joy'],
-}
+const EMOTION_FAMILY: Readonly<Record<string, string>> = pools.emotionFamily
+const COLOR_MOOD_LINK: Readonly<Record<string, readonly string[]>> = pools.colorMoodLink
 
 const ALL_EMOTION_IDS = EMOTION.map(option => option.id)
 const ALL_SHOT_IDS = SHOT.map(option => option.id)

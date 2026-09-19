@@ -1,14 +1,16 @@
 import { cancelVideoBatch, cancelVideoJob, fetchVideoBatch, fetchVideoJob } from '@/api/videoApi'
 import type { TaskRecord, TaskSummary } from '@/composables/useTaskCenter'
+import { generationTask } from '@/utils/generationTask'
 
 export async function queryTask(task: TaskRecord, signal?: AbortSignal): Promise<Partial<TaskSummary>> {
   const backend = task.backend
   if (!backend) return {}
   if (backend.kind === 'video') {
     const { job } = await fetchVideoJob(backend.id, signal)
+    const taskState = generationTask(job.status, job.progress)
     return {
-      status: ['queued', 'running', 'cancelling'].includes(job.status) ? 'running' : job.status === 'succeeded' ? 'succeeded' : job.status === 'cancelled' ? 'cancelled' : job.status === 'failed' ? 'failed' : 'interrupted',
-      progress: Math.round(Math.max(0, Math.min(1, job.progress || 0)) * 100),
+      status: taskState.taskStatus, stage: taskState.stage,
+      progress: taskState.progress,
       message: job.error || (job.status === 'succeeded' ? '视频已完成，可返回工作台查看。' : '已同步视频任务状态。'),
       resultRoute: job.status === 'succeeded' ? task.route : undefined,
     }

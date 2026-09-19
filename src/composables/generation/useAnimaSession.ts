@@ -433,6 +433,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
       if (job.metadata) patchState({ job: metadataFromJob(job, request) })
       patchState({
+        backendStatus: job.status,
         progress: typeof job.progress === 'number' ? Math.max(0, Math.min(1, job.progress)) : null,
         elapsedSeconds: typeof job.elapsedSeconds === 'number' ? Math.max(0, job.elapsedSeconds) : state.value.elapsedSeconds,
         progressText: typeof job.progressText === 'string' ? job.progressText : state.value.progressText,
@@ -564,7 +565,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         return
       }
       const metadata = metadataFromJob(data.job, request)
-      patchState({ phase: 'running', statusText: '生成中…', job: metadata })
+      patchState({ phase: 'running', backendStatus: data.job.status, statusText: '生成中…', job: metadata })
       await pollJob(data.job.id, request, serial, controller.signal)
     } catch (error) {
       if (serial !== requestSerial) return

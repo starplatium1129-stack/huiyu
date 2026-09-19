@@ -1,0 +1,579 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-19",
+  "scope": "GitHub reference implementation and prior-commit audit; office validation with isolated browser services",
+  "baseline": "95b48c70012ff46d1ad8cc5460a22406b23411ff",
+  "sourceStateAtValidation": "uncommitted",
+  "subagentsUsed": false,
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "referenceAuditMode": "structure",
+    "browser": "installed Microsoft Edge via Playwright; synthetic touch and mock upstreams"
+  },
+  "checks": {
+    "fullGate": {
+      "status": "failed",
+      "log": {
+        "path": "runtime/github-reference-gate.log",
+        "sha256": "c40514fb9cb263b937c933293c69583740efb6d463ad05a8e4854b424d7f5a5f"
+      },
+      "reason": "Combined run failed on vendored license line endings and an outdated exact-source chat assertion. Both were corrected; unaffected successful phases reused per AGENTS.md.",
+      "subsequentFullRerun": false
+    },
+    "currentValidation": {
+      "status": "passed",
+      "method": "Cumulative evidence; corrected and subsequently changed parts revalidated",
+      "quality": {
+        "status": "passed",
+        "steps": 17,
+        "log": {
+          "path": "runtime/github-reference-check-final.log",
+          "sha256": "a379af9e1cfbaf4135bafb19c83de3a52650a957043b9c07e83af0fd3fd88537"
+        }
+      },
+      "frontend": {
+        "status": "passed",
+        "fullRunTests": 923,
+        "fullRunFiles": 129,
+        "log": {
+          "path": "runtime/github-reference-vitest-final.log",
+          "sha256": "85c07a851a2a413d8761b9f4de47709de4a931779d0435d69d7eb3bdee9752bb"
+        },
+        "lastChange": {
+          "tests": 10,
+          "note": "Random recipe undo regression added after the full run; affected suite rerun",
+          "log": {
+            "path": "runtime/github-reference-random-final.log",
+            "sha256": "4a03a73b4be475e4e33f4a474d39f16af3861c7abea5767aa838ff154f635487"
+          }
+        }
+      },
+      "unit": {
+        "status": "passed",
+        "tests": 1045,
+        "log": {
+          "path": "runtime/github-reference-gate.log",
+          "sha256": "c40514fb9cb263b937c933293c69583740efb6d463ad05a8e4854b424d7f5a5f"
+        }
+      },
+      "contract": {
+        "status": "passed",
+        "groups": 34,
+        "execution": "33 groups passed in combined run; corrected chat group passed in targeted rerun",
+        "combined": {
+          "path": "runtime/github-reference-gate.log",
+          "sha256": "c40514fb9cb263b937c933293c69583740efb6d463ad05a8e4854b424d7f5a5f"
+        },
+        "corrected": {
+          "path": "runtime/github-reference-chat.log",
+          "sha256": "5c43539186db4df912ccd06d6ffb9945840046654af4f11a2769da86171fa4dd"
+        }
+      },
+      "typecheck": {
+        "status": "passed",
+        "log": {
+          "path": "runtime/github-reference-typecheck-final.log",
+          "sha256": "d0e64955cabe9cd274b69b71d7619e9eac9894c5fa00915059ce14efc35b5912"
+        }
+      },
+      "lintAffected": {
+        "status": "passed",
+        "log": {
+          "path": "runtime/github-reference-eslint-final.log",
+          "sha256": "6ade8753efcaa9ee18b904f75d8954377d03facda470ff8740ebd599f65d457f"
+        }
+      },
+      "docs": {
+        "status": "passed",
+        "log": {
+          "path": "runtime/github-reference-docs-postwrite.log",
+          "sha256": "d12d635b6ec24904a187d34d408e8c375672cac6714baff6a101d365238dd981"
+        }
+      }
+    }
+  },
+  "build": {
+    "status": "passed",
+    "log": {
+      "path": "runtime/github-reference-build-final.log",
+      "sha256": "0077bc27acb0a8d5eb3bfc25439e4045548a37bc8e446a70c61a18e06a0dba89"
+    },
+    "distIndexSha256": "41a7d4584cd5bb9a10bd7479601361f051488e0df6557ad4794dbeb9a76179bc",
+    "manifestSha256": "664f30034c808edfce40f1ac7d3d55b311a2aa701f563c6c95e0d2330e2c07ab",
+    "promptBuilderJavaScriptKiB": 137,
+    "promptBuilderBudgetKiB": 140,
+    "licenseSha256": "41924a489f374dcc647db30916c6de47c4eb8c9a995de6a4c08629696096db3e",
+    "note": "Existing budgets preserved; >90% warnings remain for several existing bundles"
+  },
+  "browser": {
+    "status": "passed",
+    "total": 28,
+    "uiAndCompanion": {
+      "tests": 23,
+      "log": {
+        "path": "runtime/github-reference-browser-final.log",
+        "sha256": "d1b325f7cb3a4231f2ee25bc22b414b45afbb5102d5da71c5ea4413979ecb544"
+      }
+    },
+    "engineRequests": {
+      "tests": 5,
+      "log": {
+        "path": "runtime/github-reference-engines-final.log",
+        "sha256": "d060ee651335908104e00aaafaa5f9a210c2fa22782bda5bdc9ea41c4efa1b66"
+      }
+    },
+    "screenshots": [
+      {
+        "path": ".review-shots/github-photoswipe-light.png",
+        "sha256": "377fcbbedf6b95670172610069a4d13293b2edfd9336b7d83ab39f24847377dc"
+      },
+      {
+        "path": ".review-shots/github-photoswipe-dark.png",
+        "sha256": "a334ee38117aaf0cdfaea38318585018b9a2d8e5e808e741cf16a3fa008bb281"
+      },
+      {
+        "path": ".review-shots/github-random-light.png",
+        "sha256": "a61a05f19468fea702c3d8eb30c7ae7dfce5612ee69b4ad20eca383933a55f9e"
+      },
+      {
+        "path": ".review-shots/github-random-dark.png",
+        "sha256": "b94c33969ab001396286f7515f7ff9b0e7bad813c83fd27ba22c8556b11c28b5"
+      },
+      {
+        "path": ".review-shots/github-tags-light.png",
+        "sha256": "2af63fcad9ecd8ef6025f08a0281403c36e43f3465a3a0ce8a0931a4fbcf9ded"
+      },
+      {
+        "path": ".review-shots/github-tags-dark.png",
+        "sha256": "cc1067b4fb1ecfd5870760324b0014a8f68ea5ba6388191be370b9252b9b6ea8"
+      },
+      {
+        "path": ".review-shots/github-history-light.png",
+        "sha256": "7cda7102c9c521e9ad63be6b7c0e22c8b40e8555fad625a85ea4c75ccbe13f2e"
+      },
+      {
+        "path": ".review-shots/github-history-dark.png",
+        "sha256": "b8e56c3b850f4d5c06ac5c5b2a6228da539acfdc8e7ee0fbdeb5ef94208fabac"
+      }
+    ],
+    "touch": "CDP simulated two-point touch; not physical device acceptance"
+  },
+  "performance": {
+    "status": "measured",
+    "fixture": "180 metadata records referencing one local 1600x1000 neutral PNG; initial 60-card page; separate 3000-record search regression",
+    "trend": {
+      "light": {
+        "kind": "synthetic-browser-trend",
+        "cycles": 20,
+        "samples": [
+          {
+            "nodes": 1977,
+            "urls": 21
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          },
+          {
+            "nodes": 1985,
+            "urls": 29
+          }
+        ],
+        "log": {
+          "path": "runtime/github-reference/gallery-resource-light.json",
+          "sha256": "50f924b10e9c917615a5d1194873a1512df7ea24836622daae55c16f0c64ca98"
+        },
+        "lastTenNodes": [
+          1985
+        ],
+        "lastTenUrls": [
+          29
+        ]
+      },
+      "dark": {
+        "kind": "synthetic-browser-trend",
+        "cycles": 20,
+        "samples": [
+          {
+            "nodes": 1978,
+            "urls": 21
+          },
+          {
+            "nodes": 1983,
+            "urls": 24
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          },
+          {
+            "nodes": 1982,
+            "urls": 25
+          }
+        ],
+        "log": {
+          "path": "runtime/github-reference/gallery-resource-dark.json",
+          "sha256": "fb202338187e5da0a7ea4308b089361e6132d4f81808ecb84ef9e60d320a663b"
+        },
+        "lastTenNodes": [
+          1982
+        ],
+        "lastTenUrls": [
+          25
+        ]
+      }
+    },
+    "limitations": [
+      "DOM counts and live Blob URL ownership only; not process memory, GPU texture memory or power",
+      "Late initial thumbnail hydration explains early sample growth; last ten cycles stable",
+      "PhotoSwipe remains opt-in; no virtualization dependency introduced"
+    ]
+  },
+  "sourceFiles": [
+    {
+      "path": "package-lock.json",
+      "sha256": "9607572e4268c7b014595cde50d28292d4b3e75d33b96318af73e51000bf5b9a"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9ba762251099cbafe0cc3f1727d5f15e5df586ddbbf1a7bd89bb453f474544ad"
+    },
+    {
+      "path": "scripts/tests/test-api-client.ts",
+      "sha256": "ebffcee3074591f80db40a512cc28f61562a32bf143cdb7a9af12364cfe1329b"
+    },
+    {
+      "path": "scripts/tests/test-chat.ts",
+      "sha256": "8fb542cefb06d157fb6752b8df9b7ff1db8288ed08f3282afafb5a2f708b162c"
+    },
+    {
+      "path": "src/components/RandomInspirationButton.vue",
+      "sha256": "f4d33256331919c75499c58b80c484a9263f9bfe5a043313a2caca8296a3039d"
+    },
+    {
+      "path": "src/components/director/DirectorTagWorkbench.vue",
+      "sha256": "1c1b810fd381a3d2718ab97e3be9780b007cf2fb7b54de3cfa2bc16a885fe87e"
+    },
+    {
+      "path": "src/components/tasks/TaskCenter.vue",
+      "sha256": "c3362bfd309edd4bfdf00319f9bf60ba1ccafecc1dc97a3decd217aee8dc3bff"
+    },
+    {
+      "path": "src/composables/chat/useCharacterRoomSession.ts",
+      "sha256": "ef565285523c01cc232460d09d6f79634af7c07828ac0316549c194731bd5343"
+    },
+    {
+      "path": "src/composables/gallery/useGalleryExports.ts",
+      "sha256": "f468a81c7fdbb6145f2cf7e1b69192573ab6866a7b4330d7be16a604d4113af5"
+    },
+    {
+      "path": "src/composables/gallery/useGalleryWorkspace.ts",
+      "sha256": "fe6b87afcfd1bd1eba58a39387335dcc4c52d4b3a5d599b979e1331d413e3e5d"
+    },
+    {
+      "path": "src/composables/generation/useAnimaSession.ts",
+      "sha256": "f1c7e96d0df66ccca228e9419f572db3e653f593d27ce82ddbf4115ee4ccec44"
+    },
+    {
+      "path": "src/composables/generation/useDrawingTaskTracking.ts",
+      "sha256": "289f72dfe22542ef0d48305cabb10d3c44e447986aa7b6ed450610fdfbfd224f"
+    },
+    {
+      "path": "src/composables/generation/useSDGenerate.ts",
+      "sha256": "101ed27f4a2f942fbe16884249dcfdab0de6a1d5da26bdf072c346da7539b810"
+    },
+    {
+      "path": "src/composables/prompt/usePromptDeepLink.spec.ts",
+      "sha256": "d27128ebc24bbdbe869fceab93030273995e3a89e77417d3f9d2bfab7aeb10d2"
+    },
+    {
+      "path": "src/composables/prompt/usePromptDeepLink.ts",
+      "sha256": "847a0265300398daf39d1c0dd36c66f5da2258c36e649fc4f87111791d24a807"
+    },
+    {
+      "path": "src/composables/prompt/usePromptHistoryApply.ts",
+      "sha256": "6d18fd170e3bdb0fb592d7f9f26fc7a95cd1a4a803f6879350247fe812eab757"
+    },
+    {
+      "path": "src/composables/prompt/usePromptLifecycle.ts",
+      "sha256": "63eeeb3490f7b040ffa163142590fa20839bfe351598a0a0310696ca029800e9"
+    },
+    {
+      "path": "src/composables/prompt/usePromptTagTools.spec.ts",
+      "sha256": "50c6c81941ba89a2fe7f0e5c0a07759a0dd39b50604e7172ae423d5dff5eb710"
+    },
+    {
+      "path": "src/composables/prompt/usePromptTagTools.ts",
+      "sha256": "759f1709873f8f966625a45dd195fef94e357cc49bb0d9a2618446b3409b9391"
+    },
+    {
+      "path": "src/composables/prompt/usePromptWorkspace.ts",
+      "sha256": "825131dbbfb675427bc76f720b89dd40e10a03998b2d07ba16f1c7a84359fd59"
+    },
+    {
+      "path": "src/composables/tasks/taskRecovery.ts",
+      "sha256": "278e5e6d4ea7e7cb739293c114cd8a373d3c2efeb7571535f00768c070c47e44"
+    },
+    {
+      "path": "src/composables/useRandomInspiration.spec.ts",
+      "sha256": "6e93668bb584683fc4e9554df181608b244060986f394212804a3ba78ede0ca9"
+    },
+    {
+      "path": "src/composables/useRandomInspiration.ts",
+      "sha256": "f292151d3d98d0438622ef6cf4639466aa28c1d231cbad07d4c253495a82c601"
+    },
+    {
+      "path": "src/composables/useTaskCenter.spec.ts",
+      "sha256": "361bdb8efb1ddd645cde5f251d2c001659ff32e81f5a3929e501e75976eafc13"
+    },
+    {
+      "path": "src/composables/useTaskCenter.ts",
+      "sha256": "c32a782f04f43b275b8cb3704bb9d810ad67324d54e02cf8fc47c4cbfa74115d"
+    },
+    {
+      "path": "src/composables/useVoice.ts",
+      "sha256": "1c44882bed9ef89ad4b2f95ca53739657045f7d04260368d76f5e5646bd335d6"
+    },
+    {
+      "path": "src/composables/video/useVideoWorkspace.spec.ts",
+      "sha256": "4bba52b1637f3fa3a3039c44df29f6e50dcf44bc928d69f73fdcd5160490f9ab"
+    },
+    {
+      "path": "src/composables/video/useVideoWorkspace.ts",
+      "sha256": "1d8b91784c22d72a7ac97b4de4c17d3e4f3172e0d38400917425a9fca97a774c"
+    },
+    {
+      "path": "src/stores/promptBuilderStore.ts",
+      "sha256": "42df4290b15360a29fc5777f116762eaa862e63ca0f3427b8fc8187219d8a377"
+    },
+    {
+      "path": "src/types/anima.ts",
+      "sha256": "f197d35fc5511038ff38b6044db530cf1b267619157800ec3ce71e366b35fa7d"
+    },
+    {
+      "path": "src/utils/randomPromptAssembler.ts",
+      "sha256": "12fe3313fa97f10546bd5e7413bd1072cc30e3dea032a7f794b2b69ba9e2503e"
+    },
+    {
+      "path": "src/views/GalleryView.vue",
+      "sha256": "b4f8664d49170631d1845e1582ccaff8bc181d706610e6cc019e5b38998bb736"
+    },
+    {
+      "path": "src/views/PromptBuilderView.vue",
+      "sha256": "90ee50b6c75a90252de3e80cd83b54837b1ad3810875fa9bfb099f90364c6e3b"
+    },
+    {
+      "path": "tests/e2e/random-inspiration.spec.ts",
+      "sha256": "fc7b2a62ba88b99dc0ccee44073523487737dd5a6c0365c422aba789df111eb1"
+    },
+    {
+      "path": "public/licenses/PhotoSwipe.txt",
+      "sha256": "41924a489f374dcc647db30916c6de47c4eb8c9a995de6a4c08629696096db3e"
+    },
+    {
+      "path": "src/components/director/HistoryRestoreNotice.vue",
+      "sha256": "2cd06f91b107cdb31489b8cfc41c2dc66e5c58f85eab0a0fc18908fae084739b"
+    },
+    {
+      "path": "src/components/gallery/PhotoSwipeStage.spec.ts",
+      "sha256": "6ef574867aa99fd042b718d560a98893a78d5b8bedb779570fc87a0256316464"
+    },
+    {
+      "path": "src/components/gallery/PhotoSwipeStage.vue",
+      "sha256": "a2142bf6455430ef3b9546dab5703e98713ab9b703cf1303119d854b0fab2eb1"
+    },
+    {
+      "path": "src/composables/generation/useSDGenerate.spec.ts",
+      "sha256": "d965b4ed442f70274f8af2d89d4efeed8e6ff6fd0c2dbf35d2bf28d20b2062ff"
+    },
+    {
+      "path": "src/composables/prompt/usePromptHistoryApply.spec.ts",
+      "sha256": "5029d9773ad2d01f158e81bc66002b47018f9ff080d4292fd9aaf9afcab5ac7c"
+    },
+    {
+      "path": "src/composables/prompt/usePromptTags.ts",
+      "sha256": "8544fc6d500d6e99bb7a619c4d2a51a0d0c61b50eb9b9e937fd813541c6e5cf6"
+    },
+    {
+      "path": "src/composables/useVoice.spec.ts",
+      "sha256": "d3ac00f8dc616843917eea92801e22ee0db966d07f1127bcd3881095ad8e1337"
+    },
+    {
+      "path": "src/config/randomInspirationPools.json",
+      "sha256": "366a5bc232467f106eca88451442b855128c0e1d085863adbec536322b8a49d8"
+    },
+    {
+      "path": "src/utils/generationTask.spec.ts",
+      "sha256": "f3ddca1e85ecd00d33406c87187735b16ffc58370dd7997f14764f377c63144f"
+    },
+    {
+      "path": "src/utils/generationTask.ts",
+      "sha256": "667fc573c2751940bdd98f184e8eafdfa0c6209e917d34f1413de1a7948b3625"
+    },
+    {
+      "path": "src/utils/promptTagDictionary.spec.ts",
+      "sha256": "df6c1ce3cdf10c1c18148eac55363f607f72dea1cc69cc7bc6914d2fbd02af6e"
+    },
+    {
+      "path": "src/utils/promptTagDictionary.ts",
+      "sha256": "401e8f2b24af5255235a6d37d138e42616898b4a524ced3f3bb0e51517de38d1"
+    },
+    {
+      "path": "src/utils/randomPromptRecipe.spec.ts",
+      "sha256": "3fecfe2374fb35b956a72c16f2ff0600f2dbe9108429c85674f62a4b97fb0161"
+    },
+    {
+      "path": "src/utils/randomPromptRecipe.ts",
+      "sha256": "c175e61456cb5ade7c010a76a3bdc837032c9528fb2dc5514752b460fa5252e5"
+    },
+    {
+      "path": "tests/e2e/github-reference.spec.ts",
+      "sha256": "36e8fca7f62d4290f3b245b31b17fb22ff49313b214307e0e46c7d75ea0e9a80"
+    }
+  ],
+  "deviceAcceptance": {
+    "status": "not-run",
+    "reason": "Physical touch, audio devices, native Live2D/GPU and installed desktop were not exercised"
+  },
+  "modelAcceptance": {
+    "status": "not-run",
+    "reason": "Local generation gateway 127.0.0.1:3000 was unavailable; request/compile tests used mock upstreams"
+  },
+  "installation": {
+    "status": "not-run",
+    "reason": "No installation or deployment performed"
+  }
+}

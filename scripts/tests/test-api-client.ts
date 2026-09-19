@@ -244,7 +244,7 @@ test('phase 2 callers do not keep ordinary JSON endpoint fetches, while TTS and 
   }
   const voice = fs.readFileSync(path.join(root, 'src/composables/useVoice.ts'), 'utf8');
   assert.match(voice, /preparing\s*=\s*voiceApi\.prepare/);
-  assert.match(voice, /prepareKey !== key/);
+  assert.match(voice, /revision !== prepareRevision/);
   assert.match(voice, /voiceApi\.translate/);
   assert.match(voice, /translationFailed/);
 });

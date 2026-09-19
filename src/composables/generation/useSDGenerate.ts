@@ -1,8 +1,5 @@
 import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
-import {
-  buildTxt2ImgRequest,
-  type SDGenerateParams,
-} from '@/utils/sdRequest'
+import type { SDGenerateParams } from '@/utils/sdRequest'
 import {
   parseSDOptionList,
   parseSDStatus,
@@ -24,6 +21,7 @@ export function useSDGenerate() {
   const online      = ref(false)
   const checkpoint  = ref('')
   const generating  = ref(false)
+  const taskState = ref('idle')
   /**
    * 0–100 的真实进度；`null` = 后端给不出进度（WebUI 路径 / 尚未收到步骤事件）。
    * 保持可空而非默认 0：UI 的进度环对 null 走 indeterminate 动画，对 0 则画一个
@@ -101,6 +99,7 @@ export function useSDGenerate() {
   async function generate(params: SDGenerateParams): Promise<string | null> {
     if (generating.value) return null
     generating.value = true
+    taskState.value = 'submitting'
     progress.value   = 0
     statusText.value = '正在生成…'
     errorMsg.value   = ''
@@ -108,8 +107,12 @@ export function useSDGenerate() {
     // 新图落地时才由下方 revoke+替换接管；失败/取消时旧图从未离开，自然还在。
 
     abortCtrl = new AbortController()
+    const controller = abortCtrl
 
     try {
+      params = JSON.parse(JSON.stringify(params)) as SDGenerateParams
+      const { buildTxt2ImgRequest } = await import('@/utils/sdRequest')
+      controller.signal.throwIfAborted()
       const { payload } = buildTxt2ImgRequest(params)
 
       statusText.value = 'SD WebUI 生成中…'
@@ -119,7 +122,8 @@ export function useSDGenerate() {
         const match = String(raw).replace(/^<lora:/i, '').replace(/>$/, '').split(':')
         const name = match[0].trim()
         const id = name === 'ayachi_nene_v18_wd14' ? 'L_NENE_V18_WD14' : name === 'shiki_natsume_v18_wd14' ? 'L_NAT_V18_WD14' : ''
-        return id ? { id, strength: Number(match[1]) || params.lora_weight || 0.8 } : null
+        const strength = match[1]?.trim() ? Number(match[1]) : params.lora_weight
+        return id ? { id, strength: typeof strength === 'number' && Number.isFinite(strength) ? strength : 0.8 } : null
       }).filter((x): x is { id: string; strength: number } => Boolean(x))
       lastLoras.value = loras
       const modelId = String(params.model || '').includes('waiIllustriousSDXL_v170') ? 'waiIllustriousSDXL_v170' : undefined
@@ -133,11 +137,16 @@ export function useSDGenerate() {
         hiresSteps: params.hr_second_pass_steps, denoisingStrength: params.denoising_strength,
         faceDetailer: Boolean(params.alwayson_scripts?.ADetailer),
         ...(isLocalStudioHost() ? { adultEnabled: true } : {}),
-      }, { signal: abortCtrl.signal })
+      }, { signal: controller.signal })
+      if (controller.signal.aborted) {
+        void generationApi.deleteJob(accepted.job.id).catch(() => {})
+        controller.signal.throwIfAborted()
+      }
 
       provider.value = accepted.job.provider === 'comfy' ? 'comfy' : 'webui'
       activeJobId = accepted.job.id
       let job = accepted.job
+      taskState.value = job.status === 'succeeded' ? 'running' : job.status
       const deadline = Date.now() + 20 * 60 * 1000
       const startedAt = Date.now()
       /**
@@ -174,12 +183,13 @@ export function useSDGenerate() {
        *   「引擎 + 已等待秒数」。
        */
       while (Date.now() < deadline) {
-        if (abortCtrl.signal.aborted) throw new DOMException('aborted', 'AbortError')
+        taskState.value = job.status === 'succeeded' ? 'running' : job.status
+        if (controller.signal.aborted) throw new DOMException('aborted', 'AbortError')
         if (job.status === 'failed') throw new Error(job.error || '生成失败')
         if (job.status === 'cancelled') throw new DOMException('cancelled', 'AbortError')
         if (job.status === 'succeeded' && job.resultUrl) break
         await new Promise(resolve => setTimeout(resolve, 700))
-        const state = await generationApi.getJob(job.id, { signal: abortCtrl.signal })
+        const state = await generationApi.getJob(job.id, { signal: controller.signal })
         if (!state.job) throw new Error('生成状态无效')
         job = state.job
         // 后端 publicJob 在 WebUI 路径下不产出 progress 字段（undefined），
@@ -196,7 +206,7 @@ export function useSDGenerate() {
           + (stuckNoted ? ' · 耗时异常，可检查 ComfyUI 是否卡住，必要时取消后重试' : '')
       }
       if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('生成超时')
-      const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: abortCtrl.signal })
+      const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: controller.signal })
       if (!resultResponse.ok || !String(resultResponse.headers.get('content-type') || '').startsWith('image/')) throw new Error('生成结果不是图片')
       const blob = await resultResponse.blob()
       if (!blob.size) throw new Error('生成结果为空')
@@ -206,10 +216,12 @@ export function useSDGenerate() {
       resultUrl.value  = url
       resultSeed.value = job.metadata?.seed ?? job.seed ?? null
       resultPrompt.value = payload.prompt
+      taskState.value = 'succeeded'
       statusText.value = '生成完成'
       return url
     } catch (e) {
-      if (isAbortError(e)) { statusText.value = '已停止'; return null }
+      if (isAbortError(e) || controller.signal.aborted) { taskState.value = 'cancelled'; statusText.value = '已停止'; return null }
+      taskState.value = 'failed'
       errorMsg.value   = errorMessage(e)
       statusText.value = '生成失败'
       return null
@@ -223,6 +235,7 @@ export function useSDGenerate() {
 
   function cancel() {
     if (!generating.value) return
+    taskState.value = 'cancelling'
     abortCtrl?.abort()
     if (activeJobId) {
       void generationApi.deleteJob(activeJobId).catch(() => {})
@@ -232,6 +245,7 @@ export function useSDGenerate() {
   }
 
   function clearResult() {
+    if (!generating.value) taskState.value = 'idle'
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
     resultSeed.value = null; resultPrompt.value = ''; errorMsg.value = ''; statusText.value = ''; progress.value = 0
   }
@@ -241,6 +255,7 @@ export function useSDGenerate() {
    * 把 blob URL 与它的 seed/prompt 挂回会话，舞台与「出视频/加入分镜」随即可用。
    */
   function adoptResult(url: string, seed: number | null, prompt: string) {
+    taskState.value = 'succeeded'
     if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
     resultUrl.value = url
     resultSeed.value = seed
@@ -260,7 +275,7 @@ export function useSDGenerate() {
   if (getCurrentInstance()) onUnmounted(dispose)
 
   return {
-    online: readonly(online), checkpoint: readonly(checkpoint),
+    taskState: readonly(taskState), online: readonly(online), checkpoint: readonly(checkpoint),
     generating: readonly(generating),
     progress: readonly(progress), statusText: readonly(statusText),
     resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed), resultPrompt: readonly(resultPrompt),

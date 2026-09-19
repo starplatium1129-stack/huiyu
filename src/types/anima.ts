@@ -52,6 +52,7 @@ export interface AnimaResultContext {
 
 export interface AnimaGenerationState {
   phase: AnimaPhase
+  backendStatus?: string
   /** ComfyUI 当前只通过轮询提供阶段；未知采样步数时保持 null，禁止伪造百分比。 */
   progress: number | null
   elapsedSeconds: number

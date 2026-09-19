@@ -24,8 +24,9 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
   function tagMeaning(tag: string, catalogLabel = ''): string {
     if (!tagMeaningRequested) {
       tagMeaningRequested = true
-      void import('@/utils/tagMeaning').then(m => { tagMeaningLookup.value = m.tagMeaning })
+      void import('@/utils/tagMeaning').then(m => { tagMeaningLookup.value = m.tagMeaning }).catch(() => { tagMeaningRequested = false })
     }
+    catalogLabel = pb.tagDictionary.lookup(tag)?.zhLabel || catalogLabel
     const lookup = tagMeaningLookup.value
     if (!lookup) return catalogLabel || tag
     return lookup(tag, catalogLabel)
@@ -34,7 +35,7 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
   /** chip 里的中文释义；完全未知的词条不占位（字典未就绪时同样不占位） */
   function tagLabel(tag: string): string {
     const meaning = tagMeaning(tag)
-    if (!tagMeaningLookup.value || !/[\u4e00-\u9fa5]/.test(meaning)) return ''
+    if (!/[\u4e00-\u9fa5]/.test(meaning)) return ''
     return meaning
   }
 
@@ -52,21 +53,6 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     return 'normal'
   }
 
-  /** 别名快速归一化（如 dof -> depth_of_field, jk -> school_uniform） */
-  function resolveTagAlias(inputTag: string): string {
-    const raw = inputTag.toLowerCase().replace(/[\s\-/]+/g, '_')
-    for (const item of ((pb.tags || []) as Array<{ en: string; aliases?: string[] }>)) {
-      if (Array.isArray(item.aliases)) {
-        for (const alias of item.aliases) {
-          if (String(alias).toLowerCase().replace(/[\s\-/]+/g, '_') === raw) {
-            return item.en
-          }
-        }
-      }
-    }
-    return inputTag
-  }
-
   /**
    * 输入框回车加词（2026-08-30 UX 审计 P0-3 重写）。
    *
@@ -81,13 +67,15 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     const input = e.target as HTMLInputElement
     const parts = input.value
       .split(/[,，、\r\n]+/)
-      .map(s => s.trim().replace(/\s+/g, '_').toLowerCase())
+      .map(s => s.trim())
       .filter(Boolean)
     if (!parts.length) return
     let added = 0
     let dup = 0
     for (const tag of parts) {
-      const canonicalTag = resolveTagAlias(tag)
+      const resolved = pb.tagDictionary.canonicalize(tag)
+      const canonicalTag = resolved === tag && /^[\w\s-]+$/.test(tag) && tag !== 'BREAK'
+        ? tag.replace(/\s+/g, '_').toLowerCase() : resolved
       if (pb.addManualTag(canonicalTag) === 'duplicate') dup++
       else added++
     }

@@ -11,7 +11,7 @@ vi.mock('@/composables/tasks/useBackendSelection', () => ({ useBackendSelection:
 vi.mock('@/stores/videoStore', () => ({ useVideoStore: () => ({ recordVideoTask: mocks.record }) }))
 vi.mock('@/api/videoApi', () => ({
   createVideoJob: mocks.create, fetchVideoJob: vi.fn(), cancelVideoJob: vi.fn(),
-  fetchVideoStatus: async () => ({ online: true, models: [{ id: 'minimax-h3', available: true, modes: ['text', 'image', 'first-last-frame'] }], defaults: { modelId: 'minimax-h3' } }),
+  fetchVideoStatus: async () => ({ online: true, models: [{ id: 'minimax-h3', available: true, executable: true, modes: ['text', 'image', 'first-last-frame'] }], defaults: { modelId: 'minimax-h3' } }),
 }))
 vi.mock('@/components/video/useVideoFrames', () => ({ useVideoFrames: (deps: VideoFramesDeps) => {
   deps.videoImageId.value = 'restored-first'

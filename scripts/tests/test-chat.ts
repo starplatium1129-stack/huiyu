@@ -361,7 +361,7 @@ async function run() {
     voiceModule.includes('audio.networkState === 2')
       && voiceModule.includes("onStatus(waitExtensions === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…')")
       && voiceModule.includes("audio.pause()") && voiceModule.includes("audio.removeAttribute('src')")
-      && voiceModule.includes('function onPlaying() { started = true }')
+      && /function onPlaying\(\) \{ started = true[;}]/.test(voiceModule)
       && voiceModule.includes("const retryable = !started && reason !== 'timeout' && item.retryLeft !== 0 && sess === session"),
     'voice must never double-play or replay from the start after mid-playback failure, and must extend slow generations instead of killing them'
   );

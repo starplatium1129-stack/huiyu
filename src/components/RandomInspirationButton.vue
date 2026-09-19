@@ -1,5 +1,5 @@
 <template>
-  <div class="random-inspiration" :class="{ open: menuOpen }">
+  <div ref="trigger" class="random-inspiration" :class="{ open: menuOpen }">
     <button
       class="random-dice"
       type="button"
@@ -20,19 +20,29 @@
     >
       <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
     </button>
-    <FluidTransition>
-      <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="夏目的调色笔记">
-        <div class="random-label">夏目的调色笔记</div>
+    <Teleport to="body"><FluidTransition>
+      <div v-if="menuOpen" ref="popover" class="random-popover" :style="popoverStyle" role="dialog" aria-label="夏目的调色笔记">
+        <div class="random-label">夏目的调色笔记 <button type="button" class="btn btn-ghost btn-icon" aria-label="关闭调色笔记" @click="menuOpen = false"><ArchiveIcon name="close" /></button></div>
         <label class="random-toggle">
           <input v-model="includeArtists" type="checkbox" />
           <span class="random-toggle-text">混入知名画师特调笔触</span>
           <small class="random-toggle-hint">开启后由夏目悄悄塞入画师特调风格；默认关闭，保留少女最纯粹的原生神韵。</small>
         </label>
+        <label class="random-seed">灵感种子
+          <input v-model="seedText" type="text" inputmode="numeric" aria-label="灵感种子" placeholder="留空则随机" />
+        </label>
+        <button class="random-choice" type="button" @click="previewCandidates">预览 3 组候选</button>
+        <div v-for="(candidate, index) in candidates" :key="candidate.recipe.seed" class="random-candidate">
+          <small>种子 {{ candidate.recipe.seed }}</small>
+          <p>{{ candidate.draw.manualTags.join(' · ') || '镜头与情绪组合' }}</p>
+          <button class="random-choice" type="button" @click="applyCandidate(index)">应用候选 {{ index + 1 }}</button>
+        </div>
+        <button v-if="lastRecipe" class="random-choice" type="button" @click="exportRecipe">保存种子与配置快照</button>
         <button class="random-undo" type="button" :disabled="!canUndo" @click="onUndo">
           夏目：“退回刚才那一抽”
         </button>
       </div>
-    </FluidTransition>
+    </FluidTransition></Teleport>
   </div>
 </template>
 
@@ -42,17 +52,31 @@ import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useRandomInspiration } from '@/composables/useRandomInspiration'
+import { useFocusTrap } from '@/composables/useFocusTrap'
+import { onClickOutside, useElementBounding, useWindowSize } from '@vueuse/core'
 
 const pb = usePromptBuilderStore()
-const { includeArtists, roll, undo, hasUndo } = useRandomInspiration()
+const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration()
 
 const menuOpen = ref(false)
+const popover = ref<HTMLElement | null>(null)
+const trigger = ref<HTMLElement | null>(null)
+const { bottom, right } = useElementBounding(trigger)
+const { width: viewportWidth, height: viewportHeight } = useWindowSize()
+const popoverStyle = computed(() => ({
+  '--random-top': `${Math.min(Math.max(88, bottom.value + 8), Math.max(88, viewportHeight.value - 240))}px`,
+  '--random-right': `${Math.max(16, viewportWidth.value - right.value)}px`,
+}))
+const seedText = ref('')
+useFocusTrap(popover, () => menuOpen.value, { onEscape: () => { menuOpen.value = false } })
+onClickOutside(popover, () => { menuOpen.value = false }, { ignore: [trigger] })
+function previewCandidates() { prepareCandidates(3, seedText.value.trim() ? Number(seedText.value) : undefined) }
 const disabled = computed(() => !pb.dataReady)
 const canUndo = computed(() => Boolean(hasUndo.value))
 
 function onRoll() {
   menuOpen.value = false
-  roll()
+  roll(seedText.value.trim() ? Number(seedText.value) : undefined)
 }
 
 function onUndo() {
@@ -136,10 +160,10 @@ function onUndo() {
   line-height: var(--lh-flush);
 }
 .random-popover {
-  position: absolute;
+  position: fixed;
   z-index: var(--z-popover);
-  top: calc(100% + 10px);
-  right: 0;
+  top: var(--random-top);
+  right: var(--random-right);
   width: min(280px, calc(100vw - 32px));
   padding: var(--s-3);
   border: 1px solid var(--border-soft);
@@ -147,7 +171,14 @@ function onUndo() {
   background: var(--bg-elevated);
   box-shadow: var(--shadow-lg);
   transform-origin: top right;
+  max-height: min(560px, calc(100dvh - var(--random-top) - 24px));
+  overflow-y: auto;
 }
+.random-seed { display: grid; gap: var(--s-1); color: var(--text-secondary); font-size: var(--fs-label-sm); margin-block: var(--s-2); }
+.random-seed input { min-width: 0; padding: var(--s-2); color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); }
+.random-choice { width: 100%; min-height: 36px; margin-top: var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-deep); cursor: pointer; }
+.random-candidate { padding-block: var(--s-2); border-bottom: 1px solid var(--border-soft); color: var(--text-secondary); font-size: var(--fs-label-sm); }
+.random-candidate p { overflow-wrap: anywhere; margin: var(--s-1) 0; }
 .popover-pop-enter-active {
   transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
 }
@@ -160,6 +191,13 @@ function onUndo() {
   transform: translateY(-6px) scale(0.96);
 }
 .random-label {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin: 2px 4px 8px;
   color: var(--text-muted);
   font: 700 var(--fs-mono-xs) var(--font-mono);

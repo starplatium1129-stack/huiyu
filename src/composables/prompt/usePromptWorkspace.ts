@@ -7,7 +7,6 @@ import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
 
 import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge';
-import { useQuickCreateApply } from '@/composables/prompt/useQuickCreateApply';
 import { useTempResult } from '@/composables/prompt/useTempResult';
 
 import { usePromptMaterials } from './usePromptMaterials';
@@ -405,7 +404,6 @@ export function usePromptWorkspace() {
         pb.sdParams.seedLock = true;
         pb.flash(`已锁定 seed ${seed}`);
     }
-    const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize });
     // ── 历史应用（恢复/复制/删除/复用配方）已下沉 usePromptHistoryApply ────────
     // 历史恢复与删除只在用户操作或历史深链时加载，普通出图首屏不下载这段代码。
     let historyTools: Promise<ReturnType<typeof import('@/composables/prompt/usePromptHistoryApply')['usePromptHistoryApply']>> | null = null;
@@ -421,11 +419,15 @@ export function usePromptWorkspace() {
             sdSize,
         }));
     }
-    async function applyHistory(entry: HistoryEntry, variant = false) { (await getHistoryTools()).applyHistory(entry, variant); }
+    async function applyHistory(entry: HistoryEntry, variant = false) {
+        const tools = await getHistoryTools();
+        if (generationBusy.value) { pb.flash('生成进行中，完成或停止后再载入配方'); return false; }
+        return tools.applyHistory(entry, variant);
+    }
     function resumeHistory(entry: HistoryEntry) { return applyHistory(entry); }
     function duplicateHistory(entry: HistoryEntry) { return applyHistory(entry, true); }
     async function deleteHistory(entry: HistoryEntry) { await (await getHistoryTools()).deleteHistory(entry); }
-    async function reuseSuccessfulRecipe(id: number) { (await getHistoryTools()).reuseSuccessfulRecipe(id); }
+    async function reuseSuccessfulRecipe(id: number) { const entry = pb.history.find(item => item.id === id); if (entry) await applyHistory(entry, true); }
     // ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
     // onMounted 首放 + watch(route.query) 按 deepLinkNeeded 条件重放：
     // 组件复用 / 后退恢复（bfcache）时组件不会重挂载、onMounted 不重跑，
@@ -449,7 +451,7 @@ export function usePromptWorkspace() {
         if (route.path !== '/prompt-builder' || !deepLinkNeeded(q))
             return;
         if (await applyDeepLink(q) && !generationBusy.value) {
-            if (pb.directorMode === 'basic')
+            if (pb.directorMode === 'basic' && !['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string'))
                 void applyManagedRoute({ silent: true });
             else
                 void refreshManagedRoute();
@@ -513,7 +515,7 @@ export function usePromptWorkspace() {
     usePromptLifecycle({
         refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY,
         pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
-        applyManagedRoute, refreshManagedRoute, restorePopularDraft, applyQuickCreateSettings,
+        applyManagedRoute, refreshManagedRoute, restorePopularDraft,
         animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative,
         updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories,
         popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession,

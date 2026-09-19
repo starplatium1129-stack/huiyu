@@ -1,7 +1,9 @@
 import { ref, watch } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import { randomPromptPlan, type RandomDraw, type RandomInspirationOptions } from '@/utils/randomPromptAssembler'
+import { type RandomInspirationOptions } from '@/utils/randomPromptAssembler'
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent.ts'
+import { randomCandidates, type RandomRecipe } from '@/utils/randomPromptRecipe'
+import { downloadBlob } from '@/utils/downloadBlob'
 
 /**
  * 随机灵感桥接层（2026-08-29，见 docs/guides/engineering/random-prompt-assembler-design.md）。
@@ -23,6 +25,11 @@ export function useRandomInspiration() {
 
   /** 「随机画师」开关（默认关闭：不加画师 tag，保留角色原生画风）。 */
   const includeArtists = ref(false)
+  const candidates = ref<ReturnType<typeof randomCandidates>>([])
+  const lastRecipe = ref<RandomRecipe | null>(null)
+  let snapshotRecipe: RandomRecipe | null = null
+  let candidateContext = ''
+  const contextKey = () => JSON.stringify([pb.char, pb.sceneId, pb.subject, pb.projectId])
 
   /** 撤销快照：仅保留最近一组（掷之前的状态）。 */
   const lastSnapshot = ref<ReturnType<typeof pb.snapshotStyleLayers> | null>(null)
@@ -41,6 +48,9 @@ export function useRandomInspiration() {
     lastSnapshot.value = null
     snapshotGenerated = []
     generatedArtists.clear()
+    candidates.value = []
+    lastRecipe.value = null
+    snapshotRecipe = null
   }, { flush: 'sync' })
 
   /** 自 store 已加载数据提取官方服装（loras.json outfit_guidance，V18 WD14 为事实源）。 */
@@ -76,7 +86,7 @@ export function useRandomInspiration() {
   }
 
   /** 掷一次随机灵感：快照当前状态 → 采样 → 写回 store。 */
-  function roll(): boolean {
+  function prepareCandidates(count = 1, seed = Math.floor(Math.random() * 4294967296)): boolean {
     if (!pb.dataReady || !pb.tags.length) {
       pb.flash('随机灵感需要数据就绪，请稍候再试', 2500, 'warning')
       return false
@@ -100,11 +110,21 @@ export function useRandomInspiration() {
           tags: pb.tags,
           officialOutfits: officialOutfitsFor(pb.char),
         }
-    const draw: RandomDraw = randomPromptPlan(options)
+    try { candidates.value = randomCandidates(options, seed, count) }
+    catch (error) { pb.flash((error as Error).message, 2500, 'warning'); return false }
+    candidateContext = contextKey()
+    return true
+  }
+
+  function applyCandidate(index: number): boolean {
+    const candidate = candidates.value[index]
+    if (!candidate || candidateContext !== contextKey()) return false
+    const { draw, recipe } = candidate
 
     lastSnapshot.value = pb.snapshotStyleLayers()
+    snapshotRecipe = lastRecipe.value
     snapshotGenerated = [...generatedArtists]
-    const retainedArtists = new Set(options.keepArtists)
+    const retainedArtists = new Set(recipe.config.keepArtists)
     applying = true
     try {
       pb.selections.emotion = draw.emotions
@@ -118,9 +138,16 @@ export function useRandomInspiration() {
       applying = false
     }
     generatedArtists = new Set(draw.artistStyleIds.filter(id => !retainedArtists.has(id)))
+    lastRecipe.value = recipe
 
     pb.flash('随机灵感已应用，可继续手改或再掷', 2500, 'info')
     return true
+  }
+
+  function roll(seed?: number): boolean { return prepareCandidates(1, seed) && applyCandidate(0) }
+  function exportRecipe() {
+    if (!lastRecipe.value) return
+    downloadBlob(new Blob([JSON.stringify(lastRecipe.value, null, 2)], { type: 'application/json' }), `huiyu-inspiration-${lastRecipe.value.seed}.json`)
   }
 
   /** 撤销上一组（回到掷之前的状态）。 */
@@ -135,9 +162,11 @@ export function useRandomInspiration() {
     generatedArtists = new Set(snapshotGenerated)
     snapshotGenerated = []
     lastSnapshot.value = null
+    lastRecipe.value = snapshotRecipe
+    snapshotRecipe = null
     pb.flash('已撤销上一组随机灵感', 2000, 'info')
     return true
   }
 
-  return { includeArtists, roll, undo, hasUndo: lastSnapshot }
+  return { includeArtists, roll, undo, hasUndo: lastSnapshot, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe }
 }

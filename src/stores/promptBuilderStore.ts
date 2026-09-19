@@ -7,12 +7,14 @@ import { historyFromResultContext } from '@/utils/resultContext'
 import { ref, reactive, computed, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { mutualGroupWithCategory, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
+import { type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
 import { imgPut, imgDelete } from '@/composables/useImageStore'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { applyModelProfileToParams } from '@/utils/promptModelProfile'
+import { usePromptTags } from '@/composables/prompt/usePromptTags'
+import type { PromptTagSource } from '@/utils/promptTagDictionary'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useToast } from '@/composables/useToast'
 
@@ -130,7 +132,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sceneId   = ref<string | null>(null)
   const sceneBaseStory = ref('')
   const selections = reactive<Selections>({ emotion: [], shot: null, lighting: null, composition: null })
-  const manualTags = ref<Set<string>>(new Set())
   /**
    * 反推顶替的服装（2026-08-29）。非空时，热门角色用参考图服装**整体替换**
    * 角色默认服装（outfit.tokens + outfit.prose 一起换；只换 tag 不换散文无效）。
@@ -149,7 +150,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const scenes = computed(() => sceneStore.scenes as unknown as Scene[])
   const curation = computed(() => sceneStore.curation as unknown as Record<string, unknown>)
   const loraMeta = computed(() => sceneStore.loras as unknown as LoraMeta[])
-  const tags = computed(() => sceneStore.tags as unknown as Array<{ en: string; cn: string; cat: string }>)
+  const tags = computed(() => sceneStore.tags as unknown as PromptTagSource[])
+  const { manualTags, tagDictionary, addManualTag, toggleManualTag } = usePromptTags(() => tags.value, flash)
   const characters = computed(() => sceneStore.characters as unknown as Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }> }>)
   const popularCharacters = computed(() => sceneStore.popularCharacters)
   /** 当前主体对应的画师专属推荐（2026-09-05 从 PromptBuilderView 迁入：纯 store 派生）。 */
@@ -166,6 +168,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const presets = ref<PromptPreset[]>([])
   const modelProfiles = ref<ModelProfile[]>([])
   const dataReady = ref(false)
+  const historyRestoreReport = ref<{ title: string; notes: string[] } | null>(null)
 
   // ── SD state ────────────────────────────────────────────────────────────
   // 生成生命周期状态（online/generating/progress/result/error）由 useSDGenerate
@@ -281,47 +284,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setComposition(id: string | null) { selections.composition = id }
   function setColorMood(id: string | null)   { colorMood.value = id }
 
-  /** 同类别不同组才互斥；同组细节（school_uniform + pleated_skirt）可叠加。 */
-  function conflictingManualTags(tag: string, candidates: Iterable<string>): string[] {
-    const incoming = mutualGroupWithCategory(tag)
-    if (!incoming) return []
-    return [...candidates].filter(candidate => {
-      const existing = mutualGroupWithCategory(candidate)
-      return existing?.category === incoming.category && existing.group !== incoming.group
-    })
-  }
-
-  function toggleManualTag(tag: string) {
-    const next = new Set(manualTags.value)
-    if (next.has(tag)) { next.delete(tag); manualTags.value = next; return }
-    // 词条目录级互斥：服装 / 时段 / 天气等类别内，只有不同组互斥。
-    const replaced = conflictingManualTags(tag, next)
-    replaced.forEach(t => next.delete(t))
-    next.add(tag)
-    manualTags.value = next
-    if (replaced.length) flash(`已用「${tag}」替换冲突词条「${replaced.join('、')}」`)
-  }
-
-  /**
-   * 幂等添加词条（2026-08-30 UX 审计 P0-3）。
-   *
-   * 与 toggleManualTag 的唯一区别：**命中已存在的词条时保留，而不是删掉**。
-   * 输入框是「加词」语义——用户敲下一个已激活的词条，预期是「确认它还在」，
-   * toggle 语义却把它移除，属于静默数据丢失（手工攒的 40+ 词条最容易这么丢）。
-   * 组间互斥顶替逻辑保留；同组细节允许叠加，仍会对真正的跨组替换提示。
-   *
-   * @returns 'added' 新增 / 'replaced' 顶替冲突组旧词 / 'duplicate' 已存在未改动
-   */
-  function addManualTag(tag: string): 'added' | 'replaced' | 'duplicate' {
-    const next = new Set(manualTags.value)
-    if (next.has(tag)) return 'duplicate'
-    const replaced = conflictingManualTags(tag, next)
-    replaced.forEach(t => next.delete(t))
-    next.add(tag)
-    manualTags.value = next
-    if (replaced.length) flash(`已用「${tag}」替换冲突词条「${replaced.join('、')}」`)
-    return replaced.length ? 'replaced' : 'added'
-  }
   function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
 
   /** 反推出跨族服装：顶替角色默认服装（replaced 为被顶替的服装族名，用于提示）。 */
@@ -672,7 +634,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
-    selections, manualTags, artistStyleIds, projectId,
+    selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, outfitOverride,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady,

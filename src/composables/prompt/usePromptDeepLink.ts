@@ -2,12 +2,7 @@ import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry, type Scene } from '@/stores/promptBuilderStore'
 import { isCharKey } from '@/composables/scene/directorOptions'
 import { COLOR_MOODS } from '@/config/promptConstants'
-import {
-  findScenario,
-  substituteScenarioPrompt,
-  SCENARIO_RES_MAP,
-  type ScenarioCharacter,
-} from '@/config/scenarios'
+import type { ScenarioCharacter } from '@/config/scenarios'
 import {
   findBlueprint as findPopularBlueprint,
   findCharacter as findPopularCharacter,
@@ -30,7 +25,7 @@ export interface PromptDeepLinkDeps {
   selectScene: (scene: Scene) => void
   applyRecommendedEngine: (character: PopularCharacter | null) => void
   setDirectorMode: (mode: 'basic' | 'pro') => void
-  applyHistory: (entry: HistoryEntry, keepAsVariant?: boolean) => void | Promise<void>
+  applyHistory: (entry: HistoryEntry, keepAsVariant?: boolean) => void | boolean | Promise<void | boolean>
 }
 
 /**
@@ -63,6 +58,8 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     let handled = false
     const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
     if (scenarioId) {
+      const { findScenario, substituteScenarioPrompt, SCENARIO_RES_MAP } = await import('@/config/scenarios')
+      if (request !== historyRequest) return false
       // 剧本模式分幕 → 导演台：第一幕的语义词条落成手动词条，
       // 质量行不搬（质量前缀由模型 profile 决定，剧本里的六连质量词
       // 正是 WAI 作者建议避免的堆叠写法）。
@@ -112,19 +109,20 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
       handled = true
     }
     if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
-      const targetId = Number(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
-      let entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
-      if (!entry && Number.isFinite(targetId)) {
+      const targetId = String(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
+      let entry = targetId ? pb.history.find(h => String(h.id) === targetId) : null
+      if (!entry && targetId) {
         await pb.loadHistory()
         if (request !== historyRequest) return handled
-        entry = pb.history.find(h => h.id === targetId)
+        entry = pb.history.find(h => String(h.id) === targetId)
       }
       if (entry) {
+        const applied = await deps.applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
+        if (applied === false) return handled
+        if (request !== historyRequest) return handled
         lastHistoryLink = historyKey(q)
-        await deps.applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
         if (typeof q.remix === 'string') {
           deps.setDirectorMode('pro')
-          pb.flash('已载入作品参数与配方，可自由调整细节')
         }
         handled = true
       }

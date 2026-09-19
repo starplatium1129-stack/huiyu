@@ -15,16 +15,15 @@
 
 ## GitHub 复用研究的接入边界（2026-09-19）
 
-[GitHub 复用与参考项目调研](research/engineering/github-reference-research-2026-09-19.md) 已纳入项目研究入口。它只提供候选实现、接口/状态机/测试策略的参考，不代表任何候选仓库已经安装、复制或通过许可证与运行验收。
+[GitHub 复用与参考项目调研](research/engineering/github-reference-research-2026-09-19.md) 的本轮实现与既有提交复审见 [实施审计](research/engineering/github-reference-implementation-2026-09-19.md)。P1 统一词条、随机种子/候选/快照、P4 任务阶段、P5 配方恢复及 P6 语音生命周期已落地；PhotoSwipe 5.4.4 为按需加载、可切回的 Spike，未替换默认观画入口。
 
-后续按以下顺序推进，并沿用本项目现有实现作为唯一生产入口：
+余下工作按证据推进：
 
-1. **P1：提示词词典与双语状态统一**。复用现有 tags 分片、Prompt State、随机灵感、反推和 Remix 链路；参考 Tag Autocomplete 的 canonical tag、释义和 alias 数据模型，不建立第二套翻译系统。
-2. **P2：作品册查看器 Spike**。只验证 PhotoSwipe 对缩放、拖拽、切图、焦点恢复、手势和资源释放的收益，不替换 Gallery 的搜索、收藏、项目、回收站、对比或 Remix 业务。
-3. **P3：性能测量后再决定虚拟化与压缩**。TanStack Virtual、fflate 等只有在固定数据集和同机基线证明收益后才进入候选接入；不以增加依赖或提高预算代替测量。
-4. **P4–P6：生成适配、作品到 Remix、Companion**。分别参考 SwarmUI／InvokeAI 的能力与元数据边界，以及 AIRI／Open-LLM-VTuber 的陪伴、语音打断和 Live2D 生命周期；继续落在现有 TypeScript／Express／Tauri 架构和 010 计划内。
+1. **观画试验设备验收**：实体触屏、Windows/Tauri、真实大图集上的缩放、拖拽边界、切图和资源趋势对照后，再决定是否正式替换默认查看器。
+2. **009 性能测量**：S03/S08、四类 KeepAlive 的 GPU/纹理/进程内存与高负载趋势。现有 DOM/Blob URL 探针和 3,000 条分页测试不足以授权引入 TanStack Virtual；压缩仍待真实 manifest + 原图包需求。
+3. **真实模型与陪伴验收**：固定种子和旧配方的最终编译请求/画面；真实 TTS 打断、换角隔离、原生 Live2D 音画同步。旧作品缺失的生成字段不能由推断补成已复现。
 
-任何候选正式接入前必须完成最新源码与维护状态、License／数据许可、最小 Spike、与当前实现的 A/B、TypeScript／Build／Unit／Contract／E2E 门禁；涉及桌面端还需 Windows／Tauri 实机验收。E（010 深化）的注册表与 Profile 生产接线已完成办公机范围；后续进入检查器／导入校准与 F 真机验收，本研究不会把办公机测试改写为第三方库已接入或 Windows 已验收。
+保留 TypeScript／Express／Tauri 架构、角色约束与分级边界；Reka UI、fflate 仍按实际需求与维护/许可/包体评估决定。010 的模型检查器、导入校准与 F 真机验收继续开放。
 
 A 批已完成本地基线核对与文档同步：默认实物模式只被未配置的 2,534 个外部参考文件阻断，办公机 structure 模式下 17 项质量检查、Vitest、1,043 项 Node 单测、34 组契约和构建通过。外部参考文件继续留在 F/V01，不用降级结果宣称实物通过；远端 CI 状态因本机未安装 GitHub CLI 未在本批读取。
 

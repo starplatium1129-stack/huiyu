@@ -1,5 +1,4 @@
 
-import { quickCreateSummary,readQuickCreate } from '@/utils/quickCreate';
 import { nextTick,onActivated,onBeforeUnmount,onDeactivated,onMounted,watch } from 'vue';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import type { UseDirectorPopularInput, useDirectorPopular } from '@/composables/scene/useDirectorPopular';
@@ -9,7 +8,6 @@ import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAss
 import type { usePromptMaterials } from './usePromptMaterials';
 import type { usePromptDeepLink } from './usePromptDeepLink';
 import type { useTempResult } from './useTempResult';
-import type { useQuickCreateApply } from './useQuickCreateApply';
 import type { usePromptVideoBridge } from './usePromptVideoBridge';
 
 export interface PromptLifecycleDeps extends
@@ -19,7 +17,6 @@ export interface PromptLifecycleDeps extends
     Pick<ReturnType<typeof usePromptMaterials>, 'sceneCollection' | 'sceneLimit'>,
     Pick<ReturnType<typeof usePromptDeepLink>, 'applyDeepLink'>,
     Pick<ReturnType<typeof useTempResult>, 'restoreTempResult'>,
-    Pick<ReturnType<typeof useQuickCreateApply>, 'applyQuickCreateSettings'>,
     Pick<ReturnType<typeof usePromptVideoBridge>, 'refreshShotsPending'> {
     route: RouteLocationNormalizedLoaded;
     DIRECTOR_MODE_KEY: string;
@@ -32,7 +29,7 @@ export interface PromptLifecycleDeps extends
 }
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
-export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, applyQuickCreateSettings, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
+export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, drawEngine, sd, startStatusPolling, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
     // A delayed storage/backend response must not resume setup or submit a deep-link job
     // after its workspace has been destroyed. KeepAlive deactivation retains its tasks.
     let disposed = false;
@@ -80,17 +77,21 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
             await restoreTempResult();
             if (disposed) return;
         }
+        const restoredRecipe = handledDeepLink && ['remix', 'regen', 'variant'].some(key => typeof route.query[key] === 'string');
         // 推荐尺寸同步到出图选择
-        if (pb.lastRecommendedSize)
+        if (!restoredRecipe && pb.lastRecommendedSize)
             sdSize.value = pb.lastRecommendedSize;
-        if (pb.directorMode === 'basic')
+        if (!restoredRecipe && pb.directorMode === 'basic')
             await applyManagedRoute({ silent: true });
         else
             await refreshManagedRoute();
         if (disposed) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
-        restorePopularDraft();
+        if (!restoredRecipe) restorePopularDraft();
         if (route.query.quick === '1') {
+            const [{ quickCreateSummary, readQuickCreate }, { useQuickCreateApply }] = await Promise.all([import('@/utils/quickCreate'), import('./useQuickCreateApply')]);
+            if (disposed) return;
+            const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize });
             const savedQuick = readQuickCreate();
             applyQuickCreateSettings(savedQuick);
             // 快速出图深链：Anima 引擎必须收敛到受控路线推荐的底模（工作室角色 → Aesthetic v1.1），

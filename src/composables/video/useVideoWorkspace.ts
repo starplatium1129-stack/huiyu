@@ -1,3 +1,4 @@
+import { generationTask, canExecuteVideo } from '@/utils/generationTask'
 
 import { onActivated } from 'vue'
 
@@ -280,9 +281,7 @@ const canGenerate = computed(() => {
   return prompt.value.trim().length >= 8
     && prompt.value.length <= 4000
     && parsedSeed.value !== null
-    && status.value?.online === true
-    && activeModel.value?.available === true
-    && activeModel.value?.modes?.includes(mode) === true
+    && canExecuteVideo(activeModel.value, mode, status.value?.online === true)
     && !submitting.value
     && !uploadingImage.value
     && !jobActive.value
@@ -514,7 +513,7 @@ onMounted(() => {
   })()
 })
 
-useTrackedTask(() => ({ kind: 'video', title: '视频创作', backend: !submitting.value && job.value ? { kind: 'video', id: job.value.id } : undefined, route: job.value ? '/video-studio?job=' + encodeURIComponent(job.value.id) : '/video-studio', resultRoute: job.value?.status === 'succeeded' ? '/video-studio?job=' + encodeURIComponent(job.value.id) : undefined, status: submitting.value || jobActive.value ? 'running' : job.value?.status === 'succeeded' ? 'succeeded' : job.value?.status === 'failed' ? 'failed' : job.value?.status === 'cancelled' ? 'cancelled' : 'idle', progress: progressPercent.value, message: job.value?.error || statusError.value || '' }), { cancel: cancelJob })
+useTrackedTask(() => ({ kind: 'video', title: '视频创作', backend: !submitting.value && job.value ? { kind: 'video', id: job.value.id } : undefined, route: job.value ? '/video-studio?job=' + encodeURIComponent(job.value.id) : '/video-studio', resultRoute: job.value?.status === 'succeeded' ? '/video-studio?job=' + encodeURIComponent(job.value.id) : undefined, status: generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').taskStatus, stage: generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').stage, progress: progressPercent.value, message: job.value?.error || statusError.value || '' }), { cancel: cancelJob })
 
 onBeforeUnmount(() => {
   disposed = true

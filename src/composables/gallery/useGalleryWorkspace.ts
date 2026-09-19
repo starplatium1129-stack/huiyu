@@ -2,7 +2,6 @@ import { characterName as resolveCharacterName } from './galleryHelpers';
 import { artworkIndexById,formatTrashTime,hiresLabel,modelName,loraName as resolveLoraName,sceneTitle as resolveSceneTitle,searchHaystack,trashPrompt,} from '@/composables/gallery/galleryHelpers';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { buildMasonryGroups,useMasonryColumns } from '@/composables/gallery/useMasonryWall';
-import { copyWithFeedback } from '@/composables/useCopyFeedback';
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { imgGet } from '@/composables/useImageStore';
 import { kvGet,kvSet } from '@/composables/useKVStore';
@@ -51,7 +50,6 @@ export function useGalleryWorkspace() {
     const infoOpen = ref(false);
     const compareMode = ref(false);
     const viewerUrl = ref('');
-    const copiedPrompt = ref(false);
     const cardUrls = reactive<Record<string, string>>({});
     /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
     const thumbUrls = reactive<Record<string, string>>({});
@@ -341,7 +339,7 @@ export function useGalleryWorkspace() {
                 if (imageId && !thumbUrls[item.id] && !thumbPending.has(imageId)) {
                     thumbPending.add(imageId);
                     blobThumbDataUrl(blob).then(dataUrl => {
-                        if (dataUrl) {
+                        if (dataUrl && !unmounted && viewActive && history.value.some(entry => entry.id === item.id)) {
                             thumbUrls[item.id] = dataUrl;
                             void kvSet(thumbKey(imageId), dataUrl);
                         }
@@ -460,7 +458,7 @@ export function useGalleryWorkspace() {
                 viewerUrl.value = item.image_data;
         }
         catch {
-            viewerUrl.value = '';
+            if (!unmounted && token === viewerLoadToken) viewerUrl.value = '';
         }
     }
     /** 查看器当前大图的 blob URL；卡片缩略图不走这里 */
@@ -580,19 +578,10 @@ export function useGalleryWorkspace() {
      */
     /** 批量撤销：整组恢复，失败条数如实汇报。 */
     /** 撤销软删：整条恢复（历史条目 + 项目引用），刷新列表即可见。 */
-    async function copyPrompt() {
-        const text = current.value?.prompt;
-        if (!text)
-            return;
-        if (await copyWithFeedback(text, 'Prompt 已复制')) {
-            copiedPrompt.value = true;
-            setTimeout(() => { copiedPrompt.value = false; }, 2000);
-        }
-    }
     /** 下载当前作品的原图文件（优先 IndexedDB 原图 blob，注入 Civitai 级元数据） */
     /* ---------- 键盘 ---------- */
     function onKeydown(e: KeyboardEvent) {
-        if (viewerIndex.value < 0)
+        if (viewerIndex.value < 0 || e.defaultPrevented || e.isComposing || e.ctrlKey || e.metaKey || e.altKey || (e.target instanceof HTMLElement && e.target.closest('input, textarea, select, [contenteditable="true"]')))
             return;
         // Escape 与 Tab 陷阱由 useFocusTrap 处理
         if (e.key === 'ArrowLeft')
@@ -645,6 +634,7 @@ export function useGalleryWorkspace() {
     onDeactivated(() => { viewActive = false; closeViewer(); document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear(); cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear(); });
     onUnmounted(() => {
         unmounted = true;
+        clearTimeout(releaseViewerTimer);
         viewerLoadToken += 1;
         // 防抖定时器里握着 router，不请掉会在组件卸载后改一次导航
         if (syncTimer) {
@@ -719,6 +709,7 @@ export function useGalleryWorkspace() {
         syncFiltersToQuery();
     });
     const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
+    const { copiedPrompt, copyPrompt } = actions;
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }
     const trashActions = useGalleryTrash({ trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage });
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }

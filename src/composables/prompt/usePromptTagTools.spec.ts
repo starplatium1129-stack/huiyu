@@ -73,6 +73,16 @@ describe('usePromptTagTools · addTag 批量粘贴', () => {
     addTag(inputWith('   ，、  '))
     expect(pb.manualTags.size).toBe(0)
   })
+
+  it('shared imports and typed aliases converge while preserving weighted and LoRA syntax', () => {
+    useSceneStore().tags = [{ en: 'depth_of_field', cn: '景深', cat: 'Camera', aliases: ['dof'] }]
+    const pb = usePromptBuilderStore()
+    pb.manualTags = new Set(['景深', 'dof', 'depth of field'])
+    expect([...pb.manualTags]).toEqual(['depth_of_field'])
+    const { addTag } = usePromptTagTools(pb)
+    addTag(inputWith('<lora:My_Model:0.8>, (dof:1.25), BREAK'))
+    expect([...pb.manualTags]).toEqual(['depth_of_field', '<lora:My_Model:0.8>', '(depth_of_field:1.25)', 'BREAK'])
+  })
 })
 
 describe('usePromptTagTools · addTag 幂等语义', () => {

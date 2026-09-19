@@ -283,6 +283,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 关键浏览器回归包含 `ui-layout.spec.ts` 的双主题/多尺寸布局与可读性检查。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
 
+`github-reference.spec.ts` 已加入关键回归：统一词条、固定种子候选、配方兼容检查和 PhotoSwipe 试验。图库使用中性本地图片夹具，双主题各 20 次开关；DOM/Blob URL 趋势保留在 `runtime/github-reference/`，双指采用 CDP 模拟，不代表真实模型、实体触屏或 GPU 内存验收。
+
 资源故障与恢复的定向用例在 `tests/e2e/resource-recovery.spec.ts`：角色列表头像、场景卡片、参考卡片与画册灯箱，共四种流程的深浅主题检查。使用本地响应夹具，确认故障请求命中并验证恢复后的图片加载。可运行 `node node_modules/@playwright/test/cli.js test tests/e2e/resource-recovery.spec.ts --project desktop --workers 1`；需要已有 dist，设置独立 AICS_E2E_PORT_OFFSET 可隔离服务端口与运行目录。该文件由默认 e2e 发现，未加入显式 critical 清单；不代表参考灯箱、Live2D 或全部离线资源验收。
 
 首页英雄图/热门横条回退见 `home-image-recovery.spec.ts`，角色详情主图/缩略图失败及恢复见 `character-detail-recovery.spec.ts`；`image-fallback-visual.spec.ts` 覆盖两处新增文字 AA 对比度、标签避让与普通桌面/2560×1440 DPR1.5/390×844 窄屏的双主题截图。它们沿用上述 Playwright 定向入口，默认 e2e 可发现，未加入显式 critical 清单。DPR1.5 是浏览器等效视口，不替代主力机 Windows DPI/WebView2 验收；装饰遮罩与实际图像叠字仍需查看截图。

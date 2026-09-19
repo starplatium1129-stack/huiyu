@@ -123,11 +123,16 @@ export function useVoice(options: {
   let prepareKey = '', preparing: Promise<boolean> | null = null
   let turn: VoiceTurn | null = null, _lastEmotion = 'neutral', _neutralStreak = 0
   let _warnedTranslation = false, _warnedAnalyser = false
+  let cancelPlayback: (() => void) | null = null, cancelReplay: (() => void) | null = null
+  let prepareRevision = 0, availabilityRevision = 0, destroyed = false, volume = 1
+  let prepareController: AbortController | null = null
 
   async function refreshAvailability() {
+    const revision = ++availabilityRevision
     try {
-      availability.value = readVoiceAvailability(await voiceApi.getStatus())
-    } catch (e) { availability.value = { online: false, voices: {}, error: errorMessage(e) } }
+      const value = readVoiceAvailability(await voiceApi.getStatus())
+      if (!destroyed && revision === availabilityRevision) availability.value = value
+    } catch (e) { if (!destroyed && revision === availabilityRevision) availability.value = { online: false, voices: {}, error: errorMessage(e) } }
     return availability.value
   }
 
@@ -136,26 +141,31 @@ export function useVoice(options: {
   }
 
   function prepare(voice: string, needsTranslation = true): Promise<boolean> {
+    if (destroyed) return Promise.resolve(false)
     if (!readyFor(voice)) return Promise.resolve(false)
     const translationReady = !needsTranslation || Boolean(availability.value.translation?.ready)
-    if (availability.value.activeVoice === voice && translationReady) { prepareKey = voice + ':' + needsTranslation; return Promise.resolve(true) }
     const key = voice + ':' + needsTranslation
     if (preparing && prepareKey === key) return preparing
+    if (!preparing && availability.value.activeVoice === voice && translationReady) { prepareKey = key; return Promise.resolve(true) }
+    const revision = ++prepareRevision
+    prepareController?.abort()
+    prepareController = new AbortController()
     prepareKey = key
     onStatus(needsTranslation ? '正在预热声线与翻译…' : '正在预热角色声线…')
-    preparing = voiceApi.prepare({ voice, translation: needsTranslation }).then(() => {
-      if (prepareKey !== key) return false
+    preparing = voiceApi.prepare({ voice, translation: needsTranslation }, { signal: prepareController.signal }).then(() => {
+      if (revision !== prepareRevision || destroyed) return false
       availability.value.activeVoice = voice
       if (needsTranslation) availability.value.translation = { ...(availability.value.translation ?? {}), ready: true }
       onStatus(''); return true
     }).catch((e) => {
-      if (prepareKey === key && !isAbortError(e)) onStatus('声线会在首次播放时加载')
+      if (revision === prepareRevision && !destroyed && !isAbortError(e)) onStatus('声线会在首次播放时加载')
       return false
-    }).finally(() => { if (prepareKey === key) preparing = null })
+    }).finally(() => { if (revision === prepareRevision) { preparing = null; prepareController = null } })
     return preparing
   }
 
   function ensureAudioContext() {
+    if (destroyed) return
     if (!audioContext) {
       try {
         const audioWindow = window as Window & typeof globalThis & {
@@ -166,7 +176,7 @@ export function useVoice(options: {
         audioContext = new AC()
         const ac = audioContext!
         analyser = ac.createAnalyser(); analyser.fftSize = 512; analyser.smoothingTimeConstant = 0.5
-        gainNode = ac.createGain(); gainNode.gain.value = 1
+        gainNode = ac.createGain(); gainNode.gain.value = volume
         analyser.connect(gainNode); gainNode.connect(ac.destination)
       } catch { audioContext = null; analyser = null }
     }
@@ -178,6 +188,7 @@ export function useVoice(options: {
   function notifyActivity() { onActivity(isActive()) }
 
   function startTurn(meta: { mid: string; voice: string; character: string }) {
+    if (destroyed) return
     stop({ preserveMessageAudio: true, silent: true })
     ensureAudioContext(); session++
     controller = new AbortController()
@@ -249,6 +260,7 @@ export function useVoice(options: {
       if (isAbortError(e) || (e instanceof ApiClientError && e.kind === 'aborted')) throw e
       translationFailed = true
     }
+    if (signal.aborted || meta.session !== session) return null
     if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
     const emotionChanged = Boolean(firstReference && emotion !== firstReference)
     return {
@@ -293,7 +305,7 @@ export function useVoice(options: {
   }
 
   function startLipSync() {
-    if (lipFrame || !analyser) return
+    if (lipFrame || !analyser || document.hidden || destroyed) return
     const samples = new Uint8Array(analyser.fftSize)
     const tick = () => {
       const audio = currentAudio || replayAudio; let target = 0
@@ -324,9 +336,11 @@ export function useVoice(options: {
     lipFrame = 0; lipSmooth = 0; onMouth(0); onAudioLevel(0, 0)
   }
   function setVolume(value: number) {
-    value = Math.max(0, Math.min(1, Number(value) || 1))
-    if (audioContext && gainNode) gainNode.gain.linearRampToValueAtTime(value, audioContext.currentTime + 0.05)
+    volume = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1
+    if (audioContext && gainNode) gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05)
   }
+  function onVisibilityChange() { if (document.hidden) stopLipSync(); else if (currentAudio || replayAudio) startLipSync() }
+  document.addEventListener('visibilitychange', onVisibilityChange)
 
   function pump(sess: number) {
     if (playing || !queue.length || sess !== session) return
@@ -343,7 +357,7 @@ export function useVoice(options: {
     // 只有连接已死（error 事件）或拖过总上限才放弃，放弃时也不再重试。
     const scheduleTimeout = () => {
       loadTimer = window.setTimeout(() => {
-        if (finished || started) return
+        if (finished || started || sess !== session) return
         if (audio.readyState < 2 && audio.networkState === 2 && waitExtensions < 2) {
           waitExtensions++
           onStatus(waitExtensions === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…')
@@ -362,7 +376,10 @@ export function useVoice(options: {
       // 数据一到浏览器会自动开播，与重试的新元素同时响（"反复说一个词"）。
       audio.pause()
       audio.removeAttribute('src')
+      audio.load()
       removeAudioSource(audio)
+      if (sess !== session) return
+      cancelPlayback = null
       if (currentAudio === audio) currentAudio = null; playing = false
       if (succeeded) {
         if (!queue.length) { onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending > 0 ? '语音合成中…' : '') }
@@ -382,13 +399,17 @@ export function useVoice(options: {
         pump(sess); notifyActivity()
       }
     }
-    function onPlaying() { started = true }
+    function onPlaying() { started = true; clearTimeout(loadTimer) }
     function done() { finish(true) }
     function onErrorEvent() { finish(false, 'error') }
     audio.addEventListener('playing', onPlaying)
     audio.addEventListener('ended', done); audio.addEventListener('error', onErrorEvent)
+    cancelPlayback = () => finish(false)
     scheduleTimeout()
-    audio.play().then(() => startLipSync()).catch(() => { onError('浏览器阻止了自动播放，请点击消息下方的"重播"。'); done() })
+    audio.play().then(() => { if (!finished && sess === session) startLipSync() }).catch(() => {
+      if (finished || sess !== session) return
+      onError('浏览器阻止了自动播放，请点击消息下方的"重播"。'); done()
+    })
   }
 
   async function playMessage(mid: string): Promise<boolean> {
@@ -400,19 +421,28 @@ export function useVoice(options: {
       if (rs !== session) return false
       const audio = new Audio(clip.url) as AudioWithSource
       replayAudio = audio; attachAnalyser(audio); onExpression(clip.emotion || 'neutral')
+      notifyActivity()
       await new Promise<void>(res => {
+        let finished = false
+        const timeout = window.setTimeout(() => done(), 270_000)
         const done = () => {
+          if (finished) return
+          finished = true
+          clearTimeout(timeout)
           audio.removeEventListener('ended', done); audio.removeEventListener('error', done)
           audio.pause()
           audio.removeAttribute('src')
+          audio.load()
+          if (replayAudio === audio) { replayAudio = null; cancelReplay = null }
           removeAudioSource(audio); res()
         }
+        cancelReplay = done
         audio.addEventListener('ended', done); audio.addEventListener('error', done)
-        audio.play().then(() => startLipSync()).catch(done)
+        audio.play().then(() => { if (!finished && rs === session) startLipSync() }).catch(done)
       })
     }
     if (rs === session) { replayAudio = null; onSpeaking(false, mid); onExpression('neutral'); onStatus(''); stopLipSync(); notifyActivity() }
-    return true
+    return rs === session
   }
 
   function hasAudio(mid: string) { const c = messageAudio.get(mid); return Boolean(c?.length) }
@@ -423,6 +453,10 @@ export function useVoice(options: {
 
   function stop(opts: { preserveMessageAudio?: boolean; silent?: boolean } = {}) {
     session++; controller?.abort(); controller = null; turn = null
+    prepareRevision++; prepareKey = ''; preparing = null
+    prepareController?.abort(); prepareController = null
+    cancelPlayback?.(); cancelPlayback = null
+    cancelReplay?.(); cancelReplay = null
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve(); pending = 0
     const refs = new Set<string>(); messageAudio.forEach(c => c.forEach(cl => refs.add(cl.url)))
     queue.forEach(it => { if (!refs.has(it.url)) URL.revokeObjectURL(it.url) }); queue = []
@@ -437,6 +471,8 @@ export function useVoice(options: {
   }
 
   function destroy() {
+    destroyed = true; availabilityRevision++
+    document.removeEventListener('visibilitychange', onVisibilityChange)
     stop({ preserveMessageAudio: false, silent: true })
     if (gainNode) { try { gainNode.disconnect() } catch {}; gainNode = null }
     if (audioContext) audioContext.close().catch(() => {}); audioContext = null; analyser = null
