@@ -14,7 +14,11 @@ export function useRouteTransition() {
     settle(el)
     el.inert = false
     if (path) markUiFluidityForPath(path, 'shell-ready')
-    if (prefersReducedMotion() || typeof el.animate !== 'function') {
+    const cachedActivation = el.dataset.routeEntered === 'true'
+    el.dataset.routeEntered = 'true'
+    // KeepAlive returns reuse the same physical page. Replaying first-entry motion makes
+    // back/forward feel slower and can blur content that was already ready.
+    if (cachedActivation || prefersReducedMotion() || typeof el.animate !== 'function') {
       if (path) markUiFluidityForPath(path, 'settled')
       done()
       return

@@ -125,7 +125,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     assert.equal(animations[0].cancelCalls, 1)
   })
 
-  it('settles the old entrance before re-entry without letting stale events cancel the new one', () => {
+  it('settles the old entrance and skips first-entry motion on the same cached element', () => {
     const hooks = mountHooks(), { el, animations } = surface(), first = counter(), second = counter()
     hooks.onEnter(el, first.done)
     const staleFinish = animations[0].onfinish!
@@ -133,10 +133,8 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     hooks.onEnter(el, second.done)
     staleFinish()
     assert.equal(first.count, 1)
-    assert.equal(second.count, 0)
-    assert.equal(animations[1].cancelCalls, 0)
-    animations[1].onfinish!()
     assert.equal(second.count, 1)
+    assert.equal(animations.length, 1)
     assert.deepEqual(state.marks, [
       ['/gallery', 'shell-ready'], ['/gallery', 'settled'],
       ['/gallery?filter=new', 'shell-ready'], ['/gallery?filter=new', 'settled'],
@@ -296,13 +294,13 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
 
   it('settles on deactivation without duplicating listeners or blocking a later activation', () => {
     const media = mediaQuery(); browser(media)
-    const hooks = mountHooks(), { el, animations } = surface(), first = counter(), second = counter()
+    const hooks = mountHooks(), { el } = surface(), first = counter(), second = counter()
     hooks.onEnter(el, first.done)
     for (const callback of state.deactivated) callback()
     assert.equal(first.count, 1)
     assert.equal(media.listeners.size, 1)
     hooks.onBeforeEnter(el); hooks.onEnter(el, second.done)
-    animations[1].onfinish!(); unmount()
+    unmount()
     assert.equal(first.count, 1)
     assert.equal(second.count, 1)
     assert.equal(media.listeners.size, 0)

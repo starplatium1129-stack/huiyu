@@ -1,5 +1,5 @@
 <template>
-  <Transition :css="false" :appear="appear" @enter="enter" @leave="leave" @after-leave="surface.dispose">
+  <Transition :css="false" :appear="appear" @enter="enter" @leave="leave" @leave-cancelled="leaveCancelled" @after-leave="surface.dispose">
     <slot />
   </Transition>
 </template>
@@ -22,5 +22,10 @@ function leave(el: Element, done: () => void) {
   element.inert = true
   element.setAttribute('data-fluid-leaving', '')
   surface.leave(el, done)
+}
+function leaveCancelled(el: Element) {
+  const element = el as HTMLElement
+  element.inert = false
+  element.removeAttribute('data-fluid-leaving')
 }
 </script>

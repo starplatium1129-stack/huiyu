@@ -371,6 +371,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     statusTimer = null
   }
 
+  /** Hidden/irrelevant workspaces stop health polling and discard its stale in-flight read. */
+  function pauseStatusPolling() {
+    stopStatusPolling()
+    statusRequest?.abort()
+    statusRequest = null
+  }
+
   function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMetadata {
     const supplied = job.metadata
     const metadata = supplied && supplied.prompt === request.prompt && supplied.negative === request.negative
@@ -617,6 +624,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     refreshBackend,
     startStatusPolling,
     stopStatusPolling,
+    pauseStatusPolling,
     generate,
     cancel,
     clearResult,

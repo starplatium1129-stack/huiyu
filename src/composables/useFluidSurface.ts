@@ -54,9 +54,16 @@ export function useFluidSurface(panelSelector?: string) {
     // A completed close leaves presentation styles behind. Measure the natural surface.
     panel.style.transform = ''; el.style.opacity = ''
     const source = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    let hasVisibleSource = false
     if (source && source !== document.body && !el.contains(source)) {
       const from = source.getBoundingClientRect(), to = panel.getBoundingClientRect()
-      panel.style.transformOrigin = `${Math.max(0, Math.min(100, (from.x + from.width / 2 - to.x) / to.width * 100))}% 0%`
+      hasVisibleSource = source.isConnected && from.width > 0 && from.height > 0 && to.width > 0 && to.height > 0
+        && from.right > 0 && from.bottom > 0 && from.left < window.innerWidth && from.top < window.innerHeight
+      if (hasVisibleSource) {
+        const x = Math.max(0, Math.min(100, (from.x + from.width / 2 - to.x) / to.width * 100))
+        const y = Math.max(0, Math.min(100, (from.y + from.height / 2 - to.y) / to.height * 100))
+        panel.style.transformOrigin = `${x}% ${y}%`
+      }
     }
     const rect = panel.getBoundingClientRect()
     const isFullscreenViewer = (panel.matches && panel.matches(FLUID_FULLSCREEN_SELECTOR)) || rect.width > innerWidth * 0.85 || rect.height > innerHeight * 0.85
@@ -70,7 +77,7 @@ export function useFluidSurface(panelSelector?: string) {
     if (isReduced) {
       scale = 1
       travel = 0
-    } else if (isFullscreenViewer) {
+    } else if (isFullscreenViewer && !hasVisibleSource) {
       panel.style.transformOrigin = 'center center'
     }
 

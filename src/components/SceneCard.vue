@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 
 export interface SceneCardScene {
   [key: string]: unknown
@@ -100,6 +100,7 @@ function onSpotEnter(e: MouseEvent) {
 function onSpotLeave(e: MouseEvent) {
   const el = e.currentTarget as HTMLElement
   spotEl.value = null
+  if (spotFrame) { cancelAnimationFrame(spotFrame); spotFrame = 0 }
   el.style.setProperty('--sc-spot-o', '0')
 }
 function onSpotMove(e: MouseEvent) {
@@ -136,4 +137,5 @@ const tags = computed(() => {
 const metaText = computed(() =>
   props.meta ?? [props.scene.season || '', props.scene.weather || ''].filter(Boolean).join(' · ')
 )
+onUnmounted(() => { if (spotFrame) cancelAnimationFrame(spotFrame) })
 </script>

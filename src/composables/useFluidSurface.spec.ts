@@ -11,6 +11,7 @@ import {
   FLUID_POPOVER_SELECTOR,
 } from './useFluidSurface'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
+import { createFluidMotion } from '@/utils/fluidSpring'
 
 describe('useFluidSurface & FluidTransition selectors and motion curves', () => {
   beforeEach(() => {
@@ -20,6 +21,7 @@ describe('useFluidSurface & FluidTransition selectors and motion curves', () => 
 
   afterEach(() => {
     document.body.innerHTML = ''
+    vi.unstubAllGlobals()
   })
 
   it('exports standardized surface panel selectors', () => {
@@ -110,5 +112,36 @@ describe('useFluidSurface & FluidTransition selectors and motion curves', () => 
     } finally {
       window.matchMedia = originalMatchMedia
     }
+  })
+
+  it('uses a visible source control as the artwork origin and falls back for offscreen sources', () => {
+    vi.stubGlobal('innerWidth', 1200)
+    vi.stubGlobal('innerHeight', 900)
+    const source = document.createElement('button')
+    const panel = document.createElement('div')
+    panel.className = 'art-viewer'
+    document.body.append(source, panel)
+    source.getBoundingClientRect = () => ({ x: 100, y: 180, left: 100, top: 180, right: 140, bottom: 220, width: 40, height: 40 } as DOMRect)
+    panel.getBoundingClientRect = () => ({ x: 0, y: 0, left: 0, top: 0, right: 1000, bottom: 800, width: 1000, height: 800 } as DOMRect)
+    source.focus()
+    const surface = useFluidSurface()
+    surface.enter(panel, () => {})
+    expect(panel.style.transformOrigin).toBe('12% 25%')
+    surface.dispose(panel)
+
+    source.getBoundingClientRect = () => ({ x: -100, y: -100, left: -100, top: -100, right: -60, bottom: -60, width: 40, height: 40 } as DOMRect)
+    surface.enter(panel, () => {})
+    expect(panel.style.transformOrigin).toBe('center center')
+    surface.dispose(panel)
+  })
+
+  it('completes the superseded transition callback when motion reverses', () => {
+    const first = vi.fn(), second = vi.fn()
+    const motion = createFluidMotion([1], () => {})
+    motion.to([0], false, first)
+    motion.to([1], true, second)
+    expect(first).toHaveBeenCalledOnce()
+    expect(second).toHaveBeenCalledOnce()
+    motion.dispose()
   })
 })

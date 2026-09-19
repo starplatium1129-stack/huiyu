@@ -1,6 +1,6 @@
 
 import { quickCreateSummary,readQuickCreate } from '@/utils/quickCreate';
-import { nextTick,onBeforeUnmount,onMounted,watch } from 'vue';
+import { nextTick,onActivated,onBeforeUnmount,onDeactivated,onMounted,watch } from 'vue';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import type { UseDirectorPopularInput, useDirectorPopular } from '@/composables/scene/useDirectorPopular';
 import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
@@ -25,7 +25,7 @@ export interface PromptLifecycleDeps extends
     DIRECTOR_MODE_KEY: string;
     startStatusPolling: ReturnType<typeof useAnimaSession>['startStatusPolling'];
     syncAnimaCharacter: ReturnType<typeof useAnimaSession>['syncCharacter'];
-    animaSession: Pick<ReturnType<typeof useAnimaSession>, 'startStatusPolling' | 'stopStatusPolling'>;
+    animaSession: Pick<ReturnType<typeof useAnimaSession>, 'startStatusPolling' | 'stopStatusPolling' | 'pauseStatusPolling'>;
     livePrompt: ReturnType<typeof useUnifiedPromptAssembly>['positivePrompt'];
     effectiveNegative: ReturnType<typeof useUnifiedPromptAssembly>['negativePrompt'];
     callGenerate: () => Promise<void>;
@@ -36,7 +36,16 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
     // A delayed storage/backend response must not resume setup or submit a deep-link job
     // after its workspace has been destroyed. KeepAlive deactivation retains its tasks.
     let disposed = false;
-    onBeforeUnmount(() => { disposed = true; });
+    let viewActive = true;
+    onBeforeUnmount(() => { disposed = true; viewActive = false; });
+    onDeactivated(() => { viewActive = false; animaSession.pauseStatusPolling(); });
+    onActivated(() => {
+        if (viewActive || disposed)
+            return;
+        viewActive = true;
+        if (drawEngine.value !== 'sd')
+            animaSession.startStatusPolling();
+    });
     // ── Lifecycle ─────────────────────────────────────────────────────────────
     onMounted(async () => {
         void refreshShotsPending();
@@ -176,8 +185,10 @@ export function usePromptLifecycle({ refreshShotsPending, refreshAnimaBackend, d
     // Anima 状态轮询跟随激活引擎：SD 引擎下停止，切到 Anima/Krea 恢复。
     // 切换动作本身会触发一次 refreshAnimaBackend，这里只管理周期轮询。
     watch(() => drawEngine.value, engine => {
+        if (!viewActive)
+            return;
         if (engine === 'sd')
-            animaSession.stopStatusPolling();
+            animaSession.pauseStatusPolling();
         else
             animaSession.startStatusPolling();
     });

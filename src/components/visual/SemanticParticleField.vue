@@ -22,6 +22,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
 import { loadPortraitCloud, samplePortraitPoints, particleNeedsOutline, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
+import { useParticlePerformanceLifecycle } from '@/composables/useParticlePerformanceLifecycle'
 
 const props = withDefaults(defineProps<{
   shape: ParticleShapeId
@@ -69,7 +70,6 @@ interface Palette {
 
 const host = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
-const reduceMotion = ref(false)
 const canvasAvailable = ref(true)
 /** 深色主题下图片点阵用 screen 混合：暗部自然隐入页面底色、亮部发光，
     消除"贴上去的彩色马赛克"突兀感（2026-08-16 用户反馈）。 */
@@ -145,6 +145,13 @@ let lastPhysicsFrame = 0
 let lastAmbientFrame = 0
 let slowFrames = 0
 let qualityScale = 1
+const performance = useParticlePerformanceLifecycle({
+  rebuild: () => setShape(false), start: startLoop, stop: stopLoop, resize,
+  cancelDeferred: () => { if (paletteFrame) { cancelAnimationFrame(paletteFrame); paletteFrame = 0 } },
+  paletteChanged: schedulePaletteRead,
+  visible: () => visible,
+})
+const { lowEffects, reduceMotion } = performance
 
 function preferredCount(): number {
   if (reduceMotion.value) return 420
@@ -162,7 +169,7 @@ function preferredCount(): number {
   if (portraitCloud) {
     count = Math.max(count, compact ? 2400 : props.density === 'hero' ? 8000 : 6000)
   }
-  return Math.round(count * qualityScale)
+  return Math.round(count * qualityScale * (lowEffects.value ? 0.65 : 1))
 }
 
 function readPalette() {
@@ -185,7 +192,7 @@ function readPalette() {
  * 这正是深色/浅色切换卡顿的来源之一：合并到下一帧批量执行一次。
  */
 function schedulePaletteRead() {
-  if (paletteFrame) return
+  if (!performance.active.value || paletteFrame) return
   paletteFrame = requestAnimationFrame(() => {
     paletteFrame = 0
     readPalette()
@@ -506,13 +513,13 @@ function renderFrame(now: number) {
 }
 
 function startLoop() {
-  if (stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
+  if (stopScheduledFrame || !performance.active.value || !visible || document.hidden || reduceMotion.value) return
   lastFrame = 0
   lastPhysicsFrame = 0
   // 2026-08-15（用户决策：性能充裕，放开帧率）：不再按密度节流（60/45/30fps），
   // 走 registerParticleFrame 的 fps<=0 原生模式——每个 rAF 都渲染，跑满显示器刷新率。
   // 物理模拟按 elapsed 时间步进（上限 32ms），高刷下不会变速；slowFrames 自愈仍保护低端机。
-  stopScheduledFrame = registerParticleFrame(renderFrame, 0)
+  stopScheduledFrame = registerParticleFrame(renderFrame, lowEffects.value ? 20 : 0)
 }
 
 function stopLoop() {
@@ -569,17 +576,6 @@ function onPointerLeave() {
   startLoop()
 }
 
-function onVisibilityChange() {
-  if (document.hidden) stopLoop()
-  else if (visible) startLoop()
-}
-
-function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
-  reduceMotion.value = event.matches
-  if (reduceMotion.value) stopLoop()
-  setShape(false)
-}
-
 watch(() => props.shape, () => { if (!portraitCloud) setShape(true) })
 watch(() => props.portraitId, id => { void applyPortrait(id) })
 watch(() => props.density, () => {
@@ -614,9 +610,11 @@ async function applyPortrait(id: string) {
 
 onMounted(() => {
   if (!host.value || !canvas.value) return
+  performance.active.value = true
+  performance.syncEffectsPreference(false)
   motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)')
-  onMotionPreference(motionMedia)
-  motionMedia.addEventListener('change', onMotionPreference)
+  performance.onMotionPreference(motionMedia)
+  motionMedia.addEventListener('change', performance.onMotionPreference)
   resizeObserver = new ResizeObserver(resize)
   resizeObserver.observe(host.value)
   intersectionObserver = new IntersectionObserver(([entry]) => {
@@ -625,9 +623,9 @@ onMounted(() => {
     else stopLoop()
   }, { rootMargin: '120px' })
   intersectionObserver.observe(host.value)
-  themeObserver = new MutationObserver(schedulePaletteRead)
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-  document.addEventListener('visibilitychange', onVisibilityChange)
+  themeObserver = new MutationObserver(performance.onRootPreferenceChanged)
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-fluid-effects', 'data-reduced-glass'] })
+  document.addEventListener('visibilitychange', performance.onVisibilityChange)
   readPalette()
   resize()
   startLoop()
@@ -635,13 +633,14 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  performance.active.value = false
   stopLoop()
   if (paletteFrame) cancelAnimationFrame(paletteFrame)
   resizeObserver?.disconnect()
   intersectionObserver?.disconnect()
   themeObserver?.disconnect()
-  motionMedia?.removeEventListener('change', onMotionPreference)
-  document.removeEventListener('visibilitychange', onVisibilityChange)
+  motionMedia?.removeEventListener('change', performance.onMotionPreference)
+  document.removeEventListener('visibilitychange', performance.onVisibilityChange)
 })
 </script>
 

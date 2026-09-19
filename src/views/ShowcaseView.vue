@@ -314,7 +314,7 @@ function clearLinkedScene() {
   void router.replace({ query })
 }
 function closeViewer() {
-  viewerMotion.close(() => { currentId.value = ''; clearLinkedScene(); document.body.classList.remove('overlay-open') })
+  viewerMotion.close(() => { currentId.value = ''; clearLinkedScene() })
 }
 
 /**
@@ -329,7 +329,6 @@ watch(currentEntry, (entry) => {
     viewerImageReady.value = false
     viewerVersion.value = Date.now()
     viewerMotion.open()
-    document.body.classList.add('overlay-open')
   } else if (entry) {
     viewerMotion.open()
     viewerImageFailed.value = false
@@ -337,7 +336,6 @@ watch(currentEntry, (entry) => {
     viewerVersion.value = Date.now()
   } else if (!entry && dialog.open) {
     dialog.close()
-    document.body.classList.remove('overlay-open')
   }
 })
 function move(step: number) {
@@ -405,7 +403,6 @@ onDeactivated(() => {
   viewerMotion.dispose()
   currentId.value = ''
   if (dialogEl.value?.open) dialogEl.value.close()
-  document.body.classList.remove('overlay-open')
 })
 onMounted(async () => {
   unmounted = false
@@ -430,7 +427,6 @@ onUnmounted(() => {
   manifestController.abort()
   document.removeEventListener('keydown', onKey)
   if (dialogEl.value?.open) dialogEl.value.close()
-  document.body.classList.remove('overlay-open')
 })
 </script>
 
@@ -624,7 +620,6 @@ onUnmounted(() => {
   border-color: var(--on-art-line);
   background: color-mix(in srgb, var(--on-art-line) 12%, transparent);
 }
-body:has(.showcase-viewer[open]) { overflow: hidden; }
 
 @media (max-width: 1000px) {
   .showcase-viewer .viewer-layout { grid-template-columns: minmax(0, 1fr) 320px; }

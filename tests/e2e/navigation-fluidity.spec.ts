@@ -155,6 +155,43 @@ test('deactivating the gallery closes its teleported viewer before the next page
   await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeVisible()
 })
 
+test('showcase preview preserves scroll through twenty open-close cycles', async ({ page }) => {
+  test.setTimeout(90_000)
+  const pixel = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
+  await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ json: {
+    sceneCount: 24, counts: { All: 24, R15: 0, R18: 0 },
+    entries: Array.from({ length: 24 }, (_, index) => ({
+      id: `scroll-${index}`, title: `滚动夹具 ${index}`, story: '预览滚动恢复夹具。',
+      category: '日常', char: 'nene', rating: 'All', attempt: 1,
+    })),
+  } }))
+  await page.route(/\/scene-showcase\/(?:thumbs|images)\/scroll-\d+\.jpg(?:\?.*)?$/, route => route.fulfill({ contentType: 'image/png', body: pixel }))
+  await page.goto('/showcase')
+  const cards = page.locator('.showcase-grid .sample')
+  await expect(cards.first()).toBeVisible()
+  await page.evaluate(() => window.scrollTo(0, 420))
+  const visibleIndex = await cards.evaluateAll(elements => {
+    const index = elements.findIndex(element => {
+      const rect = element.getBoundingClientRect()
+      return rect.top >= 0 && rect.bottom <= window.innerHeight
+    })
+    return index >= 0 ? index : 0
+  })
+  const trigger = cards.nth(visibleIndex).locator('.sample-visual')
+  await expect(trigger).toBeVisible()
+  await trigger.scrollIntoViewIfNeeded()
+  for (let cycle = 0; cycle < 20; cycle++) {
+    const before = await page.evaluate(() => window.scrollY)
+    await trigger.click()
+    const dialog = page.locator('dialog.showcase-viewer[open]')
+    await expect(dialog).toBeVisible()
+    await dialog.locator('#viewerClose').click()
+    await expect(dialog).toHaveCount(0)
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+    expect(Math.abs(await page.evaluate(() => window.scrollY) - before), `cycle ${cycle + 1}`).toBeLessThanOrEqual(2)
+  }
+})
+
 for (const theme of ['dark', 'light']) {
   for (const reducedMotion of ['no-preference', 'reduce'] as const) {
     test(`navigation keeps slow-load feedback ${theme} ${reducedMotion}`, async ({ page }) => {

@@ -63,6 +63,11 @@ export function createFluidMotion(values: number[], write: (values: number[]) =>
   }
   return {
     to(targets: number[], instant = false, done?: () => void) {
+      // A reversal supersedes the previous Vue transition phase. Release its callback
+      // before adopting the new target so rapid open/close/open cannot strand a layer.
+      const superseded = complete
+      complete = undefined
+      superseded?.()
       complete = done
       springs.forEach((spring, index) => spring.to(targets[index]))
       if (instant || prefersReducedMotion() || (typeof document !== 'undefined' && document.hidden)) finish()

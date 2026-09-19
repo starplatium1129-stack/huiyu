@@ -37,6 +37,7 @@ const {
   closestSupportedSize,
   resolveInpaintRequestBinding,
 }: typeof import('../../src/composables/generation/useAnimaSession.ts') = require('../../src/composables/generation/useAnimaSession.ts');
+const { ApiClientError }: typeof import('../../src/api/client.ts') = require('../../src/api/client.ts');
 
 // isLocalStudioHost 默认读取 window.location（浏览器全局）；node:test 下补最小桩，
 // 语义取「本机直连」：hostname 命中 LOCAL_HOSTNAMES 即提前返回，不会触碰其余字段。
@@ -390,6 +391,26 @@ test('late submit response after dispose is cancelled without reviving state', a
   await generation;
   assert.equal(deleted, true);
   assert.notEqual(session.state.value.phase, 'running');
+});
+
+test('pausing background status polling aborts the in-flight health read without changing generation work', async () => {
+  let signal: AbortSignal | undefined;
+  const client = {
+    request: (_url: string, init: { signal?: AbortSignal } = {}) => new Promise((_resolve, reject) => {
+      signal = init.signal;
+      init.signal?.addEventListener('abort', () => reject(new ApiClientError('cancelled', { kind: 'aborted' })), { once: true });
+    }),
+  };
+  const session = useAnimaSession(baseOptions({ client }));
+  session.patchState({ online: true, phase: 'running' });
+  const refresh = session.refreshBackend();
+  await new Promise(resolve => setImmediate(resolve));
+  session.pauseStatusPolling();
+  assert.equal(signal?.aborted, true);
+  await refresh;
+  assert.equal(session.state.value.online, true);
+  assert.equal(session.state.value.phase, 'running');
+  session.dispose();
 });
 
 test('in-flight result keeps the submitted prompt and context when the live form changes', async () => {

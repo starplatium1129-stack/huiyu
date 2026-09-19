@@ -95,8 +95,20 @@ async function runS04(page: Page) {
   await expect(cards.first()).toBeVisible()
   await expect.poll(() => cards.count()).toBeGreaterThan(0)
   await page.evaluate(() => window.scrollTo(0, 420))
+  const visibleIndex = await cards.evaluateAll(elements => {
+    const index = elements.findIndex(element => {
+      const rect = element.getBoundingClientRect()
+      return rect.top >= 0 && rect.bottom <= window.innerHeight
+    })
+    return index >= 0 ? index : 0
+  })
+  const target = cards.nth(visibleIndex)
+  await expect(target).toBeVisible()
+  // Playwright may still scroll a partly visible/toolbar-covered target before click.
+  // Settle that automation scroll before recording the dialog baseline.
+  await target.locator('.sample-visual').scrollIntoViewIfNeeded()
   const before = await page.evaluate(() => ({ scrollY: window.scrollY }))
-  await cards.first().locator('.sample-visual').click()
+  await target.locator('.sample-visual').click()
   const dialog = page.locator('dialog.showcase-viewer[open]')
   await expect(dialog).toBeVisible()
   const opened = await page.evaluate(() => performance.now())
