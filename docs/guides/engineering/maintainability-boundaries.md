@@ -16,6 +16,8 @@
 
 纯类型允许 import type 引用现有兼容入口；没有证据表明纯计算依赖了 store 的运行时常量，因此本轮不移动提示词映射和编译常量。
 
+长期架构计划对已明确迁出的 `types/promptHistory`、`types/artwork`、`types/generation`、`types/anima` 和 `utils/resultContext` 增加更窄的保护：它们的可达依赖连类型边也不再引用 Store/展示层/Vue。`check:domain-types` 检查实际路径与间接导入，复用 `source-imports.ts` 的 AST 读取能力；原 ESLint 试点及 PhotoSwipe/存储规则继续保留。其余兼容入口按既有规则逐步迁移，不扩大为全仓类型禁令。范围、unknown 与验证见 [架构首批记录](../../research/engineering/architecture-a01-2026-09-19.md)。
+
 ESLint 的 huiyu/module-boundaries 对以下方向执行检查：types 与 historyRecipe/generationTask/promptPolicy 不得运行时加载页面、状态或浏览器服务；storage 不得反向加载页面/组件/store；PhotoSwipe 依赖（含类型）只能从 PhotoSwipeStage 引用。规则解析普通导入、再导出、动态 import、require 和 TS import-equals，统一别名与相对路径；试点底层的非字面量加载拒绝检查绕过。test-module-boundaries 用允许/禁止夹具验证。它不检查任意 eval、运行时加载器或未纳入试点的全仓依赖图。
 
 ## 资源所有权
@@ -53,4 +55,3 @@ PhotoSwipeStage.spec 覆盖迟到解码、A→B→A 的迟到读取、失败、�
 ## 回退
 
 文档校准可独立回退；历史类型/解析改动不迁移数据；API 解码可独立撤回，不回退统一客户端；静态规则/测试报告及最低 Node CI 单独回退不影响运行时；PhotoSwipe 始终有原查看器可用。回退资源清理改动前先保留本次迟到回调回归，避免重新引入重复释放。
-

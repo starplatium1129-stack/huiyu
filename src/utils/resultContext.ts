@@ -1,9 +1,28 @@
-import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import type { HistoryEntry } from '@/types/promptHistory'
+import type { CharKey, HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
 
+/** 页面适配传入当前需要的创作字段；普通对象即可，不要求 Store/Pinia。 */
+export interface ResultContextInput {
+  readonly subject: Readonly<{ kind: 'studio' } | {
+    kind: 'popular'; characterId: string; outfitId: string; blueprintId: string | null
+  }>
+  readonly sceneId: string | null
+  readonly story: string
+  readonly char: CharKey
+  readonly visualDescription: string
+  readonly selections: Readonly<{
+    emotion: readonly string[]; shot: string | null
+    lighting: string | null; composition: string | null
+  }>
+  readonly colorMood: string | null
+  readonly manualTags: ReadonlySet<string> | readonly string[]
+  readonly artistStyleIds: readonly string[]
+  readonly directorMode: 'basic' | 'pro'
+  readonly projectId: string
+}
+
 /** 提交时取值；只保存可序列化的创作信息，不保存响应式对象或图片。 */
-export function captureResultContext(pb: ReturnType<typeof usePromptBuilderStore>): AnimaResultContext {
+export function captureResultContext(pb: ResultContextInput): AnimaResultContext {
   const subject = pb.subject
   return {
     characterId: subject.kind === 'popular' ? subject.characterId : '',

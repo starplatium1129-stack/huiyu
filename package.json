@@ -55,7 +55,7 @@
     "test:rewrite-integrity": "node scripts/tests/test-prompt-rewrite-integrity.js",
     "test:showcase": "node scripts/tests/test-showcase.js",
     "test:gallery": "node scripts/tests/test-gallery.js",
-    "test:architecture": "node scripts/tests/test-page-architecture.js",
+    "test:architecture": "node scripts/tests/test-page-architecture.js && node scripts/tests/test-domain-type-boundaries.js",
     "test:monolith": "node scripts/tests/test-monolith-budget.js",
     "test:tags": "node scripts/tests/test-tag-shards.js",
     "test:style-debt": "node scripts/tests/test-style-debt.js && node scripts/maintenance/scan-style-literals.js --check && node scripts/maintenance/check-contrast.js --check && node scripts/maintenance/lint-colors.js --check && node scripts/maintenance/lint-animations.js --check",

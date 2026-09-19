@@ -12,6 +12,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-e2e-ci-split.js',
     'test-page-architecture.js',
     'test-module-boundaries.mjs',
+    'test-domain-type-boundaries.js',
     'test-monolith-budget.js',
     'test-runtime-generated.js',
     'test-typescript-build.js',
@@ -23,6 +24,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-ux-regressions.js',
   ]),
   unit: Object.freeze([
+    'test-domain-type-boundaries-fixtures.js',
     'test-test-process-pool.js',
     'test-precompress-runner.js',
     'test-workflow-conditions.js',

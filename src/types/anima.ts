@@ -1,4 +1,5 @@
 import type { AnimaPhase, AnimaJobMetadata } from './generation'
+import type { HistorySnapshot } from './promptHistory'
 export type { AnimaPhase, AnimaJobMetadata } from './generation'
 
 import type { SDErrorReport } from '@/utils/sdError'
@@ -38,7 +39,7 @@ export interface AnimaResult {
  * （出视频/加入分镜）与历史入册必须跟随「这张图是谁」，而非当前表单。
  */
 export interface AnimaResultContext {
-  history?: import('vue').DeepReadonly<Partial<import('./promptHistory').HistoryEntry>>
+  history?: HistorySnapshot
   /** 热门角色 id；工作室角色为空串。 */
   characterId?: string
   /** 服装形态 id；无/不适用为 null。 */

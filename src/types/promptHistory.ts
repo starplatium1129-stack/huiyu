@@ -1,6 +1,10 @@
 export type CharKey = 'nene' | 'natsume' | 'triad'
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
 
+/** 历史字段为可序列化数据；快照不依赖 Vue 的响应式类型。 */
+type SnapshotValue<T> = T extends object ? { readonly [K in keyof T]: SnapshotValue<T[K]> } : T
+export type HistorySnapshot = SnapshotValue<Partial<HistoryEntry>>
+
 export type HistoryEntry = {
   id: string | number; timestamp: number; character: string
   scene: string | null; sceneTitle: string | null
@@ -44,4 +48,3 @@ export interface Selections {
   emotion: string[]; shot: string | null
   lighting: string | null; composition: string | null
 }
-

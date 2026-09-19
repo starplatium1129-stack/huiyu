@@ -287,6 +287,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | build:web / build:runtime | 前端与预算/预压；服务、网关、维护/测试及独立浏览器脚本的严格检查与编译 |
 | check:style-debt | 样式字面值、颜色、动画和双主题全局/角色令牌对比度；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
+| check:domain-types | 指定公共作品/生成类型与结果快照的可达依赖；复用 TypeScript AST、真实路径/别名/再导出/Vue 脚本解析；类型边单列，违规、未知路径和运行候选循环阻断 |
 | check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
 | test:contract / test:e2e:critical | 契约套件与关键浏览器回归；test:e2e:critical 工作流走无 build 的 `test:e2e:critical:run` 入口，复用已有构建产物（npm 脚本 `test:e2e:critical` 才先 build） |
 | test:e2e:performance | 已构建产物的单 worker 冷／热进入与首次操作测量；与回归分开执行 |
