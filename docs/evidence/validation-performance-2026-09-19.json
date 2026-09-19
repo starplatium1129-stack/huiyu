@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-19",
+  "baseline": "040caa97973242dbca9abc715fefe3cdb534605e",
+  "sourceStateAtValidation": "uncommitted",
+  "scope": "Validation executor and build precompression; same tests and compression settings",
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "referenceAuditMode": "structure",
+    "contractJobs": 2,
+    "precompressJobs": 2
+  },
+  "comparison": {
+    "method": "One baseline and one optimized run on the same host. Compression and contract measurements executed sequentially.",
+    "contract": {
+      "beforeSeconds": 220,
+      "afterSeconds": 144,
+      "durationPrecision": "rounded runner output",
+      "groupsBefore": 34,
+      "groupsAfter": 34,
+      "statusBefore": "passed",
+      "statusAfter": "passed",
+      "before": {
+        "path": "runtime/validation-performance/contract-before.log",
+        "sha256": "3b4b84fd72e2886a3524c2a5e06abbc7ef639e28714741ddfc063b784435a48f"
+      },
+      "after": {
+        "path": "runtime/validation-performance/contract-after.log",
+        "sha256": "0e4eecb7c12936af24fc5678f4db6766d4fc810519b8ca9133066ba99adc51e1"
+      }
+    },
+    "precompression": {
+      "beforeMs": 19353,
+      "afterMs": 8470,
+      "comparedArtifacts": 676,
+      "mismatches": [],
+      "quality": {
+        "brotli": 11,
+        "gzip": 9
+      },
+      "before": {
+        "path": "runtime/validation-performance/precompress-before.json",
+        "sha256": "51cead993b45d99e8066f80b6e105b9e725fc0b21b9e66f928d298eb5cf682aa"
+      },
+      "after": {
+        "path": "runtime/validation-performance/precompress-after.json",
+        "sha256": "4d20d1e164ac0074b41f34cccba53c9d47a7d813494321bcf050747bf4e548f1"
+      }
+    }
+  },
+  "checks": {
+    "fullGate": {
+      "status": "passed",
+      "durationSeconds": 272,
+      "qualitySeconds": 25.3,
+      "frontendSeconds": 8.2,
+      "unitTests": 1053,
+      "unitSeconds": 74,
+      "contractGroups": 34,
+      "contractSeconds": 147,
+      "buildSeconds": 17.1,
+      "log": {
+        "path": "runtime/validation-performance/gate-after.log",
+        "sha256": "5c2e2c618a8f2ad116b7ac68166e84983eb5281c6d163177cf658f77fd761cd4"
+      }
+    },
+    "executorCompressionLogger": {
+      "status": "passed",
+      "tests": 12,
+      "log": {
+        "path": "runtime/validation-performance/runner-tests.log",
+        "sha256": "5899713bb8ea9915cc5c57fb464d142b2ab10740d73e7ac74a192c552d8e4024"
+      }
+    },
+    "qualityInventory": {
+      "status": "passed",
+      "tests": 3,
+      "log": {
+        "path": "runtime/validation-performance/quality-inventory.log",
+        "sha256": "182fe86fe6855f8227f192b49e6083ae9b1faa7971d37c727b667fc2d8d68cf4"
+      }
+    },
+    "workflow": {
+      "status": "passed",
+      "tests": 22,
+      "log": {
+        "path": "runtime/validation-performance/workflow-tests.log",
+        "sha256": "599fe38b9012fe7fd7e7b4b42f30f0815bec4ce8696775685221851aa7ec013c"
+      }
+    },
+    "docs": {
+      "status": "passed",
+      "log": {
+        "path": "runtime/validation-performance/docs-final.log",
+        "sha256": "e969433c122b63385985b23ee7a7d010655800f45d068babb8da484ea9c605d6"
+      }
+    }
+  },
+  "build": {
+    "distIndexSha256": "41a7d4584cd5bb9a10bd7479601361f051488e0df6557ad4794dbeb9a76179bc",
+    "manifestSha256": "664f30034c808edfce40f1ac7d3d55b311a2aa701f563c6c95e0d2330e2c07ab",
+    "baselineDistIndexSha256": "41a7d4584cd5bb9a10bd7479601361f051488e0df6557ad4794dbeb9a76179bc"
+  },
+  "sourceFiles": [
+    {
+      "path": "scripts/maintenance/gate-quick.ts",
+      "sha256": "3470125cfed1d26fcd9335d78e8fb041bb98abee2da4ca6913ddea5e4c78876c"
+    },
+    {
+      "path": "scripts/maintenance/precompress.ts",
+      "sha256": "699a31a1b2b297fb7cc80228c1cee7e1e00dfa4e31b40f69dcade2cab101baa2"
+    },
+    {
+      "path": "scripts/tests/quality-test-inventory.ts",
+      "sha256": "ae93b8cfb93a3c949eac5dad4c0826646274a48efa738ebdebee8bf09da8ef87"
+    },
+    {
+      "path": "scripts/tests/run-quality-suite.ts",
+      "sha256": "9086bc10d73447c31fd61b4effb107bd068930de4e5deebe1d566546e18cb3af"
+    },
+    {
+      "path": "scripts/tests/test-logger.ts",
+      "sha256": "fec529f9519bb4a875b1bb7cc31272433c1ed3ece578506318be4ce8b5ad80fb"
+    },
+    {
+      "path": "scripts/tests/test-workflow-runner.ts",
+      "sha256": "3b2a2453c9dd4c7b7830e198746c3a9f4d9b86f840c28570730786ddd1348a76"
+    },
+    {
+      "path": "scripts/workflow.ts",
+      "sha256": "978bd6451fa32528d616c6c813ad6a99d2ef21d4975e15ab53edc1e6081f8252"
+    },
+    {
+      "path": "scripts/lib/test-process-pool.ts",
+      "sha256": "bc13a9b5c31ac86aa20d5538dd3949e30a81a9109fb5f3e2b3b6ced5b4ea71c2"
+    },
+    {
+      "path": "scripts/tests/contract-test-policy.ts",
+      "sha256": "e524bf92dc06de093cd6f5eb5ac752f08831639f4427b63ba5ace9cb9a211b45"
+    },
+    {
+      "path": "scripts/tests/test-precompress-runner.ts",
+      "sha256": "6fee5cc39d2cf31339fb4fecd415f8bbfef0e9f3061e105e72e6fe580ed5e259"
+    },
+    {
+      "path": "scripts/tests/test-test-process-pool.ts",
+      "sha256": "93be26b56e25a3ae035fb9ef01c0e29e76bfea88799a0436db479341be9026cf"
+    }
+  ],
+  "limitations": [
+    "Single-run timing comparison, sensitive to host load and filesystem cache",
+    "Only reviewed isolated contracts run concurrently; unlisted files remain serial",
+    "No test-success cache or timestamp-based skipping introduced; fixture setup and existing assertions remain"
+  ]
+}

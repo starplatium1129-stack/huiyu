@@ -355,7 +355,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '前端构建 + 预算 + 预压',
     cmd: ['npm', 'run', 'build'],
     docs: 'AGENTS.md#实施与交付',
-    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.build（vite build && check-bundle-budget && precompress）', unknown: [] },
+    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.build（vite build && check-bundle-budget && precompress）', unknown: [], notes: ['PRECOMPRESS_JOBS 默认 2，有效范围 1–4；仅并行文件压缩，保持 Brotli 11 / gzip 9、预算与产物检查'] },
   },
   'build:runtime': {
     desc: '严格检查并编译服务、网关、工具和浏览器脚本；复用未变产物',
@@ -492,7 +492,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '契约测试套件（内容/接口/热门/Anima 等聚合）',
     cmd: ['npm', 'run', 'test:contract'],
     docs: 'package.json',
-    run: { nature: ['isolated-fixture', 'self-heal-missing'], machine: ['node'], switches: { '--all': ['read-only'], '--verbose': ['read-only'] }, resume: 'na', evidence: 'scripts/tests/quality-test-inventory.js:94-121; scripts/tests/run-quality-suite.js:176', unknown: [] },
+    run: { nature: ['isolated-fixture', 'self-heal-missing'], machine: ['node'], switches: { '--all': ['read-only'], '--verbose': ['read-only'] }, resume: 'na', evidence: 'scripts/tests/contract-test-policy.ts; scripts/tests/run-quality-suite.ts:runContractSuite', unknown: [], notes: ['CONTRACT_TEST_JOBS 默认 2，仅审核过的隔离夹具并行，其余串行；设 1 保持原顺序；有效范围 1–4；失败停止派发并等待在途任务，--all 继续全部文件'] },
   },
   'test:e2e:critical': {
     desc: '关键 e2e 套件：主流程、双主题/设备、角色及办公机回归（用例数以执行结果为准）',

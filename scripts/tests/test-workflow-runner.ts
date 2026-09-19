@@ -100,12 +100,24 @@ test('npm argument forwarding preserves spaces and metacharacters', () => {
   assert.equal(cmd, process.execPath);
   assert.deepEqual(args.slice(-3), ['--', '--character', 'a & b']);
 });
-test('quick gate covers root server, dependencies, scripts and rejects typos', () => {
+test('quick gate covers root server, dependencies, scripts and rejects typos', async () => {
   assert.deepEqual(classifyFiles(['server.js']), ['server']);
   for (const file of ['package-lock.json', 'scripts/workflow.js', '.github/workflows/quality.yml', 'vite.config.ts']) assert.deepEqual(classifyFiles([file]), ['full']);
   assert.deepEqual(classifyFiles(['docs/workflow.md']), []);
   assert.deepEqual(classifyFiles(['src/中文.vue', 'data/a.json']), ['ui', 'data']);
-  assert.equal(gate(['servre']), 2);
+  assert.equal(await gate(['servre']), 2);
+});
+
+test('invalid contract concurrency fails before full-gate execution while help stays read-only', async () => {
+  const previous = process.env.CONTRACT_TEST_JOBS;
+  process.env.CONTRACT_TEST_JOBS = 'invalid';
+  try {
+    assert.equal(await gate(['--help']), 0);
+    assert.equal(await gate(['full']), 2);
+  } finally {
+    if (previous === undefined) delete process.env.CONTRACT_TEST_JOBS;
+    else process.env.CONTRACT_TEST_JOBS = previous;
+  }
 });
 test('desktop batch preserves failure without deploying or waiting for input', { skip: process.platform !== 'win32' }, () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-workflow-'));

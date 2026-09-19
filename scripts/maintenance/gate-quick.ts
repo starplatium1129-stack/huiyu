@@ -20,10 +20,11 @@
 
 const { spawnSync } = (require('node:child_process') as typeof import('node:child_process'));
 const path = (require('node:path') as typeof import('node:path'));
-const { QUALITY_TEST_SUITES } = (require('../tests/quality-test-inventory') as typeof import('../tests/quality-test-inventory'));
+const { contractJobs }: typeof import('../tests/contract-test-policy') = require('../tests/contract-test-policy');
 const {
   runSuiteFiles,
   runUnitSuite,
+  runContractSuite,
   runNpmScript,
   printExcerpt,
   formatDuration,
@@ -132,10 +133,10 @@ function detectAreas() {
   return classifyFiles([...collect(['diff', '--name-only', '-z', 'HEAD']), ...collect(['ls-files', '-z', '--others', '--exclude-standard'])]);
 }
 
-function main(argv: string[]) {
+async function main(argv: string[]) {
   if (argv.includes('--help') || argv.includes('-h')) {
     console.log('用法: node scripts/maintenance/gate-quick.js [ui|server|data|all|full] [--verbose] [--all]');
-    console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 子进程输出直通。');
+    console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 展示完整输出（contract 按文件完成后输出）。');
     return 0;
   }
   const invalid = argv.filter((arg: any) => !['ui', 'server', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
@@ -161,6 +162,9 @@ function main(argv: string[]) {
   }
 
   let exitCode = 0;
+  if (areas.includes('full')) {
+    try { contractJobs(); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 2; }
+  }
   const started = Date.now();
   for (const area of areas) {
     if (exitCode && !keepGoing) break;
@@ -191,7 +195,7 @@ function main(argv: string[]) {
     if (failPhase(runNpmStep('check（质量门禁编排）', 'check', 900_000, verbose))) continue;
     if (failPhase(runNpmStep('vitest', 'test:frontend', 300_000, verbose))) continue;
     if (failPhase(runUnitSuite({ verbose }))) continue;
-    if (failPhase(suiteFiles(QUALITY_TEST_SUITES.contract, 'contract', { verbose, keepGoing }))) continue;
+    if (failPhase(await runContractSuite({ verbose, keepGoing }))) continue;
     failPhase(runNpmStep('build（打包预算）', 'build', 600_000, verbose));
   }
   console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);
@@ -199,7 +203,7 @@ function main(argv: string[]) {
 }
 
 if (require.main === module) {
-  process.exitCode = main(process.argv.slice(2));
+  main(process.argv.slice(2)).then(code => { process.exitCode = code; }).catch(error => { console.error(error); process.exitCode = 1; });
 }
 
 export = { detectAreas, classifyFiles, main, AREA_STEPS };

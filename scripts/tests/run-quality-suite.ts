@@ -8,15 +8,18 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  * 套件末尾给汇总行；任何失败进程退出码非零。
  *   node scripts/tests/run-quality-suite.js <check|unit|contract>            摘要（默认）
  *   node scripts/tests/run-quality-suite.js contract --all                   失败后继续跑完全部文件
- *   node scripts/tests/run-quality-suite.js contract --verbose               旧模式：子进程输出直通
+ *   node scripts/tests/run-quality-suite.js contract --verbose               每个文件完成后输出完整日志
  *
- * check/contract 套件默认 fail-fast（保持既有总时长上限）；--all 用于求全貌。
+ * check 保持串行；contract 仅对审核过的独立夹具有限并行，其他文件串行。
+ * 默认 fail-fast：停止派发并等待已运行夹具；--all 用于求全貌。
  * 供 gate-quick.js 复用：runSuiteFiles / runUnitSuite / runNpmScript。
  */
 
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
 const { QUALITY_TEST_SUITES }: typeof import('./quality-test-inventory') = require('./quality-test-inventory');
+const { runTestProcessPool }: typeof import('../lib/test-process-pool') = require('../lib/test-process-pool');
+const { contractJobs, planContractTests }: typeof import('./contract-test-policy') = require('./contract-test-policy');
 
 const root = path.resolve(__dirname, '..', '..');
 const SUITE_TIMEOUT_MS = Object.freeze({
@@ -142,6 +145,36 @@ function runUnitSuite({ verbose = false }: any = {}) {
   return 1;
 }
 
+async function runContractSuite({ verbose = false, keepGoing = false } = {}): Promise<number> {
+  const jobs = contractJobs();
+  const files = QUALITY_TEST_SUITES.contract;
+  const plan = planContractTests(files, jobs);
+  const started = Date.now();
+  const controller = new AbortController();
+  const interrupt = () => controller.abort();
+  process.once('SIGINT', interrupt); process.once('SIGTERM', interrupt);
+  let passed = 0, failed = 0;
+  console.log(`contract: ${plan.parallel.length} isolated files / jobs=${jobs}; ${plan.serial.length} serial files`);
+  const onResult = (result: import('../lib/test-process-pool').TestProcessResult) => {
+    if (result.ok) passed++; else failed++;
+    console.log(`${result.ok ? '✔' : '✘'} ${result.name} ${formatDuration(result.duration)}${result.reason ? ' ' + result.reason : ''}`);
+    if (verbose) console.log(result.output.trimEnd());
+    else if (!result.ok) printExcerpt(result.output, result.name);
+  };
+  const run = (names: readonly string[], concurrency: number) => runTestProcessPool(
+    names.map(name => ({ name, file: path.join(root, 'scripts/tests', name) })),
+    { cwd: root, jobs: concurrency, timeoutMs: SUITE_TIMEOUT_MS.contract, maxOutputBytes: CAPTURE_MAX_BUFFER, keepGoing, signal: controller.signal, onResult },
+  );
+  try {
+    await run(plan.parallel, jobs);
+    if ((!failed || keepGoing) && !controller.signal.aborted) await run(plan.serial, 1);
+    const skipped = files.length - passed - failed;
+    const ok = !failed && !skipped && !controller.signal.aborted;
+    console.log(`sum [contract]: ${ok ? 'PASS' : 'FAIL'} · ${passed} 过 / ${failed} 挂${skipped ? ' · 未跑 ' + skipped : ''} · ${formatDuration(Date.now() - started)}`);
+    return ok ? 0 : 1;
+  } finally { process.removeListener('SIGINT', interrupt); process.removeListener('SIGTERM', interrupt); }
+}
+
 /** 跑一个 npm script。Node 24 禁止 spawnSync 直呼 .cmd（EINVAL），
  *  故整串命令 + shell:true；script 名全部来自本文件内部常量，无注入面。 */
 function runNpmScript(script: any, timeout: any = 300_000) {
@@ -161,7 +194,7 @@ function runNpmScript(script: any, timeout: any = 300_000) {
   return { name: script, ok: !reason, duration, reason, output: `${result.stdout || ''}\n${result.stderr || ''}` };
 }
 
-function main(argv: string[]) {
+async function main(argv: string[]) {
   const suiteName = argv.find((arg: PropertyKey) => Object.hasOwn(QUALITY_TEST_SUITES, arg));
   if (!suiteName) {
     console.error(`usage: node ${path.basename(__filename)} <check|unit|contract> [--verbose] [--all]`);
@@ -169,6 +202,7 @@ function main(argv: string[]) {
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
+  if (suiteName === 'contract') contractJobs(); // Validate before any missing-data preparation.
   const files = (QUALITY_TEST_SUITES as Record<string, any>)[suiteName];
   const entries = files.map((file: string) => ({ name: file, file: path.join(root, 'scripts', 'tests', file) }));
   if (suiteName === 'unit' || suiteName === 'contract') {
@@ -185,6 +219,7 @@ function main(argv: string[]) {
     }
   }
   if (suiteName === 'unit') return runUnitSuite({ verbose });
+  if (suiteName === 'contract') return runContractSuite({ verbose, keepGoing });
   return runSuiteFiles(entries, {
     label: suiteName,
     timeout: (SUITE_TIMEOUT_MS as Record<string, any>)[suiteName],
@@ -194,7 +229,7 @@ function main(argv: string[]) {
 }
 
 if (require.main === module) {
-  process.exitCode = main(process.argv.slice(2));
+  main(process.argv.slice(2)).then(code => { process.exitCode = code; }).catch(error => { console.error(runtimeErrorMessage(error)); process.exitCode = 1; });
 }
 
-export = { runSuiteFiles, runUnitSuite, runNpmScript, runStep, formatDuration, printExcerpt, SUITE_TIMEOUT_MS, root };
+export = { runSuiteFiles, runUnitSuite, runContractSuite, runNpmScript, runStep, formatDuration, printExcerpt, SUITE_TIMEOUT_MS, root };

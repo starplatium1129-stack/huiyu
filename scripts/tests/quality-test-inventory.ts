@@ -21,6 +21,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-ux-regressions.js',
   ]),
   unit: Object.freeze([
+    'test-test-process-pool.js',
+    'test-precompress-runner.js',
     'test-workflow-conditions.js',
     'test-runtime-errors.js',
     'test-content-ownership.js',

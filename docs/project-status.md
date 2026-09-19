@@ -136,3 +136,9 @@ E3 办公机范围验证快速切角的 Profile 同步、旧原生模型释放�
 已接入统一词条字典与别名归一、固定种子候选与配置快照、PhotoSwipe 可退出观画试验、图像/视频任务阶段、常驻配方兼容检查，以及语音中断和旧回调清理。复审同时修复恢复参数被初始化推荐覆盖、字符串作品 ID、停止后的任务摘要、图库异步资源及角色清空目标边界。详见 [实施审计](research/engineering/github-reference-implementation-2026-09-19.md)与[当次证据](evidence/github-reference-2026-09-19.json)。
 
 保留默认查看器；未接入 TanStack Virtual、Reka UI 或 fflate。真实模型、音频设备、原生 Live2D/GPU 与桌面安装仍待主力机验收，浏览器模拟与结构模式不能替代。
+
+## 2026-09-19：验证执行提速
+
+契约执行器对 9 个已复核隔离边界的文件默认两路并行，其余 25 个串行；可用 CONTRACT_TEST_JOBS=1 回退原顺序。预压默认两路异步执行，Brotli 11 / gzip 9 与同步接口保持兼容。日志测试已改为等待真实写入完成，减少固定等待引发的偶发失败。
+
+同机对照：34 组契约从 3 分 40 秒降到 2 分 24 秒；预压从 19.353 秒降到 8.470 秒，676 个压缩文件字节一致。最终单次完整门禁 PASS，耗时 4 分 32 秒；详见 [优化记录](research/engineering/validation-performance-2026-09-19.md)与[证据](evidence/validation-performance-2026-09-19.json)。
