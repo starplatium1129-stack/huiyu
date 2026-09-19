@@ -36,7 +36,7 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 
 const SCHEMA_VERSION = 1;
 const SCAN_ROOT = 'assets';
-const EXCLUDED_PATHS = Object.freeze(['assets/character-references']);
+const EXCLUDED_PATHS = Object.freeze(['assets/character-references', 'assets/live2d-candidates']);
 const HEX_ESCAPE_RE = /%[0-9a-fA-F]{2}/;
 const FORBIDDEN_CHARS_RE = /[\\:\u0000-\u001f\u007f]/;
 

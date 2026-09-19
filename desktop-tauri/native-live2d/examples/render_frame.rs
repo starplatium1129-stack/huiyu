@@ -30,6 +30,7 @@ fn main() {
     let mut frames = 90usize;
     let mut size = 512u32;
     let mut out = PathBuf::from("frame.png");
+    let mut manifest_name: Option<String> = None;
     let mut test_texture = false;
     let mut no_mask = false;
     let mut no_render = false;
@@ -40,6 +41,7 @@ fn main() {
     let mut i = 1;
     while i < args.len() {
         match args[i].as_str() {
+            "--manifest" => { i += 1; manifest_name = Some(args[i].clone()); }
             "--dir" => {
                 i += 1;
                 dir = PathBuf::from(&args[i]);
@@ -103,7 +105,7 @@ fn main() {
         .map(|e| e.path())
         .find(|p| p.extension().map(|e| e == "moc3").unwrap_or(false))
         .expect("no .moc3 in model dir");
-    let model3_path = dir.join("model3.json");
+    let model3_path = dir.join(manifest_name.unwrap_or_else(|| "model3.json".into()));
     let model3_path = if model3_path.exists() {
         model3_path
     } else {

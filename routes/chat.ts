@@ -4,6 +4,7 @@ import type { Normalized } from '../server/chat-types';
 
 import { Response } from 'express-serve-static-core';
 import type { GatewayConfig } from '../server/config-types';
+import { localLive2dRoot, readLocalCompanions } from '../services/live2d-local';
 
 let { normalizeMultimodalContent }: typeof import('./chat-content') = require('./chat-content');
 
@@ -90,13 +91,13 @@ type ChatValidationValue = {
 };
 
 /** 校验结果：要么带 error，要么带 value，二者互斥。 */
-function validateChatBody(body: any): Normalized<ChatValidationValue> {
+function validateChatBody(body: any, localPersona?: string): Normalized<ChatValidationValue> {
   let character = String(body && body.character || 'nene');
   let provider: ChatValidationValue['provider'] = body && body.provider === 'api' ? 'api' : 'local';
   let requestedModel = String(body && body.model || '');
   let rawMessages = body && body.messages;
   let companionTools = body && body.companionTools === true;
-  if (!['nene', 'natsume'].includes(character)) return { error:'不支持的聊天角色' };
+  if (!['nene', 'natsume'].includes(character) && !localPersona) return { error:'不支持的聊天角色' };
   let profileValidation = chatPrompts.normalizeUserProfile(body && body.userProfile);
   if (profileValidation.error) return { error:profileValidation.error };
   let memoryValidation = chatPrompts.normalizeMemories(body && body.memories);
@@ -172,7 +173,7 @@ function validateChatBody(body: any): Normalized<ChatValidationValue> {
       webSearch:body && body.webSearch === true,
       companionTools:companionTools,
       reasoning:reasoning,
-      messages:[{ role:'system', content:chatCharacterPrompt(character, { userProfile:profileValidation.value, memories:memoryValidation.value }) }].concat(kept).concat(toolMessages)
+      messages:[{ role:'system', content:chatPrompts.buildCharacterPrompt(character, { userProfile:profileValidation.value, memories:memoryValidation.value }, localPersona) }].concat(kept).concat(toolMessages)
     }
   };
 }
@@ -555,7 +556,9 @@ function createChatRouter(config: GatewayConfig, dependencies?: ChatDependencies
   let chatLimit = security.rateLimit({ capacity:10, refillMs:3000, label:'聊天' });
 
   router.post('/api/chat', chatLimit, express.json({ limit:'14mb' }), function (req, res) {
-    let validation = validateChatBody(req.body);
+    const localPersona = config.ROOT_DIR && !['nene', 'natsume'].includes(req.body?.character) && security.isDirectLocalRequest(req) ? readLocalCompanions(localLive2dRoot(config.ROOT_DIR, config.DESKTOP_PACKAGED ? config.RUNTIME_ROOT : undefined))
+      .find(item => item.character.id === req.body?.character)?.character.personaPrompt : undefined;
+    let validation = validateChatBody(req.body, localPersona);
     if (validation.error !== undefined) return envelope.fail(res, 400, validation.error);
 
     // 2026-08-16 审计：桌宠本地工具（list/read/write_file/run_command）只对本机会话

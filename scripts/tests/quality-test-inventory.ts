@@ -72,6 +72,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-live2d-backend.js',
     'test-live2d-native-contract.js',
     'test-live2d-service.js',
+    'test-live2d-imports.js',
     'test-live2d-textures.js',
     'test-logger.js',
     'test-logger-retention.js',

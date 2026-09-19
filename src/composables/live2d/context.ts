@@ -112,6 +112,7 @@ export interface Live2DCtx {
   speaking: boolean
   emotionRuntime: EmotionRuntime | null
   emotionCurrent: Record<string, number>
+  expressionParamIds: Set<string>
   lastParamFrame: number
   nativeAnimationAdapter: ReturnType<typeof createLive2dNativeAdapter>
   blinkScheduler: ReturnType<typeof createBlinkScheduler>
@@ -184,6 +185,7 @@ export function createLive2DCtx(): Live2DCtx {
     speaking: false,
     emotionRuntime: null,
     emotionCurrent: {},
+    expressionParamIds: new Set(),
     lastParamFrame: 0,
     nativeAnimationAdapter: createLive2dNativeAdapter(),
     blinkScheduler: createBlinkScheduler(),

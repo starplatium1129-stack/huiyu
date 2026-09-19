@@ -41,7 +41,8 @@ export function createParameterFrame(
       // their idle values cannot overwrite the audio amplitude or emotion.
       if (ctx.speaking) {
         const mouth = ctx.adapter?.mouth
-        if (mouth) ctx.model.setParameterValueById(mouth.id, ctx.mouthValue.value * mouth.scale, 1)
+        if (mouth) ctx.model.setParameterValueById(mouth.id, Math.max(mouth.range?.[0] ?? -Infinity,
+          Math.min(mouth.range?.[1] ?? Infinity, ctx.mouthValue.value * mouth.scale)), 1)
       }
       // 覆盖式眨眼：双眼参数永远写同一个值（1=睁、0=闭），修掉作者眼曲线
       // 左右眼不同步造成的"单眼 Wink"，并保证定时眨眼（见 blinkScheduler）。
@@ -65,7 +66,7 @@ export function createParameterFrame(
         const blinkValue = ctx.blinkScheduler.update(dt)
         const blinkIds = ctx.adapter?.blink
         if (blinkIds?.length) {
-          for (const id of blinkIds) ctx.model.setParameterValueById(id, blinkValue, 1)
+          for (const id of blinkIds) if (!ctx.expressionParamIds.has(id)) ctx.model.setParameterValueById(id, blinkValue, 1)
         }
         if (ctx.stageEl) ctx.stageEl.dataset.blink = blinkValue.toFixed(3)
       }
@@ -110,6 +111,7 @@ export function createParameterFrame(
         void ctx.nativeAnimationAdapter.apply(frame.nativeAnimation, ctx.model, ctx.character.value)
       }
       const targets = { ...frame.live2dParams, ...ctx.emotionRuntime.targets() }
+      for (const id of ctx.expressionParamIds) { delete targets[id]; delete ctx.emotionCurrent[id] }
       for (const id of ctx.nativeAnimationAdapter.activeSuppressedParamIds()) {
         delete targets[id]
         delete ctx.emotionCurrent[id]

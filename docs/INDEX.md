@@ -25,6 +25,8 @@
 
 ## 当前审计与待办
 
+- [本机 Live2D 候选接入（2026-09-20）](research/desktop/live2d-candidate-integration-2026-09-20.md)：7 个本机模型、LPK 解包、水墨初音替换、自动情绪与竖向舞台；Native 接入及个人桌面同步，桌面实测由用户继续。
+
 - [长期架构优化实施计划](../plans/architecture-evolution.md)：业务类型、入册用例、接口、引擎、存储和生命周期的分批实施与验收；动态进度见 roadmap。
 - [架构首批实施记录](research/engineering/architecture-a01-2026-09-19.md)：A00 当前基线复核、复用已合入的类型迁出、A01.2 窄输入和 A07.1 间接依赖检查及验证。
 - [架构 A02.1 入册用例实施记录](research/engineering/architecture-a02-2026-09-19.md)：A01.3 作品链路盘点、保存用例抽取、兼容回退时机、失败边界与浏览器/完整门禁证据。

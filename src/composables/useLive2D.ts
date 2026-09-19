@@ -74,6 +74,23 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (ctx.interactionAudio) ctx.interactionAudio.volume = ctx.interactionVolume
   }
 
+  async function setExpression(name: string): Promise<boolean> {
+    if (!ctx.ready.value || ctx.loadedCharacter.value !== ctx.character.value) return false
+    const { resolveCompanionAvatar } = await import('@/utils/companionRegistry')
+    const options = resolveCompanionAvatar(ctx.character.value)?.avatar.expressions || []
+    if (name && !options.some(option => option.id === name)) return false
+    const model = ctx.model
+    try {
+      const result = await model?.expression(name)
+      if (model !== ctx.model) return false
+      if (result) {
+        ctx.expressionParamIds = new Set(options.find(option => option.id === name)?.parameterIds || [])
+        lifecycle.resumeRendering()
+      }
+      return result === true
+    } catch { return false }
+  }
+
   // 换装和口型都依赖 Pixi ticker。某些 Cubism 模型在切换 Expression 后会停掉 idle
   // motion；语音开始时显式恢复渲染，避免出现"有声音但立绘冻结"。
   function setSpeaking(value: boolean) {
@@ -94,7 +111,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     mouthValue: ctx.mouthValue, interactionHint: ctx.interactionHint, outfit: ctx.outfit, quality: ctx.quality,
     backendKind: ctx.backendKind, backendFallback: ctx.backendFallback, adapterReport: ctx.adapterReport,
     init: lifecycle.init, enable: lifecycle.enable, disable: lifecycle.disable,
-    setCharacter: lifecycle.setCharacter, setMouth, setAudioLevel, setVolume, setOutfit: lifecycle.setOutfit, setQuality: lifecycle.setQuality, setSpeaking,
+    setCharacter: lifecycle.setCharacter, setMouth, setAudioLevel, setVolume, setExpression, setOutfit: lifecycle.setOutfit, setQuality: lifecycle.setQuality, setSpeaking,
     attachEmotionRuntime, setPaused: lifecycle.setPaused, setMaxFps, recover: lifecycle.recover,
     layout: layoutFit.layout, retry: lifecycle.retry, destroy: lifecycle.destroy,
     setGlobalPointer: pointerGaze.setGlobalPointer, releasePointerFocus: pointerGaze.release,

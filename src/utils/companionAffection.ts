@@ -180,3 +180,8 @@ export function pickAffectionMotion(
   const fallback = candidates[candidates.length - 1]
   return { index: fallback.index, entry: fallback.entry }
 }
+
+export function hasAffectionMotionRules(character: string, group: string): boolean {
+  const rules = character === 'natsume' ? NATSUME_AFFECTION_RULES : character === 'nene' ? NENE_AFFECTION_RULES : undefined
+  return Boolean(rules?.[group]?.length)
+}

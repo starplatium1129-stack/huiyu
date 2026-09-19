@@ -4,6 +4,7 @@ import type { Live2DCtx, Live2DStatus } from '@/composables/live2d/context'
 import { prefersReducedMotion } from '@/composables/live2d/context'
 import { isRecord } from '@/composables/live2d/catalog'
 import { resolveCompanionAvatar } from '@/utils/companionRegistry'
+import { hasAffectionMotionRules } from '@/utils/companionAffection'
 
 /** 分区带映射：舞台归一化坐标（x/y ∈ [0,1]）→ 互动动作。 */
 export function resolveStageInteraction(character: string, x: number, y: number): Live2DInteraction | null {
@@ -200,16 +201,16 @@ export function createInteractionController(
     // 基础调用契约保持 model.motion(interaction.group, undefined, 3) 兼容性
     const affection = useCompanionAffection()
     const dispatched = affection.dispatchInteractiveMotion(ctx.character.value, interaction.group)
-    if (!dispatched) {
+    if (!dispatched && hasAffectionMotionRules(ctx.character.value, interaction.group)) {
       ctx.interactionHint.value = '这个互动尚未解锁，先多陪伴她一会儿吧'
       return
     }
-    const motionIndex = dispatched.index
-    const customText = dispatched.entry?.text
+    const motionIndex = dispatched?.index
+    const customText = dispatched?.entry?.text
       ? `“${dispatched.entry.text}”${dispatched.bonusAwarded ? ` (好感度+${dispatched.bonusAwarded})` : ''}`
       : interaction.hint
 
-    const soundUrl = dispatched.entry?.sound
+    const soundUrl = dispatched?.entry?.sound
     const targetIndex = typeof motionIndex === 'number' ? motionIndex : undefined
     const result = ctx.model.motion(interaction.group, targetIndex, 3)
     if (isCatchable(result)) {
@@ -241,8 +242,10 @@ export function createInteractionController(
     // 原生 overlay 位于透明 WebView 下方且不接收鼠标。舞台 DOM 保持完整交互，
     // 点击坐标归一化后交给 Rust 做 Cubism 原生 HitArea 命中。
     if (ctx.session?.capability.hitTestNative) {
+      let point: { x: number; y: number } | null = null
       ctx.nativeHitTestUnsubscribe = ctx.session.onNativeHitTest?.((areas) => {
         const interaction = resolveHitAreaInteraction(ctx.character.value, areas)
+          || (point ? resolveStageInteraction(ctx.character.value, point.x, point.y) : null)
         if (interaction) playInteraction(interaction)
       }) ?? null
       // 同一互动播放中重复点击：Rust 拒绝并回传 motion-failed，这里直接
@@ -254,8 +257,10 @@ export function createInteractionController(
       }) ?? null
       ctx.pointerClickHandler = (event) => {
         if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
-        const rect = ctx.stageEl?.getBoundingClientRect()
+        const rect = ctx.hostEl?.getBoundingClientRect() || ctx.stageEl?.getBoundingClientRect()
         if (!rect?.width || !rect.height) return
+        if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return
+        point = { x: (event.clientX - rect.left) / rect.width, y: (event.clientY - rect.top) / rect.height }
         ctx.model?.hitTest(
           Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
           Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)),

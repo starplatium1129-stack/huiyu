@@ -32,6 +32,21 @@ const path = (require('path') as typeof import('path'));
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
+  'live2d:sync-local': {
+    desc: '个人桌面同步已核验本机模型，保留目标旧版本；不进入安装包',
+    cmd: ['node', 'scripts/maintenance/sync-local-live2d.js'], required: ['--source', '--target'],
+    opts: '--source <本机导入根> --target <本机目标根> [--apply]', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product'] }, resume: 'idempotent',
+      evidence: 'scripts/maintenance/sync-local-live2d.ts:1', unknown: ['目标桌面运行时验收'], notes: ['先核验所有源哈希；只同步已登记依赖，保留旧目标版本'] },
+  },
+  'live2d:import-candidates': {
+    desc: '核对并导入本机 Live2D 候选；默认预览，原件不变，不发布或安装',
+    cmd: ['node', 'scripts/maintenance/import-live2d-candidates.js'],
+    opts: '[--root <项目根>] [--ids <逗号分隔角色ID>] [--apply] [--refresh 保留旧版本后更新]', docs: 'docs/workflow.md',
+    run: { nature: ['preview', 'read-only'], machine: ['node'], switches: { '--apply': ['writes-product'], '--refresh': ['writes-product'] }, resume: 'idempotent',
+      evidence: 'scripts/maintenance/import-live2d-candidates.ts:1', unknown: ['原生后端与音频设备验收'],
+      notes: ['只生成 runtime/live2d-imports 本机副本，拒绝覆盖不同内容；不解包 lpk，不上传或发布'] },
+  },
   ...(require('./lib/workflows-content-checks') as typeof import('./lib/workflows-content-checks')),
   'maintenance:recover': {
     desc: '预览已中断维护事务的精确文件恢复；显式apply绑定预览后执行',

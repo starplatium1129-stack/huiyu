@@ -28,6 +28,22 @@ async function setup() {
 afterEach(() => { Reflect.deleteProperty(window, 'wl-live2d') })
 
 describe('browser Live2D session', () => {
+  it('supports Cubism 2 parameter access and makes expression reset persistent across motions', async () => {
+    const h = await setup()
+    const core = { setParamFloat: vi.fn(), getParamFloat: vi.fn(() => 0.7) }
+    const expressions = { currentExpression: {}, defaultExpression: {}, resetExpression: vi.fn() }
+    Object.assign(h.model.internalModel, { coreModel: core })
+    Object.assign(h.model.internalModel.motionManager, { expressionManager: expressions })
+    let handle!: Live2DModelHandle
+    h.session.onModelLoaded(value => { handle = value }); h.loaded()
+    handle.setParameterValueById('PARAM_MOUTH_OPEN_Y', 0.7, 1)
+    expect(core.setParamFloat).toHaveBeenCalledWith('PARAM_MOUTH_OPEN_Y', 0.7, 1)
+    expect(handle.getParameterValueById?.('PARAM_MOUTH_OPEN_Y')).toBe(0.7)
+    expect(handle.expression('')).toBe(true)
+    expect(expressions.currentExpression).toBe(expressions.defaultExpression)
+    expect(expressions.resetExpression).toHaveBeenCalledOnce()
+    h.session.destroy()
+  })
   it('renders a first static frame for reduced motion, and caps the resume delta', async () => {
     const h = await setup()
     h.session.onModelLoaded(() => {})

@@ -31,6 +31,21 @@ function setup() {
 afterEach(() => { vi.restoreAllMocks(); vi.useRealTimers() })
 
 describe('Live2D interaction completion', () => {
+  it('preserves expression eye parameters and clamps mouth values to the authored range', () => {
+    const h = setup()
+    h.setGroup('Idle')
+    h.ctx.expressionParamIds.add('ParamEyeLOpen')
+    h.params.set('ParamEyeLOpen', 0.3)
+    h.ctx.adapter!.mouth = { id: 'ParamMouthOpenY', scale: 3, range: [0, 1] }
+    h.ctx.speaking = true
+    h.ctx.mouthValue.value = 0.8
+    h.frame.apply()
+    expect(h.params.get('ParamEyeLOpen')).toBe(0.3)
+    expect(h.params.get('ParamMouthOpenY')).toBe(1)
+    h.ctx.expressionParamIds.clear()
+    h.frame.apply()
+    expect(h.params.get('ParamEyeLOpen')).toBeGreaterThan(0.3)
+  })
   it('interaction audio follows room volume and stays silent during speech or mute', () => {
     vi.useFakeTimers()
     const h = setup()

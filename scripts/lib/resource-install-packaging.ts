@@ -26,7 +26,7 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: any
       // TypeScript sources and source maps are build inputs, not distributable assets;
       // the desktop stage deliberately excludes them from the gateway payload.
       if (/\.(?:[cm]?ts|map)$/i.test(rel)) continue;
-      if (rel.toLowerCase() === 'character-references' || rel.toLowerCase().startsWith('character-references/')) continue;
+      if (/^(?:character-references|live2d-candidates)(?:\/|$)/i.test(rel)) continue;
       if (stat!.isDirectory()) walk(file, rel + '/');
       else entries.push({ rel, sourceBytes: stat!.size });
     }

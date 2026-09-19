@@ -115,8 +115,8 @@
 
 .chat-page .chat-layout {
   display: grid;
-  /* 立绘越大越好：角色列加宽（宽度是模型尺寸的瓶颈），对话列让位 */
-  grid-template-columns: minmax(300px, 1fr) minmax(0, 1.3fr);
+  /* Portrait models need a tall stage; width follows the column, never stretches the model. */
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
   gap: var(--s-4);
   /* Q 版小剧场移除后立绘是唯一主角：上限放宽，让 Live2D 更大 */
   height: min(920px, calc(100dvh - 150px));
@@ -2152,7 +2152,7 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .character-info { position: relative; }
 .chat-page .character-about { margin-top: 6px; color: var(--text-muted); font-size: var(--fs-label-sm); }
 .chat-page .character-about summary { width: fit-content; cursor: pointer; }
-.chat-page .character-about[open] { position: absolute; z-index: var(--z-popover); inset: auto 12px calc(100% + 8px); padding: 14px; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-elevated); box-shadow: var(--shadow-lg); max-height: 230px; overflow: auto; }
+.chat-page .character-about[open] { padding-block: var(--s-2); }
 .chat-page .character-about .character-description { white-space: normal; }
 .chat-page .live2d-wardrobe { position: relative; }
 .chat-page .wardrobe-menu { position: absolute; z-index: var(--z-popover); bottom: calc(100% + 8px); max-height: min(340px, 45dvh); overflow-y: auto; background: var(--bg-elevated); }
@@ -2164,5 +2164,5 @@ body:has(.chat-page) .sakura-fall {
   .chat-page { max-width: 1600px; }
   .chat-page .character-tabs { flex-shrink: 0; padding: 8px; }
   .chat-page .character-tab { min-height: 36px; }
-  .chat-page .chat-layout { grid-template-columns: minmax(330px, .9fr) minmax(0, 1.3fr); }
+  .chat-page .chat-layout { grid-template-columns: clamp(290px, 27vw, 390px) minmax(0, 1fr); }
 }

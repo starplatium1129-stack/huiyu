@@ -1,5 +1,5 @@
 <template>
-  <aside class="character-card" :data-character="activeId">
+  <aside class="character-card" :class="{ 'local-model-stage': getCompanionCharacter(activeId)?.tags?.includes('local-import') }" :data-character="activeId">
     <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
       <button
         v-for="characterDefinition in companionCharacters"
@@ -68,6 +68,9 @@
           <span>{{ chatStatusText }}</span>
         </div>
       </div>
+      <details class="character-controls">
+        <summary><ArchiveIcon name="gear" /><span>角色设置</span></summary>
+        <div class="character-controls-panel">
       <details class="character-about">
         <summary>关于{{ character.name }}</summary>
         <p class="character-caption">{{ character.caption }}</p>
@@ -143,6 +146,8 @@
           </li>
         </ul>
       </details>
+        </div>
+      </details>
     </div>
   </aside>
 </template>
@@ -159,12 +164,14 @@ import {
   listCompanionOutfits,
   listCompanionUiCharacters,
   normalizeCompanionOutfit,
+  resolveCompanionAvatar,
 } from '@/utils/companionRegistry'
 import { useLive2D } from '@/composables/useLive2D'
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
+import { profileEmotionConfig } from '@/live2d/companionEmotion'
 import type { Live2DBackendKind } from '@/live2d/types'
 import type { Live2DAdapterCapabilityItem, Live2DCapabilityStatus } from '@/live2d/adapterProfile'
 
@@ -264,7 +271,7 @@ watch(() => props.volume, value => live2d.setVolume((value ?? 80) / 100), { imme
 
 const emotionRuntimes = new Map<string, EmotionRuntime>()
 for (const definition of companionCharacters) {
-  const runtimeConfig = getEmotionRuntimeConfig(definition.emotionProfileId || '')
+  const runtimeConfig = getEmotionRuntimeConfig(definition.emotionProfileId || '') || profileEmotionConfig(resolveCompanionAvatar(definition.id)?.profile)
   if (runtimeConfig) emotionRuntimes.set(definition.id, createEmotionRuntime(runtimeConfig))
 }
 function activeRuntime(): EmotionRuntime | null {
@@ -491,6 +498,12 @@ defineExpose({
 </script>
 
 <style scoped>
+.character-controls > summary { display: flex; align-items: center; justify-content: flex-end; gap: 6px; min-height: 32px; color: var(--text-primary); cursor: pointer; font-size: var(--fs-label-sm); list-style: none; }
+.character-controls > summary svg { width: 16px; height: 16px; }
+.character-controls-panel { position: absolute; z-index: var(--z-popover); left: 10px; right: 10px; bottom: calc(100% + 8px); max-height: min(450px, 65dvh); overflow-y: auto; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-elevated); box-shadow: var(--shadow-lg); }
+.character-card .character-tabs { max-width: calc(100% - 24px); overflow-x: auto; }
+.character-card .character-tab { flex-shrink: 0; white-space: nowrap; }
+.character-card .character-tab.active { color: var(--text-primary); border-color: var(--border-strong); background: var(--bg-surface); }
 .live2d-capability-report { margin-top: 8px; color: var(--text-secondary); font-size: 12px; }
 .live2d-capability-report summary { min-height: 32px; cursor: pointer; color: var(--text-primary); }
 .live2d-capability-report ul { display: grid; gap: 6px; margin: 6px 0 0; padding: 0; list-style: none; }

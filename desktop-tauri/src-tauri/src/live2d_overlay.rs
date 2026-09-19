@@ -14,6 +14,8 @@ use std::sync::mpsc::{channel, Receiver, Sender, TryRecvError};
 mod frame_pacing;
 #[path = "live2d_adapter.rs"]
 mod live2d_adapter;
+#[path = "live2d_assets.rs"]
+mod live2d_assets;
 use live2d_adapter::{apply_overlay_defaults, Live2DAdapterConfig, MouthBinding, OverlaySettler};
 use std::sync::{Arc, Mutex, OnceLock};
 use std::thread;
@@ -578,6 +580,7 @@ impl RenderContext {
         character: &str,
         texture_scale: u32,
         profile: Live2DAdapterConfig,
+        local_root: Option<&std::path::Path>,
     ) -> Result<(), String> {
         if let Some(renderer) = self.renderer.as_mut() {
             renderer.release_model_resources();
@@ -593,26 +596,10 @@ impl RenderContext {
         self.motion_last_indices.clear();
         self.active_motion = None;
         self.ready_emitted = false;
-        let dir = assets_root.join("live2d").join(character);
-        if !dir.is_dir() {
-            return Err(format!("model dir not found: {}", dir.display()));
-        }
-        let moc_path = std::fs::read_dir(&dir)
-            .map_err(|e| e.to_string())?
-            .filter_map(|e| e.ok())
-            .map(|e| e.path())
-            .find(|p| p.extension().map(|e| e == "moc3").unwrap_or(false))
-            .ok_or("no .moc3 in model dir")?;
-        let stem = moc_path
-            .file_stem()
-            .and_then(|s| s.to_str())
-            .unwrap_or("model");
-        let model3_path = dir.join("model3.json");
-        let model3_path = if model3_path.exists() {
-            model3_path
-        } else {
-            dir.join(format!("{stem}.model3.json"))
-        };
+        let files = live2d_assets::resolve_model(assets_root, local_root, character, &profile.profile_id)?;
+        let dir = files.directory;
+        let moc_path = files.moc;
+        let model3_path = files.manifest;
         let moc = std::fs::read(&moc_path).map_err(|e| e.to_string())?;
         let model3_bytes = std::fs::read(&model3_path).map_err(|e| e.to_string())?;
         let manifest = model::parse_model3(&model3_bytes)?;
@@ -1346,7 +1333,8 @@ fn handle_command(
             }
             let result = (|| {
                 ctx.ensure_surface(hwnd)?;
-                ctx.load_model(assets_root, &character, texture_scale, adapter)?;
+                let local = app.map(|app| app.state::<crate::state::AppState>().paths.runtime_root.join("live2d-imports"));
+                ctx.load_model(assets_root, &character, texture_scale, adapter, local.as_deref())?;
                 ctx.start_initial_motion(app)
             })();
             if result.is_ok() {
@@ -1878,11 +1866,6 @@ pub async fn aics_live2d_set_character(
     // 白名单：character 只接受已知角色；model_path 忽略（资产由 Rust 从
     // assets_root/live2d/{character} 读取，不接收任意路径）。
     let character = character.unwrap_or_else(|| "nene".to_string());
-    if !matches!(character.as_str(), "nene" | "natsume") {
-        return Ok(
-            serde_json::json!({ "ok": false, "error": format!("unknown character {character}") }),
-        );
-    }
     let Some(adapter) = adapter else {
         return Ok(serde_json::json!({ "ok": false, "error": "missing Live2D adapter profile" }));
     };
@@ -1893,6 +1876,10 @@ pub async fn aics_live2d_set_character(
     let texture_scale = texture_scale.unwrap_or(1);
     if !matches!(texture_scale, 1 | 2 | 4) { return Err("invalid Live2D texture scale".into()); }
     let assets_root = overlay_assets_root(&app);
+    let local_root = app.state::<crate::state::AppState>().paths.runtime_root.join("live2d-imports");
+    if let Err(error) = live2d_assets::resolve_model(&assets_root, Some(&local_root), &character, &adapter.profile_id) {
+        return Ok(serde_json::json!({ "ok": false, "error": error }));
+    }
     let state = ensure_overlay(&app, assets_root);
     let (tx, rx) = tokio::sync::oneshot::channel();
     // 真异步：模型加载在渲染线程执行，本 command 挂起等待，不阻塞主线程；

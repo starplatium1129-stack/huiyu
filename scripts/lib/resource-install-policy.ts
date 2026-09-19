@@ -17,7 +17,7 @@ function manifest(value: any) {
   let total = 0;
   for (const entry of value.entries) {
     relativePath(entry.path);
-    if (!checkManifestPath(entry.path).ok || /^assets\/character-references(?:\/|$)/i.test(entry.path)) fail('UNSAFE_PATH', 'Excluded resource domain');
+    if (!checkManifestPath(entry.path).ok || /^assets\/(?:character-references|live2d-candidates)(?:\/|$)/i.test(entry.path)) fail('UNSAFE_PATH', 'Excluded resource domain');
     if (EXECUTABLE.test(entry.path)) fail('EXECUTABLE_REJECTED', 'Executable/web script content is not a resource update');
     const identity = entry.path.toLowerCase();
     if (identities.has(identity)) fail('MANIFEST_INVALID', 'Case-insensitive path collision');

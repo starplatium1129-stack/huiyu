@@ -267,9 +267,10 @@ export function useCompanionWorkspace() {
         uiIdleTimer = window.setTimeout(() => {
             if (!viewAlive || !desktopWindowVisible.value)
                 return;
-            // 输入框聚焦时保持 UI（正在打字不能突然消失）
+            // Editing or choosing a character must not be interrupted by idle hiding.
             if (document.activeElement instanceof HTMLTextAreaElement
-                || document.activeElement instanceof HTMLInputElement)
+                || document.activeElement instanceof HTMLInputElement
+                || document.activeElement instanceof HTMLSelectElement)
                 return;
             if (Date.now() - lastPointerMove > 3000)
                 setUiHidden(true);

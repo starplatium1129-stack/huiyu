@@ -42,6 +42,7 @@ export interface CompanionAvatarDefinition {
   profileId: string
   defaultOutfitId?: string
   outfits?: readonly CompanionOutfitDefinition[]
+  expressions?: readonly { id: string; label: string; parameterIds?: readonly string[] }[]
   thumbnailUrl?: string
   license?: {
     author?: string

@@ -322,6 +322,20 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ## 服务与桌面部署
 
+### 本机 Live2D 候选导入
+
+已下载的 LPK 可复用夏目使用的 [LpkUnpacker](https://github.com/ihopenot/LpkUnpacker) 命令行工具：`LpkUnpacker.py <包.lpk> <隔离输出目录> -c <同包config.json>`。本轮工具源码版本为 `906d4cdd5597403ebf46dde8fb47d9c81a352d19`，仅需 CLI 的 filetype 依赖；不需要 GUI/Live2D Python 运行库。芙宁娜与雷电将军输出到 `runtime/live2d-unpacked/<角色>`，由配方的 `unpackedEntry` 接入。原 LPK、config 与作者说明保持原样。
+
+个人桌面同步：`npm run wf -- live2d:sync-local --source <导入根> --target <用户模型根>` 默认只预览，`--apply` 核验完整源哈希后复制，保留目标旧版本。正常桌面部署使用 `deploy-desktop.bat -SyncLocalModels`，将模型写入 `%APPDATA%/com.aics.studio/gateway/live2d-imports`；安装包与公开资源清单仍不包含这些私有模型。修改 Rust 后使用 `-UseInstaller -QuietInstall -SyncLocalModels` 完整安装，UAC 仍由用户处理。
+
+需要更新已导入模型的配方或校准时，可使用 `--apply --refresh`：先核对旧版本文件哈希，将旧目录保留为 `runtime/live2d-imports/.previous-<角色>-<唯一标识>`，再切换完整新副本；失败恢复旧目录。不带 `--apply` 的 `--refresh` 仍仅预览。不要手动覆盖作者模型或删除旧版本来绕过损坏检查。
+
+`npm run wf -- live2d:import-candidates` 核对 `data/live2d-candidates.json` 中的本机候选，默认仅预览；`--ids hatsune_miku,frieren` 可缩小范围，`--apply` 将已完整核对的运行依赖复制到 `runtime/live2d-imports/<角色ID>`。源压缩包与解压目录不修改；仅在副本修复明确缺失的可选表情、登记已有表情与动作。相同内容重跑核验后保持不变，不同或损坏内容拒绝覆盖。每个模型保留 SOURCE.md、源清单哈希、文件哈希及修复记录。入口不下载、不解包受保护的 LPK、不发布、不安装。
+
+本机直连的陪伴页、聊天页从 `/api/live2d-companions` 加载本机身份与 Adapter Profile；资源仅经本机受限接口按导入文件清单提供。远程/隧道请求不返回本机角色和模型，候选原件也不进入静态资产路由、资源包或桌面暂存。新角色尚无专属音色时保持文字聊天，不借用内置角色声音。Cubism 3 本机模型支持浏览器与 Native；Cubism 2 的蕾姆保持浏览器回退。原生端仅接受与本机导入回执身份一致且引用完整的模型，不接收 WebView 的任意文件路径。
+
+真实模型浏览器检查：完成构建和导入后，设置 `AICS_LIVE2D_IMPORTS=1` 与独立 `AICS_E2E_PORT_OFFSET`，运行 `node node_modules/@playwright/test/cli.js test tests/e2e/live2d-imports.spec.ts --project desktop --workers 1`。未显式设置时跳过私有资产测试；开启后使用实际运行库、模型及贴图，保存双主题截图，不替代原生 GPU 或音频设备验收。
+
 环境与本机凭据说明见 [启动与排错](../STARTUP.md) 与 [全功能硬件配置与模型开箱指南](guides/setup-and-models.md)。
 - `models:check`：扫描当前硬件显存与 ComfyUI/反推模型就绪状态；
 - `models:download-wd14`：一键从国内高速镜像（hf-mirror）下载本地 WD14 真实反推模型（约 150MB）；

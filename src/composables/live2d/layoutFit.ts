@@ -1,4 +1,4 @@
-import { CHARACTERS } from '@/config/characters'
+import { getCompanionCharacterConfig } from '@/utils/companionRegistry'
 import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
 import { isStageHidden, prefersReducedMotion, type Live2DCtx } from '@/composables/live2d/context'
 
@@ -43,13 +43,14 @@ export function createLayoutFitController(
       if (!nw || !nh) return
       // The moc bounds include different transparent margins, so each model
       // owns an explicit visual calibration rather than sharing one multiplier.
-      const profile = CHARACTERS[ctx.character.value]?.live2dLayout ?? {
+      const profile = getCompanionCharacterConfig(ctx.character.value)?.live2dLayout ?? {
         scale: 1,
         anchorX: 0.5,
         bottomOffset: 0,
       }
       const scale = Math.min(sw / nw, sh / nh) * profile.scale
-      ctx.model.applyFit(scale, (sw - nw * scale) * profile.anchorX, sh - nh * scale + profile.bottomOffset)
+      const anchorY = profile.anchorY ?? (nw > nh ? 0.5 : 1)
+      ctx.model.applyFit(scale, (sw - nw * scale) * profile.anchorX, (sh - nh * scale) * anchorY + profile.bottomOffset)
     } catch (e) { hooks.fallback('Live2D 布局失败', e instanceof Error ? e.message : String(e)) }
   }
 
@@ -67,7 +68,7 @@ export function createLayoutFitController(
         return
       }
       try {
-        const rect = ctx.stageEl.getBoundingClientRect()
+        const rect = ctx.hostEl.getBoundingClientRect()
         if (!rect.width || !rect.height) return
         const bounds = desktopWindowBounds ?? {
           ...windowBoundsFromScreen(),

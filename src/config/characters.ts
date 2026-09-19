@@ -14,6 +14,7 @@ export interface CharacterConfig {
   live2dLayout: {
     scale: number
     anchorX: number
+    anchorY?: number
     bottomOffset: number
   }
   officialQuote?: string

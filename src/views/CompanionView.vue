@@ -1,6 +1,7 @@
 <template>
   <article
     class="companion-page"
+    :class="{ 'has-character-picker': companionCharacters.length > 3 }"
     :data-character="activeChar"
     :data-power-mode="desktopBridge ? (onBatteryPower ? 'efficiency' : 'quality') : undefined"
     :data-ui-hidden="uiHidden || undefined"
@@ -23,7 +24,11 @@
         </div>
       </div>
       <div class="companion-toolbar-actions">
-        <div v-if="desktopBridge" class="companion-char-switch" aria-label="切换角色">
+        <select v-if="companionCharacters.length > 3" class="companion-character-select"
+          :value="activeChar" aria-label="切换陪伴角色" @change="switchCharacter(($event.target as HTMLSelectElement).value)">
+          <option v-for="character in companionCharacters" :key="character.id" :value="character.id">{{ character.name }}</option>
+        </select>
+        <div v-else-if="desktopBridge" class="companion-char-switch" aria-label="切换角色">
           <button
             v-for="character in companionCharacters"
             :key="character.id"
@@ -490,3 +495,9 @@ liveDotState,
 liveDotText
 } = useCompanionWorkspace()
 </script>
+
+<style scoped>
+.companion-character-select { min-width: 0; max-width: 128px; min-height: 32px; padding: 4px 8px; border: 1px solid var(--companion-edge); border-radius: var(--r-md); background: var(--bg-surface); color: var(--text-primary); font: inherit; }
+.has-character-picker :deep(.character-tabs) { display: none; }
+.companion-page :deep(.local-model-stage .live2d-host) { inset: 96px 0 176px; }
+</style>

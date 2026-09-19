@@ -200,6 +200,9 @@ function createGateway(options: GatewayOptions = {}) {
   // 采用 no-cache + ETag 协商缓存——文件未修改返回 304 零流量秒开；
   // 用户或脚本在本地替换图片后，刷新浏览器立即生效，彻底无需手动改 ?v= 版本号。
   app.use('/assets', function (req, res, next) {
+    try {
+      if (/^\/live2d-candidates(?:\/|$)/i.test(decodeURIComponent(req.path))) return res.status(404).end();
+    } catch { return res.status(404).end(); }
     res.setHeader('Cache-Control', 'no-cache');
     next();
   }, express.static(config.ASSETS_ROOT, {

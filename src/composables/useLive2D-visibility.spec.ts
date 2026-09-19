@@ -12,6 +12,7 @@ describe('desktop layout respects visibility ownership', () => {
     ctx.hostEl = document.createElement('div')
     ctx.stageEl = document.createElement('div')
     vi.spyOn(ctx.stageEl, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 300, height: 500 } as DOMRect)
+    vi.spyOn(ctx.hostEl, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 300, height: 500 } as DOMRect)
     const updateOverlay = vi.fn(), setPaused = vi.fn(), startEmotionClock = vi.fn()
     ctx.session = { kind: 'native', capability: NATIVE_CAPABILITY, updateOverlay, setPaused } as unknown as Live2DStageSession
     const layout = createLayoutFitController(ctx, { fallback: vi.fn(), startEmotionClock })
@@ -39,6 +40,15 @@ describe('desktop layout respects visibility ownership', () => {
     expect(h.setPaused).toHaveBeenLastCalledWith(false)
     h.ctx.session = { ...h.ctx.session!, kind: 'browser' }
     expect(isStageHidden(h.ctx)).toBe(true)
+    h.layout.resetWindowBounds()
+  })
+
+  it('fits the native overlay to the model host inset rather than covering the controls', () => {
+    const h = setup()
+    h.ctx.desktopVisible = true
+    vi.spyOn(h.ctx.hostEl!, 'getBoundingClientRect').mockReturnValue({ left: 10, top: 96, width: 280, height: 300 } as DOMRect)
+    h.layout.setDesktopWindowBounds({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight })
+    expect(h.updateOverlay).toHaveBeenLastCalledWith(expect.objectContaining({ x: 10, y: 96, width: 280, height: 300 }), true)
     h.layout.resetWindowBounds()
   })
 })

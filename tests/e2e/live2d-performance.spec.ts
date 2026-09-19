@@ -15,7 +15,8 @@ type Probe = {
   snapshot: (value: unknown) => void
 }
 
-async function fixture(page: Page, legacy = false) {
+async function fixture(page: Page, legacy = false, localCharacters = false) {
+  if (!localCharacters) await page.route('**/api/live2d-companions', route => route.fulfill({ json: [] }))
   await page.addInitScript(({ legacy }) => {
     localStorage.setItem('aics_companion_live2d_v1', 'true')
     localStorage.setItem('aics_live2d_quality_v1', 'compact')
@@ -122,4 +123,21 @@ test('native character switches carry the selected adapter profile and release t
   expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthForm3', scale: -0.5 })
   expect((await probe()).characters.at(-1)?.adapter?.blink).toEqual(['ParamEyeLOpen', 'ParamEyeLOpen2'])
   expect((await probe()).destroyed).toBeGreaterThanOrEqual(1)
+})
+
+
+test('a focused character picker stays visible after the desktop idle timeout', async ({ page }) => {
+  test.skip(process.env.AICS_LIVE2D_IMPORTS !== '1', 'Requires imported character picker')
+  await fixture(page, false, true)
+  await page.evaluate(() => {
+    const p = (window as unknown as { __live2dProbe: Probe }).__live2dProbe
+    p.snapshot({ visible: true, onBatteryPower: false, live2dEnabled: true, bounds: { x: 0, y: 0, width: 480, height: 720 } })
+  })
+  const picker = page.getByRole('combobox', { name: '切换陪伴角色', exact: true })
+  await picker.hover()
+  await picker.focus()
+  await page.waitForTimeout(3600)
+  await expect(picker).toBeVisible()
+  await picker.selectOption('furina')
+  await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'furina')
 })

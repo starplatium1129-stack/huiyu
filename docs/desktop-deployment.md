@@ -25,9 +25,12 @@ deploy-desktop.bat -UseInstaller    :: 完整安装（跑安装包）
 deploy-desktop.bat -SkipBuild       :: 已手动 build 过，跳过前端构建
 deploy-desktop.bat -NoRestart       :: 部署后不自动启动
 deploy-desktop.bat -UseInstaller -QuietInstall :: UAC 确认后自动安装并启动
+deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机导入模型至用户目录
 ```
 
 两者都会：停应用 → 清 WebView2 缓存 → 验证反推依赖 → 重启桌面端。
+
+`-SyncLocalModels` 仅用于个人部署：核验并复制 `runtime/live2d-imports` 已登记文件至用户数据目录，保留旧模型版本；不会把候选 LPK/ZIP 或模型塞进可分发安装包。增量复制也排除 `assets/live2d-candidates`。
 `-QuietInstall` 仅用于完整安装，仍需要用户确认 UAC；安装器非零退出会明确报错。部署日志追加到 `runtime/desktop-deploy-last.log`，便于核对实际安装结果。
 `-Cleanup` 默认已带（清理源端已删除的历史残留）。
 

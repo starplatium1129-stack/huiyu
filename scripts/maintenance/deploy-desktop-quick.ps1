@@ -18,6 +18,7 @@
 #   -UseInstaller  跑完整安装包，不做增量复制
 #   -NoRestart     结束后不启动桌面端
 param(
+  [switch]$SyncLocalModels,
   [switch]$SkipBuild,
   [switch]$Cleanup,
   [switch]$UseInstaller,
@@ -59,6 +60,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($QuietInstall) { $argList += '-QuietInstall' }
   if ($NoRestart)    { $argList += '-NoRestart' }
   if ($StartupRepair) { $argList += '-StartupRepair' }
+  if ($SyncLocalModels) { $argList += '-SyncLocalModels' }
   $argList += @('-InstallDir', "`"$installDir`"")
   if ($QuietInstall) {
     $argList = @($argList | Where-Object { $_ -ne '-NoExit' })
@@ -200,7 +202,12 @@ if ($UseInstaller) {
     $dst = Join-Path $gatewayDir $item.dst
     if (Test-Path $src) {
       New-Item -ItemType Directory -Force -Path $dst | Out-Null
-      Copy-Item -Path (Join-Path $src '*') -Destination $dst -Recurse -Force
+      if ($item.src -eq 'assets') {
+        Get-ChildItem -LiteralPath $src | Where-Object { $_.Name -notin @('live2d-candidates', 'character-references') } |
+          ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $dst -Recurse -Force }
+      } else {
+        Copy-Item -Path (Join-Path $src '*') -Destination $dst -Recurse -Force
+      }
       Write-Host "  copied $($item.src) -> gateway/$($item.dst)" -ForegroundColor DarkGray
     }
   }
@@ -259,6 +266,13 @@ if ($UseInstaller) {
     }
     Write-Host '  synced desktop-updates -> gateway/runtime/desktop-updates' -ForegroundColor DarkGray
   }
+}
+
+if ($SyncLocalModels) {
+  $modelSource = Join-Path $root 'runtime\live2d-imports'
+  $modelTarget = Join-Path ([Environment]::GetFolderPath('ApplicationData')) 'com.aics.studio\gateway\live2d-imports'
+  node (Join-Path $root 'scripts\maintenance\sync-local-live2d.js') --source $modelSource --target $modelTarget --apply
+  if ($LASTEXITCODE -ne 0) { throw '本机 Live2D 同步核验失败' }
 }
 
 # ------------------------------------------- [5] 清 WebView2 缓存 + 验证依赖

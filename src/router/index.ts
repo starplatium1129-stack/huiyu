@@ -127,6 +127,9 @@ router.beforeEach((to, from) => {
 export const prefetchRoute = createRoutePrefetcher(router)
 
 router.beforeEach(async (to, from) => {
+  if (['/chat', '/companion', '/companion-chat'].includes(to.path)) {
+    await (await import('@/utils/localCompanions')).loadLocalCompanions()
+  }
   // 初次进入（无 from）由浏览器自己请求文档，CSP 已经对路径生效
   if (!from.matched.length) return true
   if (!needsDocumentReload(from.path, to.path)) return true

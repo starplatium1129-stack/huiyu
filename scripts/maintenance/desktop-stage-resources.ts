@@ -332,7 +332,7 @@ function stageResources(options: StageOptions = {}) {
           // 由网关 /character-references 外部目录服务；此处排除防误回放入包。
           copyDir(from, to, (filePath: any) => {
             const rel = path.relative(from, filePath);
-            return rel.split(path.sep)[0] !== 'character-references' && !/\.(?:[cm]?ts|map)$/.test(filePath);
+            return !['character-references', 'live2d-candidates'].includes(rel.split(path.sep)[0]) && !/\.(?:[cm]?ts|map)$/.test(filePath);
           });
         } else {
           copyDir(from, to, (filePath: any) => !/\.(?:[cm]?ts|map)$/.test(filePath));

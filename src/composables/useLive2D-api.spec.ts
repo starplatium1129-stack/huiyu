@@ -7,13 +7,13 @@ import { useLive2D } from '@/composables/useLive2D'
  * 子模块纯函数规格见 useLive2D.spec.ts（catalog/interactions/parameterFrame）。
  */
 describe('useLive2D 组合根 · API 冻结契约', () => {
-  it('公开 API 与冻结清单逐字一致（2026-08-23 公开契约，消费方零改动承诺）', () => {
+  it('preserves the public API and includes the additive imported-expression control', () => {
     const api = useLive2D()
     expect(Object.keys(api).sort()).toEqual([
       'adapterReport', 'attachEmotionRuntime', 'backendFallback', 'backendKind', 'character', 'destroy',
       'disable', 'enable', 'enabled', 'init', 'interactionHint', 'layout',
       'loadedCharacter', 'mouthValue', 'outfit', 'quality', 'ready', 'recover', 'releasePointerFocus',
-      'retry', 'setAudioLevel', 'setCharacter', 'setDesktopWindowBounds', 'setGlobalPointer',
+      'retry', 'setAudioLevel', 'setCharacter', 'setDesktopWindowBounds', 'setExpression', 'setGlobalPointer',
       'setMaxFps', 'setMouth', 'setOutfit', 'setQuality', 'setVolume', 'setPaused', 'setSpeaking',
       'syncNativeEmotion',
     ].sort())

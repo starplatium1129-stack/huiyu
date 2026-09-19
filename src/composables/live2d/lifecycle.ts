@@ -62,12 +62,22 @@ export function createLifecycleController(
   let runtimeGeneration = 0
   let finishPendingLoad: ((value: boolean) => void) | null = null
   let pendingConnection: AbortController | null = null
+  let requestedBackendKind: Live2DBackendKind = 'browser'
   function selectAdapter(char: string, backendKind = ctx.backendKind.value): boolean {
     const resolved = resolveCompanionAvatar(char)
     if (!resolved) {
       ctx.adapter = null
       ctx.adapterReport.value = null
       return false
+    }
+    if (backendKind === 'native' && !resolved.profile.backendCompatibility.includes('native')
+      && resolved.profile.backendCompatibility.includes('browser')) {
+      destroyRuntime()
+      const selection = selectLive2DBackend('browser')
+      ctx.backend = selection.backend
+      ctx.backendKind.value = backendKind = 'browser'
+      ctx.backendFallback.value = '此模型使用浏览器渲染'
+      if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
     }
     const compiled = compileAdapterProfile(resolved.profile, backendKind)
     ctx.adapterReport.value = compiled.ok ? compiled.adapter.report : compiled.report
@@ -94,6 +104,7 @@ export function createLifecycleController(
     options: { autoLoad?: boolean; outfit?: string; backendKind?: Live2DBackendKind } = {},
   ) {
     ctx.hostEl = host; ctx.stageEl = stage
+    requestedBackendKind = options.backendKind || 'browser'
     // wl-live2d 只接受 CSS selector，这里保证宿主节点有稳定 id 可选中
     if (!ctx.hostEl.id) ctx.hostEl.id = 'live2dHost'
     ctx.hostSelector = '#' + ctx.hostEl.id
@@ -157,7 +168,17 @@ export function createLifecycleController(
       return
     }
     ctx.character.value = char
+    if (requestedBackendKind === 'native' && ctx.backendKind.value === 'browser'
+      && ctx.loadedCharacter.value !== char && resolveCompanionAvatar(char)?.profile.backendCompatibility.includes('native')) {
+      destroyRuntime()
+      const selection = selectLive2DBackend('native')
+      ctx.backend = selection.backend
+      ctx.backendKind.value = selection.effectiveKind
+      ctx.backendFallback.value = selection.fallbackReason
+      if (ctx.hostEl) ctx.hostEl.dataset.backend = selection.fallbackReason ? 'browser-fallback' : selection.effectiveKind
+    }
     if (!selectAdapter(char)) {
+      destroyRuntime()
       setVisible(false)
       ctx.interactionHint.value = ''
       setState('static', '静态立绘', `Live2D 适配配置不支持 ${ctx.backendKind.value} 后端`)
@@ -344,6 +365,9 @@ export function createLifecycleController(
           ctx.mouthValue.value = 0; ctx.mouthHooked = false
           controllers.parameterFrame.bindMouthOverride(); bindContextEvents(); controllers.interactions.bind(); controllers.layoutFit.fit(); controllers.layoutFit.scheduleNativeLayout()
           setVisible(true); syncPause(); setState('ready', 'Live2D 已连接')
+          // Absolute companion stages do not resize when a model arrives. Fit after
+          // visibility is enabled, otherwise the hidden-stage guard skips centering.
+          controllers.layoutFit.layout()
           if (!nativeCapability?.entranceNative) playEntrance()
           void setOutfit(ctx.outfit.value)
           finish(true)
@@ -555,6 +579,7 @@ export function createLifecycleController(
     if (currentModel) currentModel.visible = false
     ctx.ready.value = false; ctx.mouthValue.value = 0; ctx.mouthHooked = false; ctx.speaking = false
     for (const key of Object.keys(ctx.emotionCurrent)) delete ctx.emotionCurrent[key]
+    ctx.expressionParamIds.clear()
     ctx.nativeAnimationAdapter.reset()
     ctx.blinkScheduler.reset()
     ctx.lastParamFrame = 0

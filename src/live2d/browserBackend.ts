@@ -14,8 +14,10 @@ import {
 } from './types.ts'
 
 interface Live2DCoreModel {
-  setParameterValueById(id: string, value: number, weight: number): void
+  setParameterValueById?(id: string, value: number, weight: number): void
   getParameterValueById?(id: string): number
+  setParamFloat?(id: string, value: number, weight: number): void
+  getParamFloat?(id: string): number
 }
 
 interface WlLive2DModel {
@@ -31,7 +33,9 @@ interface WlLive2DModel {
     on(event: 'beforeModelUpdate', callback: () => void): void
     coreModel?: Live2DCoreModel
     settings?: { hitAreas?: unknown[] }
-    motionManager?: { definitions?: Record<string, unknown>; state?: { currentGroup?: string } }
+    motionManager?: { definitions?: Record<string, unknown>; state?: { currentGroup?: string }; expressionManager?: {
+      resetExpression?(): void; currentExpression?: unknown; defaultExpression?: unknown
+    } }
   }
   hitTest?(x: number, y: number): string[]
   focus?(x: number, y: number, instant?: boolean): void
@@ -86,6 +90,13 @@ function wrapModel(model: WlLive2DModel): Live2DModelHandle {
       return model.motion(group, index, priority)
     },
     expression(name) {
+      if (!name) {
+        const manager = model.internalModel?.motionManager?.expressionManager
+        if (!manager?.resetExpression) return false
+        manager.currentExpression = manager.defaultExpression
+        manager.resetExpression()
+        return true
+      }
       if (typeof model.expression !== 'function') return false
       return model.expression(name)
     },
@@ -98,10 +109,12 @@ function wrapModel(model: WlLive2DModel): Live2DModelHandle {
       model.focus(x, y)
     },
     setParameterValueById(id, value, weight) {
-      model.internalModel?.coreModel?.setParameterValueById(id, value, weight)
+      const core = model.internalModel?.coreModel
+      const write = core?.setParameterValueById || core?.setParamFloat
+      write?.call(core, id, value, weight)
     },
     getParameterValueById(id) {
-      const read = model.internalModel?.coreModel?.getParameterValueById
+      const read = model.internalModel?.coreModel?.getParameterValueById || model.internalModel?.coreModel?.getParamFloat
       return typeof read === 'function' ? read.call(model.internalModel?.coreModel, id) : undefined
     },
     onBeforeModelUpdate(callback) {
