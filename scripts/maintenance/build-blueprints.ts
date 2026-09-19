@@ -16,6 +16,7 @@ const {
   writeBlueprintAggregate,
 }: typeof import('../lib/blueprint-store') = require('../lib/blueprint-store');
 const { syncDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
+const { refreshPrecompressed } = require('../lib/ensure-data-build');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const check = process.argv.includes('--check');
@@ -27,6 +28,7 @@ if (check) {
     if (!fs.existsSync(aggregatePath)) {
       // 产物从未构建（fresh clone / 产物退出版本库）：自愈构建而非报错
       writeBlueprintAggregate();
+      refreshPrecompressed([aggregatePath]);
       console.log('Blueprint products missing: rebuilt ' + blueprints.length + ' blueprints (' + counts + ')');
     } else {
       // 已构建但与源不一致 = 改了源忘重建，保留报错守卫
@@ -38,6 +40,7 @@ if (check) {
   }
 } else {
   writeBlueprintAggregate();
+  refreshPrecompressed([aggregatePath]);
   console.log('Built ' + aggregatePath + ': ' + blueprints.length + ' blueprints (' + counts + ')');
   // 同步 DATA_VERSION
   try {

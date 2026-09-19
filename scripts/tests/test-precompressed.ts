@@ -109,3 +109,26 @@ test('mutable data negotiates ETag consistently for br, gzip, and identity', asy
   assert.equal(changed.body, '{"revision":"new"}');
   assert.notEqual(changed.headers.etag, br.headers.etag);
 }));
+
+test('refreshPrecompressed updates sibling .br and .gz files with matching decompressed content', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atelier-refresh-'));
+  try {
+    const file = path.join(root, 'test.json');
+    const initialContent = JSON.stringify({ items: Array(100).fill('initial-content-payload') });
+    fs.writeFileSync(file, initialContent);
+    const { refreshPrecompressed } = require('../lib/ensure-data-build');
+    refreshPrecompressed([file]);
+    assert.ok(fs.existsSync(file + '.br'));
+    assert.ok(fs.existsSync(file + '.gz'));
+    assert.equal(zlib.brotliDecompressSync(fs.readFileSync(file + '.br')).toString(), initialContent);
+    assert.equal(zlib.gunzipSync(fs.readFileSync(file + '.gz')).toString(), initialContent);
+
+    const updatedContent = JSON.stringify({ items: Array(100).fill('updated-content-payload') });
+    fs.writeFileSync(file, updatedContent);
+    refreshPrecompressed([file]);
+    assert.equal(zlib.brotliDecompressSync(fs.readFileSync(file + '.br')).toString(), updatedContent);
+    assert.equal(zlib.gunzipSync(fs.readFileSync(file + '.gz')).toString(), updatedContent);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});

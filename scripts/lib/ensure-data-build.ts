@@ -44,6 +44,7 @@ const {
 const {
   aggregatePath: tagsAggregatePath,
   dictionaryPath: tagsDictionaryPath,
+  manifestPath: tagsManifestPath,
   aggregateIsCurrent: tagsIsCurrent,
   writeTagAggregate,
   loadTagShards,
@@ -105,7 +106,7 @@ function ensureTagsBuilt({ onlyIfMissing = false }: any = {}) {
   if (tagsIsCurrent()) return { rebuilt: false };
   loadTagShards();
   const count = writeTagAggregate();
-  refreshPrecompressed([tagsAggregatePath, tagsDictionaryPath]);
+  refreshPrecompressed([tagsAggregatePath, tagsDictionaryPath, tagsManifestPath]);
   return { rebuilt: true, count };
 }
 
@@ -123,4 +124,11 @@ function ensureAll({ onlyIfMissing = false }: any = {}) {
   return { scenes, popular, blueprints, tags };
 }
 
-export = { ensureAll, ensurePopularBuilt, ensureScenesBuilt, ensureBlueprintsBuilt, ensureTagsBuilt };
+export = {
+  ensureAll,
+  ensurePopularBuilt,
+  ensureScenesBuilt,
+  ensureBlueprintsBuilt,
+  ensureTagsBuilt,
+  refreshPrecompressed,
+};

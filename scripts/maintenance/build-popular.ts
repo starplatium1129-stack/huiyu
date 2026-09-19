@@ -4,6 +4,7 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { aggregatePath, aggregateIsCurrent, loadPopularShards, writePopularAggregate }: typeof import('../lib/popular-store') = require('../lib/popular-store');
 const { syncDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
+const { refreshPrecompressed } = require('../lib/ensure-data-build');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const check = process.argv.includes('--check');
@@ -15,6 +16,7 @@ if (check) {
     if (!fs.existsSync(aggregatePath)) {
       // 产物从未构建（fresh clone；产物自 2026-08-28 起不入库）：自愈构建而非报错
       writePopularAggregate();
+      refreshPrecompressed([aggregatePath]);
       console.log('Popular products missing: rebuilt ' + characters.length + ' characters (' + counts + ')');
     } else {
       // 已构建但与源不一致 = 改了源忘重建，保留报错守卫
@@ -26,6 +28,7 @@ if (check) {
   }
 } else {
   writePopularAggregate();
+  refreshPrecompressed([aggregatePath]);
   console.log('Built ' + aggregatePath + ': ' + characters.length + ' characters (' + counts + ')');
   // 同步 DATA_VERSION（与 build-scenes 共用哈希口径）
   try {

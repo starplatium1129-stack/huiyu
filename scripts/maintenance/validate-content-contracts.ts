@@ -282,6 +282,13 @@ function checkPrecompressArtifacts() {
       let source = path.join(dir, packed[1]);
       let relative = path.relative(ROOT, full);
       if (!fs.existsSync(source)) {
+        if (process.argv.includes('--fix')) {
+          try {
+            fs.unlinkSync(full);
+            console.log(`[fix] Removed orphan precompressed artifact: ${relative}`);
+            return;
+          } catch {}
+        }
         errors.push('orphan precompressed artifact: ' + relative + ' (源 json 已不存在，删除该产物或重跑 npm run precompress)');
         return;
       }
@@ -296,6 +303,14 @@ function checkPrecompressArtifacts() {
         return;
       }
       if (Buffer.compare(raw, decoded) !== 0) {
+        if (process.argv.includes('--fix')) {
+          try {
+            const { compress } = require('./precompress');
+            compress(source);
+            console.log(`[fix] Recompressed stale artifact: ${source}`);
+            return;
+          } catch {}
+        }
         errors.push(relative + ' 与源文件内容不一致（改过源 json 后必须重跑 npm run precompress，否则服务端会静默发送过期压缩数据）');
       }
     });
