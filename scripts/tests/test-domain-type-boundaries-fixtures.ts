@@ -131,3 +131,16 @@ test('direct component imports are forbidden even when they have no script', () 
     assert.ok(report.violations.some(item => item.includes('src/components/View.vue')));
   });
 });
+
+test('use cases cannot bypass their ports through a concrete repository or Node filesystem', () => {
+  fixture({
+    'src/types/domain.ts': "export * from '../application/artwork/save'",
+    'src/application/artwork/save.ts': "import '@/storage/repository'; import fs from 'node:fs'; export const save = fs.readFileSync",
+    'src/storage/repository.ts': 'export const append = () => {}',
+  }, report => {
+    assert.deepEqual(report.unknown, []);
+    assert.equal(report.violations.length, 2);
+    assert.ok(report.violations.some(item => item.includes('src/storage/repository.ts')));
+    assert.ok(report.violations.some(item => item.includes('runtime platform dependency')));
+  });
+});

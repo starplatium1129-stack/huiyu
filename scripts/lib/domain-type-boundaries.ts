@@ -23,8 +23,9 @@ export interface BoundaryReport {
 
 /** Only the migrated domain surface is guarded; unrelated legacy modules are not scanned. */
 export const DOMAIN_TYPE_ROOTS = ['src/types/promptHistory.ts', 'src/types/artwork.ts', 'src/types/generation.ts', 'src/types/anima.ts', 'src/utils/resultContext.ts'];
+export const ARTWORK_USE_CASE_ROOTS = ['src/application/artwork/saveGeneratedArtwork.ts'];
 const slash = (file: string) => file.replace(/\\/g, '/');
-const forbiddenPath = /^(src\/(stores|composables|components|views|router)(\/|\.)|routes\/)/;
+const forbiddenPath = /^(src\/(stores|composables|components|views|router|storage|api)(\/|\.)|routes\/)/;
 const framework = /^(vue|pinia|vue-router)(\/|$)/;
 
 function imports(source: string, file: string, unknown: string[]): ModuleEdge[] {
@@ -68,7 +69,7 @@ function findCycles(edges: ModuleEdge[], runtimeOnly: boolean): string[][] {
 }
 
 /** Read source only. Resolve aliases through the real app tsconfig and traverse re-exports too. */
-export function inspectModuleBoundaries(root: string, entries = DOMAIN_TYPE_ROOTS): BoundaryReport {
+export function inspectModuleBoundaries(root: string, entries = [...DOMAIN_TYPE_ROOTS, ...ARTWORK_USE_CASE_ROOTS]): BoundaryReport {
   const report: BoundaryReport = { files: [], edges: [], violations: [], unknown: [], runtimeCycles: [], typeCycles: [] };
   root = fs.realpathSync(root);
   const configPath = path.join(root, 'tsconfig.app.json');
@@ -103,7 +104,7 @@ export function inspectModuleBoundaries(root: string, entries = DOMAIN_TYPE_ROOT
       return;
     }
     if (forbiddenPath.test(file)) {
-      report.violations.push(`${file}: domain types reach a state/presentation/HTTP module`);
+      report.violations.push(`${file}: pure artwork modules reach state/presentation/infrastructure`);
       return;
     }
     // Test fixtures, vendored code, data and generated-only files are not counted
@@ -120,7 +121,11 @@ export function inspectModuleBoundaries(root: string, entries = DOMAIN_TYPE_ROOT
         report.violations.push(`${file}: ${edge.typeOnly ? 'type' : 'runtime'} dependency on ${edge.specifier}`);
         continue;
       }
-      if (isBuiltin(edge.specifier)) { edge.external = true; continue; }
+      if (isBuiltin(edge.specifier)) {
+        edge.external = true;
+        if (!edge.typeOnly) report.violations.push(`${file}: runtime platform dependency on ${edge.specifier}`);
+        continue;
+      }
       const resolved = ts.resolveModuleName(edge.specifier, absolute, options, host).resolvedModule;
       if (!resolved) {
         report.unknown.push(`${file}: cannot resolve ${edge.specifier}`);

@@ -22,6 +22,8 @@ ESLint 的 huiyu/module-boundaries 对以下方向执行检查：types 与 histo
 
 ## 资源所有权
 
+生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，Store 注入现有图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。`check:domain-types` 同时保护该用例及其可达依赖，拒绝具体存储/API 与运行时 Node 平台依赖；兼容默认值仍在原测量后节点读取，尚未等价于完整提交快照。抽取、失败与回退范围见 [A02.1 记录](../../research/engineering/architecture-a02-2026-09-19.md)。
+
 | 资源 | 唯一拥有者 / 停止动作 | 保持的语义 |
 | --- | --- | --- |
 | PhotoSwipe 实例、ResizeObserver、解码元素 | PhotoSwipeStage；列表重建和卸载统一 dispose，过期事件/解码不得发布 | 初始化失败通知 Gallery 回退；每个自建 URL 只回收一次；外部 HTTP 图片不回收 |

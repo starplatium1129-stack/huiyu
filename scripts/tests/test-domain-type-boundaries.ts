@@ -3,7 +3,7 @@ import path = require('node:path');
 import { test } from 'node:test';
 import { inspectModuleBoundaries } from '../lib/domain-type-boundaries';
 
-test('migrated artwork/generation types stay independent of state and presentation', () => {
+test('artwork types and save use case stay independent of state and infrastructure', () => {
   const report = inspectModuleBoundaries(path.resolve(__dirname, '../..'));
   console.log(JSON.stringify(report, null, 2));
   assert.deepEqual(report.violations, [], 'domain dependency violations');

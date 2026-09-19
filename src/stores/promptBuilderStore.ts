@@ -1,10 +1,9 @@
-import { parseArtworkRecords } from '@/types/artwork'
 import { withArtworkStaging } from '@/storage/artworkSession'
 import type { Scene } from '../types/scene'
 export type { Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
-import { historyFromResultContext } from '@/utils/resultContext'
+import { saveGeneratedArtwork, type GeneratedArtworkInput, type LegacyArtworkDefaults } from '@/application/artwork/saveGeneratedArtwork'
 import { ref, reactive, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
@@ -32,7 +31,7 @@ import {
 import type { DrawSubject } from '@/utils/popularContent'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 
-import type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
+import type { CharKey, HistoryEntry, Selections } from '@/types/promptHistory'
 export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
 
 export const SHOT_PROMPT: Record<string, string> = {
@@ -461,112 +460,49 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     } catch { return false }
   }
 
-  // 委托至 promptHistoryStore，保持单一实现
-  async function measureBlob(blob: Blob) { return historyStore.measureBlob(blob) }
-  async function cacheThumbnail(imageId: string, blob: Blob) { return historyStore.cacheThumbnail(imageId, blob) }
+  /** Compatibility adapter: read form defaults at the old post-measurement point.
+   * A02.2 will migrate callers to submission snapshots separately. */
+  function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
+    const currentSubject = entry.subject === 'popular'
+      ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId }
+      : entry.subject === 'studio' ? { kind: 'studio' as const } : subject.value
+    const isPopular = currentSubject.kind === 'popular'
+    const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null
+    const popBlueprint = isPopular && currentSubject.blueprintId
+      ? sceneBlueprints.value.find(b => b.id === currentSubject.blueprintId) : null
+    const sceneTitle = isPopular
+      ? (popBlueprint?.title || (popChar ? `${popChar.displayName} 创作` : '热门角色作品'))
+      : (activeScene.value?.title ?? (story.value ? story.value.slice(0, 20) : null))
+    return {
+      subject: currentSubject,
+      character: isPopular ? (currentSubject.characterId || char.value) : char.value,
+      scene: sceneId.value, sceneTitle, story: story.value, visualDescription: visualDescription.value,
+      seed: lastSeed.value ?? -1,
+      emotion: selections.emotion, shot: selections.shot, lighting: selections.lighting,
+      composition: selections.composition, colorMood: colorMood.value, manual_tags: manualTags.value,
+      lora: loraLine.value || null, model: sdModelName.value, size: lastRecommendedSize.value,
+      cfg: sdParams.cfg, steps: sdParams.steps, sampler: sdParams.sampler, scheduler: sdParams.scheduler,
+      hiresFix: sdParams.hiresFix, hiresScale: sdParams.hiresScale, hiresUpscaler: sdParams.hiresUpscaler,
+      hiresSteps: sdParams.hiresSteps, hiresDenoise: sdParams.hiresDenoise, faceDetailer: sdParams.faceDetailer,
+      project: projectId.value, artistStyleIds: directorMode.value === 'pro' ? artistStyleIds.value : [],
+    }
+  }
 
-  // ── History entry commit (IndexedDB image save) ──────────────────────────
-  async function commitHistoryEntry(entry: Partial<HistoryEntry> & {
-    context?: import('@/types/anima').AnimaResultContext | null
-    blob: Blob; seed?: number; size?: string; negative?: string; prompt: string
-    engine?: DrawEngine; profile?: string; model?: string
-    loraId?: string | null; loraStrength?: number | null
-    cfg?: number | string; steps?: number | string; sampler?: string; scheduler?: string
-    /**
-     * 重绘/换装的源图 image id（2026-08-30 UX 审计 P1-14）。此前全库唯一写入
-     * 点是 null，于是作品册的对比滑块只能拿同一张图的缩略图当 before，拉滑块
-     * 看到的是「糊版 vs 高清版」，会得出错误的重绘判断。inpaint 路径把源图
-     * 对应的历史条目 id 传进来，对比才有真实语义。
-     */
-    parentId?: string | number | null
-  }): Promise<HistoryEntry | null> {
-    return withArtworkStaging(async () => {
-      let imageId = ''
-      entry = { ...entry, ...historyFromResultContext(entry.context) }
-      try {
-        imageId = await imgPut(entry.blob)
-        void cacheThumbnail(imageId, entry.blob)
-        const measured = await measureBlob(entry.blob)
-        const now = Date.now()
-        // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
-        // removeHistoryEntry 可能误删另一条；加模块级序号保证唯一。
-        const id = historyStore.historyIdSeq(now)
-        const currentSubject = entry.subject === 'popular'
-          ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId }
-          : entry.subject === 'studio' ? { kind: 'studio' as const } : subject.value
-        const isPopular = currentSubject.kind === 'popular'
-        const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null
-        const popBlueprint = isPopular && currentSubject.blueprintId
-          ? sceneBlueprints.value.find(b => b.id === currentSubject.blueprintId)
-          : null
-        const resolvedSceneTitle = isPopular
-          ? (popBlueprint?.title || (popChar ? `${popChar.displayName} 创作` : '热门角色作品'))
-          : (activeScene.value?.title ?? (story.value ? story.value.slice(0, 20) : null))
-
-        const historyEntry: HistoryEntry = {
-          id,
-          timestamp: now,
-          character: entry.character ?? (isPopular ? (currentSubject.characterId || char.value) : char.value),
-          // 2026-08-29 修复：队列/批量入册优先用任务入队时快照的 story/scene/sceneTitle
-          // （entry.story ?? …），避免出图期间改了故事导致作品册与成片不符。
-          scene: isPopular ? (currentSubject.blueprintId ?? null) : (entry.scene !== undefined ? entry.scene : sceneId.value),
-          sceneTitle: entry.sceneTitle ?? resolvedSceneTitle,
-          story: entry.story ?? story.value,
-          visualDescription: entry.visualDescription ?? visualDescription.value,
-          prompt: entry.prompt,
-          negative: entry.negative ?? '',
-          seed: entry.seed ?? lastSeed.value ?? -1,
-          emotion: [...(entry.emotion ?? selections.emotion)],
-          shot: entry.shot !== undefined ? entry.shot : selections.shot,
-          lighting: entry.lighting !== undefined ? entry.lighting : selections.lighting,
-          composition: entry.composition !== undefined ? entry.composition : selections.composition,
-          colorMood: entry.colorMood !== undefined ? entry.colorMood : colorMood.value,
-          manual_tags: [...(entry.manual_tags ?? manualTags.value)],
-          // 2026-08-29 修复：热门角色为无 LoRA 创作，lora 相关字段一律落空——
-          // 此前会兜底到 studio 的 loraLine（<ayachi_nene:…>）或残留的 anima loraId。
-          lora: isPopular ? null : ((entry.lora ?? loraLine.value) || null),
-          cfg: entry.cfg ?? sdParams.cfg,
-          steps: entry.steps ?? sdParams.steps,
-          sampler: entry.sampler ?? sdParams.sampler,
-          scheduler: entry.scheduler ?? sdParams.scheduler,
-          checkpoint: entry.model ?? sdModelName.value,
-          size: entry.size ?? lastRecommendedSize.value,
-          engine: entry.engine ?? 'sd',
-          profile: entry.profile ?? '',
-          model: entry.model ?? sdModelName.value,
-          loraId: isPopular ? null : (entry.loraId ?? null),
-          loraStrength: isPopular ? null : (entry.loraStrength ?? null),
-          loras: isPopular ? [] : Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
-          // 2026-08-29 修复：hires/脸部修复参数落库（SD 读面板实值，Anima 读任务元数据）。
-          hiresFix: entry.hiresFix ?? sdParams.hiresFix,
-          hiresScale: entry.hiresScale ?? sdParams.hiresScale,
-          hiresUpscaler: entry.hiresUpscaler ?? sdParams.hiresUpscaler,
-          hiresSteps: entry.hiresSteps ?? sdParams.hiresSteps,
-          hiresDenoise: entry.hiresDenoise ?? sdParams.hiresDenoise,
-          faceDetailer: entry.faceDetailer ?? sdParams.faceDetailer,
-          width: measured.width, height: measured.height,
-          rating: {}, favorite: false, notes: '',
-          image_id: imageId, image_url: '',
-          version: 1, parent_id: entry.parentId ?? null, project: entry.project ?? projectId.value,
-          subject: isPopular ? 'popular' : 'studio',
-          characterId: isPopular ? currentSubject.characterId : undefined,
-          outfitId: isPopular ? currentSubject.outfitId : undefined,
-          blueprintId: isPopular ? currentSubject.blueprintId : undefined,
-          noLora: isPopular,
-          styleLoraId: entry.styleLoraId ?? null,
-          artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
-        }
-        // 2026-08-16 审计：先持久化再提交内存态——此前 kvSet 失败会「内存已入册、
-        // 磁盘没写」，刷新后条目静默丢失且刚写入的图片成为孤儿 blob。
-        history.value = parseArtworkRecords(await artworkRepository.appendArtwork(historyEntry))
-        return historyEntry
-      } catch (e) {
-        console.warn('commitHistoryEntry failed', e)
-        // 持久化失败：回收刚写入的孤儿图片，避免无历史引用的 blob 堆积。
-        if (imageId) void imgDelete(imageId).catch(() => {})
-        return null
-      }
+  async function commitHistoryEntry(entry: GeneratedArtworkInput): Promise<HistoryEntry | null> {
+    const result = await saveGeneratedArtwork(entry, {
+      withStaging: work => withArtworkStaging(async () => {
+        const saved = await work()
+        // Keep page publication inside the existing staging lease, after persistence.
+        if (saved.ok) history.value = saved.history
+        else console.warn('commitHistoryEntry failed', saved.error)
+        return saved
+      }),
+      putImage: imgPut, deleteImage: imgDelete,
+      cacheThumbnail: historyStore.cacheThumbnail, measureBlob: historyStore.measureBlob,
+      now: () => Date.now(), nextId: historyStore.historyIdSeq, resolveLegacyDefaults: resolveLegacyArtworkDefaults,
+      normalizeArtistStyleIds, appendArtwork: artworkRepository.appendArtwork,
     })
+    return result.ok ? result.entry : null
   }
 
   async function removeHistoryEntry(id: string | number) {

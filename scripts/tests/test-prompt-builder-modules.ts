@@ -123,12 +123,11 @@ assert.deepStrictEqual(parsedAnima.match, ['anima-base-v1.0'], 'profile match li
 
 const storeSource = read('src/stores/promptBuilderStore.ts');
 if (/\bany\b/.test(storeSource)) fail('prompt builder store must keep scene, profile, draft, and project boundaries explicitly typed');
-for (const marker of ['engine?: DrawEngine', 'profile?: string', 'model?: string', 'loraId?: string | null', 'loraStrength?: number | null']) {
-  if (!storeSource.includes(marker)) fail('history entries must retain generation metadata: ' + marker);
-}
-for (const marker of ['engine: entry.engine ?? \'sd\'', 'profile: entry.profile ?? \'\'', 'model: entry.model ?? sdModelName.value']) {
-  if (!storeSource.includes(marker)) fail('history commit must persist generation metadata: ' + marker);
-}
+// A02 moves mapping out of the store. Metadata preservation is exercised through
+// real saves in promptBuilderHistory.spec.ts; this check owns only module wiring.
+const { sourceImports }: typeof import('../lib/source-imports') = require('../lib/source-imports');
+assert.ok(sourceImports(storeSource).some(edge => !edge.typeOnly && edge.specifier === '@/application/artwork/saveGeneratedArtwork'),
+  'history commit must use the extracted artwork save capability');
 // 52ed8a39 将夏目身份锚点对齐自训 LoRA 标准特征（黑发/极长发/黄瞳/眼下痣/发夹），
 // 旧的 two_red_hairclips/no_hair_ribbon 词组已废弃；此断言守护新锚点不被再漂移。
 if (!storeSource.includes("black_hair, very_long_hair, yellow_eyes, mole_under_eye, hairclip")) {
@@ -177,8 +176,9 @@ const sdGenerateSource = read('src/composables/generation/useSDGenerate.ts');
 const sdQueueSource = read('src/composables/prompt/usePromptSdQueue.ts');
 const historyApplySource = read('src/composables/prompt/usePromptHistoryApply.ts');
 const deepLinkSource = read('src/composables/prompt/usePromptDeepLink.ts');
-if (storeSource.includes('kreaStyleId') || storeSource.includes('artistInfluences') || !storeSource.includes('styleLoraId: entry.styleLoraId ?? null')) {
-  fail('history must retain generated metadata without restoring manual style or artist controls');
+// styleLoraId persistence now has real save assertions in promptBuilderHistory.spec.ts.
+if (storeSource.includes('kreaStyleId') || storeSource.includes('artistInfluences')) {
+  fail('workbench must not restore retired manual style or artist controls');
 }
 if (!sdGenerateSource.includes('L_NENE_V18_WD14') || !sdQueueSource.includes('loras[0]?.id')) {
   fail('WAI history must preserve structured canonical LoRA ids and weights');

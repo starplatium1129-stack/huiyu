@@ -489,7 +489,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   },
   // ── test: 套件入口 ────────────────────────────────────────────────
   'check:domain-types': {
-    desc: '检查公共作品/生成类型与结果快照的间接依赖，报告类型边、运行候选边及未知导入',
+    desc: '检查公共类型、结果快照与入册用例的间接依赖，报告类型边、运行候选边及未知导入',
     cmd: ['node', 'scripts/tests/test-domain-type-boundaries.js'],
     docs: 'plans/architecture-evolution.md#a07',
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/lib/domain-type-boundaries.ts; scripts/tests/test-domain-type-boundaries-fixtures.ts', unknown: [] },

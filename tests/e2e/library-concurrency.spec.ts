@@ -8,6 +8,7 @@ type LibraryFixture = {
   withArtworkStaging<T>(work: () => Promise<T>): Promise<T>
   imgPutRecord(record: { id: string; blob: Blob; created_at: number }): Promise<string>
   imgGetRecord(id: string): Promise<unknown | null>
+  saveFixtureArtwork(id: number): Promise<{ id: string | number; imagePresent: boolean } | null>
   useBackup(onFlash: (message: string) => void): { cleanOrphanImages(): Promise<number> }
 
   artworkRepository: {
@@ -43,6 +44,23 @@ test.beforeAll(async () => {
       "export * from './src/storage/artworkSession.ts';",
       "export * from './src/composables/useBackup.ts';",
       "export * from './src/composables/useImageStore.ts';",
+      `import { saveGeneratedArtwork } from './src/application/artwork/saveGeneratedArtwork.ts';
+       import { withArtworkStaging } from './src/storage/artworkSession.ts';
+       import { imgPut, imgDelete, imgGetRecord } from './src/composables/useImageStore.ts';
+       import { artworkRepository } from './src/storage/artworkRepository.ts';
+       export async function saveFixtureArtwork(artworkId) {
+         const result = await saveGeneratedArtwork({ blob: new Blob(['neutral fixture'], { type: 'image/png' }), prompt: 'Neutral fixture.' }, {
+           withStaging: withArtworkStaging, putImage: imgPut, deleteImage: imgDelete,
+           cacheThumbnail: async () => {}, measureBlob: async () => ({ width: null, height: null }),
+           now: () => 1234, nextId: () => artworkId, appendArtwork: artworkRepository.appendArtwork,
+           normalizeArtistStyleIds: () => [],
+           resolveLegacyDefaults: () => ({ subject: { kind: 'studio' }, character: 'nene', scene: null, sceneTitle: null, story: '',
+             visualDescription: '', seed: -1, emotion: [], shot: null, lighting: null, composition: null, colorMood: null,
+             manual_tags: [], lora: null, cfg: 7, steps: 20, sampler: 'euler', scheduler: 'normal', model: 'fixture', size: '',
+             hiresFix: false, hiresScale: 2, hiresUpscaler: '', hiresSteps: 0, hiresDenoise: 0.5, faceDetailer: false, project: '', artistStyleIds: [] }),
+         });
+         return result.ok ? { id: result.entry.id, imagePresent: Boolean(await imgGetRecord(result.entry.image_id)) } : null;
+       }`,
     ].join('\n'), resolveDir: root },
     bundle: true, write: false, format: 'iife', globalName: 'libraryFixture', platform: 'browser',
     alias: { '@': resolve(root, 'src') }, logLevel: 'silent',
@@ -123,6 +141,15 @@ test('home legacy migration and a queued append preserve both works', async ({ p
   expect(await append).toBeNull()
   expect(await ids(writer)).toEqual(['legacy', 'new-work'])
   expect(await writer.evaluate(() => localStorage.getItem(window.libraryFixture.ARTWORK_HISTORY_KEY))).toBeNull()
+})
+
+test('two pages save through the extracted use case with real image storage, IndexedDB and Web Locks', async ({ page, context }) => {
+  const other = await context.newPage()
+  await Promise.all([enter(page), enter(other)])
+  const save = (target: Page, id: number) => target.evaluate(artworkId => window.libraryFixture.saveFixtureArtwork(artworkId), id)
+  expect(await Promise.all([save(page, 101), save(other, 202)])).toEqual([{ id: 101, imagePresent: true }, { id: 202, imagePresent: true }])
+  expect(await ids(page)).toEqual([101, 202])
+  await other.close()
 })
 
 test('two pages preserve every concurrent history append in real IndexedDB', async ({ page, context }) => {
