@@ -23,17 +23,23 @@ let viewer: PhotoSwipe | null = null
 let revision = 0
 let resize: ResizeObserver | null = null
 const urls = new Map<number, string>()
+// Only URLs created here may be revoked; image_url can be borrowed from Gallery.
+const ownedUrls = new Set<string>()
 const pending = new Set<number>()
 const decoding = new Set<HTMLImageElement>()
 function toggleZoom() { viewer?.toggleZoom() }
 
+function releaseUrl(url: string) {
+  if (ownedUrls.delete(url)) URL.revokeObjectURL(url)
+}
 function dispose() {
   revision++
   resize?.disconnect(); resize = null
-  viewer?.destroy(); viewer = null
+  const previous = viewer; viewer = null
+  try { previous?.destroy() } catch { /* finish cleanup even after partial initialization */ }
   for (const image of decoding) image.removeAttribute('src')
   decoding.clear()
-  for (const url of urls.values()) if (url.startsWith('blob:')) URL.revokeObjectURL(url)
+  for (const url of ownedUrls) releaseUrl(url)
   urls.clear(); pending.clear()
 }
 function start() {
@@ -44,7 +50,8 @@ function start() {
   const items = [...props.items]
   const data = items.map(item => ({ type: 'image', src: '', width: Number(item.width) || 832, height: Number(item.height) || 1216, alt: item.sceneTitle || '作品' }))
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const instance = new PhotoSwipe({
+  let instance: PhotoSwipe
+  try { instance = new PhotoSwipe({
     dataSource: data, index: props.index, appendToEl: element,
     getViewportSizeFn: () => ({ x: element.clientWidth, y: element.clientHeight }),
     // The Gallery dialog owns focus, keyboard navigation and body scroll.
@@ -55,10 +62,11 @@ function start() {
     pinchToClose: false, closeOnVerticalDrag: false, clickToCloseNonZoomable: false,
     imageClickAction: 'zoom', bgClickAction: false, tapAction: false, doubleTapAction: 'zoom',
     errorMsg: '图片暂时无法读取，可返回原查看器重试',
-  })
+  }) } catch { dispose(); emit('error'); return }
   viewer = instance
   instance.on('keydown', event => event.preventDefault())
   instance.on('change', () => {
+    if (revision !== token) return
     if (instance.currIndex !== props.index) emit('change', instance.currIndex)
     // Only current and neighboring decoded images survive long browsing sessions.
     for (const [index, url] of urls) {
@@ -66,11 +74,12 @@ function start() {
       instance.contentLoader.getContentByIndex(index)?.destroy()
       instance.contentLoader.removeByIndex(index)
       data[index].src = ''
-      if (url.startsWith('blob:')) URL.revokeObjectURL(url)
+      releaseUrl(url)
       urls.delete(index)
     }
   })
   instance.on('contentLoad', event => {
+    if (revision !== token) return
     const index = event.content.index
     if (data[index]?.src) return
     event.preventDefault()
@@ -83,6 +92,7 @@ function start() {
         const blob = item.image_id ? await imgGet(item.image_id) : null
         if (revision !== token) return
         url = blob ? URL.createObjectURL(blob) : safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
+        if (blob) ownedUrls.add(url)
         if (!url) throw new Error('missing image')
         urls.set(index, url)
         const image = new Image()
@@ -90,7 +100,7 @@ function start() {
         image.src = url
         try { await image.decode() } finally { decoding.delete(image) }
         if (revision !== token || Math.abs(index - instance.currIndex) > 2) {
-          if (url.startsWith('blob:')) URL.revokeObjectURL(url)
+          releaseUrl(url)
           if (revision === token && urls.get(index) === url) urls.delete(index)
           return
         }
@@ -98,13 +108,14 @@ function start() {
         Object.assign(data[index], { src: url, width: image.naturalWidth, height: image.naturalHeight })
         instance.refreshSlideContent(index)
       } catch {
-        if (url.startsWith('blob:')) URL.revokeObjectURL(url)
+        releaseUrl(url)
         if (revision === token && urls.get(index) === url) urls.delete(index)
         if (revision === token) event.content.onError()
       } finally { if (revision === token) pending.delete(index) }
     })()
   })
   instance.on('afterInit', () => {
+    if (revision !== token) return
     instance.element?.removeAttribute('role')
     instance.element?.removeAttribute('aria-modal')
     const offset = element.getBoundingClientRect()
@@ -113,6 +124,7 @@ function start() {
   try {
     instance.init()
     resize = new ResizeObserver(() => {
+      if (revision !== token) return
       instance.updateSize(true)
       const offset = element.getBoundingClientRect()
       instance.setScrollOffset(offset.left + window.scrollX, offset.top + window.scrollY)
