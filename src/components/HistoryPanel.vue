@@ -54,7 +54,8 @@
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { imgGet } from '@/composables/useImageStore'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import type { HistoryEntry } from '@/stores/promptBuilderStore'
+import { artworkTimestamp } from '@/types/artwork'
+import type { ArtworkRecord } from '@/types/artwork'
 import { useSceneStore } from '@/stores/sceneStore'
 import '@/assets/css/director/components/HistoryPanel.css'
 
@@ -62,27 +63,27 @@ import '@/assets/css/director/components/HistoryPanel.css'
 const placeholderUrl = '/assets/characters/nene-official.webp'
 const sceneStore = useSceneStore()
 
-const props = defineProps<{ history: HistoryEntry[] }>()
+const props = defineProps<{ history: ArtworkRecord[] }>()
 defineEmits<{
-  resume: [entry: HistoryEntry]
-  duplicate: [entry: HistoryEntry]
-  delete: [entry: HistoryEntry]
-  'to-shots': [entry: HistoryEntry]
-  'to-shots-batch': [entries: HistoryEntry[]]
+  resume: [entry: ArtworkRecord]
+  duplicate: [entry: ArtworkRecord]
+  delete: [entry: ArtworkRecord]
+  'to-shots': [entry: ArtworkRecord]
+  'to-shots-batch': [entries: ArtworkRecord[]]
 }>()
 
 // 必须用 ref 而非 reactive/const 裸 Set：checkbox 的 v-model 在选中变化时会整体赋值
 // （Vue 运行时先对 Set 做 add/delete，再 assign 回绑定）。裸 const 会编译成
 // `selectedSet = $event` 并在运行时抛 TypeError（esbuild 构建期即告警）。
-const selectedSet = ref(new Set<number>())
+const selectedSet = ref(new Set<string | number>())
 const selectedEntries = computed(() =>
   props.history.filter(entry => selectedSet.value.has(entry.id)))
 
-const thumbs = reactive<Record<number, string>>({})
-const objectUrls = new Map<number, string>()
-const items = computed(() => props.history.slice().sort((a, b) => b.timestamp - a.timestamp).slice(0, 12))
+const thumbs = reactive<Record<string | number, string>>({})
+const objectUrls = new Map<string | number, string>()
+const items = computed(() => props.history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 12))
 
-function engineSummary(item: HistoryEntry): string {
+function engineSummary(item: ArtworkRecord): string {
   const engineName = item.engine === 'krea2' ? 'Krea 2' : 'Anima'
   if (item.subject === 'popular' || item.characterId) {
     const popChar = sceneStore.popularCharacters.find(c => c.id === (item.characterId || item.character))
@@ -92,7 +93,7 @@ function engineSummary(item: HistoryEntry): string {
   return `${engineName} · ${charLabel}`
 }
 
-async function ensureThumb(item: HistoryEntry) {
+async function ensureThumb(item: ArtworkRecord) {
   if (!item.image_id || thumbs[item.id] || objectUrls.has(item.id)) return
   try {
     const blob = await imgGet(item.image_id)

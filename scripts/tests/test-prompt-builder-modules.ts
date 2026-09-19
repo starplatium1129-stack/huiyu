@@ -51,7 +51,7 @@ const modules = [
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
   ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
   ['src/components/GenerationParamsPanel.vue', ["defineModel<SDParams>('params'", "'reuse-seed'", 'samplerOptions']],
-  ['src/components/ManagedDrawingRouteCard.vue', ['managed-route-card', "reuse: [id: number]", 'route.promptFormat']],
+  ['src/components/ManagedDrawingRouteCard.vue', ['managed-route-card', 'route.promptFormat']],
   ['src/components/GenerationOutputControls.vue', ["defineModel<SDParams>('params'", 'generation-output-controls', 'queueAvailable', 'engine: DrawEngine']],
   ['src/components/SDRecoveryPanel.vue', ['SDErrorReport', "emit('recover'"]],
 ];

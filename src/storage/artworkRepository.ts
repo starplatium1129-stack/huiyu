@@ -503,13 +503,13 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     })
   }
 
-  function appendArtwork<T extends { id: string | number }>(entry: T): Promise<T[]> {
+  function appendArtwork<T extends { id: string | number }>(entry: T): Promise<unknown[]> {
     return enqueue(async () => {
       const history = arrayValue(await kv.get(ARTWORK_HISTORY_KEY)) ?? []
       if (history.some(item => recordId(item) === comparableId(entry.id))) throw new Error('作品编号已存在')
       const next = [...history, entry]
       await kv.set(ARTWORK_HISTORY_KEY, next)
-      return next as T[]
+      return next
     })
   }
 

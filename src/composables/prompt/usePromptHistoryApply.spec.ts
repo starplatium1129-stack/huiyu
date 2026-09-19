@@ -1,8 +1,9 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { ref } from 'vue'
-import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
+import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
+import type { ArtworkRecord } from '@/types/artwork'
 import type { AnimaGenerationState } from '@/types/anima'
 import { usePromptHistoryApply } from './usePromptHistoryApply'
 
@@ -15,7 +16,7 @@ function setup() {
   const api = usePromptHistoryApply({ pb, animaState: state, patchAnimaState: patch => { Object.assign(state.value, patch) }, clearAnimaResult: vi.fn(), refreshAnimaBackend: refresh, setDrawEngine: vi.fn(), resetBlueprintRotation: vi.fn(), sdSize: ref('832x1216') })
   return { pb, state, flash, refresh, ...api }
 }
-const entry = (overrides: Partial<HistoryEntry> = {}) => ({ id: 12, engine: 'sd', character: 'nene', manual_tags: ['dof'], emotion: ['calm'], shot: 'wide', lighting: 'moon', composition: 'rule3', colorMood: 'warmth', story: 'Saved story', seed: -1, cfg: 0, steps: 25, sampler: 'Euler', scheduler: '', size: '832x1216', project: 'saved-project', ...overrides } as HistoryEntry)
+const entry = (overrides: Partial<ArtworkRecord> = {}) => ({ id: 12, engine: 'sd', character: 'nene', manual_tags: ['dof'], emotion: ['calm'], shot: 'wide', lighting: 'moon', composition: 'rule3', colorMood: 'warmth', story: 'Saved story', seed: -1, cfg: 0, steps: 25, sampler: 'Euler', scheduler: '', size: '832x1216', project: 'saved-project', ...overrides })
 
 it('clears stale draft fields and restores tags, decisions, project and legal zeroes', async () => {
   const { pb, applyHistory } = setup()
@@ -47,6 +48,15 @@ it('reports backend model and style fallback after discovery completes', async (
 it('unknown engines leave the current draft intact', async () => {
   const { pb, applyHistory } = setup()
   pb.story = 'Keep me'
-  await applyHistory(entry({ engine: 'unknown' as HistoryEntry['engine'] }))
+  await applyHistory(entry({ engine: 'unknown' }))
   expect(pb.story).toBe('Keep me')
+})
+
+it('loads incomplete old records without claiming exact reproduction', async () => {
+  const { pb, applyHistory } = setup()
+  await applyHistory({ id: '0001', cfg: 0, seed: '0', emotion: {}, manual_tags: [42] })
+  expect(pb.sdParams.cfg).toBe(0)
+  expect(pb.sdParams.seed).toBe(0)
+  expect(pb.historyRestoreReport?.notes.join(';')).toContain('无法精确复现')
+  expect(pb.historyRestoreReport?.title).toContain('0001')
 })

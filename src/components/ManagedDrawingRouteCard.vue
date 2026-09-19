@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import type { HistoryEntry } from '@/stores/promptBuilderStore'
+import type { ArtworkRecord } from '@/types/artwork'
 import type { DrawSubject } from '@/utils/popularContent'
 import {
   promptFormatLabel,
@@ -66,7 +66,7 @@ const DISMISSED_KEY = 'aics_managed_route_dismissed_v1'
 
 const props = defineProps<{
   route: DrawingRouteRecommendation
-  history: readonly HistoryEntry[]
+  history: readonly ArtworkRecord[]
   subject: DrawSubject
   expert: boolean
   busy: boolean
@@ -74,7 +74,7 @@ const props = defineProps<{
 
 defineEmits<{
   apply: []
-  reuse: [id: number]
+  reuse: [id: string | number]
 }>()
 
 const isCollapsed = ref<boolean>(localStorage.getItem(COLLAPSED_KEY) !== 'false')

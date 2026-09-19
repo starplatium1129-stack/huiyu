@@ -1,3 +1,4 @@
+import type { ArtworkRecord } from '@/types/artwork'
 import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
@@ -16,7 +17,7 @@ import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings,
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots';
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
-import { usePromptBuilderStore,type HistoryEntry } from '@/stores/promptBuilderStore';
+import { usePromptBuilderStore } from '@/stores/promptBuilderStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
@@ -189,7 +190,7 @@ export function usePromptWorkspace() {
      * 临时缓冲（F2）已一并下沉 useTempResult；displayedResultHistoryId 来自其返回。
      */
     /** 重绘来源条目：在换装弹窗打开的瞬间定格，弹窗期间舞台结果不变。 */
-    const inpaintSourceHistoryId = ref<number | null>(null);
+    const inpaintSourceHistoryId = ref<string | number | null>(null);
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
     // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
     const { sdErrorReport, dismissError, captureJob, historyGenerationFields, runJob, commitJobResult, sdQueue, restoredCount, enqueueCurrent, enqueue3Variants } = usePromptSdQueue({
@@ -419,15 +420,15 @@ export function usePromptWorkspace() {
             sdSize,
         }));
     }
-    async function applyHistory(entry: HistoryEntry, variant = false) {
+    async function applyHistory(entry: ArtworkRecord, variant = false) {
         const tools = await getHistoryTools();
         if (generationBusy.value) { pb.flash('生成进行中，完成或停止后再载入配方'); return false; }
         return tools.applyHistory(entry, variant);
     }
-    function resumeHistory(entry: HistoryEntry) { return applyHistory(entry); }
-    function duplicateHistory(entry: HistoryEntry) { return applyHistory(entry, true); }
-    async function deleteHistory(entry: HistoryEntry) { await (await getHistoryTools()).deleteHistory(entry); }
-    async function reuseSuccessfulRecipe(id: number) { const entry = pb.history.find(item => item.id === id); if (entry) await applyHistory(entry, true); }
+    function resumeHistory(entry: ArtworkRecord) { return applyHistory(entry); }
+    function duplicateHistory(entry: ArtworkRecord) { return applyHistory(entry, true); }
+    async function deleteHistory(entry: ArtworkRecord) { await (await getHistoryTools()).deleteHistory(entry); }
+    async function reuseSuccessfulRecipe(id: string | number) { const entry = pb.history.find(item => item.id === id); if (entry) await applyHistory(entry, true); }
     // ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
     // onMounted 首放 + watch(route.query) 按 deepLinkNeeded 条件重放：
     // 组件复用 / 后退恢复（bfcache）时组件不会重挂载、onMounted 不重跑，

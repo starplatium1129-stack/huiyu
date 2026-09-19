@@ -1,5 +1,11 @@
 export interface ArtworkRecord {
   id: string | number
+  engine?: string
+  subject?: string
+  characterId?: string
+  outfitId?: string
+  blueprintId?: string | null
+  preview?: boolean
   timestamp?: string | number
   character?: string
   scene?: string | null
@@ -28,14 +34,14 @@ export interface ArtworkRecord {
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
 export function parseArtworkRecords(value: unknown): ArtworkRecord[] {
   if (!Array.isArray(value)) return []
   return value.filter((item): item is ArtworkRecord => {
     if (!isRecord(item)) return false
-    return (typeof item.id === 'string' && item.id.trim() !== '') || typeof item.id === 'number'
+    return (typeof item.id === 'string' && item.id.trim() !== '') || (typeof item.id === 'number' && Number.isFinite(item.id))
   })
 }
 

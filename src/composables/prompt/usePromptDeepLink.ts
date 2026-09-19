@@ -1,5 +1,6 @@
+import type { ArtworkRecord } from '@/types/artwork'
 import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
-import { usePromptBuilderStore, type HistoryEntry, type Scene } from '@/stores/promptBuilderStore'
+import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { isCharKey } from '@/composables/scene/directorOptions'
 import { COLOR_MOODS } from '@/config/promptConstants'
 import type { ScenarioCharacter } from '@/config/scenarios'
@@ -25,7 +26,7 @@ export interface PromptDeepLinkDeps {
   selectScene: (scene: Scene) => void
   applyRecommendedEngine: (character: PopularCharacter | null) => void
   setDirectorMode: (mode: 'basic' | 'pro') => void
-  applyHistory: (entry: HistoryEntry, keepAsVariant?: boolean) => void | boolean | Promise<void | boolean>
+  applyHistory: (entry: ArtworkRecord, keepAsVariant?: boolean) => void | boolean | Promise<void | boolean>
 }
 
 /**

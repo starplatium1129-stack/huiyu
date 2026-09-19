@@ -51,7 +51,7 @@ export function useTempResult(deps: TempResultDeps) {
   const { pb, sd } = deps
 
   /** 舞台当前结果对应的作品册条目 id（null=尚未入册；原 P1-14 inpaint 锚点）。 */
-  const displayedResultHistoryId = ref<number | null>(null)
+  const displayedResultHistoryId = ref<string | number | null>(null)
   const savingResult = ref(false)
   let resultRevision = 0
   let disposed = false
@@ -111,7 +111,7 @@ export function useTempResult(deps: TempResultDeps) {
   }
 
   /** Anima/Krea 直出成功：按偏好入册或落临时缓冲（原 onAnimaResult 内联块下沉）。 */
-  async function handleAnimaResult(result: AnimaResult, inpaintSourceHistoryId: number | null) {
+  async function handleAnimaResult(result: AnimaResult, inpaintSourceHistoryId: string | number | null) {
     const current = ownsResult(result.url)
     const frozen = deps.animaState.value.resultContext ?? null
     if (!deps.autoSaveToGallery.value) {

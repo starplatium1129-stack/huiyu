@@ -1,10 +1,11 @@
+import { parseArtworkRecords } from '@/types/artwork'
 import { withArtworkStaging } from '@/storage/artworkSession'
 import type { Scene } from '../types/scene'
 export type { Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
 import { historyFromResultContext } from '@/utils/resultContext'
-import { ref, reactive, computed, type Ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
@@ -24,7 +25,6 @@ import {
   isSDParamKey,
   parsePresetCatalog,
   parsePromptBuilderDraft,
-  type ProjectOption,
   type PromptBuilderDraft,
   type PromptPreset,
   type SDParams,
@@ -32,52 +32,8 @@ import {
 import type { DrawSubject } from '@/utils/popularContent'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 
-export type CharKey = 'nene' | 'natsume' | 'triad'
-export type DrawEngine = 'sd' | 'anima' | 'krea2'
-
-export interface HistoryEntry {
-  id: number; timestamp: number; character: CharKey
-  scene: string | null; sceneTitle: string | null
-  story: string; visualDescription?: string; prompt: string; negative: string; seed: number
-  emotion: string[]; shot: string | null; lighting: string | null
-  composition: string | null; colorMood: string | null
-  manual_tags: string[]; lora: string | null
-  cfg: number | string; steps: number | string; sampler: string
-  scheduler: string; checkpoint: string; size: string
-  engine?: DrawEngine; profile?: string; model?: string
-  provider?: 'comfy' | 'webui'
-  loraId?: string | null; loraStrength?: number | null
-  loras?: ReadonlyArray<{ id: string; strength: number }>
-  preview?: boolean
-  /** 成片真实像素；size 只是保存时下拉框的值，作品册排版以这两个为准 */
-  width: number | null; height: number | null
-  rating: Record<string, number>; favorite: boolean; notes: string
-  image_id: string; image_url: string; version: number
-  parent_id: number | null; project: string
-  /** 热门角色无 LoRA 创作模式（旧历史缺省 studio，向后兼容）。 */
-  subject?: 'studio' | 'popular'
-  characterId?: string
-  outfitId?: string
-  blueprintId?: string | null
-  noLora?: boolean
-  /** 生成时实际使用的 Krea Style LoRA id；旧历史缺省无 Style LoRA。 */
-  styleLoraId?: string | null
-  /** 专家模式选中的模型原生画师风格 id，最多两位。 */
-  artistStyleIds?: string[]
-  /** 2026-08-29 修复：高清修复（SD hires）与脸部修复等生成参数此前未保存，
-   *  作品册无法回显「开了 hires」；旧条目缺省 undefined（展示为「—」）。 */
-  hiresFix?: boolean
-  hiresScale?: number
-  hiresUpscaler?: string
-  hiresSteps?: number
-  hiresDenoise?: number
-  faceDetailer?: boolean
-}
-
-export interface Selections {
-  emotion: string[]; shot: string | null
-  lighting: string | null; composition: string | null
-}
+import type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
+export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
 
 export const SHOT_PROMPT: Record<string, string> = {
   close: 'close-up', medium: 'medium shot', wide: 'wide shot',
@@ -144,9 +100,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── Loaded data (proxy to sceneStore, single source, no drift) ───────
   const sceneStore = useSceneStore()
   const historyStore = usePromptHistoryStore()
-  const { history: _historyRef, projects: _projectsRef } = storeToRefs(historyStore)
-  const history = _historyRef as unknown as Ref<HistoryEntry[]>
-  const projects = _projectsRef as unknown as Ref<ProjectOption[]>
+  const { history, projects } = storeToRefs(historyStore)
   const scenes = computed(() => sceneStore.scenes as unknown as Scene[])
   const curation = computed(() => sceneStore.curation as unknown as Record<string, unknown>)
   const loraMeta = computed(() => sceneStore.loras as unknown as LoraMeta[])
@@ -524,7 +478,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
      * 看到的是「糊版 vs 高清版」，会得出错误的重绘判断。inpaint 路径把源图
      * 对应的历史条目 id 传进来，对比才有真实语义。
      */
-    parentId?: number | null
+    parentId?: string | number | null
   }): Promise<HistoryEntry | null> {
     return withArtworkStaging(async () => {
       let imageId = ''
@@ -552,7 +506,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         const historyEntry: HistoryEntry = {
           id,
           timestamp: now,
-          character: entry.character ?? (isPopular ? ((currentSubject.characterId as unknown as CharKey) || char.value) : char.value),
+          character: entry.character ?? (isPopular ? (currentSubject.characterId || char.value) : char.value),
           // 2026-08-29 修复：队列/批量入册优先用任务入队时快照的 story/scene/sceneTitle
           // （entry.story ?? …），避免出图期间改了故事导致作品册与成片不符。
           scene: isPopular ? (currentSubject.blueprintId ?? null) : (entry.scene !== undefined ? entry.scene : sceneId.value),
@@ -604,7 +558,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         }
         // 2026-08-16 审计：先持久化再提交内存态——此前 kvSet 失败会「内存已入册、
         // 磁盘没写」，刷新后条目静默丢失且刚写入的图片成为孤儿 blob。
-        history.value = await artworkRepository.appendArtwork(historyEntry)
+        history.value = parseArtworkRecords(await artworkRepository.appendArtwork(historyEntry))
         return historyEntry
       } catch (e) {
         console.warn('commitHistoryEntry failed', e)
@@ -615,12 +569,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     })
   }
 
-  async function removeHistoryEntry(id: number) {
+  async function removeHistoryEntry(id: string | number) {
     await historyStore.removeHistoryEntry(id)
   }
 
   /** 撤销软删（2026-08-30 UX 审计 P0-8）：整条恢复并重载列表。 */
-  async function restoreHistoryEntry(id: number): Promise<boolean> {
+  async function restoreHistoryEntry(id: string | number): Promise<boolean> {
     return await historyStore.restoreHistoryEntry(id)
   }
 

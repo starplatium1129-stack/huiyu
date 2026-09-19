@@ -1,5 +1,7 @@
+import { parseHistoryRecipe } from '@/utils/historyRecipe'
+import type { ArtworkRecord } from '@/types/artwork'
 import type { Ref } from 'vue'
-import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
+import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import { restoreHistorySceneStory } from '@/utils/promptBuilderPersistence'
 import {
@@ -49,15 +51,16 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
    * 现在：已记录且当前仍支持的字段一律回放；合法零值（cfg=0 的 Turbo 档、
    * loraStrength=0）用显式判断保留；恢复不了的写进提示，不冒称「已恢复」。
    */
-  async function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
+  async function applyHistory(record: ArtworkRecord, keepAsVariant = false) {
     const revision = ++restoreRevision
-    if (entry.engine && !['sd', 'anima', 'krea2'].includes(entry.engine)) {
-      pb.historyRestoreReport = { title: '配方未载入', notes: [`未知引擎 ${entry.engine}，当前草稿已保留`] }
-      pb.flash(`无法恢复未知引擎 ${entry.engine}，当前草稿已保留`, 9000, 'warning')
+    const parsed = parseHistoryRecipe(record)
+    if (!parsed.ok) {
+      pb.historyRestoreReport = { title: '配方未载入', notes: [parsed.error] }
+      pb.flash(parsed.error, 9000, 'warning')
       return false
     }
+    const { recipe: entry, notes: restoreNotes } = parsed
     const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
-    const restoreNotes: string[] = []
     if (!entry.engine) restoreNotes.push('旧作品未记录引擎，按 SD 配方读取')
     if (!entry.model && !entry.checkpoint) restoreNotes.push('未记录底模，使用当前底模')
     restoreNotes.push('提示词按当前角色与编译规则重建，请核对后生成')
@@ -122,7 +125,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
           cfg: finiteOr(entry.cfg, animaState.value.cfg),
           sampler: entry.sampler || animaState.value.sampler,
           scheduler: entry.scheduler || animaState.value.scheduler,
-          seed: entry.seed >= 0 ? entry.seed : null,
+          seed: entry.seed !== undefined && entry.seed >= 0 ? entry.seed : null,
         })
       } else {
         if (entry.characterId) restoreNotes.push('原角色或服装已不在当前角色库，已回落工作室模式')
@@ -131,7 +134,8 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       }
     } else {
       pb.setStudioSubject()
-      if (entry.character) pb.setChar(entry.character)
+      if (entry.character === 'nene' || entry.character === 'natsume' || entry.character === 'triad') pb.setChar(entry.character)
+      else if (entry.character) restoreNotes.push('原角色不可用，保留当前角色')
       if ((entry.engine === 'anima' || entry.engine === 'krea2') && (entry.character === 'nene' || entry.character === 'natsume')) {
         const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
         clearAnimaResult()
@@ -148,7 +152,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
           cfg: finiteOr(entry.cfg, animaState.value.cfg),
           sampler: entry.sampler || animaState.value.sampler,
           scheduler: entry.scheduler || animaState.value.scheduler,
-          seed: entry.seed >= 0 ? entry.seed : null,
+          seed: entry.seed !== undefined && entry.seed >= 0 ? entry.seed : null,
         })
       } else {
         // 旧历史没有 engine 字段，必须按既有 SD 契约恢复。
@@ -181,8 +185,8 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.setColorMood(entry.colorMood ?? null)
     pb.projectId = entry.project || ''
     pb.setArtistStyleIds(entry.artistStyleIds || [])
-    pb.sdParams.seed = entry.seed >= 0 ? entry.seed : -1
-    pb.sdParams.seedLock = entry.seed >= 0
+    pb.sdParams.seed = entry.seed !== undefined && entry.seed >= 0 ? entry.seed : -1
+    pb.sdParams.seedLock = entry.seed !== undefined && entry.seed >= 0
     pb.sdParams.cfg = finiteOr(entry.cfg, pb.sdParams.cfg)
     pb.sdParams.steps = finiteOr(entry.steps, pb.sdParams.steps)
     if (entry.sampler) pb.sdParams.sampler = entry.sampler
@@ -222,21 +226,21 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.flash(`${keepAsVariant ? '已复制为新变体草稿' : '已载入历史配方'}，请核对配方检查`, 4000, 'info')
   }
 
-  function reuseSuccessfulRecipe(id: number) {
+  function reuseSuccessfulRecipe(id: string | number) {
     const entry = pb.history.find(item => item.id === id)
     if (!entry) return
     applyHistory(entry, true)
   }
 
-  function resumeHistory(entry: HistoryEntry) { applyHistory(entry) }
-  function duplicateHistory(entry: HistoryEntry) { applyHistory(entry, true) }
+  function resumeHistory(entry: ArtworkRecord) { applyHistory(entry) }
+  function duplicateHistory(entry: ArtworkRecord) { applyHistory(entry, true) }
   /**
    * 删除历史条目（2026-08-30 UX 审计 P0-8）。
    *
    * 底层已改软删，确认文案不再写「不可撤销」，并给 5 秒撤销窗口——原图在
    * 回收站留 30 天，但用户真正会后悔的就是点下去的这几秒。
    */
-  async function deleteHistory(entry: HistoryEntry) {
+  async function deleteHistory(entry: ArtworkRecord) {
     if (!(await confirmAction(`删除历史「${entry.sceneTitle || entry.scene || '未命名'}」？`))) return
     try {
       await pb.removeHistoryEntry(entry.id)

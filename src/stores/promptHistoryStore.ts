@@ -5,7 +5,7 @@ import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 import { parseProjectOptions, type ProjectOption } from '@/utils/promptBuilderPersistence'
-import { parseArtworkRecords } from '@/types/artwork'
+import { parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 
 const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
 const PROJECT_STORAGE_KEY = ARTWORK_PROJECTS_KV_KEY
@@ -42,7 +42,7 @@ async function cacheThumbnail(imageId: string, blob: Blob): Promise<void> {
 }
 
 export const usePromptHistoryStore = defineStore('promptHistory', () => {
-  const history = ref<unknown[]>([])
+  const history = ref<ArtworkRecord[]>([])
   const projects = ref<ProjectOption[]>([])
   let historyLoad = 0
   let projectLoad = 0

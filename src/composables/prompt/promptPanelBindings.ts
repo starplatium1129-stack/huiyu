@@ -48,7 +48,7 @@ export interface PromptRenderBindings extends
   patchAnimaState: Anima['patchState']
   engineTitle: (engine: DrawEngine) => string | undefined
   BUSY_HINT: string
-  reuseSuccessfulRecipe: (id: number) => Promise<void>
+  reuseSuccessfulRecipe: (id: string | number) => Promise<void>
   upscaleCurrentResult: () => Promise<void>
   reuseLastSeed: () => void
   resetSdParams: () => void

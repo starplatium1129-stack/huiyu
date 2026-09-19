@@ -1,6 +1,6 @@
 import { withArtworkStaging } from '@/storage/artworkSession'
 import type { Ref } from 'vue'
-import type { HistoryEntry } from '@/stores/promptBuilderStore'
+import type { ArtworkRecord } from '@/types/artwork'
 import { imgGet } from '@/composables/useImageStore'
 import type { PromptVideoBridgeDeps } from './usePromptVideoBridge'
 
@@ -112,10 +112,10 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
    * 历史图 → 加入分镜：从历史条目重建跨页上下文（图片走 IndexedDB、
    * prompt 用该图实际生成时保存的词），追加到分镜待带入列表。
    */
-  async function handleHistoryToShots(entry: HistoryEntry) {
+  async function handleHistoryToShots(entry: ArtworkRecord) {
     return withArtworkStaging(async () => {
       try {
-        const blob = await imgGet(entry.image_id)
+        const blob = await imgGet(entry.image_id || '')
         if (!blob || !blob.size) { flash('历史图片已失效，无法加入分镜'); return }
         const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
         const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
@@ -148,7 +148,7 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
   }
 
   /** 历史多选批量加入分镜：逐张重建上下文，成功/失败计数汇总。 */
-  async function handleHistoryToShotsBatch(entries: HistoryEntry[]) {
+  async function handleHistoryToShotsBatch(entries: ArtworkRecord[]) {
     return withArtworkStaging(async () => {
       if (!entries.length) return
       const { prepareVideoCtx, appendShotsCtx, readShotsCtx } = await import('@/composables/useVideoBridge')
@@ -157,7 +157,7 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
       let failed = 0
       for (const entry of entries) {
         try {
-          const blob = await imgGet(entry.image_id)
+          const blob = await imgGet(entry.image_id || '')
           if (!blob || !blob.size) { failed += 1; continue }
           const ctx = await prepareVideoCtx({
             displayUrl: '',

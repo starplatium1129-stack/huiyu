@@ -1,4 +1,5 @@
-import type { usePromptBuilderStore, HistoryEntry } from '@/stores/promptBuilderStore'
+import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import type { HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
 
 /** 提交时取值；只保存可序列化的创作信息，不保存响应式对象或图片。 */
