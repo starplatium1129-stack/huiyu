@@ -217,7 +217,7 @@
 
   /* ---- Motion -----------------------------------------------------------
      语义 token 按交互目的命名，避免同一个 "fast" 同时承担按压、浮层和路由。
-     旧 --t-* 继续作为通用别名，页面新动效优先使用 --motion-*。 */
+     旧 --t-* 别名统一映射到语义 token，消除双轨硬编码数值。 */
   --motion-press: 120ms;
   --motion-hover: 160ms;
   --motion-control: 200ms;
@@ -225,9 +225,9 @@
   --motion-route: 320ms;
   --motion-route-cut: 420ms;
   --motion-atmosphere: 560ms;
-  --t-fast: 150ms;
-  --t-base: 240ms;
-  --t-slow: 300ms;
+  --t-fast: var(--motion-hover);
+  --t-base: var(--motion-surface);
+  --t-slow: var(--motion-route);
   --spring-bounce: cubic-bezier(.34, 1.56, .64, 1); /* 果冻微弹 */
   --spring-soft:   cubic-bezier(.16, 1, .3, 1);    /* 丝滑阻尼 */
   --ease-out: cubic-bezier(.23, 1, .32, 1);   /* 进入/即时反馈：快速响应，柔和落位 */
