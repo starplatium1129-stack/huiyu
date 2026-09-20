@@ -8,18 +8,18 @@
   --workspace-lift: var(--workspace-inset), 0 10px 28px -10px color-mix(in srgb, var(--ink-base) 28%, transparent);
 }
 
-/* Browse: one grouped control surface, with quieter image mats below it. */
+/* Browse: shared rounded surfaces; page styles own layout, not the material. */
 html .gallery-page .gallery-toolbar,
 html .showcase-page .toolbar-shell,
 html .scene-discovery .scene-toolbar,
 html .library-page .pop-toolbar {
-  padding: var(--s-3);
-  border: 1px solid var(--workspace-edge);
+  padding: var(--s-4);
+  border: 1px solid var(--border-soft);
   border-radius: var(--r-xl);
-  background: linear-gradient(120deg, var(--glass-highlight), transparent 54%), var(--workspace-chrome);
-  box-shadow: var(--workspace-lift);
-  -webkit-backdrop-filter: blur(24px) saturate(135%);
-  backdrop-filter: blur(24px) saturate(135%);
+  background: var(--bg-surface);
+  box-shadow: var(--workspace-inset);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 html .scene-discovery .scene-toolbar::before { display: none; }
 html .gallery-page :is(.gallery-search, .gallery-project),
@@ -40,9 +40,14 @@ html .library-page :is(.pop-cat, .pop-rating-pill) {
   border-radius: var(--r-md);
 }
 html .gallery-page .gallery-toolbar-note { font-variant-numeric: tabular-nums; }
+html :is(.gallery-page, .showcase-page, .scene-discovery, .library-page) :is(.gallery-toolbar, .toolbar-shell, .scene-toolbar, .pop-toolbar) :is(input, select, button):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 html .gallery-page .artwork:not(.artwork-selected),
 html .showcase-page .sample,
 html .library-page .pop-card {
+  border-radius: var(--r-xl);
   box-shadow: var(--workspace-inset);
   transition: transform var(--motion-surface) var(--ease-out);
 }
@@ -257,6 +262,7 @@ html .notfound-page .notfound-actions {
   html .home-page .tool-card:hover { transform: translateY(-2px); }
 }
 @media (max-width: 600px) {
+  html :is(.gallery-page, .showcase-page, .scene-discovery, .library-page) :is(.gallery-toolbar, .toolbar-shell, .scene-toolbar, .pop-toolbar) :is(input:not([type='checkbox']):not([type='radio']), select, button) { min-height:44px; }
   html .control-mobile-nav .nav-local { flex-wrap: wrap; gap: var(--s-3); }
   html .control-mobile-nav .nav-local-brand { flex: 1 0 100%; display: flex; align-items: center; gap: var(--s-3); }
   html .control-mobile-nav .nav-logo { width: 90px; }

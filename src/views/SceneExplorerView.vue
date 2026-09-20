@@ -4,19 +4,17 @@
       <div class="scene-atlas-copy">
         <div class="page-kicker eyebrow">场景手帖 · {{ activeThemeLabel }}</div>
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
-        <p class="subtitle">挑一个想走进的瞬间。镜头、光影与角色设定已经准备好，<strong>{{ scenes.length }} 个场景</strong>等你翻阅。</p>
-        <div class="curation-intro">
-          <h2>从角色的心情，走进场景</h2>
-          <p>月光下的秘密，或午后的闲谈。今天，想和谁一起？</p>
-          <div class="companion-switch" role="group" aria-label="看板娘陪伴选择">
-            <AnimatedSelection />
-            <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
-              <span class="dot"></span>绫地宁宁
-            </button>
-            <button type="button" class="companion-pill natsume" :class="{ active: companionId === 'natsume' }" :aria-pressed="companionId === 'natsume'" @click="manualCompanion = 'natsume'">
-              <span class="dot"></span>四季夏目
-            </button>
-          </div>
+        <p class="subtitle">挑一个想走进的瞬间，<strong>{{ scenes.length }} 个场景</strong>等你翻阅。</p>
+      </div>
+      <div class="curation-intro">
+        <div class="companion-switch" role="group" aria-label="看板娘陪伴选择">
+          <AnimatedSelection />
+          <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" :aria-pressed="companionId === 'nene'" @click="manualCompanion = 'nene'">
+            <span class="dot"></span>绫地宁宁
+          </button>
+          <button type="button" class="companion-pill natsume" :class="{ active: companionId === 'natsume' }" :aria-pressed="companionId === 'natsume'" @click="manualCompanion = 'natsume'">
+            <span class="dot"></span>四季夏目
+          </button>
         </div>
       </div>
       <figure class="scene-atlas-portrait" aria-label="陪伴角色">
@@ -45,9 +43,8 @@
       </div>
     </section>
 
-    <!-- 单层 sticky 工具条：搜索 + 主题 + 折叠精细筛选，
-         原来搜索/主题/facet/成人开关是四条横栏，要跨 4 个条才看到场景卡 -->
-    <div class="scene-toolbar sticky-toolbar">
+    <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
+    <div class="scene-toolbar">
       <div class="toolbar-primary">
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
@@ -159,12 +156,12 @@
               <span>{{ s2.emotion || '情绪待定' }}</span>
               <span>{{ [seasonLabel(s2.season), timeLabel(s2.timeOfDay)].filter(Boolean).join(' · ') || '时间不限' }}</span>
             </div>
-            <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
             <div class="ex-actions">
               <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
             </div>
             <details class="ex-more"><summary>镜头与更多</summary>
+              <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
               <div class="ex-decision">
                 <span>镜头 <strong>{{ dv(s2).shot }}</strong></span>
                 <span>光线 <strong>{{ dv(s2).lighting }}</strong></span>
@@ -296,23 +293,23 @@ watch(companionId, (id) => { companionFailed[id] = false })
 </script>
 
 <style scoped>
-.page { --page-max: 1100px; }
+.page { --page-max: 1100px; padding-top:var(--s-5); }
 .subtitle { margin-bottom:0; }
 
-.scene-atlas { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr); gap:var(--s-5); margin-bottom:var(--s-5); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); box-shadow:none; }
+.scene-atlas { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,1fr) auto 200px; grid-template-areas:'copy choices portrait' 'moods moods portrait'; gap:var(--s-3) var(--s-4); margin-bottom:var(--s-4); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); box-shadow:none; }
 /* contrast-exempt: 装饰性巨型水印（SCENE 底噪，4% 透明度、pointer-events:none、无信息含义），
    不是可阅读文本，不适用 WCAG 1.4.3；若日后让它承载信息，删掉本标记并按 4.5:1 选色。 */
 .scene-atlas::before { content:none; position:absolute; left:-.04em; bottom:-.22em; color:color-mix(in srgb,var(--text-primary) 4%,transparent); font:800 clamp(4rem,10vw,8rem) var(--font-mono); letter-spacing:-.08em; pointer-events:none; }
 .scene-atlas .page-kicker::before { display: none; }
-.scene-atlas-copy { position:relative; z-index:var(--z-raised); display:flex; flex-direction:column; justify-content:center; min-width:0; }
-.scene-atlas .title { max-width:8ch; margin-bottom:var(--s-3); font:500 clamp(2rem,3.2vw,3rem)/var(--lh-tight) var(--font-display); line-height:var(--lh-flush); letter-spacing:-.06em; }
+.scene-atlas-copy { grid-area:copy; position:relative; z-index:var(--z-raised); min-width:0; }
+.scene-atlas .title { margin-bottom:var(--s-2); font:500 clamp(1.5rem,2.6vw,2rem)/var(--lh-tight) var(--font-display); letter-spacing:-.03em; }
 .scene-atlas .subtitle { max-width:38rem; color:var(--text-secondary); line-height:var(--lh-loose); }
 .scene-atlas[data-companion="nene"] { --accent: var(--nene-violet); }
 .scene-atlas[data-companion="natsume"] { --accent: var(--natsume-amber); }
-.scene-atlas-portrait { position: relative; min-height: 230px; overflow: hidden; border-radius: var(--r-lg); background: var(--bg-deep); }
+.scene-atlas-portrait { grid-area:portrait; position: relative; min-height: 180px; margin:0; overflow: hidden; border-radius: var(--r-lg); background: var(--bg-deep); }
 .scene-atlas-portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0; transition: opacity var(--motion-atmosphere); }
 .scene-atlas-portrait img.current { opacity: 1; }
-.scene-atlas-portrait figcaption { position: absolute; inset: auto 0 0; padding: var(--s-6) var(--s-5) var(--s-4); background: linear-gradient(0deg, var(--bg-deep) 72%, transparent); color: var(--text-primary); font: 400 var(--fs-body)/var(--lh-loose) var(--font-serif); }
+.scene-atlas-portrait figcaption { position: absolute; inset: auto 0 0; padding: var(--s-2); background: var(--bg-deep); color: var(--text-primary); text-align:center; font: 400 var(--fs-label-sm)/var(--lh-body) var(--font-serif); }
 /* 缺图占位：透明底 + z-index 抬到 figcaption 渐变罩之上，占位文字不会被台词底部渐变压淡；
    台词 figcaption 在其下方照常可读。非当前角色的占位与 img 同样以 opacity 隐藏。 */
 .scene-atlas-portrait .companion-fallback { position: absolute; z-index: var(--z-raised); inset: 0; display: grid; place-content: center; justify-items: center; gap: var(--s-2); padding-bottom: var(--s-8); color: var(--text-muted); opacity: 0; transition: opacity var(--motion-atmosphere); }
@@ -320,10 +317,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .companion-fallback .archive-icon { width: 40px; height: 40px; }
 .companion-fallback-text { max-width: 32ch; padding: 0 var(--s-3); text-align: center; font-size: var(--fs-label-sm); letter-spacing: .04em; }
 @media (prefers-reduced-motion: reduce) { .scene-atlas-portrait img, .scene-atlas-portrait .companion-fallback { transition: none; } }
-.curation-intro { display:flex; flex-direction:column; justify-content:center; }
-.curation-intro { margin-top:var(--s-5); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
-.curation-intro h2 { margin:var(--s-1) 0 var(--s-1); font-size:var(--fs-title-xs); }
-.curation-intro p { margin:0; color:var(--text-muted); font-size:var(--fs-label); line-height:var(--lh-body); }
+.curation-intro { grid-area:choices; min-width:0; align-self:center; }
 .companion-switch { --selection-radius:var(--r-pill); --selection-shadow:inset 0 1px var(--glass-highlight); position:relative; isolation:isolate; display:flex; align-items:center; width:fit-content; max-width:100%; gap:var(--s-1); margin-top:var(--s-3); padding:var(--s-1); border:1px solid var(--workspace-edge); border-radius:var(--r-pill); background:var(--bg-surface); }
 .companion-pill { position:relative; z-index:var(--z-raised); display:inline-flex; align-items:center; gap:var(--s-2); padding:var(--s-2) var(--s-3); min-height:44px; border-radius:var(--r-pill); border:1px solid transparent; background:transparent; color:var(--text-muted); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; box-shadow:none; transition:color var(--motion-hover); }
 .companion-pill .dot { width:6px; height:6px; border-radius:50%; background:var(--cp-accent); }
@@ -331,8 +325,8 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .companion-pill.natsume { --cp-accent:var(--natsume-amber); }
 .companion-pill:hover, .companion-pill.active { color:var(--text-primary); }
 .companion-switch :deep(.animated-selection) { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:color-mix(in srgb,var(--accent) 32%,var(--border-soft)); }
-.mood-rails { position:relative; z-index:var(--z-raised); grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
-.mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:inset 0 1px 0 var(--glass-highlight); transition:transform var(--motion-hover) var(--ease-out),border-color var(--motion-hover),box-shadow var(--motion-hover); }
+.mood-rails { grid-area:moods; min-width:0; position:relative; z-index:var(--z-raised); display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); }
+.mood-rail { position:relative; overflow:hidden; min-height:64px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:none; transition:transform var(--motion-hover) var(--ease-out); }
 .mood-rail.nene { background:linear-gradient(135deg,color-mix(in srgb,var(--nene-violet) 8%,transparent),color-mix(in srgb,var(--accent) 8%,transparent)),var(--bg-elevated); }
 .mood-rail.natsume { background:linear-gradient(135deg,color-mix(in srgb,var(--natsume-amber) 8%,transparent),color-mix(in srgb,var(--text-primary) 10%,transparent)),var(--bg-elevated); }
 .mood-rail:hover { border-color:var(--accent); box-shadow:var(--shadow-sm); }
@@ -340,7 +334,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 @media (hover: hover) and (pointer: fine) {
   .mood-rail:hover { transform:translateY(-3px); }
 }
-.mood-icon { display:block; font-size:var(--fs-title-sm); margin-bottom:var(--s-1); }
+.mood-icon { float:left; margin:var(--s-1) var(--s-2) 0 0; }
 .mood-rail strong { display:block; font-size:var(--fs-body-sm); }
 .mood-rail small { color:var(--text-muted); font-size:var(--fs-mono-sm); }
 
@@ -353,8 +347,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .search-intent { min-height:22px; margin:-10px var(--s-1) var(--s-3); color:var(--text-muted); font-size:var(--fs-label-sm); }
 :deep(.search-intent strong) { color:var(--accent); }
 
-.scene-toolbar { position:relative; display:grid; gap:var(--s-3); margin-bottom:var(--s-5); padding:var(--s-3); border:1px solid color-mix(in srgb,var(--archive-cyan) 18%,var(--border-soft)); border-radius:var(--r-dossier); background:color-mix(in srgb,var(--bg-surface) 88%,transparent); box-shadow:var(--shadow-glass-sm); -webkit-backdrop-filter:blur(20px) saturate(130%); backdrop-filter:blur(20px) saturate(130%); }
-.scene-toolbar::before { content:''; position:absolute; top:-1px; left:var(--s-4); width:42px; height:var(--line-hairline); background:var(--archive-cyan); }
+.scene-toolbar { position:relative; display:grid; gap:var(--s-3); margin-bottom:var(--s-4); }
 .toolbar-primary { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
 .toolbar-primary .scene-search-wrap { flex:1 1 260px; min-width:0; margin:0; }
 .toolbar-primary .scene-count { color:var(--text-muted); font:600 var(--fs-mono-sm) var(--font-mono); white-space:nowrap; }
@@ -373,11 +366,10 @@ watch(companionId, (id) => { companionFailed[id] = false })
 @keyframes facetIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion:reduce) { .scene-facet-panel { animation:none; } }
 .scene-filter-label { font-size:var(--fs-label-xs); color:var(--text-muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:var(--s-2); }
-.scene-cats { display:flex; flex-wrap:wrap; gap:0; border-bottom:var(--line-hairline) solid var(--border-soft); }
+.scene-cats { display:flex; flex-wrap:wrap; gap:var(--s-1); }
 .scene-cat { appearance:none; position:relative; padding:7px 15px; border:0; background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-body-sm) var(--font-sans); transition:background var(--motion-hover),color var(--motion-hover); }
 .scene-cat:hover { border-color:var(--accent); color:var(--accent); }
-.scene-cat.active { background:color-mix(in srgb,var(--archive-blue-soft) 78%,transparent); color:var(--archive-cyan); }
-.scene-cat.active::after { content:''; position:absolute; right:15px; bottom:calc(0px - var(--line-hairline)); left:15px; height:2px; background:var(--archive-cyan); }
+.scene-cat.active { background:var(--accent-soft); color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); font-weight:600; }
 /* 合并后一个面板里有 7 个字段，4 列更紧凑 */
 .scene-facet-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); }
 .scene-filter-field { display:grid; gap:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:600; }
@@ -399,6 +391,11 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .scene-reset:hover { color:var(--accent); }
 
 .scene-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--s-4); }
+.scene-grid :deep(.sc) { border-radius:var(--r-xl); }
+.scene-grid :deep(.sc-body) { flex:1; gap:var(--s-2); padding:var(--s-4); }
+.scene-grid :deep(.sc-title) { white-space:normal; min-height:2.6em; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.3; }
+.scene-grid :deep(.sc-story) { min-height:calc(2em * var(--lh-body)); }
+.scene-grid :deep(.sc-meta) { display:none; }
 .scene-load { display:flex; justify-content:center; margin-top:var(--s-5); }
 .scene-fav.saved { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 .scene-flash { outline:3px solid var(--accent); outline-offset:var(--s-1); }
@@ -407,7 +404,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .ex-scene-line strong { color:var(--accent); font-weight:750; }
 .ex-scene-line span+span::before { content:'·'; margin-right:var(--s-1); /* 审计修复：分隔符原用 --border-strong(2.73:1)，改 --text-muted */ color:var(--text-muted); }
 .ex-curation { margin:0 0 var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
-.ex-actions { display:flex; gap:var(--s-2); margin-top:var(--s-1); }
+.ex-actions { display:flex; gap:var(--s-2); margin-top:auto; padding-top:var(--s-2); }
 .ex-actions .btn { flex:1; justify-content:center; font-weight:700; }
 .ex-actions .scene-draw-action {
   border-color:color-mix(in srgb,var(--accent) 44%,var(--border-soft));
@@ -444,7 +441,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .story-actions { display:flex; gap:var(--s-2); }
 .story-actions .btn { flex:1; }
 
-:deep(.sc-tier) { flex:0 0 auto; padding:1px var(--s-2); border:1px solid var(--accent); border-radius:var(--r-pill); color:var(--accent); font-size:var(--fs-mono-sm); font-weight:800; }
+:deep(.sc-tier) { flex:0 0 auto; padding:1px var(--s-2); border:1px solid var(--accent); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--accent); font-size:var(--fs-mono-sm); font-weight:800; box-shadow:none; }
 :deep(.sc-tier.personal) { color:var(--success); border-color:color-mix(in srgb,var(--success) 70%,var(--border-soft)); }
 :deep(.sc-tier.signature) { color:var(--natsume-amber); border-color:var(--natsume-amber); }
 
@@ -454,20 +451,19 @@ watch(companionId, (id) => { companionFailed[id] = false })
   .ex-decision { display:none; }
   .scene-facet-grid { grid-template-columns:1fr 1fr; }
   .scene-more-filters .scene-facet-grid { grid-template-columns:1fr 1fr; }
-  .scene-atlas { grid-template-columns:minmax(0,1fr); padding:var(--s-4); }
+  .scene-atlas { grid-template-columns:minmax(0,1fr) 140px; grid-template-areas:'copy portrait' 'choices portrait' 'moods moods'; gap:var(--s-3); }
   .scene-atlas .title { max-width:none; }
-  .scene-atlas-portrait { min-height:240px; }
+  .scene-atlas-portrait { min-height:160px; }
   .mood-rails { display:flex; overflow-x:auto; padding-bottom:3px; }
-  .mood-rail { flex:0 0 min(230px,82vw); }
+  .mood-rail { flex:0 0 200px; }
   .scene-cats { flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
   .scene-cat { flex:none; }
 }
 @media (max-width: 480px) {
   .scene-discovery { padding-top: var(--s-5); }
-  .scene-atlas { gap: var(--s-4); }
-  .scene-atlas-portrait { min-height: 180px; }
-  .curation-intro { margin-top: var(--s-2); padding-top: 0; border-top: 0; }
-  .curation-intro h2, .curation-intro p { display: none; }
+  .scene-atlas { grid-template-columns:minmax(0,1fr) 100px; grid-template-areas:'copy portrait' 'choices choices' 'moods moods'; padding:var(--s-3); }
+  .scene-atlas-portrait { min-height:140px; }
+  .companion-switch { margin-top:0; }
   .scene-facet-grid { grid-template-columns:1fr; }
 }
 @media (prefers-reduced-transparency:reduce) {

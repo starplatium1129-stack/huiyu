@@ -1,10 +1,11 @@
 <template>
   <article class="page showcase-page">
     <header class="showcase-heading">
-      <div><div class="page-kicker">CG COLLECTION / 参考画册</div><h1>把心动，一页页收藏。</h1><p>翻阅场景样张，找到想画的下一幕。自己的创作收在「我的作品」。</p>
-        <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
+      <div class="heading-copy"><div class="page-kicker">CG COLLECTION / 参考画册</div>
+        <div class="heading-title"><h1>把心动，一页页收藏。</h1><span class="collection-count"><strong>{{ stats.total }}</strong> 幅样张</span></div>
+        <p>翻阅场景样张，找到想画的下一幕。自己的创作收在「我的作品」。</p>
       </div>
-      <div class="collection-count"><strong>{{ stats.total }}</strong><span>幅角色与场景 CG</span></div>
+      <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
     </header>
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
@@ -431,33 +432,27 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.showcase-heading { display: flex; justify-content: space-between; align-items: center; gap: var(--s-7); padding-block: var(--s-5) var(--s-7); }
-.showcase-heading h1 { font: 500 clamp(2rem, 3.8vw, 3rem)/1.35 var(--font-serif); margin-block: var(--s-4); }
-.showcase-heading p { color: var(--text-muted); }
-.collection-count { display: grid; gap: var(--s-2); text-align: right; flex-shrink: 0; }
-.collection-count strong { font: 300 clamp(2rem, 4vw, 3.5rem)/1 var(--font-display); letter-spacing: -.05em; }
-.collection-count span { font-size: var(--fs-label); color: var(--text-muted); }
+.showcase-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap:wrap; gap: var(--s-3) var(--s-5); padding-block: var(--s-3) var(--s-5); }
+.heading-copy { min-width:0; }
+.heading-title { display:flex; align-items:baseline; flex-wrap:wrap; gap:var(--s-2) var(--s-4); margin-block:var(--s-2); }
+.showcase-heading h1 { font: 500 clamp(1.5rem, 2.5vw, 2rem)/1.35 var(--font-serif); margin:0; }
+.showcase-heading p { margin:0; color: var(--text-muted); font-size:var(--fs-body-sm); }
+.collection-count { white-space:nowrap; font-size:var(--fs-label); color:var(--text-muted); }
+.collection-count strong { color:var(--text-primary); font-weight:600; font-variant-numeric:tabular-nums; }
 .viewer-position { font-size: var(--fs-label-xs); color: var(--text-muted); text-align: center; }
 .viewer-paging { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
 .viewer-production { padding-block: var(--s-3); border-block: 1px solid var(--border-soft); margin-block: var(--s-4); color: var(--text-muted); font-size: var(--fs-label); }
 .viewer-production summary { cursor: pointer; min-height: 32px; }
-@media (max-width: 600px) { .showcase-heading { align-items: start; flex-direction: column; gap: var(--s-4); } .collection-count { display: flex; align-items: baseline; gap: var(--s-3); text-align: left; } }
 
 /* 空状态:替代原先的内联 padding/text-align/font-size */
 .empty-block { padding:var(--s-8) 0; text-align:center; }
 .empty-glyph { font-size:var(--fs-glyph); }
-.hero-actions { display:flex; gap:var(--s-2); flex-wrap:wrap; margin-bottom:var(--s-4); }
+.hero-actions { display:flex; gap:var(--s-2); flex-wrap:wrap; }
 
-/* 唯一一层磨砂容器：不要再和内部 .search-row 各套一个圆角面 */
+/* Surface and focus treatment are shared with the other browsing pages. */
 .toolbar-shell {
   position:sticky; top:70px; z-index:var(--z-sticky);
-  margin-bottom:var(--s-5); padding:var(--s-3);
-  border:1px solid color-mix(in srgb,var(--border-soft) 80%,transparent);
-  border-radius:var(--r-lg);
-  background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
-  box-shadow:var(--shadow-sm);
-  -webkit-backdrop-filter:blur(22px) saturate(135%);
-  backdrop-filter:blur(22px) saturate(135%);
+  margin-bottom:var(--s-4);
 }
 .search-row { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
 .search-field { position:relative; flex:1 1 240px; min-width:0; }
@@ -466,7 +461,7 @@ onUnmounted(() => {
 .scene-search-clear { position:absolute; top:50%; right:8px; transform:translateY(-50%); width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
 .filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; align-items:center; }
 .filter-dropdowns { display:grid; grid-template-columns:minmax(100px,.6fr) minmax(0,1fr); flex:1 1 300px; min-width:0; gap:var(--s-2); align-items:center; }
-.filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
+.filter-pill { padding:5px 12px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
 .filter-pill.active,.filter-pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 .filter-select { width:100%; min-width:0; max-width:100%; height:32px; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; transition:border-color var(--motion-hover),color var(--motion-hover); }
 .filter-select:hover { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); }
@@ -531,12 +526,14 @@ onUnmounted(() => {
   .search-field, .filter-dropdowns { flex:none; width:100%; }
   .filter-group { min-width:0; }
   .result-meta { margin-left:0; }
-  .toolbar-shell { position:relative; top:auto; }
+  .showcase-page .toolbar-shell { position:relative; top:auto; }
   .result-meta { white-space:normal; }
   .showcase-grid { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
   .sample { border-radius:var(--r-dossier); }
 }
 @media(prefers-reduced-motion:reduce) { .sample,.sample-image,.sample-sensitive { transition:none; animation:none; } }
+@media(prefers-contrast:more) { .showcase-page .toolbar-shell { border-color:var(--text-muted); } }
+@media(forced-colors:active) { .showcase-page .toolbar-shell { background:Canvas; border-color:CanvasText; } }
 </style>
 
 <style>

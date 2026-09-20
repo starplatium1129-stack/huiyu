@@ -32,8 +32,10 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 h2 { margin: var(--s-2) 0 0; font: 500 var(--fs-title)/var(--lh-label) var(--font-serif); }
 .guide-direct { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; color: var(--accent); font-size: var(--fs-label); }
 .guide-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); padding: 0; margin: 0; list-style: none; }
-.guide-steps a { display: flex; gap: var(--s-3); height: 100%; padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-primary); text-decoration: none; }
-.step-number { color: var(--accent); font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
+.guide-steps a { display: flex; gap: var(--s-3); height: 100%; padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); color: var(--text-primary); text-decoration: none; }
+.guide-steps a:hover { border-color:var(--accent); background:var(--bg-hover); }
+.guide-steps a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.step-number { display:grid; place-items:center; flex:0 0 40px; height:40px; border-radius:var(--r-md); background:var(--accent-soft); color:var(--accent); font:500 var(--fs-body)/var(--lh-label) var(--font-sans); }
 .guide-steps strong { display: block; font-size: var(--fs-body-sm); }
 .step-copy { display: block; margin-top: var(--s-2); color: var(--text-secondary); font-size: var(--fs-label); line-height: var(--lh-loose); }
 .guide-help { margin-top: var(--s-4); border-bottom: 1px solid var(--border-soft); color: var(--text-secondary); font-size: var(--fs-label); }

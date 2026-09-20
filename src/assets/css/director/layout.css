@@ -111,7 +111,7 @@
   .pb.journal-workspace[data-director-mode="pro"] .director-workspace {
     flex: 1;
     min-height: 0;
-    grid-template-columns: clamp(240px, 19vw, 300px) minmax(320px, 1fr) clamp(264px, 22vw, 360px);
+    grid-template-columns: clamp(240px, 18vw, 280px) minmax(320px, 1fr) clamp(280px, 24vw, 360px);
     grid-template-areas: "story stage inspector";
     align-items: stretch;
   }

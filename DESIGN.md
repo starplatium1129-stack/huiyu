@@ -286,6 +286,13 @@ Do not mix sharp system-tool rectangles, soft consumer-app pills, and oversized
 glass bubbles in the same control group. Icon geometry, border weight, radius,
 and padding must make adjacent controls feel like one family.
 
+Browse toolbars and major drawing panels share `--r-xl` (20px); their inputs
+and compact buttons use `--r-md` (10px). Browse toolbar surfaces are owned by
+`fluid-workspaces.css`: opaque theme surface, soft border, and restrained depth.
+Page styles control placement and wrapping without replacing this shape with
+square corners. Borderless reading regions and full-screen viewers may remain
+flush. Narrow browse controls provide a 44px minimum touch height.
+
 ## Anime Visual Language
 
 The identity comes from authored character artwork, emotional scene choices,
