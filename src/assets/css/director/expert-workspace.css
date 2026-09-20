@@ -1,7 +1,8 @@
 /* Panel internals: fixed headings, scrollable content, and readable controls.
    layout.css owns viewport allocation and all outer column placement. */
 .pb .inspector-section { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
-.pb .inspector-heading { display: flex; align-items: center; justify-content: space-between; padding: 16px; }
+.pb .inspector-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); padding: var(--s-4); border-top: 3px solid var(--accent); background: linear-gradient(120deg, var(--accent-soft), var(--bg-surface) 75%); }
+.pb .inspector-heading strong { font-size: var(--fs-body); letter-spacing: .04em; }
 .pb .inspector-heading span { font-size: var(--fs-label); color: var(--text-muted); }
 .pb .director-inspector .col-right { display: flex; flex-direction: column; flex-shrink: 0; padding: 0; }
 .pb .inspector-section > * { flex-shrink: 0; }
@@ -16,9 +17,9 @@
 .pb[data-director-mode="pro"] .inspector-scroll { padding: 14px; overflow-y: auto; scrollbar-width: thin; overscroll-behavior: contain; min-height: 0; }
 .pb[data-director-mode="pro"] .director-inspector .panel,
 .pb[data-director-mode="pro"] .director-inspector .result-frame { border: 0; box-shadow: none; background: transparent; padding: 0; }
-.pb[data-director-mode="pro"] .director-inspector .engine-switch { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
-.pb[data-director-mode="pro"] .director-inspector .engine-btn { padding: 8px 4px; min-height: 40px; font-size: var(--fs-label-xs); }
-.pb[data-director-mode="pro"] .director-inspector .engine-sub { display: none; }
+.pb[data-director-mode="pro"] .director-inspector .engine-switch { display: grid; grid-template-columns: 1fr; gap: var(--s-2); }
+.pb[data-director-mode="pro"] .director-inspector .engine-btn { position: relative; flex-direction: row; align-items: center; gap: var(--s-3); padding: var(--s-3); min-height: 58px; font-size: var(--fs-label); text-align: left; }
+.pb[data-director-mode="pro"] .director-inspector .engine-sub { display: block; margin-top: var(--s-1); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .pb .inspector-route { color: var(--text-secondary); font-size: var(--fs-label); }
 .pb .inspector-route summary { cursor: pointer; padding: 4px 0; }
 .pb .inspector-route .pb-managed-route-banner { margin-top: 12px; }

@@ -39,3 +39,14 @@
     outline: none;
   }
   .pb .negative-editor textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+
+/* Reading surfaces echo the character notebook without changing field behavior. */
+.pb .generation-settings .controls-grid { gap: var(--s-2); }
+.pb .generation-settings .ctrl { min-width: 0; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-base); }
+.pb .generation-settings .ctrl > label { color: var(--text-secondary); line-height: var(--lh-body); }
+.pb .generation-settings .ctrl :is(input, select) { min-height: 40px; width: 100%; min-width: 0; background: var(--bg-surface); border-radius: var(--r-sm); }
+.pb .generation-settings .ctrl-seed { grid-column: 1 / -1; }
+.pb .generation-settings .seed-input-wrap { margin-top: var(--s-2); }
+.pb .generation-settings .seed-input-wrap input { flex: 1; width: 0; }
+.pb .generation-settings .toggle-row { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; align-items: center; }
+.pb .generation-settings .negative-editor textarea { width: 100%; box-sizing: border-box; background: var(--bg-surface); }

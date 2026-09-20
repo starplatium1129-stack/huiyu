@@ -230,11 +230,13 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 }
 .anima-result { margin-top: 8px }
 .anima-result img { max-width: 100%; border-radius: var(--r-lg); border: 1px solid var(--border-soft) }
-.anima-parameter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 148px), 1fr)); gap: 12px; }
-.anima-field { display: grid; align-content: start; gap: 6px; min-width: 0; }
+.anima-parameter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: var(--s-2); }
+.anima-field { display: grid; align-content: start; gap: var(--s-2); min-width: 0; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-base); }
 .anima-field label { color: var(--text-secondary); font-size: var(--fs-label-xs); }
-.anima-field .anima-num { width: 100%; min-width: 0; min-height: 36px; box-sizing: border-box; font-variant-numeric: tabular-nums; }
+.anima-field .anima-num { width: 100%; min-width: 0; min-height: 40px; box-sizing: border-box; font-variant-numeric: tabular-nums; background: var(--bg-surface); }
 .anima-seed-control { display: flex; gap: 6px; min-width: 0; }
+.anima-seed-field { grid-column: 1 / -1; }
+.anima-seed-control .anima-seed { flex: 1; width: 0; }
 .anima-seed-control .anima-btn { flex-shrink: 0; }
 .anima-output-note { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px; margin: 4px 0; border: 1px solid var(--border-soft); border-radius: var(--r-sm); color: var(--text-primary); background: var(--accent-soft); font-size: var(--fs-label-xs); font-variant-numeric: tabular-nums; }
 .anima-output-note svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }

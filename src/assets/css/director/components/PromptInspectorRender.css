@@ -14,7 +14,7 @@
   padding: 7px 14px;
   border-radius: var(--r-md);
   border: 1px solid var(--border-soft);
-  background: var(--glass-fill);
+  background: var(--bg-surface);
   color: inherit;
   font-size: var(--fs-label);
   cursor: pointer;
@@ -26,9 +26,10 @@
 }
 .pb .engine-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .pb .engine-btn.active {
-  border-color: var(--engine-active-border);
-  background: color-mix(in srgb, var(--mood-love) 14%, transparent);
-  color: var(--engine-active-text);
+  border-color: var(--accent);
+  background: var(--bg-surface);
+  color: var(--accent);
+  box-shadow: inset 3px 0 var(--accent);
 }
 .pb .engine-btn:disabled {
   color: var(--text-disabled);
@@ -73,3 +74,9 @@
   cursor: not-allowed;
   opacity: 1;
 }
+
+.pb .engine-mark { width: 24px; height: 24px; flex-shrink: 0; }
+.pb .engine-copy { display: block; min-width: 0; overflow-wrap: anywhere; }
+.pb .base-model-picker { border-style: dashed; background: var(--bg-surface); padding: var(--s-3); gap: var(--s-2); }
+.pb .base-model-picker label { color: var(--text-secondary); }
+.pb .base-model-picker select { min-height: 42px; background: var(--bg-base); }

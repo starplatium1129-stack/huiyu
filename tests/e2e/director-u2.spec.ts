@@ -32,8 +32,10 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
     await expect(story).toHaveValue('审核用草稿：窗外下着雨。')
     await page.locator('.engine-btn').filter({ hasText: 'SD 引擎' }).click()
-    await page.getByLabel('CFG', { exact: true }).fill('6.5')
-    await page.getByLabel('CFG', { exact: true }).press('Tab')
+    await page.getByLabel('相关性 (CFG)', { exact: true }).fill('6.5')
+    await page.getByLabel('相关性 (CFG)', { exact: true }).press('Tab')
+    await expect(page.locator('.toast-item')).toHaveCount(0)
+    await page.locator('.director-inspector').screenshot({ path: info.outputPath(`sd-notebook-${theme}-${width}.png`) })
     await page.getByRole('button', { name: '场景模式', exact: true }).click()
     await expect(story).toHaveValue('审核用草稿：窗外下着雨。')
     await page.locator('[aria-controls="material-scenes"]').click()
@@ -41,7 +43,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
     // 场景模式沿用自动路线；返回 SD 后检查该引擎的草稿，而非假设路线不切换。
     await page.locator('.engine-btn').filter({ hasText: 'SD 引擎' }).click()
-    await expect(page.getByLabel('CFG', { exact: true })).toHaveValue('6.5')
+    await expect(page.getByLabel('相关性 (CFG)', { exact: true })).toHaveValue('6.5')
 
     await page.locator('[aria-controls="material-character"]').click()
     await page.getByRole('button', { name: /热门角色/ }).first().click()
@@ -50,6 +52,8 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     const disabledEngine = page.locator('.engine-btn').first()
     await expect(disabledEngine).toBeDisabled()
     await expect(disabledEngine).toHaveCSS('opacity', '1')
+    await expect(page.locator('.toast-item')).toHaveCount(0)
+    await page.locator('.director-inspector').screenshot({ path: info.outputPath(`anima-notebook-${theme}-${width}.png`) })
     await expect(disabledEngine).toHaveCSS('color', await disabledEngine.evaluate(el => {
       const probe = document.createElement('span')
       probe.style.color = 'var(--text-disabled)'; el.append(probe)
