@@ -131,7 +131,7 @@ for (const theme of ['dark', 'light']) {
 // Large character libraries and narrow inspector columns must remain browsable.
 for (const theme of ['dark', 'light']) {
   for (const width of [1440, 1280, 390]) {
-    test(`drawing sidebars catalog and readable cards ${theme} ${width}`, async ({ page }) => {
+    test(`drawing sidebars catalog and readable cards ${theme} ${width}`, async ({ page }, testInfo) => {
       await open(page, '/prompt-builder', theme, width, 900)
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
       await page.getByRole('button', { name: '热门角色 · 无需 LoRA', exact: true }).click()
@@ -142,6 +142,7 @@ for (const theme of ['dark', 'light']) {
       await expect(dialog).toBeVisible()
       await expect(dialog).toHaveCSS('opacity', '1')
       await expect(dialog.locator('.directory-item')).toHaveCount(18)
+      await dialog.screenshot({ path: testInfo.outputPath(`character-catalog-${theme}-${width}.png`) })
       const firstId = await dialog.locator('.directory-item').first().getAttribute('data-character')
       await dialog.getByRole('button', { name: '下一页', exact: true }).click()
       expect(await dialog.locator('.directory-item').first().getAttribute('data-character')).not.toBe(firstId)
@@ -150,6 +151,7 @@ for (const theme of ['dark', 'light']) {
       await dialog.locator('.directory-item').filter({ hasText: '芙宁娜' }).click()
       await expect(dialog).not.toBeVisible()
       await expect(page.locator('.character-browse-trigger')).toContainText('芙宁娜')
+      await page.locator('.popular-picker').screenshot({ path: testInfo.outputPath(`character-picker-${theme}-${width}.png`) })
       await expect(trigger).toBeFocused()
       await trigger.click()
       await page.keyboard.press('Escape')

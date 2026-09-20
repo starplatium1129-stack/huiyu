@@ -107,9 +107,10 @@ for (const theme of THEMES) {
       }
       await expect(page.locator('.character-browse-trigger')).toBeVisible()
 
-      // 身份正确：当前角色卡与服装行都显示该角色名。
+      // 身份由角色卡展示；造型手帖保留唯一选中的服装。
       await expect(page.locator('.character-browse-trigger strong')).toHaveText(name)
-      await expect(page.locator('.popular-outfits-head strong')).toContainText(name)
+      await expect(page.locator('.popular-outfits-head strong')).toHaveText('造型手帖')
+      await expect(page.locator('.outfit-chip.active')).toHaveCount(1)
 
       // 实际强调色生效：--character-accent 的解析色与期望声明值一致。
       // 角色切换有 560ms @property 过渡，用 expect.poll 等待收敛而非固定延时。

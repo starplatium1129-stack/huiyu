@@ -216,7 +216,7 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await chooseCharacter(page, '雷电将军')
   await expect(page.locator('.popular-outfits')).toBeVisible()
-  await expect(page.locator('.popular-nolora-badge')).toContainText('无需 LoRA')
+  await expect(page.getByRole('button', { name: '热门角色 · 无需 LoRA', exact: true })).toHaveAttribute('aria-pressed', 'true')
 
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-card').first().click()
@@ -489,7 +489,7 @@ test('popular creator · switching back to studio immediately restores the nene 
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await chooseCharacter(page, '雷电将军')
-  await expect(page.locator('.popular-nolora-badge')).toContainText('无需 LoRA')
+  await expect(page.getByRole('button', { name: '热门角色 · 无需 LoRA', exact: true })).toHaveAttribute('aria-pressed', 'true')
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-card').first().click()
 

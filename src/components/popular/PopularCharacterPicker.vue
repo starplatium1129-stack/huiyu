@@ -52,7 +52,7 @@ const sourceLabel = computed(() => {
       <span class="character-browse-trigger">
         <CharacterPortrait :src="selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined" :name="selectedCharacter?.displayName || '角色'" />
         <span class="character-current-text">
-          <small>当前角色</small>
+          <small class="character-current-kicker">这一幕的主角</small>
           <strong>{{ selectedCharacter?.displayName || '选择创作角色' }}</strong>
           <small :title="sourceLabel">{{ sourceLabel }}</small>
         </span>
@@ -68,9 +68,8 @@ const sourceLabel = computed(() => {
     <div v-if="selectedCharacter" class="popular-outfits">
       <div class="popular-outfits-head">
         <ArchiveIcon name="wardrobe" class="outfits-head-icon" />
-        <strong>{{ selectedCharacter.displayName }}</strong>
-        <span class="popular-badge">{{ selectedCharacter.recommendedEngine === 'krea2-turbo-fp8' ? '推荐 Krea 2' : '推荐 MiaoMiao v1.2' }}</span>
-        <span class="popular-nolora-badge">无需 LoRA</span>
+        <strong>造型手帖</strong>
+        <span class="outfits-count">{{ selectedCharacter.outfits.length }} 套官方服装</span>
       </div>
       <div class="outfit-chips" role="group" aria-label="官方服装">
         <button v-for="outfit in selectedCharacter.outfits" :key="outfit.id"
@@ -78,7 +77,8 @@ const sourceLabel = computed(() => {
           :class="{ active: selectedOutfit?.id === outfit.id }"
           :aria-pressed="selectedOutfit?.id === outfit.id"
           @click="emit('select-outfit', outfit.id)">
-          {{ outfit.name }}
+          <ArchiveIcon :name="selectedOutfit?.id === outfit.id ? 'success' : 'wardrobe'" aria-hidden="true" />
+          <span>{{ outfit.name }}</span>
         </button>
       </div>
     </div>
@@ -86,17 +86,19 @@ const sourceLabel = computed(() => {
 </template>
 
 <style scoped>
-.popular-picker { display: grid; gap: var(--s-3); }
+.popular-picker { display: grid; gap: var(--s-4); }
 
 /* 当前角色按钮：整体一个点击目标，内部只有「稳定阅读底色」与「强调动作」两层。 */
 .character-browse-button {
   display: grid;
-  gap: var(--s-2);
+  gap: 0;
   width: 100%;
   min-width: 0;
   padding: 0;
-  border: 0;
-  background: transparent;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--bg-surface);
   color: inherit;
   font: inherit;
   text-align: left;
@@ -108,30 +110,28 @@ const sourceLabel = computed(() => {
   align-items: center;
   gap: var(--s-3);
   min-width: 0;
-  padding: var(--s-2) var(--s-3);
-  border-radius: var(--r-lg);
-  background: var(--bg-deep);
+  padding: var(--s-3);
+  background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface) 70%);
   transition: background var(--motion-hover) var(--ease-out);
 }
-.character-current-text { min-width: 0; display: grid; gap: 2px; overflow-wrap: anywhere; }
-.character-current-text strong { color: var(--text-primary); font-size: var(--fs-body-sm); font-weight: 650; line-height: var(--lh-body); }
-.character-current-text small { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
+.character-current-text { min-width: 0; display: grid; gap: var(--s-2); overflow-wrap: anywhere; }
+.character-current-text strong { color: var(--text-primary); font-size: var(--fs-title-xs); font-weight: 650; line-height: var(--lh-body); }
+.character-current-text small { color: var(--text-secondary); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .character-browse-all {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: var(--s-2);
-  min-height: 40px;
+  min-height: 44px;
   padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--accent);
-  border-radius: var(--r-md);
-  background: var(--accent-soft);
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-surface);
   color: var(--accent);
   font: 600 var(--fs-label) var(--font-sans);
   transition: background var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
 }
-.character-browse-button:hover .character-browse-trigger { background: color-mix(in srgb, var(--bg-deep) 78%, var(--bg-hover)); }
-.character-browse-button:hover .character-browse-all { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.character-browse-button:hover .character-portrait { transform: rotate(0deg) translateY(-2px); }
+.character-browse-button:hover .character-browse-all { background: var(--bg-hover); }
 .character-browse-button:active .character-browse-all { transform: scale(.98); }
 
 .character-browser-dialog { margin: auto; width: min(1040px, calc(100vw - 32px)); height: min(800px, calc(100dvh - 48px)); max-height: calc(100dvh - 32px); padding: var(--s-5); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-lg); }
@@ -157,45 +157,44 @@ const sourceLabel = computed(() => {
   height: 14px;
   color: var(--pb-active);
 }
-.popular-badge,
-.popular-nolora-badge {
-  font-size: var(--fs-mono-xs);
-  padding: 2px var(--s-2);
-  border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
-}
-.popular-badge {
-  color: var(--pb-badge-blue);
-  border-color: color-mix(in srgb, var(--info) 40%, transparent);
-}
-.popular-nolora-badge {
-  color: var(--pb-badge-green);
-  border-color: color-mix(in srgb, var(--success) 40%, transparent);
-}
+.outfits-count { margin-left: auto; color: var(--text-secondary); font-size: var(--fs-label-xs); }
 .outfit-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr));
+  gap: var(--s-2);
 }
 .outfit-chip {
-  padding: var(--s-1) var(--s-3);
-  border-radius: var(--r-pill);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 48px;
+  min-width: 0;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-md);
+  text-align: left;
+  line-height: var(--lh-body);
   border: 1px solid var(--border-strong);
-  background: var(--glass-fill);
-  color: inherit;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
   font-size: var(--fs-label-sm);
   cursor: pointer;
 }
 .outfit-chip:hover { border-color: var(--accent); color: var(--accent); }
 .outfit-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .outfit-chip.active {
-  border-color: var(--pb-active);
-  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
-  color: var(--pb-active-text);
+  border-color: var(--accent);
+  background: var(--bg-surface);
+  color: var(--accent);
+  box-shadow: inset 3px 0 var(--accent);
 }
 @media (prefers-reduced-motion: reduce) {
   .character-browse-button:active .character-browse-all { transform: none; }
   .character-browser-dialog[open] { animation: none; }
 }
 @media (max-width: 540px) { .character-browser-dialog { padding: var(--s-3); } }
+.character-browse-trigger :deep(.character-portrait) { width: 86px; height: 116px; border-radius: var(--r-md); border: 1px solid var(--glass-edge); box-shadow: var(--shadow-sm); transform: rotate(-3deg); transition: transform var(--motion-hover) var(--ease-out); }
+.character-current-text .character-current-kicker { color: var(--accent); letter-spacing: .08em; }
+.outfit-chip .archive-icon { width: 16px; height: 16px; flex-shrink: 0; }
+.outfit-chip span { overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) { .character-browse-trigger :deep(.character-portrait) { transition: none; } .character-browse-button:hover .character-portrait { transform: none; } }
 </style>

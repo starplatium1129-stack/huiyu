@@ -158,8 +158,14 @@ async function locateSelected() {
 .directory-pagination button:disabled { color: var(--text-disabled); cursor: default; }
 .directory-catalog button:focus-visible, .directory-pagination select:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .directory-catalog .directory-tools { padding: var(--s-3) 0 0; }
-.directory-catalog .directory-list { min-height: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: var(--s-2); padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
-.directory-catalog .directory-item { margin: 0; min-width: 0; background: var(--bg-deep); border-color: var(--border-soft); }
+.directory-catalog .directory-list { min-height: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: var(--s-2); padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
+.directory-catalog .directory-item { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: var(--s-3); margin: 0; min-width: 0; padding: var(--s-2); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); }
+.directory-catalog .directory-item :deep(.character-portrait) { width: 100%; height: 170px; border: 0; border-radius: var(--r-md); background: var(--bg-elevated); }
+.directory-catalog .directory-item :deep(.character-portrait img) { transform: none; object-position: center 20%; }
+.directory-catalog .directory-label { padding: 0 var(--s-1) var(--s-2); }
+.directory-catalog .directory-label small { white-space: normal; line-height: var(--lh-body); }
+.directory-catalog .directory-selected { position: absolute; top: var(--s-3); right: var(--s-3); display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--accent); border-radius: var(--r-pill); background: var(--bg-surface); }
+.directory-catalog .directory-item:hover { border-color: var(--accent); transform: translateY(-2px); }
 .directory-catalog .directory-item[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
 .directory-catalog .directory-label strong { overflow-wrap: anywhere; line-height: var(--lh-body); }
 .directory-catalog .directory-empty { grid-column: 1 / -1; }
@@ -173,5 +179,5 @@ async function locateSelected() {
   .directory-series { flex: 0 0 auto; flex-direction: row; flex-wrap: nowrap; min-height: 44px; overflow-x: auto; overflow-y: hidden; padding: var(--s-1) 0 var(--s-2); }
   .directory-series button { flex: 0 0 auto; width: auto; white-space: nowrap; }
 }
-@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: 1fr; } }
+@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directory-catalog .directory-item :deep(.character-portrait) { height: 138px; } }
 </style>
