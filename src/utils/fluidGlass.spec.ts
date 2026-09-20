@@ -50,7 +50,7 @@ describe('structural glass optics', () => {
       createImageData: (width: number, height: number) => ({ data: new Uint8ClampedArray(width * height * 4) }),
       putImageData() {},
     } as unknown as CanvasRenderingContext2D)
-    vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue('data:image/png;base64,test')
+    vi.spyOn(HTMLCanvasElement.prototype, 'toBlob').mockImplementation(callback => callback(new Blob(['test'], { type: 'image/png' })))
     vi.useFakeTimers()
     let dispose = () => {}
     try {
@@ -63,7 +63,7 @@ describe('structural glass optics', () => {
       document.documentElement.dataset.glassMaterial = 'liquid'
       await vi.waitFor(() => expect(document.querySelector('.fluid-glass-definitions')).not.toBeNull())
       vi.advanceTimersByTime(100)
-      expect(surface.hasAttribute('data-fluid-refracted')).toBe(true)
+      await vi.waitFor(() => expect(surface.hasAttribute('data-fluid-refracted')).toBe(true))
       expect(document.querySelectorAll('.fluid-glass-definitions filter')).toHaveLength(1)
       expect(installFluidGlass()).toBe(dispose)
       document.documentElement.dataset.glassMaterial = 'light'

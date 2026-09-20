@@ -50,7 +50,9 @@ export function mountFluidGlass(): () => void {
   const candidates = new Set<HTMLElement>()
   const visible = new Set<HTMLElement>()
   const records = new Map<HTMLElement, GlassRecord>()
-  const cache = new Map<string, string>()
+  const cache = new Map<string, Promise<string | undefined>>()
+  const pending = new Map<HTMLElement, string>()
+  let mapQueue = Promise.resolve()
   const svg = svgNode('svg', { 'aria-hidden': 'true', width: '0', height: '0', focusable: 'false' })
   svg.classList.add('fluid-glass-definitions')
   const defs = svgNode('defs')
@@ -59,40 +61,66 @@ export function mountFluidGlass(): () => void {
   let timer = 0, disposed = false
   const enabled = () => root.dataset.glassMaterial === 'liquid' && root.dataset.fluidEffects !== 'low' && !document.hidden && !queries.some(query => query.matches)
 
-  function mapFor(w: number, h: number, r: number) {
-    const key = `${w}:${h}:${r}`
-    const cached = cache.get(key)
-    if (cached) return cached
+  async function buildMap(w: number, h: number, r: number) {
+    if (disposed) return undefined
     const factor = Math.min(1, MAX_MAP_EDGE / Math.max(w, h))
     const canvas = document.createElement('canvas')
     canvas.width = Math.max(2, Math.round(w * factor))
     canvas.height = Math.max(2, Math.round(h * factor))
-    const context = canvas.getContext('2d')
+    // Pixels originate on the CPU; do not upload them only to synchronously read
+    // them back from the GPU for PNG encoding.
+    const context = canvas.getContext('2d', { willReadFrequently: true })
     if (!context) return undefined
     const pixels = context.createImageData(canvas.width, canvas.height)
-    for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
-      const [dx, dy] = fluidLens(w, h, r, (x + .5) * w / canvas.width, (y + .5) * h / canvas.height)
-      const i = (y * canvas.width + x) * 4
-      pixels.data[i] = Math.round(127.5 + dx / 32 * 255)
-      pixels.data[i + 1] = Math.round(127.5 + dy / 32 * 255)
-      pixels.data[i + 2] = 128
-      pixels.data[i + 3] = 255
+    for (let y = 0; y < canvas.height; y++) {
+      if (y % 8 === 0) {
+        await new Promise(resolve => window.setTimeout(resolve, 0))
+        if (disposed) return undefined
+      }
+      for (let x = 0; x < canvas.width; x++) {
+        const [dx, dy] = fluidLens(w, h, r, (x + .5) * w / canvas.width, (y + .5) * h / canvas.height)
+        const i = (y * canvas.width + x) * 4
+        pixels.data[i] = Math.round(127.5 + dx / 32 * 255)
+        pixels.data[i + 1] = Math.round(127.5 + dy / 32 * 255)
+        pixels.data[i + 2] = 128; pixels.data[i + 3] = 255
+      }
     }
     context.putImageData(pixels, 0, 0)
-    const url = canvas.toDataURL()
+    const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'))
+    if (!blob || disposed) return undefined
+    return new Promise<string | undefined>(resolve => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(disposed ? undefined : String(reader.result))
+      reader.onerror = reader.onabort = () => resolve(undefined)
+      reader.readAsDataURL(blob)
+    })
+  }
+
+  function mapFor(w: number, h: number, r: number) {
+    const key = `${w}:${h}:${r}`
+    const cached = cache.get(key)
+    if (cached) return cached
+    // Rapid resizing can supersede a queued shape before it starts. Do not let
+    // obsolete maps delay the latest surface, and allow a later retry of that key.
+    const result: Promise<string | undefined> = mapQueue
+      .then(() => [...pending.values()].includes(key) ? buildMap(w, h, r) : undefined)
+      .catch(() => undefined)
+      .then(url => { if (!url && cache.get(key) === result) cache.delete(key); return url })
+    mapQueue = result.then(() => undefined)
     if (cache.size >= MAX_MAPS) cache.delete(cache.keys().next().value!)
-    cache.set(key, url)
-    return url
+    cache.set(key, result)
+    return result
   }
 
   function remove(element: HTMLElement) {
+    pending.delete(element)
     records.get(element)?.filter.remove()
     records.delete(element)
     element.removeAttribute('data-fluid-refracted')
     element.style.removeProperty('--fluid-glass-filter')
   }
 
-  function update(element: HTMLElement) {
+  async function update(element: HTMLElement) {
     const w = element.offsetWidth, h = element.offsetHeight
     if (w < 2 || h < 2 || w > 4096 || h > 2048) { remove(element); return }
     // Layout dimensions, rather than animated transforms, keep the lens stationary in surface space.
@@ -100,8 +128,16 @@ export function mountFluidGlass(): () => void {
     const r = Math.round(radiusText.endsWith('%') ? parseFloat(radiusText) * Math.min(w, h) / 100 : parseFloat(radiusText) || 0)
     const signature = `${w}:${h}:${r}`
     let record = records.get(element)
-    if (record?.signature === signature) return
-    const url = mapFor(w, h, r)
+    if (record?.signature === signature || pending.get(element) === signature) return
+    pending.set(element, signature)
+    const url = await mapFor(w, h, r)
+    if (disposed || pending.get(element) !== signature) return
+    pending.delete(element)
+    if (!enabled() || !element.isConnected || !visible.has(element) || !element.matches(FLUID_GLASS_SELECTOR)
+      || !element.getClientRects().length || getComputedStyle(element).visibility === 'hidden'
+      || element.parentElement?.closest('[data-fluid-refracted]')) return
+    if (element.offsetWidth !== w || element.offsetHeight !== h) { schedule(); return }
+    record = records.get(element)
     if (!url) return
     if (!record) {
       const id = `huiyu-fluid-lens-${++serial}`
@@ -141,8 +177,9 @@ export function mountFluidGlass(): () => void {
       if (!element.isConnected || !element.getClientRects().length || getComputedStyle(element).visibility === 'hidden') continue
       // Never refract a translucent layer through another lens.
       if (element.parentElement?.closest('[data-fluid-refracted]')) { remove(element); continue }
-      if (!records.has(element) && records.size >= MAX_SURFACES) continue
-      update(element)
+      if (!records.has(element) && !pending.has(element)
+        && new Set([...records.keys(), ...pending.keys()]).size >= MAX_SURFACES) continue
+      void update(element)
     }
   }
   function schedule() { if (!disposed && !timer) timer = window.setTimeout(refresh, 80) }
@@ -192,6 +229,6 @@ export function mountFluidGlass(): () => void {
     queries.forEach(query => query.removeEventListener('change', schedule))
     document.removeEventListener('visibilitychange', schedule)
     for (const element of records.keys()) remove(element)
-    candidates.clear(); visible.clear(); cache.clear(); svg.remove()
+    pending.clear(); candidates.clear(); visible.clear(); cache.clear(); svg.remove()
   }
 }

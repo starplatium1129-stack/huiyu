@@ -1,6 +1,23 @@
 import type { ParticlePoint } from './particleShapes'
 import { isPopularPortraitPending } from './popularPortraitSource.ts'
 
+/** Prepare once per portrait: richer chroma on paper, preserving neutrals and hue. */
+export function lightPortraitColor(hex: string): string {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim())
+  if (!match) return hex
+  const channels = [0, 2, 4].map(offset => parseInt(match[1].slice(offset, offset + 2), 16))
+  const luminance = channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722
+  let saturation = 1.14
+  // Stop at the gamut boundary rather than clipping channels and shifting hue.
+  for (const value of channels) {
+    const delta = value - luminance
+    if (delta > 0) saturation = Math.min(saturation, (255 - luminance) / delta)
+    else if (delta < 0) saturation = Math.min(saturation, -luminance / delta)
+  }
+  return `#${channels.map(value => Math.round(Math.max(0, Math.min(255,
+    luminance + (value - luminance) * saturation))).toString(16).padStart(2, '0')).join('')}`
+}
+
 /** Original dark-theme luminance floor, shared without changing the palette. */
 export function legibleParticleColor(hex: string): string {
   const value = hex.trim()

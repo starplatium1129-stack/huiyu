@@ -142,7 +142,7 @@
   .pb #stepResult > .panel-title { order:0; margin-bottom:0; }
    .pb #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */
-  .pb .scene-card { position:relative; padding:0; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); transition:border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out), box-shadow var(--motion-surface); overflow:hidden; flex-shrink:0; min-height:0; }
+  .pb .scene-card { position:relative; padding:0; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); transition:border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out); overflow:hidden; flex-shrink:0; min-height:0; }
   .pb .scene-card:hover, .pb .scene-card:focus-within { border-color:var(--accent); }
   .pb .scene-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:var(--r-md) 0 0 var(--r-md); }
   .pb .scene-card-main { display:flex; align-items:flex-start; gap:var(--s-3); width:100%; min-height:100%; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; text-align:left; font:inherit; cursor:pointer; }
@@ -155,9 +155,11 @@
   .pb .scene-card .scene-direct-btn { position:absolute; right:var(--s-2); bottom:var(--s-2); display:inline-flex; z-index:var(--z-raised); padding:var(--s-1) var(--s-3); font-size:var(--fs-label-sm); font-weight:600; background:var(--accent); color:var(--text-inverse); border-radius:var(--r-pill); box-shadow:var(--shadow-md); cursor:pointer; border:none; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(4px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out),visibility var(--motion-hover); }
   .pb .scene-card:hover .scene-direct-btn, .pb .scene-card:focus-within .scene-direct-btn { opacity:1; visibility:visible; pointer-events:auto; transform:translateY(0); }
   .pb .scene-card .scene-direct-btn:hover { transform:none; }
-  .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md); animation:obScenePulse .9s ease 1; }
+  .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md); }
+  .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; box-shadow:inset 0 0 0 3px var(--accent-glow); opacity:0; animation:obScenePulse .9s ease 1; }
   .pb .scene-card[data-char-match="0"] { opacity:0.45; }
-  @keyframes obScenePulse { 0%,100%{box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md);} 50%{box-shadow:0 0 0 6px var(--accent-glow),var(--shadow-lg);} }
+  @keyframes obScenePulse { 0%,100%{opacity:0;transform:scale(.985);} 50%{opacity:1;transform:scale(1);} }
+  @media (prefers-reduced-motion: reduce) { .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { animation:none; } }
   .pb .scene-card[data-category="校园"]::before { background:linear-gradient(180deg,#81C784,#388E3C); }
   .pb .scene-card[data-category="祭典・节日"]::before { background:linear-gradient(180deg,#FF8A65,#D84315); }
   .pb .scene-card[data-category="日常"]::before { background:linear-gradient(180deg,#4FC3F7,#0288D1); }

@@ -16,16 +16,19 @@ for (const theme of ['dark', 'light']) {
       await expect(field).toHaveClass(/density-ambient/)
       await expect(field).not.toHaveClass(/is-bare/)
       const background = await field.evaluate(e => getComputedStyle(e).backgroundImage)
-      // The original light theme deliberately removes the dark-theme grid.
-      if (theme === 'dark') expect(background).toContain('linear-gradient')
-      else expect(background).toBe('none')
+      // Portraits use a quiet light pool; grids and drafting frames compete with the dots.
+      expect(background).toContain('radial-gradient')
+      expect(background).not.toContain('linear-gradient')
+      expect(await field.evaluate(e => getComputedStyle(e).backgroundSize)).not.toMatch(/\d+px/)
+      expect(await field.evaluate(e => getComputedStyle(e, '::before').display)).toBe('none')
       await expect(field.locator('.particle-caption')).toHaveText('绫地宁宁')
       const pixels = await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())
       await page.mouse.move(frame!.x + frame!.width / 2, frame!.y + frame!.height / 2)
       await expect.poll(() => field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())).not.toBe(pixels)
       await page.mouse.move(0, 0)
       for (const label of await page.locator('.portrait-stage-heading h2, .portrait-stage-kicker, .portrait-stage-footer p').all()) {
-        expect(await label.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+        // GPU drawing can finish before the page's entrance opacity transition.
+        await expect.poll(() => label.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
       }
       await page.locator('.character-particle-stage').screenshot({ path: info.outputPath(`particles-${theme}-${width}.png`) })
       await page.getByRole('button', { name: '人物原画', exact: true }).focus()
@@ -63,6 +66,44 @@ test('missing point cloud leaves original art and archive available', async ({ p
   await expect(page.getByRole('button', { name: '粒子形象', exact: true })).toBeDisabled()
   await expect(page.locator('.portrait-image')).toBeVisible()
   await expect(page.getByRole('link', { name: '以她开始绘制' })).toHaveAttribute('href', '/prompt-builder?char=nene')
+})
+
+test('portrait uses uncapped GPU drawing and survives context loss', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_theme', 'light')
+    const original = HTMLCanvasElement.prototype.getContext
+    HTMLCanvasElement.prototype.getContext = function (kind: string, options?: unknown) {
+      const context = original.call(this, kind, options as object)
+      if (kind === 'webgl2') (window as unknown as { portraitGpu: WebGL2RenderingContext }).portraitGpu = context as WebGL2RenderingContext
+      return context
+    } as typeof original
+  })
+  await page.goto('/character?character=nene')
+  const field = page.locator('.particle-theatre .has-portrait')
+  await expect(field).toHaveAttribute('data-particle-renderer', 'webgl2')
+  await expect(field).toHaveAttribute('data-particle-frame-limit', '0')
+  await page.evaluate(() => (window as unknown as { portraitGpu: WebGL2RenderingContext }).portraitGpu.getExtension('WEBGL_lose_context')!.loseContext())
+  await expect(field).toHaveAttribute('data-particle-renderer', 'canvas2d')
+  const count = Number(await field.getAttribute('data-particle-count'))
+  expect(count).toBeGreaterThan(1000)
+  expect(await field.locator('canvas').evaluate(canvas => {
+    const ctx = (canvas as HTMLCanvasElement).getContext('2d')!
+    return ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height).data.some((value, index) => index % 4 === 3 && value > 0)
+  })).toBe(true)
+})
+
+test('portrait remains available when WebGL is disabled', async ({ page }) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext
+    HTMLCanvasElement.prototype.getContext = function (kind: string, options?: unknown) {
+      return kind === 'webgl2' ? null : original.call(this, kind, options as object)
+    } as typeof original
+  })
+  await page.goto('/character?character=nene')
+  const field = page.locator('.particle-theatre .has-portrait')
+  await expect(field).toBeVisible()
+  await expect(field).toHaveAttribute('data-particle-renderer', 'canvas2d')
+  await expect(field).toHaveClass(/has-canvas/)
 })
 
 for (const theme of ['dark', 'light']) {

@@ -1,5 +1,11 @@
 import { particleNeedsOutline } from './particlePortrait'
 
+// Shared by Canvas, GPU masks and dirty bounds so theme tuning stays identical.
+export const LIGHT_PARTICLE_SCALE = 1.32
+export const PARTICLE_EDGE_SCALE = 1.08
+export const LIGHT_PARTICLE_EDGE_ALPHA = .38
+export const LIGHT_PARTICLE_TAIL_ALPHA = .16
+
 export interface ParticleBodyPoint {
   x: number; y: number; prevX: number; prevY: number; targetX: number; targetY: number
   tone: 0 | 1 | 2; paint: number; size: number
@@ -37,7 +43,7 @@ export function drawParticleBody(ctx: CanvasRenderingContext2D, particles: reado
     const baseRadius = paints
       ? (radii[pathIndex] || 1)
       : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
-    const radius = baseRadius * (paints && !darkTheme ? 1.35 : 1) * energyScale * particle.size
+    const radius = baseRadius * (paints && !darkTheme ? LIGHT_PARTICLE_SCALE : 1) * energyScale * particle.size
     const dx = particle.x - particle.prevX
     const dy = particle.y - particle.prevY
     if (dx * dx + dy * dy > 0.12) {
@@ -47,9 +53,9 @@ export function drawParticleBody(ctx: CanvasRenderingContext2D, particles: reado
     if (shadowPaths) {
       const shadow = shadowPaths[pathIndex]
       if (shadow) {
-        // 阴影圆：右下偏移 0.5px、半径 ×1.15（比点本体略大，露一圈阴影边）
-        shadow.moveTo(particle.x + radius * 1.12, particle.y)
-        shadow.arc(particle.x, particle.y, radius * 1.12, 0, Math.PI * 2)
+        // A fine, translucent edge separates pale colors without a dark mesh.
+        shadow.moveTo(particle.x + radius * PARTICLE_EDGE_SCALE, particle.y)
+        shadow.arc(particle.x, particle.y, radius * PARTICLE_EDGE_SCALE, 0, Math.PI * 2)
       }
     }
     path.moveTo(particle.x + radius, particle.y)
@@ -59,12 +65,10 @@ export function drawParticleBody(ctx: CanvasRenderingContext2D, particles: reado
   ctx.lineCap = 'round'
   if (paints) {
     ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
-    // 极亮色阴影圆：先画阴影后主点（阴影在点下方，露出右下弧边界定）。
-    // 深色主题 screen 下近黑阴影≈不可见，无副作用。
-    // alpha 0.42：0.5 实测阴影圆偏重、密集白发区显脏（干净度降）。
+    // Pale source colors keep their centers; only their edge gets a soft underlay.
     if (shadowPaths) {
       ctx.globalCompositeOperation = 'source-over'
-      ctx.globalAlpha = .88
+      ctx.globalAlpha = LIGHT_PARTICLE_EDGE_ALPHA
       ctx.fillStyle = underColor
       shadowPaths.forEach((path) => { if (path) ctx.fill(path) })
       ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
@@ -72,7 +76,7 @@ export function drawParticleBody(ctx: CanvasRenderingContext2D, particles: reado
     // 浅色主题拖尾先垫深色衬线：亮色流光在浅底上同样会「隐形」，交互时
     // 涟漪残影要保持可见；深色主题 screen 下亮色自带发光，无需衬线。
     if (!darkTheme) {
-      ctx.globalAlpha = .3
+      ctx.globalAlpha = LIGHT_PARTICLE_TAIL_ALPHA
       ctx.strokeStyle = underColor
       ctx.lineWidth = 2.4
       tailPaths.forEach((path) => ctx.stroke(path))

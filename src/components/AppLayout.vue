@@ -7,7 +7,7 @@
     <!-- 必须是真的 <main>：skip-link 指向这里，之前是 div，跳转链接落在一个普通容器上 -->
     <main id="main" class="page-main" tabindex="-1" :aria-busy="!!pendingPath || undefined">
       <RouterView v-slot="{ Component, route }">
-        <Transition :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled">
+        <Transition :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled" @leave-cancelled="onLeaveCancelled">
           <!-- 作品册缓存：数百张大图的 blob URL 与解码结果常驻内存，
                切到其他页再回来不重新从 IndexedDB 读图，秒开。
                其余页面按需重建（各自 onMounted 拉最新数据）。 -->
@@ -41,8 +41,10 @@ import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import AppNav from './AppNav.vue'
 import RouteAtmosphere from './visual/RouteAtmosphere.vue'
 import GuestGuide from './GuestGuide.vue'
+import { useRoute } from 'vue-router'
 
-const { onBeforeEnter, onEnter, onLeave, onEnterCancelled } = useRouteTransition()
+const currentRoute = useRoute()
+const { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled } = useRouteTransition(() => currentRoute.path)
 const { pendingPath } = useNavigationFeedback()
 // 页脚年份跟随当前年份，避免手写年份过期
 const currentYear = new Date().getFullYear()

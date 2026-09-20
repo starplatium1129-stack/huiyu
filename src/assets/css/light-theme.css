@@ -63,7 +63,7 @@
   --mood-tension-text: #754096;
   --mood-warmth-text: #855014;
   --art-mat: #eeebf0;
-  --particle-surface: #e7e0ed;
+  --particle-surface: #f2eff1;
   --particle-outline: #3c3548;
 }
 /* Every registered character keeps its hue. Bright source accents become readable ink. */
@@ -75,6 +75,12 @@
 :root[data-theme="light"] .semantic-particle-field {
   background: var(--particle-surface);
   border-radius: var(--r-lg);
+}
+:root[data-theme="light"] .semantic-particle-field.has-portrait {
+  background:
+    radial-gradient(ellipse at 50% 42%, var(--bg-surface), transparent 68%),
+    radial-gradient(ellipse at 12% 95%, color-mix(in srgb, var(--archive-blue) 5%, transparent), transparent 58%),
+    var(--particle-surface);
 }
 :root[data-theme="light"] .particle-caption { background: var(--bg-surface); color: var(--text-secondary); padding: var(--s-1) var(--s-2); border-radius: var(--r-sm); }
 :root[data-theme="light"] .semantic-particle-field canvas { opacity: 1; mix-blend-mode: normal; }

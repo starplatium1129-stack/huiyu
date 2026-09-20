@@ -92,6 +92,34 @@ beforeEach(() => {
 afterEach(() => { unmount(); vi.unstubAllGlobals() })
 
 describe('route motion lifecycle and optional capability fallback (009 F4.6a)', () => {
+  it('crossfades the archive pair without blocking input and supports cancellation', () => {
+    const hooks = useRouteTransition(() => '/character')
+    const oldPage = surface(), newPage = surface(), left = counter(), entered = counter()
+    oldPage.el.dataset.routePath = '/popular-scenes?character=nene'
+    newPage.el.dataset.routePath = '/character?character=nene'
+    hooks.onLeave(oldPage.el, left.done)
+    hooks.onEnter(newPage.el, entered.done)
+    assert.equal(oldPage.el.inert, true)
+    assert.equal(newPage.el.inert, false)
+    assert.equal(left.count, 0)
+    assert.deepEqual(oldPage.calls[0], [[{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'ease-out' }])
+    assert.deepEqual(newPage.calls[0][0], [{ opacity: 0, transform: 'translateX(16px)' }, { opacity: 1, transform: 'translateX(0)' }])
+    hooks.onLeaveCancelled(oldPage.el)
+    assert.equal(oldPage.el.inert, false)
+    assert.equal(left.count, 1)
+    hooks.onEnterCancelled(newPage.el)
+    assert.equal(entered.count, 1)
+  })
+
+  it('skips both archive effects with reduced motion', () => {
+    state.reduced = true
+    const hooks = useRouteTransition(() => '/character'), oldPage = surface(), newPage = surface()
+    oldPage.el.dataset.routePath = '/popular-scenes'; newPage.el.dataset.routePath = '/character'
+    const left = counter(), entered = counter()
+    hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
+    assert.equal(left.count, 1); assert.equal(entered.count, 1)
+    assert.equal(oldPage.animations.length + newPage.animations.length, 0)
+  })
   it('preserves the existing opaque 6px / 220ms entrance and allows immediate input', () => {
     const hooks = mountHooks(), { el, calls } = surface(), done = counter()
     hooks.onEnter(el, done.done)

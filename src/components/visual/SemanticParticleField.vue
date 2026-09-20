@@ -23,12 +23,13 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
-import { loadPortraitCloud, samplePortraitPoints, legibleParticleColor, type PortraitCloud } from '@/utils/particlePortrait'
+import { loadPortraitCloud, samplePortraitPoints, legibleParticleColor, lightPortraitColor, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 import { useParticlePerformanceLifecycle } from '@/composables/useParticlePerformanceLifecycle'
 import { preferredParticleCount, type PortraitReferenceSize } from '@/utils/particleDensity'
 import { createParticleSnapshot } from '@/utils/particleSnapshot'
 import { drawParticleBody, type ParticleBodyStyle } from '@/utils/particleBody'
+import { createParticleGpuRenderer } from '@/utils/particleGpu'
 
 const props = withDefaults(defineProps<{
   shape: ParticleShapeId
@@ -89,9 +90,8 @@ let particleOutline = '#3c3548'
 let portraitCloud: PortraitCloud | null = null
 /** 剪影调色板（深色已提亮——深色主题暗部 screen 下不可见，提亮保证可读），与 portraitCloud 同步更新。 */
 let portraitPaints: string[] = []
-/** 原始调色板（未提亮）：浅色主题直接用原图颜色（暗部在浅底上天然清晰），
-    颜色与深色主题一致还原原图（2026-08-16 用户反馈「浅色模式颜色不对」）。 */
-let portraitRaw: string[] = []
+/** Light palette keeps source hues, with a small chroma boost prepared at load time. */
+let portraitLight: string[] = []
 /** 半调点阵：每个调色板色的网点半径（剪影模式统一点径，见 setShape）。 */
 let portraitRadii: number[] = []
 let portraitToken = 0
@@ -134,10 +134,14 @@ let slowFrames = 0
 let qualityScale = 1
 const sampling = ref({ count: 0, spacing: 0, quality: 1 })
 const snapshot = createParticleSnapshot()
+let gpuRenderer: ReturnType<typeof createParticleGpuRenderer> | undefined
 let lastDrawReport = 0
 const performance = useParticlePerformanceLifecycle({
   rebuild: () => setShape(false), start: startLoop, stop: stopLoop, resize,
-  cancelDeferred: () => { if (paletteFrame) { cancelAnimationFrame(paletteFrame); paletteFrame = 0 } },
+  cancelDeferred: () => {
+    if (paletteFrame) { cancelAnimationFrame(paletteFrame); paletteFrame = 0 }
+    gpuRenderer?.release(); gpuRenderer = undefined
+  },
   paletteChanged: schedulePaletteRead,
   visible: () => visible,
 })
@@ -350,20 +354,23 @@ function draw() {
   // 颜色与三档点径（页面识别色 + 层次感）。动效全站统一：静止成像、
   // 无漂移、无指针高光、慢回流物理。
   // 绘制调色板：深色主题用提亮版（暗部 screen 下不可见，提亮保证可读）；
-  // 浅色主题用原始色（暗部在浅底上天然清晰，颜色还原原图——2026-08-16
-  // 用户反馈「浅色模式颜色不对」后改为原始色）。
+  // 浅色主题保持原图色相，适度补偿浅色留白带来的视觉稀释。
   const paints = portraitCloud && portraitPaints.length
-    ? (darkTheme ? portraitPaints : (portraitRaw.length ? portraitRaw : portraitPaints))
+    ? (darkTheme ? portraitPaints : (portraitLight.length ? portraitLight : portraitPaints))
     : null
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
   const style: ParticleBodyStyle = { paints, radii: portraitRadii, darkTheme, energyScale,
     surface: particleSurface, outline: particleOutline, palette }
-  const drawnCount = props.portraitReferenceSize
+  if (paints && gpuRenderer === undefined) gpuRenderer = createParticleGpuRenderer()
+  const accelerated = !!paints && !!gpuRenderer?.draw(ctx, width, height, dpr, particles, style)
+  const drawnCount = accelerated ? particles.length : paints
     ? snapshot.draw(ctx, width, height, dpr, particles, style)
     : (drawParticleBody(ctx, particles, style), particles.length)
   const reportTime = globalThis.performance.now()
   if (host.value && reportTime - lastDrawReport >= 1000) {
     host.value.dataset.particleDrawCount = String(drawnCount)
+    host.value.dataset.particleRenderer = accelerated ? 'webgl2' : 'canvas2d'
+    host.value.dataset.particleFrameLimit = lowEffects.value ? '20' : '0'
     lastDrawReport = reportTime
   }
   // 逸散发光碎屑（优化点 ③）：缓慢漂移 + 正弦闪烁；主粒子静止时它们仍微微
@@ -376,8 +383,8 @@ function draw() {
         : (dot.paint === 2 ? palette.accent : palette.primary)
       // 无衬点：浅色主题下亮色碎屑自然淡出（与深色主题下暗色碎屑淡出对称），
       // 垫衬点实测变成背景上的「屏幕灰尘/噪点」（2026-08-16 vision 三轮）。
-      ctx.globalAlpha = (0.14 + 0.24 * pulse) * energyScale
-      ctx.fillStyle = color
+      ctx.globalAlpha = (darkTheme ? 0.14 + 0.24 * pulse : 0.06 + 0.12 * pulse) * energyScale
+      ctx.fillStyle = darkTheme ? color : palette.accent
       ctx.beginPath()
       ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2)
       ctx.fill()
@@ -485,7 +492,7 @@ async function applyPortrait(id: string) {
   if (!id) {
     portraitCloud = null
     portraitPaints = []
-    portraitRaw = []
+    portraitLight = []
     portraitRadii = []
     portraitActive.value = false
     setShape(true)
@@ -495,7 +502,7 @@ async function applyPortrait(id: string) {
   if (token !== portraitToken) return
   portraitCloud = cloud
   portraitPaints = cloud ? cloud.palette.map(legibleParticleColor) : []
-  portraitRaw = cloud ? cloud.palette.slice() : []
+  portraitLight = cloud ? cloud.palette.map(lightPortraitColor) : []
   // 网点半径在 setShape 里按「点距 × 明暗」自适应计算（依赖粒子数与场域尺寸）
   portraitRadii = portraitPaints.map(() => 1)
   portraitActive.value = cloud !== null
@@ -527,6 +534,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  gpuRenderer?.release()
   snapshot.release()
   performance.active.value = false
   stopLoop()
@@ -575,7 +583,12 @@ onUnmounted(() => {
   opacity:.7;
 }
 /* 图片点阵成像时隐藏中央菱形标记：它透在图片上会读成"幽灵图元" */
-.has-portrait::after { display:none; }
+.has-portrait::before,.has-portrait::after { display:none; }
+.semantic-particle-field.has-portrait {
+  background:
+    radial-gradient(ellipse at 50% 42%, color-mix(in srgb,var(--particle-accent) 8%,transparent),transparent 68%),
+    var(--bg-base);
+}
 canvas { display:none; position:absolute; inset:0; width:100%; height:100%; z-index:var(--z-base); }
 .has-canvas canvas { display:block; }
 .particle-fallback { display:grid; position:absolute; inset:0; place-items:center; }

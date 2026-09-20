@@ -47,6 +47,17 @@ for (const darkTheme of [false, true]) {
           if (p.x > 370 && p.y < 80) { p.prevX -= 4; p.x -= 8; p.y += 10 }
         }
         output.push(compare())
+        // A fast sweep can leave separated wakes; the middle must stay cached.
+        for (const p of particles) {
+          p.x = p.prevX = p.targetX; p.y = p.prevY = p.targetY
+          if ((p.x < 90 && p.y < 65) || (p.x > 365 && p.y > 235)) {
+            p.prevX -= 3; p.x += 8; p.y -= 5
+          }
+        }
+        output.push(compare())
+        cached.context.clearRect(0, 0, width, height)
+        const redrawn = snapshot.draw(cached.context, width, height, dpr, particles, style)
+        if (!darkTheme && redrawn >= particles.length / 2) throw new Error('Separated wakes repainted the untouched middle')
         style.paints = ['#f3cfaa', '#123456', '#aaccee']; snapshot.invalidate(); output.push(compare())
         snapshot.release()
         return output
