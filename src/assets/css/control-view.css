@@ -83,10 +83,9 @@
 .tunnel-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); padding: var(--s-3) 0; margin-bottom: var(--s-3); border-block: 1px solid var(--border-soft); }
 .tunnel-toggle-text { display: block; font-size: var(--fs-label); }
 .tunnel-toggle-hint { display: block; color: var(--text-muted); font-size: var(--fs-label-xs); margin-top: var(--s-1); }
-.tunnel-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; padding: 0; border: 1px solid var(--border-strong); border-radius: var(--r-pill); background: var(--bg-hover); cursor: pointer; }
-.tunnel-switch-knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: var(--r-pill); background: var(--text-secondary); transition: transform var(--motion-hover); }
-.tunnel-switch[aria-checked="true"] { background: var(--accent); }
-.tunnel-switch[aria-checked="true"] .tunnel-switch-knob { transform: translateX(20px); background: var(--text-inverse); }
+.tunnel-switch-control .toggle-slider { width: 44px; height: 24px; }
+.tunnel-switch-control .toggle-knob { width: 18px; height: 18px; top: 3px; left: 3px; }
+.tunnel-switch-control .toggle-knob[data-state='checked'] { transform: translateX(20px); }
 .share-panel > .btn { width: 100%; min-height: 42px; font-size: var(--fs-label); }
 .action-note { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); margin: var(--s-2) 0 var(--s-4); }
 .access-grid { display: grid; gap: var(--s-3); }
@@ -131,4 +130,4 @@
 @media (max-width: 900px) { .control-mobile-nav { display: block; } .nav-local { display: flex; justify-content: space-between; padding: var(--s-3); } .nav-local-actions { display: flex; align-items: center; gap: var(--s-2); } .nav-local-brand { color: var(--text-primary); } .control-rail { display: none; } .control-layout { display: block; } .status-wall { grid-template-columns: repeat(2,minmax(0,1fr)); } .control-work-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .control-shell { padding: var(--s-4); } .mode-grid { grid-template-columns: 1fr; } .overview-heading { flex-direction: column; } .log-panel > summary { flex-wrap: wrap; } }
 @media (max-width: 480px) { .status-wall { grid-template-columns: 1fr; } }
-@media (prefers-reduced-motion: reduce) { .spin { animation: none; } .tunnel-switch-knob { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }

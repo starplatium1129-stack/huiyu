@@ -216,12 +216,12 @@
             <span id="tunnel-switch-label" class="tunnel-toggle-text">开启公网分享通道</span>
             <span class="tunnel-toggle-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问' }}</span>
           </div>
-          <button
-            class="tunnel-switch" type="button" role="switch"
-            :aria-checked="tunnelEnabled ? 'true' : 'false'"
-        aria-labelledby="tunnel-switch-label"
-            @click="toggleTunnel"
-          ><span class="tunnel-switch-knob"></span></button>
+          <ToggleSwitch
+            class="tunnel-switch-control"
+            :model-value="tunnelEnabled"
+            aria-labelledby="tunnel-switch-label"
+            @update:model-value="toggleTunnel"
+          />
         </div>
 
         <button

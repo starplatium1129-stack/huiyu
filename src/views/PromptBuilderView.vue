@@ -33,16 +33,7 @@
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
-          <div class="director-mode-switch" role="group" aria-label="切换绘图工作模式">
-            <button class="director-mode-option" type="button"
-              :class="{ active: pb.directorMode === 'basic' }"
-              :aria-pressed="pb.directorMode === 'basic'"
-              @click="setDirectorMode('basic')">场景模式</button>
-            <button class="director-mode-option" type="button"
-              :class="{ active: pb.directorMode === 'pro' }"
-              :aria-pressed="pb.directorMode === 'pro'"
-              @click="setDirectorMode('pro')">专家模式</button>
-          </div>
+          <DirectorModeSwitch :model-value="pb.directorMode" @update:model-value="setDirectorMode" />
           <button class="focus-mode-btn" type="button"
             :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
             :aria-pressed="pb.focusMode"
@@ -186,6 +177,7 @@
 <script setup lang="ts">
 import '@/assets/css/director.css'
 import { defineAsyncComponent } from 'vue'
+const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
 const PromptResultDialogs = defineAsyncComponent(() => import('@/components/director/PromptResultDialogs.vue'))
 const PromptInspectorRender = defineAsyncComponent(() => import('@/components/director/PromptInspectorRender.vue'))
 const PromptInspectorStyle = defineAsyncComponent(() => import('@/components/director/PromptInspectorStyle.vue'))

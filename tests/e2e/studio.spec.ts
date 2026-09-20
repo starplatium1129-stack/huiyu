@@ -1321,7 +1321,7 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
   await page.locator('.filter-toggle').click();
   await expect(page.locator('.scene-facet-panel')).toBeVisible();
   await expect(page.locator('.mature-hint')).toContainText(/成人 \d+ · 已展示/);
-  const hiddenToggle = page.getByRole('checkbox', { name: /管理已隐藏/ });
+  const hiddenToggle = page.getByRole('switch', { name: /管理已隐藏/ });
   await expect(hiddenToggle).toHaveAccessibleName(/1/);
   await hiddenToggle.check();
   await expect(page.locator('.scene-grid .sc')).toHaveCount(1);

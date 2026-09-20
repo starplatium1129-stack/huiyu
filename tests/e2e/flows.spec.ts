@@ -96,10 +96,9 @@ async function switchToSdEngine(page: Page) {
 async function toggle(page: Page, target: string | Locator, on: boolean) {
   const input = typeof target === 'string' ? page.locator(target) : target;
   if (await input.isChecked() === on) return;
-  // design-system 的开关把 input 做成 `opacity:0; width:0; height:0`，
-  // 真正可点的是同级的 .slider/.voice-switch。所以点包裹的 <label>：
-  // 那是真实用户的点击目标，也是 check() 唯一能稳定命中的路径。
-  await input.locator('xpath=ancestor::label[1]').click();
+  // Reka 开关直接操作语义控件；旧语音复选框仍通过可见 label 操作。
+  if (await input.getAttribute('role') === 'switch') await input.setChecked(on);
+  else await input.locator('xpath=ancestor::label[1]').click();
   await expect(input).toBeChecked({ checked: on });
 }
 
@@ -137,7 +136,7 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
 
   // 固定尺寸与 seed，好让断言不依赖推荐值
   await page.locator('.gen-bar-size select').selectOption('896x1344');
-  await toggle(page, '.ctrl-seed input[type="checkbox"]', true);
+  await toggle(page, '.ctrl-seed [role="switch"]', true);
   await page.locator('.ctrl-seed input[type="number"]').fill('4242');
 
   await page.getByRole('button', { name: '生成图片' }).click();
@@ -186,7 +185,7 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
 
   await openGenerationSettings(page);
   await page.locator('.gen-bar-size select').selectOption('1216x832');
-  await toggle(page, page.getByRole('checkbox', { name: 'hires.fix', exact: true }), true);
+  await toggle(page, page.getByRole('switch', { name: 'hires.fix', exact: true }), true);
   await page.getByRole('button', { name: '生成图片' }).click();
 
   // 分类结果必须是显存不足，而不是笼统的"生成失败"
@@ -843,7 +842,7 @@ test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page
   await page.goto('/prompt-builder?scene=sc001');
   await switchToSdEngine(page);
   await openGenerationSettings(page);
-  await toggle(page, '.ctrl-seed input[type="checkbox"]', true);
+  await toggle(page, '.ctrl-seed [role="switch"]', true);
   await page.locator('.ctrl-seed input[type="number"]').fill('777');
   await page.getByRole('button', { name: '生成图片' }).click();
   await expect(page.locator('.result-image')).toBeVisible();
@@ -870,7 +869,7 @@ test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page
   await page.goto(`/prompt-builder?regen=${entryId}`);
   await openGenerationSettings(page);
   await expect(page.locator('.ctrl-seed input[type="number"]')).toHaveValue('777');
-  await expect(page.locator('.ctrl-seed input[type="checkbox"]')).toBeChecked();
+  await expect(page.locator('.ctrl-seed [role="switch"]')).toBeChecked();
   await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.scene-context-title')).not.toHaveText('');
 

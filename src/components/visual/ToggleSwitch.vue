@@ -1,21 +1,18 @@
 <template>
-  <label class="toggle-switch" :class="{ 'is-disabled': disabled }">
-    <input
-      type="checkbox"
-      :checked="modelValue"
+  <SwitchRoot class="toggle-switch"
+      :model-value="modelValue"
       :disabled="disabled"
       :aria-label="label || undefined"
-      @change="onChange"
-    />
-    <span class="toggle-slider" aria-hidden="true"><span ref="knob" class="toggle-knob"></span></span>
+      @update:model-value="onChange"
+    >
+    <span class="toggle-slider" aria-hidden="true"><SwitchThumb class="toggle-knob" /></span>
     <slot />
-  </label>
+  </SwitchRoot>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { createFluidMotion } from '@/utils/fluidSpring'
-const props = withDefaults(defineProps<{
+import { SwitchRoot, SwitchThumb } from 'reka-ui'
+withDefaults(defineProps<{
   modelValue: boolean
   disabled?: boolean
   /** 无文本时的无障碍标签 */
@@ -27,19 +24,10 @@ const emit = defineEmits<{
   (event: 'change', value: boolean): void
 }>()
 
-function onChange(event: Event) {
-  const value = (event.target as HTMLInputElement).checked
+function onChange(value: boolean) {
   emit('update:modelValue', value)
   emit('change', value)
 }
-const knob = ref<HTMLElement | null>(null)
-let motion: ReturnType<typeof createFluidMotion> | undefined
-onMounted(() => {
-  motion = createFluidMotion([props.modelValue ? 14 : 0], ([x]) => { if (knob.value) knob.value.style.transform = `translateX(${x}px)` }, 5.5)
-  motion.to([props.modelValue ? 14 : 0], true)
-})
-watch(() => props.modelValue, value => motion?.to([value ? 14 : 0]))
-onUnmounted(() => motion?.dispose())
 </script>
 
 <style scoped>
@@ -48,23 +36,15 @@ onUnmounted(() => motion?.dispose())
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: start;
   cursor: pointer;
   color: inherit;
-  font-size: inherit;
+  font: inherit;
   line-height: var(--lh-flush);
   flex-shrink: 0;
-}
-.toggle-switch input {
-  /* 透明但铺满整个开关：保持原生 input 可点/可聚焦（Playwright check() 可达、
-     触屏命中区更大），视觉仍由 .toggle-slider 呈现。width/height 0 会让
-     自动化与辅助技术判定元素不可交互。 */
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
 }
 .toggle-slider {
   position: relative;
@@ -72,9 +52,8 @@ onUnmounted(() => motion?.dispose())
   width: 32px;
   height: 18px;
   flex-shrink: 0;
-  background: var(--border-soft);
+  background: var(--border-strong);
   border-radius: var(--r-pill);
-  transition: background var(--motion-hover), box-shadow var(--motion-hover);
 }
 .toggle-knob {
   position: absolute;
@@ -84,24 +63,35 @@ onUnmounted(() => motion?.dispose())
   bottom: 2.5px;
   background: var(--text-primary);
   border-radius: 50%;
-  transition: background var(--motion-hover);
+  transform: translateX(0);
+  transition: transform var(--motion-hover) var(--ease-out);
 }
-.toggle-switch input:checked + .toggle-slider {
+.toggle-switch[data-state='checked'] .toggle-slider {
   background: var(--accent);
 }
-.toggle-switch input:focus-visible + .toggle-slider {
+.toggle-knob[data-state='checked'] { transform: translateX(14px); background: var(--text-inverse); }
+.toggle-switch:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-.toggle-switch.is-disabled {
+.toggle-switch[data-disabled] {
   /* 审计修复：不用 opacity 压控件（非文字 3:1 也压没了），改用禁用令牌 */
   cursor: not-allowed;
+  color: var(--text-disabled);
 }
-.toggle-switch.is-disabled .toggle-slider {
+.toggle-switch[data-disabled] .toggle-slider {
   background: var(--bg-elevated);
   box-shadow: inset 0 0 0 1px var(--border-soft);
 }
-.toggle-switch.is-disabled .toggle-knob {
+.toggle-switch[data-disabled] .toggle-knob {
   background: var(--text-disabled);
+}
+@media (prefers-reduced-motion: reduce) { .toggle-knob { transition: none; } }
+@media (forced-colors: active) {
+  .toggle-slider { background: Canvas; outline: 1px solid ButtonText; }
+  .toggle-knob { background: ButtonText; }
+  .toggle-switch[data-state='checked'] .toggle-slider { background: Highlight; }
+  .toggle-knob[data-state='checked'] { background: HighlightText; }
+  .toggle-switch[data-disabled] .toggle-knob { background: GrayText; }
 }
 </style>
