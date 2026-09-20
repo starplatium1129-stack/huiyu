@@ -3,7 +3,8 @@
 /**
  * src/composables/useCompareSnapshots.ts 单元测试（Node 内建类型剥离直跑）。
  * 覆盖 2026-08-21 拆分时的关键回归点：双快照轮转、token 防乱序、
- * 非 blob URL 直通。blob 克隆/revoke 属浏览器 API，由 E2E 与人工验证覆盖。
+ * 非 blob URL 直通。blob 克隆/revoke 与卸载由 useCompareSnapshots.spec.ts 覆盖，
+ * compare-snapshot-lifecycle.spec.ts 验证真实浏览器图片解码与 URL 轮转。
  */
 
 const test: typeof import('node:test') = require('node:test');
@@ -48,11 +49,13 @@ test('rotate keeps prev/last rotation semantics', async () => {
 
 test('rapid rotations drop stale snapshots via token guard', async () => {
   const built = [];
+  let started!: () => void;
+  let finishSlow!: () => void;
+  const slowStarted = new Promise<void>(resolve => { started = resolve });
+  const slowFinished = new Promise<void>(resolve => { finishSlow = resolve });
   const cmp = useCompareSnapshots({
     build: async (url) => {
-      // 第一次构建故意更慢：保证它晚于第二次完成，触发过期丢弃
-      const delay = url === 'slow' ? 60 : 5;
-      await flush(delay);
+      if (url === 'slow') { started(); await slowFinished; }
       const snap = { url, tag: url };
       built.push(snap);
       return snap;
@@ -60,8 +63,11 @@ test('rapid rotations drop stale snapshots via token guard', async () => {
   });
 
   cmp.rotate('slow');
+  await slowStarted;
   cmp.rotate('fast');
-  await flush(120);
+  await flush(0);
+  finishSlow();
+  await flush(0);
 
   assert.strictEqual(cmp.lastResult.value?.url, 'fast', 'only latest write wins');
   assert.strictEqual(built.length, 2);
