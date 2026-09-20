@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-type PetFixtureWindow = Window & { petFixture: { open: number; hide: number; closeChat: number; pass: boolean; send(payload: { command: string; character: string; text: string }): void } }
+type PetFixtureWindow = Window & { petFixture: { open: number; hide: number; closeChat: number; drag: number; docked: boolean; pass: boolean; send(payload: { command: string; character: string; text: string }): void } }
 
 async function desktop(page: Page, theme: string, live = false) {
   // The dev asset proxy can point at an older installed gateway; inspect this checkout's bootstrap.
@@ -14,7 +14,7 @@ async function desktop(page: Page, theme: string, live = false) {
     localStorage.setItem('aics_companion_behavior_v1', JSON.stringify({ enabled: false, dnd: true }))
     localStorage.setItem('aics_companion_live2d_v1', String(live))
     localStorage.setItem('aics_chat_v1', JSON.stringify({ version: 3, active: 'natsume', histories: {}, settings: { autoVoice: false, chatProvider: 'local' } }))
-    const fixture = { open: 0, hide: 0, closeChat: 0, docked: true, pass: false, send: (_payload: unknown) => {} }
+    const fixture = { open: 0, hide: 0, closeChat: 0, drag: 0, docked: true, pass: false, send: (_payload: unknown) => {} }
     Object.assign(window, { petFixture: fixture })
     const methods: Record<string, unknown> = {
       isDesktop: true,
@@ -22,6 +22,7 @@ async function desktop(page: Page, theme: string, live = false) {
       getSettings: async () => ({ openAtLogin: false }), getWorkspace: async () => ({ root: '', exists: false }), isPackaged: async () => true,
       getWindowState: async () => ({ maximized: false, focused: true }), getWindowZoom: async () => 1,
       openChat: async () => { fixture.open++ }, hide: () => { fixture.hide++ },
+      startDragging: async () => { fixture.drag++ },
       hideChatWindow: async () => { fixture.closeChat++ }, getChatDocked: async () => fixture.docked,
       setChatDocked: async (value: boolean) => { fixture.docked = value; return value },
       setIgnoreMouseEvents: (value: boolean) => { fixture.pass = value },
@@ -51,7 +52,9 @@ for (const theme of ['light', 'dark']) {
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
       await page.screenshot({ path: testInfo.outputPath(`chat-panel-${theme}-${width}.png`) })
     }
-    await page.getByRole('button', { name: '解除贴靠', exact: true }).click()
+    await page.locator('.companion-chat-drag').dispatchEvent('mousedown', { button: 0 })
+    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.drag)).toBe(1)
+    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.docked)).toBe(false)
     await expect(page.getByRole('button', { name: '贴靠桌宠', exact: true })).toBeVisible()
     await expect(input).toHaveValue('这段草稿暂时不发送')
     await page.getByRole('button', { name: '关闭聊天窗', exact: true }).click()
@@ -76,13 +79,16 @@ for (const theme of ['light', 'dark']) {
       expect(style.background, selector).toBe('rgba(0, 0, 0, 0)')
       expect(style.image, selector).toBe('none')
     }
-    await expect(page.locator('[data-tauri-drag-region]')).toBeVisible()
+    await expect(page.locator('[data-tauri-drag-region]')).toBeHidden()
+    await expect(page.locator('.companion-chat-chip')).toBeHidden()
     await expect(page.locator('.portrait-main')).toBeHidden()
     await page.mouse.move(10, 110)
     await expect(page.locator('.companion-page')).toHaveAttribute('data-ui-hidden', 'true', { timeout: 8000 })
-    await expect(page.locator('.companion-toolbar')).toHaveCSS('opacity', '0')
+    await expect(page.locator('.companion-toolbar')).toBeHidden()
     await page.screenshot({ path: testInfo.outputPath(`pet-quiet-${theme}.png`), omitBackground: true })
     await page.mouse.move(240, 360)
+    await expect(page.locator('.companion-toolbar')).toBeHidden()
+    await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
     await page.getByRole('button', { name: '设置', exact: true }).click()
     await page.getByRole('button', { name: '鼠标穿透', exact: true }).click()
     await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.pass)).toBe(true)
@@ -99,6 +105,7 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('.companion-reply-preview')).toHaveCount(0)
     expect(await page.locator('.live2d-host').boundingBox()).toEqual(stage)
     await page.mouse.move(250, 370)
+    await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
     await page.getByRole('button', { name: '隐藏桌宠', exact: true }).click()
     await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.hide)).toBe(1)
     await page.setViewportSize({ width: 360, height: 520 })
@@ -113,7 +120,9 @@ for (const theme of ['light', 'dark']) {
     await desktop(page, theme, true)
     for (const id of ['natsume', 'hatsune_miku', 'frieren']) {
       await page.mouse.move(20, 110)
+      await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
       await page.getByRole('combobox', { name: '切换陪伴角色', exact: true }).selectOption(id)
+      await expect(page.locator('.companion-toolbar')).toBeHidden()
       await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45000 })
       await expect(page.locator('.live2d-host canvas')).toBeVisible()
       await expect(page.locator('.live2d-host')).toHaveCSS('filter', 'none')

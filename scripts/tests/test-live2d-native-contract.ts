@@ -11,6 +11,17 @@ function read(relativePath: string) {
   return fs.readFileSync(path.join(root, relativePath), 'utf8')
 }
 
+test('native fit and hit testing share a load-time anchor instead of animated drawable bounds', () => {
+  const source = read('desktop-tauri/src-tauri/src/live2d_overlay.rs')
+  assert.match(source, /self\.fit_bounds = Some\(m\.content_bounds\(\)\)/)
+  const frame = source.slice(source.indexOf('fn render_frame('), source.indexOf('fn hit_test('))
+  const hit = source.slice(source.indexOf('fn hit_test('), source.indexOf('fn hit_area_ids('))
+  assert.match(frame, /self\.fit_bounds/)
+  assert.match(hit, /self\.fit_bounds/)
+  assert.doesNotMatch(frame, /\.content_bounds\(\)/)
+  assert.doesNotMatch(hit, /\.content_bounds\(\)/)
+})
+
 test('Native Companion owns the overlay and Atelier stays browser-only', () => {
   const companion = read('src/views/CompanionView.vue')
   const shim = read('desktop-tauri/src-tauri/src/shim.rs')

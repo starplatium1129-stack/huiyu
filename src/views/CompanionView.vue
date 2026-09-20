@@ -6,6 +6,12 @@
     :data-power-mode="desktopBridge ? (onBatteryPower ? 'efficiency' : 'quality') : undefined"
     :data-ui-hidden="uiHidden || undefined"
     :data-presence="presence.kind"
+    :data-controls-open="petGestures.controlsOpen.value || undefined"
+    @contextmenu="petGestures.contextMenu"
+    @pointerdown.capture="petGestures.beginDrag"
+    @click.capture="petGestures.click"
+    @dblclick="petGestures.doubleClick"
+    @change="petGestures.changed"
   >
     <div class="companion-ambience" aria-hidden="true">
       <i></i><i></i><i></i>
@@ -377,14 +383,16 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import { defineAsyncComponent } from 'vue'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import CompanionReplyBubble from '@/components/CompanionReplyBubble.vue'
+import { usePetGestures } from '@/composables/chat/usePetGestures'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
-import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
+const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
@@ -481,4 +489,5 @@ openChatWindow,
 liveDotState,
 liveDotText
 } = useCompanionWorkspace()
+const petGestures = usePetGestures(desktopBridge, openChatWindow)
 </script>

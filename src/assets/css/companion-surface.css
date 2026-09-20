@@ -100,6 +100,11 @@ html.companion-desktop .companion-redesign .companion-chat-chip { min-height:32p
 .companion-chat-redesign .companion-chat-actions { gap: var(--s-2); margin-top: var(--s-2); }
 .companion-chat-redesign .companion-chat-meta { color: var(--text-secondary); }
 .companion-back-latest { align-self: center; flex-shrink: 0; }
+.companion-chat-drag { flex:0 0 auto; padding:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); cursor:grab; user-select:none; }
+/* Pure-pet default. Hover and a previously focused picker must not pin chrome open. */
+html.companion-desktop .companion-page.companion-redesign:not([data-controls-open]) .companion-toolbar,
+html.companion-desktop .companion-page.companion-redesign:not([data-controls-open]) .companion-chat-chip { display:none; }
+html.companion-desktop .companion-page.companion-redesign[data-controls-open] .companion-toolbar { display:flex; opacity:1; visibility:visible; transform:none; pointer-events:auto; }
 @media (max-width: 400px) {
   .companion-drag-handle span { display: none; }
   .companion-chat-redesign .companion-chat-titlebar { padding: var(--s-2); }

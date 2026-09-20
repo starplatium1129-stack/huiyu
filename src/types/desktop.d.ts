@@ -7,6 +7,7 @@ export interface DesktopFile {
 
 export interface CompanionDesktopBridge {
   readonly isDesktop: true
+  startDragging?(): Promise<void>
   hide(): void
   quit(): void
   openAtelier(pathname?: string): void

@@ -68,6 +68,7 @@ pub const COMPANION_SHIM_JS: &str = r#"
 
     window.companionDesktop = {
     isDesktop: true,
+    startDragging: () => waitForTauri().then((api) => api.window.getCurrentWindow().startDragging()),
     setChatDocked: (docked) => invoke('set_chat_docked', { docked }),
     getChatDocked: () => invoke('get_chat_docked'),
     hide: () => invoke('hide'),

@@ -380,6 +380,8 @@ struct RenderContext {
     surface_alpha_mode: wgpu::CompositeAlphaMode,
     renderer: Option<Renderer>,
     model: Option<Model>,
+    // Author motion/physics must not move the camera by changing the drawable bbox.
+    fit_bounds: Option<([f32; 2], [f32; 2])>,
     textures: Vec<renderer::Texture>,
     mouth_level: f32,
     emotion: Option<(String, f32)>,
@@ -463,6 +465,7 @@ impl RenderContext {
             surface_alpha_mode: wgpu::CompositeAlphaMode::PreMultiplied,
             renderer: None,
             model: None,
+            fit_bounds: None,
             textures: Vec::new(),
             mouth_level: 0.0,
             emotion: None,
@@ -588,6 +591,7 @@ impl RenderContext {
             renderer.release_model_resources();
         }
         self.model = None;
+        self.fit_bounds = None;
         self.textures.clear();
         self.character = None;
         self.profile = None;
@@ -673,6 +677,8 @@ impl RenderContext {
                 return Err("no textures".to_string());
             }
         }
+        m.update(0.0);
+        self.fit_bounds = Some(m.content_bounds());
         self.model = Some(m);
         self.textures = textures;
         self.character = Some(character.to_string());
@@ -816,10 +822,7 @@ impl RenderContext {
         let view = frame
             .texture
             .create_view(&wgpu::TextureViewDescriptor::default());
-        let bounds = {
-            let model = self.model.as_ref().ok_or("no model")?;
-            model.content_bounds()
-        };
+        let bounds = self.fit_bounds.ok_or("model framing not initialized")?;
         // 2x 超采样（对齐浏览器 wl-live2d resolution:2）：模型按两倍渲染尺寸
         // 拟合到离屏目标，再线性降采样回 surface——边缘 SSAA + 纹理细节翻倍。
         // 环境变量 L2D_SUPERSAMPLE=0 可关闭（诊断/低配）。
@@ -890,7 +893,7 @@ impl RenderContext {
         } else {
             (rect.width as f32, rect.height as f32)
         };
-        let bounds = model.content_bounds();
+        let Some(bounds) = self.fit_bounds else { return vec![]; };
         let transform = framing.transform(bounds, rw, rh);
         let (canvas_x, canvas_y) = transform.screen_to_canvas(
             nx * rw,

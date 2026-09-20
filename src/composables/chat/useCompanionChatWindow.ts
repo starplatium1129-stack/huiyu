@@ -328,6 +328,14 @@ watch(inputText, () => { void nextTick(resizeComposer) })
 
 const { hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, activeChar)
 const docked = ref(true)
+async function startWindowDrag(event: MouseEvent) {
+  if (event.button !== 0 || !bridge?.startDragging || event.target instanceof Element && event.target.closest('button, input, select, textarea, a')) return
+  event.preventDefault(); event.stopPropagation()
+  try {
+    if (docked.value) docked.value = await bridge.setChatDocked?.(false) ?? false
+    await bridge.startDragging()
+  } catch { listenerError('无法移动聊天窗，请重试。') }
+}
 async function toggleDock() {
   try { docked.value = await bridge?.setChatDocked?.(!docked.value) ?? false }
   catch { listenerError('贴靠未能完成，请重试。') }
@@ -413,5 +421,5 @@ watch(activeChar, () => {
   reconcileAutoListen()
 })
 
-return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock }
+return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock }
 }

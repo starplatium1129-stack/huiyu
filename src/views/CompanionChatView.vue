@@ -1,11 +1,12 @@
 <template>
   <article class="companion-chat-window companion-chat-redesign" :data-character="activeChar">
-    <header class="desktop-titlebar companion-chat-titlebar">
+    <header class="desktop-titlebar companion-chat-titlebar" @mousedown="startWindowDrag">
       <div class="companion-chat-identity">
         <ArchiveIcon name="chat" class="companion-chat-brand-icon" />
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
         <h1 class="sr-only companion-chat-title">与{{ currentCharacter.name }}聊天</h1>
       </div>
+      <span class="companion-chat-drag" title="拖动聊天窗会解除贴靠">拖动</span>
       <div class="titlebar-controls">
         <AppearanceButton class="companion-chat-mini" />
         <button v-if="bridge?.setChatDocked" class="companion-chat-mini" type="button" :aria-pressed="docked" :aria-label="docked ? '解除贴靠' : '贴靠桌宠'" :title="docked ? '解除贴靠' : '贴靠桌宠'" @click="toggleDock"><ArchiveIcon name="pin" /></button>
@@ -151,5 +152,5 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
-const { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock } = useCompanionChatWindow()
+const { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock } = useCompanionChatWindow()
 </script>
