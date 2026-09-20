@@ -29,7 +29,7 @@
 .gallery-search-clear:hover { color:var(--text-primary); }
 .gallery-search-clear:focus-visible { outline:2px solid var(--accent); outline-offset:1px; border-radius:var(--r-sm); }
 .gallery-filter { min-height:36px; padding:0 15px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover); }
-.gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
+.gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:color-mix(in srgb,var(--accent) 8%,var(--bg-surface)); color:var(--accent); }
 .gallery-project { min-height:36px; min-width:140px; padding:0 34px 0 13px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; outline:none; }
 .gallery-project:focus { border-color:var(--accent); }
 .gallery-toolbar-note { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); text-align:right; }
@@ -99,7 +99,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 }
 .artwork-caption { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); color:var(--text-primary); background:var(--bg-surface); text-align:left; }
 .artwork-caption-copy { min-width:0; }
-.artwork-name { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-label-sm); font-weight:700; }
+.artwork-name { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-body-sm); font-weight:600; }
 .artwork-date { display:block; margin-top:var(--s-1); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .artwork-mark { flex:0 0 auto; color:var(--accent); font-size:var(--fs-label-sm); }
 

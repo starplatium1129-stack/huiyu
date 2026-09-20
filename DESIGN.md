@@ -50,12 +50,12 @@ typography:
     lineHeight: 1.7
   label:
     fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
-    fontSize: "0.85rem"
+    fontSize: "0.875rem"
     fontWeight: 600
-    lineHeight: 1.4
+    lineHeight: 1.5
   mono:
     fontFamily: "JetBrains Mono, Fira Code, Consolas, monospace"
-    fontSize: "0.82rem"
+    fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.7
 spacing:

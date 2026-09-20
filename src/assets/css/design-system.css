@@ -141,13 +141,13 @@
      mono-*  机读标签(kicker/badge/seed)   |  label-*  控件与元数据
      body-*  阅读正文                       |  title-*  标题
      只用这些档位。新增字号前先确认现有档位不够用。 */
-  --fs-mono-xs:  0.62rem;  /* kicker / 极小机读标签 */
-  --fs-mono-sm:  0.68rem;  /* badge / 单位 / 角标 */
-  --fs-label-xs: 0.72rem;  /* 密集控件标签 */
-  --fs-label-sm: 0.78rem;  /* 常规控件标签 */
-  --fs-label:    0.82rem;  /* DESIGN.md typography.mono */
-  --fs-body-sm:  0.85rem;  /* DESIGN.md typography.label */
-  --fs-body:     0.95rem;  /* 次级正文 */
+  --fs-mono-xs:  0.75rem;  /* 装饰编号，不承载操作说明 */
+  --fs-mono-sm:  0.8125rem; /* 单位 / 角标 */
+  --fs-label-xs: 0.8125rem; /* 紧凑元数据 */
+  --fs-label-sm: 0.875rem; /* 常规控件标签 */
+  --fs-label:    0.875rem; /* 参数与工具标签 */
+  --fs-body-sm:  0.9375rem; /* 说明正文 */
+  --fs-body:     1rem;     /* 阅读正文 */
   --fs-body-lg:  1rem;     /* DESIGN.md typography.body */
   --fs-title-xs: 1.05rem;  /* 卡片标题 */
   --fs-title-sm: 1.2rem;   /* h3 */
@@ -170,8 +170,8 @@
      loose  长文阅读（DESIGN.md typography.body 的 1.7 落在这档） */
   --lh-flush: 1;
   --lh-tight: 1.25;
-  --lh-label: 1.4;
-  --lh-body: 1.55;
+  --lh-label: 1.5;
+  --lh-body: 1.65;
   --lh-loose: 1.7;
 
   /* ---- Character accents (route-aware; director may animate) ---- */

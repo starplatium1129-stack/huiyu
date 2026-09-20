@@ -165,7 +165,6 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   const generationProgress = computed<number | null>(() => drawEngine.value === 'sd'
     ? (sd.progress.value === null ? null : sd.progress.value / 100)
     : animaState.value.progress)
-  const generationProgressStyle = computed(() => ({ '--progress': `${(generationProgress.value ?? 0) * 100}%` }))
   const generationError = computed(() => drawEngine.value === 'sd' ? sd.errorMsg.value : animaState.value.errorMsg)
   const generationStopped = computed(() => drawEngine.value === 'sd' ? sd.statusText.value === '已停止' : animaState.value.phase === 'cancelled')
   const engineStatusText = computed(() => {
@@ -300,7 +299,6 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     engineOnline,
     generationBusy,
     generationProgress,
-    generationProgressStyle,
     generationError,
     generationStopped,
     engineStatusText,

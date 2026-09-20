@@ -43,17 +43,12 @@
       </button>
     </section>
 
-    <div v-if="t8State" class="video-t8-bar" :data-state="t8State.available ? 'fast' : 'slow'" role="status">
-      <span class="video-t8-dot"></span>
-      {{ t8State.reason }}
-    </div>
-
-    <nav v-if="selectedMode !== 'shots'" class="video-jump-nav" aria-label="视频工作区导航"><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">任务状态</a></nav>
+    <nav v-if="selectedMode !== 'shots'" class="video-jump-nav" aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">01 镜头描述</a><a href="#video-settings">02 画幅与时长</a><a href="#video-queue">03 查看成片</a></nav>
     <div class="video-workspace">
       <div class="video-creation-column">
         <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
         <template v-else>
-        <section v-if="selectedMode === 'image'" class="video-panel video-first-frame-panel">
+        <section v-if="selectedMode === 'image'" id="video-frames" class="video-panel video-first-frame-panel">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
               <span class="video-step">00 · 首帧</span>
@@ -62,16 +57,18 @@
             <button v-if="videoImageUrl" class="btn btn-ghost" type="button" @click="clearFirstFrame">移除</button>
           </div>
           <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
-          <p v-else class="video-queue-empty">
+          <label v-else class="video-upload-drop video-upload-drop--single" :data-busy="uploadingImage || undefined">
+            <input type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
             <ArchiveIcon name="image" />
-            <span>在创作工作台生成图片后点击「生成短片」即可带到这里；图片将作为首帧，自动锁定角色与场景。</span>
-          </p>
+            <strong>{{ uploadingImage ? '正在准备首帧…' : '选一张画，让故事开始' }}</strong>
+            <span>点击上传首帧，或在绘制台点击「生成短片」带入作品。</span>
+          </label>
           <p v-if="videoImageUrl" class="video-install-note">
-            这张图将作为故事的起点。画幅默认跟随原图，你只需描述接下来发生的动作。
+            输入首帧 · 这张图是故事的起点，生成的短片将在「当前成片」中展示。选择「跟随原图」可保留画面比例。
           </p>
         </section>
 
-        <section v-else-if="selectedMode === 'first-last-frame'" class="video-panel video-first-frame-panel">
+        <section v-else-if="selectedMode === 'first-last-frame'" id="video-frames" class="video-panel video-first-frame-panel">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
               <span class="video-step">00 · 首尾帧</span>
@@ -81,20 +78,20 @@
           </div>
           <div class="video-dual-frame-grid">
             <div class="video-frame-slot">
-              <span class="field-label">首帧</span>
+              <span class="field-label">A · 故事开始 / 输入首帧</span>
               <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
-                <input type="file" accept="image/*" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
+                <input type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
                 <ArchiveIcon name="image" />
                 <span>上传首帧，或从工作台「生成短片」带入</span>
               </label>
               <button v-if="videoImageUrl" class="btn btn-ghost btn-block" type="button" @click="clearFirstFrame">移除首帧</button>
             </div>
             <div class="video-frame-slot">
-              <span class="field-label">尾帧</span>
+              <span class="field-label">B · 故事落点 / 输入尾帧</span>
               <img v-if="lastFrameUrl" class="video-first-frame" :src="lastFrameUrl" alt="视频尾帧" />
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
-                <input type="file" accept="image/*" :disabled="uploadingImage" @change="handleFrameFile($event, 'last')" />
+                <input type="file" accept="image/*" aria-label="上传视频尾帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'last')" />
                 <ArchiveIcon name="image" />
                 <span>上传尾帧</span>
               </label>
@@ -102,7 +99,7 @@
             </div>
           </div>
           <p class="video-install-note">
-            首帧决定开始，尾帧决定结束。在镜头描述中写下两幅画面之间的动作，画幅默认跟随首帧。
+            两张图都是输入画面。在下方描述它们之间发生的动作，生成后再检查实际过渡；选择「跟随原图」可沿用首帧比例。
           </p>
         </section>
 
@@ -110,12 +107,13 @@
           <div class="video-panel-heading">
             <div>
               <span class="video-step">01 · 镜头意图</span>
-              <h2>你想看到什么发生？</h2>
+              <h2>{{ selectedMode === 'text' ? '把脑海中的一幕，写成镜头' : selectedMode === 'image' ? '这张画里，接下来会发生什么？' : '从开始到结束，故事怎样发生？' }}</h2>
             </div>
             <span class="video-count" :data-warning="prompt.length > 900 || undefined">
               {{ prompt.length }} / 4000
             </span>
           </div>
+          <p class="video-brief-note">{{ selectedMode === 'text' ? '先写人物与地点，再写一个动作。短镜头更适合一件清楚的小事。' : selectedMode === 'image' ? '画面已经交代人物与场景，重点写动作、风与光的变化，以及镜头如何移动。' : '写清两幅画面之间的动作与镜头变化，首尾画面相近时更容易保持连贯。' }}</p>
           <textarea
             v-model="prompt"
             aria-label="镜头描述"
@@ -191,7 +189,7 @@
               </button>
             </div>
             <p class="video-duration-note">
-              快速档适合试镜找方向；标准档是 16GB 官方常规画布；精细档是上限档，时间明显变长。
+              快速档适合试镜找方向；标准档用于日常创作；精细档保留更多细节，也需要更长时间。
             </p>
           </div>
 
@@ -253,6 +251,71 @@
       </div>
 
       <aside class="video-side-column">
+        <section id="video-queue" class="video-panel video-queue-panel" aria-live="polite">
+          <div class="video-panel-heading video-panel-heading--compact">
+            <div>
+              <span class="video-step">任务队列</span>
+              <h2>当前成片</h2>
+            </div>
+            <span v-if="t8State" class="video-t8-badge" :data-state="t8State.available ? 'fast' : 'slow'">
+              <ArchiveIcon :name="t8State.available ? 'lightning' : 'warning'" />
+              <span>{{ t8State.available ? 'T8 双时钟加速' : '原生采样（慢）' }}</span>
+            </span>
+          </div>
+          <div v-if="!job" class="video-queue-empty">
+            <ArchiveIcon name="play" />
+            <span><strong>短片会在这里与你见面</strong>准备镜头与画面后开始生成。这里会显示进度、失败原因和完成的短片。</span>
+          </div>
+          <template v-else>
+            <div class="video-job-head">
+              <span class="video-job-state" :data-state="job.status">{{ jobStatusLabel }}</span>
+              <time>{{ formatTime(job.createdAt) }}</time>
+            </div>
+            <div class="video-job-meta">
+              <span>{{ job.width }} × {{ job.height }}</span>
+              <span>{{ job.duration }} 秒</span>
+              <span>Seed {{ job.seed }}</span>
+            </div>
+            <video v-if="job.status === 'succeeded' && job.resultUrl" :key="job.resultUrl" class="video-player video-player--queue" :src="job.resultUrl" aria-label="生成的视频成片" controls playsinline preload="metadata"></video>
+            <a v-if="job.status === 'succeeded' && job.resultUrl" class="btn btn-ghost btn-block" :href="job.resultUrl" download>下载这段故事 · MP4</a>
+            <p v-if="job.status === 'cancelled'" class="video-install-note">任务已取消。镜头描述和输入画面仍在，可以调整后重新生成。</p>
+            <p v-if="job.status === 'queued'" class="video-install-note">镜头已进入队列，等待本机开始处理。</p>
+            <p v-if="job.status === 'cancelling'" class="video-install-note">正在等待本机停止任务，完成后可以重新生成。</p>
+            <div v-if="job.status === 'queued' || job.status === 'running' || job.status === 'cancelling'" class="video-progress">
+              <i :style="{ '--progress': progressPercent + '%' }"></i>
+            </div>
+            <p v-if="job.status === 'running' && job.estimatedSeconds" class="video-job-eta">
+              {{ progressPercent }}% · 已 {{ formatSeconds(job.elapsedSeconds) }} / 预估 {{ formatSeconds(job.estimatedSeconds) }}
+            </p>
+            <p v-if="progressWarning" class="video-inline-message" :class="progressWarning.level === 'danger' ? 'error' : 'warning'">
+              {{ progressWarning.text }}
+            </p>
+            <!--
+              任务失败：后端给的是 ComfyUI 的英文技术串（节点名 / 张量形状 /
+              traceback）。走一遍分类器换成中文结论，原始串折进「技术细节」，
+              与出图路径的失败呈现对齐（2026-08-30 UX 审计）。
+            -->
+            <div v-if="jobErrorReport" class="video-inline-message error" role="alert">
+              <p>{{ jobErrorReport.title }}：{{ jobErrorReport.message }}</p>
+              <details v-if="jobErrorReport.details" class="video-error-detail">
+                <summary>技术细节</summary>
+                <code>{{ jobErrorReport.details }}</code>
+              </details>
+            </div>
+            <button
+              v-if="job.status === 'queued' || job.status === 'running'"
+              class="btn btn-danger btn-block"
+              type="button"
+              :disabled="cancelling"
+              @click="cancelJob"
+            >{{ cancelling ? '正在取消…' : '取消任务' }}</button>
+          </template>
+          <details v-if="t8State" class="video-advanced">
+            <summary>生成速度与加速状态</summary>
+            <p class="video-t8-bar" :data-state="t8State.available ? 'fast' : 'slow'">{{ t8State.reason }}</p>
+          </details>
+        </section>
+
         <section class="video-panel video-environment-panel">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
@@ -289,13 +352,8 @@
           </RouterLink>
         </section>
 
-        <section class="video-panel video-model-catalog">
-          <div class="video-panel-heading video-panel-heading--compact">
-            <div>
-              <span class="video-step">模型目录</span>
-              <h2>按能力逐步扩展</h2>
-            </div>
-          </div>
+        <details class="video-panel video-model-catalog">
+          <summary>更换生成模型 <span>{{ activeModel?.label || '等待环境检测' }}</span></summary>
           <button
             v-for="model in status?.models || []"
             :key="model.id"
@@ -313,63 +371,9 @@
               {{ model.available ? '已就绪' : (model.executable ? '待安装' : '待适配') }}
             </em>
           </button>
-        </section>
+        </details>
 
-        <section id="video-queue" class="video-panel video-queue-panel" aria-live="polite">
-          <div class="video-panel-heading video-panel-heading--compact">
-            <div>
-              <span class="video-step">任务队列</span>
-              <h2>当前成片</h2>
-            </div>
-            <span v-if="t8State" class="video-t8-badge" :data-state="t8State.available ? 'fast' : 'slow'">
-              <ArchiveIcon :name="t8State.available ? 'lightning' : 'warning'" />
-              <span>{{ t8State.available ? 'T8 双时钟加速' : '原生采样（慢）' }}</span>
-            </span>
-          </div>
-          <div v-if="!job" class="video-queue-empty">
-            <ArchiveIcon name="play" />
-            <span>提交后可离开描述区继续调整；页面会持续轮询任务状态。</span>
-          </div>
-          <template v-else>
-            <div class="video-job-head">
-              <span class="video-job-state" :data-state="job.status">{{ jobStatusLabel }}</span>
-              <time>{{ formatTime(job.createdAt) }}</time>
-            </div>
-            <div class="video-job-meta">
-              <span>{{ job.width }} × {{ job.height }}</span>
-              <span>{{ job.duration }} 秒</span>
-              <span>Seed {{ job.seed }}</span>
-            </div>
-            <div v-if="job.status === 'queued' || job.status === 'running' || job.status === 'cancelling'" class="video-progress">
-              <i :style="{ '--progress': progressPercent + '%' }"></i>
-            </div>
-            <p v-if="job.status === 'running' && job.estimatedSeconds" class="video-job-eta">
-              {{ progressPercent }}% · 已 {{ formatSeconds(job.elapsedSeconds) }} / 预估 {{ formatSeconds(job.estimatedSeconds) }}
-            </p>
-            <p v-if="progressWarning" class="video-inline-message" :class="progressWarning.level === 'danger' ? 'error' : 'warning'">
-              {{ progressWarning.text }}
-            </p>
-            <!--
-              任务失败：后端给的是 ComfyUI 的英文技术串（节点名 / 张量形状 /
-              traceback）。走一遍分类器换成中文结论，原始串折进「技术细节」，
-              与出图路径的失败呈现对齐（2026-08-30 UX 审计）。
-            -->
-            <div v-if="jobErrorReport" class="video-inline-message error" role="alert">
-              <p>{{ jobErrorReport.title }}：{{ jobErrorReport.message }}</p>
-              <details v-if="jobErrorReport.details" class="video-error-detail">
-                <summary>技术细节</summary>
-                <code>{{ jobErrorReport.details }}</code>
-              </details>
-            </div>
-            <button
-              v-if="job.status === 'queued' || job.status === 'running'"
-              class="btn btn-danger btn-block"
-              type="button"
-              :disabled="cancelling"
-              @click="cancelJob"
-            >{{ cancelling ? '正在取消…' : '取消任务' }}</button>
-          </template>
-        </section>
+
       </aside>
     </div>
 
@@ -381,7 +385,7 @@
         </div>
         <a class="btn btn-ghost" :href="job.resultUrl" download>下载 MP4</a>
       </div>
-      <video :key="job.resultUrl" class="video-player" :src="job.resultUrl" controls playsinline preload="metadata"></video>
+      <a class="btn btn-ghost" href="#video-queue">回到成片播放器</a>
       <div class="video-review-checklist">
         <span>身份是否稳定</span>
         <span>脸与手是否连续</span>

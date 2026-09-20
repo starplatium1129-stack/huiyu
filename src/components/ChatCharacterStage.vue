@@ -17,7 +17,13 @@
         <span>{{ character.roomCode }}</span>
         <small>{{ character.roomMood }}</small>
       </div>
-      <img class="portrait-main" :src="character.image" :alt="character.name" />
+      <img v-if="!portraitFailed" :key="staticPortraitSource" class="portrait-main" :src="staticPortraitSource" :alt="character.name" @error="portraitFailed = true" />
+      <span v-if="usesMoodPortrait && !portraitFailed && !live2d.ready.value" class="stage-reference-caption">陪伴氛围参考 · 既有场景样张</span>
+      <div v-if="portraitFailed && !live2d.ready.value" class="stage-portrait-missing" role="status">
+        <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
+        <span>立绘暂未加载，对话仍可继续</span>
+        <button type="button" class="btn btn-ghost btn-sm" @click="portraitFailed = false">重新加载立绘</button>
+      </div>
       <div ref="live2dHostRef" class="live2d-host" aria-hidden="true"></div>
       <div class="voice-halo" aria-hidden="true"></div>
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
@@ -145,6 +151,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useMoodReferences } from '@/composables/useMoodReferences'
 import {
   type CharacterConfig,
 } from '@/config/characters'
@@ -198,6 +205,12 @@ const emit = defineEmits<{
 }>()
 
 const stageRef = ref<HTMLElement>()
+const portraitFailed = ref(false)
+const { available: moodPortraits } = useMoodReferences(['sc001', 'sc022'])
+const moodPortraitId = computed(() => props.activeId === 'nene' ? 'sc001' : props.activeId === 'natsume' ? 'sc022' : '')
+const usesMoodPortrait = computed(() => (props.surface || 'room') === 'room' && moodPortraits.value.has(moodPortraitId.value))
+const staticPortraitSource = computed(() => usesMoodPortrait.value ? `/scene-showcase/thumbs/${moodPortraitId.value}.jpg` : props.character.image)
+watch(staticPortraitSource, () => { portraitFailed.value = false })
 const controlsRef = ref<HTMLDetailsElement>()
 function openSettings() { if (controlsRef.value) { controlsRef.value.open = true; controlsRef.value.querySelector('summary')?.focus() } }
 function closeSettings() { if (controlsRef.value) { controlsRef.value.open = false; controlsRef.value.querySelector('summary')?.focus() } }

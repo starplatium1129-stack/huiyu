@@ -10,13 +10,11 @@
     >
       <div class="page-kicker">Color script</div>
       <h1 class="title">色彩情绪</h1>
-      <p class="subtitle">诉说今日的心境与情绪，为画面的每一缕光色与阴影谱写专属基调。</p>
+      <p class="subtitle">翻开光色手帖，看看一束光、一抹颜色，怎样让故事有了心情。</p>
     </ArchivePageHero>
     <CreativeLibraryNav />
 
-    <div class="info-callout" data-reveal>
-      <strong>◎ 色彩美学</strong> | 色相与情绪深度共鸣（暖金之温馨、樱粉之悸动、幽蓝之静谧深邃）。选择一抹情绪，工坊将自动推演出对应的色彩语言、光影理由与提示词标签。
-    </div>
+    <ColorLightNotebook @choose="chooseMood" />
 
     <p class="emphasis-plain mb-3">今日心境色板 · Mood Palette</p>
     <div class="mood-grid stagger-container" data-reveal data-reveal-delay="1">
@@ -24,6 +22,7 @@
         v-for="m in MOODS" :key="m.id"
         type="button" class="mood-card"
         :class="{ active: selected?.id === m.id }"
+        :aria-pressed="selected?.id === m.id"
         :style="{ '--mood-color': m.color }"
         @click="select(m)"
       >
@@ -38,7 +37,7 @@
     </div>
 
     <Transition name="fade-up">
-      <div v-if="selected" class="result-panel card-level-3 show">
+      <div v-if="selected" ref="resultPanel" class="result-panel card-level-3 show" tabindex="-1">
         <h3>
           <span class="mood-icon" :style="{ '--mood-color': selected.color }"><ArchiveIcon :name="selected.iconName" /></span>
           {{ selected.name }} → 色彩 → 光照
@@ -61,7 +60,7 @@
         <div class="prompt-label">自动翻译 Prompt</div>
         <div class="prompt-code" v-html="colorizedPrompt"></div>
         <div class="result-actions">
-          <button class="btn btn-primary" type="button" @click="copyPrompt">⧉ 复制 Prompt</button>
+          <button class="btn btn-primary" type="button" @click="copyPrompt"><ArchiveIcon name="copy" /> 复制 Prompt</button>
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 带入工作台使用</RouterLink>
           <button class="btn btn-ghost" type="button" @click="selected = null"><ArchiveIcon name="refresh" /> 换一个情绪</button>
@@ -69,7 +68,7 @@
       </div>
     </Transition>
 
-    <h2 class="section-title spaced-lg">◈ 美术指导 · 色彩对照</h2>
+    <h2 class="section-title spaced-lg">美术指导 · 色彩语言</h2>
     <p class="note mb-3">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>
     <div class="art-ref">
       <div class="art-ref-card good">
@@ -86,7 +85,7 @@
       </div>
     </div>
 
-    <h2 class="section-title spaced">◉ 光影指导 · 让光芒诉说故事</h2>
+    <h2 class="section-title spaced">光影指导 · 让光芒诉说故事</h2>
     <p class="note mb-3">每一束光线都有出现的理由，它服务于此刻的空气、时间与叙事。</p>
     <div class="lighting-ref">
       <div v-for="l in LIGHTINGS" :key="l.name" class="lighting-mini">
@@ -101,7 +100,8 @@
 <script setup lang="ts">
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
-import { ref, computed } from 'vue'
+import ColorLightNotebook from '@/components/library/ColorLightNotebook.vue'
+import { ref, computed, nextTick } from 'vue'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
@@ -140,6 +140,14 @@ const MOODS: ColorMood[] = [
 ]
 
 const selected = ref<ColorMood | null>(null)
+const resultPanel = ref<HTMLElement | null>(null)
+
+async function chooseMood(id: string) {
+  selected.value = MOODS.find(mood => mood.id === id) ?? null
+  await nextTick()
+  resultPanel.value?.focus({ preventScroll: true })
+  resultPanel.value?.scrollIntoView({ block: 'nearest' })
+}
 
 function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 function norm(t: string) { return t.split(',').map(s => s.trim().replace(/[\s-]+/g,'_')).join(', ') }
@@ -183,8 +191,6 @@ function exportTxt() {
 </script>
 
 <style scoped>
-.info-callout { background:var(--accent-soft); border:1px solid var(--accent); border-radius:var(--r-md); padding:var(--s-3) var(--s-4); margin-bottom:var(--s-5); font-size:var(--fs-body-sm); }
-.info-callout strong { color:var(--accent); }
 .emphasis-plain { color:var(--text-primary); font-weight:600; }
 .mb-3 { margin-bottom:var(--s-3); }
 .note { color:var(--text-muted); font-size:var(--fs-body-sm); }
@@ -226,7 +232,7 @@ function exportTxt() {
 .lighting-mini { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); text-align:center; }
 .lighting-icon { margin-bottom:2px; font-size:var(--fs-title); }
 .lighting-name { font-size:var(--fs-body-sm); font-weight:600; }
-.lighting-reason { font-size:var(--fs-label-xs); color:var(--accent); font-style:italic; margin-top:2px; line-height:var(--lh-tight); }
+.lighting-reason { font-size:var(--fs-body-sm); color:var(--text-secondary); margin-top:var(--s-2); line-height:var(--lh-body); }
 
 .fade-up-enter-active { transition:opacity var(--motion-route),transform var(--motion-route); }
 .fade-up-enter-from { opacity:0; transform:translateY(12px); }

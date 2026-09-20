@@ -91,13 +91,13 @@
       <div class="director-col col-center" id="drawing-canvas">
 
         <DirectorStagePanel
+          :canvas-size="genBarSize"
           :display-result-url="displayResultUrl"
           :generation-busy="generationBusy"
           :generation-error="generationError"
           :generation-stopped="generationStopped"
           :generation-status-text="generationStatusText"
           :generation-progress="generationProgress"
-          :generation-progress-style="generationProgressStyle"
           :anima-elapsed="animaState.elapsedSeconds"
           :anima-current-node="animaState.currentNode || ''"
           :draw-engine="drawEngine"
@@ -230,7 +230,6 @@ generationError,
 generationStopped,
 generationStatusText,
 generationProgress,
-generationProgressStyle,
 animaState,
 drawEngine,
 inpaintOriginalUrl,

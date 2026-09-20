@@ -16,8 +16,8 @@
       aria-label="成片监看区"
     >
       <div class="stage-chrome">
-        <span>画布预览</span>
-        <span class="stage-ready">
+        <span>绘制画布</span>
+        <span class="stage-ready" role="status" aria-live="polite">
           {{ generationBusy ? '正在显影' : (generationError ? '需要处理' : (generationStopped ? '已暂停' : '等待创作')) }}
         </span>
       </div>
@@ -25,6 +25,8 @@
       <img class="stage-muse nene" :src="stageMuseUrl.nene" alt="" aria-hidden="true" decoding="async">
       <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
       <div class="stage-message">
+        <div class="stage-content">
+        <DirectorSceneReference :size="canvasSize" />
         <div v-if="generationBusy" class="stage-generating-copy">
           <div class="stage-generating-title">心动画面正在显影…</div>
           <div class="stage-generating-sub">
@@ -53,12 +55,12 @@
           </div>
         </div>
         <div v-else-if="generationStopped" class="stage-idle">
-          <div class="stage-placeholder-title">已停止生成</div>
+          <div class="stage-placeholder-title">这一幕已暂停</div>
           <div class="stage-placeholder-copy">
             可以调整场景与参数，准备好后继续。
           </div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('generate')">继续生成</button>
+            <button class="btn btn-primary" type="button" @click="$emit('generate')">重新开始生成</button>
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
               找回上一张未入册成片
             </button>
@@ -95,12 +97,14 @@
           <div v-if="interrogateError" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
           <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
         </div>
+        </div>
       </div>
     </section>
     </Transition>
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
+      <div class="stage-result-heading"><span>生成结果</span><span role="status">{{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}</span></div>
       <ImageSplitCompare
         v-if="inpaintCompareActive && inpaintOriginalUrl"
         :before-src="inpaintOriginalUrl"
@@ -127,18 +131,19 @@
 import { computed, ref, defineAsyncComponent } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
+import DirectorSceneReference from './DirectorSceneReference.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
 import '@/assets/css/director/components/DirectorStagePanel.css'
 
 const props = defineProps<{
   displayResultUrl: string
+  canvasSize?: string
   generationBusy: boolean
   generationError: string | null
   generationStopped: boolean
   generationStatusText: string | null
   generationProgress: number | null
-  generationProgressStyle: Record<string, string>
   animaElapsed: number
   animaCurrentNode: string
   drawEngine: string

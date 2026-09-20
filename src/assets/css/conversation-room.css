@@ -19,6 +19,12 @@
 .room-surface .portrait-stage { min-height: 0; background: transparent; border: 0; overflow: hidden; }
 .room-surface .portrait-stage[data-character] { background: transparent; }
 .room-surface .portrait-main { max-height: 100%; width: min(95%, 680px); bottom: 0; }
+/* 档案保留全身辨识，陪伴页以近景取景；不改变动态模型的用户校准。 */
+.room-surface .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) .portrait-main { width:100%; height:100%; max-height:none; object-fit:cover; object-position:50% 18%; }
+.stage-portrait-missing { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-3); padding:var(--s-5); color:var(--text-secondary); background:var(--bg-surface); text-align:center; font-size:var(--fs-body-sm); }
+.stage-portrait-missing > svg { width:44px; height:44px; color:var(--accent); }
+.stage-portrait-missing strong { color:var(--text-primary); font-size:var(--fs-title-sm); }
+.stage-reference-caption { position:absolute; top:var(--s-3); left:var(--s-3); right:var(--s-3); z-index:var(--z-raised); justify-self:start; padding:var(--s-2) var(--s-3); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .room-surface .character-info { flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-2); background:transparent; border:0; border-top:1px solid var(--border-soft); }
 .room-surface .character-info-head { min-width: 0; }
 .room-surface .character-status { display: none; }
@@ -37,7 +43,7 @@
 .room-surface .chat-empty { flex-shrink: 0; gap: var(--s-4); margin: var(--s-4) auto auto; padding: var(--s-4) var(--s-3); }
 .room-surface .chat-empty-kicker { color: var(--text-secondary); }
 .room-surface .message { max-width:90%; }
-.room-surface .message-bubble { line-height:1.85; box-shadow:none; border-radius:var(--r-md); background:var(--bg-base); border-color:var(--border-soft); }
+.room-surface .message-bubble { font-size:var(--fs-body); line-height:1.85; box-shadow:none; border-radius:var(--r-md); background:var(--bg-base); border-color:transparent; }
 .room-surface .message.user .message-bubble { background:var(--accent-soft); color:var(--text-primary); }
 .room-surface .msg-memory-btn,.room-surface .msg-voice-btn { opacity:1; color:var(--text-secondary); }
 .room-surface .msg-memory-btn:disabled,.room-surface .msg-voice-btn:disabled { color:var(--text-disabled); }

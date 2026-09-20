@@ -116,7 +116,7 @@ export function usePromptWorkspace() {
         popularProfile: popular.profile,
         flash: message => pb.flash(message),
     });
-    const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy, generationProgress, generationProgressStyle, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
+    const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
     // ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
     // 先收敛到当前底模白名单（closestSupportedSize）再同步双引擎，防服务端 400。
     const genBarSize = computed({
@@ -527,7 +527,7 @@ export function usePromptWorkspace() {
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
         selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,
         handleHistoryToShots, handleHistoryToShotsBatch, generationBusy, generationError, generationStopped, generationStatusText,
-        generationProgress, generationProgressStyle, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
+        generationProgress, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
         shotsPending, prevResult, resultArchived, savingResult, resultTemporary, hasStashedResult,
         callGenerate, inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo,
         addToShots, goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed,

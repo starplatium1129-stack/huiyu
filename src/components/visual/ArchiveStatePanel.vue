@@ -43,11 +43,19 @@ const iconName = computed<ArchiveIconName>(() => ({
   align-content:center;
   border-color:var(--border-soft);
   background:var(--bg-surface);
+  padding:var(--s-6) var(--s-4);
+  border-style:solid;
+  border-width:1px;
+  border-radius:var(--r-lg);
 }
+.archive-state-panel h2 { margin:var(--s-2) 0; font-size:var(--fs-title-sm); line-height:var(--lh-tight); font-weight:600; }
+.archive-state-panel p { max-width:38em; margin:0; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-loose); }
+.archive-state-mark::before { content:''; position:absolute; inset:4px; border:1px solid var(--border-strong); border-radius:var(--r-md); transform:rotate(-8deg); background:var(--bg-elevated); }
+.archive-state-mark :deep(.archive-icon) { position:relative; }
 .archive-state-panel.compact { min-height:150px; margin:0; padding:var(--s-4); }
 .archive-state-panel.compact .archive-state-mark { width:52px; height:52px; margin-bottom:var(--s-2); }
 .archive-state-mark { position:relative; display:grid; place-items:center; width:68px; height:68px; margin:0 auto var(--s-3); color:var(--state-accent,var(--archive-blue)); font-size:var(--fs-glyph); }
-.archive-state-code { color:color-mix(in srgb,var(--state-accent,var(--text-muted)) 68%,var(--text-muted)); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.14em; }
+.archive-state-code { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
 .archive-state-actions { display:flex; justify-content:center; gap:var(--s-2); flex-wrap:wrap; margin-top:var(--s-3); }
 [data-kind="loading"] { --state-accent:var(--archive-blue); }
 [data-kind="empty"] { --state-accent:var(--accent); }

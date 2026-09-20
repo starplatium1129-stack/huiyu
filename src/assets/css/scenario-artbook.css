@@ -35,7 +35,7 @@
 .act-title { margin:0 0 var(--s-1); font-size:var(--fs-body-lg); }
 .act-en { color:var(--text-muted); font-size:var(--fs-body-sm); }
 .act-intent { display:flex; align-items:center; gap:var(--s-3); min-height:152px; margin-block:var(--s-3); }
-.act-framing { width:64px; max-height:108px; display:grid; place-items:center; flex-shrink:0; border:1px solid var(--border-strong); border-radius:var(--r-xs); background:var(--bg-base); }
+.act-framing { aspect-ratio:var(--act-ratio); width:64px; max-height:108px; display:grid; place-items:center; flex-shrink:0; border:1px solid var(--border-strong); border-radius:var(--r-xs); background:var(--bg-base); }
 .act-framing .archive-icon { width:70%; height:70%; color:var(--accent); }
 .act-emotion { color:var(--accent); font-size:var(--fs-body-sm); }
 .act-desc { margin-top:var(--s-2); font-size:var(--fs-body-sm); line-height:var(--lh-body); color:var(--text-primary); }

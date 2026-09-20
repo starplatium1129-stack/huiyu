@@ -7,7 +7,7 @@ for (const theme of ['dark', 'light']) {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/color-script')
     for (const name of ['快乐', '恋爱', '平静', '忧伤', '神秘', '温馨']) {
-      await page.getByRole('button', { name: new RegExp(name) }).click()
+      await page.locator('.mood-grid').getByRole('button', { name: new RegExp(name) }).click()
       await expect(page.locator('.palette-code')).toHaveCount(5)
       for (const code of await page.locator('.palette-code').all()) {
         expect(await code.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
