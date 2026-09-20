@@ -27,6 +27,7 @@
         <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail">
       <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
+        <CharacterParticleStage :character-id="current.id" :name="current.name">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
           <img v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
             :src="portraitView.src" :data-attempt-token="portraitView.token"
@@ -44,6 +45,7 @@
             <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
           </div>
         </div>
+        </CharacterParticleStage>
         <div class="character-profile">
           <div class="profile-kicker">人物档案</div>
           <h2 class="character-name">{{ current.name }}</h2>
@@ -260,6 +262,7 @@
 <script setup lang="ts">
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vue'
+import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'

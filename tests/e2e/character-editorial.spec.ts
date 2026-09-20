@@ -45,6 +45,7 @@ async function fixture(page: Page, theme: string) {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/character?character=natsume')
   await expect(page.locator('.character-name')).toHaveText('四季夏目')
+  await page.getByRole('button', { name: '人物原画', exact: true }).click()
   await expect(page.locator('.portrait-image')).toHaveJSProperty('complete', true)
   await expect(page.locator('.portrait-image')).not.toHaveJSProperty('naturalWidth', 0)
 }

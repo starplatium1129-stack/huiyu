@@ -2,7 +2,7 @@
   <figure
     ref="host"
     class="semantic-particle-field"
-    :class="[`density-${density}`, `signal-${signal}`, { 'is-static': reduceMotion, 'has-canvas': canvasAvailable, 'is-bare': bare, 'has-portrait': portraitActive }]"
+    :class="[`density-${density}`, `signal-${signal}`, { 'is-static': reduceMotion || paused, 'has-canvas': canvasAvailable, 'is-bare': bare, 'has-portrait': portraitActive }]"
     :role="decorative ? undefined : 'img'"
     :aria-label="decorative ? undefined : label"
     :aria-hidden="decorative ? 'true' : undefined"
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
-import { loadPortraitCloud, samplePortraitPoints, particleNeedsOutline, type PortraitCloud } from '@/utils/particlePortrait'
+import { loadPortraitCloud, samplePortraitPoints, particleNeedsOutline, legibleParticleColor, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 import { useParticlePerformanceLifecycle } from '@/composables/useParticlePerformanceLifecycle'
 
@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<{
   caption?: string
   density?: 'backdrop' | 'ambient' | 'hero'
   interactive?: boolean
+  paused?: boolean
   bare?: boolean
   decorative?: boolean
   signal?: 'idle' | 'active' | 'success' | 'warning'
@@ -39,6 +40,7 @@ const props = withDefaults(defineProps<{
   caption: '',
   density: 'hero',
   interactive: true,
+  paused: false,
   bare: false,
   decorative: false,
   signal: 'idle',
@@ -103,27 +105,6 @@ interface AmbientParticle {
 }
 let ambient: AmbientParticle[] = []
 
-/** 主题可读性：人物原色可能过暗（黑裙/深发在深色主题不可见），提亮到最低亮度。 */
-function legibleColor(hex: string): string {
-  const value = hex.trim()
-  const match = /^#?([0-9a-f]{6})$/i.exec(value)
-  if (!match) return value
-  const full = match[1]
-  let r = parseInt(full.slice(0, 2), 16) / 255
-  let g = parseInt(full.slice(2, 4), 16) / 255
-  let b = parseInt(full.slice(4, 6), 16) / 255
-  const MIN = 0.34
-  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
-  if (lum < MIN) {
-    const lift = (MIN - lum) / Math.max(1e-6, 1 - lum)
-    r += (1 - r) * lift
-    g += (1 - g) * lift
-    b += (1 - b) * lift
-  }
-  const to255 = (c: number) => Math.round(Math.min(1, Math.max(0, c)) * 255)
-  return `#${[to255(r), to255(g), to255(b)].map(v => v.toString(16).padStart(2, '0')).join('')}`
-}
-
 let context: CanvasRenderingContext2D | null = null
 let resizeObserver: ResizeObserver | null = null
 let intersectionObserver: IntersectionObserver | null = null
@@ -154,7 +135,7 @@ const performance = useParticlePerformanceLifecycle({
 const { lowEffects, reduceMotion } = performance
 
 function preferredCount(): number {
-  if (reduceMotion.value) return 420
+  if (reduceMotion.value) return portraitCloud ? 2400 : 420
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
   // 760 → 768：对齐断点表的 --bp-sm。档外值会让 760–768 这 8px 区间单独跳一次，
   // 调试时极难看出是哪条规则生效（2026-08-30 UX 审计 P2）
@@ -255,13 +236,16 @@ function setShape(animate = true) {
     }
   })
 
-  if (!animate || reduceMotion.value) {
+  if (!animate || reduceMotion.value || props.paused) {
     particles.forEach((particle) => {
       particle.x = particle.targetX
       particle.y = particle.targetY
+      particle.prevX = particle.x
+      particle.prevY = particle.y
       particle.velocityX = 0
       particle.velocityY = 0
     })
+    ensureAmbient()
     draw()
   } else {
     startLoop()
@@ -274,7 +258,7 @@ function setShape(animate = true) {
  * backdrop 与 reduced-motion 不启用（保持静止背景与省电）。
  */
 function ensureAmbient() {
-  if (reduceMotion.value || props.density === 'backdrop' || !width || !height) {
+  if (reduceMotion.value || props.paused || props.density === 'backdrop' || !width || !height) {
     ambient = []
     return
   }
@@ -493,7 +477,7 @@ function draw() {
 }
 
 function renderFrame(now: number) {
-  if (!visible || document.hidden || reduceMotion.value) return
+  if (!visible || document.hidden || reduceMotion.value || props.paused) return
   if (lastFrame) {
     const elapsed = now - lastFrame
     slowFrames = elapsed > 28 ? slowFrames + 1 : Math.max(0, slowFrames - 2)
@@ -513,7 +497,7 @@ function renderFrame(now: number) {
 }
 
 function startLoop() {
-  if (stopScheduledFrame || !performance.active.value || !visible || document.hidden || reduceMotion.value) return
+  if (stopScheduledFrame || !performance.active.value || !visible || document.hidden || reduceMotion.value || props.paused) return
   lastFrame = 0
   lastPhysicsFrame = 0
   // 2026-08-15（用户决策：性能充裕，放开帧率）：不再按密度节流（60/45/30fps），
@@ -563,7 +547,7 @@ function resize() {
 }
 
 function onPointerMove(event: PointerEvent) {
-  if (!host.value || event.pointerType === 'touch') return
+  if (!host.value || !props.interactive || props.paused || reduceMotion.value || event.pointerType === 'touch') return
   const rect = host.value.getBoundingClientRect()
   pointerX = event.clientX - rect.left
   pointerY = event.clientY - rect.top
@@ -584,6 +568,21 @@ watch(() => props.density, () => {
   startLoop()
 })
 watch(() => props.signal, () => startLoop())
+watch(() => props.paused, paused => {
+  pointerActive = false
+  stopLoop()
+  if (paused) setShape(false)
+  else { ensureAmbient(); startLoop() }
+})
+
+function replay() {
+  pointerActive = false
+  stopLoop()
+  if (props.paused || reduceMotion.value || lowEffects.value) { setShape(false); return }
+  particles = []
+  setShape(true)
+}
+defineExpose({ replay })
 
 /** 角色剪影点云异步接管：加载完成前维持现有形状，完成后平滑形变成人物轮廓。 */
 async function applyPortrait(id: string) {
@@ -600,7 +599,7 @@ async function applyPortrait(id: string) {
   const cloud = await loadPortraitCloud(id)
   if (token !== portraitToken) return
   portraitCloud = cloud
-  portraitPaints = cloud ? cloud.palette.map(legibleColor) : []
+  portraitPaints = cloud ? cloud.palette.map(legibleParticleColor) : []
   portraitRaw = cloud ? cloud.palette.slice() : []
   // 网点半径在 setShape 里按「点距 × 明暗」自适应计算（依赖粒子数与场域尺寸）
   portraitRadii = portraitPaints.map(() => 1)
@@ -624,7 +623,7 @@ onMounted(() => {
   }, { rootMargin: '120px' })
   intersectionObserver.observe(host.value)
   themeObserver = new MutationObserver(performance.onRootPreferenceChanged)
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-fluid-effects', 'data-reduced-glass'] })
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-fluid-effects', 'data-reduced-glass', 'data-reduced-motion'] })
   document.addEventListener('visibilitychange', performance.onVisibilityChange)
   readPalette()
   resize()

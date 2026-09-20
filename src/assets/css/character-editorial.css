@@ -9,7 +9,7 @@
 .character-editorial :deep(.directory-tools) { padding:var(--s-3); }
 .character-editorial :deep(.directory-item) { gap:var(--s-2); }
 .character-editorial :deep(.directory-label strong) { overflow-wrap:anywhere; }
-.character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); align-items:start; gap:clamp(20px,2.5vw,36px); overflow:visible; scroll-margin-top:100px; }
+.character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,1fr); align-items:start; gap:clamp(20px,2.5vw,36px); overflow:visible; scroll-margin-top:100px; }
 .character-editorial .library-detail .portrait { border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
 .character-editorial .library-detail .portrait-image { max-height:760px; object-fit:contain; }
 .character-editorial .portrait-footer { justify-content:space-between; align-items:center; background:var(--bg-surface); padding:var(--s-3); border-top:1px solid var(--border-soft); }

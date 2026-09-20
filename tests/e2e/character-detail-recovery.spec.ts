@@ -58,6 +58,7 @@ async function openWithTheme(page: Page, path: string, theme: Theme) {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto(path, { waitUntil: 'domcontentloaded' })
   await expect(page.locator('h1').first()).toBeVisible()
+  await page.getByRole('button', { name: '人物原画', exact: true }).click()
 }
 
 async function shot(page: Page, testInfo: TestInfo, caseId: string, theme: Theme) {
