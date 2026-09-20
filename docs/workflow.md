@@ -270,6 +270,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 ### 验证并发与复用
 
+`test-interrogate-engine` 默认只在临时空目录验证无模型降级，并屏蔽模型目录环境变量；`test-interrogate-routes` 始终用 WD14 替身和本地 HTTP 夹具。只有显式设置 `AICS_TEST_REAL_WD14=1` 再运行 `node scripts/tests/test-interrogate-engine.js`，才会查找本机权重并执行真实 CPU 推理；该开关不属于普通 unit/contract/full 门禁的默认验收。
+
 `test:contract` 和 `gate:full` 共用契约执行器。`CONTRACT_TEST_JOBS` 默认 2，有效范围 1–4；只有 `scripts/tests/contract-test-policy.ts` 已记录临时目录、独立进程和动态端口边界的文件进入并行批次，较慢文件先启动。该批次结束后，其余文件按原顺序串行；新测试默认串行，修改已有夹具的隔离边界时须重新复核登记。设 `CONTRACT_TEST_JOBS=1` 可按完整原顺序执行，便于对照或低内存机器排障。
 
 失败时停止派发新测试，等待已启动的夹具结束；`--all` 继续执行全部文件。超时、信号、输出超限与启动失败均为失败，未执行项单独计数。中断或超时只终止执行器自己启动的进程树。并行契约的 `--verbose` 按文件完成后输出整块日志，避免混杂。单文件时限与单测已有并发不变，目录准备和真实断言没有省略。

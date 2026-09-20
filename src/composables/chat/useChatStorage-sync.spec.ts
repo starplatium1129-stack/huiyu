@@ -139,10 +139,14 @@ describe('chat storage cross-window recovery', () => {
       setBusy: (value: boolean) => { busy.value = value }, onError: vi.fn(), nearBottom: () => false, scrollBottom: vi.fn(),
     }
     const conversation = useChatConversation(options as unknown as Parameters<typeof useChatConversation>[0])
-    const pending = conversation.sendMessage('hello')
+    a.setDraft('nene', 'hello')
+    conversation.inputText.value = 'hello'
+    const pending = conversation.sendMessage()
+    expect(open().draft('nene')).toBe('')
     const emit = (event: object) => controller.enqueue(new TextEncoder().encode(JSON.stringify(event) + '\n'))
     emit({ type: 'token', content: 'first token' })
     await vi.waitFor(() => expect(a.messages().at(-1)?.content).toBe('first token'))
+    a.save() // Publish a stream checkpoint explicitly; volume no longer saves history.
     a.setVolume(30)
     const b = open()
     b.messages().push(message('other-window'))

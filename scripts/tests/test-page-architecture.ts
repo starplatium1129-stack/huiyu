@@ -306,10 +306,12 @@ assert(
 );
 
 const controlViewSource = read('src/views/ControlView.vue') + '\n' + read('src/assets/css/control-view.css');
+const tunnelSwitchSource = read('src/components/visual/ToggleSwitch.vue');
 assert(
-  /transition:\s*transform\s+var\(--motion-hover\)/.test(controlViewSource)
-    && /\.tunnel-switch\[aria-checked="true"\]\s+\.tunnel-switch-knob\s*\{\s*transform:\s*translateX\(20px\);[^}]*\}/.test(controlViewSource)
-    && !controlViewSource.includes('transition: left')
+  /<ToggleSwitch\s+class="tunnel-switch-control"/.test(controlViewSource)
+    && /transition:\s*transform\s+var\(--motion-hover\)/.test(tunnelSwitchSource)
+    && /\.toggle-knob\[data-state=['"]checked['"]\]\s*\{\s*transform:\s*translateX\(14px\)/.test(tunnelSwitchSource)
+    && !/transition:\s*left/.test(controlViewSource + tunnelSwitchSource)
     && !controlViewSource.includes('left: 22px'),
   'ControlView tunnel switch knob must animate via transform translateX and eliminate left transition',
 );

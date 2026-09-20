@@ -194,12 +194,12 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
 
     // 将 base64 落到 Comfy input 供 /pysssss/wd14tagger/tag 读取（纯本机，不走外网）
     let inputRoot = comfyInputRoot(config);
-    try { fs.mkdirSync(inputRoot, { recursive: true }); } catch {}
+    await fs.promises.mkdir(inputRoot, { recursive: true });
     let filename = 'aics_interrogate_' + crypto.randomBytes(8).toString('hex') + '.png';
     let target = path.resolve(inputRoot, filename);
     if (target.indexOf(path.resolve(inputRoot) + path.sep) !== 0) return null;
     let buffer = Buffer.from(imageBase64, 'base64');
-    fs.writeFileSync(target, buffer);
+    await fs.promises.writeFile(target, buffer, { flag: 'wx' });
 
     // 调用 WD14 的轻量 HTTP 接口（直接返回 tags 字符串，自动走 hf-mirror 下载）
     let query = '/pysssss/wd14tagger/tag?filename=' + encodeURIComponent(filename) + '&type=input';
@@ -229,7 +229,7 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
       req.end();
     }).finally(function () {
       // 清理临时输入图（模型下载期间可能需重试，稍延迟删）
-      setTimeout(function () { try { fs.unlinkSync(target); } catch {} }, 5000);
+      setTimeout(function () { void fs.promises.unlink(target).catch(() => {}); }, 5000).unref();
     });
 
     let tagText = String(result || '').trim();

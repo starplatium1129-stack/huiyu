@@ -5,6 +5,8 @@ let fs: typeof import('fs') = require('fs');
 let os: typeof import('os') = require('os');
 let path: typeof import('path') = require('path');
 let gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
+import comfy = require('../../routes/video/comfy');
+
 let video: typeof import('../../routes/video') = require('../../routes/video');
 
 function validBody(overrides?: any) {
@@ -599,6 +601,45 @@ async function run() {
   try {
     let readyStatus = await json(await fetch(readyStack.baseUrl + '/api/video/status'));
     assert.equal(readyStatus.models[0].available, true);
+    // Service extraction retains owner isolation, queue accounting and cancellation.
+    const isolated = video.createVideoService(readyStack.config, { pollIntervalMs:10 });
+    try {
+      const queued = isolated.create(video.validateInput(validBody()), 'fixture-owner');
+      assert.equal(isolated.pendingCount(), 1);
+      assert.equal(isolated.get(queued.id, 'other-owner'), null);
+      assert.equal(isolated.get(queued.id, 'fixture-owner'), queued);
+      await isolated.cancel(queued);
+      assert.equal(queued.status, 'cancelled');
+      assert.equal(isolated.publicJob(queued).code, 'VIDEO_CANCELLED');
+      assert.equal(isolated.pendingCount(), 0);
+      await isolated.cancel(queued);
+      assert.equal(queued.status, 'cancelled');
+      const request = comfy.requestComfyJson;
+      try {
+        for (const action of ['cancel', 'close'] as const) {
+          let finishSubmit!: (response: unknown) => void;
+          const reply = new Promise<unknown>(resolve => { finishSubmit = resolve; });
+          let cancelledUpstream = false;
+          comfy.requestComfyJson = async (_config, _method, route) => {
+            if (route === '/prompt') return reply;
+            if (route === '/api/jobs/fixture-pending/cancel') cancelledUpstream = true;
+            return {};
+          };
+          const pending = isolated.create(video.validateInput(validBody()), 'fixture-owner');
+          const submission = isolated.submit(pending);
+          if (action === 'cancel') await isolated.cancel(pending);
+          else isolated.close();
+          finishSubmit({ prompt_id:'fixture-pending' });
+          await submission;
+          assert.equal(cancelledUpstream, true, action + ' must cancel a late upstream submission');
+          assert.notEqual(pending.status, 'running', action + ' must not revive the task');
+        }
+      } finally {
+        comfy.requestComfyJson = request;
+      }
+    } finally {
+      isolated.close();
+    }
     let createResponse = await post(readyStack.baseUrl, validBody());
     assert.equal(createResponse.status, 202);
     let created = (await json(createResponse)).job;
@@ -662,6 +703,22 @@ async function run() {
     });
     assert.equal(emptyUpload.status, 400);
     assert.equal((await json(emptyUpload)).code, 'INVALID_IMAGE');
+    // Async write rejection must become an API failure, never a successful filename.
+    const originalWrite = fs.promises.writeFile;
+    fs.promises.writeFile = async function (target, data, options) {
+      if (String(target).includes('aics_video_input_')) throw new Error('fixture disk full');
+      return originalWrite(target, data, options);
+    };
+    try {
+      const failedUpload = await fetch(readyStack.baseUrl + '/api/video/images', {
+        method:'POST', headers:{ 'content-type':'application/json' },
+        body:JSON.stringify({ data:tinyPngBase64 }),
+      });
+      assert.equal(failedUpload.status, 500);
+      assert.equal((await json(failedUpload)).code, 'IMAGE_WRITE_FAILED');
+    } finally {
+      fs.promises.writeFile = originalWrite;
+    }
     let uploadRes = await fetch(readyStack.baseUrl + '/api/video/images', {
       method:'POST',
       headers:{ 'content-type':'application/json' },

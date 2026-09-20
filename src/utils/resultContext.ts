@@ -19,11 +19,20 @@ export interface ResultContextInput {
   readonly artistStyleIds: readonly string[]
   readonly directorMode: 'basic' | 'pro'
   readonly projectId: string
+  readonly activeScene?: { readonly title: string } | null
+  readonly popularCharacters?: readonly { readonly id: string; readonly displayName: string }[]
+  readonly sceneBlueprints?: readonly { readonly id: string; readonly title: string }[]
 }
 
 /** 提交时取值；只保存可序列化的创作信息，不保存响应式对象或图片。 */
 export function captureResultContext(pb: ResultContextInput): AnimaResultContext {
   const subject = pb.subject
+  const popularName = subject.kind === 'popular'
+    ? pb.popularCharacters?.find(character => character.id === subject.characterId)?.displayName : null
+  const sceneTitle = subject.kind === 'popular'
+    ? (pb.sceneBlueprints?.find(scene => scene.id === subject.blueprintId)?.title
+      || (popularName ? popularName + ' 创作' : '热门角色作品'))
+    : (pb.activeScene?.title ?? (pb.story ? pb.story.slice(0, 20) : null))
   return {
     characterId: subject.kind === 'popular' ? subject.characterId : '',
     outfitId: subject.kind === 'popular' ? subject.outfitId : null,
@@ -32,6 +41,7 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
     story: String(pb.story || '').trim(),
     char: pb.char,
     history: {
+      sceneTitle,
       visualDescription: pb.visualDescription,
       emotion: [...pb.selections.emotion], shot: pb.selections.shot,
       lighting: pb.selections.lighting, composition: pb.selections.composition,

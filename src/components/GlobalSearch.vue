@@ -95,6 +95,10 @@ import { kvInit, kvGet } from '@/composables/useKVStore'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 
+const props = defineProps<{
+  initialSource?: 'keyboard' | 'pointer'
+  initialTrigger?: HTMLElement | null
+}>()
 const surface = useFluidSurface('.gs-panel')
 
 interface SearchItem {
@@ -200,8 +204,8 @@ function onInputKeydown(event: KeyboardEvent) {
   }
 }
 
-function openPanel(source: 'keyboard' | 'pointer' = 'keyboard') {
-  previousActiveElement = document.activeElement as HTMLElement | null
+function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = document.activeElement as HTMLElement | null) {
+  previousActiveElement = trigger
   triggerSource.value = source
   open.value = true
   query.value = ''
@@ -315,6 +319,7 @@ watch(openRequest, () => {
 
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
+  if (props.initialSource) openPanel(props.initialSource, props.initialTrigger)
   // 场景索引延迟到首次打开面板（loadScenesOnce）；挂载即拉会把全量数据请求
   // 摊进包括首页在内的每个页面首屏（审计 2026-09-05 P2-02）
 })

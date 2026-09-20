@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue'
+import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY } from '@/utils/storageKeys'
 import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
 import {
   STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
@@ -126,6 +127,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
   const neverConfigured = ref(true)
   const archive = ref<ChatArchive>(emptyChatArchive(characterIds))
+  let archiveDirty = false
+  const pendingPreferences = new Map<string, string>()
   const messageSnapshots = new Map<string, string>()
   function rememberMessages() {
     messageSnapshots.clear()
@@ -197,8 +200,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   chatStorageSyncHandler = mergeRemoteIntoState
 
   function saveArchive() {
+    if (!archiveDirty) return
     try {
       localStorage.setItem(CHAT_ARCHIVE_KEY, serializeChatArchive(archive.value))
+      archiveDirty = false
     } catch {
       onError('浏览器存储空间不足，聊天归档可能无法长期保存。')
     }
@@ -209,6 +214,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     if (messages.length <= limit) return
     const removed = messages.splice(0, messages.length - limit)
     archive.value = archiveMessages(archive.value, char, removed)
+    archiveDirty = true
     saveArchive()
   }
 
@@ -275,7 +281,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       neverConfigured.value = true
       // Only invalid JSON may be replaced with an empty normalized record.
       // A write failure remains separate from the parsing decision.
-      try { localStorage.setItem(STORAGE_KEY, serializeChatStorage(clean)) } catch {}
+      try {
+        loadFrequentPreferences()
+        localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
+      } catch {}
       onError('本地聊天记录损坏，已恢复为空白会话。')
       return
     }
@@ -289,6 +298,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
           if (Array.isArray(list) && list.length > MAX_LOCAL_MESSAGES) {
             const overflow = list.slice(0, list.length - MAX_LOCAL_MESSAGES)
             archive.value = archiveMessages(archive.value, char, overflow as ChatMessage[])
+            archiveDirty = true
           }
         }
       }
@@ -298,6 +308,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         normalizeOptions,
       )
       applyPersisted(normalized.state)
+      loadFrequentPreferences()
       neverConfigured.value = normalized.neverConfigured
 
       state.settings.apiKey = String(normalized.state.settings.apiKey || normalized.migratedApiKey).trim().slice(0, 1000)
@@ -314,7 +325,35 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   loadArchive()
 
+  // Separate keys remain authoritative after a legacy/full-history save from
+  // another window. Per-character keys also prevent unrelated drafts clobbering.
+  function loadFrequentPreferences() {
+    const volume = localStorage.getItem(CHAT_VOLUME_KEY)
+    if (volume !== null && volume.trim() && Number.isFinite(Number(volume))) {
+      state.settings.volume = Math.max(0, Math.min(100, Math.round(Number(volume))))
+    }
+    for (const char of characterIds) {
+      const draft = localStorage.getItem(CHAT_DRAFT_PREFIX + char)
+      if (draft === null) continue
+      try {
+        const value: unknown = JSON.parse(draft)
+        if (typeof value === 'string') state.settings.drafts[char] = value.slice(0, 1200)
+      } catch { /* A malformed preference must not discard legacy history. */ }
+    }
+  }
+
+  function savePreference(key: string, value: string) {
+    pendingPreferences.set(key, value)
+    try {
+      localStorage.setItem(key, value)
+      pendingPreferences.delete(key)
+    } catch {
+      onError('浏览器存储空间不足，聊天草稿或偏好暂时无法保存。')
+    }
+  }
+
   function save(mergeRemote = true) {
+    for (const [key, value] of pendingPreferences) savePreference(key, value)
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
       // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
@@ -362,12 +401,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     save()
   }
   function setAutoVoice(v: boolean) { state.settings.autoVoice = Boolean(v); save() }
-  function setVolume(v: number) { state.settings.volume = Math.max(0, Math.min(100, Number.isFinite(Number(v)) ? Math.round(Number(v)) : 80)); save() }
+  function setVolume(v: number) {
+    state.settings.volume = Math.max(0, Math.min(100, Number.isFinite(Number(v)) ? Math.round(Number(v)) : 80))
+    savePreference(CHAT_VOLUME_KEY, String(state.settings.volume))
+  }
   function draft(char = state.active) { return state.settings.drafts[char] || '' }
   function setDraft(char: string, val: string) {
     if (!characterIds.includes(char)) return
     state.settings.drafts[char] = String(val || '').slice(0, 1200)
-    save()
+    savePreference(CHAT_DRAFT_PREFIX + char, JSON.stringify(state.settings.drafts[char]))
   }
   function trim(char = state.active) {
     const msgs = messages(char)
@@ -392,6 +434,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     const incoming = normalizeChatArchive(JSON.parse(textValue), characterIds)
     const before = archiveCounts(archive.value, characterIds)
     archive.value = mergeChatArchives(archive.value, incoming)
+    archiveDirty = true
     saveArchive()
     const after = archiveCounts(archive.value, characterIds)
     return Object.keys(after).reduce((sum, id) => sum + Math.max(0, after[id] - (before[id] || 0)), 0)
@@ -415,6 +458,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function clearArchive(char?: string) {
     if (char) archive.value.archived[char] = []
     else archive.value = emptyChatArchive(characterIds)
+    archiveDirty = true
     saveArchive()
   }
   function clear(char?: string) {

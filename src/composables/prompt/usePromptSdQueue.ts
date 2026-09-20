@@ -1,7 +1,7 @@
 import { ref, watch, type ComputedRef, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
-import { writeQuickCreate } from '@/utils/quickCreate'
+import type { SdResultSnapshot } from './sdResultActions'
 import { SD_QUEUE_SNAPSHOT_KEY } from '@/utils/storageKeys'
 import { classifySDError, type SDErrorReport } from '@/utils/sdError'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
@@ -84,10 +84,13 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   /** 把当前导演台状态快照成一个队列任务 */
   function captureJob(): Omit<SDQueueJob, 'id'> | null {
     if (!livePrompt.value) return null
+    const params = pb.sdParams
     const scene = effectiveScene.value
     const story = String(pb.story || '').trim()
+    const context = captureResultContext(pb)
+    context.history = { ...context.history, profile: modelProfile.value?.id || '' }
     return {
-      context: captureResultContext(pb),
+      context,
       title: scene?.title || (story ? story.slice(0, 28) : (pb.char === 'natsume' ? '夏目构图' : '宁宁构图')),
       prompt: livePrompt.value,
       negative: negativePrompt.value,
@@ -96,19 +99,19 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       char: pb.char,
       story,
       size: sdSize.value,
-      seed: pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : -1,
-      cfg: pb.sdParams.cfg,
-      steps: pb.sdParams.steps,
-      sampler: pb.sdParams.sampler,
-      scheduler: pb.sdParams.scheduler || '',
+      seed: params.seedLock && params.seed >= 0 ? params.seed : -1,
+      cfg: params.cfg,
+      steps: params.steps,
+      sampler: params.sampler,
+      scheduler: params.scheduler || '',
       checkpoint: pb.sdModelName || sd.checkpoint.value || '',
       lora: loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', '),
-      hiresFix: pb.sdParams.hiresFix,
-      hiresScale: pb.sdParams.hiresScale,
-      hiresUpscaler: pb.sdParams.hiresUpscaler,
-      hiresSteps: pb.sdParams.hiresSteps,
-      denoisingStrength: pb.sdParams.hiresDenoise,
-      faceDetailer: pb.sdParams.faceDetailer,
+      hiresFix: params.hiresFix,
+      hiresScale: params.hiresScale,
+      hiresUpscaler: params.hiresUpscaler,
+      hiresSteps: params.hiresSteps,
+      denoisingStrength: params.hiresDenoise,
+      faceDetailer: params.faceDetailer,
     }
   }
 
@@ -138,6 +141,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
         hiresDenoise: typeof meta.hiresDenoise === 'number' ? meta.hiresDenoise : undefined,
       }
     }
+    const params = pb.sdParams
     const model = pb.sdModelName || sd.checkpoint.value || ''
     const loras = sd.lastLoras.value
     return {
@@ -148,60 +152,57 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       loraId: loras[0]?.id || null,
       loraStrength: loras[0]?.strength ?? null,
       loras,
-      cfg: pb.sdParams.cfg,
-      steps: pb.sdParams.steps,
-      sampler: pb.sdParams.sampler,
-      scheduler: pb.sdParams.scheduler,
+      cfg: params.cfg,
+      steps: params.steps,
+      sampler: params.sampler,
+      scheduler: params.scheduler,
       size: sdSize.value,
       // 2026-08-29：SD 高清修复/脸部修复实参落库（作品册回显 hires 开关）。
-      hiresFix: pb.sdParams.hiresFix,
-      hiresScale: pb.sdParams.hiresScale,
-      hiresUpscaler: pb.sdParams.hiresUpscaler,
-      hiresSteps: pb.sdParams.hiresSteps,
-      hiresDenoise: pb.sdParams.hiresDenoise,
-      faceDetailer: pb.sdParams.faceDetailer,
+      hiresFix: params.hiresFix,
+      hiresScale: params.hiresScale,
+      hiresUpscaler: params.hiresUpscaler,
+      hiresSteps: params.hiresSteps,
+      hiresDenoise: params.hiresDenoise,
+      faceDetailer: params.faceDetailer,
     }
   }
 
   function buildSingleDetailerScripts(): Record<string, unknown> {
+    const passes: Array<[string, string, string, number, number]> = [
+      ['face_yolov8s.pt', 'detailed eyes, clean face, character-accurate facial features',
+        'deformed face, asymmetrical eyes, cross-eyed', 0.35, 0.18],
+      ['hand_yolov8n.pt', 'detailed hands, five fingers, natural fingers',
+        'extra fingers, missing fingers, fused fingers, malformed hands', 0.3, 0.16],
+    ]
+    return { ADetailer: { args: [true, false, ...passes.map(([model, prompt, negative, confidence, denoise]) => ({
+      ad_model: model, ad_prompt: prompt, ad_negative_prompt: negative,
+      ad_confidence: confidence, ad_denoising_strength: denoise,
+      ad_inpaint_only_masked: true, ad_inpaint_only_masked_padding: 32,
+      ad_use_inpaint_width_height: true, ad_inpaint_width: 768, ad_inpaint_height: 768, is_api: true,
+    }))] } }
+  }
+
+  // Preserve result facts independently of the current form and later results.
+  const completedContexts = new WeakMap<Omit<SDQueueJob, 'id'>, AnimaResultContext>()
+  function jobResultContext(job: Omit<SDQueueJob, 'id'>): AnimaResultContext {
     return {
-      ADetailer: {
-        args: [
-          true,
-          false,
-          {
-            ad_model: 'face_yolov8s.pt',
-            ad_prompt: 'detailed eyes, clean face, character-accurate facial features',
-            ad_negative_prompt: 'deformed face, asymmetrical eyes, cross-eyed',
-            ad_confidence: 0.35,
-            ad_denoising_strength: 0.18,
-            ad_inpaint_only_masked: true,
-            ad_inpaint_only_masked_padding: 32,
-            ad_use_inpaint_width_height: true,
-            ad_inpaint_width: 768,
-            ad_inpaint_height: 768,
-            is_api: true,
-          },
-          {
-            ad_model: 'hand_yolov8n.pt',
-            ad_prompt: 'detailed hands, five fingers, natural fingers',
-            ad_negative_prompt: 'extra fingers, missing fingers, fused fingers, malformed hands',
-            ad_confidence: 0.3,
-            ad_denoising_strength: 0.16,
-            ad_inpaint_only_masked: true,
-            ad_inpaint_only_masked_padding: 32,
-            ad_use_inpaint_width_height: true,
-            ad_inpaint_width: 768,
-            ad_inpaint_height: 768,
-            is_api: true,
-          },
-        ],
+      ...job.context, characterId: '', outfitId: null, blueprintId: null,
+      sceneId: job.sceneId ?? null, story: job.story, char: job.char,
+      history: {
+        ...job.context?.history, sceneTitle: job.sceneTitle || null,
+        engine: 'sd', model: job.checkpoint, cfg: job.cfg, steps: job.steps,
+        sampler: job.sampler, scheduler: job.scheduler, size: job.size,
+        lora: job.lora || null,
+        negative: job.negative, hiresFix: job.hiresFix, hiresScale: job.hiresScale,
+        hiresUpscaler: job.hiresUpscaler, hiresSteps: job.hiresSteps,
+        hiresDenoise: job.denoisingStrength, faceDetailer: job.faceDetailer,
       },
     }
   }
 
   /** 执行一个任务（队列与直接出图共用同一条路径） */
   async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean } = {}) {
+    const context = jobResultContext(job)
     const [w, h] = String(job.size).split('x').map(Number)
     let prompt = job.prompt
     if (opts.disableLora) prompt = prompt.replace(/<lora:[^>]+>\s*,?\s*/gi, '').trim().replace(/,\s*$/, '')
@@ -232,35 +233,14 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
     if (displayResultSeed.value) pb.sdParams.seed = displayResultSeed.value
     if (url) {
-      // F3：SD 结果的冻结上下文——入队时快照的 scene/story 即这张图的归属。
-      deps.setResultContext?.({
-        ...job.context,
-        characterId: '',
-        outfitId: null,
-        blueprintId: null,
-        sceneId: job.sceneId ?? null,
-        story: job.story,
-        char: job.char,
-        history: {
-          ...job.context?.history,
-          engine: 'sd', model: job.checkpoint, cfg: job.cfg, steps: job.steps,
-          sampler: job.sampler, scheduler: job.scheduler, size: job.size,
-          negative: job.negative, hiresFix: job.hiresFix, hiresScale: job.hiresScale,
-          hiresUpscaler: job.hiresUpscaler, hiresSteps: job.hiresSteps,
-          hiresDenoise: job.denoisingStrength, faceDetailer: job.faceDetailer,
-        },
-      })
-      writeQuickCreate({
-        checkpoint: job.checkpoint,
-        sampler: job.sampler,
-        scheduler: job.scheduler,
-        cfg: job.cfg,
-        steps: job.steps,
-        size: job.size,
-        hiresFix: job.hiresFix,
-        hiresUpscaler: job.hiresUpscaler,
-        hiresScale: job.hiresScale,
-      })
+      const loras = sd.lastLoras.value.map(lora => ({ ...lora }))
+      context.history = { ...context.history, seed: sd.resultSeed.value ?? undefined,
+        loras, loraId: loras[0]?.id ?? null, loraStrength: loras[0]?.strength ?? null }
+      completedContexts.set(job, context)
+      deps.setResultContext?.(context)
+      const completedJob = { ...job }
+      // Best-effort recent settings must not turn a successful image into a failure.
+      void import('./sdResultActions').then(({ rememberSdResult }) => rememberSdResult(completedJob)).catch(() => {})
     }
     return url
   }
@@ -272,32 +252,11 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
    * 切页即丢。抽出来后直出路径同样自动写历史，三条路径行为一致。
    */
   async function commitJobResult(job: Omit<SDQueueJob, 'id'>, url: string): Promise<HistoryEntry | null> {
-    // url 是本地 blob URL，不会回 HTML 错误页，但可能已被 revoke 而拿到空 blob。
-    // 空 blob 入册会在作品册里留下一条打不开的记录。
-    const response = await fetch(url)
-    const contentType = response.headers.get('content-type') || ''
-    if (!response.ok || !contentType.startsWith('image/')) throw new Error('成片响应不是图片')
-    const blob = await response.blob()
-    if (!blob.size) throw new Error('成片数据已失效')
-    // 返回落库条目：直出路径用它把「舞台这张图 = 作品册哪一条」记下来，
-    // 后续 inpaint 重绘才有对比锚点（2026-08-30 UX 审计 P1-14）。
-    return await pb.commitHistoryEntry({
-      context: job.context ?? { char: job.char, story: job.story, sceneId: job.sceneId },
-      blob, seed: sd.resultSeed.value ?? undefined,
-      size: job.size, negative: job.negative, prompt: job.prompt,
-      ...historyGenerationFields(),
-      // 2026-08-29 修复：队列任务用入队时快照（job）覆盖当前面板状态——
-      // 故事/场景在排队期间被改也不串味；hires 取任务实参而非面板现值。
-      story: job.story,
-      scene: job.sceneId ?? null,
-      sceneTitle: job.sceneTitle || undefined,
-      hiresFix: job.hiresFix,
-      hiresScale: job.hiresScale,
-      hiresUpscaler: job.hiresUpscaler,
-      hiresSteps: job.hiresSteps,
-      hiresDenoise: job.denoisingStrength,
-      faceDetailer: job.faceDetailer,
-    })
+    const context = completedContexts.get(job) ?? jobResultContext(job)
+    const seed = context.history?.seed ?? sd.resultSeed.value ?? undefined
+    const snapshot: SdResultSnapshot = { ...job, context, seed: seed ?? -1 }
+    const { archiveSdResult } = await import('./sdResultActions')
+    return archiveSdResult(snapshot, url, pb.commitHistoryEntry)
   }
 
   const sdQueue = useSDQueue({

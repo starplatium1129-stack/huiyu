@@ -126,7 +126,8 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   await page.goto('/prompt-builder?scene=sc001');
 
   // 受控路线：basic 模式系统自动选 Anima 高质量路线，SD 流程需进专家模式切引擎。
-  // 先断言受控路线卡与折叠参数面板存在，再切 SD 引擎走 SD 出图断言。
+  // 先从可见入口展开推荐路线，再切 SD 引擎走 SD 出图断言。
+  await page.locator('details.inspector-route > summary').filter({ hasText: '推荐配方与复用' }).click();
   await expect(page.locator('.managed-route-card')).toBeVisible();
   await expect(page.locator('details.generation-settings')).toBeHidden();
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
@@ -267,6 +268,7 @@ test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV
   const VOICE_TIMEOUT = 12_000;
   const errors = collectRuntimeErrors(page);
   await page.goto('/prompt-builder');
+  await page.locator('details.inspector-voice > summary').filter({ hasText: '配音与字幕' }).click();
   await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
   /**
@@ -313,6 +315,7 @@ test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不�
   const VOICE_TIMEOUT = 12_000;
   await fault(request, MOCK.tts, { ttsStatus: 500, ttsError: 'RuntimeError: reference audio missing' });
   await page.goto('/prompt-builder');
+  await page.locator('details.inspector-voice > summary').filter({ hasText: '配音与字幕' }).click();
   await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
   await page.getByRole('button', { name: '展开配音面板' }).click();
@@ -555,7 +558,7 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
   await page.locator('.utility-trigger').click();
   const download = await Promise.all([
     page.waitForEvent('download'),
-    page.getByRole('button', { name: /导出备份/ }).click(),
+    page.getByRole('button', { name: '导出备份 JSON', exact: true }).click(),
   ]).then(([dl]) => dl);
   expect(download.suggestedFilename()).toMatch(/^aics-backup-.*\.json$/);
   const backupPath = await download.path();

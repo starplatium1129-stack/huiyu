@@ -5,7 +5,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  * server/interrogate-engine 契约测试（2026-08-29 新增：真实反推模型接入）。
  * 环境无关设计：
  *   - 无 WD14 模型 → 验证降级路径（probe available=false、findModel=null、interrogateTag ok=false）；
- *   - 有 WD14 模型（本机 ComfyUI-WD14-Tagger 权重）→ 额外验证真实推理：
+ *   - 仅显式 AICS_TEST_REAL_WD14=1 才查找本机权重并验证真实推理：
  *     标签表结构（9083 行 / general 起点 4 / character 起点 6951）、
  *     sharp 生成测试图 → 反推输出结构（tags/scores/rating/characterTags 契约）、
  *     rating 四键齐全、scores 与 tags 一一对应。
@@ -15,8 +15,12 @@ let assert: typeof import('assert/strict') = require('assert/strict');
 let path: typeof import('path') = require('path');
 let engine: typeof import('../../server/interrogate-engine') = require('../../server/interrogate-engine');
 
+import fs = require('fs');
+import os = require('os');
+
 let ROOT = path.resolve(__dirname, '..', '..');
-let EMPTY_DIR = path.join(ROOT, 'runtime', 'models', 'interrogate-empty');
+// Unique empty fixture; never use the repository runtime as a no-model assumption.
+let EMPTY_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-wd14-empty-'));
 let EMPTY_CONFIG = { AI_WORKSPACE_ROOT: EMPTY_DIR, ROOT_DIR: EMPTY_DIR };
 let REAL_CONFIG = { AI_WORKSPACE_ROOT: path.join(ROOT, '..', 'AI'), ROOT_DIR: ROOT };
 
@@ -38,37 +42,52 @@ async function generateTestImage() {
 
 async function run() {
   let failures = 0;
-  async function check(name: string, fn: any) {
+  async function check(name: string, fn: () => void | Promise<void>) {
     try { await fn(); console.log('  ✔ ' + name); }
     catch (e) { failures++; console.error('  ✘ ' + name + ' — ' + runtimeErrorMessage(e)); }
   }
 
-  // 1) 降级路径（恒成立，CI 无模型也过）
-  engine._resetModelCache();
-  let probeEmpty = engine.probe(EMPTY_CONFIG);
-  check('probe(无模型) available=false', function () {
-    assert.equal(probeEmpty.available, false);
-    assert.equal(typeof probeEmpty.reason, 'string');
-  });
-  check('findModel(无模型) = null', function () {
-    assert.equal(engine.findModel(EMPTY_CONFIG), null);
-  });
-  check('interrogateTag(无模型) ok=false 且降级原因明确', async function () {
-    let r = await engine.interrogateTag(Buffer.from([1, 2, 3]), { config: EMPTY_CONFIG });
-    assert.equal(r.ok, false);
-    assert.ok(r.reason && r.reason.length > 0);
-  });
+  // Even the empty fixture must ignore operator-provided model locations.
+  const modelEnvKeys = ['AICS_WD14_MODEL_DIR', 'AICS_WD14_MODEL_PATH'] as const;
+  const savedModelEnv = modelEnvKeys.map(key => process.env[key]);
+  try {
+    modelEnvKeys.forEach(key => { delete process.env[key]; });
+    engine._resetModelCache();
+    let probeEmpty = engine.probe(EMPTY_CONFIG);
+    await check('probe(无模型) available=false', function () {
+      assert.equal(probeEmpty.available, false);
+      assert.equal(typeof probeEmpty.reason, 'string');
+    });
+    await check('findModel(无模型) = null', function () {
+      assert.equal(engine.findModel(EMPTY_CONFIG), null);
+    });
+    await check('interrogateTag(无模型) ok=false 且降级原因明确', async function () {
+      let r = await engine.interrogateTag(Buffer.from([1, 2, 3]), { config: EMPTY_CONFIG });
+      assert.equal(r.ok, false);
+      assert.ok(r.reason && r.reason.length > 0);
+    });
+  } finally {
+    modelEnvKeys.forEach((key, index) => {
+      const value = savedModelEnv[index];
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    });
+    engine._resetModelCache();
+  }
 
-  // 2) 真实模型路径（本机有权重时执行；无则跳过打印）
+  // Explicit opt-in only: default unit/contract gates must not discover real models.
   engine._resetModelCache();
-  let model = engine.findModel(REAL_CONFIG);
-  if (!model) {
+  const allowRealModel = process.env.AICS_TEST_REAL_WD14 === '1';
+  let model = allowRealModel ? engine.findModel(REAL_CONFIG) : null;
+  if (!allowRealModel) {
+    console.log('  ↪ 默认隔离测试；真实 WD14 验收需显式 AICS_TEST_REAL_WD14=1');
+  } else if (!model) {
     console.log('  ↪ 本机无 WD14 模型，跳过真实推理断言（仅降级路径验证）');
   } else {
     console.log('  模型: ' + model.modelName + ' (' + Math.round(model.bytes / 1024 / 1024) + 'MB) @ ' + model.dir);
     let tags = engine.loadTags(model.csvPath);
 
-    check('标签表契约: 9083 行 / general@4 / character@6951', function () {
+    await check('标签表契约: 9083 行 / general@4 / character@6951', function () {
       assert.equal(tags.names.length, 9083);
       assert.equal(tags.generalIndex, 4);
       assert.equal(tags.characterIndex, 6951);
@@ -78,7 +97,7 @@ async function run() {
     });
 
     let probeReal = engine.probe(REAL_CONFIG);
-    check('probe(有模型) available=true 且模型元信息完整', function () {
+    await check('probe(有模型) available=true 且模型元信息完整', function () {
       assert.equal(probeReal.available, true);
       assert.equal(probeReal.model, model!.modelName);
       assert.ok(probeReal.modelPath && probeReal.modelBytes > 0);
@@ -86,20 +105,20 @@ async function run() {
 
     let image = await generateTestImage();
     let r: any = await engine.interrogateTag(image, { config: REAL_CONFIG, threshold: 0.35 });
-    check('真实推理: ok=true / engine=wd14 / tags 非空', function () {
+    await check('真实推理: ok=true / engine=wd14 / tags 非空', function () {
       assert.equal(r.ok, true);
       assert.equal(r.engine, 'wd14');
       assert.equal(r.model, model!.modelName);
       assert.ok(Array.isArray(r.tags) && r.tags.length > 0, 'tags 为空');
       assert.ok(r.tags.length <= 100, '默认 topN=100 上限');
     });
-    check('真实推理: scores 与 tags 一一对应且为概率值', function () {
+    await check('真实推理: scores 与 tags 一一对应且为概率值', function () {
       r.tags.forEach(function (t: any) {
         assert.ok(Object.prototype.hasOwnProperty.call(r.scores, t), 'score 缺 ' + t);
         assert.ok(r.scores[t] > 0.35 && r.scores[t] <= 1.001, t + ' 概率越界: ' + r.scores[t]);
       });
     });
-    check('真实推理: rating 四键齐全且为独立 sigmoid 概率', function () {
+    await check('真实推理: rating 四键齐全且为独立 sigmoid 概率', function () {
       ['general', 'sensitive', 'questionable', 'explicit'].forEach(function (k) {
         assert.equal(typeof r.rating[k], 'number', 'rating 缺 ' + k);
         assert.ok(r.rating[k] >= 0 && r.rating[k] <= 1, k + ' 概率越界: ' + r.rating[k]);
@@ -108,7 +127,7 @@ async function run() {
       let maxRating = Math.max(r.rating.general, r.rating.sensitive, r.rating.questionable, r.rating.explicit);
       assert.ok(maxRating > 0.5, '无主导评级');
     });
-    check('真实推理: characterTags 均落在 character 区间且阈值更高', function () {
+    await check('真实推理: characterTags 均落在 character 区间且阈值更高', function () {
       assert.ok(Array.isArray(r.characterTags));
       r.characterTags.forEach(function (t: any) {
         let idx = tags.names.indexOf(t);
@@ -116,7 +135,7 @@ async function run() {
         assert.ok(r.scores[t] > 0.85, t + ' 低于 character 阈值');
       });
     });
-    check('真实推理: tags 与 characterTags 彻底分离（角色名不混入 tags）', function () {
+    await check('真实推理: tags 与 characterTags 彻底分离（角色名不混入 tags）', function () {
       // 2026-08-29：tags 只含 general 区间词条；角色名单独走 characterTags，
       // 防止识别出的角色名随大流写入 manualTags 与当前作画角色冲突。
       let characterSet = new Set(r.characterTags);
@@ -124,7 +143,7 @@ async function run() {
         assert.ok(!characterSet.has(t), t + ' 不得同时出现在 tags 与 characterTags');
       });
     });
-    check('真实推理: meta 携带引擎信息', function () {
+    await check('真实推理: meta 携带引擎信息', function () {
       assert.equal(r.meta.threshold, 0.35);
       assert.equal(typeof r.meta.modelPath, 'string');
     });
@@ -134,7 +153,10 @@ async function run() {
   console.log('test-interrogate-engine: ok');
 }
 
-run().catch(function (error) {
+run().finally(() => {
+  engine._resetModelCache();
+  fs.rmdirSync(EMPTY_DIR);
+}).catch(function (error) {
   console.error(error);
   process.exit(1);
 });

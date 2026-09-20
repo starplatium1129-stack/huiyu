@@ -22,6 +22,12 @@ function fixture() {
 }
 
 describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => {
+  it('显式空场景标题与无 LoRA 不回退到当前表单', async () => {
+    const f = fixture()
+    f.deps.resolveLegacyDefaults = () => ({ ...f.defaults, sceneTitle: 'later scene', lora: 'later lora' })
+    expect(await saveGeneratedArtwork({ ...f.input, sceneTitle: null, lora: null }, f.deps))
+      .toMatchObject({ ok: true, entry: { sceneTitle: null, lora: null } })
+  })
   it('在保护内完成图片和记录提交，返回可显示历史及完整生成记录', async () => {
     const f = fixture()
     const result = await saveGeneratedArtwork(f.input, f.deps)
