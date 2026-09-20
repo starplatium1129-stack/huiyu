@@ -1,5 +1,5 @@
 .companion-page.companion-redesign { padding: 0; }
-html.companion-desktop:has(.companion-redesign), html.companion-desktop:has(.companion-redesign) body, html.companion-desktop:has(.companion-redesign) #app { background: transparent; }
+html.companion-desktop:has(.companion-redesign), html.companion-desktop:has(.companion-redesign) body, html.companion-desktop:has(.companion-redesign) #app { background:transparent; transition:none; }
 html.companion-desktop:has(.companion-redesign) body::before, html.companion-desktop:has(.companion-redesign) body::after { display: none; }
 .companion-redesign .portrait-stage .live2d-host, .companion-redesign .live2d-host > *, .companion-redesign .live2d-host canvas, .companion-redesign .portrait-main { filter: none; box-shadow: none; }
 .companion-redesign::before, .companion-redesign::after, .companion-redesign .companion-ambience, .companion-redesign .room-signal, .companion-redesign .portrait-stage::before, .companion-redesign .portrait-stage::after, .companion-redesign .voice-halo { display: none; }
@@ -38,6 +38,10 @@ html.companion-desktop:has(.companion-redesign) body::before, html.companion-des
 .companion-redesign .companion-float-reminder button { color: var(--text-secondary); }
 .companion-reply-preview p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .companion-reply-preview svg { width: 15px; height: 15px; }
+.companion-redesign .companion-reply-preview { width:100%; max-width:100%; padding:var(--s-3); border-radius:var(--r-md); box-shadow:none; pointer-events:auto; }
+.companion-redesign .companion-reply-preview p { margin:var(--s-1) 0 var(--s-2); overflow-wrap:anywhere; line-height:var(--lh-body); }
+.companion-redesign .reply-actions { display:flex; justify-content:flex-end; align-items:center; gap:var(--s-2); }
+.companion-redesign .companion-reply-preview .reply-actions button { position:static; display:inline-flex; align-items:center; justify-content:center; gap:var(--s-1); width:auto; min-width:32px; min-height:32px; padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); opacity:1; }
 .companion-float-error, .companion-mic-status { pointer-events: auto; padding: var(--s-3); color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); }
 html.companion-desktop .companion-redesign .live2d-host { inset: 66px 0 38px; }
 html.companion-desktop .companion-redesign .portrait-main { bottom: 40px; max-height: calc(100% - 108px); }
@@ -50,6 +54,33 @@ html.companion-desktop .companion-redesign:focus-within .companion-toolbar,
 html.companion-desktop .companion-redesign:has(.character-controls[open]) .companion-toolbar,
 html.companion-desktop .companion-redesign:has(.companion-settings-popover) .companion-toolbar { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
 
+/* Only the character and explicit controls paint pixels in the native pet window. */
+html.companion-desktop .companion-page.companion-redesign,
+html.companion-desktop .companion-redesign .companion-stage,
+html.companion-desktop .companion-redesign .character-card,
+html.companion-desktop .companion-redesign .portrait-stage { background:transparent; border:0; border-radius:0; box-shadow:none; }
+html.companion-desktop .companion-page.companion-redesign { padding:0; width:100%; }
+html.companion-desktop .companion-redesign .companion-stage::before,
+html.companion-desktop .companion-redesign .companion-stage::after { display:none; }
+html.companion-desktop .companion-page.companion-redesign .portrait-stage .live2d-host,
+html.companion-desktop .companion-page.companion-redesign .live2d-host > *,
+html.companion-desktop .companion-page.companion-redesign .live2d-host canvas { filter:none; box-shadow:none; }
+/* Scene-cover fallbacks are rectangular paintings, not floating pet silhouettes. */
+html.companion-desktop .companion-page.companion-redesign .portrait-main { display:none; }
+html.companion-desktop .companion-page.companion-redesign .live2d-enable-cta,
+html.companion-desktop .companion-page.companion-redesign .avatar-status:not([data-state='ready']):not([data-state='idle']) { position:absolute; left:50%; top:50%; bottom:auto; transform:translate(-50%,-50%); width:min(260px,85%); display:block; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); box-shadow:none; backdrop-filter:none; text-align:center; }
+html.companion-desktop .companion-redesign .live2d-enable-cta-kicker,
+html.companion-desktop .companion-redesign .live2d-enable-cta small { display:none; }
+html.companion-desktop .companion-page.companion-redesign .companion-toolbar { position:absolute; inset:var(--s-2) var(--s-2) auto; width:fit-content; max-width:calc(100% - 16px); margin-inline:auto; min-height:44px; padding:var(--s-1) var(--s-2); gap:var(--s-2); border:0; border-radius:var(--r-md); background:var(--bg-surface); box-shadow:none; backdrop-filter:none; }
+html.companion-desktop .companion-redesign .companion-picker { flex:1; min-width:0; max-width:160px; }
+html.companion-desktop .companion-redesign .companion-picker select { text-overflow:ellipsis; }
+html.companion-desktop .companion-redesign .companion-toolbar-actions { gap:var(--s-1); }
+.companion-hide-btn { display:grid; place-items:center; width:32px; height:36px; padding:var(--s-1); border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); cursor:pointer; }
+.companion-hide-btn svg { width:16px; height:16px; }
+.companion-hide-btn:hover { background:var(--bg-hover); color:var(--text-primary); }
+.companion-hide-btn:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+html.companion-desktop .companion-redesign .companion-chat-chip { min-height:32px; box-shadow:none; }
+
 .companion-chat-window.companion-chat-redesign { background: var(--bg-surface); color: var(--text-primary); }
 .companion-chat-redesign .companion-chat-titlebar { padding: var(--s-3); gap: var(--s-2); min-height: 64px; background: var(--bg-surface); }
 .companion-chat-redesign .companion-chat-identity { flex: 1; min-width: 0; }
@@ -60,12 +91,12 @@ html.companion-desktop .companion-redesign:has(.companion-settings-popover) .com
 .companion-chat-redesign .companion-chat-body { padding: 0 var(--s-4); }
 .companion-chat-redesign .companion-chat-statusline { min-height: 30px; color: var(--text-secondary); }
 .companion-chat-redesign .companion-chat-bubbles { padding-block: var(--s-4); scrollbar-gutter: stable; }
-.companion-chat-redesign .companion-chat-bubble { max-width: 94%; padding: var(--s-3) var(--s-4); background: var(--bg-elevated); color: var(--text-primary); border-color: var(--border-soft); box-shadow: none; }
+.companion-chat-redesign .companion-chat-bubble { max-width:94%; padding:var(--s-3) var(--s-4); border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); border-color:var(--border-soft); box-shadow:none; }
 .companion-chat-redesign .companion-chat-bubble.user { background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface)); }
 .companion-chat-redesign .companion-chat-bubble p { font-size: var(--fs-body); line-height: 1.8; }
 .companion-message-copy { display: block; margin-top: var(--s-2); padding: 0; background: none; border: 0; font-size: var(--fs-label-sm); color: var(--text-secondary); cursor: pointer; }
 .companion-chat-redesign .companion-chat-composer { margin-inline: calc(var(--s-4) * -1); padding: var(--s-3) var(--s-4); background: var(--bg-surface); }
-.companion-chat-redesign .companion-chat-input { border-radius: var(--r-lg); background: var(--bg-elevated); color: var(--text-primary); }
+.companion-chat-redesign .companion-chat-input { border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); }
 .companion-chat-redesign .companion-chat-actions { gap: var(--s-2); margin-top: var(--s-2); }
 .companion-chat-redesign .companion-chat-meta { color: var(--text-secondary); }
 .companion-back-latest { align-self: center; flex-shrink: 0; }

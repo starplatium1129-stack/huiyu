@@ -2,7 +2,7 @@
   <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar">
     <header class="chat-head">
       <div>
-        <span class="room-eyebrow">此刻，与你</span>
+        <div class="room-title-group"><span class="room-eyebrow">HUIYU / COMPANION ROOM</span><h1 class="room-title">此刻，与你</h1></div>
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
       </div>
       <div class="chat-actions">

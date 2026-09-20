@@ -25,3 +25,12 @@
   --first-paint-background: #fff8f4;
   --first-paint-text: #645c6e;
 }
+
+/* Native pet only: prevent the normal full-window loading card and theme wash. */
+html.companion-desktop,
+html.companion-desktop body,
+html.companion-desktop #app {
+  background: transparent !important;
+  transition: none;
+}
+html.companion-desktop #app:empty::before { display: none; }

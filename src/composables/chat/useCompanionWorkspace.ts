@@ -94,7 +94,7 @@ export function useCompanionWorkspace() {
         ? `AI 工作区：${workspaceInput.value || '已配置'}`
         : '未配置 AI 工作区：样张预览与训练不可用，点击设置');
     let uiIdleTimer = 0;
-    let uiHidden = false;
+    const uiHidden = ref(false);
     let lastPointerMove = Date.now();
     let mouseToggleBlockedUntil = 0;
     const immersive = ref(false);
@@ -185,9 +185,9 @@ export function useCompanionWorkspace() {
     let boundsRevision = 0;
     /** 沉浸模式：鼠标在舞台活动时 UI 浮现，静止数秒后自动隐去（桌面窗口）。 */
     function setUiHidden(hidden: boolean) {
-        if (uiHidden === hidden)
+        if (uiHidden.value === hidden)
             return;
-        uiHidden = hidden;
+        uiHidden.value = hidden;
         document.documentElement.classList.toggle('companion-ui-hidden', hidden);
     }
     function enterImmersive() {
@@ -197,7 +197,7 @@ export function useCompanionWorkspace() {
         document.documentElement.classList.add('companion-immersive');
         // 进入沉浸前取消自动隐现计时，避免冲突
         clearTimeout(uiIdleTimer);
-        uiHidden = false;
+        uiHidden.value = false;
         document.documentElement.classList.remove('companion-ui-hidden');
     }
     function exitImmersive() {
@@ -250,7 +250,7 @@ export function useCompanionWorkspace() {
     }
     function onPointerMove(event: PointerEvent) {
         lastPointerMove = Date.now();
-        if (uiHidden)
+        if (uiHidden.value)
             setUiHidden(false);
         clearTimeout(uiIdleTimer);
         if (!desktopBridge)
@@ -270,6 +270,11 @@ export function useCompanionWorkspace() {
                 desktopBridge.setIgnoreMouseEvents(false);
             }
         }
+        scheduleUiHide();
+    }
+    function scheduleUiHide() {
+        clearTimeout(uiIdleTimer);
+        if (!desktopBridge || immersive.value) return;
         uiIdleTimer = window.setTimeout(() => {
             if (!viewAlive || !desktopWindowVisible.value)
                 return;
@@ -408,6 +413,8 @@ export function useCompanionWorkspace() {
         void refreshWorkspaceState();
         if (desktopBridge) {
             document.documentElement.classList.add('companion-desktop');
+            lastPointerMove = Date.now();
+            scheduleUiHide();
             // 真双窗口：先下行一次实时状态，聊天窗打开即有正确内容
             publishLiveState();
             chatCommandSubscription = desktopBridge.onChatCommand(onChatCommand);
@@ -467,6 +474,7 @@ export function useCompanionWorkspace() {
     });
     onUnmounted(() => {
         viewAlive = false;
+        clearTimeout(uiIdleTimer);
         window.removeEventListener('pointerdown', noteActivity);
         window.removeEventListener('pointerdown', onDocPointerDown);
         window.removeEventListener('keydown', onWindowKeydown);
@@ -491,7 +499,7 @@ export function useCompanionWorkspace() {
         if (desktopBridge && chatCommandSubscription != null)
             desktopBridge.offChatCommand(chatCommandSubscription);
         document.documentElement.classList.remove('companion-mode', 'companion-desktop', 'companion-immersive', 'companion-ui-hidden');
-        uiHidden = false;
+        uiHidden.value = false;
         immersive.value = false;
     });
     return {

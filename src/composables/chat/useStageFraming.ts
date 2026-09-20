@@ -4,12 +4,21 @@ import { STAGE_FRAMING_KEY as key } from '@/utils/storageKeys'
 type Framing = { zoom: number; x: number; y: number }
 export type StageSurface = 'room' | 'immersive' | 'companion'
 
+/** Room defaults are calibrated independently; other surfaces keep their own framing. */
+export function defaultStageFraming(character: string, surface: StageSurface): Framing {
+  if (surface === 'room') {
+    if (character === 'hatsune_miku') return { zoom: 1, x: 0, y: 0 }
+    if (character === 'natsume') return { zoom: .9, x: 0, y: 0 }
+    if (character === 'nene') return { zoom: 1.1, x: 0, y: 0 }
+  }
+  if (character === 'hatsune_miku') return surface === 'immersive'
+    ? { zoom: 1, x: 0, y: -12 } : { zoom: 1, x: 0, y: 0 }
+  return { zoom: 1, x: 0, y: 0 }
+}
+
 /** Presentation-only calibration. Author assets and outfit state are untouched. */
 export function useStageFraming(character: Ref<string>, surface: () => StageSurface) {
-  const defaults = (): Framing => character.value === 'hatsune_miku'
-    ? surface() === 'immersive' ? { zoom: 1, x: 0, y: -12 }
-      : { zoom: surface() === 'room' ? 1.45 : 1.75, x: 0, y: surface() === 'room' ? -3 : 2 }
-    : { zoom: 1, x: 0, y: 0 }
+  const defaults = (): Framing => defaultStageFraming(character.value, surface())
   const framing = ref<Framing>(defaults())
   function read() {
     try {

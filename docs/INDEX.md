@@ -25,6 +25,8 @@
 
 ## 当前审计与待办
 
+- [聊天房间与桌宠视觉设计方案（2026-09-20）](research/desktop/live2d-visual-plan-2026-09-20.md)：8 模型取景采样与 GitHub 参考；A 批聊天房间、B 批无边框桌宠已完成定向检查，安装版与完整设备验收待执行。
+
 - [本机 Live2D 候选接入（2026-09-20）](research/desktop/live2d-candidate-integration-2026-09-20.md)：本机模型与 Native 适配、影退役、开放聊天舞台、桌宠与独立聊天窗重构；双主题真实模型检查与桌面实测边界。
 
 - [长期架构优化实施计划](../plans/architecture-evolution.md)：业务类型、入册用例、接口、引擎、存储和生命周期的分批实施与验收；动态进度见 roadmap。

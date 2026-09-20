@@ -21,6 +21,7 @@
           :aria-expanded="settingsOpen"
           @click="settingsOpen = !settingsOpen"
         ><ArchiveIcon name="gear" /><span>设置</span></button>
+        <button v-if="desktopBridge" class="companion-hide-btn" type="button" aria-label="隐藏桌宠" title="隐藏桌宠（Ctrl+Shift+Space 可恢复）" @click="desktopBridge.hide"><ArchiveIcon name="close" /></button>
         <FluidTransition>
 <div v-if="settingsOpen" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop>
           <AppearancePreferences launcher-only @open="settingsOpen = false" />

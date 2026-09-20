@@ -1,38 +1,47 @@
 .page-root:has(.room-surface) > .site-footer { display: none; }
-.page-main:has(.room-surface) { padding-bottom: 0; }
-.chat-page.room-surface { position: relative; max-width: 1720px; padding: var(--s-4) var(--s-6); }
-.room-surface .chat-head { align-items: center; margin-bottom: var(--s-3); }
+.page-root:has(.room-surface) { height:calc(100dvh - var(--desktop-chrome-height, 0px)); min-height:0; }
+.page-root:has(.room-surface) > .nav { flex-shrink:0; }
+.page-main:has(.room-surface) { padding-bottom:0; min-height:0; grid-template-rows:minmax(0,1fr); }
+.chat-page.room-surface { position:relative; max-width:1720px; height:100%; min-height:0; margin-bottom:0; display:flex; flex-direction:column; padding:var(--s-4) clamp(16px,3vw,48px); background:var(--bg-base); }
+.room-surface .chat-head { align-items: center; margin-bottom:var(--s-4); padding-bottom:var(--s-4); border-bottom:1px solid var(--border-soft); flex-shrink:0; }
 .room-surface .chat-head > div:first-child { display: flex; align-items: center; gap: var(--s-4); }
-.room-eyebrow { color: var(--text-secondary); font-size: var(--fs-label); letter-spacing: .12em; }
+.room-eyebrow { display:block; color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
+.room-title { margin:var(--s-1) 0 0; font:600 clamp(1.25rem,2vw,1.7rem)/var(--lh-tight) var(--font-display); color:var(--text-primary); }
+.room-title-group { min-width:0; }
 .room-surface .chat-actions { align-items: center; }
 .room-surface .chat-actions > button { display: inline-flex; align-items: center; gap: var(--s-2); }
 .room-surface .chat-actions svg { width: 17px; height: 17px; }
-.room-surface .chat-layout { grid-template-columns: minmax(0, 1.1fr) minmax(390px, .9fr); gap: var(--s-6); min-height: 0; }
+.room-surface .chat-actions .btn-ghost { min-height:40px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); font-size:var(--fs-label-sm); }
+.room-surface .chat-layout { flex:1; height:auto; grid-template-columns:minmax(0,2fr) minmax(390px,3fr); gap:clamp(20px,2.5vw,36px); min-height:0; }
+.room-surface:is([data-character='hatsune_miku'],[data-character='frieren'],[data-character='fern_frieren']) .chat-layout { grid-template-columns:minmax(0,.46fr) minmax(390px,.54fr); }
 .room-surface .character-card { border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; min-width: 0; }
 .room-surface .character-card::before, .room-surface .portrait-stage::before, .room-surface .portrait-stage::after, .room-surface .room-signal, .room-surface .voice-halo { display: none; }
 .room-surface .portrait-stage { min-height: 0; background: transparent; border: 0; overflow: hidden; }
 .room-surface .portrait-stage[data-character] { background: transparent; }
 .room-surface .portrait-main { max-height: 100%; width: min(95%, 680px); bottom: 0; }
-.room-surface .character-info { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-3) var(--s-4); background: transparent; border: 0; }
+.room-surface .character-info { flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-2); background:transparent; border:0; border-top:1px solid var(--border-soft); }
 .room-surface .character-info-head { min-width: 0; }
 .room-surface .character-status { display: none; }
 .room-surface .character-name { font-size: var(--fs-body); }
 .room-surface .character-controls { margin: 0; }
 .room-surface .character-controls-panel { position: absolute; z-index: var(--z-popover); bottom: calc(100% + 8px); left: var(--s-3); right: var(--s-3); max-height: min(520px, 65dvh); overflow: auto; padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-elevated); box-shadow: var(--shadow-lg); }
 .room-surface .avatar-status[data-state="ready"], .room-surface .live2d-interaction-hint { display: none; }
-.room-surface .conversation-card { border-radius: var(--r-xl); border-color: var(--border-soft); background: var(--bg-surface); box-shadow: none; animation: none; }
+.room-surface .conversation-card { border-radius:var(--r-md); border-color:var(--border-soft); background:var(--bg-surface); box-shadow:none; animation:none; min-height:0; }
 .room-surface .conversation-card::before { display: none; }
-.room-surface .conversation-head { flex-shrink: 0; align-items: center; padding: var(--s-4); }
+.room-surface .conversation-head { flex-shrink:0; align-items:center; padding:var(--s-4) var(--s-5); background:var(--bg-surface); border-bottom:1px solid var(--border-soft); }
 .room-conversation-title { display: grid; gap: var(--s-1); }
 .room-conversation-title > span { color: var(--text-secondary); font-size: var(--fs-label-sm); }
 .room-volume { display: flex; align-items: center; gap: var(--s-2); color: var(--text-primary); font-size: var(--fs-label); }
 .room-volume input { min-width: 0; max-width: 150px; accent-color: var(--accent); }
-.room-surface .chat-list { padding: var(--s-4); scrollbar-gutter: stable; }
+.room-surface .chat-list { padding:var(--s-5); scrollbar-gutter:stable; min-height:0; overscroll-behavior:contain; background:var(--bg-surface); }
 .room-surface .chat-empty { flex-shrink: 0; gap: var(--s-4); margin: var(--s-4) auto auto; padding: var(--s-4) var(--s-3); }
 .room-surface .chat-empty-kicker { color: var(--text-secondary); }
-.room-surface .message { max-width: 94%; }
-.room-surface .message-bubble { line-height: 1.85; }
-.room-surface .chat-composer { flex-shrink: 0; padding: var(--s-3); }
+.room-surface .message { max-width:90%; }
+.room-surface .message-bubble { line-height:1.85; box-shadow:none; border-radius:var(--r-md); background:var(--bg-base); border-color:var(--border-soft); }
+.room-surface .message.user .message-bubble { background:var(--accent-soft); color:var(--text-primary); }
+.room-surface .msg-memory-btn,.room-surface .msg-voice-btn { opacity:1; color:var(--text-secondary); }
+.room-surface .msg-memory-btn:disabled,.room-surface .msg-voice-btn:disabled { color:var(--text-disabled); }
+.room-surface .chat-composer { flex-shrink:0; padding:var(--s-4); border-top:1px solid var(--border-soft); background:var(--bg-surface); }
 .room-surface .composer-row { gap: var(--s-2); }
 .room-surface .chat-input { min-height: 68px; max-height: 150px; }
 .room-surface .composer-tools { gap: var(--s-2); flex-wrap: wrap; padding-top: var(--s-2); }
@@ -57,17 +66,21 @@
 .room-surface.room-immersive .conversation-head { padding-block: var(--s-2); }
 .room-surface.room-immersive .room-conversation-title > span { display: none; }
 @media (max-width: 999px) {
-  .chat-page.room-surface { height: calc(100dvh - 72px); display: flex; flex-direction: column; padding: var(--s-3); margin-bottom: 0; }
-  .room-surface .chat-layout { flex: 1; grid-template-columns: minmax(0, .8fr) minmax(330px, 1fr); gap: var(--s-3); height: auto; }
+  .chat-page.room-surface { padding:var(--s-3); }
+  .room-surface .chat-layout,.room-surface:is([data-character='hatsune_miku'],[data-character='frieren'],[data-character='fern_frieren']) .chat-layout { flex:1; grid-template-columns:minmax(0,.8fr) minmax(330px,1fr); gap:var(--s-3); height:auto; }
   .room-surface .character-card, .room-surface .conversation-card { min-height: 0; }
   .room-surface .chat-head { flex-direction: row; flex-wrap: wrap; flex-shrink: 0; gap: var(--s-2); }
   .room-eyebrow { display: none; }
 }
+@media (max-width: 899px) {
+  .room-surface .chat-layout,.room-surface:is([data-character='hatsune_miku'],[data-character='frieren'],[data-character='fern_frieren']) .chat-layout { grid-template-columns:1fr; grid-template-rows:minmax(150px,30%) minmax(0,1fr); gap:var(--s-2); }
+}
 @media (max-width: 620px) {
-  .room-surface .chat-layout { grid-template-columns: 1fr; grid-template-rows: minmax(150px, 30%) minmax(0, 1fr); gap: var(--s-2); }
+  .room-title { font-size:var(--fs-title-xs); }
+  .room-surface .chat-head > div:first-child { gap:var(--s-3); flex:1 1 100%; }
   .room-surface .chat-actions { gap: var(--s-1); }
   .room-surface .chat-actions > .btn { padding-inline: var(--s-2); }
-  .room-surface .chat-actions > .btn:nth-child(2) { display: none; }
+  .room-surface .chat-actions > .btn:nth-child(2) { display:inline-flex; }
   .room-surface .character-info { position: absolute; right: 0; bottom: 0; padding: var(--s-2); z-index: var(--z-raised); }
   .room-surface .character-info-head { display: none; }
   .room-surface .character-controls > summary { background: var(--bg-surface); border-radius: var(--r-md); padding: var(--s-2); }
