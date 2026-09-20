@@ -1,4 +1,4 @@
-import { CHAT_MEMORY_KEY, isLiveLocalKey } from './storageKeys'
+import { CHAT_DRAFT_PREFIX, CHAT_MEMORY_KEY, CHAT_VOLUME_KEY, isLiveLocalKey } from './storageKeys'
 import { CHAT_ARCHIVE_KEY, mergeChatArchives, normalizeChatArchive, serializeChatArchive } from './chatArchive'
 import { mergeChatMemoryStates, normalizeChatMemoryState } from './chatMemory'
 import { normalizeChatStorage } from './chatStorageCore'
@@ -30,6 +30,13 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
       }
       const old = normalizeChatStorage(JSON.parse(current[key] || 'null'), '', options).state
       const next = normalizeChatStorage(JSON.parse(value), '', options).state
+      // Older backups keep these values inside the chat record. Promote them
+      // so existing separate preferences cannot mask the restored settings.
+      if (!(CHAT_VOLUME_KEY in incoming)) result[CHAT_VOLUME_KEY] = String(next.settings.volume)
+      for (const character of characterIds) {
+        const draftKey = CHAT_DRAFT_PREFIX + character
+        if (!(draftKey in incoming)) result[draftKey] = JSON.stringify(next.settings.drafts[character] || '')
+      }
       const merged = { ...next, histories: { ...old.histories } }
       for (const character of options.characterIds) {
         const ids = new Set<string>()

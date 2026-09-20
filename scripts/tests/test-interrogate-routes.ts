@@ -3,9 +3,14 @@
 /**
  * routes/interrogate 契约测试（2026-08-28 补：此前零覆盖；2026-08-29 适配真实引擎）。
  * 覆盖：参数校验（mode/threshold/base64）、启发式兜底闭环、status 探测（含 wd14 引擎状态）。
- * 测试栈 AI_WORKSPACE_ROOT 指向空临时目录 → wd14 不可用，WebUI/Comfy mock 无 interrogate 端点
- * → 必然落 heuristic 分支，恰验证零依赖兜底。
+ * WD14 显式替身，防止项目 runtime 或环境变量发现真实模型；上游仅用本地 HTTP 夹具。
  */
+
+import fs = require('fs');
+import path = require('path');
+import http = require('http');
+import type { AddressInfo } from 'net';
+import wd14 = require('../../server/interrogate-engine');
 
 let assert: typeof import('assert/strict') = require('assert/strict');
 let gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
@@ -73,10 +78,51 @@ async function run() {
   } finally {
     await stack.close();
   }
+  // Isolated WD14 HTTP fixture: verifies async upload and write-failure fallback.
+  let calls = 0;
+  const comfy = http.createServer((req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    if (req.url === '/object_info') return res.end(JSON.stringify({ WD14Tagger: {} }));
+    if (req.url?.startsWith('/pysssss/wd14tagger/tag')) {
+      calls += 1;
+      return res.end(JSON.stringify('1girl, blue_hair'));
+    }
+    res.end('{}');
+  });
+  await new Promise<void>(resolve => comfy.listen(0, '127.0.0.1', resolve));
+  const fixture = await gatewayStack.start({ configureConfig(config: { COMFY_HOST: string }) {
+    config.COMFY_HOST = 'http://127.0.0.1:' + (comfy.address() as AddressInfo).port;
+  } });
+  const originalWrite = fs.promises.writeFile;
+  try {
+    const result = await json(await post(fixture.baseUrl, { mode:'tag', image:TINY_PNG }));
+    assert.equal(result.engine, 'comfy');
+    assert.equal(calls, 1);
+    const inputRoot = path.join(fixture.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'input');
+    assert.ok(fs.readdirSync(inputRoot).some(name => name.startsWith('aics_interrogate_')));
+    fs.promises.writeFile = async function (target, data, options) {
+      if (String(target).includes('aics_interrogate_')) throw new Error('fixture disk full');
+      return originalWrite(target, data, options);
+    };
+    const fallback = await json(await post(fixture.baseUrl, { mode:'tag', image:TINY_PNG }));
+    assert.equal(fallback.engine, 'heuristic');
+    assert.equal(calls, 1, 'failed writes must not submit nonexistent images upstream');
+  } finally {
+    fs.promises.writeFile = originalWrite;
+    await fixture.close();
+    await gatewayStack.closeServer(comfy);
+  }
   console.log('test-interrogate-routes: ok');
 }
 
-run().catch(function (error) {
+const originalInterrogate = wd14.interrogateTag;
+const originalProbe = wd14.probe;
+wd14.interrogateTag = async () => ({ ok:false, reason:'fixture disables real inference' });
+wd14.probe = () => ({ available:false, reason:'fixture disables real models' });
+run().finally(() => {
+  wd14.interrogateTag = originalInterrogate;
+  wd14.probe = originalProbe;
+}).catch(function (error) {
   console.error(error);
   process.exit(1);
 });

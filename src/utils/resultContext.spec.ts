@@ -12,10 +12,18 @@ function input() {
 }
 
 describe('结果快照的窄输入契约', () => {
+  it('冻结场景标题，切换场景或改写目录后不改变作品标题', () => {
+    const source = { ...input(), sceneBlueprints: [{ id: 'blueprint-a', title: 'Original title' }] }
+    const snapshot = captureResultContext(source)
+    source.sceneBlueprints[0]!.title = 'Changed title'
+    source.subject.blueprintId = 'blueprint-b'
+    expect(snapshot.history?.sceneTitle).toBe('Original title')
+    expect(captureResultContext({ ...input(), subject: { kind: 'studio' }, story: '', activeScene: null }).history?.sceneTitle).toBeNull()
+  })
   it('普通对象直接捕获身份、故事、风格与项目，不创建 Store', () => {
     expect(captureResultContext(input())).toEqual({
       characterId: 'popular-a', outfitId: 'outfit-a', blueprintId: 'blueprint-a', sceneId: 'scene-a', story: 'original story', char: 'nene',
-      history: { visualDescription: 'original description', emotion: ['calm'], shot: 'medium', lighting: 'window', composition: 'center',
+      history: { sceneTitle: '热门角色作品', visualDescription: 'original description', emotion: ['calm'], shot: 'medium', lighting: 'window', composition: 'center',
         colorMood: 'soft', manual_tags: ['river'], artistStyleIds: ['style-a'], project: 'project-a' },
     })
   })

@@ -35,6 +35,9 @@ export const TUNNEL_OFF_KEY = 'aics_tunnel_off'
 export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
 export const CHAT_USER_PROFILE_KEY = 'aics_user_profile_v1'
 export const CHAT_MEMORY_KEY = 'aics_chat_memories_v1'
+/** 高频偏好单独保存，避免每次输入或调音量重写聊天历史。 */
+export const CHAT_VOLUME_KEY = 'aics_chat_volume_v1'
+export const CHAT_DRAFT_PREFIX = 'aics_chat_draft_v1:'
 export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
 /** 出图自动入册开关（2026-08-31 用户偏好：默认关，直出成片不再自动进作品册）。 */
 export const AUTO_SAVE_TO_GALLERY_KEY = 'aics_auto_save_to_gallery'
@@ -111,6 +114,7 @@ export const LIVE_LOCAL_KEYS = [
   CHAT_THINKING_KEY,
   CHAT_USER_PROFILE_KEY,
   CHAT_MEMORY_KEY,
+  CHAT_VOLUME_KEY,
   COMPANION_LIVE2D_KEY,
   LIVE2D_QUALITY_KEY,
   STAGE_FRAMING_KEY,
@@ -123,8 +127,9 @@ export const LIVE_LOCAL_KEYS = [
   AUTO_SAVE_TO_GALLERY_KEY,
 ] as const
 
-/** 动态前缀活键：训练参数/数据集选择按 job 动态命名。 */
+/** 动态前缀活键：聊天草稿按角色独立保存。 */
 export const LIVE_LOCAL_PREFIXES = [
+  CHAT_DRAFT_PREFIX,
 ] as const
 
 /** 死键：已无写入者、内容已迁移或废弃，备份导出时清理。 */

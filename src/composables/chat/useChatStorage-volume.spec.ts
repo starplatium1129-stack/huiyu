@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { useChatStorage } from './useChatStorage'
-import { STORAGE_KEY } from '@/config/characters'
+import { CHAT_VOLUME_KEY } from '@/utils/storageKeys'
 
 afterEach(() => localStorage.clear())
 
@@ -9,7 +9,7 @@ describe('chat volume persistence', () => {
     const storage = useChatStorage()
     storage.load()
     storage.setVolume(0)
-    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).settings.volume).toBe(0)
+    expect(localStorage.getItem(CHAT_VOLUME_KEY)).toBe('0')
     const restored = useChatStorage()
     restored.load()
     expect(restored.state.settings.volume).toBe(0)

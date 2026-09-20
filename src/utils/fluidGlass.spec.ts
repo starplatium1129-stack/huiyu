@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { fluidLens, installFluidGlass, FLUID_GLASS_SELECTOR } from './fluidGlass'
+import { installFluidGlass } from './fluidGlass'
+import { fluidLens, FLUID_GLASS_SELECTOR } from './fluidGlassRenderer'
 
 describe('structural glass optics', () => {
   it('includes navigation, floating toolbars and generation bar in FLUID_GLASS_SELECTOR', () => {
