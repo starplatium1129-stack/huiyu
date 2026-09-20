@@ -44,7 +44,7 @@
     </section>
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
-    <div class="scene-toolbar">
+    <div class="scene-toolbar" :class="{ 'filters-expanded': filtersOpen }">
       <div class="toolbar-primary">
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
@@ -61,14 +61,14 @@
           class="filter-toggle" type="button"
           :class="{ active: filtersOpen || activeFacetCount > 0 }"
           :aria-expanded="filtersOpen ? 'true' : 'false'"
-          aria-controls="sceneFacetPanel"
+          aria-controls="sceneFacetPanel scenePersonalViews"
           @click="filtersOpen = !filtersOpen"
         >
-          筛选<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
+          筛选与收藏<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
         </button>
       </div>
 
-      <div class="scene-personal-nav" aria-label="我的场景视图">
+      <div id="scenePersonalViews" class="scene-personal-nav" aria-label="我的场景视图">
         <span class="scene-personal-label">我的场景</span>
         <button type="button" :class="{ active: fTier === 'personal' && !showHidden }"
           :aria-pressed="fTier === 'personal' && !showHidden"
@@ -91,7 +91,7 @@
           @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.label }} {{ themeCount(d.id) }}</button>
       </div>
 
-      <div v-if="intentHtml" class="search-intent" aria-live="polite" v-html="intentHtml"></div>
+      <div v-if="searchQuery && intentHtml" class="search-intent" aria-live="polite" v-html="intentHtml"></div>
 
       <!-- 精细筛选默认收起 -->
       <div v-show="filtersOpen" id="sceneFacetPanel" class="scene-facet-panel">
@@ -470,3 +470,5 @@ watch(companionId, (id) => { companionFailed[id] = false })
   .scene-atlas { background:var(--bg-surface); }
 }
 </style>
+
+<style scoped src="@/assets/css/scene-discovery-browse.css"></style>

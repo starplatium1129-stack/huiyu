@@ -1,30 +1,18 @@
 <template>
-  <article class="page library-page" style="--page-max:1500px;">
+  <article class="page library-page popular-scene-library" style="--page-max:1500px;" :style="{ '--character-ornament': portraitPalette.accent }">
     <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>选角色、挑场景，再带着完整设定进入绘图工作台。</p></div><RouterLink :to="'/character?character=' + encodeURIComponent(selectedId)" class="btn btn-ghost">查看角色档案</RouterLink></header>
     <div class="library-layout">
-      <CharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
+      <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
       <div class="library-detail">
     <section class="pop-hero">
       <div class="pop-hero-copy">
         <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
         <h2>{{ selectedCharacter?.displayName || '选择一个角色' }}</h2>
-        <p class="subtitle">每个场景都已配好镜头与光线。选择喜欢的一幕，在工作台继续调整。</p>
         <div class="pop-hero-stat" aria-label="场景统计">
           <strong>{{ totalScenes }}</strong><span>场景蓝图</span>
           <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
         </div>
       </div>
-      <!-- 2026-08-16：hero 粒子场——粒子直接重组为当前角色的剪影（离线 rembg 点云，
-           assets/particles/p_<id>.json）；无点云时回落 characterParticleTheme 抽象形状。 -->
-      <SemanticParticleField
-        class="pop-hero-field"
-        :shape="particleTheme.shape"
-        :portrait-id="selectedId"
-        :label="`${selectedCharacter?.displayName || '热门角色'}的人物剪影粒子`"
-        :caption="`SCENES ${String(totalScenes).padStart(2, '0')}`"
-        density="ambient"
-        :style="{ '--archive-blue': particleTheme.accent, '--character-aura': particleTheme.aura }"
-      />
     </section>
 
     <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" message="正在载入热门角色档案与场景蓝图。" />
@@ -114,7 +102,7 @@ import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
-import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
+import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import {
   inferBlueprintDecisions,
   type PopularCharacter,
@@ -122,7 +110,6 @@ import {
 } from '@/utils/popularContent'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -158,16 +145,13 @@ const directoryItems = computed(() => characters.value.map(character => ({
 const selectedCharacter = computed(() =>
   characters.value.find(item => item.id === selectedId.value) ?? null,
 )
+// Keep the shared character palette on the chapter ornament without a particle canvas.
+const portraitPalette = computed(() => characterParticleTheme(selectedId.value, selectedCharacter.value?.franchise))
 const pool = computed<SceneBlueprint[]>(() =>
   allBlueprints.value.filter(bp =>
     bp.characterId === selectedId.value
     && (!(bp.adult || bp.sampleRating === 'R18') || (showMature && selectedCharacter.value?.adultEligibility === 'adult')),
   ),
-)
-
-/** hero 粒子主题：形状+主色随当前角色切换。 */
-const particleTheme = computed(() =>
-  characterParticleTheme(selectedId.value, selectedCharacter.value?.franchise),
 )
 
 // 统计口径统一为「当前角色的可浏览池」，与成人数量同源（header 不再显示全局 336 与
@@ -595,3 +579,5 @@ onMounted(() => { void init() })
   .pop-grid { grid-template-columns: minmax(0, 1fr); }
 }
 </style>
+
+<style scoped src="@/assets/css/popular-scene-browse.css"></style>

@@ -1,0 +1,25 @@
+/* Current character is already shown in the pocket selector on small screens. */
+.popular-scene-library { padding-top:var(--s-5); }
+.popular-scene-library .page-kicker::before { background:var(--character-ornament); box-shadow:none; }
+.popular-scene-library :deep(.directory-pocket) { border-left:3px solid var(--character-ornament); }
+.popular-scene-library .library-detail .pop-hero { display:block; }
+.popular-scene-library .library-detail .pop-hero-copy { padding:0; }
+.popular-scene-library .library-detail .pop-hero-copy h2 { margin-bottom:var(--s-2); }
+.popular-scene-library .pop-rating-pill,
+.popular-scene-library .pop-count { font-size:var(--fs-body-sm); }
+@media (max-width:900px) {
+  .popular-scene-library .library-detail .pop-hero { padding-bottom:var(--s-3); margin-bottom:var(--s-3); }
+  .popular-scene-library .pop-hero-copy .page-kicker,
+  .popular-scene-library .pop-hero-copy h2 { display:none; }
+  .popular-scene-library .library-detail .pop-hero-stat { margin:0; }
+}
+@media (max-width:600px) {
+  .popular-scene-library .library-header { gap:var(--s-3); }
+  .popular-scene-library .library-layout { gap:var(--s-3); }
+  .popular-scene-library .pop-toolbar { gap:var(--s-2); }
+  .popular-scene-library .pop-toolbar-row { gap:var(--s-2); }
+  .popular-scene-library .pop-rating-filters { width:100%; }
+  .popular-scene-library .pop-rating-pill { flex:1; padding-inline:var(--s-1); }
+  .popular-scene-library .pop-cats { flex-wrap:nowrap; overflow-x:auto; padding-bottom:var(--s-1); }
+  .popular-scene-library .pop-cat { flex-shrink:0; }
+}

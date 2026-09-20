@@ -1,0 +1,26 @@
+/* 先看画面：页头保留角色陪伴，窄屏把个人视图收进筛选。 */
+.scene-discovery .scene-atlas { grid-template-columns:minmax(0,1fr) auto 144px; }
+.scene-discovery .scene-atlas-portrait { min-height:144px; }
+.scene-discovery .mood-rail { min-height:52px; }
+.scene-discovery .mood-rail small { font-size:var(--fs-label); }
+.scene-discovery .scene-personal-label,
+.scene-discovery .scene-personal-nav button,
+.scene-discovery .filter-toggle,
+.scene-discovery .scene-count { font-size:var(--fs-body-sm); }
+@media (max-width:768px) {
+  .scene-discovery .scene-atlas { grid-template-columns:minmax(0,1fr) 88px; grid-template-areas:'copy portrait' 'choices choices' 'moods moods'; gap:var(--s-2); }
+  .scene-discovery .scene-atlas-portrait { min-height:100px; }
+  .scene-discovery .scene-atlas-portrait figcaption { display:none; }
+  .scene-discovery .scene-atlas .subtitle { font-size:var(--fs-body-sm); line-height:var(--lh-body); margin:0; }
+  .scene-discovery .companion-switch { margin-top:0; }
+  .scene-discovery .mood-rail { display:flex; align-items:center; gap:var(--s-2); min-height:44px; flex-basis:auto; }
+  .scene-discovery .mood-icon { float:none; margin:0; }
+  .scene-discovery .mood-rail strong { white-space:nowrap; }
+  .scene-discovery .mood-rail small { display:none; }
+  .scene-discovery .toolbar-primary { display:grid; grid-template-columns:minmax(0,1fr) auto; }
+  .scene-discovery .toolbar-primary .scene-count { grid-column:1 / -1; grid-row:2; font-weight:400; }
+  .scene-discovery .scene-toolbar:not(.filters-expanded) .scene-personal-nav { display:none; }
+  .scene-discovery .scene-personal-nav { flex-wrap:wrap; overflow:visible; }
+  .scene-discovery .scene-personal-label { width:100%; }
+  .scene-discovery .search-intent { margin:0; font-size:var(--fs-body-sm); }
+}

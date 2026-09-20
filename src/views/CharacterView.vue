@@ -24,7 +24,7 @@
     />
     <template v-else>
       <div class="library-layout">
-        <CharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
+        <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail">
       <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
@@ -263,7 +263,7 @@ import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vu
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
-import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
+import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'

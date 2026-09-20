@@ -49,7 +49,7 @@ const list = ref<HTMLElement | null>(null)
 const rail = ref<HTMLElement | null>(null)
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
 /** 选中项变化时把结果区落到它所在的页并滚入视野：打开弹窗即可看到当前角色，不用先找页。 */
-watch(() => props.selectedId, async () => {
+watch([() => props.selectedId, () => props.pageSize], async () => {
   await nextTick()
   const index = results.value.findIndex(item => item.id === props.selectedId)
   if (props.pageSize && index >= 0) page.value = Math.floor(index / props.pageSize) + 1
