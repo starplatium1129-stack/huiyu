@@ -1,4 +1,4 @@
-.shot-editor { display: grid; gap: var(--s-4); }
+.shot-editor { display: grid; gap: var(--s-4); min-width:0; }
 .shot-blocked { color: var(--text-secondary); line-height: var(--lh-loose); }
 
 /* ── 面板视觉（组件自包含：video-* 类名在 VideoStudioView 是 scoped 的，
@@ -112,7 +112,8 @@
 .shot-identity-field { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
 .shot-identity-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: var(--s-2); align-items: start; }
 .shot-identity-row .select { align-self: start; }
-.shot-row { display: grid; gap: var(--s-3); padding: var(--s-4) 0; border-top: 1px solid var(--border-soft); }
+.shot-row { display: grid; gap: var(--s-3); padding: var(--s-4) 0; border-top: 1px solid var(--border-soft); scroll-margin-top:84px; }
+.shot-row:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:var(--r-md); }
 .shot-row:first-of-type { border-top: 0; padding-top: 0; }
 .shot-row-head { display: flex; align-items: center; gap: var(--s-3); }
 .shot-index { font: 800 var(--fs-title-xs) var(--font-mono); color: var(--accent); }

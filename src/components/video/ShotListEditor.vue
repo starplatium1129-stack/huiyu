@@ -1,11 +1,12 @@
 <template>
-  <section class="shot-editor">
+  <section ref="editorRoot" class="shot-editor">
     <p v-if="batchError" class="video-panel" role="status">{{ batchError }}</p>
     <div v-if="!h3Ready" class="video-panel shot-blocked">
       <p>分镜短片模式需要 MiniMax H3 权重就绪（支持首尾帧衔接与原生对白）。安装完成后点击「重新检测」即可使用。</p>
     </div>
 
     <template v-else>
+      <ShotStoryboardStrip v-if="shots.length" :shots="shots" @locate="locateShot" />
       <section class="video-panel">
         <div class="video-panel-heading">
           <div>
@@ -293,7 +294,7 @@
           </div>
         </div>
 
-        <article v-for="(shot, index) in shots" :key="index" class="shot-row" :data-issue="shotIssueCount(index) || undefined">
+        <article v-for="(shot, index) in shots" :key="index" class="shot-row" :data-shot-index="index" tabindex="-1" :aria-label="`镜头 ${index + 1} 编辑`" :data-issue="shotIssueCount(index) || undefined">
           <header class="shot-row-head">
             <span class="shot-index">镜头 {{ index + 1 }}</span>
             <span v-if="shotIssueCount(index)" class="shot-issue-badge" :data-count="shotIssueCount(index)">
@@ -570,9 +571,17 @@ import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { nextTick, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 import { useShotWorkspace } from "@/components/video/useShotWorkspace"
 import type { VideoStatusResponse } from '@/api/videoApi'
 const props = defineProps<{ status: VideoStatusResponse | null }>()
+const editorRoot = ref<HTMLElement | null>(null)
+function locateShot(index: number) {
+  const row = editorRoot.value?.querySelector<HTMLElement>(`[data-shot-index="${index}"]`)
+  row?.scrollIntoView({ block:'start', behavior:prefersReducedMotion() ? 'instant' : 'smooth' })
+  row?.focus({ preventScroll:true })
+}
 const {
  frameInputs,h3Ready, aspectOptions, aspectRatio, quality, linkLastFrame, steps,
 identityCard, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard, onCardCharacterSelected,
