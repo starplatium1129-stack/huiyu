@@ -1,0 +1,1057 @@
+{
+  "schema": "huiyu.comprehensive-audit.v1",
+  "capturedAt": "2026-09-20T15:23:12.522Z",
+  "baselineCommit": "39d955e6186e16f68f30b8b7d74136d88b896a43",
+  "scope": "Read-only audit with isolated fixtures; report-only delivery, no remediation or deployment. This is not a release acceptance receipt.",
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "browser": "153.0.4234.48",
+    "referenceMode": "structure",
+    "browserPortOffset": 22000,
+    "browserWorkers": 2
+  },
+  "inventory": {
+    "trackedFiles": 2886,
+    "vueComponents": 123,
+    "frontendTypescript": 474,
+    "frontendTests": 153,
+    "e2eSpecs": 74,
+    "nodeTests": 162,
+    "routes": 49,
+    "services": 12,
+    "server": 45,
+    "docsMarkdown": 183,
+    "rustSources": 28
+  },
+  "build": {
+    "distIndexSha256": "a58b6a215546ebf68800c0f87a8db0d738f19c0b6fd7285b69bf79e1108827aa",
+    "manifestSha256": "76b4a53622b8490137985395f684dc1a3713445a0ec3424529454d58e16204ea",
+    "lockSha256": "5bbb6b60dce96f044d4c3c7f053ed8a0d30daff933d68a346b45b945b827ab36",
+    "productionBuild": "passed",
+    "budgetsUnchanged": true,
+    "metricsKiB": {
+      "largestRouteJavaScript": 139.8,
+      "routeJavaScriptLimit": 140,
+      "entryJavaScriptClosure": 243.9,
+      "entryCss": 95.3,
+      "entryCssLimit": 100,
+      "largestLazyChunk": 923.4,
+      "largestRouteClosure": 560.1
+    },
+    "pageUnion": {
+      "measurementOnly": true,
+      "formula": "deduplicated JS files in entry + matched lazy layout + leaf static import closures",
+      "largest": [
+        {
+          "route": "ChatView",
+          "pageUnionBytes": 589248,
+          "routeClosureBytes": 573495
+        },
+        {
+          "route": "CompanionView",
+          "pageUnionBytes": 573411,
+          "routeClosureBytes": 573411
+        },
+        {
+          "route": "PromptBuilderView",
+          "pageUnionBytes": 547874,
+          "routeClosureBytes": 531404
+        }
+      ]
+    }
+  },
+  "checks": {
+    "fullGate": {
+      "status": "failed",
+      "exitCode": 1,
+      "durationSeconds": 338,
+      "command": "AICS_REFERENCE_AUDIT_MODE=structure npm run wf -- gate:full --all",
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/full-gate.log",
+        "sha256": "01795c7a6f544a7227cc3c5181ee2376afa2db838739d8fee4e91cca257385c6",
+        "committed": false
+      }
+    },
+    "expandedCheck": {
+      "status": "failed",
+      "passedFiles": 17,
+      "failedFiles": 2,
+      "notRunFiles": 0,
+      "command": "node scripts/tests/run-quality-suite.js check --all",
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/check-expanded.log",
+        "sha256": "0207879d9bcee31d809cac17a0eb61e7d57d91917d8c06468221e291a71e214f",
+        "committed": false
+      }
+    },
+    "typecheck": {
+      "status": "failed",
+      "errorCount": 7,
+      "errors": [
+        "TS5097 src/api/client.ts:1",
+        "TS5097 src/utils/particlePortrait.ts:2",
+        "TS2823 src/utils/popularPortraitSource.ts:1",
+        "TS2683 tests/e2e/character-particle-stage.spec.ts:76",
+        "TS2683 tests/e2e/character-particle-stage.spec.ts:99",
+        "TS2683 tests/e2e/particle-gpu.spec.ts:82",
+        "TS2683 tests/e2e/particle-gpu.spec.ts:97"
+      ],
+      "note": "First E2E typecheck short-circuited later commands in npm typecheck; app typecheck passed separately."
+    },
+    "workspaceHygiene": {
+      "status": "failed",
+      "file": "tests/e2e/archive-route-transition.spec.ts",
+      "headCrlf": 0,
+      "worktreeCrlf": 1,
+      "note": "Git normalized status clean; anomaly is in worktree bytes, not committed HEAD blob."
+    },
+    "frontend": {
+      "status": "passed",
+      "files": 153,
+      "tests": 1068,
+      "coverage": {
+        "status": "passed",
+        "lines": 44.56,
+        "branches": 32.07,
+        "functions": 37.48,
+        "statements": 42.37
+      },
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/coverage.log",
+        "sha256": "213d7dd5e672f4010a39b68cd377f76b4934d8596529479f06e3e474e25b3ede",
+        "committed": false
+      }
+    },
+    "nodeUnit": {
+      "status": "passed",
+      "tests": 1073
+    },
+    "contract": {
+      "status": "passed",
+      "files": 34
+    },
+    "completeStyle": {
+      "status": "passed",
+      "command": "npm run test:style-debt",
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/style-gates.log",
+        "sha256": "1ce8e89a8b1935d0cd445183edbfc0269e1604d6050cf1379c69e1afe5af0ef9",
+        "committed": false
+      },
+      "note": "Executed separately because four scanners are absent from current full/CI orchestration."
+    },
+    "browser": {
+      "status": "failed",
+      "selected": 333,
+      "passed": 303,
+      "failed": 30,
+      "skipped": 0,
+      "notRun": 0,
+      "command": "AICS_E2E_PORT_OFFSET=22000 npm run test:e2e:critical:run -- --workers=2 --output=runtime/comprehensive-audit-2026-09-20/browser-results",
+      "failures": [
+        "[desktop] › tests\\e2e\\companion-focus.spec.ts:30:9 › companion character window dark 360",
+        "[desktop] › tests\\e2e\\a11y-device.spec.ts:76:5 › every route keeps exactly one h1",
+        "[desktop] › tests\\e2e\\companion-focus.spec.ts:30:9 › companion character window dark 480",
+        "[desktop] › tests\\e2e\\companion-focus.spec.ts:30:9 › companion character window light 360",
+        "[desktop] › tests\\e2e\\companion-focus.spec.ts:30:9 › companion character window light 480",
+        "[desktop] › tests\\e2e\\interaction-polish.spec.ts:214:5 › repeated navigation keeps a visible route view mounted",
+        "[desktop] › tests\\e2e\\studio.spec.ts:112:5 › director separates a focused scene mode from the expert tag workflow",
+        "[desktop] › tests\\e2e\\studio.spec.ts:382:5 › character room mounts portrait, composer and voice console",
+        "[desktop] › tests\\e2e\\interaction-polish.spec.ts:539:7 › character portraits and asset health stay readable dark",
+        "[desktop] › tests\\e2e\\studio.spec.ts:461:5 › desktop companion keeps a character-first surface and opens the separate chat window",
+        "[desktop] › tests\\e2e\\interaction-polish.spec.ts:539:7 › character portraits and asset health stay readable light",
+        "[desktop] › tests\\e2e\\studio.spec.ts:659:5 › companion chat window renders history from storage and relays sends to the character window",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:45:11 › layout dark 1440 /companion",
+        "[desktop] › tests\\e2e\\studio.spec.ts:998:5 › Natsume Live2D loads, reacts, and keeps wardrobe memory per character",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:45:11 › layout dark 768 /companion",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:45:11 › layout dark 390 /companion",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:102:7 › companion settings are above portrait controls dark",
+        "[desktop] › tests\\e2e\\studio.spec.ts:1138:5 › Natsume plays the Leave farewell before releasing Live2D",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:45:11 › layout light 1440 /companion",
+        "[desktop] › tests\\e2e\\studio.spec.ts:1175:5 › Live2D finishes the latest character switch after an auto-load race",
+        "[desktop] › tests\\e2e\\studio.spec.ts:1219:5 › chat storage migrates legacy settings and removes durable credentials",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:45:11 › layout light 768 /companion",
+        "[desktop] › tests\\e2e\\studio.spec.ts:1270:5 › character profile opens the selected character room and persona scenes",
+        "[desktop] › tests\\e2e\\studio.spec.ts:1293:5 › style page offers full colour moods that route into the director",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:45:11 › layout light 390 /companion",
+        "[desktop] › tests\\e2e\\ui-layout.spec.ts:102:7 › companion settings are above portrait controls light",
+        "[flows] › tests\\e2e\\anima-quick.spec.ts:105:5 › anima derives the promoted Natsume v21 LoRA and blocks triad",
+        "[desktop-narrow] › tests\\e2e\\a11y-device.spec.ts:76:5 › every route keeps exactly one h1",
+        "[tablet] › tests\\e2e\\a11y-device.spec.ts:76:5 › every route keeps exactly one h1",
+        "[phone] › tests\\e2e\\a11y-device.spec.ts:76:5 › every route keeps exactly one h1"
+      ],
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/browser-critical.log",
+        "sha256": "f802d557f5c061b966e998eb36e05a2133324fc01d837e8502108ac7c355c5af",
+        "committed": false
+      },
+      "durationMinutes": 11
+    },
+    "npmAudit": {
+      "status": "passed",
+      "command": "npm audit --json",
+      "dependencyCount": 714,
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/npm-audit-full.json",
+        "sha256": "1cf116e26e5984558941deb119eb02d604c2757fc680763e79fbc66c782f5506",
+        "committed": false
+      },
+      "note": "No Rust, native SDK, asset or source-code security coverage."
+    },
+    "workflowConditions": {
+      "status": "passed",
+      "commands": 103,
+      "executionStatus": "not-run",
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/workflow-conditions.json",
+        "sha256": "2c1597e35cdfce57ca86aa55e572efb40f8b840c1d793b971d451f3255446cd4",
+        "committed": false
+      }
+    },
+    "docsBeforeReports": {
+      "status": "passed",
+      "files": 207,
+      "links": 1228,
+      "redirects": 60,
+      "brokenLinks": 0,
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/docs-initial.log",
+        "sha256": "d830f3bfb9577f7e01e061b862967967ff431733a63e72abed0f24567160f660",
+        "committed": false
+      }
+    },
+    "qualityReports": [
+      {
+        "file": "runtime/comprehensive-audit-2026-09-20/quality/build-1789916923144-2c3d5698-14a7-439a-8205-2e5571e91816.json",
+        "sha256": "ae220fd4b236c5a35a52c7c94eca0f4258a07fb81527357d92e7f7e3bd1d79e8",
+        "label": "build",
+        "status": "passed",
+        "durationMs": 33354,
+        "results": [
+          {
+            "name": "build",
+            "status": "passed",
+            "counts": {}
+          }
+        ]
+      },
+      {
+        "file": "runtime/comprehensive-audit-2026-09-20/quality/check-1789916592050-a57d86f2-22f5-45bb-a2bd-2d61cc124233.json",
+        "sha256": "940fccf5d15ed7aa1468ad8bf007209358fce68c67a454cb0f08a615904cfeff",
+        "label": "check",
+        "status": "failed",
+        "durationMs": 3372,
+        "results": [
+          {
+            "name": "test-repo-hygiene.js",
+            "status": "failed",
+            "counts": {
+              "tests": 1,
+              "pass": 0,
+              "fail": 1,
+              "cancelled": 0,
+              "skipped": 0
+            },
+            "failureKind": "assertion"
+          },
+          {
+            "name": "test-repo-hygiene-contract.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-bundle-budget.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-workflow-runner.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-doc-redirects.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-desktop-staging.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-e2e-ci-split.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-page-architecture.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-module-boundaries.mjs",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-domain-type-boundaries.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-monolith-budget.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-runtime-generated.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-typescript-build.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-typescript-development.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-storage-key-hygiene.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-style-debt.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-bridge-acl.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-icon-button-labels.js",
+            "status": "not-run",
+            "counts": {}
+          },
+          {
+            "name": "test-ux-regressions.js",
+            "status": "not-run",
+            "counts": {}
+          }
+        ]
+      },
+      {
+        "file": "runtime/comprehensive-audit-2026-09-20/quality/check-1789916602674-aaaf0ead-a699-4b51-8cd6-2d2d86fcad71.json",
+        "sha256": "453524998dc0dbb9dd7949b38e574185ec122cc35a1bbc3f965e78c081b0fa79",
+        "label": "check",
+        "status": "failed",
+        "durationMs": 17764,
+        "results": [
+          {
+            "name": "check",
+            "status": "failed",
+            "counts": {
+              "pass": 0,
+              "fail": 1,
+              "cancelled": 0,
+              "skipped": 0
+            },
+            "failureKind": "typecheck"
+          }
+        ]
+      },
+      {
+        "file": "runtime/comprehensive-audit-2026-09-20/quality/contract-1789916889788-41af91ac-a14d-4af4-bc54-cf5357d4fd11.json",
+        "sha256": "3e97250e085f65d8792c94e531d6c05a8abd5f67d5ce29f4de9b2833419d4a64",
+        "label": "contract",
+        "status": "passed",
+        "durationMs": 182861,
+        "results": [
+          {
+            "name": "test-maintenance-recovery.js",
+            "status": "passed",
+            "counts": {
+              "tests": 21,
+              "pass": 21,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-scene-maintenance-save.js",
+            "status": "passed",
+            "counts": {
+              "tests": 16,
+              "pass": 16,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-maintenance-transaction-routes.js",
+            "status": "passed",
+            "counts": {
+              "tests": 5,
+              "pass": 5,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-maintenance-blueprint-transaction.js",
+            "status": "passed",
+            "counts": {
+              "tests": 9,
+              "pass": 9,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-anima-routes.js",
+            "status": "passed",
+            "counts": {
+              "tests": 8,
+              "pass": 8,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-resource-gateway.js",
+            "status": "passed",
+            "counts": {
+              "tests": 10,
+              "pass": 10,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-maintenance-read-barrier.js",
+            "status": "passed",
+            "counts": {
+              "tests": 11,
+              "pass": 11,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-resource-reference-gateway.js",
+            "status": "passed",
+            "counts": {
+              "tests": 8,
+              "pass": 8,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-maintenance-recovery-boundaries.js",
+            "status": "passed",
+            "counts": {
+              "tests": 7,
+              "pass": 7,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-desktop-tools-route.js",
+            "status": "passed",
+            "counts": {
+              "tests": 21,
+              "pass": 21,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-generation-routes.js",
+            "status": "passed",
+            "counts": {}
+          },
+          {
+            "name": "test-chat.js",
+            "status": "passed",
+            "counts": {
+              "tests": 3,
+              "pass": 3,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-control-failure-contract.js",
+            "status": "passed",
+            "counts": {
+              "tests": 7,
+              "pass": 7,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-gateway-contract.js",
+            "status": "passed",
+            "counts": {
+              "tests": 5,
+              "pass": 5,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-gateway-token.js",
+            "status": "passed",
+            "counts": {
+              "tests": 1,
+              "pass": 1,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-http-client.js",
+            "status": "passed",
+            "counts": {
+              "tests": 8,
+              "pass": 8,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-maintenance.js",
+            "status": "passed",
+            "counts": {
+              "tests": 8,
+              "pass": 8,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-interrogate-routes.js",
+            "status": "passed",
+            "counts": {}
+          },
+          {
+            "name": "test-interrogate-engine.js",
+            "status": "passed",
+            "counts": {}
+          },
+          {
+            "name": "test-live2d-route.js",
+            "status": "passed",
+            "counts": {}
+          },
+          {
+            "name": "test-character-reference-contract.js",
+            "status": "passed",
+            "counts": {
+              "tests": 9,
+              "pass": 9,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-pinned-scene-prompts.js",
+            "status": "passed",
+            "counts": {
+              "tests": 7,
+              "pass": 7,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-scene-story-alignment.js",
+            "status": "passed",
+            "counts": {}
+          },
+          {
+            "name": "test-sd-runtime.js",
+            "status": "passed",
+            "counts": {
+              "tests": 1,
+              "pass": 1,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-scene-shard-integrity.js",
+            "status": "passed",
+            "counts": {
+              "tests": 5,
+              "pass": 5,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-tag-shards.js",
+            "status": "passed",
+            "counts": {
+              "tests": 12,
+              "pass": 11,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 1
+            }
+          },
+          {
+            "name": "test-popular-shard-integrity.js",
+            "status": "passed",
+            "counts": {
+              "tests": 3,
+              "pass": 3,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-blueprint-shard-integrity.js",
+            "status": "passed",
+            "counts": {
+              "tests": 3,
+              "pass": 3,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-security.js",
+            "status": "passed",
+            "counts": {
+              "tests": 17,
+              "pass": 17,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-tunnel-restart.js",
+            "status": "passed",
+            "counts": {
+              "tests": 3,
+              "pass": 3,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-upstream-health.js",
+            "status": "passed",
+            "counts": {
+              "tests": 6,
+              "pass": 6,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-precompressed.js",
+            "status": "passed",
+            "counts": {
+              "tests": 5,
+              "pass": 5,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "test-video-ai.js",
+            "status": "passed",
+            "counts": {}
+          },
+          {
+            "name": "test-video-routes.js",
+            "status": "passed",
+            "counts": {}
+          }
+        ]
+      },
+      {
+        "file": "runtime/comprehensive-audit-2026-09-20/quality/test-frontend-1789916617024-e28915a2-e70e-4cf6-8fe8-b9530868585c.json",
+        "sha256": "8d903ec2b2a35e7cb1de86fb6226a361999575f720c361960f2c601169d1c907",
+        "label": "test:frontend",
+        "status": "passed",
+        "durationMs": 14345,
+        "results": [
+          {
+            "name": "test:frontend",
+            "status": "passed",
+            "counts": {}
+          }
+        ]
+      },
+      {
+        "file": "runtime/comprehensive-audit-2026-09-20/quality/unit-1789916706925-2d7575dd-f0d1-4659-9b3a-965b19de0a6d.json",
+        "sha256": "6485c78750795f49d0aa5b8c3bf8b7fecc701b3fd52aa1ff51ef357c11ed568c",
+        "label": "unit",
+        "status": "passed",
+        "durationMs": 89899,
+        "results": [
+          {
+            "name": "node --test (aggregate)",
+            "status": "passed",
+            "counts": {
+              "tests": 1075,
+              "pass": 1073,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 2
+            }
+          }
+        ]
+      }
+    ],
+    "docsAfterReports": {
+      "status": "passed",
+      "files": 217,
+      "links": 1313,
+      "redirects": 60,
+      "brokenLinks": 0,
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/docs-final.log",
+        "sha256": "c6097b3fb75100981f8a86cfcb916107a98f65958ac6c3601ef1b4bad2294c98",
+        "committed": false
+      }
+    }
+  },
+  "findingsReproduced": {
+    "securityBackend": {
+      "independentlyReproduced": true,
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/security-reproduction.log",
+        "sha256": "0c96afebac4b7ae99c02655f35cc0585e28aaa86e629966d0d2f8ae085f0166b",
+        "committed": false
+      },
+      "neutralFixturesOnly": true,
+      "cases": [
+        {
+          "id": "SEC-01",
+          "singleStatus": 403,
+          "batchStatus": 202,
+          "batchCalls": 1,
+          "realModelCalls": 0
+        },
+        {
+          "id": "SEC-02",
+          "identityStatus": 404,
+          "brotliStatus": 200,
+          "condition": "Valid sibling .br in blocked candidate namespace; default precompress does not create it."
+        },
+        {
+          "id": "SEC-03",
+          "dataStatus": 200,
+          "matureMarkerReturned": true,
+          "referenceStatus": 200,
+          "showcaseStatus": 200,
+          "note": "Authenticated remote fixture; no production adult media inspected."
+        },
+        {
+          "id": "BE-01",
+          "accepted": 6,
+          "upstreamCalls": 6,
+          "pendingReported": 0,
+          "maxPendingReported": 4
+        },
+        {
+          "id": "BE-02",
+          "firstStatus": 200,
+          "secondStatus": 404,
+          "cacheControl": null
+        },
+        {
+          "id": "BE-03",
+          "simultaneousConcatCalls": 2,
+          "injectedFfmpegCalls": 2,
+          "realFfmpegCalls": 0
+        }
+      ]
+    },
+    "restoreRace": {
+      "case": "merge-restore-loses-concurrent-chat-write",
+      "concurrentMessages": 2,
+      "afterMessages": 1,
+      "actualBrowserStorageUsed": false,
+      "independentlyReproduced": true,
+      "log": {
+        "localPath": "runtime/comprehensive-audit-2026-09-20/storage-race.json",
+        "sha256": "a29a56f2dc36f33e7ca44f3f39f44eb0a6ec7942f412e9d64cb5cc6f11a9b38c",
+        "committed": false
+      }
+    },
+    "backupNormalization": [
+      {
+        "input": {
+          "id": ""
+        },
+        "acceptedHistory": 1,
+        "visibleHistory": 0,
+        "imageCount": 0
+      },
+      {
+        "input": {
+          "timestamp": 1700000000000
+        },
+        "acceptedHistory": 1,
+        "visibleHistory": 0,
+        "imageCount": 0
+      },
+      {
+        "input": {
+          "id": "audit",
+          "image_id": "missing-image"
+        },
+        "acceptedHistory": 1,
+        "visibleHistory": 1,
+        "imageCount": 0
+      }
+    ],
+    "keyboard": {
+      "manifestSha256": "76b4a53622b8490137985395f684dc1a3713445a0ec3424529454d58e16204ea",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "cases": [
+        {
+          "theme": "dark",
+          "tabCount": 30,
+          "uploadReached": false,
+          "focusStayedInDialog": true,
+          "escapeClosed": true,
+          "dropzone": {
+            "tag": "DIV",
+            "role": null,
+            "tabIndex": -1
+          },
+          "inputDisplay": "none"
+        },
+        {
+          "theme": "light",
+          "tabCount": 30,
+          "uploadReached": false,
+          "focusStayedInDialog": true,
+          "escapeClosed": true,
+          "dropzone": {
+            "tag": "DIV",
+            "role": null,
+            "tabIndex": -1
+          },
+          "inputDisplay": "none"
+        }
+      ],
+      "screenshotsReviewed": true,
+      "screenshots": [
+        {
+          "localPath": "runtime/comprehensive-audit-2026-09-20/keyboard-dark.png",
+          "sha256": "67922ac23b2eb0445b2aa4a645263d10c173b9cd0b3e67cf92dfc44c50f8a6d2",
+          "committed": false
+        },
+        {
+          "localPath": "runtime/comprehensive-audit-2026-09-20/keyboard-light.png",
+          "sha256": "b12c8b0f9e617203f8ca48b121f751eef8e22618d073bb37fcfc0558a417861d",
+          "committed": false
+        }
+      ]
+    }
+  },
+  "content": {
+    "counts": {
+      "characters": 160,
+      "popularCharacters": 158,
+      "popularOutfits": 971,
+      "scenes": 302,
+      "blueprints": 1692,
+      "referenceCharacters": 160,
+      "referenceForms": 644,
+      "referenceEntries": 4508,
+      "pending": 1974,
+      "nonPendingWithUrl": 2534,
+      "pinned": 100
+    },
+    "coverage": {
+      "exitCode": 0,
+      "structuralErrors": [],
+      "reference": {
+        "missingRegistration": 357,
+        "pending": 282,
+        "missingImage": 0,
+        "unverifiedImage": 2324,
+        "verifiedImage": 0,
+        "referenceOnlyForms": 30,
+        "mirrorErrors": 0,
+        "duplicateCharacters": 0,
+        "duplicateOutfits": 0,
+        "duplicateRegistrations": 0
+      },
+      "themes": {
+        "explicit": 160,
+        "defaultAllowed": 0,
+        "missingTheme": 0,
+        "staleAlias": 0,
+        "nonCharacter": 0,
+        "dupCharacters": 0
+      }
+    },
+    "ownership": {
+      "exitCode": 1,
+      "domains": [
+        {
+          "domain": "scene-ratings",
+          "status": "unknown",
+          "issues": []
+        },
+        {
+          "domain": "characters",
+          "status": "unknown",
+          "issues": []
+        },
+        {
+          "domain": "popular",
+          "status": "current",
+          "issues": []
+        },
+        {
+          "domain": "scenes",
+          "status": "current",
+          "issues": []
+        },
+        {
+          "domain": "blueprints",
+          "status": "current",
+          "issues": []
+        },
+        {
+          "domain": "curation",
+          "status": "current",
+          "issues": []
+        },
+        {
+          "domain": "retired",
+          "status": "unknown",
+          "issues": []
+        },
+        {
+          "domain": "references",
+          "status": "mismatch",
+          "issues": [
+            {
+              "file": "data/character-reference-view.json",
+              "location": "waguri_kaoruko/festive_summer_yukata/prose",
+              "reason": "reference source/derived field mismatch"
+            }
+          ]
+        },
+        {
+          "domain": "themes",
+          "status": "unknown",
+          "issues": []
+        },
+        {
+          "domain": "showcase",
+          "status": "unknown",
+          "issues": []
+        }
+      ]
+    },
+    "physicalReferenceAudit": {
+      "total": 2534,
+      "missing": 2534,
+      "pending": 1974,
+      "unverified": 0,
+      "rootConfigured": false
+    },
+    "note": "Missing local root is not evidence that target-machine assets are absent."
+  },
+  "sourceHashes": {
+    "data/character-reference-standards.json": "3401f66bac853c64a07151e406fab7c327d98cdb526711f8f7ffa2d0101ccb1a",
+    "data/character-reference-view.json": "3f777d002479cb5922bf4c641675b3f9af88840bf3b16a195d1054402536aa0d",
+    "src/storage/backupRestore.ts": "7322f4d80e4ae9103f27e08db98b65be05bd3e05611b9ae59c55da07a6cce8a4",
+    "src/utils/backupSettings.ts": "613b626db5c0e00f90d7d165b4b7a3ada609e14755ebb92996702994d33e7507",
+    "src/utils/backupCore.ts": "1c785579533a1e1ef4322405d0e13208229ad5474bb19703995123605b7fb554",
+    "src/types/artwork.ts": "6ae2409f96d8eae1cd8571aa3b06b4d0b5075e2d26b75414aa17635c49105bbe",
+    "tsconfig.json": "93ddd01246660f92411108ab1578f4612e7d77397af807d46bca0c676ced8b8f",
+    "src/components/AnimaInpaintModal.vue": "fe8788e54aead562ec9d58e54d324dc52b0066b8d35a9ac33c5d20d7cb83a816",
+    "src/utils/localCompanions.ts": "aaa944b2fc42a507703f84642965508bf550cfeb4f2bb387d91f23be57b9f26f",
+    "server.ts": "f3acc8a07d3a70eee2c0cb40e43d06aab8fc29fe3dff13165f43b6205081cfb4",
+    "server/precompressed.ts": "dbc50718ad8bc05361a03121d50e7e4e4ea7ac973bcd7a314328c9d65b57ff88",
+    "server/generation/service.ts": "687b12597aa60a4b60021ab44510ffaee1b8af508d91523e056a3e5434384ca2",
+    "server/generation/webui.ts": "f11ed1f4182bb0b5dffef8676685f41e7585c32f796a0fac12408336fbcd76dd",
+    "routes/generation.ts": "a81b5463eab67c0eacb5deb74dda9e83226f81c4a77ef2593a3e85c6636e8533",
+    "routes/video.ts": "11a0b64c64da69a91119e7f3174fe6cf9bbf3d54f0f7a502faba371f10e7045b",
+    "routes/video/validation.ts": "7c0fa94588c7d38afb7133c88f057e71fb03f54b7f4ca65084f8dd25336b0e41",
+    "routes/video/batch.ts": "f47f0c44a3a637e043dc515a77de6557760898f851ec1539e72979b1f777a14e",
+    "scripts/maintenance/run-check-parallel.ts": "39585466a5b600bf0a205a3fe1bc8c5ebe104ead4d4611f39ef990e60291f541",
+    "scripts/tests/test-style-debt.ts": "b0578a8c2cf0826ab28ad8c9052dd11af2b91e25c7f2da8a2110d8fc51b3d8c0",
+    "scripts/tests/test-quality-gates.ts": "a1a1b217a20d21bd13369c7c4b873c582f4fc0b84fcbd72e66dd60f59a30867e",
+    "scripts/maintenance/check-bundle-budget.ts": "b90e8f24d3b25f09ed19fe72ecc6db59480d937641f6ef290568a30a9624ee01",
+    "desktop-tauri/src-tauri/src/gateway.rs": "1fda7bf0ee7a8fa069a7ae3e979f90ce2ff0dfe0c5dcd8eb927f71aedd1684e0"
+  },
+  "unexecuted": [
+    "Production model inference or image quality acceptance",
+    "Private asset inventory and complete visual review",
+    "Rust/native build and advisory scan",
+    "Windows installer or UAC",
+    "WebView2/DPI/multi-monitor/sleep acceptance",
+    "Physical crash/power-loss durability",
+    "Production user-library backup/restore",
+    "Target GPU/VRAM/power benchmarks",
+    "Public penetration testing or real tunnel deployment"
+  ],
+  "limitations": [
+    "Local log hashes bind bytes, not truth or authenticity. Raw logs/screenshots and one-off probes are ignored local artifacts, not included in this commit.",
+    "A successful reproduction confirms a defect, not its remediation.",
+    "No claim of whole-product WCAG conformance, vulnerability freedom or all-feature acceptance.",
+    "Final Git commit is the report delivery commit; source audit baseline remains the SHA above."
+  ]
+}

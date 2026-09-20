@@ -25,6 +25,10 @@
 
 ## 当前审计与待办
 
+- [全面审计总览（2026-09-20）](audits/2026-09-20/README.md)：当前 main 基线的安全、后端桌面、存储、内容资产、前端无障碍、性能、测试交付、文档治理八份报告；含本次失败与隔离复现证据。
+- [全面审计落实计划](audits/2026-09-20/implementation-plan.md)：按风险与依赖拆分 A0–A9，明确文件范围、实施步骤、验收和回退；报告提交不等于修复完成。
+- 分报告：[安全隐私](audits/2026-09-20/security-privacy.md)、[后端桌面](audits/2026-09-20/backend-desktop.md)、[存储可靠性](audits/2026-09-20/storage-functional-reliability.md)、[内容资产](audits/2026-09-20/content-assets-governance.md)、[前端无障碍](audits/2026-09-20/frontend-ux-accessibility.md)、[性能维护性](audits/2026-09-20/performance-maintainability.md)、[测试交付](audits/2026-09-20/testing-delivery.md)、[文档治理](audits/2026-09-20/engineering-documentation.md)；[脱敏执行证据](audits/2026-09-20/evidence.json)。
+
 - [可选轻盈 / 液态玻璃（2026-09-20）](research/engineering/glass-material-modes-2026-09-20.md)：设备内材质偏好、按需折射、资源释放、辅助显示回退及双主题验收。
 
 - [聊天房间与桌宠视觉设计方案（2026-09-20）](research/desktop/live2d-visual-plan-2026-09-20.md)：8 模型取景采样与 GitHub 参考；A 批聊天房间、B 批无边框桌宠已完成定向检查，安装版与完整设备验收待执行。
