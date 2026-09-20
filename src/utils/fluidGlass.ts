@@ -1,5 +1,5 @@
 /** Rounded glass optics adapted from DeepSeek Harness Desktop's MIT liquid-glass module. */
-export const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gen-bar, [data-fluid-glass]'
+export const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, [data-fluid-glass]'
 const SVG_NS = 'http://www.w3.org/2000/svg'
 const MAX_SURFACES = 12
 const MAX_MAPS = 32
@@ -40,9 +40,8 @@ interface GlassRecord {
 let serial = 0
 let installed: (() => void) | undefined
 
-/** Install once after mount; call the returned function on app teardown / HMR. */
-export function installFluidGlass(): () => void {
-  if (installed) return installed
+/** The expensive renderer exists only while liquid material is explicitly active. */
+function mountFluidGlass(): () => void {
   if (typeof window === 'undefined' || !window.ResizeObserver || !window.IntersectionObserver ||
     !window.CSS?.supports('backdrop-filter', 'url("#fluid-glass")')) return () => {}
 
@@ -59,7 +58,7 @@ export function installFluidGlass(): () => void {
   svg.append(defs)
   document.body.append(svg)
   let timer = 0, disposed = false
-  const enabled = () => root.dataset.fluidEffects !== 'low' && !document.hidden && !queries.some(query => query.matches)
+  const enabled = () => root.dataset.glassMaterial === 'liquid' && root.dataset.fluidEffects !== 'low' && !document.hidden && !queries.some(query => query.matches)
 
   function mapFor(w: number, h: number, r: number) {
     const key = `${w}:${h}:${r}`
@@ -186,7 +185,7 @@ export function installFluidGlass(): () => void {
   queries.forEach(query => query.addEventListener('change', schedule))
   document.addEventListener('visibilitychange', schedule)
   discover(document.body)
-  installed = () => {
+  return () => {
     if (disposed) return
     disposed = true
     window.clearTimeout(timer)
@@ -195,7 +194,44 @@ export function installFluidGlass(): () => void {
     document.removeEventListener('visibilitychange', schedule)
     for (const element of records.keys()) remove(element)
     candidates.clear(); visible.clear(); cache.clear(); svg.remove()
-    installed = undefined
+  }
+}
+
+/** Light mode has no canvas maps, SVG filters, surface observers or continuous frame loop. */
+export function installFluidGlass(): () => void {
+  if (installed) return installed
+  if (typeof window === 'undefined' || typeof MutationObserver === 'undefined') return () => {}
+  const root = document.documentElement
+  const queries = ['(forced-colors: active)', '(prefers-contrast: more)', '(prefers-reduced-transparency: reduce)']
+    .map(query => window.matchMedia(query))
+  let stop: (() => void) | undefined
+  let disposed = false
+  let stylesReady = false, loadingStyles = false
+  function reconcile() {
+    if (disposed) return
+    const enabled = root.dataset.glassMaterial === 'liquid' && root.dataset.fluidEffects !== 'low'
+      && root.dataset.reducedGlass !== 'true' && !document.hidden && !queries.some(query => query.matches)
+    if (enabled && stylesReady) stop ??= mountFluidGlass()
+    else if (enabled && !loadingStyles) {
+      loadingStyles = true
+      void import('../assets/css/glass-materials.css').then(() => {
+        stylesReady = true; loadingStyles = false; reconcile()
+      }).catch(() => { loadingStyles = false /* Keep the existing frosted fallback if the optional chunk fails. */ })
+    }
+    else { stop?.(); stop = undefined }
+  }
+  const preferences = new MutationObserver(reconcile)
+  preferences.observe(root, { attributes: true, attributeFilter: ['data-glass-material', 'data-fluid-effects', 'data-reduced-glass'] })
+  queries.forEach(query => query.addEventListener('change', reconcile))
+  document.addEventListener('visibilitychange', reconcile)
+  reconcile()
+  installed = () => {
+    if (disposed) return
+    disposed = true
+    preferences.disconnect()
+    queries.forEach(query => query.removeEventListener('change', reconcile))
+    document.removeEventListener('visibilitychange', reconcile)
+    stop?.(); stop = undefined; installed = undefined
   }
   return installed
 }

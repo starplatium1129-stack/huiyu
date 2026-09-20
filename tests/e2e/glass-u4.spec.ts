@@ -9,8 +9,9 @@ const chromeRoutes = [
 ] as const
 
 async function openAppearance(page: Page) {
+  await expect(page.locator('.nav')).toBeVisible()
   const toggle = page.locator('.nav-menu-toggle')
-  if (await toggle.isVisible()) await toggle.click()
+  if (await toggle.isVisible() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click()
   await page.locator('.nav-more > summary').click()
   await page.getByRole('button', { name: '外观与动态效果', exact: true }).click()
   await expect(page.locator('.appearance-dialog')).toBeVisible()
@@ -69,7 +70,7 @@ for (const theme of ['dark', 'light'] as const) {
         // Navigation/reload must exercise the saved preference, not reset it.
         if (!localStorage.getItem(key)) {
           localStorage.setItem('aics_theme', theme)
-          localStorage.setItem(key, JSON.stringify({ theme, motion: 'system', reducedGlass: false }))
+          localStorage.setItem(key, JSON.stringify({ theme, motion: 'system', reducedGlass: false, glass: 'liquid' }))
         }
       }, { theme, key: appearanceKey })
     })

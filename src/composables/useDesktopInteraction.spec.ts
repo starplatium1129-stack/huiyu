@@ -99,6 +99,8 @@ it('applies explicit appearance choices and keeps the legacy theme toggle author
   expect(preferences.themeMode.value).toBe('system')
   expect(document.documentElement.dataset.reducedMotion).toBe('true')
   expect(preferences.reducedGlass.value).toBe(false)
+  expect(preferences.glassMode.value).toBe('light')
+  expect(document.documentElement.dataset.glassMaterial).toBe('light')
   expect(document.documentElement.dataset.reducedGlass).toBe('true')
   const changeMedia = (query: string, matches: boolean) => {
     const media = queries.get(query)!
@@ -108,14 +110,20 @@ it('applies explicit appearance choices and keeps the legacy theme toggle author
   }
   changeMedia('(prefers-reduced-transparency: reduce)', false)
   expect(document.documentElement.dataset.fluidEffects).toBe('full')
+  preferences.setGlassMode('liquid')
+  expect(document.documentElement.dataset.glassMaterial).toBe('liquid')
+  expect(JSON.parse(localStorage.getItem('atelier-desktop-appearance-v1')!).glass).toBe('liquid')
   for (const query of ['(prefers-reduced-transparency: reduce)', '(prefers-contrast: more)', '(forced-colors: active)']) {
     changeMedia(query, true)
     expect(document.documentElement.dataset.reducedGlass).toBe('true')
     expect(document.documentElement.dataset.fluidEffects).toBe('low')
+    expect(document.documentElement.dataset.glassMaterial).toBe('light')
+    expect(preferences.glassMode.value).toBe('liquid')
     expect(preferences.reducedGlass.value).toBe(false)
     expect(JSON.parse(localStorage.getItem('atelier-desktop-appearance-v1')!).reducedGlass).toBe(false)
     changeMedia(query, false)
     expect(document.documentElement.dataset.reducedGlass).toBe('false')
+    expect(document.documentElement.dataset.glassMaterial).toBe('liquid')
   }
   preferences.setMotionMode('full')
   expect(document.documentElement.dataset.reducedMotion).toBe('false')

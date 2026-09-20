@@ -1,0 +1,34 @@
+/* Two device-local material choices. Both keep text and content unfiltered. */
+:root { --material-fill: color-mix(in srgb, var(--bg-surface) 96%, transparent); }
+:root[data-glass-material="liquid"] { --material-fill: color-mix(in srgb, var(--bg-surface) 84%, transparent); }
+
+:root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
+  background:linear-gradient(125deg, color-mix(in srgb,var(--glass-highlight) 45%,transparent),transparent 42%),var(--material-fill);
+  border-color:var(--glass-edge);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 var(--border-soft),var(--shadow-sm);
+}
+
+:root[data-glass-material="liquid"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
+  background:linear-gradient(125deg,var(--glass-highlight),transparent 26%,transparent 80%,color-mix(in srgb,var(--glass-highlight) 35%,transparent)),var(--material-fill);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),inset 1px 0 0 var(--glass-edge),inset 0 -1px 0 var(--glass-edge),var(--shadow-md);
+  -webkit-backdrop-filter:var(--fluid-glass-filter, blur(16px) saturate(125%));
+  backdrop-filter:var(--fluid-glass-filter, blur(16px) saturate(125%));
+}
+/* An unsupported SVG lens still gets a bounded, static frosted fallback. */
+:root[data-glass-material="liquid"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]):not([data-fluid-refracted]) {
+  -webkit-backdrop-filter:blur(16px) saturate(125%);
+  backdrop-filter:blur(16px) saturate(125%);
+}
+
+/* Accessibility always wins over the chosen material, without overwriting the preference. */
+:root[data-reduced-glass="true"] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
+  background:var(--bg-surface) !important;
+  box-shadow:none;
+}
+@media (prefers-reduced-transparency:reduce), (prefers-contrast:more), (forced-colors:active) {
+  :root[data-glass-material] body *, :root[data-glass-material] dialog::backdrop { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+  :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { background:var(--bg-surface) !important; background-image:none !important; box-shadow:none; }
+}
+@media (forced-colors:active) {
+  :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { background:Canvas !important; border-color:CanvasText; }
+}

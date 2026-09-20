@@ -25,6 +25,7 @@ import './assets/css/light-theme.css'
 import './assets/css/fluid-surfaces.css'
 import './assets/css/fluid-workspaces.css'
 import './assets/css/fluid-glass.css'
+import './assets/css/glass-material-base.css'
 
 initializeTheme()
 initializeDesktopPreferences()

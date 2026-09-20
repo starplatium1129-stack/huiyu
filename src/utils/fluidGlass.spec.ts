@@ -30,7 +30,7 @@ describe('structural glass optics', () => {
     expect(fluidLens(0, 0, 20, 0, 0)).toEqual([0, 0])
     expect(() => installFluidGlass()()).not.toThrow()
   })
-  it('releases filters and observers on teardown, and can install again', () => {
+  it('allocates optics only on explicit opt-in and releases them when returning to light', async () => {
     const disconnect = vi.fn()
     const surface = document.createElement('div')
     surface.className = 'sticky-toolbar'
@@ -53,20 +53,36 @@ describe('structural glass optics', () => {
     vi.useFakeTimers()
     let dispose = () => {}
     try {
+      document.documentElement.dataset.glassMaterial = 'light'
+      document.documentElement.dataset.fluidEffects = 'full'
+      document.documentElement.dataset.reducedGlass = 'false'
       dispose = installFluidGlass()
+      expect(document.querySelector('.fluid-glass-definitions')).toBeNull()
+      expect(HTMLCanvasElement.prototype.getContext).not.toHaveBeenCalled()
+      document.documentElement.dataset.glassMaterial = 'liquid'
+      await vi.waitFor(() => expect(document.querySelector('.fluid-glass-definitions')).not.toBeNull())
       vi.advanceTimersByTime(100)
       expect(surface.hasAttribute('data-fluid-refracted')).toBe(true)
       expect(document.querySelectorAll('.fluid-glass-definitions filter')).toHaveLength(1)
       expect(installFluidGlass()).toBe(dispose)
-      dispose()
+      document.documentElement.dataset.glassMaterial = 'light'
+      await vi.waitFor(() => expect(document.querySelector('.fluid-glass-definitions')).toBeNull())
       expect(surface.hasAttribute('data-fluid-refracted')).toBe(false)
       expect(surface.style.getPropertyValue('--fluid-glass-filter')).toBe('')
       expect(document.querySelector('.fluid-glass-definitions')).toBeNull()
       expect(disconnect).toHaveBeenCalledTimes(2)
+      dispose()
+      document.documentElement.dataset.glassMaterial = 'liquid'
       dispose = installFluidGlass()
+      await vi.waitFor(() => expect(document.querySelectorAll('.fluid-glass-definitions')).toHaveLength(1))
+      const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)
+      document.dispatchEvent(new Event('visibilitychange'))
+      expect(document.querySelector('.fluid-glass-definitions')).toBeNull()
+      hidden.mockReturnValue(false)
+      document.dispatchEvent(new Event('visibilitychange'))
       expect(document.querySelectorAll('.fluid-glass-definitions')).toHaveLength(1)
     } finally {
-      dispose(); surface.remove(); vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks()
+      dispose(); surface.remove(); delete document.documentElement.dataset.glassMaterial; vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks()
     }
   })
 })

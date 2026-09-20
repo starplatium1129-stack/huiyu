@@ -1,0 +1,12 @@
+/* Default material is painted, never backdrop-filtered; liquid styling loads on opt-in. */
+:root:not([data-glass-material="liquid"]) body *,
+:root:not([data-glass-material="liquid"]) body *::before,
+:root:not([data-glass-material="liquid"]) body *::after,
+:root:not([data-glass-material="liquid"]) dialog::backdrop {
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+}
+:root[data-glass-material="light"]:not([data-reduced-glass="true"]) body :is(.nav,.nav-more-menu,.sticky-toolbar,.companion-toolbar,.toolbar-shell,.gallery-toolbar,.scene-toolbar,.pop-toolbar,.gen-bar,[data-fluid-glass]) {
+  background:linear-gradient(125deg,color-mix(in srgb,var(--glass-highlight) 45%,transparent),transparent 42%),color-mix(in srgb,var(--bg-surface) 96%,transparent);
+  box-shadow:inset 0 1px var(--glass-highlight),inset 0 -1px var(--border-soft),var(--shadow-sm);
+}

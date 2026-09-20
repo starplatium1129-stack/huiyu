@@ -10,6 +10,7 @@
       <div v-if="section === 'appearance'" class="appearance-fields">
         <label>画室主题<select :value="themeMode" @change="setThemeMode(($event.target as HTMLSelectElement).value as 'system' | 'light' | 'dark')"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label>
         <label>动态效果<select :value="motionMode" @change="setMotionMode(($event.target as HTMLSelectElement).value as 'system' | 'full' | 'reduce')"><option value="system">跟随系统</option><option value="full">完整动效</option><option value="reduce">减少动态效果</option></select></label>
+        <GlassMaterialChoice v-if="materialControlsReady" />
         <label v-if="zoomAvailable">界面缩放 · {{ Math.round(zoom * 100) }}%<input type="range" min="75" max="200" step="5" :value="zoom * 100" aria-label="界面缩放" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)"><button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button></label>
         <p v-if="zoomError" role="status">{{ zoomError }}</p>
         <label class="appearance-check"><input type="checkbox" :checked="reducedGlass" @change="setReducedGlass(($event.target as HTMLInputElement).checked)"><span>降低玻璃效果<small>使用更稳定的底色，减少透光与背景干扰。</small></span></label>
@@ -29,8 +30,9 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+const GlassMaterialChoice = defineAsyncComponent(() => import('./GlassMaterialChoice.vue'))
 import { usableFocus, useDesktopPreferences } from '@/composables/useDesktopInteraction'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useDesktopZoom } from '@/composables/useDesktopZoom'
@@ -42,6 +44,7 @@ const dialog = ref<HTMLDialogElement | null>(null)
 const fluidDialog = useFluidDialog(dialog)
 const { available: zoomAvailable, zoom, error: zoomError, setZoom } = useDesktopZoom()
 const section = ref<'appearance' | 'keyboard'>('appearance')
+const materialControlsReady = ref(false)
 let trigger: HTMLElement | null = null
 function launch(value: 'appearance' | 'keyboard') {
   // Dispatch synchronously so the sole host captures the trigger before its menu closes.
@@ -52,6 +55,7 @@ async function open(value: 'appearance' | 'keyboard') {
   if (dialog.value?.open) return
   trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null
   section.value = value
+  if (value === 'appearance') materialControlsReady.value = true
   await nextTick()
   const summary = document.querySelector<HTMLElement>('.nav-more > summary')
   const origin = usableFocus(trigger) ? trigger : usableFocus(summary) ? summary : document.querySelector<HTMLElement>('.nav-menu-toggle')

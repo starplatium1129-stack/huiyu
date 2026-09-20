@@ -5,14 +5,17 @@ import { THEME_SETTING } from '@/storage/settingsRepository'
 
 type ThemeMode = 'system' | 'dark' | 'light'
 type MotionMode = 'system' | 'full' | 'reduce'
+export type GlassMode = 'light' | 'liquid'
 const KEY = 'atelier-desktop-appearance-v1'
 const themeMode = ref<ThemeMode>('system')
 const motionMode = ref<MotionMode>('system')
 const reducedGlass = ref(false)
+const glassMode = ref<GlassMode>('light')
+const effectiveGlassMode = ref<GlassMode>('light')
 let initialized = false
 
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify({ theme: themeMode.value, motion: motionMode.value, reducedGlass: reducedGlass.value })) } catch { /* Optional preferences must never block the workspace. */ }
+  try { localStorage.setItem(KEY, JSON.stringify({ theme: themeMode.value, motion: motionMode.value, reducedGlass: reducedGlass.value, glass: glassMode.value })) } catch { /* Optional preferences must never block the workspace. */ }
 }
 
 export function initializeDesktopPreferences() {
@@ -34,7 +37,8 @@ export function initializeDesktopPreferences() {
       themeMode.value = ['system', 'dark', 'light'].includes(saved?.theme) ? saved.theme : legacy === 'dark' || legacy === 'light' ? legacy : 'system'
       motionMode.value = ['system', 'full', 'reduce'].includes(saved?.motion) ? saved.motion : 'system'
       reducedGlass.value = saved?.reducedGlass === true
-    } catch { themeMode.value = theme.value; motionMode.value = 'system'; reducedGlass.value = false }
+      glassMode.value = saved?.glass === 'liquid' ? 'liquid' : 'light'
+    } catch { themeMode.value = theme.value; motionMode.value = 'system'; reducedGlass.value = false; glassMode.value = 'light' }
     finally { reading = false }
   }
   function apply() {
@@ -47,10 +51,12 @@ export function initializeDesktopPreferences() {
     const lowGlass = reducedGlass.value || contrast.matches || transparency.matches || forcedColors.matches
     root.dataset.reducedGlass = String(lowGlass)
     root.dataset.fluidEffects = lowGlass ? 'low' : 'full'
+    effectiveGlassMode.value = lowGlass ? 'light' : glassMode.value
+    root.dataset.glassMaterial = effectiveGlassMode.value
     window.dispatchEvent(new Event('atelier:motion-preference'))
   }
   read(); save(); apply()
-  watch([themeMode, motionMode, reducedGlass], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
+  watch([themeMode, motionMode, reducedGlass, glassMode], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
   // Existing sun/moon controls are an explicit choice and cancel system-following.
   watch(theme, value => { if (!applyingTheme) themeMode.value = value }, { flush: 'sync' })
   for (const query of [dark, reduce, contrast, transparency, forcedColors]) query.addEventListener('change', apply)
@@ -60,6 +66,8 @@ export function initializeDesktopPreferences() {
 export function useDesktopPreferences() {
   return {
     themeMode: readonly(themeMode), motionMode: readonly(motionMode), reducedGlass: readonly(reducedGlass),
+    glassMode: readonly(glassMode), effectiveGlassMode: readonly(effectiveGlassMode),
+    setGlassMode(value: GlassMode) { glassMode.value = value === 'liquid' ? 'liquid' : 'light' },
     setThemeMode(value: ThemeMode) { themeMode.value = value },
     setMotionMode(value: MotionMode) { motionMode.value = value },
     setReducedGlass(value: boolean) { reducedGlass.value = value },
