@@ -15,15 +15,12 @@ export function useParticlePerformanceLifecycle(hooks: ParticlePerformanceHooks)
   const lowEffects = ref(false)
   const reduceMotion = ref(false)
   const active = ref(true)
-  let systemReducedMotion = false
 
   function syncEffectsPreference(rebuild = true) {
     const root = document.documentElement
     const next = root.dataset.fluidEffects === 'low' || root.dataset.reducedGlass === 'true'
-    const nextMotion = systemReducedMotion || root.dataset.reducedMotion === 'true'
-    if (next === lowEffects.value && nextMotion === reduceMotion.value) return
+    if (next === lowEffects.value) return
     lowEffects.value = next
-    reduceMotion.value = nextMotion
     if (!rebuild || !active.value) return
     hooks.stop()
     hooks.rebuild()
@@ -41,8 +38,9 @@ export function useParticlePerformanceLifecycle(hooks: ParticlePerformanceHooks)
   }
 
   function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
-    systemReducedMotion = event.matches
-    syncEffectsPreference()
+    reduceMotion.value = event.matches
+    if (reduceMotion.value) hooks.stop()
+    hooks.rebuild()
   }
 
   onActivated(() => {

@@ -225,24 +225,3 @@ export function particleNeedsOutline(color: string, surface: string): boolean {
   if (a === null || b === null) return true
   return (Math.max(a, b) + .05) / (Math.min(a, b) + .05) < 3
 }
-
-/** 主题可读性：人物原色可能过暗（黑裙/深发在深色主题不可见），提亮到最低亮度。 */
-export function legibleParticleColor(hex: string): string {
-  const value = hex.trim()
-  const match = /^#?([0-9a-f]{6})$/i.exec(value)
-  if (!match) return value
-  const full = match[1]
-  let r = parseInt(full.slice(0, 2), 16) / 255
-  let g = parseInt(full.slice(2, 4), 16) / 255
-  let b = parseInt(full.slice(4, 6), 16) / 255
-  const MIN = 0.34
-  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
-  if (lum < MIN) {
-    const lift = (MIN - lum) / Math.max(1e-6, 1 - lum)
-    r += (1 - r) * lift
-    g += (1 - g) * lift
-    b += (1 - b) * lift
-  }
-  const to255 = (c: number) => Math.round(Math.min(1, Math.max(0, c)) * 255)
-  return `#${[to255(r), to255(g), to255(b)].map(v => v.toString(16).padStart(2, '0')).join('')}`
-}
