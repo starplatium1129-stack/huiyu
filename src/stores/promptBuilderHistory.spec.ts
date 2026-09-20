@@ -78,8 +78,10 @@ describe('入册抽取前后的兼容特征', () => {
       noLora: true, lora: null, loraId: null, loraStrength: null, loras: [], styleLoraId: 'krea-style', parent_id: 0 })
   })
 
-  it('缺省的旧输入仍在测量后读取兼容默认值；提交时机调整留给下一批', async () => {
+  it('保存开始后切换故事和项目，不会污染等待测量的作品', async () => {
     const pb = usePromptBuilderStore()
+    pb.story = 'save-time story'
+    pb.projectId = 'save-time project'
     let release!: () => void
     const waiting = new Promise<void>(resolve => { release = resolve })
     const measure = vi.spyOn(usePromptHistoryStore(), 'measureBlob').mockImplementation(async () => {
@@ -91,7 +93,7 @@ describe('入册抽取前后的兼容特征', () => {
     pb.story = 'legacy fallback after measurement'
     pb.projectId = 'late-project'
     release()
-    expect(await saving).toMatchObject({ story: 'legacy fallback after measurement', project: 'late-project', width: null, height: null })
+    expect(await saving).toMatchObject({ story: 'save-time story', project: 'save-time project', width: null, height: null })
   })
 
   it('同一毫秒连续保存保留既有序号；提交记录不复用可变数组', async () => {

@@ -126,8 +126,10 @@ if (/\bany\b/.test(storeSource)) fail('prompt builder store must keep scene, pro
 // A02 moves mapping out of the store. Metadata preservation is exercised through
 // real saves in promptBuilderHistory.spec.ts; this check owns only module wiring.
 const { sourceImports }: typeof import('../lib/source-imports') = require('../lib/source-imports');
-assert.ok(sourceImports(storeSource).some(edge => !edge.typeOnly && edge.specifier === '@/application/artwork/saveGeneratedArtwork'),
-  'history commit must use the extracted artwork save capability');
+assert.ok(sourceImports(storeSource).some(edge => !edge.typeOnly && edge.specifier === '@/composables/prompt/usePromptArtworkHistory'),
+  'history commit must delegate to the artwork storage adapter');
+assert.ok(sourceImports(read('src/composables/prompt/usePromptArtworkHistory.ts')).some(edge => !edge.typeOnly && edge.specifier === '@/application/artwork/saveGeneratedArtwork'),
+  'artwork storage adapter must use the independent save capability');
 // 52ed8a39 将夏目身份锚点对齐自训 LoRA 标准特征（黑发/极长发/黄瞳/眼下痣/发夹），
 // 旧的 two_red_hairclips/no_hair_ribbon 词组已废弃；此断言守护新锚点不被再漂移。
 if (!storeSource.includes("black_hair, very_long_hair, yellow_eyes, mole_under_eye, hairclip")) {

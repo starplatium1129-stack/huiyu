@@ -1,45 +1,7 @@
 import type { HistoryEntry } from '@/types/promptHistory'
-import type { AnimaResultContext } from '@/types/anima'
-import { parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
-import { historyFromResultContext } from '@/utils/resultContext'
-
-/** Existing commit input; callers can keep their snapshots and parent identity unchanged. */
-export type GeneratedArtworkInput = Partial<HistoryEntry> & {
-  blob: Blob
-  prompt: string
-  context?: AnimaResultContext | null
-  /** Source artwork for inpaint/variants; both legacy ID representations remain valid. */
-  parentId?: string | number | null
-}
-
-/** Explicit compatibility defaults. The store resolves these at the legacy save point. */
-export type LegacyArtworkDefaults = Readonly<Required<Pick<HistoryEntry,
-  'character' | 'scene' | 'sceneTitle' | 'story' | 'visualDescription' | 'seed' | 'shot' | 'lighting'
-  | 'composition' | 'colorMood' | 'lora' | 'cfg' | 'steps' | 'sampler' | 'scheduler' | 'model' | 'size'
-  | 'hiresFix' | 'hiresScale' | 'hiresUpscaler' | 'hiresSteps' | 'hiresDenoise' | 'faceDetailer' | 'project'
->> & {
-  subject: Readonly<{ kind: 'studio' } | { kind: 'popular'; characterId: string; outfitId: string; blueprintId?: string | null }>
-  emotion: readonly string[]
-  manual_tags: ReadonlySet<string> | readonly string[]
-  artistStyleIds: readonly string[]
-}>
-
-export interface SaveGeneratedArtworkDependencies {
-  withStaging: (work: () => Promise<SaveGeneratedArtworkResult>) => Promise<SaveGeneratedArtworkResult>
-  putImage: (blob: Blob) => Promise<string>
-  deleteImage: (id: string) => Promise<void>
-  cacheThumbnail: (id: string, blob: Blob) => Promise<void>
-  measureBlob: (blob: Blob) => Promise<{ width: number | null; height: number | null }>
-  now: () => number
-  nextId: (now: number) => number
-  resolveLegacyDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults
-  normalizeArtistStyleIds: (value: unknown) => string[]
-  appendArtwork: (entry: HistoryEntry) => Promise<unknown[]>
-}
-
-export type SaveGeneratedArtworkResult =
-  | { ok: true; entry: HistoryEntry; history: ArtworkRecord[] }
-  | { ok: false; error: unknown }
+import { parseArtworkRecords } from '@/types/artwork'
+import { prepareGeneratedArtwork, type ArtworkSaveSnapshot, type GeneratedArtworkInput, type LegacyArtworkDefaults, type SaveGeneratedArtworkDependencies, type SaveGeneratedArtworkResult } from './artworkSaveInput'
+export type { GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
 
 function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDefaults,
   imageId: string, measured: { width: number | null; height: number | null }, now: number, id: number,
@@ -83,10 +45,14 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
 }
 
 /** No store, database driver or notification dependency. Staging wraps image creation through commit. */
-export function saveGeneratedArtwork(input: GeneratedArtworkInput, deps: SaveGeneratedArtworkDependencies): Promise<SaveGeneratedArtworkResult> {
+export async function saveGeneratedArtwork(input: GeneratedArtworkInput, deps: SaveGeneratedArtworkDependencies): Promise<SaveGeneratedArtworkResult> {
+  return saveArtworkSnapshot(prepareGeneratedArtwork(input, deps.resolveLegacyDefaults), deps)
+}
+
+/** The caller already owns a detached snapshot. Load this implementation only when saving. */
+export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, deps: Omit<SaveGeneratedArtworkDependencies, 'resolveLegacyDefaults'>): Promise<SaveGeneratedArtworkResult> {
   return deps.withStaging(async () => {
     let imageId = ''
-    const entry = { ...input, ...historyFromResultContext(input.context) }
     try {
       imageId = await deps.putImage(entry.blob)
       // Thumbnails are derived, best-effort data; production already swallows their failures.
@@ -94,7 +60,6 @@ export function saveGeneratedArtwork(input: GeneratedArtworkInput, deps: SaveGen
       const measured = await deps.measureBlob(entry.blob)
       const now = deps.now()
       const id = deps.nextId(now)
-      const defaults = deps.resolveLegacyDefaults(entry)
       const historyEntry = assembleRecord(entry, defaults, imageId, measured, now, id, deps.normalizeArtistStyleIds)
       const history = parseArtworkRecords(await deps.appendArtwork(historyEntry))
       return { ok: true, entry: historyEntry, history }

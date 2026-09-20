@@ -1,6 +1,10 @@
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-type PetFixtureWindow = Window & { petFixture: { open: number; hide: number; closeChat: number; drag: number; docked: boolean; pass: boolean; send(payload: { command: string; character: string; text: string }): void } }
+declare global {
+  interface Window {
+    petFixture?: { open: number; hide: number; closeChat: number; drag: number; docked: boolean; pass: boolean; send(payload: { command: string; character: string; text: string }): void }
+  }
+}
 
 async function desktop(page: Page, theme: string, live = false) {
   // The dev asset proxy can point at an older installed gateway; inspect this checkout's bootstrap.
@@ -53,12 +57,12 @@ for (const theme of ['light', 'dark']) {
       await page.screenshot({ path: testInfo.outputPath(`chat-panel-${theme}-${width}.png`) })
     }
     await page.locator('.companion-chat-drag').dispatchEvent('mousedown', { button: 0 })
-    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.drag)).toBe(1)
-    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.docked)).toBe(false)
+    await expect.poll(() => page.evaluate(() => window.petFixture!.drag)).toBe(1)
+    await expect.poll(() => page.evaluate(() => window.petFixture!.docked)).toBe(false)
     await expect(page.getByRole('button', { name: '贴靠桌宠', exact: true })).toBeVisible()
     await expect(input).toHaveValue('这段草稿暂时不发送')
     await page.getByRole('button', { name: '关闭聊天窗', exact: true }).click()
-    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.closeChat)).toBe(1)
+    await expect.poll(() => page.evaluate(() => window.petFixture!.closeChat)).toBe(1)
   })
   test(`pet stays transparent before application mount ${theme}`, async ({ page }) => {
     await page.addInitScript(theme => { localStorage.setItem('aics_theme', theme); Object.assign(window, { companionDesktop: { isDesktop: true } }) }, theme)
@@ -91,23 +95,23 @@ for (const theme of ['light', 'dark']) {
     await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
     await page.getByRole('button', { name: '设置', exact: true }).click()
     await page.getByRole('button', { name: '鼠标穿透', exact: true }).click()
-    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.pass)).toBe(true)
+    await expect.poll(() => page.evaluate(() => window.petFixture!.pass)).toBe(true)
     await page.keyboard.press('Escape')
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('aics_companion_chat_live_v1') || '{}').chatReady)).toBe(true)
-    await page.evaluate(() => (window as PetFixtureWindow).petFixture.send({ command: 'send', character: 'natsume', text: '气泡测试' }))
+    await page.evaluate(() => window.petFixture!.send({ command: 'send', character: 'natsume', text: '气泡测试' }))
     await expect(page.locator('.companion-reply-preview')).toContainText('我就在这里')
     await expect(page.locator('.companion-reply-preview')).toHaveCSS('opacity', '1')
     const stage = await page.locator('.live2d-host').boundingBox()
     await page.screenshot({ path: testInfo.outputPath(`pet-reply-${theme}.png`), omitBackground: true })
     await page.getByRole('button', { name: '展开完整回复', exact: true }).click()
-    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.open)).toBe(1)
+    await expect.poll(() => page.evaluate(() => window.petFixture!.open)).toBe(1)
     await page.getByRole('button', { name: '收起回复气泡', exact: true }).click()
     await expect(page.locator('.companion-reply-preview')).toHaveCount(0)
     expect(await page.locator('.live2d-host').boundingBox()).toEqual(stage)
     await page.mouse.move(250, 370)
     await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
     await page.getByRole('button', { name: '隐藏桌宠', exact: true }).click()
-    await expect.poll(() => page.evaluate(() => (window as PetFixtureWindow).petFixture.hide)).toBe(1)
+    await expect.poll(() => page.evaluate(() => window.petFixture!.hide)).toBe(1)
     await page.setViewportSize({ width: 360, height: 520 })
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await expect(page.getByRole('button', { name: '隐藏桌宠', exact: true })).toBeInViewport()

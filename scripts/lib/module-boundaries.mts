@@ -4,7 +4,7 @@ import type { Rule } from 'eslint'
 /** Small pilot: type-only edges are allowed; runtime imports are checked after path normalization. */
 export function boundaryViolation(filename: string, specifier: string, typeOnly = false): string | null {
   const normalized = filename.replaceAll('\\', '/')
-  const marker = normalized.lastIndexOf('/src/')
+  const marker = Math.max(normalized.lastIndexOf('/src/'), normalized.lastIndexOf('/server/'))
   if (marker < 0) return null
   const source = normalized.slice(marker + 1)
   const target = specifier.startsWith('@/') ? path.posix.normalize('src/' + specifier.slice(2))
@@ -14,9 +14,24 @@ export function boundaryViolation(filename: string, specifier: string, typeOnly 
   if (/^photoswipe(?:\/|$)/.test(target) && source !== 'src/components/gallery/PhotoSwipeStage.vue') {
     return 'PhotoSwipe is private to PhotoSwipeStage; business code uses artwork identities and adapter events.'
   }
+  if (source.startsWith('server/generation/') && (/^express(?:\/|$)/.test(target)
+    || /^routes\/[^/]+(?:\.ts|\.js)?$/.test(target) && !/^routes\/superres(?:\.ts|\.js)?$/.test(target))) {
+    // Validation is the only request adapter; the service cannot import HTTP handlers.
+    if (!(source === 'server/generation/validation.ts' && typeOnly && target === 'express')) {
+      return 'Generation services depend on engine services, never HTTP routers or Express.'
+    }
+  }
   if (typeOnly) return null
+  if (source === 'src/stores/promptBuilderStore.ts' && (/^src\/(?:storage|api|application)\//.test(target)
+    || /^src\/composables\/(?:useImageStore|useKVStore)(?:\.|$)/.test(target))) {
+    return 'The workbench store delegates persistence to its artwork/draft adapters.'
+  }
+  if (/^src\/composables\/prompt\/usePrompt(?:Draft|SceneFilters)\.ts$/.test(source)
+    && /^src\/(?:stores|storage|api|application)\//.test(target)) {
+    return 'Drafts and scene filters receive explicit state; they cannot load the workbench or artwork services.'
+  }
   const pure = source.startsWith('src/types/') || [
-    'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts',
+    'src/utils/historyRecipe.ts', 'src/utils/generationTask.ts', 'src/utils/promptPolicy.ts', 'src/utils/promptCatalog.ts',
   ].includes(source)
   if (pure && (/^src\/(?:views|components|stores|composables|storage|api)\//.test(target) || /^(?:vue|pinia)(?:\/|$)/.test(target))) {
     return 'Pure history/prompt modules must not load UI, state instances or browser services.'
@@ -34,7 +49,9 @@ export const moduleBoundaries: Rule.RuleModule = {
     const check = (node: Rule.Node, value: unknown, typeOnly = false) => {
       if (typeof value !== 'string') {
         const filename = context.filename.replaceAll('\\', '/')
-        if (/\/src\/(?:types|storage)\//.test(filename) || /\/src\/utils\/(?:historyRecipe|generationTask|promptPolicy)\.ts$/.test(filename)) {
+        if (/\/src\/(?:types|storage)\//.test(filename) || /\/src\/utils\/(?:historyRecipe|generationTask|promptPolicy|promptCatalog)\.ts$/.test(filename)
+          || /\/server\/generation\//.test(filename) || /\/src\/stores\/promptBuilderStore\.ts$/.test(filename)
+          || /\/src\/composables\/prompt\/usePrompt(?:Draft|SceneFilters)\.ts$/.test(filename)) {
           context.report({ node, messageId: 'boundary', data: { reason: 'Pilot boundary imports must use a literal path.' } })
         }
         return
@@ -64,4 +81,3 @@ export const moduleBoundaries: Rule.RuleModule = {
     }
   },
 }
-

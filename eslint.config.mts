@@ -230,8 +230,14 @@ export default tseslint.config(
     rules: { 'no-restricted-globals': ['error', 'process', 'require', '__dirname', 'Buffer', 'window', 'document', 'localStorage', 'sessionStorage', 'indexedDB', 'navigator'] },
   },
   {
-    files: ['src/**/*.{ts,vue}'],
+    files: ['src/**/*.{ts,vue}', 'server/generation/**/*.ts'],
     plugins: { huiyu: { rules: { 'module-boundaries': moduleBoundaries } } },
     rules: { 'huiyu/module-boundaries': 'error' },
+  },
+  {
+    files: ['server/generation/**/*.ts', 'routes/generation.ts', 'src/stores/promptBuilderStore.ts',
+      'src/utils/promptCatalog.ts', 'src/composables/prompt/usePromptDraft.ts',
+      'src/composables/prompt/usePromptArtworkHistory.ts', 'src/composables/prompt/usePromptSceneFilters.ts'],
+    rules: { '@typescript-eslint/no-explicit-any': 'error' },
   },
 )

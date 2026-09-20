@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test'
 
+declare global {
+  interface Window { snapshotRevocations?: string[] }
+}
+
 test('comparison images decode after engine URL rotation and obsolete snapshots are released', async ({ page }) => {
   let generation = 0
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false, models: [] } }))
@@ -57,7 +61,7 @@ test('comparison images decode after engine URL rotation and obsolete snapshots 
     await expect(img).toHaveJSProperty('complete', true)
     await expect(img).not.toHaveJSProperty('naturalWidth', 0)
   }
-  const revoked = await page.evaluate(() => (window as Window & { snapshotRevocations: string[] }).snapshotRevocations)
+  const revoked = await page.evaluate(() => window.snapshotRevocations!)
   expect(revoked.filter(url => url === urls[0])).toHaveLength(1)
   expect(revoked).not.toContain(urls[1])
 })

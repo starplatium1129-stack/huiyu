@@ -3,6 +3,48 @@
 let assert: typeof import('assert/strict') = require('assert/strict');
 let gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
 let generation: any = require('../../routes/generation');
+import { createWebUIProbe, type requestJson } from '../../server/generation/webui';
+import { createGenerationService } from '../../server/generation/service';
+
+async function verifyProbeOwnership() {
+  const releases: Array<(value: unknown) => void> = [];
+  let requests = 0;
+  const request: typeof requestJson = async (_config, _key, _method, pathname) => {
+    requests++;
+    if (pathname.endsWith('/options')) return new Promise(resolve => releases.push(resolve));
+    if (pathname.endsWith('/sd-models')) return [{ title:'waiIllustriousSDXL_v170.safetensors' }];
+    return [{ name:42 }, null, { name:'Euler' }];
+  };
+  const config = { SD_HOST:'http://fixture.invalid' };
+  const probe = createWebUIProbe(config, request);
+  const old = probe();
+  assert.equal(probe(), old, 'ordinary status calls coalesce');
+  const fresh = probe({ fresh:true });
+  assert.notEqual(fresh, old, 'submission cannot reuse a pre-existing status probe');
+  releases[1]({ sd_model_checkpoint:'waiIllustriousSDXL_v170.safetensors' });
+  const current = await fresh;
+  assert.deepEqual(current.samplers, ['Euler'], 'untrusted catalog names are decoded');
+  releases[0]({ sd_model_checkpoint:'other.safetensors' });
+  await old;
+  assert.deepEqual(await probe(), current, 'late old status cannot replace the fresh cache');
+  assert.equal(requests, 10);
+  const other = createWebUIProbe({ SD_HOST:'http://fixture.invalid' }, request);
+  const independent = other();
+  assert.equal(requests, 15, 'each service has independent probe ownership');
+  releases[2]({}); await independent;
+  config.SD_HOST = 'http://second.invalid';
+  const switched = probe();
+  assert.equal(requests, 20, 'changing the configured host invalidates even a fresh TTL cache');
+  releases[3]({}); await switched;
+  const pendingOldHost = probe({ fresh:true });
+  config.SD_HOST = 'http://third.invalid';
+  const latestHost = probe();
+  assert.equal(requests, 30, 'a new host never joins the previous host request');
+  releases[5]({ sd_model_checkpoint:'waiIllustriousSDXL_v170.safetensors' });
+  const latest = await latestHost;
+  releases[4]({}); await pendingOldHost;
+  assert.deepEqual(await probe(), latest, 'late responses from a replaced host cannot repopulate its cache');
+}
 
 async function json(response: Response) { return response.json(); }
 async function post(base: string, body: any, token?: any) {
@@ -10,6 +52,10 @@ async function post(base: string, body: any, token?: any) {
 }
 
 async function run() {
+  await verifyProbeOwnership();
+  for (const id of ['__proto__', 'constructor']) assert.throws(() => generation.validateInput({
+    prompt:'river', width:832, height:1216, loras:[{ id, strength:0.8 }],
+  }), /未知 WAI LoRA/);
   let valid = generation.validateInput({ prompt:'1girl, solo', negative:'bad', loras:[{ id:'L_NENE_V18_WD14', strength:0.85 }], width:832, height:1216, steps:28, cfg:5.5, seed:12, sampler:'DPM++ 2M', scheduler:'Karras' });
   let dual = generation.validateInput({ prompt:'2girls', loras:[{ id:'L_NENE_V18_WD14', strength:0.52 }, { id:'L_NAT_V18_WD14', strength:0.62 }], width:832, height:1216 });
   assert.deepEqual(dual.loras.map(function (item: any) { return item.strength; }), [0.52, 0.62]);
@@ -69,6 +115,16 @@ async function run() {
    } });
    try {
      let base = stack.baseUrl;
+     const isolated = createGenerationService(stack.config);
+     try {
+       const job = await isolated.submit(generation.validateInput({ ...requestBody, faceDetailer:true }), 'owner-a');
+       assert.ok(job);
+       assert.throws(() => isolated.getJob(job.id, 'owner-b'), /任务不存在/);
+       isolated.close();
+       await assert.rejects(isolated.submit(generation.validateInput(requestBody), 'owner-a'), /生成服务已关闭/);
+       await new Promise(resolve => setTimeout(resolve, 30));
+       assert.throws(() => isolated.getJob(job.id, 'owner-a'), /任务不存在/, 'closed service releases jobs, including late responses');
+     } finally { isolated.close(); }
       let status = await json(await fetch(base + '/api/generation/status'));
       assert.equal(status.capabilities.hiresUpscalers.includes('Auto'), true);
       let webuiResponse = await post(base, requestBody);

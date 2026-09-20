@@ -812,7 +812,17 @@ async function run() {
 
   let providerMock = createMockAiServer();
   let providerBase = await listen(providerMock.server);
-  let gatewayStack = await gatewayTestStack.start({ token:'test-token' });
+  let gatewayStack = await gatewayTestStack.start({ token:'test-token', prepare({ root: fixtureRoot, config }: { root: string; config: { ROOT_DIR: string } }) {
+    // Exercise the real SPA fallback/CSP without depending on a previous production build.
+    config.ROOT_DIR = fixtureRoot;
+    fs.mkdirSync(path.join(fixtureRoot, 'dist'), { recursive:true });
+    fs.writeFileSync(path.join(fixtureRoot, 'dist', 'index.html'), '<!doctype html><html><body><div id="app"></div></body></html>');
+    const cssRoot = path.join(fixtureRoot, 'src', 'assets', 'css');
+    fs.mkdirSync(cssRoot, { recursive:true });
+    for (const name of ['design-system.css', 'light-theme.css']) fs.copyFileSync(path.join(root, 'src', 'assets', 'css', name), path.join(cssRoot, name));
+    fs.mkdirSync(path.join(fixtureRoot, 'data'), { recursive:true });
+    fs.writeFileSync(path.join(fixtureRoot, 'data', 'scenes.json'), '[]');
+  } });
   let gatewayBase = gatewayStack.baseUrl;
   try {
     let healthResponse = await fetch(gatewayBase + '/api/health');

@@ -36,3 +36,15 @@ test('active environment rules fail on wrong globals; generated output stays ign
   assert.deepEqual(await errors('server/fixture.ts', 'process.cwd()'), [])
 })
 
+test('generation and workbench persistence boundaries cannot regress', async () => {
+  for (const [file, code] of [
+    ['server/generation/service.ts', "import router = require('../../routes/anima'); void router"],
+    ['server/generation/service.ts', "import type { Request } from 'express'; export type X = Request"],
+    ['server/generation/service.ts', "const p = '../../routes/anima'; void import(p)"],
+    ['src/stores/promptBuilderStore.ts', "void import('@/storage/artworkRepository')"],
+    ['src/composables/prompt/usePromptDraft.ts', "void import('@/stores/promptBuilderStore')"],
+  ]) assert.ok((await errors(file, code)).some(m => m.ruleId === 'huiyu/module-boundaries'), code)
+  assert.deepEqual(await errors('server/generation/service.ts', "import engine = require('../../routes/anima/service'); void engine"), [])
+  assert.deepEqual(await errors('server/generation/validation.ts', "import type { Request } from 'express'; export type X = Request"), [])
+  assert.ok((await errors('server/generation/types.ts', 'export type Input = any')).some(m => m.ruleId === '@typescript-eslint/no-explicit-any'))
+})

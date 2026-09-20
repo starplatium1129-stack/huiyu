@@ -378,8 +378,9 @@ test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', a
   await page.locator('.chat-input').fill('我每周五晚上会玩 MMORPG。');
   await page.locator('.send-btn').click();
   await expect(page.locator('.message.assistant .message-bubble').last()).toContainText('今天也辛苦了', { timeout: 15_000 });
-  await page.locator('.message.user .msg-memory-btn').first().click();
-  await expect(page.locator('.message.user .msg-memory-btn').first()).toHaveText('已记住');
+  const remember = page.locator('.message.user').getByRole('button', { name: /^(钉住记忆|已记住)$/ }).first();
+  await remember.click();
+  await expect(remember).toHaveText('已记住');
 
   await page.locator('.chat-input').fill('周五晚上做什么好？');
   await page.locator('.send-btn').click();
@@ -413,7 +414,7 @@ test('chat memory write failure keeps the action retryable without a success mes
   await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false)
   await page.locator('.chat-input').fill('我喜欢周五晚上散步')
   await page.locator('.send-btn').click()
-  const remember = page.locator('.message.user .msg-memory-btn').first()
+  const remember = page.locator('.message.user').getByRole('button', { name: /^(钉住记忆|已记住)$/ }).first()
   await remember.click()
   await expect(page.locator('.chat-error')).toContainText('长期记忆保存失败')
   await expect(remember).not.toHaveText('已记住')

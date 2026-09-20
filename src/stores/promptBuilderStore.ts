@@ -1,21 +1,18 @@
-import { withArtworkStaging } from '@/storage/artworkSession'
+import { usePromptDraft } from '@/composables/prompt/usePromptDraft'
+import { usePromptSceneFilters } from '@/composables/prompt/usePromptSceneFilters'
+import { usePromptArtworkHistory } from '@/composables/prompt/usePromptArtworkHistory'
 import type { Scene } from '../types/scene'
 export type { Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
-import { saveGeneratedArtwork, type GeneratedArtworkInput, type LegacyArtworkDefaults } from '@/application/artwork/saveGeneratedArtwork'
+import type { GeneratedArtworkInput, LegacyArtworkDefaults } from '@/application/artwork/saveGeneratedArtwork'
 import { ref, reactive, computed } from 'vue'
-import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
-import { imgPut, imgDelete } from '@/composables/useImageStore'
-import { artworkRepository } from '@/storage/artworkRepository'
+import { type ModelProfile } from '@/utils/promptPolicy'
 import { useSceneStore } from '@/stores/sceneStore'
-import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { applyModelProfileToParams } from '@/utils/promptModelProfile'
 import { usePromptTags } from '@/composables/prompt/usePromptTags'
-import type { PromptTagSource } from '@/utils/promptTagDictionary'
-import { storageWriteMessage } from '@/utils/storageWriteError'
+import { parsePromptScenes, parsePromptCharacters, parsePromptLoras, parsePromptTags } from '@/utils/promptCatalog'
 import { useToast } from '@/composables/useToast'
 
 const toast = useToast()
@@ -23,15 +20,13 @@ const toast = useToast()
 import {
   isSDParamKey,
   parsePresetCatalog,
-  parsePromptBuilderDraft,
-  type PromptBuilderDraft,
   type PromptPreset,
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
 import type { DrawSubject } from '@/utils/popularContent'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 
-import type { CharKey, HistoryEntry, Selections } from '@/types/promptHistory'
+import type { CharKey, Selections } from '@/types/promptHistory'
 export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
 
 export const SHOT_PROMPT: Record<string, string> = {
@@ -98,14 +93,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   // ── Loaded data (proxy to sceneStore, single source, no drift) ───────
   const sceneStore = useSceneStore()
-  const historyStore = usePromptHistoryStore()
-  const { history, projects } = storeToRefs(historyStore)
-  const scenes = computed(() => sceneStore.scenes as unknown as Scene[])
-  const curation = computed(() => sceneStore.curation as unknown as Record<string, unknown>)
-  const loraMeta = computed(() => sceneStore.loras as unknown as LoraMeta[])
-  const tags = computed(() => sceneStore.tags as unknown as PromptTagSource[])
+  const { history, projects, commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry, loadHistory, loadProjects } = usePromptArtworkHistory(resolveLegacyArtworkDefaults)
+  const scenes = computed(() => parsePromptScenes(sceneStore.scenes))
+  const curation = computed(() => sceneStore.curation)
+  const loraMeta = computed(() => parsePromptLoras(sceneStore.loras))
+  const tags = computed(() => parsePromptTags(sceneStore.tags))
   const { manualTags, tagDictionary, addManualTag, toggleManualTag } = usePromptTags(() => tags.value, flash)
-  const characters = computed(() => sceneStore.characters as unknown as Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }> }>)
+  const characters = computed(() => parsePromptCharacters(sceneStore.characters))
   const popularCharacters = computed(() => sceneStore.popularCharacters)
   /** 当前主体对应的画师专属推荐（2026-09-05 从 PromptBuilderView 迁入：纯 store 派生）。 */
   const currentCuratedArtistStyles = computed<string[]>(() => {
@@ -151,16 +145,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // 配音状态（online/mode/caption/custom）由 VoiceStudio.vue 与 useVoice 拥有，
   // 这里不再重复存放，避免两份状态漂移。
 
-  // ── UI state ────────────────────────────────────────────────────────────
-  const focusMode     = ref(false)
-  const directorMode  = ref<'basic' | 'pro'>('basic')
-  const sceneSearch   = ref('')
-  const sceneTheme    = ref('all')
-  const sceneLibMode  = ref<'grid' | 'list'>('grid')
-  const currentStep   = ref(1)
-  // 本项目主要在本机自用，成人向场景默认参与检索；带图的场景卡仍由 SceneCard 做模糊揭示。
-  const showMatureScenes = ref(true)
-  const activeTab     = ref('tags')
+  const { focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode, currentStep, showMatureScenes, activeTab, filteredScenes } = usePromptSceneFilters(scenes, char)
   const lastRecommendedSize = ref('832x1216')
 
   // ── Derived ─────────────────────────────────────────────────────────────
@@ -190,26 +175,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const emotionPrompt = computed(() =>
     selections.emotion.map(e => PROMPT_MAP_EMOTION[e] || e).filter(Boolean).join(', ')
   )
-
-  const filteredScenes = computed(() => {
-    let list = scenes.value
-    if (!showMatureScenes.value) list = list.filter(s => !s.mature)
-    if (char.value !== 'triad') {
-      list = list.filter(s => !s.char || s.char === char.value || s.char === 'both')
-    }
-    if (sceneTheme.value && sceneTheme.value !== 'all') {
-      list = list.filter(s => s.category === sceneTheme.value || (s.series && s.series.includes(sceneTheme.value)))
-    }
-    if (sceneSearch.value.trim()) {
-      const kw = sceneSearch.value.trim().toLowerCase()
-      list = list.filter(s =>
-        s.title?.toLowerCase().includes(kw) ||
-        s.story?.toLowerCase().includes(kw) ||
-        s.tags?.some(t => t.toLowerCase().includes(kw))
-      )
-    }
-    return list
-  })
 
   // ── Mutations ───────────────────────────────────────────────────────────
   function setChar(c: CharKey) { char.value = c }
@@ -315,7 +280,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── Data loading (single source via sceneStore) ───────────────────────
   async function loadData() {
     await sceneStore.load()
-    const catalog = parsePresetCatalog(sceneStore.presets as unknown as Record<string, unknown>)
+    const catalog = parsePresetCatalog(sceneStore.presets)
     presets.value = catalog.presets
     modelProfiles.value = catalog.modelProfiles
     applyModelProfile()
@@ -338,130 +303,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  // ── Draft persistence ────────────────────────────────────────────────────
-  const DRAFT_KEY = 'aics_pb_last_draft'
-  let draftTimer: ReturnType<typeof setTimeout> | null = null
+  const { snapshotDraft, saveDraft, restoreDraft } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
-  function snapshotDraft(): PromptBuilderDraft {
-    const subjectSnapshot = subject.value.kind === 'popular'
-      ? {
-          subject: 'popular' as const,
-          characterId: subject.value.characterId,
-          outfitId: subject.value.outfitId,
-          blueprintId: subject.value.blueprintId,
-          noLora: true,
-        }
-      : { subject: 'studio' as const, noLora: false }
-    return {
-      updatedAt: Date.now(),
-      story: story.value,
-      visualDescription: visualDescription.value,
-      char: char.value,
-      sceneId: sceneId.value,
-      sceneTitle: activeScene.value?.title ?? null,
-      selections: { emotion: [...selections.emotion], shot: selections.shot, lighting: selections.lighting, composition: selections.composition },
-      colorMood: colorMood.value,
-      manualTags: [...manualTags.value],
-      artistStyleIds: [...artistStyleIds.value],
-      sceneBaseStory: sceneBaseStory.value,
-      directorMode: directorMode.value,
-      sdParams: { ...sdParams },
-      // 2026-08-16 审计：把用户已确认的参数键一并入草稿，恢复后不被 profile 覆盖。
-      sdParamsTouched: [...sdParamsTouched.value],
-      projectId: projectId.value,
-      ...subjectSnapshot,
-    }
-  }
-
-  function applyDraft(d: PromptBuilderDraft) {
-    if (typeof d.story === 'string') story.value = d.story
-    if (typeof d.visualDescription === 'string') visualDescription.value = d.visualDescription
-    if (d.char) char.value = d.char
-    if (d.sceneId !== undefined) {
-      sceneId.value = d.sceneId
-      const currentScene = scenes.value.find(s => s.id === d.sceneId)
-      if (currentScene) {
-        lastRecommendedSize.value = sceneRecommendedSize(currentScene)
-        // 场景未被用户魔改时，镜头与推荐配置自动跟随最新场景定义更新，避免旧草稿锁死过时机位
-        const isUnmodifiedScene = (!d.story || d.story === currentScene.story) && (d.sceneBaseStory === currentScene.story || !d.sceneBaseStory)
-        if (isUnmodifiedScene) {
-          sceneBaseStory.value = currentScene.story ?? ''
-          story.value = currentScene.story ?? story.value
-          selections.shot = sceneShot(currentScene)
-          selections.lighting = sceneLighting(currentScene)
-          selections.composition = sceneComposition(currentScene)
-          colorMood.value = sceneColorMood(currentScene)
-          if (d.manualTags) manualTags.value = new Set(d.manualTags)
-          artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
-          if (d.directorMode) directorMode.value = d.directorMode
-          if (d.sdParams) Object.assign(sdParams, d.sdParams)
-          if (Array.isArray(d.sdParamsTouched) && d.sdParamsTouched.length) {
-            sdParamsTouched.value = new Set(d.sdParamsTouched.filter(key => isSDParamKey(key)) as Array<keyof SDParams>)
-          }
-          if (typeof d.projectId === 'string') projectId.value = d.projectId
-          if (d.subject === 'popular' && d.characterId && d.outfitId) {
-            subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
-          } else {
-            subject.value = { kind: 'studio' }
-          }
-          return
-        }
-      }
-    }
-    if (d.sceneBaseStory !== undefined) sceneBaseStory.value = d.sceneBaseStory
-    if (d.selections) {
-      selections.emotion = d.selections.emotion ?? []
-      selections.shot = d.selections.shot ?? null
-      selections.lighting = d.selections.lighting ?? null
-      selections.composition = d.selections.composition ?? null
-    }
-    if (typeof d.colorMood === 'string' || d.colorMood === null) colorMood.value = d.colorMood
-    if (d.manualTags) manualTags.value = new Set(d.manualTags)
-    artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
-    if (d.directorMode) directorMode.value = d.directorMode
-    if (d.sdParams) Object.assign(sdParams, d.sdParams)
-    // 2026-08-16 审计：恢复草稿时同步重建 touched 集合——否则恢复的用户参数会被
-    // 后续 applyModelProfile（切底模/引擎等）当默认值静默覆盖。缺省（旧草稿）
-    // 保持原行为：不标记任何键。
-    if (Array.isArray(d.sdParamsTouched) && d.sdParamsTouched.length) {
-      sdParamsTouched.value = new Set(d.sdParamsTouched.filter(key => isSDParamKey(key)) as Array<keyof SDParams>)
-    }
-    if (typeof d.projectId === 'string') projectId.value = d.projectId
-    if (d.subject === 'popular' && d.characterId && d.outfitId) {
-      subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
-    } else {
-      subject.value = { kind: 'studio' }
-    }
-  }
-
-  function saveDraft() {
-    if (!dataReady.value) return
-    if (draftTimer) clearTimeout(draftTimer)
-    draftTimer = setTimeout(() => {
-      try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft()))
-      } catch (e) {
-        // 2026-08-30 UX 审计：原先 catch {} 静默吞掉。配额写满时界面一切正常、
-        // 用户以为草稿已存，刷新即丢——必须让失败可感知并给出补救动作。
-        console.warn('[draft] 草稿写入失败', e)
-        flash(storageWriteMessage(e, '草稿'))
-      }
-    }, 280)
-  }
-
-  function restoreDraft(): boolean {
-    try {
-      const raw = localStorage.getItem(DRAFT_KEY)
-      if (!raw) return false
-      const d = parsePromptBuilderDraft(JSON.parse(raw))
-      if (!d) return false
-      applyDraft(d)
-      return true
-    } catch { return false }
-  }
-
-  /** Compatibility adapter: read form defaults at the old post-measurement point.
-   * A02.2 will migrate callers to submission snapshots separately. */
+  /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
     const currentSubject = entry.subject === 'popular'
       ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId }
@@ -486,40 +330,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       hiresSteps: sdParams.hiresSteps, hiresDenoise: sdParams.hiresDenoise, faceDetailer: sdParams.faceDetailer,
       project: projectId.value, artistStyleIds: directorMode.value === 'pro' ? artistStyleIds.value : [],
     }
-  }
-
-  async function commitHistoryEntry(entry: GeneratedArtworkInput): Promise<HistoryEntry | null> {
-    const result = await saveGeneratedArtwork(entry, {
-      withStaging: work => withArtworkStaging(async () => {
-        const saved = await work()
-        // Keep page publication inside the existing staging lease, after persistence.
-        if (saved.ok) history.value = saved.history
-        else console.warn('commitHistoryEntry failed', saved.error)
-        return saved
-      }),
-      putImage: imgPut, deleteImage: imgDelete,
-      cacheThumbnail: historyStore.cacheThumbnail, measureBlob: historyStore.measureBlob,
-      now: () => Date.now(), nextId: historyStore.historyIdSeq, resolveLegacyDefaults: resolveLegacyArtworkDefaults,
-      normalizeArtistStyleIds, appendArtwork: artworkRepository.appendArtwork,
-    })
-    return result.ok ? result.entry : null
-  }
-
-  async function removeHistoryEntry(id: string | number) {
-    await historyStore.removeHistoryEntry(id)
-  }
-
-  /** 撤销软删（2026-08-30 UX 审计 P0-8）：整条恢复并重载列表。 */
-  async function restoreHistoryEntry(id: string | number): Promise<boolean> {
-    return await historyStore.restoreHistoryEntry(id)
-  }
-
-  async function loadHistory() {
-    await historyStore.loadHistory()
-  }
-
-  async function loadProjects() {
-    await historyStore.loadProjects()
   }
 
   return {

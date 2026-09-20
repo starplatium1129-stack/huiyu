@@ -39,7 +39,7 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     expect(f.deps.appendArtwork).not.toHaveBeenCalled()
   })
 
-  it('等待测量结束才读取兼容默认值，不等待派生缩略图', async () => {
+  it('异步测量前捕获兼容默认值，不等待派生缩略图', async () => {
     const f = fixture()
     let release!: () => void
     f.deps.cacheThumbnail = vi.fn(() => new Promise<void>(() => {}))
@@ -49,9 +49,23 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     })
     const saving = saveGeneratedArtwork(f.input, f.deps)
     await vi.waitFor(() => expect(f.deps.measureBlob).toHaveBeenCalled())
-    expect(f.deps.resolveLegacyDefaults).not.toHaveBeenCalled()
+    expect(f.deps.resolveLegacyDefaults).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ prompt: f.input.prompt }))
     release()
     expect(await saving).toMatchObject({ ok: true, entry: { width: null, height: null } })
+  })
+
+  it('等待暂存锁期间，显式输入数组与默认值数组均不再跟随表单变化', async () => {
+    const f = fixture(), emotion = ['calm'], tags = ['river'], loras = [{ id:'style', strength:0.5 }]
+    let release!: () => void
+    const wait = new Promise<void>(resolve => { release = resolve })
+    f.deps.withStaging = async work => { await wait; return work() }
+    f.deps.putImage = async () => 'image'
+    f.deps.appendArtwork = async entry => [entry]
+    f.deps.resolveLegacyDefaults = () => ({ ...f.defaults, manual_tags: tags })
+    const saving = saveGeneratedArtwork({ ...f.input, emotion, loras }, f.deps)
+    emotion.push('happy'); tags.push('lake'); loras[0]!.strength = 1
+    release()
+    expect(await saving).toMatchObject({ ok:true, entry:{ emotion:['calm'], manual_tags:['river'], loras:[{ id:'style', strength:0.5 }] } })
   })
 
   it('上下文在首次图片等待前复制，后续修改上下文数组不改变入册事实', async () => {

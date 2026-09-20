@@ -142,7 +142,8 @@ export function usePromptAssembly(
     const charDef = pb.characters.find(character =>
       character.id.includes(pb.char) || (character.lora?.name ?? '').toLowerCase().includes(pb.char),
     )
-    return charDef?.traits ?? []
+    // The catalog also carries popular-character string tags; this panel consumes structured studio traits.
+    return charDef?.traits?.filter(trait => typeof trait !== 'string') ?? []
   })
 
   const loraIdByChar = computed<Record<string, string>>(() => {
