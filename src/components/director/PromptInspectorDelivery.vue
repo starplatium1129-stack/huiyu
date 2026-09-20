@@ -40,11 +40,14 @@
             @remove="sdQueue.remove"
           />
 
+          <details class="inspector-voice">
+          <summary>配音与字幕</summary>
           <VoiceStudio
             ref="voiceStudioRef"
             :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
             :suggested-caption="pb.activeScene?.story || pb.story"
           />
+          </details>
 
           <DeferredPanel :active="batchOpen">
           <BatchSceneDrawPanel

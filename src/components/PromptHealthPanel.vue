@@ -1,7 +1,7 @@
 <template>
-  <details class="monitor advanced-decision prompt-health-panel" id="promptMonitor" :open="open !== false">
+  <details class="monitor advanced-decision prompt-health-panel" :class="{ 'prompt-health-compact': compact }" id="promptMonitor" :open="open !== false">
     <summary class="panel-title prompt-health-summary">
-      <span>Prompt 实时编译 · Live Preview</span>
+      <span>{{ compact ? '提示词与编译' : 'Prompt 实时编译 · Live Preview' }}</span>
       <span v-if="modelName" class="monitor-profile">{{ modelName }}</span>
       <span class="token-counter" :class="report.level">
         <span class="bar"><i :style="{ '--progress': progress + '%' }"></i></span>
@@ -78,6 +78,7 @@ const props = withDefaults(defineProps<{
   artViolations: string[]
   loraText?: string
   open?: boolean
+  compact?: boolean
 }>(), {
   open: true,
 })

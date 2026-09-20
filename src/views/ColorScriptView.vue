@@ -44,7 +44,10 @@
           {{ selected.name }} → 色彩 → 光照
         </h3>
         <div class="palette">
-          <div v-for="c in selected.palette" :key="c" class="palette-swatch" :style="{ '--swatch': c }">{{ c }}</div>
+          <div v-for="c in selected.palette" :key="c" class="palette-swatch">
+            <span class="palette-color" :style="{ '--swatch': c }" aria-hidden="true"></span>
+            <span class="palette-code">{{ c }}</span>
+          </div>
         </div>
         <div class="mapping-grid">
           <div v-for="(val, key) in selected.mapping" :key="key" class="mapping-item">
@@ -189,12 +192,14 @@ function exportTxt() {
 /* 章节间距:替代原先三处内联 style="margin-top:..." */
 .section-title.spaced-lg { margin-top:var(--s-8); }
 .section-title.spaced { margin-top:var(--s-6); }
-.palette { display:flex; gap:var(--s-1); margin-bottom:var(--s-4); }
+.palette { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-4); }
 
 .result-panel { padding:var(--s-5); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-surface); margin-top:var(--s-5); }
 .result-panel h3 { margin-bottom:var(--s-3); font-size:var(--fs-title-sm); }
-/* 色块上的 hex 标签:底色是任意 mood 色,故用固定深墨(--on-mood-text 同理) */
-.palette-swatch { width:48px; height:48px; border-radius:var(--r-md); background:var(--swatch); display:grid; place-items:end center; padding-bottom:4px; font-size:var(--fs-mono-xs); color:var(--on-mood-text); }
+/* 色号使用稳定阅读底色，不受任意深浅的样本色影响。 */
+.palette-swatch { width:76px; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
+.palette-color { display:block; height:48px; background:var(--swatch); }
+.palette-code { display:block; padding:var(--s-2) var(--s-1); text-align:center; color:var(--text-primary); font:500 var(--fs-body-sm)/var(--lh-label) var(--font-mono); }
 .mapping-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
 .mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); }
 .mapping-label { font-size:var(--fs-label-sm); color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:var(--s-1); }

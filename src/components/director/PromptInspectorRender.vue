@@ -1,5 +1,5 @@
 <template>
-<details class="inspector-route" :open="pb.directorMode === 'basic'"><summary>推荐配方与复用</summary>
+<details class="inspector-route"><summary>推荐配方与复用</summary>
 <ManagedDrawingRouteCard v-if="managedRoute"
       class="pb-managed-route-banner"
       :route="managedRoute"

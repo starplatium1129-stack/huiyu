@@ -15,5 +15,9 @@
   background: var(--bg-elevated);
   color: var(--text-primary);
 }
-.pb .auto-save-gallery-label { font-size: var(--fs-label-sm); color: var(--text-primary); }
-.pb .auto-save-gallery-hint { font-size: var(--fs-label-xs); color: var(--text-secondary); }
+.pb .auto-save-gallery-label { font-size: var(--fs-body-sm); color: var(--text-primary); }
+.pb .auto-save-gallery-hint { font-size: var(--fs-body-sm); color: var(--text-secondary); }
+.pb .auto-save-gallery-row { display:grid; grid-template-columns:auto minmax(0,1fr); }
+.pb .auto-save-gallery-hint { grid-column:2; line-height:var(--lh-body); }
+.pb .inspector-voice { border-top:1px solid var(--border-soft); margin-top:var(--s-3); padding-top:var(--s-2); }
+.pb .inspector-voice > summary { padding:var(--s-2) 0; color:var(--text-secondary); font-size:var(--fs-body-sm); cursor:pointer; }

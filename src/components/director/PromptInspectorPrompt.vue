@@ -9,6 +9,7 @@
           :art-violations="artViolationsView"
           :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
           :open="pb.directorMode === 'pro'"
+          :compact="pb.directorMode === 'basic'"
           @copy="copyPrompt"
           @save="saveCurrentResult"
         />
