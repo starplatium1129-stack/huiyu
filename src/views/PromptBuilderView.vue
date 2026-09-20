@@ -1,6 +1,6 @@
 <template>
   <article
-    class="pb journal-workspace"
+    class="pb journal-workspace atelier-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
     :style="currentCharacterThemeStyle"
     :data-subject="pb.subject.kind"
@@ -13,17 +13,9 @@
   >
 
     <DrawingTaskObserver :sd="sd" :anima="animaSession" />
-    <WorkspaceArchiveBar v-if="pb.directorMode !== 'pro' && (pb.isPopular || pb.activeScene)"
-      chapter="01"
-      title="绘遇工作台"
-      :subtitle="pb.isPopular ? popularCharacter?.displayName || '热门角色' : (pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式'))"
-      :status="pb.isPopular ? '角色创作' : (pb.directorMode === 'basic' ? '场景模式' : '专家模式')"
-      :state="pb.isPopular ? 'active' : (pb.directorMode === 'basic' ? 'success' : 'active')"
-      :shape="archiveBarShape"
-    />
-
     <div class="pb-topline">
       <div class="pb-header">
+        <div class="atelier-kicker">HUIYU / CREATIVE STUDIO</div>
         <div class="pb-heading-row">
           <h1 class="pb-title">开始绘制</h1>
           <div class="api-status">
@@ -37,6 +29,7 @@
           </div>
         </div>
         <p class="pb-sub">{{ modeDescription }}</p>
+        <p v-if="pb.isPopular || pb.activeScene" class="atelier-context">{{ pb.isPopular ? popularCharacter?.displayName || '热门角色' : pb.activeScene?.title }}</p>
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
@@ -211,7 +204,6 @@ const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/d
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import GenerationActionBar from '@/components/director/GenerationActionBar.vue'
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
@@ -223,7 +215,6 @@ currentCharacterThemeStyle,
 popularCharacter,
 sd,
 animaSession,
-archiveBarShape,
 modeDescription,
 setDirectorMode,
 engineOnline,

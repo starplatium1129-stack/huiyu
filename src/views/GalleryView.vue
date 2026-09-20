@@ -1,23 +1,24 @@
 <template>
   <article class="gallery-shell gallery-page" ref="shellEl">
-    <ArchivePageHero
-      class="gallery-intro"
-      chapter="06"
-      section="Private archive"
-      shape="frame"
-      label="私人作品档案的画框粒子标记"
-      caption="COLLECTION 06 / 08"
-      compact
-    >
+    <header class="gallery-intro">
       <div>
-        <div class="gallery-kicker">Private collection</div>
+        <div class="gallery-kicker">HUIYU / PRIVATE COLLECTION</div>
         <h1 class="gallery-title">我的作品</h1>
-        <p class="gallery-subtitle">每一次心动，都收在这里。翻看、收藏，或从喜欢的作品继续创作。</p>
+        <p class="gallery-subtitle">收藏每一次心动，让灵感从这里继续。</p>
       </div>
-      <template #meta><div class="gallery-count">{{ countLabel }}</div></template>
-    </ArchivePageHero>
+      <RouterLink class="btn btn-primary gallery-create" to="/prompt-builder">
+        <ArchiveIcon name="spark" />新建创作
+      </RouterLink>
+    </header>
 
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
+      <div class="gallery-browse-controls" role="group" aria-label="浏览作品">
+      <button class="gallery-filter" :class="{ active: !favoriteOnly && !trashMode }" type="button"
+        :aria-pressed="!favoriteOnly && !trashMode" @click="favoriteOnly = false; trashMode && toggleTrashMode()">全部作品</button>
+      <button class="gallery-filter" :class="{ active: favoriteOnly && !trashMode }" type="button" :aria-pressed="favoriteOnly && !trashMode" @click="favoriteOnly = trashMode || !favoriteOnly; trashMode && toggleTrashMode()">
+        <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
+      </button>
+      </div>
       <!--
         展墙搜索（2026-08-30 UX 审计 P1）：攒到几百张之后，「找某一张旧作」是
         最高频也最痛苦的动作，此前只能靠翻。检索范围含场景名、角色、当时写的
@@ -28,9 +29,6 @@
           placeholder="搜场景、角色或关键词…" />
         <button v-if="searchQuery" class="gallery-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''; searchInput?.focus()">×</button>
       </div>
-      <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" :aria-pressed="favoriteOnly" @click="favoriteOnly = !favoriteOnly">
-        <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
-      </button>
       <select v-model="projectFilter" class="gallery-project" aria-label="按项目筛选">
         <option value="">全部项目</option>
         <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.title }}</option>
@@ -39,16 +37,21 @@
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
       -->
-      <button class="gallery-filter" type="button" :class="{ active: selectMode }"
+      <div class="gallery-manage-controls" role="group" aria-label="管理作品">
+      <button v-if="!trashMode" class="gallery-filter" type="button" :class="{ active: selectMode }"
         :aria-pressed="selectMode" @click="toggleSelectMode">
         <ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}
       </button>
       <!-- 回收站（2026-08-31）：查看/恢复软删作品，30 天保留 -->
       <button class="gallery-filter" type="button" :class="{ active: trashMode }"
-        :aria-pressed="trashMode" @click="toggleTrashMode">
+        :aria-pressed="trashMode" @click="selectMode && toggleSelectMode(); toggleTrashMode()">
         <ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}
       </button>
-      <span class="gallery-toolbar-note">{{ selectMode ? '点卡片勾选，再批量移入回收站' : '点作品进入沉浸观画' }}</span>
+      </div>
+    </div>
+    <div class="gallery-summary" aria-live="polite">
+      <span class="gallery-count">{{ trashMode ? `回收站 · ${trashItems.length} 幅作品` : countLabel }}</span>
+      <span class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : selectMode ? '选择作品后，可对比挑选或批量移入回收站' : '点作品欣赏原图，或沿用配方继续创作' }}</span>
     </div>
 
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
@@ -66,7 +69,7 @@
     <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
     <section aria-live="polite" data-reveal data-reveal-delay="1">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
-      <div v-if="trashMode" class="trash-wall">
+      <div v-if="trashMode" class="trash-wall" :style="{ '--wall-cols': columnCount }">
         <div class="trash-toolbar">
           <span class="trash-hint">软删保留 30 天，超期自动清理；点「恢复」放回展墙</span>
           <span class="trash-count" aria-live="polite">{{ trashItems.length }} 条</span>
@@ -222,14 +225,14 @@
                     />
                     <div v-if="!cardUrls[item.id] && !thumbUrls[item.id] && missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
                     <div v-else-if="!cardUrls[item.id] && !thumbUrls[item.id]" class="artwork-skeleton" aria-hidden="true"></div>
-                    <div class="artwork-caption">
-                      <span>
-                        <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
-                        <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
-                      </span>
-                      <span class="artwork-mark"><ArchiveIcon v-if="item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
-                    </div>
                   </div>
+                    <div class="artwork-caption">
+                      <span class="artwork-caption-copy">
+                        <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
+                        <span class="artwork-date">{{ characterName(item.character, item) }} · {{ formatDate(stamp(item)) }}</span>
+                      </span>
+                      <span v-if="item.favorite" class="artwork-mark"><ArchiveIcon name="love" /></span>
+                    </div>
                 </button>
               </article>
             </div>
@@ -350,7 +353,6 @@ const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/
 const gestureViewer = ref(false)
 const searchInput = ref<HTMLInputElement | null>(null)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
-import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'

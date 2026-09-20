@@ -1,6 +1,6 @@
 <template>
   <aside class="director-inspector" aria-label="创作参数">
-    <div v-if="expert" class="inspector-heading"><strong>创作参数</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
+    <div class="inspector-heading"><strong>创作参数</strong><span>{{ busy ? '正在绘制' : '调整这一幕' }}</span></div>
     <div v-if="expert" class="inspector-tabs" role="tablist" aria-label="参数分类" @keydown="onKeydown">
       <button v-for="tab in tabs" :id="`inspector-tab-${tab.id}`" :key="tab.id" type="button" role="tab"
         :aria-selected="active === tab.id" :aria-controls="`inspector-${tab.id}`"

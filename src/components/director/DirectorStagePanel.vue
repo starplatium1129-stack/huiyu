@@ -65,6 +65,7 @@
           </div>
         </div>
         <div v-else class="stage-idle">
+          <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
           <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">
             选好角色，再挑一个场景或写下构思。生成后，把喜欢的这一刻存入作品册。

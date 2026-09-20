@@ -1,16 +1,25 @@
-.gallery-shell { width:min(1880px,100%); margin:0 auto; padding:clamp(24px,4vw,64px) clamp(14px,3vw,48px) var(--s-8); }
-.gallery-intro { margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
-.gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,3.8vw,3.95rem); font-weight:760; letter-spacing:-.045em; line-height:var(--lh-flush); }
+.gallery-shell { width:min(1660px,100%); margin:0 auto; padding:clamp(28px,3vw,44px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
+.gallery-intro { display:flex; align-items:center; justify-content:space-between; gap:var(--s-5); margin:0 auto clamp(24px,2.5vw,32px); }
+.gallery-kicker { margin-bottom:var(--s-3); color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.18em; }
+.gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,3.5vw,3.2rem); font-weight:600; letter-spacing:-.035em; line-height:var(--lh-tight); }
+.gallery-create { flex-shrink:0; gap:var(--s-2); }
 .gallery-subtitle { max-width:660px; margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:var(--lh-loose); }
-.gallery-count { color:var(--text-muted); font:650 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
+.gallery-count { color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-sans); white-space:nowrap; }
 
-.gallery-toolbar { max-width:1500px; margin:0 auto clamp(24px,3vw,38px); display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
+.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-3) 0; border-bottom:1px solid var(--border-soft); }
+.gallery-toolbar.sticky-toolbar { border-width:0 0 1px; border-radius:0; box-shadow:none; background:var(--bg-base); }
+.gallery-toolbar::before { display:none; }
+.gallery-browse-controls,.gallery-manage-controls { display:flex; align-items:center; gap:var(--s-1); flex-wrap:wrap; }
+.gallery-browse-controls { margin-right:auto; }
+.gallery-manage-controls { padding-left:var(--s-2); border-left:1px solid var(--border-soft); }
+.gallery-summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin:var(--s-4) 0 var(--s-5); }
+.gallery-filter :deep(.archive-icon) { width:16px; height:16px; vertical-align:-.2em; margin-right:3px; }
 /* 展墙搜索：占满富余宽度但设下限，窄屏自己换行 */
-.gallery-search-field { position:relative; flex:1 1 220px; min-width:180px; max-width:340px; }
+.gallery-search-field { position:relative; flex:1 1 210px; min-width:160px; max-width:280px; }
 .gallery-search {
-  width:100%; min-height:36px; padding:0 34px 0 var(--s-3);
-  border:1px solid var(--border-soft); border-radius:var(--r-terminal);
-  background:var(--bg-deep); color:var(--text-primary);
+  width:100%; min-height:40px; padding:0 34px 0 var(--s-3);
+  border:1px solid var(--border-soft); border-radius:var(--r-pill);
+  background:var(--bg-surface); color:var(--text-primary);
   font:400 var(--fs-label-sm) var(--font-sans); outline:none;
   -webkit-appearance:none; appearance:none; /* 去掉 WebKit 原生清除钮，避免两个 × */
   transition:border-color var(--motion-hover);
@@ -24,7 +33,7 @@
 .gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
 .gallery-project { min-height:36px; min-width:140px; padding:0 34px 0 13px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; outline:none; }
 .gallery-project:focus { border-color:var(--accent); }
-.gallery-toolbar-note { margin-left:auto; padding-right:var(--s-3); color:var(--text-muted); font-size:var(--fs-mono-sm); white-space:nowrap; }
+.gallery-toolbar-note { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); text-align:right; }
 
 /* 批量操作条（2026-08-30 UX 审计 P1）：只在勾选态出现，避免常态占一行 */
 .gallery-bulkbar { max-width:1500px; margin:0 auto var(--s-3); display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-2) var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-dossier); background:var(--accent-soft); }
@@ -52,9 +61,8 @@
   min-width: 0;
 }
 .gallery-loading-wall { min-height:340px; }
-.artwork { width:100%; position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
-.artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }
-.artwork:hover { border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.artwork { width:100%; position:relative; margin:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); content-visibility:auto; contain-intrinsic-size:auto 340px; transition:transform var(--motion-surface); }
+.artwork:hover { border-color:var(--accent); transform:translateY(-2px); }
 .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:3px; padding:3px; opacity:0; transform:translateY(-4px); pointer-events:none; border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
@@ -77,7 +85,6 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { width:14px; height:14px; vertical-align:-.12em; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
 .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); transition:transform var(--motion-surface); }
-.artwork:hover .artwork-image { transform:scale(1.025); }
 /* HD 层叠在缩略图之上，解码完成后淡入（is-loaded 由 @load 触发），
    消除缩略图→HD 硬切 src 造成的「闪一下变高清」。 */
 .artwork-image-hd { position:absolute; inset:0; opacity:0; animation:none; transition:opacity .28s var(--ease-out); }
@@ -91,41 +98,45 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
   background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%);
   animation:gallerySkeleton 1.3s linear infinite;
 }
-.artwork-caption { position:absolute; inset:auto 0 0; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-3); padding:40px var(--s-3) var(--s-3); color:var(--on-art-primary); background:linear-gradient(transparent,var(--art-scrim)); opacity:0; transform:translateY(8px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); text-align:left; pointer-events:none; }
-.artwork-button:focus-visible .artwork-caption { opacity:1; transform:none; }
+.artwork-caption { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); color:var(--text-primary); background:var(--bg-surface); text-align:left; }
+.artwork-caption-copy { min-width:0; }
 .artwork-name { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-label-sm); font-weight:700; }
-.artwork-date { display:block; margin-top:2px; color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
-.artwork-mark { flex:0 0 auto; font-size:var(--fs-label-sm); }
+.artwork-date { display:block; margin-top:var(--s-1); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-secondary); font-size:var(--fs-label-xs); }
+.artwork-mark { flex:0 0 auto; color:var(--accent); font-size:var(--fs-label-sm); }
 
-.gallery-section { grid-column:1 / -1; display:flex; align-items:center; gap:var(--s-3); margin:var(--s-4) 0 var(--s-3); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+.gallery-section { grid-column:1 / -1; display:flex; align-items:center; gap:var(--s-3); margin:0; color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-sans); letter-spacing:.08em; }
 .gallery-more { grid-column:1 / -1; display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:var(--s-5) 0 0; padding:var(--s-3); color:var(--text-muted); font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
 .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
 
 @media (hover: hover) and (pointer: fine) {
-  .artwork:hover { transform:translateY(-4px); }
+  .artwork:hover { transform:translateY(-2px); }
   .artwork:hover .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
-  .artwork:hover .artwork-caption { opacity:1; transform:none; }
 }
 
-@media (max-width:1200px) {
-  .gallery-columns { grid-template-columns:repeat(3, minmax(0,1fr)); }
-}
-@media (max-width:900px) { .gallery-count { display:none; } }
+/* 列数由容器 ResizeObserver 决定，避免视口断点与实际分列数不一致。 */
+@media (max-width:900px) { .gallery-search-field { max-width:none; } }
 @media (max-width:820px) {
-  .gallery-columns { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
+  .gallery-columns { gap:var(--s-3); }
   .gallery-col { gap:var(--s-3); }
 }
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
-  .artwork { border-radius:var(--r-dossier); }
-  .artwork-caption { opacity:1; transform:none; padding:34px var(--s-2) var(--s-2); }
+  .gallery-intro { align-items:flex-start; flex-wrap:wrap; gap:var(--s-4); }
+  .gallery-kicker { font-size:var(--fs-mono-xs); }
+  .gallery-subtitle { margin-top:var(--s-2); }
+  .gallery-browse-controls { width:100%; }
+  .gallery-search-field { flex-basis:100%; }
+  .gallery-manage-controls { margin-left:auto; padding-left:0; border-left:0; }
+  .gallery-project { min-width:0; max-width:100%; }
+  .gallery-summary { align-items:flex-start; }
+  .gallery-toolbar-note { max-width:65%; }
+  .artwork-caption { padding:var(--s-3); }
   .artwork-name { font-size:var(--fs-mono-sm); }
-  .artwork-date { display:none; }
   .artwork-tools { opacity:0; transform:translateY(-4px); pointer-events:none; }
   .artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
 }
 @media (max-width:480px) {
-  .gallery-columns { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
+  .gallery-columns { gap:var(--s-3); }
   .gallery-col { gap:var(--s-3); }
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
@@ -134,12 +145,13 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 /* 2026-08-22 动效审计 #13：入场去掉 blur 补间（绘制级且随懒加载滚动反复触发），只走 opacity/transform */
 @keyframes galleryImageIn { from { opacity:0; transform:scale(.985); } to { opacity:1; transform:scale(1); } }
 /* ── 回收站（2026-08-31）── */
-.trash-wall { max-width:1500px; margin:0 auto; }
-.trash-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-4); color:var(--text-secondary); }
+.trash-wall { margin:0 auto; display:grid; grid-template-columns:repeat(var(--wall-cols, 4),minmax(0,1fr)); gap:var(--s-4); align-items:start; }
+.trash-wall > :not(.trash-card) { grid-column:1 / -1; }
+.trash-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); color:var(--text-secondary); }
 .trash-hint { font-size:var(--fs-body-sm); }
 .trash-count { font-weight:500; color:var(--text-primary); }
 .trash-card { position:relative; border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; background:var(--bg-surface); }
-.trash-card .artwork-media { height:100%; }
+.trash-card .artwork-media { aspect-ratio:1; }
 .trash-card .artwork-caption { position:static; opacity:1; transform:none; pointer-events:auto; background:none; padding:var(--s-2) var(--s-3) var(--s-3); color:var(--text-primary); }
 .trash-card .artwork-name { display:block; font-size:var(--fs-body-sm); line-height:1.4; }
 .trash-card .artwork-date { display:block; margin-top:2px; font-size:var(--fs-label-xs); color:var(--text-secondary); }

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 for (const theme of ['dark', 'light']) {
-  test(`portrait uses its intrinsic proportions without a frame in ${theme}`, async ({ page }, testInfo) => {
+  test(`portrait preserves the full image with a separate caption in ${theme}`, async ({ page }, testInfo) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.goto('/character?character=yuzuriha_inori')
     const image = page.locator('.portrait-image')
@@ -11,13 +11,13 @@ for (const theme of ['dark', 'light']) {
     await page.locator('.character-hero').evaluate(async el => { await Promise.all(el.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => {}))) })
     const dimensions = await image.evaluate((el: HTMLImageElement) => {
       const rect = el.getBoundingClientRect(), parent = el.parentElement!
-      return { ratio: rect.width / rect.height, natural: el.naturalWidth / el.naturalHeight,
-        gap: parent.clientWidth - rect.width, border: getComputedStyle(parent).borderTopWidth, bottom: rect.bottom }
+      return { fit: getComputedStyle(el).objectFit, gap: parent.clientWidth - rect.width,
+        captionTop: parent.querySelector('.portrait-footer')!.getBoundingClientRect().top, bottom: rect.bottom }
     })
-    expect(dimensions.ratio).toBeCloseTo(dimensions.natural, 2)
+    expect(dimensions.fit).toBe('contain')
     expect(Math.abs(dimensions.gap)).toBeLessThan(2)
-    expect(dimensions.border).toBe('0px')
-    expect(dimensions.bottom).toBeLessThan(page.viewportSize()!.height)
+    expect(dimensions.captionTop).toBeGreaterThanOrEqual(dimensions.bottom - 1)
+    await expect(page.locator('.portrait-source')).toBeVisible()
     await page.screenshot({ path: testInfo.outputPath('portrait-' + theme + '.png') })
   })
 

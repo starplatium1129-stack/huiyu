@@ -1,6 +1,6 @@
 <template>
-  <article class="page character-page library-page" style="--page-max:1500px">
-    <header class="library-header"><div><div class="page-kicker">CHARACTER LIBRARY / 角色资料库</div><h1>角色档案</h1><p>从左侧查找角色，在这里查看形象、设定与创作参考。</p></div><RouterLink to="/popular-scenes" class="btn btn-ghost">浏览角色场景</RouterLink></header>
+  <article class="page character-page library-page character-editorial" style="--page-max:1600px">
+    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>认识她的故事，从一个心动的瞬间开始创作。</p></div><RouterLink to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -26,7 +26,6 @@
       <div class="library-layout">
         <CharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail">
-          <CharacterAssetSummary v-if="current" :character-id="current.id" />
       <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
           <img v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
@@ -39,13 +38,14 @@
             <strong class="portrait-missing-title">{{ portraitView.reason === 'empty' ? '立绘未登记' : '立绘缺失' }}</strong>
             <span class="portrait-missing-text">{{ portraitMissingText }}</span>
           </div>
-          <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> {{ isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
           <div class="portrait-footer">
+            <span class="portrait-badge"><ArchiveIcon name="image" /> {{ isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
             <span v-if="showFallbackNote" class="portrait-fallback-note">原图无法读取，已显示现有缩略图</span>
             <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
           </div>
         </div>
-        <div>
+        <div class="character-profile">
+          <div class="profile-kicker">人物档案</div>
           <h2 class="character-name">{{ current.name }}</h2>
           <div v-if="hasIdentity" class="identity-row">
             <span v-if="current.identity?.role" class="item role">{{ current.identity.role }}</span>
@@ -54,50 +54,52 @@
             <span v-if="current.identity?.faction" class="item">{{ current.identity.faction }}</span>
           </div>
           <div v-if="current.alias?.length" class="character-alias">{{ current.alias.join(' / ') }}</div>
+          <div class="character-actions" aria-label="角色快捷操作">
+            <RouterLink class="btn btn-primary" :to="isPopular
+              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
+              : `/prompt-builder?char=${encodeURIComponent(current.id)}`"><ArchiveIcon name="spark" />以她开始绘制</RouterLink>
+            <RouterLink v-if="!isPopular" class="btn btn-ghost" :to="`/chat?character=${encodeURIComponent(current.id)}`">进入她的房间</RouterLink>
+            <RouterLink class="btn btn-ghost" :to="isPopular
+              ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
+              : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '浏览相关场景' : '查看核心场景' }}</RouterLink>
+          </div>
           <div v-if="current.voice" class="voice-block">
             <span class="voice-label">语气示例</span>{{ current.voice }}
           </div>
           <div class="tags-grid">
             <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="tagClass(i)">{{ t }}</span>
           </div>
-          <div class="character-actions" aria-label="角色快捷操作">
-            <RouterLink v-if="!isPopular" class="btn btn-primary" :to="`/chat?character=${encodeURIComponent(current.id)}`">进入她的房间</RouterLink>
-            <RouterLink class="btn btn-primary" :to="isPopular
-              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
-              : `/prompt-builder?char=${encodeURIComponent(current.id)}`">以她开始绘制</RouterLink>
-            <RouterLink class="btn btn-ghost" :to="isPopular
-              ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
-              : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '浏览相关场景' : '查看核心场景' }}</RouterLink>
-          </div>
-          <!-- 简介被 CSS 截断（max-height），展开是真的在露出内容，
-           所以必须是可聚焦控件并汇报 aria-expanded；原先只有 @click -->
-      <button
-        v-if="current.bg_story"
-        type="button"
-        class="bg-story"
-        :class="{ expanded: bgExpanded }"
-        :aria-expanded="bgExpanded"
-        @click="bgExpanded=!bgExpanded"
-      >{{ current.bg_story }}</button>
+          <section v-if="current.bg_story" class="character-story" aria-label="角色故事">
+            <h3 class="lab">角色故事</h3>
+            <p id="character-background" class="profile-story" :class="{ expanded: bgExpanded }">{{ current.bg_story }}</p>
+            <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}</button>
+          </section>
           <div class="detail-grid">
             <section class="detail-section"><div class="lab">性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div></section>
             <section class="detail-section"><div class="lab">喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div></section>
-            <section v-if="current.lora" class="detail-section wide">
-              <div class="lab">绑定 LoRA</div>
-              <div v-if="current.lora.name" class="char-lora">档案登记：<code>{{ current.lora.name }}</code></div>
-              <div v-if="current.lora.trigger_words?.length" class="char-lora">触发词：<code>{{ current.lora.trigger_words.join(', ') }}</code></div>
-              <div v-else class="char-lora">当前模型与触发词请在绘图工作台查看。</div>
-            </section>
           </div>
         </div>
       </section>
 
+      <details v-if="current" :key="current.id" class="character-production">
+        <summary><span><ArchiveIcon name="image" />素材与模型</span><span class="production-hint">参考图可用状态 · LoRA 与触发词</span></summary>
+        <div class="production-content">
+          <CharacterAssetSummary :character-id="current.id" />
+          <section v-if="current.lora" class="detail-section">
+            <h3 class="lab">绑定 LoRA</h3>
+            <div v-if="current.lora.name" class="char-lora">档案登记：<code>{{ current.lora.name }}</code></div>
+            <div v-if="current.lora.trigger_words?.length" class="char-lora">触发词：<code>{{ current.lora.trigger_words.join(', ') }}</code></div>
+            <div v-else class="char-lora">当前模型与触发词请在绘图工作台查看。</div>
+          </section>
+        </div>
+      </details>
+
       <section v-if="characterReferences" class="char-reference-section card-direct card-level-2" data-reveal data-reveal-delay="1.5">
         <div class="recommend-head">
           <div>
-            <div class="page-kicker">Cinematic Bible</div>
-            <h2 class="recommend-title">短剧 4 视角标准参考基准</h2>
-            <p>基于 Anima 真实渲染锁定的影视级基准参考库（锁死五官、发型、服装与身材比例，跨镜一致性核心保障）。</p>
+            <div class="page-kicker">VISUAL REFERENCES</div>
+            <h2 class="recommend-title">服装与四视角参考</h2>
+            <p>选择服装，查看不同视角下的形象细节，再带入分镜创作。</p>
           </div>
           <RouterLink class="btn btn-primary btn-sm" :to="`/video-studio?mode=shots&character=${encodeURIComponent(current?.id || '')}&outfit=${encodeURIComponent(activeOutfit?.outfitId || '')}`">
             去分镜短片创作 ↗
@@ -153,7 +155,7 @@
             <div class="char-ref-info">
               <h3 class="char-ref-title">{{ refItem.name }}</h3>
               <p class="char-ref-lens"><code>{{ refItem.lens }}</code></p>
-              <p class="char-ref-desc">锁死 {{ current?.name }} · {{ activeOutfit.outfitName }} 的{{ refItem.name }}特征。</p>
+              <p class="char-ref-desc">{{ current?.name }} · {{ activeOutfit.outfitName }}</p>
               <div class="char-ref-usages">
                 <span v-for="usage in refItem.targetUsage" :key="usage" class="char-ref-tag">{{ usage }}</span>
               </div>
@@ -459,3 +461,4 @@ onMounted(() => {
 </script>
 
 <style scoped src="@/assets/css/character-view.css"></style>
+<style scoped src="@/assets/css/character-editorial.css"></style>
