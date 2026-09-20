@@ -6,7 +6,7 @@ async function openAppearance(page: Page) {
   await expect(page.locator('.nav')).toBeVisible()
   const menu = page.locator('.nav-menu-toggle')
   if (await menu.isVisible() && await menu.getAttribute('aria-expanded') !== 'true') await menu.click()
-  await page.locator('.nav-more > summary').click()
+  await page.locator('.nav-more-trigger').click()
   await page.getByRole('button', { name: '外观与动态效果', exact: true }).click()
   const dialog = page.getByRole('dialog', { name: '外观与动态效果' })
   await expect(dialog.getByRole('radio', { name: /轻盈玻璃/ })).toBeVisible()

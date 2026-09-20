@@ -1,5 +1,5 @@
 <template>
-  <div ref="trigger" class="random-inspiration" :class="{ open: menuOpen }">
+  <div class="random-inspiration" :class="{ open: menuOpen }">
     <button
       class="random-dice"
       type="button"
@@ -10,18 +10,12 @@
       <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
       <span>夏目的灵感骰子</span>
     </button>
-    <button
-      class="random-menu-trigger"
-      type="button"
-      :disabled="disabled"
-      aria-label="夏目的调色笔记"
-      :aria-expanded="menuOpen"
-      @click="menuOpen = !menuOpen"
-    >
-      <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
-    </button>
-    <Teleport to="body"><FluidTransition>
-      <div v-if="menuOpen" ref="popover" class="random-popover" :style="popoverStyle" role="dialog" aria-label="夏目的调色笔记">
+    <StudioPopover v-model:open="menuOpen" label="夏目的调色笔记" content-class="random-popover">
+      <template #trigger>
+        <button class="random-menu-trigger" type="button" :disabled="disabled" aria-label="夏目的调色笔记">
+          <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
+        </button>
+      </template>
         <div class="random-label">夏目的调色笔记 <button type="button" class="btn btn-ghost btn-icon" aria-label="关闭调色笔记" @click="menuOpen = false"><ArchiveIcon name="close" /></button></div>
         <label class="random-toggle">
           <input v-model="includeArtists" type="checkbox" />
@@ -41,35 +35,22 @@
         <button class="random-undo" type="button" :disabled="!canUndo" @click="onUndo">
           夏目：“退回刚才那一抽”
         </button>
-      </div>
-    </FluidTransition></Teleport>
+    </StudioPopover>
   </div>
 </template>
 
 <script setup lang="ts">
-import FluidTransition from "@/components/visual/FluidTransition.vue"
+import StudioPopover from '@/components/ui/StudioPopover.vue'
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useRandomInspiration } from '@/composables/useRandomInspiration'
-import { useFocusTrap } from '@/composables/useFocusTrap'
-import { onClickOutside, useElementBounding, useWindowSize } from '@vueuse/core'
 
 const pb = usePromptBuilderStore()
 const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration()
 
 const menuOpen = ref(false)
-const popover = ref<HTMLElement | null>(null)
-const trigger = ref<HTMLElement | null>(null)
-const { bottom, right } = useElementBounding(trigger)
-const { width: viewportWidth, height: viewportHeight } = useWindowSize()
-const popoverStyle = computed(() => ({
-  '--random-top': `${Math.min(Math.max(88, bottom.value + 8), Math.max(88, viewportHeight.value - 240))}px`,
-  '--random-right': `${Math.max(16, viewportWidth.value - right.value)}px`,
-}))
 const seedText = ref('')
-useFocusTrap(popover, () => menuOpen.value, { onEscape: () => { menuOpen.value = false } })
-onClickOutside(popover, () => { menuOpen.value = false }, { ignore: [trigger] })
 function previewCandidates() { prepareCandidates(3, seedText.value.trim() ? Number(seedText.value) : undefined) }
 const disabled = computed(() => !pb.dataReady)
 const canUndo = computed(() => Boolean(hasUndo.value))
@@ -159,50 +140,22 @@ function onUndo() {
   font-size: var(--fs-body);
   line-height: var(--lh-flush);
 }
-.random-popover {
-  position: fixed;
-  z-index: var(--z-popover);
-  top: var(--random-top);
-  right: var(--random-right);
-  width: min(280px, calc(100vw - 32px));
-  padding: var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-2xl);
-  background: var(--bg-elevated);
-  box-shadow: var(--shadow-lg);
-  transform-origin: top right;
-  max-height: min(560px, calc(100dvh - var(--random-top) - 24px));
-  overflow-y: auto;
-}
 .random-seed { display: grid; gap: var(--s-1); color: var(--text-secondary); font-size: var(--fs-label-sm); margin-block: var(--s-2); }
 .random-seed input { min-width: 0; padding: var(--s-2); color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); }
 .random-choice { width: 100%; min-height: 36px; margin-top: var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-deep); cursor: pointer; }
 .random-candidate { padding-block: var(--s-2); border-bottom: 1px solid var(--border-soft); color: var(--text-secondary); font-size: var(--fs-label-sm); }
 .random-candidate p { overflow-wrap: anywhere; margin: var(--s-1) 0; }
-.popover-pop-enter-active {
-  transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
-}
-.popover-pop-leave-active {
-  transition: opacity 120ms ease-out, transform 120ms ease-out;
-}
-.popover-pop-enter-from,
-.popover-pop-leave-to {
-  opacity: 0;
-  transform: translateY(-6px) scale(0.96);
-}
 .random-label {
   position: sticky;
   top: 0;
   z-index: 1;
-  background: var(--bg-elevated);
+  background: var(--bg-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 2px 4px 8px;
-  color: var(--text-muted);
-  font: 700 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  color: var(--text-primary);
+  font: 600 var(--fs-body)/var(--lh-body) var(--font-sans);
 }
 .random-toggle {
   display: grid;

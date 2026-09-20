@@ -57,12 +57,12 @@ async function open(value: 'appearance' | 'keyboard') {
   section.value = value
   if (value === 'appearance') materialControlsReady.value = true
   await nextTick()
-  const summary = document.querySelector<HTMLElement>('.nav-more > summary')
+  const summary = document.querySelector<HTMLElement>('.nav-more-trigger')
   const origin = usableFocus(trigger) ? trigger : usableFocus(summary) ? summary : document.querySelector<HTMLElement>('.nav-menu-toggle')
   fluidDialog.open(origin)
 }
 function restoreFocus() {
-  const fallback = document.querySelector<HTMLElement>('.nav-more > summary')
+  const fallback = document.querySelector<HTMLElement>('.nav-more-trigger')
   ;(usableFocus(trigger) ? trigger : usableFocus(fallback) ? fallback : document.querySelector<HTMLElement>('.nav-menu-toggle'))?.focus()
 }
 function backdropClose(event: MouseEvent) {

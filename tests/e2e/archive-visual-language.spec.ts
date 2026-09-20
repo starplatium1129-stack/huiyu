@@ -21,7 +21,7 @@ test('browsing pages expose one concise heading without decorative particles', a
 test('archive content reveals and route changes leave one active page', async ({ page }) => {
   await page.goto('/style')
   await expect(page.locator('.mood-grid[data-reveal]')).toHaveClass(/revealed/)
-  await page.locator('.nav-more summary').click()
+  await page.locator('.nav-more-trigger').click()
   await page.getByRole('navigation').getByRole('link', { name: '我的作品', exact: true }).click()
   await expect(page).toHaveURL(/\/gallery$/)
   await expect(page.locator('.archive-page-hero')).toHaveCount(1)

@@ -18,7 +18,7 @@ test('failed lazy navigation preserves the current page and offers a retry', asy
   await expect(page.locator('main h1')).toContainText('画风')
   const scenarioChunk = /\/\_app\/ScenarioView-[^/]+\.js$/
   await page.route(scenarioChunk, route => route.abort())
-  const more = page.locator('nav.nav .nav-more > summary')
+  const more = page.locator('nav.nav .nav-more-trigger')
   await more.click()
   await page.getByRole('link', { name: '剧本与分幕', exact: true }).click()
   await expect(page.locator('.route-recovery')).toBeVisible()
@@ -121,7 +121,7 @@ test('keep-alive workbench reuses the same active surface after a route round tr
   await page.locator('.pb').evaluate(element => element.setAttribute('data-f2-keepalive-probe', 'hit'))
 
   const nav = page.getByRole('navigation', { name: '主导航' })
-  await nav.locator('.nav-more > summary').click()
+  await nav.locator('.nav-more-trigger').click()
   await nav.getByRole('link', { name: '我的作品', exact: true }).click()
   await expect(page).toHaveURL(/gallery$/)
   await nav.getByRole('link', { name: '绘制', exact: true }).click()

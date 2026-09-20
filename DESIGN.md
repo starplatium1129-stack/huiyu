@@ -293,6 +293,27 @@ Page styles control placement and wrapping without replacing this shape with
 square corners. Borderless reading regions and full-screen viewers may remain
 flush. Narrow browse controls provide a 44px minimum touch height.
 
+## Vue interaction components
+
+Reusable interaction primitives live in `src/components/ui/` and use Reka UI.
+`StudioCombobox` provides searchable single selection; `StudioPopover` provides
+non-modal anchored content with collision handling and focus restoration.
+`StudioTabs` owns keyboard selection and a shared segmented appearance while
+keeping previously opened panels mounted. Views retain their deferred-loading
+boundaries. Data tools use `StudioPopover`, with file inputs kept outside the
+transient surface and an explicit focus handoff to the restore dialog.
+The secondary navigation also uses `StudioPopover`, loading `AppMoreMenu` only
+on first use. Keep destinations as actual links, and preserve route/settings
+focus handoffs when the menu closes. A failed menu download must leave primary
+navigation usable and explain how to recover by refreshing; never automatically
+reload a workspace that could have an active generation task.
+Business views supply values and content; the wrappers own theme styling and
+keyboard behavior. Keep simple native selects for short lists. Do not add a
+second focus trap or manual viewport positioning around these primitives.
+Existing modal dialogs keep their current focus stack until migrated and tested
+as a complete flow; portalled content inside legacy trapped dialogs needs an
+explicit integration check.
+
 ## Anime Visual Language
 
 The identity comes from authored character artwork, emotional scene choices,

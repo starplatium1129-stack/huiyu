@@ -6,7 +6,7 @@ const appearanceKey = 'atelier-desktop-appearance-v1'
 async function openAppearance(page: Page) {
   const toggle = page.locator('.nav-menu-toggle')
   if (await toggle.isVisible() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click()
-  await page.locator('.nav-more > summary').click()
+  await page.locator('.nav-more-trigger').click()
   await page.getByRole('button', { name: '外观与动态效果', exact: true }).click()
   const dialog = page.getByRole('dialog', { name: '外观与动态效果', exact: true })
   await expect(dialog).toBeVisible()
@@ -91,6 +91,8 @@ for (const theme of ['dark', 'light'] as const) {
       ],
     })
     await setMedia(true)
+    // Test restoration of an explicit glass choice; the lightweight default has no backdrop blur.
+    await page.addInitScript(({ key, theme }) => localStorage.setItem(key, JSON.stringify({ theme, reducedGlass:false, glass:'liquid' })), { key:appearanceKey, theme })
     await page.goto('/gallery')
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
     const dialog = await openAppearance(page)
@@ -123,7 +125,7 @@ for (const theme of ['dark', 'light'] as const) {
     expect(await savedGlass()).toBe(true)
     await page.keyboard.press('Escape')
     await expect(dialog).toBeHidden()
-    await expect(page.locator('.nav-more > summary')).toBeFocused()
+    await expect(page.locator('.nav-more-trigger')).toBeFocused()
     await media.detach()
   })
 }

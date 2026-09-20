@@ -38,10 +38,10 @@ for (const width of [1440, 768, 390]) {
     await openAtelier(page)
     const toggle = page.getByRole('button', { name: '打开导航菜单' })
     if (await toggle.isVisible()) await toggle.click()
-    await page.locator('.nav-more summary').click()
+    await page.locator('.nav-more-trigger').click()
     await page.locator('.nav-more-menu').getByRole('link', { name: '角色档案' }).click()
     await expect(page).toHaveURL(/character$/)
-    await expect(page.locator('.nav-more')).not.toHaveAttribute('open', '')
+    await expect(page.locator('.nav-more-trigger')).toHaveAttribute('aria-expanded', 'false')
     await expect(page.locator('.nav-more')).toHaveAttribute('data-active', 'true')
   })
   test('main screens fit at ' + width, async ({ page }) => {
@@ -113,7 +113,7 @@ test('selection motion settles on the final choice after rapid changes', async (
 
 test('welcome guide is optional and keyboard dismissible', async ({ page }) => {
   await openAtelier(page)
-  await page.locator('.nav-more summary').click()
+  await page.locator('.nav-more-trigger').click()
   await page.getByRole('button', { name: '初次来访 · 使用指南' }).click()
   const dialog = page.getByRole('dialog', { name: '访客导览' })
   await expect(dialog).toBeVisible()

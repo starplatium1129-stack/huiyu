@@ -32,7 +32,7 @@ for (const theme of ['light', 'dark']) {
   test(`appearance preferences stop active motion and survive reload ${theme}`, async ({ page }) => {
     await page.addInitScript(t => localStorage.setItem('aics_theme', t), theme)
     await page.goto('/scene-explorer')
-    await page.locator('.nav-more summary').click()
+    await page.locator('.nav-more-trigger').click()
     await page.getByRole('button', { name: '外观与动态效果', exact: true }).click()
     const dialog = page.getByRole('dialog', { name: '外观与动态效果' })
     await dialog.getByRole('combobox', { name: '动态效果', exact: true }).selectOption('reduce')

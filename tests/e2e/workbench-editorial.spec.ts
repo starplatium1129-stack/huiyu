@@ -12,6 +12,8 @@ async function prepare(page: Page, theme: string, online = false) {
     localStorage.setItem('aics_theme', theme)
     localStorage.setItem('aics_pb_director_mode', 'basic')
     localStorage.setItem('aics_draw_engine', 'sd')
+    // Algebraic contrast checks require an opaque surface; glass is reviewed visually.
+    localStorage.setItem('atelier-desktop-appearance-v1', JSON.stringify({ theme, reducedGlass:true }))
   }, theme)
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/prompt-builder?scene=sc001')

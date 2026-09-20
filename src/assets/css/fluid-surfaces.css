@@ -31,9 +31,9 @@
   box-shadow: var(--shadow-glass-elevated);
 }
 .nav-more-group-label { font: 600 var(--fs-label-sm) var(--font-sans); letter-spacing: normal; }
-.nav-links > a:active, .nav-more summary:active { transform: scale(.97); }
+.nav-links > a:active, .nav-more-trigger:active { transform: scale(.97); }
 @media (prefers-reduced-motion: reduce) {
-  .nav-links > a:active, .nav-more summary:active { transform: none; }
+  .nav-links > a:active, .nav-more-trigger:active { transform: none; }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .nav, .nav-links, .nav-more-menu { background: var(--bg-surface); backdrop-filter: none; }

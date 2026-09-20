@@ -219,7 +219,7 @@ test('repeated navigation keeps a visible route view mounted', async ({ page }) 
     { label: '参考画册', url: /\/showcase$/, heading: '把心动，一页页收藏。' },
     { label: '我的作品', url: /\/gallery$/, heading: '我的作品' },
   ]) {
-    if (destination.label === '我的作品') await page.locator('.nav-more summary').click()
+    if (destination.label === '我的作品') await page.locator('.nav-more-trigger').click()
     await page.getByRole('navigation').getByRole('link', { name: destination.label, exact: true }).click()
     await expect(page).toHaveURL(destination.url)
     await expect(page.locator('#main')).toContainText(destination.heading)
@@ -513,7 +513,7 @@ test('global task center retains a batch while visiting the gallery and control 
   await expect(batch.locator('.batch-progress-head')).toContainText('正在逐张出图')
   await batch.getByRole('button', { name: '关闭', exact: true }).click()
   await expect(page.getByRole('link', { name: '房间', exact: true })).toHaveAttribute('target', '_blank')
-  await page.locator('.nav-more summary').click()
+  await page.locator('.nav-more-trigger').click()
   await page.getByRole('link', { name: '我的作品', exact: true }).click()
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
   await page.locator('.task-center-button:visible').click()
@@ -521,7 +521,7 @@ test('global task center retains a batch while visiting the gallery and control 
   await expect(center.locator('.task-card[data-state="running"]')).toHaveCount(1)
   await center.screenshot({ path: '.review-shots/task-center-running.png' })
   await center.getByRole('button', { name: '关闭任务中心' }).click()
-  await page.locator('.nav-more summary').click()
+  await page.locator('.nav-more-trigger').click()
   await page.getByRole('link', { name: '控制面板', exact: true }).click()
   await expect(page.locator('.control-page')).toBeVisible()
   await page.locator('.task-center-button:visible').click()

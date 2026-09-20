@@ -382,14 +382,14 @@
   @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }
   @media (max-width:768px) {
     .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome { -webkit-backdrop-filter:blur(16px) saturate(145%); backdrop-filter:blur(16px) saturate(145%); }
-    .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
+    .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
     .pb .stage-chrome { left:12px; right:12px; top:12px; }
   }
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner { background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card, .pb-managed-route-banner { background:var(--bg-surface); }
   }
 @media (prefers-reduced-transparency: reduce) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
 }
 
 /* Hover 位移只属于精确指针；触屏保留颜色/边框反馈，不粘住卡片位置。 */

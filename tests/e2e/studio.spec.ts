@@ -348,11 +348,14 @@ test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ 
   expect(boxes!.artRight).toBeLessThanOrEqual(boxes!.copyLeft + 2);
 
   await page.getByRole('button', { name: '关闭大图' }).click();
+  await expect(page.locator('.showcase-viewer')).not.toHaveAttribute('open', '');
+  await expect(page.locator('.sample .sample-visual').first()).toBeFocused();
   await page.locator('#showcaseTypeSelect').selectOption('popular');
-  await page.locator('#showcaseCharSelect').selectOption('popular-test');
+  await page.getByRole('combobox', { name:'筛选角色', exact:true }).fill('测试角色');
+  await page.getByRole('option', { name:'测试角色', exact:true }).click();
   await expect(page.locator('.sample')).toHaveCount(1);
   await page.locator('#showcaseTypeSelect').selectOption('scene');
-  await expect(page.locator('#showcaseCharSelect')).toHaveValue('all');
+  await expect(page.locator('#showcaseCharSelect')).toHaveValue('全部角色');
   await expect(page.locator('.sample')).toHaveCount(1);
 
   expect(errors).toEqual([]);

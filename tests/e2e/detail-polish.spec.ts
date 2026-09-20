@@ -68,7 +68,7 @@ for (const theme of ['dark', 'light']) {
     const toggle = page.locator('.nav-menu-toggle')
     await toggle.click()
     await expect(page.locator('.nav-links > a').first()).toBeFocused()
-    const more = page.locator('.nav-more summary')
+    const more = page.locator('.nav-more-trigger')
     await more.click()
     await page.getByRole('link', { name: '我的作品', exact: true }).focus()
     await page.keyboard.press('Escape')

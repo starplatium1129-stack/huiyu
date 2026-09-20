@@ -115,7 +115,7 @@ export function installDesktopInteraction(router: Router) {
       const navigation = nav()
       if (!navigation || !main()) return
       event.preventDefault()
-      if (navigation.contains(document.activeElement)) contentFocus()
+      if (navigation.contains(document.activeElement) || document.activeElement?.closest('.nav-more-menu')) contentFocus()
       else {
         const active = navigation.querySelector<HTMLElement>('[aria-current]')
         const toggle = navigation.querySelector<HTMLElement>('.nav-menu-toggle')
@@ -123,7 +123,7 @@ export function installDesktopInteraction(router: Router) {
         ;(usableFocus(active) ? active : usableFocus(toggle) ? toggle : brand)?.focus()
       }
     }
-    if (event.key === 'Enter' && !event.ctrlKey && !event.shiftKey && event.target instanceof Element && event.target.closest('nav a[href]')) keyboardNavigation = true
+    if (event.key === 'Enter' && !event.ctrlKey && !event.shiftKey && event.target instanceof Element && event.target.closest('nav a[href], .nav-more-menu a[href]')) keyboardNavigation = true
   }
   function pointerdown() { keyboardNavigation = false }
   const removeAfter = router.afterEach(async (_to, _from, failure) => {

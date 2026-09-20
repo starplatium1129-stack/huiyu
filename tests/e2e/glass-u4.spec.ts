@@ -12,7 +12,7 @@ async function openAppearance(page: Page) {
   await expect(page.locator('.nav')).toBeVisible()
   const toggle = page.locator('.nav-menu-toggle')
   if (await toggle.isVisible() && await toggle.getAttribute('aria-expanded') !== 'true') await toggle.click()
-  await page.locator('.nav-more > summary').click()
+  await page.locator('.nav-more-trigger').click()
   await page.getByRole('button', { name: '外观与动态效果', exact: true }).click()
   await expect(page.locator('.appearance-dialog')).toBeVisible()
   await expect(page.locator('.appearance-dialog')).toHaveCSS('opacity', '1')
@@ -95,7 +95,7 @@ for (const theme of ['dark', 'light'] as const) {
         await page.goto(route)
         await expectSolid(page.locator('.nav'))
         await expectSolid(page.locator(selector))
-        expect(await page.locator('.nav-more > summary').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+        expect(await page.locator('.nav-more-trigger').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
       }
       await page.reload()
       await expectSolid(page.locator('.gen-bar'))
@@ -154,7 +154,7 @@ for (const theme of ['dark', 'light'] as const) {
           if (cycle === 0) await page.screenshot({ path: info.outputPath(`dialog-${theme}-${width}.png`) })
           await page.keyboard.press('Escape')
           await expect(dialog).not.toBeVisible()
-          await expect(page.locator(width === 390 ? '.nav-menu-toggle' : '.nav-more > summary')).toBeFocused()
+          await expect(page.locator(width === 390 ? '.nav-menu-toggle' : '.nav-more-trigger')).toBeFocused()
         }
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
         await expect(page.locator('html')).toBeVisible()

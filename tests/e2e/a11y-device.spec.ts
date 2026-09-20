@@ -103,7 +103,7 @@ test('primary navigation is reachable and marks the active route', async ({ page
   }
 
   // 限定在顶栏：首页正文里也有指向 /showcase 的入口卡
-  await page.locator('.nav-more > summary').click();
+  await page.locator('.nav-more-trigger').click();
   await page.locator('.nav-links a[href="/showcase"]').click();
   await expect(page).toHaveURL(/\/showcase/);
   await expect(page.locator('.nav-links a[href="/showcase"]')).toHaveAttribute('aria-current', 'page');

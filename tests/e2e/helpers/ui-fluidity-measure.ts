@@ -34,17 +34,17 @@ async function events(page: Page): Promise<UiFluidityEvent[]> {
 
 async function openMoreIfNeeded(page: Page, link: Locator): Promise<void> {
   if (await link.isVisible()) return
-  const summary = page.locator('nav.nav .nav-more > summary')
+  const summary = page.locator('nav.nav .nav-more-trigger')
   if (!(await summary.isVisible())) throw new Error('navigation archive summary is not visible')
-  const open = await summary.evaluate(element => element.parentElement?.hasAttribute('open') === true)
+  const open = await summary.getAttribute('aria-expanded') === 'true'
   if (!open) await summary.click()
   await expect(link).toBeVisible()
 }
 
 export async function clickNavPath(page: Page, path: string): Promise<void> {
-  const link = page.locator(`nav.nav a[href="${path}"]`).first()
-  await expect(link).toHaveCount(1)
+  const link = page.locator(`:is(nav.nav, .nav-more-menu) a[href="${path}"]`).first()
   await openMoreIfNeeded(page, link)
+  await expect(link).toHaveCount(1)
   const target = page.waitForURL(url => {
     const parsed = new URL(url.toString())
     return `${parsed.pathname}${parsed.search}${parsed.hash}` === path
@@ -246,4 +246,3 @@ export async function createCdpMetricWindow(page: Page): Promise<{ stop: () => P
     },
   }
 }
-

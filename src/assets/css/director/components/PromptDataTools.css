@@ -12,7 +12,7 @@
    .pb-backup-summary strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-primary); font-size:var(--fs-label); }
    .pb-backup-summary span { color:var(--text-muted); font-size:var(--fs-label-xs); }
    .pb-backup-actions { display:flex; justify-content:flex-end; gap:var(--s-2); flex-wrap:wrap; }
-  .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner {
+  .pb-backup-card, .pb-managed-route-banner {
     background:
       linear-gradient(125deg,var(--glass-specular),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 9%,transparent)),
       var(--glass-fill-strong);

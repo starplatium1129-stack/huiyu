@@ -1,14 +1,16 @@
 <template>
-  <details ref="utilityEl" class="utility-menu">
-    <summary
+  <div class="utility-menu">
+  <StudioPopover v-model:open="utilityOpen" label="数据工具" content-class="studio-data-tools"
+    @close-auto-focus="onMenuCloseAutoFocus">
+    <template #trigger><button type="button" @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
       class="utility-trigger"
       :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
       :title="backupStale ? `数据工具（${backupReminder}）` : '数据工具与蓝图'"
     >
       <span class="utility-trigger-dots" aria-hidden="true">···</span>
       <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
-    </summary>
-    <div class="utility-popover">
+    </button></template>
+    <div class="utility-heading">数据工具<button type="button" class="btn btn-ghost btn-icon" aria-label="关闭数据工具" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
       <div v-if="backupStale" class="utility-note" role="status">
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
@@ -29,7 +31,6 @@
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
           <ArchiveIcon name="upload" /> 从备份恢复
         </button>
-        <input ref="backupFileEl" class="sr-only pb-backup-file-input" type="file" accept="application/json" @change="onBackupFilePicked" />
       </div>
       <div class="utility-divider"></div>
       <div class="utility-label">创作蓝图</div>
@@ -42,16 +43,18 @@
           title="从蓝图配置文件导入并回填工作台设置">
           <ArchiveIcon name="upload" /> 导入蓝图配置
         </button>
-        <input ref="blueprintFileEl" class="sr-only pb-blueprint-file-input" type="file" accept="application/json" @change="onBlueprintFilePicked" />
       </div>
       <div class="utility-divider"></div>
       <div class="utility-label">存储维护</div>
       <div class="utility-actions">
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.cleanOrphanImages()"><ArchiveIcon name="broom" /> 清理未引用图片</button>
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="cleanOrphanImages"><ArchiveIcon name="broom" /> 清理未引用图片</button>
       </div>
-    </div>
-  </details>
+  </StudioPopover>
+  </div>
+  <!-- File pickers stay mounted when the anchored panel closes during native selection. -->
+  <input ref="backupFileEl" class="sr-only pb-backup-file-input" type="file" accept="application/json" tabindex="-1" @change="onBackupFilePicked" />
+  <input ref="blueprintFileEl" class="sr-only pb-blueprint-file-input" type="file" accept="application/json" tabindex="-1" @change="onBlueprintFilePicked" />
 
   <Teleport to="body">
     <FluidTransition>
@@ -87,10 +90,11 @@
 
 <script setup lang="ts">
 import FluidTransition from '@/components/visual/FluidTransition.vue'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
 import { downloadBlob } from "@/utils/downloadBlob"
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
-import { confirmAction } from '@/composables/useConfirm'
+import { confirmAction, useConfirmState } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/director/components/PromptDataTools.css'
@@ -108,7 +112,9 @@ const backup = useBackup((message) => emit('flash', message))
 const backupCardEl = ref<HTMLElement | null>(null)
 const backupFileEl = ref<HTMLInputElement | null>(null)
 const blueprintFileEl = ref<HTMLInputElement | null>(null)
-const utilityEl = ref<HTMLDetailsElement | null>(null)
+const utilityOpen = ref(false)
+const utilityTrigger = ref<HTMLButtonElement | null>(null)
+const confirmation = useConfirmState()
 const pendingSummary = ref<BackupSummary | null>(null)
 let backupFileVersion = 0
 
@@ -128,9 +134,12 @@ const backupReminder = computed(() => backup.lastBackupAt.value
   ? `距上次备份 ${backupDays.value} 天，建议导出备份`
   : '尚未备份，建议导出备份')
 
-useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
+const { returnFocus } = useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
   onEscape: () => { if (!backup.busy.value) discard() },
 })
+watch(() => backup.pending.value, pending => {
+  if (pending) returnFocus.value = utilityTrigger.value
+}, { flush:'post' })
 
 function pickBackupFile() {
   backupFileEl.value?.click()
@@ -138,6 +147,17 @@ function pickBackupFile() {
 
 function pickBlueprintFile() {
   blueprintFileEl.value?.click()
+}
+
+function onMenuCloseAutoFocus(event: Event) {
+  // A restore preview or confirmation owns focus while it is open.
+  if (backup.pending.value || confirmation.value.visible) event.preventDefault()
+}
+
+function cleanOrphanImages() {
+  utilityOpen.value = false
+  utilityTrigger.value?.focus()
+  void backup.cleanOrphanImages()
 }
 
 function exportBlueprint() {
@@ -155,7 +175,7 @@ function exportBlueprint() {
   const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
   downloadBlob(blob, `aics-blueprint-${stamp}.json`)
   emit('flash', '蓝图 JSON 已导出')
-  if (utilityEl.value) utilityEl.value.open = false
+  utilityOpen.value = false
 }
 
 async function onBlueprintFilePicked(event: Event) {
@@ -174,7 +194,7 @@ async function onBlueprintFilePicked(event: Event) {
     emit('flash', '读取蓝图 JSON 失败')
   }
   input.value = ''
-  if (utilityEl.value) utilityEl.value.open = false
+  utilityOpen.value = false
 }
 
 function discard() {
@@ -216,12 +236,19 @@ async function onBackupFilePicked(event: Event) {
   const summary = await backup.loadFile(file)
   if (version !== backupFileVersion) return
   pendingSummary.value = summary
-  if (utilityEl.value) utilityEl.value.open = false
+  utilityOpen.value = false
 }
 </script>
 
 <style scoped>
 .utility-trigger { position: relative; }
+.utility-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); color:var(--text-primary); font-weight:600; }
+.utility-label { margin:var(--s-3) 0 var(--s-2); color:var(--text-muted); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
+.utility-actions { display:grid; gap:var(--s-1); }
+.utility-actions .btn { justify-content:flex-start; min-height:44px; padding:var(--s-2) var(--s-3); font-size:var(--fs-label); }
+.utility-actions .btn:not(:disabled) { border-color:transparent; }
+.utility-actions .btn:hover:not(:disabled) { background:var(--bg-hover); color:var(--text-primary); }
+.utility-divider { height:1px; margin:var(--s-3) 0; background:var(--border-soft); }
 .utility-trigger-dots {
   display: inline-flex;
   align-items: center;

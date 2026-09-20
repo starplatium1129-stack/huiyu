@@ -28,34 +28,19 @@
           <span>{{ item.label }}</span>
         </RouterLink>
 
-        <!-- 归档 · 分组下拉：发现/美学/工坊，5 项主导航之外全部收口 -->
-        <details class="nav-more" :data-active="secondaryActive || undefined" :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined" :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined" ref="moreEl">
-          <!-- 不加 aria-label:它会盖掉可见文字"归档",违反 SC 2.5.3 Label in Name -->
-          <summary>更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></summary>
-          <div class="nav-more-menu">
-            <template v-for="group in archiveGroups" :key="group.heading">
-              <div class="nav-more-group-label">{{ group.heading }}</div>
-              <RouterLink
-                v-for="item in group.items"
-                :key="item.id"
-                :to="item.to"
-          :target="openBesideTask(item.to) ? '_blank' : undefined"
-          :rel="openBesideTask(item.to) ? 'noopener' : undefined"
-          :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
-                :class="{ active: activeId === item.id }"
-                :aria-current="activeId === item.id ? 'page' : undefined"
-                :data-pending="pendingPath === item.to || undefined"
-                :data-intent="intentRoutePath === item.to || undefined"
-                @click="closeMenu"
-              >
-                <ArchiveIcon :name="item.icon" />
-                <span>{{ item.label }}</span>
-              </RouterLink>
-            </template>
-            <button class="nav-help" type="button" @click="openGuide">初次来访 · 使用指南</button>
-            <AppearancePreferences launcher-only @open="closeMenu" />
-          </div>
-        </details>
+        <!-- The richer menu is loaded on first use, outside the initial navigation bundle. -->
+        <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined"
+          :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined"
+          :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined">
+          <button v-if="!moreLoaded" type="button" class="nav-more-trigger" :disabled="moreReady"
+            :aria-expanded="moreOpen" :aria-busy="moreReady" :title="moreError ? '菜单未能载入，请刷新页面后重试' : undefined"
+            @click="openMore">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
+          <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :groups="archiveGroups" :active-id="activeId"
+            :pending-path="pendingPath" :intent-path="intentRoutePath" :open-beside-task="openBesideTask"
+            @ready="moreLoaded = true" @navigate="closeMenu" @guide="openGuide" @appearance="closeMenu"
+            @close-auto-focus="onMoreCloseAutoFocus" />
+        </div>
+
 
         <!--
           全局搜索的可见入口（2026-08-30 UX 审计 P1）：搜索覆盖 15 个页面 +
@@ -93,8 +78,7 @@
 
 <script setup lang="ts">
 import BrandLogo from '@/components/BrandLogo.vue'
-import AppearancePreferences from './AppearancePreferences.vue'
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, shallowRef, watch, onMounted, onUnmounted, nextTick, type Component } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
 import AppThemeToggle from './AppThemeToggle.vue'
@@ -104,15 +88,24 @@ import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { needsDocumentReload } from '@/router'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { openGlobalSearch } from '@/composables/useGlobalSearch'
+import { useToast } from '@/composables/useToast'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 
 const route = useRoute()
+const { show: showToast } = useToast()
+const AppMoreMenu = shallowRef<Component | null>(null)
 const { activeCount } = useTaskCenter()
 const { pendingPath, intentRoutePath } = useNavigationFeedback()
 function openBesideTask(path: string) { return activeCount.value > 0 && needsDocumentReload(route.path, path) && !location.hostname.includes('tauri') }
 const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
-const moreEl = ref<HTMLDetailsElement | null>(null)
+const moreEl = ref<HTMLDivElement | null>(null)
+const moreOpen = ref(false)
+const moreReady = ref(false)
+const moreLoaded = ref(false)
+const moreError = ref(false)
+let moreHandoff = false
+watch(moreOpen, open => { if (open) moreHandoff = false }, { flush:'sync' })
 const menuToggleEl = ref<HTMLButtonElement | null>(null)
 
 interface NavItem {
@@ -170,8 +163,22 @@ const activeId = computed(() => {
 const secondaryActive = computed(() => secondaryNav.some(n => n.id === activeId.value))
 
 function closeMenu() {
+  if (moreOpen.value) moreHandoff = true
   menuOpen.value = false
-  if (moreEl.value) moreEl.value.open = false
+  moreOpen.value = false
+}
+async function openMore() {
+  moreReady.value = true; moreOpen.value = true; moreError.value = false
+  try { AppMoreMenu.value = (await import('./AppMoreMenu.vue')).default }
+  catch {
+    moreReady.value = false; moreOpen.value = false; moreError.value = true
+    showToast('菜单暂未加载，请刷新页面后重试。其余导航仍可使用。', 'error', 6000)
+  }
+}
+function onMoreCloseAutoFocus(event: Event) {
+  // Route navigation and settings dialogs own focus after selecting an entry.
+  if (moreHandoff) event.preventDefault()
+  moreHandoff = false
 }
 async function toggleMenu() {
   menuOpen.value = !menuOpen.value
@@ -185,7 +192,13 @@ async function toggleMenu() {
  * 唤起全局搜索。面板由 App.vue 挂在路由之外，与导航没有父子关系，
  * 走 useGlobalSearch 单例通道；传 'pointer' 是为了让面板按鼠标来源定位焦点。
  */
-function openGuide() { closeMenu(); window.dispatchEvent(new Event('atelier:welcome')) }
+async function openGuide() {
+  const mobile = menuOpen.value
+  closeMenu()
+  await nextTick()
+  ;(mobile ? menuToggleEl.value : moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger'))?.focus()
+  window.dispatchEvent(new Event('atelier:welcome'))
+}
 
 function openSearch() {
   if (menuOpen.value) { closeMenu(); menuToggleEl.value?.focus() }
@@ -193,16 +206,14 @@ function openSearch() {
 }
 
 function onDocClick(e: MouseEvent) {
-  if (moreEl.value?.open && !moreEl.value.contains(e.target as Node)) {
-    moreEl.value.open = false
-  }
-  if (menuOpen.value && !linksEl.value?.contains(e.target as Node) && !menuToggleEl.value?.contains(e.target as Node)) closeMenu()
+  const inMore = e.target instanceof Element && e.target.closest('.nav-more-menu')
+  if (menuOpen.value && !inMore && !linksEl.value?.contains(e.target as Node) && !menuToggleEl.value?.contains(e.target as Node)) closeMenu()
 }
 function onDocKey(e: KeyboardEvent) {
   if (e.key !== 'Escape' || e.defaultPrevented || e.isComposing) return
-  if (moreEl.value?.open) {
-    moreEl.value.open = false
-    moreEl.value.querySelector('summary')?.focus()
+  if (moreOpen.value) {
+    moreOpen.value = false
+    moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')?.focus()
     e.preventDefault()
   } else if (menuOpen.value) {
     closeMenu()
@@ -233,13 +244,12 @@ onUnmounted(() => {
 
 <style scoped>
 .nav-links a[data-pending="true"], .nav-links a[data-intent="true"],
-.nav-more[data-pending="true"] > summary, .nav-more[data-intent="true"] > summary {
+.nav-more[data-pending="true"] .nav-more-trigger, .nav-more[data-intent="true"] .nav-more-trigger {
   outline: 1px solid var(--border-strong);
   outline-offset: -1px;
   background: var(--accent-soft);
   color: var(--text-primary);
 }
-.nav-help { grid-column: 1 / -1; padding: var(--s-3); margin-top: var(--s-2); border: 0; border-top: 1px solid var(--border-soft); background: transparent; color: var(--text-muted); text-align: left; font: inherit; font-size: var(--fs-label); cursor: pointer; }
 
 /* logo.svg 是 132×48 的完整字标（图形 + 绘遇），
    只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */

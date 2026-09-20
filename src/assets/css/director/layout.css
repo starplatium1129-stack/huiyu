@@ -22,23 +22,7 @@
   .pb .focus-mode-btn:active, .pb .utility-trigger:active { transform:scale(.95); }
   .pb .utility-menu { position:relative; }
   .pb .utility-trigger { width:36px; height:36px; display:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; background:transparent; color:var(--text-secondary); cursor:pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--motion-hover),border-color var(--motion-hover),transform var(--motion-hover); }
-  .pb .utility-trigger:hover, .pb .utility-menu.open .utility-trigger { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }
-  .pb .utility-popover {
-    position:absolute; z-index:var(--z-popover); top:calc(100% + 10px); right:0;
-    width:min(300px,calc(100vw - 32px)); padding:var(--s-3);
-    border:1px solid var(--border-soft); border-radius:var(--r-2xl); box-shadow:var(--shadow-lg);
-    transform-origin:top right;
-    transition:opacity var(--motion-hover),transform var(--motion-hover) var(--ease-out);
-  }
-  @starting-style {
-    .pb .utility-menu[open] .utility-popover { opacity:0; transform:translateY(-6px) scale(.96); }
-  }
-  .pb .utility-menu:not([open]) .utility-popover { display:none; }
-  .pb .utility-label { margin:2px 4px 8px; color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
-  .pb .utility-actions { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); }
-  .pb .utility-actions .btn { min-height:38px; justify-content:center; font-size:var(--fs-label-sm); }
-  .pb .utility-actions .wide { grid-column:1 / -1; }
-  .pb .utility-divider { height:1px; margin:var(--s-3) 0; background:var(--border-soft); }
+  .pb .utility-trigger:hover, .pb .utility-trigger[data-state="open"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }
   .pb .shortcut-hint { color:var(--text-muted); font:var(--fs-mono-sm) var(--font-mono); white-space:nowrap; }
   .pb .shortcut-hint kbd { padding:2px var(--s-2); border:1px solid var(--border-soft); border-bottom-color:var(--border-strong); border-radius:var(--r-sm); background:var(--bg-deep); color:var(--text-secondary); box-shadow:0 1px 0 var(--border-soft); }
   .pb .icon-label { display:inline-flex; align-items:center; gap:var(--s-2); }

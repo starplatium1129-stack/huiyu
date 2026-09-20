@@ -112,7 +112,9 @@ function touch(key: keyof SDParams) { emit('touch', key) }
   border-radius: var(--r-md);
   background: var(--bg-deep);
   color: var(--text-muted);
-  font-size: var(--fs-label-xs);
+  font-size: var(--fs-body);
+  line-height:var(--lh-body);
+  flex-wrap:wrap;
 }
 .control-icon-inline {
   width: 14px;

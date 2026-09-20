@@ -24,9 +24,8 @@
           </select>
 
           <label class="sr-only" for="showcaseCharSelect">角色筛选</label>
-          <select id="showcaseCharSelect" class="filter-select" v-model="charFilter" aria-label="筛选角色">
-            <option v-for="opt in allCharOptions" :key="opt.v" :value="opt.v">{{ opt.l }}</option>
-          </select>
+          <StudioCombobox id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
+            :options="allCharOptions.map(opt => ({ value:opt.v, label:opt.l }))" />
         </div>
         <div class="filter-group">
           <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
@@ -162,6 +161,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { showcaseDestination } from '@/utils/showcaseDestination'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioCombobox from '@/components/ui/StudioCombobox.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {

@@ -48,7 +48,7 @@ for (const theme of ['dark', 'light'] as const) {
       await expect(random).toBeHidden()
 
       await page.locator('.utility-trigger').click()
-      await withinViewport(page.locator('.utility-popover'), page)
+      await withinViewport(page.getByRole('dialog', { name:'数据工具', exact:true }), page)
       await page.getByRole('button', { name: '导出备份 JSON', exact: true }).click({ trial: true })
       await page.locator('.utility-trigger').click()
 
@@ -90,7 +90,8 @@ for (const theme of ['dark', 'light'] as const) {
     }, theme)
     await page.goto('/prompt-builder')
     await expect(page.locator('.gen-bar')).toBeVisible()
-    for (const selector of ['.gen-bar-preset', '.gen-bar-blocked', '.material-heading', '.material-switch button:not([aria-pressed="true"])']) {
+    // The full summary lives in the output panel; the duplicate in the action bar is intentionally hidden.
+    for (const selector of ['.generation-auto-summary strong', '.gen-bar-blocked', '.material-heading', '.material-switch button:not([aria-pressed="true"])']) {
       const element = page.locator(selector).first()
       await expect(element).toBeVisible()
       expect(await element.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(13)
