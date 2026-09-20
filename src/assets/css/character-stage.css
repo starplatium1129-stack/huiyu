@@ -1,0 +1,7 @@
+/* Shared, borderless character presentation; view chrome belongs to each surface. */
+.open-character-stage .stage-framing { display: grid; gap: var(--s-2); min-width: 0; padding: var(--s-3) 0; border: 0; color: var(--text-primary); }
+.open-character-stage .stage-framing legend { color: var(--text-secondary); font-size: var(--fs-label); }
+.open-character-stage .stage-framing label { display: flex; align-items: center; gap: var(--s-3); }
+.open-character-stage .stage-framing input { width: 100%; min-width: 0; accent-color: var(--accent); }
+.open-character-stage .character-controls-panel { color: var(--text-primary); }
+.open-character-stage .character-about summary { color: var(--text-secondary); }

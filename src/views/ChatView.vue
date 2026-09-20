@@ -1,11 +1,12 @@
 <template>
-  <article class="chat-page">
+  <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar">
     <header class="chat-head">
       <div>
-        <h1 class="chat-title">角色房间 <span>静かな対話室</span></h1>
-        <p class="chat-subtitle">让宁宁或夏目陪你聊一会儿。对谈、声线与温暖记忆，都安静珍藏于本机。</p>
+        <span class="room-eyebrow">此刻，与你</span>
+        <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
       </div>
       <div class="chat-actions">
+        <button class="btn btn-ghost" type="button" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" />{{ immersive ? '展开对话' : '专注陪伴' }}</button>
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
         <!-- 次要操作收进「更多」菜单：主操作只留「新对话」，破坏性操作入菜单并标危险色 -->
         <div ref="actionsMoreRef" class="chat-actions-more" @focusout="onRoomActionFocusout">
@@ -63,6 +64,8 @@
       <ChatCharacterStage
         ref="characterStageRef"
         :active-id="activeChar"
+        :suspended="presentationSuspended"
+        :surface="immersive ? 'immersive' : 'room'"
         :character="currentCharacter"
         :speaking="isSpeaking"
         :volume="volume"
@@ -75,9 +78,9 @@
         @outfit-changed="storage.setLive2dOutfit(activeChar, $event)"
       />
 
-      <section class="conversation-card">
+      <section class="conversation-card" :aria-label="immersive ? '当前对话' : '完整对话'">
         <div class="conversation-head">
-          <strong>和{{ currentCharacter.name }}的房间</strong>
+          <div class="room-conversation-title"><strong>{{ immersive ? '此刻的话' : '我们的对话' }}</strong><span>{{ isSpeaking ? '正在说话' : busy ? '正在回复' : currentCharacter.voice ? '慢慢说，我在听' : '文字聊天' }}</span></div>
           <ChatModelControls
             :chat-provider="chatProvider"
             :busy="busy"
@@ -94,7 +97,7 @@
             @update:current-model="currentModel = $event"
             @reasoning-change="onReasoningChange"
             @toggle-api-settings="apiSettingsOpen = !apiSettingsOpen"
-          />
+          ><label v-if="currentCharacter.voice" class="room-volume">播放音量<input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label></ChatModelControls>
         </div>
 
         <FluidTransition>
@@ -118,7 +121,7 @@
         />
 </FluidTransition>
 
-        <div v-if="(!chatReady || voiceCapabilityState === 'offline' || preparingRoom)
+        <div v-if="(!chatReady || preparingRoom)
           && !(chatProvider === 'api' && !chatReady && apiSettingsOpen)" class="room-setup">
           <div>
             <strong>{{ setupTitle }}</strong>
@@ -133,10 +136,9 @@
           </button>
         </div>
 
-        <div class="chat-list" ref="chatListRef" role="log" aria-label="对话记录">
+        <div v-show="!immersive" class="chat-list" ref="chatListRef" role="log" aria-label="对话记录">
           <div v-if="!currentMessages.length" class="chat-empty">
-            <span class="chat-empty-kicker">{{ currentCharacter.roomCode }}</span>
-            <div class="icon"><ArchiveIcon :name="currentCharacter.id === 'natsume' ? 'natsume' : 'nene'" /></div>
+            <span class="chat-empty-kicker">{{ currentCharacter.name }}</span>
             <div class="chat-empty-greeting">{{ personalizedGreeting }}</div>
             <div class="chat-starters" aria-label="对话开场建议">
               <button v-for="s in currentCharacter.starters" :key="s" type="button"
@@ -149,7 +151,7 @@
               class="message"
               :class="[msg.role, msg.mid && msg.mid === streamingMid ? 'streaming' : '', msg.mid === playingMid ? 'speaking' : '']"
               :data-mid="msg.mid">
-              <div class="message-avatar"><span v-if="msg.role === 'user'">你</span><ArchiveIcon v-else :name="currentCharacter.id === 'natsume' ? 'natsume' : 'nene'" /></div>
+              <div class="message-avatar"><span v-if="msg.role === 'user'">你</span><ArchiveIcon v-else :name="activeChar === 'nene' ? 'nene' : activeChar === 'natsume' ? 'natsume' : 'character'" /></div>
               <div class="message-body">
                 <div class="message-bubble">
                   {{ msg.content }}
@@ -160,6 +162,7 @@
                   </div>
                 </div>
                 <div class="message-meta">
+                  <button class="msg-memory-btn" type="button" @click="copyMessage(msg.content)">复制</button>
                   <span v-if="msg.stopped" class="message-note">已停止</span>
                   <button v-if="msg.role === 'user' && msg.mid" class="msg-memory-btn" type="button"
                     :class="{ remembered: messageRemembered(msg.mid) }"
@@ -185,6 +188,9 @@
             </div>
           </template>
         </div>
+
+        <button v-if="!immersive && hasNew" class="room-latest btn btn-ghost" type="button" @click="latest">回到最新消息</button>
+        <div v-if="immersive" class="room-current-line" role="log" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
 
         <div v-if="toolActivity" class="chat-tool-indicator" role="status">
           <ArchiveIcon name="gear" /> {{ toolActivity }}
@@ -226,23 +232,23 @@
                 <span class="voice-toggle-copy"><strong>联网检索</strong><small>补充最新信息</small></span>
               </label>
               <span v-if="chatProvider === 'api'" class="voice-divider" aria-hidden="true"></span>
-              <label class="voice-toggle">
+              <label v-if="currentCharacter.voice" class="voice-toggle">
                 <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
                 <span class="voice-switch" aria-hidden="true"><span></span></span>
                 <span class="voice-toggle-copy"><strong>实时配音</strong><small>随回复逐句播放</small></span>
               </label>
-              <span class="voice-divider" aria-hidden="true"></span>
+              <span v-if="currentCharacter.voice" class="voice-divider" aria-hidden="true"></span>
               <span class="voice-capability" :data-state="voiceCapabilityState">
                 <span class="voice-capability-dot"></span>{{ voiceCapabilityText }}
               </span>
               <span class="voice-status" aria-live="polite">{{ voiceStatusText }}</span>
               <RouterLink v-show="showVoiceRecovery" class="voice-recovery" to="/control">启动语音 →</RouterLink>
-              <label class="volume-slider" title="音量">
+              <label v-if="currentCharacter.voice" class="volume-slider" title="音量">
                 <span class="volume-icon" aria-hidden="true"><ArchiveIcon name="sound" /></span>
                 <input type="range" v-model.number="volume" min="0" max="100" aria-label="音量"
                   @input="onVolumeChange" />
               </label>
-              <button class="replay-btn" type="button" title="重新播放上一条语音"
+              <button v-if="currentCharacter.voice" class="replay-btn" type="button" title="重新播放上一条语音"
                 :disabled="!hasReplayable"
                 @click="replayLast">
                 <span aria-hidden="true">↩</span> 重播上一条
@@ -296,6 +302,10 @@
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import '@/assets/css/chat.css'
+import '@/assets/css/conversation-room.css'
+import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
+import { useConversationReading } from '@/composables/chat/useConversationReading'
+import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
@@ -389,6 +399,15 @@ const {
 
 const profileOpen = ref(false)
 const memoryOpen = ref(false)
+const immersive = ref(false)
+const presentationSuspended = useRoomPresentation('room')
+const { hasNew, latest } = useConversationReading(chatListRef, () => currentMessages.value, activeChar)
+const currentLine = computed(() => [...currentMessages.value].reverse().find(m => m.role === 'assistant')?.content || personalizedGreeting.value)
+function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
+async function copyMessage(content: string) {
+  try { await navigator.clipboard.writeText(content); setError('已复制', 'info', 1800) }
+  catch { setError('复制失败，可以选中文字后复制。', 'warning') }
+}
 
 /** 右上角次要操作收进「更多」菜单：外点与 Escape 关闭，选中即收起。 */
 const moreOpen = ref(false)

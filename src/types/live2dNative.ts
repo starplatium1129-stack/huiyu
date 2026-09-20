@@ -41,6 +41,7 @@ export interface Live2DNativeCommands {
     rect: Live2DOverlayRect
     visible: boolean
     opacity?: number
+    framing?: { zoom: number; x: number; y: number }
   }): Promise<void>
   /** 设置原生渲染循环的目标帧率。 */
   setMaxFps(fps: number): Promise<void>
@@ -85,6 +86,7 @@ export interface Live2DNativeEvents {
 export interface Live2DNativeBridge extends Live2DNativeCommands, Live2DNativeEvents {
   readonly isNativeLive2D: true
   readonly supportsTextureQuality?: boolean
+  readonly supportsFraming?: boolean
 }
 
 declare global {

@@ -211,17 +211,9 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
     if let Some(w) = app.get_webview_window("companion-chat") {
         let _ = w.unminimize();
         let _ = w.show();
+        crate::chat_dock::follow(app);
         let _ = w.set_focus();
-        // 每次打开都重新导航（与 open_atelier 同策略）：避免 hide/close 后
-        // WebView2 内容被卸载，重现时显示空白白板。
-        let url = if gateway_url.is_empty() {
-            "http://127.0.0.1:3000/companion-chat".to_string()
-        } else {
-            format!("{}/companion-chat", gateway_url.trim_end_matches('/'))
-        };
-        if let Ok(parsed) = url.parse::<tauri::Url>() {
-            let _ = w.navigate(parsed);
-        }
+        // Hiding preserves the WebView, its draft, and the reader's scroll position.
         return;
     }
     let state = app.state::<AppState>();
@@ -258,6 +250,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
                 state.info("open companion-chat: window built");
                 crate::window_presentation::restore_zoom(&win);
                 let _ = win.show();
+                crate::chat_dock::follow(&app);
                 let _ = win.set_focus();
             }
             Err(e) => state.error(&format!("open companion-chat: window build failed: {e}")),
@@ -270,18 +263,7 @@ pub fn toggle_companion_chat(app: &AppHandle, gateway_url: &str) {
         if w.is_visible().unwrap_or(false) {
             let _ = w.hide();
         } else {
-            // 显示时同样重导航，防隐藏期间 WebView2 内容卸载成空白
-            let _ = w.unminimize();
-            let _ = w.show();
-            let _ = w.set_focus();
-            let url = if gateway_url.is_empty() {
-                "http://127.0.0.1:3000/companion-chat".to_string()
-            } else {
-                format!("{}/companion-chat", gateway_url.trim_end_matches('/'))
-            };
-            if let Ok(parsed) = url.parse::<tauri::Url>() {
-                let _ = w.navigate(parsed);
-            }
+            open_companion_chat(app, gateway_url);
         }
         return;
     }

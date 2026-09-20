@@ -13,6 +13,8 @@ mod updater_cmd;
 mod watchers;
 mod window_state;
 mod window_presentation;
+mod chat_dock;
+mod live2d_framing;
 
 use std::sync::atomic::Ordering;
 use std::time::{Duration, Instant};
@@ -178,6 +180,8 @@ fn main() {
             bridge::open_companion_chat,
             bridge::toggle_companion_chat,
             bridge::hide_companion_chat,
+            chat_dock::set_chat_docked,
+            chat_dock::get_chat_docked,
             bridge::chat_relay,
             bridge::window_minimize,
             bridge::window_maximize_toggle,
@@ -194,7 +198,7 @@ fn main() {
             updater_cmd::desktop_update_check,
             updater_cmd::desktop_update_install,
             live2d_overlay::aics_live2d_set_character,
-            live2d_overlay::aics_live2d_set_frame,
+            live2d_framing::aics_live2d_set_frame,
             live2d_overlay::aics_live2d_play_motion,
             live2d_overlay::aics_live2d_set_expression,
              live2d_overlay::aics_live2d_set_mouth_level,
@@ -421,6 +425,7 @@ fn main() {
             }
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {
                 tauri::WindowEvent::Moved(_) | tauri::WindowEvent::Resized(_) => {
+                    if label == "companion" { chat_dock::follow(app_handle); }
                     let _ = app_handle.emit("aics:save-bounds", ());
                     if label == "atelier" {
                         if let Some(window) = app_handle.get_webview_window("atelier") {

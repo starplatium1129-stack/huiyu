@@ -15,6 +15,13 @@ export const COMPANION_BEHAVIOR_KEY = 'aics_companion_behavior_v1'
 export const COMPANION_AFFECTION_KEY = 'aics_companion_affection_v1'
 /** 角色窗 → 聊天窗的实时状态通道（低频繁写入，storage 事件跨窗下发） */
 export const COMPANION_CHAT_LIVE_KEY = 'aics_companion_chat_live_v1'
+/** Transient cross-window signals, deliberately excluded from backup/restore. */
+export const CHAT_TURN_KEY = 'aics_chat_turn_v1'
+export const CHAT_RELAY_RECEIPT_KEY = 'aics_chat_relay_receipt_v1'
+export const ROOM_PRESENTATION_KEY = 'aics_room_presentation_v1'
+/** Per-character, per-surface presentation preferences, safe to restore. */
+export const STAGE_FRAMING_KEY = 'aics_stage_framing_v1'
+export const RETIRED_COMPANION_CHAT_KEY = 'aics_retired_companion_chat_v1'
 export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 /** 绘图页引擎选择；键名保持不变以兼容已保存的 Anima 偏好。 */
 export const DRAW_ENGINE_KEY = 'aics_draw_engine'
@@ -106,6 +113,8 @@ export const LIVE_LOCAL_KEYS = [
   CHAT_MEMORY_KEY,
   COMPANION_LIVE2D_KEY,
   LIVE2D_QUALITY_KEY,
+  STAGE_FRAMING_KEY,
+  RETIRED_COMPANION_CHAT_KEY,
   COMPANION_BEHAVIOR_KEY,
   COMPANION_AFFECTION_KEY,
   SPEECH_INPUT_KEY,

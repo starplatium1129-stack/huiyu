@@ -1,7 +1,7 @@
 <template>
   <article
     class="companion-page"
-    :class="{ 'has-character-picker': companionCharacters.length > 3 }"
+    :class="{ 'has-character-picker': companionCharacters.length > 3, 'companion-redesign': true }"
     :data-character="activeChar"
     :data-power-mode="desktopBridge ? (onBatteryPower ? 'efficiency' : 'quality') : undefined"
     :data-ui-hidden="uiHidden || undefined"
@@ -11,34 +11,9 @@
       <i></i><i></i><i></i>
     </div>
     <header class="companion-toolbar" :data-hidden="immersive ? 'true' : undefined">
-      <div class="companion-identity">
-        <span>{{ currentCharacter.roomCode }}</span>
-        <h1>与{{ currentCharacter.name }}相伴</h1>
-        <div
-          class="companion-affection-pill"
-          :title="`当前好感度 ${affectionScore}/100\n${affectionInfo.title}（Lv.${affectionInfo.level}）: ${affectionInfo.description}`"
-        >
-          <ArchiveIcon name="love" class="companion-affection-icon" />
-          <span class="companion-affection-label">Lv.{{ affectionInfo.level }} {{ affectionInfo.title }}</span>
-          <span class="companion-affection-value">{{ affectionScore }}</span>
-        </div>
-      </div>
+      <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchCharacter" />
       <div class="companion-toolbar-actions">
-        <select v-if="companionCharacters.length > 3" class="companion-character-select"
-          :value="activeChar" aria-label="切换陪伴角色" @change="switchCharacter(($event.target as HTMLSelectElement).value)">
-          <option v-for="character in companionCharacters" :key="character.id" :value="character.id">{{ character.name }}</option>
-        </select>
-        <div v-else-if="desktopBridge" class="companion-char-switch" aria-label="切换角色">
-          <button
-            v-for="character in companionCharacters"
-            :key="character.id"
-            type="button"
-            :aria-pressed="activeChar === character.id ? 'true' : 'false'"
-            :class="{ active: activeChar === character.id }"
-            :title="`切换到${character.name}`"
-            @click="switchCharacter(character.id)"
-          >{{ character.shortName }}</button>
-        </div>
+        <span v-if="desktopBridge" class="companion-drag-handle" data-tauri-drag-region title="拖动桌宠"><ArchiveIcon name="menu" aria-hidden="true" /><span>移动</span></span>
         <button
           type="button"
           class="companion-settings-btn"
@@ -51,6 +26,8 @@
           <AppearancePreferences launcher-only @open="settingsOpen = false" />
           <div class="companion-pop-group">
             <strong>陪伴</strong>
+            <span class="companion-pop-item">{{ affectionInfo.title }} · {{ affectionScore }}</span>
+            <button type="button" class="companion-pop-item" @click="settingsOpen = false; characterStageRef?.openSettings?.()">角色取景与外观</button>
             <Live2DQualityControl :native="Boolean(desktopBridge)" />
             <label class="companion-pop-item" title="实时配音">
               <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
@@ -88,8 +65,8 @@
           <div class="companion-pop-group">
             <strong>工作台</strong>
             <button type="button" class="companion-pop-item" title="打开完整工作台（Ctrl+Shift+A）" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')">打开完整工作台</button>
-            <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier('/chat')">完整房间（聊天）</button>
-            <RouterLink v-else class="companion-pop-item" to="/chat">完整房间（聊天）</RouterLink>
+            <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar)}`)">完整房间（聊天）</button>
+            <RouterLink v-else class="companion-pop-item" :to="{ path: '/chat', query: { character: activeChar } }">完整房间（聊天）</RouterLink>
           </div>
           <div v-if="desktopBridge" class="companion-pop-group">
             <strong>诊断</strong>
@@ -134,6 +111,8 @@
       >退出沉浸</button>
       <ChatCharacterStage
         ref="characterStageRef"
+        surface="companion"
+        :suspended="presentationSuspended"
         :active-id="activeChar"
         :character="currentCharacter"
         :speaking="isSpeaking"
@@ -226,7 +205,7 @@
 
         <div class="companion-composer">
           <div
-            v-if="!chatReady || voiceCapabilityState === 'offline' || preparingRoom"
+            v-if="!chatReady || preparingRoom"
             class="companion-setup-inline"
             :data-state="preparingRoom ? 'active' : 'warning'"
           >
@@ -361,6 +340,8 @@
 
       <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
       <div v-if="desktopBridge" class="companion-desktop-float" aria-label="桌宠快捷操作">
+        <CompanionReplyBubble :text="replyAnnouncement" :name="currentCharacter.name" @open="openChatWindow" />
+        <div v-if="chatError" class="companion-float-error" role="alert">{{ chatError }}</div>
         <TransitionGroup name="reminder-pop" tag="div" class="companion-float-reminders" role="log" aria-label="角色主动问候">
           <div
             v-for="reminder in pendingReminders"
@@ -387,6 +368,7 @@
         <span class="companion-live-dot" :data-state="liveDotState" role="status" aria-live="polite">
           <i aria-hidden="true"></i>{{ liveDotText }}
         </span>
+        <span v-if="speechState === 'capturing' || speechAutoListening" class="companion-mic-status" role="status">{{ speechState === 'capturing' ? '正在聆听' : '听候唤醒' }}</span>
       </div>
     </main>
   </article>
@@ -396,6 +378,9 @@
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import '@/assets/css/companion.css'
+import '@/assets/css/companion-surface.css'
+import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
+import CompanionReplyBubble from '@/components/CompanionReplyBubble.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
@@ -405,6 +390,7 @@ import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
 const {
 chatListRef,characterStageRef,activeChar,
 desktopBridge,
+presentationSuspended,
 onBatteryPower,
 uiHidden,
 presence,
@@ -495,9 +481,3 @@ liveDotState,
 liveDotText
 } = useCompanionWorkspace()
 </script>
-
-<style scoped>
-.companion-character-select { min-width: 0; max-width: 128px; min-height: 32px; padding: 4px 8px; border: 1px solid var(--companion-edge); border-radius: var(--r-md); background: var(--bg-surface); color: var(--text-primary); font: inherit; }
-.has-character-picker :deep(.character-tabs) { display: none; }
-.companion-page :deep(.local-model-stage .live2d-host) { inset: 96px 0 176px; }
-</style>

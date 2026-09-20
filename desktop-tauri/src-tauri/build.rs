@@ -19,6 +19,8 @@ fn main() {
                 "open_companion_chat",
                 "toggle_companion_chat",
                 "hide_companion_chat",
+                "set_chat_docked",
+                "get_chat_docked",
                 "chat_relay",
                 "window_minimize",
                 "window_maximize_toggle",

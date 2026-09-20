@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue'
+import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
 import {
   STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
 } from '@/config/characters'
@@ -149,6 +150,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     try {
       const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
       if (!raw || typeof raw !== 'object') return true
+      preserveRetiredCompanionChat(raw)
       const record = raw as Record<string, unknown>
       const parsedRevision = Number(record.historiesRevision)
       const legacyRevision = Number.isSafeInteger(parsedRevision) && parsedRevision >= 0 ? parsedRevision : 0
@@ -278,6 +280,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       return
     }
     try {
+      preserveRetiredCompanionChat(raw)
       // 先把持久化里的超限消息归档，再走白名单归一化，保证旧消息不丢。
       const rawHistories = raw && typeof raw === 'object' && (raw as Record<string, unknown>).histories
       if (rawHistories && typeof rawHistories === 'object') {

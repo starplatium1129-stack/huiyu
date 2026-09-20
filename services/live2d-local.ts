@@ -18,7 +18,8 @@ export function localLive2dRoot(root: string, runtimeRoot?: string): string {
 export function readLocalCompanions(root: string): LocalCompanion[] {
   if (!fs.existsSync(root)) return []
   return fs.readdirSync(root, { withFileTypes: true }).flatMap(entry => {
-    if (!entry.isDirectory() || !/^[a-z0-9][a-z0-9_-]{0,79}$/.test(entry.name)) return []
+    // Retired from companion surfaces; retain the author's files and old chat data.
+    if (entry.name === 'raiden_shogun' || !entry.isDirectory() || !/^[a-z0-9][a-z0-9_-]{0,79}$/.test(entry.name)) return []
     try {
       const directory = path.join(root, entry.name)
       if (fs.realpathSync(directory) !== path.resolve(directory)) return []

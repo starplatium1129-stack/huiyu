@@ -31,6 +31,8 @@
     "allow-open-companion-chat",
     "allow-toggle-companion-chat",
     "allow-hide-companion-chat",
+    "allow-set-chat-docked",
+    "allow-get-chat-docked",
     "allow-chat-relay",
     "allow-window-minimize",
     "allow-window-maximize-toggle",

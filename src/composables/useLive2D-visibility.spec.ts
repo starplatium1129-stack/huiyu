@@ -25,7 +25,7 @@ describe('desktop layout respects visibility ownership', () => {
     h.ctx.desktopVisible = false
     h.layout.setDesktopWindowBounds({ x: 20, y: 30, width: 400, height: 600 })
     h.layout.layout()
-    expect(h.updateOverlay).toHaveBeenLastCalledWith(expect.any(Object), false)
+    expect(h.updateOverlay).toHaveBeenLastCalledWith(expect.any(Object), false, { zoom: 1, x: 0, y: 0 })
     expect(h.setPaused).toHaveBeenLastCalledWith(true)
     expect(h.startEmotionClock).not.toHaveBeenCalled()
     h.layout.resetWindowBounds()
@@ -36,7 +36,7 @@ describe('desktop layout respects visibility ownership', () => {
     vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)
     h.ctx.desktopVisible = true
     h.layout.setDesktopWindowBounds({ x: 20, y: 30, width: 400, height: 600 })
-    expect(h.updateOverlay).toHaveBeenLastCalledWith(expect.any(Object), true)
+    expect(h.updateOverlay).toHaveBeenLastCalledWith(expect.any(Object), true, { zoom: 1, x: 0, y: 0 })
     expect(h.setPaused).toHaveBeenLastCalledWith(false)
     h.ctx.session = { ...h.ctx.session!, kind: 'browser' }
     expect(isStageHidden(h.ctx)).toBe(true)
@@ -48,7 +48,7 @@ describe('desktop layout respects visibility ownership', () => {
     h.ctx.desktopVisible = true
     vi.spyOn(h.ctx.hostEl!, 'getBoundingClientRect').mockReturnValue({ left: 10, top: 96, width: 280, height: 300 } as DOMRect)
     h.layout.setDesktopWindowBounds({ x: 0, y: 0, width: window.innerWidth, height: window.innerHeight })
-    expect(h.updateOverlay).toHaveBeenLastCalledWith(expect.objectContaining({ x: 10, y: 96, width: 280, height: 300 }), true)
+    expect(h.updateOverlay).toHaveBeenLastCalledWith(expect.objectContaining({ x: 10, y: 96, width: 280, height: 300 }), true, { zoom: 1, x: 0, y: 0 })
     h.layout.resetWindowBounds()
   })
 })

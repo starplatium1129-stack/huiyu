@@ -127,9 +127,11 @@ export interface Live2DStageSession {
   updateOverlay?(
     rect: { x: number; y: number; width: number; height: number },
     visible: boolean,
+    framing?: { zoom: number; x: number; y: number },
   ): void
   /** 浏览器：取 canvas 元素（webglcontextlost/restored 绑定）；原生：null */
   canvasElement(): HTMLElement | null
+  resizeCanvas?(width: number, height: number): void
 
   /** 原生专属：Rust 回传的 Cubism 原生 HitArea 命中（kind === 'native' 时存在） */
   onNativeHitTest?(callback: (areas: string[]) => void): () => void

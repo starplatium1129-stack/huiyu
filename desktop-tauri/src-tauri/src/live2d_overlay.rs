@@ -70,6 +70,7 @@ const RENDER_ERROR_LOG_LIMIT: u32 = 5;
 
 pub struct Live2DOverlayState {
     pub rect: Mutex<OverlayRect>,
+    pub framing: Mutex<crate::live2d_framing::StageFraming>,
     pub visible: AtomicBool,
     pub opacity: AtomicU32,
     /// HWND 以 isize 存储（HWND = *mut c_void 非 Send）。
@@ -111,6 +112,7 @@ impl Default for Live2DOverlayState {
     fn default() -> Self {
         Self {
             rect: Mutex::new(OverlayRect::default()),
+            framing: Mutex::new(crate::live2d_framing::StageFraming::default()),
             visible: AtomicBool::new(false),
             opacity: AtomicU32::new(255),
             hwnd: Mutex::new(None),
@@ -832,7 +834,7 @@ impl RenderContext {
         } else {
             (rect.width as f32, rect.height as f32)
         };
-        let transform = ViewTransform::fit_content(bounds, rw, rh, 0.02);
+        let transform = state.framing.lock().unwrap().transform(bounds, rw, rh);
         let (min_x, min_y) = transform.canvas_to_screen(bounds.0[0], bounds.0[1], rw, rh);
         let (max_x, max_y) = transform.canvas_to_screen(bounds.1[0], bounds.1[1], rw, rh);
         // 诊断边界换算回显示空间（超采样渲染是 rw/rh 上的坐标）。
@@ -873,7 +875,7 @@ impl RenderContext {
 
     /// 归一化坐标（0..1，overlay 相对）→ 作者 HitArea 命中。
     /// 超采样开启时渲染空间是 2x 离屏目标，命中映射必须换算到同一空间。
-    fn hit_test(&self, rect: OverlayRect, nx: f32, ny: f32) -> Vec<String> {
+    fn hit_test(&self, rect: OverlayRect, framing: crate::live2d_framing::StageFraming, nx: f32, ny: f32) -> Vec<String> {
         let Some(model) = self.model.as_ref() else {
             return vec![];
         };
@@ -889,7 +891,7 @@ impl RenderContext {
             (rect.width as f32, rect.height as f32)
         };
         let bounds = model.content_bounds();
-        let transform = ViewTransform::fit_content(bounds, rw, rh, 0.02);
+        let transform = framing.transform(bounds, rw, rh);
         let (canvas_x, canvas_y) = transform.screen_to_canvas(
             nx * rw,
             ny * rh,
@@ -1423,7 +1425,7 @@ fn handle_command(
         }
         OverlayCommand::HitTestAsync { x, y } => {
             let rect = *state.rect.lock().unwrap();
-            let areas = ctx.hit_test(rect, x, y);
+            let areas = ctx.hit_test(rect, *state.framing.lock().unwrap(), x, y);
             *state.hit_test_result.lock().unwrap() = Some(areas.clone());
             if let Some(app) = app {
                 let _ = app.emit("aics:live2d:hit-test", areas);
@@ -1431,7 +1433,7 @@ fn handle_command(
         }
         OverlayCommand::HitTest { x, y, reply } => {
             let rect = *state.rect.lock().unwrap();
-            let areas = ctx.hit_test(rect, x, y);
+            let areas = ctx.hit_test(rect, *state.framing.lock().unwrap(), x, y);
             *state.hit_test_result.lock().unwrap() = Some(areas.clone());
             let _ = reply.send(Ok(areas));
         }
@@ -1901,37 +1903,6 @@ pub async fn aics_live2d_set_character(
         Ok(()) => Ok(serde_json::json!({ "ok": true })),
         Err(e) => Ok(serde_json::json!({ "ok": false, "error": e })),
     }
-}
-
-#[tauri::command]
-pub fn aics_live2d_set_frame(
-    app: AppHandle,
-    rect: serde_json::Value,
-    visible: bool,
-    opacity: Option<f64>,
-) -> Result<(), String> {
-    let obj = rect.as_object().ok_or("rect must be an object")?;
-    let x = obj.get("x").and_then(|v| v.as_i64()).ok_or("rect.x")? as i32;
-    let y = obj.get("y").and_then(|v| v.as_i64()).ok_or("rect.y")? as i32;
-    let width = obj
-        .get("width")
-        .and_then(|v| v.as_u64())
-        .ok_or("rect.width")? as u32;
-    let height = obj
-        .get("height")
-        .and_then(|v| v.as_u64())
-        .ok_or("rect.height")? as u32;
-    apply_frame(
-        &app,
-        OverlayRect {
-            x,
-            y,
-            width,
-            height,
-        },
-        visible,
-        opacity.map(|o| (o.clamp(0.0, 1.0) * 255.0) as u32),
-    )
 }
 
 /// 只读状态查询。未初始化时不得创建 overlay 或启动渲染线程。

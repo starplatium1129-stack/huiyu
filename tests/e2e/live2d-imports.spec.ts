@@ -24,8 +24,8 @@ for (const theme of ['dark', 'light']) {
     await page.goto('/chat')
     await page.evaluate(theme => document.documentElement.setAttribute('data-theme', theme), theme)
     const host = page.locator('.live2d-host')
-    for (const name of ['初音', '芙莉莲', '菲伦', '长离', '蕾姆', '芙宁娜', '影', '宁宁']) {
-      await page.getByRole('tab', { name, exact: true }).click()
+    for (const name of ['初音未来', '芙莉莲', '菲伦', '长离', '蕾姆', '芙宁娜', '绫地宁宁']) {
+      await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption({ label: name })
       const enable = page.locator('.live2d-enable-cta')
       if (await enable.isVisible()) await enable.click()
       await expect(host).toHaveAttribute('data-state', 'ready', { timeout: 40_000 })
@@ -46,7 +46,8 @@ for (const theme of ['dark', 'light']) {
       fs.writeFileSync(`runtime/live2d-import-review/${theme}-${name}-model.json`, JSON.stringify(snapshot, null, 2))
       await expect(page.getByRole('combobox', { name: 'Live2D 表情', exact: true })).toHaveCount(0)
       const stage = await page.locator('.portrait-stage').boundingBox()
-      expect(stage!.height / stage!.width).toBeGreaterThan(1.3)
+      expect(stage!.height).toBeGreaterThan(450)
+      expect(stage!.width).toBeGreaterThan(500)
 
     }
   })
@@ -86,7 +87,7 @@ test('largest imported atlas and multi-atlas models render at all three quality 
   test.setTimeout(180_000)
   await page.goto('/chat')
   for (const [name, id] of [['芙莉莲', 'frieren'], ['菲伦', 'fern_frieren']]) {
-    await page.getByRole('tab', { name, exact: true }).click()
+    await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption({ label: name })
     const enable = page.locator('.live2d-enable-cta')
     if (await enable.isVisible()) await enable.click()
     await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 40_000 })

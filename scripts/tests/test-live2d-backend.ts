@@ -239,6 +239,22 @@ test('凝视轨迹：坐标归一化、边界钳制与连续回中', () => {
   assert.equal(gazeSettled({ x: 0.001, y: -0.001 }, { x: 0, y: 0 }), true);
 });
 
+test('native framing changes update the image without moving the window; identical framing is coalesced', async () => {
+  const bridge = createStubBridge() as any;
+  bridge.supportsFraming = true;
+  const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/model', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  const rect = { x: 0, y: 60, width: 480, height: 600 };
+  const framing = { zoom: 1.6, x: -0.1, y: 0.08 };
+  session.updateOverlay!(rect, true, framing);
+  session.updateOverlay!(rect, true, framing);
+  assert.equal(bridge.calls.setFrame.length, 1);
+  assert.deepEqual(bridge.calls.setFrame[0][0].framing, framing);
+  session.updateOverlay!(rect, true, { ...framing, zoom: 1.8 });
+  assert.equal(bridge.calls.setFrame.length, 2);
+  assert.deepEqual(bridge.calls.setFrame[1][0].rect, rect);
+  session.destroy();
+});
+
 test('原生后端：高频凝视 latest-wins，桥繁忙时只保留最新目标', async () => {
   const bridge = createStubBridge();
   const releases: { (value: any): void; (): void; new(): any; }[] = [];

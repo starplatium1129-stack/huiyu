@@ -13,7 +13,7 @@ pub struct WindowBounds {
     pub height: i64,
 }
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Default)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CompanionPreferences {
     #[serde(default, alias = "always_on_top")]
@@ -22,6 +22,12 @@ pub struct CompanionPreferences {
     pub ignore_mouse_events: bool,
     #[serde(default, alias = "live2d_enabled")]
     pub live2d_enabled: Option<bool>,
+    #[serde(default = "default_chat_docked")]
+    pub chat_docked: bool,
+}
+fn default_chat_docked() -> bool { true }
+impl Default for CompanionPreferences {
+    fn default() -> Self { Self { always_on_top: false, ignore_mouse_events: false, live2d_enabled: None, chat_docked: true } }
 }
 
 const DEFAULT_BOUNDS: WindowBounds = WindowBounds { x: 24, y: 80, width: 540, height: 760 };
@@ -278,7 +284,7 @@ mod tests {
         let tmp = std::env::temp_dir().join(format!("aics-prefs-test-{}", std::process::id()));
         let file = tmp.join("preferences.json");
         let preferences = CompanionPreferences {
-            always_on_top: true, ignore_mouse_events: true, live2d_enabled: Some(false),
+            always_on_top: true, ignore_mouse_events: true, live2d_enabled: Some(false), chat_docked: false,
         };
         save_companion_preferences(&file, &preferences);
         let loaded = load_companion_preferences(&file);

@@ -35,7 +35,7 @@ for (const theme of ['dark', 'light']) {
       await page.getByRole('button', { name: '设置', exact: true }).click()
       const panel = page.locator('.companion-settings-popover')
       await expect(panel).toBeVisible()
-      const contrast = await page.locator('.companion-char-switch button.active').evaluate(element => {
+      const contrast = await page.getByRole('combobox', { name: '切换陪伴角色' }).evaluate(element => {
         const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1
         const context = canvas.getContext('2d')!
         const rgb = (value: string) => { context.clearRect(0, 0, 1, 1); context.fillStyle = value; context.fillRect(0, 0, 1, 1); return [...context.getImageData(0, 0, 1, 1).data].slice(0, 3) }
@@ -47,9 +47,6 @@ for (const theme of ['dark', 'light']) {
       expect(contrast).toBeGreaterThanOrEqual(4.5)
       const bounds = await panel.boundingBox()
       expect(bounds && bounds.x >= 0 && bounds.y + bounds.height <= height).toBeTruthy()
-      for (const button of await page.locator('.companion-char-switch button').all()) {
-        expect(await button.evaluate(element => { const range = document.createRange(); range.selectNodeContents(element); return range.getClientRects().length })).toBe(1)
-      }
       await page.screenshot({ path: `.review-shots/companion-focus-${theme}-${width}.png` })
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
       await page.keyboard.press('Escape')
@@ -134,13 +131,14 @@ for (const theme of ['dark', 'light']) {
   test(`companion capability report explains pending and unsupported mappings in ${theme} theme`, async ({ page }) => {
     await desktopFixture(page, theme)
     await page.goto('/chat')
+    await page.locator('.character-controls > summary').click()
     const report = page.locator('.live2d-capability-report')
     await expect(report.locator('summary')).toContainText('待实机')
     await report.locator('summary').click()
     await expect(report.locator('li')).toHaveCount(7)
     await expect(report).toContainText('口型')
     await expect(report).toContainText('ParamMouthOpenY')
-    await page.locator('.character-tabs').getByRole('tab', { name: '夏目', exact: true }).click()
+    await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('natsume')
     await expect(page.locator('.character-card')).toHaveAttribute('data-character', 'natsume')
     await expect(report).toContainText('ParamMouthForm3')
     await report.screenshot({ path: `.review-shots/companion-capabilities-${theme}.png` })

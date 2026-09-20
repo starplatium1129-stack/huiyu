@@ -513,6 +513,7 @@ export function useChatConversation(options: ChatConversationOptions) {
 
   function destroy() {
     clearTimeout(draftTimer)
+    options.storage.setDraft(options.activeChar.value, inputText.value)
     abortCurrentRequest(true)
   }
 

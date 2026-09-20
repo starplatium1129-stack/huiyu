@@ -68,6 +68,8 @@ pub const COMPANION_SHIM_JS: &str = r#"
 
     window.companionDesktop = {
     isDesktop: true,
+    setChatDocked: (docked) => invoke('set_chat_docked', { docked }),
+    getChatDocked: () => invoke('get_chat_docked'),
     hide: () => invoke('hide'),
     quit: () => invoke('quit'),
     openAtelier: (pathname = '/') => invoke('open_atelier', { pathname }).catch((e) => {
@@ -148,11 +150,13 @@ pub const COMPANION_SHIM_JS: &str = r#"
   if (enableNativeLive2D) window.aicsLive2dNative = {
     isNativeLive2D: true,
     supportsTextureQuality: true,
+    supportsFraming: true,
     setCharacter: (modelPath, options) => invoke('aics_live2d_set_character', { modelPath, character: options && options.character, textureScale: options && options.textureScale, adapter: options && options.adapter }),
     setFrame: (frame) => invoke('aics_live2d_set_frame', {
       rect: frame.rect,
       visible: frame.visible,
       opacity: frame.opacity != null ? frame.opacity : null,
+      framing: frame.framing || null,
     }),
     setMaxFps: (fps) => invoke('aics_live2d_set_max_fps', { fps }),
     playMotion: (group, index, priority) => invoke('aics_live2d_play_motion', { group, index: index != null ? index : null, priority: priority != null ? priority : null }),

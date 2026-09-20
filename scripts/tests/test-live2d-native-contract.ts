@@ -113,7 +113,8 @@ test('Native IPC command inventory stays consistent across build manifest, invok
   }
   // invoke_handler 必须与 manifest 一一对应（遗漏 = 运行时命令不可达）。
   for (const name of commands) {
-    assert.ok(main.includes(`live2d_overlay::aics_live2d_${name}`), `invoke_handler 缺少 aics_live2d_${name}`)
+    const owner = name === 'set_frame' ? 'live2d_framing' : 'live2d_overlay'
+    assert.ok(main.includes(`${owner}::aics_live2d_${name}`), `invoke_handler 缺少 aics_live2d_${name}`)
   }
   // capabilities 权限名用连字符（Tauri permission id 规范），与命令一一对应；
   // 只允许 Companion 窗口 + 本机回环来源。
@@ -153,7 +154,7 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
   assert.match(live2d, /session\?\.sendMouthLevel\?\.\(0\)/)
   assert.match(emotionClock, /requestAnimationFrame\(tick\)/)
   assert.match(layoutFit, /const visible = !isStageHidden\(ctx\) && !prefersReducedMotion\(\)/)
-  assert.match(layoutFit, /session\.updateOverlay\(overlayRect, visible\)/)
+  assert.match(layoutFit, /session\.updateOverlay\(overlayRect, visible, framing\(\)\)/)
   assert.match(layoutFit, /windowBounds: \{ x: 0, y: 0, width: bounds\.width, height: bounds\.height \}/)
   assert.match(interactions, /model\?\.hitTest\(/)
   assert.match(layoutFit, /nativeSession && ctx\.nativeOverlayReady && !sizeChanged/)

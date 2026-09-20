@@ -1,0 +1,77 @@
+.companion-page.companion-redesign { padding: 0; }
+html.companion-desktop:has(.companion-redesign), html.companion-desktop:has(.companion-redesign) body, html.companion-desktop:has(.companion-redesign) #app { background: transparent; }
+html.companion-desktop:has(.companion-redesign) body::before, html.companion-desktop:has(.companion-redesign) body::after { display: none; }
+.companion-redesign .portrait-stage .live2d-host, .companion-redesign .live2d-host > *, .companion-redesign .live2d-host canvas, .companion-redesign .portrait-main { filter: none; box-shadow: none; }
+.companion-redesign::before, .companion-redesign::after, .companion-redesign .companion-ambience, .companion-redesign .room-signal, .companion-redesign .portrait-stage::before, .companion-redesign .portrait-stage::after, .companion-redesign .voice-halo { display: none; }
+.companion-redesign .companion-toolbar { inset: var(--s-3) var(--s-3) auto; min-height: 48px; padding: var(--s-2); border: 0; border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-primary); box-shadow: none; backdrop-filter: none; }
+.companion-redesign .companion-settings-btn { color: var(--text-primary); background: var(--bg-elevated); border-color: var(--border-soft); }
+.companion-redesign .companion-toolbar-actions { flex-shrink: 0; }
+.companion-drag-handle { display: inline-flex; gap: var(--s-1); align-items: center; min-height: 36px; padding: var(--s-2); color: var(--text-secondary); cursor: grab; touch-action: none; }
+.companion-drag-handle svg { width: 16px; height: 16px; pointer-events: none; }
+.companion-drag-handle span { pointer-events: none; font-size: var(--fs-label-sm); }
+.companion-redesign .companion-settings-popover { top: calc(100% + 8px); max-height: calc(100dvh - 100px); color: var(--text-primary); background: var(--bg-elevated); border-color: var(--border-soft); backdrop-filter: none; }
+.companion-redesign .companion-pop-group > strong { color: var(--text-secondary); }
+.companion-redesign .companion-pop-item { color: var(--text-primary); }
+.companion-redesign .character-card, .companion-redesign .portrait-stage { background: transparent; border: 0; box-shadow: none; }
+.companion-redesign .portrait-stage { inset: 0; }
+.companion-redesign .live2d-host { inset: 76px 0 210px; }
+.companion-redesign .portrait-main { bottom: 210px; max-height: calc(100% - 290px); }
+.companion-redesign .avatar-status[data-state="ready"], .companion-redesign .live2d-interaction-hint, .companion-redesign .companion-presence-cue { display: none; }
+.companion-redesign .companion-conversation { background: transparent; box-shadow: none; border: 0; padding: var(--s-3); }
+.companion-redesign .companion-composer { background: var(--bg-surface); color: var(--text-primary); border-color: var(--border-soft); backdrop-filter: none; }
+.companion-redesign .companion-input { color: var(--text-primary); background: var(--bg-elevated); }
+.companion-redesign .companion-bubbles { max-height: 100px; }
+.companion-redesign .companion-bubble { color: var(--text-primary); background: var(--bg-surface); }
+.companion-redesign .companion-empty { display: none; }
+.companion-redesign .character-info { position: absolute; z-index: var(--z-popover); top: 76px; right: var(--s-3); left: var(--s-3); padding: 0; background: transparent; border: 0; }
+.companion-redesign .character-info-head { display: none; }
+.companion-redesign .character-controls { margin: 0; }
+.companion-redesign .character-controls:not([open]) { display: none; }
+.companion-redesign .character-controls > summary { padding: var(--s-3); color: var(--text-primary); background: var(--bg-elevated); border-radius: var(--r-md); }
+.companion-redesign .character-controls-panel { position: static; max-height: calc(100dvh - 170px); overflow: auto; padding: var(--s-4); border: 1px solid var(--border-soft); background: var(--bg-elevated); border-radius: var(--r-lg); }
+.companion-redesign .companion-live-dot { background: var(--bg-surface); color: var(--text-secondary); text-shadow: none; }
+.companion-redesign .companion-live-dot[data-state="idle"] { display: none; }
+.companion-redesign .companion-chat-chip { color: var(--text-primary); background: var(--bg-surface); border-color: var(--border-soft); backdrop-filter: none; box-shadow: var(--shadow-glass-sm); }
+.companion-redesign .companion-float-reminder { background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-soft); text-shadow: none; backdrop-filter: none; }
+.companion-redesign .companion-float-reminder > span { color: var(--text-secondary); }
+.companion-redesign .companion-float-reminder p { color: var(--text-primary); }
+.companion-redesign .companion-float-reminder button { color: var(--text-secondary); }
+.companion-reply-preview p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.companion-reply-preview svg { width: 15px; height: 15px; }
+.companion-float-error, .companion-mic-status { pointer-events: auto; padding: var(--s-3); color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); }
+html.companion-desktop .companion-redesign .live2d-host { inset: 66px 0 38px; }
+html.companion-desktop .companion-redesign .portrait-main { bottom: 40px; max-height: calc(100% - 108px); }
+html.companion-desktop .companion-redesign .character-info { display: block; }
+html.companion-desktop .companion-redesign .companion-desktop-float { bottom: var(--s-2); width: min(300px, calc(100% - 24px)); }
+html.companion-desktop.companion-ui-hidden .companion-redesign .companion-desktop-float { opacity: 1; transform: translateX(-50%); }
+html.companion-desktop.companion-ui-hidden .companion-redesign .companion-chat-chip { opacity: 1; }
+html.companion-desktop.companion-ui-hidden .companion-redesign .companion-chat-chip:is(:hover, :focus-visible) { opacity: 1; }
+html.companion-desktop .companion-redesign:focus-within .companion-toolbar,
+html.companion-desktop .companion-redesign:has(.character-controls[open]) .companion-toolbar,
+html.companion-desktop .companion-redesign:has(.companion-settings-popover) .companion-toolbar { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
+
+.companion-chat-window.companion-chat-redesign { background: var(--bg-surface); color: var(--text-primary); }
+.companion-chat-redesign .companion-chat-titlebar { padding: var(--s-3); gap: var(--s-2); min-height: 64px; background: var(--bg-surface); }
+.companion-chat-redesign .companion-chat-identity { flex: 1; min-width: 0; }
+.companion-chat-redesign .companion-chat-brand-icon { display: none; }
+.companion-chat-redesign .titlebar-controls { flex-shrink: 0; gap: var(--s-1); }
+.companion-chat-redesign .companion-picker { max-width: 100%; }
+.companion-chat-redesign .companion-picker select { max-width: 190px; }
+.companion-chat-redesign .companion-chat-body { padding: 0 var(--s-4); }
+.companion-chat-redesign .companion-chat-statusline { min-height: 30px; color: var(--text-secondary); }
+.companion-chat-redesign .companion-chat-bubbles { padding-block: var(--s-4); scrollbar-gutter: stable; }
+.companion-chat-redesign .companion-chat-bubble { max-width: 94%; padding: var(--s-3) var(--s-4); background: var(--bg-elevated); color: var(--text-primary); border-color: var(--border-soft); box-shadow: none; }
+.companion-chat-redesign .companion-chat-bubble.user { background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface)); }
+.companion-chat-redesign .companion-chat-bubble p { font-size: var(--fs-body); line-height: 1.8; }
+.companion-message-copy { display: block; margin-top: var(--s-2); padding: 0; background: none; border: 0; font-size: var(--fs-label-sm); color: var(--text-secondary); cursor: pointer; }
+.companion-chat-redesign .companion-chat-composer { margin-inline: calc(var(--s-4) * -1); padding: var(--s-3) var(--s-4); background: var(--bg-surface); }
+.companion-chat-redesign .companion-chat-input { border-radius: var(--r-lg); background: var(--bg-elevated); color: var(--text-primary); }
+.companion-chat-redesign .companion-chat-actions { gap: var(--s-2); margin-top: var(--s-2); }
+.companion-chat-redesign .companion-chat-meta { color: var(--text-secondary); }
+.companion-back-latest { align-self: center; flex-shrink: 0; }
+@media (max-width: 400px) {
+  .companion-drag-handle span { display: none; }
+  .companion-chat-redesign .companion-chat-titlebar { padding: var(--s-2); }
+  .companion-chat-redesign .companion-picker > svg { display: none; }
+  .companion-chat-redesign .companion-chat-mini { width: 30px; height: 36px; }
+}

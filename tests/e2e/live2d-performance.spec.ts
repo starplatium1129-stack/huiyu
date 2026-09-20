@@ -86,6 +86,18 @@ test('native companion keeps live visibility, power and bounds ahead of a stale 
   expect((await probe()).fps).toBe(30)
   await page.evaluate(() => (window as unknown as { __live2dProbe: Probe }).__live2dProbe.events.onShown())
   await expect.poll(async () => (await probe()).frame?.visible).toBe(true)
+  await page.evaluate(() => {
+    localStorage.setItem('aics_room_presentation_v1', JSON.stringify({ id: 'full-room', ts: Date.now() }))
+    window.dispatchEvent(new StorageEvent('storage', { key: 'aics_room_presentation_v1' }))
+  })
+  await expect.poll(async () => (await probe()).frame?.visible).toBe(false)
+  await page.evaluate(() => {
+    (window as unknown as { __live2dProbe: Probe }).__live2dProbe.events.onVisibilityChanged(false)
+    localStorage.removeItem('aics_room_presentation_v1')
+    window.dispatchEvent(new StorageEvent('storage', { key: 'aics_room_presentation_v1' }))
+  })
+  await page.waitForTimeout(100)
+  expect((await probe()).frame?.visible).toBe(false)
 })
 
 test('legacy desktop bridge retains original textures and disables unsupported quality controls', async ({ page }) => {
@@ -117,7 +129,7 @@ test('native character switches carry the selected adapter profile and release t
   await expect.poll(async () => (await probe()).characters.at(-1)?.adapter?.profileId).toBe('profile-nene-v1')
   expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthOpenY', scale: 1 })
 
-  await page.locator('.companion-char-switch').getByRole('button', { name: '夏目', exact: true }).click()
+  await page.getByRole('combobox', { name: '切换陪伴角色' }).selectOption('natsume')
   await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'natsume')
   await expect.poll(async () => (await probe()).characters.at(-1)?.adapter?.profileId).toBe('profile-natsume-v1')
   expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthForm3', scale: -0.5 })

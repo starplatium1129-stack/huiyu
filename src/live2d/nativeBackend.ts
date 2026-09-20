@@ -83,6 +83,7 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       let destroyed = false
       let lastRect: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 }
       let lastVisible = false
+      let framing = { zoom: 1, x: 0, y: 0 }
       let gazeInFlight = false
       let queuedGaze: { x: number; y: number } | null = null
       let streamsPaused = false
@@ -117,7 +118,7 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         ) return
         const frame = { rect: { ...lastRect }, visible: lastVisible }
         pushedFrame = frame
-        void Promise.resolve(bridge.setFrame({ ...frame, opacity: 1 })).catch(() => {
+        void Promise.resolve(bridge.setFrame({ ...frame, opacity: 1, ...(bridge.supportsFraming ? { framing } : {}) })).catch(() => {
           // 只撤销失败请求自己的缓存，旧失败不能覆盖较新的成功更新。
           if (pushedFrame === frame) pushedFrame = null
         })
@@ -230,8 +231,9 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         getScreenSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         getCanvasSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         setStageScale() { /* overlay 尺寸由 live2dOverlayLayout 计算后经 updateOverlay 下发 */ },
-        updateOverlay(rect, visible) {
+        updateOverlay(rect, visible, view) {
           if (destroyed) return
+          if (view && (view.zoom !== framing.zoom || view.x !== framing.x || view.y !== framing.y)) { framing = view; pushedFrame = null }
           lastRect = { ...rect }
           lastVisible = visible
           pushFrame()

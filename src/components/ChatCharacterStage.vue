@@ -1,24 +1,7 @@
 <template>
-  <aside class="character-card" :class="{ 'local-model-stage': getCompanionCharacter(activeId)?.tags?.includes('local-import') }" :data-character="activeId">
-    <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
-      <button
-        v-for="characterDefinition in companionCharacters"
-        :id="tabs.tabId(characterDefinition.id)"
-        :key="characterDefinition.id"
-        class="character-tab"
-        type="button"
-        :class="{ active: activeId === characterDefinition.id }"
-        :data-character="characterDefinition.id"
-        role="tab"
-        :aria-controls="tabs.panelId(characterDefinition.id)"
-        :aria-selected="activeId === characterDefinition.id ? 'true' : 'false'"
-        :tabindex="tabs.tabIndex(characterDefinition.id)"
-        @click="emit('select', characterDefinition.id)"
-      >{{ characterDefinition.shortName }}</button>
-    </div>
+  <aside class="character-card open-character-stage" :class="{ 'local-model-stage': getCompanionCharacter(activeId)?.tags?.includes('local-import') }" :data-character="activeId" :data-surface="surface" :style="framingStyle">
 
     <div
-      :id="tabs.panelId(activeId)"
       ref="stageRef"
       class="portrait-stage"
       :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId, 'touch-pulse': touchResonanceActive }, `emotion-${emotion}`]"
@@ -27,8 +10,8 @@
       :data-presence="presence || undefined"
       :data-mouth-level="mouthLevel.toFixed(3)"
       :data-audio-peak="audioPeak.toFixed(3)"
-      role="tabpanel"
-      :aria-labelledby="tabs.tabId(activeId)"
+      role="region"
+      :aria-label="`${character.name}的角色舞台`"
     >
       <div class="room-signal">
         <span>{{ character.roomCode }}</span>
@@ -68,7 +51,7 @@
           <span>{{ chatStatusText }}</span>
         </div>
       </div>
-      <details class="character-controls">
+      <details ref="controlsRef" class="character-controls" @keydown.esc.stop="closeSettings">
         <summary><ArchiveIcon name="gear" /><span>角色设置</span></summary>
         <div class="character-controls-panel">
       <details class="character-about">
@@ -136,6 +119,14 @@
         </div>
       </div>
       <Live2DQualityControl :native="live2d.backendKind.value === 'native'" />
+      <button v-if="live2d.ready.value" type="button" class="btn btn-ghost" @click="handleAvatarAction">切换为静态立绘</button>
+      <fieldset v-if="live2d.ready.value" class="stage-framing">
+        <legend>角色取景</legend>
+        <label>大小 <input type="range" min="0.65" max="2.2" step="0.05" :value="framing.zoom" aria-label="角色大小" @input="updateFraming('zoom', Number(($event.target as HTMLInputElement).value))" /></label>
+        <label>左右 <input type="range" min="-25" max="25" step="1" :value="framing.x" aria-label="角色左右位置" @input="updateFraming('x', Number(($event.target as HTMLInputElement).value))" /></label>
+        <label>高低 <input type="range" min="-25" max="25" step="1" :value="framing.y" aria-label="角色高低位置" @input="updateFraming('y', Number(($event.target as HTMLInputElement).value))" /></label>
+        <button class="btn btn-ghost" type="button" @click="resetFraming">恢复默认取景</button>
+      </fieldset>
       <details v-if="live2d.adapterReport.value" class="live2d-capability-report">
         <summary>{{ capabilitySummary }}</summary>
         <ul>
@@ -169,7 +160,8 @@ import {
 import { useLive2D } from '@/composables/useLive2D'
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
-import { useRovingTabs } from '@/composables/useRovingTabs'
+import { useStageFraming, type StageSurface } from '@/composables/chat/useStageFraming'
+import '@/assets/css/character-stage.css'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
 import { profileEmotionConfig } from '@/live2d/companionEmotion'
 import type { Live2DBackendKind } from '@/live2d/types'
@@ -180,6 +172,8 @@ const CHARACTER_IDS = listCompanionCharacterIds()
 
 const props = defineProps<{
   activeId: string
+  surface?: StageSurface
+  suspended?: boolean
   character: CharacterConfig
   speaking: boolean
   chatStatusText: string
@@ -204,6 +198,10 @@ const emit = defineEmits<{
 }>()
 
 const stageRef = ref<HTMLElement>()
+const controlsRef = ref<HTMLDetailsElement>()
+function openSettings() { if (controlsRef.value) { controlsRef.value.open = true; controlsRef.value.querySelector('summary')?.focus() } }
+function closeSettings() { if (controlsRef.value) { controlsRef.value.open = false; controlsRef.value.querySelector('summary')?.focus() } }
+const { framing, framingStyle, update: updateFraming, reset: resetFraming } = useStageFraming(computed(() => props.activeId), () => props.surface || 'room')
 const live2dHostRef = ref<HTMLElement>()
 const emotion = ref('neutral')
 const mouthLevel = ref(0)
@@ -242,6 +240,14 @@ const live2d = useLive2D((status) => {
   avatarDetail.value = status.detail
   avatarRetryable.value = status.retryable
 })
+watch(framing, () => live2d.layout(), { deep: true, flush: 'post' })
+let desktopVisible = true
+watch(() => props.suspended, updateStageVisibility, { immediate: true })
+function updateStageVisibility() {
+  const visible = desktopVisible && !props.suspended
+  live2d.setPaused(!visible)
+  if (visible) void live2d.recover()
+}
 const capabilityLabels: Record<Live2DAdapterCapabilityItem['id'], string> = {
   mouth: '口型', blink: '眨眼', focus: '视线', emotions: '情绪', interactions: '互动',
   'hit-areas': '点击区', 'overlay-reset': '叠层复位',
@@ -289,14 +295,6 @@ watch(live2d.interactionHint, (hint) => {
     touchTimer = setTimeout(() => { touchResonanceActive.value = false }, 1400)
   }
 })
-
-const activeIdRef = computed(() => props.activeId)
-const tabs = useRovingTabs(
-  () => CHARACTER_IDS as unknown as readonly string[],
-  activeIdRef,
-  (id) => emit('select', id),
-  { prefix: 'chatchar' },
-)
 
 const avatarActionable = computed(() =>
   avatarState.value !== 'checking'
@@ -356,8 +354,8 @@ function setUserMessage() {
 }
 
 function setDesktopVisible(visible: boolean) {
-  live2d.setPaused(!visible)
-  if (visible) void live2d.recover()
+  desktopVisible = visible
+  updateStageVisibility()
 }
 
 function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) {
@@ -484,6 +482,7 @@ onUnmounted(() => {
 })
 
 defineExpose({
+  openSettings,
   setSpeaking,
   setMouth,
   setAudioLevel,

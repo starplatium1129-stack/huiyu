@@ -118,6 +118,7 @@ export function useChatSpeechInteraction({
   function reconcileAutoListen(): void {
     const shouldListen =
       speechReady.value &&
+      !document.hidden && document.hasFocus() &&
       speechConfig.value.wakeEnabled &&
       !busy.value &&
       speechState.value !== 'error' && // 权限被拒后不自动重试，等用户手动
@@ -196,9 +197,15 @@ export function useChatSpeechInteraction({
   }
 
   onBeforeUnmount(() => {
+    window.removeEventListener('focus', reconcileAutoListen)
+    window.removeEventListener('blur', reconcileAutoListen)
+    document.removeEventListener('visibilitychange', reconcileAutoListen)
     stopSpeechSessionWatch()
     speechRelease()
   })
+  window.addEventListener('focus', reconcileAutoListen)
+  window.addEventListener('blur', reconcileAutoListen)
+  document.addEventListener('visibilitychange', reconcileAutoListen)
 
   return {
     speechConfig,

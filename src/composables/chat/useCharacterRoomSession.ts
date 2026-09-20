@@ -12,7 +12,7 @@ import { usePolling } from '@/composables/usePolling'
 import { controlApi } from '@/api/controlApi'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
-import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY } from '@/utils/storageKeys'
+import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, CHAT_TURN_KEY } from '@/utils/storageKeys'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import {
   editChatFact,
@@ -29,8 +29,10 @@ import {
 } from '@/utils/chatMemory'
 import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
 import { confirmAction } from '@/composables/useConfirm'
+import { withChatTurn } from '@/utils/chatTurnOwnership'
 
 interface CharacterStageHandle {
+  openSettings?: () => void
   setSpeaking: (value: boolean) => void
   setMouth: (value: number) => void
   setAudioLevel: (level: number, peak?: number) => void
@@ -141,6 +143,7 @@ export function useCharacterRoomSession() {
     if (!config) throw new Error('No companion character presentation is registered')
     return config
   })
+  watch(() => route.query.character, id => { if (typeof id === 'string') switchCharacter(id) })
 
   const voice = useVoice({
     enabled: () => autoVoice.value,
@@ -188,7 +191,11 @@ export function useCharacterRoomSession() {
 
   function updateVoiceCapability() {
     const voiceId = currentCharacter.value.voice
-    if (voice.readyFor(voiceId)) {
+    if (!voiceId) {
+      voiceCapabilityText.value = '文字聊天'
+      voiceCapabilityState.value = 'text-only'
+      showVoiceRecovery.value = false
+    } else if (voice.readyFor(voiceId)) {
       voiceCapabilityText.value = 'AI 声线就绪'
       voiceCapabilityState.value = 'ready'
       showVoiceRecovery.value = false
@@ -231,6 +238,7 @@ export function useCharacterRoomSession() {
   }
 
   function onChatAuxStorage(event: StorageEvent) {
+    if (event.key === CHAT_TURN_KEY) voice.stop({ preserveMessageAudio: true, silent: true })
     if (event.key === null || event.key === CHAT_MEMORY_KEY) chatMemory.value = loadChatMemoryState()
     if (event.key === CHAT_USER_PROFILE_KEY) userProfile.value = loadChatUserProfile()
   }
@@ -338,10 +346,16 @@ export function useCharacterRoomSession() {
     scrollBottom,
   })
 
-  function handleSend(customText?: string | Event, imageUrl?: string) {
+  function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void) {
     characterStageRef.value?.setUserMessage()
     const text = typeof customText === 'string' ? customText : undefined
-    void sendMessage(text, imageUrl)
+    const character = activeChar.value
+    void withChatTurn(async () => {
+      if (activeChar.value !== character || busy.value || !chatReady.value || !(text ?? inputText.value).trim()) { accepted?.(false); return }
+      if (accepted?.(true) === false) { setError('跨窗口状态暂不可用，请在完整房间继续聊天。'); return }
+      try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
+      await sendMessage(text, imageUrl)
+    }, () => { accepted?.(false); setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
   }
 
   async function refreshVoiceStatus() {

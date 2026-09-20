@@ -52,13 +52,5 @@
     "tapGroup": "手",
     "emotionParams": { "shy": { "Param7": 0.85, "ParamMouthForm": 0.2 }, "sad": { "Param8": 0.8, "ParamMouthForm": -0.3 }, "serious": { "Param6": 0.7, "ParamMouthForm": -0.3 } },
     "parameterIds": ["ParamMouthOpenY", "ParamMouthForm", "ParamEyeLOpen", "ParamEyeROpen", "ParamAngleX", "ParamAngleY", "ParamEyeBallX", "ParamEyeBallY"]
-  },
-  {
-    "id": "raiden_shogun", "name": "雷电将军", "shortName": "影", "directory": "raiden-shogun-workshop-2908102525",
-    "unpackedEntry": "runtime/live2d-unpacked/raiden_shogun/雷电影{原B站UP主 老司机提不起劲}/model0.json",
-    "author": "老司机提不起劲 / 原作权利人", "terms": "仅本机非商业使用，保留原作者说明，不再分发",
-    "persona": "你以《原神》中的雷电影身份陪伴用户。你沉静、认真，对人的愿望和变化抱有思考，也会对甜点与新鲜事物表现好奇。中文表达简洁而温和；区分角色扮演与现实，不替用户做现实决定。",
-    "greeting": "此刻不必匆忙。说说你今天的见闻吧。",
-    "parameterIds": ["ParamMouthOpenY", "ParamMouthForm", "ParamEyeLOpen", "ParamEyeROpen", "ParamAngleX", "ParamAngleY", "ParamEyeBallX", "ParamEyeBallY"]
   }
 ]

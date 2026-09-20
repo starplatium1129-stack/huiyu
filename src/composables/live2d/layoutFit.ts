@@ -32,6 +32,11 @@ export function createLayoutFitController(
     startEmotionClock: () => void
   },
 ) {
+  function framing() {
+    const style = ctx.hostEl ? getComputedStyle(ctx.hostEl) : null
+    const number = (name: string, fallback: number) => parseFloat(style?.getPropertyValue(name) || '') || fallback
+    return { zoom: Math.max(.65, Math.min(2.2, number('--stage-zoom', 1))), x: number('--stage-x', 0) / 100, y: number('--stage-y', 0) / 100 }
+  }
   function fit() {
     if (!ctx.model || !ctx.hostEl) return
     try {
@@ -48,9 +53,10 @@ export function createLayoutFitController(
         anchorX: 0.5,
         bottomOffset: 0,
       }
-      const scale = Math.min(sw / nw, sh / nh) * profile.scale
+      const view = framing()
+      const scale = Math.min(sw / nw, sh / nh) * profile.scale * view.zoom
       const anchorY = profile.anchorY ?? (nw > nh ? 0.5 : 1)
-      ctx.model.applyFit(scale, (sw - nw * scale) * profile.anchorX, (sh - nh * scale) * anchorY + profile.bottomOffset)
+      ctx.model.applyFit(scale, (sw - nw * scale) * profile.anchorX + sw * view.x, (sh - nh * scale) * anchorY + profile.bottomOffset + sh * view.y)
     } catch (e) { hooks.fallback('Live2D 布局失败', e instanceof Error ? e.message : String(e)) }
   }
 
@@ -91,7 +97,7 @@ export function createLayoutFitController(
         })
         ctx.nativeOverlayReady = true
         const visible = !isStageHidden(ctx) && !prefersReducedMotion()
-        ctx.session.updateOverlay(overlayRect, visible)
+        ctx.session.updateOverlay(overlayRect, visible, framing())
         ctx.session.setPaused(!visible)
         if (visible) hooks.startEmotionClock()
       } catch {}
@@ -101,6 +107,7 @@ export function createLayoutFitController(
     try {
       const wrapper = ctx.hostEl.firstElementChild as HTMLElement | null
       if (!wrapper) return
+      ctx.session?.resizeCanvas?.(ctx.hostEl.clientWidth, ctx.hostEl.clientHeight)
       // 用实际 canvas 尺寸做比例（不同模型画布不同），不硬编码 420×610
       const canvasSize = ctx.session?.getCanvasSize() ?? { width: 420, height: 610 }
       const ws = ctx.hostEl.clientWidth / canvasSize.width, hs = ctx.hostEl.clientHeight / canvasSize.height

@@ -23,6 +23,7 @@ pub fn checked_file(root: &Path, reference: &str) -> Result<PathBuf, String> {
 /// The model URL from WebView never becomes a filesystem path. Only a known
 /// builtin or a completed local import with matching identities can be loaded.
 pub fn resolve_model(assets: &Path, local_root: Option<&Path>, character: &str, profile_id: &str) -> Result<ModelFiles, String> {
+    if character == "raiden_shogun" { return Err("this companion model has been retired".into()); }
     if character.is_empty() || character.len() > 80
         || !character.bytes().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == b'_' || c == b'-') {
         return Err("invalid Live2D character".into());

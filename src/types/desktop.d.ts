@@ -13,6 +13,8 @@ export interface CompanionDesktopBridge {
   openChat(): Promise<unknown>
   toggleChat(): Promise<unknown>
   hideChatWindow(): Promise<unknown>
+  setChatDocked?(docked: boolean): Promise<boolean>
+  getChatDocked?(): Promise<boolean>
   chatRelay(payload: Record<string, unknown>): Promise<unknown>
   onChatCommand(listener: (payload: { command: string; text?: string; imageUrl?: string; character?: string }) => void): number
   offChatCommand(subscriptionId: number): void

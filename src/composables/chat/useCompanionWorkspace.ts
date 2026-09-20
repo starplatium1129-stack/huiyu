@@ -1,5 +1,7 @@
 
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession';
+import { publishChatReceipt } from '@/utils/chatRelayReceipt';
+import { useRoomPresentation } from '@/composables/chat/useRoomPresentation';
 import { useCompanionAffection } from '@/composables/useCompanionAffection';
 import { useCompanionBehaviorRuntime } from '@/composables/useCompanionBehaviorRuntime';
 import { useCompanionClipboardImport } from '@/composables/useCompanionClipboardImport';
@@ -16,6 +18,7 @@ export function useCompanionWorkspace() {
     const companionCharacters = listCompanionUiCharacters();
     const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState } = useCharacterRoomSession();
     const desktopBridge = window.companionDesktop;
+    const presentationSuspended = useRoomPresentation('companion');
     const { getScore, getLevelInfo } = useCompanionAffection();
     const affectionScore = computed(() => getScore(activeChar.value));
     const affectionInfo = computed(() => getLevelInfo(activeChar.value));
@@ -62,7 +65,7 @@ export function useCompanionWorkspace() {
     });
     useCompanionPerformance({ activeChar, reminders: pendingReminders, stage: characterStageRef, voice, autoVoice, voiceActive,
         voiceId: () => currentCharacter.value.voice, affection: () => affectionScore.value,
-        allowed: () => behaviorEnabled.value && !dnd.value && !inQuietHours.value && pageVisible.value && desktopWindowVisible.value
+        allowed: () => !presentationSuspended.value && behaviorEnabled.value && !dnd.value && !inQuietHours.value && pageVisible.value && desktopWindowVisible.value
             && !busy.value && !thinkingActivity.value && !toolActivity.value && !preparingRoom.value
             && !composerFocused.value && !inputText.value.trim() && speechState.value !== 'capturing',
     });
@@ -153,11 +156,13 @@ export function useCompanionWorkspace() {
         text?: string;
         imageUrl?: string;
         character?: string;
+        requestId?: string;
     }) {
         if (!viewAlive)
             return;
         if (payload.command === 'send' && typeof payload.text === 'string' && payload.text.trim()) {
-            handleSend(payload.text, payload.imageUrl);
+            if (payload.character && payload.character !== activeChar.value) { publishChatReceipt(payload.requestId, false); return; }
+            handleSend(payload.text, payload.imageUrl, accepted => publishChatReceipt(payload.requestId, accepted));
         }
         else if (payload.command === 'switch-character' && payload.character) {
             switchCharacter(payload.character);
@@ -203,6 +208,7 @@ export function useCompanionWorkspace() {
     }
     function onWindowKeydown(event: KeyboardEvent) {
         noteActivity();
+        setUiHidden(false);
         if (event.key === 'Escape' && immersive.value) {
             exitImmersive();
             return;
@@ -268,6 +274,7 @@ export function useCompanionWorkspace() {
             if (!viewAlive || !desktopWindowVisible.value)
                 return;
             // Editing or choosing a character must not be interrupted by idle hiding.
+            if (settingsOpen.value || workspaceOpen.value || document.querySelector('.character-controls[open]') || window.getSelection()?.toString()) return;
             if (document.activeElement instanceof HTMLTextAreaElement
                 || document.activeElement instanceof HTMLInputElement
                 || document.activeElement instanceof HTMLSelectElement)
@@ -490,7 +497,7 @@ export function useCompanionWorkspace() {
     return {
 chatListRef,
 characterStageRef,
-        activeChar, desktopBridge, onBatteryPower, uiHidden, presence, immersive,
+        activeChar, desktopBridge, onBatteryPower, uiHidden, presence, immersive, presentationSuspended,
         currentCharacter, affectionScore, affectionInfo, companionCharacters, switchCharacter, settingsOpen,
         autoVoice, onAutoVoiceChange, behaviorEnabled, dnd, toggleDnd, importInputRef,
         onImportInputChange, alwaysOnTop, togglePin, ignoreMouseEvents, toggleMouseEvents, enterImmersive,

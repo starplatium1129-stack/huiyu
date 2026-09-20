@@ -47,6 +47,7 @@ interface WlLive2DApp {
   app?: {
     render?(): void
     screen?: { width: number; height: number }
+    renderer?: { resize(width: number, height: number): void }
     ticker?: {
       started: boolean
       maxFPS?: number
@@ -254,6 +255,16 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
             width: parseFloat(cvs.style.width) || cvs.width || screenSize.width,
             height: parseFloat(cvs.style.height) || cvs.height || screenSize.height,
           }
+        },
+        resizeCanvas(width, height) {
+          if (destroyed || !app.app?.renderer?.resize) return
+          const w = Math.max(1, Math.round(width)), h = Math.max(1, Math.round(height))
+          if (screenSize.width === w && screenSize.height === h) return
+          app.app.renderer.resize(w, h)
+          screenSize = { width: w, height: h }
+          const host = document.querySelector<HTMLElement>(options.selector)
+          const wrapper = host?.firstElementChild as HTMLElement | null
+          if (wrapper) { wrapper.style.width = `${w}px`; wrapper.style.height = `${h}px` }
         },
         setStageScale(scale) {
           if (destroyed) return

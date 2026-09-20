@@ -64,6 +64,7 @@
           <ArchiveIcon name="gear" />
         </button>
       </template>
+      <slot />
     </div>
   </details>
 </template>

@@ -42,6 +42,13 @@ test('local model import repairs optional entries, keeps source bytes, is idempo
     const localRoot = localLive2dRoot(root)
     const entries = readLocalCompanions(localRoot)
     assert.equal(entries.length, 1)
+    // A retired model remains on disk but is absent from both discovery and serving.
+    const retired = path.join(localRoot, 'raiden_shogun')
+    fs.cpSync(path.join(localRoot, 'fixture'), retired, { recursive: true })
+    const receipt = JSON.parse(fs.readFileSync(path.join(retired, 'companion.json'), 'utf8'))
+    receipt.character.id = 'raiden_shogun'
+    fs.writeFileSync(path.join(retired, 'companion.json'), JSON.stringify(receipt))
+    assert.deepEqual(readLocalCompanions(localRoot).map(item => item.character.id), ['fixture'])
     const desktopModels = path.join(root, 'desktop-profile/live2d-imports')
     assert.equal(syncLocalLive2d(localRoot, desktopModels)[0].state, 'preview')
     assert.equal(fs.existsSync(desktopModels), false)
@@ -59,6 +66,7 @@ test('local model import repairs optional entries, keeps source bytes, is idempo
       assert.equal(catalog[0].character.id, 'fixture')
       assert.equal((await fetch(url + entries[0].avatar.modelPath)).status, 200)
       assert.equal((await fetch(url + '/api/live2d-local/fixture/companion.json')).status, 404)
+      assert.equal((await fetch(url + '/api/live2d-local/raiden_shogun/' + entries[0].manifest)).status, 404)
       const remote = { 'x-forwarded-for': '203.0.113.10' }
       assert.deepEqual(await (await fetch(url + '/api/live2d-companions', { headers: remote })).json(), [])
       assert.equal((await fetch(url + entries[0].avatar.modelPath, { headers: remote })).status, 404)
