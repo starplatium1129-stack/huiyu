@@ -36,16 +36,16 @@
 .sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sc-static { cursor: default; }
 
-/* 鼠标跟随光斑：坐标由 SceneCard 的 mousemove 写入 --sc-spot-x/y，
-   透明度由 enter/leave 写入 --sc-spot-o（0/1）。z-index 1 压在缩略图
-   (0) 之上、角标 (3) 与正文之下，产生"指尖划过卡片泛起柔光"的质感。 */
+/* Cache a fixed-size light texture; pointer movement only changes its transform. */
 .sc::before {
-  content: ""; position: absolute; inset: 0; z-index: var(--z-sc-pointer-glow); pointer-events: none;
-  background: radial-gradient(260px circle at var(--sc-spot-x, 50%) var(--sc-spot-y, 40%),
+  content: ""; position: absolute; left:0; top:0; width:520px; height:520px; z-index: var(--z-sc-pointer-glow); pointer-events: none;
+  background: radial-gradient(260px circle at center,
     color-mix(in srgb, var(--accent) 12%, transparent), transparent 66%);
+  transform:translate3d(calc(var(--sc-spot-x, 0px) - 260px),calc(var(--sc-spot-y, 0px) - 260px),0);
   opacity: var(--sc-spot-o, 0);
   transition: opacity var(--motion-route-cut) var(--ease-out);
 }
+.sc:hover::before { will-change:transform,opacity; }
 .sc:hover .sc-band { border-color: transparent; }
 
 /* ---- 视觉预览图区(审核样张优先,渐变兜底) ---- */

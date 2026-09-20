@@ -92,6 +92,42 @@ beforeEach(() => {
 afterEach(() => { unmount(); vi.unstubAllGlobals() })
 
 describe('route motion lifecycle and optional capability fallback (009 F4.6a)', () => {
+  it('animates ordinary page changes and gives cached returns an opacity-only settle', () => {
+    let destination = '/gallery'
+    const hooks = useRouteTransition(() => destination)
+    const gallery = surface(), style = surface()
+    gallery.el.dataset.routePath = '/gallery'; style.el.dataset.routePath = '/style'
+    hooks.onEnter(gallery.el, () => {}); gallery.animations[0].onfinish!()
+    destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, () => {})
+    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }])
+    destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, () => {})
+    assert.equal(gallery.el.inert, false)
+    assert.deepEqual(gallery.calls.at(-1), [[{ opacity: .88 }, { opacity: 1 }], { duration: 150, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
+    hooks.onEnterCancelled(gallery.el); hooks.onLeaveCancelled(style.el)
+  })
+
+  it('fades standalone layouts without translating native overlay anchors', () => {
+    const hooks = useRouteTransition(undefined, { initialFade: true }), { el, calls } = surface()
+    el.dataset.routePath = '/control'
+    hooks.onEnter(el, () => {})
+    assert.deepEqual(calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
+    hooks.onEnterCancelled(el)
+  })
+
+  it('keeps only one departing page during rapid navigation', () => {
+    let destination = '/style'
+    const hooks = useRouteTransition(() => destination), first = surface(), second = surface()
+    first.el.dataset.routePath = '/gallery'; second.el.dataset.routePath = '/style'
+    const leftFirst = counter(), leftSecond = counter()
+    hooks.onLeave(first.el, leftFirst.done)
+    assert.equal(leftFirst.count, 0)
+    destination = '/lora'; hooks.onLeave(second.el, leftSecond.done)
+    assert.equal(leftFirst.count, 1)
+    assert.equal(first.animations[0].cancelCalls, 1)
+    assert.equal(leftSecond.count, 0)
+    hooks.onLeaveCancelled(second.el)
+    assert.equal(leftSecond.count, 1)
+  })
   it('crossfades the archive pair without blocking input and supports cancellation', () => {
     const hooks = useRouteTransition(() => '/character')
     const oldPage = surface(), newPage = surface(), left = counter(), entered = counter()

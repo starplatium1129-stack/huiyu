@@ -51,7 +51,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { computed, onDeactivated, onUnmounted, ref, watch } from 'vue'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 
 export interface SceneCardScene {
   [key: string]: unknown
@@ -88,30 +89,33 @@ const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 const thumbFailed = ref(false)
 const thumbLoaded = ref(false)
 
-// 鼠标跟随光斑：hover 时光斑中心跟随指针（CSS 自定义属性承载坐标，
-// 不直接写 style 属性，符合样式债门禁；卡片级 passive 监听开销极小）
+// Move a fixed gradient texture; coalesce pointer events to the latest position.
 const spotEl = ref<HTMLElement | null>(null)
 let spotFrame = 0
+let spotX = 0, spotY = 0
 function onSpotEnter(e: MouseEvent) {
+  if (prefersReducedMotion()) return
   const el = e.currentTarget as HTMLElement
   spotEl.value = el
   el.style.setProperty('--sc-spot-o', '1')
+  onSpotMove(e)
 }
-function onSpotLeave(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
+function onSpotLeave() {
+  spotEl.value?.style.setProperty('--sc-spot-o', '0')
   spotEl.value = null
   if (spotFrame) { cancelAnimationFrame(spotFrame); spotFrame = 0 }
-  el.style.setProperty('--sc-spot-o', '0')
 }
 function onSpotMove(e: MouseEvent) {
+  if (prefersReducedMotion()) { onSpotLeave(); return }
   const el = e.currentTarget as HTMLElement
   if (spotEl.value !== el) return
+  spotX = e.clientX; spotY = e.clientY
   if (spotFrame) return
   spotFrame = requestAnimationFrame(() => {
     spotFrame = 0
     const r = el.getBoundingClientRect()
-    el.style.setProperty('--sc-spot-x', String(e.clientX - r.left))
-    el.style.setProperty('--sc-spot-y', String(e.clientY - r.top))
+    el.style.setProperty('--sc-spot-x', `${spotX - r.left}px`)
+    el.style.setProperty('--sc-spot-y', `${spotY - r.top}px`)
   })
 }
 
@@ -137,5 +141,6 @@ const tags = computed(() => {
 const metaText = computed(() =>
   props.meta ?? [props.scene.season || '', props.scene.weather || ''].filter(Boolean).join(' · ')
 )
-onUnmounted(() => { if (spotFrame) cancelAnimationFrame(spotFrame) })
+onDeactivated(onSpotLeave)
+onUnmounted(onSpotLeave)
 </script>

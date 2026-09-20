@@ -3,7 +3,11 @@
   <RouteRecoveryBanner />
   <DesktopUpdateBanner v-if="!isCompanion" />
   <div class="route-stage">
-    <RouterView v-slot="{ Component }"><KeepAlive include="AppLayout"><component :is="Component" /></KeepAlive></RouterView>
+    <RouterView v-slot="{ Component }">
+      <Transition appear :css="false" @enter="enterLayout" @leave="leaveLayout" @enter-cancelled="layoutMotion.onEnterCancelled">
+        <KeepAlive include="AppLayout"><component :is="Component" :data-route-path="route.fullPath" /></KeepAlive>
+      </Transition>
+    </RouterView>
   </div>
   <AppInteractionLayer v-if="!isCompanion" />
   <AppToast v-if="!isCompanion" />
@@ -30,11 +34,20 @@ import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
+import { useRouteTransition } from '@/composables/useRouteTransition'
 
 // 键名统一出处：src/utils/storageKeys.ts
 const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 const route = useRoute()
 const router = useRouter()
+const layoutMotion = useRouteTransition(undefined, { initialFade: true })
+function enterLayout(element: Element, done: () => void) {
+  // AppLayout already animates its inner route. Standalone windows fade only;
+  // translating their root would move native-overlay anchors and fixed controls.
+  if (element.classList.contains('page-root')) done()
+  else layoutMotion.onEnter(element, done)
+}
+function leaveLayout(element: Element, done: () => void) { layoutMotion.onEnterCancelled(element); done() }
 let detachDesktopWorkspace: (() => void) | undefined
 onMounted(() => {
   if (window.companionDesktop && !location.pathname.startsWith('/companion')) {
