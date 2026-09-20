@@ -36,6 +36,7 @@ export interface TagShardFile {
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const zlib: typeof import('node:zlib') = require('node:zlib');
 
 const root = path.resolve(
   process.env.AICS_DATA_ROOT
@@ -127,6 +128,18 @@ export function aggregateIsCurrent(): boolean {
     const { tags, manifest } = loadTagShards();
     checkTagPath(root, aggregatePath);
     checkTagPath(root, dictionaryPath);
+    // Existing precompressed responses must describe the same product as JSON.
+    for (const product of [aggregatePath, dictionaryPath]) {
+      const raw = fs.readFileSync(product);
+      for (const suffix of ['.gz', '.br']) {
+        const compressed = product + suffix;
+        if (!fs.existsSync(compressed)) continue;
+        checkTagPath(root, compressed);
+        const bytes = fs.readFileSync(compressed);
+        const decoded = suffix === '.gz' ? zlib.gunzipSync(bytes) : zlib.brotliDecompressSync(bytes);
+        if (!decoded.equals(raw)) return false;
+      }
+    }
     const current = readJson<TagEntry[]>(aggregatePath);
     if (!Array.isArray(current) || current.length !== tags.length) return false;
     const currentDict = readJson<TagDictionaryOutput>(dictionaryPath);

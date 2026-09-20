@@ -57,8 +57,12 @@ export function useInterrogate() {
   const lastResult = ref<InterrogateResult | null>(null)
 
   async function interrogate(file: File, mode: InterrogateMode = 'tag', threshold = 0.35): Promise<InterrogateResult | null> {
+    if (busy.value) return null
     busy.value = true
     error.value = null
+    lastResult.value = null
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 120_000)
     try {
       if (!file) throw new Error('请选择图片')
       if (file.size > MAX_BYTES) throw new Error('图片超过 12MB 限制')
@@ -67,6 +71,7 @@ export function useInterrogate() {
       // 后端接受 base64 或 dataURL，传 dataURL 更省一次前缀判断
       const res = await fetch(API, {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: dataUrl, mode: mode, threshold: threshold })
       })
@@ -78,18 +83,25 @@ export function useInterrogate() {
       // 后端信封是 { ok:true, ...payload }，payload 直接平铺在顶层；
       // 兼容历史/未来可能的 { ok:true, data: {...} } 两种形态。
       const data = (json.data ?? json) as InterrogateResult
+      if (data.engine === 'heuristic') {
+        throw new Error(data.warning || '本地反推模型不可用，演示标签未写入工作台，请检查 WD14 模型后重试')
+      }
+      if (!Array.isArray(data.tags) || typeof data.caption !== 'string') throw new Error('反推服务返回了无效结果，请重试')
       lastResult.value = data
       return data
     } catch (e: unknown) {
       // fetch 的网络失败（网关没起）抛的是 TypeError，消息是浏览器的
       // "Failed to fetch"，同样属于「看不懂」，在这里一并换成可读文案。
       const isNetwork = e instanceof TypeError
-      const message = isNetwork
+      const message = controller.signal.aborted
+        ? '反推超时，请检查本地模型状态后重试'
+        : isNetwork
         ? interrogateFailure(0, '')
         : (e instanceof Error ? e.message : String(e))
       error.value = message || '反推失败'
-      throw e
+      throw new Error(error.value)
     } finally {
+      clearTimeout(timeout)
       busy.value = false
     }
   }

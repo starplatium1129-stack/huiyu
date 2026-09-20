@@ -10,6 +10,7 @@ export interface RandomRecipe {
   config: Omit<RandomInspirationOptions, 'rng' | 'identityExclude'> & { identityExclude?: string[] }
 }
 export function seededRandom(seed: number) {
+  if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('种子须为 0–4294967295 的整数')
   let state = seed >>> 0
   return () => {
     state = (state + 0x6d2b79f5) >>> 0

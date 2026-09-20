@@ -64,6 +64,7 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
    * ③ 用幂等 add 而非 toggle：输入已有词条不再把它删掉。
    */
   function addTag(e: Event) {
+    if ((e as KeyboardEvent).isComposing || (e as KeyboardEvent).keyCode === 229) return
     const input = e.target as HTMLInputElement
     const parts = input.value
       .split(/[,，、\r\n]+/)
@@ -72,15 +73,21 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     if (!parts.length) return
     let added = 0
     let dup = 0
+    let replaced = 0
     for (const tag of parts) {
       const resolved = pb.tagDictionary.canonicalize(tag)
       const canonicalTag = resolved === tag && /^[\w\s-]+$/.test(tag) && tag !== 'BREAK'
         ? tag.replace(/\s+/g, '_').toLowerCase() : resolved
-      if (pb.addManualTag(canonicalTag) === 'duplicate') dup++
-      else added++
+      const outcome = pb.addManualTag(canonicalTag)
+      if (outcome === 'duplicate') dup++
+      else {
+        added++
+        if (outcome === 'replaced') replaced++
+      }
     }
     input.value = ''
-    if (dup) pb.flash(`已添加 ${added} 个，跳过 ${dup} 个已存在`)
+    if (replaced && parts.length > 1) pb.flash(`已处理 ${parts.length} 个输入，其中 ${replaced} 项替换了冲突词条，跳过重复 ${dup} 项；当前共 ${pb.manualTags.size} 个词条`)
+    else if (dup) pb.flash(`已添加 ${added} 个，跳过 ${dup} 个已存在`)
     else if (added > 1) pb.flash(`已添加 ${added} 个词条`)
   }
 

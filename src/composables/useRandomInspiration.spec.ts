@@ -112,3 +112,70 @@ it('undo restores the recipe exported for the restored inspiration', () => {
   random.undo()
   expect(random.lastRecipe.value?.seed).toBe(41)
 })
+
+it.each(['tags', 'artists', 'shot', 'emotion'])('manual %s edits invalidate previews and the old export', field => {
+  const random = setup()
+  const pb = usePromptBuilderStore()
+  random.roll(41)
+  random.prepareCandidates(3, 42)
+  if (field === 'tags') pb.manualTags.add('hand_written_detail')
+  if (field === 'artists') pb.setArtistStyleIds(['rella'])
+  if (field === 'shot') pb.selections.shot = 'custom-shot'
+  if (field === 'emotion') pb.selections.emotion.push('custom-emotion')
+  const edited = pb.snapshotStyleLayers()
+  expect(random.candidates.value).toEqual([])
+  expect(random.lastRecipe.value).toBeNull()
+  expect(random.applyCandidate(0)).toBe(false)
+  expect(pb.snapshotStyleLayers()).toEqual(edited)
+})
+
+it('failed previews clear previous candidates without changing current style or undo', () => {
+  const random = setup()
+  const pb = usePromptBuilderStore()
+  random.roll(41)
+  const before = pb.snapshotStyleLayers()
+  const undo = random.hasUndo.value
+  expect(random.prepareCandidates(3, NaN)).toBe(false)
+  expect(random.candidates.value).toEqual([])
+  expect(random.applyCandidate(0)).toBe(false)
+  expect(pb.snapshotStyleLayers()).toEqual(before)
+  expect(random.hasUndo.value).toEqual(undo)
+})
+
+it('reapplying the same candidate preserves undo and switching candidates still works', () => {
+  const random = setup()
+  const pb = usePromptBuilderStore()
+  const before = pb.snapshotStyleLayers()
+  random.prepareCandidates(3, 41)
+  random.applyCandidate(0)
+  const first = pb.snapshotStyleLayers()
+  random.applyCandidate(0)
+  expect(random.hasUndo.value).toEqual(before)
+  random.applyCandidate(1)
+  expect(random.lastRecipe.value?.seed).toBe(42)
+  expect(random.undo()).toBe(true)
+  expect(pb.snapshotStyleLayers()).toEqual(first)
+  expect(random.candidates.value).toEqual([])
+})
+
+it('editing applied emotions does not mutate the preview draw', () => {
+  const random = setup()
+  random.prepareCandidates(1, 41)
+  const candidate = random.candidates.value[0]
+  const original = [...candidate.draw.emotions]
+  random.applyCandidate(0)
+  usePromptBuilderStore().selections.emotion.push('manual')
+  expect(candidate.draw.emotions).toEqual(original)
+})
+
+it.each(['artists', 'catalog', 'ready', 'outfit'])('invalidates previews after %s context changes', field => {
+  const random = setup()
+  const pb = usePromptBuilderStore()
+  random.prepareCandidates(3, 41)
+  if (field === 'artists') random.includeArtists.value = true
+  if (field === 'catalog') useSceneStore().tags.push({ en: 'library', cn: '图书馆', cat: 'Scene' })
+  if (field === 'ready') pb.dataReady = false
+  if (field === 'outfit') pb.setOutfitOverride(['dress'], 'test')
+  expect(random.candidates.value).toEqual([])
+  expect(random.applyCandidate(0)).toBe(false)
+})

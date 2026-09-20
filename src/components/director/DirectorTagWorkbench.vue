@@ -101,7 +101,7 @@
       </p>
     </div>
     <input v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
-      @keydown.enter.prevent="addTag($event); tagInputText = ''" />
+      @keydown.enter="onTagEnter" />
     <datalist id="prompt-tag-suggestions">
       <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="tag.canonicalTag" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
     </datalist>
@@ -144,6 +144,13 @@ const tagInputText = ref('')
 const inputSuggestions = computed(() => tagInputText.value.trim() && !/[,，、\r\n]/.test(tagInputText.value)
   ? pb.tagDictionary.entries.filter(tag => matchesPromptTag({ en: tag.canonicalTag, cn: tag.zhLabel, cat: tag.category, aliases: tag.aliases }, tagInputText.value)).slice(0, 12) : [])
 const tagCategory = ref('all')
+
+function onTagEnter(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) return
+  event.preventDefault()
+  addTag(event)
+  tagInputText.value = ''
+}
 
 /**
  * 清空全部手工词条（2026-08-30 UX 审计 P0-4）。
@@ -244,7 +251,7 @@ const matchedTags = computed(() => {
   const q = tagSearch.value.trim().toLowerCase()
   return tagCatalog.value
     .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
-    .filter(tag => matchesPromptTag(tag, q, tagMeaning(tag.en, tag.cn)))
+    .filter(tag => !q || matchesPromptTag(tag, q, tagMeaning(tag.en, tag.cn)))
     .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
 })
 

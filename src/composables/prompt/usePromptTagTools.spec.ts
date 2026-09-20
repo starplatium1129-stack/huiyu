@@ -23,6 +23,22 @@ beforeEach(() => {
 })
 
 describe('usePromptTagTools · addTag 批量粘贴', () => {
+  it('does not submit or clear Chinese IME composition', () => {
+    const pb = usePromptBuilderStore()
+    const event = { target: { value: '校服' }, isComposing: true } as unknown as KeyboardEvent
+    usePromptTagTools(pb).addTag(event)
+    expect(pb.manualTags.size).toBe(0)
+    expect((event.target as HTMLInputElement).value).toBe('校服')
+  })
+
+  it('keeps conflict replacements visible in batch feedback', () => {
+    const pb = usePromptBuilderStore()
+    const flash = vi.spyOn(pb, 'flash')
+    usePromptTagTools(pb).addTag(inputWith('school_uniform, bikini, smile'))
+    expect([...pb.manualTags]).toEqual(['bikini', 'smile'])
+    expect(flash).toHaveBeenLastCalledWith(expect.stringContaining('1 项替换了冲突词条'))
+  })
+
   it('英文逗号分隔一次回车加多个词条', () => {
     const pb = usePromptBuilderStore()
     const { addTag } = usePromptTagTools(pb)

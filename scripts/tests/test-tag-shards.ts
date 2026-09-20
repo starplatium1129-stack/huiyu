@@ -85,6 +85,7 @@ import os from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { buildTagDictionary } from '../lib/tag-store';
 import { writeTagFiles } from '../lib/tag-files';
+import zlib from 'node:zlib';
 
 const sampleTag = (id = 'one', en = 'park'): TagEntry => ({ id, en, cn: '公园', cat: 'Scene', related: [] });
 function tagFixture(t: TestContext) {
@@ -107,6 +108,28 @@ function sentinels(root: string) {
   assert.equal(fs.readFileSync(path.join(root, 'data/tags.json'), 'utf8'), 'aggregate sentinel');
   assert.equal(fs.readFileSync(path.join(root, 'data/tags-dictionary.json'), 'utf8'), 'dictionary sentinel');
 }
+
+test('freshness checks reject stale and corrupt compressed products', t => {
+  const f = tagFixture(t);
+  assert.equal(runTag(f.root).status, 0);
+  const check = () => spawnSync(process.execPath, ['-e', `process.exit(require(${JSON.stringify(path.resolve(__dirname, '../lib/tag-store.js'))}).aggregateIsCurrent() ? 0 : 1)`], {
+    env: { ...process.env, AICS_DATA_ROOT: f.root }, encoding: 'utf8',
+  }).status;
+  assert.equal(check(), 0);
+  for (const product of ['tags.json', 'tags-dictionary.json']) {
+    for (const suffix of ['.gz', '.br']) {
+      const output = path.join(f.root, 'data', product + suffix);
+      const compress = suffix === '.gz' ? zlib.gzipSync : zlib.brotliCompressSync;
+      fs.writeFileSync(output, compress(fs.readFileSync(path.join(f.root, 'data', product))));
+      assert.equal(check(), 0);
+      fs.writeFileSync(output, compress(Buffer.from('stale')));
+      assert.equal(check(), 1);
+      fs.writeFileSync(output, 'corrupt');
+      assert.equal(check(), 1);
+      fs.unlinkSync(output);
+    }
+  }
+});
 
 test('dictionary rejects silent collisions and preserves explicitly resolved legacy IDs', () => {
   assert.throws(() => buildTagDictionary([sampleTag(), sampleTag('two', ' PARK ')]), /Unresolved duplicate/);

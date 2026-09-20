@@ -29,7 +29,12 @@ export function useRandomInspiration() {
   const lastRecipe = ref<RandomRecipe | null>(null)
   let snapshotRecipe: RandomRecipe | null = null
   let candidateContext = ''
-  const contextKey = () => JSON.stringify([pb.char, pb.sceneId, pb.subject, pb.projectId])
+  const contextKey = () => JSON.stringify([pb.char, pb.sceneId, pb.subject, pb.projectId, pb.outfitOverride])
+
+  function clearCandidates() {
+    candidates.value = []
+    candidateContext = ''
+  }
 
   /** 撤销快照：仅保留最近一组（掷之前的状态）。 */
   const lastSnapshot = ref<ReturnType<typeof pb.snapshotStyleLayers> | null>(null)
@@ -44,11 +49,21 @@ export function useRandomInspiration() {
     if (!applying) generatedArtists.clear()
   }, { deep: true, flush: 'sync' })
 
-  watch(() => JSON.stringify([pb.char, pb.sceneId, pb.subject, pb.projectId]), () => {
+  // Previews and exported recipes describe the state they were created for.
+  // Manual edits must not be overwritten by a now-stale preview.
+  watch(() => pb.snapshotStyleLayers(), () => {
+    if (applying) return
+    clearCandidates()
+    lastRecipe.value = null
+  }, { deep: true, flush: 'sync' })
+
+  watch([includeArtists, () => pb.tags, () => pb.dataReady], clearCandidates, { deep: true, flush: 'sync' })
+
+  watch(contextKey, () => {
     lastSnapshot.value = null
     snapshotGenerated = []
     generatedArtists.clear()
-    candidates.value = []
+    clearCandidates()
     lastRecipe.value = null
     snapshotRecipe = null
   }, { flush: 'sync' })
@@ -87,6 +102,7 @@ export function useRandomInspiration() {
 
   /** 掷一次随机灵感：快照当前状态 → 采样 → 写回 store。 */
   function prepareCandidates(count = 1, seed = Math.floor(Math.random() * 4294967296)): boolean {
+    clearCandidates()
     if (!pb.dataReady || !pb.tags.length) {
       pb.flash('随机灵感需要数据就绪，请稍候再试', 2500, 'warning')
       return false
@@ -118,8 +134,10 @@ export function useRandomInspiration() {
 
   function applyCandidate(index: number): boolean {
     const candidate = candidates.value[index]
-    if (!candidate || candidateContext !== contextKey()) return false
+    if (!pb.dataReady || !candidate || candidateContext !== contextKey()) return false
     const { draw, recipe } = candidate
+    // A second click must not replace the original undo snapshot with itself.
+    if (lastRecipe.value === recipe) return true
 
     lastSnapshot.value = pb.snapshotStyleLayers()
     snapshotRecipe = lastRecipe.value
@@ -127,7 +145,7 @@ export function useRandomInspiration() {
     const retainedArtists = new Set(recipe.config.keepArtists)
     applying = true
     try {
-      pb.selections.emotion = draw.emotions
+      pb.selections.emotion = [...draw.emotions]
       pb.selections.shot = draw.shot
       pb.selections.lighting = draw.lighting
       pb.selections.composition = draw.composition
@@ -164,6 +182,7 @@ export function useRandomInspiration() {
     lastSnapshot.value = null
     lastRecipe.value = snapshotRecipe
     snapshotRecipe = null
+    clearCandidates()
     pb.flash('已撤销上一组随机灵感', 2000, 'info')
     return true
   }

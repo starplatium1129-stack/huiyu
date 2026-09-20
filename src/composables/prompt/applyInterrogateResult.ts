@@ -4,6 +4,10 @@ import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown) {
   if (!result || typeof result !== 'object') return
+  if ((result as { engine?: string }).engine === 'heuristic') {
+    pb.flash('本地反推模型不可用，演示标签未写入工作台，请检查 WD14 模型后重试')
+    return
+  }
   const { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
   const payload = result as { mode?: string; caption?: string; tags?: unknown; characterTags?: unknown; warning?: string }
   if (payload.mode === 'caption' && typeof payload.caption === 'string' && payload.caption.trim()) {
@@ -86,11 +90,10 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     const detail = merged.conflicts.length === 1
       ? first.reason
       : `${first.reason} 等 ${merged.conflicts.length} 项`
-    parts.push(`跳过身份冲突 ${merged.conflicts.length} 个：${detail}`)
+    parts.push(`跳过冲突词条 ${merged.conflicts.length} 个：${detail}`)
   }
   if (note) parts.push(note)
   pb.flash(parts.length ? parts.join('；') : '反推完成，无新增词条')
   const warning = payload.warning
   if (warning) setTimeout(() => pb.flash(warning), 2600)
 }
-
