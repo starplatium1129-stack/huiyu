@@ -1,6 +1,27 @@
 import type { ParticlePoint } from './particleShapes'
 import { isPopularPortraitPending } from './popularPortraitSource.ts'
 
+/** Original dark-theme luminance floor, shared without changing the palette. */
+export function legibleParticleColor(hex: string): string {
+  const value = hex.trim()
+  const match = /^#?([0-9a-f]{6})$/i.exec(value)
+  if (!match) return value
+  const full = match[1]
+  let r = parseInt(full.slice(0, 2), 16) / 255
+  let g = parseInt(full.slice(2, 4), 16) / 255
+  let b = parseInt(full.slice(4, 6), 16) / 255
+  const MIN = 0.34
+  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+  if (lum < MIN) {
+    const lift = (MIN - lum) / Math.max(1e-6, 1 - lum)
+    r += (1 - r) * lift
+    g += (1 - g) * lift
+    b += (1 - b) * lift
+  }
+  const to255 = (c: number) => Math.round(Math.min(1, Math.max(0, c)) * 255)
+  return `#${[to255(r), to255(g), to255(b)].map(v => v.toString(16).padStart(2, '0')).join('')}`
+}
+
 /**
  * 角色形象粒子（2026-08-16）：粒子直接重组为「这个角色的剪影」，形状与
  * 配色都来自立绘本身。离线脚本（scripts/maintenance/build-particle-portraits.py，

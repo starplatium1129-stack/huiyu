@@ -64,3 +64,28 @@ test('missing point cloud leaves original art and archive available', async ({ p
   await expect(page.locator('.portrait-image')).toBeVisible()
   await expect(page.getByRole('link', { name: '以她开始绘制' })).toHaveAttribute('href', '/prompt-builder?char=nene')
 })
+
+for (const theme of ['dark', 'light']) {
+  test(`screen spacing survives enlargement and low-effects scheduling ${theme}`, async ({ page }) => {
+    test.setTimeout(45000)
+    await page.setViewportSize({ width: 1600, height: 1150 })
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.goto('/character?character=nene')
+    const field = page.locator('.particle-theatre .has-portrait')
+    await expect(field).toBeVisible()
+    const theatre = page.locator('.particle-theatre')
+    await theatre.evaluate(e => { (e as HTMLElement).style.height = '330px' })
+    await expect.poll(async () => Number(await field.getAttribute('data-particle-count'))).toBeLessThan(6500)
+    const referenceSpacing = Number(await field.getAttribute('data-particle-spacing'))
+    const referenceCount = Number(await field.getAttribute('data-particle-count'))
+    await theatre.evaluate(e => { (e as HTMLElement).style.height = '660px' })
+    await expect.poll(async () => Number(await field.getAttribute('data-particle-count'))).toBeGreaterThan(referenceCount * 3.8)
+    expect(Number(await field.getAttribute('data-particle-spacing'))).toBeCloseTo(referenceSpacing, 2)
+    await page.evaluate(() => { document.documentElement.dataset.reducedGlass = 'true' })
+    await page.waitForTimeout(1000)
+    const lowCount = await field.getAttribute('data-particle-count')
+    await page.waitForTimeout(10000)
+    expect(await field.getAttribute('data-particle-count')).toBe(lowCount)
+    expect(await field.getAttribute('data-particle-quality')).toBe('1')
+  })
+}

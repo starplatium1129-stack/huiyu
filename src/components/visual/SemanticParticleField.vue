@@ -6,6 +6,9 @@
     :role="decorative ? undefined : 'img'"
     :aria-label="decorative ? undefined : label"
     :aria-hidden="decorative ? 'true' : undefined"
+    :data-particle-count="sampling.count"
+    :data-particle-spacing="sampling.spacing"
+    :data-particle-quality="sampling.quality"
     @pointermove="onPointerMove"
     @pointerleave="onPointerLeave"
   >
@@ -20,9 +23,12 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
-import { loadPortraitCloud, samplePortraitPoints, particleNeedsOutline, type PortraitCloud } from '@/utils/particlePortrait'
+import { loadPortraitCloud, samplePortraitPoints, legibleParticleColor, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 import { useParticlePerformanceLifecycle } from '@/composables/useParticlePerformanceLifecycle'
+import { preferredParticleCount, type PortraitReferenceSize } from '@/utils/particleDensity'
+import { createParticleSnapshot } from '@/utils/particleSnapshot'
+import { drawParticleBody, type ParticleBodyStyle } from '@/utils/particleBody'
 
 const props = withDefaults(defineProps<{
   shape: ParticleShapeId
@@ -35,6 +41,8 @@ const props = withDefaults(defineProps<{
   signal?: 'idle' | 'active' | 'success' | 'warning'
   /** 角色形象粒子：提供且有预生成点云时，粒子重组为该角色的剪影（缺省回落 shape）。 */
   portraitId?: string
+  /** Preserve the old portrait's screen spacing when this display is enlarged. */
+  portraitReferenceSize?: PortraitReferenceSize
 }>(), {
   caption: '',
   density: 'hero',
@@ -103,27 +111,6 @@ interface AmbientParticle {
 }
 let ambient: AmbientParticle[] = []
 
-/** 主题可读性：人物原色可能过暗（黑裙/深发在深色主题不可见），提亮到最低亮度。 */
-function legibleColor(hex: string): string {
-  const value = hex.trim()
-  const match = /^#?([0-9a-f]{6})$/i.exec(value)
-  if (!match) return value
-  const full = match[1]
-  let r = parseInt(full.slice(0, 2), 16) / 255
-  let g = parseInt(full.slice(2, 4), 16) / 255
-  let b = parseInt(full.slice(4, 6), 16) / 255
-  const MIN = 0.34
-  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
-  if (lum < MIN) {
-    const lift = (MIN - lum) / Math.max(1e-6, 1 - lum)
-    r += (1 - r) * lift
-    g += (1 - g) * lift
-    b += (1 - b) * lift
-  }
-  const to255 = (c: number) => Math.round(Math.min(1, Math.max(0, c)) * 255)
-  return `#${[to255(r), to255(g), to255(b)].map(v => v.toString(16).padStart(2, '0')).join('')}`
-}
-
 let context: CanvasRenderingContext2D | null = null
 let resizeObserver: ResizeObserver | null = null
 let intersectionObserver: IntersectionObserver | null = null
@@ -145,6 +132,9 @@ let lastPhysicsFrame = 0
 let lastAmbientFrame = 0
 let slowFrames = 0
 let qualityScale = 1
+const sampling = ref({ count: 0, spacing: 0, quality: 1 })
+const snapshot = createParticleSnapshot()
+let lastDrawReport = 0
 const performance = useParticlePerformanceLifecycle({
   rebuild: () => setShape(false), start: startLoop, stop: stopLoop, resize,
   cancelDeferred: () => { if (paletteFrame) { cancelAnimationFrame(paletteFrame); paletteFrame = 0 } },
@@ -154,25 +144,14 @@ const performance = useParticlePerformanceLifecycle({
 const { lowEffects, reduceMotion } = performance
 
 function preferredCount(): number {
-  if (reduceMotion.value) return 420
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
-  // 760 → 768：对齐断点表的 --bp-sm。档外值会让 760–768 这 8px 区间单独跳一次，
-  // 调试时极难看出是哪条规则生效（2026-08-30 UX 审计 P2）
-  const compact = window.matchMedia('(max-width: 768px)').matches
-  let count: number
-  if (props.density === 'backdrop') count = compact ? 220 : 380
-  else if (compact || (memory !== undefined && memory <= 4)) count = 520
-  else count = props.density === 'ambient' ? 780 : 1380
-  // 图片点阵密度：整图复刻需要更高点数承载细节（32 色层次 + 背景成像）；
-  // hero 8000 / ambient 6000 / 窄屏 2400，点径 0.55×点距留出点阵缝隙感。
-  // 物理与绘制均为 O(n) 批处理，慢帧自愈降档继续兜底。
-  if (portraitCloud) {
-    count = Math.max(count, compact ? 2400 : props.density === 'hero' ? 8000 : 6000)
-  }
-  return Math.round(count * qualityScale * (lowEffects.value ? 0.65 : 1))
+  return preferredParticleCount({ density: props.density, compact: window.matchMedia('(max-width: 768px)').matches,
+    lowMemory: memory !== undefined && memory <= 4, reduceMotion: reduceMotion.value, lowEffects: lowEffects.value,
+    quality: qualityScale, portraitAspect: portraitCloud?.aspect, width, height, reference: props.portraitReferenceSize })
 }
 
 function readPalette() {
+  snapshot.invalidate()
   if (!host.value) return
   darkTheme = (document.documentElement.dataset.theme || 'dark') !== 'light'
   const style = getComputedStyle(host.value)
@@ -211,12 +190,14 @@ function targetPosition(point: ParticlePoint): { x: number; y: number } {
 }
 
 function setShape(animate = true) {
+  snapshot.invalidate()
   if (!width || !height) return
   const count = Math.max(props.density === 'backdrop' ? 80 : 120, preferredCount())
   let shape: ParticlePoint[]
   if (portraitCloud) {
     const sample = samplePortraitPoints(portraitCloud, count, width, height)
     shape = sample.points
+    sampling.value = { count: shape.length, spacing: sample.spacing, quality: qualityScale }
     // 统一点径 = 0.3×点距（2026-08-16 对齐参考实现 CONFIG.particleSize=3 /
     // samplingStep=5 ≈ 0.3×间距）：点与点之间保留清晰负空间，还原点阵网格
     // 空气感；此前 0.55× 点径让网点粘连成「位图」，失掉离散点阵质感。
@@ -323,6 +304,7 @@ function simulateParticles(now: number): boolean {
   const step = elapsed / 16.67
   const interactionRadius = 105
   const interactionRadiusSquared = interactionRadius * interactionRadius
+  const damping = Math.pow(0.85, step)
   let moving = pointerActive
 
   for (const particle of particles) {
@@ -345,7 +327,6 @@ function simulateParticles(now: number): boolean {
       }
     }
 
-    const damping = Math.pow(0.85, step)
     particle.velocityX *= damping
     particle.velocityY *= damping
     particle.x += particle.velocityX * step
@@ -374,103 +355,16 @@ function draw() {
   const paints = portraitCloud && portraitPaints.length
     ? (darkTheme ? portraitPaints : (portraitRaw.length ? portraitRaw : portraitPaints))
     : null
-  const paths = paints
-    ? paints.map(() => new Path2D())
-    : [new Path2D(), new Path2D(), new Path2D()]
-  // 运动拖尾（对齐参考实现的残影流光）：粒子位移超过阈值时连一条
-  // 上一帧→当前帧线段；静止粒子不入路径——空闲观感不变，交互涟漪带出流光。
-  const tailPaths = paths.map(() => new Path2D())
-  // Light-mode points retain their original colors. A thin concentric ink edge
-  // separates low-contrast colors from the paper surface without darkening their centers.
-  const shadowFlags = paints && !darkTheme ? paints.map(color => particleNeedsOutline(color, particleSurface)) : null
-  const shadowPaths = shadowFlags?.some(Boolean) ? shadowFlags.map(outline => outline ? new Path2D() : null) : null
-  const underColor = particleOutline
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
-
-  for (const particle of particles) {
-    const pathIndex = paints
-      ? Math.min(paths.length - 1, Math.max(0, particle.paint))
-      : particle.tone
-    const path = paths[pathIndex]
-    // 图片点阵（剪影/整图复刻）统一点径；抽象形状维持经典三档点径
-    // （0.78/1.05/1.55 的层次 + 强调色亮点——2026-08-16 用户决策恢复，
-    // 统一大点径在稀疏轮廓形状上显得粗笨）
-    const baseRadius = paints
-      ? (portraitRadii[pathIndex] || 1)
-      : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
-    const radius = baseRadius * (paints && !darkTheme ? 1.35 : 1) * energyScale * particle.size
-    const dx = particle.x - particle.prevX
-    const dy = particle.y - particle.prevY
-    if (dx * dx + dy * dy > 0.12) {
-      tailPaths[pathIndex].moveTo(particle.prevX, particle.prevY)
-      tailPaths[pathIndex].lineTo(particle.x, particle.y)
-    }
-    if (shadowPaths) {
-      const shadow = shadowPaths[pathIndex]
-      if (shadow) {
-        // 阴影圆：右下偏移 0.5px、半径 ×1.15（比点本体略大，露一圈阴影边）
-        shadow.moveTo(particle.x + radius * 1.12, particle.y)
-        shadow.arc(particle.x, particle.y, radius * 1.12, 0, Math.PI * 2)
-      }
-    }
-    path.moveTo(particle.x + radius, particle.y)
-    path.arc(particle.x, particle.y, radius, 0, Math.PI * 2)
-  }
-  // 先拖尾后头点：流光在点后，头点保持锐利；混合模式跟随主体（深色 screen 发光）。
-  ctx.lineCap = 'round'
-  if (paints) {
-    ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
-    // 极亮色阴影圆：先画阴影后主点（阴影在点下方，露出右下弧边界定）。
-    // 深色主题 screen 下近黑阴影≈不可见，无副作用。
-    // alpha 0.42：0.5 实测阴影圆偏重、密集白发区显脏（干净度降）。
-    if (shadowPaths) {
-      ctx.globalCompositeOperation = 'source-over'
-      ctx.globalAlpha = .88
-      ctx.fillStyle = underColor
-      shadowPaths.forEach((path) => { if (path) ctx.fill(path) })
-      ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
-    }
-    // 浅色主题拖尾先垫深色衬线：亮色流光在浅底上同样会「隐形」，交互时
-    // 涟漪残影要保持可见；深色主题 screen 下亮色自带发光，无需衬线。
-    if (!darkTheme) {
-      ctx.globalAlpha = .3
-      ctx.strokeStyle = underColor
-      ctx.lineWidth = 2.4
-      tailPaths.forEach((path) => ctx.stroke(path))
-    }
-    paints.forEach((color, index) => {
-      ctx.globalAlpha = .32
-      ctx.strokeStyle = color
-      ctx.lineWidth = 1.4
-      ctx.stroke(tailPaths[index])
-    })
-    // 图片点阵：深色主题 screen 混合（暗部隐入底色、亮部发光，与档案风融合）；
-    // 浅色主题正常混合、主点透明度 0.95（几乎不透明：颜色还原原图，与深色
-    // 主题一致——0.86 时与浅底混合 14% 会把颜色漂白）。
-    ctx.globalAlpha = darkTheme ? .88 : 1
-    paints.forEach((color, index) => {
-      ctx.fillStyle = color
-      ctx.fill(paths[index])
-    })
-    ctx.globalCompositeOperation = 'source-over'
-  } else {
-    ctx.globalAlpha = .28
-    ctx.strokeStyle = palette.primary
-    ctx.lineWidth = 1.2
-    ctx.stroke(tailPaths[0])
-    ctx.strokeStyle = palette.secondary
-    ctx.stroke(tailPaths[1])
-    ctx.strokeStyle = palette.accent
-    ctx.stroke(tailPaths[2])
-    ctx.globalAlpha = darkTheme ? .72 : 1
-    ctx.fillStyle = palette.primary
-    ctx.fill(paths[0])
-    ctx.globalAlpha = darkTheme ? .46 : .9
-    ctx.fillStyle = palette.secondary
-    ctx.fill(paths[1])
-    ctx.globalAlpha = .9
-    ctx.fillStyle = palette.accent
-    ctx.fill(paths[2])
+  const style: ParticleBodyStyle = { paints, radii: portraitRadii, darkTheme, energyScale,
+    surface: particleSurface, outline: particleOutline, palette }
+  const drawnCount = props.portraitReferenceSize
+    ? snapshot.draw(ctx, width, height, dpr, particles, style)
+    : (drawParticleBody(ctx, particles, style), particles.length)
+  const reportTime = globalThis.performance.now()
+  if (host.value && reportTime - lastDrawReport >= 1000) {
+    host.value.dataset.particleDrawCount = String(drawnCount)
+    lastDrawReport = reportTime
   }
   // 逸散发光碎屑（优化点 ③）：缓慢漂移 + 正弦闪烁；主粒子静止时它们仍微微
   // 浮动，给点阵加呼吸感（backdrop 不生成，reduced-motion 不生成）。
@@ -496,9 +390,9 @@ function renderFrame(now: number) {
   if (!visible || document.hidden || reduceMotion.value) return
   if (lastFrame) {
     const elapsed = now - lastFrame
-    slowFrames = elapsed > 28 ? slowFrames + 1 : Math.max(0, slowFrames - 2)
-    if (slowFrames >= 20 && qualityScale > 0.48) {
-      qualityScale *= 0.7
+    slowFrames = elapsed > (lowEffects.value ? 75 : 28) ? slowFrames + 1 : Math.max(0, slowFrames - 2)
+    if (!props.portraitReferenceSize && slowFrames >= 20 && qualityScale > 0.48) {
+      qualityScale = Math.max(0.48, qualityScale * 0.7)
       slowFrames = 0
       setShape(false)
     }
@@ -583,7 +477,7 @@ watch(() => props.density, () => {
   resize()
   startLoop()
 })
-watch(() => props.signal, () => startLoop())
+watch(() => props.signal, () => { snapshot.invalidate(); startLoop() })
 
 /** 角色剪影点云异步接管：加载完成前维持现有形状，完成后平滑形变成人物轮廓。 */
 async function applyPortrait(id: string) {
@@ -600,7 +494,7 @@ async function applyPortrait(id: string) {
   const cloud = await loadPortraitCloud(id)
   if (token !== portraitToken) return
   portraitCloud = cloud
-  portraitPaints = cloud ? cloud.palette.map(legibleColor) : []
+  portraitPaints = cloud ? cloud.palette.map(legibleParticleColor) : []
   portraitRaw = cloud ? cloud.palette.slice() : []
   // 网点半径在 setShape 里按「点距 × 明暗」自适应计算（依赖粒子数与场域尺寸）
   portraitRadii = portraitPaints.map(() => 1)
@@ -633,6 +527,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  snapshot.release()
   performance.active.value = false
   stopLoop()
   if (paletteFrame) cancelAnimationFrame(paletteFrame)

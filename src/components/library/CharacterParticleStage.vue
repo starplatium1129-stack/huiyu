@@ -8,7 +8,7 @@
       </div>
     </header>
     <div v-show="!showOriginal" class="particle-theatre" :aria-busy="loading">
-      <SemanticParticleField v-show="available" :shape="theme.shape" :portrait-id="characterId" :label="`${name}的人物粒子形象`" :caption="name" density="ambient" />
+      <SemanticParticleField v-show="available" :shape="theme.shape" :portrait-id="characterId" :label="`${name}的人物粒子形象`" :caption="name" density="ambient" :portrait-reference-size="referenceSize" />
       <div v-if="loading" class="particle-loading" role="status"><ArchiveIcon name="spark" /><span>正在聚拢{{ name }}的光点…</span></div>
     </div>
     <div v-show="showOriginal" class="stage-original"><slot /></div>
@@ -29,6 +29,8 @@ import { loadPortraitCloud } from '@/utils/particlePortrait'
 const SemanticParticleField = defineAsyncComponent(() => import('@/components/visual/SemanticParticleField.vue'))
 const props = defineProps<{ characterId: string; name: string }>()
 const theme = computed(() => characterParticleTheme(props.characterId))
+// The removed desktop scene portrait used a 330px-high field and 6000 points.
+const referenceSize = { width: 500, height: 330 }
 const mode = ref<'particles' | 'original'>('particles')
 const available = ref(false)
 const loading = ref(true)
