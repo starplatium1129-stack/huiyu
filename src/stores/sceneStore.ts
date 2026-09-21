@@ -53,11 +53,23 @@ export interface TagMeta {
  */
 export { DATA_VERSION }
 
+/** Per-file application boundary; a stalled local/remote response must not own loading forever. */
+export const SCENE_DATA_TIMEOUT_MS = 15_000
+
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function fetchJson<T>(file: string, version: number): Promise<T> {
-  const response = await fetch(`/data/${file}?v=${version}`)
-  if (!response.ok) throw new Error(`${file} HTTP ${response.status}`)
-  return (await response.json()) as T
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), SCENE_DATA_TIMEOUT_MS)
+  try {
+    const response = await fetch(`/data/${file}?v=${version}`, { signal: controller.signal })
+    if (!response.ok) throw new Error(`${file} HTTP ${response.status}`)
+    return (await response.json()) as T
+  } catch (error) {
+    if (controller.signal.aborted) throw new Error(`${file} 请求超时`)
+    throw error
+  } finally {
+    clearTimeout(timeout)
+  }
 }
 
 const CORE_FILE = 'scenes-core.json'
@@ -215,16 +227,22 @@ export const useSceneStore = defineStore('scenes', () => {
     const requestVersion = version.value
     if (!force && metaLoadedEpoch === epoch) return
     const specs = lite ? META_SPECS.filter((spec) => spec.lite) : META_SPECS
-    const results = await Promise.all(specs.map((spec) => loadMetaSpec(spec, epoch, requestVersion, force)))
+    const requests = specs.map((spec) => loadMetaSpec(spec, epoch, requestVersion, force))
+    const results = await Promise.all(requests.filter((_request, index) => specs[index].required))
     if (epoch !== loadEpoch) return
 
     const requiredFailures = results
       .filter((result) => result.required && !result.ok)
       .map((result) => `${result.file}: ${(result.error as Error)?.message ?? result.error}`)
-    metaLoadedEpoch = META_SPECS.every((spec) => metaOk.get(spec.file)?.epoch === epoch) ? epoch : null
     if (requiredFailures.length) {
       throw new Error(`必需数据加载失败：${requiredFailures.join('；')}`)
     }
+    // Optional catalogs may be slow or unavailable; the scene view can become
+    // usable after required data is ready. Their completion still updates the
+    // per-file failure set and the all-metadata cache marker in the background.
+    void Promise.all(requests).then(() => {
+      if (epoch === loadEpoch) metaLoadedEpoch = META_SPECS.every((spec) => metaOk.get(spec.file)?.epoch === epoch) ? epoch : null
+    })
   }
 
   // ── 分片层：逐分片缓存 + 在途去重 ─────────────────────────────────────

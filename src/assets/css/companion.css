@@ -1543,7 +1543,7 @@ html.companion-mode:not(.companion-desktop) body {
   white-space: pre-wrap;
 }
 
-.companion-page .companion-reminder-bubble button {
+.companion-page .companion-reminder-dismiss {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -1558,10 +1558,33 @@ html.companion-mode:not(.companion-desktop) body {
   line-height: var(--lh-flush);
 }
 
-.companion-page .companion-reminder-bubble button:hover,
-.companion-page .companion-reminder-bubble button:focus-visible {
+.companion-page .companion-reminder-dismiss:hover,
+.companion-page .companion-reminder-dismiss:focus-visible {
   color: var(--text-primary);
   background: var(--bg-elevated);
+}
+
+.companion-reminder-actions {
+  display: flex;
+  margin-top: 6px;
+  padding-right: 20px;
+}
+
+.companion-reminder-action {
+  min-height: 26px;
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 50%, var(--border-soft));
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--character-accent) 10%, transparent);
+  color: var(--text-primary);
+  cursor: pointer;
+  font: 600 var(--fs-label-xs) var(--font-sans);
+}
+
+.companion-reminder-action:hover,
+.companion-reminder-action:focus-visible {
+  border-color: var(--character-accent);
+  background: color-mix(in srgb, var(--character-accent) 20%, var(--bg-elevated));
 }
 
 .companion-page .companion-quiet-hours-hint {
@@ -1575,9 +1598,7 @@ html.companion-mode:not(.companion-desktop) body {
   cursor: default;
 }
 
-.companion-page .companion-reminder-bubble.companion-reminder-link {
-  cursor: pointer;
-}
+.companion-page .companion-reminder-bubble.companion-reminder-link { cursor: default; }
 
 .companion-page .companion-reminder-bubble[data-event-kind="sd-done"] {
   border-color: color-mix(in srgb, var(--character-accent) 70%, var(--border-strong));
@@ -2793,7 +2814,7 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   line-height: var(--lh-body);
   white-space: pre-wrap;
 }
-.companion-float-reminder > button {
+.companion-float-reminder > .companion-reminder-dismiss {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -2807,17 +2828,33 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   font-size: var(--fs-body);
   line-height: var(--lh-flush);
 }
+
+.companion-float-reminder .companion-reminder-actions {
+  padding-right: 20px;
+}
+
+.companion-float-reminder .companion-reminder-action {
+  border-color: color-mix(in srgb, var(--character-accent) 58%, var(--companion-edge));
+  background: color-mix(in srgb, var(--character-accent) 16%, var(--art-scrim));
+  color: var(--companion-ink);
+}
+
+.companion-float-reminder .companion-reminder-action:hover,
+.companion-float-reminder .companion-reminder-action:focus-visible {
+  border-color: var(--character-accent);
+  background: color-mix(in srgb, var(--character-accent) 28%, var(--art-scrim));
+}
 /* 命中区扩到 24px（WCAG 2.5.8，2026-08-28）：视觉保持 20px，点击面垫到 24px */
-.companion-float-reminder > button::before {
+.companion-float-reminder > .companion-reminder-dismiss::before {
   content: "";
   position: absolute;
   inset: -2px;
   border-radius: var(--r-sm);
 }
-.companion-float-reminder > button:hover,
-.companion-float-reminder > button:focus-visible {
+.companion-float-reminder > .companion-reminder-dismiss:hover,
+.companion-float-reminder > .companion-reminder-dismiss:focus-visible {
   color: var(--companion-ink);
   background: var(--companion-wash);
 }
 .companion-float-reminder[data-kind="event"] { border-style: dashed; cursor: default; }
-.companion-float-reminder.companion-reminder-link { cursor: pointer; }
+.companion-float-reminder.companion-reminder-link { cursor: default; }

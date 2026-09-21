@@ -74,6 +74,13 @@ for (const entry of layoutRoutes) {
 }
 
 test('every route keeps exactly one h1', async ({ page }) => {
+  const titles: Record<string, string> = {
+    '/': '绘遇', '/prompt-builder': '绘图工作台 · 绘遇', '/gallery': '作品册 · 绘遇',
+    '/scene-explorer': '场景探索 · 绘遇', '/showcase': '作品展 · 绘遇', '/chat': '完整房间 · 绘遇',
+    '/companion': '桌面陪伴 · 绘遇', '/control': '服务控制 · 绘遇',
+    '/scene-manager': '场景管理 · 绘遇', '/character': '角色档案 · 绘遇',
+    '/color-script': '色彩脚本 · 绘遇', '/lora': '角色 LoRA · 绘遇', '/style': '画师风格 · 绘遇',
+  }
   for (const entry of [
     ...layoutRoutes,
     { path: '/companion', name: 'companion' },
@@ -82,7 +89,13 @@ test('every route keeps exactly one h1', async ({ page }) => {
   ]) {
     await page.goto(entry.path);
     await expect(page.getByRole('heading', { level: 1 }), `${entry.name} must have a single h1`).toHaveCount(1);
+    await expect(page).toHaveTitle(titles[entry.path] || /绘遇/);
   }
+});
+
+test('not-found route gets a distinct document title', async ({ page }) => {
+  await page.goto('/route-that-does-not-exist');
+  await expect(page).toHaveTitle('页面未找到 · 绘遇');
 });
 
 test('primary navigation is reachable and marks the active route', async ({ page }) => {

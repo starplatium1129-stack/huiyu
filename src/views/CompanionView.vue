@@ -164,13 +164,14 @@
             class="companion-reminder-bubble"
             :data-kind="reminder.kind"
             :data-event-kind="reminder.eventKind || undefined"
-            :title="reminder.kind === 'event' && reminder.eventKind ? (desktopBridge ? '点击打开对应页面' : '') : ''"
-            :class="{ 'companion-reminder-link': reminder.kind === 'event' && reminder.eventKind }"
-            @click="openReminderRoute(reminder)"
+            :class="{ 'companion-reminder-link': reminder.kind === 'event' && reminder.eventKind && desktopBridge }"
           >
             <span class="companion-reminder-name">{{ currentCharacter.name }}</span>
             <p>{{ reminder.line }}</p>
-            <button type="button" aria-label="关闭这条问候" @click.stop="dismissReminder(reminder.id)">×</button>
+            <div v-if="reminder.kind === 'event' && reminder.eventKind && desktopBridge" class="companion-reminder-actions">
+              <button type="button" class="companion-reminder-action" @click="openReminderRoute(reminder)">{{ reminderActionLabel(reminder) }}</button>
+            </div>
+            <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)">×</button>
           </div>
         </TransitionGroup>
         <Transition name="layer-fade">
@@ -360,13 +361,14 @@
             class="companion-float-reminder"
             :data-kind="reminder.kind"
             :data-event-kind="reminder.eventKind || undefined"
-            :title="reminder.kind === 'event' && reminder.eventKind ? '点击打开对应页面' : ''"
-            :class="{ 'companion-reminder-link': reminder.kind === 'event' && reminder.eventKind }"
-            @click="openReminderRoute(reminder)"
+            :class="{ 'companion-reminder-link': reminder.kind === 'event' && reminder.eventKind && desktopBridge }"
           >
             <span>{{ currentCharacter.name }}</span>
             <p>{{ reminder.line }}</p>
-            <button type="button" aria-label="关闭这条问候" @click.stop="dismissReminder(reminder.id)">×</button>
+            <div v-if="reminder.kind === 'event' && reminder.eventKind && desktopBridge" class="companion-reminder-actions">
+              <button type="button" class="companion-reminder-action" @click="openReminderRoute(reminder)">{{ reminderActionLabel(reminder) }}</button>
+            </div>
+            <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)">×</button>
           </div>
         </TransitionGroup>
         <button
@@ -400,6 +402,7 @@ const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatC
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
+import type { CompanionReminder } from '@/utils/companionBehavior'
 const {
 chatListRef,characterStageRef,activeChar,
 desktopBridge,
@@ -494,4 +497,8 @@ liveDotState,
 liveDotText
 } = useCompanionWorkspace()
 const petGestures = usePetGestures(desktopBridge, openChatWindow)
+
+function reminderActionLabel(reminder: CompanionReminder) {
+  return reminder.eventKind === 'sd-done' ? '查看作品册' : '查看服务状态'
+}
 </script>

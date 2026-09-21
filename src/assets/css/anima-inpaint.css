@@ -293,11 +293,19 @@
   border-radius: var(--r-lg);
   width: 100%;
   height: 100%;
+  background: transparent;
+  color: inherit;
+  font: inherit;
 }
 
 .dropzone-empty:hover {
   border-color: var(--accent);
   background: rgba(56, 189, 248, 0.05);
+}
+
+.dropzone-empty:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .dropzone-icon {

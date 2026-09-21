@@ -255,11 +255,11 @@ async function handleStart() {
             </template>
 
             <template v-else>
-              <div class="dropzone-empty" @click="triggerUpload">
+              <button class="dropzone-empty" type="button" aria-label="选择本地图片换装" @click="triggerUpload">
                 <ArchiveIcon name="upload" class="dropzone-icon" />
                 <span class="dropzone-title">点击或拖拽上传本地图片</span>
                 <span class="dropzone-hint">支持 PNG / JPG / WebP 任意动漫图像</span>
-              </div>
+              </button>
             </template>
           </div>
 

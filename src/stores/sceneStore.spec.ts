@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { useSceneStore, DATA_VERSION } from './sceneStore'
+import { useSceneStore, DATA_VERSION, SCENE_DATA_TIMEOUT_MS } from './sceneStore'
 
 /**
  * sceneStore 数据装载契约：
@@ -340,6 +340,34 @@ describe('sceneStore · 按需加载与并发去重', () => {
 })
 
 describe('sceneStore · 失败恢复（审计 2026-09-05 P1-01）', () => {
+  it('stalled required data is aborted at the application boundary and loading settles', async () => {
+    routes = {
+      ...fullRoutes(),
+      'characters.json': [{ id: 'char-1' }],
+    }
+    vi.useFakeTimers()
+    vi.stubGlobal('fetch', vi.fn((input: string | URL, init?: RequestInit) => {
+      const file = String(input).replace(/^\/data\//, '').replace(/\?.*$/, '')
+      if (file === 'characters.json') {
+        return new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true })
+        })
+      }
+      return Promise.resolve(response(routes[file]))
+    }))
+    try {
+      const store = useSceneStore()
+      const pending = store.load()
+      await vi.advanceTimersByTimeAsync(SCENE_DATA_TIMEOUT_MS)
+      await pending
+      expect(store.loading).toBe(false)
+      expect(store.loaded).toBe(false)
+      expect(store.error).toContain('characters.json 请求超时')
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('损坏 JSON 容器与重复角色 id 必须可见，恢复后可重新加载', async () => {
     routes = fullRoutes()
     stubFetch()

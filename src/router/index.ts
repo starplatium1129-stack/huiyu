@@ -61,29 +61,29 @@ const router = createRouter({
       path: '/',
       component: () => import('@/components/AppLayout.vue'),
       children: [
-        { path: '',                name: 'home',          component: () => import('@/views/HomeView.vue') },
-        { path: 'scene-explorer', name: 'scene',         component: () => import('@/views/SceneExplorerView.vue') },
-        { path: 'popular-scenes', name: 'popular-scenes', component: () => import('@/views/PopularSceneExplorerView.vue') },
-        { path: 'prompt-builder', name: 'director',      component: () => import('@/views/PromptBuilderView.vue') },
-        { path: 'video-studio',  name: 'video',         component: () => import('@/views/VideoStudioView.vue') },
-        { path: 'chat',           name: 'chat',          component: () => import('@/views/ChatView.vue') },
-        { path: 'showcase',       name: 'showcase',      component: () => import('@/views/ShowcaseView.vue') },
-        { path: 'gallery',        name: 'gallery',       component: () => import('@/views/GalleryView.vue') },
-        { path: 'character',      name: 'character',     component: () => import('@/views/CharacterView.vue') },
-        { path: 'style',          name: 'style',         component: () => import('@/views/StyleView.vue') },
-        { path: 'lora',           name: 'lora',          component: () => import('@/views/LoraView.vue') },
-        { path: 'scene-manager',  name: 'manager',       component: () => import('@/views/SceneManagerView.vue') },
-        { path: 'color-script',   name: 'color-script',  component: () => import('@/views/ColorScriptView.vue') },
-        { path: 'scenario',       name: 'scenario',      component: () => import('@/views/ScenarioView.vue') },
+        { path: '',                name: 'home',          meta: { title: '绘遇' }, component: () => import('@/views/HomeView.vue') },
+        { path: 'scene-explorer', name: 'scene',         meta: { title: '场景探索' }, component: () => import('@/views/SceneExplorerView.vue') },
+        { path: 'popular-scenes', name: 'popular-scenes', meta: { title: '热门场景' }, component: () => import('@/views/PopularSceneExplorerView.vue') },
+        { path: 'prompt-builder', name: 'director',      meta: { title: '绘图工作台' }, component: () => import('@/views/PromptBuilderView.vue') },
+        { path: 'video-studio',  name: 'video',         meta: { title: '视频工作台' }, component: () => import('@/views/VideoStudioView.vue') },
+        { path: 'chat',           name: 'chat',          meta: { title: '完整房间' }, component: () => import('@/views/ChatView.vue') },
+        { path: 'showcase',       name: 'showcase',      meta: { title: '作品展' }, component: () => import('@/views/ShowcaseView.vue') },
+        { path: 'gallery',        name: 'gallery',       meta: { title: '作品册' }, component: () => import('@/views/GalleryView.vue') },
+        { path: 'character',      name: 'character',     meta: { title: '角色档案' }, component: () => import('@/views/CharacterView.vue') },
+        { path: 'style',          name: 'style',         meta: { title: '画师风格' }, component: () => import('@/views/StyleView.vue') },
+        { path: 'lora',           name: 'lora',          meta: { title: '角色 LoRA' }, component: () => import('@/views/LoraView.vue') },
+        { path: 'scene-manager',  name: 'manager',       meta: { title: '场景管理' }, component: () => import('@/views/SceneManagerView.vue') },
+        { path: 'color-script',   name: 'color-script',  meta: { title: '色彩脚本' }, component: () => import('@/views/ColorScriptView.vue') },
+        { path: 'scenario',       name: 'scenario',      meta: { title: '叙事脚本' }, component: () => import('@/views/ScenarioView.vue') },
         // 兜底路由：没有它，任何拼错的地址都只渲染一个空白外壳
-        { path: ':pathMatch(.*)*', name: 'not-found',    component: () => import('@/views/NotFoundView.vue') },
+        { path: ':pathMatch(.*)*', name: 'not-found',    meta: { title: '页面未找到' }, component: () => import('@/views/NotFoundView.vue') },
       ]
     },
     // 桌宠与控制面板都有独立完整布局，不套 AppLayout。
-    { path: '/companion', name: 'companion', component: () => import('@/views/CompanionView.vue') },
+    { path: '/companion', name: 'companion', meta: { title: '桌面陪伴' }, component: () => import('@/views/CompanionView.vue') },
     // 真双窗口：独立聊天窗（无 Live2D，严格 CSP，不进 LIVE2D_PATHS）
-    { path: '/companion-chat', name: 'companion-chat', component: () => import('@/views/CompanionChatView.vue') },
-    { path: '/control', name: 'control', component: () => import('@/views/ControlView.vue') }
+    { path: '/companion-chat', name: 'companion-chat', meta: { title: '陪伴聊天' }, component: () => import('@/views/CompanionChatView.vue') },
+    { path: '/control', name: 'control', meta: { title: '服务控制' }, component: () => import('@/views/ControlView.vue') }
   ],
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
   scrollBehavior(to, from, savedPosition) {
@@ -140,6 +140,13 @@ router.beforeEach(async (to, from) => {
   approveTaskReload()
   window.location.assign(to.fullPath)
   return false
+})
+
+const BRAND_TITLE = '绘遇'
+router.afterEach((to) => {
+  if (typeof document === 'undefined') return
+  const pageTitle = typeof to.meta.title === 'string' ? to.meta.title : BRAND_TITLE
+  document.title = pageTitle === BRAND_TITLE ? BRAND_TITLE : `${pageTitle} · ${BRAND_TITLE}`
 })
 
 export default router

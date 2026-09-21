@@ -584,6 +584,30 @@ test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, ad
   await expect(modal).toBeVisible()
   await expect(modal.locator('.modal-header')).toContainText('智能视觉换装')
 
+  // 空态上传入口必须是原生按钮：Enter 与 Space 都能打开同一个文件选择器，
+  // 选择后进入预览，不依赖鼠标或隐藏 input 的可聚焦性。
+  const fixture = { name: 'keyboard-upload.png', mimeType: 'image/png', buffer: Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+    'base64',
+  ) }
+  const emptyUpload = modal.getByRole('button', { name: '选择本地图片换装', exact: true })
+  await emptyUpload.focus()
+  const enterChooser = page.waitForEvent('filechooser')
+  await page.keyboard.press('Enter')
+  await (await enterChooser).setFiles(fixture)
+  await expect(modal.locator('.preview-thumb')).toBeVisible()
+
+  await modal.getByRole('button', { name: '关闭', exact: true }).click()
+  await expect(modal).not.toBeVisible()
+  await openInpaintBtn.click()
+  await expect(modal).toBeVisible()
+  const emptyUploadAgain = modal.getByRole('button', { name: '选择本地图片换装', exact: true })
+  await emptyUploadAgain.focus()
+  const spaceChooser = page.waitForEvent('filechooser')
+  await page.keyboard.press('Space')
+  await (await spaceChooser).setFiles(fixture)
+  await expect(modal.locator('.preview-thumb')).toBeVisible()
+
   // 遮罩模式切换：手绘 vs 自动识别
   await page.getByRole('button', { name: '自动识别', exact: true }).click()
   await expect(page.locator('#maskPromptInput')).toBeVisible()

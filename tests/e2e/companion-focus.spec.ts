@@ -31,7 +31,13 @@ for (const theme of ['dark', 'light']) {
       await desktopFixture(page, theme)
       await page.setViewportSize({ width, height })
       await page.goto('/companion')
+      // Pure-pet mode keeps chrome hidden until an explicit desktop gesture.
+      // The old test assumed a permanently visible chat chip and stopped before
+      // checking the current right-click / Shift+F10 contract.
+      await expect(page.locator('.companion-chat-chip')).toBeHidden()
+      await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
       await expect(page.locator('.companion-chat-chip')).toBeVisible()
+      await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
       await page.getByRole('button', { name: '设置', exact: true }).click()
       const panel = page.locator('.companion-settings-popover')
       await expect(panel).toBeVisible()
@@ -51,6 +57,9 @@ for (const theme of ['dark', 'light']) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
       await page.keyboard.press('Escape')
       await expect(panel).toBeHidden()
+      await page.locator('.companion-page').press('Shift+F10')
+      await expect(page.locator('.companion-chat-chip')).toBeVisible()
+      await page.keyboard.press('Escape')
       const reminder = page.locator('.companion-float-reminder p').first()
       await expect(reminder).toBeVisible()
       const overlayContrast = await reminder.evaluate(element => {
