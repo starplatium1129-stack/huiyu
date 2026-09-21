@@ -39,6 +39,7 @@ interface RequestOptions {
   json?: unknown;
   signal?: AbortSignal;
   timeoutMs?: number;
+  totalTimeoutMs?: number;
   timeoutMessage?: string;
   limit?: number;
 }
@@ -177,6 +178,15 @@ async function request(baseUrl: string, pathname: string, options?: RequestOptio
     let responseRef: IncomingMessage | null = null;
     let req: ClientRequest | null = null;
     let connectReq: ClientRequest | null = null;
+    const deadline = opts.totalTimeoutMs ? setTimeout(() => {
+      const error = new UpstreamError('Upstream total deadline exceeded', { code: 'UPSTREAM_DEADLINE' });
+      req?.destroy(error);
+      connectReq?.destroy(error);
+      responseRef?.destroy(error);
+      if (!settled) reject(error);
+      cleanupAbort();
+    }, opts.totalTimeoutMs) : null;
+    deadline?.unref();
 
     function onResponse(response: IncomingMessage) {
       settled = true;
@@ -190,6 +200,7 @@ async function request(baseUrl: string, pathname: string, options?: RequestOptio
       else if (connectReq && !connectReq.destroyed) connectReq.destroy(abortError());
     }
     function cleanupAbort() {
+      if (deadline) clearTimeout(deadline);
       if (opts.signal) opts.signal.removeEventListener('abort', onAbort);
     }
 

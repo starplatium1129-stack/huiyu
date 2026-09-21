@@ -11,7 +11,7 @@ let { normalizeMultimodalContent }: typeof import('./chat-content') = require('.
 let express: typeof import('express') = require('express');
 
 
-let StringDecoder = (require('string_decoder') as typeof import('string_decoder')).StringDecoder;
+import { boundedLines, type StreamLimits } from '../services/stream-budget';
 let httpClient: typeof import('../services/http-client') = require('../services/http-client');
 let security: typeof import('../server/security') = require('../server/security');
 let envelope: typeof import('../server/http-envelope') = require('../server/http-envelope');
@@ -249,7 +249,7 @@ function buildWebSearchParams(api: { model: string; vendor: string; }) {
   return {};
 }
 
-async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: GatewayConfig) {
+async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: GatewayConfig, limits: StreamLimits & { totalTimeoutMs?: number } = {}) {
   handlers = handlers || {};
   let api = input.api;
   // 访客模式（hostConfig:true）：从站主托管配置注入 baseUrl/model/key，
@@ -305,6 +305,7 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
       input.companionTools ? { tools:companionTools.TOOL_DEFINITIONS } : {}),
     signal:input.signal,
     timeoutMs:120000,
+    totalTimeoutMs:limits.totalTimeoutMs ?? 600000,
     timeoutMessage:'自定义 API 对话超时'
   });
   let statusCode = result.response.statusCode || 0;
@@ -319,10 +320,11 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
 
   if (handlers.onStart) await handlers.onStart({ model:api.model, queueWaitMs:0 });
   let contentType = String(result.response.headers['content-type'] || '').toLowerCase();
-  let decoder = new StringDecoder('utf8');
   let buffer = '';
   let emitted = false;
   let malformedSse = false;
+  let terminal = false;
+  const sse = contentType.includes('text/event-stream');
 
   // tool_calls 流式增量按 index 累积（OpenAI 兼容格式：id 与 name 只在
   // 首次 chunk 出现，arguments 是字符串分片）；流结束时统一 flush 成事件。
@@ -342,10 +344,14 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
     for (let i = 0; i < deltas.length; i += 1) {
       let delta = deltas[i] || {};
       let rawIndex = delta.index !== undefined ? Number(delta.index) : i;
-      let index = Number.isInteger(rawIndex) && rawIndex >= 0 && rawIndex <= 16 ? rawIndex : i;
+      if (!Number.isInteger(rawIndex) || rawIndex < 0 || rawIndex >= 8) throw new httpClient.UpstreamError('工具数量或索引无效', { code:'STREAM_BUDGET' });
+      let index = rawIndex;
       let acc = toolCallsByIndex[index] || (toolCallsByIndex[index] = { id:'', name:'', arguments:'' });
+      if (typeof delta.id === 'string' && delta.id.length > 128) throw new httpClient.UpstreamError('工具 ID 超限', { code:'STREAM_BUDGET' });
       if (typeof delta.id === 'string' && delta.id) acc.id = delta.id;
       if (delta.function) {
+        if (typeof delta.function.arguments !== 'undefined' && typeof delta.function.arguments !== 'string') throw new httpClient.UpstreamError('工具参数格式无效', { code:'INVALID_SSE' });
+        if (Buffer.byteLength(acc.arguments) + Buffer.byteLength(delta.function.arguments || '') > 4000 || acc.name.length + String(delta.function.name || '').length > 128) throw new httpClient.UpstreamError('工具参数超限', { code:'STREAM_BUDGET' });
         // 部分实现会把 name 也分片传输，用拼接兼容
         if (typeof delta.function.name === 'string') acc.name += delta.function.name;
         if (typeof delta.function.arguments === 'string') acc.arguments += delta.function.arguments;
@@ -356,6 +362,13 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
     if (!handlers.onToolCall) return Promise.resolve();
     let indexes = Object.keys(toolCallsByIndex).map(Number).sort(function (a, b) { return a - b; });
     let chain = Promise.resolve();
+    // Validate the complete batch before publishing any potentially effectful call.
+    for (const index of indexes) {
+      const call = toolCallsByIndex[index];
+      if (!call.id || !companionTools.isKnownToolName(call.name)) throw new httpClient.UpstreamError('工具调用不完整', { code:'INVALID_SSE' });
+      try { const args = JSON.parse(call.arguments); if (!args || typeof args !== 'object' || Array.isArray(args)) throw Error(); }
+      catch { throw new httpClient.UpstreamError('工具参数不完整', { code:'INVALID_SSE' }); }
+    }
     indexes.forEach(function (index) {
       let call = toolCallsByIndex[index];
       if (!call || !call.name) return;
@@ -373,58 +386,57 @@ async function streamCompatibleApi(input: any, handlers: any, gatewayConfig?: Ga
     return chain;
   }
 
-  for await (let chunk of result.response) {
-    buffer += Buffer.isBuffer(chunk) ? decoder.write(chunk) : String(chunk);
-    if (!contentType.includes('text/event-stream') && !buffer.includes('\ndata:')) continue;
-    let lines = buffer.split(/\r?\n/);
-    buffer = lines.pop() || '';
-    for (let i = 0; i < lines.length; i += 1) {
-      let line = lines[i].trim();
+  for await (let rawLine of boundedLines(result.response, limits)) {
+    if (!sse) { buffer += rawLine + '\n'; continue; }
+      let line = rawLine.trim();
       if (!line.startsWith('data:')) continue;
       let payload = line.slice(5).trim();
-      if (!payload || payload === '[DONE]') continue;
+      if (!payload) continue;
+      if (payload === '[DONE]') { terminal = true; break; }
       let event;
       try { event = JSON.parse(payload); } catch (error) {
         malformedSse = true;
         continue;
       }
       accumulateToolCalls(event);
+      const finish = event?.choices?.[0]?.finish_reason;
+      if (['stop', 'length', 'tool_calls', 'content_filter'].includes(finish)) terminal = true;
       let reasoning = compatibleReasoning(event);
       if (reasoning) {
+        if (Buffer.byteLength(reasoningText) + Buffer.byteLength(reasoning) > 20000) throw new httpClient.UpstreamError('推理过程超限', { code:'STREAM_BUDGET' });
         reasoningText += reasoning;
         emitted = true;
         if (handlers.onReasoning) await handlers.onReasoning(reasoning);
-        continue;
       }
       let token = compatibleContent(event);
       if (!token) continue;
       emitted = true;
       if (handlers.onToken) await handlers.onToken(token);
-    }
   }
-  buffer += decoder.end();
 
-  if (malformedSse && !emitted && !Object.keys(toolCallsByIndex).length) {
+  if (malformedSse || (sse && !terminal)) {
     throw new httpClient.UpstreamError('自定义 API 返回了畸形 SSE', {
       code:'INVALID_SSE'
     });
   }
+  if (!sse && !buffer.trim()) throw new httpClient.UpstreamError('上游返回空响应', { code:'INCOMPLETE_STREAM' });
 
   if (!emitted && buffer.trim()) {
     let responseBody;
     try { responseBody = JSON.parse(buffer); } catch (error) {
       throw new httpClient.UpstreamError('自定义 API 返回了无法识别的响应', {
         code:'INVALID_JSON',
-        detail:buffer.slice(0, 300)
       });
     }
     accumulateToolCalls(responseBody);
     let reasoningBody = compatibleReasoning(responseBody);
     if (reasoningBody) {
+      if (Buffer.byteLength(reasoningBody) > 20000) throw new httpClient.UpstreamError('推理过程超限', { code:'STREAM_BUDGET' });
       reasoningText += reasoningBody;
       if (handlers.onReasoning) await handlers.onReasoning(reasoningBody);
     }
     let content = compatibleContent(responseBody);
+    if (!Array.isArray(responseBody?.choices) || !responseBody.choices[0]?.message) throw new httpClient.UpstreamError('非流式响应缺少消息', { code:'INVALID_JSON' });
     if (content && handlers.onToken) await handlers.onToken(content);
   }
   await flushToolCalls();

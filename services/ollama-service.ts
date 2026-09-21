@@ -3,6 +3,7 @@
 import type { IncomingMessage } from 'http';
 import SerialQueue = require('./serial-queue');
 import httpClient = require('./http-client');
+import { boundedLines, type StreamLimits } from './stream-budget';
 
 interface OllamaModelDetails {
   parameter_size?: string;
@@ -51,6 +52,7 @@ interface StreamChatResult {
 }
 
 interface OllamaServiceOptions {
+  streamLimits?: StreamLimits & { totalTimeoutMs?: number };
   host: string;
   model?: string;
   keepAlive?: string;
@@ -185,13 +187,9 @@ function createOllamaService(options: OllamaServiceOptions) {
   }
 
   async function consumeNdjson(response: IncomingMessage, callbacks: StreamCallbacks): Promise<void> {
-    const decoder = new TextDecoder();
-    let buffer = '';
     let doneEmitted = false;
-    for await (const chunk of response) {
-      buffer += decoder.decode(chunk as Buffer, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
+    for await (const line of boundedLines(response, options.streamLimits)) {
+      const lines = [line];
       for (let i = 0; i < lines.length; i += 1) {
         if (!lines[i].trim()) continue;
         let item: StreamEvent;
@@ -200,28 +198,15 @@ function createOllamaService(options: OllamaServiceOptions) {
         } catch {
           throw new httpClient.UpstreamError('Ollama returned an invalid stream event', {
             code: 'INVALID_NDJSON',
-            detail: lines[i].slice(0, 300)
           });
         }
-        if (item.done) doneEmitted = true;
+        if (!item || typeof item !== 'object' || (item.done !== undefined && typeof item.done !== 'boolean') || (item.message?.content !== undefined && typeof item.message.content !== 'string')) throw new httpClient.UpstreamError('Invalid stream fields', { code:'INVALID_NDJSON' });
+        if (item.done === true) doneEmitted = true;
         await emitItem(item, callbacks);
       }
+      if (doneEmitted) break;
     }
-    buffer += decoder.decode();
-    if (buffer.trim()) {
-      let lastItem: StreamEvent;
-      try {
-        lastItem = JSON.parse(buffer) as StreamEvent;
-      } catch {
-        throw new httpClient.UpstreamError('Ollama returned an incomplete stream event', {
-          code: 'INVALID_NDJSON',
-          detail: buffer.slice(0, 300)
-        });
-      }
-      if (lastItem.done) doneEmitted = true;
-      await emitItem(lastItem, callbacks);
-    }
-    if (!doneEmitted && callbacks.onDone) await callbacks.onDone();
+    if (!doneEmitted) throw new httpClient.UpstreamError('Ollama stream ended without done', { code:'INCOMPLETE_STREAM' });
   }
 
   function streamChat(input: StreamChatInput, callbacks?: StreamCallbacks): Promise<StreamChatResult> {
@@ -244,6 +229,7 @@ function createOllamaService(options: OllamaServiceOptions) {
       const upstream = await httpClient.request(host, '/api/chat', {
         method: 'POST',
         timeoutMs: 3 * 60 * 1000,
+        totalTimeoutMs: options.streamLimits?.totalTimeoutMs ?? 600000,
         timeoutMessage: 'Ollama 对话超时',
         signal: input.signal,
         json: {

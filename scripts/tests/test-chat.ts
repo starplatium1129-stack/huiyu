@@ -1,6 +1,56 @@
 'use strict';
 const { test }: typeof import('node:test') = require('node:test');
 
+test('bounded compatible stream rejects incomplete, oversized and dripping upstreams', async () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  const http: typeof import('node:http') = require('node:http');
+  const { streamCompatibleApi }: typeof import('../../routes/chat') = require('../../routes/chat');
+  const { createOllamaService }: typeof import('../../services/ollama-service') = require('../../services/ollama-service');
+  let mode = 'valid';
+  const token = 'data: ' + JSON.stringify({ choices: [{ delta: { content: '中性' } }] }) + '\n\n';
+  const server = http.createServer((req, res) => {
+    if (req.url === '/api/tags') { res.end(JSON.stringify({ models: [{ name: 'fixture' }] })); return; }
+    if (req.url === '/api/chat') { res.end(JSON.stringify({ message: { content: 'neutral' }, ...(mode === 'valid' ? { done: true } : {}) }) + '\n'); return; }
+    res.setHeader('Content-Type', 'text/event-stream');
+    if (mode === 'drip') {
+      const timer = setInterval(() => res.write(': ping\n'), 5);
+      res.on('close', () => clearInterval(timer)); return;
+    }
+    if (mode === 'large') { res.end('x'.repeat(81)); return; }
+    if (mode === 'reasoning') { res.end('data: ' + JSON.stringify({ choices: [{ delta: { reasoning_content: 'x'.repeat(20001) } }] }) + '\n\ndata: [DONE]\n\n'); return; }
+    if (mode === 'missing') { res.end(token); return; }
+    const bytes = Buffer.from(token + 'data: [DONE]\n\ndata: [DONE]\n\n');
+    for (const byte of bytes) res.write(Buffer.from([byte]));
+    res.end();
+  });
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve));
+  const baseUrl = 'http://127.0.0.1:' + (server.address() as import('net').AddressInfo).port;
+  const input = { api: { baseUrl, pathname: '/', model: 'fixture' }, messages: [] };
+  try {
+    let text = '', done = 0;
+    await streamCompatibleApi(input, { onToken: (value: string) => { text += value; }, onDone: () => { done++; } });
+    assert.equal(text, '中性'); assert.equal(done, 1);
+    mode = 'missing';
+    await assert.rejects(streamCompatibleApi(input, {}), /SSE/);
+    mode = 'large';
+    await assert.rejects(streamCompatibleApi(input, {}, undefined, { frameBytes: 80 }), /预算/);
+    mode = 'reasoning';
+    await assert.rejects(streamCompatibleApi(input, {}), /超限/);
+    mode = 'drip';
+    await assert.rejects(streamCompatibleApi(input, {}, undefined, { totalTimeoutMs: 40 }), /deadline/);
+    const ollama = createOllamaService({ host: baseUrl });
+    mode = 'missing';
+    await assert.rejects(ollama.streamChat({ messages: [] }), /without done/);
+    assert.equal(ollama.queueStatus().active, 0);
+    mode = 'valid'; done = 0;
+    await ollama.streamChat({ messages: [] }, { onDone: () => { done++; } });
+    assert.equal(done, 1);
+  } finally {
+    server.closeAllConnections();
+    await new Promise<void>(resolve => server.close(() => resolve()));
+  }
+});
+
 test('chat', async () => {
 let fs: typeof import('fs') = require('fs');
 let path: typeof import('path') = require('path');
@@ -142,9 +192,9 @@ function createMockAiServer() {
           // OpenAI 兼容的 tool_calls 增量：id/name 首次出现，arguments 分片；
           // 思考轮带工具调用：reasoning_content 增量先到（DeepSeek V4 回传契约）
           res.write('data: {"choices":[{"delta":{"reasoning_content":"我得先看看"}}]}\n\n');
-          res.write('data: {"choices":[{"delta":{"tool_calls":[{"index":0,"id":"call_1","function":{"name":"list_files","arguments":"{\\"path\\":\\"\\"}"}}]}}]}\n\n');
+          res.write('data: ' + JSON.stringify({ choices:[{ delta:{ tool_calls:[{ index:0, id:'call_1', function:{ name:'list_files', arguments:'{' } }] } }] }) + '\n\n');
           res.write('data: {"choices":[{"delta":{"content":"让我看看工作区里有什么。"}}]}\n\n');
-          res.write('data: {"choices":[{"delta":{"tool_calls":[{"index":0,"function":{"arguments":"."}}]}}]}\n\n');
+          res.write('data: ' + JSON.stringify({ choices:[{ delta:{ tool_calls:[{ index:0, function:{ arguments:'\"path\":\".\"}' } }] } }] }) + '\n\n');
           res.end('data: [DONE]\n\n');
           return;
         }
@@ -658,7 +708,7 @@ async function run() {
     assert(toolCalls.length === 1, 'split tool_calls deltas must accumulate into one event');
     assert(toolCalls[0].id === 'call_1', 'tool-call event must carry the call id');
     assert(toolCalls[0].name === 'list_files', 'tool-call event must carry the tool name');
-    assert(toolCalls[0].arguments === '{"path":""}.', 'tool-call arguments must be concatenated across chunks');
+    assert(toolCalls[0].arguments === '{\"path\":\".\"}', 'tool-call arguments must be concatenated across chunks');
     assert(toolCalls[0].reasoning === '我得先看看', 'tool-call events must carry the round reasoning for V4 round-trip');
     assert(toolTokens.join('') === '让我看看工作区里有什么。', 'text tokens must still stream alongside tool calls');
 
