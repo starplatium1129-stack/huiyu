@@ -31,6 +31,20 @@ function setup() {
 afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); delete window.companionDesktop })
 
 describe('chat recovery and tool lifecycle', () => {
+  it('discards a queued draft when another window clears content, then accepts new input', async () => {
+    vi.useFakeTimers()
+    const { conversation, options } = setup()
+    conversation.inputText.value = 'old pending draft'
+    conversation.onInputChange()
+    conversation.clearDraftInput()
+    await vi.advanceTimersByTimeAsync(300)
+    expect(conversation.inputText.value).toBe('')
+    expect(options.storage.setDraft).not.toHaveBeenCalled()
+    conversation.inputText.value = 'new after reset'
+    conversation.onInputChange()
+    await vi.advanceTimersByTimeAsync(300)
+    expect(options.storage.setDraft).toHaveBeenLastCalledWith('nene', 'new after reset')
+  })
   it('passes drawing draft status back to the model without rewarding a generated image', async () => {
     addScore.mockClear()
     const output = '已保存绘画草稿。尚未提交生成任务，也未生成图片。'

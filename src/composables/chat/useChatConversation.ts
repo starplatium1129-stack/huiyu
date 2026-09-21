@@ -511,6 +511,11 @@ export function useChatConversation(options: ChatConversationOptions) {
     draftTimer = window.setTimeout(() => options.storage.setDraft(characterId, value), 240) as unknown as number
   }
 
+  function clearDraftInput() {
+    clearTimeout(draftTimer)
+    inputText.value = ''
+  }
+
   function destroy() {
     clearTimeout(draftTimer)
     options.storage.setDraft(options.activeChar.value, inputText.value)
@@ -526,6 +531,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     sendMessage,
     useStarter,
     onInputChange,
+    clearDraftInput,
     destroy,
   }
 }

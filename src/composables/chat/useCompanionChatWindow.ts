@@ -11,7 +11,7 @@ import { useVoiceInput } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
 import { createCompanionBehavior, normalizeCompanionConfig } from '@/utils/companionBehavior'
-import { COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '@/utils/storageKeys'
+import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '@/utils/storageKeys'
 
 import { useConversationReading } from '@/composables/chat/useConversationReading'
 import { relayChatTurn } from '@/utils/chatRelayReceipt'
@@ -374,6 +374,12 @@ onMounted(() => {
 })
 
 function onStorageChange(event: StorageEvent) {
+  if (event.key === CHAT_RESET_KEY) {
+    clearTimeout(draftTimer)
+    inputText.value = ''
+    storage.canWrite()
+    // canWrite clears in-memory content; do not reload while the publisher is still deleting.
+  }
   if (event.key === COMPANION_CHAT_LIVE_KEY) readLive()
   if (event.key === null || event.key === COMPANION_BEHAVIOR_KEY) {
     behavior.setConfig(readBehaviorConfig())

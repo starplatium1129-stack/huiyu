@@ -241,9 +241,9 @@ export function useCharacterRoomSession() {
     if (event.key === CHAT_RESET_KEY) {
       stopEverything()
       voice.stop({ preserveMessageAudio: false, silent: true })
-      inputText.value = ''
+      clearDraftInput()
       storage.canWrite()
-      void storage.load()
+      // The reset marker precedes deletion; loading here can republish pre-reset drafts.
       chatMemory.value = loadChatMemoryState()
       userProfile.value = loadChatUserProfile()
     }
@@ -302,6 +302,7 @@ export function useCharacterRoomSession() {
     sendMessage,
     useStarter,
     onInputChange,
+    clearDraftInput,
     destroy: destroyConversation,
     stopEverything: stopConversation,
   } = useChatConversation({
@@ -499,7 +500,7 @@ export function useCharacterRoomSession() {
     voice.stop({ preserveMessageAudio: false, silent: true })
     try {
       const result = clearStoredChatContent()
-      inputText.value = ''
+      clearDraftInput()
       storage.canWrite()
       await storage.load()
       chatMemory.value = loadChatMemoryState()
