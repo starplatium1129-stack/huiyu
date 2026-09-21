@@ -1,6 +1,33 @@
 import { expect, test } from '@playwright/test'
 
 for (const theme of ['dark', 'light']) {
+  test(`global search finds the oldest of 10000 works ${theme}`, async ({ page }) => {
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/')
+    await page.evaluate(async () => {
+      await new Promise<void>((resolve, reject) => {
+        const request = indexedDB.open('aics_kv_store', 1)
+        request.onupgradeneeded = () => request.result.createObjectStore('kv', { keyPath: 'key' })
+        request.onerror = () => reject(request.error)
+        request.onsuccess = () => {
+          const db = request.result, tx = db.transaction('kv', 'readwrite')
+          tx.objectStore('kv').put({ key: 'aics_pb_history', value: Array.from({ length: 10000 }, (_, i) => ({ id: i + 1, timestamp: i + 1, sceneTitle: i === 0 ? 'oldest-neutral-sentinel' : 'neutral' })) })
+          tx.oncomplete = () => { db.close(); resolve() }
+          tx.onerror = () => reject(tx.error)
+        }
+      })
+    })
+    const start = Date.now()
+    await page.keyboard.press('Control+k')
+    const input = page.getByRole('searchbox', { name: '搜索场景、作品或页面' })
+    await input.fill('oldest-neutral-sentinel')
+    await expect(page.getByRole('option', { name: /oldest-neutral-sentinel/ })).toBeVisible()
+    console.log(JSON.stringify({ theme, search10000Ms: Date.now() - start }))
+    await page.screenshot({ path: `runtime/audit-011/b4-${theme}.png` })
+    await input.press('Enter')
+    await expect(page).toHaveURL(/regen=1(?:&|$)/)
+  })
   test(`reset profile-only content with keyboard ${theme}`, async ({ page }) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })

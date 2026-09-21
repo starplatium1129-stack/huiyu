@@ -1,5 +1,6 @@
 import { characterName as resolveCharacterName } from './galleryHelpers';
 import { artworkIndexById,formatTrashTime,hiresLabel,modelName,loraName as resolveLoraName,sceneTitle as resolveSceneTitle,searchHaystack,trashPrompt,} from '@/composables/gallery/galleryHelpers';
+import { matchesArtwork } from '@/utils/artworkSearch';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { buildMasonryGroups,useMasonryColumns } from '@/composables/gallery/useMasonryWall';
 import { useFocusTrap } from '@/composables/useFocusTrap';
@@ -118,7 +119,7 @@ export function useGalleryWorkspace() {
         }
         const term = searchQuery.value.trim().toLowerCase();
         if (term)
-            source = source.filter(i => searchHaystack(i).includes(term));
+            source = source.filter(i => matchesArtwork(searchHaystack(i), term));
         // 历史是按生成顺序 append 的，展墙必须自己排：最新在前。
         // 之前直接用了存储顺序，所以作品册永远是最旧的排在最上面。
         return source.sort((a, b) => stamp(b) - stamp(a));

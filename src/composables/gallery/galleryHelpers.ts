@@ -2,6 +2,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 import type { TrashEntry } from '@/storage/artworkRepository'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import type { PopularCharacter } from '@/utils/popularContent'
+import { artworkSearchText } from '@/utils/artworkSearch'
 
 /** Viewer actions bind to a stable artwork identity, never to a mutable list position. */
 export function artworkIndexById(items: readonly ArtworkRecord[], id: string | number | null): number {
@@ -24,9 +25,7 @@ export function characterName(value: string | undefined, item: ArtworkRecord | u
  * 拼接场景名、角色、故事、所属项目、Prompt，用于展墙全文检索。
  */
 export function searchHaystack(item: ArtworkRecord): string {
-  return [
-    item.sceneTitle, item.scene, item.character, item.story, item.project, item.prompt,
-  ].filter(part => typeof part === 'string' && part).join(' ').toLowerCase()
+  return artworkSearchText(item)
 }
 
 /** 回收站卡片摘要：取原 history 条目的 prompt 短述 */

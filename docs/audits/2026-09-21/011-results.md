@@ -21,3 +21,9 @@
 执行前回环 HTTP 中性反例确证缺终态仍 onDone 一次，见 b3-before.log。共享 boundedLines 在解码/拼接前计数：单帧 1 MiB，总 16 MiB，包含注释空行；request 可选绝对 deadline 为聊天设 10 分钟，不替代 idle timeout。推理 20,000 字节、每工具参数 4,000 字节、最多 8 个，保守不超过已有续聊输入字符上限。有效 finish_reason 或 DONE 可终结 SSE；非流式须有消息；Ollama EOF 缺 done 拒绝，工具整批 JSON 验证后才发布。
 
 运行时首次构建因 CommonJS import 失败；紧接的旧 JS 测试通过无效，不作为证据。修正并重建后，既有测试的工具参数夹具竟为非法 JSON（尾随点）；改为合法分片并保留拼接断言，未放宽生产检查。最终聊天 4 项（含 UTF-8、缺终态、重复 DONE、帧超限、推理超限、40ms 滴流截止、Ollama 队列释放），HTTP 8 项、队列 2 项及单体门禁通过。日志 runtime/audit-011/b3-*；无真实模型。
+
+## B4
+
+执行前从实际 GlobalSearch.vue 提取 loadWorks 并用 TypeScript 编译执行，301 输入仅索引 300，最旧关键词 false（b4-before.log）。新增轻字段全集索引，复用 parseArtworkRecords/artworkTimestamp，作品册和全局搜索统一标题/角色/场景/项目/提示词与空白分词 AND 匹配；排序稳定，匹配后限制 5 项。读取失败可见，重开重新读取，请求序号阻止旧响应覆盖。
+
+0/1/300/301/1000/10000 七项单测通过，双主题 10k 最旧命中及 Enter 正确 ID 跳转 2 项通过；端口偏移 17000，首次打开到命中 470/123ms（含浏览器等待，不是纯计算）。应用类型、生产构建/预算/预压通过。日志与截图 b4-*。B3 提交 4b0a9a8 已推送。

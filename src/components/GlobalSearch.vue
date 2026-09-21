@@ -17,6 +17,7 @@
           <button type="button" class="gs-esc" aria-label="关闭搜索" title="关闭搜索（Esc）" @click="close()"><ArchiveIcon name="close" /></button>
         </div>
 
+        <p v-if="worksError" class="gs-empty" role="alert">{{ worksError }}</p>
         <div ref="resultsEl" class="gs-results" role="listbox" aria-label="搜索结果">
           <template v-if="!query.trim()">
             <section v-if="filteredActions.length" class="gs-group">
@@ -93,6 +94,7 @@ import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'
 import { kvInit, kvGet } from '@/composables/useKVStore'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+import { indexArtworkSearch } from '@/utils/artworkSearch'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 
 const props = defineProps<{
@@ -127,7 +129,8 @@ const panelEl = ref<HTMLElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)
 const scenes = ref<SceneItem[]>([])
 const works = ref<WorkItem[]>([])
-let worksLoading = false
+let worksRequest = 0
+const worksError = ref('')
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
 
@@ -216,6 +219,7 @@ function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = docume
 }
 
 function close(restoreFocus = true) {
+  worksRequest++
   open.value = false
   const previous = previousActiveElement
   previousActiveElement = null
@@ -240,37 +244,18 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 async function loadWorks() {
-  if (worksLoading) return
-  worksLoading = true
+  const request = ++worksRequest
+  worksError.value = ''
+  works.value = []
   try {
     await kvInit()
     const raw = await kvGet<unknown[]>(HISTORY_KEY)
-    const list = Array.isArray(raw) ? raw.slice() : []
-    // 2026-08-30 UX 审计：这里原来是 `!r`（写反了），任何非空条目都会被判为
-    // 非对象而被丢掉——「作品」分组永远为空，用户搜不到旧作会误判「那张图没
-    // 了」。口径与 App.vue 的 `!!r` 对齐。
-    works.value = list
-      .filter((r): r is Record<string, unknown> => !!r && typeof r === 'object' && ['string', 'number'].includes(typeof (r as Record<string, unknown>).id))
-      .sort((a, b) => (Number(b.timestamp) || Date.parse(String(b.timestamp)) || 0) - (Number(a.timestamp) || Date.parse(String(a.timestamp)) || 0))
-      .slice(0, 300)
-      .map((entry) => {
-        const title = String(entry.sceneTitle || entry.title || entry.scene || '未命名作品')
-        const time = typeof entry.timestamp === 'number' || typeof entry.timestamp === 'string'
-          ? new Date(entry.timestamp).toLocaleDateString()
-          : ''
-        const size = String(entry.size || '')
-        const prompt = String(entry.prompt || '')
-        return {
-          id: String(entry.id),
-          path: `/prompt-builder?regen=${encodeURIComponent(String(entry.id))}`,
-          title,
-          meta: [time, size].filter(Boolean).join(' · '),
-          keywords: `${title} ${prompt} ${entry.story || ''} ${entry.character || ''}`,
-        } satisfies WorkItem
-      })
-  } catch { /* 作品索引失败不影响搜索 */ } finally { worksLoading = false }
+    if (request !== worksRequest || !open.value) return
+    works.value = indexArtworkSearch(raw)
+  } catch {
+    if (request === worksRequest) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
+  }
 }
-
 async function loadScenes() {
   try {
     // 审计 2026-09-05 P2-02：搜索只需要场景分片与轻元数据，走 loadHome 轻载，
