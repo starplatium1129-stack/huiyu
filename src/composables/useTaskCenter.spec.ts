@@ -64,7 +64,35 @@ it('new tasks merge with restored summaries and old running work is not reported
   expect(module.useTaskCenter().tasks.value).toHaveLength(2)
   expect(module.useTaskCenter().tasks.value.find(task => task.id === 'previous')?.status).toBe('interrupted')
   expect(module.useTaskCenter().activeCount.value).toBe(1)
-  expect(storage.set.mock.calls.at(-1)?.[1]).toHaveLength(2)
+  expect(storage.set.mock.calls.at(-1)?.[1]).toMatchObject({ version: 1, records: expect.any(Array) })
+  expect(storage.set.mock.calls.at(-1)?.[1].records).toHaveLength(2)
+})
+
+it('merges stale window writes and persists deletion tombstones', async () => {
+  let persisted: unknown = []
+  storage.get.mockImplementation(async () => structuredClone(persisted))
+  storage.set.mockImplementation(async (_key: string, value: unknown) => { persisted = structuredClone(value) })
+
+  const first = await import('./useTaskCenter')
+  first.createTask({ kind: 'image', title: '窗口 A', status: 'running', route: '/prompt-builder' })
+  await first.flushTaskSummaries()
+
+  vi.resetModules()
+  const second = await import('./useTaskCenter')
+  second.createTask({ kind: 'image', title: '窗口 B', status: 'succeeded', route: '/gallery' })
+  await second.flushTaskSummaries()
+  expect((persisted as { records: unknown[] }).records).toHaveLength(2)
+
+  first.updateTask(first.useTaskCenter().tasks.value.find(task => task.title === '窗口 A')!.id, { message: 'A 的更新' })
+  await first.flushTaskSummaries()
+  expect((persisted as { records: Array<{ title: string }> }).records.map(task => task.title).sort()).toEqual(['窗口 A', '窗口 B'])
+
+  second.useTaskCenter().clearCompleted()
+  await second.flushTaskSummaries()
+  vi.resetModules()
+  const restored = await import('./useTaskCenter')
+  await restored.hydrateTasks()
+  expect(restored.useTaskCenter().tasks.value.map(task => task.title)).toEqual(['窗口 A'])
 })
 
 it('deactivation retains work and controls; true destruction marks it interrupted', async () => {

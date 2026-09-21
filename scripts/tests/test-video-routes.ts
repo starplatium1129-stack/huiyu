@@ -822,11 +822,16 @@ async function run() {
   }
 
   // ── P5/P6/P8 网关：分镜批量（逐镜排队 + 尾帧衔接 + 拼接）───────────────
+  let concatCalls = 0;
+  let releaseConcat: (() => void) | null = null;
+  let concatGate: Promise<void> | null = null;
   let fakeFfmpeg = async function (args: string|any[]) {
     let out: any = args[args.length - 1];
     if (String(out).endsWith('.png')) {
       fs.writeFileSync(out, Buffer.from(tinyPngBase64, 'base64'));
     } else if (String(out).endsWith('.mp4')) {
+      concatCalls += 1;
+      if (concatGate) await concatGate;
       fs.writeFileSync(out, Buffer.from('fake-batch-mp4'));
     } else {
       throw new Error('unexpected ffmpeg output: ' + out);
@@ -977,11 +982,23 @@ async function run() {
       'shot 3 runs as FL2VA with the official alignment instruction');
 
     // 拼接成片：至少两镜成功 → concat → Range 可读。
-    let concatRes = await fetch(batchStack.baseUrl + '/api/video/batches/' + createdBatch.id + '/concat', {
-      method:'POST',
+    let concatUrl = batchStack.baseUrl + '/api/video/batches/' + createdBatch.id + '/concat';
+    concatGate = new Promise(function (resolve) { releaseConcat = resolve; });
+    let concatRequests = Array.from({ length:20 }, function () {
+      return fetch(concatUrl, { method:'POST' });
     });
-    assert.equal(concatRes.status, 200);
-    let concatBatch = (await json(concatRes)).batch;
+    for (let attempt = 0; attempt < 20 && concatCalls < 1; attempt += 1) {
+      await new Promise(function (resolve) { setTimeout(resolve, 10); });
+    }
+    assert.equal(concatCalls, 1, 'same-batch concat requests share one in-flight transcode');
+    releaseConcat!();
+    let concatResponses = await Promise.all(concatRequests);
+    let concatBodies = await Promise.all(concatResponses.map(async function (response) {
+      assert.equal(response.status, 200);
+      return (await json(response)).batch;
+    }));
+    let concatBatch = concatBodies[0];
+    assert.equal(concatCalls, 1, 'same-batch concat launches exactly one ffmpeg operation');
     assert.equal(concatBatch.concatAvailable, true);
     assert.ok(concatBatch.concatUrl);
     let concatGet = await fetch(batchStack.baseUrl + concatBatch.concatUrl, { headers:{ Range:'bytes=0-3' } });

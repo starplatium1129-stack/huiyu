@@ -53,6 +53,9 @@ export async function saveGeneratedArtwork(input: GeneratedArtworkInput, deps: S
 export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, deps: Omit<SaveGeneratedArtworkDependencies, 'resolveLegacyDefaults'>): Promise<SaveGeneratedArtworkResult> {
   return deps.withStaging(async () => {
     let imageId = ''
+    const operationId = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : `artwork-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
     try {
       imageId = await deps.putImage(entry.blob)
       // Thumbnails are derived, best-effort data; production already swallows their failures.
@@ -64,10 +67,16 @@ export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, de
       const history = parseArtworkRecords(await deps.appendArtwork(historyEntry))
       return { ok: true, entry: historyEntry, history }
     } catch (error) {
-      // Preserve existing owned-image compensation and its timing. This is not an
-      // ambiguous-commit recovery protocol, nor a guarantee that cleanup succeeded.
-      if (imageId) void deps.deleteImage(imageId).catch(() => {})
-      return { ok: false, error }
+      // Preserve existing owned-image compensation, but return its outcome with
+      // an operation ID so cleanup failure is diagnosable and can be retried.
+      if (!imageId) return { ok: false, error, operationId, cleanup: { status: 'not-needed' as const } }
+      try {
+        await deps.deleteImage(imageId)
+        return { ok: false, error, operationId, cleanup: { status: 'completed' as const, imageId } }
+      } catch (cleanupError) {
+        console.warn('[artwork] owned image cleanup pending', { operationId, imageId })
+        return { ok: false, error, operationId, cleanup: { status: 'failed' as const, imageId, error: cleanupError } }
+      }
     }
   })
 }

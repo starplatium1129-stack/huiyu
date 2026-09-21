@@ -39,7 +39,7 @@ export interface SaveGeneratedArtworkDependencies {
 
 export type SaveGeneratedArtworkResult =
   | { ok: true; entry: HistoryEntry; history: ArtworkRecord[] }
-  | { ok: false; error: unknown }
+  | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed'; imageId?: string; error?: unknown } }
 
 
 export interface ArtworkSaveSnapshot { entry: GeneratedArtworkInput; defaults: LegacyArtworkDefaults }

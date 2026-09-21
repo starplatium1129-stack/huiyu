@@ -27,9 +27,88 @@ export function approveTaskReload() { reloadApproved = true }
 export function consumeTaskReloadApproval() { const approved = reloadApproved; reloadApproved = false; return approved }
 let loading: Promise<void> | undefined
 let writeTail = Promise.resolve()
+const TASK_CENTER_LOCK = 'huiyu-task-center'
+const deletedTasks = new Map<string, number>()
+
+interface StoredTaskSnapshot { version: 1; records: unknown[]; deleted: Record<string, number> }
+
+function parseTaskRecord(item: unknown): TaskRecord | null {
+  if (!item || typeof item !== 'object') return null
+  const value = item as Partial<TaskRecord>
+  if (typeof value.id !== 'string' || typeof value.title !== 'string' || typeof value.route !== 'string'
+    || !value.route.startsWith('/') || value.route.startsWith('//')
+    || !['image', 'batch', 'video', 'interrogate'].includes(String(value.kind))
+    || !['idle', 'running', 'succeeded', 'failed', 'cancelled', 'interrupted'].includes(String(value.status))) return null
+  const createdAt = typeof value.createdAt === 'number' && Number.isFinite(value.createdAt) ? value.createdAt : 0
+  const updatedAt = typeof value.updatedAt === 'number' && Number.isFinite(value.updatedAt) ? value.updatedAt : createdAt
+  const backend = value.backend && ['video', 'video-batch'].includes(value.backend.kind)
+    && typeof value.backend.id === 'string' && /^[\w-]{1,160}$/.test(value.backend.id)
+    ? { kind: value.backend.kind, id: value.backend.id } : undefined
+  return {
+    ...value as TaskRecord,
+    createdAt,
+    updatedAt,
+    backend,
+    resultRoute: typeof value.resultRoute === 'string' && value.resultRoute.startsWith('/') && !value.resultRoute.startsWith('//') ? value.resultRoute : undefined,
+  }
+}
+
+function decodeSnapshot(value: unknown): { records: TaskRecord[]; deleted: Map<string, number> } {
+  const recordsValue = Array.isArray(value) ? value : value && typeof value === 'object' && Array.isArray((value as StoredTaskSnapshot).records)
+    ? (value as StoredTaskSnapshot).records : []
+  const deletedValue = !Array.isArray(value) && value && typeof value === 'object' && (value as StoredTaskSnapshot).deleted
+    ? (value as StoredTaskSnapshot).deleted : {}
+  const records = recordsValue.map(parseTaskRecord).filter((item): item is TaskRecord => Boolean(item))
+  const deleted = new Map<string, number>()
+  if (deletedValue && typeof deletedValue === 'object') {
+    for (const [id, timestamp] of Object.entries(deletedValue)) {
+      if (/^[\w-]{1,160}$/.test(id) && typeof timestamp === 'number' && Number.isFinite(timestamp)) deleted.set(id, timestamp)
+    }
+  }
+  return { records, deleted }
+}
+
+function mergeSnapshot(remote: { records: TaskRecord[]; deleted: Map<string, number> }) {
+  const byId = new Map<string, TaskRecord>()
+  const localIds = new Set(tasks.value.map(task => task.id))
+  for (const record of remote.records) {
+    byId.set(record.id, !localIds.has(record.id) && record.status === 'running'
+      ? { ...record, status: 'interrupted', message: '这是其他页面会话留下的记录，请回工作台检查进度或已保存结果。' }
+      : record)
+  }
+  for (const record of tasks.value) {
+    const existing = byId.get(record.id)
+    if (!existing || record.updatedAt >= existing.updatedAt) byId.set(record.id, record)
+  }
+  const deleted = new Map(remote.deleted)
+  for (const [id, timestamp] of deletedTasks) deleted.set(id, Math.max(timestamp, deleted.get(id) || 0))
+  for (const [id, record] of byId) {
+    const deletedAt = deleted.get(id)
+    if (deletedAt !== undefined && deletedAt >= record.updatedAt) byId.delete(id)
+    else if (deletedAt !== undefined) deleted.delete(id)
+  }
+  const records = [...byId.values()].sort((a, b) => b.createdAt - a.createdAt)
+  const limitedDeleted = [...deleted.entries()].sort((a, b) => b[1] - a[1]).slice(0, 200)
+  return { records, deleted: new Map(limitedDeleted) }
+}
+
+function encodeSnapshot(snapshot: { records: TaskRecord[]; deleted: Map<string, number> }): StoredTaskSnapshot {
+  return { version: 1, records: snapshot.records, deleted: Object.fromEntries(snapshot.deleted) }
+}
+
+function withTaskCenterLock<T>(work: () => Promise<T>): Promise<T> {
+  const locks = globalThis.navigator?.locks
+  return locks ? locks.request(TASK_CENTER_LOCK, { mode: 'exclusive' }, () => work()) : work()
+}
 
 function persist() {
-  writeTail = writeTail.catch(() => {}).then(async () => { await hydrateTasks(); await kvSet(KEY, JSON.parse(JSON.stringify(tasks.value))) }).then(() => { storageError.value = '' }).catch(() => { storageError.value = '任务摘要暂未保存；当前任务继续运行。' })
+  writeTail = writeTail.catch(() => {}).then(() => withTaskCenterLock(async () => {
+    const merged = mergeSnapshot(decodeSnapshot(await kvGet<unknown>(KEY)))
+    tasks.value = merged.records
+    deletedTasks.clear()
+    for (const [id, timestamp] of merged.deleted) deletedTasks.set(id, timestamp)
+    await kvSet(KEY, JSON.parse(JSON.stringify(encodeSnapshot(merged))))
+  })).then(() => { storageError.value = '' }).catch(() => { storageError.value = '任务摘要暂未保存；当前任务继续运行。' })
 }
 export function createTask(summary: TaskSummary, controls: TaskControls = {}): string {
   const id = `task-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
@@ -55,18 +134,17 @@ export function flushTaskSummaries() { return writeTail }
 export function forgetTaskControls(id: string) { actions.delete(id) }
 export function hydrateTasks(): Promise<void> {
   return loading ??= kvGet<unknown>(KEY).then(value => {
-    if (!Array.isArray(value)) return
+    const snapshot = decodeSnapshot(value)
+    deletedTasks.clear()
+    for (const [id, timestamp] of snapshot.deleted) deletedTasks.set(id, timestamp)
     const existing = new Set(tasks.value.map(task => task.id))
-    for (const item of value.slice(0, 100)) {
-      if (!item || typeof item.id !== 'string' || typeof item.title !== 'string' || typeof item.route !== 'string' || !item.route.startsWith('/') || item.route.startsWith('//') || existing.has(item.id)) continue
-      if (!['image', 'batch', 'video', 'interrogate'].includes(item.kind) || !['idle', 'running', 'succeeded', 'failed', 'cancelled', 'interrupted'].includes(item.status)) continue
-      const backend = item.backend && ['video', 'video-batch'].includes(item.backend.kind) && typeof item.backend.id === 'string' && /^[\w-]{1,160}$/.test(item.backend.id) ? { kind: item.backend.kind, id: item.backend.id } : undefined
-      if (backend && tasks.value.some(task => task.backend?.kind === backend.kind && task.backend?.id === backend.id)) continue
+    for (const item of snapshot.records.slice(0, 100)) {
+      if (existing.has(item.id) || tasks.value.some(task => task.backend?.kind === item.backend?.kind && task.backend?.id === item.backend?.id && item.backend)) continue
       existing.add(item.id)
-      tasks.value.push({ ...item, backend, resultRoute: typeof item.resultRoute === 'string' && item.resultRoute.startsWith('/') && !item.resultRoute.startsWith('//') ? item.resultRoute : undefined, status: item.status === 'running' ? 'interrupted' : item.status,
+      tasks.value.push({ ...item, status: item.status === 'running' ? 'interrupted' : item.status,
         message: item.status === 'running' ? '这是其他页面会话留下的记录，请回工作台检查进度或已保存结果。' : item.message })
     }
-    tasks.value.sort((a, b) => b.createdAt - a.createdAt)
+    tasks.value = mergeSnapshot({ records: tasks.value, deleted: snapshot.deleted }).records
     storageError.value = ''
   }).catch(error => { loading = undefined; storageError.value = '暂时无法读取之前的任务摘要，可重新尝试。'; throw error })
 }
@@ -78,7 +156,15 @@ function findBackendTask(summary: TaskSummary) {
 export function useTaskCenter() {
   return { tasks, opened, storageError, activeCount: computed(() => tasks.value.filter(task => task.status === 'running').length),
     controls: (id: string) => actions.get(id),
-    clearCompleted() { const keep = tasks.value.filter(task => task.status === 'running' || task.status === 'failed' || task.status === 'interrupted'); const retained = new Set(keep.map(task => task.id)); for (const id of actions.keys()) if (!retained.has(id)) actions.delete(id); tasks.value = keep; persist() },
+    clearCompleted() {
+      const keep = tasks.value.filter(task => task.status === 'running' || task.status === 'failed' || task.status === 'interrupted')
+      const retained = new Set(keep.map(task => task.id))
+      const deletedAt = Date.now()
+      for (const task of tasks.value) if (!retained.has(task.id)) deletedTasks.set(task.id, deletedAt)
+      for (const id of actions.keys()) if (!retained.has(id)) actions.delete(id)
+      tasks.value = keep
+      persist()
+    },
   }
 }
 

@@ -18,27 +18,46 @@ let errors: typeof import('./errors') = require('./errors');
 let constants: typeof import('./constants') = require('./constants');
 let media: typeof import('./media') = require('./media');
 let validation: typeof import('./validation') = require('./validation');
+let SerialQueue: typeof import('../../services/serial-queue') = require('../../services/serial-queue');
 
 let serviceError = errors.serviceError;
 let MODEL_BY_ID = constants.MODEL_BY_ID;
 let IMAGE_INPUT_PREFIX = constants.IMAGE_INPUT_PREFIX;
 let BATCH_TTL_MS = constants.BATCH_TTL_MS;
 let BATCH_JOB_TTL_MS = constants.BATCH_JOB_TTL_MS;
+let FFMPEG_TIMEOUT_MS = 10 * 60 * 1000;
+let TRANSCODE_MAX_PENDING = 4;
 
 function createBatchService(config: any, videoService: any, dependencies: any) {
   dependencies = dependencies || {};
   let batches = new Map();
   let closed = false;
   let pollIntervalMs = dependencies.batchPollIntervalMs || 2000;
+  let transcodeQueue = new SerialQueue('video-transcode', dependencies.transcodeMaxPending || TRANSCODE_MAX_PENDING);
+  let activeChildren = new Set<any>();
   // ffmpeg 命令可注入（测试替身）；缺省走 child_process.execFile。
-  let runFfmpeg = dependencies.runFfmpeg || function (args: readonly string[]|null|undefined) {
+  let runFfmpeg = dependencies.runFfmpeg || function (args: readonly string[]|null|undefined, options?: { signal?: AbortSignal }) {
     return new Promise(function (resolve, reject) {
-      childProcess.execFile('ffmpeg', args, { maxBuffer:8 * 1024 * 1024 }, function (error, stdout, stderr) {
+      let child = childProcess.execFile('ffmpeg', args, {
+        maxBuffer:8 * 1024 * 1024,
+        timeout:FFMPEG_TIMEOUT_MS,
+        killSignal:'SIGTERM',
+        signal:options && options.signal,
+      }, function (error, stdout, stderr) {
+        activeChildren.delete(child);
         if (error) reject(new Error('ffmpeg 执行失败: ' + String(stderr || error.message).slice(0, 300)));
         else resolve(stdout);
       });
+      activeChildren.add(child);
     });
   };
+
+  function runTranscode(args: readonly string[], signal?: AbortSignal) {
+    return transcodeQueue.run(function () {
+      if (closed) throw serviceError(503, 'VIDEO_BATCH_CLOSED', '视频批量服务已关闭');
+      return runFfmpeg(args, { signal:signal });
+    }, { signal:signal });
+  }
 
   function publicShot(shot: any) {
     return {
@@ -87,14 +106,14 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   }
 
   // 从上一镜结果 MP4 抽取尾帧 → 受控输入文件（供下一镜 FL2VA 尾帧 / I2VA 首帧）。
-  async function extractLastFrame(shot: any) {
+  async function extractLastFrame(shot: any, signal?: AbortSignal) {
     if (!shot.job || !shot.job.result || !shot.job.result.path) return null;
     let name = IMAGE_INPUT_PREFIX + crypto.randomBytes(8).toString('hex') + '.png';
     let root = media.imageInputRoot(config);
     let target = path.resolve(root, name);
     if (target.indexOf(path.resolve(root) + path.sep) !== 0) return null;
     try {
-      await runFfmpeg(['-y', '-sseof', '-0.1', '-i', shot.job.result.path, '-frames:v', '1', '-update', '1', target]);
+      await runTranscode(['-y', '-sseof', '-0.1', '-i', shot.job.result.path, '-frames:v', '1', '-update', '1', target], signal);
     } catch (error) {
       console.warn('[video] 尾帧抽取失败（镜头 ' + shot.index + '）：' + runtimeErrorMessage(error));
       return null;
@@ -173,7 +192,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
             finalizeStatus(batch);
             return;
           }
-          let name = await extractLastFrame(shot);
+          let name = await extractLastFrame(shot, batch.abortController && batch.abortController.signal);
           if (name) {
             if (next.input.image) next.input.lastFrame = name;
             else next.input.image = name;
@@ -229,8 +248,12 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   function removeBatch(batch: any) {
     if (batch.watchTimer) clearTimeout(batch.watchTimer);
     if (batch.gcTimer) clearTimeout(batch.gcTimer);
+    batch.abortController?.abort();
     if (batch.concat && batch.concat.path) {
       try { fs.unlinkSync(batch.concat.path); } catch (error) {}
+    }
+    for (const file of [batch.concatListPath, batch.concatTempPath, batch.concatFinalPath]) {
+      if (file) try { fs.unlinkSync(file); } catch (error) {}
     }
     batches.delete(batch.id);
   }
@@ -267,6 +290,12 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       }),
       createdAt:Date.now(),
       concat:null,
+      concatInFlight:null,
+      concatOperationId:null,
+      concatListPath:null,
+      concatTempPath:null,
+      concatFinalPath:null,
+      abortController:new AbortController(),
       watchTimer:null,
       gcTimer:null,
       kicking:false,
@@ -281,6 +310,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   async function cancel(batch: { status: string; watchTimer: string|number|NodeJS.Timeout|null|undefined; shots: string|any[]; }) {
     if (batch.status === 'done') return batch;
     batch.status = 'cancelled';
+    (batch as any).abortController?.abort();
     if (batch.watchTimer) { clearTimeout(batch.watchTimer); batch.watchTimer = null; }
     for (let i = 0; i < batch.shots.length; i += 1) {
       let shot: any = batch.shots[i];
@@ -314,48 +344,75 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     return batch;
   }
 
-  async function concat(batch: any) {
-    if (batch.concat) return batch.concat;
-    let succeeded = batch.shots.filter(function (s: { status: string; }) { return s.status === 'succeeded'; });
-    if (succeeded.length < 2) {
-      throw serviceError(409, 'BATCH_CONCAT_NEEDS_SHOTS', '至少需要两个成功分镜才能拼接');
-    }
-    let root = media.ensureMediaRoot(config);
-    let listPath = path.join(root, 'batch_' + batch.id + '.txt');
-    let lines = succeeded.map(function (shot: any) {
-      return "file '" + String(shot.job.result.path).replace(/'/g, "'\\''") + "'";
-    });
-    fs.writeFileSync(listPath, lines.join('\n') + '\n');
-    let target = path.join(root, 'batch_' + batch.id + '.mp4');
-    // 2026-08-16 真机实测：H3 输出画布可能与请求画布有 ±几像素漂移（如 832×480 →
-    // 832×509），逐镜拼接必须 scale+pad 归一化到批量画布，否则成片分辨率逐段漂移。
-    let canvas = batch.shots[0].input;
-    let args = ['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
-      '-vf', 'scale=' + canvas.width + ':' + canvas.height + ':force_original_aspect_ratio=decrease,pad=' + canvas.width + ':' + canvas.height + ':(ow-iw)/2:(oh-ih)/2,setsar=1',
-      '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p',
-      '-c:a', 'aac', '-b:a', '192k', target];
-    try {
-      await runFfmpeg(args);
-    } catch (error) {
-      // 部分镜头可能无音轨导致音频编码失败：去掉音频轨重试（纯视频拼接）。
-      console.warn('[video] 带音轨拼接失败，回退纯视频拼接：' + runtimeErrorMessage(error));
-      await runFfmpeg(['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
-        '-vf', 'scale=' + canvas.width + ':' + canvas.height + ':force_original_aspect_ratio=decrease,pad=' + canvas.width + ':' + canvas.height + ':(ow-iw)/2:(oh-ih)/2,setsar=1',
+  function concat(batch: any) {
+    if (batch.concat) return Promise.resolve(batch.concat);
+    if (batch.concatInFlight) return batch.concatInFlight;
+    let operationId = crypto.randomBytes(8).toString('hex');
+    batch.concatOperationId = operationId;
+    batch.concatInFlight = (async function () {
+      let signal = batch.abortController && batch.abortController.signal;
+      let succeeded = batch.shots.filter(function (s: { status: string; }) { return s.status === 'succeeded'; });
+      if (succeeded.length < 2) {
+        throw serviceError(409, 'BATCH_CONCAT_NEEDS_SHOTS', '至少需要两个成功分镜才能拼接');
+      }
+      let root = media.ensureMediaRoot(config);
+      let listPath = path.join(root, 'batch_' + batch.id + '_' + operationId + '.txt');
+      let tempTarget = path.join(root, '.batch_' + batch.id + '_' + operationId + '.part.mp4');
+      let target = path.join(root, 'batch_' + batch.id + '_' + operationId + '.mp4');
+      batch.concatListPath = listPath;
+      batch.concatTempPath = tempTarget;
+      batch.concatFinalPath = target;
+      let lines = succeeded.map(function (shot: any) {
+        return "file '" + String(shot.job.result.path).replace(/'/g, "'\\''") + "'";
+      });
+      fs.writeFileSync(listPath, lines.join('\n') + '\n');
+      // 2026-08-16 真机实测：H3 输出画布可能与请求画布有 ±几像素漂移（如 832×480 →
+      // 832×509），逐镜拼接必须 scale+pad 归一化到批量画布，否则成片分辨率逐段漂移。
+      let canvas = batch.shots[0].input;
+      let filter = 'scale=' + canvas.width + ':' + canvas.height + ':force_original_aspect_ratio=decrease,pad=' + canvas.width + ':' + canvas.height + ':(ow-iw)/2:(oh-ih)/2,setsar=1';
+      let args = ['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
+        '-vf', filter,
         '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p',
-        '-an', target]);
-    } finally {
-      try { fs.unlinkSync(listPath); } catch (error) {}
-    }
-    if (!fs.existsSync(target) || !fs.statSync(target).size) {
-      throw serviceError(500, 'BATCH_CONCAT_FAILED', '视频拼接失败');
-    }
-    batch.concat = { path:target, mime:'video/mp4' };
-    return batch.concat;
+        '-c:a', 'aac', '-b:a', '192k', tempTarget];
+      try {
+        await runTranscode(args, signal);
+      } catch (error) {
+        // 部分镜头可能无音轨导致音频编码失败：去掉音频轨重试（纯视频拼接）。
+        if (signal?.aborted) throw error;
+        console.warn('[video] 带音轨拼接失败，回退纯视频拼接：' + runtimeErrorMessage(error));
+        try { fs.unlinkSync(tempTarget); } catch (cleanupError) {}
+        await runTranscode(['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
+          '-vf', filter,
+          '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p',
+          '-an', tempTarget], signal);
+      }
+      if (signal?.aborted) throw serviceError(499, 'VIDEO_BATCH_CANCELLED', '视频拼接已取消');
+      if (!fs.existsSync(tempTarget) || !fs.statSync(tempTarget).size) {
+        throw serviceError(500, 'BATCH_CONCAT_FAILED', '视频拼接失败');
+      }
+      fs.renameSync(tempTarget, target);
+      batch.concat = { path:target, mime:'video/mp4' };
+      return batch.concat;
+    })().finally(function () {
+      try { if (batch.concatListPath) fs.unlinkSync(batch.concatListPath); } catch (error) {}
+      try { if (batch.concatTempPath) fs.unlinkSync(batch.concatTempPath); } catch (error) {}
+      if (batch.concatOperationId === operationId) {
+        batch.concatInFlight = null;
+        batch.concatOperationId = null;
+        batch.concatListPath = null;
+        batch.concatTempPath = null;
+        batch.concatFinalPath = batch.concat ? batch.concat.path : null;
+      }
+    });
+    return batch.concatInFlight;
   }
 
   function close() {
     closed = true;
     batches.forEach(removeBatch);
+    for (const child of activeChildren) {
+      try { child.kill(); } catch (error) {}
+    }
   }
 
   return {

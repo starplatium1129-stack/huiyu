@@ -89,9 +89,12 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     const f = fixture(), error = new Error(failure)
     f.deps[failure] = vi.fn().mockRejectedValue(error)
     const result = await saveGeneratedArtwork(f.input, f.deps)
-    expect(result).toEqual({ ok: false, error })
+    expect(result).toMatchObject({ ok: false, error })
     if (failure === 'putImage') expect(f.deps.deleteImage).not.toHaveBeenCalled()
-    else expect(f.deps.deleteImage).toHaveBeenCalledExactlyOnceWith('new-image')
+    else {
+      expect(f.deps.deleteImage).toHaveBeenCalledExactlyOnceWith('new-image')
+      expect(result).toMatchObject({ cleanup: { status: 'completed', imageId: 'new-image' } })
+    }
     expect(f.staged()).toBe(false)
   })
 
@@ -101,6 +104,6 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     expect((await saveGeneratedArtwork(f.input, f.deps)).ok).toBe(true)
     f.deps.appendArtwork = vi.fn().mockRejectedValue(error)
     f.deps.deleteImage = vi.fn().mockRejectedValue(new Error('cleanup failed'))
-    expect(await saveGeneratedArtwork(f.input, f.deps)).toEqual({ ok: false, error })
+    expect(await saveGeneratedArtwork(f.input, f.deps)).toMatchObject({ ok: false, error, cleanup: { status: 'failed', imageId: 'new-image' } })
   })
 })

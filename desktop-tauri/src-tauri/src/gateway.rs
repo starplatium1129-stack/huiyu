@@ -1,5 +1,5 @@
 use std::io::{Read, Write};
-use std::net::TcpStream;
+use std::net::{TcpStream, ToSocketAddrs};
 use std::process::{Child, Command, Stdio};
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
@@ -9,6 +9,7 @@ use std::time::{Duration, Instant};
 
 pub const DESKTOP_GATEWAY_PROTOCOL: i64 = 1;
 pub const GATEWAY_HOST: &str = "127.0.0.1";
+const MAX_HEALTH_RESPONSE_BYTES: usize = 16 * 1024;
 
 #[derive(Debug, Clone)]
 pub struct GatewayHealth {
@@ -23,7 +24,9 @@ fn http_get(base_url: &str, path: &str, timeout: Duration) -> Option<String> {
         .trim_start_matches("http://")
         .trim_start_matches("https://")
         .to_string();
-    let mut stream = TcpStream::connect(&host_port).ok()?;
+    let deadline = Instant::now().checked_add(timeout)?;
+    let address = host_port.to_socket_addrs().ok()?.next()?;
+    let mut stream = TcpStream::connect_timeout(&address, timeout).ok()?;
     stream.set_read_timeout(Some(timeout)).ok()?;
     stream.set_write_timeout(Some(timeout)).ok()?;
     let request = format!(
@@ -31,7 +34,19 @@ fn http_get(base_url: &str, path: &str, timeout: Duration) -> Option<String> {
     );
     stream.write_all(request.as_bytes()).ok()?;
     let mut raw = Vec::new();
-    stream.read_to_end(&mut raw).ok()?;
+    let mut buffer = [0u8; 4096];
+    loop {
+        let remaining = deadline.checked_duration_since(Instant::now())?;
+        if remaining.is_zero() { return None; }
+        stream.set_read_timeout(Some(remaining)).ok()?;
+        let read = match stream.read(&mut buffer) {
+            Ok(0) => break,
+            Ok(size) => size,
+            Err(_) => return None,
+        };
+        if raw.len().saturating_add(read) > MAX_HEALTH_RESPONSE_BYTES { return None; }
+        raw.extend_from_slice(&buffer[..read]);
+    }
     let text = String::from_utf8_lossy(&raw).to_string();
     let Some(body) = text.split("\r\n\r\n").nth(1) else {
         return None;
@@ -84,6 +99,7 @@ pub struct GatewaySupervisor {
     on_exit: Option<Arc<dyn Fn(i32) + Send + Sync>>,
     on_output: Option<Arc<dyn Fn(&str, &str) + Send + Sync>>,
     child: Mutex<Option<Child>>,
+    start_lock: tokio::sync::Mutex<()>,
     owned: AtomicBool,
     stopping: AtomicBool,
     active_port: Mutex<u16>,
@@ -163,6 +179,7 @@ impl GatewaySupervisorBuilder {
             on_exit: self.on_exit,
             on_output: self.on_output,
             child: Mutex::new(None),
+            start_lock: tokio::sync::Mutex::new(()),
             owned: AtomicBool::new(false),
             stopping: AtomicBool::new(false),
             active_port: Mutex::new(self.port),
@@ -191,12 +208,19 @@ impl GatewaySupervisor {
     }
 
     pub async fn start(&self) -> Result<String, String> {
+        let _start_guard = self.start_lock.lock().await;
         if self.stopping.load(Ordering::Relaxed) {
             return Err("Gateway start cancelled".into());
         }
         // 已有兼容网关 → attach
         if self.is_healthy() {
             return Ok(self.base_url());
+        }
+        // A failed health check on an owned instance is a restart, not an
+        // invitation to launch a second gateway on another port. Reap the old
+        // child before deciding whether the configured port is available.
+        if self.owns_gateway() {
+            self.stop().await;
         }
         let current = *self.active_port.lock().unwrap();
         if !is_port_available(&self.host, current) {
@@ -275,13 +299,11 @@ impl GatewaySupervisor {
     pub async fn stop(&self) {
         self.stopping.store(true, Ordering::Relaxed);
         let child = self.child.lock().unwrap().take();
-        let Some(mut child) = child else {
-            self.stopping.store(false, Ordering::Relaxed);
-            return;
-        };
         self.owned.store(false, Ordering::Relaxed);
-        let _ = child.kill();
-        let _ = child.wait();
+        if let Some(mut child) = child {
+            let _ = child.kill();
+            let _ = child.wait();
+        }
         self.stopping.store(false, Ordering::Relaxed);
     }
 
@@ -367,5 +389,25 @@ mod tests {
         let port = listener.local_addr().unwrap().port();
         assert!(!is_port_available("127.0.0.1", port));
         assert!(is_port_available("127.0.0.1", 0)); // 0 端口必然不可连
+    }
+
+    #[test]
+    fn health_reader_rejects_an_oversized_response() {
+        use std::io::Write;
+        use std::net::TcpListener;
+        use std::thread;
+
+        let listener = TcpListener::bind(("127.0.0.1", 0)).unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let handle = thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut request = [0u8; 256];
+            let _ = stream.read(&mut request);
+            let body = vec![b'x'; MAX_HEALTH_RESPONSE_BYTES + 1];
+            write!(stream, "HTTP/1.1 200 OK\r\nContent-Length: {}\r\n\r\n", body.len()).unwrap();
+            stream.write_all(&body).unwrap();
+        });
+        assert!(read_gateway_health(&format!("http://127.0.0.1:{port}"), Duration::from_millis(500)).is_none());
+        handle.join().unwrap();
     }
 }
