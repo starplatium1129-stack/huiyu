@@ -1,5 +1,16 @@
 import type { Page } from '@playwright/test'
 
+/** Neutral local references for reading/layout tests, independent of private media. */
+export async function installSceneReferences(page: Page) {
+  const ids = ['sc001', 'sc002', 'sc003', 'sc004', 'sc006', 'sc007', 'sc011', 'sc013', 'sc069', 'sc215']
+  await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ json: {
+    entries: ids.map(id => ({ id, title: `中性布局夹具 ${id}`, char: 'nene', type: 'scene', rating: 'All', width: 832, height: 1216 })),
+  } }))
+  await page.route(/\/scene-showcase\/(images|thumbs)\/sc\d+\.jpg/, route => route.fulfill({
+    contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="832" height="1216"><rect width="832" height="1216" fill="#746687"/><circle cx="416" cy="360" r="140" fill="#d5e1e2"/></svg>',
+  }))
+}
+
 // Synthetic browser artwork; never a published or audited sample.
 export async function installShowcaseFixture(page: Page, options: { failFirst?: boolean } = {}) {
   let requests = 0

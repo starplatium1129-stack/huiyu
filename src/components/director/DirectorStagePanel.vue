@@ -66,7 +66,7 @@
             </button>
           </div>
         </div>
-        <div v-else class="stage-idle">
+        <div v-else class="stage-idle stage-idle-guide">
           <div class="atelier-canvas-mark" aria-hidden="true"><ArchiveIcon name="image" /></div>
           <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">

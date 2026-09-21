@@ -17,9 +17,10 @@
     <ColorLightNotebook @choose="chooseMood" />
 
     <p class="emphasis-plain mb-3">今日心境色板 · Mood Palette</p>
-    <div class="mood-grid stagger-container" data-reveal data-reveal-delay="1">
+    <div ref="moodGrid" class="mood-grid stagger-container" data-reveal data-reveal-delay="1">
       <button
         v-for="m in MOODS" :key="m.id"
+        :data-mood="m.id"
         type="button" class="mood-card"
         :class="{ active: selected?.id === m.id }"
         :aria-pressed="selected?.id === m.id"
@@ -63,7 +64,7 @@
           <button class="btn btn-primary" type="button" @click="copyPrompt"><ArchiveIcon name="copy" /> 复制 Prompt</button>
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 带入工作台使用</RouterLink>
-          <button class="btn btn-ghost" type="button" @click="selected = null"><ArchiveIcon name="refresh" /> 换一个情绪</button>
+          <button class="btn btn-ghost" type="button" @click="resetMood"><ArchiveIcon name="refresh" /> 换一个情绪</button>
         </div>
       </div>
     </Transition>
@@ -141,6 +142,13 @@ const MOODS: ColorMood[] = [
 
 const selected = ref<ColorMood | null>(null)
 const resultPanel = ref<HTMLElement | null>(null)
+const moodGrid = ref<HTMLElement | null>(null)
+async function resetMood() {
+  const id = selected.value?.id
+  selected.value = null
+  await nextTick()
+  moodGrid.value?.querySelector<HTMLButtonElement>(`[data-mood="${id}"]`)?.focus()
+}
 
 async function chooseMood(id: string) {
   selected.value = MOODS.find(mood => mood.id === id) ?? null

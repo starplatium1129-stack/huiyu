@@ -43,6 +43,8 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .stage-chrome { background: transparent; box-shadow: none; border: 0; backdrop-filter: none; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); letter-spacing: normal; }
 .pb.journal-workspace .stage-muse { animation: none; filter: none; }
 .pb.journal-workspace .stage-idle { position: relative; z-index: var(--z-raised); padding: var(--s-6) var(--s-4); }
+.pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide { padding-block:var(--s-3); }
+.pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide :is(.atelier-canvas-mark, .stage-placeholder-title, .stage-placeholder-copy) { display:none; }
 .pb.journal-workspace .stage-placeholder-title { font-size: var(--fs-title-sm); line-height: var(--lh-label); }
 .pb.journal-workspace .stage-placeholder-copy { max-width: 380px; color: var(--text-secondary); font-size: var(--fs-body-sm); }
 .pb.journal-workspace .stage-quick-actions { gap: var(--s-2); }
@@ -58,6 +60,10 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
   .pb.journal-workspace .pb-header { width: 100%; }
   .pb.journal-workspace .pb-sub { display: none; }
   .pb.journal-workspace .pb-top-actions { width: 100%; justify-content: flex-start; }
+}
+/* Short desktop windows retain the character/scene summary and primary action. */
+@media (min-width: 901px) and (max-height: 760px) {
+  .pb.journal-workspace .pb-sub { display: none; }
 }
 @media (max-width: 900px) {
   .pb.journal-workspace .drawing-jump-links { display: flex; gap: var(--s-2); margin-bottom: var(--s-3); border-bottom: 1px solid var(--border-soft); }

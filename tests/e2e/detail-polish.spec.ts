@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
-import { installShowcaseFixture } from './helpers/showcase'
+import { installShowcaseFixture, installSceneReferences } from './helpers/showcase'
+import { textContrast } from './helpers/contrast'
 
 for (const theme of ['dark', 'light']) {
   test(`offline video remains editable and script dialog works on a narrow screen ${theme}`, async ({ page }) => {
@@ -27,20 +28,17 @@ for (const theme of ['dark', 'light']) {
   })
 
   test(`portrait captions stay readable over artwork ${theme}`, async ({ page }) => {
+    await installSceneReferences(page)
     await page.addInitScript(t => localStorage.setItem('aics_theme', t), theme)
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto('/chat')
-    const caption = page.locator('.room-signal')
+    const caption = page.locator('.stage-reference-caption')
     await expect(caption).toBeVisible()
-    const contrast = await caption.evaluate(el => {
-      const ctx = document.createElement('canvas').getContext('2d')!
-      const rgba = (color: string) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = color; ctx.fillRect(0, 0, 1, 1); return [...ctx.getImageData(0, 0, 1, 1).data] }
-      const light = (color: number[]) => color.slice(0, 3).map(v => { const n = v / 255; return n <= .04045 ? n / 12.92 : ((n + .055) / 1.055) ** 2.4 }).reduce((s, v, i) => s + v * [.2126, .7152, .0722][i], 0)
-      const bg = rgba(getComputedStyle(el).backgroundColor)
-      return { alpha: bg[3], ratios: [...el.querySelectorAll('span,small')].map(node => { const a = light(bg), b = light(rgba(getComputedStyle(node).color)); return (Math.max(a, b) + .05) / (Math.min(a, b) + .05) }) }
-    })
-    expect(contrast.alpha).toBe(255)
-    expect(Math.min(...contrast.ratios)).toBeGreaterThanOrEqual(4.5)
+    await expect.poll(() => caption.evaluate(el => {
+      for (let node: Element | null = el; node; node = node.parentElement) if (Number(getComputedStyle(node).opacity) !== 1) return false
+      return true
+    })).toBe(true)
+    expect(await caption.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
   })
 
   test(`search respects IME and restores its opener ${theme}`, async ({ page }) => {

@@ -57,8 +57,8 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
   )
 
   const modeDescription = computed(() => pb.directorMode === 'basic'
-    ? '宁宁：“挑一幕喜欢的场景，镜头与光影已经备好。”'
-    : '夏目：“角色、光影和画面细节，这次由你来导演。”')
+    ? '挑一幕喜欢的场景，镜头与光影已经备好。'
+    : '角色、光影和画面细节，这次由你来导演。')
 
   // ── 显存预算提示 ─────────────────────────────────────────────────────────
   const vramBudget = computed(() => {

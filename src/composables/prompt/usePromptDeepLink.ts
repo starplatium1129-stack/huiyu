@@ -17,6 +17,7 @@ type AnimaSession = ReturnType<typeof useAnimaSession>
 
 export interface PromptDeepLinkDeps {
   pb: PromptBuilderStore
+  /** Host setter synchronizes engine dimensions through the existing supported-size policy. */
   sdSize: Ref<string>
   patchAnimaState: AnimaSession['patchState']
   /** 热门蓝图全量列表展开开关（预选蓝图卡片可能不在推荐 3 个里）。 */
@@ -67,6 +68,8 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
       const scenario = findScenario(scenarioId)
       const act = scenario?.acts[0]
       if (act) {
+        if (pb.isPopular) deps.selectPopularSource('studio')
+        pb.clearScene()
         const char = isCharKey(q.char) ? (q.char as ScenarioCharacter) : 'nene'
         pb.setChar(char)
         pb.setStory(`${scenario.name} · ${act.title}：${act.desc}`)
@@ -77,12 +80,16 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
           .filter(Boolean)
         pb.manualTags = new Set(semanticTokens)
         const dim = SCENARIO_RES_MAP[act.res]?.dim
-        if (dim) sdSize.value = dim.replace('×', 'x')
+        if (dim) {
+          pb.lastRecommendedSize = dim.replace('×', 'x')
+          sdSize.value = pb.lastRecommendedSize
+        }
         pb.flash(`已载入剧本《${scenario.name}》第一幕 ${act.title}，可调整后生成`)
         handled = true
       }
     }
     if (isCharKey(q.char)) {
+      if (pb.isPopular && !q.popular && !historyKey(q)) deps.selectPopularSource('studio')
       pb.setChar(q.char); handled = true
     }
     // 热门角色深链：不带 !pb.isPopular 前置条件——已在热门模式时二次进入

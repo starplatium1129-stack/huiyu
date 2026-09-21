@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
+import { installSceneReferences } from './helpers/showcase'
 
 for (const theme of ['dark', 'light']) {
   test(`scene reference preserves full composition ${theme}`, async ({ page }, info) => {
+    await installSceneReferences(page)
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/prompt-builder?scene=sc003')
@@ -18,6 +20,7 @@ for (const theme of ['dark', 'light']) {
   })
   for (const width of [1440, 390]) {
     test(`reading hierarchy and notebook ${theme} ${width}`, async ({ page }, info) => {
+      await installSceneReferences(page)
       await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 })
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
       await page.emulateMedia({ reducedMotion: 'reduce' })

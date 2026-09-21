@@ -51,11 +51,22 @@ describe('history links on a reused workbench', () => {
 })
 
 describe('context links on a reused workbench', () => {
+  it.each([{ char: 'natsume' }, { scenario: 'promise', char: 'natsume' }])('leaves a popular subject before applying %j', async query => {
+    const pb = { isPopular: true, char: 'nene', story: 'existing draft', manualTags: new Set<string>(),
+      setChar(value: string) { this.char = value }, setStory(value: string) { this.story = value }, clearScene: vi.fn(), flash: vi.fn() }
+    const selectPopularSource = vi.fn(() => { pb.isPopular = false })
+    const api = usePromptDeepLink({ pb, sdSize: ref(''), selectPopularSource } as unknown as PromptDeepLinkDeps)
+    await api.applyDeepLink(query)
+    expect(selectPopularSource).toHaveBeenCalledExactlyOnceWith('studio')
+    expect(pb.char).toBe('natsume')
+    expect(pb.isPopular).toBe(false)
+    if (!('scenario' in query)) expect(pb.story).toBe('existing draft')
+  })
   it.each(['nene', 'natsume', undefined] as const)('applies each story with character %s and preserves unchanged edits', async char => {
     const pb = {
-      char: 'natsume', story: 'existing draft', manualTags: new Set<string>(),
+      char: 'natsume', story: 'existing draft', lastRecommendedSize: '', manualTags: new Set<string>(),
       setChar(value: string) { this.char = value },
-      setStory(value: string) { this.story = value }, flash: vi.fn(),
+      setStory(value: string) { this.story = value }, clearScene: vi.fn(), flash: vi.fn(),
     }
     const sdSize = ref('')
     const api = usePromptDeepLink({ pb, sdSize } as unknown as PromptDeepLinkDeps)
@@ -67,6 +78,8 @@ describe('context links on a reused workbench', () => {
       expect(pb.char).toBe(char || 'nene')
       expect(pb.story).toBe(`${scenario.name} · ${act.title}：${act.desc}`)
       expect(sdSize.value).toBe(SCENARIO_RES_MAP[act.res].dim.replace('×', 'x'))
+      expect(pb.lastRecommendedSize).toBe(sdSize.value)
+      expect(pb.clearScene).toHaveBeenCalled()
       expect([...pb.manualTags]).toEqual([...new Set(substituteScenarioPrompt(act.prompt, char || 'nene')
         .split('\n').slice(1).flatMap(line => line.split(',').map(token => token.trim().replace(/[\s-]+/g, '_'))).filter(Boolean))])
       pb.story = 'manual edit after arrival'

@@ -14,9 +14,9 @@
     </header>
     <div class="mood-grid style-mood-grid" data-reveal data-reveal-delay="1">
       <article v-for="m in MOODS" :key="m.id" class="style-mood-card">
-        <RouterLink class="style-sample" :to="'/showcase?scene=' + m.sceneId" :aria-label="'查看' + m.name + '氛围参考'">
+        <RouterLink class="style-sample" :class="{ 'is-unavailable': !loading && !available.has(m.sceneId) }" :to="'/showcase?scene=' + m.sceneId" :aria-label="'查看' + m.name + '氛围参考'">
           <img v-if="available.has(m.sceneId) && !failedSamples.has(m.id)" :src="'/scene-showcase/thumbs/' + m.sceneId + '.jpg'" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818" loading="lazy" decoding="async" @error="failedSamples.add(m.id)" />
-          <span v-else class="style-sample-missing"><ArchiveIcon name="image" /><span>{{ loading ? '正在翻开画册…' : '氛围参考暂未连接' }}</span><small>仍可选用下方配色</small></span>
+          <span v-else class="style-sample-missing"><ArchiveIcon name="image" /><span>{{ loading ? '正在翻开画册…' : failedSamples.has(m.id) ? '参考图片加载失败' : '氛围参考暂未连接' }}</span><small>仍可选用下方配色</small></span>
         </RouterLink>
         <div class="style-card-body">
           <div class="style-card-heading"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3><span>{{ m.en }}</span></div>
@@ -70,6 +70,8 @@ useScrollReveal()
 .style-mood-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-5); }
 .style-mood-card { min-width:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); }
 .style-sample { display:block; aspect-ratio:4 / 3; overflow:hidden; background:var(--bg-elevated); }
+.style-sample.is-unavailable { aspect-ratio: auto; min-height: 104px; }
+.style-sample.is-unavailable .style-sample-missing { flex-direction: row; flex-wrap: wrap; min-height: 104px; }
 .style-sample img { width:100%; height:100%; object-fit:cover; object-position:center 12%; display:block; transition:transform var(--motion-surface) var(--ease-out); }
 .style-sample-missing { height:100%; padding:var(--s-4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); color:var(--text-secondary); text-align:center; font-size:var(--fs-body-sm); }
 .style-sample-missing .archive-icon { width:32px; height:32px; }

@@ -105,7 +105,7 @@
           <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">智能推荐</option><option value="used">最近常用</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
         </div>
         <div class="scene-filter-meta">
-          <span class="mature-hint" title="本机个人使用，成人内容已常驻展示，仅用模糊遮罩区分">成人 <em>{{ matureCount }}</em> · 已展示</span>
+          <span class="mature-hint"><template v-if="adultEnabled">成人 <em>{{ matureCount }}</em> · 已展示</template><template v-else>成人场景 · 仅限本机</template></span>
           <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
           <button class="scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
         </div>
@@ -256,6 +256,7 @@ fTime,
 fSeries,
 fRating,
 matureCount,
+adultEnabled,
 resetFilters,
 loading,
 loadError,

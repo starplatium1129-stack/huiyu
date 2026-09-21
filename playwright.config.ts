@@ -86,6 +86,10 @@ export default defineConfig({
           AICS_RUNTIME_ROOT: join(__dirname, 'runtime', `e2e-web-${MOCK_PORTS.web}`),
           AI_WORKSPACE_ROOT: join(__dirname, 'runtime', `e2e-web-${MOCK_PORTS.web}`, 'AI'),
           AICS_DISABLE_LEGACY_RUNTIME_MIGRATION: '1',
+          SD_HOST: `http://127.0.0.1:${MOCK_PORTS.sd}`,
+          COMFY_HOST: `http://127.0.0.1:${MOCK_PORTS.translate + 1}`,
+          OLLAMA_HOST: `http://127.0.0.1:${MOCK_PORTS.ollama}`,
+          TTS_HOST: `http://127.0.0.1:${MOCK_PORTS.tts}`,
         } : {}),
       }
     },

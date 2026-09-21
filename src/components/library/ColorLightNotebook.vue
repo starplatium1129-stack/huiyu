@@ -15,9 +15,9 @@
         <RouterLink v-if="available.has(sample.id) && !failed.has(sample.id)" class="study-image" :to="'/showcase?scene=' + sample.id" :aria-label="'查看参考原图：' + sample.title">
           <img :src="'/scene-showcase/thumbs/' + sample.id + '.jpg'" :alt="sample.title + '，' + sample.light" width="560" height="818" loading="lazy" decoding="async" @error="failed.add(sample.id)" />
         </RouterLink>
-        <div v-else class="study-image study-unavailable" role="status">
+        <div v-else class="study-image study-unavailable" :class="{ 'is-unconnected': !loading && !available.has(sample.id) }" role="status">
           <ArchiveIcon name="image" />
-          <strong>{{ loading ? '正在翻开参考画册…' : '这张参考暂时未能展示' }}</strong>
+          <strong>{{ loading ? '正在翻开参考画册…' : failed.has(sample.id) ? '参考图片加载失败' : '这张参考暂时未能展示' }}</strong>
           <p>{{ loading ? '正在核对样张目录' : '可继续阅读观察笔记，或选用下方情绪色板。' }}</p>
         </div>
         <figcaption>
@@ -81,6 +81,7 @@ const failed = ref(new Set<string>())
 .study-image img { display:block; width:100%; height:100%; object-fit:contain; }
 .study-unavailable { padding:var(--s-5); flex-direction:column; gap:var(--s-3); text-align:center; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
 .study-unavailable .archive-icon { width:36px; height:36px; color:var(--accent); }
+.study-unavailable.is-unconnected { height:auto; min-height:140px; }
 figcaption { padding:var(--s-4) var(--s-5); }
 .study-label { display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s-2); color:var(--text-muted); font-size:var(--fs-body-sm); }
 .light-study h3 { margin:var(--s-3) 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); color:var(--text-primary); }

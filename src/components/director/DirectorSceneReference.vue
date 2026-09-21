@@ -1,5 +1,5 @@
 <template>
-  <figure v-if="scene" class="scene-reference" aria-label="当前场景参考">
+  <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" aria-label="当前场景参考">
     <div class="scene-reference-picture" :class="{ 'is-restricted': restricted }">
       <img v-if="canLoad && !failed" :key="imageUrl" :src="imageUrl" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" @error="failed = true" />
       <div v-else class="scene-reference-empty"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
@@ -73,6 +73,7 @@ const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.
 .scene-reference { display:grid; grid-template-columns:minmax(120px,.9fr) minmax(0,1fr); gap:var(--s-4); margin:0 0 var(--s-4); text-align:left; align-items:center; }
 .scene-reference-picture { position:relative; overflow:hidden; display:grid; place-items:center; aspect-ratio:4/3; border-radius:var(--r-lg); background:var(--bg-base); }
 .scene-reference-picture img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; }
+.scene-reference.is-unconnected .scene-reference-picture { aspect-ratio:auto; min-height:104px; }
 .scene-reference-picture.is-restricted img { filter:blur(24px); transform:scale(1.15); }
 .scene-reference-mask { position:absolute; inset:0; display:grid; place-items:center; background:color-mix(in srgb,var(--bg-surface) 85%,transparent); color:var(--text-primary); font-size:var(--fs-label); }
 .scene-reference-empty { display:grid; justify-items:center; gap:var(--s-3); padding:var(--s-4); color:var(--text-secondary); font-size:var(--fs-label); text-align:center; }
@@ -84,4 +85,5 @@ figcaption p { margin:var(--s-2) 0 var(--s-3); color:var(--text-secondary); font
 .scene-reference-settings dt { color:var(--text-secondary); }
 .scene-reference-settings dd { margin:var(--s-1) 0 0; color:var(--text-primary); }
 @container canvas-column (max-width:440px) { .scene-reference { grid-template-columns:1fr; } .scene-reference-picture { max-height:190px; aspect-ratio:16/9; } }
+@media (min-width:901px) and (max-height:760px) { .scene-reference-picture { max-height:180px; } }
 </style>

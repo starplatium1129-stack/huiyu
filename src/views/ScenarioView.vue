@@ -15,9 +15,9 @@
     <div class="scenario-workspace">
       <div class="scenario-list" role="group" aria-label="故事手帖">
         <button v-for="s in SCENARIOS" :key="s.id" type="button" class="scenario-card" :class="{ active: activeScenario?.id === s.id }" :aria-pressed="activeScenario?.id === s.id" @click="openScenario(s)">
-          <span class="scenario-cover" :data-character="currentChar">
+          <span class="scenario-cover" :class="{ 'is-unconnected': !loadingReferences && !available.has(coverId(s.id)) }" :data-character="currentChar">
             <img v-if="available.has(coverId(s.id)) && !failedCovers.has(coverId(s.id))" :key="coverId(s.id)" :src="'/scene-showcase/thumbs/' + coverId(s.id) + '.jpg'" :alt="(currentChar === 'nene' ? '宁宁' : '夏目') + ' · ' + s.name + '氛围参考'" width="560" height="818" loading="lazy" decoding="async" @error="failedCovers.add(coverId(s.id))" />
-            <span v-else class="scenario-cover-missing"><ArchiveIcon :name="s.iconName" /><span>{{ loadingReferences ? '正在翻开画册…' : '氛围参考暂未连接' }}</span></span>
+            <span v-else class="scenario-cover-missing"><ArchiveIcon :name="s.iconName" /><span>{{ loadingReferences ? '正在翻开画册…' : failedCovers.has(coverId(s.id)) ? '封面加载失败' : '氛围参考暂未连接' }}</span></span>
           </span>
           <span class="scenario-book-copy"><span class="scenario-book-title"><strong class="scenario-name">{{ s.name }}</strong><ArchiveIcon v-if="activeScenario?.id === s.id" name="success" /></span><span class="scenario-desc">{{ s.desc }}</span><span class="scenario-count">{{ s.acts.length }} 幕故事<span>{{ s.en }}</span></span></span>
         </button>

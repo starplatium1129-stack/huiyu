@@ -4,6 +4,7 @@ import { kvGet,kvInit } from '@/composables/useKVStore';
 import { useSceneStore,type CurationData,type Scene } from '@/stores/sceneStore';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment';
 import { buildPreferenceProfile,isPersonaCore,readHiddenScenes,readSceneUsage,sceneUsageScore,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,personalScore as uxPersonalScore,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys';
 import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
@@ -109,8 +110,8 @@ export function useSceneExplorerWorkspace() {
     const hiddenIds = ref(readHiddenScenes());
     const localUsage = ref(readSceneUsage());
     const showHidden = ref(false);
-    /** 本机个人使用：成人内容常驻，仅模糊遮罩，不再自锁。 */
-    const showMature = ref(true);
+    const adultEnabled = isLocalStudioHost();
+    const showMature = ref(adultEnabled);
     const searchQuery = ref('');
     /** 首帧数据就绪标记：避免初始化时赋初值触发数据 watch 重复加载 */
     let dataReady = false;
@@ -579,7 +580,7 @@ drawerEl,
         activeFacetCount, fTier, showHidden, showPersonalScenes, usedCount, sortBy,
         showFavoriteScenes, favoriteCount, showHiddenScenes, hiddenCount, showAllScenes, availableCount,
         THEME_DEFS, activeTheme, themeCount, intentHtml, fChar, fSeason,
-        fTime, fSeries, fRating, matureCount, resetFilters, loading,
+        fTime, fSeries, fRating, matureCount, adultEnabled, resetFilters, loading,
         loadError, init, paged, flashId, usageFor, isCore,
         tier, charName, seasonLabel, timeLabel, personalReason, drawerScene,
         dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,

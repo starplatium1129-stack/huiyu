@@ -436,7 +436,7 @@ export function usePromptWorkspace() {
     // 「点场景卡片后提示词跟随新场景」。八类参数全部走视图注入的同一路径动作。
     const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
         pb,
-        sdSize,
+        sdSize: computed({ get: () => sdSize.value, set: applyRecommendedSize }),
         patchAnimaState,
         showAllBlueprints,
         selectPopularSource,

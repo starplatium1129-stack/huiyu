@@ -71,7 +71,7 @@ test('consecutive copies get distinct IDs and cancelling reload keeps the local 
   expect(ids).toEqual(['sc1000', 'sc1001'])
   await page.getByRole('button', { name: '重新读取', exact: true }).click()
   const confirmation = page.getByRole('alertdialog')
-  await expect(confirmation).toContainText('未保存修改')
+  await expect(confirmation).toContainText('未保存的修改')
   await confirmation.getByRole('button', { name: '取消', exact: true }).click()
   await expect(page.locator('.maintenance-state')).toHaveClass(/dirty/)
   await page.getByRole('searchbox', { name: '搜索管理场景' }).fill('sc1001')

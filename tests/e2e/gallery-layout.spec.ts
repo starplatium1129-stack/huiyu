@@ -1,16 +1,14 @@
 import { expect, test, type Page } from '@playwright/test'
-import { readFileSync } from 'node:fs'
 import { textContrast } from './helpers/contrast'
 
 // Browser-local fixture: no personal artwork or generation endpoint is used.
 async function seedGallery(page: Page, theme: string, empty = false) {
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false } }))
-  const images = ['natsume-home-cg.jpg', 'nene-home-cg.jpg', 'natsume-official.webp']
   await page.route('**/assets/gallery-fixture-*', route => {
     const item = Number(route.request().url().split('-').at(-1))
     if (item === 3) return route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750"><rect width="1200" height="750" fill="#d5e1e2"/><circle cx="900" cy="220" r="80" fill="#f8e5bf"/><path d="M0 390Q300 270 600 410T1200 360V750H0Z" fill="#829ea4"/><path d="M0 580Q400 430 750 600T1200 500V750H0Z" fill="#4e737e"/></svg>' })
-    const index = item % images.length
-    return route.fulfill({ body: readFileSync(`assets/characters/${images[index]}`), contentType: index === 2 ? 'image/webp' : 'image/jpeg' })
+    const [width, height] = [[832, 1216], [1216, 832], [1024, 1024]][item % 3]
+    return route.fulfill({ contentType: 'image/svg+xml', body: `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="100%" height="100%" fill="#746687"/><circle cx="250" cy="250" r="140" fill="#d5e1e2"/><path d="M0 600L500 350L1200 800V1400H0Z" fill="#4e737e"/></svg>` })
   })
   await page.addInitScript(({ theme, empty }) => {
     localStorage.setItem('aics_theme', theme)

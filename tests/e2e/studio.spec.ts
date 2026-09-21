@@ -133,7 +133,7 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   expect(shellWidth).toBeLessThanOrEqual(1880);
   expect(shellWidth).toBeLessThanOrEqual(viewportWidth);
   const basicColumns = await page.locator('.director-workspace').evaluate(element => {
-    const [left, center, right] = Array.from(element.children).map(child => child.getBoundingClientRect().width);
+    const [left, center, right] = ['.col-left', '.col-center', '.director-inspector'].map(selector => element.querySelector(selector)!.getBoundingClientRect().width);
     return { left, center, right };
   });
   // Atelier basic mode reserves 280px for story and 320px for decisions at >=1400px.

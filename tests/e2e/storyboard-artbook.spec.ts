@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import { SCENARIOS, substituteScenarioPrompt } from '../../src/config/scenarios'
 import { textContrast } from './helpers/contrast'
+import { installSceneReferences } from './helpers/showcase'
 
 async function dismissNotices(page: Page) {
   const buttons = page.locator('.toast-close')
@@ -30,6 +31,7 @@ async function installVideoFixture(page: Page) {
 
 for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
   test(`story notebook preserves prompts and shot handoff ${theme} ${width}`, async ({ page }, info) => {
+    await installSceneReferences(page)
     await page.setViewportSize({ width, height: width === 390 ? 844 : 960 })
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(theme => {

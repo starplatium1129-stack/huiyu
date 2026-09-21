@@ -13,7 +13,7 @@ for (const theme of ['dark', 'light']) {
       expect(box!.y).toBeGreaterThan(64)
       expect(box!.y + box!.height).toBeLessThanOrEqual(height)
       await page.goto('/prompt-builder?scene=sc006')
-      await expect(page.locator('.workspace-archive-bar')).toBeVisible()
+      await expect(page.locator('.atelier-context')).toContainText('平安夜')
       const sceneBox = await generate.boundingBox()
       expect(sceneBox!.y + sceneBox!.height).toBeLessThanOrEqual(height)
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
@@ -46,7 +46,7 @@ for (const theme of ['dark', 'light']) {
 test('reduced motion removes list entry and filtered cards do not wait for animation', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/style')
-  const card = page.locator('.stagger-container > *').first()
+  const card = page.locator('.style-mood-card').first()
   await expect(card).toBeVisible()
   await expect(card).toHaveCSS('animation-name', 'none')
   await page.emulateMedia({ reducedMotion: 'no-preference' })

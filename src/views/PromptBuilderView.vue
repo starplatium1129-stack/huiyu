@@ -29,7 +29,7 @@
           </div>
         </div>
         <p class="pb-sub">{{ modeDescription }}</p>
-        <p v-if="pb.isPopular || pb.activeScene" class="atelier-context">{{ pb.isPopular ? popularCharacter?.displayName || '热门角色' : pb.activeScene?.title }}</p>
+        <p class="atelier-context">{{ pb.isPopular ? popularCharacter?.displayName || '热门角色' : charOptions.find(item => item.id === pb.char)?.label }}<template v-if="pb.activeScene"> · {{ pb.activeScene.title }}</template></p>
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
@@ -58,34 +58,6 @@
       <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
     </nav>
     <div class="director-workspace">
-
-      <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
-      <div class="director-col col-left" id="drawing-materials">
-        <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
-        <template #story>
-
-        <DirectorStoryPanel />
-
-        </template>
-        <template #character>
-        <DirectorCharacterPanel :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
-
-        </template>
-        <template #scenes>
-          <PromptMaterialScenes :bindings="materialBindings" />
-        </template>
-        <template #history>
-        <HistoryPanel class="advanced-decision"
-          :history="pb.history"
-          @resume="resumeHistory"
-          @duplicate="duplicateHistory"
-          @delete="deleteHistory"
-          @to-shots="handleHistoryToShots"
-          @to-shots-batch="handleHistoryToShotsBatch"
-        />
-        </template>
-        </DirectorMaterialDrawer>
-      </div>
 
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
       <div class="director-col col-center" id="drawing-canvas">
@@ -150,6 +122,34 @@
         </div>
 
       </div>
+      <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
+      <div class="director-col col-left" id="drawing-materials">
+        <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
+        <template #story>
+
+        <DirectorStoryPanel />
+
+        </template>
+        <template #character>
+        <DirectorCharacterPanel :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
+
+        </template>
+        <template #scenes>
+          <PromptMaterialScenes :bindings="materialBindings" />
+        </template>
+        <template #history>
+        <HistoryPanel class="advanced-decision"
+          :history="pb.history"
+          @resume="resumeHistory"
+          @duplicate="duplicateHistory"
+          @delete="deleteHistory"
+          @to-shots="handleHistoryToShots"
+          @to-shots-batch="handleHistoryToShotsBatch"
+        />
+        </template>
+        </DirectorMaterialDrawer>
+      </div>
+
       <DirectorInspector ref="inspector" :expert="pb.directorMode === 'pro'" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
           <PromptInspectorRender :bindings="renderBindings" />
@@ -177,6 +177,7 @@
 <script setup lang="ts">
 import '@/assets/css/director.css'
 import { defineAsyncComponent } from 'vue'
+import { charOptions } from '@/composables/scene/directorOptions'
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
 const PromptResultDialogs = defineAsyncComponent(() => import('@/components/director/PromptResultDialogs.vue'))
 const PromptInspectorRender = defineAsyncComponent(() => import('@/components/director/PromptInspectorRender.vue'))

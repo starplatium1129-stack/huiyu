@@ -2,16 +2,16 @@
   <article class="page" style="--page-max:1100px">
     <WorkspaceArchiveBar
       chapter="10"
-      title="MODEL SHELF"
-      :subtitle="loading ? 'READING LOCAL CATALOG' : `${loras.length} CHARACTER PROFILES`"
-      :status="loading ? 'SCANNING' : (loras.length ? 'CATALOG READY' : 'EMPTY CATALOG')"
+      title="模型资料"
+      :subtitle="loading ? '正在读取资料' : `${loras.length} 份角色模型资料`"
+      :status="loading ? '读取中' : (loadError ? '读取失败' : loras.length ? '资料已收录' : '暂无资料')"
       :state="loading ? 'active' : (loras.length ? 'success' : 'warning')"
       shape="frame"
     />
     <div class="lora-title-row">
       <div>
-        <h1 class="title">角色模型库 (LoRA)</h1>
-        <p class="subtitle">专属 LoRA 模型凝结着角色的容颜细节与神态气质。出图时由工作台智能调度，在此浏览核心特征与最佳推荐权重。</p>
+        <h1 class="title">模型资料 (LoRA)</h1>
+        <p class="subtitle">查阅角色特征、推荐权重与历史评测。资料收录不代表本机已安装；进入工作台后可检测当前引擎与模型是否可用。</p>
       </div>
     </div>
     <CreativeLibraryNav />
@@ -19,7 +19,7 @@
       v-if="loading"
       kind="loading"
       title="正在读取模型目录"
-      message="正在核对本机 LoRA 档案与推荐权重。"
+      message="正在读取收录的 LoRA 资料与推荐权重。"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
@@ -33,7 +33,7 @@
       v-else-if="!loras.length"
       kind="empty"
       title="模型目录暂未收录"
-      message="导入模型后，专属角色与画风档案将在此静候取用。"
+      message="当前没有收录模型资料。仍可前往工作台选择已有角色，或在控制面板查看资源。"
     >
     </ArchiveStatePanel>
     <template v-else>
@@ -60,7 +60,7 @@
         <section v-if="l.evaluation" class="evaluation-panel" aria-label="模型评测结果">
           <div class="evaluation-head">
             <div>
-              <span class="lora-label">固定种子人工盲审</span>
+              <span class="lora-label">历史评测 · 固定种子人工盲审</span>
               <strong>{{ l.evaluation.evaluatedAt || '已完成' }}</strong>
             </div>
             <span class="badge" :class="l.experimental ? 'badge-warning' : 'badge-success'">{{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status }}</span>
@@ -84,6 +84,12 @@
             </dl>
           </details>
         </section>
+        <div class="model-actions">
+          <button v-if="l.triggerWords.length" class="btn btn-ghost" type="button" @click="copyWithFeedback(l.triggerWords.join(', '), '已复制触发词')">复制触发词</button>
+          <RouterLink v-if="modelCharacter(l.id)" class="btn btn-ghost" :to="{ path: '/prompt-builder', query: { char: modelCharacter(l.id) } }">用此角色绘制</RouterLink>
+          <span v-else>仅供资料参考，未配置直接使用入口</span>
+        </div>
+        <p v-if="modelCharacter(l.id)" class="model-availability">本机可用性尚未检测。入口只选择角色，不强制加载此历史版本；引擎与模型由工作台现有规则决定。</p>
       </div>
     </div>
     </template>
@@ -94,6 +100,7 @@
 import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import {
@@ -108,12 +115,18 @@ const modelQuery = ref('')
 const visibleLoras = computed(() => { const term = modelQuery.value.trim().toLocaleLowerCase(); return loras.value.filter(model => !term || [model.name, model.character, model.baseModel, model.description, ...model.triggerWords].join(' ').toLocaleLowerCase().includes(term)) })
 const loading = ref(true)
 const loadError = ref('')
+// Explicit curated identity mapping; never infer a runnable model from display names.
+function modelCharacter(id: string) {
+  if (id === 'L_NENE_V21_ANIMA') return 'nene'
+  if (id === 'L_NAT_V21_ANIMA') return 'natsume'
+  return undefined
+}
 
 async function loadCatalog() {
   loading.value = true
   loadError.value = ''
   try {
-    await sceneStore.load()
+    await sceneStore.loadLoraCatalog()
     loras.value = parseLoraCatalog(sceneStore.loras)
   } catch (e) {
     console.warn('lora load failed', e)
@@ -126,6 +139,9 @@ onMounted(() => { void loadCatalog() })
 </script>
 
 <style scoped>
+.model-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
+.model-actions > span, .model-availability { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
+.model-availability { margin-top: var(--s-3); }
 .model-details { font-size: var(--fs-label); color: var(--text-secondary); margin-bottom: var(--s-3); }
 .model-details summary { cursor: pointer; }
 .lora-grid .lora-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }

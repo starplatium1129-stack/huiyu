@@ -10,6 +10,7 @@
 .scenario-card { min-width:0; width:100%; overflow:hidden; padding:0; border:1px solid var(--border-soft); border-radius:var(--r-xl); text-align:left; background:var(--bg-surface); color:var(--text-primary); font:inherit; cursor:pointer; }
 .scenario-card.active { border-color:var(--accent); box-shadow:inset 0 -3px var(--accent); }
 .scenario-cover { display:block; aspect-ratio:16 / 9; overflow:hidden; background:var(--bg-elevated); }
+.scenario-cover.is-unconnected { aspect-ratio:auto; height:88px; }
 .scenario-cover img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 30%; transition:transform var(--motion-surface) var(--ease-out); }
 .scenario-cover[data-character='natsume'] img { object-position:center 6%; }
 .scenario-cover-missing { display:flex; height:100%; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-3); color:var(--text-secondary); font-size:var(--fs-body-sm); }

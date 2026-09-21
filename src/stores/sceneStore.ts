@@ -154,7 +154,7 @@ export const useSceneStore = defineStore('scenes', () => {
   const META_SPECS: MetaSpec[] = [
     { file: 'curation.json', required: false, lite: true, parse: (raw) => raw ?? {}, apply: (d) => { curation.value = d as CurationData } },
     { file: 'characters.json', required: true, lite: false, parse: (raw) => requireDataRecords(raw, 'characters.json'), apply: (d) => { characters.value = d as Array<Record<string, unknown>> } },
-    { file: 'loras.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { loras.value = d as LoraMeta[] } },
+    { file: 'loras.json', required: false, lite: false, parse: (raw) => requireDataRecords(raw, 'LoRA资料'), apply: (d) => { loras.value = d as LoraMeta[] } },
     { file: 'tags.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
     { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
     { file: 'scenes-index.json', required: false, lite: true, parse: (raw) => raw ?? null, apply: (d) => { index.value = d as SceneIndex | null } },
@@ -223,6 +223,13 @@ export const useSceneStore = defineStore('scenes', () => {
     })()
     metaInflight.set(spec.file, entry)
     return entry.promise
+  }
+
+  /** Read the model reference catalog without loading scenes or blueprints. */
+  async function loadLoraCatalog(): Promise<void> {
+    const spec = META_SPECS.find(item => item.file === 'loras.json')!
+    const result = await loadMetaSpec(spec, loadEpoch, version.value, false)
+    if (!result.ok) throw result.error
   }
 
   async function loadMeta(force = false, lite = false): Promise<void> {
@@ -454,6 +461,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadHome, loadCharacter, loadCore, ensureCharacter, ensureCore, reload, byId, count,
+    load, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, byId, count,
   }
 })

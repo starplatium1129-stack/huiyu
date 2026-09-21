@@ -76,8 +76,8 @@
   .pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: 330px minmax(0, 1fr); }
 }
 @media (max-width: 900px) {
-  .pb.journal-workspace .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "story" "stage" "decisions"; }
-  .pb.journal-workspace.has-result .director-workspace { grid-template-areas: "stage" "story" "decisions"; }
+  /* Match DOM and keyboard order: the single canvas precedes materials on narrow screens. */
+  .pb.journal-workspace .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "story" "decisions"; }
   .pb.journal-workspace .col-left { position: static; max-height: none; overflow: visible; }
   .pb.journal-workspace[data-director-mode="basic"] .director-workspace > .col-left { grid-row: auto; }
 }

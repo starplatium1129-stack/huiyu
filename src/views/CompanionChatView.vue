@@ -1,5 +1,6 @@
 <template>
   <article class="companion-chat-window companion-chat-redesign" :data-character="activeChar">
+    <a class="skip-link" href="#companion-chat-main">跳到主要内容</a>
     <header class="desktop-titlebar companion-chat-titlebar" @mousedown="startWindowDrag">
       <div class="companion-chat-identity">
         <ArchiveIcon name="chat" class="companion-chat-brand-icon" />
@@ -27,7 +28,7 @@
       </div>
     </header>
 
-    <section class="companion-chat-body" aria-label="桌宠聊天">
+    <main id="companion-chat-main" tabindex="-1" class="companion-chat-body" aria-label="桌宠聊天">
       <div class="companion-chat-statusline" role="status" aria-live="polite">
         <i class="companion-chat-status-dot" :data-state="statusDotState" aria-hidden="true"></i>
         <span>{{ statusText }}</span>
@@ -133,7 +134,7 @@
           </span>
         </div>
       </div>
-    </section>
+    </main>
 
     <SpeechInputSettings
       v-if="speechSettingsOpen"
