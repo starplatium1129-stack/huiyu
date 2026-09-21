@@ -9,7 +9,9 @@
 
 ## 审计快照
 
-- [规划整理前快照（2026-09-21）](audits/roadmap-snapshot-2026-09-21.md)：保存批次过程与过时状态；完成和待办以当前入口为准。
+- [工作流治理实施与复核（2026-09-13–14）](audits/workflow-governance-2026-09-13-14.md)：W1、资源治理、图片回退与蓝图适配的分批证据。
+- [资产与资料复核（2026-09-13）](audits/asset-document-review-2026-09-13.md)：资产误报更正、六份盘点结论与后续资料交付边界。
+
 
 - [页面切换、工作台动效与旧模块清理（2026-09-15）](audits/ui-navigation-and-unused-2026-09-15.md)：导航/动效验证和后续删除分阶段记录；桌面同步仍未完成。
 - [场景滚动与角色档案补全（2026-09-12）](audits/scene-scroll-character-profiles-2026-09-12.md)
@@ -81,7 +83,6 @@
 - [001 — 修复高频交互的合成层性能](completed/001-interaction-compositor-fixes.md)
 - [002 — 补齐导演台状态交接与退出反馈](completed/002-director-workflow-continuity.md)
 - [003 — 收敛动效令牌并保留 reduced-motion 反馈](completed/003-motion-accessibility-tokens.md)
-- [协作指南整理前快照](completed/agents-baseline-2026-09-08.md)
 - [非主机代码修复与验证 · 2026-09-08](completed/code-only-repairs-2026-09-08.md)
 - [手绘图标逐枚升级 · 2026-09-08](completed/icon-refinement-2026-09-08.md)
 - [useLive2D 组合式函数模块化拆分计划（研究报告）](completed/live2d-composable-refactor-plan.md)

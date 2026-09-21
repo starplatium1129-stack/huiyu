@@ -11,7 +11,7 @@
 - 确证问题 5 组：① `reference:render`/`showcase:batch-miaomiao` 默认网关是历史端点 3123，与注册表/文档写的 3000 矛盾；② `showcase:fill-gaps` 直写活跃 manifest、verdict 硬编码 `pass`、`--dry-run` 仍有 mkdir 副作用；③ `showcase:batch-miaomiao` 直写固定版本目录绕过版本化发布；④ 参考库对热门服装覆盖缺口 357/971（109 角色），形态级差额无对账入口；⑤ 主题层漂移（`historia_reiss` 旧别名主题 + 8 角色无主题）。
 - 工作区存在其他会话并行改动（`docs/INDEX.md`、`SKILL.md` 等），本轮未触碰。
 
-> **复核更正（2026-09-13，依据 [GLM 实施交接](../../guides/engineering/glm-implementation-handoff.md)）**：
+> **复核更正（2026-09-13，依据 [GLM 实施交接](../../archive/audits/workflow-governance-2026-09-13-14.md)）**：
 > 1. DATA_VERSION 哈希域为 **13** 个产物（`scripts/lib/data-version.js:18-23` 注释明示），原文误写 12；
 > 2. 「分片↔聚合逐字节 0 漂移」表述过强：popular/blueprint 为**解析后逐条 JSON 序列化比较**（语义级，非文件字节级），场景分片仅数量与 scenes-index 计数一致；
 > 3. 原 §3.3「只读门禁（11）」枚举与实际条目数不符，已改为按 facet 描述；「只读但默认即写」这类单一标签不适合作为机器元数据，机器元数据由后续 W1 实施以多值 facet 承担；

@@ -12,6 +12,6 @@
 | [验收用例](gemini-resource-acceptance.md) / [JSON](gemini-resource-acceptance.json) | 6 项现状与 3 项未来 R1 用例设计，全部明确未执行 | 隔离环境执行及主力机验收 |
 | [GitHub 复用与参考项目调研（2026-09-19）](github-reference-research-2026-09-19.md) | 候选项目、复用边界与 P1–P6 实施顺序；明确先 Spike、再许可/维护状态和门禁 | 实施与提交复审见 [落地记录](github-reference-implementation-2026-09-19.md)；PhotoSwipe 维持 Spike，真实模型、原生设备与性能验收单列 |
 
-进度与缺口见 [任务状态](gemini-followup-progress.json)。首轮问题记录见 [资产交付复核](gemini-asset-review-2026-09-13.md)。GLM 工程实施见 [W1 复核](glm-w1-review-and-submit-scope.md)。
+进度与缺口见 [任务状态](gemini-followup-progress.json)。首轮问题记录见 [资产交付复核](../../archive/audits/asset-document-review-2026-09-13.md)。GLM 工程实施见 [工作流治理实施记录](../../archive/audits/workflow-governance-2026-09-13-14.md)。
 
 本次修订移除未经测量的图片百分比、像素距离、固定压缩收益与“实锤”裁切结论；纠正文档命令/路由、作品库已有入口、目录资源分流和错误徽章行为。没有修改业务代码、原图、生产数据或分级，没有运行模型、安装或发布。

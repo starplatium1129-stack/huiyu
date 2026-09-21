@@ -88,11 +88,11 @@
 | 热门生成身份 | `data/popular/` 源 → popular:build → 聚合 → `src/utils/popularContent.ts` | 展示档案与生成身份用途独立；不能把两份同名字段机械合并 |
 | 服装 | 热门分片 outfits，经 parseOutfit 解析；工作室服装另见 useDirectorCatalog、promptPolicy 与 promptBuilderStore | 热门服装按角色 ID + 服装 ID 定位；parseOutfit 保留 default，不保留分片 isDefault；参考 view 的 isDefault 属于另一条派生链 |
 | 参考标准与视图 | standards/view；写入者包括 sync-multi-outfit-standards 和 register-pending-reference-outfits | view 是合并投影且登记器会写入，不是纯覆盖产物。镜像契约通过不代表图片存在或已审核 |
-| 角色蓝图 | `data/blueprints/` 源 → blueprints:build → 聚合；运行时按角色解析 outfitId | UI 保存通过变更集与持久化事务同步源分片、聚合及版本；旧基线返回 409 并保留草稿，存在未恢复事务时读取拒绝半写状态。隔离验证与真实断电边界见 [当前实现](project-status.md) 和 [剩余验收](roadmap.md#后续工作流与内容数据治理)；旧风险证据保留在 [历史复核](research/engineering/six-task-review-2026-09-13.md) |
+| 角色蓝图 | `data/blueprints/` 源 → blueprints:build → 聚合；运行时按角色解析 outfitId | UI 保存通过变更集与持久化事务同步源分片、聚合及版本；旧基线返回 409 并保留草稿，存在未恢复事务时读取拒绝半写状态。隔离验证与真实断电边界见 [当前实现](project-status.md) 和 [剩余验收](roadmap.md#后续工作流与内容数据治理)；旧风险证据保留在 [历史复核](archive/audits/asset-document-review-2026-09-13.md) |
 
 参考同步有实际数据写入，不能作为档案编辑后的固定必跑步骤：`sync-multi-outfit-standards.js` 根据磁盘四个参考机位是否齐全过滤热门服装，并允许角色级旧机位路径回退；在缺素材根的机器上运行可能写出空形态。名称启发式产生的 isNsfw 与该磁盘过滤是两条独立逻辑，不能据此解释某形态缺失原因。同步中的 `o.default || idx === 0` 无条件将首套标成默认；若其他服装也标 default，需检查输出是否出现双默认，不能称为“仅无标记时兜底”。
 
-`accent_color` 有机器读取者：覆盖审计 `report-content-coverage.js` 将其带入缺主题报告，但不与 tokens.css 比对。主题渲染以实际 CSS 为准；不同颜色值不能直接判为数据冲突。更多已核实范围与未验收项见 [盘点复核](research/engineering/six-task-review-2026-09-13.md)。
+`accent_color` 有机器读取者：覆盖审计 `report-content-coverage.js` 将其带入缺主题报告，但不与 tokens.css 比对。主题渲染以实际 CSS 为准；不同颜色值不能直接判为数据冲突。更多已核实范围与未验收项见 [盘点复核](archive/audits/asset-document-review-2026-09-13.md)。
 
 ## 角色聊天、实时语音与 Live2D
 

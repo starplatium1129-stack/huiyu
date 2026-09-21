@@ -65,15 +65,10 @@
 - [聊天房间与桌宠视觉设计方案（2026-09-20）](research/desktop/live2d-visual-plan-2026-09-20.md)：8 模型取景采样与 GitHub 参考；A 批聊天房间、B 批无边框桌宠已完成定向检查，安装版与完整设备验收待执行。
 - [本机 Live2D 候选接入（2026-09-20）](research/desktop/live2d-candidate-integration-2026-09-20.md)：本机模型与 Native 适配、影退役、开放聊天舞台、桌宠与独立聊天窗重构；双主题真实模型检查与桌面实测边界。
 - [可维护性增量审查（2026-09-19）](research/engineering/maintainability-optimization-2026-09-19.md)：M01–M10 的固定基线、依据与实施边界；执行结果见项目状态，剩余事项见 roadmap。
-- [六份盘点报告汇总复核](research/engineering/six-task-review-2026-09-13.md)与[GLM Flash 分批任务](guides/engineering/glm-flash-next-batches.md)：状态校准、立绘缺失误报修正、蓝图保存风险和后续实施边界。
 - [工程研究资料归档](research/engineering/README.md)：资产、图片候选、容器与文案、文档证据及未执行验收用例的已核验范围。
 - [GitHub 复用与参考项目调研（2026-09-19）](research/engineering/github-reference-research-2026-09-19.md)：候选项目与 HUIYU 能力边界、优先级和正式接入前的 Spike／许可／门禁要求。
-- [GLM W1 实施复核与提交范围](research/engineering/glm-w1-review-and-submit-scope.md)：元数据预览、覆盖漏检、类型边界修复及分批提交建议。
 - [Gemini 场景候选复核与修订](research/prompts/gemini-scene-candidates/review.md)：60 份概念／12 份深化稿核对，三条双引擎修订候选，均未出图。
 - [Gemini 第二轮复核与场景创作交接](guides/engineering/gemini-scene-draft-handoff.md)：已纠正项、新误报与 60 份场景概念／12 份双引擎草稿任务；不写生产内容。
-- [GLM 报告复核与实施交接](guides/engineering/glm-implementation-handoff.md)：先做工作流元数据和只读覆盖报告，发布与真实内容变更单列。
-- [Gemini 资产交付复核](research/engineering/gemini-asset-review-2026-09-13.md)与[后续任务包](guides/engineering/gemini-followup-tasks.md)：结构账本复核、报告更正、视觉初筛与文案/文档整理。
-- [GLM / Gemini 任务提示词](guides/engineering/model-task-briefs.md)：工作流与字段职责盘点、资产对账与视觉初审；输出范围分离，统一复核。
 - [成年角色 NSFW / R-18 CG 提示词规范](guides/prompts/nsfw-cg-prompt-standard.md)：双引擎 NSFW 语法、脱衣防冲突机制、Danbooru 核心矩阵与 R-18 蓝图规范。
 - [手机竖屏壁纸](guides/prompts/mobile-wallpaper-prompt-standard.md)与[成年角色非露骨 CG 研究](research/prompts/adult-nonexplicit-cg-reliability-2026-09-13.md)：iPhone 17 Pro／通用长屏适配、非露骨创作及中性一致性检查；候选未出图。
 - [单人物立绘与特写壁纸规范](guides/prompts/character-wallpaper-prompt-standard.md)：与叙事 CG 同列重点，分别评价人物表现和桌面适配；案例尚未出图。
@@ -81,7 +76,9 @@
 
 ## 已完成批次与历史记录
 
-- [规划整理前快照（2026-09-21）](archive/audits/roadmap-snapshot-2026-09-21.md)：保留已从待办页移出的过程与旧结论，不作为执行清单。
+- [工作流治理实施与复核（2026-09-13–14）](archive/audits/workflow-governance-2026-09-13-14.md)：合并 GLM 交接、W1 初版/复核及 A/RB/RC/RD、N1–N3、G1–G16 结果，保留分批失败与补验。
+- [资产与资料复核（2026-09-13）](archive/audits/asset-document-review-2026-09-13.md)：合并 Gemini 交付复核、G0–G5 资料范围及六份盘点的误报更正；原始 JSON 与验收证据保留。
+
 - [项目状态](project-status.md)：已实现范围与分阶段验证边界；内容数量保留日期，不把旧统计当作新盘点。
 - [页面切换、工作台动效与旧模块清理（2026-09-15）](archive/audits/ui-navigation-and-unused-2026-09-15.md)：导航阶段 41 项浏览器回归与后续删除分别记录；两处旧实现及专属测试已移除，安装版尚未同步。
 - [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复的历史复审；当前实现与剩余验收分别见项目状态和 roadmap。

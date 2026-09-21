@@ -1,40 +1,110 @@
-# 六份盘点报告的汇总复核
+# 工作流治理实施与复核记录（2026-09-13–14）
 
-2026-09-13；复核基线 `ac29219`，开工工作树干净。原报告为本机 `scripts/archive/task-01` 至 `task-06` 的 Markdown 及附件，属于被忽略的工作材料，不作为远端可用依赖。本页保存可以独立理解的复核结论；未重跑历史全量门禁或进行真实出图、安装与设备验收。
+> 2026-09-21 合并归档。由 GLM 交接、分批任务、W1 首次实施/复核及六报告的工程后续记录整理而来。以下数字、失败和“待修”均属于所标基线；不构成重新派工。当前实现查 [项目状态](../../project-status.md)，剩余验收查 [未来规划](../../roadmap.md)。原文可从整理前提交 `d348b3d` 查询。
 
-## 可采纳的发现
+## 合并范围与结论
 
-| 原任务 | 本次复核结论 | 处理 |
-| --- | --- | --- |
-| 01 待办状态 | 006 的 W1/D1/D3/D4 状态表落后于正文及代码；sc063/sc087 的 rating 和 usage 当前均含 R15 | 已同步 006 与 roadmap，真实画面缺口保留 |
-| 02 人物/服装 | 存在双默认字段、跨域服装 ID 和字段文本差异；覆盖工具仍列出 8 位缺显式主题、1 个历史别名候选 | 仅作为有范围的核对项，不批量迁移 ID、统一色值或修改提示词 |
-| 03 场景/蓝图 | 保存 API 的蓝图分支只写聚合；真实存储/自愈函数在临时目录已复现修改被旧源覆盖 | 提升为优先核心保存修复项，由强模型处理；尚未跑完整 HTTP/UI 保存 |
-| 04 工作流 | 部署可转发安装等开关，但元数据 switches 为空；若干 evidence 行号和构建描述过时 | 交 GLM 修说明/元数据，保持执行行为不变 |
-| 05 素材 | 参考条目 4,508，显式 pending 1,974，有 URL 2,534；批次的登记/历史审核与实际资产需分开 | 数量已重新计算；不关闭 V01/V02 |
-| 06 资源 | assets 当前 629 文件、353,211,795 字节（336.849 MiB）；详情图出错分支隐藏图片，没有缩略图回退 | 文件统计已复算；页面故障效果待浏览器验证，安装包收益未测 |
+W1 元数据与覆盖报告、A/RB/RC、N1–N3、G1–G16 的办公机实施和复核已留证；RD 只覆盖部分故障用例。蓝图适配器当时不等于保存事务接线，后续接线情况以项目状态为准。真实素材、审核发布、安装、物理断电与设备范围不因文档合并关闭。
 
-## 必须纠正的推断
+旧分批任务的实施细节由下方实际结果取代，删除额度安排、并行派工、共享工作区与提交指令。只读描述元数据不等于执行许可，候选字节核验不等于已审核发布。
 
-1. **任务 05 的“新 49 角色仅 6 位有立绘、43 位缺图”是误报。** 一次性脚本 `reconcile-task-05.js` 仅去掉 `../`，没有去掉 URL 查询参数，导致 `popular-*.png?v=...` 被当作文件名。本次按同批 49 个 ID 从 characters.json 重新取路径，剥离查询/片段后逐文件 stat，结果 **49/49 普通文件存在**；全部 158 位热门角色的声明立绘亦存在。存在性不证明画质、身份或分级合格，不能据此补写审核结果。
-2. **任务 02 把多种设计差异直接称为缺陷。** `src/utils/characterProfiles.ts` 的档案解析没有输出 traits，不能由原始 traits 的对象/字符串差异推导当前页面必然异常。`report-content-ownership.js` 明确将参考 view 定义为合并投影，不能先假定其必须纯覆盖生成，再称合并写入违规。不同用途的服装 ID、颜色值也不能自动统一。
-3. **芙莉莲字段确有内部不一致，但报告给出的原作争议与历史根因没有证据。** 当前 visual_dna/tags/identityTokens 为绿眼，traits/canon.formNotes 中有紫眼；本次只确认字段差异，不裁定原作事实，不改生成内容。
-4. **任务 06 的“基础包保证 100% 页面可用”和“安装包削减 98%”未成立。** 336.849 MiB 是源 assets 文件总量；不同分组的小计在原报告中还相互矛盾。没有安装包构建测量、依赖闭包和离线视觉验收，不能推导完整程序压缩包收益，也不能据此删除打包资源。
-5. **断外网不等于本地 Live2D 不可用。** 当前模型经本地网关读取；应分开验证外网断开、素材缺失、网关不可达，不把按需激活误称已实现在线下载。
-6. **未访问外部素材根，不等于证明图片不存在或历史审核未发生。** 本机无当次验收证据时写“未核验”；pending/URL/文件存在/审核声明/画面验收分别记录。对暂停的审计不得自行恢复出图。
+## 首轮盘点的修正依据
 
-## 证据入口与验证范围
+原报告值得作为实施线索。已重新运行注册表审计，确认 74 项入口无断链/循环；检查其一次性脚本后重新运行，主要规模与引用差额能复现。重点源码已核实：
 
-- 保存分支：`routes/maintenance.js` 的 `blueprints !== undefined` 写入；重建：`scripts/lib/ensure-data-build.js` 的 `ensureBlueprintsBuilt`、`scripts/lib/blueprint-store.js` 的 `aggregateIsCurrent`/`writeBlueprintAggregate`；启动调用在 `server.js`。
-- 档案解析及容错：`src/utils/characterProfiles.ts`、`src/views/CharacterView.vue` 的 `brokenPortraits`；参考 view 的已声明边界在 `scripts/maintenance/report-content-ownership.js`。
-- 部署说明：`scripts/workflow.js` 的两个 deploy 条目、`deploy-desktop.bat` 及其 PowerShell 目标；default nature 已有 writes-release/service，不能把遗漏 switches 夸大为全部标成只读。
-- 本次重新执行只读 `report-content-coverage.js --json`，structuralErrors 为空，8 位缺显式主题及 historia_reiss 别名候选仍在。它是覆盖报告，不是浏览器或图片质量验收。
-- 重新计算参考显式 pending/URL、资产数量与字节、49/158 个声明立绘的文件存在性、sc063/sc087 元数据；未运行生成器、下载器或安装流程。
+- `render-all-outfits-references.js` 与 `generate-all-scenes-showcase-miaomiao.js` 默认网关确为 3123，`reference:render` 的注册说明写 3000，存在配置说明不一致。先明确默认及覆盖规则，不能全仓替换 3123。
+- `render-showcase-gaps.js` 在 dry-run 判断前 mkdir，成功出图后直接写目标清单并把 `review.verdict` 填为 pass；必须拆清生成成功、已审核和已发布。仅把 pass 改 pending 并不能防止原图已写进活跃目录。
+- `generate-all-scenes-showcase-miaomiao.js` 使用固定版本目录。候选输出、审核和发布边界需要专门改造与故障测试。
+- 971 套热门服装中有 357 套未在标准参考库登记；现有 register 只处理整角色标准服装为空的情况。该差额是覆盖待办，不是悬空引用，不授权自动补描述、机位或触发出图。
+- CSS 的 historia_reiss 选择器没有对应 canonical krista_lenz；除默认主题角色 nene 外，8 个角色未匹配显式主题。需区分旧别名、允许默认与待补，不能统一套一套颜色或直接改为硬失败。
 
-蓝图隔离复现已执行：在临时根创建单条虚构蓝图，使用真实 writeJson 按保存路由表达式只改聚合，断言源字节不变且 aggregateIsCurrent 为 false；调用真实 ensureBlueprintsBuilt 后返回 rebuilt:true，标题被恢复为旧值。断言通过，不等于完整 HTTP/UI 验收。当前事务快照未覆盖蓝图源，不能只追加 split 调用；validate-content-contracts.js 还固定读取仓库根，后续隔离 HTTP 测试需先明确校验根目录。这两项与源/聚合一致性一起修，不能交给仅修改说明的批次。
+报告需更正：DATA_VERSION 当前为 13 个产物，不是 12；“只读门禁（11）”与实际枚举不符；“只读但默认即写”分类不适合作为机器元数据。热门/蓝图检查是解析对象序列化比较，场景部分只比较数量，不能宣称全域逐字节零漂移。参考 URL 非空也不表示图片已完成。本次未把 74 个底层脚本全部重新逐行审计。
 
-## 后续分工
+## W1 初版设计与已知局限
 
-GLM 5.3 Flash 按 [分批任务包](../../guides/engineering/glm-flash-next-batches.md) 先修工作流说明，再完成可复算资产清单和有证据的字段职责材料。每批有确定产物和停止条件，不用更多报告替代实现。主任务负责核心保存缺陷、报告判断、最终 Git 写操作和必要验收。原六份报告不整体升级为权威文档，也不因数量多就全部采纳。
+### 0. 盘点修订（复核更正落实）
+
+[glm-governance-inventory.md](../../research/engineering/glm-governance-inventory.md) / [.json](../../research/engineering/glm-governance-inventory.json) 顶部新增「复核更正」节（JSON `meta.review.corrections`），逐条保留可追溯记录：
+
+- R1 DATA_VERSION 哈希域 12 → **13**（`scripts/lib/data-version.js:18-23` 注释明示）；
+- R2 「分片↔聚合逐字节零漂移」改为准确表述：popular/blueprint 为**解析后逐条 JSON 序列化比较**，场景为数量与 scenes-index 计数一致；
+- R3 「只读门禁（11）」枚举失实 → §3.3 改为 facet 描述；单一「只读但默认即写」标签不进入机器元数据；
+- R4 补记：参考 URL 非空 ≠ 图片已交付/通过审核；缺登记 357 项是**覆盖待办而非悬空引用**。
+
+另按实数据核补：nene 的 `accent_color(#38bdf8)` 与 tokens.css `:root` 默认色 `#ff75a0` 不同源，「nene 走默认主题」属人工约定，不可由数据推导（影响 B 的实现选择，见 §2）。
+
+### 1. A：W1 工作流执行元数据
+
+#### 设计
+
+- 元数据**内联**在每个 `WORKFLOWS` 注册项（`scripts/workflow.js`），字段：
+  - `nature`：默认（无开关）行为的 facet 多值；枚举 `EFFECTS`（read-only / preview / self-heal-missing / guard / writes-source / writes-product / writes-release / writes-baseline / delete / external-model / network-download / publish-remote / service / isolated-fixture）；
+  - `machine`：`MACHINES`（node / windows / windows-toolchain / python-pillow / gateway / comfyui / vision-api / network / playwright-browser / build-present）；
+  - `switches`：显式开关 → 行为 facet（如 `data:build --check` → `['self-heal-missing','guard']`、`runtime:clean --prune` → `['delete']`）；
+  - `resume`：idempotent | checkpoint | na；`evidence`：核实位置（文件:行）；`unknown`：未核实点；`notes`：已确证缺陷登记（如 C1/C2/C3，不改执行）。
+- **共用**：`node scripts/workflow.js <命令> --help` 的详细 JSON 输出 `run` 字段；`--plan` 预览每步追加 `[nature]` 标注；`audit:workflows` 校验元数据（缺字段/未知枚举/复合只读/开关格式/空 evidence 均报错并计入退出码）。`audit:workflows --json` 实测 `count=75, errors=[]`。
+- **零行为变化**：runner 的 `main/plan/invocation` 执行路径不读取 `run`，无基于元数据的拦截；所有命令、参数、默认端点、目录、发布行为不变（`deploy-desktop.bat`、`render-showcase-gaps.js`、`generate-all-scenes-showcase-miaomiao.js`、`reference:render` 的执行逻辑一律未动，缺陷只在 `notes` 里登记）。
+- 复合工作流（`reference:full`/`showcase:full`）显式给 `run`，审计强制「复合不得仅标 read-only/preview/夹具」。
+
+#### 测试证据（scripts/tests/test-workflow-runner.js，15/15 通过）
+
+新增 5 个真实行为测试（非快照）：
+
+1. 74+1 项 `validateRun` 全部合法；
+2. 审计拒绝：缺 run、复合只读、未知枚举、非 `--` 开关、非法 resume、空 evidence；
+3. **元数据仅描述性**：`machine:['windows']` 的 node 命令在任何平台按原参数执行（无拦截）；
+4. **旧调用不变**：注入 run spy 断言 `data:build`/`check:content`/`showcase:scene-candidates` 的真实 cmd/args 逐字节不变（npm 无转发参数时不插 `--`，语义保持）；
+5. **help/plan 不调用执行器**（注入会抛错的 run）；help 输出含 run 与 `self-heal-missing`；`--plan` 输出 `[preview]` 标注且必填参数校验照常生效；
+6. 语义一致性不变式：external-model 必须声明 gateway/comfyui/vision-api 之一、默认 preview 的发布器不得默认写入、复合 nature 与子步骤有交集、定点校验（`data:build --check` 自愈+守卫、`reference:register` 默认写、`runtime:clean --prune` 删除、`showcase:full` 发布步无 writes-release）。
+
+### 2. B：只读内容覆盖差额报告
+
+#### 设计（scripts/maintenance/report-content-coverage.js）
+
+- **入口**：`npm run wf -- audit:coverage [--json] [--root <夹具根>]`（已登记 WORKFLOWS + docs/workflow.md「内容覆盖差额报告」节）。
+- **复用现有读取器**：`scripts/lib/popular-store.js`（分片+manifest，通过 `AICS_DATA_ROOT` 支持夹具根）、`server/config.resolveCharRefRoot`（素材根解析，与 `check:ref-urls` 同口径）；standards/view/characters/tokens.css 只读。
+- **输出分类**（每条含对象 ID、所在源文件、差额类型、关联位置）：
+  - 参考：`missing-reference-registration`（357，109 角色，含分片文件名）、`reference-pending`（282 套形态存在 pending 视角）、`missing-image`（URL 已填但素材根 statSync 缺文件）、`unverified`（素材根不存在/structure 模式，不冒充缺图也不冒充通过；本机 2324 条属此类）、`reference-only-forms`（30，sync 自动追加机制，单列不混入差额）；
+  - 主题：explicit 151 / default-allowed `nene`（显式清单，附证据注释）/ 待补 8（含 characters.json 的 accent_color 供修复参考）/ 旧别名 `historia_reiss`（经 popular 别名归一匹配建议 `krista_lenz`，标「待人工确认」）/ 未归类 `triad`（共享主题，人工归类）。
+- **结构错误退出 1**（清单缺文件、跨分片重复角色/服装 ID、manifest 条目缺 count 或批次数不符、standards↔view 镜像破坏）；**覆盖差额恒退出 0**（信息性，不作为门禁失败依据）。不写任何文件、不批量登记、不出图、不改主题。
+- 输出确定性：排序稳定、无时间戳（可复跑 diff）。
+
+#### 测试证据（scripts/tests/test-coverage-report.js，6/6 通过，已登记 unit 套件）
+
+隔离夹具（tmp 目录，覆盖交接要求全部验收点）：双方 ID 集合差额精确断言；pending/缺实图/无法核实三分（注入 fileExists true/false/null）；standards 独有形态不混入差额；跨文件重复角色+重复服装 ID → 结构错误；standards↔view 镜像破坏 → 结构错误；manifest 批次数不符 → CLI 退出 1；分片缺文件 → CLI 退出 1；CLI 两次运行 stdout 逐字节一致；`fileExists` 区分「真缺图」与「素材根缺失」，越界路径拒绝。
+
+#### 生产数据实测（2026-09-13，本机）
+
+`node scripts/maintenance/report-content-coverage.js --json` → 退出 0，结构错误 0；缺登记 357 / pending 282 套 / 缺实图 0 / 无法核实 2324 / 参考库独有 30；主题 explicit 151 / 缺 8 / 旧别名 1（→krista_lenz）/ 未归类 1（triad）。与盘点数字一致。快照存 `scripts/archive/glm-governance/coverage-report-2026-09-13.json`（gitignored，非交付物）。
+
+
+### 初版证据限制
+
+初版 runner 15 项、覆盖报告 6 项的证据仅代表首次交付；复合只读限制、环境/模块缓存读取和若干漏检在下一节修正。初版未逐行核验 check:rewrite 主体；C1/C2/C3 当时仅记入 notes，未改执行逻辑。初版运行日志和覆盖快照在本机 scripts/archive/glm-governance，非远端交付物。
+
+## 修复结论
+
+GLM 完成了有效的实现，但原定向测试漏掉了若干边界，本轮直接修复：
+
+- `--plan` 原先只显示默认 nature，带 `--apply` 仍只看到 preview。现分别显示默认行为与本次开关关联行为，不假设组合开关优先级，也不改变执行命令。
+- 复合审计原先禁止任何纯只读组合，却不能发现部分漏报副作用。现根据实际子步骤检查副作用覆盖，允许真正只读的组合；元数据列表类型校验与显示要求一致。
+- 元数据补记 fill-gaps 的 dry-run 仍会创建目录，以及 gate:quick 可能升级 full 构建。这里只纠正描述，不改变这两个入口的业务行为。
+- 覆盖报告原先遇到部分机位 pending 就跳过整套剩余 URL；现逐项检查可核实图片。
+- 重复角色/形态被 Map/Set 隐藏、manifest count 未实际比较、同文件及空服装角色重复漏报等均补结构校验；原 count 测试有被其他错误误触发的假阳性，已增加精确断言。
+- `--root` 改为显式只读加载，固定复用项目配置解析器，不执行夹具内 config，也不依赖模块缓存或继承环境来确定夹具根；先校验 URL，再判断参考根是否可访问。
+- 根 TypeScript 失败来自先前 API 类型接入引入的前端实现链，并非 GLM 本批新增：SceneBlueprint/BlueprintCompositionIntent 移入独立纯类型模块，原路径保留类型导出。没有弱化 tsconfig、使用 any 或改变生成逻辑。
+- 修复本轮相关源码、计划文件的 LF 行尾；Gemini 报告和候选仅做尾部空格/末尾换行整理，没有修改其结论、分级或提示词内容。
+
+## 本机检查
+
+- 工作流定向回归 18 例、覆盖报告隔离回归 10 例通过。
+- `npm run typecheck` 通过；仓库文本规范检查通过。
+- `audit:workflows` 为 75 项，错误 0。覆盖报告实际库只读检查结构错误 0；357 套缺登记、282 套有 pending、2,324 条图片未核实。后者只统计本报告覆盖的热门服装机位，不是全参考库的 2,534 条 URL；未核实不等于缺图。
+- 完整 `gate:full` 通过，耗时 2 分 17 秒：check、前端单测、536 项 unit、26 组 contract、构建与预算均通过。办公机使用 `AICS_REFERENCE_AUDIT_MODE=structure`，不把该模式当成真实素材验收。日志为 `scripts/archive/glm-governance/full-review-final.log`；首次运行的行尾失败记录保留在 `full-review.log`，修正后定向复验再重跑完整门禁。
+
+## 审核范围排除项
+
+W1 当次没有审查生产提示词、分级或 NSFW 规范；Gemini 候选只能按未编译/未出图草稿理解。三条候选的源身份/衣装快照与原 60/12 批次的覆盖不能混算，未验证材料不得升级为生产规范。
 
 ## GLM A/B/C/D 后续产物复核
 
@@ -45,7 +115,6 @@ GLM 5.3 Flash 按 [分批任务包](../../guides/engineering/glm-flash-next-batc
 - **C 部分采纳**：view 合并规则、跨文件 default→isDefault 派生和角色内服装 ID 解析有证据。Marin 某形态缺失被归因于 isNsfw 无依据，实际过滤还检查磁盘机位；accent_color 有覆盖审计读取者。绝对“无消费者”及未知根因须修正，不把整份材料直接升格为契约。
 - **D 保留为未执行草稿**：F11/F12 用 not-ready 且接受 idle，不能证明故障已经发生；F7 容器可见不证明回退画面；F1 过度限定回退实现；F8 缓存/重复请求及多项恢复操作未闭环。未接入正式门禁、未作浏览器通过声明。
 
-继续工作限定在任务包文末 RB/RC/RD，三个目录可并行。核心蓝图持久化问题仍未修复；本次工作流验收不关闭它，也不关闭真机、素材或 UI 缺口。
 
 本次完整门禁通过，见 [执行日志](../../evidence/glm-workflow-gate-2026-09-13.txt)：check、vitest、623 项 unit、26 组 contract 和生产构建，总计 2 分 18 秒。显式使用 AICS_REFERENCE_AUDIT_MODE=structure，仅验证外部参考索引结构，不验证文件可用性或画质。工作流注册审计 79 项、文档检查 184 文件/1003 链接通过；未实际运行部署、安装或浏览器 UI 验收。
 
@@ -59,7 +128,6 @@ GLM 5.3 Flash 按 [分批任务包](../../guides/engineering/glm-flash-next-batc
 - 主任务修正 F03 的同角色解码/恢复检查、F05 的隐藏图片与同卡提示、F08b 的恢复解码、故障态截图，以及 route 注册/响应的 await。选取 F03/F05/F08b/F09 纳入 `tests/e2e/resource-recovery.spec.ts`，独立端口使用既有构建及本地图片/JSON 响应夹具，深浅主题 **8/8 通过**。不依赖外部参考目录，不调用生成模型；截图与 DOM 断言不等同于 WCAG 全站视觉验收。
 - F01/F02/F04 的产品回退仍待实现；F08 的缓存/故障触发、F07 的像素视觉、F10–F12 的模型前置与失败恢复尚未验收，未纳入正式测试。整份 RD 不标为全部完成。
 
-下一步 GLM 直接实现首页和角色详情的图片回退（任务包 N1/N2），主任务负责收齐代码后的双主题浏览器验收。原蓝图保存缺陷仍由核心修复任务单独追踪。
 
 当次统计、夹具结果与测试源码哈希见 [验收摘要](../../evidence/resource-recovery-2026-09-13.json)，正式测试执行见 [浏览器日志](../../evidence/resource-recovery-browser-2026-09-13.txt)。本机一次性脚本和旧失败 trace 留在 scripts/archive，远端复验浏览器流程使用已提交的测试文件，不依赖这些临时路径。
 
@@ -101,7 +169,6 @@ GLM 5.3 Flash 按 [分批任务包](../../guides/engineering/glm-flash-next-batc
 
 最终验收通过：G1 定向 24 项、G2/G3 定向 21 项；完整门禁含 **632 项 unit、26 组 contract、前端测试与构建**，总计 2 分 7 秒，显式 structure 参考模式。新增测试的正则空格写法及未使用变量曾阻断 lint，已修正并重跑通过，未放宽规则。注册审计 79 项通过；条件报告仍将所有入口标记 not-run，报告成功不冒充命令执行验收。源码哈希与范围见 [G1–G3 摘要](../../evidence/governance-g1-g3-2026-09-13/summary.json)，执行记录见 [门禁日志](../../evidence/governance-g1-g3-2026-09-13/gate.txt)。
 
-G1–G3 已整合，下一轮按任务包 G4/G5/G6 分别完善交付文字输出、资源清单基础工具和八位角色主题；它们各有独立文件边界，完整资源分发与蓝图事务不在这三批中。
 
 ## G4/G5/G6 复核与验收（2026-09-14）
 
@@ -133,7 +200,7 @@ G10 实现默认只读预览、显式 apply 导出候选包。复核补上发布
 
 定向用例 G8 46、G9 20、G10 20，既有清单 22 项；完整门禁含 **696 项 unit、26 组 contract、前端测试与构建**通过，structure 参考模式；81 项注册审计通过。初次门禁发现四处测试未使用变量，修正后完整重跑；新测试 CRLF 也已规范，未放宽检查规则。见 [G8–G10 验收摘要](../../evidence/governance-g8-g10-2026-09-14/summary.json)与[门禁日志](../../evidence/governance-g8-g10-2026-09-14/gate.txt)。
 
-本批无 UI 改动，不需浏览器视觉复验；所有导出写入测试使用临时夹具，没有复制真实素材、安装或下载。候选字节核验不等于质量/审核/安装验收，完整资源分发及蓝图保存事务仍未完成。下一批按任务包 G11/G12/G13 并行补隔离校验根、纯蓝图变更规划器、增量候选包；规划器尚不接入生产保存。
+本批无 UI 改动，不需浏览器视觉复验；所有导出写入测试使用临时夹具，没有复制真实素材、安装或下载。候选字节核验不等于质量/审核/安装验收，完整资源分发及蓝图保存事务仍未完成。后续隔离根、规划器和增量候选的结果见下节。
 
 ## G11/G12/G13 隔离根、蓝图规划与增量候选（2026-09-14）
 
@@ -145,7 +212,6 @@ G13 增量候选只复制 added/changed，removed 仅记录；旧清单结构核
 
 完整门禁 **742 项 unit、26 组 contract、前端测试与构建**通过，总计 2 分 50 秒，structure 参考模式；81 项注册审计通过。新 G11 测试的一处未使用参数已在完整门禁前清理。见 [G11–G13 验收摘要](../../evidence/governance-g11-g13-2026-09-14/summary.json)及[门禁日志](../../evidence/governance-g11-g13-2026-09-14/gate.txt)。未修改 UI/生产内容或资源，未安装/下载/真实生成，所有导出写入仍只用临时夹具；增量候选不等于已安装更新或可信发布。
 
-下一批 G14/G15/G16 分别补参考校验 CLI 根、增量候选基线兼容核验、蓝图磁盘准备与应用适配器。蓝图适配器复用既有快照约定，不另建备份系统；主任务负责后续锁、统一备份、路由及跨域回滚接线。
 
 ## G14/G15/G16 参考根、增量核验与蓝图写入适配（2026-09-14）
 

@@ -58,5 +58,15 @@
   "/docs/ux-audit-2026-08-30.html": "/docs/archive/audits/ux-audit-2026-08-30.html",
   "/docs/workflow-audit-2026-08-31.html": "/docs/archive/audits/workflow-audit-2026-08-31.html",
   "/docs/workflow-audit-2026-09-08.md": "/docs/archive/audits/workflow-audit-2026-09-08.md",
-  "/docs/archive/expired/particle-portrait-pipeline.md": "/docs/guides/characters/particle-portrait-pipeline.md"
+  "/docs/archive/expired/particle-portrait-pipeline.md": "/docs/guides/characters/particle-portrait-pipeline.md",
+  "/docs/guides/engineering/glm-implementation-handoff.md": "/docs/archive/audits/workflow-governance-2026-09-13-14.md",
+  "/docs/guides/engineering/glm-flash-next-batches.md": "/docs/archive/audits/workflow-governance-2026-09-13-14.md",
+  "/docs/research/engineering/glm-w1-coverage-implementation.md": "/docs/archive/audits/workflow-governance-2026-09-13-14.md",
+  "/docs/research/engineering/glm-w1-review-and-submit-scope.md": "/docs/archive/audits/workflow-governance-2026-09-13-14.md",
+  "/docs/guides/engineering/gemini-followup-tasks.md": "/docs/archive/audits/asset-document-review-2026-09-13.md",
+  "/docs/research/engineering/gemini-asset-review-2026-09-13.md": "/docs/archive/audits/asset-document-review-2026-09-13.md",
+  "/docs/research/engineering/six-task-review-2026-09-13.md": "/docs/archive/audits/asset-document-review-2026-09-13.md",
+  "/docs/archive/audits/roadmap-snapshot-2026-09-21.md": "/docs/roadmap.md",
+  "/docs/archive/completed/agents-baseline-2026-09-08.md": "/docs/INDEX.md",
+  "/docs/guides/engineering/model-task-briefs.md": "/docs/archive/README.md"
 }
