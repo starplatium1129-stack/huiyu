@@ -39,6 +39,7 @@ const PUBLISH = process.argv.includes('--publish');
 const MANUAL = process.argv.includes('--manual');
 const COMPLETE_MANUAL = process.argv.includes('--complete-manual');
 const RELEASE_REPOSITORY = 'starplatium1129-stack/huiyu';
+const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
 const MANUAL_MARKER = '<!-- huiyu-release-mode: manual -->';
 
 function ghCommand() {
@@ -175,6 +176,7 @@ function main() {
   }
   if (BUMP_KIND) bumpVersion(BUMP_KIND);
   const version = require(path.join(ROOT, 'package.json')).version;
+  const previousBuild = SKIP_BUILD || BUNDLE_ONLY ? binding.verifyBuild(ROOT) : null;
 
   if (!SKIP_BUILD) {
     if (BUNDLE_ONLY) {
@@ -206,12 +208,14 @@ function main() {
   }
 
   // 找出本次产出的安装包与签名（NSIS：*-setup.exe + .sig）
+  if (BUNDLE_ONLY && !SKIP_BUILD && previousBuild) binding.extendBuild(ROOT, previousBuild);
   const artifacts = fs.readdirSync(BUNDLE_DIR)
     .filter((f: any) => f.endsWith(`_${version}_x64-setup.exe`))
     .map((exe: any) => ({ exe, sig: `${exe}.sig` }))
     .filter((a: any) => MANUAL || fs.existsSync(path.join(BUNDLE_DIR, a.sig)));
   if (!artifacts.length) fail(`${BUNDLE_DIR} 下没有 updater 安装包（*-setup.exe + .sig）`);
   const artifact = artifacts[artifacts.length - 1];
+  binding.verifyBuild(ROOT, path.join(BUNDLE_DIR, artifact.exe));
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const exeName = artifact.exe;
@@ -222,6 +226,7 @@ function main() {
   const sha256 = crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex').toUpperCase();
   const shaPath = path.join(OUT_DIR, `${exeName}.sha256`);
   fs.writeFileSync(shaPath, `${sha256}  ${exeName}\n`);
+  binding.verifyDistribution(ROOT, executable);
   if (MANUAL) {
     if (PUBLISH) publishRelease(version, assertPublishReady(version), [executable, shaPath]);
     console.log(`[release-desktop-update] ${version} 手动安装包已生成，未修改自动更新清单`);
@@ -244,6 +249,7 @@ function main() {
 
   console.log(`[release-desktop-update] ${version} 已生成到 runtime/desktop-updates/`);
   if (PUBLISH) {
+    binding.verifyDistribution(ROOT, executable);
     const head = assertPublishReady(version);
     publishRelease(version, head, [manifestPath, executable, `${executable}.sig`, shaPath]);
     console.log(`[release-desktop-update] ${releaseTag(version)} 已发布到 ${RELEASE_REPOSITORY}`);

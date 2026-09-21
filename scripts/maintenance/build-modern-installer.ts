@@ -21,6 +21,7 @@ function run(command: string, args: readonly string[], options: any = {}) {
 }
 
 function buildModernInstaller({ payload, output, preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96 }: any = {}) {
+  if (!preview) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).verifyBuild(ROOT, payload);
   if (!preview && (!payload || !fs.existsSync(payload))) throw new Error('A verified NSIS payload is required');
   if (!['dark', 'light'].includes(theme) || !['ready', 'installing', 'done', 'error'].includes(state)) throw new Error('Unknown preview theme or state');
   fs.mkdirSync(GENERATED, { recursive: true });
@@ -72,6 +73,7 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
     console.log(`Native preview: ${captureFile}`);
   }
   if (output) { fs.mkdirSync(path.dirname(output), { recursive: true }); fs.copyFileSync(executable, output); }
+  if (!preview) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).bindDistribution(ROOT, payload, output || executable);
   console.log(`Modern installer: ${output || executable}`);
   return { executable: output || executable, payloadHash, payloadLength, version };
 }

@@ -232,6 +232,7 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
   const events: any = [];
   await runTauri(['build', '--no-bundle'], {
     root: 'fixture-root',
+    binding: { sourceIdentity: () => { events.push('capture-source'); return {} as never; }, recordBuild: () => { events.push('bind-build'); } },
     npmCommand: 'npm',
     checkEnvironment: () => { events.push('environment'); },
     withLock: async (options: any, callback: any) => {
@@ -254,10 +255,12 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
   assert.deepEqual(events, [
     'lock',
     'environment',
+    'capture-source',
     'npm:run build',
     'npm:run test:services-generated',
     'prepare',
     `${process.execPath}:tauri-cli.js build --no-bundle`,
+    'bind-build',
     'unlock',
   ]);
 });

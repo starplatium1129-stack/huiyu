@@ -15,6 +15,42 @@ const {
 
 const ROOT = path.resolve(__dirname, '..', '..');
 
+test('desktop build binding rejects same-version stale sources, tampering and missing receipts before side effects', () => {
+  const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
+  const { execFileSync }: typeof import('node:child_process') = require('node:child_process');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'desktop-binding-'));
+  const put = (name: string, value: string) => { const file = path.join(root, name); fs.mkdirSync(path.dirname(file), { recursive:true }); fs.writeFileSync(file, value); };
+  const git = (...args: string[]) => execFileSync('git', args, { cwd:root, stdio:'pipe', windowsHide:true });
+  let sideEffects = 0;
+  try {
+    git('init'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid');
+    put('.gitignore', 'runtime/\ndist/\ndesktop-tauri/\n'); put('package.json', '{"version":"1.0.0"}'); put('source.ts', 'A');
+    git('add', '.gitignore', 'package.json', 'source.ts'); git('commit', '-m', 'A');
+    put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/node.exe', 'node-A');
+    put('desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe', 'native-A');
+    const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/fixture.exe'; put(payload, 'payload-A');
+    const source = binding.sourceIdentity(root);
+    binding.recordBuild(root, source);
+    binding.verifyBuild(root, path.join(root, payload));
+    put('docs/note.md', 'documentation only');
+    binding.verifyBuild(root);
+    put('source.ts', 'B'); git('add', 'source.ts'); git('commit', '-m', 'B');
+    assert.throws(() => { binding.verifyBuild(root); sideEffects++; }, /源码与构建不匹配/);
+    assert.equal(sideEffects, 0);
+    put('source.ts', 'A');
+    binding.verifyBuild(root); // Identical content may be committed after the build.
+    put(payload, 'tampered');
+    assert.throws(() => binding.verifyBuild(root), /改写/);
+    put(payload, 'payload-A');
+    fs.unlinkSync(path.join(root, 'desktop-tauri/src-tauri/resources/node.exe'));
+    assert.throws(() => binding.verifyBuild(root), /缺失|改写/);
+    fs.unlinkSync(path.join(root, binding.receiptPath));
+    assert.throws(() => binding.verifyBuild(root), /缺少/);
+    put(binding.receiptPath, '{}');
+    assert.throws(() => binding.verifyBuild(root), /格式/);
+  } finally { fs.rmSync(root, { recursive:true, force:true }); }
+});
+
 test('桌面更新端点固定使用主项目 GitHub Releases', () => {
   const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8'));
   assert.deepEqual(config.plugins.updater.endpoints, [

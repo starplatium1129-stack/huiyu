@@ -388,3 +388,9 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 | Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
 
 当前办公机修复与未执行范围见 [1.7.1](releases/v1.7.1.md)；[独立审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md) 保留修复前证据，[工作流审计（2026-09-08）](archive/audits/workflow-audit-2026-09-08.md) 保留为历史。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
+
+### 011 发行输入绑定（2026-09-21）
+
+完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和 Markdown），复用 delivery-identity 的路径/字节哈希。生成 runtime/delivery-evidence/desktop-build-binding.json，绑定 dist、暂存 resources（含网关、锁文件和 Node）、原生 exe；打包构建另绑定 NSIS 目录。仅原生构建不会把目录中遗留的旧 NSIS 纳入新身份。
+
+skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同版本源码不同、锁文件变化、混包、缺回执和篡改在封装/签名/上传前拒绝。封装后追加分发文件身份并在签名/上传前核对。正常版本修改先构建再提交相同字节可用，不要求循环提交 SHA；仅文档变化不失效。旧包缺回执不能补写身份冒认已构建，应在原源码完整重建并重新审核；不得将同版本重建包冒充原公开资产。
