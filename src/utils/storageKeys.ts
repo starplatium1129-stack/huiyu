@@ -38,6 +38,8 @@ export const CHAT_MEMORY_KEY = 'aics_chat_memories_v1'
 /** 高频偏好单独保存，避免每次输入或调音量重写聊天历史。 */
 export const CHAT_VOLUME_KEY = 'aics_chat_volume_v1'
 export const CHAT_DRAFT_PREFIX = 'aics_chat_draft_v1:'
+/** Local deletion tombstone; never exported/restored from an older backup. */
+export const CHAT_RESET_KEY = 'aics_chat_reset_v1'
 export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
 /** 出图自动入册开关（2026-08-31 用户偏好：默认关，直出成片不再自动进作品册）。 */
 export const AUTO_SAVE_TO_GALLERY_KEY = 'aics_auto_save_to_gallery'

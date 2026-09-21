@@ -1,5 +1,7 @@
 import { CHAT_MEMORY_KEY } from './storageKeys.ts'
 import { assertChatVersion, assertStoredChatVersion } from './chatVersion.ts'
+import { chatResetRevision } from './chatReset.ts'
+const resetStamp = Symbol('chatReset')
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   isCompanionCharacterId,
@@ -27,10 +29,12 @@ const MAX_ITEMS = 200
 const MAX_TEXT = 240
 
 export function emptyChatMemoryState(): ChatMemoryState {
-  return {
+  const state: ChatMemoryState = {
     version: 1,
     byCharacter: Object.fromEntries(listCompanionCharacterIds().map(id => [id, []])),
   }
+  if (typeof localStorage !== 'undefined') Object.defineProperty(state, resetStamp, { value: chatResetRevision() })
+  return state
 }
 
 function cleanText(value: unknown): string {
@@ -101,6 +105,8 @@ export function loadChatMemoryState(): ChatMemoryState {
 }
 
 export function saveChatMemoryState(state: ChatMemoryState): void {
+  const revision = Reflect.get(state, resetStamp)
+  if (revision !== undefined && revision !== chatResetRevision()) throw new Error('聊天内容已清空，旧记忆修改已停止。')
   assertStoredChatVersion(CHAT_MEMORY_KEY, 1)
   localStorage.setItem(CHAT_MEMORY_KEY, JSON.stringify(normalizeChatMemoryState(state)))
 }

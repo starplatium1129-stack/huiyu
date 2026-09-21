@@ -17,7 +17,7 @@ it.each([999, '3', null, -1, 1.5])('rejects unsupported version %s without touch
   const original = JSON.stringify({ version, sentinel: 'neutral', histories: { raiden_shogun: [] } })
   localStorage.setItem(STORAGE_KEY, original)
   const error = vi.fn(), storage = useChatStorage(error)
-  const writes = vi.spyOn(Storage.prototype, 'setItem')
+  const writes = vi.spyOn(localStorage, 'setItem')
   await storage.load()
   storage.setActive('natsume'); storage.setDraft('nene', 'new'); storage.clear(); storage.clearArchive(); storage.save()
   expect(writes).not.toHaveBeenCalled()

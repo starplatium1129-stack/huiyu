@@ -1,19 +1,48 @@
 import { expect, test } from '@playwright/test'
 
 for (const theme of ['dark', 'light']) {
+  test(`reset profile-only content with keyboard ${theme}`, async ({ page }) => {
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/')
+    await page.evaluate(theme => {
+      localStorage.setItem('aics_theme', theme)
+      localStorage.setItem('aics_user_profile_v1', JSON.stringify({ callName: 'neutral', note: 'neutral' }))
+      localStorage.setItem('aics_chat_draft_v1:retired', '"neutral"')
+    }, theme)
+    await page.reload()
+    await page.goto('/chat')
+    await page.locator('.chat-actions').getByRole('button', { name: '更多' }).click()
+    await page.getByRole('menuitem', { name: '清空聊天内容与个人档案', exact: true }).click()
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
+    const confirm = page.getByRole('button', { name: '清空聊天内容', exact: true })
+    await expect(confirm).toBeVisible()
+    await page.screenshot({ path: `runtime/audit-011/b2-confirm-${theme}.png`, fullPage: true })
+    await confirm.focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByText('本机聊天内容与个人档案已清空；连接和偏好已保留。')).toBeVisible()
+    expect(await page.evaluate(() => localStorage.getItem('aics_user_profile_v1'))).toBeNull()
+    expect(await page.evaluate(() => localStorage.getItem('aics_chat_draft_v1:retired'))).toBeNull()
+    await page.reload()
+    expect(await page.evaluate(() => localStorage.getItem('aics_user_profile_v1'))).toBeNull()
+  })
   test(`future chat remains byte-identical after navigation and reload ${theme}`, async ({ page, context }) => {
     const original = '{ "version": 999, "sentinel": "neutral-future", "histories": {"raiden_shogun": []} }'
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/')
     await page.evaluate(({ original, theme }) => {
       localStorage.setItem('aics_chat_v1', original)
       localStorage.setItem('aics_theme', theme)
     }, { original, theme })
+    await page.reload()
     await page.goto('/chat')
     await expect(page.getByText(/聊天数据版本不兼容或已损坏/).first()).toBeVisible()
     await page.screenshot({ path: `runtime/audit-011/b1-${theme}.png`, fullPage: true })
     const second = await context.newPage()
     await second.goto('/chat?character=natsume')
     await page.goto('/settings')
+    await page.reload()
     await page.goto('/chat')
     await page.reload()
     expect(await page.evaluate(() => localStorage.getItem('aics_chat_v1'))).toBe(original)

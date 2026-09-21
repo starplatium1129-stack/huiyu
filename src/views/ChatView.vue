@@ -17,7 +17,7 @@
           <FluidTransition>
             <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作" @keydown="navigateRoomActions">
               <button class="chat-more-item is-danger" role="menuitem" type="button"
-                @click="runRoomAction(() => clearAllMemory())">重置全部对话与数据</button>
+                @click="runRoomAction(() => clearAllMemory())">清空聊天内容与个人档案</button>
               <button class="chat-more-item" role="menuitem" type="button"
                 @click="runRoomAction(() => { archiveOpen = !archiveOpen })">对话归档</button>
               <button class="chat-more-item" role="menuitem" type="button"

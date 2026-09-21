@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue'
 import { createChatCredentials } from '@/utils/chatCredentials'
 import { assertStoredChatVersion } from '@/utils/chatVersion'
+import { chatResetRevision } from '@/utils/chatReset'
 import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY } from '@/utils/storageKeys'
 import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
 import {
@@ -93,6 +94,7 @@ function mergeHistories(local: ChatMessage[], remote: ChatMessage[], snapshots: 
 }
 
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
+  let resetRevision = chatResetRevision()
   const credentials = createChatCredentials()
   let pendingLegacyKey = ''
   let credentialRevision = 0
@@ -134,6 +136,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   const writeBlocked = ref(false)
   function canWrite() {
     try {
+      if (resetRevision !== chatResetRevision()) {
+        resetRevision = chatResetRevision()
+        pendingPreferences.clear()
+        archiveDirty = false
+        archive.value = emptyChatArchive(characterIds)
+        for (const char of characterIds) { state.histories[char] = []; state.settings.drafts[char] = '' }
+        onError('另一窗口已清空聊天内容；旧操作已停止，请重新输入。')
+        return false
+      }
       assertStoredChatVersion(STORAGE_KEY, STORAGE_VERSION)
       assertStoredChatVersion(CHAT_ARCHIVE_KEY, 1)
       writeBlocked.value = false
@@ -416,6 +427,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     // Independent preferences never rewrite the versioned record. The load /
     // storage-event guard blocks editing when incompatibility is known.
     if (writeBlocked.value) return
+    if (resetRevision !== chatResetRevision() && !canWrite()) return
     pendingPreferences.set(key, value)
     try {
       localStorage.setItem(key, value)

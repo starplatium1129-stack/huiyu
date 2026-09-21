@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { STORAGE_KEY, MAX_LOCAL_MESSAGES } from '@/config/characters'
 import { CHAT_ARCHIVE_KEY } from '@/utils/chatArchive'
-import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY, collectLiveLocalSettings } from '@/utils/storageKeys'
+import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY, CHAT_RESET_KEY, collectLiveLocalSettings } from '@/utils/storageKeys'
 import { prepareBackupSettings } from '@/utils/backupSettings'
 import { useChatStorage } from './useChatStorage'
 
@@ -33,7 +33,7 @@ describe('independent chat preference persistence', () => {
     storage.setDraft('nene', 'next question')
     storage.setVolume(0)
     expect(content).not.toHaveBeenCalled()
-    expect(get).not.toHaveBeenCalled()
+    expect(get.mock.calls.every(([key]) => key === CHAT_RESET_KEY)).toBe(true)
     expect(set.mock.calls.map(([key]) => key)).toEqual([CHAT_DRAFT_PREFIX + 'nene', CHAT_VOLUME_KEY])
     expect(open().draft('nene')).toBe('next question')
     expect(open().state.settings.volume).toBe(0)

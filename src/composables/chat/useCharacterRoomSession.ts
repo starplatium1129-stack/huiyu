@@ -12,18 +12,17 @@ import { usePolling } from '@/composables/usePolling'
 import { controlApi } from '@/api/controlApi'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
-import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, CHAT_TURN_KEY } from '@/utils/storageKeys'
+import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, CHAT_TURN_KEY, CHAT_RESET_KEY } from '@/utils/storageKeys'
+import { clearStoredChatContent } from '@/utils/chatReset'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import {
   editChatFact,
   changeStoredChatMemory,
-  emptyChatMemoryState,
   isChatFactRemembered,
   loadChatMemoryState,
   recallChatFacts,
   rememberChatFact,
   removeChatFact,
-  saveChatMemoryState,
   type ChatMemoryCharacter,
   type ChatMemoryState,
 } from '@/utils/chatMemory'
@@ -239,6 +238,15 @@ export function useCharacterRoomSession() {
   }
 
   function onChatAuxStorage(event: StorageEvent) {
+    if (event.key === CHAT_RESET_KEY) {
+      stopEverything()
+      voice.stop({ preserveMessageAudio: false, silent: true })
+      inputText.value = ''
+      storage.canWrite()
+      void storage.load()
+      chatMemory.value = loadChatMemoryState()
+      userProfile.value = loadChatUserProfile()
+    }
     if (event.key === CHAT_TURN_KEY) voice.stop({ preserveMessageAudio: true, silent: true })
     if (event.key === null || event.key === CHAT_MEMORY_KEY) chatMemory.value = loadChatMemoryState()
     if (event.key === CHAT_USER_PROFILE_KEY) userProfile.value = loadChatUserProfile()
@@ -258,16 +266,6 @@ export function useCharacterRoomSession() {
   }
 
   const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()])
-
-  function persistChatMemory() {
-    try {
-      saveChatMemoryState(chatMemory.value)
-      return true
-    } catch {
-      setError('长期记忆保存失败，请检查浏览器存储空间。', 'warning')
-      return false
-    }
-  }
 
   function changeMemory(change: (state: ChatMemoryState) => boolean, message: string) {
     try {
@@ -489,27 +487,27 @@ export function useCharacterRoomSession() {
 
   async function clearAllMemory() {
     if (!storage.canWrite()) return
-    const archiveCounts = storage.archiveCount()
-    const hasMemory = Object.values(storage.state.histories).some(items => items.length > 0)
-      || Object.values(chatMemory.value.byCharacter).some(items => items.length > 0)
-      || Object.values(archiveCounts).some(count => count > 0)
-    if (!hasMemory) return
     const confirmed = await confirmAction({
-      title: '重置所有对话与聊天数据？',
-      message: '将彻底清空宁宁与夏目的全部对话记录、历史归档、长期事实记忆，并重置您的个人称呼档案。此操作无法撤销。',
-      confirmLabel: '清空并重置',
+      title: '清空本机聊天内容与个人档案？',
+      message: '清除所有当前及退休角色的对话、归档、事实记忆、草稿、个人称呼与备注和本会话语音缓存。保留 API 连接、凭据、外观、音量及行为偏好。已导出的文件和第三方记录不受影响。此操作无法撤销。',
+      confirmLabel: '清空聊天内容',
       danger: true,
     })
     if (!confirmed) return
     if (busy.value) abortCurrentRequest(true)
     voice.stop({ preserveMessageAudio: false, silent: true })
-    storage.clear()
-    storage.clearArchive()
-    chatMemory.value = emptyChatMemoryState()
-    const memorySaved = persistChatMemory()
-    userProfile.value = { callName: '', relationship: 'atelier_owner', note: '' }
-    settingsRepository.remove({ key: CHAT_USER_PROFILE_KEY })
-    if (memorySaved) setError('全部本地聊天数据已重置。', 'info', 3000)
+    try {
+      const result = clearStoredChatContent()
+      inputText.value = ''
+      storage.canWrite()
+      await storage.load()
+      chatMemory.value = loadChatMemoryState()
+      userProfile.value = loadChatUserProfile()
+      if (result.failed.length) setError(`部分聊天内容未清除（${result.failed.length} 项），请重试清空；已删除内容不会恢复。`, 'warning', 0)
+      else setError('本机聊天内容与个人档案已清空；连接和偏好已保留。', 'info', 5000)
+    } catch {
+      setError('清空未完成，存储不可写或数据版本不兼容；请排除问题后重试。', 'warning', 0)
+    }
   }
 
   function onAutoVoiceChange() {
