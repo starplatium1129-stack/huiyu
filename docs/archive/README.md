@@ -9,6 +9,8 @@
 
 ## 审计快照
 
+- [规划整理前快照（2026-09-21）](audits/roadmap-snapshot-2026-09-21.md)：保存批次过程与过时状态；完成和待办以当前入口为准。
+
 - [页面切换、工作台动效与旧模块清理（2026-09-15）](audits/ui-navigation-and-unused-2026-09-15.md)：导航/动效验证和后续删除分阶段记录；桌面同步仍未完成。
 - [场景滚动与角色档案补全（2026-09-12）](audits/scene-scroll-character-profiles-2026-09-12.md)
 - [全站交互细节审查与优化（2026-09-12）](audits/interaction-detail-polish-2026-09-12.md)
