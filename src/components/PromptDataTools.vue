@@ -74,8 +74,12 @@
             {{ pendingSummary?.history ?? 0 }} 条历史 ·
             {{ pendingSummary?.projects ?? 0 }} 个项目 ·
             {{ pendingSummary?.images ?? 0 }} 张图片 ·
+            {{ pendingSummary?.missingImages ? `缺 ${pendingSummary.missingImages} 张原图 · ` : '' }}
             数据版本 v{{ backup.pending.value?.schemaVersion ?? '1.0' }}
           </span>
+          <small v-if="pendingSummary?.missingImages" class="pb-backup-warning">
+            缺少的原图不会被伪造关联；对应记录仍会保留并以无图状态恢复。
+          </small>
         </div>
         <div class="pb-backup-actions">
           <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="discard">取消</button>

@@ -11,6 +11,7 @@
    .pb-backup-summary { display:grid; gap:3px; margin:var(--s-4) 0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
    .pb-backup-summary strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-primary); font-size:var(--fs-label); }
    .pb-backup-summary span { color:var(--text-muted); font-size:var(--fs-label-xs); }
+   .pb-backup-warning { color:var(--warning-text); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
    .pb-backup-actions { display:flex; justify-content:flex-end; gap:var(--s-2); flex-wrap:wrap; }
   .pb-backup-card, .pb-managed-route-banner {
     background:

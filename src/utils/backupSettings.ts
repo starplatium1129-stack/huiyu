@@ -7,7 +7,10 @@ import { listCompanionCharacterIds, normalizeCompanionOutfit } from './companion
 /** Validate and merge settings in memory before touching the user's existing storage. */
 export function prepareBackupSettings(current: Record<string, string>, incoming: Record<string, string>, replace: boolean) {
   const characterIds = listCompanionCharacterIds()
-  const result = replace ? {} as Record<string, string> : { ...current }
+  // Merge mode returns only keys supplied by the backup (plus explicit legacy
+  // companion preferences it must promote). Returning the whole current snapshot
+  // would make a later restore write stale values from before an async image stage.
+  const result = {} as Record<string, string>
   for (const [key, value] of Object.entries(incoming)) {
     if (!isLiveLocalKey(key)) continue
     if (!replace && key === CHAT_MEMORY_KEY) {

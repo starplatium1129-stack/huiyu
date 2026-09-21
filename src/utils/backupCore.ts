@@ -37,6 +37,7 @@ export interface BackupSummary {
   projects: number
   images: number
   settings: number
+  missingImages?: number
 }
 
 function object(value: unknown): Record<string, unknown> {
@@ -50,10 +51,40 @@ function finite(value: unknown, fallback = 0): number {
   return Number.isFinite(number) ? number : fallback
 }
 
-function records(value: unknown): BackupRecord[] {
-  return Array.isArray(value)
-    ? value.filter((item): item is BackupRecord => Boolean(item && typeof item === 'object' && !Array.isArray(item)))
-    : []
+function recordId(value: unknown): string | number | null {
+  if (typeof value === 'string' && value.trim()) return value.trim()
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  return null
+}
+
+function stableLegacyId(record: BackupRecord, kind: 'history' | 'projects'): string {
+  const serialized = JSON.stringify(record)
+  let hash = 2166136261
+  for (let index = 0; index < serialized.length; index += 1) {
+    hash ^= serialized.charCodeAt(index)
+    hash = Math.imul(hash, 16777619)
+  }
+  const timestamp = finite(record.timestamp ?? record.updatedAt ?? record.createdAt)
+  if (!timestamp) throw new Error(`备份 ${kind} 含缺少稳定 ID 的记录，已停止恢复`)
+  return `legacy_${kind}_${timestamp}_${(hash >>> 0).toString(36)}`
+}
+
+function records(value: unknown, kind: 'history' | 'projects', allowLegacyIds: boolean): BackupRecord[] {
+  if (!Array.isArray(value)) return []
+  const seen = new Set<string>()
+  return value.map((item, index) => {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) {
+      throw new Error(`备份 ${kind} 第 ${index + 1} 条记录不可展示，已停止恢复`)
+    }
+    const source = item as BackupRecord
+    const existingId = recordId(source.id)
+    const id = existingId ?? (allowLegacyIds ? stableLegacyId(source, kind) : null)
+    if (id === null) throw new Error(`备份 ${kind} 第 ${index + 1} 条记录缺少有效 ID，已停止恢复`)
+    const key = String(id)
+    if (seen.has(key)) throw new Error(`备份 ${kind} 含重复记录 ID：${key}`)
+    seen.add(key)
+    return existingId === null ? { ...source, id } : source
+  })
 }
 
 function settings(value: unknown): Record<string, string> {
@@ -95,7 +126,7 @@ export function normalizeBackup(raw: unknown): BackupFile {
 
   const data = hasNestedData ? nested : source
   for (const key of ['history', 'projects']) {
-    if (data[key] !== undefined && (!Array.isArray(data[key]) || records(data[key]).length !== (data[key] as unknown[]).length)) {
+    if (data[key] !== undefined && !Array.isArray(data[key])) {
       throw new Error(`备份 ${key} 数据损坏，已停止恢复`)
     }
   }
@@ -111,8 +142,8 @@ export function normalizeBackup(raw: unknown): BackupFile {
     schemaVersion: BACKUP_SCHEMA_VERSION,
     createdAt: String(source.createdAt || source.exportedAt || new Date(0).toISOString()),
     data: {
-      history: records(data.history),
-      projects: records(data.projects),
+      history: records(data.history, 'history', version < 2),
+      projects: records(data.projects, 'projects', version < 2),
       settings: settings(data.settings),
     },
     images: images as BackupImage[],
@@ -163,16 +194,32 @@ export function mergeBackupRecords(current: BackupRecord[], incoming: BackupReco
       merged.set(key, previous ? { ...previous, ...item } : { ...item })
     }
   }
-  records(current).forEach((item, index) => insert(item, index, 'current'))
-  records(incoming).forEach((item, index) => insert(item, index, 'incoming'))
+  current.forEach((item, index) => insert(item, index, 'current'))
+  incoming.forEach((item, index) => insert(item, index, 'incoming'))
   return [...merged.values()].sort((a, b) => recordTimestamp(b) - recordTimestamp(a))
 }
 
 export function summarizeBackup(backup: BackupFile): BackupSummary {
+  const references = new Set<string>()
+  const collect = (value: unknown): void => {
+    if (Array.isArray(value)) { value.forEach(collect); return }
+    if (!value || typeof value !== 'object') return
+    for (const [key, child] of Object.entries(value)) {
+      if (['image_id', 'imageId', 'videoImageId', 'lastFrameImageId'].includes(key) && typeof child === 'string' && child.trim()) {
+        references.add(child.trim())
+      } else if (key === 'imageIds' && Array.isArray(child)) {
+        child.filter((id): id is string => typeof id === 'string' && Boolean(id.trim())).forEach(id => references.add(id.trim()))
+      } else collect(child)
+    }
+  }
+  collect([backup.data.history, backup.data.projects])
+  const imageIds = new Set(backup.images.map(image => image.id))
+  const missingImages = [...references].filter(id => !imageIds.has(id)).length
   return {
     history: backup.data.history.length,
     projects: backup.data.projects.length,
     images: backup.images.length,
     settings: Object.keys(backup.data.settings).length,
+    ...(missingImages ? { missingImages } : {}),
   }
 }

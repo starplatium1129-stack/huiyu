@@ -69,6 +69,26 @@ describe('bounded, importable backup export', () => {
     const pictures = await buildBackupBlob({ appVersion: 'test' }, [image()], { read: async () => url })
     expect(normalizeBackup(JSON.parse(await pictures.blob.text())).images).toHaveLength(1)
   })
+  it('rejects modern records that the runtime cannot display', () => {
+    expect(() => normalizeBackup({
+      schemaVersion: 2,
+      data: { history: [{ id: '' }], projects: [], settings: {} },
+      images: [],
+    })).toThrow('缺少有效 ID')
+    expect(() => normalizeBackup({
+      schemaVersion: 2,
+      data: { history: [{ id: 'same' }, { id: 'same' }], projects: [], settings: {} },
+      images: [],
+    })).toThrow('重复记录 ID')
+  })
+  it('migrates legacy timestamp-only records to stable IDs', () => {
+    const raw = { schemaVersion: 1, history: [{ timestamp: 1700000000000 }], projects: [{ timestamp: 1700000000000, name: '旧项目' }], images: [] }
+    const first = normalizeBackup(raw)
+    const second = normalizeBackup(raw)
+    expect(first.data.history[0].id).toBe(second.data.history[0].id)
+    expect(first.data.projects[0].id).toBe(second.data.projects[0].id)
+    expect(String(first.data.history[0].id)).toMatch(/^legacy_history_/)
+  })
   it('uses the real FileReader and honours cancellation before reading', async () => {
     await expect(readImageDataUrl(image().blob)).resolves.toBe(url)
     const controller = new AbortController(); controller.abort()

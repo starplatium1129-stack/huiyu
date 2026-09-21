@@ -48,6 +48,28 @@ describe('backup restore publication', () => {
     expect(localStorage.getItem('aics_theme')).toBe('dark')
     expect(imgDeleteMany).toHaveBeenCalledWith([vi.mocked(imgPutRecord).mock.calls[0][0].id])
   })
+  it('does not overwrite settings changed while images are being staged', async () => {
+    const file = backup()
+    file.data.settings = { aics_theme: 'light' }
+    vi.mocked(imgPutRecord).mockImplementationOnce(async record => {
+      localStorage.setItem('aics_theme', 'user-choice')
+      localStorage.setItem('aics_chat_v1', JSON.stringify({ histories: { nene: [{ mid: 'new' }] } }))
+      return record.id
+    })
+    await restoreBackupData(file, false)
+    expect(localStorage.getItem('aics_theme')).toBe('user-choice')
+    expect(localStorage.getItem('aics_chat_v1')).toContain('new')
+  })
+  it('does not roll back a setting changed after this restore published it', async () => {
+    const file = backup()
+    file.data.settings = { aics_theme: 'light' }
+    vi.mocked(kvSetMany).mockImplementationOnce(async () => {
+      localStorage.setItem('aics_theme', 'user-choice-after-publish')
+      throw new Error('quota')
+    })
+    await expect(restoreBackupData(file, true)).rejects.toThrow('quota')
+    expect(localStorage.getItem('aics_theme')).toBe('user-choice-after-publish')
+  })
   it('validates all encoded images before writing any record', async () => {
     const file = backup(); file.images.push({ id: 'bad', dataUrl: 'data:image/png;base64,a' })
     await expect(restoreBackupData(file, true)).rejects.toThrow()
