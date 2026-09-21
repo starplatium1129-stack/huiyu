@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "specs": [
+    { "file": "page-experience-flows.spec.ts", "lane": "critical", "risk": "剧本跨页身份", "reason": "两角色三本剧本落地正文及模拟最终请求，保护角色与来源一致。" },
     { "file": "data-boundaries.spec.ts", "lane": "critical", "risk": "chat data and full-library search", "reason": "Version refusal, deletion tombstones and 10000-work search regression" },
     { "file": "a11y-device.spec.ts", "lane": "critical", "risk": "主流程可达性", "reason": "键盘、主题和窄屏主流程是每次变更的发布前回归。" },
     { "file": "anima-quick.spec.ts", "lane": "critical", "risk": "生成请求", "reason": "Anima 快速生成与参数提交是核心创作路径。" },

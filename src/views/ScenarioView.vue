@@ -42,7 +42,7 @@
             <div class="act-actions"><button class="btn btn-ghost" type="button" @click="copyPrompt(a)"><ArchiveIcon name="copy" />复制本幕 Prompt</button></div>
           </article>
         </div>
-        <footer class="scenario-handoff"><p>把这些片刻连成故事，或从第一幕开始绘制。</p><RouterLink :to="'/prompt-builder?scenario=' + activeScenario.id" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
+        <footer class="scenario-handoff"><p>把这些片刻连成故事，或从第一幕开始绘制。</p><RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, char: currentChar } }" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
       </section>
     </div>
   </article>

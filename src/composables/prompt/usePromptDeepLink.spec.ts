@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { effectScope } from 'vue'
+import { effectScope, ref } from 'vue'
+import { SCENARIOS, SCENARIO_RES_MAP, substituteScenarioPrompt } from '@/config/scenarios'
 import { usePromptDeepLink, type PromptDeepLinkDeps } from './usePromptDeepLink'
 
 describe('history links on a reused workbench', () => {
@@ -50,6 +51,29 @@ describe('history links on a reused workbench', () => {
 })
 
 describe('context links on a reused workbench', () => {
+  it.each(['nene', 'natsume', undefined] as const)('applies each story with character %s and preserves unchanged edits', async char => {
+    const pb = {
+      char: 'natsume', story: 'existing draft', manualTags: new Set<string>(),
+      setChar(value: string) { this.char = value },
+      setStory(value: string) { this.story = value }, flash: vi.fn(),
+    }
+    const sdSize = ref('')
+    const api = usePromptDeepLink({ pb, sdSize } as unknown as PromptDeepLinkDeps)
+    for (const scenario of SCENARIOS) {
+      const query = { scenario: scenario.id, ...(char ? { char } : {}) }
+      expect(api.deepLinkNeeded(query)).toBe(true)
+      expect(await api.applyDeepLink(query)).toBe(true)
+      const act = scenario.acts[0]
+      expect(pb.char).toBe(char || 'nene')
+      expect(pb.story).toBe(`${scenario.name} · ${act.title}：${act.desc}`)
+      expect(sdSize.value).toBe(SCENARIO_RES_MAP[act.res].dim.replace('×', 'x'))
+      expect([...pb.manualTags]).toEqual([...new Set(substituteScenarioPrompt(act.prompt, char || 'nene')
+        .split('\n').slice(1).flatMap(line => line.split(',').map(token => token.trim().replace(/[\s-]+/g, '_'))).filter(Boolean))])
+      pb.story = 'manual edit after arrival'
+      expect(api.deepLinkNeeded(query)).toBe(false)
+      expect(pb.story).toBe('manual edit after arrival')
+    }
+  })
   it('replays mood-only changes and does not replay an unchanged link over manual edits', async () => {
     const scene = { id: 'scene-a' }
     const pb = {
