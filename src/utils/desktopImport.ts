@@ -11,7 +11,8 @@ import { withArtworkStaging } from '@/storage/artworkSession'
  */
 
 import { imgPut, imgDelete } from '../composables/useImageStore'
-import { kvSet } from '../composables/useKVStore'
+import { kvGet, kvSet } from '../composables/useKVStore'
+import { ARTWORK_HISTORY_KV_KEY } from './storageKeys'
 import { artworkRepository } from '../storage/artworkRepository'
 import { blobThumbDataUrl, thumbKey } from './imageThumb'
 import {
@@ -45,10 +46,13 @@ export async function importLocalImages(files: readonly ImportSourceFile[]): Pro
     let skipped = 0
     for (const file of candidates) {
       let imageId: string | null = null
+      let pendingRecord: ReturnType<typeof buildImportedRecord> | null = null
+      const operationId = crypto.randomUUID()
       try {
         imageId = await imgPut(file.blob)
         const measured = await measureBlob(file.blob)
         const record = buildImportedRecord(file, imageId, measured)
+        pendingRecord = record
         await artworkRepository.appendArtwork(record)
         const thumbnailId = imageId
         void blobThumbDataUrl(file.blob).then(dataUrl => {
@@ -56,8 +60,23 @@ export async function importLocalImages(files: readonly ImportSourceFile[]): Pro
           return undefined
         }).catch(() => {})
         imported += 1
-      } catch {
-        if (imageId) await imgDelete(imageId).catch(() => {})
+      } catch (error) {
+        if (pendingRecord) {
+          // A rejected append may already have committed. Never delete its image.
+          try {
+            const history = await kvGet<unknown[]>(ARTWORK_HISTORY_KV_KEY)
+            if (Array.isArray(history) && history.some(item => item && typeof item === 'object'
+              && String((item as { id?: unknown }).id) === String(pendingRecord!.id)
+              && (item as { image_id?: unknown }).image_id === imageId)) {
+              imported += 1
+              continue
+            }
+          } catch { /* Unknown publication retains the staged image. */ }
+          console.warn('[desktop-import] commit unknown; image retained', { operationId, imageId, error })
+        } else if (imageId) {
+          try { await imgDelete(imageId) }
+          catch (cleanupError) { console.warn('[desktop-import] image cleanup failed', { operationId, imageId, error, cleanupError }) }
+        } else console.warn('[desktop-import] image write failed', { operationId, error })
         skipped += 1
       }
     }

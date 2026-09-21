@@ -2,9 +2,9 @@
  * 聊天记忆归档 —— 纯逻辑核心。
  *
  * 对话 trim 到 20 条前的旧消息不再直接丢弃，而是先归档到
- * `aics_chat_archive_v1`（localStorage），并支持 JSON / Markdown 导出、
+ * IndexedDB（旧 localStorage 仅作迁移源），并支持 JSON / Markdown 导出、
  * 导入合并与"并入当前对话"恢复。归档上限按角色 5000 条，
- * 防止 localStorage 无界增长（约 1MB/角色，处于安全余量内）。
+ * 防止归档无界增长。
  */
 import type { PersistedChatMessage } from './chatStorageCore'
 import { assertChatVersion } from './chatVersion.ts'
@@ -15,6 +15,7 @@ export const CHAT_ARCHIVE_MAX_PER_CHAR = 5000
 
 export interface ChatArchive {
   version: number
+  revisions?: Record<string, string>
   archived: Record<string, PersistedChatMessage[]>
 }
 
@@ -48,17 +49,21 @@ function normalizeMessages(value: unknown): PersistedChatMessage[] {
 }
 
 export function emptyChatArchive(characterIds: string[]): ChatArchive {
-  const archived: Record<string, PersistedChatMessage[]> = {}
-  for (const id of characterIds.length ? characterIds : ['nene']) archived[id] = []
-  return { version: CHAT_ARCHIVE_VERSION, archived }
+  const archived: Record<string, PersistedChatMessage[]> = Object.fromEntries((characterIds.length ? characterIds : ['nene']).map(id => [id, []]))
+  return { version: CHAT_ARCHIVE_VERSION, archived, revisions: Object.fromEntries(Object.keys(archived).map(id => [id, ''])) }
 }
 
 export function normalizeChatArchive(value: unknown, characterIds: string[]): ChatArchive {
   assertChatVersion(value, CHAT_ARCHIVE_VERSION)
-  const archive = emptyChatArchive(characterIds)
   const raw = isRecord(value) ? value : {}
+  if (raw.archived !== undefined && !isRecord(raw.archived)) throw new Error('聊天归档格式损坏，原件已保留。')
+  if (raw.revisions !== undefined && !isRecord(raw.revisions)) throw new Error('聊天归档修订号损坏，原件已保留。')
+  const revisions = isRecord(raw.revisions) ? raw.revisions : {}
   const archived = isRecord(raw.archived) ? raw.archived : {}
+  const archive = emptyChatArchive([...new Set([...characterIds, ...Object.keys(archived)])])
   for (const id of Object.keys(archive.archived)) {
+    archive.revisions![id] = text(revisions[id], 160)
+    if (Object.hasOwn(archived, id) && !Array.isArray(archived[id])) throw new Error('聊天归档角色记录损坏，原件已保留。')
     archive.archived[id] = normalizeMessages(archived[id]).slice(-CHAT_ARCHIVE_MAX_PER_CHAR)
   }
   return archive
@@ -68,6 +73,7 @@ export function serializeChatArchive(archive: ChatArchive): string {
   return JSON.stringify({
     version: CHAT_ARCHIVE_VERSION,
     archived: archive.archived,
+    revisions: archive.revisions,
   })
 }
 
@@ -81,7 +87,7 @@ export function archiveMessages(
   characterId: string,
   removed: PersistedChatMessage[],
 ): ChatArchive {
-  if (!archive.archived[characterId]) archive.archived[characterId] = []
+  if (!Object.hasOwn(archive.archived, characterId)) Object.defineProperty(archive.archived, characterId, { value: [], writable: true, enumerable: true, configurable: true })
   const seen = new Set(archive.archived[characterId].map(messageKey).filter((key): key is string => Boolean(key)))
   const additions: PersistedChatMessage[] = []
   for (const message of removed) {
@@ -100,9 +106,7 @@ export function archiveMessages(
 }
 
 export function archiveCounts(archive: ChatArchive, characterIds: string[]): Record<string, number> {
-  const counts: Record<string, number> = {}
-  for (const id of characterIds) counts[id] = (archive.archived[id] || []).length
-  return counts
+  return Object.fromEntries([...new Set([...characterIds, ...Object.keys(archive.archived)])].map(id => [id, (archive.archived[id] || []).length]))
 }
 
 /** 把归档消息并回当前对话：有 mid 时去重，保持归档顺序。 */
@@ -123,7 +127,8 @@ export function mergeArchiveIntoHistory(
 
 /** 合并两个归档（导入用）：按角色、按 mid/内容去重。 */
 export function mergeChatArchives(current: ChatArchive, incoming: ChatArchive): ChatArchive {
-  const merged = emptyChatArchive(Object.keys(current.archived))
+  const merged = emptyChatArchive([...new Set([...Object.keys(current.archived), ...Object.keys(incoming.archived)])])
+  merged.revisions = { ...merged.revisions, ...current.revisions }
   for (const characterId of Object.keys(merged.archived)) {
     merged.archived[characterId] = archiveMessages(
       { version: CHAT_ARCHIVE_VERSION, archived: { [characterId]: [] } },

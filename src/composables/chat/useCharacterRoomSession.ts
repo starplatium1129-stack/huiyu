@@ -499,7 +499,7 @@ export function useCharacterRoomSession() {
     if (busy.value) abortCurrentRequest(true)
     voice.stop({ preserveMessageAudio: false, silent: true })
     try {
-      const result = clearStoredChatContent()
+      const result = await clearStoredChatContent()
       clearDraftInput()
       storage.canWrite()
       await storage.load()

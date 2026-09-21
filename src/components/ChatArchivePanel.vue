@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { downloadBlob } from "@/utils/downloadBlob"
 import { computed, ref } from 'vue'
-import { CHARACTERS } from '@/config/characters'
+import { getCompanionCharacter } from '@/utils/companionRegistry'
 import type { useChatStorage } from '@/composables/chat/useChatStorage'
 import { confirmAction } from '@/composables/useConfirm'
 
@@ -49,10 +49,10 @@ const emit = defineEmits<{
 }>()
 
 const fileEl = ref<HTMLInputElement>()
-const characterIds = Object.keys(CHARACTERS)
+const characterIds = computed(() => Object.keys(counts.value))
 
 function characterName(id: string) {
-  return CHARACTERS[id]?.name || id
+  return getCompanionCharacter(id)?.name || id
 }
 
 const counts = computed(() => props.storage.archiveCount())
@@ -62,25 +62,18 @@ function download(name: string, content: string, mime: string) {
   downloadBlob(new Blob([content], { type: mime }), name)
 }
 
-function exportJson() {
-  if (!totalCount.value) {
-    emit('notice', '归档里还没有消息。', 'info')
-    return
-  }
-  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-  download(`aics-chat-archive-${stamp}.json`, props.storage.exportArchiveJson(), 'application/json;charset=utf-8')
-  emit('notice', `已导出 ${totalCount.value} 条归档消息（JSON）。`, 'info')
+async function exportArchive(format: 'json' | 'markdown') {
+  try {
+    const content = await (format === 'json' ? props.storage.exportArchiveJson() : props.storage.exportArchiveMarkdown())
+    if (!totalCount.value) { emit('notice', '归档里还没有消息。', 'info'); return }
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
+    download(`aics-chat-archive-${stamp}.${format === 'json' ? 'json' : 'md'}`, content,
+      format === 'json' ? 'application/json;charset=utf-8' : 'text/markdown;charset=utf-8')
+    emit('notice', `已导出 ${totalCount.value} 条归档消息。`, 'info')
+  } catch (error) { emit('notice', `无法读取归档：${error instanceof Error ? error.message : '存储暂不可用'}`, 'error') }
 }
-
-function exportMarkdown() {
-  if (!totalCount.value) {
-    emit('notice', '归档里还没有消息。', 'info')
-    return
-  }
-  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-  download(`aics-chat-archive-${stamp}.md`, props.storage.exportArchiveMarkdown(), 'text/markdown;charset=utf-8')
-  emit('notice', `已导出 ${totalCount.value} 条归档消息（Markdown）。`, 'info')
-}
+const exportJson = () => exportArchive('json')
+const exportMarkdown = () => exportArchive('markdown')
 
 function onFile(event: Event) {
   const input = event.target as HTMLInputElement
@@ -91,9 +84,9 @@ function onFile(event: Event) {
     emit('notice', '归档文件超过 8 MB，请确认来源后重试。', 'error')
     return
   }
-  void file.text().then(text => {
+  void file.text().then(async text => {
     try {
-      const added = props.storage.importArchiveJson(text)
+      const added = await props.storage.importArchiveJson(text)
       emit('notice', added ? `导入完成，新增 ${added} 条归档消息。` : '导入完成，没有新增消息（可能已存在）。', 'info')
     } catch (error) {
       emit('notice', `无法读取归档：${error instanceof Error ? error.message : '文件已损坏'}`, 'error')
@@ -103,11 +96,15 @@ function onFile(event: Event) {
   })
 }
 
-function restoreCurrent() {
-  const added = props.storage.restoreFromArchive(props.activeChar)
-  emit('notice', added
-    ? `已把 ${added} 条归档消息并回 ${characterName(props.activeChar)} 的对话。`
-    : '当前角色没有可并入的归档消息。', 'info')
+async function restoreCurrent() {
+  try {
+    const added = await props.storage.restoreFromArchive(props.activeChar)
+    emit('notice', added
+      ? `已把 ${added} 条归档消息并回 ${characterName(props.activeChar)} 的对话。`
+      : '当前角色没有可并入的归档消息。', 'info')
+  } catch (error) {
+    emit('notice', `无法恢复归档：${error instanceof Error ? error.message : '存储暂不可用'}`, 'error')
+  }
 }
 
 async function clearArchive() {
@@ -119,8 +116,8 @@ async function clearArchive() {
     danger: true,
   })
   if (!confirmed) return
-  props.storage.clearArchive()
-  emit('notice', '对话归档已清空。', 'info')
+  if (await props.storage.clearArchive()) emit('notice', '对话归档已清空。', 'info')
+  else emit('notice', '归档清空尚未保存，请重试。', 'error')
 }
 </script>
 

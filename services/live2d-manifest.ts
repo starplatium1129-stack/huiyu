@@ -24,7 +24,7 @@ export function modelFormat(model: ModelManifest): 'cubism2' | 'cubism3' {
 export function mapModelReferences(model: ModelManifest, map: (file: string) => string): void {
   const modern = modelFormat(model) === 'cubism3'
   const refs = modern ? model.FileReferences : model
-  for (const key of modern ? ['Moc', 'Physics', 'Pose', 'DisplayInfo'] : ['model', 'physics', 'pose']) {
+  for (const key of modern ? ['Moc', 'Physics', 'Pose', 'DisplayInfo', 'UserData'] : ['model', 'physics', 'pose']) {
     if (refs[key]) refs[key] = map(refs[key])
   }
   const textureKey = modern ? 'Textures' : 'textures'

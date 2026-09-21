@@ -60,6 +60,9 @@ export interface Live2DRuntimeAdapterConfig {
 
 /** 统一模型句柄。浏览器实现包装 wl-live2d model，原生实现经桥委托 Rust。 */
 export interface Live2DModelHandle {
+  /** Runtime enumeration is separate from model JSON declarations. */
+  enumerateParameters?(): import('./modelParameters').Live2DParameterEnumeration
+  stopAnimation?(): void
   /** 与 wl-live2d 语义一致：模型网格可见性（原生端映射为 overlay 可见性） */
   visible: boolean
   /** 播放动作组；priority 沿用 wl-live2d 数值（3=FORCE），原生端映射到 Cubism MotionPriority */

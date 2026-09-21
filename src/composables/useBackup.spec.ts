@@ -14,7 +14,7 @@ vi.mock('@/storage/artworkMutation', () => ({ withArtworkMutation: (work: () => 
 vi.mock('@/storage/artworkSession', () => ({ withArtworkCleanup: vi.fn((work: () => Promise<unknown>) => work()) }))
 vi.mock('@/utils/downloadBlob', () => ({ downloadBlob: vi.fn() }))
 const contents = JSON.stringify({ history: [{ id: 'one' }] })
-beforeEach(() => { vi.clearAllMocks(); sessionStorage.clear(); localStorage.clear(); vi.mocked(kvGet).mockResolvedValue([]) })
+beforeEach(() => { vi.stubGlobal('navigator', { locks: { request: async (_name: string, work: () => unknown) => work() } }); vi.clearAllMocks(); sessionStorage.clear(); localStorage.clear(); vi.mocked(kvGet).mockImplementation(async key => key === 'chat_archive_v1' ? null : [] as never) })
 afterEach(() => vi.unstubAllGlobals())
 describe('backup selection and cleanup', () => {
   it('does not restore a previous backup after selecting an oversized file', async () => {
@@ -134,7 +134,7 @@ describe('backup safety regressions', () => {
     expect(flash).toHaveBeenCalledWith(expect.stringContaining('已取消备份'))
   })
   it('downloads an importable complete file on success', async () => {
-    vi.mocked(kvGet).mockResolvedValue([{ id: 'one' }])
+    vi.mocked(kvGet).mockImplementation(async key => key === 'chat_archive_v1' ? null : [{ id: 'one' }] as never)
     vi.mocked(imgList).mockResolvedValue([{ id: 'image', blob: new Blob(['a'], { type: 'image/png' }) }] as Awaited<ReturnType<typeof imgList>>)
     const tool = useBackup()
     await tool.exportBackup()
@@ -142,5 +142,21 @@ describe('backup safety regressions', () => {
     const [blob] = vi.mocked(downloadBlob).mock.calls[0]
     expect(await tool.loadFile(new File([blob], 'round-trip.json'))).toMatchObject({ images: 1, history: 1 })
     expect(tool.lastBackupAt.value).toBeGreaterThan(0)
+  })
+  it('exports unavailable character archives from IndexedDB and stops on archive read errors', async () => {
+    const archive = { version: 1, archived: { unavailable_private_model: [{ mid: 'private', role: 'user', content: 'kept', stopped: false }] } }
+    vi.mocked(kvGet).mockImplementation(async key => (key === 'chat_archive_v1' ? archive : []) as never)
+    vi.mocked(imgList).mockResolvedValue([])
+    const tool = useBackup()
+    await tool.exportBackup()
+    expect(downloadBlob).toHaveBeenCalledTimes(1)
+    const [blob] = vi.mocked(downloadBlob).mock.calls[0]
+    expect(await blob.text()).toContain('unavailable_private_model')
+    vi.mocked(downloadBlob).mockClear()
+    vi.mocked(kvGet).mockImplementation(async key => { if (key === 'chat_archive_v1') throw Error('database offline'); return [] as never })
+    const warning = vi.spyOn(console, 'error').mockImplementation(() => {})
+    await tool.exportBackup()
+    expect(downloadBlob).not.toHaveBeenCalled()
+    warning.mockRestore()
   })
 })

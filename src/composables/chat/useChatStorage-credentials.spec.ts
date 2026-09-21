@@ -68,7 +68,9 @@ describe('chat credential migration through storage', () => {
     expect(error).toHaveBeenCalled()
     const backup = createBackup({ appVersion: 'fixture', settings: { [STORAGE_KEY]: localStorage.getItem(STORAGE_KEY)! } })
     expect(JSON.stringify(backup)).not.toContain(secret)
-    expect(storage.exportArchiveJson()).not.toContain(secret)
+    // This fixture has no IndexedDB. Async export must reject rather than
+    // returning an empty/successful archive or leaking an unobserved rejection.
+    await expect(storage.exportArchiveJson()).rejects.toThrow('IndexedDB')
   })
 
   it('refuses plaintext fallback when an older desktop bridge cannot save securely', async () => {

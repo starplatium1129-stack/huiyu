@@ -33,8 +33,8 @@ interface WlLive2DModel {
     on(event: 'beforeModelUpdate', callback: () => void): void
     coreModel?: Live2DCoreModel
     settings?: { hitAreas?: unknown[] }
-    motionManager?: { definitions?: Record<string, unknown>; state?: { currentGroup?: string }; expressionManager?: {
-      resetExpression?(): void; currentExpression?: unknown; defaultExpression?: unknown
+    motionManager?: { definitions?: Record<string, unknown>; state?: { currentGroup?: string }; stopAllMotions?(): void; expressionManager?: {
+      resetExpression?(): void; currentExpression?: unknown; defaultExpression?: unknown; reserveExpressionIndex?: number
     } }
   }
   hitTest?(x: number, y: number): string[]
@@ -82,8 +82,19 @@ function errorMessage(error: unknown): string {
 }
 
 /** 包装 wl-live2d model 为统一句柄（原 useLive2D 中对 model 的全部操作都在这里） */
-function wrapModel(model: WlLive2DModel): Live2DModelHandle {
+function wrapModel(model: WlLive2DModel, enumerate: typeof import('./modelParameters').enumerateModelParameters): Live2DModelHandle {
   return {
+    enumerateParameters: () => enumerate(model.internalModel?.coreModel),
+    stopAnimation() {
+      const manager = model.internalModel?.motionManager
+      manager?.stopAllMotions?.()
+      if (manager?.expressionManager?.resetExpression) {
+        // pixi-live2d-display checks this reservation after async expression loading.
+        manager.expressionManager.reserveExpressionIndex = -1
+        manager.expressionManager.currentExpression = manager.expressionManager.defaultExpression
+        manager.expressionManager.resetExpression()
+      }
+    },
     get visible() { return model.visible },
     set visible(value: boolean) { model.visible = value },
     motion(group, index, priority) {
@@ -94,6 +105,7 @@ function wrapModel(model: WlLive2DModel): Live2DModelHandle {
       if (!name) {
         const manager = model.internalModel?.motionManager?.expressionManager
         if (!manager?.resetExpression) return false
+        manager.reserveExpressionIndex = -1
         manager.currentExpression = manager.defaultExpression
         manager.resetExpression()
         return true
@@ -153,7 +165,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
     capability: BROWSER_CAPABILITY,
 
     async connect(options: Live2DConnectOptions): Promise<Live2DStageSession> {
-      const library = await loadLibrary()
+      const [library, { enumerateModelParameters }] = await Promise.all([loadLibrary(), import('./modelParameters')])
       options.signal?.throwIfAborted()
       if (typeof document === 'undefined') throw new Error('wl-live2d 需要浏览器 DOM')
       let app: WlLive2DApp
@@ -210,7 +222,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
               model.autoUpdate = false
               app.app.ticker.add(advanceModel, undefined, 50)
             }
-            modelHandle = wrapModel(model)
+            modelHandle = wrapModel(model, enumerateModelParameters)
             screenSize = {
               width: Number(app.app?.screen?.width) || options.canvasWidth,
               height: Number(app.app?.screen?.height) || options.canvasHeight,

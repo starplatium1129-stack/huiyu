@@ -65,7 +65,7 @@ for (const spec of ['theme-audit.spec.ts', 'capture.spec.ts', 'particle-atmosphe
 const nightlySpecs = specNames(nightlyRun);
 const overlap = criticalSpecs.filter(function (spec) { return nightlySpecs.includes(spec); });
 assert.deepStrictEqual(overlap, [], 'critical 与 nightly 分组不得重叠');
-assert(!/studio\.spec\.ts|flows\.spec\.ts|a11y-device\.spec\.ts/.test(nightlyRun),
+assert(!nightlySpecs.some(spec => ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts'].includes(spec)),
   'nightly visual regression should not duplicate the PR critical suite');
 for (const lane of ['device', 'manual']) {
   assert.deepStrictEqual(specNames(critical).filter(function (spec) { return specsForLane(lane).includes(spec); }), [],

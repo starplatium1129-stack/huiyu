@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "scope": "Office archive concurrency, uncertain-save compensation, bounded Cubism3 import and browser calibration",
+  "baselineCommit": "0502f13b05f7f880883b8a289d8ae19b98cf8e71",
+  "environment": {
+    "machine": "office",
+    "platform": "win32",
+    "node": "v24.18.0",
+    "arch": "x64"
+  },
+  "source": {
+    "sha256": "9dfbd687912885e87d607f57228d8f98bce1fd0c92cb05c6456c1bc31cea8a9d",
+    "selectors": [
+      {
+        "path": "package-lock.json",
+        "kind": "file"
+      },
+      {
+        "path": "package.json",
+        "kind": "file"
+      },
+      {
+        "path": "routes/live2d-import.ts",
+        "kind": "file"
+      },
+      {
+        "path": "routes/live2d.ts",
+        "kind": "file"
+      },
+      {
+        "path": "scripts/tests/test-e2e-ci-split.ts",
+        "kind": "file"
+      },
+      {
+        "path": "scripts/tests/test-live2d-imports.ts",
+        "kind": "file"
+      },
+      {
+        "path": "services/live2d-import-editor.ts",
+        "kind": "file"
+      },
+      {
+        "path": "services/live2d-import-profile.ts",
+        "kind": "file"
+      },
+      {
+        "path": "services/live2d-local.ts",
+        "kind": "file"
+      },
+      {
+        "path": "services/live2d-manifest.ts",
+        "kind": "file"
+      },
+      {
+        "path": "services/live2d-upload-checks.ts",
+        "kind": "file"
+      },
+      {
+        "path": "src",
+        "kind": "tree"
+      },
+      {
+        "path": "tests/e2e/chat-archive-concurrency.spec.ts",
+        "kind": "file"
+      },
+      {
+        "path": "tests/e2e/e2e-lanes.json",
+        "kind": "file"
+      },
+      {
+        "path": "tests/e2e/live2d-performance.spec.ts",
+        "kind": "file"
+      },
+      {
+        "path": "tests/e2e/model-studio.spec.ts",
+        "kind": "file"
+      }
+    ]
+  },
+  "build": {
+    "treeSha256": "4c21f866eaac0f9b38baad4bff3549f3fdb9c1cfcb0896df8fb7ffa3e2f7c531",
+    "distIndexSha256": "e9eed58257d5c681a4e4b4466c9f81502b806873ba45d5fccdaa26ecb2e782aa",
+    "viteManifestSha256": "e91348dac9379d76f41cf903f943979244dbfa062f144b8fcd087da03cd9a80c"
+  },
+  "checks": {
+    "quality": {
+      "status": "passed",
+      "log": "runtime/office-tail-check-final-bound.log",
+      "sha256": "c35127ef1cc327e6cdaded62c1b96a9c95986ba284177b6f714a5f2bef3acb06",
+      "steps": 21,
+      "mode": "structure"
+    },
+    "frontend": {
+      "status": "passed",
+      "log": "runtime/office-tail-vitest-final.log",
+      "sha256": "c83d08281ae41b8920320ce754efd0fdcf3f13d750cdf7b4e2b1eabaf92e025d",
+      "files": 173,
+      "passed": 1228,
+      "unhandledErrors": 0
+    },
+    "initialFullGate": {
+      "status": "failed",
+      "log": "runtime/office-tail-full-gate.log",
+      "sha256": "c451ccd78ea823cbd7c456446c31b102eb8126ebfb56b6e0d666ec403cd06194",
+      "reason": "Initial quality stage failed; quality and affected frontend/browser checks were subsequently rerun. Node 1082 and 35 contract files passed in this run.",
+      "nodePassed": 1082,
+      "contractFiles": 35
+    },
+    "build": {
+      "status": "passed",
+      "log": "runtime/model-studio-build-final.log",
+      "sha256": "00e11a8ac8085cb3bf664ceee6c41dc8f777899bee8d7a8812bea78f58269449"
+    },
+    "browserInitial": {
+      "status": "failed",
+      "log": "runtime/office-tail-browser-final.log",
+      "sha256": "2ebb974cffe5de1483153019fca1731a0e56cf45c03e0d6886e10b20658655b5",
+      "passed": 37,
+      "failed": 2,
+      "skipped": 1,
+      "reason": "Two old native fixture controls needed the existing right-click gesture; corrected without changing assertions."
+    },
+    "browserRecheck": {
+      "status": "passed",
+      "log": "runtime/office-tail-browser-recheck.log",
+      "sha256": "3db88ef7e9ec765b15a2992718ba7d808b4190eda0e106332cb25167a830ae02",
+      "passed": 32,
+      "skipped": 1,
+      "distinctPassedAcrossRuns": 41,
+      "distinctSkipped": 1
+    },
+    "modalVisual": {
+      "status": "passed",
+      "log": "runtime/office-tail-modal-visual.log",
+      "sha256": "4d381e3e7052277bcfda2f6d283c09e9e81644c4ee66163cfac781767ac269ed",
+      "passed": 2
+    }
+  },
+  "screenshots": [
+    {
+      "path": "runtime/model-studio-review/light-390.png",
+      "sha256": "eef8f55a0aade8844088c79a1555130742ba6936773549d97bfc0c04f293ce5a"
+    },
+    {
+      "path": "runtime/model-studio-review/dark-1440.png",
+      "sha256": "939be59d559e74cf180036f2ec2f47e1985ac2ba5b0fb92a07100802d60749eb"
+    },
+    {
+      "path": "runtime/model-studio-review/companion-dark.png",
+      "sha256": "81c42157759682da1e8e375eade6cc232ba007cb17f2394c90feac6acf1e1ba1"
+    },
+    {
+      "path": "runtime/model-studio-review/companion-light.png",
+      "sha256": "28f8242ced8a998cf071ac2075a4793d40fad77041e8419d42a71e7b784c00f1"
+    },
+    {
+      "path": "runtime/model-studio-review/real-builtin-preview.png",
+      "sha256": "4c380f37d6497230e18410a5fc2b79d3bfba3f48058b8da5d38ac1617fd0c884"
+    }
+  ],
+  "limitations": [
+    "structure does not verify private reference images",
+    "one imported-private-model picker test remains skipped",
+    "real preview used existing bundled Nene model with a 2048px isolated texture copy; source assets unchanged",
+    "new calibration supports browser Cubism3; native endpoint calibration remains unsupported",
+    "installation, native devices, audio and generation model acceptance not executed"
+  ],
+  "installation": {
+    "status": "pending"
+  },
+  "deviceAcceptance": {
+    "status": "pending"
+  },
+  "modelAcceptance": {
+    "status": "pending"
+  }
+}

@@ -1,3 +1,8 @@
+const archiveKv = vi.hoisted(() => new Map<string, unknown>())
+vi.mock('@/composables/useKVStore', () => ({
+  kvGet: vi.fn(async (key: string) => archiveKv.get(key) ?? null),
+  kvSet: vi.fn(async (key: string, value: unknown) => { archiveKv.set(key, JSON.parse(JSON.stringify(value))) }),
+}))
 import { afterEach, expect, it, vi } from 'vitest'
 import { STORAGE_KEY } from '@/config/characters'
 import { CHAT_ARCHIVE_KEY, normalizeChatArchive } from '@/utils/chatArchive'
@@ -6,7 +11,7 @@ import { normalizeChatStorage } from '@/utils/chatStorageCore'
 import { prepareBackupSettings } from '@/utils/backupSettings'
 import { useChatStorage } from './useChatStorage'
 
-afterEach(() => { localStorage.clear(); vi.restoreAllMocks() })
+afterEach(() => { archiveKv.clear(); localStorage.clear(); vi.restoreAllMocks() })
 const options = { characterIds: ['nene'], maxMessages: 20, version: 3, createMessageId: () => 'fixture' }
 it.each([undefined, 1, 2, 3])('migrates supported chat version %s with messages intact', version => {
   const result = normalizeChatStorage({ version, histories: { nene: [{ role: 'user', content: 'neutral', mid: 'fixture' }] } }, '', options)

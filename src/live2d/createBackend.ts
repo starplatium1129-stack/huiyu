@@ -10,9 +10,16 @@
  * host.dataset（E2E 可断言）并提示用户当前是浏览器渲染。
  */
 
-import { createBrowserLive2DBackend } from './browserBackend.ts'
 import { createNativeLive2DBackend, type NativeBridgeProvider } from './nativeBackend.ts'
-import type { Live2DBackendKind, Live2DStageBackend } from './types.ts'
+import { BROWSER_CAPABILITY, type Live2DBackendKind, type Live2DStageBackend } from './types.ts'
+
+function createBrowserLive2DBackend(): Live2DStageBackend {
+  return { kind: 'browser', capability: BROWSER_CAPABILITY, async connect(options) {
+    const { createBrowserLive2DBackend: create } = await import('./browserBackend.ts')
+    options.signal?.throwIfAborted()
+    return create().connect(options)
+  } }
+}
 
 export interface BackendSelection {
   backend: Live2DStageBackend

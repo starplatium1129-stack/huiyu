@@ -78,6 +78,8 @@
     { "file": "video-artbook.spec.ts", "lane": "nightly", "risk": "视频画集", "reason": "视频三模式与画集展示依赖较多状态，纳入夜间。" },
     { "file": "workbench-editorial.spec.ts", "lane": "nightly", "risk": "工作台阅读", "reason": "工作台阅读层级覆盖多状态视觉，使用夜间审查。" },
     { "file": "workbench-loading.spec.ts", "lane": "critical", "risk": "工作台加载", "reason": "加载/失败/重试状态直接影响主流程，保留关键 lane。" },
-    { "file": "workbench-polish.spec.ts", "lane": "nightly", "risk": "工作台视觉", "reason": "工作台细节视觉回归量大，纳入夜间矩阵。" }
+    { "file": "workbench-polish.spec.ts", "lane": "nightly", "risk": "工作台视觉", "reason": "工作台细节视觉回归量大，纳入夜间矩阵。" },
+    { "file": "chat-archive-concurrency.spec.ts", "lane": "critical", "risk": "Cross-window archive loss and deleted records returning", "reason": "Real IndexedDB and Web Locks transactions, migration and backup regressions" },
+    { "file": "model-studio.spec.ts", "lane": "nightly", "risk": "Local model import, calibration, theme and preview lifetime", "reason": "Includes real bundled Cubism model with an isolated bounded texture copy" }
   ]
 }

@@ -41,8 +41,9 @@ export interface Live2DAdapterProfile {
   avatarId: string
   backendCompatibility: readonly Live2DBackendKind[]
   parameterBindings: {
-    mouth?: { id: string; scale: number; range?: [number, number] }
+    mouth?: { id: string; scale: number; range?: [number, number]; closed?: number; open?: number }
     blink?: readonly string[]
+    blinkCalibration?: Record<string, { closed: number; open: number; range: [number, number] }>
     focus?: readonly string[]
     custom?: Record<string, Live2DParameterBinding>
   }
@@ -90,8 +91,9 @@ export interface CompiledLive2DAdapter {
   profileVersion: string
   avatarId: string
   backend: Live2DBackendKind
-  mouth?: { id: string; scale: number; range?: [number, number] }
+  mouth?: Live2DAdapterProfile['parameterBindings']['mouth']
   blink: readonly string[]
+  blinkCalibration?: Live2DAdapterProfile['parameterBindings']['blinkCalibration']
   focus: readonly string[]
   interactions: Readonly<Record<string, Live2DInteraction>>
   hitAreaMap: Readonly<Record<string, string>>
@@ -186,8 +188,13 @@ export const NATSUME_BUILTIN_PROFILE: Live2DAdapterProfile = Object.freeze({
 })
 
 export function validateAdapterProfile(candidate: unknown): { valid: boolean; errors: string[] } {
+  try { return validateProfileFields(candidate) }
+  catch { return { valid: false, errors: ['Profile contains malformed fields'] } }
+}
+
+function validateProfileFields(candidate: unknown): { valid: boolean; errors: string[] } {
   const errors: string[] = []
-  if (!candidate || typeof candidate !== 'object') {
+  if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) {
     return { valid: false, errors: ['Profile must be an object'] }
   }
   const p = candidate as Partial<Live2DAdapterProfile>
@@ -199,7 +206,7 @@ export function validateAdapterProfile(candidate: unknown): { valid: boolean; er
     || p.backendCompatibility.some(backend => backend !== 'browser' && backend !== 'native')) {
     errors.push('backendCompatibility must contain browser or native')
   }
-  if (!p.parameterBindings || typeof p.parameterBindings !== 'object') {
+  if (!p.parameterBindings || typeof p.parameterBindings !== 'object' || Array.isArray(p.parameterBindings)) {
     errors.push('parameterBindings is required')
   } else {
     const mouth = p.parameterBindings.mouth
@@ -207,10 +214,21 @@ export function validateAdapterProfile(candidate: unknown): { valid: boolean; er
       if (!validParameterId(mouth.id)) errors.push('mouth parameter id must be a non-empty string')
       if (!Number.isFinite(mouth.scale)) errors.push('mouth scale must be finite')
       if (mouth.range && (!validRange(mouth.range))) errors.push('mouth range must be finite and ordered')
+      if (mouth.closed !== undefined || mouth.open !== undefined) {
+        if (!validEndpoints(mouth)) errors.push('mouth endpoints must be finite and inside its range')
+        if (p.backendCompatibility?.includes('native')) errors.push('calibrated endpoints currently require browser backend')
+      }
     }
     const blink = p.parameterBindings.blink
     if (blink && (!Array.isArray(blink) || blink.some(id => !validParameterId(id)))) {
       errors.push('blink parameters must contain non-empty strings')
+    }
+    if (p.parameterBindings.blinkCalibration) {
+      if (typeof p.parameterBindings.blinkCalibration !== 'object' || Array.isArray(p.parameterBindings.blinkCalibration)) errors.push('blink calibration must be an object')
+      if (p.backendCompatibility?.includes('native')) errors.push('calibrated blink currently requires browser backend')
+      for (const [id, binding] of Object.entries(p.parameterBindings.blinkCalibration)) {
+        if (!Array.isArray(blink) || !blink.includes(id) || !validEndpoints(binding)) errors.push('blink calibration must bind existing blink IDs with valid endpoints')
+      }
     }
     const focus = p.parameterBindings.focus
     if (focus && (!Array.isArray(focus) || focus.some(id => !validParameterId(id)))) {
@@ -265,6 +283,12 @@ function validParameterId(value: unknown): value is string {
 function validRange(value: unknown): value is [number, number] {
   return Array.isArray(value) && value.length === 2
     && value.every(item => Number.isFinite(item)) && value[0] <= value[1]
+}
+
+function validEndpoints(value: { closed?: number; open?: number; range?: [number, number] }): boolean {
+  return Boolean(value && validRange(value.range) && Number.isFinite(value.closed) && Number.isFinite(value.open)
+    && value.closed! >= value.range![0] && value.closed! <= value.range![1]
+    && value.open! >= value.range![0] && value.open! <= value.range![1] && value.closed !== value.open)
 }
 
 function validStageHitZone(
@@ -326,6 +350,7 @@ export function compileAdapterProfile(
       backend,
       mouth: profile.parameterBindings.mouth,
       blink: profile.parameterBindings.blink || [],
+      blinkCalibration: profile.parameterBindings.blinkCalibration,
       focus: profile.parameterBindings.focus || [],
       interactions: profile.interactions || {},
       hitAreaMap: profile.hitAreaMap || {},

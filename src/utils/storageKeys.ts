@@ -16,6 +16,8 @@ export const COMPANION_AFFECTION_KEY = 'aics_companion_affection_v1'
 /** 角色窗 → 聊天窗的实时状态通道（低频繁写入，storage 事件跨窗下发） */
 export const COMPANION_CHAT_LIVE_KEY = 'aics_companion_chat_live_v1'
 /** Transient cross-window signals, deliberately excluded from backup/restore. */
+export const CHAT_ARCHIVE_CHANGED_KEY = 'aics_chat_archive_changed'
+export const CHAT_ARCHIVE_KV_KEY = 'chat_archive_v1'
 export const CHAT_TURN_KEY = 'aics_chat_turn_v1'
 export const CHAT_RELAY_RECEIPT_KEY = 'aics_chat_relay_receipt_v1'
 export const ROOM_PRESENTATION_KEY = 'aics_room_presentation_v1'

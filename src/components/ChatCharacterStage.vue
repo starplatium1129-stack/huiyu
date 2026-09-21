@@ -57,7 +57,9 @@
           <span>{{ chatStatusText }}</span>
         </div>
       </div>
+      <button v-if="localStudio && surface !== 'companion'" type="button" class="btn btn-ghost" @click="modelStudioOpen = true">导入或校准模型</button>
       <CharacterStageSettings ref="controlsRef" :companion="surface === 'companion'" :character-id="activeId">
+      <button v-if="localStudio && surface === 'companion'" type="button" class="btn btn-ghost" @click="modelStudioOpen = true">导入或校准模型</button>
       <details class="character-about">
         <summary>关于{{ character.name }}</summary>
         <p class="character-caption">{{ character.caption }}</p>
@@ -144,10 +146,12 @@
       </CharacterStageSettings>
     </div>
   </aside>
+  <ModelStudio v-if="modelStudioOpen" @close="modelStudioOpen = false" />
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { useMoodReferences } from '@/composables/useMoodReferences'
 import {
   type CharacterConfig,
@@ -210,6 +214,10 @@ const usesMoodPortrait = computed(() => (props.surface || 'room') === 'room' && 
 const staticPortraitSource = computed(() => usesMoodPortrait.value ? `/scene-showcase/thumbs/${moodPortraitId.value}.jpg` : props.character.image)
 watch(staticPortraitSource, () => { portraitFailed.value = false })
 const controlsRef = ref<InstanceType<typeof CharacterStageSettings>>()
+const ModelStudio = defineAsyncComponent(() => import('./ModelStudio.vue'))
+const localStudio = isLocalStudioHost()
+const modelStudioOpen = ref(false)
+watch(modelStudioOpen, updateStageVisibility)
 function openSettings() { controlsRef.value?.open() }
 const { framing, framingStyle, update: updateFraming, reset: resetFraming } = useStageFraming(computed(() => props.activeId), () => props.surface || 'room')
 const live2dHostRef = ref<HTMLElement>()
@@ -254,7 +262,7 @@ watch(framing, () => live2d.layout(), { deep: true, flush: 'post' })
 let desktopVisible = true
 watch(() => props.suspended, updateStageVisibility, { immediate: true })
 function updateStageVisibility() {
-  const visible = desktopVisible && !props.suspended
+  const visible = desktopVisible && !props.suspended && !modelStudioOpen.value
   live2d.setPaused(!visible)
   if (visible) void live2d.recover()
 }

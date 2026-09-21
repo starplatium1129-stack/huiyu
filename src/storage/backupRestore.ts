@@ -3,8 +3,10 @@ import { kvGet, kvSetMany } from '@/composables/useKVStore'
 import { withArtworkMutation } from './artworkMutation'
 import { mergeBackupRecords, type BackupFile, type BackupRecord } from '@/utils/backupCore'
 import { prepareBackupSettings } from '@/utils/backupSettings'
-import { CHAT_ARCHIVE_KEY } from '@/utils/chatArchive'
-import { CHAT_MEMORY_KEY, ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, collectLiveLocalSettings, isLiveLocalKey } from '@/utils/storageKeys'
+import { CHAT_ARCHIVE_KV_KEY, readChatArchive, withChatArchiveMutation } from './chatArchiveRepository'
+import { CHAT_ARCHIVE_KEY, emptyChatArchive, normalizeChatArchive, serializeChatArchive } from '@/utils/chatArchive'
+import { listCompanionCharacterIds } from '@/utils/companionRegistry'
+import { CHAT_ARCHIVE_CHANGED_KEY, CHAT_MEMORY_KEY, ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, collectLiveLocalSettings, isLiveLocalKey } from '@/utils/storageKeys'
 
 const imageFields = new Set(['image_id', 'imageId', 'videoImageId', 'lastFrameImageId', 'imageIds'])
 const mergeableSettings = new Set([CHAT_MEMORY_KEY, CHAT_ARCHIVE_KEY, 'aics_chat_v1'])
@@ -36,7 +38,9 @@ function rollbackSettings(previous: Record<string, string>, published: Record<st
 
 /** Stage new images under fresh IDs, then atomically publish history/projects. Never erase originals. */
 export async function restoreBackupData(imported: BackupFile, replace: boolean): Promise<void> {
-  return withArtworkMutation(() => restoreBackupDataNow(imported, replace))
+  return withArtworkMutation(() => replace || CHAT_ARCHIVE_KEY in imported.data.settings
+    ? withChatArchiveMutation(() => restoreBackupDataNow(imported, replace))
+    : restoreBackupDataNow(imported, replace))
 }
 
 async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Promise<void> {
@@ -61,16 +65,21 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
   let settingsTouched = false
   let rollbackBaseline = previousSettings
   let publishedSettings: Record<string, string> = {}
+  let pendingEntries: Array<{ key: string; value: unknown }> | null = null
+  const archiveTouched = replace || CHAT_ARCHIVE_KEY in imported.data.settings
+  const previousArchive = archiveTouched ? await kvGet(CHAT_ARCHIVE_KV_KEY) : null
+  const operationId = crypto.randomUUID()
   try {
     for (const image of images) {
-      await imgPutRecord(image)
       stagedIds.push(image.id)
+      await imgPutRecord(image)
     }
     const latestSettings = collectLiveLocalSettings(localStorage)
     // Compensation restores the values we actually replaced, including writes
     // made by another page during asynchronous image staging.
     rollbackBaseline = latestSettings
-    let nextSettings = prepareBackupSettings(latestSettings, imported.data.settings, replace)
+    const archiveSettings = archiveTouched ? { ...latestSettings, [CHAT_ARCHIVE_KEY]: serializeChatArchive(await readChatArchive()) } : latestSettings
+    let nextSettings = prepareBackupSettings(archiveSettings, imported.data.settings, replace)
     if (!replace) {
       // A merge never overwrites a key changed by another writer while images were staged.
       // Chat history/memory/archive are explicitly merged against the latest value.
@@ -84,16 +93,38 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
     publishedSettings = { ...nextSettings }
     settingsTouched = true
     writeSettings(nextSettings, replace)
-    await kvSetMany([
+    pendingEntries = [
       { key: ARTWORK_HISTORY_KV_KEY, value: replace ? importedHistory : mergeBackupRecords(history || [], importedHistory) },
       { key: ARTWORK_PROJECTS_KV_KEY, value: replace ? importedProjects : mergeBackupRecords(projects || [], importedProjects) },
-    ])
+    ]
+    if (archiveTouched) {
+      const ids = listCompanionCharacterIds()
+      const archive = nextSettings[CHAT_ARCHIVE_KEY]
+        ? normalizeChatArchive(JSON.parse(nextSettings[CHAT_ARCHIVE_KEY]), ids) : emptyChatArchive(ids)
+      if (replace) archive.revisions = Object.fromEntries(Object.keys(archive.archived).map(id => [id, crypto.randomUUID()]))
+      pendingEntries.push({ key: CHAT_ARCHIVE_KV_KEY, value: archive })
+    }
+    await kvSetMany(pendingEntries)
+    if (archiveTouched) try { localStorage.setItem(CHAT_ARCHIVE_CHANGED_KEY, crypto.randomUUID()) } catch { /* Invalidation is best effort. */ }
   } catch (error) {
+    if (pendingEntries) {
+      let unchanged = false
+      try {
+        const actual = await Promise.all(pendingEntries.map(entry => kvGet(entry.key)))
+        if (actual.every((value, index) => JSON.stringify(value) === JSON.stringify(pendingEntries![index].value))) return
+        unchanged = actual.every((value, index) => JSON.stringify(value) === JSON.stringify([history, projects, previousArchive][index]))
+      } catch { /* Read failure cannot prove rollback. */ }
+      if (!unchanged) {
+        console.warn('[backup-restore] commit unknown; images retained', { operationId, imageIds: stagedIds, error })
+        throw new Error(`恢复结果暂时无法确认；原有作品与原图未删除，导入图片已保留。请先核对作品册再重试（${operationId}）`)
+      }
+    }
     const cleanupErrors: string[] = []
     if (settingsTouched) {
       try { rollbackSettings(rollbackBaseline, publishedSettings, replace) } catch { cleanupErrors.push('设置回滚失败') }
     }
     try { await imgDeleteMany(stagedIds) } catch { cleanupErrors.push('临时图片清理失败') }
+    if (cleanupErrors.length) console.warn('[backup-restore] cleanup failed', { operationId, imageIds: stagedIds, cleanupErrors, error })
     const message = error instanceof Error ? error.message : String(error)
     throw new Error(`${message}；原有作品与原图未删除${cleanupErrors.length ? `；${cleanupErrors.join('、')}` : ''}`)
   }

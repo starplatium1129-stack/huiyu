@@ -107,6 +107,7 @@ test('legacy desktop bridge retains original textures and disables unsupported q
     p.snapshot({ visible: true, onBatteryPower: false, alwaysOnTop: false, ignoreMouseEvents: false, live2dEnabled: true, bounds: { x: 0, y: 0, width: 480, height: 720 } })
   })
   await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready')
+  await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
   await page.getByRole('button', { name: '设置', exact: true }).click()
   const quality = page.locator('.companion-settings-popover').getByRole('combobox', { name: 'Live2D 画质' })
   await expect(quality).toBeDisabled()
@@ -129,6 +130,7 @@ test('native character switches carry the selected adapter profile and release t
   await expect.poll(async () => (await probe()).characters.at(-1)?.adapter?.profileId).toBe('profile-nene-v1')
   expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthOpenY', scale: 1 })
 
+  await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
   await page.getByRole('combobox', { name: '切换陪伴角色' }).selectOption('natsume')
   await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'natsume')
   await expect.poll(async () => (await probe()).characters.at(-1)?.adapter?.profileId).toBe('profile-natsume-v1')

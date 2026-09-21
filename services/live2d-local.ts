@@ -24,6 +24,7 @@ export function readLocalCompanions(root: string): LocalCompanion[] {
       const directory = path.join(root, entry.name)
       if (fs.realpathSync(directory) !== path.resolve(directory)) return []
       const data = JSON.parse(fs.readFileSync(modelFile(directory, 'companion.json'), 'utf8')) as LocalCompanion
+      if ((data as LocalCompanion & { disabled?: boolean }).disabled === true) return []
       if (data.character.id !== entry.name || ['nene', 'natsume'].includes(entry.name)
         || typeof data.character.personaPrompt !== 'string' || !Array.isArray(data.files)) return []
       const model = JSON.parse(fs.readFileSync(modelFile(directory, data.manifest), 'utf8'))

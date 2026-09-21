@@ -5,6 +5,7 @@ import path from 'node:path';
 const { isDirectLocalRequest }: typeof import('../server/security') = require('../server/security');
 import { localLive2dRoot, readLocalCompanions } from '../services/live2d-local';
 import { modelFile } from '../services/live2d-manifest';
+import { createLive2dImportRouter } from './live2d-import';
 
 let express: typeof import('express') = require('express');
 let typedHandler: typeof import('../server/typed-route').typedHandler = require('../server/typed-route').typedHandler;
@@ -26,6 +27,7 @@ function createLive2dRouter(config: Live2dConfig, dependencies?: Live2dRouterDep
 
   const localRoot = config.ROOT_DIR ? localLive2dRoot(config.ROOT_DIR, config.DESKTOP_PACKAGED ? config.RUNTIME_ROOT : undefined) : '';
   const locals = () => localRoot ? readLocalCompanions(localRoot) : [];
+  router.use(createLive2dImportRouter(localRoot));
   const localTextures = localRoot ? createLive2dTextureService(localRoot, {
     characters: () => locals().map(item => item.character.id),
     manifestName: id => locals().find(item => item.character.id === id)?.manifest || '',

@@ -1,3 +1,5 @@
+import { readChatArchive, withChatArchiveMutation } from '@/storage/chatArchiveRepository'
+import { CHAT_ARCHIVE_KEY, serializeChatArchive } from '@/utils/chatArchive'
 import { withArtworkMutation } from '@/storage/artworkMutation'
 import { withArtworkCleanup } from '@/storage/artworkSession'
 import { buildBackupBlob, MAX_BACKUP_BYTES, BACKUP_SIZE_MESSAGE, type BackupExportProgress } from '@/utils/backupExport'
@@ -48,9 +50,9 @@ export function readLastBackupAt(): number {
 }
 
 
-function collectSettings(): Record<string, string> {
+async function collectSettings(): Promise<Record<string, string>> {
   // 活键统一登记在 src/utils/storageKeys.ts：精确键 + 训练动态前缀。
-  return collectLiveLocalSettings(localStorage)
+  return { ...collectLiveLocalSettings(localStorage), [CHAT_ARCHIVE_KEY]: serializeChatArchive(await withChatArchiveMutation(() => readChatArchive())) }
 }
 
 function errorMessage(error: unknown, fallback: string) {
@@ -83,7 +85,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         if ((history !== null && !Array.isArray(history)) || (projects !== null && !Array.isArray(projects))) {
           throw new Error('作品记录格式异常，已停止导出，未丢弃损坏记录')
         }
-        return { history: history ?? [], projects: projects ?? [], images, settings: collectSettings() }
+        return { history: history ?? [], projects: projects ?? [], images, settings: await collectSettings() }
       })
       const { blob, summary: info } = await buildBackupBlob({
         appVersion, createdAt: new Date().toISOString(), history: snapshot.history,

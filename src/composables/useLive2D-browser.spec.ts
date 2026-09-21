@@ -18,16 +18,45 @@ async function setup() {
     onModelError: (callback: typeof failed) => { failed = callback },
     destroy: vi.fn(),
   }
-  Object.defineProperty(window, 'wl-live2d', { configurable: true, value: { wlLive2d: () => app } })
+  const factory = vi.fn(() => app)
+  Object.defineProperty(window, 'wl-live2d', { configurable: true, value: { wlLive2d: factory } })
   const session = await createBrowserLive2DBackend().connect({
     selector: '#host', modelUrl: '/model.json', canvasWidth: 420, canvasHeight: 610, character: 'nene',
   })
-  return { model, app, ticker, session, loaded: () => loaded(model), failed: () => failed(new Error('late')) }
+  return { model, app, ticker, session, factory, loaded: () => loaded(model), failed: () => failed(new Error('late')) }
 }
 
 afterEach(() => { Reflect.deleteProperty(window, 'wl-live2d') })
 
 describe('browser Live2D session', () => {
+  it.each(['stopAnimation', 'defaultExpression'] as const)('cancels an asynchronously reserved expression via %s without applying it later', async stop => {
+    const h = await setup()
+    const baseline = { name: 'default' }, delayed = { name: 'late' }
+    const expressions = { currentExpression: baseline, defaultExpression: baseline, reserveExpressionIndex: -1, resetExpression: vi.fn() }
+    const stopMotions = vi.fn()
+    Object.assign(h.model.internalModel.motionManager, { expressionManager: expressions, stopAllMotions: stopMotions })
+    let finish!: () => void
+    // Mirrors the installed SDK's reservation check after loadExpression resolves.
+    Object.assign(h.model, { expression: async () => {
+      expressions.reserveExpressionIndex = 3
+      await new Promise<void>(resolve => { finish = resolve })
+      if (expressions.reserveExpressionIndex !== 3) return false
+      expressions.currentExpression = delayed
+      return true
+    } })
+    let handle!: Live2DModelHandle
+    h.session.onModelLoaded(value => { handle = value }); h.loaded()
+    const pending = handle.expression('late')
+    expect(expressions.reserveExpressionIndex).toBe(3)
+    if (stop === 'stopAnimation') handle.stopAnimation?.()
+    else handle.expression('')
+    finish()
+    await expect(pending).resolves.toBe(false)
+    expect(expressions.currentExpression).toBe(baseline)
+    expect(expressions.resetExpression).toHaveBeenCalledOnce()
+    if (stop === 'stopAnimation') expect(stopMotions).toHaveBeenCalledOnce()
+    h.session.destroy()
+  })
   it('supports Cubism 2 parameter access and makes expression reset persistent across motions', async () => {
     const h = await setup()
     const core = { setParamFloat: vi.fn(), getParamFloat: vi.fn(() => 0.7) }
