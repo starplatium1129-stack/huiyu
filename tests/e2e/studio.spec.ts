@@ -1272,13 +1272,9 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   });
   await page.reload();
   await expect(page.locator('.chat-input')).toBeVisible();
-  const recovered = await page.evaluate(() => JSON.parse(localStorage.getItem('aics_chat_v1') || '{}'));
-  expect(recovered.version).toBe(3);
-  expect(recovered.active).toBe('nene');
-  expect(recovered.histories).toMatchObject({ nene: [], natsume: [] });
-  expect(Object.values(recovered.histories).every(history => Array.isArray(history) && history.length === 0)).toBe(true);
-  expect(recovered.settings.provider).toBe('api');
-  expect(recovered.settings.live2dOutfit).toBe('school');
+  expect(await page.evaluate(() => localStorage.getItem('aics_chat_v1'))).toBe('{damaged');
+  await expect(page.getByText(/聊天数据版本不兼容或已损坏/).first()).toBeVisible();
+  await expect(page.locator('.send-btn')).toBeDisabled();
 });
 
 test('character profile opens the selected character room and persona scenes', async ({ page }) => {

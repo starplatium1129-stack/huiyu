@@ -71,6 +71,9 @@ function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima
   });
 
   router.post(['/api/anima/images', '/api/creative/images'], jobLimit, express.json({ limit:'28mb' }), async function (req, res) {
+    const controller = new AbortController();
+    const disconnected = () => { if (!res.writableEnded) controller.abort(); };
+    res.once('close', disconnected);
     try {
       if (!isPlainObject(req.body) || typeof req.body.image !== 'string') {
         return envelope.fail(res, 400, '请求体必须包含 image base64 字符串', { code:'INVALID_BODY' });
@@ -84,11 +87,13 @@ function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima
       if (!ext) {
         return envelope.fail(res, 400, '不支持的图片格式（仅限 PNG、JPEG、WebP）', { code:'INVALID_IMAGE_FORMAT' });
       }
-      let filename = await storeAdmittedImage(imageInputRoot(config), buffer, 'aics_anima_input_', ext, requestOwner(req), config.IMAGE_STORAGE_LIMITS);
+      let filename = await storeAdmittedImage(imageInputRoot(config), buffer, 'aics_anima_input_', ext, requestOwner(req), config.IMAGE_STORAGE_LIMITS, controller.signal);
       return envelope.ok(res, { ok:true, name:filename });
     } catch (error) {
-      return envelope.fail(res, runtimeErrorStatus(error) || 500, runtimeErrorMessage(error) || '图片保存失败', { code:runtimeErrorCode(error) || 'IMAGE_SAVE_FAILED' });
-    }
+      const code = runtimeErrorCode(error) || 'IMAGE_SAVE_FAILED';
+      const message = /^(IMAGE_QUOTA|IMAGE_STORAGE_BUSY|IMAGE_STORAGE_INVALID|INVALID_IMAGE|QUEUE_FULL)$/.test(String(code)) ? runtimeErrorMessage(error) : '图片保存失败，请检查存储权限和剩余空间。';
+      return envelope.fail(res, runtimeErrorStatus(error) || 500, message, { code });
+    } finally { res.off('close', disconnected); }
   });
 
   router.post(['/api/anima/jobs', '/api/creative/jobs'], jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {

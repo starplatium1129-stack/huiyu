@@ -37,6 +37,19 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
     put('source.ts', 'B'); git('add', 'source.ts'); git('commit', '-m', 'B');
     assert.throws(() => { binding.verifyBuild(root); sideEffects++; }, /源码与构建不匹配/);
     assert.equal(sideEffects, 0);
+    const vm: typeof import('node:vm') = require('node:vm');
+    const { createRequire }: typeof import('node:module') = require('node:module');
+    const entry = path.join(ROOT, 'scripts/maintenance/release-desktop-update.js');
+    const originalRequire = createRequire(entry);
+    const guardedRequire = (name: string) => name === './build-modern-installer'
+      ? { buildModernInstaller: () => { sideEffects++; throw Error('unexpected-wrapper'); } }
+      : originalRequire(name);
+    const sourceCode = fs.readFileSync(entry, 'utf8').replace(/^const ROOT =.*$/m, 'const ROOT = ' + JSON.stringify(root) + ';');
+    assert.throws(() => vm.runInNewContext(sourceCode + '\nmain();', {
+      require:guardedRequire, module:{ exports:{} }, exports:{}, __dirname:path.dirname(entry),
+      process:{ ...process, argv:['node', 'fixture', '--skip-build', '--manual', '--publish'] }, console,
+    }), /源码与构建不匹配/);
+    assert.equal(sideEffects, 0, 'actual skip-build publish entry rejects before wrapper/sign/upload');
     put('source.ts', 'A');
     binding.verifyBuild(root); // Identical content may be committed after the build.
     put(payload, 'tampered');

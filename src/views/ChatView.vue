@@ -217,7 +217,7 @@
               :title="busy ? '停止生成回复' : '停止语音播放'"
               @click="stopEverything">停止</button>
             <button class="btn btn-primary send-btn" type="button"
-              :disabled="busy || !chatReady || !inputText.trim()"
+              :disabled="busy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
               :title="chatReady ? '发送 (Enter 发送，Shift+Enter 换行)' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')"
               @click="handleSend">
               <span>{{ busy ? '回复中…' : '发送' }}</span>
@@ -292,7 +292,7 @@
           </div>
 
           <div class="chat-error" role="status" aria-live="polite"
-            :data-kind="chatErrorKind">{{ chatError }}</div>
+            :data-kind="storage.writeBlocked.value ? 'warning' : chatErrorKind">{{ storage.writeBlocked.value ? '聊天数据版本不兼容或已损坏，原件已保留；请升级或恢复兼容数据后再发送、清空或保存。' : chatError }}</div>
           <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>
         </div>
       </section>

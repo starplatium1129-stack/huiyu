@@ -53,16 +53,34 @@ async function run() {
     const store = (bytes: Buffer) => admission.storeAdmittedImage(quotaRoot, bytes, 'aics_video_ref_', 'png', 'fixture', { files:1, bytes:200 });
     const [a, b] = await Promise.all([store(image), store(image)]);
     assert.equal(a, b, 'same bytes share one reference within owner');
-    assert.equal(fs.readdirSync(quotaRoot).length, 1);
+    assert.equal(fs.readdirSync(quotaRoot).filter(name => name.startsWith('aics_')).length, 1);
     await assert.rejects(store(other), /额度/);
     assert.deepEqual(fs.readFileSync(path.join(quotaRoot, a)), image, 'quota never deletes referenced files');
     await assert.rejects(admission.storeAdmittedImage(quotaRoot, Buffer.from('corrupt'), 'aics_video_ref_', 'png', 'fixture'), /损坏/);
-    assert.equal(fs.readdirSync(quotaRoot).length, 1, 'failed writes release lock and temporary file');
+    assert.equal(fs.readdirSync(quotaRoot).filter(name => name.startsWith('aics_')).length, 1, 'failed writes release lock and temporary file');
     const huge = Buffer.from(image); huge.writeUInt32BE(100000, 16);
     await assert.rejects(admission.validateImage(huge), /预算/);
     await assert.rejects(admission.validateImage(image.subarray(0, 30)), /损坏/);
     const owner = await admission.storeAdmittedImage(quotaRoot, image, 'aics_video_ref_', 'png', 'other-owner');
     assert.notEqual(owner, a, 'owners cannot probe another identity through deduplication');
+    const third = await sharp({ create:{ width:2, height:2, channels:3, background:'#666' } }).png().toBuffer();
+    const race = await Promise.allSettled([other, third].map(bytes => admission.storeAdmittedImage(quotaRoot, bytes, 'aics_video_ref_', 'png', 'fixture', { files:3, bytes:1000 })));
+    assert.equal(race.filter(result => result.status === 'fulfilled').length, 1, 'concurrent writes cannot sell the last slot twice');
+    assert.equal(fs.readdirSync(quotaRoot).filter(name => name.startsWith('aics_')).length, 3);
+    const controller = new AbortController(); controller.abort();
+    await assert.rejects(admission.storeAdmittedImage(quotaRoot, third, 'aics_video_ref_', 'png', 'fixture', {}, controller.signal), /abort/i);
+    assert.equal(fs.readdirSync(quotaRoot).filter(name => name.startsWith('aics_')).length, 3, 'cancelled admission leaves no file');
+    const { execFile }: typeof import('node:child_process') = require('node:child_process');
+    const separateProcess = (bytes: Buffer) => new Promise<void>((resolve, reject) => {
+      const code = "require(process.argv[1]).storeAdmittedImage(process.argv[2], Buffer.from(process.argv[3], 'base64'), 'aics_video_ref_', 'png', 'fixture', {files:4,bytes:2000}).then(()=>{},e=>{console.error(e.code);process.exitCode=1})";
+      execFile(process.execPath, ['-e', code, require.resolve('../../services/image-admission'), quotaRoot, bytes.toString('base64')], { windowsHide:true }, error => error ? reject(error) : resolve());
+    });
+    const crossProcess = await Promise.allSettled(await Promise.all(['#555', '#444'].map(async background => {
+      const bytes = await sharp({ create:{ width:2, height:2, channels:3, background } }).png().toBuffer();
+      return { bytes };
+    })).then(items => items.map(({ bytes }) => separateProcess(bytes))));
+    assert.equal(crossProcess.filter(result => result.status === 'fulfilled').length, 1, 'cross-process and restart scans share the last slot');
+    assert.equal(fs.readdirSync(quotaRoot).filter(name => name.startsWith('aics_')).length, 4);
   } finally { fs.rmSync(quotaRoot, { recursive:true, force:true }); }
   // A completed generation batch can still own a cancellable concat operation.
   const isolatedRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'video-concat-cancel-'));

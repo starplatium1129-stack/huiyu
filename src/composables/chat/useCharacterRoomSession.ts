@@ -253,6 +253,7 @@ export function useCharacterRoomSession() {
   }
 
   function updateUserProfile(profile: ChatUserProfile) {
+    if (!storage.canWrite()) { userProfile.value = loadChatUserProfile(); return }
     try {
       userProfile.value = saveChatUserProfile(profile)
       setError('用户档案已保存', 'info', 3000)

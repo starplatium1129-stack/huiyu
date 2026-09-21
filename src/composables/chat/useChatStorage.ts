@@ -1,8 +1,8 @@
 import { reactive, ref } from 'vue'
 import { createChatCredentials } from '@/utils/chatCredentials'
-import { assertStoredChatVersion } from '@/utils/chatVersion'
+import { assertChatVersion, assertStoredChatVersion } from '@/utils/chatVersion'
 import { chatResetRevision } from '@/utils/chatReset'
-import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY } from '@/utils/storageKeys'
+import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY, CHAT_MEMORY_KEY } from '@/utils/storageKeys'
 import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
 import {
   STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
@@ -94,7 +94,8 @@ function mergeHistories(local: ChatMessage[], remote: ChatMessage[], snapshots: 
 }
 
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
-  let resetRevision = chatResetRevision()
+  let resetRevision = ''
+  try { resetRevision = chatResetRevision() } catch { /* load reports inaccessible storage */ }
   const credentials = createChatCredentials()
   let pendingLegacyKey = ''
   let credentialRevision = 0
@@ -147,6 +148,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       }
       assertStoredChatVersion(STORAGE_KEY, STORAGE_VERSION)
       assertStoredChatVersion(CHAT_ARCHIVE_KEY, 1)
+      assertStoredChatVersion(CHAT_MEMORY_KEY, 1)
       writeBlocked.value = false
       return true
     } catch {
@@ -182,6 +184,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     if (!canWrite()) return false
     try {
       const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
+      assertChatVersion(raw, STORAGE_VERSION)
       if (!raw || typeof raw !== 'object') return true
       preserveRetiredCompanionChat(raw)
       const record = raw as Record<string, unknown>
@@ -325,19 +328,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     try {
       raw = stored ? JSON.parse(stored) : {}
     } catch {
-      const clean = normalizeChatStorage({}, '', normalizeOptions).state
-      applyPersisted(clean)
-      neverConfigured.value = true
-      // Only invalid JSON may be replaced with an empty normalized record.
-      // A write failure remains separate from the parsing decision.
-      try {
-        loadFrequentPreferences()
-        localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
-      } catch {}
-      onError('本地聊天记录损坏，已恢复为空白会话。')
+      writeBlocked.value = true
+      onError('本地聊天记录损坏，原件已保留，无法安全修改。')
       return
     }
     try {
+      assertChatVersion(raw, STORAGE_VERSION)
       preserveRetiredCompanionChat(raw)
       // 先把持久化里的超限消息归档，再走白名单归一化，保证旧消息不丢。
       const rawHistories = raw && typeof raw === 'object' && (raw as Record<string, unknown>).histories
@@ -388,6 +384,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
             const currentText = localStorage.getItem(STORAGE_KEY)
             if (currentText) {
               const current = JSON.parse(currentText)
+              assertChatVersion(current, STORAGE_VERSION)
               if (current.settings?.apiBaseUrl === endpoint && current.settings?.apiKey === pendingLegacyKey) {
                 current.settings.apiKey = ''
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(current))

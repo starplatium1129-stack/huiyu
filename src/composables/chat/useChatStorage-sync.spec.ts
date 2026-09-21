@@ -13,14 +13,15 @@ function open() {
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); localStorage.clear() })
 
 describe('chat storage cross-window recovery', () => {
-  it('rewrites genuinely malformed JSON as a readable empty session', () => {
+  it('preserves malformed JSON and refuses writes instead of replacing the original', () => {
     localStorage.setItem(STORAGE_KEY, '{damaged')
     const onError = vi.fn()
     const storage = useChatStorage(onError)
     storage.load()
     expect(storage.messages()).toEqual([])
-    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).histories.nene).toEqual([])
-    expect(onError).toHaveBeenCalledWith('本地聊天记录损坏，已恢复为空白会话。')
+    expect(localStorage.getItem(STORAGE_KEY)).toBe('{damaged')
+    expect(storage.save()).toBe(false)
+    expect(onError).toHaveBeenCalledWith(expect.stringContaining('原件已保留'))
     expect(open().messages()).toEqual([])
   })
 

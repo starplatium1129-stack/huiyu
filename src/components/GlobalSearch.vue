@@ -18,6 +18,7 @@
         </div>
 
         <p v-if="worksError" class="gs-empty" role="alert">{{ worksError }}</p>
+        <p v-else-if="worksLoading" class="gs-empty" role="status">正在读取作品…</p>
         <div ref="resultsEl" class="gs-results" role="listbox" aria-label="搜索结果">
           <template v-if="!query.trim()">
             <section v-if="filteredActions.length" class="gs-group">
@@ -73,7 +74,7 @@
                 <small>{{ item.meta }}</small>
               </button>
             </section>
-            <p v-if="!filteredPages.length && !filteredScenes.length && !filteredWorks.length" class="gs-empty">
+            <p v-if="!worksError && !worksLoading && !filteredPages.length && !filteredScenes.length && !filteredWorks.length" class="gs-empty">
               没有匹配的结果，试试场景标题、标签或作品名。
             </p>
           </template>
@@ -131,6 +132,7 @@ const scenes = ref<SceneItem[]>([])
 const works = ref<WorkItem[]>([])
 let worksRequest = 0
 const worksError = ref('')
+const worksLoading = ref(false)
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
 
@@ -245,6 +247,7 @@ function onKeydown(event: KeyboardEvent) {
 
 async function loadWorks() {
   const request = ++worksRequest
+  worksLoading.value = true
   worksError.value = ''
   works.value = []
   try {
@@ -254,7 +257,7 @@ async function loadWorks() {
     works.value = indexArtworkSearch(raw)
   } catch {
     if (request === worksRequest) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
-  }
+  } finally { if (request === worksRequest) worksLoading.value = false }
 }
 async function loadScenes() {
   try {

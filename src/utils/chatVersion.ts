@@ -13,5 +13,9 @@ export function assertChatVersion(value: unknown, current: number): void {
 
 export function assertStoredChatVersion(key: string, current: number): void {
   const raw = localStorage.getItem(key)
-  if (raw !== null) assertChatVersion(JSON.parse(raw), current)
+  if (raw !== null) {
+    const value: unknown = JSON.parse(raw)
+    if (value === null) throw new Error('聊天数据格式损坏，原件已保留。')
+    assertChatVersion(value, current)
+  }
 }

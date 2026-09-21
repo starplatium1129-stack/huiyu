@@ -112,7 +112,8 @@ function image(value: unknown): BackupImage | null {
 export function normalizeBackup(raw: unknown): BackupFile {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('备份文件不是有效对象')
   const source = raw as Record<string, unknown>
-  const version = Math.max(0, Math.floor(finite(source.schemaVersion)))
+  if (source.schemaVersion !== undefined && (typeof source.schemaVersion !== 'number' || !Number.isSafeInteger(source.schemaVersion) || source.schemaVersion < 0)) throw new Error('备份版本无效，请保留原件并确认格式')
+  const version = source.schemaVersion === undefined ? 0 : source.schemaVersion as number
   if (version > BACKUP_SCHEMA_VERSION) throw new Error('该备份来自更新版本，请先升级网站')
   if (source.type != null && source.type !== BACKUP_TYPE) throw new Error('该文件不是绘遇备份')
   if (source.app != null && source.app !== BACKUP_APP) throw new Error('该文件不是绘遇备份')

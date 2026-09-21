@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { textContrast } from './helpers/contrast'
 
 for (const theme of ['dark', 'light']) {
   test(`global search finds the oldest of 10000 works ${theme}`, async ({ page }) => {
@@ -28,7 +29,7 @@ for (const theme of ['dark', 'light']) {
     await input.press('Enter')
     await expect(page).toHaveURL(/regen=1(?:&|$)/)
   })
-  test(`reset profile-only content with keyboard ${theme}`, async ({ page }) => {
+  test(`reset profile-only content with keyboard ${theme}`, async ({ page, context }) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/')
@@ -39,17 +40,33 @@ for (const theme of ['dark', 'light']) {
     }, theme)
     await page.reload()
     await page.goto('/chat')
+    const other = await context.newPage()
+    await other.goto('/chat')
+    await other.locator('.chat-input').fill('neutral-late-draft')
     await page.locator('.chat-actions').getByRole('button', { name: '更多' }).click()
     await page.getByRole('menuitem', { name: '清空聊天内容与个人档案', exact: true }).click()
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
     const confirm = page.getByRole('button', { name: '清空聊天内容', exact: true })
     await expect(confirm).toBeVisible()
+    await expect(page.getByRole('button', { name: '取消', exact: true })).toBeFocused()
+    expect(await page.locator('.confirm-message').evaluate(textContrast, null)).toBeGreaterThanOrEqual(4.5)
+    expect(await confirm.evaluate(textContrast, null)).toBeGreaterThanOrEqual(4.5)
     await page.screenshot({ path: `runtime/audit-011/b2-confirm-${theme}.png`, fullPage: true })
+    await page.keyboard.press('Escape')
+    expect(await page.evaluate(() => localStorage.getItem('aics_user_profile_v1'))).toContain('neutral')
+    await page.locator('.chat-actions').getByRole('button', { name: '更多' }).click()
+    await page.getByRole('menuitem', { name: '清空聊天内容与个人档案', exact: true }).click()
     await confirm.focus()
     await page.keyboard.press('Enter')
     await expect(page.getByText('本机聊天内容与个人档案已清空；连接和偏好已保留。')).toBeVisible()
     expect(await page.evaluate(() => localStorage.getItem('aics_user_profile_v1'))).toBeNull()
     expect(await page.evaluate(() => localStorage.getItem('aics_chat_draft_v1:retired'))).toBeNull()
+    await expect(other.locator('.chat-input')).toHaveValue('')
+    await other.reload()
+    await expect(other.locator('.chat-input')).toHaveValue('')
+    await other.locator('.chat-input').fill('new-after-clear')
+    await expect.poll(() => other.evaluate(() => localStorage.getItem('aics_chat_draft_v1:nene'))).toContain('new-after-clear')
+    await other.close()
     await page.reload()
     expect(await page.evaluate(() => localStorage.getItem('aics_user_profile_v1'))).toBeNull()
   })

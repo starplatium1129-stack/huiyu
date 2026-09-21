@@ -124,12 +124,17 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
     }
     let isReference = body.kind === 'reference';
     let prefix = isReference ? IMAGE_REF_PREFIX : IMAGE_INPUT_PREFIX;
+    const controller = new AbortController();
+    const disconnected = () => { if (!res.writableEnded) controller.abort(); };
+    res.once('close', disconnected);
     try {
-      const name = await storeAdmittedImage(media.imageInputRoot(config), buffer, prefix, ext, requestOwner(req), config.IMAGE_STORAGE_LIMITS);
+      const name = await storeAdmittedImage(media.imageInputRoot(config), buffer, prefix, ext, requestOwner(req), config.IMAGE_STORAGE_LIMITS, controller.signal);
       return envelope.ok(res, { name, bytes:buffer.length });
     } catch (error) {
-      return envelope.fail(res, runtimeErrorStatus(error) || 500, runtimeErrorMessage(error), { code:runtimeErrorCode(error) || 'IMAGE_WRITE_FAILED' });
-    }
+      const code = runtimeErrorCode(error) || 'IMAGE_WRITE_FAILED';
+      const message = /^(IMAGE_QUOTA|IMAGE_STORAGE_BUSY|IMAGE_STORAGE_INVALID|INVALID_IMAGE|QUEUE_FULL)$/.test(String(code)) ? runtimeErrorMessage(error) : '图片写入失败，请检查存储权限和剩余空间。';
+      return envelope.fail(res, runtimeErrorStatus(error) || 500, message, { code });
+    } finally { res.off('close', disconnected); }
   });
 
   router.post('/api/video/jobs', jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
