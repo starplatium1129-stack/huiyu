@@ -61,6 +61,27 @@ createResourceInstaller({...config, access:{isLocalStudioHost:()=>true,isAuthori
     assert.equal((await f.installer().status()).state.sequence, 2);
   });
 
+  test('a released writer lock between lstat and realpath is an absent claim, not a recovery failure', async t => {
+    const f = fixture(t);
+    const installed = await f.installer().install({ releaseId: 'base' });
+    const lock = path.join(f.installer().root, 'locks/writer.json');
+    write(lock, JSON.stringify({ pid: process.pid, host: require('node:os').hostname(), token: require('node:crypto').randomUUID() }));
+    let released = false;
+    const io = Object.create(fs) as typeof fs;
+    io.realpathSync = ((target: PathLike, options: any) => {
+      if (!released && path.resolve(String(target)) === path.resolve(lock)) {
+        released = true;
+        fs.unlinkSync(lock);
+      }
+      return fs.realpathSync(target, options);
+    }) as typeof fs.realpathSync;
+    const recovered = await f.installer({ io }).recover();
+    assert.equal(released, true);
+    assert.equal(recovered.ok, true);
+    assert.deepEqual(recovered.state, installed.state);
+    assert.equal(fs.existsSync(lock), false);
+  });
+
   test('junction in candidate assets is rejected before external file content is read', async t => {
     const f = fixture(t);
     const assets = path.join(f.packs, 'base/assets');

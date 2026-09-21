@@ -89,7 +89,15 @@ function noLinks(io: typeof fs, target: string, options: { missing?: boolean; ha
       if (runtimeErrorCode(error) === 'ENOENT' && missing) return null;
       throw error;
     }
-    if (stat.isSymbolicLink() || !samePath(cursor, io.realpathSync(cursor))) fail('UNSAFE_LINK', 'Symlink/junction rejected: ' + cursor);
+    if (stat.isSymbolicLink()) fail('UNSAFE_LINK', 'Symlink/junction rejected: ' + cursor);
+    let resolved;
+    try { resolved = io.realpathSync(cursor); } catch (error) {
+      // A concurrent lock owner may release this file after lstat. Only callers
+      // already allowing missing paths can treat that as an absent claim.
+      if (missing && runtimeErrorCode(error) === 'ENOENT') return null;
+      throw error;
+    }
+    if (!samePath(cursor, resolved)) fail('UNSAFE_LINK', 'Symlink/junction rejected: ' + cursor);
     if (index < parts.length - 1 && !stat.isDirectory()) fail('UNSAFE_PATH', 'Non-directory ancestor');
     if (!stat.isDirectory() && !stat.isFile()) fail('UNSAFE_FILE', 'Only ordinary files and directories are accepted');
     if (stat.isFile() && stat.nlink !== 1 && !hardlinks) fail('UNSAFE_LINK', 'Hard-linked resource or metadata rejected');
