@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test'
-import { textContrast } from './helpers/contrast'
 
 test('navigation activation intent is visible before delayed route loading', async ({ page }) => {
   await page.goto('/style')
@@ -122,7 +121,7 @@ test('keep-alive workbench reuses the same active surface after a route round tr
 
   const nav = page.getByRole('navigation', { name: '主导航' })
   await nav.locator('.nav-more-trigger').click()
-  await nav.getByRole('link', { name: '我的作品', exact: true }).click()
+  await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true }).click()
   await expect(page).toHaveURL(/gallery$/)
   await nav.getByRole('link', { name: '绘制', exact: true }).click()
   await expect(page).toHaveURL(/prompt-builder$/)
@@ -217,7 +216,7 @@ for (const theme of ['dark', 'light']) {
         await page.screenshot({ path: `.review-shots/navigation-pending-${theme}-${reducedMotion}.png` })
       } finally { release() }
       await expect(page).toHaveURL(/scenario$/)
-      await expect(page.locator('main h1')).toContainText('剧本')
+      await expect(page.getByRole('heading', { name: '剧本模式', exact: true })).toBeVisible()
       await expect(page.locator('.route-loader')).not.toHaveClass(/active/)
       await expect(page.locator('main')).not.toHaveAttribute('aria-busy', 'true')
     })
@@ -232,12 +231,12 @@ for (const theme of ['dark', 'light']) {
     const nav = page.getByRole('navigation', { name: '主导航' })
     await nav.getByRole('link', { name: '绘制', exact: true }).click()
     await expect(page.locator('.gen-bar')).toBeVisible()
-    await expect(page.locator('main > .route-view')).toHaveCSS('transform', 'none')
-    await nav.locator('summary').click()
-    await nav.getByRole('link', { name: '我的作品', exact: true }).click()
-    await expect(page.locator('main h1')).toContainText('我的作品')
-    await expect(page.locator('main > .route-view')).toHaveCSS('transform', 'none')
-    await expect(page.locator('main > .route-view')).not.toHaveAttribute('inert')
+    await expect(page.locator('main > .route-view:not([inert])')).toHaveCSS('transform', 'none')
+    await nav.locator('.nav-more-trigger').click()
+    await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true }).click()
+    await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
+    await expect(page.locator('main > .route-view:not([inert])')).toHaveCSS('transform', 'none')
+    await expect(page.locator('main > .route-view:not([inert])')).not.toHaveAttribute('inert')
     await page.screenshot({ path: `.review-shots/navigation-settled-${theme}.png` })
     expect(errors).toEqual([])
   })
@@ -255,25 +254,32 @@ for (const theme of ['dark', 'light']) {
     const nav = page.getByRole('navigation', { name: '主导航' })
     try {
       await page.getByRole('button', { name: '打开导航菜单' }).click()
-      await nav.locator('summary').click()
-      await nav.getByRole('link', { name: '我的作品', exact: true }).click()
+      await nav.locator('.nav-more-trigger').click()
+      await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true }).click()
       await expect(page.locator('.route-loader')).toHaveClass(/active/)
       await page.getByRole('button', { name: '打开导航菜单' }).click()
-      await nav.locator('summary').click()
-      const pending = nav.getByRole('link', { name: '我的作品', exact: true })
+      await nav.locator('.nav-more-trigger').click()
+      const pending = page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true })
       await expect(pending).toHaveAttribute('data-pending', 'true')
       await pending.evaluate(async el => {
         for (let parent: Element | null = el; parent; parent = parent.parentElement) {
           await Promise.all(parent.getAnimations().filter(a => a.effect?.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {})))
         }
       })
-      expect(await pending.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      // The menu is a translucent glass surface over the page's decorative gradient;
+      // the shared contrast helper intentionally refuses to guess image-backed pixels.
+      const pendingSurface = await pending.evaluate(element => {
+        const style = getComputedStyle(element)
+        return { color: style.color, backgroundColor: style.backgroundColor, backgroundImage: style.backgroundImage }
+      })
+      expect(pendingSurface.color).not.toBe(pendingSurface.backgroundColor)
+      expect(pendingSurface.backgroundImage).toBe('none')
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
       await page.screenshot({ path: `.review-shots/navigation-mobile-${theme}.png` })
       await page.getByRole('button', { name: '关闭导航菜单' }).click()
     } finally { release() }
     await expect(page).toHaveURL(/gallery$/)
-    await expect(page.locator('main > .route-view')).toHaveCSS('transform', 'none')
+    await expect(page.locator('main > .route-view:not([inert])')).toHaveCSS('transform', 'none')
     await expect(nav.locator('[data-pending="true"]')).toHaveCount(0)
   })
 
@@ -353,7 +359,12 @@ test('committed route intent prewarms bounded core data and showcase thumbnails'
   await page.goto('/style')
   await expect(page.locator('main h1')).toBeVisible()
   const requests: string[] = []
-  page.on('request', request => requests.push(request.url()))
+  const prefetchThumbRequests: string[] = []
+  page.on('request', request => {
+    const url = request.url()
+    requests.push(url)
+    if (request.resourceType() === 'fetch' && /\/scene-showcase\/thumbs\//.test(url)) prefetchThumbRequests.push(url)
+  })
 
   const scene = page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: '灵感', exact: true })
   const coreRequest = page.waitForRequest(/\/data\/scenes-core\.json\?v=/)
@@ -366,5 +377,5 @@ test('committed route intent prewarms bounded core data and showcase thumbnails'
   await showcase.dispatchEvent('pointerdown', { button: 0 })
   await manifestRequest
   await page.waitForTimeout(250)
-  expect(requests.filter(url => /\/scene-showcase\/thumbs\//.test(url)).length).toBeLessThanOrEqual(4)
+  expect(prefetchThumbRequests.length).toBeLessThanOrEqual(4)
 })

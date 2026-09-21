@@ -68,13 +68,18 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
         'classify-scene-ratings.js --check', 'validate-scenes.js', 'validate-content-contracts.js']) {
         assert.ok(orchestrator.includes(legacyStep), `parallel check orchestrator must include ${legacyStep}`);
     }
-    // test:style-debt 已由 test:check 的质量套件统一执行五项样式门禁；并发编排器
-    // 不得再把其中的四项拆成独立进程，避免一次 check 重复扫描整棵样式树。
+    // test:check 负责夹具/结构样式测试；四个完整扫描由并发编排器明确登记，
+    // 让 full/CI 真正执行与 test:style-debt 相同的五项门禁且每项只执行一次。
     assert.ok(read('scripts/tests/quality-test-inventory.ts').includes("'test-style-debt.js'"),
         'quality check suite must own the complete style-debt gate');
-    for (const duplicateStep of ["['style-literals'", "['contrast'", "['colors'", "['animations'"]) {
-        assert.doesNotMatch(orchestrator, new RegExp(duplicateStep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
-            `parallel check must not duplicate ${duplicateStep}`);
+    for (const [name, command] of [
+        ['style-literals', 'scan-style-literals.js --check'],
+        ['contrast', 'check-contrast.js --check'],
+        ['colors', 'lint-colors.js --check'],
+        ['animations', 'lint-animations.js --check'],
+    ]) {
+        assert.ok(orchestrator.includes(`['${name}', 'node scripts/maintenance/${command}']`),
+            `parallel check must execute the complete ${name} style scan`);
     }
   assert.doesNotMatch(scripts.validate, /test:live2d-native|test:live|test:e2e/);
   assert.doesNotMatch(scripts.validate, /build:desktop/);

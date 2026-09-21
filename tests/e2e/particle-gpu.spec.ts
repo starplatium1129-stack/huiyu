@@ -78,7 +78,7 @@ test('GPU context loss and unsupported devices return control to Canvas', async 
     const api = (window as unknown as { ParticleFixture: Api }).ParticleFixture
     const getContext = HTMLCanvasElement.prototype.getContext
     let gpuContext: WebGL2RenderingContext | null = null
-    HTMLCanvasElement.prototype.getContext = function (kind: string, options?: unknown) {
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, kind: string, options?: unknown) {
       const context = getContext.call(this, kind, options as object)
       if (kind === 'webgl2') gpuContext = context as WebGL2RenderingContext
       return context
@@ -93,7 +93,7 @@ test('GPU context loss and unsupported devices return control to Canvas', async 
     const style: ParticleBodyStyle = { paints: ['#ffffff'], radii: [1], darkTheme: false, energyScale: 1, surface: '#e7e0ed', outline: '#3c3548', palette: { primary: '#ffffff', secondary: '#999999', accent: '#ee9abc' } }
     const drawsAfterLoss = renderer.draw(ctx, 100, 100, 1, [], style)
     renderer.release()
-    HTMLCanvasElement.prototype.getContext = function (kind: string, options?: unknown) {
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, kind: string, options?: unknown) {
       return kind === 'webgl2' ? null : getContext.call(this, kind, options as object)
     } as typeof getContext
     const unavailable = api.createParticleGpuRenderer()

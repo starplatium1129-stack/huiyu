@@ -17,6 +17,10 @@
       <i></i><i></i><i></i>
     </div>
     <header class="companion-toolbar" :data-hidden="immersive ? 'true' : undefined">
+      <div class="companion-identity" aria-live="polite">
+        <span>陪伴模式</span>
+        <h1>与{{ currentCharacter.name }}相伴</h1>
+      </div>
       <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchCharacter" />
       <div class="companion-toolbar-actions">
         <span v-if="desktopBridge" class="companion-drag-handle" data-tauri-drag-region title="拖动桌宠"><ArchiveIcon name="menu" aria-hidden="true" /><span>移动</span></span>

@@ -75,7 +75,7 @@ test('a failed menu download keeps primary navigation available', async ({ page 
   await expect(page.getByRole('button', { name:'更多', exact:true })).toBeEnabled()
   await page.getByRole('navigation', { name:'主导航' }).getByRole('link', { name:'参考画册', exact:true }).click()
   await expect(page).toHaveURL(/\/showcase$/)
-  await expect(page.locator('main h1')).toBeVisible()
+  await expect(page.locator('main > .route-view:not([inert]) h1')).toBeVisible()
   await page.unroute(module)
   await page.reload()
   await page.getByRole('button', { name:'更多', exact:true }).click()

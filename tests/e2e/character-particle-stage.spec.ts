@@ -72,7 +72,7 @@ test('portrait uses uncapped GPU drawing and survives context loss', async ({ pa
   await page.addInitScript(() => {
     localStorage.setItem('aics_theme', 'light')
     const original = HTMLCanvasElement.prototype.getContext
-    HTMLCanvasElement.prototype.getContext = function (kind: string, options?: unknown) {
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, kind: string, options?: unknown) {
       const context = original.call(this, kind, options as object)
       if (kind === 'webgl2') (window as unknown as { portraitGpu: WebGL2RenderingContext }).portraitGpu = context as WebGL2RenderingContext
       return context
@@ -95,7 +95,7 @@ test('portrait uses uncapped GPU drawing and survives context loss', async ({ pa
 test('portrait remains available when WebGL is disabled', async ({ page }) => {
   await page.addInitScript(() => {
     const original = HTMLCanvasElement.prototype.getContext
-    HTMLCanvasElement.prototype.getContext = function (kind: string, options?: unknown) {
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, kind: string, options?: unknown) {
       return kind === 'webgl2' ? null : original.call(this, kind, options as object)
     } as typeof original
   })

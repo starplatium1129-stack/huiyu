@@ -38,6 +38,9 @@ for (const size of sizes) {
         await page.goto('/character?character=frieren', { waitUntil: 'domcontentloaded' })
         const portrait = page.locator('.portrait[data-portrait-state]')
         await expect(portrait).toHaveAttribute('data-portrait-state', 'fallback')
+        // 角色档案默认展示粒子展台；切到原画模式后再验收原图/缩略图回退文案。
+        await page.getByRole('button', { name: '人物原画', exact: true }).click()
+        await expect(portrait).toBeVisible()
         const note = portrait.locator('.portrait-fallback-note')
         await note.scrollIntoViewIfNeeded()
         await expect(portrait.locator('img')).not.toHaveJSProperty('naturalWidth', 0)
@@ -55,6 +58,8 @@ for (const size of sizes) {
         await page.route('**/assets/characters/thumbs/popular-frieren.webp*', route => route.fulfill({ status: 404, body: 'missing thumbnail' }))
         await page.reload({ waitUntil: 'domcontentloaded' })
         await expect(portrait).toHaveAttribute('data-portrait-state', 'missing')
+        await page.getByRole('button', { name: '人物原画', exact: true }).click()
+        await expect(portrait).toBeVisible()
         await portrait.scrollIntoViewIfNeeded()
         await readable(portrait.locator('.portrait-missing-title'))
         await readable(portrait.locator('.portrait-missing-text'))

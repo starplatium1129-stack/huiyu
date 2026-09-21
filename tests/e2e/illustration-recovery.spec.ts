@@ -160,14 +160,21 @@ for (const viewport of [{ width: 1440, height: 960 }, { width: 768, height: 1024
       await expect(text).toBeVisible()
       await portrait.scrollIntoViewIfNeeded()
       expect(await text.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
-      const separated = await portrait.evaluate(element => {
-        const placeholder = element.querySelector('.companion-fallback.current .companion-fallback-text')!
-        const caption = element.querySelector('figcaption')!
-        const a = document.createRange(), b = document.createRange()
-        a.selectNodeContents(placeholder); b.selectNodeContents(caption)
-        return a.getBoundingClientRect().bottom + 4 <= b.getBoundingClientRect().top
-      })
-      expect(separated, '占位提示不得与台词重叠').toBe(true)
+      const caption = portrait.locator('figcaption')
+      if (viewport.width <= 768) {
+        // 窄屏按当前画册布局隐藏台词，避免压缩角色占位；桌面才验证两层间距。
+        await expect(caption).toBeHidden()
+      } else {
+        await expect(caption).toBeVisible()
+        const separated = await portrait.evaluate(element => {
+          const placeholder = element.querySelector('.companion-fallback.current .companion-fallback-text')!
+          const captionElement = element.querySelector('figcaption')!
+          const a = document.createRange(), b = document.createRange()
+          a.selectNodeContents(placeholder); b.selectNodeContents(captionElement)
+          return a.getBoundingClientRect().bottom + 4 <= b.getBoundingClientRect().top
+        })
+        expect(separated, '占位提示不得与台词重叠').toBe(true)
+      }
       await portrait.screenshot({ path: info.outputPath(`scene-${viewport.width}-${theme}.png`) })
       await intercept(page, '**/natsume-coffee*.webp*', notFound)
       await page.goto('/no-such-page-glm', { waitUntil: 'domcontentloaded' })

@@ -19,8 +19,14 @@
 const { spawn } = (require('child_process') as typeof import('child_process'));
 
 // 重步骤优先入队（repo 卫生 ≈50s、双 typecheck、eslint 是关键路径）。
+// 样式债测试与四个完整扫描由同一 check 编排拥有，避免 full/CI 只跑
+// test-style-debt.js 的夹具而漏掉实际的字面值、对比度、颜色和动效扫描。
 const STEPS = [
   ['test:check', 'npm run test:check'],
+  ['style-literals', 'node scripts/maintenance/scan-style-literals.js --check'],
+  ['contrast', 'node scripts/maintenance/check-contrast.js --check'],
+  ['colors', 'node scripts/maintenance/lint-colors.js --check'],
+  ['animations', 'node scripts/maintenance/lint-animations.js --check'],
   ['typecheck:app', 'npm run typecheck:app'],
   ['typecheck', 'npm run typecheck'],
   ['lint:js', 'npm run lint:js'],
