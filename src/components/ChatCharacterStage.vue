@@ -57,9 +57,7 @@
           <span>{{ chatStatusText }}</span>
         </div>
       </div>
-      <details ref="controlsRef" class="character-controls" @keydown.esc.stop="closeSettings">
-        <summary><ArchiveIcon name="gear" /><span>角色设置</span></summary>
-        <div class="character-controls-panel">
+      <CharacterStageSettings ref="controlsRef" :companion="surface === 'companion'" :character-id="activeId">
       <details class="character-about">
         <summary>关于{{ character.name }}</summary>
         <p class="character-caption">{{ character.caption }}</p>
@@ -143,8 +141,7 @@
           </li>
         </ul>
       </details>
-        </div>
-      </details>
+      </CharacterStageSettings>
     </div>
   </aside>
 </template>
@@ -166,6 +163,7 @@ import {
 } from '@/utils/companionRegistry'
 import { useLive2D } from '@/composables/useLive2D'
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
+import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useStageFraming, type StageSurface } from '@/composables/chat/useStageFraming'
 import '@/assets/css/character-stage.css'
@@ -211,9 +209,8 @@ const moodPortraitId = computed(() => props.activeId === 'nene' ? 'sc001' : prop
 const usesMoodPortrait = computed(() => (props.surface || 'room') === 'room' && moodPortraits.value.has(moodPortraitId.value))
 const staticPortraitSource = computed(() => usesMoodPortrait.value ? `/scene-showcase/thumbs/${moodPortraitId.value}.jpg` : props.character.image)
 watch(staticPortraitSource, () => { portraitFailed.value = false })
-const controlsRef = ref<HTMLDetailsElement>()
-function openSettings() { if (controlsRef.value) { controlsRef.value.open = true; controlsRef.value.querySelector('summary')?.focus() } }
-function closeSettings() { if (controlsRef.value) { controlsRef.value.open = false; controlsRef.value.querySelector('summary')?.focus() } }
+const controlsRef = ref<InstanceType<typeof CharacterStageSettings>>()
+function openSettings() { controlsRef.value?.open() }
 const { framing, framingStyle, update: updateFraming, reset: resetFraming } = useStageFraming(computed(() => props.activeId), () => props.surface || 'room')
 const live2dHostRef = ref<HTMLElement>()
 const emotion = ref('neutral')
@@ -510,9 +507,6 @@ defineExpose({
 </script>
 
 <style scoped>
-.character-controls > summary { display: flex; align-items: center; justify-content: flex-end; gap: 6px; min-height: 32px; color: var(--text-primary); cursor: pointer; font-size: var(--fs-label-sm); list-style: none; }
-.character-controls > summary svg { width: 16px; height: 16px; }
-.character-controls-panel { position: absolute; z-index: var(--z-popover); left: 10px; right: 10px; bottom: calc(100% + 8px); max-height: min(450px, 65dvh); overflow-y: auto; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-elevated); box-shadow: var(--shadow-lg); }
 .character-card .character-tabs { max-width: calc(100% - 24px); overflow-x: auto; }
 .character-card .character-tab { flex-shrink: 0; white-space: nowrap; }
 .character-card .character-tab.active { color: var(--text-primary); border-color: var(--border-strong); background: var(--bg-surface); }

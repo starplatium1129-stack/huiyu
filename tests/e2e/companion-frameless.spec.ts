@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { textContrast } from './helpers/contrast'
 declare global {
   interface Window {
     petFixture?: { open: number; hide: number; closeChat: number; drag: number; docked: boolean; pass: boolean; send(payload: { command: string; character: string; text: string }): void }
@@ -45,6 +46,59 @@ test('native pet window keeps the frameless transparent builder contract', () =>
 })
 
 for (const theme of ['light', 'dark']) {
+  test(`pet character settings fit the window and can always close ${theme}`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 360, height: 480 })
+    await desktop(page, theme)
+    await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
+    await page.getByRole('button', { name: '设置', exact: true }).click()
+    await page.getByRole('button', { name: '角色取景与外观', exact: true }).click()
+    const panel = page.locator('.character-controls-panel')
+    await expect(panel).toBeVisible()
+    const dialog = page.getByRole('dialog', { name: '角色取景与外观', exact: true })
+    await expect(dialog).toBeVisible()
+    await dialog.locator('.character-about > summary').click()
+    await dialog.evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished.catch(() => {}))) })
+    for (const selector of ['h2', '.character-description', '.live2d-quality-control']) {
+      expect(await dialog.locator(selector).evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+    }
+    await page.screenshot({ path: testInfo.outputPath(`character-settings-${theme}.png`) })
+    const bounds = await panel.boundingBox()
+    expect(bounds && bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.width <= 360 && bounds.y + bounds.height <= 480).toBeTruthy()
+    await page.getByRole('button', { name: '关闭角色设置', exact: true }).click()
+    await expect(panel).toBeHidden()
+    await expect(page.getByRole('button', { name: '设置', exact: true })).toBeFocused()
+    for (const mode of ['escape', 'backdrop']) {
+      await page.getByRole('button', { name: '设置', exact: true }).click()
+      await page.getByRole('button', { name: '角色取景与外观', exact: true }).click()
+      await expect(dialog).toBeVisible()
+      // Resizing an already-open window must leave a scrollable body and an accessible close button.
+      await page.setViewportSize({ width: 360, height: 320 })
+      await expect(page.getByRole('button', { name: '关闭角色设置', exact: true })).toBeInViewport()
+      const quality = dialog.getByRole('combobox', { name: 'Live2D 画质', exact: true })
+      await quality.scrollIntoViewIfNeeded()
+      await expect(quality).toBeInViewport()
+      expect(await panel.evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true)
+      await expect(page.getByRole('button', { name: '关闭角色设置', exact: true })).toBeInViewport()
+      await quality.selectOption('standard')
+      await expect(quality).toHaveValue('standard')
+      if (mode === 'escape') { await quality.focus(); await page.keyboard.press('Escape') }
+      else await page.mouse.click(2, 2)
+      await expect(dialog).toBeHidden()
+      await page.setViewportSize({ width: 360, height: 480 })
+    }
+  })
+  test(`room character settings still expand and close ${theme}`, async ({ page }) => {
+    await desktop(page, theme)
+    await page.goto('/chat?character=natsume')
+    const summary = page.locator('.character-controls > summary')
+    await summary.click()
+    const panel = page.locator('.character-controls-panel')
+    await expect(panel).toBeVisible()
+    await panel.getByRole('combobox', { name: 'Live2D 画质' }).focus()
+    await page.keyboard.press('Escape')
+    await expect(panel).toBeHidden()
+    await expect(summary).toBeFocused()
+  })
   test(`separate chat panel preserves drafts and dock controls ${theme}`, async ({ page }, testInfo) => {
     await desktop(page, theme)
     await page.goto('/companion-chat')
