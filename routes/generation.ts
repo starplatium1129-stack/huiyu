@@ -53,11 +53,11 @@ function createGenerationRouter(config: GenerationConfig, dependencies?: Generat
     router.get('/api/generation/jobs/:id/result', (req, res) => {
         try {
             const result = service.getResult(req.params.id, owner(req));
+            res.setHeader('Cache-Control', 'no-store');
             res.setHeader('Content-Type', result.mime);
             if (result.kind === 'buffer') {
                 res.setHeader('Content-Length', String(result.buffer.length));
                 res.end(result.buffer);
-                result.consume();
                 return;
             }
             res.setHeader('Content-Length', String(result.bytes));
@@ -66,7 +66,6 @@ function createGenerationRouter(config: GenerationConfig, dependencies?: Generat
                 envelope.fail(res, 404, '结果不存在', { code: 'RESULT_NOT_FOUND' });
             else
                 res.destroy(); });
-            res.once('finish', result.consume);
             stream.pipe(res);
         }
         catch (e) {

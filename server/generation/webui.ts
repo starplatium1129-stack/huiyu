@@ -147,9 +147,16 @@ async function doProbeWebUI(config: Pick<GenerationConfig, 'SD_HOST'>, request: 
 export function publicJob(job: WebUIJob) {
     return { id: job.id, status: job.status, provider: job.provider, seed: job.input.seed, resultAvailable: Boolean(job.result), resultUrl: job.result ? '/api/generation/jobs/' + encodeURIComponent(job.id) + '/result' : null, metadata: Object.assign({}, job.metadata, { provider: job.provider }), error: job.error || null, code: job.code || null };
 }
-export function createWebUIJob(config: GenerationConfig, input: GenerationInput, ownerId: string) {
+export function createWebUIJob(config: GenerationConfig, input: GenerationInput, ownerId: string, options: { start?: boolean } = {}) {
     let id = crypto.randomBytes(18).toString('hex');
-    let webJob: WebUIJob = { id: id, owner: ownerId, input: input, provider: 'webui', status: 'running', result: null, error: null, code: null, metadata: { engine: 'sd', provider: 'webui', id: id, modelId: input.modelId, profileId: input.profile, loras: freezeLoras(input.loras), loraId: input.loras[0] && input.loras[0].id || null, loraStrength: input.loras[0] && input.loras[0].strength || null, width: input.width, height: input.height, steps: input.steps, cfg: input.cfg, sampler: input.sampler, scheduler: input.scheduler, seed: input.seed, hiresFix: Boolean(input.hiresFix), hiresUpscaler: input.hiresFix ? input.hiresUpscaler : null, hiresScale: input.hiresFix ? input.hiresScale : null } };
+    let webJob: WebUIJob = { id: id, owner: ownerId, input: input, provider: 'webui', status: options.start === false ? 'queued' : 'running', result: null, error: null, code: null, metadata: { engine: 'sd', provider: 'webui', id: id, modelId: input.modelId, profileId: input.profile, loras: freezeLoras(input.loras), loraId: input.loras[0] && input.loras[0].id || null, loraStrength: input.loras[0] && input.loras[0].strength || null, width: input.width, height: input.height, steps: input.steps, cfg: input.cfg, sampler: input.sampler, scheduler: input.scheduler, seed: input.seed, hiresFix: Boolean(input.hiresFix), hiresUpscaler: input.hiresFix ? input.hiresUpscaler : null, hiresScale: input.hiresFix ? input.hiresScale : null } };
+    if (options.start !== false)
+        void startWebUIJob(config, webJob);
+    return webJob;
+}
+export function startWebUIJob(config: GenerationConfig, webJob: WebUIJob): Promise<void> {
+    let input = webJob.input;
+    webJob.status = 'running';
     let payload: Record<string, unknown> = { prompt: input.prompt, negative_prompt: input.negative, width: input.width, height: input.height, cfg_scale: input.cfg, steps: input.steps, sampler_name: input.sampler, seed: input.seed, batch_size: 1, n_iter: 1, send_images: true, save_images: false,
         override_settings: { sd_model_checkpoint: CHECKPOINT }, override_settings_restore_afterwards: true };
     if (input.webuiScheduler)
@@ -163,7 +170,7 @@ export function createWebUIJob(config: GenerationConfig, input: GenerationInput,
     }
     if (input.faceDetailer)
         payload.alwayson_scripts = { ADetailer: { args: [true, false, { ad_model: 'face_yolov8s.pt', ad_prompt: 'detailed eyes, clean face, character-accurate facial features', ad_negative_prompt: 'deformed face, asymmetrical eyes, cross-eyed', is_api: true }, { ad_model: 'hand_yolov8n.pt', ad_prompt: 'detailed hands, five fingers, natural fingers', ad_negative_prompt: 'extra fingers, missing fingers, fused fingers, malformed hands', is_api: true }] } };
-    void requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/txt2img', payload, 20 * 60 * 1000).then(function (result) {
+    return requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/txt2img', payload, 20 * 60 * 1000).then(function (result) {
         if (webJob.status === 'cancelled')
             return;
         if (!plain(result) || !Array.isArray(result.images) || !result.images[0])
@@ -188,5 +195,4 @@ export function createWebUIJob(config: GenerationConfig, input: GenerationInput,
         webJob.error = plain(data) && data.error ? String(data.error) : errorMessage(e);
         webJob.code = errorCode(e) || 'WEBUI_FAILED';
     } });
-    return webJob;
 }

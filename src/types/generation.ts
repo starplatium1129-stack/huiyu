@@ -78,6 +78,8 @@ export interface GenerationStatus {
   }
   pending: number
   maxPending: number
+  webuiPending?: number
+  comfyPending?: number
 }
 
 export interface GenerationJobEnvelope {

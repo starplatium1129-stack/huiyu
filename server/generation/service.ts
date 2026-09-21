@@ -6,8 +6,9 @@ import { error } from './errors';
 import { errorCode as runtimeErrorCode } from '../../scripts/lib/runtime-errors';
 import { MAX_PENDING, WEB_JOB_TTL_MS, OUTPUT_PREFIX, LORAS, CHECKPOINT, WEBUI_UPSCALERS } from './constants';
 import { safeComfyResource, availableSuperRes, comfyResourcesAvailable, validateWaiResources } from './resources';
+import SerialQueue = require('../../services/serial-queue');
 import { buildWorkflow } from './workflow';
-import { createWebUIProbe, requestJson, createWebUIJob, publicJob } from './webui';
+import { createWebUIProbe, requestJson, createWebUIJob, startWebUIJob, publicJob } from './webui';
 import type { GenerationConfig, GenerationInput, WebUIJob, GenerationStatus } from './types';
 type ComfyService = ReturnType<typeof createAnimaService<GenerationInput>>;
 export interface GenerationDependencies {
@@ -20,12 +21,62 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
     // webJob 与 Comfy 分支（anima 服务内部 registry）共用同一套定时器原语。
     let registry = jobRunner.createJobRegistry<WebUIJob>();
     let jobs = registry.jobs;
+    // WebUI has no upstream queue contract. Keep its accepted/in-flight work in
+    // the same bounded WAI budget instead of acknowledging every request at once.
+    let webuiQueue = new SerialQueue('wai-webui', MAX_PENDING);
+    let admitted = 0;
+    let webuiAdmitted = 0;
+    let comfyAdmitted = 0;
+    let comfyAdmissions = new Map<string, { release: () => void; timer: ReturnType<typeof setInterval> }>();
+    function reserveAdmission(provider: 'webui' | 'comfy') {
+        if (admitted >= MAX_PENDING)
+            throw error(503, 'GENERATION_QUEUE_FULL', 'WAI 任务队列已满，请稍后再试');
+        admitted += 1;
+        if (provider === 'webui')
+            webuiAdmitted += 1;
+        else
+            comfyAdmitted += 1;
+        let released = false;
+        return function release() {
+            if (released)
+                return;
+            released = true;
+            admitted = Math.max(0, admitted - 1);
+            if (provider === 'webui')
+                webuiAdmitted = Math.max(0, webuiAdmitted - 1);
+            else
+                comfyAdmitted = Math.max(0, comfyAdmitted - 1);
+        };
+    }
+    function settleComfyAdmission(job: ReturnType<ComfyService['create']>) {
+        if (!['succeeded', 'failed', 'cancelled'].includes(job.status))
+            return;
+        let admission = comfyAdmissions.get(job.id);
+        if (!admission)
+            return;
+        clearInterval(admission.timer);
+        comfyAdmissions.delete(job.id);
+        admission.release();
+    }
+    function watchComfyAdmission(job: ReturnType<ComfyService['create']>, release: () => void) {
+        let timer = setInterval(function () { settleComfyAdmission(job); }, 100);
+        if (typeof timer.unref === 'function')
+            timer.unref();
+        comfyAdmissions.set(job.id, { release: release, timer: timer });
+        settleComfyAdmission(job);
+    }
     // 2026-08-16 审计：WebUI 出图任务此前只进 Map 从不回收（内存无上限泄漏）。
     // 统一走 trackWebJob：TTL 后删除（含释放 result Buffer），与 Comfy 分支的
-    // gcTimer 对齐；结果送达后 result=null 已由取图端点处理。
+    // gcTimer 对齐；结果由 TTL 回收，取图端点只读，不把网络发送完成误当作客户端持久化确认。
     function trackWebJob(webJob: WebUIJob) {
         jobs.set(webJob.id, webJob);
         registry.armTimer(webJob, 'gcTimer', WEB_JOB_TTL_MS, function () {
+            if (webJob.status === 'queued') {
+                webJob.status = 'cancelled';
+                webJob.code = 'WEBUI_EXPIRED';
+                webJob.queueAbort?.abort();
+                webJob.admissionRelease?.();
+            }
             if (webJob.result)
                 webJob.result = null;
             jobs.delete(webJob.id);
@@ -33,7 +84,11 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         return webJob;
     }
     function status(): GenerationStatus {
-        return { online: false, provider: null, webuiOnline: false, comfyFallbackOnline: false, checkpoint: '', samplers: [], schedulers: [], models: [], loras: Object.keys(LORAS).map(function (id) { return { id: id, character: LORAS[id].character, available: safeComfyResource(config, 'loras', LORAS[id].file) }; }), capabilities: { basic: false, hires: false, hiresUpscalers: [], faceDetailer: false }, pending: comfy.status().pending, maxPending: MAX_PENDING };
+        let webui = webuiQueue.status();
+        let comfyPending = comfy.status().pending;
+        let actualWebui = Math.max(webui.active + webui.pending, webuiAdmitted);
+        let actualComfy = Math.max(comfyPending, comfyAdmitted);
+        return { online: false, provider: null, webuiOnline: false, comfyFallbackOnline: false, checkpoint: '', samplers: [], schedulers: [], models: [], loras: Object.keys(LORAS).map(function (id) { return { id: id, character: LORAS[id].character, available: safeComfyResource(config, 'loras', LORAS[id].file) }; }), capabilities: { basic: false, hires: false, hiresUpscalers: [], faceDetailer: false }, pending: Math.max(admitted, actualWebui + actualComfy), maxPending: MAX_PENDING, webuiPending: actualWebui, comfyPending: actualComfy };
     }
     async function getStatus() {
         let webui = await probeWebUI();
@@ -66,6 +121,36 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         data.models = webui.models;
         return data;
     }
+    function submitWebUI(input: GenerationInput, ownerId: string) {
+        let release = reserveAdmission('webui');
+        let webJob: WebUIJob;
+        try {
+            webJob = createWebUIJob(config, input, ownerId, { start: false });
+        }
+        catch (cause) {
+            release();
+            throw cause;
+        }
+        let controller = new AbortController();
+        webJob.queueAbort = controller;
+        webJob.admissionRelease = release;
+        trackWebJob(webJob);
+        void webuiQueue.run(function () {
+            if (webJob.status === 'cancelled') return;
+            return startWebUIJob(config, webJob);
+        }, { signal: controller.signal }).then(function () {
+            if (['succeeded', 'failed', 'cancelled'].includes(webJob.status))
+                webJob.admissionRelease?.();
+        }, function (cause) {
+            if (webJob.status !== 'cancelled') {
+                webJob.status = 'failed';
+                webJob.error = cause instanceof Error ? cause.message : String(cause);
+                webJob.code = runtimeErrorCode(cause) || 'WEBUI_QUEUE_FAILED';
+            }
+            webJob.admissionRelease?.();
+        });
+        return publicJob(webJob);
+    }
     async function submit(input: GenerationInput, ownerId: string) {
         if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
         // fresh：路由决策不能吃缓存——上游刚下线时必须立即失败而不是送进注定失败的分支
@@ -80,9 +165,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         let webuiUsable = webui.online && webui.waiAvailable;
         if (input.autoHires && webuiUsable && webuiSupportsSampler && webuiSupportsScheduler && webuiSupportsAnimeUpscaler) {
             let animeInput = Object.assign({}, input, { autoHires: false, hiresUpscaler: 'R-ESRGAN 4x+ Anime6B', comfyHires: false, comfyUnsupported: true });
-            let animeJob = createWebUIJob(config, animeInput, ownerId);
-            trackWebJob(animeJob);
-            return publicJob(animeJob);
+            return submitWebUI(animeInput, ownerId);
         }
         if (comfyUsable && !input.faceDetailer && !input.comfyUnsupported) {
             let superResModel = availableSuperRes(config);
@@ -109,14 +192,10 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         }
         if (input.autoHires && webuiUsable) {
             let directInput = Object.assign({}, input, { autoHires: false, hiresFix: false, comfyHires: false, comfyUnsupported: false });
-            let directJob = createWebUIJob(config, directInput, ownerId);
-            trackWebJob(directJob);
-            return publicJob(directJob);
+            return submitWebUI(directInput, ownerId);
         }
         if (webuiUsable) {
-            let webJob = createWebUIJob(config, input, ownerId);
-            trackWebJob(webJob);
-            return publicJob(webJob);
+            return submitWebUI(input, ownerId);
         }
         if (input.faceDetailer) {
             throw error(503, 'WEBUI_RESOURCES_UNAVAILABLE', '当前功能需要包含 WAI checkpoint 的 SD WebUI / reForge');
@@ -128,13 +207,18 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         return submitComfy(input, ownerId);
     }
     async function submitComfy(input: GenerationInput, ownerId: string) {
+        let release = reserveAdmission('comfy');
         let job;
         try {
             job = comfy.create(input, ownerId);
             await comfy.submit(job);
+            watchComfyAdmission(job, release);
         } catch (cause) {
-            if (job?.upstreamId)
+            if (job?.upstreamId) {
+                watchComfyAdmission(job, release);
                 throw error(502, runtimeErrorCode(cause) || 'COMFY_SUBMIT_UNCERTAIN', 'ComfyUI 已接受任务但提交响应异常');
+            }
+            release();
             if (job) await comfy.cancel(job).catch(() => {});
             throw error(502, runtimeErrorCode(cause) || 'COMFY_SUBMIT_FAILED', 'ComfyUI 提交失败');
         }
@@ -151,6 +235,8 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
     }
     function getJob(id: string, ownerId: string) {
         const found = find(id, ownerId);
+        if (found.provider === 'comfy')
+            settleComfyAdmission(found.job);
         return found.provider === 'comfy' ? comfy.publicJob(found.job) : publicJob(found.job);
     }
     function getResult(id: string, ownerId: string) {
@@ -165,35 +251,51 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             throw error(404, 'RESULT_NOT_FOUND', '结果不存在');
         if (found.provider === 'webui') {
             const job = found.job;
-            return { kind: 'buffer' as const, buffer: job.result!, mime: job.mime || 'image/png', consume: () => { job.result = null; } };
+            return { kind: 'buffer' as const, buffer: job.result!, mime: job.mime || 'image/png', consume: () => {} };
         }
         const job = found.job;
+        settleComfyAdmission(job);
         const result = job.result!;
         const root = path.resolve(config.RUNTIME?.outputs || path.join(config.RUNTIME_ROOT, 'outputs'), 'wai');
         const file = path.resolve(result.path);
         if (!file.startsWith(root + path.sep))
             throw error(404, 'RESULT_NOT_FOUND', '结果不存在');
-        return { kind: 'file' as const, file, mime: result.mime, bytes: result.bytes, consume: () => comfy.consumeResult(job) };
+        return { kind: 'file' as const, file, mime: result.mime, bytes: result.bytes, consume: () => {} };
     }
     async function cancel(id: string, ownerId: string) {
         const found = find(id, ownerId);
         if (found.provider === 'comfy') {
             await comfy.cancel(found.job);
+            settleComfyAdmission(found.job);
             return comfy.publicJob(found.job);
         }
         const job = found.job;
-        if (job.status === 'running')
+        let wasQueued = job.status === 'queued';
+        if (wasQueued) {
+            job.queueAbort?.abort();
+        } else if (job.status === 'running')
             await requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/interrupt', {}, 10000).catch(() => { });
         job.status = 'cancelled';
         job.code = 'WEBUI_CANCELLED';
+        if (wasQueued)
+            job.admissionRelease?.();
         return publicJob(job);
     }
     function close() {
         registry.close();
+        for (const admission of comfyAdmissions.values()) {
+            clearInterval(admission.timer);
+            admission.release();
+        }
+        comfyAdmissions.clear();
         for (const job of jobs.values()) {
+            let wasQueued = job.status === 'queued';
+            job.queueAbort?.abort();
             registry.clearTimer(job, 'gcTimer');
             job.result = null;
             job.status = 'cancelled';
+            if (wasQueued)
+                job.admissionRelease?.();
         }
         jobs.clear();
         comfy.close();

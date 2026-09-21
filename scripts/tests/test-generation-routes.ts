@@ -50,6 +50,21 @@ async function json(response: Response) { return response.json(); }
 async function post(base: string, body: any, token?: any) {
   return fetch(base + '/api/generation/jobs', { method:'POST', headers:{ 'content-type':'application/json', ...(token ? { 'x-token':token } : {}) }, body:JSON.stringify(body) });
 }
+type FixtureGenerationJob = { id: string; status: string; resultUrl?: string | null; [key: string]: unknown };
+async function waitForGenerationJob(base: string, id: string, timeoutMs = 4000) {
+  let deadline = Date.now() + timeoutMs;
+  let latest: FixtureGenerationJob | null = null;
+  do {
+    let response = await fetch(base + '/api/generation/jobs/' + encodeURIComponent(id));
+    latest = (await json(response) as { job: FixtureGenerationJob }).job;
+    if (['succeeded', 'failed', 'cancelled'].includes(latest.status)) return latest;
+    await new Promise(function (resolve) { setTimeout(resolve, 20); });
+  } while (Date.now() < deadline);
+  throw new Error('generation job did not finish: ' + id + ' (' + (latest && latest.status) + ')');
+}
+function mockFault(url: string, fault: Record<string, unknown>) {
+  return fetch(url + '/__mock/fault', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify(fault) });
+}
 
 async function run() {
   await verifyProbeOwnership();
@@ -127,11 +142,43 @@ async function run() {
      } finally { isolated.close(); }
       let status = await json(await fetch(base + '/api/generation/status'));
       assert.equal(status.capabilities.hiresUpscalers.includes('Auto'), true);
+      let queuedAutoBody = Object.assign({}, requestBody, { hiresFix:true, hiresUpscaler:'Auto', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 });
+      await mockFault(stack.upstreams.sd.url!, { renderMs:150 });
+      let admissionResponses = await Promise.all(Array.from({ length:5 }, function () { return post(base, queuedAutoBody); }));
+      let admissionJobs: FixtureGenerationJob[] = [];
+      let queueFullResponses = 0;
+      for (const response of admissionResponses) {
+        if (response.status === 202) admissionJobs.push((await json(response)).job);
+        if (response.status === 503) {
+          queueFullResponses += 1;
+          assert.equal((await json(response)).code, 'GENERATION_QUEUE_FULL');
+        }
+      }
+      assert.equal(admissionJobs.length, 4, 'WebUI admission is bounded by the in-flight budget');
+      assert.equal(queueFullResponses, 1, 'the fifth WebUI request is rejected instead of being accepted unboundedly');
+      let admissionStatus = await json(await fetch(base + '/api/generation/status'));
+      assert.ok(admissionStatus.webuiPending <= admissionStatus.maxPending);
+      await Promise.all(admissionJobs.map(function (job) { return waitForGenerationJob(base, job.id); }));
+      await mockFault(stack.upstreams.sd.url!, { renderMs:0 });
       let webuiResponse = await post(base, requestBody);
      assert.equal(webuiResponse.status, 202);
      let webuiJob = (await json(webuiResponse)).job;
       assert.equal(webuiJob.provider, 'comfy', 'Comfy is preferred for compatible WAI requests');
       assert.deepEqual(webuiJob.metadata.loras, [{ id:'L_NENE_V18_WD14', strength:0.85 }]);
+      let completedComfyJob = await waitForGenerationJob(base, webuiJob.id);
+      assert.equal(completedComfyJob.status, 'succeeded');
+      assert.ok(completedComfyJob.resultUrl);
+      let comfyPromptCountBeforeResult = (await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'))).calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).length;
+      let comfyFirstResult = await fetch(base + completedComfyJob.resultUrl);
+      assert.equal(comfyFirstResult.status, 200);
+      assert.equal(comfyFirstResult.headers.get('cache-control'), 'no-store');
+      let comfyFirstBytes = Buffer.from(await comfyFirstResult.arrayBuffer());
+      let comfySecondResult = await fetch(base + completedComfyJob.resultUrl);
+      assert.equal(comfySecondResult.status, 200, 'Comfy results are also rereadable within their TTL');
+      assert.deepEqual(Buffer.from(await comfySecondResult.arrayBuffer()), comfyFirstBytes);
+      let comfyPromptCountAfterResult = (await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'))).calls.filter(function (call: { path: string; }) { return call.path === '/prompt'; }).length;
+      assert.equal(comfyPromptCountAfterResult, comfyPromptCountBeforeResult, 'rereading a Comfy result does not submit another prompt');
+      assert.ok([401, 404].includes((await fetch(base + completedComfyJob.resultUrl, { headers:{ 'x-token':'wrong-token', 'x-forwarded-for':'203.0.113.10' } })).status), 'result reads remain owner-scoped');
       let autoWebuiResponse = await post(base, Object.assign({}, requestBody, { hiresFix:true, hiresUpscaler:'Auto', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 }));
       assert.equal(autoWebuiResponse.status, 202);
       let autoWebuiJob = (await json(autoWebuiResponse)).job;
@@ -140,6 +187,41 @@ async function run() {
       let autoWebuiCalls = await json(await fetch(stack.upstreams.sd.url + '/__mock/state'));
       let autoPayload = autoWebuiCalls.calls.filter(function (call: { path: string; }) { return call.path === '/sdapi/v1/txt2img'; }).at(-1).body;
       assert.equal(autoPayload.hr_upscaler, 'R-ESRGAN 4x+ Anime6B');
+      let completedAutoWebuiJob = await waitForGenerationJob(base, autoWebuiJob.id);
+      assert.equal(completedAutoWebuiJob.status, 'succeeded');
+      assert.ok(completedAutoWebuiJob.resultUrl);
+      let sdCallsBeforeResult = autoWebuiCalls.calls.filter(function (call: { path: string; }) { return call.path === '/sdapi/v1/txt2img'; }).length;
+      let firstResult = await fetch(base + completedAutoWebuiJob.resultUrl);
+      assert.equal(firstResult.status, 200);
+      assert.equal(firstResult.headers.get('cache-control'), 'no-store');
+      let firstBytes = Buffer.from(await firstResult.arrayBuffer());
+      let secondResult = await fetch(base + completedAutoWebuiJob.resultUrl);
+      assert.equal(secondResult.status, 200, 'a generated result remains readable within its TTL');
+      assert.deepEqual(Buffer.from(await secondResult.arrayBuffer()), firstBytes);
+      let sdCallsAfterResult = (await json(await fetch(stack.upstreams.sd.url + '/__mock/state'))).calls.filter(function (call: { path: string; }) { return call.path === '/sdapi/v1/txt2img'; }).length;
+      assert.equal(sdCallsAfterResult, sdCallsBeforeResult, 'rereading a result does not submit a second generation');
+      await mockFault(stack.upstreams.sd.url!, { renderMs:180 });
+      let cancelFirstResponse = await post(base, queuedAutoBody);
+      let cancelFirstJob = (await json(cancelFirstResponse)).job;
+      let cancelSecondResponse = await post(base, queuedAutoBody);
+      let cancelSecondJob = (await json(cancelSecondResponse)).job;
+      let cancelResult = await fetch(base + '/api/generation/jobs/' + encodeURIComponent(cancelSecondJob.id), { method:'DELETE' });
+      assert.equal(cancelResult.status, 200);
+      assert.equal((await json(cancelResult)).job.status, 'cancelled');
+      await waitForGenerationJob(base, cancelFirstJob.id);
+      assert.equal((await json(await fetch(base + '/api/generation/jobs/' + encodeURIComponent(cancelSecondJob.id)))).job.status, 'cancelled');
+      let cancelCalls = (await json(await fetch(stack.upstreams.sd.url + '/__mock/state'))).calls.filter(function (call: { path: string; }) { return call.path === '/sdapi/v1/txt2img'; }).length;
+      assert.equal(cancelCalls - sdCallsAfterResult, 1, 'a queued cancellation does not interrupt or duplicate the active WebUI request');
+      await mockFault(stack.upstreams.sd.url!, { renderMs:0 });
+      await mockFault(stack.upstreams.sd.url!, { txt2imgStatus:500, txt2imgError:'fixture webui failure' });
+      let failedWebuiResponse = await post(base, queuedAutoBody);
+      assert.equal(failedWebuiResponse.status, 202);
+      let failedWebuiJob = await waitForGenerationJob(base, (await json(failedWebuiResponse)).job.id);
+      assert.equal(failedWebuiJob.status, 'failed');
+      await mockFault(stack.upstreams.sd.url!, { renderMs:0 });
+      let recoveredWebuiResponse = await post(base, queuedAutoBody);
+      assert.equal(recoveredWebuiResponse.status, 202, 'a failed WebUI task releases its admission slot');
+      assert.equal((await waitForGenerationJob(base, (await json(recoveredWebuiResponse)).job.id)).status, 'succeeded');
      let webuiSamplerFallback = await post(base, Object.assign({}, requestBody, { sampler:'DPM++ SDE' }));
       assert.equal(webuiSamplerFallback.status, 202, 'Comfy-first routing must not reject a Comfy-compatible request because WebUI lacks the sampler');
      await fetch(stack.upstreams.sd.url + '/__mock/fault', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ offline:true }) });

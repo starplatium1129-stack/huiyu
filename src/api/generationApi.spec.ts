@@ -30,6 +30,14 @@ it('accepts WebUI absent progress, Comfy fraction progress and legal seed zero',
   expect((await response({ ok: true, job: { ...job, progress: .25 } }).getJob('id')).job.progress).toBe(.25)
 })
 
+it('preserves the provider-specific queue counts when the gateway supplies them', async () => {
+  const result = await response({ ok: true, online: true, provider: 'comfy', webuiOnline: true, comfyFallbackOnline: true,
+    checkpoint: 'waiIllustriousSDXL_v170.safetensors', samplers: [], schedulers: [], models: [],
+    loras: [], capabilities: { basic: true, hires: true, hiresUpscalers: [], faceDetailer: true },
+    pending: 3, maxPending: 4, webuiPending: 1, comfyPending: 2 }).getStatus()
+  expect(result).toMatchObject({ pending: 3, maxPending: 4, webuiPending: 1, comfyPending: 2 })
+})
+
 it.each(['abort', 'timeout'])('retains transport %s semantics', async cause => {
   vi.useFakeTimers()
   const fetcher = vi.fn<FetchImplementation>((_url, init) => new Promise((_yes, no) =>
@@ -43,4 +51,3 @@ it.each(['abort', 'timeout'])('retains transport %s semantics', async cause => {
   expect(fetcher.mock.calls[0][0]).toBe('/api/generation/jobs/job%2F1')
   expect(vi.getTimerCount()).toBe(0)
 })
-

@@ -42,7 +42,8 @@ export function isGenerationStatus(v: ApiResponseObject): v is ApiResponseObject
     && Array.isArray(v.loras) && v.loras.every(l => object(l) && text(l.id) && text(l.character) && typeof l.available === 'boolean')
     && finite(v.pending) && Number.isInteger(v.pending) && v.pending >= 0
     && finite(v.maxPending) && Number.isInteger(v.maxPending) && v.maxPending > 0
+    && optional(v.webuiPending, n => finite(n) && Number.isInteger(n) && n >= 0)
+    && optional(v.comfyPending, n => finite(n) && Number.isInteger(n) && n >= 0)
     && object(capabilities) && ['basic', 'hires', 'faceDetailer'].every(key => typeof capabilities[key] === 'boolean')
     && strings(capabilities.hiresUpscalers)
 }
-

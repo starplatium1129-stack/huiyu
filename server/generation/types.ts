@@ -59,6 +59,8 @@ export interface GenerationStatus {
     };
     pending: number;
     maxPending: number;
+    webuiPending?: number;
+    comfyPending?: number;
 }
 export interface WebUIJob {
     id: string;
@@ -71,5 +73,7 @@ export interface WebUIJob {
     error: string | null;
     code: string | number | null;
     metadata: Record<string, unknown>;
+    queueAbort?: AbortController;
+    admissionRelease?: () => void;
     gcTimer?: ReturnType<typeof setTimeout> | null;
 }
