@@ -1,0 +1,634 @@
+{
+  "standard": {
+    "id": "morgan_le_fay_fate",
+    "displayName": "摩根",
+    "originalName": "Morgan le Fay",
+    "source": "Fate",
+    "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin",
+    "identityTokens": [
+      "morgan (fate/grand order)",
+      "1girl",
+      "solo",
+      "white_hair",
+      "long_hair",
+      "straight_hair",
+      "blue_eyes",
+      "pale_skin",
+      "fgo"
+    ],
+    "outfits": [
+      {
+        "id": "winter_queen",
+        "name": "冬之女王本貌",
+        "isDefault": true,
+        "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown",
+        "tokens": [
+          "crown",
+          "gothic_dress",
+          "black_dress",
+          "blue_dress",
+          "high_collar",
+          "detached_sleeves",
+          "layered_skirt",
+          "long_dress"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "aesc_rain_witch",
+        "name": "雨之魔女梣",
+        "isDefault": false,
+        "prose": "her Aesc form as the Witch of Rain, a blue witch robe with a wide-brimmed witch hat and wooden staff",
+        "tokens": [
+          "aesc (fate)",
+          "witch_hat",
+          "robe",
+          "staff",
+          "blue_dress",
+          "magic"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "aesc_savior",
+        "name": "救世主梣",
+        "isDefault": false,
+        "prose": "her Aesc form as the Savior, a blue robe with a capelet and magic staff",
+        "tokens": [
+          "aesc (fate)",
+          "capelet",
+          "robe",
+          "staff",
+          "blue_dress",
+          "magic"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "water_princess",
+        "name": "水妃摩根（泳装）",
+        "isDefault": false,
+        "prose": "her summer Water Princess swimsuit, a stylish white halter swimsuit with bare shoulders and loose silver hair",
+        "tokens": [
+          "morgan (water princess) (fate)",
+          "swimsuit",
+          "white_swimsuit",
+          "halterneck",
+          "bare_shoulders",
+          "smile"
+        ],
+        "isNsfw": true
+      },
+      {
+        "id": "aesc_hooded_travel",
+        "name": "梣·雨后兜帽行旅变体",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a closed blue hooded travelling robe over warm clothes and sturdy boots, carrying a wooden staff",
+        "tokens": [
+          "aesc (fate)",
+          "blue_hooded_robe",
+          "hood",
+          "robe",
+          "boots",
+          "staff"
+        ]
+      }
+    ]
+  },
+  "view": {
+    "characterId": "morgan_le_fay_fate",
+    "displayName": "摩根",
+    "source": "Fate",
+    "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin",
+    "outfits": [
+      {
+        "outfitId": "winter_queen",
+        "outfitName": "冬之女王本貌",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/morgan_le_fay_fate/winter_queen/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/morgan_le_fay_fate/winter_queen/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/morgan_le_fay_fate/winter_queen/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/morgan_le_fay_fate/winter_queen/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/morgan_le_fay_fate/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/morgan_le_fay_fate/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/morgan_le_fay_fate/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "aesc_rain_witch",
+        "outfitName": "雨之魔女梣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her Aesc form as the Witch of Rain, a blue witch robe with a wide-brimmed witch hat and wooden staff",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_rain_witch/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_rain_witch/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_rain_witch/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_rain_witch/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_rain_witch/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_rain_witch/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_rain_witch/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "aesc_savior",
+        "outfitName": "救世主梣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her Aesc form as the Savior, a blue robe with a capelet and magic staff",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_savior/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_savior/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_savior/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_savior/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_savior/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_savior/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/morgan_le_fay_fate/aesc_savior/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "water_princess",
+        "outfitName": "水妃摩根（泳装）",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her summer Water Princess swimsuit, a stylish white halter swimsuit with bare shoulders and loose silver hair",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/morgan_le_fay_fate/water_princess/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/morgan_le_fay_fate/water_princess/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/morgan_le_fay_fate/water_princess/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/morgan_le_fay_fate/water_princess/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/morgan_le_fay_fate/water_princess/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/morgan_le_fay_fate/water_princess/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/morgan_le_fay_fate/water_princess/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "aesc_hooded_travel",
+        "outfitName": "梣·雨后兜帽行旅变体",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a closed blue hooded travelling robe over warm clothes and sturdy boots, carrying a wooden staff",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,658 @@
+{
+  "standard": {
+    "id": "lappland_arknights",
+    "displayName": "拉普兰德",
+    "originalName": "Lappland",
+    "source": "Arknights",
+    "identityProse": "Lappland from Arknights, an unhinged Lupo swordswoman with wild messy silver-white hair, wolf ears, a bushy tail, manic grey eyes, and a sharp predatory smirk.",
+    "identityTokens": [
+      "lappland (arknights)",
+      "1girl",
+      "solo",
+      "silver_hair",
+      "messy_hair",
+      "wolf_ears",
+      "wolf_tail",
+      "grey_eyes",
+      "smirk",
+      "sharp_teeth",
+      "arknights"
+    ],
+    "outfits": [
+      {
+        "id": "standard_mercenary",
+        "name": "罗德岛作战服",
+        "isDefault": true,
+        "prose": "Lappland's signature battle attire: a dark slate-grey duster trench coat with tattered ragged hem and high collar worn open over a white tank top, black leather utility harness with thigh straps, black shorts, leather combat boots, dual sword sheaths on her back, and black fingerless gloves",
+        "tokens": [
+          "coat",
+          "trench_coat",
+          "duster_coat",
+          "tattered_hem",
+          "tank_top",
+          "white_shirt",
+          "shorts",
+          "black_shorts",
+          "harness",
+          "thigh_holster",
+          "straps",
+          "combat_boots",
+          "fingerless_gloves",
+          "dual_swords"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "refined_horrormare",
+        "name": "典雅噩兆 / 宴会礼服",
+        "isDefault": false,
+        "prose": "the Refined Horrormare gothic evening ensemble: a dramatic black and crimson velvet ballgown with an asymmetric jagged lace hem, sheer lace masquerade eye mask, black leather opera gloves, crimson rose corsage, and dark crystal jewelry, projecting lethal aristocratic madness",
+        "tokens": [
+          "ballgown",
+          "black_dress",
+          "red_dress",
+          "gothic_dress",
+          "lace_mask",
+          "eye_mask",
+          "opera_gloves",
+          "black_gloves",
+          "rose",
+          "corsage",
+          "elegant",
+          "aristocratic"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "casual_leather",
+        "name": "狂野机车皮衣便服",
+        "isDefault": false,
+        "prose": "a rebellious street-biker look: a cropped black leather biker jacket studded with silver rivets over a dark grey cropped camisole, distressed denim mini shorts, fishnet stockings, studded leather choker, and heavy platform combat boots, wolf tail swishing restlessly",
+        "tokens": [
+          "leather_jacket",
+          "biker_jacket",
+          "crop_top",
+          "camisole",
+          "denim_shorts",
+          "short_shorts",
+          "fishnet_stockings",
+          "choker",
+          "platform_boots",
+          "rebellious",
+          "casual"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "nomad_wasteland",
+        "name": "叙拉古荒原行者",
+        "isDefault": false,
+        "prose": "a weathered Siracusa nomad wanderer outfit: a heavy hooded grey poncho cloak with wolf fur trim, bandolier ammo belts crossing her chest, weathered leather pants, traveling canteen, and combat boots, dual blades drawn in the dust storm",
+        "tokens": [
+          "poncho",
+          "cloak",
+          "hood",
+          "fur_trim",
+          "bandolier",
+          "leather_pants",
+          "pants",
+          "traveling",
+          "wasteland",
+          "wanderer"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "nsfw_nude",
+        "name": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "prose": "completely naked, full nudity, pale fair skin dotted with fine glistening sweat and a few black originium crystal flecks, firm perky breasts with erect pink nipples, slender athletic waist with subtle abs, navel, exposed dripping pussy, white wolf ears and tail, bare feet, wild flushed euphoric expression",
+        "tokens": [
+          "nude",
+          "completely_naked",
+          "uncensored",
+          "pale_skin",
+          "originium_crystal",
+          "breasts",
+          "pink_nipples",
+          "slender_waist",
+          "toned_abs",
+          "navel",
+          "pussy",
+          "wolf_ears",
+          "wolf_tail",
+          "bare_feet"
+        ],
+        "isNsfw": true
+      }
+    ]
+  },
+  "view": {
+    "characterId": "lappland_arknights",
+    "displayName": "拉普兰德",
+    "source": "Arknights",
+    "identityProse": "Lappland from Arknights, an unhinged Lupo swordswoman with wild messy silver-white hair, wolf ears, a bushy tail, manic grey eyes, and a sharp predatory smirk.",
+    "outfits": [
+      {
+        "outfitId": "standard_mercenary",
+        "outfitName": "罗德岛作战服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Lappland's signature battle attire: a dark slate-grey duster trench coat with tattered ragged hem and high collar worn open over a white tank top, black leather utility harness with thigh straps, black shorts, leather combat boots, dual sword sheaths on her back, and black fingerless gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/lappland_arknights/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/lappland_arknights/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/lappland_arknights/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "refined_horrormare",
+        "outfitName": "典雅噩兆 / 宴会礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "the Refined Horrormare gothic evening ensemble: a dramatic black and crimson velvet ballgown with an asymmetric jagged lace hem, sheer lace masquerade eye mask, black leather opera gloves, crimson rose corsage, and dark crystal jewelry, projecting lethal aristocratic madness",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_leather",
+        "outfitName": "狂野机车皮衣便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a rebellious street-biker look: a cropped black leather biker jacket studded with silver rivets over a dark grey cropped camisole, distressed denim mini shorts, fishnet stockings, studded leather choker, and heavy platform combat boots, wolf tail swishing restlessly",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nomad_wasteland",
+        "outfitName": "叙拉古荒原行者",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a weathered Siracusa nomad wanderer outfit: a heavy hooded grey poncho cloak with wolf fur trim, bandolier ammo belts crossing her chest, weathered leather pants, traveling canteen, and combat boots, dual blades drawn in the dust storm",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, pale fair skin dotted with fine glistening sweat and a few black originium crystal flecks, firm perky breasts with erect pink nipples, slender athletic waist with subtle abs, navel, exposed dripping pussy, white wolf ears and tail, bare feet, wild flushed euphoric expression",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_design_back.png"
+          }
+        ]
+      }
+    ]
+  }
+}

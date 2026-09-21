@@ -93,6 +93,7 @@ const AREA_STEPS = {
       [
         { name: 'build-scenes --check', file: path.join(root, 'scripts', 'maintenance', 'build-scenes.js'), args: ['--check'] },
         { name: 'popular:build --check', file: path.join(root, 'scripts', 'maintenance', 'build-popular.js'), args: ['--check'] },
+        { name: 'reference:build --check', file: path.join(root, 'scripts', 'maintenance', 'build-references.js'), args: ['--check'] },
         { name: 'blueprints:build --check', file: path.join(root, 'scripts', 'maintenance', 'build-blueprints.js'), args: ['--check'] },
         { name: 'tags:build --check', file: path.join(root, 'scripts', 'maintenance', 'build-tags.js'), args: ['--check'] },
         { name: 'test-tag-shards', file: path.join(testsDir, 'test-tag-shards.js') },

@@ -24,6 +24,10 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-ux-regressions.js',
   ]),
   unit: Object.freeze([
+    'test-reference-shards.js',
+    'test-reference-library-merge.js',
+    'test-content-sync.js',
+    'test-character-reference-profile.js',
     'test-domain-type-boundaries-fixtures.js',
     'test-test-process-pool.js',
     'test-precompress-runner.js',

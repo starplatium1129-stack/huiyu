@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "specs": [
+    { "file": "character-reference-loading.spec.ts", "lane": "critical", "risk": "人物参考按需加载", "reason": "双主题验证单人物请求、切换与缓存，不调用模型。" },
     { "file": "page-experience-workspaces.spec.ts", "lane": "critical", "risk": "画布顺序和资料闭环", "reason": "双主题断点、缺图可用动作、模型资料失败与角色交接。" },
     { "file": "page-experience-docs.spec.ts", "lane": "critical", "risk": "文档主题与地标", "reason": "当前文档真实颜色、窄屏重排、主题跨页与键盘入口。" },
     { "file": "page-experience-flows.spec.ts", "lane": "critical", "risk": "剧本跨页身份", "reason": "两角色三本剧本落地正文及模拟最终请求，保护角色与来源一致。" },

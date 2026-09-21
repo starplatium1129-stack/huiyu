@@ -1,0 +1,661 @@
+{
+  "standard": {
+    "id": "shiromi_iori",
+    "displayName": "银镜伊织",
+    "originalName": "Shiromi Iori",
+    "source": "Blue Archive",
+    "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, asymmetrical bangs falling over one eye, red eyes, a pale violet crosshair halo, pointy elf ears, black hair ribbons, and a slender demon tail.",
+    "identityTokens": [
+      "iori (blue archive)",
+      "1girl",
+      "solo",
+      "silver_hair",
+      "twintails",
+      "hair_over_one_eye",
+      "red_eyes",
+      "hair_ribbon",
+      "halo",
+      "dark_skin",
+      "pointy_ears",
+      "tail",
+      "blue_archive"
+    ],
+    "outfits": [
+      {
+        "id": "disciplinary_uniform",
+        "name": "风纪突击队长制服",
+        "isDefault": true,
+        "prose": "Gehenna Disciplinary Committee assault uniform with a black sleeveless cropped military jacket, red disciplinary armband, short black pleated miniskirt, garter belt with thigh-high black stockings, fingerless combat gloves, tactical harness, sniper rifle holster, and black combat boots",
+        "tokens": [
+          "military_uniform",
+          "black_jacket",
+          "crop_top",
+          "sleeveless",
+          "red_armband",
+          "armband",
+          "pleated_skirt",
+          "black_skirt",
+          "miniskirt",
+          "garter_straps",
+          "garter_belt",
+          "thighhighs",
+          "black_thighhighs",
+          "fingerless_gloves",
+          "combat_boots",
+          "sniper_rifle",
+          "gehenna"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "swimsuit",
+        "name": "夏日灼阳泳装",
+        "isDefault": false,
+        "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her hair ribbons, and a water squirt rifle",
+        "tokens": [
+          "swimsuit",
+          "bikini",
+          "white_bikini",
+          "halterneck",
+          "tanlines",
+          "tan_lines",
+          "pareo",
+          "sunglasses",
+          "sandals",
+          "water_gun",
+          "beachwear"
+        ],
+        "isNsfw": true
+      },
+      {
+        "id": "casual_streetwear",
+        "name": "街头休闲私服",
+        "isDefault": false,
+        "prose": "a trendy urban street outfit: a black ribbed sleeveless crop halter top, distressed denim shorts with a leather belt, open oversized flannel red-black checkered shirt, black choker, white high-top sneakers, and demon tail swishing freely",
+        "tokens": [
+          "casual",
+          "crop_top",
+          "halter_top",
+          "denim_shorts",
+          "short_shorts",
+          "plaid_shirt",
+          "flannel_shirt",
+          "choker",
+          "sneakers",
+          "streetwear"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "tactical_night_ops",
+        "name": "暗夜潜行紧身衣",
+        "isDefault": false,
+        "prose": "a high-tech black tactical stealth bodysuit with reinforced kevlar panels, utility pouches, night-vision monocle headset, combat knife sheathed on her hip, fingerless tactical gloves, and combat boots",
+        "tokens": [
+          "bodysuit",
+          "tight_suit",
+          "stealth_suit",
+          "tactical_gear",
+          "pouches",
+          "utility_belt",
+          "headset",
+          "fingerless_gloves",
+          "combat_boots",
+          "military"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "nsfw_nude",
+        "name": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, pointy elf ears, black hair ribbons, wagging demon tail, bare legs and bare feet, soft sensual lighting",
+        "tokens": [
+          "nude",
+          "completely_naked",
+          "uncensored",
+          "dark_skin",
+          "tanlines",
+          "breasts",
+          "pink_nipples",
+          "slender_body",
+          "navel",
+          "pussy",
+          "pointy_ears",
+          "demon_tail",
+          "hair_ribbon",
+          "bare_feet"
+        ],
+        "isNsfw": true
+      }
+    ]
+  },
+  "view": {
+    "characterId": "shiromi_iori",
+    "displayName": "银镜伊织",
+    "source": "Blue Archive",
+    "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, asymmetrical bangs falling over one eye, red eyes, a pale violet crosshair halo, pointy elf ears, black hair ribbons, and a slender demon tail.",
+    "outfits": [
+      {
+        "outfitId": "disciplinary_uniform",
+        "outfitName": "风纪突击队长制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Gehenna Disciplinary Committee assault uniform with a black sleeveless cropped military jacket, red disciplinary armband, short black pleated miniskirt, garter belt with thigh-high black stockings, fingerless combat gloves, tactical harness, sniper rifle holster, and black combat boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/shiromi_iori/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/shiromi_iori/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/shiromi_iori/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "swimsuit",
+        "outfitName": "夏日灼阳泳装",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her hair ribbons, and a water squirt rifle",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_streetwear",
+        "outfitName": "街头休闲私服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a trendy urban street outfit: a black ribbed sleeveless crop halter top, distressed denim shorts with a leather belt, open oversized flannel red-black checkered shirt, black choker, white high-top sneakers, and demon tail swishing freely",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "tactical_night_ops",
+        "outfitName": "暗夜潜行紧身衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a high-tech black tactical stealth bodysuit with reinforced kevlar panels, utility pouches, night-vision monocle headset, combat knife sheathed on her hip, fingerless tactical gloves, and combat boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, pointy elf ears, black hair ribbons, wagging demon tail, bare legs and bare feet, soft sensual lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_design_back.png"
+          }
+        ]
+      }
+    ]
+  }
+}

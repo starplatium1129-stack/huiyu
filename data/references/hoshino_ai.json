@@ -1,0 +1,517 @@
+{
+  "standard": {
+    "id": "hoshino_ai",
+    "displayName": "星野爱",
+    "originalName": "Hoshino Ai",
+    "source": "Oshi no Ko",
+    "identityProse": "Hoshino Ai from Oshi no Ko, the top idol of B-Komachi with long purple hair styled with one side up, hair between her eyes and purple eyes with star-shaped pupils, wearing her signature rabbit hair ornament and a sleeveless frilled pink dress with a heart brooch",
+    "identityTokens": [
+      "hoshino_ai",
+      "1girl",
+      "solo",
+      "purple_hair",
+      "long_hair",
+      "one_side_up",
+      "sidelocks",
+      "swept_bangs",
+      "hair_between_eyes",
+      "star_pupils",
+      "purple_eyes",
+      "rabbit_hair_ornament",
+      "idol",
+      "oshi_no_ko"
+    ],
+    "outfits": [
+      {
+        "id": "main_look",
+        "name": "立绘主形象",
+        "isDefault": true,
+        "prose": "her signature idol look, a sleeveless frilled pink dress with a heart brooch, frilled gloves and thigh boots, with the rabbit hair ornament in her one-side-up hair",
+        "tokens": [
+          "frilled_dress",
+          "pink_dress",
+          "sleeveless_dress",
+          "heart_brooch",
+          "frilled_gloves",
+          "thigh_boots",
+          "rabbit_hair_ornament"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "stage_off_shoulder",
+        "name": "舞台服·露肩粉裙",
+        "isDefault": false,
+        "prose": "her stage costume with an off-shoulder pink dress, a blue necktie, white thigh-highs and black shoes",
+        "tokens": [
+          "off_shoulder",
+          "pink_dress",
+          "blue_necktie",
+          "white_thighhighs",
+          "black_shoes"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "stage_two_tone",
+        "name": "舞台服·白上粉下",
+        "isDefault": false,
+        "prose": "her second stage costume, a two-tone dress with a white top, pink skirt and collar, brown belt, brown boots and white thigh-highs",
+        "tokens": [
+          "two_tone_dress",
+          "white_dress",
+          "pink_skirt",
+          "collar",
+          "brown_belt",
+          "brown_boots",
+          "white_thighhighs"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "rehearsal_casual",
+        "name": "彩排室练习便装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a comfortable casual t-shirt and pleated skirt with sneakers for dance rehearsal, with her rabbit hair ornament",
+        "tokens": [
+          "casual_tshirt",
+          "pleated_skirt",
+          "sneakers",
+          "rabbit_hair_ornament"
+        ]
+      }
+    ]
+  },
+  "view": {
+    "characterId": "hoshino_ai",
+    "displayName": "星野爱",
+    "source": "Oshi no Ko",
+    "identityProse": "Hoshino Ai from Oshi no Ko, the top idol of B-Komachi with long purple hair styled with one side up, hair between her eyes and purple eyes with star-shaped pupils, wearing her signature rabbit hair ornament and a sleeveless frilled pink dress with a heart brooch",
+    "outfits": [
+      {
+        "outfitId": "main_look",
+        "outfitName": "立绘主形象",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her signature idol look, a sleeveless frilled pink dress with a heart brooch, frilled gloves and thigh boots, with the rabbit hair ornament in her one-side-up hair",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hoshino_ai/main_look/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hoshino_ai/main_look/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hoshino_ai/main_look/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hoshino_ai/main_look/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/hoshino_ai/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/hoshino_ai/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/hoshino_ai/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "stage_off_shoulder",
+        "outfitName": "舞台服·露肩粉裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her stage costume with an off-shoulder pink dress, a blue necktie, white thigh-highs and black shoes",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hoshino_ai/stage_off_shoulder/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hoshino_ai/stage_off_shoulder/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hoshino_ai/stage_off_shoulder/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hoshino_ai/stage_off_shoulder/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/hoshino_ai/stage_off_shoulder/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/hoshino_ai/stage_off_shoulder/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/hoshino_ai/stage_off_shoulder/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "stage_two_tone",
+        "outfitName": "舞台服·白上粉下",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her second stage costume, a two-tone dress with a white top, pink skirt and collar, brown belt, brown boots and white thigh-highs",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hoshino_ai/stage_two_tone/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hoshino_ai/stage_two_tone/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hoshino_ai/stage_two_tone/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hoshino_ai/stage_two_tone/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/hoshino_ai/stage_two_tone/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/hoshino_ai/stage_two_tone/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/hoshino_ai/stage_two_tone/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "rehearsal_casual",
+        "outfitName": "彩排室练习便装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a comfortable casual t-shirt and pleated skirt with sneakers for dance rehearsal, with her rabbit hair ornament",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  }
+}

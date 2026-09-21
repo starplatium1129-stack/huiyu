@@ -1,0 +1,689 @@
+{
+  "standard": {
+    "id": "kotegawa_yui",
+    "displayName": "古手川唯",
+    "originalName": "古手川 唯 (Kotegawa Yui)",
+    "source": "To LOVE-Ru",
+    "identityProse": "Kotegawa Yui from To LOVE-Ru by Kentaro Yabuki, the serious and easily flustered disciplinary committee member with long straight glossy black hair, thin white hairband, striking golden-brown eyes, a curvaceous hourglass figure, and a proud tsundere expression.",
+    "identityTokens": [
+      "kotegawa_yui",
+      "1girl",
+      "solo",
+      "black_hair",
+      "long_hair",
+      "very_long_hair",
+      "straight_hair",
+      "hairband",
+      "white_hairband",
+      "yellow_eyes",
+      "brown_eyes",
+      "large_breasts",
+      "cleavage",
+      "to_love-ru"
+    ],
+    "outfits": [
+      {
+        "id": "sainan_uniform",
+        "name": "彩南风纪委员水手制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Sainan High School disciplinary uniform: neat short-sleeved white sailor blouse buttoned firmly up to the neck, teal sailor collar, red disciplinary committee armband on her left sleeve, teal pleated miniskirt, dark knee socks, and polished brown school loafers",
+        "tokens": [
+          "sainan_high_school_uniform",
+          "school_uniform",
+          "sailor_suit",
+          "white_shirt",
+          "sailor_collar",
+          "armband",
+          "red_armband",
+          "pleated_skirt",
+          "miniskirt",
+          "knee_socks",
+          "loafers",
+          "white_hairband"
+        ]
+      },
+      {
+        "id": "cat_costume",
+        "name": "羞耻猫娘变身毛绒装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an overwhelmingly embarrassing transformed costume: fluffy black cat ears attached to a headband, a tight strapless black leather leotard mini-corset showing deep cleavage, furry paw mittens, a long black cat tail swishing above her hips, thigh-high black stockings, and bright blushing cheeks",
+        "tokens": [
+          "cat_costume",
+          "cat_ears",
+          "cat_tail",
+          "fake_animal_ears",
+          "strapless_leotard",
+          "cleavage",
+          "paw_gloves",
+          "thighhighs",
+          "black_thighhighs",
+          "heavy_blush",
+          "tsundere"
+        ]
+      },
+      {
+        "id": "school_swimsuit",
+        "name": "风纪委员纯白深蓝死库水",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "traditional Japanese navy-blue one-piece school competition swimsuit (sukumizu), form-fitting stretch fabric accentuating her voluptuous bust and trim waist, white rectangular fabric name tag reading Kotegawa on the chest, water droplets on smooth skin, and white swim cap held in hand",
+        "tokens": [
+          "swimsuit",
+          "school_swimsuit",
+          "one-piece_swimsuit",
+          "navy_blue_swimsuit",
+          "cleavage",
+          "wet_skin",
+          "white_hairband",
+          "barefoot"
+        ]
+      },
+      {
+        "id": "casual_sweater",
+        "name": "休日端庄开衫百褶长裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "modest and ladylike weekend casual attire: an ivory knitted cardigan buttoned modestly over a pastel lavender blouse, high-waisted pleated navy mid-length skirt, sheer black tights, brown low-heeled strap shoes, and a leather handbag",
+        "tokens": [
+          "casual",
+          "cardigan",
+          "knit_cardigan",
+          "blouse",
+          "pleated_skirt",
+          "pantyhose",
+          "black_pantyhose",
+          "shoes",
+          "white_hairband"
+        ]
+      },
+      {
+        "id": "nsfw_nude",
+        "name": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, pristine porcelain fair skin, bountiful firm breasts with tender rose-pink nipples, slender athletic waist, lush curved hips, exposed pussy, cascading silky black hair, iconic white hairband still perched in hair, furiously blushing tsundere expression, bare feet, soft dim bedroom lighting",
+        "tokens": [
+          "nude",
+          "completely_naked",
+          "uncensored",
+          "pale_skin",
+          "large_breasts",
+          "pink_nipples",
+          "slender_waist",
+          "wide_hips",
+          "navel",
+          "pussy",
+          "white_hairband",
+          "very_long_hair",
+          "bare_legs",
+          "bare_feet"
+        ]
+      }
+    ]
+  },
+  "view": {
+    "characterId": "kotegawa_yui",
+    "displayName": "古手川唯",
+    "source": "To LOVE-Ru",
+    "identityProse": "Kotegawa Yui from To LOVE-Ru by Kentaro Yabuki, the serious and easily flustered disciplinary committee member with long straight glossy black hair, thin white hairband, striking golden-brown eyes, a curvaceous hourglass figure, and a proud tsundere expression.",
+    "outfits": [
+      {
+        "outfitId": "sainan_uniform",
+        "outfitName": "彩南风纪委员水手制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Sainan High School disciplinary uniform: neat short-sleeved white sailor blouse buttoned firmly up to the neck, teal sailor collar, red disciplinary committee armband on her left sleeve, teal pleated miniskirt, dark knee socks, and polished brown school loafers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "cat_costume",
+        "outfitName": "羞耻猫娘变身毛绒装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an overwhelmingly embarrassing transformed costume: fluffy black cat ears attached to a headband, a tight strapless black leather leotard mini-corset showing deep cleavage, furry paw mittens, a long black cat tail swishing above her hips, thigh-high black stockings, and bright blushing cheeks",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "school_swimsuit",
+        "outfitName": "风纪委员纯白深蓝死库水",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "traditional Japanese navy-blue one-piece school competition swimsuit (sukumizu), form-fitting stretch fabric accentuating her voluptuous bust and trim waist, white rectangular fabric name tag reading Kotegawa on the chest, water droplets on smooth skin, and white swim cap held in hand",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_sweater",
+        "outfitName": "休日端庄开衫百褶长裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "modest and ladylike weekend casual attire: an ivory knitted cardigan buttoned modestly over a pastel lavender blouse, high-waisted pleated navy mid-length skirt, sheer black tights, brown low-heeled strap shoes, and a leather handbag",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, pristine porcelain fair skin, bountiful firm breasts with tender rose-pink nipples, slender athletic waist, lush curved hips, exposed pussy, cascading silky black hair, iconic white hairband still perched in hair, furiously blushing tsundere expression, bare feet, soft dim bedroom lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  }
+}

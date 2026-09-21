@@ -10,7 +10,7 @@ async function check(refresh = false) {
   const signal = controller.signal, id = props.characterId
   checking.value = true; available.value = 0; total.value = 0; problem.value = ''
   try {
-    await ensureCharacterReferencesLoaded(refresh)
+    await ensureCharacterReferencesLoaded(id, refresh)
     if (signal.aborted) return
     const outfits = getCharacterReferences(id)?.outfits || []
     const outfit = outfits.find(item => item.isDefault && !item.isNsfw) || outfits.find(item => !item.isNsfw)

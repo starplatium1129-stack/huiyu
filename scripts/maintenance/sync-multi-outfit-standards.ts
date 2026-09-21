@@ -12,13 +12,10 @@
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const referenceStore: typeof import('../lib/reference-store') = require('../lib/reference-store');
+const { mergeReferenceLibrary }: typeof import('../lib/reference-library-merge') = require('../lib/reference-library-merge');
 
-const ROOT = path.resolve(__dirname, '..', '..');
-const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
-const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
-// 2026-08-21 起前端运行时直接加载该 JSON；src/utils/characterReferenceData.ts
-// 已改为手写加载器，不再由脚本生成。
-const VIEW_JSON_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
+const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
 // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences（样张模式，桌面
 // 安装包不再携带 ~1GB 媒体图）；找不到外部目录时退回项目 assets 兼容旧环境。
 const OUT_BASE = (() => {
@@ -157,15 +154,16 @@ const HEROINE_CHARACTERS = [
 ];
 
 function buildMultiOutfitMatrix() {
-  const popularRaw = JSON.parse(fs.readFileSync(POPULAR_FILE, 'utf8'));
+  const popularRaw = { characters: (require('../lib/popular-store') as typeof import('../lib/popular-store')).loadPopularShards().characters };
   const allCharacters = [...HEROINE_CHARACTERS];
 
   for (const p of popularRaw.characters || []) {
     const rawOutfits = p.outfits || [];
+    const defaultIndex = Math.max(0, rawOutfits.findIndex((o: any) => o.default === true || o.isDefault === true));
     const formattedOutfits = rawOutfits.map((o: any, idx: number) => ({
       id: o.id,
       name: o.name,
-      isDefault: o.default || idx === 0,
+      isDefault: idx === defaultIndex,
       prose: o.prose || '',
       tokens: o.tokens || [],
       isNsfw: Boolean(o.name.includes('私密') || o.name.includes('泳装') || o.name.includes('浴') || o.id.includes('nsfw') || o.name.includes('裸'))
@@ -210,7 +208,6 @@ function buildMultiOutfitMatrix() {
     perspectives: [...PERSPECTIVES, ...DESIGN_PERSPECTIVES],
     characters: allCharacters
   };
-  fs.writeFileSync(STANDARDS_FILE, JSON.stringify(standardsData, null, 2) + '\n', 'utf8');
 
   // 构建 TS 运行时契约
   const tsRecord: Record<string, any> = {};
@@ -259,11 +256,8 @@ function buildMultiOutfitMatrix() {
     };
   }
 
-  // 合并写入（不整库覆盖）：本脚本只重建热门角色子集，合并保留其余角色条目。
-  let existing: Record<string, any> = {};
-  try { existing = JSON.parse(fs.readFileSync(VIEW_JSON_FILE, 'utf8')); } catch {}
-  const merged = Object.assign(existing, tsRecord);
-  fs.writeFileSync(VIEW_JSON_FILE, JSON.stringify(merged, null, 2), 'utf8');
+  const merged = mergeReferenceLibrary(referenceStore.readReferenceLibrary(ROOT), { standards: standardsData, view: tsRecord });
+  referenceStore.writeReferenceLibrary(ROOT, merged.standards, merged.view);
   console.log(`[Full Nude Matrix Sync] 已合并写入 ${Object.keys(tsRecord).length} 位角色 -> data/character-reference-view.json`);
 }
 

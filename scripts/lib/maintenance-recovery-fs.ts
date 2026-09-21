@@ -147,13 +147,13 @@ function context(options: any = {}) {
   }
   return { rootDir, root, runtimeRoot, showcaseRoot, stateDir, leaseDir: path.join(stateDir, 'lease'), backupRoot: path.join(runtimeRoot, 'maintenance-backups') };
 }
-const DATA_NAMES = new Set([...VERSIONED_FILES, 'retired-scenes.json']);
+const DATA_NAMES = new Set([...VERSIONED_FILES, 'retired-scenes.json', 'character-reference-standards.json', 'character-reference-view.json']);
 function targetPath(ctx: any, source: any) {
   if (typeof source !== 'string' || !path.isAbsolute(source)) throw failure('MAINTENANCE_PATH', '备份 source 必须是绝对路径');
   const file = path.resolve(source);
   const relative = path.relative(ctx.rootDir, file).replace(/\\/g, '/');
   const stem = relative.replace(/\.(gz|br)$/, '');
-  const inData = stem.startsWith('data/') && (DATA_NAMES.has(stem.slice(5)) || /^data\/(scenes|blueprints|popular)\/[A-Za-z0-9][A-Za-z0-9_.-]*\.json$/.test(stem));
+  const inData = stem.startsWith('data/') && (DATA_NAMES.has(stem.slice(5)) || /^data\/(scenes|blueprints|popular|references)\/[A-Za-z0-9][A-Za-z0-9_.-]*\.json$/.test(stem));
   if (within(ctx.rootDir, file) && (inData || relative === 'src/stores/sceneStore.ts')) {
     safePath(file);
     return file;

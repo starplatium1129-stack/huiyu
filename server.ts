@@ -81,7 +81,7 @@ function createGateway(options: GatewayOptions = {}) {
   // Fence mutable content before any installed projection, precompressed file or
   // ordinary static handler can return bytes from a maintenance transaction.
   if (!isDesktopPackagedMode(config)) {
-    app.use(['/data', '/scene-showcase'], maintenanceReadBarrier({ rootDir: config.ROOT_DIR,
+    app.use(['/data', '/scene-showcase', '/api/character-reference-profile'], maintenanceReadBarrier({ rootDir: config.ROOT_DIR,
       runtimeRoot: config.RUNTIME_ROOT, showcaseRoot: config.SCENE_SHOWCASE_DIR }));
   }
   let resources = createResourcesRouter(config);

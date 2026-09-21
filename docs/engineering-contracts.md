@@ -28,7 +28,7 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 
 角色接入必须同步完成以下六层：
 
-1. **数据层与大盘**：`data/popular/<franchise>.json`（服装+蓝图）+ `data/characters.json`（人物档案、视觉DNA、性格世界观、`accent_color`）+ `npm run popular:build` 编译 `popular-characters.json`；
+1. **数据层与大盘**：`data/popular/<franchise>.json`（身份+服装）、`data/blueprints/<franchise>.json`（蓝图）与 `data/characters.json`（人物档案、视觉DNA、性格世界观、`accent_color`）；`npm run wf -- content:sync` 只读预览，`--apply` 统一校验/登记/构建。参考权威源为 `data/references/<人物ID>.json` 与 manifest，两个旧参考 JSON 仅为兼容聚合产物；
 2. **UI 主题与强调色系统（必做项）**：在 `data/characters.json` 提供有效十六进制 `accent_color`，由 `src/utils/characterTheme.ts` 和 `src/assets/css/director/tokens.css` 的通用令牌派生主题。既有 `CHARACTER_THEME_OVERRIDES` 调校优先，缺失或非法颜色回退默认强调色；普通新角色无需新增 CSS 选择器，特殊调校才加入例外。核对角色切换、默认/缺失/非法颜色及两主题实际效果，保留 WCAG AA 与图片叠字视觉验收；
 3. **全量场景蓝图（SFW/NSFW 姿势解剖防崩）**：每位角色配齐 10~11 套场景蓝图（6~7 SFW 唯美日常 + 4~5 R18 成人专属）；成人蓝图严格遵守**「后入/俯身 $\rightarrow$ 强制 `1536x1152` 横画幅 + POV扶腰受力」**与**「仰卧/POV $\rightarrow$ 强制 `1152x1536` 竖画幅 + 揉胸/分腿层级」**黄金法则，杜绝悬浮器官与断腰；
 4. **立绘原图与 WebP 紧凑头像缩略图**：在发布样张原图（`assets/characters/popular-<id>.png`）后，**必须同步执行 `python scripts/maintenance/build-character-thumbs.py`** 编译生成 `assets/characters/thumbs/popular-<id>.webp`，确保生图左侧选择器、首页横条卡片不掉头像；

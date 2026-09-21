@@ -119,6 +119,8 @@ pnpm-workspace.yaml
 /data/scenes-index.json
 /data/popular-characters.json
 /data/scene-blueprints.json
+/data/character-reference-standards.json
+/data/character-reference-view.json
 
 # scripts/archive：一次性历史脚本（占 scripts 目录 44%，2026-08-29 审计出库）。
 # 不再跟踪；需要时从 git 历史（origin 保留完整历史）取回。

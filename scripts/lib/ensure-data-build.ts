@@ -21,6 +21,7 @@
  */
 
 const fs: typeof import('fs') = require('fs');
+const referenceStore: typeof import('./reference-store') = require('./reference-store');
 const {
   aggregatePath: scenesAggregatePath,
   browserShardPath,
@@ -110,6 +111,14 @@ function ensureTagsBuilt({ onlyIfMissing = false }: any = {}) {
   return { rebuilt: true, count };
 }
 
+function ensureReferencesBuilt({ onlyIfMissing = false }: any = {}) {
+  const root = require('node:path').resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || require('node:path').join(__dirname, '../..'));
+  const files = ['standards', 'view'].map(name => require('node:path').join(root, `data/character-reference-${name}.json`));
+  if (onlyIfMissing && files.every(file => fs.existsSync(file))) return { rebuilt: false };
+  if (referenceStore.aggregateIsCurrent(root)) return { rebuilt: false };
+  return { rebuilt: true, count: referenceStore.writeReferenceAggregate(root) };
+}
+
 /** 场景 + 热门角色 + 蓝图 + 词条四个产物面一起自愈；任一面源分片损坏会抛出，由调用方决定降级策略。
  *
  *  - 默认（网关启动）：陈旧即重建——运行时必须拿到与语义源一致的数据；
@@ -121,7 +130,8 @@ function ensureAll({ onlyIfMissing = false }: any = {}) {
   const popular = ensurePopularBuilt({ onlyIfMissing });
   const blueprints = ensureBlueprintsBuilt({ onlyIfMissing });
   const tags = ensureTagsBuilt({ onlyIfMissing });
-  return { scenes, popular, blueprints, tags };
+  const references = ensureReferencesBuilt({ onlyIfMissing });
+  return { scenes, popular, blueprints, tags, references };
 }
 
 export = {
@@ -130,5 +140,6 @@ export = {
   ensureScenesBuilt,
   ensureBlueprintsBuilt,
   ensureTagsBuilt,
+  ensureReferencesBuilt,
   refreshPrecompressed,
 };

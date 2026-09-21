@@ -3,7 +3,6 @@ import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
 import { useVideoStore } from '@/stores/videoStore'
-import { ensureCharacterReferencesLoaded } from '@/utils/characterReferenceData'
 
 interface ShotDraftDeps {
   aspectRatio: Ref<VideoBatch['aspectRatio']>
@@ -100,7 +99,6 @@ async function restoreShotsDraft() {
     restoringDraft = false
   }
   // 参考档案为运行时 JSON：先就位再按「角色+服装」重装配参考卡（F3）。
-  await ensureCharacterReferencesLoaded().catch(() => undefined)
   for (const [index, card] of referenceCards.value.entries()) {
     if (card.characterId) await autoLoadCharacterReferences(card.characterId, index, card.outfitId || undefined)
   }

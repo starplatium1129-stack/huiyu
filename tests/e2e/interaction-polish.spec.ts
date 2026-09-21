@@ -541,10 +541,9 @@ for (const theme of ['dark', 'light']) {
   test(`character portraits and asset health stay readable ${theme}`, async ({ page }) => {
     // This is a UI test; physical reference files are checked separately on the asset host.
     const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
-    await page.route('**/data/character-reference-view.json', route => route.fulfill({ json: {
-      furina: { characterId: 'furina', displayName: '芙宁娜', outfits: [{ outfitId: 'fixture', outfitName: '测试服装', isDefault: true, isNsfw: false, prose: '',
+    await page.route('**/api/character-reference-profile/furina', route => route.fulfill({ json: { characterId: 'furina', displayName: '芙宁娜', outfits: [{ outfitId: 'fixture', outfitName: '测试服装', isDefault: true, isNsfw: false, prose: '',
         references: Array.from({ length: 7 }, (_, index) => ({ id: 'fixture-' + index, name: '测试机位 ' + index, shotType: '正面', fileName: index + '.png', lens: '50mm', targetUsage: [], url: '/character-references/furina/fixture/' + index + '.png' })),
-      }] },
+      }],
     } }))
     await page.route('**/character-references/**', route => route.fulfill({ status: 200, contentType: 'image/png', body: image }))
     await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })

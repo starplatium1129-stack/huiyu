@@ -1,0 +1,655 @@
+{
+  "standard": {
+    "id": "texas_arknights",
+    "displayName": "德克萨斯",
+    "originalName": "Texas",
+    "source": "Arknights",
+    "identityProse": "Texas from Arknights, a calm and stoic Lupo courier with sleek straight black hair, pointy wolf ears, a bushy black tail, and golden-amber eyes.",
+    "identityTokens": [
+      "texas (arknights)",
+      "1girl",
+      "solo",
+      "black_hair",
+      "long_hair",
+      "wolf_ears",
+      "wolf_tail",
+      "amber_eyes",
+      "calm_expression",
+      "arknights"
+    ],
+    "outfits": [
+      {
+        "id": "penguin_logistics",
+        "name": "企鹅物流制服",
+        "isDefault": true,
+        "prose": "Penguin Logistics courier uniform: a hooded black and white techwear windbreaker jacket with yellow accents and PL logo, white collared shirt, slim black tie, dark high-waisted shorts, black leather belt with sword scabbards, black over-knee socks, combat boots, and fingerless gloves",
+        "tokens": [
+          "techwear",
+          "jacket",
+          "hooded_jacket",
+          "black_jacket",
+          "white_shirt",
+          "black_necktie",
+          "shorts",
+          "black_shorts",
+          "thighhighs",
+          "black_thighhighs",
+          "combat_boots",
+          "fingerless_gloves",
+          "holster",
+          "sheath",
+          "penguin_logistics"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "omertosa_mafia",
+        "name": "叙拉古缄默黑帮风衣",
+        "isDefault": false,
+        "prose": "Siracusa Texas the Omertosa formal attire: an exquisite double-breasted charcoal-black mafia overcoat with crimson silk lining, tailored black pinstripe vest, crisp white dress shirt, red silk ascot, slim tailored trousers, polished leather dress shoes, and twin glowing golden rapier swords",
+        "tokens": [
+          "overcoat",
+          "long_coat",
+          "black_coat",
+          "formal_attire",
+          "suit",
+          "vest",
+          "white_shirt",
+          "red_ascot",
+          "trousers",
+          "dress_shoes",
+          "rapier",
+          "dual_wielding",
+          "siracusa"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "willpower_winter",
+        "name": "意志 / 寒冬信使日常便服",
+        "isDefault": false,
+        "prose": "a cozy winter urban courier outfit: a heavy olive-green winter parka with faux-fur lined hood, thick cream knit scarf, charcoal skinny jeans, leather motorcycle boots, leather messenger courier bag, and a pocky box in her pocket",
+        "tokens": [
+          "parka",
+          "winter_coat",
+          "scarf",
+          "knit_scarf",
+          "jeans",
+          "pants",
+          "boots",
+          "messenger_bag",
+          "casual",
+          "winter_clothes"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "summer_sunbreeze",
+        "name": "阳光微风夏日泳装",
+        "isDefault": false,
+        "prose": "a stylish and sleek black one-piece swimsuit with asymmetric cutouts along the waist, translucent white linen beach shirt worn open, dark sunglasses, and sandals, wolf tail swishing in the seaside breeze",
+        "tokens": [
+          "swimsuit",
+          "one-piece_swimsuit",
+          "black_swimsuit",
+          "cutouts",
+          "open_shirt",
+          "white_shirt",
+          "sunglasses",
+          "sandals",
+          "beachwear"
+        ],
+        "isNsfw": true
+      },
+      {
+        "id": "nsfw_nude",
+        "name": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "prose": "completely naked, full nudity, bare skin, lean and beautifully toned athletic body, perky natural breasts with tender pink nipples, slender waist, flat stomach, navel, delicate pussy, fluffy dark wolf ears and tail, bare legs, bare feet, soft dramatic room lighting",
+        "tokens": [
+          "nude",
+          "completely_naked",
+          "uncensored",
+          "breasts",
+          "pink_nipples",
+          "slender_body",
+          "toned_stomach",
+          "navel",
+          "pussy",
+          "wolf_ears",
+          "wolf_tail",
+          "bare_feet"
+        ],
+        "isNsfw": true
+      }
+    ]
+  },
+  "view": {
+    "characterId": "texas_arknights",
+    "displayName": "德克萨斯",
+    "source": "Arknights",
+    "identityProse": "Texas from Arknights, a calm and stoic Lupo courier with sleek straight black hair, pointy wolf ears, a bushy black tail, and golden-amber eyes.",
+    "outfits": [
+      {
+        "outfitId": "penguin_logistics",
+        "outfitName": "企鹅物流制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Penguin Logistics courier uniform: a hooded black and white techwear windbreaker jacket with yellow accents and PL logo, white collared shirt, slim black tie, dark high-waisted shorts, black leather belt with sword scabbards, black over-knee socks, combat boots, and fingerless gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/texas_arknights/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/texas_arknights/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/texas_arknights/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "omertosa_mafia",
+        "outfitName": "叙拉古缄默黑帮风衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "Siracusa Texas the Omertosa formal attire: an exquisite double-breasted charcoal-black mafia overcoat with crimson silk lining, tailored black pinstripe vest, crisp white dress shirt, red silk ascot, slim tailored trousers, polished leather dress shoes, and twin glowing golden rapier swords",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "willpower_winter",
+        "outfitName": "意志 / 寒冬信使日常便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a cozy winter urban courier outfit: a heavy olive-green winter parka with faux-fur lined hood, thick cream knit scarf, charcoal skinny jeans, leather motorcycle boots, leather messenger courier bag, and a pocky box in her pocket",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "summer_sunbreeze",
+        "outfitName": "阳光微风夏日泳装",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "a stylish and sleek black one-piece swimsuit with asymmetric cutouts along the waist, translucent white linen beach shirt worn open, dark sunglasses, and sandals, wolf tail swishing in the seaside breeze",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, bare skin, lean and beautifully toned athletic body, perky natural breasts with tender pink nipples, slender waist, flat stomach, navel, delicate pussy, fluffy dark wolf ears and tail, bare legs, bare feet, soft dramatic room lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_design_back.png"
+          }
+        ]
+      }
+    ]
+  }
+}

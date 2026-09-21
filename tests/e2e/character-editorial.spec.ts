@@ -24,6 +24,12 @@ const references = { natsume: { characterId: 'natsume', outfits: ['default', 'co
 async function fixture(page: Page, theme: string) {
   const picture = readFileSync('assets/characters/natsume-home-cg.jpg')
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false } }))
+  await page.route('**/api/character-reference-profile/*', route => {
+    const id = new URL(route.request().url()).pathname.split('/').at(-1)
+    return id === 'natsume'
+      ? route.fulfill({ json: references.natsume })
+      : route.fulfill({ status: 404, json: { error: '角色参考档案尚未登记' } })
+  })
   await page.route('**/assets/editorial-fixture.jpg', route => route.fulfill({ body: picture, contentType: 'image/jpeg' }))
   await page.route('**/assets/editorial-missing.jpg', route => route.fulfill({ status: 404 }))
   await page.route('**/assets/characters/thumbs/popular-fixture-popular.webp*', route => route.fulfill({ status: 404 }))
@@ -33,7 +39,7 @@ async function fixture(page: Page, theme: string) {
     if (url.searchParams.has('import')) return route.continue()
     const file = url.pathname.split('/').at(-1)!
     const data: Record<string, unknown> = {
-      'characters.json': profiles, 'character-reference-view.json': references,
+      'characters.json': profiles,
       'popular-characters.json': { characters: [] }, 'scene-blueprints.json': { blueprints: [] },
       'curation.json': { personaCoreSceneIds: ['sc9001'] },
       'scenes-index.json': { total: 1 },

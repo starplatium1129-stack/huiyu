@@ -1,5 +1,5 @@
 import { ref, onScopeDispose, getCurrentScope, type Ref } from 'vue'
-import { getCharacterReferences } from '@/utils/characterReferenceData'
+import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 import type { VideoImageUploadResponse } from '@/api/videoApi'
 
 /**
@@ -127,8 +127,15 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     const targetCard = referenceCards.value[cardIndex]
     cancelCard(targetCard)
     clearImages(targetCard)
+    const controller = start(targetCard)
+    targetCard.characterId = charId
+    targetCard.outfitId = ''
+    targetCard.label = ''
+    await ensureCharacterReferencesLoaded(charId).catch(() => undefined)
+    if (!current(targetCard, controller)) { finish(targetCard, controller); return 0 }
     const profile = getCharacterReferences(charId)
     if (!profile) {
+      finish(targetCard, controller)
       targetCard.characterId = charId
       targetCard.outfitId = ''
       targetCard.label = ''
@@ -149,8 +156,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     targetCard.label = profile.displayName + (chosenOutfit && !chosenOutfit.isDefault ? ` · ${chosenOutfit.outfitName}` : '')
 
     updateMultiCharacterIdentity()
-    if (!chosenOutfit) { deps.batchError.value = '该服装参考档案不存在，请重新选择'; return 0 }
-    const controller = start(targetCard)
+    if (!chosenOutfit) { finish(targetCard, controller); deps.batchError.value = '该服装参考档案不存在，请重新选择'; return 0 }
     let loaded = 0
     try {
       // 自动加载基准图（特写 / 半身 / 全身 / 侧后背影）；设计图基线占位（pending 无 url）排除

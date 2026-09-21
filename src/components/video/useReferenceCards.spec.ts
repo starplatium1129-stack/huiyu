@@ -1,8 +1,9 @@
 import { effectScope, ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useReferenceCards, removeCastSlot } from './useReferenceCards'
+import { ensureCharacterReferencesLoaded } from '@/utils/characterReferenceData'
 const profiles = vi.hoisted(() => ({ value: {} as Record<string, unknown> }))
-vi.mock('@/utils/characterReferenceData', () => ({ getCharacterReferences: (id: string) => profiles.value[id] }))
+vi.mock('@/utils/characterReferenceData', () => ({ getCharacterReferences: (id: string) => profiles.value[id], ensureCharacterReferencesLoaded: vi.fn(async () => {}) }))
 function setup() {
   const scope = effectScope()
   const deps = { identityCard: ref(''), batchError: ref(''), readBlobAsDataURL: vi.fn(async () => 'data:image/png;base64,eA=='), uploadVideoImage: vi.fn(async () => ({ ok: true as const, name: 'uploaded.png', bytes: 1 })), onCardRemoved: vi.fn() }
@@ -19,6 +20,19 @@ beforeEach(() => {
 })
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
 describe('reference-card async ownership', () => {
+  it('ignores a previous character profile arriving after a new selection', async () => {
+    let finish!: () => void
+    vi.mocked(ensureCharacterReferencesLoaded).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    const { cards, scope } = setup()
+    const old = cards.autoLoadCharacterReferences('one')
+    await cards.autoLoadCharacterReferences('missing')
+    finish()
+    await old
+    expect(cards.referenceCards.value[0].characterId).toBe('missing')
+    expect(cards.referenceCards.value[0].images).toHaveLength(0)
+    expect(cards.loadingRefAssets.value).toBe(false)
+    scope.stop()
+  })
   it('clears old images when a newly selected character has no loaded profile', async () => {
     const { cards, deps, scope } = setup()
     await cards.autoLoadCharacterReferences('one')
@@ -34,6 +48,7 @@ describe('reference-card async ownership', () => {
     vi.mocked(fetch).mockReturnValueOnce(new Promise(done => { resolve = done }))
     const { cards, deps, scope } = setup()
     const old = cards.autoLoadCharacterReferences('one', 0, 'a')
+    await vi.waitFor(() => expect(fetch).toHaveBeenCalledTimes(1))
     await cards.autoLoadCharacterReferences('one', 0, 'b')
     resolve(new Response(new Blob(['old'], { type: 'image/png' })))
     await old

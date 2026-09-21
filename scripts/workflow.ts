@@ -234,12 +234,26 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     opts: '--target popular|scenes --chunks 1-17',
     run: { nature: ['writes-source'], machine: ['node'], switches: { '--help': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/apply-chunks.js:110,147', unknown: ['--target/--chunks 合法性由脚本自校验，注册表未声明 required'] },
   },
+  'content:sync': {
+    desc: '统一校验人物/服装/场景，修正清单计数、补登参考分片并构建聚合（默认只读预览）',
+    cmd: ['node', 'scripts/maintenance/sync-content.js'],
+    docs: 'docs/guides/characters/character-onboarding-workflow.md',
+    opts: '[--apply] [--ids=a,b] [--root=目录]；ids 仅限制参考登记，全部内容均校验/构建',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--apply': ['writes-source', 'writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/sync-content.ts', unknown: [], notes: ['不调用模型、不安装、不发布；pending 不代表图片完成'] },
+  },
+  'reference:build': {
+    desc: '从每人物参考分片构建兼容 standards/view 聚合',
+    cmd: ['node', 'scripts/maintenance/build-references.js'],
+    docs: 'docs/workflow.md',
+    opts: '[--check]；check 仅在产物缺失时自愈，已有陈旧产物报错',
+    run: { nature: ['writes-product'], machine: ['node'], switches: { '--check': ['read-only', 'self-heal-missing'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-references.ts', unknown: [], notes: ['data/references 为权威源；聚合不入 Git'] },
+  },
   'reference:register': {
-    desc: '按 popular→standards/view 对账登记缺失的角色形态（pending 占位不制造断链）',
+    desc: '从 popular 分片补登新人物/服装参考分片（pending 占位不制造断链）',
     cmd: ['node', 'scripts/maintenance/register-pending-reference-outfits.js'],
     docs: 'scripts/maintenance/register-pending-reference-outfits.js:1',
     opts: '[--dry-run] [--ids=a,b,c] 默认处理所有 popular 中 standards/view 缺失的服装；登记后仍需 reference:render 候选出图、人工验收及发布',
-    run: { nature: ['writes-source'], machine: ['node'], switches: { '--dry-run': ['preview'] }, resume: 'idempotent', evidence: 'scripts/maintenance/register-pending-reference-outfits.js:1-190', unknown: [], notes: ['默认（无 --dry-run）即写 standards 与 view；pending 不算已交付资产；按服装粒度增量登记'] },
+    run: { nature: ['writes-source', 'writes-product'], machine: ['node'], switches: { '--dry-run': ['preview'] }, resume: 'idempotent', evidence: 'scripts/maintenance/register-pending-reference-outfits.ts', unknown: [], notes: ['默认写每人物参考分片及兼容聚合；pending 不算已交付资产；按服装粒度增量登记'] },
   },
   'reference:render': {
     desc: '参考库四视角待审核候选出图（MiaoMiao v1.6，832x1216，默认并发3）',

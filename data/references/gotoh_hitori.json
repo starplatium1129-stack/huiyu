@@ -1,0 +1,766 @@
+{
+  "standard": {
+    "id": "gotoh_hitori",
+    "displayName": "后藤一里",
+    "originalName": "後藤ひとり",
+    "source": "Bocchi the Rock!",
+    "identityProse": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression",
+    "identityTokens": [
+      "gotoh_hitori",
+      "1girl",
+      "solo",
+      "pink_hair",
+      "long_hair",
+      "blue_eyes",
+      "hair_ornament",
+      "cube_hair_ornament",
+      "bocchi_the_rock!"
+    ],
+    "outfits": [
+      {
+        "id": "pink_tracksuit",
+        "name": "经典粉色运动服常服",
+        "isDefault": true,
+        "prose": "wearing her iconic oversized bright pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks, casual sneakers, and carrying a black electric guitar gig bag",
+        "tokens": [
+          "pink_tracksuit",
+          "tracksuit",
+          "track_jacket",
+          "jacket",
+          "long_sleeves",
+          "pleated_skirt",
+          "black_skirt",
+          "black_socks",
+          "sneakers",
+          "guitar_case"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "kessoku_band_live_tshirt",
+        "name": "结束乐队Live演出T恤",
+        "isDefault": false,
+        "prose": "wearing a black Kessoku Band graphic print t-shirt tucked into a dark pleated skirt, a red wristband, and slinging her black Gibson Les Paul Custom electric guitar across her shoulder",
+        "tokens": [
+          "black_t-shirt",
+          "t-shirt",
+          "print_t-shirt",
+          "black_skirt",
+          "pleated_skirt",
+          "wristband",
+          "electric_guitar",
+          "gibson_les_paul",
+          "guitar_strap",
+          "guitar_pick"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "cultural_festival_maid",
+        "name": "文化祭复古黑白女仆装",
+        "isDefault": false,
+        "prose": "wearing a classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+        "tokens": [
+          "maid_uniform",
+          "maid_dress",
+          "black_dress",
+          "white_apron",
+          "maid_apron",
+          "maid_headdress",
+          "frills",
+          "frilled_apron",
+          "thighhighs",
+          "black_thighhighs"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "shuka_summer_uniform",
+        "name": "秀华高中夏季水手校服",
+        "isDefault": false,
+        "prose": "wearing the official Shuka High School summer uniform featuring a short-sleeved white sailor shirt with a navy blue collar, red ribbon necktie, and neat dark pleated skirt",
+        "tokens": [
+          "school_uniform",
+          "sailor_uniform",
+          "white_shirt",
+          "short_sleeves",
+          "sailor_collar",
+          "blue_collar",
+          "red_necktie",
+          "pleated_skirt",
+          "black_skirt",
+          "white_socks",
+          "loafers"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "closet_pajamas_casual",
+        "name": "壁橱避难所宽松睡衣私服",
+        "isDefault": false,
+        "prose": "wearing an oversized baggy pastel t-shirt and loose lounge shorts while wearing large over-ear monitor headphones sitting curled up inside her dimly lit cozy closet recording nook",
+        "tokens": [
+          "oversized_t-shirt",
+          "pajamas",
+          "loose_clothes",
+          "bare_legs",
+          "headphones",
+          "casual_clothes"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "nsfw_nude",
+        "name": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "prose": "completely naked with zero clothes, unexpectedly voluptuous and busty figure with soft fair skin, prominent perky pink nipples, smooth shaved exposed pussy, blushing intensely from head to toe",
+        "tokens": [
+          "nude",
+          "completely_naked",
+          "uncensored",
+          "full_body_bare",
+          "large_breasts",
+          "pink_nipples",
+          "exposed_pussy",
+          "detailed_vulva",
+          "slender_waist",
+          "blushing",
+          "bare_feet"
+        ],
+        "isNsfw": true
+      }
+    ]
+  },
+  "view": {
+    "characterId": "gotoh_hitori",
+    "displayName": "后藤一里",
+    "source": "Bocchi the Rock!",
+    "identityProse": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression",
+    "outfits": [
+      {
+        "outfitId": "pink_tracksuit",
+        "outfitName": "经典粉色运动服常服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her iconic oversized bright pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks, casual sneakers, and carrying a black electric guitar gig bag",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/gotoh_hitori/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/gotoh_hitori/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/gotoh_hitori/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "kessoku_band_live_tshirt",
+        "outfitName": "结束乐队Live演出T恤",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a black Kessoku Band graphic print t-shirt tucked into a dark pleated skirt, a red wristband, and slinging her black Gibson Les Paul Custom electric guitar across her shoulder",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "cultural_festival_maid",
+        "outfitName": "文化祭复古黑白女仆装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "shuka_summer_uniform",
+        "outfitName": "秀华高中夏季水手校服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing the official Shuka High School summer uniform featuring a short-sleeved white sailor shirt with a navy blue collar, red ribbon necktie, and neat dark pleated skirt",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "closet_pajamas_casual",
+        "outfitName": "壁橱避难所宽松睡衣私服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing an oversized baggy pastel t-shirt and loose lounge shorts while wearing large over-ear monitor headphones sitting curled up inside her dimly lit cozy closet recording nook",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, unexpectedly voluptuous and busty figure with soft fair skin, prominent perky pink nipples, smooth shaved exposed pussy, blushing intensely from head to toe",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_design_back.png"
+          }
+        ]
+      }
+    ]
+  }
+}

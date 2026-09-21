@@ -28,39 +28,38 @@ export interface CharacterReferenceProfile {
   outfits: CharacterOutfitReference[]
 }
 
-/**
- * 角色参考标准的数据本体位于 `/data/character-reference-view.json`
- * （45 角色 / 900+ 参考项）。历史上它以字面量内嵌在本模块里，
- * 导致 ~365KB 纯数据进入共享 JS chunk 且改数据必须重新构建前端；
- * 2026-08-21 起改为运行时加载，本模块只保留类型契约与加载器。
- *
- * 服务端对该文件按 no-cache + ETag 协商缓存下发（server.js PUBLIC_DATA_FILES
- * 特例），维护脚本更新 JSON 后刷新即生效，无需手动升版本号。
- */
+/** 按角色懒加载；网关保留本机权限并选择已安装的参考资源版本。 */
 const standards = shallowRef<Record<string, CharacterReferenceProfile>>({})
-let loading: Promise<void> | null = null
-let revision = 0
+const requests = new Map<string, Promise<void>>()
+const revisions = new Map<string, number>()
 
-/** 预取参考标准数据；视图挂载时调用一次。失败可重试（下次调用重新发起）。 */
-export function ensureCharacterReferencesLoaded(refresh = false): Promise<void> {
-  if (refresh) loading = null
-  if (!loading) {
-    const requested = ++revision
-    loading = fetch('/data/character-reference-view.json')
-      .then((response) => {
-        if (!response.ok) throw new Error(`character-reference-view ${response.status}`)
-        return response.json() as Promise<Record<string, CharacterReferenceProfile>>
-      })
-      .then((data) => {
-        if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('参考目录格式无效')
-        if (requested === revision) standards.value = data
-      })
-      .catch((error) => {
-        if (requested === revision) loading = null
-        throw error
-      })
-  }
-  return loading
+/** 同一角色并发去重；失败可重试，刷新前的迟到响应不会覆盖新数据。 */
+export function ensureCharacterReferencesLoaded(characterId: string, refresh = false): Promise<void> {
+  if (!/^[a-z0-9][a-z0-9_-]*$/i.test(characterId)) return Promise.reject(new Error('角色 ID 无效'))
+  if (!refresh && requests.has(characterId)) return requests.get(characterId)!
+  const revision = (revisions.get(characterId) || 0) + 1
+  revisions.set(characterId, revision)
+  const request = fetch('/api/character-reference-profile/' + encodeURIComponent(characterId), { cache: 'no-cache' })
+    .then(async response => {
+      if (response.status === 404) return undefined
+      if (!response.ok) throw new Error('character-reference-profile ' + response.status)
+      const data = await response.json() as CharacterReferenceProfile
+      if (!data || data.characterId !== characterId || !Array.isArray(data.outfits)) throw new Error('参考档案格式无效')
+      return data
+    })
+    .then(data => {
+      if (revisions.get(characterId) !== revision) return
+      const next = { ...standards.value }
+      if (data) next[characterId] = data
+      else delete next[characterId]
+      standards.value = next
+    })
+    .catch(error => {
+      if (revisions.get(characterId) === revision) requests.delete(characterId)
+      throw error
+    })
+  requests.set(characterId, request)
+  return request
 }
 
 /** 同步读取角色参考档案；数据未加载完成时返回 undefined（与未知角色同路径降级）。 */

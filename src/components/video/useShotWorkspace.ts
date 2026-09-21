@@ -261,13 +261,18 @@ export function useShotWorkspace(props: {
         shots.value.splice(target, 0, item);
     }
     // 角色锚点：选择角色 → 自动注入身份描述，并自动装配标准 3 视角参考图（Ref2VA）。
-    watch(characterId, async (id) => {
+    watch(characterId, async (id, _previous, onCleanup) => {
+        let stale = false;
+        onCleanup(() => { stale = true; });
         if (!id)
             return;
+        await ensureCharacterReferencesLoaded(id).catch(() => undefined);
+        if (stale) return;
         const stdProfile = getCharacterReferences(id);
         if (stdProfile) {
             identityCard.value = stdProfile.identityProse || '';
             await autoLoadCharacterReferences(id);
+            if (stale) return;
             shots.value.forEach((s) => {
                 if (!s.cast)
                     s.cast = '1';
@@ -423,8 +428,6 @@ export function useShotWorkspace(props: {
             importScenarioActs();
             await reconnectShotsBatch();
         })();
-        // 参考档案为运行时 JSON：挂载即预取，参考卡/身份卡读取时数据通常已就位
-        void ensureCharacterReferencesLoaded().catch(() => undefined);
         const charParam = typeof route.query.character === 'string' ? route.query.character.trim() : '';
         if (charParam) {
             characterId.value = charParam;

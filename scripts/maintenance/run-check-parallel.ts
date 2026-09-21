@@ -33,6 +33,7 @@ const STEPS = [
   ['ts-directives', 'node scripts/maintenance/scan-ts-directives.js --check'],
   ['scenes:build', 'node scripts/maintenance/build-scenes.js --check'],
   ['popular:build', 'node scripts/maintenance/build-popular.js --check'],
+  ['reference:build', 'node scripts/maintenance/build-references.js --check'],
   ['blueprints:build', 'node scripts/maintenance/build-blueprints.js --check'],
   ['tags:build', 'node scripts/maintenance/build-tags.js --check'],
   ['tags:integrity', 'node scripts/tests/test-tag-shards.js'],

@@ -2,6 +2,7 @@
 'use strict';
 
 import { PathOrFileDescriptor } from 'node:fs';
+import { readReferenceLibrary, writeReferenceLibrary } from '../lib/reference-store';
 
 /**
  * 登记「已上架但尚无参考资产」的角色形态，消除 standards / view 的形态集合漂移。
@@ -28,9 +29,7 @@ import { PathOrFileDescriptor } from 'node:fs';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
-const ROOT = path.resolve(__dirname, '..', '..');
-const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
-const VIEW_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
+const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
 const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
 
 const argv = process.argv.slice(2);
@@ -83,9 +82,10 @@ function viewOutfit(standard: any, perspectives: any[]) {
 }
 
 function main() {
-  const standards = readJson(STANDARDS_FILE);
-  const view = readJson(VIEW_FILE);
-  const popular = readJson(POPULAR_FILE);
+  const { standards, view } = readReferenceLibrary(ROOT);
+  const popular = fs.existsSync(path.join(ROOT, 'data/popular/manifest.json'))
+    ? { characters: (require('../lib/popular-store') as typeof import('../lib/popular-store')).loadPopularShards().characters }
+    : readJson(POPULAR_FILE);
   const perspectives = standards.perspectives;
 
   const popularById = new Map((popular.characters || []).map((c: any) => [c.id, c]));
@@ -95,14 +95,25 @@ function main() {
   const errors: string[] = [];
   let addedOutfits = 0;
 
+  for (const id of onlyIds || []) if (!popularById.has(id) && !standardById.has(id)) errors.push(`${id}: 未知角色 ID`);
+
   for (const popChar of popular.characters || []) {
     if (onlyIds && !onlyIds.has(popChar.id)) continue;
-    const character = standardById.get(popChar.id);
-    const viewChar = view[popChar.id];
-    if (!character || !viewChar) {
-      errors.push(`${popChar.id}: standards/view 角色记录缺失`);
-      continue;
+    let character = standardById.get(popChar.id);
+    if (!character) {
+      if (![popChar.id, popChar.displayName, popChar.originalName, popChar.franchise, popChar.identityProse].every(value => typeof value === 'string' && value.trim())
+        || !Array.isArray(popChar.identityTokens) || !popChar.identityTokens.length || !popChar.outfits?.length) {
+        errors.push(`${popChar.id}: 新角色缺少身份字段或服装，不能自动登记`);
+        continue;
+      }
+      character = { id: popChar.id, displayName: popChar.displayName, originalName: popChar.originalName,
+        source: popChar.franchise, identityProse: popChar.identityProse, identityTokens: [...popChar.identityTokens], outfits: [] };
+      standards.characters.push(character);
+      standardById.set(popChar.id, character);
+      view[popChar.id] = { characterId: popChar.id, displayName: popChar.displayName, source: popChar.franchise,
+        identityProse: popChar.identityProse, outfits: [] };
     }
+    const viewChar = view[popChar.id];
 
     const standardIds = new Set(character.outfits.map((o: any) => o.id));
     const viewIds = new Set((viewChar.outfits || []).map((o: any) => o.outfitId));
@@ -113,7 +124,8 @@ function main() {
     for (const popOutfit of missing) {
       let standard = character.outfits.find((o: any) => o.id === popOutfit.id);
       if (!standardIds.has(popOutfit.id)) {
-        standard = standardOutfit(popOutfit, character.outfits);
+        standard = standardOutfit({ ...popOutfit, default: popOutfit.default === true
+          || (!popChar.outfits.some((o: any) => o.default === true || o.isDefault === true) && popChar.outfits[0].id === popOutfit.id) }, character.outfits);
         character.outfits.push(standard);
         standardIds.add(popOutfit.id);
       }
@@ -152,7 +164,8 @@ function main() {
         tokens: (popOutfit?.tokens || []).length ? popOutfit.tokens : [vo.outfitId],
       };
       character.outfits.push(standardOutfit(popOutfit || fallback, character.outfits));
-      vo.references = pendingReferences(perspectives);
+      // Existing URLs and reviewed/pending states are asset facts; registration never erases them.
+      if (!vo.references?.length) vo.references = pendingReferences(perspectives);
       added.push(vo.outfitId);
       addedOutfits += 1;
     }
@@ -183,9 +196,8 @@ function main() {
     return;
   }
 
-  fs.writeFileSync(STANDARDS_FILE, JSON.stringify(standards, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(VIEW_FILE, JSON.stringify(view, null, 2) + '\n', 'utf8');
-  console.log(`[register-pending] 已写入 standards 与 view（记得跑 data:build 更新 DATA_VERSION）`);
+  writeReferenceLibrary(ROOT, standards, view);
+  console.log('[register-pending] 已同步人物参考分片与兼容聚合；pending 仍需候选出图和人工审核');
 }
 
-main();
+try { main(); } catch (error) { console.error(error instanceof Error ? error.message : error); process.exitCode = 1; }

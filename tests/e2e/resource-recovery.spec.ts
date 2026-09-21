@@ -159,7 +159,7 @@ failureCase('F05', '场景卡片缩略图 404 提示可用', async (page, theme,
 
 failureCase('F08b', '参考卡片拒绝不可放大', async (page, theme, testInfo) => {
   const FIXTURE_URL = '/character-references/f08-fixture/front.png'
-  await page.route('**/data/character-reference-view.json', jsonFixture(controlledReferenceIndex(FIXTURE_URL)))
+  await page.route('**/api/character-reference-profile/nene', jsonFixture(controlledReferenceIndex(FIXTURE_URL).nene))
   const pattern = '**/character-references/**'
   const probe = await intercept(page, pattern, refused)
   await openWithTheme(page, '/character?character=nene', theme)

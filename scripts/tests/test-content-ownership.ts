@@ -80,9 +80,9 @@ test('updated ownership notes surface key responsibilities in JSON and text outp
   assert.ok(byDomain.blueprints.writers.some((w: any) => w.includes('blueprint-write.js') && w.includes('分片/manifest/聚合')));
   assert.ok(byDomain.blueprints.boundary.includes('重启自愈'));
   assert.ok(byDomain.references.writers.some((w: any) => w.includes('合并写入')));
-  assert.ok(byDomain.references.writers.some((w: any) => w.includes('双写')));
-  assert.ok(byDomain.references.boundary.includes('idx===0') && byDomain.references.boundary.includes('首套'));
-  assert.ok(byDomain.references.boundary.includes('机位'));
+  assert.ok(byDomain.references.writers.some((w: any) => w.includes('writeReferenceLibrary')));
+  assert.ok(byDomain.references.boundary.includes('不入 Git') && byDomain.references.boundary.includes('不手工编辑'));
+  assert.ok(byDomain.references.fields.includes('机位'));
   assert.ok(byDomain.themes.readers.some((r: any) => r.includes('--character-')));
   assert.ok(byDomain.themes.readers.some((r: any) => r.includes('accent_color')));
   assert.ok(report.scope.includes('不声称穷尽'));

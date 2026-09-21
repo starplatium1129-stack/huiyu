@@ -1,0 +1,392 @@
+{
+  "standard": {
+    "id": "eris_greyrat",
+    "displayName": "艾莉丝",
+    "originalName": "Eris Greyrat",
+    "source": "Mushoku Tensei",
+    "identityProse": "Eris Greyrat from Mushoku Tensei, a noble-born swordswoman with deep crimson wavy long hair, red eyes, thick eyebrows and a small ahoge, tall and athletic with a tomboyish \"mad dog\" aura that contrasts her noble upbringing",
+    "identityTokens": [
+      "eris_greyrat",
+      "1girl",
+      "solo",
+      "red_hair",
+      "long_hair",
+      "curly_hair",
+      "red_eyes",
+      "ahoge",
+      "thick_eyebrows",
+      "headband",
+      "athletic",
+      "mushoku_tensei"
+    ],
+    "outfits": [
+      {
+        "id": "sword_king",
+        "name": "剑王时期",
+        "isDefault": true,
+        "prose": "her iconic outfit as the Sword King, a crop top with open inner-thigh pants and stirrup leggings, white pantyhose, a headband and a sheathed sword at her hip",
+        "tokens": [
+          "crop_top",
+          "open_inner_thigh_pants",
+          "stirrup_leggings",
+          "white_pantyhose",
+          "headband",
+          "sword",
+          "sheath"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "dead_end_adventurer",
+        "name": "冒险者 Dead End",
+        "isDefault": false,
+        "prose": "her Dead End adventurer outfit from the journey across the Demon Continent, a practical jacket with pants and boots, sword and sheath at her belt",
+        "tokens": [
+          "jacket",
+          "pants",
+          "boots",
+          "sword",
+          "sheath",
+          "belt",
+          "adventure"
+        ],
+        "isNsfw": false
+      },
+      {
+        "id": "noble_child",
+        "name": "贵族大小姐",
+        "isDefault": false,
+        "prose": "her childhood noble outfit, an elegant frilled dress befitting the young lady of the Greyrat house, with her characteristic headband and ahoge",
+        "tokens": [
+          "dress",
+          "frills",
+          "headband",
+          "hair_ribbon",
+          "ahoge",
+          "red_hair"
+        ],
+        "isNsfw": false
+      }
+    ]
+  },
+  "view": {
+    "characterId": "eris_greyrat",
+    "displayName": "艾莉丝",
+    "source": "Mushoku Tensei",
+    "identityProse": "Eris Greyrat from Mushoku Tensei, a noble-born swordswoman with deep crimson wavy long hair, red eyes, thick eyebrows and a small ahoge, tall and athletic with a tomboyish \"mad dog\" aura that contrasts her noble upbringing",
+    "outfits": [
+      {
+        "outfitId": "sword_king",
+        "outfitName": "剑王时期",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her iconic outfit as the Sword King, a crop top with open inner-thigh pants and stirrup leggings, white pantyhose, a headband and a sheathed sword at her hip",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/eris_greyrat/sword_king/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/eris_greyrat/sword_king/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/eris_greyrat/sword_king/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/eris_greyrat/sword_king/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/eris_greyrat/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/eris_greyrat/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/eris_greyrat/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "dead_end_adventurer",
+        "outfitName": "冒险者 Dead End",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her Dead End adventurer outfit from the journey across the Demon Continent, a practical jacket with pants and boots, sword and sheath at her belt",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/eris_greyrat/dead_end_adventurer/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/eris_greyrat/dead_end_adventurer/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/eris_greyrat/dead_end_adventurer/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/eris_greyrat/dead_end_adventurer/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/eris_greyrat/dead_end_adventurer/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/eris_greyrat/dead_end_adventurer/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/eris_greyrat/dead_end_adventurer/ref_design_back.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "noble_child",
+        "outfitName": "贵族大小姐",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her childhood noble outfit, an elegant frilled dress befitting the young lady of the Greyrat house, with her characteristic headband and ahoge",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/eris_greyrat/noble_child/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/eris_greyrat/noble_child/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/eris_greyrat/noble_child/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/eris_greyrat/noble_child/ref_04_back_rear.png"
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "/character-references/eris_greyrat/noble_child/ref_design_front.png"
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "/character-references/eris_greyrat/noble_child/ref_design_side.png"
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "/character-references/eris_greyrat/noble_child/ref_design_back.png"
+          }
+        ]
+      }
+    ]
+  }
+}

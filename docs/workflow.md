@@ -74,6 +74,8 @@
 | 操作 | 入口 | 注意事项 |
 | --- | --- | --- |
 | 场景分片聚合 | data:build | data/scenes → scenes.json |
+| 人物／服装／场景统一同步 | content:sync | 默认只读校验与登记预览；--apply 修清单 count、补参考分片并构建聚合；--ids=a,b 仅限制参考登记 |
+| 每人物参考分片聚合 | reference:build | data/references → standards/view 兼容聚合；--check 检查一致性（产物缺失会自愈）；聚合不入 Git |
 | 热门角色聚合 | popular:build | data/popular → popular-characters.json |
 | 蓝图聚合 | blueprints:build | 使用既有蓝图分片源，不直接改聚合产物 |
 | 词条分片与字典 | tags:build / tags:check | 校验 manifest、重复词/别名决策和源路径；保留旧 ID，生成聚合与字典，失效旧压缩 |
@@ -220,6 +222,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 退出码：0 核验通过；1 内容/不兼容（元数据缺失/损坏/不支持版本、清单结构错误或非空 unverified、基线或重建目标身份/数量失配、totals/candidate 与实际不符、候选实际字节核验失败）；2 参数/越界/环境（参数缺失或无法识别、root 不可用、基线清单越界/缺失/不可读、候选目录越界/缺失/不是目录/junction 逃逸、内部异常）。隔离回归：`node scripts/tests/test-resource-pack-verify.js`（已登记 unit 套件，候选包由 G13 导出器在临时夹具内生成，记录型 fs 证明旧资产零访问与全程零写入）。
 
 ## 办公机工程阶段入口（2026-09-15）
+
+2026-09-22：日常人物／服装／场景维护统一入口与文件位置见[人物接入工作流](guides/characters/character-onboarding-workflow.md#日常维护入口)。参考库已按人物分片；新人物登记复制已有身份数据，不编造提示词、URL 或审核状态。只读预览不构建，显式 apply 不涉及模型/安装/发布；参考登记事务与后续聚合构建分阶段执行，失败后可修复并重跑。
 
 本阶段衔接后端、场景管理界面、资源服务及维护工具；工程验证在办公机隔离环境执行，真实模型、资产质量和主力机安装/设备验收分别留存。
 

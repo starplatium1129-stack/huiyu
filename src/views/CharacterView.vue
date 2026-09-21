@@ -263,7 +263,7 @@
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vue'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
@@ -456,10 +456,11 @@ async function loadProfiles() {
   loading.value = false
 }
 
+watch(() => current.value?.id, id => {
+  if (id) void ensureCharacterReferencesLoaded(id).catch(() => undefined)
+})
 onMounted(() => {
   void loadProfiles()
-  // 参考档案为运行时 JSON：挂载即预取；shallowRef 到达后 computed 自动重算
-  void ensureCharacterReferencesLoaded().catch(() => undefined)
 })
 </script>
 

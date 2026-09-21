@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "character-reference-standards-v2",
   "title": "character-reference-standards-v2",
-  "description": "角色 × 多服装形态 4 视角标准参考资产库 + 3 视角设计图基线占位的结构契约。data/character-reference-standards.json 是唯一手写权威源；执行化见 scripts/tests/test-character-reference-contract.js（2026-08-28 机器契约，替代散落在维护脚本里的手写字段清单）。",
+  "description": "角色 × 多服装形态 4 视角标准参考资产库 + 3 视角设计图基线占位的结构契约。data/references 是分片权威源，data/character-reference-standards.json 为兼容聚合产物；执行化见 scripts/tests/test-character-reference-contract.js（2026-08-28 机器契约，替代散落在维护脚本里的手写字段清单）。",
   "type": "object",
   "additionalProperties": false,
   "required": [

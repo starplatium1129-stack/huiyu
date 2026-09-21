@@ -48,9 +48,8 @@ const crypto: typeof import('crypto') = require('crypto');
 const { compress }: typeof import('./precompress.js') = require('./precompress.js');
 
 const HOST = process.env.COMFY_HOST || 'http://127.0.0.1:8188';
-const ROOT = path.resolve(__dirname, '..', '..');
+const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
 const VIEW_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
-const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
 const REF_ROOT = process.env.AI_WORKSPACE_ROOT
   ? path.join(process.env.AI_WORKSPACE_ROOT, 'CharacterReferences')
   : path.resolve(ROOT, '..', 'AI', 'CharacterReferences');
@@ -264,11 +263,8 @@ function targetRelPath(charId: string, outfitId: string, view: any, isDefault: b
 }
 
 // ── 收集任务 ─────────────────────────────────────────────────────────────────
-if (!fs.existsSync(VIEW_FILE)) fail('缺 data/character-reference-view.json');
-if (!fs.existsSync(STANDARDS_FILE)) fail('缺 data/character-reference-standards.json');
-
-const view = JSON.parse(fs.readFileSync(VIEW_FILE, 'utf8'));
-const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
+const referenceStore: typeof import('../lib/reference-store') = require('../lib/reference-store');
+const { view, standards } = referenceStore.readReferenceLibrary(ROOT);
 const stdByChar = new Map((standards.characters || []).map((c: any) => [c.id, c]));
 
 const tasks: any[] = [];
@@ -343,8 +339,10 @@ log(`=== 完成: 本次 ${slice.length} 成功 ${ok} 失败 ${failCount} ===`);
 
 // ── 后处理：view.json pending→url + 重建预压缩产物 ─────────────────────────
 try {
+  // Rendering can take hours: update the current source, not the initial snapshot.
+  const current = referenceStore.readReferenceLibrary(ROOT);
   let filled = 0;
-  for (const profile of Object.values<any>(view)) {
+  for (const profile of Object.values<any>(current.view)) {
     for (const o of profile.outfits || []) {
       for (const ref of o.references || []) {
         if (!ref.id || !String(ref.id).startsWith('ref_design_') || !ref.pending) continue;
@@ -365,7 +363,7 @@ try {
     }
   }
   if (filled) {
-    fs.writeFileSync(VIEW_FILE, JSON.stringify(view, null, 2) + '\n', 'utf8');
+    referenceStore.writeReferenceLibrary(ROOT, current.standards, current.view);
     const c: any = compress(VIEW_FILE);
     log(`view.json 已更新: ${filled} 个 design 条目填 url，预压缩产物已重建（br ${c.brotli}B / gz ${c.gzip}B）`);
   } else {

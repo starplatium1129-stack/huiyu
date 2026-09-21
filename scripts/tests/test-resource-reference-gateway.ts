@@ -35,6 +35,9 @@ test('approved reference images and projection route together ahead of stale pre
   const stack = await f.stack({ CHARACTER_REF_ROOT: v.root });
   const index: any = await request(stack, '/data/character-reference-view.json', undefined, { 'accept-encoding': 'gzip' });
   assert.deepEqual(index.data, v.view);
+  const profile: any = await request(stack, '/api/character-reference-profile/fixture');
+  assert.equal(profile.status, 200);
+  assert.deepEqual(profile.data, v.view.fixture);
   assert.equal(index.headers['cache-control'], 'private, no-cache');
   const image: any = await request(stack, '/character-references/fixture/approved.png');
   assert.equal(image.text, 'approved reference fixture');
@@ -52,7 +55,7 @@ for (const corruption of ['image', 'index', 'source', 'marker']) test('bad refer
     source: path.join(f.program, 'data/character-reference-standards.json'), marker: path.join(v.root, 'reference-release.json') }[corruption];
   write(file, '{"changed":true}');
   const stack = await f.stack({ CHARACTER_REF_ROOT: v.root });
-  for (const url of ['/data/character-reference-view.json', '/character-references/fixture/approved.png']) {
+  for (const url of ['/data/character-reference-view.json', '/api/character-reference-profile/fixture', '/character-references/fixture/approved.png']) {
     const response: any = await request(stack, url);
     assert.equal(response.status, 503); assert.equal(response.data.code, 'REFERENCE_RELEASE_INVALID');
     assert.equal(response.text.includes(f.base), false);
@@ -72,7 +75,7 @@ test('versioned references reject remote/forwarded access even with gateway toke
   const f = resourceFixture(t); const v = version(f);
   const stack = await f.stack({ CHARACTER_REF_ROOT: v.root });
   const remote = { 'x-forwarded-for': '203.0.113.9', 'x-token': stack.config.TOKEN };
-  for (const url of ['/data/character-reference-view.json', '/character-references/fixture/approved.png']) {
+  for (const url of ['/data/character-reference-view.json', '/api/character-reference-profile/fixture', '/character-references/fixture/approved.png']) {
     assert.equal((await request(stack, url, undefined, remote)).status, 403);
   }
 });

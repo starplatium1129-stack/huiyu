@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-import { PathOrFileDescriptor } from 'node:fs';
 
 /**
  * 参考库 URL 断链修复（2026-08-29 产品运营审计 P0-1）。
@@ -26,16 +25,12 @@ import { PathOrFileDescriptor } from 'node:fs';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
 const VIEW_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
 // 2026-08-29：删除两个从未被引用的常量 ASSETS / PERSPECTIVE_COUNT ——
 // 它们让 lint:js 报 4 个 error，进而被 pre-push 钩子挡下（见 .githooks/pre-push）。
 const DRY_RUN = process.argv.includes('--dry-run');
-
-function readJson(file: PathOrFileDescriptor) {
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
-}
 
 function refUrlToPath(url: any) {
   // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences，URL 前缀
@@ -139,11 +134,11 @@ function snapshotBackup(renames: { from: string; to: string; }[]) {
   const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
   const dir = path.join(ROOT, 'runtime', 'maintenance-backups', `${stamp}-ref-url-repair`);
   fs.mkdirSync(dir, { recursive: true });
-  fs.copyFileSync(VIEW_FILE, path.join(dir, 'character-reference-view.json'));
-  fs.copyFileSync(STANDARDS_FILE, path.join(dir, 'character-reference-standards.json'));
+  if (fs.existsSync(VIEW_FILE)) fs.copyFileSync(VIEW_FILE, path.join(dir, 'character-reference-view.json'));
+  if (fs.existsSync(STANDARDS_FILE)) fs.copyFileSync(STANDARDS_FILE, path.join(dir, 'character-reference-standards.json'));
   fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify({
     stamp, dryRun: DRY_RUN, renames,
-    note: '回滚 = 恢复两份 json + 按 manifest.renames 反向重命名',
+    note: '参考源由维护事务备份恢复；资产按 manifest.renames 反向重命名。此处聚合副本仅供比对。',
   }, null, 2) + '\n');
   return dir;
 }
@@ -161,8 +156,7 @@ function countBroken(view: ArrayLike<any>|{ [s: string]: any; }) {
 }
 
 function main() {
-  const view = readJson(VIEW_FILE);
-  const standards = readJson(STANDARDS_FILE);
+  const { view, standards } = (require('../lib/reference-store') as typeof import('../lib/reference-store')).readReferenceLibrary(ROOT);
   const beforeRefs = Object.values(view).reduce((n: any, p: any) => n + (p.outfits || []).reduce((m: any, o: any) => m + (o.references || []).length, 0), 0);
 
   const renames = repairDriftedFiles(view);
@@ -190,8 +184,7 @@ function main() {
   }
 
   const backupDir = snapshotBackup(renames);
-  fs.writeFileSync(VIEW_FILE, JSON.stringify(view, null, 2) + '\n');
-  fs.writeFileSync(STANDARDS_FILE, JSON.stringify(standards, null, 2) + '\n');
+  (require('../lib/reference-store') as typeof import('../lib/reference-store')).writeReferenceLibrary(ROOT, standards, view);
   console.log(`[ref-url-repair] 已备份并写盘: ${path.relative(ROOT, backupDir)}`);
 }
 
