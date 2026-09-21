@@ -88,6 +88,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   function commitSpeechText(text: string) {
     inputText.value = text
     if (speechConfig.value.autoSend && chatReady.value && !busy.value) void deps.handleSend()
+    else speechSession.markReplyIdle()
   }
 
   function onSpeechText(text: string, source: VoiceTextSource) {
@@ -97,6 +98,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     }
     const action = speechSession.onSessionText(text)
     if (action === 'end') {
+      speechSession.endSession()
       speechNotice.value = '已退出连续对话'
       return
     }

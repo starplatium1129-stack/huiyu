@@ -93,7 +93,7 @@
             class="companion-chat-speech"
             type="button"
             :data-state="speechState"
-            :disabled="speechState === 'recognizing' || !liveState.chatReady"
+            :disabled="speechButtonDisabled"
             :title="speechError || '按住说话，松开识别；也可按住 Space'"
             @pointerdown.prevent="onSpeechPress"
             @pointerup="onSpeechRelease"
@@ -153,5 +153,5 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
-const { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock } = useCompanionChatWindow()
+const { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock } = useCompanionChatWindow()
 </script>

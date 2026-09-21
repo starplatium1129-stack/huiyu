@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, type Ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { importLocalImages } from '@/utils/desktopImport'
 import type { ImportSourceFile } from '@/utils/desktopImportCore'
@@ -53,8 +53,11 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   let clipboardTextSubscription: number | undefined
   let importBusy = false
   let alive = true
+  let characterRevision = 0
+  watch(activeChar, () => { characterRevision += 1 }, { flush: 'sync' })
 
   function showClipboardCard(card: ClipboardCard) {
+    dismissClipboardCard()
     clipboardCard.value = card
     clearTimeout(clipboardCardTimer)
     clipboardCardTimer = window.setTimeout(dismissClipboardCard, 20_000) as unknown as number
@@ -150,12 +153,14 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   }
 
   async function onCaptureAndInspectScreen() {
-    if (capturingScreen.value || deps.busy.value || !deps.chatReady.value) return
+    if (!alive || capturingScreen.value || deps.busy.value || !deps.chatReady.value) return
+    const revision = characterRevision
+    const character = activeChar.value
     capturingScreen.value = true
     try {
       const dataUrl = await captureScreenFrame()
-      if (!dataUrl) return
-      const prompt = getCharacterInspectionPrompt(activeChar.value)
+      if (!dataUrl || !alive || revision !== characterRevision || deps.busy.value || !deps.chatReady.value) return
+      const prompt = getCharacterInspectionPrompt(character)
       deps.handleSend(prompt, dataUrl)
     } catch {
       // 捕获异常忽略
@@ -165,6 +170,9 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   }
 
   async function inspectClipboardImage() {
+    if (!alive || deps.busy.value || !deps.chatReady.value) return
+    const revision = characterRevision
+    const character = activeChar.value
     const card = clipboardCard.value
     if (!card || card.kind !== 'image' || !card.png) return
     const blob = clipboardPngBlob(card.png)
@@ -172,7 +180,8 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
     if (!blob) return
     try {
       const dataUrl = await blobToDataUrl(blob)
-      const prompt = getCharacterInspectionPrompt(activeChar.value)
+      if (!alive || revision !== characterRevision || deps.busy.value || !deps.chatReady.value) return
+      const prompt = getCharacterInspectionPrompt(character)
       deps.handleSend(prompt, dataUrl)
     } catch {
       // 转换异常忽略

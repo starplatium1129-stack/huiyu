@@ -54,6 +54,10 @@ const currentCharacter = computed(() => {
 
 const inputText = ref('')
 const sending = ref(false)
+const windowVisible = ref(true)
+const pageHidden = ref(document.hidden)
+const windowFocused = ref(document.hasFocus())
+let alive = true
 let liveInitialized = false
 const composerFocused = ref(false)
 const listRef = ref<HTMLDivElement>()
@@ -89,6 +93,10 @@ const {
 
 const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
 const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
+const replyActive = computed(() => sending.value || liveState.busy || liveState.thinking || liveState.speaking)
+const canCapture = computed(() => speechReady.value && liveState.chatReady && !replyActive.value
+  && windowVisible.value && !pageHidden.value && windowFocused.value)
+const speechButtonDisabled = computed(() => !liveState.chatReady || replyActive.value || speechState.value === 'recognizing')
 const speechSessionActive = computed(() => {
   void speechSessionState.value
   return speechSession.isSessionActive()
@@ -160,7 +168,10 @@ async function onSend() {
       if (activeChar.value === character && inputText.value.trim() === text) inputText.value = ''
       if (storage.draft(character).trim() === text) storage.setDraft(character, '')
     } catch { listenerError('发送失败，草稿已保留，请重试。') }
-    finally { sending.value = false }
+    finally {
+      sending.value = false
+      if (alive && !replyActive.value) speechSession.markReplyIdle()
+    }
   } else {
     listenerError('桌宠桥未连接，无法发送（请在角色窗中打开聊天）。')
   }
@@ -220,18 +231,21 @@ let speechHeldByPointer = false
 let speechHeldByKeyboard = false
 
 function onSpeechText(text: string, source: string) {
+  if (!alive || !canCapture.value) return
   if (source === 'auto' && !speechSession.isSessionActive()) {
     if (speechSession.onWakeText(text)) listenerNotice(`已唤醒${currentCharacter.value.name}，直接对话吧`)
     return
   }
   const action = speechSession.onSessionText(text)
   if (action === 'end') {
+    speechSession.endSession()
     listenerNotice('已退出连续对话')
     return
   }
   if (action === 'submit') {
     inputText.value = text
-    if (speechConfig.value.autoSend && canSend.value) onSend()
+    if (speechConfig.value.autoSend && canSend.value) void onSend()
+    else speechSession.markReplyIdle()
   }
 }
 
@@ -244,24 +258,41 @@ function listenerNotice(message: string) {
 }
 
 function reconcileAutoListen() {
+  if (!alive) return
+  if (!canCapture.value) {
+    cancelSpeechActivity()
+    return
+  }
   const shouldListen = speechReady.value
     && speechConfig.value.wakeEnabled
     && liveState.chatReady
     && !liveState.busy
     && !behavior.config().dnd
     && !behavior.inQuietHours()
-    && !document.hidden && document.hasFocus()
     && speechState.value !== 'error'
     && speechSession.shouldAutoListen()
   if (shouldListen && !speechAutoListening.value && !speechBusy.value) {
     void speechStart('auto')
   } else if (!shouldListen && speechAutoListening.value) {
-    speechStop()
+    speechCancel()
   }
 }
 
+function cancelSpeechActivity() {
+  speechHeldByPointer = false
+  speechHeldByKeyboard = false
+  speechCancel()
+}
+
+watch(replyActive, active => {
+  if (active) { speechSession.markReplyBusy(); cancelSpeechActivity() }
+  else speechSession.markReplyIdle()
+  reconcileAutoListen()
+})
+watch([speechState, speechConfig, canCapture, speechSessionState], reconcileAutoListen)
+
 function onSpeechPress() {
-  if (speechBusy.value || !liveState.chatReady) return
+  if (speechBusy.value || !canCapture.value) return
   speechHeldByPointer = true
   void speechStart('manual')
 }
@@ -297,7 +328,7 @@ function onWindowKeydown(event: KeyboardEvent) {
   if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
     || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable)
     || (target instanceof HTMLElement && Boolean(target.closest('button, a, [role="button"]')))) return
-  if (speechBusy.value || !liveState.chatReady || document.hidden) return
+  if (speechBusy.value || !canCapture.value) return
   speechHeldByKeyboard = true
   event.preventDefault()
   void speechStart('manual')
@@ -348,6 +379,8 @@ async function copyMessage(content: string) {
 /* —— 生命周期 —— */
 let visibilitySub = 0
 function onVisibilityChange() {
+  pageHidden.value = document.hidden
+  windowFocused.value = document.hasFocus()
   reconcileAutoListen()
 }
 
@@ -360,8 +393,8 @@ onMounted(() => {
   liveInitialized = true
   void nextTick(resizeComposer)
   window.addEventListener('resize', resizeComposer)
-  window.addEventListener('focus', reconcileAutoListen)
-  window.addEventListener('blur', reconcileAutoListen)
+  window.addEventListener('focus', onVisibilityChange)
+  window.addEventListener('blur', onVisibilityChange)
   void Promise.resolve(bridge?.getChatDocked?.()).then(value => { if (typeof value === 'boolean') docked.value = value }).catch(() => {})
   speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
   reconcileAutoListen()
@@ -370,7 +403,10 @@ onMounted(() => {
   window.addEventListener('keyup', onWindowKeyup, { passive: false })
   window.addEventListener('pointerdown', onDocFocus, { passive: true })
   document.addEventListener('visibilitychange', onVisibilityChange)
-  if (bridge?.onVisibilityChanged) visibilitySub = bridge.onVisibilityChanged(reconcileAutoListen)
+  if (bridge?.onVisibilityChanged) visibilitySub = bridge.onVisibilityChanged(visible => {
+    windowVisible.value = visible
+    onVisibilityChange()
+  })
 })
 
 function onStorageChange(event: StorageEvent) {
@@ -394,11 +430,12 @@ function onDocFocus() {
 }
 
 onUnmounted(() => {
+  alive = false
   quietClock.stop()
   storage.setDraft(activeChar.value, inputText.value)
   window.removeEventListener('resize', resizeComposer)
-  window.removeEventListener('focus', reconcileAutoListen)
-  window.removeEventListener('blur', reconcileAutoListen)
+  window.removeEventListener('focus', onVisibilityChange)
+  window.removeEventListener('blur', onVisibilityChange)
   stopSpeechSessionWatch()
   clearTimeout(draftTimer)
   clearTimeout(errorTimer)
@@ -427,5 +464,5 @@ watch(activeChar, () => {
   reconcileAutoListen()
 })
 
-return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock }
+return { activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, statusDotState, statusText, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, composerFocused, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, metaText, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, toggleDock }
 }

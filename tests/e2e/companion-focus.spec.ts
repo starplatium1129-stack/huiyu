@@ -274,6 +274,27 @@ test('companion chat rejects an unknown live character instead of borrowing anot
 })
 
 for (const theme of ['dark', 'light']) {
+  test(`companion microphone control follows reply and voice state ${theme}`, async ({ page }, testInfo) => {
+    await desktopFixture(page, theme, true)
+    await page.addInitScript(() => {
+      localStorage.setItem('aics_speech_input_v1', JSON.stringify({ enabled: true,
+        endpoint: 'http://127.0.0.1:9999', wakeEnabled: false, autoSend: false }))
+    })
+    await page.setViewportSize({ width: 480, height: 640 })
+    await page.goto('/companion-chat')
+    const speech = page.getByRole('button', { name: '按住说话', exact: true })
+    await expect(speech).toBeEnabled()
+    for (const phase of ['busy', 'speaking', 'idle']) {
+      await page.evaluate(phase => {
+        localStorage.setItem('aics_companion_chat_live_v1', JSON.stringify({ activeChar: 'nene', chatReady: true,
+          busy: phase === 'busy', speaking: phase === 'speaking', ts: Date.now() }))
+        window.dispatchEvent(new StorageEvent('storage', { key: 'aics_companion_chat_live_v1' }))
+      }, phase)
+      if (phase === 'idle') await expect(speech).toBeEnabled()
+      else await expect(speech).toBeDisabled()
+      await page.screenshot({ path: testInfo.outputPath(`microphone-${theme}-${phase}.png`) })
+    }
+  })
   test(`companion capability report explains pending and unsupported mappings in ${theme} theme`, async ({ page }) => {
     await desktopFixture(page, theme)
     await page.goto('/chat')

@@ -41,6 +41,8 @@
 
 这里保存已完成的审计或办公机实施；报告中的真实素材、安装与设备待验边界继续有效。
 
+- [桌宠功能检查与修复（2026-09-21）](audits/2026-09-21/companion-functional-review.md)：语音会话/录音取消、剪贴板资源与迟到看图归属修复；保留真实 Windows、模型和音频设备待验范围。
+
 - [012：全站页面与功能体验](audits/2026-09-21/012-execution-report.md)：办公机实施完成；[217 项功能矩阵](audits/2026-09-21/012-page-function-matrix.md)保留 85 项含主力机条件的记录，[基线审计](audits/2026-09-21/012-page-experience-audit.md)与[原计划](../plans/012-page-experience-polish.md)仅作追溯。
 - [012执行证据](audits/2026-09-21/012-execution-evidence.json)：逐ID处置、608个去重浏览器结果、最终默认页面、日志/图片哈希与主力机限制；[详细执行报告](audits/2026-09-21/012-execution-report.md)含逐页结论和前后图。
 - [011：数据兼容、删除闭环与资源边界](audits/2026-09-21/011-results.md)：六项实现及最终集成验证完成；[证据](audits/2026-09-21/011-evidence.json)与[原计划](../plans/011-data-compatibility-and-resource-boundaries.md)保留实现范围，真实模型/安装验收见 roadmap。
