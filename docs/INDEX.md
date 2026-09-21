@@ -28,6 +28,7 @@
 ## 当前审计与待办
 
 - [012：全站页面与功能体验审计](audits/2026-09-21/012-page-experience-audit.md)：当前基线的112页面组合、重点交互、确认问题与美术方向；[逐页功能矩阵](audits/2026-09-21/012-page-function-matrix.md)逐项登记状态边界，[执行计划](../plans/012-page-experience-polish.md)与[执行记录](audits/2026-09-21/012-execution-report.md)维护实施进度，[脱敏证据](audits/2026-09-21/012-evidence.json)保存审计基线结果与构建身份。
+- [012执行证据](audits/2026-09-21/012-execution-evidence.json)：逐ID处置、608个去重浏览器结果、最终默认页面、日志/图片哈希与主力机限制；[详细执行报告](audits/2026-09-21/012-execution-report.md)含逐页结论和前后图。
 
 - [011：数据兼容、删除闭环与资源边界执行计划](../plans/011-data-compatibility-and-resource-boundaries.md)：2026-09-21 补查后的六项工作，含明确文件范围、反例、实施顺序、验收、回退和新任务交接；单会话执行，不使用子代理。
 
