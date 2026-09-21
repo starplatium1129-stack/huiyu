@@ -272,11 +272,11 @@ export function useChatConversation(options: ChatConversationOptions) {
     // 视觉轮（临时切到 Gemini 看图）的模型名不写回用户配置
     if (options.chatProvider.value === 'api' && !hostMode && !useVision) {
       options.apiModel.value = String(rawModel)
-      options.storage.setApiSettings({
+      void Promise.resolve(options.storage.setApiSettings({
         baseUrl: options.apiBaseUrl.value,
         model: options.apiModel.value,
         apiKey: options.apiKey.value,
-      })
+      })).catch(() => options.onError('模型配置未能安全保存，当前回复不受影响，请稍后重试。'))
     } else if (options.chatProvider.value !== 'api' || hostMode) {
       options.currentModel.value = String(rawModel)
       options.storage.setModel(options.currentModel.value)

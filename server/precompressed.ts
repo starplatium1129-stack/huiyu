@@ -65,7 +65,7 @@ function precompressed(rootDir: string, options?: { assetsRoot?: string }): Requ
       // data/ JSON 可由维护链路更新，即使通过 .br/.gz 发送也必须协商 ETag；
       // 只有内容哈希的 SPA _app 资源才允许 immutable。
       const versioned = pathname.startsWith('/_app/');
-      res.setHeader('Cache-Control', versioned ? 'public, max-age=31536000, immutable' : 'no-cache');
+      res.setHeader('Cache-Control', versioned ? 'public, max-age=31536000, immutable' : 'private, no-cache');
       res.sendFile(file, error => {
         if (!error) return;
         if (res.headersSent) return next(error);

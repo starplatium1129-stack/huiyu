@@ -312,6 +312,14 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `npm run wf -- desktop:storage-benchmark` 独立运行桌面持久化候选比较：使用 Node 内置 `node:sqlite`、已安装 Playwright 浏览器（可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`）和临时目录，输出 JSON 后清理夹具，不连接生产网关、不打开真实浏览器资料。比较 1,000/10,000 条作品索引及 64 对原图/缩略图，各三轮；耗时不设 CI 阈值，运行时不要并发构建或浏览器测试。方法限制和推荐结论见 [计划 005](../plans/005-desktop-architecture-consolidation.md)。迁移/任务日志故障注入原型已登记 unit 套件，均不接入生产运行时。
 
+`npm run wf -- desktop:thumbnail-benchmark` 直接抽取当前 `App.vue` 的预热函数，在临时 loopback 服务和私有浏览器上下文运行真实 IndexedDB 与图片解码。1k/10k 历史共用 64 张中性 1024px 图，前台/后台/双页各三轮观察五秒；报告实际 visibility、读写/生成次数、重复图片读取、CDP JS 堆与脚本/任务时间及源码/夹具哈希。后台未实际 hidden 时标为 unavailable，不模拟后台性能，不把小图结果当作用户大图/GPU成本。独占运行后保存 stdout JSON；不新增性能阻断阈值。
+
+`npm run wf -- desktop:restore-benchmark` 在新私有上下文按 1k/10k 历史各跑三轮，64 张确定性中性噪声 PNG 经真实 `buildBackupBlob → Blob.text → JSON.parse/normalizeBackup → restoreBackupData`，核对条目、原图字节数、图片重映射及旧原图保全。分别报告导出/读取/解析/恢复时间、实际备份字节与约 25ms CDP JS 堆采样；observedPeak 是观测下界，不含 Blob 原生后备内存、完整进程/GPU，也不代表 512MiB 峰值、可取消性或断电恢复。独占运行，无生产库访问。
+
+`node scripts/maintenance/check-bundle-budget.js [dist目录] --json` 保留旧预算，同时报告入口与真实路由匹配链的静态 JS 文件并集（不计运行时动态请求）。映射来自 router AST；无 src 命名块只接受唯一匹配，缺失/歧义显式 unknown、总数 null，不能解释为零。新指标仅报告，包含文件集合、manifest/router 哈希；需将所选 dist 与相同源码配对，再用独占冷启动浏览器的 script 请求核对动态加载差异。
+
+迁移原型 `test-artwork-persistence-prototype.js` 在文件发布、事务内元数据写入与提交后三个检查点真实强杀自有子进程，重开临时 SQLite 核对未提交/已提交状态及幂等恢复。这只证明该候选的进程终止边界；浏览器备份涉及 localStorage 与 IndexedDB 的恢复 journal、设置发布/清理阶段、物理断电及 512 MiB 大包峰值仍须独立验收，不据此上线 journal。
+
 `flows`、`anima-quick`、`office-code` 共用模拟上游，统一在 `flows` 项目的单 worker 中运行；其他页面和设备回归仍可并行。多会话验收时给每轮设置不同的 `AICS_E2E_PORT_OFFSET`（例如 `15000`），网关、浏览器和模拟上游按同一映射偏移端口，并使用隔离运行目录、拒绝复用已有服务。浏览器测试期间不得重建共享 dist；先完成构建再验收，并用独立 `--output` 目录保留每轮证据。
 
 无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。2026-09-09 的工程治理历史见[当时记录](archive/audits/engineering-debt-2026-09-09.md)。
@@ -319,6 +327,14 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 首次建立无构建产物的 worktree 时，先执行 `npm run build:runtime` 与 `npm run build`，再运行完整门禁；聊天契约会实际请求已构建的 SPA。隔离验收副本只带入本任务文件，不能通过忽略其他会话的失败文件而宣称原共享工作区全量通过。
 
 每周 Dependency Audit 同时检查运行时与完整依赖树，高危/致命阻断，并保留 JSON 报告 14 天。中危告警须按实际调用路径评估，不能把流程通过理解为零漏洞。9-09 的依赖问题见[历史审计](archive/audits/remaining-dimensions-2026-09-09.md)，9-11 的 `adm-zip` 升级、重新审计及安装验收边界见[办公机收尾记录](archive/audits/office-code-2026-09-11.md)。
+
+Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/src-tauri/Cargo.lock`（发行桌面壳）和 `desktop-tauri/native-live2d/Cargo.lock`（原生渲染器独立构建）；PoC 锁文件不冒充发行依赖。发现 advisory 或扫描不可用均失败，保留 JSON、stderr、退出码、工具版本、源码 SHA 和锁文件哈希。原生 SDK 不属于 Cargo advisory 数据库：`native-live2d/build.rs` 声明 Cubism Native 5-r.5，实际 SDK 字节与许可仍需发行机单独记录。两份 Cargo 清单与 npm 锁文件随 CI artifact 保存；14 天留存不能代替长期发行归档。
+
+发行交接继续复用 `capture:delivery`：源码选择包含 npm/Cargo 锁文件与 SDK 构建配置，构建选择包含安装包、暂存网关的实际 package-lock、随包 Node 版本/哈希和实际 Cubism SDK 版本/哈希清单。先捕获身份，再运行扫描/门禁，结果记录写实际命令、运行环境、素材模式、失败/跳过及日志相对路径；按 `--baseline/--record` 绑定结果。尚无安装包或 SDK 时保持该项 pending，不能用开发机 Node 或声明 SDK 版本填作随包实测值。
+
+交付时将回执与选中的脱敏日志/哈希清单一并放入受控发行 artifact，或把脱敏摘要登记到 docs/evidence 并加入文档索引；仅引用 runtime 路径无法跨机器移交。接收方恢复相同相对路径后运行 `audit:delivery`，核对 source/build 和日志是否 fresh，分别填写 installation、deviceAcceptance、modelAcceptance。现有失效检查能检出选中源码、构建或日志字节变化；哈希不认证日志语义，也不补签未运行项目。
+
+历史 Audit stability validation 已收口为人工触发、只读 token 和禁用 checkout 凭据持久化，仅保存重现补丁与证据，不提交或推送。普通 push/PR 不触发该历史工作流。`docs:check` 仅核对本地目标文件，`audit:workflow-conditions` 仅核对注册条件；标题锚点、描述语义、外部来源和实际运行结果仍需逐项检查，不能据两项通过声称全部入口可运行。
 
 预算包括路由 JS 140 KiB、CSS、入口与依赖闭包等，完整阈值见 check-bundle-budget.js。测试规模与路由数量以当次输出为准；历史 PASS 不能代替本次检查。
 
@@ -339,6 +355,9 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 真实模型浏览器检查：完成构建和导入后，设置 `AICS_LIVE2D_IMPORTS=1` 与独立 `AICS_E2E_PORT_OFFSET`，运行 `node node_modules/@playwright/test/cli.js test tests/e2e/live2d-imports.spec.ts --project desktop --workers 1`。未显式设置时跳过私有资产测试；开启后使用实际运行库、模型及贴图，保存双主题截图，不替代原生 GPU 或音频设备验收。
 
 环境与本机凭据说明见 [启动与排错](../STARTUP.md) 与 [全功能硬件配置与模型开箱指南](guides/setup-and-models.md)。
+
+聊天个人 API 密钥在 Windows 桌面版由系统凭据管理器按 API 地址保存，网页端只放在当前页面内存；浏览器持久设置保留地址/模型，不保存新密钥。旧明文记录只有安全写入和读回一致后才清除；失败保留可恢复旧值并提示重试，不降级为新明文写入。配置面板可独立清除个人密钥；备份导出排除尚未迁移的旧密钥。站主托管配置仍是服务端受限文件，与个人凭据迁移分开验收。原生测试仅使用唯一 `Huiyu/Test` 目标，不读取已有个人凭据；系统凭据库失败、升级与最终安装须另留真实 Windows 验收。
+
 - `models:check`：扫描当前硬件显存与 ComfyUI/反推模型就绪状态；
 - `models:download-wd14`：一键从国内高速镜像（hf-mirror）下载本地 WD14 真实反推模型（约 150MB）；
 - `models:download-h3 --models-root <ComfyUI模型目录>`：H3 可选模型下载入口；该操作下载大文件，不属于质量检查或普通安装的自动步骤。

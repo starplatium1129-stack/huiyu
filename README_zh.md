@@ -26,8 +26,8 @@
   - 在“效果样张”中查看逐场景审核的实际成图，支持带着场景直接进入导演台。
 - **角色 4 视角参考档案库（Character Reference Bible）**：
   - 四种电影参考视角与正、侧、背三视图设计基线；登记、待生成、已有图片与视觉审核完成分开统计，详见[项目状态](docs/project-status.md)。
-  - 新角色形态先经 `workflow reference:register` 登记占位（不制造断链），再由 `reference:render` 出图回填。
-  - 全自动闭环自愈流水线：3 并发批量出图池 + 4 并发 Gemini 3.7 Flash 纯视觉审核池 + 定向微调自愈引擎。
+  - 新角色形态先经 `workflow reference:register` 登记占位，再由 `reference:render` 生成隔离候选，不直接回填活跃库。
+  - 自动检查辅助人工审核；缺人工决定保持 pending，明确通过后才显式发布不可变版本。具体步骤见[候选审核与版本发布](docs/workflow.md#参考库候选审核与版本发布)。
   - 标准化参考资产契约为下游 MiniMax H3 Ref2VA 视频生成提供稳定的角色锁脸保障。
 - **多生成引擎协同与 精选动漫画风**：
   - 跨引擎提示词自动编译：支持 Stable Diffusion / WAI (Danbooru tags)、Anima 1.1 (`@artist` + 原生标签流) 与 Krea 2 Turbo (3~5 句纯英文自然语言)。

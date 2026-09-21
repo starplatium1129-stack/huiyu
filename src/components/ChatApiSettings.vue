@@ -9,7 +9,7 @@
           <span>使用 DeepSeek、OpenCode 或任意 OpenAI 兼容服务。</span>
         </div>
       </div>
-      <span class="api-storage-note"><i aria-hidden="true"></i>密钥仅保留到关闭浏览器</span>
+      <span class="api-storage-note"><i aria-hidden="true"></i>{{ desktopCredentials ? '密钥由 Windows 安全保存' : '密钥仅用于当前页面会话' }}</span>
     </div>
 
     <fieldset class="api-vendor-picker">
@@ -65,6 +65,7 @@
     <div class="api-settings-actions">
       <span class="api-test-status" :data-state="testState" role="status">{{ statusText }}</span>
       <div class="api-settings-buttons">
+          <button class="btn btn-ghost btn-sm" type="button" @click="clearPersonalKey">清除个人密钥</button>
         <button class="btn btn-ghost btn-sm" type="button"
           :disabled="testing || !canTest" @click="testConnection">
           {{ testing ? '测试中…' : '测试连接' }}
@@ -87,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import {
   CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL,
@@ -96,6 +97,7 @@ import {
   OPENCODE_GO_BASE_URL, OPENCODE_GO_DEFAULT_MODEL,
 } from '@/config/chatApi'
 import { chatApi } from '@/api/chatApi'
+import { createChatApiDrafts } from '@/utils/chatApiDrafts'
 
 type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 interface ModelOption { value: string; label: string }
@@ -156,42 +158,25 @@ const emit = defineEmits<{
   save: []
   'save-host': []
   'clear-host': []
+  'clear-key': []
 }>()
 
 const showApiKey = ref(false)
+const desktopCredentials = Boolean(window.companionDesktop)
 const testing = ref(false)
 const testState = ref('')
 const testMessage = ref('')
 const discoveredModels = ref<string[]>([])
-/**
- * 每个服务商独立的草稿：切换按钮时先保存当前商家的 baseUrl/model/key，
- * 再恢复目标商家上次填过的值（没有才用预设），来回切换互不覆盖。
- * 之前是"点谁用谁的预设"——已填的内容会被下一个商家的预设冲掉。
- * 草稿持久化到 localStorage，刷新页面后仍能找回各商家填过的内容。
- */
-const DRAFTS_KEY = 'aics_chat_api_drafts'
-interface VendorDraft { baseUrl: string; model: string; apiKey: string }
-const vendorDrafts = ref<Record<string, VendorDraft>>({})
-try {
-  const stored = localStorage.getItem(DRAFTS_KEY)
-  if (stored) {
-    const parsed = JSON.parse(stored) as Record<string, unknown>
-    const restored: Record<string, VendorDraft> = {}
-    for (const [key, value] of Object.entries(parsed)) {
-      if (value && typeof value === 'object') {
-        const draft = value as VendorDraft
-        if (typeof draft.baseUrl === 'string' && typeof draft.model === 'string' && typeof draft.apiKey === 'string') {
-          restored[key] = { baseUrl: draft.baseUrl, model: draft.model, apiKey: draft.apiKey }
-        }
-      }
-    }
-    vendorDrafts.value = restored
-  }
-} catch { /* 草稿损坏则忽略 */ }
+const draftStore = createChatApiDrafts(() => { testMessage.value = '旧密钥草稿暂未能安全迁移，原值已保留，请重试。' })
+const vendorDrafts = draftStore.drafts
 
-watch(vendorDrafts, (value) => {
-  try { localStorage.setItem(DRAFTS_KEY, JSON.stringify(value)) } catch {}
-}, { deep: true })
+async function clearPersonalKey() {
+  try {
+    await draftStore.clear(props.vendor, { baseUrl: props.baseUrl, model: props.model, apiKey: props.apiKey })
+    emit('update:apiKey', '')
+    emit('clear-key')
+  } catch { testMessage.value = '个人密钥草稿清除失败，原值已保留，请重试。' }
+}
 
 const vendorProxy = computed({
   get: () => props.vendor,
@@ -234,11 +219,11 @@ function selectVendor(vendor: ApiVendor) {
   const current = props.vendor
   // 先把当前商家的草稿存起来
   if (current !== vendor) {
-    vendorDrafts.value[current] = {
+    draftStore.set(current, {
       baseUrl: props.baseUrl,
       model: props.model,
       apiKey: props.apiKey,
-    }
+    })
   }
   emit('update:vendor', vendor)
   discoveredModels.value = []

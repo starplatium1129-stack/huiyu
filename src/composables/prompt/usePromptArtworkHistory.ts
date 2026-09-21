@@ -1,9 +1,5 @@
-import { withArtworkStaging } from '@/storage/artworkSession'
 import { prepareGeneratedArtwork, type GeneratedArtworkInput, type LegacyArtworkDefaults } from '@/application/artwork/artworkSaveInput'
-import { imgPut, imgDelete } from '@/composables/useImageStore'
-import { artworkRepository } from '@/storage/artworkRepository'
 import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
-import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { storeToRefs } from 'pinia'
 import type { HistoryEntry } from '@/types/promptHistory'
 
@@ -13,21 +9,8 @@ export function usePromptArtworkHistory(resolveLegacyArtworkDefaults: (entry: Ge
   const { history, projects } = storeToRefs(historyStore)
   async function commitHistoryEntry(entry: GeneratedArtworkInput): Promise<HistoryEntry | null> {
     const snapshot = prepareGeneratedArtwork(entry, resolveLegacyArtworkDefaults)
-    const { saveArtworkSnapshot } = await import('@/application/artwork/saveGeneratedArtwork')
-    const result = await saveArtworkSnapshot(snapshot, {
-      withStaging: work => withArtworkStaging(async () => {
-        const saved = await work()
-        // Keep page publication inside the existing staging lease, after persistence.
-        if (saved.ok) history.value = saved.history
-        else console.warn('commitHistoryEntry failed', saved.error)
-        return saved
-      }),
-      putImage: imgPut, deleteImage: imgDelete,
-      cacheThumbnail: historyStore.cacheThumbnail, measureBlob: historyStore.measureBlob,
-      now: () => Date.now(), nextId: historyStore.historyIdSeq,
-      normalizeArtistStyleIds, appendArtwork: artworkRepository.appendArtwork,
-    })
-    return result.ok ? result.entry : null
+    const { persistPromptArtwork } = await import('./persistPromptArtwork')
+    return persistPromptArtwork(snapshot, historyStore)
   }
 
   async function removeHistoryEntry(id: string | number) {

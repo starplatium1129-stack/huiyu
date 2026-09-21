@@ -121,6 +121,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
     }, options.control || {});
     gateway = createGateway({
       config:config,
+      env:options.env || {},
       services:services,
       control:control,
       spawn:options.spawn

@@ -2,6 +2,8 @@
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const { createHash }: typeof import('node:crypto') = require('node:crypto');
+const { readPageMappings, pageBundleReport }: typeof import('../lib/page-bundle-report') = require('../lib/page-bundle-report');
 
 const DEFAULT_BUDGETS = Object.freeze({
   // PromptBuilder carries the three server-backed engines and their history
@@ -31,7 +33,7 @@ const DEFAULT_BUDGETS = Object.freeze({
   // 预算 390 KiB（告警线 351 KiB ≈ 当前 +8 KiB）。
   entryClosureJavaScript: 390 * 1024,
   // 最大路由静态闭包（2026-09-06 审计 P2-03）：防「路由自身变小、代码搬进
-  // 同步共享块」的造假 —— 路由闭包含入口链与全部静态共享模块，去重后统计。
+  // 同步共享块」的造假 —— 仅路由自身及其静态依赖，不含独立入口或懒布局。
   // 以实测最大的 PromptBuilderView 515.3 KiB 为基线，预算 580 KiB。
   routeClosureJavaScript: 580 * 1024,
 });
@@ -122,7 +124,7 @@ function kib(bytes: any) {
   return `${(bytes / 1024).toFixed(1)} KiB`;
 }
 
-function run(distDir: any = path.resolve(__dirname, '../../dist')) {
+function run(distDir: any = path.resolve(__dirname, '../../dist'), options: { json?: boolean } = {}) {
   const manifestPath = path.join(distDir, '.vite', 'manifest.json');
   if (!fs.existsSync(manifestPath)) {
     throw new Error(`Vite manifest missing: ${manifestPath}`);
@@ -130,6 +132,14 @@ function run(distDir: any = path.resolve(__dirname, '../../dist')) {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const sizeOf = (file: any) => fs.statSync(path.join(distDir, file)).size;
   const result: any = evaluateManifest(manifest, sizeOf);
+  const routerSource = fs.readFileSync(path.resolve(__dirname, '../../src/router/index.ts'), 'utf8');
+  result.pages = pageBundleReport(manifest, readPageMappings(routerSource), sizeOf);
+  result.pageMeasurement = {
+    mode: 'report-only', unit: 'uncompressed JavaScript bytes',
+    scope: 'application entry plus matched route component chain and static imports, deduplicated by output file; excludes runtime dynamic imports',
+    manifestSha256: createHash('sha256').update(fs.readFileSync(manifestPath)).digest('hex'),
+    routerSha256: createHash('sha256').update(routerSource).digest('hex'),
+  };
   if (result.routes.length < 12) {
     throw new Error(`Expected at least 12 lazy route chunks, found ${result.routes.length}`);
   }
@@ -176,7 +186,7 @@ function run(distDir: any = path.resolve(__dirname, '../../dist')) {
   const largestCss = [...result.routes].sort((a: any, b: any) => b.css - a.css)[0];
   const largestLazy = lazy.sort((a: any, b: any) => b.javascript - a.javascript)[0];
   const largestClosure = [...result.routes].sort((a: any, b: any) => b.closureJavaScript - a.closureJavaScript)[0];
-  console.log(
+  if (!options.json) console.log(
     `Route bundle budget passed: ${result.routes.length} routes; `
     + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `
     + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}; `
@@ -185,6 +195,15 @@ function run(distDir: any = path.resolve(__dirname, '../../dist')) {
     + `largest route closure ${largestClosure.route} ${kib(largestClosure.closureJavaScript)} / ${kib(DEFAULT_BUDGETS.routeClosureJavaScript)}; `
     + `entry CSS ${kib(entryCssBytes)} / ${kib(DEFAULT_BUDGETS.entryCss)}`,
   );
+  if (options.json) console.log(JSON.stringify(result, null, 2));
+  else {
+    const measured = result.pages.filter((page: any) => page.status === 'measured').sort((a: any, b: any) => b.pageJavaScript - a.pageJavaScript);
+    console.log(`Page JS union (report only): ${measured.length}/${result.pages.length} resolved; `
+      + measured.slice(0, 3).map((page: any) => `${page.route} ${kib(page.pageJavaScript)}`).join('; '));
+    for (const page of result.pages.filter((page: any) => page.status === 'unknown')) {
+      console.warn(`[unknown] page JS ${page.route}: ${page.unknown.join('; ')}`);
+    }
+  }
   if (result.warnings && result.warnings.length) {
     console.warn(`[warn] bundle budget >90% warning:\n${[...result.warnings, ...lazyWarnings].join('\n')}`);
   } else if (lazyWarnings.length) {
@@ -195,7 +214,9 @@ function run(distDir: any = path.resolve(__dirname, '../../dist')) {
 
 if (require.main === module) {
   try {
-    run(process.argv[2] ? path.resolve(process.argv[2]) : undefined);
+    const args = process.argv.slice(2);
+    const dist = args.find(argument => !argument.startsWith('--'));
+    run(dist ? path.resolve(dist) : undefined, { json: args.includes('--json') });
   } catch (error) {
     console.error(error instanceof Error ? error.message : error);
     process.exitCode = 1;

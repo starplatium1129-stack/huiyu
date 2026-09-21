@@ -1,9 +1,8 @@
 name: Audit stability validation
 on:
-  push:
-    branches: [codex/huiyu-audit-stability-b18fa1b]
+  workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: audit-stability-${{ github.ref }}
   cancel-in-progress: true
@@ -17,6 +16,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.18.0
@@ -25,12 +25,17 @@ jobs:
       - run: npm run build:runtime && npm run scenes:build && npm run popular:build && npm run blueprints:build
       - name: Reproduce old refresh bugs and apply explicit reviewed patches
         run: node poc/audit-stability-apply.cjs
-      - name: Publish controlled source changes to the isolated branch
+      - name: Export historical reproduction patch for review
         run: |
-          git config user.name 'huiyu-audit'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- src/api/client.ts src/stores/sceneStore.ts data/popular/attack-on-titan.json data/popular/yuzusoft.json data/blueprints/my-dress-up-darling.json data/blueprints/arknights.json .github/workflows/quality.yml docs/evidence/scene-audit-closeout-2026-09-10/repair-evidence.json
-          git diff --cached --quiet || git commit -m 'fix: close verified scene-data errors and refresh ordering regressions'
-          git push origin HEAD:codex/huiyu-audit-stability-b18fa1b
+          git diff --binary > audit-stability.patch
+      - name: Preserve reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: historical-audit-reproduction
+          path: |
+            audit-stability.patch
+            docs/evidence/scene-audit-closeout-2026-09-10/repair-evidence.json
+          retention-days: 14
       - name: Complete quality gate in reference-structure mode
         run: npm run wf -- gate:full --all

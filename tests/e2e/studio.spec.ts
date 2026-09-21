@@ -118,7 +118,10 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('.material-switch button[aria-controls="material-character"]')).toHaveAttribute('aria-pressed', 'true');
   await page.locator('.material-switch button[aria-controls="material-story"]').click();
   await expect(page.locator('.story-input')).toBeVisible();
+  await expect(page.locator('.voice-studio')).toBeHidden();
+  await page.locator('.inspector-voice > summary').click();
   await expect(page.locator('.voice-studio')).toBeVisible();
+  await page.locator('.inspector-voice > summary').click();
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click();
   await expect(page.locator('.scene-list button.scene-card').first()).toBeVisible();
   await expect(page.locator('.scene-list button.scene-card')).toHaveCount(6);
@@ -133,14 +136,17 @@ test('director separates a focused scene mode from the expert tag workflow', asy
     const [left, center, right] = Array.from(element.children).map(child => child.getBoundingClientRect().width);
     return { left, center, right };
   });
-  expect(basicColumns.left).toBeGreaterThanOrEqual(320);
+  // Atelier basic mode reserves 280px for story and 320px for decisions at >=1400px.
+  expect(basicColumns.left).toBeCloseTo(280, 0);
   expect(basicColumns.center).toBeGreaterThan(basicColumns.left * 1.75);
-  expect(basicColumns.right).toBeGreaterThan(0);
+  expect(basicColumns.right).toBeCloseTo(320, 0);
   await expect(page.locator('.director-inspector')).toBeVisible();
   await expect(page.locator('.inspector-tabs')).toBeHidden();
   // 受控路线：basic 模式由系统自动选择引擎，底模选择器只在专家模式出现
   await expect(page.locator('#baseModel')).toBeHidden();
+  await page.locator('.inspector-route > summary').click();
   await expect(page.locator('.managed-route-card')).toBeVisible();
+  await page.locator('.inspector-route > summary').click();
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
 
   // 选一张场景后，提示词应实时生成，并带出结构健康统计
@@ -420,7 +426,7 @@ test('character room mounts portrait, composer and voice console', async ({ page
   });
   await page.goto('/chat');
 
-  await expect(page.getByRole('heading', { name: '角色房间', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '此刻，与你', level: 1 })).toBeVisible();
   await expect(page.locator('.chat-input')).toBeVisible();
   await expect(page.locator('.send-btn')).toBeVisible();
   await expect(page.locator('.portrait-main')).toBeVisible();
@@ -428,9 +434,9 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await expect(page.locator('.avatar-status')).toHaveText('启用 Live2D');
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
   expect(live2dAssetRequests).toEqual([]);
-  // 两个角色都可切换
-  await expect(page.locator('.character-tab')).toHaveCount(2);
-  await page.getByRole('tab', { name: /夏目/ }).click();
+  // 角色目录可扩展；原有两位角色仍可通过原生选择器切换。
+  await expect(page.getByRole('combobox', { name: '切换角色', exact: true }).locator('option[value="nene"], option[value="natsume"]')).toHaveCount(2);
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('natsume');
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载四季夏目动态立绘');
   await page.locator('.live2d-enable-cta').click();
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
@@ -494,13 +500,14 @@ test('desktop companion keeps a character-first surface and opens the separate c
   await expect(page.locator('.companion-page')).toBeVisible();
   await expect(page.locator('.page-root')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: '与绫地宁宁相伴', level: 1 })).toBeVisible();
-  await expect(page.locator('.character-tab')).toHaveCount(2);
+  await expect(page.getByRole('combobox', { name: '切换陪伴角色', exact: true })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: '切换陪伴角色', exact: true }).locator('option[value="nene"], option[value="natsume"]')).toHaveCount(2);
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
   // 完整房间入口已收敛进设置弹层（2026-08-15 布局改造）；浏览器模式为链接
   await page.locator('.companion-settings-btn').click();
   await expect(page.locator('.companion-settings-popover')).toBeVisible();
   const roomLink = page.locator('.companion-settings-popover a', { hasText: '完整房间' });
-  await expect(roomLink).toHaveAttribute('href', '/chat');
+  await expect(roomLink).toHaveAttribute('href', '/chat?character=nene');
   await page.keyboard.press('Escape');
   await expect(page.locator('.companion-settings-popover')).toHaveCount(0);
   const overflow = await page.evaluate(() => ({
@@ -608,10 +615,9 @@ test('desktop companion keeps a character-first surface and opens the separate c
   // —— 桌面模式（桥模拟）：角色窗是"只装角色"的表面，聊天在独立窗 ——
   await expect(page.locator('.companion-input')).toBeHidden();
   await expect(page.locator('.companion-conversation')).toBeHidden();
-  // 聊天入口：悬停胶囊常驻，点击 → openChat（打开独立聊天窗）
-  const chatChip = page.locator('.companion-chat-chip');
-  await expect(chatChip).toBeVisible();
-  await chatChip.click();
+  // 原生桌宠默认仅展示角色；双击角色打开独立聊天窗。
+  await expect(page.locator('.companion-chat-chip')).toBeHidden();
+  await page.locator('.portrait-stage').dblclick();
   await expect.poll(() => page.evaluate(() => (window as any).__openChatCalls.length)).toBeGreaterThan(0);
   // 环境问候转瞬态浮层：挂载时按时间片入队一条问候气泡
   await expect(page.locator('.companion-float-reminder')).toHaveCount(1);
@@ -619,6 +625,7 @@ test('desktop companion keeps a character-first surface and opens the separate c
   await page.locator('.companion-float-reminder button').click();
   await expect(page.locator('.companion-float-reminder')).toHaveCount(0);
   const dndButton = page.locator('.companion-settings-popover button[aria-pressed]', { hasText: '勿扰' });
+  await page.keyboard.press('Shift+F10');
   await page.locator('.companion-settings-btn').click();
   await expect(page.locator('.companion-settings-popover')).toBeVisible();
   await expect(dndButton).toHaveCount(1);
@@ -700,7 +707,7 @@ test('companion chat window renders history from storage and relays sends to the
         openAtelier: () => {},
         openChat: () => {},
         hideChatWindow: () => { (window as any).__hideChatCalls += 1; },
-        chatRelay: (payload: Record<string, unknown>) => {
+        chatRelay: async (payload: Record<string, unknown>) => {
           (window as any).__relayedCommands.push(payload);
           // 模拟角色窗处理 'send' 后回写一条 assistant 消息到 storage
           if ((payload as any).command === 'send') {
@@ -710,6 +717,9 @@ test('companion chat window renders history from storage and relays sends to the
             list.push({ role: 'assistant', content: '已收到。', mid: `echo-ai-${Date.now()}` });
             raw.histories.nene = list;
             localStorage.setItem('aics_chat_v1', JSON.stringify(raw));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'aics_chat_v1', newValue: JSON.stringify(raw) }));
+            // The owning window acknowledges acceptance separately from IPC delivery.
+            window.dispatchEvent(new StorageEvent('storage', { key: 'aics_chat_relay_receipt_v1', newValue: JSON.stringify({ requestId: payload.requestId, accepted: true, ts: Date.now() }) }));
           }
         },
         onChatCommand: () => 1,
@@ -727,7 +737,8 @@ test('companion chat window renders history from storage and relays sends to the
   await expect(page.locator('.companion-chat-bubble.user p')).toHaveText('你好呀', { timeout: 5000 });
   await expect(page.locator('.companion-chat-bubble p', { hasText: '今天也在这里陪着你' })).toBeVisible();
   // 角色切换控件 + 迷你标题栏
-  await expect(page.locator('.companion-chat-char-switch button')).toHaveCount(2);
+  await expect(page.getByRole('combobox', { name: '切换角色', exact: true })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: '切换角色', exact: true }).locator('option[value="nene"], option[value="natsume"]')).toHaveCount(2);
 
   // 发送 → chatRelay({ command:'send', text })，清空输入
   const input = page.locator('.companion-chat-input');
@@ -1040,13 +1051,13 @@ test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', as
   // 断言出现非空互动提示，而非特定台词
   await expect(page.locator('.live2d-interaction-hint')).toHaveText(/\S/);
 
-  await page.getByRole('tab', { name: /宁宁/ }).click();
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('nene');
   await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'nene');
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
   await expect(page.locator('.wardrobe-trigger')).toContainText('校服');
 
   const settings = await page.evaluate(() => JSON.parse(localStorage.getItem('aics_chat_v1') || '{}').settings);
-  expect(settings.live2dOutfits).toEqual({ nene: 'school', natsume: 'natsume-cafe' });
+  expect(settings.live2dOutfits).toMatchObject({ nene: 'school', natsume: 'natsume-cafe' });
   expect(errors).toEqual([]);
 });
 
@@ -1162,7 +1173,8 @@ test('Natsume plays the Leave farewell before releasing Live2D', async ({ page }
 
   await page.goto('/chat');
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 45_000 });
-  await page.locator('.avatar-status').click();
+  await page.locator('.character-controls > summary').click();
+  await page.getByRole('button', { name: '切换为静态立绘', exact: true }).click();
 
   // 先进入告别阶段（播 Leave 动作），再释放模型
   await expect(page.locator('.avatar-status')).toContainText('正在道别');
@@ -1208,7 +1220,7 @@ test('Live2D finishes the latest character switch after an auto-load race', asyn
 
   await page.goto('/chat');
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'loading');
-  await page.getByRole('tab', { name: /夏目/ }).click();
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('natsume');
   await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
   await expect(page.locator('.live2d-host canvas')).toBeVisible();
@@ -1236,6 +1248,7 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   await page.goto('/chat');
   await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
 
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('aics_chat_v1') || '')).not.toContain('legacy-browser-secret');
   const migrated = await page.evaluate(() => ({
     local: localStorage.getItem('aics_chat_v1') || '',
     sessionKey: sessionStorage.getItem('aics_chat_api_key_v1'),
@@ -1246,9 +1259,9 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   expect(durable.settings.apiBaseUrl).toBe('https://legacy.example/v1');
   expect(durable.settings.apiModel).toBe('legacy-model');
   expect(durable.settings.live2dOutfit).toBe('natsume-cafe');
-  expect(durable.settings.live2dOutfits).toEqual({ nene: 'school', natsume: 'natsume-cafe' });
-  expect(migrated.local).toContain('legacy-browser-secret');
-  expect(migrated.local).toContain('apiKey');
+  expect(durable.settings.live2dOutfits).toMatchObject({ nene: 'school', natsume: 'natsume-cafe' });
+  expect(migrated.local).not.toContain('legacy-browser-secret');
+  expect(durable.settings.apiKey).toBe('');
   expect(migrated.local).not.toContain('Authorization');
   expect(migrated.local).not.toContain('password');
   expect(migrated.sessionKey).toBeNull();
@@ -1262,7 +1275,8 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   const recovered = await page.evaluate(() => JSON.parse(localStorage.getItem('aics_chat_v1') || '{}'));
   expect(recovered.version).toBe(3);
   expect(recovered.active).toBe('nene');
-  expect(recovered.histories).toEqual({ nene: [], natsume: [] });
+  expect(recovered.histories).toMatchObject({ nene: [], natsume: [] });
+  expect(Object.values(recovered.histories).every(history => Array.isArray(history) && history.length === 0)).toBe(true);
   expect(recovered.settings.provider).toBe('api');
   expect(recovered.settings.live2dOutfit).toBe('school');
 });
@@ -1285,7 +1299,9 @@ test('character profile opens the selected character room and persona scenes', a
   await page.getByRole('link', { name: '进入她的房间' }).click();
   await expect(page).toHaveURL(/\/chat\?character=natsume/);
   await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
-  await expect(page.locator('.room-setup')).toBeVisible();
+  await page.locator('.room-model-settings > summary').click();
+  await expect(page.getByRole('group', { name: '对话模型来源' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '自定义 API', exact: true })).toBeVisible();
 
   expect(errors).toEqual([]);
 });
@@ -1294,12 +1310,12 @@ test('style page offers full colour moods that route into the director', async (
   const errors = collectRuntimeErrors(page);
   await page.goto('/style');
 
-  await expect(page.locator('.mood-card')).toHaveCount(6);
+  await expect(page.locator('.style-mood-card')).toHaveCount(6);
   // 每张色卡应有多色条，而不是单色块
-  const swatches = await page.locator('.mood-card').first().locator('.mood-swatch').count();
+  const swatches = await page.locator('.style-mood-card').first().locator('.mood-swatch').count();
   expect(swatches).toBeGreaterThan(1);
 
-  await page.locator('.mood-card').first().click();
+  await page.locator('.style-mood-card').first().getByRole('link', { name: '用这个调子绘制' }).click();
   await expect(page).toHaveURL(/\/prompt-builder\?mood=/);
 
   expect(errors).toEqual([]);

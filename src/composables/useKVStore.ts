@@ -62,5 +62,25 @@ export async function kvSetMany(entries: Array<{ key: string; value: unknown }>)
   })
 }
 
+/** Atomic read-modify-write, including browsers without Web Locks. The reducer is synchronous. */
+export async function kvUpdate<T>(key: string, update: (current: unknown) => T): Promise<T> {
+  const db = await openDb()
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite')
+    const store = tx.objectStore(STORE_NAME)
+    let result: T
+    tx.oncomplete = () => resolve(result)
+    tx.onerror = () => reject(tx.error)
+    tx.onabort = () => reject(tx.error ?? new Error('KV 事务已取消'))
+    const request = store.get(key)
+    request.onsuccess = () => {
+      try {
+        result = update(request.result?.value ?? null)
+        store.put({ key, value: JSON.parse(JSON.stringify(result)) })
+      } catch (error) { tx.abort(); reject(error) }
+    }
+  })
+}
+
 /** 兼容旧版 AICKVStore.init() 调用 */
 export const kvInit = openDb

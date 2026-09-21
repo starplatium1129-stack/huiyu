@@ -28,6 +28,7 @@ export interface PersistedChatState {
     apiBaseUrl: string
     apiModel: string
     apiKey: string
+    apiConfiguredByUser?: boolean
     webSearchEnabled: boolean
     live2dEnabled: boolean
     live2dOutfit: string
@@ -152,7 +153,9 @@ export function normalizeChatStorage(
   const FALLBACK_MODEL = 'gemini-3.6-flash-high'
   const FALLBACK_KEY = 'sk-local-proxy-key-2024'
   const equalsFallback = apiBaseUrl === FALLBACK_BASE_URL && apiModel === FALLBACK_MODEL && apiKey === FALLBACK_KEY
-  const neverConfigured = (!apiBaseUrl && !apiModel && !apiKey) || equalsFallback
+  const neverConfigured = typeof settings.apiConfiguredByUser === 'boolean'
+    ? !settings.apiConfiguredByUser
+    : (!apiBaseUrl && !apiModel && !apiKey) || equalsFallback
   const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? FALLBACK_BASE_URL : '')
   const finalApiModel = apiModel || (neverConfigured ? FALLBACK_MODEL : '')
   const finalApiKey = apiKey || (neverConfigured ? FALLBACK_KEY : '')
@@ -184,6 +187,7 @@ export function normalizeChatStorage(
         apiBaseUrl: finalApiBaseUrl,
         apiModel: finalApiModel,
         apiKey: finalApiKey,
+        apiConfiguredByUser: !neverConfigured,
         webSearchEnabled: settings.webSearchEnabled !== false,
         live2dEnabled: settings.live2dEnabled === true,
         live2dOutfit: live2dOutfits[active],

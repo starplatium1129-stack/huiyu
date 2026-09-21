@@ -1,4 +1,4 @@
-import { computed, getCurrentScope, onScopeDispose, ref, type Ref } from 'vue'
+import { computed, getCurrentScope, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { useChatStorage, type ChatState } from '@/composables/chat/useChatStorage'
 import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
 import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
@@ -48,6 +48,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   restoreSettings(storage.state)
+  watch(() => storage.state.settings.apiKey, value => { apiKey.value = value })
 
   /** 拉取站主托管配置（接口不回传密钥，只告知是否可用） */
   async function refreshHostConfig() {
@@ -152,17 +153,30 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     }
   }
 
-  function saveApiSettings() {
+  async function saveApiSettings() {
     if (!apiConfigured.value) {
       apiConfigHint.value = apiVendor.value !== 'custom'
         ? `请填写 ${apiVendor.value === 'opencode' ? 'OpenCode Zen' : apiVendor.value === 'opencode-go' ? 'OpenCode Go' : 'DeepSeek'} API Key。`
         : '请填写 API 地址和模型名。'
       return
     }
-    storage.setApiSettings({ baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value })
-    apiConfigHint.value = '配置已保存在这个浏览器中。'
+    try {
+      await storage.setApiSettings({ baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value })
+    } catch {
+      apiConfigHint.value = '安全凭据保存失败，原配置已保留，请重试。'
+      return
+    }
+    apiConfigHint.value = window.companionDesktop ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
     apiSettingsOpen.value = false
     setChatStatus(`自定义 API · ${apiModel.value}`, 'online')
+  }
+
+  async function clearApiCredential() {
+    try {
+      await storage.setApiSettings({ baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: '' })
+      apiKey.value = ''
+      apiConfigHint.value = '个人密钥已清除。'
+    } catch { apiConfigHint.value = '个人密钥清除失败，原配置已保留，请重试。' }
   }
 
   function setBusyStatus(value: boolean) {
@@ -196,7 +210,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     hostApiConfigured, hostApiModel, hostApiBaseUrl, useHostConfig,
     apiConfigured, apiConfiguredByUser, chatReady, refreshChatStatus, refreshHostConfig,
     saveHostConfig, clearHostConfig,
-    setChatProvider, saveApiSettings,
+    setChatProvider, saveApiSettings, clearApiCredential,
     setChatStatus, setBusy: setBusyStatus,
   }
 }

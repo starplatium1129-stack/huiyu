@@ -62,7 +62,10 @@ async function fetchJson<T>(file: string, version: number): Promise<T> {
   const timeout = setTimeout(() => controller.abort(), SCENE_DATA_TIMEOUT_MS)
   try {
     const response = await fetch(`/data/${file}?v=${version}`, { signal: controller.signal })
-    if (!response.ok) throw new Error(`${file} HTTP ${response.status}`)
+    if (!response.ok) {
+      if (response.status === 403) throw new Error('此内容尚未审核为远程可用，请在本机工作室查看。')
+      throw new Error(`${file} HTTP ${response.status}`)
+    }
     return (await response.json()) as T
   } catch (error) {
     if (controller.signal.aborted) throw new Error(`${file} 请求超时`)

@@ -53,6 +53,7 @@ export async function saveGeneratedArtwork(input: GeneratedArtworkInput, deps: S
 export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, deps: Omit<SaveGeneratedArtworkDependencies, 'resolveLegacyDefaults'>): Promise<SaveGeneratedArtworkResult> {
   return deps.withStaging(async () => {
     let imageId = ''
+    let pendingEntry: HistoryEntry | undefined
     const operationId = typeof crypto !== 'undefined' && 'randomUUID' in crypto
       ? crypto.randomUUID()
       : `artwork-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
@@ -64,9 +65,21 @@ export function saveArtworkSnapshot({ entry, defaults }: ArtworkSaveSnapshot, de
       const now = deps.now()
       const id = deps.nextId(now)
       const historyEntry = assembleRecord(entry, defaults, imageId, measured, now, id, deps.normalizeArtistStyleIds)
+      pendingEntry = historyEntry
       const history = parseArtworkRecords(await deps.appendArtwork(historyEntry))
       return { ok: true, entry: historyEntry, history }
     } catch (error) {
+      // Append rejection can mean a lost acknowledgement after commit. Read back
+      // by identity, or retain the image when the outcome remains unknown.
+      if (pendingEntry) {
+        try {
+          const history = parseArtworkRecords(await deps.readArtworkHistory?.() ?? [])
+          if (history.some(item => String(item.id) === String(pendingEntry!.id) && item.image_id === imageId)) {
+            return { ok: true, entry: pendingEntry, history }
+          }
+        } catch { /* An unreadable store cannot prove rollback. */ }
+        return { ok: false, error, operationId, cleanup: { status: 'commit-unknown' as const, imageId } }
+      }
       // Preserve existing owned-image compensation, but return its outcome with
       // an operation ID so cleanup failure is diagnosable and can be retried.
       if (!imageId) return { ok: false, error, operationId, cleanup: { status: 'not-needed' as const } }

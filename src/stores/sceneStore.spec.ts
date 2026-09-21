@@ -81,6 +81,15 @@ beforeEach(() => {
 })
 
 describe('sceneStore · 全量加载', () => {
+  it('unpublished remote content has an actionable error and remains retryable', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 403 })))
+    const store = useSceneStore()
+    await store.load()
+    expect(store.error).toContain('请在本机工作室查看')
+    expect(store.loading).toBe(false)
+    expect(store.loaded).toBe(false)
+  })
+
   it('load() 拉齐三分片与元数据，合并去重并按 sc 序号升序', async () => {
     routes = {
       'scenes-shared.json': [scene('sc090', { char: 'triad' }), scene('sc010')],

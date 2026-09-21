@@ -119,6 +119,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only'], machine: ['windows', 'node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/desktop-build-environment.js:39-64', unknown: [] } },
   'desktop:storage-benchmark': { desc: '用临时库和私有浏览器比较 IndexedDB 与 SQLite 原型，不访问用户数据', cmd: ['node', 'scripts/tests/prototypes/benchmark-artwork-storage.js'], docs: 'plans/005-desktop-architecture-consolidation.md',
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-artwork-storage.js:56-135', unknown: [] } },
+  'desktop:thumbnail-benchmark': { desc: '隔离测量 1k/10k 历史缩略图预热的前台、后台和双页资源成本', cmd: ['node', 'scripts/tests/prototypes/benchmark-thumbnail-warmup.js'], docs: 'docs/workflow.md#门禁与构建',
+    run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-thumbnail-warmup.ts', unknown: ['浏览器是否提供真实 hidden 状态'], notes: ['三轮五秒观察；临时同源私有浏览器不访问生产库；独占运行，不与构建或其他浏览器测试并行；输出 JSON，无性能门禁'] } },
+  'desktop:restore-benchmark': { desc: '隔离测量真实备份导出、解析和 1k/10k 恢复，不访问用户库', cmd: ['node', 'scripts/tests/prototypes/benchmark-backup-restore.js'], docs: 'docs/workflow.md#门禁与构建',
+    run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-backup-restore.ts', unknown: ['JS堆采样不代表完整进程峰值或512MiB容量'], notes: ['三轮私有上下文与64张中性PNG；使用真实导出/恢复实现；独占运行，输出JSON，无性能阈值'] } },
   'desktop:package-local': { desc: '跳过压缩生成本机测试安装包', cmd: ['npm', 'run', 'package:tauri', '--', '--config', 'tauri.local.json'], docs: 'docs/desktop-deployment.md',
     run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: {}, resume: 'idempotent', evidence: 'package.json scripts.package:tauri; scripts/maintenance/run-tauri.js:17', unknown: [] } },
   'brand:build': { desc: '从手绘 SVG 母版生成绘遇字标、网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md',
@@ -478,7 +482,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '打包预算门禁（路由与依赖闭包，build:web 隐含）',
     cmd: ['node', 'scripts/maintenance/check-bundle-budget.js'],
     docs: 'AGENTS.md#实施与交付',
-    run: { nature: ['read-only', 'guard'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/check-bundle-budget.js:198-201', unknown: [] },
+    run: { nature: ['read-only', 'guard'], machine: ['node', 'build-present'], switches: { '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/check-bundle-budget.ts', unknown: [], notes: ['旧预算维持阻断；入口+匹配路由链JS并集仅报告，未知映射不计为零'] },
   },
   // ── backup / runtime: 磁盘债治理 ────────────────────────────────
   'backup:git': {
@@ -537,7 +541,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only'], machine: ['node'], switches: { '--check': ['guard'], '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/detect-orphan-scripts.js:90-144', unknown: [] },
   },
   'character:onboard': {
-    desc: '一站式新角色接入（档案/标准/粒子/参考图/样张/DATA_VERSION）',
+    desc: '历史活跃库维护流水线（直接写源/资产）；新角色使用候选审核发布流程',
     cmd: ['npm', 'run', 'character:onboard'],
     docs: 'docs/guides/characters/character-onboarding-workflow.md',
     run: { nature: ['writes-source', 'external-model', 'writes-product'], machine: ['gateway', 'node', 'python-pillow'], switches: { '--skip-render': ['writes-source'], '--deploy': ['writes-release'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/workflow-onboard-popular-character.js:23-348', unknown: [], notes: ['--skip-render 跳过出图但不能据此声明资产完成；--deploy 走 deploy-desktop-quick.ps1 -NoRestart'] },

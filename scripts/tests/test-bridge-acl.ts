@@ -51,6 +51,10 @@ function main() {
   const build = buildRsCommands();
   const defaultCap = capability('capabilities/default.json');
   const live2dCap = capability('capabilities/companion-live2d.json');
+  for (const cap of [defaultCap, live2dCap]) {
+    assert.strictEqual(cap.local, false, 'static capability must not authorize untrusted local content');
+    assert.strictEqual(cap.remote, undefined, 'remote authority must be granted only after authenticating the selected gateway origin');
+  }
   const allowed = new Set([
     ...permissionIds(defaultCap),
     ...permissionIds(live2dCap),

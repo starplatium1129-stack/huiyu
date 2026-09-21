@@ -1,5 +1,5 @@
 import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
-import { kvGet, kvSet } from '@/composables/useKVStore'
+import { kvGet, kvUpdate } from '@/composables/useKVStore'
 import { TASK_CENTER_KV_KEY as KEY } from '@/utils/storageKeys'
 import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
 import type { GenerationStage } from '@/utils/generationTask'
@@ -27,7 +27,6 @@ export function approveTaskReload() { reloadApproved = true }
 export function consumeTaskReloadApproval() { const approved = reloadApproved; reloadApproved = false; return approved }
 let loading: Promise<void> | undefined
 let writeTail = Promise.resolve()
-const TASK_CENTER_LOCK = 'huiyu-task-center'
 const deletedTasks = new Map<string, number>()
 
 interface StoredTaskSnapshot { version: 1; records: unknown[]; deleted: Record<string, number> }
@@ -82,33 +81,33 @@ function mergeSnapshot(remote: { records: TaskRecord[]; deleted: Map<string, num
   }
   const deleted = new Map(remote.deleted)
   for (const [id, timestamp] of deletedTasks) deleted.set(id, Math.max(timestamp, deleted.get(id) || 0))
-  for (const [id, record] of byId) {
+  for (const id of byId.keys()) {
     const deletedAt = deleted.get(id)
-    if (deletedAt !== undefined && deletedAt >= record.updatedAt) byId.delete(id)
-    else if (deletedAt !== undefined) deleted.delete(id)
+    if (deletedAt !== undefined) byId.delete(id)
   }
   const records = [...byId.values()].sort((a, b) => b.createdAt - a.createdAt)
-  const limitedDeleted = [...deleted.entries()].sort((a, b) => b[1] - a[1]).slice(0, 200)
-  return { records, deleted: new Map(limitedDeleted) }
+  let completed = 0
+  const retained = records.filter(record => {
+    if (record.status === 'running' || ++completed <= 60) return true
+    deleted.set(record.id, Math.max(Date.now(), record.updatedAt))
+    return false
+  })
+  return { records: retained, deleted }
 }
 
 function encodeSnapshot(snapshot: { records: TaskRecord[]; deleted: Map<string, number> }): StoredTaskSnapshot {
   return { version: 1, records: snapshot.records, deleted: Object.fromEntries(snapshot.deleted) }
 }
 
-function withTaskCenterLock<T>(work: () => Promise<T>): Promise<T> {
-  const locks = globalThis.navigator?.locks
-  return locks ? locks.request(TASK_CENTER_LOCK, { mode: 'exclusive' }, () => work()) : work()
-}
-
 function persist() {
-  writeTail = writeTail.catch(() => {}).then(() => withTaskCenterLock(async () => {
-    const merged = mergeSnapshot(decodeSnapshot(await kvGet<unknown>(KEY)))
+  writeTail = writeTail.catch(() => {}).then(async () => {
+    const saved = await kvUpdate(KEY, value => encodeSnapshot(mergeSnapshot(decodeSnapshot(value))))
+    // Local progress may have changed while the transaction committed.
+    const merged = mergeSnapshot(decodeSnapshot(saved))
     tasks.value = merged.records
     deletedTasks.clear()
     for (const [id, timestamp] of merged.deleted) deletedTasks.set(id, timestamp)
-    await kvSet(KEY, JSON.parse(JSON.stringify(encodeSnapshot(merged))))
-  })).then(() => { storageError.value = '' }).catch(() => { storageError.value = '任务摘要暂未保存；当前任务继续运行。' })
+  }).then(() => { storageError.value = '' }).catch(() => { storageError.value = '任务摘要暂未保存；当前任务继续运行。' })
 }
 export function createTask(summary: TaskSummary, controls: TaskControls = {}): string {
   const id = `task-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
@@ -127,7 +126,7 @@ export function updateTask(id: string, patch: Partial<TaskSummary>) {
   const task = tasks.value.find(item => item.id === id)
   if (!task) return
   if (patch.status && patch.status !== task.status) recordDiagnosticTask(id, task.kind, patch.status)
-  Object.assign(task, patch, { updatedAt: Date.now() })
+  Object.assign(task, patch, { updatedAt: Math.max(Date.now(), task.updatedAt + 1) })
   persist()
 }
 export function flushTaskSummaries() { return writeTail }
@@ -135,8 +134,9 @@ export function forgetTaskControls(id: string) { actions.delete(id) }
 export function hydrateTasks(): Promise<void> {
   return loading ??= kvGet<unknown>(KEY).then(value => {
     const snapshot = decodeSnapshot(value)
-    deletedTasks.clear()
-    for (const [id, timestamp] of snapshot.deleted) deletedTasks.set(id, timestamp)
+    // A user may clear tasks while the initial read is pending. Hydration must
+    // merge those local tombstones instead of restoring an older snapshot.
+    for (const [id, timestamp] of snapshot.deleted) deletedTasks.set(id, Math.max(timestamp, deletedTasks.get(id) || 0))
     const existing = new Set(tasks.value.map(task => task.id))
     for (const item of snapshot.records.slice(0, 100)) {
       if (existing.has(item.id) || tasks.value.some(task => task.backend?.kind === item.backend?.kind && task.backend?.id === item.backend?.id && item.backend)) continue

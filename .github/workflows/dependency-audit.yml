@@ -11,6 +11,62 @@ permissions:
   contents: read
 
 jobs:
+  rust-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [src-tauri, native-live2d]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install pinned Rust advisory scanner
+        run: cargo install cargo-audit --version 0.21.2 --locked
+      - name: Scan release Cargo lockfile
+        id: scan
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          cargo audit --file desktop-tauri/${{ matrix.component }}/Cargo.lock --json > rust-audit.json 2> rust-audit.stderr
+          status=$?
+          if [ ! -s rust-audit.json ]; then
+            printf '{"error":"Rust advisory scan unavailable; see stderr"}\n' > rust-audit.json
+            status=1
+          fi
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit "$status"
+      - name: Capture source and scanner identity
+        if: always()
+        shell: bash
+        env:
+          SCAN_EXIT_CODE: ${{ steps.scan.outputs.exit_code || 'not-run' }}
+        run: |
+          printf 'source_commit=%s\ncomponent=%s\nexit_code=%s\n' "$GITHUB_SHA" '${{ matrix.component }}' "$SCAN_EXIT_CODE" > rust-audit-metadata.txt
+          sha256sum desktop-tauri/${{ matrix.component }}/Cargo.lock >> rust-audit-metadata.txt
+          rustc --version >> rust-audit-metadata.txt
+          cargo --version >> rust-audit-metadata.txt
+          cargo audit --version >> rust-audit-metadata.txt 2>&1 || true
+      - name: Preserve Rust audit and dependency inventory
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: rust-audit-${{ matrix.component }}
+          path: |
+            rust-audit.json
+            rust-audit.stderr
+            rust-audit-metadata.txt
+            desktop-tauri/${{ matrix.component }}/Cargo.lock
+            desktop-tauri/${{ matrix.component }}/Cargo.toml
+            desktop-tauri/native-live2d/build.rs
+          retention-days: 14
+      - name: Enforce successful advisory scan
+        if: always()
+        run: test "${{ steps.scan.outputs.exit_code }}" = "0"
   audit:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -132,5 +188,6 @@ jobs:
             dependency-audit-runtime.stderr
             dependency-audit.stderr
             dependency-audit-metadata.json
+            package-lock.json
           if-no-files-found: warn
           retention-days: 14

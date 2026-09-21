@@ -146,6 +146,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-chat.js',
     'test-control-failure-contract.js',
     'test-gateway-contract.js',
+    'test-remote-content.js',
     'test-gateway-token.js',
     'test-http-client.js',
     'test-maintenance.js',

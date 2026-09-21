@@ -3,8 +3,23 @@ import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import { mount } from '@vue/test-utils'
 
 const storage = vi.hoisted(() => ({ get: vi.fn(), set: vi.fn() }))
-vi.mock('@/composables/useKVStore', () => ({ kvGet: storage.get, kvSet: storage.set }))
+vi.mock('@/composables/useKVStore', () => ({ kvGet: storage.get, kvSet: storage.set, kvUpdate: async (key: string, update: (value: unknown) => unknown) => { const value = JSON.parse(JSON.stringify(update(await storage.get(key)))); await storage.set(key, value); return value } }))
 beforeEach(() => { vi.resetModules(); storage.get.mockReset().mockResolvedValue([]); storage.set.mockReset().mockResolvedValue(undefined) })
+
+it('a delayed initial read cannot revive a task cleared while hydration was pending', async () => {
+  const module = await import('./useTaskCenter')
+  module.createTask({ kind: 'image', title: '已完成', status: 'succeeded', route: '/gallery' })
+  await module.flushTaskSummaries()
+  const stale = structuredClone(storage.set.mock.calls.at(-1)![1])
+  let finish!: (value: unknown) => void
+  storage.get.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  const hydration = module.hydrateTasks()
+  module.useTaskCenter().clearCompleted()
+  await module.flushTaskSummaries()
+  finish(stale)
+  await hydration
+  expect(module.useTaskCenter().tasks.value).toEqual([])
+})
 
 it('a failed read can be retried and never overwrites unseen history', async () => {
   storage.get.mockRejectedValueOnce(new Error('unavailable'))
@@ -154,4 +169,34 @@ it.each(['failed', 'cancelled'] as const)('a retry retains the previous %s summa
   expect(tasks.find(task => task.id === first)?.status).toBe(terminal)
   expect(module.useTaskCenter().activeCount.value).toBe(1)
   owner.unmount(); await module.flushTaskSummaries()
+})
+
+it('a late stale-window update cannot resurrect a deleted ID even with a newer timestamp', async () => {
+  let persisted: unknown = []
+  storage.get.mockImplementation(async () => structuredClone(persisted))
+  storage.set.mockImplementation(async (_key: string, value: unknown) => { persisted = structuredClone(value) })
+  const a = await import('./useTaskCenter')
+  const id = a.createTask({ kind: 'image', title: 'old', status: 'succeeded', route: '/gallery' })
+  await a.flushTaskSummaries()
+  vi.resetModules()
+  const b = await import('./useTaskCenter')
+  await b.hydrateTasks()
+  b.useTaskCenter().clearCompleted()
+  await b.flushTaskSummaries()
+  a.updateTask(id, { message: 'late' })
+  await a.flushTaskSummaries()
+  expect((persisted as { records: unknown[] }).records).toHaveLength(0)
+})
+
+it('history retention remains bounded after merging persisted history', async () => {
+  let persisted: unknown = []
+  storage.get.mockImplementation(async () => structuredClone(persisted))
+  storage.set.mockImplementation(async (_key: string, value: unknown) => { persisted = structuredClone(value) })
+  const a = await import('./useTaskCenter')
+  for (let i = 0; i < 65; i++) {
+    a.createTask({ kind: 'image', title: String(i), status: 'succeeded', route: '/gallery' })
+    await a.flushTaskSummaries()
+  }
+  expect((persisted as { records: unknown[] }).records).toHaveLength(60)
+  expect(a.useTaskCenter().tasks.value).toHaveLength(60)
 })

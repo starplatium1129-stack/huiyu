@@ -34,12 +34,13 @@ export interface SaveGeneratedArtworkDependencies {
   nextId: (now: number) => number
   resolveLegacyDefaults: (entry: GeneratedArtworkInput) => LegacyArtworkDefaults
   normalizeArtistStyleIds: (value: unknown) => string[]
+  readArtworkHistory?: () => Promise<unknown[]>
   appendArtwork: (entry: HistoryEntry) => Promise<unknown[]>
 }
 
 export type SaveGeneratedArtworkResult =
   | { ok: true; entry: HistoryEntry; history: ArtworkRecord[] }
-  | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed'; imageId?: string; error?: unknown } }
+  | { ok: false; error: unknown; operationId: string; cleanup: { status: 'not-needed' | 'completed' | 'failed' | 'commit-unknown'; imageId?: string; error?: unknown } }
 
 
 export interface ArtworkSaveSnapshot { entry: GeneratedArtworkInput; defaults: LegacyArtworkDefaults }

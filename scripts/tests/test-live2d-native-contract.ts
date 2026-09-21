@@ -128,14 +128,26 @@ test('Native IPC command inventory stays consistent across build manifest, invok
     assert.ok(main.includes(`${owner}::aics_live2d_${name}`), `invoke_handler 缺少 aics_live2d_${name}`)
   }
   // capabilities 权限名用连字符（Tauri permission id 规范），与命令一一对应；
-  // 只允许 Companion 窗口 + 本机回环来源。
+  // 仅登记 Companion 权限模板；具体来源在握手成功后动态授权。
   for (const name of commands) {
     const permission = `allow-aics-live2d-${name.replace(/_/g, '-')}`
     assert.ok(capabilities.includes(permission), `capabilities 缺少 ${permission}`)
   }
-  assert.deepStrictEqual(JSON.parse(capabilities).windows, ['companion'])
-  const urls = JSON.parse(capabilities).remote.urls
-  assert.ok(urls.length === 1 && urls[0].startsWith('http://127.0.0.1:'), 'live2d 命令只允许本机回环来源')
+  const template = JSON.parse(capabilities)
+  assert.deepStrictEqual(template.windows, ['companion'])
+  assert.equal(template.local, false, '静态模板不能授予本地页面权限')
+  assert.equal(template.remote, undefined, '静态模板不能预先信任任意回环端口')
+
+  const shared = read('desktop-tauri/src-tauri/src/main_shared.rs')
+  const origin = read('desktop-tauri/src-tauri/src/gateway_origin.rs')
+  const authorization = shared.slice(shared.indexOf('pub fn authorize_gateway_origin('))
+  assert.match(authorization, /include_str!\("\.\.\/capabilities\/companion-live2d\.json"\)/, '动态授权必须复用同一 Live2D 权限模板')
+  assert.match(authorization, /capability\["remote"\] = serde_json::json!\(\{ "urls": \[format!\("\{\}\/\*", parsed\.origin\(\)\.ascii_serialization\(\)\)\]/, '动态授权必须绑定认证后选定的精确 origin')
+  assert.match(authorization, /app\.add_capability\(/)
+  assert.match(origin, /gateway\.host_str\(\) == Some\("127\.0\.0\.1"\)/)
+  assert.match(origin, /url\.origin\(\) == gateway\.origin\(\)/, '同为回环但端口不同也必须拒绝')
+  assert.match(main, /main_shared::authorize_gateway_origin\(/)
+  assert.match(main, /main_shared::is_gateway_origin\(view\.app_handle\(\), &url\)/, 'IPC 仍须验证当前认证来源')
 })
 
 test('Native destroy keeps the overlay thread alive for reuse (long-lived contract)', () => {

@@ -1,4 +1,5 @@
 import { reactive, ref } from 'vue'
+import { createChatCredentials } from '@/utils/chatCredentials'
 import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY } from '@/utils/storageKeys'
 import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
 import {
@@ -91,6 +92,9 @@ function mergeHistories(local: ChatMessage[], remote: ChatMessage[], snapshots: 
 }
 
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
+  const credentials = createChatCredentials()
+  let pendingLegacyKey = ''
+  let credentialRevision = 0
   const characterIds = listCompanionCharacterIds()
   const defaultCharacterId = characterIds[0] || DEFAULT_COMPANION_CHARACTER_ID
   const defaultOutfits = Object.fromEntries(characterIds.map(id => [id, getCompanionDefaultOutfit(id)]))
@@ -240,7 +244,21 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.settings.volume = persisted.settings.volume
   }
 
-  function persistedState(): PersistedChatState {
+  function persistedState(scrubCredential = false): PersistedChatState {
+    let existingKey = ''
+    let existingEndpoint = state.settings.apiBaseUrl
+    let existingModel = state.settings.apiModel
+    let existingConfigured = !neverConfigured.value
+    try {
+      const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
+      const key = current?.settings?.apiKey || current?.apiKey || current?.api?.apiKey
+      const endpoint = current?.settings?.apiBaseUrl || current?.settings?.baseUrl || current?.api?.baseUrl
+      const model = current?.settings?.apiModel || current?.api?.model
+      existingKey = typeof key === 'string' ? key.trim().slice(0, 1000) : ''
+      if (typeof endpoint === 'string') existingEndpoint = endpoint.trim().slice(0, 500)
+      if (typeof model === 'string') existingModel = model.trim().slice(0, 200)
+      if (typeof current?.settings?.apiConfiguredByUser === 'boolean') existingConfigured = current.settings.apiConfiguredByUser
+    } catch { /* Malformed legacy records have no recoverable credential. */ }
     return {
       version: STORAGE_VERSION,
       historiesRevision: state.historiesRevision,
@@ -250,9 +268,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       settings: {
         model: state.settings.model,
         provider: state.settings.provider,
-        apiBaseUrl: state.settings.apiBaseUrl,
-        apiModel: state.settings.apiModel,
-        apiKey: state.settings.apiKey,
+        apiBaseUrl: scrubCredential ? state.settings.apiBaseUrl : existingEndpoint,
+        apiModel: scrubCredential ? state.settings.apiModel : existingModel,
+        // Keep only an existing migration source until secure write/read succeeds.
+        // New keys are never written to browser storage.
+        apiKey: scrubCredential ? '' : existingKey,
+        apiConfiguredByUser: scrubCredential ? !neverConfigured.value : existingConfigured,
         webSearchEnabled: state.settings.webSearchEnabled,
         live2dEnabled: state.settings.live2dEnabled,
         live2dOutfit: state.settings.live2dOutfit,
@@ -264,7 +285,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
   }
 
-  function load() {
+  async function load() {
     let stored = ''
     let raw: unknown
     try {
@@ -312,12 +333,42 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       neverConfigured.value = normalized.neverConfigured
 
       state.settings.apiKey = String(normalized.state.settings.apiKey || normalized.migratedApiKey).trim().slice(0, 1000)
+      const legacy = raw as { settings?: { apiKey?: unknown }; apiKey?: unknown; api?: { apiKey?: unknown } } | null
+      const legacyValue = legacy?.settings?.apiKey || legacy?.apiKey || legacy?.api?.apiKey
+      pendingLegacyKey = typeof legacyValue === 'string' ? legacyValue.trim().slice(0, 1000) : ''
       rememberMessages()
 
       // Rewriting existing records through the allowlist removes unsupported
       // authorization headers, tokens and unknown fields from localStorage.
       if (stored) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       saveArchive()
+      const revision = credentialRevision
+      const endpoint = state.settings.apiBaseUrl
+      try {
+        await credentials.load(endpoint, pendingLegacyKey, {
+          isCurrent: () => {
+            if (revision !== credentialRevision) return false
+            const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
+            return current?.settings?.apiBaseUrl === endpoint && current?.settings?.apiKey === pendingLegacyKey
+          },
+          commit: secret => {
+            if (revision !== credentialRevision) return
+            state.settings.apiKey = secret || (normalized.neverConfigured ? normalized.state.settings.apiKey : '')
+            // Touch only the matching migration source, never other windows' histories.
+            const currentText = localStorage.getItem(STORAGE_KEY)
+            if (currentText) {
+              const current = JSON.parse(currentText)
+              if (current.settings?.apiBaseUrl === endpoint && current.settings?.apiKey === pendingLegacyKey) {
+                current.settings.apiKey = ''
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(current))
+              }
+            }
+            pendingLegacyKey = ''
+          },
+        })
+      } catch {
+        onError('安全凭据暂不可用，原配置已保留，请稍后重新加载或保存配置。')
+      }
     } catch {
       onError('浏览器存储不可用或空间不足，聊天记录保留在当前会话中，暂时无法保存。')
     }
@@ -352,19 +403,21 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
   }
 
-  function save(mergeRemote = true) {
+  function save(mergeRemote = true, scrubCredential = false) {
     for (const [key, value] of pendingPreferences) savePreference(key, value)
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
       // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
       if (mergeRemote && !mergeRemoteIntoState()) return
       state.version = STORAGE_VERSION
-      localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
+      localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState(scrubCredential)))
       rememberMessages()
       localStorage.setItem('aics_chat_model', state.settings.model || '')
       saveArchive()
+      return true
     } catch {
       onError('浏览器存储空间不足，本轮聊天可能无法长期保存。')
+      return false
     }
   }
 
@@ -380,13 +433,19 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   function setModel(model: string) { state.settings.model = String(model || ''); save() }
   function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; save() }
-  function setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }) {
-    state.settings.apiBaseUrl = String(settings.baseUrl || '').trim().slice(0, 500)
-    state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
-    state.settings.apiKey = String(settings.apiKey || '').trim().slice(0, 1000)
-    // 用户显式保存过 API 配置，不再是"从未配置"，站主配置不再抢占
-    neverConfigured.value = false
-    save()
+  async function setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }) {
+    const endpoint = String(settings.baseUrl || '').trim().slice(0, 500)
+    const secret = String(settings.apiKey || '').trim().slice(0, 1000)
+    const revision = ++credentialRevision
+    await credentials.save(endpoint, secret, () => {
+      if (revision !== credentialRevision) return
+      pendingLegacyKey = ''
+      state.settings.apiBaseUrl = endpoint
+      state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
+      state.settings.apiKey = secret
+      neverConfigured.value = false
+      if (!save(true, true)) throw new Error('安全凭据已写入，但浏览器配置保存失败，请重试。')
+    })
   }
   function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); save() }
   function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }

@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod bridge;
+mod credentials;
 mod gateway;
 mod live2d_overlay;
 mod logger;
@@ -59,6 +60,10 @@ fn start_gateway_monitor(app: AppHandle) {
             tokio::time::sleep(delay).await;
             match supervisor.start().await {
                 Ok(url) => {
+                    if let Err(error) = main_shared::authorize_gateway_origin(&app, &url) {
+                        state.error(&format!("gateway capability rejected: {error}"));
+                        continue;
+                    }
                     *state.gateway_url.lock().unwrap() = url.clone();
                     let _ = app.emit("aics:gateway-url", url.clone());
                     state.info(&format!("gateway restarted at {url}"));
@@ -162,7 +167,10 @@ fn main() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .invoke_handler(tauri::generate_handler![
+        .invoke_handler({
+            let handler: fn(tauri::ipc::Invoke) -> bool = tauri::generate_handler![
+            credentials::chat_credential_read,
+            credentials::chat_credential_write,
             bridge::get_state,
             bridge::hide,
             bridge::quit,
@@ -208,7 +216,17 @@ fn main() {
             live2d_overlay::aics_live2d_hit_test,
             live2d_overlay::aics_live2d_destroy,
             live2d_overlay::aics_live2d_get_state,
-        ])
+            ];
+            move |invoke: tauri::ipc::Invoke| {
+                let view = invoke.message.webview();
+                let trusted = view.url().map(|url| main_shared::is_gateway_origin(view.app_handle(), &url)).unwrap_or(false);
+                if !trusted {
+                    invoke.resolver.reject("IPC requires the current authenticated gateway origin");
+                    return true;
+                }
+                handler(invoke)
+            }
+        })
         .setup(|app| {
             let state = AppState::new(paths::resolve_paths(app.handle()));
             app.manage(state);
@@ -302,6 +320,10 @@ fn main() {
                 let supervisor = handle.state::<gateway::GatewaySupervisor>();
                 match supervisor.start().await {
                     Ok(url) => {
+                        if let Err(error) = main_shared::authorize_gateway_origin(&handle, &url) {
+                            s.error(&format!("gateway capability rejected: {error}"));
+                            return;
+                        }
                         *s.gateway_url.lock().unwrap() = url.clone();
                         window_state::save_desktop_gateway_port(&s.paths.gateway_port_file, supervisor.port());
                         s.info(&format!("Gateway {} at {url}", if supervisor.owns_gateway() { "started" } else { "attached" }));

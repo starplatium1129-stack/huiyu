@@ -10,6 +10,7 @@ const http: typeof import('node:http') = require('node:http');
 const zlib: typeof import('node:zlib') = require('node:zlib');
 const express: typeof import('express') = require('express');
 const { precompressed }: typeof import('../../server/precompressed') = require('../../server/precompressed');
+const { rejectPrivateAssetPath }: typeof import('../../server/static-path-policy') = require('../../server/static-path-policy');
 
 async function fixture(run: any) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atelier-compression-'));
@@ -21,11 +22,12 @@ async function fixture(run: any) {
   };
   const app = express();
   app.use((req, res, next) => { res.vary('Origin'); next(); });
+  app.use('/assets', rejectPrivateAssetPath);
   app.use(precompressed(root, { assetsRoot:assets }));
   app.use('/assets', express.static(assets, { dotfiles:'deny' }));
   app.use('/data', (req, res, next) => {
     if (!(require('../../server/public-data') as typeof import('../../server/public-data')).includes(req.path.slice(1))) return res.sendStatus(404);
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'private, no-cache');
     next();
   }, express.static(path.join(root, 'data')));
   const server = http.createServer(app);
@@ -75,7 +77,11 @@ test('compressed assets keep source boundaries and mutable-data cache policy', a
   write(path.join(assets, '.hidden', 'secret.json'));
   assert.notEqual((await get('/assets/.hidden/secret.json', 'br')).status, 200);
   write(path.join(assets, 'live2d-candidates', 'fixture', 'model.json'), '{"private":true}');
-  for (const pathValue of ['/assets/live2d-candidates/fixture/model.json', '/assets/%6cive2d-candidates/fixture/model.json']) {
+  for (const pathValue of ['/assets/live2d-candidates/fixture/model.json', '/assets/%6cive2d-candidates/fixture/model.json',
+    '/assets/live2d-candidates%5cfixture%5cmodel.json', '/assets/%6cive2d-candidates%5cfixture/model.json',
+    '/assets/LIVE2D-CANDIDATES%5cfixture/model.json', '/assets/./live2d-candidates/fixture/model.json',
+    '/assets/x/../live2d-candidates/fixture/model.json', '/assets/%2e/live2d-candidates/fixture/model.json',
+    '/assets//live2d-candidates/fixture/model.json']) {
     for (const encoding of ['identity', 'br', 'gzip']) {
       assert.equal((await get(pathValue, encoding)).status, 404,
         `private candidate assets must be rejected for ${pathValue} / ${encoding}`);
@@ -83,9 +89,9 @@ test('compressed assets keep source boundaries and mutable-data cache policy', a
     assert.equal(await head(pathValue, 'br'), 404, `private candidate assets must reject HEAD for ${pathValue}`);
   }
   write(path.join(root, 'data', 'character-reference-view.json'));
-  assert.equal((await get('/data/character-reference-view.json', 'br')).headers['cache-control'], 'no-cache');
+  assert.equal((await get('/data/character-reference-view.json', 'br')).headers['cache-control'], 'private, no-cache');
   write(path.join(root, 'data', 'scenes.json'));
-  assert.equal((await get('/data/scenes.json', 'br')).headers['cache-control'], 'no-cache');
+  assert.equal((await get('/data/scenes.json', 'br')).headers['cache-control'], 'private, no-cache');
   write(path.join(root, 'data', 'private.json'));
   assert.equal((await get('/data/private.json', 'br')).status, 404);
 }));
@@ -96,7 +102,7 @@ test('mutable data negotiates ETag consistently for br, gzip, and identity', asy
 
   const br = await get('/data/scenes.json', 'br');
   assert.equal(br.headers['content-encoding'], 'br');
-  assert.equal(br.headers['cache-control'], 'no-cache');
+  assert.equal(br.headers['cache-control'], 'private, no-cache');
   assert.ok(br.headers.etag, 'brotli response must expose an ETag');
   const br304 = await get('/data/scenes.json', 'br', { 'If-None-Match': br.headers.etag });
   assert.equal(br304.status, 304);
@@ -104,7 +110,7 @@ test('mutable data negotiates ETag consistently for br, gzip, and identity', asy
 
   const gzip = await get('/data/scenes.json', 'gzip');
   assert.equal(gzip.headers['content-encoding'], 'gzip');
-  assert.equal(gzip.headers['cache-control'], 'no-cache');
+  assert.equal(gzip.headers['cache-control'], 'private, no-cache');
   assert.ok(gzip.headers.etag, 'gzip response must expose an ETag');
   const gzip304 = await get('/data/scenes.json', 'gzip', { 'If-None-Match': gzip.headers.etag });
   assert.equal(gzip304.status, 304);
@@ -112,7 +118,7 @@ test('mutable data negotiates ETag consistently for br, gzip, and identity', asy
 
   const identity = await get('/data/scenes.json', 'br;q=0, gzip;q=0');
   assert.equal(identity.headers['content-encoding'], undefined);
-  assert.equal(identity.headers['cache-control'], 'no-cache');
+  assert.equal(identity.headers['cache-control'], 'private, no-cache');
   assert.ok(identity.headers.etag, 'identity response must expose an ETag');
   const identity304 = await get('/data/scenes.json', 'br;q=0, gzip;q=0', { 'If-None-Match': identity.headers.etag });
   assert.equal(identity304.status, 304);

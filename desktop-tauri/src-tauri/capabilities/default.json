@@ -2,10 +2,11 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Desktop shell commands exposed only to the bundled loopback gateway UI.",
-  "windows": ["companion", "companion-chat", "atelier"],
-  "remote": {
-    "urls": ["http://127.0.0.1:*/*"]
-  },
+  "windows": [
+    "companion",
+    "companion-chat",
+    "atelier"
+  ],
   "permissions": [
     "core:default",
     "core:window:allow-start-dragging",
@@ -47,6 +48,9 @@
     "allow-pick-files",
     "allow-save-image",
     "allow-desktop-update-check",
-    "allow-desktop-update-install"
-  ]
+    "allow-desktop-update-install",
+    "allow-chat-credential-read",
+    "allow-chat-credential-write"
+  ],
+  "local": false
 }

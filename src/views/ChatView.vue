@@ -116,6 +116,7 @@
           @update:model="apiModel = $event"
           @update:api-key="apiKey = $event"
           @save="saveApiSettings"
+          @clear-key="clearApiCredential"
           @save-host="saveToHost"
           @clear-host="clearHostConfigAndRefresh"
         />
@@ -384,6 +385,7 @@ const {
   clearHostConfigAndRefresh,
   setChatProvider,
   saveApiSettings,
+  clearApiCredential,
   onVolumeChange,
   handleSend,
   useStarter,

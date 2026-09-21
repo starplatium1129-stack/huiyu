@@ -26,7 +26,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
   - Reviewed showcase samples in `AI/SceneShowcase/`, with direct links into the studio; availability depends on local assets.
 - **4-Perspective Character Reference Bible**:
   - Four cinematic reference perspectives plus front, side, and back design sheets. Registered, pending, available, and visually reviewed assets are distinguished in [Project status](docs/project-status.md).
-  - Automated closed-loop pipeline: 3-concurrency generation, 4-concurrency pure-vision Gemini 3.7 Flash audit pool, and fine-tuned repair engine.
+  - Generate isolated candidates and run automated checks, then record human review before explicitly publishing an immutable version. Missing review stays pending; see the [reference workflow](docs/workflow.md#参考库候选审核与版本发布).
   - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
 - **Multi-Engine Generation & Curated Artist Styles**:
   - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), and Krea 2 Turbo (natural language prose).

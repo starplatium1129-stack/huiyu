@@ -114,18 +114,19 @@ describe('入册抽取前后的兼容特征', () => {
     expect(await usePromptBuilderStore().commitHistoryEntry({ blob: blob(), prompt: 'A quiet river.' })).toBeNull()
     expect(io.append).not.toHaveBeenCalled()
     expect(io.remove).not.toHaveBeenCalled()
-    expect(console.warn).toHaveBeenCalledWith('commitHistoryEntry failed', error)
+    expect(console.warn).toHaveBeenCalledWith('commitHistoryEntry failed', expect.objectContaining({ error, cleanup: { status: 'not-needed' } }))
   })
 
-  it('持久化失败只清理本次图片，返回失败且不发布内存记录', async () => {
+  it('持久化结果未知保留原图，返回失败且不发布未经确认的内存记录', async () => {
     const error = new Error('metadata write failed')
     io.append.mockRejectedValue(error)
     io.remove.mockRejectedValue(new Error('cleanup failed'))
     const pb = usePromptBuilderStore()
     expect(await pb.commitHistoryEntry({ blob: blob(), prompt: 'A quiet river.' })).toBeNull()
     expect(pb.history).toEqual([])
-    expect(io.remove).toHaveBeenCalledExactlyOnceWith('owned-image')
-    expect(console.warn).toHaveBeenCalledWith('commitHistoryEntry failed', error)
+    expect(io.remove).not.toHaveBeenCalled()
+    expect(console.warn).toHaveBeenCalledWith('commitHistoryEntry failed', expect.objectContaining({ error,
+      cleanup: { status: 'commit-unknown', imageId: 'owned-image' }, operationId: expect.any(String) }))
   })
 
   it('缩略图失败保持原图与成功记录', async () => {

@@ -5,6 +5,8 @@ import type { Socket } from 'node:net';
 import type { Request, Response, NextFunction } from 'express';
 import type { GatewayOptions, GatewayState } from './server/gateway-types';
 import { errorField } from './scripts/lib/runtime-errors';
+import { createRemoteContent } from './server/remote-content';
+import { createHmac } from 'node:crypto';
 
 let express: typeof import('express') = require('express');
 let compression: typeof import('compression') = require('compression');
@@ -49,7 +51,7 @@ function staticOptions(maxAge: number): NonNullable<Parameters<typeof express.st
     maxAge:maxAge,
     setHeaders:function (res: any, filePath: string) {
       if (/\.(?:html|json)$/i.test(filePath)) {
-        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Cache-Control', 'private, no-cache');
       }
     }
   };
@@ -84,6 +86,8 @@ function createGateway(options: GatewayOptions = {}) {
   }
   let resources = createResourcesRouter(config);
   app.use(resources.router);
+  // The same decision precedes installed, precompressed and legacy resources.
+  app.use(createRemoteContent(config));
   // Installed allowlist precedes bundled/precompressed media. Request authorization is still
   // evaluated here; no policy/configuration paths are exposed by the management API.
   app.use(resources.staticMiddleware);
@@ -141,12 +145,18 @@ function createGateway(options: GatewayOptions = {}) {
 
   app.get('/api/health', function (req, res) {
     let live2dStatus = live2d.service.status();
+    const desktopSecret = (options.env || process.env).AICS_DESKTOP_GATEWAY_TOKEN;
+    const challenge = req.headers['x-aics-desktop-challenge'];
+    const desktopProof = security.isDirectLocalRequest(req) && typeof desktopSecret === 'string'
+      && /^[a-f0-9]{64}$/.test(desktopSecret) && typeof challenge === 'string' && /^[a-f0-9]{64}$/.test(challenge)
+      ? createHmac('sha256', desktopSecret).update(challenge).digest('hex') : undefined;
     res.setHeader('Cache-Control', 'no-store');
     res.json({
       ok:true,
       app:'ai-cg-studio',
       gateway:true,
       desktopProtocol:1,
+      desktopProof,
       port:Number(config.PORT),
       capabilities:{
         chat:true,
@@ -178,7 +188,7 @@ function createGateway(options: GatewayOptions = {}) {
   }
 
   app.get(['/', '/index.html'], function (req, res) {
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'private, no-cache');
     let spaEntry = path.join(DIST_DIR, 'index.html');
     res.sendFile('index.html', { root: fs.existsSync(spaEntry) ? DIST_DIR : config.ROOT_DIR });
   });
@@ -192,7 +202,7 @@ function createGateway(options: GatewayOptions = {}) {
   // Live2D manifests reference unhashed moc/texture/motion files. Revalidate
   // them so model fixes do not leave existing browsers on a week-old asset set.
   app.use(['/assets/live2d', '/assets/live2d-current'], function (req, res, next) {
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'private, no-cache');
     next();
   }, express.static(config.LIVE2D_ROOT, {
     dotfiles:'deny',
@@ -203,7 +213,7 @@ function createGateway(options: GatewayOptions = {}) {
   // 采用 no-cache + ETag 协商缓存——文件未修改返回 304 零流量秒开；
   // 用户或脚本在本地替换图片后，刷新浏览器立即生效，彻底无需手动改 ?v= 版本号。
   app.use('/assets', function (req, res, next) {
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'private, no-cache');
     next();
   }, express.static(config.ASSETS_ROOT, {
     dotfiles: 'deny',
@@ -214,7 +224,7 @@ function createGateway(options: GatewayOptions = {}) {
   // 与 /assets 同为 no-cache + ETag 协商缓存；外部目录缺失时不挂路由。
   if (config.CHARACTER_REF_ROOT) {
     app.use('/character-references', function (req, res, next) {
-      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Cache-Control', 'private, no-cache');
       next();
     }, express.static(config.CHARACTER_REF_ROOT, {
       dotfiles: 'deny',
@@ -238,7 +248,7 @@ function createGateway(options: GatewayOptions = {}) {
     // 参考标准由多个维护脚本直接改写、无统一版本号入口，
     // 用 no-cache + ETag 协商缓存：没变回 304 零流量，变了立即生效。
     res.setHeader('Cache-Control', NO_CACHE_DATA_FILES.indexOf(name) !== -1
-      ? 'no-cache'
+      ? 'private, no-cache'
       : 'public, max-age=31536000, immutable');
     next();
   }, express.static(path.join(config.ROOT_DIR, 'data'), {
@@ -255,7 +265,7 @@ function createGateway(options: GatewayOptions = {}) {
     // 白名单同时约束了 images|thumbs 下的 scNNN / artist_ / pc_ / lora_ 文件
     // 与穿越字符/绝对 URL/query-hash，见 server/showcase-assets.js。
     if (!showcaseAssets.isShowcaseAssetPath(req.path)) return res.status(404).end();
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'private, no-cache');
     next();
   }, config.SCENE_SHOWCASE_DIR
     ? express.static(config.SCENE_SHOWCASE_DIR, { dotfiles:'deny', index:false, fallthrough:false })
@@ -346,7 +356,7 @@ function createGateway(options: GatewayOptions = {}) {
     if (!fs.existsSync(spaEntry)) return next();
     let ext = path.extname(req.path);
     if (ext && ext !== '.html') return next();
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'private, no-cache');
     // Resolve the fixed entry relative to its root; hidden worktree ancestors are not web paths.
     res.sendFile('index.html', { root: path.dirname(spaEntry) });
   });

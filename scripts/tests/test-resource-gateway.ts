@@ -55,7 +55,10 @@ test('installed resource bytes/metadata never leak through remote or arbitrary-p
   const remote = { 'x-forwarded-for': '203.0.113.10', 'x-token': stack.config.TOKEN };
   assert.equal((await request(stack, '/api/resources/status', undefined, remote)).status, 403);
   assert.equal((await request(stack, '/api/resources/tasks', { action: 'import', releaseId: 'images-new' }, remote)).status, 403);
-  assert.equal((await request(stack, '/assets/characters/portrait.png', undefined, remote)).text, 'bundled base image');
+  const unpublished = await request(stack, '/assets/characters/portrait.png', undefined, remote);
+  assert.equal(unpublished.status, 403);
+  assert.equal(unpublished.data.code, 'CONTENT_NOT_PUBLISHED', 'installed fallback cannot bypass remote review');
+  assert.equal((await request(stack, '/assets/characters/portrait.png')).text, 'old approved image');
   assert.equal((await request(stack, '/api/resources/status', undefined, { Host: 'evil.invalid' })).status, 421);
   assert.equal((await request(stack, '/api/resources/tasks', { action: 'import', releaseId: 'images-old', path: f.artwork })).status, 400);
   assert.equal((await request(stack, '/api/resources/tasks', { action: 'download', releaseId: 'images-old', url: 'http://127.0.0.1/' })).status, 400);

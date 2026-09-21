@@ -3,6 +3,11 @@ import { build } from 'esbuild'
 import { resolve } from 'node:path'
 
 type LibraryFixture = {
+  useChatStorage(): {
+    load(): Promise<void>
+    setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }): Promise<void>
+    state: { settings: { apiKey: string } }
+  }
   startArtworkSession(): Promise<void>
   stopArtworkSession(): Promise<void>
   withArtworkStaging<T>(work: () => Promise<T>): Promise<T>
@@ -24,10 +29,18 @@ type LibraryFixture = {
   kvSet(key: string, value: unknown): Promise<void>
   restoreBackupData(backup: unknown, replace: boolean): Promise<void>
   normalizeBackup(backup: unknown): unknown
+  createTask(summary: { kind: 'image'; title: string; status: 'succeeded' | 'running'; route: string }): string
+  updateTask(id: string, patch: { message: string }): void
+  flushTaskSummaries(): Promise<void>
+  hydrateTasks(): Promise<void>
+  useTaskCenter(): { tasks: { value: Array<{ title: string }> }; clearCompleted(): void }
 }
 declare global {
   interface Window {
     libraryFixture: LibraryFixture
+    credentialReadFixture(): Promise<string | null>
+    credentialWriteFixture(endpoint: string, secret: string): Promise<void>
+    credentialWork?: { store: ReturnType<LibraryFixture['useChatStorage']>; done: Promise<void> }
     libraryBarrier?: { entered: boolean; release(): void; done: Promise<void> }
   }
 }
@@ -38,12 +51,14 @@ test.beforeAll(async () => {
   const bundled = await build({
     stdin: { contents: [
       "export * from './src/storage/artworkRepository.ts';",
+      "export { useChatStorage } from './src/composables/chat/useChatStorage.ts';",
       "export * from './src/composables/useKVStore.ts';",
       "export * from './src/storage/backupRestore.ts';",
       "export * from './src/utils/backupCore.ts';",
       "export * from './src/storage/artworkSession.ts';",
       "export * from './src/composables/useBackup.ts';",
       "export * from './src/composables/useImageStore.ts';",
+      "export * from './src/composables/useTaskCenter.ts';",
       `import { saveGeneratedArtwork } from './src/application/artwork/saveGeneratedArtwork.ts';
        import { withArtworkStaging } from './src/storage/artworkSession.ts';
        import { imgPut, imgDelete, imgGetRecord } from './src/composables/useImageStore.ts';
@@ -63,6 +78,7 @@ test.beforeAll(async () => {
        }`,
     ].join('\n'), resolveDir: root },
     bundle: true, write: false, format: 'iife', globalName: 'libraryFixture', platform: 'browser',
+    define: { 'import.meta.env.VITE_CLIPROXY_API_KEY': '""' },
     alias: { '@': resolve(root, 'src') }, logLevel: 'silent',
   })
   sourceBundle = bundled.outputFiles[0].text
@@ -80,6 +96,32 @@ async function enter(page: Page) {
   await page.goto('/__library-fixture')
   await page.waitForFunction(() => Boolean(window.libraryFixture?.artworkRepository))
 }
+
+test('task summaries atomically merge two pages and clearing defeats a stale writer', async ({ context }) => {
+  await context.addInitScript(() => Object.defineProperty(navigator, 'locks', { value: undefined, configurable: true }))
+  const first = await context.newPage(), second = await context.newPage()
+  await Promise.all([enter(first), enter(second)])
+  const [completed] = await Promise.all([
+    first.evaluate(async () => {
+      const id = window.libraryFixture.createTask({ kind: 'image', title: 'Completed A', status: 'succeeded', route: '/gallery' })
+      await window.libraryFixture.flushTaskSummaries()
+      return id
+    }),
+    second.evaluate(async () => {
+      window.libraryFixture.createTask({ kind: 'image', title: 'Running B', status: 'running', route: '/prompt-builder' })
+      await window.libraryFixture.flushTaskSummaries()
+    }),
+  ])
+  await second.evaluate(async () => { await window.libraryFixture.hydrateTasks() })
+  expect(await second.evaluate(() => window.libraryFixture.useTaskCenter().tasks.value.map(task => task.title).sort())).toEqual(['Completed A', 'Running B'])
+  await second.evaluate(async () => { window.libraryFixture.useTaskCenter().clearCompleted(); await window.libraryFixture.flushTaskSummaries() })
+  await first.evaluate(async id => {
+    window.libraryFixture.updateTask(id, { message: 'stale update' })
+    await window.libraryFixture.flushTaskSummaries()
+  }, completed)
+  expect(await first.evaluate(() => window.libraryFixture.useTaskCenter().tasks.value.map(task => task.title))).toEqual(['Running B'])
+  await Promise.all([first.close(), second.close()])
+})
 async function ids(page: Page) {
   return page.evaluate(async () => (await window.libraryFixture.kvGet(window.libraryFixture.ARTWORK_HISTORY_KEY) || []).map(item => item.id).sort())
 }
@@ -342,3 +384,52 @@ test('automatic trash purge uses the same cross-document protection as manual cl
   expect(await page.evaluate(() => window.libraryFixture.artworkRepository.purgeExpiredTrash())).toEqual({ purged: 1 })
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).toBeNull()
 })
+
+for (const replacement of ['neutral-new-key', '']) {
+  test(`chat credentials do not revive after another window ${replacement ? 'saves' : 'clears'} with real Web Locks`, async ({ context, page }) => {
+    const endpoint = 'https://neutral-credential.example/v1'
+    let stored: string | null = null
+    const writes: string[] = []
+    let release!: () => void
+    const barrier = new Promise<void>(resolve => { release = resolve })
+    await context.exposeBinding('credentialReadFixture', async () => stored)
+    await context.exposeBinding('credentialWriteFixture', async (_source, _endpoint: string, value: string) => {
+      writes.push(value)
+      await barrier
+      stored = value || null
+    })
+    await context.addInitScript(() => {
+      window.companionDesktop = {
+        isDesktop: true,
+        readChatCredential: () => window.credentialReadFixture(),
+        writeChatCredential: (endpoint: string, secret: string) => window.credentialWriteFixture(endpoint, secret),
+      } as unknown as typeof window.companionDesktop
+    })
+    const other = await context.newPage()
+    await Promise.all([enter(page), enter(other)])
+    try {
+      await page.evaluate(({ endpoint, replacement }) => {
+        localStorage.setItem('aics_chat_v1', JSON.stringify({ settings: {
+          apiBaseUrl: endpoint, apiModel: 'fixture', apiKey: 'neutral-old-key',
+        }, histories: {} }))
+        const store = window.libraryFixture.useChatStorage()
+        window.credentialWork = { store, done: store.setApiSettings({ baseUrl: endpoint, model: 'fixture', apiKey: replacement }) }
+      }, { endpoint, replacement })
+      await expect.poll(() => writes.length).toBe(1)
+      await other.evaluate(() => {
+        const store = window.libraryFixture.useChatStorage()
+        window.credentialWork = { store, done: store.load() }
+      })
+      await expect.poll(() => other.evaluate(async () => (await navigator.locks.query()).pending?.some(lock => lock.name?.startsWith('huiyu-chat-credential:')))).toBe(true)
+      release()
+      await Promise.all([page.evaluate(() => window.credentialWork!.done), other.evaluate(() => window.credentialWork!.done)])
+      expect(writes).toEqual([replacement])
+      expect(stored || '').toBe(replacement)
+      expect(await other.evaluate(() => window.credentialWork!.store.state.settings.apiKey)).toBe(replacement)
+      expect(await page.evaluate(() => localStorage.getItem('aics_chat_v1'))).not.toContain('neutral-old-key')
+    } finally {
+      release()
+      await other.close()
+    }
+  })
+}

@@ -59,6 +59,7 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
     !record.image_id && aliases.has(String(record.id)) ? { ...record, image_id: aliases.get(String(record.id)) } : record)
   const importedProjects = remap(imported.data.projects, aliases) as BackupRecord[]
   let settingsTouched = false
+  let rollbackBaseline = previousSettings
   let publishedSettings: Record<string, string> = {}
   try {
     for (const image of images) {
@@ -66,6 +67,9 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
       stagedIds.push(image.id)
     }
     const latestSettings = collectLiveLocalSettings(localStorage)
+    // Compensation restores the values we actually replaced, including writes
+    // made by another page during asynchronous image staging.
+    rollbackBaseline = latestSettings
     let nextSettings = prepareBackupSettings(latestSettings, imported.data.settings, replace)
     if (!replace) {
       // A merge never overwrites a key changed by another writer while images were staged.
@@ -87,7 +91,7 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
   } catch (error) {
     const cleanupErrors: string[] = []
     if (settingsTouched) {
-      try { rollbackSettings(previousSettings, publishedSettings, replace) } catch { cleanupErrors.push('设置回滚失败') }
+      try { rollbackSettings(rollbackBaseline, publishedSettings, replace) } catch { cleanupErrors.push('设置回滚失败') }
     }
     try { await imgDeleteMany(stagedIds) } catch { cleanupErrors.push('临时图片清理失败') }
     const message = error instanceof Error ? error.message : String(error)

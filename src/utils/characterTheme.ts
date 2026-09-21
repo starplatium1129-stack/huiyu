@@ -191,7 +191,7 @@ const DEFAULT_THEME: CharacterThemeOverride = Object.freeze({
   aura: 'rgba(183,132,246,.28)',
   auraSecondary: 'rgba(255,117,160,.20)',
 })
-const HEX_COLOR = /^#[\da-f]{3,8}$/i
+const HEX_COLOR = /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i
 
 function recordFor(id: string, records: readonly CharacterThemeRecord[]): CharacterThemeRecord | undefined {
   return records.find(record => String(record?.id || '') === id)

@@ -219,8 +219,10 @@ test('repeated navigation keeps a visible route view mounted', async ({ page }) 
     { label: '参考画册', url: /\/showcase$/, heading: '把心动，一页页收藏。' },
     { label: '我的作品', url: /\/gallery$/, heading: '我的作品' },
   ]) {
-    if (destination.label === '我的作品') await page.locator('.nav-more-trigger').click()
-    await page.getByRole('navigation').getByRole('link', { name: destination.label, exact: true }).click()
+    if (destination.label === '我的作品') {
+      await page.getByRole('button', { name: '更多', exact: true }).click()
+      await page.getByRole('dialog', { name: '更多页面', exact: true }).getByRole('link', { name: destination.label, exact: true }).click()
+    } else await page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: destination.label, exact: true }).click()
     await expect(page).toHaveURL(destination.url)
     await expect(page.locator('#main')).toContainText(destination.heading)
     expect(await page.locator('#main .route-view').evaluateAll(views => views.some(view => {
@@ -538,14 +540,23 @@ test('global task center retains a batch while visiting the gallery and control 
 for (const theme of ['dark', 'light']) {
   test(`character portraits and asset health stay readable ${theme}`, async ({ page }) => {
     // This is a UI test; physical reference files are checked separately on the asset host.
-    await page.route('**/character-references/**', route => route.fulfill({ status: 200, contentType: 'image/png', body: '' }))
+    const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
+    await page.route('**/data/character-reference-view.json', route => route.fulfill({ json: {
+      furina: { characterId: 'furina', displayName: '芙宁娜', outfits: [{ outfitId: 'fixture', outfitName: '测试服装', isDefault: true, isNsfw: false, prose: '',
+        references: Array.from({ length: 7 }, (_, index) => ({ id: 'fixture-' + index, name: '测试机位 ' + index, shotType: '正面', fileName: index + '.png', lens: '50mm', targetUsage: [], url: '/character-references/furina/fixture/' + index + '.png' })),
+      }] },
+    } }))
+    await page.route('**/character-references/**', route => route.fulfill({ status: 200, contentType: 'image/png', body: image }))
     await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.goto('/character?character=furina')
+    await page.locator('.character-production > summary').click()
     const assets = page.getByRole('region', { name: '角色素材状态' })
     await expect(assets).toContainText('7 / 7 可读取')
-    await expect(page.locator('.directory-item[data-character="furina"] .character-portrait')).toHaveAttribute('data-state', 'image')
+    const portrait = page.locator(theme === 'dark' ? '.directory-item[data-character="furina"] .character-portrait' : '.directory-pocket .character-portrait')
+    await expect(portrait).toBeVisible()
+    await expect(portrait).toHaveAttribute('data-state', 'image')
     await assets.screenshot({ path: `.review-shots/character-assets-${theme}.png` })
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
   })

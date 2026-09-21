@@ -109,12 +109,8 @@ pub fn toggle_companion_visibility(app: &AppHandle) {
 
 pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
     let pathname = normalize_atelier_path(target);
-    // gateway_url 尚未就绪时回退到默认端口（窗口创建路径在网关 ready 后才执行）
-    let base = if gateway_url.is_empty() {
-        "http://127.0.0.1:3000".to_string()
-    } else {
-        gateway_url.to_string()
-    };
+    if gateway_url.is_empty() { return; }
+    let base = gateway_url.to_string();
     if let Some(w) = app.get_webview_window("atelier") {
         let _ = w.show();
         let _ = w.set_focus();
@@ -152,6 +148,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
             .maximized(presentation.maximized)
             .decorations(false)
             .visible(false)
+            .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
             .initialization_script(crate::shim::COMPANION_SHIM_JS)
             .build()
         {
@@ -186,6 +183,7 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, s
         .skip_taskbar(true)
         .shadow(false)
         .visible(false)
+        .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
         .initialization_script(shim)
         .build()?;
     let ignore_mouse_events = state.ignore_mouse_events.load(Ordering::Relaxed);
@@ -218,11 +216,8 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
     }
     let state = app.state::<AppState>();
     let bounds = companion_chat_bounds(&state);
-    let url = if gateway_url.is_empty() {
-        "http://127.0.0.1:3000/companion-chat".to_string()
-    } else {
-        format!("{}/companion-chat", gateway_url.trim_end_matches('/'))
-    };
+    if gateway_url.is_empty() { return; }
+    let url = format!("{}/companion-chat", gateway_url.trim_end_matches('/'));
     let app = app.clone();
     tauri::async_runtime::spawn_blocking(move || {
         let state = app.state::<AppState>();
@@ -243,6 +238,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
             .skip_taskbar(true)
             .shadow(true)
             .visible(false)
+            .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
             .initialization_script(crate::shim::COMPANION_SHIM_JS)
             .build()
         {
@@ -383,4 +379,38 @@ mod tests {
         assert_eq!(normalize_atelier_path(Some("/bad path")), "/");
         assert_eq!(normalize_atelier_path(None), "/");
     }
+}
+#[path = "gateway_origin.rs"]
+mod gateway_origin;
+pub use gateway_origin::same_gateway_origin;
+
+pub fn is_gateway_navigation(app: &AppHandle, url: &tauri::Url) -> bool {
+    if !is_gateway_origin(app, url) { return false; }
+    // A navigation fetches new executable content, so re-prove the live server.
+    app.try_state::<crate::gateway::GatewaySupervisor>().map(|gateway| gateway.is_healthy()).unwrap_or(false)
+}
+
+pub fn is_gateway_origin(app: &AppHandle, url: &tauri::Url) -> bool {
+    let Some(state) = app.try_state::<AppState>() else { return false; };
+    if !app.try_state::<crate::gateway::GatewaySupervisor>().map(|gateway| gateway.is_authenticated()).unwrap_or(false) { return false; }
+    let expected = state.gateway_url.lock().unwrap().clone();
+    same_gateway_origin(&expected, url)
+}
+
+/// Static capabilities grant no remote origin. Add only the proven startup origin.
+pub fn authorize_gateway_origin(app: &AppHandle, url: &str) -> Result<(), String> {
+    let parsed = tauri::Url::parse(url).map_err(|e| e.to_string())?;
+    if !same_gateway_origin(url, &parsed) { return Err("Untrusted gateway origin".into()); }
+    let current = app.state::<AppState>().gateway_url.lock().unwrap().clone();
+    if !current.is_empty() {
+        if same_gateway_origin(&current, &parsed) { return Ok(()); }
+        return Err("Gateway origin changed; restart the desktop before granting privileges".into());
+    }
+    for template in [include_str!("../capabilities/default.json"), include_str!("../capabilities/companion-live2d.json")] {
+        let mut capability: serde_json::Value = serde_json::from_str(template).map_err(|e| e.to_string())?;
+        capability["identifier"] = serde_json::json!(format!("{}-{}", capability["identifier"].as_str().unwrap(), parsed.port_or_known_default().unwrap()));
+        capability["remote"] = serde_json::json!({ "urls": [format!("{}/*", parsed.origin().ascii_serialization())] });
+        app.add_capability(serde_json::to_string(&capability).map_err(|e| e.to_string())?).map_err(|e| e.to_string())?;
+    }
+    Ok(())
 }

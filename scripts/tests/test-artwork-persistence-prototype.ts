@@ -5,6 +5,7 @@ const { test }: typeof import('node:test') = require('node:test');
 const fs: typeof import('node:fs') = require('node:fs');
 const os: typeof import('node:os') = require('node:os');
 const path: typeof import('node:path') = require('node:path');
+const { spawn }: typeof import('node:child_process') = require('node:child_process');
 const { openArtworkCandidate, digest }: typeof import('./prototypes/artwork-sqlite') = require('./prototypes/artwork-sqlite');
 
 function fixture(t: any) {
@@ -23,6 +24,47 @@ function fixture(t: any) {
 }
 
 for (const interruption of ['file-published', 'metadata-written', 'committed']) {
+  test(`candidate survives process termination at ${interruption}`, async t => {
+    const { root, source } = fixture(t);
+    // IPC acknowledges the checkpoint, then Atomics.wait holds the child inside
+    // the actual write/transaction. SIGKILL prevents catch/finally/close cleanup.
+    const worker = `
+      const {openArtworkCandidate}=require(process.argv[1]);
+      process.on('message', ({root, source, phase}) => {
+        source.images=source.images.map(image=>({...image,bytes:Buffer.from(image.bytes.data)}));
+        const candidate=openArtworkCandidate(root, current => {
+          if(current===phase) {
+            process.send({phase:current});
+            Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0);
+          }
+        });
+        candidate.importSnapshot('migration-1',source);
+      });`;
+    const child = spawn(process.execPath, ['-e', worker, require.resolve('./prototypes/artwork-sqlite')],
+      { stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true });
+    let stderr = '';
+    child.stderr?.on('data', chunk => { stderr += String(chunk); });
+    let reached = false;
+    const exited = new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error(`checkpoint timeout: ${stderr}`)); }, 10_000);
+      child.once('error', error => { clearTimeout(timer); reject(error); });
+      child.on('message', message => {
+        if ((message as { phase?: string }).phase === interruption) { reached = true; child.kill('SIGKILL'); }
+      });
+      child.once('exit', () => { clearTimeout(timer); reached ? resolve() : reject(new Error(`worker exited before checkpoint: ${stderr}`)); });
+    });
+    child.send({ root, source, phase: interruption });
+    await exited;
+    const candidate = openArtworkCandidate(root);
+    try {
+      assert.equal(candidate.count(), interruption === 'committed' ? 1 : 0);
+      assert.equal(candidate.state('migration-1'), interruption === 'committed' ? 'ready' : 'preparing');
+      candidate.importSnapshot('migration-1', source);
+      candidate.importSnapshot('migration-1', source);
+      assert.deepEqual(candidate.history(), source.history);
+      for (const image of source.images) assert.deepEqual(candidate.readImage(image.id), image.bytes);
+    } finally { candidate.close(); }
+  });
   test(`candidate resumes after ${interruption} without changing source`, t => {
     const { root, source } = fixture(t);
     const before = digest(JSON.stringify(source));

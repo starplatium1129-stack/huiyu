@@ -3,6 +3,8 @@ import { restoreBackupData } from './backupRestore'
 import { imgPutRecord, imgDeleteMany } from '@/composables/useImageStore'
 import { kvGet, kvSetMany } from '@/composables/useKVStore'
 import { normalizeBackup, type BackupFile } from '@/utils/backupCore'
+import { CHAT_ARCHIVE_KEY } from '@/utils/chatArchive'
+import { CHAT_MEMORY_KEY } from '@/utils/storageKeys'
 
 vi.mock('@/composables/useImageStore', () => ({ imgPutRecord: vi.fn(), imgDeleteMany: vi.fn() }))
 vi.mock('@/composables/useKVStore', () => ({ kvGet: vi.fn(), kvSetMany: vi.fn() }))
@@ -69,6 +71,24 @@ describe('backup restore publication', () => {
     })
     await expect(restoreBackupData(file, true)).rejects.toThrow('quota')
     expect(localStorage.getItem('aics_theme')).toBe('user-choice-after-publish')
+  })
+  it.each([false, true])('preserves writes made during image staging when publication fails (replace=%s)', async replace => {
+    const file = backup()
+    file.data.settings[CHAT_ARCHIVE_KEY] = JSON.stringify({ version: 1, archived: { nene: [] } })
+    file.data.settings[CHAT_MEMORY_KEY] = JSON.stringify({ version: 1, byCharacter: { nene: [] } })
+    const archive = JSON.stringify({ version: 1, archived: { nene: [{ mid: 'new', role: 'user', content: 'New conversation' }] } })
+    const memory = JSON.stringify({ version: 1, byCharacter: { nene: [{ id: 'new', character: 'nene', text: 'New memory', createdAt: 1, updatedAt: 1 }] } })
+    vi.mocked(imgPutRecord).mockImplementationOnce(async record => {
+      localStorage.setItem(CHAT_ARCHIVE_KEY, archive)
+      localStorage.setItem(CHAT_MEMORY_KEY, memory)
+      localStorage.setItem('aics_theme', 'latest-theme')
+      return record.id
+    })
+    vi.mocked(kvSetMany).mockRejectedValueOnce(new Error('quota'))
+    await expect(restoreBackupData(file, replace)).rejects.toThrow('quota')
+    expect(localStorage.getItem(CHAT_ARCHIVE_KEY)).toBe(archive)
+    expect(localStorage.getItem(CHAT_MEMORY_KEY)).toBe(memory)
+    expect(localStorage.getItem('aics_theme')).toBe('latest-theme')
   })
   it('validates all encoded images before writing any record', async () => {
     const file = backup(); file.images.push({ id: 'bad', dataUrl: 'data:image/png;base64,a' })

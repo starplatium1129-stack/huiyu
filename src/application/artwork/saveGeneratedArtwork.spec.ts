@@ -90,7 +90,10 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     f.deps[failure] = vi.fn().mockRejectedValue(error)
     const result = await saveGeneratedArtwork(f.input, f.deps)
     expect(result).toMatchObject({ ok: false, error })
-    if (failure === 'putImage') expect(f.deps.deleteImage).not.toHaveBeenCalled()
+    if (failure === 'appendArtwork') {
+      expect(f.deps.deleteImage).not.toHaveBeenCalled()
+      expect(result).toMatchObject({ cleanup: { status: 'commit-unknown', imageId: 'new-image' } })
+    } else if (failure === 'putImage') expect(f.deps.deleteImage).not.toHaveBeenCalled()
     else {
       expect(f.deps.deleteImage).toHaveBeenCalledExactlyOnceWith('new-image')
       expect(result).toMatchObject({ cleanup: { status: 'completed', imageId: 'new-image' } })
@@ -102,8 +105,25 @@ describe('保存生成作品用例：显式依赖，无 Pinia 或页面', () => 
     const f = fixture(), error = new Error('commit failed')
     f.deps.cacheThumbnail = vi.fn().mockRejectedValue(new Error('thumbnail failed'))
     expect((await saveGeneratedArtwork(f.input, f.deps)).ok).toBe(true)
-    f.deps.appendArtwork = vi.fn().mockRejectedValue(error)
+    f.deps.measureBlob = vi.fn().mockRejectedValue(error)
     f.deps.deleteImage = vi.fn().mockRejectedValue(new Error('cleanup failed'))
     expect(await saveGeneratedArtwork(f.input, f.deps)).toMatchObject({ ok: false, error, cleanup: { status: 'failed', imageId: 'new-image' } })
   })
+})
+
+it('lost commit acknowledgement is recovered by record and image identity without deleting the image', async () => {
+  const f = fixture()
+  let committed: unknown[] = []
+  f.deps.appendArtwork = async entry => { committed = [entry]; throw new Error('ack lost') }
+  f.deps.readArtworkHistory = async () => committed
+  expect(await saveGeneratedArtwork(f.input, f.deps)).toMatchObject({ ok: true, entry: { image_id: 'new-image' } })
+  expect(f.deps.deleteImage).not.toHaveBeenCalled()
+})
+
+it('an unreadable commit outcome keeps its owned image and an operation identifier', async () => {
+  const f = fixture()
+  f.deps.appendArtwork = async () => { throw new Error('unknown') }
+  f.deps.readArtworkHistory = async () => { throw new Error('offline') }
+  expect(await saveGeneratedArtwork(f.input, f.deps)).toMatchObject({ ok: false, operationId: expect.any(String), cleanup: { status: 'commit-unknown', imageId: 'new-image' } })
+  expect(f.deps.deleteImage).not.toHaveBeenCalled()
 })

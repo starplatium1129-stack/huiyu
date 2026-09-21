@@ -44,6 +44,37 @@ async function waitForJob(base: string, id: string|number|boolean) {
 }
 
 async function run() {
+  // A completed generation batch can still own a cancellable concat operation.
+  const isolatedRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'video-concat-cancel-'));
+  const batchModule: typeof import('../../routes/video/batch') = require('../../routes/video/batch');
+  let started!: () => void;
+  const entered = new Promise<void>(resolve => { started = resolve; });
+  let calls = 0;
+  const isolated = batchModule.createBatchService({ ROOT_DIR:isolatedRoot }, {}, {
+    runFfmpeg:async (args: string[], options: { signal: AbortSignal }) => {
+      calls += 1;
+      if (calls === 1) {
+        started();
+        await new Promise<void>((_resolve, reject) => options.signal.addEventListener('abort', () => reject(new Error('cancelled')), { once:true }));
+      }
+      fs.writeFileSync(args.at(-1)!, 'neutral-mp4');
+    },
+  });
+  const fixture: any = { id:'fixture', status:'done', abortController:new AbortController(), shots:[1, 2].map(index => ({ status:'succeeded', input:{ width:32, height:32 }, job:{ result:{ path:path.join(isolatedRoot, index + '.mp4') } } })) };
+  try {
+    const pending = isolated.concat(fixture);
+    const rejected = assert.rejects(pending, /cancelled/);
+    await entered;
+    await isolated.cancel(fixture);
+    await rejected;
+    assert.equal(calls, 1, 'cancellation must not retry without audio');
+    assert.equal(fixture.concat, undefined, 'cancelled output must never publish');
+    const result = await isolated.concat(fixture);
+    assert.ok(fs.existsSync(result.path), 'explicit concat retry uses a fresh signal');
+    assert.equal(calls, 2);
+    assert.ok(fs.readdirSync(path.dirname(result.path)).every(name => !name.endsWith('.txt') && !name.includes('.part.')));
+  } finally { isolated.close(); fs.rmSync(isolatedRoot, { recursive:true, force:true }); }
+
   let input = video.validateInput(validBody());
   assert.equal(input.width, 832);
   assert.equal(input.height, 480);

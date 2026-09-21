@@ -34,6 +34,8 @@
 .room-surface .avatar-status[data-state="ready"], .room-surface .live2d-interaction-hint { display: none; }
 .room-surface .conversation-card { border-radius:var(--r-md); border-color:var(--border-soft); background:var(--bg-surface); box-shadow:none; animation:none; min-height:0; }
 .room-surface .conversation-card::before { display: none; }
+.room-surface .conversation-card:has(.api-settings) { overflow-y: auto; }
+.room-surface .conversation-card:has(.api-settings) > * { flex-shrink: 0; }
 .room-surface .conversation-head { flex-shrink:0; align-items:center; padding:var(--s-4) var(--s-5); background:var(--bg-surface); border-bottom:1px solid var(--border-soft); }
 .room-conversation-title { display: grid; gap: var(--s-1); }
 .room-conversation-title > span { color: var(--text-secondary); font-size: var(--fs-label-sm); }
@@ -80,6 +82,12 @@
 }
 @media (max-width: 899px) {
   .room-surface .chat-layout,.room-surface:is([data-character='hatsune_miku'],[data-character='frieren'],[data-character='fern_frieren']) .chat-layout { grid-template-columns:1fr; grid-template-rows:minmax(150px,30%) minmax(0,1fr); gap:var(--s-2); }
+  /* The full API form needs intrinsic height; the fixed chat/composer grid
+     otherwise compresses it to a clipped strip on narrow screens. */
+  .page-root:has(.room-surface .api-settings) { height:auto; min-height:calc(100dvh - var(--desktop-chrome-height, 0px)); }
+  .page-main:has(.room-surface .api-settings) { grid-template-rows:auto; }
+  .chat-page.room-surface:has(.api-settings) { height:auto; }
+  .room-surface:has(.api-settings) .chat-layout { flex:none; grid-template-rows:minmax(150px,30dvh) auto; }
 }
 @media (max-width: 620px) {
   .room-title { font-size:var(--fs-title-xs); }

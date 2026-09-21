@@ -11,6 +11,7 @@ import { errorMessage as runtimeErrorMessage } from '../../scripts/lib/runtime-e
  */
 
 let childProcess: typeof import('child_process') = require('child_process');
+let processTree: typeof import('../../server/process-tree') = require('../../server/process-tree');
 let crypto: typeof import('crypto') = require('crypto');
 let fs: typeof import('fs') = require('fs');
 let path: typeof import('path') = require('path');
@@ -38,17 +39,28 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   // ffmpeg 命令可注入（测试替身）；缺省走 child_process.execFile。
   let runFfmpeg = dependencies.runFfmpeg || function (args: readonly string[]|null|undefined, options?: { signal?: AbortSignal }) {
     return new Promise(function (resolve, reject) {
-      let child = childProcess.execFile('ffmpeg', args, {
-        maxBuffer:8 * 1024 * 1024,
-        timeout:FFMPEG_TIMEOUT_MS,
-        killSignal:'SIGTERM',
-        signal:options && options.signal,
-      }, function (error, stdout, stderr) {
+      const child = childProcess.spawn('ffmpeg', args || [], {
+        windowsHide:true, detached:process.platform !== 'win32', stdio:['ignore', 'pipe', 'pipe'],
+      });
+      let stdout = '', stderr = '', failure: Error | null = null;
+      const abort = () => {
+        failure ||= new Error('ffmpeg 操作已取消或超时');
+        processTree.killProcessTree(child, { group:true, force:true });
+      };
+      const timer = setTimeout(abort, FFMPEG_TIMEOUT_MS);
+      options?.signal?.addEventListener('abort', abort, { once:true });
+      child.stdout.on('data', chunk => { stdout = (stdout + chunk.toString()).slice(-8192); });
+      child.stderr.on('data', chunk => { stderr = (stderr + chunk.toString()).slice(-8192); });
+      child.on('error', error => { failure = error; });
+      child.on('close', code => {
+        clearTimeout(timer);
+        options?.signal?.removeEventListener('abort', abort);
         activeChildren.delete(child);
-        if (error) reject(new Error('ffmpeg 执行失败: ' + String(stderr || error.message).slice(0, 300)));
+        if (failure || code !== 0) reject(failure || new Error('ffmpeg 执行失败: ' + stderr.slice(-300)));
         else resolve(stdout);
       });
       activeChildren.add(child);
+      if (options?.signal?.aborted) abort();
     });
   };
 
@@ -308,7 +320,10 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   }
 
   async function cancel(batch: { status: string; watchTimer: string|number|NodeJS.Timeout|null|undefined; shots: string|any[]; }) {
-    if (batch.status === 'done') return batch;
+    if (batch.status === 'done') {
+      (batch as any).abortController?.abort();
+      return batch;
+    }
     batch.status = 'cancelled';
     (batch as any).abortController?.abort();
     if (batch.watchTimer) { clearTimeout(batch.watchTimer); batch.watchTimer = null; }
@@ -335,6 +350,12 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     if (shot.status !== 'failed' && shot.status !== 'cancelled') {
       throw serviceError(409, 'BATCH_SHOT_NOT_RETRYABLE', '只有失败或取消的分镜可以重抽');
     }
+    if ((batch as any).concatInFlight) throw serviceError(409, 'BATCH_CONCAT_RUNNING', '请先完成或取消当前拼接');
+    if ((batch as any).abortController?.signal.aborted) (batch as any).abortController = new AbortController();
+    if ((batch as any).concat) {
+      try { fs.unlinkSync((batch as any).concat.path); } catch {}
+      (batch as any).concat = null;
+    }
     shot.status = 'pending';
     shot.error = null;
     shot.errorCode = null;
@@ -347,6 +368,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   function concat(batch: any) {
     if (batch.concat) return Promise.resolve(batch.concat);
     if (batch.concatInFlight) return batch.concatInFlight;
+    if (batch.status === 'done' && batch.abortController?.signal.aborted) batch.abortController = new AbortController();
     let operationId = crypto.randomBytes(8).toString('hex');
     batch.concatOperationId = operationId;
     batch.concatInFlight = (async function () {
@@ -411,7 +433,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     closed = true;
     batches.forEach(removeBatch);
     for (const child of activeChildren) {
-      try { child.kill(); } catch (error) {}
+      try { processTree.killProcessTree(child, { group:true, force:true }); } catch (error) {}
     }
   }
 

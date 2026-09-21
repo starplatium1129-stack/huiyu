@@ -1,0 +1,1252 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-21T05:41:14.722Z",
+  "baselineCommit": "9bc306e1e83c0c5f30e8870ac38722deefa15d9e",
+  "sourceIdentity": "Baseline commit plus the controlled file hashes below; the containing Git commit is the delivered revision.",
+  "environment": {
+    "machine": "office",
+    "platform": "win32",
+    "node": "v24.18.0",
+    "browser": "Edge 153.0.4234.48"
+  },
+  "scope": "A0-A5 re-review and office implementation/acceptance for A6-A9. No model generation or desktop installer execution.",
+  "build": {
+    "index": {
+      "path": "dist/index.html",
+      "sha256": "678fe31464fd9511b41a4af5e297ee78628c2f54e7c1f827c7049f8fbe534572"
+    },
+    "manifest": {
+      "path": "dist/.vite/manifest.json",
+      "sha256": "52f9439bb6066d22b710937368a4e91c2d131c53105f7cdfe5ee6a7a8cd3c4d6"
+    }
+  },
+  "validation": {
+    "fullGateFirstRun": {
+      "result": "FAILED",
+      "command": "AICS_REFERENCE_AUDIT_MODE=structure npm run wf -- gate:full --all",
+      "frontend": {
+        "passed": 1103,
+        "failed": 2
+      },
+      "unit": {
+        "passed": 1074,
+        "failed": 2,
+        "skipped": 2
+      },
+      "contracts": {
+        "passed": 34,
+        "failed": 1
+      },
+      "note": "Initial type, line-ending and obsolete-contract failures are retained in gate-full.log. This is not relabelled as a final all-in-one pass."
+    },
+    "followup": {
+      "quality": "19/21 check steps passed; the two actual-media checks failed because the office has no reference root. Both were then run and passed in explicitly labelled structure mode. No thresholds or material records changed.",
+      "frontend": {
+        "files": 158,
+        "passed": 1109,
+        "failed": 0
+      },
+      "affectedNodeTests": {
+        "passed": 20,
+        "failed": 0,
+        "note": "Includes both failed unit contracts, the failed resource gateway contract, remote publication and desktop proof integration."
+      },
+      "browser": {
+        "initialPassed": 431,
+        "initialFailed": 14,
+        "recovered": 14,
+        "uniqueCriticalCases": 445,
+        "skipped": 0,
+        "note": "431 unchanged cases reuse the first critical run. All 14 failures were individually fixed and passed; the final CSS change additionally passed the complete 20-case companion suite. Not a second single 445-case run."
+      },
+      "finalCompanionAndCredentialUI": {
+        "passed": 20,
+        "failed": 0,
+        "screenshots": 8,
+        "minimumContrast": 5.366,
+        "note": "Only ui/personal-api-* are final. ui/verified-* and ui-before-fix retain the real 33px clipping failure."
+      },
+      "typechecks": "Application, node, test and browser tools passed in check; final E2E root tsc passed after selector/fixture fixes.",
+      "styles": "Style debt, literal, both-theme contrast, colors, animation and monolith checks passed after the narrow form fix.",
+      "build": "Final build, unchanged existing budgets and precompression passed.",
+      "npmAudit": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "native": {
+        "evidenceKind": "agent-recorded-tool-result-summary",
+        "environment": {
+          "node": "v24.18.0",
+          "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+          "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "platform": "win32",
+          "osRelease": "10.0.26100"
+        },
+        "checks": [
+          {
+            "name": "cargo check",
+            "passed": true
+          },
+          {
+            "name": "gateway",
+            "passed": 11,
+            "failed": 0
+          },
+          {
+            "name": "credentials",
+            "passed": 2,
+            "failed": 0
+          }
+        ],
+        "note": "Full Windows cargo check and full desktop test binary: gateway 11/11 and Credential Manager 2/2. Summary of tool outputs, not raw stdout. Unique test credentials were cleaned."
+      },
+      "ffmpeg": {
+        "status": "PASS",
+        "requests": 20,
+        "outputs": 1,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 320,
+              "height": 240
+            }
+          ],
+          "format": {
+            "duration": "1.000000"
+          }
+        },
+        "sha256": "71b7ac84f7a56ba4e40e7ac12a9dd8e0490ed4554c6a50bdd1f336275260f45c",
+        "ffmpeg": "ffmpeg version 8.1.2-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers\r"
+      },
+      "bundleSmoke": {
+        "passed": true,
+        "command": "npm run prepare:tauri",
+        "note": "Staged locked production dependencies and launched the copied bundle outside the repository with its Node sidecar. No installer or user instance involved."
+      }
+    }
+  },
+  "performance": {
+    "schemaVersion": 1,
+    "scope": "A7 isolated browser baseline; no production gateway/database; no GPU or native desktop claims",
+    "environment": {
+      "node": "v24.18.0",
+      "platform": "win32",
+      "sourceCommit": "9bc306e1e83c0c5f30e8870ac38722deefa15d9e",
+      "appSha256": "467f34d0a9b16c5877e7a3d0c89830083e224c7cdab827e5729f891f23a3193c",
+      "fixtureSha256": "c5ab212ab11f3e23e352ab85d42638e9c2c7c44a1ceee8fe39006ca980494d0e",
+      "browser": "153.0.4234.48"
+    },
+    "thumbnail": [
+      {
+        "count": 1000,
+        "mode": "foreground",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          1000,
+          1000,
+          1000
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 1000,
+        "mode": "background",
+        "status": [
+          "background-unavailable",
+          "background-unavailable",
+          "background-unavailable"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          1000,
+          1000,
+          1000
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 1000,
+        "mode": "two-pages",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          128,
+          128,
+          128
+        ],
+        "thumbnailReads": [
+          2000,
+          2000,
+          2000
+        ],
+        "repeatedImageReads": [
+          64,
+          64,
+          64
+        ]
+      },
+      {
+        "count": 10000,
+        "mode": "foreground",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          10000,
+          10000,
+          10000
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 10000,
+        "mode": "background",
+        "status": [
+          "background-unavailable",
+          "background-unavailable",
+          "background-unavailable"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          10000,
+          10000,
+          10000
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 10000,
+        "mode": "two-pages",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          128,
+          128,
+          126
+        ],
+        "thumbnailReads": [
+          20000,
+          20000,
+          20000
+        ],
+        "repeatedImageReads": [
+          64,
+          64,
+          62
+        ]
+      }
+    ],
+    "storage": [
+      {
+        "count": 1000,
+        "trials": 3,
+        "indexedDB": {
+          "publishMs": {
+            "median": 13.099999994039536,
+            "raw": [
+              12.800000011920929,
+              13.099999994039536,
+              13.900000005960464
+            ]
+          },
+          "patch30Ms": {
+            "median": 142.5,
+            "raw": [
+              142,
+              142.5,
+              311.90000000596046
+            ]
+          },
+          "readAllMs": {
+            "median": 1.0999999940395355,
+            "raw": [
+              1.0999999940395355,
+              1.0999999940395355,
+              1
+            ]
+          }
+        },
+        "sqlite": {
+          "publishMs": {
+            "median": 3.9913000000001375,
+            "raw": [
+              5.402300000000196,
+              3.789199999999937,
+              3.9913000000001375
+            ]
+          },
+          "patch30Ms": {
+            "median": 10.609700000000203,
+            "raw": [
+              14.193099999999959,
+              10.609700000000203,
+              10.452400000000125
+            ]
+          },
+          "readAllMs": {
+            "median": 1.977200000000039,
+            "raw": [
+              2.722500000000082,
+              1.977200000000039,
+              1.6400999999996202
+            ]
+          }
+        }
+      },
+      {
+        "count": 10000,
+        "trials": 3,
+        "indexedDB": {
+          "publishMs": {
+            "median": 67.09999999403954,
+            "raw": [
+              67.09999999403954,
+              66.2999999821186,
+              73.80000001192093
+            ]
+          },
+          "patch30Ms": {
+            "median": 975.5,
+            "raw": [
+              975.5,
+              946.4000000059605,
+              999.4000000059605
+            ]
+          },
+          "readAllMs": {
+            "median": 8,
+            "raw": [
+              7.300000011920929,
+              8,
+              8.299999982118607
+            ]
+          }
+        },
+        "sqlite": {
+          "publishMs": {
+            "median": 53.68049999999948,
+            "raw": [
+              57.88040000000001,
+              53.68049999999948,
+              53.29079999999976
+            ]
+          },
+          "patch30Ms": {
+            "median": 10.83259999999973,
+            "raw": [
+              10.83259999999973,
+              10.414999999999964,
+              11.079400000000533
+            ]
+          },
+          "readAllMs": {
+            "median": 16.94329999999991,
+            "raw": [
+              17.924200000000383,
+              16.94329999999991,
+              16.336200000000645
+            ]
+          }
+        }
+      }
+    ],
+    "limitations": [
+      "3 samples per case: medians and raw values only; no stable p95 claim",
+      "Headless background scenarios remained visible and are unmeasured for true background cost",
+      "Thumbnail fixture uses 64 shared neutral 1024px images across 1k/10k histories",
+      "Dedupe claim is limited to prewarm clients, demand-driven gallery generation remains independent",
+      "SQLite candidate timings do not justify production migration; durability and IPC differ",
+      "Restore first startup failed resolving @ imports before any measurement; explicit alias fixed, subsequent full 6-case benchmark passed",
+      "Observed JS heap samples are lower bounds, exclude Blob backing/native/browser/GPU memory and do not establish 512MiB capacity/cancellation/physical-power-loss safety",
+      "Thumbnail after comparison uses identical isolated worktree storage/image source and browser, changing only production warmup; restore measurement bundles current main workspace production source"
+    ],
+    "files": [
+      {
+        "name": "thumbnail-before.json",
+        "bytes": 62482,
+        "sha256": "4170928d27cfbca948c5e406cb3ab77f8c3b7ff2b337af515469b7767a3c8ccf"
+      },
+      {
+        "name": "thumbnail-after.json",
+        "bytes": 52455,
+        "sha256": "6afa62944dd9b0fbfb0a0f0b9f21e30623ad7ee51abe60b5b0e4ab6dc4f89cc3"
+      },
+      {
+        "name": "storage.json",
+        "bytes": 4126,
+        "sha256": "eacc7987893f940062f758032ee12f8a0563e7fbda140b5a29c60ddc2e4aff6f"
+      },
+      {
+        "name": "restore.json",
+        "bytes": 10109,
+        "sha256": "f6f0622b7ff14bbcbfd730b1252b8031ba84eb7c603ebc9a9e95993b8b02aee6"
+      },
+      {
+        "name": "page-script-comparison.json",
+        "bytes": 63036,
+        "sha256": "2149065aedd222fd50e184afa14581fddd357ea1c7659f446b46c6a4b9d67066"
+      },
+      {
+        "name": "page-script-chat.png",
+        "bytes": 106408,
+        "sha256": "e74987316ae6d04e3924dd4517cdf0b7c7c9ed5eb6a63df8ef9bcb881fcfcdf5"
+      },
+      {
+        "name": "page-script-prompt-builder.png",
+        "bytes": 235495,
+        "sha256": "aecaa0798e4d81e5c55463469456b5c8416948f5289c7971c5602929c9280c1e"
+      }
+    ],
+    "afterEnvironment": {
+      "node": "v24.18.0",
+      "platform": "win32",
+      "sourceCommit": "9bc306e1e83c0c5f30e8870ac38722deefa15d9e",
+      "appSha256": "3fb7f860adcf5a0d388dab7a700a28c1e017407929cc7cf4a867bdc157e93eb0",
+      "fixtureSha256": "06d95a9c13858a0fb3372b14bc3bd2e13390a0ab8da1397602d1c1e090e21d95",
+      "browser": "153.0.4234.48"
+    },
+    "restoreEnvironment": {
+      "node": "v24.18.0",
+      "platform": "win32",
+      "sourceCommit": "9bc306e1e83c0c5f30e8870ac38722deefa15d9e",
+      "fixtureSha256": "b45f9b03e6d752dff727402a741ca773a6dcf54e789ddbfb173ccf5a041f8e6e",
+      "browser": "153.0.4234.48"
+    },
+    "thumbnailAfter": [
+      {
+        "count": 1000,
+        "mode": "foreground",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          64,
+          64,
+          64
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 1000,
+        "mode": "background",
+        "status": [
+          "background-unavailable",
+          "background-unavailable",
+          "background-unavailable"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          64,
+          64,
+          64
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 1000,
+        "mode": "two-pages",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          128,
+          128,
+          128
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 10000,
+        "mode": "foreground",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          64,
+          64,
+          64
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 10000,
+        "mode": "background",
+        "status": [
+          "background-unavailable",
+          "background-unavailable",
+          "background-unavailable"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          64,
+          64,
+          64
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "count": 10000,
+        "mode": "two-pages",
+        "status": [
+          "measured",
+          "measured",
+          "measured"
+        ],
+        "generated": [
+          64,
+          64,
+          64
+        ],
+        "thumbnailReads": [
+          128,
+          128,
+          128
+        ],
+        "repeatedImageReads": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "restore": [
+      {
+        "count": 1000,
+        "trials": 3,
+        "metrics": {
+          "backupBytes": {
+            "median": 19799432,
+            "raw": [
+              19799432,
+              19799432,
+              19799432
+            ]
+          },
+          "restoredImageBytes": {
+            "median": 14460471,
+            "raw": [
+              14460471,
+              14460471,
+              14460471
+            ]
+          },
+          "exportMs": {
+            "median": 121,
+            "raw": [
+              151.7999999821186,
+              115.90000000596046,
+              121
+            ]
+          },
+          "readMs": {
+            "median": 12.800000011920929,
+            "raw": [
+              12.800000011920929,
+              12.099999994039536,
+              13.600000023841858
+            ]
+          },
+          "parseMs": {
+            "median": 19.69999998807907,
+            "raw": [
+              25.5,
+              19.69999998807907,
+              19.599999994039536
+            ]
+          },
+          "restoreMs": {
+            "median": 963.2000000178814,
+            "raw": [
+              996.5999999940395,
+              963.2000000178814,
+              932.1999999880791
+            ]
+          }
+        },
+        "observedJsHeapPeakBytes": [
+          51998320,
+          53414216,
+          53626444
+        ],
+        "heapSamples": [
+          45,
+          46,
+          46
+        ]
+      },
+      {
+        "count": 10000,
+        "trials": 3,
+        "metrics": {
+          "backupBytes": {
+            "median": 24424023,
+            "raw": [
+              24424023,
+              24424023,
+              24424023
+            ]
+          },
+          "restoredImageBytes": {
+            "median": 14460471,
+            "raw": [
+              14460471,
+              14460471,
+              14460471
+            ]
+          },
+          "exportMs": {
+            "median": 160.39999997615814,
+            "raw": [
+              168.7999999821186,
+              158,
+              160.39999997615814
+            ]
+          },
+          "readMs": {
+            "median": 15.5,
+            "raw": [
+              15.300000011920929,
+              15.5,
+              16.399999976158142
+            ]
+          },
+          "parseMs": {
+            "median": 24.80000001192093,
+            "raw": [
+              24.80000001192093,
+              24.200000017881393,
+              25.900000005960464
+            ]
+          },
+          "restoreMs": {
+            "median": 1142.4000000059605,
+            "raw": [
+              1186.0999999940395,
+              1142.4000000059605,
+              1032.800000011921
+            ]
+          }
+        },
+        "observedJsHeapPeakBytes": [
+          90258552,
+          91803548,
+          93151936
+        ],
+        "heapSamples": [
+          56,
+          54,
+          51
+        ]
+      }
+    ],
+    "coldScriptComparison": {
+      "manifestSha256": "52f9439bb6066d22b710937368a4e91c2d131c53105f7cdfe5ee6a7a8cd3c4d6",
+      "routerSha256": "f1c775a4028be8bc804b22af7815feaed40475ea48c4ca76cf29fcd1e3f60b93",
+      "distIndexSha256": "678fe31464fd9511b41a4af5e297ee78628c2f54e7c1f827c7049f8fbe534572",
+      "report": "page-script-comparison.json",
+      "pages": [
+        {
+          "route": "/chat",
+          "status": "matched-static-closure",
+          "staticBytes": 598100,
+          "loadedBytes": 600538,
+          "expectedFiles": 29,
+          "requestedFiles": 31,
+          "missing": [],
+          "requestedButNotLoaded": [],
+          "extraCount": 2,
+          "extraViteBytes": 1007,
+          "classicBootstrapBytes": 1431,
+          "pageErrors": [],
+          "screenshot": {
+            "file": "page-script-chat.png",
+            "sha256": "e74987316ae6d04e3924dd4517cdf0b7c7c9ed5eb6a63df8ef9bcb881fcfcdf5"
+          }
+        },
+        {
+          "route": "/prompt-builder",
+          "status": "matched-static-closure",
+          "staticBytes": 551671,
+          "loadedBytes": 841807,
+          "expectedFiles": 19,
+          "requestedFiles": 63,
+          "missing": [],
+          "requestedButNotLoaded": [],
+          "extraCount": 44,
+          "extraViteBytes": 288705,
+          "classicBootstrapBytes": 1431,
+          "pageErrors": [],
+          "screenshot": {
+            "file": "page-script-prompt-builder.png",
+            "sha256": "aecaa0798e4d81e5c55463469456b5c8416948f5289c7971c5602929c9280c1e"
+          }
+        }
+      ]
+    }
+  },
+  "releaseInputs": [
+    {
+      "path": "package-lock.json",
+      "sha256": "5bbb6b60dce96f044d4c3c7f053ed8a0d30daff933d68a346b45b945b827ab36"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/Cargo.lock",
+      "sha256": "a15ee1261d87502cf37413ebcf3dfac422f1ef36290d6b4378895d7f260dbf87"
+    },
+    {
+      "path": "desktop-tauri/native-live2d/Cargo.lock",
+      "sha256": "4e2ad7b806a0bdd26b5e94296cf2006ed88dfabf03e8c68590edc2327f251145"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/resources/gateway/package.json",
+      "sha256": "73f6332ca7a84e0c560973f44474a549e7a6b66fca8d4003e3c325c21a430f8c"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/resources/gateway/package-lock.json",
+      "sha256": "efe492cbda14b48dca1d766423fcd236adb1f20639376149172f9a256af98d70"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/binaries/node-x86_64-pc-windows-msvc.exe",
+      "sha256": "9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de"
+    },
+    {
+      "path": "runtime/desktop-build-sdk/CubismSdkForNative-5-r.5/Core/lib/windows/x86_64/143/Live2DCubismCore_MD.lib",
+      "sha256": "f8f63bbda72106cae2aab735e54ff2a2d76cbdb0adc1123c4764d9109f11c46d"
+    }
+  ],
+  "formalHandoff": {
+    "baseline": "runtime/delivery-evidence/audit-20260921-baseline.json",
+    "office": "runtime/delivery-evidence/audit-20260921-office.json",
+    "auditStatus": "pending",
+    "auditExitCode": 3,
+    "auditErrors": 0,
+    "scope": "Only the newly executed isolated bundle smoke is attached as checks.bundleSmoke. Prior tests are not back-signed onto this later baseline. Installation, device and model acceptance remain pending."
+  },
+  "outstanding": [
+    "CONTENT-01: waguri_kaoruko/festive_summer_yukata/prose still differs; requires authoritative text and real compiled/image acceptance before modifying data.",
+    "CONTENT-02: 357 unregistered and 282 pending outfit forms; 2534 declared URLs remain physically unverified without a configured reference root. 1974 entries remain pending.",
+    "SEC-03: real manual per-resource release decisions, complete remote catalog UX and installed media acceptance are pending; absent release index is fail-closed.",
+    "STORE-03: browser multi-store journal is not deployed; SQLite prototype process termination is not physical power-loss acceptance.",
+    "STORE-04/PM-05: 512MiB full-process peak/cancellation, genuine hidden-window performance, target GPU/KeepAlive/long-run power and device matrix remain unverified.",
+    "A9: no final installer/UAC, real WebView2 navigation/upgrade or primary-machine V04/V05/V07 acceptance. Service-host credential-file encryption is separate from personal-key migration.",
+    "Rust advisory CI was added and checked with failure fixtures; no real local Rust advisory database scan was performed. SDK hashes identify bytes, not licence/review approval."
+  ],
+  "controlledFiles": [
+    {
+      "path": ".github/workflows/audit-stability-validation.yml",
+      "sha256": "d22b70a15814bb4cab7a8b9dd7ef3b7a5a983cd02b3da7268cf239cf3e0801a0"
+    },
+    {
+      "path": ".github/workflows/dependency-audit.yml",
+      "sha256": "41ac760ed92b0eb33648aa9f4626bf294a48001ade63ef682030dd565356a1e2"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/Cargo.lock",
+      "sha256": "a15ee1261d87502cf37413ebcf3dfac422f1ef36290d6b4378895d7f260dbf87"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/Cargo.toml",
+      "sha256": "f90c0769e4273cbc895b2ee99a58c904349c83279dba21df05e80559efa3faf4"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/build.rs",
+      "sha256": "20ff4287ab15c9d947a3c861fafc78012f7edb50cd3c8d6bc89719a4c9b18896"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/capabilities/companion-live2d.json",
+      "sha256": "8b0b5a1add5fe5e4257d00b23d9b19721e3d1f15ac3b4f2a04fa2c242a6d90ed"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/capabilities/default.json",
+      "sha256": "c8ad96262b98d7198f7c4371aa7ee29fc0eb321df5ed95957f2baf0011e543dc"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/permissions/autogenerated/chat_credential_read.toml",
+      "sha256": "403eed77905af5a1f710730f0212028b3667302ba74b95c5b5efa4fc32a70ec9"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/permissions/autogenerated/chat_credential_write.toml",
+      "sha256": "72e9a4e922777fe1be91b00f523905f6dd2176b14c53f69be8dbf22b908ac046"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/credentials.rs",
+      "sha256": "4934be25a989a2dba42fb77a0295ffdf86cbdee72a554baa34bb85348418b7f3"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/gateway.rs",
+      "sha256": "6bc9081a4fd887513b7755929e5dae20aed7cd7974432ae2cffe98c4a8ef61e0"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/gateway_identity.rs",
+      "sha256": "0453af1498ebc74acb50791961818a1f66beb220f87dc54c25a7164f8ec570d6"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/gateway_native_tests.rs",
+      "sha256": "10615369598e7ee2e44d4f7e6868377af51c93038c48d09ab3bad99f1efe7015"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/gateway_origin.rs",
+      "sha256": "9213fa9d51e41914ab226ac1ec0fca53a70c5f4aabd38e336605121ca9845ca5"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/main.rs",
+      "sha256": "0d69823284266be5db9f5bfd362050bb2b9bccbedfeed2a12d00968c3367f514"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/main_shared.rs",
+      "sha256": "3c811ea42a438a394ef4b1d11865a5b80f04da030847a7951e113be386b5c45e"
+    },
+    {
+      "path": "desktop-tauri/src-tauri/src/shim.rs",
+      "sha256": "b456896ef43b5b383e1eb29b730dd997821f9c1add3dc16dc889fd08f7918b46"
+    },
+    {
+      "path": "routes/video/batch.ts",
+      "sha256": "308f6db85da7db676bc9ab804c5614c0723903f2b7eefcf0bf250158cce35a50"
+    },
+    {
+      "path": "scripts/lib/page-bundle-report.ts",
+      "sha256": "59a05f291298ec9ec57c2a16d07bc670f237add0779f0c14884f6cd08f8346cd"
+    },
+    {
+      "path": "scripts/maintenance/check-bundle-budget.ts",
+      "sha256": "0dc2e5239947cab63f7733e748b281fff11b5a4d2da77787b00466453f193c13"
+    },
+    {
+      "path": "scripts/tests/gateway-test-stack.ts",
+      "sha256": "dd06b7e7e00a7515ff0a6aa70b21a35d8106014aca0fc8fe2e177fa64586df91"
+    },
+    {
+      "path": "scripts/tests/prototypes/benchmark-backup-restore.ts",
+      "sha256": "c04c158f9708adc596d724b3f2defffd170548ebd55d1cdc2dbacb29209dc898"
+    },
+    {
+      "path": "scripts/tests/prototypes/benchmark-thumbnail-warmup.ts",
+      "sha256": "3954ab0f5b69cfafb501a797e95c103b38209a71fe2c7b3181a494686e249e3f"
+    },
+    {
+      "path": "scripts/tests/quality-test-inventory.ts",
+      "sha256": "af536546dd9b6074604d46f3f04eb733fe6ae05932fece14bf7c2d85a7fa3642"
+    },
+    {
+      "path": "scripts/tests/test-artwork-persistence-prototype.ts",
+      "sha256": "880a4603e4543ad8d873eaeb8aeade392894e1a1e8cc4589133f3cc7d3cf2011"
+    },
+    {
+      "path": "scripts/tests/test-bridge-acl.ts",
+      "sha256": "756a61c71e0d80507d8f94d38f72966007e7788e7a45c2bbad9b7e9da9e50ed2"
+    },
+    {
+      "path": "scripts/tests/test-bundle-budget.ts",
+      "sha256": "61f54cbb35b611cc0680631f8c15e143780c04905db935957959c00172fc4a62"
+    },
+    {
+      "path": "scripts/tests/test-live2d-native-contract.ts",
+      "sha256": "788a4c949085a4f826ee9be250b6f2026f6f882d62e90a69391f8ca55cc5c229"
+    },
+    {
+      "path": "scripts/tests/test-precompressed.ts",
+      "sha256": "5c24d517b66e2fbe4ee573f67cec5d8b0d26d076baf38611949f9cb3c25dfe42"
+    },
+    {
+      "path": "scripts/tests/test-prompt-builder-modules.ts",
+      "sha256": "c76b0478d7e0934576154b680bce19e582472cf2d58ceb17be58b226595e6e3b"
+    },
+    {
+      "path": "scripts/tests/test-remote-content.ts",
+      "sha256": "b9b36f410f3c909a29442e122c94d14a740a34b1d816c3e020f9d2120975bd1c"
+    },
+    {
+      "path": "scripts/tests/test-resource-gateway.ts",
+      "sha256": "45e5457e9924a4da5dd62b8660edef33e4ad191544a4f30f9f4f494b8d76e4d1"
+    },
+    {
+      "path": "scripts/tests/test-video-routes.ts",
+      "sha256": "870dd8c269c6153924bd8ece546fe338ef51ef9918c808e5b10eafaf65927633"
+    },
+    {
+      "path": "scripts/workflow.ts",
+      "sha256": "452d0f3da138b7a3e78730fa2101b88b90bbf6570fb5e78717a680b8c86eb3e6"
+    },
+    {
+      "path": "server.ts",
+      "sha256": "afec3916a09d315f076dfc67f9c1c63f1a000c39c6607e4a9d6d71bd439b8d98"
+    },
+    {
+      "path": "server/precompressed.ts",
+      "sha256": "f02b0a18ee773d985caa551b0f15a9ca973ebd72a2f6b8dd42fb963923478bb1"
+    },
+    {
+      "path": "server/remote-content.ts",
+      "sha256": "ac676d8e6f199abf093a2e7fd3d98f1b045e16f5e3b18273b9b4a37621e5c4b2"
+    },
+    {
+      "path": "server/static-path-policy.ts",
+      "sha256": "97ced10e1f097e75177b238c9d4733e6afc56c039b77272408fe18f791ae276b"
+    },
+    {
+      "path": "src/App.vue",
+      "sha256": "3fb7f860adcf5a0d388dab7a700a28c1e017407929cc7cf4a867bdc157e93eb0"
+    },
+    {
+      "path": "src/application/artwork/artworkSaveInput.ts",
+      "sha256": "fa38b46ae411c97d3cef4b58fb2986306e5a56569402c58b54224bcfc5e97d51"
+    },
+    {
+      "path": "src/application/artwork/saveGeneratedArtwork.spec.ts",
+      "sha256": "f36ffb334b757957a0a0ea44839383c4da0afab6c5c82bf969ab7aa0f8094087"
+    },
+    {
+      "path": "src/application/artwork/saveGeneratedArtwork.ts",
+      "sha256": "a5ddc516291c22222121d21bf175e09731f825c01fd0b6c02512c50db3f2d556"
+    },
+    {
+      "path": "src/assets/css/conversation-room.css",
+      "sha256": "7dbd6f9b9537051dd567f30870f6c966521f7ee95147461e9ea83458f198fe42"
+    },
+    {
+      "path": "src/components/ChatApiSettings.vue",
+      "sha256": "00c31729d15ed61a20a17e3ce658329b86ed3c9dac3a3e17bc19402caf44cb05"
+    },
+    {
+      "path": "src/composables/chat/useCharacterRoomSession.ts",
+      "sha256": "5924598c342a7fd59fea1d0e12a42f48b8b07810c810bdf868ed610bae47f94f"
+    },
+    {
+      "path": "src/composables/chat/useChatConversation.ts",
+      "sha256": "bfa4f36d25cb8e64b1ecac3e1cfaa46ff2de97e57800b7829a459152602e8afb"
+    },
+    {
+      "path": "src/composables/chat/useChatProvider.ts",
+      "sha256": "5129f926ae3f31354e9711b4ba5180fd55327c3a0cef4e27d482d29702b3ec80"
+    },
+    {
+      "path": "src/composables/chat/useChatStorage-credentials.spec.ts",
+      "sha256": "4970991f81bd744be05d9ce9fde0c55d0854c8fc742b0cfc610b21df0de7a616"
+    },
+    {
+      "path": "src/composables/chat/useChatStorage.ts",
+      "sha256": "890cab730204eef0c9632ef2da653c079ba1e08756e1ad5afca52332c7efa910"
+    },
+    {
+      "path": "src/composables/prompt/persistPromptArtwork.ts",
+      "sha256": "463fded079a4ab0bfab5a6d081638ad02f9f15b5d99518335540760bb8c11537"
+    },
+    {
+      "path": "src/composables/prompt/usePromptArtworkHistory.ts",
+      "sha256": "3af22919def5ba9ae1aa753b96916e81f7ad4cb70eb5addc382772bbe0de96fb"
+    },
+    {
+      "path": "src/composables/useKVStore.ts",
+      "sha256": "ffc45adafd316ab9d981bc7bc7e8dae17bbfc3634e5222f28595075b772011f4"
+    },
+    {
+      "path": "src/composables/useTaskCenter.spec.ts",
+      "sha256": "e8b18dd32da3e5d35d17468b4e01a4a033246faa794bb5276c1ab1cfbacad7c5"
+    },
+    {
+      "path": "src/composables/useTaskCenter.ts",
+      "sha256": "390e0eef336f2a572bb74eee6473d055d84bba3ff5cc1bbfe6773050af1fa6e9"
+    },
+    {
+      "path": "src/storage/backupRestore.spec.ts",
+      "sha256": "be299c18ae18773a15adb261296cb30c20e07d452cfcf49e543e16bdfd7c7802"
+    },
+    {
+      "path": "src/storage/backupRestore.ts",
+      "sha256": "979190b2ad4aa291831e1b985ade0f4ad04b06387756baf540f0dbbfc53c89e4"
+    },
+    {
+      "path": "src/stores/promptBuilderHistory.spec.ts",
+      "sha256": "8d925b0919b0ac87946fec788bfd8822e99ecb48638464a26e3b48d9eaad2fe6"
+    },
+    {
+      "path": "src/stores/sceneStore.spec.ts",
+      "sha256": "8bc40023e97dd287c1e67d011537fc0cf392a83b098f6c9f8a5427d7fb6ce6bd"
+    },
+    {
+      "path": "src/stores/sceneStore.ts",
+      "sha256": "24a451e5e9949fc0b48834008657887abd4036eddbe00c2df1f14e72c8a17fbe"
+    },
+    {
+      "path": "src/types/desktop.d.ts",
+      "sha256": "a9287f1f4f3e42249b5a9972559e5a46bf4a2caf96a83d324a6de94ff35bc4c3"
+    },
+    {
+      "path": "src/utils/backupCore.ts",
+      "sha256": "b0aa4a65c04824e06a111aa0891e199cad88f10d382e9b3c8379522732881b95"
+    },
+    {
+      "path": "src/utils/characterTheme.test.ts",
+      "sha256": "e83229232456f8fcb25da1e1fc7f1bc306080b62493a7e878a6be5a4da7e8299"
+    },
+    {
+      "path": "src/utils/characterTheme.ts",
+      "sha256": "fd817651409c652c56bfce4b90419241d355d6991abca20da37f795907c7a6cc"
+    },
+    {
+      "path": "src/utils/chatApiDrafts.spec.ts",
+      "sha256": "17bc5a2469cf283339d79a011096254d278e6f5f9d733efc8c97ba727c81a987"
+    },
+    {
+      "path": "src/utils/chatApiDrafts.ts",
+      "sha256": "741894f3e2785a5f3f8e38ca71ae68048d22cd8c84637353b9e404c94485a29b"
+    },
+    {
+      "path": "src/utils/chatCredentials.ts",
+      "sha256": "38050b706b5ec7cc20fd89ec35c3a861a2527e83f5c05d47119683550c3840ad"
+    },
+    {
+      "path": "src/utils/chatStorageCore.ts",
+      "sha256": "8154a0a6d7f5c155cb15a1e58bd3251ef95700abbc4baab5f95d53193ef77c43"
+    },
+    {
+      "path": "src/utils/galleryThumbnailWarmup.spec.ts",
+      "sha256": "79892d047ea81c4d7748af2363efaba3d1e2b90988fe816cc6f288dda06823a6"
+    },
+    {
+      "path": "src/utils/galleryThumbnailWarmup.ts",
+      "sha256": "8f988347d0cf58544ba2a1a4b9403535ab3072baab5f78dec394affdcd5d03db"
+    },
+    {
+      "path": "src/views/ChatView.vue",
+      "sha256": "d8d16ded8d21344c93434aa92165b996624e7b2a94ad0d486e027cfe442abb94"
+    },
+    {
+      "path": "tests/e2e/anima-quick.spec.ts",
+      "sha256": "2fff3a868ba24fafc44eee380332e80c04d46893f3b6a515fb3f4117330de4d1"
+    },
+    {
+      "path": "tests/e2e/companion-focus.spec.ts",
+      "sha256": "2565d906de791575d75d67e3a4e0a15a5cc6c47002cc8705955b24fcc4f2f2a6"
+    },
+    {
+      "path": "tests/e2e/interaction-polish.spec.ts",
+      "sha256": "c91572ee2ceb8257e30585032427b81029fbd1facb3b40026b0df9d4c2cb1f23"
+    },
+    {
+      "path": "tests/e2e/library-concurrency.spec.ts",
+      "sha256": "a95076b25778dc8a188cf624fcb046a9978a8656b7a621606431bc803b4609ca"
+    },
+    {
+      "path": "tests/e2e/studio.spec.ts",
+      "sha256": "0b2a06c471d42a618cc472f86bea9115f947ee785f9726f8c4160f2b0a7de56f"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "runtime/audit-handoff-2026-09-21/gate-full.log",
+      "sha256": "a23553038d2baf4e0f7f6239e467457b7fada623c88748efb401a00c1349a131"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/check-retry.log",
+      "sha256": "9e71e3fffdd75e6a5269d8983dbf11b796ab03ac1c517659bb569400d78abee0"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/content-structure.log",
+      "sha256": "122e96790d0d2fc94f79ec659f44501f13ec31bc90aeace0be45b8643b88d215"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/reference-structure.log",
+      "sha256": "9c4702cba1b86984f89aaa454048a147a12d568ce3edbb613d8f9c32c381e2dd"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/frontend-final.log",
+      "sha256": "41123b31537f30bbcef6a8a588215ae5615f25cbf5c62ae1794c92540dd4600d"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/node-retry.log",
+      "sha256": "5c9b44c28706188f8ce867bca1e1c65f10b7020605563b7ae85169881eff4533"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/e2e-critical.log",
+      "sha256": "cd02392647086c47832ac19bdba7a20fd803363da2839f286edb9e9a0737b097"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/anima-retry.log",
+      "sha256": "508c076c3c50c0e3d447b54fe9a9cc9cf53e7e472407827d10c26be3e8ff6c72"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/e2e-recovery-studio.log",
+      "sha256": "9998b958243f859f37e3dcdf79dc3f9b68ea8ca221dce19af833f62ccdda5b4f"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/e2e-recovery-studio-2.log",
+      "sha256": "0436b9ce47f21c4dfa03ad84d6e5278d4bd1f72978bc4b705c1f9b68dfe134d0"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/e2e-recovery-studio-3.log",
+      "sha256": "2df835d74a4e67c00ce36b3286a8afdc233cf46d7dbab357e5746e71ec7c307e"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/e2e-recovery-adjudication.json",
+      "sha256": "7908b6aa75996edbec447756a7107e490918009e3d70c4df3644199895e8ee9a"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/ui-final.log",
+      "sha256": "c270c0e59268733a00c8addb0430ccc94dd05f31d5c297f392229c0dd339893f"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/e2e-typecheck-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/build-ui-final.log",
+      "sha256": "722393364507518dad8f66c990e78b8194e1dce675cc24125660b2dc2e9c06fd"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/npm-audit.json",
+      "sha256": "1cf116e26e5984558941deb119eb02d604c2757fc680763e79fbc66c782f5506"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/ffmpeg-native.json",
+      "sha256": "e00bf803241197fa991af126dfdbe1eb3ae405946e3f13861fc5c7c434a9d145"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/desktop-bundle-smoke.log",
+      "sha256": "531ce69434782369d922508a3763f78cf3fe94cd00760fa317c9362ba0279359"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/docs-final.log",
+      "sha256": "83c4c0ac1d0b5b5d85c0de52ae925999e65a75351c007ab89f0413cb79e45ea3"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/hygiene-final.log",
+      "sha256": "38d7d4e7f8676b64a795536729c2dff6d8e1f47554bb5e55f8787b2b9e35a24e"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/delivery-audit-office.json",
+      "sha256": "7fcd6b6c9a5e6dd4239860a82183e5a479422f3a8f72e6a7bb0d5381dc9f0a81"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/native/validation-summary.json",
+      "sha256": "15fb531664bb24d070f04efad4524ae3e5e12a9d9e9cdec9d60b069bd0519981"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/performance/summary.json",
+      "sha256": "a68e8b580421103fdcfa1835d51a3a916ee58aa3f817d0589c93c0f70cd383d4"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/performance/page-bundles.json",
+      "sha256": "819bb9dfa69910e29c45377bc9d2298c42bd1f0f7f7d68d2606534e5596766fc"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/performance/page-script-comparison.json",
+      "sha256": "2149065aedd222fd50e184afa14581fddd357ea1c7659f446b46c6a4b9d67066"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/ownership.json",
+      "sha256": "f69a61f9ba432bf661b44c5e2cdaa460093a96930b05b8de952addf71cf9269e"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/coverage.json",
+      "sha256": "bc8485534d26ac8069fa3d7f2b9d396d3bd27282487c57d8679e7997390922c4"
+    },
+    {
+      "file": "runtime/audit-handoff-2026-09-21/reference-files.log",
+      "sha256": "2077aae31a2c2f6ef33e7b933d14dee9a740bf6325dee726d744940d7b2f9502"
+    }
+  ],
+  "limitations": "Runtime evidence remains local/ignored. This committed summary preserves outcomes and hashes; it does not imply raw logs/screenshots are shipped, or authenticate manual image decisions."
+}

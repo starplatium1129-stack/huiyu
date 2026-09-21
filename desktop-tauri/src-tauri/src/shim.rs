@@ -67,6 +67,8 @@ pub const COMPANION_SHIM_JS: &str = r#"
     setTimeout(() => { tryApply(); mo.disconnect() }, 8000)
 
     window.companionDesktop = {
+    readChatCredential: (endpoint) => invoke('chat_credential_read', { endpoint }),
+    writeChatCredential: (endpoint, secret) => invoke('chat_credential_write', { endpoint, secret }),
     isDesktop: true,
     startDragging: () => waitForTauri().then((api) => api.window.getCurrentWindow().startDragging()),
     setChatDocked: (docked) => invoke('set_chat_docked', { docked }),

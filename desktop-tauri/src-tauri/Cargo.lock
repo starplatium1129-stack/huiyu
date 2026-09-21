@@ -26,6 +26,7 @@ dependencies = [
  "live2d-native",
  "pollster",
  "raw-window-handle",
+ "ring",
  "serde",
  "serde_json",
  "tauri",

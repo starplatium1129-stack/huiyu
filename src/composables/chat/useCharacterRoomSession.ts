@@ -111,6 +111,7 @@ export function useCharacterRoomSession() {
     clearHostConfig,
     setChatProvider,
     saveApiSettings,
+    clearApiCredential,
     setChatStatus,
     setBusy,
   } = useChatProvider({ storage, isBusy: busy })
@@ -637,6 +638,7 @@ export function useCharacterRoomSession() {
     clearHostConfigAndRefresh,
     setChatProvider,
     saveApiSettings,
+    clearApiCredential,
     onVolumeChange,
     handleSend,
     useStarter,

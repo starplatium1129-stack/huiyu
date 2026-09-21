@@ -172,10 +172,38 @@ export function createBackup(payload: {
     data: {
       history: payload.history || [],
       projects: payload.projects || [],
-      settings: payload.settings || {},
+      settings: backupSafeSettings(payload.settings || {}),
     },
     images: payload.images || [],
   })
+}
+
+/** Recovery sources may still contain an un-migrated key; never export it. */
+function backupSafeSettings(settings: Record<string, string>): Record<string, string> {
+  const safe = { ...settings }
+  if (safe.aics_chat_v1) {
+    try {
+      const chat = object(JSON.parse(safe.aics_chat_v1))
+      delete chat.apiKey
+      for (const field of ['settings', 'api']) {
+        const record = object(chat[field])
+        delete record.apiKey
+        delete record.authorization
+        delete record.headers
+      }
+      safe.aics_chat_v1 = JSON.stringify(chat)
+    } catch { delete safe.aics_chat_v1 }
+  }
+  if (safe.aics_chat_api_drafts) {
+    try {
+      const drafts = object(JSON.parse(safe.aics_chat_api_drafts))
+      safe.aics_chat_api_drafts = JSON.stringify(Object.fromEntries(Object.entries(drafts).map(([vendor, raw]) => {
+        const entry = object(raw)
+        return [vendor, { baseUrl: typeof entry.baseUrl === 'string' ? entry.baseUrl : '', model: typeof entry.model === 'string' ? entry.model : '' }]
+      })))
+    } catch { delete safe.aics_chat_api_drafts }
+  }
+  return safe
 }
 
 function recordTimestamp(record: BackupRecord): number {

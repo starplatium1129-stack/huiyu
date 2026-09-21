@@ -3,9 +3,12 @@ use std::net::{TcpStream, ToSocketAddrs};
 use std::process::{Child, Command, Stdio};
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
+
+#[path = "gateway_identity.rs"]
+mod identity;
 
 pub const DESKTOP_GATEWAY_PROTOCOL: i64 = 1;
 pub const GATEWAY_HOST: &str = "127.0.0.1";
@@ -16,9 +19,10 @@ pub struct GatewayHealth {
     pub ok: bool,
     pub app: String,
     pub desktop_protocol: i64,
+    pub desktop_proof: String,
 }
 
-fn http_get(base_url: &str, path: &str, timeout: Duration) -> Option<String> {
+fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&str>) -> Option<String> {
     let _url = format!("{base_url}{path}");
     let host_port = base_url
         .trim_start_matches("http://")
@@ -29,8 +33,9 @@ fn http_get(base_url: &str, path: &str, timeout: Duration) -> Option<String> {
     let mut stream = TcpStream::connect_timeout(&address, timeout).ok()?;
     stream.set_read_timeout(Some(timeout)).ok()?;
     stream.set_write_timeout(Some(timeout)).ok()?;
+    let proof_header = challenge.map(|c| format!("X-AICS-Desktop-Challenge: {c}\r\n")).unwrap_or_default();
     let request = format!(
-        "GET {path} HTTP/1.1\r\nHost: {host_port}\r\nConnection: close\r\n\r\n"
+        "GET {path} HTTP/1.1\r\nHost: {host_port}\r\n{proof_header}Connection: close\r\n\r\n"
     );
     stream.write_all(request.as_bytes()).ok()?;
     let mut raw = Vec::new();
@@ -58,13 +63,18 @@ fn http_get(base_url: &str, path: &str, timeout: Duration) -> Option<String> {
 }
 
 pub fn read_gateway_health(base_url: &str, timeout: Duration) -> Option<GatewayHealth> {
-    let body = http_get(base_url, "/api/health", timeout)?;
+    read_health(base_url, timeout, None)
+}
+
+fn read_health(base_url: &str, timeout: Duration, challenge: Option<&str>) -> Option<GatewayHealth> {
+    let body = http_get(base_url, "/api/health", timeout, challenge)?;
     let value: serde_json::Value = serde_json::from_str(&body).ok()?;
     let obj = value.as_object()?;
     Some(GatewayHealth {
         ok: obj.get("ok").and_then(|v| v.as_bool()).unwrap_or(false),
         app: obj.get("app").and_then(|v| v.as_str()).unwrap_or("").to_string(),
         desktop_protocol: obj.get("desktopProtocol").and_then(|v| v.as_i64()).unwrap_or(0),
+        desktop_proof: obj.get("desktopProof").and_then(|v| v.as_str()).unwrap_or("").to_string(),
     })
 }
 
@@ -102,6 +112,10 @@ pub struct GatewaySupervisor {
     start_lock: tokio::sync::Mutex<()>,
     owned: AtomicBool,
     stopping: AtomicBool,
+    stop_generation: AtomicU64,
+    identity_token: Mutex<Option<String>>,
+    authenticated_port: Mutex<Option<u16>>,
+    authenticated: AtomicBool,
     active_port: Mutex<u16>,
 }
 
@@ -182,6 +196,10 @@ impl GatewaySupervisorBuilder {
             start_lock: tokio::sync::Mutex::new(()),
             owned: AtomicBool::new(false),
             stopping: AtomicBool::new(false),
+            stop_generation: AtomicU64::new(0),
+            authenticated_port: Mutex::new(None),
+            authenticated: AtomicBool::new(false),
+            identity_token: Mutex::new(if cfg!(debug_assertions) { std::env::var("AICS_DESKTOP_ATTACH_TOKEN").ok() } else { None }),
             active_port: Mutex::new(self.port),
         }
     }
@@ -201,9 +219,19 @@ impl GatewaySupervisor {
         self.owned.load(Ordering::Relaxed)
     }
 
+    pub fn is_authenticated(&self) -> bool { self.authenticated.load(Ordering::SeqCst) }
+
     pub fn is_healthy(&self) -> bool {
-        read_gateway_health(&self.base_url(), Duration::from_millis(1200))
-            .map(|h| is_desktop_gateway_compatible(&h))
+        let healthy = self.check_authenticated_health();
+        self.authenticated.store(healthy, Ordering::SeqCst);
+        healthy
+    }
+
+    fn check_authenticated_health(&self) -> bool {
+        let Some(token) = self.identity_token.lock().unwrap().clone() else { return false; };
+        let Ok(challenge) = identity::random_secret() else { return false; };
+        read_health(&self.base_url(), Duration::from_millis(1200), Some(&challenge))
+            .map(|h| is_desktop_gateway_compatible(&h) && identity::verify_proof(&token, &challenge, &h.desktop_proof))
             .unwrap_or(false)
     }
 
@@ -212,26 +240,36 @@ impl GatewaySupervisor {
         if self.stopping.load(Ordering::Relaxed) {
             return Err("Gateway start cancelled".into());
         }
+        if self.identity_token.lock().unwrap().as_ref().is_some_and(|token| !identity::valid_secret(token)) {
+            return Err("AICS_DESKTOP_ATTACH_TOKEN must be exactly 64 lowercase hexadecimal characters".into());
+        }
+        let generation = self.stop_generation.load(Ordering::SeqCst);
         // 已有兼容网关 → attach
         if self.is_healthy() {
+            *self.authenticated_port.lock().unwrap() = Some(self.port());
             return Ok(self.base_url());
         }
         // A failed health check on an owned instance is a restart, not an
         // invitation to launch a second gateway on another port. Reap the old
         // child before deciding whether the configured port is available.
         if self.owns_gateway() {
-            self.stop().await;
+            self.reap_child();
         }
         let current = *self.active_port.lock().unwrap();
         if !is_port_available(&self.host, current) {
+            if self.authenticated_port.lock().unwrap().is_some() {
+                return Err("Authenticated gateway port is occupied; restart the desktop to select a new origin".into());
+            }
             let next = find_available_port(&self.host, current.saturating_add(1), 32)
                 .ok_or("No available desktop gateway port")?;
             *self.active_port.lock().unwrap() = next;
         }
 
         let port = self.port();
+        let token = identity::random_secret()?;
+        *self.identity_token.lock().unwrap() = Some(token.clone());
         self.stopping.store(false, Ordering::Relaxed);
-        self.owned.store(true, Ordering::Relaxed);
+
 
         let node = self
             .node_path
@@ -251,6 +289,7 @@ impl GatewaySupervisor {
         for (key, value) in &self.env {
             command.env(key, value);
         }
+        command.env("AICS_DESKTOP_GATEWAY_TOKEN", token);
 
         // Windows：GUI 应用（windows_subsystem=windows）派生控制台子进程时，
         // 不带 CREATE_NO_WINDOW 会为 node.exe 新建一个可见的控制台窗口（打开应用即弹窗）。
@@ -259,6 +298,7 @@ impl GatewaySupervisor {
         command.creation_flags(0x0800_0000); // CREATE_NO_WINDOW
 
         let mut child = command.spawn().map_err(|e| format!("spawn gateway: {e}"))?;
+        self.owned.store(true, Ordering::Relaxed);
 
         if let Some(on_output) = self.on_output.clone() {
             if let Some(stdout) = child.stdout.take() {
@@ -271,10 +311,9 @@ impl GatewaySupervisor {
 
         let started_at = Instant::now();
         loop {
-            if self.stopping.load(Ordering::Relaxed) {
-                let _ = child.kill();
-                let _ = child.wait();
-                let _ = self.stop().await;
+            if self.stop_generation.load(Ordering::SeqCst) != generation {
+                terminate_child(&mut child);
+                self.reap_child();
                 return Err("Gateway start cancelled".into());
             }
             if let Ok(Some(_status)) = child.try_wait() {
@@ -283,12 +322,19 @@ impl GatewaySupervisor {
                 return Err("Gateway exited during startup".into());
             }
             if self.is_healthy() {
-                *self.child.lock().unwrap() = Some(child);
+                let mut slot = self.child.lock().unwrap();
+                if self.stop_generation.load(Ordering::SeqCst) != generation {
+                    terminate_child(&mut child);
+                    self.owned.store(false, Ordering::Relaxed);
+                    self.authenticated.store(false, Ordering::SeqCst);
+                    return Err("Gateway start cancelled".into());
+                }
+                *slot = Some(child);
+                *self.authenticated_port.lock().unwrap() = Some(port);
                 return Ok(self.base_url());
             }
             if started_at.elapsed() > Duration::from_millis(self.wait_ms) {
-                let _ = child.kill();
-                let _ = child.wait();
+                terminate_child(&mut child);
                 let _ = self.stop().await;
                 return Err(format!("Gateway did not become healthy at {}", self.base_url()));
             }
@@ -296,29 +342,23 @@ impl GatewaySupervisor {
         }
     }
 
-    pub async fn stop(&self) {
-        self.stopping.store(true, Ordering::Relaxed);
+    fn reap_child(&self) {
+        self.authenticated.store(false, Ordering::SeqCst);
         let child = self.child.lock().unwrap().take();
         self.owned.store(false, Ordering::Relaxed);
         if let Some(mut child) = child {
-            let _ = child.kill();
-            let _ = child.wait();
+            terminate_child(&mut child);
         }
-        self.stopping.store(false, Ordering::Relaxed);
     }
+
+    pub async fn stop(&self) { self.stop_sync(); }
 
     /// 同步停止自有网关（应用退出路径使用，等价于 stop() 但非 async）。
     /// 实测 app.exit(0) 不触发 managed state 的 Drop（2026-08-15），
     /// 退出清理必须由调用方在 ExitRequested 放行前显式执行。
     pub fn stop_sync(&self) {
-        self.stopping.store(true, Ordering::Relaxed);
-        let child = self.child.lock().unwrap().take();
-        if let Some(mut child) = child {
-            self.owned.store(false, Ordering::Relaxed);
-            let _ = child.kill();
-            let _ = child.wait();
-        }
-        self.stopping.store(false, Ordering::Relaxed);
+        self.stop_generation.fetch_add(1, Ordering::SeqCst);
+        self.reap_child();
     }
 
     /// 健康检查失败/退出时的重启入口：指数退避由调用方（main）调度
@@ -335,11 +375,23 @@ impl Drop for GatewaySupervisor {
     fn drop(&mut self) {
         if self.owned.load(Ordering::Relaxed) {
             if let Some(mut child) = self.child.lock().unwrap().take() {
-                let _ = child.kill();
-                let _ = child.wait();
+                terminate_child(&mut child);
             }
         }
     }
+}
+
+fn terminate_child(child: &mut Child) {
+    if matches!(child.try_wait(), Ok(Some(_))) { return; }
+    #[cfg(windows)]
+    {
+        let _ = Command::new("taskkill")
+            .args(["/PID", &child.id().to_string(), "/T", "/F"])
+            .creation_flags(0x0800_0000)
+            .stdout(Stdio::null()).stderr(Stdio::null()).status();
+    }
+    let _ = child.kill();
+    let _ = child.wait();
 }
 
 fn pipe_output<R: Read + Send + 'static>(
@@ -378,6 +430,7 @@ mod tests {
             ok: obj.get("ok").and_then(|v| v.as_bool()).unwrap_or(false),
             app: obj.get("app").and_then(|v| v.as_str()).unwrap_or("").to_string(),
             desktop_protocol: obj.get("desktopProtocol").and_then(|v| v.as_i64()).unwrap_or(0),
+            desktop_proof: String::new(),
         };
         assert!(is_desktop_gateway_compatible(&parsed));
     }
@@ -411,3 +464,7 @@ mod tests {
         handle.join().unwrap();
     }
 }
+
+#[cfg(test)]
+#[path = "gateway_native_tests.rs"]
+mod native_tests;

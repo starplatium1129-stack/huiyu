@@ -29,10 +29,10 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 角色接入必须同步完成以下六层：
 
 1. **数据层与大盘**：`data/popular/<franchise>.json`（服装+蓝图）+ `data/characters.json`（人物档案、视觉DNA、性格世界观、`accent_color`）+ `npm run popular:build` 编译 `popular-characters.json`；
-2. **UI 主题与强调色系统（必做项）**：在 `src/assets/css/director/tokens.css` 中为新角色注册专属主题与氛围光晕（`.pb[data-character="<id>"]` 与 `body:has(.pb[data-character="<id>"])`），配置 `--character-accent`、`--character-soft`、`--character-glow` 与 `--character-aura`，确保生图台与页面全局背景光斑丝滑响应角色切换；
+2. **UI 主题与强调色系统（必做项）**：在 `data/characters.json` 提供有效十六进制 `accent_color`，由 `src/utils/characterTheme.ts` 和 `src/assets/css/director/tokens.css` 的通用令牌派生主题。既有 `CHARACTER_THEME_OVERRIDES` 调校优先，缺失或非法颜色回退默认强调色；普通新角色无需新增 CSS 选择器，特殊调校才加入例外。核对角色切换、默认/缺失/非法颜色及两主题实际效果，保留 WCAG AA 与图片叠字视觉验收；
 3. **全量场景蓝图（SFW/NSFW 姿势解剖防崩）**：每位角色配齐 10~11 套场景蓝图（6~7 SFW 唯美日常 + 4~5 R18 成人专属）；成人蓝图严格遵守**「后入/俯身 $\rightarrow$ 强制 `1536x1152` 横画幅 + POV扶腰受力」**与**「仰卧/POV $\rightarrow$ 强制 `1152x1536` 竖画幅 + 揉胸/分腿层级」**黄金法则，杜绝悬浮器官与断腰；
 4. **立绘原图与 WebP 紧凑头像缩略图**：在发布样张原图（`assets/characters/popular-<id>.png`）后，**必须同步执行 `python scripts/maintenance/build-character-thumbs.py`** 编译生成 `assets/characters/thumbs/popular-<id>.webp`，确保生图左侧选择器、首页横条卡片不掉头像；
-5. **全视角参考标准库接入**：在 `data/character-reference-standards.json` 与 `data/character-reference-view.json` 中为新角色及所有服装形态注册 7 视角机位定义（面部特写/半身定妆/全身立姿/背影回眸 + 3 视角设计图），无资产形态先跑 `workflow reference:register` 登记 pending 占位（防 standards/view 漂移与断链），再执行 `node scripts/maintenance/render-all-outfits-references.js --ids=<角色id>` 完成资产补齐并跑 `sync-multi-outfit-standards.js` 回填 url；
+5. **全视角参考标准库接入**：为新角色及全部服装登记 4 个参考机位和 3 个设计机位。先用 `reference:register --dry-run` 预览，再显式登记 pending（写源）；`reference:render`/`reference:design` 调用模型，仅写隔离候选。经 `reference:inspect` 只读核验、人工查看图片、`reference:review` 写入绑定当前候选的审核决定，再 `reference:publish` 预览，显式 `--apply` 发布到新版本目录。缺审核保持 pending，发布不自动激活或安装。参数以[候选审核与版本发布](workflow.md#参考库候选审核与版本发布)为准。旧 `sync-multi-outfit-standards` 与 URL 修复仅用于已核验旧库维护，不能代替新候选发布；
 6. **门禁、质检与桌面端同步**：必须跑通 `node scripts/tests/test-popular-content.js`、`npm run typecheck:app` 与 `npm run build`，并执行 `deploy-desktop.bat -SkipBuild` 完成桌面端闭环同步与 Git 推送。
 
 自动化辅助入口见 [接入工作流](guides/characters/character-onboarding-workflow.md)。脚本执行成功不等于主题、头像、所有形态参考图和真实样张全部验收通过；必须逐层核对。场景数量是接入目标，不能为凑数覆盖已定稿内容；现存更多场景无需删减。

@@ -6,6 +6,8 @@ export interface DesktopFile {
 }
 
 export interface CompanionDesktopBridge {
+  readChatCredential?(endpoint: string): Promise<string | null>
+  writeChatCredential?(endpoint: string, secret: string): Promise<void>
   readonly isDesktop: true
   startDragging?(): Promise<void>
   hide(): void

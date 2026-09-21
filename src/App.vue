@@ -20,9 +20,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
-import { imgGet } from '@/composables/useImageStore'
-import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
+import { startGalleryThumbnailWarmup } from '@/utils/galleryThumbnailWarmup'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
@@ -32,12 +30,9 @@ import GlobalSearch from '@/components/GlobalSearchHost.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
-import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
 import { useRouteTransition } from '@/composables/useRouteTransition'
 
-// 键名统一出处：src/utils/storageKeys.ts
-const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 const route = useRoute()
 const router = useRouter()
 const layoutMotion = useRouteTransition(undefined, { initialFade: true })
@@ -57,51 +52,10 @@ onMounted(() => {
 onUnmounted(() => detachDesktopWorkspace?.())
 const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')
 
-interface ThumbWarmEntry { image_id?: string }
-
-let warmStopped = false
-let warmHandle = 0
-
-/** 后台按空闲时间给历史图库补缩略图，首次进作品册就有缓存 */
-async function warmGalleryThumbs() {
-  try { await kvInit() } catch { return }
-  let list: ThumbWarmEntry[] = []
-  try {
-    const raw = await kvGet(HISTORY_KEY)
-    list = (Array.isArray(raw) ? raw : []).filter(
-      (r): r is ThumbWarmEntry => !!r && typeof r === 'object'
-        && typeof (r as ThumbWarmEntry).image_id === 'string',
-    )
-  } catch { return }
-  let index = 0
-  const step = async () => {
-    if (warmStopped || index >= list.length) return
-    const imageId = (list[index++].image_id as string)
-    try {
-      const cached = await kvGet(thumbKey(imageId))
-      if (!(typeof cached === 'string' && cached.startsWith('data:image/'))) {
-        const blob = await imgGet(imageId)
-        if (blob) {
-          const dataUrl = await blobThumbDataUrl(blob)
-          if (dataUrl) await kvSet(thumbKey(imageId), dataUrl)
-        }
-      }
-    } catch { /* 单张失败跳过，缩略图只是缓存 */ }
-    scheduleNext()
-  }
-  const scheduleNext = () => {
-    if (warmStopped) return
-    if (typeof window.requestIdleCallback === 'function') {
-      warmHandle = window.requestIdleCallback(() => { void step() }, { timeout: 4000 }) as unknown as number
-    } else {
-      warmHandle = window.setTimeout(() => { void step() }, 120) as unknown as number
-    }
-  }
-  scheduleNext()
-}
+let stopThumbnailWarmup: (() => void) | undefined
 
 onMounted(() => {
-  if (!isCompanion.value) void warmGalleryThumbs()
+  if (!isCompanion.value) stopThumbnailWarmup = startGalleryThumbnailWarmup()
   // bfcache（Chromium 后退/前进缓存）恢复时，Vue Router 内部路由可能与地址栏
   // 不同步：组件不重挂载、onMounted 深链不执行，导致「点击场景/卡片后页面
   // 还是上一个场景的提示词」。恢复时用地址栏重建路由，触发正确的组件挂载。
@@ -117,11 +71,7 @@ onMounted(() => {
     window.removeEventListener('pageshow', onPageShow)
   })
 })
-onUnmounted(() => {
-  warmStopped = true
-  if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(warmHandle)
-  else window.clearTimeout(warmHandle)
-})
+onUnmounted(() => stopThumbnailWarmup?.())
 </script>
 
 <style>
