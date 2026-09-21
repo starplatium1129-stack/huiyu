@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "scope": "011 B0–B7 office implementation; no production data, models, installation or public release",
+  "commit": "5aff1ff69eff63dc4dd37921d3beca768f890e2e",
+  "baselineCommit": "1ec0d1d1e364c6ef6b9e74fa4cea0cc31fbc8f15",
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "machine": "office"
+  },
+  "source": {
+    "sha256": "949aad7373133b98f47eee200f32e28d5c448136734a2d9f46729fe11948d337",
+    "baselineFile": "runtime/delivery-evidence/011-b7-final3.json",
+    "baselineSha256": "2dee44427144698fed663a5a5cef5ffc341a9abc21eae9cb5199d0124cfd8469"
+  },
+  "build": {
+    "manifestSha256": "71b0cb83e1f29caeeeeeb25b5f2e47247ddba4282425ffdf0cbeeb8adff4ccba",
+    "distIndexSha256": "0267f11aa789f2373e0297a1e370171355831bfa679ab40e1dc33355bd1f8779",
+    "viteManifestSha256": "c884dfdfb0f6832138d5768593c59ab5e2356cd51c9eea0b90da318868a9d66b"
+  },
+  "checks": {
+    "fullGate": {
+      "status": "passed",
+      "exitCode": 0,
+      "command": "npm run wf -- gate:full --all",
+      "environment": {
+        "AICS_REFERENCE_AUDIT_MODE": "structure"
+      },
+      "log": "runtime/audit-011/b7-full-final3.log",
+      "sha256": "fefdcbc2f51906cfa3731dc2f2aba6d7185fe7414fccbfedd2886f40deb764bc",
+      "counts": {
+        "qualitySteps": 21,
+        "frontendFiles": 162,
+        "frontendTests": 1136,
+        "nodePassed": 1077,
+        "nodeSkipped": 2,
+        "contractFiles": 35
+      }
+    },
+    "browser": {
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/audit-011/b7-browser-retest.log",
+      "sha256": "0c6e52692dfda4a52defeab0e117106983fbe277f3c2f3828bb09f7001bcf36a",
+      "scope": "32 distinct affected critical tests: 31 passed in initial run; legacy corruption assertion updated and 1 targeted retest passed. Same production source and dist.",
+      "initial": {
+        "status": "failed",
+        "passed": 31,
+        "failed": 1,
+        "exitCode": 1,
+        "log": "runtime/audit-011/b7-browser.log",
+        "sha256": "f0a023cbe3e4cf1ed392f9c24aa37058e225ade34ba616a22e828903273b5beb"
+      },
+      "portOffset": 17000
+    }
+  },
+  "installation": {
+    "status": "unrun"
+  },
+  "deviceAcceptance": {
+    "status": "unrun"
+  },
+  "modelAcceptance": {
+    "status": "unrun"
+  },
+  "deferred": [
+    "Unknown browser-held reference ownership is retained; no automatic reference garbage collection.",
+    "Crashed image admission lock requires operator inspection while gateways are stopped.",
+    "Real model/GPU, large user assets, desktop install/UAC and public Release not run."
+  ],
+  "protectedDataDiff": ""
+}
