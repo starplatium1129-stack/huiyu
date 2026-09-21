@@ -1,0 +1,3188 @@
+{
+  "schema": "huiyu.page-experience-audit.v1",
+  "capturedAt": "2026-09-21T09:11:49.499Z",
+  "baselineCommit": "2966392cc0bc0163bfb92a8e87c095aa3d7a7300",
+  "scope": "Independent audit and implementation plan only; no product changes. C/I/F/D feature statuses do not imply all functions tested.",
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "browser": "153.0.4234.48",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 900
+      }
+    ],
+    "reducedMotion": "reduce",
+    "deviceScaleFactor": 1,
+    "gateway": "unique temporary runtime and loopback ports, repository gateway-test-stack with mock upstreams",
+    "productionModelCalls": 0,
+    "productionStorageUsed": false,
+    "desktopInstallerRun": false
+  },
+  "build": {
+    "indexSha256": "0267f11aa789f2373e0297a1e370171355831bfa679ab40e1dc33355bd1f8779",
+    "manifestSha256": "c884dfdfb0f6832138d5768593c59ab5e2356cd51c9eea0b90da318868a9d66b",
+    "unchangedDuringBrowser": true,
+    "status": "passed",
+    "budgetsUnchanged": true,
+    "routeJsKiB": 139.6,
+    "routeJsLimitKiB": 140,
+    "entryCssKiB": 95.3,
+    "entryCssLimitKiB": 100,
+    "largestRouteClosureKiB": 572.9,
+    "pageUnionReportKiB": 588.3
+  },
+  "summary": {
+    "spaPages": 18,
+    "activeDocumentPages": 10,
+    "baselineCases": 112,
+    "loadProbeErrors": 0,
+    "pageErrorCases": 0,
+    "horizontalOverflowCases": 0,
+    "h1CountMismatchCases": 0,
+    "additionalStateRecords": 30,
+    "scenarioReproductions": 2,
+    "documentStyleChecks": 20,
+    "registeredFunctionRows": 217,
+    "notes": [
+      "112 baseline observations are not 112 full behavior tests.",
+      "Visual contact sheets cover baseline cases; key original screenshots and state sheets were reviewed.",
+      "Unavailable private/external media is not evidence of missing assets on the main machine.",
+      "All source-functional rows remain individually scoped C/I/F/D until the new implementation task completes the matrix."
+    ]
+  },
+  "styles": {
+    "status": "passed",
+    "command": "npm run test:style-debt"
+  },
+  "findings": {
+    "F01": [
+      {
+        "theme": "dark",
+        "selected": "natsume",
+        "href": "/prompt-builder?scenario=promise",
+        "actual": "nene",
+        "correct": false
+      },
+      {
+        "theme": "light",
+        "selected": "natsume",
+        "href": "/prompt-builder?scenario=promise",
+        "actual": "nene",
+        "correct": false
+      }
+    ],
+    "F02": [
+      {
+        "theme": "dark",
+        "url": "/docs/index.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/getting-started.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": true
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/roadmap.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/guides/art/art-direction.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/guides/art/philosophy.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/guides/art/worldview.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/guides/art/quality-standard.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/guides/characters/scene-spec.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/guides/prompts/prompt-spec.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "dark",
+        "url": "/docs/guides/prompts/tag-standard.html",
+        "effective": "dark",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/index.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/getting-started.html",
+        "effective": "light",
+        "base": "#fff8f4",
+        "bodyBackground": "rgb(255, 248, 244)",
+        "text": "rgb(33, 28, 48)",
+        "lightStylesheet": true
+      },
+      {
+        "theme": "light",
+        "url": "/docs/roadmap.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/guides/art/art-direction.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/guides/art/philosophy.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/guides/art/worldview.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/guides/art/quality-standard.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/guides/characters/scene-spec.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/guides/prompts/prompt-spec.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      },
+      {
+        "theme": "light",
+        "url": "/docs/guides/prompts/tag-standard.html",
+        "effective": "light",
+        "base": "#211c30",
+        "bodyBackground": "rgb(33, 28, 48)",
+        "text": "rgb(255, 248, 244)",
+        "lightStylesheet": false
+      }
+    ],
+    "F03": [
+      {
+        "id": "director-order",
+        "theme": "dark",
+        "width": 390,
+        "boxes": [
+          {
+            "id": "drawing-materials",
+            "class": "director-col col-left",
+            "top": 311,
+            "height": 527
+          },
+          {
+            "id": "drawing-canvas",
+            "class": "director-col col-center",
+            "top": 854,
+            "height": 564
+          },
+          {
+            "id": "",
+            "class": "stage-placeholder",
+            "top": 854,
+            "height": 425
+          }
+        ]
+      },
+      {
+        "id": "director-order",
+        "theme": "light",
+        "width": 390,
+        "boxes": [
+          {
+            "id": "drawing-materials",
+            "class": "director-col col-left",
+            "top": 311,
+            "height": 527
+          },
+          {
+            "id": "drawing-canvas",
+            "class": "director-col col-center",
+            "top": 854,
+            "height": 564
+          },
+          {
+            "id": "",
+            "class": "stage-placeholder",
+            "top": 854,
+            "height": 425
+          }
+        ]
+      }
+    ],
+    "F04": [
+      {
+        "id": "style-missing-action",
+        "theme": "dark",
+        "width": 390,
+        "firstActionTop": 984,
+        "placeholderHeight": 255
+      },
+      {
+        "id": "style-missing-action",
+        "theme": "light",
+        "width": 390,
+        "firstActionTop": 984,
+        "placeholderHeight": 255
+      }
+    ],
+    "F05": {
+      "level": "source observation/design recommendation",
+      "source": "src/views/LoraView.vue",
+      "note": "Static catalog and whole-store load; do not infer installed model readiness."
+    },
+    "F06": {
+      "level": "source observation/design recommendation",
+      "sources": [
+        "src/router/index.ts",
+        "src/components/AppNav.vue"
+      ]
+    },
+    "F07": {
+      "level": "state audit recommendation",
+      "note": "Four video modes and missing services/media require next-step capability guidance; full failure chains deferred."
+    },
+    "F08": {
+      "level": "coverage recommendation",
+      "note": "Complete the function-state matrix; no blanket WCAG/performance/real-model claim."
+    },
+    "F09": {
+      "level": "DOM observation",
+      "surfaces": [
+        "/companion-chat",
+        "/docs/getting-started.html",
+        "/docs/roadmap.html",
+        "/docs/guides/art/art-direction.html",
+        "/docs/guides/art/philosophy.html",
+        "/docs/guides/art/worldview.html",
+        "/docs/guides/art/quality-standard.html",
+        "/docs/guides/characters/scene-spec.html",
+        "/docs/guides/prompts/prompt-spec.html",
+        "/docs/guides/prompts/tag-standard.html"
+      ],
+      "cases": 40,
+      "note": "Pages have h1 and visible content; missing main landmark is not a blanket WCAG verdict."
+    }
+  },
+  "baselineCases": [
+    {
+      "id": "home",
+      "url": "/",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3710,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 3,
+      "screenshot": {
+        "localPath": "runtime/audit-012/home-dark-1440.png",
+        "sha256": "79cd4d59ae98f47e366b4d899275193fab372a31580362c77f88941acc5f9a4e",
+        "committed": false
+      }
+    },
+    {
+      "id": "home",
+      "url": "/",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4859,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 2,
+      "screenshot": {
+        "localPath": "runtime/audit-012/home-dark-390.png",
+        "sha256": "0edad795b25e86c16e0b60850a054252a4da2eda16b5e3f2dcf1abc4432a1d4a",
+        "committed": false
+      }
+    },
+    {
+      "id": "home",
+      "url": "/",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3710,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 3,
+      "screenshot": {
+        "localPath": "runtime/audit-012/home-light-1440.png",
+        "sha256": "f3760b050316558ab6a805de0d1f3a6f967609518d204997b8a7e48c1d9cd6a0",
+        "committed": false
+      }
+    },
+    {
+      "id": "home",
+      "url": "/",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4859,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 2,
+      "screenshot": {
+        "localPath": "runtime/audit-012/home-light-390.png",
+        "sha256": "fa653b199e2764c2c75d970698987a2aae28a964f0ec6eb09a93ca6a8e310c7b",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenes",
+      "url": "/scene-explorer",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "场景探索 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2660,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 12,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenes-dark-1440.png",
+        "sha256": "ea7ad7eeecc213cae58f82bf9b6114d6357197eee9f6e1d26b0c80dc849b31d3",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenes",
+      "url": "/scene-explorer",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "场景探索 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 5507,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 4,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenes-dark-390.png",
+        "sha256": "5ea641c0edf67827318250069a7ddc5234102d4b59355a4f95bb5477b6a9f119",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenes",
+      "url": "/scene-explorer",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "场景探索 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2660,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 12,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenes-light-1440.png",
+        "sha256": "f9ff721a8cd164281cca126ec5a642dbfbe02bbf2ff6ef55d4d7b8e516019ebc",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenes",
+      "url": "/scene-explorer",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "场景探索 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 5507,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 4,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenes-light-390.png",
+        "sha256": "7dbc65235ddb4e5dd6cb37ff3ffb84c72f4f4cdeb8771716d5945ffef4379cd6",
+        "committed": false
+      }
+    },
+    {
+      "id": "popular",
+      "url": "/popular-scenes",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "热门场景 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2092,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 10,
+      "screenshot": {
+        "localPath": "runtime/audit-012/popular-dark-1440.png",
+        "sha256": "d032c9a77b791709b267f0dfc88e8e21aca47002ff69fd12017bbd8f3cc9787e",
+        "committed": false
+      }
+    },
+    {
+      "id": "popular",
+      "url": "/popular-scenes",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "热门场景 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4586,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 6,
+      "screenshot": {
+        "localPath": "runtime/audit-012/popular-dark-390.png",
+        "sha256": "57259f1f7cdb2c207971afb841c387fba76de5fbd215e70b0bfaa926788f9a8f",
+        "committed": false
+      }
+    },
+    {
+      "id": "popular",
+      "url": "/popular-scenes",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "热门场景 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2092,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 10,
+      "screenshot": {
+        "localPath": "runtime/audit-012/popular-light-1440.png",
+        "sha256": "c7f6db871ab4700173eceb2d8a57505ddcbfb4195b16efce06805db751bb6623",
+        "committed": false
+      }
+    },
+    {
+      "id": "popular",
+      "url": "/popular-scenes",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "热门场景 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4586,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 6,
+      "screenshot": {
+        "localPath": "runtime/audit-012/popular-light-390.png",
+        "sha256": "001fca4e2bdac3c9233f0b73dd2ef045fa2d7d975e51ebb62ee0ce5d67bf4f16",
+        "committed": false
+      }
+    },
+    {
+      "id": "director",
+      "url": "/prompt-builder",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "绘图工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 985,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/director-dark-1440.png",
+        "sha256": "2317dcc2d391d7de833f6336a025a6b581baf21d1197fdd2388b865f6cc3717e",
+        "committed": false
+      }
+    },
+    {
+      "id": "director",
+      "url": "/prompt-builder",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "绘图工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 2206,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/director-dark-390.png",
+        "sha256": "4fae89995e527b84e77e5ce9125bc53e372d3bbc209d205ec6129d124b86a857",
+        "committed": false
+      }
+    },
+    {
+      "id": "director",
+      "url": "/prompt-builder",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "绘图工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 985,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/director-light-1440.png",
+        "sha256": "12fbf2775170b536c3d794bb956ca4c1f09baee1fda5a8d979b332a309aa57a8",
+        "committed": false
+      }
+    },
+    {
+      "id": "director",
+      "url": "/prompt-builder",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "绘图工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 2206,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/director-light-390.png",
+        "sha256": "5152ae02d181f4bc2749da645eccb7f8a407e158c95bbb59828d2a63cbacb7e5",
+        "committed": false
+      }
+    },
+    {
+      "id": "video",
+      "url": "/video-studio",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "视频工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1874,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/video-dark-1440.png",
+        "sha256": "b682b088b0e9efe4293ebcbcf807e518a3f7a138080fde985565990ed122f5d2",
+        "committed": false
+      }
+    },
+    {
+      "id": "video",
+      "url": "/video-studio",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "视频工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3785,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/video-dark-390.png",
+        "sha256": "502284d72b89cc10ae12f365b4ec64151c743e72483373687846ebb25ed736aa",
+        "committed": false
+      }
+    },
+    {
+      "id": "video",
+      "url": "/video-studio",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "视频工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1874,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/video-light-1440.png",
+        "sha256": "1c19c7191cfd2b357082fde7908010a08d6e33d967c903352e6129e19406bdb9",
+        "committed": false
+      }
+    },
+    {
+      "id": "video",
+      "url": "/video-studio",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "视频工作台 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3785,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/video-light-390.png",
+        "sha256": "0b0a7f8af6fac8bd11983ef76a6a9b0e8d6d104615f060174c85fadf041db23b",
+        "committed": false
+      }
+    },
+    {
+      "id": "chat",
+      "url": "/chat",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "完整房间 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/chat-dark-1440.png",
+        "sha256": "49c719343d16bf88c8693f4feb9a619244853b251189e33f9d7d3fbc542774f8",
+        "committed": false
+      }
+    },
+    {
+      "id": "chat",
+      "url": "/chat",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "完整房间 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/chat-dark-390.png",
+        "sha256": "3ffa8160d45be24e095dc737cc86777fb8634e1593df1a9eb067ab5994c639c5",
+        "committed": false
+      }
+    },
+    {
+      "id": "chat",
+      "url": "/chat",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "完整房间 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/chat-light-1440.png",
+        "sha256": "b0c9b9817b97bf3db66bde06e429d2754c1977158964b97173542c90fd978b86",
+        "committed": false
+      }
+    },
+    {
+      "id": "chat",
+      "url": "/chat",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "完整房间 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/chat-light-390.png",
+        "sha256": "f74d28aaf5c54af77acaa24886a34fe7d88a4e34ee6b68fda2d729261078ed08",
+        "committed": false
+      }
+    },
+    {
+      "id": "showcase",
+      "url": "/showcase",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "作品展 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 930,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/showcase-dark-1440.png",
+        "sha256": "a7682c80d22ae0aa392f7caeef35116117d799a5269d2d4e1be08574c688ce46",
+        "committed": false
+      }
+    },
+    {
+      "id": "showcase",
+      "url": "/showcase",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "作品展 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 1238,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/showcase-dark-390.png",
+        "sha256": "c0f3edf5546f87c16e99b7d2f6b5724d9b544267e80606bb6569745940f2a9c6",
+        "committed": false
+      }
+    },
+    {
+      "id": "showcase",
+      "url": "/showcase",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "作品展 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 930,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/showcase-light-1440.png",
+        "sha256": "66c654d877bd31a69995101f4bd3e84dd3a48c26c024d878ea32466d26c57e50",
+        "committed": false
+      }
+    },
+    {
+      "id": "showcase",
+      "url": "/showcase",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "作品展 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 1238,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/showcase-light-390.png",
+        "sha256": "8fc8219d68dfaf687d5bae3900c8dde7b5dad8c612c32f05204b4ea777778dcb",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery",
+      "url": "/gallery",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "作品册 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-dark-1440.png",
+        "sha256": "c394aeef7aaa3a733c5a8bac805bc9afaf80a2de0d60191d5bff8e6929a6e374",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery",
+      "url": "/gallery",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "作品册 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 956,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-dark-390.png",
+        "sha256": "f6137551403bb9ae31f9ed7d290f9b3568169834f28072cb66ae56b6b283e658",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery",
+      "url": "/gallery",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "作品册 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-light-1440.png",
+        "sha256": "3d5eae89107b3d67cd20a9002fdeefe76505d712a7ce619febb9b9f0268eb7b3",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery",
+      "url": "/gallery",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "作品册 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 956,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-light-390.png",
+        "sha256": "3ca5e307f7a1aff403268720b90f9f41e7a7176c11c2fa5d314a56ef56f200db",
+        "committed": false
+      }
+    },
+    {
+      "id": "character",
+      "url": "/character",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "角色档案 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 4407,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 11,
+      "screenshot": {
+        "localPath": "runtime/audit-012/character-dark-1440.png",
+        "sha256": "81e5861c30181bf7c84c1719524dd1787edbe9a664cff6803c7dd993483e64a3",
+        "committed": false
+      }
+    },
+    {
+      "id": "character",
+      "url": "/character",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "角色档案 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 6623,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 7,
+      "screenshot": {
+        "localPath": "runtime/audit-012/character-dark-390.png",
+        "sha256": "01055c7f667d26d449b9ef3edab988ff54fe15be61d28806b5f79c99c72b27bc",
+        "committed": false
+      }
+    },
+    {
+      "id": "character",
+      "url": "/character",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "角色档案 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 4407,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 11,
+      "screenshot": {
+        "localPath": "runtime/audit-012/character-light-1440.png",
+        "sha256": "a7eb35caa4cb35c07c0c33e3643159777c9b16415417cfaea6580759aec146b0",
+        "committed": false
+      }
+    },
+    {
+      "id": "character",
+      "url": "/character",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "角色档案 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 6623,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 7,
+      "screenshot": {
+        "localPath": "runtime/audit-012/character-light-390.png",
+        "sha256": "ad8447a4deb7ec565b77b46bf3e7c69b75205fd7ee6afe79bb384cd487cb54a9",
+        "committed": false
+      }
+    },
+    {
+      "id": "style",
+      "url": "/style",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "画师风格 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1730,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/style-dark-1440.png",
+        "sha256": "481d6a0e80950640e4c338d6f5e589e60e1cfae6f9a498ef3be84d75fe36442b",
+        "committed": false
+      }
+    },
+    {
+      "id": "style",
+      "url": "/style",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "画师风格 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3772,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/style-dark-390.png",
+        "sha256": "6c5b09f88487df238d933fd34cbe41bde43468a2dd354d28194fa2fabda97603",
+        "committed": false
+      }
+    },
+    {
+      "id": "style",
+      "url": "/style",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "画师风格 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1730,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/style-light-1440.png",
+        "sha256": "db36a8b0aec6b5ec3d6986efd4d7fb273c38ab4af576f28dae7551a0307b3d86",
+        "committed": false
+      }
+    },
+    {
+      "id": "style",
+      "url": "/style",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "画师风格 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3772,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/style-light-390.png",
+        "sha256": "fd461da3154bb4f74edcf08b5db757794fbb715064ed17029d79ad1f2fbe7970",
+        "committed": false
+      }
+    },
+    {
+      "id": "lora",
+      "url": "/lora",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "角色 LoRA · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2542,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/lora-dark-1440.png",
+        "sha256": "5c2bc31718fb99b4c3ccea6668ab30b115885b9f990d0fc7711f77e1a74ba8c1",
+        "committed": false
+      }
+    },
+    {
+      "id": "lora",
+      "url": "/lora",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "角色 LoRA · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4274,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/lora-dark-390.png",
+        "sha256": "0c88de8e2eab7156b3f4e9dd78e6c8f059ea29220d275c7d64f6ef58268e373d",
+        "committed": false
+      }
+    },
+    {
+      "id": "lora",
+      "url": "/lora",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "角色 LoRA · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2542,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/lora-light-1440.png",
+        "sha256": "149eb544df5205a7f67ebf3448e88922a5dab547b84cda61640578b15b2a4ccd",
+        "committed": false
+      }
+    },
+    {
+      "id": "lora",
+      "url": "/lora",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "角色 LoRA · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4274,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/lora-light-390.png",
+        "sha256": "f35964817b50a3aca0566fa7505af282c825d44eb3a26403d82efcd63e26f531",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager",
+      "url": "/scene-manager",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "场景管理 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1004,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-dark-1440.png",
+        "sha256": "2e45351fb80e4330823a2c0ca2ab509038ef26cdf8abde6cbce3eebaae5935cc",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager",
+      "url": "/scene-manager",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "场景管理 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 2050,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-dark-390.png",
+        "sha256": "085e225695e95ca7a12d0b25726eeceb1ee8cc4b0000e6cb8528382d3c75002c",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager",
+      "url": "/scene-manager",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "场景管理 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1004,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-light-1440.png",
+        "sha256": "56a642c7086ce40da9aa8c733d050d1063792bfac5232b2659dbb685ba9c291e",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager",
+      "url": "/scene-manager",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "场景管理 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 2050,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-light-390.png",
+        "sha256": "77c4228c0299bdb97ca1679d1973a56cf7ef90143d2fdfac35ecc4be1d9575ca",
+        "committed": false
+      }
+    },
+    {
+      "id": "color",
+      "url": "/color-script",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "色彩脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2309,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/color-dark-1440.png",
+        "sha256": "3c0e6624ad2d6824003ceab267e8e4eb54a48d6064c21dbfb47f79273e3e4b2b",
+        "committed": false
+      }
+    },
+    {
+      "id": "color",
+      "url": "/color-script",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "色彩脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4148,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/color-dark-390.png",
+        "sha256": "6e70a3b54363c978cc812a0792dbfddcc5aff2b819594b3409ac2dfd5158d140",
+        "committed": false
+      }
+    },
+    {
+      "id": "color",
+      "url": "/color-script",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "色彩脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2309,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/color-light-1440.png",
+        "sha256": "020264e668e6dad811149cc248b8d1e291efc75618fff98d5ac7ca5c7a63e027",
+        "committed": false
+      }
+    },
+    {
+      "id": "color",
+      "url": "/color-script",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "色彩脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4148,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/color-light-390.png",
+        "sha256": "929cb445b6c0b62453fc653cb6efa9f32a4010efe8d703b7ba4826e7283370e5",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenario",
+      "url": "/scenario",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "叙事脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1692,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenario-dark-1440.png",
+        "sha256": "3edcfe85b7a38113e5df3483dfcc12d408757d8a4ff3170ed54120f2a8e463ed",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenario",
+      "url": "/scenario",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "叙事脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 2903,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenario-dark-390.png",
+        "sha256": "78faa4317668e1a6b5a378207dedbf908d119d98dd170486c45665b139256504",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenario",
+      "url": "/scenario",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "叙事脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1692,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenario-light-1440.png",
+        "sha256": "ccf1a0a82043ed1255bf35faf481819e68bc7e0c678a8d3cb564cea328541740",
+        "committed": false
+      }
+    },
+    {
+      "id": "scenario",
+      "url": "/scenario",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "叙事脚本 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 2903,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scenario-light-390.png",
+        "sha256": "5ecd21b61d65b695b17b215c22dd35980f79d33198dda8f63f61d0a741f7a8d3",
+        "committed": false
+      }
+    },
+    {
+      "id": "not-found",
+      "url": "/audit-012-missing",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "页面未找到 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/not-found-dark-1440.png",
+        "sha256": "767db7ef85d84ceef2afebbb7f24cb2e6dffe5688c11da1b07379a8798c96fd9",
+        "committed": false
+      }
+    },
+    {
+      "id": "not-found",
+      "url": "/audit-012-missing",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "页面未找到 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/not-found-dark-390.png",
+        "sha256": "07805350944864b5aec6951dfb095e403bfb6a23fb5ab72a52bc47dc22be7b73",
+        "committed": false
+      }
+    },
+    {
+      "id": "not-found",
+      "url": "/audit-012-missing",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "页面未找到 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/not-found-light-1440.png",
+        "sha256": "5646f6a7559e8623ecfc18f73e13f9f7a2486d54e86e231dd55eddd66316078a",
+        "committed": false
+      }
+    },
+    {
+      "id": "not-found",
+      "url": "/audit-012-missing",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "页面未找到 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/not-found-light-390.png",
+        "sha256": "92c8d8fe5cb57678e6af119d4d721ac346a713f26cf8fc372d4838ac83caf966",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion",
+      "url": "/companion",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "桌面陪伴 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-dark-1440.png",
+        "sha256": "8dbaea4a5d262f1186123ef00ec49dc121ed811167fda0e95d14dc9e576f8c5c",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion",
+      "url": "/companion",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "桌面陪伴 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-dark-390.png",
+        "sha256": "7df4d6b9ec6822a7ece1cbbb142bb2425f2349e23ad61945f28879063cceabc2",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion",
+      "url": "/companion",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "桌面陪伴 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-light-1440.png",
+        "sha256": "ccb2501655c4d4f4c9a5521105edf09a43d25d2d4703d7dac6b50675760aca0a",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion",
+      "url": "/companion",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "桌面陪伴 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 1,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-light-390.png",
+        "sha256": "daaf9250f89137db94d5467eed49e2ec6a1f9039c4715a50c40d11b07f5eee48",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion-chat",
+      "url": "/companion-chat",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "陪伴聊天 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-chat-dark-1440.png",
+        "sha256": "119dcba63427c319c605be5aab49e6ec46e95f9748b73c42e3b036eda2c39319",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion-chat",
+      "url": "/companion-chat",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "陪伴聊天 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-chat-dark-390.png",
+        "sha256": "478152d1b443ddd0dbd2077015ed347922a75a3b8f0ea80cb236fbf73f90745e",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion-chat",
+      "url": "/companion-chat",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "陪伴聊天 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-chat-light-1440.png",
+        "sha256": "6a739ff3e312e9fc04a433b46dcd55cb55fe89553617c773b84993c48d9a71bb",
+        "committed": false
+      }
+    },
+    {
+      "id": "companion-chat",
+      "url": "/companion-chat",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "陪伴聊天 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/companion-chat-light-390.png",
+        "sha256": "6f168eef6ec8020a539f05b5f1612f937928be42e8e1ccd80fc7c787795b6019",
+        "committed": false
+      }
+    },
+    {
+      "id": "control",
+      "url": "/control",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "服务控制 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2473,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/control-dark-1440.png",
+        "sha256": "7ae2ab8f5ffb3214f7535edf3da178ac611c7de2d7719b669804e4c97518a9cf",
+        "committed": false
+      }
+    },
+    {
+      "id": "control",
+      "url": "/control",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "服务控制 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3970,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/control-dark-390.png",
+        "sha256": "b6b9bffebd154e98f6c16c0c9b2a7f0ef4e985a782fa7a0bd5e61ae20f5871ca",
+        "committed": false
+      }
+    },
+    {
+      "id": "control",
+      "url": "/control",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "服务控制 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2473,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/control-light-1440.png",
+        "sha256": "219345388ea58778f322a526bd48ff9776f48e418b6a68a43fdff077eb24fdda",
+        "committed": false
+      }
+    },
+    {
+      "id": "control",
+      "url": "/control",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "服务控制 · 绘遇",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3970,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/control-light-390.png",
+        "sha256": "c79ef5da9ce921895805ec3aa667c70c526c9537a725f61182bca0d1fc035c4b",
+        "committed": false
+      }
+    },
+    {
+      "id": "manual",
+      "url": "/docs/index.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "创作手册 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2227,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manual-dark-1440.png",
+        "sha256": "bd9fb0d64059d342fbe14992ead7584f84ff9da5cfc2df863d05fcabb1e37563",
+        "committed": false
+      }
+    },
+    {
+      "id": "manual",
+      "url": "/docs/index.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "创作手册 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3157,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manual-dark-390.png",
+        "sha256": "a70615d889faecfedb2e3fd3638488a56d53e0407bd356fbc8ab562984d99dba",
+        "committed": false
+      }
+    },
+    {
+      "id": "manual",
+      "url": "/docs/index.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "创作手册 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 2227,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manual-light-1440.png",
+        "sha256": "afbe00736aa2112764507fd245e16884f99fda673744a9b60955bbf340cd9ad1",
+        "committed": false
+      }
+    },
+    {
+      "id": "manual",
+      "url": "/docs/index.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "创作手册 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 1,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 3157,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/manual-light-390.png",
+        "sha256": "df21c30992e20e2bf70445ff59e8887d89a2f75cde14889f729fc07ccbe814fc",
+        "committed": false
+      }
+    },
+    {
+      "id": "getting-started",
+      "url": "/docs/getting-started.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "新手教程 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1457,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/getting-started-dark-1440.png",
+        "sha256": "71aff3d7352b090db46544f0617e1b991c8d953fdde1bebbb0561535c49aee2b",
+        "committed": false
+      }
+    },
+    {
+      "id": "getting-started",
+      "url": "/docs/getting-started.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "新手教程 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 1942,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/getting-started-dark-390.png",
+        "sha256": "3cfa3ee3ce611cd91e6a1dce599d65187110135d40855ab60ccaa14fc8982d45",
+        "committed": false
+      }
+    },
+    {
+      "id": "getting-started",
+      "url": "/docs/getting-started.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "新手教程 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1457,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/getting-started-light-1440.png",
+        "sha256": "17e8f10c57c2f3c6fc9d3ef5bca00a85e781522e719b0bc2ca05d541c66ecd7f",
+        "committed": false
+      }
+    },
+    {
+      "id": "getting-started",
+      "url": "/docs/getting-started.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "新手教程 · 绘遇 HUIYU",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 1942,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/getting-started-light-390.png",
+        "sha256": "d21806d621cedb47bd644dd9077c6960d5aecde058b54cefcab258ada325c2da",
+        "committed": false
+      }
+    },
+    {
+      "id": "roadmap",
+      "url": "/docs/roadmap.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "产品路线图 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/roadmap-dark-1440.png",
+        "sha256": "c8fe68b814d296005608fa7419d83666adb1ddcf0db3b5eee7f9fbf088a90599",
+        "committed": false
+      }
+    },
+    {
+      "id": "roadmap",
+      "url": "/docs/roadmap.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "产品路线图 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/roadmap-dark-390.png",
+        "sha256": "074b0f4b48aad535aed88c125ac5c7850c4db34476e87c31c4efd8dd5de869f5",
+        "committed": false
+      }
+    },
+    {
+      "id": "roadmap",
+      "url": "/docs/roadmap.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "产品路线图 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/roadmap-light-1440.png",
+        "sha256": "7aced3d1f1736d6b45683795d4c16cf781a72224e0c371e5d0b510a3e9f92049",
+        "committed": false
+      }
+    },
+    {
+      "id": "roadmap",
+      "url": "/docs/roadmap.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "产品路线图 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 900,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/roadmap-light-390.png",
+        "sha256": "b07a33b7470836ca013a18f94db734f1edd3ab503749747956e9ddcff37106e8",
+        "committed": false
+      }
+    },
+    {
+      "id": "art-direction",
+      "url": "/docs/guides/art/art-direction.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "CG 美术风格规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3887,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/art-direction-dark-1440.png",
+        "sha256": "61ab2596b84e76f582a626d1f5c86895bf5b8bb5736effe18f9e2ba6a0921be5",
+        "committed": false
+      }
+    },
+    {
+      "id": "art-direction",
+      "url": "/docs/guides/art/art-direction.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "CG 美术风格规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 6222,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/art-direction-dark-390.png",
+        "sha256": "605339e46a825d90304a33d8b156c8634a6530bc22481382fd46b0a1a7346515",
+        "committed": false
+      }
+    },
+    {
+      "id": "art-direction",
+      "url": "/docs/guides/art/art-direction.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "CG 美术风格规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3887,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/art-direction-light-1440.png",
+        "sha256": "b26207c7c54e155ee75bc45d0a8f90e6a4da18831c027e0a3a40d29652e9f8a0",
+        "committed": false
+      }
+    },
+    {
+      "id": "art-direction",
+      "url": "/docs/guides/art/art-direction.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "CG 美术风格规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 6222,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/art-direction-light-390.png",
+        "sha256": "c5710fb790eadc1e8e4e8e331de8e1df39752ec0b4d778b35e98bd7ec2b5849c",
+        "committed": false
+      }
+    },
+    {
+      "id": "philosophy",
+      "url": "/docs/guides/art/philosophy.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "创作取向 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3069,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/philosophy-dark-1440.png",
+        "sha256": "84ae1f8df3e2e068f8f3e1fd567ccfc0b6eb77862bb210512bacf7674e232da4",
+        "committed": false
+      }
+    },
+    {
+      "id": "philosophy",
+      "url": "/docs/guides/art/philosophy.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "创作取向 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4693,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/philosophy-dark-390.png",
+        "sha256": "d7edc884db6f715b7e3707d73f0cfded612fade5a2e1e1e413b7cabfd364ddd9",
+        "committed": false
+      }
+    },
+    {
+      "id": "philosophy",
+      "url": "/docs/guides/art/philosophy.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "创作取向 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3069,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/philosophy-light-1440.png",
+        "sha256": "c9f8bc13e915adbc35e1566e010b9cba1f679a89fb0ee6d2595631d438711d14",
+        "committed": false
+      }
+    },
+    {
+      "id": "philosophy",
+      "url": "/docs/guides/art/philosophy.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "创作取向 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4693,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/philosophy-light-390.png",
+        "sha256": "2b5509382bbf38b510685461e5cea1f80391cedde09b25405be6a192b729627c",
+        "committed": false
+      }
+    },
+    {
+      "id": "worldview",
+      "url": "/docs/guides/art/worldview.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "项目定位 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 4265,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/worldview-dark-1440.png",
+        "sha256": "6f5faad9ea08a7008277b550ad2d152195f0a34d1fe318d902565283d77f95f7",
+        "committed": false
+      }
+    },
+    {
+      "id": "worldview",
+      "url": "/docs/guides/art/worldview.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "项目定位 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4649,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/worldview-dark-390.png",
+        "sha256": "ee8394c5e1de0fffad7d055520cf2eee4767b1baad36314347bfe7fa6a9a61de",
+        "committed": false
+      }
+    },
+    {
+      "id": "worldview",
+      "url": "/docs/guides/art/worldview.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "项目定位 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 4265,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/worldview-light-1440.png",
+        "sha256": "5689bcdf88fd7aeb0607acd00e0ebd2a16192b33515bf6dc11bcab313871c0a0",
+        "committed": false
+      }
+    },
+    {
+      "id": "worldview",
+      "url": "/docs/guides/art/worldview.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "项目定位 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4649,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/worldview-light-390.png",
+        "sha256": "900cf9c1f08868e92e2ed1fa673a1862e9b5618e0ad1ed0ee4c151b0836682d5",
+        "committed": false
+      }
+    },
+    {
+      "id": "quality",
+      "url": "/docs/guides/art/quality-standard.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "出图质量检查 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1702,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/quality-dark-1440.png",
+        "sha256": "8e1636fa745d5abecdd20283cf3df1bf382af6948b450714407ff96d5b64d825",
+        "committed": false
+      }
+    },
+    {
+      "id": "quality",
+      "url": "/docs/guides/art/quality-standard.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "出图质量检查 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 1934,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/quality-dark-390.png",
+        "sha256": "10c757e9049d90fda1adddd1bf5cb5c957aaf9e9c838b94a3a2ef3079a4b7b2f",
+        "committed": false
+      }
+    },
+    {
+      "id": "quality",
+      "url": "/docs/guides/art/quality-standard.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "出图质量检查 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 1702,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/quality-light-1440.png",
+        "sha256": "077ffdbe2d166749c7f8df7815c59d999095cfa195cf14da8e9fc88a67728186",
+        "committed": false
+      }
+    },
+    {
+      "id": "quality",
+      "url": "/docs/guides/art/quality-standard.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "出图质量检查 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 1934,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/quality-light-390.png",
+        "sha256": "d8d01d516506db976aae97b53f7d409298ab4ce9bb99c903c0a0233e8ce2febf",
+        "committed": false
+      }
+    },
+    {
+      "id": "scene-spec",
+      "url": "/docs/guides/characters/scene-spec.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "Scene 数据与写作规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 5183,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scene-spec-dark-1440.png",
+        "sha256": "081b8000d2d7bb34206d14f76ae08ff88ea12c586c89eef0ea33aa66c4d30048",
+        "committed": false
+      }
+    },
+    {
+      "id": "scene-spec",
+      "url": "/docs/guides/characters/scene-spec.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "Scene 数据与写作规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 7223,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scene-spec-dark-390.png",
+        "sha256": "df1374e98ffdd00306e77cc0f8abb7f100d04d86f43c584c47052882d40158a8",
+        "committed": false
+      }
+    },
+    {
+      "id": "scene-spec",
+      "url": "/docs/guides/characters/scene-spec.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "Scene 数据与写作规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 5183,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scene-spec-light-1440.png",
+        "sha256": "ff8e1bcec9d9495762f6d8560e6c49114111e9eac00943306c500e4641be8f3d",
+        "committed": false
+      }
+    },
+    {
+      "id": "scene-spec",
+      "url": "/docs/guides/characters/scene-spec.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "Scene 数据与写作规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 7223,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/scene-spec-light-390.png",
+        "sha256": "cbfe23586dc157645a73996f81cb6c74c4a43e6c821bf29754709ad0b7bb4fc6",
+        "committed": false
+      }
+    },
+    {
+      "id": "prompt-spec",
+      "url": "/docs/guides/prompts/prompt-spec.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "Prompt 规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 4391,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/prompt-spec-dark-1440.png",
+        "sha256": "c2d20b425b94d86cd84bb81a4799f396e3993b4d44fa3fdd65720ed8224902a2",
+        "committed": false
+      }
+    },
+    {
+      "id": "prompt-spec",
+      "url": "/docs/guides/prompts/prompt-spec.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "Prompt 规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4403,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/prompt-spec-dark-390.png",
+        "sha256": "dd67f302025343e691cce7f126127bcabbd775635a8725aa0ded0666b227e580",
+        "committed": false
+      }
+    },
+    {
+      "id": "prompt-spec",
+      "url": "/docs/guides/prompts/prompt-spec.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "Prompt 规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 4391,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/prompt-spec-light-1440.png",
+        "sha256": "a1bb0e0c56ea31b9aa6854a6f36311b89b1dd3a5ac224b1ced631d234edd7ede",
+        "committed": false
+      }
+    },
+    {
+      "id": "prompt-spec",
+      "url": "/docs/guides/prompts/prompt-spec.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "Prompt 规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4403,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/prompt-spec-light-390.png",
+        "sha256": "11c354c3849f5f5e470e4e931a9001a71446f627d55d719909fe5bc1e6505d07",
+        "committed": false
+      }
+    },
+    {
+      "id": "tag-standard",
+      "url": "/docs/guides/prompts/tag-standard.html",
+      "theme": "dark",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "标签规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3650,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/tag-standard-dark-1440.png",
+        "sha256": "b6447c034a9e4d8b85bc0bb454e511e7938e1966b5853d2156df38292bc5dbef",
+        "committed": false
+      }
+    },
+    {
+      "id": "tag-standard",
+      "url": "/docs/guides/prompts/tag-standard.html",
+      "theme": "dark",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "标签规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4529,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/tag-standard-dark-390.png",
+        "sha256": "ec7a8f378bd6eb1232a72fc6ffacc75a3745cdefc967efaab09630adf1d7f6da",
+        "committed": false
+      }
+    },
+    {
+      "id": "tag-standard",
+      "url": "/docs/guides/prompts/tag-standard.html",
+      "theme": "light",
+      "width": 1440,
+      "httpStatus": 200,
+      "title": "标签规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 1440,
+      "viewportWidth": 1440,
+      "scrollHeight": 3650,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/tag-standard-light-1440.png",
+        "sha256": "acf3d9149fa4a80ef41ce72bf65a1911d01f1405e2f922a0dbb87d37b5a9581d",
+        "committed": false
+      }
+    },
+    {
+      "id": "tag-standard",
+      "url": "/docs/guides/prompts/tag-standard.html",
+      "theme": "light",
+      "width": 390,
+      "httpStatus": 200,
+      "title": "标签规范 · 绫季绘境",
+      "h1Count": 1,
+      "mainCount": 0,
+      "pageWidth": 390,
+      "viewportWidth": 390,
+      "scrollHeight": 4529,
+      "pageErrors": [],
+      "externalRequestsBlocked": 0,
+      "failedResponseCount": 0,
+      "screenshot": {
+        "localPath": "runtime/audit-012/tag-standard-light-390.png",
+        "sha256": "75c6b3992e97fdf83c962306047d692ac9a4b5e42b5bfccd148c3ad9bc54b551",
+        "committed": false
+      }
+    }
+  ],
+  "stateRecords": [
+    {
+      "id": "inpaint-empty",
+      "theme": "dark",
+      "upload": {
+        "tag": "BUTTON",
+        "tabIndex": 0
+      },
+      "screenshot": {
+        "localPath": "runtime/audit-012/inpaint-dark.png",
+        "sha256": "d98e3772a9395625e6de390023ecb8d43a9879b7ea47bf2545d5a98b678a6355",
+        "committed": false
+      }
+    },
+    {
+      "id": "data-tools",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/data-tools-dark.png",
+        "sha256": "d07bf4afb6accfdc7248583eed0d9293ae17289d0276773a6e6f70cd87263de9",
+        "committed": false
+      }
+    },
+    {
+      "id": "search",
+      "theme": "dark",
+      "matches": 3,
+      "screenshot": {
+        "localPath": "runtime/audit-012/search-dark.png",
+        "sha256": "349ca124337f22b3c32b11fc7a62e7f246b2168be082e529ce7ad7a635993dcf",
+        "committed": false
+      }
+    },
+    {
+      "id": "tasks-empty",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/tasks-empty-dark.png",
+        "sha256": "e1c3c35cc59194af242db99a34d99a5a2c04dfeea92cea7facca048be00c05e3",
+        "committed": false
+      }
+    },
+    {
+      "id": "director-order",
+      "theme": "dark",
+      "width": 390,
+      "boxes": [
+        {
+          "id": "drawing-materials",
+          "class": "director-col col-left",
+          "top": 311,
+          "height": 527
+        },
+        {
+          "id": "drawing-canvas",
+          "class": "director-col col-center",
+          "top": 854,
+          "height": 564
+        },
+        {
+          "id": "",
+          "class": "stage-placeholder",
+          "top": 854,
+          "height": 425
+        }
+      ]
+    },
+    {
+      "id": "style-missing-action",
+      "theme": "dark",
+      "width": 390,
+      "firstActionTop": 984,
+      "placeholderHeight": 255
+    },
+    {
+      "id": "manager-tab",
+      "name": "场景库",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-0-dark.png",
+        "sha256": "2e45351fb80e4330823a2c0ca2ab509038ef26cdf8abde6cbce3eebaae5935cc",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "蓝图库",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-1-dark.png",
+        "sha256": "3e6fc2d1b5f6cdde4ca5efa5fe8e970edf7bb72845ce8530d0355441cd013674",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "标签库",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-2-dark.png",
+        "sha256": "64142ee7fc1ff982345447d759bff10a7a65e77430e86b5ae85f1e208eec5303",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "样张",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-3-dark.png",
+        "sha256": "2a4af371519f1b11914378d83ec4f7b08afc92c6c311b18513f0f62f11112f08",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "重复检测",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-4-dark.png",
+        "sha256": "04d4cbf08c5d4dc1c5ffc9cfad582acce227203480382b9ea77aee93005e7576",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "导入",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-5-dark.png",
+        "sha256": "15f88d87e05f4106c33a07c78ff5e31aca29c3dc8c522fa2b0d6bec39a276b3c",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "维护工具",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-6-dark.png",
+        "sha256": "24c772c50d61533fdf7961ff790bdff715edc471e91e9f32fbdcd4c03accddac",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery-populated",
+      "theme": "dark",
+      "cards": 3,
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-populated-dark.png",
+        "sha256": "5ad95b351d567b29d4881e10355ea8d563ddeaf5a4d00143c22870d727b078b1",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery-viewer",
+      "theme": "dark",
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-viewer-dark.png",
+        "sha256": "e8d7e7390193250fa22cbcef8c44ad7f33fd9be3f651402b0ee86d0f4fc612a0",
+        "committed": false
+      }
+    },
+    {
+      "id": "inpaint-empty",
+      "theme": "light",
+      "upload": {
+        "tag": "BUTTON",
+        "tabIndex": 0
+      },
+      "screenshot": {
+        "localPath": "runtime/audit-012/inpaint-light.png",
+        "sha256": "e04a943ae46be547df87460f9350a6e17da88a3059b683d2cbd81f7f86c8c717",
+        "committed": false
+      }
+    },
+    {
+      "id": "data-tools",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/data-tools-light.png",
+        "sha256": "44e3f53c739388e85e4b89fbc85bcf089f905151d6624b117e8bc5855a29a163",
+        "committed": false
+      }
+    },
+    {
+      "id": "search",
+      "theme": "light",
+      "matches": 3,
+      "screenshot": {
+        "localPath": "runtime/audit-012/search-light.png",
+        "sha256": "cf442edbc3ebb0cbb6d77fac6a6835f2efeebefd2806446b5f393057b62003a0",
+        "committed": false
+      }
+    },
+    {
+      "id": "tasks-empty",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/tasks-empty-light.png",
+        "sha256": "f24f3ce933bc4d792c6ee3c973ffb4016671491bdf298c3d682d40e313918764",
+        "committed": false
+      }
+    },
+    {
+      "id": "director-order",
+      "theme": "light",
+      "width": 390,
+      "boxes": [
+        {
+          "id": "drawing-materials",
+          "class": "director-col col-left",
+          "top": 311,
+          "height": 527
+        },
+        {
+          "id": "drawing-canvas",
+          "class": "director-col col-center",
+          "top": 854,
+          "height": 564
+        },
+        {
+          "id": "",
+          "class": "stage-placeholder",
+          "top": 854,
+          "height": 425
+        }
+      ]
+    },
+    {
+      "id": "style-missing-action",
+      "theme": "light",
+      "width": 390,
+      "firstActionTop": 984,
+      "placeholderHeight": 255
+    },
+    {
+      "id": "manager-tab",
+      "name": "场景库",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-0-light.png",
+        "sha256": "56a642c7086ce40da9aa8c733d050d1063792bfac5232b2659dbb685ba9c291e",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "蓝图库",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-1-light.png",
+        "sha256": "767b5740bb3d4552069060a974a086369845cbbb04f80b7e294a5f5e0fb80905",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "标签库",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-2-light.png",
+        "sha256": "c3786f59dd1ae2c37dcba60033a43ae325b7d3e32432c5f2fb035e5060735ad3",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "样张",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-3-light.png",
+        "sha256": "912e7f76cc13b40b03cf150a63d9d7ca4c2bcf58c449e0693cee0bc8ea6d4f37",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "重复检测",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-4-light.png",
+        "sha256": "b075e923d5412895253b67290386576cd7bae8fcfb8dbcf2d0b0c240441bf622",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "导入",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-5-light.png",
+        "sha256": "f1820c4ace011fd1b3bc5a924761c97ded4b5119552d3b01e0a43bd84518db55",
+        "committed": false
+      }
+    },
+    {
+      "id": "manager-tab",
+      "name": "维护工具",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/manager-tab-6-light.png",
+        "sha256": "e34cb94a2ed5ac41cd27ebca1fafdab27c0867c6540c615d47c72e38355d94ec",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery-populated",
+      "theme": "light",
+      "cards": 3,
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-populated-light.png",
+        "sha256": "30b06fa9d19e237bb482d872cde6489ac78f27b81d9c38ead2daaddc423002f2",
+        "committed": false
+      }
+    },
+    {
+      "id": "gallery-viewer",
+      "theme": "light",
+      "screenshot": {
+        "localPath": "runtime/audit-012/gallery-viewer-light.png",
+        "sha256": "737eca3ae6a1441fcf36b240d0c6c38344b8960642aae1b352e665870b1ff8a0",
+        "committed": false
+      }
+    }
+  ],
+  "probeCorrections": [
+    {
+      "attempt": 1,
+      "result": "Stopped before manager state iteration",
+      "reason": "Exact accessible button name omitted visible record counts; audit locator error, not product failure."
+    },
+    {
+      "attempt": 2,
+      "result": "Stopped before manager state iteration",
+      "reason": "Incorrect role tab assumption; source confirms buttons with aria-pressed."
+    },
+    {
+      "attempt": 3,
+      "result": "completed",
+      "reason": "Actual observed button name prefix used; 30 state observations, 2 scenario defects, 20 document style checks."
+    }
+  ],
+  "sourceHashes": {
+    "src/router/index.ts": "f1c775a4028be8bc804b22af7815feaed40475ea48c4ca76cf29fcd1e3f60b93",
+    "src/components/AppNav.vue": "207f8f9d3c8b3e61c17b30d31bc4893878a0a5b0b3d500f216d79428fc229c28",
+    "src/components/GlobalSearch.vue": "f166036c78d5de6eee6508dcd7bed5ff340cd9ebe3f85f378d16e2db5d5cb1ef",
+    "src/components/PromptDataTools.vue": "4cf2cbd0ec6f35452229f9663dd9bbf8946a2d49f1b6da6c1d35e2d59922186e",
+    "src/components/ResourceLibraryPanel.vue": "33323fc8baad23ed44a453d656e587099c19001afe25dd01beb277b367b4712b",
+    "src/composables/prompt/usePromptDeepLink.ts": "134b84ca4b9b9d3551ff4fe425fcfab149d212fc0a794abba2f8b804687697ef",
+    "src/composables/video/useVideoWorkspace.ts": "1d8b91784c22d72a7ac97b4de4c17d3e4f3172e0d38400917425a9fca97a774c",
+    "DESIGN.md": "ab47eae4a148cae82cf183adb94f42be7c7798d8a8773c078958fece68320f8b",
+    "src/views/CharacterView.vue": "6defdc18febab118e7001c1fb081a3845db5f1763c78698f8be200e5bbdd705d",
+    "src/views/ChatView.vue": "b832375190fbec5f6139b7ebe8b4a1bca46e887394838cde32620e6410e0c7be",
+    "src/views/ColorScriptView.vue": "540b4cf7893c47b4d5bcc1a13058a1ddb0fa59a34999177d804b6af87c027503",
+    "src/views/CompanionChatView.vue": "ae67a41555cfcdef07a17e7e77928f2db5b5e618745703b41b47ece8ad1e29d6",
+    "src/views/CompanionView.vue": "2e69885dbb446e42c3f42eb1ce34aae39bfe28b344c8350c109338e9c9adf13f",
+    "src/views/ControlView.vue": "68655f5af6950adfdfbb516c6a37ba63e8f51fc4020a7b1a2c7e3264e4dc5df6",
+    "src/views/GalleryView.vue": "9a5c222bb1e89505190ef7690e6e4ffdb1799d70f9cbdaf4fea9f0e8fbe4111b",
+    "src/views/HomeView.vue": "6984faf6150ccbe36a8ec0d13811f7bf95e1fa882975d4bf82a3518d3f143067",
+    "src/views/LoraView.vue": "07e943388b3219152aaa0ed55e7c53356013b0a7c1e036d67b20a1f3478bdb72",
+    "src/views/NotFoundView.vue": "aca4f5db38db0e015b2881fe2f528d853320e7dd4e13e2f305a509df667ab034",
+    "src/views/PopularSceneExplorerView.vue": "12521695155bb96df53a05988bcf497f9fed066fd15e0fe01583e07d36e2038f",
+    "src/views/PromptBuilderView.vue": "98a95ec6762f380909b2e75da4fb73cd7d06c4f3c2636bb34bab7022c31ca0b6",
+    "src/views/ScenarioView.vue": "c3ceda9d2faff6152f37c5ca40554b16b614d0663eff1a246cdbd8ae3285e3e7",
+    "src/views/SceneExplorerView.vue": "0b4cc340a0ba090b24d7d815bd549219ab9a9d4470568c53b665d677260b22e8",
+    "src/views/SceneManagerView.vue": "aa2b4bf524b46e84ea9c0cf0db69f4217ede0ef4698b26c7222344820460b5b7",
+    "src/views/ShowcaseView.vue": "3a2faab2340f0ca8425860e0bbc8c1df21264ee5095cf9c8d5e3518318c86613",
+    "src/views/StyleView.vue": "9b24fcbeecd04d78c1ff8faad7a6acb990f8eabedfa08ca8f17a95ad0b5a8da7",
+    "src/views/VideoStudioView.vue": "beef35147ac755c167bf794b1d57c9292ee69402a72436a197368f9d1383a73c",
+    "docs/index.html": "93ff6e07a59d278d36d99fb9d8c1251412d67875eb51aec128103a22291b1c07",
+    "docs/getting-started.html": "e4515e5795422793e9fb9009f67f6082e7c9d3eef508738bad1cad3cd51ae8d2",
+    "docs/roadmap.html": "f0eff9c3fad77f49972142e2165b24319abfdc614be467f4069ad7034ef158a2",
+    "docs/guides/art/art-direction.html": "e5ee7eb9a347baf1876ba5aca09566a977ba7bf8feee86757cda7d11f7270fdc",
+    "docs/guides/art/philosophy.html": "d054df6d453a73cba10ab5e46775ccdaba68631066bb4582e25c0b4d47055e7c",
+    "docs/guides/art/worldview.html": "6bb67e25ebf8f4b59f87ab0c2616288f9b06e7dd7a8b544b32dd703a675c338e",
+    "docs/guides/art/quality-standard.html": "b981a70d663e38cc1d982fab20bf9f74837711443901b2ee286bb44b774452a3",
+    "docs/guides/characters/scene-spec.html": "46a9bc37180007f0ac7db2d76f7b9b0409b4876be44a14e350b54023f341abee",
+    "docs/guides/prompts/prompt-spec.html": "b7f1372288b4ecd0602b788ad4712ca74515e2ffe9971574ac2f659ab6f73b92",
+    "docs/guides/prompts/tag-standard.html": "4ae57319067a317d34db8b8c8640732ecdb8ad0e773d8c5247400d5633c745aa"
+  },
+  "localLogs": [
+    {
+      "path": "runtime/audit-012/build.log",
+      "sha256": "b0eebf57db6e754bd854d810416168aa8fe7f5f245ad42fdc75441c0603a4b73",
+      "committed": false
+    },
+    {
+      "path": "runtime/audit-012/page-capture.log",
+      "sha256": "2d1ad836db36a8827782b7df7212eedf9ce46f04af1c10ece9dd4d855f338106",
+      "committed": false
+    },
+    {
+      "path": "runtime/audit-012/state-capture.log",
+      "sha256": "fe24e8f0a088ded060ad2dc246c71d4c7fedaf290ca1f86c08e80a92ce9d948f",
+      "committed": false
+    },
+    {
+      "path": "runtime/audit-012/state-capture-final.log",
+      "sha256": "6e637c804274dcb3ba0b3f68f0a953c437386bb16ae6ac97d06845378e00cd32",
+      "committed": false
+    },
+    {
+      "path": "runtime/audit-012/state-capture-verified.log",
+      "sha256": "1ca402d06b56bde4d9796144e05619d41fcf3c1ae21ea651f87f3244ae644654",
+      "committed": false
+    },
+    {
+      "path": "runtime/audit-012/style-check.log",
+      "sha256": "c7609044c0013b98a96157664c26b139fe7d141720bb531e874764f3abf34b85",
+      "committed": false
+    }
+  ],
+  "research": [
+    {
+      "source": "Apple HIG Typography",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/typography",
+      "retrieved": "https://developer.apple.com/tutorials/data/design/human-interface-guidelines/typography.json"
+    },
+    {
+      "source": "Apple HIG Layout",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/layout",
+      "retrieved": "https://developer.apple.com/tutorials/data/design/human-interface-guidelines/layout.json"
+    },
+    {
+      "source": "W3C WCAG Understanding",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+    },
+    {
+      "source": "W3C WCAG Understanding",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+    },
+    {
+      "source": "W3C WCAG Understanding",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+    },
+    {
+      "source": "W3C WCAG Understanding",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+    },
+    {
+      "source": "W3C WCAG Understanding",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+    },
+    {
+      "source": "WAI-ARIA APG Dialog",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+    },
+    {
+      "source": "web.dev INP",
+      "url": "https://web.dev/articles/optimize-inp"
+    }
+  ],
+  "unverified": [
+    "All unexercised feature/error/cancel/persistence states listed C/T in matrix",
+    "Normal-motion/GPU/long-session profiling",
+    "Actual screen readers, native Windows transparency/DPI/multi-monitor/installer",
+    "Actual model image/video/speech quality and external asset review",
+    "Production maintenance writes, service management, resource download/install and credentials",
+    "Archived HTML visual review beyond inventory; preserve historical text"
+  ],
+  "delivery": {
+    "type": "audit-and-plan",
+    "productModified": false,
+    "next": "New project task executes plans/012-page-experience-polish.md independently without subagents"
+  }
+}
