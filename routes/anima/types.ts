@@ -1,6 +1,7 @@
 import type { ComfyConfig, ComfyStateConfig } from '../../server/comfy-types';
 
 export interface ImageGenerationConfig extends ComfyConfig, ComfyStateConfig {
+  IMAGE_STORAGE_LIMITS?: { bytes: number; files: number };
   ROOT_DIR: string;
   AI_WORKSPACE_ROOT?: string;
   RUNTIME?: { state?: string; outputs?: string };

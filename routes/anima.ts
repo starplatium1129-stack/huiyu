@@ -1,4 +1,5 @@
 import type { ImageGenerationConfig, ImageJob, ImageModelDefinition, ImageLoraDefinition } from './anima/types';
+import { storeAdmittedImage } from '../services/image-admission';
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
 'use strict';
 
@@ -83,16 +84,10 @@ function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima
       if (!ext) {
         return envelope.fail(res, 400, '不支持的图片格式（仅限 PNG、JPEG、WebP）', { code:'INVALID_IMAGE_FORMAT' });
       }
-      let hash = crypto.createHash('sha256').update(buffer).digest('hex').slice(0, 24);
-      let filename = 'aics_anima_input_' + hash + '.' + ext;
-      let targetDir = imageInputRoot(config);
-      fs.mkdirSync(targetDir, { recursive:true });
-      let targetPath = path.resolve(targetDir, filename);
-      // 异步写盘，避免 ≤20MB 同步写冻结事件循环（2026-08-21 性能审计 #1）
-      await fs.promises.writeFile(targetPath, buffer);
+      let filename = await storeAdmittedImage(imageInputRoot(config), buffer, 'aics_anima_input_', ext, requestOwner(req), config.IMAGE_STORAGE_LIMITS);
       return envelope.ok(res, { ok:true, name:filename });
     } catch (error) {
-      return envelope.fail(res, 500, runtimeErrorMessage(error) || '图片保存失败', { code:'IMAGE_SAVE_FAILED' });
+      return envelope.fail(res, runtimeErrorStatus(error) || 500, runtimeErrorMessage(error) || '图片保存失败', { code:runtimeErrorCode(error) || 'IMAGE_SAVE_FAILED' });
     }
   });
 

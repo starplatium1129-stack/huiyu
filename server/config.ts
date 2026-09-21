@@ -135,6 +135,10 @@ function loadGatewayConfig(rootDir: string, env: NodeJS.ProcessEnv = process.env
     // 桌面打包版可落在安装目录之外；浏览器不直接提供此路径，由服务端按
     // env.AI_WORKSPACE_ROOT 或 appRoot 兄弟目录解析。
     AI_WORKSPACE_ROOT:workspaceRoot,
+    IMAGE_STORAGE_LIMITS: {
+      bytes:boundedInteger(env.AICS_IMAGE_STORAGE_BYTES, 512 * 1024 * 1024, 1024, 8 * 1024 * 1024 * 1024),
+      files:boundedInteger(env.AICS_IMAGE_STORAGE_FILES, 1024, 1, 100000),
+    },
     // Operator environment only: request bodies and saved app settings cannot enable commands.
     DESKTOP_TRUSTED_COMMANDS:env.AICS_DESKTOP_COMMANDS === 'trusted',
     // No runtime/config.json fallback: only the operator environment selects/approves resources.

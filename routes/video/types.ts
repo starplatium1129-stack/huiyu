@@ -2,6 +2,7 @@ import type { ComfyConfig, ComfyStateConfig } from '../../server/comfy-types';
 import type validation = require('./validation');
 import type comfy = require('./comfy');
 export interface VideoConfig extends ComfyConfig, ComfyStateConfig {
+  IMAGE_STORAGE_LIMITS?: { bytes: number; files: number };
   ROOT_DIR: string;
   AI_WORKSPACE_ROOT?: string;
 }

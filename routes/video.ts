@@ -1,3 +1,4 @@
+import { storeAdmittedImage } from '../services/image-admission';
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStatus as runtimeErrorStatus } from '../scripts/lib/runtime-errors';
 import type { VideoConfig, VideoServiceDependencies } from './video/types';
 import serviceFactory = require('./video/service');
@@ -8,8 +9,6 @@ import videoStream = require('./video-stream');
 const { streamVideo } = videoStream;
 import crypto = require('crypto');
 import express = require('express');
-import fs = require('fs');
-import path = require('path');
 import security = require('../server/security');
 import envelope = require('../server/http-envelope');
 import constants = require('./video/constants');
@@ -125,20 +124,12 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
     }
     let isReference = body.kind === 'reference';
     let prefix = isReference ? IMAGE_REF_PREFIX : IMAGE_INPUT_PREFIX;
-    let name = prefix + crypto.randomBytes(8).toString('hex') + '.' + ext;
-    let root = media.imageInputRoot(config);
-    let resolvedRoot = path.resolve(root);
-    let target = path.resolve(root, name);
-    if (target.indexOf(resolvedRoot + path.sep) !== 0) {
-      return envelope.fail(res, 500, '图片存储路径无效', { code:'IMAGE_STORAGE_INVALID' });
-    }
     try {
-      await fs.promises.mkdir(resolvedRoot, { recursive:true });
-      await fs.promises.writeFile(target, buffer, { flag:'wx' });
+      const name = await storeAdmittedImage(media.imageInputRoot(config), buffer, prefix, ext, requestOwner(req), config.IMAGE_STORAGE_LIMITS);
+      return envelope.ok(res, { name, bytes:buffer.length });
     } catch (error) {
-      return envelope.fail(res, 500, '图片写入失败', { code:'IMAGE_WRITE_FAILED' });
+      return envelope.fail(res, runtimeErrorStatus(error) || 500, runtimeErrorMessage(error), { code:runtimeErrorCode(error) || 'IMAGE_WRITE_FAILED' });
     }
-    envelope.ok(res, { name:name, bytes:buffer.length });
   });
 
   router.post('/api/video/jobs', jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {

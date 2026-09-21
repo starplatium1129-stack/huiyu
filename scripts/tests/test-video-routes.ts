@@ -44,6 +44,26 @@ async function waitForJob(base: string, id: string|number|boolean) {
 }
 
 async function run() {
+  const admission: typeof import('../../services/image-admission') = require('../../services/image-admission');
+  const sharp: typeof import('sharp').default = require('sharp');
+  const quotaRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'image-admission-'));
+  try {
+    const image = await sharp({ create:{ width:2, height:2, channels:3, background:'#888' } }).png().toBuffer();
+    const other = await sharp({ create:{ width:2, height:2, channels:3, background:'#777' } }).png().toBuffer();
+    const store = (bytes: Buffer) => admission.storeAdmittedImage(quotaRoot, bytes, 'aics_video_ref_', 'png', 'fixture', { files:1, bytes:200 });
+    const [a, b] = await Promise.all([store(image), store(image)]);
+    assert.equal(a, b, 'same bytes share one reference within owner');
+    assert.equal(fs.readdirSync(quotaRoot).length, 1);
+    await assert.rejects(store(other), /额度/);
+    assert.deepEqual(fs.readFileSync(path.join(quotaRoot, a)), image, 'quota never deletes referenced files');
+    await assert.rejects(admission.storeAdmittedImage(quotaRoot, Buffer.from('corrupt'), 'aics_video_ref_', 'png', 'fixture'), /损坏/);
+    assert.equal(fs.readdirSync(quotaRoot).length, 1, 'failed writes release lock and temporary file');
+    const huge = Buffer.from(image); huge.writeUInt32BE(100000, 16);
+    await assert.rejects(admission.validateImage(huge), /预算/);
+    await assert.rejects(admission.validateImage(image.subarray(0, 30)), /损坏/);
+    const owner = await admission.storeAdmittedImage(quotaRoot, image, 'aics_video_ref_', 'png', 'other-owner');
+    assert.notEqual(owner, a, 'owners cannot probe another identity through deduplication');
+  } finally { fs.rmSync(quotaRoot, { recursive:true, force:true }); }
   // A completed generation batch can still own a cancellable concat operation.
   const isolatedRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'video-concat-cancel-'));
   const batchModule: typeof import('../../routes/video/batch') = require('../../routes/video/batch');
@@ -759,7 +779,7 @@ async function run() {
     });
     assert.equal(uploadRes.status, 200);
     let uploadBody = await json(uploadRes);
-    assert.match(uploadBody.name, /^aics_video_input_[a-f0-9]{16}\.png$/, 'upload must return a controlled input filename');
+    assert.match(uploadBody.name, /^aics_video_input_[a-f0-9]{40}\.png$/, 'upload must return a controlled input filename');
     assert.equal(uploadBody.bytes, 70);
 
     let h3I2vCreate = await post(readyStack.baseUrl, validBody({
@@ -782,9 +802,7 @@ async function run() {
     assert.equal(i2vFinished.resultAvailable, true);
 
     // original 画幅全流程：上传 832x1216 首帧 → 提交 original → 画布按比例计算。
-    let tallUploadPng = Buffer.from(tinyPngBase64, 'base64');
-    tallUploadPng.writeUInt32BE(832, 16);
-    tallUploadPng.writeUInt32BE(1216, 20);
+    let tallUploadPng = await sharp({ create:{ width:832, height:1216, channels:3, background:'#888' } }).png().toBuffer();
     let tallUpload = await fetch(readyStack.baseUrl + '/api/video/images', {
       method:'POST',
       headers:{ 'content-type':'application/json' },
