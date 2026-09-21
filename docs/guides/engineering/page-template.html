@@ -2,7 +2,7 @@
 <html lang="zh-CN" data-theme="light" data-nav="PUT-YOUR-NAV-KEY-HERE">
 <!--
   ============================================================
-  绫季绘境 · 新页面模板
+  绘遇 HUIYU · 新页面模板
   复制本文件重命名，按注释替换标记即可。
 
   公约 (按优先级排序):
@@ -17,8 +17,8 @@
      body-sm/body/body-lg 正文 · title-xs/title-sm/title 标题 · display h1
   5. 圆角 var(--r-sm|md|lg|xl|2xl|3xl|stage|pill)、间距 var(--s-1) 到 var(--s-8)、
      动效 var(--t-fast|base|slow) + var(--ease-out|in)、层级 var(--z-*)
-  6. header 里固定引入: design-system.css / docs.css / nav.js / theme.js
-  7. <body> 上 data-nav 决定导航高亮项 (scene/director/showcase/…/docs)
+  6. header 里固定引入: design-system.css / light-theme.css / docs.css / nav.js / theme.js
+  7. body 上 data-nav 决定导航高亮项 (scene/director/showcase/…/docs)
   8. 新功能放 tools/，新文档放 docs/
   ============================================================
 -->
@@ -26,9 +26,10 @@
 <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>页面标题 · 绫季绘境</title>
+<title>页面标题 · 绘遇 HUIYU</title>
 <!-- ↓ 这 4 行不能省 ↓ -->
 <link rel="stylesheet" href="../../../src/assets/css/design-system.css">
+<link rel="stylesheet" href="../../../src/assets/css/light-theme.css">
 <link rel="stylesheet" href="../../../css/docs.css?v=1">
 <script src="../../../tools/nav.js?v=8"></script>
 <script src="../../../tools/theme.js?v=5"></script>
@@ -54,18 +55,19 @@
   .sample-actions { margin-bottom: var(--s-4); }
 </style>
 </head>
-<body>
+<body data-nav="docs">
+<a class="skip-link" href="#main">跳到主要内容</a>
 
 <!-- ========== 导航 (不要改, nav.js 自动渲染) ========== -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-brand"><span class="sr-only">绫季绘境</span></div>
+    <div class="nav-brand"><span class="sr-only">绘遇 HUIYU</span></div>
     <div class="nav-links"><!-- 自动填充 --></div>
   </div>
 </nav>
 
 <!-- ========== 页面正文 ========== -->
-<article class="page">
+<main class="page" id="main" tabindex="-1" aria-label="文档正文">
 
   <!-- 返回链接 — 改成你要回退到的页面 -->
   <a href="../../index.html" class="nav-back">← 返回</a>
@@ -98,10 +100,10 @@
 
   <!-- 页脚 -->
   <footer class="footer">
-    <p>绫季绘境 · 你的页面</p>
+    <p>绘遇 HUIYU · 你的页面</p>
   </footer>
 
-</article>
+</main>
 
 </body>
 </html>

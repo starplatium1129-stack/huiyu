@@ -139,15 +139,15 @@ let previousActiveElement: HTMLElement | null = null
 const PAGES: PageItem[] = [
   { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绘遇' },
   { id: 'director', label: '开始绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 导演台 prompt 出图' },
-  { id: 'video', label: 'AI 视频创作', icon: 'play', path: '/video-studio', keywords: '视频 动画 本地模型 wan comfyui' },
+  { id: 'video', label: '故事短片', icon: 'play', path: '/video-studio', keywords: 'AI 视频创作 视频工作台 视频 动画 本地模型 wan comfyui' },
   { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },
-  { id: 'popular-scenes', label: '热门角色场景', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图 雷电将军 芙莉莲' },
+  { id: 'popular-scenes', label: '角色场景', icon: 'scene', path: '/popular-scenes', keywords: '热门角色场景 热门 角色 蓝图 雷电将军 芙莉莲' },
   { id: 'chat', label: '角色房间', icon: 'chat', path: '/chat', keywords: '聊天 角色 宁宁 夏目' },
   { id: 'showcase', label: '参考画册', icon: 'image', path: '/showcase', keywords: '参考画册 CG 画册 样张 展示 定稿 gallery showcase' },
   { id: 'gallery', label: '我的作品', icon: 'gallery', path: '/gallery', keywords: '我的作品 作品册 作品 图库 收藏' },
   { id: 'character', label: '角色档案', icon: 'character', path: '/character', keywords: '角色 档案 人设' },
-  { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画风 色彩 色板' },
-  { id: 'lora', label: '模型', icon: 'model', path: '/lora', keywords: '模型 lora 权重' },
+  { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画师风格 画风 色彩 色板' },
+  { id: 'lora', label: '模型资料', icon: 'model', path: '/lora', keywords: '角色 LoRA 模型 lora 权重' },
   { id: 'scenario', label: '剧本模式', icon: 'book', path: '/scenario', keywords: '剧本 分幕 剧情' },
   // 显示名与页面 h1 统一为「色彩情绪」（2026-08-30 UX 审计 P1）。keywords 里
   // 保留全部旧叫法：改名之后，按老名字找它的用户不应该什么都搜不到。

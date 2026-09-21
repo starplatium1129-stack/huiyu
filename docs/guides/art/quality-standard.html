@@ -4,8 +4,9 @@
 <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>出图质量检查 · 绫季绘境</title>
+<title>出图质量检查 · 绘遇 HUIYU</title>
 <link rel="stylesheet" href="../../../src/assets/css/design-system.css">
+<link rel="stylesheet" href="../../../src/assets/css/light-theme.css">
 <link rel="stylesheet" href="../../../css/docs.css?v=1">
 <script src="../../../tools/nav.js?v=8"></script>
 <script src="../../../tools/theme.js?v=5"></script>
@@ -57,6 +58,7 @@
     font-size: var(--fs-label-sm); font-weight: 600; color: var(--text-inverse);
     transition: width var(--t-base) var(--ease-out);
   }
+  .quality-fill span { padding-inline: var(--s-1); border-radius: var(--r-sm); color: var(--text-primary); background: var(--bg-surface); }
   /* 五项维度的展示色:被展示的评分色本身,集中在这一处 */
   .q-stability { background: linear-gradient(90deg, var(--info), #81D4FA); }
   .q-face { background: linear-gradient(90deg, var(--accent), #F48FB1); }
@@ -69,16 +71,17 @@
 </style>
 </head>
 <body data-nav="docs">
+<a class="skip-link" href="#main">跳到主要内容</a>
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-brand"><span class="dot"></span> 绫季绘境</div>
+    <div class="nav-brand"><span class="dot"></span> 绘遇 HUIYU</div>
     <div class="nav-links">
     </div>
   </div>
 </nav>
 
-<article class="page">
+<main class="page" id="main" tabindex="-1" aria-label="文档正文">
   <a href="../../../index.html" class="nav-back">← 回首页</a>
 
   <h1 class="title title-gradient">⭐ 出图质量检查</h1>
@@ -89,23 +92,23 @@
     <h3>示例：一次出图记录</h3>
     <div class="quality-dim">
       <div class="quality-label">人物</div>
-      <div class="quality-bar"><div class="quality-fill q-stability" style="--fill:80%">★★★★☆ 4.0</div></div>
+      <div class="quality-bar"><div class="quality-fill q-stability" style="--fill:80%"><span>★★★★☆ 4.0</span></div></div>
     </div>
     <div class="quality-dim">
       <div class="quality-label">表情</div>
-      <div class="quality-bar"><div class="quality-fill q-face" style="--fill:100%">★★★★★ 5.0</div></div>
+      <div class="quality-bar"><div class="quality-fill q-face" style="--fill:100%"><span>★★★★★ 5.0</span></div></div>
     </div>
     <div class="quality-dim">
       <div class="quality-label">构图</div>
-      <div class="quality-bar"><div class="quality-fill q-bg" style="--fill:80%">★★★★☆ 4.0</div></div>
+      <div class="quality-bar"><div class="quality-fill q-bg" style="--fill:80%"><span>★★★★☆ 4.0</span></div></div>
     </div>
     <div class="quality-dim">
       <div class="quality-label">手部</div>
-      <div class="quality-bar"><div class="quality-fill q-lora" style="--fill:100%">★★★★★ 5.0</div></div>
+      <div class="quality-bar"><div class="quality-fill q-lora" style="--fill:100%"><span>★★★★★ 5.0</span></div></div>
     </div>
     <div class="quality-dim">
       <div class="quality-label">氛围</div>
-      <div class="quality-bar"><div class="quality-fill q-wallpaper" style="--fill:100%">★★★★★ 5.0</div></div>
+      <div class="quality-bar"><div class="quality-fill q-wallpaper" style="--fill:100%"><span>★★★★★ 5.0</span></div></div>
     </div>
   </div>
 
@@ -171,10 +174,10 @@
   </div>
 
   <footer class="footer">
-    <p>绫季绘境 · 五项出图检查</p>
+    <p>绘遇 HUIYU · 五项出图检查</p>
     <p class="muted mt-4">记录问题，是为了让下一次修改更有方向。</p>
   </footer>
-</article>
+</main>
 
 </body>
 </html>

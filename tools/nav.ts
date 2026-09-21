@@ -67,18 +67,18 @@
       brand.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = brandLink(); } };
     }
     let current = document.body.getAttribute('data-nav');
-    document.title = document.title.replace(/AI[ -]CG Studio/gi, '绫季绘境');
+    document.title = document.title.replace(/AI[ -]CG Studio|绫季绘境/gi, '绘遇 HUIYU');
     document.querySelectorAll('.footer p').forEach(function(paragraph){
       if (/AI[ -]CG Studio/i.test(paragraph.textContent)) paragraph.textContent = paragraph.textContent.replace(/AI[ -]CG Studio/gi, '绫季绘境');
     });
     let primary = PRIMARY_NAV.map(function (item) {
       let cls = (item.id === current) ? ' class="active"' : '';
-      return '<a' + cls + ' href="' + d + item.href + '">' + item.icon + ' ' + item.label + '</a>';
+      return '<a' + cls + ' href="' + d + item.href + '">' + item.label + '</a>';
     }).join('');
     let secondaryActive = SECONDARY_NAV.some(function(item){ return item.id === current; });
     let secondary = SECONDARY_NAV.map(function(item) {
       let cls = (item.id === current) ? ' class="active"' : '';
-      return '<a' + cls + ' href="' + d + item.href + '">' + item.icon + '<span>' + item.label + '</span></a>';
+      return '<a' + cls + ' href="' + d + item.href + '"><span>' + item.label + '</span></a>';
     }).join('');
     host.innerHTML = primary +
       '<details class="nav-more"' + (secondaryActive ? ' data-active="true"' : '') + '>' +
@@ -94,30 +94,39 @@
       toggle.className = 'nav-menu-toggle';
       toggle.setAttribute('aria-label', '打开导航菜单');
       toggle.setAttribute('aria-expanded', 'false');
-      toggle.textContent = '☰';
+      const menuIcon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 6.5 Q12 6.2 19.5 6.5 M4.5 12 H19.5 M4.5 17.5 Q12 17.8 19.5 17.5"/></svg>';
+      const closeIcon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5 Q12 12.2 17.5 17.5 M17.5 6.5 Q12 11.8 6.5 17.5"/></svg>';
+      toggle.innerHTML = menuIcon;
       toggle.addEventListener('click', function(){
         let open = host.classList.toggle('open');
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
         toggle.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
-        toggle.textContent = open ? '✕' : '☰';
+        toggle.innerHTML = open ? closeIcon : menuIcon;
       });
       inner.appendChild(toggle);
       host.addEventListener('click', function(e){
         if (!(e.target instanceof Element) || !e.target.closest('a')) return;
         host.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
-        toggle.textContent = '☰';
+        toggle.setAttribute('aria-label', '打开导航菜单');
+        toggle.innerHTML = menuIcon;
       });
       document.addEventListener('click', function(e){
         let more = host.querySelector<HTMLDetailsElement>('.nav-more');
         if (more && more.open && e.target instanceof Node && !more.contains(e.target)) more.open = false;
       });
       document.addEventListener('keydown', function(e){
+        const more = host.querySelector<HTMLDetailsElement>('.nav-more');
+        if (e.key === 'Escape' && more?.open) {
+          more.open = false;
+          more.querySelector('summary')?.focus();
+          return;
+        }
         if (e.key === 'Escape' && host.classList.contains('open')) {
           host.classList.remove('open');
           toggle.setAttribute('aria-expanded', 'false');
           toggle.setAttribute('aria-label', '打开导航菜单');
-          toggle.textContent = '☰';
+          toggle.innerHTML = menuIcon;
           toggle.focus();
         }
       });
