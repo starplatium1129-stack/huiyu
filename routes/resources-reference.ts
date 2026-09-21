@@ -36,7 +36,6 @@ function createReferenceResources(config: any) {
     return bytes(release.viewFile, release.release.viewSha256);
   }
   return function referenceResources(req: any, res: any, next: any) {
-    if (!root || (!release && !blocked)) return next(); // Legacy unversioned handling remains intact.
     let pathname;
     try { pathname = decodeURIComponent(String(req.path)); } catch { return next(); }
     const isView = /^\/data\/character-reference-view\.json\/?$/i.test(pathname);
@@ -48,6 +47,7 @@ function createReferenceResources(config: any) {
     if (!security.isDirectLocalRequest(req) || !security.hostAllowed(req.headers.host, config.PORT, '')) {
       return res.status(403).json({ ok: false, code: 'REFERENCE_LOCAL_ONLY', error: '该参考资源仅限本机使用' });
     }
+    if (!root || (!release && !blocked)) return next(); // Local legacy fallback remains intact.
     if (blocked) return res.status(503).json({ ok: false, code: 'REFERENCE_RELEASE_INVALID', error: '参考资源版本未通过校验' });
     if (!/^(GET|HEAD)$/.test(req.method)) return res.status(405).end();
     try {

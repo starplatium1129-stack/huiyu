@@ -40,7 +40,13 @@ async function fixture(run: any) {
       });
     }).on('error', reject);
   });
-  try { await run({ root, assets, write, get }); }
+  const head = (url: any, accept: any) => new Promise((resolve, reject) => {
+    const request = http.request({ method:'HEAD', host:'127.0.0.1', port:(server.address!() as import('node:net').AddressInfo).port, path:url, headers:{ 'Accept-Encoding':accept } }, res => {
+      res.resume(); res.on('end', () => resolve(res.statusCode));
+    });
+    request.on('error', reject); request.end();
+  });
+  try { await run({ root, assets, write, get, head }); }
   finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); fs.rmSync(root, { recursive:true, force:true }); }
 }
 
@@ -63,11 +69,19 @@ test('stale or missing compressed variants fall back without serving old content
   fs.unlinkSync(file); assert.equal((await get('/assets/sample.json', 'gzip')).status, 404);
 }));
 
-test('compressed assets keep source boundaries and mutable-data cache policy', async () => fixture(async ({ root, assets, write, get }: any) => {
+test('compressed assets keep source boundaries and mutable-data cache policy', async () => fixture(async ({ root, assets, write, get, head }: any) => {
   write(path.join(root, 'assets', 'sample.json'), '{"wrong":true}'); write(path.join(assets, 'sample.json'), '{"right":true}');
   assert.equal((await get('/assets/sample.json', 'br')).body, '{"right":true}');
   write(path.join(assets, '.hidden', 'secret.json'));
   assert.notEqual((await get('/assets/.hidden/secret.json', 'br')).status, 200);
+  write(path.join(assets, 'live2d-candidates', 'fixture', 'model.json'), '{"private":true}');
+  for (const pathValue of ['/assets/live2d-candidates/fixture/model.json', '/assets/%6cive2d-candidates/fixture/model.json']) {
+    for (const encoding of ['identity', 'br', 'gzip']) {
+      assert.equal((await get(pathValue, encoding)).status, 404,
+        `private candidate assets must be rejected for ${pathValue} / ${encoding}`);
+    }
+    assert.equal(await head(pathValue, 'br'), 404, `private candidate assets must reject HEAD for ${pathValue}`);
+  }
   write(path.join(root, 'data', 'character-reference-view.json'));
   assert.equal((await get('/data/character-reference-view.json', 'br')).headers['cache-control'], 'no-cache');
   write(path.join(root, 'data', 'scenes.json'));

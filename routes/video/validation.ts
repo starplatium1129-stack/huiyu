@@ -52,6 +52,8 @@ let readImageSize = media.readImageSize;
 let imageInputRoot = media.imageInputRoot;
 let fitCanvasToRatio = media.fitCanvasToRatio;
 
+interface RequestAccessContext { isLocal: boolean; }
+
 let ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
@@ -337,7 +339,10 @@ let BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFra
 let BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'dialogueLang', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image', 'references']);
 let BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
 
-function validateBatchInput(body: any, config?: any) {
+function validateBatchInput(body: any, config?: any, accessContext?: RequestAccessContext) {
+  // HTTP 入口必须显式传入由服务端请求生成的上下文；缺失/未知按远程处理。
+  // adultEnabled 仍只是请求内的第二道显式开关，不能替代传输层授权。
+  let requestContext: RequestAccessContext = Object.freeze({ isLocal: accessContext?.isLocal === true });
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) {
     if (!BATCH_BODY_KEYS.has(key)) {
@@ -399,7 +404,7 @@ function validateBatchInput(body: any, config?: any) {
     // 走 assertAdultAllowed 放行；远程/隧道由服务端 fail-closed 拒绝。
     if (body.adultEnabled === true) shotBody.adultEnabled = true;
     if (model.family === 'minimax-h3') shotBody.steps = steps;
-    let input = Object.assign({}, validateInput(shotBody, config));
+    let input = Object.assign({}, validateInput(shotBody, config, requestContext));
     return { input:input };
   });
   return Object.freeze({
@@ -409,6 +414,7 @@ function validateBatchInput(body: any, config?: any) {
     linkLastFrame:linkLastFrame,
     steps:steps,
     adultEnabled:body.adultEnabled === true,
+    accessContext:requestContext,
     shots:shots,
   });
 }

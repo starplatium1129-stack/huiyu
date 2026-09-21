@@ -217,7 +217,7 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
     try { await ensureT8Probe(config); } catch (error) { /* 探测失败沿用旧值，提交照常 */ }
     let batchInput;
     try {
-      batchInput = validateBatchInput(req.body, config);
+      batchInput = validateBatchInput(req.body, config, { isLocal:security.isDirectLocalRequest(req) });
     } catch (error: any) {
       return envelope.fail(res, runtimeErrorStatus(error) || 400, runtimeErrorMessage(error), {
         code:runtimeErrorCode(error),

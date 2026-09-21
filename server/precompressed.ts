@@ -11,6 +11,7 @@
 let path: typeof import('path') = require('path');
 let fs: typeof import('fs') = require('fs');
 let publicDataFiles: typeof import('./public-data') = require('./public-data');
+let { isPrivateAssetPath }: typeof import('./static-path-policy') = require('./static-path-policy');
 import type { RequestHandler } from 'express';
 
 let PRECOMPRESSIBLE = /\.(?:js|css|html|json|svg|txt|map)$/i;
@@ -34,6 +35,9 @@ function precompressed(rootDir: string, options?: { assetsRoot?: string }): Requ
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
     let pathname;
     try { pathname = decodeURIComponent(req.path); } catch { return next(); }
+    // This guard runs before encoding negotiation, so identity/br/gzip/HEAD cannot
+    // disagree about the private candidate namespace.
+    if (isPrivateAssetPath(pathname)) return res.status(404).end();
     if (!PRECOMPRESSIBLE.test(pathname) || /[\\\0]/.test(pathname) || pathname.split('/').some(part => part.startsWith('.'))) return next();
     if (!/^\/(?:_app\/|data\/|assets\/|css\/|docs\/|index\.html$)/.test(pathname)) return next();
     if (!req.acceptsEncodings('br', 'gzip')) return next();

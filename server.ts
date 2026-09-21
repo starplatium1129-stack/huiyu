@@ -17,6 +17,7 @@ let security: typeof import('./server/security') = require('./server/security');
 let sdProxyPolicy: typeof import('./server/sd-proxy-policy') = require('./server/sd-proxy-policy');
 let envelope: typeof import('./server/http-envelope') = require('./server/http-envelope');
 let { precompressed }: typeof import('./server/precompressed') = require('./server/precompressed');
+let { rejectPrivateAssetPath }: typeof import('./server/static-path-policy') = require('./server/static-path-policy');
 let { createTunnelManager }: typeof import('./server/tunnel') = require('./server/tunnel');
 let createChatRouter = (require('./routes/chat') as typeof import('./routes/chat')).createChatRouter;
 let createVoiceRouter = (require('./routes/voice') as typeof import('./routes/voice')).createVoiceRouter;
@@ -88,6 +89,8 @@ function createGateway(options: GatewayOptions = {}) {
   app.use(resources.staticMiddleware);
   app.use(createReferenceResources(config));
   app.use('/docs', (require('./server/docs') as typeof import('./server/docs')).redirectLegacyDocs);
+  // Keep private candidate assets out of every static route, including precompressed files.
+  app.use('/assets', rejectPrivateAssetPath);
   app.use(precompressed(config.ROOT_DIR, { assetsRoot: config.ASSETS_ROOT }));
   // 流式响应（聊天 NDJSON / SSE）不进 zlib 缓冲：compression 默认攒满才吐，
   // token 到达会变成一段一段的突发；X-Accel-Buffering 只对反代生效管不了它
@@ -200,9 +203,6 @@ function createGateway(options: GatewayOptions = {}) {
   // 采用 no-cache + ETag 协商缓存——文件未修改返回 304 零流量秒开；
   // 用户或脚本在本地替换图片后，刷新浏览器立即生效，彻底无需手动改 ?v= 版本号。
   app.use('/assets', function (req, res, next) {
-    try {
-      if (/^\/live2d-candidates(?:\/|$)/i.test(decodeURIComponent(req.path))) return res.status(404).end();
-    } catch { return res.status(404).end(); }
     res.setHeader('Cache-Control', 'no-cache');
     next();
   }, express.static(config.ASSETS_ROOT, {

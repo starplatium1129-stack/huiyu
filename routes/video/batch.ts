@@ -141,7 +141,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     if (input.negative) body.negative = input.negative;
     if (batch.modelId === 'minimax-h3' && input.steps) body.steps = input.steps;
     if (batch.adultEnabled === true) body.adultEnabled = true;
-    return Object.assign({}, validation.validateInput(body, config));
+    return Object.assign({}, validation.validateInput(body, config, batch.accessContext || { isLocal:false }));
   }
 
   function scheduleWatch(batch: any) {
@@ -253,6 +253,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       steps:batchInput.steps,
       linkLastFrame:batchInput.linkLastFrame,
       adultEnabled:batchInput.adultEnabled === true,
+      accessContext:batchInput.accessContext || Object.freeze({ isLocal:false }),
       shots:batchInput.shots.map(function (entry: any, index: number) {
         return {
           index:index + 1,

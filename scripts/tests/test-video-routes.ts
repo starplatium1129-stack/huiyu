@@ -391,15 +391,17 @@ async function run() {
     aspectRatio:'landscape',
     adultEnabled:true,
     shots:[{ prompt:'nude explicit scene, naked character' }],
-  });
+  }, null, { isLocal:true });
   assert.equal(batchAdult.adultEnabled, true, 'batch carries the transport flag through');
+  assert.equal(batchAdult.accessContext.isLocal, true, 'batch stores the server-approved access context');
   assert.throws(function () {
     video.validateBatchInput({
       modelId:'minimax-h3',
       aspectRatio:'landscape',
+      adultEnabled:true,
       shots:[{ prompt:'nude explicit scene, naked character' }],
-    });
-  }, /成人内容未获本机授权/, 'batch without the flag is rejected per shot');
+    }, null, { isLocal:false });
+  }, /ADULT_REMOTE_NOT_ALLOWED|仅限本机直连/, 'remote batch rejects adult intent despite the body flag');
 
   // ── T8 双时钟路径（2026-08-16 默认提速路径；真机 standard 5s 228s → 90s）──
   video.setT8Available(true);
@@ -845,6 +847,29 @@ async function run() {
   });
   try {
     // 参数契约：批量拒绝逐镜歧义画幅/空镜头/未知字段/超量镜头。
+    let remoteAdultBatch = await fetch(batchStack.baseUrl + '/api/video/batches', {
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-token':batchStack.config.TOKEN,
+        'x-forwarded-for':'198.51.100.8',
+      },
+      body:JSON.stringify({
+        modelId:'minimax-h3', aspectRatio:'landscape', adultEnabled:true,
+        shots:[{ prompt:'nude explicit scene, naked character' }],
+      }),
+    });
+    assert.equal(remoteAdultBatch.status, 403, 'remote batch must use transport context for adult gating');
+    assert.equal((await json(remoteAdultBatch)).code, 'ADULT_REMOTE_NOT_ALLOWED');
+    let noTokenAdultBatch = await fetch(batchStack.baseUrl + '/api/video/batches', {
+      method:'POST',
+      headers:{ 'content-type':'application/json', 'x-forwarded-for':'198.51.100.8' },
+      body:JSON.stringify({
+        modelId:'minimax-h3', aspectRatio:'landscape', adultEnabled:true,
+        shots:[{ prompt:'nude explicit scene, naked character' }],
+      }),
+    });
+    assert.equal(noTokenAdultBatch.status, 401, 'remote batch without a token must stop at gateway auth');
     let badBatch = await fetch(batchStack.baseUrl + '/api/video/batches', {
       method:'POST',
       headers:{ 'content-type':'application/json' },
