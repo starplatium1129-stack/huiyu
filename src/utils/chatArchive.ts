@@ -7,6 +7,7 @@
  * 防止 localStorage 无界增长（约 1MB/角色，处于安全余量内）。
  */
 import type { PersistedChatMessage } from './chatStorageCore'
+import { assertChatVersion } from './chatVersion.ts'
 
 export const CHAT_ARCHIVE_KEY = 'aics_chat_archive_v1'
 export const CHAT_ARCHIVE_VERSION = 1
@@ -53,6 +54,7 @@ export function emptyChatArchive(characterIds: string[]): ChatArchive {
 }
 
 export function normalizeChatArchive(value: unknown, characterIds: string[]): ChatArchive {
+  assertChatVersion(value, CHAT_ARCHIVE_VERSION)
   const archive = emptyChatArchive(characterIds)
   const raw = isRecord(value) ? value : {}
   const archived = isRecord(raw.archived) ? raw.archived : {}

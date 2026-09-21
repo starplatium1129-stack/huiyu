@@ -1,4 +1,5 @@
 import { CHAT_MEMORY_KEY } from './storageKeys.ts'
+import { assertChatVersion, assertStoredChatVersion } from './chatVersion.ts'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   isCompanionCharacterId,
@@ -68,6 +69,7 @@ function normalizeItem(value: unknown, fallbackCharacter: ChatMemoryCharacter): 
 }
 
 export function normalizeChatMemoryState(value: unknown): ChatMemoryState {
+  assertChatVersion(value, 1)
   const state = emptyChatMemoryState()
   if (!value || typeof value !== 'object' || Array.isArray(value)) return state
   const byCharacter = (value as Record<string, unknown>).byCharacter
@@ -99,6 +101,7 @@ export function loadChatMemoryState(): ChatMemoryState {
 }
 
 export function saveChatMemoryState(state: ChatMemoryState): void {
+  assertStoredChatVersion(CHAT_MEMORY_KEY, 1)
   localStorage.setItem(CHAT_MEMORY_KEY, JSON.stringify(normalizeChatMemoryState(state)))
 }
 

@@ -3,6 +3,7 @@ import { CHAT_ARCHIVE_KEY, mergeChatArchives, normalizeChatArchive, serializeCha
 import { mergeChatMemoryStates, normalizeChatMemoryState } from './chatMemory'
 import { normalizeChatStorage } from './chatStorageCore'
 import { listCompanionCharacterIds, normalizeCompanionOutfit } from './companionRegistry'
+import { assertChatVersion } from './chatVersion'
 
 /** Validate and merge settings in memory before touching the user's existing storage. */
 export function prepareBackupSettings(current: Record<string, string>, incoming: Record<string, string>, replace: boolean) {
@@ -11,8 +12,16 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
   // companion preferences it must promote). Returning the whole current snapshot
   // would make a later restore write stale values from before an async image stage.
   const result = {} as Record<string, string>
+  if (replace) for (const [key, version] of [['aics_chat_v1', 3], [CHAT_MEMORY_KEY, 1], [CHAT_ARCHIVE_KEY, 1]] as const) {
+    assertChatVersion(JSON.parse(current[key] || 'null'), version)
+  }
   for (const [key, value] of Object.entries(incoming)) {
     if (!isLiveLocalKey(key)) continue
+    const version = key === 'aics_chat_v1' ? 3 : [CHAT_MEMORY_KEY, CHAT_ARCHIVE_KEY].includes(key) ? 1 : 0
+    if (version) {
+      assertChatVersion(JSON.parse(current[key] || 'null'), version)
+      assertChatVersion(JSON.parse(value), version)
+    }
     if (!replace && key === CHAT_MEMORY_KEY) {
       result[key] = JSON.stringify(mergeChatMemoryStates(
         normalizeChatMemoryState(JSON.parse(current[key] || 'null')),

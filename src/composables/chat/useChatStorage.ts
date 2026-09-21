@@ -1,5 +1,6 @@
 import { reactive, ref } from 'vue'
 import { createChatCredentials } from '@/utils/chatCredentials'
+import { assertStoredChatVersion } from '@/utils/chatVersion'
 import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY } from '@/utils/storageKeys'
 import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
 import {
@@ -130,6 +131,19 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
   const neverConfigured = ref(true)
+  const writeBlocked = ref(false)
+  function canWrite() {
+    try {
+      assertStoredChatVersion(STORAGE_KEY, STORAGE_VERSION)
+      assertStoredChatVersion(CHAT_ARCHIVE_KEY, 1)
+      writeBlocked.value = false
+      return true
+    } catch {
+      writeBlocked.value = true
+      onError('聊天数据版本不兼容或已损坏，原件已保留；请升级或恢复兼容数据后再发送、清空或保存。')
+      return false
+    }
+  }
   const archive = ref<ChatArchive>(emptyChatArchive(characterIds))
   let archiveDirty = false
   const pendingPreferences = new Map<string, string>()
@@ -154,6 +168,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   /** 把 localStorage 中其他窗口更新的历史合并进内存（按 mid 去重，零丢失）。 */
   function mergeRemoteIntoState(): boolean {
+    if (!canWrite()) return false
     try {
       const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
       if (!raw || typeof raw !== 'object') return true
@@ -205,6 +220,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   function saveArchive() {
     if (!archiveDirty) return
+    if (!canWrite()) return false
     try {
       localStorage.setItem(CHAT_ARCHIVE_KEY, serializeChatArchive(archive.value))
       archiveDirty = false
@@ -286,6 +302,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   async function load() {
+    if (!canWrite()) return
     let stored = ''
     let raw: unknown
     try {
@@ -347,11 +364,13 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       try {
         await credentials.load(endpoint, pendingLegacyKey, {
           isCurrent: () => {
+            if (!canWrite()) return false
             if (revision !== credentialRevision) return false
             const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
             return current?.settings?.apiBaseUrl === endpoint && current?.settings?.apiKey === pendingLegacyKey
           },
           commit: secret => {
+            if (!canWrite()) return
             if (revision !== credentialRevision) return
             state.settings.apiKey = secret || (normalized.neverConfigured ? normalized.state.settings.apiKey : '')
             // Touch only the matching migration source, never other windows' histories.
@@ -394,6 +413,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   function savePreference(key: string, value: string) {
+    // Independent preferences never rewrite the versioned record. The load /
+    // storage-event guard blocks editing when incompatibility is known.
+    if (writeBlocked.value) return
     pendingPreferences.set(key, value)
     try {
       localStorage.setItem(key, value)
@@ -404,6 +426,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   function save(mergeRemote = true, scrubCredential = false) {
+    if (!canWrite()) return false
     for (const [key, value] of pendingPreferences) savePreference(key, value)
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
@@ -434,6 +457,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function setModel(model: string) { state.settings.model = String(model || ''); save() }
   function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; save() }
   async function setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }) {
+    if (!canWrite()) throw new Error('聊天配置受版本保护，无法安全修改。')
     const endpoint = String(settings.baseUrl || '').trim().slice(0, 500)
     const secret = String(settings.apiKey || '').trim().slice(0, 1000)
     const revision = ++credentialRevision
@@ -471,6 +495,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     savePreference(CHAT_DRAFT_PREFIX + char, JSON.stringify(state.settings.drafts[char]))
   }
   function trim(char = state.active) {
+    if (!canWrite()) return
     const msgs = messages(char)
     archiveOverflow(char, msgs, MAX_LOCAL_MESSAGES)
   }
@@ -490,6 +515,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
   function importArchiveJson(textValue: string): number {
+    if (!canWrite()) throw new Error('聊天归档受版本保护，无法安全修改。')
     const incoming = normalizeChatArchive(JSON.parse(textValue), characterIds)
     const before = archiveCounts(archive.value, characterIds)
     archive.value = mergeChatArchives(archive.value, incoming)
@@ -500,6 +526,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   /** 把该角色归档并回当前对话；返回并入条数。 */
   function restoreFromArchive(char = state.active): number {
+    if (!canWrite()) return 0
     if (!characterIds.includes(char)) return 0
     const archived = archive.value.archived[char] || []
     if (!archived.length) return 0
@@ -515,12 +542,14 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     return added
   }
   function clearArchive(char?: string) {
+    if (!canWrite()) return false
     if (char) archive.value.archived[char] = []
     else archive.value = emptyChatArchive(characterIds)
     archiveDirty = true
     saveArchive()
   }
   function clear(char?: string) {
+    if (!canWrite()) return false
     // Preserve a clear made by another tab for a different character before
     // applying this character's clear. localStorage access is synchronous, so
     // the read and the following write are one uninterrupted mutation.
@@ -537,7 +566,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   return {
-    state, load, save, messages, neverConfigured,
+    state, load, save, messages, neverConfigured, canWrite, writeBlocked,
     setActive, setModel, setProvider, setApiSettings, setWebSearchEnabled,
     setLive2dEnabled, live2dOutfit, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
     archiveCount, exportArchiveJson, exportArchiveMarkdown, importArchiveJson,

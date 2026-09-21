@@ -348,6 +348,7 @@ export function useCharacterRoomSession() {
   })
 
   function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void) {
+    if (!storage.canWrite()) { accepted?.(false); return }
     characterStageRef.value?.setUserMessage()
     const text = typeof customText === 'string' ? customText : undefined
     const character = activeChar.value
@@ -487,6 +488,7 @@ export function useCharacterRoomSession() {
   }
 
   async function clearAllMemory() {
+    if (!storage.canWrite()) return
     const archiveCounts = storage.archiveCount()
     const hasMemory = Object.values(storage.state.histories).some(items => items.length > 0)
       || Object.values(chatMemory.value.byCharacter).some(items => items.length > 0)

@@ -1,3 +1,5 @@
+import { assertChatVersion } from './chatVersion.ts'
+
 export interface ChatStorageOptions {
   characterIds: string[]
   maxMessages: number
@@ -97,6 +99,7 @@ export function normalizeChatStorage(
   legacyModel: unknown,
   options: ChatStorageOptions,
 ): NormalizedChatStorage {
+  assertChatVersion(value, options.version)
   const raw = isRecord(value) ? value : {}
   const settings = isRecord(raw.settings) ? raw.settings : {}
   const legacyApi = isRecord(raw.api) ? raw.api : {}

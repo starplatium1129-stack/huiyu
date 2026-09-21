@@ -81,8 +81,9 @@ assert(/"apiKey":"legacy-secret"/.test(durable),
 assert(!/password|Authorization|headers/.test(durable),
   'durable chat storage must still discard unknown secrets and custom authorization fields');
 
+assert.throws(() => core.normalizeChatStorage({ version: 'broken' }, '', options), /版本/);
 const damaged = core.normalizeChatStorage({
-  version:'broken',
+  version:3,
   active:'unknown',
   histories:{ nene:'not-an-array' },
   settings:{
@@ -250,8 +251,9 @@ test('Chat archive round-trip: trim overflow, export/import, markdown and restor
   assert(/\*\*宁宁\*\*：old-1/.test(markdown), 'markdown export must render assistant lines');
   assert(/\*\*你\*\*：old-0/.test(markdown), 'markdown export must render user lines');
 
+  assert.throws(() => archive.normalizeChatArchive({ version: 'broken' }, ids), /版本/);
   const damaged = archive.normalizeChatArchive({
-    version: 'broken',
+    version: 1,
     archived: { nene: [{ role: 'system', content: 'x' }, { role: 'user', content: 'ok', mid: 123 }] },
   }, ids);
   assert.deepStrictEqual(damaged.archived.nene.map(m => m.content), ['ok']);
