@@ -235,11 +235,11 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['writes-source'], machine: ['node'], switches: { '--help': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/apply-chunks.js:110,147', unknown: ['--target/--chunks 合法性由脚本自校验，注册表未声明 required'] },
   },
   'reference:register': {
-    desc: '登记尚无参考资产的角色形态（standards/view 形态集合对账，pending 占位不制造断链）',
+    desc: '按 popular→standards/view 对账登记缺失的角色形态（pending 占位不制造断链）',
     cmd: ['node', 'scripts/maintenance/register-pending-reference-outfits.js'],
     docs: 'scripts/maintenance/register-pending-reference-outfits.js:1',
-    opts: '[--dry-run] [--ids=a,b,c] 默认处理所有「standards 空 + view 已有形态」的角色；登记后仍需 reference:render 候选出图、人工验收及发布',
-    run: { nature: ['writes-source'], machine: ['node'], switches: { '--dry-run': ['preview'] }, resume: 'idempotent', evidence: 'scripts/maintenance/register-pending-reference-outfits.js:108-114', unknown: [], notes: ['默认（无 --dry-run）即写 standards 与 view；pending 不算已交付资产'] },
+    opts: '[--dry-run] [--ids=a,b,c] 默认处理所有 popular 中 standards/view 缺失的服装；登记后仍需 reference:render 候选出图、人工验收及发布',
+    run: { nature: ['writes-source'], machine: ['node'], switches: { '--dry-run': ['preview'] }, resume: 'idempotent', evidence: 'scripts/maintenance/register-pending-reference-outfits.js:1-190', unknown: [], notes: ['默认（无 --dry-run）即写 standards 与 view；pending 不算已交付资产；按服装粒度增量登记'] },
   },
   'reference:render': {
     desc: '参考库四视角待审核候选出图（MiaoMiao v1.6，832x1216，默认并发3）',

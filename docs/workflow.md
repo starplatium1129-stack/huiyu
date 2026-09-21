@@ -117,7 +117,7 @@
 
 推荐命令与操作性质来自工作流注册表，全部只列出、不执行；build 可能写数据产物，版本由 `virtual:data-version` 按产物内容解析，不能因出现在报告里就当作只读检查。本批不提供自动增量检查：全域聚合顺序、浏览器分片、样张完整性、DATA_VERSION、压缩产物、历史删除/重命名未覆盖。公共构建器/契约路径建议全量 data:validate；未知路径不宣称影响为空。全域主题与参考覆盖沿用 audit:coverage；真实编译/画面验收仍需后续对应机器执行。
 
-1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。
+1. `reference:register --dry-run` 按服装粒度对账待登记形态；核对后按需登记。已登记形态不覆盖，新增项只写 7 个 pending 占位。
 2. `reference:render --output <候选目录>` 生成四视角待审核候选；人工验收与发布仍须显式完成。`reference:design` 是独立的三视图设计图入口，行为不等同于候选生成器。
 3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
 4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。CLI 数据根为 `--root <完整项目根>` > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根，view 与审计 appRoot 对齐，显式外部素材配置保留；直接 `--help` / `--plan` 零目标读取。参数/根错误退出 2，缺失或损坏 view、审计问题退出 1。

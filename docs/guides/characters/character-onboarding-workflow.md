@@ -19,7 +19,7 @@
 
 | 阶段 | 入口与副作用 | 完成条件 |
 | --- | --- | --- |
-| 登记 | `reference:register --dry-run` 只读预览；去掉 dry-run 写源 | standards/view 占位一致，状态仍为 pending |
+| 登记 | `reference:register --dry-run` 只读预览；去掉 dry-run 写源，按 popular→standards/view 的服装粒度差额补齐 | standards/view 占位一致，状态仍为 pending |
 | 候选 | `reference:render --output <隔离候选目录> --ids=<id>`，设计图用 `reference:design`；调用模型并写候选 | 有实际图片与生成清单；未审核 |
 | 检查 | `reference:inspect --from <候选清单>` 只读 | 核对图片、记录和输入身份 |
 | 人工审核 | 查看图片后写 decisions，再 `reference:review` 创建审核记录 | 每条决定绑定当前 recordId、sha256、inputVersion；漏审仍 pending |
