@@ -2385,14 +2385,14 @@
         "riding",
         "heavy_blush"
       ],
-      "promptProse": "Moonlit mist surrounds adult, age-twenty-plus Hu Tao reclining alone on a warm rock shelf in a hidden Wuwang Hill spring. A soaked dark-red talisman veil clings open across bare breasts and abdomen. One knee bends against the stone while she balances a blue ghost-flame lotus in one palm and lets the other hand move beneath the water between her thighs. Ripples answer with tiny spectral butterflies as wet brown twin tails frame glowing plum eyes, red cheeks and an irrepressible grin. Horizontal bath portrait, no text or extra people.",
+      "promptProse": "Moonlit mist surrounds adult, age-twenty-plus Hu Tao reclining alone on a warm rock shelf in a hidden Wuwang Hill spring. A soaked dark-red talisman veil clings open across bare breasts and abdomen. One knee bends against the stone while she balances a blue ghost-flame lotus in one palm and lets the other hand move beneath the water between her thighs. Ripples answer with tiny spectral butterflies as wet brown twin tails frame glowing plum eyes, red cheeks and an irrepressible grin. Vertical bath portrait, no text or extra people.",
       "promptTokens": [
         "hot_spring",
         "steaming_water",
         "rocks",
         "moonlight",
         "ghost_butterflies",
-        "horizontal_framing",
+        "vertical_framing",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",

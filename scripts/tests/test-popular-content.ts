@@ -621,6 +621,44 @@ test('adult blueprints compile as explicit adult versions in both engines', func
   });
 });
 
+test('blueprint framing: authored and compiled directions match recommended dimensions', function () {
+  const { resolveModelProfile }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
+  const catalog = persistence.parsePresetCatalog(require('../../data/presets.json'));
+  const profiles = {
+    anima: resolveModelProfile(catalog.modelProfiles, 'anima-miaomiao-v1.2', 'anima'),
+    krea2: resolveModelProfile(catalog.modelProfiles, 'krea2-turbo-fp8', 'krea2'),
+  };
+  const framing = /\b(horizontal|vertical)\s+(?:[a-z-]+\s+){0,4}(?:portrait|composition|framing)\b/gi;
+  let checked = 0;
+  for (const blueprint of blueprints) {
+    if (![...blueprint.promptProse.matchAll(framing)].length) continue;
+    const [width, height] = blueprint.recommendedSize.split(/[x×]/).map(Number);
+    if (width === height) continue;
+    assert.ok(width > 0 && height > 0, blueprint.id + ' must have valid dimensions');
+    const expected = width > height ? 'horizontal' : 'vertical';
+    const checkDirection = (text: string, label: string) => {
+      const matches = [...text.matchAll(framing)];
+      assert.ok(matches.length > 0, blueprint.id + ' ' + label + ' must retain authored framing');
+      for (const match of matches) {
+        assert.strictEqual(match[1].toLowerCase(), expected,
+          blueprint.id + ' ' + label + ' framing conflicts with ' + blueprint.recommendedSize);
+      }
+    };
+    checkDirection(blueprint.promptProse, 'source');
+    const character = popular.findCharacter(characters, blueprint.characterId!)!;
+    const outfit = popular.findOutfit(character, blueprint.outfitId!)!;
+    for (const engine of ['anima', 'krea2'] as const) {
+      const result = popular.buildPopularPromptPlan({
+        character, outfit, blueprint, engine, profile: profiles[engine], adultEnabled: true,
+      });
+      assert.ok(result, blueprint.id + ' must compile for ' + engine);
+      checkDirection(result.prompt, engine);
+    }
+    checked++;
+  }
+  assert.ok(checked >= 20, 'framing regression must cover the repaired corpus');
+});
+
 test('blueprint lighting: explicit emitters outrank prose colors, titles and time-only tags', function () {
   const base = blueprints.find(b => b.id === 'raiden_shogun_narukami_shrine');
   const decide = (fields: any) => popular.inferBlueprintDecisions({ ...base, ...fields }).lighting;
