@@ -211,13 +211,18 @@
           <details class="video-advanced">
             <summary>高级设置</summary>
             <div class="video-advanced-grid">
-              <label v-if="activeModel?.id === 'minimax-h3'" class="video-steps-toggle">
-                <input v-model="steps" type="checkbox" :true-value="4" :false-value="8" />
+              <ToggleSwitch
+                v-if="activeModel?.id === 'minimax-h3'"
+                class="video-steps-toggle"
+                :model-value="steps === 4"
+                label="极速 4 步"
+                @update:model-value="steps = $event ? 4 : 8"
+              >
                 <span>
                   <strong>极速 4 步</strong>
                   <small>Turbo 蒸馏 4 步采样，约快一倍（实测 fast 5s 130s → 80s），质量略降，适合试镜与长片。</small>
                 </span>
-              </label>
+              </ToggleSwitch>
               <label class="field">
                 <span class="field-label">负向描述</span>
                 <textarea
@@ -401,6 +406,7 @@
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ShotListEditor from '@/components/video/ShotListEditor.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { useVideoWorkspace } from "@/composables/video/useVideoWorkspace"
 const {
 archiveStatus,

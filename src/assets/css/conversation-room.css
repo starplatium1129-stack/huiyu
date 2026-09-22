@@ -39,8 +39,40 @@
 .room-surface .conversation-head { flex-shrink:0; align-items:center; padding:var(--s-4) var(--s-5); background:var(--bg-surface); border-bottom:1px solid var(--border-soft); }
 .room-conversation-title { display: grid; gap: var(--s-1); }
 .room-conversation-title > span { color: var(--text-secondary); font-size: var(--fs-label-sm); }
-.room-volume { display: flex; align-items: center; gap: var(--s-2); color: var(--text-primary); font-size: var(--fs-label); }
-.room-volume input { min-width: 0; max-width: 150px; accent-color: var(--accent); }
+.room-volume { display: flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: var(--fs-label); }
+.room-volume span { display: inline-flex; align-items: baseline; gap: var(--s-1); }
+.room-volume small { color: var(--text-muted); font-size: var(--fs-label-xs); }
+.room-volume input[type="range"] {
+  width: 96px;
+  height: 24px;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  background: linear-gradient(to bottom, transparent 10px, var(--border-strong) 10px 14px, transparent 14px);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.room-volume input[type="range"]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--bg-surface);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  -webkit-appearance: none;
+}
+.room-volume input[type="range"]::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--bg-surface);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+}
+.room-volume input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .room-surface .chat-list { padding:var(--s-5); scrollbar-gutter:stable; min-height:0; overscroll-behavior:contain; background:var(--bg-surface); }
 .room-surface .chat-empty { flex-shrink: 0; gap: var(--s-4); margin: var(--s-4) auto auto; padding: var(--s-4) var(--s-3); }
 .room-surface .chat-empty-kicker { color: var(--text-secondary); }

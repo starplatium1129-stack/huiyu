@@ -337,12 +337,19 @@
 
 .char-select {
   width: 100%;
+  min-height: 38px;
+  padding: var(--s-2) var(--s-3);
+  padding-inline-end: var(--s-7);
   background: var(--bg-deep);
   color: var(--text-primary);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-terminal);
-  padding: 4px 8px;
-  font-size: var(--fs-label-sm);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  font: 500 var(--fs-label-sm) var(--font-sans);
+  cursor: pointer;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+.char-select:is(:hover, :focus-visible) {
+  border-color: var(--archive-blue);
 }
 
 .field-label {
@@ -493,7 +500,45 @@
 
 .slider {
   width: 100%;
-  accent-color: var(--archive-blue);
+  height: 28px;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  background: linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.slider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--bg-surface);
+  border-radius: 50%;
+  background: var(--archive-blue);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  -webkit-appearance: none;
+}
+.slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 3px solid var(--bg-surface);
+  border-radius: 50%;
+  background: var(--archive-blue);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+}
+.slider:focus-visible {
+  outline: 2px solid var(--archive-blue);
+  outline-offset: 2px;
+}
+
+.seed-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
   cursor: pointer;
 }
 

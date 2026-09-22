@@ -17,11 +17,12 @@
         </button>
       </template>
         <div class="random-label">夏目的调色笔记 <button type="button" class="btn btn-ghost btn-icon" aria-label="关闭调色笔记" @click="menuOpen = false"><ArchiveIcon name="close" /></button></div>
-        <label class="random-toggle">
-          <input v-model="includeArtists" type="checkbox" />
-          <span class="random-toggle-text">混入知名画师特调笔触</span>
-          <small class="random-toggle-hint">开启后由夏目悄悄塞入画师特调风格；默认关闭，保留少女最纯粹的原生神韵。</small>
-        </label>
+        <ToggleSwitch v-model="includeArtists" class="random-toggle" label="混入知名画师特调笔触">
+          <span class="random-toggle-copy">
+            <strong class="random-toggle-text">混入知名画师特调笔触</strong>
+            <small class="random-toggle-hint">开启后由夏目悄悄塞入画师特调风格；默认关闭，保留少女最纯粹的原生神韵。</small>
+          </span>
+        </ToggleSwitch>
         <label class="random-seed">灵感种子
           <input v-model="seedText" type="text" inputmode="numeric" aria-label="灵感种子" placeholder="留空则随机" />
         </label>
@@ -41,6 +42,7 @@
 
 <script setup lang="ts">
 import StudioPopover from '@/components/ui/StudioPopover.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
@@ -158,10 +160,10 @@ function onUndo() {
   font: 600 var(--fs-body)/var(--lh-body) var(--font-sans);
 }
 .random-toggle {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 2px var(--s-2);
-  align-items: center;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  width: 100%;
   padding: var(--s-2);
   border-radius: var(--r-md);
   cursor: pointer;
@@ -169,9 +171,12 @@ function onUndo() {
 .random-toggle:hover {
   background: var(--bg-elevated);
 }
-.random-toggle input {
-  grid-row: 1 / 3;
-  accent-color: var(--accent);
+.random-toggle-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  text-align: left;
 }
 .random-toggle-text {
   color: var(--text-primary);

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
@@ -418,10 +419,9 @@ async function handleStart() {
           </div>
 
           <div class="seed-option-row">
-            <label class="checkbox-label">
-              <input v-model="preserveSeed" type="checkbox" />
+            <ToggleSwitch v-model="preserveSeed" label="锁定原图 Seed" class="seed-toggle">
               <span>锁定原图 Seed ({{ seed ?? '随机' }}) 保持光影与环境色调高度一致</span>
-            </label>
+            </ToggleSwitch>
           </div>
         </div>
       </div>

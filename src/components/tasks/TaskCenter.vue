@@ -51,7 +51,31 @@ async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) ret
 .task-card-title strong { font-size: var(--fs-body-sm); overflow-wrap: anywhere; }
 .task-card-title span { flex-shrink: 0; color: var(--text-secondary); font-size: var(--fs-label); }
 .task-card[data-state="failed"] .task-card-title span { color: var(--warning-text); }
-.task-card progress { width: 100%; height: 5px; accent-color: var(--accent); margin-block: var(--s-3); }
+.task-card progress {
+  display: block;
+  width: 100%;
+  height: 6px;
+  margin-block: var(--s-3);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--border-soft) 80%, transparent);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.task-card progress::-webkit-progress-bar {
+  background: color-mix(in srgb, var(--border-soft) 80%, transparent);
+}
+.task-card progress::-webkit-progress-value {
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--archive-cyan, var(--accent)), var(--accent));
+  box-shadow: 0 0 8px -1px var(--accent-glow);
+}
+.task-card progress::-moz-progress-bar {
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--archive-cyan, var(--accent)), var(--accent));
+  box-shadow: 0 0 8px -1px var(--accent-glow);
+}
 .task-actions { margin-top: var(--s-3); }
 .task-empty { padding: var(--s-5); text-align: center; }
 @media (prefers-reduced-motion: reduce) { .task-center[open] { animation: none; } }

@@ -39,21 +39,21 @@
         </select>
       </template>
       <template v-else>
-        <label class="thinking-toggle" title="模型推理强度（像 OpenCode 一样多档；off 不思考）">
-          <span>推理</span>
-          <select
-            class="model-select reasoning-select"
-            :value="reasoning"
-            :disabled="busy"
-            aria-label="模型推理强度"
-            @change="emit('reasoning-change', ($event.target as HTMLSelectElement).value as 'off' | 'low' | 'medium' | 'high')"
-          >
-            <option value="off">关</option>
-            <option value="low">低</option>
-            <option value="medium">中</option>
-            <option value="high">高</option>
-          </select>
-        </label>
+        <div class="thinking-group" title="模型推理强度（像 OpenCode 一样多档；关表示不思考）">
+          <span class="thinking-title">推理</span>
+          <div class="thinking-segments" role="radiogroup" aria-label="模型推理强度">
+            <button
+              v-for="opt in reasoningOptions"
+              :key="opt.value"
+              type="button"
+              role="radio"
+              :aria-checked="reasoning === opt.value"
+              :class="{ active: reasoning === opt.value }"
+              :disabled="busy"
+              @click="emit('reasoning-change', opt.value)"
+            >{{ opt.label }}</button>
+          </div>
+        </div>
         <button
           class="api-settings-toggle"
           type="button"
@@ -71,6 +71,13 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+
+const reasoningOptions = [
+  { value: 'off', label: '关' },
+  { value: 'low', label: '低' },
+  { value: 'medium', label: '中' },
+  { value: 'high', label: '高' },
+] as const
 
 defineProps<{
   chatProvider: string

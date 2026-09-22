@@ -97,7 +97,7 @@
             @update:current-model="currentModel = $event"
             @reasoning-change="onReasoningChange"
             @toggle-api-settings="apiSettingsOpen = !apiSettingsOpen"
-          ><label v-if="currentCharacter.voice" class="room-volume">播放音量<input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label></ChatModelControls>
+          ><label v-if="currentCharacter.voice" class="room-volume"><span>播放音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label></ChatModelControls>
         </div>
 
         <FluidTransition>
@@ -227,17 +227,24 @@
 
           <div class="composer-tools">
             <div class="voice-console" aria-label="角色声线控制">
-              <label v-if="chatProvider === 'api'" class="voice-toggle">
-                <input type="checkbox" v-model="webSearchEnabled" />
-                <span class="voice-switch" aria-hidden="true"><span></span></span>
+              <ToggleSwitch
+                v-if="chatProvider === 'api'"
+                v-model="webSearchEnabled"
+                class="voice-toggle"
+                label="联网检索"
+              >
                 <span class="voice-toggle-copy"><strong>联网检索</strong><small>补充最新信息</small></span>
-              </label>
+              </ToggleSwitch>
               <span v-if="chatProvider === 'api'" class="voice-divider" aria-hidden="true"></span>
-              <label v-if="currentCharacter.voice" class="voice-toggle">
-                <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
-                <span class="voice-switch" aria-hidden="true"><span></span></span>
+              <ToggleSwitch
+                v-if="currentCharacter.voice"
+                :model-value="autoVoice"
+                class="voice-toggle"
+                label="实时配音"
+                @update:model-value="autoVoice = $event; onAutoVoiceChange()"
+              >
                 <span class="voice-toggle-copy"><strong>实时配音</strong><small>随回复逐句播放</small></span>
-              </label>
+              </ToggleSwitch>
               <span v-if="currentCharacter.voice" class="voice-divider" aria-hidden="true"></span>
               <span class="voice-capability" :data-state="voiceCapabilityState">
                 <span class="voice-capability-dot"></span>{{ voiceCapabilityText }}
@@ -248,6 +255,7 @@
                 <span class="volume-icon" aria-hidden="true"><ArchiveIcon name="sound" /></span>
                 <input type="range" v-model.number="volume" min="0" max="100" aria-label="音量"
                   @input="onVolumeChange" />
+                <small class="volume-value">{{ volume }}%</small>
               </label>
               <button v-if="currentCharacter.voice" class="replay-btn" type="button" title="重新播放上一条语音"
                 :disabled="!hasReplayable"
@@ -302,6 +310,7 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
 import { useConversationReading } from '@/composables/chat/useConversationReading'

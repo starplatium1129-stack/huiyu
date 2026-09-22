@@ -19,8 +19,32 @@
   .pb .voice-state.warn { color:var(--warning-text); border-color:color-mix(in srgb,var(--warning) 45%,var(--border-soft)); }
   .pb .voice-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2); margin-bottom:var(--s-3); }
   .pb .voice-field { display:grid; gap:4px; min-width:0; color:var(--text-muted); font-size:var(--fs-mono-sm); }
-  .pb .voice-field select { width:100%; min-width:0; padding:var(--s-2) 8px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); outline:none; }
-  .pb .voice-field select:focus, .pb .voice-text:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
+  .pb .voice-field select {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: var(--s-2) var(--s-7) var(--s-2) 8px;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-md);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+      linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+    background-repeat: no-repeat;
+    background-position:
+      calc(100% - 14px) calc(50% - 1px),
+      calc(100% - 10px) calc(50% - 1px);
+    background-size: 5px 5px;
+    transition: border-color var(--motion-hover) var(--ease-out);
+  }
+  .pb .voice-field select:hover { border-color: var(--accent); }
+  .pb .voice-field select:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pb .voice-text:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
   .pb .voice-text { width:100%; min-height:130px; resize:vertical; box-sizing:border-box; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font: var(--fs-body-sm)/1.7 var(--font-sans); outline:none; }
   .pb .voice-copy { padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface)); }
   .pb .voice-copy-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
@@ -37,7 +61,18 @@
   .pb .voice-actions .btn { flex:1 1 120px; }
   /* 审计修复: 不用 opacity 压字（压后低于 AA 4.5:1） */
   .pb .voice-actions .btn:disabled { color: var(--text-disabled); border-color: var(--border-soft); background: var(--bg-surface); cursor:not-allowed; box-shadow:none; }
-  .pb .voice-audio { display:none; width:100%; margin-top:var(--s-3); height:38px; }
-  .pb .voice-audio.show { display:block; }
+  .pb .voice-audio {
+    display: none;
+    width: 100%;
+    margin-top: var(--s-3);
+    height: 40px;
+    border-radius: var(--r-pill);
+    outline: none;
+    box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  }
+  .pb .voice-audio::-webkit-media-controls-panel {
+    background-color: var(--bg-surface);
+  }
+  .pb .voice-audio.show { display: block; }
   .pb .voice-download { display:none; width:100%; margin-top:var(--s-2); }
   .pb .voice-download.show { display:inline-flex; justify-content:center; }

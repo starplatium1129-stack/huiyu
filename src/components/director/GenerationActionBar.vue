@@ -3,6 +3,7 @@
        （2026-08-28 审计：尺寸原在栏底 AnimaQuickPanel/输出面板内，改一次要滚全页） -->
   <div class="gen-bar" role="group" aria-label="出图尺寸与生成">
     <label class="gen-bar-size">
+      <ArchiveIcon name="centercomp" class="gen-bar-aspect-icon" aria-hidden="true" />
       <span class="gen-bar-label">画幅比例</span>
       <select :value="size" :disabled="busy" @change="onSizeChange">
         <template v-if="engine === 'sd'">
@@ -54,6 +55,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 // 出图条承载主行动（生成按钮），同步导入保证首屏即位，不进异步分片；
 // 体量 ~2KB，路由 CSS 预算余量充足。

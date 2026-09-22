@@ -413,7 +413,7 @@
                   <option value="All">All</option><option value="R15">R15</option><option value="R18">R18</option>
                 </select>
               </label>
-              <label class="form-group form-check"><input v-model="bpEditing.adult" type="checkbox" :disabled="desktopPackaged" /><span>成人蓝图（adult）</span></label>
+              <ToggleSwitch v-model="bpEditing.adult" :disabled="desktopPackaged" class="form-group form-check" label="成人蓝图（adult）"><span>成人蓝图（adult）</span></ToggleSwitch>
               <label class="form-group form-group-full"><span class="field-label">描述</span><textarea v-model="bpEditing.description" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
             </div>
           </fieldset>
@@ -511,6 +511,7 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

@@ -49,21 +49,31 @@
           </div>
         </div>
 
-        <label class="shot-toggle">
-          <input v-model="linkLastFrame" type="checkbox" :disabled="batchActive || submitting" />
+        <ToggleSwitch
+          class="shot-toggle"
+          :model-value="linkLastFrame"
+          :disabled="batchActive || submitting"
+          label="自动衔接上一镜尾帧"
+          @update:model-value="linkLastFrame = $event"
+        >
           <span>
             <strong>自动衔接上一镜尾帧</strong>
             <small>本镜有首帧时作为尾帧（FL2VA 桥接），无首帧时续接为开头（I2VA 续接），跨镜动作与空间更连续。</small>
           </span>
-        </label>
+        </ToggleSwitch>
 
-        <label class="shot-toggle">
-          <input v-model="steps" :disabled="batchActive || submitting" type="checkbox" :true-value="4" :false-value="8" />
+        <ToggleSwitch
+          class="shot-toggle"
+          :model-value="steps === 4"
+          :disabled="batchActive || submitting"
+          label="极速 4 步（整批）"
+          @update:model-value="steps = $event ? 4 : 8"
+        >
           <span>
             <strong>极速 4 步（整批）</strong>
             <small>采用 Turbo 蒸馏采样，耗时减少约 40%，画质微降，适合快速试镜与连贯长片。</small>
           </span>
-        </label>
+        </ToggleSwitch>
 
         <label class="field shot-identity-field">
           <span class="field-label">角色身份锚点（逐镜注入提示词开头，跨镜一致性关键）</span>
@@ -568,6 +578,7 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { nextTick, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

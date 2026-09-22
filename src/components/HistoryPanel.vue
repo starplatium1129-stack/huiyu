@@ -20,7 +20,10 @@
           <img v-else class="history-placeholder" :src="placeholderUrl" alt="" aria-hidden="true">
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
           <label class="history-pick" title="勾选后可批量加入分镜">
-            <input v-model="selectedSet" type="checkbox" :value="item.id" />
+            <input v-model="selectedSet" type="checkbox" :value="item.id" class="history-pick-input" />
+            <span class="history-pick-box" aria-hidden="true">
+              <ArchiveIcon name="success" class="history-pick-check" />
+            </span>
           </label>
         </div>
         <div class="history-main">
@@ -137,14 +140,42 @@ onBeforeUnmount(() => {
 }
 .history-batch { display: inline-flex; gap: var(--s-1); }
 .history-pick {
-  position: absolute; top: 4px; left: 4px;
+  position: absolute; top: 6px; left: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.history-pick-input {
+  position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;
+}
+.history-pick-box {
   display: grid; place-items: center;
   width: 20px; height: 20px;
   border-radius: var(--r-sm);
-  background: color-mix(in srgb, var(--bg-deep) 78%, transparent);
-  cursor: pointer;
+  background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+  border: 1px solid var(--border-strong);
+  color: transparent;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 4px var(--art-scrim-soft);
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
-.history-pick input { margin: 0; accent-color: var(--accent); }
+.history-pick:hover .history-pick-box {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent-soft) 60%, var(--bg-surface));
+}
+.history-pick-input:checked + .history-pick-box {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-inverse);
+  box-shadow: 0 0 10px -1px var(--accent-glow);
+}
+.history-pick-input:focus-visible + .history-pick-box {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.history-pick-check {
+  width: 13px; height: 13px;
+}
 .history-item[data-selected="true"] { outline: 1px solid var(--accent); outline-offset: -1px; border-radius: var(--r-md); }
 .history-thumb { position: relative; }
 </style>

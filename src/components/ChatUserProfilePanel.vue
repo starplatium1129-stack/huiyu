@@ -85,7 +85,6 @@ function save() {
 .profile-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, .5fr); gap: var(--s-3); }
 .profile-grid label { display: grid; gap: 6px; }
 .profile-grid input,
-.profile-grid select,
 .profile-grid textarea {
   width: 100%;
   padding: 9px 11px;
@@ -94,6 +93,32 @@ function save() {
   background: var(--bg-deep);
   color: var(--text-primary);
   font: inherit;
+}
+.profile-grid select {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px var(--s-7) 9px 11px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+.profile-grid select:is(:hover, :focus-visible) {
+  border-color: var(--accent);
 }
 .profile-note { grid-column: 1 / -1; }
 .profile-note small { justify-self: end; color: var(--text-muted); font-size: var(--fs-mono-sm); }

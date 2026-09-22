@@ -62,10 +62,48 @@ onUnmounted(library.stop)
 .resource-version code { overflow-wrap: anywhere; max-width: 100%; color: var(--text-secondary); }
 .resource-selection { display: grid; gap: var(--s-2); margin-block: var(--s-3); }
 .resource-selection label { font-size: var(--fs-label); }
-.resource-selection select { width: 100%; min-width: 0; padding: var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--bg-deep); color: var(--text-primary); font: inherit; }
+.resource-selection select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: var(--s-3) var(--s-7) var(--s-3) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+.resource-selection select:hover:not(:disabled) { border-color: var(--accent); }
 .resource-notice, .resource-task { border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: var(--s-3); line-height: var(--lh-body); font-size: var(--fs-label); overflow-wrap: anywhere; }
 .resource-task p { margin-bottom: 0; }
-.resource-task progress { display: block; width: 100%; margin-top: var(--s-3); }
+.resource-task progress {
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin-top: var(--s-3);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--bg-deep);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.resource-task progress::-webkit-progress-bar { background: var(--bg-deep); }
+.resource-task progress::-webkit-progress-value { border-radius: var(--r-pill); background: var(--accent); }
+.resource-task progress::-moz-progress-bar { border-radius: var(--r-pill); background: var(--accent); }
 .resource-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
 .resource-actions button { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
 .resource-actions button:hover:not(:disabled) { background: var(--bg-elevated); }

@@ -374,8 +374,38 @@ watch(companionId, (id) => { companionFailed[id] = false })
 /* 合并后一个面板里有 7 个字段，4 列更紧凑 */
 .scene-facet-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); }
 .scene-filter-field { display:grid; gap:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:600; }
-.scene-filter-field select { width:100%; padding:8px 10px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font:500 var(--fs-label) var(--font-sans); outline:none; }
-.scene-filter-field select:focus { border-color:var(--accent); }
+.scene-filter-field select {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px var(--s-7) 8px 10px;
+  background-color: var(--bg-deep);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  color: var(--text-primary);
+  font: 500 var(--fs-label) var(--font-sans);
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+  transition: border-color var(--motion-hover), background-color var(--motion-hover);
+}
+.scene-filter-field select:hover {
+  border-color: var(--accent);
+  background-color: var(--bg-surface);
+}
+.scene-filter-field select:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .scene-more-filters { border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); overflow:hidden; }
 .scene-more-filters summary { list-style:none; display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3); color:var(--text-secondary); cursor:pointer; font-size:var(--fs-label); font-weight:650; }
 .scene-more-filters summary::-webkit-details-marker { display:none; }

@@ -1109,8 +1109,7 @@ body:has(.chat-page) .sakura-fall {
   font: 700 var(--fs-mono-xs) var(--font-mono);
 }
 
-.chat-page .api-field input,
-.chat-page .api-field select {
+.chat-page .api-field input {
   width: 100%;
   min-width: 0;
   min-height: 42px;
@@ -1123,8 +1122,37 @@ body:has(.chat-page) .sakura-fall {
   outline: none;
 }
 
+.chat-page .api-field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px var(--s-7) 8px 11px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background-color: color-mix(in srgb, var(--bg-deep) 88%, transparent);
+  color: var(--text-primary);
+  font: var(--fs-label-sm) var(--font-sans);
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+
+.chat-page .api-field select:hover {
+  border-color: var(--character-ink, var(--character-accent));
+}
+
 .chat-page .api-field input:focus,
-.chat-page .api-field select:focus {
+.chat-page .api-field select:focus-visible {
   border-color: var(--character-ink, var(--character-accent));
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--character-accent) 16%, transparent);
 }
@@ -1190,12 +1218,41 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .model-select {
   max-width: 230px;
-  padding: 4px 7px;
+  min-height: 32px;
+  padding: 4px var(--s-6) 4px 8px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-sm);
-  background: var(--bg-deep);
-  color: var(--text-secondary);
+  border-radius: var(--r-md);
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
   font: 600 var(--fs-mono-sm) var(--font-sans);
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 12px) calc(50% - 1px),
+    calc(100% - 8px) calc(50% - 1px);
+  background-size: 4px 4px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+
+.chat-page .model-select:hover:not(:disabled) {
+  border-color: var(--character-ink, var(--character-accent));
+}
+
+.chat-page .model-select:focus-visible {
+  border-color: var(--character-ink, var(--character-accent));
+  outline: 2px solid var(--character-ink, var(--character-accent));
+  outline-offset: 1px;
+}
+
+.chat-page .model-select:disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
 }
 
 .chat-page .chat-list {
@@ -1554,6 +1611,55 @@ body:has(.chat-page) .sakura-fall {
   white-space: nowrap;
 }
 
+.chat-page .thinking-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.chat-page .thinking-title {
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+
+.chat-page .thinking-segments {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-deep);
+}
+
+.chat-page .thinking-segments button {
+  min-height: 26px;
+  padding: 0 var(--s-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font: 600 var(--fs-label-xs) var(--font-sans);
+  cursor: pointer;
+  transition: background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
+}
+
+.chat-page .thinking-segments button:is(:hover, :focus-visible):not(:disabled) {
+  color: var(--text-primary);
+}
+
+.chat-page .thinking-segments button.active {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-page .thinking-segments button:disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
 .chat-page .thinking-toggle {
   display: inline-flex;
   align-items: center;
@@ -1873,9 +1979,16 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .volume-slider {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   color: var(--text-muted);
   font-size: var(--fs-mono-sm);
+}
+
+.chat-page .volume-slider .volume-value {
+  font-size: var(--fs-mono-xs);
+  color: var(--text-muted);
+  min-width: 28px;
+  font-variant-numeric: tabular-nums;
 }
 
 .chat-page .volume-icon {

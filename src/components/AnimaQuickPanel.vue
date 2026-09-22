@@ -187,7 +187,30 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-hires-icon { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0 }
 .anima-row label, .anima-label { font-size: var(--fs-label-xs); color: var(--text-secondary); min-width: 44px }
 .anima-label { margin-top: 4px }
-.anima-row select, .anima-num { background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 4px 8px; font-size: var(--fs-label-xs) }
+.anima-row select, .anima-field select {
+  background-color: var(--bg-deep);
+  color: inherit;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  padding: 6px var(--s-7) 6px 10px;
+  font-size: var(--fs-label-xs);
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 12px) calc(50% - 1px),
+    calc(100% - 8px) calc(50% - 1px);
+  background-size: 4px 4px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+.anima-row select:hover, .anima-field select:hover { border-color: var(--accent); }
+.anima-row select:focus-visible, .anima-field select:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
+.anima-num { background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: 4px 8px; font-size: var(--fs-label-xs) }
 .anima-row select { flex: 1; min-width: 120px }
 .anima-num { width: 72px }
 .anima-seed { width: 140px }

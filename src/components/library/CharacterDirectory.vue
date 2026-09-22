@@ -126,6 +126,22 @@ async function locateSelected() {
 .directory-heading { display: flex; justify-content: space-between; font-size: var(--fs-body-sm); font-weight: 600; }
 .directory-heading span, .directory-count { color: var(--text-muted); font-size: var(--fs-label-xs); }
 .directory-tools input, .directory-tools select { min-width: 0; width: 100%; min-height: 40px; padding: var(--s-2) var(--s-3); color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); font: inherit; font-size: var(--fs-label); }
+.directory-tools select, .directory-pagination select {
+  padding-inline-end: var(--s-7);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+.directory-tools select:hover, .directory-pagination select:hover { border-color: var(--accent); }
 .directory-count, .directory-current { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); }
 .directory-count button, .directory-current button { padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font: inherit; }
 .directory-list { flex: 1 1 auto; min-height: 120px; overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }

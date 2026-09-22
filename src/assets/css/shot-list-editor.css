@@ -105,8 +105,8 @@
 @media (max-width: 768px) {
   .shot-reference-grid, .shot-script-row { grid-template-columns: 1fr; }
 }
-.shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; }
-.shot-toggle input { margin-top: 4px; accent-color: var(--accent); }
+.shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); width: 100%; margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; text-align: left; }
+.shot-toggle > span { flex: 1; }
 .shot-toggle strong, .shot-toggle small { display: block; }
 .shot-toggle small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .shot-identity-field { display: grid; gap: var(--s-2); margin-top: var(--s-4); }

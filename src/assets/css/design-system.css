@@ -962,6 +962,20 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   font: 400 var(--fs-body) var(--font-sans);
   transition: border-color var(--motion-hover), box-shadow var(--motion-hover), background var(--motion-hover);
 }
+.select {
+  padding-inline-end: var(--s-7);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+}
 .textarea { min-height: 96px; resize: vertical; line-height: var(--lh-body); }
 .input-mono, .textarea-mono { font-family: var(--font-mono); font-size: var(--fs-label); }
 .input::placeholder, .textarea::placeholder { color: var(--text-muted); }
@@ -1694,6 +1708,13 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 /* textarea 的原生灰色拖拽把手无法主题化，隐藏后拖拽区域仍在（光标会变 resize） */
 ::-webkit-resizer { background: transparent; }
 textarea { scrollbar-width: thin; }
+summary {
+  cursor: pointer;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
 /* 统计数字 / 进度 / 参数等机器数字纵向对齐，跳动时不左右抖 */
 :where(code, .mono, .archive-code, .fs-mono, .count, .stat, .seed, .progress-copy strong) { font-variant-numeric: tabular-nums; }
 /* 通用图片入场：给需要"翻开画集"质感的图片用 */

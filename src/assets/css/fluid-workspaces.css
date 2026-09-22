@@ -32,6 +32,26 @@ html .library-page .pop-search {
   background: var(--bg-surface);
   color: var(--text-primary);
 }
+html .gallery-page .gallery-project,
+html .showcase-page .filter-select {
+  padding: 0 var(--s-7) 0 var(--s-3);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+html .gallery-page .gallery-project:hover,
+html .showcase-page .filter-select:hover {
+  border-color: var(--accent);
+}
 html .gallery-page .gallery-filter,
 html .showcase-page .filter-pill,
 html .scene-discovery .scene-cat,
