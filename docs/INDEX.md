@@ -88,6 +88,7 @@
 - [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复的历史复审；当前实现与剩余验收分别见项目状态和 roadmap。
 - [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。
 - [全站交互细节优化（2026-09-12）](archive/audits/interaction-detail-polish-2026-09-12.md)：状态联动、菜单/搜索/灯箱焦点、录音、分镜反馈与双主题页面复验。
+- [1.7.2 工作台与桌面维护](releases/v1.7.2.md)：主线内容、工作台体验、资源边界、桌面可靠性与工程维护更新。
 - [1.7.1 办公机修复](releases/v1.7.1.md)：独立审计 A01–A05 的修复、浏览器契约整理与发布验收边界。
 
 - [办公机独立全面审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md)：当时源码与失败/通过证据；后续修复查项目状态，不直接执行旧待办。
@@ -100,7 +101,7 @@
 - [专题指南](guides/README.md)：角色与粒子、提示词、美术、视频、桌面、工程设计。
 - [研究与候选方案](research/README.md)：调研依据与待评估提案。
 - [历史记录](archive/README.md)：审计、批次、实验、故障与过期方案。
-- [版本更新](releases/v1.7.1.md)：当前修复及验收边界；[1.7.0](releases/v1.7.0.md)、[1.6.1](releases/v1.6.1.md)、[1.6.0](releases/v1.6.0.md) 与 [1.5.10](releases/v1.5.10.md) 保留为历史版本。
+- [版本更新](releases/v1.7.2.md)：当前更新及验收边界；[1.7.1](releases/v1.7.1.md)、[1.7.0](releases/v1.7.0.md)、[1.6.1](releases/v1.6.1.md)、[1.6.0](releases/v1.6.0.md) 与 [1.5.10](releases/v1.5.10.md) 保留为历史版本。
 - [专项计划与保留提案](../plans/README.md)：部分实施、待验收与暂停提案分别登记；001–003 已归档。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)：面向使用者的静态手册。
 

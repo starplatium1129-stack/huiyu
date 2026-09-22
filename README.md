@@ -4,7 +4,7 @@
 
 [中文说明](README_zh.md)
 
-[Download HUIYU 1.7.1 for Windows (manual install)](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.1) · [Release notes](docs/releases/v1.7.1.md)
+[Download HUIYU 1.7.2 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.7.2) · [Release notes](docs/releases/v1.7.2.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
