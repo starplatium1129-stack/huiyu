@@ -20,7 +20,8 @@ async function openAppearance(page: Page) {
 
 async function setGlassPreference(page: Page, reduced: boolean) {
   await openAppearance(page)
-  await page.getByRole('checkbox', { name: /降低玻璃效果/ }).setChecked(reduced)
+  const control = page.getByRole('switch', { name: '降低玻璃效果' })
+  if (await control.isChecked() !== reduced) await control.click()
   await page.keyboard.press('Escape')
   await expect(page.locator('.appearance-dialog')).not.toBeVisible()
 }

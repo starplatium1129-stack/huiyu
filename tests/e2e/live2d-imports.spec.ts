@@ -96,11 +96,11 @@ test('largest imported atlas and multi-atlas models render at all three quality 
     await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 40_000 })
     for (const quality of ['original', 'standard', 'compact']) {
       await page.locator('.character-controls > summary').click()
-      const select = page.getByRole('combobox', { name: 'Live2D 画质', exact: true })
-      if (await select.inputValue() !== quality) {
+      const control = page.getByRole('radiogroup', { name: 'Live2D 画质', exact: true })
+      if (await control.getAttribute('data-value') !== quality) {
         const manifest = quality === 'original' ? `/api/live2d-local/${id}/${id}.model3.json` : `/api/live2d-model/${id}/${quality}`
         const loaded = page.waitForResponse(response => response.url().endsWith(manifest) && response.ok())
-        await select.selectOption(quality)
+        await control.locator(`[data-value="${quality}"]`).click()
         await loaded
       }
       await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 40_000 })

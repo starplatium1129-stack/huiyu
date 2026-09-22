@@ -9,9 +9,18 @@
 .appearance-close { display: grid; place-items: center; flex: 0 0 40px; height: 40px; border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; }
 .appearance-fields { display: grid; gap: var(--s-5); }
 .appearance-fields label { display: grid; gap: var(--s-2); color: var(--text-secondary); font-size: var(--fs-body); }
-.appearance-fields select { min-width: 0; min-height: 44px; padding: var(--s-3); color: var(--text-primary); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-surface); font: inherit; }
-.appearance-fields .appearance-check { display: flex; align-items: start; gap: var(--s-3); cursor: pointer; }
-.appearance-check input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--accent); }
+.appearance-choice-field { min-width: 0; margin: 0; padding: 0; border: 0; }
+.appearance-choice-field legend { margin-bottom: var(--s-2); padding: 0; color: var(--text-secondary); font-size: var(--fs-body); }
+.appearance-segments { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-1); padding: var(--s-1); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-deep); }
+.appearance-segments button { min-width: 0; min-height: 44px; padding: var(--s-2); border: 1px solid transparent; border-radius: var(--r-md); background: transparent; color: var(--text-secondary); font: 600 var(--fs-label-sm) var(--font-sans); cursor: pointer; }
+.appearance-segments button[aria-checked="true"] { border-color: color-mix(in srgb, var(--accent) 58%, var(--border-soft)); background: var(--accent-soft); color: var(--text-primary); box-shadow: inset 0 1px 0 var(--glass-highlight); }
+.appearance-segments button:is(:hover, :focus-visible) { border-color: var(--accent); color: var(--text-primary); }
+.appearance-range input[type="range"] { width: 100%; height: 28px; margin: 0; border: 0; outline: 0; background: linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px); cursor: pointer; -webkit-appearance: none; appearance: none; }
+.appearance-range input[type="range"]::-webkit-slider-thumb { width: 18px; height: 18px; border: 3px solid var(--bg-surface); border-radius: 50%; background: var(--accent); box-shadow: var(--shadow-sm); cursor: grab; -webkit-appearance: none; }
+.appearance-range input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border: 3px solid var(--bg-surface); border-radius: 50%; background: var(--accent); box-shadow: var(--shadow-sm); cursor: grab; }
+.appearance-range input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.appearance-fields .appearance-check { display: flex; align-items: flex-start; gap: var(--s-3); width: 100%; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); cursor: pointer; }
+.appearance-check > span:last-child { flex: 1; text-align: left; }
 .appearance-check small { display: block; margin-top: var(--s-2); color: var(--text-muted); font-size: var(--fs-label); line-height: 1.6; }
 .appearance-note { margin: 0; color: var(--text-muted); font-size: var(--fs-label); line-height: 1.7; }
 .appearance-shortcuts { display: grid; gap: var(--s-4); margin: 0; }
@@ -21,6 +30,7 @@
 .appearance-dialog :focus-visible, .appearance-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 html[data-reduced-glass="true"] .appearance-dialog::backdrop { backdrop-filter: none; }
 @media (forced-colors: active) {
-  .appearance-dialog, .appearance-fields select, .appearance-close { color: CanvasText; background: Canvas; border: 1px solid CanvasText; box-shadow: none; }
+  .appearance-dialog, .appearance-segments, .appearance-check, .appearance-close { color: CanvasText; background: Canvas; border: 1px solid CanvasText; box-shadow: none; }
+  .appearance-segments button[aria-checked="true"] { outline: 2px solid Highlight; }
   .appearance-dialog::backdrop { backdrop-filter: none; }
 }

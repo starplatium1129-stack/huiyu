@@ -40,10 +40,9 @@
             <span class="companion-pop-item">{{ affectionInfo.title }} · {{ affectionScore }}</span>
             <button type="button" class="companion-pop-item" @click="settingsOpen = false; characterStageRef?.openSettings?.()">角色取景与外观</button>
             <Live2DQualityControl :native="Boolean(desktopBridge)" />
-            <label class="companion-pop-item" title="实时配音">
-              <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
+            <ToggleSwitch class="companion-pop-item companion-pop-switch" :model-value="autoVoice" label="实时配音" @update:model-value="setAutoVoice">
               <span title="播放聊天回复和新问候；勿扰时暂停主动问候">实时配音：{{ autoVoice ? '开' : '关' }}</span>
-            </label>
+            </ToggleSwitch>
             <button v-if="behaviorEnabled" type="button" class="companion-pop-item" :aria-pressed="dnd" @click="toggleDnd">
               {{ dnd ? '关闭勿扰（恢复主动问候）' : '开启勿扰（暂停主动问候）' }}
             </button>
@@ -95,8 +94,8 @@
               <ArchiveIcon :name="workspaceExists ? 'success' : 'error'" />
               <span>{{ workspaceExists ? 'AI 工作区已就绪' : 'AI 工作区缺失' }}</span>
             </button>
-            <label class="companion-pop-item" title="音量">
-              <span>音量</span>
+            <label class="companion-pop-item companion-pop-volume" title="音量">
+              <span>音量 <small>{{ volume }}%</small></span>
               <input
                 type="range"
                 v-model.number="volume"
@@ -395,6 +394,7 @@ import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import CompanionReplyBubble from '@/components/CompanionReplyBubble.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
@@ -501,6 +501,11 @@ const petGestures = usePetGestures(desktopBridge, openChatWindow)
 function switchPetCharacter(id: string) {
   switchCharacter(id)
   petGestures.controlsOpen.value = false
+}
+
+function setAutoVoice(enabled: boolean) {
+  autoVoice.value = enabled
+  onAutoVoiceChange()
 }
 
 function reminderActionLabel(reminder: CompanionReminder) {

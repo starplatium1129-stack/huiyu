@@ -30,7 +30,7 @@ for (const theme of ['light', 'dark']) {
     for (const text of await dialog.locator('.glass-choice-body strong, .glass-choice-body small').all()) {
       expect(await text.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
     }
-    await dialog.getByRole('radio', { name: /液态玻璃/ }).check()
+    await dialog.getByRole('radio', { name: /液态玻璃/ }).click()
     await expect(page.locator('html')).toHaveAttribute('data-glass-material', 'liquid')
     await page.screenshot({ path:testInfo.outputPath(`choice-${theme}.png`) })
     await page.keyboard.press('Escape')
@@ -44,7 +44,7 @@ for (const theme of ['light', 'dark']) {
     await second.goto('/gallery')
     await expect(second.locator('html')).toHaveAttribute('data-glass-material', 'liquid')
     dialog = await openAppearance(page)
-    await dialog.getByRole('radio', { name: /轻盈玻璃/ }).check()
+    await dialog.getByRole('radio', { name: /轻盈玻璃/ }).click()
     await expect(page.locator('.fluid-glass-definitions')).toHaveCount(0)
     await expect(page.locator('[data-fluid-refracted]')).toHaveCount(0)
     await expect(second.locator('html')).toHaveAttribute('data-glass-material', 'light')
@@ -85,6 +85,6 @@ test('unsupported optics keep the choice operable and use the frosted fallback',
   await expect(page.locator('.fluid-glass-definitions')).toHaveCount(0)
   await expect(page.locator('.nav')).toHaveCSS('backdrop-filter', /blur/)
   const dialog = await openAppearance(page)
-  await dialog.getByRole('radio', { name:/轻盈玻璃/ }).check()
+  await dialog.getByRole('radio', { name:/轻盈玻璃/ }).click()
   await expect(page.locator('.nav')).toHaveCSS('backdrop-filter', 'none')
 })

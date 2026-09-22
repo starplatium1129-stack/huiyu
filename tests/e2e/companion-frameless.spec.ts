@@ -74,14 +74,14 @@ for (const theme of ['light', 'dark']) {
       // Resizing an already-open window must leave a scrollable body and an accessible close button.
       await page.setViewportSize({ width: 360, height: 320 })
       await expect(page.getByRole('button', { name: '关闭角色设置', exact: true })).toBeInViewport()
-      const quality = dialog.getByRole('combobox', { name: 'Live2D 画质', exact: true })
+      const quality = dialog.getByRole('radiogroup', { name: 'Live2D 画质', exact: true })
       await quality.scrollIntoViewIfNeeded()
       await expect(quality).toBeInViewport()
       expect(await panel.evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true)
       await expect(page.getByRole('button', { name: '关闭角色设置', exact: true })).toBeInViewport()
-      await quality.selectOption('standard')
-      await expect(quality).toHaveValue('standard')
-      if (mode === 'escape') { await quality.focus(); await page.keyboard.press('Escape') }
+      await quality.getByRole('radio', { name: /标准/ }).click()
+      await expect(quality).toHaveAttribute('data-value', 'standard')
+      if (mode === 'escape') { await quality.getByRole('radio', { checked: true }).focus(); await page.keyboard.press('Escape') }
       else await page.mouse.click(2, 2)
       await expect(dialog).toBeHidden()
       await page.setViewportSize({ width: 360, height: 480 })
@@ -94,7 +94,7 @@ for (const theme of ['light', 'dark']) {
     await summary.click()
     const panel = page.locator('.character-controls-panel')
     await expect(panel).toBeVisible()
-    await panel.getByRole('combobox', { name: 'Live2D 画质' }).focus()
+    await panel.getByRole('radiogroup', { name: 'Live2D 画质' }).getByRole('radio', { checked: true }).focus()
     await page.keyboard.press('Escape')
     await expect(panel).toBeHidden()
     await expect(summary).toBeFocused()

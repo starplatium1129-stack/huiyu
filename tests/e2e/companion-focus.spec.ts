@@ -178,6 +178,8 @@ for (const theme of ['dark', 'light']) {
       await page.getByRole('button', { name: '设置', exact: true }).click()
       const panel = page.locator('.companion-settings-popover')
       await expect(panel).toBeVisible()
+      await expect(panel.locator('select, input[type="checkbox"], input[type="radio"]')).toHaveCount(0)
+      expect(await panel.getByRole('slider', { name: '桌宠音量' }).evaluate(element => getComputedStyle(element).appearance)).toBe('none')
       const contrast = await page.getByRole('combobox', { name: '切换陪伴角色' }).evaluate(element => {
         const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1
         const context = canvas.getContext('2d')!

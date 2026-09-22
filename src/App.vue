@@ -18,13 +18,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { startGalleryThumbnailWarmup } from '@/utils/galleryThumbnailWarmup'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
-import AppearancePreferences from '@/components/AppearancePreferences.vue'
+const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
 import TaskCenter from '@/components/tasks/TaskCenter.vue'
 import GlobalSearch from '@/components/GlobalSearchHost.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'

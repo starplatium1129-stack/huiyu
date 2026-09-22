@@ -10,6 +10,7 @@ async function openAppearance(page: Page) {
   await page.getByRole('button', { name: '外观与动态效果', exact: true }).click()
   const dialog = page.getByRole('dialog', { name: '外观与动态效果', exact: true })
   await expect(dialog).toBeVisible()
+  await expect(dialog.locator('select, input[type="checkbox"], input[type="radio"]')).toHaveCount(0)
   return dialog
 }
 
@@ -102,7 +103,7 @@ for (const theme of ['dark', 'light'] as const) {
       await expect(page.locator('html')).toHaveAttribute('data-reduced-glass', 'true')
       await expect.poll(blur).toBe('none')
       await expect.poll(() => page.locator('.nav').evaluate(element => getComputedStyle(element).backdropFilter)).toBe('none')
-      await expect(dialog.getByLabel('降低玻璃效果')).not.toBeChecked()
+      await expect(dialog.getByRole('switch', { name: '降低玻璃效果' })).not.toBeChecked()
       expect(await savedGlass()).toBe(false)
     }
     await assertSolid()
@@ -117,7 +118,7 @@ for (const theme of ['dark', 'light'] as const) {
     await setMedia(false, false, true)
     await assertSolid()
     await setMedia(false)
-    await dialog.getByLabel('降低玻璃效果').check()
+    await dialog.getByRole('switch', { name: '降低玻璃效果' }).click()
     await setMedia(true)
     await setMedia(false)
     await expect(page.locator('html')).toHaveAttribute('data-reduced-glass', 'true')
@@ -166,8 +167,8 @@ test.describe('touch and text resizing', () => {
       await page.locator('html').evaluate((element, font) => {
         element.style.fontSize = `${parseFloat(font) * 2}px`
       }, desktopFont)
-      await expect(dialog.getByLabel('画室主题')).toBeVisible()
-      await dialog.getByLabel('动态效果').selectOption('reduce')
+      await expect(dialog.getByRole('radiogroup', { name: '画室主题' })).toBeVisible()
+      await dialog.getByRole('radio', { name: '减少动态', exact: true }).click()
       const close = dialog.getByRole('button', { name: '关闭', exact: true })
       await close.scrollIntoViewIfNeeded()
       expect(await dialog.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)

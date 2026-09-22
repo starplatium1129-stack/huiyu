@@ -109,9 +109,9 @@ test('legacy desktop bridge retains original textures and disables unsupported q
   await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready')
   await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
   await page.getByRole('button', { name: '设置', exact: true }).click()
-  const quality = page.locator('.companion-settings-popover').getByRole('combobox', { name: 'Live2D 画质' })
-  await expect(quality).toBeDisabled()
-  await expect(quality).toHaveValue('original')
+  const quality = page.locator('.companion-settings-popover').getByRole('radiogroup', { name: 'Live2D 画质' })
+  for (const option of await quality.getByRole('radio').all()) await expect(option).toBeDisabled()
+  await expect(quality).toHaveAttribute('data-value', 'original')
   expect(await page.evaluate(() => (window as unknown as { __live2dProbe: Probe }).__live2dProbe.characters.every(value => value.textureScale === undefined))).toBe(true)
 })
 
