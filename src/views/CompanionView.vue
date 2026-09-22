@@ -21,7 +21,7 @@
         <span>陪伴模式</span>
         <h1>与{{ currentCharacter.name }}相伴</h1>
       </div>
-      <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchCharacter" />
+      <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" />
       <div class="companion-toolbar-actions">
         <span v-if="desktopBridge" class="companion-drag-handle" data-tauri-drag-region title="拖动桌宠"><ArchiveIcon name="menu" aria-hidden="true" /><span>移动</span></span>
         <button
@@ -497,6 +497,11 @@ liveDotState,
 liveDotText
 } = useCompanionWorkspace()
 const petGestures = usePetGestures(desktopBridge, openChatWindow)
+
+function switchPetCharacter(id: string) {
+  switchCharacter(id)
+  petGestures.controlsOpen.value = false
+}
 
 function reminderActionLabel(reminder: CompanionReminder) {
   return reminder.eventKind === 'sd-done' ? '查看作品册' : '查看服务状态'

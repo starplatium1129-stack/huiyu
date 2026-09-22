@@ -28,7 +28,9 @@ for (const theme of ['dark', 'light']) {
     test.setTimeout(60000)
     await page.addInitScript(theme => { localStorage.setItem('aics_theme', theme); localStorage.setItem('aics_live2d_quality_v1', 'compact') }, theme)
     await page.goto('/chat?character=hatsune_miku')
-    await expect(page.getByRole('combobox', { name: '切换角色', exact: true }).locator('option[value="raiden_shogun"]')).toHaveCount(0)
+    await page.getByRole('combobox', { name: '切换角色', exact: true }).click()
+    await expect(page.locator('.companion-picker-option[data-value="raiden_shogun"]')).toHaveCount(0)
+    await page.keyboard.press('Escape')
     const enable = page.locator('.live2d-enable-cta')
     await expect(enable).toBeVisible()
     await enable.click()
@@ -64,7 +66,8 @@ for (const theme of ['dark', 'light']) {
     }, theme)
     await page.goto('/companion?character=hatsune_miku')
     for (const id of ['hatsune_miku', 'frieren', 'nene']) {
-      await page.getByRole('combobox', { name: '切换陪伴角色' }).selectOption(id)
+      await page.getByRole('combobox', { name: '切换陪伴角色' }).click()
+      await page.locator(`.companion-picker-option[data-value="${id}"]`).click()
       await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 40000 })
       await expect(page.locator('.live2d-host canvas')).toBeVisible()
       await page.waitForTimeout(500)
@@ -101,9 +104,10 @@ test('reading an older message is stable and the latest shortcut follows new con
 
 test('opening the full room carries the selected character and an unsaved draft', async ({ page }) => {
   await page.goto('/companion-chat')
-  await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('natsume')
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).click()
+  await page.locator('.companion-picker-option[data-value="natsume"]').click()
   await page.locator('.companion-chat-input').fill('继续这段还没发送的对话')
   await page.getByRole('button', { name: '打开完整房间', exact: true }).click()
-  await expect(page.getByRole('combobox', { name: '切换角色', exact: true })).toHaveValue('natsume')
+  await expect(page.getByRole('combobox', { name: '切换角色', exact: true })).toHaveAttribute('data-value', 'natsume')
   await expect(page.locator('.chat-input')).toHaveValue('继续这段还没发送的对话')
 })

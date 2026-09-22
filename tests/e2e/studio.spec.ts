@@ -434,9 +434,10 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await expect(page.locator('.avatar-status')).toHaveText('启用 Live2D');
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
   expect(live2dAssetRequests).toEqual([]);
-  // 角色目录可扩展；原有两位角色仍可通过原生选择器切换。
-  await expect(page.getByRole('combobox', { name: '切换角色', exact: true }).locator('option[value="nene"], option[value="natsume"]')).toHaveCount(2);
-  await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('natsume');
+  // 角色目录可扩展；原有两位角色仍可通过角色菜单切换。
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).click();
+  await expect(page.locator('.companion-picker-option[data-value="nene"], .companion-picker-option[data-value="natsume"]')).toHaveCount(2);
+  await page.locator('.companion-picker-option[data-value="natsume"]').click();
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载四季夏目动态立绘');
   await page.locator('.live2d-enable-cta').click();
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
@@ -501,7 +502,9 @@ test('desktop companion keeps a character-first surface and opens the separate c
   await expect(page.locator('.page-root')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: '与绫地宁宁相伴', level: 1 })).toBeVisible();
   await expect(page.getByRole('combobox', { name: '切换陪伴角色', exact: true })).toBeVisible();
-  await expect(page.getByRole('combobox', { name: '切换陪伴角色', exact: true }).locator('option[value="nene"], option[value="natsume"]')).toHaveCount(2);
+  await page.getByRole('combobox', { name: '切换陪伴角色', exact: true }).click();
+  await expect(page.locator('.companion-picker-option[data-value="nene"], .companion-picker-option[data-value="natsume"]')).toHaveCount(2);
+  await page.keyboard.press('Escape');
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
   // 完整房间入口已收敛进设置弹层（2026-08-15 布局改造）；浏览器模式为链接
   await page.locator('.companion-settings-btn').click();
@@ -738,7 +741,9 @@ test('companion chat window renders history from storage and relays sends to the
   await expect(page.locator('.companion-chat-bubble p', { hasText: '今天也在这里陪着你' })).toBeVisible();
   // 角色切换控件 + 迷你标题栏
   await expect(page.getByRole('combobox', { name: '切换角色', exact: true })).toBeVisible();
-  await expect(page.getByRole('combobox', { name: '切换角色', exact: true }).locator('option[value="nene"], option[value="natsume"]')).toHaveCount(2);
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).click();
+  await expect(page.locator('.companion-picker-option[data-value="nene"], .companion-picker-option[data-value="natsume"]')).toHaveCount(2);
+  await page.keyboard.press('Escape');
 
   // 发送 → chatRelay({ command:'send', text })，清空输入
   const input = page.locator('.companion-chat-input');
@@ -1051,7 +1056,8 @@ test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', as
   // 断言出现非空互动提示，而非特定台词
   await expect(page.locator('.live2d-interaction-hint')).toHaveText(/\S/);
 
-  await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('nene');
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).click();
+  await page.locator('.companion-picker-option[data-value="nene"]').click();
   await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'nene');
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
   await expect(page.locator('.wardrobe-trigger')).toContainText('校服');
@@ -1220,7 +1226,8 @@ test('Live2D finishes the latest character switch after an auto-load race', asyn
 
   await page.goto('/chat');
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'loading');
-  await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption('natsume');
+  await page.getByRole('combobox', { name: '切换角色', exact: true }).click();
+  await page.locator('.companion-picker-option[data-value="natsume"]').click();
   await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
   await expect(page.locator('.live2d-host canvas')).toBeVisible();

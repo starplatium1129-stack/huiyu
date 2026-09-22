@@ -25,7 +25,8 @@ for (const theme of ['dark', 'light']) {
     await page.evaluate(theme => document.documentElement.setAttribute('data-theme', theme), theme)
     const host = page.locator('.live2d-host')
     for (const name of ['初音未来', '芙莉莲', '菲伦', '长离', '蕾姆', '芙宁娜', '绫地宁宁']) {
-      await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption({ label: name })
+      await page.getByRole('combobox', { name: '切换角色', exact: true }).click()
+      await page.getByRole('option', { name: new RegExp(name) }).click()
       const enable = page.locator('.live2d-enable-cta')
       if (await enable.isVisible()) await enable.click()
       await expect(host).toHaveAttribute('data-state', 'ready', { timeout: 40_000 })
@@ -60,7 +61,8 @@ test('imported character controls fit a narrow companion window', async ({ page 
   for (const theme of ['dark', 'light']) {
     await page.evaluate(theme => document.documentElement.setAttribute('data-theme', theme), theme)
     const picker = page.getByRole('combobox', { name: '切换陪伴角色', exact: true })
-    await picker.selectOption('changli_wuthering')
+    await picker.click()
+    await page.locator('.companion-picker-option[data-value="changli_wuthering"]').click()
     const enable = page.locator('.live2d-enable-cta')
     if (await enable.isVisible()) await enable.click()
     await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 })
@@ -87,7 +89,8 @@ test('largest imported atlas and multi-atlas models render at all three quality 
   test.setTimeout(180_000)
   await page.goto('/chat')
   for (const [name, id] of [['芙莉莲', 'frieren'], ['菲伦', 'fern_frieren']]) {
-    await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption({ label: name })
+    await page.getByRole('combobox', { name: '切换角色', exact: true }).click()
+    await page.getByRole('option', { name: new RegExp(name) }).click()
     const enable = page.locator('.live2d-enable-cta')
     if (await enable.isVisible()) await enable.click()
     await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 40_000 })

@@ -131,7 +131,8 @@ test('native character switches carry the selected adapter profile and release t
   expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthOpenY', scale: 1 })
 
   await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
-  await page.getByRole('combobox', { name: '切换陪伴角色' }).selectOption('natsume')
+  await page.getByRole('combobox', { name: '切换陪伴角色' }).click()
+  await page.locator('.companion-picker-option[data-value="natsume"]').click()
   await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'natsume')
   await expect.poll(async () => (await probe()).characters.at(-1)?.adapter?.profileId).toBe('profile-natsume-v1')
   expect((await probe()).characters.at(-1)?.adapter?.mouth).toEqual({ id: 'ParamMouthForm3', scale: -0.5 })
@@ -152,6 +153,7 @@ test('a focused character picker stays visible after the desktop idle timeout', 
   await picker.focus()
   await page.waitForTimeout(3600)
   await expect(picker).toBeVisible()
-  await picker.selectOption('furina')
+  await picker.click()
+  await page.locator('.companion-picker-option[data-value="furina"]').click()
   await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'furina')
 })

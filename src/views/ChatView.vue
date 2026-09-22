@@ -304,10 +304,9 @@
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
-import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import { useConversationReading } from '@/composables/chat/useConversationReading'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatModelControls from '@/components/ChatModelControls.vue'
@@ -320,6 +319,8 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useChatSpeechInteraction } from '@/composables/chat/useChatSpeechInteraction'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
+
+const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
 
 const {
   chatListRef,

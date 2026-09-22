@@ -40,7 +40,8 @@ for (const theme of ['light', 'dark']) {
     await page.goto('/chat?character=natsume')
     for (const id of ['natsume', 'hatsune_miku', 'frieren', 'nene']) {
       await page.setViewportSize({ width: 1440, height: 1000 })
-      await page.getByRole('combobox', { name: '切换角色', exact: true }).selectOption(id)
+      await page.getByRole('combobox', { name: '切换角色', exact: true }).click()
+      await page.locator(`.companion-picker-option[data-value="${id}"]`).click()
       const enable = page.locator('.live2d-enable-cta')
       if (await enable.isVisible()) await enable.click()
       await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45000 })

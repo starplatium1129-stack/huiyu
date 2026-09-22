@@ -179,7 +179,8 @@ for (const theme of ['light', 'dark']) {
     for (const id of ['natsume', 'hatsune_miku', 'frieren']) {
       await page.mouse.move(20, 110)
       await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
-      await page.getByRole('combobox', { name: '切换陪伴角色', exact: true }).selectOption(id)
+      await page.getByRole('combobox', { name: '切换陪伴角色', exact: true }).click()
+      await page.locator(`.companion-picker-option[data-value="${id}"]`).click()
       await expect(page.locator('.companion-toolbar')).toBeHidden()
       await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45000 })
       await expect(page.locator('.live2d-host canvas')).toBeVisible()
