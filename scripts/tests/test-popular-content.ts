@@ -586,6 +586,10 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
 test('adult blueprints compile as explicit adult versions in both engines', function () {
   let adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length > 0, 'adult blueprint corpus must not be empty');
+  const { resolveModelProfile }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
+  const catalog = persistence.parsePresetCatalog((require('../../data/presets.json') as typeof import('../../data/presets.json')));
+  const animaProfile: any = resolveModelProfile(catalog.modelProfiles, 'anima-miaomiao-v1.2', 'anima');
+  const kreaProfile: any = resolveModelProfile(catalog.modelProfiles, 'krea2-turbo-fp8', 'krea2');
   adultBlueprints.forEach(function (blueprint) {
     let character = popular.findCharacter(characters, blueprint.characterId!)!;
     let outfit = character!.outfits.find(function (item) { return item.id === blueprint.outfitId; })
@@ -593,11 +597,11 @@ test('adult blueprints compile as explicit adult versions in both engines', func
       || character!.outfits[0];
     let anima = popular.buildPopularPromptPlan({
       character: character, outfit: outfit, blueprint: blueprint,
-      engine: 'anima', profile: null, adultEnabled: true,
+      engine: 'anima', profile: animaProfile, adultEnabled: true,
     });
     let krea = popular.buildPopularPromptPlan({
       character: character, outfit: outfit, blueprint: blueprint,
-      engine: 'krea2', profile: null, adultEnabled: true,
+      engine: 'krea2', profile: kreaProfile, adultEnabled: true,
     });
     assert.ok(anima && krea, blueprint.id + ' must compile for both adult engines');
     assert.ok(anima.prompt.split('\n')[0].split(',').map(function (token) { return token.trim(); }).includes('adult'),
@@ -611,6 +615,9 @@ test('adult blueprints compile as explicit adult versions in both engines', func
     });
     assert.ok(anima.negative.split(',').map(function (part) { return part.trim().toLowerCase(); }).includes('extra limbs'),
       blueprint.id + ' Anima negative must suppress extra limbs');
+    const malformedWear = /\bShe wears (?:standing|sitting|kneeling|lying|on back|pov|completely nude|masturbation|sensual alone|sitting in water)\b/i;
+    assert.ok(!malformedWear.test(anima.prompt), blueprint.id + ' Anima caption must not turn pose/body controls into clothing');
+    assert.ok(!malformedWear.test(krea.prompt), blueprint.id + ' Krea prose must not turn pose/body controls into clothing');
   });
 });
 

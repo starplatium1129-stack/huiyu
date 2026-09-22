@@ -114,15 +114,19 @@ function outfitPhrases(plan: PromptPlan): string[] {
   const canonical = KREA_CANONICAL_OUTFITS.find(([key]) => keys.has(key))
   if (canonical) return [canonical[1]]
   // 角色主词（preserveTokens = exactTokens）是**身份**不是服装。outfitProse 为空时
-  // 这条回退会把 controls 里剩下的东西当服装描述渲染；热门角色基础提示词瘦身后
-  // controls 只剩主词，于是渲染出 "She wears mika (blue archive" 这类病句
-  // （2026-08-29 实测）。回退推断必须先排除主词。
+  // 这条回退会把 controls 里剩下的东西当服装描述渲染；热门成人蓝图的 controls
+  // 还可能包含 kneeling / on_back / completely_nude 等动作与身体状态，不能生成
+  // "She wears kneeling" 这类病句。只允许服装词进入回退；动作、镜头、身体状态
+  // 仍由 sceneVisualFragments / sceneProse 分别承载。
   const identityKeys = new Set(plan.preserveTokens.map(normalizeProseKey))
   return plan.exactControls
     .filter(token => {
       const key = normalizeProseKey(token)
       if (!key || identityKeys.has(key)) return false
-      return !KREA_META_KEYS.has(key) && !KREA_IDENTITY_KEYS.has(key) && !/^(?:nene|natsume)_r18$/.test(key)
+      return KREA_OUTFIT_RE.test(key)
+        && !KREA_META_KEYS.has(key)
+        && !KREA_IDENTITY_KEYS.has(key)
+        && !/^(?:nene|natsume)_r18$/.test(key)
     })
     .map(proseToken)
     .filter(Boolean)

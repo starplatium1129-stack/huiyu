@@ -2021,7 +2021,6 @@
       "location": "精品店试衣更衣室",
       "mood": "私密挑逗",
       "negativeTokens": [
-        "mirror",
         "reflection",
         "mirror reflection",
         "glass reflection",
@@ -3001,7 +3000,7 @@
         "depth_of_field",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "sampleRating": "R18",
       "sceneTags": [
         "self_control",

@@ -521,7 +521,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "sampleRating": "R18",
       "sceneTags": [
         "office",
@@ -1602,7 +1602,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "sampleRating": "R18",
       "sceneTags": [
         "band",
@@ -2494,7 +2494,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "sampleRating": "R18",
       "sceneTags": [
         "millennium",
@@ -4814,7 +4814,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "sampleRating": "R18",
       "sceneTags": [
         "bedroom",
@@ -6474,7 +6474,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "sampleRating": "R18",
       "sceneTags": [
         "office",
@@ -6722,7 +6722,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "sampleRating": "R18",
       "sceneTags": [
         "onsen",

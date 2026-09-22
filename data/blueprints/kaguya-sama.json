@@ -2282,7 +2282,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "sampleRating": "R18",
       "sceneTags": [
         "self_control",

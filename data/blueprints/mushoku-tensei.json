@@ -569,7 +569,6 @@
         "dishes",
         "dress",
         "dynamic_lighting",
-        "full_body",
         "indoor",
         "kitchen",
         "medium_shot",
@@ -660,7 +659,6 @@
         "bare_legs",
         "cross_legged",
         "dusk",
-        "full_body",
         "hot_spring_inn",
         "indoor",
         "lantern",
@@ -1647,7 +1645,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "sampleRating": "R18",
       "sceneTags": [
         "study_room",

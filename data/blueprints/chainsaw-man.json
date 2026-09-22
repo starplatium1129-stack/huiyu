@@ -389,8 +389,7 @@
         "solo"
       ],
       "nsfwProse": "Adult Makima sits with absolute dominant serenity within a high-backed black leather executive chair in her locked top-floor office. Piercing golden sunset streaming through half-lowered venetian blinds paints dramatic zebra-striped shadows across her voluptuous bare skin. She is completely nude except for a pristine black necktie knotted precisely around her slender throat, cascading down between full bare breasts and flushed pink nipples toward her naval. Her long legs are crossed with imperial grace as one hand lightly props up her chin, her golden concentric-ringed eyes gazing downward with an unreadable, intoxicating smile.",
-      "outfitId": "work_suit",
-      "sampleRating": "R18"
+      "outfitId": "work_suit"
     },
     {
       "id": "makima_dog_park",
@@ -1431,7 +1430,7 @@
       "lighting": "moonlight",
       "camera": "side view, medium shot, horizontal framing",
       "mood": "sensual",
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18"

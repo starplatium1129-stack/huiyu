@@ -394,8 +394,7 @@
         "solo"
       ],
       "nsfwProse": "Adult Artoria Pendragon reclines peacefully on her side across an antique emerald velvet chaise longue, resting her chin upon one slender hand. She is completely nude save for an exquisite royal sapphire pendant resting upon her bare, glowing collarbone between exposed pink-tipped breasts. Warm amber flames from the nearby stone fireplace trace the disciplined, supple curve of her athletic waist and hips with painterly chiaroscuro, while her deep emerald eyes meet yours with serene dignity, profound trust, and a gentle unhurried blush.",
-      "outfitId": "bridal_dress",
-      "sampleRating": "R18"
+      "outfitId": "bridal_dress"
     },
     {
       "id": "artoria_burger_shop",
@@ -948,7 +947,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -1852,7 +1851,6 @@
         "child",
         "loli",
         "underage",
-        "school uniform",
         "bright",
         "cold",
         "night",
@@ -2107,7 +2105,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -4239,7 +4237,6 @@
         "bad anatomy",
         "extra fingers",
         "clothes",
-        "school uniform",
         "cropped_feet",
         "feet_out_of_frame",
         "missing_feet",
@@ -6049,7 +6046,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "winter_queen",
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -7263,7 +7260,7 @@
         "touching_own_body",
         "hand_between_legs"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "outfitId": "chaldea_casual",
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -8138,7 +8135,7 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "adult": true,
       "sampleRating": "R18",
       "kreaStyleHint": "r18_explicit_h_cg",
