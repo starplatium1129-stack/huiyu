@@ -228,9 +228,9 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     }
   }
 
-  async function onCardCharacterSelected(cardIndex: number, event: Event) {
-    const select = event.target as HTMLSelectElement
-    const charId = select.value
+  // 去原生化的连带清理（2026-09-22）：原签名从 Event.target.value 读角色 id，
+  // 是原生 <select> 的产物；改用 StudioSelect 后回写的就是 id 本身。
+  async function onCardCharacterSelected(cardIndex: number, charId: string) {
     if (!charId) {
       const card = referenceCards.value[cardIndex]
       if (!card) return

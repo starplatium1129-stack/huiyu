@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 test('theme switch persists through reload and preserves native control colors', async ({ page }) => {
   await page.goto('/')
@@ -17,9 +18,9 @@ for (const theme of ['light', 'dark']) {
     await page.goto('/character')
     const directory = page.getByRole('complementary', { name: '角色目录' })
     await expect(directory).toBeVisible()
-    await page.getByLabel('筛选角色系列').selectOption('Oregairu')
+    await pickStudioOptionByValue(page.getByLabel('筛选角色系列'), 'Oregairu')
     await expect(directory.locator('.directory-item')).toHaveCount(4)
-    await page.getByLabel('筛选角色系列').selectOption('')
+    await pickStudioOptionByValue(page.getByLabel('筛选角色系列'), '')
     await page.getByRole('searchbox', { name: '搜索角色或作品' }).fill('加藤惠')
     await expect(directory.locator('.directory-item')).toHaveCount(1)
     await page.getByRole('searchbox', { name: '搜索角色或作品' }).press('Enter')

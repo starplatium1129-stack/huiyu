@@ -36,11 +36,12 @@
       </label>
       <label class="api-field">
         <span><i aria-hidden="true">02</i> 模型</span>
-        <select v-if="vendorProxy !== 'custom'" v-model="modelProxy" aria-label="模型名" required>
-          <option v-for="option in modelOptions" :key="option.value" :value="option.value">
-            {{ option.label }}
-          </option>
-        </select>
+        <StudioSelect
+          v-if="vendorProxy !== 'custom'"
+          v-model="modelProxy"
+          label="模型名"
+          :options="modelOptions"
+        />
         <template v-else>
           <input v-model.trim="modelProxy" list="chat-api-models" maxlength="200"
             aria-label="模型名"
@@ -90,6 +91,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import {
   CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL,
   DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL,

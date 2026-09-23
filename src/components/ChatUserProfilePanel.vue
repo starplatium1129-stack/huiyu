@@ -15,9 +15,11 @@
       </label>
       <label>
         <span>关系定位</span>
-        <select v-model="draft.relationship">
-          <option v-for="option in CHAT_RELATIONSHIPS" :key="option.id" :value="option.id">{{ option.label }}</option>
-        </select>
+        <StudioSelect
+          v-model="draft.relationship"
+          label="关系定位"
+          :options="CHAT_RELATIONSHIPS.map(option => ({ value: option.id, label: option.label }))"
+        />
       </label>
       <label class="profile-note">
         <span>希望她记住的背景</span>
@@ -34,6 +36,7 @@
 
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import {
   CHAT_RELATIONSHIPS,
   EMPTY_CHAT_USER_PROFILE,

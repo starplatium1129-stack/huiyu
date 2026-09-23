@@ -115,24 +115,7 @@
                   maxlength="20"
                   placeholder="角色名（如 宁宁 / 夏目）"
                 />
-                <select
-                  class="select select-tight shot-card-quick-select"
-                  aria-label="一键预设装配此角色"
-                  :disabled="batchActive || submitting"
-                  :value="card.characterId || ''"
-                  @change="onCardCharacterSelected(cardIndex, $event)"
-                >
-                  <option value="">选择角色预设...</option>
-                  <optgroup label="专属角色">
-                    <option value="nene">绫地宁宁</option>
-                    <option value="natsume">四季夏目</option>
-                  </optgroup>
-                  <optgroup label="热门角色">
-                    <option v-for="character in popularCharacters" :key="character.id" :value="character.id">
-                      {{ character.displayName }}
-                    </option>
-                  </optgroup>
-                </select>
+                <StudioSelect class="shot-card-quick-select" size="sm" label="一键预设装配此角色" :groups="cardCharacterGroups" :model-value="card.characterId || ''" :disabled="batchActive || submitting" @update:model-value="(value) => selectCardCharacter(cardIndex, String(value))" />
                 <button
                   v-if="referenceCards.length > 1"
                   class="btn btn-ghost btn-xs shot-card-remove-btn"
@@ -197,19 +180,9 @@
           </div>
         </div>
         <div class="shot-toolbar">
-          <select v-model="sceneFillId" :disabled="batchActive || submitting" class="select" aria-label="从场景蓝图快速填充镜头描述">
-            <option value="">场景蓝图 → 填入空镜头</option>
-            <option v-for="blueprint in sceneBlueprints" :key="blueprint.id" :value="blueprint.id">
-              {{ blueprint.title }}
-            </option>
-          </select>
+          <StudioSelect size="sm" label="从场景蓝图快速填充镜头描述" v-model="sceneFillId" :options="sceneFillOptions" :disabled="batchActive || submitting" />
           <button class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="addShot">＋ 添加镜头</button>
-          <select v-model="storyboardBlueprintId" :disabled="storyboardBusy || batchActive || submitting" class="select" aria-label="选择场景蓝图生成四镜剧本">
-            <option value="">蓝图一键剧本 · 起承转合四镜</option>
-            <option v-for="blueprint in sceneBlueprints" :key="blueprint.id" :value="blueprint.id">
-              {{ blueprint.title }}
-            </option>
-          </select>
+          <StudioSelect size="sm" label="选择场景蓝图生成四镜剧本" v-model="storyboardBlueprintId" :options="storyboardOptions" :disabled="storyboardBusy || batchActive || submitting" />
           <input
             v-model="storyboardIntent"
             class="input shot-intent-input"
@@ -374,49 +347,23 @@
             <div class="shot-selects">
               <label class="field">
                 <span class="field-label">角色</span>
-                <select v-model="shot.cast" class="select" :disabled="batchActive || submitting" title="本镜出场角色（对应顶部角色参考卡，生成时自动带参考图）">
-                  <option value="">无参考</option>
-                  <option v-for="(card, cardIdx) in referenceCards" :key="cardIdx" :value="String(cardIdx + 1)">
-                    角色 {{ cardIdx + 1 }}{{ card.label ? ' · ' + card.label : '' }}
-                  </option>
-                  <option v-if="referenceCards.length >= 2" value="12">
-                    双人（角色 1 + 2）
-                  </option>
-                  <option v-if="referenceCards.length >= 3" value="123">
-                    三人（角色 1 + 2 + 3）
-                  </option>
-                  <option value="all">全员出场</option>
-                </select>
+              <StudioSelect size="sm" label="本镜出场角色" title="本镜出场角色（对应顶部角色参考卡，生成时自动带参考图）" v-model="shot.cast" :options="castOptions" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">景别</span>
-                <select v-model="shot.shotSize" class="select" :disabled="batchActive || submitting">
-                  <option value="">默认</option>
-                  <option value="wide">全景</option>
-                  <option value="medium">中景</option>
-                  <option value="closeup">特写</option>
-                </select>
+                <StudioSelect size="sm" label="景别" v-model="shot.shotSize" :options="shotSizeOptions" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">镜头运动</span>
-                <select v-model="shot.camera" class="select" :disabled="batchActive || submitting">
-                  <option v-for="item in cameraOptions" :key="item.id" :value="item.id">{{ item.label }}</option>
-                </select>
+                <StudioSelect size="sm" label="镜头运动" v-model="shot.camera" :options="cameraOptions.map(item => ({ value: item.id, label: item.label }))" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">主体运动</span>
-                <select v-model="shot.motion" class="select" :disabled="batchActive || submitting">
-                  <option v-for="item in motionOptions" :key="item.id" :value="item.id">{{ item.label }}</option>
-                </select>
+              <StudioSelect size="sm" label="主体运动" v-model="shot.motion" :options="motionOptions.map(item => ({ value: item.id, label: item.label }))" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">时长</span>
-                <select v-model="shot.duration" class="select" :disabled="batchActive || submitting">
-                  <option :value="3">3 秒</option>
-                  <option :value="5">5 秒（推荐）</option>
-                  <option :value="10">10 秒 · 长镜</option>
-                  <option :value="15">15 秒 · 长镜</option>
-                </select>
+                <StudioSelect size="sm" label="时长" v-model="shot.duration" :options="durationOptions" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">Seed</span>
@@ -443,14 +390,7 @@
           </div>
 
           <p v-if="serverShot(index)?.error" class="shot-error">{{ serverShot(index)?.error }}</p>
-          <video
-            v-if="serverShot(index)?.resultUrl"
-            class="shot-result"
-            :src="serverShot(index)?.resultUrl ?? undefined"
-            controls
-            playsinline
-            preload="metadata"
-          ></video>
+          <StudioMediaPlayer v-if="serverShot(index)?.resultUrl" class="shot-result" kind="video" :src="serverShot(index)?.resultUrl ?? ''" label="本镜生成结果" />
           <div v-if="serverShot(index)?.status === 'failed'" class="shot-retry">
             <button class="btn btn-primary" type="button" :disabled="retrying || cancelling || concating || submitting" @click="retryShotAt(index)">{{ retrying ? '正在重试…' : '重抽本镜（同 Seed）' }}</button>
           </div>
@@ -487,21 +427,11 @@
             <div class="shot-script-row">
               <label class="field">
                 <span class="field-label">镜头数</span>
-                <select v-model="scriptCount" class="select">
-                  <option :value="null">自动</option>
-                  <option :value="8">8 镜</option>
-                  <option :value="10">10 镜</option>
-                  <option :value="12">12 镜</option>
-                </select>
+                <StudioSelect size="sm" label="镜头数" :model-value="scriptCount ?? ''" :options="scriptCountOptions" @update:model-value="value => (scriptCount = value === '' ? null : Number(value))" />
               </label>
               <label class="field">
                 <span class="field-label">总时长（秒）</span>
-                <select v-model="scriptTotal" class="select">
-                  <option :value="null">自动</option>
-                  <option :value="40">约 40s</option>
-                  <option :value="60">约 60s</option>
-                  <option :value="90">约 90s</option>
-                </select>
+                <StudioSelect size="sm" label="总时长（秒）" :model-value="scriptTotal ?? ''" :options="scriptTotalOptions" @update:model-value="value => (scriptTotal = value === '' ? null : Number(value))" />
               </label>
             </div>
             <footer class="shot-script-foot">
@@ -569,7 +499,7 @@
             <strong>整片预览</strong>
             <a class="btn btn-ghost" :href="batch.concatUrl" download>下载整片 MP4</a>
           </div>
-          <video class="shot-concat-player" :src="batch.concatUrl" controls playsinline preload="metadata"></video>
+          <StudioMediaPlayer class="shot-concat-player" kind="video" :src="batch.concatUrl" label="整片预览" />
         </template>
       </section>
     </template>
@@ -579,7 +509,10 @@
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import { nextTick, ref } from 'vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
+import type { StudioSelectOption, StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
+import { computed, nextTick, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
@@ -609,6 +542,70 @@ scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
 cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
 submitBatch, submitting, retrying, batchError, batchStatusLabel, progressPercent,
 } = useShotWorkspace(props)
+
+// —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
+const cardCharacterGroups = computed<StudioSelectGroup[]>(() => [
+  { label: '角色预设', options: [{ value: '', label: '选择角色预设...' }] },
+  { label: '专属角色', options: [
+    { value: 'nene', label: '绫地宁宁' },
+    { value: 'natsume', label: '四季夏目' },
+  ] },
+  { label: '热门角色', options: popularCharacters.value.map(c => ({ value: c.id, label: c.displayName })) },
+])
+
+const sceneFillOptions = computed<StudioSelectOption[]>(() => [
+  { value: '', label: '场景蓝图 → 填入空镜头' },
+  ...sceneBlueprints.value.map(b => ({ value: b.id, label: b.title })),
+])
+
+const storyboardOptions = computed<StudioSelectOption[]>(() => [
+  { value: '', label: '蓝图一键剧本 · 起承转合四镜' },
+  ...sceneBlueprints.value.map(b => ({ value: b.id, label: b.title })),
+])
+
+// 镜头级参数与剧本档位的选项：原先内联在 <option> 里，抽出来让模板保持单行。
+const shotSizeOptions: StudioSelectOption[] = [
+  { value: '', label: '默认' },
+  { value: 'wide', label: '全景' },
+  { value: 'medium', label: '中景' },
+  { value: 'closeup', label: '特写' },
+]
+// 时长是数字值：shot.duration 为 number，保持类型不要字符串化。
+const durationOptions: StudioSelectOption[] = [
+  { value: 3, label: '3 秒' },
+  { value: 5, label: '5 秒（推荐）' },
+  { value: 10, label: '10 秒 · 长镜' },
+  { value: 15, label: '15 秒 · 长镜' },
+]
+const scriptCountOptions: StudioSelectOption[] = [
+  { value: '', label: '自动' },
+  { value: 8, label: '8 镜' },
+  { value: 10, label: '10 镜' },
+  { value: 12, label: '12 镜' },
+]
+const scriptTotalOptions: StudioSelectOption[] = [
+  { value: '', label: '自动' },
+  { value: 40, label: '约 40s' },
+  { value: 60, label: '约 60s' },
+  { value: 90, label: '约 90s' },
+]
+
+const castOptions = computed<StudioSelectOption[]>(() => {
+  const options: StudioSelectOption[] = [{ value: '', label: '无参考' }]
+  referenceCards.value.forEach((card, cardIdx) => {
+    options.push({ value: String(cardIdx + 1), label: `角色 ${cardIdx + 1}${card.label ? ' · ' + card.label : ''}` })
+  })
+  if (referenceCards.value.length >= 2) options.push({ value: '12', label: '双人（角色 1 + 2）' })
+  if (referenceCards.value.length >= 3) options.push({ value: '123', label: '三人（角色 1 + 2 + 3）' })
+  options.push({ value: 'all', label: '全员出场' })
+  return options
+})
+
+// onCardCharacterSelected 已按新签名收 string（见 useReferenceCards），直接透传。
+function selectCardCharacter(cardIndex: number, value: string | number) {
+  onCardCharacterSelected(cardIndex, String(value))
+}
+
 async function removeReferenceWithFocus(cardIndex: number, imageIndex: number, event: MouseEvent) {
   const group = (event.currentTarget as HTMLElement).closest('.shot-reference-images')
   removeReference(cardIndex, imageIndex)

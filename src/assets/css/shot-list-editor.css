@@ -40,7 +40,7 @@
 .video-progress i { display: block; height: 100%; width: 100%; transform-origin: left; scale: var(--progress, 0%); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: scale var(--motion-surface) var(--ease-out); }
 
 .shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
-.shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }
+.shot-toolbar .studio-select-wrapper { width: auto; max-width: 300px; flex: 0 1 auto; }
 .shot-toolbar .shot-intent-input { width: 180px; flex: 0 1 auto; min-height: 34px; }
 .shot-ai-note { margin: 0 0 var(--s-3); color: var(--accent); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .shot-ai-note[data-busy="true"] { color: var(--warning-text); }
@@ -57,7 +57,9 @@
 .shot-reference-card { display: grid; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); }
 .shot-reference-head { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
 .shot-reference-head strong { font-size: var(--fs-body-sm); white-space: nowrap; }
-.shot-card-quick-select { flex: 1 1 140px; min-height: 28px; padding: 2px var(--s-2); font-size: var(--fs-label-xs); border-color: var(--accent); }
+.shot-card-quick-select { flex: 1 1 140px; }
+/* 原有「一键预设」始终使用强调色边框，迁到 StudioSelect 后保留在 trigger 上 */
+.shot-card-quick-select .studio-select-trigger { border-color: var(--accent); }
 .input-tight { min-height: 28px; padding: 2px var(--s-2); font-size: var(--fs-label-xs); }
 .shot-card-outfit-pills { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0; }
 .shot-card-outfit-pill {
@@ -111,7 +113,7 @@
 .shot-toggle small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .shot-identity-field { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
 .shot-identity-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: var(--s-2); align-items: start; }
-.shot-identity-row .select { align-self: start; }
+.shot-identity-row .studio-select-wrapper { align-self: start; }
 .shot-row { display: grid; gap: var(--s-3); padding: var(--s-4) 0; border-top: 1px solid var(--border-soft); scroll-margin-top:84px; }
 .shot-row:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:var(--r-md); }
 .shot-row:first-of-type { border-top: 0; padding-top: 0; }
@@ -136,7 +138,8 @@
 .shot-frame-input { display: none; }
 .shot-chain-note { color: var(--text-muted); font-size: var(--fs-label-xs); }
 .shot-error { margin: 0; color: var(--danger-text); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
-.shot-result { display: block; width: min(100%, 520px); border-radius: var(--r-md); background: var(--bg-deep); }
+/* 2026-09-22：画面与播放条由 StudioMediaPlayer 自带主题外观，这里只保留尺寸与布局。 */
+.shot-result { --media-max-height: 42vh; width: min(100%, 520px); }
 .shot-retry { display: flex; }
 .shot-empty { color: var(--text-muted); font-size: var(--fs-body-sm); line-height: var(--lh-loose); }
 .shot-submit-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-4); background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, transparent), var(--bg-surface)); }
@@ -147,7 +150,7 @@
 .shot-progress-panel { display: grid; gap: var(--s-3); }
 .shot-progress-stats { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
 .shot-concat-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
-.shot-concat-player { display: block; width: 100%; max-height: min(68vh, 700px); border-radius: var(--r-lg); background: var(--bg-deep); }
+.shot-concat-player { --media-max-height: min(68vh, 700px); width: 100%; }
 @media (max-width: 1000px) {
   .shot-identity-row { grid-template-columns: 1fr; }
   .shot-selects { grid-template-columns: repeat(2, minmax(0, 1fr)); }

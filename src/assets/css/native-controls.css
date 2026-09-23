@@ -1,23 +1,43 @@
-/* Unified browser-control chrome. Component-specific controls keep precedence. */
-:root body select:not([multiple]) {
-  padding-inline-end: var(--s-7);
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  cursor: pointer;
+/* Unified browser-control chrome. Component-specific controls keep precedence.
+   2026-09-22 去原生化收尾：全站原生 <select> 已由 src/components/ui/StudioSelect.vue
+   接管，本文件不再为原生 select 兜底。故意不补：漏改的地方保留浏览器原生外观，
+   当作可见的漏改信号，而不是被一层"看起来还行"的样式盖住。 */
+
+/* ── 表单自动填充 ──
+   Chrome 用系统黄底铺满整个控件，深色主题下是全站最刺眼的一处原生外观。
+   只能靠一段超长 transition 把填充色的出现时机推到不可见，
+   再垫一层主题表面色；文字色与插入符必须同时显式声明，否则仍是 UA 默认。 */
+:where(input, textarea):-webkit-autofill,
+:where(input, textarea):-webkit-autofill:hover,
+:where(input, textarea):-webkit-autofill:focus,
+:where(input, textarea):autofill {
+  -webkit-text-fill-color: var(--text-primary);
+  box-shadow: 0 0 0 1000px var(--bg-surface) inset;
+  caret-color: var(--accent);
+  transition: background-color 100000s var(--ease-out) 0s;
+}
+
+/* ── 移动端点击高亮 ──
+   WebKit 在点击时压一层与主题无关的灰/蓝色块，触屏设备上尤其像系统默认控件。 */
+html { -webkit-tap-highlight-color: transparent; }
+
+/* ── 文本插入符 ──
+   跟随强调色，与 ::selection 的粉调保持同一套选中语言。 */
+:where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+       textarea,
+       [contenteditable]:not([contenteditable="false"])) {
+  caret-color: var(--accent);
+}
+
+/* ── search 输入的原生装饰 ──
+   macOS/WebKit 会在框内画放大镜与结果按钮，与项目自己的搜索图标重复。 */
+:where(input[type="search"]) {
   -webkit-appearance: none;
   appearance: none;
 }
-
-:root body select:not([multiple]):disabled { cursor: not-allowed; }
-:root body select:not([multiple]):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-
+:where(input[type="search"])::-webkit-search-decoration,
+:where(input[type="search"])::-webkit-search-results-button,
+:where(input[type="search"])::-webkit-search-results-decoration { display: none; }
 
 :where(input[type="checkbox"], input[type="radio"]) {
   display: inline-grid;
@@ -91,7 +111,6 @@
 :where(input[type="number"]) { -moz-appearance: textfield; appearance: textfield; }
 :where(input[type="number"])::-webkit-inner-spin-button,
 :where(input[type="number"])::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
-:where(input[type="search"])::-webkit-search-cancel-button { -webkit-appearance: none; }
 
 :where(input[type="file"]) { color: var(--text-secondary); font: inherit; }
 :where(input[type="file"])::file-selector-button {
@@ -107,6 +126,9 @@
 }
 :where(input[type="file"])::file-selector-button:hover { border-color: var(--accent); background: var(--accent-soft); }
 
+/* 媒体元素被拖拽时浏览器会画一张半透明快照；交互控件里的图片只作为画面内容。 */
+:where(button, a, label, summary) img { -webkit-user-drag: none; }
+
 :where(progress) {
   height: 8px;
   overflow: hidden;
@@ -121,11 +143,11 @@
 :where(progress)::-moz-progress-bar { border-radius: var(--r-pill); background: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
-  :root body select:not([multiple])::picker-icon,
   :where(input[type="checkbox"], input[type="radio"])::before { transition: none; }
 }
 
 @media (forced-colors: active) {
+  :where(input, textarea):-webkit-autofill { -webkit-text-fill-color: CanvasText; }
   :where(input[type="checkbox"], input[type="radio"]) { border-color: ButtonText; background: Canvas; color: HighlightText; }
   :where(input[type="checkbox"], input[type="radio"]):checked { border-color: Highlight; background: Highlight; }
   :where(input[type="range"]) { background: CanvasText; }

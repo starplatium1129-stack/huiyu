@@ -37,7 +37,7 @@
 .pb.atelier-workspace .col-center { container-type:inline-size; container-name:canvas-column; }
 .pb.journal-workspace.atelier-workspace .gen-bar { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-2) var(--s-3); border-radius:var(--r-xl); background:var(--bg-surface); box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
 .pb.atelier-workspace .gen-bar-size { min-width:0; flex:1 1 220px; color:var(--text-secondary); }
-.pb.atelier-workspace .gen-bar-size select { flex:1; min-width:0; max-width:100%; }
+.pb.atelier-workspace .gen-bar-size .studio-select-wrapper { flex:1; min-width:0; max-width:100%; }
 /* 完整参数摘要保留在右侧输出面板，画布下不重复占行。 */
 .pb.atelier-workspace .gen-bar-preset { display:none; }
 .pb.atelier-workspace .gen-bar-size { grid-column:1; grid-row:1; }

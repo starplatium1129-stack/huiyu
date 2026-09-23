@@ -8,6 +8,7 @@ import { downloadBlob } from '@/utils/downloadBlob'
 import { version as appVersion } from '../../package.json'
 import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
 import { ref } from 'vue'
+import { confirmAction } from '@/composables/useConfirm'
 import { kvGet } from '@/composables/useKVStore'
 import { imgList, imgGet, imgDeleteMany } from '@/composables/useImageStore'
 import {
@@ -193,7 +194,12 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   async function restore(mode: 'replace' | 'merge', confirmed = false): Promise<boolean> {
     if (!pending.value || busy.value) return false
     const replace = mode === 'replace'
-    if (replace && !confirmed && !window.confirm('覆盖恢复会替换当前项目与历史记录。原图保留，确认恢复后可通过存储清理释放空间。确定继续吗？')) {
+    if (replace && !confirmed && !(await confirmAction({
+      title: '覆盖恢复会替换当前项目与历史记录',
+      message: '原图保留；确认恢复后可通过存储清理释放空间。',
+      confirmLabel: '继续覆盖恢复',
+      danger: true,
+    }))) {
       return false
     }
     busy.value = true
@@ -257,7 +263,12 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       const snapshot = await readCleanupState()
       const candidates = new Set(snapshot.images.filter(record => !snapshot.referenced.has(record.id)).map(record => record.id))
       if (!candidates.size) { onFlash('没有需要清理的孤儿图片'); return 0 }
-      if (!window.confirm(`将检查并清理 ${candidates.size} 张未引用图片。请先备份，并保存草稿、关闭其他绘遇窗口。确认后会重新检查引用；新保存或新建的图片不会按旧名单删除。确定继续吗？`)) return 0
+      if (!(await confirmAction({
+        title: `清理 ${candidates.size} 张未引用图片`,
+        message: '请先备份，并保存草稿、关闭其他绘遇窗口。确认后会重新检查引用；新保存或新建的图片不会按旧名单删除。',
+        confirmLabel: '继续清理',
+        danger: true,
+      }))) return 0
       const removed = await withArtworkCleanup(async () => {
         const current = await readCleanupState()
         const ids = current.images.filter(record => candidates.has(record.id) && !current.referenced.has(record.id)).map(record => record.id)

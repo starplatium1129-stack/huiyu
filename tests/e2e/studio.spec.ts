@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { expectStudioSelectValue, pickStudioOptionByValue, readStudioOptions } from './helpers/studioSelect';
 
 /**
  * Vue SPA 浏览器回归
@@ -356,11 +357,11 @@ test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ 
   await page.getByRole('button', { name: '关闭大图' }).click();
   await expect(page.locator('.showcase-viewer')).not.toHaveAttribute('open', '');
   await expect(page.locator('.sample .sample-visual').first()).toBeFocused();
-  await page.locator('#showcaseTypeSelect').selectOption('popular');
+  await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular');
   await page.getByRole('combobox', { name:'筛选角色', exact:true }).fill('测试角色');
   await page.getByRole('option', { name:'测试角色', exact:true }).click();
   await expect(page.locator('.sample')).toHaveCount(1);
-  await page.locator('#showcaseTypeSelect').selectOption('scene');
+  await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'scene');
   await expect(page.locator('#showcaseCharSelect')).toHaveValue('全部角色');
   await expect(page.locator('.sample')).toHaveCount(1);
 
@@ -448,18 +449,18 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await page.locator('[data-vendor="deepseek"]').click();
   await expect(page.locator('[data-vendor="deepseek"]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByLabel('API 地址')).toHaveValue('https://api.deepseek.com');
-  await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash');
+  await expectStudioSelectValue(page.getByLabel('模型名'), 'deepseek-v4-flash');
   await page.locator('[data-vendor="opencode"]').click();
   await expect(page.getByLabel('API 地址')).toHaveValue('https://opencode.ai/zen/v1');
-  await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash-free');
+  await expectStudioSelectValue(page.getByLabel('模型名'), 'deepseek-v4-flash-free');
   await page.locator('[data-vendor="opencode-go"]').click();
   await expect(page.getByLabel('API 地址')).toHaveValue('https://opencode.ai/zen/go/v1');
-  await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash');
+  await expectStudioSelectValue(page.getByLabel('模型名'), 'deepseek-v4-flash');
   await page.locator('[data-vendor="opencode"]').click();
   await page.getByLabel('API Key').fill('test-key');
   await page.getByRole('button', { name: '测试连接' }).click();
   await expect(page.locator('.api-test-status')).toContainText('连接成功，发现 2 个模型');
-  await expect(page.getByLabel('模型名').locator('option')).toHaveCount(6);
+  expect((await readStudioOptions(page.getByLabel('模型名'))).length).toBe(6);
   await expect(page.locator('.voice-console')).toBeVisible();
 
   expect(errors).toEqual([]);

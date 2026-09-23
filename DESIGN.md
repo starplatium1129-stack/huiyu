@@ -296,23 +296,42 @@ flush. Narrow browse controls provide a 44px minimum touch height.
 ## Vue interaction components
 
 Reusable interaction primitives live in `src/components/ui/` and use Reka UI.
-`StudioCombobox` provides searchable single selection; `StudioPopover` provides
-non-modal anchored content with collision handling and focus restoration.
-`StudioTabs` owns keyboard selection and a shared segmented appearance while
-keeping previously opened panels mounted. Views retain their deferred-loading
-boundaries. Data tools use `StudioPopover`, with file inputs kept outside the
-transient surface and an explicit focus handoff to the restore dialog.
-The secondary navigation also uses `StudioPopover`, loading `AppMoreMenu` only
-on first use. Keep destinations as actual links, and preserve route/settings
+`StudioSelect` provides single selection and replaces every native `<select>`;
+it accepts flat or grouped options, disabled entries, string or numeric values,
+and treats an empty-string value as a real choice ("all / auto / none") rather
+than as "nothing selected". `StudioCombobox` provides searchable single
+selection; `StudioPopover` provides non-modal anchored content with collision
+handling and focus restoration. `StudioMediaPlayer` renders audio and video
+without the browser's native control chrome, keeping the decoded element as the
+playback core. `StudioTabs` owns keyboard selection and a shared segmented
+appearance while keeping previously opened panels mounted. Views retain their
+deferred-loading boundaries. Data tools use `StudioPopover`, with file inputs
+kept outside the transient surface and an explicit focus handoff to the restore
+dialog. The secondary navigation also uses `StudioPopover`, loading `AppMoreMenu`
+only on first use. Keep destinations as actual links, and preserve route/settings
 focus handoffs when the menu closes. A failed menu download must leave primary
 navigation usable and explain how to recover by refreshing; never automatically
 reload a workspace that could have an active generation task.
 Business views supply values and content; the wrappers own theme styling and
-keyboard behavior. Keep simple native selects for short lists. Do not add a
-second focus trap or manual viewport positioning around these primitives.
-Existing modal dialogs keep their current focus stack until migrated and tested
-as a complete flow; portalled content inside legacy trapped dialogs needs an
-explicit integration check.
+keyboard behavior. Do not add a second focus trap or manual viewport positioning
+around these primitives. Existing modal dialogs keep their current focus stack
+until migrated and tested as a complete flow; portalled content inside legacy
+trapped dialogs needs an explicit integration check.
+
+### Native browser chrome
+
+The system skin never ships: a native `<select>`, a `<audio>`/`<video>` with the
+`controls` attribute, or a `window.confirm`/`alert`/`prompt` call is a defect,
+not a shortcut, because none of them can follow the theme, the character accent,
+or the project's focus flow. `scripts/tests/test-native-controls.js` enforces
+this across `src/`. Native checkboxes and radios remain allowed while
+`native-controls.css` gives them themed appearance, but any container that
+`apple-hig-accessibility` or `companion-focus` asserts on must contain none.
+`native-controls.css` covers the remaining browser surfaces the theme cannot
+reach through components: autofill fills, tap highlights, caret color, search
+field decorations, file-selector buttons, spinners, range thumbs, progress bars,
+and image drag ghosts. When a new native surface appears, extend that file rather
+than styling the leak at the call site.
 
 ## Anime Visual Language
 

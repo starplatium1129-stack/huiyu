@@ -30,8 +30,7 @@
 .gallery-search-clear:focus-visible { outline:2px solid var(--accent); outline-offset:1px; border-radius:var(--r-sm); }
 .gallery-filter { min-height:36px; padding:0 15px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover); }
 .gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:color-mix(in srgb,var(--accent) 8%,var(--bg-surface)); color:var(--accent); }
-.gallery-project { min-height:36px; min-width:140px; padding:0 34px 0 13px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; outline:none; }
-.gallery-project:focus { border-color:var(--accent); }
+.gallery-project { width:auto; min-width:140px; }
 .gallery-toolbar-note { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); text-align:right; }
 
 /* 批量操作条（2026-08-30 UX 审计 P1）：只在勾选态出现，避免常态占一行 */

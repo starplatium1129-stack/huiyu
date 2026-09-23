@@ -13,7 +13,7 @@
       <div class="directory-tools">
         <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
         <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" @keydown="onSearchKeydown" />
-        <select v-if="!catalog" v-model="series" aria-label="筛选角色系列"><option value="">全部系列</option><option v-for="group in groups" :key="group.key" :value="group.key">{{ group.label }} · {{ group.count }}</option></select>
+        <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="[{ value: '', label: '全部系列' }, ...groups.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))]" />
         <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
       </div>
       <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
@@ -26,7 +26,7 @@
       </div>
       <nav v-if="pageCount > 1" class="directory-pagination" aria-label="角色分页">
         <button type="button" :disabled="page === 1" @click="page--">上一页</button>
-        <label>第 <select v-model.number="page" aria-label="跳转角色页"><option v-for="n in pageCount" :key="n" :value="n">{{ n }}</option></select> / {{ pageCount }} 页</label>
+        <label>第 <StudioSelect v-model.number="page" label="跳转角色页" inline size="sm" :options="pageItems.map(n => ({ value: n, label: String(n) }))" /> / {{ pageCount }} 页</label>
         <button type="button" :disabled="page === pageCount" @click="page++">下一页</button>
       </nav>
       <div class="directory-current"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
@@ -38,6 +38,7 @@ import { computed, nextTick, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; aliases?: string[] }
 const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
 const emit = defineEmits<{ select: [id: string]; dismiss: [] }>()
@@ -68,6 +69,8 @@ const results = computed(() => {
     .sort((a, b) => Number(b.name.toLocaleLowerCase() === term) - Number(a.name.toLocaleLowerCase() === term))
 })
 const pageCount = computed(() => props.pageSize ? Math.max(1, Math.ceil(results.value.length / props.pageSize)) : 1)
+/** 页码跳转选项：1 … pageCount，供 StudioSelect 渲染（原生分页 <select> 已迁移）。 */
+const pageItems = computed(() => Array.from({ length: pageCount.value }, (_, i) => i + 1))
 const visibleResults = computed(() => props.pageSize ? results.value.slice((page.value - 1) * props.pageSize, page.value * props.pageSize) : results.value)
 watch([query, series], () => { page.value = 1 })
 watch(pageCount, count => { page.value = Math.min(page.value, count) })
@@ -125,23 +128,9 @@ async function locateSelected() {
 .directory-tools { padding: var(--s-4); display: grid; gap: var(--s-3); flex-shrink: 0; }
 .directory-heading { display: flex; justify-content: space-between; font-size: var(--fs-body-sm); font-weight: 600; }
 .directory-heading span, .directory-count { color: var(--text-muted); font-size: var(--fs-label-xs); }
-.directory-tools input, .directory-tools select { min-width: 0; width: 100%; min-height: 40px; padding: var(--s-2) var(--s-3); color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); font: inherit; font-size: var(--fs-label); }
-.directory-tools select, .directory-pagination select {
-  padding-inline-end: var(--s-7);
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  transition: border-color var(--motion-hover) var(--ease-out);
-}
-.directory-tools select:hover, .directory-pagination select:hover { border-color: var(--accent); }
+.directory-tools input { min-width: 0; width: 100%; min-height: 40px; padding: var(--s-2) var(--s-3); color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); font: inherit; font-size: var(--fs-label); }
+/* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度）落在 wrapper。 */
+.directory-tools .studio-select-wrapper { width: 100%; min-width: 0; min-height: 40px; }
 .directory-count, .directory-current { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); }
 .directory-count button, .directory-current button { padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font: inherit; }
 .directory-list { flex: 1 1 auto; min-height: 120px; overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }
@@ -165,14 +154,16 @@ async function locateSelected() {
 .directory-rail { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; min-height: 0; padding-right: var(--s-3); border-right: 1px solid var(--border-soft); }
 .directory-rail-title { margin: 0; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 600; }
 .directory-series { display: flex; flex-direction: column; gap: var(--s-1); min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
-.directory-series button, .directory-pagination button, .directory-pagination select { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); min-height: 36px; color: var(--text-secondary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
+.directory-series button, .directory-pagination button { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); min-height: 36px; color: var(--text-secondary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
+.directory-pagination .studio-select-wrapper { min-height: 36px; }
 .directory-series button { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); width: 100%; min-width: 0; text-align: left; line-height: var(--lh-body); overflow-wrap: anywhere; }
 .directory-series button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
 .directory-series button span { color: var(--text-muted); flex-shrink: 0; }
 /* 分页行给结果滚动区一个明确的下边界，让「未滚到底」与「被裁切」可区分。 */
 .directory-pagination { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); padding: var(--s-3) 0; margin-top: var(--s-2); border-top: 1px solid var(--border-soft); color: var(--text-secondary); font-size: var(--fs-label); flex-shrink: 0; }
 .directory-pagination button:disabled { color: var(--text-disabled); cursor: default; }
-.directory-catalog button:focus-visible, .directory-pagination select:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.directory-catalog button:focus-visible,
+.directory-pagination :deep(.studio-select-trigger):focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .directory-catalog .directory-tools { padding: var(--s-3) 0 0; }
 .directory-catalog .directory-list { min-height: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: var(--s-2); padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
 .directory-catalog .directory-item { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: var(--s-3); margin: 0; min-width: 0; padding: var(--s-2); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); }

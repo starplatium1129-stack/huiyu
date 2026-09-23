@@ -1,6 +1,7 @@
 import { expect, test, type Locator } from '@playwright/test'
 import { installShowcaseFixture } from './helpers/showcase'
 import { textContrast } from './helpers/contrast'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 async function contained(locator: Locator, width: number, height: number) {
   const box = (await locator.boundingBox())!
@@ -46,10 +47,10 @@ for (const theme of ['light', 'dark']) {
       await field.press('Escape')
       await page.getByRole('button', { name:'清除筛选', exact:true }).click()
       await expect(field).toHaveValue('全部角色')
-      await page.getByLabel('筛选作品类型').selectOption('popular')
+      await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular')
       await field.fill('雷电')
       await option.click()
-      await page.getByLabel('筛选作品类型').selectOption('scene')
+      await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'scene')
       await expect(field).toHaveValue('全部角色')
       await expect(page.locator('.sample-title')).toContainText('测试场景')
     })

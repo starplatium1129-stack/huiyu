@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
@@ -272,12 +273,17 @@ async function handleStart() {
                 <span>角色模型辅助 (LoRA)</span>
               </span>
             </label>
-            <select id="charModeSelect" v-model="characterMode" class="input input-sm char-select">
-              <option value="auto">自动跟随当前角色 ({{ character || '通用' }})</option>
-              <option value="none">通用模式 (无 LoRA / 任意第三方动漫图)</option>
-              <option value="nene">绫地宁宁专属 LoRA (Ayachi Nene)</option>
-              <option value="natsume">四季夏目专属 LoRA (Shiki Natsume)</option>
-            </select>
+            <StudioSelect
+              id="charModeSelect"
+              v-model="characterMode"
+              label="角色模型辅助 (LoRA)"
+              :options="[
+                { value: 'auto', label: `自动跟随当前角色 (${character || '通用'})` },
+                { value: 'none', label: '通用模式 (无 LoRA / 任意第三方动漫图)' },
+                { value: 'nene', label: '绫地宁宁专属 LoRA (Ayachi Nene)' },
+                { value: 'natsume', label: '四季夏目专属 LoRA (Shiki Natsume)' },
+              ]"
+            />
           </div>
 
           <div class="segment-box">

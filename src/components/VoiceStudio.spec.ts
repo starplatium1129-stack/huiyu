@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import VoiceStudio from './VoiceStudio.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { voiceApi, type VoiceAudioResult } from '@/api/voiceApi'
 import type { TtsStatus, TranslateResult } from '@/types/api'
 
@@ -18,13 +19,24 @@ function deferred<T>() {
   return { promise, resolve }
 }
 
+/**
+ * 配音面板的四个下拉已从原生 <select> 换成 StudioSelect（2026-09-22 去原生化）。
+ * 取值列表在弹层里，而 happy-dom 不会展开弹层，所以直接走组件的 update:modelValue
+ * 契约——这与用户点选后在组件内部产生的回写是同一条路径。
+ * 顺序：0 角色 / 1 语言 / 2 情绪 / 3 语速。
+ */
+async function chooseField(wrapper: VueWrapper, index: number, value: string | number) {
+  wrapper.findAllComponents(StudioSelect)[index].vm.$emit('update:modelValue', value)
+  await flushPromises()
+}
+
 async function openStudio() {
   const wrapper = mount(VoiceStudio, {
     props: { initialVoice: 'nene', suggestedCaption: '你好' },
     global: { stubs: { RouterLink: true, ArchiveIcon: true } },
   })
   await flushPromises()
-  await wrapper.findAll('select')[1].setValue('zh')
+  await chooseField(wrapper, 1, 'zh')
   return wrapper
 }
 
@@ -45,11 +57,10 @@ describe('VoiceStudio 异步操作生命周期', () => {
     const status = deferred<TtsStatus>()
     vi.mocked(voiceApi.getStatus).mockReturnValueOnce(status.promise)
     await wrapper.find('button.btn-primary').trigger('click')
-    const selects = wrapper.findAll('select')
-    await selects[0].setValue('natsume')
-    await selects[1].setValue('ja')
-    await selects[2].setValue('happy')
-    await selects[3].setValue('1.15')
+    await chooseField(wrapper, 0, 'natsume')
+    await chooseField(wrapper, 1, 'ja')
+    await chooseField(wrapper, 2, 'happy')
+    await chooseField(wrapper, 3, 1.15)
     status.resolve(ready)
     await flushPromises()
     expect(voiceApi.synthesize).toHaveBeenCalledWith({
@@ -92,7 +103,7 @@ describe('VoiceStudio 异步操作生命周期', () => {
 
   it('翻译期间用户修改字幕时保留新稿，不填回旧字幕的译文', async () => {
     const wrapper = await openStudio()
-    await wrapper.findAll('select')[1].setValue('ja')
+    await chooseField(wrapper, 1, 'ja')
     const translation = deferred<TranslateResult>()
     vi.mocked(voiceApi.translate).mockReturnValueOnce(translation.promise)
     const translateButton = wrapper.findAll('button').find(button => button.text() === '翻译成日文')!

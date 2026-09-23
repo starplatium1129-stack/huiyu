@@ -5,28 +5,32 @@
       <p>从常用页面开始，外观沿用你选择的深浅主题。</p>
     </div>
     <label for="desktop-start-page">打开工作台时</label>
-    <select id="desktop-start-page" :value="startPage" @change="saveStartPage">
-      <option v-for="page in desktopPages" :key="page.value" :value="page.value">{{ page.label }}</option>
-      <option value="last">回到上次工作页</option>
-    </select>
+    <StudioSelect
+      id="desktop-start-page"
+      :model-value="startPage"
+      label="打开工作台时"
+      :options="[...desktopPages, { value: 'last', label: '回到上次工作页' }]"
+      @update:model-value="saveStartPageValue"
+    />
     <p class="desktop-preferences-note" role="status">{{ feedback || '仅记住页面位置；从作品或场景打开时仍进入对应内容。' }}</p>
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { settingsRepository } from '@/storage/settingsRepository'
 import { desktopPages, DESKTOP_START_PAGE_SETTING } from '@/storage/desktopPreferences'
 const isDesktop = Boolean(window.companionDesktop)
 const startPage = ref(settingsRepository.get(DESKTOP_START_PAGE_SETTING) || '/')
 const feedback = ref('')
-function saveStartPage(event: Event) {
-  const value = DESKTOP_START_PAGE_SETTING.parse((event.target as HTMLSelectElement).value)
-  if (!value) return
-  settingsRepository.set(DESKTOP_START_PAGE_SETTING, value)
+function saveStartPageValue(value: string | number) {
+  const parsed = DESKTOP_START_PAGE_SETTING.parse(String(value))
+  if (!parsed) return
+  settingsRepository.set(DESKTOP_START_PAGE_SETTING, parsed)
   const saved = settingsRepository.get(DESKTOP_START_PAGE_SETTING)
   startPage.value = saved || '/'
-  feedback.value = saved === value ? '已保存，下次打开工作台时生效。' : '设置未能保存，请检查本地存储后重试。'
+  feedback.value = saved === parsed ? '已保存，下次打开工作台时生效。' : '设置未能保存，请检查本地存储后重试。'
 }
 </script>
 

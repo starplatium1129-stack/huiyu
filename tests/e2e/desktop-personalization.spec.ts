@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 import type { CompanionDesktopBridge } from '../../src/types/desktop'
 import { DESKTOP_START_PAGE_KEY, GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(key => {
@@ -24,14 +25,14 @@ for (const theme of ['dark', 'light'] as const) {
     await expect(page.locator('.desktop-titlebar')).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
     const select = page.getByLabel('打开工作台时')
-    await select.selectOption('/gallery')
+    await pickStudioOptionByValue(select, '/gallery')
     await expect(page.getByRole('status').filter({ hasText: '已保存，下次打开工作台时生效。' })).toBeVisible()
     await page.screenshot({ path: testInfo.outputPath(`desktop-${theme}.png`), fullPage: true })
     await page.goto('/')
     await expect(page).toHaveURL(/\/gallery$/)
     await page.goto('/control')
-    await expect(select).toHaveValue('/gallery')
-    await select.selectOption('last')
+    await expect(select).toContainText('我的作品')
+    await pickStudioOptionByValue(select, 'last')
     await page.goto('/video-studio')
     await expect(page.locator('h1')).toBeVisible()
     await page.goto('/')

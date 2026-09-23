@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test'
 import { cpSync, mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import sharp from 'sharp'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 const fixtureDir = path.resolve('runtime/model-studio-review/neutral-model')
 test.beforeAll(() => {
@@ -62,7 +63,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     await dialog.getByLabel('独立角色设定').fill('只用于隔离校准测试的中性角色。')
     await dialog.getByLabel('作者或来源').fill('自动化测试夹具')
     await dialog.getByLabel('许可与使用范围').fill('仅隔离测试')
-    await dialog.getByRole('combobox', { name: '口型参数', exact: true }).selectOption('ParamMouthOpenY')
+    await pickStudioOptionByValue(dialog.getByRole('combobox', { name: '口型参数', exact: true }), 'ParamMouthOpenY')
     await dialog.getByLabel('口型闭合值', { exact: true }).fill('2')
     await dialog.getByLabel('口型张开值', { exact: true }).fill('-1')
     await dialog.getByLabel('模拟语音电平').fill('0.5')

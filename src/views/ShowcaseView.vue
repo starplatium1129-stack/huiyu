@@ -19,9 +19,8 @@
         </div>
         <div class="filter-group filter-dropdowns">
           <label class="sr-only" for="showcaseTypeSelect">作品类型</label>
-          <select id="showcaseTypeSelect" class="filter-select" v-model="typeFilter" aria-label="筛选作品类型">
-            <option v-for="opt in TYPE_OPTS" :key="opt.v" :value="opt.v">{{ opt.l }}</option>
-          </select>
+          <StudioSelect id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
+            :options="TYPE_OPTS.map(opt => ({ value: opt.v, label: opt.l }))" />
 
           <label class="sr-only" for="showcaseCharSelect">角色筛选</label>
           <StudioCombobox id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
@@ -162,6 +161,7 @@ import { showcaseDestination } from '@/utils/showcaseDestination'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioCombobox from '@/components/ui/StudioCombobox.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {

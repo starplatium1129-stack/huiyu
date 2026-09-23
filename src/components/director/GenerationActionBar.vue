@@ -5,32 +5,15 @@
     <label class="gen-bar-size">
       <ArchiveIcon name="centercomp" class="gen-bar-aspect-icon" aria-hidden="true" />
       <span class="gen-bar-label">画幅比例</span>
-      <select :value="size" :disabled="busy" @change="onSizeChange">
-        <template v-if="engine === 'sd'">
-          <optgroup label="竖图 Portrait">
-            <option value="768x1344">768×1344</option>
-            <option value="832x1216">832×1216</option>
-            <option value="896x1344">896×1344</option>
-            <option value="1024x1344">1024×1344 · WAI 推荐</option>
-            <option value="1024x1536">1024×1536</option>
-            <option value="1152x1536">1152×1536</option>
-          </optgroup>
-          <optgroup label="方图 Square">
-            <option value="896x896">896×896</option>
-            <option value="1024x1024">1024×1024</option>
-            <option value="1280x1280">1280×1280</option>
-          </optgroup>
-          <optgroup label="横图 Landscape">
-            <option value="1216x832">1216×832</option>
-            <option value="1344x896">1344×896</option>
-            <option value="1536x1024">1536×1024</option>
-          </optgroup>
-          <optgroup label="16:9 官方 CG">
-            <option value="1344x768">1344×768</option>
-          </optgroup>
-        </template>
-        <option v-else v-for="item in animaSizes" :key="item" :value="item">{{ item.replace('x', '×') }}</option>
-      </select>
+      <StudioSelect
+        size="sm"
+        label="画幅比例"
+        :model-value="size"
+        :disabled="busy"
+        :groups="engine === 'sd' ? sizeGroups : undefined"
+        :options="engine === 'sd' ? undefined : sizeOptions"
+        @update:model-value="onSizeChange"
+      />
     </label>
     <span v-if="presetSummary" class="gen-bar-preset">{{ presetSummary }}</span>
     <!--
@@ -56,6 +39,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import type { StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 // 出图条承载主行动（生成按钮），同步导入保证首屏即位，不进异步分片；
 // 体量 ~2KB，路由 CSS 预算余量充足。
@@ -88,8 +73,35 @@ const emit = defineEmits<{
   cancel: []
 }>()
 
-function onSizeChange(e: Event) {
-  const value = (e.target as HTMLSelectElement).value
-  if (value) emit('update:size', value)
+// SD 引擎按竖/方/横/官方 CG 分组；Anima/Krea2 取平铺候选尺寸。
+const sizeGroups: StudioSelectGroup[] = [
+  { label: '竖图 Portrait', options: [
+    { value: '768x1344', label: '768×1344' },
+    { value: '832x1216', label: '832×1216' },
+    { value: '896x1344', label: '896×1344' },
+    { value: '1024x1344', label: '1024×1344 · WAI 推荐' },
+    { value: '1024x1536', label: '1024×1536' },
+    { value: '1152x1536', label: '1152×1536' },
+  ] },
+  { label: '方图 Square', options: [
+    { value: '896x896', label: '896×896' },
+    { value: '1024x1024', label: '1024×1024' },
+    { value: '1280x1280', label: '1280×1280' },
+  ] },
+  { label: '横图 Landscape', options: [
+    { value: '1216x832', label: '1216×832' },
+    { value: '1344x896', label: '1344×896' },
+    { value: '1536x1024', label: '1536×1024' },
+  ] },
+  { label: '16:9 官方 CG', options: [
+    { value: '1344x768', label: '1344×768' },
+  ] },
+]
+const sizeOptions = computed(() =>
+  props.animaSizes.map(item => ({ value: item, label: item.replace('x', '×') })),
+)
+
+function onSizeChange(value: string | number) {
+  if (value !== '' && value != null) emit('update:size', String(value))
 }
 </script>

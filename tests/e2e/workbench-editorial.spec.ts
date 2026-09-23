@@ -70,7 +70,7 @@ for (const theme of ['light', 'dark']) {
     await page.locator('.engine-switch button').first().click()
     await page.getByTestId('sd-generate').click()
     await expect(page.locator('.stage-generating-title')).toBeVisible()
-    await expect(page.locator('.gen-bar-size select')).toBeDisabled()
+    await expect(page.locator('.gen-bar-size .studio-select-trigger')).toBeDisabled()
     await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-running.png`) })
     await page.getByRole('button', { name: '先停一下', exact: true }).click()
     await expect.poll(() => cancellations).toBe(1)
@@ -103,7 +103,7 @@ for (const theme of ['light', 'dark']) {
       await page.setViewportSize({ width, height: 900 })
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
       await page.locator('.gen-bar').scrollIntoViewIfNeeded()
-      await expect(page.locator('.gen-bar-size select')).toBeInViewport()
+      await expect(page.locator('.gen-bar-size .studio-select-trigger')).toBeInViewport()
       await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-${width}.png`) })
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
       if (width >= 1024) {

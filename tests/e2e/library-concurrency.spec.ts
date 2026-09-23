@@ -80,6 +80,27 @@ test.beforeAll(async () => {
     bundle: true, write: false, format: 'iife', globalName: 'libraryFixture', platform: 'browser',
     define: { 'import.meta.env.VITE_CLIPROXY_API_KEY': '""' },
     alias: { '@': resolve(root, 'src') }, logLevel: 'silent',
+    plugins: [{
+      /**
+       * 孤儿清理的确认已从原生 confirm 收编到 useConfirm（2026-09-22 去原生化）。
+       * 本夹具只提供独立文档壳，不挂载 App.vue，因此没有 <ConfirmDialog> 宿主，
+       * confirmAction 会永远悬置。这里把它桩成「自动接受」——等价于迁移前
+       * page.on('dialog', dialog => dialog.accept()) 的语义；弹窗自身的键盘流程、
+       * 焦点与对比度由 ConfirmDialog.spec.ts 与 apple-hig-accessibility.spec.ts 覆盖。
+       */
+      name: 'confirm-stub',
+      setup(build) {
+        build.onResolve({ filter: /composables\/useConfirm(\.ts)?$/ }, () => ({ path: 'confirm-stub', namespace: 'confirm-stub' }))
+        build.onLoad({ filter: /.*/, namespace: 'confirm-stub' }, () => ({
+          contents: [
+            'export function confirmAction() { return Promise.resolve(true) }',
+            'export function resolveConfirm() {}',
+            'export function useConfirmState() { return { value: { visible: false } } }',
+          ].join('\n'),
+          loader: 'js',
+        }))
+      },
+    }],
   })
   sourceBundle = bundled.outputFiles[0].text
 })
@@ -286,7 +307,6 @@ test('orphan cleanup refuses another live document and succeeds after it closes'
     other.evaluate(() => window.libraryFixture.startArtworkSession()),
   ])
   await seedOrphan(page)
-  page.on('dialog', dialog => dialog.accept())
   const result = await page.evaluate(async () => {
     const messages: string[] = []
     const count = await window.libraryFixture.useBackup(message => messages.push(message)).cleanOrphanImages()
@@ -316,7 +336,6 @@ test('orphan cleanup protects same-document image staging until its reference is
     })
   })
   await page.waitForFunction(() => window.libraryBarrier?.entered)
-  page.on('dialog', dialog => dialog.accept())
   try {
     expect(await page.evaluate(() => window.libraryFixture.useBackup(() => {}).cleanOrphanImages())).toBe(0)
     expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).not.toBeNull()

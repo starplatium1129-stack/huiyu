@@ -160,15 +160,19 @@
           <div class="video-choice-pair">
             <label class="field">
               <span class="field-label">镜头运动</span>
-              <select v-model="camera" class="select">
-                <option v-for="item in cameraOptions" :key="item.id" :value="item.id">{{ item.label }}</option>
-              </select>
+              <StudioSelect
+                v-model="camera"
+                label="镜头运动"
+                :options="cameraOptions.map(item => ({ value: item.id, label: item.label }))"
+              />
             </label>
             <label class="field">
               <span class="field-label">主体运动</span>
-              <select v-model="motion" class="select">
-                <option v-for="item in motionOptions" :key="item.id" :value="item.id">{{ item.label }}</option>
-              </select>
+              <StudioSelect
+                v-model="motion"
+                label="主体运动"
+                :options="motionOptions.map(item => ({ value: item.id, label: item.label }))"
+              />
             </label>
           </div>
 
@@ -281,7 +285,14 @@
               <span>{{ job.duration }} 秒</span>
               <span>Seed {{ job.seed }}</span>
             </div>
-            <video v-if="job.status === 'succeeded' && job.resultUrl" :key="job.resultUrl" class="video-player video-player--queue" :src="job.resultUrl" aria-label="生成的视频成片" controls playsinline preload="metadata"></video>
+            <StudioMediaPlayer
+              v-if="job.status === 'succeeded' && job.resultUrl"
+              :key="job.resultUrl"
+              class="video-player video-player--queue"
+              kind="video"
+              :src="job.resultUrl"
+              label="生成的视频成片"
+            />
             <a v-if="job.status === 'succeeded' && job.resultUrl" class="btn btn-ghost btn-block" :href="job.resultUrl" download>下载这段故事 · MP4</a>
             <p v-if="job.status === 'cancelled'" class="video-install-note">任务已取消。镜头描述和输入画面仍在，可以调整后重新生成。</p>
             <p v-if="job.status === 'queued'" class="video-install-note">镜头已进入队列，等待本机开始处理。</p>
@@ -407,6 +418,8 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ShotListEditor from '@/components/video/ShotListEditor.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import { useVideoWorkspace } from "@/composables/video/useVideoWorkspace"
 const {
 archiveStatus,

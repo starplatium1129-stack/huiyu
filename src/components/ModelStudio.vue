@@ -23,10 +23,9 @@
             <fieldset :disabled="studio.busy.value">
               <legend>选择模型</legend>
               <label v-if="existing.length">已导入角色
-                <select v-model="selected" @change="studio.openExisting(selected)">
-                  <option value="" disabled>选择本机角色</option>
-                  <option v-for="character in existing" :key="character.id" :value="character.id">{{ character.name }}</option>
-                </select>
+                <StudioSelect v-model="selected" placeholder="选择本机角色" label="已导入角色"
+                  :options="existing.map(character => ({ value: character.id, label: character.name }))"
+                  @update:model-value="(value) => studio.openExisting(String(value))" />
               </label>
               <label>导入新模型文件夹<input type="file" webkitdirectory multiple aria-label="模型文件夹" @change="chooseFolder" /></label>
               <p>支持完整 Cubism 3 文件夹。最多 512 个文件、总计 256 MiB；浏览器预览的模型依赖最多 96 MiB。缺少引用会停止导入。</p>
@@ -102,6 +101,7 @@ import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { listCompanionUiCharacters } from '@/utils/companionRegistry'
 import ModelCalibrationFields from './ModelCalibrationFields.vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import '@/assets/css/model-studio.css'
 const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null)

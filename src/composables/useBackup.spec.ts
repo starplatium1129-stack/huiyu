@@ -6,7 +6,10 @@ import { MAX_BACKUP_BYTES } from '@/utils/backupExport'
 import { BACKUP_AT_KEY, ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 import { withArtworkCleanup } from '@/storage/artworkSession'
 import { kvGet } from './useKVStore'
+import { confirmAction } from '@/composables/useConfirm'
 import { ARTWORK_TRASH_KV_KEY, ARTWORK_PROJECTS_KV_KEY, VIDEO_DRAFT_KEY } from '@/utils/storageKeys'
+// 覆盖恢复与孤儿清理的确认走项目自己的确认弹窗（原生 confirm 已收编）。
+vi.mock('@/composables/useConfirm', () => ({ confirmAction: vi.fn(async () => true) }))
 vi.mock('./useImageStore', () => ({ imgList: vi.fn(), imgGet: vi.fn(), imgDeleteMany: vi.fn(), imgPutRecord: vi.fn() }))
 vi.mock('./useKVStore', () => ({ kvGet: vi.fn(), kvSetMany: vi.fn() }))
 vi.mock('@/storage/backupRestore', () => ({ restoreBackupData: vi.fn() }))
@@ -14,7 +17,7 @@ vi.mock('@/storage/artworkMutation', () => ({ withArtworkMutation: (work: () => 
 vi.mock('@/storage/artworkSession', () => ({ withArtworkCleanup: vi.fn((work: () => Promise<unknown>) => work()) }))
 vi.mock('@/utils/downloadBlob', () => ({ downloadBlob: vi.fn() }))
 const contents = JSON.stringify({ history: [{ id: 'one' }] })
-beforeEach(() => { vi.stubGlobal('navigator', { locks: { request: async (_name: string, work: () => unknown) => work() } }); vi.clearAllMocks(); sessionStorage.clear(); localStorage.clear(); vi.mocked(kvGet).mockImplementation(async key => key === 'chat_archive_v1' ? null : [] as never) })
+beforeEach(() => { vi.stubGlobal('navigator', { locks: { request: async (_name: string, work: () => unknown) => work() } }); vi.clearAllMocks(); vi.mocked(confirmAction).mockResolvedValue(true); sessionStorage.clear(); localStorage.clear(); vi.mocked(kvGet).mockImplementation(async key => key === 'chat_archive_v1' ? null : [] as never) })
 afterEach(() => vi.unstubAllGlobals())
 describe('backup selection and cleanup', () => {
   it('does not restore a previous backup after selecting an oversized file', async () => {
@@ -37,9 +40,9 @@ describe('backup selection and cleanup', () => {
     vi.mocked(kvGet).mockImplementation(async key => key === ARTWORK_TRASH_KV_KEY ? [{ imageIds: ['trash'] }] : key === ARTWORK_PROJECTS_KV_KEY ? [{ imageId: 'project' }] : [])
     vi.mocked(imgList).mockResolvedValue(['trash', 'project', 'video', 'orphan'].map(id => ({ id })) as Awaited<ReturnType<typeof imgList>>)
     sessionStorage.setItem(VIDEO_DRAFT_KEY, JSON.stringify({ videoImageId: 'video' }))
-    vi.stubGlobal('confirm', () => true)
     const tool = useBackup()
     expect(await tool.cleanOrphanImages()).toBe(1)
+    expect(confirmAction).toHaveBeenCalledTimes(1)
     expect(imgDeleteMany).toHaveBeenCalledWith(['orphan'])
     expect(tool.busy.value).toBe(false)
   })
@@ -59,7 +62,7 @@ describe('backup safety regressions', () => {
     const stored = new Map<string, unknown>()
     vi.mocked(kvGet).mockImplementation(async key => stored.get(key) as never ?? [])
     vi.mocked(imgList).mockResolvedValue([{ id: 'racing' }] as Awaited<ReturnType<typeof imgList>>)
-    vi.stubGlobal('confirm', () => { stored.set(ARTWORK_HISTORY_KV_KEY, [{ image_id: 'racing' }]); return true })
+    vi.mocked(confirmAction).mockImplementation(async () => { stored.set(ARTWORK_HISTORY_KV_KEY, [{ image_id: 'racing' }]); return true })
     expect(await useBackup().cleanOrphanImages()).toBe(0)
     expect(withArtworkCleanup).toHaveBeenCalledTimes(1)
     expect(imgDeleteMany).not.toHaveBeenCalled()
@@ -67,7 +70,7 @@ describe('backup safety regressions', () => {
   it('never extends the approved deletion set with images created after confirmation', async () => {
     vi.mocked(imgList).mockResolvedValueOnce([{ id: 'old' }] as Awaited<ReturnType<typeof imgList>>)
       .mockResolvedValueOnce([{ id: 'old' }, { id: 'new' }] as Awaited<ReturnType<typeof imgList>>)
-    vi.stubGlobal('confirm', () => true)
+    vi.mocked(confirmAction).mockResolvedValue(true)
     expect(await useBackup().cleanOrphanImages()).toBe(1)
     expect(imgDeleteMany).toHaveBeenCalledWith(['old'])
   })
@@ -92,7 +95,6 @@ describe('backup safety regressions', () => {
   it('fails closed when exclusive cleanup access cannot be acquired', async () => {
     vi.mocked(imgList).mockResolvedValue([{ id: 'draft' }] as Awaited<ReturnType<typeof imgList>>)
     vi.mocked(withArtworkCleanup).mockRejectedValueOnce(new Error('other window'))
-    vi.stubGlobal('confirm', () => true)
     const flash = vi.fn(), tool = useBackup(flash)
     expect(await tool.cleanOrphanImages()).toBe(0)
     expect(imgDeleteMany).not.toHaveBeenCalled()
@@ -101,10 +103,9 @@ describe('backup safety regressions', () => {
   })
   it('leaves images untouched on cancellation or failure of the second scan', async () => {
     vi.mocked(imgList).mockResolvedValue([{ id: 'old' }] as Awaited<ReturnType<typeof imgList>>)
-    vi.stubGlobal('confirm', () => false)
+    vi.mocked(confirmAction).mockResolvedValueOnce(false)
     expect(await useBackup().cleanOrphanImages()).toBe(0)
     expect(withArtworkCleanup).not.toHaveBeenCalled()
-    vi.stubGlobal('confirm', () => true)
     vi.mocked(imgList).mockResolvedValueOnce([{ id: 'old' }] as Awaited<ReturnType<typeof imgList>>).mockRejectedValueOnce(new Error('read failed'))
     expect(await useBackup().cleanOrphanImages()).toBe(0)
     expect(imgDeleteMany).not.toHaveBeenCalled()

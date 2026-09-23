@@ -65,7 +65,7 @@ describe('reference-card async ownership', () => {
     expect(deps.identityCard.value).toBe('')
     expect(deps.onCardRemoved).toHaveBeenCalledWith(0)
     deps.identityCard.value = 'User authored identity'
-    await cards.onCardCharacterSelected(0, { target: { value: '' } } as unknown as Event)
+    await cards.onCardCharacterSelected(0, '')
     expect(deps.identityCard.value).toBe('User authored identity')
     scope.stop()
   })

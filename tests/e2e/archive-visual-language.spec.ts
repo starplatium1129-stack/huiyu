@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { pickStudioOptionByValue, readStudioOptions } from './helpers/studioSelect'
 
 const archivePages = [
   { path: '/character', heading: '角色档案' },
@@ -53,11 +54,14 @@ test('character directory filters by franchise and opens matching details', asyn
   await expect(page.locator('.character-name')).toHaveText('凯尔希')
   await expect(page.locator('.character-hero')).toBeVisible()
   await search.fill('')
-  await directory.getByLabel('筛选角色系列').selectOption({ label: await directory.locator('option').filter({ hasText: /^明日方舟 ·/ }).innerText() })
+  const seriesTrigger = directory.getByLabel('筛选角色系列')
+  const arknightsSeries = (await readStudioOptions(seriesTrigger)).find(option => option.label.startsWith('明日方舟 ·'))
+  expect(arknightsSeries).toBeDefined()
+  await pickStudioOptionByValue(seriesTrigger, arknightsSeries!.value)
   const arknights = await directory.locator('.directory-item').count()
   expect(arknights).toBeGreaterThanOrEqual(13)
   expect(arknights).toBeLessThan(total)
-  await directory.getByLabel('筛选角色系列').selectOption('')
+  await pickStudioOptionByValue(seriesTrigger, '')
   await search.fill('Fate')
   await expect.poll(() => directory.locator('.directory-item').count()).toBeGreaterThanOrEqual(3)
   expect(await directory.locator('.directory-item').count()).toBeLessThan(total)

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { installShowcaseFixture } from './helpers/showcase'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 async function seedWork(page: Page, id: number, title: string) {
   await page.evaluate(async ({ id, title }) => {
@@ -55,7 +56,7 @@ test('popular CG handoff keeps its character and blueprint, and back restores fi
   let jobs = 0
   page.on('request', request => { if (request.method() === 'POST' && request.url().endsWith('/api/anima/jobs')) jobs++ })
   await page.goto('/showcase')
-  await page.getByLabel('筛选作品类型').selectOption('popular')
+  await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular')
   await page.getByRole('combobox', { name:'筛选角色', exact:true }).fill('雷电')
   await page.getByRole('option', { name:'雷电将军', exact:true }).click()
   await page.getByRole('searchbox', { name: '搜索画册' }).fill('天守阁')

@@ -62,7 +62,7 @@ for (const theme of ['dark', 'light']) {
     await expect(page.getByRole('dialog')).toBeHidden()
     await expect(directory).toBeVisible()
     await expect(directory.getByRole('searchbox')).toHaveValue('芙宁娜')
-    await expect(directory.locator('select option:checked')).toContainText('原神')
+    await expect(directory.getByLabel('筛选角色系列')).toContainText('原神')
     expect(await page.evaluate(() => document.documentElement.style.overflow)).not.toBe('hidden')
     await page.setViewportSize({ width: 390, height: 844 })
     await page.getByRole('button', { name: /^选择角色，当前/ }).click()

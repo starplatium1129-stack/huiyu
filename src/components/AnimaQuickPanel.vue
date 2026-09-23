@@ -4,6 +4,7 @@ import type { AnimaGenerationState } from '@/types/anima'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 
 const props = defineProps<{
   state: AnimaGenerationState
@@ -76,9 +77,8 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 
        <div v-if="capabilities.lora && !noLoraMode" class="anima-row">
         <label :for="idOf('lora')">LoRA</label>
-        <select :id="idOf('lora')" v-model="loraId" :disabled="busy">
-          <option v-for="l in state.loras" :key="l.id" :value="l.id">{{ l.name || l.id }}</option>
-        </select>
+        <StudioSelect :id="idOf('lora')" v-model="loraId" label="LoRA" :disabled="busy"
+          :options="state.loras.map(l => ({ value: l.id, label: l.name || l.id }))" />
         <label :for="idOf('strength')" class="anima-inline">强度</label>
         <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
        </div>
@@ -100,9 +100,8 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </div>
         <div class="anima-field">
           <label :for="idOf('size')">画布尺寸</label>
-          <select :id="idOf('size')" v-model="size" class="anima-num" :disabled="busy">
-            <option v-for="item in availableSizes" :key="item" :value="item">{{ item.replace('x', '×') }}</option>
-          </select>
+          <StudioSelect :id="idOf('size')" v-model="size" label="画布尺寸" :disabled="busy"
+            :options="availableSizes.map(item => ({ value: item, label: item.replace('x', '×') }))" />
         </div>
       </div>
       <p class="anima-output-note"><ArchiveIcon name="spark" />预计成片 {{ outputSize }}<span>放大倍率越高，显存与等待时间通常越多</span></p>
@@ -119,10 +118,8 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </ToggleSwitch>
         <template v-if="hiresFix">
           <label :for="idOf('scale')" class="anima-inline">倍率</label>
-          <select :id="idOf('scale')" v-model.number="hiresScale" class="anima-num" :disabled="busy">
-            <option :value="1.5">1.5×</option>
-            <option :value="2.0">2.0×</option>
-          </select>
+          <StudioSelect :id="idOf('scale')" v-model.number="hiresScale" label="倍率" :disabled="busy"
+            :options="[{ value: 1.5, label: '1.5×' }, { value: 2.0, label: '2.0×' }]" />
           <label :for="idOf('denoise')" class="anima-inline">重绘幅度</label>
           <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy" />
         </template>
@@ -187,31 +184,10 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-hires-icon { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0 }
 .anima-row label, .anima-label { font-size: var(--fs-label-xs); color: var(--text-secondary); min-width: 44px }
 .anima-label { margin-top: 4px }
-.anima-row select, .anima-field select {
-  background-color: var(--bg-deep);
-  color: inherit;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  padding: 6px var(--s-7) 6px 10px;
-  font-size: var(--fs-label-xs);
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 12px) calc(50% - 1px),
-    calc(100% - 8px) calc(50% - 1px);
-  background-size: 4px 4px;
-  transition: border-color var(--motion-hover) var(--ease-out);
-}
-.anima-row select:hover, .anima-field select:hover { border-color: var(--accent); }
-.anima-row select:focus-visible, .anima-field select:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
+/* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；行内布局（flex/min-width）
+   由 .studio-select-wrapper 承接，保持 LoRA / 倍率与原生 select 一致的拉伸行为。 */
+.anima-row .studio-select-wrapper { flex: 1; min-width: 120px }
 .anima-num { background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: 4px 8px; font-size: var(--fs-label-xs) }
-.anima-row select { flex: 1; min-width: 120px }
 .anima-num { width: 72px }
 .anima-seed { width: 140px }
 .anima-inline { font-size: var(--fs-label-xs); color: var(--text-secondary) }
@@ -264,8 +240,8 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-output-note { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px; margin: 4px 0; border: 1px solid var(--border-soft); border-radius: var(--r-sm); color: var(--text-primary); background: var(--accent-soft); font-size: var(--fs-label-xs); font-variant-numeric: tabular-nums; }
 .anima-output-note svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
 .anima-output-note span { flex-basis: 100%; color: var(--text-secondary); }
-.anima-quick-panel :is(input, select):disabled { opacity: 1; color: var(--text-disabled); -webkit-text-fill-color: var(--text-disabled); cursor: not-allowed; }
-.anima-quick-panel :is(input, select, textarea, button, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.anima-quick-panel input:disabled { opacity: 1; color: var(--text-disabled); -webkit-text-fill-color: var(--text-disabled); cursor: not-allowed; }
+.anima-quick-panel :is(input, textarea, button, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .anima-quick-panel :is(button):active:not(:disabled) { transform: scale(.97); }
 .anima-progress-copy > span, .anima-error-block { min-width: 0; overflow-wrap: anywhere; }
 .anima-status { white-space: nowrap; }

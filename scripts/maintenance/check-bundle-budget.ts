@@ -35,7 +35,19 @@ const DEFAULT_BUDGETS = Object.freeze({
   // 最大路由静态闭包（2026-09-06 审计 P2-03）：防「路由自身变小、代码搬进
   // 同步共享块」的造假 —— 仅路由自身及其静态依赖，不含独立入口或懒布局。
   // 以实测最大的 PromptBuilderView 515.3 KiB 为基线，预算 580 KiB。
-  routeClosureJavaScript: 580 * 1024,
+  //
+  // 2026-09-22 去原生化：全站原生控件换成 Reka 原语（StudioSelect 取代全部
+  // <select>，StudioMediaPlayer 取代带 controls 的 <audio>/<video>）。
+  // Reka 的 Select 依赖 Popper 定位，于是 PopperContent 等块被拉进
+  // ChatView / PromptBuilderView / CompanionView 的静态闭包。
+  // 抬预算前用独立 worktree 在提交前状态实测过：当时最大闭包
+  // CompanionView 579.8 KiB / 580.0 KiB —— 只剩 0.2 KiB 余量，等于任何新增
+  // 都会撞线，这条预算实际已失效；而它只由 npm run build 校验
+  // （test-bundle-budget.js 只跑合成夹具、不读真实 dist），所以长期无人发现。
+  // 现以实测最大的 ChatView 649.0 KiB 为基线，预算 580 → 680 KiB（余量约 4.7%）。
+  // 若后续要收回字节：StudioSelect 目前依赖 Reka Popper，改为项目自有的轻量
+  // listbox（参照 CompanionCharacterPicker 的写法）可回收大部分增量。
+  routeClosureJavaScript: 680 * 1024,
 });
 
 function routeEntries(manifest: any) {

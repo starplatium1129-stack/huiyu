@@ -18,17 +18,10 @@
       <details v-if="params.hiresFix" class="sd-advanced-options advanced-decision">
         <summary>高级设置</summary>
         <div class="sd-advanced-grid">
-          <label>放大<select v-model.number="params.hiresScale" @change="touch('hiresScale')"><option :value="1.5">1.5×</option><option :value="2">2×</option></select></label>
+          <label>放大<StudioSelect v-model.number="params.hiresScale" size="sm" label="放大倍率" :options="[{ value: 1.5, label: '1.5×' }, { value: 2, label: '2×' }]" @update:model-value="touch('hiresScale')" /></label>
           <label>二阶段步数<input type="number" v-model.number="params.hiresSteps" min="0" max="60" step="1" @change="touch('hiresSteps')"></label>
           <label>重绘幅度<input type="number" v-model.number="params.hiresDenoise" min="0.1" max="0.9" step="0.05" @change="touch('hiresDenoise')"></label>
-          <label>放大器<select v-model="params.hiresUpscaler" @change="touch('hiresUpscaler')">
-            <option>Auto</option>
-            <option>Remacri</option>
-            <option>Latent</option>
-            <option>Latent (nearest-exact)</option>
-            <option>R-ESRGAN 4x+ Anime6B</option>
-            <option>R-ESRGAN 4x+</option>
-          </select></label>
+          <label>放大器<StudioSelect v-model="params.hiresUpscaler" size="sm" label="放大器" :options="upscalerOptions" @update:model-value="touch('hiresUpscaler')" /></label>
         </div>
       </details>
     </div>
@@ -65,6 +58,8 @@ import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import '@/assets/css/director/components/GenerationOutputControls.css'
 
 defineProps<{
@@ -98,6 +93,16 @@ const emit = defineEmits<{
 }>()
 
 function touch(key: keyof SDParams) { emit('touch', key) }
+
+// —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
+const upscalerOptions: StudioSelectOption[] = [
+  { value: 'Auto', label: 'Auto' },
+  { value: 'Remacri', label: 'Remacri' },
+  { value: 'Latent', label: 'Latent' },
+  { value: 'Latent (nearest-exact)', label: 'Latent (nearest-exact)' },
+  { value: 'R-ESRGAN 4x+ Anime6B', label: 'R-ESRGAN 4x+ Anime6B' },
+  { value: 'R-ESRGAN 4x+', label: 'R-ESRGAN 4x+' },
+]
 </script>
 
 <style scoped>

@@ -1122,37 +1122,16 @@ body:has(.chat-page) .sakura-fall {
   outline: none;
 }
 
-.chat-page .api-field select {
-  width: 100%;
-  min-width: 0;
-  min-height: 42px;
-  padding: 8px var(--s-7) 8px 11px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background-color: color-mix(in srgb, var(--bg-deep) 88%, transparent);
-  color: var(--text-primary);
-  font: var(--fs-label-sm) var(--font-sans);
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  transition: border-color var(--motion-hover) var(--ease-out);
-}
-
-.chat-page .api-field select:hover {
+/* 原生 select 已迁至 StudioSelect（2026-09-22 去原生化）：外观由触发器提供，
+   焦点色保留本页的角色强调色，改挂触发器。 */
+.chat-page .api-field .studio-select-trigger:focus-visible {
   border-color: var(--character-ink, var(--character-accent));
+  outline-color: var(--character-ink, var(--character-accent));
 }
 
-.chat-page .api-field input:focus,
-.chat-page .api-field select:focus-visible {
+
+
+.chat-page .api-field input:focus {
   border-color: var(--character-ink, var(--character-accent));
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--character-accent) 16%, transparent);
 }
@@ -1216,44 +1195,24 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .api-settings-toggle { color: color-mix(in srgb,var(--character-accent) 78%,var(--text-primary)); }
 .chat-page .keyboard-hint { font-size: var(--fs-label-xs); }
 
-.chat-page .model-select {
-  max-width: 230px;
-  min-height: 32px;
-  padding: 4px var(--s-6) 4px 8px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background-color: var(--bg-deep);
-  color: var(--text-primary);
-  font: 600 var(--fs-mono-sm) var(--font-sans);
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 12px) calc(50% - 1px),
-    calc(100% - 8px) calc(50% - 1px);
-  background-size: 4px 4px;
-  transition: border-color var(--motion-hover) var(--ease-out);
-}
-
-.chat-page .model-select:hover:not(:disabled) {
+.chat-page .model-select { max-width: 230px; }
+.chat-page .model-select .studio-select-trigger:hover:not(:disabled) {
   border-color: var(--character-ink, var(--character-accent));
 }
-
-.chat-page .model-select:focus-visible {
+.chat-page .model-select .studio-select-trigger:focus-visible {
   border-color: var(--character-ink, var(--character-accent));
-  outline: 2px solid var(--character-ink, var(--character-accent));
-  outline-offset: 1px;
+  outline-color: var(--character-ink, var(--character-accent));
 }
-
-.chat-page .model-select:disabled {
+.chat-page .model-select .studio-select-trigger[data-disabled] {
   color: var(--text-disabled);
   cursor: not-allowed;
 }
+
+
+
+
+
+
 
 .chat-page .chat-list {
   display: flex;
@@ -1670,18 +1629,10 @@ body:has(.chat-page) .sakura-fall {
   font-size: var(--fs-label-sm);
 }
 
-.chat-page .thinking-toggle select {
-  max-width: 72px;
-  padding: 2px 4px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-sm);
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  font-size: var(--fs-label-sm);
-  cursor: pointer;
-}
+/* 原生 select 已迁至 StudioSelect（2026-09-22 去原生化）。 */
 
-.chat-page .thinking-toggle:has(select:disabled) {
+
+.chat-page .thinking-toggle:has(.studio-select-trigger[data-disabled]) {
   /* 审计修复：不用 opacity 压整块容器（压后低于 AA），改用禁用令牌 */
   color: var(--text-disabled);
   border-color: var(--border-soft);

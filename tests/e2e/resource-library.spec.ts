@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 import type { ResourceAction, ResourceStatus, ResourceTask } from '../../src/types/resources'
 import { GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 test.use({ serviceWorkers: 'block' })
 
@@ -47,11 +48,11 @@ for (const theme of ['dark', 'light'] as const) {
       await expect(panel).toContainText('portraits-v1')
       expect(writes).toEqual([])
       const select = panel.getByRole('combobox', { name: '选择资源版本' })
-      await select.selectOption('hd')
+      await pickStudioOptionByValue(select, 'hd')
       await expect(panel.getByRole('button', { name: '安装所选版本' })).toBeDisabled()
       await expect(panel.getByRole('button', { name: '下载资源' })).toBeEnabled()
       expect(writes).toEqual([])
-      await select.selectOption('portraits')
+      await pickStudioOptionByValue(select, 'portraits')
       const install = panel.getByRole('button', { name: '安装所选版本' })
       await install.focus(); await expect(install).toBeFocused()
       await panel.screenshot({ path: testInfo.outputPath(`resource-library-${theme}-${width}-ready.png`) })

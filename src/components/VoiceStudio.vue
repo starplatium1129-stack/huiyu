@@ -19,28 +19,16 @@
     <div v-show="!collapsed" class="voice-body">
         <div class="voice-controls">
           <label class="voice-field">角色
-            <select v-model="voiceChar">
-              <option value="nene">宁宁</option>
-              <option value="natsume">夏目</option>
-            </select>
+            <StudioSelect v-model="voiceChar" label="角色" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }]" />
           </label>
           <label class="voice-field">语言
-            <select v-model="voiceLang">
-              <option value="ja">日语配音</option>
-              <option value="zh">中文配音</option>
-            </select>
+            <StudioSelect v-model="voiceLang" label="语言" :options="[{ value: 'ja', label: '日语配音' }, { value: 'zh', label: '中文配音' }]" />
           </label>
           <label class="voice-field">情绪
-            <select v-model="voiceEmotion">
-              <option v-for="e in VOICE_EMOTIONS" :key="e.id" :value="e.id">{{ e.label }}</option>
-            </select>
+            <StudioSelect v-model="voiceEmotion" label="情绪" :options="VOICE_EMOTIONS.map(e => ({ value: e.id, label: e.label }))" />
           </label>
           <label class="voice-field">语速
-            <select v-model.number="voiceSpeed">
-              <option :value="0.85">慢 0.85×</option>
-              <option :value="1">正常 1.0×</option>
-              <option :value="1.15">快 1.15×</option>
-            </select>
+            <StudioSelect v-model.number="voiceSpeed" label="语速" :options="[{ value: 0.85, label: '慢 0.85×' }, { value: 1, label: '正常 1.0×' }, { value: 1.15, label: '快 1.15×' }]" />
           </label>
         </div>
         <div class="voice-copy">
@@ -64,7 +52,7 @@
         </div>
         <div class="voice-status">{{ voiceStatus }}</div>
         <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
-        <audio v-if="voiceAudioUrl" class="voice-audio show" :src="voiceAudioUrl" controls></audio>
+        <StudioMediaPlayer v-if="voiceAudioUrl" class="voice-audio show" kind="audio" :src="voiceAudioUrl" label="AI 声线试听" />
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
     </div>
   </section>
@@ -73,6 +61,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { useToast } from '@/composables/useToast'
 import { voiceApi, type VoiceSynthesisPayload } from '@/api/voiceApi'
 import '@/assets/css/director/components/VoiceStudio.css'

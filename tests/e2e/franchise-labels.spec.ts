@@ -1,14 +1,15 @@
 import { expect, test } from '@playwright/test'
+import { pickStudioOptionByValue, readStudioOptions } from './helpers/studioSelect'
 
 test('all franchise groups have Chinese labels while both language aliases remain searchable', async ({ page }) => {
   await page.goto('/popular-scenes')
   const series = page.getByLabel('筛选角色系列')
-  const group = series.locator('option[value="Blue Archive"]')
-  await expect(group).toHaveCount(1)
-  const labels = await series.locator('option').allTextContents()
-  expect(labels.filter(label => !/[\u4e00-\u9fff]/.test(label))).toEqual([])
-  const count = Number((await group.textContent())!.split(' · ').at(-1))
-  await series.selectOption('Blue Archive')
+  const options = await readStudioOptions(series)
+  const blueArchive = options.find(option => option.value === 'Blue Archive')
+  expect(blueArchive).toBeDefined()
+  expect(options.filter(option => !/[一-鿿]/.test(option.label))).toEqual([])
+  const count = Number(blueArchive!.label.split(' · ').at(-1))
+  await pickStudioOptionByValue(series, 'Blue Archive')
   await expect(page.locator('.directory-item')).toHaveCount(count)
   const search = page.getByRole('searchbox', { name: '搜索角色或作品' })
   await search.fill('Blue Archive')

@@ -29,10 +29,7 @@
           placeholder="搜场景、角色或关键词…" />
         <button v-if="searchQuery" class="gallery-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''; searchInput?.focus()">×</button>
       </div>
-      <select v-model="projectFilter" class="gallery-project" aria-label="按项目筛选">
-        <option value="">全部项目</option>
-        <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.title }}</option>
-      </select>
+      <StudioSelect v-model="projectFilter" class="gallery-project" label="按项目筛选" :options="[{ value: '', label: '全部项目' }, ...projects.map(p => ({ value: p.id, label: p.title }))]" />
       <!--
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
         → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
@@ -348,6 +345,7 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { defineAsyncComponent, ref, watch } from 'vue'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
 const gestureViewer = ref(false)

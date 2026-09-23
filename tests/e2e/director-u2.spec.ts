@@ -21,7 +21,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     }))
     await randomMenu.click()
     if (width === 390) {
-      expect((await page.locator('.gen-bar-size select').boundingBox())!.width).toBeGreaterThanOrEqual(140)
+      expect((await page.locator('.gen-bar-size .studio-select-trigger').boundingBox())!.width).toBeGreaterThanOrEqual(140)
     }
     await expect(page.locator('.utility-trigger')).toHaveAccessibleName(/尚未备份/)
     await page.locator('[aria-controls="material-scenes"]').click()

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type APIRequestContext, type Locator, type Page } from '@playwright/test';
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js';
+import { expectStudioSelectValue, pickStudioOptionByValue } from './helpers/studioSelect';
 
 /**
  * 六条主流程回归 —— 跑在 mock 上游之上（scripts/tests/mock-stack.js）。
@@ -136,7 +137,7 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   await expect(page.locator('.prompt-health-body')).toContainText('lora');
 
   // 固定尺寸与 seed，好让断言不依赖推荐值
-  await page.locator('.gen-bar-size select').selectOption('896x1344');
+  await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), '896x1344');
   await toggle(page, '.ctrl-seed [role="switch"]', true);
   await page.locator('.ctrl-seed input[type="number"]').fill('4242');
 
@@ -185,7 +186,7 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
   await switchToSdEngine(page);
 
   await openGenerationSettings(page);
-  await page.locator('.gen-bar-size select').selectOption('1216x832');
+  await pickStudioOptionByValue(page.locator('.gen-bar-size').getByRole('combobox'), '1216x832');
   await toggle(page, page.getByRole('switch', { name: 'hires.fix', exact: true }), true);
   await page.getByRole('button', { name: '生成图片' }).click();
 
@@ -238,7 +239,7 @@ test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ p
   // 受控路线下引擎切换只在专家模式渲染
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
   await page.locator('.engine-switch button').nth(1).click();
-  await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 10_000 });
+  await expectStudioSelectValue(page.locator('#baseModel'), /anima/, { timeout: 10_000 });
   await page.locator('[aria-controls="material-story"]').click();
   await page.locator('.story-input').fill('夏目在咖啡馆里对我微笑');
   await expect(page.getByTestId('anima-generate')).toBeEnabled({ timeout: 10_000 });
@@ -279,7 +280,7 @@ test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV
    * "本次是否 set_*_weights" 会随执行顺序漂移。换声线强制重新激活，断言才稳定。
    */
   await page.getByRole('button', { name: '展开配音面板' }).click();
-  await page.locator('.voice-field select').first().selectOption('natsume');
+  await pickStudioOptionByValue(page.locator('.voice-field').first().getByRole('combobox'), 'natsume');
   await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
   await page.locator('.voice-caption-text').fill('今天也辛苦了，先休息一会儿吧。');
@@ -320,7 +321,7 @@ test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不�
 
   await page.getByRole('button', { name: '展开配音面板' }).click();
   await page.locator('.voice-caption-text').fill('测试失败路径。');
-  await page.locator('.voice-field select').nth(1).selectOption('zh');  // 跳过翻译
+  await pickStudioOptionByValue(page.locator('.voice-field').nth(1).getByRole('combobox'), 'zh');  // 跳过翻译
   await page.getByRole('button', { name: '生成 AI 声线' }).click();
 
   await expect(page.locator('.voice-status')).toContainText('GPT-SoVITS 生成失败');
@@ -337,8 +338,8 @@ test('flow 3 · 聊天：流式回复逐字到达，system prompt 由网关注�
   await useLocalChat(page);
 
   // 关掉实时配音：这条用例只测聊天流
-  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
-  await expect(page.locator('.model-select')).toBeEnabled();
+  await toggle(page, page.getByRole('switch', { name: /实时配音/ }), false);
+  await expect(page.locator('.model-select .studio-select-trigger')).toBeEnabled();
   await expect(page.locator('.character-status')).toContainText('本地聊天模型已连接');
 
   await page.locator('.chat-input').fill('今天有点累');
@@ -367,13 +368,13 @@ test('flow 3 · 聊天：流式回复逐字到达，system prompt 由网关注�
 test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', async ({ page, request }) => {
   await page.goto('/chat');
   await useLocalChat(page);
-  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
+  await toggle(page, page.getByRole('switch', { name: /实时配音/ }), false);
 
   // 2026-08-21：次要操作收进「更多」菜单，先展开再点「我的档案」（只点一次，二次点击会收起）
   await page.locator('.chat-more-trigger').click();
   await page.getByRole('menuitem', { name: '我的档案' }).click();
   await page.getByLabel('希望她怎样称呼你').fill('小林');
-  await page.getByLabel('关系定位').selectOption('confidant');
+  await pickStudioOptionByValue(page.getByLabel('关系定位'), 'confidant');
   await page.getByLabel('希望她记住的背景').fill('我习惯夜间工作，希望先听我说完。');
   await page.getByRole('button', { name: '保存档案' }).click();
 
@@ -413,7 +414,7 @@ test('chat memory write failure keeps the action retryable without a success mes
   })
   await page.goto('/chat')
   await useLocalChat(page)
-  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false)
+  await toggle(page, page.getByRole('switch', { name: /实时配音/ }), false)
   await page.locator('.chat-input').fill('我喜欢周五晚上散步')
   await page.locator('.send-btn').click()
   const remember = page.locator('.message.user').getByRole('button', { name: /^(钉住记忆|已记住)$/ }).first()
@@ -428,7 +429,7 @@ test('chat memory write failure keeps the action retryable without a success mes
 test('flow 3b · 聊天配音：开启实时配音后逐句走翻译 + TTS', async ({ page, request }) => {
   await page.goto('/chat');
   await useLocalChat(page);
-  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), true);
+  await toggle(page, page.getByRole('switch', { name: /实时配音/ }), true);
   await expect(page.locator('.voice-capability')).toHaveAttribute('data-state', 'ready');
 
   await page.locator('.chat-input').fill('陪我说说话');
@@ -450,7 +451,7 @@ test('flow 3c · 聊天配音：舞台提示保留显示但不进入朗读', asy
   await fault(request, MOCK.ollama, { reply: '（稍微有点慌乱）诶、和我一起看吗……' });
   await page.goto('/chat');
   await useLocalChat(page);
-  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), true);
+  await toggle(page, page.getByRole('switch', { name: /实时配音/ }), true);
   await expect(page.locator('.voice-capability')).toHaveAttribute('data-state', 'ready');
 
   await page.locator('.chat-input').fill('一起看恐怖片吗？');
@@ -470,8 +471,8 @@ test('flow 3d · 聊天中断：停止后已生成的片段保留并标记', asy
   await fault(request, MOCK.ollama, { latency: 400 });
   await page.goto('/chat');
   await useLocalChat(page);
-  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
-  await expect(page.locator('.model-select')).toBeEnabled();
+  await toggle(page, page.getByRole('switch', { name: /实时配音/ }), false);
+  await expect(page.locator('.model-select .studio-select-trigger')).toBeEnabled();
 
   await page.locator('.chat-input').fill('讲个长故事');
   await page.locator('.send-btn').click();
@@ -487,7 +488,7 @@ for (const theme of ['dark', 'light']) {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme);
     await page.goto('/chat');
     await useLocalChat(page);
-    await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
+    await toggle(page, page.getByRole('switch', { name: /实时配音/ }), false);
     // 故障注入只覆盖前端断流恢复；其余 flow 3 用例继续验证真实网关中继。
     await page.route('**/api/chat', route => route.fulfill({
       contentType: 'application/x-ndjson',
@@ -512,8 +513,8 @@ test('flow 3e · 情绪标签协议：标签剥离不进展示/历史，显式�
   await fault(request, MOCK.ollama, { reply: '[mood=happy]今天也辛苦了，先休息一会儿吧！', latency: 150 });
   await page.goto('/chat');
   await useLocalChat(page);
-  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
-  await expect(page.locator('.model-select')).toBeEnabled();
+  await toggle(page, page.getByRole('switch', { name: /实时配音/ }), false);
+  await expect(page.locator('.model-select .studio-select-trigger')).toBeEnabled();
 
   await page.locator('.chat-input').fill('陪我聊聊天');
   await page.locator('.send-btn').click();
@@ -815,7 +816,7 @@ test('flow 6b · 深链：无场景时 ?char 生效', async ({ page }) => {
   await expect(page.locator('.pb')).toHaveAttribute('data-character', 'natsume');
   await expect(page.locator('.char-btn.active')).toContainText('夏目');
   // 声线随角色联动
-  await expect(page.locator('.voice-field select').first()).toHaveValue('natsume');
+  await expect(page.locator('.voice-field').first().locator('.studio-select-trigger')).toHaveAttribute('data-value', 'natsume');
 });
 
 test('flow 6c · 深链：?resume=1 恢复上次草稿', async ({ page }) => {

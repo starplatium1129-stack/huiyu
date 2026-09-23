@@ -21,6 +21,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-style-debt.js',
     'test-bridge-acl.js',
     'test-icon-button-labels.js',
+    'test-native-controls.js',
     'test-ux-regressions.js',
   ]),
   unit: Object.freeze([

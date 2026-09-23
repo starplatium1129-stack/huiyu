@@ -18,8 +18,8 @@
   .pb .scene-filter-more-body { padding:0 var(--s-3) var(--s-3); }
   .pb .scene-filter-more .scene-filter-grid { margin-top:4px; }
   .pb .scene-filter-field { display:grid; gap:3px; color:var(--text-muted); font-size:var(--fs-mono-sm); }
-  .pb .scene-filter-field select { width:100%; min-width:0; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:var(--s-2) var(--s-2); font-size:var(--fs-label-sm); outline:none; }
-  .pb .scene-filter-field select:focus { border-color:var(--accent); }
+    /* 原生 select 已迁至 StudioSelect：外观由触发器统一提供，这里保留宽度收敛。 */
+  .pb .scene-filter-field .studio-select-wrapper { width:100%; min-width:0; }
   .pb .scene-mature-row { display:flex; align-items:center; justify-content:flex-end; margin-bottom:var(--s-2); }
   .pb .scene-mature-row label { display:flex; align-items:center; gap:var(--s-2); color:var(--text-muted); cursor:pointer; font-size:var(--fs-label-xs); }
   .pb .scene-cat { appearance:none; padding: 3px var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: var(--r-pill); cursor: pointer; font: 500 var(--fs-label-xs) var(--font-sans); transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }

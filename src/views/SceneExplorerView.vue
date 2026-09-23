@@ -96,13 +96,13 @@
       <!-- 精细筛选默认收起 -->
       <div v-show="filtersOpen" id="sceneFacetPanel" class="scene-facet-panel">
         <div class="scene-facet-grid">
-          <label class="scene-filter-field">角色<select v-model="fChar"><option value="all">全部角色</option><option value="nene">宁宁</option><option value="natsume">夏目</option><option value="triad">双人</option></select></label>
-          <label class="scene-filter-field">季节<select v-model="fSeason"><option value="all">全部季节</option><option value="春">春</option><option value="夏">夏</option><option value="秋">秋</option><option value="冬">冬</option></select></label>
-          <label class="scene-filter-field">时段<select v-model="fTime"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
-          <label class="scene-filter-field">系列<select v-model="fSeries"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
-          <label class="scene-filter-field">分级<select v-model="fRating"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15</option><option value="R18">R18</option></select></label>
-          <label class="scene-filter-field">层级<select v-model="fTier"><option value="personal">我的常用</option><option value="core">人设核心</option><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整库</option></select></label>
-          <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">智能推荐</option><option value="used">最近常用</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
+          <label class="scene-filter-field">角色<StudioSelect v-model="fChar" label="角色" :options="[{ value: 'all', label: '全部角色' }, { value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" /></label>
+          <label class="scene-filter-field">季节<StudioSelect v-model="fSeason" label="季节" :options="[{ value: 'all', label: '全部季节' }, { value: '春', label: '春' }, { value: '夏', label: '夏' }, { value: '秋', label: '秋' }, { value: '冬', label: '冬' }]" /></label>
+          <label class="scene-filter-field">时段<StudioSelect v-model="fTime" label="时段" :options="[{ value: 'all', label: '全部时段' }, { value: 'morning', label: '清晨' }, { value: 'afternoon', label: '午后' }, { value: 'sunset', label: '黄昏' }, { value: 'night', label: '夜晚与深夜' }, { value: 'dawn', label: '黎明' }]" /></label>
+          <label class="scene-filter-field">系列<StudioSelect v-model="fSeries" label="系列" :options="[{ value: 'all', label: '全部系列' }, { value: 'after', label: 'After Story' }, { value: 'fanwork', label: '同人' }, { value: 'active', label: 'Active Sync' }]" /></label>
+          <label class="scene-filter-field">分级<StudioSelect v-model="fRating" label="分级" :options="[{ value: 'all', label: '全部分级' }, { value: 'All', label: '全年龄' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" /></label>
+          <label class="scene-filter-field">层级<StudioSelect v-model="fTier" label="层级" :options="[{ value: 'personal', label: '我的常用' }, { value: 'core', label: '人设核心' }, { value: 'featured', label: '招牌与精选' }, { value: 'signature', label: '只看招牌' }, { value: 'curated', label: '只看精选' }, { value: 'all', label: '完整库' }]" /></label>
+          <label class="scene-filter-field">排序<StudioSelect v-model="sortBy" label="排序" :options="[{ value: 'smart', label: '智能推荐' }, { value: 'used', label: '最近常用' }, { value: 'curated', label: '主理人精选' }, { value: 'favorite', label: '我的收藏' }, { value: 'newest', label: '最新加入' }, { value: 'title', label: '名称A-Z' }]" /></label>
         </div>
         <div class="scene-filter-meta">
           <span class="mature-hint"><template v-if="adultEnabled">成人 <em>{{ matureCount }}</em> · 已展示</template><template v-else>成人场景 · 仅限本机</template></span>
@@ -212,6 +212,7 @@
 
 <script setup lang="ts">
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { ref, reactive, watch } from 'vue'
 const searchInput = ref<HTMLInputElement | null>(null)
@@ -374,38 +375,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 /* 合并后一个面板里有 7 个字段，4 列更紧凑 */
 .scene-facet-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); }
 .scene-filter-field { display:grid; gap:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:600; }
-.scene-filter-field select {
-  width: 100%;
-  min-height: 40px;
-  padding: 8px var(--s-7) 8px 10px;
-  background-color: var(--bg-deep);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  color: var(--text-primary);
-  font: 500 var(--fs-label) var(--font-sans);
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  transition: border-color var(--motion-hover), background-color var(--motion-hover);
-}
-.scene-filter-field select:hover {
-  border-color: var(--accent);
-  background-color: var(--bg-surface);
-}
-.scene-filter-field select:focus-visible {
-  border-color: var(--accent);
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
+.scene-filter-field :deep(.studio-select-wrapper) { width: 100%; }
 .scene-more-filters { border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); overflow:hidden; }
 .scene-more-filters summary { list-style:none; display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3); color:var(--text-secondary); cursor:pointer; font-size:var(--fs-label); font-weight:650; }
 .scene-more-filters summary::-webkit-details-marker { display:none; }

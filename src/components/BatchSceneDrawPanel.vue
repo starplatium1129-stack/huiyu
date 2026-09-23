@@ -50,10 +50,7 @@
           <template v-if="batchMode === 'scene'">
             <div class="batch-scene-toolbar">
               <input v-model="filter" class="input" type="search" aria-label="搜索批量场景" placeholder="搜索场景 / 角色 / 地点…" />
-              <select v-model="categoryFilter" class="select" aria-label="按分类过滤">
-                <option value="">全部分类</option>
-                <option v-for="name in categories" :key="name" :value="name">{{ name }}</option>
-              </select>
+              <StudioSelect v-model="categoryFilter" size="sm" label="按分类过滤" :options="categoryOptions" />
               <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllScenes">{{ allFilteredScenesSelected ? '取消全选' : '全选匹配项' }}</button>
               <button class="btn btn-ghost btn-sm" type="button" @click="clearSceneSelection">清空</button>
             </div>
@@ -99,10 +96,7 @@
 
             <div class="batch-scene-toolbar">
               <input v-model="charFilter" class="input" type="search" aria-label="搜索批量角色" placeholder="搜索角色名 / 原作…" />
-              <select v-model="franchiseFilter" class="select" aria-label="按作品过滤">
-                <option value="">全部作品</option>
-                <option v-for="name in franchises" :key="name" :value="name">{{ name }}</option>
-              </select>
+              <StudioSelect v-model="franchiseFilter" size="sm" label="按作品过滤" :options="franchiseOptions" />
               <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllCharacters">{{ allFilteredCharsSelected ? '取消全选' : '全选匹配项' }}</button>
               <button class="btn btn-ghost btn-sm" type="button" @click="clearCharSelection">清空</button>
             </div>
@@ -231,6 +225,8 @@
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import { computed, reactive, ref, watch, onUnmounted } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -404,6 +400,16 @@ function resetToConfig() {
   previewJob.value = null
   phase.value = 'config'
 }
+
+// —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
+const categoryOptions = computed<StudioSelectOption[]>(() => [
+  { value: '', label: '全部分类' },
+  ...categories.value.map(name => ({ value: name, label: name })),
+])
+const franchiseOptions = computed<StudioSelectOption[]>(() => [
+  { value: '', label: '全部作品' },
+  ...franchises.value.map(name => ({ value: name, label: name })),
+])
 
 function placeholderText(job: BatchDrawJob): string {
   if (job.status === 'failed') return job.error || '生成失败'

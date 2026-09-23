@@ -23,20 +23,15 @@
         </button>
       </div>
       <template v-if="chatProvider === 'local'">
-        <select
+        <StudioSelect
           class="model-select"
-          :value="currentModel"
-          :disabled="busy || !ollamaOnline"
-          aria-label="选择本地聊天模型"
-          @change="emit('update:currentModel', ($event.target as HTMLSelectElement).value)"
-        >
-          <option v-if="!ollamaOnline || !models.length" value="">
-            {{ ollamaOnline ? '无可用模型' : '正在发现模型…' }}
-          </option>
-          <option v-for="m in models" :key="m.name" :value="m.name">
-            {{ m.name }}{{ m.parameters ? ' · ' + m.parameters : '' }}
-          </option>
-        </select>
+          :model-value="currentModel"
+          :disabled="busy || !ollamaOnline || !models.length"
+          label="选择本地聊天模型"
+          :placeholder="ollamaOnline ? (models.length ? '选择本地模型' : '无可用模型') : '正在发现模型…'"
+          :options="models.map(m => ({ value: m.name, label: m.name + (m.parameters ? ' · ' + m.parameters : '') }))"
+          @update:model-value="emit('update:currentModel', String($event))"
+        />
       </template>
       <template v-else>
         <div class="thinking-group" title="模型推理强度（像 OpenCode 一样多档；关表示不思考）">
@@ -71,6 +66,7 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 
 const reasoningOptions = [
   { value: 'off', label: '关' },

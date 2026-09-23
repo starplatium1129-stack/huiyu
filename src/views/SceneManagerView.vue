@@ -107,10 +107,7 @@
       <template v-if="tab==='tags'">
         <div class="toolbar">
           <input v-model="tagSearch" class="search-input" type="search" placeholder="搜索标签（英文/中文/分类）…" />
-          <select v-model="tagCatFilter" class="filter-select">
-            <option value="">全部分类</option>
-            <option v-for="c in tagCats" :key="c" :value="c">{{ c }}</option>
-          </select>
+          <StudioSelect v-model="tagCatFilter" class="filter-select" label="标签分类" :options="[{ value: '', label: '全部分类' }, ...tagCats.map(c => ({ value: c, label: c }))]" />
           <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="startAddTag">＋ 新增标签</button>
           <span class="list-meta">{{ filteredTags.length }} / {{ tags.length }} 个</span>
         </div>
@@ -178,11 +175,11 @@
         </section>
         <div class="toolbar">
           <input v-model="imageSearch" class="search-input" type="search" placeholder="搜索场景/蓝图 ID、标题、角色…" />
-          <select v-model="imageTypeFilter" class="filter-select">
-            <option value="all">全部样张 ({{ allShowcaseItems.length }})</option>
-            <option value="scene">经典主线场景 ({{ scenes.length }})</option>
-            <option value="popular">热门角色蓝图 ({{ allShowcaseItems.length - scenes.length }})</option>
-          </select>
+          <StudioSelect v-model="imageTypeFilter" class="filter-select" label="样张类型" :options="[
+            { value: 'all', label: '全部样张 (' + allShowcaseItems.length + ')' },
+            { value: 'scene', label: '经典主线场景 (' + scenes.length + ')' },
+            { value: 'popular', label: '热门角色蓝图 (' + (allShowcaseItems.length - scenes.length) + ')' },
+          ]" />
           <span class="list-meta">{{ filteredImageScenes.length }} 个场景/蓝图</span>
         </div>
         <p class="note">点选任意主线场景或热门角色蓝图查看当前样张，支持直接上传替换。图片会自动归一化为标准 JPEG 并更新官方 Manifest，刷新后即时生效。</p>
@@ -323,16 +320,12 @@
               <label class="form-group"><span class="field-label">分类</span><input v-model="editing.category" class="input" :disabled="desktopPackaged" placeholder="恋爱 / 日常 / 校园…" /></label>
               <label class="form-group">
                 <span class="field-label">角色</span>
-                <select v-model="editing.char" class="filter-select" :disabled="desktopPackaged" @change="updateCharacterDefaults">
-                  <option value="nene">宁宁</option><option value="natsume">夏目</option><option value="triad">双人</option>
-                </select>
+                <StudioSelect v-model="editing.char" class="filter-select" label="角色" :disabled="desktopPackaged" @update:model-value="updateCharacterDefaults" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" />
               </label>
               <label class="form-group"><span class="field-label">LoRA</span><input v-model="editing.lora" class="input" :disabled="desktopPackaged" /></label>
               <label class="form-group">
                 <span class="field-label">分级</span>
-                <select v-model="editing.rating" class="filter-select" :disabled="desktopPackaged">
-                  <option value="All">All</option><option value="R15">R15</option><option value="R18">R18</option>
-                </select>
+                <StudioSelect v-model="editing.rating" class="filter-select" label="分级" :disabled="desktopPackaged" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
               </label>
             </div>
           </fieldset>
@@ -368,9 +361,7 @@
             <div class="form-grid">
               <label class="form-group">
                 <span class="field-label">策展层级</span>
-                <select v-model="curationTierValue" class="filter-select" :disabled="desktopPackaged" @change="onCurationTierChange">
-                  <option value="normal">普通</option><option value="review">待审</option><option value="curated">精选</option><option value="signature">招牌</option>
-                </select>
+                <StudioSelect v-model="curationTierValue" class="filter-select" label="策展层级" :disabled="desktopPackaged" @update:model-value="onCurationTierChange" :options="[{ value: 'normal', label: '普通' }, { value: 'review', label: '待审' }, { value: 'curated', label: '精选' }, { value: 'signature', label: '招牌' }]" />
               </label>
               <label class="form-group form-group-full"><span class="field-label">推荐理由（招牌必填）</span><input v-model="curationReason" class="input" :disabled="desktopPackaged || curationTierValue==='normal'||curationTierValue==='review'" :aria-invalid="curationTierValue==='signature' && !curationReason.trim() && triedSave" :class="{invalid: curationTierValue==='signature' && !curationReason.trim() && triedSave}" /></label>
             </div>
@@ -409,9 +400,7 @@
               <label class="form-group"><span class="field-label">服装 outfitId</span><input v-model="bpEditing.outfitId" class="input" :disabled="desktopPackaged" placeholder="default / school / witch…" /></label>
               <label class="form-group">
                 <span class="field-label">样张定级</span>
-                <select v-model="bpEditing.sampleRating" class="filter-select" :disabled="desktopPackaged">
-                  <option value="All">All</option><option value="R15">R15</option><option value="R18">R18</option>
-                </select>
+                <StudioSelect v-model="bpEditing.sampleRating" class="filter-select" label="样张定级" :disabled="desktopPackaged" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
               </label>
               <ToggleSwitch v-model="bpEditing.adult" :disabled="desktopPackaged" class="form-group form-check" label="成人蓝图（adult）"><span>成人蓝图（adult）</span></ToggleSwitch>
               <label class="form-group form-group-full"><span class="field-label">描述</span><textarea v-model="bpEditing.description" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
@@ -488,9 +477,7 @@
             </label>
             <label class="form-group">
               <span class="field-label">分类 *</span>
-              <select v-model="tagForm.cat" class="filter-select" :disabled="desktopPackaged">
-                <option v-for="c in tagCats" :key="c" :value="c">{{ c }}</option>
-              </select>
+              <StudioSelect v-model="tagForm.cat" class="filter-select" label="分类" :disabled="desktopPackaged" :options="tagCats.map(c => ({ value: c, label: c }))" />
             </label>
             <label class="form-group">
               <span class="field-label">权重 * (0–2)</span>
@@ -515,6 +502,7 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import MaintenanceCatalog from '@/components/maintenance/MaintenanceCatalog.vue'
 import SceneImpactPreview from '@/components/maintenance/SceneImpactPreview.vue'
 import { useSceneManagerWorkspace } from "@/composables/scene/useSceneManagerWorkspace"

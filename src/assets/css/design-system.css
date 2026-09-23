@@ -951,7 +951,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   letter-spacing: .02em;
 }
 .field-hint { color: var(--text-muted); font-size: var(--fs-mono-sm); line-height: var(--lh-body); }
-.input, .select, .textarea {
+.input, .textarea {
   width: 100%;
   min-height: 40px;
   padding: var(--s-2) var(--s-3);
@@ -962,32 +962,18 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   font: 400 var(--fs-body) var(--font-sans);
   transition: border-color var(--motion-hover), box-shadow var(--motion-hover), background var(--motion-hover);
 }
-.select {
-  padding-inline-end: var(--s-7);
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-}
 .textarea { min-height: 96px; resize: vertical; line-height: var(--lh-body); }
 .input-mono, .textarea-mono { font-family: var(--font-mono); font-size: var(--fs-label); }
 .input::placeholder, .textarea::placeholder { color: var(--text-muted); }
-.input:hover, .select:hover, .textarea:hover { border-color: var(--border-strong); }
-.input:focus, .select:focus, .textarea:focus {
+.input:hover, .textarea:hover { border-color: var(--border-strong); }
+.input:focus, .textarea:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: var(--ring);
 }
 /* 同 .btn:disabled —— 不用 opacity 压字（实测浅色底 3.01:1 不达 AA），
    改为显式文字色 + 压暗底。 */
-.input:disabled, .select:disabled, .textarea:disabled {
+.input:disabled, .textarea:disabled {
   color: var(--text-disabled);
   border-color: var(--border-soft);
   cursor: not-allowed;
@@ -1622,7 +1608,7 @@ body:has(.pb) .route-atmosphere .route-index {
 :where(
   body, .nav, .card, .card-info, .card-create, .card-direct,
   .panel, .btn, .chip, .filter-pill, .badge, .sc, .mood-card,
-  .input, .select, .textarea, .option, .tag-chip, .scene-card,
+  .input, .textarea, .option, .tag-chip, .scene-card,
   .status-tile, .service-row, .mode-card, .panel-card,
   .artwork, .sample, .history-item, .tool-card, .stat-card
 ) {

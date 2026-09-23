@@ -17,9 +17,8 @@
       <p v-else-if="status && !status.managementEnabled" class="resource-description">资源管理尚未启用，请由本机管理员完成配置。</p>
       <div v-if="status?.releases.length" class="resource-selection">
         <label for="resource-release">选择资源版本</label>
-        <select id="resource-release" v-model="selectedId" :disabled="busy">
-          <option v-for="release in status.releases" :key="release.id" :value="release.id">{{ release.label }} · {{ release.kind === 'delta' ? '增量更新' : '完整资源' }}</option>
-        </select>
+        <StudioSelect id="resource-release" v-model="selectedId" :disabled="busy"
+          :options="status?.releases.map(release => ({ value: release.id, label: `${release.label} · ${release.kind === 'delta' ? '增量更新' : '完整资源'}` }))" />
         <p v-if="selected" class="resource-description">{{ selected.source === 'offline' ? '从已批准的本地资源包导入。' : selected.downloaded ? '下载缓存已就绪；安装时会重新校验。' : '需要手动下载，完成后再安装。' }}</p>
       </div>
       <div v-if="status?.task" class="resource-task" :aria-busy="status.busy">
@@ -43,6 +42,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { useResourceLibrary } from '../composables/useResourceLibrary'
 const library = useResourceLibrary()
 const { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
@@ -62,31 +62,8 @@ onUnmounted(library.stop)
 .resource-version code { overflow-wrap: anywhere; max-width: 100%; color: var(--text-secondary); }
 .resource-selection { display: grid; gap: var(--s-2); margin-block: var(--s-3); }
 .resource-selection label { font-size: var(--fs-label); }
-.resource-selection select {
-  width: 100%;
-  min-width: 0;
-  min-height: 44px;
-  padding: var(--s-3) var(--s-7) var(--s-3) var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background-color: var(--bg-deep);
-  color: var(--text-primary);
-  font: inherit;
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  transition: border-color var(--motion-hover) var(--ease-out);
-}
-.resource-selection select:hover:not(:disabled) { border-color: var(--accent); }
+/* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度/最小高度）落在 wrapper。 */
+.resource-selection .studio-select-wrapper { width: 100%; min-width: 0; min-height: 44px; }
 .resource-notice, .resource-task { border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: var(--s-3); line-height: var(--lh-body); font-size: var(--fs-label); overflow-wrap: anywhere; }
 .resource-task p { margin-bottom: 0; }
 .resource-task progress {
@@ -107,8 +84,10 @@ onUnmounted(library.stop)
 .resource-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
 .resource-actions button { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
 .resource-actions button:hover:not(:disabled) { background: var(--bg-elevated); }
-.resource-actions button:disabled, .resource-selection select:disabled { color: var(--text-disabled); opacity: 1; cursor: not-allowed; }
-.resource-actions button:focus-visible, .resource-selection select:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
+.resource-actions button:disabled { color: var(--text-disabled); opacity: 1; cursor: not-allowed; }
+.resource-selection :deep(.studio-select-trigger):disabled { color: var(--text-disabled); opacity: 1; cursor: not-allowed; }
+.resource-actions button:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
+.resource-selection :deep(.studio-select-trigger):focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
 .resource-footnote { margin-bottom: 0; }
 @media (max-width: 480px) { .resource-actions button { flex: 1 1 140px; } }
 </style>

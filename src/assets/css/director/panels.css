@@ -83,23 +83,8 @@
   .pb .result-frame { margin-top: 0; border: 1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); padding: var(--s-4); }
   .pb .ctrl { display: flex; flex-direction: column; gap: 2px; }
   .pb .ctrl label { font-size: var(--fs-mono-sm); color: var(--text-muted); }
-  .pb .ctrl select { background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-sm); color: var(--text-primary); padding: 4px var(--s-2); font-size: var(--fs-label); outline: none; }
-  .pb .ctrl select:focus { border-color: var(--accent); }
-  .pb .ctrl.toggle-row { flex-direction: row; align-items: center; gap: var(--s-2); }
-  .pb .ctrl.toggle-row label { font-size: var(--fs-label-sm); color: var(--text-secondary); }
-  .pb .switch { position: relative; display: inline-block; width: 32px; height: 18px; flex-shrink: 0; }
-  .pb .switch input { opacity: 0; width: 0; height: 0; }
-  .pb .slider { position: absolute; cursor: pointer; inset: 0; background: var(--border-soft); border-radius: var(--r-pill); transition: background var(--motion-hover) var(--ease-out); }
-  .pb .slider:before { content: ""; position: absolute; height: 13px; width: 13px; left: 2.5px; bottom: 2.5px; background: var(--text-primary); border-radius: 50%; transition: transform var(--motion-hover) var(--ease-out); }
-  .pb .switch input:checked + .slider { background: var(--accent); }
-  .pb .switch input:checked + .slider:before { transform: translateX(14px); }
+    /* 原生 select 已迁至 StudioSelect：外观由触发器统一提供（2026-09-22 去原生化）。 */
 
-  /* ---- 右栏: 导演台 ---- */
-  .pb .director-card {
-    background:color-mix(in srgb,var(--bg-surface) 96%,var(--bg-base));
-    border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-3); box-shadow:none;
-    transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover);
-  }
   .pb .director-card:hover { border-color:color-mix(in srgb,var(--accent) 24%,var(--border-soft)); }
   .pb .director-mode-switch {
     display:inline-flex; padding:3px;
@@ -281,9 +266,9 @@
     .pb #stepResult > * { grid-column:1 !important; grid-row:auto !important; }
     .pb .voice-controls { grid-template-columns:1fr; }
     .pb .story-chip, .pb .char-btn, .pb .scene-cat, .pb .scene-filter-reset, .pb .chip-select, .pb .tag-chip, .pb .option, .pb .cat-tab { min-height: 44px; }
-    .pb .scene-filter-field select, .pb .controls-grid select, .pb .sd-inline-options select { min-height: 44px; }
+    .pb .scene-filter-field .studio-select-trigger, .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger { min-height: 44px; }
     /* iOS 聚焦自动放大要求控件字号不低于平台阈值,与正文阶梯分开归属 */
-    .pb .story-input, .pb .scene-search, .pb .controls-grid select, .pb .sd-inline-options select, .pb .seed-input-wrap input, .pb .voice-text, .pb .review-notes, .pb .review-image-url { font-size:var(--fs-ios-control) !important; }
+    .pb .story-input, .pb .scene-search, .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger, .pb .seed-input-wrap input, .pb .voice-text, .pb .review-notes, .pb .review-image-url { font-size:var(--fs-ios-control) !important; }
     .pb .scene-card-main { padding-bottom:var(--s-3); }
     .pb .scene-card .scene-direct-btn { display:inline-flex; position:static; margin:0 var(--s-3) var(--s-3); min-height:40px; align-items:center; }
     .pb .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
@@ -321,8 +306,8 @@
     .pb .focus-mode-btn { width:36px; padding:0; }
     .pb .shortcut-only { display:none; }
     .pb .sd-inline-options { align-items:stretch; }
-    .pb .sd-inline-options label:has(select) { width:100%; justify-content:space-between; }
-    .pb .sd-inline-options select { flex:1; min-width:0; }
+    .pb .sd-inline-options label:has(.studio-select-wrapper) { width:100%; justify-content:space-between; }
+    .pb .sd-inline-options .studio-select-wrapper { flex:1; min-width:0; }
     .pb .sd-advanced-options { width:100%; }
     .pb .sd-advanced-options > summary { justify-content:center; width:100%; }
     .pb .sd-advanced-grid { position:static; grid-template-columns:1fr; width:100%; min-width:0; margin-top:var(--s-2); box-shadow:none; }

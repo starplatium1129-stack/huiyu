@@ -5,10 +5,10 @@
       <button class="btn btn-primary btn-sm" type="button" :disabled="readonly" :title="readonly ? '桌面模式仅可查看和导出' : ''" @click="$emit('add')">新增{{ label }}</button>
     </div>
     <div class="catalog-filters">
-      <label>角色<select v-model="character" :aria-label="`筛选${label}角色`"><option value="">全部角色</option><option v-for="[id, name] in characters" :key="id" :value="id">{{ name }}</option></select></label>
-      <label>分类<select v-model="category" :aria-label="`筛选${label}分类`"><option value="">全部分类</option><option v-for="item in categories" :key="item">{{ item }}</option></select></label>
-      <label>分级<select v-model="rating" :aria-label="`筛选${label}分级`"><option value="">全部分级</option><option value="All">全年龄 · All</option><option value="R15">R15</option><option value="R18">R18</option></select></label>
-      <label>排序<select v-model="sort" :aria-label="`${label}排序`"><option value="id">按编号</option><option value="title">按标题</option><option value="character">按角色</option></select></label>
+      <label>角色<StudioSelect v-model="character" :label="`筛选${label}角色`" :options="[{ value: '', label: '全部角色' }, ...characters.map(([id, name]) => ({ value: id, label: name }))]" /></label>
+      <label>分类<StudioSelect v-model="category" :label="`筛选${label}分类`" :options="[{ value: '', label: '全部分类' }, ...categories.map(item => ({ value: item, label: item }))]" /></label>
+      <label>分级<StudioSelect v-model="rating" :label="`筛选${label}分级`" :options="[{ value: '', label: '全部分级' }, { value: 'All', label: '全年龄 · All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" /></label>
+      <label>排序<StudioSelect v-model="sort" :label="`${label}排序`" :options="[{ value: 'id', label: '按编号' }, { value: 'title', label: '按标题' }, { value: 'character', label: '按角色' }]" /></label>
       <button v-if="hasFilters" class="btn btn-ghost btn-sm" type="button" @click="reset">清除筛选</button>
     </div>
     <div class="catalog-scope">
@@ -44,6 +44,7 @@ import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import MaintenanceRecordDetail from './MaintenanceRecordDetail.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 import '@/assets/css/maintenance-workspace.css'
 const props = defineProps<{ records: MaintenanceRecord[]; kind: 'scene' | 'blueprint'; label: string; readonly: boolean }>()
 defineEmits<{ add: []; edit: [id: string]; duplicate: [id: string]; remove: [id: string] }>()

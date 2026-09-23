@@ -30,15 +30,26 @@
         </datalist>
       </div>
       <div class="ctrl"><label :for="idOf('sampler')">采样器 (Sampler)</label>
-        <select :id="idOf('sampler')" v-model="params.sampler" title="采样器：决定去噪方式与画面质感。" @change="touch('sampler')">
-          <option v-for="sampler in samplerOptions" :key="sampler">{{ sampler }}</option>
-        </select>
+        <StudioSelect
+          :id="idOf('sampler')"
+          size="sm"
+          label="采样器 (Sampler)"
+          title="采样器：决定去噪方式与画面质感。"
+          v-model="params.sampler"
+          :options="samplerSelectOptions"
+          @update:model-value="touch('sampler')"
+        />
       </div>
       <div class="ctrl"><label :for="idOf('scheduler')">调度器 (Scheduler)</label>
-        <select :id="idOf('scheduler')" v-model="params.scheduler" title="调度器：配合采样器控制去噪节奏，一般保持自动。" @change="touch('scheduler')">
-          <option value="">自动</option>
-          <option v-for="scheduler in schedulerOptions" :key="scheduler">{{ scheduler }}</option>
-        </select>
+        <StudioSelect
+          :id="idOf('scheduler')"
+          size="sm"
+          label="调度器 (Scheduler)"
+          title="调度器：配合采样器控制去噪节奏，一般保持自动。"
+          v-model="params.scheduler"
+          :options="schedulerSelectOptions"
+          @update:model-value="touch('scheduler')"
+        />
       </div>
       <div class="ctrl toggle-row">
         <ToggleSwitch v-model="params.quality" label="质量前缀" />
@@ -68,6 +79,8 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 import '@/assets/css/director/components/GenerationParamsPanel.css'
 
@@ -112,6 +125,15 @@ const schedulerOptions = computed(() =>
   props.schedulers.length ? props.schedulers : ['Karras', 'Exponential'],
 )
 function touch(key: keyof SDParams) { emit('touch', key) }
+
+// —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
+const samplerSelectOptions = computed<StudioSelectOption[]>(() =>
+  samplerOptions.value.map(sampler => ({ value: sampler, label: sampler })),
+)
+const schedulerSelectOptions = computed<StudioSelectOption[]>(() => [
+  { value: '', label: '自动' },
+  ...schedulerOptions.value.map(scheduler => ({ value: scheduler, label: scheduler })),
+])
 
 /**
  * 数字框的取值收口。

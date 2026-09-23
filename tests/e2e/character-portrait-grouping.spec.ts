@@ -1,12 +1,14 @@
 import { expect, test } from '@playwright/test'
+import { pickStudioOptionByValue, readStudioOptions } from './helpers/studioSelect'
 
 test('different source spellings form one complete work group', async ({ page }) => {
   await page.goto('/character')
   const series = page.getByLabel('筛选角色系列')
-  await expect(series.locator('option[value="Oregairu"]')).toContainText('4')
-  await series.selectOption('Oregairu')
+  const oregairu = (await readStudioOptions(series)).find(option => option.value === 'Oregairu')
+  expect(oregairu?.label).toContain('4')
+  await pickStudioOptionByValue(series, 'Oregairu')
   await expect(page.locator('.directory-item')).toHaveCount(4)
-  await series.selectOption('Saenai Heroine no Sodatekata')
+  await pickStudioOptionByValue(series, 'Saenai Heroine no Sodatekata')
   await expect(page.locator('.directory-item')).toHaveCount(2)
 
 })

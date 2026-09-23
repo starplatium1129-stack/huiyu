@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
+import { expectStudioSelectValue } from './helpers/studioSelect'
 
 async function chooseCharacter(page: Page, name: string) {
   if (new URL(page.url()).pathname === '/prompt-builder') {
@@ -38,7 +39,7 @@ test('anima engine: main generate shows result in main frame through mock ComfyU
   const animaEngine = page.locator('.engine-switch button').nth(1)
   await expect(animaEngine).toBeEnabled({ timeout: 30000 })
   await animaEngine.click()
-  await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 30000 })
+  await expectStudioSelectValue(page.locator('#baseModel'), /anima/, { timeout: 30000 })
   // c2bbb9a 起在线徽章文案改为「<引擎> 已连接」
   await expect(page.locator('.api-status .badge')).toContainText(/Anima 已连接/, { timeout: 30000 })
 

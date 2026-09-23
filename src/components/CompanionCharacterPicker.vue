@@ -95,12 +95,14 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
         role="listbox"
         class="companion-picker-content"
         :aria-label="label"
+        @pointerdown.stop
+        @wheel.stop
       >
         <div class="companion-picker-heading" aria-hidden="true">
           <span><ArchiveIcon name="character" />陪伴角色</span>
           <small>{{ characters.length }} 位可选</small>
         </div>
-        <div class="companion-picker-viewport">
+        <div class="companion-picker-viewport" @pointerdown.stop @wheel.stop>
           <button
             v-for="(character, index) in characters"
             :key="character.id"
@@ -225,6 +227,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
 .companion-picker-trigger[data-state='open'] .companion-picker-chevron { transform: rotate(180deg); }
 
 .companion-picker-content {
+  -webkit-app-region: no-drag;
   position: absolute;
   z-index: var(--z-popover);
   top: calc(100% + 8px);
@@ -239,7 +242,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
   color: var(--text-primary);
   box-shadow: var(--shadow-glass-elevated);
 }
-html.companion-desktop .companion-picker-content { right: auto; left: 0; }
+html.companion-desktop .companion-picker-content { right: auto; left: 0; -webkit-app-region: no-drag; }
 .companion-picker-menu-enter-active,
 .companion-picker-menu-leave-active { transition: opacity var(--motion-hover), transform var(--motion-hover) var(--ease-out); }
 .companion-picker-menu-enter-from,
@@ -259,6 +262,8 @@ html.companion-desktop .companion-picker-content { right: auto; left: 0; }
 .companion-picker-heading small { color: var(--text-secondary); font: 500 var(--fs-label-xs) var(--font-sans); }
 
 .companion-picker-viewport {
+  -webkit-app-region: no-drag;
+  touch-action: pan-y;
   max-height: min(290px, calc(100dvh - 140px));
   overflow-y: auto;
   overscroll-behavior: contain;

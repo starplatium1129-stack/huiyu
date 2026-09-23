@@ -38,17 +38,27 @@
 
           <div v-if="pb.directorMode === 'pro'" class="base-model-picker">
             <label for="baseModel">基础模型 (Checkpoint)</label>
-            <select v-if="drawEngine === 'sd'" id="baseModel" v-model="pb.sdModelName" :disabled="generationBusy"
-              :title="generationBusy ? BUSY_HINT : undefined">
-              <option value="">使用 WebUI 当前模型</option>
-              <option v-for="model in sd.models.value" :key="model" :value="model">{{ model }}</option>
-            </select>
-            <select v-else id="baseModel" :value="animaState.modelId" :disabled="generationBusy"
-              :title="generationBusy ? BUSY_HINT : undefined" @change="selectAnimaModel">
-              <option v-for="model in animaState.models" :key="model.id" :value="model.id" :disabled="model.available === false">
-                {{ model.label || model.id }}{{ model.available === false ? ' · 模型未安装' : '' }}
-              </option>
-            </select>
+            <StudioSelect
+              v-if="drawEngine === 'sd'"
+              id="baseModel"
+              size="sm"
+              label="基础模型 (Checkpoint)"
+              v-model="pb.sdModelName"
+              :disabled="generationBusy"
+              :title="generationBusy ? BUSY_HINT : undefined"
+              :options="sdModelOptions"
+            />
+            <StudioSelect
+              v-else
+              id="baseModel"
+              size="sm"
+              label="基础模型 (Checkpoint)"
+              :model-value="animaState.modelId"
+              :disabled="generationBusy"
+              :title="generationBusy ? BUSY_HINT : undefined"
+              :options="animaModelOptions"
+              @update:model-value="onAnimaModelSelected"
+            />
           </div>
 
 
@@ -99,8 +109,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const GenerationParamsPanel = defineAsyncComponent(() => import('@/components/GenerationParamsPanel.vue'))
@@ -109,6 +121,24 @@ const GenerationOutputControls = defineAsyncComponent(() => import('@/components
 
 const props = defineProps<{ bindings: PromptRenderBindings }>()
 const { pb, displayResultUrl, sd, generationBusy, animaState, drawEngine, upscaleCurrentResult, generationPresetSummary, sdQueue, managedRoute, applyManagedRoute, reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel, displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint, canUseFaceDetailer, enqueueCurrent, enqueue3Variants, resetAll } = props.bindings
+
+// —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
+const sdModelOptions = computed<StudioSelectOption[]>(() => [
+  { value: '', label: '使用 WebUI 当前模型' },
+  ...sd.models.value.map(model => ({ value: model, label: model })),
+])
+const animaModelOptions = computed<StudioSelectOption[]>(() =>
+  animaState.value.models.map(model => ({
+    value: model.id,
+    label: `${model.label || model.id}${model.available === false ? ' · 模型未安装' : ''}`,
+    disabled: model.available === false,
+  })),
+)
+// selectAnimaModel 已按新签名收 string（见 useDirectorEngine），
+// 不再需要把值伪装成 Event 对象。
+function onAnimaModelSelected(value: string | number) {
+  selectAnimaModel(String(value))
+}
 </script>
 
 <style src="@/assets/css/director/components/PromptInspectorRender.css"></style>

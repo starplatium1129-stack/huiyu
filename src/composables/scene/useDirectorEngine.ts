@@ -197,8 +197,10 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     else void cancelAnimaJob()
   }
 
-  function selectAnimaModel(event: Event) {
-    applyModel((event.target as HTMLSelectElement).value)
+  // 去原生化的连带清理（2026-09-22）：原签名读 event.target.value，
+  // 是原生 <select> 的产物；改用 StudioSelect 后回写的就是模型 id。
+  function selectAnimaModel(modelId: string) {
+    applyModel(modelId)
   }
 
   function updateAnimaPromptState() {

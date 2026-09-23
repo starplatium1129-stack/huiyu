@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 // Browser-local fixture: no personal artwork or generation endpoint is used.
 async function seedGallery(page: Page, theme: string, empty = false) {
@@ -49,9 +50,9 @@ for (const theme of ['light', 'dark']) {
     await expect(page.getByText('当前筛选下没有作品')).toBeVisible()
     await page.getByRole('button', { name: '重置筛选', exact: true }).click()
     await expect(cards).toHaveCount(6)
-    await page.getByLabel('按项目筛选').selectOption('review')
+    await pickStudioOptionByValue(page.getByLabel('按项目筛选'), 'review')
     await expect(cards).toHaveCount(2)
-    await page.getByLabel('按项目筛选').selectOption('')
+    await pickStudioOptionByValue(page.getByLabel('按项目筛选'), '')
     await cards.first().locator('.artwork-button').click()
     await expect(page.getByRole('dialog', { name: '作品观赏模式' })).toBeVisible()
     await page.keyboard.press('Escape')

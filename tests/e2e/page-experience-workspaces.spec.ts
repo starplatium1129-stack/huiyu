@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 test.use({ baseURL: `http://127.0.0.1:${MOCK_PORTS.gateway}` })
 
 for (const theme of ['dark', 'light']) {
@@ -105,6 +106,6 @@ test('remote hostname refuses mature scene browsing even if a local fixture deli
   await expect(page.locator('.scene-grid .sc').first()).toBeVisible()
   await page.getByRole('button', { name: /^筛选与收藏/ }).click()
   await expect(page.locator('.mature-hint')).toHaveText('成人场景 · 仅限本机')
-  await page.getByRole('combobox', { name: /^分级/ }).selectOption('R18')
+  await pickStudioOptionByValue(page.getByRole('combobox', { name: /^分级/ }), 'R18')
   await expect(page.locator('.scene-grid .sc')).toHaveCount(0)
 })

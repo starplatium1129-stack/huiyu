@@ -2,10 +2,9 @@
   <fieldset class="model-calibration-fields" :disabled="disabled || !parameters.length">
     <legend>{{ title }}</legend>
     <label>{{ title }}参数
-      <select :value="binding.id" :disabled="!parameters.length" @change="$emit('update', { ...binding, id: ($event.target as HTMLSelectElement).value }, true)">
-        <option value="">不覆写，保留作者动画</option>
-        <option v-for="parameter in parameters" :key="parameter.id" :value="parameter.id">{{ parameter.id }}</option>
-      </select>
+      <StudioSelect :model-value="binding.id" :disabled="!parameters.length" :label="`${title}参数`"
+        :options="[{ value: '', label: '不覆写，保留作者动画' }, ...parameters.map(parameter => ({ value: parameter.id, label: parameter.id }))]"
+        @update:model-value="(value) => $emit('update', { ...binding, id: String(value) }, true)" />
     </label>
     <template v-if="binding.id">
       <p v-if="range">实际范围 {{ range.min }} ～ {{ range.max }} · 默认 {{ range.default }}</p>
@@ -19,35 +18,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { CalibrationBinding, ModelParameter } from '@/live2d/modelCalibration'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
 const props = defineProps<{ title: string; binding: CalibrationBinding; parameters: ModelParameter[]; disabled?: boolean }>()
 defineEmits<{ update: [value: CalibrationBinding, select: boolean] }>()
 const range = computed(() => props.parameters.find(item => item.id === props.binding.id))
 </script>
 
 <style scoped>
-.model-calibration-fields select {
-  width: 100%;
-  min-height: 40px;
-  padding: var(--s-2) var(--s-7) var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
-  font: inherit;
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  transition: border-color var(--motion-hover) var(--ease-out);
-}
-.model-calibration-fields select:hover { border-color: var(--accent); }
-.model-calibration-fields select:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
+/* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度/最小高度）落在 wrapper。 */
+.model-calibration-fields .studio-select-wrapper { width: 100%; min-height: 40px; }
 </style>

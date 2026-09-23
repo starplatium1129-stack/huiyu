@@ -842,8 +842,12 @@ html.companion-desktop .companion-toolbar {
 }
 
 html.companion-desktop .companion-toolbar-actions,
-html.companion-desktop .companion-toolbar-actions * {
-  -webkit-app-region: no-drag;
+html.companion-desktop .companion-toolbar-actions *,
+html.companion-desktop .companion-picker,
+html.companion-desktop .companion-picker *,
+html.companion-desktop .companion-picker-content,
+html.companion-desktop .companion-picker-content * {
+  -webkit-app-region: no-drag !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

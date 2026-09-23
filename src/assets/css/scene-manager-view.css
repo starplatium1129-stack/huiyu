@@ -22,31 +22,9 @@
 .search-input { flex:1 1 280px; min-width:200px; padding:var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font-size:var(--fs-body); }
 .search-input:focus { border-color:var(--accent); outline:none; }
 .filter-select {
-  min-height: 38px;
-  padding: var(--s-1) var(--s-7) var(--s-1) var(--s-3);
-  background-color: var(--bg-deep);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  color: var(--text-primary);
-  font-size: var(--fs-body-sm);
   min-width: 110px;
   flex: 0 1 auto;
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
-    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    calc(100% - 14px) calc(50% - 1px),
-    calc(100% - 10px) calc(50% - 1px);
-  background-size: 5px 5px;
-  transition: border-color var(--motion-hover) var(--ease-out);
 }
-.filter-select:hover { border-color: var(--accent); }
-.filter-select:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
 .stats { display:flex; gap:var(--s-3); margin-bottom:var(--s-4); flex-wrap:wrap; align-items:stretch; }
 .stat-group { display:flex; gap:var(--s-2); flex-wrap:wrap; align-items:stretch; padding:var(--s-1); border-radius:var(--r-md); }
 .stat-group--overview { background:color-mix(in srgb,var(--accent) 6%,transparent); }
@@ -157,7 +135,7 @@ tr:hover td { background:var(--bg-elevated); }
 .input-mono { font-family:var(--font-mono); font-size:var(--fs-label); }
 .input:focus { border-color:var(--accent); }
 .input.invalid { border-color:var(--danger-text); box-shadow:0 0 0 2px color-mix(in srgb,var(--danger) 22%,transparent); }
-.form-grid .filter-select { width: 100%; min-height: 40px; padding: var(--s-2) var(--s-7) var(--s-2) var(--s-3); }
+.form-grid .filter-select { width: 100%; }
 .form-hint { color:var(--danger-text); font-size:var(--fs-label-sm); margin:0 0 var(--s-3); }
 .form-check { display:flex; align-items:center; gap:var(--s-2); }
 .modal-actions { position:sticky; bottom:calc(-1 * var(--s-6)); padding:var(--s-3) 0; background:var(--bg-elevated); border-top:1px solid var(--border-soft); display:flex; gap:var(--s-2); margin-top:var(--s-2); flex-wrap:wrap; }

@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test'
 import { SCENARIOS, substituteScenarioPrompt } from '../../src/config/scenarios'
 import { textContrast } from './helpers/contrast'
 import { installSceneReferences } from './helpers/showcase'
+import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 async function dismissNotices(page: Page) {
   const buttons = page.locator('.toast-close')
@@ -81,7 +82,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     await page.keyboard.press('Enter')
     await expect(page.locator('[data-shot-index="1"]')).toBeFocused()
     const first = page.locator('.shot-row').first()
-    await first.getByRole('combobox', { name:'时长', exact:true }).selectOption('5')
+    await pickStudioOptionByValue(first.getByRole('combobox', { name:'时长', exact:true }), '5')
     await expect(page.locator('.storyboard-total')).toHaveText('3 镜 · 11 秒')
     await first.locator('input[type="file"]').setInputFiles('assets/characters/natsume-home-cg-512.webp')
     const overview = page.getByRole('navigation', { name:'镜头首帧总览' })
