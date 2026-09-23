@@ -43,9 +43,11 @@
     <!-- 缩放控制浮标 (放大时浮现) -->
     <div v-if="scale > 1.01" class="zoom-controls">
       <span class="zoom-level">{{ Math.round(scale * 100) }}%</span>
-      <button type="button" class="btn-reset-zoom" title="还原 100%" @click.stop="resetZoom">
-        还原
-      </button>
+      <StudioTooltip content="还原 100%">
+        <button type="button" class="btn-reset-zoom" @click.stop="resetZoom">
+          还原
+        </button>
+      </StudioTooltip>
     </div>
     <div v-else class="zoom-hint">
       双击或滚轮放大查看细节
@@ -55,6 +57,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const props = defineProps<{
   src: string

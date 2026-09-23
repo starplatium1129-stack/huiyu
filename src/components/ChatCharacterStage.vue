@@ -29,14 +29,15 @@
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
         {{ live2d.interactionHint.value }}
       </div>
-      <button
-        class="avatar-status"
-        type="button"
-        :data-state="avatarState"
-        :disabled="!avatarActionable"
-        :title="avatarActionTitle"
-        @click="handleAvatarAction"
-      >{{ avatarText }}</button>
+      <StudioTooltip anchor :content="avatarActionTitle">
+        <button
+          class="avatar-status"
+          type="button"
+          :data-state="avatarState"
+          :disabled="!avatarActionable"
+          @click="handleAvatarAction"
+        >{{ avatarText }}</button>
+      </StudioTooltip>
       <button
         v-if="avatarState === 'idle'"
         class="live2d-enable-cta"
@@ -170,6 +171,7 @@ import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useStageFraming, type StageSurface } from '@/composables/chat/useStageFraming'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import '@/assets/css/character-stage.css'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
 import { profileEmotionConfig } from '@/live2d/companionEmotion'

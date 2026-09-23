@@ -133,3 +133,6 @@ scripts/archive/
 .cache/
 # Derived native installer template, bitmap and UI previews.
 desktop-tauri/src-tauri/installer/generated/
+
+# unreal-agent runner session logs (GUI agent workspace artifacts)
+logs/

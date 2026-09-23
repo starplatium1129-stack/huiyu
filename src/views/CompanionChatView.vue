@@ -7,24 +7,30 @@
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
         <h1 class="sr-only companion-chat-title">与{{ currentCharacter.name }}聊天</h1>
       </div>
-      <span class="companion-chat-drag" title="拖动聊天窗会解除贴靠">拖动</span>
+      <StudioTooltip content="拖动聊天窗会解除贴靠">
+        <span class="companion-chat-drag" tabindex="0">拖动</span>
+      </StudioTooltip>
       <div class="titlebar-controls">
         <AppearanceButton class="companion-chat-mini" />
-        <button v-if="bridge?.setChatDocked" class="companion-chat-mini" type="button" :aria-pressed="docked" :aria-label="docked ? '解除贴靠' : '贴靠桌宠'" :title="docked ? '解除贴靠' : '贴靠桌宠'" @click="toggleDock"><ArchiveIcon name="pin" /></button>
-        <button
-          class="companion-chat-mini"
-          type="button"
-          title="打开完整房间（Chat）"
-          aria-label="打开完整房间"
-          @click="openFullRoom"
-        ><ArchiveIcon name="chat" /></button>
-        <button
-          class="companion-chat-mini"
-          type="button"
-          title="关闭聊天窗"
-          aria-label="关闭聊天窗"
-          @click="closeWindow"
-        ><ArchiveIcon name="close" /></button>
+        <StudioTooltip v-if="bridge?.setChatDocked" :content="docked ? '解除贴靠' : '贴靠桌宠'">
+          <button class="companion-chat-mini" type="button" :aria-pressed="docked" :aria-label="docked ? '解除贴靠' : '贴靠桌宠'" @click="toggleDock"><ArchiveIcon name="pin" /></button>
+        </StudioTooltip>
+        <StudioTooltip content="打开完整房间（Chat）">
+          <button
+            class="companion-chat-mini"
+            type="button"
+            aria-label="打开完整房间"
+            @click="openFullRoom"
+          ><ArchiveIcon name="chat" /></button>
+        </StudioTooltip>
+        <StudioTooltip content="关闭聊天窗">
+          <button
+            class="companion-chat-mini"
+            type="button"
+            aria-label="关闭聊天窗"
+            @click="closeWindow"
+          ><ArchiveIcon name="close" /></button>
+        </StudioTooltip>
       </div>
     </header>
 
@@ -33,9 +39,11 @@
         <i class="companion-chat-status-dot" :data-state="statusDotState" aria-hidden="true"></i>
         <span>{{ statusText }}</span>
         <span v-if="noticeText" class="companion-chat-notice">{{ noticeText }}</span>
-        <span v-if="quietHint" class="companion-chat-quiet" title="安静时段静默">
-          <ArchiveIcon name="moon" /> 安静时段
-        </span>
+        <StudioTooltip v-if="quietHint" content="安静时段静默">
+          <span class="companion-chat-quiet">
+            <ArchiveIcon name="moon" /> 安静时段
+          </span>
+        </StudioTooltip>
       </div>
 
       <div ref="listRef" class="companion-chat-bubbles" role="log" aria-label="最近对话">
@@ -88,30 +96,30 @@
           @keydown.enter.exact="submitChatOnEnter($event, onSend)"
         ></textarea>
         <div class="companion-chat-actions">
-          <button
-            v-if="speechReady"
-            class="companion-chat-speech"
-            type="button"
-            :data-state="speechState"
-            :disabled="speechButtonDisabled"
-            :title="speechError || '按住说话，松开识别；也可按住 Space'"
-            @pointerdown.prevent="onSpeechPress"
-            @pointerup="onSpeechRelease"
-            @pointercancel="onSpeechCancel"
-            @pointerleave="onSpeechLeave"
-            @keydown.space.prevent="!$event.repeat && onSpeechPress()"
-            @keydown.enter.prevent="!$event.repeat && onSpeechPress()"
-            @keyup.space.prevent="onSpeechRelease"
-            @keyup.enter.prevent="onSpeechRelease"
-            @blur="onSpeechCancel"
-          ><ArchiveIcon name="sound" /><span>{{ speechButtonText }}</span></button>
-          <button
-            v-else
-            class="companion-chat-speech companion-chat-speech-config"
-            type="button"
-            title="配置语音输入"
-            @click="speechSettingsOpen = true"
-          ><ArchiveIcon name="sound" /><span>语音设置</span></button>
+          <StudioTooltip v-if="speechReady" anchor :content="speechError || '按住说话，松开识别；也可按住 Space'">
+            <button
+              class="companion-chat-speech"
+              type="button"
+              :data-state="speechState"
+              :disabled="speechButtonDisabled"
+              @pointerdown.prevent="onSpeechPress"
+              @pointerup="onSpeechRelease"
+              @pointercancel="onSpeechCancel"
+              @pointerleave="onSpeechLeave"
+              @keydown.space.prevent="!$event.repeat && onSpeechPress()"
+              @keydown.enter.prevent="!$event.repeat && onSpeechPress()"
+              @keyup.space.prevent="onSpeechRelease"
+              @keyup.enter.prevent="onSpeechRelease"
+              @blur="onSpeechCancel"
+            ><ArchiveIcon name="sound" /><span>{{ speechButtonText }}</span></button>
+          </StudioTooltip>
+          <StudioTooltip v-else content="配置语音输入">
+            <button
+              class="companion-chat-speech companion-chat-speech-config"
+              type="button"
+              @click="speechSettingsOpen = true"
+            ><ArchiveIcon name="sound" /><span>语音设置</span></button>
+          </StudioTooltip>
           <button
             v-if="liveState.busy || liveState.speaking"
             class="companion-chat-stop"
@@ -147,6 +155,7 @@
 <script setup lang="ts">
 import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'

@@ -19,15 +19,18 @@
         <!-- 正向标签流或自然语言 -->
         <div v-for="(line, idx) in promptLines" :key="idx" class="prompt-line-block">
           <div v-if="line.type === 'tags'" class="prompt-tag-stream" aria-label="正向标签流">
-            <span
+            <StudioTooltip
               v-for="(tok, tIdx) in line.tokens"
               :key="tIdx"
-              class="token-chip"
-              :class="tok.kind"
-              :title="tok.tooltip"
+              :content="tok.tooltip"
             >
-              {{ tok.text }}
-            </span>
+              <span
+                class="token-chip"
+                :class="tok.kind"
+              >
+                {{ tok.text }}
+              </span>
+            </StudioTooltip>
           </div>
           <div v-else-if="line.type === 'prose'" class="prompt-prose-block">
             <span class="prose-label">视觉叙事引导 (Prose Directing)</span>
@@ -67,6 +70,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { QUALITY_WORDS } from '@/utils/promptPolicy'
 import type { PromptReport } from '@/utils/promptPolicy'
 import '@/assets/css/director/components/PromptHealthPanel.css'

@@ -59,6 +59,12 @@ function onDocumentPointerDown(event: PointerEvent) {
   if (open.value && !pickerEl.value?.contains(event.target as Node)) closePicker()
 }
 
+function onViewportWheel(event: WheelEvent) {
+  const el = event.currentTarget as HTMLElement | null
+  if (!el) return
+  el.scrollTop += event.deltaY
+}
+
 onMounted(() => document.addEventListener('pointerdown', onDocumentPointerDown, true))
 onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerDown, true))
 </script>
@@ -96,13 +102,12 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
         class="companion-picker-content"
         :aria-label="label"
         @pointerdown.stop
-        @wheel.stop
       >
         <div class="companion-picker-heading" aria-hidden="true">
           <span><ArchiveIcon name="character" />陪伴角色</span>
           <small>{{ characters.length }} 位可选</small>
         </div>
-        <div class="companion-picker-viewport" @pointerdown.stop @wheel.stop>
+        <div class="companion-picker-viewport" @pointerdown.stop @wheel.passive="onViewportWheel">
           <button
             v-for="(character, index) in characters"
             :key="character.id"

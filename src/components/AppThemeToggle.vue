@@ -1,8 +1,15 @@
-<template><button type="button" class="app-theme-toggle" :aria-label="label" :title="label" :aria-pressed="theme === 'light'" @click="toggleTheme"><ArchiveIcon :name="theme === 'light' ? 'moon' : 'sun'" /></button></template>
+<template>
+  <StudioTooltip :content="label">
+    <button type="button" class="app-theme-toggle" :aria-label="label" :aria-pressed="theme === 'light'" @click="toggleTheme">
+      <ArchiveIcon :name="theme === 'light' ? 'moon' : 'sun'" />
+    </button>
+  </StudioTooltip>
+</template>
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 const { theme, toggleTheme } = useTheme()
 const label = computed(() => theme.value === 'light' ? '切换为深色模式' : '切换为亮色模式')
 </script>

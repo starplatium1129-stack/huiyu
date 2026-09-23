@@ -328,9 +328,10 @@ The system skin never ships: a native `<select>`, a `<audio>`/`<video>` with the
 `window.confirm`/`alert`/`prompt` call is a defect, not a shortcut, because none
 of them can follow the theme, the character accent, or the project's focus flow.
 `scripts/tests/test-native-controls.js` enforces this across `src/`.
-The native `title` attribute is the slowest of these to retire, so the gate
-counts it and holds it to a one-way baseline: subtract from that number when you
-migrate a batch, never add to it. Two integration shapes matter — wrap the
+The native `title` attribute is retired across all native HTML elements, with
+the gate baseline reduced from 177 to 35 (the remaining 35 being purely Vue
+component custom props on `ArchiveStatePanel`, `WorkspaceArchiveBar`, and
+`ModelCalibrationFields`). Two integration shapes matter — wrap the
 control in `StudioTooltip` with `anchor` when the control can be disabled
 (disabled controls do not dispatch pointer events, so a plain wrapper never
 receives hover), and for a `StudioSelect` host put the hint on the select itself

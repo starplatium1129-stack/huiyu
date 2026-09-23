@@ -6,25 +6,28 @@
         恢复默认（2026-08-30 UX 审计 P1）：调参调乱了没有回头路。必须 .stop
         挡住冒泡——summary 的点击会折叠整块面板，不挡就是「一按就收起来」。
       -->
-      <button type="button" class="btn btn-ghost btn-mini params-reset"
-        title="把 CFG / Steps / 采样器等恢复为当前底模的推荐值"
-        @click.stop.prevent="$emit('reset')">恢复默认</button>
+      <StudioTooltip content="把 CFG / Steps / 采样器等恢复为当前底模的推荐值">
+        <button type="button" class="btn btn-ghost btn-mini params-reset"
+          @click.stop.prevent="$emit('reset')">恢复默认</button>
+      </StudioTooltip>
     </summary>
     <div class="controls-grid">
       <div class="ctrl"><label :for="idOf('cfg')">相关性 (CFG)</label>
-        <input :id="idOf('cfg')" v-model.number="params.cfg" class="input ctrl-num" type="number"
-          min="1" max="20" step="0.5" :list="idOf('cfg-presets')"
-          title="提示词遵循强度：值越高越贴近提示词，过低画面会漂。常用 5–8，也可直接输入任意值。"
-          @change="normalize('cfg', 7, 1, 20)">
+        <StudioTooltip content="提示词遵循强度：值越高越贴近提示词，过低画面会漂。常用 5–8，也可直接输入任意值。">
+          <input :id="idOf('cfg')" v-model.number="params.cfg" class="input ctrl-num" type="number"
+            min="1" max="20" step="0.5" :list="idOf('cfg-presets')"
+            @change="normalize('cfg', 7, 1, 20)">
+        </StudioTooltip>
         <datalist :id="idOf('cfg-presets')">
           <option v-for="v in CFG_PRESETS" :key="v" :value="v"></option>
         </datalist>
       </div>
       <div class="ctrl"><label :for="idOf('steps')">步数 (Steps)</label>
-        <input :id="idOf('steps')" v-model.number="params.steps" class="input ctrl-num" type="number"
-          min="1" max="150" step="1" :list="idOf('steps-presets')"
-          title="采样步数：越多细节越足、耗时越长，常用 20-40，也可直接输入任意值。"
-          @change="normalize('steps', 28, 1, 150)">
+        <StudioTooltip content="采样步数：越多细节越足、耗时越长，常用 20-40，也可直接输入任意值。">
+          <input :id="idOf('steps')" v-model.number="params.steps" class="input ctrl-num" type="number"
+            min="1" max="150" step="1" :list="idOf('steps-presets')"
+            @change="normalize('steps', 28, 1, 150)">
+        </StudioTooltip>
         <datalist :id="idOf('steps-presets')">
           <option v-for="v in STEPS_PRESETS" :key="v" :value="v"></option>
         </datalist>
@@ -34,7 +37,7 @@
           :id="idOf('sampler')"
           size="sm"
           label="采样器 (Sampler)"
-          title="采样器：决定去噪方式与画面质感。"
+          hint="采样器：决定去噪方式与画面质感。"
           v-model="params.sampler"
           :options="samplerSelectOptions"
           @update:model-value="touch('sampler')"
@@ -45,7 +48,7 @@
           :id="idOf('scheduler')"
           size="sm"
           label="调度器 (Scheduler)"
-          title="调度器：配合采样器控制去噪节奏，一般保持自动。"
+          hint="调度器：配合采样器控制去噪节奏，一般保持自动。"
           v-model="params.scheduler"
           :options="schedulerSelectOptions"
           @update:model-value="touch('scheduler')"
@@ -53,11 +56,15 @@
       </div>
       <div class="ctrl toggle-row">
         <ToggleSwitch v-model="params.quality" label="质量前缀" />
-        <label title="由模型 profile 注入的质量前缀，无需手写。">质量前缀</label>
+        <StudioTooltip content="由模型 profile 注入的质量前缀，无需手写。">
+          <label>质量前缀</label>
+        </StudioTooltip>
       </div>
       <div class="ctrl toggle-row">
         <ToggleSwitch v-model="params.negative" label="负面提示词" />
-        <label title="启用负面提示词，防止常见画面缺陷与多余元素。">负面提示词</label>
+        <StudioTooltip content="启用负面提示词，防止常见画面缺陷与多余元素。">
+          <label>负面提示词</label>
+        </StudioTooltip>
       </div>
       <div class="ctrl ctrl-seed">
         <ToggleSwitch v-model="params.seedLock" class="seed-lock-label" label="固定随机种子 (Seed)"><span>固定随机种子 (Seed)</span></ToggleSwitch>
@@ -70,7 +77,9 @@
       </div>
       <div v-if="params.negative" class="ctrl ctrl-full negative-editor">
         <label :for="idOf('negative')">负面提示词</label>
-        <textarea :id="idOf('negative')" v-model="params.negativeCustom" title="留空使用默认负面；可追加常见缺陷词，如 extra fingers, bad anatomy。" placeholder="留空使用默认负面；可追加如：extra fingers, bad anatomy"></textarea>
+        <StudioTooltip content="留空使用默认负面；可追加常见缺陷词，如 extra fingers, bad anatomy。">
+          <textarea :id="idOf('negative')" v-model="params.negativeCustom" placeholder="留空使用默认负面；可追加如：extra fingers, bad anatomy"></textarea>
+        </StudioTooltip>
       </div>
     </div>
   </details>
@@ -80,6 +89,7 @@
 import { computed, useId } from 'vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 import '@/assets/css/director/components/GenerationParamsPanel.css'

@@ -141,7 +141,9 @@
             </details>
             <div class="viewer-story">{{ currentEntry.story }}</div>
             <div class="viewer-actions">
-              <RouterLink v-if="workspaceTarget" class="btn btn-primary" :to="workspaceTarget.to" :title="workspaceTarget.hint"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
+              <StudioTooltip v-if="workspaceTarget" :content="workspaceTarget.hint">
+                <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
+              </StudioTooltip>
               <span class="viewer-position" aria-live="polite">{{ currentIdx + 1 }} / {{ filtered.length }} · 方向键切换，Esc 关闭</span>
               <div class="viewer-paging"><button class="btn btn-ghost" type="button" aria-label="上一张" @click="move(-1)">← 上一张</button><button class="btn btn-ghost" type="button" aria-label="下一张" @click="move(1)">下一张 →</button></div>
             </div>
@@ -162,6 +164,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioCombobox from '@/components/ui/StudioCombobox.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {

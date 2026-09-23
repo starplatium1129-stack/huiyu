@@ -16,24 +16,30 @@
           <div class="panel-title">引擎与输出</div>
 
           <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">
-            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
-              :disabled="generationBusy || pb.isPopular"
-              :title="engineTitle('sd')"
-              @click="setDrawEngine('sd')">
-              <ArchiveIcon name="scene" class="engine-mark" aria-hidden="true" />
-              <span class="engine-copy">SD 引擎 <span class="engine-sub">{{ pb.isPopular ? '仅工作室角色' : 'WebUI · v18 LoRA' }}</span></span>
-            </button>
-            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
-              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('anima'))" :title="engineTitle('anima')"
-              @click="setDrawEngine('anima')">
-              <ArchiveIcon name="spark" class="engine-mark" aria-hidden="true" />
-              <span class="engine-copy">Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v21 LoRA' }}</span></span>
-            </button>
-            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
-              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('krea2'))" :title="engineTitle('krea2')" @click="setDrawEngine('krea2')">
-              <ArchiveIcon name="palette" class="engine-mark" aria-hidden="true" />
-              <span class="engine-copy">Krea 2 <span class="engine-sub">{{ pb.isPopular ? '自然语言 · 身份优先' : 'ComfyUI · 自然语言实验' }}</span></span>
-            </button>
+            <StudioTooltip anchor :content="engineTitle('sd')">
+              <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
+                :disabled="generationBusy || pb.isPopular"
+                @click="setDrawEngine('sd')">
+                <ArchiveIcon name="scene" class="engine-mark" aria-hidden="true" />
+                <span class="engine-copy">SD 引擎 <span class="engine-sub">{{ pb.isPopular ? '仅工作室角色' : 'WebUI · v18 LoRA' }}</span></span>
+              </button>
+            </StudioTooltip>
+            <StudioTooltip anchor :content="engineTitle('anima')">
+              <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
+                :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('anima'))"
+                @click="setDrawEngine('anima')">
+                <ArchiveIcon name="spark" class="engine-mark" aria-hidden="true" />
+                <span class="engine-copy">Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v21 LoRA' }}</span></span>
+              </button>
+            </StudioTooltip>
+            <StudioTooltip anchor :content="engineTitle('krea2')">
+              <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
+                :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('krea2'))"
+                @click="setDrawEngine('krea2')">
+                <ArchiveIcon name="palette" class="engine-mark" aria-hidden="true" />
+                <span class="engine-copy">Krea 2 <span class="engine-sub">{{ pb.isPopular ? '自然语言 · 身份优先' : 'ComfyUI · 自然语言实验' }}</span></span>
+              </button>
+            </StudioTooltip>
           </div>
 
           <div v-if="pb.directorMode === 'pro'" class="base-model-picker">
@@ -45,7 +51,7 @@
               label="基础模型 (Checkpoint)"
               v-model="pb.sdModelName"
               :disabled="generationBusy"
-              :title="generationBusy ? BUSY_HINT : undefined"
+              :hint="generationBusy ? BUSY_HINT : undefined"
               :options="sdModelOptions"
             />
             <StudioSelect
@@ -55,7 +61,7 @@
               label="基础模型 (Checkpoint)"
               :model-value="animaState.modelId"
               :disabled="generationBusy"
-              :title="generationBusy ? BUSY_HINT : undefined"
+              :hint="generationBusy ? BUSY_HINT : undefined"
               :options="animaModelOptions"
               @update:model-value="onAnimaModelSelected"
             />
@@ -112,6 +118,7 @@
 import { computed, defineAsyncComponent } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))

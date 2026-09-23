@@ -1,20 +1,22 @@
 <template>
-  <button
-    type="button"
-    class="sound-toggle"
-    data-interface-sound-toggle
-    :class="{ active: soundEnabled }"
-    :aria-pressed="soundEnabled"
-    :aria-label="soundEnabled ? '关闭界面音效' : '开启界面音效'"
-    :title="soundEnabled ? '界面音效已开启' : '界面音效已关闭'"
-    @click="toggleSound"
-  >
-    <ArchiveIcon :name="soundEnabled ? 'sound' : 'mute'" />
-  </button>
+  <StudioTooltip :content="soundEnabled ? '界面音效已开启' : '界面音效已关闭'">
+    <button
+      type="button"
+      class="sound-toggle"
+      data-interface-sound-toggle
+      :class="{ active: soundEnabled }"
+      :aria-pressed="soundEnabled"
+      :aria-label="soundEnabled ? '关闭界面音效' : '开启界面音效'"
+      @click="toggleSound"
+    >
+      <ArchiveIcon :name="soundEnabled ? 'sound' : 'mute'" />
+    </button>
+  </StudioTooltip>
 </template>
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useInterfaceFeedback } from '@/composables/useInterfaceFeedback'
 
 const { soundEnabled, toggleSound } = useInterfaceFeedback()

@@ -29,12 +29,14 @@
             <div class="batch-field">
               <span class="field-label">引擎</span>
               <div class="batch-seg" role="group" aria-label="选择批量出图引擎">
-                <button type="button" :class="{ active: batchEngine === 'sd' }" :disabled="!sdAvailable"
-                  :title="!sdAvailable ? 'SD WebUI 当前离线' : undefined"
-                  @click="batchEngine = 'sd'">SD</button>
-                <button type="button" :class="{ active: batchEngine === 'anima' }" :disabled="!animaAvailable"
-                  :title="!animaAvailable ? 'ComfyUI 当前离线' : undefined"
-                  @click="batchEngine = 'anima'">{{ props.deps.animaState.value.family === 'krea2' ? 'Krea 2' : 'Anima' }}</button>
+                <StudioTooltip anchor :content="!sdAvailable ? 'SD WebUI 当前离线' : undefined">
+                  <button type="button" :class="{ active: batchEngine === 'sd' }" :disabled="!sdAvailable"
+                    @click="batchEngine = 'sd'">SD</button>
+                </StudioTooltip>
+                <StudioTooltip anchor :content="!animaAvailable ? 'ComfyUI 当前离线' : undefined">
+                  <button type="button" :class="{ active: batchEngine === 'anima' }" :disabled="!animaAvailable"
+                    @click="batchEngine = 'anima'">{{ props.deps.animaState.value.family === 'krea2' ? 'Krea 2' : 'Anima' }}</button>
+                </StudioTooltip>
               </div>
             </div>
             <div class="batch-field">
@@ -69,7 +71,9 @@
                 <strong class="batch-scene-title">{{ scene.title }}</strong>
                 <small class="batch-scene-meta">
                   {{ props.deps.pb.popularCharacters.find(character => character.id === scene.characterId)?.displayName }} · {{ scene.category }}<template v-if="scene.location"> · {{ scene.location }}</template>
-                  <ArchiveIcon v-if="scene.adult" name="lock" class="batch-scene-adult" title="成人场景" />
+                  <StudioTooltip content="成人场景">
+                    <ArchiveIcon v-if="scene.adult" name="lock" class="batch-scene-adult" />
+                  </StudioTooltip>
                 </small>
               </button>
               <p v-if="!filteredScenes.length" class="batch-empty">
@@ -159,16 +163,16 @@
 
           <div class="batch-result-grid">
             <figure v-for="job in jobs" :key="job.id" class="batch-card" :data-state="job.status">
-              <button
-                v-if="job.resultUrl"
-                type="button"
-                class="batch-thumb-btn"
-                :aria-label="`查看大图：${job.sceneTitle}`"
-                :title="`查看大图：${job.sceneTitle}`"
-                @click="previewJob = job"
-              >
-                <img class="batch-thumb" :src="job.resultUrl" :alt="job.sceneTitle" loading="lazy" decoding="async" />
-              </button>
+              <StudioTooltip v-if="job.resultUrl" :content="`查看大图：${job.sceneTitle}`">
+                <button
+                  type="button"
+                  class="batch-thumb-btn"
+                  :aria-label="`查看大图：${job.sceneTitle}`"
+                  @click="previewJob = job"
+                >
+                  <img class="batch-thumb" :src="job.resultUrl" :alt="job.sceneTitle" loading="lazy" decoding="async" />
+                </button>
+              </StudioTooltip>
               <div v-else class="batch-thumb batch-thumb-placeholder" :data-state="job.status">
                 <ArchiveIcon :name="job.status === 'failed' ? 'warning' : 'spark'" />
                 <span>{{ placeholderText(job) }}</span>
@@ -226,6 +230,7 @@
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import { computed, reactive, ref, watch, onUnmounted } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'

@@ -225,7 +225,11 @@ test('Krea 2 and Anima both block triad mode', async ({ page }) => {
   await page.locator('#stepChar .char-btn').filter({ hasText: '双人' }).click()
   await expect(page.locator('.engine-switch button').nth(1)).toBeDisabled()
   await expect(page.locator('.engine-switch button').nth(2)).toBeDisabled()
-  await expect(page.locator('.engine-switch button').nth(2)).toHaveAttribute('title', /双人.*SD/)
+  expect(await page.locator('.engine-switch button').nth(2).getAttribute('title')).toBeNull()
+  await page.locator('.engine-switch .studio-tooltip-anchor').nth(2).hover()
+  const tip = page.locator('.studio-tooltip')
+  await expect(tip).toBeVisible()
+  await expect(tip).toHaveText(/双人.*SD/)
 })
 
 // ── 热门角色无 LoRA 创作模式 ───────────────────────────────────────────────

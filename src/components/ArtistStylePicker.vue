@@ -7,15 +7,15 @@
       </div>
       <div class="artist-summary-right">
         <strong :class="{ active: selected.length }">{{ selectionSummary }}</strong>
-        <button
-          v-if="selected.length"
-          type="button"
-          class="artist-clear-inline"
-          title="清空画师风格"
-          @click.stop="clearSelected"
-        >
-          清空
-        </button>
+        <StudioTooltip v-if="selected.length" content="清空画师风格">
+          <button
+            type="button"
+            class="artist-clear-inline"
+            @click.stop="clearSelected"
+          >
+            清空
+          </button>
+        </StudioTooltip>
       </div>
     </summary>
     <div class="artist-style-body">
@@ -33,21 +33,24 @@
           </span>
         </div>
         <div class="artist-presets-row">
-          <button
+          <StudioTooltip
             v-for="combo in ARTIST_COMBO_PRESETS"
             :key="combo.id"
-            type="button"
-            class="artist-combo-btn"
-            :class="{ active: isComboActive(combo.artistIds) }"
-            :title="`${combo.tagline} · ${combo.mood}`"
-            @click="applyCombo(combo.artistIds)"
+            :content="`${combo.tagline} · ${combo.mood}`"
           >
-            <div class="combo-top">
-              <ArchiveIcon :name="combo.icon || 'spark'" class="combo-icon" />
-              <span class="combo-label">{{ combo.label }}</span>
-            </div>
-            <small class="combo-tagline">{{ combo.tagline }}</small>
-          </button>
+            <button
+              type="button"
+              class="artist-combo-btn"
+              :class="{ active: isComboActive(combo.artistIds) }"
+              @click="applyCombo(combo.artistIds)"
+            >
+              <div class="combo-top">
+                <ArchiveIcon :name="combo.icon || 'spark'" class="combo-icon" />
+                <span class="combo-label">{{ combo.label }}</span>
+              </div>
+              <small class="combo-tagline">{{ combo.tagline }}</small>
+            </button>
+          </StudioTooltip>
         </div>
       </div>
 
@@ -96,21 +99,27 @@
               <span v-if="option.cnName" class="artist-cn-name">{{ option.cnName }}</span>
               <span class="artist-en-name">{{ option.name }}</span>
             </strong>
-            <small v-if="frequentTop3Ids.includes(option.id)" class="artist-frequent" title="常用画师：使用频次 Top 3 自动置顶">
-              <ArchiveIcon name="flame" class="badge-icon" />
-              <span>常用</span>
-            </small>
-            <small v-else-if="props.curatedArtistStyles?.includes(option.id)" class="artist-curated" title="角色专属：官方原画师或精选推荐画风">
-              <ArchiveIcon name="spark" class="badge-icon" />
-              <span>推荐</span>
-            </small>
+            <StudioTooltip v-if="frequentTop3Ids.includes(option.id)" content="常用画师：使用频次 Top 3 自动置顶">
+              <small class="artist-frequent">
+                <ArchiveIcon name="flame" class="badge-icon" />
+                <span>常用</span>
+              </small>
+            </StudioTooltip>
+            <StudioTooltip v-else-if="props.curatedArtistStyles?.includes(option.id)" content="角色专属：官方原画师或精选推荐画风">
+              <small class="artist-curated">
+                <ArchiveIcon name="spark" class="badge-icon" />
+                <span>推荐</span>
+              </small>
+            </StudioTooltip>
             <small v-else class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
           <small class="artist-desc">{{ option.description }}</small>
-          <small v-if="option.masterpiece" class="artist-masterpiece" :title="option.masterpiece">
-            <span class="masterpiece-badge">代表作</span>
-            <span class="masterpiece-text">{{ option.masterpiece }}</span>
-          </small>
+          <StudioTooltip v-if="option.masterpiece" :content="option.masterpiece">
+            <small class="artist-masterpiece">
+              <span class="masterpiece-badge">代表作</span>
+              <span class="masterpiece-text">{{ option.masterpiece }}</span>
+            </small>
+          </StudioTooltip>
         </button>
       </div>
 
@@ -128,6 +137,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import {
   type ArtistStyleEngine,
   type ArtistStyleOption,

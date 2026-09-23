@@ -2,32 +2,37 @@
   <div class="utility-menu">
   <StudioPopover v-model:open="utilityOpen" label="数据工具" content-class="studio-data-tools"
     @close-auto-focus="onMenuCloseAutoFocus">
-    <template #trigger><button type="button" @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
-      class="utility-trigger"
-      :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
-      :title="backupStale ? `数据工具（${backupReminder}）` : '数据工具与蓝图'"
-    >
-      <span class="utility-trigger-dots" aria-hidden="true">···</span>
-      <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
-    </button></template>
+    <template #trigger>
+      <StudioTooltip :content="backupStale ? `数据工具（${backupReminder}）` : '数据工具与蓝图'">
+        <button type="button" @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
+          class="utility-trigger"
+          :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
+        >
+          <span class="utility-trigger-dots" aria-hidden="true">···</span>
+          <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
+        </button>
+      </StudioTooltip>
+    </template>
     <div class="utility-heading">数据工具<button type="button" class="btn btn-ghost btn-icon" aria-label="关闭数据工具" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
       <div v-if="backupStale" class="utility-note" role="status">
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
       <div class="utility-label">本地数据</div>
       <div class="utility-actions">
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()"
-          title="导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」">
-          <ArchiveIcon name="download" /> 导出备份 JSON
-        </button>
+        <StudioTooltip anchor content="导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」">
+          <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
+            <ArchiveIcon name="download" /> 导出备份 JSON
+          </button>
+        </StudioTooltip>
         <div v-if="backup.exportProgress.value" class="utility-note wide" role="status" aria-live="polite">
           正在备份图片：{{ backup.exportProgress.value.completed }} / {{ backup.exportProgress.value.total }}
         </div>
         <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消备份</button>
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()"
-          title="把作品册的每张原图下载成独立的图片文件">
-          <ArchiveIcon name="image" /> 导出作品图片
-        </button>
+        <StudioTooltip anchor content="把作品册的每张原图下载成独立的图片文件">
+          <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()">
+            <ArchiveIcon name="image" /> 导出作品图片
+          </button>
+        </StudioTooltip>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
           <ArchiveIcon name="upload" /> 从备份恢复
         </button>
@@ -35,14 +40,16 @@
       <div class="utility-divider"></div>
       <div class="utility-label">创作蓝图</div>
       <div class="utility-actions">
-        <button class="btn btn-ghost wide" type="button" @click="exportBlueprint"
-          title="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
-          <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
-        </button>
-        <button class="btn btn-ghost wide" type="button" @click="pickBlueprintFile"
-          title="从蓝图配置文件导入并回填工作台设置">
-          <ArchiveIcon name="upload" /> 导入蓝图配置
-        </button>
+        <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
+          <button class="btn btn-ghost wide" type="button" @click="exportBlueprint">
+            <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
+          </button>
+        </StudioTooltip>
+        <StudioTooltip content="从蓝图配置文件导入并回填工作台设置">
+          <button class="btn btn-ghost wide" type="button" @click="pickBlueprintFile">
+            <ArchiveIcon name="upload" /> 导入蓝图配置
+          </button>
+        </StudioTooltip>
       </div>
       <div class="utility-divider"></div>
       <div class="utility-label">存储维护</div>
@@ -95,6 +102,7 @@
 <script setup lang="ts">
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { downloadBlob } from "@/utils/downloadBlob"
 import { ref, computed, watch } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger } from 'reka-ui'
+import { nextTick, onMounted, onUpdated, ref } from "vue"
+import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger } from "reka-ui"
 
 /**
  * 原生 title 属性的替身。
@@ -23,17 +23,82 @@ import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRo
  * 记得在 App 层挂 provider，组件在单测里也能独立跑。代价是跨提示的 skip-delay 合并
  * 用不上（换到另一个控件要重新等 delay）——这个延迟很短，换来的是没有隐式全局依赖。
  */
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   /** 提示正文；为空时组件退化为只渲染子元素，不做任何包装 */
   content?: string | null
-  side?: 'top' | 'right' | 'bottom' | 'left'
+  side?: "top" | "right" | "bottom" | "left"
   /** hover 多久后出现（毫秒）；键盘聚焦不受此延迟约束 */
   delay?: number
   /** 触发元素可能被禁用时打开：包一层可接收 hover 的外壳 */
   anchor?: boolean
-}>(), { content: null, side: 'top', delay: 400, anchor: false })
+}>(), { content: null, side: "top", delay: 400, anchor: false })
 
 const anchorEl = ref<HTMLElement | null>(null)
+const hasDisabledChild = ref(false)
+
+function syncDisabled() {
+  if (!props.anchor || !anchorEl.value) {
+    hasDisabledChild.value = false
+    return
+  }
+  const child = anchorEl.value.firstElementChild as (HTMLElement & { disabled?: boolean }) | null
+  hasDisabledChild.value = Boolean(child?.disabled || child?.matches(":disabled"))
+}
+
+function dispatchToChild(type: string, e?: PointerEvent | FocusEvent) {
+  const child = anchorEl.value?.firstElementChild
+  if (!child) return
+  let ev: Event
+  try {
+    if (type.startsWith("pointer")) {
+      const pe = e as PointerEvent | undefined
+      ev = new PointerEvent(type, {
+        bubbles: false,
+        cancelable: true,
+        pointerType: pe?.pointerType ?? "mouse",
+        clientX: pe?.clientX ?? 0,
+        clientY: pe?.clientY ?? 0,
+      })
+    } else if (type === "focus" || type === "blur") {
+      ev = new FocusEvent(type, { bubbles: false, cancelable: true })
+    } else {
+      ev = new Event(type, { bubbles: false, cancelable: true })
+    }
+  } catch {
+    ev = new Event(type, { bubbles: false, cancelable: true })
+  }
+  child.dispatchEvent(ev)
+}
+
+function onAnchorPointerMove(e: PointerEvent) {
+  if (!props.anchor) return
+  syncDisabled()
+  if (e.target === anchorEl.value || hasDisabledChild.value) {
+    dispatchToChild("pointermove", e)
+  }
+}
+
+function onAnchorPointerLeave(e: PointerEvent) {
+  if (!props.anchor) return
+  dispatchToChild("pointerleave", e)
+}
+
+function onAnchorPointerDown(e: PointerEvent) {
+  if (!props.anchor) return
+  if (e.target === anchorEl.value || hasDisabledChild.value) {
+    dispatchToChild("pointerdown", e)
+  }
+}
+
+function onAnchorFocus(e: FocusEvent) {
+  if (!props.anchor || !hasDisabledChild.value) return
+  dispatchToChild("focus", e)
+}
+
+function onAnchorBlur(e: FocusEvent) {
+  if (!props.anchor || !hasDisabledChild.value) return
+  dispatchToChild("blur", e)
+}
 
 /**
  * 原生 <dialog> 用 showModal 打开后在顶层渲染，body 其余部分对它都是下方内容：
@@ -43,13 +108,28 @@ const anchorEl = ref<HTMLElement | null>(null)
 const portalTarget = ref<HTMLElement | undefined>(undefined)
 const inDialog = ref(false)
 onMounted(() => {
-  const dialog = anchorEl.value?.closest('dialog')
+  syncDisabled()
+  const dialog = anchorEl.value?.closest("dialog")
   if (dialog) { portalTarget.value = dialog; inDialog.value = true }
+})
+onUpdated(() => {
+  syncDisabled()
 })
 </script>
 
 <template>
-  <span ref="anchorEl" class="studio-tooltip-anchor" :data-anchor="anchor ? '' : undefined">
+  <span
+    ref="anchorEl"
+    class="studio-tooltip-anchor"
+    :data-anchor="anchor ? '' : undefined"
+    :tabindex="anchor && hasDisabledChild ? 0 : undefined"
+    :aria-disabled="anchor && hasDisabledChild ? 'true' : undefined"
+    @pointermove="onAnchorPointerMove"
+    @pointerleave="onAnchorPointerLeave"
+    @pointerdown="onAnchorPointerDown"
+    @focus="onAnchorFocus"
+    @blur="onAnchorBlur"
+  >
     <TooltipProvider v-if="content" :delay-duration="delay">
       <TooltipRoot>
         <TooltipTrigger as-child><slot /></TooltipTrigger>

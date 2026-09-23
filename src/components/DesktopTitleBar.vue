@@ -3,22 +3,30 @@
     <div class="titlebar-brand">
       <img class="titlebar-dot" src="/assets/favicon.svg" alt="" aria-hidden="true" />
       <span class="titlebar-name">绘遇 · HUIYU</span>
-      <span v-if="pageTitle" class="titlebar-page" :title="pageTitle">{{ pageTitle }}</span>
+      <StudioTooltip v-if="pageTitle" :content="pageTitle">
+        <span class="titlebar-page">{{ pageTitle }}</span>
+      </StudioTooltip>
     </div>
     <div class="titlebar-controls">
-      <button class="tb-btn" type="button" aria-label="最小化" title="最小化" @click="bridge?.minimizeWindow()">
-        <!-- 审计修复(2026-08-28)：原为 <rect fill="currentColor"> 实心块，违反
-             「图标一律手绘线条、严禁实心填充」红线。改为描边横线，与相邻
-             最大化/关闭两个控件同为 stroke 1.3 的线宽，视觉上一家。 -->
-        <svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M1.5 6h9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" /></svg>
-      </button>
-      <button class="tb-btn" type="button" :aria-label="maximized ? '还原' : '最大化'" :title="maximized ? '还原' : '最大化'" @click="bridge?.toggleMaximizeWindow()">
-        <svg v-if="!maximized" viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
-        <svg v-else viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M3.5 3.5v-2h7v7h-2M1.5 4.5v6h6v-6z" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
-      </button>
-      <button class="tb-btn tb-close" type="button" aria-label="关闭" title="关闭" @click="bridge?.closeWindow()">
-        <svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
-      </button>
+      <StudioTooltip content="最小化">
+        <button class="tb-btn" type="button" aria-label="最小化" @click="bridge?.minimizeWindow()">
+          <!-- 审计修复(2026-08-28)：原为 <rect fill="currentColor"> 实心块，违反
+               「图标一律手绘线条、严禁实心填充」红线。改为描边横线，与相邻
+               最大化/关闭两个控件同为 stroke 1.3 的线宽，视觉上一家。 -->
+          <svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M1.5 6h9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" /></svg>
+        </button>
+      </StudioTooltip>
+      <StudioTooltip :content="maximized ? '还原' : '最大化'">
+        <button class="tb-btn" type="button" :aria-label="maximized ? '还原' : '最大化'" @click="bridge?.toggleMaximizeWindow()">
+          <svg v-if="!maximized" viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
+          <svg v-else viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M3.5 3.5v-2h7v7h-2M1.5 4.5v6h6v-6z" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
+        </button>
+      </StudioTooltip>
+      <StudioTooltip content="关闭">
+        <button class="tb-btn tb-close" type="button" aria-label="关闭" @click="bridge?.closeWindow()">
+          <svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+        </button>
+      </StudioTooltip>
     </div>
   </header>
 </template>
@@ -26,6 +34,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const bridge = window.companionDesktop
 const route = useRoute()

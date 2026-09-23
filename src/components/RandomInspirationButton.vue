@@ -1,15 +1,16 @@
 <template>
   <div class="random-inspiration" :class="{ open: menuOpen }">
-    <button
-      class="random-dice"
-      type="button"
-      :disabled="disabled"
-      :title="disabled ? '数据准备中…' : '夏目：“不知道画什么？那就让我随便给你摇一组词条……顺手而已，别想多。”'"
-      @click="onRoll"
-    >
-      <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
-      <span>夏目的灵感骰子</span>
-    </button>
+    <StudioTooltip anchor :content="disabled ? '数据准备中…' : '夏目：“不知道画什么？那就让我随便给你摇一组词条……顺手而已，别想多。”'">
+      <button
+        class="random-dice"
+        type="button"
+        :disabled="disabled"
+        @click="onRoll"
+      >
+        <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
+        <span>夏目的灵感骰子</span>
+      </button>
+    </StudioTooltip>
     <StudioPopover v-model:open="menuOpen" label="夏目的调色笔记" content-class="random-popover">
       <template #trigger>
         <button class="random-menu-trigger" type="button" :disabled="disabled" aria-label="夏目的调色笔记">
@@ -42,6 +43,7 @@
 
 <script setup lang="ts">
 import StudioPopover from '@/components/ui/StudioPopover.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

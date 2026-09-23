@@ -109,4 +109,24 @@ describe('StudioSelect', () => {
     expect(root.classes()).toContain('model-select')
     expect(root.classes()).toContain('studio-select-inline')
   })
+
+  it('delegates hint to StudioTooltip instead of setting a native title attribute', () => {
+    const wrapper = mountSelect({ modelValue: 'opt1', hint: '采样器说明' })
+    const trigger = wrapper.find('.studio-select-trigger')
+    expect(trigger.attributes('title')).toBeUndefined()
+    const tooltip = wrapper.findComponent({ name: 'StudioTooltip' })
+    expect(tooltip.exists()).toBe(true)
+    expect(tooltip.props('content')).toBe('采样器说明')
+    expect(tooltip.props('anchor')).toBe(false)
+  })
+
+  it('enables tooltip anchor when the select is disabled so hover still triggers hint', () => {
+    const wrapper = mountSelect({ modelValue: 'opt1', hint: '生成中不可切换', disabled: true })
+    const trigger = wrapper.find('.studio-select-trigger')
+    expect(trigger.attributes('title')).toBeUndefined()
+    const tooltip = wrapper.findComponent({ name: 'StudioTooltip' })
+    expect(tooltip.exists()).toBe(true)
+    expect(tooltip.props('content')).toBe('生成中不可切换')
+    expect(tooltip.props('anchor')).toBe(true)
+  })
 })

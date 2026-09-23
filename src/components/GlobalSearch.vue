@@ -14,7 +14,9 @@
             aria-label="搜索场景、作品或页面"
             @keydown="onInputKeydown"
           />
-          <button type="button" class="gs-esc" aria-label="关闭搜索" title="关闭搜索（Esc）" @click="close()"><ArchiveIcon name="close" /></button>
+          <StudioTooltip content="关闭搜索（Esc）">
+            <button type="button" class="gs-esc" aria-label="关闭搜索" @click="close()"><ArchiveIcon name="close" /></button>
+          </StudioTooltip>
         </div>
 
         <p v-if="worksError" class="gs-empty" role="alert">{{ worksError }}</p>
@@ -90,6 +92,7 @@
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'

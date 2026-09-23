@@ -1,9 +1,11 @@
 <template>
   <div v-if="isDismissed" class="managed-route-dismissed-wrap">
-    <button class="managed-route-reopen-btn" type="button" @click="restoreBanner" title="点击展开路线推荐">
-      <ArchiveIcon name="info" />
-      <span>路线推荐：{{ route.title }}</span>
-    </button>
+    <StudioTooltip content="点击展开路线推荐">
+      <button class="managed-route-reopen-btn" type="button" @click="restoreBanner">
+        <ArchiveIcon name="info" />
+        <span>路线推荐：{{ route.title }}</span>
+      </button>
+    </StudioTooltip>
   </div>
   <section v-else class="managed-route-card" :class="{ experimental: route.experimental, 'is-collapsed': isCollapsed }" aria-live="polite">
     <div class="managed-route-main">
@@ -22,12 +24,13 @@
           @click="toggleCollapse">
           {{ isCollapsed ? '展开详情' : '收起' }}
         </button>
-        <button class="managed-route-dismiss" type="button"
-          aria-label="关闭路线推荐横幅"
-          title="关闭横幅（可在顶部重新打开）"
-          @click="dismissBanner">
-          <ArchiveIcon name="close" />
-        </button>
+        <StudioTooltip content="关闭横幅（可在顶部重新打开）">
+          <button class="managed-route-dismiss" type="button"
+            aria-label="关闭路线推荐横幅"
+            @click="dismissBanner">
+            <ArchiveIcon name="close" />
+          </button>
+        </StudioTooltip>
       </div>
     </div>
     <template v-if="!isCollapsed">
@@ -53,6 +56,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { DrawSubject } from '@/utils/popularContent'
 import {

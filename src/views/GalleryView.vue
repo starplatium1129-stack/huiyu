@@ -94,11 +94,13 @@
               <span class="artwork-date">删除于 {{ formatTrashTime(entry.deletedAt) }}</span>
             </div>
             <div class="artwork-tools">
-              <button class="artwork-tool" type="button" :disabled="trashBusy === entry.id"
-                :aria-label="`恢复作品：${trashPrompt(entry)}`" title="恢复放回展墙"
-                @click="restoreTrashItem(entry.id)">
-                <ArchiveIcon name="spark" /><span>{{ trashBusy === entry.id ? '恢复中…' : '恢复' }}</span>
-              </button>
+              <StudioTooltip anchor content="恢复放回展墙">
+                <button class="artwork-tool" type="button" :disabled="trashBusy === entry.id"
+                  :aria-label="`恢复作品：${trashPrompt(entry)}`"
+                  @click="restoreTrashItem(entry.id)">
+                  <ArchiveIcon name="spark" /><span>{{ trashBusy === entry.id ? '恢复中…' : '恢复' }}</span>
+                </button>
+              </StudioTooltip>
             </div>
           </article>
         </template>
@@ -170,23 +172,27 @@
                       @click="pendingDeleteId = null">取消</button>
                   </template>
                   <template v-else>
-                    <button class="artwork-tool" type="button"
-                      :class="{ 'artwork-tool-on': item.favorite }"
-                      :aria-pressed="!!item.favorite"
-                      :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
-                      title="收藏后可在顶部按「收藏」筛选"
-                      @click="toggleFavorite(item)">
-                      <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
-                    </button>
-                    <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
-                      <ArchiveIcon name="spark" /><span>沿用配方</span>
-                    </RouterLink>
-                    <button class="artwork-tool danger" type="button"
-                      :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
-                      title="删除作品"
-                      @click="pendingDeleteId = item.id">
-                      <ArchiveIcon name="close" /><span>删除</span>
-                    </button>
+                    <StudioTooltip content="收藏后可在顶部按「收藏」筛选">
+                      <button class="artwork-tool" type="button"
+                        :class="{ 'artwork-tool-on': item.favorite }"
+                        :aria-pressed="!!item.favorite"
+                        :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
+                        @click="toggleFavorite(item)">
+                        <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
+                      </button>
+                    </StudioTooltip>
+                    <StudioTooltip content="以此作品配方回填创作台">
+                      <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`">
+                        <ArchiveIcon name="spark" /><span>沿用配方</span>
+                      </RouterLink>
+                    </StudioTooltip>
+                    <StudioTooltip content="删除作品">
+                      <button class="artwork-tool danger" type="button"
+                        :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
+                        @click="pendingDeleteId = item.id">
+                        <ArchiveIcon name="close" /><span>删除</span>
+                      </button>
+                    </StudioTooltip>
                   </template>
                 </div>
                 <button
@@ -282,9 +288,11 @@
         </ZoomableImageViewer>
         <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
         <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)">›</button>
-        <button v-if="hasComparableImage && viewerUrl" class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :aria-pressed="compareMode" :title="compareMode ? '退出对比' : '开启对比滑块'" @click="compareMode = !compareMode">
-          <ArchiveIcon name="spark" /> 对比
-        </button>
+        <StudioTooltip v-if="hasComparableImage && viewerUrl" :content="compareMode ? '退出对比' : '开启对比滑块'">
+          <button class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :aria-pressed="compareMode" @click="compareMode = !compareMode">
+            <ArchiveIcon name="spark" /> 对比
+          </button>
+        </StudioTooltip>
         <button class="viewer-info-toggle" type="button" aria-label="作品信息" :aria-expanded="infoOpen" @click="infoOpen = !infoOpen">i</button>
         <div class="viewer-position">{{ viewerIndex + 1 }} / {{ visible.length }}</div>
       </section>
@@ -299,7 +307,9 @@
         <div class="viewer-facts">
           <div class="viewer-fact" v-for="f in facts" :key="f.label">
             <small>{{ f.label }}</small>
-            <strong :title="f.value || '—'">{{ f.value || '—' }}</strong>
+            <StudioTooltip :content="f.value || '—'">
+              <strong>{{ f.value || '—' }}</strong>
+            </StudioTooltip>
           </div>
         </div>
         <details class="viewer-details">
@@ -346,6 +356,7 @@
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { defineAsyncComponent, ref, watch } from 'vue'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
 const gestureViewer = ref(false)

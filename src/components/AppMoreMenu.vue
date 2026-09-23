@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 defineProps<{
   groups: readonly { heading: string; items: readonly { id: string; label: string; to: string; icon: ArchiveIconName }[] }[]
@@ -21,15 +22,20 @@ onMounted(() => emit('ready'))
     <template #trigger><button type="button" class="nav-more-trigger">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button></template>
     <template v-for="group in groups" :key="group.heading">
       <div class="nav-more-group-label">{{ group.heading }}</div>
-      <RouterLink v-for="item in group.items" :key="item.id" :to="item.to"
-        :target="openBesideTask(item.to) ? '_blank' : undefined"
-        :rel="openBesideTask(item.to) ? 'noopener' : undefined"
-        :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
-        :class="{ active:activeId === item.id }" :aria-current="activeId === item.id ? 'page' : undefined"
-        :data-pending="pendingPath === item.to || undefined" :data-intent="intentPath === item.to || undefined"
-        @click="emit('navigate')">
-        <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
-      </RouterLink>
+      <StudioTooltip
+        v-for="item in group.items"
+        :key="item.id"
+        :content="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
+      >
+        <RouterLink :to="item.to"
+          :target="openBesideTask(item.to) ? '_blank' : undefined"
+          :rel="openBesideTask(item.to) ? 'noopener' : undefined"
+          :class="{ active:activeId === item.id }" :aria-current="activeId === item.id ? 'page' : undefined"
+          :data-pending="pendingPath === item.to || undefined" :data-intent="intentPath === item.to || undefined"
+          @click="emit('navigate')">
+          <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
+        </RouterLink>
+      </StudioTooltip>
     </template>
     <button class="nav-help" type="button" @click="emit('guide')">初次来访 · 使用指南</button>
     <AppearancePreferences launcher-only @open="emit('appearance')" />

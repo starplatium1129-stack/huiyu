@@ -7,6 +7,7 @@ import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
 import CharacterPortrait from '@/components/library/CharacterPortrait.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const props = defineProps<{
   characters: PopularCharacter[]
@@ -54,7 +55,9 @@ const sourceLabel = computed(() => {
         <span class="character-current-text">
           <small class="character-current-kicker">这一幕的主角</small>
           <strong>{{ selectedCharacter?.displayName || '选择创作角色' }}</strong>
-          <small :title="sourceLabel">{{ sourceLabel }}</small>
+          <StudioTooltip :content="sourceLabel">
+            <small>{{ sourceLabel }}</small>
+          </StudioTooltip>
         </span>
       </span>
       <span class="character-browse-all"><ArchiveIcon name="search" />浏览全部 {{ characters.length }} 位角色</span>

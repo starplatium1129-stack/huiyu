@@ -10,31 +10,36 @@
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }" @keydown="onNavigationKey">
         <AnimatedSelection target=":scope > a.active" />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
-        <RouterLink
+        <StudioTooltip
           v-for="item in primaryNav"
           :key="item.id"
-          :to="item.to"
-          :target="openBesideTask(item.to) ? '_blank' : undefined"
-          :rel="openBesideTask(item.to) ? 'noopener' : undefined"
-          :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
-          :class="{ active: activeId === item.id }"
-          :aria-current="activeId === item.id ? 'page' : undefined"
-          :data-pending="pendingPath === item.to || undefined"
-          :data-intent="intentRoutePath === item.to || undefined"
-          :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
-          @click="closeMenu"
+          :content="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
         >
-          <ArchiveIcon :name="item.icon" />
-          <span>{{ item.label }}</span>
-        </RouterLink>
+          <RouterLink
+            :to="item.to"
+            :target="openBesideTask(item.to) ? '_blank' : undefined"
+            :rel="openBesideTask(item.to) ? 'noopener' : undefined"
+            :class="{ active: activeId === item.id }"
+            :aria-current="activeId === item.id ? 'page' : undefined"
+            :data-pending="pendingPath === item.to || undefined"
+            :data-intent="intentRoutePath === item.to || undefined"
+            :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
+            @click="closeMenu"
+          >
+            <ArchiveIcon :name="item.icon" />
+            <span>{{ item.label }}</span>
+          </RouterLink>
+        </StudioTooltip>
 
         <!-- The richer menu is loaded on first use, outside the initial navigation bundle. -->
         <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined"
           :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined"
           :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined">
-          <button v-if="!moreLoaded" type="button" class="nav-more-trigger" :disabled="moreReady"
-            :aria-expanded="moreOpen" :aria-busy="moreReady" :title="moreError ? '菜单未能载入，请刷新页面后重试' : undefined"
-            @click="openMore">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
+          <StudioTooltip anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
+            <button v-if="!moreLoaded" type="button" class="nav-more-trigger" :disabled="moreReady"
+              :aria-expanded="moreOpen" :aria-busy="moreReady"
+              @click="openMore">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
+          </StudioTooltip>
           <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :groups="archiveGroups" :active-id="activeId"
             :pending-path="pendingPath" :intent-path="intentRoutePath" :open-beside-task="openBesideTask"
             @ready="moreLoaded = true" @navigate="closeMenu" @guide="openGuide" @appearance="closeMenu"
@@ -49,13 +54,14 @@
           按钮只有图标没有可见文字，所以 aria-label 是必需的（无可见文字时
           不存在 SC 2.5.3 的「标签覆盖可见文字」问题）；快捷键提示放 title。
         -->
-        <button
-          type="button"
-          class="nav-search"
-          aria-label="搜索页面、场景与作品"
-          title="搜索页面、场景与作品（Ctrl/⌘ + K）"
-          @click="openSearch"
-        ><ArchiveIcon name="search" /></button>
+        <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
+          <button
+            type="button"
+            class="nav-search"
+            aria-label="搜索页面、场景与作品"
+            @click="openSearch"
+          ><ArchiveIcon name="search" /></button>
+        </StudioTooltip>
 
         <TaskCenterButton />
         <AppThemeToggle />
@@ -90,6 +96,7 @@ import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { openGlobalSearch } from '@/composables/useGlobalSearch'
 import { useToast } from '@/composables/useToast'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const route = useRoute()
 const { show: showToast } = useToast()

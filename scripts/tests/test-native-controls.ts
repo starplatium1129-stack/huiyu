@@ -115,13 +115,15 @@ test('native checkbox and radio usage stays counted', () => {
   assert.ok(total >= 0);
 });
 
-// 原生 title 提示的未迁移存量：177 处（2026-09-22 口径，含静态 title 与动态 :title）。
+// 原生 title 提示的未迁移存量：从 177 处清零至 35 处（剩余 35 处均为 Vue 组件自定义属性：
+// ArchiveStatePanel 29 处、WorkspaceArchiveBar 3 处、ModelCalibrationFields 3 处；
+// 原生 HTML 元素上的 title 提示已完全清零）。
 // 它是浏览器原生外观里最后一大块，而且行为也改不动：出现延迟约 1 秒、无法主题化、
 // 只有 hover 才出（键盘与触屏用户拿不到）、禁用控件上多数浏览器连 hover 都不响应。
 // 替代品是 StudioTooltip（hover 与聚焦都触发、跟随双主题令牌、dialog 内自动改写 portal）。
 // 这里锁成「只降不升」：迁移一批就把这个数字改小，不允许新增原生 title。
 const NATIVE_TITLE = /(?<![\w-]):?title="/g;
-const TITLE_BASELINE = 177;
+const TITLE_BASELINE = 35;
 
 test('native title tooltips only go down', () => {
   const { counts } = scan([{ re: NATIVE_TITLE }]);

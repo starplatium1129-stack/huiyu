@@ -2,6 +2,7 @@
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
@@ -245,15 +246,16 @@ async function handleStart() {
                 <ArchiveIcon name="spark" />
                 <span>{{ maskMode === 'paint' ? '涂白换装，Shift/右键保护' : '自动识别服装区域' }}</span>
               </div>
-              <button
-                class="btn btn-xs btn-upload-overlay"
-                type="button"
-                title="选择或拖入其他本地图片"
-                @click="triggerUpload"
-              >
-                <ArchiveIcon name="upload" />
-                <span>更换外部图片</span>
-              </button>
+              <StudioTooltip content="选择或拖入其他本地图片">
+                <button
+                  class="btn btn-xs btn-upload-overlay"
+                  type="button"
+                  @click="triggerUpload"
+                >
+                  <ArchiveIcon name="upload" />
+                  <span>更换外部图片</span>
+                </button>
+              </StudioTooltip>
             </template>
 
             <template v-else>
@@ -304,16 +306,17 @@ async function handleStart() {
               </div>
               <input id="brushSizeInput" v-model.number="brushSize" class="slider" type="range" min="8" max="96" step="4" />
               <div class="mask-action-btns">
-                <button
-                  type="button"
-                  class="btn btn-ghost btn-xs"
-                  :disabled="maskHistory.length === 0"
-                  title="撤销上一步笔画 (Ctrl+Z)"
-                  @click="undoMask"
-                >
-                  <ArchiveIcon name="refresh" />
-                  <span>撤销 <kbd>Ctrl+Z</kbd></span>
-                </button>
+                <StudioTooltip anchor content="撤销上一步笔画 (Ctrl+Z)">
+                  <button
+                    type="button"
+                    class="btn btn-ghost btn-xs"
+                    :disabled="maskHistory.length === 0"
+                    @click="undoMask"
+                  >
+                    <ArchiveIcon name="refresh" />
+                    <span>撤销 <kbd>Ctrl+Z</kbd></span>
+                  </button>
+                </StudioTooltip>
                 <button type="button" class="btn btn-ghost btn-xs btn-clear-mask" @click="clearMask">清空遮罩</button>
               </div>
               <span class="field-hint">

@@ -23,14 +23,15 @@
     -->
     <span v-if="unavailableReason && !busy" class="gen-bar-blocked" role="status">{{ unavailableReason }}</span>
     <div class="gen-bar-actions">
-      <button
-        :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
-        class="btn btn-primary"
-        type="button"
-        :disabled="busy || !online || !!blockedReason"
-        :title="unavailableReason || undefined"
-        @click="$emit('generate')"
-      >{{ busy ? '正在绘制…' : '生成图片' }}</button>
+      <StudioTooltip anchor :content="unavailableReason || undefined">
+        <button
+          :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
+          class="btn btn-primary"
+          type="button"
+          :disabled="busy || !online || !!blockedReason"
+          @click="$emit('generate')"
+        >{{ busy ? '正在绘制…' : '生成图片' }}</button>
+      </StudioTooltip>
       <button v-if="busy" class="btn btn-ghost" type="button" @click="$emit('cancel')">先停一下</button>
     </div>
   </div>
@@ -40,6 +41,7 @@
 import { computed } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 // 出图条承载主行动（生成按钮），同步导入保证首屏即位，不进异步分片；

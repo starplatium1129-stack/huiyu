@@ -2,7 +2,9 @@
   <section class="maintenance-catalog" :aria-label="`${label}维护工作台`">
     <div class="catalog-toolbar">
       <label class="catalog-search"><ArchiveIcon name="search" /><input v-model="search" type="search" :aria-label="`搜索管理${label}`" placeholder="搜索标题、ID、角色、故事或提示词" /></label>
-      <button class="btn btn-primary btn-sm" type="button" :disabled="readonly" :title="readonly ? '桌面模式仅可查看和导出' : ''" @click="$emit('add')">新增{{ label }}</button>
+      <StudioTooltip anchor :content="readonly ? '桌面模式仅可查看和导出' : undefined">
+        <button class="btn btn-primary btn-sm" type="button" :disabled="readonly" @click="$emit('add')">新增{{ label }}</button>
+      </StudioTooltip>
     </div>
     <div class="catalog-filters">
       <label>角色<StudioSelect v-model="character" :label="`筛选${label}角色`" :options="[{ value: '', label: '全部角色' }, ...characters.map(([id, name]) => ({ value: id, label: name }))]" /></label>
@@ -45,6 +47,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import MaintenanceRecordDetail from './MaintenanceRecordDetail.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import '@/assets/css/maintenance-workspace.css'
 const props = defineProps<{ records: MaintenanceRecord[]; kind: 'scene' | 'blueprint'; label: string; readonly: boolean }>()
 defineEmits<{ add: []; edit: [id: string]; duplicate: [id: string]; remove: [id: string] }>()

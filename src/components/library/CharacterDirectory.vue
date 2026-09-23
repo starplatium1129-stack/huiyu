@@ -19,7 +19,12 @@
       <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
         <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
           <CharacterPortrait :src="item.image" :name="item.name" />
-          <span class="directory-label"><strong>{{ item.name }}</strong><small :title="franchiseLabel(franchiseKey(item.source))">{{ franchiseLabel(franchiseKey(item.source)) }}</small></span>
+          <span class="directory-label">
+            <strong>{{ item.name }}</strong>
+            <StudioTooltip :content="franchiseLabel(franchiseKey(item.source))">
+              <small>{{ franchiseLabel(franchiseKey(item.source)) }}</small>
+            </StudioTooltip>
+          </span>
           <span v-if="selectedId === item.id" class="directory-selected" aria-hidden="true"><ArchiveIcon name="success" /></span>
         </button>
         <div v-if="!results.length" class="directory-empty">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
@@ -39,6 +44,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; aliases?: string[] }
 const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
 const emit = defineEmits<{ select: [id: string]; dismiss: [] }>()

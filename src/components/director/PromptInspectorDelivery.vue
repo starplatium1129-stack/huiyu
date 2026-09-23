@@ -10,13 +10,14 @@
 
           <!-- 批量出图入口（多场景 / 多角色） -->
           <div class="batch-entry-row">
-            <button
-              class="btn btn-ghost"
-              type="button"
-              :disabled="generationBusy"
-              :title="generationBusy ? BUSY_HINT : (batchRunning ? '查看本批出图进度' : '批量选择场景或角色，生成后预览成片并自动入册')"
-              @click="batchOpen = true"
-            >{{ batchRunning ? '查看批量进度' : '批量出图 · 场景 / 多角色' }}</button>
+            <StudioTooltip anchor :content="generationBusy ? BUSY_HINT : (batchRunning ? '查看本批出图进度' : '批量选择场景或角色，生成后预览成片并自动入册')">
+              <button
+                class="btn btn-ghost"
+                type="button"
+                :disabled="generationBusy"
+                @click="batchOpen = true"
+              >{{ batchRunning ? '查看批量进度' : '批量出图 · 场景 / 多角色' }}</button>
+            </StudioTooltip>
             <span v-if="shotsPending" class="batch-entry-count">
               分镜待带入 {{ shotsPending }} 镜 · <button class="linklike" type="button" @click="goToShots">去分镜短片</button>
             </span>
@@ -68,6 +69,7 @@
 import { defineAsyncComponent } from 'vue'
 import type { PromptDeliveryBindings } from '@/composables/prompt/promptPanelBindings'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
 const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/GenerationQueuePanel.vue'))
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))

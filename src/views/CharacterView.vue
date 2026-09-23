@@ -42,7 +42,9 @@
           <div class="portrait-footer">
             <span class="portrait-badge"><ArchiveIcon name="image" /> {{ isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
             <span v-if="showFallbackNote" class="portrait-fallback-note">原图无法读取，已显示现有缩略图</span>
-            <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
+            <StudioTooltip :content="current.source">
+              <span class="portrait-source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
+            </StudioTooltip>
           </div>
         </div>
         </CharacterParticleStage>
@@ -208,19 +210,22 @@
                 </div>
               </div>
               <div class="ref-modal-actions">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="nextRefIndex(-1) < 0" aria-label="上一视角" title="上一视角 (键盘 ←)" @click="moveRef(-1)">
-                  ← <kbd>←</kbd>
-                </button>
-                <button
-                  class="btn btn-ghost btn-sm"
-                  type="button"
-                  :disabled="nextRefIndex(1) < 0"
-                  aria-label="下一视角"
-                  title="下一视角 (键盘 →)"
-                  @click="moveRef(1)"
-                >
-                  <kbd>→</kbd> →
-                </button>
+                <StudioTooltip anchor content="上一视角 (键盘 ←)">
+                  <button class="btn btn-ghost btn-sm" type="button" :disabled="nextRefIndex(-1) < 0" aria-label="上一视角" @click="moveRef(-1)">
+                    ← <kbd>←</kbd>
+                  </button>
+                </StudioTooltip>
+                <StudioTooltip anchor content="下一视角 (键盘 →)">
+                  <button
+                    class="btn btn-ghost btn-sm"
+                    type="button"
+                    :disabled="nextRefIndex(1) < 0"
+                    aria-label="下一视角"
+                    @click="moveRef(1)"
+                  >
+                    <kbd>→</kbd> →
+                  </button>
+                </StudioTooltip>
                 <RouterLink
                   class="btn btn-primary btn-sm"
                   :to="`/video-studio?mode=shots&character=${encodeURIComponent(current?.id || '')}&outfit=${encodeURIComponent(activeOutfit?.outfitId || '')}`"
@@ -269,6 +274,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { usePortraitFallback } from '@/composables/usePortraitFallback'
 import { useScrollReveal } from '@/composables/useScrollReveal'

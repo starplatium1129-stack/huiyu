@@ -4,34 +4,36 @@
       <span>Live2D 画质</span>
       <small>{{ supported ? qualityHint : '当前桌面版本仅支持原始资源' }}</small>
     </legend>
-    <div
-      class="live2d-quality-options"
-      role="radiogroup"
-      aria-label="Live2D 画质"
-      :data-value="supported ? quality : 'original'"
-      :title="supported ? '切换后重新加载模型，原始资源保持不变' : '更新桌面程序后可选择其他画质'"
-    >
-      <button
-        v-for="option in options"
-        :key="option.value"
-        type="button"
-        role="radio"
-        class="live2d-quality-option"
-        :data-value="option.value"
-        :aria-checked="(supported ? quality : 'original') === option.value"
-        :disabled="!supported"
-        @click="setQuality(option.value)"
+    <StudioTooltip :content="supported ? '切换后重新加载模型，原始资源保持不变' : '更新桌面程序后可选择其他画质'">
+      <div
+        class="live2d-quality-options"
+        role="radiogroup"
+        aria-label="Live2D 画质"
+        :data-value="supported ? quality : 'original'"
       >
-        <strong>{{ option.label }}</strong>
-        <small>{{ option.caption }}</small>
-      </button>
-    </div>
+        <button
+          v-for="option in options"
+          :key="option.value"
+          type="button"
+          role="radio"
+          class="live2d-quality-option"
+          :data-value="option.value"
+          :aria-checked="(supported ? quality : 'original') === option.value"
+          :disabled="!supported"
+          @click="setQuality(option.value)"
+        >
+          <strong>{{ option.label }}</strong>
+          <small>{{ option.caption }}</small>
+        </button>
+      </div>
+    </StudioTooltip>
   </fieldset>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const props = defineProps<{ native?: boolean }>()
 const { quality, setQuality } = useLive2DPreferences()

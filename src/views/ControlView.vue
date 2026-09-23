@@ -106,8 +106,12 @@
               <span class="service-row-meta">{{ sdOnline ? (webuiManaged ? '受控' : '手动') : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || sdOnline" :title="sdOnline ? '已在运行' : '启动受控 WebUI'" @click="serviceAction('webui','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !sdOnline" :title="!sdOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('webui','stop')">停止</button>
+              <StudioTooltip anchor :content="sdOnline ? '已在运行' : '启动受控 WebUI'">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || sdOnline" @click="serviceAction('webui','start')">启动</button>
+              </StudioTooltip>
+              <StudioTooltip anchor :content="!sdOnline ? '未在运行' : '停止服务'">
+                <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !sdOnline" @click="confirmServiceAction('webui','stop')">停止</button>
+              </StudioTooltip>
             </span>
           </div>
           <div class="service-row">
@@ -117,8 +121,12 @@
               <span class="service-row-meta">{{ comfyOnline ? (comfyManaged ? '受控' : '手动') : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || comfyOnline" :title="comfyOnline ? '已在运行，无需重复启动' : '启动受控 ComfyUI'" @click="serviceAction('comfy','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !comfyOnline" :title="!comfyOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('comfy','stop')">停止</button>
+              <StudioTooltip anchor :content="comfyOnline ? '已在运行，无需重复启动' : '启动受控 ComfyUI'">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || comfyOnline" @click="serviceAction('comfy','start')">启动</button>
+              </StudioTooltip>
+              <StudioTooltip anchor :content="!comfyOnline ? '未在运行' : '停止服务'">
+                <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !comfyOnline" @click="confirmServiceAction('comfy','stop')">停止</button>
+              </StudioTooltip>
             </span>
           </div>
           <div class="service-row">
@@ -128,15 +136,21 @@
               <span class="service-row-meta">{{ ttsOnline ? '在线' : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || ttsOnline" :title="ttsOnline ? '已在运行' : '启动语音'" @click="serviceAction('voice','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ttsOnline" :title="!ttsOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('voice','stop')">停止</button>
+              <StudioTooltip anchor :content="ttsOnline ? '已在运行' : '启动语音'">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || ttsOnline" @click="serviceAction('voice','start')">启动</button>
+              </StudioTooltip>
+              <StudioTooltip anchor :content="!ttsOnline ? '未在运行' : '停止服务'">
+                <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ttsOnline" @click="confirmServiceAction('voice','stop')">停止</button>
+              </StudioTooltip>
             </span>
           </div>
           <div class="service-row">
             <span class="service-row-name">
               <span class="dot" :class="{ on: ollamaOnline }"></span>
               Ollama 聊天模型
-              <span class="service-row-meta" :title="ollamaMeta">{{ ollamaMeta }}</span>
+              <StudioTooltip :content="ollamaMeta">
+                <span class="service-row-meta">{{ ollamaMeta }}</span>
+              </StudioTooltip>
             </span>
             <span class="service-row-actions">
               <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ollamaModels.length" @click="serviceAction('ollama','unload')">卸载模型释放显存</button>
@@ -167,19 +181,25 @@
 
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
         <div class="field-row">
-          <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" :title="sdHost" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
+          <StudioTooltip :content="sdHost">
+            <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
+          </StudioTooltip>
         </div>
         <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
         <div class="field-row">
-          <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" :title="comfyHost" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
+          <StudioTooltip :content="comfyHost">
+            <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
+          </StudioTooltip>
         </div>
         <p class="field-help">用于 Anima、Krea 与视频生成，请填写本机 HTTP 地址。</p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row">
-          <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" :title="ttsHost" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
+          <StudioTooltip :content="ttsHost">
+            <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
+          </StudioTooltip>
         </div>
         <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
 
@@ -275,7 +295,9 @@
         <summary>
           <span class="log-summary-title"><ArchiveIcon name="book" /> 运行日志</span>
           <span class="summary-side">
-            <button class="btn btn-ghost btn-sm" type="button" :disabled="exportingDiag" title="仅保存版本与运行状态，不包含密钥、聊天正文或图片" @click.stop="exportDiag">{{ exportingDiag ? '正在整理…' : '导出诊断包' }}</button>
+            <StudioTooltip anchor content="仅保存版本与运行状态，不包含密钥、聊天正文或图片">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="exportingDiag" @click.stop="exportDiag">{{ exportingDiag ? '正在整理…' : '导出诊断包' }}</button>
+            </StudioTooltip>
             <button class="btn btn-ghost btn-sm" type="button" @click.stop="clearLogs">清空显示</button>
             <span class="chevron">›</span>
           </span>
@@ -304,6 +326,7 @@ import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
 import { computed, onMounted, onUnmounted } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'

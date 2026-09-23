@@ -19,12 +19,14 @@
           <img v-if="thumbs[item.id]" :src="thumbs[item.id]" alt="历史作品缩略图" loading="lazy">
           <img v-else class="history-placeholder" :src="placeholderUrl" alt="" aria-hidden="true">
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
-          <label class="history-pick" title="勾选后可批量加入分镜">
-            <input v-model="selectedSet" type="checkbox" :value="item.id" class="history-pick-input" />
-            <span class="history-pick-box" aria-hidden="true">
-              <ArchiveIcon name="success" class="history-pick-check" />
-            </span>
-          </label>
+          <StudioTooltip content="勾选后可批量加入分镜">
+            <label class="history-pick">
+              <input v-model="selectedSet" type="checkbox" :value="item.id" class="history-pick-input" />
+              <span class="history-pick-box" aria-hidden="true">
+                <ArchiveIcon name="success" class="history-pick-check" />
+              </span>
+            </label>
+          </StudioTooltip>
         </div>
         <div class="history-main">
           <div class="history-card-title">{{ item.sceneTitle || item.story || '未命名作品' }}</div>
@@ -42,7 +44,9 @@
             </span>
             <div class="history-actions" aria-label="历史操作">
               <button class="history-action primary" type="button" @click="$emit('resume', item)">继续</button>
-              <button class="history-action" type="button" title="把这张图加入分镜短片待带入列表" @click="$emit('to-shots', item)">加入分镜</button>
+              <StudioTooltip content="把这张图加入分镜短片待带入列表">
+                <button class="history-action" type="button" @click="$emit('to-shots', item)">加入分镜</button>
+              </StudioTooltip>
               <button class="history-action" type="button" @click="$emit('duplicate', item)">复制</button>
               <button class="history-action delete" type="button" aria-label="删除历史" @click="$emit('delete', item)">×</button>
             </div>
@@ -57,6 +61,7 @@
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { imgGet } from '@/composables/useImageStore'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { artworkTimestamp } from '@/types/artwork'
 import type { ArtworkRecord } from '@/types/artwork'
 import { useSceneStore } from '@/stores/sceneStore'

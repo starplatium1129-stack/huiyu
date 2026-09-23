@@ -14,6 +14,7 @@ import {
   SelectItemIndicator,
 } from 'reka-ui'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 /**
  * 选项值允许字符串或数字：调用方既有角色/场景 id，也有 1.5× 这类倍率与页码。
@@ -51,12 +52,15 @@ const props = withDefaults(defineProps<{
   size?: 'sm' | 'md'
   /** 行内场景（如「第 N / M 页」）不撑满父级宽度 */
   inline?: boolean
+  /** 提示文案，使用 StudioTooltip 接管；悬停与键盘聚焦均触发，不再渲染原生 title */
+  hint?: string | null
 }>(), {
   label: '',
   placeholder: '请选择',
   disabled: false,
   size: 'md',
   inline: false,
+  hint: null,
 })
 
 const modelValue = defineModel<string | number>({ default: '' })
@@ -83,13 +87,15 @@ function applyKey(key: string) {
 }
 
 const attrs = useAttrs()
-// class 落在外层包裹上，便于页面按上下文控制宽度与布局；其余属性（title、data-*、
+// class 落在外层包裹上，便于页面按上下文控制宽度与布局；其余属性（data-*、
 // aria-*）连同 id 一起加到可见 trigger。样式一律走 class —— 仓库禁止内联 style
 // （test-style-debt 的内联样式预算只允许承载自定义属性），所以 style 不透传。
+// title 转为 hint 由 StudioTooltip 接管，不再透传给原生 trigger 产生原生提示。
 const wrapperClass = computed(() => [attrs.class, props.inline ? 'studio-select-inline' : undefined])
 const accessibleName = computed(() => props.label || (attrs['aria-label'] as string | undefined) || undefined)
+const effectiveHint = computed(() => props.hint ?? (attrs.title as string | undefined) ?? null)
 const triggerAttrs = computed(() => {
-  const { class: _class, style: _style, id: _id, 'aria-label': _ariaLabel, ...rest } = attrs
+  const { class: _class, style: _style, id: _id, 'aria-label': _ariaLabel, title: _title, ...rest } = attrs
   return rest
 })
 
@@ -112,17 +118,19 @@ onMounted(() => {
 <template>
   <div ref="wrapperEl" class="studio-select-wrapper" :class="wrapperClass" :data-size="size">
     <SelectRoot :model-value="currentKey" :disabled="disabled" @update:model-value="applyKey">
-      <SelectTrigger
-        v-bind="triggerAttrs"
-        :id="id"
-        class="studio-select-trigger"
-        :aria-label="accessibleName"
-        :data-empty="selectedLabel ? undefined : ''"
-        :data-value="String(modelValue ?? '')"
-      >
-        <SelectValue class="studio-select-value" :placeholder="placeholder">{{ selectedLabel || placeholder }}</SelectValue>
-        <ArchiveIcon name="chevron-down" class="studio-select-icon" aria-hidden="true" />
-      </SelectTrigger>
+      <StudioTooltip :content="effectiveHint" :anchor="disabled">
+        <SelectTrigger
+          v-bind="triggerAttrs"
+          :id="id"
+          class="studio-select-trigger"
+          :aria-label="accessibleName"
+          :data-empty="selectedLabel ? undefined : ''"
+          :data-value="String(modelValue ?? '')"
+        >
+          <SelectValue class="studio-select-value" :placeholder="placeholder">{{ selectedLabel || placeholder }}</SelectValue>
+          <ArchiveIcon name="chevron-down" class="studio-select-icon" aria-hidden="true" />
+        </SelectTrigger>
+      </StudioTooltip>
 
       <SelectPortal :to="portalTarget">
         <SelectContent position="popper" align="start" :side-offset="6" :collision-padding="12" class="studio-select-content">
@@ -177,6 +185,7 @@ onMounted(() => {
   min-width: 0;
 }
 .studio-select-wrapper.studio-select-inline { width: auto; }
+.studio-select-wrapper > .studio-tooltip-anchor[data-anchor] { width: 100%; }
 
 .studio-select-trigger {
   display: inline-flex;

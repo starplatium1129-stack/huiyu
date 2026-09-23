@@ -157,9 +157,11 @@
                 <div class="message-bubble">
                   {{ msg.content }}
                   <div v-if="msg.role === 'assistant' && msg.recalledMemories?.length" class="msg-recalled-box">
-                    <span class="msg-recalled-label" :title="msg.recalledMemories.map(m => '• ' + m).join('\n')">
-                      <ArchiveIcon name="love" class="recalled-icon" /> 她记得 ({{ msg.recalledMemories.length }})
-                    </span>
+                    <StudioTooltip :content="msg.recalledMemories.map(m => '• ' + m).join('\n')">
+                      <span class="msg-recalled-label">
+                        <ArchiveIcon name="love" class="recalled-icon" /> 她记得 ({{ msg.recalledMemories.length }})
+                      </span>
+                    </StudioTooltip>
                   </div>
                 </div>
                 <div class="message-meta">
@@ -171,19 +173,21 @@
                     <ArchiveIcon :name="messageRemembered(msg.mid) ? 'success' : 'pin'" />
                     <span>{{ messageRemembered(msg.mid) ? '已记住' : '钉住记忆' }}</span>
                   </button>
-                  <button v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)"
-                    class="msg-voice-btn" type="button"
-                    :class="{ playing: playingMid === msg.mid }"
-                    :data-mid="msg.mid" :title="playingMid === msg.mid ? '正在播放中…' : '重播这条语音'"
-                    @click="voice.playMessage(msg.mid)">
-                    <span v-if="playingMid === msg.mid" class="audio-equalizer" aria-hidden="true">
-                      <span class="eq-bar"></span>
-                      <span class="eq-bar"></span>
-                      <span class="eq-bar"></span>
-                    </span>
-                    <ArchiveIcon v-else name="sound" />
-                    <span>{{ playingMid === msg.mid ? '播放中' : '重播' }}</span>
-                  </button>
+                  <StudioTooltip v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)" :content="playingMid === msg.mid ? '正在播放中…' : '重播这条语音'">
+                    <button
+                      class="msg-voice-btn" type="button"
+                      :class="{ playing: playingMid === msg.mid }"
+                      :data-mid="msg.mid"
+                      @click="voice.playMessage(msg.mid)">
+                      <span v-if="playingMid === msg.mid" class="audio-equalizer" aria-hidden="true">
+                        <span class="eq-bar"></span>
+                        <span class="eq-bar"></span>
+                        <span class="eq-bar"></span>
+                      </span>
+                      <ArchiveIcon v-else name="sound" />
+                      <span>{{ playingMid === msg.mid ? '播放中' : '重播' }}</span>
+                    </button>
+                  </StudioTooltip>
                 </div>
               </div>
             </div>
@@ -212,17 +216,18 @@
               placeholder="轻声对她说点什么吧……" aria-label="聊天输入"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)"
               @input="onInputChange"></textarea>
-            <button class="btn btn-ghost stop-btn" type="button"
-              v-show="busy || voiceActive"
-              :title="busy ? '停止生成回复' : '停止语音播放'"
-              @click="stopEverything">停止</button>
-            <button class="btn btn-primary send-btn" type="button"
-              :disabled="busy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
-              :title="chatReady ? '发送 (Enter 发送，Shift+Enter 换行)' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')"
-              @click="handleSend">
-              <span>{{ busy ? '回复中…' : '发送' }}</span>
-              <kbd class="kbd-send-hint">↵</kbd>
-            </button>
+            <StudioTooltip v-show="busy || voiceActive" content="停止生成回复或语音播放">
+              <button class="btn btn-ghost stop-btn" type="button"
+                @click="stopEverything">停止</button>
+            </StudioTooltip>
+            <StudioTooltip anchor :content="chatReady ? '发送 (Enter 发送，Shift+Enter 换行)' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')">
+              <button class="btn btn-primary send-btn" type="button"
+                :disabled="busy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
+                @click="handleSend">
+                <span>{{ busy ? '回复中…' : '发送' }}</span>
+                <kbd class="kbd-send-hint">↵</kbd>
+              </button>
+            </StudioTooltip>
           </div>
 
           <div class="composer-tools">
@@ -251,51 +256,60 @@
               </span>
               <span class="voice-status" aria-live="polite">{{ voiceStatusText }}</span>
               <RouterLink v-show="showVoiceRecovery" class="voice-recovery" to="/control">启动语音 →</RouterLink>
-              <label v-if="currentCharacter.voice" class="volume-slider" title="音量">
-                <span class="volume-icon" aria-hidden="true"><ArchiveIcon name="sound" /></span>
-                <input type="range" v-model.number="volume" min="0" max="100" aria-label="音量"
-                  @input="onVolumeChange" />
-                <small class="volume-value">{{ volume }}%</small>
-              </label>
-              <button v-if="currentCharacter.voice" class="replay-btn" type="button" title="重新播放上一条语音"
-                :disabled="!hasReplayable"
-                @click="replayLast">
-                <span aria-hidden="true">↩</span> 重播上一条
-              </button>
+              <StudioTooltip v-if="currentCharacter.voice" content="音量">
+                <label class="volume-slider">
+                  <span class="volume-icon" aria-hidden="true"><ArchiveIcon name="sound" /></span>
+                  <input type="range" v-model.number="volume" min="0" max="100" aria-label="音量"
+                    @input="onVolumeChange" />
+                  <small class="volume-value">{{ volume }}%</small>
+                </label>
+              </StudioTooltip>
+              <StudioTooltip v-if="currentCharacter.voice" anchor content="重新播放上一条语音">
+                <button class="replay-btn" type="button"
+                  :disabled="!hasReplayable"
+                  @click="replayLast">
+                  <span aria-hidden="true">↩</span> 重播上一条
+                </button>
+              </StudioTooltip>
             </div>
             <template v-if="speechReady">
               <span class="voice-divider" aria-hidden="true"></span>
-              <button class="hold-talk-btn" type="button"
-                :data-state="speechState"
-                :disabled="speechState === 'recognizing'"
-                :title="speechError || '按住说话，松开识别；也可按住空格或 Enter'"
-                @keydown.space.prevent="onSpeechKeyPress"
-                @keydown.enter.prevent="onSpeechKeyPress"
-                @keyup.space.prevent="onSpeechRelease"
-                @keyup.enter.prevent="onSpeechRelease"
-                @blur="onSpeechCancel"
-                @pointerdown.prevent="onSpeechPress"
-                @pointerup="onSpeechRelease"
-                @pointercancel="onSpeechCancel"
-                @pointerleave="onSpeechLeave">
-                <ArchiveIcon name="sound" /> {{ speechButtonText }}
-              </button>
+              <StudioTooltip anchor :content="speechError || '按住说话，松开识别；也可按住空格或 Enter'">
+                <button class="hold-talk-btn" type="button"
+                  :data-state="speechState"
+                  :disabled="speechState === 'recognizing'"
+                  @keydown.space.prevent="onSpeechKeyPress"
+                  @keydown.enter.prevent="onSpeechKeyPress"
+                  @keyup.space.prevent="onSpeechRelease"
+                  @keyup.enter.prevent="onSpeechRelease"
+                  @blur="onSpeechCancel"
+                  @pointerdown.prevent="onSpeechPress"
+                  @pointerup="onSpeechRelease"
+                  @pointercancel="onSpeechCancel"
+                  @pointerleave="onSpeechLeave">
+                  <ArchiveIcon name="sound" /> {{ speechButtonText }}
+                </button>
+              </StudioTooltip>
               <span class="voice-status speech-state-text" aria-live="polite">{{ speechStateText }}</span>
               <span v-if="speechSessionActive" class="speech-session-badge" role="status">
                 <span class="speech-session-dot" aria-hidden="true"></span>连续对话中
-                <button class="speech-session-end" type="button" title="结束连续对话" aria-label="结束连续对话"
-                  @click="onSpeechSessionEnd">×</button>
+                <StudioTooltip content="结束连续对话">
+                  <button class="speech-session-end" type="button" aria-label="结束连续对话"
+                    @click="onSpeechSessionEnd">×</button>
+                </StudioTooltip>
               </span>
               <span v-else-if="speechAutoListening" class="speech-session-badge speech-session-badge-muted" role="status">
                 <span class="speech-session-dot" aria-hidden="true"></span>听候唤醒
               </span>
               <span v-if="speechNotice" class="speech-notice" role="status">{{ speechNotice }}</span>
             </template>
-            <button class="speech-config-btn" type="button" title="语音输入设置" aria-label="语音输入设置"
-              :aria-expanded="speechSettingsOpen"
-              @click="speechSettingsOpen = !speechSettingsOpen">
-              语音输入设置
-            </button>
+            <StudioTooltip content="语音输入设置">
+              <button class="speech-config-btn" type="button" aria-label="语音输入设置"
+                :aria-expanded="speechSettingsOpen"
+                @click="speechSettingsOpen = !speechSettingsOpen">
+                语音输入设置
+              </button>
+            </StudioTooltip>
             <span class="keyboard-hint">Enter 发送 · Shift+Enter 换行</span>
           </div>
 
@@ -311,6 +325,7 @@
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
 import { useConversationReading } from '@/composables/chat/useConversationReading'

@@ -32,19 +32,21 @@
     </div>
 
     <div class="preview-actions">
-      <button
-        v-if="hasResult && (engine === 'anima' || engine === 'sd')"
-        class="btn btn-ghost btn-hires-action-quick"
-        type="button"
-        :disabled="generating"
-        title="使用当前 Seed 生成放大版本，最终尺寸取决于原画布"
-        @click="$emit('upscale-current')"
-      >
-        <ArchiveIcon name="spark" class="control-icon-inline" />
-        <span>高清放大 2×</span>
-      </button>
+      <StudioTooltip v-if="hasResult && (engine === 'anima' || engine === 'sd')" anchor content="使用当前 Seed 生成放大版本，最终尺寸取决于原画布">
+        <button
+          class="btn btn-ghost btn-hires-action-quick"
+          type="button"
+          :disabled="generating"
+          @click="$emit('upscale-current')"
+        >
+          <ArchiveIcon name="spark" class="control-icon-inline" />
+          <span>高清放大 2×</span>
+        </button>
+      </StudioTooltip>
       <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue')">加入队列</button>
-      <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" title="一键将 3 组不同 Seed 候选变体加入队列" @click="$emit('enqueue-variants')">3 组候选</button>
+      <StudioTooltip v-if="engine === 'sd'" anchor content="一键将 3 组不同 Seed 候选变体加入队列">
+        <button class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue-variants')">3 组候选</button>
+      </StudioTooltip>
       <button v-if="engine === 'sd' && expert" class="btn btn-ghost" type="button" :disabled="resultSeed == null" @click="$emit('reuse-seed')">
         锁定这个 seed 微调
       </button>
@@ -59,6 +61,7 @@ import type { SDParams } from '@/utils/promptBuilderPersistence'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import '@/assets/css/director/components/GenerationOutputControls.css'
 

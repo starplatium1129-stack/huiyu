@@ -19,12 +19,13 @@
         <div class="pb-heading-row">
           <h1 class="pb-title">开始绘制</h1>
           <div class="api-status">
-            <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
-              :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
-              @click="recheckEngineConnection">
-              <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
-              <span>{{ drawEngineLabel }} {{ engineOnline ? '已连接' : '未连接' }}</span>
-            </button>
+            <StudioTooltip :content="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`">
+              <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
+                @click="recheckEngineConnection">
+                <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
+                <span>{{ drawEngineLabel }} {{ engineOnline ? '已连接' : '未连接' }}</span>
+              </button>
+            </StudioTooltip>
             <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
           </div>
         </div>
@@ -197,7 +198,8 @@ const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/d
 const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import GenerationActionBar from '@/components/director/GenerationActionBar.vue'
+const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioTooltip.vue'))
+const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
 const {

@@ -23,7 +23,9 @@
       </div>
       <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" />
       <div class="companion-toolbar-actions">
-        <span v-if="desktopBridge" class="companion-drag-handle" data-tauri-drag-region title="拖动桌宠"><ArchiveIcon name="menu" aria-hidden="true" /><span>移动</span></span>
+        <StudioTooltip v-if="desktopBridge" content="拖动桌宠">
+          <span class="companion-drag-handle" data-tauri-drag-region tabindex="0"><ArchiveIcon name="menu" aria-hidden="true" /><span>移动</span></span>
+        </StudioTooltip>
         <button
           type="button"
           class="companion-settings-btn"
@@ -31,7 +33,9 @@
           :aria-expanded="settingsOpen"
           @click="settingsOpen = !settingsOpen"
         ><ArchiveIcon name="gear" /><span>设置</span></button>
-        <button v-if="desktopBridge" class="companion-hide-btn" type="button" aria-label="隐藏桌宠" title="隐藏桌宠（Ctrl+Shift+Space 可恢复）" @click="desktopBridge.hide"><ArchiveIcon name="close" /></button>
+        <StudioTooltip v-if="desktopBridge" content="隐藏桌宠（Ctrl+Shift+Space 可恢复）">
+          <button class="companion-hide-btn" type="button" aria-label="隐藏桌宠" @click="desktopBridge.hide"><ArchiveIcon name="close" /></button>
+        </StudioTooltip>
         <FluidTransition>
 <div v-if="settingsOpen" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop>
           <AppearancePreferences launcher-only @open="settingsOpen = false" />
@@ -41,7 +45,9 @@
             <button type="button" class="companion-pop-item" @click="settingsOpen = false; characterStageRef?.openSettings?.()">角色取景与外观</button>
             <Live2DQualityControl :native="Boolean(desktopBridge)" />
             <ToggleSwitch class="companion-pop-item companion-pop-switch" :model-value="autoVoice" label="实时配音" @update:model-value="setAutoVoice">
-              <span title="播放聊天回复和新问候；勿扰时暂停主动问候">实时配音：{{ autoVoice ? '开' : '关' }}</span>
+              <StudioTooltip content="播放聊天回复和新问候；勿扰时暂停主动问候">
+                <span>实时配音：{{ autoVoice ? '开' : '关' }}</span>
+              </StudioTooltip>
             </ToggleSwitch>
             <button v-if="behaviorEnabled" type="button" class="companion-pop-item" :aria-pressed="dnd" @click="toggleDnd">
               {{ dnd ? '关闭勿扰（恢复主动问候）' : '开启勿扰（暂停主动问候）' }}
@@ -62,49 +68,60 @@
             <button type="button" class="companion-pop-item" :aria-pressed="alwaysOnTop" @click="togglePin">
               {{ alwaysOnTop ? '取消置顶' : '置顶窗口' }}
             </button>
-            <button
-              type="button"
-              class="companion-pop-item"
-              :title="ignoreMouseEvents ? '恢复窗口交互（Ctrl+Shift+P）' : '开启鼠标穿透（Ctrl+Shift+P）'"
-              :aria-pressed="ignoreMouseEvents"
-              @click="toggleMouseEvents"
-            >{{ ignoreMouseEvents ? '恢复窗口交互' : '鼠标穿透' }}</button>
-            <button type="button" class="companion-pop-item" title="隐藏 Companion（Ctrl+Shift+Space）" @click="desktopBridge.hide">隐藏 Companion</button>
-            <button type="button" class="companion-pop-item" title="沉浸模式：只保留角色与对话（Esc 退出）" @click="enterImmersive">沉浸模式</button>
+            <StudioTooltip :content="ignoreMouseEvents ? '恢复窗口交互（Ctrl+Shift+P）' : '开启鼠标穿透（Ctrl+Shift+P）'">
+              <button
+                type="button"
+                class="companion-pop-item"
+                :aria-pressed="ignoreMouseEvents"
+                @click="toggleMouseEvents"
+              >{{ ignoreMouseEvents ? '恢复窗口交互' : '鼠标穿透' }}</button>
+            </StudioTooltip>
+            <StudioTooltip content="隐藏 Companion（Ctrl+Shift+Space）">
+              <button type="button" class="companion-pop-item" @click="desktopBridge.hide">隐藏 Companion</button>
+            </StudioTooltip>
+            <StudioTooltip content="沉浸模式：只保留角色与对话（Esc 退出）">
+              <button type="button" class="companion-pop-item" @click="enterImmersive">沉浸模式</button>
+            </StudioTooltip>
           </div>
           <div class="companion-pop-group">
             <strong>工作台</strong>
-            <button type="button" class="companion-pop-item" title="打开完整工作台（Ctrl+Shift+A）" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')">打开完整工作台</button>
+            <StudioTooltip content="打开完整工作台（Ctrl+Shift+A）">
+              <button type="button" class="companion-pop-item" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')">打开完整工作台</button>
+            </StudioTooltip>
             <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar)}`)">完整房间（聊天）</button>
             <RouterLink v-else class="companion-pop-item" :to="{ path: '/chat', query: { character: activeChar } }">完整房间（聊天）</RouterLink>
           </div>
           <div v-if="desktopBridge" class="companion-pop-group">
             <strong>诊断</strong>
-            <span
-              class="companion-pop-item"
-              :title="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Native Live2D 目标 165 FPS'"
-            >{{ onBatteryPower ? 'Live2D 30 FPS（电池）' : 'Live2D 165 FPS（接电）' }}</span>
-            <button
-              type="button"
-              class="companion-pop-item"
-              :data-state="workspaceExists ? 'ok' : 'missing'"
-              :title="workspaceTooltip"
-              @click="workspaceOpen = !workspaceOpen"
-            >
-              <ArchiveIcon :name="workspaceExists ? 'success' : 'error'" />
-              <span>{{ workspaceExists ? 'AI 工作区已就绪' : 'AI 工作区缺失' }}</span>
-            </button>
-            <label class="companion-pop-item companion-pop-volume" title="音量">
-              <span>音量 <small>{{ volume }}%</small></span>
-              <input
-                type="range"
-                v-model.number="volume"
-                min="0"
-                max="100"
-                aria-label="桌宠音量"
-                @input="onVolumeChange"
-              />
-            </label>
+            <StudioTooltip :content="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Native Live2D 目标 165 FPS'">
+              <span class="companion-pop-item">
+                {{ onBatteryPower ? 'Live2D 30 FPS（电池）' : 'Live2D 165 FPS（接电）' }}
+              </span>
+            </StudioTooltip>
+            <StudioTooltip :content="workspaceTooltip">
+              <button
+                type="button"
+                class="companion-pop-item"
+                :data-state="workspaceExists ? 'ok' : 'missing'"
+                @click="workspaceOpen = !workspaceOpen"
+              >
+                <ArchiveIcon :name="workspaceExists ? 'success' : 'error'" />
+                <span>{{ workspaceExists ? 'AI 工作区已就绪' : 'AI 工作区缺失' }}</span>
+              </button>
+            </StudioTooltip>
+            <StudioTooltip content="桌宠音量">
+              <label class="companion-pop-item companion-pop-volume">
+                <span>音量 <small>{{ volume }}%</small></span>
+                <input
+                  type="range"
+                  v-model.number="volume"
+                  min="0"
+                  max="100"
+                  aria-label="桌宠音量"
+                  @input="onVolumeChange"
+                />
+              </label>
+            </StudioTooltip>
           </div>
         </div>
 </FluidTransition>
@@ -112,13 +129,13 @@
     </header>
 
     <main class="companion-stage" aria-label="桌面陪伴模式" :data-immersive="immersive ? 'true' : undefined">
-      <button
-        v-if="desktopBridge && immersive"
-        class="companion-exit-immersive"
-        type="button"
-        title="退出沉浸模式（Esc）"
-        @click="exitImmersive"
-      >退出沉浸</button>
+      <StudioTooltip v-if="desktopBridge && immersive" content="退出沉浸模式（Esc）">
+        <button
+          class="companion-exit-immersive"
+          type="button"
+          @click="exitImmersive"
+        >退出沉浸</button>
+      </StudioTooltip>
       <ChatCharacterStage
         ref="characterStageRef"
         surface="companion"
@@ -243,17 +260,18 @@
             @keydown.enter.exact="submitChatOnEnter($event, handleSend)"
             @input="onInputChange"
           ></textarea>
-          <button
-            class="companion-vision-btn"
-            type="button"
-            :disabled="busy || !chatReady || capturingScreen"
-            :title="`让${currentCharacter.name}看你当前的屏幕画面`"
-            aria-label="看屏幕"
-            @click="onCaptureAndInspectScreen"
-          >
-            <ArchiveIcon name="eye" />
-            <span>{{ capturingScreen ? '看屏中…' : '看屏幕' }}</span>
-          </button>
+          <StudioTooltip anchor :content="`让${currentCharacter.name}看你当前的屏幕画面`">
+            <button
+              class="companion-vision-btn"
+              type="button"
+              :disabled="busy || !chatReady || capturingScreen"
+              aria-label="看屏幕"
+              @click="onCaptureAndInspectScreen"
+            >
+              <ArchiveIcon name="eye" />
+              <span>{{ capturingScreen ? '看屏中…' : '看屏幕' }}</span>
+            </button>
+          </StudioTooltip>
           <button
             v-if="busy || voiceActive"
             class="companion-stop"
@@ -267,51 +285,57 @@
              @click="handleSend"
            >{{ busy ? '回复中' : '发送' }}</button>
            <div v-if="speechReady" class="companion-speech-cluster">
-            <button
-              class="companion-speech-btn"
-              type="button"
-              :data-state="speechState"
-              :disabled="speechButtonDisabled"
-              :title="speechError || '按住说话，松开识别；也可按住 Space'"
-              @pointerdown.prevent="onSpeechPress"
-              @pointerup="onSpeechRelease"
-              @pointercancel="onSpeechCancel"
-              @pointerleave="onSpeechLeave"
-            >{{ speechButtonText }}</button>
+            <StudioTooltip anchor :content="speechError || '按住说话，松开识别；也可按住 Space'">
+              <button
+                class="companion-speech-btn"
+                type="button"
+                :data-state="speechState"
+                :disabled="speechButtonDisabled"
+                @pointerdown.prevent="onSpeechPress"
+                @pointerup="onSpeechRelease"
+                @pointercancel="onSpeechCancel"
+                @pointerleave="onSpeechLeave"
+              >{{ speechButtonText }}</button>
+            </StudioTooltip>
             <span class="companion-speech-state" role="status" aria-live="polite">
               {{ speechStateText || (speechAutoListening ? '听候唤醒' : '') }}
             </span>
              <span v-if="speechSessionActive" class="companion-speech-session" role="status">
                连续对话中
-               <button
-                 class="companion-speech-session-end"
-                 type="button"
-                 title="结束连续对话"
-                 aria-label="结束连续对话"
-                 @click="onSpeechSessionEnd"
-               >×</button>
+               <StudioTooltip content="结束连续对话">
+                 <button
+                   class="companion-speech-session-end"
+                   type="button"
+                   aria-label="结束连续对话"
+                   @click="onSpeechSessionEnd"
+                 >×</button>
+               </StudioTooltip>
              </span>
-            <button
-              class="companion-speech-settings"
-              type="button"
-              title="语音输入设置"
-              aria-label="语音输入设置"
-              @click="speechSettingsOpen = !speechSettingsOpen"
-            >设置</button>
+            <StudioTooltip content="语音输入设置">
+              <button
+                class="companion-speech-settings"
+                type="button"
+                aria-label="语音输入设置"
+                @click="speechSettingsOpen = !speechSettingsOpen"
+              >设置</button>
+            </StudioTooltip>
            </div>
            <div v-else class="companion-speech-cluster">
-             <button
-               class="companion-speech-settings"
-               type="button"
-               title="配置语音输入"
-               aria-label="配置语音输入"
-               @click="speechSettingsOpen = true"
-             >语音设置</button>
+            <StudioTooltip content="配置语音输入">
+              <button
+                class="companion-speech-settings"
+                type="button"
+                aria-label="配置语音输入"
+                @click="speechSettingsOpen = true"
+              >语音设置</button>
+            </StudioTooltip>
            </div>
            <div class="companion-composer-meta" aria-live="polite">
              <span class="companion-chat-status">{{ chatStatusText }}</span>
              <span v-if="voiceStatusText" class="companion-voice-status">{{ voiceStatusText }}</span>
-             <span v-if="inQuietHours" class="companion-quiet-hours-hint" :title="quietHoursText"><ArchiveIcon name="moon" /> 安静时段</span>
+             <StudioTooltip v-if="inQuietHours" :content="quietHoursText">
+               <span class="companion-quiet-hours-hint"><ArchiveIcon name="moon" /> 安静时段</span>
+             </StudioTooltip>
            </div>
          </div>
 
@@ -370,13 +394,14 @@
             <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)">×</button>
           </div>
         </TransitionGroup>
-        <button
-          class="companion-chat-chip"
-          type="button"
-          title="打开聊天窗（Ctrl+Shift+X）"
-          aria-label="打开聊天"
-          @click="openChatWindow"
-        ><ArchiveIcon name="chat" /><span>聊天</span></button>
+        <StudioTooltip content="打开聊天窗（Ctrl+Shift+X）">
+          <button
+            class="companion-chat-chip"
+            type="button"
+            aria-label="打开聊天"
+            @click="openChatWindow"
+          ><ArchiveIcon name="chat" /><span>聊天</span></button>
+        </StudioTooltip>
         <span class="companion-live-dot" :data-state="liveDotState" role="status" aria-live="polite">
           <i aria-hidden="true"></i>{{ liveDotText }}
         </span>
@@ -395,6 +420,7 @@ import '@/assets/css/companion-surface.css'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import CompanionReplyBubble from '@/components/CompanionReplyBubble.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'

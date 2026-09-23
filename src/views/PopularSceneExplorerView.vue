@@ -34,7 +34,9 @@
               @click="ratingFilter = r.v">{{ r.l }}</button>
           </div>
           <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }}</span>
-          <span class="pop-count mature-hint" :title="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
+          <StudioTooltip :content="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">
+            <span class="pop-count mature-hint">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
+          </StudioTooltip>
         </div>
         <div class="pop-cats" role="group" aria-label="场景分类">
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
@@ -110,6 +112,7 @@ import {
 } from '@/utils/popularContent'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'

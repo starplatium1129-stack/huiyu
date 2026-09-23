@@ -1,6 +1,13 @@
-<template><button type="button" class="appearance-button" aria-label="外观与动态效果" title="外观与动态效果" @click="open"><ArchiveIcon name="palette" /></button></template>
+<template>
+  <StudioTooltip content="外观与动态效果">
+    <button type="button" class="appearance-button" aria-label="外观与动态效果" @click="open">
+      <ArchiveIcon name="palette" />
+    </button>
+  </StudioTooltip>
+</template>
 <script setup lang="ts">
 import ArchiveIcon from './visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 function open() { window.dispatchEvent(new CustomEvent('atelier:appearance-open', { detail: { section: 'appearance' } })) }
 </script>
 <style scoped>

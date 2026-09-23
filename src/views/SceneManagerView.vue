@@ -22,9 +22,11 @@
         <button class="btn btn-ghost" type="button" :disabled="loading || saving || desktopPackaged || toolRunning || previewing" @click="loadFromStore(true)">重新读取</button>
         <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="loading"><ArchiveIcon name="download" /> 导出 JSON</button>
         <button class="btn btn-ghost" type="button" :disabled="!canPreview" @click="tab = 'tools'; previewChanges()"><ArchiveIcon name="eye" /> 影响预览</button>
-        <button class="btn btn-primary" type="button" :disabled="!canSave" :title="desktopPackaged ? '桌面应用模式不支持保存场景内容' : ''" @click="saveToProject">
-          {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '保存到项目') }}
-        </button>
+        <StudioTooltip anchor :content="desktopPackaged ? '桌面应用模式不支持保存场景内容' : undefined">
+          <button class="btn btn-primary" type="button" :disabled="!canSave" @click="saveToProject">
+            {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '保存到项目') }}
+          </button>
+        </StudioTooltip>
       </div>
     </header>
 
@@ -263,11 +265,13 @@
       <template v-if="tab==='tools'">
         <SceneImpactPreview :preview="preview" :groups="previewGroups" :companions="previewCompanions" :busy="previewing" :enabled="canPreview" :error="previewError" :invalidated="previewInvalidated" :empty="previewEmpty" @preview="previewChanges" />
         <div class="tool-grid">
-          <button v-for="t in TOOLS" :key="t.id" class="sm-tool-card" type="button" :disabled="toolRunning || desktopPackaged || saving || previewing" :title="desktopPackaged ? '桌面应用模式不支持维护任务' : ''" @click="runTool(t.id)">
-            <div class="sm-tool-icon"><ArchiveIcon :name="t.iconName" /></div>
-            <div class="sm-tool-label">{{ t.label }}</div>
-            <div class="sm-tool-desc">{{ t.desc }}</div>
-          </button>
+          <StudioTooltip v-for="t in TOOLS" :key="t.id" anchor :content="desktopPackaged ? '桌面应用模式不支持维护任务' : undefined">
+            <button class="sm-tool-card" type="button" :disabled="toolRunning || desktopPackaged || saving || previewing" @click="runTool(t.id)">
+              <div class="sm-tool-icon"><ArchiveIcon :name="t.iconName" /></div>
+              <div class="sm-tool-label">{{ t.label }}</div>
+              <div class="sm-tool-desc">{{ t.desc }}</div>
+            </button>
+          </StudioTooltip>
         </div>
         <div v-if="toolResult" class="tool-result-panel">
           <div class="tool-result-head">
@@ -503,6 +507,7 @@ import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import MaintenanceCatalog from '@/components/maintenance/MaintenanceCatalog.vue'
 import SceneImpactPreview from '@/components/maintenance/SceneImpactPreview.vue'
 import { useSceneManagerWorkspace } from "@/composables/scene/useSceneManagerWorkspace"

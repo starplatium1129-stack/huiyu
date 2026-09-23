@@ -22,7 +22,7 @@ vi.mock('@/utils/characterReferenceData', () => ({
 let wrapper: VueWrapper | undefined
 afterEach(() => wrapper?.unmount())
 async function openReferences() {
-  wrapper = shallowMount(CharacterView, { global: { stubs: { teleport: true, RouterLink: { template: '<a><slot /></a>' } } } })
+  wrapper = shallowMount(CharacterView, { global: { stubs: { teleport: true, RouterLink: { template: '<a><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
   await flushPromises()
   await wrapper.get('.char-ref-card').trigger('click')
   await flushPromises()

@@ -34,21 +34,23 @@
         />
       </template>
       <template v-else>
-        <div class="thinking-group" title="模型推理强度（像 OpenCode 一样多档；关表示不思考）">
-          <span class="thinking-title">推理</span>
-          <div class="thinking-segments" role="radiogroup" aria-label="模型推理强度">
-            <button
-              v-for="opt in reasoningOptions"
-              :key="opt.value"
-              type="button"
-              role="radio"
-              :aria-checked="reasoning === opt.value"
-              :class="{ active: reasoning === opt.value }"
-              :disabled="busy"
-              @click="emit('reasoning-change', opt.value)"
-            >{{ opt.label }}</button>
+        <StudioTooltip content="模型推理强度（像 OpenCode 一样多档；关表示不思考）">
+          <div class="thinking-group">
+            <span class="thinking-title">推理</span>
+            <div class="thinking-segments" role="radiogroup" aria-label="模型推理强度">
+              <button
+                v-for="opt in reasoningOptions"
+                :key="opt.value"
+                type="button"
+                role="radio"
+                :aria-checked="reasoning === opt.value"
+                :class="{ active: reasoning === opt.value }"
+                :disabled="busy"
+                @click="emit('reasoning-change', opt.value)"
+              >{{ opt.label }}</button>
+            </div>
           </div>
-        </div>
+        </StudioTooltip>
         <button
           class="api-settings-toggle"
           type="button"
@@ -67,6 +69,7 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const reasoningOptions = [
   { value: 'off', label: '关' },

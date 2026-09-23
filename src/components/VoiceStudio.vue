@@ -7,13 +7,14 @@
       </div>
       <div class="voice-head-actions">
         <span class="voice-state" :class="voiceStateKind">{{ voiceStateLabel }}</span>
-        <button class="voice-collapse" type="button"
-          :aria-expanded="!collapsed"
-          :aria-label="collapsed ? '展开配音面板' : '收起配音面板'"
-          :title="collapsed ? '展开配音面板' : '收起配音面板'"
-          @click="collapsed = !collapsed">
-          <ArchiveIcon :name="collapsed ? 'expand' : 'compress'" />
-        </button>
+        <StudioTooltip :content="collapsed ? '展开配音面板' : '收起配音面板'">
+          <button class="voice-collapse" type="button"
+            :aria-expanded="!collapsed"
+            :aria-label="collapsed ? '展开配音面板' : '收起配音面板'"
+            @click="collapsed = !collapsed">
+            <ArchiveIcon :name="collapsed ? 'expand' : 'compress'" />
+          </button>
+        </StudioTooltip>
       </div>
     </div>
     <div v-show="!collapsed" class="voice-body">
@@ -63,6 +64,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useToast } from '@/composables/useToast'
 import { voiceApi, type VoiceSynthesisPayload } from '@/api/voiceApi'
 import '@/assets/css/director/components/VoiceStudio.css'

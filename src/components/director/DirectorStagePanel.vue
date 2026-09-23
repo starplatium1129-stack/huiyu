@@ -74,24 +74,25 @@
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
-            <button
-              v-if="drawEngine === 'anima'"
-              class="btn btn-ghost"
-              type="button"
-              title="导入任意外部本地图片，进行智能语义识别与局部换装"
-              @click="$emit('openInpaint')"
-            >
-              <ArchiveIcon name="inpaint" />
-              <span>导入图片换装</span>
-            </button>
-            <button class="btn btn-ghost" type="button"
-              :disabled="interrogateBusy"
-              :title="(interrogateMode === 'caption' ? '从图片提取自然语言描述（适合 Krea）' : '从图片提取特征标签（适合 Anima/SD）') + '；也可聚焦后直接粘贴图片'"
-              @click="triggerInterrogatePick"
-              @paste="onInterrogatePaste">
-              <ArchiveIcon name="search" />
-              <span>{{ interrogateBusy ? '正在读取图片…' : '从图片提取灵感' }}</span>
-            </button>
+            <StudioTooltip v-if="drawEngine === 'anima'" content="导入任意外部本地图片，进行智能语义识别与局部换装">
+              <button
+                class="btn btn-ghost"
+                type="button"
+                @click="$emit('openInpaint')"
+              >
+                <ArchiveIcon name="inpaint" />
+                <span>导入图片换装</span>
+              </button>
+            </StudioTooltip>
+            <StudioTooltip anchor :content="(interrogateMode === 'caption' ? '从图片提取自然语言描述（适合 Krea）' : '从图片提取特征标签（适合 Anima/SD）') + '；也可聚焦后直接粘贴图片'">
+              <button class="btn btn-ghost" type="button"
+                :disabled="interrogateBusy"
+                @click="triggerInterrogatePick"
+                @paste="onInterrogatePaste">
+                <ArchiveIcon name="search" />
+                <span>{{ interrogateBusy ? '正在读取图片…' : '从图片提取灵感' }}</span>
+              </button>
+            </StudioTooltip>
 
           </div>
           <div v-if="interrogateError" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
@@ -130,6 +131,7 @@
 <script setup lang="ts">
 import { computed, ref, defineAsyncComponent } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import { useInterrogate } from '@/composables/useInterrogate'

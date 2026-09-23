@@ -8,7 +8,9 @@
     <p v-if="!isLocal" role="status">资源管理仅在本机控制室开放。</p>
     <template v-else>
       <div class="resource-version"><ArchiveIcon name="book" /><span>{{ status?.mounted ? '正在使用已安装资源' : '正在使用随包基础资源' }}</span>
-        <code v-if="status?.current" :title="status.current.identity">{{ status.current.releaseId }} · {{ status.current.identity.slice(0, 12) }}</code>
+        <StudioTooltip v-if="status?.current" :content="status.current.identity">
+          <code>{{ status.current.releaseId }} · {{ status.current.identity.slice(0, 12) }}</code>
+        </StudioTooltip>
       </div>
       <p v-if="!status && loading" role="status">正在读取资源库…</p>
       <p v-if="error" class="resource-notice" role="alert">{{ error }}</p>
@@ -43,6 +45,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useResourceLibrary } from '../composables/useResourceLibrary'
 const library = useResourceLibrary()
 const { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,

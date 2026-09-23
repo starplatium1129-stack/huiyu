@@ -3,21 +3,27 @@
     <div class="panel-title expert-tags-header">
       <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
       <div class="expert-tags-actions">
-        <button type="button" class="btn btn-ghost btn-xs" :disabled="interrogateBusy" title="上传图片本地反推为 Tag（WD14 真实模型），可切人直出" @click="triggerInterrogatePick">
-          <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '反推中…' : '本地反推' }}
-        </button>
-        <span v-if="interrogateMeta" class="tag-interrogate-engine" :class="{ 'is-fallback': interrogateMeta.fallback }" :title="interrogateMeta.title">{{ interrogateMeta.label }}</span>
+        <StudioTooltip anchor content="上传图片本地反推为 Tag（WD14 真实模型），可切人直出">
+          <button type="button" class="btn btn-ghost btn-xs" :disabled="interrogateBusy" @click="triggerInterrogatePick">
+            <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '反推中…' : '本地反推' }}
+          </button>
+        </StudioTooltip>
+        <StudioTooltip v-if="interrogateMeta" :content="interrogateMeta.title">
+          <span class="tag-interrogate-engine" :class="{ 'is-fallback': interrogateMeta.fallback }">{{ interrogateMeta.label }}</span>
+        </StudioTooltip>
         <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
       <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
     </div>
     <div v-if="interrogateError" class="tag-interrogate-error" role="alert">{{ interrogateError }}</div>
     <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
-      <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag" :data-weight-tier="tagWeightTier(tag)" :title="tagMeaning(tag)">
-        <span class="manual-tag-en">{{ tag }}</span>
-        <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
-        <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
-      </span>
+      <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
+        <span class="manual-tag" :data-weight-tier="tagWeightTier(tag)">
+          <span class="manual-tag-en">{{ tag }}</span>
+          <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
+          <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
+        </span>
+      </StudioTooltip>
       <p v-if="!pb.manualTags.size" class="manual-tags-empty-hint">
         暂未激活自选词条。可在下方点选预设战袍、装配专属服装包，或搜索与批量输入标签添加。
       </p>
@@ -29,15 +35,16 @@
         <span>一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</span>
       </div>
       <div class="outfit-preset-list universal-preset-list">
-        <button v-for="preset in universalWardrobePresets" :key="preset.id"
-          type="button" class="outfit-preset universal-outfit-btn"
-          :class="{ selected: isPresetActive(preset.tags) }"
-          :aria-pressed="isPresetActive(preset.tags)"
-          :title="preset.description"
-          @click="toggleUniversalPreset(preset.tags, preset.label)">
-          <strong>{{ preset.label }}</strong>
-          <small>{{ preset.description }}</small>
-        </button>
+        <StudioTooltip v-for="preset in universalWardrobePresets" :key="preset.id" :content="preset.description">
+          <button
+            type="button" class="outfit-preset universal-outfit-btn"
+            :class="{ selected: isPresetActive(preset.tags) }"
+            :aria-pressed="isPresetActive(preset.tags)"
+            @click="toggleUniversalPreset(preset.tags, preset.label)">
+            <strong>{{ preset.label }}</strong>
+            <small>{{ preset.description }}</small>
+          </button>
+        </StudioTooltip>
       </div>
     </div>
 
@@ -83,13 +90,15 @@
           @click="tagCategory = cat.id">{{ cat.label }}</button>
       </div>
       <div class="tag-results">
-        <button v-for="tag in visibleTags" :key="tag.en" type="button"
-          :class="{ selected: pb.manualTags.has(tag.en) }"
-          :aria-pressed="pb.manualTags.has(tag.en)"
-          :title="tagMeaning(tag.en, tag.cn)"
-          @click="pb.toggleManualTag(tag.en)">
-          <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ tag.en }}</small>
-        </button>
+        <StudioTooltip v-for="tag in visibleTags" :key="tag.en" :content="tagMeaning(tag.en, tag.cn)">
+          <button
+            type="button"
+            :class="{ selected: pb.manualTags.has(tag.en) }"
+            :aria-pressed="pb.manualTags.has(tag.en)"
+            @click="pb.toggleManualTag(tag.en)">
+            <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ tag.en }}</small>
+          </button>
+        </StudioTooltip>
       </div>
       <!--
         截断告知（2026-08-30 UX 审计）：这里长期硬截 72 条且不说明，用户会以为
@@ -114,6 +123,7 @@ import { matchesPromptTag } from '@/utils/promptTagDictionary'
 import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import { confirmAction } from '@/composables/useConfirm'
 import { applyInterrogateResult } from '@/composables/prompt/applyInterrogateResult'

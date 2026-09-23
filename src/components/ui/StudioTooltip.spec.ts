@@ -67,4 +67,38 @@ describe('StudioTooltip', () => {
     wrapper.unmount()
     dialog.remove()
   })
+
+  it('控件被禁用时通过 anchor 悬停外壳仍能触发提示', async () => {
+    const wrapper = mount(StudioTooltip, {
+      props: { content: '当前操作暂不可用', anchor: true, delay: 0 },
+      slots: { default: '<button type="button" disabled>不可用</button>' },
+      attachTo: document.body,
+    })
+    const anchor = wrapper.find('.studio-tooltip-anchor')
+    await anchor.trigger('pointermove')
+    await flushPromises()
+
+    const tip = document.querySelector('.studio-tooltip')
+    expect(tip).not.toBeNull()
+    expect(tip!.textContent).toContain('当前操作暂不可用')
+    wrapper.unmount()
+  })
+
+  it('控件被禁用时通过 anchor 键盘聚焦外壳也能触发提示', async () => {
+    const wrapper = mount(StudioTooltip, {
+      props: { content: '键盘提示说明', anchor: true },
+      slots: { default: '<button type="button" disabled>不可用</button>' },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    const anchor = wrapper.find('.studio-tooltip-anchor')
+    expect(anchor.attributes('tabindex')).toBe('0')
+    await anchor.trigger('focus')
+    await flushPromises()
+
+    const tip = document.querySelector('.studio-tooltip')
+    expect(tip).not.toBeNull()
+    expect(tip!.textContent).toContain('键盘提示说明')
+    wrapper.unmount()
+  })
 })
