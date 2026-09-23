@@ -14,6 +14,8 @@
  *   · 模板出现原生 <select> → 失败（改用 StudioSelect）
  *   · 模板出现带 controls 的 <audio>/<video> → 失败（改用 StudioMediaPlayer）
  *   · 逻辑出现 confirm/alert/prompt 调用 → 失败（改用 useConfirm 或项目弹层）
+ *   · 原生 title 提示 → 计数并锁「只降不升」（改用 StudioTooltip：原生 title 延迟约 1 秒、
+ *     不可主题化、只有 hover 才出，禁用控件上多数浏览器还不响应）
  *   · 原生 checkbox/radio 只计数不阻断（native-controls.css 仍为其提供主题外观，
  *     但 apple-hig-accessibility / companion-focus 要求指定容器内为 0）
  *
@@ -111,4 +113,24 @@ test('native checkbox and radio usage stays counted', () => {
   // 全库数量变化本身不是回归，但审计时需要这个数字在手。
   console.log(`原生 checkbox/radio：${total} 处（允许，需双主题视觉验收）`);
   assert.ok(total >= 0);
+});
+
+// 原生 title 提示的未迁移存量：177 处（2026-09-22 口径，含静态 title 与动态 :title）。
+// 它是浏览器原生外观里最后一大块，而且行为也改不动：出现延迟约 1 秒、无法主题化、
+// 只有 hover 才出（键盘与触屏用户拿不到）、禁用控件上多数浏览器连 hover 都不响应。
+// 替代品是 StudioTooltip（hover 与聚焦都触发、跟随双主题令牌、dialog 内自动改写 portal）。
+// 这里锁成「只降不升」：迁移一批就把这个数字改小，不允许新增原生 title。
+const NATIVE_TITLE = /(?<![\w-]):?title="/g;
+const TITLE_BASELINE = 177;
+
+test('native title tooltips only go down', () => {
+  const { counts } = scan([{ re: NATIVE_TITLE }]);
+  const total = counts.get(NATIVE_TITLE.source) ?? 0;
+
+  console.log(`原生 title 提示：${total} 处 / 未迁移基线 ${TITLE_BASELINE}`);
+  assert.ok(
+    total <= TITLE_BASELINE,
+    `原生 title 从 ${TITLE_BASELINE} 涨到 ${total}：改用 StudioTooltip —— hover 与键盘聚焦都出提示，`
+    + '跟随双主题令牌，且在 dialog 内不会被弹窗盖住（迁完一批请把 TITLE_BASELINE 同步调小）',
+  );
 });

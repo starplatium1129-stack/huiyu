@@ -103,6 +103,39 @@ test('anima expert parameters and unified button share one parent-owned request 
   expect((bodies[0] as { character: string }).character).toBe('nene')
 })
 
+test('director result tools use themed tooltips that also open from the keyboard', async ({ page, request }) => {
+  const mockGateway = `http://127.0.0.1:${MOCK_PORTS.gateway}`
+  const mockComfy = `http://127.0.0.1:${MOCK_PORTS.translate + 1}`
+  await request.post(`${mockComfy}/__mock/reset`)
+  await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
+  await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(1800)
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await page.locator('.engine-switch button').nth(1).click()
+  await page.locator('.anima-quick-panel').evaluate(el => { (el as HTMLDetailsElement).open = true })
+  await page.locator('.material-switch button[aria-controls="material-story"]').click()
+  await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
+  await page.locator('.anima-quick-panel .anima-seed').fill('424242')
+  await page.getByTestId('anima-generate').click()
+  await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
+
+  await page.locator('.result-tools-disclosure summary').first().click()
+  const hires = page.locator('.btn-hires-action').first()
+  // 迁移契约：按钮上不再挂原生 title —— 原生提示延迟约 1 秒，且只在 hover 时出现
+  expect(await hires.getAttribute('title')).toBeNull()
+
+  // 键盘聚焦就该出提示，这是原生 title 做不到的（纯键盘用户原本完全拿不到这些说明）。
+  // 断言命中 role=tooltip，等于把「提示真的进了可访问树」钉成回归。
+  // 键盘聚焦就该出提示，这是原生 title 做不到的（纯键盘用户原本完全拿不到这些说明）。
+  // 注意 role="tooltip" 在 Reka 的无障碍镜像节点上（VisuallyHidden），可见内容是 slot，
+  // 所以这里按类名断言可见性，并按 aria-describedby 断言提示真的挂到了触发元素上。
+  await hires.focus()
+  const tip = page.locator('.studio-tooltip')
+  await expect(tip).toBeVisible()
+  await expect(tip).toContainText('高清超分')
+  await expect(hires).toHaveAttribute('aria-describedby', /.+/)
+})
+
 test('anima derives the promoted Natsume v21 LoRA and blocks triad', async ({ page, request }) => {
   test.setTimeout(60000)
   const bodies: Array<Record<string, unknown>> = []

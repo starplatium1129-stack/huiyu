@@ -295,7 +295,10 @@ const CHECKS = [
       + '+ 一堆功能说明」只会以为是软件坏了。禁用态必须优先讲为什么点不了。',
     assert(source: any) {
       const code = stripComments(source);
-      return /BUSY_HINT/.test(code) && /:title="generationBusy \? BUSY_HINT/.test(code);
+      // 承载提示的属性随去原生化从 :title 换成了 StudioTooltip 的 :content
+      // （原生 title 延迟约 1 秒、只在 hover 出、禁用控件上更是不响应），
+      // 但这条断言的意图不变：忙碌分支必须排在功能说明之前。
+      return /BUSY_HINT/.test(code) && /:(?:title|content)="generationBusy \? BUSY_HINT/.test(code);
     },
   },
   {
