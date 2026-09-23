@@ -101,4 +101,72 @@ describe('StudioTooltip', () => {
     expect(tip!.textContent).toContain('键盘提示说明')
     wrapper.unmount()
   })
-})
+  it('子元素使用 aria-disabled="true" 时外壳同样识别为禁用态并提供聚焦与悬停支持', async () => {
+    const wrapper = mount(StudioTooltip, {
+      props: { content: '无障碍禁用说明', anchor: true },
+      slots: { default: '<div role="button" aria-disabled="true">自定义按钮</div>' },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    const anchor = wrapper.find('.studio-tooltip-anchor')
+    expect(anchor.attributes('tabindex')).toBe('0')
+    expect(anchor.attributes('aria-disabled')).toBe('true')
+
+    await anchor.trigger('focus')
+    await flushPromises()
+    const tip = document.querySelector('.studio-tooltip')
+    expect(tip).not.toBeNull()
+    expect(tip!.textContent).toContain('无障碍禁用说明')
+    wrapper.unmount()
+  })
+
+  it('子元素动态切换 disabled 属性时通过 MutationObserver 实时同步 anchor 外壳状态', async () => {
+    const wrapper = mount(StudioTooltip, {
+      props: { content: '动态状态提示', anchor: true },
+      slots: { default: '<button type="button">操作</button>' },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    const anchor = wrapper.find('.studio-tooltip-anchor')
+    expect(anchor.attributes('tabindex')).toBeUndefined()
+
+    const btn = wrapper.find('button').element as HTMLButtonElement
+    btn.disabled = true
+    await flushPromises()
+
+    expect(anchor.attributes('tabindex')).toBe('0')
+    expect(anchor.attributes('aria-disabled')).toBe('true')
+
+    btn.disabled = false
+    await flushPromises()
+
+    expect(anchor.attributes('tabindex')).toBeUndefined()
+    expect(anchor.attributes('aria-disabled')).toBeUndefined()
+    wrapper.unmount()
+  })
+
+  it('动态切换 anchor 属性时自动建立或注销外壳能力', async () => {
+    const wrapper = mount(StudioTooltip, {
+      props: { content: '动态 anchor 提示', anchor: false },
+      slots: { default: '<button type="button" disabled>不可用</button>' },
+      attachTo: document.body,
+    })
+    await flushPromises()
+    const anchor = wrapper.find('.studio-tooltip-anchor')
+    expect(anchor.attributes('data-anchor')).toBeUndefined()
+    expect(anchor.attributes('tabindex')).toBeUndefined()
+
+    await wrapper.setProps({ anchor: true })
+    await flushPromises()
+
+    expect(anchor.attributes('data-anchor')).toBeDefined()
+    expect(anchor.attributes('tabindex')).toBe('0')
+
+    await wrapper.setProps({ anchor: false })
+    await flushPromises()
+
+    expect(anchor.attributes('data-anchor')).toBeUndefined()
+    expect(anchor.attributes('tabindex')).toBeUndefined()
+    wrapper.unmount()
+  })
+});

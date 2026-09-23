@@ -336,6 +336,12 @@ control in `StudioTooltip` with `anchor` when the control can be disabled
 (disabled controls do not dispatch pointer events, so a plain wrapper never
 receives hover), and for a `StudioSelect` host put the hint on the select itself
 rather than wrapping it, because the trigger is the focusable element.
+Popovers (`StudioPopover`) attach anchoring directly to their `#trigger` slot;
+keep trigger buttons bare with `aria-label` rather than wrapping them in
+`StudioTooltip`, preserving clean anchor geometry. `StudioTooltip` with
+`anchor` employs a MutationObserver to observe subtree `disabled` and
+`aria-disabled` attributes, dynamically synchronizing focus proxies and
+tabindex across runtime reactive state transitions.
 Native checkboxes and radios remain allowed while
 `native-controls.css` gives them themed appearance, but any container that
 `apple-hig-accessibility` or `companion-focus` asserts on must contain none.

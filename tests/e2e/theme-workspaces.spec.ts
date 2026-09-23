@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 test('theme switch persists through reload and preserves native control colors', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' })
   await page.goto('/')
   await page.getByRole('button', { name: '切换为亮色模式' }).click()
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
@@ -32,8 +33,8 @@ for (const theme of ['light', 'dark']) {
   test('updated portrait particles remain visible on the ' + theme + ' surface', async ({ page }) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto('/popular-scenes?character=shiina_mahiru')
-    const field = page.locator('.pop-hero-field')
+    await page.goto('/character?character=shiina_mahiru')
+    const field = page.locator('.particle-theatre .has-portrait')
     await expect(field).toHaveClass(/has-portrait/)
     await expect.poll(() => field.locator('canvas').evaluate((canvas: HTMLCanvasElement) => {
       const pixels = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data

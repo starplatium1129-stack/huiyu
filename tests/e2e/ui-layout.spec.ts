@@ -104,7 +104,7 @@ for (const theme of ['dark', 'light']) {
     await page.getByRole('button', { name: '设置', exact: true }).click()
     const popover = page.locator('.companion-settings-popover')
     await expect(popover).toBeVisible()
-    await popover.locator('input').first().click({ trial: true })
+    await popover.locator('button, [role="switch"]').first().click({ trial: true })
     expect(await contrast(page.locator('.companion-input'))).toBeGreaterThanOrEqual(4.5)
     expect(await contrast(page.locator('.companion-send'))).toBeGreaterThanOrEqual(4.5)
     await expect(popover.getByText('完整房间（聊天）', { exact: true })).toHaveCount(1)

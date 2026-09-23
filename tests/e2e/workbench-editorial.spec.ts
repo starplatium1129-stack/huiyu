@@ -67,6 +67,7 @@ for (const theme of ['light', 'dark']) {
     })
     await page.route('**/atelier-fixture.jpg', route => route.fulfill({ path: 'assets/characters/natsume-home-cg.jpg', contentType: 'image/jpeg' }))
     await page.getByRole('button', { name: '专家模式', exact: true }).click()
+    await expect(page.locator('.engine-switch button').first()).toBeVisible()
     await page.locator('.engine-switch button').first().click()
     await page.getByTestId('sd-generate').click()
     await expect(page.locator('.stage-generating-title')).toBeVisible()

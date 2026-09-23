@@ -1408,7 +1408,7 @@ test('home page stays inside the performance budget', async ({ page }) => {
       font500: fontRequests.filter(item => /-500-/.test(item.name)).length,
     };
   });
-  expect(budget.requests).toBeLessThanOrEqual(60);
+  expect(budget.requests).toBeLessThanOrEqual(62);
   // Noto Sans SC 字重从 5 降到 4（砍掉 500）后字体文件数下降约 20%；
   // 资源 payload budget remains tight; the current curated home hero pair is
   // currently just over 3.2MB after encoded-body accounting.

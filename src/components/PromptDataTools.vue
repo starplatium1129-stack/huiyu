@@ -3,15 +3,13 @@
   <StudioPopover v-model:open="utilityOpen" label="数据工具" content-class="studio-data-tools"
     @close-auto-focus="onMenuCloseAutoFocus">
     <template #trigger>
-      <StudioTooltip :content="backupStale ? `数据工具（${backupReminder}）` : '数据工具与蓝图'">
-        <button type="button" @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
-          class="utility-trigger"
-          :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
-        >
-          <span class="utility-trigger-dots" aria-hidden="true">···</span>
-          <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
-        </button>
-      </StudioTooltip>
+      <button type="button" @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
+        class="utility-trigger"
+        :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
+      >
+        <span class="utility-trigger-dots" aria-hidden="true">···</span>
+        <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
+      </button>
     </template>
     <div class="utility-heading">数据工具<button type="button" class="btn btn-ghost btn-icon" aria-label="关闭数据工具" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
       <div v-if="backupStale" class="utility-note" role="status">

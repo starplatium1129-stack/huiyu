@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, onUpdated, ref } from "vue"
+import { nextTick, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
 import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger } from "reka-ui"
 
 /**
@@ -42,7 +42,11 @@ function syncDisabled() {
     return
   }
   const child = anchorEl.value.firstElementChild as (HTMLElement & { disabled?: boolean }) | null
-  hasDisabledChild.value = Boolean(child?.disabled || child?.matches(":disabled"))
+  hasDisabledChild.value = Boolean(
+    child?.disabled ||
+    child?.matches(":disabled, [aria-disabled='true']") ||
+    child?.getAttribute("aria-disabled") === "true"
+  )
 }
 
 function dispatchToChild(type: string, e?: PointerEvent | FocusEvent) {
@@ -107,13 +111,38 @@ function onAnchorBlur(e: FocusEvent) {
  */
 const portalTarget = ref<HTMLElement | undefined>(undefined)
 const inDialog = ref(false)
+let observer: MutationObserver | null = null
+
+function setupObserver() {
+  observer?.disconnect()
+  observer = null
+  if (props.anchor && anchorEl.value && typeof MutationObserver !== "undefined") {
+    observer = new MutationObserver(() => syncDisabled())
+    observer.observe(anchorEl.value, {
+      attributes: true,
+      attributeFilter: ["disabled", "aria-disabled"],
+      subtree: true,
+      childList: true,
+    })
+  }
+}
+
 onMounted(() => {
   syncDisabled()
   const dialog = anchorEl.value?.closest("dialog")
   if (dialog) { portalTarget.value = dialog; inDialog.value = true }
+  setupObserver()
 })
 onUpdated(() => {
   syncDisabled()
+})
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  observer = null
+})
+watch(() => props.anchor, () => {
+  syncDisabled()
+  setupObserver()
 })
 </script>
 
