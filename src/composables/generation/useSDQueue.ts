@@ -143,16 +143,23 @@ export function useSDQueue(options: {
    */
   function restore(jobs: SDQueueJob[]): number {
     if (!Array.isArray(jobs) || !jobs.length) return 0
-    const incoming = jobs.filter(job => job && typeof job.id === 'string' && typeof job.prompt === 'string')
-    if (!incoming.length) return 0
-    // 与在跑/已在队的任务按 id 去重（同一任务不重复灌）
+    const capacity = Math.max(0, SD_QUEUE_LIMIT - total.value)
+    if (!capacity) return 0
+    // Account for the running job and deduplicate both existing and incoming IDs.
     const existing = new Set([activeJob.value?.id, ...queue.value.map(j => j.id)])
-    const fresh = incoming.filter(j => !existing.has(j.id))
+    const fresh: SDQueueJob[] = []
+    for (const job of jobs) {
+      if (!job || typeof job.id !== 'string' || !job.id.trim()
+        || typeof job.prompt !== 'string' || !job.prompt.trim() || existing.has(job.id)) continue
+      existing.add(job.id)
+      fresh.push(job)
+      if (fresh.length === capacity) break
+    }
     if (!fresh.length) return 0
-    queue.value = [...queue.value, ...fresh].slice(0, SD_QUEUE_LIMIT)
+    // Merging into a live batch must not erase its already-completed progress.
+    if (!total.value) done.value = 0
+    queue.value = [...queue.value, ...fresh]
     paused.value = true
-    // 恢复快照即开新一轮：完成数归零，本轮总量 = 恢复进来的等待数。
-    done.value = 0
     return fresh.length
   }
 
