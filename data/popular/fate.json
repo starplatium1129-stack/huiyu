@@ -396,6 +396,7 @@
       "defaultOutfitId": "avenger_black_armor",
       "identityTokens": [
         "jeanne d'arc alter (fate)",
+        "fate/grand_order",
         "1girl",
         "solo",
         "silver_hair",
@@ -1012,6 +1013,7 @@
       "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued beauty with chin-length layered platinum-silver hair, piercing amber-yellow eyes, a slender fragile silhouette, and a cool, deadpan composure",
       "identityTokens": [
         "caren_hortensia",
+        "fate/hollow_ataraxia",
         "white_hair",
         "short_hair",
         "yellow_eyes",
@@ -1170,6 +1172,7 @@
       "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, with pale platinum-blonde hair, amber-gold eyes, ivory skin and a reserved, composed presence",
       "identityTokens": [
         "saber_alter",
+        "fate/stay_night",
         "blonde_hair",
         "yellow_eyes",
         "golden_eyes",
@@ -1331,6 +1334,7 @@
       "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
       "identityTokens": [
         "jeanne d'arc (fate)",
+        "fate/grand_order",
         "1girl",
         "solo",
         "blonde_hair",
@@ -1521,6 +1525,7 @@
       "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a tall mature woman with very long purple hair, crimson-red eyes and a poised, confident presence",
       "identityTokens": [
         "scathach (fate)",
+        "fate/grand_order",
         "1girl",
         "solo",
         "purple_hair",
@@ -1699,6 +1704,7 @@
       "identityProse": "Ishtar from Fate/Grand Order, the Babylonian goddess of love and war as an Archer-class pseudo-Servant using Tohsaka Rin's body, a haughty yet endearing goddess with black hair styled two-side-up in high twintail puffs, and radiant red eyes that soften when flustered",
       "identityTokens": [
         "ishtar (fate)",
+        "fate/grand_order",
         "1girl",
         "solo",
         "black_hair",
@@ -1868,6 +1874,7 @@
       "identityProse": "Ereshkigal from Fate/Grand Order, the lonely goddess who rules the land of the dead as a Lancer-class Servant, wearing Tohsaka Rin's true appearance with very long blonde hair in twintails, and gentle yet solemn red eyes",
       "identityTokens": [
         "ereshkigal (fate)",
+        "fate/grand_order",
         "1girl",
         "solo",
         "blonde_hair",
