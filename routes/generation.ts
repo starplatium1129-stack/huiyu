@@ -47,6 +47,7 @@ function createGenerationRouter(config: GenerationConfig, dependencies?: Generat
             return envelope.ok(res, { job: service.getJob(req.params.id, owner(req)) });
         }
         catch (e) {
+            if (service.getLost(req.params.id, owner(req))) return envelope.fail(res, 410, '网关重启导致该生成任务中断；请重新提交', { code: 'JOB_LOST' });
             return envelope.fail(res, errorStatus(e) || 500, errorMessage(e), { code: errorCode(e) });
         }
     });
@@ -69,6 +70,7 @@ function createGenerationRouter(config: GenerationConfig, dependencies?: Generat
             stream.pipe(res);
         }
         catch (e) {
+            if (service.getLost(req.params.id, owner(req))) return envelope.fail(res, 410, '网关重启导致该生成任务结果丢失；请重新提交', { code: 'JOB_LOST' });
             return envelope.fail(res, errorStatus(e) || 500, errorMessage(e), { code: errorCode(e) });
         }
     });
@@ -77,6 +79,7 @@ function createGenerationRouter(config: GenerationConfig, dependencies?: Generat
             return envelope.ok(res, { job: await service.cancel(req.params.id, owner(req)) });
         }
         catch (e) {
+            if (service.getLost(req.params.id, owner(req))) return envelope.fail(res, 410, '该生成任务已随网关重启中断，无需取消', { code: 'JOB_LOST' });
             return envelope.fail(res, errorStatus(e) || 500, errorMessage(e), { code: errorCode(e) });
         }
     });
