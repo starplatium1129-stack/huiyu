@@ -1,6 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import { resolveInpaintRequestBinding } from './useAnimaSession'
 import { apiClient } from '@/api/client'
+import { escapeKnownLiteralTags } from '@/utils/promptLiteralTags.ts'
 import type { AnimaInpaintDeps } from './useAnimaInpaint'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 
@@ -81,7 +82,8 @@ export async function submitAnimaInpaint(payload: InpaintSubmitPayload, context:
   } else if (charLocked === 'none' && popularIdentityTokens.value.length && isPopular.value) {
     // 2026-08-30 热门角色换装修复：身份标签前置（hina (blue archive), halo, silver_hair…），
     // 模型才知道衣服穿在谁身上——此前只传衣服词导致新衣光影/气质与原图脱节。
-    promptText = `${popularIdentityTokens.value.join(', ')}, ${promptText}`
+    const identity = escapeKnownLiteralTags(popularIdentityTokens.value.join(', '), popularIdentityTokens.value)
+    promptText = `${identity}, ${promptText}`
   }
 
   const negativePrompt = charLocked === 'none'
