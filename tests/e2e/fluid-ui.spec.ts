@@ -69,7 +69,7 @@ for (const theme of ['light', 'dark']) {
     await page.goto('/scene-explorer')
     await page.locator('.nav-search').click()
     const panel = page.getByRole('dialog', { name: '全局搜索' })
-    await expect(page.getByRole('searchbox', { name: '搜索场景、作品或页面' })).toBeFocused()
+    await expect(page.getByRole('combobox', { name: '搜索场景、作品或页面' })).toBeFocused()
     await expect(panel).toBeVisible()
     await page.waitForTimeout(600)
     await panel.evaluate(el => el.setAttribute('data-continuity-probe', 'same-surface'))

@@ -37,11 +37,11 @@
             <span class="voice-copy-title">中文字幕</span>
             <span class="voice-copy-note">画面旁白 / 台词</span>
           </div>
-          <textarea class="voice-text voice-caption-text" v-model="voiceCaption" rows="3" placeholder="写下要配的中文台词或旁白…"></textarea>
+          <textarea class="voice-text voice-caption-text" v-model="voiceCaption" aria-label="中文字幕" rows="3" placeholder="写下要配的中文台词或旁白…"></textarea>
         </div>
         <details class="voice-script-details" :open="voiceLang === 'ja'">
           <summary>日文 / 实际配音稿</summary>
-          <textarea class="voice-text" v-model="voiceScript" rows="3" placeholder="日文配音稿；可从中文一键翻译"></textarea>
+          <textarea class="voice-text" v-model="voiceScript" aria-label="日文配音稿" rows="3" placeholder="日文配音稿；可从中文一键翻译"></textarea>
         </details>
         <div class="voice-actions">
           <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang !== 'ja'" @click="translateVoice">翻译成日文</button>
@@ -53,7 +53,7 @@
         </div>
         <div class="voice-status">{{ voiceStatus }}</div>
         <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
-        <StudioMediaPlayer v-if="voiceAudioUrl" class="voice-audio show" kind="audio" :src="voiceAudioUrl" label="AI 声线试听" />
+        <StudioMediaPlayer v-if="voiceAudioUrl" class="voice-audio show" kind="audio" :src="voiceAudioUrl" label="AI 声线试听" :transcript="voiceAudioTranscript" />
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
     </div>
   </section>
@@ -93,6 +93,7 @@ const voiceBusy = ref(false)
 const voiceOnline = ref(false)
 const voiceConfigured = ref(false)
 const voiceAudioUrl = ref('')
+const voiceAudioTranscript = ref('')
 let voiceObjectUrl = ''
 const lifecycle = new AbortController()
 const callOptions = { signal: lifecycle.signal }
@@ -150,6 +151,7 @@ async function refreshVoiceStatus() {
 function clearVoiceAudio() {
   if (voiceObjectUrl) { URL.revokeObjectURL(voiceObjectUrl); voiceObjectUrl = '' }
   voiceAudioUrl.value = ''
+  voiceAudioTranscript.value = ''
 }
 
 async function translateVoice() {
@@ -211,6 +213,7 @@ async function generateVoice() {
     if (lifecycle.signal.aborted) return
     voiceObjectUrl = URL.createObjectURL(blob)
     voiceAudioUrl.value = voiceObjectUrl
+    voiceAudioTranscript.value = text
     voiceDownloadName.value = `aics_voice_${payload.voice}_${payload.language}_${Date.now()}.wav`
     voiceStatus.value = 'AI 声线已生成，可试听或下载 WAV。' + (queueWaitMs > 0 ? `（排队 ${Math.round(queueWaitMs / 100) / 10}s）` : '')
     toast.success('配音已生成')

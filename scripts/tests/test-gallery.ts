@@ -86,6 +86,20 @@ assert(
   /initialFocus:\s*closeBtn/.test(view),
   'immersive viewer must move focus into the dialog on open',
 );
+assert(
+  /useFocusTrap\(\s*infoEl/.test(view) && /initialFocus:\s*infoCloseBtn/.test(view),
+  'narrow artwork info must open as a nested focus trap on its visible close control',
+);
+assert(
+  view.includes(':inert="infoDrawerHidden"')
+    && view.includes(':aria-hidden="infoDrawerHidden ? \'true\' : undefined"')
+    && view.includes('关闭信息'),
+  'closed narrow artwork info must be hidden from focus and assistive technology',
+);
+assert(
+  view.includes('background:var(--bg-deep)') && view.includes('background-image:linear-gradient(var(--art-scrim),var(--art-scrim))'),
+  'narrow artwork info must use an opaque theme surface',
+);
 
 // composable 本身必须真的实现陷阱与焦点还原
 const trap = read('src/composables/useFocusTrap.ts');

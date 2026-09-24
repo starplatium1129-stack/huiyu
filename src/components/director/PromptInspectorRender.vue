@@ -17,7 +17,8 @@
 
           <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">
             <StudioTooltip anchor :content="engineTitle('sd')">
-              <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
+              <button type="button" class="engine-btn" :aria-pressed="drawEngine === 'sd'"
+                :class="{ active: drawEngine === 'sd' }"
                 :disabled="generationBusy || pb.isPopular"
                 @click="setDrawEngine('sd')">
                 <ArchiveIcon name="scene" class="engine-mark" aria-hidden="true" />
@@ -25,7 +26,8 @@
               </button>
             </StudioTooltip>
             <StudioTooltip anchor :content="engineTitle('anima')">
-              <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
+              <button type="button" class="engine-btn" :aria-pressed="drawEngine === 'anima'"
+                :class="{ active: drawEngine === 'anima' }"
                 :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('anima'))"
                 @click="setDrawEngine('anima')">
                 <ArchiveIcon name="spark" class="engine-mark" aria-hidden="true" />
@@ -33,7 +35,8 @@
               </button>
             </StudioTooltip>
             <StudioTooltip anchor :content="engineTitle('krea2')">
-              <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
+              <button type="button" class="engine-btn" :aria-pressed="drawEngine === 'krea2'"
+                :class="{ active: drawEngine === 'krea2' }"
                 :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('krea2'))"
                 @click="setDrawEngine('krea2')">
                 <ArchiveIcon name="palette" class="engine-mark" aria-hidden="true" />

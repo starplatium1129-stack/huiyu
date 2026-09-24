@@ -3,6 +3,15 @@
     ref="containerEl"
     class="image-split-compare"
     :class="{ 'is-dragging': isDragging }"
+    role="slider"
+    tabindex="0"
+    :aria-label="comparisonLabel"
+    aria-orientation="horizontal"
+    :aria-valuenow="splitPos"
+    :aria-valuetext="splitValueText"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    @keydown="onKeydown"
     @pointerdown="startDrag"
     @pointermove="onDrag"
     @pointerup="stopDrag"
@@ -27,19 +36,11 @@
     <div
       class="split-divider"
       :style="dividerStyle"
-      role="slider"
-      aria-label="左右对比滑动条"
-      :aria-valuenow="splitPos"
-      aria-valuemin="0"
-      aria-valuemax="100"
+      aria-hidden="true"
     >
       <div class="divider-line"></div>
       <div class="divider-handle">
-        <!-- 线宽收敛到图标基准 1.8（2026-08-28）：此前 2.5 明显偏粗 -->
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8">
-          <polyline points="8 6 2 12 8 18"></polyline>
-          <polyline points="16 6 22 12 16 18"></polyline>
-        </svg>
+        <ArchiveIcon name="compare" class="divider-icon" />
       </div>
     </div>
   </div>
@@ -47,6 +48,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 const props = defineProps<{
   beforeSrc: string
@@ -56,7 +58,16 @@ const props = defineProps<{
   initialPos?: number
 }>()
 
-const splitPos = ref(props.initialPos ?? 50)
+function clampPos(value: number) {
+  if (!Number.isFinite(value)) return 50
+  return Math.max(0, Math.min(100, Math.round(value)))
+}
+
+const splitPos = ref(clampPos(props.initialPos ?? 50))
+const beforeName = computed(() => props.beforeLabel || '原图')
+const afterName = computed(() => props.afterLabel || '换装后')
+const comparisonLabel = computed(() => `左右对比滑动条：${beforeName.value}与${afterName.value}`)
+const splitValueText = computed(() => `对比位置 ${splitPos.value}%：${beforeName.value}与${afterName.value}`)
 const isDragging = ref(false)
 const containerEl = ref<HTMLElement | null>(null)
 
@@ -79,6 +90,7 @@ function updatePosFromEvent(event: PointerEvent) {
 
 function startDrag(event: PointerEvent) {
   isDragging.value = true
+  containerEl.value?.focus({ preventScroll: true })
   event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
   updatePosFromEvent(event)
 }
@@ -97,6 +109,19 @@ function stopDrag(event: PointerEvent) {
     } catch {}
   }
 }
+
+function onKeydown(event: KeyboardEvent) {
+  let next: number | null = null
+  if (event.key === 'ArrowLeft') next = splitPos.value - 1
+  else if (event.key === 'ArrowRight') next = splitPos.value + 1
+  else if (event.key === 'PageDown') next = splitPos.value - 10
+  else if (event.key === 'PageUp') next = splitPos.value + 10
+  else if (event.key === 'Home') next = 0
+  else if (event.key === 'End') next = 100
+  if (next === null) return
+  event.preventDefault()
+  splitPos.value = clampPos(next)
+}
 </script>
 
 <style scoped>
@@ -110,6 +135,11 @@ function stopDrag(event: PointerEvent) {
   cursor: ew-resize;
   border-radius: var(--r-sm);
   background: var(--bg-deep);
+}
+
+.image-split-compare:focus-visible {
+  outline: 2px solid var(--archive-blue);
+  outline-offset: -2px;
 }
 
 .split-layer {
@@ -189,6 +219,10 @@ function stopDrag(event: PointerEvent) {
   align-items: center;
   justify-content: center;
   color: var(--archive-blue);
+}
+
+.divider-icon {
+  font-size: var(--fs-label-sm);
 }
 
 .is-dragging .divider-handle {

@@ -296,8 +296,10 @@ async function handleStart() {
               </span>
             </label>
             <div class="mask-mode-switch" role="group" aria-label="遮罩模式">
-              <button type="button" :class="{ active: maskMode === 'paint' }" @click="maskMode = 'paint'">手绘精确遮罩</button>
-              <button type="button" :class="{ active: maskMode === 'auto' }" @click="maskMode = 'auto'">自动识别</button>
+              <button type="button" :aria-pressed="maskMode === 'paint'"
+                :class="{ active: maskMode === 'paint' }" @click="maskMode = 'paint'">手绘精确遮罩</button>
+              <button type="button" :aria-pressed="maskMode === 'auto'"
+                :class="{ active: maskMode === 'auto' }" @click="maskMode = 'auto'">自动识别</button>
             </div>
             <template v-if="maskMode === 'paint'">
               <div class="brush-size-header">
@@ -355,11 +357,12 @@ async function handleStart() {
               <span>选择目标服装形态</span>
             </span>
 
-            <div class="preset-grid">
+            <div class="preset-grid" role="group" aria-label="目标服装形态">
               <button
                 v-for="p in visiblePresets"
                 :key="p.id"
                 type="button"
+                :aria-pressed="selectedPresetId === p.id"
                 class="preset-card"
                 :class="{ active: selectedPresetId === p.id, 'is-nsfw': p.isNsfw }"
                 @click="selectedPresetId = p.id"
@@ -369,6 +372,7 @@ async function handleStart() {
               </button>
               <button
                 type="button"
+                :aria-pressed="selectedPresetId === 'custom'"
                 class="preset-card custom-card"
                 :class="{ active: selectedPresetId === 'custom' }"
                 @click="selectedPresetId = 'custom'"
@@ -402,6 +406,7 @@ async function handleStart() {
               <input
                 v-model.number="denoisingStrength"
                 type="range"
+                aria-label="重绘去噪幅度"
                 min="0.50"
                 max="0.98"
                 step="0.02"
@@ -418,6 +423,7 @@ async function handleStart() {
               <input
                 v-model.number="growMaskBy"
                 type="range"
+                aria-label="遮罩边缘羽化外扩"
                 min="0"
                 max="24"
                 step="2"

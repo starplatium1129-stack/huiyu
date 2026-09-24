@@ -10,8 +10,15 @@
             v-model="query"
             type="search"
             class="gs-input"
+            role="combobox"
             placeholder="搜索场景、作品、页面…"
             aria-label="搜索场景、作品或页面"
+            aria-haspopup="listbox"
+            :aria-expanded="open"
+            :aria-controls="listboxId"
+            aria-autocomplete="list"
+            :aria-activedescendant="activeResultId"
+            :aria-describedby="searchAnnouncementId"
             @keydown="onInputKeydown"
           />
           <StudioTooltip content="关闭搜索（Esc）">
@@ -21,13 +28,15 @@
 
         <p v-if="worksError" class="gs-empty" role="alert">{{ worksError }}</p>
         <p v-else-if="worksLoading" class="gs-empty" role="status">正在读取作品…</p>
-        <div ref="resultsEl" class="gs-results" role="listbox" aria-label="搜索结果">
+        <div :id="listboxId" ref="resultsEl" class="gs-results" role="listbox" aria-label="搜索结果">
           <template v-if="!query.trim()">
             <section v-if="filteredActions.length" class="gs-group">
               <h4 class="gs-group-title">快捷操作</h4>
               <button v-for="(item, i) in filteredActions" :key="'a' + item.id" type="button"
                 class="gs-row" :class="{ active: activeIndex === i }" role="option"
+                :id="resultId('action', item.id)"
                 :aria-selected="activeIndex === i"
+                tabindex="-1"
                 @pointermove="activeIndex = i" @click="run(i)">
                 <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
                 <small>{{ item.hint }}</small>
@@ -37,7 +46,9 @@
               <h4 class="gs-group-title">页面</h4>
               <button v-for="(item, i) in filteredPages" :key="'p' + item.id" type="button"
                 class="gs-row" :class="{ active: activeIndex === filteredActions.length + i }" role="option"
+                :id="resultId('page', item.id)"
                 :aria-selected="activeIndex === filteredActions.length + i"
+                tabindex="-1"
                 @pointermove="activeIndex = filteredActions.length + i" @click="run(filteredActions.length + i)">
                 <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
                 <small>{{ item.path }}</small>
@@ -50,7 +61,9 @@
               <h4 class="gs-group-title">页面</h4>
               <button v-for="(item, i) in filteredPages" :key="'p' + item.id" type="button"
                 class="gs-row" :class="{ active: activeIndex === i }" role="option"
+                :id="resultId('page', item.id)"
                 :aria-selected="activeIndex === i"
+                tabindex="-1"
                 @pointermove="activeIndex = i" @click="run(i)">
                 <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
                 <small>{{ item.path }}</small>
@@ -60,7 +73,9 @@
               <h4 class="gs-group-title">灵感场景 · {{ filteredScenes.length }}</h4>
               <button v-for="(item, i) in filteredScenes" :key="'s' + item.id" type="button"
                 class="gs-row" :class="{ active: activeIndex === filteredPages.length + i }" role="option"
+                :id="resultId('scene', item.id)"
                 :aria-selected="activeIndex === filteredPages.length + i"
+                tabindex="-1"
                 @pointermove="activeIndex = filteredPages.length + i" @click="run(filteredPages.length + i)">
                 <ArchiveIcon name="scene" /><span>{{ item.title }}</span>
                 <small>{{ item.meta }}</small>
@@ -70,7 +85,9 @@
               <h4 class="gs-group-title">作品 · {{ filteredWorks.length }}</h4>
               <button v-for="(item, i) in filteredWorks" :key="'w' + item.id" type="button"
                 class="gs-row" :class="{ active: activeIndex === filteredPages.length + filteredScenes.length + i }" role="option"
+                :id="resultId('work', item.id)"
                 :aria-selected="activeIndex === filteredPages.length + filteredScenes.length + i"
+                tabindex="-1"
                 @pointermove="activeIndex = filteredPages.length + filteredScenes.length + i" @click="run(filteredPages.length + filteredScenes.length + i)">
                 <ArchiveIcon name="gallery" /><span>{{ item.title }}</span>
                 <small>{{ item.meta }}</small>
@@ -81,6 +98,7 @@
             </p>
           </template>
         </div>
+        <p :id="searchAnnouncementId" class="gs-sr-status" role="status" aria-live="polite" aria-atomic="true">{{ resultsAnnouncement }}</p>
         <div class="gs-footer" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
       </div>
     </div>
@@ -89,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, useId, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -120,6 +138,13 @@ interface SearchItem {
 interface PageItem extends SearchItem { path: string }
 interface SceneItem { path: string; id: string; title: string; meta: string; keywords: string }
 interface WorkItem { path: string; id: string | number; title: string; meta: string; keywords: string }
+type SearchResultKind = 'action' | 'page' | 'scene' | 'work'
+interface FlatSearchResult {
+  kind: SearchResultKind
+  id: string | number
+  path: string
+  label: string
+}
 
 const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 
@@ -138,6 +163,10 @@ const worksError = ref('')
 const worksLoading = ref(false)
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
+
+const searchInstanceId = useId()
+const listboxId = `global-search-listbox-${searchInstanceId}`
+const searchAnnouncementId = `global-search-announcement-${searchInstanceId}`
 
 const PAGES: PageItem[] = [
   { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绘遇' },
@@ -179,10 +208,40 @@ const filteredScenes = computed(() => scenes.value.filter(s => match(s.keywords)
 const filteredWorks = computed(() => works.value.filter(w => match(w.keywords)).slice(0, 5))
 
 /** 展平结果行：空查询 = 操作 + 页面；有查询 = 页面 + 场景 + 作品 */
-const flat = computed<(SearchItem | SceneItem | WorkItem)[]>(() => {
-  if (!query.value.trim()) return [...filteredActions.value, ...filteredPages.value]
-  return [...filteredPages.value, ...filteredScenes.value, ...filteredWorks.value]
+const flat = computed<FlatSearchResult[]>(() => {
+  const actions: FlatSearchResult[] = filteredActions.value.map(item => ({
+    kind: 'action', id: item.id, path: item.path, label: item.label,
+  }))
+  const pages: FlatSearchResult[] = filteredPages.value.map(item => ({
+    kind: 'page', id: item.id, path: item.path, label: item.label,
+  }))
+  const scenes: FlatSearchResult[] = filteredScenes.value.map(item => ({
+    kind: 'scene', id: item.id, path: item.path, label: item.title,
+  }))
+  const works: FlatSearchResult[] = filteredWorks.value.map(item => ({
+    kind: 'work', id: item.id, path: item.path, label: item.title,
+  }))
+  if (!query.value.trim()) return [...actions, ...pages]
+  return [...pages, ...scenes, ...works]
 })
+
+const activeResult = computed(() => flat.value[activeIndex.value])
+const activeResultId = computed(() => {
+  const result = activeResult.value
+  return open.value && result ? resultId(result.kind, result.id) : undefined
+})
+const resultsAnnouncement = computed(() => {
+  const total = flat.value.length
+  if (!total) return query.value.trim() ? '没有匹配的结果' : '暂无可用结果'
+  const result = activeResult.value
+  return result
+    ? `找到 ${total} 个结果，当前第 ${activeIndex.value + 1} 项：${result.label}`
+    : `找到 ${total} 个结果`
+})
+
+function resultId(kind: SearchResultKind, id: string | number) {
+  return `${listboxId}-${kind}-${encodeURIComponent(String(id))}`
+}
 
 function run(index: number) {
   const item = flat.value[index]
@@ -194,7 +253,8 @@ function run(index: number) {
 function move(step: number) {
   const total = flat.value.length
   if (!total) return
-  activeIndex.value = (activeIndex.value + step + total) % total
+  const current = activeIndex.value >= total || activeIndex.value < 0 ? -1 : activeIndex.value
+  activeIndex.value = (current + step + total) % total
   void nextTick(() => {
     const activeRow = resultsEl.value?.querySelector('.gs-row.active') as HTMLElement | null
     activeRow?.scrollIntoView({ block: 'nearest' })
@@ -377,6 +437,7 @@ onUnmounted(() => {
 .gs-row.active { background: var(--accent-soft); color: var(--text-primary); }
 .gs-row.active small { color: var(--text-secondary); }
 .gs-footer { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border-soft); color: var(--text-muted); background: var(--bg-surface); font-size: var(--fs-label-sm); }
+.gs-sr-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 @media (max-width: 600px) { .global-search { padding-top: var(--s-5); } .gs-input { font-size: var(--fs-body); } .gs-results { max-height: 60dvh; } }
 .gs-empty { padding: var(--s-6) var(--s-4); color: var(--text-muted); text-align: center; font-size: var(--fs-body-sm); }
 @media (prefers-reduced-motion: reduce) { .gs-panel { animation: none; } }

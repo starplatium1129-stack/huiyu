@@ -1623,7 +1623,10 @@ body:has(.pb) .route-atmosphere .route-index {
   transition: none !important;
 }
 
-@media (max-width: 768px) {
+/* The full desktop navigation stops fitting before the phone breakpoint. Keep
+   769–900px on the compact menu instead of allowing two-line Chinese labels
+   to inflate the sticky header to roughly twice its intended height. */
+@media (max-width: 900px) {
   .nav-inner { position: relative; }
   .nav-menu-toggle { display: inline-flex; }
   .nav-links {
@@ -1647,6 +1650,9 @@ body:has(.pb) .route-atmosphere .route-index {
   .local-status { grid-column:1 / -1; }
   .local-status-trigger { width:100%; justify-content:flex-start; min-height:42px; border-radius:var(--r-md); background:var(--bg-deep); }
   .local-status-panel { position:static; width:auto; margin-top:var(--s-2); }
+}
+
+@media (max-width: 768px) {
   .page-header h1 { font-size: var(--fs-title); }
   .container { padding: 0 var(--s-4); }
   .card-info, .card-create { -webkit-backdrop-filter:none; backdrop-filter:none; }

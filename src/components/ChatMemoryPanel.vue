@@ -15,7 +15,7 @@
         <div>
           <span>{{ drafts[item.id]?.length || 0 }} / 240</span>
           <button type="button" class="btn btn-ghost" @click="save(item.id)">保存</button>
-          <button type="button" class="btn btn-ghost" @click="$emit('delete', item.id)">删除</button>
+          <button type="button" class="btn btn-ghost" @click="requestDelete(item.id)">删除</button>
         </div>
       </article>
     </div>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
+import { confirmAction } from '@/composables/useConfirm'
 import type { ChatMemoryItem } from '@/utils/chatMemory'
 
 const props = defineProps<{
@@ -47,6 +48,18 @@ watch(() => props.items, items => {
 function save(id: string) {
   const text = String(drafts[id] || '').trim()
   if (text) emit('update', id, text)
+}
+
+async function requestDelete(id: string) {
+  const fact = props.items.find(item => item.id === id)
+  if (!fact) return
+  const confirmed = await confirmAction({
+    title: '删除这条长期记忆？',
+    message: fact.text,
+    confirmLabel: '删除记忆',
+    danger: true,
+  })
+  if (confirmed) emit('delete', id)
 }
 </script>
 

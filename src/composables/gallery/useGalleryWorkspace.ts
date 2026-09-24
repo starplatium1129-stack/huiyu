@@ -49,6 +49,10 @@ export function useGalleryWorkspace() {
     const viewerIndex = ref(-1);
     const viewerItemId = ref<string | number | null>(null);
     const infoOpen = ref(false);
+    const narrowViewerMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+        ? window.matchMedia('(max-width: 900px)') : null;
+    const narrowViewer = ref(narrowViewerMedia?.matches ?? false);
+    const infoDrawerHidden = computed(() => narrowViewer.value && !infoOpen.value);
     const compareMode = ref(false);
     const viewerUrl = ref('');
     const cardUrls = reactive<Record<string, string>>({});
@@ -102,6 +106,7 @@ export function useGalleryWorkspace() {
     /** 恢复一条软删作品：放回展墙后刷新回收站与主墙。 */
     const closeBtn = ref<HTMLElement | null>(null);
     const viewerEl = ref<HTMLElement | null>(null);
+    const infoEl = ref<HTMLElement | null>(null), infoToggleBtn = ref<HTMLButtonElement | null>(null), infoCloseBtn = ref<HTMLButtonElement | null>(null);
     const shellEl = ref<HTMLElement | null>(null);
     const objectUrls = new Set<string>();
     /** 查看器当前显示的 blob URL，翻页时要主动释放 */
@@ -495,11 +500,17 @@ export function useGalleryWorkspace() {
         clearTimeout(releaseViewerTimer);
         releaseViewerTimer = setTimeout(() => { if (viewerIndex.value < 0) { releaseViewerUrl(); viewerUrl.value = ''; } }, 260);
     }
-    // 焦点存取、Tab 陷阱、Escape、滚动锁统一由 useFocusTrap 负责。
-    // 这里原本是全项目唯一做对的那份实现，已抽成 composable 给其余弹层复用。
+    function toggleInfoDrawer() { if (!narrowViewer.value) return; if (!infoOpen.value) infoToggleBtn.value?.focus({ preventScroll: true }); infoOpen.value = !infoOpen.value; }
+    function closeInfoDrawer() { infoOpen.value = false; }
+    function syncNarrowViewer() { const nextNarrow = narrowViewerMedia?.matches ?? false; narrowViewer.value = nextNarrow; if (!nextNarrow && infoOpen.value) { closeInfoDrawer(); void nextTick(() => closeBtn.value?.focus({ preventScroll: true })); } }
+    // 父查看器与窄屏信息抽屉叠成两层陷阱：抽屉打开时 Escape 只交给顶层抽屉，
+    // 关闭后由子陷阱把焦点还给 .viewer-info-toggle，再由父陷阱管理整个查看器。
     useFocusTrap(viewerEl, () => viewerIndex.value >= 0, {
         onEscape: closeViewer,
         initialFocus: closeBtn,
+    });
+    useFocusTrap(infoEl, () => narrowViewer.value && infoOpen.value, {
+        onEscape: closeInfoDrawer, initialFocus: infoCloseBtn, lockScroll: false,
     });
     function step(delta: number) {
         const activeIndex = artworkIndexById(visible.value, viewerItemId.value);
@@ -590,14 +601,14 @@ export function useGalleryWorkspace() {
         if (e.key === 'ArrowRight')
             return step(1);
         if (e.key.toLowerCase() === 'i') {
-            infoOpen.value = !infoOpen.value;
+            toggleInfoDrawer();
             return;
         }
     }
     /* ---------- 初始化 ---------- */
     function loadGalleryStorage(): Promise<void> { return loadGalleryStorageAction({ galleryLoading, galleryError, history, projects }) }
     onMounted(async () => {
-        unmounted = false;
+        unmounted = false; syncNarrowViewer(); narrowViewerMedia?.addEventListener('change', syncNarrowViewer);
         document.addEventListener('keydown', onKeydown);
         await loadGalleryStorage();
         compareFromRoute();
@@ -646,7 +657,7 @@ export function useGalleryWorkspace() {
         cardObserver = null;
         observedCards.clear();
         moreObserver?.disconnect();
-        moreObserver = null;
+        moreObserver = null; narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
         document.removeEventListener('keydown', onKeydown);
         revokeAll();
     });
@@ -719,10 +730,7 @@ export function useGalleryWorkspace() {
     function confirmDelete(item: ArtworkRecord): Promise<void> { return confirmDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage }, item); }
     function bulkDelete(): Promise<void> { return bulkDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage }); }
     return {
-closeBtn,
-viewerEl,
-sentinelEl,
-shellEl,
+closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
@@ -731,7 +739,7 @@ shellEl,
         masonryGroups, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
-        hasMoreToRender, pagedVisible, viewerIndex, infoOpen, closeViewer, step,
+        hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, step,
         compareMode, hasComparableImage, viewerUrl, parentImageUrl, current, characterName,
         facts, downloadCurrent, copiedPrompt, copyPrompt, showToast, releaseCardResources,
     };

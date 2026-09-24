@@ -61,4 +61,39 @@ describe('ZoomableImageViewer panning and zoom state', () => {
     const layer = wrapper.find('.zoom-transform-layer')
     expect(layer.exists()).toBe(true)
   })
+
+  it('keeps labelled zoom controls available and uses them for keyboard panning', async () => {
+    const wrapper = mount(ZoomableImageViewer, {
+      props: {
+        src: '/test-art.png',
+        alt: 'Test Artwork',
+      },
+    })
+
+    const container = wrapper.find('.zoomable-image-viewer')
+    const controls = wrapper.findAll('.zoom-control')
+    expect(container.attributes('tabindex')).toBe('0')
+    expect(controls).toHaveLength(3)
+    expect(controls.map(control => control.attributes('aria-label'))).toEqual([
+      '放大图片',
+      '缩小图片',
+      '还原图片缩放',
+    ])
+    expect(controls.every(control => control.find('svg.archive-icon').exists())).toBe(true)
+
+    await controls[0].trigger('click')
+    expect(wrapper.find('.zoom-level').text()).toBe('125%')
+    expect(wrapper.find('.zoom-transform-layer').attributes('style')).toContain('scale(1.25)')
+
+    await controls[1].trigger('click')
+    expect(wrapper.find('.zoom-level').text()).toBe('100%')
+
+    await controls[0].trigger('click')
+    await container.trigger('keydown', { key: 'ArrowRight' })
+    expect(wrapper.find('.zoom-transform-layer').attributes('style')).toContain('translate(32px, 0px) scale(1.25)')
+
+    await container.trigger('keydown', { key: 'Home' })
+    expect(wrapper.find('.zoom-level').text()).toBe('100%')
+    expect(wrapper.find('.zoom-transform-layer').attributes('style')).toContain('translate(0px, 0px) scale(1)')
+  })
 })

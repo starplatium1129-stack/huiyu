@@ -8,6 +8,8 @@ for (const theme of ['light', 'dark']) {
     await page.goto('/control')
     const share = page.getByRole('switch', { name: '开启公网分享通道' })
     await expect(share).toBeVisible()
+    const shareBox = await share.boundingBox()
+    expect(shareBox && shareBox.width >= 44 && shareBox.height >= 44).toBe(true)
     const initial = await share.isChecked()
     await share.focus()
     await share.press('Space')

@@ -370,7 +370,7 @@
           </div>
 
           <p v-if="serverShot(index)?.error" class="shot-error">{{ serverShot(index)?.error }}</p>
-          <StudioMediaPlayer v-if="serverShot(index)?.resultUrl" class="shot-result" kind="video" :src="serverShot(index)?.resultUrl ?? ''" label="本镜生成结果" />
+          <StudioMediaPlayer v-if="serverShot(index)?.resultUrl" class="shot-result" kind="video" :src="serverShot(index)?.resultUrl ?? ''" label="本镜生成结果" :transcript="(shot.dialogue || '').trim()" />
           <div v-if="serverShot(index)?.status === 'failed'" class="shot-retry">
             <button class="btn btn-primary" type="button" :disabled="retrying || cancelling || concating || submitting" @click="retryShotAt(index)">{{ retrying ? '正在重试…' : '重抽本镜（同 Seed）' }}</button>
           </div>
@@ -479,7 +479,7 @@
             <strong>整片预览</strong>
             <a class="btn btn-ghost" :href="batch.concatUrl" download>下载整片 MP4</a>
           </div>
-          <StudioMediaPlayer class="shot-concat-player" kind="video" :src="batch.concatUrl" label="整片预览" />
+          <StudioMediaPlayer class="shot-concat-player" kind="video" :src="batch.concatUrl" label="整片预览" :transcript="concatTranscript" />
         </template>
       </section>
     </template>
@@ -523,6 +523,11 @@ scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
 cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
 submitBatch, submitting, retrying, batchError, batchStatusLabel, progressPercent,
 } = useShotWorkspace(props)
+
+const concatTranscript = computed(() => (batch.value?.shots ?? [])
+  .map(shot => (shot.dialogue || '').trim())
+  .filter(Boolean)
+  .join('\n'))
 
 // —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
 const cardCharacterGroups = computed<StudioSelectGroup[]>(() => [

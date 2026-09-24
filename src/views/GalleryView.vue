@@ -263,7 +263,7 @@
           aria-label="作品观赏模式"
           ref="viewerEl"
         >
-      <section class="viewer-stage" @click.self="infoOpen = false">
+      <section class="viewer-stage" @click.self="closeInfoDrawer">
         <button class="viewer-close viewer-close-on-art" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn">×</button>
         <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)">‹</button>
         <template v-if="compareMode && hasComparableImage && viewerUrl">
@@ -293,13 +293,26 @@
             <ArchiveIcon name="spark" /> 对比
           </button>
         </StudioTooltip>
-        <button class="viewer-info-toggle" type="button" aria-label="作品信息" :aria-expanded="infoOpen" @click="infoOpen = !infoOpen">i</button>
+        <button ref="infoToggleBtn" class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="viewer-info" :aria-expanded="infoOpen" @click="toggleInfoDrawer">i</button>
         <div class="viewer-position">{{ viewerIndex + 1 }} / {{ visible.length }}</div>
       </section>
 
-      <aside class="viewer-info" v-if="displayedCurrent">
-        <div class="viewer-kicker">Artwork {{ (viewerIndex >= 0 ? viewerIndex : displayedIndex) + 1 }}</div>
-        <h2 class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
+      <aside
+        id="viewer-info"
+        ref="infoEl"
+        class="viewer-info"
+        v-if="displayedCurrent"
+        :inert="infoDrawerHidden"
+        :aria-hidden="infoDrawerHidden ? 'true' : undefined"
+        aria-labelledby="viewer-info-title"
+      >
+        <header class="viewer-info-header">
+          <div class="viewer-kicker">Artwork {{ (viewerIndex >= 0 ? viewerIndex : displayedIndex) + 1 }}</div>
+          <button ref="infoCloseBtn" class="viewer-info-close" type="button" @click="closeInfoDrawer">
+            <ArchiveIcon name="close" /><span>关闭信息</span>
+          </button>
+        </header>
+        <h2 id="viewer-info-title" class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
         <div class="viewer-meta">
           {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }} · v{{ displayedCurrent.version || 1 }}
         </div>
@@ -368,7 +381,7 @@ import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 const {
-closeBtn,viewerEl,sentinelEl,shellEl,countLabel,
+closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
 searchQuery,
 favoriteOnly,
 favoriteCount,
@@ -420,6 +433,9 @@ hasMoreToRender,
 pagedVisible,
 viewerIndex,
 infoOpen,
+infoDrawerHidden,
+toggleInfoDrawer,
+closeInfoDrawer,
 closeViewer,
 step,
 compareMode,
@@ -484,10 +500,15 @@ watch(current, value => {
 /* 审计修复: .24 远低于 UI 组件 3:1 门槛 */
 .viewer-nav:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor:default; }
 .viewer-position { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); color:var(--on-art-secondary); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
-.viewer-info { min-width:0; overflow-y:auto; padding:56px var(--s-5) var(--s-6); border-left:1px solid var(--on-art-line); background:var(--art-scrim); }
-.viewer-title { margin:var(--s-3) 0 var(--s-1); color:var(--on-art-primary); font-size:var(--fs-title); line-height:var(--lh-tight); }
+.viewer-info { box-sizing:border-box; min-width:0; overflow-y:auto; padding:56px var(--s-5) var(--s-6); border-left:1px solid var(--on-art-line); background:var(--art-scrim); }
+.viewer-info-header { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); }
+.viewer-info-close { display:none; align-items:center; gap:6px; min-height:40px; padding:0 12px; border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:background var(--motion-hover),border-color var(--motion-hover); }
+.viewer-info-close:hover { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
+.viewer-info-close:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
+.viewer-info-close .archive-icon { width:16px; height:16px; }
+.viewer-title { margin:var(--s-3) 0 var(--s-1); color:var(--on-art-primary); font-size:var(--fs-title); line-height:var(--lh-tight); overflow-wrap:anywhere; }
 .art-viewer .viewer-kicker { color:var(--on-art-secondary); }
-.viewer-meta { color:var(--on-art-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
+.viewer-meta { color:var(--on-art-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); overflow-wrap:anywhere; }
 .viewer-facts { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); margin-bottom:var(--s-5); }
 .viewer-fact { min-width:0; padding:var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-md); background:var(--on-art-fill); }
 .viewer-fact small,.viewer-fact strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -501,12 +522,18 @@ watch(current, value => {
 @media (max-width:900px) {
   .art-viewer { grid-template-columns:1fr; }
   .viewer-stage { padding:60px 42px 78px; }
-  .viewer-info { position:absolute; inset:0 0 0 auto; width:min(86vw,360px); transform:translateX(100%); transition:transform var(--motion-surface) var(--ease-drawer); z-index:var(--z-raised); }
-  .art-viewer.info-open .viewer-info { transform:none; }
+  .viewer-info { position:absolute; inset:0 0 0 auto; width:min(92vw,360px); max-width:100%; visibility:hidden; pointer-events:none; transform:translateX(100%); background:var(--bg-deep); background-image:linear-gradient(var(--art-scrim),var(--art-scrim)); transition:transform var(--motion-surface) var(--ease-drawer),visibility 0s linear var(--motion-surface); z-index:var(--z-raised); }
+  .art-viewer.info-open .viewer-info { visibility:visible; pointer-events:auto; transform:none; transition-delay:0s; }
   .viewer-info-toggle { display:grid; }
+  .viewer-info-close { display:inline-flex; flex:0 0 auto; }
+  .viewer-info .viewer-actions { display:flex; flex-wrap:wrap; }
+  .viewer-info .viewer-actions > * { flex:1 1 10rem; min-width:0; }
 }
 @media (max-width:600px) {
   .viewer-stage { padding:58px 38px 76px; }
+  .viewer-info { width:min(100%,360px); padding:var(--s-4) var(--s-3) var(--s-5); }
+  .viewer-info-header { align-items:stretch; flex-direction:column; }
+  .viewer-info-close { align-self:flex-start; }
   .viewer-nav { width:36px; height:56px; }
   .viewer-prev { left:var(--s-2); }
   .viewer-next { right:var(--s-2); }

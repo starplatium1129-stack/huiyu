@@ -74,6 +74,53 @@ for (const theme of ['light', 'dark']) {
     await expect(cards).toHaveCount(5)
   })
 
+  test(`gallery narrow info drawer focus lifecycle ${theme}`, async ({ page }, testInfo) => {
+    await seedGallery(page, theme)
+    await page.setViewportSize({ width: 390, height: 960 })
+    await page.addStyleTag({ content: 'html { font-size: 200% !important; }' })
+
+    const opener = page.locator('.gallery-wall .artwork-button').first()
+    await opener.click()
+    const viewer = page.getByRole('dialog', { name: '作品观赏模式' })
+    const toggle = viewer.locator('.viewer-info-toggle')
+    const info = viewer.locator('.viewer-info')
+    const infoClose = info.getByRole('button', { name: '关闭信息' })
+
+    await expect(viewer).toBeVisible()
+    await expect(info).toBeHidden()
+    await expect(info).toHaveAttribute('inert', '')
+    await expect(info).toHaveAttribute('aria-hidden', 'true')
+    await expect(viewer.locator('.zoom-hint')).toBeHidden()
+    await page.screenshot({ path: testInfo.outputPath(`gallery-viewer-${theme}-200.png`) })
+
+    await toggle.click()
+    await expect(info).toBeVisible()
+    await expect(info).not.toHaveAttribute('inert', '')
+    await expect(info).not.toHaveAttribute('aria-hidden', 'true')
+    await expect(infoClose).toBeVisible()
+    await expect(infoClose).toBeFocused()
+    expect(await info.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true)
+    await page.screenshot({ path: testInfo.outputPath(`gallery-info-${theme}-200.png`) })
+
+    await page.keyboard.press('Escape')
+    await expect(viewer).toBeVisible()
+    await expect(info).toBeHidden()
+    await expect(toggle).toBeFocused()
+
+    await toggle.click()
+    await expect(infoClose).toBeFocused()
+    await page.keyboard.press('ArrowRight')
+    await expect(viewer.locator('.viewer-position')).toHaveText('2 / 6')
+    await expect(info).toBeHidden()
+    await expect(toggle).toBeFocused()
+
+    await toggle.click()
+    await expect(infoClose).toBeFocused()
+    await viewer.locator('.viewer-close').evaluate((button: HTMLButtonElement) => button.click())
+    await expect(viewer).toBeHidden()
+    await expect(opener).toBeFocused()
+  })
+
   test(`gallery responsive layout ${theme}`, async ({ page }, testInfo) => {
     await seedGallery(page, theme)
     for (const width of [1280, 820, 390]) {

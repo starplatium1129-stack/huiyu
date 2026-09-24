@@ -47,7 +47,7 @@ for (const theme of ['dark', 'light']) {
     const opener = page.getByRole('button', { name: '搜索页面、场景与作品', exact: true })
     await opener.click()
     const search = page.getByRole('dialog', { name: '全局搜索' })
-    const input = search.getByRole('searchbox')
+    const input = search.getByRole('combobox')
     await input.fill('绘制')
     await input.dispatchEvent('keydown', { key: 'Enter', isComposing: true })
     await expect(search).toBeVisible()

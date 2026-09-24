@@ -17,7 +17,11 @@ const props = withDefaults(defineProps<{
   /** 可访问名称，例如「生成的视频成片」「AI 声线试听」 */
   label: string
   poster?: string
-}>(), { kind: 'video', poster: '' })
+  /** 可选字幕轨；生成结果存在字幕文件时传入。 */
+  captionsSrc?: string
+  /** 音频或视频的文字稿，供听障用户读取。 */
+  transcript?: string
+}>(), { kind: 'video', poster: '', captionsSrc: '', transcript: '' })
 
 const media = ref<HTMLMediaElement | null>(null)
 const playing = ref(false)
@@ -119,7 +123,9 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       @ended="onEnded"
       @volumechange="muted = ($event.target as HTMLMediaElement).muted"
       @error="failed = true"
-    ></video>
+    >
+      <track v-if="captionsSrc" kind="captions" :src="captionsSrc" srclang="zh-CN" label="中文字幕" default />
+    </video>
     <audio
       v-else
       ref="media"
@@ -166,6 +172,11 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
         <ArchiveIcon :name="fullscreen ? 'compress' : 'expand'" />
       </button>
     </div>
+
+    <details v-if="transcript" class="studio-media-transcript">
+      <summary>查看文字稿</summary>
+      <p>{{ transcript }}</p>
+    </details>
 
     <p v-if="failed" class="studio-media-error" role="status">这段媒体无法播放。可以重新生成，或用下方按钮下载后查看。</p>
   </figure>
@@ -281,6 +292,17 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
   cursor: grab;
 }
 .studio-media-seek:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+
+.studio-media-transcript {
+  padding: var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: var(--fs-body-sm);
+}
+.studio-media-transcript summary { min-height: 32px; color: var(--text-primary); cursor: pointer; }
+.studio-media-transcript p { margin: var(--s-2) 0 0; line-height: var(--lh-body); white-space: pre-wrap; }
 
 .studio-media-error {
   margin: 0;

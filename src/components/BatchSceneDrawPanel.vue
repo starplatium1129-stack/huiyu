@@ -22,19 +22,23 @@
             <div class="batch-field">
               <span class="field-label">模式</span>
               <div class="batch-seg" role="group" aria-label="选择批量模式">
-                <button type="button" :class="{ active: batchMode === 'scene' }" @click="batchMode = 'scene'">按场景蓝图</button>
-                <button type="button" :class="{ active: batchMode === 'character' }" @click="batchMode = 'character'">按多角色漫游</button>
+                <button type="button" :aria-pressed="batchMode === 'scene'"
+                  :class="{ active: batchMode === 'scene' }" @click="batchMode = 'scene'">按场景蓝图</button>
+                <button type="button" :aria-pressed="batchMode === 'character'"
+                  :class="{ active: batchMode === 'character' }" @click="batchMode = 'character'">按多角色漫游</button>
               </div>
             </div>
             <div class="batch-field">
               <span class="field-label">引擎</span>
               <div class="batch-seg" role="group" aria-label="选择批量出图引擎">
                 <StudioTooltip anchor :content="!sdAvailable ? 'SD WebUI 当前离线' : undefined">
-                  <button type="button" :class="{ active: batchEngine === 'sd' }" :disabled="!sdAvailable"
+                  <button type="button" :aria-pressed="batchEngine === 'sd'"
+                    :class="{ active: batchEngine === 'sd' }" :disabled="!sdAvailable"
                     @click="batchEngine = 'sd'">SD</button>
                 </StudioTooltip>
                 <StudioTooltip anchor :content="!animaAvailable ? 'ComfyUI 当前离线' : undefined">
-                  <button type="button" :class="{ active: batchEngine === 'anima' }" :disabled="!animaAvailable"
+                  <button type="button" :aria-pressed="batchEngine === 'anima'"
+                    :class="{ active: batchEngine === 'anima' }" :disabled="!animaAvailable"
                     @click="batchEngine = 'anima'">{{ props.deps.animaState.value.family === 'krea2' ? 'Krea 2' : 'Anima' }}</button>
                 </StudioTooltip>
               </div>
@@ -42,8 +46,10 @@
             <div class="batch-field">
               <span class="field-label">每项张数</span>
               <div class="batch-seg" role="group" aria-label="每项出几张">
-                <button type="button" :class="{ active: count === 1 }" @click="count = 1">1 张</button>
-                <button type="button" :class="{ active: count === 3 }" @click="count = 3">3 张候选</button>
+                <button type="button" :aria-pressed="count === 1"
+                  :class="{ active: count === 1 }" @click="count = 1">1 张</button>
+                <button type="button" :aria-pressed="count === 3"
+                  :class="{ active: count === 3 }" @click="count = 3">3 张候选</button>
               </div>
             </div>
           </div>

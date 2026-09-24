@@ -108,7 +108,7 @@
       <!-- 标签库 -->
       <template v-if="tab==='tags'">
         <div class="toolbar">
-          <input v-model="tagSearch" class="search-input" type="search" placeholder="搜索标签（英文/中文/分类）…" />
+          <input v-model="tagSearch" class="search-input" type="search" aria-label="搜索标签（英文、中文或分类）" placeholder="搜索标签（英文/中文/分类）…" />
           <StudioSelect v-model="tagCatFilter" class="filter-select" label="标签分类" :options="[{ value: '', label: '全部分类' }, ...tagCats.map(c => ({ value: c, label: c }))]" />
           <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="startAddTag">＋ 新增标签</button>
           <span class="list-meta">{{ filteredTags.length }} / {{ tags.length }} 个</span>
@@ -176,7 +176,7 @@
           </div>
         </section>
         <div class="toolbar">
-          <input v-model="imageSearch" class="search-input" type="search" placeholder="搜索场景/蓝图 ID、标题、角色…" />
+          <input v-model="imageSearch" class="search-input" type="search" aria-label="搜索场景、蓝图、角色或标题" placeholder="搜索场景/蓝图 ID、标题、角色…" />
           <StudioSelect v-model="imageTypeFilter" class="filter-select" label="样张类型" :options="[
             { value: 'all', label: '全部样张 (' + allShowcaseItems.length + ')' },
             { value: 'scene', label: '经典主线场景 (' + scenes.length + ')' },

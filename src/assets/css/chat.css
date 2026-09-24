@@ -1409,23 +1409,20 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .msg-voice-btn,
 .chat-page .msg-memory-btn {
+  min-height: 26px;
   padding: 2px 9px;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-pill);
   background: transparent;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: pointer;
   font-size: var(--fs-mono-sm);
-  opacity: .35;
-  transition: opacity var(--motion-control) ease, color var(--motion-control) ease, border-color var(--motion-control) ease;
+  transition: color var(--motion-control) ease, border-color var(--motion-control) ease;
 }
 
-.chat-page .message:hover .msg-voice-btn,
-.chat-page .message:hover .msg-memory-btn,
-.chat-page .msg-voice-btn:focus-visible,
-.chat-page .msg-memory-btn:focus-visible,
-.chat-page .msg-voice-btn.playing {
-  opacity: 1;
+@media (pointer: coarse) {
+  .chat-page .msg-voice-btn,
+  .chat-page .msg-memory-btn { min-height: 44px; padding-inline: 12px; }
 }
 
 .chat-page .msg-voice-btn:hover,
@@ -1440,8 +1437,8 @@ body:has(.chat-page) .sakura-fall {
   border-color: color-mix(in srgb, var(--archive-cyan) 45%, var(--border-soft));
   color: var(--archive-cyan);
   background: var(--archive-blue-soft);
-  opacity: .85;
 }
+.chat-page .msg-memory-btn.remembered:disabled { color: var(--text-disabled); background: var(--bg-surface); }
 
 /*   ============================================================
    消息内音频均衡器：播放律动声波

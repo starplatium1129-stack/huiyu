@@ -42,6 +42,21 @@ describe('StudioMediaPlayer', () => {
     expect(wrapper.find('.studio-media-error').exists()).toBe(false)
   })
 
+  it('exposes optional captions and a readable transcript', () => {
+    const wrapper = mount(StudioMediaPlayer, {
+      props: {
+        src: '/media/clip.mp4',
+        label: '生成的视频成片',
+        captionsSrc: '/media/clip.zh.vtt',
+        transcript: '角色说出这一句台词。',
+      },
+    })
+    const track = wrapper.find('track[kind="captions"]')
+    expect(track.attributes('src')).toBe('/media/clip.zh.vtt')
+    expect(track.attributes('srclang')).toBe('zh-CN')
+    expect(wrapper.get('.studio-media-transcript').text()).toContain('角色说出这一句台词。')
+  })
+
   it('reports an unplayable source instead of leaving a broken native frame', async () => {
     const wrapper = mount(StudioMediaPlayer, { props: { src: '/media/broken.mp4', label: '镜头一' } })
     await wrapper.find('video').trigger('error')

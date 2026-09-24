@@ -51,6 +51,15 @@ beforeEach(() => {
 })
 afterEach(() => vi.restoreAllMocks())
 
+describe('VoiceStudio 可访问名称', () => {
+  it('为字幕与日文配音稿提供稳定名称', async () => {
+    const wrapper = await openStudio()
+    expect(wrapper.find('.voice-caption-text').attributes('aria-label')).toBe('中文字幕')
+    expect(wrapper.find('.voice-script-details textarea').attributes('aria-label')).toBe('日文配音稿')
+    wrapper.unmount()
+  })
+})
+
 describe('VoiceStudio 异步操作生命周期', () => {
   it('生成时冻结声线、语言、情绪和速度，下载文件名沿用生成设置', async () => {
     const wrapper = await openStudio()
@@ -68,6 +77,7 @@ describe('VoiceStudio 异步操作生命周期', () => {
       referenceEmotion: 'neutral', consistency: 'locked', speed: 1,
     }, { signal: expect.any(AbortSignal) })
     expect(wrapper.find('a.voice-download').attributes('download')).toMatch(/^aics_voice_nene_zh_/)
+    expect(wrapper.get('.studio-media-transcript').text()).toContain('你好')
     wrapper.unmount()
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:voice-test')
   })

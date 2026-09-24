@@ -3,6 +3,10 @@
     ref="containerEl"
     class="zoomable-image-viewer"
     :class="{ 'is-zoomed': scale > 1.01, 'is-panning': isPanning }"
+    role="group"
+    tabindex="0"
+    :aria-label="viewerLabel"
+    @keydown="onKeydown"
     @wheel.prevent="handleWheel"
     @pointerdown="startPan"
     @pointermove="onPan"
@@ -40,16 +44,26 @@
       </div>
     </div>
 
-    <!-- 缩放控制浮标 (放大时浮现) -->
-    <div v-if="scale > 1.01" class="zoom-controls">
-      <span class="zoom-level">{{ Math.round(scale * 100) }}%</span>
+    <!-- 缩放控制始终可见，键盘和触摸用户不必先猜测手势。 -->
+    <div class="zoom-controls" role="group" aria-label="图片缩放控制" @pointerdown.stop @dblclick.stop>
+      <span class="zoom-level" aria-live="polite">{{ Math.round(scale * 100) }}%</span>
+      <StudioTooltip content="放大">
+        <button type="button" class="zoom-control" aria-label="放大图片" @pointerdown.stop @click.stop="zoomIn">
+          <ArchiveIcon name="expand" />
+        </button>
+      </StudioTooltip>
+      <StudioTooltip content="缩小">
+        <button type="button" class="zoom-control" aria-label="缩小图片" @pointerdown.stop @click.stop="zoomOut">
+          <ArchiveIcon name="compress" />
+        </button>
+      </StudioTooltip>
       <StudioTooltip content="还原 100%">
-        <button type="button" class="btn-reset-zoom" @click.stop="resetZoom">
-          还原
+        <button type="button" class="zoom-control btn-reset-zoom" aria-label="还原图片缩放" @pointerdown.stop @click.stop="resetZoom">
+          <ArchiveIcon name="refresh" />
         </button>
       </StudioTooltip>
     </div>
-    <div v-else class="zoom-hint">
+    <div v-if="scale <= 1.01" class="zoom-hint">
       双击或滚轮放大查看细节
     </div>
   </div>
@@ -57,6 +71,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const props = defineProps<{
@@ -83,6 +98,7 @@ const scale = ref(1)
 const translateX = ref(0)
 const translateY = ref(0)
 const isPanning = ref(false)
+const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片查看器')
 
 // 自定义属性载体：变换规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
 const zoomLayerStyle = computed(() => ({
@@ -92,6 +108,8 @@ let startX = 0
 let startY = 0
 let initialTranslateX = 0
 let initialTranslateY = 0
+const ZOOM_STEP = 0.25
+const KEYBOARD_PAN_STEP = 32
 
 function onImageLoad() {
   imageReady.value = true
@@ -118,30 +136,69 @@ function resetZoom() {
   isPanning.value = false
 }
 
+function setScale(nextScale: number) {
+  const boundedScale = Math.max(minScale, Math.min(maxScale, nextScale))
+  if (boundedScale <= 1.01) {
+    resetZoom()
+    return
+  }
+  scale.value = Number(boundedScale.toFixed(2))
+}
+
+function zoomIn() {
+  setScale(scale.value + ZOOM_STEP)
+}
+
+function zoomOut() {
+  setScale(scale.value - ZOOM_STEP)
+}
+
 function toggleZoom(event: MouseEvent) {
   if (scale.value > 1.05) {
     resetZoom()
-  } else {
-    scale.value = 2.2
-    // 聚焦到点击位置
-    if (containerEl.value) {
-      const rect = containerEl.value.getBoundingClientRect()
-      const offsetX = event.clientX - (rect.left + rect.width / 2)
-      const offsetY = event.clientY - (rect.top + rect.height / 2)
-      translateX.value = -offsetX * 1.2
-      translateY.value = -offsetY * 1.2
-    }
+    return
+  }
+  const targetScale = Math.max(minScale, Math.min(maxScale, 2.2))
+  if (targetScale <= 1.01) {
+    resetZoom()
+    return
+  }
+  scale.value = Number(targetScale.toFixed(2))
+  // 聚焦到点击位置
+  if (containerEl.value) {
+    const rect = containerEl.value.getBoundingClientRect()
+    const offsetX = event.clientX - (rect.left + rect.width / 2)
+    const offsetY = event.clientY - (rect.top + rect.height / 2)
+    translateX.value = -offsetX * 1.2
+    translateY.value = -offsetY * 1.2
   }
 }
 
 function handleWheel(event: WheelEvent) {
-  const delta = event.deltaY < 0 ? 0.25 : -0.25
-  const newScale = Math.max(minScale, Math.min(maxScale, scale.value + delta))
-  if (newScale <= 1.01) {
+  setScale(scale.value + (event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP))
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+  if (event.key === 'Home') {
+    event.preventDefault()
     resetZoom()
     return
   }
-  scale.value = Number(newScale.toFixed(2))
+  if (scale.value <= 1.01) return
+
+  let dx = 0
+  let dy = 0
+  if (event.key === 'ArrowLeft') dx = -KEYBOARD_PAN_STEP
+  else if (event.key === 'ArrowRight') dx = KEYBOARD_PAN_STEP
+  else if (event.key === 'ArrowUp') dy = -KEYBOARD_PAN_STEP
+  else if (event.key === 'ArrowDown') dy = KEYBOARD_PAN_STEP
+  else return
+
+  event.preventDefault()
+  isPanning.value = false
+  translateX.value += dx
+  translateY.value += dy
 }
 
 function startPan(event: PointerEvent) {
@@ -185,6 +242,11 @@ function stopPan(event: PointerEvent) {
   user-select: none;
   cursor: zoom-in;
   touch-action: none;
+}
+
+.zoomable-image-viewer:focus-visible {
+  outline: 2px solid var(--archive-blue);
+  outline-offset: -2px;
 }
 
 .zoomable-image-viewer.is-zoomed {
@@ -270,36 +332,59 @@ function stopPan(event: PointerEvent) {
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 12px;
+  gap: 6px;
+  padding: 4px;
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, black 75%, transparent);
-  border: 1px solid color-mix(in srgb, white 15%, transparent);
+  background: color-mix(in srgb, var(--bg-deep) 84%, transparent);
+  border: 1px solid var(--border-soft);
   backdrop-filter: blur(8px);
   z-index: var(--z-raised);
   font-size: var(--fs-label-sm);
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .zoom-level {
+  margin: 0 4px;
   font-family: var(--font-mono, monospace);
   font-weight: 600;
   color: var(--archive-blue);
 }
 
-.btn-reset-zoom {
-  border: 0;
-  background: color-mix(in srgb, white 15%, transparent);
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: var(--r-xs);
+.zoom-control {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--bg-elevated) 78%, transparent);
+  color: var(--text-primary);
   cursor: pointer;
-  font-size: var(--fs-mono-sm);
 }
 
-.btn-reset-zoom:hover {
-  background: var(--archive-blue);
-  color: #000;
+.zoom-control:hover {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.zoom-control:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.zoom-control :deep(.archive-icon) {
+  font-size: 16px;
+}
+
+@media (pointer: coarse) {
+  .zoom-control { width: 44px; height: 44px; }
+  .zoom-hint { display: none; }
+}
+
+@media (max-width: 600px) {
+  .zoom-hint { display: none; }
 }
 
 .zoom-hint {

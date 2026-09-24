@@ -229,6 +229,35 @@ for (const theme of ['dark', 'light']) {
   }
 }
 
+for (const theme of ['dark', 'light']) {
+  test(`companion redesign title uses the active theme ink · ${theme}`, async ({ page }) => {
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.goto('/companion')
+    const title = page.locator('.companion-redesign .companion-identity h1')
+    expect(await paintedTextContrast(title)).toBeGreaterThanOrEqual(4.5)
+  })
+}
+
+test('AI 工作区 dialog owns Escape and restores its trigger', async ({ page }) => {
+  await desktopFixture(page, 'light')
+  await page.setViewportSize({ width: 480, height: 720 })
+  await page.goto('/companion')
+  await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
+  await page.getByRole('button', { name: '设置', exact: true }).click()
+  const settings = page.locator('.companion-settings-popover')
+  const trigger = settings.getByRole('button', { name: /AI 工作区/ })
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
+  await trigger.dispatchEvent('click')
+  const dialog = page.getByRole('dialog', { name: /AI 工作区/ })
+  const input = dialog.getByRole('textbox', { name: 'AI 工作区目录路径' })
+  await expect(dialog).toBeVisible()
+  await expect(input).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(settings).toBeVisible()
+  await expect(trigger).toBeFocused()
+})
+
 test('companion chat keeps drafts across status updates and IME confirmation', async ({ page }) => {
   await desktopFixture(page, 'dark', true)
   await page.goto('/companion-chat')

@@ -21,7 +21,7 @@ for (const theme of ['dark', 'light']) {
     })
     const start = Date.now()
     await page.keyboard.press('Control+k')
-    const input = page.getByRole('searchbox', { name: '搜索场景、作品或页面' })
+    const input = page.getByRole('combobox', { name: '搜索场景、作品或页面' })
     await input.fill('oldest-neutral-sentinel')
     await expect(page.getByRole('option', { name: /oldest-neutral-sentinel/ })).toBeVisible()
     console.log(JSON.stringify({ theme, search10000Ms: Date.now() - start }))

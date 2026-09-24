@@ -1,5 +1,6 @@
 <template>
   <SwitchRoot class="toggle-switch"
+      :class="{ 'toggle-switch-icon-only': !hasSlotContent }"
       :model-value="modelValue"
       :disabled="disabled"
       :aria-label="label || undefined"
@@ -11,7 +12,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed, useSlots } from 'vue'
 import { SwitchRoot, SwitchThumb } from 'reka-ui'
+
+const slots = useSlots()
+const hasSlotContent = computed(() => Boolean(slots.default))
+
 withDefaults(defineProps<{
   modelValue: boolean
   disabled?: boolean
@@ -45,6 +51,11 @@ function onChange(value: boolean) {
   font: inherit;
   line-height: var(--lh-flush);
   flex-shrink: 0;
+}
+.toggle-switch-icon-only {
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
 }
 .toggle-slider {
   position: relative;

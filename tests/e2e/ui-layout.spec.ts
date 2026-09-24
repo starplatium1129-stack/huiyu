@@ -86,6 +86,21 @@ for (const theme of ['dark', 'light']) {
     await expect(page.locator('.toast-item')).toHaveCount(0)
   })
 
+  test(`message actions retain AA contrast without hover ${theme}`, async ({ page }) => {
+    await open(page, '/chat', theme, 800)
+    await page.evaluate(() => {
+      const host = document.createElement('div')
+      host.className = 'message user'
+      host.innerHTML = '<div class="message-body"><div class="message-bubble">Fixture</div><div class="message-meta"><button class="msg-memory-btn" type="button">Copy</button><button class="msg-memory-btn remembered" type="button" disabled>Remembered</button></div></div>'
+      document.querySelector('.conversation-card')?.append(host)
+    })
+    const action = page.locator('.message .msg-memory-btn:not(.remembered)').last()
+    await expect(action).toBeVisible()
+    expect(await contrast(action)).toBeGreaterThanOrEqual(4.5)
+    const remembered = page.locator('.message .msg-memory-btn.remembered').last()
+    expect(await contrast(remembered)).toBeGreaterThanOrEqual(4.5)
+  })
+
   test(`rating badges retain AA contrast ${theme}`, async ({ page }) => {
     await open(page, '/scene-explorer', theme, 1440)
     await expect(page.locator('.sc').first()).toBeVisible()
@@ -118,8 +133,17 @@ for (const theme of ['dark', 'light']) {
     const modal = page.getByRole('dialog', { name: '智能局部换装', exact: true })
     await expect(modal).toBeVisible()
     expect(await contrast(modal.locator('.dropzone-hint'))).toBeGreaterThanOrEqual(4.5)
-    await modal.locator('.mask-mode-switch button').first().click()
-    expect(await contrast(modal.locator('.mask-mode-switch button.active'))).toBeGreaterThanOrEqual(4.5)
+    const maskModes = modal.getByRole('group', { name: '遮罩模式', exact: true })
+    const paintMask = maskModes.getByRole('button', { name: '手绘精确遮罩' })
+    const autoMask = maskModes.getByRole('button', { name: '自动识别' })
+    await expect(autoMask).toHaveAttribute('aria-pressed', 'true')
+    await expect(paintMask).toHaveAttribute('aria-pressed', 'false')
+    await expect(modal.getByRole('group', { name: '目标服装形态' }).getByRole('button').first()).toBeVisible()
+    await expect(modal.getByRole('slider', { name: '重绘去噪幅度' })).toBeVisible()
+    await expect(modal.getByRole('slider', { name: '遮罩边缘羽化外扩' })).toBeVisible()
+    await paintMask.click()
+    await expect(paintMask).toHaveAttribute('aria-pressed', 'true')
+    expect(await contrast(paintMask)).toBeGreaterThanOrEqual(4.5)
     expect(await contrast(modal.locator('.prompt-textarea').first(), '::placeholder')).toBeGreaterThanOrEqual(4.5)
     await modal.locator('.preset-card:not(.is-nsfw)').first().click()
     expect(await contrast(modal.locator('.preset-card.active'))).toBeGreaterThanOrEqual(4.5)

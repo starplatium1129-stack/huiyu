@@ -34,6 +34,7 @@
       </div>
       <div class="scene-search-wrap">
         <input type="search" class="scene-search" v-model="pb.sceneSearch"
+          aria-label="搜索场景"
           placeholder="试试：安静的夏目雨夜">
         <button class="scene-search-clear" type="button" aria-label="清空"
           @click="pb.sceneSearch = ''">×</button>
@@ -45,9 +46,10 @@
         <button class="scene-filter-reset" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
       </div>
       <div class="scene-filter-label advanced-decision">主题</div>
-      <div class="scene-cats advanced-decision">
+      <div class="scene-cats advanced-decision" role="group" aria-label="场景主题">
         <button v-for="t in SCENE_THEMES" :key="t.id"
           class="scene-cat-btn" type="button"
+          :aria-pressed="pb.sceneTheme === t.id"
           :class="{ active: pb.sceneTheme === t.id }"
           @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
       </div>
@@ -57,6 +59,7 @@
         <button v-for="scene in visibleScenes" :key="scene.id"
           class="scene-card"
           :class="{ active: pb.sceneId === scene.id }"
+          :aria-pressed="pb.sceneId === scene.id"
           type="button"
           @click="$emit('selectScene', scene)">
           <div class="scene-card-title">

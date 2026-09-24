@@ -1,7 +1,8 @@
 <template>
   <div class="panel step-panel" id="stepStory">
     <div class="panel-title">故事 · Story</div>
-    <textarea class="story-input" v-model="pb.story"
+    <textarea id="directorStoryInput" class="story-input" v-model="pb.story"
+      aria-label="故事"
       placeholder="写下这一幕发生的事，或一句想留在画里的对白…"
       @input="onStoryInput"></textarea>
     <label class="visual-description-label" for="visualDescription">画面描述 · Visual description</label>

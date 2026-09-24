@@ -100,10 +100,14 @@
             </StudioTooltip>
             <StudioTooltip :content="workspaceTooltip">
               <button
+                ref="workspaceTriggerEl"
                 type="button"
                 class="companion-pop-item"
                 :data-state="workspaceExists ? 'ok' : 'missing'"
-                @click="workspaceOpen = !workspaceOpen"
+                aria-haspopup="dialog"
+                :aria-expanded="workspaceOpen"
+                aria-controls="companion-workspace-settings"
+                @click="toggleWorkspace"
               >
                 <ArchiveIcon :name="workspaceExists ? 'success' : 'error'" />
                 <span>{{ workspaceExists ? 'AI 工作区已就绪' : 'AI 工作区缺失' }}</span>
@@ -352,12 +356,23 @@
       </section>
 
       <FluidTransition>
-<div v-if="workspaceOpen" class="companion-workspace-settings" role="dialog" aria-label="AI 工作区设置">
+<div
+  v-if="workspaceOpen"
+  id="companion-workspace-settings"
+  ref="workspaceDialogEl"
+  class="companion-workspace-settings"
+  role="dialog"
+  aria-modal="true"
+  aria-label="AI 工作区设置"
+  aria-describedby="companion-workspace-description"
+  @keydown.esc.stop.prevent="closeWorkspace"
+>
         <div>
           <strong>AI 工作区</strong>
-          <span>存放样张、训练数据与配音资源的目录（例如 E:\AI）。设置后网关重启生效。</span>
+          <span id="companion-workspace-description">存放样张、训练数据与配音资源的目录（例如 E:\AI）。设置后网关重启生效。</span>
         </div>
         <input
+          ref="workspaceInputEl"
           v-model="workspaceInput"
           type="text"
           placeholder="目录路径"
@@ -368,7 +383,7 @@
           <button type="button" class="btn btn-primary" :disabled="workspaceSaving" @click="saveWorkspace">
             {{ workspaceSaving ? '保存中…' : '保存并重启网关' }}
           </button>
-          <button type="button" class="btn btn-ghost" @click="workspaceOpen = false">关闭</button>
+          <button type="button" class="btn btn-ghost" @click="closeWorkspace">关闭</button>
         </div>
       </div>
 </FluidTransition>
@@ -413,7 +428,7 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
@@ -428,6 +443,7 @@ const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatC
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
+import { useFocusTrap } from "@/composables/useFocusTrap"
 import type { CompanionReminder } from '@/utils/companionBehavior'
 const {
 chatListRef,characterStageRef,activeChar,
@@ -522,6 +538,31 @@ openChatWindow,
 liveDotState,
 liveDotText
 } = useCompanionWorkspace()
+
+const workspaceDialogEl = ref<HTMLElement | null>(null)
+const workspaceInputEl = ref<HTMLInputElement | null>(null)
+const workspaceTriggerEl = ref<HTMLButtonElement | null>(null)
+const { returnFocus: workspaceReturnFocus } = useFocusTrap(workspaceDialogEl, () => workspaceOpen.value, {
+  initialFocus: workspaceInputEl,
+  onEscape: closeWorkspace,
+})
+
+function toggleWorkspace() {
+  if (workspaceOpen.value) {
+    closeWorkspace()
+    return
+  }
+  if (workspaceTriggerEl.value) {
+    workspaceTriggerEl.value.focus({ preventScroll: true })
+    workspaceReturnFocus.value = workspaceTriggerEl.value
+  }
+  workspaceOpen.value = true
+}
+
+function closeWorkspace() {
+  workspaceOpen.value = false
+}
+
 const petGestures = usePetGestures(desktopBridge, openChatWindow)
 
 function switchPetCharacter(id: string) {

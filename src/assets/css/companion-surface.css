@@ -3,7 +3,9 @@ html.companion-desktop:has(.companion-redesign), html.companion-desktop:has(.com
 html.companion-desktop:has(.companion-redesign) body::before, html.companion-desktop:has(.companion-redesign) body::after { display: none; }
 .companion-redesign .portrait-stage .live2d-host, .companion-redesign .live2d-host > *, .companion-redesign .live2d-host canvas, .companion-redesign .portrait-main { filter: none; box-shadow: none; }
 .companion-redesign::before, .companion-redesign::after, .companion-redesign .companion-ambience, .companion-redesign .room-signal, .companion-redesign .portrait-stage::before, .companion-redesign .portrait-stage::after, .companion-redesign .voice-halo { display: none; }
-.companion-redesign .companion-toolbar { inset: var(--s-3) var(--s-3) auto; min-height: 48px; padding: var(--s-2); border: 0; border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-primary); box-shadow: none; backdrop-filter: none; }
+.companion-redesign .companion-toolbar { --companion-ink: var(--text-primary); --companion-ink-soft: var(--text-secondary); inset: var(--s-3) var(--s-3) auto; min-height: 48px; padding: var(--s-2); border: 0; border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-primary); box-shadow: none; backdrop-filter: none; }
+.companion-redesign .companion-toolbar .companion-identity > span { color: var(--text-secondary); text-shadow: none; }
+.companion-redesign .companion-toolbar .companion-identity h1 { color: var(--text-primary); text-shadow: none; }
 .companion-redesign .companion-settings-btn { color: var(--text-primary); background: var(--bg-elevated); border-color: var(--border-soft); }
 .companion-redesign .companion-toolbar-actions { flex-shrink: 0; }
 .companion-drag-handle { display: inline-flex; gap: var(--s-1); align-items: center; min-height: 36px; padding: var(--s-2); color: var(--text-secondary); cursor: grab; touch-action: none; }
