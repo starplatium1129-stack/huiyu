@@ -431,13 +431,13 @@ body > *:has(+ .footer),
 }
 .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--accent-soft); }
 .nav-links a.active { color: var(--accent); background: transparent; }
-.nav-links > a::after {
+.nav-links :is(> a, .studio-tooltip-anchor > a, a)::after {
   content:""; position:absolute; left:50%; bottom:2px; width:12px; height:2px;
   border-radius:var(--r-pill); background:var(--accent);
   opacity:0; transform:translateX(-50%) scaleX(.35);
   transition:opacity var(--motion-hover),transform var(--motion-hover) var(--ease-out);
 }
-.nav-links > a.active::after { opacity:0; }
+.nav-links :is(> a, .studio-tooltip-anchor > a, a).active::after { opacity:0; }
 .nav-more { position:relative; }
 .nav-more-trigger {
   display:flex; align-items:center; gap:5px; list-style:none; cursor:pointer;

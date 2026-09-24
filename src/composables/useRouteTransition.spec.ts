@@ -99,11 +99,21 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     gallery.el.dataset.routePath = '/gallery'; style.el.dataset.routePath = '/style'
     hooks.onEnter(gallery.el, () => {}); gallery.animations[0].onfinish!()
     destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, () => {})
-    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }])
+    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateX(32px)' }, { opacity: 1, transform: 'translateX(0)' }])
     destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, () => {})
     assert.equal(gallery.el.inert, false)
     assert.deepEqual(gallery.calls.at(-1), [[{ opacity: .88 }, { opacity: 1 }], { duration: 150, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
     hooks.onEnterCancelled(gallery.el); hooks.onLeaveCancelled(style.el)
+  })
+
+  it('slides in from left when navigating backwards in the route order', () => {
+    let destination = '/style'
+    const hooks = useRouteTransition(() => destination)
+    const style = surface('/style'), scene = surface('/scene-explorer')
+    hooks.onEnter(style.el, () => {}); style.animations[0].onfinish!()
+    destination = '/scene-explorer'; hooks.onLeave(style.el, () => {}); hooks.onEnter(scene.el, () => {})
+    assert.deepEqual(scene.calls[0][0], [{ opacity: 0, transform: 'translateX(-32px)' }, { opacity: 1, transform: 'translateX(0)' }])
+    hooks.onEnterCancelled(scene.el); hooks.onLeaveCancelled(style.el)
   })
 
   it('fades standalone layouts without translating native overlay anchors', () => {

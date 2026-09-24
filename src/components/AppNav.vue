@@ -10,26 +10,22 @@
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }" @keydown="onNavigationKey">
         <AnimatedSelection target=":scope > a.active" />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
-        <StudioTooltip
+        <RouterLink
           v-for="item in primaryNav"
           :key="item.id"
-          :content="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
+          :to="item.to"
+          :target="openBesideTask(item.to) ? '_blank' : undefined"
+          :rel="openBesideTask(item.to) ? 'noopener' : undefined"
+          :class="{ active: activeId === item.id }"
+          :aria-current="activeId === item.id ? 'page' : undefined"
+          :data-pending="pendingPath === item.to || undefined"
+          :data-intent="intentRoutePath === item.to || undefined"
+          :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
+          @click="closeMenu"
         >
-          <RouterLink
-            :to="item.to"
-            :target="openBesideTask(item.to) ? '_blank' : undefined"
-            :rel="openBesideTask(item.to) ? 'noopener' : undefined"
-            :class="{ active: activeId === item.id }"
-            :aria-current="activeId === item.id ? 'page' : undefined"
-            :data-pending="pendingPath === item.to || undefined"
-            :data-intent="intentRoutePath === item.to || undefined"
-            :tabindex="activeId === item.id || (!primaryNav.some(entry => entry.id === activeId) && item === primaryNav[0]) ? 0 : -1"
-            @click="closeMenu"
-          >
-            <ArchiveIcon :name="item.icon" />
-            <span>{{ item.label }}</span>
-          </RouterLink>
-        </StudioTooltip>
+          <ArchiveIcon :name="item.icon" />
+          <span>{{ item.label }}</span>
+        </RouterLink>
 
         <!-- The richer menu is loaded on first use, outside the initial navigation bundle. -->
         <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined"

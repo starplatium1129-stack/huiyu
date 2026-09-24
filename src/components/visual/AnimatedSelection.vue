@@ -28,7 +28,9 @@ function onVisibilityChange() {
 }
 function update() {
   const el = indicator.value
-  const selected = parent?.querySelector<HTMLElement>(props.target)
+  const targetSelector = props.target
+  const selected = parent?.querySelector<HTMLElement>(targetSelector)
+    ?? (targetSelector.includes(':scope >') ? parent?.querySelector<HTMLElement>(targetSelector.replace(':scope >', ':scope ')) : null)
   if (!el || !parent || (typeof document !== 'undefined' && document.hidden)) return
   if (selected !== observedTarget) {
     if (observedTarget) resize?.unobserve(observedTarget)
@@ -102,5 +104,17 @@ onUnmounted(() => {
 })
 </script>
 <style scoped>
-.animated-selection { position: absolute; inset: 0 auto auto 0; pointer-events: none; opacity: 0; transform-origin: 0 0; border-radius: var(--selection-radius, var(--r-md)); background: linear-gradient(135deg, var(--glass-highlight), transparent), var(--bg-elevated); border: 1px solid var(--glass-edge); box-shadow: var(--selection-shadow, var(--shadow-glass-sm)); }
+.animated-selection {
+  position: absolute;
+  inset: 0 auto auto 0;
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: 0 0;
+  border-radius: var(--selection-radius, var(--r-md));
+  background: linear-gradient(135deg, var(--glass-highlight), transparent), var(--bg-elevated);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--selection-shadow, var(--shadow-glass-sm));
+  transition: opacity var(--motion-hover) var(--ease-out);
+  will-change: transform, opacity;
+}
 </style>

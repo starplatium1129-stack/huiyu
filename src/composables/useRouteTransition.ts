@@ -2,6 +2,37 @@ import { onDeactivated, onMounted, onUnmounted } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 
+/**
+ * Ordered sequence of workspace routes to determine directional iOS transitions.
+ * Forward tabs slide in from the right, backward tabs slide in from the left.
+ */
+const ROUTE_ORDER: Record<string, number> = {
+  '/': 0,
+  '/showcase': 1,
+  '/popular-scenes': 2,
+  '/scene-explorer': 3,
+  '/prompt-builder': 4,
+  '/chat': 5,
+  '/gallery': 6,
+  '/video-studio': 7,
+  '/character': 8,
+  '/style': 9,
+  '/scenario': 10,
+  '/color-script': 11,
+  '/lora': 12,
+  '/scene-manager': 13,
+  '/control': 14,
+}
+
+function getRouteDirection(from: string, to: string): number {
+  const fromIdx = ROUTE_ORDER[from]
+  const toIdx = ROUTE_ORDER[to]
+  if (fromIdx !== undefined && toIdx !== undefined) {
+    return toIdx >= fromIdx ? 1 : -1
+  }
+  return 1
+}
+
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
 export function useRouteTransition(destinationPath?: () => string, options: { initialFade?: boolean } = {}) {
   const active = new Map<HTMLElement, () => void>()
@@ -52,17 +83,29 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     const offset = pathname(path) === '/character' ? 16 : -16
     let frames: Keyframe[] = [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }]
     let duration = 220
+    let easing = 'cubic-bezier(.22, 1, .36, 1)'
+
     if (crossRoute) {
-      frames = [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }]
-      duration = 240
-    } else if (options.initialFade) frames = [{ opacity: 0 }, { opacity: 1 }]
+      const dir = getRouteDirection(departingPath, pathname(path))
+      const slideOffset = dir >= 0 ? 32 : -32
+      frames = [{ opacity: 0, transform: `translateX(${slideOffset}px)` }, { opacity: 1, transform: 'translateX(0)' }]
+      duration = 280
+      easing = 'cubic-bezier(.32, .72, 0, 1)'
+    } else if (options.initialFade) {
+      frames = [{ opacity: 0 }, { opacity: 1 }]
+    }
     if (archive) {
       frames = [{ opacity: 0, transform: `translateX(${offset}px)` }, { opacity: 1, transform: 'translateX(0)' }]
       duration = 280
+      easing = 'cubic-bezier(.22, 1, .36, 1)'
     }
-    if (cachedActivation) { frames = [{ opacity: .88 }, { opacity: 1 }]; duration = 150 }
+    if (cachedActivation) {
+      frames = [{ opacity: .88 }, { opacity: 1 }]
+      duration = 150
+      easing = 'cubic-bezier(.22, 1, .36, 1)'
+    }
     try {
-      animation = el.animate(frames, { duration, easing: 'cubic-bezier(.22, 1, .36, 1)' })
+      animation = el.animate(frames, { duration, easing })
       active.set(el, finish)
       animation.onfinish = finish
       animation.oncancel = finish
@@ -92,9 +135,17 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       }
       done()
     }
+    const isArchive = archivePair(departingPath, destination)
+    const dir = getRouteDirection(departingPath, destination)
+    const leaveOffset = dir >= 0 ? -20 : 20
+    const leaveFrames: Keyframe[] = isArchive
+      ? [{ opacity: 1 }, { opacity: 0 }]
+      : [{ opacity: 1, transform: 'translateX(0)' }, { opacity: 0, transform: `translateX(${leaveOffset}px)` }]
+    const leaveDuration = isArchive ? 140 : 110
+    const leaveEasing = isArchive ? 'ease-out' : 'cubic-bezier(.32, .72, 0, 1)'
     try {
-      animation = el.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: archivePair(departingPath, destination) ? 140 : 110, easing: 'ease-out',
+      animation = el.animate(leaveFrames, {
+        duration: leaveDuration, easing: leaveEasing,
       })
       leaving = el; active.set(el, finish); animation.onfinish = animation.oncancel = finish
     } catch { finish() }
