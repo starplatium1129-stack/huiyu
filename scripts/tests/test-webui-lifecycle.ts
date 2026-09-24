@@ -285,7 +285,7 @@ test('an in-flight Comfy acceptance after close is not acknowledged or watched',
   const provider = fakeComfy(); provider.probe = async () => true;
   provider.create = ((value: GenerationInput, owner: string) => ({ id:'late', status:'queued', input:value, owner })) as typeof provider.create;
   provider.submit = async job => { await new Promise<void>(resolve => { release = resolve; }); job.upstreamId = 'upstream-late'; };
-  provider.cancel = (async () => { cancelled++; }) as typeof provider.cancel;
+  provider.cancel = async job => { cancelled++; return job; };
   const intervals = t.mock.method(globalThis, 'setInterval');
   const service = createGenerationService(config(host, root), { waiComfy:provider });
   t.after(() => service.close());
