@@ -99,7 +99,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     gallery.el.dataset.routePath = '/gallery'; style.el.dataset.routePath = '/style'
     hooks.onEnter(gallery.el, () => {}); gallery.animations[0].onfinish!()
     destination = '/style'; hooks.onLeave(gallery.el, () => {}); hooks.onEnter(style.el, () => {})
-    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateX(32px)' }, { opacity: 1, transform: 'translateX(0)' }])
+    assert.deepEqual(style.calls[0][0], [{ opacity: 0, transform: 'translateX(18px) scale(.992)' }, { opacity: 1, transform: 'translateX(0) scale(1)' }])
     destination = '/gallery'; hooks.onLeave(style.el, () => {}); hooks.onEnter(gallery.el, () => {})
     assert.equal(gallery.el.inert, false)
     assert.deepEqual(gallery.calls.at(-1), [[{ opacity: .88 }, { opacity: 1 }], { duration: 150, easing: 'cubic-bezier(.22, 1, .36, 1)' }])
@@ -112,7 +112,7 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     const style = surface('/style'), scene = surface('/scene-explorer')
     hooks.onEnter(style.el, () => {}); style.animations[0].onfinish!()
     destination = '/scene-explorer'; hooks.onLeave(style.el, () => {}); hooks.onEnter(scene.el, () => {})
-    assert.deepEqual(scene.calls[0][0], [{ opacity: 0, transform: 'translateX(-32px)' }, { opacity: 1, transform: 'translateX(0)' }])
+    assert.deepEqual(scene.calls[0][0], [{ opacity: 0, transform: 'translateX(-18px) scale(.992)' }, { opacity: 1, transform: 'translateX(0) scale(1)' }])
     hooks.onEnterCancelled(scene.el); hooks.onLeaveCancelled(style.el)
   })
 
@@ -396,5 +396,63 @@ describe('route motion lifecycle and optional capability fallback (009 F4.6a)', 
     animations[0].onfinish!()
     assert.equal(done.count, 1)
     assert.deepEqual(state.marks, [])
+  })
+
+  it('hands off workspace depth using only transform and opacity, without a retained fill', () => {
+    const hooks = useRouteTransition(() => '/style'), oldPage = surface('/gallery'), newPage = surface('/style')
+    const left = counter(), entered = counter()
+    hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
+    assert.deepEqual(oldPage.calls[0], [[
+      { opacity: 1, transform: 'translateX(0) scale(1)' },
+      { opacity: 0, transform: 'translateX(-8px) scale(.996)' },
+    ], { duration: 160, easing: 'cubic-bezier(.4, 0, 1, 1)' }])
+    assert.deepEqual(newPage.calls[0][1], { duration: 320, easing: 'cubic-bezier(.16, 1, .3, 1)' })
+    for (const { calls } of [oldPage, newPage]) {
+      for (const frame of calls[0][0] as Keyframe[]) {
+        assert.ok(Object.keys(frame).every(key => key === 'transform' || key === 'opacity'))
+      }
+    }
+    oldPage.animations[0].onfinish!(); newPage.animations[0].onfinish!()
+    assert.equal(left.count, 1); assert.equal(entered.count, 1)
+    assert.equal(oldPage.animations[0].cancelCalls, 1)
+    assert.equal(newPage.animations[0].cancelCalls, 1)
+  })
+
+  it('does not invent a horizontal direction for an unranked workspace', () => {
+    const hooks = useRouteTransition(() => '/new-workspace'), oldPage = surface('/gallery'), newPage = surface('/new-workspace')
+    hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
+    assert.deepEqual(newPage.calls[0][0], [
+      { opacity: 0, transform: 'translateX(0px) scale(.992)' },
+      { opacity: 1, transform: 'translateX(0) scale(1)' },
+    ])
+    assert.deepEqual((oldPage.calls[0][0] as Keyframe[])[1], { opacity: 0, transform: 'translateX(0px) scale(.996)' })
+    hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
+  })
+
+  it('keeps AppLayout initialFade limited to first paint, not subsequent workspace navigation', () => {
+    const hooks = useRouteTransition(() => '/style', { initialFade: true })
+    const oldPage = surface('/gallery'), newPage = surface('/style')
+    hooks.onEnter(oldPage.el, () => {}); oldPage.animations[0].onfinish!()
+    assert.deepEqual(oldPage.calls[0][0], [{ opacity: 0 }, { opacity: 1 }])
+    hooks.onLeave(oldPage.el, () => {}); hooks.onEnter(newPage.el, () => {})
+    assert.deepEqual(newPage.calls[0][0], [
+      { opacity: 0, transform: 'translateX(18px) scale(.992)' },
+      { opacity: 1, transform: 'translateX(0) scale(1)' },
+    ])
+    hooks.onLeaveCancelled(oldPage.el); hooks.onEnterCancelled(newPage.el)
+  })
+
+  it('settles both halves of the depth transition immediately when reduced motion changes', () => {
+    const events = browser(), hooks = useRouteTransition(() => '/style')
+    for (const callback of state.mounted.splice(0)) callback()
+    const oldPage = surface('/gallery'), newPage = surface('/style'), left = counter(), entered = counter()
+    hooks.onLeave(oldPage.el, left.done); hooks.onEnter(newPage.el, entered.done)
+    state.reduced = true; events.dispatchEvent(new Event('atelier:motion-preference'))
+    assert.equal(left.count, 1); assert.equal(entered.count, 1)
+    assert.equal(newPage.el.inert, false)
+    assert.equal(oldPage.animations[0].onfinish, null)
+    assert.equal(newPage.animations[0].onfinish, null)
+    unmount()
+    assert.equal(left.count, 1); assert.equal(entered.count, 1)
   })
 })

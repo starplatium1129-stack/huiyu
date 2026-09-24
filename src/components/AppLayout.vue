@@ -69,6 +69,8 @@ const currentYear = new Date().getFullYear()
 .route-view {
   grid-area: 1 / 1;
   min-width: 0;
+  /* Anchor depth motion at the page top, not halfway down a long document. */
+  transform-origin: 50% 0;
 }
 /* 用 skip-link 跳进来时要有可见落点，但鼠标点击不该出现描边 */
 .page-main:focus-visible {

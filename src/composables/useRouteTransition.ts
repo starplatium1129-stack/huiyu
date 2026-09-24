@@ -3,8 +3,8 @@ import { prefersReducedMotion } from '@/utils/motionPreference'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 
 /**
- * Ordered sequence of workspace routes to determine directional iOS transitions.
- * Forward tabs slide in from the right, backward tabs slide in from the left.
+ * Workspace order provides a small directional cue, not a full-screen mobile slide.
+ * Unknown routes stay neutral rather than inventing a forward/back relationship.
  */
 const ROUTE_ORDER: Record<string, number> = {
   '/': 0,
@@ -30,7 +30,7 @@ function getRouteDirection(from: string, to: string): number {
   if (fromIdx !== undefined && toIdx !== undefined) {
     return toIdx >= fromIdx ? 1 : -1
   }
-  return 1
+  return 0
 }
 
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
@@ -86,11 +86,15 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     let easing = 'cubic-bezier(.22, 1, .36, 1)'
 
     if (crossRoute) {
-      const dir = getRouteDirection(departingPath, pathname(path))
-      const slideOffset = dir >= 0 ? 32 : -32
-      frames = [{ opacity: 0, transform: `translateX(${slideOffset}px)` }, { opacity: 1, transform: 'translateX(0)' }]
-      duration = 280
-      easing = 'cubic-bezier(.32, .72, 0, 1)'
+      const slideOffset = getRouteDirection(departingPath, pathname(path)) * 18
+      // A restrained depth hand-off: no blur animation, overshoot, layout work or
+      // persistent fill. Cancel at settlement so fixed descendants regain their viewport.
+      frames = [
+        { opacity: 0, transform: `translateX(${slideOffset}px) scale(.992)` },
+        { opacity: 1, transform: 'translateX(0) scale(1)' },
+      ]
+      duration = 320
+      easing = 'cubic-bezier(.16, 1, .3, 1)'
     } else if (options.initialFade) {
       frames = [{ opacity: 0 }, { opacity: 1 }]
     }
@@ -137,12 +141,15 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     }
     const isArchive = archivePair(departingPath, destination)
     const dir = getRouteDirection(departingPath, destination)
-    const leaveOffset = dir >= 0 ? -20 : 20
+    const leaveOffset = dir * -8
     const leaveFrames: Keyframe[] = isArchive
       ? [{ opacity: 1 }, { opacity: 0 }]
-      : [{ opacity: 1, transform: 'translateX(0)' }, { opacity: 0, transform: `translateX(${leaveOffset}px)` }]
-    const leaveDuration = isArchive ? 140 : 110
-    const leaveEasing = isArchive ? 'ease-out' : 'cubic-bezier(.32, .72, 0, 1)'
+      : [
+        { opacity: 1, transform: 'translateX(0) scale(1)' },
+        { opacity: 0, transform: `translateX(${leaveOffset}px) scale(.996)` },
+      ]
+    const leaveDuration = isArchive ? 140 : 160
+    const leaveEasing = isArchive ? 'ease-out' : 'cubic-bezier(.4, 0, 1, 1)'
     try {
       animation = el.animate(leaveFrames, {
         duration: leaveDuration, easing: leaveEasing,
