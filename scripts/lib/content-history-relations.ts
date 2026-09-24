@@ -27,22 +27,50 @@ function relations(row: any, snapshots: any, unknown: string[]) {
     }
   } else if (row.kind === 'scene') {
     add('character', value.char, null, 'char');
+    for (const characterId of Array.isArray(value.character) ? value.character : []) {
+      add('character', characterId, null, 'character[]');
+      if (!validId(characterId)) unknown.push(`${row.file}#${row.id}: character[] contains unknown id ${characterId}`);
+    }
     if (validId(value.outfitId)) add('outfit', value.outfitId, value.char, 'outfitId');
+    else if (value.outfitId !== undefined) unknown.push(`${row.file}#${row.id}: outfitId is not a valid id`);
   } else if (row.kind === 'outfit' || row.kind === 'reference-outfit') {
     add('character', row.characterId, null, 'owner');
     if (row.kind === 'reference-outfit') {
       add('outfit', row.id, row.characterId, 'outfitId');
       if (value.references !== undefined && !Array.isArray(value.references)) unknown.push(`${row.file}#${row.id}: reference perspectives unknown`);
-      for (const reference of Array.isArray(value.references) ? value.references : []) add('perspective', reference?.id, null, 'references[].id');
+      for (const reference of Array.isArray(value.references) ? value.references : []) {
+        add('perspective', reference?.id, null, 'references[].id');
+        if (!validId(reference?.id)) unknown.push(`${row.file}#${row.id}: references[] contains unknown perspective id ${reference?.id}`);
+      }
     }
   } else if (row.kind === 'reference-character') add('character', row.id, null, 'character-id');
   else if (row.kind === 'curation' || row.kind === 'retired') add('scene', row.id, null, 'scene-id');
   else if (row.kind === 'profile') {
     const ids = value.lora?.recommended_scene;
     if (ids !== undefined && !Array.isArray(ids)) unknown.push(`${row.file}#${row.id}: lora.recommended_scene unknown`);
-    for (const id of Array.isArray(ids) ? ids : []) add('scene', id, null, 'lora.recommended_scene');
+    for (const id of Array.isArray(ids) ? ids : []) {
+      add('scene', id, null, 'lora.recommended_scene');
+      if (!validId(id)) unknown.push(`${row.file}#${row.id}: lora.recommended_scene contains unknown scene id ${id}`);
+    }
   }
   return output;
+}
+
+function targetExists(snapshots: any, relation: any): boolean {
+  const rows = (domain: string, kind: string) => snapshots[domain]?.rows?.filter((row: any) => row.role === 'source' && row.kind === kind) || [];
+  if (relation.kind === 'character') {
+    return relation.id === 'triad'
+      || rows('characters', 'profile').some((row: any) => row.id === relation.id)
+      || rows('popular', 'character').some((row: any) => row.id === relation.id)
+      || rows('references', 'reference-character').some((row: any) => row.id === relation.id);
+  }
+  if (relation.kind === 'outfit') {
+    return rows('popular', 'outfit').some((row: any) => row.id === relation.id && row.characterId === relation.characterId)
+      || rows('references', 'reference-outfit').some((row: any) => row.id === relation.id && row.characterId === relation.characterId);
+  }
+  if (relation.kind === 'scene') return rows('scenes', 'scene').some((row: any) => row.id === relation.id);
+  if (relation.kind === 'perspective') return rows('references', 'perspective').some((row: any) => row.id === relation.id);
+  return false;
 }
 
 function relationshipIssues(snapshots: any, { keys }: any = {}) {
@@ -81,6 +109,21 @@ function relationshipIssues(snapshots: any, { keys }: any = {}) {
       const exists = scenes.rows.some((scene: any) => scene.id === row.id);
       if ((domain === 'curation' && !exists) || (domain === 'retired' && exists)) issues.push({ domain, file: row.file, id: row.id,
         reason: domain === 'curation' ? 'curation references absent scene' : 'retired ID is still active' });
+    }
+  }
+  const seen = new Set(issues.map((issue: any) => `${issue.domain}|${issue.file}|${issue.id}|${issue.reason}`));
+  for (const snapshot of Object.values<any>(snapshots)) {
+    const group = snapshot?.groups?.[`${snapshot.domain}:source`];
+    if (!group?.complete) continue;
+    for (const row of group.rows) {
+      if (!selected(row) || snapshot.domain === 'retired') continue;
+      for (const relation of relations(row, snapshots, [])) {
+        if (targetExists(snapshots, relation)) continue;
+        const issue = { domain: snapshot.domain, file: row.file, id: row.id,
+          reason: `dangling ${relation.kind} ${relation.characterId ? `${relation.characterId}/` : ''}${relation.id} via ${relation.via}` };
+        const key = `${issue.domain}|${issue.file}|${issue.id}|${issue.reason}`;
+        if (!seen.has(key)) { seen.add(key); issues.push(issue); }
+      }
     }
   }
   return issues;

@@ -20,6 +20,7 @@ export function useConversationReading(element: Ref<HTMLElement | undefined | nu
   watch(element, (el, old) => {
     old?.removeEventListener('scroll', onScroll)
     el?.addEventListener('scroll', onScroll, { passive: true })
+    if (el) void latest()
   }, { flush: 'post' })
   watch(revision, () => { if (following.value) void latest(); else hasNew.value = true }, { deep: true })
   watch(character, latest)

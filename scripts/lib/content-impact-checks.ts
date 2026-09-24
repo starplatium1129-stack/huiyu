@@ -26,6 +26,35 @@ const FIELD_VALIDATION = {
   references: { rules: ['scripts/contracts/character-reference-standards.schema.json', 'scripts/contracts/character-reference-view.schema.json', 'content-impact-references.js:compareReferenceProjection'], unknown: ['Assets/review authenticity', 'Writer dependency completeness'] },
 };
 
+/**
+ * Return the observed top-level fields for source and derived rows.  This is
+ * deliberately an inventory, not a second schema: field meaning and runtime
+ * readers remain in FIELD_VALIDATION.  Keeping both sides visible makes a
+ * newly added source field impossible to hide behind a successful JSON
+ * projection check.
+ */
+function fieldInventory(snapshots: any) {
+  return Object.entries<any>(snapshots).map(([domain, snapshot]) => {
+    const sourceRows = (snapshot?.rows || []).filter((row: any) => row.role === 'source');
+    const derivedRows = (snapshot?.rows || []).filter((row: any) => row.role === 'derived');
+    const fields = (rows: any[]) => [...new Set(rows.flatMap((row: any) => row.value && typeof row.value === 'object' && !Array.isArray(row.value)
+      ? Object.keys(row.value) : []))].sort();
+    const sourceFields = fields(sourceRows);
+    const derivedFields = fields(derivedRows);
+    return {
+      domain,
+      sourceRows: sourceRows.length,
+      derivedRows: derivedRows.length,
+      sourceFields,
+      derivedFields,
+      sourceOnlyFields: sourceFields.filter((field: string) => !derivedFields.includes(field)),
+      derivedOnlyFields: derivedFields.filter((field: string) => !sourceFields.includes(field)),
+      sourceComplete: snapshot?.groups?.[`${domain}:source`]?.complete !== false && snapshot?.complete !== false,
+      derivedComplete: Object.entries<any>(snapshot?.groups || {}).filter(([name]) => name.includes(':derived:')).every(([, group]: any) => group.complete !== false),
+    };
+  });
+}
+
 function selectExecution(report: any, forceFull: any = false, context: any) {
   const reasons = [];
   if (forceFull) reasons.push('Explicit --full');
@@ -105,10 +134,19 @@ function runtimeFieldChecks(snapshots: { [s: string]: any; }|ArrayLike<any>, key
   catch (error) { unknown.push(`Existing runtime parsers unavailable: ${runtimeErrorMessage(error)}`); }
   for (const snapshot of Object.values(snapshots)) for (const row of snapshot.rows) {
     if (row.role !== 'source' || (keys && !keys.has(row.key))) continue;
-    if (!['character', 'blueprint', 'scene'].includes(row.kind)) continue;
+    if (!['character', 'blueprint', 'scene', 'profile'].includes(row.kind)) continue;
     const value = row.value;
     try {
-      if (row.kind === 'scene') {
+      if (row.kind === 'profile') {
+        for (const field of ['id', 'name', 'source', 'speech']) {
+          if (typeof value[field] !== 'string' || !value[field].trim()) issues.push({ key: row.key, field, reason: 'Character profile field must be a nonempty string' });
+        }
+        if (value.type !== undefined && typeof value.type !== 'string') issues.push({ key: row.key, field: 'type', reason: 'Expected string' });
+        if (value.tags !== undefined && !Array.isArray(value.tags)) issues.push({ key: row.key, field: 'tags', reason: 'Expected array' });
+        coverage.push({ key: row.key, rule: 'character profile required-field predicate',
+          unknownFields: Object.keys(value).filter((field) => !['id', 'name', 'type', 'icon', 'source', 'alias', 'voice', 'speech', 'tags', 'bg_story', 'personality', 'likes', 'identity', 'portrait', 'lora'].includes(field)),
+          boundary: 'Required profile fields only; visual DNA, prompt and asset semantics remain outside this reader' });
+      } else if (row.kind === 'scene') {
         // Only these scalar contracts from validate-scenes are claimed here.
         // Prompt semantics, the other required fields and rendering remain full.
         for (const field of ['prompt', 'negative']) if (typeof value[field] !== 'string' || !value[field].trim()) {
@@ -155,14 +193,17 @@ function fullFieldChecks(reader: any, snapshots: any) {
     const fields = [...new Set((snapshots[domain]?.rows || []).filter((row: { role: string; }) => row.role === 'source').flatMap((row: { value: any; }) => Object.keys(row.value)))];
     unknown.push({ domain, observedFields: fields.sort(), semanticCoverage: 'unknown beyond explicit exported predicates and JSON projections' });
   }
-  return { checks, fields: unknown, ruleRoot: CODE_ROOT };
+  const coverage = fieldInventory(snapshots);
+  checks.push(outcome('field-inventory', 'all supported source/derived rows', [],
+    coverage.filter((entry: any) => !entry.sourceComplete || !entry.derivedComplete).map((entry: any) => ({ domain: entry.domain, reason: 'source or derived field projection is incomplete' }))));
+  return { checks, fields: unknown, fieldCoverage: coverage, ruleRoot: CODE_ROOT };
 }
 
 function executePredicates(selection: { mode: string; targets: Iterable<any>|null|undefined; }, context: any, root: PathLike) {
   const reader = context?.currentReader || localReader(root);
   const snapshots = { ...(context?.after || {}) };
   const checks = [];
-  let fieldCoverage: { domain: string; observedFields: any[]; semanticCoverage: string; }[] = [];
+  let fieldCoverage: any[] = [];
   if (selection.mode === 'full') {
     for (const domain of DOMAINS) {
       snapshots[domain] ||= inspectDomain(reader, domain);
@@ -173,7 +214,7 @@ function executePredicates(selection: { mode: string; targets: Iterable<any>|nul
     checks.push(runtimeFieldChecks(snapshots));
     const fields = fullFieldChecks(reader, snapshots);
     checks.push(...fields.checks);
-    fieldCoverage = fields.fields;
+    fieldCoverage = fields.fieldCoverage;
   } else {
     const keys = new Set(selection.targets);
     checks.push(recordEquality(snapshots, keys), relationCheck(snapshots, keys), runtimeFieldChecks(snapshots, keys));
@@ -188,4 +229,4 @@ function executePredicates(selection: { mode: string; targets: Iterable<any>|nul
     evidence: [...reader.evidence.values()], wholeLibrary: 'not-validated', exitCode: failed ? 1 : 3 };
 }
 
-export = { DOMAINS, UNTRACKED, FIELD_VALIDATION, selectExecution, executePredicates, recordEquality, relationCheck, fullFieldChecks, runtimeFieldChecks };
+export = { DOMAINS, UNTRACKED, FIELD_VALIDATION, fieldInventory, selectExecution, executePredicates, recordEquality, relationCheck, fullFieldChecks, runtimeFieldChecks };

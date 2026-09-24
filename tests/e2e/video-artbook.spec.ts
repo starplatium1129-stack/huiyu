@@ -99,7 +99,7 @@ for (const status of ['queued', 'running', 'cancelling', 'cancelled', 'failed', 
       await expect(queue.locator('.video-error-detail code')).toContainText('simulated artbook failure')
     }
     if (status === 'succeeded') {
-      await expect(queue.getByLabel('生成的视频成片')).toHaveAttribute('src', '/mock-artbook-result.mp4')
+      await expect(queue.locator('video[aria-label="生成的视频成片"]')).toHaveAttribute('src', '/mock-artbook-result.mp4')
       await expect(page.locator('video')).toHaveCount(1)
       await expect(queue.getByRole('link', { name:'下载这段故事 · MP4' })).toHaveAttribute('download', '')
       // Playback is deliberately not asserted: this fixture proves controls, never model output.

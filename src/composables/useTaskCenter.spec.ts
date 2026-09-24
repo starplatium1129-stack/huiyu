@@ -199,4 +199,7 @@ it('history retention remains bounded after merging persisted history', async ()
   }
   expect((persisted as { records: unknown[] }).records).toHaveLength(60)
   expect(a.useTaskCenter().tasks.value).toHaveLength(60)
+  const diagnostics = a.useTaskCenter().storageDiagnostics.value
+  expect(diagnostics).toMatchObject({ recordCount: 60, tombstoneCount: 5, historyLimit: 60, compaction: { policy: 'retain-tombstones', safeToDrop: false } })
+  expect(diagnostics.serializedBytes).toBeGreaterThan(0)
 })

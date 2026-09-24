@@ -28,6 +28,17 @@ export function consumeTaskReloadApproval() { const approved = reloadApproved; r
 let loading: Promise<void> | undefined
 let writeTail = Promise.resolve()
 const deletedTasks = new Map<string, number>()
+const TASK_HISTORY_LIMIT = 60
+
+export interface TaskStorageDiagnostics {
+  recordCount: number
+  tombstoneCount: number
+  serializedBytes: number
+  oldestTombstoneAt: number | null
+  oldestTombstoneAgeMs: number | null
+  historyLimit: number
+  compaction: { policy: 'retain-tombstones'; safeToDrop: false; reason: string }
+}
 
 interface StoredTaskSnapshot { version: 1; records: unknown[]; deleted: Record<string, number> }
 
@@ -88,7 +99,7 @@ function mergeSnapshot(remote: { records: TaskRecord[]; deleted: Map<string, num
   const records = [...byId.values()].sort((a, b) => b.createdAt - a.createdAt)
   let completed = 0
   const retained = records.filter(record => {
-    if (record.status === 'running' || ++completed <= 60) return true
+    if (record.status === 'running' || ++completed <= TASK_HISTORY_LIMIT) return true
     deleted.set(record.id, Math.max(Date.now(), record.updatedAt))
     return false
   })
@@ -97,6 +108,25 @@ function mergeSnapshot(remote: { records: TaskRecord[]; deleted: Map<string, num
 
 function encodeSnapshot(snapshot: { records: TaskRecord[]; deleted: Map<string, number> }): StoredTaskSnapshot {
   return { version: 1, records: snapshot.records, deleted: Object.fromEntries(snapshot.deleted) }
+}
+
+/** Measure the bounded summary store without deciding that a tombstone is safe to discard. */
+export function taskStorageDiagnostics(now = Date.now()): TaskStorageDiagnostics {
+  const serialized = JSON.stringify(encodeSnapshot({ records: tasks.value, deleted: deletedTasks }))
+  const oldestTombstoneAt = deletedTasks.size ? Math.min(...deletedTasks.values()) : null
+  return {
+    recordCount: tasks.value.length,
+    tombstoneCount: deletedTasks.size,
+    serializedBytes: typeof TextEncoder === 'function' ? new TextEncoder().encode(serialized).byteLength : serialized.length,
+    oldestTombstoneAt,
+    oldestTombstoneAgeMs: oldestTombstoneAt === null ? null : Math.max(0, now - oldestTombstoneAt),
+    historyLimit: TASK_HISTORY_LIMIT,
+    compaction: {
+      policy: 'retain-tombstones',
+      safeToDrop: false,
+      reason: '尚无跨窗口确认水位；墓碑必须保留，不能按数量或年龄直接丢弃以免旧窗口复活已清理摘要。',
+    },
+  }
 }
 
 function persist() {
@@ -116,7 +146,7 @@ export function createTask(summary: TaskSummary, controls: TaskControls = {}): s
   actions.set(id, controls)
   // Running work is never removed to make room for historical summaries.
   let completed = 0
-  tasks.value = tasks.value.filter(task => task.status === 'running' || ++completed <= 60)
+  tasks.value = tasks.value.filter(task => task.status === 'running' || ++completed <= TASK_HISTORY_LIMIT)
   const retained = new Set(tasks.value.map(task => task.id))
   for (const key of actions.keys()) if (!retained.has(key)) actions.delete(key)
   persist()
@@ -155,6 +185,7 @@ function findBackendTask(summary: TaskSummary) {
 }
 export function useTaskCenter() {
   return { tasks, opened, storageError, activeCount: computed(() => tasks.value.filter(task => task.status === 'running').length),
+    storageDiagnostics: computed(() => taskStorageDiagnostics()),
     controls: (id: string) => actions.get(id),
     clearCompleted() {
       const keep = tasks.value.filter(task => task.status === 'running' || task.status === 'failed' || task.status === 'interrupted')

@@ -175,7 +175,7 @@
 
 `check:impact --base <本地commit/ref> --execute --json` 根据旧新源关系选择实际执行的只读检查；不带 execute 只预览，help/plan 零目标读取。只有可证明身份、关系、清单和顺序不变的受支持场景/蓝图记录字段变化才走 incremental；删除、重命名、未知路径、公共实现或不完整关系回退 full。`--full --execute` 无需 Git 即可检查七个已支持结构域。它复用现有解析器、参考 schema、内容纯函数和源/产物对照，不运行可能自愈写入的 builder。
 
-输出分别记录 selection、execution.executed、逐检查状态及未知字段。局部或已支持完整结构域通过均不等于完整内容 gate：DATA_VERSION、压缩伴生物与未导出的语义规则仍保留完整门禁要求，退出 3；实际失败退出 1，参数错误退出 2，预览退出 0。读到文件或目录成员变化时返回 incomplete，不能用混合快照认证通过。`audit:ownership` 的 fieldValidation/readWriteCoverage 只说明规则与覆盖，不代表已执行这些检查。
+输出分别记录 selection、execution.executed、逐检查状态、未知字段、`execution.fieldCoverage` 的源/派生顶层字段库存，以及跨域关系目标的实际存在性。局部或已支持完整结构域通过均不等于完整内容 gate：DATA_VERSION、压缩伴生物与未导出的语义规则仍保留完整门禁要求，退出 3；实际失败退出 1，参数错误退出 2，预览退出 0。读到文件或目录成员变化时返回 incomplete，不能用混合快照认证通过。`audit:ownership` 的 fieldValidation/readWriteCoverage 只说明规则与覆盖，不代表已执行这些检查。
 
 `audit:content-evidence --root <源根> --candidate-root <候选根> --manifest <候选根相对清单> --source <源根相对源文件> --recipe <源根相对生成器> [--decisions <候选根相对审核JSON>] --json` 只读取明确允许的输入、原生候选账本和资产。source 可重复；旧机器路径不自动重定位。它分开报告结构、生成状态、源/请求/输入版本、实际文件字节、审核绑定和发布证据；源、图片或记录变化使旧审核 stale，遗漏新 attempt 或损坏字节不会被历史 pass 掩盖。
 

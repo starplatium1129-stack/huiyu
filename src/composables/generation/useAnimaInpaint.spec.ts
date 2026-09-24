@@ -59,6 +59,19 @@ describe('换装提交按操作加载', () => {
     expect(tools.inpaintOriginalUrl.value).toBe('blob:original')
   })
 
+  it('freezes model and LoRA state before the asynchronous source upload', async () => {
+    const { deps, tools, generate } = harness()
+    let resolveUpload!: (value: object | PromiseLike<object>) => void
+    vi.mocked(apiClient.request).mockImplementationOnce(() => new Promise(resolve => { resolveUpload = resolve }))
+    const pending = tools.handleInpaintSubmit(payload)
+    await vi.waitFor(() => expect(apiClient.request).toHaveBeenCalled())
+    deps.animaState.value.modelId = 'base-model'
+    deps.animaState.value.loraStrength = 0.1
+    resolveUpload({ ok: true, name: 'source.png' })
+    await pending
+    expect(generate).toHaveBeenCalledWith(expect.objectContaining({ modelId: 'character-model', loraStrength: 0.75 }))
+  })
+
   it('热门角色沿用无 LoRA 绑定、身份与自动遮罩参数', async () => {
     const { tools, generate } = harness(true)
     await tools.handleInpaintSubmit({ ...payload, characterOverride: 'nene', targetWidth: 1024, targetHeight: 1024 })

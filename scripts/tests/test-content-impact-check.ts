@@ -80,6 +80,18 @@ test('deletion and rename use old relations, then execute full checks that find 
   assert.equal(result.exitCode, 1);
 });
 
+test('full relationship validation covers scene character arrays and profile recommendations', (t) => {
+  const f = fixture(t, false);
+  f.scenes[0].character = ['missing-character'];
+  f.write('data/scenes/one.1.json', f.scenes.slice(0, 2));
+  f.sceneProducts();
+  const result = checkContentImpact(parse(['--root', f.root, '--full', '--execute']));
+  assert.equal(result.exitCode, 1);
+  const relationships = result.execution.checks.find((check: any) => check.id === 'source-relationships');
+  assert.equal(relationships.status, 'failed');
+  assert.ok(relationships.issues.some((issue: any) => issue.reason.includes('character missing-character')));
+});
+
 test('aggregate ordering cannot take the incremental route; unsupported source boundaries stay incomplete', (t) => {
   const f = fixture(t);
   f.write('data/scene-blueprints.json', { version: 2, blueprints: [...f.blueprints].reverse() });
@@ -97,12 +109,25 @@ test('explicit full runs without Git, reuses exact schema and cannot silently dr
   const f = fixture(t, false);
   const call = () => checkContentImpact(parse(['--root', f.root, '--full', '--execute']));
   assert.equal(call().execution.status, 'passed-scoped');
+  const inventory = call().execution.fieldCoverage;
+  assert.ok(inventory.some((entry: any) => entry.domain === 'popular' && entry.sourceFields.includes('identityTokens')));
+  assert.ok(inventory.some((entry: any) => entry.domain === 'scenes' && entry.derivedFields.includes('prompt')));
+  assert.ok(inventory.every((entry: any) => Array.isArray(entry.sourceOnlyFields) && Array.isArray(entry.derivedOnlyFields)));
   const standards = f.read('data/character-reference-standards.json');
   standards.characters[0].unexpectedField = true;
   f.write('data/character-reference-standards.json', standards);
   const result = call();
   assert.equal(result.exitCode, 1);
   assert.equal(result.execution.checks.find((check: any) => check.id === 'existing-reference-standards-schema').status, 'failed');
+});
+
+test('character profile required fields are part of the full runtime field predicate', (t) => {
+  const f = fixture(t, false);
+  f.write('data/characters.json', [{ id: 'broken' }]);
+  const result = checkContentImpact(parse(['--root', f.root, '--full', '--execute']));
+  assert.equal(result.exitCode, 1);
+  assert.equal(result.execution.checks.find((check: any) => check.id === 'runtime-field-contracts').status, 'failed');
+  assert.ok(result.execution.fieldCoverage.some((entry: any) => entry.domain === 'characters' && entry.sourceFields.includes('id')));
 });
 
 test('full structural fallback also has zero write/process effects; ownership describes field checks without claiming execution', (t) => {
