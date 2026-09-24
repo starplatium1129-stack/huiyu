@@ -1,4 +1,14 @@
 import { apiClient } from './client'
+import {
+  isVideoBatchResponse,
+  isVideoJobResponse,
+  isVideoStatusResponse,
+  isVideoStoryboard,
+} from './videoApiResponse'
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
 
 export type VideoMode = 'text' | 'image' | 'first-last-frame'
 export type VideoJobStatus = 'queued' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
@@ -105,31 +115,6 @@ export interface VideoImageUploadResponse {
   bytes: number
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-}
-
-function isVideoJob(value: unknown): value is VideoJob {
-  if (!isRecord(value)) return false
-  return typeof value.id === 'string'
-    && typeof value.status === 'string'
-    && typeof value.modelId === 'string'
-    && typeof value.prompt === 'string'
-    && typeof value.createdAt === 'number'
-}
-
-function isVideoStatusResponse(value: Record<string, unknown>): boolean {
-  return value.ok === true
-    && typeof value.online === 'boolean'
-    && typeof value.pending === 'number'
-    && Array.isArray(value.models)
-    && Array.isArray(value.qualities)
-    && isRecord(value.defaults)
-}
-
-function isVideoJobResponse(value: Record<string, unknown>): boolean {
-  return value.ok === true && isVideoJob(value.job)
-}
 
 export function fetchVideoStatus(signal?: AbortSignal): Promise<VideoStatusResponse> {
   return apiClient.request<VideoStatusResponse>('/api/video/status', {
@@ -278,8 +263,7 @@ export function createVideoStoryboard(
     body: intent ? { blueprintId, intent } : { blueprintId },
     signal,
     timeoutMs: 15_000,
-    validate: (value: Record<string, unknown>) =>
-      value.ok === true && isRecord(value.storyboard) && Array.isArray(value.storyboard.shots),
+    validate: (value: Record<string, unknown>) => value.ok === true && isVideoStoryboard(value.storyboard),
   })
 }
 
@@ -288,27 +272,6 @@ export interface VideoBatchResponse {
   batch: VideoBatch
 }
 
-function isVideoBatchShot(value: unknown): value is VideoBatchShot {
-  if (!isRecord(value)) return false
-  return typeof value.index === 'number'
-    && typeof value.status === 'string'
-    && typeof value.prompt === 'string'
-    && typeof value.seed === 'number'
-    && typeof value.duration === 'number'
-}
-
-function isVideoBatch(value: unknown): value is VideoBatch {
-  if (!isRecord(value)) return false
-  return typeof value.id === 'string'
-    && typeof value.status === 'string'
-    && isRecord(value.progress)
-    && Array.isArray(value.shots)
-    && value.shots.every(isVideoBatchShot)
-}
-
-function isVideoBatchResponse(value: Record<string, unknown>): boolean {
-  return value.ok === true && isVideoBatch(value.batch)
-}
 
 export function createVideoBatch(input: CreateVideoBatchInput, signal?: AbortSignal): Promise<VideoBatchResponse> {
   return apiClient.request<VideoBatchResponse>('/api/video/batches', {

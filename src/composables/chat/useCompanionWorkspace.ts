@@ -1,5 +1,6 @@
 
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession';
+import { useConversationReading } from '@/composables/chat/useConversationReading';
 import { publishChatReceipt } from '@/utils/chatRelayReceipt';
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation';
 import { useCompanionAffection } from '@/composables/useCompanionAffection';
@@ -38,6 +39,9 @@ export function useCompanionWorkspace() {
         ? desktopWindowVisible.value && desktopLive2dOverride.value !== false
         : storage.state.settings.live2dEnabled);
     const immersiveMessages = computed(() => companionMessages.value.slice(-2));
+    const { hasNew: hasNewMessages, latest: latestMessages } = useConversationReading(
+        chatListRef, () => immersiveMessages.value, activeChar,
+    );
     // ── 角色行为运行时（提醒/问候/事件轮询/勿扰）已下沉 useCompanionBehaviorRuntime ──
     // 两只 30s 心跳与轮询 AbortController 生命周期由 composable 自持；
     // 导入/剪贴板入册走 noteReturn 族 + resetEventDetector 重置检测基线。
@@ -512,7 +516,7 @@ characterStageRef,
         workspaceExists, workspaceTooltip, workspaceOpen, volume, onVolumeChange, exitImmersive,
         isSpeaking, chatStatusText, statusKind, companionAutoLoad, desktopWindowBounds, storage,
         handleLive2dPreference, pendingReminders, openReminderRoute, dismissReminder, clipboardCard, inspectClipboardImage,
-        acceptClipboardCard, dismissClipboardCard, companionMessages, immersiveMessages, toolActivity, thinkingActivity,
+        acceptClipboardCard, dismissClipboardCard, companionMessages, immersiveMessages, hasNewMessages, latestMessages, toolActivity, thinkingActivity,
         chatReady, voiceCapabilityState, preparingRoom, setupTitle, chatProvider, prepareRoom,
         inputText, composerFocused, handleSend, onInputChange, busy, capturingScreen,
         onCaptureAndInspectScreen, voiceActive, stopEverything, speechReady, speechState, speechButtonDisabled,

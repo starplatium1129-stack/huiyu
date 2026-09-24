@@ -457,6 +457,13 @@ html.companion-mode body {
   scrollbar-width: thin;
 }
 
+.companion-page .companion-back-latest {
+  justify-self: end;
+  min-height: 28px;
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+
 .companion-page .companion-empty,
 .companion-page .companion-bubble {
   width: fit-content;

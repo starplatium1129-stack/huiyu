@@ -40,6 +40,13 @@ export interface TaskStorageDiagnostics {
   compaction: { policy: 'retain-tombstones'; safeToDrop: false; reason: string }
 }
 
+export interface TaskSummaryCompactionPlan {
+  eligibleIds: string[]
+  retainedIds: string[]
+  safeToApply: boolean
+  reason: string
+}
+
 interface StoredTaskSnapshot { version: 1; records: unknown[]; deleted: Record<string, number> }
 
 function parseTaskRecord(item: unknown): TaskRecord | null {
@@ -127,6 +134,26 @@ export function taskStorageDiagnostics(now = Date.now()): TaskStorageDiagnostics
       reason: '尚无跨窗口确认水位；墓碑必须保留，不能按数量或年龄直接丢弃以免旧窗口复活已清理摘要。',
     },
   }
+}
+
+/**
+ * Produce a compaction plan only after an external cross-window drain has
+ * been confirmed. The task center never removes tombstones merely because a
+ * count or age threshold was reached.
+ */
+export function planTaskSummaryCompaction(
+  deleted: Record<string, number>,
+  confirmation?: { watermark: number; staleWritersDrained: boolean },
+): TaskSummaryCompactionPlan {
+  const ids = Object.keys(deleted).sort((a, b) => (deleted[a] ?? 0) - (deleted[b] ?? 0))
+  if (!confirmation || !Number.isFinite(confirmation.watermark) || confirmation.watermark <= 0 || !confirmation.staleWritersDrained) {
+    return { eligibleIds: [], retainedIds: ids, safeToApply: false,
+      reason: '需要明确确认水位，并证明旧窗口写入者已排空后才能删除墓碑。' }
+  }
+  const eligibleIds = ids.filter(id => (deleted[id] ?? Infinity) <= confirmation.watermark)
+  const eligible = new Set(eligibleIds)
+  return { eligibleIds, retainedIds: ids.filter(id => !eligible.has(id)), safeToApply: true,
+    reason: '仅删除确认水位之前的墓碑；任务记录和未确认墓碑保持不变。' }
 }
 
 function persist() {

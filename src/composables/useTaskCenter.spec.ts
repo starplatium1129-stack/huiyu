@@ -188,6 +188,15 @@ it('a late stale-window update cannot resurrect a deleted ID even with a newer t
   expect((persisted as { records: unknown[] }).records).toHaveLength(0)
 })
 
+it('compaction requires a confirmed cross-window watermark', async () => {
+  const module = await import('./useTaskCenter')
+  const deleted = { old: 10, recent: 30 }
+  const blocked = module.planTaskSummaryCompaction(deleted)
+  expect(blocked).toMatchObject({ eligibleIds: [], retainedIds: ['old', 'recent'], safeToApply: false })
+  const plan = module.planTaskSummaryCompaction(deleted, { watermark: 20, staleWritersDrained: true })
+  expect(plan).toMatchObject({ eligibleIds: ['old'], retainedIds: ['recent'], safeToApply: true })
+})
+
 it('history retention remains bounded after merging persisted history', async () => {
   let persisted: unknown = []
   storage.get.mockImplementation(async () => structuredClone(persisted))

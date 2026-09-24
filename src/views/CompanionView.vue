@@ -230,6 +230,7 @@
             </div>
           </template>
         </div>
+        <button v-if="hasNewMessages" class="btn btn-ghost btn-sm companion-back-latest" type="button" @click="latestMessages">回到最新</button>
 
         <div v-if="toolActivity || thinkingActivity" class="companion-tool-indicator" role="status">
           <ArchiveIcon :name="toolActivity ? 'gear' : 'spark'" /> {{ toolActivity || '思考中…' }}
@@ -493,6 +494,8 @@ acceptClipboardCard,
 dismissClipboardCard,
 companionMessages,
 immersiveMessages,
+hasNewMessages,
+latestMessages,
 toolActivity,
 thinkingActivity,
 chatReady,
