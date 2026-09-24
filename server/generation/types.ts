@@ -1,6 +1,7 @@
 import type { ImageGenerationConfig, ImageJobInput } from '../../routes/anima/types';
 export interface GenerationConfig extends ImageGenerationConfig {
     SD_HOST: string | URL;
+    SD_API_AUTH?: string;
     RUNTIME_ROOT: string;
 }
 /** Normalized WAI request. Raw network fields are unknown until validation. */
@@ -73,6 +74,11 @@ export interface WebUIJob {
     error: string | null;
     code: string | number | null;
     metadata: Record<string, unknown>;
+    /** Bound at admission: settings changes must not redirect an existing job's interrupt. */
+    connection?: Pick<GenerationConfig, 'SD_HOST' | 'SD_API_AUTH'>;
+    execution?: Promise<void>;
+    cancellation?: Promise<void>;
+    requestAbort?: AbortController;
     queueAbort?: AbortController;
     admissionRelease?: () => void;
     gcTimer?: ReturnType<typeof setTimeout> | null;
