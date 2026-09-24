@@ -76,7 +76,7 @@ function fixture(t: any, withGit: any = true) {
   write('data/character-reference-view.json', { a: { characterId: 'a', displayName: 'A', source: 'fixture', identityProse: 'identity a',
     outfits: [{ outfitId: 'dress', outfitName: 'Dress', prose: 'dress a', isDefault: true, isNsfw: false,
       references: perspectives.map((p) => ({ ...p, pending: true, url: '' })) }] } });
-  write('data/characters.json', [{ id: 'a', name: 'A' }]);
+  write('data/characters.json', [{ id: 'a', name: 'A' }, { id: 'b', name: 'B' }, { id: 'natsume', name: 'Natsume' }]);
   write('src/assets/css/director/tokens.css', '.pb { --character-accent: red; }');
   let base = null;
   if (withGit) {
