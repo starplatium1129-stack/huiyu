@@ -181,7 +181,9 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
   });
 
   router.get('/api/video/jobs/:id/result', function (req, res) {
-    let job = service.get(req.params.id, requestOwner(req));
+    let owner = requestOwner(req);
+    let job = service.get(req.params.id, owner);
+    if (!job && service.getLost(req.params.id, owner)) return envelope.fail(res, 410, '网关重启导致该视频结果丢失；请重新提交', { code:'JOB_LOST' });
     if (!job || job.status !== 'succeeded' || !job.result) {
       return envelope.fail(res, 404, '视频结果不存在', { code:'RESULT_NOT_FOUND' });
     }
