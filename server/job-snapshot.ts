@@ -39,6 +39,7 @@ function toSnapshot(job: SnapshotJob): JobSnapshot {
       width: input.width || null,
       height: input.height || null,
       duration: input.duration || null,
+      family: input.family || null,
     },
   };
 }
