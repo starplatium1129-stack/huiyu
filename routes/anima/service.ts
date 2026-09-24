@@ -12,6 +12,7 @@ let comfyProgress: typeof import('../../server/comfy-progress') = require('../..
 let upstreamHealth: typeof import('../../server/upstream-health') = require('../../server/upstream-health');
 let modelCatalog: typeof import('../../server/anima-model-catalog') = require('../../server/anima-model-catalog');
 let jobRunner: typeof import('../../server/job-runner') = require('../../server/job-runner');
+let jobSnapshot: typeof import('../../server/job-snapshot') = require('../../server/job-snapshot');
 let superres: typeof import('../superres') = require('../superres');
 
 let animaErrors: typeof import('./errors') = require('./errors');
@@ -71,6 +72,9 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
   // poll/cancel 状态机保持本路由引擎专属实现。
   let registry = jobRunner.createJobRegistry<ImageJob<Input>>();
   let jobs = registry.jobs;
+  let runtimeRoot = config.RUNTIME && config.RUNTIME.state ? path.dirname(config.RUNTIME.state) : path.join(config.ROOT_DIR, 'runtime');
+  let snapshots = jobSnapshot.createJobSnapshotStore(path.join(runtimeRoot, 'jobs', mediaNamespace));
+  let lostJobs = snapshots.drain();
   function cleanupOwnedInputs() {
     let activeInputs: Set<string> = new Set();
     jobs.forEach(function (job) {
@@ -384,6 +388,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
       cancelPolling:false
     };
     jobs.set(job.id, job);
+    snapshots.save(job);
     function collect() {
       let current = jobs.get(job.id);
       if (current !== job) return;
@@ -400,6 +405,11 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     return job;
   }
 
+  function getLost(id: unknown, owner: string) {
+    let key = String(id || '');
+    return lostJobs.find(function (job) { return job.id === key && job.owner === owner; }) || null;
+  }
+
   function removeResult(job: ImageJob<Input>) {
     if (job.result && job.result.path) {
       try { fs.unlinkSync(job.result.path); } catch (error) {}
@@ -414,6 +424,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     if (job.gcTimer) { clearTimeout(job.gcTimer); job.gcTimer = null; }
     removeResult(job);
     jobs.delete(job.id);
+    snapshots.remove(job.id);
     cleanupOwnedInputs();
   }
 
@@ -492,6 +503,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
         void requestTargetedCancel(job).catch(function () {});
       }
       removeResult(job);
+      snapshots.remove(job.id);
     });
     jobs.clear();
     cleanupMediaRoot(config, mediaNamespace);
@@ -502,6 +514,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     create:create,
     submit:submit,
     get:get,
+    getLost:getLost,
     cancel:cancel,
     consumeResult:consumeResult,
       publicJob:function (job: ImageJob<Input>) { return publicJob(job, job.input && job.input.family === 'krea2' ? '/api/creative' : routeBase); },

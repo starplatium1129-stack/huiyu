@@ -181,7 +181,9 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
   });
 
   router.get('/api/video/jobs/:id/result', function (req, res) {
-    let job = service.get(req.params.id, requestOwner(req));
+    let owner = requestOwner(req);
+    let job = service.get(req.params.id, owner);
+    if (!job && service.getLost(req.params.id, owner)) return envelope.fail(res, 410, '网关重启导致该视频结果丢失；请重新提交', { code:'JOB_LOST' });
     if (!job || job.status !== 'succeeded' || !job.result) {
       return envelope.fail(res, 404, '视频结果不存在', { code:'RESULT_NOT_FOUND' });
     }
@@ -233,14 +235,18 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
   });
 
   router.get('/api/video/batches/:id', function (req, res) {
-    let batch = batchService.get(req.params.id, requestOwner(req));
+    let owner = requestOwner(req);
+    let batch = batchService.get(req.params.id, owner);
+    if (!batch && batchService.getLost(req.params.id, owner)) return envelope.fail(res, 410, '网关重启导致该分镜任务中断；请重新提交', { code:'BATCH_LOST' });
     if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
     res.setHeader('Cache-Control', 'no-store');
     envelope.ok(res, { batch:batchService.publicBatch(batch) });
   });
 
   router.delete('/api/video/batches/:id', async function (req, res) {
-    let batch = batchService.get(req.params.id, requestOwner(req));
+    let owner = requestOwner(req);
+    let batch = batchService.get(req.params.id, owner);
+    if (!batch && batchService.getLost(req.params.id, owner)) return envelope.fail(res, 410, '该分镜任务已随网关重启中断，无需取消', { code:'BATCH_LOST' });
     if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
     let cancelled = await batchService.cancel(batch);
     envelope.ok(res, { batch:batchService.publicBatch(cancelled) });
@@ -248,7 +254,9 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
 
   // 重抽单个失败/取消分镜（同 seed 确定性复现，不重跑整批）。
   router.post('/api/video/batches/:id/shots/:index/retry', async function (req, res) {
-    let batch = batchService.get(req.params.id, requestOwner(req));
+    let owner = requestOwner(req);
+    let batch = batchService.get(req.params.id, owner);
+    if (!batch && batchService.getLost(req.params.id, owner)) return envelope.fail(res, 410, '网关重启导致该分镜任务中断；请重新提交', { code:'BATCH_LOST' });
     if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
     let index = Number(req.params.index);
     if (!Number.isSafeInteger(index) || index < 1) {
@@ -264,7 +272,9 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
   });
 
   router.post('/api/video/batches/:id/concat', async function (req, res) {
-    let batch = batchService.get(req.params.id, requestOwner(req));
+    let owner = requestOwner(req);
+    let batch = batchService.get(req.params.id, owner);
+    if (!batch && batchService.getLost(req.params.id, owner)) return envelope.fail(res, 410, '网关重启导致该分镜任务中断；请重新提交', { code:'BATCH_LOST' });
     if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
     try {
       await batchService.concat(batch);
@@ -276,7 +286,9 @@ function createVideoRouter(config: VideoConfig, dependencies: VideoRouterDepende
   });
 
   router.get('/api/video/batches/:id/result', function (req, res) {
-    let batch = batchService.get(req.params.id, requestOwner(req));
+    let owner = requestOwner(req);
+    let batch = batchService.get(req.params.id, owner);
+    if (!batch && batchService.getLost(req.params.id, owner)) return envelope.fail(res, 410, '网关重启导致该分镜结果丢失；请重新提交', { code:'BATCH_LOST' });
     if (!batch || !batch.concat) {
       return envelope.fail(res, 404, '拼接结果不存在', { code:'RESULT_NOT_FOUND' });
     }

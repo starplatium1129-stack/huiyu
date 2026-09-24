@@ -20,6 +20,7 @@ let constants: typeof import('./constants') = require('./constants');
 let media: typeof import('./media') = require('./media');
 let validation: typeof import('./validation') = require('./validation');
 let SerialQueue: typeof import('../../services/serial-queue') = require('../../services/serial-queue');
+let jobSnapshot: typeof import('../../server/job-snapshot') = require('../../server/job-snapshot');
 
 let serviceError = errors.serviceError;
 let MODEL_BY_ID = constants.MODEL_BY_ID;
@@ -32,6 +33,9 @@ let TRANSCODE_MAX_PENDING = 4;
 function createBatchService(config: any, videoService: any, dependencies: any) {
   dependencies = dependencies || {};
   let batches = new Map();
+  let runtimeRoot = config.RUNTIME_ROOT || (config.RUNTIME && config.RUNTIME.state ? path.dirname(config.RUNTIME.state) : path.join(config.ROOT_DIR, 'runtime'));
+  let snapshots = jobSnapshot.createJobSnapshotStore(path.join(runtimeRoot, 'jobs', 'video-batch'));
+  let lostBatches = snapshots.drain();
   let closed = false;
   let pollIntervalMs = dependencies.batchPollIntervalMs || 2000;
   let transcodeQueue = new SerialQueue('video-transcode', dependencies.transcodeMaxPending || TRANSCODE_MAX_PENDING);
@@ -115,6 +119,11 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   function get(id: any, owner: any) {
     let batch = batches.get(String(id || ''));
     return batch && batch.owner === owner ? batch : null;
+  }
+
+  function getLost(id: any, owner: any) {
+    let key = String(id || '');
+    return lostBatches.find(function (batch) { return batch.id === key && batch.owner === owner; }) || null;
   }
 
   // 从上一镜结果 MP4 抽取尾帧 → 受控输入文件（供下一镜 FL2VA 尾帧 / I2VA 首帧）。
@@ -268,6 +277,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       if (file) try { fs.unlinkSync(file); } catch (error) {}
     }
     batches.delete(batch.id);
+    snapshots.remove(batch.id);
   }
 
   async function create(owner: any, batchInput: any) {
@@ -313,6 +323,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       kicking:false,
     };
     batches.set(id, batch);
+    snapshots.save({ id:id, owner:owner, createdAt:batch.createdAt, input:{ modelId:batch.modelId, family:'video-batch' } });
     batch.gcTimer = setTimeout(function () { removeBatch(batch); }, BATCH_TTL_MS);
     if (batch.gcTimer.unref) batch.gcTimer.unref();
     void kick(batch);
@@ -440,6 +451,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   return {
     create:create,
     get:get,
+    getLost:getLost,
     cancel:cancel,
     retryShot:retryShot,
     concat:concat,

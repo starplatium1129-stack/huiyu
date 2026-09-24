@@ -11,6 +11,7 @@ export interface SnapshotInput {
   width?: number | null;
   height?: number | null;
   duration?: number | null;
+  family?: string | null;
 }
 
 export interface SnapshotJob {

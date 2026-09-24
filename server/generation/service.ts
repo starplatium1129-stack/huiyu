@@ -1,5 +1,6 @@
 import path = require('node:path');
 import jobRunner = require('../job-runner');
+import jobSnapshot = require('../job-snapshot');
 import animaService = require('../../routes/anima/service');
 const { createAnimaService } = animaService;
 import { error } from './errors';
@@ -21,6 +22,8 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
     // webJob 与 Comfy 分支（anima 服务内部 registry）共用同一套定时器原语。
     let registry = jobRunner.createJobRegistry<WebUIJob>();
     let jobs = registry.jobs;
+    let snapshots = jobSnapshot.createJobSnapshotStore(path.join(config.RUNTIME_ROOT, 'jobs', 'wai-webui'));
+    let lostWebJobs = snapshots.drain();
     // WebUI has no upstream queue contract. Keep its accepted/in-flight work in
     // the same bounded WAI budget instead of acknowledging every request at once.
     let webuiQueue = new SerialQueue('wai-webui', MAX_PENDING);
@@ -70,6 +73,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
     // gcTimer 对齐；结果由 TTL 回收，取图端点只读，不把网络发送完成误当作客户端持久化确认。
     function trackWebJob(webJob: WebUIJob) {
         jobs.set(webJob.id, webJob);
+        snapshots.save(webJob);
         registry.armTimer(webJob, 'gcTimer', WEB_JOB_TTL_MS, function () {
             if (webJob.status === 'queued') {
                 webJob.status = 'cancelled';
@@ -80,6 +84,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             if (webJob.result)
                 webJob.result = null;
             jobs.delete(webJob.id);
+            snapshots.remove(webJob.id);
         }, { unref: true });
         return webJob;
     }
@@ -233,6 +238,11 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             return { provider: 'webui' as const, job };
         throw error(404, 'JOB_NOT_FOUND', '任务不存在');
     }
+    function getLost(id: string, ownerId: string) {
+        const comfyLost = comfy.getLost(id, ownerId);
+        if (comfyLost) return comfyLost;
+        return lostWebJobs.find(function (job) { return job.id === id && job.owner === ownerId; }) || null;
+    }
     function getJob(id: string, ownerId: string) {
         const found = find(id, ownerId);
         if (found.provider === 'comfy')
@@ -294,11 +304,12 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             registry.clearTimer(job, 'gcTimer');
             job.result = null;
             job.status = 'cancelled';
+            snapshots.remove(job.id);
             if (wasQueued)
                 job.admissionRelease?.();
         }
         jobs.clear();
         comfy.close();
     }
-    return { getStatus, submit, getJob, getResult, cancel, close, comfy };
+    return { getStatus, submit, getJob, getResult, getLost, cancel, close, comfy };
 }

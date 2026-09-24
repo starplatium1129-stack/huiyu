@@ -53,6 +53,7 @@ function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima
   let jobLimit = security.rateLimit({ capacity:12, refillMs:5000, label:'Anima 出图' });
   function routeFamily(req: Pick<Request, 'path'>) { return String(req.path || '').startsWith('/api/anima') ? 'anima' : 'creative'; }
   function routeOwnsJob(req: Pick<Request, 'path'>, job: ImageJob | null): job is ImageJob { return Boolean(job) && (routeFamily(req) === 'anima' ? job!.input.family === 'anima' : job!.input.family === 'krea2'); }
+  function routeOwnsLost(req: Pick<Request, 'path'>, job: ReturnType<typeof service.getLost>) { return Boolean(job) && (routeFamily(req) === 'anima' ? job!.input?.family === 'anima' : job!.input?.family === 'krea2'); }
 
   router.get(['/api/anima/status', '/api/creative/status'], function (req, res) {
     service.probe().then(function (online) {
@@ -120,8 +121,12 @@ function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima
   });
 
   router.get(['/api/anima/jobs/:id/result', '/api/creative/jobs/:id/result'], function (req, res) {
-    let job = service.get(req.params.id, requestOwner(req));
-    if (!routeOwnsJob(req, job)) return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
+    let owner = requestOwner(req);
+    let job = service.get(req.params.id, owner);
+    if (!routeOwnsJob(req, job)) {
+      if (routeOwnsLost(req, service.getLost(req.params.id, owner))) return envelope.fail(res, 410, '网关重启导致该生成任务中断，结果已丢失；请重新提交', { code:'JOB_LOST' });
+      return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
+    }
     if (job.resultConsumed) return envelope.fail(res, 404, '结果已消费或不存在', { code:'RESULT_NOT_FOUND' });
     if (job.status !== 'succeeded' || !job.result) {
       return envelope.fail(res, job.status === 'failed' ? 502 : 409,
@@ -152,15 +157,23 @@ function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima
   });
 
   router.get(['/api/anima/jobs/:id', '/api/creative/jobs/:id'], function (req, res) {
-    let job = service.get(req.params.id, requestOwner(req));
-    if (!routeOwnsJob(req, job)) return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
+    let owner = requestOwner(req);
+    let job = service.get(req.params.id, owner);
+    if (!routeOwnsJob(req, job)) {
+      if (routeOwnsLost(req, service.getLost(req.params.id, owner))) return envelope.fail(res, 410, '网关重启导致该生成任务中断；请重新提交', { code:'JOB_LOST' });
+      return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
+    }
     res.setHeader('Cache-Control', 'no-store');
     return envelope.ok(res, { job:service.publicJob(job) });
   });
 
   router.delete(['/api/anima/jobs/:id', '/api/creative/jobs/:id'], async function (req, res) {
-    let job = service.get(req.params.id, requestOwner(req));
-    if (!routeOwnsJob(req, job)) return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
+    let owner = requestOwner(req);
+    let job = service.get(req.params.id, owner);
+    if (!routeOwnsJob(req, job)) {
+      if (routeOwnsLost(req, service.getLost(req.params.id, owner))) return envelope.fail(res, 410, '该生成任务已随网关重启中断，无需取消', { code:'JOB_LOST' });
+      return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
+    }
      let cancelled = await service.cancel(job);
      res.status(cancelled.status === 'cancelling' ? 202 : 200);
      return envelope.ok(res, { job:service.publicJob(cancelled) });

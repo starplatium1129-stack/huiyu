@@ -17,7 +17,7 @@ function sampleJob(overrides: any = {}) {
     owner: 'local',
     createdAt: 1730000000000,
     estimatedSeconds: 180,
-    input: { modelId: 'h3-native', width: 832, height: 480, duration: 5 },
+    input: { modelId: 'h3-native', width: 832, height: 480, duration: 5, family: 'video' },
   }, overrides);
 }
 
@@ -31,7 +31,7 @@ test('save 写入快照且不落提示词/Token', () => {
     const parsed = JSON.parse(fs.readFileSync(path.join(dir, files[0]), 'utf8'));
     assert.strictEqual(parsed.id, 'v-1730000000-ab12');
     assert.strictEqual(parsed.status, 'running');
-    assert.deepStrictEqual(Object.keys(parsed.input), ['modelId', 'width', 'height', 'duration']);
+    assert.deepStrictEqual(Object.keys(parsed.input), ['modelId', 'width', 'height', 'duration', 'family']);
     assert.ok(!JSON.stringify(parsed).includes('prompt'));
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -104,6 +104,7 @@ test('toSnapshot 输出公开字段白名单', () => {
   const snap = toSnapshot(sampleJob());
   assert.deepStrictEqual(Object.keys(snap), ['id', 'owner', 'status', 'createdAt', 'estimatedSeconds', 'input']);
   assert.strictEqual(snap.owner, 'local');
+  assert.strictEqual(snap.input?.family, 'video');
 });
 
 test('未配置目录时退化为无操作存根', () => {
