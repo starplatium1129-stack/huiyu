@@ -6,13 +6,13 @@ import type { SceneMaintenanceDeps } from './useSceneMaintenance'
 import type { SceneMaintenanceSnapshot, SceneDraft } from '@/types/api'
 
 const mock = vi.hoisted(() => ({
-  getState: vi.fn(), load: vi.fn(), reload: vi.fn(), confirm: vi.fn(),
+  getState: vi.fn(), load: vi.fn(), reload: vi.fn(), loadMetadata: vi.fn(async () => {}), confirm: vi.fn(),
   saveChanges: vi.fn(), preview: vi.fn(),
   maintenanceDeps: null as unknown as SceneMaintenanceDeps,
 }))
 vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { getScenesState: mock.getState, saveSceneChanges: mock.saveChanges, previewSceneChanges: mock.preview } }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({
-  load: mock.load, reload: mock.reload, popularCharacters: [], sceneBlueprints: [],
+  load: mock.load, reload: mock.reload, loadMetadata: mock.loadMetadata, popularCharacters: [], sceneBlueprints: [],
   scenes: [{ id: 'sc001', title: 'stale cache' }], tags: [], curation: {},
 }) }))
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: mock.confirm }))
@@ -49,13 +49,23 @@ describe('scene editor snapshot loading', () => {
     expect(workspace.scenes.value[0].title).toBe('current')
     expect(mock.maintenanceDeps.baseVersion()).toBe(7)
     expect(mock.load).not.toHaveBeenCalled()
-    expect(mock.reload).toHaveBeenCalledTimes(1)
+    expect(mock.reload).not.toHaveBeenCalled()
+    expect(mock.loadMetadata).toHaveBeenCalledWith(true)
     workspace.dirty.value = true
     mock.confirm.mockResolvedValue(false)
     await workspace.loadFromStore(true)
     expect(mock.getState).toHaveBeenCalledTimes(1)
     expect(workspace.dirty.value).toBe(true)
   })
+  it('keeps the authoritative snapshot when auxiliary metadata fails', async () => {
+    mock.loadMetadata.mockRejectedValueOnce(new Error('metadata offline'))
+    const workspace = setup()
+    await flushPromises()
+    expect(workspace.scenes.value[0].title).toBe('current')
+    expect(workspace.loadError.value).toBe('')
+    expect(workspace.dirty.value).toBe(false)
+  })
+
   it('does not turn a failed state request into a writable cached baseline', async () => {
     mock.getState.mockRejectedValue(new Error('offline'))
     const workspace = setup()

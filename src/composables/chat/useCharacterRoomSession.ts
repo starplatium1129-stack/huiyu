@@ -480,10 +480,11 @@ export function useCharacterRoomSession() {
     if (!confirmed) return
     if (disposed || activeChar.value !== targetCharacter) return
     if (busy.value) abortCurrentRequest(true)
-    const mids = messages.map(message => message.mid).filter(Boolean)
+    if (!storage.clear(targetCharacter)) return setError('清空未完成，原对话已保留；请检查浏览器存储后重试。', 'warning', 0)
+    clearDraftInput()
+    storage.setDraft(targetCharacter, '')
     voice.stop({ preserveMessageAudio: true, silent: true })
-    voice.clearMessages(mids)
-    storage.clear(targetCharacter)
+    voice.clearMessages(messages.map(message => message.mid).filter(Boolean))
     setError('已开始新的本地对话。', 'info', 2500)
   }
 

@@ -560,8 +560,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         timeoutMs: 30_000,
       })
       if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
-      if (serial !== requestSerial) {
+      if (controller.signal.aborted || serial !== requestSerial) {
+        // A cancel can race the POST response. Once the server has accepted a
+        // job, delete that late job instead of leaving an unowned GPU task.
         void client.request(jobPath(activeFamily, data.job.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
+        if (serial === requestSerial && controller.signal.aborted) {
+          patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
+        }
         return
       }
       const metadata = metadataFromJob(data.job, request)
@@ -569,6 +574,10 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       await pollJob(data.job.id, request, serial, controller.signal)
     } catch (error) {
       if (serial !== requestSerial) return
+      if (controller.signal.aborted) {
+        patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
+        return
+      }
       if (error instanceof ApiClientError && error.kind === 'aborted') return
       patchState(failurePatch(error, '生成失败'))
     } finally {
@@ -579,7 +588,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   async function cancel(): Promise<void> {
     const job = state.value.job
     if (!job && state.value.phase === 'submitting') {
-      options.flash('任务正在登记，取得任务编号后即可安全取消')
+      // Abort the registration request as well. If the server has already
+      // accepted it, generate() sees the aborted signal and deletes the late
+      // job id as soon as the response arrives.
+      jobRequest?.abort()
+      patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
       return
     }
     if (!job || !['running', 'cancelling'].includes(state.value.phase)) return

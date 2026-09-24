@@ -418,8 +418,10 @@ export function useShotWorkspace(props: {
     });
     // 批次提交成功即记录 batchId；重连/新提交都会刷新这份记录。
     watch(() => batch.value?.id, (id) => {
-        if (id)
-            videoStore.recordShotsBatch({ batchId: id, submittedAt: Date.now() });
+        if (!id) return
+        if (!videoStore.recordShotsBatch({ batchId: id, submittedAt: Date.now() })) {
+            batchError.value = '分镜批次已提交，但批次记录保存失败；离开本页将无法自动重连，请保留当前页面并重试。'
+        }
     });
     onMounted(() => {
         void (async () => {

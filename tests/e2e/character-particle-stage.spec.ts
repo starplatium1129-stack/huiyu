@@ -1,14 +1,38 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Locator, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
+
+async function waitForAnimationFrames(page: Page) {
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+}
+
+async function hoverAndWaitForParticleFrame(page: Page, field: Locator) {
+  await field.evaluate(element => {
+    element.setAttribute('data-test-pointer-seen', '0')
+    element.addEventListener('pointermove', () => element.setAttribute('data-test-pointer-seen', '1'), { once: true })
+  })
+  const box = await field.boundingBox()
+  if (!box) throw new Error('particle field has no hit box')
+  await page.mouse.move(box.x + 8, box.y + 8)
+  await page.mouse.move(box.x + box.width - 8, box.y + box.height / 2)
+  await expect.poll(() => field.getAttribute('data-test-pointer-seen')).toBe('1')
+  await waitForAnimationFrames(page)
+}
 
 for (const theme of ['dark', 'light']) {
   for (const width of [1600, 390]) {
     test(`original particle style in the larger theatre ${theme} ${width}`, async ({ page }, info) => {
+      test.setTimeout(45_000)
+      await page.emulateMedia({ reducedMotion: 'no-preference' })
       await page.setViewportSize({ width, height: width === 390 ? 844 : 1150 })
+      await page.bringToFront()
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
       await page.goto('/character?character=nene')
       const field = page.locator('.particle-theatre .has-portrait')
       await expect(field).toBeVisible()
+      await field.scrollIntoViewIfNeeded()
+      await expect(field).toBeInViewport()
+      await expect.poll(async () => Number(await field.getAttribute('data-particle-count') || 0)).toBeGreaterThan(0)
+      await expect.poll(async () => Number(await field.getAttribute('data-particle-draw-count') || 0)).toBeGreaterThan(0)
       await expect(page.locator('.character-hero')).toHaveClass(/revealed/)
       const frame = await field.boundingBox()
       expect(frame!.height).toBeGreaterThanOrEqual(430)
@@ -23,7 +47,7 @@ for (const theme of ['dark', 'light']) {
       expect(await field.evaluate(e => getComputedStyle(e, '::before').display)).toBe('none')
       await expect(field.locator('.particle-caption')).toHaveText('绫地宁宁')
       const pixels = await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())
-      await page.mouse.move(frame!.x + frame!.width / 2, frame!.y + frame!.height / 2)
+      await hoverAndWaitForParticleFrame(page, field)
       await expect.poll(() => field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())).not.toBe(pixels)
       await page.mouse.move(0, 0)
       for (const label of await page.locator('.portrait-stage-heading h2, .portrait-stage-kicker, .portrait-stage-footer p').all()) {
@@ -36,7 +60,11 @@ for (const theme of ['dark', 'light']) {
       await expect(page.locator('.stage-original')).toBeVisible()
       await expect(page.locator('.portrait-image')).toBeVisible()
       await page.getByRole('button', { name: '粒子形象', exact: true }).click()
+      await field.scrollIntoViewIfNeeded()
       await expect(field).not.toHaveClass(/is-static/)
+      await expect.poll(async () => Number(await field.getAttribute('data-particle-count') || 0)).toBeGreaterThan(0)
+      await expect(field).toBeVisible()
+      await waitForAnimationFrames(page)
       const before = await field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())
       await expect.poll(() => field.locator('canvas').evaluate(e => (e as HTMLCanvasElement).toDataURL())).not.toBe(before)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)

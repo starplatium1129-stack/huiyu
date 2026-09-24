@@ -35,7 +35,7 @@ export interface SDQueueJob {
 }
 
 export interface SDJobOutcome {
-  status: 'success' | 'cancelled' | 'failure'
+  status: 'success' | 'success-with-warning' | 'cancelled' | 'failure'
   error?: unknown
 }
 
@@ -113,12 +113,15 @@ export function useSDQueue(options: {
 
     try {
       const outcome = await run(job)
-      if (!outcome || outcome.status !== 'success') {
+      if (outcome?.status === 'success') {
+        done.value += 1
+      } else if (outcome?.status === 'success-with-warning') {
+        done.value += 1
+        onFlash(String(outcome.error || '任务完成，但结果未能写入作品册'))
+      } else {
         retain(outcome?.status === 'cancelled'
           ? '队列已停止并暂停，当前任务已保留'
           : '队列已暂停，失败任务已保留在队首')
-      } else {
-        done.value += 1
       }
     } catch (e) {
       console.error('queue task failed unexpectedly', e)

@@ -42,7 +42,7 @@
   - 噪点：A 暗部有扩散微噪点/色块伪影，B 纯净无斑点；
   - 整体：A 像「未消噪的半成品」、磨砂厚涂感杂质多，B 达商业轻小说插画成品级。
 - **Anima 真机对比（2026-08-20）**：`node scripts/maintenance/compare-hires-anima.js`（anima-aesthetic-v1.1, 2×, teaCache off）同 seed 出 `anima-A_latent_bicubic.png` 与 `anima-B_remacri_superres.png`（均 1664×2432），image-inspect group 终审结论「B 显著优于 A」——线稿锐利、五官聚焦、色块纯净、发丝/配饰轮廓结实，无硬伤。Anima 链路 Remacri 生效有据。
-- ⚠️ key 修正记录：image-inspect 默认 key 曾为 `sk-local-proxy-key-2024`（已失效）；CLIProxyAPI 今日更换了 api-keys（明文见 `E:\code\反代\EasyCLIProxyAPI-*\cpa-core\config.yaml` 的 api-keys 段，此处刻意不抄录）。2026-08-22 安全清理：key 不再硬编码进脚本或文档，改为 `VISION_API_KEY` 环境变量或 gitignored 的 `runtime/vision-api-key.txt` 首行提供。手抄 key 曾因抄错一位导致 401，须以 config.yaml 原文为准。
+- ⚠️ key 修正记录：image-inspect 曾使用一枚已轮换的本地代理占位 key（具体值已从文档移除）；CLIProxyAPI 今日更换了 api-keys（明文见 `E:\code\反代\EasyCLIProxyAPI-*\cpa-core\config.yaml` 的 api-keys 段，此处刻意不抄录）。2026-08-22 安全清理：key 不再硬编码进脚本或文档，改为 `VISION_API_KEY` 环境变量或 gitignored 的 `runtime/vision-api-key.txt` 首行提供。手抄 key 曾因抄错一位导致 401，须以 config.yaml 原文为准。
 
 ## 踩坑
 

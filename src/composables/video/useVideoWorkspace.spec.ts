@@ -58,6 +58,14 @@ describe('video submission recovery', () => {
     expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({ prompt: 'A calm afternoon by the window', duration: 3 }))
     expect(mocks.record).toHaveBeenCalledWith(expect.objectContaining({ mode: 'text' }))
   })
+  it('reports when an accepted video job cannot be recorded for reconnect', async () => {
+    mocks.frames.mockResolvedValueOnce({})
+    mocks.create.mockResolvedValueOnce({ job: { id: 'unrecorded', status: 'succeeded' } })
+    mocks.record.mockReturnValueOnce(false)
+    const workspace = await setup()
+    await workspace.submitVideo()
+    expect(workspace.statusError.value).toContain('任务记录保存失败')
+  })
   it('keeps the submission failure visible after refreshing environment status', async () => {
     mocks.frames.mockResolvedValueOnce({})
     mocks.create.mockRejectedValueOnce(new Error('测试提交失败'))

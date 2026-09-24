@@ -9,13 +9,11 @@
 /** 本机 CLIProxyAPI 网关（CPA-Manager-Plus / CLIProxyAPI 管理的本地多账号代理） */
 export const CLIPROXY_BASE_URL = 'http://127.0.0.1:8317/v1'
 /**
- * 密钥不入库（2026-08-31 七维审计 P1）：.env* 已 .gitignore，本机在项目根
- * `.env.local` 写 `VITE_CLIPROXY_API_KEY=sk-xxx` 即可在 dev/build 时注入
- * （Vite 静态内联，桌面部署随 dist 生效）。未配置时为空串，此时走
- * ChatApiSettings 手填或网关侧配置。注意：历史提交中曾有旧默认值，需要
- * 彻底轮换时在 CLIProxyAPI 侧改管理 key 后同步更新 .env.local。
+ * 聊天密钥不得通过 VITE_* 注入：Vite 会把这类值内联到浏览器包，任何拿到
+ * dist 的人都能读取。默认保持为空，用户通过 ChatApiSettings 的安全凭据
+ * 存储手动配置；网关侧托管配置也继续优先。
  */
-export const CLIPROXY_API_KEY: string = import.meta.env.VITE_CLIPROXY_API_KEY || ''
+export const CLIPROXY_API_KEY = ''
 export const CLIPROXY_DEFAULT_MODEL = 'gemini-3.6-flash-high'
 
 export const DEEPSEEK_BASE_URL = 'https://api.deepseek.com'

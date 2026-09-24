@@ -250,7 +250,8 @@ function createInterrogateRouter(config: any) {
   let router = express.Router();
   let limit = security.rateLimit({ capacity: 12, refillMs: 5000, label: '反推' });
 
-  router.post('/api/interrogate', limit, express.json({ limit: MAX_BODY }), async function (req, res) {
+  // 反推会上传图片并触发本机模型/临时文件写入；远程隧道不得借用本机权限。
+  router.post('/api/interrogate', security.localOnly, limit, express.json({ limit: MAX_BODY }), async function (req, res) {
     try {
       let body = req.body;
       if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON');
@@ -320,7 +321,7 @@ function createInterrogateRouter(config: any) {
   });
 
   // 轻量探测：前端据此决定显示 本地/WD14/启发式 徽标
-  router.get('/api/interrogate/status', function (req, res) {
+  router.get('/api/interrogate/status', security.localOnly, function (req, res) {
     res.setHeader('Cache-Control', 'no-store');
     return envelope.ok(res, {
       local: true,

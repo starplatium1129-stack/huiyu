@@ -15,9 +15,6 @@ import {
 } from 'reka-ui'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { useAnchoredSurfaceMotion } from '@/composables/useAnchoredSurfaceMotion'
-
-const surfaceMotion = useAnchoredSurfaceMotion('select')
 
 /**
  * 选项值允许字符串或数字：调用方既有角色/场景 id，也有 1.5× 这类倍率与页码。
@@ -136,47 +133,44 @@ onMounted(() => {
       </StudioTooltip>
 
       <SelectPortal :to="portalTarget">
-        <Transition :css="false" @enter="surfaceMotion.enter" @leave="surfaceMotion.leave"
-          @after-leave="surfaceMotion.afterLeave">
-          <SelectContent position="popper" align="start" :side-offset="6" :collision-padding="12" class="studio-select-content">
-            <SelectViewport class="studio-select-viewport">
-              <template v-if="groups">
-                <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">
-                  <SelectLabel class="studio-select-group-label">{{ group.label }}</SelectLabel>
-                  <SelectItem
-                    v-for="option in group.options"
-                    :key="keyOf(option.value)"
-                    :value="keyOf(option.value)"
-                    :disabled="option.disabled"
-                    class="studio-select-item"
-                  >
-                    <!-- data-value 与原生 option 的 value 语义一致，e2e 按值选择靠它定位。
-                         SelectItem 外面还包着 CollectionItem，属性透传不保证，所以挂在
-                         SelectItemText 上（该组件显式透传 $attrs）。 -->
-                    <SelectItemText :data-value="String(option.value)">{{ option.label }}</SelectItemText>
-                    <SelectItemIndicator class="studio-select-check">
-                      <ArchiveIcon name="success" />
-                    </SelectItemIndicator>
-                  </SelectItem>
-                </SelectGroup>
-              </template>
-              <template v-else>
+        <SelectContent position="popper" align="start" :side-offset="6" :collision-padding="12" class="studio-select-content">
+          <SelectViewport class="studio-select-viewport">
+            <template v-if="groups">
+              <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">
+                <SelectLabel class="studio-select-group-label">{{ group.label }}</SelectLabel>
                 <SelectItem
-                  v-for="option in options"
+                  v-for="option in group.options"
                   :key="keyOf(option.value)"
                   :value="keyOf(option.value)"
                   :disabled="option.disabled"
                   class="studio-select-item"
                 >
+                  <!-- data-value 与原生 option 的 value 语义一致，e2e 按值选择靠它定位。
+                       SelectItem 外面还包着 CollectionItem，属性透传不保证，所以挂在
+                       SelectItemText 上（该组件显式透传 $attrs）。 -->
                   <SelectItemText :data-value="String(option.value)">{{ option.label }}</SelectItemText>
                   <SelectItemIndicator class="studio-select-check">
                     <ArchiveIcon name="success" />
                   </SelectItemIndicator>
                 </SelectItem>
-              </template>
-            </SelectViewport>
-          </SelectContent>
-        </Transition>
+              </SelectGroup>
+            </template>
+            <template v-else>
+              <SelectItem
+                v-for="option in options"
+                :key="keyOf(option.value)"
+                :value="keyOf(option.value)"
+                :disabled="option.disabled"
+                class="studio-select-item"
+              >
+                <SelectItemText :data-value="String(option.value)">{{ option.label }}</SelectItemText>
+                <SelectItemIndicator class="studio-select-check">
+                  <ArchiveIcon name="success" />
+                </SelectItemIndicator>
+              </SelectItem>
+            </template>
+          </SelectViewport>
+        </SelectContent>
       </SelectPortal>
     </SelectRoot>
   </div>
@@ -263,6 +257,10 @@ onMounted(() => {
   box-shadow: var(--shadow-lg);
   color: var(--text-primary);
 }
+.studio-select-content[data-state='open'] { animation:studio-select-in var(--motion-surface) var(--ease-out) both; }
+.studio-select-content[data-state='closed'] { animation:studio-select-out var(--motion-hover) var(--ease-out) both; }
+@keyframes studio-select-in { from { opacity:0; transform:translateY(-3px) scale(.98); } to { opacity:1; transform:none; } }
+@keyframes studio-select-out { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-2px) scale(.99); } }
 .studio-select-viewport {
   max-height: min(280px, calc(var(--reka-select-content-available-height, 320px) - 16px));
   overflow-y: auto;
@@ -320,6 +318,7 @@ onMounted(() => {
 }
 @media (prefers-reduced-motion: reduce) {
   .studio-select-icon { transition: none; }
+  .studio-select-content[data-state] { animation: none; }
 }
 @media (forced-colors: active) {
   .studio-select-content { background: Canvas; border-color: CanvasText; }

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { installSceneStateFixture } from './helpers/sceneState';
 
 /**
  * 无障碍与多设备回归（Vue SPA 版本）
@@ -74,6 +75,10 @@ for (const entry of layoutRoutes) {
 }
 
 test('every route keeps exactly one h1', async ({ page }) => {
+  // This is a route-shell audit: wait for the app's heading, not for every
+  // optional image/catalog request to finish while 15 routes share workers.
+  test.setTimeout(60_000)
+  await installSceneStateFixture(page)
   const titles: Record<string, string> = {
     '/': '绘遇', '/prompt-builder': '绘制工作台 · 绘遇', '/gallery': '我的作品 · 绘遇',
     '/scene-explorer': '灵感场景 · 绘遇', '/showcase': '参考画册 · 绘遇', '/chat': '角色房间 · 绘遇',
@@ -87,8 +92,8 @@ test('every route keeps exactly one h1', async ({ page }) => {
     { path: '/control', name: 'control' },
     ...['scene-manager', 'character', 'color-script', 'lora', 'style'].map(name => ({ path: '/' + name, name })),
   ]) {
-    await page.goto(entry.path);
-    await expect(page.getByRole('heading', { level: 1 }), `${entry.name} must have a single h1`).toHaveCount(1);
+    await page.goto(entry.path, { waitUntil: 'domcontentloaded' });
+    await expect(page.getByRole('heading', { level: 1 }), `${entry.name} must have a single h1`).toHaveCount(1, { timeout: 15_000 });
     await expect(page).toHaveTitle(titles[entry.path] || /绘遇/);
   }
 });

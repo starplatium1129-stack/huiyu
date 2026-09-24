@@ -47,21 +47,15 @@
     <!-- 缩放控制始终可见，键盘和触摸用户不必先猜测手势。 -->
     <div class="zoom-controls" role="group" aria-label="图片缩放控制" @pointerdown.stop @dblclick.stop>
       <span class="zoom-level" aria-live="polite">{{ Math.round(scale * 100) }}%</span>
-      <StudioTooltip content="放大">
-        <button type="button" class="zoom-control" aria-label="放大图片" @pointerdown.stop @click.stop="zoomIn">
-          <ArchiveIcon name="expand" />
-        </button>
-      </StudioTooltip>
-      <StudioTooltip content="缩小">
-        <button type="button" class="zoom-control" aria-label="缩小图片" @pointerdown.stop @click.stop="zoomOut">
-          <ArchiveIcon name="compress" />
-        </button>
-      </StudioTooltip>
-      <StudioTooltip content="还原 100%">
-        <button type="button" class="zoom-control btn-reset-zoom" aria-label="还原图片缩放" @pointerdown.stop @click.stop="resetZoom">
-          <ArchiveIcon name="refresh" />
-        </button>
-      </StudioTooltip>
+      <button type="button" class="zoom-control" aria-label="放大图片" @pointerdown.stop @click.stop="zoomIn">
+        <ArchiveIcon name="expand" />
+      </button>
+      <button type="button" class="zoom-control" aria-label="缩小图片" @pointerdown.stop @click.stop="zoomOut">
+        <ArchiveIcon name="compress" />
+      </button>
+      <button type="button" class="zoom-control btn-reset-zoom" aria-label="还原图片缩放" @pointerdown.stop @click.stop="resetZoom">
+        <ArchiveIcon name="refresh" />
+      </button>
     </div>
     <div v-if="scale <= 1.01" class="zoom-hint">
       双击或滚轮放大查看细节
@@ -72,7 +66,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const props = defineProps<{
   src: string

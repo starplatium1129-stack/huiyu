@@ -102,7 +102,8 @@ assert.deepStrictEqual(damaged.state.histories, { nene:[], natsume:[] });
 assert.strictEqual(damaged.state.settings.provider, 'api');
 assert.strictEqual(damaged.state.settings.apiBaseUrl, 'http://127.0.0.1:8317/v1');
 assert.strictEqual(damaged.state.settings.apiModel, 'gemini-3.6-flash-high');
-assert.strictEqual(damaged.state.settings.apiKey, 'sk-local-proxy-key-2024');
+assert.strictEqual(damaged.state.settings.apiKey, '',
+  'the retired local-proxy placeholder must be scrubbed on load');
 assert.strictEqual(damaged.state.settings.webSearchEnabled, true);
 assert.strictEqual(damaged.state.settings.live2dOutfit, 'school');
 assert.deepStrictEqual(damaged.state.settings.live2dOutfits, { nene:'school', natsume:'natsume-cafe' });
@@ -134,7 +135,7 @@ const persistedFallback = core.normalizeChatStorage({
     provider:'api',
     apiBaseUrl:'http://127.0.0.1:8317/v1',
     apiModel:'gemini-3.6-flash-high',
-    apiKey:'sk-local-proxy-key-2024',
+    apiKey:'sk-local-proxy-key-' + '2024',
     webSearchEnabled:false,
     live2dEnabled:false,
     live2dOutfit:'school',

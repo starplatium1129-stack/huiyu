@@ -413,7 +413,10 @@ async function submitVideo() {
     const response = await createVideoJob({ ...request, ...frames })
     job.value = response.job
     // 任务记录（F1）：离页后按 jobId 重连真实状态。
-    useVideoStore().recordVideoTask({ jobId: response.job.id, mode, submittedAt: Date.now() })
+    const recorded = useVideoStore().recordVideoTask({ jobId: response.job.id, mode, submittedAt: Date.now() })
+    if (!recorded) {
+      statusError.value = '视频任务已提交，但任务记录保存失败；离开本页将无法自动重连，请保留当前页面并重试。'
+    }
     schedulePoll()
   } catch (error) {
     // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；

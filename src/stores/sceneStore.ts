@@ -232,11 +232,11 @@ export const useSceneStore = defineStore('scenes', () => {
     if (!result.ok) throw result.error
   }
 
-  async function loadMeta(force = false, lite = false): Promise<void> {
+  async function loadMeta(force = false, lite = false, only?: ReadonlySet<string>): Promise<void> {
     const epoch = loadEpoch
     const requestVersion = version.value
     if (!force && metaLoadedEpoch === epoch) return
-    const specs = lite ? META_SPECS.filter((spec) => spec.lite) : META_SPECS
+    const specs = only ? META_SPECS.filter((spec) => only.has(spec.file)) : lite ? META_SPECS.filter((spec) => spec.lite) : META_SPECS
     const requests = specs.map((spec) => loadMetaSpec(spec, epoch, requestVersion, force))
     const results = await Promise.all(requests.filter((_request, index) => specs[index].required))
     if (epoch !== loadEpoch) return
@@ -433,6 +433,24 @@ export const useSceneStore = defineStore('scenes', () => {
     return load(true)
   }
 
+  /** 角色档案首屏壳：只取角色目录与热门角色，不等待场景/蓝图大资源。 */
+  function loadCharacterShell(force = false): Promise<void> {
+    if (force) {
+      beginNewEpoch()
+      inflightByKey.delete('character-shell')
+    }
+    return loadMeta(force, false, new Set(['characters.json', 'popular-characters.json']))
+  }
+
+  /** 场景维护只需要角色元数据；不要为一个编辑器首屏拉取三份场景分片。 */
+  function loadMetadata(force = false): Promise<void> {
+    if (force) {
+      beginNewEpoch()
+      inflightByKey.delete('metadata')
+    }
+    return loadMeta(force, true)
+  }
+
   /**
    * 目录页轻载（审计 2026-09-05 P2-02）：首页与全局搜索只吃 curation/角色目录/索引
    * 与三分片；3.4MB 场景蓝图与 prompt 元数据不在此拉取，由创作页的 load()/
@@ -461,6 +479,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, byId, count,
+    load, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, byId, count,
   }
 })

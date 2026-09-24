@@ -352,7 +352,7 @@ test('data-saving mode avoids speculative imports but allows normal navigation',
   expect(requests.some(url => /SceneExplorerView-[^/]+\.js/.test(url))).toBe(false)
   await link.click()
   await expect(page).toHaveURL(/scene-explorer$/)
-  await expect(page.locator('main h1')).toBeVisible()
+  await expect(page.locator('.page-main > .route-view[data-route-path="/scene-explorer"] h1')).toBeVisible()
 })
 
 test('committed route intent prewarms bounded core data and showcase thumbnails', async ({ page }) => {

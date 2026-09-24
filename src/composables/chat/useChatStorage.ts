@@ -565,7 +565,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     // Preserve a clear made by another tab for a different character before
     // applying this character's clear. localStorage access is synchronous, so
     // the read and the following write are one uninterrupted mutation.
-    if (char) mergeRemoteIntoState()
+    if (char && !mergeRemoteIntoState()) return false
+    const previous = {
+      histories: { ...state.histories },
+      historiesRevision: state.historiesRevision,
+      historiesRevisions: { ...state.historiesRevisions },
+    }
     if (char) { state.histories[char] = [] }
     else { for (const k of characterIds) state.histories[k] = [] }
     // Advance the tombstone before persisting. A delayed save from a tab that
@@ -574,7 +579,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.historiesRevision = nextRevision
     if (char) state.historiesRevisions[char] = Math.max((state.historiesRevisions[char] || 0) + 1, nextRevision)
     else for (const key of characterIds) state.historiesRevisions[key] = nextRevision
-    save(false)
+    if (save(false)) return true
+    // A failed localStorage write must not make the current tab look cleared.
+    state.histories = previous.histories
+    state.historiesRevision = previous.historiesRevision
+    state.historiesRevisions = previous.historiesRevisions
+    return false
   }
 
   return {

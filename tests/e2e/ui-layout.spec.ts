@@ -1,5 +1,6 @@
 import { test, expect, type Locator, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
+import { installSceneStateFixture } from './helpers/sceneState'
 
 const base = process.env.AICS_UI_AUDIT_URL || ''
 const routes = ['/', '/scene-explorer', '/popular-scenes', '/prompt-builder', '/video-studio', '/chat', '/showcase', '/gallery', '/character', '/style', '/lora', '/scene-manager', '/color-script', '/scenario', '/companion', '/companion-chat', '/control']
@@ -8,6 +9,7 @@ async function open(page: Page, route: string, theme: string, width: number, hei
   await page.setViewportSize({ width, height })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+  if (route === '/scene-manager') await installSceneStateFixture(page)
   await page.goto(base + route, { waitUntil: 'domcontentloaded' })
   await expect(page.locator('h1').first()).toBeVisible()
 }

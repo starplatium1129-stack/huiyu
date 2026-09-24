@@ -85,6 +85,17 @@ describe('useSDQueue · 批次进度计数（F6）', () => {
     expect(q.done.value).toBe(2)
   })
 
+  it('入册警告仍计为生成完成，并把恢复提示交给调用方', async () => {
+    const warnings: string[] = []
+    const { run, settleActive } = controllableRunner()
+    const q = useSDQueue({ run, onFlash: message => warnings.push(message) })
+    q.enqueue(makeJob('A'))
+    await settleActive({ status: 'success-with-warning', error: '成片未能入册' })
+    expect(q.done.value).toBe(1)
+    expect(q.paused.value).toBe(false)
+    expect(warnings).toContain('成片未能入册')
+  })
+
   it('途中追加：本轮总量随追加增长，完成数不回退', async () => {
     const { run, settleActive } = controllableRunner()
     const q = useSDQueue({ run })

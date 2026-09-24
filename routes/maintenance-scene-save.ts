@@ -29,6 +29,16 @@ function conflictSummary(current: any, incoming: any, baseVersion: any, currentV
 function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged, unavailable,
   maintenanceSnapshot, runMaintenanceChecks, runNodeScript, syncVersion, timeoutMs }: any) {
   const leaseOptions = { rootDir: cfg.ROOT_DIR, runtimeRoot: cfg.RUNTIME_ROOT, showcaseRoot: cfg.SCENE_SHOWCASE_DIR };
+  let sceneStateCache: { root: string; version: number; value: any } | null = null;
+  function invalidateSceneStateCache() { sceneStateCache = null; }
+  function readSceneStateCached() {
+    const version = sceneContentVersion(cfg.ROOT_DIR);
+    if (sceneStateCache && sceneStateCache.root === cfg.ROOT_DIR && sceneStateCache.version === version)
+      return sceneStateCache.value;
+    const value = readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite, leaseOptions);
+    sceneStateCache = { root: cfg.ROOT_DIR, version, value };
+    return value;
+  }
 
   async function save(req: any, res: any, mode: any) {
     if (packaged(cfg)) return unavailable(req, res);
@@ -140,14 +150,19 @@ function registerSceneMaintenance({ router, cfg, sceneStore, localOnly, packaged
   for (const [url, mode] of [
     ['/api/maintenance/scenes', 'import'], ['/api/maintenance/scenes/import', 'import'],
     ['/api/maintenance/scenes/changes', 'changes'], ['/api/maintenance/scenes/preview', 'preview'],
-  ]) router.post(url, localOnly, express.json({ limit: '20mb' }), (req: any, res: any) => save(req, res, mode));
+  ]) router.post(url, localOnly, express.json({ limit: '20mb' }), (req: any, res: any) => {
+    invalidateSceneStateCache();
+    res.once('finish', invalidateSceneStateCache);
+    res.once('close', invalidateSceneStateCache);
+    return save(req, res, mode);
+  });
 
   router.get('/api/maintenance/scenes-state', localOnly, async (req: any, res: any) => {
     if (packaged(cfg)) return unavailable(req, res);
     return sceneWrite.withSceneWriteLock(() => {
       try {
         res.set('Cache-Control', 'no-store');
-        res.json({ ok: true, ...readSceneState(cfg.ROOT_DIR, sceneStore, sceneWrite, leaseOptions) });
+        res.json({ ok: true, ...readSceneStateCached() });
       } catch (error: any) { envelope.fail(res, runtimeErrorStatus(error, 'statusCode') || 500, runtimeErrorMessage(error) || '读取场景状态失败', { code: runtimeErrorCode(error), recoveryRequired: Boolean(error.recoveryRequired) }); }
     });
   });

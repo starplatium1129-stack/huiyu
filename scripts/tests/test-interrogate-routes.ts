@@ -40,6 +40,9 @@ async function run() {
     // wd14 真实引擎状态：有模型时返回 model，无模型时返回 reason（结构契约）。
     assert.equal(typeof status.wd14.available, 'boolean');
     assert.ok(status.wd14.available ? typeof status.wd14.model === 'string' : typeof status.wd14.reason === 'string');
+    // 图片反推会触发本机模型与临时文件写入，隧道/代理请求不得借用本机权限。
+    let tunneledStatus = await fetch(base + '/api/interrogate/status', { headers:{ 'x-forwarded-for':'203.0.113.10' } });
+    assert.ok([401, 403].includes(tunneledStatus.status), 'tunneled interrogate status must be denied');
 
     // 参数校验：mode 白名单 / threshold 范围 / 图片必须存在。
     let badMode = await post(base, { mode:'translate', image:TINY_PNG });

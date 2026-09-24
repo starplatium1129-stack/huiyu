@@ -559,6 +559,36 @@ describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
     expect(store.loaded).toBe(false)
   })
 
+  it('loadCharacterShell 只拉角色目录，不等待场景分片', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    const store = useSceneStore()
+
+    await store.loadCharacterShell()
+
+    expect(store.characters).toHaveLength(1)
+    expect(store.popularCharacters).toEqual([])
+    expect(fetchCount('scenes-shared.json')).toBe(0)
+    expect(fetchCount('scenes-nene.json')).toBe(0)
+    expect(fetchCount('scenes-natsume.json')).toBe(0)
+  })
+
+  it('loadMetadata 只拉角色元数据，不触发场景分片请求', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    const store = useSceneStore()
+
+    await store.loadMetadata(true)
+
+    expect(store.popularCharacters).toEqual([])
+    expect(fetchCount('characters.json')).toBe(0)
+    expect(fetchCount('popular-characters.json')).toBe(1)
+    expect(fetchCount('scenes-shared.json')).toBe(0)
+    expect(fetchCount('scenes-nene.json')).toBe(0)
+    expect(fetchCount('scenes-natsume.json')).toBe(0)
+    expect(store.loaded).toBe(false)
+  })
+
   it('轻载后全量 load() 增量补拉重元数据，已成功资源不重复请求', async () => {
     routes = fullRoutes()
     stubFetch()

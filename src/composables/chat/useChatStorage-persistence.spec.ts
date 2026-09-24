@@ -62,6 +62,20 @@ describe('independent chat preference persistence', () => {
     expect(restored.state.settings.volume).toBe(25)
   })
 
+  it('clear reports failure and restores the in-memory history when persistence fails', async () => {
+    const storage = await open()
+    storage.messages('nene').push({ mid: 'keep', role: 'user', stopped: false, content: '保留' })
+    const write = localStorage.setItem.bind(localStorage)
+    vi.spyOn(localStorage, 'setItem').mockImplementation((key, value) => {
+      if (key === STORAGE_KEY) throw new Error('full')
+      write(key, value)
+    })
+
+    expect(storage.clear('nene')).toBe(false)
+    expect(storage.messages('nene')).toHaveLength(1)
+    expect(storage.messages('nene')[0].mid).toBe('keep')
+  })
+
   it('retains in-memory preferences and reports failed writes', async () => {
     const onError = vi.fn(), storage = await open(onError)
     vi.spyOn(localStorage, 'setItem').mockImplementation(() => { throw new Error('full') })

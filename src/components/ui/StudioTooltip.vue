@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
 import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger } from "reka-ui"
-import { useAnchoredSurfaceMotion } from '@/composables/useAnchoredSurfaceMotion'
-
-const surfaceMotion = useAnchoredSurfaceMotion('tooltip')
 
 /**
  * 原生 title 属性的替身。
@@ -166,19 +163,16 @@ watch(() => props.anchor, () => {
       <TooltipRoot>
         <TooltipTrigger as-child><slot /></TooltipTrigger>
         <TooltipPortal :to="portalTarget">
-          <Transition :css="false" @enter="surfaceMotion.enter" @leave="surfaceMotion.leave"
-            @after-leave="surfaceMotion.afterLeave">
-            <TooltipContent
-              :side="side"
-              :side-offset="6"
-              :collision-padding="12"
-              class="studio-tooltip"
-              :data-in-dialog="inDialog ? '' : undefined"
-            >
-              {{ content }}
-              <TooltipArrow class="studio-tooltip-arrow" :width="10" :height="5" />
-            </TooltipContent>
-          </Transition>
+          <TooltipContent
+            :side="side"
+            :side-offset="6"
+            :collision-padding="12"
+            class="studio-tooltip"
+            :data-in-dialog="inDialog ? '' : undefined"
+          >
+            {{ content }}
+            <TooltipArrow class="studio-tooltip-arrow" :width="10" :height="5" />
+          </TooltipContent>
         </TooltipPortal>
       </TooltipRoot>
     </TooltipProvider>
@@ -213,8 +207,13 @@ watch(() => props.anchor, () => {
   box-shadow: var(--shadow-md);
   transform-origin: var(--reka-tooltip-content-transform-origin, center);
 }
+.studio-tooltip[data-state='open'] { animation:studio-tooltip-in var(--motion-control) var(--ease-out) both; }
+.studio-tooltip[data-state='closed'] { animation:studio-tooltip-out var(--motion-hover) var(--ease-out) both; }
+@keyframes studio-tooltip-in { from { opacity:0; transform:translateY(-2px) scale(.98); } to { opacity:1; transform:none; } }
+@keyframes studio-tooltip-out { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-1px) scale(.99); } }
 /* 渲染进 dialog 时要盖过弹窗内部最高层（--z-overlay 是弹窗层） */
 .studio-tooltip[data-in-dialog] { z-index: calc(var(--z-overlay) + 1); }
 .studio-tooltip-arrow { fill: var(--bg-elevated); }
+@media (prefers-reduced-motion: reduce) { .studio-tooltip[data-state] { animation: none; } }
 @media (forced-colors: active) { .studio-tooltip { background: Canvas; border-color: CanvasText; } .studio-tooltip-arrow { fill: Canvas; } }
 </style>

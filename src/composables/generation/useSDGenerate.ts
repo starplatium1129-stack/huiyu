@@ -44,6 +44,11 @@ export function useSDGenerate() {
   let abortCtrl: AbortController | null = null
   let activeJobId = ''
 
+  function abandonAcceptedJob(jobId: string) {
+    if (!jobId) return
+    void generationApi.deleteJob(jobId).catch(() => {})
+  }
+
   async function checkStatus(): Promise<boolean> {
     // 应用生成路由统一走 /api/generation/status（含 Comfy 探测与白名单资源检查）。
     // 网关给出明确结论（含 offline）时直接采用，只有请求失败才落到旧 WebUI 探测。
@@ -139,7 +144,7 @@ export function useSDGenerate() {
         ...(isLocalStudioHost() ? { adultEnabled: true } : {}),
       }, { signal: controller.signal })
       if (controller.signal.aborted) {
-        void generationApi.deleteJob(accepted.job.id).catch(() => {})
+        abandonAcceptedJob(accepted.job.id)
         controller.signal.throwIfAborted()
       }
 
@@ -205,7 +210,13 @@ export function useSDGenerate() {
           + ` · 已等待 ${Math.max(0, Math.round(elapsedMs / 1000))}s`
           + (stuckNoted ? ' · 耗时异常，可检查 ComfyUI 是否卡住，必要时取消后重试' : '')
       }
-      if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('生成超时')
+      if (job.status !== 'succeeded' || !job.resultUrl) {
+        // A client-side deadline must not leave an accepted job consuming the
+        // backend queue. The request may still finish, but its result has no
+        // owner after this generation attempt ends.
+        abandonAcceptedJob(job.id)
+        throw new Error('生成超时')
+      }
       const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: controller.signal })
       if (!resultResponse.ok || !String(resultResponse.headers.get('content-type') || '').startsWith('image/')) throw new Error('生成结果不是图片')
       const blob = await resultResponse.blob()
@@ -238,7 +249,7 @@ export function useSDGenerate() {
     taskState.value = 'cancelling'
     abortCtrl?.abort()
     if (activeJobId) {
-      void generationApi.deleteJob(activeJobId).catch(() => {})
+      abandonAcceptedJob(activeJobId)
     }
     // Cancellation is owned by the application job route. Do not issue a
     // global WebUI interrupt for a Comfy job.

@@ -242,8 +242,12 @@ test('director restores state from a scene deep link', async ({ page }) => {
 
 test('scene manager loads project data and opens the editor without dirtying state', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
+  const stateResponse = page.waitForResponse(response =>
+    new URL(response.url()).pathname === '/api/maintenance/scenes-state' && response.request().method() === 'GET');
   await page.goto('/scene-manager');
+  expect((await stateResponse).ok()).toBe(true);
 
+  await expect(page.locator('#maintenanceTitle')).toHaveText('已同步', { timeout: 15_000 });
   await expect(page.locator('.catalog-record').first()).toBeVisible();
   await expect(page.locator('.stats')).toContainText('302');
   // 未改动时保存按钮必须不可用
@@ -358,11 +362,10 @@ test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ 
   await expect(page.locator('.showcase-viewer')).not.toHaveAttribute('open', '');
   await expect(page.locator('.sample .sample-visual').first()).toBeFocused();
   await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular');
-  await page.getByRole('combobox', { name:'筛选角色', exact:true }).fill('测试角色');
-  await page.getByRole('option', { name:'测试角色', exact:true }).click();
+  await pickStudioOptionByValue(page.getByLabel('筛选角色'), 'popular-test');
   await expect(page.locator('.sample')).toHaveCount(1);
   await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'scene');
-  await expect(page.locator('#showcaseCharSelect')).toHaveValue('全部角色');
+  await expectStudioSelectValue(page.locator('#showcaseCharSelect'), 'all');
   await expect(page.locator('.sample')).toHaveCount(1);
 
   expect(errors).toEqual([]);

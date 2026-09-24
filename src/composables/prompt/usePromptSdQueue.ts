@@ -268,8 +268,13 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
         sdErrorReport.value = null
         // 队列产出自动入册，避免跑完一批还要手点保存
         try {
-          await commitJobResult(job, url)
-        } catch (e) { console.warn('queue autosave failed', e) }
+          const saved = await commitJobResult(job, url)
+          if (!saved) {
+            return { status: 'success-with-warning' as const, error: '生成完成，但成片未能入册；请从当前结果保存或重试。' }
+          }
+        } catch {
+          return { status: 'success-with-warning' as const, error: '生成完成，但成片入册失败；请从当前结果保存或重试。' }
+        }
         return { status: 'success' as const }
       }
       const err = sd.errorMsg.value

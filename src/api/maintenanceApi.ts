@@ -181,6 +181,7 @@ export function createMaintenanceApi(client: ApiClient = apiClient): Maintenance
     getScenesState(options: MaintenanceCallOptions = {}) {
       return client.request<ScenesStateResult>('/api/maintenance/scenes-state', {
         cache: 'no-store',
+        cachePolicy: 'bypass',
         signal: options.signal,
         timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
         validate: isScenesState,

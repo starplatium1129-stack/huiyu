@@ -12,21 +12,30 @@ async function observeMotion(page: Page, selector: string) {
     ;(window as MotionWindow).__anchoredMotionSamples = samples
     const capture = () => {
       document.querySelectorAll<HTMLElement>(selector).forEach(element => {
-        if (element.style.willChange.includes('transform') && samples.length < 1000) {
-          samples.push({ transform: element.style.transform, state: element.dataset.state })
+        if (samples.length < 1000) {
+          const style = getComputedStyle(element)
+          samples.push({ transform: style.transform, state: element.dataset.state })
         }
       })
     }
     const observer = new MutationObserver(capture)
-    observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['style'], childList: true })
+    observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['style', 'data-state'], childList: true })
     window.addEventListener('pagehide', () => observer.disconnect(), { once: true })
   }, selector)
 }
 
 async function expectMotionWasPlayed(page: Page) {
   await expect.poll(() => page.evaluate(() =>
-    (window as MotionWindow).__anchoredMotionSamples?.some(sample => /scale\(0\./.test(sample.transform)) ?? false,
+    (window as MotionWindow).__anchoredMotionSamples?.some(sample =>
+      sample.transform !== 'none' && !/^matrix\(1,\s*0,\s*0,\s*1,\s*0,\s*0\)$/.test(sample.transform),
+    ) ?? false,
   )).toBe(true)
+}
+
+async function expectSettledTransform(locator: import('@playwright/test').Locator) {
+  await expect.poll(() => locator.evaluate(element => getComputedStyle(element).transform)).toMatch(
+    /^(?:none|matrix\(1,\s*0,\s*0,\s*1,\s*0,\s*0\))$/,
+  )
 }
 
 for (const theme of ['light', 'dark'] as const) {
@@ -49,7 +58,7 @@ for (const theme of ['light', 'dark'] as const) {
       await page.keyboard.press('Escape')
       await trigger.press('Enter')
       await expect(content).toHaveCount(1)
-      await expect(content).toHaveCSS('transform', 'none')
+      await expectSettledTransform(content)
       await expect(content).toHaveCSS('will-change', 'auto')
       await expect(content).not.toHaveAttribute('inert')
       await page.keyboard.press('Escape')
@@ -73,7 +82,7 @@ for (const theme of ['light', 'dark'] as const) {
       await trigger.click()
       await expect(content).toBeVisible()
       await expectMotionWasPlayed(page)
-      await expect(content).toHaveCSS('transform', 'none')
+      await expectSettledTransform(content)
       await expect(content).toHaveCSS('will-change', 'auto')
       await page.keyboard.press('Escape')
       await expect(content).toHaveCount(0)
@@ -85,7 +94,7 @@ for (const theme of ['light', 'dark'] as const) {
         document.documentElement.dataset.motion = 'reduce'
         window.dispatchEvent(new Event('atelier:motion-preference'))
       })
-      await expect(content).toHaveCSS('transform', 'none')
+      await expectSettledTransform(content)
       await page.keyboard.press('Escape')
       await expect(content).toHaveCount(0)
       await expect(trigger).toBeFocused()

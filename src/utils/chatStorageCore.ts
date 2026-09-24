@@ -154,14 +154,17 @@ export function normalizeChatStorage(
   // 配置之外，聊天一直打本机 127.0.0.1:8317 而失败。
   const FALLBACK_BASE_URL = 'http://127.0.0.1:8317/v1'
   const FALLBACK_MODEL = 'gemini-3.6-flash-high'
-  const FALLBACK_KEY = 'sk-local-proxy-key-2024'
-  const equalsFallback = apiBaseUrl === FALLBACK_BASE_URL && apiModel === FALLBACK_MODEL && apiKey === FALLBACK_KEY
-  const neverConfigured = typeof settings.apiConfiguredByUser === 'boolean'
+  // Older builds persisted a local-proxy placeholder. Recognize its prefix so
+  // it is scrubbed on the next save, but never ship or reuse a default secret.
+  const legacyFallbackKey = apiBaseUrl === FALLBACK_BASE_URL
+    && apiModel === FALLBACK_MODEL
+    && /^sk-local-proxy-key-/.test(apiKey)
+  const neverConfigured = legacyFallbackKey || (typeof settings.apiConfiguredByUser === 'boolean'
     ? !settings.apiConfiguredByUser
-    : (!apiBaseUrl && !apiModel && !apiKey) || equalsFallback
+    : (!apiBaseUrl && !apiModel && !apiKey))
   const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? FALLBACK_BASE_URL : '')
   const finalApiModel = apiModel || (neverConfigured ? FALLBACK_MODEL : '')
-  const finalApiKey = apiKey || (neverConfigured ? FALLBACK_KEY : '')
+  const finalApiKey = legacyFallbackKey ? '' : apiKey
 
   const rawHistoriesRevision = Number(raw.historiesRevision)
   const historiesRevision = Number.isSafeInteger(rawHistoriesRevision) && rawHistoriesRevision >= 0

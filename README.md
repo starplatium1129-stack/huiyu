@@ -158,7 +158,7 @@ npm run workflow -- check:full  # full validation suite (13 parallel checks + un
 npm run build                   # production build, 140KB per-route budget
 ```
 
-For fast iteration run only the area you touched: `npm run workflow -- gate:quick ui|server|data|all`.
+For fast iteration run only the area you touched: `npm run workflow -- gate:quick ui|server|data|all`. `npm run validate` intentionally does not run the production build; run `npm run build` separately when the release bundle or bundle budgets are in scope. When the private reference root is unavailable, use the hermetic structure contract explicitly (PowerShell): `$env:AICS_REFERENCE_AUDIT_MODE='structure'; npm run validate`; do not treat that as physical-asset approval.
 
 ### Commit discipline (hard rules)
 
@@ -173,7 +173,7 @@ For fast iteration run only the area you touched: `npm run workflow -- gate:quic
 - **Content rating is fail-closed.** R18 content renders blurred by default; `adultEligibility` + `adultEnabled` double-gate, and unknown/unauthorized states must be rejected — never fall back to "safe".
 - **Pinned scenes are byte-level baselines.** The 100 pinned scenes in `data/prompt-pinned-scenes.json` must never be touched by bulk tools (`npm run scenes:pin` enforces this). Changing one requires a real image test first.
 - **No template-based bulk delivery.** Batch rewrites must be genuinely rewritten per item and pass `test-prompt-rewrite-integrity.js` (coverage = claimed count, no template fingerprints, ≤50% retained entries, ≤60% prose similarity).
-- **Dark theme only.** The light theme is retired; new colors are written once. Use the `--text-disabled` token for disabled states, never `opacity`.
+- **Dual theme.** Light and dark themes are both supported; new UI must be reviewed in both themes. Use the `--text-disabled` token for disabled states, never `opacity`.
 - **Style contracts come from DESIGN.md** — the runtime CSS is a derived implementation; resolve conflicts in favor of the contract.
 
 ### Tests
@@ -222,8 +222,8 @@ huiyu/
 
 ```powershell
 npm run typecheck:app     # TypeScript check for Vue SFCs
-npm run build             # Build web application bundle
-npm run validate          # Complete validation suite
+npm run validate          # Quality checks + frontend/unit/contract suites (does not build)
+npm run build             # Production bundle, route budgets, and precompression
 ```
 
 For current implementation details, verification baselines, and the complete documentation index, see [docs/project-status.md](docs/project-status.md) and [docs/INDEX.md](docs/INDEX.md).

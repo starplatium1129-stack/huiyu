@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
+import { installSceneStateFixture } from './helpers/sceneState'
 
 type RecordedMotion = { path: string; frames: Keyframe[] }
 async function recordMotion(page: Page) {
@@ -23,6 +24,7 @@ async function navigate(page: Page, path: string) {
 for (const theme of ['dark', 'light']) {
   test(`all workspace route shells transition and cached pages retain their DOM ${theme}`, async ({ page }, info) => {
     test.setTimeout(60000)
+    await installSceneStateFixture(page)
     await recordMotion(page)
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.goto('/')

@@ -19,12 +19,12 @@
         </div>
         <div class="filter-group filter-dropdowns">
           <label class="sr-only" for="showcaseTypeSelect">作品类型</label>
-          <StudioSelect id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
+          <StudioSelect :key="`type-${typeFilter}`" id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
             :options="TYPE_OPTS.map(opt => ({ value: opt.v, label: opt.l }))" />
 
           <label class="sr-only" for="showcaseCharSelect">角色筛选</label>
-          <StudioCombobox id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
-            :options="allCharOptions.map(opt => ({ value:opt.v, label:opt.l }))" />
+          <StudioSelect id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
+            :options="allCharOptions.map(opt => ({ value: opt.v, label: opt.l }))" />
         </div>
         <div class="filter-group">
           <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
@@ -104,12 +104,11 @@
 
     <!-- 查看器 dialog -->
     <Teleport to="body">
-      <!-- 必须用 showModal() 打开（见 watch(currentEntry)）：
-           设 open 属性只是非模态 dialog —— 没有 top layer、没有 ::backdrop、
-           背景不 inert，Tab 能直接跑到下面的网格里 -->
+      <!-- 必须用 showModal() 打开（见 openViewer）：设 open 属性只是非模态 dialog，
+           没有 top layer、没有 ::backdrop，背景不 inert，Tab 能直接跑到下面的网格里 -->
       <dialog ref="dialogEl" class="showcase-viewer" aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <button class="viewer-close viewer-close-on-art" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
-        <div v-if="currentEntry" class="viewer-layout">
+        <div v-if="viewerMounted && currentEntry" class="viewer-layout">
           <div class="viewer-art">
             <ZoomableImageViewer
               :src="imgSrc(currentEntry)"
@@ -156,13 +155,12 @@
 
 <script setup lang="ts">
 import { useFluidDialog } from '@/composables/useFluidDialog'
-import { ref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
 import { showcaseDestination } from '@/utils/showcaseDestination'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import StudioCombobox from '@/components/ui/StudioCombobox.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
@@ -205,6 +203,7 @@ const loadSentinel = ref<HTMLElement | null>(null)
 let sentinelObserver: IntersectionObserver | null = null
 function loadMore() { visibleCount.value += PAGE_SIZE }
 const currentId   = ref('')
+const viewerMounted = ref(false)
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const viewerMotion = useFluidDialog(dialogEl)
 const brokenThumbs = ref(new Set<string>())
@@ -275,10 +274,10 @@ const allCharOptions = computed<{ v: string; l: string }[]>(() => {
     return [{ v: 'all', l: '全部热门角色' }, ...popularCharOpts.value]
   }
   if (typeFilter.value === 'scene' || typeFilter.value === 'lora') {
-    return [...CHAR_OPTS]
+    return [...charOpts.value]
   }
   // 全部类型下：全部角色 + 工作室角色 + 热门角色
-  const base = [...CHAR_OPTS]
+  const base = [...charOpts.value]
   if (popularCharOpts.value.length) {
     return [...base, ...popularCharOpts.value]
   }
@@ -303,11 +302,24 @@ const currentIdx = computed(() => filtered.value.findIndex(e => e.id === current
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
-function openViewer(id: string) { currentId.value = id }
+function openViewer(id: string) {
+  viewerMounted.value = true
+  currentId.value = id
+  viewerImageFailed.value = false
+  viewerImageReady.value = false
+  viewerVersion.value = Date.now()
+  // Opening after the computed entry has rendered avoids relying on a same-card
+  // close/reopen value change, which is not guaranteed during dialog teardown.
+  void nextTick(() => {
+    if (currentId.value === id && dialogEl.value && !unmounted && viewActive && route.path === '/showcase') {
+      viewerMotion.open()
+    }
+  })
+}
 function openLinkedScene() {
   if (!viewActive || route.path !== '/showcase') return
   const id = route.query.scene
-  if (typeof id === 'string' && entries.value.some(entry => entry.id === id && entry.rating !== 'R18')) currentId.value = id
+  if (typeof id === 'string' && entries.value.some(entry => entry.id === id && entry.rating !== 'R18')) openViewer(id)
 }
 watch(() => route.query.scene, openLinkedScene)
 function clearLinkedScene() {
@@ -318,41 +330,26 @@ function clearLinkedScene() {
   void router.replace({ query })
 }
 function closeViewer() {
-  viewerMotion.close(() => { currentId.value = ''; clearLinkedScene() })
+  // Unmount Reka tooltip portals while the native dialog is still connected;
+  // tearing them down after dialog.close() leaves a stale Teleport anchor.
+  viewerMounted.value = false
+  viewerMotion.close(() => { clearLinkedScene() })
 }
 
-/**
- * 真模态由浏览器负责：showModal() 给我们 top layer、inert 背景、
- * 原生焦点约束与 Escape，都是 :open 属性拿不到的。
- */
-watch(currentEntry, (entry) => {
-  const dialog = dialogEl.value
-  if (!dialog || !viewActive || route.path !== '/showcase') return
-  if (entry && !dialog.open) {
-    viewerImageFailed.value = false
-    viewerImageReady.value = false
-    viewerVersion.value = Date.now()
-    viewerMotion.open()
-  } else if (entry) {
-    viewerMotion.open()
-    viewerImageFailed.value = false
-    viewerImageReady.value = false
-    viewerVersion.value = Date.now()
-  } else if (!entry && dialog.open) {
-    dialog.close()
-  }
-})
+// Native <dialog> owns the top layer, inert background, focus containment and
+// Escape handling. Selection changes always pass through openViewer so the media
+// source is reset before the already-open dialog is retargeted.
 function move(step: number) {
   const arr = filtered.value
   if (!arr.length) return
   const next = (currentIdx.value + step + arr.length) % arr.length
-  currentId.value = arr[next].id
+  openViewer(arr[next].id)
 }
 function openRandom() {
   const safe = (ratingFilter.value === 'R18' ? filtered.value : filtered.value.filter(e => e.rating !== 'R18'))
   const src = safe.length ? safe : filtered.value
   if (!src.length) return
-  currentId.value = src[Math.floor(Math.random() * src.length)].id
+  openViewer(src[Math.floor(Math.random() * src.length)].id)
 }
 function resetFilters() { searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
 
@@ -405,6 +402,7 @@ onDeactivated(() => {
   document.removeEventListener('keydown', onKey)
   sentinelObserver?.disconnect()
   viewerMotion.dispose()
+  viewerMounted.value = false
   currentId.value = ''
   if (dialogEl.value?.open) dialogEl.value.close()
 })
@@ -426,6 +424,7 @@ onMounted(async () => {
 onUnmounted(() => {
   unmounted = true
   viewerMotion.dispose()
+  viewerMounted.value = false
   sentinelObserver?.disconnect()
   sentinelObserver = null
   manifestController.abort()

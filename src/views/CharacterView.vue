@@ -450,11 +450,16 @@ async function loadProfiles() {
   loading.value = true
   loadError.value = ''
   try {
-    await sceneStore.load()
+    // 角色档案首屏只需要目录壳；场景/蓝图画布随后后台补齐，不能阻塞粒子展台挂载。
+    await sceneStore.loadCharacterShell()
     characters.value = parseCharacterProfiles(sceneStore.characters)
-    scenes.value = parseCharacterScenes(sceneStore.scenes)
     const requested = typeof route.query.character === 'string' ? route.query.character : ''
     current.value = characters.value.find(c => c.id === requested) || characters.value[0] || null
+    void sceneStore.load().then(() => {
+      scenes.value = parseCharacterScenes(sceneStore.scenes)
+    }).catch((e) => {
+      console.warn('character scene data load failed', e)
+    })
   } catch (e) {
     console.warn('character data load failed', e)
     loadError.value = String(e instanceof Error ? e.message : e)

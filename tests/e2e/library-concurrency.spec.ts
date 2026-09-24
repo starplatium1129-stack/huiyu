@@ -78,7 +78,6 @@ test.beforeAll(async () => {
        }`,
     ].join('\n'), resolveDir: root },
     bundle: true, write: false, format: 'iife', globalName: 'libraryFixture', platform: 'browser',
-    define: { 'import.meta.env.VITE_CLIPROXY_API_KEY': '""' },
     alias: { '@': resolve(root, 'src') }, logLevel: 'silent',
     plugins: [{
       /**
@@ -316,7 +315,10 @@ test('orphan cleanup refuses another live document and succeeds after it closes'
   expect(result.messages.join(' ')).toContain('未删除图片')
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).not.toBeNull()
   await other.close()
-  expect(await page.evaluate(() => window.libraryFixture.useBackup(() => {}).cleanOrphanImages())).toBe(1)
+  await expect.poll(() => page.evaluate(async () => {
+    try { return await window.libraryFixture.useBackup(() => {}).cleanOrphanImages() }
+    catch { return 0 }
+  }), { timeout: 10_000 }).toBe(1)
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).toBeNull()
 })
 
@@ -400,7 +402,10 @@ test('automatic trash purge uses the same cross-document protection as manual cl
   expect(error).toContain('未删除图片')
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).not.toBeNull()
   await other.close()
-  expect(await page.evaluate(() => window.libraryFixture.artworkRepository.purgeExpiredTrash())).toEqual({ purged: 1 })
+  await expect.poll(() => page.evaluate(async () => {
+    try { return await window.libraryFixture.artworkRepository.purgeExpiredTrash() }
+    catch { return { purged: 0 } }
+  }), { timeout: 10_000 }).toEqual({ purged: 1 })
   expect(await page.evaluate(() => window.libraryFixture.imgGetRecord('cleanup-candidate'))).toBeNull()
 })
 

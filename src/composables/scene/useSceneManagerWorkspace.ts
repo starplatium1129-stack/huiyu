@@ -322,13 +322,19 @@ export function useSceneManagerWorkspace() {
     onMounted(() => {
         window.addEventListener('beforeunload', onBeforeUnload);
     });
-    onBeforeUnmount(() => { window.removeEventListener('beforeunload', onBeforeUnload); });
+    let loadAbort: AbortController | null = null;
+    onBeforeUnmount(() => {
+        window.removeEventListener('beforeunload', onBeforeUnload);
+        loadAbort?.abort();
+    });
     /**
      * 可写编辑器通过同一响应读取内容与版本；打包桌面仅加载只读展示数据。
      */
     let reloadRunning = false;
     async function loadFromStore(force = false) {
         if (reloadRunning || saving.value || toolRunning.value || previewing.value || importConfirming.value) return;
+        const controller = new AbortController();
+        loadAbort = controller;
         reloadRunning = true;
         try {
         if (dirty.value) {
@@ -347,9 +353,12 @@ export function useSceneManagerWorkspace() {
             const packaged = window.companionDesktop ? await window.companionDesktop.isPackaged() : false;
             desktopPackaged.value = packaged;
             if (!packaged) {
-                // 共享角色元数据仍供标签与详情使用；可写内容只采用下面的原子快照。
-                await (force ? sceneStore.reload() : sceneStore.load());
-                const state = await maintenanceApi.getScenesState();
+                // 角色显示名是辅助元数据；权威内容读取不能被它阻塞。
+                // 两条请求并行启动，state 成功即可建立可写基线。
+                void (force ? sceneStore.loadMetadata(true) : sceneStore.loadMetadata()).catch((error) => {
+                    console.warn('scene maintenance metadata load failed', error)
+                })
+                const state = await maintenanceApi.getScenesState({ signal: controller.signal });
                 if (sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() }) !== draftBefore) {
                     dirty.value = true;
                     maintenanceHint.value = '读取期间有新编辑，已保留草稿与原基线。请先导出，再重新读取并合并';
@@ -383,6 +392,7 @@ export function useSceneManagerWorkspace() {
             dirty.value = false;
         }
         catch (err) {
+            if (controller.signal.aborted) return;
             sceneStateVersion.value = null;
             sceneBaseline.value = null;
             loadError.value = errorMessage(err, '场景数据加载失败');
@@ -390,7 +400,10 @@ export function useSceneManagerWorkspace() {
         finally {
             loading.value = false;
         }
-        } finally { reloadRunning = false; }
+        } finally {
+            if (loadAbort === controller) loadAbort = null;
+            reloadRunning = false;
+        }
     }
     /** 服务端分配下一个稳定场景 ID；失败返回 null，禁止猜测退役 ID。 */
     async function allocateNextSceneId(): Promise<string | null> {
