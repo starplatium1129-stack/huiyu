@@ -33,6 +33,7 @@ export function useSDGenerate() {
   const resultSeed  = ref<number | null>(null)
   /** 当前结果图实际提交生成时使用的正向提示词（出视频/存历史按图取词，不随面板改动漂移）。 */
   const resultPrompt = ref('')
+  /** LoRA facts belong to the displayed result, not a pending or failed attempt. */
   const lastLoras = ref<Array<{ id: string; strength: number }>>([])
   const errorMsg    = ref('')
   const samplers    = ref<string[]>([])
@@ -130,7 +131,6 @@ export function useSDGenerate() {
         const strength = match[1]?.trim() ? Number(match[1]) : params.lora_weight
         return id ? { id, strength: typeof strength === 'number' && Number.isFinite(strength) ? strength : 0.8 } : null
       }).filter((x): x is { id: string; strength: number } => Boolean(x))
-      lastLoras.value = loras
       const modelId = String(params.model || '').includes('waiIllustriousSDXL_v170') ? 'waiIllustriousSDXL_v170' : undefined
       const accepted = await generationApi.createJob({
         prompt: payload.prompt, negative: payload.negative_prompt, profile: '',
@@ -188,13 +188,15 @@ export function useSDGenerate() {
        *   「引擎 + 已等待秒数」。
        */
       while (Date.now() < deadline) {
+        controller.signal.throwIfAborted()
         taskState.value = job.status === 'succeeded' ? 'running' : job.status
-        if (controller.signal.aborted) throw new DOMException('aborted', 'AbortError')
         if (job.status === 'failed') throw new Error(job.error || '生成失败')
         if (job.status === 'cancelled') throw new DOMException('cancelled', 'AbortError')
         if (job.status === 'succeeded' && job.resultUrl) break
         await new Promise(resolve => setTimeout(resolve, 700))
+        controller.signal.throwIfAborted()
         const state = await generationApi.getJob(job.id, { signal: controller.signal })
+        controller.signal.throwIfAborted()
         if (!state.job) throw new Error('生成状态无效')
         job = state.job
         // 后端 publicJob 在 WebUI 路径下不产出 progress 字段（undefined），
@@ -218,8 +220,12 @@ export function useSDGenerate() {
         throw new Error('生成超时')
       }
       const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: controller.signal })
+      controller.signal.throwIfAborted()
       if (!resultResponse.ok || !String(resultResponse.headers.get('content-type') || '').startsWith('image/')) throw new Error('生成结果不是图片')
       const blob = await resultResponse.blob()
+      // Cancellation/unmount may win after the response or body has resolved.
+      // Check before publishing a result or acquiring its object URL.
+      controller.signal.throwIfAborted()
       if (!blob.size) throw new Error('生成结果为空')
       const url = URL.createObjectURL(blob)
       // 覆盖前先释放上一张，否则每出一张图泄漏一个 blob URL
@@ -227,6 +233,7 @@ export function useSDGenerate() {
       resultUrl.value  = url
       resultSeed.value = job.metadata?.seed ?? job.seed ?? null
       resultPrompt.value = payload.prompt
+      lastLoras.value = loras
       taskState.value = 'succeeded'
       statusText.value = '生成完成'
       return url
@@ -258,6 +265,7 @@ export function useSDGenerate() {
   function clearResult() {
     if (!generating.value) taskState.value = 'idle'
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
+    lastLoras.value = []
     resultSeed.value = null; resultPrompt.value = ''; errorMsg.value = ''; statusText.value = ''; progress.value = 0
   }
 
@@ -271,6 +279,8 @@ export function useSDGenerate() {
     resultUrl.value = url
     resultSeed.value = seed
     resultPrompt.value = prompt
+    // Restored images do not inherit LoRAs from an unrelated local result.
+    lastLoras.value = []
     errorMsg.value = ''
     statusText.value = '已找回上次未入册的成片'
   }

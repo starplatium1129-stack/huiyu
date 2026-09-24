@@ -45,7 +45,7 @@ export interface PromptSdQueueDeps {
  * Anima/Krea 直出与错误恢复动作（runRecovery）仍归宿主视图。
  */
 export function usePromptSdQueue(deps: PromptSdQueueDeps) {
-  const { pb, sd, sdSize, drawEngine, livePrompt, negativePrompt, effectiveScene, loraSpecs, modelProfile, animaState, displayResultSeed } = deps
+  const { pb, sd, sdSize, drawEngine, livePrompt, negativePrompt, effectiveScene, loraSpecs, modelProfile, animaState } = deps
 
   const sdErrorReport = ref<SDErrorReport | null>(null)
   function dismissError() { sdErrorReport.value = null }
@@ -183,7 +183,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   }
 
   // Preserve result facts independently of the current form and later results.
-  const completedContexts = new WeakMap<Omit<SDQueueJob, 'id'>, AnimaResultContext>()
+  const completedJobs = new WeakMap<Omit<SDQueueJob, 'id'>, SdResultSnapshot>()
   function jobResultContext(job: Omit<SDQueueJob, 'id'>): AnimaResultContext {
     return {
       ...job.context, characterId: '', outfitId: null, blueprintId: null,
@@ -202,43 +202,49 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
   /** 执行一个任务（队列与直接出图共用同一条路径） */
   async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean } = {}) {
-    const context = jobResultContext(job)
-    const [w, h] = String(job.size).split('x').map(Number)
-    let prompt = job.prompt
-    if (opts.disableLora) prompt = prompt.replace(/<lora:[^>]+>\s*,?\s*/gi, '').trim().replace(/,\s*$/, '')
-    const directHighResolution = !job.hiresFix && (w || 832) * (h || 1216) > 1_500_000
-    const alwaysonScripts = job.faceDetailer && job.char !== 'triad' && directHighResolution
+    // Recovery edits and later form/queue mutations must not rewrite result facts.
+    const submitted = JSON.parse(JSON.stringify(job)) as Omit<SDQueueJob, 'id'>
+    if (opts.disableLora) {
+      submitted.prompt = submitted.prompt.replace(/<lora:[^>]+>\s*,?\s*/gi, '').trim().replace(/,\s*$/, '')
+      submitted.lora = undefined
+    }
+    const context = jobResultContext(submitted)
+    const [w, h] = String(submitted.size).split('x').map(Number)
+    const directHighResolution = !submitted.hiresFix && (w || 832) * (h || 1216) > 1_500_000
+    const alwaysonScripts = submitted.faceDetailer && submitted.char !== 'triad' && directHighResolution
       ? buildSingleDetailerScripts()
       : undefined
 
     const url = await sd.generate({
-      prompt,
-      negative_prompt: job.negative,
+      prompt: submitted.prompt,
+      negative_prompt: submitted.negative,
       width: w || 832,
       height: h || 1216,
-      cfg_scale: job.cfg,
-      steps: job.steps,
-      sampler_name: job.sampler,
-      scheduler: job.scheduler || undefined,
-      hr_fix: job.hiresFix,
-      hr_scale: job.hiresScale,
-      hr_upscaler: job.hiresUpscaler,
-      hr_second_pass_steps: job.hiresSteps,
-      denoising_strength: job.denoisingStrength,
-      seed: job.seed,
-      model: job.checkpoint || undefined,
-      lora: job.lora,
+      cfg_scale: submitted.cfg,
+      steps: submitted.steps,
+      sampler_name: submitted.sampler,
+      scheduler: submitted.scheduler || undefined,
+      hr_fix: submitted.hiresFix,
+      hr_scale: submitted.hiresScale,
+      hr_upscaler: submitted.hiresUpscaler,
+      hr_second_pass_steps: submitted.hiresSteps,
+      denoising_strength: submitted.denoisingStrength,
+      seed: submitted.seed,
+      model: submitted.checkpoint || undefined,
+      lora: submitted.lora,
       alwayson_scripts: alwaysonScripts,
     })
 
-    if (displayResultSeed.value) pb.sdParams.seed = displayResultSeed.value
     if (url) {
+      // Zero is a valid seed; failed attempts must not reuse an old display seed.
+      if (sd.resultSeed.value !== null) pb.sdParams.seed = sd.resultSeed.value
       const loras = sd.lastLoras.value.map(lora => ({ ...lora }))
       context.history = { ...context.history, seed: sd.resultSeed.value ?? undefined,
         loras, loraId: loras[0]?.id ?? null, loraStrength: loras[0]?.strength ?? null }
-      completedContexts.set(job, context)
+      const completedJob: SdResultSnapshot = { ...submitted, context, seed: sd.resultSeed.value ?? -1 }
+      // The view receives its own context; its edits cannot mutate archive input.
+      completedJobs.set(job, JSON.parse(JSON.stringify(completedJob)) as SdResultSnapshot)
       deps.setResultContext?.(context)
-      const completedJob = { ...job }
       // Best-effort recent settings must not turn a successful image into a failure.
       void import('./sdResultActions').then(({ rememberSdResult }) => rememberSdResult(completedJob)).catch(() => {})
     }
@@ -252,9 +258,10 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
    * 切页即丢。抽出来后直出路径同样自动写历史，三条路径行为一致。
    */
   async function commitJobResult(job: Omit<SDQueueJob, 'id'>, url: string): Promise<HistoryEntry | null> {
-    const context = completedContexts.get(job) ?? jobResultContext(job)
-    const seed = context.history?.seed ?? sd.resultSeed.value ?? undefined
-    const snapshot: SdResultSnapshot = { ...job, context, seed: seed ?? -1 }
+    const completed = completedJobs.get(job)
+    const context = completed?.context ?? jobResultContext(job)
+    const seed = completed ? completed.seed : context.history?.seed ?? sd.resultSeed.value ?? -1
+    const snapshot: SdResultSnapshot = { ...(completed ?? job), context, seed }
     const { archiveSdResult } = await import('./sdResultActions')
     return archiveSdResult(snapshot, url, pb.commitHistoryEntry)
   }
@@ -312,15 +319,19 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     const baseJob = captureJob()
     if (!baseJob) { pb.flash('请先选择场景或填写故事'); return }
     const baseSeed = baseJob.seed >= 0 ? baseJob.seed : Math.floor(Math.random() * 900000000)
+    let admitted = 0
     for (let i = 0; i < 3; i++) {
       const jobVariant = {
         ...baseJob,
         title: `${baseJob.title} (候选 ${i + 1}/3)`,
         seed: baseSeed + i * 1000 + (i > 0 ? Math.floor(Math.random() * 100) : 0),
       }
-      sdQueue.enqueue(jobVariant)
+      if (!sdQueue.enqueue(jobVariant)) break
+      admitted += 1
     }
-    pb.flash('已将 3 组不同 Seed 候选加入出图队列')
+    if (admitted > 0) {
+      pb.flash(`已将 ${admitted} 组不同 Seed 候选加入出图队列${admitted < 3 ? '（队列剩余容量不足）' : ''}`)
+    }
   }
 
   return {
