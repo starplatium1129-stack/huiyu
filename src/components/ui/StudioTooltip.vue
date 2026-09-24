@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
 import { TooltipArrow, TooltipContent, TooltipPortal, TooltipProvider, TooltipRoot, TooltipTrigger } from "reka-ui"
+import { useAnchoredSurfaceMotion } from '@/composables/useAnchoredSurfaceMotion'
+
+const surfaceMotion = useAnchoredSurfaceMotion('tooltip')
 
 /**
  * 原生 title 属性的替身。
@@ -163,16 +166,19 @@ watch(() => props.anchor, () => {
       <TooltipRoot>
         <TooltipTrigger as-child><slot /></TooltipTrigger>
         <TooltipPortal :to="portalTarget">
-          <TooltipContent
-            :side="side"
-            :side-offset="6"
-            :collision-padding="12"
-            class="studio-tooltip"
-            :data-in-dialog="inDialog ? '' : undefined"
-          >
-            {{ content }}
-            <TooltipArrow class="studio-tooltip-arrow" :width="10" :height="5" />
-          </TooltipContent>
+          <Transition :css="false" @enter="surfaceMotion.enter" @leave="surfaceMotion.leave"
+            @after-leave="surfaceMotion.afterLeave">
+            <TooltipContent
+              :side="side"
+              :side-offset="6"
+              :collision-padding="12"
+              class="studio-tooltip"
+              :data-in-dialog="inDialog ? '' : undefined"
+            >
+              {{ content }}
+              <TooltipArrow class="studio-tooltip-arrow" :width="10" :height="5" />
+            </TooltipContent>
+          </Transition>
         </TooltipPortal>
       </TooltipRoot>
     </TooltipProvider>
@@ -210,8 +216,5 @@ watch(() => props.anchor, () => {
 /* 渲染进 dialog 时要盖过弹窗内部最高层（--z-overlay 是弹窗层） */
 .studio-tooltip[data-in-dialog] { z-index: calc(var(--z-overlay) + 1); }
 .studio-tooltip-arrow { fill: var(--bg-elevated); }
-.studio-tooltip[data-state='delayed-open'] { animation: studio-tooltip-in var(--motion-hover) var(--ease-out); }
-@keyframes studio-tooltip-in { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .studio-tooltip[data-state='delayed-open'] { animation: none; } }
 @media (forced-colors: active) { .studio-tooltip { background: Canvas; border-color: CanvasText; } .studio-tooltip-arrow { fill: Canvas; } }
 </style>
