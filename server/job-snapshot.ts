@@ -26,6 +26,8 @@ function validOwner(value: unknown): value is string {
 /** Apply the same field/type whitelist on write AND restore. Never trust disk JSON. */
 function toSnapshot(job: SnapshotJob): JobSnapshot {
   const input = job.input || {};
+  const family = typeof input.family === 'string' && input.family.length <= 80 && !/[\x00-\x1f\x7f]/.test(input.family)
+    ? input.family : null;
   return {
     id: safeId(job.id),
     owner: validOwner(job.owner) ? job.owner : null,
@@ -35,7 +37,7 @@ function toSnapshot(job: SnapshotJob): JobSnapshot {
     input: {
       modelId: typeof input.modelId === 'string' && input.modelId.length <= 200 ? input.modelId : null,
       width: positive(input.width), height: positive(input.height), duration: positive(input.duration),
-      family: typeof input.family === 'string' && input.family.length <= 80 && !/[\x00-\x1f\x7f]/.test(input.family) ? input.family : null,
+      ...(family ? { family } : {}),
     },
   };
 }

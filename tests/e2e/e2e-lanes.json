@@ -39,6 +39,7 @@
     { "file": "fluid-complete.spec.ts", "lane": "nightly", "risk": "流畅度视觉", "reason": "完整流畅度场景耗时且依赖测量，纳入夜间运行。" },
     { "file": "fluid-glass-async.spec.ts", "lane": "nightly", "risk": "材质异步", "reason": "液态材质异步生命周期属于夜间视觉与资源检查。" },
     { "file": "fluid-ui.spec.ts", "lane": "nightly", "risk": "界面流畅度", "reason": "多页面动效与测量不适合挤入核心请求 lane。" },
+    { "file": "ui-fluidity.spec.ts", "lane": "manual", "risk": "009 办公机流畅度", "reason": "该历史专项夹具依赖独立办公机页面标记，按需在 009 性能环境手动运行。" },
     { "file": "franchise-labels.spec.ts", "lane": "nightly", "risk": "作品标签", "reason": "标签展示是内容视觉一致性检查，纳入夜间。" },
     { "file": "gallery-layout.spec.ts", "lane": "nightly", "risk": "作品册布局", "reason": "画廊布局跨主题和断点，使用夜间视觉矩阵。" },
     { "file": "github-reference.spec.ts", "lane": "critical", "risk": "参考接入", "reason": "参考素材接入主流程与分级边界需要快速回归。" },

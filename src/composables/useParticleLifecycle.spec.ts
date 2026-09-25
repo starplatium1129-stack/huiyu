@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, defineComponent, h, KeepAlive, nextTick, ref, type App } from 'vue'
-import { useParticleLifecycle, type ParticleLifecycleHooks } from './useParticleLifecycle'
+import { useParticleLifecycle } from './useParticleLifecycle'
 
 let app: App | undefined, frames: Map<number, FrameRequestCallback>, id: number
 let observers: Set<object>, callbacks: Array<() => void>
