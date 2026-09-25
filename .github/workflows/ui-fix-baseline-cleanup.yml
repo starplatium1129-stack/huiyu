@@ -1,0 +1,80 @@
+name: UI fix baseline cleanup
+
+on:
+  push:
+    branches: [fix/ai-visual-lifecycle-20260925]
+    paths: [.github/workflows/ui-fix-baseline-cleanup.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.ref == 'refs/heads/fix/ai-visual-lifecycle-20260925'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+      - name: Apply exact baseline-only corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = '710e9f2b67032a9a8944da3afe4d04e739b12b78'
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace(path, changes):
+              file = Path(path)
+              text = file.read_text()
+              for old, new in changes:
+                  if text.count(old) != 1:
+                      raise SystemExit(f'Expected exactly one match in {path}: {old!r}')
+                  text = text.replace(old, new, 1)
+              file.write_text(text)
+
+          replace('routes/chat.ts', [
+              ("import type { Normalized } from '../server/chat-types';\n", ''),
+              ('let { normalizeToolMessage, validateChatBody, validateCompatibleApi }', 'let { validateChatBody, validateCompatibleApi }'),
+              ("import type { ChatValidationValue, CompatibleApiValue } from './chat-validation';\n", ''),
+          ])
+          replace('src/composables/chat/useCharacterRoomSession.ts', [
+              ("import { loadChatUserProfile } from '@/utils/chatUserProfile'\n", ''),
+              ("import { recallChatFacts } from '@/utils/chatMemory'\n", ''),
+          ])
+          replace('src/composables/gallery/useGalleryWorkspace.ts', [
+              ('        PAGE_SIZE,\n', ''),
+              ('        renderLimit,\n', ''),
+              ('        groups,\n', ''),
+              ('        compareIds,\n', ''),
+              ('        parentArtwork,\n', ''),
+          ])
+          replace('scripts/tests/test-showcase.ts', [
+              ("  const fs: typeof import('fs') = require('fs');\n  const path: typeof import('path') = require('path');\n  const root = path.resolve(__dirname, '..', '..');\n  const view = readShowcaseView();",
+               '  const view = readShowcaseView();'),
+          ])
+          replace('src/components/visual/CgImageReveal.spec.ts', [
+              ("import { describe, expect, it, vi } from 'vitest'", "import { describe, expect, it } from 'vitest'"),
+          ])
+          replace('scripts/tests/test-anima-session.ts', [
+              ("    return nextResolve(specifier, context);\n  },\n});",
+               "    // Split source modules also use extensionless relative imports.\n"
+               "    // Keep this test-only resolver restricted to the frontend source tree.\n"
+               "    const sourcePrefix = pathToFileURL(aliasSrcRoot + nodePath.sep).href;\n"
+               "    if (context.parentURL?.startsWith(sourcePrefix)\n"
+               "      && /^\\.\\.?\\//.test(specifier) && !nodePath.extname(specifier)) {\n"
+               "      const target = new URL(specifier, context.parentURL);\n"
+               "      for (const candidate of [target.href + '.ts', target.href + '/index.ts']) {\n"
+               "        try { return nextResolve(candidate, context); } catch { /* try the next source shape */ }\n"
+               "      }\n"
+               "    }\n"
+               "    return nextResolve(specifier, context);\n  },\n});"),
+          ])
+          PY
+          git diff --check
+          git diff --stat
+          git add routes/chat.ts src/composables/chat/useCharacterRoomSession.ts src/composables/gallery/useGalleryWorkspace.ts scripts/tests/test-showcase.ts src/components/visual/CgImageReveal.spec.ts scripts/tests/test-anima-session.ts
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(quality): remove stale refactor bindings and resolve split session modules in tests'
+          git push origin HEAD:refs/heads/fix/ai-visual-lifecycle-20260925
