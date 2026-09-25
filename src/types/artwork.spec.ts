@@ -2,7 +2,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest'
 import type { DeepReadonly } from 'vue'
 import type { CharKey as LegacyCharKey, DrawEngine as LegacyDrawEngine, HistoryEntry as LegacyHistoryEntry } from '@/stores/promptBuilderStore'
 import type { CharKey, DrawEngine, HistoryEntry, HistorySnapshot } from './promptHistory'
-import { parseArtworkRecords } from './artwork'
+import { artworkTimestamp, parseArtworkRecords } from './artwork'
 import { historyFromResultContext } from '@/utils/resultContext'
 
 describe('公共作品类型的兼容边界', () => {
@@ -11,6 +11,11 @@ describe('公共作品类型的兼容边界', () => {
     expectTypeOf<CharKey>().toEqualTypeOf<LegacyCharKey>()
     expectTypeOf<DrawEngine>().toEqualTypeOf<LegacyDrawEngine>()
     expectTypeOf<HistorySnapshot>().toEqualTypeOf<DeepReadonly<Partial<HistoryEntry>>>()
+  })
+
+  it('无法解析的时间戳回退到数值 ID，不丢失排序稳定性', () => {
+    expect(artworkTimestamp({ id: 42, timestamp: 'not-a-date' })).toBe(42)
+    expect(artworkTimestamp({ id: 'legacy', timestamp: 'not-a-date' })).toBe(0)
   })
 
   it('旧记录保留字符串/数字 ID、缺失父作品、扩展字段及 null/缺省差别，不回写', () => {
