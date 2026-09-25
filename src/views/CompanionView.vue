@@ -238,8 +238,8 @@
 
         <div class="companion-composer">
           <VoiceGlow
-            :active="composerFocused || speechState === 'capturing' || speechAutoListening || voiceActive"
-            :level="speechState === 'capturing' ? 0.75 : (voiceActive ? 0.6 : 0)"
+            :active="!presentationSuspended && !uiHidden && (composerFocused || speechState === 'capturing' || speechState === 'recognizing' || speechAutoListening || voiceActive || busy)"
+            :level="speechLevel"
             :processing="busy || speechState === 'recognizing'"
             color-variant="dual"
           />
@@ -463,6 +463,7 @@ voiceActive,
 stopEverything,
 speechReady,
 speechState,
+speechLevel,
 speechButtonDisabled,
 speechError,
 onSpeechPress,
