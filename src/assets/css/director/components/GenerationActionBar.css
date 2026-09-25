@@ -12,8 +12,6 @@
     background:
       linear-gradient(135deg,var(--glass-specular),transparent 34%,transparent 68%,color-mix(in srgb,var(--accent) 10%,transparent)),
       var(--glass-fill);
-    -webkit-backdrop-filter: blur(24px) saturate(165%) contrast(1.04);
-    backdrop-filter: blur(24px) saturate(165%) contrast(1.04);
     box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 36px -6px rgba(4, 3, 16, 0.38);
     transition: border-color var(--motion-hover), box-shadow var(--motion-hover);
   }
@@ -57,10 +55,4 @@
   @media (max-width: 600px) {
     /* 尺寸独占一行，避免离线原因和生成按钮把所选尺寸挤成两位数字。 */
     .pb .gen-bar-size { flex: 1 1 100%; }
-  }
-  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-    .pb .gen-bar { background: var(--bg-surface); }
-  }
-  @media (prefers-reduced-transparency: reduce) {
-    .pb .gen-bar { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: var(--bg-surface); }
   }

@@ -13,7 +13,15 @@ export const PROJECTS = {
 } as const;
 type ProjectName = keyof typeof PROJECTS;
 interface BuildOptions { check?: boolean; force?: boolean; projects?: ProjectName[]; quiet?: boolean }
-interface BuildRecord { version: 1; fingerprint: string; outputs: Record<string, string> }
+interface BuildRecord {
+  version: 1;
+  fingerprint: string;
+  outputs: Record<string, string>;
+  localSources?: Record<string, string>;
+  builderDigest?: string;
+  configDigest?: string;
+  lockDigest?: string | null;
+}
 interface BuildResult { project: ProjectName; sources: number; outputs: number; cached: boolean }
 
 const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -84,8 +92,58 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
   const pending: Array<{ project: ProjectName; recordFile: string; previous?: BuildRecord;
     record: BuildRecord; contents: Map<string, string> }> = [];
   const results: BuildResult[] = [];
+  const lock = path.join(root, 'package-lock.json');
+  const lockDigest = fs.existsSync(lock) ? digest(fs.readFileSync(lock)) : null;
+  const builderDigest = digest(fs.readFileSync(fileURLToPath(import.meta.url)));
+
   for (const project of options.projects || Object.keys(PROJECTS) as ProjectName[]) {
     const parsed = loadProject(root, project);
+    const configFile = path.join(root, PROJECTS[project]);
+    const configDigest = digest(fs.readFileSync(configFile, 'utf8'));
+    const recordFile = path.join(root, '.cache', 'typescript-build', `${project}.json`);
+    const previous = readRecord(recordFile);
+    const expected = new Set(parsed.fileNames.filter(file => !file.endsWith('.d.ts'))
+      .flatMap(file => {
+        const relative = relativeInside(root, outputForSource(file));
+        return parsed.options.declaration ? [relative, relative.replace(/\.js$/, '.d.ts')] : [relative];
+      }));
+
+    if (!options.check && !options.force && previous?.localSources
+      && previous.builderDigest === builderDigest
+      && previous.configDigest === configDigest
+      && previous.lockDigest === lockDigest
+      && expected.size === Object.keys(previous.outputs).length
+    ) {
+      const sourceEntries = Object.entries(previous.localSources);
+      let fastMatch = sourceEntries.length > 0;
+      if (fastMatch) {
+        for (const [relSource, hash] of sourceEntries) {
+          const absSource = path.join(root, relSource);
+          if (!fs.existsSync(absSource) || digest(fs.readFileSync(absSource)) !== hash) {
+            fastMatch = false;
+            break;
+          }
+        }
+      }
+      if (fastMatch) {
+        for (const relative of expected) {
+          if (!ownedOutput(project, relative) || !previous.outputs[relative]) {
+            fastMatch = false;
+            break;
+          }
+          const file = path.join(root, relative);
+          if (!fs.existsSync(file) || digest(fs.readFileSync(file)) !== previous.outputs[relative]) {
+            fastMatch = false;
+            break;
+          }
+        }
+      }
+      if (fastMatch) {
+        results.push({ project, sources: parsed.fileNames.length, outputs: expected.size, cached: true });
+        continue;
+      }
+    }
+
     // Classic browser scripts execute on different pages, in their own scopes.
     const groups = project === 'browser' ? parsed.fileNames.map(file => [file]) : [parsed.fileNames];
     const isolatedEmit = project === 'node' || project === 'tests';
@@ -99,19 +157,11 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
         localSources.set(relative, digest(source.text));
       }
     }
-    const lock = path.join(root, 'package-lock.json');
     const fingerprint = digest(JSON.stringify({ compiler: ts.version, options: parsed.options,
-      builder: digest(fs.readFileSync(fileURLToPath(import.meta.url))),
+      builder: builderDigest,
       sources: [...localSources].sort(([a]: any, [b]: any) => a.localeCompare(b)),
-      config: fs.readFileSync(path.join(root, PROJECTS[project]), 'utf8'),
-      dependencies: fs.existsSync(lock) ? digest(fs.readFileSync(lock)) : null }));
-    const recordFile = path.join(root, '.cache', 'typescript-build', `${project}.json`);
-    const previous = readRecord(recordFile);
-    const expected = new Set(parsed.fileNames.filter(file => !file.endsWith('.d.ts'))
-      .flatMap(file => {
-        const relative = relativeInside(root, outputForSource(file));
-        return parsed.options.declaration ? [relative, relative.replace(/\.js$/, '.d.ts')] : [relative];
-      }));
+      config: fs.readFileSync(configFile, 'utf8'),
+      dependencies: lockDigest }));
     const cached = !options.check && !options.force && previous?.fingerprint === fingerprint
       && expected.size === Object.keys(previous.outputs).length
       && [...expected].every(relative => {
@@ -165,6 +215,8 @@ export function buildProjects(root: string, options: BuildOptions = {}): BuildRe
         throw new Error(`${project}: source/output inventory is incomplete`);
       }
       pending.push({ project, recordFile, previous, contents, record: { version: 1, fingerprint,
+        builderDigest, configDigest, lockDigest,
+        localSources: Object.fromEntries(localSources),
         outputs: Object.fromEntries([...contents].map(([file, text]: any) => [file, digest(text)])) } });
     }
     results.push({ project, sources: parsed.fileNames.length, outputs: options.check ? 0 : contents.size, cached: false });

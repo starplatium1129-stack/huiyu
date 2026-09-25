@@ -8,8 +8,6 @@
   background: linear-gradient(115deg, var(--glass-highlight), transparent 45%), var(--nav-bg);
   border-bottom-color: var(--glass-edge);
   box-shadow: inset 0 1px 0 var(--glass-highlight), 0 4px 20px color-mix(in srgb, var(--ink-base) 6%, transparent);
-  -webkit-backdrop-filter: blur(24px) saturate(135%);
-  backdrop-filter: blur(24px) saturate(135%);
 }
 @media (min-width: 769px) {
   .nav-links {
@@ -43,14 +41,15 @@
 html :is(.modal-card, .batch-panel, .story-card, .pb-backup-card, .pb-compare,
   .shot-script-panel, .appearance-dialog, .char-ref-modal, .candidate-compare,
   .character-browser-dialog, .companion-settings-popover, .companion-workspace-settings,
-  .guest-guide-card, .random-popover, .chat-more-menu) {
+  .guest-guide-card, .random-popover, .chat-more-menu, .confirm-panel) {
   border-color: var(--glass-edge);
   border-radius: var(--r-xl);
   box-shadow: var(--shadow-glass-elevated);
 }
 html :is(.modal-card, .batch-panel, .story-card, .pb-backup-card, .pb-compare,
   .shot-script-panel, .appearance-dialog, .candidate-compare, .character-browser-dialog,
-  .companion-settings-popover, .companion-workspace-settings, .guest-guide-card, .random-popover) {
+  .companion-settings-popover, .companion-workspace-settings, .guest-guide-card, .random-popover,
+  .confirm-panel) {
   background: var(--bg-surface);
 }
 html :is(.modal-card, .batch-panel, .story-card, .pb-backup-card, .shot-script-panel) > :is(h2, h3, header) {

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import { installShowcaseFixture } from './helpers/showcase'
 
-type MotionSample = { transform: string; state: string | undefined }
+type MotionSample = { transform: string; state: string | undefined; opacity: string }
 type MotionWindow = Window & { __anchoredMotionSamples?: MotionSample[] }
 
 async function observeMotion(page: Page, selector: string) {
@@ -14,7 +14,7 @@ async function observeMotion(page: Page, selector: string) {
       document.querySelectorAll<HTMLElement>(selector).forEach(element => {
         if (samples.length < 1000) {
           const style = getComputedStyle(element)
-          samples.push({ transform: style.transform, state: element.dataset.state })
+          samples.push({ transform: style.transform, state: element.dataset.state, opacity: style.opacity })
         }
       })
     }
@@ -27,7 +27,8 @@ async function observeMotion(page: Page, selector: string) {
 async function expectMotionWasPlayed(page: Page) {
   await expect.poll(() => page.evaluate(() =>
     (window as MotionWindow).__anchoredMotionSamples?.some(sample =>
-      sample.transform !== 'none' && !/^matrix\(1,\s*0,\s*0,\s*1,\s*0,\s*0\)$/.test(sample.transform),
+      (sample.opacity !== undefined && Number(sample.opacity) < 0.99) ||
+      (sample.transform !== 'none' && !/^matrix\(1,\s*0,\s*0,\s*1,\s*0,\s*0\)$/.test(sample.transform)),
     ) ?? false,
   )).toBe(true)
 }

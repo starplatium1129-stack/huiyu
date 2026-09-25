@@ -24,8 +24,17 @@ for (const theme of ['dark', 'light']) {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.route('**/api/video/status', route => route.fulfill({ json: {
       ok: true, online: true, pending: 0, maxPending: 2,
-      models: [{ id: 'minimax-h3', label: 'MiniMax H3', available: true, executable: true, modes: ['text', 'image', 'first-last-frame'], requirements: [], missing: [] }],
-      qualities: [], defaults: { modelId: 'minimax-h3' }, t8: { available: true, reason: '测试环境' },
+      models: [{
+        id: 'minimax-h3', label: 'MiniMax H3', family: 'minimax', tier: 'cloud',
+        summary: 'MiniMax H3', reason: '', available: true, executable: true,
+        modes: ['text', 'image', 'first-last-frame'], requirements: [], missing: [],
+      }],
+      qualities: [],
+      defaults: {
+        modelId: 'minimax-h3', aspectRatio: 'landscape', duration: 5,
+        camera: 'still', motion: 'natural', quality: 'standard',
+      },
+      t8: { available: true, reason: '测试环境' },
     } }))
     await page.route('**/api/video/jobs', route => route.fulfill({ status: 503, json: { ok: false, error: '测试视频提交失败，请重试' } }))
     await page.goto('/video-studio')
@@ -58,7 +67,12 @@ test('video task query retries from the workspace without navigating away', asyn
   await page.route('**/api/video/jobs/retry-query', route => {
     requests += 1
     return recovered
-      ? route.fulfill({ json: { ok: true, job: { id: 'retry-query', modelId: 'minimax-h3', prompt: 'A quiet afternoon', createdAt: 1, status: 'cancelled', progress: 0, resultAvailable: false, resultUrl: null, error: null } } })
+      ? route.fulfill({ json: { ok: true, job: {
+          id: 'retry-query', provider: 'comfy', modelId: 'minimax-h3', prompt: 'A quiet afternoon',
+          status: 'cancelled', progress: 0, estimatedSeconds: 0, elapsedSeconds: 0,
+          width: 1280, height: 720, duration: 5, fps: 24, seed: 0, createdAt: 1,
+          resultAvailable: false, resultUrl: null, error: null, code: null,
+        } } })
       : route.fulfill({ status: 503, json: { ok: false, error: '任务查询暂时失败' } })
   })
   await page.goto('/video-studio?job=retry-query')
@@ -83,7 +97,12 @@ async function mockDrawingStatus(page: Page) {
 test('cached video workspace follows a different task-center link', async ({ page }) => {
   await page.route(/\/api\/video\/jobs\/cached-(one|two)$/, route => {
     const id = new URL(route.request().url()).pathname.split('/').pop()!
-    return route.fulfill({ json: { ok: true, job: { id, modelId: 'minimax-h3', prompt: 'A quiet afternoon', createdAt: 1, status: id.endsWith('one') ? 'cancelled' : 'failed', progress: 0, resultAvailable: false, resultUrl: null, error: null } } })
+    return route.fulfill({ json: { ok: true, job: {
+      id, provider: 'comfy', modelId: 'minimax-h3', prompt: 'A quiet afternoon',
+      status: id.endsWith('one') ? 'cancelled' : 'failed', progress: 0,
+      estimatedSeconds: 0, elapsedSeconds: 0, width: 1280, height: 720, duration: 5,
+      fps: 24, seed: 0, createdAt: 1, resultAvailable: false, resultUrl: null, error: null, code: null,
+    } } })
   })
   await page.goto('/gallery')
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
@@ -117,7 +136,11 @@ for (const theme of ['dark', 'light']) {
     await page.route('**/api/video/jobs/recovery-one', async route => {
       if (route.request().method() === 'DELETE') { cancels += 1; status = 'cancelled' }
       else reads += 1
-      await route.fulfill({ json: { ok: true, job: { id: 'recovery-one', modelId: 'minimax-h3', prompt: 'A quiet afternoon', createdAt: 1, status, progress: .4, resultAvailable: false, resultUrl: null, error: null } } })
+      await route.fulfill({ json: { ok: true, job: {
+        id: 'recovery-one', provider: 'comfy', modelId: 'minimax-h3', prompt: 'A quiet afternoon',
+        status, progress: .4, estimatedSeconds: 10, elapsedSeconds: 4, width: 1280, height: 720,
+        duration: 5, fps: 24, seed: 0, createdAt: 1, resultAvailable: false, resultUrl: null, error: null, code: null,
+      } } })
     })
     await page.route('**/api/video/jobs', async route => { submissions += 1; await route.abort() })
     await page.goto('/gallery')

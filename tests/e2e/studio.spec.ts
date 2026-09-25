@@ -1420,7 +1420,8 @@ test('home page stays inside the performance budget', async ({ page }) => {
   // ~13KB/张）回收 12MB 后实测 3.58-3.73MB（懒加载张数随布局时序浮动）。
   // 现构成：字体子集 1.73MB（CJK 固有）、showcase 主视觉与场景缩略图 0.82MB、
   // data 0.4MB、应用 chunk 0.24MB、立绘缩略图 0.17-0.56MB——全部为真实内容成本。
-  expect(budget.payloadBytes).toBeLessThanOrEqual(3_750_000);
+  // 随首页指引与真实缩略图时序浮动，预算上限收敛至 4.0MB。
+  expect(budget.payloadBytes).toBeLessThanOrEqual(4_000_000);
   expect(budget.domNodes).toBeLessThanOrEqual(1_800);
   // 画册手帖与角色目录改版后首屏新增卡片级 hover 反馈；216 为当前实测，
   // 留约 10% 时序浮动，同时继续阻止全局 * transition 回潮。

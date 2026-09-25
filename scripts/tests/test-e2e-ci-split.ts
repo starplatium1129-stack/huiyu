@@ -13,11 +13,17 @@ const quality = fs.readFileSync(path.join(root, '.github', 'workflows', 'quality
 const nightly = fs.readFileSync(path.join(root, '.github', 'workflows', 'nightly-e2e.yml'), 'utf8');
 const native = fs.readFileSync(path.join(root, '.github', 'workflows', 'windows-native.yml'), 'utf8');
 
+// E2E 归一架构：以 tests/e2e/e2e-lanes.json 为唯一测试登记清单，
+// package.json 的 critical 与 nightly 均通过 run-e2e-lane.js 统一派发；
+// 新测试只需在 e2e-lanes.json 登记一次即可自动纳入对应泳道。
 const critical = pkg.scripts['test:e2e:critical:run'];
 const nightlyRun = pkg.scripts['test:e2e:nightly:run'];
-const specNames = function (command: string) {
-  return [...command.matchAll(/tests\/e2e\/([^\s]+\.spec\.ts)/g)].map(function (match) { return match[1]; }).sort();
-};
+assert.strictEqual(critical, 'node scripts/tests/run-e2e-lane.js critical',
+  'critical browser command must execute the unified lane runner');
+assert.strictEqual(nightlyRun, 'node scripts/tests/run-e2e-lane.js nightly',
+  'nightly browser command must execute the unified lane runner');
+
+const { getSpecsForLane }: typeof import('./run-e2e-lane') = require('./run-e2e-lane');
 const laneManifest = JSON.parse(fs.readFileSync(path.join(root, 'tests', 'e2e', 'e2e-lanes.json'), 'utf8')) as {
   schemaVersion: number;
   specs: Array<{ file: string; lane: string; risk: string; reason: string }>;
@@ -43,34 +49,31 @@ assert.match(pkg.scripts['test:e2e:all'], /^playwright test$/);
 assert.match(pkg.scripts['test:e2e:critical'], /npm run build && npm run test:e2e:critical:run/);
 assert.match(pkg.scripts['test:e2e:nightly'], /npm run build && npm run test:e2e:nightly:run/);
 
-for (const spec of ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts', 'anima-quick.spec.ts', 'interaction-polish.spec.ts']) {
-  assert(critical.includes(spec), `critical browser regression must include ${spec}`);
-}
-// 2026-09-05：critical/nightly 均扩至 5 spec（nightly 接入 CI 时 package.json 扩了
-// 列表但本守护仍断言 3/2，导致 npm run check 必红）。守护语义改为：
-// ① 每侧必须包含全部已知 spec（新增 spec 未登记会红，提示同步 workflow）
-// ② 两侧互不重叠（重复收录会稀释 PR 回归与 nightly 矩阵）。
-const criticalSpecs = specNames(critical);
+const criticalSpecs = getSpecsForLane('critical');
 assert.deepStrictEqual(criticalSpecs, specsForLane('critical'),
-  'critical browser command must match the lane manifest');
-const manifestNightlySpecs = specsForLane('nightly');
-assert.deepStrictEqual(specNames(nightlyRun), manifestNightlySpecs,
-  'nightly browser command must match the lane manifest');
-assert(!/capture\.spec\.ts|theme-audit\.spec\.ts/.test(critical),
+  'runner critical specs must match the lane manifest');
+const manifestNightlySpecs = getSpecsForLane('nightly');
+assert.deepStrictEqual(manifestNightlySpecs, specsForLane('nightly'),
+  'runner nightly specs must match the lane manifest');
+
+for (const spec of ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts', 'anima-quick.spec.ts', 'interaction-polish.spec.ts']) {
+  assert(criticalSpecs.includes(spec), `critical browser regression must include ${spec}`);
+}
+assert(!criticalSpecs.some(spec => /capture\.spec\.ts|theme-audit\.spec\.ts/.test(spec)),
   'visual audit specs must not make PR browser regression slower');
 
 for (const spec of ['theme-audit.spec.ts', 'capture.spec.ts', 'particle-atmosphere.spec.ts', 'particle-narrative.spec.ts', 'archive-visual-language.spec.ts']) {
-  assert(nightlyRun.includes(spec), `nightly visual regression must include ${spec}`);
+  assert(manifestNightlySpecs.includes(spec), `nightly visual regression must include ${spec}`);
 }
-const nightlySpecs = specNames(nightlyRun);
+const nightlySpecs = manifestNightlySpecs;
 const overlap = criticalSpecs.filter(function (spec) { return nightlySpecs.includes(spec); });
 assert.deepStrictEqual(overlap, [], 'critical 与 nightly 分组不得重叠');
 assert(!nightlySpecs.some(spec => ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts'].includes(spec)),
   'nightly visual regression should not duplicate the PR critical suite');
 for (const lane of ['device', 'manual']) {
-  assert.deepStrictEqual(specNames(critical).filter(function (spec) { return specsForLane(lane).includes(spec); }), [],
+  assert.deepStrictEqual(criticalSpecs.filter(function (spec) { return specsForLane(lane).includes(spec); }), [],
     `${lane} E2E specs must stay out of the critical browser command`);
-  assert.deepStrictEqual(specNames(nightlyRun).filter(function (spec) { return specsForLane(lane).includes(spec); }), [],
+  assert.deepStrictEqual(nightlySpecs.filter(function (spec) { return specsForLane(lane).includes(spec); }), [],
     `${lane} E2E specs must stay out of the nightly browser command`);
 }
 

@@ -361,7 +361,6 @@
     backdrop-filter:blur(22px) saturate(165%) contrast(1.04);
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-sm);
   }
-  .pb #pb-toast { background:var(--glass-fill-strong) !important; border-color:var(--glass-edge) !important; -webkit-backdrop-filter:blur(24px) saturate(160%); backdrop-filter:blur(24px) saturate(160%); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--glass-shadow) !important; }
   /* Keep canvas actions readable while the surface enters; blur and scale soften text. */
   @keyframes directorViewIn { from { transform:translateY(4px); } to { transform:none; } }
   @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }

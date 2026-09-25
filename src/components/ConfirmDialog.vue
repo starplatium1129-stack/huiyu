@@ -92,9 +92,6 @@ onUnmounted(() => {
   width: min(380px, calc(100vw - 32px));
   padding: var(--s-5);
   border: 1px solid var(--glass-edge);
-  border-radius: var(--r-xl);
-  background: var(--bg-surface);
-  box-shadow: var(--shadow-glass-elevated);
   color: var(--text-primary);
 }
 .confirm-icon { display: block; margin-bottom: var(--s-2); color: var(--text-secondary); }

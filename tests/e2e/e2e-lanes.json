@@ -45,6 +45,7 @@
     { "file": "github-reference.spec.ts", "lane": "critical", "risk": "参考接入", "reason": "参考素材接入主流程与分级边界需要快速回归。" },
     { "file": "glass-material-modes.spec.ts", "lane": "nightly", "risk": "玻璃材质", "reason": "材质模式涉及资源释放和视觉截图，纳入夜间。" },
     { "file": "glass-u4.spec.ts", "lane": "nightly", "risk": "玻璃兼容", "reason": "U4 材质兼容验证依赖完整视觉环境，放入夜间。" },
+    { "file": "home-creation-guide.spec.ts", "lane": "critical", "risk": "首页指引悬停", "reason": "双主题验证创作指引卡片悬停材质、边框和位移不抖动。" },
     { "file": "home-image-recovery.spec.ts", "lane": "critical", "risk": "首页图片恢复", "reason": "近期图片恢复用例覆盖首页首屏失败回退，必须进入 PR 回归。" },
     { "file": "illustration-recovery.spec.ts", "lane": "critical", "risk": "插画恢复", "reason": "插画加载失败与恢复直接影响主要浏览流程，需快速发现。" },
     { "file": "image-fallback-visual.spec.ts", "lane": "critical", "risk": "图片回退", "reason": "图片失败占位与主题可读性是近期恢复改动的关键保护。" },
