@@ -18,11 +18,11 @@
 /* Match the workbench chrome rule's specificity so its static blur cannot hide
    an installed lens. The generated filter only affects the backdrop. */
 :root body [data-fluid-refracted],
-:root body .gen-bar[data-fluid-refracted] {
-  -webkit-backdrop-filter: var(--fluid-glass-filter);
-  backdrop-filter: var(--fluid-glass-filter);
+:root body :is(.gen-bar, .pb .gen-bar)[data-fluid-refracted] {
+  -webkit-backdrop-filter: var(--fluid-glass-filter) !important;
+  backdrop-filter: var(--fluid-glass-filter) !important;
 }
-:root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, [data-fluid-glass]) {
+:root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
   background: var(--bg-surface) !important;
   background-image: none !important;
   box-shadow: none !important;
@@ -30,7 +30,7 @@
   backdrop-filter: none !important;
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, [data-fluid-glass]) {
+  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
     background: var(--bg-surface) !important;
     background-image: none !important;
     box-shadow: none !important;
@@ -39,13 +39,13 @@
   }
 }
 @media (prefers-contrast: more) {
-  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, [data-fluid-glass]) {
+  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
     border-color: var(--text-muted);
   }
 }
 @media (forced-colors: active) {
-  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, [data-fluid-glass]),
-  :root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, [data-fluid-glass]) {
+  :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]),
+  :root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
     background: Canvas !important;
     background-image: none !important;
     border-color: CanvasText;

@@ -196,3 +196,71 @@ test('build refuses weakened checking, corrupted caches cannot count as successf
     assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }), /strictly check TypeScript/);
   } finally { f.remove(); }
 });
+
+test('newly added declaration file invalidates cache and catches introduced type errors', async () => {
+  const f = fixture();
+  try {
+    const { buildProjects } = await builder;
+    f.write('server/types.d.ts', 'interface ServerConfig { port: number; }\n');
+    f.write('server/value.ts', 'export const config: ServerConfig = { port: 8080 };\nexport const value: number = 41;\n');
+
+    const first = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
+    assert.equal(first.cached, false);
+    const second = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
+    assert.equal(second.cached, true);
+
+    // 构建后新增 .d.ts，通过接口合并影响现有源码类型判断（增加必选字段导致 server/value.ts 报错）
+    f.write('server/conflict.d.ts', 'interface ServerConfig { secretKey: string; }\n');
+    assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }), /secretKey/);
+
+    // 改为合法且兼容的新增声明文件，缓存必须失效并重新构建
+    f.write('server/conflict.d.ts', 'interface ServerConfig { optionalHost?: string; }\n');
+    const rebuilt = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
+    assert.equal(rebuilt.cached, false);
+    assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, true);
+
+    // 删除新增的声明文件，同样触发缓存失效并重新构建
+    fs.unlinkSync(path.join(f.root, 'server/conflict.d.ts'));
+    const unlinked = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
+    assert.equal(unlinked.cached, false);
+    assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, true);
+  } finally { f.remove(); }
+});
+
+test('modifying inherited base config invalidates child project cache and catches type errors', async () => {
+  const f = fixture();
+  try {
+    const { buildProjects } = await builder;
+    // 写入父配置并让子配置 extends 父配置
+    f.write('tsconfig.base.json', JSON.stringify({
+      compilerOptions: { target: 'ES2022', strict: true, skipLibCheck: true },
+    }));
+    f.write('tsconfig.node.json', JSON.stringify({
+      extends: './tsconfig.base.json',
+      compilerOptions: { module: 'Node16', moduleResolution: 'Node16', noEmitOnError: true, rootDir: '.', outDir: '.', types: [] },
+      include: ['server.ts', 'server/**/*.ts'],
+      exclude: [],
+    }));
+    // 源码包含未使用的局部变量，但当前未开启 noUnusedLocals，构建能够通过
+    f.write('server/value.ts', 'const unusedLocalValue = 100;\nexport const value: number = 41;\n');
+
+    const first = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
+    assert.equal(first.cached, false);
+    assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, true);
+
+    // 仅修改父配置 tsconfig.base.json，子配置 tsconfig.node.json 保持完全不变
+    // 开启 noUnusedLocals，破坏性配置变更必须被发现
+    f.write('tsconfig.base.json', JSON.stringify({
+      compilerOptions: { target: 'ES2022', strict: true, noUnusedLocals: true, skipLibCheck: true },
+    }));
+    assert.throws(() => buildProjects(f.root, { quiet: true, projects: ['node'] }), /is declared but its value is never read/);
+
+    // 父配置修改为正常有效配置（例如 removeComments: true），子配置依然不变
+    f.write('tsconfig.base.json', JSON.stringify({
+      compilerOptions: { target: 'ES2022', strict: true, removeComments: true, skipLibCheck: true },
+    }));
+    const recompiled = buildProjects(f.root, { quiet: true, projects: ['node'] })[0];
+    assert.equal(recompiled.cached, false);
+    assert.equal(buildProjects(f.root, { quiet: true, projects: ['node'] })[0].cached, true);
+  } finally { f.remove(); }
+});
