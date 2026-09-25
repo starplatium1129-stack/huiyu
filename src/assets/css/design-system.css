@@ -234,6 +234,12 @@
   --ease-in-out: cubic-bezier(.77, 0, .175, 1); /* 屏内移动/形变 */
   --ease-drawer: cubic-bezier(.32, .72, 0, 1);  /* 抽屉与大面积浮层 */
 
+  /* Spring-to-linear：transform 专用；linear() 不支持时回退 Bézier。 */
+  --spring-bouncy-ease: var(--spring-bounce);
+  --spring-bouncy-duration: 650ms;
+  --spring-gentle-ease: var(--spring-soft);
+  --spring-gentle-duration: var(--motion-control);
+
   /* ---- z-index scale(唯一来源,禁止页面内写魔法数字) ---- */
   --z-below: -1;      /* 背景光斑 / 装饰层 */
   --z-base: 1;        /* 卡片内部堆叠 */
@@ -273,6 +279,14 @@
   --stage-amber:  linear-gradient(155deg, #4a3525 0%, #2e2018 48%, #1b1210 100%);
 }
 
+/* Spring-to-linear 烘焙结果：只有支持原生 linear() 的浏览器才启用，
+   旧 Safari/浏览器继续使用上面的 Bézier 与 motion-control fallback。 */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring-gentle-ease: linear(0, 0.0046 1.042%, 0.0173 2.083%, 0.0364 3.125%, 0.0607 4.167%, 0.1204 6.25%, 0.189 8.333%, 0.3696 13.542%, 0.4383 15.625%, 0.5027 17.708%, 0.5898 20.833%, 0.6413 22.917%, 0.6875 25%, 0.7287 27.083%, 0.7652 29.167%, 0.8119 32.292%, 0.8383 34.375%, 0.8812 38.542%, 0.9133 42.708%, 0.9319 45.833%, 0.9547 51.042%, 0.9786 60.417%, 0.9924 72.917%, 1);
+    --spring-gentle-duration: 550ms;
+  }
+}
 
 /* SPA navigation uses AppLayout.vue transitions. Cross-document automatic
    transitions require both documents to remain opted in; async route startup

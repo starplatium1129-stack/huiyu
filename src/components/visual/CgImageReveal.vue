@@ -319,7 +319,7 @@ defineExpose({
   display: block;
   overflow: hidden;
   border-radius: inherit;
-  background: var(--bg-deep, #181420);
+  background: var(--bg-deep);
 }
 
 .cg-image-target {

@@ -268,7 +268,10 @@ Glass surfaces are allowed for navigation, floating utilities, and the director
 stage chrome. They must have an opaque fallback and must not be stacked until
 text becomes hazy. Prefer one clear surface boundary over several nested glowing
 cards. Motion uses the existing `150ms` and `240ms` timings; page and character
-transitions may be slightly slower, but never delay an action.
+transitions may be slightly slower, but never delay an action. Transform-only
+surfaces may opt into the pre-baked Spring-to-linear tokens from
+`src/utils/springCompiler.ts`; unsupported browsers use the existing Bézier
+fallbacks, and reduced-motion keeps the short state-feedback transition.
 
 Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
 System transparency, increased contrast, and forced colors must update material

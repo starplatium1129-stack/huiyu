@@ -17,7 +17,8 @@
   cursor: pointer;
   content-visibility: auto;
   contain-intrinsic-size: auto 280px;
-  transition: border-color var(--motion-hover), transform var(--motion-control) var(--spring-soft), box-shadow var(--motion-control) var(--ease-out);
+  /* 卡片抬升是 transform-only 物理弹簧；linear() 不支持时回退到 Bézier。 */
+  transition: border-color var(--motion-hover), transform var(--spring-gentle-duration) var(--spring-gentle-ease), box-shadow var(--motion-control) var(--ease-out);
   min-width: 0;
   color: var(--text-primary);
   text-decoration: none;
