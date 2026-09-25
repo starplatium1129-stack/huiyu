@@ -43,6 +43,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
 
   const {
     state: speechState,
+    level: speechLevel,
     errorMessage: speechError,
     supported: speechSupported,
     autoListening: speechAutoListening,
@@ -233,6 +234,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   return {
     speechReady,
     speechState,
+    speechLevel,
     speechError,
     speechAutoListening,
     speechSessionActive,
