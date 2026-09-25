@@ -29,6 +29,7 @@
         <div class="stage-content">
         <DirectorSceneReference :size="canvasSize" />
         <div v-if="generationBusy" class="stage-generating-copy">
+          <ThinkingOrb state="working" size="lg" color-variant="dual" />
           <div class="stage-generating-title">心动画面正在显影…</div>
           <div class="stage-generating-sub">
             {{ generationStatusText || '正在绘制这一幕，请稍候。' }}
@@ -142,6 +143,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'
+import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
