@@ -51,7 +51,7 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   const nightly = read('.github/workflows/nightly-e2e.yml');
 
   // 2026-08-22 加入 test:frontend（Vitest）道：validate 必须先跑前端单测再进 unit/contract。
-  assert.equal(scripts.validate, 'npm run check && npm run test:frontend && npm run test:unit && npm run test:contract');
+  assert.equal(scripts.validate, 'npm run check && npm run test:frontend && npm run test:unit:run && npm run test:contract:run');
   assert.match(scripts['test:frontend'], /^vitest run$/);
   assert.ok(
     fs.existsSync(path.join(root, 'vitest.config.ts'))

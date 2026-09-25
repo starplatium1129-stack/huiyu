@@ -197,7 +197,7 @@ async function main(argv: string[]) {
     if (failPhase(runNpmStep('vitest', 'test:frontend', 300_000, verbose))) continue;
     if (failPhase(runUnitSuite({ verbose }))) continue;
     if (failPhase(await runContractSuite({ verbose, keepGoing }))) continue;
-    failPhase(runNpmStep('build（打包预算）', 'build', 600_000, verbose));
+    failPhase(runNpmStep('build（打包预算）', 'build:web:run', 600_000, verbose));
   }
   console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);
   return exitCode;

@@ -288,9 +288,9 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | --- | --- |
 | gate:quick ui/server/data/all | 按变更面积分层；默认检测 Git 改动；脚本、依赖、配置及未知代码路径升级 full；纯文档跳过 |
 | check:quick | npm run check 的全部已注册并行检查 |
-| check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build |
+| check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build；validate 内部使用 `test:unit:run` / `test:contract:run` 复用 check 阶段已准备的运行时，独立运行 `test:unit` / `test:contract` 仍会先执行 `build:runtime` |
 | gate:full | npm run check（内含 typecheck:app/typecheck）+ vitest + unit + contract + build，全量入口 |
-| build:web / build:runtime | 前端与预算/预压；服务、网关、维护/测试及独立浏览器脚本的严格检查与编译 |
+| build:web / build:runtime | 前端与预算/预压；服务、网关、维护/测试及独立浏览器脚本的严格检查与编译；`build:web:run` / `start:run` 是组合流程复用的内部无准备入口 |
 | check:style-debt | 样式字面值、颜色、动画和双主题全局/角色令牌对比度；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
 | check:domain-types | 指定公共作品/生成类型、结果快照及保存用例的可达依赖；复用 AST/真实路径/别名/再导出/Vue 脚本解析；禁止直连具体存储/API/Node 平台；类型边单列，违规、未知路径和运行候选循环阻断 |

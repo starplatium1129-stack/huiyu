@@ -370,7 +370,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '全量门禁：check（内含双 typecheck）+ vitest + unit + contract + 打包预算（横切重构/提交前）',
     cmd: ['node', 'scripts/maintenance/gate-quick.js', 'full'],
     docs: 'docs/workflow.md',
-    run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:174-189; scripts/maintenance/run-check-parallel.js:22-25', unknown: [], notes: ['typecheck:app/typecheck 已包含在 check 编排内（run-check-parallel.js:24-25），不单独重复执行；末步真实执行 npm run build（vite+预算+预压）'] },
+    run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:174-189; scripts/maintenance/run-check-parallel.js:22-25', unknown: [], notes: ['typecheck:app/typecheck 已包含在 check 编排内（run-check-parallel.js:24-25），不单独重复执行；末步执行 npm run build:web:run，复用 check 阶段已准备的 runtime（vite+预算+预压）'] },
   },
   'check:full': {
     desc: '完整校验：check + frontend + unit + contract',
