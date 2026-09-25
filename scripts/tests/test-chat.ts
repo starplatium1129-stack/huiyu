@@ -268,7 +268,6 @@ async function run() {
   roomSession += '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useRoomMemory.ts'), 'utf8');
   let apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   let characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
-  let companionRegistry = fs.readFileSync(path.join(root, 'src', 'utils', 'companionRegistry.ts'), 'utf8');
   let adapterProfile = fs.readFileSync(path.join(root, 'src', 'live2d', 'adapterProfile.ts'), 'utf8');
   let voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
   let voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
@@ -288,7 +287,6 @@ async function run() {
   let chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatConversation.ts'), 'utf8');
   let userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
   let memoryPanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatMemoryPanel.vue'), 'utf8');
-  let securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   let voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   let chatRouteSource = [
     path.join(root, 'routes', 'chat.js'),
@@ -307,13 +305,8 @@ async function run() {
       && roomSession.includes('useVoice'),
     'website chat and companion must share only the character-room session core'
   );
-  assert(
-    companionRegistry.includes("characters.set('nene'")
-      && companionRegistry.includes("characters.set('natsume'")
-      && characterStageComponent.includes('listCompanionUiCharacters')
-      && html.includes('switchCharacter'),
-    'both registered companion characters must be selectable'
-  );
+  // 两个已登记角色可在真实舞台切换（tests/e2e/studio.spec.ts 会切到 nene 并断言服装记忆变化），
+  // 不再用注册表字符串推断「可选择」这一行为。
   // chat.css 是路由专属样式：由 ChatView 自己 import，随 /chat 的懒加载块下发，
   // 不再进全局包（它曾占 139KB 全局 CSS 的 13%，而只有一个路由用得到）。
   assert(html.includes('assets/css/chat.css'), 'chat styles must be imported by the chat view');
@@ -339,8 +332,8 @@ async function run() {
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(html.includes('ChatUserProfilePanel') && userProfilePanel.includes('CHAT_RELATIONSHIPS'), 'user profile editing must have independent component ownership');
   assert(html.includes('ChatMemoryPanel') && memoryPanel.includes('LONG-TERM MEMORY') && html.includes('messageRemembered'), 'manual long-term memory must have independent UI ownership');
-  assert(chatConversation.includes('userProfile: hasChatUserProfile') && roomSession.includes('loadChatUserProfile'), 'the validated local user profile must reach every chat request');
-  assert(chatConversation.includes('memories: options.recallMemories') && roomSession.includes('recallChatFacts'), 'recalled user-confirmed facts must reach the chat request');
+  // 档案与记忆是否真的进入请求，由本文件后面的真实 validateChatBody 场景断言
+  // （profiledPrompt / memoryValidation），不再靠调用点字符串推断。
   assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
     /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopWindowBounds,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?(?:releasePointerFocus,?\s*)?\}\)/.test(characterStageComponent)
@@ -419,8 +412,10 @@ async function run() {
   );
   assert(voiceModule.includes('voiceApi.prepare') && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
-  assert(live2dAggregated.includes('ResizeObserver') && live2dAggregated.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
-  assert(live2dAggregated.includes('setOutfit') && live2dAggregated.includes('setSpeaking') && live2dAggregated.includes('setMouth') && live2dAggregated.includes('ParamMouthOpenY'), 'Live2D must switch authored outfits and write real speech amplitudes into the mouth parameter');
+  // 布局跟随与口型/表情写入分别由 layoutFit、useLive2D-api 与 interactions 行为测试覆盖；
+  // 这里只保留没有行为证据的 WebGL 上下文丢失恢复。
+  assert(live2dAggregated.includes('webglcontextlost'), 'Live2D must recover WebGL failures');
+  assert(live2dAggregated.includes('setOutfit') && live2dAggregated.includes('setSpeaking'), 'Live2D must switch authored outfits and drive speech state');
   assert(
     characterConfig.includes("{ id: 'school', label: '校服', expression: 'expression1' }")
       && characterConfig.includes("{ id: 'casual', label: '常服', expression: 'expression2' }")
@@ -466,21 +461,12 @@ async function run() {
     'Live2D status JSON and dynamic runtime exports must be narrowed before use'
   );
   assert(!characterStageComponent.includes('live2d-quick-actions') && !live2dAggregated.includes('beginGreetingGesture'), 'Live2D must not expose simulated quick actions');
-  assert(
-    live2dAggregated.includes('options.autoLoad === true')
-      && live2dAggregated.includes("setState('idle', '启用 Live2D'"),
-    'Live2D must stay unloaded until the user explicitly enables it'
-  );
+  // 未显式启用前保持未加载，由 E2E 直接断言页面上的「启用 Live2D」状态文案。
   assert(live2dAggregated.includes("'degraded'") && live2dAggregated.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
   assert(live2dStageModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
-  // PixiJS 需要 unsafe-eval：两个 Live2D 页面都必须放行，否则运行时初始化失败
-  assert(
-    securitySource.includes("path === '/chat'")
-      && securitySource.includes("path === '/companion'")
-      && securitySource.includes('unsafe-eval'),
-    'CSP must allow unsafe-eval on chat and companion routes for the Live2D renderer'
-  );
+  // PixiJS 需要 unsafe-eval：真实响应头在本文件后面的 HTTP 场景里逐路由断言
+  // （/chat 与 /companion 放行，/ 保持不放行），此处不再重复匹配 security.js 源码。
   // 情绪关键词曾因编码损坏全部失效，导致语音永远 neutral
   assert(!/\uFFFD/.test(streamUtils), 'emotion keywords must not contain replacement characters');
   ['shy', 'happy', 'sad', 'serious', 'gentle'].forEach(function (emotion) {
