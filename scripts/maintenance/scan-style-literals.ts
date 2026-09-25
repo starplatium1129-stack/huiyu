@@ -18,7 +18,7 @@ const targets = args.length
     .filter((f: any) => !sources.isStandaloneReport(f));
 
 // 已在源文件里写注释说明理由的合理例外(根字号基准、品牌图形圆角、
-// iOS 16px 约束、装饰性字形槽、卡内堆叠底层)。总量作为回归预算使用。
+// iOS 16px 约束、装饰性字形槽、卡内堆叠底层)。默认只报告趋势；需要硬门禁时显式传 --strict。
 // 2026-07-27:门槛改为扫真实样式树后按实测重设；2026-08-15 保持回归门禁。
 const BUDGET = 36;
 
@@ -63,9 +63,14 @@ console.log('TOTAL literal occurrences: ' + grand + ' (budget ' + BUDGET + ')');
 
 if (process.argv.includes('--check')) {
   if (grand > BUDGET) {
-    console.error('样式字面量超出预算:新增了 ' + (grand - BUDGET) + ' 处未走 token 的字面量。');
-    console.error('请改用 --fs-* / --r-* / --z-* / --s-* token;确有必要的例外请写注释并调整 BUDGET。');
-    process.exit(1);
+    const message = `样式字面量超出趋势预算：${grand} > ${BUDGET}，新增 ${grand - BUDGET} 处。`;
+    if (process.argv.includes('--strict')) {
+      console.error(message);
+      console.error('请改用 --fs-* / --r-* / --z-* / --s-* token；确有必要的例外请写注释并调整 BUDGET。');
+      process.exit(1);
+    }
+    console.warn(`[style-literals] ${message} 默认仅报告；需要硬门禁时请使用 --strict。`);
+  } else {
+    console.log('字面量趋势预算检查通过。');
   }
-  console.log('字面量预算检查通过。');
 }

@@ -63,6 +63,7 @@
     "test:monolith": "node scripts/tests/test-monolith-budget.js",
     "test:tags": "node scripts/tests/test-tag-shards.js",
     "test:style-debt": "node scripts/tests/test-style-debt.js && node scripts/maintenance/scan-style-literals.js --check && node scripts/maintenance/check-contrast.js --check && node scripts/maintenance/lint-colors.js --check && node scripts/maintenance/lint-animations.js --check",
+    "test:style-debt:strict": "node scripts/tests/test-style-debt.js && node scripts/maintenance/scan-style-literals.js --check --strict && node scripts/maintenance/check-contrast.js --check && node scripts/maintenance/lint-colors.js --check && node scripts/maintenance/lint-animations.js --check",
     "test:a11y-labels": "node scripts/tests/test-icon-button-labels.js",
     "lint:literals": "node scripts/maintenance/scan-style-literals.js",
     "lint:js": "eslint src routes services scripts server.ts server tools",

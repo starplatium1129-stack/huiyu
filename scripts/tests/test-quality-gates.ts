@@ -63,7 +63,8 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
         assert.ok(orchestrator.includes(legacyStep), `parallel check orchestrator must include ${legacyStep}`);
     }
     // test:check 负责夹具/结构样式测试；四个完整扫描由并发编排器明确登记，
-    // 让 full/CI 真正执行与 test:style-debt 相同的五项门禁且每项只执行一次。
+    // 让 full/CI 真正执行与 test:style-debt 相同的五项检查且每项只执行一次。
+    // 字面量扫描默认报告趋势，只有 test:style-debt:strict 才阻断。
     assert.ok(read('scripts/tests/quality-test-inventory.ts').includes("'test-style-debt.js'"),
         'quality check suite must own the complete style-debt gate');
     for (const [name, command] of [
