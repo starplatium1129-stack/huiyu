@@ -289,7 +289,10 @@ async function run() {
   let characterPrompts = fs.readFileSync(path.join(root, 'server', 'chat-character-prompts.js'), 'utf8');
   let securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   let voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
-  let chatRouteSource = fs.readFileSync(path.join(root, 'routes', 'chat.js'), 'utf8');
+  let chatRouteSource = [
+    path.join(root, 'routes', 'chat.js'),
+    path.join(root, 'routes', 'chat-validation.js'),
+  ].filter(fs.existsSync).map(f => fs.readFileSync(f, 'utf8')).join('\n');
   let serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
   assert(html.includes('chat-page'), 'chat view must render the character room shell');

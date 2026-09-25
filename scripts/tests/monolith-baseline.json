@@ -1,10 +1,8 @@
 {
   "src/components/ArtistStylePicker.vue": 598,
   "src/utils/tagMeaning.ts": 594,
-  "routes/video-ai.ts": 587,
   "src/utils/promptPolicy.ts": 585,
   "src/views/ShowcaseView.vue": 580,
-  "routes/chat.ts": 574,
   "src/components/video/ShotListEditor.vue": 570,
   "src/views/CompanionView.vue": 567,
   "src/composables/live2d/lifecycle.ts": 559,
