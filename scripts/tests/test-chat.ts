@@ -263,6 +263,9 @@ async function run() {
   let companionSpeech = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionSpeechInput.ts'), 'utf8');
   // d674a99 将角色房间会话核心迁入 chat/ 子目录（与 useChatConversation 等同层）
   let roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useCharacterRoomSession.ts'), 'utf8');
+  // The session delegates profile loading and fact recall to useRoomMemory.
+  assert(roomSession.includes('} = useRoomMemory({'), 'the session must wire the memory owner');
+  roomSession += '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useRoomMemory.ts'), 'utf8');
   let apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   let chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
   let characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
