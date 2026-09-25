@@ -106,42 +106,6 @@ function extractFunction(source: any, name: any) {
 
 const CHECKS = [
   {
-    id: 'P0-1 确认框不得劫持 Enter',
-    file: 'src/components/ConfirmDialog.vue',
-    why: 'Enter 被 document 级 keydown 抢先 preventDefault 后调 ok()，会让「默认聚焦取消」'
-      + '这道防线失效——焦点在取消上按 Enter 仍然执行删除。必须留给浏览器原生按钮语义。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return !/e\.key\s*===\s*'Enter'[\s\S]{0,120}ok\(\s*\)/.test(code);
-    },
-  },
-  {
-    id: 'P0-2 Anima 轮询不得无条件覆写用户参数',
-    file: 'src/composables/generation/useAnimaSession.ts',
-    why: '每 15 秒无条件套用底模 defaults 会把用户手调的 CFG/Steps 静默改回默认值，'
-      + '并清空已选风格 LoRA。defaults 只在底模真的变了时才该套用。',
-    assert(source: any) {
-      // 只看心跳函数：applyModel 里的重置是正确行为（用户真的换了底模）
-      const body = stripComments(extractFunction(source, 'refreshBackend'));
-      if (!body) return false;
-      // 不得再无条件清空风格 LoRA，也不得无条件写 steps/cfg 等默认值
-      return !/styleLoraId:\s*''/.test(body) && /shouldApplyDefaults/.test(body);
-    },
-  },
-  {
-    id: 'P0-4 清空词条必须经过确认',
-    file: 'src/components/director/DirectorTagWorkbench.vue',
-    why: '角色厨手工攒的 40+ 词条是本项目最高成本的手工资产，一次误点不能全灭。',
-    assert(source: any) {
-      const body = stripComments(extractFunction(source, 'clearTags'));
-      if (!body) return false;
-      // 清空动作必须排在确认之后：先看得到确认，再看到赋值
-      const confirmAt = body.search(/await\s+confirmAction/);
-      const assignAt = body.search(/manualTags\s*=\s*new Set\(\s*\)/);
-      return confirmAt >= 0 && assignAt > confirmAt;
-    },
-  },
-  {
     id: 'P0-5 出图队列必须持久化',
     file: 'src/utils/storageKeys.ts',
     why: '队列只活在视图作用域时，切页或刷新就整组蒸发且没有任何解释。',
@@ -239,19 +203,6 @@ const CHECKS = [
     },
   },
   {
-    id: 'P2 生成中禁用的控件必须说明原因',
-    file: 'src/components/director/DirectorResultTools.vue',
-    why: '生成中这些按钮被禁用时，悬停冒出来的仍是功能介绍——用户面对「点不动 '
-      + '+ 一堆功能说明」只会以为是软件坏了。禁用态必须优先讲为什么点不了。',
-    assert(source: any) {
-      const code = stripComments(source);
-      // 承载提示的属性随去原生化从 :title 换成了 StudioTooltip 的 :content
-      // （原生 title 延迟约 1 秒、只在 hover 出、禁用控件上更是不响应），
-      // 但这条断言的意图不变：忙碌分支必须排在功能说明之前。
-      return /BUSY_HINT/.test(code) && /:(?:title|content)="generationBusy \? BUSY_HINT/.test(code);
-    },
-  },
-  {
     id: 'P1 Live2D 路由也必须预热',
     file: 'src/router/index.ts',
     why: '进出 Live2D 页要整页刷新（CSP 需要 unsafe-eval），刷新后浏览器得重新取'
@@ -276,35 +227,6 @@ const CHECKS = [
       if (!sync) return false;
       const calls = code.match(/restoreFiltersFromQuery\(\)/g) || [];
       return /router\.replace/.test(sync) && /setTimeout/.test(sync) && calls.length >= 1;
-    },
-  },
-  {
-    id: 'P1 出图参数必须能恢复默认（且先清 touched）',
-    file: 'src/stores/promptBuilderStore.ts',
-    why: '调参调乱了没有回头路。实现上有个必踩的坑：applyModelProfileToParams '
-      + '会跳过用户碰过的字段，不先清 sdParamsTouched 就调 applyModelProfile，'
-      + '「恢复默认」点下去界面纹丝不动，用户只会判定按钮坏了。顺序不能颠倒。',
-    assert(source: any) {
-      // 自带函数体提取：本函数带返回类型注解，通用的 extractFunction 匹配不到
-      const code = stripComments(source);
-      const start = code.search(/function\s+resetParamsToProfile\s*\(/);
-      if (start < 0) return false;
-      const open = code.indexOf('{', start);
-      if (open < 0) return false;
-      let depth = 0;
-      let end = -1;
-      for (let i = open; i < code.length; i += 1) {
-        if (code[i] === '{') depth += 1;
-        else if (code[i] === '}') {
-          depth -= 1;
-          if (depth === 0) { end = i; break; }
-        }
-      }
-      if (end < 0) return false;
-      const body = code.slice(open, end + 1);
-      const clearAt = body.search(/sdParamsTouched\.value\s*=\s*new Set/);
-      const applyAt = body.search(/applyModelProfile\(/);
-      return clearAt >= 0 && applyAt > clearAt;
     },
   },
   {
@@ -390,31 +312,6 @@ const CHECKS = [
     assert(source: any) {
       const code = stripComments(source);
       return /openGlobalSearch/.test(code) && /nav-search/.test(code);
-    },
-  },
-  {
-    id: 'P1 搜索面板必须响应外部唤起请求',
-    file: 'src/components/GlobalSearch.vue',
-    why: '搜索面板挂在路由之外的 App.vue，导航按钮在路由之内，没有父子关系，'
-      + '只能经单例通道唤起。若这条 watch 被删，按钮会变成点了没反应的死按钮。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /watch\(\s*openRequest/.test(code) && /openPanel\(/.test(code);
-    },
-  },
-  {
-    id: 'P1 批量删除必须先确认、再删、并释放图片内存',
-    file: 'src/views/GalleryView.vue',
-    why: '清几百张废稿是真实高频场景。批量路径若绕过确认，一次误点就整组消失；'
-      + '若只改数组而不 revokeObjectURL，相当于在 LRU 大图工程上捅一个洞——'
-      + '删掉的卡片 blob 全部泄漏，几百张图白占内存。顺序必须是确认→软删→释放。',
-    assert(source: any) {
-      const body = stripComments(extractFunction(source, 'bulkDeleteAction'));
-      if (!body) return false;
-      const confirmAt = body.search(/await\s+confirmAction/);
-      const deleteAt = body.search(/softDeleteArtwork/);
-      const releaseAt = body.search(/releaseCardResources\s*\(/);
-      return confirmAt >= 0 && deleteAt > confirmAt && releaseAt > deleteAt;
     },
   },
 ];

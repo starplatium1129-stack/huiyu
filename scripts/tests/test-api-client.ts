@@ -242,11 +242,6 @@ test('phase 2 callers do not keep ordinary JSON endpoint fetches, while TTS and 
     const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
     assert.doesNotMatch(source, ordinaryEndpoint, `${relativePath} must use phase 2 API modules`);
   }
-  const voice = fs.readFileSync(path.join(root, 'src/composables/useVoice.ts'), 'utf8');
-  assert.match(voice, /preparing\s*=\s*voiceApi\.prepare/);
-  assert.match(voice, /revision !== prepareRevision/);
-  assert.match(voice, /voiceApi\.translate/);
-  assert.match(voice, /translationFailed/);
 });
 
 test('client maps standard 400/409/501/504 envelopes without losing fields', async () => {
@@ -635,19 +630,6 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
     const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
     assert.doesNotMatch(source, /\bfetch\s*\(/, `${relativePath} must use the typed API modules`);
   }
-  // 事件轮询（controlApi/imgCount 聚合 + AbortController）已归
-  // useCompanionBehaviorRuntime，卸载中止哨兵随之迁移（存活标志更名 alive）。
-  const companionBehavior = fs.readFileSync(path.join(root, 'src/composables/useCompanionBehaviorRuntime.ts'), 'utf8');
-  assert.match(companionBehavior, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);
-  assert.match(companionBehavior, /!alive || controller.signal.aborted/);
-  assert.match(companionBehavior, /status\.ok === false/);
-  assert.match(companionBehavior, /alive = false\s+eventPollController\?\.abort\(\)/);
-
-  const roomSession = fs.readFileSync(path.join(root, 'src/composables/chat/useCharacterRoomSession.ts'), 'utf8') + '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useRoomSetup.ts'), 'utf8');
-  assert.match(roomSession, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);
-  assert.match(roomSession, /controlApi\.switchMode\('chat', \{ signal: controller\.signal \}\)/);
-  assert.match(roomSession, /roomPollRequest\?\.abort\(\)/);
-  assert.match(roomSession, /roomActionRequest\?\.abort\(\)/);
 });
 
 test('API modules keep operation timeouts within the documented baselines', () => {

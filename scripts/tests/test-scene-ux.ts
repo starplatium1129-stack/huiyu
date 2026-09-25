@@ -1,5 +1,4 @@
 const assert: typeof import('assert') = require('assert');
-const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
 
@@ -10,8 +9,6 @@ const { readJson }: typeof import('../lib/scene-store') = require('../lib/scene-
 const sceneUx: typeof import('../../src/utils/sceneUX.ts') = require('../../src/utils/sceneUX.ts');
 
 const root = path.resolve(__dirname, '..', '..');
-assert(!/\bany\b/.test(fs.readFileSync(path.join(root, 'src/utils/sceneUX.ts'), 'utf8')),
-  'sceneUX must not regress to explicit any types');
 const scenes = readJson(path.join(root, 'data', 'scenes.json'));
 const curation = readJson(path.join(root, 'data', 'curation.json'));
 

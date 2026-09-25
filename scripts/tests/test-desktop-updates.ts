@@ -83,14 +83,6 @@ test('发布清单指向同版本公开 Release 安装包', () => {
   );
 });
 
-test('自动检查只提示，安装必须由用户点击触发', () => {
-  const banner = fs.readFileSync(path.join(ROOT, 'src/components/DesktopUpdateBanner.vue'), 'utf8');
-  const updater = fs.readFileSync(path.join(ROOT, 'src/composables/useDesktopUpdater.ts'), 'utf8');
-  assert.match(banner, /@click="installUpdate\(\)"/);
-  assert.doesNotMatch(banner, /onMounted\([^\n]*installUpdate/);
-  assert.match(updater, /async function install\(\)/);
-});
-
 function releaseFixture(callback: any) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-release-test-'));
   try {

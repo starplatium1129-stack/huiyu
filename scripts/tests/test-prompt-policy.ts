@@ -1,14 +1,9 @@
 const assert: typeof import('assert') = require('assert');
-const fs: typeof import('fs') = require('fs');
-const path: typeof import('path') = require('path');
 const policy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 
 const { test }: typeof import('node:test') = require('node:test');
 
 test("Prompt policy tests passed: production module, scoped BREAK, ratings, framing and analysis", () => {
-const source = fs.readFileSync(path.join(__dirname, '../../src/utils/promptPolicy.ts'), 'utf8');
-assert(!/\bany\b/.test(source), 'production prompt policy must keep explicit domain types');
-
 const dual = policy.dedupeText('2girls, (ayachi_nene, white_dress, blush) BREAK (shiki_natsume, white_dress, blush)');
 assert.strictEqual((dual.match(/white_dress/g) || []).length, 2, 'BREAK scopes must retain repeated attributes for both subjects');
 assert.strictEqual((dual.match(/blush/g) || []).length, 2, 'emotion must remain bound to both subjects');

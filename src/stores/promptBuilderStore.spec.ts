@@ -41,6 +41,29 @@ describe('promptBuilderStore · SD 参数', () => {
     s.markParamTouched('notARealParam' as never)
     expect(s.sdParamsTouched.has('notARealParam' as never)).toBe(false)
   })
+
+  it('resetParamsToProfile 清空 touched 标记并恢复默认模型参数', () => {
+    const s = usePromptBuilderStore()
+    s.modelProfiles = [{
+      id: 'wai_illustrious_v17',
+      name: 'WAI Illustrious',
+      checkpoint_match: '.*',
+      cfg: 6,
+      steps: 30,
+      sampler: 'Euler a',
+      hires_fix: false,
+    } as any]
+    s.markParamTouched('cfg')
+    s.markParamTouched('steps')
+    s.sdParams.cfg = 12
+    s.sdParams.steps = 50
+    expect(s.sdParamsTouched.size).toBe(2)
+
+    s.resetParamsToProfile()
+    expect(s.sdParamsTouched.size).toBe(0)
+    expect(s.sdParams.cfg).toBe(6)
+    expect(s.sdParams.steps).toBe(30)
+  })
 })
 
 describe('promptBuilderStore · 角色与主体切换', () => {

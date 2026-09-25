@@ -5,8 +5,6 @@ import GlobalSearch from './GlobalSearch.vue'
 
 const mocks = vi.hoisted(() => ({
   routerPush: vi.fn(),
-  openRequest: { value: 0, __v_isRef: true },
-  openSource: { value: 'keyboard' as 'keyboard' | 'pointer' },
   loadHome: vi.fn().mockResolvedValue(undefined),
   scenes: [] as Array<Record<string, unknown>>,
   kvInit: vi.fn().mockResolvedValue(undefined),
@@ -18,12 +16,18 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({ push: mocks.routerPush }),
 }))
 
-vi.mock('@/composables/useGlobalSearch', () => ({
-  useGlobalSearchRequest: () => ({
-    openRequest: mocks.openRequest,
-    openSource: mocks.openSource,
-  }),
-}))
+vi.mock('@/composables/useGlobalSearch', async () => {
+  const { ref } = await import('vue')
+  const openRequest = ref(0)
+  const openSource = ref<'keyboard' | 'pointer'>('keyboard')
+  return {
+    useGlobalSearchRequest: () => ({ openRequest, openSource }),
+    openGlobalSearch: (source: 'keyboard' | 'pointer' = 'pointer') => {
+      openSource.value = source
+      openRequest.value += 1
+    },
+  }
+})
 
 vi.mock('@/stores/sceneStore', () => ({
   useSceneStore: () => ({
@@ -90,8 +94,6 @@ function searchInput() {
 
 beforeEach(() => {
   mocks.routerPush.mockReset()
-  mocks.openRequest.value = 0
-  mocks.openSource.value = 'keyboard'
   mocks.loadHome.mockClear()
   mocks.kvInit.mockClear()
   mocks.kvGet.mockClear()
@@ -159,5 +161,24 @@ describe('GlobalSearch combobox', () => {
     expect(mocks.routerPush).toHaveBeenCalledWith('/')
     expect(input.getAttribute('aria-expanded')).toBe('false')
     expect(document.querySelector('.global-search')?.getAttribute('aria-hidden')).toBe('true')
+  })
+
+  it('响应外部 openGlobalSearch 唤起并打开搜索面板', async () => {
+    const { openGlobalSearch } = await import('@/composables/useGlobalSearch')
+    const wrapper = mount(GlobalSearch, {
+      attachTo: document.body,
+      global: {
+        stubs: { StudioTooltip: tooltipStub },
+      },
+    })
+    mounted.push(wrapper)
+    await settleSearch()
+
+    expect(document.querySelector('.global-search')?.getAttribute('aria-hidden')).toBe('true')
+
+    openGlobalSearch('pointer')
+    await settleSearch()
+
+    expect(document.querySelector('.global-search')?.getAttribute('aria-hidden')).toBe('false')
   })
 })

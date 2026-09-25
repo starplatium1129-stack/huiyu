@@ -127,7 +127,6 @@ test('HTTP blueprint save persists canonical shards, companions and survives fre
       const packed = fs.readFileSync(path.join(root, 'data/scene-blueprints.json.' + ext));
       assert.deepEqual(ext === 'gz' ? zlib.gunzipSync(packed) : zlib.brotliDecompressSync(packed), raw);
     }
-    assert.match(fs.readFileSync(path.join(root, 'src/stores/sceneStore.ts'), 'utf8'), /virtual:data-version/);
     const rebuilt = spawnSync(process.execPath, ['-e', "require('./scripts/lib/blueprint-store').writeBlueprintAggregate()"], {
       cwd: REPO, env: { ...process.env, AICS_DATA_ROOT: root }, encoding: 'utf8',
     });

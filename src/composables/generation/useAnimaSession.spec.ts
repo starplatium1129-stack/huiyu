@@ -54,3 +54,51 @@ describe('useAnimaSession · submission cancellation', () => {
     session.dispose()
   })
 })
+
+describe('useAnimaSession · backend status and polling', () => {
+  it('底模未发生改变的心跳轮询不覆写用户手动调整的 cfg、steps 与已选风格 LoRA', async () => {
+    const statusData = {
+      ok: true,
+      online: true,
+      models: [{
+        id: 'model-a',
+        family: 'krea2',
+        available: true,
+        defaults: { steps: 20, cfg: 5 },
+      }],
+      styleLoras: [{ id: 'style-1', label: 'Style 1' }],
+    }
+    const client = {
+      request: vi.fn(async () => statusData),
+    } as unknown as ApiClient
+
+    const session = useAnimaSession({
+      getCharacter: () => 'nene',
+      isPopular: () => false,
+      getFamily: () => 'krea2',
+      getRequest: () => request,
+      onResult: vi.fn(),
+      flash: vi.fn(),
+      preferredSize: () => '832x1216',
+      client,
+    })
+
+    // 首次轮询拉取，套用底模默认值
+    await session.refreshBackend()
+    expect(session.state.value.cfg).toBe(5)
+    expect(session.state.value.steps).toBe(20)
+
+    // 用户手动调整了 cfg、steps 并选择了风格 LoRA
+    session.patchState({ cfg: 7.5, steps: 35, styleLoraId: 'style-1' })
+
+    // 再次触发心跳轮询（底模 model-a 未变）
+    await session.refreshBackend()
+
+    // 断言用户参数未被静默改回默认值
+    expect(session.state.value.cfg).toBe(7.5)
+    expect(session.state.value.steps).toBe(35)
+    expect(session.state.value.styleLoraId).toBe('style-1')
+
+    session.dispose()
+  })
+})

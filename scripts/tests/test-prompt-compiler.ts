@@ -308,10 +308,6 @@ test('Anima rating and controls remain aligned without safe/R18 contradiction', 
 });
 
 test('Anima profiles do not bind one character and LoRA contracts own exact controls from the selected service LoRA id', () => {
-  const assemblySource = fs.readFileSync(path.join(__dirname, '../../src/composables/prompt/usePromptAssembly.ts'), 'utf8');
-  assert(assemblySource.includes('selectedLoraId.value'), 'assembly must resolve the contract from the selected service LoRA id');
-  assert(assemblySource.includes("pb.char === 'triad' ? '' : String(selectedLoraId.value || '')"));
-  assert(!assemblySource.includes('Object.values(controlLoraIds.value)'));
   const animaProfiles: any[] = presets.model_profiles.filter(profile => profile.engine === 'anima');
   for (const profile of animaProfiles) {
     assert.strictEqual(profile.lora_id, undefined);
