@@ -20,6 +20,8 @@
      opacity:0; transform:scale(.98); filter:none;
      animation:aicsBloomReveal var(--motion-control) var(--ease-out) both;
    }
+   /* CgImageReveal owns its image; the legacy animation must not pin opacity/transform. */
+   .pb .result-image-reveal .result-image { animation:none; opacity:1; transform:none; }
    .pb .result-image-actions {
      display:flex; justify-content:center; flex-wrap:wrap; gap:var(--s-2);
      padding:var(--s-3); border-top:1px solid var(--border-soft);
@@ -42,8 +44,7 @@
   /* ── plans/002：画布占位 ↔ 成片交接（stage-swap）──
      占位层退出时绝对定位浮层化，避免与进入中的结果层双占布局撑跳高度
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
-     只补间 opacity/transform。结果层入场走 wrap 的 directorViewIn +
-     图片 aicsBloomReveal，本类不参与，防双重驱动。 */
+     只补间 opacity/transform。结果容器用 directorViewIn，图片由 CgImageReveal 接管。 */
   .pb .stage-slot { position:relative; }
   .pb .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-active {
@@ -52,15 +53,14 @@
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
   .pb .stage-swap-leave-to { transform:scale(.985); }
-  /* ── 生成等待：画布呼吸 + 扫光 ──
-     出图要几十秒，静止的深色块会放大等待焦虑。 */
+  /* ── 生成等待：保留画布微弱呼吸，工作光限定在 BorderBeam 边缘。 ── */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
   .pb .stage-placeholder.is-generating::before {
     animation:stageBreath 3.2s ease-in-out infinite;
   }
   .pb .stage-placeholder.is-generating::after {
-    opacity:1;
-    animation:stageSweep 2.4s var(--ease-stage-sweep) infinite;
+    opacity:0;
+    animation:none;
   }
   .pb .stage-generating-copy {
     position:relative; z-index:var(--z-raised);
@@ -112,5 +112,6 @@
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { font-size:var(--fs-body); }
 .pb .stage-result-heading { display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s-2); padding:var(--s-3) var(--s-4); background:var(--bg-surface); color:var(--text-secondary); font-size:var(--fs-label); border-bottom:1px solid var(--border-soft); }
 .pb .stage-result-heading > :first-child { color:var(--text-primary); font-weight:600; }
+.pb .stage-result-status { display:inline-flex; align-items:center; gap:var(--s-2); }
 .pb .stage-error-detail { display:block; max-height:100px; overflow:auto; margin-top:var(--s-2); overflow-wrap:anywhere; }
 .pb .stage-placeholder.is-generating::after { z-index:var(--z-base); }
