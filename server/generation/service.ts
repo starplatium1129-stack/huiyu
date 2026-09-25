@@ -32,6 +32,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
     let comfyAdmitted = 0;
     let comfyAdmissions = new Map<string, { release: () => void; timer: ReturnType<typeof setInterval> }>();
     function reserveAdmission(provider: 'webui' | 'comfy') {
+        if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
         if (admitted >= MAX_PENDING)
             throw error(503, 'GENERATION_QUEUE_FULL', 'WAI 任务队列已满，请稍后再试');
         admitted += 1;
@@ -62,31 +63,23 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         admission.release();
     }
     function watchComfyAdmission(job: ReturnType<ComfyService['create']>, release: () => void) {
+        if (registry.isClosed()) { release(); return; }
         let timer = setInterval(function () { settleComfyAdmission(job); }, 100);
         if (typeof timer.unref === 'function')
             timer.unref();
         comfyAdmissions.set(job.id, { release: release, timer: timer });
         settleComfyAdmission(job);
     }
-    // 2026-08-16 审计：WebUI 出图任务此前只进 Map 从不回收（内存无上限泄漏）。
-    // 统一走 trackWebJob：TTL 后删除（含释放 result Buffer），与 Comfy 分支的
-    // gcTimer 对齐；结果由 TTL 回收，取图端点只读，不把网络发送完成误当作客户端持久化确认。
-    function trackWebJob(webJob: WebUIJob) {
-        jobs.set(webJob.id, webJob);
-        snapshots.save(webJob);
+    // Retention starts after settlement, not admission: a long wait must not consume
+    // the download window or delete a running job. HTTP work has its own total deadline.
+    function retainWebJob(webJob: WebUIJob) {
+        webJob.admissionRelease?.();
+        if (registry.isClosed() || jobs.get(webJob.id) !== webJob) return;
         registry.armTimer(webJob, 'gcTimer', WEB_JOB_TTL_MS, function () {
-            if (webJob.status === 'queued') {
-                webJob.status = 'cancelled';
-                webJob.code = 'WEBUI_EXPIRED';
-                webJob.queueAbort?.abort();
-                webJob.admissionRelease?.();
-            }
-            if (webJob.result)
-                webJob.result = null;
+            webJob.result = null;
             jobs.delete(webJob.id);
             snapshots.remove(webJob.id);
         }, { unref: true });
-        return webJob;
     }
     function status(): GenerationStatus {
         let webui = webuiQueue.status();
@@ -139,20 +132,24 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         let controller = new AbortController();
         webJob.queueAbort = controller;
         webJob.admissionRelease = release;
-        trackWebJob(webJob);
-        void webuiQueue.run(function () {
+        jobs.set(webJob.id, webJob);
+        snapshots.save(webJob);
+        void webuiQueue.run(async function () {
             if (webJob.status === 'cancelled') return;
-            return startWebUIJob(config, webJob);
+            await startWebUIJob(config, webJob);
+            // WebUI interrupt is global. Do not start the next job until the old
+            // generation AND its outstanding interrupt have both settled.
+            await webJob.cancellation;
+            if (webJob.status === 'cancelling') webJob.status = 'failed';
         }, { signal: controller.signal }).then(function () {
-            if (['succeeded', 'failed', 'cancelled'].includes(webJob.status))
-                webJob.admissionRelease?.();
+            retainWebJob(webJob);
         }, function (cause) {
             if (webJob.status !== 'cancelled') {
                 webJob.status = 'failed';
-                webJob.error = cause instanceof Error ? cause.message : String(cause);
+                webJob.error = 'WebUI 任务执行失败';
                 webJob.code = runtimeErrorCode(cause) || 'WEBUI_QUEUE_FAILED';
             }
-            webJob.admissionRelease?.();
+            retainWebJob(webJob);
         });
         return publicJob(webJob);
     }
@@ -217,8 +214,14 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         try {
             job = comfy.create(input, ownerId);
             await comfy.submit(job);
+            if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
             watchComfyAdmission(job, release);
         } catch (cause) {
+            if (registry.isClosed()) {
+                release();
+                if (job) await comfy.cancel(job).catch(() => {});
+                throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
+            }
             if (job?.upstreamId) {
                 watchComfyAdmission(job, release);
                 throw error(502, runtimeErrorCode(cause) || 'COMFY_SUBMIT_UNCERTAIN', 'ComfyUI 已接受任务但提交响应异常');
@@ -280,18 +283,34 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             return comfy.publicJob(found.job);
         }
         const job = found.job;
-        let wasQueued = job.status === 'queued';
-        if (wasQueued) {
+        if (jobRunner.isTerminalStatus(job.status)) return publicJob(job);
+        if (job.status === 'queued') {
+            job.status = 'cancelled';
+            job.code = 'WEBUI_CANCELLED';
             job.queueAbort?.abort();
-        } else if (job.status === 'running')
-            await requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/interrupt', {}, 10000).catch(() => { });
-        job.status = 'cancelled';
-        job.code = 'WEBUI_CANCELLED';
-        if (wasQueued)
             job.admissionRelease?.();
+            return publicJob(job);
+        }
+        if (!job.cancellation) {
+            job.status = 'cancelling';
+            job.cancellation = requestJson(job.connection || config, 'SD_HOST', 'POST', '/sdapi/v1/interrupt', {}, 10000)
+                .then(() => {
+                    if (job.status !== 'cancelling') return;
+                    job.status = 'cancelled';
+                    job.code = 'WEBUI_CANCELLED';
+                    job.error = '任务已取消';
+                }, () => {
+                    if (job.status !== 'cancelling') return;
+                    // Keep the execution slot until the original request settles.
+                    job.code = 'WEBUI_CANCEL_FAILED';
+                    job.error = '未能确认上游取消，等待原任务结束后释放队列';
+                });
+        }
+        await job.cancellation;
         return publicJob(job);
     }
     function close() {
+        if (registry.isClosed()) return;
         registry.close();
         for (const admission of comfyAdmissions.values()) {
             clearInterval(admission.timer);
@@ -299,14 +318,14 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         }
         comfyAdmissions.clear();
         for (const job of jobs.values()) {
-            let wasQueued = job.status === 'queued';
+            job.status = 'cancelled';
             job.queueAbort?.abort();
+            job.requestAbort?.abort();
             registry.clearTimer(job, 'gcTimer');
             job.result = null;
             job.status = 'cancelled';
             snapshots.remove(job.id);
-            if (wasQueued)
-                job.admissionRelease?.();
+            job.admissionRelease?.();
         }
         jobs.clear();
         comfy.close();

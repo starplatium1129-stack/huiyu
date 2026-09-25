@@ -3,23 +3,8 @@
 type LoggerOptions = { dir?: string; prefix?: string; retainDays?: number; maxBytes?: number; dailyBytesLimit?: number; debug?: boolean };
 type Logger = { info(message: string, detail?: any): void; warn(message: string, detail?: any): void; error(message: string, detail?: any): void; debug(message: string): void };
 
-/**
- * server/logger.js — 网关最小日志设施（2026-08-21 收口）。
- *
- * 背景：网关此前 console.* 直出，无级别过滤、无时间戳、无落盘——dev 靠终端，
- * 打包模式靠 Tauri sidecar 捕获，长期运行排障只能靠重启复现。本模块保持零生产
- * 依赖，提供：
- *   1. 级别方法 info/warn/error/debug（debug 默认静默，DEBUG=1 或选项开启）；
- *   2. 按天轮转：写入 <dir>/<prefix>-YYYYMMDD.log（文件名即轮转，无重命名步骤）；
- *   3. 保留期清理：init 与日期翻转时删除超过 retainDays 的旧日志；
- *   4. 大小守卫：无日期后缀的旁路日志超过 maxBytes 时归档为按天名（复用保留期
- *      自动回收）；被外部进程占用 rename 失败则 truncate 0 保底；
- *   5. 单日落盘上限（2026-08-31）：按天日志达到 dailyBytesLimit 后当日暂停落盘
- *      仅留终端输出，防异常日刷屏把单文件撑到数十 MB，次日自动恢复；
- *   6. 落盘 fire-and-forget：appendFile 失败静默吞掉——日志永远不能弄崩网关。
- *
- * 约定：console 输出保持原样（终端/sidecar 可见性不变），文件行格式为
- * `[ISO] [LEVEL] message`；error 级别额外追加 detail（如 stack）。
+/** Local diagnostics: bounded writes, credential redaction and non-destructive rotation.
+ * No cross-process hard quota is claimed; reservations cover this logger's pending writes.
  */
 
 let fs: typeof import('fs') = require('fs');
@@ -31,26 +16,40 @@ function dateKey(d: Date) {
   return '' + d.getFullYear() + mm + dd;
 }
 
+function positiveOption(value: unknown, fallback: number): number {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : fallback;
+}
+function safeText(value: unknown): string {
+  let text: string;
+  try { text = value instanceof Error ? value.stack || value.message : String(value); }
+  catch { return '[unprintable detail]'; }
+  // Redact before truncation, in both file and terminal output. This is not a
+  // general-purpose secret detector: callers must still avoid logging raw bodies.
+  return text.replace(/(https?:\/\/)[^\s/@]+@/gi, '$1[REDACTED]@')
+    .replace(/([?&](?:token|access_token|api[-_]?key)=)[^&#\s"']*/gi, '$1[REDACTED]')
+    .replace(/(\baics_token=)[^;\s"']*/gi, '$1[REDACTED]')
+    .replace(/\b(Bearer|Basic)\s+[A-Za-z0-9+/_=.~-]+/gi, '$1 [REDACTED]')
+    .replace(/\r/g, '\\r').replace(/\n/g, '\\n')
+    .slice(0, 4096);
+}
+
 function createLogger(options?: LoggerOptions): Logger {
   options = options || {};
   let dir = options.dir || '';
-  let prefix = options.prefix || 'gateway';
-  let retainDays = Number(options.retainDays) > 0 ? Number(options.retainDays) : 14;
-  let maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : 8 * 1024 * 1024;
+  let prefix = options.prefix && /^[\w-][\w.-]*$/.test(options.prefix) ? options.prefix : 'gateway';
+  let retainDays = positiveOption(options.retainDays, 14);
+  let maxBytes = positiveOption(options.maxBytes, 8 * 1024 * 1024);
   // 单日落盘上限（2026-08-31 补，七维审计 P1「gateway 单日日志 17.85MB 失控」）：
   // 按天日志靠 retainDays 兜底总量，但异常日（刷屏 bug）单文件可以无限膨胀。
   // 达到 dailyBytesLimit 后当日仅保留终端输出，次日自动恢复。
-  let dailyBytesLimit = Number(options.dailyBytesLimit) > 0 ? Number(options.dailyBytesLimit) : 20 * 1024 * 1024;
+  let dailyBytesLimit = positiveOption(options.dailyBytesLimit, 20 * 1024 * 1024);
   let debugEnabled = options.debug === true || process.env.DEBUG === '1';
   let currentKey = '';
   let dailyPaused = false;
-  let writesSinceCheck = 0;
+  let reservedBytes = 0;
 
-  // 大小守卫（2026-08-31 补，工程审计 P1-12「runtime 日志滚动」）：
-  // 无日期后缀的旁路日志（comfyui.stderr.log / control.log 等）没有按天轮转，
-  // 单文件会无限增长。超过 maxBytes 时优先归档为 <name>-YYYYMMDD.log——
-  // 归档文件带日期后缀，天然落入上方的按天保留期清理；rename 被占用（外部
-  // 进程持句柄）则 truncate 0 保底。按天日志（-YYYYMMDD.log）不在此列。
+  // Never overwrite an earlier archive or truncate a log merely because rotation failed.
   function guardSize(now: Date) {
     if (!dir) return;
     let today = dateKey(now);
@@ -60,14 +59,17 @@ function createLogger(options?: LoggerOptions): Logger {
         if (/-(\d{8})\.log$/i.test(name)) return;
         let full = path.join(dir, name);
         let size;
-        try { size = fs.statSync(full).size; } catch (error) { return; }
+        try { const stat = fs.lstatSync(full); if (!stat.isFile()) return; size = stat.size; } catch (error) { return; }
         if (size <= maxBytes) return;
         let archived = path.join(dir, name.replace(/\.log$/i, '-' + today + '.log'));
+        for (let i = 1; fs.existsSync(archived); i++) {
+          if (i > 1000) return;
+          archived = path.join(dir, name.replace(/\.log$/i, '.' + i + '-' + today + '.log'));
+        }
         try {
           fs.renameSync(full, archived);
           return;
         } catch (error) {}
-        try { fs.truncateSync(full, 0); } catch (error) {}
       });
     } catch (error) {}
   }
@@ -80,6 +82,7 @@ function createLogger(options?: LoggerOptions): Logger {
       fs.readdirSync(dir).forEach(function (name) {
         if (!/\.log$/i.test(name)) return;
         let full = path.join(dir, name);
+        try { if (!fs.lstatSync(full).isFile()) return; } catch { return; }
         // 2026-08-28 审计 P1-11：此前只回收本 prefix 的按天日志，comfyui/control/
         // translate 等旁路日志与收口前的旧格式残留永远无人清理。改为双判据：
         // - 任意 <name>-YYYYMMDD.log 按文件名日期判过期（自己的旧按天日志不变）；
@@ -108,52 +111,46 @@ function createLogger(options?: LoggerOptions): Logger {
     return path.join(dir, prefix + '-' + dateKey(now) + '.log');
   }
 
-  function checkDailySize(full: string) {
-    let size = 0;
-    try { size = fs.statSync(full).size; } catch (error) { return; }
-    if (size <= dailyBytesLimit) return;
-    dailyPaused = true;
-    process.stderr.write('[logger] 当日日志 ' + path.basename(full) + ' 已达 ' +
-      (size / 1024 / 1024).toFixed(1) + 'MB（单日上限 ' + (dailyBytesLimit / 1024 / 1024).toFixed(0) +
-      'MB），今日落盘暂停、仅保留终端输出；疑似刷屏 bug，次日自动恢复。\n');
-  }
-
   function write(level: 'info' | 'warn' | 'error' | 'debug', message: string, detail?: any) {
-    let now = new Date();
-    // 日期翻转时再做一次旧日志清理（每天最多触发一次）。
-    let key = dateKey(now);
+    if (level === 'debug' && !debugEnabled) return;
+    const now = new Date();
+    const key = dateKey(now);
     if (key !== currentKey && dir) {
       currentKey = key;
-      dailyPaused = false; // 新的一天恢复落盘
-      writesSinceCheck = 0;
+      dailyPaused = false;
       guardSize(now);
       sweepRetention(now);
+      try {
+        const stat = fs.lstatSync(logFile(now));
+        reservedBytes = stat.isFile() ? stat.size : dailyBytesLimit;
+      } catch { reservedBytes = 0; }
     }
-    if (level === 'debug') {
-      if (!debugEnabled) return;
-      process.stdout.write('  [debug] ' + message + '\n');
-    } else if (level === 'warn') {
-      process.stderr.write(message + '\n');
-    } else if (level === 'error') {
-      process.stderr.write(message + '\n');
-    } else {
-      process.stdout.write(message + '\n');
+    const safeMessage = safeText(message);
+    try {
+      const output = (level === 'debug' ? '  [debug] ' : '') + safeMessage + '\n';
+      if (level === 'warn' || level === 'error') process.stderr.write(output);
+      else process.stdout.write(output);
+    } catch { /* A broken diagnostic sink must not fail the caller. */ }
+    if (!dir || dailyPaused) return;
+    let line = '[' + now.toISOString() + '] [' + level.toUpperCase() + '] ' + safeMessage;
+    if (detail) line += ' | ' + safeText(detail);
+    line += '\n';
+    const bytes = Buffer.byteLength(line);
+    // Reserve BEFORE appendFile: hundreds of async writes can be queued before a
+    // stat sees any of them. Also account for a pre-existing log on the first write.
+    if (reservedBytes + bytes > dailyBytesLimit) {
+      dailyPaused = true;
+      try { process.stderr.write('[logger] 当日日志已达写入预算，今日暂停落盘、保留终端输出。\n'); } catch {}
+      return;
     }
-    if (!dir) return;
-    if (dailyPaused) return;
-    let line = '[' + now.toISOString() + '] [' + level.toUpperCase() + '] ' + message;
-    if (detail) {
-      let errorDetail = detail instanceof Error ? detail.stack || detail.message : String(detail);
-      line += ' | ' + errorDetail;
+    reservedBytes += bytes;
+    try {
+      fs.appendFile(logFile(now), line, { encoding:'utf8', mode:0o600 }, function (error) {
+        if (error && currentKey === key) reservedBytes = Math.max(0, reservedBytes - bytes);
+      });
+    } catch {
+      if (currentKey === key) reservedBytes = Math.max(0, reservedBytes - bytes);
     }
-    // 节流检查单日体积：每 500 次落盘做一次 statSync（高频日志下秒级一查，成本可忽略）
-    writesSinceCheck++;
-    if (writesSinceCheck >= 500) {
-      writesSinceCheck = 0;
-      checkDailySize(logFile(now));
-      if (dailyPaused) return;
-    }
-    fs.appendFile(logFile(now), line + '\n', 'utf8', function () {});
   }
 
   return {

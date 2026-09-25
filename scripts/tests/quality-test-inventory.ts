@@ -81,6 +81,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-live2d-textures.js',
     'test-logger.js',
     'test-logger-retention.js',
+    'test-logger-safety.js',
     'test-compare-snapshots.js',
     'test-inpaint-showcase-candidates.js',
     'test-interrogate-merge.js',
@@ -148,6 +149,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-anima-routes.js',
     'test-desktop-tools-route.js',
     'test-generation-routes.js',
+    'test-webui-lifecycle.js',
     'test-chat.js',
     'test-control-failure-contract.js',
     'test-gateway-contract.js',
@@ -181,6 +183,8 @@ interface TestMetadata {
   resources: readonly string[]; timeoutMs?: number;
 }
 const QUALITY_TEST_METADATA: Readonly<Record<string, TestMetadata>> = Object.freeze({
+  'test-webui-lifecycle.js': { domain:'generation-lifecycle', environment:'node-loopback', parallelSafety:'isolated', resources:['temporary-directory', 'loopback-http', 'process-local-mocks'] },
+  'test-logger-safety.js': { domain:'diagnostics', environment:'node', parallelSafety:'isolated', resources:['temporary-directory', 'process-local-mocks'] },
   'test-api-client.js': { domain: 'generation-api', environment: 'node', parallelSafety: 'isolated', resources: ['mock-fetch', 'timers'] },
   'test-module-boundaries.mjs': { domain: 'architecture', environment: 'node', parallelSafety: 'isolated', resources: ['read-only-source'] },
 });
