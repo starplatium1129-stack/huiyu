@@ -11,7 +11,7 @@
  */
 
 import { ref, type Ref } from 'vue'
-import { createVadSegmenter } from '@/utils/vadSegmenter'
+import { createVadSegmenter, rmsOf } from '@/utils/vadSegmenter'
 import { resampleTo16k, encodeWav16k, recognizeWithAsr } from '@/utils/voiceApi'
 import type { SpeechInputConfig } from '@/utils/speechInputConfig'
 
@@ -31,6 +31,8 @@ export interface UseVoiceInputOptions {
 export interface UseVoiceInput {
   state: Ref<VoiceInputState>
   errorMessage: Ref<string>
+  /** 已有采集流的归一化 RMS 电平；不建立第二条麦克风/分析管线。 */
+  level: Ref<number>
   /** 浏览器是否支持麦克风采集 */
   supported: boolean
   /** 自动监听是否运行中（auto 模式） */
@@ -55,6 +57,7 @@ const MAX_PENDING_SEGMENTS = 4
 export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   const state = ref<VoiceInputState>('idle')
   const errorMessage = ref('')
+  const level = ref(0)
   const autoListening = ref(false)
   const supported = typeof navigator !== 'undefined' && Boolean(navigator.mediaDevices?.getUserMedia)
 
@@ -80,6 +83,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   }
 
   function cleanupTracks(): void {
+    level.value = 0
     if (stream) {
       for (const track of stream.getTracks()) track.stop()
       stream = null
@@ -88,6 +92,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
 
   function teardownGraph(): void {
     if (processor) {
+      processor.onaudioprocess = null
       try { processor.disconnect() } catch { /* 已断开 */ }
       processor = null
     }
@@ -242,6 +247,8 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     processor.onaudioprocess = (event: AudioProcessingEvent): void => {
       if (!capturing || !vad || disposed || token !== startToken) return
       const channel = event.inputBuffer.getChannelData(0)
+      const rms = rmsOf(channel, 0, channel.length)
+      level.value = Number.isFinite(rms) ? Math.min(1, rms * 3.5) : 0
       vad.push(resampleTo16k(channel, context?.sampleRate ?? TARGET_RATE))
       if (mode === 'auto' && !recognizing) {
         const segments = vad.takeSegments()
@@ -296,5 +303,5 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     cancel()
   }
 
-  return { state, errorMessage, supported, autoListening, start, stop, cancel, release }
+  return { state, errorMessage, level, supported, autoListening, start, stop, cancel, release }
 }
