@@ -1,0 +1,37 @@
+name: UI contract alignment
+on:
+  push:
+    branches: [fix/ai-visual-lifecycle-20260925]
+    paths: [.github/workflows/ui-contract-alignment.yml]
+permissions:
+  contents: write
+jobs:
+  align:
+    if: github.ref == 'refs/heads/fix/ai-visual-lifecycle-20260925'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+      - name: Align source contract with the existing memory owner
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = '897e8941317b3cf0ef8a087a36d1afcf74d26396'
+          python3 - <<'PY'
+          from pathlib import Path
+          file = Path('scripts/tests/test-chat.ts')
+          text = file.read_text()
+          old = "  let roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useCharacterRoomSession.ts'), 'utf8');"
+          new = old + "\n  // The session delegates profile loading and fact recall to useRoomMemory.\n  assert(roomSession.includes('} = useRoomMemory({'), 'the session must wire the memory owner');\n  roomSession += '\\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useRoomMemory.ts'), 'utf8');"
+          if text.count(old) != 1:
+              raise SystemExit('Expected a single session source declaration')
+          file.write_text(text.replace(old, new, 1))
+          PY
+          git diff --check
+          git diff -- scripts/tests/test-chat.ts
+          git add scripts/tests/test-chat.ts
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'test(chat): follow extracted room memory in source contracts'
+          git push origin HEAD:refs/heads/fix/ai-visual-lifecycle-20260925
