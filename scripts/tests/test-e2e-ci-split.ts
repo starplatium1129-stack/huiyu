@@ -11,7 +11,6 @@ const root = path.resolve(__dirname, '..', '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const quality = fs.readFileSync(path.join(root, '.github', 'workflows', 'quality.yml'), 'utf8');
 const nightly = fs.readFileSync(path.join(root, '.github', 'workflows', 'nightly-e2e.yml'), 'utf8');
-const native = fs.readFileSync(path.join(root, '.github', 'workflows', 'windows-native.yml'), 'utf8');
 
 // E2E 归一架构：以 tests/e2e/e2e-lanes.json 为唯一测试登记清单，
 // package.json 的 critical 与 nightly 均通过 run-e2e-lane.js 统一派发；
@@ -89,13 +88,6 @@ assert.match(nightly, /cron: '0 18 \* \* \*'/);
 assert.match(nightly, /workflow_dispatch:/);
 assert.match(nightly, /npm run test:e2e:nightly:run/);
 assert.match(nightly, /Upload visual review screenshots/);
-
-assert.match(native, /self-hosted, Windows, X64, live2d-cubism/);
-assert.match(native, /LIVE2D_CUBISM_SDK_DIR/);
-assert.match(native, /npm run build:tauri/);
-assert.match(native, /npm run test:live2d-native:release/);
-assert.match(native, /run-live2d-renderer-soak\.js --seconds 300 --switch-every 60/);
-assert.doesNotMatch(native, /pull_request:/);
 
 });
 

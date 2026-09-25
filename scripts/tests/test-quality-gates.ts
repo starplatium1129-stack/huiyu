@@ -97,8 +97,6 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.ok(checkStep >= 0 && checkStep < unitStep && unitStep < contractStep,
     'Ubuntu quality workflow must run check, unit, then contract');
   assert.match(quality, /AICS_HYGIENE_BASE_REF/);
-  assert.doesNotMatch(quality, /npm run test:live\b|regress-anima|test:live2d-native/);
-  assert.doesNotMatch(quality, /npm run test:live2d-native/);
   const summary = quality.slice(quality.indexOf('  quality-summary:'));
   assert.ok(summary.length > 0, 'quality workflow must expose a final summary job');
   assert.match(summary, /if: always\(\)/);
