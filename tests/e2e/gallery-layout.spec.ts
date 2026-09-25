@@ -48,6 +48,7 @@ for (const theme of ['light', 'dark']) {
     await expect(cards).toHaveCount(1)
     await page.getByRole('searchbox', { name: '搜索作品' }).fill('不存在的作品')
     await expect(page.getByText('当前筛选下没有作品')).toBeVisible()
+    await expect(page.locator('.archive-state-panel[data-kind="filtered"]')).toBeVisible()
     await page.getByRole('button', { name: '重置筛选', exact: true }).click()
     await expect(cards).toHaveCount(6)
     await pickStudioOptionByValue(page.getByLabel('按项目筛选'), 'review')

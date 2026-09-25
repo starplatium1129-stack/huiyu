@@ -47,7 +47,6 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-scene-rating-diagnostics.js', // 人工 R15 usage 真实隔离写入、受保护字段保持与幂等检查
     'test-anima-session.js',
     'test-api-client.js',
-    'test-archive-state-panel.js',
     'test-artwork-persistence-prototype.js',
     'test-batch-draw.js',
     'test-blink-scheduler.js',
