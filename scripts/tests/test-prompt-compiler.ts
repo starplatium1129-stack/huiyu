@@ -1,6 +1,4 @@
 const assert: typeof import('assert') = require('assert');
-const fs: typeof import('fs') = require('fs');
-const path: typeof import('path') = require('path');
 const { test }: typeof import('node:test') = require('node:test');
 const compiler: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
 const policy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
