@@ -3,250 +3,164 @@
     ref="containerRef"
     class="voice-glow-container"
     :class="{
-      'is-active': active,
+      'is-active': active && canPresent,
       'is-processing': processing,
+      'is-low-effects': lowEffects,
       [`variant-${colorVariant}`]: true,
     }"
     aria-hidden="true"
   >
-    <canvas
-      ref="canvasRef"
-      class="voice-glow-canvas"
-    />
+    <canvas ref="canvasRef" class="voice-glow-canvas" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
+import { useVisualActivity } from '@/composables/useVisualActivity'
 
-const props = withDefaults(
-  defineProps<{
-    /** 是否激活声控光晕 */
-    active?: boolean
-    /** 音频电平 (0~1)，由外部麦克风或音量分析器传入 */
-    level?: number
-    /** 语音识别/思考中的流光状态 (光带在底部左右游走) */
-    processing?: boolean
-    /** 呼吸周期 (秒) */
-    breatheDuration?: number
-    /** 升起最大高度 (px) */
-    maxHeight?: number
-    /** 色彩变体：dual (甜系粉紫) | accent (粉) | violet (紫) */
-    colorVariant?: 'dual' | 'accent' | 'violet'
-    /** 静默状态下的呼吸微光强度 (0~1) */
-    idleStrength?: number
-  }>(),
-  {
-    active: true,
-    level: 0,
-    processing: false,
-    breatheDuration: 4.6,
-    maxHeight: 28,
-    colorVariant: 'dual',
-    idleStrength: 0.22,
-  }
-)
+const props = withDefaults(defineProps<{
+  active?: boolean
+  /** Real audio level, normalized to 0..1; this component never requests a microphone. */
+  level?: number
+  processing?: boolean
+  breatheDuration?: number
+  maxHeight?: number
+  colorVariant?: 'dual' | 'accent' | 'violet'
+  idleStrength?: number
+}>(), {
+  active: true, level: 0, processing: false, breatheDuration: 4.6,
+  maxHeight: 28, colorVariant: 'dual', idleStrength: 0.22,
+})
 
 const containerRef = ref<HTMLElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-
+const { canPresent, canAnimate, reducedMotion, lowEffects, appearanceRevision } = useVisualActivity(containerRef)
 let rafId: number | null = null
 let smoothedLevel = 0
-let lastTime = 0
-let resizeObserver: ResizeObserver | null = null
-let isReducedMotion = false
+let lastTime: number | null = null
+let animationTime = 0
+let colors = { primary: '#F2A8BE', secondary: '#B784F6' }
+const clampUnit = (value: number) => Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0
+const level = computed(() => clampUnit(props.level))
+const idleStrength = computed(() => clampUnit(props.idleStrength))
+const height = computed(() => Number.isFinite(props.maxHeight) ? Math.max(1, Math.min(120, props.maxHeight)) : 28)
+const period = computed(() => Number.isFinite(props.breatheDuration) ? Math.max(0.5, props.breatheDuration) : 4.6)
 
-function checkReducedMotion(): boolean {
-  if (typeof window === 'undefined' || !window.matchMedia) return false
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
-
-function parseColors(): { primary: string; secondary: string } {
-  if (typeof window === 'undefined' || !containerRef.value) {
-    return { primary: '#F2A8BE', secondary: '#B784F6' }
-  }
+function readColors(): void {
+  if (!containerRef.value) return
   const styles = getComputedStyle(containerRef.value)
   const accent = styles.getPropertyValue('--accent').trim() || '#F2A8BE'
   const violet = styles.getPropertyValue('--accent-violet').trim() || '#B784F6'
-
-  switch (props.colorVariant) {
-    case 'accent':
-      return { primary: accent, secondary: accent }
-    case 'violet':
-      return { primary: violet, secondary: violet }
-    case 'dual':
-    default:
-      return { primary: accent, secondary: violet }
-  }
+  colors = props.colorVariant === 'accent' ? { primary: accent, secondary: accent }
+    : props.colorVariant === 'violet' ? { primary: violet, secondary: violet } : { primary: accent, secondary: violet }
 }
 
 function updateCanvasSize(): void {
   const canvas = canvasRef.value
   const container = containerRef.value
   if (!canvas || !container) return
-
-  const rect = container.getBoundingClientRect()
-  const w = Math.round(rect.width) || 320
-  const h = props.maxHeight
-
-  const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  canvas.width = Math.round(w * dpr)
-  canvas.height = Math.round(h * dpr)
-  canvas.style.width = `${w}px`
-  canvas.style.height = `${h}px`
-}
-
-// 核心物理阻尼包络跟踪 (One-pole filter)
-function updateEnvelope(targetLevel: number, dt: number): number {
-  const attack = 0.12 // 上升快 (120ms)
-  const release = 0.45 // 下降平滑 (450ms)
-  const tau = targetLevel > smoothedLevel ? attack : release
-  const alpha = 1 - Math.exp(-dt / tau)
-  smoothedLevel += (targetLevel - smoothedLevel) * alpha
-  return smoothedLevel
-}
-
-function renderFrame(now: number): void {
-  if (!props.active || !canvasRef.value) {
-    stopAnimation()
-    return
+  const width = Math.max(1, Math.round(container.getBoundingClientRect().width))
+  const dpr = Math.min(window.devicePixelRatio || 1, 2, 2048 / width)
+  const pixelWidth = Math.max(1, Math.round(width * dpr))
+  const pixelHeight = Math.max(1, Math.round(height.value * dpr))
+  if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+    canvas.width = pixelWidth
+    canvas.height = pixelHeight
   }
+  canvas.style.width = `${width}px`
+  canvas.style.height = `${height.value}px`
+}
 
+function stopAnimation(): void {
+  if (rafId !== null) cancelAnimationFrame(rafId)
+  rafId = null
+  lastTime = null
+}
+
+/** Returns whether a further animated frame is useful. Static states never self-schedule. */
+function drawFrame(dt: number): boolean {
   const canvas = canvasRef.value
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  if (!lastTime) lastTime = now
-  const dt = Math.min((now - lastTime) / 1000, 0.1)
-  lastTime = now
-
-  const target = Math.max(0, Math.min(1, props.level))
-  const currentLevel = updateEnvelope(target, dt)
-
-  // 呼吸态计算：无声音时维持微弱的慢正弦呼吸
-  const breathe = isReducedMotion
-    ? 0.5
-    : 0.5 + 0.5 * Math.sin((2 * Math.PI * (now / 1000)) / props.breatheDuration)
-  const idleFactor = (1 - currentLevel) * props.idleStrength * breathe
-  const effectiveLevel = Math.max(currentLevel, idleFactor)
-
+  const ctx = canvas?.getContext('2d')
+  if (!canvas || !ctx) return false
+  const target = Math.max(level.value, props.processing ? 0.5 : 0)
+  if (reducedMotion.value) smoothedLevel = target
+  else {
+    const tau = target > smoothedLevel ? 0.12 : 0.45
+    smoothedLevel += (target - smoothedLevel) * (1 - Math.exp(-dt / tau))
+  }
+  const breathe = reducedMotion.value ? 0.5 : 0.5 + 0.5 * Math.sin(2 * Math.PI * animationTime / period.value)
+  const effectiveLevel = Math.max(smoothedLevel, (1 - smoothedLevel) * idleStrength.value * breathe)
   const w = canvas.width
   const h = canvas.height
   ctx.clearRect(0, 0, w, h)
+  const moving = props.processing || idleStrength.value > 0 || target > 0 || smoothedLevel > 0.01
+  if (effectiveLevel <= 0.01) return moving
 
-  if (effectiveLevel <= 0.01) {
-    rafId = requestAnimationFrame(renderFrame)
-    return
-  }
-
-  const { primary, secondary } = parseColors()
-
-  // 处理态光斑中心左右游走：[-0.3w, 0.3w]
-  let centerX = w * 0.5
-  if (props.processing && !isReducedMotion) {
-    const sweep = Math.sin((now / 1000) * 2.8) * 0.32
-    centerX = w * (0.5 + sweep)
-  }
-
-  // 1. 绘制升起的柔光渐变 (Inner Light)
+  const centerX = w * (0.5 + (props.processing && !reducedMotion.value ? Math.sin(animationTime * 2.8) * 0.32 : 0))
   const riseHeight = h * (0.35 + 0.65 * effectiveLevel)
   const gradient = ctx.createLinearGradient(centerX, h, centerX, h - riseHeight)
-  gradient.addColorStop(0, primary)
-  gradient.addColorStop(0.5, secondary)
+  gradient.addColorStop(0, colors.primary)
+  gradient.addColorStop(0.5, colors.secondary)
   gradient.addColorStop(1, 'transparent')
-
+  const bellSpread = w * (0.35 + 0.25 * effectiveLevel)
+  const points: [number, number][] = []
+  for (let i = 0; i <= 60; i++) {
+    const x = i / 60 * w
+    const bell = Math.exp(-Math.pow(Math.abs(x - centerX) / (bellSpread * 0.5), 1.8))
+    points.push([x, h - bell * riseHeight])
+  }
   ctx.save()
   ctx.fillStyle = gradient
   ctx.globalAlpha = Math.min(1, 0.35 + 0.65 * effectiveLevel)
-
-  // 2. 钟形曲线计算 (Gaussian Bell Curve)
   ctx.beginPath()
   ctx.moveTo(0, h)
-
-  const steps = 60
-  const curvePower = 1.8
-  const bellSpread = w * (0.35 + 0.25 * effectiveLevel)
-
-  for (let i = 0; i <= steps; i++) {
-    const x = (i / steps) * w
-    const dist = Math.abs(x - centerX)
-    const normalizedDist = dist / (bellSpread * 0.5)
-    const bell = Math.exp(-Math.pow(normalizedDist, curvePower))
-    const y = h - bell * riseHeight
-    ctx.lineTo(x, y)
-  }
-
+  for (const [x, y] of points) ctx.lineTo(x, y)
   ctx.lineTo(w, h)
   ctx.closePath()
   ctx.fill()
-
-  // 3. 绘制顶部边缘微光高光弧线 (Band Stroke)
   ctx.beginPath()
-  for (let i = 0; i <= steps; i++) {
-    const x = (i / steps) * w
-    const dist = Math.abs(x - centerX)
-    const normalizedDist = dist / (bellSpread * 0.5)
-    const bell = Math.exp(-Math.pow(normalizedDist, curvePower))
-    const y = h - bell * riseHeight
-    if (i === 0) ctx.moveTo(x, y)
-    else ctx.lineTo(x, y)
-  }
-
+  points.forEach(([x, y], index) => { if (index === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y) })
   ctx.strokeStyle = '#ffffff'
   ctx.lineWidth = Math.max(1, 1.5 * effectiveLevel)
   ctx.globalAlpha = Math.min(1, 0.2 + 0.7 * effectiveLevel)
   ctx.stroke()
-
   ctx.restore()
-
-  rafId = requestAnimationFrame(renderFrame)
+  return moving
 }
 
-function startAnimation(): void {
-  if (rafId === null && props.active) {
-    lastTime = 0
-    rafId = requestAnimationFrame(renderFrame)
+function frame(now: number): void {
+  rafId = null
+  if (!props.active || !canAnimate.value) return
+  const dt = lastTime === null ? 1 / 60 : Math.max(0, Math.min((now - lastTime) / 1000, 0.1))
+  lastTime = now
+  animationTime += dt
+  if (drawFrame(dt)) rafId = requestAnimationFrame(frame)
+}
+
+function refresh(): void {
+  if (!props.active || !canPresent.value) {
+    stopAnimation()
+    smoothedLevel = 0
+    return
+  }
+  if (reducedMotion.value) {
+    stopAnimation()
+    drawFrame(0)
+  } else if (rafId === null) {
+    rafId = requestAnimationFrame(frame)
   }
 }
 
-function stopAnimation(): void {
-  if (rafId !== null) {
-    cancelAnimationFrame(rafId)
-    rafId = null
-  }
-}
-
-watch(
-  () => props.active,
-  (val) => {
-    if (val) startAnimation()
-    else stopAnimation()
-  }
-)
-
-onMounted(() => {
-  isReducedMotion = checkReducedMotion()
-  updateCanvasSize()
-
-  if (containerRef.value && typeof ResizeObserver !== 'undefined') {
-    resizeObserver = new ResizeObserver(() => {
-      updateCanvasSize()
-    })
-    resizeObserver.observe(containerRef.value)
-  }
-
-  if (props.active) {
-    startAnimation()
-  }
-})
-
-onBeforeUnmount(() => {
-  stopAnimation()
-  if (resizeObserver) {
-    resizeObserver.disconnect()
-    resizeObserver = null
-  }
-})
+watch([() => props.active, canPresent, canAnimate, () => props.processing, level, idleStrength, period], refresh, { flush: 'post' })
+watch([() => props.colorVariant, appearanceRevision], () => {
+  readColors()
+  refresh()
+}, { flush: 'post' })
+watch(height, () => { updateCanvasSize(); refresh() }, { flush: 'post' })
+useResizeObserver(containerRef, () => { updateCanvasSize(); refresh() })
+onMounted(() => { updateCanvasSize(); readColors(); refresh() })
+onBeforeUnmount(stopAnimation)
 </script>
 
 <style scoped>
@@ -260,18 +174,16 @@ onBeforeUnmount(() => {
   z-index: 1;
   border-bottom-left-radius: inherit;
   border-bottom-right-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--motion-control, 200ms) var(--ease-out, ease-out);
 }
-
+.voice-glow-container.is-active { opacity: 1; }
 .voice-glow-canvas {
   display: block;
   width: 100%;
   pointer-events: none;
   filter: drop-shadow(0 -2px 8px var(--accent-glow, rgba(242, 168, 190, 0.35)));
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .voice-glow-canvas {
-    filter: none !important;
-  }
-}
+.is-low-effects { transition: none; }
+.is-low-effects .voice-glow-canvas { filter: none; }
 </style>
