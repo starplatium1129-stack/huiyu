@@ -91,8 +91,8 @@
 
 - [项目状态](project-status.md)：已实现范围与分阶段验证边界；内容数量保留日期，不把旧统计当作新盘点。
 - [页面切换、工作台动效与旧模块清理（2026-09-15）](archive/audits/ui-navigation-and-unused-2026-09-15.md)：导航阶段 41 项浏览器回归与后续删除分别记录；两处旧实现及专属测试已移除，安装版尚未同步。
-- [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复的历史复审；当前实现与剩余验收分别见 roadmap。
-- [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：草稿版本、字段恢复显示与六位角色资料来源。
+- [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复的历史复审；当前实现与剩余验收分别见项目状态和 roadmap。
+- [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。
 - [全站交互细节优化（2026-09-12）](archive/audits/interaction-detail-polish-2026-09-12.md)：状态联动、菜单/搜索/灯箱焦点、录音、分镜反馈与双主题页面复验。
 - [1.7.2 工作台与桌面维护](releases/v1.7.2.md)：主线内容、工作台体验、资源边界、桌面可靠性与工程维护更新。
 - [1.7.1 办公机修复](releases/v1.7.1.md)：独立审计 A01–A05 的修复、浏览器契约整理与发布验收边界。
@@ -101,7 +101,7 @@
 
 ## 按需查阅
 
-- [Apple HIG Web 设计规范](guides/design/apple-hig-web-guidelines.md)：官方原则、Web 无障碍底线、组件状态与验收矩阵；按当前仓库更正双主题与品牌边界，不替代根目录 DESIGN.md。
+- [Apple HIG Web 设计规范](guides/design/apple-hig-web-guidelines.md)：官方原则、Web 无障碍底线、组件状态与验收矩阵；已按当前仓库更正双主题与品牌边界，不替代根目录 DESIGN.md。
 - [启动与排错](../STARTUP.md)：干净工作区启动、AI 服务端点、模型目录与本机凭据恢复。
 - [全功能开箱与硬件配置、模型部署指南](guides/setup-and-models.md)：各硬件档位运行能力、公共开源底座直链、自训专属 LoRA 说明与环境体检。
 - [专题指南](guides/README.md)：角色与粒子、提示词、美术、视频、桌面、工程设计。
