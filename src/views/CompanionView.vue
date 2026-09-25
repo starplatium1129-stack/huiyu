@@ -346,73 +346,31 @@
         <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>
       </section>
 
-      <FluidTransition>
-<div
-  v-if="workspaceOpen"
-  id="companion-workspace-settings"
-  ref="workspaceDialogEl"
-  class="companion-workspace-settings"
-  role="dialog"
-  aria-modal="true"
-  aria-label="AI 工作区设置"
-  aria-describedby="companion-workspace-description"
-  @keydown.esc.stop.prevent="closeWorkspace"
->
-        <div>
-          <strong>AI 工作区</strong>
-          <span id="companion-workspace-description">存放样张、训练数据与配音资源的目录（例如 E:\AI）。设置后网关重启生效。</span>
-        </div>
-        <input
-          ref="workspaceInputEl"
-          v-model="workspaceInput"
-          type="text"
-          placeholder="目录路径"
-          aria-label="AI 工作区目录路径"
-          @keydown.enter="saveWorkspace"
-        />
-        <div class="companion-workspace-actions">
-          <button type="button" class="btn btn-primary" :disabled="workspaceSaving" @click="saveWorkspace">
-            {{ workspaceSaving ? '保存中…' : '保存并重启网关' }}
-          </button>
-          <button type="button" class="btn btn-ghost" @click="closeWorkspace">关闭</button>
-        </div>
-      </div>
-</FluidTransition>
+      <CompanionWorkspaceSettings
+        :open="workspaceOpen"
+        :model-value="workspaceInput"
+        :saving="workspaceSaving"
+        :return-focus-el="workspaceTriggerEl"
+        @close="closeWorkspace"
+        @save="saveWorkspace"
+        @update:model-value="workspaceInput = $event"
+      />
 
       <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
-      <div v-if="desktopBridge" class="companion-desktop-float" aria-label="桌宠快捷操作">
-        <CompanionReplyBubble :text="replyAnnouncement" :name="currentCharacter.name" @open="openChatWindow" />
-        <div v-if="chatError" class="companion-float-error" role="alert">{{ chatError }}</div>
-        <TransitionGroup name="reminder-pop" tag="div" class="companion-float-reminders" role="log" aria-label="角色主动问候">
-          <div
-            v-for="reminder in pendingReminders"
-            :key="reminder.id"
-            class="companion-float-reminder"
-            :data-kind="reminder.kind"
-            :data-event-kind="reminder.eventKind || undefined"
-            :class="{ 'companion-reminder-link': reminder.kind === 'event' && reminder.eventKind && desktopBridge }"
-          >
-            <span>{{ currentCharacter.name }}</span>
-            <p>{{ reminder.line }}</p>
-            <div v-if="reminder.kind === 'event' && reminder.eventKind && desktopBridge" class="companion-reminder-actions">
-              <button type="button" class="companion-reminder-action" @click="openReminderRoute(reminder)">{{ reminderActionLabel(reminder) }}</button>
-            </div>
-            <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)">×</button>
-          </div>
-        </TransitionGroup>
-        <StudioTooltip content="打开聊天窗（Ctrl+Shift+X）">
-          <button
-            class="companion-chat-chip"
-            type="button"
-            aria-label="打开聊天"
-            @click="openChatWindow"
-          ><ArchiveIcon name="chat" /><span>聊天</span></button>
-        </StudioTooltip>
-        <span class="companion-live-dot" :data-state="liveDotState" role="status" aria-live="polite">
-          <i aria-hidden="true"></i>{{ liveDotText }}
-        </span>
-        <span v-if="speechState === 'capturing' || speechAutoListening" class="companion-mic-status" role="status">{{ speechState === 'capturing' ? '正在聆听' : '听候唤醒' }}</span>
-      </div>
+      <CompanionDesktopFloat
+        v-if="desktopBridge"
+        :reply-announcement="replyAnnouncement"
+        :character-name="currentCharacter.name"
+        :chat-error="chatError"
+        :reminders="pendingReminders"
+        :live-dot-state="liveDotState"
+        :live-dot-text="liveDotText"
+        :speech-capturing="speechState === 'capturing'"
+        :speech-auto-listening="speechAutoListening"
+        @open-chat="openChatWindow"
+        @open-reminder="openReminderRoute"
+        @dismiss-reminder="dismissReminder"
+      />
     </main>
   </article>
 </template>
@@ -425,7 +383,8 @@ import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
-import CompanionReplyBubble from '@/components/CompanionReplyBubble.vue'
+import CompanionDesktopFloat from '@/components/CompanionDesktopFloat.vue'
+import CompanionWorkspaceSettings from '@/components/CompanionWorkspaceSettings.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
@@ -435,8 +394,6 @@ const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatC
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
-import { useFocusTrap } from "@/composables/useFocusTrap"
-import type { CompanionReminder } from '@/utils/companionBehavior'
 const {
 chatListRef,characterStageRef,activeChar,
 desktopBridge,
@@ -533,24 +490,10 @@ liveDotState,
 liveDotText
 } = useCompanionWorkspace()
 
-const workspaceDialogEl = ref<HTMLElement | null>(null)
-const workspaceInputEl = ref<HTMLInputElement | null>(null)
 const workspaceTriggerEl = ref<HTMLButtonElement | null>(null)
-const { returnFocus: workspaceReturnFocus } = useFocusTrap(workspaceDialogEl, () => workspaceOpen.value, {
-  initialFocus: workspaceInputEl,
-  onEscape: closeWorkspace,
-})
 
 function toggleWorkspace() {
-  if (workspaceOpen.value) {
-    closeWorkspace()
-    return
-  }
-  if (workspaceTriggerEl.value) {
-    workspaceTriggerEl.value.focus({ preventScroll: true })
-    workspaceReturnFocus.value = workspaceTriggerEl.value
-  }
-  workspaceOpen.value = true
+  workspaceOpen.value = !workspaceOpen.value
 }
 
 function closeWorkspace() {
@@ -569,7 +512,5 @@ function setAutoVoice(enabled: boolean) {
   onAutoVoiceChange()
 }
 
-function reminderActionLabel(reminder: CompanionReminder) {
-  return reminder.eventKind === 'sd-done' ? '查看作品册' : '查看服务状态'
-}
+function reminderActionLabel(reminder: { eventKind?: string }) { return reminder.eventKind === 'sd-done' ? '查看作品册' : '查看服务状态' }
 </script>

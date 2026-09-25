@@ -1,31 +1,19 @@
 import { selectLive2DBackend } from '@/live2d/createBackend'
 import { compileAdapterProfile } from '@/live2d/adapterProfile'
 import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
-import type {
-  Live2DBackendKind,
-  Live2DModelHandle,
-  Live2DStageSession,
-} from '@/live2d/types'
+import type { Live2DBackendKind,Live2DModelHandle,Live2DStageSession } from '@/live2d/types'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
-import { live2DTextureScale, normalizeLive2DQuality } from '@/live2d/quality'
+import { normalizeLive2DQuality } from '@/live2d/quality'
 import { isStageHidden, prefersReducedMotion, type Live2DCtx, type Live2DStatus } from '@/composables/live2d/context'
-import {
-  ENTRANCE_MAX_MS,
-  LEAVE_PLAY_MS,
-} from '@/composables/live2d/constants'
-import { isRecord, readLive2DCatalog, type Live2DModelInfo } from '@/composables/live2d/catalog'
+import { LEAVE_PLAY_MS } from '@/composables/live2d/constants'
+import { readLive2DCatalog, type Live2DModelInfo } from '@/composables/live2d/catalog'
 import {
   normalizeCompanionOutfit,
   resolveCompanionAvatar,
 } from '@/utils/companionRegistry'
-
-function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error)
-}
-
-function isCatchable(value: unknown): value is { catch(handler: (error: unknown) => void): unknown } {
-  return isRecord(value) && typeof value.catch === 'function'
-}
+import { connectSession, recoverBrowserAfterNativeFailure } from './lifecycleConnect'
+import { createEntranceController } from './lifecycleEntrance'
+import { errorMessage, isCatchable } from './lifecycleUtils'
 
 /**
  * 生命周期域（拆分 Step 7 自 useLive2D.ts 原样搬出）：
@@ -59,8 +47,8 @@ export function createLifecycleController(
   const NATIVE_STOPPED_RETRY_LIMIT = 3
   let nativeStoppedRetries = 0
   let nativeRetryTimer = 0
-  let entranceTimer = 0
   let runtimeGeneration = 0
+  const entrance = createEntranceController(ctx, () => runtimeGeneration)
   let finishPendingLoad: ((value: boolean) => void) | null = null
   let pendingConnection: AbortController | null = null
   let requestedBackendKind: Live2DBackendKind = 'browser'
@@ -301,53 +289,24 @@ export function createLifecycleController(
         // 加载状态必须在 connect 之前显示：原生后端 setCharacter 在渲染线程
         // 加载模型与纹理可能耗时数秒，期间 UI 线程保持空闲，loading 立即可见。
         setState('loading', 'Live2D 加载中…')
-        let nextSession: Live2DStageSession
+        let nextSession: Live2DStageSession | null
         try {
-          nextSession = await ctx.backend!.connect({
+          nextSession = await connectSession({
+            ctx,
+            char,
+            info,
             signal: connection.signal,
-            selector: ctx.hostSelector,
-            modelUrl: ctx.backendKind.value === 'browser' && ctx.quality.value !== 'original'
-              ? `/api/live2d-model/${char}/${ctx.quality.value}` : info.modelUrl,
-            textureScale: live2DTextureScale(ctx.quality.value),
-            canvasWidth: info.canvas?.width || 420,
-            canvasHeight: info.canvas?.height || 610,
-            character: char,
-            adapter: ctx.adapter || undefined,
+            preferOptimizedBrowserModel: ctx.backendKind.value === 'browser',
           })
-        } catch (e) {
-          if (!isCurrent()) { finish(false); return }
-          const message = errorMessage(e)
-          // 原生 IPC、GPU 或模型初始化任一步失败，都回退浏览器后端再试一次。
-          if (ctx.backendKind.value === 'native' && ctx.backend?.kind === 'native') {
-            const selection = selectLive2DBackend('browser')
-            ctx.backend = selection.backend
-            ctx.backendKind.value = 'browser'
-            if (!selectAdapter(char, 'browser')) {
-              fallback('Live2D 适配失败', '当前 Profile 不支持原生回退后的浏览器后端')
-              finish(false); return
-            }
-            ctx.backendFallback.value = `原生 Live2D 初始化失败，已回退到浏览器渲染：${message}`
-            if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
-            console.warn('[live2d]', ctx.backendFallback.value)
-            try {
-              nextSession = await ctx.backend!.connect({
-                signal: connection.signal,
-                selector: ctx.hostSelector,
-                modelUrl: ctx.quality.value !== 'original' ? `/api/live2d-model/${char}/${ctx.quality.value}` : info.modelUrl,
-                textureScale: live2DTextureScale(ctx.quality.value),
-                canvasWidth: info.canvas?.width || 420,
-                canvasHeight: info.canvas?.height || 610,
-                character: char,
-                adapter: ctx.adapter || undefined,
-              })
-            } catch (e2) {
-              if (isCurrent()) fallback('Live2D 初始化失败', errorMessage(e2))
-              finish(false); return
-            }
-          } else {
-            fallback('Live2D 初始化失败', message)
-            finish(false); return
-          }
+        } catch (error) {
+          nextSession = await recoverBrowserAfterNativeFailure({
+            ctx, char, info, error, signal: connection.signal, isCurrent, selectAdapter, fallback,
+            preferOptimizedBrowserModel: true,
+          })
+        }
+        if (!nextSession) {
+          finish(false)
+          return
         }
         if (!isCurrent()) {
           nextSession.destroy()
@@ -369,7 +328,7 @@ export function createLifecycleController(
           // Absolute companion stages do not resize when a model arrives. Fit after
           // visibility is enabled, otherwise the hidden-stage guard skips centering.
           controllers.layoutFit.layout()
-          if (!nativeCapability?.entranceNative) playEntrance()
+          if (!nativeCapability?.entranceNative) entrance.play()
           void setOutfit(ctx.outfit.value)
           finish(true)
         })
@@ -419,41 +378,6 @@ export function createLifecycleController(
       media.addListener(syncPause); removeMotionListener = () => media.removeListener(syncPause)
     }
     window.addEventListener('atelier:motion-preference', syncPause)
-  }
-
-  function playEntrance() {
-    if (prefersReducedMotion()) return
-    if (!ctx.model) return
-    const motionFn = ctx.model.motion
-    const generation = runtimeGeneration
-    if (typeof motionFn !== 'function') return
-    // 浏览器路径：从 wl-live2d 的 motionManager.definitions 探测 Start 组
-    // （原生后端由 Rust 接管入场动作，不会走到这里）。
-    const entranceGroup = ctx.adapter?.entranceGroup
-    if (!entranceGroup || !(ctx.model.hasMotionGroup?.(entranceGroup) ?? false)) return
-    // 模型刚加载完成时 Start 组的动作可能还在预加载，startRandomMotion 会
-    // 因组内全部未就绪直接返回 false；这里重试直到登场动作真正启动。
-    let attempts = 0
-    const tryStart = () => {
-      if (attempts++ > 40 || generation !== runtimeGeneration || !ctx.enabled.value || ctx.destroyed.value || !ctx.model) return
-      const result = motionFn.call(ctx.model, entranceGroup, undefined, 2)
-      const started = isCatchable(result)
-        ? result.then((v: unknown) => v === true).catch(() => false)
-        : Promise.resolve(result === true)
-      void started.then((ok: boolean) => {
-        if (generation !== runtimeGeneration || !ctx.enabled.value || ctx.destroyed.value) return
-        if (ok) {
-          ctx.entranceUntil = performance.now() + ENTRANCE_MAX_MS
-          // 登场结束后（entranceUntil 过期）叠层参数由 parameterFrame.apply 的
-          // 所有权交接自动启动 smoothstep 回落：Start* 变体也会驱动叠层
-          // 显隐（2026-08-16 实测 Start_1 等把 Param38 等拉高），
-          // idle 不带回，残留会成半透明重影。
-          return
-        }
-        entranceTimer = window.setTimeout(tryStart, 250)
-      })
-    }
-    tryStart()
   }
 
   function bindContextEvents() {
@@ -561,7 +485,7 @@ export function createLifecycleController(
     pendingConnection?.abort()
     pendingConnection = null
     clearTimeout(nativeRetryTimer); nativeRetryTimer = 0
-    clearTimeout(entranceTimer); entranceTimer = 0
+    entrance.cancel()
     finishPendingLoad?.(false)
     controllers.interactions.stopAudio()
     clearTimeout(ctx.timers.load); ctx.timers.load = 0

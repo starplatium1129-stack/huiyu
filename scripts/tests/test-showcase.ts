@@ -26,9 +26,10 @@ const path: typeof import('path') = require('path');
 
 const root = path.resolve(__dirname, '..', '..');
 const read = (relative: string) => fs.readFileSync(path.join(root, relative), 'utf8');
+const readShowcaseView = () => [read('src/views/ShowcaseView.vue'), read('src/assets/css/showcase-view.css')].join('\n');
 
 test('showcase source contract: view, router, nav, server allowlist, exporter wording', () => {
-  const view = read('src/views/ShowcaseView.vue');
+  const view = readShowcaseView();
   const router = read('src/router/index.ts');
   const nav = read('src/components/AppNav.vue');
   const server = read('server.js');
@@ -275,7 +276,7 @@ test('showcase view renders entry-type grouping, gated CTA, metadata and the mob
   const fs: typeof import('fs') = require('fs');
   const path: typeof import('path') = require('path');
   const root = path.resolve(__dirname, '..', '..');
-  const view = fs.readFileSync(path.join(root, 'src/views/ShowcaseView.vue'), 'utf8');
+  const view = readShowcaseView();
 
   // 类型分组复用现有 filter-pill 视觉语言。
   assert(view.includes("TYPE_OPTS = [{ v:'all', l:'全部类型' }"), 'type filter must group entries');

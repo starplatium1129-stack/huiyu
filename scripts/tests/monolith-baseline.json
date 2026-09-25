@@ -1,9 +1,4 @@
 {
-  "src/views/ShowcaseView.vue": 580,
-  "src/components/video/ShotListEditor.vue": 570,
-  "src/views/CompanionView.vue": 567,
-  "src/composables/live2d/lifecycle.ts": 559,
-  "src/composables/scene/useSceneExplorerWorkspace.ts": 552,
   "src/composables/generation/useAnimaSession.ts": 544,
   "src/config/artistStyleCatalog.ts": 543,
   "src/utils/popularContent.ts": 540,

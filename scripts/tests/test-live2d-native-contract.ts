@@ -186,7 +186,10 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
   assert.match(layoutFit, /tick\(\)/)
   assert.match(layoutFit, /session\.setPaused\(!visible\)/)
   assert.match(live2d, /setDesktopWindowBounds/)
-  const lifecycle = read('src/composables/live2d/lifecycle.ts')
+  const lifecycle = [
+    read('src/composables/live2d/lifecycle.ts'),
+    read('src/composables/live2d/lifecycleConnect.ts'),
+  ].join('\n')
   assert.match(lifecycle, /destroyed\.value = true; ctx\.enabled\.value = false; destroyRuntime\(\)[\s\S]{0,180}?controllers\.layoutFit\.resetWindowBounds\(\)/)
   const companionView = read('src/views/CompanionView.vue')
   const characterStage = read('src/components/ChatCharacterStage.vue')
@@ -198,7 +201,7 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
   // 单一情绪时间推进器：sendEmotion 只能出现在 RAF tick，口型回调不推进。
   assert.equal((emotionClock.match(/sendEmotion/g) || []).length, 1, 'sendEmotion 只允许出现在原生情绪时钟 tick')
   // 加载状态必须在 connect 之前显示。
-  assert.ok(lifecycle.indexOf("setState('loading', 'Live2D 加载中…')") < lifecycle.indexOf('await ctx.backend!.connect('), 'loading 必须在 connect 之前设置')
+  assert.ok(lifecycle.indexOf("setState('loading', 'Live2D 加载中…')") < lifecycle.indexOf('await connectSession('), 'loading 必须在 connect 之前设置')
   assert.match(interactions, /onMotionFailed/)
   assert.match(backend, /if \(!destroyed\) callback\(handle\)/)
   assert.match(backend, /bridge\.setMaxFps/)

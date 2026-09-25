@@ -228,27 +228,11 @@
         <p v-if="aiNote" role="status" class="shot-ai-note" :data-busy="aiBusy || undefined">{{ aiNote }}</p>
         <p v-else-if="flowHint" class="shot-flow-hint">{{ flowHint }}</p>
 
-        <div v-if="reviewIssues.length" class="shot-review-list" aria-live="polite">
-          <div
-            v-for="(issue, issueIndex) in reviewIssues"
-            :key="issueIndex"
-            class="shot-review-item"
-            :data-severity="issue.severity"
-          >
-            <span class="shot-review-tag">{{ issue.severity === 'error' ? '必须修' : '建议' }}</span>
-            <span class="shot-review-copy">
-              镜头 {{ issue.index + 1 }} · {{ issue.message }}
-              <em v-if="issue.suggestion">→ {{ issue.suggestion }}</em>
-            </span>
-            <button
-              v-if="issue.suggestion"
-              class="btn btn-ghost btn-sm"
-              type="button"
-              :disabled="batchActive || submitting"
-              @click="applyReviewSuggestion(issue)"
-            >应用建议</button>
-          </div>
-        </div>
+        <ShotReviewIssues
+          :issues="reviewIssues"
+          :disabled="batchActive || submitting"
+          @apply="applyReviewSuggestion"
+        />
 
         <article v-for="(shot, index) in shots" :key="index" class="shot-row" :data-shot-index="index" tabindex="-1" :aria-label="`镜头 ${index + 1} 编辑`" :data-issue="shotIssueCount(index) || undefined">
           <header class="shot-row-head">
@@ -381,54 +365,21 @@
         </p>
       </section>
 
-      <Teleport to="body">
-        <FluidTransition>
-        <div v-if="scriptOpen" class="shot-script-overlay" @click.self="scriptOpen = false">
-          <section ref="scriptDialog" class="shot-script-panel" role="dialog" aria-modal="true" aria-label="AI 生成分镜脚本">
-            <header class="shot-script-head">
-              <div>
-                <span class="video-step"><ArchiveIcon name="wand" /> AI 生成脚本</span>
-                <h2>故事梗概 → 完整分镜表</h2>
-                <p>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p>
-              </div>
-              <button class="btn btn-ghost" type="button" aria-label="关闭" @click="scriptOpen = false"><ArchiveIcon name="close" /></button>
-            </header>
-            <label class="field">
-              <span class="field-label">故事梗概（中文即可）</span>
-              <textarea
-                ref="scriptStoryInput"
-                v-model="scriptStory"
-                class="textarea"
-                rows="5"
-                maxlength="2000"
-                placeholder="例如：宁宁在咖啡店值夜班，打烊前收到一封旧信，读完决定去找写信的人……"
-              ></textarea>
-            </label>
-            <div class="shot-script-row">
-              <label class="field">
-                <span class="field-label">镜头数</span>
-                <StudioSelect size="sm" label="镜头数" :model-value="scriptCount ?? ''" :options="scriptCountOptions" @update:model-value="value => (scriptCount = value === '' ? null : Number(value))" />
-              </label>
-              <label class="field">
-                <span class="field-label">总时长（秒）</span>
-                <StudioSelect size="sm" label="总时长（秒）" :model-value="scriptTotal ?? ''" :options="scriptTotalOptions" @update:model-value="value => (scriptTotal = value === '' ? null : Number(value))" />
-              </label>
-            </div>
-            <footer class="shot-script-foot">
-              <span v-if="referenceCards.some(card => card.label)" class="shot-script-hint">
-                参考卡角色将作为 &lt;Picture N&gt; 注入：{{ referenceCards.filter(card => card.label).map(card => card.label).join('、') }}
-              </span>
-              <button
-                class="btn btn-primary"
-                type="button"
-                :disabled="scriptBusy || !scriptStory.trim()"
-                @click="runAiScript"
-              >{{ scriptBusy ? '生成中…' : '生成分镜表' }}</button>
-            </footer>
-          </section>
-        </div>
-        </FluidTransition>
-      </Teleport>
+      <ShotScriptDialog
+        :open="scriptOpen"
+        :busy="scriptBusy"
+        :story="scriptStory"
+        :count="scriptCount"
+        :total="scriptTotal"
+        :count-options="scriptCountOptions"
+        :total-options="scriptTotalOptions"
+        :reference-labels="referenceCards.filter(card => card.label).map(card => card.label)"
+        @close="scriptOpen = false"
+        @submit="runAiScript"
+        @update:story="scriptStory = $event"
+        @update:count="scriptCount = $event"
+        @update:total="scriptTotal = $event"
+      />
 
       <section class="video-panel shot-submit-panel" :data-ready="canSubmit || undefined">
         <div>
@@ -487,16 +438,17 @@
 </template>
 
 <script setup lang="ts">
-import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption, StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
 import { computed, nextTick, ref } from 'vue'
-import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
+import ShotReviewIssues from './ShotReviewIssues.vue'
+import ShotScriptDialog from './ShotScriptDialog.vue'
+import { durationOptions, scriptCountOptions, scriptTotalOptions, shotSizeOptions } from './shotListEditorOptions'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import { useShotWorkspace } from "@/components/video/useShotWorkspace"
 import type { VideoStatusResponse } from '@/api/videoApi'
@@ -549,33 +501,6 @@ const storyboardOptions = computed<StudioSelectOption[]>(() => [
   ...sceneBlueprints.value.map(b => ({ value: b.id, label: b.title })),
 ])
 
-// 镜头级参数与剧本档位的选项：原先内联在 <option> 里，抽出来让模板保持单行。
-const shotSizeOptions: StudioSelectOption[] = [
-  { value: '', label: '默认' },
-  { value: 'wide', label: '全景' },
-  { value: 'medium', label: '中景' },
-  { value: 'closeup', label: '特写' },
-]
-// 时长是数字值：shot.duration 为 number，保持类型不要字符串化。
-const durationOptions: StudioSelectOption[] = [
-  { value: 3, label: '3 秒' },
-  { value: 5, label: '5 秒（推荐）' },
-  { value: 10, label: '10 秒 · 长镜' },
-  { value: 15, label: '15 秒 · 长镜' },
-]
-const scriptCountOptions: StudioSelectOption[] = [
-  { value: '', label: '自动' },
-  { value: 8, label: '8 镜' },
-  { value: 10, label: '10 镜' },
-  { value: 12, label: '12 镜' },
-]
-const scriptTotalOptions: StudioSelectOption[] = [
-  { value: '', label: '自动' },
-  { value: 40, label: '约 40s' },
-  { value: 60, label: '约 60s' },
-  { value: 90, label: '约 90s' },
-]
-
 const castOptions = computed<StudioSelectOption[]>(() => {
   const options: StudioSelectOption[] = [{ value: '', label: '无参考' }]
   referenceCards.value.forEach((card, cardIdx) => {
@@ -599,9 +524,6 @@ async function removeReferenceWithFocus(cardIndex: number, imageIndex: number, e
   const buttons = group?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')
   buttons?.[Math.min(imageIndex, buttons.length - 1)]?.focus({ preventScroll: true })
 }
-const scriptDialog = ref<HTMLElement | null>(null)
-const scriptStoryInput = ref<HTMLElement | null>(null)
-useFocusTrap(scriptDialog, () => scriptOpen.value, { onEscape: () => { scriptOpen.value = false }, initialFocus: scriptStoryInput })
 </script>
 
 <style scoped src="@/assets/css/shot-list-editor.css"></style>

@@ -77,17 +77,17 @@ onMounted(() => {
 })
 
 const trackStyle = computed(() => ({
-  borderRadius: props.borderRadius,
-  padding: `${props.borderWidth}px`,
+  '--beam-radius': props.borderRadius,
+  '--beam-border-width': `${props.borderWidth}px`,
   '--beam-duration': `${props.duration}s`,
 }))
 
 const bloomStyle = computed(() => ({
-  borderRadius: props.borderRadius,
+  '--beam-radius': props.borderRadius,
   '--beam-duration': `${props.duration}s`,
 }))
 
-const rayStyle = computed(() => {
+const rayGradient = computed(() => {
   // 根据不同变体选用二次元甜系色彩
   let gradient = ''
   switch (props.colorVariant) {
@@ -142,10 +142,10 @@ const rayStyle = computed(() => {
       break
   }
 
-  return {
-    background: gradient,
-  }
+  return gradient
 })
+
+const rayStyle = computed(() => ({ '--beam-gradient': rayGradient.value }))
 </script>
 
 <style scoped>
@@ -165,6 +165,8 @@ const rayStyle = computed(() => {
 .border-beam-track {
   position: absolute;
   inset: 0;
+  border-radius: var(--beam-radius, inherit);
+  padding: var(--beam-border-width, 1.5px);
   pointer-events: none;
   overflow: hidden;
   box-sizing: border-box;
@@ -181,6 +183,7 @@ const rayStyle = computed(() => {
 .border-beam-bloom {
   position: absolute;
   inset: -2px;
+  border-radius: var(--beam-radius, inherit);
   pointer-events: none;
   overflow: hidden;
   box-sizing: border-box;
@@ -205,6 +208,7 @@ const rayStyle = computed(() => {
 .border-beam-ray {
   position: absolute;
   inset: -150%;
+  background: var(--beam-gradient);
   transform-origin: center center;
   animation: border-beam-spin var(--beam-duration, 3.6s) linear infinite;
   will-change: transform;

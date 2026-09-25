@@ -83,29 +83,10 @@
 .shot-dialogue-row .input { flex: 1 1 auto; }
 .shot-dialogue-options { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-2); }
 .shot-dialogue-options .btn { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.shot-review-list { display: grid; gap: var(--s-2); margin: 0 0 var(--s-3); }
-.shot-review-item { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; padding: var(--s-2) var(--s-3); border-radius: var(--r-md); font-size: var(--fs-body-sm); }
-.shot-review-item[data-severity="error"] { background: color-mix(in srgb, var(--danger) 10%, transparent); }
-.shot-review-item[data-severity="warn"] { background: color-mix(in srgb, var(--warning) 10%, transparent); }
-.shot-review-tag { padding: 1px var(--s-2); border-radius: var(--r-pill); font: 700 var(--fs-mono-xs) var(--font-mono); }
-.shot-review-item[data-severity="error"] .shot-review-tag { background: var(--danger); color: var(--text-inverse); }
-/* 审计修复：warn 标签原为 40% 透明 warning 底配 --warning-text（4.05:1 压线不过），
-   与同级 error 标签统一为「实心底 + 反色深字」 */
-.shot-review-item[data-severity="warn"] .shot-review-tag { background: var(--warning); color: var(--text-inverse); }
-.shot-review-copy { flex: 1 1 280px; min-width: 0; line-height: var(--lh-body); }
-.shot-review-copy em { color: var(--text-secondary); font-style: normal; }
 .shot-issue-badge { padding: 1px var(--s-2); border-radius: var(--r-pill); background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger-text); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .shot-row[data-issue] { outline: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); outline-offset: -1px; border-radius: var(--r-lg); }
-.shot-script-overlay { position: fixed; inset: 0; z-index: var(--z-dock); display: grid; place-items: center; padding: clamp(12px, 3vw, 32px); background: color-mix(in srgb, var(--bg-deep) 55%, transparent); backdrop-filter: blur(4px); }
-.shot-script-panel { width: min(560px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; display: grid; gap: var(--s-4); padding: clamp(16px, 2.4vw, 26px); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); box-shadow: var(--shadow-md); }
-.shot-script-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
-.shot-script-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }
-.shot-script-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
-.shot-script-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
-.shot-script-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
-.shot-script-hint { color: var(--text-muted); font-size: var(--fs-label-xs); }
 @media (max-width: 768px) {
-  .shot-reference-grid, .shot-script-row { grid-template-columns: 1fr; }
+  .shot-reference-grid { grid-template-columns: 1fr; }
 }
 .shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); width: 100%; margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; text-align: left; }
 .shot-toggle > span { flex: 1; }

@@ -1,35 +1,30 @@
-import { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue';
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { kvGet,kvInit } from '@/composables/useKVStore';
-import { useSceneStore,type CurationData,type Scene } from '@/stores/sceneStore';
+import { useSceneStore,type CurationData } from '@/stores/sceneStore';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment';
 import { buildPreferenceProfile,isPersonaCore,readHiddenScenes,readSceneUsage,sceneUsageScore,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,personalScore as uxPersonalScore,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys';
 import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
+import {
+    DEFAULT_RAILS,
+    THEME_DEFS,
+    matchesSeries,
+    matchesTheme,
+    matchesTime,
+    primaryCategory,
+    railIconName,
+    sceneVisualLabels,
+    themeDefinition,
+    type ExplorerScene,
+} from './sceneExplorerPresentation';
 import { watchDebounced } from '@vueuse/core';
 import { computed,nextTick,onMounted,onUnmounted,ref,watch } from 'vue';
 import type { LocationQueryRaw } from 'vue-router';
 import { useRoute,useRouter } from 'vue-router';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useSceneExplorerWorkspace() {
-    interface ExplorerScene extends Scene {
-        title?: string;
-        category?: string;
-        story?: string;
-        char?: string;
-        emotion?: string;
-        season?: string;
-        timeOfDay?: string;
-        rating?: string;
-        mature?: boolean;
-        camera?: string;
-        lighting?: string;
-        location?: string;
-        weather?: string;
-        tags?: string[];
-    }
     interface ExplorerCuration extends CurationData, SceneUXConfig {
         moodRails?: Array<{
             character: string;
@@ -43,48 +38,6 @@ export function useSceneExplorerWorkspace() {
     const PAGE_SIZE = 24;
     const FAV_KEY = 'aics_scene_favorites';
     const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY;
-    const THEME_DEFS: Array<{
-        id: string;
-        label: string;
-        iconName: ArchiveIconName;
-        categories: string[];
-    }> = [
-        { id: 'all', label: '全部', iconName: 'spark', categories: [] as string[] },
-        { id: 'romance', label: '恋爱', iconName: 'love', categories: ['恋爱'] },
-        { id: 'daily', label: '日常', iconName: 'coffee', categories: ['日常'] },
-        { id: 'intimate', label: '亲密', iconName: 'moonlight', categories: ['亲密', 'R15'] },
-        { id: 'school', label: '校园', iconName: 'cap', categories: ['校园'] },
-        { id: 'travel', label: '旅行', iconName: 'plane', categories: ['旅行'] },
-        { id: 'festival', label: '节日', iconName: 'flower', categories: ['祭典・节日'] },
-        { id: 'story', label: '剧情', iconName: 'clap', categories: ['战斗', 'Active Sync'] },
-        { id: 'fanwork', label: '同人', iconName: 'spark', categories: ['同人'] },
-    ];
-    const DEFAULT_RAILS = [
-        { character: 'nene', icon: 'moonlight', title: '宁宁的月光秘密', subtitle: '图书馆 · 樱色 · 魔女', query: 'nene library' },
-        { character: 'natsume', icon: 'coffee', title: '夏目的夜灯关心', subtitle: '咖啡馆 · 雨夜 · 琥珀', query: 'natsume cafe' },
-        { character: 'shared', icon: 'goldenhour', title: '夏日远行', subtitle: '海风 · 黄昏 · 纪念', query: 'beach sunset' },
-    ];
-    /** moodRails 数据兼容两类来源：服务端 curation.json 的 emoji 旧值 → 映射到手绘图标；本地 ArchiveIconName 直接透传 */
-    function railIconName(icon: string | undefined): ArchiveIconName {
-        switch (icon) {
-            case '🌙': return 'moonlight';
-            case '☕': return 'coffee';
-            case '🌅':
-            case '🌄': return 'goldenhour';
-            case '🌸': return 'cherry';
-            case '🍂': return 'autumnleaf';
-            case '💕':
-            case '❤': return 'love';
-            case '📖': return 'book';
-            case '🎬': return 'clap';
-            case '✿': return 'flower';
-            default:
-                // 已是手绘图标名（本地 DEFAULT_RAILS）时原样使用；未知值回退 spark
-                return (icon && ['moonlight', 'coffee', 'goldenhour', 'cherry', 'autumnleaf', 'love', 'book', 'clap', 'flower', 'spark', 'sun', 'star', 'leaf', 'wand'].includes(icon))
-                    ? icon as ArchiveIconName
-                    : 'spark';
-        }
-    }
     const route = useRoute();
     const router = useRouter();
     const sceneStore = useSceneStore();
@@ -186,7 +139,7 @@ export function useSceneExplorerWorkspace() {
         void router.replace({ query }).catch(() => { });
     });
     const activeTheme = ref('all');
-    const activeThemeDefinition = computed(() => themeDef(activeTheme.value));
+    const activeThemeDefinition = computed(() => themeDefinition(activeTheme.value));
     const activeThemeLabel = computed(() => activeThemeDefinition.value.label);
     const manualCompanion = ref<'nene' | 'natsume' | null>(null);
     const companionId = computed<'nene' | 'natsume'>(() => {
@@ -244,26 +197,6 @@ export function useSceneExplorerWorkspace() {
             return '已隐藏';
         return ({ personal: '我的常用', core: '人设核心', featured: '精选', signature: '招牌', curated: '精选', all: '全库' } as Record<string, string>)[fTier.value] || '场景';
     });
-    function primaryCat(s: ExplorerScene) { const c = s.category || '其他'; return c === 'Active_Sync_Scenes' ? 'Active Sync' : c.split('/')[0]; }
-    function themeDef(id: string) { return THEME_DEFS.find(d => d.id === id) || THEME_DEFS[0]; }
-    function matchesTheme(s: ExplorerScene, id: string) { return id === 'all' || themeDef(id).categories.includes(primaryCat(s)); }
-    function matchesSeries(s: ExplorerScene, v: string) {
-        const c = s.category || '';
-        if (v === 'after')
-            return /After_Story/i.test(c);
-        if (v === 'fanwork')
-            return /同人/.test(c);
-        if (v === 'active')
-            return c === 'Active_Sync_Scenes';
-        return true;
-    }
-    function matchesTime(s: ExplorerScene, v: string) {
-        if (v === 'all')
-            return true;
-        if (v === 'night')
-            return ['night', 'late_night', 'evening'].includes(s.timeOfDay || '');
-        return s.timeOfDay === v;
-    }
     function tier(s: ExplorerScene) { return uxTier(s, curation.value); }
     function isCore(s: ExplorerScene) { return isPersonaCore(s, curation.value); }
     function sigIds(): string[] { return curation.value.signatureSceneIds || []; }
@@ -307,30 +240,6 @@ export function useSceneExplorerWorkspace() {
     function themeCount(id: string) {
         return scenes.value.filter(s => (showMature.value || !s.mature) && !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length;
     }
-    function dv(s: ExplorerScene) {
-        const cm: Record<string, string> = { 半身中景: '半身', 全身远景: '远景', 全身中景: '全身', 特写: '特写', 特写镜头: '特写', 面部特写: '特写', 远景: '远景', 中景: '半身', 全身: '全身', 半身: '半身' };
-        const lm: Record<string, string> = { 窗光: '窗光', 黄金时刻: '黄昏光', 逆光: '逆光', 月光: '月光', 夜灯: '夜灯', 霓虹: '霓虹', 烛光: '烛光', 阴天: '阴天光', 夕阳光: '黄昏光', 晨光: '晨光' };
-        const ca = String(s.camera || '');
-        const shot = cm[s.camera || ''] || (/第一人称|主观/i.test(ca) ? '第一人称' : /俯视|俯瞰/.test(ca) ? '俯视' : /仰视|微仰/.test(ca) ? '仰视' : /侧面|侧方/.test(ca) ? '侧面' : /近景|特写/.test(ca) ? '特写' : /全身|远景/.test(ca) ? '远景' : '半身');
-        const li = String(s.lighting || '');
-        const lighting = lm[s.lighting || ''] || (/夕阳|黄昏|黄金|落日/.test(li) ? '黄昏光' : /逆光|背光/.test(li) ? '逆光' : /月光|星光/.test(li) ? '月光' : /窗光|晨光|朝阳/.test(li) ? '窗光' : /阴天|雨天|漫射/.test(li) ? '柔光' : /灯|烛|暖光|霓虹/.test(li) ? '夜灯' : '自然光');
-        const t = (s.tags || []).join(',').toLowerCase();
-        const em = (s.emotion || '').toLowerCase();
-        let color = '自然';
-        if (/sunset|dusk|golden|黄昏|夕阳|浪漫/.test(t) || /love|shy|恋爱|害羞/.test(em))
-            color = '暖橙';
-        else if (/night|月|夜|星空|moon/.test(t))
-            color = '冷蓝';
-        else if (/spring|cherry|花|樱花|春/.test(t))
-            color = '粉嫩';
-        else if (/autumn|red_leaves|秋/.test(t))
-            color = '琥珀';
-        else if (/rain|雨|cloudy/.test(t))
-            color = '灰蓝';
-        else if (/winter|snow|雪|冬/.test(t))
-            color = '冷白';
-        return { shot, lighting, color };
-    }
     const filtered = computed(() => {
         // 用 debounce 后的值：直接读 searchQuery 会让下面的过滤+排序在每次击键时重跑
         const q = debouncedQuery.value.trim().toLowerCase();
@@ -364,14 +273,14 @@ export function useSceneExplorerWorkspace() {
             }
             if (sortBy.value === 'favorite' && !favs.value.has(s.id) && !uxIsFav(s, profile.value))
                 return false;
-            return !q || uxMatchesSearch(s, q, curation.value, [primaryCat(s), timeLabel(s.timeOfDay)]);
+            return !q || uxMatchesSearch(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)]);
         });
         // 相关度先算一遍存 Map:原先在比较器里每次比较都调 uxSearchScore 两次,
         // 297 条 ≈ 每次重算 4900 次评分,每次还带字符串归一化
         const relevance = new Map<string, number>();
         if (q) {
             for (const s of r) {
-                relevance.set(s.id, uxSearchScore(s, q, curation.value, [primaryCat(s), timeLabel(s.timeOfDay)]));
+                relevance.set(s.id, uxSearchScore(s, q, curation.value, [primaryCategory(s), timeLabel(s.timeOfDay)]));
             }
         }
         return r.sort((a, b) => {
@@ -583,7 +492,7 @@ drawerEl,
         fTime, fSeries, fRating, matureCount, adultEnabled, resetFilters, loading,
         loadError, init, paged, flashId, usageFor, isCore,
         tier, charName, seasonLabel, timeLabel, personalReason, drawerScene,
-        dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
+        dv: sceneVisualLabels, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
         PAGE_SIZE,
     };
 }
