@@ -29,13 +29,13 @@
 - 当前支持深浅主题，新增/修改 UI 均需两种主题视觉审查、WCAG AA 对比度与扫光不压字。禁用文字用 `--text-disabled`，不得 opacity 压字。check-contrast 覆盖双主题全局令牌与角色强调色；组件动态样式、图片叠字和实际布局仍需浏览器视觉验收。
 - 保持本机/远程分级边界：`adultEnabled = isLocalStudioHost()`；远程、隧道、未知或未授权状态 fail-closed，保留拒绝与模糊遮罩。分级字段约定见 [内容与接入契约](docs/engineering-contracts.md#角色接入)。
 - `assets/character-references/` 不入 Git；运行时经 `/data/character-reference-view.json` 懒加载。pending 占位不能计为已交付资产。
-- 单体有效行数上限 600；存量豁免只降不升，门禁为 `test-monolith-budget.js`，基线为 `scripts/tests/monolith-baseline.json`。
+- 单体有效行数上限 500；存量豁免只降不升，门禁为 `test-monolith-budget.js`，基线为 `scripts/tests/monolith-baseline.json`。
 
 ## 实施与交付
 
 - 复杂状态放 composable，View 负责展示。按改动核对工程契约和上面的质量红线。
 - **实现克制与反过度设计**：不做推测性抽象；单一场景直接实现，延迟至第二个真实用例出现才提取通用能力，不预留无用配置项。
-- **重构删除优于兼容**：内部逻辑重构时直接清理过时实现，严禁新增兼容垫片（deprecated shim）与死分支；单文件逼近 600 行红线时必须先拆分解耦。
+- **重构删除优于兼容**：内部逻辑重构时直接清理过时实现，严禁新增兼容垫片（deprecated shim）与死分支；单文件逼近 500 行红线时必须先拆分解耦。
 - **边界清晰与模型隔离**：生图网关协议、本地 JSON 持久化数据、Pinia 状态与 View 视图模型严禁互相泄漏，数据在边界处完成转换校验，不跨层共享可变引用。
 - **依赖自律与避免重复发明**：引入新功能前先检索当前依赖库（package.json），不臆断缺少能力，严禁重复自研通用工具，不引入非必要三方依赖。
 - **并发、竞态与资源回收**：生成与长耗时调用必须支持取消（AbortController/连接断开）、超时与防重入；涉及 Live2D、Pixi、音频播放等长生命周期对象，必须保证严格释放，杜绝内存与显存泄漏。

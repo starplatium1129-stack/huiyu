@@ -430,7 +430,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   },
   // ── check: 单项门禁（可单独跑或组合）──────────────────────────────
   'check:monolith': {
-    desc: '600 行红线只降不升门禁（以 monolith-baseline.json 为准）',
+    desc: '500 行红线只降不升门禁（以 monolith-baseline.json 为准）',
     cmd: ['node', 'scripts/tests/test-monolith-budget.js'],
     docs: 'scripts/tests/test-monolith-budget.js:1',
     opts: '[--update-baseline] 重新生成基线（体量真降后用）',

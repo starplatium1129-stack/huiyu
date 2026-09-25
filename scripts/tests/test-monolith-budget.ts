@@ -7,14 +7,14 @@ type Baseline = Record<string, number>;
 /**
  * test-monolith-budget.js —— 单体体量「只降不升」门禁（2026-08-31 审计立项）
  *
- * 背景：AGENTS.md 与 8-28 工程审计确立的 600 行拆分红线此前仅靠 eslint
+ * 背景：AGENTS.md 与 8-28 工程审计确立的 500 行拆分红线此前仅靠 eslint
  * max-lines warn@1000 预警（warn 不阻断，8-28~8-31 三天单体仍回涨 +870 行）。
  * 本门禁采用与 ALLOWED_EXEMPT / style-debt 同构的「豁免基线」模式：
  *
- *   1. 有效行数（跳过空行与纯注释行，与 eslint max-lines 口径一致）> 600
+ *   1. 有效行数（跳过空行与纯注释行，与 eslint max-lines 口径一致）> 500
  *      且不在基线清单 → FAIL（新单体入库）
  *   2. 在基线清单内但有效行数超过基线记录值 → FAIL（存量回涨）
- *   3. 基线内文件已降至 600 以下 → 打印清理提醒（不阻断，下次 --update-baseline 收编）
+ *   3. 基线内文件已降至 500 以下 → 打印清理提醒（不阻断，下次 --update-baseline 收编）
  *   4. 基线内文件已不存在 → FAIL（防基线腐化）
  *
  * 基线：scripts/tests/monolith-baseline.json。修复拆分后运行
@@ -33,7 +33,7 @@ const { test }: typeof import('node:test') = require('node:test');
 
 const root = path.resolve(__dirname, '..', '..');
 const BASELINE_FILE = path.join(__dirname, 'monolith-baseline.json');
-const RED_LINE = 600;
+const RED_LINE = 500;
 
 // 与 eslint.config.js 的 ignores / max-lines files 对齐
 const SCAN_DIRS = ['src', 'routes', 'services', 'server'];
@@ -119,7 +119,7 @@ test('monolith-budget', () => {
     if (!(rel in baseline)) {
       violations.push(`[新单体] ${rel}: ${count} 行 > ${RED_LINE} 红线且不在基线。拆分该文件，或评审后 --update-baseline 收编（需在提交信息说明理由）`);
     } else if (count > baseline[rel]) {
-      violations.push(`[回涨] ${rel}: ${count} 行 > 基线 ${baseline[rel]}（600 行拆分红线内只降不升）`);
+      violations.push(`[回涨] ${rel}: ${count} 行 > 基线 ${baseline[rel]}（500 行拆分红线内只降不升）`);
     }
   }
 
