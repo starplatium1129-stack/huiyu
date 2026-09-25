@@ -70,6 +70,28 @@ for (const theme of ['light', 'dark']) for (const width of [1440, 900, 800, 390]
   })
 }
 
+test('more popover keeps its trigger anchor while entering', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 })
+  await page.goto('/scene-explorer')
+  const trigger = page.getByRole('button', { name: '更多', exact: true })
+  await expect(trigger).toBeVisible()
+  const triggerBox = (await trigger.boundingBox())!
+  // Extend the enter animation so an accidental positional transform is observable.
+  await page.addStyleTag({ content: '.studio-popover[data-state="open"] { animation-duration: 800ms !important; }' })
+  await trigger.click()
+  const menu = page.getByRole('dialog', { name: '更多页面', exact: true })
+  await expect(menu).toBeVisible()
+  await expect(menu).toHaveAttribute('data-side', 'bottom')
+  const frame = await menu.evaluate(element => ({
+    top: element.getBoundingClientRect().top,
+    transform: getComputedStyle(element).transform,
+  }))
+  const triggerAfter = (await trigger.boundingBox())!
+  expect(Math.abs(triggerAfter.y - triggerBox.y)).toBeLessThanOrEqual(1)
+  expect(frame.transform).toBe('none')
+  expect(Math.abs(frame.top - (triggerAfter.y + triggerAfter.height + 10))).toBeLessThanOrEqual(2)
+})
+
 test('a failed menu download keeps primary navigation available', async ({ page }) => {
   await page.goto('/scene-explorer')
   await expect(page.locator('main h1')).toBeVisible()

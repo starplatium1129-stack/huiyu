@@ -31,8 +31,8 @@
         <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined"
           :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined"
           :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined">
-          <StudioTooltip anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
-            <button v-if="!moreLoaded" type="button" class="nav-more-trigger" :disabled="moreReady"
+          <StudioTooltip v-if="!moreLoaded" anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
+            <button type="button" class="nav-more-trigger" :disabled="moreReady"
               :aria-expanded="moreOpen" :aria-busy="moreReady"
               @click="openMore">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
           </StudioTooltip>

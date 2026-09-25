@@ -20,11 +20,12 @@ const emit = defineEmits<{ closeAutoFocus: [event: Event] }>()
 
 <!-- Reka portals cross component roots; keep these uniquely prefixed rules global. -->
 <style>
-.studio-popover { z-index:var(--z-popover); width:min(340px,calc(100vw - 32px)); max-height:var(--reka-popover-content-available-height, calc(100dvh - 32px)); overflow-y:auto; overscroll-behavior:contain; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg); transform-origin:var(--reka-popover-content-transform-origin, top right); }
+.studio-popover { z-index:var(--z-popover); width:min(340px,calc(100vw - 32px)); max-height:var(--reka-popover-content-available-height, calc(100dvh - 32px)); overflow-y:auto; overscroll-behavior:contain; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg); }
+/* Reka 的外层 wrapper 负责定位 transform；这里只淡入淡出，避免菜单从触发器旁边漂移。 */
 .studio-popover[data-state='open'] { animation:studio-popover-in var(--motion-surface) var(--ease-out) both; }
 .studio-popover[data-state='closed'] { animation:studio-popover-out var(--motion-hover) var(--ease-out) both; }
-@keyframes studio-popover-in { from { opacity:0; transform:translateY(-4px) scale(.97); } to { opacity:1; transform:none; } }
-@keyframes studio-popover-out { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-2px) scale(.985); } }
+@keyframes studio-popover-in { from { opacity:0; } to { opacity:1; } }
+@keyframes studio-popover-out { from { opacity:1; } to { opacity:0; } }
 @media(prefers-reduced-motion:reduce) { .studio-popover[data-state] { animation:none; } }
 @media(forced-colors:active) { .studio-popover { background:Canvas; border-color:CanvasText; } }
 </style>
