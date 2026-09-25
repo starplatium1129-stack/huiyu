@@ -19,7 +19,7 @@ const WD14_CSV = process.env.AICS_WD14_MODEL_DIR
 if (!WD14_CSV || !fs.existsSync(WD14_CSV)) { console.error('找不到 WD14 CSV，请设置 AICS_WD14_MODEL_DIR'); process.exit(1) }
 
 function loadDicts() {
-  const files = ['src/utils/tagMeaning.ts', 'src/utils/tagMeaningZh.ts']
+  const files = ['src/utils/tagMeaning.ts', 'src/utils/tagMeaningExact.ts', 'src/utils/tagMeaningZh.ts']
   const dicts = []
   for (const file of files) {
     const src = fs.readFileSync(file, 'utf8')
