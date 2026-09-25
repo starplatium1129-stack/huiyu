@@ -1,0 +1,65 @@
+name: Isolated tag repair workspace
+
+on:
+  push:
+    branches: [codex/tag-inspiration-repair-20260918]
+    paths: [.github/workflows/tag-repair-workspace.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  workspace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 8f29335b16f7e44348eddbee0549891e14fdc405
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Prepare locked offline test workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          mkdir -p "$RUNNER_TEMP/tag-repair-workspace" "$RUNNER_TEMP/tag-repair-parts"
+          git archive --format=tar 8f29335b16f7e44348eddbee0549891e14fdc405 | gzip > "$RUNNER_TEMP/tag-repair-workspace/source.tar.gz"
+          tar -czf "$RUNNER_TEMP/tag-repair-workspace/dependencies.tar.gz" node_modules
+          gzip -c "$(command -v node)" > "$RUNNER_TEMP/tag-repair-workspace/node.gz"
+          printf '%s\n' 8f29335b16f7e44348eddbee0549891e14fdc405 > "$RUNNER_TEMP/tag-repair-workspace/source-commit.txt"
+          cd "$RUNNER_TEMP/tag-repair-workspace"
+          sha256sum source.tar.gz dependencies.tar.gz node.gz > SHA256SUMS
+          tar -cf - source.tar.gz dependencies.tar.gz node.gz source-commit.txt SHA256SUMS | split -b 200M -d -a 3 - "$RUNNER_TEMP/tag-repair-parts/workspace-"
+          ls -lh "$RUNNER_TEMP/tag-repair-parts/"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-workspace-000
+          path: ${{ runner.temp }}/tag-repair-parts/workspace-000
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-workspace-001
+          path: ${{ runner.temp }}/tag-repair-parts/workspace-001
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-workspace-002
+          path: ${{ runner.temp }}/tag-repair-parts/workspace-002
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-workspace-003
+          path: ${{ runner.temp }}/tag-repair-parts/workspace-003
+          if-no-files-found: ignore
+          retention-days: 1
+          compression-level: 0

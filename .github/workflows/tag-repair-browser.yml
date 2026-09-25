@@ -1,0 +1,53 @@
+name: Tag repair browser verification
+
+on:
+  push:
+    branches: [codex/tag-inspiration-repair-20260918]
+    paths: [.github/workflows/tag-repair-browser.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 02d5113bb8ee2faaf323d63885bccf8671b3a185
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npx playwright install --with-deps chromium
+      - name: Verify existing nightly matrix and new light-dark random controls
+        run: npm run test:e2e:nightly:run && npx playwright test tests/e2e/random-inspiration.spec.ts --project=desktop
+        env:
+          CI: '1'
+      - name: Keep visual review evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-visual-evidence
+          path: .review-shots/*.png
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+      - name: Keep failures
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: tag-repair-browser-failures
+          path: |
+            test-results
+            playwright-report
+          if-no-files-found: ignore
+          retention-days: 1
