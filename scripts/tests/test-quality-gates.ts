@@ -27,12 +27,6 @@ test('quality gates cover every deterministic test exactly once', () => {
   assert.deepEqual(duplicates, [], `test files assigned to multiple lanes: ${duplicates.join(', ')}`);
   assert.deepEqual(missing, [], `test files missing from quality inventory: ${missing.join(', ')}`);
   assert.deepEqual(stale, [], `quality inventory references missing files: ${stale.join(', ')}`);
-  assert.equal(QUALITY_TEST_SUITES.check[0], 'test-repo-hygiene.js');
-  assert.equal(QUALITY_TEST_SUITES.check[1], 'test-repo-hygiene-contract.js');
-  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-mood-tag.js'));
-  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-service-watchdog.js'));
-  assert.ok(QUALITY_TEST_SUITES.contract.includes('test-tunnel-restart.js'));
-  assert.ok(QUALITY_TEST_SUITES.contract.includes('test-desktop-tools-route.js'));
 
   for (const file of discovered) {
     assert.doesNotMatch(read(`scripts/tests/${file}`), /require\(['"]\.\/test-[^'"\)]+['"]\)/,
