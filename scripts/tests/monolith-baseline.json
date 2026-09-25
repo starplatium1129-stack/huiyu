@@ -1,9 +1,1 @@
-{
-  "src/composables/generation/useAnimaSession.ts": 544,
-  "src/config/artistStyleCatalog.ts": 543,
-  "src/utils/popularContent.ts": 540,
-  "src/composables/chat/useChatStorage.ts": 538,
-  "src/views/PopularSceneExplorerView.vue": 538,
-  "src/components/visual/SemanticParticleField.vue": 529,
-  "src/stores/sceneStore.spec.ts": 523
-}
+{}

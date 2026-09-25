@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useSceneStore, DATA_VERSION, SCENE_DATA_TIMEOUT_MS } from './sceneStore'
+import { deferred, fullRoutes, response, revisionData, scene, type Json } from './sceneStoreTestFixtures'
 
 /**
  * sceneStore 数据装载契约：
@@ -9,7 +10,6 @@ import { useSceneStore, DATA_VERSION, SCENE_DATA_TIMEOUT_MS } from './sceneStore
  *  - 按需加载只拉目标角色分片；inflight 去重；失败落 error 态
  */
 
-type Json = unknown
 const calls: string[] = []
 let routes: Record<string, Json> = {}
 /** 文件 → 剩余失败次数（模拟临时 503 后恢复） */
@@ -34,41 +34,6 @@ function stubFetch() {
     }
     return { ok: true, status: 200, json: async () => routes[file] } as Response
   }))
-}
-
-function scene(id: string, extra: Record<string, unknown> = {}) {
-  return { id, title: id, ...extra }
-}
-
-function response(value: Json): Response {
-  return { ok: true, status: 200, json: async () => structuredClone(value) } as Response
-}
-
-function deferred<T>() {
-  let resolve!: (value: T | PromiseLike<T>) => void
-  let reject!: (reason?: unknown) => void
-  const promise = new Promise<T>((done, fail) => { resolve = done; reject = fail })
-  return { promise, resolve, reject }
-}
-
-function revisionData(file: string, revision: string): Json {
-  if (file === 'scenes-shared.json') return [scene('sc001', { title: `${revision}-shared` })]
-  if (file === 'scenes-nene.json') return [scene('sc002', { title: `${revision}-nene` })]
-  if (file === 'scenes-natsume.json') return [scene('sc003', { title: `${revision}-natsume` })]
-  if (file === 'scenes-core.json') return [scene('sc004', { title: `${revision}-core` })]
-  if (file === 'curation.json') return { revision }
-  if (file === 'scenes-index.json') return { version: 1, total: 3 }
-  if (file === 'characters.json') return [{ id: 'char-1', name: revision }]
-  if (file === 'popular-characters.json') return { characters: [] }
-  if (file === 'scene-blueprints.json') return {
-    blueprints: [{
-      id: 'bp-1', title: 'Blueprint', category: 'daily', description: 'A fixture blueprint',
-      location: 'room', action: 'sit', timeOfDay: 'day', lighting: 'soft', camera: 'portrait',
-      mood: 'calm', sceneTags: [], promptProse: 'A fixture scene', promptTokens: ['fixture'],
-      negativeTokens: [], recommendedSize: '832x1216', adult: false,
-    }],
-  }
-  return []
 }
 
 beforeEach(() => {
@@ -398,16 +363,6 @@ describe('sceneStore · 失败恢复（审计 2026-09-05 P1-01）', () => {
     await store.load(true)
     expect(store.error).toBeNull()
   })
-  const fullRoutes = () => ({
-    'scenes-shared.json': [scene('sc001')],
-    'scenes-nene.json': [scene('sc002')],
-    'scenes-natsume.json': [scene('sc003')],
-    'curation.json': {}, 'loras.json': [], 'tags.json': [], 'presets.json': [],
-    'characters.json': [{ id: 'char-1', name: 'Nene' }],
-    'popular-characters.json': { characters: [] },
-    'scene-blueprints.json': { blueprints: [] },
-  })
-
   it('必需元数据首载 503：不得标记 loaded，error 可见；恢复后重试补拉且不重复请求已成功资源', async () => {
     routes = fullRoutes()
     stubFetch()
@@ -530,20 +485,11 @@ describe('sceneStore · 多目标并发（审计 2026-09-05 P1-02）', () => {
 })
 
 describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
-  const fullRoutes = () => ({
-    'scenes-shared.json': [scene('sc001')],
-    'scenes-nene.json': [scene('sc002')],
-    'scenes-natsume.json': [scene('sc003')],
-    'curation.json': { signatureSceneIds: ['sc002'] },
-    'characters.json': [{ id: 'char-1' }],
-    'loras.json': [], 'tags.json': [], 'presets.json': [],
-    'popular-characters.json': { characters: [] },
-    'scene-blueprints.json': { blueprints: [] },
-  })
+  const lightRoutes = () => fullRoutes({ signatureSceneIds: ['sc002'] })
   const fetchCount = (file: string) => calls.filter(u => u.split('?')[0].endsWith(`/${file}`)).length
 
   it('loadHome 只拉轻元数据 + 三分片，不请求蓝图等重元数据', async () => {
-    routes = fullRoutes()
+    routes = lightRoutes()
     stubFetch()
     const store = useSceneStore()
 
@@ -560,7 +506,7 @@ describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
   })
 
   it('loadCharacterShell 只拉角色目录，不等待场景分片', async () => {
-    routes = fullRoutes()
+    routes = lightRoutes()
     stubFetch()
     const store = useSceneStore()
 
@@ -574,7 +520,7 @@ describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
   })
 
   it('loadMetadata 只拉角色元数据，不触发场景分片请求', async () => {
-    routes = fullRoutes()
+    routes = lightRoutes()
     stubFetch()
     const store = useSceneStore()
 
@@ -590,7 +536,7 @@ describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
   })
 
   it('轻载后全量 load() 增量补拉重元数据，已成功资源不重复请求', async () => {
-    routes = fullRoutes()
+    routes = lightRoutes()
     stubFetch()
     const store = useSceneStore()
     await store.loadHome()

@@ -5,19 +5,13 @@ import { assertChatVersion, assertStoredChatVersion } from '@/utils/chatVersion'
 import { chatResetRevision } from '@/utils/chatReset'
 import { CHAT_ARCHIVE_CHANGED_KEY, CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY, CHAT_MEMORY_KEY } from '@/utils/storageKeys'
 import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
+import { STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES } from '@/config/characters'
 import {
-  STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
-} from '@/config/characters'
-import {
-  DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionCharacter,
   getCompanionDefaultOutfit,
   listCompanionCharacterIds,
   normalizeCompanionOutfit,
 } from '@/utils/companionRegistry'
-import {
-  CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL,
-} from '@/config/chatApi'
 import {
   normalizeChatStorage, serializeChatStorage, type PersistedChatState,
 } from '@/utils/chatStorageCore'
@@ -29,36 +23,10 @@ import {
   normalizeChatArchive,
   serializeChatArchive,
 } from '@/utils/chatArchive'
-
-export interface ChatMessage {
-  role: 'user' | 'assistant'
-  content: string
-  mid: string
-  stopped: boolean
-  recalledMemories?: string[]
-}
-
-export interface ChatState {
-  version: number
-  historiesRevision: number
-  historiesRevisions: Record<string, number>
-  active: string
-  histories: Record<string, ChatMessage[]>
-  settings: {
-    model: string
-    provider: 'local' | 'api'
-    apiBaseUrl: string
-    apiModel: string
-    apiKey: string
-    webSearchEnabled: boolean
-    live2dEnabled: boolean
-    live2dOutfit: string
-    live2dOutfits: Record<string, string>
-    autoVoice: boolean
-    volume: number
-    drafts: Record<string, string>
-  }
-}
+import { mergeHistories } from './chatStorageMerge'
+import { createChatNormalizeOptions, createChatStorageState } from './chatStorageState'
+import type { ChatMessage, ChatState } from './chatStorageTypes'
+export type { ChatMessage, ChatState } from './chatStorageTypes'
 
 /**
  * 2026-08-16 审计：多窗口并发聊天时单键 last-writer-wins 会静默丢消息。
@@ -69,27 +37,6 @@ export interface ChatState {
 let chatStorageSyncInstalled = false
 let chatStorageSyncHandler: (() => void) | null = null
 
-/** 按 mid 去重：remote 为基（较旧），local 独有的消息追加到尾部。 */
-function mergeHistories(local: ChatMessage[], remote: ChatMessage[], snapshots: Map<string, string>): ChatMessage[] {
-  const localById = new Map(local.map(message => [message.mid, message]))
-  const seen = new Set<string>()
-  const merged: ChatMessage[] = []
-  for (const message of [...remote, ...local]) {
-    if (!message || typeof message.mid !== 'string' || !message.mid) continue
-    if (seen.has(message.mid)) continue
-    seen.add(message.mid)
-    const existing = localById.get(message.mid)
-    if (existing && snapshots.get(message.mid) === JSON.stringify(existing)) {
-      // Only unchanged local messages may adopt remote updates. Mutate in place:
-      // the streaming callback can still hold the original assistant object.
-      Object.assign(existing, message)
-      snapshots.set(message.mid, JSON.stringify(existing))
-    } else if (!existing) snapshots.set(message.mid, JSON.stringify(message))
-    merged.push(existing || message)
-  }
-  return merged
-}
-
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
   let resetRevision = ''
   try { resetRevision = chatResetRevision() } catch { /* load reports inaccessible storage */ }
@@ -97,37 +44,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   let pendingLegacyKey = ''
   let credentialRevision = 0
   const characterIds = listCompanionCharacterIds()
-  const defaultCharacterId = characterIds[0] || DEFAULT_COMPANION_CHARACTER_ID
-  const defaultOutfits = Object.fromEntries(characterIds.map(id => [id, getCompanionDefaultOutfit(id)]))
-  const state = reactive<ChatState>({
-    version: STORAGE_VERSION,
-    historiesRevision: 0,
-    historiesRevisions: Object.fromEntries(characterIds.map(k => [k, 0])),
-    active: defaultCharacterId,
-    histories: Object.fromEntries(characterIds.map(k => [k, []])),
-    settings: {
-      model: '',
-      provider: 'api',
-      apiBaseUrl: CLIPROXY_BASE_URL,
-      apiModel: CLIPROXY_DEFAULT_MODEL,
-      apiKey: CLIPROXY_API_KEY,
-      webSearchEnabled: false,
-      live2dEnabled: false,
-      live2dOutfit: defaultOutfits[defaultCharacterId] || '',
-      live2dOutfits: defaultOutfits,
-      autoVoice: true,
-      volume: 80,
-      drafts: Object.fromEntries(characterIds.map(k => [k, ''])),
-    },
-  })
-
-  const normalizeOptions = {
-    characterIds,
-    maxMessages: MAX_LOCAL_MESSAGES,
-    version: STORAGE_VERSION,
-    createMessageId,
-    normalizeOutfit: normalizeCompanionOutfit,
-  }
+  const state = reactive<ChatState>(createChatStorageState(characterIds))
+  const normalizeOptions = createChatNormalizeOptions(characterIds)
 
   /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
   const neverConfigured = ref(true)
