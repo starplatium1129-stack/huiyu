@@ -7,16 +7,19 @@ vi.mock('@/utils/voiceApi', () => ({
   resampleTo16k: (samples: Float32Array) => samples,
   encodeWav16k: () => new Uint8Array([1, 2]), recognizeWithAsr: vi.fn(),
 }))
-vi.mock('@/utils/vadSegmenter', () => ({ createVadSegmenter: () => ({ push() {}, takeSegments: () => [new Float32Array([0.5])] }) }))
+vi.mock('@/utils/vadSegmenter', async importOriginal => {
+  const original = await importOriginal<typeof import('@/utils/vadSegmenter')>()
+  return { ...original, createVadSegmenter: () => ({ push() {}, takeSegments: () => [new Float32Array([0.5])] }) }
+})
 const tracks: Array<{ stop: ReturnType<typeof vi.fn> }> = []
-const processors: Array<{ onaudioprocess?: () => void; disconnect: ReturnType<typeof vi.fn> }> = []
+const processors: Array<{ onaudioprocess: ((event: AudioProcessingEvent) => void) | null; disconnect: ReturnType<typeof vi.fn> }> = []
 class AudioContextFixture {
   state = 'running'
   sampleRate = 16000
   destination = {}
   createMediaStreamSource() { return { connect() {}, disconnect() {} } }
   createScriptProcessor() {
-    const processor = { connect() {}, disconnect: vi.fn(), onaudioprocess: undefined }
+    const processor = { connect() {}, disconnect: vi.fn(), onaudioprocess: null as ((event: AudioProcessingEvent) => void) | null }
     processors.push(processor)
     return processor
   }
@@ -93,4 +96,46 @@ describe('voice session ownership', () => {
     expect(navigator.mediaDevices.getUserMedia).not.toHaveBeenCalled()
     voice.release()
   })
+})
+
+function audioEvent(amplitude: number): AudioProcessingEvent {
+  return { inputBuffer: { getChannelData: () => new Float32Array(4096).fill(amplitude) } } as unknown as AudioProcessingEvent
+}
+describe('microphone visual meter', () => {
+  it('follows real PCM energy without requesting a second stream or processor', async () => {
+    const voice = useVoiceInput({ config: () => ({} as SpeechInputConfig) })
+    await voice.start()
+    expect(voice.level.value).toBe(0)
+    const processor = processors[0]
+    processor.onaudioprocess?.(audioEvent(0.05))
+    expect(voice.level.value).toBeCloseTo(0.175)
+    processor.onaudioprocess?.(audioEvent(0.2))
+    expect(voice.level.value).toBeCloseTo(0.7)
+    processor.onaudioprocess?.(audioEvent(0.8))
+    expect(voice.level.value).toBe(1)
+    processor.onaudioprocess?.(audioEvent(0))
+    expect(voice.level.value).toBe(0)
+    expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledTimes(1)
+    expect(processors).toHaveLength(1)
+    voice.release()
+  })
+  for (const operation of ['stop', 'cancel', 'release'] as const) {
+    it(`${operation} clears the level and rejects already queued audio callbacks`, async () => {
+      vi.mocked(recognizeWithAsr).mockResolvedValue({ text: '', latencyMs: 1 })
+      const voice = useVoiceInput({ config: () => ({} as SpeechInputConfig) })
+      await voice.start()
+      const processor = processors[0]
+      const queued = processor.onaudioprocess!
+      queued(audioEvent(0.2))
+      expect(voice.level.value).toBeGreaterThan(0)
+      voice[operation]()
+      expect(voice.level.value).toBe(0)
+      expect(processor.onaudioprocess).toBeNull()
+      queued(audioEvent(0.8))
+      expect(voice.level.value).toBe(0)
+      expect(processor.disconnect).toHaveBeenCalled()
+      voice.release()
+      await settle()
+    })
+  }
 })
