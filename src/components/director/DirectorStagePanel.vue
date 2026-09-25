@@ -15,6 +15,7 @@
       }"
       aria-label="成片监看区"
     >
+      <BorderBeam v-if="generationBusy" size="lg" color-variant="dual" />
       <div class="stage-chrome">
         <span>绘制画布</span>
         <span class="stage-ready" role="status" aria-live="polite">
@@ -113,7 +114,13 @@
         before-label="换装前原图"
         after-label="换装后成片"
       />
-      <img v-else class="result-image" :src="displayResultUrl" alt="当前生成的画面成片" />
+      <CgImageReveal
+        v-else
+        class="result-image-reveal"
+        img-class="result-image"
+        :src="displayResultUrl"
+        alt="当前生成的画面成片"
+      />
       <DirectorResultTools
         v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, savingResult, resultTemporary }"
         @interrogateCurrent="interrogateCurrentImage" @interrogateUpload="triggerInterrogatePick"
@@ -133,6 +140,8 @@ import { computed, ref, defineAsyncComponent } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
+import CgImageReveal from '@/components/visual/CgImageReveal.vue'
+import BorderBeam from '@/components/visual/BorderBeam.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'

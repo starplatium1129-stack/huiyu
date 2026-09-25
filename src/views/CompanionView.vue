@@ -237,6 +237,12 @@
         </div>
 
         <div class="companion-composer">
+          <VoiceGlow
+            :active="composerFocused || speechState === 'capturing' || speechAutoListening || voiceActive"
+            :level="speechState === 'capturing' ? 0.75 : (voiceActive ? 0.6 : 0)"
+            :processing="busy || speechState === 'recognizing'"
+            color-variant="dual"
+          />
           <div
             v-if="!chatReady || preparingRoom"
             class="companion-setup-inline"
@@ -266,29 +272,13 @@
             @input="onInputChange"
           ></textarea>
           <StudioTooltip anchor :content="`让${currentCharacter.name}看你当前的屏幕画面`">
-            <button
-              class="companion-vision-btn"
-              type="button"
-              :disabled="busy || !chatReady || capturingScreen"
-              aria-label="看屏幕"
-              @click="onCaptureAndInspectScreen"
-            >
+            <button class="companion-vision-btn" type="button" :disabled="busy || !chatReady || capturingScreen" aria-label="看屏幕" @click="onCaptureAndInspectScreen">
               <ArchiveIcon name="eye" />
               <span>{{ capturingScreen ? '看屏中…' : '看屏幕' }}</span>
             </button>
           </StudioTooltip>
-          <button
-            v-if="busy || voiceActive"
-            class="companion-stop"
-            type="button"
-            @click="stopEverything"
-          >停止</button>
-           <button
-             class="companion-send"
-             type="button"
-             :disabled="busy || !chatReady"
-             @click="handleSend"
-           >{{ busy ? '回复中' : '发送' }}</button>
+          <button v-if="busy || voiceActive" class="companion-stop" type="button" @click="stopEverything">停止</button>
+          <button class="companion-send" type="button" :disabled="busy || !chatReady" @click="handleSend">{{ busy ? '回复中' : '发送' }}</button>
            <div v-if="speechReady" class="companion-speech-cluster">
             <StudioTooltip anchor :content="speechError || '按住说话，松开识别；也可按住 Space'">
               <button
@@ -429,6 +419,7 @@
 
 <script setup lang="ts">
 import FluidTransition from "@/components/visual/FluidTransition.vue"
+import VoiceGlow from "@/components/visual/VoiceGlow.vue"
 import { defineAsyncComponent, ref } from 'vue'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import '@/assets/css/companion.css'

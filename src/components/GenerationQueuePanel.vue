@@ -16,6 +16,7 @@
     <p v-if="pausedReason" class="sd-queue-reason">{{ pausedReason }}</p>
     <div class="sd-queue-list">
       <div v-if="activeJob" class="sd-queue-item sd-queue-item-active">
+        <BorderBeam size="sm" color-variant="accent" border-radius="var(--r-md)" />
         <!-- 速度线：斜向细线持续流动，一眼看出"这条在跑" -->
         <span class="fx-speed-lines" aria-hidden="true"></span>
         <span class="sd-queue-index">生成中</span>
@@ -57,6 +58,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import BorderBeam from '@/components/visual/BorderBeam.vue'
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 import '@/assets/css/director/components/GenerationQueuePanel.css'
 
