@@ -13,8 +13,5 @@
   "src/composables/chat/useChatStorage.ts": 538,
   "src/views/PopularSceneExplorerView.vue": 538,
   "src/components/visual/SemanticParticleField.vue": 529,
-  "src/stores/sceneStore.spec.ts": 523,
-  "src/views/GalleryView.vue": 516,
-  "src/views/SceneManagerView.vue": 508,
-  "src/views/ChatView.vue": 503
+  "src/stores/sceneStore.spec.ts": 523
 }

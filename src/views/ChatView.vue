@@ -8,25 +8,12 @@
       <div class="chat-actions">
         <button class="btn btn-ghost" type="button" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" />{{ immersive ? '展开对话' : '专注陪伴' }}</button>
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
-        <!-- 次要操作收进「更多」菜单：主操作只留「新对话」，破坏性操作入菜单并标危险色 -->
-        <div ref="actionsMoreRef" class="chat-actions-more" @focusout="onRoomActionFocusout">
-          <button class="btn btn-ghost chat-more-trigger" type="button"
-            :aria-expanded="moreOpen ? 'true' : 'false'" aria-haspopup="menu"
-            @keydown.down.prevent="focusRoomAction(0)" @keydown.up.prevent="focusRoomAction(-1)"
-            @click="moreOpen = !moreOpen">更多<span class="chat-more-caret" aria-hidden="true">{{ moreOpen ? '▴' : '▾' }}</span></button>
-          <FluidTransition>
-            <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作" @keydown="navigateRoomActions">
-              <button class="chat-more-item is-danger" role="menuitem" type="button"
-                @click="runRoomAction(() => clearAllMemory())">清空聊天内容与个人档案</button>
-              <button class="chat-more-item" role="menuitem" type="button"
-                @click="runRoomAction(() => { archiveOpen = !archiveOpen })">对话归档</button>
-              <button class="chat-more-item" role="menuitem" type="button"
-                @click="runRoomAction(() => { memoryOpen = !memoryOpen })">长期记忆</button>
-              <button class="chat-more-item" role="menuitem" type="button"
-                @click="runRoomAction(() => { profileOpen = !profileOpen })">我的档案</button>
-            </div>
-          </FluidTransition>
-        </div>
+        <ChatActionsMenu
+          @clear-all="clearAllMemory"
+          @toggle-archive="archiveOpen = !archiveOpen"
+          @toggle-memory="memoryOpen = !memoryOpen"
+          @toggle-profile="profileOpen = !profileOpen"
+        />
       </div>
     </header>
 
@@ -338,6 +325,7 @@ import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
 import ChatUserProfilePanel from '@/components/ChatUserProfilePanel.vue'
 import ChatMemoryPanel from '@/components/ChatMemoryPanel.vue'
+import ChatActionsMenu from '@/components/ChatActionsMenu.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useChatSpeechInteraction } from '@/composables/chat/useChatSpeechInteraction'
@@ -435,55 +423,6 @@ async function copyMessage(content: string) {
   try { await navigator.clipboard.writeText(content); setError('已复制', 'info', 1800) }
   catch { setError('复制失败，可以选中文字后复制。', 'warning') }
 }
-
-/** 右上角次要操作收进「更多」菜单：外点与 Escape 关闭，选中即收起。 */
-const moreOpen = ref(false)
-const actionsMoreRef = ref<HTMLElement | null>(null)
-function runRoomAction(action: () => void) {
-  moreOpen.value = false
-  actionsMoreRef.value?.querySelector<HTMLButtonElement>('.chat-more-trigger')?.focus()
-  action()
-}
-function onRoomActionPointerDown(event: PointerEvent) {
-  if (actionsMoreRef.value && event.target instanceof Node && !actionsMoreRef.value.contains(event.target)) {
-    moreOpen.value = false
-  }
-}
-function onRoomActionKeydown(event: KeyboardEvent) {
-  if (event.key !== 'Escape' || !moreOpen.value) return
-  event.preventDefault()
-  moreOpen.value = false
-  actionsMoreRef.value?.querySelector<HTMLButtonElement>('.chat-more-trigger')?.focus()
-}
-function onRoomActionFocusout(event: FocusEvent) {
-  if (event.relatedTarget instanceof Node && !actionsMoreRef.value?.contains(event.relatedTarget)) moreOpen.value = false
-}
-async function focusRoomAction(index: number) {
-  moreOpen.value = true
-  await nextTick()
-  const items = actionsMoreRef.value?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')
-  if (items?.length) items[(index + items.length) % items.length]?.focus()
-}
-function navigateRoomActions(event: KeyboardEvent) {
-  if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return
-  event.preventDefault()
-  const items = [...(actionsMoreRef.value?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]') || [])]
-  const index = items.indexOf(document.activeElement as HTMLButtonElement)
-  void focusRoomAction(event.key === 'Home' ? 0 : event.key === 'End' ? -1 : index + (event.key === 'ArrowDown' ? 1 : -1))
-}
-watch(moreOpen, open => {
-  if (open) {
-    document.addEventListener('pointerdown', onRoomActionPointerDown, true)
-    document.addEventListener('keydown', onRoomActionKeydown)
-  } else {
-    document.removeEventListener('pointerdown', onRoomActionPointerDown, true)
-    document.removeEventListener('keydown', onRoomActionKeydown)
-  }
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('pointerdown', onRoomActionPointerDown, true)
-  document.removeEventListener('keydown', onRoomActionKeydown)
-})
 
 const personalizedGreeting = computed(() => {
   const char = currentCharacter.value
