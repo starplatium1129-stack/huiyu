@@ -1,0 +1,30 @@
+name: Storage repair source snapshot
+on:
+  push:
+    branches: [codex/storage-safety-20260918]
+    paths: [.github/workflows/storage-review-snapshot.yml]
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: cf279ff65768a92e642191df8bba83702d4989c0
+          persist-credentials: false
+      - name: Export only tracked source and identity
+        run: |
+          mkdir -p "$RUNNER_TEMP/storage-source"
+          git archive --format=tar.gz HEAD > "$RUNNER_TEMP/storage-source/source.tar.gz"
+          git ls-tree -rz HEAD > "$RUNNER_TEMP/storage-source/tracked-files.bin"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/storage-source/identity.txt"
+          cd "$RUNNER_TEMP/storage-source"
+          sha256sum source.tar.gz tracked-files.bin identity.txt > SHA256SUMS
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: storage-source-snapshot
+          path: ${{ runner.temp }}/storage-source/
+          retention-days: 1
+          if-no-files-found: error
