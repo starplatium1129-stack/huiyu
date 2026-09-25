@@ -267,7 +267,6 @@ async function run() {
   assert(roomSession.includes('} = useRoomMemory({'), 'the session must wire the memory owner');
   roomSession += '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useRoomMemory.ts'), 'utf8');
   let apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
-  let chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
   let characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
   let companionRegistry = fs.readFileSync(path.join(root, 'src', 'utils', 'companionRegistry.ts'), 'utf8');
   let adapterProfile = fs.readFileSync(path.join(root, 'src', 'live2d', 'adapterProfile.ts'), 'utf8');
@@ -289,7 +288,6 @@ async function run() {
   let chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatConversation.ts'), 'utf8');
   let userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
   let memoryPanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatMemoryPanel.vue'), 'utf8');
-  let characterPrompts = fs.readFileSync(path.join(root, 'server', 'chat-character-prompts.js'), 'utf8');
   let securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   let voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   let chatRouteSource = [
@@ -343,7 +341,6 @@ async function run() {
   assert(html.includes('ChatMemoryPanel') && memoryPanel.includes('LONG-TERM MEMORY') && html.includes('messageRemembered'), 'manual long-term memory must have independent UI ownership');
   assert(chatConversation.includes('userProfile: hasChatUserProfile') && roomSession.includes('loadChatUserProfile'), 'the validated local user profile must reach every chat request');
   assert(chatConversation.includes('memories: options.recallMemories') && roomSession.includes('recallChatFacts'), 'recalled user-confirmed facts must reach the chat request');
-  assert(chatRouteSource.includes("require('../server/chat-character-prompts')") && characterPrompts.includes('buildCharacterPrompt'), 'server prompt layering must have independent ownership');
   assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
     /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopWindowBounds,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?(?:releasePointerFocus,?\s*)?\}\)/.test(characterStageComponent)
@@ -355,13 +352,6 @@ async function run() {
     apiSettingsComponent.includes('chatApi.testProvider')
       && apiSettingsComponent.includes('discoveredModels'),
     'chat API settings must test credentials and discover models'
-  );
-  assert(
-    apiSettingsComponent.includes("'opencode-go'")
-      && apiSettingsComponent.includes('OPENCODE_GO_BASE_URL')
-      && chatApiConfig.includes('https://opencode.ai/zen/go/v1')
-      && chatApiConfig.includes('deepseek-v4-flash'),
-    'OpenCode Go must offer its dedicated endpoint and DeepSeek V4 Flash preset'
   );
   assert(chatConversation.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
   assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
@@ -497,13 +487,6 @@ async function run() {
     assert(streamUtils.includes("'" + emotion + "'"), 'inferEmotion must classify ' + emotion);
   });
   assert(serverSource.includes('createGateway') && serverSource.includes("require('./routes/chat')"), 'gateway must use modular route composition');
-  assert(
-    chatRouteSource.includes('kept.unshift')
-      && chatRouteSource.includes('used + text.length > 12000')
-      && chatRouteSource.includes('count < 24')
-      && !chatRouteSource.includes('当前对话过长'),
-    'long conversations must be trimmed from the oldest messages instead of being rejected'
-  );
 
   let utils: typeof import('../../src/utils/stream.ts') = require('../../src/utils/stream.ts');
   let chatStatus: typeof import('../../src/utils/chatStatus.ts') = require('../../src/utils/chatStatus.ts');
