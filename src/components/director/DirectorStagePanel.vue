@@ -1,9 +1,7 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
   <div class="stage-slot">
-    <!-- Stage placeholder：plans/002 交接收尾——v-if + stage-swap 过渡，
-         占位层淡出让位（结果层入场由 result-image-wrap 的 directorViewIn
-         与图片 aicsBloomReveal 承担，不做双重驱动） -->
+    <!-- 容器保留轻量入场；图片显现只由 CgImageReveal 驱动。 -->
     <Transition name="stage-swap">
       <section
         v-if="!displayResultUrl"
@@ -107,7 +105,13 @@
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-      <div class="stage-result-heading"><span>生成结果</span><span role="status">{{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}</span></div>
+      <div class="stage-result-heading">
+        <span>生成结果</span>
+        <span class="stage-result-status" role="status">
+          <ThinkingOrb v-if="generationBusy" state="working" size="sm" aria-hidden="true" />
+          {{ generationBusy ? '下一张正在显影 · 当前成片保留' : resultArchived ? '已存入作品册' : '当前成片 · 待入册' }}
+        </span>
+      </div>
       <ImageSplitCompare
         v-if="inpaintCompareActive && inpaintOriginalUrl"
         :before-src="inpaintOriginalUrl"
@@ -120,7 +124,10 @@
         class="result-image-reveal"
         img-class="result-image"
         :src="displayResultUrl"
+        :auto-reveal="!revealedResults.has(displayResultUrl)"
         alt="当前生成的画面成片"
+        @reveal-start="rememberResultReveal"
+        @reveal-complete="rememberResultReveal"
       />
       <DirectorResultTools
         v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, savingResult, resultTemporary }"
@@ -171,6 +178,18 @@ const props = defineProps<{
   /** Anima/Krea 暂存里还有上一张未入册成片（失败/取消后可找回）。 */
   hasStashedResult?: boolean
 }>()
+
+// Keep reveal history local and bounded. Returning from compare/history must not replay it.
+const revealedResults = ref(new Set<string>())
+function rememberResultReveal() {
+  const source = props.displayResultUrl
+  if (!source || revealedResults.value.has(source)) return
+  revealedResults.value.add(source)
+  if (revealedResults.value.size > 32) {
+    const oldest = revealedResults.value.values().next().value
+    if (oldest !== undefined) revealedResults.value.delete(oldest)
+  }
+}
 
 // Result-only tools load after an image exists.
 const DirectorResultTools = defineAsyncComponent(() => import('./DirectorResultTools.vue'))
