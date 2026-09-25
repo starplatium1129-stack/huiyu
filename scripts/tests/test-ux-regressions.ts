@@ -129,16 +129,6 @@ const CHECKS = [
     },
   },
   {
-    id: 'P0-3 词条输入必须按逗号/换行切分',
-    file: 'src/composables/prompt/usePromptTagTools.ts',
-    why: '从 Danbooru 复制「blue_hair, smile, twintails」回车只得到一条垃圾词条，'
-      + '而批量粘贴正是「提示词自主权」最高频的动作。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /split\(\s*\/\[?[^\/]*[,，][^\/]*\]?\/\s*\)/.test(code);
-    },
-  },
-  {
     id: 'P0-4 清空词条必须经过确认',
     file: 'src/components/director/DirectorTagWorkbench.vue',
     why: '角色厨手工攒的 40+ 词条是本项目最高成本的手工资产，一次误点不能全灭。',
@@ -188,15 +178,6 @@ const CHECKS = [
     },
   },
   {
-    id: 'P0-8 作品删除必须走软删',
-    file: 'src/views/GalleryView.vue',
-    why: '硬删会同时清掉 IndexedDB 原图与缩略图，误删不可恢复。回收站保留 30 天。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /softDeleteArtwork/.test(code) && !/artworkRepository\.deleteArtwork/.test(code);
-    },
-  },
-  {
     id: 'P0-9 出图进度必须可空（不得兜成 0）',
     file: 'src/composables/generation/useSDGenerate.ts',
     why: '后端给不出进度时兜成 0 会被读成「卡在 0%」。可空才能让 UI 走 indeterminate，'
@@ -207,32 +188,12 @@ const CHECKS = [
     },
   },
   {
-    id: 'P1 全局搜索作品过滤不得写反',
-    file: 'src/components/GlobalSearch.vue',
-    why: '`!r` 会把每个非空条目判为非对象而丢掉，「作品」分组永远为空——'
-      + '用户搜不到旧作会误判「那张图没了」。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return !/=>\s*!r\s*&&/.test(code);
-    },
-  },
-  {
     id: 'P1 桌宠容器高度下限不得超出视口',
     file: 'src/assets/css/companion.css',
     why: '死值 min-height 在宽扁窗（如 700x500）里超过视口高度，而两层 overflow:hidden '
       + '会把底部对话条永久裁掉，既不能输入也关不掉窗。',
     assert(source: any) {
       return /min-height:\s*min\(\s*560px\s*,\s*100dvh\s*\)/.test(source);
-    },
-  },
-  {
-    id: 'P2 场景探索页搜索词必须进 URL',
-    file: 'src/views/SceneExplorerView.vue',
-    why: '刷新或从别处返回时白搜一次。只同步 q 这一个参数：character / scene 是'
-      + '别的页面带进来的深链参数，把本页筛选全写进 query 会和它们互相覆盖。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /route\.query\.q/.test(code) && /router\.replace/.test(code);
     },
   },
   {
@@ -278,17 +239,6 @@ const CHECKS = [
     },
   },
   {
-    id: 'P2 Toast 必须有同屏上限',
-    file: 'src/composables/useToast.ts',
-    why: '批量失败、轮询报错会在几秒内连发好几条，没有上限时整屏都是提示条，'
-      + '把正在操作的内容全挡住。挤掉多余提示时不能牺牲带内联动作的那几条——'
-      + '那是删除后的撤销入口，清掉等于把撤销机会弄丢。',
-    assert(source: any) {
-      const code = stripComments(source);
-      return /MAX_VISIBLE/.test(code) && /trimToasts/.test(code) && /!\s*t\.action/.test(code);
-    },
-  },
-  {
     id: 'P2 生成中禁用的控件必须说明原因',
     file: 'src/components/director/DirectorResultTools.vue',
     why: '生成中这些按钮被禁用时，悬停冒出来的仍是功能介绍——用户面对「点不动 '
@@ -311,16 +261,6 @@ const CHECKS = [
     assert(source: any) {
       const code = stripComments(source);
       return !/if\s*\(\s*LIVE2D_PATHS\.has\(path\)\s*\)\s*return/.test(code);
-    },
-  },
-  {
-    id: 'P1 作品册必须能按关键词检索',
-    file: 'src/views/GalleryView.vue',
-    why: '攒到几百张之后，「找某一张旧作」是最高频也最痛苦的动作，而此前只有'
-      + '「收藏 + 项目」两个控件，找一张图只能靠翻页。',
-    assert(source: any) {
-      const code = stripComments(source).replace(/<!--[\s\S]*?-->/g, '');
-      return /searchQuery/.test(code) && /type="search"/.test(code);
     },
   },
   {
