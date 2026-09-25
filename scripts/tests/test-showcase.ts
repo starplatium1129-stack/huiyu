@@ -273,9 +273,6 @@ test('showcase manifest extended contract: scene/artist/popular/lora entries wit
 
 test('showcase view renders entry-type grouping, gated CTA, metadata and the mobile popular select', () => {
   const assert: typeof import('assert') = require('assert');
-  const fs: typeof import('fs') = require('fs');
-  const path: typeof import('path') = require('path');
-  const root = path.resolve(__dirname, '..', '..');
   const view = readShowcaseView();
 
   // 类型分组复用现有 filter-pill 视觉语言。

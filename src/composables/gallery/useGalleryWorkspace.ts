@@ -99,11 +99,8 @@ export function useGalleryWorkspace() {
         visible,
         favoriteCount,
         countLabel,
-        PAGE_SIZE,
-        renderLimit,
         pagedVisible,
         hasMoreToRender,
-        groups,
         masonryGroups,
         resetGalleryFilters,
         restoreFiltersFromQuery,
@@ -138,11 +135,9 @@ export function useGalleryWorkspace() {
     const {
         compareMode,
         compareOpen,
-        compareIds,
         compareItems,
         compareSelected,
         compareFromRoute,
-        parentArtwork,
         parentImageUrl,
         hasComparableImage,
     } = useGalleryComparison({

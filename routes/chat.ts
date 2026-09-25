@@ -1,13 +1,11 @@
 import { errorMessage as runtimeErrorMessage } from '../scripts/lib/runtime-errors';
-import type { Normalized } from '../server/chat-types';
 'use strict';
 
 import { Response } from 'express-serve-static-core';
 import type { GatewayConfig } from '../server/config-types';
 import { localLive2dRoot, readLocalCompanions } from '../services/live2d-local';
 
-let { normalizeToolMessage, validateChatBody, validateCompatibleApi }: typeof import('./chat-validation') = require('./chat-validation');
-import type { ChatValidationValue, CompatibleApiValue } from './chat-validation';
+let { validateChatBody, validateCompatibleApi }: typeof import('./chat-validation') = require('./chat-validation');
 
 let express: typeof import('express') = require('express');
 

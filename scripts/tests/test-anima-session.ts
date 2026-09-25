@@ -27,6 +27,16 @@ registerHooks({
         }
       }
     }
+    // Split source modules also use extensionless relative imports.
+    // Keep this test-only resolver restricted to the frontend source tree.
+    const sourcePrefix = pathToFileURL(aliasSrcRoot + nodePath.sep).href;
+    if (context.parentURL?.startsWith(sourcePrefix)
+      && /^\.\.?\//.test(specifier) && !nodePath.extname(specifier)) {
+      const target = new URL(specifier, context.parentURL);
+      for (const candidate of [target.href + '.ts', target.href + '/index.ts']) {
+        try { return nextResolve(candidate, context); } catch { /* try the next source shape */ }
+      }
+    }
     return nextResolve(specifier, context);
   },
 });
