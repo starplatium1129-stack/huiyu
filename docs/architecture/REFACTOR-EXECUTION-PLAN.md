@@ -1,191 +1,121 @@
 # HUIYU 架构重构执行计划
 
-> 2026-09-26。目标优先级：长期正确性、可靠性、可恢复性、清晰边界；不以“重构麻烦”为保留次优架构的理由。
+> 修订：2026-09-26；设计审查基线 `8939d9769501788482968eb6666a584adab739c1`。
+> 本版替代 PR #10 初稿 `188d9b6e` 的执行顺序与协议说明。状态：**方案复审完成，生产代码尚未实施，实施批次尚未验收**。
+> 优先长期正确性、数据完整性、任务可靠性和明确边界；不以重构工作量大作为保留次优架构的理由。也不把设计文档称为已经经过实机证明的实现。
 
-## 最终目标
+## 1. 使用本计划
 
-1. 作品/项目不依赖 WebView origin 或 localhost 端口。
-2. 长任务不依赖 Vue 页面生命周期；切页只取消订阅，不取消任务。
-3. runtime/gateway 重启时桌面 UI 不消失、不整页刷新。
-4. 桌面业务数据只有一个权威来源。
-5. 桌面能力通过类型化接口暴露，业务组件不直接知道 Tauri command、shim 或动态端口。
-6. 重启后可 reconciliation；无法证明状态时标记 unknown/interrupted，禁止盲目重提 GPU 工作。
-7. Web 版继续可用，但其 IndexedDB adapter 不限制桌面架构。
+首次接手只需本文、复审结论和执行手册。进入对应批次再读取专题，不再次开展整个仓库/框架选型研究。
 
-## 目标架构
+| 文档 | 用途 |
+| --- | --- |
+| [计划复审](REFACTOR-AUDIT.md) | 原提纲 14 处修正、固定源码入口、已完成成果和证据边界 |
+| [Workspace 与迁移](WORKSPACE-MIGRATION-DESIGN.md) | 单写者、保存提交、全量迁移、备份、回退和旧来源保护 |
+| [任务运行时](TASK-RUNTIME-DESIGN.md) | 幂等接受、按 provider 对账、取消竞争、结果收件箱和批次恢复 |
+| [桌面接入](DESKTOP-INTEGRATION-DESIGN.md) | 启动、可信会话、类型化桥接、资源地址、打包和来源切换 |
+| [Codex 执行手册](CODEX-EXECUTION-RUNBOOK.md) | 每批受控文件、已有命令、验收/停止条件及首条执行提示 |
 
-```text
-Vue 3 UI
-├─ feature modules
-├─ Pinia：draft / selection / UI state
-├─ query/cache：可重新获取的 server state
-└─ platform capabilities
-        │
-Tauri/Rust host
-├─ bundled UI / windows / tray / updater / credentials
-├─ runtime supervision
-└─ native rendering supervision
-        │
-Node/TypeScript application runtime
-├─ generation/video/voice orchestration
-├─ durable task ledger + reconciliation
-├─ artwork/project/task repositories
-└─ engine adapters
-        │
-Workspace
-├─ SQLite：结构化记录
-└─ filesystem：原图/视频/派生媒体
-```
+实施前仍读取 AGENTS.md。计划与源码不符时修正具体假设并记录依据，不机械执行。新发现不得以静默改范围的方式绕过数据、安全和验证门槛。
 
-权威所有权：编辑临时状态归 Vue；作品/项目/任务归 runtime+workspace；媒体归 workspace filesystem；窗口/更新/系统凭据归 Tauri；Live2D 原生状态归 renderer supervisor。禁止双主。
+## 2. 最终产品不变量
 
-## 非目标
+1. 桌面作品、项目和原图属于稳定 workspace，不随 localhost 端口改变。
+2. 任务接受后由 runtime 拥有；离开页面解除订阅，不隐式取消任务。
+3. UI 从应用资源独立启动；runtime 故障时保留界面与草稿，恢复后重新连接而非整页导航。
+4. 每个持久领域只有一个可写权威，缓存不能变成第二个主库。
+5. 不因上游应答丢失、重启或客户端重试重复提交 GPU 工作。
+6. 结果已生成、结果已可靠取回、结果已入作品册是三个不同事实；保留默认不自动入册。
+7. 桌面私人数据不因搬入服务器而对共享网关链接开放。
+8. Web 模式继续运行，它的 IndexedDB 是独立浏览器数据域，不是桌面库的自动双写副本。
 
-本轮不默认做 Vue→React、Tauri→Electron、Node→全 Rust，也不为目录漂亮做无行为收益的搬家。Electron 和独立 Live2D renderer process 放到后期用数据做 PoC 决策。
+**修正原承诺：** runtime 停机时可展示已加载只读缓存、仍存活媒体和诊断，不承诺冷启动即可完整浏览未加载作品。完整离线库需要独立存储服务，是另一项明确需求，不能偷偷加第二套数据库实现。
 
-# Phase 0 — 基线与安全网（P0）
+## 3. 已定架构决策
 
-- 新增 ADR：workspace storage、task ownership、desktop UI origin、platform capability、native renderer isolation。
-- 扩展 architecture tests：application/domain 禁止依赖 Tauri global；desktop adapter 外禁止散落 invoke 字符串；runtime repository 禁止依赖 Vue/Pinia；桌面持久化禁止新增 IndexedDB；页面 unmount 禁止作为默认 cancel。
-- 记录 baseline：冷启动、网关恢复、空闲内存、切页任务行为、网关崩溃、端口冲突、100/500/2000 作品读取、Live2D 60/120/165 FPS。
+| 决策 | 默认实施选择 | 理由与边界 |
+| --- | --- | --- |
+| D01 UI/宿主 | Vue 3 + Pinia，Tauri/Rust | 当前核心问题不要求换框架；保留现有品牌、布局和原生能力 |
+| D02 业务运行时 | 独立 Node/TypeScript runtime | 集中任务与数据权威，沿用现有引擎适配，不全量改写 Rust |
+| D03 桌面作品库 | SQLite + 不可变媒体；单一 storage worker | 独立于 origin，具体驱动与 sidecar 要过 R2 门槛；先媒体后发布记录 |
+| D04 任务 | durable ledger + provider reconciliation | 先落账再副作用；未知接受不重提；结果交付独立于页面 |
+| D05 桌面传输 | 已有 HTTP 业务 API + 专属会话；Tauri 窄能力 | 复用现有客户端；共享 token 不授予私人库权限 |
+| D06 本地 UI | 桌面独立构建/hash 路由；Web 保持原路由 | 类型化 bootstrap/资源解析先完成，全部来源数据就绪后再切换 |
+| D07 状态 | Pinia 编辑/展示；runtime 持久事实；单一查询缓存 | 首先复用现有 client，不强制先引入 TanStack Query |
+| D08 迁移 | 分领域唯一 authority，维护屏障与候选激活 | 无双主；有新写入后不能靠 feature flag 返回旧快照 |
 
-**Gate：** baseline 可重复，关键现状有测试保护。
-
-# Phase 1 — Workspace v2（P0，最高优先级）
-
-先定义 ports：ArtworkRepository、ProjectRepository、SettingsRepository、TaskRepository、MediaRepository。application use case 只依赖接口；Web 可继续 IndexedDB adapter；Desktop 指向 runtime/workspace。
-
-推荐：
-```text
-workspace/
-├─ huiyu.sqlite3
-├─ media/images
-├─ media/videos
-├─ media/derived
-├─ runtime
-└─ backups
-```
-
-SQLite 至少覆盖 schema_version、artworks、projects、project_artworks、tasks、migration_state 与非敏感业务设置；credential 继续系统安全存储。
-
-SQLite 与媒体文件不是同一事务。作品写入必须保留现有 staging/compensation/commit-unknown 思想：临时媒体→校验/fsync→DB transaction→原子 promote→recovery marker/启动恢复。
-
-### IndexedDB 迁移
-
-旧 origin 读取→migration manifest→导入 workspace→校验数量/ID/hash/size/项目引用→标记完成→保留旧库兼容期→再切 authority。
-
-要求：幂等、可续跑、失败不宣称完成、迁移前备份。
-
-**关键验收：** 3000 创建作品→关闭→占用 3000→桌面换端口启动→原作品/项目/图片仍完整。
-
-**Gate：** 桌面业务资产不再依赖 IndexedDB origin；backup/restore 与 Web adapter 均通过。
-
-# Phase 2 — Durable Task Runtime（P0）
-
-统一外部任务状态：queued/submitting/running/cancelling/succeeded/failed/cancelled/interrupted/unknown。
-
-持久化 stable task id、kind、时间、sanitized input、provider/upstream id、status/progress、result refs、error、cancel/reconciliation metadata。不要强行统一 Comfy/WebUI/video 内部状态机，只统一外部契约。
-
-重构 useSDGenerate/anima/video：composable 只 submit/subscribe/display；unmount=unsubscribe；explicit cancel=cancel；Task Center 查询 runtime 真实任务。
-
-runtime 启动时读取非终态任务并按 provider reconciliation：能查则重连；结果存在则落账；确认失败则终结；无法证明则 unknown/interrupted；**绝不自动重新提交未确认任务**。
-
-必测：切页任务继续、关闭视频页仍可观察、runtime 重启后重连、未知状态不重复生成、cancel/unmount 竞争、同一结果只入册一次。
-
-**Gate：** 长任务生命周期与 Vue component 完全解耦。
-
-# Phase 3 — Desktop UI 与 Runtime 解耦（P1）
-
-Phase 1 完成后，Atelier/Companion/Chat 改为 Tauri bundled frontend resource。新增 starting/ready/degraded/restarting/unavailable 连接状态。
-
-runtime 不可用时仍可浏览本地作品、保留草稿、查看诊断；恢复后 transport reconnect + query invalidation + task reconciliation。删除“gateway restart → navigate 整页”作为正常恢复方式。
-
-Transport 用 ADR 比较 authenticated HTTP/WS、Tauri IPC+sidecar 或其他本机 IPC，以 streaming、安全、调试、Windows 可靠性、Web 共用程度为准。
-
-**Gate：** kill runtime 后窗口不刷新；恢复后查询与任务自动恢复。
-
-# Phase 4 — 前端分层（P1）
-
-逐步按 app/features/application/domain/infrastructure/shared/platform 收敛，不一次性搬目录。评估 TanStack Vue Query 或同等 query layer，负责 catalog/status/artwork list/task list 等可失效 server state；不负责 durable execution、undo/redo 或复杂 draft。
-
-Pinia 收敛为 prompt draft、selection、panel/UI preference、editing session。
-
-**Gate：** feature 可在 mock platform/runtime 下测试；核心 use case 不依赖 Vue。
-
-# Phase 5 — 类型化 Desktop Capability（P1）
-
-逐步退出 shim.rs 中的大段业务 JS。定义 Window/Workspace/Credential/Notification/Update/Live2D capabilities；bridge 在正常 TS source 构建；command/event names 集中；Rust/TS 做 contract test 或生成契约；业务组件禁止直接访问 window.__TAURI__。window.companionDesktop 先降为兼容层，再删除。
-
-CSP 的 unsafe-eval/unsafe-inline 只在实测覆盖下逐步收紧。
-
-**Gate：** desktop capability 可类型检查、mock、contract-test。
-
-# Phase 6 — Live2D renderer process PoC（P2）
-
-独立实验，不直接迁移。比较当前线程方案与 renderer process：CPU、frame time/drops、60/120/165 FPS、显存、renderer crash 后 host 存活、sleep/wake、DPI 100/125/150/200、多显示器、hide/show、model reload。只有故障隔离收益成立且性能/交互无不可接受回退才迁移。
-
-# Phase 7 — Tauri vs Electron 产品基准（P2）
-
-边界稳定后做最小 Electron shell，复用 Vue UI/runtime。比较 installer、cold/warm start、idle/multi-window memory、透明窗、快捷键、tray/updater、native overlay、渲染一致性、sleep/wake、crash isolation、Windows DPI、发布复杂度。只有数据明显支持才换宿主。
-
-## 迁移规则
-
-采用 Strangler Migration：
+这些是本轮 ADR 决策入口，具体取舍和协议写在对应专题。R0 将窄变化同步到工程契约，不再复制五份同义文档。
 
 ```text
-define port → wrap legacy → add new implementation → verify
-→ migrate → switch authority → soak → remove legacy
+Vue UI / 已有 application use cases
+  ├─ Web adapter：浏览器自己的 IndexedDB / 既有网关访问
+  └─ Desktop adapter：可信 bootstrap、runtime 连接、窄系统能力
+             │
+Tauri host ──┼─ bundled UI、窗口、凭据、更新、进程监管
+             │  （不直接拥有第二份业务数据库）
+             ▼
+Node application runtime
+  ├─ 现有 provider / 调度 / 取消语义
+  ├─ durable tasks + 结果收件箱
+  └─ workspace service → 单写 storage worker
+                         ├─ SQLite 元数据/账本
+                         └─ 不可变媒体/暂存/备份
 ```
 
-高风险能力保留 feature flag/回退路径。legacy 的删除条件是新路径完成迁移验证和 soak，而不是“新代码写完”。
+## 4. 修订后的实施批次
 
-## PR 批次
+R0–R11 是主线；R12/R13 为独立实验。本次全部仍为待执行。每批文件与命令详见执行手册，不能只完成文档就勾选代码交付。
 
-1. R0 ADR + baseline + architecture guards
-2. R1 repository ports + legacy adapters
-3. R2 workspace v2 schema + media staging
-4. R3 IndexedDB migration + verification + backup
-5. R4 desktop authority switch + port-invariance tests
-6. R5 durable task model + task repository
-7. R6 generation/anima/video task ownership migration
-8. R7 Task Center reconnect/reconciliation
-9. R8 bundled desktop UI + runtime reconnect
-10. R9 feature/query cleanup
-11. R10 typed desktop capability bridge
-12. R11 legacy storage/shim cleanup
-13. R12 Live2D renderer-process PoC
-14. R13 Tauri/Electron benchmark PoC
+| 批次 | 交付物 | 主要依赖 / 不允许提前发生的事 |
+| --- | --- | --- |
+| R0 | 当前基线、窄工程契约、精确旧边允许列表及新增依赖护栏 | 不改运行行为、不迁移真实数据 |
+| R1 | 复用现有仓储/保存 ports，收口调用点；最小安全 bootstrap | R0；不新建无人使用的抽象，不切 UI origin |
+| R2 | workspace worker/schema、媒体提交、幂等回执、受保护 API、备份候选 | R1；隔离运行，实际 sidecar 通过后才允许生产启用 |
+| R3 | 旧来源桥接、完整迁移清单、维护屏障、幂等导入/校验 | R2；保留旧 origin、profile 和源数据 |
+| R4 | 作品域 authority 激活，端口不变量与三类回退演练 | R3 + Windows/备份证据；有新写入后不可直接切回旧库 |
+| R5 | 任务账本、准入/幂等、取消意图、按 provider 恢复内核 | R2；可先在隔离库实施，无需提前操作真实用户数据 |
+| R6a–d | WAI/WebUI、Comfy/Anima/Krea、单视频、分镜批次逐条接入 | R5；每条完整链路通过后再换前端默认入口 |
+| R7 | Task Center 从 runtime 读取；可靠未入册结果收件箱 | R6；不改变自动入册设置 |
+| R8 | 完整类型化桥接、会话/epoch、资源解析、媒体权限与重连 | R1 最小 bootstrap + R2/R5 契约；仍在旧 UI 来源验收 |
+| R9a–b | 剩余设置/聊天/草稿迁移；bundled UI/路由/权限切换 | R4、R7、R8 和 R9a 校验完成，才执行 R9b |
+| R10 | 已迁移功能模块/查询职责整理 | R7–R9；不全仓搬目录，不叠加缓存 |
+| R11 | 退役无消费者桌面路径、最终发布/恢复/回退证据 | 主线各 gate 通过；Web adapter 与必要升级 importer 不误删 |
+| R12 | 独立 renderer process 故障隔离 PoC | 不阻塞主线；以实际故障隔离/性能决定是否采用 |
+| R13 | 同一 UI/runtime 的 Electron 对照 PoC | 不默认换宿主，也不作为 R0 前置任务 |
 
-R0–R11 是主重构；R12/R13 是独立决策实验。不要合成一个超大 PR。
+与初稿编号的区别：原 R8（bundled UI）移至新版 R9；原 R10（桥接）提前至新版 R8，最小 bootstrap 更早放到 R1；原 R9（前端整理）移至新版 R10。后续报告必须标注使用本修订批次，避免按旧编号颠倒依赖。
 
-## 每批 Definition of Done
+实现依赖和生产激活是两张不同的门禁：R4 等待真机时，R5–R8 的隔离实现可以继续；不能为了推进开发而跳过真实数据激活验证。默认一次只提交一个受控批次，不开展多个互相改同一状态机的并行重写。
 
-- typecheck、architecture、unit、contract 通过；
-- 受影响关键路径有 E2E；
-- 无已知数据丢失路径；
-- 持久化 schema 有 migration；
-- 跨进程协议有版本/兼容策略；
-- 更新 ADR；
-- 桌面高风险阶段跑 native acceptance/staging/package；
-- 不把关键一致性问题以 TODO 推给下一阶段。
+## 5. 迁移与回退原则
 
-## 明天第一轮
+采用“定义真实接口 → 接入现有实现 → 建新实现 → 验证 → 候选迁移 → 切换唯一权威 → 观察 → 退役”的顺序，但不允许无期限兼容层和双写。
 
-1. 拉最新 main 并重新确认基线。
-2. 跑 npm run validate + 桌面关键 acceptance，记录现有失败。
-3. 完成 R0。
-4. 画 artwork/project/task 读写调用图。
-5. 定义 repository ports，用现有 IndexedDB 包 legacy adapters。
-6. 行为完全不变后完成 R1。
-7. 再开始 workspace v2 schema/migration prototype。
+- Web adapter 是仍在使用的平台实现，不是必须删除的 legacy。
+- 数据格式迁移与旧来源读取是有明确升级跨度的 importer，不是任意 fallback。
+- 旧依赖允许列表必须精确且只减不增；护栏不能一上来把所有旧路径判错，再整目录豁免。
+- 功能入口可默认关闭；数据库选择必须由持久激活状态、版本和代际决定，不能让用户随手切换两份主库。
+- 迁移前失败保留源；激活但无新写入须证明后才能回退；已有新写入优先前向修复或完整反向转换，不能丢新作品。
+- 旧来源的设置/聊天尚未迁移时，不能把作品域迁移成功说成整个 WebView profile 已完成。
 
-## 不可破坏的不变量
+## 6. 验证层级与 Definition of Done
 
-- 不丢已有作品、原图、项目引用、设置。
-- 不因恢复逻辑重复提交 GPU 工作。
-- 不因页面卸载隐式取消已接受长任务。
-- 不用 UI cache 充当桌面持久化事实。
-- credential 不写普通 SQLite 表或日志。
-- 不为了统一破坏 Comfy/WebUI/video 必要的状态机差异。
-- 未完成数据迁移前不改变桌面 origin。
-- 每个高风险 authority switch 都必须有回滚方案。
+| 层级 | 能证明什么 | 不能代替什么 |
+| --- | --- | --- |
+| 静态审查/契约 | 依赖、协议、范围和风险可追溯 | 编译、实际性能、用户库完整性 |
+| 单元/契约/故障夹具 | 幂等、引用、状态机、崩溃窗口和拒绝策略 | 真正断电、旧 profile、真实模型 |
+| 浏览器 E2E | 页面、订阅、资源、旧/新 adapter 行为 | 原生 WebView2/窗口与安装 |
+| Windows 安装产物 | sidecar、worker、权限、来源、DPI/窗口及更新 | 没有执行过的模型/硬件组合 |
+| 真实数据迁移/恢复 | 指定来源的完整性与回退证据 | 其他未知来源或未来版本 |
+
+每批必须记录实际提交、文件、命令、退出状态和未验项；基线失败与本次回归分开。改动相关测试、类型、架构护栏通过后再合入；有持久化变更必须有 schema migration，有跨进程协议必须有版本/不兼容处理。
+
+R4/R9 的上线 gate 还要求复制 profile 演练、校验通过的备份/恢复和真实安装证据。没有环境可以交付默认关闭的实现，但必须明确未激活，不写成验收完成。
+
+测试只使用隔离 workspace、临时端口和假上游，除非相应真实操作已获授权。没有因本计划而授权清理用户库、启动真实 GPU、安装应用或处理 UAC。
+
+## 7. 首轮执行的明确边界
+
+第一轮仅完成 R0，使用[执行手册末尾提示](CODEX-EXECUTION-RUNBOOK.md)。现有 SQLite 和任务恢复原型已有路径和历史证据，不重复开发同类演示；R1 再建立实际可替换边界。
+
+本次方案审查已经完成，但没有运行项目测试、没有实施 R0 护栏、没有更改生产代码、没有迁移用户数据。Windows 原生、真实数据库和最终性能仍由各批门槛验证，不能用方案写得详细替代实测。
