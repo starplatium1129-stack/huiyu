@@ -54,7 +54,7 @@ export function useCompanionWorkspace() {
     });
     // ── 语音输入（按住说话/Space 保持/唤醒会话/auto-listen gating）已下沉
     //    useCompanionSpeechInput；visibilitychange 监听与卸载释放自持。──
-    const { speechReady, speechState, speechError, speechAutoListening, speechSessionActive, speechButtonDisabled, speechButtonText, speechStateText, speechSettingsOpen, pageVisible, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, onSpeechSessionEnd, onSpeechSettingsSaved, handleSpaceKeyDown, handleSpaceKeyUp, cancelSpeechActivity, reconcileAutoListen } = useCompanionSpeechInput({
+    const { speechReady, speechState, speechLevel, speechError, speechAutoListening, speechSessionActive, speechButtonDisabled, speechButtonText, speechStateText, speechSettingsOpen, pageVisible, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, onSpeechSessionEnd, onSpeechSettingsSaved, handleSpaceKeyDown, handleSpaceKeyUp, cancelSpeechActivity, reconcileAutoListen } = useCompanionSpeechInput({
         busy,
         chatReady,
         inputText,
@@ -519,7 +519,7 @@ characterStageRef,
         acceptClipboardCard, dismissClipboardCard, companionMessages, immersiveMessages, hasNewMessages, latestMessages, toolActivity, thinkingActivity,
         chatReady, voiceCapabilityState, preparingRoom, setupTitle, chatProvider, prepareRoom,
         inputText, composerFocused, handleSend, onInputChange, busy, capturingScreen,
-        onCaptureAndInspectScreen, voiceActive, stopEverything, speechReady, speechState, speechButtonDisabled,
+        onCaptureAndInspectScreen, voiceActive, stopEverything, speechReady, speechState, speechLevel, speechButtonDisabled,
         speechError, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText,
         speechStateText, speechAutoListening, speechSessionActive, onSpeechSessionEnd, speechSettingsOpen, voiceStatusText,
         inQuietHours, quietHoursText, onSpeechSettingsSaved, chatErrorKind, chatError, replyAnnouncement,
