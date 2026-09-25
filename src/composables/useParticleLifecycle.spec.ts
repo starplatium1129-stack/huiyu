@@ -4,8 +4,14 @@ import { useParticleLifecycle, type ParticleLifecycleHooks } from './useParticle
 
 let app: App | undefined, frames: Map<number, FrameRequestCallback>, id: number
 let observers: Set<object>, callbacks: Array<() => void>
-type TestHooks = { [K in keyof ParticleLifecycleHooks]: ReturnType<typeof vi.fn> & ParticleLifecycleHooks[K] }
-let hooks: TestHooks
+function createHooks() {
+  return {
+    start: vi.fn<() => void>(), stop: vi.fn<() => void>(), resize: vi.fn<() => void>(),
+    palette: vi.fn<() => void>(), preference: vi.fn<() => void>(),
+    visible: vi.fn<(value: boolean) => void>(), portrait: vi.fn<() => void>(), invalidate: vi.fn<() => void>(),
+  }
+}
+let hooks: ReturnType<typeof createHooks>
 let api: ReturnType<typeof useParticleLifecycle>
 const shown = ref(true)
 async function mount() {
@@ -20,7 +26,7 @@ async function mount() {
 }
 beforeEach(() => {
   shown.value = true; frames = new Map(); id = 0; observers = new Set(); callbacks = []
-  hooks = { start: vi.fn(), stop: vi.fn(), resize: vi.fn(), palette: vi.fn(), preference: vi.fn(), visible: vi.fn(), portrait: vi.fn(), invalidate: vi.fn() } as unknown as TestHooks
+  hooks = createHooks()
   vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
   vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { const next = id++; frames.set(next, callback); return next })
   vi.stubGlobal('cancelAnimationFrame', (value: number) => frames.delete(value))

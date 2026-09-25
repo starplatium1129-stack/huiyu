@@ -91,9 +91,9 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.doesNotMatch(scripts['package:tauri'], /prepare:tauri/);
 
   assert.match(quality, /npm run check/);
-  const checkStep = quality.indexOf('run: npm run check');
-  const unitStep = quality.indexOf('run: npm run test:unit');
-  const contractStep = quality.indexOf('run: npm run test:contract');
+  const checkStep = quality.indexOf('npm run check');
+  const unitStep = quality.indexOf('npm run test:unit');
+  const contractStep = quality.indexOf('npm run test:contract');
   assert.ok(checkStep >= 0 && checkStep < unitStep && unitStep < contractStep,
     'Ubuntu quality workflow must run check, unit, then contract');
   assert.match(quality, /AICS_HYGIENE_BASE_REF/);
