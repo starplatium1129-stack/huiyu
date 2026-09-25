@@ -643,7 +643,7 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
   assert.match(companionBehavior, /status\.ok === false/);
   assert.match(companionBehavior, /alive = false\s+eventPollController\?\.abort\(\)/);
 
-  const roomSession = fs.readFileSync(path.join(root, 'src/composables/chat/useCharacterRoomSession.ts'), 'utf8');
+  const roomSession = fs.readFileSync(path.join(root, 'src/composables/chat/useCharacterRoomSession.ts'), 'utf8') + '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useRoomSetup.ts'), 'utf8');
   assert.match(roomSession, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);
   assert.match(roomSession, /controlApi\.switchMode\('chat', \{ signal: controller\.signal \}\)/);
   assert.match(roomSession, /roomPollRequest\?\.abort\(\)/);

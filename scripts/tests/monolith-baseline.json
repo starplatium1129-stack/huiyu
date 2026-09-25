@@ -1,6 +1,4 @@
 {
-  "src/composables/chat/useCharacterRoomSession.ts": 600,
-  "src/composables/gallery/useGalleryWorkspace.ts": 600,
   "src/components/ArtistStylePicker.vue": 598,
   "src/utils/tagMeaning.ts": 594,
   "routes/video-ai.ts": 587,

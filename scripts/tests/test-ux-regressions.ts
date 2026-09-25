@@ -24,7 +24,7 @@ const ROOT = path.resolve(__dirname, '../..');
 
 function read(relPath: any) {
   const owners: any = {
-    'src/views/GalleryView.vue': ['src/composables/gallery/useGalleryWorkspace.ts', 'src/composables/gallery/galleryMutations.ts'],
+    'src/views/GalleryView.vue': ['src/composables/gallery/useGalleryWorkspace.ts', 'src/composables/gallery/galleryMutations.ts', 'src/composables/gallery/useGalleryFilters.ts'],
     'src/views/SceneExplorerView.vue': ['src/composables/scene/useSceneExplorerWorkspace.ts'],
   };
   return [relPath, ...(owners[relPath] || [])].map(file => fs.readFileSync(path.join(ROOT, file), 'utf8')).join('\n');

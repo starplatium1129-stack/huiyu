@@ -1,8 +1,6 @@
-import { characterName as resolveCharacterName } from './galleryHelpers';
-import { artworkIndexById,formatTrashTime,hiresLabel,modelName,loraName as resolveLoraName,sceneTitle as resolveSceneTitle,searchHaystack,trashPrompt,} from '@/composables/gallery/galleryHelpers';
-import { matchesArtwork } from '@/utils/artworkSearch';
+import { artworkFacts, artworkIndexById, characterName as resolveCharacterName, formatDate, formatTrashTime, safeImageUrl, sceneTitle as resolveSceneTitle, trashPrompt } from './galleryHelpers';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
-import { buildMasonryGroups,useMasonryColumns } from '@/composables/gallery/useMasonryWall';
+import { useMasonryColumns } from '@/composables/gallery/useMasonryWall';
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { imgGet } from '@/composables/useImageStore';
 import { kvGet,kvSet } from '@/composables/useKVStore';
@@ -14,13 +12,14 @@ import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
 import { blobThumbDataUrl,thumbKey } from '@/utils/imageThumb';
 import { computed,nextTick,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
-import type { LocationQueryRaw } from 'vue-router';
 import { useRoute,useRouter } from 'vue-router';
-import { dayGroup,formatDate,safeImageUrl } from './galleryHelpers';
 import { bulkDeleteAction,confirmDeleteAction,toggleFavoriteAction } from './galleryMutations';
 import { loadGalleryStorageAction,type GalleryProject } from './galleryStorage';
 import { useGalleryExports } from './useGalleryExports';
 import { useGalleryTrash } from './useGalleryTrash';
+import { useGalleryFilters } from './useGalleryFilters';
+import { useGalleryComparison } from './useGalleryComparison';
+import { useGallerySelection } from './useGallerySelection';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useGalleryWorkspace() {
     const sceneStore = useSceneStore();
@@ -35,25 +34,14 @@ export function useGalleryWorkspace() {
     /** 旧键，仅用于一次性迁移 */
 
 
-    const history = ref<ArtworkRecord[]>([]);
-    const projects = ref<GalleryProject[]>([]);
-    const scenes = ref<Scene[]>([]);
-    const loras = ref<LoraMeta[]>([]);
-    const favoriteOnly = ref(false);
-    const projectFilter = ref('');
-    /** 展墙搜索（2026-08-30 UX 审计 P1）：此前只有「收藏 + 项目」两个控件，
-     *  攒到几百张后找某张旧作只能靠翻。 */
-    const searchQuery = ref('');
-    const galleryLoading = ref(true);
-    const galleryError = ref('');
-    const viewerIndex = ref(-1);
-    const viewerItemId = ref<string | number | null>(null);
+    const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
+    const galleryLoading = ref(true), galleryError = ref('');
+    const viewerIndex = ref(-1), viewerItemId = ref<string | number | null>(null);
     const infoOpen = ref(false);
     const narrowViewerMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
         ? window.matchMedia('(max-width: 900px)') : null;
     const narrowViewer = ref(narrowViewerMedia?.matches ?? false);
     const infoDrawerHidden = computed(() => narrowViewer.value && !infoOpen.value);
-    const compareMode = ref(false);
     const viewerUrl = ref('');
     const cardUrls = reactive<Record<string, string>>({});
     /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
@@ -79,18 +67,6 @@ export function useGalleryWorkspace() {
     /** 待确认删除的条目 id：删除有回收站兜底，但二次确认仍是防手滑的第一道闸 */
     const pendingDeleteId = ref<string | number | null>(null);
     const deleting = ref(false);
-    /** 多选模式与已选集合（2026-08-30 UX 审计 P1：批量清理） */
-    const selectMode = ref(false);
-    const selectedIds = ref(new Set<string | number>());
-    const compareOpen = ref(false), compareIds = ref<string[]>([]);
-    const compareItems = computed(() => history.value.filter(item => compareIds.value.includes(String(item.id))));
-    function compareSelected() { compareIds.value = [...selectedIds.value].map(String).slice(0, 4); compareOpen.value = compareIds.value.length >= 2; }
-    function compareFromRoute() {
-        if (route.path !== '/gallery' || typeof route.query.compare !== 'string')
-            return;
-        compareIds.value = route.query.compare.split(',').slice(0, 4);
-        compareOpen.value = compareItems.value.length >= 2;
-    }
     const bulkDeleting = ref(false);
     // ── 回收站视图（2026-08-31）：软删条目列表 + 逐条恢复 ────────────────────
     const trashMode = ref(false);
@@ -108,151 +84,80 @@ export function useGalleryWorkspace() {
     const viewerEl = ref<HTMLElement | null>(null);
     const infoEl = ref<HTMLElement | null>(null), infoToggleBtn = ref<HTMLButtonElement | null>(null), infoCloseBtn = ref<HTMLButtonElement | null>(null);
     const shellEl = ref<HTMLElement | null>(null);
+    const { columnCount } = useMasonryColumns(shellEl);
     const objectUrls = new Set<string>();
     /** 查看器当前显示的 blob URL，翻页时要主动释放 */
     let viewerObjectUrl = '';
     let viewerLoadToken = 0;
     let unmounted = false;
     let viewActive = true;
-    /* ---------- 派生数据 ---------- */
-    const visible = computed(() => {
-        let source = favoriteOnly.value ? history.value.filter(i => i.favorite) : history.value.slice();
-        if (projectFilter.value) {
-            const p = projects.value.find(x => x.id === projectFilter.value);
-            if (p)
-                source = source.filter(i => Array.isArray(p.history_ids) && p.history_ids.includes(i.id));
-        }
-        const term = searchQuery.value.trim().toLowerCase();
-        if (term)
-            source = source.filter(i => matchesArtwork(searchHaystack(i), term));
-        // 历史是按生成顺序 append 的，展墙必须自己排：最新在前。
-        // 之前直接用了存储顺序，所以作品册永远是最旧的排在最上面。
-        return source.sort((a, b) => stamp(b) - stamp(a));
+
+    const {
+        favoriteOnly,
+        projectFilter,
+        searchQuery,
+        visible,
+        favoriteCount,
+        countLabel,
+        PAGE_SIZE,
+        renderLimit,
+        pagedVisible,
+        hasMoreToRender,
+        groups,
+        masonryGroups,
+        resetGalleryFilters,
+        restoreFiltersFromQuery,
+        cleanupFilterSync,
+        loadMoreIfNeeded: triggerLoadMore,
+    } = useGalleryFilters({
+        history,
+        projects,
+        ratioOf,
+        columnCount,
+        route,
+        router,
+        onFilterReset: () => { clearSelection(); },
+        isViewActive: () => viewActive,
     });
-    const favoriteCount = computed(() => history.value.filter(i => i.favorite).length);
-    const countLabel = computed(() => `${visible.value.length} 幅作品`);
+
+    const {
+        selectMode,
+        selectedIds,
+        toggleSelectMode,
+        toggleSelect,
+        allVisibleSelected,
+        selectAllVisible,
+        clearSelection,
+    } = useGallerySelection(visible);
+
     const current = computed(() => {
         const index = artworkIndexById(history.value, viewerItemId.value);
         return index >= 0 ? history.value[index] : null;
     });
-    /* ---------- 分页渲染：滚动触底递增，避免数百作品全量铺 DOM ----------
-       查看器导航仍走完整 visible；分页只约束「展墙渲染多少张」。 */
-    const PAGE_SIZE = 60;
-    const renderLimit = ref(PAGE_SIZE);
-    const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value));
-    const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length);
-    /* ---------- 时间分组与多列瀑布流 ---------- */
-    const groups = computed(() => {
-        const order = ['今天', '本周', '更早'];
-        const buckets: Record<string, ArtworkRecord[]> = {};
-        pagedVisible.value.forEach(item => {
-            const key = dayGroup(stamp(item));
-            (buckets[key] = buckets[key] || []).push(item);
-        });
-        return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }));
+
+    const {
+        compareMode,
+        compareOpen,
+        compareIds,
+        compareItems,
+        compareSelected,
+        compareFromRoute,
+        parentArtwork,
+        parentImageUrl,
+        hasComparableImage,
+    } = useGalleryComparison({
+        history,
+        selectedIds,
+        route,
+        current,
+        cardUrls,
+        thumbUrls,
     });
-    const { columnCount } = useMasonryColumns(shellEl);
-    const masonryGroups = computed(() => buildMasonryGroups(groups.value, ratioOf, columnCount.value));
-    const parentArtwork = computed(() => {
-        const pId = current.value?.parent_id;
-        if (!pId)
-            return null;
-        return history.value.find(h => String(h.id) === String(pId)) || null;
-    });
-    const parentImageUrl = computed(() => {
-        if (!parentArtwork.value)
-            return '';
-        const pId = parentArtwork.value.id;
-        return cardUrls[pId] || thumbUrls[pId] || '';
-    });
-    const hasComparableImage = computed(() => {
-        if (!current.value)
-            return false;
-        return Boolean(parentImageUrl.value || thumbUrls[current.value.id]);
-    });
-    function resetGalleryFilters() {
-        favoriteOnly.value = false;
-        projectFilter.value = '';
-        searchQuery.value = '';
-    }
-    /* ---------- 筛选状态进 URL（2026-08-30 UX 审计 P1）----------
-       刷新页面、把链接存成书签、或从别处带着参数跳进来时，筛选条件不该归零。 */
-    /**
-     * 只在挂载时读 URL。
-     *
-     * 不在 onActivated 读：本页被 KeepAlive 缓存，从 Remix 回来时组件状态还在，
-     * 而那次返回的 URL 大概率是干净的 /gallery——照着它恢复反而会把用户当前的
-     * 筛选清掉，比不做还糟。
-     */
-    function restoreFiltersFromQuery() {
-        const q = route.query;
-        if (typeof q.fav === 'string')
-            favoriteOnly.value = q.fav === '1';
-        if (typeof q.project === 'string')
-            projectFilter.value = q.project;
-        if (typeof q.q === 'string')
-            searchQuery.value = q.q;
-    }
-    let syncTimer: ReturnType<typeof setTimeout> | null = null;
-    /**
-     * 写回 URL。
-     *
-     * 用 replace 而不是 push：筛选是高频微调，不该把后退键变成「逐步撤销筛选」
-     * 的历史栈。搜索输入带 300ms 防抖，避免每敲一个字就改一次地址。
-     */
-    function syncFiltersToQuery() {
-        const q = route.query;
-        const fav = q.fav === '1';
-        const project = typeof q.project === 'string' ? q.project : '';
-        const term = typeof q.q === 'string' ? q.q : '';
-        // 与地址栏已经一致就什么都不做：挂载时从 URL 恢复会反过来触发这里，
-        // 不挡住会多出一次无意义的导航
-        if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim())
-            return;
-        if (syncTimer)
-            clearTimeout(syncTimer);
-        syncTimer = setTimeout(() => {
-            syncTimer = null;
-            // LocationQuery 的值允许是数组（?a=1&a=2），不能断言成 Record<string,string>
-            const query: LocationQueryRaw = { ...route.query };
-            if (favoriteOnly.value)
-                query.fav = '1';
-            else
-                delete query.fav;
-            if (projectFilter.value)
-                query.project = projectFilter.value;
-            else
-                delete query.project;
-            const next = searchQuery.value.trim();
-            if (next)
-                query.q = next;
-            else
-                delete query.q;
-            void router.replace({ query });
-        }, 300);
-    }
-    const facts = computed(() => {
-        if (!current.value)
-            return [];
-        const i = current.value;
-        return [
-            { label: '尺寸', value: i.size || '' },
-            { label: 'LoRA', value: loraName(i.lora) },
-            { label: '模型', value: modelName(i.checkpoint) },
-            { label: 'Seed', value: i.seed == null ? '' : String(i.seed) },
-            { label: 'Sampler', value: i.sampler || '' },
-            // 2026-08-29 修复：回显高清修复与采样参数（旧条目缺字段显示「—」）。
-            { label: '高清修复', value: hiresLabel(i) },
-            { label: 'CFG', value: i.cfg == null ? '' : String(i.cfg) },
-            { label: '步数', value: i.steps == null ? '' : String(i.steps) },
-        ];
-    });
+
+    const facts = computed(() => artworkFacts(current.value, loras.value));
     /* ---------- 工具函数 ---------- */
     function sceneTitle(id: string | null | undefined, item?: ArtworkRecord) {
         return resolveSceneTitle(id, item, scenes.value, sceneStore.popularCharacters);
-    }
-    function loraName(id: string | null | undefined) {
-        return resolveLoraName(id, loras.value);
     }
     function characterName(v: string | undefined, item?: ArtworkRecord) { return resolveCharacterName(v, item, sceneStore.popularCharacters); }
     /** 时间戳兜底：老记录可能把 timestamp 存成字符串，或干脆没有 */
@@ -552,45 +457,6 @@ export function useGalleryWorkspace() {
             missingImageIds.value = new Set(missingImageIds.value);
         forgetRatio(id);
     }
-    /**
-     * 删除（2026-08-30 UX 审计 P0-8：原为硬删不可恢复）。
-     *
-     * 现在默认走软删：列表与项目引用立即消失（界面反馈与从前一致），但原图
-     * 与缩略图保留 30 天，toast 上给 5 秒「撤销」窗口；超期由挂载时的懒清理
-     * 真删。攒几百张时误删不再是不可逆损失。
-     */
-    /* ---------- 多选批量（2026-08-30 UX 审计 P1）---------- */
-    function toggleSelectMode() {
-        selectMode.value = !selectMode.value;
-        if (!selectMode.value)
-            selectedIds.value = new Set();
-    }
-    function toggleSelect(id: string | number) {
-        const next = new Set(selectedIds.value);
-        if (next.has(id))
-            next.delete(id);
-        else
-            next.add(id);
-        selectedIds.value = next;
-    }
-    const allVisibleSelected = computed(() => visible.value.length > 0 && visible.value.every(item => selectedIds.value.has(item.id)));
-    function selectAllVisible() {
-        if (allVisibleSelected.value) {
-            selectedIds.value = new Set();
-            return;
-        }
-        selectedIds.value = new Set(visible.value.map(item => item.id));
-    }
-    /**
-     * 批量移入回收站。
-     *
-     * 逐条走软删（与单张同一实现），因此同样享受 30 天保留与「已移入回收站」的
-     * 一致性；失败不中断，最后如实汇报成功/失败条数——批量操作最怕的是「以为全
-     * 成了，其实只成了一半」。
-     */
-    /** 批量撤销：整组恢复，失败条数如实汇报。 */
-    /** 撤销软删：整条恢复（历史条目 + 项目引用），刷新列表即可见。 */
-    /** 下载当前作品的原图文件（优先 IndexedDB 原图 blob，注入 Civitai 级元数据） */
     /* ---------- 键盘 ---------- */
     function onKeydown(e: KeyboardEvent) {
         if (viewerIndex.value < 0 || e.defaultPrevented || e.isComposing || e.ctrlKey || e.metaKey || e.altKey || (e.target instanceof HTMLElement && e.target.closest('input, textarea, select, [contenteditable="true"]')))
@@ -648,11 +514,7 @@ export function useGalleryWorkspace() {
         unmounted = true;
         clearTimeout(releaseViewerTimer);
         viewerLoadToken += 1;
-        // 防抖定时器里握着 router，不请掉会在组件卸载后改一次导航
-        if (syncTimer) {
-            clearTimeout(syncTimer);
-            syncTimer = null;
-        }
+        cleanupFilterSync();
         cardObserver?.disconnect();
         cardObserver = null;
         observedCards.clear();
@@ -685,15 +547,7 @@ export function useGalleryWorkspace() {
     const sentinelEl = ref<HTMLElement | null>(null);
     let moreObserver: IntersectionObserver | null = null;
     function loadMoreIfNeeded() {
-        if (!viewActive || !hasMoreToRender.value) return;
-        renderLimit.value = Math.min(renderLimit.value + PAGE_SIZE, visible.value.length);
-        // 极端情况：新页仍不足以把哨兵推出视口（如全部同比例小图）。
-        // nextTick 后再探测一次，直到哨兵离开视口或加载完毕，保证分页总能继续。
-        void nextTick(() => {
-            if (!viewActive || !hasMoreToRender.value || !sentinelEl.value) return;
-            if (sentinelEl.value.getBoundingClientRect().top < window.innerHeight + 800)
-                loadMoreIfNeeded();
-        });
+        triggerLoadMore(sentinelEl.value);
     }
     onMounted(() => {
         moreObserver = new IntersectionObserver(entries => {
@@ -713,12 +567,6 @@ export function useGalleryWorkspace() {
     watch(() => [route.query.compare, route.query.batch], () => {
         if (route.path === '/gallery')
             void loadGalleryStorage().then(compareFromRoute);
-    });
-    // 筛选变化回到第一页，让用户始终从最新作品看起
-    watch([favoriteOnly, projectFilter, searchQuery], () => {
-        renderLimit.value = PAGE_SIZE;
-        selectedIds.value = new Set();
-        syncFiltersToQuery();
     });
     const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
     const { copiedPrompt, copyPrompt } = actions;

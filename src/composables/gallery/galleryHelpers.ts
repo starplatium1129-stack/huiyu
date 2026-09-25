@@ -113,3 +113,18 @@ export function safeImageUrl(v: string | undefined) {
             return '';
         }
     }
+
+export function artworkFacts(item: ArtworkRecord | null | undefined, loras: LoraMeta[]): { label: string; value: string }[] {
+  if (!item) return [];
+  return [
+    { label: '尺寸', value: item.size || '' },
+    { label: 'LoRA', value: loraName(item.lora, loras) },
+    { label: '模型', value: modelName(item.checkpoint) },
+    { label: 'Seed', value: item.seed == null ? '' : String(item.seed) },
+    { label: 'Sampler', value: item.sampler || '' },
+    { label: '高清修复', value: hiresLabel(item) },
+    { label: 'CFG', value: item.cfg == null ? '' : String(item.cfg) },
+    { label: '步数', value: item.steps == null ? '' : String(item.steps) },
+  ];
+}
+

@@ -5,30 +5,20 @@ import {
   getCompanionCharacterConfig,
 } from '@/utils/companionRegistry'
 import { useChatConversation } from '@/composables/chat/useChatConversation'
-import { useChatStorage, type ChatMessage } from '@/composables/chat/useChatStorage'
+import { useChatStorage } from '@/composables/chat/useChatStorage'
 import { useChatProvider } from '@/composables/chat/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
-import { usePolling } from '@/composables/usePolling'
-import { controlApi } from '@/api/controlApi'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
-import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
-import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, CHAT_TURN_KEY, CHAT_RESET_KEY } from '@/utils/storageKeys'
 import { clearStoredChatContent } from '@/utils/chatReset'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import {
-  editChatFact,
-  changeStoredChatMemory,
-  isChatFactRemembered,
-  loadChatMemoryState,
-  recallChatFacts,
-  rememberChatFact,
-  removeChatFact,
-  type ChatMemoryCharacter,
-  type ChatMemoryState,
-} from '@/utils/chatMemory'
-import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
+import { loadCharacterSettingCards } from '@/utils/characterSettingMemory'
+import { loadChatUserProfile } from '@/utils/chatUserProfile'
+import { recallChatFacts } from '@/utils/chatMemory'
 import { confirmAction } from '@/composables/useConfirm'
 import { withChatTurn } from '@/utils/chatTurnOwnership'
+import { CHAT_TURN_KEY } from '@/utils/storageKeys'
+import { useRoomMemory } from '@/composables/chat/useRoomMemory'
+import { useRoomSetup } from '@/composables/chat/useRoomSetup'
 
 interface CharacterStageHandle {
   openSettings?: () => void
@@ -62,16 +52,11 @@ export function useCharacterRoomSession() {
   const isSpeaking = ref(false)
   const autoVoice = ref(true)
   const volume = ref(80)
-  const preparingRoom = ref(false)
-  const roomSetupText = ref('一键切到聊天优先：释放受管绘图显存，并启动角色语音服务。')
   const archiveOpen = ref(false)
-  const userProfile = ref(loadChatUserProfile())
-  const chatMemory = ref(loadChatMemoryState())
 
   let statusTimer = 0
   let errorTimer = 0
   let disposed = false
-  let roomActionRequest: AbortController | null = null
 
   function setError(message: string, kind = 'error', timeout = 7000) {
     clearTimeout(errorTimer)
@@ -171,23 +156,6 @@ export function useCharacterRoomSession() {
     get: () => storage.state.settings.webSearchEnabled,
     set: value => storage.setWebSearchEnabled(value),
   })
-  const setupTitle = computed(() => {
-    if (preparingRoom.value) return '正在准备角色房间'
-    if (chatProvider.value === 'api' && !apiConfigured.value) return '还没有配置自定义 API'
-    if (chatProvider.value === 'local' && !ollamaOnline.value) return '本地聊天模型还没有就绪'
-    return '角色语音还没有就绪'
-  })
-  const setupDescription = computed(() => {
-    if (preparingRoom.value) return roomSetupText.value
-    if (chatProvider.value === 'api' && !apiConfigured.value) {
-      return '填写兼容 OpenAI 格式的地址、模型名和密钥后即可对话。'
-    }
-    if (chatProvider.value === 'api') return 'API 对话已经可用；准备本地语音后可以继续使用逐句配音。'
-    return roomSetupText.value
-  })
-  const hasReplayable = computed(() =>
-    currentMessages.value.some(message => message.role === 'assistant' && message.mid && voice.hasAudio(message.mid)),
-  )
 
   function updateVoiceCapability() {
     const voiceId = currentCharacter.value.voice
@@ -209,6 +177,32 @@ export function useCharacterRoomSession() {
       showVoiceRecovery.value = true
     }
   }
+
+  const {
+    preparingRoom,
+    roomSetupText,
+    setupTitle,
+    setupDescription,
+    refreshVoiceStatus,
+    refreshRoomState,
+    prepareRoom,
+    destroy: destroyRoomSetup,
+  } = useRoomSetup({
+    chatProvider,
+    apiConfigured,
+    ollamaOnline,
+    autoVoice,
+    currentCharacter,
+    voice,
+    refreshChatStatus,
+    updateVoiceCapability,
+    setError,
+    isDisposed: () => disposed,
+  })
+
+  const hasReplayable = computed(() =>
+    currentMessages.value.some(message => message.role === 'assistant' && message.mid && voice.hasAudio(message.mid)),
+  )
 
   function nearBottom() {
     const element = chatListRef.value
@@ -237,62 +231,25 @@ export function useCharacterRoomSession() {
     settingsRepository.set(CHAT_THINKING_SETTING, level)
   }
 
-  function onChatAuxStorage(event: StorageEvent) {
-    if (event.key === CHAT_RESET_KEY) {
-      stopEverything()
-      voice.stop({ preserveMessageAudio: false, silent: true })
-      clearDraftInput()
-      storage.canWrite()
-      // The reset marker precedes deletion; loading here can republish pre-reset drafts.
-      chatMemory.value = loadChatMemoryState()
-      userProfile.value = loadChatUserProfile()
-    }
-    if (event.key === CHAT_TURN_KEY) voice.stop({ preserveMessageAudio: true, silent: true })
-    if (event.key === null || event.key === CHAT_MEMORY_KEY) chatMemory.value = loadChatMemoryState()
-    if (event.key === CHAT_USER_PROFILE_KEY) userProfile.value = loadChatUserProfile()
-  }
-
-  function updateUserProfile(profile: ChatUserProfile) {
-    if (!storage.canWrite()) { userProfile.value = loadChatUserProfile(); return }
-    try {
-      userProfile.value = saveChatUserProfile(profile)
-      setError('用户档案已保存', 'info', 3000)
-    } catch {
-      setError('用户档案保存失败，请检查浏览器存储空间。', 'warning')
-    }
-  }
-
-  function memoryCharacter(value = activeChar.value): ChatMemoryCharacter {
-    return getCompanionCharacterConfig(value) ? value : DEFAULT_COMPANION_CHARACTER_ID
-  }
-
-  const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()])
-
-  function changeMemory(change: (state: ChatMemoryState) => boolean, message: string) {
-    try {
-      const next = changeStoredChatMemory(change)
-      if (!next) return
-      chatMemory.value = next
-      setError(message, 'info', 2500)
-    } catch { setError('长期记忆保存失败，原有记忆已保留，请检查浏览器存储空间后重试。', 'warning') }
-  }
-
-  function rememberMessage(message: ChatMessage) {
-    if (message.role !== 'user') return
-    changeMemory(state => Boolean(rememberChatFact(state, memoryCharacter(), message.content, message.mid)), '已加入长期记忆')
-  }
-
-  function updateMemory(id: string, text: string) {
-    changeMemory(state => editChatFact(state, memoryCharacter(), id, text), '长期记忆已更新')
-  }
-
-  function deleteMemory(id: string) {
-    changeMemory(state => removeChatFact(state, memoryCharacter(), id), '已删除长期记忆')
-  }
-
-  function messageRemembered(mid: string) {
-    return isChatFactRemembered(chatMemory.value, memoryCharacter(), mid)
-  }
+  const {
+    userProfile,
+    currentMemories,
+    updateUserProfile,
+    rememberMessage,
+    updateMemory,
+    deleteMemory,
+    messageRemembered,
+    recallMemories,
+    onChatAuxStorage,
+    resetMemoryState,
+  } = useRoomMemory({
+    storage,
+    activeChar,
+    setError,
+    stopEverything,
+    voice,
+    clearDraftInput: () => clearDraftInput(),
+  })
 
   const {
     inputText,
@@ -322,15 +279,7 @@ export function useCharacterRoomSession() {
     companionTools,
     reasoning,
     userProfile,
-    recallMemories: (character, query) => {
-      if (!getCompanionCharacterConfig(character)) return []
-      if (!characterSettingCards().length) void loadCharacterSettingCards().catch(() => {})
-      // 角色设定记忆（2026-08-28 最小闭环）：从 data/characters.json 既有档案派生
-      // 的角色设定卡，优先于会话事实注入——LLM 先对齐人设，再结合长期记忆。
-      const setting = recallCharacterSetting(characterSettingCards(), memoryCharacter(character), query)
-      const facts = recallChatFacts(chatMemory.value, memoryCharacter(character), query)
-      return [...setting, ...facts]
-    },
+    recallMemories,
     setBusy,
     onError: setError,
     onStreamEmotion: (emotion) => {
@@ -358,95 +307,6 @@ export function useCharacterRoomSession() {
       try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
       await sendMessage(text, imageUrl)
     }, () => { accepted?.(false); setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
-  }
-
-  async function refreshVoiceStatus() {
-    await voice.refreshAvailability()
-    if (disposed) return
-    updateVoiceCapability()
-    const voiceId = currentCharacter.value.voice
-    if (voice.readyFor(voiceId)) voice.prepare(voiceId, true)
-  }
-
-  async function refreshRoomState() {
-    if (autoVoice.value) voice.ensureAudioContext()
-    await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
-  }
-
-  /** 房间准备操作轮询（审计 2026-09-05 P2-05：迁移到 usePolling 底座）。
-   *  旧实现 setInterval + 每次先 abort 上一个请求：响应慢于 1.8s 时完成态永远读不到。
-   *  底座的 in-flight 去重保证最多一个查询、完成一次再排下一次；代际守卫保证
-   *  重入/卸载后旧 tick 的回写被丢弃。返回 false = 轮询结束（底座自动 stop）。 */
-  let roomPollOperationId = ''
-  let roomPollRequest: AbortController | null = null
-  const roomPoll = usePolling({
-    intervalMs: 1800,
-    tick: async () => {
-      const controller = new AbortController()
-      roomPollRequest = controller
-      try {
-        const data = await controlApi.getStatus({ signal: controller.signal })
-        if (roomPollRequest !== controller) return false
-        const operation = data.operation
-        if (!operation || operation.id !== roomPollOperationId) return false
-        roomSetupText.value = operation.message || '正在准备本地服务…'
-        if (operation.status === 'running') return // void = 继续，完成本次后由底座排下一次
-        preparingRoom.value = false
-        if (operation.status === 'failed') {
-          setError(operation.error || '聊天环境准备失败，请到控制面板查看。')
-          roomSetupText.value = '准备失败；可以到控制面板查看服务状态。'
-          return false
-        }
-        await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
-        roomSetupText.value = '聊天环境已就绪。'
-        return false
-      } catch {
-        if (controller.signal.aborted) return false
-        roomSetupText.value = '仍在后台准备；状态暂时无法读取。'
-        return // 瞬时网络抖动：完成本次查询后再安排下一次
-      } finally {
-        if (roomPollRequest === controller) roomPollRequest = null
-      }
-    },
-  })
-
-  function stopRoomPolling() {
-    roomPoll.stop()
-    roomPollRequest?.abort()
-    roomPollRequest = null
-  }
-
-  async function prepareRoom() {
-    if (preparingRoom.value) return
-    preparingRoom.value = true
-    setError('')
-    roomSetupText.value = '正在提交聊天优先切换…'
-    roomActionRequest?.abort()
-    const controller = new AbortController()
-    roomActionRequest = controller
-    try {
-      const data = await controlApi.switchMode('chat', { signal: controller.signal })
-      if (roomActionRequest !== controller || controller.signal.aborted) return
-      const operationId = String(data.operation?.id || '')
-      roomSetupText.value = data.message || '正在准备聊天环境…'
-      if (!operationId) {
-        preparingRoom.value = false
-        await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
-        return
-      }
-      roomPollRequest?.abort()
-      roomPollRequest = null
-      roomPoll.stop()
-      roomPollOperationId = operationId
-      roomPoll.start()
-    } catch (error) {
-      if (controller.signal.aborted) return
-      preparingRoom.value = false
-      roomSetupText.value = '准备失败；可以到控制面板手动处理。'
-      setError(error instanceof Error && error.message ? error.message : '聊天环境准备失败')
-    } finally {
-      if (roomActionRequest === controller) roomActionRequest = null
-    }
   }
 
   function stopEverything() {
@@ -504,8 +364,7 @@ export function useCharacterRoomSession() {
       clearDraftInput()
       storage.canWrite()
       await storage.load()
-      chatMemory.value = loadChatMemoryState()
-      userProfile.value = loadChatUserProfile()
+      resetMemoryState()
       if (result.failed.length) setError(`部分聊天内容未清除（${result.failed.length} 项），请重试清空；已删除内容不会恢复。`, 'warning', 0)
       else setError('本机聊天内容与个人档案已清空；连接和偏好已保留。', 'info', 5000)
     } catch {
@@ -566,10 +425,7 @@ export function useCharacterRoomSession() {
     disposed = true
     window.removeEventListener('storage', onChatAuxStorage)
     clearInterval(statusTimer)
-    stopRoomPolling()
-    roomActionRequest?.abort()
-    roomPollRequest = null
-    roomActionRequest = null
+    destroyRoomSetup()
     clearTimeout(errorTimer)
     destroyConversation()
     voice.destroy()
