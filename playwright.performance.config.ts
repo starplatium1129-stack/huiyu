@@ -8,6 +8,7 @@ export default defineConfig({
   projects: [
     { name: 'performance', testMatch: /office-performance\.bench\.ts$/ },
     { name: 'fluidity', testMatch: /ui-fluidity\.bench\.ts$/, use: { trace: 'off' } },
+    { name: 'fluidity-office', testMatch: /ui-fluidity-office\.bench\.ts$/, use: { trace: 'off' } },
   ],
   webServer: Array.isArray(regression.webServer) ? regression.webServer[0] : regression.webServer,
   outputDir: 'runtime/office-code-2026-09-11/performance-traces',

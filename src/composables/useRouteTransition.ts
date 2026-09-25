@@ -36,6 +36,7 @@ function getRouteDirection(from: string, to: string): number {
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
 export function useRouteTransition(destinationPath?: () => string, options: { initialFade?: boolean } = {}) {
   const active = new Map<HTMLElement, () => void>()
+  const departed = new WeakSet<HTMLElement>()
   let leaving: HTMLElement | undefined
   let departingPath = ''
   const pathname = (path: string) => path.split(/[?#]/, 1)[0]
@@ -52,10 +53,11 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (path) markUiFluidityForPath(path, 'shell-ready')
     const cachedActivation = el.dataset.routeEntered === 'true'
     el.dataset.routeEntered = 'true'
+    const restored = departed.delete(el)
     const crossRoute = !!departingPath && departingPath !== pathname(path)
     // A same-page/query refresh does not replay motion. Returning to a cached page
     // gets only a short opacity settle: no remount, translation or scroll reset.
-    if ((cachedActivation && !crossRoute) || prefersReducedMotion() || typeof el.animate !== 'function') {
+    if (restored || (cachedActivation && !crossRoute) || prefersReducedMotion() || typeof el.animate !== 'function') {
       if (path) markUiFluidityForPath(path, 'settled')
       done()
       return
@@ -120,6 +122,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   }
   function onLeave(element: Element, done: () => void) {
     const el = element as HTMLElement
+    if (!destinationPath) departed.add(el)
     // Fast navigation must not accumulate several full-page compositing layers.
     if (leaving && leaving !== el) settle(leaving)
     departingPath = pathname(el.dataset.routePath || '')

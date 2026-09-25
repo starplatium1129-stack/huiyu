@@ -49,6 +49,7 @@ export function createLifecycleController(
   },
 ) {
   const setState = hooks.setState
+  let removeMotionListener: (() => void) | undefined
   /**
    * 原生渲染线程停止（GPU 设备丢失 / swapchain 不可恢复）后的自动重试。
    * 桌宠是长期挂机场景，渲染挂掉时不应只留一个"点我重试"的按钮等人来点；
@@ -409,9 +410,15 @@ export function createLifecycleController(
     if (ctx.visibilityHandler) return
     ctx.visibilityHandler = syncPause
     document.addEventListener('visibilitychange', ctx.visibilityHandler)
-    ctx.motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    ctx.motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null
     ctx.motionPreferenceHandler = syncPause
-    ctx.motionQuery.addEventListener?.('change', ctx.motionPreferenceHandler)
+    const media = ctx.motionQuery
+    if (typeof media?.addEventListener === 'function') {
+      media.addEventListener('change', syncPause); removeMotionListener = () => media.removeEventListener('change', syncPause)
+    } else if (typeof media?.addListener === 'function') {
+      media.addListener(syncPause); removeMotionListener = () => media.removeListener(syncPause)
+    }
+    window.addEventListener('atelier:motion-preference', syncPause)
   }
 
   function playEntrance() {
@@ -439,7 +446,7 @@ export function createLifecycleController(
           ctx.entranceUntil = performance.now() + ENTRANCE_MAX_MS
           // 登场结束后（entranceUntil 过期）叠层参数由 parameterFrame.apply 的
           // 所有权交接自动启动 smoothstep 回落：Start* 变体也会驱动叠层
-          // 显隐（2026-08-16 实测 Start_1 等把 Param38 等从 0 拉高），
+          // 显隐（2026-08-16 实测 Start_1 等把 Param38 等拉高），
           // idle 不带回，残留会成半透明重影。
           return
         }
@@ -609,7 +616,8 @@ export function createLifecycleController(
     ctx.resizeObserver?.disconnect()
     if (ctx.onResize) window.removeEventListener('resize', ctx.onResize)
     if (ctx.visibilityHandler) { document.removeEventListener('visibilitychange', ctx.visibilityHandler); ctx.visibilityHandler = null }
-    if (ctx.motionPreferenceHandler) ctx.motionQuery?.removeEventListener?.('change', ctx.motionPreferenceHandler)
+    removeMotionListener?.(); removeMotionListener = undefined
+    window.removeEventListener('atelier:motion-preference', syncPause)
     ctx.motionQuery = null; ctx.motionPreferenceHandler = null
     if (ctx.stageEl && ctx.pointerClickHandler) ctx.stageEl.removeEventListener('click', ctx.pointerClickHandler)
     if (ctx.stageEl && ctx.pointerGazeHandler) ctx.stageEl.removeEventListener('mousemove', ctx.pointerGazeHandler)
