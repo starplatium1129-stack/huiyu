@@ -341,15 +341,18 @@ $items = @(Get-CimInstance Win32_Process | Where-Object {
 }
 
 function processTree(rootPid: any) {
+  // ParentProcessId outlives its parent. Compare creation times so PID reuse
+  // cannot adopt an unrelated long-lived service into the measured/owned tree.
   const script = `
-$all = @(Get-CimInstance Win32_Process | ForEach-Object { [pscustomobject]@{ pid = $_.ProcessId; parentPid = $_.ParentProcessId; name = $_.Name; executablePath = $_.ExecutablePath } })
+$all = @(Get-CimInstance Win32_Process | ForEach-Object { [pscustomobject]@{ pid = [int]$_.ProcessId; parentPid = [int]$_.ParentProcessId; name = $_.Name; executablePath = $_.ExecutablePath; createdAt = if ($_.CreationDate) { ([DateTimeOffset]$_.CreationDate).ToUnixTimeMilliseconds() } else { [long]0 } } })
+$byId = @{}; foreach ($item in $all) { $byId[$item.pid] = $item }
 $ids = New-Object System.Collections.Generic.HashSet[int]
 [void]$ids.Add(${Number(rootPid)})
 $changed = $true
 while ($changed) {
   $changed = $false
   foreach ($item in $all) {
-    if ($ids.Contains([int]$item.parentPid) -and -not $ids.Contains([int]$item.pid)) { [void]$ids.Add([int]$item.pid); $changed = $true }
+    if ($ids.Contains([int]$item.parentPid) -and $byId.ContainsKey($item.parentPid) -and $item.createdAt -ge $byId[$item.parentPid].createdAt -and -not $ids.Contains([int]$item.pid)) { [void]$ids.Add([int]$item.pid); $changed = $true }
   }
 }
 $items = @($all | Where-Object { $ids.Contains([int]$_.pid) })
@@ -388,15 +391,16 @@ $ErrorActionPreference = 'Stop'
 $rootPid = ${Number(rootPid)}
 $collectorPid = $PID
 $all = @(Get-CimInstance Win32_Process | ForEach-Object {
-  [pscustomobject]@{ pid = [int]$_.ProcessId; parentPid = [int]$_.ParentProcessId; name = $_.Name }
+  [pscustomobject]@{ pid = [int]$_.ProcessId; parentPid = [int]$_.ParentProcessId; name = $_.Name; createdAt = if ($_.CreationDate) { ([DateTimeOffset]$_.CreationDate).ToUnixTimeMilliseconds() } else { [long]0 } }
 })
+$byId = @{}; foreach ($item in $all) { $byId[$item.pid] = $item }
 $ids = New-Object System.Collections.Generic.HashSet[int]
 [void]$ids.Add($rootPid)
 $changed = $true
 while ($changed) {
   $changed = $false
   foreach ($item in $all) {
-    if ($ids.Contains($item.parentPid) -and -not $ids.Contains($item.pid)) {
+    if ($ids.Contains($item.parentPid) -and $byId.ContainsKey($item.parentPid) -and $item.createdAt -ge $byId[$item.parentPid].createdAt -and -not $ids.Contains($item.pid)) {
       [void]$ids.Add($item.pid)
       $changed = $true
     }

@@ -99,10 +99,10 @@ test('isDirectLocalRequest：本机直连识别与转发头拒绝', () => {
 });
 
 test('本机权限：拒绝外站浏览器来源，保留桌面、Vite 与原生命令行', () => {
-  for (const origin of ['https://external.example', 'null', 'https://localhost.external.example', 'https://tauri.example', 'file://', 'http://localhost/path']) {
+  for (const origin of ['https://external.example', 'null', 'https://localhost.external.example', 'https://tauri.example', 'file://', 'http://localhost/path', 'http://huiyu.localhost', 'https://huiyu.localhost:444', 'https://huiyu.localhost.evil.test']) {
     assert.equal(security.isDirectLocalRequest(mockReq({ headers: { origin } })), false, origin);
   }
-  for (const origin of ['http://127.0.0.1:3000', 'http://localhost:5173', 'http://[::1]:5173', 'https://tauri.localhost', 'tauri://localhost']) {
+  for (const origin of ['http://127.0.0.1:3000', 'http://localhost:5173', 'http://[::1]:5173', 'https://tauri.localhost', 'tauri://localhost', 'https://huiyu.localhost']) {
     assert.equal(security.isDirectLocalRequest(mockReq({ headers: { origin } })), true, origin);
   }
   assert.equal(security.isDirectLocalRequest(mockReq({ method: 'POST', headers: { 'sec-fetch-site': 'cross-site' } })), false);

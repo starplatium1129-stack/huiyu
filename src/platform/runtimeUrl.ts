@@ -1,5 +1,6 @@
 import { shallowRef } from 'vue'
 import type { FetchImplementation } from '../api/client.ts'
+import { isNativeDesktopOrigin } from '../../services/desktopOrigins.ts'
 const runtimeOrigin = shallowRef<string | null>(null)
 let desktopMode = false
 let transport: FetchImplementation | null = null
@@ -28,7 +29,7 @@ export function resolveRuntimeUrl(value: string | null | undefined): string {
   const base = runtimeOrigin.value
   const url = new URL(value, base)
   if (typeof location !== 'undefined' && url.origin === location.origin
-    && ['http://tauri.localhost', 'https://tauri.localhost'].includes(location.origin)) {
+    && isNativeDesktopOrigin(location.origin)) {
     if (url.pathname.startsWith('/_app/')) return url.href
     return new URL(url.pathname + url.search + url.hash, base).href
   }

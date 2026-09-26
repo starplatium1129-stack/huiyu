@@ -1,16 +1,6 @@
 import type { DesktopBootstrap, DesktopWorkspaceSession } from '../../../types/desktop-bootstrap.ts'
-
-// Use the host's existing withGlobalTauri API. It is private to this adapter;
-// application callers receive only named capabilities, never a generic invoke.
-interface TauriHost {
-  core: { invoke(command: string, args?: Record<string, unknown>): Promise<unknown> }
-}
-
-function invoke(command: 'desktop_bootstrap' | 'desktop_workspace_prepare' | 'desktop_workspace_activate' | 'desktop_workspace_enable_bundled' | 'window_zoom_get' | 'window_zoom_set', args?: Record<string, unknown>) {
-  const host = (window as Window & { __TAURI__?: TauriHost }).__TAURI__
-  if (!host?.core?.invoke) return Promise.reject(new Error('桌面连接不可用'))
-  return host.core.invoke(command, args)
-}
+import { isNativeDesktopOrigin } from '../../../services/desktopOrigins.ts'
+import { invokeHost as invoke } from './hostApi.ts'
 
 export function decodeDesktopBootstrap(value: unknown): DesktopBootstrap {
   if (!value || typeof value !== 'object') throw new Error('桌面启动响应无效')
@@ -33,7 +23,7 @@ export function decodeDesktopBootstrap(value: unknown): DesktopBootstrap {
   if (runtime.protocolVersion !== 1 || (runtime.ownership !== 'managed' && runtime.ownership !== 'attached')) {
     throw new Error('桌面运行时协议不兼容')
   }
-  const nativeOrigin = ['http://tauri.localhost', 'https://tauri.localhost', 'tauri://localhost'].includes(window.location.origin)
+  const nativeOrigin = isNativeDesktopOrigin(window.location.origin)
   if (typeof runtime.origin !== 'string' || (!nativeOrigin && runtime.origin !== window.location.origin)) {
     throw new Error('桌面运行时来源不匹配')
   }

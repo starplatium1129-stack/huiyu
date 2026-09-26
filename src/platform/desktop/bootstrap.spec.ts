@@ -16,7 +16,7 @@ describe('desktop bootstrap wire contract', () => {
     const invoke = vi.fn().mockResolvedValue(ready)
     vi.stubGlobal('window', { location: { origin }, __TAURI__: { core: { invoke } } })
     expect(await readDesktopBootstrap()).toEqual(ready)
-    expect(invoke).toHaveBeenCalledWith('desktop_bootstrap', undefined)
+    expect(invoke).toHaveBeenCalledWith('desktop_bootstrap')
   })
 
   it('rejects incompatible versions, unregistered roles and a different runtime origin', () => {
@@ -38,5 +38,16 @@ describe('desktop bootstrap wire contract', () => {
     expect(decodeDesktopBootstrap({ ...ready, sourceOrigin: 'http://tauri.localhost' }).runtime?.origin).toBe(origin)
     expect(() => decodeDesktopBootstrap({ ...ready, sourceOrigin: 'http://tauri.localhost',
       runtime: { ...ready.runtime, origin: 'https://untrusted.example' } })).toThrow('来源无效')
+  })
+
+  it('uses Electron named capabilities without a Tauri global', async () => {
+    const sourceOrigin = 'https://huiyu.localhost'
+    const bootstrap = vi.fn().mockResolvedValue({ ...ready, sourceOrigin, bundledUiAvailable: true })
+    vi.stubGlobal('window', { location: { origin: sourceOrigin }, __HUIYU_ELECTRON__: {
+      commands: { desktop_bootstrap: bootstrap }, event: {}, startDragging: vi.fn(),
+    } })
+    expect((await readDesktopBootstrap()).runtime?.origin).toBe(origin)
+    expect(bootstrap).toHaveBeenCalledWith(undefined)
+    expect('__TAURI__' in window).toBe(false)
   })
 })

@@ -1,10 +1,32 @@
-interface TauriApi {
+interface DesktopHostApi {
+  readonly nativeDragRegions?: true
   core: { invoke<T>(command: string, args?: Record<string, unknown>): Promise<T> }
   event: { listen<T>(name: string, listener: (event: { payload: T }) => void): Promise<() => void> }
   window: { getCurrentWindow(): { startDragging(): Promise<void> } }
 }
-export function hostApi(): TauriApi | undefined {
-  return typeof window === 'undefined' ? undefined : (window as Window & { __TAURI__?: TauriApi }).__TAURI__
+interface ElectronHostApi {
+  commands: Record<string, ((args?: Record<string, unknown>) => Promise<unknown>) | undefined>
+  event: DesktopHostApi['event']
+  startDragging(): Promise<void>
+}
+export function hostApi(): DesktopHostApi | undefined {
+  if (typeof window === 'undefined') return undefined
+  const hosts = window as Window & { __TAURI__?: DesktopHostApi; __HUIYU_ELECTRON__?: ElectronHostApi }
+  if (hosts.__TAURI__) return hosts.__TAURI__
+  const electron = hosts.__HUIYU_ELECTRON__
+  if (!electron) return undefined
+  // Electron exposes only individually registered preload commands. This
+  // normalization stays inside the platform adapter; there is no Tauri shim.
+  return {
+    nativeDragRegions: true,
+    core: { async invoke<T>(command: string, args?: Record<string, unknown>): Promise<T> {
+      const method = electron.commands[command]
+      if (!method) throw new Error('桌面能力未实现：' + command)
+      return await method(args) as T
+    } },
+    event: electron.event,
+    window: { getCurrentWindow: () => ({ startDragging: () => electron.startDragging() }) },
+  }
 }
 // Kept private to desktop adapters; application consumers import named capabilities.
 export function invokeHost<T>(command: string, args?: Record<string, unknown>): Promise<T> {

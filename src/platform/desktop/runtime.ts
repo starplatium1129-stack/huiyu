@@ -2,6 +2,7 @@ import { configureApiTransport, type FetchImplementation } from '../../api/clien
 import { setRuntimeOrigin, setRuntimeFetch, resolveRuntimeUrl } from '../runtimeUrl.ts'
 import { readDesktopBootstrap } from './bootstrap.ts'
 import type { DesktopBootstrap } from '../../../types/desktop-bootstrap.ts'
+import { hostApi } from './hostApi.ts'
 
 export type DesktopConnectionState = { connection: 'starting' | 'ready' | 'unavailable'; bootstrap: DesktopBootstrap | null }
 let state: DesktopConnectionState = { connection: 'starting', bootstrap: null }
@@ -77,7 +78,7 @@ export async function initializeDesktopRuntime(): Promise<() => void> {
   await refreshDesktopRuntime()
   const timer = setInterval(() => { void refreshDesktopRuntime() }, 10_000)
   let unlisten: (() => void) | undefined
-  const events = (window as unknown as { __TAURI__?: { event?: { listen(name: string, listener: () => void): Promise<() => void> } } }).__TAURI__?.event
+  const events = hostApi()?.event
   let disposed = false
   void events?.listen('aics:gateway-ready', () => { void refreshDesktopRuntime() }).then(remove => { if (disposed) remove(); else unlisten = remove })
   stop = () => { disposed = true; started = false; clearInterval(timer); unlisten?.(); epochController.abort(); listeners.clear() }

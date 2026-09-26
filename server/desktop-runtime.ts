@@ -5,6 +5,7 @@ import { createTaskRuntime } from './tasks/runtime';
 import { createTaskRouter } from '../routes/tasks';
 import type { GatewayConfig } from './config-types';
 import security = require('./security');
+import { NATIVE_DESKTOP_ORIGINS } from '../services/desktopOrigins';
 
 export type DesktopWorkspaceHost = Awaited<ReturnType<typeof createDesktopWorkspaceHost>>;
 const taskClosers = new WeakMap<DesktopWorkspaceHost, () => Promise<void>>();
@@ -18,7 +19,7 @@ export async function openDesktopRuntimeHost(config: GatewayConfig, env: NodeJS.
 }
 
 export function desktopResourceCors(host: DesktopWorkspaceHost): express.RequestHandler {
-  const nativeOrigins = new Set(['http://tauri.localhost', 'https://tauri.localhost', 'tauri://localhost']);
+  const nativeOrigins = new Set(NATIVE_DESKTOP_ORIGINS);
   return (req, res, next) => {
     let origin = typeof req.headers.origin === 'string' ? req.headers.origin : '';
     if (!origin && ['GET', 'HEAD'].includes(req.method) && req.headers.referer) {

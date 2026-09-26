@@ -1,6 +1,7 @@
 import type { CompanionDesktopBridge } from '../../types/desktop.d.ts'
 import { apiClient } from '../../api/client.ts'
 import { hostApi, invokeHost as invoke, onHostEvent as on, offHostEvent as off } from './hostApi.ts'
+import { getDesktopWindowRole } from './runtime.ts'
 
 const capabilities: CompanionDesktopBridge = {
   isDesktop: true,
@@ -40,8 +41,12 @@ const capabilities: CompanionDesktopBridge = {
   closeWindow: () => { void invoke('window_close') }, getWindowState: () => invoke('get_window_state'),
   onMaximizedChanged: listener => on('aics:maximized', listener), offMaximizedChanged: off,
 }
-export function getDesktopCapabilities(): CompanionDesktopBridge | undefined { return hostApi() ? capabilities : undefined }
+const cssDragCapabilities: CompanionDesktopBridge = { ...capabilities, startDragging: undefined }
+export function getDesktopCapabilities(): CompanionDesktopBridge | undefined {
+  const host = hostApi()
+  return host ? host.nativeDragRegions ? cssDragCapabilities : capabilities : undefined
+}
 export function onDesktopNavigate(listener: (path: string) => void): () => void {
-  const id = on<string>('aics:navigate', path => { if (/^\/(?:[a-zA-Z0-9-]+)?$/.test(path)) listener(path) })
+  const id = on<string>('aics:navigate', path => { if (getDesktopWindowRole() === 'atelier' && /^\/(?:[a-zA-Z0-9-]+)?$/.test(path)) listener(path) })
   return () => off(id)
 }

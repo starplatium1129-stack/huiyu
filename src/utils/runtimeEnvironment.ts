@@ -7,11 +7,14 @@
  * 现统一到这里。
  */
 
+import { ELECTRON_UI_ORIGIN } from '../../services/desktopOrigins.ts'
+
 const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]', 'tauri.localhost'] as const
 
 export function isLocalStudioHost(hostname?: string): boolean {
   if (hostname === undefined) {
     if (typeof window === 'undefined') return false
+    if (window.location.origin === ELECTRON_UI_ORIGIN) return true
     if (!['http:', 'https:', 'tauri:'].includes(window.location.protocol)) return false
     hostname = window.location.hostname
   }

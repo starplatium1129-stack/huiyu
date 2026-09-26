@@ -36,4 +36,13 @@ describe('local studio origin', () => {
     vi.stubGlobal('window', undefined)
     expect(isLocalStudioHost()).toBe(false)
   })
+
+  it('accepts the exact Electron HTTPS origin, not a claimed bridge or another scheme', () => {
+    for (const origin of ['https://huiyu.localhost', 'http://huiyu.localhost', 'https://huiyu.localhost:444', 'https://huiyu.localhost.evil.test']) {
+      const url = new URL(origin)
+      vi.stubGlobal('window', { location: url, __HUIYU_ELECTRON__: {} })
+      expect(isLocalStudioHost()).toBe(origin === 'https://huiyu.localhost')
+    }
+    expect(isLocalStudioHost('huiyu.localhost')).toBe(false)
+  })
 })

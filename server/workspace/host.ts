@@ -6,6 +6,7 @@ import { createDesktopHostVerifier } from './host-auth';
 import { readWorkspacePointer, writeWorkspacePointer, workspaceRoot, type WorkspacePointer } from './activation';
 import { WorkspaceError, type WorkspaceContext } from './types';
 import { createWorkspaceMediaRouter } from './host-media';
+import { NATIVE_DESKTOP_ORIGINS } from '../../services/desktopOrigins';
 
 export interface DesktopWorkspaceHostOptions {
   configRoot: string;
@@ -21,7 +22,7 @@ export interface DesktopWorkspaceHostOptions {
 export async function createDesktopWorkspaceHost(options: DesktopWorkspaceHostOptions) {
   const router = express.Router();
   const verify = createDesktopHostVerifier(options.secret);
-  const allowedOrigins = [options.gatewayOrigin, 'http://tauri.localhost', 'https://tauri.localhost', 'tauri://localhost'];
+  const allowedOrigins = [options.gatewayOrigin, ...NATIVE_DESKTOP_ORIGINS];
   let pointer = readWorkspacePointer(options.configRoot);
   let candidate = pointer ? null : readWorkspacePointer(options.configRoot, true);
   let gateway: WorkspaceGateway | null = null;

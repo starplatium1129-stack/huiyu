@@ -2,6 +2,7 @@
 
 import type { IncomingHttpHeaders } from 'node:http';
 import type { Request, RequestHandler, NextFunction } from 'express';
+import { ELECTRON_UI_ORIGIN } from '../services/desktopOrigins';
 
 interface SecurityRequest {
   socket?: { remoteAddress?: string | null };
@@ -37,6 +38,7 @@ function hasLocalBrowserOrigin(req: SecurityRequest) {
       if (typeof req.headers.origin !== 'string') return false;
       let origin = new URL(req.headers.origin);
       if (origin.username || origin.password || (origin.pathname && origin.pathname !== '/') || origin.search || origin.hash) return false;
+      if (req.headers.origin === ELECTRON_UI_ORIGIN) return true;
       if (origin.protocol === 'tauri:') return origin.hostname === 'localhost';
       return (origin.protocol === 'http:' || origin.protocol === 'https:') &&
         (LOOPBACK_HOSTNAMES.indexOf(origin.hostname) !== -1 || origin.hostname === 'tauri.localhost');

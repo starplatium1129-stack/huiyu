@@ -1,4 +1,5 @@
 import { readonly, ref } from 'vue'
+import { hostApi } from '@/platform/desktop/hostApi'
 
 interface ZoomBridge { getWindowZoom(): Promise<number>; setWindowZoom(value: number): Promise<number> }
 const available = ref(false), zoom = ref(1), error = ref('')
@@ -30,7 +31,7 @@ export function useDesktopZoom() { return { available: readonly(available), zoom
 export function installDesktopZoom() {
   // Presence selects the adapter only; the host authenticates origin and role.
   // Normal browsers do not load the desktop module or change browser shortcuts.
-  if (!('__TAURI__' in window)) return () => {}
+  if (!hostApi()) return () => {}
   const generation = ++installation
   disposed = false
   void import('@/platform/desktop/bootstrap').then(async desktop => {

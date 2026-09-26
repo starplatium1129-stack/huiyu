@@ -195,6 +195,7 @@ const QUALITY_TEST_METADATA: Readonly<Record<string, TestMetadata>> = Object.fre
   'test-api-client.js': { domain: 'generation-api', environment: 'node', parallelSafety: 'isolated', resources: ['mock-fetch', 'timers'] },
   'test-module-boundaries.mjs': { domain: 'architecture', environment: 'node', parallelSafety: 'isolated', resources: ['read-only-source'] },
   'test-live2d-renderer-process.mjs': { domain: 'native-renderer', environment: 'windows-gpu', parallelSafety: 'serial', resources: ['isolated-config-profile', 'owned-renderer-processes', 'visible-test-window', 'local-gpu', 'read-only-installed-models'], timeoutMs: 300_000 },
+  'test-electron-shell.mjs': { domain: 'desktop-shell-comparison', environment: 'windows-gpu', parallelSafety: 'serial', resources: ['isolated-config-profile-ai', 'owned-runtime-and-renderer-processes', 'visible-test-windows', 'loopback-cdp', 'local-gpu', 'read-only-build-and-models'], timeoutMs: 300_000 },
 });
 function qualityTestMetadata(file: string): TestMetadata {
   const contract = CONTRACT_ISOLATION[file];
@@ -202,5 +203,5 @@ function qualityTestMetadata(file: string): TestMetadata {
   return QUALITY_TEST_METADATA[file] ?? { domain: 'unclassified', environment: 'node', parallelSafety: 'unreviewed', resources: ['unreviewed'] };
 }
 // Browser and real packaged-Windows probes have separate explicit execution prerequisites.
-const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs', 'test-workspace-sidecar.js', 'test-workspace-migration-browser.mjs', 'test-desktop-library-browser.mjs', 'test-task-center-browser.mjs', 'test-live2d-renderer-process.mjs']);
+const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs', 'test-workspace-sidecar.js', 'test-workspace-migration-browser.mjs', 'test-desktop-library-browser.mjs', 'test-task-center-browser.mjs', 'test-live2d-renderer-process.mjs', 'test-electron-shell.mjs']);
 export = { QUALITY_TEST_SUITES, QUALITY_TEST_METADATA, QUALITY_EXTERNAL_TESTS, qualityTestMetadata };
