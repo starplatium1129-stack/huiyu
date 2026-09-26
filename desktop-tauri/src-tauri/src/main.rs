@@ -6,6 +6,11 @@ mod ui_entry;
 mod credentials;
 mod gateway;
 mod live2d_overlay;
+mod live2d_renderer;
+mod live2d_process_protocol;
+mod live2d_renderer_child;
+mod live2d_process;
+mod live2d_process_probe;
 mod logger;
 mod main_shared;
 mod paths;
@@ -116,6 +121,19 @@ fn register_shortcuts(app: &AppHandle) {
 
 
 fn main() {
+    // R12 compares the same renderer in a child process. Dispatch before Tauri
+    // plugins so a renderer never owns user storage, the gateway or a tray.
+    let child_mode = std::env::args().any(|arg| arg == "--live2d-renderer-child");
+    let probe_mode = std::env::args().any(|arg| arg == "--live2d-renderer-probe-host");
+    if child_mode || probe_mode {
+        if !live2d_process::enabled() {
+            eprintln!("Live2D process experiment requires an isolated profile and config");
+            std::process::exit(2);
+        }
+        let result = if child_mode { live2d_renderer_child::run() } else { live2d_process_probe::run() };
+        if let Err(error) = result { eprintln!("Live2D process: {error}"); std::process::exit(1); }
+        return;
+    }
     // 进程最早期 DPI awareness：必须在任何窗口创建之前设置，否则 Win32 会
     // 按系统 DPI 缩放窗口坐标。overlay 线程内的设置只覆盖自身创建时机，而
     // Companion WebView 窗口在此前已由 wry 创建；进程级 per-monitor v2 让
@@ -435,10 +453,13 @@ fn main() {
                 let state = app_handle.state::<AppState>();
                 if !state.quitting.load(Ordering::Relaxed) {
                     api.prevent_exit();
-                } else if let Some(supervisor) = app_handle.try_state::<gateway::GatewaySupervisor>() {
+                } else {
+                    live2d_process::shutdown();
+                    if let Some(supervisor) = app_handle.try_state::<gateway::GatewaySupervisor>() {
                     // 显式退出：先停掉自有的 sidecar 网关，避免 node 孤儿进程
                     // 继续占用端口（Drop 不触发，实测见 gateway.rs stop_sync 注释）
                     supervisor.stop_sync();
+                    }
                 }
             }
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {

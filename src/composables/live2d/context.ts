@@ -34,7 +34,7 @@ export { prefersReducedMotion } from '@/utils/motionPreference'
 /** Native transparent windows may be visible without an active WebView. */
 export function isStageHidden(ctx: Live2DCtx): boolean {
   if (ctx.desktopVisible === false) return true
-  if (ctx.session?.kind === 'native' && ctx.desktopVisible === true) return false
+  if ((ctx.session?.kind ?? ctx.backendKind.value) === 'native' && ctx.desktopVisible === true) return false
   return document.hidden
 }
 

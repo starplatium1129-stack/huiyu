@@ -11,8 +11,16 @@ function read(relativePath: string) {
   return fs.readFileSync(path.join(root, relativePath), 'utf8')
 }
 
+// The adapter and shared kernel now live in separate modules. Keep the existing
+// ownership assertions over their actual implementation, not the old monolith.
+function readOverlay() {
+  const base = 'desktop-tauri/src-tauri/src/'
+  return ['live2d_overlay.rs', ...['mod', 'model', 'draw', 'motion', 'frame', 'commands', 'window', 'blink', 'device', 'tests'].map(name => 'live2d_renderer/' + name + '.rs')]
+    .map(file => read(base + file)).join('\n')
+}
+
 test('native fit and hit testing share a load-time anchor instead of animated drawable bounds', () => {
-  const source = read('desktop-tauri/src-tauri/src/live2d_overlay.rs')
+  const source = readOverlay()
   assert.match(source, /self\.fit_bounds = Some\(m\.content_bounds\(\)\)/)
   const frame = source.slice(source.indexOf('fn render_frame('), source.indexOf('fn hit_test('))
   const hit = source.slice(source.indexOf('fn hit_test('), source.indexOf('fn hit_area_ids('))
@@ -39,7 +47,7 @@ test('Native Companion owns the overlay and Atelier stays browser-only', () => {
 })
 
 test('Native IPC payload and render ownership contracts stay aligned', () => {
-  const overlay = read('desktop-tauri/src-tauri/src/live2d_overlay.rs')
+  const overlay = readOverlay()
   const adapter = read('desktop-tauri/src-tauri/src/live2d_adapter.rs')
   const renderer = read('desktop-tauri/native-live2d/src/renderer.rs')
   const model = read('desktop-tauri/native-live2d/src/model.rs')
@@ -56,12 +64,12 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   assert.match(adapter, /pub fn apply_emotion\(&self, model: &mut Model/)
   assert.doesNotMatch(overlay, /fn mouth_param_for\(|fn emotion_params\(/,
     'native parameter mappings must come from the validated adapter profile')
-  assert.match(overlay, /ctx\.advance_motion\(dt, app\.as_ref\(\)\)/)
+  assert.match(overlay, /ctx\.advance_motion\(dt, app\)/)
   // 渲染线程退出必须广播 stopped（带 reason），前端才知 overlay 不可用并可重试。
   assert.match(overlay, /"aics:live2d:stopped"/)
-  assert.match(overlay, /fn emit_stopped\(app: Option<&AppHandle>, reason: &str\)/)
+  assert.match(overlay, /fn emit_stopped\(app: Option<&RendererEvents>, reason: &str\)/)
   assert.match(overlay, /stopped_reason = Some\(format!\("render frame failed: \{e\}"\)\)/)
-  assert.match(overlay, /emit_stopped\(app\.as_ref\(\), &reason\)/)
+  assert.match(overlay, /emit_stopped\(app, stopped_reason\.as_deref\(\)\.unwrap_or\("renderer shutdown"\)\)/)
   // overlay 位于透明 Companion WebView 下方，禁止用 SetWindowRgn 给控件挖洞：
   // Win32 region 同时裁剪 DComp 画面，会在角色身上留下矩形缺口。
   assert.doesNotMatch(overlay, /SetWindowRgn/)
@@ -85,7 +93,7 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   assert.match(overlay, /SetMaxFps\(u32\)/)
   assert.match(overlay, /target_fps\.load/)
   assert.match(overlay, /model_bounds/)
-  const stateCommand = overlay.match(/pub fn aics_live2d_get_state[\s\S]*?\n}\n\n#\[tauri::command\]/)?.[0] || ''
+  const stateCommand = overlay.match(/pub async fn aics_live2d_get_state[\s\S]*?\n}\n\n#\[tauri::command\]/)?.[0] || ''
   assert.match(stateCommand, /try_state::<Arc<Live2DOverlayState>>/)
   assert.doesNotMatch(stateCommand, /ensure_overlay/)
   for (const field of ['active', 'rect', 'visible', 'frameCount', 'targetFps', 'character', 'ready', 'windowReady', 'rendererAttached', 'modelBounds', 'mouthLevel', 'mouthMappedValue']) {
@@ -150,7 +158,7 @@ test('Native IPC command inventory stays consistent across build manifest, invok
 })
 
 test('Native destroy keeps the overlay thread alive for reuse (long-lived contract)', () => {
-  const overlay = read('desktop-tauri/src-tauri/src/live2d_overlay.rs')
+  const overlay = readOverlay()
 
   // destroy 契约：释放模型与资源，但保留渲染线程/窗口，前端可重新 setCharacter。
   assert.match(overlay, /fn clear_model_state\(state: &Live2DOverlayState\)/)

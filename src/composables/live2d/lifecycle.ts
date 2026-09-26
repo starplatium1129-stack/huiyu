@@ -2,11 +2,10 @@ import { selectLive2DBackend } from '@/live2d/createBackend'
 import { compileAdapterProfile } from '@/live2d/adapterProfile'
 import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
 import type { Live2DBackendKind,Live2DModelHandle,Live2DStageSession } from '@/live2d/types'
-import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { normalizeLive2DQuality } from '@/live2d/quality'
 import { isStageHidden, prefersReducedMotion, type Live2DCtx, type Live2DStatus } from '@/composables/live2d/context'
 import { LEAVE_PLAY_MS } from '@/composables/live2d/constants'
-import { readLive2DCatalog, type Live2DModelInfo } from '@/composables/live2d/catalog'
+import { type Live2DModelInfo } from '@/composables/live2d/catalog'
 import {
   normalizeCompanionOutfit,
   resolveCompanionAvatar,
@@ -14,6 +13,7 @@ import {
 import { connectSession, recoverBrowserAfterNativeFailure } from './lifecycleConnect'
 import { createEntranceController } from './lifecycleEntrance'
 import { errorMessage, isCatchable } from './lifecycleUtils'
+import { createLifecycleCatalog } from './lifecycleCatalog'
 
 /**
  * 生命周期域（拆分 Step 7 自 useLive2D.ts 原样搬出）：
@@ -52,6 +52,14 @@ export function createLifecycleController(
   let finishPendingLoad: ((value: boolean) => void) | null = null
   let pendingConnection: AbortController | null = null
   let requestedBackendKind: Live2DBackendKind = 'browser'
+  const catalog = createLifecycleCatalog(ctx, recover, detail => fallback('Live2D 未就绪', detail))
+  function useBackend(kind: Live2DBackendKind, fallback?: string) {
+    const selection = selectLive2DBackend(kind)
+    ctx.backend = selection.backend
+    ctx.backendKind.value = selection.effectiveKind
+    ctx.backendFallback.value = fallback || selection.fallbackReason
+    if (ctx.hostEl) ctx.hostEl.dataset.backend = ctx.backendFallback.value ? 'browser-fallback' : selection.effectiveKind
+  }
   function selectAdapter(char: string, backendKind = ctx.backendKind.value): boolean {
     const resolved = resolveCompanionAvatar(char)
     if (!resolved) {
@@ -62,11 +70,8 @@ export function createLifecycleController(
     if (backendKind === 'native' && !resolved.profile.backendCompatibility.includes('native')
       && resolved.profile.backendCompatibility.includes('browser')) {
       destroyRuntime()
-      const selection = selectLive2DBackend('browser')
-      ctx.backend = selection.backend
-      ctx.backendKind.value = backendKind = 'browser'
-      ctx.backendFallback.value = '此模型使用浏览器渲染'
-      if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
+      useBackend('browser', '此模型使用浏览器渲染')
+      backendKind = ctx.backendKind.value
     }
     const compiled = compileAdapterProfile(resolved.profile, backendKind)
     ctx.adapterReport.value = compiled.ok ? compiled.adapter.report : compiled.report
@@ -102,31 +107,25 @@ export function createLifecycleController(
       return
     }
     ctx.character.value = char
+    ctx.enabled.value = options.autoLoad === true
     controllers.pointerGaze.bind()
     ctx.outfit.value = normalizeCompanionOutfit(char, options.outfit || ctx.outfit.value)
     setState('checking', '检查 Live2D…')
     try {
-      const catalog = readLive2DCatalog(await mediaStatusApi.getLive2DStatus())
-      if (ctx.destroyed.value) return
-      ctx.catalog = catalog
-      const selection = selectLive2DBackend(options.backendKind)
-      ctx.backend = selection.backend
-      ctx.backendKind.value = selection.effectiveKind
-      ctx.backendFallback.value = selection.fallbackReason
-      if (!selectAdapter(char, selection.effectiveKind)) {
-        setState('static', '静态立绘', `Live2D 适配配置不支持 ${selection.effectiveKind} 后端`)
+      useBackend(requestedBackendKind)
+      if (!selectAdapter(char)) {
+        setState('static', '静态立绘', `Live2D 适配配置不支持 ${ctx.backendKind.value} 后端`)
         return
       }
-      if (ctx.backendFallback.value) {
-        if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
-        console.warn('[live2d]', ctx.backendFallback.value)
-      } else if (ctx.hostEl) {
-        ctx.hostEl.dataset.backend = selection.effectiveKind
-      }
+      if (ctx.backendFallback.value) console.warn('[live2d]', ctx.backendFallback.value)
+      ctx.catalog = null
+      catalog.listen()
+      const available = await catalog.load()
+      if (ctx.destroyed.value) return
       observeSize()
       bindVisibility()
-      ctx.enabled.value = options.autoLoad === true
-      if (ctx.enabled.value) await setCharacter(ctx.character.value)
+      if (!available) return
+      if (ctx.enabled.value) { if (!isStageHidden(ctx)) await setCharacter(ctx.character.value) }
       else {
         setVisible(false)
         setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
@@ -135,14 +134,6 @@ export function createLifecycleController(
       if (ctx.destroyed.value) return
       fallback('Live2D 未就绪', errorMessage(e))
     }
-  }
-
-  function modelInfo(char: string) {
-    const catalogInfo = ctx.catalog?.models?.[char]
-    const registered = resolveCompanionAvatar(char)
-    return catalogInfo && registered
-      ? { ...catalogInfo, modelUrl: registered.avatar.modelPath }
-      : null
   }
 
   async function setCharacter(char: string) {
@@ -157,14 +148,14 @@ export function createLifecycleController(
       return
     }
     ctx.character.value = char
+    if (!ctx.catalog) {
+      if (!await catalog.load()) return
+      if (ctx.destroyed.value || !ctx.enabled.value || isStageHidden(ctx) || char !== ctx.character.value) return
+    }
     if (requestedBackendKind === 'native' && ctx.backendKind.value === 'browser'
       && ctx.loadedCharacter.value !== char && resolveCompanionAvatar(char)?.profile.backendCompatibility.includes('native')) {
       destroyRuntime()
-      const selection = selectLive2DBackend('native')
-      ctx.backend = selection.backend
-      ctx.backendKind.value = selection.effectiveKind
-      ctx.backendFallback.value = selection.fallbackReason
-      if (ctx.hostEl) ctx.hostEl.dataset.backend = selection.fallbackReason ? 'browser-fallback' : selection.effectiveKind
+      useBackend('native')
     }
     if (!selectAdapter(char)) {
       destroyRuntime()
@@ -173,7 +164,7 @@ export function createLifecycleController(
       setState('static', '静态立绘', `Live2D 适配配置不支持 ${ctx.backendKind.value} 后端`)
       return
     }
-    const info = modelInfo(char)
+    const info = catalog.modelInfo(char)
     if (!info?.available || !info?.modelUrl) {
       destroyRuntime()
       setVisible(false)
@@ -204,7 +195,7 @@ export function createLifecycleController(
   }
 
   async function retry() {
-    if (ctx.destroyed.value) return
+    if (ctx.destroyed.value || isStageHidden(ctx)) return
     if (ctx.loading) return ctx.loading
     if (!ctx.enabled.value) return enable()
     destroyRuntime()
@@ -409,7 +400,7 @@ export function createLifecycleController(
   }
 
   function syncPause() {
-    if (!ctx.session) return
+    if (!ctx.session) { void recover(); return }
     // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
     const waitingForNativeBounds = ctx.session?.capability.parameterOverride === false && !ctx.nativeOverlayReady
     const shouldPause = isStageHidden(ctx) || prefersReducedMotion() || waitingForNativeBounds
@@ -534,6 +525,7 @@ export function createLifecycleController(
   function destroy() {
     ctx.lifecycleToken += 1
     ctx.destroyed.value = true; ctx.enabled.value = false; destroyRuntime()
+    catalog.destroy()
     ctx.adapter = null
     ctx.adapterReport.value = null
     controllers.layoutFit.resetWindowBounds()

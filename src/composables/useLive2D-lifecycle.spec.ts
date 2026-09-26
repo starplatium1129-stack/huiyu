@@ -4,6 +4,8 @@ import { createLifecycleController } from './live2d/lifecycle'
 import { BROWSER_CAPABILITY, type Live2DConnectOptions, type Live2DModelHandle, type Live2DStageSession } from '@/live2d/types'
 import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
+import * as runtime from '@/platform/desktop/runtime'
+import * as backendFactory from '@/live2d/createBackend'
 
 function deferred<T>() {
   let resolve!: (value: T) => void
@@ -45,6 +47,59 @@ function setup() {
 afterEach(() => { vi.clearAllTimers(); vi.useRealTimers() })
 
 describe('Live2D lifecycle races', () => {
+  it('recovers the missing startup catalog once the runtime is ready, respecting hidden and disabled stages', async () => {
+    const h = setup()
+    vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    const unsubscribe = vi.fn()
+    let changed!: (value: runtime.DesktopConnectionState) => void
+    vi.spyOn(runtime, 'onDesktopRuntime').mockImplementation(listener => { changed = listener; return unsubscribe })
+    vi.spyOn(runtime, 'getDesktopRuntime').mockReturnValue({ connection: 'starting', bootstrap: null })
+    vi.spyOn(backendFactory, 'selectLive2DBackend').mockReturnValue({ backend: h.ctx.backend!, effectiveKind: 'browser', fallbackReason: null })
+    const fetchCatalog = vi.spyOn(mediaStatusApi, 'getLive2DStatus')
+      .mockRejectedValueOnce(new Error('本地运行时尚未连接'))
+      .mockResolvedValue({ models: { nene: { available: true, modelUrl: '/nene.model3.json' } } } as Awaited<ReturnType<typeof mediaStatusApi.getLive2DStatus>>)
+    await h.lifecycle.init('nene', h.ctx.hostEl!, h.ctx.stageEl!, { autoLoad: true })
+    expect(h.ctx.enabled.value).toBe(true)
+    expect(h.setState).toHaveBeenLastCalledWith('fallback', 'Live2D 未就绪', '本地运行时尚未连接', true)
+    h.lifecycle.setPaused(true)
+    changed({ connection: 'ready', bootstrap: null })
+    await vi.advanceTimersByTimeAsync(0)
+    expect(fetchCatalog).toHaveBeenCalledOnce()
+    expect(h.connect).not.toHaveBeenCalled()
+    h.lifecycle.setPaused(false)
+    await vi.advanceTimersByTimeAsync(0)
+    expect(fetchCatalog).toHaveBeenCalledTimes(2)
+    expect(h.connect).toHaveBeenCalledOnce()
+    h.loaded()
+    changed({ connection: 'ready', bootstrap: null })
+    await vi.advanceTimersByTimeAsync(0)
+    expect(h.ctx.ready.value).toBe(true)
+    expect(h.connect).toHaveBeenCalledOnce()
+    h.lifecycle.disable()
+    h.ctx.catalog = null
+    changed({ connection: 'unavailable', bootstrap: null })
+    changed({ connection: 'ready', bootstrap: null })
+    await vi.advanceTimersByTimeAsync(0)
+    expect(fetchCatalog).toHaveBeenCalledTimes(2)
+    h.lifecycle.destroy()
+    expect(unsubscribe).toHaveBeenCalledOnce()
+  })
+
+  it('loads a catalog checked while hidden when the desktop becomes visible', async () => {
+    const h = setup()
+    vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    vi.spyOn(backendFactory, 'selectLive2DBackend').mockReturnValue({ backend: h.ctx.backend!, effectiveKind: 'browser', fallbackReason: null })
+    vi.spyOn(mediaStatusApi, 'getLive2DStatus').mockResolvedValue({ models: { nene: { available: true, modelUrl: '/nene.model3.json' } } } as Awaited<ReturnType<typeof mediaStatusApi.getLive2DStatus>>)
+    h.lifecycle.setPaused(true)
+    await h.lifecycle.init('nene', h.ctx.hostEl!, h.ctx.stageEl!, { autoLoad: true })
+    expect(h.connect).not.toHaveBeenCalled()
+    h.lifecycle.setPaused(false)
+    await vi.advanceTimersByTimeAsync(0)
+    expect(h.connect).toHaveBeenCalledOnce()
+    h.loaded()
+    h.lifecycle.destroy()
+  })
+
   it('quality changes cancel an obsolete load and keep the latest profile', async () => {
     const h = setup()
     const connection = deferred<Live2DStageSession>()

@@ -3,7 +3,7 @@ use tauri::{AppHandle, Manager};
 use std::sync::Arc;
 use crate::live2d_overlay::{apply_frame, Live2DOverlayState, OverlayRect};
 
-#[derive(Clone, Copy, serde::Deserialize)]
+#[derive(Clone, Copy, Debug, serde::Deserialize, serde::Serialize)]
 pub struct StageFraming { pub zoom: f32, pub x: f32, pub y: f32 }
 impl Default for StageFraming {
     fn default() -> Self { Self { zoom: 1.0, x: 0.0, y: 0.0 } }
@@ -23,13 +23,21 @@ impl StageFraming {
 }
 
 #[tauri::command]
-pub fn aics_live2d_set_frame(app: AppHandle, rect: serde_json::Value, visible: bool, opacity: Option<f64>, framing: Option<StageFraming>) -> Result<(), String> {
+pub async fn aics_live2d_set_frame(app: AppHandle, rect: serde_json::Value, visible: bool, opacity: Option<f64>, framing: Option<StageFraming>) -> Result<(), String> {
     let framing = framing.unwrap_or_default().validate()?;
     let obj = rect.as_object().ok_or("rect must be an object")?;
     let x = obj.get("x").and_then(|v| v.as_i64()).ok_or("rect.x")? as i32;
     let y = obj.get("y").and_then(|v| v.as_i64()).ok_or("rect.y")? as i32;
     let width = obj.get("width").and_then(|v| v.as_u64()).ok_or("rect.width")? as u32;
     let height = obj.get("height").and_then(|v| v.as_u64()).ok_or("rect.height")? as u32;
+    if crate::live2d_process::enabled() {
+        let companion_hwnd = app.get_webview_window("companion").and_then(|window| window.hwnd().ok()).map(|handle| handle.0 as isize);
+        return crate::live2d_process::call(&app, crate::live2d_process_protocol::Command::SetFrame {
+            rect: OverlayRect { x, y, width, height }, visible,
+            opacity: opacity.map(|o| (o.clamp(0.0, 1.0) * 255.0) as u32),
+            framing: Some(serde_json::to_value(framing).map_err(|e| e.to_string())?), companion_hwnd,
+        }).await.map(|_| ());
+    }
     if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() { *state.framing.lock().unwrap() = framing; }
     apply_frame(&app, OverlayRect { x, y, width, height }, visible, opacity.map(|o| (o.clamp(0.0, 1.0) * 255.0) as u32))
 }

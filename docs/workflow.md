@@ -318,6 +318,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `npm run wf -- desktop:workspace-sidecar` 在 Windows 上用已有、固定哈希的 Node sidecar 验证生产 workspace worker。先运行 `npm run build:runtime`；探针复用实际 staging 文件选择及 Tauri 资源映射，复制到临时安装布局，执行 SQLite 保存、重开、备份和候选恢复。仅使用临时库，不下载、不安装、不读取用户库；通过证明该 sidecar 和本次 worker 产物可运行，不替代正式安装、WebView2 或物理断电验收。该入口单独执行，不混入跨平台 unit 套件。
 
+`npm run wf -- desktop:renderer-process-check --exe <候选EXE> --assets-root <已有assets目录> --out <新证据目录>` 在 Windows 上验证 Live2D 独立渲染进程；先生成 Node 测试入口并构建支持 `--live2d-renderer-probe-host` / `--live2d-renderer-child` 的候选 EXE。脚本使用独立 config/profile、可见测试窗口与现有宁宁/夏目模型，记录 GPU 快照、帧数和 60/120/165 FPS 各两秒实测（可用 `--sample-ms` 调整），检验加载中杀子进程、超时、父进程存活、显式重连以及 Shutdown/EOF/父进程突然退出的无孤儿回收。GPU 快照须实际查看；帧率为测量值，没有把目标帧率视为性能门禁。只读模型资源，不启动已安装生产应用、不访问生产资料、不下载或调用 AI 生成。该入口与其他 GPU 测量串行，单独运行，不进入默认 unit/validate 套件；证据目录保留 JSONL、stderr、PNG 和结果 JSON。
+
 `npm run wf -- desktop:thumbnail-benchmark` 直接抽取当前 `App.vue` 的预热函数，在临时 loopback 服务和私有浏览器上下文运行真实 IndexedDB 与图片解码。1k/10k 历史共用 64 张中性 1024px 图，前台/后台/双页各三轮观察五秒；报告实际 visibility、读写/生成次数、重复图片读取、CDP JS 堆与脚本/任务时间及源码/夹具哈希。后台未实际 hidden 时标为 unavailable，不模拟后台性能，不把小图结果当作用户大图/GPU成本。独占运行后保存 stdout JSON；不新增性能阻断阈值。
 
 `npm run wf -- desktop:restore-benchmark` 在新私有上下文按 1k/10k 历史各跑三轮，64 张确定性中性噪声 PNG 经真实 `buildBackupBlob → Blob.text → JSON.parse/normalizeBackup → restoreBackupData`，核对条目、原图字节数、图片重映射及旧原图保全。分别报告导出/读取/解析/恢复时间、实际备份字节与约 25ms CDP JS 堆采样；observedPeak 是观测下界，不含 Blob 原生后备内存、完整进程/GPU，也不代表 512MiB 峰值、可取消性或断电恢复。独占运行，无生产库访问。

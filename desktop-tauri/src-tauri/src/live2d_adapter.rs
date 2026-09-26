@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use live2d_native::model::Model;
 
-#[derive(Clone, Debug, serde::Deserialize)]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MouthBinding {
     pub id: String,
@@ -10,14 +10,14 @@ pub struct MouthBinding {
     pub range: Option<[f32; 2]>,
 }
 
-#[derive(Clone, Debug, serde::Deserialize)]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OverlaySettleConfig {
     pub settle_ms: f32,
     pub reset_defaults: HashMap<String, f32>,
 }
 
-#[derive(Clone, Debug, serde::Deserialize)]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Live2DAdapterConfig {
     pub profile_id: String,
