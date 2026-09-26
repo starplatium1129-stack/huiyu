@@ -2,8 +2,8 @@
   "batch": "R0",
   "status": "R0-complete-with-recorded-baseline-failures",
   "baseCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
-  "headCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
-  "headCommitMeaning": "Actual HEAD during checks. Verified implementation was uncommitted; exact source hashes below bind the tested bytes. Implementation commit will be bound after commit.",
+  "headCommit": "af8c567230673427eeed3995b93cda29576cfc32",
+  "headCommitMeaning": "Actual committed implementation, pushed and rechecked with committed Git allowlist history. Later commits only finalize documentation/evidence.",
   "environment": {
     "node": "v24.18.0",
     "npm": "11.16.0",
@@ -270,6 +270,17 @@
       "logSha256": "9ac73a4fa2710075bcd0a5ca9c610c7b2b04e1ff8b291ac2c8f2f487bb509aa7",
       "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt",
       "transcriptCapture": "complete log with line-ending/trailing-whitespace normalization"
+    },
+    {
+      "command": "npm run test:architecture",
+      "phase": "committed-history",
+      "status": "passed",
+      "exitCode": 0,
+      "sourceCommit": "af8c567230673427eeed3995b93cda29576cfc32",
+      "log": "runtime/refactor-r0/final/architecture-committed.log",
+      "logSha256": "3aed60864e36fe57041d4971f1d211f16e2810c5dfa1a66408ff9f668677125d",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt",
+      "transcriptCapture": "complete log with line-ending/trailing-whitespace normalization"
     }
   ],
   "baselineFailures": [
@@ -333,7 +344,7 @@
   "verificationReuse": "Production sources and dependencies unchanged. Baseline build/frontend/unit/contracts remain valid for those bytes; final tooling changes were checked by strict runtime build, architecture/quality fixtures, lint and docs.",
   "transcript": {
     "path": "docs/evidence/architecture-r0-2026-09-26-checks.txt",
-    "sha256": "55f724647542374e2105b177d4706a4246ef03a453d0634ba825a1b93e48982c"
+    "sha256": "823d7faf328a508e85308ab1838cb3480a6768c6031b738eea1c47a66ea70d08"
   },
   "nextBatchScope": [
     "src/storage/artworkRepository.ts",
@@ -350,5 +361,8 @@
     "src/api/client.ts",
     "desktop-tauri/src-tauri/src/bridge.rs",
     "desktop-tauri/src-tauri/src/main.rs"
-  ]
+  ],
+  "implementationCommit": "af8c567230673427eeed3995b93cda29576cfc32",
+  "branch": "codex/architecture-r0",
+  "implementationPushed": true
 }

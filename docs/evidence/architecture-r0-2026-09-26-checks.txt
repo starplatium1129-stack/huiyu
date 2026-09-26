@@ -865,3 +865,132 @@ Documentation: 227 files, 1659 local links, 70 redirects, 0 broken links.
 ℹ skipped 0
 ℹ todo 0
 ℹ duration_ms 1778.7481
+
+===== committed-history: npm run test:architecture; exit=0; commit=af8c567230673427eeed3995b93cda29576cfc32 =====
+
+> huiyu@1.7.2 test:architecture
+> node scripts/tests/test-page-architecture.js && node scripts/tests/test-domain-type-boundaries.js
+
+✔ page-architecture (29.366ms)
+✔ router import parsing permits equivalent helpers but distinguishes eager imports (1.9011ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 34.8912
+{
+  "files": [
+    "src/application/artwork/artworkSaveInput.ts",
+    "src/application/artwork/saveGeneratedArtwork.ts",
+    "src/types/anima.ts",
+    "src/types/artwork.ts",
+    "src/types/generation.ts",
+    "src/types/promptHistory.ts",
+    "src/utils/resultContext.ts",
+    "src/utils/sdError.ts"
+  ],
+  "edges": [
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./generation",
+      "typeOnly": true,
+      "to": "src/types/generation.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./generation",
+      "typeOnly": true,
+      "to": "src/types/generation.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "@/utils/sdError",
+      "typeOnly": true,
+      "to": "src/utils/sdError.ts"
+    },
+    {
+      "from": "src/utils/resultContext.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/utils/resultContext.ts",
+      "specifier": "@/types/anima",
+      "typeOnly": true,
+      "to": "src/types/anima.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/anima",
+      "typeOnly": true,
+      "to": "src/types/anima.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/artwork",
+      "typeOnly": true,
+      "to": "src/types/artwork.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/utils/resultContext",
+      "typeOnly": false,
+      "to": "src/utils/resultContext.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "@/types/artwork",
+      "typeOnly": false,
+      "to": "src/types/artwork.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": false,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": true,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    }
+  ],
+  "violations": [],
+  "unknown": [],
+  "runtimeCycles": [],
+  "typeCycles": []
+}
+R0: 665 production sources, 3203 imports, 33 exact legacy edges; no new violations
+✔ artwork types and save use case stay independent of state and infrastructure (1123.0856ms)
+✔ R0 dependency debt only shrinks from its sealed seed and approved Git history (814.4383ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1959.597
