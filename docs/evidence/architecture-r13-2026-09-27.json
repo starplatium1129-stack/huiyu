@@ -1,0 +1,288 @@
+{
+  "date": "2026-09-27",
+  "batch": "R13",
+  "baseCommit": "0e6cabceef4b54b76444279db66ee6563f69d0af",
+  "implementationCommit": "9963b283e2880004a51f36404476f2b4fb98d79b",
+  "status": "poc-and-local-comparison-complete; keep-tauri-production-default",
+  "productionDataTouched": false,
+  "installedApplicationChanged": false,
+  "aiGenerationInvoked": false,
+  "installedSourceUnchanged": "ce3db83b",
+  "candidate": {
+    "tauriExeSha256": "2d4cceb3a6ea6c1a97a8b6f8576d43f8e7de0b5e7b6a6291f780dc120fdd7f5e",
+    "installed": false,
+    "signed": false,
+    "retainedPath": "runtime/refactor-r13/candidate/ai-cg-studio-desktop.exe",
+    "navigationBroadcastFix": "Only atelier consumes navigation broadcasts; source and candidate verified, not installed"
+  },
+  "inputs": {
+    "uiIndexSha256": "4a384bca60d258797367f0be7017d181754a8b774e3c558a22e9d1788f8fcfe9",
+    "gatewayEntrySha256": "50d87bb6eaebc8dd6a6d7f8588010414467596a326ab95c78b9b71c03f6cd897",
+    "nodeVersion": "24.18.0",
+    "nodeSha256": "9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de",
+    "electronVersion": "44.4.5",
+    "electronExeSha256": "bd14928e0728366fd3f41499cb398ff3f4304dab259a3e605077899a6f8c748e",
+    "electronArchiveSha256": "11c395820a5aaa8ebcc0686b476d0ac98a730274ebfbdc8cf5538a7c2815cb5d",
+    "electronArchiveBytes": 158184819,
+    "officialArchive": "https://github.com/electron/electron/releases/download/v44.4.5/electron-v44.4.5-win32-x64.zip",
+    "officialChecksums": "https://github.com/electron/electron/releases/download/v44.4.5/SHASUMS256.txt",
+    "nativeHelperSha256": "1742cd5c93eec5924de5c488924e0ecc13b7fca07c93c23548148cc9139c6285",
+    "nativeArchitectures": {
+      "tauri": "production-default renderer thread",
+      "electron": "R12 probe supervisor plus renderer child"
+    },
+    "workspace": "isolated temporary profiles, fixed Node sidecar, shared staged gateway, no production fallback"
+  },
+  "checks": {
+    "targetedFrontend": {
+      "passed": 14,
+      "files": 4,
+      "evidence": "runtime/r13-adapter-tests.log"
+    },
+    "localOriginSecurity": {
+      "passed": 6,
+      "evidence": "runtime/r13-security.log"
+    },
+    "workflow": {
+      "passed": 22
+    },
+    "applicationTypes": "passed",
+    "nodeAndTestTypes": "passed",
+    "architecture": {
+      "status": "passed",
+      "sources": 767,
+      "imports": 3792,
+      "legacyEdges": 0,
+      "violations": 0
+    },
+    "monolith": {
+      "status": "passed",
+      "files": 936,
+      "exemptions": 0
+    },
+    "lint": {
+      "errors": 0,
+      "warnings": 16,
+      "evidence": "runtime/r13-lint.log"
+    },
+    "cjsSyntax": "passed",
+    "webBuild": "passed; budgets unchanged",
+    "desktopUiBuild": "passed",
+    "tauriReleaseBuild": "passed",
+    "stagedGateway": "passed; 143 production dependencies",
+    "finalStaticEvidence": "runtime/refactor-r13/final-static/",
+    "fullValidate": "not-run; targeted checks selected for this change"
+  },
+  "functional": {
+    "status": "passed-with-explicit-evidence-reuse",
+    "sourceUiSha256": "845b0d3217271de13177371898ce3fa23ca1626e1bd2942d0e850f2942546cec",
+    "verified": [
+      "UI visible before deliberately delayed runtime",
+      "three registered roles and private workspace",
+      "fixed sandboxed preload without Node/require/process/Tauri/global invoke",
+      "main-frame origin and role authorization",
+      "private SQLite write/read, page reload and full shell reopen",
+      "runtime outage keeps document, restart invalidates old epoch session",
+      "renderer crash isolated and reopened",
+      "both nene and natsume loaded through real frontend",
+      "normal exit releases experiment processes"
+    ],
+    "currentUiVerified": [
+      "paired cost workloads",
+      "three visible role windows",
+      "light and dark homepage art",
+      "actual transparent desktop composition with Natsume",
+      "normal exit without orphans",
+      "Tauri navigation only affects Atelier"
+    ],
+    "modelImagesRetainSourceUiHash": true,
+    "aggregateEntryCountIsNotUniqueTestCount": true,
+    "sources": [
+      "runtime/refactor-r13/electron-acceptance-2/report.json",
+      "runtime/refactor-r13/electron-native-completion/report.json",
+      "runtime/refactor-r13/electron-costs-and-exit/report.json",
+      "runtime/refactor-r13/electron-final/report.json"
+    ],
+    "parentCrash": {
+      "passed": true,
+      "runtimeExited": true,
+      "ownerReleased": true,
+      "portReleased": true,
+      "evidence": "runtime/refactor-r13/runtime-parent-disconnect.json"
+    },
+    "terminalNativeClose": "subsequent setCharacter rejected without new process",
+    "tauriNormalExitNoOrphans": true,
+    "tauriOwnerReleased": true
+  },
+  "comparison": {
+    "scope": "single-machine short samples; currently implemented product configurations, not a pure framework benchmark",
+    "shared": {
+      "uiIndexSha256": "4a384bca60d258797367f0be7017d181754a8b774e3c558a22e9d1788f8fcfe9",
+      "dpr": 1,
+      "screen": {
+        "width": 2622,
+        "height": 1206
+      },
+      "theme": "dark",
+      "threeWindowsVisible": true,
+      "viewport": {
+        "atelier": [
+          1280,
+          820
+        ],
+        "companion": [
+          540,
+          760
+        ],
+        "chat": [
+          480,
+          820
+        ]
+      },
+      "nativeCharacter": "natsume",
+      "textureQuality": "original",
+      "nativeTargetFps": 60,
+      "nativeRect": {
+        "height": 656,
+        "width": 540,
+        "x": 40,
+        "y": 126
+      },
+      "homePictures": "loaded before samples, each 1024x1497"
+    },
+    "method": "same Windows helper; ParentPID and creation-time ancestry; working-set sums may double-count shared pages; private bytes are committed memory, not exclusive physical RAM",
+    "tauriIdle": {
+      "processCount": 11,
+      "workingSetBytes": 1258426368,
+      "privateBytes": 915095552,
+      "gpuDedicatedBytes": 6541312,
+      "gpuSharedBytes": 220372992,
+      "gpuScope": "process-tree",
+      "sampleWallMs": 2237,
+      "cpuMs": 31.25,
+      "cpuCorePercent": 1.396960214573089,
+      "cpuScope": "same surviving process-tree PIDs; 100% equals one logical core",
+      "beforeProcessCount": 15,
+      "source": "runtime/refactor-r13/tauri-comparison-1790445979247/report.json"
+    },
+    "electronIdle": {
+      "processCount": 7,
+      "workingSetBytes": 1146306560,
+      "privateBytes": 842096640,
+      "gpuDedicatedBytes": 6336512,
+      "gpuSharedBytes": 164274176,
+      "gpuScope": "process-tree",
+      "sampleWallMs": 2235,
+      "cpuMs": 78.125,
+      "cpuCorePercent": 3.495525727069351,
+      "cpuScope": "same surviving process-tree PIDs; 100% equals one logical core",
+      "beforeProcessCount": 11,
+      "source": "runtime/refactor-r13/electron-final/report.json"
+    },
+    "tauriNative": {
+      "processCount": 11,
+      "workingSetBytes": 2290335744,
+      "privateBytes": 1918918656,
+      "gpuDedicatedBytes": 8265728,
+      "gpuSharedBytes": 1408352256,
+      "gpuScope": "process-tree",
+      "sampleWallMs": 2257,
+      "cpuMs": 281.25,
+      "cpuCorePercent": 12.461231723526806,
+      "cpuScope": "same surviving process-tree PIDs; 100% equals one logical core",
+      "beforeProcessCount": 11,
+      "frames": {
+        "before": 419,
+        "after": 875,
+        "elapsedMs": 7739.860699999999,
+        "measuredFps": 58.91578901413562,
+        "targetFps": 60,
+        "rect": {
+          "height": 656,
+          "width": 540,
+          "x": 40,
+          "y": 126
+        }
+      },
+      "source": "runtime/refactor-r13/tauri-comparison-1790446352807/report.json"
+    },
+    "electronNative": {
+      "processCount": 9,
+      "workingSetBytes": 2310361088,
+      "privateBytes": 1964310528,
+      "gpuDedicatedBytes": 11313152,
+      "gpuSharedBytes": 1361690624,
+      "gpuScope": "process-tree",
+      "sampleWallMs": 2260,
+      "cpuMs": 250,
+      "cpuCorePercent": 11.061946902654867,
+      "cpuScope": "same surviving process-tree PIDs; 100% equals one logical core",
+      "beforeProcessCount": 9,
+      "frames": {
+        "delta": 461,
+        "elapsedMs": 7850.836599999999,
+        "measuredFps": 58.719856683808715,
+        "targetFps": 60
+      },
+      "source": "runtime/refactor-r13/electron-final/report.json"
+    },
+    "tauriSamplesFromSeparateLaunches": true,
+    "startupRanking": "not-made: different window-open order, profile warmth and deliberately delayed functional run",
+    "excluded": [
+      "ancestry-only historical ParentPID samples",
+      "different UI/DPR/display samples",
+      "missing-homepage-picture samples"
+    ],
+    "qualification": "After initially unavailable runtime left cached hero placeholders, Atelier was reloaded with ready runtime for steady-content costs. This is not evidence of no-reload image recovery.",
+    "conclusion": "mixed small cost differences and similar target-60 FPS; insufficient overall benefit to justify migration"
+  },
+  "deliveryFootprint": {
+    "electronRuntimeBytes": 385243397,
+    "uiBytes": 21412169,
+    "nativeExecutableBytes": 45353984,
+    "nodeExecutableBytes": 92534088,
+    "scope": "uncompressed selected runtime components; shared gateway/assets excluded, no installer claim",
+    "measuredScope": "selected components from referenced PoC setup, before final small frontend-only navigation change",
+    "systemWebView2ExcludedFromTauriFolder": true,
+    "electronInstallerProduced": false
+  },
+  "visualReview": {
+    "status": "passed",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "models": [
+      "nene",
+      "natsume"
+    ],
+    "desktopCompositeSha256": "947896b6ba752534a5e94d6fd996c9e2fa1769aa9b90eaf06d69f3c7e2a366ff",
+    "screenshotsCommitted": false,
+    "reason": "Raw captures may contain personal desktop background"
+  },
+  "rawReports": [
+    {
+      "path": "runtime/refactor-r13/electron-final/report.json",
+      "sha256": "aac4d5290efa69d1c60d767107bd095bdb1fded9a8776b0675561544f26a84d1"
+    },
+    {
+      "path": "runtime/refactor-r13/tauri-comparison-1790445979247/report.json",
+      "sha256": "a6e4a62fdfa8c37cc059ea2f1a276734d1e3e0c18651dc97ee9ff669d67e9f3e"
+    },
+    {
+      "path": "runtime/refactor-r13/tauri-comparison-1790446352807/report.json",
+      "sha256": "2cb6402704c573e08e52bd596cdc4340ac59593db8e0bfe7c674f2f93e5fd213"
+    }
+  ],
+  "remainingScope": [
+    "tray/global hotkeys/OS deep links",
+    "clipboard/global mouse producers",
+    "file pick/export and workspace selection",
+    "autostart/notifications",
+    "installer/signing/updates",
+    "microphone/camera permissions",
+    "query-string host navigation",
+    "other devices/platforms, long residence, sleep and driver resets"
+  ],
+  "decision": "R13 experiment complete; production remains Tauri with renderer thread; production adoption is a separate decision"
+}
