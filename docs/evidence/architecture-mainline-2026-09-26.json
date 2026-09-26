@@ -1,0 +1,389 @@
+{
+  "date": "2026-09-26",
+  "batches": [
+    "R3",
+    "R4",
+    "R5",
+    "R6a",
+    "R6b",
+    "R6c",
+    "R6d",
+    "R7",
+    "R8",
+    "R9a",
+    "R9b",
+    "R10",
+    "R11"
+  ],
+  "baseCommit": "15b22e6a2166a18a49b362edfe90416b37177804",
+  "implementationCommit": "ee53cee0bd7cfb437cc90702cfe41f45c2ddad75",
+  "status": "R0-R11-mainline-complete; production installed, current source migrated and bundled UI activated",
+  "productionDataTouched": true,
+  "productionWorkspaceActivated": true,
+  "productionUiOriginChanged": true,
+  "nativeInstallation": "passed; actual installed NSIS payload, 41 runtime files and production application accepted",
+  "realModelCalls": false,
+  "legacyDependencyExceptions": 0,
+  "schemaVersion": 3,
+  "checks": [
+    {
+      "name": "frontend",
+      "status": "passed-across-full-and-targeted-runs",
+      "initialPassed": 1417,
+      "initialFailed": 2,
+      "initialSuiteLoadFailures": 1,
+      "repaired": [
+        "creationRecovery",
+        "useBackup",
+        "useChatStorage-persistence"
+      ],
+      "additional": "profile conflict/offline, durable image unload/cancel, task result saving and playback",
+      "log": "runtime/refactor-mainline/frontend.log"
+    },
+    {
+      "name": "node-unit",
+      "status": "passed-across-full-and-targeted-runs",
+      "initialPassed": 1074,
+      "initialFailed": 10,
+      "initialSkipped": 4,
+      "repaired": "Node direct-TS paths and existing adapter/source contract expectations",
+      "log": "runtime/refactor-mainline/unit.log"
+    },
+    {
+      "name": "contracts",
+      "status": "passed-across-runs",
+      "files": 38,
+      "logs": [
+        "runtime/refactor-mainline/contract.log",
+        "runtime/refactor-mainline/contract-remaining.log",
+        "runtime/refactor-mainline/contracts-recheck.log"
+      ]
+    },
+    {
+      "name": "core-browser",
+      "status": "passed-across-runs",
+      "cases": 73,
+      "initialPassed": 70,
+      "targetedRecheckPassed": 3,
+      "logs": [
+        "runtime/refactor-mainline/e2e-core.log",
+        "runtime/refactor-mainline/e2e-recheck.log"
+      ]
+    },
+    {
+      "name": "typed-host-browser",
+      "status": "passed-across-runs",
+      "cases": 6,
+      "initialPassed": 5,
+      "targetedRecheckPassed": 1,
+      "logs": [
+        "runtime/refactor-mainline/e2e-host-fixtures.log",
+        "runtime/refactor-mainline/native-event-recheck.log"
+      ]
+    },
+    {
+      "name": "private-library-browser",
+      "status": "passed",
+      "command": "node scripts/tests/test-desktop-library-browser.mts"
+    },
+    {
+      "name": "migration-conflict-browser",
+      "status": "passed",
+      "command": "node scripts/tests/test-workspace-migration-browser.mts"
+    },
+    {
+      "name": "task-center-browser",
+      "status": "passed",
+      "command": "node scripts/tests/test-task-center-browser.mts"
+    },
+    {
+      "name": "task-runtime",
+      "status": "passed",
+      "cases": 11,
+      "details": "idempotency, unknown recovery, late cancel, input reconstruction, shutdown drain, discard, migrated history and batch explicit continuation",
+      "log": "runtime/refactor-mainline/task-runtime-accepted.log"
+    },
+    {
+      "name": "types",
+      "status": "passed",
+      "log": "runtime/refactor-mainline/typecheck-final.log"
+    },
+    {
+      "name": "architecture",
+      "status": "passed",
+      "allowlist": 0
+    },
+    {
+      "name": "monolith",
+      "status": "passed",
+      "exemptions": 0,
+      "limit": 500
+    },
+    {
+      "name": "web-build-and-budgets",
+      "status": "passed",
+      "log": "runtime/refactor-mainline/web-build-accepted.log",
+      "promptRouteKiB": 139.7,
+      "chatClosureKiB": 678.6,
+      "thresholdsIncreased": false
+    },
+    {
+      "name": "default-check",
+      "status": "failed",
+      "log": "runtime/refactor-mainline/check-final.log",
+      "baseline": "2534 external reference assets missing; real asset acceptance is not claimed",
+      "transientRepairs": "Full typecheck and all 20 deterministic check files subsequently passed; the two missing-reference-asset checks remain failed."
+    },
+    {
+      "name": "deterministic-check-lane",
+      "status": "passed-across-runs",
+      "files": 20,
+      "initialPassed": 4,
+      "remainingPassed": 16,
+      "logs": [
+        "runtime/refactor-mainline/test-check-final.log",
+        "runtime/refactor-mainline/check-remaining.log"
+      ]
+    },
+    {
+      "name": "no-referrer-private-reads-hotfix",
+      "status": "passed",
+      "command": "node scripts/tests/test-desktop-library-browser.mjs",
+      "details": "Production no-referrer policy; authenticated same-origin GET succeeds, raw token-only GET remains denied, single-object DOM media returns 206"
+    }
+  ],
+  "sidecar": {
+    "node": "v24.18.0",
+    "sqlite": "3.53.1",
+    "schemaVersion": 3,
+    "sha256": "9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de",
+    "status": "passed",
+    "installed": true
+  },
+  "nativeWebView2": {
+    "status": "passed",
+    "installed": false,
+    "developmentRepositoryFallback": false,
+    "checks": [
+      {
+        "name": "bundled-ui-starts-without-runtime-or-development-repository",
+        "passed": true
+      },
+      {
+        "name": "three-host-window-roles-offline",
+        "passed": true,
+        "roles": [
+          "companion",
+          "atelier",
+          "companion-chat"
+        ]
+      },
+      {
+        "name": "runtime-recovery-without-document-navigation",
+        "passed": true
+      },
+      {
+        "name": "real-ui-private-session-and-cors",
+        "passed": true,
+        "status": 200
+      }
+    ],
+    "scope": "isolated native acceptance before production installation; production evidence is recorded separately"
+  },
+  "profileCopy": {
+    "verified": true,
+    "sourceModified": false,
+    "files": 814,
+    "bytes": 65836236,
+    "currentOrigin": "http://127.0.0.1:3002",
+    "reader": "Existing Edge Chromium over a verified WebView2 profile copy; not an installed native upgrade flow",
+    "networkRequestsForwarded": 0,
+    "sources": [
+      {
+        "origin": "http://127.0.0.1:3001",
+        "state": "verified-independent-roundtrip",
+        "records": 5,
+        "media": 0,
+        "blockers": {
+          "unknown": 0,
+          "credential": 0,
+          "media": 0
+        },
+        "backupFingerprint": "783a71d82777dbbb1571a1dee8ae0440edec29027b336c7e81a313f63ecd5a22"
+      },
+      {
+        "origin": "http://127.0.0.1:3000",
+        "state": "blocked-by-source-classification",
+        "records": 23,
+        "media": 0,
+        "blockers": {
+          "unknown": 0,
+          "credential": 1,
+          "media": 0
+        },
+        "backupFingerprint": "1d0874926c8a01af4d29518590feff08f61454094371ec96b4f5e6d9baa38211"
+      },
+      {
+        "origin": "http://127.0.0.1:3002",
+        "state": "verified-independent-roundtrip",
+        "records": 15,
+        "media": 0,
+        "blockers": {
+          "unknown": 0,
+          "credential": 0,
+          "media": 0
+        },
+        "backupFingerprint": "03786272d7c81c40ce31bf81ed04724c275a032f0dde583e6d8f70ff0b6ee17d"
+      }
+    ]
+  },
+  "remainingGates": [
+    "Historical origin 3000 contains one credential requiring separate handling; it was not merged into the current source",
+    "Actual user-authority rollback is not claimed by rollback classification or independent restore-candidate verification",
+    "2534 external reference assets are absent locally; actual asset acceptance remains failed"
+  ],
+  "independentExperiments": {
+    "R12": "not-run; separate experiment",
+    "R13": "not-run; separate experiment"
+  },
+  "persistedCheckLog": "docs/evidence/architecture-mainline-2026-09-26-checks.txt",
+  "package": {
+    "status": "passed-and-installed",
+    "pipelineExitCode": 0,
+    "sourceCommit": "ee53cee0bd7cfb437cc90702cfe41f45c2ddad75",
+    "verifiedBuildFlag": true,
+    "privateSameOriginHotfix": true,
+    "installer": {
+      "path": "runtime/desktop-updates/AI-CG-Studio_1.7.2-refactor-ee53cee0-verified_x64-setup.exe",
+      "bytes": 451768336,
+      "sha256": "bd726a195a939ce3b8492589f648a89a5fff45a4889eab736c23536fff8a3ac5",
+      "signed": false
+    },
+    "executableSha256": "ccfd67641b00a57bf542027c1fa4a05287d441959ecddd33a7289074522f7ece",
+    "installedPayloadSha256": "4ae6619035e3ebaae89cd463ae26e076c4ba8d59c85e4360a03ee157e7a68099",
+    "installedMatchesExtractedPayload": true,
+    "payloadDifferenceFromReleaseExe": {
+      "offset": 38744328,
+      "length": 3,
+      "before": "UNK",
+      "after": "NSS"
+    },
+    "runtimeFilesMatched": 41,
+    "binding": {
+      "buildCommit": "ee53cee0bd7cfb437cc90702cfe41f45c2ddad75",
+      "sourceSha256": "2b4a04b1cb21b6725c60001d6c0eff64585de61d99f74e2759df9f10217f699a",
+      "buildSha256": "2cde9c783ae9c53c45fe920273b0daa21d414df14a5d8d3cc7e3c5419b0bd533",
+      "verification": "passed"
+    },
+    "dependencies": "existing verified 143-package lock closure copied; no dependency installation/download",
+    "deployment": "deploy-desktop.bat -UseInstaller -QuietInstall -SkipBuild -NoRestart -InstallDir D:\\AI-CG-Studio",
+    "publicRelease": false
+  },
+  "authorization": {
+    "installation": true,
+    "currentSourceMigration": true,
+    "bundledUiActivation": true,
+    "received": "2026-09-26",
+    "retention": "Original sources and independent backups retained; historical origins not merged"
+  },
+  "implementationCommits": [
+    "b58b0e8abc8457138ce18b1c204f0b05f2d2f018",
+    "ee53cee0bd7cfb437cc90702cfe41f45c2ddad75"
+  ],
+  "packageHistory": [
+    {
+      "status": "passed-after-artifact-materialization",
+      "pipelineExitCode": 1,
+      "compilerAndNsis": "passed",
+      "bindingVerification": "passed",
+      "repairExitCode": 0,
+      "initialBindingFailure": "Cargo release executable had 2 hard links; byte-identical materialization changed link count to 1 without rebuilding",
+      "installer": {
+        "path": "desktop-tauri/src-tauri/target/release/bundle/nsis/AI-CG-Studio_1.7.2_x64-setup.exe",
+        "bytes": 451763858,
+        "sha256": "d87bb65bcce9237f171a9a1b94e371af1188f7d05ac2b4c5f021e78c21b11b33",
+        "signed": false
+      },
+      "executableSha256": "f5494dac7a2ad2c45e862aa9079de2ab2b775c926303ee62461a067d738a6efa",
+      "binding": {
+        "buildCommit": "b58b0e8abc8457138ce18b1c204f0b05f2d2f018",
+        "sourceSha256": "4ea536448c0ea711d75a70e5c87bd56fd5f76be91b739a473ecbe84a0dd907f7",
+        "buildSha256": "6cf38e42dbab6de831df574d6c82288f2abfc2e99c1ba11ecf765fcb5f08efca",
+        "includeBundle": true
+      },
+      "dependencies": "existing verified 143-package lock closure copied; no dependency installation/download",
+      "installedPayloadSha256": "e2b1571ad57ecf7cfc32f8a13fa1f0d4847e5b2be66df708053e832f0523a047",
+      "payloadDifferenceFromReleaseExe": "3-byte Tauri bundle marker UNK→NSS at offset 38749448; installed bytes equal extracted NSIS payload"
+    }
+  ],
+  "productionAcceptance": {
+    "completed": true,
+    "authorized": true,
+    "isolatedGateUsed": false,
+    "modelCalls": 0,
+    "workspaceIdentityUnchanged": true,
+    "previousOrigin": "http://127.0.0.1:3002",
+    "currentOrigin": "http://tauri.localhost",
+    "bundledUi": true,
+    "packaged": true,
+    "checks": [
+      "installed-hotfix-private-reads-and-profile-hydration",
+      "native-verified-build-gate-and-user-visible-origin-switch",
+      "bundled-origin-restart-preserves-workspace-and-domain-counts",
+      "three-production-native-window-roles"
+    ],
+    "beforeCounts": {
+      "schemaVersion": 3,
+      "revision": 9,
+      "migrationState": "activated",
+      "migrationRecords": 15,
+      "migrationMedia": 0,
+      "migrationFingerprint": "7c78e47c587ff47db07dbac78424003a49721d6ce4de7bfa48ae387e0bbddf9d",
+      "artworks": 0,
+      "projects": 0,
+      "settings": 10,
+      "chat": 1,
+      "drafts": 2
+    },
+    "afterCounts": {
+      "schemaVersion": 3,
+      "revision": 14,
+      "migrationState": "activated",
+      "migrationRecords": 15,
+      "migrationMedia": 0,
+      "migrationFingerprint": "7c78e47c587ff47db07dbac78424003a49721d6ce4de7bfa48ae387e0bbddf9d",
+      "artworks": 0,
+      "projects": 0,
+      "settings": 10,
+      "chat": 1,
+      "drafts": 2
+    },
+    "quarantineRecords": 2,
+    "sourceRetention": {
+      "checked": 15,
+      "mismatches": 0
+    },
+    "windowRoles": [
+      "companion",
+      "atelier",
+      "companion-chat"
+    ],
+    "allWindowsShareWorkspace": true,
+    "originalSourcesRetained": true,
+    "historicalSourcesMerged": false,
+    "backupRoot": "runtime/refactor-mainline/production-backup-2026-09-26T13-42-24-948Z",
+    "switchBackup": {
+      "revision": 10,
+      "backupFiles": 4,
+      "restoreCandidateFiles": 4
+    },
+    "normalStartupWithoutCdp": true,
+    "temporaryCdpClosed": true,
+    "normalAppRunningAtHandover": true,
+    "limits": [
+      "Current source originally contained zero artworks and zero media",
+      "No production generation or video playback was performed; media Range and same-origin DOM 206 were verified with isolated fixtures",
+      "Runtime reports contain private onsite evidence and are not committed"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # Codex 执行手册
 
-> 2026-09-26；配套[总计划](REFACTOR-EXECUTION-PLAN.md)。本文件为执行清单，不是已执行报告。R0 已完成，R1 实现与定向验收完成，R2 代码、隔离及 sidecar 门槛完成但未启用生产；原生安装/WebView2 未验。实际结果见 [R0 记录](R0-EXECUTION-REPORT.md)、[R1 记录](R1-EXECUTION-REPORT.md)、[R2 记录](R2-EXECUTION-REPORT.md)。R3–R13 仍待执行。
+> 2026-09-26；配套[总计划](REFACTOR-EXECUTION-PLAN.md)。R0–R11 主线代码、正式安装、当前旧来源 3002 迁移及独立界面切换已完成，详见 [R3–R11 主线记录](R3-R11-EXECUTION-REPORT.md)。旧来源和 D 盘独立备份保留；历史 3000 来源的凭据未合并/迁移。R12/R13 仍为独立实验。 下方保留实施清单和首轮历史模板，不要求重新执行已完成批次。
 
 ## 0. 接手规则：只读本批所需内容
 

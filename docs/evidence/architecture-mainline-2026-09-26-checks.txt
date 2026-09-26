@@ -1,0 +1,279 @@
+Implementation commit: b58b0e8abc8457138ce18b1c204f0b05f2d2f018
+Checks executed 2026-09-26 on Windows, Node 24.18.0 / npm 11.16.0.
+Initial isolated test phase made no production changes. Subsequent authorized installation and migration are recorded below. No model calls throughout.
+Failed initial runs were retained and repaired only at affected boundaries; aggregate entries do not claim one-shot green validate.
+
+FILE runtime-build-accepted.log
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 343 sources; 343 outputs built
+[typescript] tests: 234 sources; 232 outputs built
+[typescript] browser: 6 sources; current
+
+FILE typecheck-final.log
+> huiyu@1.7.2 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.runtime.json --noEmit && npm run typecheck:node && npm run typecheck:tests && npm run typecheck:browser-tools
+
+
+> huiyu@1.7.2 typecheck:node
+> tsc -p tsconfig.node.json --noEmit
+
+
+> huiyu@1.7.2 typecheck:tests
+> tsc -p tsconfig.tests.json --noEmit
+
+
+> huiyu@1.7.2 typecheck:browser-tools
+> node scripts/build-node.mts --project browser --check
+
+[typescript] browser: 6 sources; checked
+
+FILE architecture-ready.log
+}
+R0: 757 production sources, 3737 imports, 0 exact legacy edges; no new violations
+✔ artwork types and save use case stay independent of state and infrastructure (2205.6694ms)
+✔ R0 dependency debt only shrinks from its sealed seed and approved Git history (1685.3868ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3923.9475
+
+FILE check-remaining.log
+✔ test-doc-redirects.js 143ms
+✔ test-desktop-staging.js 700ms
+✔ test-e2e-ci-split.js 57ms
+✔ test-page-architecture.js 219ms
+✔ test-module-boundaries.mjs 1.0s
+✔ test-domain-type-boundaries.js 2.4s
+✔ test-monolith-budget.js 103ms
+✔ test-runtime-generated.js 1.3s
+✔ test-typescript-build.js 7.9s
+✔ test-typescript-development.js 541ms
+✔ test-storage-key-hygiene.js 112ms
+✔ test-style-debt.js 148ms
+✔ test-bridge-acl.js 42ms
+✔ test-icon-button-labels.js 58ms
+✔ test-native-controls.js 128ms
+✔ test-ux-regressions.js 89ms
+sum [refactor-check-remaining]: PASS · 16 过 / 0 挂 · 未跑 0 · 14.9s
+
+FILE task-runtime-accepted.log
+✔ accepted response loss retries the same identity; conflicts and foreign owners cannot expose a task (56.4402ms)
+✔ lost upstream ID remains unknown across repeated restarts and blocks duplicate GPU admission (44.2037ms)
+✔ cancellation by request key survives create in flight and late IDs keep the intent (70.8298ms)
+✔ collector publishes verified inbox media without artwork creation; restart only re-reads results (45.442ms)
+✔ changed backend binding never queries or cancels the replacement (34.8021ms)
+✔ existing Comfy service awaits durable intent and prompt identity, then collects without any page polling (115.0338ms)
+✔ input media is protected in workspace and reconstructs provider files without generating again (46.5297ms)
+✔ shutdown drains an in-flight upstream identity write before the workspace can close (38.3829ms)
+✔ discard releases only settled task results and never resurrects them during recovery (47.7601ms)
+✔ migrated legacy task summaries are read-only and scoped to their verified principal (22.1733ms)
+✔ restored batch stays paused and explicit continuation submits only the never sent shot (22.173ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 691.4094
+
+FILE storage-tasks-final.log
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 950.372
+
+FILE contracts-recheck.log
+ℹ tests 16
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 1040.8467
+
+FILE e2e-core.log
+  3 failed
+    [desktop] › tests\e2e\library-concurrency.spec.ts:121:5 › task summaries atomically merge two pages and clearing defeats a stale writer
+    [desktop] › tests\e2e\library-concurrency.spec.ts:414:7 › chat credentials do not revive after another window saves with real Web Locks
+    [desktop] › tests\e2e\library-concurrency.spec.ts:414:7 › chat credentials do not revive after another window clears with real Web Locks
+  70 passed (3.6m)
+
+FILE e2e-recheck.log
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/3] [desktop] › tests\e2e\library-concurrency.spec.ts:121:5 › task summaries atomically merge two pages and clearing defeats a stale writer
+[2/3] [desktop] › tests\e2e\library-concurrency.spec.ts:414:7 › chat credentials do not revive after another window saves with real Web Locks
+[3/3] [desktop] › tests\e2e\library-concurrency.spec.ts:414:7 › chat credentials do not revive after another window clears with real Web Locks
+  3 passed (3.6s)
+
+FILE e2e-host-fixtures.log
+[6/6] [desktop] › tests\e2e\live2d-performance.spec.ts:105:5 › an unsupported host protocol preserves the UI without issuing native model commands
+  1 failed
+    [desktop] › tests\e2e\live2d-performance.spec.ts:57:5 › native companion keeps live visibility, power and bounds ahead of a stale startup snapshot
+  5 passed (12.7s)
+
+FILE native-event-recheck.log
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/1] [desktop] › tests\e2e\live2d-performance.spec.ts:57:5 › native companion keeps live visibility, power and bounds ahead of a stale startup snapshot
+  1 passed (3.2s)
+
+FILE web-build-accepted.log
+✓ built in 7.96s
+Route bundle budget passed: 18 routes; largest JS PromptBuilderView 139.7 KiB / 140.0 KiB; largest CSS PromptBuilderView 65.4 KiB / 115.0 KiB; largest lazy index.js 923.4 KiB / 1000.0 KiB; entry closure JS 262.2 KiB / 390.0 KiB; largest route closure ChatView 678.6 KiB / 680.0 KiB; entry CSS 87.7 KiB / 100.0 KiB
+Page JS union (report only): 18/18 resolved; /chat 703.8 KiB; /video-studio 675.1 KiB; /prompt-builder 655.0 KiB
+[warn] bundle budget >90% warning:
+PromptBuilderView JavaScript 139.7 KiB > 90% of 140.0 KiB
+ChatView static closure JavaScript 678.6 KiB > 90% of 680.0 KiB
+CompanionView static closure JavaScript 648.0 KiB > 90% of 680.0 KiB
+SceneManagerView static closure JavaScript 629.6 KiB > 90% of 680.0 KiB
+VideoStudioView static closure JavaScript 652.5 KiB > 90% of 680.0 KiB
+index.js lazy JavaScript 923.4 KiB > 90% of 1000.0 KiB
+Purged 304 redundant .woff files (8.9 MB)，重写 1 个 CSS——浏览器只取 woff2
+Precompressed 567 files: 29039.6 KB raw → 5895.5 KB gzip → 4426.5 KB brotli (brotli 比 gzip 再省 25%)
+
+Default npm run check: FAILED. Missing external reference assets: 2534/2534; source and indices unchanged. Other transient type/text/fixture failures were repaired and targeted reruns passed.
+
+NSIS CANDIDATE
+{
+  "status": "passed-after-artifact-materialization",
+  "pipelineExitCode": 1,
+  "compilerAndNsis": "passed",
+  "bindingVerification": "passed",
+  "repairExitCode": 0,
+  "initialBindingFailure": "Cargo release executable had 2 hard links; byte-identical materialization changed link count to 1 without rebuilding",
+  "installer": {
+    "path": "desktop-tauri/src-tauri/target/release/bundle/nsis/AI-CG-Studio_1.7.2_x64-setup.exe",
+    "bytes": 451763858,
+    "sha256": "d87bb65bcce9237f171a9a1b94e371af1188f7d05ac2b4c5f021e78c21b11b33",
+    "signed": false
+  },
+  "executableSha256": "f5494dac7a2ad2c45e862aa9079de2ab2b775c926303ee62461a067d738a6efa",
+  "binding": {
+    "buildCommit": "b58b0e8abc8457138ce18b1c204f0b05f2d2f018",
+    "sourceSha256": "4ea536448c0ea711d75a70e5c87bd56fd5f76be91b739a473ecbe84a0dd907f7",
+    "buildSha256": "6cf38e42dbab6de831df574d6c82288f2abfc2e99c1ba11ecf765fcb5f08efca",
+    "includeBundle": true
+  },
+  "dependencies": "existing verified 143-package lock closure copied; no dependency installation/download"
+}
+
+FINAL RELEASE AND AUTHORIZED PRODUCTION ACCEPTANCE
+{
+  "sourceCommit": "ee53cee0bd7cfb437cc90702cfe41f45c2ddad75",
+  "package": {
+    "status": "passed-and-installed",
+    "pipelineExitCode": 0,
+    "sourceCommit": "ee53cee0bd7cfb437cc90702cfe41f45c2ddad75",
+    "verifiedBuildFlag": true,
+    "privateSameOriginHotfix": true,
+    "installer": {
+      "path": "runtime/desktop-updates/AI-CG-Studio_1.7.2-refactor-ee53cee0-verified_x64-setup.exe",
+      "bytes": 451768336,
+      "sha256": "bd726a195a939ce3b8492589f648a89a5fff45a4889eab736c23536fff8a3ac5",
+      "signed": false
+    },
+    "executableSha256": "ccfd67641b00a57bf542027c1fa4a05287d441959ecddd33a7289074522f7ece",
+    "installedPayloadSha256": "4ae6619035e3ebaae89cd463ae26e076c4ba8d59c85e4360a03ee157e7a68099",
+    "installedMatchesExtractedPayload": true,
+    "payloadDifferenceFromReleaseExe": {
+      "offset": 38744328,
+      "length": 3,
+      "before": "UNK",
+      "after": "NSS"
+    },
+    "runtimeFilesMatched": 41,
+    "binding": {
+      "buildCommit": "ee53cee0bd7cfb437cc90702cfe41f45c2ddad75",
+      "sourceSha256": "2b4a04b1cb21b6725c60001d6c0eff64585de61d99f74e2759df9f10217f699a",
+      "buildSha256": "2cde9c783ae9c53c45fe920273b0daa21d414df14a5d8d3cc7e3c5419b0bd533",
+      "verification": "passed"
+    },
+    "dependencies": "existing verified 143-package lock closure copied; no dependency installation/download",
+    "deployment": "deploy-desktop.bat -UseInstaller -QuietInstall -SkipBuild -NoRestart -InstallDir D:\\AI-CG-Studio",
+    "publicRelease": false
+  },
+  "productionAcceptance": {
+    "completed": true,
+    "authorized": true,
+    "isolatedGateUsed": false,
+    "modelCalls": 0,
+    "workspaceIdentityUnchanged": true,
+    "previousOrigin": "http://127.0.0.1:3002",
+    "currentOrigin": "http://tauri.localhost",
+    "bundledUi": true,
+    "packaged": true,
+    "checks": [
+      "installed-hotfix-private-reads-and-profile-hydration",
+      "native-verified-build-gate-and-user-visible-origin-switch",
+      "bundled-origin-restart-preserves-workspace-and-domain-counts",
+      "three-production-native-window-roles"
+    ],
+    "beforeCounts": {
+      "schemaVersion": 3,
+      "revision": 9,
+      "migrationState": "activated",
+      "migrationRecords": 15,
+      "migrationMedia": 0,
+      "migrationFingerprint": "7c78e47c587ff47db07dbac78424003a49721d6ce4de7bfa48ae387e0bbddf9d",
+      "artworks": 0,
+      "projects": 0,
+      "settings": 10,
+      "chat": 1,
+      "drafts": 2
+    },
+    "afterCounts": {
+      "schemaVersion": 3,
+      "revision": 14,
+      "migrationState": "activated",
+      "migrationRecords": 15,
+      "migrationMedia": 0,
+      "migrationFingerprint": "7c78e47c587ff47db07dbac78424003a49721d6ce4de7bfa48ae387e0bbddf9d",
+      "artworks": 0,
+      "projects": 0,
+      "settings": 10,
+      "chat": 1,
+      "drafts": 2
+    },
+    "quarantineRecords": 2,
+    "sourceRetention": {
+      "checked": 15,
+      "mismatches": 0
+    },
+    "windowRoles": [
+      "companion",
+      "atelier",
+      "companion-chat"
+    ],
+    "allWindowsShareWorkspace": true,
+    "originalSourcesRetained": true,
+    "historicalSourcesMerged": false,
+    "backupRoot": "runtime/refactor-mainline/production-backup-2026-09-26T13-42-24-948Z",
+    "switchBackup": {
+      "revision": 10,
+      "backupFiles": 4,
+      "restoreCandidateFiles": 4
+    },
+    "normalStartupWithoutCdp": true,
+    "temporaryCdpClosed": true,
+    "normalAppRunningAtHandover": true,
+    "limits": [
+      "Current source originally contained zero artworks and zero media",
+      "No production generation or video playback was performed; media Range and same-origin DOM 206 were verified with isolated fixtures",
+      "Runtime reports contain private onsite evidence and are not committed"
+    ]
+  }
+}

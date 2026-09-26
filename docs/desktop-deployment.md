@@ -42,9 +42,12 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 ## 一、决策表：改了什么，就用什么
 
+2026-09-26 当前桌面已启用独立打包 UI（`http://tauri.localhost`）。它的前端编译进原生 EXE；修改 Vue / TS / CSS 后必须重新打包并完整安装，仅复制网关 `dist/` 不会更新桌面界面。构建时保留已验收的 `AICS_BUNDLED_UI_VERIFIED=1` 标记；来源切换和真实资料迁移仍经宿主维护流程，不能用标记跳过资料门槛。此次安装与迁移证据见 [主线实施记录](architecture/R3-R11-EXECUTION-REPORT.md)。
+
 | 改动内容 | 用哪个 | 原因 |
 |---|---|---|
-| `src/**` 前端代码（Vue / TS / CSS） | **增量** | 只需换 `dist/` |
+| `src/**` 前端代码（Vue / TS / CSS），已启用独立 UI | **完整安装** | 前端编译进 EXE，必须重新打包 |
+| `src/**` 前端代码，仍使用旧 HTTP UI 来源 | **增量** | 只需换网关 `dist/` |
 | `data/` 场景、热门角色数据 | **增量** | 只需换 `data/` 产物 |
 | `routes/` `server/` `services/` `scripts/lib/` | **增量** | 网关 JS 直接复制即可 |
 | `assets/` 新增/修改静态资源 | **增量** | 直接复制 |
@@ -159,4 +162,4 @@ Bash 调 powershell）被安全策略拦截——这是命令校验规则，不�
 
 ## 发行构建身份（011）
 
-发行前必须保留当前构建的 `runtime/delivery-evidence/desktop-build-binding.json`；详见[工作流](workflow.md#011-发行输入绑定2026-09-21)。仅部署/安装不会补建发行回执。缺失、陈旧或篡改产物必须回到受控构建流程，不使用同版本号绕过校验。桌面安装及 UAC 仍走本指南既有入口；本次源码验证未安装或公开发布。
+发行前必须保留当前构建的 `runtime/delivery-evidence/desktop-build-binding.json`；详见[工作流](workflow.md#011-发行输入绑定2026-09-21)。仅部署/安装不会补建发行回执。缺失、陈旧或篡改产物必须回到受控构建流程，不使用同版本号绕过校验。桌面安装及 UAC 仍走本指南既有入口；本机安装不等于公开发布。
