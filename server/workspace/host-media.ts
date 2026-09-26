@@ -42,8 +42,17 @@ export function createWorkspaceMediaRouter(service: WorkspaceService, authority:
     const grant = typeof req.query.cap === 'string' ? grants.get(req.query.cap) : undefined;
     let origin: string | undefined;
     try { origin = typeof req.headers.origin === 'string' ? req.headers.origin : new URL(req.headers.referer || '').origin; } catch { /* denied below */ }
-    if (!grant || grant.expiresAt <= Date.now() || grant.alias !== req.params.alias || origin !== grant.session.origin
-      || !security.hostAllowed(req.headers.host) || !security.isDirectLocalRequest({ socket: req.socket, method: req.method, headers: { ...req.headers, origin } })) {
+    // Browser media GETs under no-referrer omit both headers even in CORS mode.
+    // Only this short-lived, single-object capability may use same-origin Fetch
+    // Metadata plus an exact grant-origin/Host match. Private JSON remains strict.
+    const grantedOrigin = grant ? new URL(grant.session.origin) : null;
+    const sameOriginMedia = req.headers.origin === undefined && req.headers.referer === undefined
+      && req.headers['sec-fetch-site'] === 'same-origin' && grantedOrigin?.protocol === 'http:'
+      && grantedOrigin.host.toLowerCase() === req.headers.host?.toLowerCase();
+    const direct = sameOriginMedia ? security.isDirectLocalRequest(req)
+      : security.isDirectLocalRequest({ socket: req.socket, method: req.method, headers: { ...req.headers, origin } });
+    if (!grant || grant.expiresAt <= Date.now() || grant.alias !== req.params.alias || (!sameOriginMedia && origin !== grant.session.origin)
+      || !security.hostAllowed(req.headers.host) || !direct) {
       return res.status(401).end();
     }
     const controller = new AbortController();
@@ -68,7 +77,7 @@ export function createWorkspaceMediaRouter(service: WorkspaceService, authority:
       res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Cache-Control', 'private, no-store');
       res.setHeader('Referrer-Policy', 'no-referrer');
-      res.setHeader('Access-Control-Allow-Origin', origin);
+      if (origin) res.setHeader('Access-Control-Allow-Origin', origin);
       res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
       if (req.method === 'HEAD') return res.end();
       for (let offset = start; offset <= end;) {

@@ -19,13 +19,18 @@ const port = (reserved.address() as net.AddressInfo).port
 await new Promise<void>(resolve => reserved.close(() => resolve()))
 const server = await createServer({ configFile: false, appType: 'custom', resolve: { alias: { '@': path.resolve('src') } },
   optimizeDeps: { noDiscovery: true, entries: [] }, server: { host: '127.0.0.1', port, strictPort: true, watch: null } })
-server.middlewares.use((req, res, next) => { if (req.url !== '/fixture') return next(); res.setHeader('Content-Type', 'text/html'); res.end('<!doctype html><title>Isolated desktop library</title>') })
+server.middlewares.use((req, res, next) => { if (req.url !== '/fixture') return next(); res.setHeader('Content-Type', 'text/html'); res.setHeader('Referrer-Policy', 'no-referrer'); res.end('<!doctype html><title>Isolated desktop library</title>') })
 await server.listen()
 const address = server.httpServer!.address()
 if (!address || typeof address === 'string') throw new Error('No browser fixture port')
 const origin = `http://127.0.0.1:${address.port}`
 const binding = createWorkspaceGateway({ service, allowedOrigins: [origin] })
 const app = require('express')()
+const provenance: Array<{ origin: unknown; referer: unknown; site: unknown; destination: unknown }> = []
+app.use((req: import('express').Request, _res: import('express').Response, next: import('express').NextFunction) => {
+  if (req.method === 'GET' && req.path.startsWith('/api/workspace/')) provenance.push({ origin: req.headers.origin, referer: req.headers.referer, site: req.headers['sec-fetch-site'], destination: req.headers['sec-fetch-dest'] })
+  next()
+})
 app.use('/api/workspace', createWorkspaceMediaRouter(service, binding.authority))
 app.use('/api/workspace', binding.router)
 server.middlewares.use(app)
@@ -66,6 +71,30 @@ try {
   assert.equal(original.history[0].favorite, true)
   assert.ok(original.bytes > 0)
   assert.equal(original.rawTheme, 'light', 'runtime setting never double-writes the old source')
+  const provenanceResult = await page.evaluate(async () => {
+    const descriptor = await Reflect.get(window, '__TAURI__').core.invoke('desktop_bootstrap')
+    const raw = await fetch('/api/workspace/status', { headers: { 'x-aics-workspace-session': descriptor.runtime.workspace.token } })
+    const { desktopRuntimeFetch } = await import(String('/src/platform/desktop/runtime.ts'))
+    const transported = await desktopRuntimeFetch('/api/workspace/status')
+    return { rawStatus: raw.status, transportedStatus: transported.status }
+  })
+  assert.equal(provenanceResult.rawStatus, 401, 'a token alone with omitted browser provenance remains denied')
+  assert.equal(provenanceResult.transportedStatus, 200, 'private same-origin GET works under the production no-referrer document policy')
+  assert.ok(provenance.some(request => request.origin === undefined && request.referer === origin + '/' && request.site === 'same-origin'),
+    'the browser sends origin-only Referer, not the current private document path')
+  const mediaResponse = page.waitForResponse(response => response.url().includes('/api/workspace/media-content/') && response.request().resourceType() === 'media')
+  await page.evaluate(async alias => {
+    const { desktopRuntimeFetch } = await import(String('/src/platform/desktop/runtime.ts'))
+    const minted = await desktopRuntimeFetch('/api/workspace/media-capabilities', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ alias }) })
+    const capability = await minted.json()
+    const video = document.createElement('video')
+    video.id = 'private-media-fixture'; video.crossOrigin = 'anonymous'; video.preload = 'metadata'; video.src = capability.url
+    document.body.append(video)
+  }, original.history[0].image_id)
+  const domMedia = await mediaResponse
+  console.log('Same-origin DOM media provenance:', JSON.stringify({ status: domMedia.status(), ...provenance.find(request => request.destination === 'video') }))
+  assert.ok([200, 206].includes(domMedia.status()), 'DOM media capabilities work under the production no-referrer policy')
+  await page.evaluate(() => { const video = document.querySelector<HTMLVideoElement>('#private-media-fixture'); video?.pause(); video?.removeAttribute('src'); video?.load(); video?.remove() })
   await page.reload()
   const resumed = await page.evaluate(async () => {
     const { initializePlatform } = await import(String('/src/platform/initializePlatform.ts'))

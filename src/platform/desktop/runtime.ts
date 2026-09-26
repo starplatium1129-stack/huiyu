@@ -26,13 +26,18 @@ export const desktopRuntimeFetch: FetchImplementation = async (input, init = {})
   if (!url) throw new Error('资源地址不属于已验证的运行时')
   const headers = new Headers(init.headers)
   const pathname = new URL(url).pathname
-  if (pathname.startsWith('/api/workspace/') || pathname === '/api/tasks/v1' || pathname.startsWith('/api/tasks/v1/')) {
+  const privateRequest = pathname.startsWith('/api/workspace/') || pathname === '/api/tasks/v1' || pathname.startsWith('/api/tasks/v1/')
+  if (privateRequest) {
     const session = bootstrap.runtime.workspace
     if (!session || session.expiresAt <= Date.now()) { void refreshDesktopRuntime(); throw new Error('工作区会话已过期，请重新读取') }
     headers.set('x-aics-workspace-session', session.token)
   }
   const signal = AbortSignal.any([epochController.signal, ...(init.signal ? [init.signal] : [])])
-  const response = await fetch(url, { ...init, headers, signal })
+  // Same-origin GET/HEAD omit Origin. The private session authority also needs
+  // browser provenance; send only the origin while retaining the document's
+  // no-referrer policy for unrelated requests and never emitting a private URL.
+  const referrerPolicy = privateRequest && new URL(url).origin === window.location.origin ? 'origin' : init.referrerPolicy
+  const response = await fetch(url, { ...init, headers, signal, referrerPolicy })
   if (response.status === 401) void refreshDesktopRuntime()
   return response
 }
