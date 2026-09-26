@@ -316,6 +316,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `npm run wf -- desktop:storage-benchmark` 独立运行桌面持久化候选比较：使用 Node 内置 `node:sqlite`、已安装 Playwright 浏览器（可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`）和临时目录，输出 JSON 后清理夹具，不连接生产网关、不打开真实浏览器资料。比较 1,000/10,000 条作品索引及 64 对原图/缩略图，各三轮；耗时不设 CI 阈值，运行时不要并发构建或浏览器测试。方法限制和推荐结论见 [计划 005](../plans/005-desktop-architecture-consolidation.md)。迁移/任务日志故障注入原型已登记 unit 套件，均不接入生产运行时。
 
+`npm run wf -- desktop:workspace-sidecar` 在 Windows 上用已有、固定哈希的 Node sidecar 验证生产 workspace worker。先运行 `npm run build:runtime`；探针复用实际 staging 文件选择及 Tauri 资源映射，复制到临时安装布局，执行 SQLite 保存、重开、备份和候选恢复。仅使用临时库，不下载、不安装、不读取用户库；通过证明该 sidecar 和本次 worker 产物可运行，不替代正式安装、WebView2 或物理断电验收。该入口单独执行，不混入跨平台 unit 套件。
+
 `npm run wf -- desktop:thumbnail-benchmark` 直接抽取当前 `App.vue` 的预热函数，在临时 loopback 服务和私有浏览器上下文运行真实 IndexedDB 与图片解码。1k/10k 历史共用 64 张中性 1024px 图，前台/后台/双页各三轮观察五秒；报告实际 visibility、读写/生成次数、重复图片读取、CDP JS 堆与脚本/任务时间及源码/夹具哈希。后台未实际 hidden 时标为 unavailable，不模拟后台性能，不把小图结果当作用户大图/GPU成本。独占运行后保存 stdout JSON；不新增性能阻断阈值。
 
 `npm run wf -- desktop:restore-benchmark` 在新私有上下文按 1k/10k 历史各跑三轮，64 张确定性中性噪声 PNG 经真实 `buildBackupBlob → Blob.text → JSON.parse/normalizeBackup → restoreBackupData`，核对条目、原图字节数、图片重映射及旧原图保全。分别报告导出/读取/解析/恢复时间、实际备份字节与约 25ms CDP JS 堆采样；observedPeak 是观测下界，不含 Blob 原生后备内存、完整进程/GPU，也不代表 512MiB 峰值、可取消性或断电恢复。独占运行，无生产库访问。

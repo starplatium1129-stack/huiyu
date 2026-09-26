@@ -1,0 +1,201 @@
+R2 selected terminal evidence. Paths, ANSI, line endings and trailing whitespace normalized. Long existing regression logs are tail excerpts.
+
+===== npm run build:runtime; exit=0 =====
+
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 315 sources; current
+[typescript] tests: 227 sources; current
+[typescript] browser: 6 sources; current
+
+===== node --test scripts/tests/test-workspace-storage.js scripts/tests/test-workspace-client.js scripts/tests/test-workspace-backup.js scripts/tests/test-workspace-routes.js; exit=0 =====
+✔ SQLite API snapshot releases writes during copying and restores the earlier WAL state (116.2427ms)
+✔ failed media verification keeps backup leases, and a retry repairs only its own incomplete output (90.0101ms)
+✔ backup honours cancellation during copying; restore rejects a valid-hash unknown schema (93.0106ms)
+✔ a workspace owns one worker and closes before another writer can reopen its receipts (157.3079ms)
+✔ cancelled waits retain accepted save identity so the same operation can be reconciled (87.214ms)
+✔ a second process cannot steal a live or orphaned owner; host recovery requires its exited child (241.1897ms)
+[video] T8 双时钟节点不可用，回退原生采样路径
+  🌪 Tunnel stopped
+✔ workspace API stays disabled without an explicit host binding (107.7032ms)
+[video] T8 双时钟节点不可用，回退原生采样路径
+  🌪 Tunnel stopped
+✔ real gateway and storage worker enforce private sessions and preserve save/revision receipts (304.9968ms)
+Workspace storage: 57 checks passed; four real process exits recovered, no production data accessed.
+✔ scripts\tests\test-workspace-storage.js (780.1897ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 818.4413
+
+===== npm run wf -- desktop:workspace-sidecar; exit=0 =====
+
+> huiyu@1.7.2 wf
+> node scripts/workflow.js desktop:workspace-sidecar
+
+[执行] desktop:workspace-sidecar: ["C:\\Program Files\\nodejs\\node.exe","scripts/tests/test-workspace-sidecar.js"]
+{"node":"v24.18.0","sqlite":"3.53.1","schemaVersion":1,"saved":true,"reopened":true,"backup":true,"restoredCandidate":true,"queuedWritePreserved":true,"writeDuringCopy":true,"sidecarSha256":"9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de","packagedModules":14,"workerSha256":"aa7a432ecf97499672ab506d833f6bfd25cc86b8f3592fb0980cdd1797673738"}
+✔ pinned Windows sidecar loads the staged production workspace worker and completes save/reopen/backup (757.985ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 762.7645
+
+===== npm run test:architecture; exit=0 =====
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "@/types/artwork",
+      "typeOnly": false,
+      "to": "src/types/artwork.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": false,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": true,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    }
+  ],
+  "violations": [],
+  "unknown": [],
+  "runtimeCycles": [],
+  "typeCycles": []
+}
+R0: 688 production sources, 3275 imports, 13 exact legacy edges; no new violations
+✔ artwork types and save use case stay independent of state and infrastructure (1514.1467ms)
+✔ R0 dependency debt only shrinks from its sealed seed and approved Git history (1019.5031ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2559.9805
+
+===== npm run test:monolith; exit=0 =====
+
+> huiyu@1.7.2 test:monolith
+> node scripts/tests/test-monolith-budget.js
+
+✅ 单体体量门禁通过：850 个文件，0 个基线豁免，红线 500 行只降不升。
+✔ monolith-budget (127.2403ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 134.4779
+
+===== node --test scripts/tests/test-desktop-staging.js scripts/tests/test-gateway-contract.js scripts/tests/test-workflow-runner.js scripts/tests/test-quality-gates.js; exit=0 =====
+[执行] winOnly: ["C:\\Program Files\\nodejs\\node.exe","x.js"]
+[执行] data:build: ["C:\\Program Files\\nodejs\\node.exe","scripts/maintenance/build-scenes.js"]
+[执行] check:content: ["C:\\Program Files\\nodejs\\node.exe","C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js","run","test:content"]
+[执行] showcase:scene-candidates: ["C:\\Program Files\\nodejs\\node.exe","scripts/maintenance/generate-scene-showcase-anima11.js","--model","anima-miaomiao-v1.2","--output","o","--ids","sc001"]
+✔ preview declarations allow read-only execution guards without inventing write effects (1.5235ms)
+✔ postinstall preserves custom hooks and only removes the absent legacy override (4.0207ms)
+✔ orphan check fails for an unreferenced script and accepts a desktop source reference (301.7805ms)
+✔ every registered help is side-effect free; plans never spawn (28.0606ms)
+✔ registry references and graph are valid (10.1853ms)
+✔ composites stop after failure and preserve child errors (2.1204ms)
+✔ showcase uses one candidate directory across stages and previews publication (0.4782ms)
+✔ npm argument forwarding preserves spaces and metacharacters (0.5752ms)
+✔ quick gate covers root server, dependencies, scripts and rejects typos (1.5731ms)
+✔ invalid contract concurrency fails before full-gate execution while help stays read-only (0.8675ms)
+✔ desktop batch preserves failure without deploying or waiting for input (196.3831ms)
+✔ every registered entry carries valid run metadata (1.7932ms)
+✔ audit rejects missing, malformed and understated compound metadata (2.8959ms)
+✔ metadata is descriptive only: execution path never consults run (0.9787ms)
+✔ legacy invocations keep their exact commands after metadata landed (1.8399ms)
+✔ help prints run conditions without spawning; plan tags steps with nature (0.5724ms)
+✔ plan distinguishes default effects from requested switch effects without executing (0.3268ms)
+✔ audit accepts truly passive composites and rejects missing child write effects (0.8104ms)
+✔ metadata lists must be arrays so valid audit entries remain renderable (0.1748ms)
+✔ run metadata stays semantically consistent with the registry (0.8206ms)
+✔ deploy preview describes installer switches without invoking deployment (0.5004ms)
+✔ single-dash metadata is limited to batch alphabetic flags (0.3419ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19440.6718
+
+===== ESLint on the 26 changed TypeScript sources; exit=0 =====
+   51:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   80:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  134:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  166:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+<repo>\scripts\tests\gateway-test-stack.ts
+   92:158  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:65   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+<repo>\server.ts
+   52:31  warning  Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+  318:40  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  372:28  warning  Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+  492:78  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  493:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  494:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  495:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  496:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  497:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  498:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  499:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  500:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  501:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  503:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  504:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  509:16  warning  Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+  513:10  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+✖ 27 problems (0 errors, 27 warnings)
+
+(node:12668) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///<repo>/eslint.config.js?mtime=1789829179783 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\<repo>\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+===== node node_modules/eslint/bin/eslint.js server/workspace routes/workspace.ts scripts/tests/test-workspace-storage.ts scripts/tests/test-workspace-client.ts scripts/tests/test-workspace-routes.ts scripts/tests/test-workspace-backup.ts scripts/tests/test-workspace-sidecar.ts; exit=0 =====
+(node:29808) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///<repo>/eslint.config.js?mtime=1789829179783 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\<repo>\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+===== npm run wf -- docs:check; exit=0 =====
+
+> huiyu@1.7.2 wf
+> node scripts/workflow.js docs:check
+
+[执行] docs:check: ["C:\\Program Files\\nodejs\\node.exe","scripts/maintenance/check-doc-links.js"]
+Documentation: 229 files, 1675 local links, 70 redirects, 0 broken links.
+
+===== node scripts/tests/test-repo-hygiene.js; exit=0 =====
+✔ repository text hygiene scans index, worktree, and nonignored untracked files (2151.6891ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2156.1948

@@ -98,7 +98,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
   let cleanupRuntime = options.cleanupRuntime === true || (ownsTemporaryRoot && options.cleanupRuntime !== false);
   let runtime = runtimePaths.createRuntimePaths(temporaryRoot);
   let upstreams: Upstreams | null = null;
-  let gateway: { app: RequestListener; handleUpgrade: (...args: any[]) => void; close: () => void; }|null = null;
+  let gateway: { app: RequestListener; handleUpgrade: (...args: any[]) => void; close: () => void | Promise<void>; }|null = null;
   let server: Server | null = null;
   let closed = false;
 
@@ -124,6 +124,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
       env:options.env || {},
       services:services,
       control:control,
+      workspace:options.workspace,
       spawn:options.spawn
     });
     server = http.createServer(gateway!.app);
@@ -148,7 +149,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
          if (closed) return;
          closed = true;
          let errors = [];
-         try { if (gateway) gateway.close(); } catch (error) { errors.push(error); }
+         try { if (gateway) await gateway.close(); } catch (error) { errors.push(error); }
          try { await closeServer(server); } catch (error) { errors.push(error); }
          try { if (upstreams) await upstreams.close(); } catch (error) { errors.push(error); }
          try { if (cleanupRuntime) removeFixtureRoot(temporaryRoot); } catch (error) { errors.push(error); }
@@ -156,7 +157,7 @@ async function start(options: { runtimeRoot?: string; cleanupRuntime?: boolean; 
        }
     };
   } catch (error) {
-    try { if (gateway) gateway.close(); } catch (closeError) {}
+    try { if (gateway) await gateway.close(); } catch (closeError) {}
     await closeServer(server);
     if (upstreams) await upstreams.close();
     if (cleanupRuntime) removeFixtureRoot(temporaryRoot);

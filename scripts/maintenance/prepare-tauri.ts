@@ -170,6 +170,8 @@ if (require.main === module) {
 }
 
 export = {
+  NODE_VERSION,
+  NODE_SHA256,
   ensureNodeSidecar,
   prepareTauri,
   sha256,

@@ -119,6 +119,8 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only'], machine: ['windows', 'node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/desktop-build-environment.js:39-64', unknown: [] } },
   'desktop:storage-benchmark': { desc: '用临时库和私有浏览器比较 IndexedDB 与 SQLite 原型，不访问用户数据', cmd: ['node', 'scripts/tests/prototypes/benchmark-artwork-storage.js'], docs: 'plans/005-desktop-architecture-consolidation.md',
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-artwork-storage.js:56-135', unknown: [] } },
+  'desktop:workspace-sidecar': { desc: '使用已有 Windows sidecar 验证包内 workspace worker、SQLite 与备份恢复', cmd: ['node', 'scripts/tests/test-workspace-sidecar.js'], docs: 'docs/workflow.md#门禁与构建',
+    run: { nature: ['isolated-fixture'], machine: ['windows', 'node'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-workspace-sidecar.ts', unknown: [], notes: ['先构建运行时代码；校验已有 sidecar 版本与固定哈希，不下载、不安装；真实打包选择和资源映射进入临时目录，不访问用户库'] } },
   'desktop:thumbnail-benchmark': { desc: '隔离测量 1k/10k 历史缩略图预热的前台、后台和双页资源成本', cmd: ['node', 'scripts/tests/prototypes/benchmark-thumbnail-warmup.js'], docs: 'docs/workflow.md#门禁与构建',
     run: { nature: ['isolated-fixture'], machine: ['node', 'playwright-browser'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/prototypes/benchmark-thumbnail-warmup.ts', unknown: ['浏览器是否提供真实 hidden 状态'], notes: ['三轮五秒观察；临时同源私有浏览器不访问生产库；独占运行，不与构建或其他浏览器测试并行；输出 JSON，无性能门禁'] } },
   'desktop:restore-benchmark': { desc: '隔离测量真实备份导出、解析和 1k/10k 恢复，不访问用户库', cmd: ['node', 'scripts/tests/prototypes/benchmark-backup-restore.js'], docs: 'docs/workflow.md#门禁与构建',

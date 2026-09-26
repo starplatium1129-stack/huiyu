@@ -6,7 +6,7 @@
 
 ## 本次用户指定的架构重构
 
-- [复审后的架构重构执行计划](architecture/REFACTOR-EXECUTION-PLAN.md)：固定源码基线、14 处计划修正、存储迁移/任务恢复/桌面接入规范和 R0–R13 依赖门槛；配套 [Codex 执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md) 提供每批文件、命令与停止条件。R0 已完成，见 [R0 实施记录](architecture/R0-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r0-2026-09-26.json)；R1 仓储收口与最小 bootstrap 实现/定向验收完成，见 [R1 实施记录](architecture/R1-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r1-2026-09-26.json)。原生安装/WebView2 未验，R2–R13 仍待执行，尚未迁移用户数据或切换 UI 来源。
+- [复审后的架构重构执行计划](architecture/REFACTOR-EXECUTION-PLAN.md)：固定源码基线、14 处计划修正、存储迁移/任务恢复/桌面接入规范和 R0–R13 依赖门槛；配套 [Codex 执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md) 提供每批文件、命令与停止条件。R0 已完成，见 [R0 实施记录](architecture/R0-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r0-2026-09-26.json)；R1 实现/定向验收完成，见 [R1 实施记录](architecture/R1-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r1-2026-09-26.json)；R2 代码、隔离及 sidecar 门槛完成，见 [R2 实施记录](architecture/R2-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r2-2026-09-26.json)。Workspace 默认关闭、未启用生产，原生安装/WebView2 未验；R3–R13 仍待执行，尚未迁移用户数据或切换 UI 来源。
 
 本次指定任务按该专项执行；其他待办和优先级仍查未来规划。不能把这份新设计当作已具备的桌面能力。
 

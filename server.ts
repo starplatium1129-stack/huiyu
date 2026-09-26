@@ -78,6 +78,10 @@ function createGateway(options: GatewayOptions = {}) {
   let tunnelManager: ReturnType<typeof createTunnelManager> | null = null;
   app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }));
   app.use(security.tokenAuth(config.TOKEN));
+  // Private storage has its own session authority; a shared token grants no workspace access.
+  app.use('/api/workspace', options.workspace?.router || ((_req, res) => {
+    envelope.fail(res, 404, '私人工作区尚未启用', { code: 'WORKSPACE_DISABLED' });
+  }));
   // Fence mutable content before any installed projection, precompressed file or
   // ordinary static handler can return bytes from a maintenance transaction.
   if (!isDesktopPackagedMode(config)) {
@@ -383,7 +387,7 @@ function createGateway(options: GatewayOptions = {}) {
     envelope.fail(res, status, messages[status] || (status >= 500 ? '网关内部错误' : '请求无法处理'));
   });
 
-  function close() {
+  async function close() {
     resources.close();
     voice.close();
     if (anima && typeof anima.close === 'function') anima.close();
@@ -392,6 +396,7 @@ function createGateway(options: GatewayOptions = {}) {
     if (maintenance && typeof maintenance.close === 'function') maintenance.close();
     if (control && typeof control.close === 'function') control.close();
     if (tunnelManager) tunnelManager.stop();
+    await options.workspace?.close();
   }
 
   // 将控制函数暴露给 gatewayState，供 control 路由调用
@@ -528,9 +533,11 @@ function startGateway(options?: GatewayOptions) {
   function shutdown() {
     if (closing) return;
     closing = true;
-    gateway.close();
-    server.close(function () { process.exit(0); });
     setTimeout(function () { process.exit(1); }, 5000).unref();
+    void gateway.close().then(() => server.close(function () { process.exit(0); }), error => {
+      logger.error('网关关闭失败', error);
+      process.exit(1);
+    });
   }
   process.once('SIGINT', shutdown);
   process.once('SIGTERM', shutdown);

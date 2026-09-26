@@ -1,6 +1,6 @@
 # Codex 执行手册
 
-> 2026-09-26；配套[总计划](REFACTOR-EXECUTION-PLAN.md)。本文件为执行清单，不是已执行报告。R0 已完成，R1 实现与定向验收完成，原生安装/WebView2 未验；实际结果和限制见 [R0 记录](R0-EXECUTION-REPORT.md)、[R1 记录](R1-EXECUTION-REPORT.md)。R2–R13 仍待执行。
+> 2026-09-26；配套[总计划](REFACTOR-EXECUTION-PLAN.md)。本文件为执行清单，不是已执行报告。R0 已完成，R1 实现与定向验收完成，R2 代码、隔离及 sidecar 门槛完成但未启用生产；原生安装/WebView2 未验。实际结果见 [R0 记录](R0-EXECUTION-REPORT.md)、[R1 记录](R1-EXECUTION-REPORT.md)、[R2 记录](R2-EXECUTION-REPORT.md)。R3–R13 仍待执行。
 
 ## 0. 接手规则：只读本批所需内容
 
@@ -95,6 +95,8 @@ Gate：新增合法/非法依赖夹具能分别通过/失败；注释、类型�
 测试：保存用例、backupRestore、client、桌面 bootstrap 正反权限夹具、架构/typecheck。Gate：旧路径行为不变，实际消费者可替换，Web 不依赖 Tauri。
 
 ## 4. R2 — Workspace 内核与受保护 API
+
+状态：代码、隔离测试及实际 sidecar 门槛完成，默认关闭、未启用生产；不是完整 NSIS 安装/WebView2 验收。实现边界、当次结果与过程修复见 [R2 实施记录](R2-EXECUTION-REPORT.md)。
 
 建议新增生产文件归入 `server/workspace/`，路由按当前 server/routes 组织；worker 是该目录内的实际 TS 源，不导入 `scripts/tests/prototypes`。
 

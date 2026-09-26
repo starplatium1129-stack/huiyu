@@ -47,7 +47,7 @@ services/**/*.d.ts
 /poc/live2d-compare/probe2.mjs
 /poc/live2d-compare/shot.mjs
 /poc/live2d-compare/probe-types.js
-workspace/
+/workspace/
 
 # 旧版运行文件（启动时会自动迁移到 runtime/）
 friend_outputs/

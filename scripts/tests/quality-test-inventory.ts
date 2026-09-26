@@ -49,6 +49,9 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-anima-session.js',
     'test-api-client.js',
     'test-artwork-persistence-prototype.js',
+    'test-workspace-storage.js',
+    'test-workspace-client.js',
+    'test-workspace-backup.js',
     'test-batch-draw.js',
     'test-blink-scheduler.js',
     'test-character-profiles.js',
@@ -138,6 +141,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-wav-quality.js',
   ]),
   contract: Object.freeze([
+    'test-workspace-routes.js',
     'test-maintenance-recovery.js',
     'test-maintenance-recovery-boundaries.js',
     'test-maintenance-read-barrier.js',
@@ -192,6 +196,6 @@ function qualityTestMetadata(file: string): TestMetadata {
   if (contract) return { domain: 'contract', environment: 'node-loopback', parallelSafety: 'isolated', resources: [contract.fixture] };
   return QUALITY_TEST_METADATA[file] ?? { domain: 'unclassified', environment: 'node', parallelSafety: 'unreviewed', resources: ['unreviewed'] };
 }
-// Browser visual harness requires its own server; it is not part of deterministic Node lanes.
-const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs']);
+// Browser and real packaged-Windows probes have separate explicit execution prerequisites.
+const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs', 'test-workspace-sidecar.js']);
 export = { QUALITY_TEST_SUITES, QUALITY_TEST_METADATA, QUALITY_EXTERNAL_TESTS, qualityTestMetadata };

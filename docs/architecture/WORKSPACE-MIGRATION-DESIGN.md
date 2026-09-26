@@ -2,6 +2,8 @@
 
 > 设计规范，尚未接入生产。对应新版 R1–R4，以及 R9 的剩余来源数据迁移。入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
 
+> 实现状态：R1 仓储收口已完成；R2 内核/API 的代码、隔离及 sidecar 门槛完成，见 [R2 实施记录](R2-EXECUTION-REPORT.md) 与 [验证证据](../evidence/architecture-r2-2026-09-26.json)。激活状态：默认关闭，旧 Web 权威保持；R3 旧来源盘点/迁移器与 R4 真实数据激活仍待执行，原生安装/WebView2 未验。
+
 ## 1. 已定方案与所有权
 
 桌面作品库由 Node 应用运行时统一管理；SQLite 元数据和不可变媒体文件共同组成 workspace。Vue 不直接访问桌面 SQLite，Rust 不建立第二套业务仓储。

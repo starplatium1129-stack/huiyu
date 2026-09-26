@@ -1,0 +1,278 @@
+{
+  "batch": "R2",
+  "status": "implemented-isolated-and-sidecar-gates-passed-production-disabled",
+  "baseCommit": "9260bd38eb5280fec406e348c489e19f22d00a82",
+  "headCommit": null,
+  "branch": "main",
+  "environment": {
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "packageLockSha256": "302ed273761e76cd239cada37b1d5c4b552e580e09b1c2a6ed351a9bacf50df4"
+  },
+  "changedPaths": [
+    ".gitignore",
+    "docs/INDEX.md",
+    "docs/architecture/CODEX-EXECUTION-RUNBOOK.md",
+    "docs/architecture/R2-EXECUTION-REPORT.md",
+    "docs/architecture/REFACTOR-EXECUTION-PLAN.md",
+    "docs/architecture/WORKSPACE-MIGRATION-DESIGN.md",
+    "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+    "docs/evidence/architecture-r2-2026-09-26.json",
+    "docs/workflow.md",
+    "routes/workspace.ts",
+    "scripts/maintenance/prepare-tauri.ts",
+    "scripts/tests/gateway-test-stack.ts",
+    "scripts/tests/quality-test-inventory.ts",
+    "scripts/tests/test-workspace-backup.ts",
+    "scripts/tests/test-workspace-client.ts",
+    "scripts/tests/test-workspace-routes.ts",
+    "scripts/tests/test-workspace-sidecar.ts",
+    "scripts/tests/test-workspace-storage.ts",
+    "scripts/workflow.ts",
+    "server.ts",
+    "server/gateway-types.ts",
+    "server/workspace/auth.ts",
+    "server/workspace/backup.ts",
+    "server/workspace/client.ts",
+    "server/workspace/engine.ts",
+    "server/workspace/garbage.ts",
+    "server/workspace/gateway.ts",
+    "server/workspace/media.ts",
+    "server/workspace/owner.ts",
+    "server/workspace/paths.ts",
+    "server/workspace/records.ts",
+    "server/workspace/saves.ts",
+    "server/workspace/schema.ts",
+    "server/workspace/types.ts",
+    "server/workspace/worker.ts"
+  ],
+  "checkedSourceHashes": {
+    ".gitignore": "6d082521efd689795cc3d6af5340d613b0df24ee8406e03a9ffafcf913e63b35",
+    "routes/workspace.ts": "2312604422b34fdd32dfee974b40efb93606f79b7a8171992ed9c218ed319048",
+    "scripts/maintenance/prepare-tauri.ts": "b4f76968041ffa1374fd680671cf7e3b2b5697e805f07fb1d9dcb024b1db5ce9",
+    "scripts/tests/gateway-test-stack.ts": "1f4cdd5a6db90017366b44ab545e671512d138821f8e098424b2394f9ce1d081",
+    "scripts/tests/quality-test-inventory.ts": "ffec3515b0b952c03f756f56520eec4dcf1f059920765609d28d6a26d51909ee",
+    "scripts/tests/test-workspace-backup.ts": "66f59c01d5bc97b396523b829fe420c9e5ff8d6ce4279e73aa6b3a360bdf4b72",
+    "scripts/tests/test-workspace-client.ts": "0b3a3bc046ef8d606bb00a872f9152c1e3fa267b632bc62b0185e8bb09b51c8e",
+    "scripts/tests/test-workspace-routes.ts": "0677ce7762be12333cc2db9e9a5b3433704eee4429351af0e6511b46e4c8a18d",
+    "scripts/tests/test-workspace-sidecar.ts": "b6b2abcfb97b09b1a2ef9f668e29b7a45d78382e7d8c2e8cfead09596e15935b",
+    "scripts/tests/test-workspace-storage.ts": "f76370327d878ff618ad1b537aea10e2e3e35a9111556f068a78453e8d345b00",
+    "scripts/workflow.ts": "5c0927f68b32894ca00001ec38b53c0d93a98e3447f1bd9eded8a6af465b2cc2",
+    "server.ts": "697ecc22b55a45977fb528c085f66f235c73cc81ddbf5938b637e964ec856ce0",
+    "server/gateway-types.ts": "c30565a4ec63b83f61a5ac881ab8a8477d7486e9fbbe64d484dc22de2ad4fe31",
+    "server/workspace/auth.ts": "10293124f8e9ce09136ee54340cba533954013452467a85490b86f40dd369f0e",
+    "server/workspace/backup.ts": "a16158d4b9ed9dc8f1aea0c2d5d6ee605d13f33eb1b843846063fe9ab442ee7c",
+    "server/workspace/client.ts": "04c0762081fe7a8bfd34e49e8b9520efc8837bf6ecaab7ab759d00bd6d155bae",
+    "server/workspace/engine.ts": "7bfbe021492c4d19e825978eb3b65067f02d21de056985f3706d36685be69745",
+    "server/workspace/garbage.ts": "6ee645e59bb35d0adfee61faedde8d5c0ab6208572c44d51ced2db33f01c199a",
+    "server/workspace/gateway.ts": "24c8b0f3161222980cb84b163f4ee5ab7361263fcd0b52023f5ff6c40471f1eb",
+    "server/workspace/media.ts": "fbfcfbb9646dac5075af28660162334969fa4c05a872332cd7814ecd87af9a91",
+    "server/workspace/owner.ts": "5c1e1dc84f39c12cf13463ae9276d3dcfebf334a6dfed413a66ad5fc942250bd",
+    "server/workspace/paths.ts": "3cd84b25035b344220924707efed037314764b0a48a8dcab2b158421e35a0852",
+    "server/workspace/records.ts": "566f4f0fd73d6607c33a756c271fb219cb4de512b25761daa23dbc91f293bd7d",
+    "server/workspace/saves.ts": "ebc3bbc0c84f29d3f2f6a7d6cb26ee8b63eade4782e7e9ecc856750e50571a9b",
+    "server/workspace/schema.ts": "26eccb010112850f5dfb92b29409be6c844c565dc02f85cce6524f8f746a2204",
+    "server/workspace/types.ts": "144184f182528652b4add0cb0a8f827de5d82f0f35441f78a1bdaaea4f5c4e17",
+    "server/workspace/worker.ts": "60442bcc7450b30a6821c46b99004dc6f811ad72a36496054b00215a63b1a6a1"
+  },
+  "verifiedCompiledModules": {
+    "server/workspace/auth.js": "be6a30f3af402711df40592a069f7292d7911b0bf6d2d1fb7951ee85da8b404b",
+    "server/workspace/backup.js": "8e958ba8a54ec59c4d289418b47b7442c0af143f62e3c72961f598db23260b72",
+    "server/workspace/client.js": "0c8dbe44cecff526843d7afb56115fb1ed01c99e96897bb8f2ae2de4f4e23907",
+    "server/workspace/engine.js": "b7ffda529ad59abc71cdcaae149ad4bfd7ecc219fdfeece51a9a254ab8b6c841",
+    "server/workspace/garbage.js": "7c7b3e7995439f5829029d20eacfb0f881503d122feccdf6bf805fcfd4128a1d",
+    "server/workspace/gateway.js": "14adb837f68e5372e0f9ff4108f3c38fff05ad525a2b7ed3a1a9280fb6c2028a",
+    "server/workspace/media.js": "85717799b3e1cc96cdd6ea6578fb343422d2ad52cc487d218adf81a7e496e978",
+    "server/workspace/owner.js": "befefca754ea48137d7bbecf78326016f18c3a54809e3dce4a1080262c5541f8",
+    "server/workspace/paths.js": "f6dc9142dad722bbdb2b8f86fa5d2100a43abce49bbc16b762f35c32014acde5",
+    "server/workspace/records.js": "f4dfcb7699bc2f173cc5963677950005c8e05ba18c2d6a8a08012e2506230622",
+    "server/workspace/saves.js": "c7341a2291af13022e38b58f2779167c3de5afcc09ceb8326799752c812f1059",
+    "server/workspace/schema.js": "1d61743b791cf9466ae350b37bc916ac811b76465ac4891d6af52fdc2f7fad86",
+    "server/workspace/types.js": "035ad055660746753f4b3bee3ff87fd94bba2df66f79e0f6684a5c89a27eff0b",
+    "server/workspace/worker.js": "aa7a432ecf97499672ab506d833f6bfd25cc86b8f3592fb0980cdd1797673738"
+  },
+  "checks": [
+    {
+      "command": "npm run build:runtime",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/build-runtime-normalized.log",
+      "logSha256": "db14ec91357e1c48e1d44f428cb978ffcfc76b54a97ffcbe67ef7b06e81785aa",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "node --test scripts/tests/test-workspace-storage.js scripts/tests/test-workspace-client.js scripts/tests/test-workspace-backup.js scripts/tests/test-workspace-routes.js",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/workspace-release.log",
+      "logSha256": "c8f237974d5ee78682b2da4fadda9a2d63b0c5784aad068a53ac0187fadb7d68",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "npm run wf -- desktop:workspace-sidecar",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/sidecar-release.log",
+      "logSha256": "b6032904a80a8c015d1ea239421daea61e9cc55869611962d7be42cfc285234f",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "npm run test:architecture",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/architecture.log",
+      "logSha256": "d736e2b3e0c74c8f2be238dcf1dae165a90f238b8c32ec4d2f8656b8470b115e",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "npm run test:monolith",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/monolith.log",
+      "logSha256": "99f83c7b71cf276ae355706004be5e041f9e142cb885df00c78015c408dad0b6",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "node --test scripts/tests/test-desktop-staging.js scripts/tests/test-gateway-contract.js scripts/tests/test-workflow-runner.js scripts/tests/test-quality-gates.js",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/staging-gateway.log",
+      "logSha256": "81506aebb439391eeeb07283871ecb4ee6917e0268e0e156fc87e4892dec3aa7",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "ESLint on the 26 changed TypeScript sources",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/lint.log",
+      "logSha256": "1e2380cf72f7d01543de655c4795141668d88419474945932050f8710ecdee3a",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js server/workspace routes/workspace.ts scripts/tests/test-workspace-storage.ts scripts/tests/test-workspace-client.ts scripts/tests/test-workspace-routes.ts scripts/tests/test-workspace-backup.ts scripts/tests/test-workspace-sidecar.ts",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/lint-release.log",
+      "logSha256": "f9081c2a5f3083aeebb73636a114a68f522564ae6550971939bda8cf92d1bee8",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "last 35 lines or complete shorter log"
+    },
+    {
+      "command": "npm run wf -- docs:check",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/docs.log",
+      "logSha256": "1ce750bef2892254d001b383be90fc6c38b769c8651bd2316de3f8caca0d84eb",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "complete log"
+    },
+    {
+      "command": "node scripts/tests/test-repo-hygiene.js",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/hygiene.log",
+      "logSha256": "ffff2d31dcf938a8390d4ee0adeb0a45a281e2da295ee77facd3b5063ee46e35",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+      "capture": "complete log"
+    },
+    {
+      "command": "node scripts/build-node.mts --project node",
+      "status": "passed",
+      "exitCode": 0,
+      "localLog": "runtime/refactor-r2/build-node-format.log",
+      "logSha256": "d94f1bd6e2ddbb4e24f173fa65b0f648de8461491e3c7369e23c6d17916b7076",
+      "note": "Removed one trailing blank line; all 14 verified compiled modules remained byte-identical."
+    }
+  ],
+  "sidecar": {
+    "node": "v24.18.0",
+    "sqlite": "3.53.1",
+    "sha256": "9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de",
+    "workerSha256": "aa7a432ecf97499672ab506d833f6bfd25cc86b8f3592fb0980cdd1797673738",
+    "packagedModules": 14,
+    "staging": "production stageResources and actual Tauri bundle.resources mapping into a temporary installed layout",
+    "results": {
+      "saved": true,
+      "reopened": true,
+      "backup": true,
+      "restoredCandidate": true,
+      "writeDuringCopy": true
+    },
+    "installerAcceptance": "not-run"
+  },
+  "behaviorEvidence": {
+    "workspaceNodeTests": 9,
+    "storageScriptReportedChecks": 57,
+    "actualSigkillCheckpoints": [
+      "prepared",
+      "media-published",
+      "metadata-written",
+      "committed"
+    ],
+    "existingRegressionTests": 40,
+    "remainingLegacyEdges": 13,
+    "monolithFiles": 850
+  },
+  "developmentFindings": [
+    {
+      "status": "resolved",
+      "finding": "Early delegated runs used stale generated JavaScript; the sidecar fixture also omitted an explicit TypeScript exclude list.",
+      "resolution": "Corrected the isolated fixture and used a centralized strict runtime build before final tests.",
+      "evidence": "Delegated tool output; final results are in the archived centralized logs."
+    },
+    {
+      "status": "resolved",
+      "finding": "Node fetch ignored the fixture Host override, so one early authorization assertion did not send the intended request.",
+      "resolution": "Used node:http in the existing route fixture; actual Host and forwarding rejection now pass."
+    },
+    {
+      "status": "resolved",
+      "finding": "Non-finite parsed JSON numbers could become null on persistence; locale-dependent key ordering could change persisted fingerprints.",
+      "resolution": "Reject non-finite JSON numbers before persistence and use locale-independent lexical key ordering."
+    },
+    {
+      "status": "resolved",
+      "finding": "The first backup implementation occupied the write queue for the entire file copy.",
+      "resolution": "Release the queue after the SQLite snapshot; protect source media with durable leases, yield copying/hash work every MiB, admit one background copy, and cancel/drain it before closing. The sidecar probe verifies writes complete during copying while the restored snapshot stays earlier."
+    },
+    {
+      "status": "resolved",
+      "finding": "A native storage error or staging cleanup failure must not imply a committed save was rolled back.",
+      "resolution": "Native mutation errors report COMMIT_UNKNOWN; committed receipts remain successful if owned staging cleanup must wait for GC."
+    }
+  ],
+  "productionDataTouched": false,
+  "productionWorkspaceActivated": false,
+  "frontendAuthority": "existing Web IndexedDB",
+  "uiOriginChanged": false,
+  "sessionIssuance": "Trusted in-process capability only; native window session delivery remains a later integration step.",
+  "limits": [
+    "No production migration or real WebView profile access.",
+    "No complete installer/WebView2 or physical power-loss acceptance.",
+    "Windows file fsync is retained; directory flush awaits a supported and verified target runtime.",
+    "Unexpected owner locks remain until the host can prove the matching old process exited; Tauri automatic recovery is not connected yet.",
+    "Normal artwork saves preserve the existing no-automatic-project-membership behavior.",
+    "Large-library performance and complete media Range/capability transport remain separate acceptance work."
+  ],
+  "notRun": [
+    "frontend tests/build (no frontend change)",
+    "full validate (R0 missing-reference-media baseline retained)",
+    "real model/GPU calls",
+    "production migration",
+    "installer/WebView2"
+  ],
+  "nextBatch": "R3",
+  "transcript": {
+    "path": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
+    "sha256": "729196ec0c1bdc707bad10662cf7e5f71b3670939d9ef917935cfec662d384b2"
+  }
+}
