@@ -30,6 +30,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-content-sync.js',
     'test-character-reference-profile.js',
     'test-domain-type-boundaries-fixtures.js',
+    'test-refactor-boundaries-fixtures.js',
     'test-test-process-pool.js',
     'test-precompress-runner.js',
     'test-workflow-conditions.js',

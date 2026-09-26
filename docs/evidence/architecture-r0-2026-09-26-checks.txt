@@ -1,0 +1,867 @@
+R0 command evidence — actual captured output; repository paths replaced by <repo>; ANSI, line endings and trailing whitespace normalized.
+Baseline build output is a tail excerpt; all other selected command output is complete.
+
+===== baseline: npm run build:runtime; exit=0 =====
+
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 298 sources; current
+[typescript] tests: 221 sources; current
+[typescript] browser: 6 sources; current
+
+
+===== baseline: npm run test:architecture; exit=0 =====
+
+> huiyu@1.7.2 test:architecture
+> node scripts/tests/test-page-architecture.js && node scripts/tests/test-domain-type-boundaries.js
+
+✔ page-architecture (78.3002ms)
+✔ router import parsing permits equivalent helpers but distinguishes eager imports (3.5017ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.8186
+{
+  "files": [
+    "src/application/artwork/artworkSaveInput.ts",
+    "src/application/artwork/saveGeneratedArtwork.ts",
+    "src/types/anima.ts",
+    "src/types/artwork.ts",
+    "src/types/generation.ts",
+    "src/types/promptHistory.ts",
+    "src/utils/resultContext.ts",
+    "src/utils/sdError.ts"
+  ],
+  "edges": [
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./generation",
+      "typeOnly": true,
+      "to": "src/types/generation.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./generation",
+      "typeOnly": true,
+      "to": "src/types/generation.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "@/utils/sdError",
+      "typeOnly": true,
+      "to": "src/utils/sdError.ts"
+    },
+    {
+      "from": "src/utils/resultContext.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/utils/resultContext.ts",
+      "specifier": "@/types/anima",
+      "typeOnly": true,
+      "to": "src/types/anima.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "@/types/artwork",
+      "typeOnly": false,
+      "to": "src/types/artwork.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": false,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/anima",
+      "typeOnly": true,
+      "to": "src/types/anima.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/artwork",
+      "typeOnly": true,
+      "to": "src/types/artwork.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/utils/resultContext",
+      "typeOnly": false,
+      "to": "src/utils/resultContext.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": true,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    }
+  ],
+  "violations": [],
+  "unknown": [],
+  "runtimeCycles": [],
+  "typeCycles": []
+}
+✔ artwork types and save use case stay independent of state and infrastructure (50.129ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 54.0829
+
+
+===== baseline: npm run test:monolith; exit=0 =====
+
+> huiyu@1.7.2 test:monolith
+> node scripts/tests/test-monolith-budget.js
+
+✅ 单体体量门禁通过：827 个文件，0 个基线豁免，红线 500 行只降不升。
+✔ monolith-budget (88.3114ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92.1882
+
+
+===== baseline: npm run validate; exit=1 =====
+
+> huiyu@1.7.2 validate
+> npm run check && npm run test:frontend && npm run test:unit:run && npm run test:contract:run
+
+
+> huiyu@1.7.2 precheck
+> npm run build:runtime
+
+
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 298 sources; current
+[typescript] tests: 221 sources; current
+[typescript] browser: 6 sources; current
+
+> huiyu@1.7.2 check
+> node scripts/maintenance/run-check-parallel.js
+
+质量门禁并发编排：21 步 / 并发 6（CHECK_JOBS 可调）
+  ✅ animations (0.2s)
+  ✅ style-literals (0.2s)
+  ✅ colors (0.2s)
+  ✅ contrast (0.2s)
+  ✅ scenes:build (0.2s)
+  ✅ popular:build (0.2s)
+  ✅ reference:build (0.6s)
+  ✅ blueprints:build (0.5s)
+  ✅ tags:build (0.2s)
+  ✅ ts-directives (2.2s)
+  ✅ scenes:optimize (0.5s)
+  ✅ scenes:ratings (0.2s)
+  ✅ scenes:validate (0.5s)
+  ❌ content-contracts (1.5s)
+  ❌ ref-urls (0.3s)
+  ✅ design:lint (0.9s)
+  ✅ orphan-scripts (5.4s)
+  ✅ typecheck:app (18.4s)
+  ✅ typecheck (26.6s)
+  ✅ lint:js (30.0s)
+  ✅ test:check (34.4s)
+
+门禁失败：2/21 步未通过（总耗时 34.4s）：
+
+──── ❌ content-contracts 输出尾部 ────
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_01_face_closeup.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_02_half_medium.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_03_full_dynamic.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_04_back_rear.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_front.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_side.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_back.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_01_face_closeup.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_02_half_medium.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_03_full_dynamic.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_04_back_rear.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_design_front.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_design_side.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_design_back.png
+    - character-reference-view: nene/casual_summer: /character-references/nene/casual_summer/ref_01_face_closeup.png
+    - 参考图缺失 2534/2534；素材根目录: (未配置)。先确认素材路径与同步，不自动改写索引。
+  (node:5628) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///<repo>/src/utils/popularParseGuards.ts is not specified and it doesn't parse as CommonJS.
+  Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+  To eliminate this warning, add "type": "module" to \\?\<repo>\package.json.
+  (Use `node --trace-warnings ...` to show where the warning was created)
+
+──── ❌ ref-urls 输出尾部 ────
+  total urls: 2534 | missing: 2534 | pending: 4473 | unverified: 0 | refRoot: (not configured)
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_01_face_closeup.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_02_half_medium.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_03_full_dynamic.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_04_back_rear.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_front.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_side.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_back.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_01_face_closeup.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_02_half_medium.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_03_full_dynamic.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_04_back_rear.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_design_front.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_design_side.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_design_back.png
+  REFERENCE: nene/casual_summer: /character-references/nene/casual_summer/ref_01_face_closeup.png
+  先核对 AICS_CHARACTER_REF_ROOT / AI_WORKSPACE_ROOT 与素材同步；不要用修改索引或 pending 掩盖缺图。
+
+
+===== baseline: npm run build; exit=0 =====
+dist/_app/BatchSceneDrawPanel-YKrO4Cy2.js                                         32.61 kB │ gzip:  12.03 kB
+dist/_app/shared-CGhT8-34.js                                                      35.72 kB │ gzip:  14.82 kB
+dist/_app/ModelStudio-BUuNu9V9.js                                                 37.63 kB │ gzip:  14.47 kB
+dist/_app/ChatView-2Algg4tY.js                                                    42.60 kB │ gzip:  15.72 kB
+dist/_app/ControlView-BZB34v0A.js                                                 45.05 kB │ gzip:  16.54 kB
+dist/_app/Live2DQualityControl-BXo2WrLi.js                                        46.32 kB │ gzip:  17.96 kB
+dist/_app/GalleryView-oByCUGNi.js                                                 51.31 kB │ gzip:  19.42 kB
+dist/_app/CompanionView-eUZPJfFk.js                                               58.92 kB │ gzip:  21.79 kB
+dist/_app/live2d-BD7kjGPn.js                                                      60.32 kB │ gzip:  19.04 kB
+dist/_app/PhotoSwipeStage-KhyOIP1G.js                                             64.80 kB │ gzip:  19.56 kB
+dist/_app/tagMeaning-BV4O3LIk.js                                                  76.47 kB │ gzip:  37.01 kB
+dist/_app/SceneManagerView-DbYJeE-5.js                                            99.23 kB │ gzip:  32.03 kB
+dist/_app/index-DuNrMxzf.js                                                      100.62 kB │ gzip:  30.46 kB
+dist/_app/VideoStudioView-aZ_IaMBp.js                                            102.43 kB │ gzip:  35.59 kB
+dist/_app/prompt-DMNXUAWT.js                                                     107.27 kB │ gzip:  38.54 kB
+dist/_app/vendor-SxDWQbM_.js                                                     111.08 kB │ gzip:  43.60 kB
+dist/_app/PromptBuilderView-DqlIasDa.js                                          142.68 kB │ gzip:  47.31 kB
+dist/_app/index-CjjYlXv0.js                                                      159.09 kB │ gzip:  56.21 kB
+dist/_app/index-Br0epxKg.js                                                      945.58 kB │ gzip: 263.13 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.95s
+Route bundle budget passed: 18 routes; largest JS PromptBuilderView 139.3 KiB / 140.0 KiB; largest CSS PromptBuilderView 64.8 KiB / 115.0 KiB; largest lazy index.js 923.4 KiB / 1000.0 KiB; entry closure JS 306.3 KiB / 390.0 KiB; largest route closure ChatView 676.7 KiB / 680.0 KiB; entry CSS 100.0 KiB / 100.0 KiB
+Page JS union (report only): 18/18 resolved; /chat 692.5 KiB; /companion 650.9 KiB; /prompt-builder 599.2 KiB
+[warn] bundle budget >90% warning:
+PromptBuilderView JavaScript 139.3 KiB > 90% of 140.0 KiB
+ChatView static closure JavaScript 676.7 KiB > 90% of 680.0 KiB
+CompanionView static closure JavaScript 650.9 KiB > 90% of 680.0 KiB
+index.js lazy JavaScript 923.4 KiB > 90% of 1000.0 KiB
+Purged 304 redundant .woff files (8.9 MB)，重写 1 个 CSS——浏览器只取 woff2
+Precompressed 540 files: 28894.5 KB raw → 5842.3 KB gzip → 4378.9 KB brotli (brotli 比 gzip 再省 25%)
+
+
+===== baseline: npm run test:frontend; exit=0 =====
+
+> huiyu@1.7.2 test:frontend
+> vitest run
+
+
+ RUN  v4.1.11 <repo>
+
+(node:28160) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ Test Files  203 passed (203)
+      Tests  1423 passed (1423)
+   Start at  17:05:02
+   Duration  18.89s (transform 26.16s, setup 0ms, import 73.58s, tests 21.08s, environment 166.76s)
+
+
+
+===== baseline: npm run test:unit:run; exit=0 =====
+
+> huiyu@1.7.2 test:unit:run
+> node scripts/tests/run-quality-suite.js unit
+
+✔ unit 套件 1097 用例 1m 49s
+
+
+===== baseline: npm run test:contract:run; exit=0 =====
+
+> huiyu@1.7.2 test:contract:run
+> node scripts/tests/run-quality-suite.js contract
+
+contract: 9 isolated files / jobs=2; 27 serial files
+✔ test-maintenance-recovery.js 44.1s
+✔ test-scene-maintenance-save.js 54.1s
+✔ test-maintenance-transaction-routes.js 18.4s
+✔ test-anima-routes.js 18.1s
+✔ test-maintenance-blueprint-transaction.js 2m 26s
+✔ test-maintenance-read-barrier.js 15.8s
+✔ test-resource-gateway.js 10.4s
+✔ test-resource-reference-gateway.js 2.0s
+✔ test-maintenance-recovery-boundaries.js 8.2s
+✔ test-desktop-tools-route.js 2.8s
+✔ test-generation-routes.js 2.6s
+✔ test-webui-lifecycle.js 650ms
+✔ test-chat.js 995ms
+✔ test-control-failure-contract.js 6.6s
+✔ test-gateway-contract.js 18.0s
+✔ test-remote-content.js 1.0s
+✔ test-gateway-token.js 82ms
+✔ test-http-client.js 101ms
+✔ test-maintenance.js 166ms
+✔ test-interrogate-routes.js 466ms
+✔ test-interrogate-engine.js 150ms
+✔ test-live2d-route.js 283ms
+✔ test-character-reference-contract.js 216ms
+✔ test-pinned-scene-prompts.js 191ms
+✔ test-scene-story-alignment.js 75ms
+✔ test-sd-runtime.js 208ms
+✔ test-scene-shard-integrity.js 111ms
+✔ test-tag-shards.js 1.7s
+✔ test-popular-shard-integrity.js 87ms
+✔ test-blueprint-shard-integrity.js 141ms
+✔ test-security.js 302ms
+✔ test-tunnel-restart.js 238ms
+✔ test-upstream-health.js 357ms
+✔ test-precompressed.js 228ms
+✔ test-video-ai.js 1.3s
+✔ test-video-routes.js 9.8s
+sum [contract]: PASS · 36 过 / 0 挂 · 3m 27s
+
+
+===== implementation-intermediate: npm run build:runtime; exit=0 =====
+
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 300 sources; current
+[typescript] tests: 222 sources; current
+[typescript] browser: 6 sources; current
+
+
+===== implementation-intermediate: node --test scripts/tests/test-refactor-boundaries-fixtures.js scripts/tests/test-domain-type-boundaries-fixtures.js; exit=0 =====
+✔ allows pure aliases, inline type imports, import types and source behind .js paths (15.0448ms)
+✔ rejects a store dependency through a re-export: import type { State } from '#state' (5.3422ms)
+✔ rejects a store dependency through a re-export: export type { State } from '#state' (4.8571ms)
+✔ rejects a store dependency through a re-export: const state = require('#state') (5.2768ms)
+✔ rejects a store dependency through a re-export: const state = import(`#state`) (5.2137ms)
+✔ rejects a store dependency through a re-export: import state = require('#state') (4.7814ms)
+✔ rejects a store dependency through a re-export: type State = import('#state').State (4.5522ms)
+✔ reports type and runtime cycles separately (6.7824ms)
+✔ mixed imports and side effects remain runtime edges, inline re-exports can be type-only (6.0925ms)
+✔ parses both Vue script blocks and script src, ignoring import-like template text (11.2111ms)
+✔ unresolved, computed imports and reachable excluded files stay unknown (4.3323ms)
+✔ rejects framework imports even when type-only; does not read dependency packages (3.3779ms)
+✔ invalid SFCs are unknown rather than a clean scan (3.9176ms)
+✔ direct component imports are forbidden even when they have no script (3.694ms)
+✔ use cases cannot bypass their ports through a concrete repository or Node filesystem (5.6271ms)
+✔ keeps real Web persistence adapters and repository consumers legal (29.0289ms)
+✔ ignores comments, ordinary strings and template text, and permits unsubscribe on unload (10.6058ms)
+✔ permits type-only frontend, use case and Tauri references without reclassifying them as runtime (14.7869ms)
+✔ rejects a new frontend raw persistence import edge (6.9348ms)
+✔ rejects a new frontend raw persistence export edge (8.6088ms)
+✔ rejects a new frontend raw persistence dynamic edge (6.79ms)
+✔ rejects a new frontend raw persistence require edge (7.0288ms)
+✔ rejects a new frontend raw persistence import-equals edge (7.1238ms)
+✔ mixed named imports and side-effect imports remain runtime dependencies (8.2608ms)
+✔ normalizes relative, alias, dot-segment and .js-to-TypeScript targets (8.8698ms)
+✔ barrels and new storage files cannot grant themselves persistence exceptions (8.2594ms)
+✔ inspects both Vue script blocks and external script sources (8.0255ms)
+✔ use cases cannot import src/storage/concrete.ts (6.9071ms)
+✔ use cases cannot import src/api/client.ts (6.5087ms)
+✔ use cases cannot import src/stores/artwork.ts (7.1432ms)
+✔ use cases cannot import src/composables/useArtwork.ts (6.5975ms)
+✔ use cases cannot import src/components/Panel.vue (6.6304ms)
+✔ use cases cannot import src/views/Panel.vue (6.7768ms)
+✔ use cases cannot import src/platform/desktop/bootstrap.ts (7.6528ms)
+✔ use cases cannot import runtime dependency vue (6.9755ms)
+✔ use cases cannot import runtime dependency pinia (6.3104ms)
+✔ use cases cannot import runtime dependency node:fs (5.6449ms)
+✔ only desktop adapters can import Tauri and Web adapters cannot load desktop adapters (11.9163ms)
+✔ Web adapters cannot reach desktop capabilities through a shared barrel (7.8909ms)
+✔ reachable vendor and shared runtime helpers cannot hide forbidden dependencies (9.9085ms)
+✔ package aliases cannot disguise Tauri capabilities (6.9742ms)
+✔ invalid Vue scripts and imports of frontend tests cannot yield a clean scan (7.7489ms)
+✔ runtime source server.ts cannot depend on frontend, including types (7.417ms)
+✔ runtime source server/runtime.ts cannot depend on frontend, including types (6.6229ms)
+✔ runtime source routes/workspace.ts cannot depend on frontend, including types (6.9921ms)
+✔ runtime source services/workspace.ts cannot depend on frontend, including types (6.6041ms)
+✔ production source src/utils/prototype.ts cannot reuse test prototype code or types (7.5373ms)
+✔ production source server/runtime.ts cannot reuse test prototype code or types (7.126ms)
+✔ production source routes/workspace.ts cannot reuse test prototype code or types (6.5242ms)
+✔ production source services/workspace.ts cannot reuse test prototype code or types (6.9801ms)
+✔ test files are not production entrypoints, but importing their source remains forbidden (6.1458ms)
+✔ computed imports and missing local modules cannot produce a clean report (11.0305ms)
+✔ an exact legacy allowance is accepted and removing edge plus allowance is accepted (19.6887ms)
+✔ new violations cannot authorize themselves through new allowlist entries (15.25ms)
+✔ the ceiling rejects edits to source, target, dependency kind, type classification, rule or exit batch (7.9055ms)
+✔ stale, duplicate, wildcard and incomplete allowances fail closed (6.8528ms)
+✔ a retired exemption cannot be restored against the tightened ceiling (5.7498ms)
+✔ Git ancestors without an allowlist use the seed and committed versions are read exactly (561.2888ms)
+✔ Git history keeps retired allowances removed when a current change tries to reintroduce them (511.5429ms)
+✔ invalid Git revisions and an allowlist removed after R0 fail closed (609.7114ms)
+✔ base selection respects the existing AICS_HYGIENE_BASE_REF and falls back for a zero SHA (0.3835ms)
+ℹ tests 61
+ℹ suites 0
+ℹ pass 61
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2297.4915
+
+
+===== implementation-intermediate: npm run test:architecture; exit=0 =====
+
+> huiyu@1.7.2 test:architecture
+> node scripts/tests/test-page-architecture.js && node scripts/tests/test-domain-type-boundaries.js
+
+✔ page-architecture (26.4634ms)
+✔ router import parsing permits equivalent helpers but distinguishes eager imports (1.77ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 31.4862
+{
+  "files": [
+    "src/application/artwork/artworkSaveInput.ts",
+    "src/application/artwork/saveGeneratedArtwork.ts",
+    "src/types/anima.ts",
+    "src/types/artwork.ts",
+    "src/types/generation.ts",
+    "src/types/promptHistory.ts",
+    "src/utils/resultContext.ts",
+    "src/utils/sdError.ts"
+  ],
+  "edges": [
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./generation",
+      "typeOnly": true,
+      "to": "src/types/generation.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "./generation",
+      "typeOnly": true,
+      "to": "src/types/generation.ts"
+    },
+    {
+      "from": "src/types/anima.ts",
+      "specifier": "@/utils/sdError",
+      "typeOnly": true,
+      "to": "src/utils/sdError.ts"
+    },
+    {
+      "from": "src/utils/resultContext.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/utils/resultContext.ts",
+      "specifier": "@/types/anima",
+      "typeOnly": true,
+      "to": "src/types/anima.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/anima",
+      "typeOnly": true,
+      "to": "src/types/anima.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/types/artwork",
+      "typeOnly": true,
+      "to": "src/types/artwork.ts"
+    },
+    {
+      "from": "src/application/artwork/artworkSaveInput.ts",
+      "specifier": "@/utils/resultContext",
+      "typeOnly": false,
+      "to": "src/utils/resultContext.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "@/types/promptHistory",
+      "typeOnly": true,
+      "to": "src/types/promptHistory.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "@/types/artwork",
+      "typeOnly": false,
+      "to": "src/types/artwork.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": false,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    },
+    {
+      "from": "src/application/artwork/saveGeneratedArtwork.ts",
+      "specifier": "./artworkSaveInput",
+      "typeOnly": true,
+      "to": "src/application/artwork/artworkSaveInput.ts"
+    }
+  ],
+  "violations": [],
+  "unknown": [],
+  "runtimeCycles": [],
+  "typeCycles": []
+}
+R0: 664 production sources, 3203 imports, 33 exact legacy edges; no new violations
+✔ artwork types and save use case stay independent of state and infrastructure (1329.7322ms)
+✔ R0 dependency debt only shrinks from its sealed seed and approved Git history (860.0986ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2212.8853
+
+
+===== implementation-intermediate: npm run check; exit=1 =====
+
+> huiyu@1.7.2 precheck
+> npm run build:runtime
+
+
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 300 sources; current
+[typescript] tests: 222 sources; current
+[typescript] browser: 6 sources; current
+
+> huiyu@1.7.2 check
+> node scripts/maintenance/run-check-parallel.js
+
+质量门禁并发编排：21 步 / 并发 6（CHECK_JOBS 可调）
+  ✅ animations (0.1s)
+  ✅ colors (0.1s)
+  ✅ style-literals (0.1s)
+  ✅ contrast (0.2s)
+  ✅ scenes:build (0.1s)
+  ✅ popular:build (0.1s)
+  ✅ reference:build (0.4s)
+  ✅ blueprints:build (0.3s)
+  ✅ tags:build (0.2s)
+  ✅ scenes:optimize (0.4s)
+  ✅ ts-directives (1.8s)
+  ✅ scenes:ratings (0.2s)
+  ✅ scenes:validate (0.5s)
+  ❌ content-contracts (1.2s)
+  ❌ ref-urls (0.3s)
+  ✅ design:lint (0.8s)
+  ✅ orphan-scripts (4.5s)
+  ❌ test:check (13.8s)
+  ✅ typecheck:app (21.2s)
+  ✅ typecheck (21.3s)
+  ✅ lint:js (24.8s)
+
+门禁失败：3/21 步未通过（总耗时 24.9s）：
+
+──── ❌ test:check 输出尾部 ────
+    ✖ documentation links and destinations remain valid (147.0255ms)
+      Error: Command failed: C:\Program Files\nodejs\node.exe <repo>\scripts\maintenance\check-doc-links.js
+      docs/architecture/R0-EXECUTION-REPORT.md: ../evidence/architecture-r0-2026-09-26.json
+      docs/INDEX.md: evidence/architecture-r0-2026-09-26.json
+
+          at genericNodeError (node:internal/errors:985:15)
+          at wrappedFn (node:internal/errors:539:14)
+          at checkExecSyncError (node:child_process:925:11)
+          at execFileSync (node:child_process:961:15)
+          at TestContext.<anonymous> (<repo>\scripts\tests\test-doc-redirects.js:9:20)
+          at Test.runInAsyncScope (node:async_hooks:227:14)
+          at Test.run (node:internal/test_runner/test:1325:25)
+          at Test.start (node:internal/test_runner/test:1191:17)
+          at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+        status: 1,
+        signal: null,
+        output: [ null, 'Documentation: 227 files, 1656 local links, 70 redirects, 2 broken links.\n', 'docs/architecture/R0-EXECUTION-REPORT.md: ../evidence/architecture-r0-2026-09-26.json\ndocs/INDEX.md: evidence/architecture-r0-2026-09-26.json\n' ],
+        pid: 18592,
+        stdout: 'Documentation: 227 files, 1656 local links, 70 redirects, 2 broken links.\n',
+        stderr: 'docs/architecture/R0-EXECUTION-REPORT.md: ../evidence/architecture-r0-2026-09-26.json\ndocs/INDEX.md: evidence/architecture-r0-2026-09-26.json\n'
+      }
+
+    docs/architecture/R0-EXECUTION-REPORT.md: ../evidence/architecture-r0-2026-09-26.json
+    docs/INDEX.md: evidence/architecture-r0-2026-09-26.json
+  sum [check]: FAIL · 4 过 / 1 挂 · 未跑 15 · 13.2s
+
+──── ❌ content-contracts 输出尾部 ────
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_01_face_closeup.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_02_half_medium.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_03_full_dynamic.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_04_back_rear.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_front.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_side.png
+    - character-reference-view: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_back.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_01_face_closeup.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_02_half_medium.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_03_full_dynamic.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_04_back_rear.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_design_front.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_design_side.png
+    - character-reference-view: nene/school_uniform: /character-references/nene/school_uniform/ref_design_back.png
+    - character-reference-view: nene/casual_summer: /character-references/nene/casual_summer/ref_01_face_closeup.png
+    - 参考图缺失 2534/2534；素材根目录: (未配置)。先确认素材路径与同步，不自动改写索引。
+  (node:20664) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///<repo>/src/utils/popularParseGuards.ts is not specified and it doesn't parse as CommonJS.
+  Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+  To eliminate this warning, add "type": "module" to \\?\<repo>\package.json.
+  (Use `node --trace-warnings ...` to show where the warning was created)
+
+──── ❌ ref-urls 输出尾部 ────
+  total urls: 2534 | missing: 2534 | pending: 4473 | unverified: 0 | refRoot: (not configured)
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_01_face_closeup.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_02_half_medium.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_03_full_dynamic.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_04_back_rear.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_front.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_side.png
+  REFERENCE: nene/witch_canonical: /character-references/nene/witch_canonical/ref_design_back.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_01_face_closeup.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_02_half_medium.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_03_full_dynamic.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_04_back_rear.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_design_front.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_design_side.png
+  REFERENCE: nene/school_uniform: /character-references/nene/school_uniform/ref_design_back.png
+  REFERENCE: nene/casual_summer: /character-references/nene/casual_summer/ref_01_face_closeup.png
+  先核对 AICS_CHARACTER_REF_ROOT / AI_WORKSPACE_ROOT 与素材同步；不要用修改索引或 pending 掩盖缺图。
+
+
+===== integration-repair: npm run test:check; exit=0 =====
+
+> huiyu@1.7.2 test:check
+> node scripts/tests/test-quality-gates.js && node scripts/tests/run-quality-suite.js check
+
+✔ quality gates cover every deterministic test exactly once (13.3374ms)
+✔ quality workflows keep default, desktop, and live lanes separated (0.9855ms)
+✔ contract CI builds the SPA before testing fallback and CSP on a clean checkout (0.202ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17.6556
+✔ test-repo-hygiene.js 1.8s
+✔ test-repo-hygiene-contract.js 4.0s
+✔ test-bundle-budget.js 177ms
+✔ test-workflow-runner.js 281ms
+✔ test-doc-redirects.js 142ms
+✔ test-desktop-staging.js 701ms
+✔ test-e2e-ci-split.js 58ms
+✔ test-page-architecture.js 192ms
+✔ test-module-boundaries.mjs 970ms
+✔ test-domain-type-boundaries.js 2.0s
+✔ test-monolith-budget.js 93ms
+✔ test-runtime-generated.js 1.3s
+✔ test-typescript-build.js 8.0s
+✔ test-typescript-development.js 565ms
+✔ test-storage-key-hygiene.js 114ms
+✔ test-style-debt.js 148ms
+✔ test-bridge-acl.js 42ms
+✔ test-icon-button-labels.js 71ms
+✔ test-native-controls.js 124ms
+✔ test-ux-regressions.js 92ms
+sum [check]: PASS · 20 过 / 0 挂 · 未跑 0 · 20.9s
+
+
+===== final: npm run build:runtime; exit=0 =====
+
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 300 sources; 300 outputs built
+[typescript] tests: 222 sources; 220 outputs built
+[typescript] browser: 6 sources; current
+
+
+===== final: node --test scripts/tests/test-refactor-boundaries-fixtures.js scripts/tests/test-domain-type-boundaries-fixtures.js; exit=0 =====
+✔ allows pure aliases, inline type imports, import types and source behind .js paths (20.3932ms)
+✔ rejects a store dependency through a re-export: import type { State } from '#state' (7.6053ms)
+✔ rejects a store dependency through a re-export: export type { State } from '#state' (7.0958ms)
+✔ rejects a store dependency through a re-export: const state = require('#state') (9.2069ms)
+✔ rejects a store dependency through a re-export: const state = import(`#state`) (7.0527ms)
+✔ rejects a store dependency through a re-export: import state = require('#state') (6.3215ms)
+✔ rejects a store dependency through a re-export: type State = import('#state').State (6.9166ms)
+✔ reports type and runtime cycles separately (8.5804ms)
+✔ mixed imports and side effects remain runtime edges, inline re-exports can be type-only (7.888ms)
+✔ parses both Vue script blocks and script src, ignoring import-like template text (13.1758ms)
+✔ unresolved, computed imports and reachable excluded files stay unknown (5.9478ms)
+✔ rejects framework imports even when type-only; does not read dependency packages (3.7528ms)
+✔ invalid SFCs are unknown rather than a clean scan (5.2064ms)
+✔ direct component imports are forbidden even when they have no script (5.0618ms)
+✔ use cases cannot bypass their ports through a concrete repository or Node filesystem (8.0062ms)
+✔ keeps real Web persistence adapters and repository consumers legal (42.0834ms)
+✔ ignores comments, ordinary strings and template text, and permits unsubscribe on unload (14.4485ms)
+✔ permits type-only frontend, use case and Tauri references without reclassifying them as runtime (19.1116ms)
+✔ rejects a new frontend raw persistence import edge (9.6534ms)
+✔ rejects a new frontend raw persistence export edge (9.0476ms)
+✔ rejects a new frontend raw persistence dynamic edge (10.4693ms)
+✔ rejects a new frontend raw persistence require edge (8.5898ms)
+✔ rejects a new frontend raw persistence import-equals edge (7.8479ms)
+✔ mixed named imports and side-effect imports remain runtime dependencies (9.6392ms)
+✔ normalizes relative, alias, dot-segment and .js-to-TypeScript targets (10.5103ms)
+✔ barrels and new storage files cannot grant themselves persistence exceptions (9.3904ms)
+✔ inspects both Vue script blocks and external script sources (9.7839ms)
+✔ use cases cannot import src/storage/concrete.ts (8.049ms)
+✔ use cases cannot import src/api/client.ts (8.0138ms)
+✔ use cases cannot import src/stores/artwork.ts (8.1332ms)
+✔ use cases cannot import src/composables/useArtwork.ts (7.6534ms)
+✔ use cases cannot import src/components/Panel.vue (7.4294ms)
+✔ use cases cannot import src/views/Panel.vue (7.5088ms)
+✔ use cases cannot import src/platform/desktop/bootstrap.ts (7.4695ms)
+✔ use cases cannot import runtime dependency vue (7.2055ms)
+✔ use cases cannot import runtime dependency pinia (7.2737ms)
+✔ use cases cannot import runtime dependency node:fs (6.7336ms)
+✔ only desktop adapters can import Tauri and Web adapters cannot load desktop adapters (11.9319ms)
+✔ Web adapters cannot reach desktop capabilities through a shared barrel (8.5299ms)
+✔ reachable vendor and shared runtime helpers cannot hide forbidden dependencies (10.9002ms)
+✔ local declaration barrels preserve runtime type boundaries (7.5642ms)
+✔ a runtime import cannot execute a local declaration-only module (6.8292ms)
+✔ package aliases cannot disguise Tauri capabilities (6.0982ms)
+✔ invalid Vue scripts and imports of frontend tests cannot yield a clean scan (7.4309ms)
+✔ runtime source server.ts cannot depend on frontend, including types (7.5796ms)
+✔ runtime source server/runtime.ts cannot depend on frontend, including types (7.7239ms)
+✔ runtime source routes/workspace.ts cannot depend on frontend, including types (7.1095ms)
+✔ runtime source services/workspace.ts cannot depend on frontend, including types (7.3921ms)
+✔ production source src/utils/prototype.ts cannot reuse test prototype code or types (7.0941ms)
+✔ production source server/runtime.ts cannot reuse test prototype code or types (7.3271ms)
+✔ production source routes/workspace.ts cannot reuse test prototype code or types (7.0293ms)
+✔ production source services/workspace.ts cannot reuse test prototype code or types (7.7349ms)
+✔ test files are not production entrypoints, but importing their source remains forbidden (7.5677ms)
+✔ computed imports and missing local modules cannot produce a clean report (10.1298ms)
+✔ an exact legacy allowance is accepted and removing edge plus allowance is accepted (8.3838ms)
+✔ new violations cannot authorize themselves through new allowlist entries (7.0594ms)
+✔ the ceiling rejects edits to source, target, dependency kind, type classification, rule or exit batch (7.3489ms)
+✔ stale, duplicate, wildcard and incomplete allowances fail closed (7.6818ms)
+✔ a retired exemption cannot be restored against the tightened ceiling (7.7226ms)
+✔ Git ancestors without an allowlist use the seed and committed versions are read exactly (640.4582ms)
+✔ Git history keeps retired allowances removed when a current change tries to reintroduce them (635.4523ms)
+✔ invalid Git revisions and an allowlist removed after R0 fail closed (578.8846ms)
+✔ base selection respects the existing AICS_HYGIENE_BASE_REF and falls back for a zero SHA (0.3589ms)
+ℹ tests 63
+ℹ suites 0
+ℹ pass 63
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2567.4455
+
+
+===== final: npm run test:check; exit=0 =====
+
+> huiyu@1.7.2 test:check
+> node scripts/tests/test-quality-gates.js && node scripts/tests/run-quality-suite.js check
+
+✔ quality gates cover every deterministic test exactly once (19.6313ms)
+✔ quality workflows keep default, desktop, and live lanes separated (1.5497ms)
+✔ contract CI builds the SPA before testing fallback and CSP on a clean checkout (0.3971ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26.2311
+✔ test-repo-hygiene.js 2.3s
+✔ test-repo-hygiene-contract.js 4.6s
+✔ test-bundle-budget.js 190ms
+✔ test-workflow-runner.js 301ms
+✔ test-doc-redirects.js 159ms
+✔ test-desktop-staging.js 909ms
+✔ test-e2e-ci-split.js 81ms
+✔ test-page-architecture.js 267ms
+✔ test-module-boundaries.mjs 1.3s
+✔ test-domain-type-boundaries.js 2.6s
+✔ test-monolith-budget.js 113ms
+✔ test-runtime-generated.js 1.6s
+✔ test-typescript-build.js 10.2s
+✔ test-typescript-development.js 607ms
+✔ test-storage-key-hygiene.js 127ms
+✔ test-style-debt.js 182ms
+✔ test-bridge-acl.js 49ms
+✔ test-icon-button-labels.js 70ms
+✔ test-native-controls.js 148ms
+✔ test-ux-regressions.js 105ms
+sum [check]: PASS · 20 过 / 0 挂 · 未跑 0 · 26.0s
+
+
+===== final: node node_modules/eslint/bin/eslint.js scripts/lib/refactor-boundaries.ts scripts/lib/refactor-allowlist.ts scripts/tests/test-refactor-boundaries-fixtures.ts scripts/tests/test-domain-type-boundaries.ts scripts/tests/quality-test-inventory.ts; exit=0 =====
+(node:12716) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///<repo>/eslint.config.js?mtime=1789829179783 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\<repo>\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+===== final: npm run wf -- docs:check; exit=0 =====
+
+> huiyu@1.7.2 wf
+> node scripts/workflow.js docs:check
+
+[执行] docs:check: ["C:\\Program Files\\nodejs\\node.exe","scripts/maintenance/check-doc-links.js"]
+Documentation: 227 files, 1659 local links, 70 redirects, 0 broken links.
+
+===== artifact-final: node scripts/tests/test-repo-hygiene.js; exit=0 =====
+✔ repository text hygiene scans index, worktree, and nonignored untracked files (1774.9897ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1778.7481

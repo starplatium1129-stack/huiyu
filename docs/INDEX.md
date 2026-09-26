@@ -6,7 +6,7 @@
 
 ## 本次用户指定的架构重构
 
-- [复审后的架构重构执行计划](architecture/REFACTOR-EXECUTION-PLAN.md)：固定源码基线、14 处计划修正、存储迁移/任务恢复/桌面接入规范和 R0–R13 依赖门槛；配套 [Codex 执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md) 提供每批文件、命令与停止条件。本次仅完成方案审查，生产实现和实际验收尚未开始；先做 R0，不重复 005 已完成阶段。
+- [复审后的架构重构执行计划](architecture/REFACTOR-EXECUTION-PLAN.md)：固定源码基线、14 处计划修正、存储迁移/任务恢复/桌面接入规范和 R0–R13 依赖门槛；配套 [Codex 执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md) 提供每批文件、命令与停止条件。R0 的基线、窄契约与依赖护栏已完成，实际检查和参考素材缺失限制见 [R0 实施记录](architecture/R0-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r0-2026-09-26.json)；R1–R13 仍待执行，生产运行路径尚未改变。
 
 本次指定任务按该专项执行；其他待办和优先级仍查未来规划。不能把这份新设计当作已具备的桌面能力。
 

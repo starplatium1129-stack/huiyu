@@ -1,0 +1,354 @@
+{
+  "batch": "R0",
+  "status": "R0-complete-with-recorded-baseline-failures",
+  "baseCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+  "headCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+  "headCommitMeaning": "Actual HEAD during checks. Verified implementation was uncommitted; exact source hashes below bind the tested bytes. Implementation commit will be bound after commit.",
+  "environment": {
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "packageLockSha256": "302ed273761e76cd239cada37b1d5c4b552e580e09b1c2a6ed351a9bacf50df4",
+    "referenceAuditMode": "default (asset files required)",
+    "dependencyCheck": {
+      "command": "npm ls --depth=0",
+      "exitCode": 0
+    },
+    "inputHashes": {
+      "package.json": "96675026f5665a83af654be3d2835b84e48aad71975c3556ab2287fe988b13f8",
+      "package-lock.json": "302ed273761e76cd239cada37b1d5c4b552e580e09b1c2a6ed351a9bacf50df4",
+      "tsconfig.app.json": "038e373048812dfaba698715dca21e65944e69510c133efbeb6a999bd30eb952",
+      "tsconfig.node.json": "e487b19d78c28e4189f0caee42c66870dc228b1f5818901b51da790a751d07ae",
+      "tsconfig.tests.json": "472c58290a66089a4623a64bece1d726b1130827770cf315dd003796b5cd0cd1"
+    }
+  },
+  "changedPaths": [
+    "docs/INDEX.md",
+    "docs/architecture/CODEX-EXECUTION-RUNBOOK.md",
+    "docs/architecture/R0-EXECUTION-REPORT.md",
+    "docs/architecture/REFACTOR-EXECUTION-PLAN.md",
+    "docs/engineering-contracts.md",
+    "docs/evidence/architecture-r0-2026-09-26-checks.txt",
+    "docs/evidence/architecture-r0-2026-09-26.json",
+    "scripts/lib/refactor-allowlist.ts",
+    "scripts/lib/refactor-boundaries.ts",
+    "scripts/tests/quality-test-inventory.ts",
+    "scripts/tests/refactor-boundary-allowlist.json",
+    "scripts/tests/refactor-boundary-seed.json",
+    "scripts/tests/test-domain-type-boundaries.ts",
+    "scripts/tests/test-refactor-boundaries-fixtures.ts"
+  ],
+  "checkedSourceHashes": {
+    "scripts/lib/refactor-boundaries.ts": "8146ec8e38a908f11d2a35674461aa1b7339de887a752a520bf75f46ba917d10",
+    "scripts/lib/refactor-allowlist.ts": "2cf63abc36981fbebbd0efaa90ece58d1120fce5a7136118d63dd57d767cb4e1",
+    "scripts/tests/test-refactor-boundaries-fixtures.ts": "b580aa4fade62623c21d0839d65b5b1fe37b7dad7eb6046c55d09a94888a0893",
+    "scripts/tests/test-domain-type-boundaries.ts": "68ae0e13723813f8617a9376fe96f5c547ed9a9eb7cd4540162239f54d4201bc",
+    "scripts/tests/quality-test-inventory.ts": "bc6bc8e1bba82f2ebe898e4a14a0a3919c181ca06de2debe6dbf21585b76c5c7",
+    "scripts/tests/refactor-boundary-allowlist.json": "244ef923914d91a889e051b6b64aac4200b0686823419c9ac578e4c756d1790e",
+    "scripts/tests/refactor-boundary-seed.json": "cd3de5ef598db6bfbef6f3143e082124af97644224d2279961afda32fa250da3"
+  },
+  "checks": [
+    {
+      "command": "npm run build:runtime",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:03:28.8678869Z",
+      "finishedAt": "2026-09-26T09:03:33.0949817Z",
+      "log": "runtime/refactor-r0/baseline/build-runtime.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "b2d5c4723730cbfb3d2e60b8474dc2fcdd7746dd92e8c601860f7df89902c6ac",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:architecture",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:03:33.1306070Z",
+      "finishedAt": "2026-09-26T09:03:33.9192082Z",
+      "log": "runtime/refactor-r0/baseline/test-architecture.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "54cf745f3f4c4f9080beeb7202d86afd5e6b686ca51b2fab67f6e14e448fb7c2",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:monolith",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:03:33.9261172Z",
+      "finishedAt": "2026-09-26T09:03:34.3465668Z",
+      "log": "runtime/refactor-r0/baseline/test-monolith.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "fd09b24e330b19620673e754058a4a37d35b2895efe6f7efdc1f32e764b54941",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run validate",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-09-26T09:03:34.3494944Z",
+      "finishedAt": "2026-09-26T09:04:13.6314019Z",
+      "log": "runtime/refactor-r0/baseline/validate.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "f7d3d0ccd426ccac92e84798936b2c20e36f16e05694c74720a7a8910d012256",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:04:36.8985799Z",
+      "finishedAt": "2026-09-26T09:05:01.6595859Z",
+      "log": "runtime/refactor-r0/baseline/build.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "ede6be70bdbd06844cfecde80243721a76c657c490af65c1891a2302fb2ec780",
+      "transcriptCapture": "last 35 lines of original build log",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:frontend",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:05:01.6783725Z",
+      "finishedAt": "2026-09-26T09:05:21.3619617Z",
+      "log": "runtime/refactor-r0/baseline/test-frontend.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "a47afd4de446eba0dde845c0e1f093383413c84467eb16c914a5ec2d004f7b83",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:unit:run",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:05:21.3669504Z",
+      "finishedAt": "2026-09-26T09:07:10.4424556Z",
+      "log": "runtime/refactor-r0/baseline/test-unit-run.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "d49f060ed6117377d4e505efc63bdde87bd5c63f5e3c18fcf1d9e1cd3c2df15c",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:contract:run",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:07:10.4478490Z",
+      "finishedAt": "2026-09-26T09:10:38.2425500Z",
+      "log": "runtime/refactor-r0/baseline/test-contract-run.log",
+      "sourceCommit": "61604ec6dafa4118a83f6bc30a2824de27aceef5",
+      "phase": "baseline",
+      "logSha256": "e23b906fdae7274549197a4cd259925995aaa9d7d0e62df28a26d24f3bbf3cb7",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run build:runtime",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:14:32.4590802Z",
+      "finishedAt": "2026-09-26T09:14:35.4212956Z",
+      "log": "runtime/refactor-r0/final/build-runtime.log",
+      "phase": "implementation-intermediate",
+      "logSha256": "7b4f5573d28d1c96fd1e874adca8abdf5c698a1a92161df4088ce5dac9137733",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "node --test scripts/tests/test-refactor-boundaries-fixtures.js scripts/tests/test-domain-type-boundaries-fixtures.js",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:14:35.4399538Z",
+      "finishedAt": "2026-09-26T09:14:37.7930051Z",
+      "log": "runtime/refactor-r0/final/fixtures.log",
+      "phase": "implementation-intermediate",
+      "logSha256": "9e7b878acde7d818b5689ede899520b162f1b4a9c4d3c47a54d6669eddc3c3d2",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:architecture",
+      "status": "passed",
+      "exitCode": 0,
+      "startedAt": "2026-09-26T09:14:37.8019142Z",
+      "finishedAt": "2026-09-26T09:14:40.6734867Z",
+      "log": "runtime/refactor-r0/final/architecture.log",
+      "phase": "implementation-intermediate",
+      "logSha256": "3a0669bbb5f320fa41526a8493959ce1a6a7195d60754abd02d28d0bd6f8fb2e",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run check",
+      "status": "failed",
+      "exitCode": 1,
+      "startedAt": "2026-09-26T09:14:40.6792067Z",
+      "finishedAt": "2026-09-26T09:15:09.1749659Z",
+      "log": "runtime/refactor-r0/final/check.log",
+      "phase": "implementation-intermediate",
+      "logSha256": "818befedacea1330dad148316241bc4f9234dfca397cba313763f940e192f42c",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:check",
+      "phase": "integration-repair",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/refactor-r0/final/test-check-retest.log",
+      "logSha256": "5e2e9ed494350189440f5cd389113310304566fc30e49b05de54f488526d39eb",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run build:runtime",
+      "phase": "final",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/refactor-r0/final/build-runtime-declarations.log",
+      "logSha256": "eccc0dbf535dca603a617fc1c7f8d8d7b706eb62c25c3de353774fa30b3593be",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "node --test scripts/tests/test-refactor-boundaries-fixtures.js scripts/tests/test-domain-type-boundaries-fixtures.js",
+      "phase": "final",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/refactor-r0/final/fixtures-final.log",
+      "logSha256": "997b313274445cbd6a73d544b4826c00835c5c73591d7d73caa965e5483097e3",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run test:check",
+      "phase": "final",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/refactor-r0/final/test-check-final.log",
+      "logSha256": "66219493579847e28edcabd25dd26451e375334150c98adae54400aec341f8d0",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js scripts/lib/refactor-boundaries.ts scripts/lib/refactor-allowlist.ts scripts/tests/test-refactor-boundaries-fixtures.ts scripts/tests/test-domain-type-boundaries.ts scripts/tests/quality-test-inventory.ts",
+      "phase": "final",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/refactor-r0/final/lint-final.log",
+      "logSha256": "4213c822fa6685550883e01b0dff5e6e1c193719eaaceee2f784c8b9be2f30c7",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "npm run wf -- docs:check",
+      "phase": "final",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/refactor-r0/final/docs-final.log",
+      "logSha256": "5f174cd1e7861a90662dc42f41cc99180d840da95d3b084fde376924c833e438",
+      "transcriptCapture": "complete selected log with path/ANSI/line-ending/trailing-whitespace normalization",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt"
+    },
+    {
+      "command": "node scripts/tests/test-repo-hygiene.js",
+      "phase": "artifact-final",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "runtime/refactor-r0/final/hygiene-artifacts-final.log",
+      "logSha256": "9ac73a4fa2710075bcd0a5ca9c610c7b2b04e1ff8b291ac2c8f2f487bb509aa7",
+      "portableEvidence": "docs/evidence/architecture-r0-2026-09-26-checks.txt",
+      "transcriptCapture": "complete log with line-ending/trailing-whitespace normalization"
+    }
+  ],
+  "baselineFailures": [
+    {
+      "checks": [
+        "content-contracts",
+        "ref-urls"
+      ],
+      "reason": "Reference media root not configured; 2534 of 2534 published reference files absent. No structure-mode override applied."
+    }
+  ],
+  "implementationIssues": [
+    {
+      "command": "npm run check",
+      "status": "resolved",
+      "reason": "Evidence JSON was not yet written when the documentation check ran; test:check failed after 4 passed files and left 15 not-run.",
+      "fix": "Added the evidence artifact; reran the complete test:check suite successfully (20 files), then reran it again after the final declaration-boundary fix.",
+      "limit": "The recorded npm run check remains failed. Neither final check nor validate was relabeled as passing."
+    },
+    {
+      "command": "node scripts/tests/test-repo-hygiene.js",
+      "status": "resolved",
+      "reason": "Archived raw command output contained trailing whitespace (84 index/worktree observations).",
+      "fix": "Normalized whitespace only in the portable transcript; original local logs and their hashes are preserved.",
+      "verification": "Targeted repository hygiene rerun passed after normalization, including staged artifacts."
+    }
+  ],
+  "dependencyGuard": {
+    "sourceFiles": 665,
+    "edges": 3203,
+    "legacyAllowances": 33,
+    "unknown": 0,
+    "seedCanonicalSha256": "cc6bee8f05ea2c501de66734871e5ff851d535bfbd06e58a069d4dbda9f129ee",
+    "scope": "Static dependency edges and reachable local source, not task effects or global Tauri bridge access.",
+    "fixtureTests": {
+      "new": 48,
+      "existing": 15,
+      "total": 63,
+      "passed": 63
+    }
+  },
+  "productionDataTouched": false,
+  "productionBehaviorChanged": false,
+  "nativeAcceptance": "not-run",
+  "modelAcceptance": "not-run",
+  "migrationAcceptance": "not-run",
+  "browserE2E": "not-run: no UI or production behavior change",
+  "nextBatch": "R1",
+  "blockers": [
+    "Full validate remains blocked by unavailable reference media; R1 isolated implementation is not blocked by this unrelated baseline limitation."
+  ],
+  "intermediateCheckedSourceHashes": {
+    "scripts/lib/refactor-allowlist.ts": "2cf63abc36981fbebbd0efaa90ece58d1120fce5a7136118d63dd57d767cb4e1",
+    "scripts/lib/refactor-boundaries.ts": "124c847a4fc1d6ad3a884a446bc708befb86217c6e398d2c9216e5e022e7405b",
+    "scripts/tests/quality-test-inventory.ts": "bc6bc8e1bba82f2ebe898e4a14a0a3919c181ca06de2debe6dbf21585b76c5c7",
+    "scripts/tests/refactor-boundary-allowlist.json": "244ef923914d91a889e051b6b64aac4200b0686823419c9ac578e4c756d1790e",
+    "scripts/tests/refactor-boundary-seed.json": "cd3de5ef598db6bfbef6f3143e082124af97644224d2279961afda32fa250da3",
+    "scripts/tests/test-domain-type-boundaries.ts": "68ae0e13723813f8617a9376fe96f5c547ed9a9eb7cd4540162239f54d4201bc",
+    "scripts/tests/test-refactor-boundaries-fixtures.ts": "a002f56fc5c440cc7344122c3a5b2519acc92ed60ea9db6d4b3068b2316706ad"
+  },
+  "verificationReuse": "Production sources and dependencies unchanged. Baseline build/frontend/unit/contracts remain valid for those bytes; final tooling changes were checked by strict runtime build, architecture/quality fixtures, lint and docs.",
+  "transcript": {
+    "path": "docs/evidence/architecture-r0-2026-09-26-checks.txt",
+    "sha256": "55f724647542374e2105b177d4706a4246ef03a453d0634ba825a1b93e48982c"
+  },
+  "nextBatchScope": [
+    "src/storage/artworkRepository.ts",
+    "src/application/artwork/saveGeneratedArtwork.ts",
+    "src/application/artwork/artworkSaveInput.ts",
+    "src/composables/prompt/persistPromptArtwork.ts",
+    "src/stores/promptHistoryStore.ts",
+    "src/utils/desktopImport.ts",
+    "src/composables/gallery/galleryStorage.ts",
+    "src/composables/gallery/useGalleryWorkspace.ts",
+    "src/composables/gallery/useGalleryTrash.ts",
+    "src/views/HomeView.vue",
+    "src/composables/scene/useSceneExplorerWorkspace.ts",
+    "src/api/client.ts",
+    "desktop-tauri/src-tauri/src/bridge.rs",
+    "desktop-tauri/src-tauri/src/main.rs"
+  ]
+}
