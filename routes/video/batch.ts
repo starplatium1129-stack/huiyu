@@ -1,4 +1,5 @@
 import { errorMessage as runtimeErrorMessage } from '../../scripts/lib/runtime-errors';
+import { saveBatchCheckpoint, batchShotHooks } from '../../server/tasks/batch-checkpoint';
 'use strict';
 
 /**
@@ -144,7 +145,8 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
   }
 
   // 批状态收敛：无待处理/运行中镜头时定终态；否则继续推进下一镜。
-  function finalizeStatus(batch: { shots: any[]; status: string; }) {
+  async function finalizeStatus(batch: any) {
+    try {
     let pending = batch.shots.some(function (s: { status: string; }) { return s.status === 'pending'; });
     let active = batch.shots.some(function (s: { status: string; }) { return s.status === 'queued' || s.status === 'running'; });
     if (!pending && !active) {
@@ -153,9 +155,12 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
         return s.status === 'succeeded' || s.status === 'cancelled';
       });
       batch.status = allSucceeded ? 'done' : (allTerminal ? 'cancelled' : 'paused');
+      await saveBatchCheckpoint(batch);
       return;
     }
+    await saveBatchCheckpoint(batch);
     void kick(batch);
+    } catch { batch.status = 'paused'; batch.errorCode = 'BATCH_CHECKPOINT_FAILED'; }
   }
 
   // linkLastFrame 衔接可能在提交前改写了 image/lastFrame（上一镜尾帧）：
@@ -215,6 +220,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
           }
           let name = await extractLastFrame(shot, batch.abortController && batch.abortController.signal);
           if (name) {
+            shot.tailFrame = name;
             if (next.input.image) next.input.lastFrame = name;
             else next.input.image = name;
           }
@@ -250,9 +256,11 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       shot.job = job;
       shot.attempts += 1;
       shot.status = 'queued';
-      await videoService.submit(job);
+      await saveBatchCheckpoint(batch);
+      await videoService.submit(job, batchShotHooks(batch, shot));
       scheduleWatch(batch);
     } catch (error: any) {
+      if (batch.taskHooks) { batch.status = 'paused'; shot.errorCode = 'BATCH_SUBMISSION_UNCONFIRMED'; try { await saveBatchCheckpoint(batch); } catch {} return; }
       shot.status = 'failed';
       shot.error = error && error.message || '分镜提交失败';
       shot.errorCode = error && error.code || 'BATCH_SUBMIT_FAILED';
@@ -280,7 +288,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     snapshots.remove(batch.id);
   }
 
-  async function create(owner: any, batchInput: any) {
+  async function create(owner: any, batchInput: any, taskHooks?: import('../../server/tasks/provider').TaskExecutionHooks, recovered?: Record<string, any>) {
     let availability = media.modelAvailability(config, MODEL_BY_ID[batchInput.modelId]);
     if (!availability.available) {
       throw serviceError(503, 'VIDEO_MODEL_UNAVAILABLE', '视频模型文件尚未安装', {
@@ -290,6 +298,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     let id = crypto.randomBytes(18).toString('hex');
     let batch: any = {
       id:id,
+      taskHooks,
       owner:owner,
       status:'running',
       modelId:batchInput.modelId,
@@ -322,11 +331,31 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       gcTimer:null,
       kicking:false,
     };
+    if (recovered) {
+      batch.shots = recovered.shots.map((shot: any) => ({ ...shot, input: structuredClone(shot.input),
+        status: shot.status === 'succeeded' ? 'succeeded' : 'pending',
+        job: shot.result ? { id: shot.gatewayJobId, upstreamId: shot.upstreamId, result: shot.result } : null,
+      }));
+      batch.status = batch.shots.every((shot: any) => shot.status === 'succeeded') ? 'done' : 'paused';
+    }
     batches.set(id, batch);
     snapshots.save({ id:id, owner:owner, createdAt:batch.createdAt, input:{ modelId:batch.modelId, family:'video-batch' } });
     batch.gcTimer = setTimeout(function () { removeBatch(batch); }, BATCH_TTL_MS);
     if (batch.gcTimer.unref) batch.gcTimer.unref();
-    void kick(batch);
+    await saveBatchCheckpoint(batch);
+    if (!recovered) void kick(batch);
+    return batch;
+  }
+
+  async function resume(batch: any) {
+    if (closed || batch.status !== 'paused' || batch.kicking) throw serviceError(409, 'BATCH_RESUME_UNSAFE', '分镜尚未完成核对');
+    const next = batch.shots.find((shot: any) => shot.status === 'pending');
+    if (next && batch.linkLastFrame && next.index > 1 && !next.input.references?.length) {
+      const previous = batch.shots[next.index - 2];
+      const name = previous.tailFrame || await extractLastFrame(previous, batch.abortController.signal);
+      if (name) { previous.tailFrame = name; if (next.input.image) next.input.lastFrame = name; else next.input.image = name; }
+    }
+    batch.status = 'running'; await saveBatchCheckpoint(batch); void kick(batch);
     return batch;
   }
 
@@ -395,6 +424,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       batch.concatListPath = listPath;
       batch.concatTempPath = tempTarget;
       batch.concatFinalPath = target;
+      await saveBatchCheckpoint(batch);
       let lines = succeeded.map(function (shot: any) {
         return "file '" + String(shot.job.result.path).replace(/'/g, "'\\''") + "'";
       });
@@ -425,6 +455,8 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       }
       fs.renameSync(tempTarget, target);
       batch.concat = { path:target, mime:'video/mp4' };
+      if (batch.taskHooks) await batch.taskHooks.collect([{ file: target, mime: 'video/mp4', index: batch.shots.length }]);
+      await saveBatchCheckpoint(batch);
       return batch.concat;
     })().finally(function () {
       try { if (batch.concatListPath) fs.unlinkSync(batch.concatListPath); } catch (error) {}
@@ -442,7 +474,10 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
 
   function close() {
     closed = true;
-    batches.forEach(removeBatch);
+    batches.forEach(batch => {
+      if (!batch.taskHooks) removeBatch(batch);
+      else { if (batch.watchTimer) clearTimeout(batch.watchTimer); if (batch.gcTimer) clearTimeout(batch.gcTimer); batch.abortController?.abort(); }
+    });
     for (const child of activeChildren) {
       try { processTree.killProcessTree(child, { group:true, force:true }); } catch (error) {}
     }
@@ -450,6 +485,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
 
   return {
     create:create,
+    resume,
     get:get,
     getLost:getLost,
     cancel:cancel,

@@ -1,24 +1,26 @@
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 
-import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession';
-import { useConversationReading } from '@/composables/chat/useConversationReading';
-import { publishChatReceipt } from '@/utils/chatRelayReceipt';
-import { useRoomPresentation } from '@/composables/chat/useRoomPresentation';
-import { useCompanionAffection } from '@/composables/useCompanionAffection';
-import { useCompanionBehaviorRuntime } from '@/composables/useCompanionBehaviorRuntime';
-import { useCompanionClipboardImport } from '@/composables/useCompanionClipboardImport';
-import { useCompanionSpeechInput } from '@/composables/useCompanionSpeechInput';
-import { useCompanionPerformance } from '@/composables/useCompanionPerformance';
-import { pickCompanionLine } from '@/config/characters';
-import { listCompanionUiCharacters } from '@/utils/companionRegistry';
-import { resolveCompanionPresence } from '@/utils/companionPresence';
-import { scrollBehavior } from '@/utils/motionPreference';
-import { COMPANION_CHAT_LIVE_KEY,COMPANION_LIVE2D_KEY } from '@/utils/storageKeys';
+import { useCharacterRoomSession } from './useCharacterRoomSession.ts';
+import { useConversationReading } from './useConversationReading.ts';
+import { publishChatReceipt } from '../../utils/chatRelayReceipt.ts';
+import { useRoomPresentation } from './useRoomPresentation.ts';
+import { useCompanionAffection } from '../useCompanionAffection.ts';
+import { useCompanionBehaviorRuntime } from '../useCompanionBehaviorRuntime.ts';
+import { useCompanionClipboardImport } from '../useCompanionClipboardImport.ts';
+import { useCompanionSpeechInput } from '../useCompanionSpeechInput.ts';
+import { useCompanionPerformance } from '../useCompanionPerformance.ts';
+import { pickCompanionLine } from '../../config/characters.ts';
+import { listCompanionUiCharacters } from '../../utils/companionRegistry.ts';
+import { resolveCompanionPresence } from '../../utils/companionPresence.ts';
+import { scrollBehavior } from '../../utils/motionPreference.ts';
+import { COMPANION_CHAT_LIVE_KEY,COMPANION_LIVE2D_KEY } from '../../utils/storageKeys.ts';
 import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
     const companionCharacters = listCompanionUiCharacters();
     const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState } = useCharacterRoomSession();
-    const desktopBridge = window.companionDesktop;
+    const desktopBridge = getDesktopCapabilities();
     const presentationSuspended = useRoomPresentation('companion');
     const { getScore, getLevelInfo } = useCompanionAffection();
     const affectionScore = computed(() => getScore(activeChar.value));
@@ -405,6 +407,14 @@ export function useCompanionWorkspace() {
         onBatteryPower.value = onBattery;
         characterStageRef.value?.setDesktopPerformanceMode?.(onBattery);
     }
+    // The stage is lazy-loaded. Host events may arrive before its ref exists;
+    // replay the latest observed state when the actual renderer attaches.
+    watch(characterStageRef, stage => {
+        if (!stage || !desktopBridge) return;
+        stage.setDesktopVisible?.(desktopWindowVisible.value);
+        stage.setDesktopPerformanceMode?.(onBatteryPower.value);
+        if (desktopWindowBounds.value) stage.setDesktopWindowBounds?.(desktopWindowBounds.value);
+    }, { flush: 'post' });
     onMounted(async () => {
         document.documentElement.classList.add('companion-mode');
         window.addEventListener('pointerdown', noteActivity, { passive: true });

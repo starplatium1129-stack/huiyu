@@ -1,7 +1,7 @@
 import { withArtworkStaging } from '@/storage/artworkSession'
 import type { Ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
-import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import type { PromptVideoBridgeDeps } from './usePromptVideoBridge'
 
 // Only loaded when a finished image is sent to a video or shot list.
@@ -115,7 +115,7 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
   async function handleHistoryToShots(entry: ArtworkRecord) {
     return withArtworkStaging(async () => {
       try {
-        const blob = await imgGet(entry.image_id || '')
+        const blob = await artworkRepository.getImage(entry.image_id || '')
         if (!blob || !blob.size) { flash('历史图片已失效，无法加入分镜'); return }
         const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
         const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
@@ -157,7 +157,7 @@ export function createPromptVideoActions(deps: PromptVideoBridgeDeps, shotsPendi
       let failed = 0
       for (const entry of entries) {
         try {
-          const blob = await imgGet(entry.image_id || '')
+          const blob = await artworkRepository.getImage(entry.image_id || '')
           if (!blob || !blob.size) { failed += 1; continue }
           const ctx = await prepareVideoCtx({
             displayUrl: '',

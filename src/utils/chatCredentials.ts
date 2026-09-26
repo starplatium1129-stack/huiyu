@@ -1,11 +1,12 @@
-import type { CompanionDesktopBridge } from '@/types/desktop'
+import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
+import type { CompanionDesktopBridge } from '../types/desktop.d.ts'
 
 const session = new Map<string, string>()
 const writes = new Map<string, Promise<void>>()
 type CredentialBridge = Pick<CompanionDesktopBridge, 'readChatCredential' | 'writeChatCredential'>
 
 /** Web credentials live only in this page's memory. Desktop never falls back to plaintext. */
-export function createChatCredentials(bridge: CredentialBridge | undefined = window.companionDesktop) {
+export function createChatCredentials(bridge: CredentialBridge | undefined = getDesktopCapabilities()) {
   function requireBridge() {
     if (!bridge?.readChatCredential || !bridge.writeChatCredential) {
       throw new Error('当前桌面版本不支持安全凭据，请更新后重试；原配置已保留。')

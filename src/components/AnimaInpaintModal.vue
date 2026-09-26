@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -220,7 +222,7 @@ async function handleStart() {
                 class="preview-surface"
                 :style="previewSurfaceStyle"
               >
-                <img ref="previewImageEl" class="preview-thumb" :src="activeImageUrl" alt="换装基准图" @load="syncMaskCanvas" />
+                <img :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="syncMaskCanvas" />
                 <canvas
                   ref="maskCanvasEl"
                   class="mask-canvas"

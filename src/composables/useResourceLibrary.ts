@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { resourceApi, type ResourceApi } from '../api/resourceApi'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment'
-import type { ResourceAction, ResourceStatus } from '../types/resources'
+import type { ResourceAction, ResourceStatus } from '../../types/resources'
 
 export function useResourceLibrary(api: ResourceApi = resourceApi, isLocal = isLocalStudioHost()) {
   const status = ref<ResourceStatus | null>(null)

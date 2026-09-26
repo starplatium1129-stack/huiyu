@@ -45,8 +45,6 @@ export interface CompanionDesktopBridge {
   notify(title: string, body: string): void
   setProgress(progress: number | null): void
   runTool(name: string, args: Record<string, unknown>, options?: { signal?: AbortSignal }): Promise<{ ok: boolean; output: string; imageDataUrl?: string }>
-  onFileDrop(listener: (files: DesktopFile[]) => void): number
-  offFileDrop(subscriptionId: number): void
   onResume(listener: () => void): number
   offResume(subscriptionId: number): void
   onShown(listener: () => void): number
@@ -71,12 +69,6 @@ export interface CompanionDesktopBridge {
   getWindowState(): Promise<{ maximized: boolean; focused: boolean }>
   onMaximizedChanged(listener: (maximized: boolean) => void): number
   offMaximizedChanged(subscriptionId: number): void
-}
-
-declare global {
-  interface Window {
-    companionDesktop?: CompanionDesktopBridge
-  }
 }
 
 export {}

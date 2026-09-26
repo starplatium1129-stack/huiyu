@@ -424,11 +424,22 @@ for (const replacement of ['neutral-new-key', '']) {
       stored = value || null
     })
     await context.addInitScript(() => {
-      window.companionDesktop = {
-        isDesktop: true,
-        readChatCredential: () => window.credentialReadFixture(),
-        writeChatCredential: (endpoint: string, secret: string) => window.credentialWriteFixture(endpoint, secret),
-      } as unknown as typeof window.companionDesktop
+      Object.assign(window, { __TAURI__: {
+        core: { invoke: async (command: string, args?: Record<string, unknown>) => {
+          if (command === 'chat_credential_read') return window.credentialReadFixture()
+          if (command === 'chat_credential_write') return window.credentialWriteFixture(String(args?.endpoint), String(args?.secret ?? ''))
+          if (command === 'desktop_bootstrap') return {
+            protocolVersion: 1, windowRole: 'atelier', windowId: 'atelier', sourceProfileId: `profile-${'a'.repeat(64)}`,
+            sourceOrigin: location.origin, bundledUiAvailable: false, connection: 'ready',
+            runtime: { origin: location.origin, protocolVersion: 1, ownership: 'managed', runtimeEpoch: 'credential-fixture', workspace: null },
+          }
+          if (command === 'window_zoom_get') return 1
+          if (command === 'window_zoom_set') return args?.value
+          return null
+        } },
+        event: { listen: async () => () => {} },
+        window: { getCurrentWindow: () => ({ startDragging: async () => {} }) },
+      } })
     })
     const other = await context.newPage()
     await Promise.all([enter(page), enter(other)])

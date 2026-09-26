@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
 import type { CompanionDesktopBridge } from '../../src/types/desktop'
@@ -114,7 +115,7 @@ for (const [theme, width, height] of [['dark', 1440, 960], ['light', 1280, 800],
 
 test('packaged desktop can inspect records without enabling writes', async ({ page }, testInfo) => {
   await page.addInitScript(() => {
-    window.companionDesktop = {
+    window.desktopCapabilitiesFixture = {
       isDesktop: true, isPackaged: async () => true,
       getWindowState: async () => ({ maximized: false, focused: true }),
       onMaximizedChanged: () => 1, offMaximizedChanged: () => {},
@@ -178,3 +179,5 @@ test('unmatched scene writes are rejected locally for every endpoint and query s
   })
   expect(results).toEqual(Array(6).fill({ status: 403, code: 'SCENE_TEST_NETWORK_BLOCKED' }))
 })
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

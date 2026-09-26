@@ -3,7 +3,7 @@ import { defineComponent, h } from 'vue'
 import { mount } from '@vue/test-utils'
 
 const mocks = vi.hoisted(() => ({ get: vi.fn(), set: vi.fn(), query: vi.fn(), cancel: vi.fn() }))
-vi.mock('@/composables/useKVStore', () => ({ kvGet: mocks.get, kvSet: mocks.set }))
+vi.mock('@/platform/web/taskHistory', () => ({ readTaskHistory: mocks.get, updateTaskHistory: async (update: (value: unknown) => unknown) => { const value = update(await mocks.get()); await mocks.set('tasks', value); return value } }))
 vi.mock('./taskRecovery', () => ({ queryTask: mocks.query, cancelRecoveredTask: mocks.cancel }))
 const saved = { id: 'old', title: '视频', kind: 'video', status: 'running', route: '/video-studio?job=one', createdAt: 1, updatedAt: 1, backend: { kind: 'video', id: 'one' } }
 beforeEach(() => {

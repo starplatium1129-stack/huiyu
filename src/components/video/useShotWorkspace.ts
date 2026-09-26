@@ -1,7 +1,7 @@
 import { withArtworkStaging } from '@/storage/artworkSession'
 import { createVideoStoryboard,uploadVideoImage,type VideoBatch,type VideoDefaults,type VideoQuality,type VideoStatusResponse,} from '@/api/videoApi';
 import { confirmAction } from '@/composables/useConfirm';
-import { imgPut } from '@/composables/useImageStore';
+import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore';
 import { useVideoStore } from '@/stores/videoStore';
 import { ensureCharacterReferencesLoaded,getCharacterReferences } from '@/utils/characterReferenceData';
@@ -334,7 +334,7 @@ export function useShotWorkspace(props: {
               shot.imageName = upload.name;
               shot.imageUrl = URL.createObjectURL(file);
               // IndexedDB 耐久凭据：草稿恢复/失败重试都靠它（服务端受控名会被清理）。
-              shot.imageId = await imgPut(file).catch(() => shot.imageId || '');
+              shot.imageId = await artworkRepository.putImage(file).catch(() => shot.imageId || '');
               batchError.value = '';
           }
           catch (error) {

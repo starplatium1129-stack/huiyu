@@ -1,10 +1,13 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { CHAT_DRAFT_PREFIX, CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, RETIRED_COMPANION_CHAT_KEY, CHAT_RESET_KEY } from './storageKeys.ts'
 import { assertStoredChatVersion } from './chatVersion.ts'
+import { profileRuntimeActive, resetProfileChat } from '../platform/web/profileStorage.ts'
 
 export function chatResetRevision(): string { return localStorage.getItem(CHAT_RESET_KEY) || '' }
 
 /** Exact content ownership; configuration, credentials and artwork are retained. */
 export async function clearStoredChatContent(): Promise<{ failed: string[] }> {
+  if (profileRuntimeActive()) { await resetProfileChat(); return { failed: [] } }
   const { readChatArchive, withChatArchiveMutation, writeChatArchive } = await import('../storage/chatArchiveRepository')
   return withChatArchiveMutation(async () => {
     assertStoredChatVersion('aics_chat_v1', 3)

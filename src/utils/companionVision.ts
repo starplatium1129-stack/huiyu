@@ -1,3 +1,4 @@
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
 /**
  * 桌宠屏幕感知与多模态视觉工具集
  *
@@ -34,7 +35,7 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
 export async function captureScreenFrame(): Promise<string | null> {
   // 1. 优先尝试本地桌面网关的原生截屏（在桌面客户端及本机环境下免授权弹窗、毫秒级截取）
   try {
-    const res = await fetch('/api/desktop-tools', {
+    const res = await runtimeFetch('/api/desktop-tools', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'capture_screen', args: {} }),

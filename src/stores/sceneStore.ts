@@ -1,16 +1,17 @@
-import type { SceneRecord as Scene } from '../types/scene'
-export type { SceneRecord as Scene } from '../types/scene'
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import type { SceneRecord as Scene } from '../types/scene.ts'
+export type { SceneRecord as Scene } from '../types/scene.ts'
 
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { DATA_VERSION } from 'virtual:data-version'
-import { requireDataRecords, requireDataCollection } from '@/utils/dataRecords'
+import { requireDataRecords, requireDataCollection } from '../utils/dataRecords.ts'
 import {
   parsePopularCharacters,
   parseSceneBlueprints,
   type PopularCharacter,
   type SceneBlueprint,
-} from '@/utils/popularContent.ts'
+} from '../utils/popularContent.ts'
 
 export interface CurationData {
   featured?: string[]
@@ -61,7 +62,7 @@ async function fetchJson<T>(file: string, version: number): Promise<T> {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), SCENE_DATA_TIMEOUT_MS)
   try {
-    const response = await fetch(`/data/${file}?v=${version}`, { signal: controller.signal })
+    const response = await runtimeFetch(`/data/${file}?v=${version}`, { signal: controller.signal })
     if (!response.ok) {
       if (response.status === 403) throw new Error('此内容尚未审核为远程可用，请在本机工作室查看。')
       throw new Error(`${file} HTTP ${response.status}`)

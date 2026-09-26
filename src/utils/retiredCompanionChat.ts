@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { RETIRED_COMPANION_CHAT_KEY, CHAT_MEMORY_KEY } from './storageKeys'
 import { CHAT_ARCHIVE_KEY } from './chatArchive'
 

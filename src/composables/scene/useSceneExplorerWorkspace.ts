@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { useFocusTrap } from '@/composables/useFocusTrap';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { useSceneStore,type CurationData } from '@/stores/sceneStore';

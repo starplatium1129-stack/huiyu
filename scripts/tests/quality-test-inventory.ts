@@ -52,6 +52,9 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-workspace-storage.js',
     'test-workspace-client.js',
     'test-workspace-backup.js',
+    'test-workspace-migration.js',
+    'test-task-runtime.js',
+    'test-desktop-workspace-host.js',
     'test-batch-draw.js',
     'test-blink-scheduler.js',
     'test-character-profiles.js',
@@ -142,6 +145,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
   ]),
   contract: Object.freeze([
     'test-workspace-routes.js',
+    'test-workspace-library-http.js',
     'test-maintenance-recovery.js',
     'test-maintenance-recovery-boundaries.js',
     'test-maintenance-read-barrier.js',
@@ -197,5 +201,5 @@ function qualityTestMetadata(file: string): TestMetadata {
   return QUALITY_TEST_METADATA[file] ?? { domain: 'unclassified', environment: 'node', parallelSafety: 'unreviewed', resources: ['unreviewed'] };
 }
 // Browser and real packaged-Windows probes have separate explicit execution prerequisites.
-const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs', 'test-workspace-sidecar.js']);
+const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs', 'test-workspace-sidecar.js', 'test-workspace-migration-browser.mjs', 'test-desktop-library-browser.mjs', 'test-task-center-browser.mjs']);
 export = { QUALITY_TEST_SUITES, QUALITY_TEST_METADATA, QUALITY_EXTERNAL_TESTS, qualityTestMetadata };

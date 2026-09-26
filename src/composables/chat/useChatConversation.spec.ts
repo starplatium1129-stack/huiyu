@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { computed, ref } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CHARACTERS } from '@/config/characters'
@@ -28,7 +29,7 @@ function setup() {
   const conversation = useChatConversation(options as unknown as Parameters<typeof useChatConversation>[0])
   return { conversation, options, messages, busy }
 }
-afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); delete window.companionDesktop })
+afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); desktopFixture.current = undefined })
 
 describe('chat recovery and tool lifecycle', () => {
   it('discards a queued draft when another window clears content, then accepts new input', async () => {
@@ -72,7 +73,7 @@ describe('chat recovery and tool lifecycle', () => {
       toolSignal = options?.signal
       return new Promise<{ ok: boolean; output: string }>(() => {})
     })
-    window.companionDesktop = { runTool } as unknown as NonNullable<Window['companionDesktop']>
+    desktopFixture.current = { runTool } as unknown as CompanionDesktopBridge
     const fetchMock = vi.fn().mockResolvedValue(stream([
       { type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{}' },
       { type: 'tool-call', id: 'two', name: 'read_image', arguments: '{}' }, { type: 'done' },
@@ -145,7 +146,7 @@ describe('chat recovery and tool lifecycle', () => {
 
   it('reports the tool round limit rather than presenting an empty successful reply', async () => {
     const runTool = vi.fn().mockResolvedValue({ ok: true, output: '完成' })
-    window.companionDesktop = { runTool } as unknown as NonNullable<Window['companionDesktop']>
+    desktopFixture.current = { runTool } as unknown as CompanionDesktopBridge
     vi.stubGlobal('fetch', vi.fn().mockImplementation(() => Promise.resolve(stream([
       { type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{}' }, { type: 'done' },
     ]))))
@@ -157,3 +158,6 @@ describe('chat recovery and tool lifecycle', () => {
     expect(options.voice.finishTurn).not.toHaveBeenCalled()
   })
 })
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import type { ResourceAction, ResourceStatus, ResourceTask } from '../../src/types/resources'
+import type { ResourceAction, ResourceStatus, ResourceTask } from '../../types/resources'
 import { GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 

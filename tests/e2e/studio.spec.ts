@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { expect, test, type Page } from '@playwright/test';
 import { expectStudioSelectValue, pickStudioOptionByValue, readStudioOptions } from './helpers/studioSelect';
 
@@ -547,16 +548,14 @@ test('desktop companion keeps a character-first surface and opens the separate c
     (window as any).__ignoreMouseCalls = [];
     (window as any).__openChatCalls = [];
     (window as any).__relayedCommands = [];
-    Object.defineProperty(window, 'companionDesktop', {
-      configurable: true,
-      value: {
+    window.desktopCapabilitiesFixture = {
         isDesktop: true,
         hide: () => {},
         quit: () => {},
         openAtelier: () => {},
-        openChat: () => { (window as any).__openChatCalls.push(1); },
-        toggleChat: () => {},
-        chatRelay: (payload: Record<string, unknown>) => { (window as any).__relayedCommands.push(payload); },
+        openChat: async () => { (window as any).__openChatCalls.push(1); },
+        toggleChat: async () => {},
+        chatRelay: async (payload: Record<string, unknown>) => { (window as any).__relayedCommands.push(payload); },
         onChatCommand: () => 1,
         offChatCommand: () => {},
         setIgnoreMouseEvents: (value: boolean) => (window as any).__ignoreMouseCalls.push(value),
@@ -575,8 +574,6 @@ test('desktop companion keeps a character-first surface and opens the separate c
         openWorkspace: async () => false,
         openRuntime: async () => false,
         notify: () => {},
-        onFileDrop: () => 1,
-        offFileDrop: () => {},
         onResume: () => 1,
         offResume: () => {},
         onShown: () => 1,
@@ -603,8 +600,7 @@ test('desktop companion keeps a character-first surface and opens the separate c
         saveImage: async () => ({ saved: false }),
         getWorkspace: async () => ({ root: '', exists: false }),
         setWorkspace: async () => ({ root: '' }),
-      },
-    });
+      };
   });
   await page.reload();
   const companionCsp = await page.evaluate(async () => {
@@ -705,15 +701,13 @@ test('companion chat window renders history from storage and relays sends to the
     (window as any).__relayedCommands = [];
     (window as any).__radioStates = [];
     (window as any).__hideChatCalls = 0;
-    Object.defineProperty(window, 'companionDesktop', {
-      configurable: true,
-      value: {
+    window.desktopCapabilitiesFixture = {
         isDesktop: true,
         hide: () => {},
         quit: () => {},
         openAtelier: () => {},
-        openChat: () => {},
-        hideChatWindow: () => { (window as any).__hideChatCalls += 1; },
+        openChat: async () => {},
+        hideChatWindow: async () => { (window as any).__hideChatCalls += 1; },
         chatRelay: async (payload: Record<string, unknown>) => {
           (window as any).__relayedCommands.push(payload);
           // 模拟角色窗处理 'send' 后回写一条 assistant 消息到 storage
@@ -733,8 +727,7 @@ test('companion chat window renders history from storage and relays sends to the
         offChatCommand: () => {},
         onVisibilityChanged: () => 1,
         offVisibilityChanged: () => {},
-      },
-    });
+      };
   });
   await page.setViewportSize({ width: 560, height: 720 });
   await page.goto('/companion-chat');
@@ -1493,7 +1486,7 @@ test('Live2D falls back to the browser backend when native bridge is missing', a
     }));
   });
 
-  // 显式请求原生后端；无 window.aicsLive2dNative 时必须回退浏览器且仍可用
+  // 显式请求原生后端；无 window.nativeCapabilitiesFixture 时必须回退浏览器且仍可用
   await page.goto('/chat?live2dBackend=native');
   await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45_000 });
   await expect(page.locator('.live2d-host')).toHaveAttribute('data-backend', 'browser-fallback');
@@ -1501,3 +1494,5 @@ test('Live2D falls back to the browser backend when native bridge is missing', a
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready');
   expect(errors).toEqual([]);
 });
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

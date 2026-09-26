@@ -428,7 +428,7 @@
         <template v-if="batch.concatUrl">
           <div class="shot-concat-heading">
             <strong>整片预览</strong>
-            <a class="btn btn-ghost" :href="batch.concatUrl" download>下载整片 MP4</a>
+            <TaskMediaDownload class="btn btn-ghost" :src="batch.concatUrl">下载整片 MP4</TaskMediaDownload>
           </div>
           <StudioMediaPlayer class="shot-concat-player" kind="video" :src="batch.concatUrl" label="整片预览" :transcript="concatTranscript" />
         </template>
@@ -441,6 +441,7 @@
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
+import TaskMediaDownload from '@/components/tasks/TaskMediaDownload.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption, StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
 import { computed, nextTick, ref } from 'vue'

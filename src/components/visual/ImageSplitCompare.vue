@@ -19,7 +19,7 @@
   >
     <!-- Before Image (Base layer) -->
     <div class="split-layer layer-before">
-      <img :src="beforeSrc" :alt="beforeLabel || '原图'" class="split-img" draggable="false" />
+      <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(beforeSrc)" :alt="beforeLabel || '原图'" class="split-img" draggable="false" />
       <span class="split-badge badge-before">{{ beforeLabel || '换装前' }}</span>
     </div>
 
@@ -28,7 +28,7 @@
       class="split-layer layer-after"
       :style="splitLayerStyle"
     >
-      <img :src="afterSrc" :alt="afterLabel || '换装后'" class="split-img" draggable="false" />
+      <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(afterSrc)" :alt="afterLabel || '换装后'" class="split-img" draggable="false" />
       <span class="split-badge badge-after">{{ afterLabel || '换装后' }}</span>
     </div>
 
@@ -47,6 +47,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 

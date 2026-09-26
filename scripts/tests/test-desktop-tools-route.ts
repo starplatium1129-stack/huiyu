@@ -170,18 +170,29 @@ function writeProcessTree(root: any) {
 }
 
 function nativeBridge(base: any) {
-  const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/src/shim.rs'), 'utf8');
-  const script = source.match(/pub const COMPANION_SHIM_JS: &str = r#"([\s\S]*?)"#;/)?.[1];
-  assert.ok(script, 'native bridge source must be available');
-  const window: any = { __TAURI__: { core: { invoke: async () => ({}) }, event: { listen: async () => () => {}, emit: async () => {} } } };
-  vm.runInNewContext(script, {
-    window, location: { pathname: '/prompt-builder' },
-    document: { readyState: 'complete', querySelectorAll: () => [], querySelector: () => null },
-    MutationObserver: class { observe() {} disconnect() {} },
-    setTimeout: () => 0, clearTimeout: () => {}, console: { log() {}, error() {} },
-    fetch: (url: any, options: any) => fetch(base + url, options),
-  });
-  return window.companionDesktop;
+  const ts: typeof import('typescript') = require('typescript');
+  const sourceRoot = path.resolve(__dirname, '../../src');
+  const modules = new Map<string, Record<string, unknown>>();
+  // Execute the production adapter and its production cancellation client. Only
+  // the browser/native host and loopback endpoint are supplied by this fixture.
+  function load(file: string): Record<string, unknown> {
+    const filename = file.endsWith('.ts') ? file : `${file}.ts`;
+    assert.ok(filename.startsWith(sourceRoot + path.sep));
+    const cached = modules.get(filename); if (cached) return cached;
+    const exports: Record<string, unknown> = {}; modules.set(filename, exports);
+    const output = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
+      compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS },
+    }).outputText;
+    vm.runInNewContext(output, {
+      exports, window: { __TAURI__: {} }, AbortController, Headers, URL, structuredClone, setTimeout, clearTimeout,
+      fetch: (url: string, options: RequestInit) => fetch(base + url, options),
+      require: (specifier: string) => load(specifier.startsWith('@/')
+        ? path.join(sourceRoot, specifier.slice(2)) : path.resolve(path.dirname(filename), specifier)),
+    }, { filename });
+    return exports;
+  }
+  const factory = load(path.join(sourceRoot, 'platform/desktop/capabilities.ts')).getDesktopCapabilities as () => import('../../src/types/desktop').CompanionDesktopBridge;
+  return factory();
 }
 
 test('run_command：取消已启动进程及子进程，不影响其他请求', async () => {
@@ -244,7 +255,7 @@ test('生产桌面桥取消：真实 HTTP 断开后终止网关内工具进程�
     await waitFor(() => fs.existsSync(path.join(root, 'ready.json')));
     pids = JSON.parse(fs.readFileSync(path.join(root, 'ready.json'), 'utf8'));
     controller.abort();
-    assert.equal((await pending).name, 'AbortError');
+    assert.equal((await pending).kind, 'aborted');
     await waitFor(() => pids.every((pid: any) => !isAlive(pid)));
   } finally {
     controller.abort();

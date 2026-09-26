@@ -1,6 +1,7 @@
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { ref, onScopeDispose, getCurrentScope, type Ref } from 'vue'
-import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
-import type { VideoImageUploadResponse } from '@/api/videoApi'
+import { ensureCharacterReferencesLoaded, getCharacterReferences } from '../../utils/characterReferenceData.ts'
+import type { VideoImageUploadResponse } from '../../api/videoApi.ts'
 
 /**
  * 分镜编辑器·角色参考卡（Ref2VA）编排（2026-08-22 自 ShotListEditor 下沉）。
@@ -168,7 +169,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
         try {
         const imgUrl = new URL(item.url, location.href)
         imgUrl.searchParams.set('t', String(Date.now()))
-        const resp = await fetch(imgUrl.href, { cache: 'no-cache', signal: controller.signal })
+        const resp = await runtimeFetch(imgUrl.href, { cache: 'no-cache', signal: controller.signal })
         if (!resp.ok) continue
         const blob = await resp.blob()
         if (!blob.size || blob.size > 20 * 1024 * 1024 || (blob.type && !blob.type.startsWith('image/'))) continue

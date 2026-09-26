@@ -54,6 +54,7 @@
 </template>
 
 <script setup lang="ts">
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'

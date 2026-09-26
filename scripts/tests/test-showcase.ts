@@ -37,7 +37,7 @@ test('showcase source contract: view, router, nav, server allowlist, exporter wo
 
   // ── 数据来源与跳转 ────────────────────────────────────────────────────────
   assert(
-    view.includes("fetch('/scene-showcase/manifest.json'"),
+    view.includes("runtimeFetch('/scene-showcase/manifest.json'"),
     'showcase view must load the approved manifest',
   );
   assert(

@@ -6,8 +6,7 @@
  * 后端改名、可选字段忘判空，全都要等运行时才炸，而它们恰好都在破坏性
  * 操作路径上（改 host、启停服务、写回 data/scenes）。
  *
- * 与 `types/*.ts`（运行时 TS 用）分开放：`tsconfig.app.json` 只 include `src/`，
- * Bundler 解析下 SPA 取不到仓库根的 `types/`。两边的字段含义须保持一致。
+ * 共享请求 wire DTO 位于仓库根 types/，前端展示契约留在此文件。
  */
 
 // ── 统一错误信封（server/http-envelope.js）────────────────────────────────
@@ -32,19 +31,6 @@ export interface ProviderTestResult { ok: true; models: string[] }
 export interface TtsStatus { online: boolean; voices: Record<string, boolean>; translation?: { ready: boolean }; activeVoice?: string; error?: string }
 export interface VoicePrepareResult { ok: true; voice: string; translation: boolean; prepareMs?: number }
 export interface TranslateResult { sourceLanguage?: string; targetLanguage?: string; translation: string; segments?: unknown[] }
-/** Runtime request DTOs are optional at the boundary because malformed JSON is
- * still possible; handlers validate before invoking the service. */
-export interface TranslateRequest { text?: string }
-export interface VoicePrepareRequest { voice?: string; translation?: boolean }
-export interface TtsRequest {
-  voice?: string
-  text?: string
-  language?: string
-  emotion?: string
-  referenceEmotion?: string
-  consistency?: string
-  speed?: number
-}
 export interface Live2DStatusResponse { models: Record<string, unknown> }
 export interface SDStatusResponse { online: boolean; checkpoint: string; models: string[]; samplers: string[]; schedulers: string[]; upscalers: string[] }
 

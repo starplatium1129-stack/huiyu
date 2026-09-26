@@ -1,8 +1,9 @@
 import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
-import { kvGet, kvUpdate } from '@/composables/useKVStore'
-import { TASK_CENTER_KV_KEY as KEY } from '@/utils/storageKeys'
+import { readTaskHistory, updateTaskHistory } from '@/platform/web/taskHistory'
 import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
 import type { GenerationStage } from '@/utils/generationTask'
+import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
+import { runtimeTaskActiveCount } from '@/api/runtimeTaskState'
 
 export type TaskStatus = 'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled' | 'interrupted'
 export interface TaskSummary {
@@ -157,8 +158,9 @@ export function planTaskSummaryCompaction(
 }
 
 function persist() {
+  if (hasRuntimeTasks()) return
   writeTail = writeTail.catch(() => {}).then(async () => {
-    const saved = await kvUpdate(KEY, value => encodeSnapshot(mergeSnapshot(decodeSnapshot(value))))
+    const saved = await updateTaskHistory(value => encodeSnapshot(mergeSnapshot(decodeSnapshot(value))))
     // Local progress may have changed while the transaction committed.
     const merged = mergeSnapshot(decodeSnapshot(saved))
     tasks.value = merged.records
@@ -189,7 +191,8 @@ export function updateTask(id: string, patch: Partial<TaskSummary>) {
 export function flushTaskSummaries() { return writeTail }
 export function forgetTaskControls(id: string) { actions.delete(id) }
 export function hydrateTasks(): Promise<void> {
-  return loading ??= kvGet<unknown>(KEY).then(value => {
+  const read = () => hasRuntimeTasks() ? import('@/api/runtimeTasks').then(api => api.readRuntimeTaskHistory()) : readTaskHistory()
+  return loading ??= read().then(value => {
     const snapshot = decodeSnapshot(value)
     // A user may clear tasks while the initial read is pending. Hydration must
     // merge those local tombstones instead of restoring an older snapshot.
@@ -211,7 +214,7 @@ function findBackendTask(summary: TaskSummary) {
   return summary.backend && tasks.value.find(task => task.backend?.kind === summary.backend?.kind && task.backend?.id === summary.backend?.id)
 }
 export function useTaskCenter() {
-  return { tasks, opened, storageError, activeCount: computed(() => tasks.value.filter(task => task.status === 'running').length),
+  return { tasks, opened, storageError, activeCount: computed(() => hasRuntimeTasks() ? runtimeTaskActiveCount.value : tasks.value.filter(task => task.status === 'running').length),
     storageDiagnostics: computed(() => taskStorageDiagnostics()),
     controls: (id: string) => actions.get(id),
     clearCompleted() {
@@ -232,6 +235,7 @@ export function useTrackedTask(source: () => TaskSummary, controls: TaskControls
   let id = ''
   let previous: TaskStatus = 'idle'
   watch(source, summary => {
+    if (hasRuntimeTasks() && summary.kind !== 'interrogate') return
     const prior = tasks.value.find(task => task.id === id)
     if (summary.backend && prior?.backend && (summary.backend.id !== prior.backend.id || summary.backend.kind !== prior.backend.kind)) {
       forgetTaskControls(id); id = ''; previous = 'idle'

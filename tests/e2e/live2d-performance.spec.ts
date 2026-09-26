@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect, type Page } from '@playwright/test'
 import type { Live2DNativeBridge } from '../../src/types/live2dNative'
 import type { Live2DRuntimeAdapterConfig } from '../../src/live2d/types'
@@ -18,6 +19,7 @@ type Probe = {
 async function fixture(page: Page, legacy = false, localCharacters = false) {
   if (!localCharacters) await page.route('**/api/live2d-companions', route => route.fulfill({ json: [] }))
   await page.addInitScript(({ legacy }) => {
+    if (legacy) window.desktopProtocolFixture = 2
     localStorage.setItem('aics_companion_live2d_v1', 'true')
     localStorage.setItem('aics_live2d_quality_v1', 'compact')
     localStorage.setItem('aics_companion_behavior_v1', JSON.stringify({ enabled: false, dnd: true }))
@@ -31,12 +33,12 @@ async function fixture(page: Page, legacy = false, localCharacters = false) {
       getWindowState: async () => ({ maximized: false, focused: true }),
       chatRelay: async () => {}, isPackaged: async () => true,
     }
-    window.companionDesktop = new Proxy(methods, { get(target, key: string) {
+    window.desktopCapabilitiesFixture = new Proxy(methods, { get(target, key: string) {
       if (key in target) return target[key]
       if (key.startsWith('on')) return (callback: (value?: unknown) => void) => { probe.events[key] = callback; return 1 }
       return () => undefined
-    } }) as unknown as NonNullable<Window['companionDesktop']>
-    window.aicsLive2dNative = {
+    } }) as unknown as NonNullable<Window['desktopCapabilitiesFixture']>
+    window.nativeCapabilitiesFixture = {
       isNativeLive2D: true, supportsTextureQuality: !legacy,
       setCharacter: async (_path, options) => { probe.characters.push(options!); return { ok: true } },
       setFrame: async frame => { probe.frames.push(frame) }, setMaxFps: async fps => { probe.fps.push(fps) },
@@ -100,19 +102,14 @@ test('native companion keeps live visibility, power and bounds ahead of a stale 
   expect((await probe()).frame?.visible).toBe(false)
 })
 
-test('legacy desktop bridge retains original textures and disables unsupported quality controls', async ({ page }) => {
+test('an unsupported host protocol preserves the UI without issuing native model commands', async ({ page }) => {
   await fixture(page, true)
   await page.evaluate(() => {
     const p = (window as unknown as { __live2dProbe: Probe }).__live2dProbe
     p.snapshot({ visible: true, onBatteryPower: false, alwaysOnTop: false, ignoreMouseEvents: false, live2dEnabled: true, bounds: { x: 0, y: 0, width: 480, height: 720 } })
   })
-  await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready')
-  await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
-  await page.getByRole('button', { name: '设置', exact: true }).click()
-  const quality = page.locator('.companion-settings-popover').getByRole('radiogroup', { name: 'Live2D 画质' })
-  for (const option of await quality.getByRole('radio').all()) await expect(option).toBeDisabled()
-  await expect(quality).toHaveAttribute('data-value', 'original')
-  expect(await page.evaluate(() => (window as unknown as { __live2dProbe: Probe }).__live2dProbe.characters.every(value => value.textureScale === undefined))).toBe(true)
+  await expect(page.locator('.runtime-notice')).toContainText('本机服务尚未连接')
+  expect(await page.evaluate(() => (window as unknown as { __live2dProbe: Probe }).__live2dProbe.characters)).toEqual([])
 })
 
 test('native character switches carry the selected adapter profile and release the previous model', async ({ page }) => {
@@ -157,3 +154,5 @@ test('a focused character picker stays visible after the desktop idle timeout', 
   await page.locator('.companion-picker-option[data-value="furina"]').click()
   await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'furina')
 })
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-desktop-workspace-activate"
+description = "Enables the desktop_workspace_activate command without any pre-configured scope."
+commands.allow = ["desktop_workspace_activate"]
+
+[[permission]]
+identifier = "deny-desktop-workspace-activate"
+description = "Denies the desktop_workspace_activate command without any pre-configured scope."
+commands.deny = ["desktop_workspace_activate"]

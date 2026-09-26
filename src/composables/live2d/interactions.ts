@@ -1,10 +1,11 @@
-import { useCompanionAffection } from '@/composables/useCompanionAffection'
-import type { Live2DInteraction } from '@/composables/live2d/constants'
-import type { Live2DCtx, Live2DStatus } from '@/composables/live2d/context'
-import { prefersReducedMotion } from '@/composables/live2d/context'
-import { isRecord } from '@/composables/live2d/catalog'
-import { resolveCompanionAvatar } from '@/utils/companionRegistry'
-import { hasAffectionMotionRules } from '@/utils/companionAffection'
+import { resolveRuntimeUrl, runtimeResourceCors } from '../../platform/runtimeUrl.ts'
+import { useCompanionAffection } from '../useCompanionAffection.ts'
+import type { Live2DInteraction } from './constants.ts'
+import type { Live2DCtx, Live2DStatus } from './context.ts'
+import { prefersReducedMotion } from './context.ts'
+import { isRecord } from './catalog.ts'
+import { resolveCompanionAvatar } from '../../utils/companionRegistry.ts'
+import { hasAffectionMotionRules } from '../../utils/companionAffection.ts'
 
 /** 分区带映射：舞台归一化坐标（x/y ∈ [0,1]）→ 互动动作。 */
 export function resolveStageInteraction(character: string, x: number, y: number): Live2DInteraction | null {
@@ -102,7 +103,9 @@ export function createInteractionController(
     if (!soundUrl || ctx.speaking || ctx.interactionVolume === 0) return
     try {
       stopAudio()
-      const audio = new Audio(soundUrl)
+      const audio = new Audio()
+      audio.crossOrigin = runtimeResourceCors() ?? null
+      audio.src = resolveRuntimeUrl(soundUrl)
       audio.volume = ctx.interactionVolume
       ctx.interactionAudio = audio
       audio.play().catch(() => {

@@ -2,11 +2,12 @@ import { computed, effectScope, ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useTempResult, type TempResultDeps } from './useTempResult'
 import { clearTempResult, readTempResult, writeTempResult, type TempResultRecord } from '@/utils/tempResult'
-import { imgDelete, imgPut } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import type { AnimaResult } from '@/types/anima'
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 
-vi.mock('@/composables/useImageStore', () => ({ imgDelete: vi.fn().mockResolvedValue(undefined), imgGet: vi.fn(), imgPut: vi.fn() }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { deleteImage: vi.fn().mockResolvedValue(undefined), getImage: vi.fn(), putImage: vi.fn() } }))
+const imgDelete = artworkRepository.deleteImage, imgPut = artworkRepository.putImage
 vi.mock('@/utils/tempResult', () => ({ clearTempResult: vi.fn(), readTempResult: vi.fn(() => null), writeTempResult: vi.fn(() => true) }))
 const scopes: ReturnType<typeof effectScope>[] = []
 function deferred<T>() {

@@ -3,6 +3,9 @@ fn main() {
         tauri_build::Attributes::new().app_manifest(
             tauri_build::AppManifest::new().commands(&[
                 "desktop_bootstrap",
+                "desktop_workspace_prepare",
+                "desktop_workspace_activate",
+                "desktop_workspace_enable_bundled",
                 "chat_credential_read",
                 "chat_credential_write",
                 "get_state",

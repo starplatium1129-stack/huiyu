@@ -1,12 +1,14 @@
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { computed, onUnmounted, reactive, ref, shallowRef } from 'vue'
-import { apiClient } from '@/api/client'
-import { inspectModelFiles, type ModelInspection } from '@/live2d/modelInspector'
-import { connectModelPreview, createModelPreviewUrls } from '@/live2d/modelPreview'
-import { buildCalibratedProfile, calibrationValue, calibratedBinding, type CalibrationBinding, type ModelParameter } from '@/live2d/modelCalibration'
-import { validateAdapterProfile, type Live2DAdapterProfile } from '@/live2d/adapterProfile'
-import type { Live2DModelHandle, Live2DStageSession } from '@/live2d/types'
-import { getCompanionCharacter, resolveCompanionAvatar } from '@/utils/companionRegistry'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { apiClient } from '../api/client.ts'
+import { inspectModelFiles, type ModelInspection } from '../live2d/modelInspector.ts'
+import { connectModelPreview, createModelPreviewUrls } from '../live2d/modelPreview.ts'
+import { buildCalibratedProfile, calibrationValue, calibratedBinding, type CalibrationBinding, type ModelParameter } from '../live2d/modelCalibration.ts'
+import { validateAdapterProfile, type Live2DAdapterProfile } from '../live2d/adapterProfile.ts'
+import type { Live2DModelHandle, Live2DStageSession } from '../live2d/types.ts'
+import { getCompanionCharacter, resolveCompanionAvatar } from '../utils/companionRegistry.ts'
+import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 
 interface SavedModel { id: string; revision: string; fingerprint: string; profile: Live2DAdapterProfile; disabled?: boolean; canRollback?: boolean }
 const errorText = (error: unknown) => error instanceof Error ? error.message : String(error)
@@ -238,7 +240,7 @@ export function useModelStudio(hostId: string) {
         for (const item of inspection.value.entries) form.append('files', item.file, item.file.name)
         form.append('paths', JSON.stringify(inspection.value.entries.map(item => item.path)))
         form.append('metadata', JSON.stringify({ ...identity, entryPath: inspection.value.entryPath, profile }))
-        const response = await fetch('/api/live2d-import', { method: 'POST', body: form, signal: controller.signal })
+        const response = await runtimeFetch('/api/live2d-import', { method: 'POST', body: form, signal: controller.signal })
         const result = await response.json()
         if (token !== generation || controller.signal.aborted) return
         if (!response.ok) throw new Error(result.error || '导入失败')

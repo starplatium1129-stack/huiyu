@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { STORAGE_KEY } from '@/config/characters'
 import { createBackup } from '@/utils/backupCore'
@@ -16,10 +17,10 @@ beforeEach(() => {
     },
   } })
 })
-afterEach(() => { localStorage.clear(); delete window.companionDesktop; Reflect.deleteProperty(navigator, 'locks'); vi.restoreAllMocks() })
+afterEach(() => { localStorage.clear(); desktopFixture.current = undefined; Reflect.deleteProperty(navigator, 'locks'); vi.restoreAllMocks() })
 
 function desktop(read: () => Promise<string | null>, write: (endpoint: string, secret: string) => Promise<void>) {
-  window.companionDesktop = { isDesktop: true, readChatCredential: read, writeChatCredential: write } as unknown as typeof window.companionDesktop
+  desktopFixture.current = { isDesktop: true, readChatCredential: read, writeChatCredential: write } as unknown as (CompanionDesktopBridge | undefined)
 }
 
 describe('chat credential migration through storage', () => {
@@ -74,7 +75,7 @@ describe('chat credential migration through storage', () => {
   })
 
   it('refuses plaintext fallback when an older desktop bridge cannot save securely', async () => {
-    window.companionDesktop = { isDesktop: true } as typeof window.companionDesktop
+    desktopFixture.current = { isDesktop: true } as (CompanionDesktopBridge | undefined)
     const storage = useChatStorage()
     await expect(storage.setApiSettings({ baseUrl: endpoint, model: 'fixture', apiKey: secret })).rejects.toThrow()
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull()
@@ -161,3 +162,6 @@ describe('chat credential migration through storage', () => {
     expect(localStorage.getItem(STORAGE_KEY)).not.toContain(secret)
   })
 })
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

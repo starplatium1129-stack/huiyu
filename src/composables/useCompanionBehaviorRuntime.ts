@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import { usePolling } from './usePolling'
 import type { CompanionDesktopBridge } from '@/types/desktop'

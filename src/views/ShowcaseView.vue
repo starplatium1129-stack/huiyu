@@ -74,7 +74,7 @@
         :data-rating="entry.rating"
       >
         <button class="sample-visual" :class="{ 'sample-visual-measured': hasRatio(entry) }" type="button" :style="{ '--sample-ratio': sampleRatio(entry) }" :aria-label="'查看 ' + entry.title + ' 大图'" @click="openViewer(entry.id)">
-          <img v-if="!brokenThumbs.has(entry.id)" class="sample-image" :class="{ 'sample-image-ready': loadedThumbs.has(entry.id) }" :src="thumbSrc(entry)" :alt="entry.title"
+          <img :crossorigin="runtimeResourceCors()" v-if="!brokenThumbs.has(entry.id)" class="sample-image" :class="{ 'sample-image-ready': loadedThumbs.has(entry.id) }" :src="resolveRuntimeUrl(thumbSrc(entry))" :alt="entry.title"
             :width="entry.width" :height="entry.height" loading="lazy" decoding="async" @load="markThumbLoaded(entry)" @error="markThumbError(entry)" />
           <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span>
           <span class="sample-shade"></span>
@@ -111,7 +111,7 @@
         <div v-if="viewerMounted && currentEntry" class="viewer-layout">
           <div class="viewer-art">
             <ZoomableImageViewer
-              :src="imgSrc(currentEntry)"
+              :src="resolveRuntimeUrl(imgSrc(currentEntry))"
               :alt="currentEntry.title"
               @load="viewerImageReady = true"
               @error="viewerImageFailed = true"
@@ -154,6 +154,10 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
+import { runtimeFetch } from '@/platform/runtimeUrl'
+
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -369,7 +373,7 @@ async function loadManifest() {
   try {
     // manifest 是样张目录（非 data/），仍单独取；curation 走共享 store
     const [manifest] = await Promise.all([
-      fetch('/scene-showcase/manifest.json', { cache: 'no-cache', signal: manifestController.signal }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
+      runtimeFetch('/scene-showcase/manifest.json', { cache: 'no-cache', signal: manifestController.signal }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
       sceneStore.load().catch(() => {})
     ])
     if (unmounted || revision !== manifestRevision) return

@@ -31,13 +31,15 @@
 </template>
 
 <script setup lang="ts">
+import { getNativeLive2dCapabilities } from '@/platform/desktop/nativeLive2d'
+
 import { computed } from 'vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const props = defineProps<{ native?: boolean }>()
 const { quality, setQuality } = useLive2DPreferences()
-const supported = computed(() => !props.native || !window.aicsLive2dNative || window.aicsLive2dNative.supportsTextureQuality === true)
+const supported = computed(() => !props.native || !getNativeLive2dCapabilities() || getNativeLive2dCapabilities()!.supportsTextureQuality === true)
 const options = [
   { value: 'original', label: '原始', caption: '高清' },
   { value: 'standard', label: '标准', caption: '省内存' },

@@ -17,11 +17,13 @@
 </template>
 
 <script setup lang="ts">
+import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
+
 import { ref } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { settingsRepository } from '@/storage/settingsRepository'
 import { desktopPages, DESKTOP_START_PAGE_SETTING } from '@/storage/desktopPreferences'
-const isDesktop = Boolean(window.companionDesktop)
+const isDesktop = Boolean(getDesktopCapabilities())
 const startPage = ref(settingsRepository.get(DESKTOP_START_PAGE_SETTING) || '/')
 const feedback = ref('')
 function saveStartPageValue(value: string | number) {

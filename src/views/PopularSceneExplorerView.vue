@@ -59,7 +59,7 @@
           <RouterLink v-if="thumbSrc(blueprint)" class="pop-thumb" :class="{ 'is-missing': thumbFailed[thumbSrc(blueprint)] }" :to="drawUrl(blueprint)"
             :aria-label="`以「${blueprint.title}」开始绘制`">
             <span class="pop-thumb-skeleton" :class="{ visible: !thumbState[thumbSrc(blueprint)] && !thumbFailed[thumbSrc(blueprint)] }" aria-hidden="true"></span>
-            <img :src="thumbSrc(blueprint)" alt="" loading="lazy" decoding="async"
+            <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(thumbSrc(blueprint))" alt="" loading="lazy" decoding="async"
               :class="{
                 'pop-thumb-r18': sampleRatingOf(blueprint) === 'R18',
                 'pop-thumb-missing': thumbFailed[thumbSrc(blueprint)],
@@ -100,6 +100,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

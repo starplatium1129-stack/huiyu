@@ -2,13 +2,13 @@
 
 mod bridge;
 mod bootstrap;
+mod ui_entry;
 mod credentials;
 mod gateway;
 mod live2d_overlay;
 mod logger;
 mod main_shared;
 mod paths;
-mod shim;
 mod state;
 mod tray;
 mod updater_cmd;
@@ -66,28 +66,15 @@ fn start_gateway_monitor(app: AppHandle) {
                         continue;
                     }
                     *state.gateway_url.lock().unwrap() = url.clone();
-                    let _ = app.emit("aics:gateway-url", url.clone());
+                    let _ = app.emit("aics:gateway-ready", url.clone());
                     state.info(&format!("gateway restarted at {url}"));
-                    // 页面重新加载
-                    if let Some(w) = app.get_webview_window("companion") {
-                        let companion_url = format!("{}/companion", url.trim_end_matches('/'));
-                        if let Ok(parsed) = companion_url.parse() {
-                            let _ = w.navigate(parsed);
-                        }
-                    } else {
+                    // Existing documents reconnect through the typed transport;
+                    // navigation here would discard unsaved drafts and task views.
+                    if app.get_webview_window("companion").is_none() {
                         let visible = !std::env::args().any(|arg| arg == "--hidden");
-                        if let Err(error) = main_shared::create_companion_window(&app, &url, shim::COMPANION_SHIM_JS, visible) {
+                        if let Err(error) = main_shared::create_companion_window(&app, &url, visible) {
                             state.error(&format!("companion recovery failed: {error}"));
                         }
-                    }
-                    if let Some(w) = app.get_webview_window("companion-chat") {
-                        let chat_url = format!("{}/companion-chat", url.trim_end_matches('/'));
-                        if let Ok(parsed) = chat_url.parse() {
-                            let _ = w.navigate(parsed);
-                        }
-                    }
-                    if let Some(w) = app.get_webview_window("atelier") {
-                        let _ = w.navigate(url.parse().unwrap());
                     }
                 }
                 Err(e) => state.error(&format!("gateway restart failed: {e}")),
@@ -146,7 +133,9 @@ fn main() {
     let app = tauri::Builder::default()
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-        .plugin(tauri_plugin_single_instance::init(|app, argv, _cwd| {
+        .plugin(if ui_entry::isolated_profile().is_some() {
+            tauri::plugin::Builder::new("isolated-instance").build()
+        } else { tauri_plugin_single_instance::init(|app, argv, _cwd| {
             let state = app.state::<AppState>();
             for arg in argv {
                 if arg.starts_with("aics://") {
@@ -159,7 +148,7 @@ fn main() {
                 }
             }
             main_shared::show_companion(app, true);
-        }))
+        }) })
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
             Some(vec!["--hidden"]),
@@ -171,6 +160,9 @@ fn main() {
         .invoke_handler({
             let handler: fn(tauri::ipc::Invoke) -> bool = tauri::generate_handler![
             bridge::desktop_bootstrap,
+            bridge::desktop_workspace_prepare,
+            bridge::desktop_workspace_activate,
+            bridge::desktop_workspace_enable_bundled,
             credentials::chat_credential_read,
             credentials::chat_credential_write,
             bridge::get_state,
@@ -221,7 +213,8 @@ fn main() {
             ];
             move |invoke: tauri::ipc::Invoke| {
                 let view = invoke.message.webview();
-                let trusted = view.url().map(|url| main_shared::is_gateway_origin(view.app_handle(), &url)).unwrap_or(false);
+                let trusted = matches!(view.label(), "atelier" | "companion" | "companion-chat")
+                    && view.url().map(|url| main_shared::is_gateway_origin(view.app_handle(), &url)).unwrap_or(false);
                 if !trusted {
                     invoke.resolver.reject("IPC requires the current authenticated gateway origin");
                     return true;
@@ -248,12 +241,12 @@ fn main() {
             state.info("Companion starting (tauri shell)");
 
             // GitHub Releases 更新检查不依赖本地网关；失败静默，不影响离线启动。
-            updater_cmd::spawn_startup_check(app.handle().clone());
+            if ui_entry::isolated_profile().is_none() { updater_cmd::spawn_startup_check(app.handle().clone()); }
 
             // 深链注册（dev 模式插件不会自动写注册表，需显式注册）
             {
                 use tauri_plugin_deep_link::{DeepLinkExt, OpenUrlEvent};
-                let _ = app.deep_link().register("aics");
+                if ui_entry::isolated_profile().is_none() { let _ = app.deep_link().register("aics"); }
                 let handle = app.handle().clone();
                 app.deep_link().on_open_url(move |event: OpenUrlEvent| {
                     let state = handle.state::<AppState>();
@@ -273,7 +266,9 @@ fn main() {
             }
 
             // 数据迁移（Electron → Tauri，幂等）
-            let migrated = paths::migrate_electron_data(&state.paths.config_root, &state.paths.runtime_root);
+            let migrated = if ui_entry::isolated_profile().is_none() {
+                paths::migrate_electron_data(&state.paths.config_root, &state.paths.runtime_root)
+            } else { Vec::new() };
             if !migrated.is_empty() {
                 state.info(&format!("migrated electron data: {}", migrated.join(", ")));
             }
@@ -307,7 +302,11 @@ fn main() {
             )
             .port(configured_port)
             .node_path(sidecar_node)
-            .env(main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap())))
+            .env({
+                let mut env = main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap()));
+                if ui_entry::bundled(app.handle()) { env.push(("AICS_DESKTOP_BUNDLED_UI".into(), "1".into())); }
+                env
+            })
             .on_output(move |stream, text| {
                 let log = logger::FileLogger::new(&log_path);
                 log.debug(&format!("[gateway:{stream}] {}", text.trim()));
@@ -333,6 +332,10 @@ fn main() {
                     }
                     Err(e) => {
                         s.error(&format!("Gateway start failed: {e}"));
+                        if ui_entry::bundled(&handle) {
+                            let _ = handle.emit("aics:gateway-unavailable", ());
+                            return;
+                        }
                         use tauri_plugin_dialog::DialogExt;
                         handle.dialog().message(format!(
                             "本地网关未能启动，桌宠和画室暂时无法打开。请重新安装修复版；后台会继续尝试恢复。\n\n诊断日志：{}\n\n{}",
@@ -343,11 +346,10 @@ fn main() {
             });
 
             let handle = app.handle().clone();
-            let shim = shim::COMPANION_SHIM_JS;
             let show_on_start = !std::env::args().any(|arg| arg == "--hidden");
             tauri::async_runtime::spawn(async move {
                 let start = Instant::now();
-                loop {
+                while !ui_entry::bundled(&handle) {
                     tokio::time::sleep(Duration::from_millis(200)).await;
                     let ready = !handle.state::<AppState>().gateway_url.lock().unwrap().is_empty();
                     if ready || start.elapsed() > Duration::from_secs(40) {
@@ -355,10 +357,10 @@ fn main() {
                     }
                 }
                 let url = handle.state::<AppState>().gateway_url.lock().unwrap().clone();
-                if url.is_empty() {
+                if url.is_empty() && !ui_entry::bundled(&handle) {
                     return;
                 }
-                if let Err(e) = main_shared::create_companion_window(&handle, &url, shim, show_on_start) {
+                if let Err(e) = main_shared::create_companion_window(&handle, &url, show_on_start) {
                     eprintln!("companion window: {e}");
                 }
             });
@@ -394,14 +396,6 @@ fn main() {
                         main_shared::open_companion_chat(&inner, &url);
                     }
                 });
-                let h4 = handle.clone();
-                h4.listen("aics:shim-diagnose", {
-                    let inner = h4.clone();
-                    move |event| {
-                        let state = inner.state::<AppState>();
-                        state.warn(&format!("[shim] {}", event.payload().to_string()));
-                    }
-                });
                 loop { tokio::time::sleep(Duration::from_secs(3600)).await; }
             });
 
@@ -417,10 +411,10 @@ fn main() {
             });
 
             let _ = tray::create_tray(app.handle());
-            register_shortcuts(app.handle());
+            if ui_entry::isolated_profile().is_none() { register_shortcuts(app.handle()); }
             let handle = app.handle().clone();
             watchers::start_global_mouse_watch(handle.clone());
-            watchers::start_clipboard_watch(handle.clone());
+            if ui_entry::isolated_profile().is_none() { watchers::start_clipboard_watch(handle.clone()); }
             watchers::start_power_watch(handle.clone());
             watchers::start_display_watch(handle.clone());
             watchers::start_hidden_degrade(handle.clone());

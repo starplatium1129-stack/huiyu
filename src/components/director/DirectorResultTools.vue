@@ -2,7 +2,8 @@
       <div class="result-image-actions">
         <!-- F2：入册状态如实标注——未入册的成片在临时缓冲里，离页/失败也能找回 -->
         <span v-if="resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived">
-          {{ resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册 · 请保存画面' }}
+          <ArchiveIcon :name="resultArchived ? 'success' : 'gallery'" />
+          <span>{{ resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册 · 请保存画面' }}</span>
         </span>
         <RouterLink v-if="resultArchived" class="btn btn-primary" to="/gallery">查看作品册</RouterLink>
         <button v-else class="btn btn-primary" type="button" :disabled="savingResult" @click="$emit('saveResult')">{{ savingResult ? '正在入册…' : '存入作品册' }}</button>
@@ -10,8 +11,14 @@
           与上一张对比
         </button>
         <details class="result-tools-disclosure">
-          <summary>修图与短片<span v-if="shotsPending"> · {{ shotsPending }} 个分镜</span></summary>
+          <summary>
+            <span>修图与短片<span v-if="shotsPending" class="result-tools-count"> · {{ shotsPending }} 个分镜</span></span>
+            <ArchiveIcon name="chevron-down" class="result-tools-chevron" />
+          </summary>
           <div class="result-tools-grid">
+            <div class="result-tools-group" role="group" aria-label="修图">
+              <span class="result-tools-label" aria-hidden="true">修图</span>
+              <div class="result-tool-buttons">
         <!-- 原生 title 换成 StudioTooltip：hover 与键盘聚焦都出提示，且跟随双主题令牌。
              可禁用（busy）的按钮加 anchor —— 禁用控件不派发指针事件，没有外壳托住 hover
              时提示根本不会出现。v-if 挂在 Tooltip 上（不能留在内层按钮上，否则条件为假
@@ -80,6 +87,11 @@
             <span>高清放大 2x</span>
           </button>
         </StudioTooltip>
+              </div>
+            </div>
+            <div v-if="(displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')) || shotsPending > 0" class="result-tools-group" role="group" aria-label="短片">
+              <span class="result-tools-label" aria-hidden="true">短片</span>
+              <div class="result-tool-buttons">
         <StudioTooltip
           v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
           anchor
@@ -120,9 +132,16 @@
             <span>去分镜短片（{{ shotsPending }}）</span>
           </button>
         </StudioTooltip>
+              </div>
+            </div>
+            <div class="result-tools-group result-tools-cleanup" role="group" aria-label="清理">
+              <span class="result-tools-label" aria-hidden="true">清理</span>
+              <div class="result-tool-buttons">
         <StudioTooltip content="从画布中移除当前成片（已保存的作品不受影响）">
           <button class="btn btn-ghost" type="button" @click="$emit('clearResult')">清除画布画面</button>
         </StudioTooltip>
+              </div>
+            </div>
           </div>
         </details>
       </div>

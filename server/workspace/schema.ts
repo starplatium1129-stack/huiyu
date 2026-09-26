@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import { assertSafePath, syncDirectory } from './paths';
 import { DatabaseSync } from 'node:sqlite';
 import { WorkspaceError } from './types';
+import { supportedSchema, upgradeWorkspaceSchema } from './schema-upgrade';
 
 export type StorageCheckpoint = 'prepared' | 'media-published' | 'metadata-written' | 'committed';
 export interface WorkspaceStorageContext {
@@ -13,7 +14,7 @@ export interface WorkspaceStorageContext {
   checkpoint(phase: StorageCheckpoint): void;
 }
 
-const schema = `
+export const BASE_SCHEMA_SQL = `
 CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT NOT NULL);
 CREATE TABLE schema_migrations(version INTEGER PRIMARY KEY, applied_at INTEGER NOT NULL);
 CREATE TABLE artworks(id_key TEXT PRIMARY KEY, id_json TEXT NOT NULL, body TEXT NOT NULL,
@@ -52,7 +53,7 @@ export function openStorage(options: { root: string; workspaceId: string; writer
     const identity: unknown = JSON.parse(fs.readFileSync(identityFile, 'utf8'));
     if (!identity || typeof identity !== 'object' || !('workspaceId' in identity)
       || identity.workspaceId !== options.workspaceId || !('schemaVersion' in identity)
-      || identity.schemaVersion !== 1 || !('databaseKind' in identity) || identity.databaseKind !== 'huiyu-workspace') {
+      || !supportedSchema(identity.schemaVersion) || !('databaseKind' in identity) || identity.databaseKind !== 'huiyu-workspace') {
       throw new WorkspaceError('WORKSPACE_IDENTITY', 'Workspace identity or format is unsupported');
     }
   } else {
@@ -68,21 +69,21 @@ export function openStorage(options: { root: string; workspaceId: string; writer
   const db = new DatabaseSync(databaseFile);
   try {
     const version = db.prepare('PRAGMA user_version').get()?.user_version;
-    if ((hasDatabase && version !== 1) || (!hasDatabase && version !== 0)) {
+    if ((hasDatabase && !supportedSchema(version)) || (!hasDatabase && version !== 0)) {
       throw new WorkspaceError('WORKSPACE_SCHEMA', 'Unsupported workspace schema; repair required');
     }
     db.exec('PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON;');
     db.exec('BEGIN IMMEDIATE');
     try {
       if (!hasDatabase) {
-        db.exec(schema);
+        db.exec(BASE_SCHEMA_SQL);
         const insert = db.prepare('INSERT INTO meta VALUES(?,?)');
         for (const [key, value] of Object.entries({ workspaceId: options.workspaceId,
           databaseKind: 'huiyu-workspace', schemaVersion: '1', revision: '0', writerEpoch: options.writerEpoch })) insert.run(key, value);
         db.prepare('INSERT INTO schema_migrations VALUES(1,?)').run(Date.now());
       } else {
         for (const [key, expected] of Object.entries({ workspaceId: options.workspaceId,
-          databaseKind: 'huiyu-workspace', schemaVersion: '1' })) {
+          databaseKind: 'huiyu-workspace', schemaVersion: String(version) })) {
           if (db.prepare('SELECT value FROM meta WHERE key=?').get(key)?.value !== expected) {
             throw new WorkspaceError('WORKSPACE_IDENTITY', 'Workspace database identity mismatch');
           }
@@ -91,6 +92,7 @@ export function openStorage(options: { root: string; workspaceId: string; writer
       }
       db.exec('COMMIT');
     } catch (error) { db.exec('ROLLBACK'); throw error; }
+    upgradeWorkspaceSchema(db, root, options.workspaceId);
     return { db, root, workspaceId: options.workspaceId, writerEpoch: options.writerEpoch,
       checkpoint: options.onCheckpoint ?? (() => {}),
       transaction<T>(action: () => T): T {

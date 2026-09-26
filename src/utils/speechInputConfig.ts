@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 /**
  * 语音输入（ASR）配置：load/save/normalize，localStorage 持久化。
  *
@@ -89,7 +90,7 @@ export interface KeyedStorage {
 }
 
 function defaultStorage(): KeyedStorage | null {
-  return typeof localStorage !== 'undefined' ? localStorage : null
+  return typeof globalThis.localStorage !== 'undefined' ? localStorage : null
 }
 
 /** 读取并归一化语音输入配置（无参数时读浏览器 localStorage，测试可注入 storage）。 */

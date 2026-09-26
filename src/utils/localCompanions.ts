@@ -1,6 +1,7 @@
-import { isLocalStudioHost } from './runtimeEnvironment'
-import { registerCompanionAvatar, registerCompanionCharacter, type CompanionAvatarDefinition, type CompanionCharacterDefinition } from './companionRegistry'
-import { validateAdapterProfile, type Live2DAdapterProfile } from '../live2d/adapterProfile'
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { isLocalStudioHost } from './runtimeEnvironment.ts'
+import { registerCompanionAvatar, registerCompanionCharacter, type CompanionAvatarDefinition, type CompanionCharacterDefinition } from './companionRegistry.ts'
+import { validateAdapterProfile, type Live2DAdapterProfile } from '../live2d/adapterProfile.ts'
 
 let loaded: Promise<void> | undefined
 
@@ -10,7 +11,7 @@ export function loadLocalCompanions(): Promise<void> {
   if (loaded) return loaded
   let current: Promise<void>
   current = (async () => {
-    const response = await fetch('/api/live2d-companions', { signal: AbortSignal.timeout(5000) })
+    const response = await runtimeFetch('/api/live2d-companions', { signal: AbortSignal.timeout(5000) })
     if (!response.ok) throw new Error(`本机角色目录 HTTP ${response.status}`)
     const entries: unknown = await response.json()
     if (!Array.isArray(entries)) throw new Error('本机角色目录格式无效')

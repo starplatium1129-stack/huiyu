@@ -41,7 +41,7 @@ describe('independent chat preference persistence', () => {
     storage.setDraft('nene', 'next question')
     storage.setVolume(0)
     expect(content).not.toHaveBeenCalled()
-    expect(get.mock.calls.every(([key]) => key === CHAT_RESET_KEY)).toBe(true)
+    expect(get.mock.calls.every(([key]) => key === CHAT_RESET_KEY || key === 'huiyu:migration:barrier')).toBe(true)
     expect(set.mock.calls.map(([key]) => key)).toEqual([CHAT_DRAFT_PREFIX + 'nene', CHAT_VOLUME_KEY])
     expect((await open()).draft('nene')).toBe('next question')
     expect((await open()).state.settings.volume).toBe(0)

@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { ref, shallowRef, defineComponent } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -30,7 +31,7 @@ beforeEach(() => {
   vi.mocked(maintenanceApi.previewSceneChanges).mockResolvedValue(impact())
   vi.mocked(confirmAction).mockResolvedValue(true)
 })
-afterEach(() => { wrapper?.unmount(); vi.resetAllMocks(); delete window.companionDesktop })
+afterEach(() => { wrapper?.unmount(); vi.resetAllMocks(); desktopFixture.current = undefined })
 function setup() {
   const baseline = shallowRef<SceneMaintenanceSnapshot | null>(freezeSceneSnapshot(snapshot()))
   const version = ref<number | null>(42)
@@ -165,7 +166,7 @@ describe('maintenance delta saving and edit protection', () => {
     expect(deps.adoptSceneState).not.toHaveBeenCalled()
   })
   it('keeps an unknown packaged-desktop state read-only', async () => {
-    window.companionDesktop = { isPackaged: vi.fn().mockRejectedValue(new Error('unavailable')) } as never
+    desktopFixture.current = { isPackaged: vi.fn().mockRejectedValue(new Error('unavailable')) } as never
     const { tools } = setup()
     await flushPromises()
     await tools.saveToProject()
@@ -224,3 +225,6 @@ describe('read-only impact previews', () => {
     expect(tools.highlightedOutput.value.match(/class="hl-id"/g)).toHaveLength(3)
   })
 })
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

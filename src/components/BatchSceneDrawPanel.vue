@@ -122,7 +122,7 @@
                 @click="toggleChar(char.id)"
               >
                 <div class="batch-char-avatar-wrap">
-                  <img :src="char.avatarUrl" :alt="char.displayName" class="batch-char-avatar" loading="lazy" decoding="async" />
+                  <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(char.avatarUrl)" :alt="char.displayName" class="batch-char-avatar" loading="lazy" decoding="async" />
                   <span class="batch-char-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
                 </div>
                 <div class="batch-char-info">
@@ -176,7 +176,7 @@
                   :aria-label="`查看大图：${job.sceneTitle}`"
                   @click="previewJob = job"
                 >
-                  <img class="batch-thumb" :src="job.resultUrl" :alt="job.sceneTitle" loading="lazy" decoding="async" />
+                  <img :crossorigin="runtimeResourceCors()" class="batch-thumb" :src="resolveRuntimeUrl(job.resultUrl)" :alt="job.sceneTitle" loading="lazy" decoding="async" />
                 </button>
               </StudioTooltip>
               <div v-else class="batch-thumb batch-thumb-placeholder" :data-state="job.status">
@@ -185,7 +185,7 @@
               </div>
               <figcaption class="batch-card-caption">
                 <div class="batch-card-header-line">
-                  <img v-if="job.avatarUrl" :src="job.avatarUrl" :alt="job.sceneTitle" class="batch-card-avatar" />
+                  <img :crossorigin="runtimeResourceCors()" v-if="job.avatarUrl" :src="resolveRuntimeUrl(job.avatarUrl)" :alt="job.sceneTitle" class="batch-card-avatar" />
                   <span class="batch-card-title">{{ job.sceneTitle }}<em v-if="job.variant > 0"> · {{ job.variant + 1 }}</em></span>
                 </div>
                 <span class="batch-card-seed">{{ job.subtitle ? job.subtitle + ' · ' : '' }}{{ job.seed >= 0 ? 'seed ' + job.seed : '随机' }}</span>
@@ -216,7 +216,7 @@
         <!-- 大图预览 -->
         <Transition name="layer-fade">
         <div v-if="previewJob?.resultUrl" class="batch-lightbox" @click.self="previewJob = null">
-          <img :src="previewJob.resultUrl" :alt="previewJob.sceneTitle" />
+          <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(previewJob.resultUrl)" :alt="previewJob.sceneTitle" />
           <p class="batch-lightbox-caption">
             {{ previewJob.sceneTitle }}<em v-if="previewJob.variant > 0"> · 候选 {{ previewJob.variant + 1 }}</em>
             · {{ previewJob.seed >= 0 ? 'seed ' + previewJob.seed : '随机 seed' }}
@@ -233,6 +233,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import StudioSelect from '@/components/ui/StudioSelect.vue'

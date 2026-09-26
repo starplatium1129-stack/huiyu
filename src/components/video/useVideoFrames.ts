@@ -6,7 +6,7 @@ import {
   type VideoMode,
   type VideoStatusResponse,
 } from '@/api/videoApi'
-import { imgGet, imgPut } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { useVideoStore, type VideoCtxPayload } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
 
@@ -91,7 +91,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     clearLastFrame()
     const version = firstVersion
     try {
-      const blob = await imgGet(ctx.imageId)
+      const blob = await artworkRepository.getImage(ctx.imageId)
       if (version !== firstVersion) return
       if (blob) {
         if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
@@ -158,7 +158,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
       statusError.value = ''
       try {
         const upload = await uploadVideoImage(await blobToBase64(file))
-        const imageId = await imgPut(file).catch(() => '')
+        const imageId = await artworkRepository.putImage(file).catch(() => '')
         if (!isCurrent()) return
         const preview = URL.createObjectURL(file)
         if (!imageId) statusError.value = '图片可用于本次生成，但本地保存失败，刷新或再次生成前需重新选择图片'
@@ -195,7 +195,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     if (mode === 'first-last-frame') lastFrameName.value = ''
     async function resolve(frame: { id: string; name: string }, label: string) {
       if (frame.id) {
-        const blob = await imgGet(frame.id)
+        const blob = await artworkRepository.getImage(frame.id)
         if (!blob) throw new Error(`${label}图片读取失败，请重新选择`)
         return (await uploadVideoImage(await blobToBase64(blob))).name
       }

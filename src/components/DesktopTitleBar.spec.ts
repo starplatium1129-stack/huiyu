@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesktopTitleBar from './DesktopTitleBar.vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 vi.mock('vue-router', () => ({ useRoute: () => ({ path: '/', meta: { title: '我的工作台' } }) }))
-afterEach(() => { delete window.companionDesktop; document.documentElement.classList.remove('aics-desktop-shell') })
+afterEach(() => { desktopFixture.current = undefined; document.documentElement.classList.remove('aics-desktop-shell') })
 describe('desktop title bar lifecycle', () => {
   it('does not add desktop controls to a browser', () => {
     const wrapper = mount(DesktopTitleBar)
@@ -14,7 +14,7 @@ describe('desktop title bar lifecycle', () => {
     let resolve!: (state: { maximized: boolean; focused: boolean }) => void
     let listener!: (maximized: boolean) => void
     const off = vi.fn()
-    window.companionDesktop = {
+    desktopFixture.current = {
       getWindowState: () => new Promise(done => { resolve = done }),
       onMaximizedChanged: (callback: typeof listener) => { listener = callback; return 0 },
       offMaximizedChanged: off,
@@ -31,7 +31,7 @@ describe('desktop title bar lifecycle', () => {
     let resolve!: (state: { maximized: boolean; focused: boolean }) => void
     const subscribe = vi.fn(() => 7)
     const off = vi.fn()
-    window.companionDesktop = {
+    desktopFixture.current = {
       getWindowState: () => new Promise(done => { resolve = done }),
       onMaximizedChanged: subscribe, offMaximizedChanged: off,
     } as unknown as CompanionDesktopBridge
@@ -44,3 +44,6 @@ describe('desktop title bar lifecycle', () => {
     expect(document.documentElement.classList.contains('aics-desktop-shell')).toBe(false)
   })
 })
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

@@ -29,8 +29,8 @@
       <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
         <CharacterParticleStage :character-id="current.id" :name="current.name">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
-          <img v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
-            :src="portraitView.src" :data-attempt-token="portraitView.token"
+          <img :crossorigin="runtimeResourceCors()" v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
+            :src="resolveRuntimeUrl(portraitView.src)" :data-attempt-token="portraitView.token"
             :alt="current.portrait?.alt || current.name"
             loading="eager" decoding="async" @load="measurePortrait"
             @error="onPortraitError" />
@@ -142,7 +142,7 @@
             <div class="char-ref-image-wrap">
               <img
                 v-if="refItem.url && !unavailableReferences.has(refItem.url)"
-                :src="`${refItem.url}?t=${refVersion}`"
+                :src="resolveRuntimeUrl(`${refItem.url}?t=${refVersion}`)"
                 :alt="refItem.name"
                 @error="unavailableReferences.add(refItem.url)"
                 class="char-ref-image"
@@ -181,7 +181,7 @@
           <div v-if="activeRefModal" class="ref-modal-layout">
             <div class="ref-modal-art">
               <ZoomableImageViewer
-                :src="`${activeRefModal.url}?t=${refVersion}`"
+                :src="resolveRuntimeUrl(`${activeRefModal.url}?t=${refVersion}`)"
                 :alt="activeRefModal.name"
               >
                 <template #fallback>
@@ -265,6 +265,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vue'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'

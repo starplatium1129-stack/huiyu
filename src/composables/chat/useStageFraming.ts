@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { computed, ref, watch, type Ref } from 'vue'
 import { STAGE_FRAMING_KEY as key } from '@/utils/storageKeys'
 

@@ -6,13 +6,15 @@
     </header>
     <div class="journal-spread">
       <RouterLink v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" class="journal-entry" :class="{ lead: index === 0 }" :to="(missingScenes.has(scene.id) ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
-        <div class="journal-art"><img v-if="!missingScenes.has(scene.id)" @error="missingScenes.add(scene.id)" :src="'/scene-showcase/images/' + scene.id + '.jpg'" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><span v-else class="journal-missing">样张暂未连接<span>先看看这一幕的故事与设定</span></span></div>
+        <div class="journal-art"><img :crossorigin="runtimeResourceCors()" v-if="!missingScenes.has(scene.id)" @error="missingScenes.add(scene.id)" :src="resolveRuntimeUrl('/scene-showcase/images/' + scene.id + '.jpg')" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><span v-else class="journal-missing">样张暂未连接<span>先看看这一幕的故事与设定</span></span></div>
         <div class="journal-caption"><span class="journal-category">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read">{{ missingScenes.has(scene.id) ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
       </RouterLink>
     </div>
   </section>
 </template>
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { ref } from 'vue'
 const missingScenes = ref(new Set<string>())
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

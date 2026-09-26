@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { textContrast } from './helpers/contrast'
@@ -33,7 +34,7 @@ async function desktop(page: Page, theme: string, live = false) {
       setIgnoreMouseEvents: (value: boolean) => { fixture.pass = value },
       onChatCommand: (handler: typeof fixture.send) => { fixture.send = handler; return 1 },
     }
-    window.companionDesktop = new Proxy(methods, { get(target, key: string) { if (key in target) return target[key]; if (key.startsWith('on')) return () => 1; return () => undefined } }) as unknown as NonNullable<Window['companionDesktop']>
+    window.desktopCapabilitiesFixture = new Proxy(methods, { get(target, key: string) { if (key in target) return target[key]; if (key.startsWith('on')) return () => 1; return () => undefined } }) as unknown as NonNullable<Window['desktopCapabilitiesFixture']>
   }, { theme, live })
   await page.goto('/companion?character=natsume')
   await expect(page.locator('html')).toHaveClass(/companion-desktop/)
@@ -119,7 +120,7 @@ for (const theme of ['light', 'dark']) {
     await expect.poll(() => page.evaluate(() => window.petFixture!.closeChat)).toBe(1)
   })
   test(`pet stays transparent before application mount ${theme}`, async ({ page }) => {
-    await page.addInitScript(theme => { localStorage.setItem('aics_theme', theme); Object.assign(window, { companionDesktop: { isDesktop: true } }) }, theme)
+    await page.addInitScript(theme => { localStorage.setItem('aics_theme', theme); Object.assign(window, { desktopCapabilitiesFixture: { isDesktop: true } }) }, theme)
     await page.route('**/assets/theme-bootstrap.js', route => route.fulfill({ path: 'assets/theme-bootstrap.js', contentType: 'text/javascript' }))
     await page.route('**/*', route => route.request().resourceType() === 'script' && !route.request().url().includes('theme-bootstrap') ? route.abort() : route.fallback())
     await page.goto('/companion')
@@ -197,3 +198,5 @@ for (const theme of ['light', 'dark']) {
     }
   })
 }
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

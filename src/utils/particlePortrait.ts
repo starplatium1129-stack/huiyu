@@ -1,4 +1,5 @@
-import type { ParticlePoint } from './particleShapes'
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import type { ParticlePoint } from './particleShapes.ts'
 import { isPopularPortraitPending } from './popularPortraitSource.ts'
 
 /** Prepare once per portrait: richer chroma on paper, preserving neutrals and hue. */
@@ -106,7 +107,7 @@ export function loadPortraitCloud(id: string): Promise<PortraitCloud | null> {
   if (cached !== undefined) return Promise.resolve(cached)
   const pending = pendingLoads.get(id)
   if (pending) return pending
-  const task = fetch(portraitCloudUrl(id))
+  const task = runtimeFetch(portraitCloudUrl(id))
     .then(async res => {
       const cloud = res.ok ? await res.json() as PortraitCloud : null
       const usable = cloud

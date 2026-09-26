@@ -1,5 +1,5 @@
 use std::sync::atomic::Ordering;
-use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
+use tauri::{AppHandle, Emitter, Manager, WebviewWindowBuilder};
 
 use crate::paths::DesktopPaths;
 use crate::state::AppState;
@@ -109,36 +109,27 @@ pub fn toggle_companion_visibility(app: &AppHandle) {
 
 pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
     let pathname = normalize_atelier_path(target);
-    if gateway_url.is_empty() { return; }
+    if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
     let base = gateway_url.to_string();
     if let Some(w) = app.get_webview_window("atelier") {
-        let _ = w.show();
-        let _ = w.set_focus();
-        let url = format!("{base}{pathname}");
-        if let Ok(parsed) = url.parse() {
-            let _ = w.navigate(parsed);
-        }
+        if !crate::ui_entry::isolated_hidden() { let _ = w.show(); let _ = w.set_focus(); }
+        let _ = w.emit("aics:navigate", pathname);
         return;
     }
     let state = app.state::<AppState>();
     let bounds = atelier_bounds(&state);
-    let url = format!("{base}{pathname}");
+    let source = match crate::ui_entry::source(app, &base, &pathname) { Ok(source) => source, Err(_) => return };
     // 窗口创建不能发生在主线程的 IPC 回调内：WebView2 环境创建需要消息泵，
     // 同步等待会阻塞主线程消息循环，导致后续所有 invoke 超时。
     // 放到 tokio 线程执行（wry 在 Windows 允许非主线程创建窗口）。
     let app = app.clone();
     tauri::async_runtime::spawn_blocking(move || {
         let state = app.state::<AppState>();
-        let parsed = match url.parse::<tauri::Url>() {
-            Ok(u) => u,
-            Err(e) => {
-                state.error(&format!("open atelier: bad url {url}: {e}"));
-                return;
-            }
-        };
         let presentation = load_window_presentation(&state.paths.atelier_window_file);
         save_window_bounds(&state.paths.atelier_window_file, &bounds);
-        match WebviewWindowBuilder::new(&app, "atelier", WebviewUrl::External(parsed))
+        let mut builder = WebviewWindowBuilder::new(&app, "atelier", source);
+        if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
+        match builder
             .title("绘遇 · HUIYU")
             // The controlled bridge clamps and persists Ctrl±/0 and Ctrl+wheel.
             .zoom_hotkeys_enabled(false)
@@ -149,14 +140,13 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
             .decorations(false)
             .visible(false)
             .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
-            .initialization_script(crate::shim::COMPANION_SHIM_JS)
             .build()
         {
             Ok(win) => {
                 state.info("open atelier: window built");
                 crate::window_presentation::restore_zoom(&win);
-                let show_result = win.show();
-                let focus_result = win.set_focus();
+                let show_result = if crate::ui_entry::isolated_hidden() { Ok(()) } else { win.show() };
+                let focus_result = if crate::ui_entry::isolated_hidden() { Ok(()) } else { win.set_focus() };
                 state.info(&format!(
                     "open atelier: show={show_result:?} focus={focus_result:?} visible={}",
                     win.is_visible().unwrap_or(false)
@@ -167,12 +157,13 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
     });
 }
 
-pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, show_on_start: bool) -> tauri::Result<()> {
+pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start: bool) -> tauri::Result<()> {
     let state = app.state::<AppState>();
     let bounds = companion_bounds(&state);
-    let url = format!("{gateway_url}/companion");
-    let parsed = url.parse::<tauri::Url>().expect("companion url must parse");
-    let win = WebviewWindowBuilder::new(app, "companion", WebviewUrl::External(parsed))
+    let source = crate::ui_entry::source(app, gateway_url, "/companion").map_err(|error| tauri::Error::Io(std::io::Error::other(error)))?;
+    let mut builder = WebviewWindowBuilder::new(app, "companion", source);
+    if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
+    let win = builder
         .title("绘遇 Companion")
         .inner_size(bounds.width as f64, bounds.height as f64)
         .position(bounds.x as f64, bounds.y as f64)
@@ -184,7 +175,6 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, s
         .shadow(false)
         .visible(false)
         .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
-        .initialization_script(shim)
         .build()?;
     let ignore_mouse_events = state.ignore_mouse_events.load(Ordering::Relaxed);
     if let Err(error) = win.set_ignore_cursor_events(ignore_mouse_events) {
@@ -207,27 +197,24 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, s
 /// 放 tokio 线程执行。
 pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
     if let Some(w) = app.get_webview_window("companion-chat") {
-        let _ = w.unminimize();
-        let _ = w.show();
+        if !crate::ui_entry::isolated_hidden() { let _ = w.unminimize(); let _ = w.show(); }
         crate::chat_dock::follow(app);
-        let _ = w.set_focus();
+        if !crate::ui_entry::isolated_hidden() { let _ = w.set_focus(); }
         // Hiding preserves the WebView, its draft, and the reader's scroll position.
         return;
     }
     let state = app.state::<AppState>();
     let bounds = companion_chat_bounds(&state);
-    if gateway_url.is_empty() { return; }
-    let url = format!("{}/companion-chat", gateway_url.trim_end_matches('/'));
+    if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
+    let source = match crate::ui_entry::source(app, gateway_url, "/companion-chat") { Ok(source) => source, Err(_) => return };
     let app = app.clone();
     tauri::async_runtime::spawn_blocking(move || {
         let state = app.state::<AppState>();
-        let Ok(parsed) = url.parse::<tauri::Url>() else {
-            state.error(&format!("open companion-chat: bad url {url}"));
-            return;
-        };
         let presentation = load_window_presentation(&state.paths.companion_chat_window_file);
         save_window_bounds(&state.paths.companion_chat_window_file, &bounds);
-        match WebviewWindowBuilder::new(&app, "companion-chat", WebviewUrl::External(parsed))
+        let mut builder = WebviewWindowBuilder::new(&app, "companion-chat", source);
+        if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
+        match builder
             .title("绘遇聊天")
             .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
@@ -239,15 +226,14 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
             .shadow(true)
             .visible(false)
             .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
-            .initialization_script(crate::shim::COMPANION_SHIM_JS)
             .build()
         {
             Ok(win) => {
                 state.info("open companion-chat: window built");
                 crate::window_presentation::restore_zoom(&win);
-                let _ = win.show();
+                if !crate::ui_entry::isolated_hidden() { let _ = win.show(); }
                 crate::chat_dock::follow(&app);
-                let _ = win.set_focus();
+                if !crate::ui_entry::isolated_hidden() { let _ = win.set_focus(); }
             }
             Err(e) => state.error(&format!("open companion-chat: window build failed: {e}")),
         }
@@ -341,11 +327,16 @@ pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Opti
         ("AICS_ASSETS_ROOT".into(), paths.assets_root.to_string_lossy().to_string()),
         ("AICS_TOOLS_ROOT".into(), paths.tools_root.to_string_lossy().to_string()),
         ("AICS_RUNTIME_ROOT".into(), paths.runtime_root.to_string_lossy().to_string()),
+        ("AICS_DESKTOP_CONFIG_ROOT".into(), paths.config_root.to_string_lossy().to_string()),
+        ("AICS_DESKTOP_SOURCE_PROFILE_ID".into(), paths.source_profile_id.clone()),
         ("AICS_SCRIPTS_ROOT".into(), paths.app_root.join("scripts").to_string_lossy().to_string()),
         ("AI_WORKSPACE_ROOT".into(), workspace_root.map(String::from).or_else(|| std::env::var("AI_WORKSPACE_ROOT").ok()).unwrap_or_else(|| paths.app_root.parent().unwrap_or(&paths.app_root).join("AI").to_string_lossy().to_string())),
     ];
     if is_packaged {
         env.push(("AICS_DESKTOP_PACKAGED".into(), "1".into()));
+    }
+    if paths.gateway_port_file.exists() {
+        env.push(("AICS_DESKTOP_PRESERVE_ORIGIN".into(), "1".into()));
     }
     env
 }
@@ -385,6 +376,7 @@ mod gateway_origin;
 pub use gateway_origin::same_gateway_origin;
 
 pub fn is_gateway_navigation(app: &AppHandle, url: &tauri::Url) -> bool {
+    if crate::ui_entry::bundled(app) && crate::ui_entry::native_origin(url) { return true; }
     if !is_gateway_origin(app, url) { return false; }
     // A navigation fetches new executable content, so re-prove the live server.
     app.try_state::<crate::gateway::GatewaySupervisor>().map(|gateway| gateway.is_healthy()).unwrap_or(false)
@@ -392,7 +384,9 @@ pub fn is_gateway_navigation(app: &AppHandle, url: &tauri::Url) -> bool {
 
 pub fn is_gateway_origin(app: &AppHandle, url: &tauri::Url) -> bool {
     let Some(state) = app.try_state::<AppState>() else { return false; };
-    if !app.try_state::<crate::gateway::GatewaySupervisor>().map(|gateway| gateway.is_authenticated()).unwrap_or(false) { return false; }
+    if crate::ui_entry::bundled(app) && crate::ui_entry::native_origin(url) { return true; }
+    // Retain capabilities for an already loaded trusted document while the
+    // runtime reconnects. Every new navigation still verifies fresh identity.
     let expected = state.gateway_url.lock().unwrap().clone();
     same_gateway_origin(&expected, url)
 }
@@ -404,7 +398,7 @@ pub fn authorize_gateway_origin(app: &AppHandle, url: &str) -> Result<(), String
     let current = app.state::<AppState>().gateway_url.lock().unwrap().clone();
     if !current.is_empty() {
         if same_gateway_origin(&current, &parsed) { return Ok(()); }
-        return Err("Gateway origin changed; restart the desktop before granting privileges".into());
+        if !crate::ui_entry::bundled(app) { return Err("Gateway origin changed; restart the desktop before granting privileges".into()); }
     }
     for template in [include_str!("../capabilities/default.json"), include_str!("../capabilities/companion-live2d.json")] {
         let mut capability: serde_json::Value = serde_json::from_str(template).map_err(|e| e.to_string())?;

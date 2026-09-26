@@ -18,7 +18,7 @@
       </div>
       <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
         <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
-          <CharacterPortrait :src="item.image" :name="item.name" />
+          <CharacterPortrait :src="resolveRuntimeUrl(item.image)" :name="item.name" />
           <span class="directory-label">
             <strong>{{ item.name }}</strong>
             <StudioTooltip :content="franchiseLabel(franchiseKey(item.source))">
@@ -39,6 +39,8 @@
   </aside>
 </template>
 <script setup lang="ts">
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
+
 import { computed, nextTick, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'

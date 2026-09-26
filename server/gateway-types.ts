@@ -20,6 +20,7 @@ export interface GatewayOptions {
   control?: NonNullable<Parameters<typeof import('../routes/control').createControlRouter>[2]>;
   /** In-process capability only: absent by default, never inferred from a public token or env path. */
   workspace?: WorkspaceGateway;
+  desktopHost?: import('./desktop-runtime').DesktopWorkspaceHost;
 }
 
 export interface GatewayState {

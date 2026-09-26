@@ -319,7 +319,7 @@ async function run() {
   assert(!chatCss.includes('portrait-talk'), 'static portraits must not scale or bounce while voice is playing');
   assert(
     roomSession.includes('useChatConversation')
-      && chatConversation.includes("fetch('/api/chat'")
+      && chatConversation.includes("runtimeFetch('/api/chat'")
       && chatConversation.includes('parseNdjsonResponse'),
     'chat conversation composable must stream from the gateway'
   );

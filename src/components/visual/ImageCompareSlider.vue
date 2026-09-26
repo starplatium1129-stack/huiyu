@@ -16,12 +16,12 @@
     @pointercancel="onPointerUp"
   >
     <!-- 底层 (After: 高清/修复后) -->
-    <img class="compare-img after-img" :src="afterSrc" :alt="afterLabel" decoding="async" />
+    <img :crossorigin="runtimeResourceCors()" class="compare-img after-img" :src="resolveRuntimeUrl(afterSrc)" :alt="afterLabel" decoding="async" />
     <span class="compare-badge badge-after">{{ afterLabel }}</span>
 
     <!-- 顶层 (Before: 原图，根据 splitRatio 裁剪) -->
     <div class="compare-overlay">
-      <img class="compare-img before-img" :src="beforeSrc" :alt="beforeLabel" decoding="async" />
+      <img :crossorigin="runtimeResourceCors()" class="compare-img before-img" :src="resolveRuntimeUrl(beforeSrc)" :alt="beforeLabel" decoding="async" />
       <span class="compare-badge badge-before">{{ beforeLabel }}</span>
     </div>
 
@@ -36,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { ref, computed } from 'vue'
 
 const props = withDefaults(defineProps<{

@@ -1,10 +1,12 @@
-import { artworkRepository } from '@/storage/artworkRepository'
-import { buildArtworkFileName } from '@/utils/artworkFileName'
-import { formatA1111Parameters, injectPngMetadata, isPng } from '@/utils/pngMetadata'
-import { safeImageUrl } from './galleryHelpers'
-import type { useGalleryWorkspace } from './useGalleryWorkspace'
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { artworkRepository } from '../../storage/artworkRepository.ts'
+import { buildArtworkFileName } from '../../utils/artworkFileName.ts'
+import { formatA1111Parameters, injectPngMetadata, isPng } from '../../utils/pngMetadata.ts'
+import { safeImageUrl } from './galleryHelpers.ts'
+import type { useGalleryWorkspace } from './useGalleryWorkspace.ts'
 import { getCurrentScope, onScopeDispose, ref, type Ref } from 'vue'
-import { copyWithFeedback } from '@/composables/useCopyFeedback'
+import { copyWithFeedback } from '../useCopyFeedback.ts'
 
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, 'current' | 'stamp' | 'sceneTitle' | 'characterName' | 'showToast'>
 
@@ -45,7 +47,7 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
       if (!rawBlob) {
         const source = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
         if (!source) throw new Error('原图已丢失，无法下载；缩略图不能替代原图')
-        const response = await fetch(source, { signal: AbortSignal.timeout(30_000) })
+        const response = await runtimeFetch(source, { signal: AbortSignal.timeout(30_000) })
         if (!response.ok) throw new Error(`原图读取失败（${response.status}），请稍后重试`)
         rawBlob = await response.blob()
       }
@@ -74,9 +76,9 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
         try { data = new Uint8Array(injectPngMetadata(buffer, metaText)); metadataWritten = true } catch { /* 原始字节仍可保存 */ }
       }
       const detail = metadataWritten ? '（已嵌入生成参数）' : '（保留原始格式）'
-      if (window.companionDesktop) {
+      if (getDesktopCapabilities()) {
         try {
-          const result = await window.companionDesktop.saveImage({ data, name: fileName })
+          const result = await getDesktopCapabilities()!.saveImage({ data, name: fileName })
           if (result.saved) showToast(`已保存到 ${result.filePath || '所选位置'}${detail}`)
           else if (result.error) showToast(`保存失败：${result.error}`, 'warning')
           return

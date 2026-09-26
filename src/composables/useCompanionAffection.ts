@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { ref, computed } from 'vue'
 import {
   COMPANION_AFFECTION_KEY,
@@ -24,7 +25,7 @@ const DEFAULT_SCORES: Record<string, number> = {
 const state = ref<AffectionStoreState>(loadInitialState())
 
 function loadInitialState(strict = false): AffectionStoreState {
-  if (typeof localStorage === 'undefined') return {}
+  if (typeof globalThis.localStorage === 'undefined') return {}
   try {
     const raw = localStorage.getItem(COMPANION_AFFECTION_KEY)
     if (!raw) return {}
@@ -45,7 +46,7 @@ function loadInitialState(strict = false): AffectionStoreState {
 }
 
 function saveState() {
-  if (typeof localStorage === 'undefined') return false
+  if (typeof globalThis.localStorage === 'undefined') return false
   try {
     localStorage.setItem(COMPANION_AFFECTION_KEY, JSON.stringify(state.value))
     return true

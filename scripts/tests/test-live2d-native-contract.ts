@@ -24,19 +24,18 @@ test('native fit and hit testing share a load-time anchor instead of animated dr
 
 test('Native Companion owns the overlay and Atelier stays browser-only', () => {
   const companion = read('src/views/CompanionView.vue')
-  const shim = read('desktop-tauri/src-tauri/src/shim.rs')
+  const adapter = read('src/platform/desktop/nativeLive2d.ts')
+  const events = read('src/platform/desktop/hostApi.ts')
   const main = read('desktop-tauri/src-tauri/src/main.rs')
 
   assert.match(companion, /:backend="desktopBridge \? 'native' : 'browser'"/)
-  assert.ok(shim.includes("location.pathname.replace(/\\/+$/, '')"))
-  assert.match(shim, /if \(enableNativeLive2D\) window\.aicsLive2dNative/)
-  assert.match(shim, /const waitForTauri = \(\) => new Promise/)
-  assert.match(shim, /TAURI_API_UNAVAILABLE/)
-  assert.match(shim, /entry\.cancelled/)
-  assert.match(shim, /return id/)
-  assert.match(shim, /onStopped: \(cb\) => on\('aics:live2d:stopped', cb\)/)
+  assert.match(adapter, /bootstrap\?\.windowRole === 'companion'/)
+  assert.doesNotMatch(adapter, /location\.pathname/)
+  assert.match(events, /entry\.cancelled/)
+  assert.match(events, /return id/)
+  assert.match(adapter, /onStopped: listener => on\('aics:live2d:stopped', listener\)/)
   assert.match(main, /arg == "--hidden"/)
-  assert.match(main, /create_companion_window\(&handle, &url, shim, show_on_start\)/)
+  assert.match(main, /create_companion_window\(&handle, &url, show_on_start\)/)
 })
 
 test('Native IPC payload and render ownership contracts stay aligned', () => {
@@ -100,7 +99,7 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   assert.match(model, /count <= 0 \|\| pointer\.is_null\(\)/)
   assert.match(mainShared, /aics:visibility/, 'window visibility must be emitted by the shell')
   assert.match(mainShared, /aics:window-bounds/)
-  assert.match(main, /format!\("\{\}\/companion", url\.trim_end_matches\('\/'\)\)/)
+  assert.match(mainShared, /ui_entry::source\(app, gateway_url, "\/companion"\)/)
   // 进程最早期 DPI awareness：必须在任何窗口创建前设置，覆盖 Companion WebView。
   assert.ok(main.indexOf('SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)')
     < main.indexOf('tauri::Builder::default()'),
@@ -135,7 +134,7 @@ test('Native IPC command inventory stays consistent across build manifest, invok
   }
   const template = JSON.parse(capabilities)
   assert.deepStrictEqual(template.windows, ['companion'])
-  assert.equal(template.local, false, '静态模板不能授予本地页面权限')
+  assert.equal(template.local, true, 'bundled Companion needs the same typed native capabilities')
   assert.equal(template.remote, undefined, '静态模板不能预先信任任意回环端口')
 
   const shared = read('desktop-tauri/src-tauri/src/main_shared.rs')

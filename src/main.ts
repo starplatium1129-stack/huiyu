@@ -1,8 +1,7 @@
 import { startArtworkSession, stopArtworkSession } from './storage/artworkSession'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import App from './App.vue'
-import router from './router'
+import { initializePlatform } from './platform/initializePlatform'
 import { installRouteRecovery } from './composables/useRouteRecovery'
 import { installNavigationFeedback } from './composables/useNavigationFeedback'
 import { initializeTheme } from './composables/useTheme'
@@ -28,27 +27,34 @@ import './assets/css/fluid-glass.css'
 import './assets/css/glass-material-base.css'
 import './assets/css/native-controls.css'
 
-initializeTheme()
-initializeDesktopPreferences()
-installRouteRecovery(router)
-const stopNavigationFeedback = installNavigationFeedback(router)
-
 // Join before mounting: a new document must not start writing while another
 // document holds exclusive cleanup access. Browsing still works without locks;
 // mutations/cleanup keep their own fail-closed checks in that environment.
 let disposed = false
 let stopUi = () => {}
-void startArtworkSession().catch(error => console.warn('作品清理保护不可用', error)).then(() => {
+let stopNavigationFeedback = () => {}
+let stopPlatform = () => {}
+void (async () => {
+  const { useTaskCenter } = await import('./composables/useTaskCenter')
+  const center = useTaskCenter()
+  stopPlatform = await initializePlatform(() => center.activeCount.value > 0)
+  initializeTheme()
+  initializeDesktopPreferences()
+  const [{ default: App }, { default: router }] = await Promise.all([import('./App.vue'), import('./router')])
+  installRouteRecovery(router)
+  stopNavigationFeedback = installNavigationFeedback(router)
+  await startArtworkSession().catch(error => console.warn('作品清理保护不可用', error))
   if (disposed) return
   createApp(App).use(createPinia()).use(router).mount('#app')
   const stopDesktopInteraction = installDesktopInteraction(router)
   const stopFluidGlass = installFluidGlass()
   const stopDesktopZoom = installDesktopZoom()
   stopUi = () => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom() }
-})
+})()
 if (import.meta.hot) import.meta.hot.dispose(() => {
   disposed = true
   stopUi()
+  stopPlatform()
   stopNavigationFeedback()
   void stopArtworkSession().catch(() => {})
 })

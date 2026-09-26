@@ -45,7 +45,7 @@ const modules = [
   ['src/composables/useVoice.ts', ['startTurn', 'append', 'finishTurn']],
   ['src/composables/useImageStore.ts', ['imgPut', 'imgGet', 'imgDeleteMany']],
   ['src/composables/useKVStore.ts', ['kvGet', 'kvSet']],
-   ['src/components/HistoryPanel.vue', ['history-wrap', 'imgGet']],
+   ['src/components/HistoryPanel.vue', ['history-wrap', 'artworkRepository.getImage']],
   ['src/components/VoiceStudio.vue', ['voice-studio', 'voiceApi.getStatus', 'voiceApi.prepare', 'voiceApi.translate', 'voiceApi.synthesize']],
   ['src/components/PromptDataTools.vue', ['useBackup', 'pb-backup-overlay', 'useFocusTrap']],
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],

@@ -10,6 +10,8 @@ export type GeneratedArtworkInput = Partial<HistoryEntry> & {
   context?: AnimaResultContext | null
   /** Source artwork for inpaint/variants; both legacy ID representations remain valid. */
   parentId?: string | number | null
+  taskId?: string
+  resultIndex?: number
 }
 
 /** Compatibility defaults are captured once at save invocation, before any asynchronous work. */

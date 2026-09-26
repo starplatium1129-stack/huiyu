@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { defineComponent, nextTick, ref } from 'vue'
@@ -48,11 +49,11 @@ beforeEach(() => {
   localStorage.clear(); vi.clearAllMocks(); state.value = 'idle'; autoListening.value = false
   vi.spyOn(document, 'hasFocus').mockReturnValue(true)
   vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
-  window.companionDesktop = { chatRelay: vi.fn(), getChatDocked: async () => true,
+  desktopFixture.current = { chatRelay: vi.fn(), getChatDocked: async () => true,
     onVisibilityChanged: (cb: typeof fixture.visibility) => { fixture.visibility = cb; return 1 }, offVisibilityChanged: vi.fn(),
-  } as unknown as NonNullable<Window['companionDesktop']>
+  } as unknown as CompanionDesktopBridge
 })
-afterEach(() => { wrapper?.unmount(); wrapper = undefined; delete window.companionDesktop; vi.restoreAllMocks() })
+afterEach(() => { wrapper?.unmount(); wrapper = undefined; desktopFixture.current = undefined; vi.restoreAllMocks() })
 
 describe('companion chat speech ownership', () => {
   it.each(['blur', 'hidden', 'native-hidden'])('cancels manual recording on %s without submitting it', async reason => {
@@ -112,3 +113,6 @@ describe('browser companion speech session', () => {
     expect(inputText.value).toBe('重新开始')
   })
 })
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

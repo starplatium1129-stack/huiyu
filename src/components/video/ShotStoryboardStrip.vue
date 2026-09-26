@@ -4,7 +4,7 @@
     <div class="storyboard-frames">
       <button v-for="(shot, index) in shots" :key="index" type="button" class="storyboard-frame" :aria-label="`查看镜头 ${index + 1}`" @click="emit('locate', index)">
         <span class="storyboard-media">
-          <img v-if="shot.imageUrl && !failedSources.has(shot.imageUrl)" :key="shot.imageUrl" :src="shot.imageUrl" :alt="`镜头 ${index + 1} 首帧`" loading="lazy" decoding="async" @error="markFailed" />
+          <img :crossorigin="runtimeResourceCors()" v-if="shot.imageUrl && !failedSources.has(shot.imageUrl)" :key="shot.imageUrl" :src="resolveRuntimeUrl(shot.imageUrl)" :alt="`镜头 ${index + 1} 首帧`" loading="lazy" decoding="async" @error="markFailed" />
           <span v-else class="storyboard-placeholder"><ArchiveIcon :name="shot.shotSize === 'wide' ? 'wideshot' : shot.shotSize === 'closeup' ? 'closeup' : 'midshot'" /><span>{{ shot.imageUrl ? '首帧暂不可读' : '待补首帧' }}</span></span>
         </span>
         <span class="storyboard-caption"><strong>镜头 {{ String(index + 1).padStart(2, '0') }}</strong><span>{{ shot.duration }} 秒 · {{ sizeLabel(shot.shotSize) }}</span></span>
@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const props = defineProps<{ shots: readonly { imageUrl?: string; prompt: string; duration: number; shotSize: string }[] }>()

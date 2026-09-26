@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { expect, test } from '@playwright/test'
 import type { CompanionDesktopBridge } from '../../src/types/desktop'
 import { DESKTOP_START_PAGE_KEY, GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys'
@@ -6,7 +7,7 @@ import { pickStudioOptionByValue } from './helpers/studioSelect'
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(key => {
     localStorage.setItem(key, '1')
-    window.companionDesktop = {
+    window.desktopCapabilitiesFixture = {
       isDesktop: true,
       getWindowState: async () => ({ maximized: false, focused: true }),
       onMaximizedChanged: () => 1,
@@ -44,10 +45,12 @@ for (const theme of ['dark', 'light'] as const) {
 
 test('desktop start preference does not redirect a normal browser', async ({ page }) => {
   await page.addInitScript(key => {
-    delete window.companionDesktop
+    window.desktopCapabilitiesFixture = undefined
     localStorage.setItem(key, '/gallery')
   }, DESKTOP_START_PAGE_KEY)
   await page.goto('/')
   await expect(page).toHaveURL(/\/$/)
   await expect(page.locator('.desktop-titlebar')).toHaveCount(0)
 })
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

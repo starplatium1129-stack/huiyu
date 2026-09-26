@@ -3,7 +3,7 @@
     <header><div><h2 id="candidate-title">对比挑选</h2><p>并排看画面与参数，选出最满意的一张。暂不采用的图片仍然保留。</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭对比" @click="emit('close')"><ArchiveIcon name="close" /></button></header>
     <p v-if="error" class="candidate-error" role="alert">{{ error }}</p>
     <div class="candidate-grid"><article v-for="item in items" :key="item.id" :data-choice="item.reviewState || 'candidate'" class="candidate-card">
-      <div class="candidate-image"><img v-if="urls[String(item.id)]" :src="urls[String(item.id)]" :alt="title(item)" /><span v-else>{{ loading ? '正在读取原图…' : '原图暂不可用，作品记录仍保留' }}</span></div>
+      <div class="candidate-image"><img :crossorigin="runtimeResourceCors()" v-if="urls[String(item.id)]" :src="resolveRuntimeUrl(urls[String(item.id)])" :alt="title(item)" /><span v-else>{{ loading ? '正在读取原图…' : '原图暂不可用，作品记录仍保留' }}</span></div>
       <div class="candidate-info"><h3>{{ title(item) }}</h3><p class="candidate-meta">{{ item.model || item.checkpoint || item.engine || '未记录模型' }}<br />{{ item.size || '未记录尺寸' }} · seed {{ item.seed ?? '随机' }}</p><strong class="candidate-verdict">{{ item.reviewState === 'preferred' ? '本组首选 · 已收藏' : item.reviewState === 'rejected' ? '暂不采用' : '候选' }}</strong>
       <div class="candidate-actions"><button class="btn btn-primary" type="button" :disabled="busy" @click="prefer(item)">选为首选</button><button class="btn btn-ghost" type="button" :disabled="busy" @click="setAside(item)">{{ item.reviewState === 'rejected' ? '恢复候选' : '暂不采用' }}</button><RouterLink class="btn btn-ghost" :to="`/prompt-builder?remix=${encodeURIComponent(item.id)}`" @click="emit('close')">继续微调</RouterLink></div></div>
     </article></div>
@@ -11,6 +11,8 @@
   </dialog></Teleport>
 </template>
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { nextTick, onDeactivated, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 

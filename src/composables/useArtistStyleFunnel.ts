@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 // 画师三级漏斗排序（2026-09-05 从 ArtistStylePicker.vue 抽出：单体门禁 631>600 拆分）
 // 1. Top 3 常用画师：只取使用频次最高的前 3 位（避免试一次就永久污染列表）；
 // 2. 角色专属画师：当前角色的官方原画师 / 精选推荐风格；

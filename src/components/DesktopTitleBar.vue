@@ -1,5 +1,5 @@
 <template>
-  <header v-if="visible" class="desktop-titlebar" aria-label="窗口标题栏">
+  <header v-if="visible" class="desktop-titlebar" aria-label="窗口标题栏" data-tauri-drag-region>
     <div class="titlebar-brand">
       <img class="titlebar-dot" src="/assets/favicon.svg" alt="" aria-hidden="true" />
       <span class="titlebar-name">绘遇 · HUIYU</span>
@@ -7,7 +7,7 @@
         <span class="titlebar-page">{{ pageTitle }}</span>
       </StudioTooltip>
     </div>
-    <div class="titlebar-controls">
+    <div class="titlebar-controls" data-tauri-drag-region="false">
       <StudioTooltip content="最小化">
         <button class="tb-btn" type="button" aria-label="最小化" @click="bridge?.minimizeWindow()">
           <!-- 审计修复(2026-08-28)：原为 <rect fill="currentColor"> 实心块，违反
@@ -32,11 +32,14 @@
 </template>
 
 <script setup lang="ts">
+import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
+import { getDesktopWindowRole } from '@/platform/desktop/runtime'
+
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
-const bridge = window.companionDesktop
+const bridge = getDesktopCapabilities()
 const route = useRoute()
 const maximized = ref(false)
 const pageTitle = computed(() => {
@@ -51,7 +54,7 @@ let receivedWindowEvent = false
 
 onMounted(async () => {
   // 挂载早期 route.path 可能尚未就绪，用 location.pathname 硬守卫桌宠表面
-  if (!bridge || location.pathname === '/companion' || location.pathname === '/companion-chat') return
+  if (!bridge || getDesktopWindowRole() === 'companion' || getDesktopWindowRole() === 'companion-chat') return
   document.documentElement.classList.add('aics-desktop-shell')
   maximizedSub = bridge.onMaximizedChanged(value => {
     receivedWindowEvent = true

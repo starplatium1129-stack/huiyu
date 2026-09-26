@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { useResourceLibrary } from './useResourceLibrary'
 import type { ResourceApi } from '../api/resourceApi'
-import type { ResourceStatus, ResourceTask } from '../types/resources'
+import type { ResourceStatus, ResourceTask } from '../../types/resources'
 
 const task: ResourceTask = { id: 'e58ce240-61d8-4a71-a496-bcbd4e74a7d5', action: 'import', releaseId: 'portrait',
   resumeAction: null, state: 'running', phase: 'copy-progress', bytes: 5, total: 10, startedAt: 1, finishedAt: 0, error: null }

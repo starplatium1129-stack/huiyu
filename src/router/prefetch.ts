@@ -1,3 +1,4 @@
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import type { Router } from 'vue-router'
 import { DATA_VERSION } from 'virtual:data-version'
 
@@ -15,19 +16,19 @@ function safeShowcaseUrl(value: unknown): string | null {
     const raw = value.trim()
     const path = raw.startsWith('/') ? raw : `/scene-showcase/${raw.replace(/^\/+/, '')}`
     const url = new URL(path, location.origin)
-    return url.origin === location.origin && url.pathname.startsWith('/scene-showcase/') ? url.href : null
+    return url.origin === location.origin && url.pathname.startsWith('/scene-showcase/') ? url.pathname + url.search : null
   } catch { return null }
 }
 
 async function prefetchCoreResources(signal: AbortSignal): Promise<void> {
   await Promise.all(CORE_RESOURCE_FILES.map(file =>
-    fetch(`/data/${file}?v=${DATA_VERSION}`, { cache: 'force-cache', credentials: 'same-origin', signal })
+    runtimeFetch(`/data/${file}?v=${DATA_VERSION}`, { cache: 'force-cache', credentials: 'same-origin', signal })
       .then(response => { if (!response.ok) throw new Error(`${file} HTTP ${response.status}`) }),
   ))
 }
 
 async function prefetchShowcaseResources(signal: AbortSignal): Promise<void> {
-  const response = await fetch('/scene-showcase/manifest.json', { cache: 'no-store', credentials: 'same-origin', signal })
+  const response = await runtimeFetch('/scene-showcase/manifest.json', { cache: 'no-store', credentials: 'same-origin', signal })
   if (!response.ok) throw new Error(`showcase HTTP ${response.status}`)
   const raw = await response.json() as { entries?: Array<{ id?: unknown; thumb?: unknown; rating?: unknown }> }
   const urls = (Array.isArray(raw.entries) ? raw.entries : [])
@@ -37,7 +38,7 @@ async function prefetchShowcaseResources(signal: AbortSignal): Promise<void> {
       : null))
     .filter((url): url is string => Boolean(url))
     .slice(0, SHOWCASE_THUMB_LIMIT)
-  await Promise.all(urls.map(url => fetch(url, { cache: 'force-cache', credentials: 'same-origin', signal })
+  await Promise.all(urls.map(url => runtimeFetch(url, { cache: 'force-cache', credentials: 'same-origin', signal })
     .then(response => { if (!response.ok) throw new Error(`thumbnail HTTP ${response.status}`) })))
 }
 

@@ -63,7 +63,7 @@ export function usePromptWorkspace() {
         isPopular: () => pb.isPopular,
         getFamily: () => drawEngine.value === 'krea2' ? 'krea2' : 'anima',
         getRequest: () => buildAnimaRequest(),
-        getSubmitContext: captureResultContext,
+        getSubmitContext: () => ({ ...captureResultContext(), parentId: inpaintSourceHistoryId.value }),
         onResult: result => onAnimaResult(result),
         flash: message => pb.flash(message),
         preferredSize: () => pb.lastRecommendedSize,

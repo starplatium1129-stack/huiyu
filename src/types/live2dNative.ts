@@ -79,20 +79,13 @@ export interface Live2DNativeEvents {
 }
 
 /**
- * Rust 壳注入前端的全局桥。注入方式：initialization script 在页面顶层创建
- * `window.aicsLive2dNative`（与 companionDesktop 同机制）。浏览器后端/纯
- * Web 环境不存在该对象。
+ * 由桌面平台 adapter 提供的窄能力；仅宿主确认的 Companion 窗口可用。
+ * 普通 Web 使用 browser backend。
  */
 export interface Live2DNativeBridge extends Live2DNativeCommands, Live2DNativeEvents {
   readonly isNativeLive2D: true
   readonly supportsTextureQuality?: boolean
   readonly supportsFraming?: boolean
-}
-
-declare global {
-  interface Window {
-    aicsLive2dNative?: Live2DNativeBridge
-  }
 }
 
 export {}

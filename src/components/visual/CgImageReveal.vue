@@ -6,7 +6,7 @@
       ref="imgRef"
       class="cg-image-target"
       :class="imgClass"
-      :src="src"
+      :src="resolveRuntimeUrl(src)"
       :alt="alt || '生成的画面成片'"
       loading="eager"
       decoding="async"
@@ -20,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'

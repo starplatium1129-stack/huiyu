@@ -6,9 +6,9 @@ import { PathOrFileDescriptor } from 'node:fs';
 /**
  * Prepare all ignored Tauri inputs from tracked sources.
  *
- * The web directory is a tiny deterministic frontendDist placeholder because
- * the real windows navigate to the local gateway. The gateway resources are
- * staged separately, and the Node sidecar is downloaded from the official
+ * The web directory contains the desktop-mode bundled UI. Activation controls
+ * when windows use it; legacy profile origins stay readable until migration.
+ * Gateway resources are staged separately, and Node is downloaded from the official
  * Node release endpoint with a fixed SHA-256 check.
  */
 
@@ -30,17 +30,6 @@ const NODE_URL = `https://nodejs.org/dist/${NODE_VERSION}/win-x64/node.exe`;
 const NODE_SHA256 = '9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de';
 const DOWNLOAD_TIMEOUT_MS = 120_000;
 const MAX_REDIRECTS = 5;
-const WEB_INDEX = `<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <title>绘遇 · HUIYU</title>
-</head>
-<body>
-  <p>runtime navigates to the local gateway</p>
-</body>
-</html>
-`;
 
 function sha256(filePath: PathOrFileDescriptor) {
   return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
@@ -138,9 +127,12 @@ async function prepareTauri(options: any = {}) {
   const sidecarDir = options.sidecarDir || path.join(root, 'desktop-tauri', 'src-tauri', 'binaries');
   const sidecarPath = options.sidecarPath || path.join(sidecarDir, 'node-x86_64-pc-windows-msvc.exe');
   const stage = options.stage || path.join(root, 'desktop-tauri', 'src-tauri', 'resources');
-  fs.mkdirSync(webDir, { recursive: true });
-  fs.writeFileSync(path.join(webDir, 'index.html'), WEB_INDEX, 'utf8');
-  console.log('[tauri] generated desktop-tauri/web/index.html');
+  const buildDesktopUi = options.buildDesktopUi || (() => execFileSync(process.execPath,
+    [path.join(path.dirname(require.resolve('vite/package.json')), 'bin/vite.js'), 'build', '--mode', 'desktop', '--outDir', webDir],
+    { cwd: root, stdio: 'inherit', windowsHide: true }));
+  await buildDesktopUi();
+  if (!fs.existsSync(path.join(webDir, 'index.html'))) throw new Error('Desktop bundled UI was not built');
+  console.log('[tauri] built desktop bundled UI');
   await ensureNodeSidecar({
     sidecarDir,
     sidecarPath,

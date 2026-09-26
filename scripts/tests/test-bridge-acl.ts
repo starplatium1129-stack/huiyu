@@ -4,7 +4,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  * 回归保护（2026-08-20 实障）：桌宠桥新增 IPC 命令后若漏配 Tauri ACL，
  * 前端走 invoke 的命令会被 "Command xxx not allowed by ACL" 拒绝，
  * 而 E2E 用 mock 桥测不到、热键/托盘走 Rust 直调也测不到。
- * 本测试静态核对：shim/desktop adapter 的 invoke 命令 ⊆ build.rs 命令清单 ⊆ 各 capability 放行。
+ * 本测试静态核对：desktop adapter 的 invoke 命令 ⊆ build.rs 命令清单 ⊆ 各 capability 放行。
  */
 const { readFileSync }: typeof import('node:fs') = require('node:fs');
 const { join }: typeof import('node:path') = require('node:path');
@@ -17,11 +17,12 @@ function read(rel: string) {
   return readFileSync(join(srcTauri, rel), 'utf8');
 }
 
-/** Existing shim and migrated desktop adapter invoke('cmd') names. */
+/** Concrete desktop capabilities invoke only registered native commands. */
 function shimCommands() {
-  const src = read('src/shim.rs') + '\n' + readFileSync(join(root, 'src/platform/desktop/bootstrap.ts'), 'utf8');
+  const src = ['bootstrap.ts', 'capabilities.ts', 'nativeLive2d.ts', 'updater.ts']
+    .map(file => readFileSync(join(root, 'src/platform/desktop', file), 'utf8')).join('\n');
   const set = new Set();
-  for (const m of src.matchAll(/invoke\(\s*'([a-z_0-9]+)'/g)) set.add(m[1]);
+  for (const m of src.matchAll(/invoke(?:Host)?(?:<[^\n]+>)?\(\s*'([a-z_0-9]+)'/g)) set.add(m[1]);
   return set;
 }
 
@@ -51,9 +52,13 @@ function main() {
   const defaultCap = capability('capabilities/default.json');
   const live2dCap = capability('capabilities/companion-live2d.json');
   for (const cap of [defaultCap, live2dCap]) {
-    assert.strictEqual(cap.local, false, 'static capability must not authorize untrusted local content');
+    assert.strictEqual(cap.local, true, 'bundled application windows need native capabilities');
     assert.strictEqual(cap.remote, undefined, 'remote authority must be granted only after authenticating the selected gateway origin');
   }
+  assert.match(read('src/main.rs'), /main_shared::is_gateway_origin\(view\.app_handle\(\), &url\)/,
+    'native IPC must still verify the application origin');
+  assert.match(read('src/main_shared.rs'), /ui_entry::bundled\(app\) && crate::ui_entry::native_origin\(url\)/,
+    'local origin authority must require verified bundled activation');
   const allowed = new Set([
     ...permissionIds(defaultCap),
     ...permissionIds(live2dCap),

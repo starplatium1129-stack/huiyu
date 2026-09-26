@@ -24,6 +24,7 @@ function intentLink(event: Event): HTMLAnchorElement | null {
 function cancelHover() { clearTimeout(hoverTimer) }
 function routeDestination(el: HTMLAnchorElement): string {
   const url = new URL(el.href, location.href)
+  if (import.meta.env.MODE === 'desktop') return url.hash.slice(1) || '/'
   return `${url.pathname}${url.search}${url.hash}`
 }
 function canSpeculate() {

@@ -1,7 +1,8 @@
+import { getNativeLive2dCapabilities } from '../platform/desktop/nativeLive2d.ts'
 /**
  * 原生渲染后端 —— Rust overlay 窗口 + Cubism Native（路径 B）。
  *
- * 前端经 window.aicsLive2dNative 桥与 Rust 通信：Rust 在透明 WS_EX_LAYERED
+ * 前端经 getNativeLive2dCapabilities() 桥与 Rust 通信：Rust 在透明 WS_EX_LAYERED
  * overlay 窗口上用 wgpu 呈现 Live2D，模型由 Cubism Native 官方运行时执行
  * motion/physics/pose/expression/hit-test。前端只传"意图"（口型电平、
  * 情绪名称/强度、动作组请求、overlay 矩形），不做参数级写入。
@@ -18,7 +19,7 @@ import {
   type Live2DStageBackend,
   type Live2DStageSession,
 } from './types.ts'
-import type { Live2DMotionPriority, Live2DNativeBridge } from '@/types/live2dNative'
+import type { Live2DMotionPriority, Live2DNativeBridge } from '../types/live2dNative.ts'
 import { createLatestIntent } from './latestIntent.ts'
 
 /**
@@ -31,7 +32,7 @@ export type NativeBridgeProvider = () => Live2DNativeBridge | null | undefined
 
 function defaultBridgeProvider(): Live2DNativeBridge | null | undefined {
   if (typeof window === 'undefined') return undefined
-  return window.aicsLive2dNative
+  return getNativeLive2dCapabilities()
 }
 
 const PRIORITY_MAP: Record<number, Live2DMotionPriority> = {

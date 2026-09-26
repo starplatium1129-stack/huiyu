@@ -77,6 +77,7 @@ export type ComfyLink = [string, number];
 export interface ImageResult { path: string; mime: string; bytes: number }
 
 export interface ImageJob<Input extends ImageJobInput = ImageJobInput> {
+  taskHooks?: import('../../server/tasks/provider').TaskExecutionHooks;
   id: string;
   owner: string;
   provider: string;
@@ -104,6 +105,7 @@ export interface ImageJob<Input extends ImageJobInput = ImageJobInput> {
 }
 
 export interface ImageServiceOptions<Input extends ImageJobInput> {
+  durableTasks?: boolean;
   buildWorkflow?: (input: Input) => ComfyWorkflow;
   validateResources?: (input: Input) => any;
   outputPrefix?: string;

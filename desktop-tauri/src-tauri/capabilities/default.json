@@ -16,6 +16,9 @@
     "autostart:default",
     "opener:default",
     "allow-desktop-bootstrap",
+    "allow-desktop-workspace-prepare",
+    "allow-desktop-workspace-activate",
+    "allow-desktop-workspace-enable-bundled",
     "allow-get-state",
     "allow-hide",
     "allow-quit",
@@ -53,5 +56,5 @@
     "allow-chat-credential-read",
     "allow-chat-credential-write"
   ],
-  "local": false
+  "local": true
 }

@@ -13,11 +13,12 @@ import { createWebUIProbe, requestJson, createWebUIJob, startWebUIJob, publicJob
 import type { GenerationConfig, GenerationInput, WebUIJob, GenerationStatus } from './types';
 type ComfyService = ReturnType<typeof createAnimaService<GenerationInput>>;
 export interface GenerationDependencies {
+    durableTasks?: boolean;
     waiComfy?: ComfyService;
 }
 export function createGenerationService(config: GenerationConfig, dependencies: GenerationDependencies = {}) {
     const probeWebUI = createWebUIProbe(config);
-    let comfy = dependencies.waiComfy || createAnimaService<GenerationInput>(config, { buildWorkflow: buildWorkflow, validateResources: function (input: GenerationInput) { validateWaiResources(config, input); }, outputPrefix: OUTPUT_PREFIX, outputNodeId: '10', mediaNamespace: 'wai', engine: 'sd', routeBase: '/api/generation' });
+    let comfy = dependencies.waiComfy || createAnimaService<GenerationInput>(config, { durableTasks: dependencies.durableTasks, buildWorkflow: buildWorkflow, validateResources: function (input: GenerationInput) { validateWaiResources(config, input); }, outputPrefix: OUTPUT_PREFIX, outputNodeId: '10', mediaNamespace: 'wai', engine: 'sd', routeBase: '/api/generation' });
     // 任务注册表骨架收口到 server/job-runner.js（2026-08-21）：WebUI 分支的
     // webJob 与 Comfy 分支（anima 服务内部 registry）共用同一套定时器原语。
     let registry = jobRunner.createJobRegistry<WebUIJob>();
@@ -119,7 +120,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         data.models = webui.models;
         return data;
     }
-    function submitWebUI(input: GenerationInput, ownerId: string) {
+    async function submitWebUI(input: GenerationInput, ownerId: string, hooks?: import('../tasks/provider').TaskExecutionHooks) {
         let release = reserveAdmission('webui');
         let webJob: WebUIJob;
         try {
@@ -134,9 +135,12 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         webJob.admissionRelease = release;
         jobs.set(webJob.id, webJob);
         snapshots.save(webJob);
+        if (hooks) await hooks.checkpoint({ gatewayJobId: webJob.id, provider: 'webui', effectiveInput: webJob.input });
         void webuiQueue.run(async function () {
             if (webJob.status === 'cancelled') return;
+            if (hooks) await hooks.submitting('webui', '');
             await startWebUIJob(config, webJob);
+            if (hooks && webJob.result) await hooks.collect([{ bytes: webJob.result, mime: webJob.mime || 'image/png' }]);
             // WebUI interrupt is global. Do not start the next job until the old
             // generation AND its outstanding interrupt have both settled.
             await webJob.cancellation;
@@ -153,7 +157,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         });
         return publicJob(webJob);
     }
-    async function submit(input: GenerationInput, ownerId: string) {
+    async function submit(input: GenerationInput, ownerId: string, hooks?: import('../tasks/provider').TaskExecutionHooks) {
         if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
         // fresh：路由决策不能吃缓存——上游刚下线时必须立即失败而不是送进注定失败的分支
         let webui = await probeWebUI({ fresh: true });
@@ -167,7 +171,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         let webuiUsable = webui.online && webui.waiAvailable;
         if (input.autoHires && webuiUsable && webuiSupportsSampler && webuiSupportsScheduler && webuiSupportsAnimeUpscaler) {
             let animeInput = Object.assign({}, input, { autoHires: false, hiresUpscaler: 'R-ESRGAN 4x+ Anime6B', comfyHires: false, comfyUnsupported: true });
-            return submitWebUI(animeInput, ownerId);
+            return submitWebUI(animeInput, ownerId, hooks);
         }
         if (comfyUsable && !input.faceDetailer && !input.comfyUnsupported) {
             let superResModel = availableSuperRes(config);
@@ -184,7 +188,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             if (!preferredInput) {
                 throw error(503, 'SUPER_RES_MODEL_UNAVAILABLE', 'Comfy 本地未安装 ESRGAN 超分模型（Remacri / R-ESRGAN 4x+），请改用 WebUI 或 Latent');
             }
-            return submitComfy(preferredInput, ownerId);
+            return submitComfy(preferredInput, ownerId, hooks);
         }
         if (webuiUsable && (!webuiSupportsSampler || !webuiSupportsScheduler)) {
             throw error(400, 'WEBUI_CAPABILITY_UNAVAILABLE', 'WebUI 不支持当前采样器或调度器');
@@ -194,10 +198,10 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         }
         if (input.autoHires && webuiUsable) {
             let directInput = Object.assign({}, input, { autoHires: false, hiresFix: false, comfyHires: false, comfyUnsupported: false });
-            return submitWebUI(directInput, ownerId);
+            return submitWebUI(directInput, ownerId, hooks);
         }
         if (webuiUsable) {
-            return submitWebUI(input, ownerId);
+            return submitWebUI(input, ownerId, hooks);
         }
         if (input.faceDetailer) {
             throw error(503, 'WEBUI_RESOURCES_UNAVAILABLE', '当前功能需要包含 WAI checkpoint 的 SD WebUI / reForge');
@@ -206,17 +210,22 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             throw error(503, 'COMFY_RESOURCES_UNAVAILABLE', 'WAI checkpoint 或角色 LoRA 资源不可用，未选择 ComfyUI');
         if (input.comfyUnsupported)
             throw error(503, 'COMFY_CAPABILITY_UNAVAILABLE', '当前请求不符合 ComfyUI 能力，请启用 WebUI 或改用 Latent hires');
-        return submitComfy(input, ownerId);
+        return submitComfy(input, ownerId, hooks);
     }
-    async function submitComfy(input: GenerationInput, ownerId: string) {
+    async function submitComfy(input: GenerationInput, ownerId: string, hooks?: import('../tasks/provider').TaskExecutionHooks) {
         let release = reserveAdmission('comfy');
         let job;
+        let attempted = false;
         try {
             job = comfy.create(input, ownerId);
-            await comfy.submit(job);
+            if (hooks) await hooks.checkpoint({ gatewayJobId: job.id, provider: 'comfy', effectiveInput: job.input });
+            await comfy.submit(job, hooks ? { ...hooks, async submitting(name, identity) { await hooks.submitting(name, identity); attempted = true; } } : undefined);
             if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
             watchComfyAdmission(job, release);
         } catch (cause) {
+            // Durable ledger owns an uncertain submission. Never turn a lost POST
+            // response into cancellation or release its admission slot.
+            if (hooks && job && attempted) { watchComfyAdmission(job, release); throw cause; }
             if (registry.isClosed()) {
                 release();
                 if (job) await comfy.cancel(job).catch(() => {});
@@ -330,5 +339,5 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         jobs.clear();
         comfy.close();
     }
-    return { getStatus, submit, getJob, getResult, getLost, cancel, close, comfy };
+    return { getStatus, submit, getJob, getResult, getLost, cancel, close, comfy, find };
 }

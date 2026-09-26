@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 /** Missing versions are the supported pre-version format; numbered formats
  * migrate through the existing field allowlists. Never coerce version strings. */
 export function assertChatVersion(value: unknown, current: number): void {

@@ -1,10 +1,12 @@
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { computed, getCurrentScope, onScopeDispose, ref, watch, type Ref } from 'vue'
-import { useChatStorage, type ChatState } from '@/composables/chat/useChatStorage'
-import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
-import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
-import { STORAGE_KEY } from '@/config/characters'
-import { chatApi } from '@/api/chatApi'
-import { ApiClientError } from '@/api/client'
+import { useChatStorage, type ChatState } from './useChatStorage.ts'
+import { parseChatStatus, type ChatModel } from '../../utils/chatStatus.ts'
+import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '../../config/chatApi.ts'
+import { STORAGE_KEY } from '../../config/characters.ts'
+import { chatApi } from '../../api/chatApi.ts'
+import { ApiClientError } from '../../api/client.ts'
 
 export type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 type ChatStorage = ReturnType<typeof useChatStorage>
@@ -166,7 +168,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
       apiConfigHint.value = '安全凭据保存失败，原配置已保留，请重试。'
       return
     }
-    apiConfigHint.value = window.companionDesktop ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
+    apiConfigHint.value = getDesktopCapabilities() ? '配置已保存，密钥由 Windows 凭据管理器保护。' : '配置已保存，密钥仅用于当前页面会话。'
     apiSettingsOpen.value = false
     setChatStatus(`自定义 API · ${apiModel.value}`, 'online')
   }

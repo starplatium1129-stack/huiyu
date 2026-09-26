@@ -10,7 +10,7 @@
       <div class="pb-compare-grid">
         <figure v-for="(snap, index) in [previous, current]" :key="index" class="pb-compare-card">
           <div class="pb-compare-visual">
-            <img :src="snap.url" :alt="'对比图 ' + (index + 1)" loading="eager" decoding="async" />
+            <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(snap.url)" :alt="'对比图 ' + (index + 1)" loading="eager" decoding="async" />
             <span class="pb-compare-tag" :class="{ current: index === 1 }">{{ index === 0 ? '上一张' : '当前' }}</span>
           </div>
           <figcaption class="pb-compare-facts">
@@ -24,6 +24,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'

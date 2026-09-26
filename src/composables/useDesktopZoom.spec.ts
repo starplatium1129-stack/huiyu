@@ -15,7 +15,9 @@ function desktop(role: 'atelier' | 'companion' = 'atelier') {
   Object.defineProperty(window, '__TAURI__', { configurable: true, value: {} })
   vi.mocked(readDesktopBootstrap).mockResolvedValue({
     protocolVersion: 1, windowRole: role, connection: 'ready',
-    runtime: { origin: 'http://127.0.0.1:4312', protocolVersion: 1, ownership: 'managed' },
+    windowId: role, sourceProfileId: `profile-${'a'.repeat(64)}`, sourceOrigin: 'http://127.0.0.1:4312',
+    bundledUiAvailable: false,
+    runtime: { origin: 'http://127.0.0.1:4312', protocolVersion: 1, ownership: 'managed', runtimeEpoch: 'epoch-1', workspace: null },
   })
   vi.mocked(desktopWindowZoom.getWindowZoom).mockResolvedValue(1)
 }

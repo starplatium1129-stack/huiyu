@@ -1,4 +1,12 @@
 import fs from 'node:fs';
+import { executeLibraryMedia } from './library-media';
+import { executeTaskCommand } from './tasks';
+import type { TaskCommand } from './task-types';
+import { executeMigration } from './migration-commands';
+import type { MigrationCommand } from './migration-types';
+import { CURRENT_SCHEMA_VERSION } from './schema-upgrade';
+import { executeProfile } from './profile-commands';
+import type { ProfileCommand } from './profile-types';
 import { backupWorkspace, restoreBackup } from './backup';
 import { collectGarbage } from './garbage';
 import { MAX_CHUNK_BYTES, mediaPath, verifyMedia } from './media';
@@ -12,6 +20,7 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
   create: boolean; onCheckpoint?: (phase: StorageCheckpoint) => void }) {
   const storage = openStorage(options);
   let closed = false;
+  const verifiedMedia = new Map<string, string>();
   const revision = (): number => Number(storage.db.prepare("SELECT value FROM meta WHERE key='revision'").get()?.value);
   function currentWriter(): void {
     if (storage.db.prepare("SELECT value FROM meta WHERE key='writerEpoch'").get()?.value !== options.writerEpoch) {
@@ -54,9 +63,14 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
       };
       checkCancelled();
       if (isWorkspaceMutation(command)) currentWriter();
+      if (command.kind.startsWith('task.')) return executeTaskCommand(storage, command as TaskCommand, context, executeOptions);
+      if (command.kind.startsWith('migration.')) return executeMigration(storage, command as MigrationCommand, context, executeOptions);
+      if (command.kind.startsWith('profile.')) return executeProfile(storage, command as ProfileCommand, context, executeOptions);
       const principal = context.principalId;
       switch (command.kind) {
-        case 'status': return { workspaceId: options.workspaceId, databaseKind: 'huiyu-workspace', schemaVersion: 1,
+        case 'prepareMedia': case 'uploadMediaChunk': case 'commitMedia': case 'releaseMedia': case 'appendArtwork': case 'countMedia':
+          return executeLibraryMedia(storage, principal, command, checkCancelled);
+        case 'status': return { workspaceId: options.workspaceId, databaseKind: 'huiyu-workspace', schemaVersion: CURRENT_SCHEMA_VERSION,
           writerEpoch: options.writerEpoch, revision: revision(), sqliteVersion: String(storage.db.prepare('SELECT sqlite_version() AS version').get()?.version) };
         case 'listArtworks': {
           const limit = command.limit ?? 100;
@@ -79,7 +93,7 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
         case 'restoreArtwork':
           if (!findOperation(storage, principal, command.operationId)?.receipt_json) verifyArtworkMedia(storage, entityKey(command.id), checkCancelled);
           return mutateRecord(storage, principal, command);
-        case 'patchArtwork': case 'softDeleteArtwork': case 'saveProject': case 'purgeExpiredTrash':
+        case 'patchArtwork': case 'softDeleteArtwork': case 'hardDeleteArtwork': case 'saveProject': case 'purgeExpiredTrash':
           return mutateRecord(storage, principal, command);
         case 'collectGarbage': return collectGarbage(storage, principal, command, checkCancelled);
         case 'readMedia': {
@@ -91,13 +105,22 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
             throw new WorkspaceError('INVALID_COMMAND', 'Invalid media read range', 400);
           }
           const file = mediaPath(storage.root, String(media.hash));
-          verifyMedia(storage.root, file, { sha256: String(media.hash), bytes: Number(media.bytes), mime: String(media.mime) }, checkCancelled);
+          const stat = fs.statSync(file, { bigint: true });
+          const identity = `${stat.ino}:${stat.size}:${stat.mtimeNs}:${stat.ctimeNs}`;
+          // Range streaming uses many bounded reads of the same immutable object.
+          // Hash once per observed file version, not once per 1 MiB of a video.
+          if (verifiedMedia.get(file) !== identity) {
+            verifyMedia(storage.root, file, { sha256: String(media.hash), bytes: Number(media.bytes), mime: String(media.mime) }, checkCancelled);
+            if (verifiedMedia.size >= 256) verifiedMedia.delete(verifiedMedia.keys().next().value!);
+            verifiedMedia.set(file, identity);
+          }
           const data = Buffer.alloc(Math.min(length, Number(media.bytes) - offset));
           const fd = fs.openSync(file, 'r');
           try { fs.readSync(fd, data, 0, data.length, offset); } finally { fs.closeSync(fd); }
           return { data, mime: String(media.mime), totalBytes: Number(media.bytes), sha256: String(media.hash), offset } satisfies WorkspaceResults['readMedia'];
         }
         case 'backup': case 'restoreBackup': return backupCommand(command, principal, executeOptions);
+        default: throw new WorkspaceError('INVALID_COMMAND', 'Unknown workspace command', 400);
       }
     },
     close(): void { if (!closed) { storage.db.close(); closed = true; } },

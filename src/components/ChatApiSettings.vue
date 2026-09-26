@@ -89,6 +89,8 @@
 </template>
 
 <script setup lang="ts">
+import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
+
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -164,7 +166,7 @@ const emit = defineEmits<{
 }>()
 
 const showApiKey = ref(false)
-const desktopCredentials = Boolean(window.companionDesktop)
+const desktopCredentials = Boolean(getDesktopCapabilities())
 const testing = ref(false)
 const testState = ref('')
 const testMessage = ref('')

@@ -15,7 +15,7 @@
           <img
             v-if="trashThumbs[entry.id]"
             class="artwork-image"
-            :src="trashThumbs[entry.id]"
+            :src="resolveRuntimeUrl(trashThumbs[entry.id])"
             :alt="trashPrompt(entry)"
             loading="lazy"
             decoding="async"
@@ -43,6 +43,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'

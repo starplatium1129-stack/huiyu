@@ -180,6 +180,6 @@ describe('临时成片持久化', () => {
     finish('late-image')
     await pending
     expect(readTempResult()).toBeNull()
-    expect(io.remove).toHaveBeenCalledWith('late-image')
+    expect(io.remove).toHaveBeenCalledWith(['late-image'])
   })
 })

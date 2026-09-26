@@ -19,8 +19,8 @@
       </div>
       <figure class="scene-atlas-portrait" aria-label="陪伴角色">
         <template v-for="character in ['nene', 'natsume']" :key="character">
-          <img v-if="!companionFailed[character]"
-            :src="'/assets/characters/' + character + '-home-cg-1024.webp'"
+          <img :crossorigin="runtimeResourceCors()" v-if="!companionFailed[character]"
+            :src="resolveRuntimeUrl('/assets/characters/' + character + '-home-cg-1024.webp')"
             :class="[character, { current: companionId === character }]"
             :alt="companionId === character ? (character === 'nene' ? '绫地宁宁' : '四季夏目') : ''"
             :aria-hidden="companionId !== character" width="1024" height="1344" decoding="async"
@@ -168,7 +168,7 @@
                 <span>色调 <strong>{{ dv(s2).color }}</strong></span>
               </div>
               <div class="ex-secondary">
-                <a class="btn btn-ghost btn-sm" :href="quickCreateUrl(s2.id)"><ArchiveIcon name="lightning" /> 直接出图</a>
+                <RouterLink class="btn btn-ghost btn-sm" :to="quickCreateUrl(s2.id)"><ArchiveIcon name="lightning" /> 直接出图</RouterLink>
               <button class="btn btn-ghost scene-hide-action" type="button" @click.stop="toggleHidden(s2.id)">
                 {{ hiddenIds.has(s2.id) ? '↩ 恢复' : '隐藏' }}
               </button>
@@ -199,7 +199,7 @@
             <div class="story-meta">{{ charName(displayedDrawerScene) }} · {{ seasonLabel(displayedDrawerScene.season) }} · {{ timeLabel(displayedDrawerScene.timeOfDay) }} · {{ displayedDrawerScene.emotion }}</div>
             <div class="story-body">{{ displayedDrawerScene.story || '' }}</div>
             <div class="story-actions">
-              <a class="btn btn-primary" :href="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
+              <RouterLink class="btn btn-primary" :to="quickCreateUrl(displayedDrawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</RouterLink>
               <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(displayedDrawerScene.id)"><ArchiveIcon name="clap" /> 进入工作台调整</RouterLink>
               <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
             </div>
@@ -211,6 +211,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import FluidTransition from "@/components/visual/FluidTransition.vue"

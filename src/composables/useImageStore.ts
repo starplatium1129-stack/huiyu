@@ -1,4 +1,5 @@
 /** AICGImageStore 的 TypeScript 替代：IndexedDB 图片 Blob 存储 */
+import { withMigrationWrite, assertWebArtworkWritable } from '../platform/web/migrationBarrier.ts'
 
 const DB_NAME = 'aics_image_store'
 const DB_VERSION = 1
@@ -56,6 +57,11 @@ function createId(): string {
 }
 
 function tx<T>(mode: IDBTransactionMode, action: (store: IDBObjectStore) => void): Promise<T | undefined> {
+  if (mode === 'readwrite') assertWebArtworkWritable()
+  const run = () => transact<T>(mode, action)
+  return mode === 'readwrite' ? withMigrationWrite(run) : run()
+}
+function transact<T>(mode: IDBTransactionMode, action: (store: IDBObjectStore) => void): Promise<T | undefined> {
   return openDb().then(db => new Promise((resolve, reject) => {
     let transaction: IDBTransaction
     try { transaction = db.transaction(STORE_NAME, mode) } catch (e) { reject(e); return }
@@ -122,6 +128,23 @@ export async function imgList(): Promise<StoredImageRecord[]> {
     const req = transaction.objectStore(STORE_NAME).getAll()
     req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result : [])
     req.onerror   = () => reject(req.error ?? new Error('图片列表读取失败'))
+  })
+}
+
+/** Includes temporary and trash media; migration must never infer the set from history. */
+export async function imgPage(after?: string, limit = 20): Promise<{ entries: StoredImageRecord[]; nextCursor: string | null }> {
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new Error('无效的图片迁移分页大小')
+  const db = await openDb()
+  return new Promise((resolve, reject) => {
+    const entries: StoredImageRecord[] = []
+    const request = db.transaction(STORE_NAME).objectStore(STORE_NAME).openCursor(after === undefined ? undefined : IDBKeyRange.lowerBound(after, true))
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      const cursor = request.result
+      if (!cursor) { resolve({ entries, nextCursor: null }); return }
+      if (entries.length === limit) { resolve({ entries, nextCursor: entries.at(-1)!.id }); return }
+      entries.push(cursor.value as StoredImageRecord); cursor.continue()
+    }
   })
 }
 

@@ -1,3 +1,4 @@
+import { resolveRuntimeUrl } from '../platform/runtimeUrl.ts'
 /**
  * 浏览器渲染后端 —— wl-live2d（Pixi + Cubism Web）。
  *
@@ -202,7 +203,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
         // enabled, preload the small motion files so the first tap is a real
         // interaction instead of a delayed network request.
         models: [{
-          path: options.modelUrl,
+          path: resolveRuntimeUrl(options.modelUrl),
           width: options.canvasWidth,
           height: options.canvasHeight,
           position: { x: 0, y: 0 },

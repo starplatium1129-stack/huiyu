@@ -1,20 +1,21 @@
-import { useSceneEditorModal } from '@/composables/scene/useSceneEditorModal';
-import { useSceneImportExport } from '@/composables/scene/useSceneImportExport';
-import { useSceneMaintenance } from '@/composables/scene/useSceneMaintenance';
-import { useSceneShowcaseUpload } from '@/composables/scene/useSceneShowcaseUpload';
-import { useSceneTagManager } from '@/composables/scene/useSceneTagManager';
-import { confirmAction } from '@/composables/useConfirm';
-import { copyWithFeedback } from '@/composables/useCopyFeedback';
-import { useFocusTrap } from '@/composables/useFocusTrap';
-import { maintenanceApi } from '@/api/maintenanceApi';
-import { useSceneStore } from '@/stores/sceneStore';
-import type { CurationData,SceneDraft,TagRecord,SceneMaintenanceSnapshot } from '@/types/api';
-import { nextCopyId } from '@/utils/copyId';
-import { highlightSearchText as hl } from '@/utils/highlightSearchText';
-import { blueprintMaintenanceRecord,sceneMaintenanceRecord } from '@/utils/maintenanceRecords';
-import type { SceneBlueprint } from '@/utils/popularContent';
-import { cloneSceneSnapshot, freezeSceneSnapshot, MAX_BLUEPRINTS, sceneContentKey } from '@/utils/sceneChanges';
-import { isSceneId } from '@/utils/sceneId';
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { useSceneEditorModal } from './useSceneEditorModal.ts';
+import { useSceneImportExport } from './useSceneImportExport.ts';
+import { useSceneMaintenance } from './useSceneMaintenance.ts';
+import { useSceneShowcaseUpload } from './useSceneShowcaseUpload.ts';
+import { useSceneTagManager } from './useSceneTagManager.ts';
+import { confirmAction } from '../useConfirm.ts';
+import { copyWithFeedback } from '../useCopyFeedback.ts';
+import { useFocusTrap } from '../useFocusTrap.ts';
+import { maintenanceApi } from '../../api/maintenanceApi.ts';
+import { useSceneStore } from '../../stores/sceneStore.ts';
+import type { CurationData,SceneDraft,TagRecord,SceneMaintenanceSnapshot } from '../../types/api.ts';
+import { nextCopyId } from '../../utils/copyId.ts';
+import { highlightSearchText as hl } from '../../utils/highlightSearchText.ts';
+import { blueprintMaintenanceRecord,sceneMaintenanceRecord } from '../../utils/maintenanceRecords.ts';
+import type { SceneBlueprint } from '../../utils/popularContent.ts';
+import { cloneSceneSnapshot, freezeSceneSnapshot, MAX_BLUEPRINTS, sceneContentKey } from '../../utils/sceneChanges.ts';
+import { isSceneId } from '../../utils/sceneId.ts';
 import { computed,onBeforeUnmount,onMounted,ref,shallowRef } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
@@ -350,7 +351,7 @@ export function useSceneManagerWorkspace() {
         loading.value = true;
         const draftBefore = sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() });
         try {
-            const packaged = window.companionDesktop ? await window.companionDesktop.isPackaged() : false;
+            const packaged = getDesktopCapabilities() ? await getDesktopCapabilities()!.isPackaged() : false;
             desktopPackaged.value = packaged;
             if (!packaged) {
                 // 角色显示名是辅助元数据；权威内容读取不能被它阻塞。

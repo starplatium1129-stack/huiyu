@@ -80,7 +80,7 @@ function membership(context: WorkspaceStorageContext, projectKey: string): strin
   return context.db.prepare('SELECT artwork_key FROM project_artworks WHERE project_key=? ORDER BY position').all(projectKey).map(row => String(row.artwork_key));
 }
 
-type RecordMutation = Extract<WorkspaceCommand, { kind: 'patchArtwork' | 'softDeleteArtwork' | 'restoreArtwork' | 'saveProject' | 'purgeExpiredTrash' }>;
+type RecordMutation = Extract<WorkspaceCommand, { kind: 'patchArtwork' | 'softDeleteArtwork' | 'hardDeleteArtwork' | 'restoreArtwork' | 'saveProject' | 'purgeExpiredTrash' }>;
 export function mutateRecord(context: WorkspaceStorageContext, principal: string, command: RecordMutation): MutationReceipt {
   const result = context.transaction(() => {
     const previous = findOperation(context, principal, command.operationId);
@@ -113,7 +113,14 @@ export function mutateRecord(context: WorkspaceStorageContext, principal: string
     } else {
       const artworkKey = entityKey(command.id);
       const artwork = requireArtwork(context, command.id, command.expectedRevision);
-      if (command.kind === 'patchArtwork') {
+      if (command.kind === 'hardDeleteArtwork') {
+        const refs = storageMembershipProjects(context, artworkKey);
+        for (const projectKey of refs) updateMembership(context, projectKey, membership(context, projectKey).filter(key => key !== artworkKey), revision);
+        context.db.prepare("DELETE FROM media_refs WHERE owner_kind IN ('artwork','trash') AND owner_id=?").run(artworkKey);
+        context.db.prepare('DELETE FROM artworks WHERE id_key=?').run(artworkKey);
+        receipt.changed = true;
+        receipt.removed = refs.length;
+      } else if (command.kind === 'patchArtwork') {
         if ('id' in command.patch || 'image_id' in command.patch) throw new WorkspaceError('INVALID_COMMAND', 'Artwork identity and media cannot be patched', 400);
         if (artwork.deletedAt !== null) throw new WorkspaceError('OPERATION_CONFLICT', 'Restore the artwork before editing');
         context.db.prepare('UPDATE artworks SET body=?,revision=? WHERE id_key=?').run(JSON.stringify({ ...artwork.body, ...command.patch }), revision, artworkKey);
@@ -138,8 +145,8 @@ export function mutateRecord(context: WorkspaceStorageContext, principal: string
         }
         context.db.prepare('DELETE FROM trash WHERE artwork_key=?').run(artworkKey);
       }
-      receipt.artwork = artworkByKey(context, artworkKey)!;
-      receipt.changed = receipt.artwork.revision === revision;
+      const updated = artworkByKey(context, artworkKey);
+      if (updated) { receipt.artwork = updated; receipt.changed = updated.revision === revision; }
     }
     context.checkpoint('metadata-written');
     commitOperation(context, key, receipt);
@@ -147,4 +154,7 @@ export function mutateRecord(context: WorkspaceStorageContext, principal: string
   });
   context.checkpoint('committed');
   return result;
+}
+function storageMembershipProjects(context: WorkspaceStorageContext, artworkKey: string): string[] {
+  return context.db.prepare('SELECT project_key FROM project_artworks WHERE artwork_key=?').all(artworkKey).map(row => String(row.project_key));
 }

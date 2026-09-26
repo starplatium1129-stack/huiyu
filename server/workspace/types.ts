@@ -29,12 +29,12 @@ export interface OperationState {
 export interface WorkspaceStatus {
   workspaceId: string;
   databaseKind: 'huiyu-workspace';
-  schemaVersion: 1;
+  schemaVersion: number;
   revision: number;
   writerEpoch: string;
   sqliteVersion: string;
 }
-export type WorkspaceCommand =
+type CoreWorkspaceCommand =
   | { kind: 'status' }
   | { kind: 'listArtworks'; limit?: number; cursor?: string; includeDeleted?: boolean }
   | { kind: 'getArtwork'; id: EntityId }
@@ -46,6 +46,7 @@ export type WorkspaceCommand =
   | { kind: 'getOperation'; operationId: string }
   | { kind: 'patchArtwork'; operationId: string; id: EntityId; expectedRevision: number; patch: Record<string, JsonValue> }
   | { kind: 'softDeleteArtwork'; operationId: string; id: EntityId; expectedRevision: number }
+  | { kind: 'hardDeleteArtwork'; operationId: string; id: EntityId; expectedRevision: number }
   | { kind: 'restoreArtwork'; operationId: string; id: EntityId; expectedRevision: number }
   | { kind: 'saveProject'; operationId: string; project: WorkspaceBody; artworkIds: EntityId[]; expectedRevision: number | null }
   | { kind: 'purgeExpiredTrash'; operationId: string }
@@ -54,7 +55,8 @@ export type WorkspaceCommand =
   | { kind: 'backup'; operationId: string }
   | { kind: 'restoreBackup'; operationId: string; backupId: string };
 
-export interface WorkspaceResults {
+export type WorkspaceCommand = CoreWorkspaceCommand | TaskCommand | MigrationCommand | ProfileCommand | LibraryMediaCommand;
+export interface WorkspaceResults extends TaskResults, MigrationResults, ProfileResults, LibraryMediaResults {
   status: WorkspaceStatus;
   listArtworks: { items: WorkspaceArtwork[]; nextCursor: string | null; revision: number };
   getArtwork: WorkspaceArtwork | null;
@@ -66,6 +68,7 @@ export interface WorkspaceResults {
   getOperation: OperationState | null;
   patchArtwork: MutationReceipt;
   softDeleteArtwork: MutationReceipt;
+  hardDeleteArtwork: MutationReceipt;
   restoreArtwork: MutationReceipt;
   saveProject: MutationReceipt;
   purgeExpiredTrash: MutationReceipt;
@@ -90,5 +93,10 @@ export class WorkspaceError extends Error {
   }
 }
 export function isWorkspaceMutation(command: WorkspaceCommand): boolean {
-  return !['status', 'listArtworks', 'getArtwork', 'listProjects', 'getOperation', 'readMedia'].includes(command.kind);
+  return !['status', 'listArtworks', 'getArtwork', 'listProjects', 'getOperation', 'readMedia', 'task.list', 'task.get', 'migration.status',
+    'profile.readSettings', 'profile.readChat', 'profile.readDrafts', 'countMedia', 'task.input.get', 'task.legacy-history'].includes(command.kind);
 }
+import type { TaskCommand, TaskResults } from './task-types';
+import type { MigrationCommand, MigrationResults } from './migration-types';
+import type { ProfileCommand, ProfileResults } from './profile-types';
+import type { LibraryMediaCommand, LibraryMediaResults } from './library-media';

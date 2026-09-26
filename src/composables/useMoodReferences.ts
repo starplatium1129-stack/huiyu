@@ -1,5 +1,6 @@
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { onMounted, onUnmounted, ref } from 'vue'
-import { parseShowcaseManifest } from '@/utils/showcaseManifest'
+import { parseShowcaseManifest } from '../utils/showcaseManifest.ts'
 
 /** Only publish reference IDs explicitly rated All in the current media catalogue. */
 export function useMoodReferences(ids: readonly string[]) {
@@ -8,7 +9,7 @@ export function useMoodReferences(ids: readonly string[]) {
   const controller = new AbortController()
   onMounted(async () => {
     try {
-      const response = await fetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
+      const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
       if (!response.ok) return
       const manifest = await response.json() as { entries: Array<{ id?: unknown } | null> }
       const { entries } = parseShowcaseManifest(manifest)

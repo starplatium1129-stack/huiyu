@@ -2,7 +2,7 @@ import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
 import { useVideoStore } from '@/stores/videoStore'
-import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { uploadVideoImage } from '@/api/videoApi'
 import { getCharacterReferences } from '@/utils/characterReferenceData'
 
@@ -80,7 +80,7 @@ export function useShotImport(deps: ShotImportDeps) {
   /** 单镜首帧挂载：IndexedDB 取 blob → 上传换受控文件名 → 本地预览。 */
   async function mountShotFrame(shot: ShotDraft, imageId: string): Promise<boolean> {
     try {
-      const blob = await imgGet(imageId)
+      const blob = await artworkRepository.getImage(imageId)
       if (!blob || !blob.size) return false
       const dataUrl = await readBlobAsDataURL(blob)
       const comma = dataUrl.indexOf(',')

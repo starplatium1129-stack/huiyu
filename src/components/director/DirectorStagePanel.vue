@@ -21,8 +21,8 @@
         </span>
       </div>
       <i class="stage-magic-ring" aria-hidden="true"></i>
-      <img class="stage-muse nene" :src="stageMuseUrl.nene" alt="" aria-hidden="true" decoding="async">
-      <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
+      <img :crossorigin="runtimeResourceCors()" class="stage-muse nene" :src="resolveRuntimeUrl(stageMuseUrl.nene)" alt="" aria-hidden="true" decoding="async">
+      <img :crossorigin="runtimeResourceCors()" class="stage-muse natsume" :src="resolveRuntimeUrl(stageMuseUrl.natsume)" alt="" aria-hidden="true" decoding="async">
       <div class="stage-message">
         <div class="stage-content">
         <DirectorSceneReference :size="canvasSize" />
@@ -123,7 +123,7 @@
         v-else
         class="result-image-reveal"
         img-class="result-image"
-        :src="displayResultUrl"
+        :src="resolveRuntimeUrl(displayResultUrl)"
         :auto-reveal="!revealedResults.has(displayResultUrl)"
         alt="当前生成的画面成片"
         @reveal-start="rememberResultReveal"
@@ -144,6 +144,10 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
+import { runtimeFetch } from '@/platform/runtimeUrl'
+
 import { computed, ref, defineAsyncComponent } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -272,7 +276,7 @@ async function interrogateCurrentImage() {
   }
   let file: File
   try {
-    var res = await fetch(props.displayResultUrl)
+    var res = await runtimeFetch(props.displayResultUrl)
     if (!res.ok) throw new Error('获取当前成片失败')
     var blob = await res.blob()
     file = new File([blob], 'current_result.png', { type: blob.type || 'image/png' })

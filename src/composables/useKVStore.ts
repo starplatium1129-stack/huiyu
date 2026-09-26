@@ -1,4 +1,7 @@
 /** AICKVStore 的 TypeScript 替代：IndexedDB KV 存储（history / projects 等） */
+import { withMigrationWrite, assertWebArtworkWritable } from '../platform/web/migrationBarrier.ts'
+import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY, ARTWORK_HISTORY_QUARANTINE_KEY } from '../utils/storageKeys.ts'
+const artworkKeys = new Set<string>([ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY, ARTWORK_HISTORY_QUARANTINE_KEY])
 
 const DB_NAME = 'aics_kv_store'
 const DB_VERSION = 1
@@ -49,6 +52,10 @@ export async function kvSet(key: string, value: unknown): Promise<void> {
 
 /** Commit related records together; a quota failure must not split history from projects. */
 export async function kvSetMany(entries: Array<{ key: string; value: unknown }>): Promise<void> {
+  if (entries.some(entry => artworkKeys.has(entry.key))) assertWebArtworkWritable()
+  return withMigrationWrite(() => commitEntries(entries))
+}
+async function commitEntries(entries: Array<{ key: string; value: unknown }>): Promise<void> {
   const snapshot = JSON.parse(JSON.stringify(entries)) as Array<{ key: string; value: unknown }>
   const db = await openDb()
   return new Promise((resolve, reject) => {
@@ -64,6 +71,10 @@ export async function kvSetMany(entries: Array<{ key: string; value: unknown }>)
 
 /** Atomic read-modify-write, including browsers without Web Locks. The reducer is synchronous. */
 export async function kvUpdate<T>(key: string, update: (current: unknown) => T): Promise<T> {
+  if (artworkKeys.has(key)) assertWebArtworkWritable()
+  return withMigrationWrite(() => updateEntry(key, update))
+}
+async function updateEntry<T>(key: string, update: (current: unknown) => T): Promise<T> {
   const db = await openDb()
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite')
@@ -78,6 +89,23 @@ export async function kvUpdate<T>(key: string, update: (current: unknown) => T):
         result = update(request.result?.value ?? null)
         store.put({ key, value: JSON.parse(JSON.stringify(result)) })
       } catch (error) { tx.abort(); reject(error) }
+    }
+  })
+}
+
+/** Cursor pages preserve unregistered keys for the migration classification gate. */
+export async function kvPage(after?: string, limit = 100): Promise<{ entries: Array<{ key: string; value: unknown }>; nextCursor: string | null }> {
+  if (!Number.isInteger(limit) || limit < 1 || limit > 200) throw new Error('无效的迁移分页大小')
+  const db = await openDb()
+  return new Promise((resolve, reject) => {
+    const entries: Array<{ key: string; value: unknown }> = []
+    const request = db.transaction(STORE_NAME).objectStore(STORE_NAME).openCursor(after === undefined ? undefined : IDBKeyRange.lowerBound(after, true))
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      const cursor = request.result
+      if (!cursor) { resolve({ entries, nextCursor: null }); return }
+      if (entries.length === limit) { resolve({ entries, nextCursor: entries.at(-1)!.key }); return }
+      entries.push(cursor.value as { key: string; value: unknown }); cursor.continue()
     }
   })
 }

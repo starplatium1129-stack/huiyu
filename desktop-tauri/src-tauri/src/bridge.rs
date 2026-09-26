@@ -12,6 +12,21 @@ pub async fn desktop_bootstrap(window: tauri::WebviewWindow) -> Result<crate::bo
     crate::bootstrap::read(window).await
 }
 
+#[tauri::command]
+pub async fn desktop_workspace_prepare(window: tauri::WebviewWindow) -> Result<crate::bootstrap::DesktopBootstrap, String> {
+    crate::bootstrap::request(window, "prepare-candidate", None, false).await
+}
+
+#[tauri::command]
+pub async fn desktop_workspace_activate(window: tauri::WebviewWindow, migration_id: String, bundled_ui: bool) -> Result<crate::bootstrap::DesktopBootstrap, String> {
+    crate::bootstrap::request(window, "activate", Some(migration_id), bundled_ui).await
+}
+
+#[tauri::command]
+pub async fn desktop_workspace_enable_bundled(window: tauri::WebviewWindow) -> Result<crate::bootstrap::DesktopBootstrap, String> {
+    crate::bootstrap::request(window, "enable-bundled", None, true).await
+}
+
 /// IPC 命令层：与 Electron 版 preload 桥一一对应（前端零改动由 shim 保证）。
 
 #[derive(Serialize)]
@@ -192,8 +207,26 @@ pub fn hide_companion_chat(app: AppHandle) {
 
 /// 聊天窗 → 角色窗指令中继：聊天窗不持有会话运行时，发送/切角色等动作
 /// 转发给 companion 窗口的 CompanionView 执行（后者是唯一会话写者）。
+#[derive(serde::Deserialize, Serialize, Clone)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ChatRelay {
+    command: String,
+    text: Option<String>,
+    image_url: Option<String>,
+    character: Option<String>,
+    request_id: Option<String>,
+}
+
 #[tauri::command]
-pub fn chat_relay(app: AppHandle, payload: serde_json::Value) -> bool {
+pub fn chat_relay(window: tauri::WebviewWindow, app: AppHandle, payload: ChatRelay) -> bool {
+    if window.label() != "companion-chat"
+        || !matches!(payload.command.as_str(), "send" | "stop" | "switch-character")
+        || payload.text.as_ref().is_some_and(|value| value.len() > 65_536)
+        || payload.image_url.as_ref().is_some_and(|value| value.len() > 16 * 1024 * 1024)
+        || payload.character.as_ref().is_some_and(|value| value.len() > 256)
+        || payload.request_id.as_ref().is_some_and(|value| value.len() > 128) { return false; }
+    if payload.command == "send" && (payload.request_id.as_ref().is_none_or(|value| value.is_empty())
+        || payload.text.as_ref().is_none_or(|value| value.trim().is_empty())) { return false; }
     let Some(w) = app.get_webview_window("companion") else { return false };
     let _ = w.emit("aics:chat-command", payload);
     true

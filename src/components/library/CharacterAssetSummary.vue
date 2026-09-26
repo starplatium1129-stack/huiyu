@@ -1,5 +1,7 @@
 <template><section class="asset-summary" aria-label="角色素材状态"><div><strong>创作素材</strong><p role="status">{{ checking ? '正在检查默认服装参考图…' : problem || `默认服装参考图 ${available} / ${total} 可读取` }}</p></div><button class="btn btn-ghost" type="button" :disabled="checking" @click="check(true)">重新检查</button></section></template>
 <script setup lang="ts">
+import { runtimeFetch } from '@/platform/runtimeUrl'
+
 import { onUnmounted, ref, watch } from 'vue'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 const props = defineProps<{ characterId: string }>()
@@ -19,7 +21,7 @@ async function check(refresh = false) {
     if (!references.length) { problem.value = '默认服装参考图尚未登记'; return }
     const results = await Promise.all(references.map(async reference => {
       if (reference.pending || !/^\/character-references\/[a-z0-9_-]+\/(?:[a-z0-9_-]+\/)?[a-z0-9_.-]+$/i.test(reference.url)) return false
-      try { const result = await fetch(reference.url, { method: 'HEAD', signal }); return result.ok && (result.headers.get('content-type') || '').startsWith('image/') } catch { return false }
+      try { const result = await runtimeFetch(reference.url, { method: 'HEAD', signal }); return result.ok && (result.headers.get('content-type') || '').startsWith('image/') } catch { return false }
     }))
     if (!signal.aborted && props.characterId === id) available.value = results.filter(Boolean).length
   } catch { if (!signal.aborted) problem.value = '暂时无法检查素材，请重试' }

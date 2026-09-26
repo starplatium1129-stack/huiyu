@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { CHAT_MEMORY_KEY } from './storageKeys.ts'
 import { assertChatVersion, assertStoredChatVersion } from './chatVersion.ts'
 import { chatResetRevision } from './chatReset.ts'
@@ -33,7 +34,7 @@ export function emptyChatMemoryState(): ChatMemoryState {
     version: 1,
     byCharacter: Object.fromEntries(listCompanionCharacterIds().map(id => [id, []])),
   }
-  if (typeof localStorage !== 'undefined') Object.defineProperty(state, resetStamp, { value: chatResetRevision() })
+  if (typeof globalThis.localStorage !== 'undefined') Object.defineProperty(state, resetStamp, { value: chatResetRevision() })
   return state
 }
 

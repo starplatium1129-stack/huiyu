@@ -1,18 +1,20 @@
-import { withArtworkStaging } from '@/storage/artworkSession'
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { withArtworkStaging } from '../../storage/artworkSession.ts'
 import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
-import type { usePromptBuilderStore, HistoryEntry } from '@/stores/promptBuilderStore'
-import type { DrawEngine } from '@/storage/settingsRepository'
-import type { AnimaResult, AnimaResultContext } from '@/types/anima'
-import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
-import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
-import type { SDQueueJob } from '@/composables/generation/useSDQueue'
-import { imgDelete, imgGet, imgPut } from '@/composables/useImageStore'
+import type { usePromptBuilderStore, HistoryEntry } from '../../stores/promptBuilderStore.ts'
+import type { DrawEngine } from '../../storage/settingsRepository.ts'
+import type { AnimaResult, AnimaResultContext } from '../../types/anima.ts'
+import type { useAnimaSession } from '../generation/useAnimaSession.ts'
+import type { useSDGenerate } from '../generation/useSDGenerate.ts'
+import type { SDQueueJob } from '../generation/useSDQueue.ts'
+import { hasRuntimeTasks, isRuntimeTaskId } from '../../api/runtimeTaskAuthority.ts'
+import { artworkRepository } from '../../storage/artworkRepository.ts'
 import {
   clearTempResult,
   readTempResult,
   writeTempResult,
   type TempResultRecord,
-} from '@/utils/tempResult'
+} from '../../utils/tempResult.ts'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -73,20 +75,24 @@ export function useTempResult(deps: TempResultDeps) {
 
   /** 替换式写入：先读旧记录，新记录落稳后回收旧 blob（不炸主链路）。 */
   async function captureTemp(partial: Omit<TempResultRecord, 'imageId' | 'savedAt'>, blob: Blob, url = deps.displayResultUrl.value, current = ownsResult(url)) {
+    if (hasRuntimeTasks() && (isRuntimeTaskId(partial.animaMetadata?.id || '') || (sd.resultUrl.value === url && sd.resultTaskId?.value))) {
+      if (current()) storedResultUrl.value = url
+      return
+    }
     return withArtworkStaging(async () => {
       if (!current()) return
       const mutation = ++tempMutation
       try {
-        const imageId = await imgPut(blob)
-        if (mutation !== tempMutation || !current()) { void imgDelete(imageId).catch(() => {}); return }
+        const imageId = await artworkRepository.putImage(blob)
+        if (mutation !== tempMutation || !current()) { void artworkRepository.deleteImage(imageId).catch(() => {}); return }
         const previous = readTempResult()
         if (!writeTempResult({ ...partial, imageId, savedAt: Date.now() })) {
-          void imgDelete(imageId).catch(() => {})
+          void artworkRepository.deleteImage(imageId).catch(() => {})
           pb.flash('临时成片写入失败（存储空间不足）：可尝试「存入作品册」或下载原图')
           return
         }
         storedResultUrl.value = url
-        if (previous && previous.imageId !== imageId) void imgDelete(previous.imageId).catch(() => {})
+        if (previous && previous.imageId !== imageId) void artworkRepository.deleteImage(previous.imageId).catch(() => {})
       } catch (error) {
         console.warn('[temp-result] capture failed', error)
         if (current()) pb.flash('临时成片保存失败：请在离开前存入作品册或下载原图')
@@ -100,7 +106,7 @@ export function useTempResult(deps: TempResultDeps) {
     storedResultUrl.value = ''
     const record = readTempResult()
     clearTempResult()
-    if (record) void imgDelete(record.imageId).catch(() => {})
+    if (record) void artworkRepository.deleteImage(record.imageId).catch(() => {})
   }
 
   /** 舞台当前结果的 F3 冻结上下文（Anima 在会话 state，SD 在 resultContext ref）。 */
@@ -116,6 +122,7 @@ export function useTempResult(deps: TempResultDeps) {
     const frozen = deps.animaState.value.resultContext ?? null
     if (!deps.autoSaveToGallery.value) {
       if (current()) displayedResultHistoryId.value = null
+      if (hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id)) { storedResultUrl.value = result.url; return }
       await captureTemp({
         engine: result.metadata.engine,
         prompt: result.metadata.prompt,
@@ -133,6 +140,7 @@ export function useTempResult(deps: TempResultDeps) {
       // 「重绘前 vs 重绘后」的真实语义（P1-14）。
       const isInpaint = Boolean(result.metadata.initImage)
       const saved = await pb.commitHistoryEntry({
+        taskId: hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id) ? result.metadata.id : undefined,
         context: frozen,
         blob: result.blob,
         seed: result.metadata.seed,
@@ -176,8 +184,9 @@ export function useTempResult(deps: TempResultDeps) {
     const context = deps.resultContext.value
     if (!deps.autoSaveToGallery.value) {
       if (current()) displayedResultHistoryId.value = null
+      if (hasRuntimeTasks() && sd.resultTaskId?.value) { storedResultUrl.value = url; return }
       try {
-        const blob = await (await fetch(url, { cache: 'no-store' })).blob()
+        const blob = await (await runtimeFetch(url, { cache: 'no-store' })).blob()
         if (blob.size) {
           await captureTemp({
             engine: 'sd',
@@ -207,7 +216,7 @@ export function useTempResult(deps: TempResultDeps) {
       if (!current()) return
       pb.flash('自动入册失败，可手动点「存入作品册」')
       try {
-        const blob = await (await fetch(url)).blob()
+        const blob = await (await runtimeFetch(url)).blob()
         await captureTemp({ engine: 'sd', prompt: job.prompt, negative: job.negative,
           seed, size: job.size, context }, blob, url, current)
       } catch { if (current()) pb.flash('临时保存也未成功，请下载当前原图') }
@@ -224,6 +233,7 @@ export function useTempResult(deps: TempResultDeps) {
       const current = ownsResult(url)
       const frozen = currentContext()
       const snapshot = JSON.parse(JSON.stringify({
+        taskId: hasRuntimeTasks() ? deps.drawEngine.value === 'sd' ? sd.resultTaskId?.value : isRuntimeTaskId(deps.animaState.value.result?.metadata.id || '') ? deps.animaState.value.result?.metadata.id : undefined : undefined,
         context: frozen, seed: deps.displayResultSeed.value ?? undefined,
         ...deps.historyGenerationFields(), story: frozen?.story,
         scene: frozen ? (frozen.sceneId ?? null) : undefined,
@@ -239,7 +249,7 @@ export function useTempResult(deps: TempResultDeps) {
         prompt = result.metadata.prompt
         negative = result.metadata.negative
       } else {
-        const response = await fetch(url, { cache: 'no-store' })
+        const response = await runtimeFetch(url, { cache: 'no-store' })
         const contentType = response.headers.get('content-type') || ''
         if (!response.ok || !contentType.startsWith('image/')) {
           pb.flash('成片响应无效，请重新生成')
@@ -273,11 +283,28 @@ export function useTempResult(deps: TempResultDeps) {
    * 返回是否发生了恢复（调用方据此提示）。
    */
   async function restoreTempResult(): Promise<boolean> {
+    if (hasRuntimeTasks()) {
+      const { refreshRuntimeTasks, runtimeTasks, runtimeResultPath, fetchRuntimeResult } = await import('../../api/runtimeTasks.ts')
+      await refreshRuntimeTasks().catch(() => {})
+      const task = runtimeTasks.value.find(item => ['generation', 'anima', 'creative'].includes(item.kind) && item.resultState === 'available' && !['saved', 'discarded'].includes(item.deliveryState))
+      if (!task) return false
+      const blob = await fetchRuntimeResult(runtimeResultPath(task)).catch(() => null)
+      if (!blob || disposed) return false
+      const context = (task.metadata.context || null) as AnimaResultContext | null
+      const url = URL.createObjectURL(blob)
+      if (task.kind === 'generation') { deps.sd.adoptResult(url, Number(task.input.seed) || 0, String(task.input.prompt || ''), task.taskId); deps.resultContext.value = context; deps.setDrawEngine('sd') }
+      else {
+        const metadata = { ...task.metadata, id: task.taskId, resultUrl: runtimeResultPath(task) } as unknown as AnimaResult['metadata']
+        deps.patchAnimaState({ result: { url, blob, metadata }, job: metadata, resultContext: context, phase: 'succeeded', progress: 1, statusText: '已从收件箱找回结果' })
+        deps.setDrawEngine(task.kind === 'creative' ? 'krea2' : 'anima')
+      }
+      storedResultUrl.value = url; return true
+    }
     const record = readTempResult()
     if (!record) return false
     let blob: Blob | null = null
     try {
-      blob = await imgGet(record.imageId)
+      blob = await artworkRepository.getImage(record.imageId)
     } catch { /* 读取失败按失效处理 */ }
     if (!blob || !blob.size) {
       clearTempResult()

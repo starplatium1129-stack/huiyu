@@ -1,6 +1,7 @@
+import { runtimeFetch, resolveRuntimeUrl, runtimeResourceCors } from '../../platform/runtimeUrl.ts'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
-import { inpaintCanvasSize } from '@/utils/inpaintCanvas'
-import { useToast } from '@/composables/useToast'
+import { inpaintCanvasSize } from '../../utils/inpaintCanvas.ts'
+import { useToast } from '../../composables/useToast.ts'
 
 export interface InpaintImageSourceDeps {
   open: () => boolean
@@ -85,7 +86,7 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     }
     if (activeImageUrl.value) {
       try {
-        const res = await fetch(activeImageUrl.value, { cache: 'no-store' })
+        const res = await runtimeFetch(activeImageUrl.value, { cache: 'no-store' })
         if (!res.ok) return null
         return await res.blob()
       } catch {
@@ -109,12 +110,13 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
       return
     }
     const img = new Image()
+    img.crossOrigin = runtimeResourceCors() ?? null
     img.onload = () => {
       detectedResolution.value = inpaintCanvasSize(img.naturalWidth, img.naturalHeight)
       void nextTick(deps.syncMaskCanvas)
     }
     img.onerror = () => { detectedResolution.value = null }
-    img.src = url
+    img.src = resolveRuntimeUrl(url)
   }, { immediate: true })
 
   onBeforeUnmount(() => {

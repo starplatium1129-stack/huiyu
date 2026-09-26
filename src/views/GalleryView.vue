@@ -176,7 +176,7 @@
                     <img
                       v-if="thumbUrls[item.id]"
                       class="artwork-image"
-                      :src="thumbUrls[item.id]"
+                      :src="resolveRuntimeUrl(thumbUrls[item.id])"
                       :alt="sceneTitle(item.scene, item)"
                       loading="lazy"
                       decoding="async"
@@ -187,7 +187,7 @@
                     <img
                       v-if="cardUrls[item.id]"
                       class="artwork-image artwork-image-hd"
-                      :src="cardUrls[item.id]"
+                      :src="resolveRuntimeUrl(cardUrls[item.id])"
                       :alt="sceneTitle(item.scene, item)"
                       decoding="async"
                       referrerpolicy="no-referrer"
@@ -246,7 +246,7 @@
         <PhotoSwipeStage v-else-if="gestureViewer && viewerIndex >= 0" :items="visible" :index="viewerIndex" @change="openViewer" @error="gestureViewer = false" />
         <ZoomableImageViewer
           v-else-if="viewerUrl"
-          :src="viewerUrl"
+          :src="resolveRuntimeUrl(viewerUrl)"
           :alt="current ? sceneTitle(current.scene, current) : ''"
         >
           <template #fallback>
@@ -334,6 +334,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'

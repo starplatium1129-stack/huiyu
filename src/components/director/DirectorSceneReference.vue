@@ -1,7 +1,7 @@
 <template>
   <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" aria-label="当前场景参考">
     <div class="scene-reference-picture" :class="{ 'is-restricted': restricted }">
-      <img v-if="canLoad && !failed" :key="imageUrl" :src="imageUrl" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" @error="failed = true" />
+      <img :crossorigin="runtimeResourceCors()" v-if="canLoad && !failed" :key="imageUrl" :src="resolveRuntimeUrl(imageUrl)" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" @error="failed = true" />
       <div v-else class="scene-reference-empty"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
       <span v-if="restricted && canLoad && !failed" class="scene-reference-mask">分级参考 · 已模糊</span>
     </div>
@@ -20,6 +20,10 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
+import { runtimeFetch } from '@/platform/runtimeUrl'
+
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
@@ -35,7 +39,7 @@ const entries = ref<ShowcaseEntry[]>([])
 const controller = new AbortController()
 onMounted(async () => {
   try {
-    const response = await fetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
+    const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
     if (!response.ok) return
     const raw = await response.json() as { entries?: Array<{ id?: unknown } | null> }
     if (!Array.isArray(raw.entries)) return

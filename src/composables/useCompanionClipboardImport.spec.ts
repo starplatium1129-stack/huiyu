@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { afterEach, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, ref } from 'vue'
@@ -20,7 +21,7 @@ function setup() {
     onClipboardText: (cb: typeof text) => { text = cb; return 2 }, offClipboardImage: vi.fn(), offClipboardText: vi.fn() }
   wrapper = mount(defineComponent({ setup() {
     api = useCompanionClipboardImport({ activeChar, busy, chatReady: ref(true), handleSend,
-      inputText: ref(''), desktopBridge: bridge as unknown as NonNullable<Window['companionDesktop']>,
+      inputText: ref(''), desktopBridge: bridge as unknown as CompanionDesktopBridge,
       currentCharacterName: () => activeChar.value, persistDraft: vi.fn(), scrollChatToBottom: vi.fn(),
       noteReturn: vi.fn(), noteReturnPlain: vi.fn(), resetEventDetector: vi.fn() })
     return () => null

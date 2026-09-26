@@ -15,7 +15,7 @@
     <div class="mood-grid style-mood-grid" data-reveal data-reveal-delay="1">
       <article v-for="m in MOODS" :key="m.id" class="style-mood-card">
         <RouterLink class="style-sample" :class="{ 'is-unavailable': !loading && !available.has(m.sceneId) }" :to="'/showcase?scene=' + m.sceneId" :aria-label="'查看' + m.name + '氛围参考'">
-          <img v-if="available.has(m.sceneId) && !failedSamples.has(m.id)" :src="'/scene-showcase/thumbs/' + m.sceneId + '.jpg'" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818" loading="lazy" decoding="async" @error="failedSamples.add(m.id)" />
+          <img :crossorigin="runtimeResourceCors()" v-if="available.has(m.sceneId) && !failedSamples.has(m.id)" :src="resolveRuntimeUrl('/scene-showcase/thumbs/' + m.sceneId + '.jpg')" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818" loading="lazy" decoding="async" @error="failedSamples.add(m.id)" />
           <span v-else class="style-sample-missing"><ArchiveIcon name="image" /><span>{{ loading ? '正在翻开画册…' : failedSamples.has(m.id) ? '参考图片加载失败' : '氛围参考暂未连接' }}</span><small>仍可选用下方配色</small></span>
         </RouterLink>
         <div class="style-card-body">
@@ -36,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { ref } from 'vue'
 import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
 import { COLOR_MOODS } from '@/config/promptConstants'

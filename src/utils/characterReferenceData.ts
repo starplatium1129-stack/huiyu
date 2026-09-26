@@ -1,3 +1,4 @@
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { shallowRef } from 'vue'
 
 export interface CharacterReferenceItem {
@@ -39,7 +40,7 @@ export function ensureCharacterReferencesLoaded(characterId: string, refresh = f
   if (!refresh && requests.has(characterId)) return requests.get(characterId)!
   const revision = (revisions.get(characterId) || 0) + 1
   revisions.set(characterId, revision)
-  const request = fetch('/api/character-reference-profile/' + encodeURIComponent(characterId), { cache: 'no-cache' })
+  const request = runtimeFetch('/api/character-reference-profile/' + encodeURIComponent(characterId), { cache: 'no-cache' })
     .then(async response => {
       if (response.status === 404) return undefined
       if (!response.ok) throw new Error('character-reference-profile ' + response.status)

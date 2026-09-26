@@ -1,5 +1,5 @@
 import { apiClient, type ApiClient, type ApiResponseObject } from './client'
-import type { ResourceAction, ResourceStatus, ResourceTaskResult } from '../types/resources'
+import type { ResourceAction, ResourceStatus, ResourceTaskResult } from '../../types/resources'
 
 export interface ResourceApi {
   status(fresh?: boolean, signal?: AbortSignal): Promise<ResourceStatus>

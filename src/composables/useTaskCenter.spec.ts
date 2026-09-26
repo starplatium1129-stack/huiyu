@@ -3,7 +3,7 @@ import { defineComponent, h, KeepAlive, nextTick, ref } from 'vue'
 import { mount } from '@vue/test-utils'
 
 const storage = vi.hoisted(() => ({ get: vi.fn(), set: vi.fn() }))
-vi.mock('@/composables/useKVStore', () => ({ kvGet: storage.get, kvSet: storage.set, kvUpdate: async (key: string, update: (value: unknown) => unknown) => { const value = JSON.parse(JSON.stringify(update(await storage.get(key)))); await storage.set(key, value); return value } }))
+vi.mock('@/platform/web/taskHistory', () => ({ readTaskHistory: storage.get, updateTaskHistory: async (update: (value: unknown) => unknown) => { const value = JSON.parse(JSON.stringify(update(await storage.get('tasks')))); await storage.set('tasks', value); return value } }))
 beforeEach(() => { vi.resetModules(); storage.get.mockReset().mockResolvedValue([]); storage.set.mockReset().mockResolvedValue(undefined) })
 
 it('a delayed initial read cannot revive a task cleared while hydration was pending', async () => {

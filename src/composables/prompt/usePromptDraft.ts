@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { onScopeDispose, type Ref, type ComputedRef } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { isSDParamKey, parsePromptBuilderDraft, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'

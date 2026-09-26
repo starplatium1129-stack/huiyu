@@ -1,5 +1,7 @@
-<template><span class="character-portrait" :data-state="failed || pending ? 'placeholder' : 'image'" aria-hidden="true"><img v-if="src && !failed && !pending" :src="src" alt="" loading="lazy" decoding="async" @error="failed = true" /><span v-else class="portrait-initial">{{ name.slice(0, 1) || '人' }}</span></span></template>
+<template><span class="character-portrait" :data-state="failed || pending ? 'placeholder' : 'image'" aria-hidden="true"><img :crossorigin="runtimeResourceCors()" v-if="src && !failed && !pending" :src="resolveRuntimeUrl(src)" alt="" loading="lazy" decoding="async" @error="failed = true" /><span v-else class="portrait-initial">{{ name.slice(0, 1) || '人' }}</span></span></template>
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { computed, ref, watch } from 'vue'
 const props = defineProps<{ src?: string; name: string }>()
 const failed = ref(false)

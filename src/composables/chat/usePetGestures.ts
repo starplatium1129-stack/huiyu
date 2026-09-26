@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
 /** Desktop chrome is explicit: context menu/keyboard only, never pointer proximity. */
-export function usePetGestures(bridge: Window['companionDesktop'], openChat: () => void) {
+export function usePetGestures(bridge: import('@/types/desktop').CompanionDesktopBridge | undefined, openChat: () => void) {
   const controlsOpen = ref(false)
   let origin: { x: number; y: number } | null = null
   let suppressClickUntil = 0

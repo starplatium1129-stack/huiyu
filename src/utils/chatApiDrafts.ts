@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { ref } from 'vue'
 import { createChatCredentials } from './chatCredentials'
 

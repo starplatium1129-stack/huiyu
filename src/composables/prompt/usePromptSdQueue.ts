@@ -10,6 +10,8 @@ import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import { useSDQueue, type SDQueueJob } from '@/composables/generation/useSDQueue'
 import type { AnimaResultContext } from '@/types/anima'
 import { captureResultContext } from '@/utils/resultContext'
+import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
+import { profileLocalStorage as localStorage } from '@/platform/web/profileStorage'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -59,6 +61,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
    * 留——它已被真实取消，恢复一个早已死掉的 jobId 只会误导。
    */
   function readQueueSnapshot(): SDQueueJob[] {
+    if (hasRuntimeTasks()) return []
     try {
       const raw = localStorage.getItem(SD_QUEUE_SNAPSHOT_KEY)
       if (!raw) return []
@@ -70,6 +73,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   }
 
   function persistQueueSnapshot(jobs: readonly SDQueueJob[]) {
+    if (hasRuntimeTasks()) return
     try {
       if (!jobs.length) { localStorage.removeItem(SD_QUEUE_SNAPSHOT_KEY); return }
       localStorage.setItem(SD_QUEUE_SNAPSHOT_KEY, JSON.stringify(jobs))
@@ -216,6 +220,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       : undefined
 
     const url = await sd.generate({
+      runtimeContext: context as Record<string, unknown>,
       prompt: submitted.prompt,
       negative_prompt: submitted.negative,
       width: w || 832,
@@ -241,7 +246,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       const loras = sd.lastLoras.value.map(lora => ({ ...lora }))
       context.history = { ...context.history, seed: sd.resultSeed.value ?? undefined,
         loras, loraId: loras[0]?.id ?? null, loraStrength: loras[0]?.strength ?? null }
-      const completedJob: SdResultSnapshot = { ...submitted, context, seed: sd.resultSeed.value ?? -1 }
+      const completedJob: SdResultSnapshot = { ...submitted, context, seed: sd.resultSeed.value ?? -1, taskId: sd.resultTaskId?.value || undefined }
       // The view receives its own context; its edits cannot mutate archive input.
       completedJobs.set(job, JSON.parse(JSON.stringify(completedJob)) as SdResultSnapshot)
       deps.setResultContext?.(context)

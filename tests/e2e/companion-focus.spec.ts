@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect, type Locator, type Page } from '@playwright/test'
 import { mkdirSync, writeFileSync } from 'node:fs'
 
@@ -23,11 +24,11 @@ async function desktopFixture(page: Page, theme: string, failRelay = false, cred
       methods.readChatCredential = async (endpoint: string) => vault.get(endpoint) || null
       methods.writeChatCredential = async (endpoint: string, secret: string) => { if (secret) vault.set(endpoint, secret); else vault.delete(endpoint) }
     }
-    window.companionDesktop = new Proxy(methods, { get(target, key: string) {
+    window.desktopCapabilitiesFixture = new Proxy(methods, { get(target, key: string) {
       if (key in target) return target[key]
       if (key.startsWith('on')) return () => 1
       return () => undefined
-    } }) as unknown as NonNullable<Window['companionDesktop']>
+    } }) as unknown as NonNullable<Window['desktopCapabilitiesFixture']>
   }, { theme, failRelay, credentials })
 }
 
@@ -124,11 +125,11 @@ for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for 
     await expect(panel).toBeHidden()
     await page.locator('.api-settings-toggle').click()
     await expect(key).toHaveValue('neutral-ui-key')
-    if (desktop) expect(await page.evaluate(() => window.companionDesktop!.readChatCredential!('https://neutral-credential.example/v1'))).toBe('neutral-ui-key')
+    if (desktop) expect(await page.evaluate(() => window.desktopCapabilitiesFixture!.readChatCredential!('https://neutral-credential.example/v1'))).toBe('neutral-ui-key')
     await panel.getByRole('button', { name: '清除个人密钥', exact: true }).click()
     await expect(key).toHaveValue('')
     await expect(panel.locator('.api-test-status')).toHaveText('个人密钥已清除。')
-    if (desktop) expect(await page.evaluate(() => window.companionDesktop!.readChatCredential!('https://neutral-credential.example/v1'))).toBeNull()
+    if (desktop) expect(await page.evaluate(() => window.desktopCapabilitiesFixture!.readChatCredential!('https://neutral-credential.example/v1'))).toBeNull()
     await panel.locator('[data-vendor="deepseek"]').click()
     await panel.locator('[data-vendor="custom"]').click()
     await expect(key).toHaveValue('')
@@ -343,3 +344,5 @@ for (const theme of ['dark', 'light']) {
     await report.screenshot({ path: `.review-shots/companion-capabilities-${theme}.png` })
   })
 }
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

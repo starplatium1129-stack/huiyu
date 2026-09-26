@@ -18,5 +18,5 @@
     "allow-aics-live2d-destroy",
     "allow-aics-live2d-get-state"
   ],
-  "local": false
+  "local": true
 }

@@ -16,8 +16,8 @@
     <div v-else class="history-list compact-history-list">
       <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
-          <img v-if="thumbs[item.id]" :src="thumbs[item.id]" alt="历史作品缩略图" loading="lazy">
-          <img v-else class="history-placeholder" :src="placeholderUrl" alt="" aria-hidden="true">
+          <img :crossorigin="runtimeResourceCors()" v-if="thumbs[item.id]" :src="resolveRuntimeUrl(thumbs[item.id])" alt="历史作品缩略图" loading="lazy">
+          <img :crossorigin="runtimeResourceCors()" v-else class="history-placeholder" :src="resolveRuntimeUrl(placeholderUrl)" alt="" aria-hidden="true">
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
           <StudioTooltip content="勾选后可批量加入分镜">
             <label class="history-pick">
@@ -58,6 +58,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 
 import { nextTick,onActivated,onBeforeUnmount,onDeactivated,onMounted,watch } from 'vue';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';

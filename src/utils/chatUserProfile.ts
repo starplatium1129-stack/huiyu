@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { CHAT_USER_PROFILE_KEY } from './storageKeys.ts'
 
 export type ChatRelationship = 'atelier_owner' | 'friend' | 'confidant' | 'lover'

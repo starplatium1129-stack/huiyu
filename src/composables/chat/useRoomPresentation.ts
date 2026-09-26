@@ -1,5 +1,6 @@
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { onMounted, onUnmounted, ref } from 'vue'
-import { ROOM_PRESENTATION_KEY as key } from '@/utils/storageKeys'
+import { ROOM_PRESENTATION_KEY as key } from '../../utils/storageKeys.ts'
 
 /** Focused full room owns the animated presentation; the pet resumes when it leaves. */
 export function useRoomPresentation(surface: 'room' | 'companion') {
@@ -7,7 +8,7 @@ export function useRoomPresentation(surface: 'room' | 'companion') {
   const id = Math.random().toString(36).slice(2)
   let timer = 0
   function update() {
-    if (!window.companionDesktop) return
+    if (!getDesktopCapabilities()) return
     try {
       const record = JSON.parse(localStorage.getItem(key) || 'null')
       if (surface === 'room') {

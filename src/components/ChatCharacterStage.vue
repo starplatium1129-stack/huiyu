@@ -17,7 +17,7 @@
         <span>{{ character.roomCode }}</span>
         <small>{{ character.roomMood }}</small>
       </div>
-      <img v-if="!portraitFailed" :key="staticPortraitSource" class="portrait-main" :src="staticPortraitSource" :alt="character.name" @error="portraitFailed = true" />
+      <img :crossorigin="runtimeResourceCors()" v-if="!portraitFailed" :key="staticPortraitSource" class="portrait-main" :src="resolveRuntimeUrl(staticPortraitSource)" :alt="character.name" @error="portraitFailed = true" />
       <span v-if="usesMoodPortrait && !portraitFailed && !live2d.ready.value" class="stage-reference-caption">陪伴氛围参考 · 既有场景样张</span>
       <div v-if="portraitFailed && !live2d.ready.value" class="stage-portrait-missing" role="status">
         <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
@@ -151,6 +151,10 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
+import { getNativeLive2dCapabilities } from '@/platform/desktop/nativeLive2d'
+
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { useMoodReferences } from '@/composables/useMoodReferences'
@@ -290,7 +294,7 @@ const capabilitySummary = computed(() => {
 })
 const { quality } = useLive2DPreferences()
 watch([quality, live2d.backendKind], ([value, backend]) => {
-  const legacyNative = backend === 'native' && window.aicsLive2dNative && !window.aicsLive2dNative.supportsTextureQuality
+  const legacyNative = backend === 'native' && getNativeLive2dCapabilities() && !getNativeLive2dCapabilities()!.supportsTextureQuality
   void live2d.setQuality(legacyNative ? 'original' : value)
 }, { immediate: true, flush: 'sync' })
 watch(() => props.volume, value => live2d.setVolume((value ?? 80) / 100), { immediate: true })

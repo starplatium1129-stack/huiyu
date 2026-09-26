@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { expect, test, type Page } from '@playwright/test'
 import type { SceneDraft, SceneMaintenanceSnapshot, SceneChangesPayload } from '../../src/types/api'
 import { GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys'
@@ -239,7 +240,7 @@ test('consecutive copies keep sc1000+ IDs complete through the editor and search
 })
 
 test('packaged desktop stays read-only while complete export remains available', async ({ page }) => {
-  await page.addInitScript(() => { window.companionDesktop = { isPackaged: async () => true } as never })
+  await page.addInitScript(() => { window.desktopCapabilitiesFixture = { isPackaged: async () => true } as never })
   await goto(page)
   await expect(page.locator('.manager-readonly')).toBeVisible()
   await expect(page.getByRole('button', { name: '桌面模式不可保存', exact: true })).toBeDisabled()
@@ -254,3 +255,5 @@ test('a denied writable snapshot never falls back to cached full saves', async (
   await expect(page.getByRole('button', { name: '保存到项目', exact: true })).toBeDisabled()
   await expect(page.getByRole('button', { name: '影响预览', exact: true })).toBeDisabled()
 })
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

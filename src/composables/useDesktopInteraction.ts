@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { nextTick, readonly, ref, watch } from 'vue'
 import type { Router } from 'vue-router'
 import { useTheme } from './useTheme'

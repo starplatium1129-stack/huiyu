@@ -8,6 +8,7 @@ import type { WorkspaceStorageContext } from './schema';
 import { entityKey } from './records';
 import { detectedMime } from './media';
 import { WorkspaceError, type ExecuteOptions } from './types';
+import { supportedSchema, databaseSchema } from './schema-upgrade';
 
 interface FileDigest { bytes: number; sha256: string }
 interface BackupMedia { hash: string; bytes: number; mime: string }
@@ -16,7 +17,7 @@ interface BackupManifest {
   kind: 'huiyu-workspace-backup';
   backupId: string;
   workspaceId: string;
-  schemaVersion: 1;
+  schemaVersion: number;
   revision: number;
   database: FileDigest;
   media: BackupMedia[];
@@ -111,7 +112,7 @@ function validId(id: string): void {
 function parseManifest(root: string, backupId: string, workspaceId: string): BackupManifest {
   const value: unknown = JSON.parse(fs.readFileSync(assertSafePath(root, 'manifest.json'), 'utf8'));
   if (!record(value) || value.kind !== 'huiyu-workspace-backup' || value.formatVersion !== 1
-    || value.schemaVersion !== 1 || value.backupId !== backupId || value.workspaceId !== workspaceId
+    || !supportedSchema(value.schemaVersion) || value.backupId !== backupId || value.workspaceId !== workspaceId
     || !Number.isSafeInteger(value.revision) || Number(value.revision) < 0 || !record(value.database)
     || !Number.isSafeInteger(value.database.bytes) || Number(value.database.bytes) < 0
     || typeof value.database.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(value.database.sha256)
@@ -123,28 +124,28 @@ function parseManifest(root: string, backupId: string, workspaceId: string): Bac
   });
   if (new Set(media.map(item => item.hash)).size !== media.length) invalid('Duplicate backup media entry');
   return { formatVersion: 1, kind: 'huiyu-workspace-backup', backupId, workspaceId,
-    schemaVersion: 1, revision: Number(value.revision),
+    schemaVersion: Number(value.schemaVersion), revision: Number(value.revision),
     database: { bytes: Number(value.database.bytes), sha256: value.database.sha256 }, media };
 }
 async function verifySnapshot(root: string, manifest: BackupManifest, options: ExecuteOptions): Promise<void> {
   const actual = await hashFile(root, 'huiyu.sqlite3', options);
   if (actual.bytes !== manifest.database.bytes || actual.sha256 !== manifest.database.sha256) invalid('Backup database hash mismatch');
   const identity: unknown = JSON.parse(fs.readFileSync(assertSafePath(root, 'workspace.json'), 'utf8'));
-  if (!record(identity) || identity.workspaceId !== manifest.workspaceId || identity.schemaVersion !== 1
+  if (!record(identity) || identity.workspaceId !== manifest.workspaceId || identity.schemaVersion !== manifest.schemaVersion
     || identity.databaseKind !== 'huiyu-workspace') invalid('Backup workspace identity mismatch');
   for (const suffix of ['-wal', '-shm']) {
     if (fs.existsSync(assertSafePath(root, 'huiyu.sqlite3' + suffix))) invalid('Backup contains unexpected SQLite side files');
   }
   const db = new DatabaseSync(assertSafePath(root, 'huiyu.sqlite3'), { readOnly: true });
   try {
-    if (db.prepare('PRAGMA user_version').get()?.user_version !== 1
+    if (db.prepare('PRAGMA user_version').get()?.user_version !== manifest.schemaVersion
       || db.prepare('PRAGMA integrity_check').get()?.integrity_check !== 'ok'
       || db.prepare('PRAGMA foreign_key_check').all().length) invalid('Backup database schema or integrity check failed');
     for (const [key, expected] of Object.entries({ workspaceId: manifest.workspaceId, databaseKind: 'huiyu-workspace',
-      schemaVersion: '1', revision: String(manifest.revision) })) {
+      schemaVersion: String(manifest.schemaVersion), revision: String(manifest.revision) })) {
       if (db.prepare('SELECT value FROM meta WHERE key=?').get(key)?.value !== expected) invalid('Backup database identity or revision mismatch');
     }
-    if (db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get()?.version !== 1) invalid('Unknown backup migration version');
+    if (db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get()?.version !== manifest.schemaVersion) invalid('Unknown backup migration version');
     if (JSON.stringify(mediaRows(db)) !== JSON.stringify([...manifest.media].sort((a, b) => a.hash.localeCompare(b.hash)))) invalid('Backup media inventory differs from database');
     for (const table of ['artworks', 'projects']) {
       for (const row of db.prepare(`SELECT id_key,id_json,body FROM ${table}`).all()) {
@@ -203,6 +204,7 @@ function prepareDirectory(context: WorkspaceStorageContext, relative: string, id
 /** Only SQLite snapshot creation occupies the writer lane. Durable leases preserve
  * its originals while bounded, cancellable copies yield to later workspace writes. */
 export async function backupWorkspace(context: WorkspaceStorageContext, backupId: string, options: ExecuteOptions = {}) {
+  const schemaVersion = databaseSchema(context.db);
   validId(backupId);
   checkCancelled(options);
   context.transaction(() => {});
@@ -236,9 +238,9 @@ export async function backupWorkspace(context: WorkspaceStorageContext, backupId
   try { fs.fsyncSync(databaseFd); } finally { fs.closeSync(databaseFd); }
   options.onCopyReady?.();
   for (const item of media) await copyVerified(context.root, destination, objectPath(item.hash), { bytes: item.bytes, sha256: item.hash }, options);
-  writeJson(destination, 'workspace.json', { workspaceId: context.workspaceId, databaseKind: 'huiyu-workspace', schemaVersion: 1 });
+  writeJson(destination, 'workspace.json', { workspaceId: context.workspaceId, databaseKind: 'huiyu-workspace', schemaVersion });
   const manifest: BackupManifest = { formatVersion: 1, kind: 'huiyu-workspace-backup', backupId,
-    workspaceId: context.workspaceId, schemaVersion: 1, revision,
+    workspaceId: context.workspaceId, schemaVersion, revision,
     database: await hashFile(destination, 'huiyu.sqlite3', options), media };
   await verifySnapshot(destination, manifest, options);
   // Manifest is the completion marker; incomplete/failed backup directories are never restorable.
@@ -270,7 +272,7 @@ export async function restoreBackup(context: WorkspaceStorageContext, backupId: 
   const destination = prepareDirectory(context, `restore-candidates/${candidateId}`, `${backupId}:${candidateId}`);
   await copyVerified(source, destination, 'huiyu.sqlite3', manifest.database, options);
   for (const item of manifest.media) await copyVerified(source, destination, objectPath(item.hash), { bytes: item.bytes, sha256: item.hash }, options);
-  writeJson(destination, 'workspace.json', { workspaceId: context.workspaceId, databaseKind: 'huiyu-workspace', schemaVersion: 1 });
+  writeJson(destination, 'workspace.json', { workspaceId: context.workspaceId, databaseKind: 'huiyu-workspace', schemaVersion: manifest.schemaVersion });
   await verifySnapshot(destination, manifest, options);
   publishMarker(destination, 'candidate.json', { formatVersion: 1, state: 'verified', backupId, candidateId,
     workspaceId: context.workspaceId, revision: manifest.revision, activated: false });

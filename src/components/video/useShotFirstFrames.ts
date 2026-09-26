@@ -1,10 +1,13 @@
-import { withArtworkStaging } from '@/storage/artworkSession'
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { withArtworkStaging } from '../../storage/artworkSession.ts'
 import { ref, onScopeDispose } from 'vue'
-import { useTrackedTask } from '@/composables/useTaskCenter'
-import { apiClient } from '@/api/client'
-import { uploadVideoImage } from '@/api/videoApi'
-import { imgPut } from '@/composables/useImageStore'
-import type { ShotDraft } from './shotListTypes'
+import { useTrackedTask } from '../../composables/useTaskCenter.ts'
+import { apiClient } from '../../api/client.ts'
+import { uploadVideoImage } from '../../api/videoApi.ts'
+import { artworkRepository } from '../../storage/artworkRepository.ts'
+import { hasRuntimeTasks, runtimeRequestKey, submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath,
+  cancelRuntimeTaskKey, type TaskRecord } from '../../api/runtimeTasks.ts'
+import type { ShotDraft } from './shotListTypes.ts'
 
 /**
  * useShotFirstFrames —— 分镜「一键首帧」：逐镜走 Krea2 增强链路出图（2026-08-23）。
@@ -76,10 +79,17 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
   const taskStatus = ref<'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled'>('idle')
   let controller: AbortController | null = null
   let activeJob = ''
+  let durableAttempt = false, activeRuntimeKey = ''
+  const acceptedFrames = new WeakMap<ShotDraft, TaskRecord>()
   async function cancelFirstFrames() {
     if (!controller) return
     controller.abort()
     taskStatus.value = 'cancelled'
+    if (durableAttempt && activeRuntimeKey) {
+      try { await cancelRuntimeTaskKey(activeRuntimeKey) }
+      catch { options.onError('取消意图暂未确认，请在任务中心核对；不会重发首帧任务。') }
+      return
+    }
     if (activeJob) {
       const id = activeJob
       activeJob = ''
@@ -87,7 +97,7 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
       catch { options.onError('已停止后续首帧，当前后端任务取消未确认，请查看任务状态') }
     }
   }
-  onScopeDispose(() => { void cancelFirstFrames() })
+  onScopeDispose(() => { if (durableAttempt) controller?.abort(); else void cancelFirstFrames() })
   useTrackedTask(() => ({ kind: 'image', title: '分镜首帧生成', route: '/video-studio?mode=shots', status: taskStatus.value, message: firstFrameProgress.value }), { cancel: cancelFirstFrames })
 
   async function generateFirstFrames(shots: ShotDraft[], aspect: VideoAspect) {
@@ -103,6 +113,7 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
       firstFrameBusy.value = true
       taskStatus.value = 'running'
       controller = new AbortController()
+      durableAttempt = hasRuntimeTasks()
       const signal = controller.signal
       let failed = 0
       try {
@@ -110,11 +121,25 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
           signal.throwIfAborted()
           const { shot } = pending[i]
           firstFrameProgress.value = `${i + 1}/${pending.length}`
+          let runtimeSettled = false
           try {
             const size = KREA2_SIZE_BY_ASPECT[aspect]
-            const submit = await apiClient.request<CreativeJobBody>('/api/creative/jobs', {
+            const payload = { prompt: shot.firstFramePrompt, modelId: 'krea2-turbo-fp8', ...size }
+            let blob: Blob, resultAlias = ''
+            if (durableAttempt) {
+              const previous = acceptedFrames.get(shot)
+              activeRuntimeKey = previous?.requestKey || runtimeRequestKey('creative', payload)
+              const accepted = previous || await submitRuntimeTask('creative', payload, activeRuntimeKey, { role: 'storyboard-first-frame', shotIndex: pending[i].index })
+              acceptedFrames.set(shot, accepted)
+              signal.throwIfAborted()
+              const task = await waitForRuntimeTask(accepted.taskId, signal, value => { runtimeSettled = value.upstreamSettled; acceptedFrames.set(shot, value) })
+              blob = await fetchRuntimeResult(runtimeResultPath(task), signal)
+              resultAlias = task.resultRefs.find(value => value.index === 0)?.alias || ''
+              activeRuntimeKey = ''
+            } else {
+              const submit = await apiClient.request<CreativeJobBody>('/api/creative/jobs', {
               method: 'POST',
-              body: { prompt: shot.firstFramePrompt, modelId: 'krea2-turbo-fp8', ...size },
+              body: payload,
               timeoutMs: 30_000,
               signal,
               validate: isCreativeJobBody,
@@ -122,19 +147,26 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
             activeJob = submit.job.id
             const resultUrl = await pollCreativeJob(submit.job.id, 240_000, signal)
             activeJob = ''
-            const response = await fetch(resultUrl, { signal })
+            const response = await runtimeFetch(resultUrl, { signal })
             if (!response.ok) throw new Error('首帧图片读取失败')
-            const blob = await response.blob()
+              blob = await response.blob()
+            }
             const upload = await uploadVideoImage(await blobToBase64(blob), undefined, signal)
-            const imageId = await imgPut(blob).catch(() => '')
+            const imageId = resultAlias || await artworkRepository.putImage(blob).catch(() => '')
             signal.throwIfAborted()
             if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
             shot.imageName = upload.name
             shot.imageUrl = URL.createObjectURL(blob)
             // IndexedDB 耐久凭据：草稿恢复与失败重试用（F1/F4）；失败不阻断主链路。
             shot.imageId = imageId
-          } catch {
+          } catch (error) {
             if (signal.aborted) throw signal.reason
+            if (durableAttempt) {
+              if (!runtimeSettled) throw error
+              const current = acceptedFrames.get(shot)
+              if (current?.status !== 'succeeded') acceptedFrames.delete(shot)
+              activeRuntimeKey = ''; failed += 1; continue
+            }
             if (activeJob) {
               const id = activeJob
               activeJob = ''
@@ -154,6 +186,7 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
       } finally {
         controller = null
         activeJob = ''
+        activeRuntimeKey = ''
         firstFrameBusy.value = false
         firstFrameProgress.value = ''
       }

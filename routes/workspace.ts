@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import envelope = require('../server/http-envelope');
 import { WORKSPACE_SESSION_HEADER, type WorkspaceSessionAuthority, type WorkspaceSession } from '../server/workspace/auth';
 import type { WorkspaceService } from '../server/workspace/client';
+import { profileWorkspaceCommand } from './workspace-profile';
 import { WorkspaceError, type EntityId, type JsonValue, type WorkspaceBody,
   type WorkspaceCommand, type WorkspaceContext, type WorkspaceResults, type MediaInput } from '../server/workspace/types';
 
@@ -98,7 +99,7 @@ export function createWorkspaceRouter(service: WorkspaceService, authority: Work
     try {
       const owner = context(req);
       command = build();
-      const result = await service.request(command, owner, { signal: controller.signal, timeoutMs: 30000 });
+      const result = await service.request(command, owner, { signal: controller.signal, timeoutMs: ['backup', 'restoreBackup'].includes(command.kind) ? 120000 : 30000 });
       if (res.destroyed) return;
       if (command.kind === 'readMedia') {
         const block = result as WorkspaceResults['readMedia'];
@@ -128,7 +129,18 @@ export function createWorkspaceRouter(service: WorkspaceService, authority: Work
   const operationId = (req: Request) => text(req.params.operationId ?? record(req.body).operationId);
   const revision = (req: Request) => integer(record(req.body).expectedRevision);
 
+  router.use((req, res, next) => {
+    if (!req.path.startsWith('/profile/') && !req.path.startsWith('/migrations')) return next();
+    return handle(req, res, () => profileWorkspaceCommand(req, req.body || {}) || invalid('Unknown profile resource'));
+  });
+
   router.get('/status', (req, res) => handle(req, res, () => ({ kind: 'status' })));
+  router.get('/media/count', (req, res) => handle(req, res, () => ({ kind: 'countMedia' })));
+  router.post('/media-uploads/:operationId', (req, res) => handle(req, res, () => ({ kind: 'prepareMedia', operationId: operationId(req), media: media(record(req.body).media) })));
+  router.put('/media-uploads/:operationId/chunks', (req, res) => handle(req, res, () => ({ kind: 'uploadMediaChunk', operationId: operationId(req), offset: integer(record(req.body).offset), data: chunk(record(req.body).data) })));
+  router.post('/media-uploads/:operationId/commit', (req, res) => handle(req, res, () => ({ kind: 'commitMedia', operationId: operationId(req) })));
+  router.delete('/media/:alias', (req, res) => handle(req, res, () => ({ kind: 'releaseMedia', operationId: operationId(req), alias: text(req.params.alias) })));
+  router.post('/artworks', (req, res) => handle(req, res, () => ({ kind: 'appendArtwork', operationId: operationId(req), artwork: body(record(req.body).artwork) })));
   router.get('/artworks', (req, res) => handle(req, res, () => ({
     kind: 'listArtworks', ...(req.query.limit !== undefined ? { limit: integer(Number(req.query.limit), 1) } : {}),
     ...(req.query.cursor !== undefined ? { cursor: text(req.query.cursor) } : {}),
@@ -155,6 +167,7 @@ export function createWorkspaceRouter(service: WorkspaceService, authority: Work
   router.delete('/artworks/:id', (req, res) => handle(req, res, () => ({
     kind: 'softDeleteArtwork', operationId: operationId(req), id: routeId(req), expectedRevision: revision(req),
   })));
+  router.delete('/artworks/:id/permanent', (req, res) => handle(req, res, () => ({ kind: 'hardDeleteArtwork', operationId: operationId(req), id: routeId(req), expectedRevision: revision(req) })));
   router.post('/artworks/:id/restore', (req, res) => handle(req, res, () => ({
     kind: 'restoreArtwork', operationId: operationId(req), id: routeId(req), expectedRevision: revision(req),
   })));

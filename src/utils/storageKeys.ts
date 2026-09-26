@@ -129,11 +129,17 @@ export const LIVE_LOCAL_KEYS = [
   DRAW_ENGINE_KEY,
   GUEST_GUIDE_DISMISSED_KEY,
   AUTO_SAVE_TO_GALLERY_KEY,
+  'aics-artist-usage',
+  'aics-voice-studio-collapsed',
+  'aics_managed_route_collapsed_v1',
+  'aics_managed_route_dismissed_v1',
+  'atelier-desktop-appearance-v1',
 ] as const
 
 /** 动态前缀活键：聊天草稿按角色独立保存。 */
 export const LIVE_LOCAL_PREFIXES = [
   CHAT_DRAFT_PREFIX,
+  'aics-model-draft-',
 ] as const
 
 /** 死键：已无写入者、内容已迁移或废弃，备份导出时清理。 */

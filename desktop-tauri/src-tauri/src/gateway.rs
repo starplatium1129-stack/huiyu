@@ -9,6 +9,9 @@ use std::time::{Duration, Instant};
 
 #[path = "gateway_identity.rs"]
 mod identity;
+#[path = "gateway_host.rs"]
+mod host;
+pub use host::profile_id;
 
 pub const DESKTOP_GATEWAY_PROTOCOL: i64 = 1;
 pub const GATEWAY_HOST: &str = "127.0.0.1";
@@ -62,6 +65,7 @@ fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&st
     Some(body.to_string())
 }
 
+#[cfg(test)]
 pub fn read_gateway_health(base_url: &str, timeout: Duration) -> Option<GatewayHealth> {
     read_health(base_url, timeout, None)
 }
@@ -219,7 +223,15 @@ impl GatewaySupervisor {
         self.owned.load(Ordering::Relaxed)
     }
 
-    pub fn is_authenticated(&self) -> bool { self.authenticated.load(Ordering::SeqCst) }
+    pub fn runtime_epoch(&self) -> String {
+        self.identity_token.lock().unwrap().as_ref().map(|secret| host::epoch(secret)).unwrap_or_default()
+    }
+
+    pub fn host_request(&self, payload: serde_json::Value) -> Result<serde_json::Value, String> {
+        if !self.is_healthy() { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
+        let secret = self.identity_token.lock().unwrap().clone().ok_or("HOST_IDENTITY_UNAVAILABLE")?;
+        host::request(&self.base_url(), &secret, payload)
+    }
 
     pub fn is_healthy(&self) -> bool {
         let healthy = self.check_authenticated_health();
@@ -257,8 +269,10 @@ impl GatewaySupervisor {
         }
         let current = *self.active_port.lock().unwrap();
         if !is_port_available(&self.host, current) {
-            if self.authenticated_port.lock().unwrap().is_some() {
-                return Err("Authenticated gateway port is occupied; restart the desktop to select a new origin".into());
+            let bundled = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_BUNDLED_UI" && value == "1");
+            let preserve = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_PRESERVE_ORIGIN" && value == "1");
+            if !bundled && (self.authenticated_port.lock().unwrap().is_some() || preserve) {
+                return Err("Legacy profile origin is occupied; close the conflicting service before migration".into());
             }
             let next = find_available_port(&self.host, current.saturating_add(1), 32)
                 .ok_or("No available desktop gateway port")?;
@@ -347,7 +361,16 @@ impl GatewaySupervisor {
         let child = self.child.lock().unwrap().take();
         self.owned.store(false, Ordering::Relaxed);
         if let Some(mut child) = child {
+            let config = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_CONFIG_ROOT")
+                .map(|(_, value)| std::path::PathBuf::from(value));
+            let snapshot = config.as_ref().and_then(|root| host::owner_snapshot(root, child.id()));
+            if let (Some(profile), Some(secret)) = (self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID"), self.identity_token.lock().unwrap().clone()) {
+                let _ = host::request(&self.base_url(), &secret, serde_json::json!({
+                    "action": "shutdown", "windowId": "atelier", "origin": self.base_url(), "sourceProfileId": profile.1,
+                }));
+            }
             terminate_child(&mut child);
+            host::release_exited_owner(snapshot, &mut child);
         }
     }
 

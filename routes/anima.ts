@@ -46,10 +46,10 @@ function requestOwner(req: Pick<import('express').Request, 'socket' | 'headers' 
   return crypto.createHash('sha256').update(String(token)).digest('hex');
 }
 
-function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima?: ReturnType<typeof createAnimaService> }) {
+function createAnimaRouter(config: ImageGenerationConfig, dependencies?: { anima?: ReturnType<typeof createAnimaService>; durableTasks?: boolean }) {
   dependencies = dependencies || {};
   let router = express.Router();
-  let service = dependencies.anima || createAnimaService(config);
+  let service = dependencies.anima || createAnimaService(config, { durableTasks: dependencies.durableTasks });
   let jobLimit = security.rateLimit({ capacity:12, refillMs:5000, label:'Anima 出图' });
   function routeFamily(req: Pick<Request, 'path'>) { return String(req.path || '').startsWith('/api/anima') ? 'anima' : 'creative'; }
   function routeOwnsJob(req: Pick<Request, 'path'>, job: ImageJob | null): job is ImageJob { return Boolean(job) && (routeFamily(req) === 'anima' ? job!.input.family === 'anima' : job!.input.family === 'krea2'); }

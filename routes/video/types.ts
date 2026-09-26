@@ -16,10 +16,12 @@ export type VideoInput = Omit<ReturnType<typeof validation.validateInput>,
   references: string[];
 };
 export interface VideoServiceDependencies {
+  durableTasks?: boolean;
   jobTtlMs?: number;
   pollIntervalMs?: number;
 }
 export interface VideoJob {
+  taskHooks?: import('../../server/tasks/provider').TaskExecutionHooks;
   id: string;
   owner: string;
   input: VideoInput;

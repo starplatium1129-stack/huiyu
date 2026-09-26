@@ -17,9 +17,9 @@
       </div>
       <div class="utility-label">本地数据</div>
       <div class="utility-actions">
-        <StudioTooltip anchor content="导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」">
+        <StudioTooltip anchor :content="backup.desktopActive.value ? '完整备份保存在本机工作区，并下载恢复凭证' : '导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」'">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
-            <ArchiveIcon name="download" /> 导出备份 JSON
+            <ArchiveIcon name="download" /> {{ backup.desktopActive.value ? '创建工作区备份' : '导出备份 JSON' }}
           </button>
         </StudioTooltip>
         <div v-if="backup.exportProgress.value" class="utility-note wide" role="status" aria-live="polite">
@@ -52,6 +52,13 @@
       <div class="utility-divider"></div>
       <div class="utility-label">存储维护</div>
       <div class="utility-actions">
+        <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate()"><ArchiveIcon name="upload" /> 迁移至本机工作区</button>
+        <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate(true)"><ArchiveIcon name="refresh" /> 继续已备份的迁移</button>
+        <StudioTooltip v-if="migration.bundledAvailable.value" anchor :content="migration.bundledVerified.value ? '完成备份核对后，下次启动使用程序内置界面' : '此版本尚未完成桌面启动验收，继续使用当前入口'">
+          <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value || !migration.bundledVerified.value" @click="migration.enableBundled()"><ArchiveIcon name="spark" /> 启用独立启动界面</button>
+        </StudioTooltip>
+        <div v-if="migration.progress.value" class="utility-note wide" role="status" aria-live="polite">{{ migration.progress.value }}</div>
+        <button v-if="migration.busy.value" class="btn btn-ghost wide" type="button" @click="migration.cancel()">取消迁移</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="cleanOrphanImages"><ArchiveIcon name="broom" /> 清理未引用图片</button>
       </div>
@@ -63,7 +70,7 @@
 
   <Teleport to="body">
     <FluidTransition>
-    <div v-if="backup.pending.value" class="pb-backup-overlay open" @click.self="discard">
+    <div v-if="backup.pending.value || backup.pendingWorkspace.value" class="pb-backup-overlay open" @click.self="discard">
       <div
         ref="backupCardEl"
         class="pb-backup-card"
@@ -72,10 +79,12 @@
         aria-labelledby="backup-restore-title"
       >
         <h3 id="backup-restore-title">从备份恢复</h3>
-        <p>选择恢复方式。覆盖会替换现有数据，合并会按 id 保留较新的记录。</p>
+        <p v-if="backup.pendingWorkspace.value">先创建并核验独立恢复副本，当前工作区继续保留。</p>
+        <p v-else>选择恢复方式。覆盖会替换现有数据，合并会按 id 保留较新的记录。</p>
         <div class="pb-backup-summary">
           <strong>{{ backup.pendingName.value }}</strong>
-          <span>
+          <span v-if="backup.pendingWorkspace.value">{{ backup.pendingWorkspace.value.mediaCount }} 个原始媒体 · 备份于 {{ backup.pendingWorkspace.value.createdAt }}</span>
+          <span v-else>
             {{ pendingSummary?.history ?? 0 }} 条历史 ·
             {{ pendingSummary?.projects ?? 0 }} 个项目 ·
             {{ pendingSummary?.images ?? 0 }} 张图片 ·
@@ -88,8 +97,9 @@
         </div>
         <div class="pb-backup-actions">
           <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="discard">取消</button>
-          <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>
-          <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="restoreReplace">覆盖本地</button>
+          <button v-if="backup.pendingWorkspace.value" class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">验证恢复副本</button>
+          <template v-else><button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>
+          <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="restoreReplace">覆盖本地</button></template>
         </div>
       </div>
     </div>
@@ -104,6 +114,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { downloadBlob } from "@/utils/downloadBlob"
 import { ref, computed, watch } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
+import { useWorkspaceMigration } from '@/composables/useWorkspaceMigration'
 import { confirmAction, useConfirmState } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -119,6 +130,7 @@ const emit = defineEmits<{
 }>()
 
 const backup = useBackup((message) => emit('flash', message))
+const migration = useWorkspaceMigration(message => emit('flash', message))
 const backupCardEl = ref<HTMLElement | null>(null)
 const backupFileEl = ref<HTMLInputElement | null>(null)
 const blueprintFileEl = ref<HTMLInputElement | null>(null)
@@ -144,10 +156,10 @@ const backupReminder = computed(() => backup.lastBackupAt.value
   ? `距上次备份 ${backupDays.value} 天，建议导出备份`
   : '尚未备份，建议导出备份')
 
-const { returnFocus } = useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
+const { returnFocus } = useFocusTrap(backupCardEl, () => backup.pending.value !== null || backup.pendingWorkspace.value !== null, {
   onEscape: () => { if (!backup.busy.value) discard() },
 })
-watch(() => backup.pending.value, pending => {
+watch(() => backup.pending.value || backup.pendingWorkspace.value, pending => {
   if (pending) returnFocus.value = utilityTrigger.value
 }, { flush:'post' })
 
@@ -161,7 +173,7 @@ function pickBlueprintFile() {
 
 function onMenuCloseAutoFocus(event: Event) {
   // A restore preview or confirmation owns focus while it is open.
-  if (backup.pending.value || confirmation.value.visible) event.preventDefault()
+  if (backup.pending.value || backup.pendingWorkspace.value || confirmation.value.visible) event.preventDefault()
 }
 
 function cleanOrphanImages() {

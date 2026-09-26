@@ -53,13 +53,16 @@
         </div>
         <div class="voice-status">{{ voiceStatus }}</div>
         <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
-        <StudioMediaPlayer v-if="voiceAudioUrl" class="voice-audio show" kind="audio" :src="voiceAudioUrl" label="AI 声线试听" :transcript="voiceAudioTranscript" />
+        <StudioMediaPlayer v-if="voiceAudioUrl" class="voice-audio show" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
+
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'

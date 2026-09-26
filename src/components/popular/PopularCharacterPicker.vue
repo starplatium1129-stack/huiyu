@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
+
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { computed, ref, useId } from 'vue'
@@ -51,7 +53,7 @@ const sourceLabel = computed(() => {
          不再让卡片和浏览按钮各自成框、各自打开同一个弹窗。 -->
     <button type="button" class="character-browse-button" aria-haspopup="dialog" @click="browserMotion.open()">
       <span class="character-browse-trigger">
-        <CharacterPortrait :src="selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined" :name="selectedCharacter?.displayName || '角色'" />
+        <CharacterPortrait :src="resolveRuntimeUrl(selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined)" :name="selectedCharacter?.displayName || '角色'" />
         <span class="character-current-text">
           <small class="character-current-kicker">这一幕的主角</small>
           <strong>{{ selectedCharacter?.displayName || '选择创作角色' }}</strong>

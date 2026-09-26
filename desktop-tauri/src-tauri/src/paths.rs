@@ -16,6 +16,7 @@ pub struct DesktopPaths {
     pub tools_root: PathBuf,
     pub runtime_root: PathBuf,
     pub config_root: PathBuf,
+    pub source_profile_id: String,
     pub ai_workspace_file: PathBuf,
     pub desktop_log: PathBuf,
     pub gateway_port_file: PathBuf,
@@ -54,9 +55,10 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
             .unwrap_or_else(|_| PathBuf::from(DEV_PROJECT_ROOT)),
     );
     let config_root = simplify_path(
-        app.path()
+        std::env::var_os("AICS_DESKTOP_CONFIG_ROOT").map(PathBuf::from).filter(|path| path.is_absolute())
+            .unwrap_or_else(|| app.path()
             .app_config_dir()
-            .unwrap_or_else(|_| PathBuf::from(DEV_PROJECT_ROOT)),
+            .expect("Desktop configuration directory is unavailable")),
     );
 
     // 诊断：resource_dir 与候选布局（打包模式资源在 exe 旁 resources/ 下）
@@ -127,6 +129,10 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
         None
     };
 
+    let profile_root = crate::ui_entry::isolated_profile().unwrap_or_else(|| app.path().app_local_data_dir().expect("WebView profile directory is unavailable"));
+    // Failure retains a closed migration boundary; it does not invent a new
+    // identity for unreadable data. The bundled UI can still show diagnostics.
+    let source_profile_id = crate::gateway::profile_id(&profile_root).unwrap_or_default();
     DesktopPaths {
         app_root,
         resource_root,
@@ -136,6 +142,7 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
         tools_root,
         runtime_root,
         config_root: config_root.clone(),
+        source_profile_id,
         ai_workspace_file: config_root.join("ai-workspace.json"),
         desktop_log: config_root.join("desktop.log"),
         gateway_port_file: config_root.join("desktop-gateway.json"),

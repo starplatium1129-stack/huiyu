@@ -13,7 +13,7 @@
     <div class="comparison-spread">
       <figure v-for="sample in current.samples" :key="sample.id" class="light-study">
         <RouterLink v-if="available.has(sample.id) && !failed.has(sample.id)" class="study-image" :to="'/showcase?scene=' + sample.id" :aria-label="'查看参考原图：' + sample.title">
-          <img :src="'/scene-showcase/thumbs/' + sample.id + '.jpg'" :alt="sample.title + '，' + sample.light" width="560" height="818" loading="lazy" decoding="async" @error="failed.add(sample.id)" />
+          <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl('/scene-showcase/thumbs/' + sample.id + '.jpg')" :alt="sample.title + '，' + sample.light" width="560" height="818" loading="lazy" decoding="async" @error="failed.add(sample.id)" />
         </RouterLink>
         <div v-else class="study-image study-unavailable" :class="{ 'is-unconnected': !loading && !available.has(sample.id) }" role="status">
           <ArchiveIcon name="image" />
@@ -38,6 +38,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useMoodReferences } from '@/composables/useMoodReferences'

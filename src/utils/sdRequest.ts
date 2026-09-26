@@ -45,6 +45,7 @@ export interface SDGenerateParams {
   lora?: string | string[]
   lora_weight?: number
   dual_enhancement?: DualEnhancement
+  runtimeContext?: Record<string, unknown>
 }
 
 export interface Txt2ImgPayload extends Record<string, unknown> {

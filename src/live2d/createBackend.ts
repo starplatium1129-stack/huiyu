@@ -1,8 +1,9 @@
+import { getNativeLive2dCapabilities } from '../platform/desktop/nativeLive2d.ts'
 /**
  * 后端工厂与回退逻辑。
  *
  * 选择顺序：
- * 1. 显式请求 native 且桥可用（window.aicsLive2dNative）→ native
+ * 1. 显式请求 native 且桥可用（getNativeLive2dCapabilities()）→ native
  * 2. 显式请求 native 但桥缺失 → 自动回退 browser，并标记 fallback
  * 3. 默认/浏览器请求 → browser
  *
@@ -33,7 +34,7 @@ export function selectLive2DBackend(
   requestedKind: Live2DBackendKind = 'browser',
   bridgeProvider: NativeBridgeProvider = () => {
     if (typeof window === 'undefined') return undefined
-    return window.aicsLive2dNative
+    return getNativeLive2dCapabilities()
   },
 ): BackendSelection {
   if (requestedKind !== 'native') {

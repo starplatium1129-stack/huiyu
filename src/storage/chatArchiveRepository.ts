@@ -1,6 +1,8 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { CHAT_ARCHIVE_KEY, normalizeChatArchive, type ChatArchive } from '@/utils/chatArchive'
 import { listCompanionCharacterIds } from '@/utils/companionRegistry'
+import { profileRuntimeActive, readProfileChatArchive, writeProfileChatArchive } from '../platform/web/profileStorage.ts'
 
 import { CHAT_ARCHIVE_CHANGED_KEY, CHAT_ARCHIVE_KV_KEY } from '@/utils/storageKeys'
 export { CHAT_ARCHIVE_KV_KEY } from '@/utils/storageKeys'
@@ -14,7 +16,7 @@ export async function withChatArchiveMutation<T>(work: () => Promise<T>): Promis
  * source; never merge it back after a clear. Backups still use the portable v1 JSON.
  */
 export async function readChatArchive(characterIds = listCompanionCharacterIds()): Promise<ChatArchive> {
-  const stored = await kvGet(CHAT_ARCHIVE_KV_KEY)
+  const stored = profileRuntimeActive() ? await readProfileChatArchive() : await kvGet(CHAT_ARCHIVE_KV_KEY)
   if (stored !== null && (typeof stored !== 'object' || Array.isArray(stored))) throw new Error('聊天归档格式异常，原件已保留。')
   if (stored !== null && !Object.hasOwn(stored, 'archived')) throw new Error('聊天归档结构不完整，原件已保留。')
   if (stored !== null) return normalizeChatArchive(stored, characterIds)
@@ -26,6 +28,7 @@ export async function readChatArchive(characterIds = listCompanionCharacterIds()
 
 /** Caller holds the archive lock, including backup restore and global reset. */
 export async function writeChatArchive(archive: ChatArchive): Promise<void> {
+  if (profileRuntimeActive()) { await writeProfileChatArchive(archive); return }
   await kvSet(CHAT_ARCHIVE_KV_KEY, archive)
   try { localStorage.removeItem(CHAT_ARCHIVE_KEY) } catch { /* The IDB record prevents legacy replay. */ }
   // Invalidation only. Other pages reload IndexedDB rather than trusting this cache.

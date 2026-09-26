@@ -1,12 +1,13 @@
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch, type Ref } from 'vue'
-import { ApiClientError } from '@/api/client'
-import { maintenanceApi } from '@/api/maintenanceApi'
-import type { BackupEntry } from '@/api/maintenanceApi'
-import type { SceneDraft, TagRecord, CurationData, SceneChangesPreview, SceneMaintenanceSnapshot } from '@/types/api'
-import type { SceneBlueprint } from '@/utils/popularContent'
-import { buildSceneChangeSet, cloneSceneSnapshot, hasSceneChanges, sceneContentKey } from '@/utils/sceneChanges'
-import { isSceneId } from '@/utils/sceneId'
-import { confirmAction } from '@/composables/useConfirm'
+import { ApiClientError } from '../../api/client.ts'
+import { maintenanceApi } from '../../api/maintenanceApi.ts'
+import type { BackupEntry } from '../../api/maintenanceApi.ts'
+import type { SceneDraft, TagRecord, CurationData, SceneChangesPreview, SceneMaintenanceSnapshot } from '../../types/api.ts'
+import type { SceneBlueprint } from '../../utils/popularContent.ts'
+import { buildSceneChangeSet, cloneSceneSnapshot, hasSceneChanges, sceneContentKey } from '../../utils/sceneChanges.ts'
+import { isSceneId } from '../../utils/sceneId.ts'
+import { confirmAction } from '../useConfirm.ts'
 
 export interface SceneMaintenanceDeps {
   scenes: Ref<SceneDraft[]>
@@ -55,7 +56,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   const backupsError = ref('')
   const backupsExpanded = ref(false)
   /** 桌面打包模式：data 在只读应用包内，场景保存与维护任务不可用 */
-  const desktopPackaged = ref(!!window.companionDesktop)
+  const desktopPackaged = ref(!!getDesktopCapabilities())
   const importConfirming = ref(false)
   const needsReload = ref(false)
   const preview = shallowRef<SceneChangesPreview | null>(null)
@@ -280,8 +281,8 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   const highlightedOutput = highlightedToolOutput
 
   onMounted(() => {
-    if (window.companionDesktop) {
-      window.companionDesktop.isPackaged().then(packaged => {
+    if (getDesktopCapabilities()) {
+      getDesktopCapabilities()!.isPackaged().then(packaged => {
         desktopPackaged.value = packaged
         if (packaged) maintenanceHint.value = '桌面应用模式：场景内容位于只读应用包内，保存与维护任务不可用'
       }).catch(() => { maintenanceHint.value = '无法确认桌面写入状态，已保持只读，请重新读取' })

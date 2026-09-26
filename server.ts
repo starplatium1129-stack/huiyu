@@ -7,6 +7,7 @@ import type { GatewayOptions, GatewayState } from './server/gateway-types';
 import { errorField } from './scripts/lib/runtime-errors';
 import { createRemoteContent } from './server/remote-content';
 import { createHmac } from 'node:crypto';
+import { openDesktopRuntimeHost, createDesktopTasks, desktopResourceCors } from './server/desktop-runtime';
 
 let express: typeof import('express') = require('express');
 let compression: typeof import('compression') = require('compression');
@@ -77,6 +78,7 @@ function createGateway(options: GatewayOptions = {}) {
   // _app、assets、docs 等预压产物，绕过 tokenAuth 与 hostGuard。
   let tunnelManager: ReturnType<typeof createTunnelManager> | null = null;
   app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }));
+  if (options.desktopHost) { app.use(desktopResourceCors(options.desktopHost)); app.use(options.desktopHost.router); }
   app.use(security.tokenAuth(config.TOKEN));
   // Private storage has its own session authority; a shared token grants no workspace access.
   app.use('/api/workspace', options.workspace?.router || ((_req, res) => {
@@ -116,10 +118,14 @@ function createGateway(options: GatewayOptions = {}) {
   let voice = createVoiceRouter(config, options.services);
   let live2d = createLive2dRouter(config, options.services);
   let maintenance = createMaintenanceRouter(config);
-  let anima = createAnimaRouter(config, options.services);
-  let generation = createGenerationRouter(config, options.services);
+  const generationDependencies = { ...options.services, ...(options.desktopHost ? { durableTasks: true } : {}) };
+  let anima = createAnimaRouter(config, generationDependencies);
+  let generation = createGenerationRouter(config, generationDependencies);
   let interrogate = createInterrogateRouter(config);
-  let video = createVideoRouter(config, options.services);
+  let video = createVideoRouter(config, generationDependencies);
+  const desktopTasks = createDesktopTasks(options.desktopHost, { config, generation: generation.generationService,
+    anima: anima.service, video: video.service, batch: video.batchService }, (options.env || process.env).AICS_DESKTOP_SOURCE_PROFILE_ID);
+  app.use('/api/tasks/v1', desktopTasks.router);
   let videoAi = (require('./routes/video-ai') as typeof import('./routes/video-ai')).createVideoAiRouter(config, options.services);
   let desktopTools = (require('./routes/desktop-tools') as typeof import('./routes/desktop-tools')).createDesktopToolsRouter({ security: security, config: config });
 
@@ -388,6 +394,7 @@ function createGateway(options: GatewayOptions = {}) {
   });
 
   async function close() {
+    if (options.desktopHost) await desktopTasks.close();
     resources.close();
     voice.close();
     if (anima && typeof anima.close === 'function') anima.close();
@@ -397,6 +404,7 @@ function createGateway(options: GatewayOptions = {}) {
     if (control && typeof control.close === 'function') control.close();
     if (tunnelManager) tunnelManager.stop();
     await options.workspace?.close();
+    await options.desktopHost?.close();
   }
 
   // 将控制函数暴露给 gatewayState，供 control 路由调用
@@ -460,7 +468,10 @@ function createGateway(options: GatewayOptions = {}) {
   };
 }
 
-function startGateway(options?: GatewayOptions) {
+async function startGateway(options: GatewayOptions = {}) {
+  const env = options.env || process.env;
+  const configInput = options.config || loadGatewayConfig(__dirname, env);
+  options = { ...options, config: configInput, desktopHost: options.desktopHost || await openDesktopRuntimeHost(configInput, env) };
   let gateway = createGateway(options);
   let config = gateway.config;
   let logger = gateway.logger;
@@ -544,7 +555,7 @@ function startGateway(options?: GatewayOptions) {
   return { gateway:gateway, server:server, shutdown:shutdown, logger:logger };
 }
 
-if (require.main === module) startGateway();
+if (require.main === module) void startGateway().catch(error => { console.error('网关启动失败', error); process.exitCode = 1; });
 
 export = {
   createGateway:createGateway,

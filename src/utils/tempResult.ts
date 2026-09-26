@@ -1,3 +1,4 @@
+import { profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
 import { TEMP_RESULT_KEY } from '@/utils/storageKeys'
 import type { AnimaJobMetadata, AnimaResultContext } from '@/types/anima'
 import type { DrawEngine } from '@/storage/settingsRepository'

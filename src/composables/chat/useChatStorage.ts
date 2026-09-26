@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { reactive, ref } from 'vue'
 import { useChatArchiveStorage } from './useChatArchiveStorage'
 import { createChatCredentials } from '@/utils/chatCredentials'

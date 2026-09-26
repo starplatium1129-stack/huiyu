@@ -1,18 +1,20 @@
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { ref, type ComputedRef, type Ref } from 'vue'
-import { createMessageId, type CharacterConfig } from '@/config/characters'
-import { useChatStorage } from '@/composables/chat/useChatStorage'
-import { useVoice } from '@/composables/useVoice'
-import { CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL } from '@/config/chatApi'
+import { createMessageId, type CharacterConfig } from '../../config/characters.ts'
+import { useChatStorage } from './useChatStorage.ts'
+import { useVoice } from '../useVoice.ts'
+import { CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL } from '../../config/chatApi.ts'
 import {
   inferEmotion,
   isAbortError,
   parseNdjsonResponse,
   streamErrorMessage,
-} from '@/utils/stream'
-import { extractMoodTag } from '@/utils/moodTag'
-import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { abortableTask } from '@/utils/abortableTask'
+} from '../../utils/stream.ts'
+import { extractMoodTag } from '../../utils/moodTag.ts'
+import { hasChatUserProfile, type ChatUserProfile } from '../../utils/chatUserProfile.ts'
+import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
+import { abortableTask } from '../../utils/abortableTask.ts'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
 // 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
@@ -248,10 +250,10 @@ export function useChatConversation(options: ChatConversationOptions) {
       return { ok: false, output: '工具参数必须是 JSON 对象。' }
     }
     let result: ToolCallResult
-    if (window.companionDesktop) {
-      result = await abortableTask(() => window.companionDesktop!.runTool(call.name, parsedArgs, { signal }), signal)
+    if (getDesktopCapabilities()) {
+      result = await abortableTask(() => getDesktopCapabilities()!.runTool(call.name, parsedArgs, { signal }), signal)
     } else {
-      const res = await fetch('/api/desktop-tools', {
+      const res = await runtimeFetch('/api/desktop-tools', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal,
@@ -372,7 +374,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         visionRound = false
         // DeepSeek V4：思考轮带 tool_calls 时必须回传 reasoning_content
         let roundReasoning = ''
-        const response = await fetch('/api/chat', {
+        const response = await runtimeFetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: buildChatRequestBody({

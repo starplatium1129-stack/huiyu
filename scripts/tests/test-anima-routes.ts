@@ -397,7 +397,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
       return true;
     }), 'gateway must never issue a global or legacy running interrupt operation');
     fs.writeFileSync(path.join(runtime.outputs, 'anima', 'orphan-close.png'), 'orphan');
-    gateway.close();
+    await gateway.close();
     assert.strictEqual(fs.existsSync(path.join(runtime.outputs, 'anima', 'orphan-close.png')), false,
       'gateway close must remove runtime Anima result files');
   } finally {

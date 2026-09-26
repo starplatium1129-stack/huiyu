@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { LIVE2D_QUALITY_KEY, normalizeLive2DQuality } from '@/live2d/quality'
 

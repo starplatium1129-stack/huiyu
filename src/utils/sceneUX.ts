@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 /** AICSceneUX 的 TypeScript 替代：纯场景工具函数，无副作用 */
 
 export interface SceneUXConfig {

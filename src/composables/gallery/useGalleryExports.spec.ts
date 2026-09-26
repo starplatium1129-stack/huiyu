@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { artworkRepository } from '@/storage/artworkRepository'
@@ -19,7 +20,7 @@ beforeEach(() => {
   vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
   vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
 })
-afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); delete window.companionDesktop })
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); desktopFixture.current = undefined })
 
 describe('gallery original export', () => {
   it.each([
@@ -28,7 +29,7 @@ describe('gallery original export', () => {
   ])('keeps %s bytes and extension without claiming PNG metadata', async (ext, bytes) => {
     vi.mocked(artworkRepository.getImage).mockResolvedValue(new Blob([bytes], { type: 'image/png' }))
     const saveImage = vi.fn().mockResolvedValue({ saved: true })
-    window.companionDesktop = { saveImage } as unknown as NonNullable<Window['companionDesktop']>
+    desktopFixture.current = { saveImage } as unknown as CompanionDesktopBridge
     const { downloadCurrent, showToast } = setup()
     await downloadCurrent()
     expect(saveImage.mock.calls[0][0].name).toMatch(new RegExp(`\\.${ext}$`))
@@ -38,7 +39,7 @@ describe('gallery original export', () => {
   it('embeds PNG generation metadata including zero CFG and seed', async () => {
     vi.mocked(artworkRepository.getImage).mockResolvedValue(new Blob([png]))
     const saveImage = vi.fn().mockResolvedValue({ saved: true })
-    window.companionDesktop = { saveImage } as unknown as NonNullable<Window['companionDesktop']>
+    desktopFixture.current = { saveImage } as unknown as CompanionDesktopBridge
     const { downloadCurrent } = setup()
     await downloadCurrent()
     const text = extractPngParameters(saveImage.mock.calls[0][0].data.buffer)
@@ -48,7 +49,7 @@ describe('gallery original export', () => {
   it('distinguishes native write errors from a cancelled save dialog', async () => {
     vi.mocked(artworkRepository.getImage).mockResolvedValue(new Blob([png]))
     const saveImage = vi.fn().mockResolvedValue({ saved: false, error: '磁盘已满' })
-    window.companionDesktop = { saveImage } as unknown as NonNullable<Window['companionDesktop']>
+    desktopFixture.current = { saveImage } as unknown as CompanionDesktopBridge
     const { downloadCurrent, showToast } = setup()
     await downloadCurrent()
     expect(showToast).toHaveBeenCalledWith('保存失败：磁盘已满', 'warning')
@@ -67,7 +68,7 @@ describe('gallery original export', () => {
     let resolve!: (blob: Blob) => void
     vi.mocked(artworkRepository.getImage).mockReturnValue(new Promise(done => { resolve = done }))
     const saveImage = vi.fn().mockResolvedValue({ saved: false })
-    window.companionDesktop = { saveImage } as unknown as NonNullable<Window['companionDesktop']>
+    desktopFixture.current = { saveImage } as unknown as CompanionDesktopBridge
     const { downloadCurrent, current, showToast } = setup()
     const pending = downloadCurrent()
     current.value = { id: 'other', prompt: 'Other', cfg: 1, seed: 1 }
@@ -80,3 +81,6 @@ describe('gallery original export', () => {
     expect(HTMLAnchorElement.prototype.click).not.toHaveBeenCalled()
   })
 })
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

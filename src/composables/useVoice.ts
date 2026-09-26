@@ -1,9 +1,10 @@
+import { resolveRuntimeUrl, runtimeResourceCors } from '../platform/runtimeUrl.ts'
 import { ref } from 'vue'
 import {
   SentenceBuffer, extractSpokenDialogue, inferEmotion, isAbortError,
-} from '@/utils/stream'
-import { voiceApi } from '@/api/voiceApi'
-import { ApiClientError } from '@/api/client'
+} from '../utils/stream.ts'
+import { voiceApi } from '../api/voiceApi.ts'
+import { ApiClientError } from '../api/client.ts'
 
 export interface VoiceAvailability {
   online: boolean
@@ -347,7 +348,9 @@ export function useVoice(options: {
     const item = queue.shift()
     if (!item) return
     playing = true
-    const audio = new Audio(item.url) as AudioWithSource
+    const audio = new Audio() as AudioWithSource
+    audio.crossOrigin = runtimeResourceCors() ?? null
+    audio.src = resolveRuntimeUrl(item.url)
     currentAudio = audio; attachAnalyser(audio)
     onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); notifyActivity()
     let finished = false, started = false
@@ -419,7 +422,9 @@ export function useVoice(options: {
     const rs = session; onSpeaking(true, mid); onStatus('重播中…'); notifyActivity()
     for (const clip of clips) {
       if (rs !== session) return false
-      const audio = new Audio(clip.url) as AudioWithSource
+      const audio = new Audio() as AudioWithSource
+      audio.crossOrigin = runtimeResourceCors() ?? null
+      audio.src = resolveRuntimeUrl(clip.url)
       replayAudio = audio; attachAnalyser(audio); onExpression(clip.emotion || 'neutral')
       notifyActivity()
       await new Promise<void>(res => {

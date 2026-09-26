@@ -1,15 +1,1 @@
-[
-  {"source":"routes/resources.ts","target":"src/types/resources.ts","kind":"import","typeOnly":true,"rule":"runtime-no-frontend","exitBatch":"R8","reason":"将共享资源 wire DTO 从前端类型域迁出，保持协议边界。"},
-  {"source":"routes/voice.ts","target":"src/types/api.ts","kind":"import","typeOnly":true,"rule":"runtime-no-frontend","exitBatch":"R8","reason":"将语音 wire DTO 从前端类型域迁出，保持协议边界。"},
-  {"source":"src/components/video/useShotFirstFrames.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R6d","reason":"分镜首帧持久化纳入分镜适配能力。"},
-  {"source":"src/components/video/useShotImport.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R9a","reason":"分镜草稿媒体读取随剩余草稿域适配收口。"},
-  {"source":"src/components/video/useShotWorkspace.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R6d","reason":"分镜交接图通过结果与媒体能力存放。"},
-  {"source":"src/components/video/useVideoFrames.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R6c","reason":"视频帧读写接入单视频媒体能力。"},
-  {"source":"src/components/video/useVideoStudioDraft.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R9a","reason":"视频草稿引用按剩余profile领域适配。"},
-  {"source":"src/composables/prompt/promptVideoActions.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R6c","reason":"单视频交接图改用任务媒体能力。"},
-  {"source":"src/composables/prompt/useTempResult.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R7","reason":"临时结果改接可靠结果收件箱，保留默认不入册。"},
-  {"source":"src/composables/useBackup.ts","target":"src/composables/useKVStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R3","reason":"备份编排经来源导出能力，真实Web存储适配保留。"},
-  {"source":"src/composables/useBackup.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R3","reason":"备份编排经来源导出能力，真实Web存储适配保留。"},
-  {"source":"src/composables/useTaskCenter.ts","target":"src/composables/useKVStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R7","reason":"任务中心从runtime查询事实，旧KV摘要只读历史。"},
-  {"source":"src/stores/videoStore.ts","target":"src/composables/useImageStore.ts","kind":"import","typeOnly":false,"rule":"browser-storage-port","exitBatch":"R6c","reason":"视频交接图通过单视频媒体能力存放。"}
-]
+[]

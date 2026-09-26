@@ -293,7 +293,7 @@
               :src="job.resultUrl"
               label="生成的视频成片"
             />
-            <a v-if="job.status === 'succeeded' && job.resultUrl" class="btn btn-ghost btn-block" :href="job.resultUrl" download>下载这段故事 · MP4</a>
+            <TaskMediaDownload v-if="job.status === 'succeeded' && job.resultUrl" class="btn btn-ghost btn-block" :src="job.resultUrl">下载这段故事 · MP4</TaskMediaDownload>
             <p v-if="job.status === 'cancelled'" class="video-install-note">任务已取消。镜头描述和输入画面仍在，可以调整后重新生成。</p>
             <p v-if="job.status === 'queued'" class="video-install-note">镜头已进入队列，等待本机开始处理。</p>
             <p v-if="job.status === 'cancelling'" class="video-install-note">正在等待本机停止任务，完成后可以重新生成。</p>
@@ -399,7 +399,7 @@
           <span class="video-step">03 · 成片预览</span>
           <h2>检查连贯性，再决定是否加长</h2>
         </div>
-        <a class="btn btn-ghost" :href="job.resultUrl" download>下载 MP4</a>
+        <TaskMediaDownload class="btn btn-ghost" :src="job.resultUrl">下载 MP4</TaskMediaDownload>
       </div>
       <a class="btn btn-ghost" href="#video-queue">回到成片播放器</a>
       <div class="video-review-checklist">
@@ -420,6 +420,7 @@ import ShotListEditor from '@/components/video/ShotListEditor.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
+import TaskMediaDownload from '@/components/tasks/TaskMediaDownload.vue'
 import { useVideoWorkspace } from "@/composables/video/useVideoWorkspace"
 const {
 archiveStatus,

@@ -1,4 +1,5 @@
 import { onUnmounted, ref } from 'vue'
+import { getDesktopUpdater } from '@/platform/desktop/updater'
 
 /**
  * 桌面端自动更新横幅（审计 P1：Tauri updater）。
@@ -7,43 +8,26 @@ import { onUnmounted, ref } from 'vue'
  * `desktop_update_install` 命令下载安装并由安装器重启应用。
  */
 
-interface TauriCore {
-  event: {
-    listen: (event: string, handler: (event: { payload: unknown }) => void) => Promise<() => void>
-  }
-  core: {
-    invoke: (cmd: string, args?: Record<string, unknown>) => Promise<unknown>
-  }
-}
-
-function tauriApi(): TauriCore | null {
-  return (window as unknown as { __TAURI__?: TauriCore }).__TAURI__ ?? null
-}
-
 export function useDesktopUpdater() {
   const availableVersion = ref('')
   const statusText = ref('')
   const installing = ref(false)
   const errorText = ref('')
-  const offs: Array<() => void> = []
+  const subscriptions: number[] = []
 
-  const api = tauriApi()
+  const api = getDesktopUpdater()
   /** 当前前端是否运行在桌面壳内。浏览器里桌面更新能力不存在——这是能力缺失，
    *  不是故障（审计 2026-09-05 P2-04）：静默跳过检查，不得把"仅桌面端支持"当错误展示。 */
   const supported = api !== null
   if (api) {
-    api.event.listen('desktop-update-found', (event) => {
-      if (typeof event.payload === 'string' && !installing.value) availableVersion.value = event.payload
-    }).then((off) => offs.push(off))
-    api.event.listen('desktop-update-progress', (event) => {
-      if (typeof event.payload === 'string') statusText.value = event.payload
-    }).then((off) => offs.push(off))
+    subscriptions.push(api.onFound(version => { if (!installing.value) availableVersion.value = version }))
+    subscriptions.push(api.onProgress(text => { statusText.value = text }))
   }
 
   async function check(silent = false): Promise<void> {
     if (!api) return
     try {
-      const version = (await api.core.invoke('desktop_update_check')) as string | null
+      const version = await api.check()
       if (version && !installing.value) availableVersion.value = version
       errorText.value = '' // 重试成功：清掉上一次失败留下的旧错误
     } catch (error) {
@@ -58,7 +42,7 @@ export function useDesktopUpdater() {
     errorText.value = ''
     statusText.value = '准备安装…'
     try {
-      await api.core.invoke('desktop_update_install')
+      await api.install()
       // 成功路径：安装器重启应用，不会走到这里
     } catch (error) {
       errorText.value = error instanceof Error ? error.message : String(error)
@@ -66,7 +50,7 @@ export function useDesktopUpdater() {
     }
   }
 
-  onUnmounted(() => { offs.forEach((off) => off()) })
+  onUnmounted(() => { subscriptions.forEach(id => api?.off(id)) })
 
   return { availableVersion, statusText, installing, errorText, supported, check, install }
 }

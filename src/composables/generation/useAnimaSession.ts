@@ -3,6 +3,7 @@ import { ApiClientError, apiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { classifySDError } from '@/utils/sdError'
+import { hasRuntimeTasks, runtimeRequestKey } from '@/api/runtimeTaskAuthority'
 import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
@@ -43,6 +44,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let activeFamily: 'anima' | 'krea2' = 'anima'
   let statusRequest: AbortController | null = null
   let jobRequest: AbortController | null = null
+  let durableAttempt = false, durableKey = ''
 
   /**
    * 上一次成功成片的临时缓冲（2026-09-06 体验报告 F2）。
@@ -381,12 +383,23 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     jobRequest?.abort()
     const controller = new AbortController()
     jobRequest = controller
+    durableAttempt = hasRuntimeTasks(); durableKey = ''
     const context = options.getSubmitContext?.()
     pendingContext = context ? JSON.parse(JSON.stringify(context)) as AnimaResultContext : null
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
     patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     try {
+      if (durableAttempt) {
+        const kind = family === 'krea2' ? 'creative' : 'anima'
+        const input = animaRequestPayload(request)
+        durableKey = runtimeRequestKey(kind, input)
+        const { runRuntimeAnima } = await import('./runtimeImageSession')
+        await runRuntimeAnima({ input, key: durableKey, signal: controller.signal, family, request, context: pendingContext, state,
+          isCurrent: () => !controller.signal.aborted && serial === requestSerial,
+          metadata: job => metadataFromJob(job, request, family), discardStashed: discardStashedResult, onResult: options.onResult })
+        return
+      }
       const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(family), {
         method: 'POST',
         body: animaRequestPayload(request),
@@ -420,6 +433,15 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   }
 
   async function cancel(): Promise<void> {
+    if (durableAttempt && durableKey && ['submitting', 'running', 'cancelling'].includes(state.value.phase)) {
+      patchState({ phase: 'cancelling', statusText: '正在记录取消请求…' })
+      try {
+        const { cancelRuntimeTaskKey, taskMessage } = await import('@/api/runtimeTasks')
+        const task = await cancelRuntimeTaskKey(durableKey)
+        patchState({ phase: task?.status === 'cancelled' ? 'cancelled' : 'cancelling', statusText: task ? taskMessage(task) : '取消意图已记录，等待提交核对。' })
+      } catch { patchState({ statusText: '取消尚未确认，请到任务中心核对。' }) }
+      return
+    }
     const job = state.value.job
     if (state.value.phase === 'submitting') {
       // Invalidate first: a late POST must not overwrite a restored result.
@@ -460,7 +482,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     jobRequest = null
     stopStatusPolling()
     const activeJob = state.value.job
-    if (activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
+    if (!durableAttempt && activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
       void client.request<{ ok?: boolean }>(jobPath(activeFamily, activeJob.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
     }
     const result = state.value.result

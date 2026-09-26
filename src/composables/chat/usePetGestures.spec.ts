@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { describe, expect, it, vi } from 'vitest'
 import { defineComponent, h } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
@@ -6,7 +7,7 @@ import { usePetGestures } from './usePetGestures'
 function setup() {
   const drag = vi.fn().mockResolvedValue(undefined), chat = vi.fn()
   const wrapper = mount(defineComponent({ setup() {
-    const gestures = usePetGestures({ startDragging: drag } as unknown as Window['companionDesktop'], chat)
+    const gestures = usePetGestures({ startDragging: drag } as unknown as (CompanionDesktopBridge | undefined), chat)
     return () => h('div', { 'data-open': gestures.controlsOpen.value, onContextmenu: gestures.contextMenu, onPointerdownCapture: gestures.beginDrag, onDblclick: gestures.doubleClick }, [h('div', { class: 'portrait-stage' }), h('button', '设置')])
   } }))
   return { wrapper, drag, chat }

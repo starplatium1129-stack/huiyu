@@ -503,4 +503,20 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
   }
 }
 
-export const apiClient = createApiClient()
+let runtimeClient = createApiClient()
+let runtimeGeneration = 0
+
+/** Rebuild the existing cache/consumer-cancellation client when host identity
+ * changes. An old response cannot reach either the new cache or its caller. */
+export function configureApiTransport(fetchImplementation?: FetchImplementation): void {
+  runtimeGeneration += 1
+  runtimeClient = createApiClient(fetchImplementation)
+}
+export const apiClient: ApiClient = {
+  async request<T extends object>(url: string, options?: ApiRequestOptions): Promise<T> {
+    const generation = runtimeGeneration
+    const result = await runtimeClient.request<T>(url, options)
+    if (generation !== runtimeGeneration) throw new ApiClientError('运行时连接已更新，请重新读取', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
+    return result
+  },
+}

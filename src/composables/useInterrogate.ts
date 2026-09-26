@@ -1,4 +1,5 @@
-import { useTrackedTask } from '@/composables/useTaskCenter'
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { useTrackedTask } from './useTaskCenter.ts'
 import { ref } from 'vue'
 
 export type InterrogateMode = 'tag' | 'caption'
@@ -69,7 +70,7 @@ export function useInterrogate() {
       if (!file.type.startsWith('image/')) throw new Error('仅支持图片文件')
       const dataUrl = await fileToDataUrl(file)
       // 后端接受 base64 或 dataURL，传 dataURL 更省一次前缀判断
-      const res = await fetch(API, {
+      const res = await runtimeFetch(API, {
         method: 'POST',
         signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },

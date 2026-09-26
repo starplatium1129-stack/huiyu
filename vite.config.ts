@@ -52,6 +52,15 @@ export default defineConfig(async ({ mode }) => {
       }
     } satisfies Plugin
   ]
+  if (mode === 'desktop') plugins.push({
+    name: 'desktop-startup-assets',
+    generateBundle() {
+      const fs = runtimeRequire('node:fs') as typeof import('node:fs')
+      for (const name of ['favicon.svg', 'logo.svg', 'logo-light.svg', 'theme-bootstrap.js']) {
+        this.emitFile({ type: 'asset', fileName: `assets/${name}`, source: fs.readFileSync(fileURLToPath(new URL(`./assets/${name}`, import.meta.url))) })
+      }
+    },
+  })
   if (mode === 'analyze') {
     const { visualizer } = await import('rollup-plugin-visualizer')
     plugins.push(visualizer({
@@ -63,6 +72,7 @@ export default defineConfig(async ({ mode }) => {
   }
 
   return {
+  base: mode === 'desktop' ? './' : '/',
   plugins,
   resolve: {
     alias: {
@@ -90,7 +100,7 @@ export default defineConfig(async ({ mode }) => {
     }
   },
   build: {
-    outDir: 'dist',
+    outDir: mode === 'desktop' ? 'desktop-tauri/web' : 'dist',
     emptyOutDir: true,
     manifest: true,
     // 避免与 Express 已有的 /assets/ 路由（角色图等）冲突

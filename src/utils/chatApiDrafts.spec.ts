@@ -1,3 +1,4 @@
+import type { CompanionDesktopBridge } from '@/types/desktop'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createChatApiDrafts, CHAT_API_DRAFTS_KEY } from './chatApiDrafts'
 import { createBackup } from './backupCore'
@@ -14,12 +15,12 @@ beforeEach(() => {
     },
   } })
 })
-afterEach(() => { localStorage.clear(); delete window.companionDesktop; Reflect.deleteProperty(navigator, 'locks'); vi.restoreAllMocks() })
+afterEach(() => { localStorage.clear(); desktopFixture.current = undefined; Reflect.deleteProperty(navigator, 'locks'); vi.restoreAllMocks() })
 function seed(vendor: string) {
   localStorage.setItem(CHAT_API_DRAFTS_KEY, JSON.stringify({ [vendor]: { baseUrl: endpoint, model: 'fixture', apiKey: secret } }))
 }
 function bridge(read: (endpoint: string) => Promise<string | null>, write: (endpoint: string, secret: string) => Promise<void>) {
-  window.companionDesktop = { isDesktop: true, readChatCredential: read, writeChatCredential: write } as unknown as typeof window.companionDesktop
+  desktopFixture.current = { isDesktop: true, readChatCredential: read, writeChatCredential: write } as unknown as (CompanionDesktopBridge | undefined)
 }
 
 describe('provider draft credentials', () => {
@@ -68,3 +69,6 @@ describe('provider draft credentials', () => {
     expect(JSON.stringify(backup)).not.toContain(secret)
   })
 })
+
+const desktopFixture = vi.hoisted(() => ({ current: undefined as CompanionDesktopBridge | undefined }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => desktopFixture.current }))

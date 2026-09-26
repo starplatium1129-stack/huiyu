@@ -1,20 +1,22 @@
+import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
-import { usePolling } from '@/composables/usePolling'
+import { usePolling } from '../usePolling.ts'
 import { useRouter } from 'vue-router'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionCharacterConfig,
-} from '@/utils/companionRegistry'
-import { useChatStorage } from '@/composables/chat/useChatStorage'
-import { useVoiceInput } from '@/composables/useVoiceInput'
-import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
-import { createSpeechSession } from '@/utils/speechSession'
-import { createCompanionBehavior, normalizeCompanionConfig } from '@/utils/companionBehavior'
-import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '@/utils/storageKeys'
+} from '../../utils/companionRegistry.ts'
+import { useChatStorage } from './useChatStorage.ts'
+import { useVoiceInput } from '../useVoiceInput.ts'
+import { isSpeechInputReady, loadSpeechInputConfig } from '../../utils/speechInputConfig.ts'
+import { createSpeechSession } from '../../utils/speechSession.ts'
+import { createCompanionBehavior, normalizeCompanionConfig } from '../../utils/companionBehavior.ts'
+import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '../../utils/storageKeys.ts'
 
-import { useConversationReading } from '@/composables/chat/useConversationReading'
-import { relayChatTurn } from '@/utils/chatRelayReceipt'
+import { useConversationReading } from './useConversationReading.ts'
+import { relayChatTurn } from '../../utils/chatRelayReceipt.ts'
 
 export function useCompanionChatWindow() {
 
@@ -29,7 +31,7 @@ interface ChatLiveState {
 
 /** 无桥降级：允许纯浏览器里用本地 storage 观看/本地切角色（发送需桌宠桥） */
 const storage = useChatStorage(() => { /* 聊天窗静默收集失败即可 */ })
-const bridge = window.companionDesktop
+const bridge = getDesktopCapabilities()
 /** 浏览器形态（无桥）下 /companion-chat 是死路：window.close() 对非脚本打开的
  *  窗口无效，页面里也没有任何路由出口。这里给一个真正走得通的返回。 */
 const router = useRouter()

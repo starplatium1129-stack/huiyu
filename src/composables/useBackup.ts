@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage, profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
 import { readChatArchive, withChatArchiveMutation } from '@/storage/chatArchiveRepository'
 import { CHAT_ARCHIVE_KEY, serializeChatArchive } from '@/utils/chatArchive'
 import { withArtworkMutation } from '@/storage/artworkMutation'
@@ -7,23 +8,20 @@ import { restoreBackupData } from '@/storage/backupRestore'
 import { downloadBlob } from '@/utils/downloadBlob'
 import { version as appVersion } from '../../package.json'
 import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
-import { ref } from 'vue'
+import { ref, onScopeDispose } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
-import { kvGet } from '@/composables/useKVStore'
-import { imgList, imgGet, imgDeleteMany } from '@/composables/useImageStore'
+import { readWebBackupLibrary, readWebBackupCleanup, readWebBackupImages, readWebBackupImage, deleteWebBackupImages } from '../platform/web/profileBackupSource'
+import { createWorkspaceBackup, parseWorkspaceBackupReceipt, createWorkspaceRestoreCandidate, workspaceBackupActive, workspaceStorageHealth, collectWorkspaceGarbage, type WorkspaceBackupReceipt } from '../platform/desktop/backupActions'
+import { onDesktopRuntime } from '../platform/desktop/runtime'
+import { artworkRepository } from '../storage/artworkRepository'
 import {
   normalizeBackup,
   summarizeBackup,
   type BackupFile,
-  type BackupRecord,
   type BackupSummary,
 } from '@/utils/backupCore'
 import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHealth'
 import {
-  ARTWORK_HISTORY_KV_KEY,
-  ARTWORK_PROJECTS_KV_KEY,
-  ARTWORK_TRASH_KV_KEY,
-  ARTWORK_HISTORY_QUARANTINE_KEY,
   BACKUP_AT_KEY,
   cleanDeadLocalKeys,
   collectLiveLocalSettings,
@@ -35,10 +33,6 @@ export type { BackupSummary } from '@/utils/backupCore'
  * 本地数据备份 / 恢复 — 从重构前 tools/prompt-builder/backup.js 迁移。
  * 备份内容：作品历史、项目、出图设置、IndexedDB 图片（base64 内联）。
  */
-
-// 键名统一出处：src/utils/storageKeys.ts
-const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
-const PROJECT_KEY = ARTWORK_PROJECTS_KV_KEY
 
 // 备份时间戳键（BACKUP_AT_KEY）已登记在 storageKeys.ts：
 // 活键但刻意不参与备份导出，恢复时不覆盖新环境的时间戳。
@@ -64,6 +58,10 @@ function errorMessage(error: unknown, fallback: string) {
 export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const busy = ref(false)
   const pending = ref<BackupFile | null>(null)
+  const pendingWorkspace = ref<WorkspaceBackupReceipt | null>(null)
+  const desktopActive = ref(workspaceBackupActive())
+  const removeRuntimeListener = onDesktopRuntime(() => { desktopActive.value = workspaceBackupActive() })
+  onScopeDispose(removeRuntimeListener)
   const pendingName = ref('')
   const lastBackupAt = ref(readLastBackupAt())
   let fileRequest = 0
@@ -78,15 +76,18 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     try {
       const controller = new AbortController()
       exportController = controller
+      if (desktopActive.value) {
+        const receipt = await createWorkspaceBackup(controller.signal)
+        downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `huiyu-backup-${receipt.backupId}.json`)
+        lastBackupAt.value = Date.now()
+        localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value))
+        onFlash(`工作区备份已保存，包含 ${receipt.mediaCount} 个原始媒体；恢复凭证已下载。`)
+        return
+      }
       exportProgress.value = { completed: 0, total: 0 }
       const snapshot = await withArtworkMutation(async () => {
-        const [history, projects, images] = await Promise.all([
-          kvGet<BackupRecord[]>(HISTORY_KEY), kvGet<BackupRecord[]>(PROJECT_KEY), imgList(),
-        ])
-        if ((history !== null && !Array.isArray(history)) || (projects !== null && !Array.isArray(projects))) {
-          throw new Error('作品记录格式异常，已停止导出，未丢弃损坏记录')
-        }
-        return { history: history ?? [], projects: projects ?? [], images, settings: await collectSettings() }
+        const [library, images] = await Promise.all([readWebBackupLibrary(), readWebBackupImages()])
+        return { ...library, images, settings: await collectSettings() }
       })
       const { blob, summary: info } = await buildBackupBlob({
         appVersion, createdAt: new Date().toISOString(), history: snapshot.history,
@@ -126,12 +127,15 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     busy.value = true
     onFlash('正在整理作品图片…')
     try {
-      const records = (await imgList()) || []
+      const records = desktopActive.value
+        ? (await artworkRepository.readHistory()).filter(item => item.image_id).map(item => ({ id: item.image_id!, blob: null,
+          name: String(item.title || ''), created_at: Number(item.timestamp) || Date.now() }))
+        : await readWebBackupImages()
       let saved = 0
       let failed = 0
       for (const record of records) {
         try {
-          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await imgGet(record.id) : null)
+          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktopActive.value ? artworkRepository.getImage(record.id) : readWebBackupImage(record.id)) : null)
           if (!blob) { failed++; continue }
           const url = URL.createObjectURL(blob)
           const a = document.createElement('a')
@@ -169,13 +173,21 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     if (!file || busy.value) return null
     const request = ++fileRequest
     pending.value = null
+    pendingWorkspace.value = null
     pendingName.value = ''
     if (file.size > MAX_BACKUP_BYTES) {
       onFlash(BACKUP_SIZE_MESSAGE)
       return null
     }
     try {
-      const normalized = normalizeBackup(JSON.parse(await file.text()))
+      const raw: unknown = JSON.parse(await file.text())
+      if (desktopActive.value) {
+        const receipt = parseWorkspaceBackupReceipt(raw)
+        if (request !== fileRequest) return null
+        pendingWorkspace.value = receipt; pendingName.value = file.name
+        return { history: 0, projects: 0, images: receipt.mediaCount, settings: 0 }
+      }
+      const normalized = normalizeBackup(raw)
       if (request !== fileRequest) return null
       pending.value = normalized
       pendingName.value = file.name
@@ -189,9 +201,20 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  function discard() { if (busy.value) return; fileRequest++; pending.value = null; pendingName.value = '' }
+  function discard() { if (busy.value) return; fileRequest++; pending.value = null; pendingWorkspace.value = null; pendingName.value = '' }
 
   async function restore(mode: 'replace' | 'merge', confirmed = false): Promise<boolean> {
+    if (desktopActive.value) {
+      if (!pendingWorkspace.value || busy.value) return false
+      busy.value = true
+      try {
+        const candidate = await createWorkspaceRestoreCandidate(pendingWorkspace.value)
+        pendingWorkspace.value = null; pendingName.value = ''
+        onFlash(`恢复副本已验证：${candidate.candidateId}。当前工作区保持不变，可在维护切换时选择该副本。`)
+        return true
+      } catch (error) { onFlash('恢复校验失败：' + errorMessage(error, '备份不完整')); return false }
+      finally { busy.value = false }
+    }
     if (!pending.value || busy.value) return false
     const replace = mode === 'replace'
     if (replace && !confirmed && !(await confirmAction({
@@ -224,7 +247,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   /** 存储体检：历史条数、图片体积、配额占用 */
   async function healthCheck(): Promise<string> {
     try {
-      const [history, images] = await Promise.all([kvGet<BackupRecord[]>(HISTORY_KEY), imgList()])
+      if (desktopActive.value) { const message = await workspaceStorageHealth(); onFlash(message); return message }
+      const [{ history }, images] = await Promise.all([readWebBackupLibrary(), readWebBackupImages()])
       const bytes = (images || []).reduce((sum, r) => sum + (Number(r.size) || 0), 0)
       const mb = (bytes / 1024 / 1024).toFixed(1)
 
@@ -245,9 +269,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   }
 
   async function readCleanupState() {
-    const [history, projects, trash, quarantine, images] = await Promise.all([
-      kvGet(HISTORY_KEY), kvGet(PROJECT_KEY), kvGet(ARTWORK_TRASH_KV_KEY), kvGet(ARTWORK_HISTORY_QUARANTINE_KEY), imgList(),
-    ])
+    const { history, projects, trash, quarantine, images } = await readWebBackupCleanup()
     const referenced = collectImageReferences([history, projects, trash, quarantine, ...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)])
     return { referenced, images }
   }
@@ -260,6 +282,11 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     if (busy.value) return 0
     busy.value = true
     try {
+      if (desktopActive.value) {
+        const removed = await collectWorkspaceGarbage()
+        onFlash(`已清理 ${removed} 个过期且无引用的媒体对象。`)
+        return removed
+      }
       const snapshot = await readCleanupState()
       const candidates = new Set(snapshot.images.filter(record => !snapshot.referenced.has(record.id)).map(record => record.id))
       if (!candidates.size) { onFlash('没有需要清理的孤儿图片'); return 0 }
@@ -272,7 +299,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       const removed = await withArtworkCleanup(async () => {
         const current = await readCleanupState()
         const ids = current.images.filter(record => candidates.has(record.id) && !current.referenced.has(record.id)).map(record => record.id)
-        if (ids.length) await imgDeleteMany(ids)
+        if (ids.length) await deleteWebBackupImages(ids)
         return ids.length
       })
       onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
@@ -285,5 +312,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { busy, exportProgress, cancelExport, pending, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { busy, desktopActive, exportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

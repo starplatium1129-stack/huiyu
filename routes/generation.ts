@@ -83,7 +83,7 @@ function createGenerationRouter(config: GenerationConfig, dependencies?: Generat
             return envelope.fail(res, errorStatus(e) || 500, errorMessage(e), { code: errorCode(e) });
         }
     });
-    return { router, service: service.comfy, close: service.close };
+    return { router, service: service.comfy, generationService: service, close: service.close };
 }
 // Compatibility exports for existing gateway fixtures and callers.
 export = { createGenerationRouter, validateInput: validate, buildWorkflow, normalizeCheckpointName, isWaiCheckpoint, availableSuperRes, constants: { CHECKPOINT, LORAS, SAMPLERS, COMFY_SUPERRES_FILES } };

@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { expect, test, type BrowserContext } from '@playwright/test'
 import type { CompanionDesktopBridge } from '../../src/types/desktop'
 
@@ -19,10 +20,11 @@ const displays = [
 ]
 
 async function prepareDesktop(context: BrowserContext, theme: string) {
+  await installDesktopHostFixture(context)
   await context.addInitScript(value => {
     localStorage.setItem('aics_theme', value)
     localStorage.setItem('aics_guest_guide_dismissed', '1')
-    window.companionDesktop = {
+    window.desktopCapabilitiesFixture = {
       isDesktop: true, getWindowState: async () => ({ maximized: false, focused: true }),
       onMaximizedChanged: () => 1, offMaximizedChanged: () => {},
       minimizeWindow: () => {}, toggleMaximizeWindow: () => {}, closeWindow: () => {},
@@ -174,3 +176,5 @@ for (const theme of ['dark', 'light']) {
     })
   }
 }
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

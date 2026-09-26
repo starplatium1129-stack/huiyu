@@ -2,14 +2,43 @@ import { effectScope } from 'vue'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { useShotFirstFrames } from './useShotFirstFrames'
 import type { ShotDraft } from './shotListTypes'
-const mocks = vi.hoisted(() => ({ request: vi.fn(), upload: vi.fn() }))
+const mocks = vi.hoisted(() => ({ request: vi.fn(), upload: vi.fn(), durable: false, submit: vi.fn(), wait: vi.fn(), cancel: vi.fn() }))
 vi.mock('@/api/client', () => ({ apiClient: { request: mocks.request } }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: mocks.upload }))
-vi.mock('@/composables/useImageStore', () => ({ imgPut: vi.fn() }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { putImage: vi.fn() } }))
+vi.mock('@/api/runtimeTasks', () => ({ hasRuntimeTasks: () => mocks.durable, runtimeRequestKey: () => 'request-first-frame',
+  submitRuntimeTask: mocks.submit, waitForRuntimeTask: mocks.wait, cancelRuntimeTaskKey: mocks.cancel,
+  fetchRuntimeResult: vi.fn(), runtimeResultPath: vi.fn() }))
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
-afterEach(() => { vi.clearAllMocks(); vi.unstubAllGlobals() })
+afterEach(() => { vi.clearAllMocks(); vi.unstubAllGlobals(); mocks.durable = false })
 const shot = () => ({ firstFramePrompt: 'A quiet room', imageName: '', imageUrl: '' } as ShotDraft)
 describe('first-frame batch cancellation', () => {
+  it('detaches desktop observation on unload while keeping the accepted task and exact input', async () => {
+    mocks.durable = true
+    mocks.submit.mockResolvedValue({ taskId: 'accepted', requestKey: 'request-first-frame' })
+    mocks.wait.mockImplementation((_id, signal) => new Promise((_resolve, reject) => signal.addEventListener('abort', () => reject(signal.reason))))
+    const scope = effectScope(), tools = scope.run(() => useShotFirstFrames({ onError: vi.fn() }))!
+    const pending = tools.generateFirstFrames([shot(), shot()], 'portrait')
+    await vi.waitFor(() => expect(mocks.wait).toHaveBeenCalledTimes(1))
+    scope.stop(); await pending
+    expect(mocks.submit).toHaveBeenCalledWith('creative', { prompt: 'A quiet room', modelId: 'krea2-turbo-fp8', width: 1024, height: 1536 }, 'request-first-frame', expect.any(Object))
+    expect(mocks.submit).toHaveBeenCalledTimes(1)
+    expect(mocks.cancel).not.toHaveBeenCalled()
+    expect(mocks.request).not.toHaveBeenCalled()
+  })
+  it('records explicit desktop cancellation by the original key before acceptance returns', async () => {
+    mocks.durable = true
+    let finish!: (value: unknown) => void
+    mocks.submit.mockImplementation(() => new Promise(resolve => { finish = resolve }))
+    const scope = effectScope(), tools = scope.run(() => useShotFirstFrames({ onError: vi.fn() }))!
+    const pending = tools.generateFirstFrames([shot()], 'square')
+    await vi.waitFor(() => expect(mocks.submit).toHaveBeenCalledTimes(1))
+    await tools.cancelFirstFrames()
+    finish({ taskId: 'late', requestKey: 'request-first-frame' }); await pending
+    expect(mocks.cancel).toHaveBeenCalledExactlyOnceWith('request-first-frame')
+    expect(mocks.wait).not.toHaveBeenCalled()
+    scope.stop()
+  })
   it('cancels the owned backend job and never starts the next shot', async () => {
     mocks.request.mockImplementation(async (_path, options) => {
       if (options.method === 'POST') return { ok: true, job: { id: 'owned', status: 'running' } }

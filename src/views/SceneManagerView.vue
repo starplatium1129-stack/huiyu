@@ -125,7 +125,7 @@
                 <button class="btn btn-ghost btn-sm" type="button" @click="selectedHeroId = ''">关闭</button>
               </span>
             </div>
-            <img class="image-preview-img home-hero-preview" :src="heroUrl" :alt="selectedHeroTitle" />
+            <img :crossorigin="runtimeResourceCors()" class="image-preview-img home-hero-preview" :src="resolveRuntimeUrl(heroUrl)" :alt="selectedHeroTitle" />
             <input ref="heroFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
             <p class="image-feedback" :class="{ err: showcaseError }">{{ showcaseFeedback }}</p>
           </div>
@@ -147,7 +147,7 @@
             :class="{ active: selectedImageId === s.id }"
             @click="previewImage(s)"
           >
-            <img :src="`/scene-showcase/thumbs/${encodeURIComponent(s.id)}.jpg?v=${showcaseVersion}`" loading="lazy" class="sm-card-thumb" @error="onThumbError" alt="" />
+            <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(`/scene-showcase/thumbs/${encodeURIComponent(s.id)}.jpg?v=${showcaseVersion}`)" loading="lazy" class="sm-card-thumb" @error="onThumbError" alt="" />
             <span class="sm-card-id">{{ s.id }}</span>
             <span class="sm-card-title">{{ s.title }}</span>
             <span class="sm-card-meta">{{ charLabel(s.char) }} · {{ s.rating || 'All' }}</span>
@@ -167,7 +167,7 @@
               <button class="btn btn-ghost btn-sm" type="button" @click="selectedImageId = ''">关闭</button>
             </span>
           </div>
-          <img class="image-preview-img" :src="showcaseUrl" :alt="selectedImageTitle" @error="onShowcaseMissing" />
+          <img :crossorigin="runtimeResourceCors()" class="image-preview-img" :src="resolveRuntimeUrl(showcaseUrl)" :alt="selectedImageTitle" @error="onShowcaseMissing" />
           <input ref="showcaseFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onShowcasePicked" />
           <p class="image-feedback" :class="{ err: showcaseError }">{{ showcaseFeedback }}</p>
         </div>
@@ -456,6 +456,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'

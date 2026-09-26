@@ -1,6 +1,7 @@
+import { profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { imgPut } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import {
   VIDEO_CONTEXT_KEY,
   VIDEO_DRAFT_KEY,
@@ -18,7 +19,7 @@ import {
  * 1. 绘图页 → 视频页的跨页交接载荷（单图出视频 / 多图分镜短片），类型化 + 响应式；
  * 2. 底层仍持久化到 sessionStorage（键名不变）：跨 SPA 路由与整页刷新都存活，
  *    且保持「视频页一次性消费」语义——消费即清除，不产生幽灵预填。
- * 图片本体不入 store：走 IndexedDB（useImageStore.imgPut），载荷只带 imageId。
+ * 图片本体不入 store：走作品媒体仓储，载荷只带 imageId。
  */
 
 export interface VideoCtxPayload {
@@ -390,7 +391,7 @@ export async function prepareVideoCtx(target: VideoBridgeTarget): Promise<VideoC
       target.flash('成片数据已失效，请重新生成')
       return null
     }
-    const imageId = await imgPut(blob)
+    const imageId = await artworkRepository.putImage(blob)
     return {
       imageId,
       prompt: target.prompt,
@@ -406,3 +407,4 @@ export async function prepareVideoCtx(target: VideoBridgeTarget): Promise<VideoC
     return null
   }
 }
+import { runtimeFetch as fetch } from '@/platform/runtimeUrl'

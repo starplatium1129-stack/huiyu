@@ -1,5 +1,5 @@
 import { watch, type Ref } from 'vue'
-import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { useVideoStore, type VideoDraftPayload } from '@/stores/videoStore'
 import { fetchVideoJob, type VideoDefaults, type VideoJob, type VideoMode } from '@/api/videoApi'
 import { ApiClientError } from '@/api/client'
@@ -88,7 +88,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   async function restoreFrame(imageId: string, urlRef: Ref<string>): Promise<boolean> {
     if (!imageId) return true
     try {
-      const blob = await imgGet(imageId)
+      const blob = await artworkRepository.getImage(imageId)
       if (!blob || !blob.size) return false
       if (urlRef.value) URL.revokeObjectURL(urlRef.value)
       urlRef.value = URL.createObjectURL(blob)

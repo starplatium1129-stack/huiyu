@@ -1,29 +1,28 @@
-import { useTrackedTask } from '@/composables/useTaskCenter'
+import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { useTrackedTask } from '../useTaskCenter.ts'
 import { ref, shallowRef, type Ref } from 'vue'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { identityDomainOf } from '@/utils/interrogateMerge'
-import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
-import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '@/stores/promptBuilderStore'
-import { apiClient, ApiClientError } from '@/api/client'
+import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
+import { identityDomainOf } from '../../utils/interrogateMerge.ts'
+import { artistStyleProse, artistTagsForEngine } from '../../config/artistStyles.ts'
+import { popularPortraitSrc } from '../../utils/popularPortraitSource.ts'
+import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '../../stores/promptBuilderStore.ts'
+import { createBatchAnimaTransport } from './batchAnimaJob.ts'
 import {
   findCharacter as findPopularCharacter,
   buildPopularPromptPlan, defaultOutfit, findOutfit, inferBlueprintDecisions,
   type SceneBlueprint,
   type PopularCharacter,
-} from '@/utils/popularContent'
-import { mutualGroupWithCategory, normalizeKey } from '@/utils/promptPolicy'
+} from '../../utils/popularContent.ts'
+import { mutualGroupWithCategory, normalizeKey } from '../../utils/promptPolicy.ts'
 import {
   ANIMA_CHARACTER_BY_CHARACTER,
-  animaRequestPayload,
   type useAnimaSession,
-  type AnimaPublicJob,
   type AnimaRequest,
-} from '@/composables/generation/useAnimaSession'
-import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
-import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
-import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchTargetItem } from '@/composables/generation/useBatchDraw'
-import type { SDQueueJob } from '@/composables/generation/useSDQueue'
+} from '../generation/useAnimaSession.ts'
+import type { useSDGenerate } from '../generation/useSDGenerate.ts'
+import type { usePromptAssembly } from './usePromptAssembly.ts'
+import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchTargetItem } from '../generation/useBatchDraw.ts'
+import type { SDQueueJob } from '../generation/useSDQueue.ts'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -60,6 +59,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   const sdSize = shallowRef(deps.sdSize.value), negativePrompt = shallowRef(deps.negativePrompt.value)
   const loraSpecs = shallowRef(deps.loraSpecs.value), modelProfile = shallowRef(deps.modelProfile.value)
   const animaState = shallowRef(deps.animaState.value)
+  const animaTransport = createBatchAnimaTransport(() => animaState.value.family)
   let characters: PopularCharacter[] | null = null
   let blueprints: SceneBlueprint[] | null = null
   let fields: Partial<HistoryEntry> = {}
@@ -261,7 +261,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     try {
       const url = await runJob(job, { disableLora: isTargetPopular || isTargetOtherStudio })
       if (!url) return { ok: false, error: sd.errorMsg.value || 'SD 生成失败' }
-      const response = await fetch(url, { cache: 'no-store' })
+      const response = await runtimeFetch(url, { cache: 'no-store' })
       const contentType = response.headers.get('content-type') || ''
       if (!response.ok || !contentType.startsWith('image/')) return { ok: false, error: '成片响应不是图片' }
       const blob = await response.blob()
@@ -274,6 +274,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         negative: job.negative,
         prompt: job.prompt,
         ...historyGenerationFields(),
+        ...(sd.resultTaskId?.value ? { taskId: sd.resultTaskId.value } : {}),
         visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds],
         // 精准覆盖角色元数据
         ...(isTargetPopular ? {
@@ -340,52 +341,10 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       hiresScale: animaState.value.hiresScale,
       hiresDenoise: animaState.value.hiresDenoise,
     }
-    try {
-      const jobRoute = animaState.value.family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
-      let data: { ok?: boolean; job?: AnimaPublicJob; error?: string } | undefined
-      const admissionDeadline = Date.now() + 120_000
-      while (!data && Date.now() < admissionDeadline) {
-        if (batchDraw.cancelRequested.value) return { ok: false, cancelled: true }
-        try {
-          data = await apiClient.request(jobRoute, { method: 'POST', body: animaRequestPayload(request), timeoutMs: 30_000 })
-        } catch (error) {
-          if (!(error instanceof ApiClientError) || error.status !== 429) throw error
-          input.report?.('队列暂满，等待空位…可点停止结束等待')
-          await new Promise(resolve => setTimeout(resolve, 5000))
-        }
-      }
-      if (!data) throw new Error('队列持续繁忙，请稍后重试本项')
-      if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
-      const jobId = data.job.id
-      const deadline = Date.now() + 10 * 60 * 1000
-      let job = data.job
-      while (Date.now() < deadline) {
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        const state = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(
-          `${jobRoute}/${encodeURIComponent(jobId)}`, { cache: 'no-store', timeoutMs: 15_000 }).catch(error => {
-            if (error instanceof ApiClientError && ['network', 'timeout'].includes(error.kind)) return null
-            throw error
-          })
-        if (!state) { input.report?.('连接暂时中断，正在重连同一任务…'); continue }
-        if (state.ok !== true || !state.job) throw new Error(state.error || 'Anima 状态无效')
-        job = state.job
-        input.report?.(job.status === 'queued' ? '已接收，等待生成…' : '正在生成…')
-        if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')
-        if (job.status === 'cancelled') return { ok: false, error: '任务已取消' }
-        if (job.status === 'succeeded' && job.resultAvailable && job.resultUrl) break
-      }
-      if (job.status !== 'succeeded' || !job.resultUrl) {
-        await apiClient.request(`${jobRoute}/${encodeURIComponent(jobId)}`, { method: 'DELETE', timeoutMs: 15_000 }).catch(() => undefined)
-        throw new Error('Anima 等待超时，已尝试停止该任务；请核对任务状态后重试')
-      }
-      const blob = await fetchImageBlob(job.resultUrl)
-      if (!blob.size) throw new Error('生成结果为空')
-
-      return await persist(input, {
-        blob,
+    const history = {
         ...historyGenerationFields(),
-        seed: job.seed, negative: request.negative, prompt,
-        size: `${request.width}x${request.height}`, engine: animaState.value.family === 'krea2' ? 'krea2' : 'anima',
+        seed: request.seed, negative: request.negative, prompt,
+        size: `${request.width}x${request.height}`, engine: animaState.value.family === 'krea2' ? 'krea2' as const : 'anima' as const,
         model: request.modelId, profile: request.profileId, loraId: request.loraId, loraStrength: request.loraStrength,
         cfg: request.cfg, steps: request.steps, sampler: animaState.value.sampler, scheduler: animaState.value.scheduler,
         visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds],
@@ -406,20 +365,15 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         hiresFix: Boolean(animaState.value.hiresFix),
         hiresScale: animaState.value.hiresScale,
         hiresDenoise: animaState.value.hiresDenoise,
-      })
+    }
+    try {
+      const result = await animaTransport.run(request, { history, char: history.character, characterId: history.characterId,
+        outfitId: history.outfitId, blueprintId: history.blueprintId, story: history.story }, () => batchDraw.cancelRequested.value, input.report)
+      return await persist(input, { ...history, blob: result.blob, seed: result.seed, ...(result.taskId ? { taskId: result.taskId } : {}) })
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') return { ok: false, cancelled: true }
       return { ok: false, error: error instanceof Error ? error.message : 'Anima 生成失败' }
     }
-  }
-
-  async function fetchImageBlob(url: string): Promise<Blob> {
-    const response = await fetch(url, { cache: 'no-store' })
-    const contentType = String(response.headers.get('content-type') || '')
-    if (!response.ok) throw new Error(`图片读取失败（HTTP ${response.status}）`)
-    if (!contentType.startsWith('image/')) throw new Error('网关返回的结果不是图片')
-    const blob = await response.blob()
-    if (!blob.size) throw new Error('生成结果为空')
-    return blob
   }
 
   type HistoryInput = Parameters<PromptBuilderStore['commitHistoryEntry']>[0]
@@ -441,6 +395,9 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       return saved ? persist(input, saved) : runEngine === 'sd' ? runBatchSd(input) : runBatchAnima(input)
     },
   })
+
+  const disposeBatch = batchDraw.dispose
+  batchDraw.dispose = () => { animaTransport.dispose(); disposeBatch() }
 
   function selectedSeed() {
     const seed = runEngine === 'anima' ? animaState.value.seed : pb.sdParams.seedLock ? pb.sdParams.seed : null

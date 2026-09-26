@@ -2,7 +2,7 @@
   <div class="browsing-directory">
     <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" aria-haspopup="dialog"
       :aria-label="'选择角色，当前' + (selected?.name || '未选择')" @click="openDirectory">
-      <CharacterPortrait :src="selected?.image" :name="selected?.name || '角色'" />
+      <CharacterPortrait :src="resolveRuntimeUrl(selected?.image)" :name="selected?.name || '角色'" />
       <span class="pocket-copy"><small>这一页的主角</small><strong>{{ selected?.name || '选择角色' }}</strong></span>
       <span class="pocket-action">换一位<ArchiveIcon name="search" /></span>
     </button>
@@ -22,6 +22,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
+
 import { computed, nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
 import CharacterDirectory, { type DirectoryCharacter } from './CharacterDirectory.vue'
 import CharacterPortrait from './CharacterPortrait.vue'

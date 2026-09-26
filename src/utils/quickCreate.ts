@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 export const QUICK_CREATE_STORAGE_KEY = 'aics_sd_last_success_v1'
 
 export interface QuickCreateSettings {
@@ -55,7 +56,7 @@ export function normalizeQuickCreate(value: unknown): QuickCreateSettings | null
 
 function storage(target?: StorageLike): StorageLike | null {
   if (target) return target
-  try { return typeof localStorage !== 'undefined' ? localStorage : null } catch { return null }
+  try { return typeof globalThis.localStorage !== 'undefined' ? localStorage : null } catch { return null }
 }
 
 export function readQuickCreate(target?: StorageLike): QuickCreateSettings | null {

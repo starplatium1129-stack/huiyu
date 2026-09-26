@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-desktop-workspace-enable-bundled"
+description = "Enables the desktop_workspace_enable_bundled command without any pre-configured scope."
+commands.allow = ["desktop_workspace_enable_bundled"]
+
+[[permission]]
+identifier = "deny-desktop-workspace-enable-bundled"
+description = "Denies the desktop_workspace_enable_bundled command without any pre-configured scope."
+commands.deny = ["desktop_workspace_enable_bundled"]

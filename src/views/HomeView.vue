@@ -18,12 +18,12 @@
           </div>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" aria-label="宁宁与夏目的角色视觉">
-          <img v-if="!heroFailed.nene" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="heroAssets.nene" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" @error="heroFailed.nene = true" />
+          <img :crossorigin="runtimeResourceCors()" v-if="!heroFailed.nene" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="resolveRuntimeUrl(heroAssets.nene)" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" @error="heroFailed.nene = true" />
           <div v-else class="hero-fallback nene" :class="{ 'is-current': homeMuse === 'nene' }" aria-hidden="true">
             <ArchiveIcon name="image" />
             <span class="hero-fallback-text">主视觉暂未加载</span>
           </div>
-          <img v-if="!heroFailed.natsume" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :src="heroAssets.natsume" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" @error="heroFailed.natsume = true" />
+          <img :crossorigin="runtimeResourceCors()" v-if="!heroFailed.natsume" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :src="resolveRuntimeUrl(heroAssets.natsume)" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" @error="heroFailed.natsume = true" />
           <div v-else class="hero-fallback natsume" :class="{ 'is-current': homeMuse === 'natsume' }" aria-hidden="true">
             <ArchiveIcon name="image" />
             <span class="hero-fallback-text">主视觉暂未加载</span>
@@ -48,7 +48,7 @@
           :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
         >
           <div class="recent-cover" :data-image-id="h.image_id">
-            <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" class="recent-cover-img" loading="lazy" decoding="async" />
+            <img :crossorigin="runtimeResourceCors()" v-if="coverUrl(h)" :src="resolveRuntimeUrl(coverUrl(h))" alt="" class="recent-cover-img" loading="lazy" decoding="async" />
             <ArchiveIcon v-else name="image" class="placeholder" />
           </div>
           <div class="recent-body">
@@ -96,7 +96,7 @@
               <img
                 v-if="!isPortraitFailed(c.id)"
                 :key="portraitSrc(c.id)"
-                :src="portraitSrc(c.id)"
+                :src="resolveRuntimeUrl(portraitSrc(c.id))"
                 :alt="c.displayName"
                 loading="lazy"
                 decoding="async"
@@ -211,6 +211,9 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, onMounted, onUnmounted, reactive, watch } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'

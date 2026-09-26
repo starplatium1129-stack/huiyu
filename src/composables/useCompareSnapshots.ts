@@ -1,3 +1,4 @@
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { ref, onBeforeUnmount, type Ref } from 'vue'
 // 带 .ts 扩展（allowImportingTsExtensions）：让本模块可被 scripts/tests 以 node --test 直跑
 import { useFocusTrap } from './useFocusTrap.ts'
@@ -33,7 +34,7 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
   async function persistUrl(url: string): Promise<string | null> {
     if (!url.startsWith('blob:')) return url
     try {
-      const response = await fetch(url)
+      const response = await runtimeFetch(url)
       if (!response.ok) return null
       const blob = await response.blob()
       if (disposed || !blob.size) return null

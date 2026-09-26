@@ -27,7 +27,7 @@
       <img
         v-show="!imageFailed"
         ref="imageEl"
-        :src="src"
+        :src="resolveRuntimeUrl(src)"
         :alt="alt"
         class="zoomable-img"
         :class="{ 'is-ready': imageReady }"
@@ -64,6 +64,8 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+
 import { computed, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 

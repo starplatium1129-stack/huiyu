@@ -1,3 +1,4 @@
+import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
 import { downloadBlob } from '../utils/downloadBlob.ts'
 import { copyText } from '../utils/clipboard.ts'
 /**
@@ -15,7 +16,7 @@ import {
   type ControlServiceAction,
 } from '../api/controlApi.ts'
 import { maintenanceApi, type MaintenanceApi } from '../api/maintenanceApi.ts'
-import type { useControlStatus } from '@/composables/useControlStatus'
+import type { useControlStatus } from './useControlStatus.ts'
 import { settingsRepository, TUNNEL_ENABLED_SETTING } from '../storage/settingsRepository.ts'
 
 type StatusApi = ReturnType<typeof useControlStatus>
@@ -175,9 +176,9 @@ export function useControlActions(
   /** 重新构建前端（公网分享伺服 dist/，源码改动后需重建才生效） */
   async function buildWeb() {
     if (buildingWeb.value) return
-    if (window.companionDesktop) {
+    if (getDesktopCapabilities()) {
       try {
-        if (await window.companionDesktop.isPackaged()) {
+        if (await getDesktopCapabilities()!.isPackaged()) {
           showToast('桌面应用模式不支持重建前端（源码不在安装包内）', true)
           return
         }

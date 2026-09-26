@@ -46,7 +46,7 @@ fn owned_unhealthy_process_is_reaped_before_restart_and_stop() {
         assert!(is_port_available(GATEWAY_HOST, port));
         assert!(!supervisor.owns_gateway());
         let occupied = std::net::TcpListener::bind((GATEWAY_HOST, port)).unwrap();
-        assert!(supervisor.start().await.unwrap_err().contains("restart the desktop"));
+        assert!(supervisor.start().await.unwrap_err().contains("Legacy profile origin is occupied"));
         assert_eq!(supervisor.port(), port);
         drop(occupied);
     });
@@ -143,7 +143,7 @@ fn stop_during_startup_cannot_publish_a_late_child() {
     supervisor.stop_sync();
     assert!(worker.join().unwrap().unwrap_err().contains("cancelled"));
     assert!(supervisor.child.lock().unwrap().is_none());
-    assert!(!supervisor.is_authenticated());
+    assert!(!supervisor.authenticated.load(Ordering::SeqCst));
     assert!(!supervisor.owns_gateway());
     assert!(is_port_available(GATEWAY_HOST, port));
     std::fs::remove_dir_all(root).unwrap();

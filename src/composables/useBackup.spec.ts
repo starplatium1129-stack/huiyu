@@ -13,6 +13,7 @@ vi.mock('@/composables/useConfirm', () => ({ confirmAction: vi.fn(async () => tr
 vi.mock('./useImageStore', () => ({ imgList: vi.fn(), imgGet: vi.fn(), imgDeleteMany: vi.fn(), imgPutRecord: vi.fn() }))
 vi.mock('./useKVStore', () => ({ kvGet: vi.fn(), kvSetMany: vi.fn() }))
 vi.mock('@/storage/backupRestore', () => ({ restoreBackupData: vi.fn() }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { readHistory: vi.fn(), getImage: vi.fn() } }))
 vi.mock('@/storage/artworkMutation', () => ({ withArtworkMutation: (work: () => Promise<unknown>) => work() }))
 vi.mock('@/storage/artworkSession', () => ({ withArtworkCleanup: vi.fn((work: () => Promise<unknown>) => work()) }))
 vi.mock('@/utils/downloadBlob', () => ({ downloadBlob: vi.fn() }))

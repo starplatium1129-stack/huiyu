@@ -1,6 +1,6 @@
 import { useTaskCenter, approveTaskReload } from '@/composables/useTaskCenter'
 import { confirmAction } from '@/composables/useConfirm'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import { needsDocumentReload } from './documentPolicy'
 import { createRoutePrefetcher } from './prefetch'
@@ -20,6 +20,7 @@ function cancelPendingScrollRestore() {
 }
 
 function currentLocation(): string {
+  if (import.meta.env.MODE === 'desktop') return window.location.hash.slice(1) || '/'
   return `${window.location.pathname}${window.location.search}${window.location.hash}`
 }
 
@@ -55,7 +56,7 @@ function scheduleScrollRestore(path: string, position: { left: number; top: numb
  * 代价是两次刷新，换来的是其余路由继续维持不含 unsafe-eval 的严格策略。
  */
 const router = createRouter({
-  history: createWebHistory(),
+  history: import.meta.env.MODE === 'desktop' ? createWebHashHistory() : createWebHistory(),
   routes: [
     {
       path: '/',
@@ -132,6 +133,9 @@ router.beforeEach(async (to, from) => {
   }
   // 初次进入（无 from）由浏览器自己请求文档，CSP 已经对路径生效
   if (!from.matched.length) return true
+  // Bundled desktop documents have the application CSP already; changing a
+  // route never needs a gateway document or drops unsubmitted drafts.
+  if (import.meta.env.MODE === 'desktop') return true
   if (!needsDocumentReload(from.path, to.path)) return true
 
   // 进 Live2D 页面换到带 unsafe-eval 的文档；离开时换回严格文档，

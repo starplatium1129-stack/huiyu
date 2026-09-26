@@ -1,3 +1,4 @@
+import { runtimeFetch as fetch } from '@/platform/runtimeUrl'
 export async function fetchResultImage(url: string, signal: AbortSignal): Promise<Blob> {
     if (signal.aborted) throw new Error('请求已取消')
     const controller = new AbortController()

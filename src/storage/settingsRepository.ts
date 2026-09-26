@@ -1,3 +1,4 @@
+import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import {
   AUTO_SAVE_TO_GALLERY_KEY,
   CHAT_THINKING_KEY,
@@ -77,7 +78,7 @@ export const CHAT_THINKING_SETTING: SettingDefinition<ReasoningLevel> = {
 
 function browserStorage(): KeyedStorage | null {
   try {
-    return typeof localStorage === 'undefined' ? null : localStorage
+    return typeof globalThis.localStorage === 'undefined' ? null : localStorage
   } catch {
     return null
   }

@@ -1,3 +1,4 @@
+import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect } from '@playwright/test'
 
 for (const theme of ['dark', 'light']) {
@@ -62,7 +63,7 @@ for (const theme of ['dark', 'light']) {
         isDesktop: true, getState: async () => ({ visible: true, live2dEnabled: true, bounds: { x: 0, y: 0, width: 480, height: 720 } }),
         getSettings: async () => ({}), getWorkspace: async () => ({ root: '', exists: false }), isPackaged: async () => true,
       }
-      window.companionDesktop = new Proxy(methods, { get(target, key: string) { if (key in target) return target[key]; if (key.startsWith('on')) return () => 1; return () => undefined } }) as unknown as NonNullable<Window['companionDesktop']>
+      window.desktopCapabilitiesFixture = new Proxy(methods, { get(target, key: string) { if (key in target) return target[key]; if (key.startsWith('on')) return () => 1; return () => undefined } }) as unknown as NonNullable<Window['desktopCapabilitiesFixture']>
     }, theme)
     await page.goto('/companion?character=hatsune_miku')
     for (const id of ['hatsune_miku', 'frieren', 'nene']) {
@@ -111,3 +112,5 @@ test('opening the full room carries the selected character and an unsaved draft'
   await expect(page.getByRole('combobox', { name: '切换角色', exact: true })).toHaveAttribute('data-value', 'natsume')
   await expect(page.locator('.chat-input')).toHaveValue('继续这段还没发送的对话')
 })
+
+test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

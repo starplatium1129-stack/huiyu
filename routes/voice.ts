@@ -1,7 +1,7 @@
 'use strict';
 
 import type { Response } from 'express-serve-static-core';
-import type { TranslateRequest, TtsRequest, VoicePrepareRequest } from '../src/types/api';
+import type { TranslateRequest, TtsRequest, VoicePrepareRequest } from '../types/voice';
 import type { GatewayConfig } from '../server/config-types';
 import { errorCode as runtimeErrorCode, errorField, errorMessage as runtimeErrorMessage } from '../scripts/lib/runtime-errors';
 

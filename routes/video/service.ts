@@ -33,10 +33,11 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
   // poll/cancel 状态机保持本路由引擎专属实现（分镜 batches 是另一套形状，不套用）。
   let registry = jobRunner.createJobRegistry<VideoJob>();
   let jobs = registry.jobs;
+  const submissions = new Set<Promise<void>>();
   let clientId = comfyClient.clientIdFor(config, 'video');
   // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI
   // 任务（立即 + 30s 后各试一次，重试幂等无害）；2026-08-21 收口到 comfy-client。
-  comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'video');
+  if (!dependencies.durableTasks) comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'video');
   // 任务快照：save/remove 挂在创建与 removeJob 两端。优雅关停会逐一 removeJob
   // 天然清空快照；只有崩溃/强杀才留痕 —— drain() 启动时读走并以 tombstone 常驻，
   // 路由层据此把「未知 id」升级为 410 JOB_LOST 的明确提示。
@@ -48,8 +49,7 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
   let jobTtlMs = dependencies.jobTtlMs || JOB_TTL_MS;
   let pollIntervalMs = dependencies.pollIntervalMs || POLL_INTERVAL_MS;
 
-  media.cleanupMediaRoot(config);
-  media.cleanupImageInput(config);
+  if (!dependencies.durableTasks) { media.cleanupMediaRoot(config); media.cleanupImageInput(config); }
 
   let pendingCount = registry.pendingCount;
 
@@ -151,6 +151,7 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
         return;
       }
       job.result = await comfy.materializeResult(config, job, output);
+      if (job.taskHooks) await job.taskHooks.collect([{ file: job.result.path, mime: job.result.mime }]);
       // 2026-08-16 审计：materialize 期间用户可能已取消（cancel 与 poll 竞态）——
       // 材料化完成不代表任务仍有效；状态已离开 running 时丢弃结果文件，保持取消态，
       // 避免「取消后任务静默复活为 succeeded」并残留下载文件。
@@ -178,13 +179,16 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
     }
   }
 
-  async function submit(job: VideoJob) {
+  async function submitUpstream(job: VideoJob, hooks?: import('../../server/tasks/provider').TaskExecutionHooks) {
+    if (registry.isClosed()) throw serviceError(503, 'SERVICE_CLOSED', '视频服务已关闭');
+    job.taskHooks = hooks;
     let availability = media.modelAvailability(config, MODEL_BY_ID[job.input.modelId]);
     if (!availability.available) {
       throw serviceError(503, 'VIDEO_MODEL_UNAVAILABLE', '视频模型文件尚未安装', {
         missing:availability.missing,
       });
     }
+    if (hooks) await hooks.submitting('comfy', '');
     let response: unknown = await comfy.requestComfyJson(config, 'POST', '/prompt', {
       prompt:buildWorkflow(job.input),
       client_id:clientId,
@@ -194,6 +198,8 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
       throw serviceError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 未返回有效任务 ID');
     }
     job.upstreamId = promptId;
+    if (hooks) await hooks.observed(promptId, { ...publicJob(job), gatewayJobId: job.id });
+    if (registry.isClosed() && hooks) return;
     // 提交期间被取消（cancel 与 submit 竞态）：不能把已经取消的任务又翻回
     // running——否则用户按了取消，任务却复活跑完全程占 45 分钟 GPU。
     // 这里直接把刚创建的上游任务一并取消，保持取消语义。
@@ -213,7 +219,14 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
     schedulePoll(job, 0);
   }
 
+  function submit(job: VideoJob, hooks?: import('../../server/tasks/provider').TaskExecutionHooks) {
+    const work = submitUpstream(job, hooks); submissions.add(work);
+    void work.then(() => submissions.delete(work), () => submissions.delete(work));
+    return work;
+  }
+
   function create(input: VideoInput, owner: string, opts?: { ttlMs?: number }) {
+    if (registry.isClosed()) throw serviceError(503, 'SERVICE_CLOSED', '视频服务已关闭');
     if (pendingCount() >= MAX_PENDING) {
       throw serviceError(429, 'VIDEO_QUEUE_FULL', '视频队列已满，请等待当前任务完成');
     }
@@ -294,13 +307,17 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
 
   function close() {
     registry.close();
-    jobs.forEach(removeJob);
-    media.cleanupMediaRoot(config);
+    jobs.forEach(job => {
+      if (!job.taskHooks) removeJob(job);
+      else { if (job.pollTimer) clearTimeout(job.pollTimer); if (job.gcTimer) clearTimeout(job.gcTimer); }
+    });
+    if (!dependencies.durableTasks) media.cleanupMediaRoot(config);
   }
 
   return {
     create:create,
     submit:submit,
+    drainSubmissions: async () => { await Promise.allSettled([...submissions]); },
     get:get,
     getLost:getLost,
     cancel:cancel,

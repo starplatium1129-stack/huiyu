@@ -72,6 +72,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
   // poll/cancel 状态机保持本路由引擎专属实现。
   let registry = jobRunner.createJobRegistry<ImageJob<Input>>();
   let jobs = registry.jobs;
+  const submissions = new Set<Promise<void>>();
   let runtimeRoot = config.RUNTIME && config.RUNTIME.state ? path.dirname(config.RUNTIME.state) : path.join(config.ROOT_DIR, 'runtime');
   let snapshots = jobSnapshot.createJobSnapshotStore(path.join(runtimeRoot, 'jobs', mediaNamespace));
   let lostJobs = snapshots.drain();
@@ -86,16 +87,15 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
   // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI
   // 任务（立即 + 30s 后各试一次，重试幂等无害）；2026-08-21 收口到 comfy-client。
   let clientId = comfyClient.clientIdFor(config, engine);
-  comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'anima');
+  if (!options.durableTasks) comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'anima');
   let progressMonitor = comfyProgress.createComfyProgressMonitor(config, clientId);
   // 显存保护：按当前 ComfyUI 实例记录最近一次提交的底模家族；Anima ⇄ Krea2
   // 切换时先让 ComfyUI 卸载上一家族模型，避免两个大模型同时驻留显存。
   // 首次提交也释放一次，兜底网关重启后 ComfyUI 里仍驻留的旧模型。
   let comfyHostKey = String(config.COMFY_HOST || 'default');
 
-  cleanupMediaRoot(config, mediaNamespace);
-  cleanupOwnedInputs();
-  let inputCleanupTimer = setInterval(cleanupOwnedInputs, Math.min(inputImageTtlMs, 5 * 60 * 1000));
+  if (!options.durableTasks) { cleanupMediaRoot(config, mediaNamespace); cleanupOwnedInputs(); }
+  let inputCleanupTimer = setInterval(() => { if (!options?.durableTasks) cleanupOwnedInputs(); }, Math.min(inputImageTtlMs, 5 * 60 * 1000));
   if (typeof inputCleanupTimer.unref === 'function') inputCleanupTimer.unref();
 
   let pendingCount = registry.pendingCount;
@@ -271,6 +271,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
         return;
       }
        job.result = await materializeResult(config, job, image, { outputPrefix:job.input.family === 'krea2' ? 'creative_app' : outputPrefix, mediaNamespace:mediaNamespace });
+       if (job.taskHooks) await job.taskHooks.collect([{ file: job.result.path, mime: job.result.mime }]);
        job.resultConsumed = false;
       // 2026-08-16 审计（与 video.js 同款）：materialize 期间用户可能已取消——
       // 状态离开 running 时丢弃结果并保持取消流程，避免「取消后任务复活为
@@ -301,7 +302,8 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     }
   }
 
-  async function submit(job: ImageJob<Input>) {
+  async function submitUpstream(job: ImageJob<Input>, hooks?: import('../../server/tasks/provider').TaskExecutionHooks) {
+    job.taskHooks = hooks;
     if (registry.isClosed() || job.status !== 'queued') throw serviceError(409, 'JOB_NOT_QUEUED', '任务已结束或服务已关闭');
     validateResources(job.input);
     // WAI/generation 复用本服务时 input 没有 family，用 engine 兜底为 'sd'，
@@ -314,6 +316,7 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
       await unloadComfyModels(config);
     }
     if (registry.isClosed() || job.status !== 'queued') return;
+    if (hooks) await hooks.submitting('comfy', '');
     let response = await requestComfyJson<PromptSubmission>(config, 'POST', '/prompt', {
       prompt:buildWorkflowForJob(job.input),
       client_id:clientId
@@ -323,7 +326,9 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
       throw serviceError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 未返回有效任务 ID');
     }
     job.upstreamId = promptId;
+    if (hooks) await hooks.observed(promptId, { ...job.metadata, gatewayJobId: job.id });
     lastFamilyByComfyHost.set(comfyHostKey, family);
+    if (registry.isClosed() && hooks) return;
     if (registry.isClosed() || ['cancelling', 'cancelled'].includes(job.status)) {
       void requestTargetedCancel(job).catch(function () {});
       return;
@@ -332,6 +337,12 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     job.progressText = '已提交，等待 ComfyUI 执行…';
     progressMonitor.watch(promptId, job);
     schedulePoll(job, 0);
+  }
+
+  function submit(job: ImageJob<Input>, hooks?: import('../../server/tasks/provider').TaskExecutionHooks) {
+    const work = submitUpstream(job, hooks); submissions.add(work);
+    void work.then(() => submissions.delete(work), () => submissions.delete(work));
+    return work;
   }
 
   function create(input: Input, owner: string) {
@@ -499,20 +510,20 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
       job.pollTimer = null;
       if (job.gcTimer) clearTimeout(job.gcTimer);
       job.gcTimer = null;
-      if (job.status === 'queued' || job.status === 'running' || job.status === 'cancelling') {
+      if (!job.taskHooks && (job.status === 'queued' || job.status === 'running' || job.status === 'cancelling')) {
         void requestTargetedCancel(job).catch(function () {});
       }
-      removeResult(job);
+      if (!job.taskHooks) removeResult(job);
       snapshots.remove(job.id);
     });
     jobs.clear();
-    cleanupMediaRoot(config, mediaNamespace);
-    cleanupOwnedInputs();
+    if (!options?.durableTasks) { cleanupMediaRoot(config, mediaNamespace); cleanupOwnedInputs(); }
   }
 
   return {
     create:create,
     submit:submit,
+    drainSubmissions: async () => { await Promise.allSettled([...submissions]); },
     get:get,
     getLost:getLost,
     cancel:cancel,

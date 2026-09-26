@@ -1,5 +1,6 @@
 <template>
   <DesktopTitleBar />
+  <RuntimeConnectionNotice />
   <RouteRecoveryBanner />
   <DesktopUpdateBanner v-if="!isCompanion" />
   <div class="route-stage">
@@ -18,6 +19,9 @@
 </template>
 
 <script setup lang="ts">
+import { getDesktopCapabilities, onDesktopNavigate } from '@/platform/desktop/capabilities'
+import { getDesktopWindowRole } from '@/platform/desktop/runtime'
+
 import { computed, defineAsyncComponent, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { startGalleryThumbnailWarmup } from '@/utils/galleryThumbnailWarmup'
@@ -28,6 +32,7 @@ const AppearancePreferences = defineAsyncComponent(() => import('@/components/Ap
 import TaskCenter from '@/components/tasks/TaskCenter.vue'
 import GlobalSearch from '@/components/GlobalSearchHost.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
+import RuntimeConnectionNotice from '@/components/RuntimeConnectionNotice.vue'
 import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
@@ -44,12 +49,14 @@ function enterLayout(element: Element, done: () => void) {
 }
 function leaveLayout(element: Element, done: () => void) { layoutMotion.onEnterCancelled(element); done() }
 let detachDesktopWorkspace: (() => void) | undefined
+let detachDesktopNavigation: (() => void) | undefined
 onMounted(() => {
-  if (window.companionDesktop && !location.pathname.startsWith('/companion')) {
+  if (getDesktopCapabilities()) detachDesktopNavigation = onDesktopNavigate(path => { void router.push(path) })
+  if (getDesktopCapabilities() && getDesktopWindowRole() === 'atelier') {
     detachDesktopWorkspace = attachDesktopWorkspace(router)
   }
 })
-onUnmounted(() => detachDesktopWorkspace?.())
+onUnmounted(() => { detachDesktopWorkspace?.(); detachDesktopNavigation?.() })
 const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')
 
 let stopThumbnailWarmup: (() => void) | undefined

@@ -2,7 +2,7 @@ import { errorCode as runtimeErrorCode } from '../scripts/lib/runtime-errors';
 'use strict';
 
 import type { GatewayConfig } from '../server/config-types';
-import type { ResourceCancelRequest, ResourceTaskRequest } from '../src/types/resources';
+import type { ResourceCancelRequest, ResourceTaskRequest } from '../types/resources';
 
 const express: typeof import('express') = require('express');
 const security: typeof import('../server/security') = require('../server/security');

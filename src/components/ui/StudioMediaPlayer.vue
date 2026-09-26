@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { useTaskMediaSource } from '@/composables/tasks/useTaskMediaSource'
 
 /**
  * 原生 <audio controls> / <video controls> 的替代品。
@@ -24,6 +25,11 @@ const props = withDefaults(defineProps<{
 }>(), { kind: 'video', poster: '', captionsSrc: '', transcript: '' })
 
 const media = ref<HTMLMediaElement | null>(null)
+const taskMedia = useTaskMediaSource(() => props.src)
+const mediaSource = taskMedia.url
+const mediaError = taskMedia.error
+let resumeAt = 0, resumePlaying = false
+watch(mediaSource, (_next, previous) => { if (previous && media.value) { resumeAt = media.value.currentTime || 0; resumePlaying = !media.value.paused } })
 const playing = ref(false)
 const muted = ref(false)
 const duration = ref(0)
@@ -81,7 +87,10 @@ function syncFullscreen() { fullscreen.value = document.fullscreenElement === me
 function onLoadedMetadata() {
   const element = media.value
   if (!element) return
+  failed.value = false
   duration.value = Number.isFinite(element.duration) ? element.duration : 0
+  if (resumeAt) { element.currentTime = resumeAt; resumeAt = 0 }
+  if (resumePlaying) { resumePlaying = false; void element.play().catch(() => {}) }
 }
 
 function onTimeUpdate() {
@@ -94,6 +103,7 @@ function onEnded() { playing.value = false }
 
 // 换片（重新生成 / 换镜头）时把整条状态复位，避免沿用上一条的进度与错误。
 watch(() => props.src, () => {
+  resumeAt = 0; resumePlaying = false
   playing.value = false
   currentTime.value = 0
   duration.value = 0
@@ -110,7 +120,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       v-if="kind === 'video'"
       ref="media"
       class="studio-media-frame"
-      :src="src"
+      :src="mediaSource"
       :poster="poster || undefined"
       :aria-label="label"
       playsinline
@@ -122,7 +132,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       @pause="playing = false"
       @ended="onEnded"
       @volumechange="muted = ($event.target as HTMLMediaElement).muted"
-      @error="failed = true"
+      @error="failed = true; taskMedia.refresh()"
     >
       <track v-if="captionsSrc" kind="captions" :src="captionsSrc" srclang="zh-CN" label="中文字幕" default />
     </video>
@@ -178,7 +188,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
       <p>{{ transcript }}</p>
     </details>
 
-    <p v-if="failed" class="studio-media-error" role="status">这段媒体无法播放。可以重新生成，或用下方按钮下载后查看。</p>
+    <p v-if="failed || mediaError" class="studio-media-error" role="status">{{ mediaError || '这段媒体暂时无法播放，可重新读取已保存的结果，或下载后查看。' }}<button class="btn btn-ghost btn-sm" type="button" @click="taskMedia.refresh()">重新读取</button></p>
   </figure>
 </template>
 

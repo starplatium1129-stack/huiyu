@@ -1,5 +1,7 @@
+import type { TranslateRequest, TtsRequest, VoicePrepareRequest } from '../../types/voice.ts'
 import { ApiClientError, apiClient, type ApiClient, type ApiResponseObject, type FetchImplementation } from './client.ts'
-import type { TranslateRequest, TranslateResult, TtsRequest, TtsStatus, VoicePrepareRequest, VoicePrepareResult } from '../types/api.ts'
+import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import type { TranslateResult, TtsStatus, VoicePrepareResult } from '../types/api.ts'
 
 export const VOICE_API_TIMEOUTS = {
   status: 10_000,
@@ -74,7 +76,7 @@ export interface VoiceApi {
   synthesize(payload: VoiceSynthesisPayload, options?: VoiceCallOptions): Promise<VoiceAudioResult>
 }
 
-export function createVoiceApi(client: ApiClient = apiClient, fetchAudio: FetchImplementation = (input, init) => globalThis.fetch(input, init)): VoiceApi {
+export function createVoiceApi(client: ApiClient = apiClient, fetchAudio: FetchImplementation = runtimeFetch): VoiceApi {
   return {
     getStatus(options = {}) {
       return client.request<TtsStatus>('/api/tts-status', {
