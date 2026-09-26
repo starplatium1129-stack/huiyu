@@ -1,0 +1,111 @@
+{
+  "date": "2026-09-27",
+  "status": "installed-and-accepted",
+  "sourceCommit": "ce3db83baf4e23d7f71e42c4119dd6fae3f49e02",
+  "version": "1.7.2",
+  "authorization": "User requested deployment of the latest UI refactor together with the Live2D fix",
+  "build": {
+    "pipelineExitCode": 0,
+    "sourceBinding": "passed",
+    "sourceSha256": "2ceddc6212c339b47bd749a0db03f9762b048a32937acb7a51a7d5f642621f26",
+    "buildSha256": "0147f9436fcb0fb67cdf0792a41aa6c9fbd3586174583f68347792b725592dba",
+    "dependenciesReused": 143,
+    "dependenciesDownloaded": false,
+    "bundledUiVerified": true,
+    "rendererProcessExperimentEnabled": false
+  },
+  "installer": {
+    "path": "runtime/desktop-updates/AI-CG-Studio_1.7.2-ce3db83b-ui-live2d_x64-setup.exe",
+    "bytes": 451989495,
+    "sha256": "22d1b4082966986e877184563d7af0063a0136d35a0c5b4b376d5dc12f1fc903",
+    "updaterSigned": false,
+    "publicRelease": false
+  },
+  "installation": {
+    "entry": "deploy-desktop.bat -UseInstaller -QuietInstall -SkipBuild -NoRestart -InstallDir D:\\AI-CG-Studio",
+    "installedExecutableSha256": "f8572975c1ef21af9b415807d8d637b85f37ef2c83170c5a95c5a84642618272",
+    "actualNsisPayloadMatched": true,
+    "runtimeFilesMatched": 41,
+    "runtimeFilesChecked": 41
+  },
+  "backup": {
+    "path": "runtime/ui-live2d-deploy-2026-09-27/cold-backup-1790438789318",
+    "config": {
+      "files": 180,
+      "bytes": 198586532,
+      "digest": "13d87d7e521896d121776539f1d4d96296976bd4a5905f162dcc071d2a654271"
+    },
+    "profile": {
+      "files": 867,
+      "bytes": 77867775,
+      "digest": "674d48cd9bdfdfe716caffe6886e3a55d57c3b6bbdc4469df4782d32af450d08"
+    },
+    "sourceCopyAndAfterHashesMatched": true
+  },
+  "production": {
+    "workspaceIdentityAndPointerUnchanged": true,
+    "bundledUi": true,
+    "schemaVersion": 3,
+    "revisionBefore": 28,
+    "revisionAfter": 39,
+    "chat": 1,
+    "drafts": 3,
+    "artworks": 0,
+    "projects": 0,
+    "migrationRecords": 15,
+    "settingsRecords": 10,
+    "changedSettingKeys": [
+      "aics_desktop_last_page"
+    ],
+    "changedSettingReason": "Normal navigation updated the last page; it was retained, not rolled back",
+    "databaseByteEqualityClaimed": false,
+    "migrationRepeated": false,
+    "sourceChanged": false,
+    "chatDraftArtworkProjectAndMigrationHashesUnchanged": true
+  },
+  "acceptance": {
+    "checks": [
+      "installed-default-thread-native-model-ready-visible-and-producing-frames",
+      "installed-home-particle-link-both-characters-both-themes",
+      "installed-bookshelf-showcase-popular-scenes-and-empty-gallery-both-themes",
+      "same-workspace-and-private-data-retained",
+      "temporary-review-settings-restored-and-normal-startup"
+    ],
+    "live2d": {
+      "mode": "native-thread",
+      "character": "nene",
+      "frameCountBefore": 26,
+      "frameCountAfter": 172,
+      "ready": true,
+      "visible": true,
+      "renderErrors": 0,
+      "surfaceFailures": 0,
+      "actualNativeScreenshotReviewed": true
+    },
+    "ui": {
+      "bookshelfBothThemes": true,
+      "referenceAlbumsBothThemes": true,
+      "popularScenesBothThemes": true,
+      "personalGalleryEmptyStateBothThemes": true,
+      "homeParticleLinksBothCharactersBothThemes": true,
+      "themePreview": "DOM token preview; original persisted light preference retained",
+      "homeNatsumeScreenshot": "Authored crossfade intermediate frame; actual navigation separately verified",
+      "productionGalleryRecordsCreated": 0
+    },
+    "live2dPreferenceRestored": true,
+    "temporaryCdpClosed": true,
+    "normalStartupWithoutCdp": true
+  },
+  "reusedEvidence": [
+    "runtime/character-bookshelf-review/verification.json",
+    "runtime/collection-ui-review/verification.json",
+    "docs/evidence/architecture-r12-2026-09-26.json"
+  ],
+  "limitations": [
+    "Existing credential-unavailable notification remains; credentials were not changed or claimed verified",
+    "Personal gallery originally contains zero artworks/projects; only its truthful empty state was checked on production data",
+    "This local installer is unsigned and was not publicly released",
+    "R12 independent renderer process remains experimental and disabled in production"
+  ],
+  "privateEvidenceDirectory": "runtime/ui-live2d-deploy-2026-09-27/installed-acceptance-1790439351250"
+}
