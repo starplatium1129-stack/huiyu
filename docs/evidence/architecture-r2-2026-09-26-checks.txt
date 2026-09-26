@@ -199,3 +199,7 @@ Documentation: 229 files, 1675 local links, 70 redirects, 0 broken links.
 ℹ skipped 0
 ℹ todo 0
 ℹ duration_ms 2156.1948
+
+===== Node compilation after EOF formatting; exit=0 =====
+[typescript] node: 315 sources; 315 outputs built
+Verified compiled workspace modules remained byte-identical.

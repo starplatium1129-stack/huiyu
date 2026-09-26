@@ -2,7 +2,7 @@
   "batch": "R2",
   "status": "implemented-isolated-and-sidecar-gates-passed-production-disabled",
   "baseCommit": "9260bd38eb5280fec406e348c489e19f22d00a82",
-  "headCommit": null,
+  "headCommit": "137aa1aae1f9c3a3fe3b084288e860dc6db20297",
   "branch": "main",
   "environment": {
     "node": "v24.18.0",
@@ -190,7 +190,8 @@
       "exitCode": 0,
       "localLog": "runtime/refactor-r2/build-node-format.log",
       "logSha256": "d94f1bd6e2ddbb4e24f173fa65b0f648de8461491e3c7369e23c6d17916b7076",
-      "note": "Removed one trailing blank line; all 14 verified compiled modules remained byte-identical."
+      "note": "Removed one trailing blank line; all 14 verified compiled modules remained byte-identical.",
+      "portableEvidence": "docs/evidence/architecture-r2-2026-09-26-checks.txt"
     }
   ],
   "sidecar": {
@@ -273,6 +274,8 @@
   "nextBatch": "R3",
   "transcript": {
     "path": "docs/evidence/architecture-r2-2026-09-26-checks.txt",
-    "sha256": "729196ec0c1bdc707bad10662cf7e5f71b3670939d9ef917935cfec662d384b2"
-  }
+    "sha256": "bbe4dbbd714e9ee2db8111ff5073d3e97314ab9102cc7f1ebe9bdf413be6e5f1"
+  },
+  "headCommitMeaning": "Pushed implementation commit; later commits only bind validation evidence.",
+  "implementationPushed": true
 }
