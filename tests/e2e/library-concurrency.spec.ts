@@ -51,6 +51,7 @@ test.beforeAll(async () => {
   const bundled = await build({
     stdin: { contents: [
       "export * from './src/storage/artworkRepository.ts';",
+      "export { ARTWORK_HISTORY_KV_KEY as ARTWORK_HISTORY_KEY, ARTWORK_TRASH_KV_KEY as ARTWORK_TRASH_KEY } from './src/utils/storageKeys.ts';",
       "export { useChatStorage } from './src/composables/chat/useChatStorage.ts';",
       "export * from './src/composables/useKVStore.ts';",
       "export * from './src/storage/backupRestore.ts';",
@@ -260,7 +261,7 @@ test('a failed transaction releases the cross-page lock and permits a retry', as
   await Promise.all([enter(page), enter(other)])
   const failed = await page.evaluate(async () => {
     const originalPut = IDBObjectStore.prototype.put
-    IDBObjectStore.prototype.put = function (...args) {
+    IDBObjectStore.prototype.put = function (..._args) {
       IDBObjectStore.prototype.put = originalPut
       throw new DOMException('fixture quota failure', 'QuotaExceededError')
     }

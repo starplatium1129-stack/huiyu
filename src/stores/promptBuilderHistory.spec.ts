@@ -5,14 +5,14 @@ import { usePromptHistoryStore } from './promptHistoryStore'
 import { captureResultContext } from '@/utils/resultContext'
 import type { HistoryEntry } from '@/types/promptHistory'
 
-const io = vi.hoisted(() => ({ put: vi.fn(), remove: vi.fn(), append: vi.fn(), thumbnail: vi.fn(), kvSet: vi.fn(), stageExit: vi.fn(), events: [] as string[] }))
-vi.mock('@/composables/useImageStore', () => ({ imgPut: io.put, imgDelete: io.remove }))
-vi.mock('@/composables/useKVStore', () => ({ kvGet: vi.fn(), kvSet: io.kvSet }))
-vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: io.thumbnail, thumbKey: (id: string) => `thumb:${id}` }))
-vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { appendArtwork: io.append } }))
-vi.mock('@/storage/artworkSession', () => ({ withArtworkStaging: async (work: () => Promise<unknown>) => {
-  io.events.push('stage-enter')
-  try { return await work() } finally { io.stageExit(); io.events.push('stage-exit') }
+const io = vi.hoisted(() => ({ put: vi.fn(), remove: vi.fn(), append: vi.fn(), thumbnail: vi.fn(), stageExit: vi.fn(), events: [] as string[] }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: {
+  putImage: io.put, deleteImage: io.remove, appendArtwork: io.append, cacheThumbnail: io.thumbnail,
+  readHistory: async () => [],
+  withStaging: async (work: () => Promise<unknown>) => {
+    io.events.push('stage-enter')
+    try { return await work() } finally { io.stageExit(); io.events.push('stage-exit') }
+  },
 } }))
 
 const blob = () => new Blob(['neutral image fixture'], { type: 'image/png' })
@@ -24,7 +24,6 @@ beforeEach(() => {
   io.put.mockImplementation(async () => { io.events.push('put'); return 'owned-image' })
   io.remove.mockResolvedValue(undefined)
   io.thumbnail.mockImplementation(async () => { io.events.push('thumbnail'); return null })
-  io.kvSet.mockResolvedValue(undefined)
   io.append.mockImplementation(async (entry: HistoryEntry) => { io.events.push('append'); return [entry] })
   vi.stubGlobal('createImageBitmap', vi.fn(async () => { io.events.push('measure'); return { width: 832, height: 1216, close: vi.fn() } }))
   vi.spyOn(console, 'warn').mockImplementation(() => {})

@@ -1,14 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { kvGet, kvSet } from '@/composables/useKVStore'
-import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import { artworkRepository } from '@/storage/artworkRepository'
-import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 import { parseProjectOptions, type ProjectOption } from '@/utils/promptBuilderPersistence'
 import { parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
-
-const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
-const PROJECT_STORAGE_KEY = ARTWORK_PROJECTS_KV_KEY
 
 let lastHistoryId = 0
 function historyIdSeq(now: number): number {
@@ -34,13 +28,6 @@ async function measureBlob(blob: Blob): Promise<{ width: number | null; height: 
   })
 }
 
-async function cacheThumbnail(imageId: string, blob: Blob): Promise<void> {
-  try {
-    const dataUrl = await blobThumbDataUrl(blob)
-    if (dataUrl) await kvSet(thumbKey(imageId), dataUrl)
-  } catch { /* ignore */ }
-}
-
 export const usePromptHistoryStore = defineStore('promptHistory', () => {
   const history = ref<ArtworkRecord[]>([])
   const projects = ref<ProjectOption[]>([])
@@ -50,7 +37,7 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
   async function loadHistory() {
     const request = ++historyLoad
     try {
-      const raw = await kvGet<unknown[]>(HISTORY_STORAGE_KEY)
+      const raw = await artworkRepository.readHistory()
       if (request === historyLoad) history.value = parseArtworkRecords(raw)
     } catch {}
     await loadProjects()
@@ -59,12 +46,7 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
   async function loadProjects() {
     const request = ++projectLoad
     try {
-      let raw: unknown = await kvGet(PROJECT_STORAGE_KEY)
-      let parsed = parseProjectOptions(raw)
-      if (!Array.isArray(raw)) {
-        raw = await kvGet('aics_projects')
-        parsed = parseProjectOptions(raw)
-      }
+      const parsed = parseProjectOptions(await artworkRepository.readProjects())
       if (request === projectLoad) projects.value = parsed
     } catch {}
   }
@@ -98,7 +80,6 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
     projects,
     historyIdSeq,
     measureBlob,
-    cacheThumbnail,
     loadHistory,
     loadProjects,
     removeHistoryEntry,

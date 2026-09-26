@@ -1,12 +1,9 @@
-import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
-import { imgGet } from '@/composables/useImageStore'
 import { blobThumbDataUrl, thumbKey } from './imageThumb'
-import { ARTWORK_HISTORY_KV_KEY } from './storageKeys'
 
 export interface ThumbnailWarmupDependencies {
   list(): Promise<unknown>
-  get(key: string): Promise<unknown>
-  put(key: string, value: string): Promise<unknown>
+  get(imageId: string): Promise<unknown>
+  put(imageId: string, value: string): Promise<unknown>
   image(id: string): Promise<Blob | null>
   render(blob: Blob): Promise<string>
   lock(key: string, work: () => Promise<boolean>): Promise<boolean>
@@ -45,14 +42,14 @@ export function createThumbnailWarmup(deps: ThumbnailWarmupDependencies): () => 
       const complete = await deps.lock(key, async () => {
         if (!active()) return false
         try {
-          const cached = await deps.get(key)
+          const cached = await deps.get(id)
           if (typeof cached === 'string' && cached.startsWith('data:image/')) return true
           if (!active()) return false
           const blob = await deps.image(id)
           if (!active()) return false
           if (blob) {
             const data = await deps.render(blob)
-            if (data && !stopped) await deps.put(key, data)
+            if (data && !stopped) await deps.put(id, data)
           }
           return true
         } catch { return true } // A failed optional thumbnail never blocks the next one.
@@ -78,8 +75,10 @@ export function startGalleryThumbnailWarmup(): () => void {
   const locks = globalThis.navigator?.locks
   if (!locks) return () => {} // Skip optional work if cross-window exclusion is unavailable.
   return createThumbnailWarmup({
-    list: async () => { await kvInit(); return kvGet(ARTWORK_HISTORY_KV_KEY) },
-    get: kvGet, put: kvSet, image: imgGet, render: blobThumbDataUrl,
+    list: async () => (await import('@/storage/artworkRepository')).artworkRepository.readHistory(),
+    get: async id => (await import('@/storage/artworkRepository')).artworkRepository.getThumbnail(id),
+    put: async (id, dataUrl) => (await import('@/storage/artworkRepository')).artworkRepository.setThumbnail(id, dataUrl),
+    image: async id => (await import('@/storage/artworkRepository')).artworkRepository.getImage(id), render: blobThumbDataUrl,
     lock: async (key, work) => await locks.request(`huiyu-thumbnail:${key}`, work),
     visible: () => document.visibilityState === 'visible',
     listen: listener => { document.addEventListener('visibilitychange', listener); return () => document.removeEventListener('visibilitychange', listener) },

@@ -2,15 +2,13 @@ import { artworkFacts, artworkIndexById, characterName as resolveCharacterName, 
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { useMasonryColumns } from '@/composables/gallery/useMasonryWall';
 import { useFocusTrap } from '@/composables/useFocusTrap';
-import { imgGet } from '@/composables/useImageStore';
-import { kvGet,kvSet } from '@/composables/useKVStore';
 import { useScrollReveal } from '@/composables/useScrollReveal';
 import { useToast } from '@/composables/useToast';
 import { artworkRepository,type TrashEntry } from '@/storage/artworkRepository';
 import type { LoraMeta,Scene } from '@/stores/sceneStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
-import { blobThumbDataUrl,thumbKey } from '@/utils/imageThumb';
+import { blobThumbDataUrl } from '@/utils/imageThumb';
 import { computed,nextTick,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { bulkDeleteAction,confirmDeleteAction,toggleFavoriteAction } from './galleryMutations';
@@ -27,12 +25,6 @@ export function useGalleryWorkspace() {
     const { show: showToast } = useToast();
     const route = useRoute();
     const router = useRouter();
-
-    // 键名统一出处：src/utils/storageKeys.ts。本文件曾把项目键写成旧键
-    // aics_projects（见下方 LEGACY_PROJECT_KEY），与备份读写的新键各操作一套数据且永久分叉。
-
-    /** 旧键，仅用于一次性迁移 */
-
 
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
     const galleryLoading = ref(true), galleryError = ref('');
@@ -52,7 +44,7 @@ export function useGalleryWorkspace() {
     const { ratioOf, measure, forgetRatio } = useArtworkRatios({
         pending: thumbPending,
         hasThumb: item => Boolean(thumbUrls[item.id]),
-        saveThumb: (item, dataUrl, imageId) => kvSet(thumbKey(imageId), dataUrl).then(() => { thumbUrls[item.id] = dataUrl; }),
+        saveThumb: (item, dataUrl, imageId) => artworkRepository.setThumbnail(imageId, dataUrl).then(() => { thumbUrls[item.id] = dataUrl; }),
     });
     /**
      * HD 层解码完成：回填真实比例 + 淡入覆盖缩略图。
@@ -217,7 +209,7 @@ export function useGalleryWorkspace() {
                 if (!item.image_id)
                     continue;
                 try {
-                    const thumb = await kvGet<string>(thumbKey(item.image_id));
+                    const thumb = await artworkRepository.getThumbnail(item.image_id);
                     if (unmounted)
                         return;
                     if (typeof thumb === 'string' && thumb.startsWith('data:image/')) {
@@ -233,7 +225,7 @@ export function useGalleryWorkspace() {
         const fallback = safeImageUrl(item.image_url);
         let resolved = false;
         try {
-            const blob = item.image_id ? await imgGet(item.image_id) : null;
+            const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null;
             if (unmounted || !viewActive) return;
             if (blob) {
                 cardUrls[item.id] = trackUrl(URL.createObjectURL(blob));
@@ -247,7 +239,7 @@ export function useGalleryWorkspace() {
                     blobThumbDataUrl(blob).then(dataUrl => {
                         if (dataUrl && !unmounted && viewActive && history.value.some(entry => entry.id === item.id)) {
                             thumbUrls[item.id] = dataUrl;
-                            void kvSet(thumbKey(imageId), dataUrl);
+                            void artworkRepository.setThumbnail(imageId, dataUrl);
                         }
                     }).catch(() => { }).finally(() => thumbPending.delete(imageId));
                 }
@@ -350,7 +342,7 @@ export function useGalleryWorkspace() {
         const token = ++viewerLoadToken;
         const fallback = safeImageUrl(item.image_url);
         try {
-            const blob = item.image_id ? await imgGet(item.image_id) : null;
+            const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null;
             if (unmounted || token !== viewerLoadToken || current.value?.id !== item.id)
                 return;
             if (blob) {

@@ -1,6 +1,4 @@
-import { kvGet } from '@/composables/useKVStore'
 import { artworkRepository } from '@/storage/artworkRepository'
-import { thumbKey } from '@/utils/imageThumb'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashItems" | "trashThumbs" | "trashBusy" | "showToast" | "loadGalleryStorage">
 export function useGalleryTrash({ trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void> } {
@@ -12,7 +10,7 @@ async function loadTrash() {
     for (const entry of entries) {
       const imageId = entry.imageIds?.[0]
       if (!imageId || trashThumbs[entry.id]) continue
-      const thumb = await kvGet<string>(thumbKey(imageId))
+      const thumb = await artworkRepository.getThumbnail(imageId)
       if (thumb) trashThumbs[entry.id] = thumb
     }
   } catch (e) {

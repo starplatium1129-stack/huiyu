@@ -1,6 +1,6 @@
 # Codex 执行手册
 
-> 2026-09-26；配套[总计划](REFACTOR-EXECUTION-PLAN.md)。本文件为执行清单，不是已执行报告。R0 的已实施范围、实际验证及基线限制见 [R0 实施记录](R0-EXECUTION-REPORT.md)；R1–R13 仍待执行。
+> 2026-09-26；配套[总计划](REFACTOR-EXECUTION-PLAN.md)。本文件为执行清单，不是已执行报告。R0 已完成，R1 实现与定向验收完成，原生安装/WebView2 未验；实际结果和限制见 [R0 记录](R0-EXECUTION-REPORT.md)、[R1 记录](R1-EXECUTION-REPORT.md)。R2–R13 仍待执行。
 
 ## 0. 接手规则：只读本批所需内容
 
@@ -81,6 +81,8 @@ Node 测试 `.js` 是构建入口/生成物，先完成 build:runtime；原型�
 Gate：新增合法/非法依赖夹具能分别通过/失败；注释、类型导入、unsubscribe 不被误报；基线问题与本次回归分开记录。
 
 ## 3. R1 — 收口已有仓储与最小 bootstrap
+
+状态：实现与定向验收完成，含 7 项隔离 E2E 与最终类型/lint；原生安装/WebView2 未验。实际接线和保留的失败记录见 [R1 实施记录](R1-EXECUTION-REPORT.md)。
 
 读：[Workspace 1–3 节](WORKSPACE-MIGRATION-DESIGN.md)、[Desktop 3–4 节](DESKTOP-INTEGRATION-DESIGN.md)。
 

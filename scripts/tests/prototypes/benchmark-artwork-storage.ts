@@ -23,6 +23,7 @@ async function main() {
   const bundle = await build({
     stdin: { contents: [
       "export * from './src/storage/artworkRepository.ts';",
+      "export { ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY } from './src/platform/web/artworkStorage.ts';",
       "export * from './src/composables/useKVStore.ts';",
       "export * from './src/composables/useImageStore.ts';",
     ].join('\n'), resolveDir: appRoot },

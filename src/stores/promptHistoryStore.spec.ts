@@ -1,45 +1,28 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePromptHistoryStore } from './promptHistoryStore'
-import { kvGet } from '@/composables/useKVStore'
 import { artworkRepository } from '@/storage/artworkRepository'
-import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 
-vi.mock('@/composables/useKVStore', () => ({ kvGet: vi.fn(), kvSet: vi.fn() }))
 vi.mock('@/storage/artworkRepository', () => ({
-  artworkRepository: { softDeleteArtwork: vi.fn(), restoreArtwork: vi.fn() },
+  artworkRepository: { readHistory: vi.fn(), readProjects: vi.fn(), softDeleteArtwork: vi.fn(), restoreArtwork: vi.fn() },
 }))
 
 beforeEach(() => {
   setActivePinia(createPinia())
   vi.resetAllMocks()
-  vi.mocked(kvGet).mockResolvedValue(null)
+  vi.mocked(artworkRepository.readHistory).mockResolvedValue([])
+  vi.mocked(artworkRepository.readProjects).mockResolvedValue([])
 })
 
 describe('promptHistoryStore 持久化同步', () => {
-  it('存储已清空时清除旧列表，并忽略损坏的历史条目', async () => {
+  it('存储已清空时清除旧列表，后续读取重新填充', async () => {
     const store = usePromptHistoryStore()
     store.history = [{ id: 1 }]
     await store.loadHistory()
     expect(store.history).toEqual([])
-    vi.mocked(kvGet).mockImplementation(async key => key === ARTWORK_HISTORY_KV_KEY ? [null, {}, { id: 2 }] : null)
+    vi.mocked(artworkRepository.readHistory).mockResolvedValue([{ id: 2 }])
     await store.loadHistory()
     expect(store.history).toEqual([{ id: 2 }])
-  })
-
-  it('已保存的空项目列表不会复活旧键中的项目', async () => {
-    const store = usePromptHistoryStore()
-    vi.mocked(kvGet).mockImplementation(async key => key === ARTWORK_PROJECTS_KV_KEY ? [] : [{ id: 'legacy', name: '旧项目' }])
-    await store.loadProjects()
-    expect(store.projects).toEqual([])
-    expect(kvGet).not.toHaveBeenCalledWith('aics_projects')
-  })
-
-  it('仅在新项目键缺失时兼容旧键', async () => {
-    const store = usePromptHistoryStore()
-    vi.mocked(kvGet).mockImplementation(async key => key === 'aics_projects' ? [{ id: 'legacy', name: '旧项目' }] : null)
-    await store.loadProjects()
-    expect(store.projects).toEqual([{ id: 'legacy', name: '旧项目' }])
   })
 
   it('删除失败保留内存条目，成功时兼容旧数据中的字符串 id', async () => {
@@ -55,8 +38,8 @@ describe('promptHistoryStore 持久化同步', () => {
 
   it('删除完成后，较早发起的读取不能把条目加回界面', async () => {
     const store = usePromptHistoryStore()
-    let resolveRead!: (value: unknown) => void
-    vi.mocked(kvGet).mockImplementationOnce(() => new Promise(resolve => { resolveRead = resolve }))
+    let resolveRead!: (value: Array<{ id: number }>) => void
+    vi.mocked(artworkRepository.readHistory).mockImplementationOnce(() => new Promise(resolve => { resolveRead = resolve }))
     store.history = [{ id: 1 }, { id: 2 }]
     const loading = store.loadHistory()
     vi.mocked(artworkRepository.softDeleteArtwork).mockResolvedValueOnce({ deleted: true })
@@ -70,13 +53,15 @@ describe('promptHistoryStore 持久化同步', () => {
     const store = usePromptHistoryStore()
     vi.mocked(artworkRepository.restoreArtwork).mockResolvedValueOnce({ restored: false })
     expect(await store.restoreHistoryEntry(1)).toBe(false)
-    expect(kvGet).not.toHaveBeenCalled()
+    expect(artworkRepository.readHistory).not.toHaveBeenCalled()
     vi.mocked(artworkRepository.restoreArtwork).mockResolvedValueOnce({ restored: true })
-    vi.mocked(kvGet).mockImplementation(async key => key === ARTWORK_HISTORY_KV_KEY ? [{ id: 1 }] : [{ id: 'p1', name: '项目' }])
+    vi.mocked(artworkRepository.readHistory).mockResolvedValue([{ id: 1 }])
+    vi.mocked(artworkRepository.readProjects).mockResolvedValue([{ id: 'p1', name: '项目' }])
     expect(await store.restoreHistoryEntry(1)).toBe(true)
     expect(store.history).toEqual([{ id: 1 }])
     expect(store.projects).toEqual([{ id: 'p1', name: '项目' }])
-    expect(kvGet).toHaveBeenCalledTimes(2)
+    expect(artworkRepository.readHistory).toHaveBeenCalledTimes(1)
+    expect(artworkRepository.readProjects).toHaveBeenCalledTimes(1)
   })
 
   it('时钟回调和单毫秒高并发不会产生重复作品编号', () => {

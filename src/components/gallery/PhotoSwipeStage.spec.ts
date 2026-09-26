@@ -3,7 +3,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import PhotoSwipeStage from './PhotoSwipeStage.vue'
 
 const mocks = vi.hoisted(() => ({ read: vi.fn(), failed: vi.fn(), destroyed: vi.fn(), refreshed: vi.fn(), init: vi.fn() }))
-vi.mock('@/composables/useImageStore', () => ({ imgGet: mocks.read }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read } }))
 vi.mock('photoswipe', () => ({ default: class {
   events: Record<string, (event: unknown) => void> = {}
   currIndex = 0

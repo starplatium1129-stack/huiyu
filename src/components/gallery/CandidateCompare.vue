@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { nextTick, onDeactivated, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { imgGet } from '@/composables/useImageStore'
+
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { ArtworkRecord } from '@/types/artwork'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
@@ -36,7 +36,7 @@ watch(() => props.open, async open => {
   const current = version
   await Promise.all(props.items.map(async item => {
     try {
-      const blob = item.image_id ? await imgGet(item.image_id) : null
+      const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null
       if (current !== version) return
       if (blob) { const url = URL.createObjectURL(blob); owned.add(url); urls.value[String(item.id)] = url }
       else {

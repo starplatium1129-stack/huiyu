@@ -7,6 +7,11 @@ use tauri_plugin_opener::OpenerExt;
 
 use crate::state::AppState;
 
+#[tauri::command]
+pub async fn desktop_bootstrap(window: tauri::WebviewWindow) -> Result<crate::bootstrap::DesktopBootstrap, String> {
+    crate::bootstrap::read(window).await
+}
+
 /// IPC 命令层：与 Electron 版 preload 桥一一对应（前端零改动由 shim 保证）。
 
 #[derive(Serialize)]

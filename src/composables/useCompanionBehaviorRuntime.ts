@@ -2,7 +2,6 @@ import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import { usePolling } from './usePolling'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { controlApi } from '@/api/controlApi'
-import { imgCount } from '@/composables/useImageStore'
 import { pickCompanionLine } from '@/config/characters'
 import { pickEnvironmentGreeting } from '@/utils/environmentContext'
 import { createCompanionBehavior, normalizeCompanionConfig, type CompanionReminder } from '@/utils/companionBehavior'
@@ -163,7 +162,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     try {
       const [status, imageCount] = await Promise.all([
         controlApi.getStatus({ signal: controller.signal }).catch(() => null),
-        imgCount().catch(() => -1),
+        import('@/storage/artworkRepository').then(({ artworkRepository }) => artworkRepository.countImages()).catch(() => -1),
       ])
       if (!alive || controller.signal.aborted || !status || status.ok === false || character !== activeChar.value || !desktopWindowVisible()) return
       const events = eventDetector.ingest({

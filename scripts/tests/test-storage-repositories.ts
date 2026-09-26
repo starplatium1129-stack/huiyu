@@ -19,8 +19,8 @@ const {
   ARTWORK_HISTORY_KEY,
   ARTWORK_PROJECTS_KEY,
   ArtworkDeletionError,
-  createArtworkRepository,
-}: typeof import('../../src/storage/artworkRepository.ts') = require('../../src/storage/artworkRepository.ts');
+  createWebArtworkRepository,
+}: typeof import('../../src/platform/web/artworkRepository.ts') = require('../../src/platform/web/artworkRepository.ts');
 const { thumbKey }: typeof import('../../src/utils/imageThumb.ts') = require('../../src/utils/imageThumb.ts');
 const keys: typeof import('../../src/utils/storageKeys.ts') = require('../../src/utils/storageKeys.ts');
 
@@ -98,7 +98,7 @@ function createArtworkFixture(failure: any = {}) {
       ids.forEach((id: any) => imageRecords.delete(id));
     },
   };
-  return { values, imageRecords, imageReads, repository: createArtworkRepository({ kv, images }) };
+  return { values, imageRecords, imageReads, repository: createWebArtworkRepository({ kv, images }) };
 }
 
 function stateOf(fixture: any) {

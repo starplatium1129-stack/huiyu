@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod bridge;
+mod bootstrap;
 mod credentials;
 mod gateway;
 mod live2d_overlay;
@@ -169,6 +170,7 @@ fn main() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .invoke_handler({
             let handler: fn(tauri::ipc::Invoke) -> bool = tauri::generate_handler![
+            bridge::desktop_bootstrap,
             credentials::chat_credential_read,
             credentials::chat_credential_write,
             bridge::get_state,

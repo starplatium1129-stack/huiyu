@@ -69,9 +69,6 @@ export interface CompanionDesktopBridge {
   toggleMaximizeWindow(): void
   closeWindow(): void
   getWindowState(): Promise<{ maximized: boolean; focused: boolean }>
-  /** Available in desktop builds with controlled native page zoom; Companion rejects it. */
-  getWindowZoom?(): Promise<number>
-  setWindowZoom?(value: number): Promise<number>
   onMaximizedChanged(listener: (maximized: boolean) => void): number
   offMaximizedChanged(subscriptionId: number): void
 }

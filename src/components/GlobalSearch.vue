@@ -114,8 +114,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'
-import { kvInit, kvGet } from '@/composables/useKVStore'
-import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { indexArtworkSearch } from '@/utils/artworkSearch'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 
@@ -146,7 +145,6 @@ interface FlatSearchResult {
   label: string
 }
 
-const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 
 const router = useRouter()
 const sceneStore = useSceneStore()
@@ -314,8 +312,7 @@ async function loadWorks() {
   worksError.value = ''
   works.value = []
   try {
-    await kvInit()
-    const raw = await kvGet<unknown[]>(HISTORY_KEY)
+    const raw = await artworkRepository.readHistory()
     if (request !== worksRequest || !open.value) return
     works.value = indexArtworkSearch(raw)
   } catch {

@@ -220,15 +220,12 @@ import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
-import { withArtworkMutation } from '@/storage/artworkMutation'
-import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { Scene } from '@/stores/sceneStore'
-import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
-import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork'
 
 useScrollReveal()
 
@@ -270,7 +267,7 @@ function markPortraitFailure(event: Event) {
   if (src) portraitFailed[src] = true
 }
 
-/** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
+/** 卸载标记：异步媒体读取回来时组件可能已经没了 */
 let unmounted = false
 
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
@@ -373,17 +370,7 @@ async function loadSceneHighlights() {
 
 async function loadRecentWorks() {
   try {
-    const history = await withArtworkMutation(async () => {
-      const current = parseArtworkRecords(await kvGet(ARTWORK_HISTORY_KV_KEY))
-      if (current.length) return current
-      let legacy: ArtworkRecord[] = []
-      try { legacy = parseArtworkRecords(JSON.parse(localStorage.getItem(ARTWORK_HISTORY_KV_KEY) || '[]')) } catch {}
-      if (legacy.length) {
-        await kvSet(ARTWORK_HISTORY_KV_KEY, legacy)
-        localStorage.removeItem(ARTWORK_HISTORY_KV_KEY)
-      }
-      return legacy
-    })
+    const history = await artworkRepository.readRecentHistory()
     // 历史按生成顺序 append，直接 slice 拿到的是最旧的三幅
     recentWorks.value = history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
 
@@ -396,7 +383,7 @@ async function loadRecentWorks() {
     await Promise.all(recentWorks.value.map(async h => {
       if (!h.image_id) return
       try {
-        const blob = await imgGet(h.image_id)
+        const blob = await artworkRepository.getImage(h.image_id)
         if (!blob) return
         // 组件可能在 await 期间就卸载了，这时候不该再建 URL
         if (unmounted) return
@@ -411,9 +398,8 @@ onMounted(async () => {
   initContinueDraft()
   void loadSceneHighlights()
   try {
-    await kvInit()
     await loadRecentWorks()
-  } catch (e) { console.warn('KV store unavailable', e) }
+  } catch (e) { console.warn('作品库暂时不可用', e) }
 })
 
 onUnmounted(() => {

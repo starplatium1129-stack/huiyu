@@ -7,8 +7,7 @@ const mocks = vi.hoisted(() => ({
   routerPush: vi.fn(),
   loadHome: vi.fn().mockResolvedValue(undefined),
   scenes: [] as Array<Record<string, unknown>>,
-  kvInit: vi.fn().mockResolvedValue(undefined),
-  kvGet: vi.fn().mockResolvedValue([]),
+  readHistory: vi.fn().mockResolvedValue([]),
   indexArtworkSearch: vi.fn().mockReturnValue([]),
 }))
 
@@ -36,9 +35,8 @@ vi.mock('@/stores/sceneStore', () => ({
   }),
 }))
 
-vi.mock('@/composables/useKVStore', () => ({
-  kvInit: mocks.kvInit,
-  kvGet: mocks.kvGet,
+vi.mock('@/storage/artworkRepository', () => ({
+  artworkRepository: { readHistory: mocks.readHistory },
 }))
 
 vi.mock('@/utils/artworkSearch', () => ({
@@ -95,8 +93,7 @@ function searchInput() {
 beforeEach(() => {
   mocks.routerPush.mockReset()
   mocks.loadHome.mockClear()
-  mocks.kvInit.mockClear()
-  mocks.kvGet.mockClear()
+  mocks.readHistory.mockClear()
   mocks.indexArtworkSearch.mockClear()
 })
 

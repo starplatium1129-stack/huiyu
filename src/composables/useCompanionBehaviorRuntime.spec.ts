@@ -6,7 +6,7 @@ import { createCompanionBehavior } from '@/utils/companionBehavior'
 import { createCompanionEventDetector } from '@/utils/companionEvents'
 import { COMPANION_BEHAVIOR_KEY, COMPANION_AFFECTION_KEY } from '@/utils/storageKeys'
 vi.mock('@/api/controlApi', () => ({ controlApi: { getStatus: async () => ({ ok: true, sdOnline: false, ttsOnline: false, ollamaOnline: false }) } }))
-vi.mock('@/composables/useImageStore', () => ({ imgCount: async () => 10 }))
+vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { countImages: async () => 10 } }))
 let wrapper: ReturnType<typeof mount> | undefined
 beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date('2026-09-10T12:00:00')); localStorage.clear() })
 afterEach(() => { wrapper?.unmount(); vi.useRealTimers(); vi.restoreAllMocks() })

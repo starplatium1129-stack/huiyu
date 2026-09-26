@@ -1,11 +1,10 @@
 import { useFocusTrap } from '@/composables/useFocusTrap';
-import { kvGet,kvInit } from '@/composables/useKVStore';
+import { artworkRepository } from '@/storage/artworkRepository';
 import { useSceneStore,type CurationData } from '@/stores/sceneStore';
 import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment';
 import { buildPreferenceProfile,isPersonaCore,readHiddenScenes,readSceneUsage,sceneUsageScore,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,personalScore as uxPersonalScore,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
-import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys';
 import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
 import {
     DEFAULT_RAILS,
@@ -37,7 +36,6 @@ export function useSceneExplorerWorkspace() {
     }
     const PAGE_SIZE = 24;
     const FAV_KEY = 'aics_scene_favorites';
-    const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY;
     const route = useRoute();
     const router = useRouter();
     const sceneStore = useSceneStore();
@@ -423,22 +421,7 @@ export function useSceneExplorerWorkspace() {
             loadError.value = e instanceof Error ? e.message : String(e);
         }
         try {
-            const fallback = () => {
-                try {
-                    return buildPreferenceProfile(JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'));
-                }
-                catch {
-                    return buildPreferenceProfile([]);
-                }
-            };
-            try {
-                await kvInit();
-                const h = await kvGet<unknown[]>(HISTORY_KEY);
-                profile.value = Array.isArray(h) ? buildPreferenceProfile(h) : fallback();
-            }
-            catch {
-                profile.value = fallback();
-            }
+            profile.value = buildPreferenceProfile(await artworkRepository.readPreferenceHistory());
         }
         catch { }
         loading.value = false;

@@ -2,6 +2,7 @@ fn main() {
     tauri_build::try_build(
         tauri_build::Attributes::new().app_manifest(
             tauri_build::AppManifest::new().commands(&[
+                "desktop_bootstrap",
                 "chat_credential_read",
                 "chat_credential_write",
                 "get_state",

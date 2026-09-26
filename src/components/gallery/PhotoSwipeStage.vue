@@ -12,7 +12,7 @@ import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import PhotoSwipe from 'photoswipe'
 import 'photoswipe/style.css'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { safeImageUrl } from '@/composables/gallery/galleryHelpers'
 import type { ArtworkRecord } from '@/types/artwork'
 
@@ -89,7 +89,7 @@ function start() {
       let url = ''
       try {
         const item = items[index]
-        const blob = item.image_id ? await imgGet(item.image_id) : null
+        const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null
         if (revision !== token) return
         url = blob ? URL.createObjectURL(blob) : safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
         if (blob) ownedUrls.add(url)

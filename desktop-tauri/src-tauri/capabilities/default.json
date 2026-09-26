@@ -15,6 +15,7 @@
     "dialog:default",
     "autostart:default",
     "opener:default",
+    "allow-desktop-bootstrap",
     "allow-get-state",
     "allow-hide",
     "allow-quit",

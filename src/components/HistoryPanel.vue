@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
-import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { artworkTimestamp } from '@/types/artwork'
@@ -104,7 +104,7 @@ function engineSummary(item: ArtworkRecord): string {
 async function ensureThumb(item: ArtworkRecord) {
   if (!item.image_id || thumbs[item.id] || objectUrls.has(item.id)) return
   try {
-    const blob = await imgGet(item.image_id)
+    const blob = await artworkRepository.getImage(item.image_id)
     if (!blob) return
     const url = URL.createObjectURL(blob)
     objectUrls.set(item.id, url)

@@ -1,0 +1,199 @@
+R1 selected terminal excerpts. ANSI, local repository paths, line endings and trailing whitespace normalized.
+
+===== npm run build:runtime; exit=0 =====
+
+> huiyu@1.7.2 build:runtime
+> node scripts/build-node.mts
+
+[typescript] services: 17 sources; current
+[typescript] node: 300 sources; current
+[typescript] tests: 222 sources; 220 outputs built
+[typescript] browser: 6 sources; current
+
+===== npm run test:frontend; exit=1 =====
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed | 203 passed (204)
+      Tests  8 failed | 1420 passed (1428)
+     Errors  1 error
+   Start at  17:33:59
+   Duration  23.32s (transform 37.35s, setup 0ms, import 95.28s, tests 24.76s, environment 198.77s)
+
+
+===== npm run test:frontend -- src/stores/promptBuilderHistory.spec.ts src/composables/gallery/galleryStorage.spec.ts; exit=0 =====
+> vitest run src/stores/promptBuilderHistory.spec.ts src/composables/gallery/galleryStorage.spec.ts
+
+
+ RUN  v4.1.11 <repo>
+
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  17:36:45
+   Duration  1.75s (transform 1.01s, setup 0ms, import 1.31s, tests 140ms, environment 1.08s)
+
+
+===== npm run test:frontend -- src/composables/useCompanionBehaviorRuntime.spec.ts; exit=0 =====
+> vitest run src/composables/useCompanionBehaviorRuntime.spec.ts
+
+
+ RUN  v4.1.11 <repo>
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  17:38:35
+   Duration  809ms (transform 142ms, setup 0ms, import 209ms, tests 58ms, environment 348ms)
+
+
+===== npm run typecheck:app; exit=0 =====
+
+> huiyu@1.7.2 typecheck:app
+> vue-tsc -p tsconfig.app.json --noEmit
+
+
+===== npm run test:architecture; exit=0 =====
+R0: 673 production sources, 3205 imports, 13 exact legacy edges; no new violations
+✔ artwork types and save use case stay independent of state and infrastructure (1409.0276ms)
+✔ R0 dependency debt only shrinks from its sealed seed and approved Git history (1029.3424ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2464.3899
+
+===== npm run test:monolith; exit=0 =====
+
+✅ 单体体量门禁通过：835 个文件，0 个基线豁免，红线 500 行只降不升。
+✔ monolith-budget (120.5996ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 129.8841
+
+===== node --test scripts/tests/test-bridge-acl.js scripts/tests/test-storage-repositories.js; exit=0 =====
+✔ comparison marks update together without deleting images or touching prompts (1.1615ms)
+✔ failed comparison save leaves the complete previous selection intact (0.8566ms)
+✔ background generation preserves comparison choices and concurrent new images (1.4541ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 344.5713
+
+===== npm run build (initial); exit=1 =====
+dist/_app/PromptBuilderView-CYwXmGv5.js                                          142.25 kB │ gzip:  47.15 kB
+dist/_app/index-CRBZzMPG.js                                                      169.21 kB │ gzip:  59.96 kB
+dist/_app/index-Br0epxKg.js                                                      945.58 kB │ gzip: 263.13 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 12.27s
+Route bundle budget exceeded:
+ChatView static closure JavaScript 703113 > 696320
+
+===== npm run build (first loading adjustment); exit=1 =====
+dist/_app/PromptBuilderView-CobbzlNo.js                                          142.25 kB │ gzip:  47.14 kB
+dist/_app/index-CaWXIV9M.js                                                      169.80 kB │ gzip:  60.13 kB
+dist/_app/index-Br0epxKg.js                                                      945.58 kB │ gzip: 263.13 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.56s
+Route bundle budget exceeded:
+ChatView static closure JavaScript 703705 > 696320
+
+===== npm run build (final); exit=0 =====
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.57s
+Route bundle budget passed: 18 routes; largest JS PromptBuilderView 139.2 KiB / 140.0 KiB; largest CSS PromptBuilderView 64.8 KiB / 115.0 KiB; largest lazy index.js 923.4 KiB / 1000.0 KiB; entry closure JS 304.5 KiB / 390.0 KiB; largest route closure ChatView 675.0 KiB / 680.0 KiB; entry CSS 100.0 KiB / 100.0 KiB
+Page JS union (report only): 18/18 resolved; /chat 690.8 KiB; /companion 655.2 KiB; /prompt-builder 602.7 KiB
+[warn] bundle budget >90% warning:
+PromptBuilderView JavaScript 139.2 KiB > 90% of 140.0 KiB
+ChatView static closure JavaScript 675.0 KiB > 90% of 680.0 KiB
+CompanionView static closure JavaScript 655.2 KiB > 90% of 680.0 KiB
+index.js lazy JavaScript 923.4 KiB > 90% of 1000.0 KiB
+Purged 304 redundant .woff files (8.9 MB)，重写 1 个 CSS——浏览器只取 woff2
+Precompressed 542 files: 28900.7 KB raw → 5844.8 KB gzip → 4381.1 KB brotli (brotli 比 gzip 再省 25%)
+
+===== ESLint on 41 changed TS/Vue files; exit=1 =====
+  256:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+<repo>\tests\e2e\library-concurrency.spec.ts
+  264:49  error  'args' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 48 problems (1 error, 47 warnings)
+
+(node:29104) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///<repo>/eslint.config.js?mtime=1789829179783 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\<repo>\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+===== node node_modules/eslint/bin/eslint.js src/utils/galleryThumbnailWarmup.ts src/composables/useCompanionBehaviorRuntime.ts src/composables/gallery/galleryStorage.spec.ts tests/e2e/library-concurrency.spec.ts; exit=0 =====
+(node:30064) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///<repo>/eslint.config.js?mtime=1789829179783 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\<repo>\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+===== AICS_E2E_PORT_OFFSET=18000 node node_modules/@playwright/test/cli.js test tests/e2e/library-concurrency.spec.ts --project desktop --workers 1 --grep 'home migration|home legacy|two pages save|append, favorite|a failed transaction|orphan cleanup protects same-document|automatic trash purge' --output runtime/refactor-r1/e2e; exit=0 =====
+
+[WebServer] (node:25316) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+[WebServer] (node:30660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] [video] T8 双时钟节点不可用，回退原生采样路径
+
+Running 7 tests using 1 worker
+
+
+(node:27996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/7] [desktop] › tests\e2e\library-concurrency.spec.ts:165:5 › home migration retains legacy data when another page commits before its read
+[2/7] [desktop] › tests\e2e\library-concurrency.spec.ts:185:5 › home legacy migration and a queued append preserve both works
+[3/7] [desktop] › tests\e2e\library-concurrency.spec.ts:209:5 › two pages save through the extracted use case with real image storage, IndexedDB and Web Locks
+[4/7] [desktop] › tests\e2e\library-concurrency.spec.ts:231:5 › append, favorite, delete, restore and backup merge share the same cross-page boundary
+[5/7] [desktop] › tests\e2e\library-concurrency.spec.ts:259:5 › a failed transaction releases the cross-page lock and permits a retry
+[6/7] [desktop] › tests\e2e\library-concurrency.spec.ts:326:5 › orphan cleanup protects same-document image staging until its reference is published
+[7/7] [desktop] › tests\e2e\library-concurrency.spec.ts:387:5 › automatic trash purge uses the same cross-document protection as manual cleanup
+  7 passed (13.3s)
+
+===== npm run wf -- docs:check; exit=0 =====
+
+> huiyu@1.7.2 wf
+> node scripts/workflow.js docs:check
+
+[执行] docs:check: ["C:\\Program Files\\nodejs\\node.exe","scripts/maintenance/check-doc-links.js"]
+Documentation: 228 files, 1666 local links, 70 redirects, 0 broken links.
+
+===== repository hygiene; exit=0 =====
+✔ repository text hygiene scans index, worktree, and nonignored untracked files (1726.2644ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1729.9014

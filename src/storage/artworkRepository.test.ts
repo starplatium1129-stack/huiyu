@@ -1,16 +1,16 @@
 /**
  * artworkRepository 单测（2026-08-31 七维审计 P1：补测试盲区）。
  *
- * 被测模块通过 ArtworkRepositoryDependencies 注入 KV / 图片适配器，
+ * 被测模块通过 WebArtworkRepositoryDependencies 注入 KV / 图片适配器，
  * 这里用内存 Map 假实现，不触 IndexedDB（useKVStore/useImageStore 均
  * 惰性访问，import 无副作用，无需 mock）。
  */
 import { describe, expect, it, vi } from 'vitest'
 import {
-  createArtworkRepository,
+  createWebArtworkRepository,
   ArtworkDeletionError,
   ARTWORK_TRASH_RETENTION_DAYS,
-} from './artworkRepository'
+} from '../platform/web/artworkRepository'
 import { thumbKey } from '../utils/imageThumb'
 import type { StoredImageRecord } from '../composables/useImageStore'
 import {
@@ -69,7 +69,7 @@ function makeRepo() {
   const projects = [{ id: 'p1', name: '项目一', history_ids: ['a1'] }]
   kv.store.set(KV.history, history)
   kv.store.set(KV.projects, projects)
-  const repo = createArtworkRepository({ kv: kv.adapter, images: images.adapter })
+  const repo = createWebArtworkRepository({ kv: kv.adapter, images: images.adapter })
   return { repo, kv, images }
 }
 
@@ -91,7 +91,7 @@ function makeTimedSharedRepo() {
     { id: 'shared', blob: fakeBlob, name: 'shared.png', type: 'image/png', size: 1, created_at: 1 },
   ])
   kv.store.set(thumbKey('shared'), { data: 'tiny' })
-  const repo = createArtworkRepository({
+  const repo = createWebArtworkRepository({
     kv: kv.adapter,
     images: images.adapter,
   })
@@ -136,7 +136,7 @@ describe('artworkRepository 软删 / 恢复', () => {
     const images = makeImages([
       { id: 'img-a', blob: fakeBlob, name: 'a.png', type: 'image/png', size: 1, created_at: 1 },
     ])
-    const repo = createArtworkRepository({ kv: { ...kv.adapter, setMany }, images: images.adapter })
+    const repo = createWebArtworkRepository({ kv: { ...kv.adapter, setMany }, images: images.adapter })
     await repo.softDeleteArtwork('a1')
     await repo.restoreArtwork('a1')
     expect(kv.adapter.set).not.toHaveBeenCalled()
@@ -156,7 +156,7 @@ describe('artworkRepository 软删 / 恢复', () => {
       kv.store.set(key, value)
       if (key === KV.trash && failOnce) { failOnce = false; throw new Error('quota') }
     })
-    const repo = createArtworkRepository({ kv: { get: kv.adapter.get, set: kv.adapter.set } })
+    const repo = createWebArtworkRepository({ kv: { get: kv.adapter.get, set: kv.adapter.set } })
     await expect(repo.softDeleteArtwork('a1')).rejects.toMatchObject({ rollbackErrors: [] })
     expect(await kv.adapter.get(KV.trash)).toBeNull()
     expect(kv.store.get(KV.history)).toEqual(history)
@@ -272,7 +272,7 @@ describe('artworkRepository 惰性清理', () => {
       { id: 'img-boundary', blob: fakeBlob, name: 'boundary.png', type: 'image/png', size: 1, created_at: 1 },
     ])
     kv.store.set(thumbKey('img-boundary'), { data: 'tiny' })
-    const repo = createArtworkRepository({ kv: kv.adapter, images: images.adapter })
+    const repo = createWebArtworkRepository({ kv: kv.adapter, images: images.adapter })
     try {
       dateNow.mockReturnValue(epoch + ARTWORK_TRASH_RETENTION_DAYS * DAY)
       expect(await repo.purgeExpiredTrash()).toEqual({ purged: 0 })
@@ -314,7 +314,7 @@ describe('artworkRepository 惰性清理', () => {
     })
     const images = makeImages([shared])
     kv.store.set(thumbKey('img-shared'), { data: 'tiny' })
-    const repo = createArtworkRepository({ kv: kv.adapter, images: images.adapter })
+    const repo = createWebArtworkRepository({ kv: kv.adapter, images: images.adapter })
 
     expect(await repo.purgeExpiredTrash()).toEqual({ purged: 1 })
     expect(images.store.has('img-shared')).toBe(true)
@@ -451,9 +451,64 @@ describe('expired trash protects all live reference domains', () => {
     const images = makeImages(['project-image', 'quarantine-image', 'orphan'].map(id => ({
       id, blob: fakeBlob, name: '', type: 'image/png', size: 1, created_at: 1,
     })))
-    const repo = createArtworkRepository({ kv: kv.adapter, images: images.adapter })
+    const repo = createWebArtworkRepository({ kv: kv.adapter, images: images.adapter })
     expect(await repo.purgeExpiredTrash()).toEqual({ purged: 1 })
     expect([...images.store.keys()]).toEqual(['project-image', 'quarantine-image'])
     expect(images.adapter.deleteMany).toHaveBeenCalledWith(['orphan'])
+  })
+})
+
+describe('Web artwork reads and legacy imports', () => {
+  it('filters invalid artwork records and detaches read/write snapshots without losing unknown fields', async () => {
+    const kv = makeKv({ [KV.history]: [null, {}, { id: 2, extra: { detail: 'keep' } }] })
+    const repo = createWebArtworkRepository({ kv: kv.adapter })
+    const records = await repo.readHistory()
+    expect(records).toEqual([{ id: 2, extra: { detail: 'keep' } }])
+    ;(records[0].extra as { detail: string }).detail = 'changed'
+    expect((await repo.readHistory())[0].extra).toEqual({ detail: 'keep' })
+    const input = { id: 'new', extra: { detail: 'original' } }
+    const saving = repo.appendArtwork(input)
+    input.extra.detail = 'changed'
+    const saved = await saving
+    expect(saved[1]).toEqual({ id: 'new', extra: { detail: 'original' } })
+    ;(saved[1].extra as { detail: string }).detail = 'changed again'
+    expect((await repo.readHistory())[1].extra).toEqual({ detail: 'original' })
+  })
+
+  it('keeps an empty project list authoritative and reads the old key only when the new value is not an array', async () => {
+    const kv = makeKv({ [KV.projects]: [], aics_projects: [{ id: 7, name: '旧项目', extra: { detail: 'keep' } }] })
+    const repo = createWebArtworkRepository({ kv: kv.adapter })
+    expect(await repo.readProjects()).toEqual([])
+    expect(kv.adapter.get).not.toHaveBeenCalledWith('aics_projects')
+    kv.store.delete(KV.projects)
+    expect(await repo.readProjects()).toEqual([{ id: 7, name: '旧项目', extra: { detail: 'keep' } }])
+  })
+
+  it('failed library import retains its local source until the write succeeds', async () => {
+    const kv = makeKv({ [KV.projects]: [] })
+    const source = new Map([[KV.history, JSON.stringify([{ id: 'legacy', prompt: 'old work' }])]])
+    const local = { getItem: (key: string) => source.get(key) ?? null, removeItem: (key: string) => { source.delete(key) } }
+    const repo = createWebArtworkRepository({ kv: kv.adapter, localStorage: local })
+    kv.adapter.set.mockRejectedValueOnce(new Error('quota'))
+    await expect(repo.readLibrarySnapshot()).rejects.toThrow('quota')
+    expect(source.get(KV.history)).toContain('legacy')
+    expect(kv.store.has(KV.history)).toBe(false)
+    expect((await repo.readLibrarySnapshot()).history).toEqual([{ id: 'legacy', prompt: 'old work' }])
+    expect(source.has(KV.history)).toBe(false)
+  })
+
+  it('preserves Gallery empty-list authority, Home legacy import and read-only preference fallback', async () => {
+    const kv = makeKv({ [KV.history]: [], [KV.projects]: [] })
+    const local = { getItem: () => JSON.stringify([{ id: 'legacy', prompt: 'old work' }]), removeItem: vi.fn() }
+    const repo = createWebArtworkRepository({ kv: kv.adapter, localStorage: local })
+    expect((await repo.readLibrarySnapshot()).history).toEqual([])
+    expect(await repo.readPreferenceHistory()).toEqual([])
+    expect(kv.adapter.set).not.toHaveBeenCalled()
+    expect(await repo.readRecentHistory()).toEqual([{ id: 'legacy', prompt: 'old work' }])
+    expect(local.removeItem).toHaveBeenCalledWith(KV.history)
+    kv.adapter.set.mockClear()
+    kv.adapter.get.mockRejectedValueOnce(new Error('offline'))
+    expect(await repo.readPreferenceHistory()).toEqual([{ id: 'legacy', prompt: 'old work' }])
+    expect(kv.adapter.set).not.toHaveBeenCalled()
   })
 })

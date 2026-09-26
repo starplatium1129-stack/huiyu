@@ -4,7 +4,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  * 回归保护（2026-08-20 实障）：桌宠桥新增 IPC 命令后若漏配 Tauri ACL，
  * 前端走 invoke 的命令会被 "Command xxx not allowed by ACL" 拒绝，
  * 而 E2E 用 mock 桥测不到、热键/托盘走 Rust 直调也测不到。
- * 本测试静态核对：shim 的 invoke 命令 ⊆ build.rs 命令清单 ⊆ 各 capability 放行。
+ * 本测试静态核对：shim/desktop adapter 的 invoke 命令 ⊆ build.rs 命令清单 ⊆ 各 capability 放行。
  */
 const { readFileSync }: typeof import('node:fs') = require('node:fs');
 const { join }: typeof import('node:path') = require('node:path');
@@ -17,12 +17,11 @@ function read(rel: string) {
   return readFileSync(join(srcTauri, rel), 'utf8');
 }
 
-/** shim.rs 里所有 invoke('cmd') 的命令名 */
+/** Existing shim and migrated desktop adapter invoke('cmd') names. */
 function shimCommands() {
-  const src = read('src/shim.rs');
+  const src = read('src/shim.rs') + '\n' + readFileSync(join(root, 'src/platform/desktop/bootstrap.ts'), 'utf8');
   const set = new Set();
   for (const m of src.matchAll(/invoke\(\s*'([a-z_0-9]+)'/g)) set.add(m[1]);
-  // 手动补：不在 shim 字符串里、但仍会被前端直接 invoke 的核心/插件命令不算业务命令，跳过
   return set;
 }
 

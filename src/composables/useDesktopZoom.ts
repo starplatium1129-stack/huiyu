@@ -3,6 +3,7 @@ import { readonly, ref } from 'vue'
 interface ZoomBridge { getWindowZoom(): Promise<number>; setWindowZoom(value: number): Promise<number> }
 const available = ref(false), zoom = ref(1), error = ref('')
 let bridge: ZoomBridge | undefined, requested = 1, saving = false, disposed = false
+let installation = 0
 const bounded = (value: number) => Math.max(.75, Math.min(2, Math.round(value * 100) / 100))
 
 async function flush() {
@@ -27,10 +28,20 @@ export function useDesktopZoom() { return { available: readonly(available), zoom
 
 /** Native WebView zoom only: CSS scaling cannot keep text and hit coordinates correct. */
 export function installDesktopZoom() {
-  const candidate = window.companionDesktop as unknown as Partial<ZoomBridge> | undefined
-  if (location.pathname === '/companion' || !candidate?.getWindowZoom || !candidate.setWindowZoom) return () => {}
-  bridge = candidate as ZoomBridge; disposed = false
-  void bridge.getWindowZoom().then(value => { if (!disposed) { zoom.value = requested = bounded(value); available.value = true } }).catch(() => {})
+  // Presence selects the adapter only; the host authenticates origin and role.
+  // Normal browsers do not load the desktop module or change browser shortcuts.
+  if (!('__TAURI__' in window)) return () => {}
+  const generation = ++installation
+  disposed = false
+  void import('@/platform/desktop/bootstrap').then(async desktop => {
+    if (disposed || generation !== installation) return
+    const bootstrap = await desktop.readDesktopBootstrap()
+    if (disposed || generation !== installation || bootstrap.connection !== 'ready' || bootstrap.windowRole === 'companion') return
+    const value = await desktop.desktopWindowZoom.getWindowZoom()
+    if (disposed || generation !== installation) return
+    bridge = desktop.desktopWindowZoom
+    zoom.value = requested = bounded(value); available.value = true
+  }).catch(() => {})
   function keydown(event: KeyboardEvent) {
     if (!available.value || event.defaultPrevented || !event.ctrlKey || event.altKey || event.metaKey || event.isComposing) return
     if (!['+', '=', '-', '0'].includes(event.key)) return
@@ -43,5 +54,8 @@ export function installDesktopZoom() {
   }
   document.addEventListener('keydown', keydown)
   document.addEventListener('wheel', wheel, { passive: false })
-  return () => { disposed = true; available.value = false; bridge = undefined; document.removeEventListener('keydown', keydown); document.removeEventListener('wheel', wheel) }
+  return () => {
+    if (generation === installation) { disposed = true; available.value = false; bridge = undefined }
+    document.removeEventListener('keydown', keydown); document.removeEventListener('wheel', wheel)
+  }
 }

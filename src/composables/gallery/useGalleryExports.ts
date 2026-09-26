@@ -1,4 +1,4 @@
-import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { buildArtworkFileName } from '@/utils/artworkFileName'
 import { formatA1111Parameters, injectPngMetadata, isPng } from '@/utils/pngMetadata'
 import { safeImageUrl } from './galleryHelpers'
@@ -41,7 +41,7 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
     try {
       // 捕获作品记录；翻页后也不能拿另一张图的查看器 URL 配上本图文件名。
       let rawBlob: Blob | null = null
-      try { rawBlob = await imgGet(String(item.image_id || item.id)) } catch { /* 尝试记录内的原图来源 */ }
+      try { rawBlob = await artworkRepository.getImage(String(item.image_id || item.id)) } catch { /* 尝试记录内的原图来源 */ }
       if (!rawBlob) {
         const source = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
         if (!source) throw new Error('原图已丢失，无法下载；缩略图不能替代原图')
