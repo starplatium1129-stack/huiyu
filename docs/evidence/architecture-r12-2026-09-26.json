@@ -1,0 +1,316 @@
+{
+  "date": "2026-09-26",
+  "batch": "R12",
+  "baseCommit": "cc533b4f15e1f264b544578d902d027fa6f93e51",
+  "implementationCommit": "20eb41669b1711b22ee34897bb963e34c9827239",
+  "status": "poc-and-local-comparison-complete; production-default-not-changed",
+  "productionDataTouched": false,
+  "installedApplicationChanged": false,
+  "aiGenerationInvoked": false,
+  "candidate": {
+    "sha256": "c11e87a222c80d932b29540161f464d93b4f68db9d1cdf57fb7794dcf8492bed",
+    "retainedPath": "runtime/refactor-r12/candidate/ai-cg-studio-desktop.exe",
+    "installed": false,
+    "signed": false
+  },
+  "checks": {
+    "rust": {
+      "passed": 50
+    },
+    "frontendLifecycle": {
+      "passed": 17
+    },
+    "nativeContracts": {
+      "passed": 6
+    },
+    "workflow": {
+      "passed": 22
+    },
+    "applicationTypes": "passed",
+    "architecture": "passed",
+    "monolith": {
+      "status": "passed",
+      "files": 919,
+      "exemptions": 0
+    },
+    "lint": {
+      "errors": 0,
+      "warnings": 5
+    },
+    "webBuild": {
+      "status": "passed",
+      "chatClosureKiB": 679.9,
+      "chatBudgetKiB": 680,
+      "budgetRaised": false
+    },
+    "desktopUiBuild": "passed",
+    "nativeReleaseBuild": "passed"
+  },
+  "protocolAcceptance": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "both built-in models render at each requested frame limit",
+        "passed": true
+      },
+      {
+        "name": "kill rejects pending; parent survives; explicit reconnect renders",
+        "passed": true
+      },
+      {
+        "name": "deadline closes failed generation without implicit restart",
+        "passed": true
+      },
+      {
+        "name": "renderer Shutdown and normal parent exit leave no child",
+        "passed": true
+      },
+      {
+        "name": "parent stdin EOF gracefully reaps child",
+        "passed": true
+      },
+      {
+        "name": "abrupt parent exit triggers OS Job child cleanup",
+        "passed": true
+      }
+    ],
+    "models": [
+      {
+        "character": "nene",
+        "modelSha256": "1efd789f4cb23da01bc53bf64b5464a2dbcc9bc8e71ba7752bbb01735c77aabf",
+        "defaultOutfit": "school/expression1",
+        "samples": [
+          {
+            "requestedFps": 60,
+            "elapsedMs": 2006.5583999999994,
+            "frameDelta": 118,
+            "measuredFps": 58.80715956236312,
+            "surfaceFailures": 0,
+            "surfaceRecoveries": 0
+          },
+          {
+            "requestedFps": 120,
+            "elapsedMs": 2012.3447999999999,
+            "frameDelta": 235,
+            "measuredFps": 116.77919211459191,
+            "surfaceFailures": 0,
+            "surfaceRecoveries": 0
+          },
+          {
+            "requestedFps": 165,
+            "elapsedMs": 2010.227600000001,
+            "frameDelta": 241,
+            "measuredFps": 119.88692225696228,
+            "surfaceFailures": 0,
+            "surfaceRecoveries": 0
+          }
+        ],
+        "visualReview": "passed; GPU readback, not window composition",
+        "workingSetBytes": 1428656128,
+        "gpuSharedBytes": 1349197824
+      },
+      {
+        "character": "natsume",
+        "modelSha256": "948d9cb9805ef203da2c142a2cf87126486ad4fb47bf95f571caf25cdd81ab65",
+        "defaultOutfit": "natsume-cafe",
+        "samples": [
+          {
+            "requestedFps": 60,
+            "elapsedMs": 2011.6146999999983,
+            "frameDelta": 119,
+            "measuredFps": 59.15645774511396,
+            "surfaceFailures": 0,
+            "surfaceRecoveries": 0
+          },
+          {
+            "requestedFps": 120,
+            "elapsedMs": 2008.8689999999988,
+            "frameDelta": 233,
+            "measuredFps": 115.98566158370713,
+            "surfaceFailures": 0,
+            "surfaceRecoveries": 0
+          },
+          {
+            "requestedFps": 165,
+            "elapsedMs": 2011.0470999999998,
+            "frameDelta": 241,
+            "measuredFps": 119.83806843708436,
+            "surfaceFailures": 0,
+            "surfaceRecoveries": 0
+          }
+        ],
+        "visualReview": "passed; GPU readback, not window composition",
+        "workingSetBytes": 1434198016,
+        "gpuSharedBytes": 1349197824
+      }
+    ]
+  },
+  "nativeUi": {
+    "thread": {
+      "completed": true,
+      "checks": [
+        "startup-ready-without-reload-and-frames-advance",
+        "thread-default-has-no-renderer-child",
+        "same-nene-rect-60-120-165-targets-measured-with-actual-frame-deltas",
+        "hidden-frames-stop-and-owned-window-restore-resumes",
+        "host-and-document-survive-renderer-lifecycle",
+        "normal-host-exit-leaves-no-renderer-process-or-owned-gpu-window"
+      ],
+      "display": {
+        "dpr": 2,
+        "screen": {
+          "width": 1440,
+          "height": 900,
+          "availWidth": 1440,
+          "availHeight": 900,
+          "colorDepth": 24
+        },
+        "viewport": {
+          "width": 540,
+          "height": 760
+        }
+      },
+      "samples": [
+        {
+          "requestedFps": 60,
+          "targetBefore": 60,
+          "targetAfter": 60,
+          "frameDelta": 120,
+          "elapsedMs": 2022.012999999999,
+          "measuredFps": 59.34679945183343,
+          "rect": {
+            "height": 1312,
+            "width": 1080,
+            "x": 40,
+            "y": 172
+          }
+        },
+        {
+          "requestedFps": 120,
+          "targetBefore": 120,
+          "targetAfter": 120,
+          "frameDelta": 235,
+          "elapsedMs": 2018.2839000000004,
+          "measuredFps": 116.43555200534472,
+          "rect": {
+            "height": 1312,
+            "width": 1080,
+            "x": 40,
+            "y": 172
+          }
+        },
+        {
+          "requestedFps": 165,
+          "targetBefore": 165,
+          "targetAfter": 165,
+          "frameDelta": 241,
+          "elapsedMs": 2014.3069000000014,
+          "measuredFps": 119.64413168618934,
+          "rect": {
+            "height": 1312,
+            "width": 1080,
+            "x": 40,
+            "y": 172
+          }
+        }
+      ],
+      "documentReloads": 0,
+      "remainingGpuWindows": 0
+    },
+    "process": {
+      "completed": true,
+      "checks": [
+        "startup-ready-without-reload-and-frames-advance",
+        "real-child-pid-distinct-from-tauri-host",
+        "same-nene-rect-60-120-165-targets-measured-with-actual-frame-deltas",
+        "renderer-kill-recovered-by-existing-bounded-ui-policy-with-same-host",
+        "hidden-frames-stop-and-owned-window-restore-resumes",
+        "host-and-document-survive-renderer-lifecycle",
+        "normal-host-exit-leaves-no-renderer-process-or-owned-gpu-window"
+      ],
+      "display": {
+        "dpr": 2,
+        "screen": {
+          "width": 1440,
+          "height": 900,
+          "availWidth": 1440,
+          "availHeight": 900,
+          "colorDepth": 24
+        },
+        "viewport": {
+          "width": 540,
+          "height": 760
+        }
+      },
+      "samples": [
+        {
+          "requestedFps": 60,
+          "targetBefore": 60,
+          "targetAfter": 60,
+          "frameDelta": 119,
+          "elapsedMs": 2021.9840999999997,
+          "measuredFps": 58.853083958474265,
+          "rect": {
+            "height": 1312,
+            "width": 1080,
+            "x": 1654,
+            "y": 258
+          }
+        },
+        {
+          "requestedFps": 120,
+          "targetBefore": 120,
+          "targetAfter": 120,
+          "frameDelta": 233,
+          "elapsedMs": 2011.0090999999993,
+          "measuredFps": 115.86223055877772,
+          "rect": {
+            "height": 1312,
+            "width": 1080,
+            "x": 1654,
+            "y": 258
+          }
+        },
+        {
+          "requestedFps": 165,
+          "targetBefore": 165,
+          "targetAfter": 165,
+          "frameDelta": 243,
+          "elapsedMs": 2020.3905999999988,
+          "measuredFps": 120.27377280413012,
+          "rect": {
+            "height": 1312,
+            "width": 1080,
+            "x": 1654,
+            "y": 258
+          }
+        }
+      ],
+      "documentReloads": 0,
+      "remainingGpuWindows": 0
+    },
+    "visualReview": "Actual physical-pixel overlay captures inspected in both modes and after child recovery; default Nene intact and transparency correct",
+    "visibilityRestore": "owned-HWND ShowWindow plus window-scoped shell visibility notification; tray entry not exercised"
+  },
+  "decision": "Keep production thread default. The isolated process improves crash containment; measured frame rates are comparable, with no demonstrated performance or memory advantage.",
+  "limitations": [
+    "165 FPS target measured about 120 FPS on this machine",
+    "Same-UI memory comparison was not sampled",
+    "One machine at DPR 2; other DPI, multiple monitors, sleep/GPU reset, long-duration power and all outfits not claimed",
+    "Tray entry not exercised; visibility restore uses the owned test HWND and scoped shell notifications",
+    "Native snapshots can contain desktop background; retained locally and not committed",
+    "R13 not run"
+  ],
+  "rawEvidence": [
+    "runtime/refactor-r12/process-acceptance/report.json",
+    "runtime/refactor-r12/native-final-thread-1790436463833/report.json",
+    "runtime/refactor-r12/native-final-process-1790436494928/report.json"
+  ],
+  "retainedFailures": [
+    "Previous ee53 startup with enabled Live2D remained inactive until catalog recovery was implemented",
+    "First Windows compile needed Win32_System_Threading feature",
+    "Initial frontend bundle exceeded ChatView budget by 206 bytes; repeated backend selection was consolidated",
+    "Initial window screenshot used logical coordinates; physical overlay rect captures superseded it",
+    "Initial harness counted same-document history changes as navigation; identity/timeOrigin checks proved zero reloads"
+  ]
+}

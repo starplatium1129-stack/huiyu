@@ -2,7 +2,7 @@
 
 ## 2026-09-26 指定架构主线
 
-R0–R11 主线代码、受影响验收、NSIS 安装及用户授权后的当前来源迁移/独立 UI 切换已完成。旧 profile 与独立备份保留；历史来源凭据处理和 R12/R13 独立实验继续单列，不冒充已经执行。范围和证据见 [主线实施记录](architecture/R3-R11-EXECUTION-REPORT.md)。
+R0–R11 主线代码、受影响验收、NSIS 安装及用户授权后的当前来源迁移/独立 UI 切换已完成。旧 profile 与独立备份保留；历史来源凭据处理和独立实验继续单列。R12 已完成本机 PoC，保留线程默认；是否采用进程及其他设备/长期资源对照继续另定，R13 未执行。范围和证据见 [主线实施记录](architecture/R3-R11-EXECUTION-REPORT.md)及 [R12 记录](architecture/R12-EXECUTION-REPORT.md)。
 
 
 > 更新于 2026-09-26。此页只维护待开发、待验收、暂停和待决策事项。已完成范围见 [项目状态](project-status.md)，分批过程见 [历史记录](archive/README.md)，整理前原文可从 Git 提交 `f397359` 的 docs/roadmap.md 查询。历史通过记录不替代当前构建或真实设备验收。
