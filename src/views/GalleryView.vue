@@ -11,6 +11,8 @@
       </RouterLink>
     </header>
 
+    <GalleryProjectAlbums v-if="!trashMode && !galleryLoading && !galleryError" :albums="albums" :selected-id="projectFilter" @select="projectFilter = $event" />
+
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
       <div class="gallery-browse-controls" role="group" aria-label="浏览作品">
       <button class="gallery-filter" :class="{ active: !favoriteOnly && !trashMode }" type="button"
@@ -47,7 +49,7 @@
       </div>
     </div>
     <div class="gallery-summary" aria-live="polite">
-      <span class="gallery-count">{{ trashMode ? `回收站 · ${trashItems.length} 幅作品` : countLabel }}</span>
+      <span class="gallery-count"><strong>{{ trashMode ? '回收站' : '作品展墙' }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
       <span class="gallery-toolbar-note">{{ trashMode ? '删除的作品保留 30 天，可随时恢复' : selectMode ? '选择作品后，可对比挑选或批量移入回收站' : '点作品欣赏原图，或沿用配方继续创作' }}</span>
     </div>
 
@@ -345,11 +347,13 @@ const gestureViewer = ref(false)
 const searchInput = ref<HTMLInputElement | null>(null)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
+import GalleryProjectAlbums from '@/components/gallery/GalleryProjectAlbums.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
+import { useGalleryProjectAlbums } from '@/composables/gallery/useGalleryProjectAlbums'
 const {
 closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
 searchQuery,
@@ -419,6 +423,7 @@ downloadCurrent,
 copiedPrompt,
 copyPrompt
 } = useGalleryWorkspace()
+const { albums } = useGalleryProjectAlbums({ projects, history, thumbUrls, cardUrls })
 
 const displayedCurrent = ref(current.value)
 const displayedIndex = ref(viewerIndex.value)
@@ -433,81 +438,4 @@ watch(current, value => {
 <style scoped src="@/assets/css/gallery-view.css"></style>
 
 
-<style>
-/* 非 scoped：Teleport 到 body 的查看器 */
-.art-viewer { position:fixed; inset:0; z-index:var(--z-overlay); display:grid; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:var(--art-backdrop); color:var(--on-art-primary); }
-.art-viewer.layer-pop-enter-active,
-.art-viewer.layer-pop-leave-active { transition:opacity var(--motion-surface) var(--ease-out); }
-.art-viewer.layer-pop-enter-active > .viewer-stage,
-.art-viewer.layer-pop-leave-active > .viewer-stage { transition:transform var(--motion-surface) var(--ease-out),opacity var(--motion-surface) var(--ease-out); }
-.art-viewer.layer-pop-enter-from,
-.art-viewer.layer-pop-leave-to { opacity:0; }
-.art-viewer.layer-pop-enter-from > .viewer-stage { transform:scale(.985); opacity:0; }
-.art-viewer.layer-pop-leave-to > .viewer-stage { transform:scale(.98); opacity:0; }
-.viewer-compare-host { width:100%; height:calc(100vh - 120px); max-width:min(90vw, 1200px); display:flex; align-items:center; justify-content:center; }
-.viewer-compare-toggle {
-  position:absolute; z-index:var(--z-raised); top:18px; right:64px;
-  display:inline-flex; align-items:center; gap:4px;
-  padding:6px 12px; border-radius:var(--r-pill);
-  border:1px solid var(--on-art-line); background:var(--art-scrim);
-  color:var(--on-art-primary); cursor:pointer; font:600 var(--fs-label-xs) var(--font-mono);
-  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
-  transition:background var(--motion-hover), border-color var(--motion-hover);
-}
-.viewer-compare-toggle:hover, .viewer-compare-toggle.active {
-  border-color:var(--accent); background:color-mix(in srgb,var(--accent) 30%,var(--art-scrim)); color:var(--on-art-primary);
-}
-.viewer-stage { position:relative; min-width:0; display:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); overflow:hidden; }
-.viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px var(--art-backdrop)); animation:galleryImageIn .35s var(--ease-out); }
-.viewer-fallback { color:var(--on-art-secondary); font-size:var(--fs-glyph-lg); }
-.art-viewer .viewer-close { position:absolute; z-index:var(--z-raised); top:18px; left:18px; }
-.viewer-nav,.viewer-info-toggle { position:absolute; z-index:var(--z-raised); display:grid; place-items:center; border:1px solid var(--on-art-line); background:var(--art-scrim); color:var(--on-art-primary); cursor:pointer; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:background var(--motion-hover),transform var(--motion-hover); }
-.viewer-info-toggle { top:18px; right:18px; width:40px; height:40px; border-radius:50%; display:none; }
-.viewer-nav { top:50%; width:44px; height:64px; border-radius:var(--r-pill); transform:translateY(-50%); font-size:var(--fs-title); }
-.viewer-nav:hover,.viewer-info-toggle:hover { background:color-mix(in srgb,var(--accent) 58%,var(--art-scrim)); }
-.viewer-prev { left:var(--s-4); }
-.viewer-next { right:var(--s-4); }
-/* 审计修复: .24 远低于 UI 组件 3:1 门槛 */
-.viewer-nav:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor:default; }
-.viewer-position { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); color:var(--on-art-secondary); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
-.viewer-info { box-sizing:border-box; min-width:0; overflow-y:auto; padding:56px var(--s-5) var(--s-6); border-left:1px solid var(--on-art-line); background:var(--art-scrim); }
-.viewer-info-header { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); }
-.viewer-info-close { display:none; align-items:center; gap:6px; min-height:40px; padding:0 12px; border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:background var(--motion-hover),border-color var(--motion-hover); }
-.viewer-info-close:hover { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
-.viewer-info-close:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
-.viewer-info-close .archive-icon { width:16px; height:16px; }
-.viewer-title { margin:var(--s-3) 0 var(--s-1); color:var(--on-art-primary); font-size:var(--fs-title); line-height:var(--lh-tight); overflow-wrap:anywhere; }
-.art-viewer .viewer-kicker { color:var(--on-art-secondary); }
-.viewer-meta { color:var(--on-art-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); overflow-wrap:anywhere; }
-.viewer-facts { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); margin-bottom:var(--s-5); }
-.viewer-fact { min-width:0; padding:var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-md); background:var(--on-art-fill); }
-.viewer-fact small,.viewer-fact strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.viewer-fact small { color:var(--on-art-secondary); font-size:var(--fs-mono-xs); text-transform:uppercase; letter-spacing:.08em; }
-.viewer-fact strong { margin-top:var(--s-1); color:var(--on-art-primary); font-size:var(--fs-label-xs); }
-.viewer-details { margin:0 0 var(--s-5); border-top:1px solid var(--on-art-line); }
-.viewer-details summary { padding:var(--s-3) 0; color:var(--on-art-secondary); font-size:var(--fs-label-xs); cursor:pointer; }
-.art-viewer .viewer-actions .btn-ghost { color:var(--on-art-primary); border-color:var(--on-art-line); background:var(--art-scrim); }
-.art-viewer .viewer-actions .btn-danger { color:var(--on-art-primary); }
-.viewer-prompt { max-height:220px; overflow:auto; padding:var(--s-3); border-radius:var(--r-md); background:var(--art-backdrop); color:var(--on-art-secondary); font:400 var(--fs-mono-sm)/1.65 var(--font-mono); white-space:pre-wrap; word-break:break-word; }
-@media (max-width:900px) {
-  .art-viewer { grid-template-columns:1fr; }
-  .viewer-stage { padding:60px 42px 78px; }
-  .viewer-info { position:absolute; inset:0 0 0 auto; width:min(92vw,360px); max-width:100%; visibility:hidden; pointer-events:none; transform:translateX(100%); background:var(--bg-deep); background-image:linear-gradient(var(--art-scrim),var(--art-scrim)); transition:transform var(--motion-surface) var(--ease-drawer),visibility 0s linear var(--motion-surface); z-index:var(--z-raised); }
-  .art-viewer.info-open .viewer-info { visibility:visible; pointer-events:auto; transform:none; transition-delay:0s; }
-  .viewer-info-toggle { display:grid; }
-  .viewer-info-close { display:inline-flex; flex:0 0 auto; }
-  .viewer-info .viewer-actions { display:flex; flex-wrap:wrap; }
-  .viewer-info .viewer-actions > * { flex:1 1 10rem; min-width:0; }
-}
-@media (max-width:600px) {
-  .viewer-stage { padding:58px 38px 76px; }
-  .viewer-info { width:min(100%,360px); padding:var(--s-4) var(--s-3) var(--s-5); }
-  .viewer-info-header { align-items:stretch; flex-direction:column; }
-  .viewer-info-close { align-self:flex-start; }
-  .viewer-nav { width:36px; height:56px; }
-  .viewer-prev { left:var(--s-2); }
-  .viewer-next { right:var(--s-2); }
-}
-@media (prefers-reduced-motion:reduce) { .art-viewer,.viewer-info { transition:none !important; } }
-
-</style>
+<style src="@/assets/css/gallery-viewer.css"></style>

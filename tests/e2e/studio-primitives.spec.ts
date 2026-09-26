@@ -20,6 +20,7 @@ for (const theme of ['light', 'dark']) {
       await installShowcaseFixture(page)
       await page.goto('/showcase')
       await expect(page.locator('.sample')).toHaveCount(2)
+      await page.locator('.showcase-filters > summary').press('Enter')
       const field = page.getByRole('combobox', { name:'筛选角色', exact:true })
       await expect(field).toHaveValue('全部角色')
       await field.fill('不存在的角色')

@@ -1,18 +1,15 @@
 <template>
   <article class="page library-page popular-scene-library" style="--page-max:1500px;" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>选角色、挑场景，再带着完整设定进入绘图工作台。</p></div><RouterLink :to="'/character?character=' + encodeURIComponent(selectedId)" class="btn btn-ghost">查看角色档案</RouterLink></header>
+    <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>翻一翻角色的日常与远方，挑选想要绘制的那一幕。</p></div><RouterLink :to="'/character?character=' + encodeURIComponent(selectedId)" class="btn btn-ghost"><ArchiveIcon name="character" />查看角色档案</RouterLink></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
       <div class="library-detail">
-    <section class="pop-hero">
+    <section class="pop-hero" aria-label="当前角色场景">
       <div class="pop-hero-copy">
         <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
         <h2>{{ selectedCharacter?.displayName || '选择一个角色' }}</h2>
-        <div class="pop-hero-stat" aria-label="场景统计">
-          <strong>{{ totalScenes }}</strong><span>场景蓝图</span>
-          <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
-        </div>
       </div>
+      <p class="pop-hero-stat" aria-label="场景统计"><strong>{{ totalScenes }}</strong> 幕可选场景</p>
     </section>
 
     <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" message="正在载入热门角色档案与场景蓝图。" />
@@ -21,22 +18,20 @@
     </ArchiveStatePanel>
 
     <template v-else>
-      <!-- 工具栏：第一行 搜索+结果数+分级筛选+成人开关，第二行 场景分类（全部最左、成人垫底独立样式） -->
       <div class="pop-toolbar">
         <div class="pop-toolbar-row">
-          <label class="sr-only" for="popularSceneSearch">搜索场景</label>
-          <input v-model="query" type="search" id="popularSceneSearch" class="pop-search"
-            placeholder="搜索场景标题、描述、地点或氛围（如：浴、黑丝、月光）" />
+          <div class="pop-search-field">
+            <ArchiveIcon name="search" />
+            <label class="sr-only" for="popularSceneSearch">搜索场景</label>
+            <input v-model="query" type="search" id="popularSceneSearch" class="pop-search"
+              placeholder="搜索场景、地点或氛围…" />
+          </div>
           <div class="pop-rating-filters" role="group" aria-label="分级筛选">
             <button v-for="r in RATING_OPTS" :key="r.v" type="button" class="pop-rating-pill"
               :class="{ active: ratingFilter === r.v, ['rating-' + r.v]: r.v !== 'all' }"
               :aria-pressed="ratingFilter === r.v"
               @click="ratingFilter = r.v">{{ r.l }}</button>
           </div>
-          <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }}</span>
-          <StudioTooltip :content="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">
-            <span class="pop-count mature-hint">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
-          </StudioTooltip>
         </div>
         <div class="pop-cats" role="group" aria-label="场景分类">
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
@@ -44,6 +39,12 @@
             :aria-pressed="category === cat.id"
             @click="category = cat.id">{{ cat.label }}<em>{{ cat.count }}</em></button>
         </div>
+      </div>
+      <div class="pop-results-bar">
+        <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }} 幕</span>
+        <StudioTooltip :content="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">
+          <span class="pop-count mature-hint">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
+        </StudioTooltip>
       </div>
 
       <div v-if="filtered.length === 0" class="pop-empty">
@@ -66,31 +67,30 @@
                 'pop-thumb-ready': thumbState[thumbSrc(blueprint)],
               }"
               @load="onThumbLoad(thumbSrc(blueprint))" @error="onThumbError(thumbSrc(blueprint))" />
-            <span v-if="thumbFailed[thumbSrc(blueprint)]" class="pop-preview-missing">样张暂未就绪 · 可先查看场景</span>
+            <span v-if="thumbFailed[thumbSrc(blueprint)]" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong><span>场景设定已就绪，可以直接绘制</span></span>
             <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
           </RouterLink>
-          <header class="pop-card-head">
-            <h3>{{ blueprint.title }}</h3>
-            <span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span>
-          </header>
-          <p class="pop-desc">{{ blueprint.description }}</p>
-          <div class="pop-meta">
-            <span>{{ blueprint.category }}</span>
-            <span>{{ blueprint.location }}</span>
-            <span>{{ timeLabel(blueprint.timeOfDay) }}</span>
-            <span>{{ blueprint.recommendedSize.replace('x', '×') }}</span>
+          <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张待补充</strong><span>场景设定已就绪，可以直接绘制</span></span></div>
+          <div class="pop-card-body">
+            <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
+            <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
+            <p class="pop-desc">{{ displayDescription(blueprint) }}</p>
+            <div class="pop-meta"><span>{{ blueprint.location }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
+            <details class="pop-scene-details">
+              <summary><span>场景细节</span><ArchiveIcon name="chevron-down" /></summary>
+              <p v-if="blueprint.description" class="pop-full-description">{{ displayDescription(blueprint) }}</p>
+              <dl class="pop-decision">
+                <div><dt>镜头</dt><dd>{{ shotLabel(blueprint) }}</dd></div>
+                <div><dt>光线</dt><dd>{{ lightLabel(blueprint) }}</dd></div>
+                <div><dt>色调</dt><dd>{{ moodLabel(blueprint) }}</dd></div>
+                <div><dt>画幅</dt><dd>{{ blueprint.recommendedSize.replace('x', '×') }}</dd></div>
+                <div v-if="blueprint.adult && artistLabel(blueprint)" class="pop-artist"><dt>画师</dt><dd>{{ artistLabel(blueprint) }}</dd></div>
+              </dl>
+            </details>
+            <footer class="pop-card-actions">
+              <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
+            </footer>
           </div>
-          <div class="pop-decision">
-            <span>镜头 <strong>{{ shotLabel(blueprint) }}</strong></span>
-            <span>光线 <strong>{{ lightLabel(blueprint) }}</strong></span>
-            <span>色调 <strong>{{ moodLabel(blueprint) }}</strong></span>
-            <span v-if="blueprint.adult" class="pop-artist">画师 <strong>{{ artistLabel(blueprint) }}</strong></span>
-          </div>
-          <footer class="pop-card-actions">
-            <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)">
-              <ArchiveIcon name="spark" /> 开始绘制
-            </RouterLink>
-          </footer>
         </article>
       </div>
     </template>
@@ -189,6 +189,10 @@ function selectCharacter(id: string) {
 }
 function drawUrl(blueprint: SceneBlueprint): string {
   return `/prompt-builder?popular=${encodeURIComponent(selectedId.value)}&blueprint=${encodeURIComponent(blueprint.id)}`
+}
+function displayDescription(blueprint: SceneBlueprint): string {
+  const prefix = `[${blueprint.title}]`
+  return blueprint.description.startsWith(prefix) ? blueprint.description.slice(prefix.length).trim() : blueprint.description
 }
 function resetFilters() {
   query.value = ''

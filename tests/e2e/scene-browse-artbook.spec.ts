@@ -11,7 +11,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 768, 390]) {
     for (const [name, route, art] of [
       ['scenes', '/scene-explorer', '.scene-grid .sc'],
       ['popular', '/popular-scenes', '.pop-thumb'],
-      ['character', '/character', '.character-particle-stage'],
+      ['character', '/character?character=nene', '.character-particle-stage'],
     ] as const) {
       await page.goto(route)
       await expect(page.locator(art).first()).toBeVisible()

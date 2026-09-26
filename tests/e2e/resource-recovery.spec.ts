@@ -119,7 +119,7 @@ const jsonFixture = (body: unknown) => (route: Route) =>
 
 failureCase('F03', '角色列表缩略图 404 首字回退', async (page, theme, testInfo) => {
   const probe = await intercept(page, '**/assets/characters/thumbs/popular-*.webp*', notFound)
-  await openWithTheme(page, '/character', theme)
+  await openWithTheme(page, '/character?character=nene', theme)
   await page.getByRole('searchbox', { name: '搜索角色或作品' }).fill('芙莉莲')
   const card = page.locator('.directory-item[data-character="frieren"]')
   await card.scrollIntoViewIfNeeded()

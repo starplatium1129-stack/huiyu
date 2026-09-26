@@ -583,7 +583,7 @@ test('popular creator · scene library page deep-links character and blueprint i
   expect(charCount).toBeGreaterThanOrEqual(18)
   await page.locator('.character-directory .directory-item').filter({ hasText: '雷电将军' }).click()
   await page.locator('.pop-card').filter({ hasText: '花海逆光' }).first()
-    .getByRole('link', { name: '开始绘制', exact: true }).click()
+    .getByRole('link', { name: '绘制这一幕', exact: true }).click()
   // 深链：绘图页应预选角色 + 展开全部列表 + 激活目标蓝图。
   await page.waitForTimeout(3000)
   await expect(page.locator('.blueprint-card.active')).toContainText('花海逆光')
@@ -597,7 +597,7 @@ test('popular creator · scene library page deep-links character and blueprint i
   await page.waitForTimeout(2500)
   await page.locator('.character-directory .directory-item').filter({ hasText: '樱岛麻衣' }).click()
   await expect(page.locator('.pop-card.adult').first()).toBeVisible()
-  await page.locator('.pop-card.adult').first().getByRole('link', { name: '开始绘制', exact: true }).click()
+  await page.locator('.pop-card.adult').first().getByRole('link', { name: '绘制这一幕', exact: true }).click()
   await page.waitForTimeout(3000)
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 })

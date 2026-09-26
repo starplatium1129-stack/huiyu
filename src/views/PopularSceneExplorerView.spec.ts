@@ -23,7 +23,7 @@ let wrapper: VueWrapper | undefined
 beforeEach(() => { access.local = true; access.eligibility = 'adult' })
 afterEach(() => { wrapper?.unmount() })
 async function mountLibrary() {
-  wrapper = shallowMount(PopularSceneExplorerView, { global: { stubs: { RouterLink: { template: '<a><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
+  wrapper = shallowMount(PopularSceneExplorerView, { global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
   await flushPromises()
   return wrapper
 }
@@ -55,5 +55,27 @@ describe('角色场景的本机访问边界', () => {
     await page.findAll('.pop-rating-pill').find(button => button.text() === '全年龄')!.trigger('click')
     expect(page.findAll('[data-blueprint-id]').map(card => card.attributes('data-blueprint-id'))).toEqual(['safe', 'legacy-safe'])
     expect(page.findAll('.pop-rating')).toHaveLength(0)
+  })
+
+  it('次级场景设定默认收起，绘制入口始终携带原角色与蓝图', async () => {
+    const page = await mountLibrary()
+    const card = page.get('[data-blueprint-id="safe"]')
+    expect(card.get('details').element.open).toBe(false)
+    expect(card.get('summary').text()).toBe('场景细节')
+    expect(card.get('.pop-decision').text()).toContain('832×1216')
+    expect(card.get('.pop-draw-action').text()).toBe('绘制这一幕')
+    expect(card.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=fixture&blueprint=safe')
+    expect(card.get('.pop-thumb').attributes('href')).toBe(card.get('.pop-draw-action').attributes('href'))
+    expect(card.find('details .pop-draw-action').exists()).toBe(false)
+  })
+
+  it('图片失败明确显示待补充，并保留对应场景的绘制入口', async () => {
+    const page = await mountLibrary()
+    const card = page.get('[data-blueprint-id="safe"]')
+    await card.get('img').trigger('error')
+    expect(card.get('.pop-preview-missing').text()).toContain('样张暂不可用')
+    expect(card.get('img').classes()).toContain('pop-thumb-missing')
+    expect(card.get('.pop-draw-action').attributes('href')).toBe('/prompt-builder?popular=fixture&blueprint=safe')
+    expect(page.get('[data-blueprint-id="legacy-safe"]').find('.pop-preview-missing').exists()).toBe(false)
   })
 })

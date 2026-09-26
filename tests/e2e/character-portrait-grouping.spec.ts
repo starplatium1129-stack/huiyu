@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import { pickStudioOptionByValue, readStudioOptions } from './helpers/studioSelect'
 
 test('different source spellings form one complete work group', async ({ page }) => {
-  await page.goto('/character')
+  await page.goto('/character?character=nene')
   const series = page.getByLabel('筛选角色系列')
   const oregairu = (await readStudioOptions(series)).find(option => option.value === 'Oregairu')
   expect(oregairu?.label).toContain('4')

@@ -1,6 +1,6 @@
 <template>
   <article class="page character-page library-page character-editorial" style="--page-max:1600px">
-    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>认识她的故事，从一个心动的瞬间开始创作。</p></div><RouterLink to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></header>
+    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>{{ showShelf ? '翻开喜欢的作品，认识下一位故事主角。' : '认识她的故事，从一个心动的瞬间开始创作。' }}</p></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><RouterLink to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -23,7 +23,8 @@
       message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
-      <div class="library-layout">
+      <CharacterBookshelf v-show="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" @select="selectCharacter" />
+      <div v-if="!showShelf" class="library-layout">
         <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail">
       <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
@@ -271,8 +272,9 @@ import { useFluidDialog } from '@/composables/useFluidDialog'
 import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vue'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
+import CharacterBookshelf from '@/components/library/CharacterBookshelf.vue'
+import { useCharacterArchiveNavigation } from '@/composables/useCharacterArchiveNavigation'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -290,12 +292,14 @@ import {
 } from '@/utils/characterProfiles'
 
 const sceneStore = useSceneStore()
-const route = useRoute()
-const router = useRouter()
 const characters = ref<CharacterProfile[]>([])
 const scenes = ref<CharacterScene[]>([])
 const loading = ref(true)
-const current = ref<CharacterProfile | null>(null)
+const profileAnchor = ref<HTMLElement | null>(null)
+const bookshelf = ref<InstanceType<typeof CharacterBookshelf> | null>(null)
+const { current, showShelf, lastViewedId, selectCharacter, showBookshelf } = useCharacterArchiveNavigation(
+  characters, profileAnchor, () => bookshelf.value?.focusSelected(),
+)
 const bgExpanded = ref(false)
 useScrollReveal()
 
@@ -327,25 +331,6 @@ const portraitMissingText = computed(() => ({
 const showFallbackNote = computed(() => portraitView.value.state === 'fallback' && portraitLoaded.value
   && !!current.value && !isPopularPortraitPending(current.value.id))
 
-const profileAnchor = ref<HTMLElement | null>(null)
-function selectCharacter(id: string) {
-  const found = characters.value.find(c => String(c.id) === id)
-  if (!found) return
-  current.value = found
-  if (route.query.character !== id) void router.replace({ query: { ...route.query, character: id } })
-  selectedOutfitId.value = ''
-  bgExpanded.value = false
-  // 点击卡片联动档案大卡：档案区不在视口内才平滑滚过去（已在视野内不打扰浏览）
-  void nextTick(() => {
-    const anchor = profileAnchor.value
-    if (!anchor) return
-    const rect = anchor.getBoundingClientRect()
-    const inView = rect.top >= 70 && rect.top < window.innerHeight * 0.9
-    if (inView) return
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    anchor.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
-  })
-}
 function tagClass(index: unknown) { return 'm' + (Number(index) % 6) }
 
 const characterReferences = computed(() => {
@@ -455,13 +440,6 @@ async function loadProfiles() {
     // 角色档案首屏只需要目录壳；场景/蓝图画布随后后台补齐，不能阻塞粒子展台挂载。
     await sceneStore.loadCharacterShell()
     characters.value = parseCharacterProfiles(sceneStore.characters)
-    const requested = typeof route.query.character === 'string' ? route.query.character : ''
-    current.value = characters.value.find(c => c.id === requested) || characters.value[0] || null
-    void sceneStore.load().then(() => {
-      scenes.value = parseCharacterScenes(sceneStore.scenes)
-    }).catch((e) => {
-      console.warn('character scene data load failed', e)
-    })
   } catch (e) {
     console.warn('character data load failed', e)
     loadError.value = String(e instanceof Error ? e.message : e)
@@ -470,7 +448,14 @@ async function loadProfiles() {
 }
 
 watch(() => current.value?.id, id => {
-  if (id) void ensureCharacterReferencesLoaded(id).catch(() => undefined)
+  selectedOutfitId.value = ''; bgExpanded.value = false; activeRefIndex.value = -1
+  refMotion.dispose()
+  if (!id) return
+  void ensureCharacterReferencesLoaded(id).catch(() => undefined)
+  // The bookshelf needs only the character shell; load scene details on entry.
+  void sceneStore.load().then(() => {
+    scenes.value = parseCharacterScenes(sceneStore.scenes)
+  }).catch(e => console.warn('character scene data load failed', e))
 })
 onMounted(() => {
   void loadProfiles()

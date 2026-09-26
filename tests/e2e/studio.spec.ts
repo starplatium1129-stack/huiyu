@@ -362,6 +362,7 @@ test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ 
   await page.getByRole('button', { name: '关闭大图' }).click();
   await expect(page.locator('.showcase-viewer')).not.toHaveAttribute('open', '');
   await expect(page.locator('.sample .sample-visual').first()).toBeFocused();
+  await page.locator('.showcase-filters > summary').press('Enter');
   await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular');
   await pickStudioOptionByValue(page.getByLabel('筛选角色'), 'popular-test');
   await expect(page.locator('.sample')).toHaveCount(1);

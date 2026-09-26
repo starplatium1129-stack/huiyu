@@ -27,7 +27,7 @@ for (const theme of ['dark', 'light']) {
       for (const route of ['/', '/gallery', '/chat', '/character', '/color-script', '/video-studio', '/prompt-builder']) {
         await page.goto(route)
         await expect(page.locator('main')).toBeVisible()
-        const ready: Record<string, string> = { '/': '.hero-character.is-current', '/gallery': '.archive-state-panel', '/chat': '.chat-input', '/character': '.character-hero', '/color-script': '.light-notebook', '/video-studio': '.video-prompt', '/prompt-builder': '.stage-placeholder' }
+        const ready: Record<string, string> = { '/': '.hero-character.is-current', '/gallery': '.archive-state-panel', '/chat': '.chat-input', '/character': '.character-bookshelf', '/color-script': '.light-notebook', '/video-studio': '.video-prompt', '/prompt-builder': '.stage-placeholder' }
         await expect(page.locator(ready[route])).toBeVisible()
         if (route === '/chat') {
           await expect(page.locator('.stage-reference-caption')).toBeVisible()

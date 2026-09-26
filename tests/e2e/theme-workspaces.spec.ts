@@ -16,7 +16,7 @@ test('theme switch persists through reload and preserves native control colors',
 for (const theme of ['light', 'dark']) {
   test('character browsing is a compact searchable directory in ' + theme, async ({ page }) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
-    await page.goto('/character')
+    await page.goto('/character?character=nene')
     const directory = page.getByRole('complementary', { name: '角色目录' })
     await expect(directory).toBeVisible()
     await pickStudioOptionByValue(page.getByLabel('筛选角色系列'), 'Oregairu')

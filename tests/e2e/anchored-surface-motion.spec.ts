@@ -48,6 +48,7 @@ for (const theme of ['light', 'dark'] as const) {
       await installShowcaseFixture(page)
       await page.goto('/showcase')
       await expect(page.locator('.sample')).toHaveCount(2)
+      await page.locator('.showcase-filters > summary').press('Enter')
       await observeMotion(page, '.studio-select-content')
       const trigger = page.getByLabel('筛选作品类型')
       const content = page.locator('.studio-select-content')

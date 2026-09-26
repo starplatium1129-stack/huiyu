@@ -26,7 +26,7 @@ const path: typeof import('path') = require('path');
 
 const root = path.resolve(__dirname, '..', '..');
 const read = (relative: string) => fs.readFileSync(path.join(root, relative), 'utf8');
-const readShowcaseView = () => [read('src/views/ShowcaseView.vue'), read('src/assets/css/showcase-view.css')].join('\n');
+const readShowcaseView = () => [read('src/views/ShowcaseView.vue'), read('src/components/showcase/ShowcaseSampleCard.vue'), read('src/assets/css/showcase-view.css')].join('\n');
 
 test('showcase source contract: view, router, nav, server allowlist, exporter wording', () => {
   const view = readShowcaseView();

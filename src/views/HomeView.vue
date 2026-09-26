@@ -16,6 +16,10 @@
             <button type="button" :aria-pressed="homeMuse === 'nene'" @click="homeMuse = 'nene'"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
             <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="homeMuse = 'natsume'"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
           </div>
+          <RouterLink class="hero-particle-link" :to="`/character?character=${homeMuse}`"
+            :aria-label="`欣赏${homeMuse === 'nene' ? '绫地宁宁' : '四季夏目'}的粒子形象`">
+            <ArchiveIcon name="spark" /><span>欣赏粒子形象</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
+          </RouterLink>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" aria-label="宁宁与夏目的角色视觉">
           <img :crossorigin="runtimeResourceCors()" v-if="!heroFailed.nene" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="resolveRuntimeUrl(heroAssets.nene)" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" @error="heroFailed.nene = true" />

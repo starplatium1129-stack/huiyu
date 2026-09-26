@@ -8,34 +8,39 @@
       <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
     </header>
 
+    <ShowcaseAlbums v-if="!manifestLoading" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" :broken-thumbs="brokenThumbs" @select="typeFilter = $event" @image-error="markThumbError" />
+
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row">
         <div class="search-field">
+          <ArchiveIcon name="search" />
           <input ref="searchInput" v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" aria-label="搜索画册" @keydown.esc.prevent="searchQuery = ''" placeholder="搜索场景、情绪、角色或关键词…" />
-          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空搜索" @click="searchQuery=''; searchInput?.focus()">×</button>
+          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空搜索" @click="searchQuery=''; searchInput?.focus()"><ArchiveIcon name="close" /></button>
         </div>
         <div class="filter-group">
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
-        <div class="filter-group filter-dropdowns">
-          <label class="sr-only" for="showcaseTypeSelect">作品类型</label>
-          <StudioSelect :key="`type-${typeFilter}`" id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
-            :options="TYPE_OPTS.map(opt => ({ value: opt.v, label: opt.l }))" />
-
-          <label class="sr-only" for="showcaseCharSelect">角色筛选</label>
-          <StudioSelect id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
-            :options="allCharOptions.map(opt => ({ value: opt.v, label: opt.l }))" />
-        </div>
-        <div class="filter-group">
-          <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
-        </div>
-        <button v-if="hasFilters" class="filter-pill" type="button" @click="resetFilters">清除筛选</button>
-        <span class="result-meta" id="resultMeta" role="status">
-          显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊
-        </span>
+        <button v-if="hasFilters" class="filter-reset" type="button" @click="resetFilters">清除筛选</button>
       </div>
+      <details class="showcase-filters">
+        <summary><span>细选画册</span><span class="filter-summary">{{ filterSummary }}</span><ArchiveIcon name="chevron-down" /></summary>
+        <div class="filter-details">
+          <div class="filter-group filter-dropdowns">
+            <label for="showcaseTypeSelect">作品类型
+              <StudioSelect :key="`type-${typeFilter}`" id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
+                :options="TYPE_OPTS.map(opt => ({ value: opt.v, label: opt.l }))" /></label>
+            <label for="showcaseCharSelect">角色筛选
+              <StudioSelect id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
+                :options="allCharOptions.map(opt => ({ value: opt.v, label: opt.l }))" /></label>
+          </div>
+          <div class="rating-options"><span>内容分级</span><div class="filter-group">
+            <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
+          </div></div>
+        </div>
+      </details>
     </div>
 
+    <div class="showcase-results-heading"><h2>{{ typeFilter === 'all' ? '全部样张' : typeLabel(typeFilter) }}</h2><span class="result-meta" id="resultMeta" role="status">显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊</span></div>
     <p v-if="reloadError && !unavailable" role="status">{{ reloadError }}</p>
     <ArchiveStatePanel
       v-if="unavailable"
@@ -68,34 +73,10 @@
     </ArchiveStatePanel>
 
     <div v-else class="showcase-grid stagger-container" data-reveal data-reveal-delay="1">
-      <article
-        v-for="entry in paged" :key="entry.id"
-        class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }"
-        :data-rating="entry.rating"
-      >
-        <button class="sample-visual" :class="{ 'sample-visual-measured': hasRatio(entry) }" type="button" :style="{ '--sample-ratio': sampleRatio(entry) }" :aria-label="'查看 ' + entry.title + ' 大图'" @click="openViewer(entry.id)">
-          <img :crossorigin="runtimeResourceCors()" v-if="!brokenThumbs.has(entry.id)" class="sample-image" :class="{ 'sample-image-ready': loadedThumbs.has(entry.id) }" :src="resolveRuntimeUrl(thumbSrc(entry))" :alt="entry.title"
-            :width="entry.width" :height="entry.height" loading="lazy" decoding="async" @load="markThumbLoaded(entry)" @error="markThumbError(entry)" />
-          <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span>
-          <span class="sample-shade"></span>
-          <span class="sample-badges">
-            <span v-if="featured.has(entry.id)" class="sample-badge">精选</span>
-            <span v-else-if="entry.type !== 'scene'" class="sample-badge sample-badge-type">{{ typeLabel(entry.type) }}</span>
-            <span v-else></span>
-            <span class="sample-badge" :class="'rating-' + entry.rating">{{ ratingLabel(entry.rating) }}</span>
-          </span>
-          <span v-if="entry.rating === 'R18'" class="sample-sensitive">
-            <strong>R18</strong><span>悬停或聚焦预览</span>
-          </span>
-          <span class="sample-caption">
-            <span class="sample-kicker">
-              <span>{{ charLabel(entry.char) }}</span>
-
-            </span>
-            <strong class="sample-title">{{ entry.title }}</strong>
-          </span>
-        </button>
-      </article>
+      <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
+        :loaded="loadedThumbs.has(entry.id)" :broken="brokenThumbs.has(entry.id)" :featured="featured.has(entry.id)"
+        :character-label="charLabel(entry.char)" :type-label="typeLabel(entry.type)" :rating-label="ratingLabel(entry.rating)"
+        @open="openViewer" @loaded="markThumbLoaded" @error="markThumbError" />
     </div>
 
     <div ref="loadSentinel" v-show="paged.length < filtered.length" class="load-wrap">
@@ -154,9 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
-
-import { runtimeFetch } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl, runtimeFetch } from '@/platform/runtimeUrl'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
@@ -168,6 +147,9 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
+import ShowcaseAlbums from '@/components/showcase/ShowcaseAlbums.vue'
+import ShowcaseSampleCard from '@/components/showcase/ShowcaseSampleCard.vue'
+import { useShowcaseAlbums } from '@/composables/showcase/useShowcaseAlbums'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseShowcaseManifest,
@@ -190,6 +172,7 @@ const LABELS: Record<string,string> = { nene:'绫地宁宁', natsume:'四季夏�
 const TYPE_LABELS: Record<string,string> = { scene:'场景样张', artist:'画师风格', popular:'热门角色', lora:'LoRA 样张' }
 
 const entries   = ref<ShowcaseEntry[]>([])
+const albums = useShowcaseAlbums(entries)
 const featured  = ref(new Set<string>())
 const stats     = ref({ total: '—', safe: '—', r15: '—' })
 const unavailable = ref(false)
@@ -241,6 +224,7 @@ const characterLabels = computed(() => {
   return labels
 })
 function charLabel(value: string) { return LABELS[value] || characterLabels.value.get(value) || value || '角色' }
+const filterSummary = computed(() => [typeFilter.value === 'all' ? '' : typeLabel(typeFilter.value), charFilter.value === 'all' ? '' : charLabel(charFilter.value), ratingFilter.value === 'all' ? '' : ratingLabel(ratingFilter.value)].filter(Boolean).join(' · ') || '类型、角色与分级')
 const searchIndex = computed(() => new Map(entries.value.map(entry => [entry.id, norm([entry.id, entry.title, entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' '))])))
 const hasFilters = computed(() => Boolean(searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
 function thumbSrc(entry: ShowcaseEntry) {
@@ -248,13 +232,6 @@ function thumbSrc(entry: ShowcaseEntry) {
 }
 function imgSrc(entry: ShowcaseEntry) {
   return entry.image ? `/scene-showcase/${entry.image}?cv=${imgVersion.value}&v=${viewerVersion.value}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}&v=${viewerVersion.value}`
-}
-/** 只有 manifest 明确给出尺寸时才锁比例框；缺失时保持原图的自然高度，避免留白边 */
-function hasRatio(entry: ShowcaseEntry): boolean {
-  return Boolean(entry.width && entry.height)
-}
-function sampleRatio(entry: ShowcaseEntry): string {
-  return entry.width && entry.height ? `${entry.width} / ${entry.height}` : '3 / 4'
 }
 function markThumbError(entry: ShowcaseEntry) {
   brokenThumbs.value = new Set([...brokenThumbs.value, entry.id])

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import CharacterView from './CharacterView.vue'
 
-vi.mock('vue-router', () => ({ useRoute: () => ({ query: {} }), useRouter: () => ({ replace: vi.fn() }) }))
+vi.mock('vue-router', () => ({ useRoute: () => ({ query: { character: 'nene' } }), useRouter: () => ({ replace: vi.fn(), push: vi.fn() }) }))
 vi.mock('@/composables/useScrollReveal', () => ({ useScrollReveal: () => {} }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({ load: async () => {}, loadCharacterShell: async () => {}, characters: [], scenes: [], curation: {} }) }))
 vi.mock('@/utils/characterProfiles', () => ({

@@ -56,6 +56,7 @@ test('popular CG handoff keeps its character and blueprint, and back restores fi
   let jobs = 0
   page.on('request', request => { if (request.method() === 'POST' && request.url().endsWith('/api/anima/jobs')) jobs++ })
   await page.goto('/showcase')
+  await page.locator('.showcase-filters > summary').press('Enter')
   await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular')
   await page.getByRole('combobox', { name:'筛选角色', exact:true }).fill('雷电')
   await page.getByRole('option', { name:'雷电将军', exact:true }).click()
