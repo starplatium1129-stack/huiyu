@@ -14,13 +14,17 @@ let previousOverflow = ''
 let previousPaddingRight = ''
 let previousScrollX = 0
 let previousScrollY = 0
+let previousScrollPath = ''
+let scrollRevision = 0
 
 function lockPageScroll() {
   if (modalLocks++ > 0) return
+  scrollRevision++
   const root = document.documentElement
   const gutter = window.innerWidth - root.clientWidth
   previousScrollX = window.scrollX
   previousScrollY = window.scrollY
+  previousScrollPath = window.location.pathname
   previousOverflow = root.style.overflow
   previousPaddingRight = root.style.paddingRight
   root.style.overflow = 'hidden'
@@ -33,9 +37,13 @@ function unlockPageScroll() {
   const root = document.documentElement
   root.style.overflow = previousOverflow
   root.style.paddingRight = previousPaddingRight
+  const x = previousScrollX, y = previousScrollY, path = previousScrollPath, revision = scrollRevision
   const restore = () => {
-    if (window.scrollX !== previousScrollX || window.scrollY !== previousScrollY) {
-      window.scrollTo(previousScrollX, previousScrollY)
+    if (modalLocks || revision !== scrollRevision || window.location.pathname !== path) return
+    if (window.scrollX !== x || window.scrollY !== y) {
+      // This is position restoration, not navigation. CSS scroll-behavior:smooth
+      // must not turn a native focus jump into a visible trip through the page.
+      window.scrollTo({ left: x, top: y, behavior: 'instant' })
     }
   }
   restore()
@@ -60,11 +68,14 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
    */
   function onNativeClose() {
     if (dialog.value?.open) return
+    const version = intention
     releaseScrollLock()
     const target = returnFocus
     returnFocus = null
     if (!target || !target.isConnected || target.closest('[inert], [hidden]')) return
-    const focus = () => target.focus({ preventScroll: true })
+    const focus = () => {
+      if (version === intention && !dialog.value?.open) target.focus({ preventScroll: true })
+    }
     if (typeof window.requestAnimationFrame === 'function') {
       window.requestAnimationFrame(() => window.requestAnimationFrame(focus))
     } else focus()
@@ -87,7 +98,9 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
     if (!el.open) {
       returnFocus = source && source !== document.body ? source : null
       surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
-      el.showModal()
+      // Native showModal can move focus and scroll; capture the reading position first.
+      if (!locked) { locked = true; lockPageScroll() }
+      try { el.showModal() } catch (error) { releaseScrollLock(); throw error }
       trackClose(el)
       if (source && source !== document.body && !el.contains(source)) {
         const from = source.getBoundingClientRect(), rect = el.getBoundingClientRect()

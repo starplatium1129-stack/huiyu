@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { defineComponent, h, ref } from 'vue'
 import { useFluidDialog, isBackdropClick } from './useFluidDialog'
@@ -118,17 +118,47 @@ describe('modal page scroll lock', () => {
     const originalScrollY = Object.getOwnPropertyDescriptor(window, 'scrollY')
     let scrollY = 420
     Object.defineProperty(window, 'scrollY', { configurable: true, get: () => scrollY })
-    window.scrollTo = ((_: number, top: number) => { scrollY = top }) as typeof window.scrollTo
+    window.scrollTo = vi.fn((options: ScrollToOptions) => { scrollY = options.top! }) as typeof window.scrollTo
     try {
       vm.open(null)
       scrollY = 0
       vm.close()
       flushNativeClose(dialog)
       expect(scrollY).toBe(420)
+      expect(window.scrollTo).toHaveBeenCalledWith({left:0,top:420,behavior:'instant'})
     } finally {
       window.scrollTo = originalScrollTo
       if (originalScrollY) Object.defineProperty(window, 'scrollY', originalScrollY)
     }
+  })
+  it('captures the reading position before native showModal moves focus', () => {
+    const vm = spawn(), dialog = dialogOf(vm)
+    const original = Object.getOwnPropertyDescriptor(window, 'scrollY')
+    let y = 640
+    Object.defineProperty(window, 'scrollY', {configurable:true,get:()=>y})
+    const scroll = vi.spyOn(window, 'scrollTo').mockImplementation((options: ScrollToOptions | number, top?: number) => { y = typeof options === 'number' ? top! : options.top! })
+    const show = dialog.showModal.bind(dialog)
+    vi.spyOn(dialog, 'showModal').mockImplementation(() => { show(); y = 0 })
+    try {
+      vm.open(null); vm.close(); flushNativeClose(dialog)
+      expect(y).toBe(640)
+    } finally { scroll.mockRestore(); if(original) Object.defineProperty(window,'scrollY',original) }
+  })
+  it('does not let an old deferred restore move a newly opened modal', () => {
+    const first = spawn(), second = spawn()
+    const frames:FrameRequestCallback[] = []
+    const raf = vi.spyOn(window,'requestAnimationFrame').mockImplementation(callback=>{frames.push(callback);return frames.length})
+    const scroll = vi.spyOn(window,'scrollTo').mockImplementation(()=>{})
+    const original = Object.getOwnPropertyDescriptor(window,'scrollY')
+    let y = 320
+    Object.defineProperty(window,'scrollY',{configurable:true,get:()=>y})
+    try {
+      first.open(null); first.close(); flushNativeClose(dialogOf(first))
+      y = 780; second.open(null); y = 0
+      for(let count=0;frames.length&&count<10;count++) frames.shift()!(count)
+      expect(scroll).not.toHaveBeenCalled()
+      second.close();flushNativeClose(dialogOf(second))
+    } finally {raf.mockRestore();scroll.mockRestore();if(original)Object.defineProperty(window,'scrollY',original)}
   })
 })
 
