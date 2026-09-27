@@ -1,9 +1,10 @@
 /* Shared, borderless character presentation; view chrome belongs to each surface. */
 .open-character-stage .stage-framing { display: grid; gap: var(--s-2); min-width: 0; padding: var(--s-3) 0; border: 0; color: var(--text-primary); }
 .open-character-stage .stage-framing legend { color: var(--text-secondary); font-size: var(--fs-label); }
-.open-character-stage .stage-framing label { display: flex; align-items: center; gap: var(--s-3); }
+.open-character-stage .stage-framing label { display: grid; grid-template-columns: 2em minmax(0, 1fr); align-items: center; gap: var(--s-3); white-space: nowrap; }
 .open-character-stage .stage-framing input[type="range"] {
   width: 100%;
+  min-width: 0;
   height: 28px;
   margin: 0;
   border: 0;
@@ -38,3 +39,176 @@
 }
 .open-character-stage .character-controls-panel { color: var(--text-primary); }
 .open-character-stage .character-about summary { color: var(--text-secondary); }
+
+/*   ============================================================
+   Live2D 换装：衣装抽屉 / 换装入口 / 衣装菜单
+  ============================================================ */
+.open-character-stage .live2d-wardrobe {
+  position: relative;
+  z-index: var(--z-raised);
+  margin-top: var(--s-2);
+}
+
+.open-character-stage .wardrobe-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 9px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 28%, var(--glass-edge));
+  border-radius: var(--r-md);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), transform var(--motion-press) var(--ease-out);
+}
+
+.open-character-stage .wardrobe-trigger:active {
+  transform: scale(.985);
+}
+
+.open-character-stage .wardrobe-trigger:hover,
+.open-character-stage .live2d-wardrobe.open .wardrobe-trigger {
+  border-color: color-mix(in srgb, var(--character-accent) 62%, var(--border-soft));
+  background: var(--bg-surface);
+}
+
+.open-character-stage .wardrobe-static {
+  cursor: default;
+}
+
+.open-character-stage .wardrobe-static:active {
+  transform: none;
+}
+
+.open-character-stage .wardrobe-note {
+  max-width: 9rem;
+  color: var(--text-secondary);
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+  line-height: var(--lh-label);
+  text-align: right;
+}
+
+.open-character-stage .wardrobe-symbol {
+  display: grid;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 40%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--character-accent) 12%, transparent);
+  color: var(--text-primary);
+}
+
+.open-character-stage .wardrobe-copy {
+  display: grid;
+  flex: 1;
+  gap: 1px;
+  text-align: left;
+}
+
+.open-character-stage .wardrobe-copy small,
+.open-character-stage .wardrobe-menu-title {
+  color: var(--text-muted);
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .08em;
+}
+
+.open-character-stage .wardrobe-copy strong {
+  font-size: var(--fs-label-sm);
+}
+
+.open-character-stage .wardrobe-chevron {
+  color: var(--text-muted);
+  transition: transform var(--motion-hover);
+}
+
+.open-character-stage .live2d-wardrobe.open .wardrobe-chevron {
+  transform: rotate(180deg);
+}
+
+.open-character-stage .wardrobe-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  width: 100%;
+  gap: 3px;
+  margin-top: 6px;
+  padding: var(--s-2);
+  border: 1px solid color-mix(in srgb, var(--character-accent) 30%, var(--glass-edge));
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.open-character-stage .wardrobe-menu-title {
+  grid-column: 1 / -1;
+  padding: 4px 6px 5px;
+}
+
+.open-character-stage .wardrobe-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 29px;
+  padding: 4px 7px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: 600 var(--fs-label-xs) var(--font-sans);
+  text-align: left;
+  transition: background var(--motion-hover) ease, border-color var(--motion-hover) ease, color var(--motion-hover) ease, transform var(--motion-press) var(--ease-out);
+}
+
+.open-character-stage .wardrobe-option:active {
+  transform: scale(.98);
+}
+
+.open-character-stage .wardrobe-option:hover {
+  background: color-mix(in srgb, var(--character-accent) 9%, transparent);
+  color: var(--text-primary);
+}
+
+.open-character-stage .wardrobe-option i {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+}
+
+.open-character-stage .wardrobe-option.active {
+  border-color: color-mix(in srgb, var(--character-accent) 26%, transparent);
+  background: color-mix(in srgb, var(--character-accent) 14%, transparent);
+  color: var(--text-primary);
+}
+
+.open-character-stage .wardrobe-option.active i {
+  border-color: var(--text-primary);
+  background: var(--character-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--character-accent) 65%, transparent);
+}
+
+.open-character-stage .wardrobe-option:disabled {
+  cursor: wait;
+  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+}
+
+
+/* Settings travel through Teleport: controls own their styles independently of the route. */
+.open-character-stage .character-controls-panel { display: grid; gap: var(--s-3); }
+.open-character-stage .character-about { color: var(--text-secondary); font-size: var(--fs-label-sm); }
+.open-character-stage .character-about summary { width: fit-content; min-height: 32px; cursor: pointer; }
+.open-character-stage .character-caption,
+.open-character-stage .character-description { margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: var(--lh-body); white-space: normal; }
+.open-character-stage .wardrobe-symbol svg { width: 16px; height: 16px; }
+.open-character-stage .wardrobe-chevron { width: 16px; height: 16px; flex-shrink: 0; }
+.open-character-stage .wardrobe-menu { box-sizing: border-box; max-height: min(340px, 45dvh); overflow-y: auto; }
+.open-character-stage .wardrobe-option { min-height: 40px; }
+.open-character-stage .wardrobe-trigger:focus-visible,
+.open-character-stage .wardrobe-option:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

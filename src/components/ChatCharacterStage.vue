@@ -71,7 +71,7 @@
         class="live2d-wardrobe"
         :class="{ open: wardrobeOpen }"
         @click.stop
-        @keydown.esc.stop.prevent="closeWardrobe"
+        @keydown.esc="onWardrobeEscape"
       >
         <div
           v-if="outfitOptions.length <= 1"
@@ -100,7 +100,7 @@
             <small>WARDROBE</small>
             <strong>{{ activeOutfitLabel }}</strong>
           </span>
-          <span class="wardrobe-chevron" aria-hidden="true">⌄</span>
+          <ArchiveIcon class="wardrobe-chevron" name="chevron-down" aria-hidden="true" />
         </button>
         <div
           v-if="outfitOptions.length > 1 && wardrobeOpen"
@@ -177,6 +177,7 @@ import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useStageFraming, type StageSurface } from '@/composables/chat/useStageFraming'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/character-stage.css'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
 import { profileEmotionConfig } from '@/live2d/companionEmotion'
@@ -237,6 +238,12 @@ const avatarRetryable = ref(false)
 const outfitBusy = ref(false)
 const wardrobeOpen = ref(false)
 const wardrobeTriggerRef = ref<HTMLButtonElement>()
+function onWardrobeEscape(event: KeyboardEvent) {
+  if (!wardrobeOpen.value) return
+  event.preventDefault()
+  event.stopPropagation()
+  closeWardrobe()
+}
 function closeWardrobe() {
   wardrobeOpen.value = false
   wardrobeTriggerRef.value?.focus()

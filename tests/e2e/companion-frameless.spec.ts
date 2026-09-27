@@ -236,6 +236,47 @@ for (const theme of ['light', 'dark']) {
     }
   })
   }
+  test(`wardrobe settings retain shared styling outside chat in ${theme}`, async ({ page }, testInfo) => {
+    test.skip(process.env.AICS_LIVE2D_IMPORTS !== '1', 'Requires local Live2D assets')
+    test.setTimeout(90000)
+    await page.setViewportSize({ width: 540, height: 760 })
+    await desktop(page, theme, true)
+    await page.goto('/companion?character=nene')
+    await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45000 })
+    await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
+    await page.getByRole('button', { name: '设置', exact: true }).click()
+    await page.getByRole('button', { name: '角色取景与外观', exact: true }).click()
+    const dialog = page.getByRole('dialog', { name: '角色取景与外观', exact: true })
+    await dialog.locator('button.wardrobe-trigger').click()
+    const menu = dialog.locator('.wardrobe-menu')
+    await expect(menu).toBeVisible()
+    await expect(menu).toHaveCSS('display', 'grid')
+    await expect(dialog.locator('.wardrobe-trigger')).toHaveCSS('display', 'flex')
+    await expect(dialog.locator('.wardrobe-symbol svg path').first()).toBeVisible()
+    await expect(dialog.locator('svg.wardrobe-chevron')).toBeVisible()
+    await dialog.evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished.catch(() => {}))) })
+    for (const width of [540, 360]) {
+      await page.setViewportSize({ width, height: 760 })
+      const panel = dialog.locator('.character-controls-panel')
+      expect(await panel.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true)
+      for (const label of await dialog.locator('.stage-framing label').all()) {
+        expect(await label.evaluate(el => {
+          const range = document.createRange(); range.selectNodeContents(el.firstChild!)
+          return range.getClientRects().length
+        })).toBe(1)
+      }
+      for (const selector of ['.wardrobe-copy strong', '.wardrobe-menu-title', '.wardrobe-option.active', '.stage-framing legend']) {
+        expect(await dialog.locator(selector).evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      }
+      await page.screenshot({ path: testInfo.outputPath(`wardrobe-${theme}-${width}.png`) })
+    }
+    await dialog.locator('.wardrobe-option').first().focus()
+    await page.keyboard.press('Escape')
+    await expect(menu).toBeHidden()
+    await expect(dialog.locator('.wardrobe-trigger')).toBeFocused()
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeHidden()
+  })
   test(`pet character settings fit the window and can always close ${theme}`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 360, height: 480 })
     await desktop(page, theme)
