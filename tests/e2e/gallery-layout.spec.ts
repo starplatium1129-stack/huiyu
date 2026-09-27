@@ -3,7 +3,7 @@ import { textContrast } from './helpers/contrast'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
 // Browser-local fixture: no personal artwork or generation endpoint is used.
-async function seedGallery(page: Page, theme: string, empty = false) {
+async function seedGallery(page: Page, theme: string, empty = false, reducedMotion: 'reduce' | 'no-preference' = 'reduce') {
   await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json: { ok: true, online: false } }))
   await page.route('**/assets/gallery-fixture-*', route => {
     const item = Number(route.request().url().split('-').at(-1))
@@ -18,17 +18,127 @@ async function seedGallery(page: Page, theme: string, empty = false) {
       id: `gallery-review-${index}`, sceneTitle: ['午后，和你', '光的形状', '一封写给秋日的长信：保留完整标题以验证小屏幕上的省略与布局', '雨后的街角', '海与她', '某个下午'][index],
       character: index % 2 ? 'nene' : 'natsume', prompt: 'Neutral UI review fixture',
       image_url: `/assets/gallery-fixture-${index}`, favorite: index < 2,
+      parent_id: index === 0 ? 'gallery-review-1' : undefined,
       manual_tags: index < 2 ? ['春日'] : ['夜景'],
       timestamp: Date.now() - index * 1000, width: 832, height: 1216,
     }))))
     localStorage.setItem('aics_pb_projects', JSON.stringify([{ id: 'review', title: '秋日手记', history_ids: ['gallery-review-0', 'gallery-review-1'] }]))
   }, { theme, empty })
-  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.emulateMedia({ reducedMotion })
   await page.goto('/gallery')
   await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
 }
 
 for (const theme of ['light', 'dark']) {
+  test(`gallery preview keeps real images through the closing fade ${theme}`, async ({ page }, testInfo) => {
+    const errors: string[] = []
+    page.on('pageerror', error => errors.push(error.message))
+    await seedGallery(page, theme, false, 'no-preference')
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
+    const opener = page.locator('.artwork-button').first()
+    const viewer = page.locator('.art-viewer')
+    await expect(opener.locator('.artwork-image-hd.is-loaded')).toBeVisible()
+    const modes = [
+      { name: 'original', image: '.zoomable-img' },
+      { name: 'comparison', image: '.image-compare-slider .after-img' },
+      { name: 'gesture', image: '.pswp__item[aria-hidden="false"] .pswp__img:not(.pswp__img--placeholder)' },
+    ]
+    for (const mode of modes) {
+      if (mode.name === 'original') {
+        await opener.scrollIntoViewIfNeeded()
+        const opening = await opener.evaluate(async (button: HTMLButtonElement) => {
+          const frames: { left: number; top: number; width: number }[] = []
+          const source = button.querySelector('.artwork-image-hd')!.getBoundingClientRect()
+          button.focus({ preventScroll: true }); button.click()
+          const start = performance.now()
+          while (performance.now() - start < 1500) {
+            await new Promise(requestAnimationFrame)
+            const proxy = document.querySelector('[data-image-origin-proxy]')
+            if (proxy) {
+              const rect = proxy.getBoundingClientRect()
+              frames.push({ left: rect.left, top: rect.top, width: rect.width })
+            } else if (frames.length) {
+              const target = document.querySelector('.art-viewer .zoomable-img')!.getBoundingClientRect()
+              return { frames, sourceWidth: source.width, targetWidth: target.width, targetLeft: target.left, targetTop: target.top }
+            }
+          }
+          throw new Error('Gallery did not animate an image from its source card')
+        })
+        expect(opening.frames.length).toBeGreaterThan(2)
+        expect(opening.frames[0].width).toBeGreaterThanOrEqual(opening.sourceWidth - 1)
+        expect(opening.frames[0].width).toBeLessThan(opening.targetWidth - 2)
+        const last = opening.frames.at(-1)!
+        expect(Math.abs(last.width - opening.targetWidth)).toBeLessThan(4)
+        expect(Math.abs(last.left - opening.targetLeft)).toBeLessThan(4)
+        expect(Math.abs(last.top - opening.targetTop)).toBeLessThan(4)
+        await testInfo.attach(`gallery-origin-${theme}`, { body: JSON.stringify(opening), contentType: 'application/json' })
+      } else await opener.click()
+      await expect(viewer).toHaveCSS('transform', 'none')
+      if (mode.name === 'comparison') await viewer.locator('.viewer-compare-toggle').click()
+      if (mode.name === 'gesture') {
+        await viewer.locator('.viewer-more summary').click()
+        await viewer.getByRole('button', { name: '尝试手势观画', exact: true }).click()
+      }
+      await expect.poll(() => viewer.locator(mode.image).evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
+      await viewer.screenshot({ path: testInfo.outputPath(`gallery-preview-${theme}-${mode.name}.png`) })
+      const frames = await viewer.evaluate(async (element, selector) => {
+        const image = element.querySelector<HTMLImageElement>(selector)!
+        const samples: { opacity: number; imageRetained: boolean; proxyWidth: number | null }[] = []
+        const start = performance.now()
+        ;(element.querySelector('.viewer-close') as HTMLButtonElement).click()
+        while (performance.now() - start < 3000) {
+          await new Promise(requestAnimationFrame)
+          const style = getComputedStyle(element)
+          if (style.display === 'none') return samples
+          samples.push({ opacity: Number(style.opacity), imageRetained: image.isConnected && image.complete && image.naturalWidth > 0 && element.querySelector(selector) === image,
+            proxyWidth: element.querySelector('[data-image-origin-proxy]')?.getBoundingClientRect().width ?? null })
+        }
+        throw new Error('Gallery closing transition did not complete')
+      }, mode.image)
+      expect(frames.some(frame => frame.opacity > .05 && frame.opacity < .9), mode.name).toBe(true)
+      expect(frames.some(frame => frame.opacity > 0 && frame.opacity < .1), mode.name).toBe(true)
+      expect(frames.every(frame => frame.imageRetained), mode.name).toBe(true)
+      const proxyWidths = frames.flatMap(frame => frame.proxyWidth === null ? [] : [frame.proxyWidth])
+      expect(proxyWidths.length, mode.name).toBeGreaterThan(2)
+      expect(proxyWidths[0] - proxyWidths.at(-1)!, mode.name).toBeGreaterThan(20)
+      await expect(viewer).toBeHidden()
+      await expect(page.locator('[data-image-origin-proxy]')).toHaveCount(0)
+      await expect(viewer.locator(mode.image)).toHaveCount(0)
+      await expect(opener).toBeFocused()
+      await testInfo.attach(`gallery-fade-${theme}-${mode.name}`, { body: JSON.stringify(frames), contentType: 'application/json' })
+    }
+
+    await opener.click()
+    await expect(viewer).toHaveCSS('transform', 'none')
+    const gestureImage = viewer.locator(modes[2].image)
+    await expect(gestureImage).toBeVisible()
+    const reversal = await viewer.evaluate(async (element, selector) => {
+      const image = element.querySelector(selector)
+      ;(element.querySelector('.viewer-close') as HTMLButtonElement).click()
+      const start = performance.now()
+      while (performance.now() - start < 3000) {
+        await new Promise(requestAnimationFrame)
+        const opacity = Number(getComputedStyle(element).opacity)
+        if (opacity > .2 && opacity < .8) {
+          const retained = image?.isConnected === true
+          ;(document.querySelector('.artwork-button') as HTMLButtonElement).click()
+          await new Promise(requestAnimationFrame)
+          return { retained, reused: image === element.querySelector(selector) }
+        }
+      }
+      throw new Error('Gallery close did not expose a reversible fade')
+    }, modes[2].image)
+    expect(reversal).toEqual({ retained: true, reused: true })
+    await expect(viewer).toHaveClass(/open/)
+    await expect(viewer).toHaveCSS('transform', 'none')
+    await expect(gestureImage).toBeVisible()
+    await viewer.getByRole('link', { name: '沿用配方', exact: true }).click()
+    await expect(page).toHaveURL(/\/prompt-builder\?remix=/)
+    await expect(page.locator('.photoswipe-stage')).toHaveCount(0)
+    await expect(viewer).toBeHidden()
+    expect(errors).toEqual([])
+  })
+
   test(`gallery browsing, selection and restoration ${theme}`, async ({ page }, testInfo) => {
     await seedGallery(page, theme)
     const cards = page.locator('.gallery-wall .artwork')

@@ -1,7 +1,6 @@
 import { computed, nextTick, onDeactivated, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { CharacterProfile } from '@/types/character'
-import { scrollBehavior } from '@/utils/motionPreference'
 import { captureScrollAnchor, restoreScrollAnchor, type ScrollAnchor } from '@/utils/scrollAnchor'
 
 /** The URL owns the open profile; the shelf keeps its own browsing position. */
@@ -33,6 +32,7 @@ export function useCharacterArchiveNavigation(
       if (previous) {
         restoreShelfFocus()
         if (shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, {
+          immediate: true,
           shouldContinue: () => showShelf.value && route.path === '/character',
         })
       }
@@ -42,7 +42,9 @@ export function useCharacterArchiveNavigation(
     if (!anchor) return
     const rect = anchor.getBoundingClientRect()
     if (rect.top < 70 || rect.top >= window.innerHeight * 0.9) {
-      anchor.scrollIntoView({ behavior: scrollBehavior(), block: 'start' })
+      // The section itself supplies entry motion. Scrolling the whole document
+      // as well makes a shelf/detail switch look like the page is rebounding.
+      anchor.scrollIntoView({ behavior: 'instant', block: 'start' })
     }
   }, { flush: 'post' })
 

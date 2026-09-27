@@ -1,5 +1,5 @@
 <template>
-  <FluidTransition appear>
+  <FluidTransition appear panel=".guest-guide-card">
   <aside
     v-if="visible"
     ref="guideEl"
@@ -104,7 +104,6 @@ function dismiss() {
   padding: var(--s-5);
   background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
   backdrop-filter: blur(10px);
-  animation: guest-guide-in .3s var(--ease-out) both;
 }
 .guest-guide-card {
   width: min(520px, 100%);
@@ -115,15 +114,6 @@ function dismiss() {
   border-radius: var(--r-xl);
   background: var(--bg-surface);
   box-shadow: var(--shadow-lg);
-  animation: guest-guide-card-in .34s var(--ease-out) .06s both;
-}
-@keyframes guest-guide-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes guest-guide-card-in {
-  from { opacity: 0; transform: translateY(10px) scale(.98); }
-  to { opacity: 1; transform: none; }
 }
 .guest-guide-kicker {
   color: var(--accent);

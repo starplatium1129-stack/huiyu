@@ -1,5 +1,5 @@
 <template>
-  <article class="page character-page library-page character-editorial" style="--page-max:1600px">
+  <article ref="archiveRoot" class="page character-page library-page character-editorial" style="--page-max:1600px">
     <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1><p>{{ showShelf ? '翻开喜欢的作品，认识下一位故事主角。' : '认识她的故事，从一个心动的瞬间开始创作。' }}</p></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><RouterLink to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
@@ -23,12 +23,15 @@
       message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
-      <CharacterBookshelf v-show="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" @select="selectCharacter" />
+      <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
+        <CharacterBookshelf v-show="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" @select="selectCharacter" />
+      </Transition>
+      <Transition :css="false" @enter="archiveMotion.enter" @enter-cancelled="archiveMotion.dispose" @after-leave="archiveMotion.dispose">
       <div v-if="!showShelf" class="library-layout">
         <BrowsingCharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail">
-      <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
-        <CharacterParticleStage :character-id="current.id" :name="current.name">
+      <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3">
+        <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
           <img :crossorigin="runtimeResourceCors()" v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
             :src="resolveRuntimeUrl(portraitView.src)" :data-attempt-token="portraitView.token"
@@ -262,6 +265,7 @@
       </section>
         </div>
       </div>
+      </Transition>
     </template>
   </article>
 </template>
@@ -270,6 +274,7 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
+import { useCharacterPortraitTransition } from '@/composables/useCharacterPortraitTransition'
 import CharacterAssetSummary from '@/components/library/CharacterAssetSummary.vue'
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
@@ -297,10 +302,13 @@ const characters = ref<CharacterProfile[]>([])
 const scenes = ref<CharacterScene[]>([])
 const loading = ref(true)
 const profileAnchor = ref<HTMLElement | null>(null)
+const archiveRoot = ref<HTMLElement | null>(null)
 const bookshelf = ref<InstanceType<typeof CharacterBookshelf> | null>(null)
 const { current, showShelf, lastViewedId, selectCharacter, showBookshelf } = useCharacterArchiveNavigation(
   characters, profileAnchor, () => bookshelf.value?.focusSelected(),
 )
+const archiveMotion = useCharacterPortraitTransition(archiveRoot, showShelf, () => current.value?.id || lastViewedId.value)
+const { preferOriginal } = archiveMotion
 const bgExpanded = ref(false)
 useScrollReveal()
 

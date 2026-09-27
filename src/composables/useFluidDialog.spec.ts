@@ -140,9 +140,19 @@ describe('modal page scroll lock', () => {
     const show = dialog.showModal.bind(dialog)
     vi.spyOn(dialog, 'showModal').mockImplementation(() => { show(); y = 0 })
     try {
-      vm.open(null); vm.close(); flushNativeClose(dialog)
+      vm.open(null)
+      expect(y).toBe(640)
+      vm.close(); flushNativeClose(dialog)
       expect(y).toBe(640)
     } finally { scroll.mockRestore(); if(original) Object.defineProperty(window,'scrollY',original) }
+  })
+  it('cancels pending native smooth scrolling even before the coordinates move', () => {
+    const vm = spawn()
+    const scroll = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+    try {
+      vm.open(null)
+      expect(scroll).toHaveBeenCalledWith({ left: window.scrollX, top: window.scrollY, behavior: 'instant' })
+    } finally { scroll.mockRestore() }
   })
   it('does not let an old deferred restore move a newly opened modal', () => {
     const first = spawn(), second = spawn()
@@ -154,7 +164,7 @@ describe('modal page scroll lock', () => {
     Object.defineProperty(window,'scrollY',{configurable:true,get:()=>y})
     try {
       first.open(null); first.close(); flushNativeClose(dialogOf(first))
-      y = 780; second.open(null); y = 0
+      y = 780; second.open(null); scroll.mockClear(); y = 0
       for(let count=0;frames.length&&count<10;count++) frames.shift()!(count)
       expect(scroll).not.toHaveBeenCalled()
       second.close();flushNativeClose(dialogOf(second))

@@ -178,7 +178,7 @@
                   :aria-label="selectMode
                     ? `${selectedIds.has(item.id) ? '取消选择' : '选择'}作品：${sceneTitle(item.scene, item)}`
                     : `欣赏作品：${sceneTitle(item.scene, item)}`"
-                  @click="selectMode ? toggleSelect(item.id) : openViewer(indexOf(item))"
+                  @click="selectMode ? toggleSelect(item.id) : openFromCard(indexOf(item), $event)"
                 >
                   <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
                     <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
@@ -228,16 +228,18 @@
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
-      <FluidTransition>
+      <FluidTransition @before-leave="imageOrigin.leave" @after-leave="finishViewerClose">
         <div
           v-show="viewerIndex >= 0"
           class="art-viewer"
+          data-image-transition
           :class="{ open: viewerIndex >= 0, 'info-open': infoOpen }"
           role="dialog"
           aria-modal="true"
           :aria-hidden="viewerIndex >= 0 ? 'false' : 'true'"
           aria-label="作品观赏模式"
           ref="viewerEl"
+          @load.capture="imageOrigin.loaded"
         >
       <section class="viewer-stage" @click.self="closeInfoDrawer">
         <button class="viewer-close" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn"><ArchiveIcon name="close" /></button>
@@ -252,7 +254,7 @@
             />
           </div>
         </template>
-        <PhotoSwipeStage v-else-if="gestureViewer && viewerIndex >= 0" :items="visible" :index="viewerIndex" @change="openViewer" @error="gestureViewer = false" />
+        <PhotoSwipeStage v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="gestureViewer = false" />
         <ZoomableImageViewer
           v-else-if="viewerUrl"
           :src="resolveRuntimeUrl(viewerUrl)"
@@ -270,7 +272,7 @@
           </button>
         </StudioTooltip>
         <button ref="infoToggleBtn" class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="viewer-info" :aria-expanded="infoOpen" @click="toggleInfoDrawer"><ArchiveIcon name="info" /></button>
-        <div class="viewer-position">{{ viewerIndex + 1 }} / {{ visible.length }}</div>
+        <div class="viewer-position">{{ displayedIndex + 1 }} / {{ visible.length }}</div>
       </section>
 
       <aside
@@ -378,6 +380,7 @@ import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryProjectAlbums } from '@/composables/gallery/useGalleryProjectAlbums'
+import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
 const {
 tagFilter, tagOptions,
 closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
@@ -436,6 +439,7 @@ infoDrawerHidden,
 toggleInfoDrawer,
 closeInfoDrawer,
 closeViewer,
+onViewerClosed,
 step,
 compareMode,
 hasComparableImage,
@@ -448,6 +452,12 @@ downloadCurrent,
 copiedPrompt,
 copyPrompt
 } = useGalleryWorkspace()
+const imageOrigin = useGalleryImageOrigin({ viewerEl, shellEl, viewerIndex, viewerUrl, current })
+function openFromCard(index: number, event: MouseEvent) {
+  imageOrigin.capture(event)
+  openViewer(index)
+  void imageOrigin.enter()
+}
 const { albums } = useGalleryProjectAlbums({ projects, history, thumbUrls, cardUrls })
 const tagControls = ref<HTMLElement | null>(null)
 async function filterByTag(tag: string) {
@@ -457,12 +467,20 @@ async function filterByTag(tag: string) {
 
 const displayedCurrent = ref(current.value)
 const displayedIndex = ref(viewerIndex.value)
-watch(current, value => {
-  if (value) {
+watch([current, viewerIndex], ([value, index]) => {
+  if (value && index >= 0) {
     displayedCurrent.value = value
-    displayedIndex.value = viewerIndex.value
+    displayedIndex.value = index
   }
 }, { flush: 'sync' })
+function finishViewerClose() {
+  imageOrigin.cancel()
+  onViewerClosed()
+  if (viewerIndex.value < 0) {
+    displayedCurrent.value = null
+    displayedIndex.value = -1
+  }
+}
 </script>
 
 <style scoped src="@/assets/css/gallery-view.css"></style>

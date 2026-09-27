@@ -1,5 +1,6 @@
 import { getCurrentInstance, onDeactivated, onUnmounted } from 'vue'
 import { createFluidMotion } from '@/utils/fluidSpring'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 
 /**
  * 默认浮层表面与卡片面板选择器（009 交互流畅度与性能规范）。
@@ -56,11 +57,14 @@ export function useFluidSurface(panelSelector?: string) {
       opacity: el.style.opacity,
       transform: panel.style.transform,
       origin: panel.style.transformOrigin,
+      backdrop: el.style.getPropertyValue('--fluid-backdrop-opacity'),
     }
     const restore = () => {
       el.style.opacity = original.opacity
       panel.style.transform = original.transform
       panel.style.transformOrigin = original.origin
+      if (original.backdrop) el.style.setProperty('--fluid-backdrop-opacity', original.backdrop)
+      else el.style.removeProperty('--fluid-backdrop-opacity')
     }
     const source = document.activeElement instanceof HTMLElement ? document.activeElement : null
     let hasVisibleSource = false
@@ -77,15 +81,21 @@ export function useFluidSurface(panelSelector?: string) {
     const rect = panel.getBoundingClientRect()
     const isFullscreenViewer = (panel.matches && panel.matches(FLUID_FULLSCREEN_SELECTOR)) || rect.width > innerWidth * 0.85 || rect.height > innerHeight * 0.85
     const isPopover = (panel.matches && panel.matches(FLUID_POPOVER_SELECTOR)) || (rect.width > 0 && rect.width < 340 && rect.height < 380)
-    const isReduced = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isReduced = prefersReducedMotion()
 
-    const scale = isReduced ? 1 : isFullscreenViewer ? 0.992 : isPopover ? 0.975 : 0.96
-    const travel = isReduced ? 0 : isFullscreenViewer || isPopover ? 4 : 8
+    // Image previews animate their own source-to-image proxy; moving the
+    // containing surface too would shift both ends of that path.
+    const imageTransition = el.hasAttribute('data-image-transition')
+    const scale = isReduced || imageTransition ? 1 : isFullscreenViewer ? 0.975 : isPopover ? 0.975 : 0.96
+    const travel = isReduced || imageTransition ? 0 : isFullscreenViewer ? 10 : isPopover ? 4 : 8
     const spring = isFullscreenViewer ? 5.2 : 4.8
     if (isFullscreenViewer && !hasVisibleSource) panel.style.transformOrigin = 'center center'
 
     const motion = createFluidMotion([initial], ([progress]) => {
       el.style.opacity = String(progress)
+      // Native ::backdrop is a separate top-layer surface, not a child: fading
+      // the dialog alone leaves a solid scrim that vanishes abruptly on close.
+      if (el instanceof HTMLDialogElement) el.style.setProperty('--fluid-backdrop-opacity', String(progress))
       panel.style.transform = `translateY(${(1 - progress) * -travel}px) scale(${scale + (1 - scale) * progress})`
     }, spring)
     const current = { motion, restore }

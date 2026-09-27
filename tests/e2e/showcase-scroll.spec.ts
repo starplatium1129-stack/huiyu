@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { installShowcaseFixture } from './helpers/showcase'
 // One native-focus regression and one normal keyboard/narrow-screen path.
 const cases = [
   { theme: 'light', close: 'button', nativeReset: true },
@@ -45,5 +46,187 @@ for (const { theme, close, nativeReset } of cases) {
       await expect(page.locator('.pb')).toBeVisible()
       await expect.poll(()=>page.evaluate(()=>scrollY)).toBe(0)
     }
+  })
+}
+
+for (const theme of ['light', 'dark']) {
+  test(`preview keeps its image throughout dismissal and can reopen ${theme}`, async ({ page }, info) => {
+    const errors: string[] = []
+    page.on('pageerror', error => errors.push(error.message))
+    await installShowcaseFixture(page)
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.goto('/showcase')
+    const opener = page.locator('.sample-visual').first()
+    const dialog = page.locator('dialog.showcase-viewer')
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const opening = await opener.evaluate(button => new Promise<number[]>(resolve => {
+        const opacities: number[] = []
+        ;(button as HTMLElement).focus({ preventScroll: true })
+        ;(button as HTMLElement).click()
+        const sample = () => {
+          const dialog = document.querySelector<HTMLDialogElement>('dialog.showcase-viewer')!
+          if (dialog.open) {
+            const opacity = Number(getComputedStyle(dialog).opacity)
+            opacities.push(opacity)
+            if (opacity === 1) { resolve(opacities); return }
+          }
+          requestAnimationFrame(sample)
+        }
+        requestAnimationFrame(sample)
+      }))
+      expect(opening.some(value => value > .15 && value < .85)).toBe(true)
+      await expect(dialog.locator('.zoomable-img')).toHaveClass(/is-ready/)
+      await expect(dialog).toHaveCSS('opacity', '1')
+      await dialog.getByRole('link', { name: '在工作台打开', exact: true }).hover()
+      await expect(dialog.locator('.studio-tooltip')).toBeVisible()
+      await page.screenshot({ path: info.outputPath(`preview-${theme}-${attempt}.png`) })
+      const result = await dialog.evaluate(el => new Promise<{ frames: number; blank: number; backdrops: number[]; scales: number[]; opacities: number[] }>(resolve => {
+        let frames = 0, blank = 0
+        const backdrops: number[] = [], scales: number[] = [], opacities: number[] = []
+        const image = el.querySelector('.zoomable-img')
+        const sample = () => {
+          if (!(el as HTMLDialogElement).open) { resolve({ frames, blank, backdrops, scales, opacities }); return }
+          frames++
+          opacities.push(Number(getComputedStyle(el).opacity))
+          backdrops.push(Number(getComputedStyle(el, '::backdrop').opacity))
+          const panel = el.querySelector('.viewer-layout')
+          if (panel) scales.push(new DOMMatrixReadOnly(getComputedStyle(panel).transform).a)
+          if (Number(getComputedStyle(el).opacity) > .05 && (!image?.isConnected || !el.querySelector('.viewer-layout'))) blank++
+          requestAnimationFrame(sample)
+        }
+        ;(el.querySelector('#viewerClose') as HTMLButtonElement).click()
+        requestAnimationFrame(sample)
+      }))
+      expect(result.frames).toBeGreaterThan(0)
+      expect(result.blank).toBe(0)
+      expect(result.opacities.some(value => value > .15 && value < .85)).toBe(true)
+      expect(result.backdrops.some(value => value > .15 && value < .85)).toBe(true)
+      expect(result.scales.every(value => value === 1)).toBe(true)
+      await expect(opener).toBeFocused()
+      await expect(dialog.locator('.viewer-layout')).toHaveCount(0)
+    }
+    expect(errors).toEqual([])
+  })
+}
+
+for (const theme of ['light', 'dark']) {
+  for (const motion of ['no-preference', 'reduce'] as const) {
+    test(`sticky artbook search stays in place across preview ${theme} ${motion}`, async ({ page }, info) => {
+      await page.setViewportSize({ width: 1440, height: 960 })
+      await page.emulateMedia({ reducedMotion: motion })
+      await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+      await installShowcaseFixture(page)
+      await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ json: {
+        entries: Array.from({ length: 48 }, (_, i) => ({ id: 'sticky-' + i, title: '吸顶检查 ' + i, char: 'nene', rating: 'All', type: 'scene', width: 832, height: 1216 })),
+      } }))
+      await page.goto('/showcase')
+      const toolbar = page.locator('.toolbar-shell')
+      const opener = page.locator('.sample-visual').nth(20)
+      await opener.scrollIntoViewIfNeeded()
+      await expect(toolbar).toHaveCSS('opacity', '1')
+      await expect(toolbar).toHaveCSS('transform', 'none')
+      const top = await toolbar.evaluate(el => el.getBoundingClientRect().top)
+      const y = await page.evaluate(() => scrollY)
+      expect(y).toBeGreaterThan(1000)
+      expect(top).toBeGreaterThan(0)
+      expect(top).toBeLessThan(100)
+      const dialog = page.locator('dialog.showcase-viewer')
+      // Sample the real pointer activation position: Playwright may scroll a
+      // partially covered card into view before dispatching the click.
+      await opener.evaluate(el => el.addEventListener('click', () => {
+        el.setAttribute('data-opening-scroll-y', String(scrollY))
+      }, { capture: true, once: true }))
+      await opener.click()
+      const openingY = Number(await opener.getAttribute('data-opening-scroll-y'))
+      await expect(dialog).toHaveCSS('opacity', '1')
+      expect(await toolbar.evaluate(el => el.getBoundingClientRect().top)).toBeCloseTo(top, 0)
+      const frames = await dialog.evaluate(el => new Promise<Array<{ top: number; y: number; opacity: number }>>(resolve => {
+        const samples: Array<{ top: number; y: number; opacity: number }> = []
+        const toolbar = document.querySelector('.toolbar-shell')!
+        let closedFrames = 0
+        const sample = () => {
+          samples.push({ top: toolbar.getBoundingClientRect().top, y: scrollY, opacity: Number(getComputedStyle(toolbar).opacity) })
+          if (!(el as HTMLDialogElement).open && ++closedFrames === 3) { resolve(samples); return }
+          requestAnimationFrame(sample)
+        }
+        ;(el.querySelector('#viewerClose') as HTMLButtonElement).click()
+        requestAnimationFrame(sample)
+      }))
+      await info.attach('sticky-frames', { body: JSON.stringify({ y, openingY, top, frames }), contentType: 'application/json' })
+      expect(Math.max(...frames.map(frame => Math.abs(frame.top - top)))).toBeLessThanOrEqual(1)
+      expect(Math.max(...frames.map(frame => Math.abs(frame.y - openingY)))).toBeLessThanOrEqual(1)
+      expect(frames.every(frame => frame.opacity === 1)).toBe(true)
+      await expect(opener).toBeFocused()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+      await page.screenshot({ path: info.outputPath(`sticky-search-${theme}-${motion}.png`) })
+    })
+  }
+}
+
+for (const theme of ['light', 'dark']) {
+  test(`artbook image expands from its thumbnail and returns ${theme}`, async ({ page }, info) => {
+    await installShowcaseFixture(page)
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.goto('/showcase')
+    const opener = page.locator('.sample-visual').first()
+    await opener.scrollIntoViewIfNeeded()
+    await expect(opener.locator('img')).toHaveClass(/sample-image-ready/)
+    await expect(page.locator('.showcase-grid')).toHaveCSS('transform', 'none')
+    const source = await opener.locator('img').boundingBox()
+    const flight = await opener.evaluate(button => new Promise<Array<{ x: number; y: number; w: number; h: number }>>(resolve => {
+      const samples: Array<{ x: number; y: number; w: number; h: number }> = []
+      ;(button as HTMLElement).focus({ preventScroll: true }); (button as HTMLElement).click()
+      let frames = 0
+      const sample = () => {
+        const proxy = document.querySelector('[data-image-origin-proxy]')
+        if (proxy) { const r = proxy.getBoundingClientRect(); samples.push({ x: r.x, y: r.y, w: r.width, h: r.height }) }
+        if (++frames > 50) { resolve(samples); return }
+        requestAnimationFrame(sample)
+      }
+      requestAnimationFrame(sample)
+    }))
+    expect(flight.length).toBeGreaterThan(3)
+    expect(Math.abs(flight[0].w - source!.width)).toBeLessThan(60)
+    const dialog = page.locator('.showcase-viewer')
+    await expect(dialog.locator('[data-image-origin-proxy]')).toHaveCount(0)
+    const target = await dialog.locator('.zoomable-img').boundingBox()
+    expect(Math.abs(flight.at(-1)!.w - target!.width)).toBeLessThan(4)
+    await page.screenshot({ path: info.outputPath(`image-origin-open-${theme}.png`) })
+    const returning = await dialog.evaluate(el => new Promise<Array<{ x: number; y: number; w: number; h: number }>>(resolve => {
+      const samples: Array<{ x: number; y: number; w: number; h: number }> = []
+      const sample = () => {
+        const proxy = el.querySelector('[data-image-origin-proxy]')
+        if (proxy) { const r = proxy.getBoundingClientRect(); samples.push({ x: r.x, y: r.y, w: r.width, h: r.height }) }
+        if (!(el as HTMLDialogElement).open) { resolve(samples); return }
+        requestAnimationFrame(sample)
+      }
+      ;(el.querySelector('#viewerClose') as HTMLButtonElement).click()
+      requestAnimationFrame(sample)
+    }))
+    expect(returning.length).toBeGreaterThan(3)
+    const last = returning.at(-1)!
+    expect(Math.abs(last.x - source!.x)).toBeLessThan(2)
+    expect(Math.abs(last.y - source!.y)).toBeLessThan(2)
+    expect(Math.abs(last.w - source!.width)).toBeLessThan(2)
+    await expect(page.locator('[data-image-origin-proxy]')).toHaveCount(0)
+    await expect(opener).toBeFocused()
+    await page.screenshot({ path: info.outputPath(`image-origin-return-${theme}.png`) })
+    await page.setViewportSize({ width: 390, height: 844 })
+    await opener.click()
+    await expect(dialog.locator('.zoomable-img')).toHaveClass(/is-ready/)
+    await expect(dialog).toHaveCSS('opacity', '1')
+    const bounds = await dialog.locator('.zoomable-img').evaluate(img => {
+      const picture = img.getBoundingClientRect(), canvas = img.closest('.zoomable-image-viewer')!.getBoundingClientRect()
+      return { clipped: picture.top < canvas.top - 1 || picture.bottom > canvas.bottom + 1 || picture.left < canvas.left - 1 || picture.right > canvas.right + 1 }
+    })
+    expect(bounds.clipped).toBe(false)
+    await page.screenshot({ path: info.outputPath(`image-origin-phone-${theme}.png`) })
+    await page.getByRole('button', { name: '放大图片', exact: true }).click()
+    await expect(dialog.locator('.zoomable-image-viewer')).toHaveClass(/is-zoomed/)
+    await page.getByRole('button', { name: '关闭大图', exact: true }).click()
+    await expect(dialog).toBeHidden()
+    await expect(page.locator('[data-image-origin-proxy]')).toHaveCount(0)
   })
 }

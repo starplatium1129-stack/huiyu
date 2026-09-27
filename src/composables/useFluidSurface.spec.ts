@@ -22,6 +22,7 @@ describe('useFluidSurface & FluidTransition selectors and motion curves', () => 
   afterEach(() => {
     document.body.innerHTML = ''
     vi.unstubAllGlobals()
+    delete document.documentElement.dataset.motion
   })
 
   it('exports standardized surface panel selectors', () => {
@@ -82,36 +83,53 @@ describe('useFluidSurface & FluidTransition selectors and motion curves', () => 
     wrapper.remove()
   })
 
-  it('applies reduced motion parameters when prefers-reduced-motion is true', () => {
-    const originalMatchMedia = window.matchMedia
-    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-      matches: query.includes('prefers-reduced-motion: reduce'),
-      media: query,
-      onchange: null,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }))
+  it('applies reduced motion immediately and leaves no spatial transform', () => {
+    document.documentElement.dataset.motion = 'reduce'
+    const surface = useFluidSurface()
+    const el = document.createElement('div')
+    document.body.append(el)
+    const done = vi.fn()
+    surface.enter(el, done)
+    expect(done).toHaveBeenCalledOnce()
+    expect(el.style.transform).toBe('')
+    surface.dispose(el)
+  })
 
-    try {
-      const surface = useFluidSurface()
-      const el = document.createElement('div')
-      el.className = 'test-panel'
-      document.body.appendChild(el)
+  it('keeps native backdrop and content in phase during interrupted motion', () => {
+    document.documentElement.dataset.motion = 'full'
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frames.push(callback); return frames.length })
+    vi.stubGlobal('cancelAnimationFrame', vi.fn())
+    const dialog = document.createElement('dialog'), panel = document.createElement('div')
+    panel.className = 'viewer-layout'
+    dialog.append(panel); document.body.append(dialog)
+    const surface = useFluidSurface('.viewer-layout')
+    surface.enter(dialog, () => {})
+    frames.shift()!(16); frames.shift()!(32)
+    const opacity = Number(dialog.style.opacity)
+    expect(opacity).toBeGreaterThan(0)
+    expect(opacity).toBeLessThan(1)
+    expect(dialog.style.getPropertyValue('--fluid-backdrop-opacity')).toBe(dialog.style.opacity)
+    const transform = panel.style.transform
+    surface.leave(dialog, () => {})
+    expect(panel.style.transform).toBe(transform)
+    surface.enter(dialog, () => {})
+    expect(panel.style.transform).toBe(transform)
+    surface.dispose(dialog)
+    expect(dialog.style.getPropertyValue('--fluid-backdrop-opacity')).toBe('')
+    expect(panel.style.transform).toBe('')
+  })
 
-      surface.enter(el, () => {})
-
-      // Under reduced motion, scale is 1 and travel is 0 (no spatial displacement)
-      expect(el.style.transform).toContain('translateY(0px)')
-      expect(el.style.transform).toContain('scale(1)')
-
-      surface.dispose(el)
-      el.remove()
-    } finally {
-      window.matchMedia = originalMatchMedia
-    }
+  it('fades an image preview shell without moving the image trajectory', () => {
+    document.documentElement.dataset.motion = 'full'
+    const el = document.createElement('dialog')
+    el.setAttribute('data-image-transition', '')
+    document.body.append(el)
+    const surface = useFluidSurface()
+    surface.enter(el, () => {})
+    expect(el.style.transform).toBe('translateY(0px) scale(1)')
+    expect(Number(el.style.opacity)).toBeLessThan(1)
+    surface.dispose(el)
   })
 
   it('uses a visible source control as the artwork origin and falls back for offscreen sources', () => {

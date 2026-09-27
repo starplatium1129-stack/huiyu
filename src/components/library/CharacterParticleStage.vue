@@ -27,11 +27,11 @@ import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { loadPortraitCloud } from '@/utils/particlePortrait'
 
 const SemanticParticleField = defineAsyncComponent(() => import('@/components/visual/SemanticParticleField.vue'))
-const props = defineProps<{ characterId: string; name: string }>()
+const props = defineProps<{ characterId: string; name: string; initialOriginal?: boolean }>()
 const theme = computed(() => characterParticleTheme(props.characterId))
 // The removed desktop scene portrait used a 330px-high field and 6000 points.
 const referenceSize = { width: 500, height: 330 }
-const mode = ref<'particles' | 'original'>('particles')
+const mode = ref<'particles' | 'original'>(props.initialOriginal ? 'original' : 'particles')
 const available = ref(false)
 const loading = ref(true)
 const showOriginal = computed(() => mode.value === 'original' || (!loading.value && !available.value))

@@ -1,4 +1,4 @@
-import { artworkFacts, artworkIndexById, characterName as resolveCharacterName, formatDate, formatTrashTime, safeImageUrl, sceneTitle as resolveSceneTitle, trashPrompt } from './galleryHelpers';
+import { artworkFacts, characterName as resolveCharacterName, formatDate, formatTrashTime, safeImageUrl, sceneTitle as resolveSceneTitle, trashPrompt } from './galleryHelpers';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { useMasonryColumns } from '@/composables/gallery/useMasonryWall';
 import { useFocusTrap } from '@/composables/useFocusTrap';
@@ -18,6 +18,7 @@ import { useGalleryTrash } from './useGalleryTrash';
 import { useGalleryFilters } from './useGalleryFilters';
 import { useGalleryComparison } from './useGalleryComparison';
 import { useGallerySelection } from './useGallerySelection';
+import { useGalleryViewer } from './useGalleryViewer';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useGalleryWorkspace() {
     const sceneStore = useSceneStore();
@@ -28,13 +29,11 @@ export function useGalleryWorkspace() {
 
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
     const galleryLoading = ref(true), galleryError = ref('');
-    const viewerIndex = ref(-1), viewerItemId = ref<string | number | null>(null);
     const infoOpen = ref(false);
     const narrowViewerMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
         ? window.matchMedia('(max-width: 900px)') : null;
     const narrowViewer = ref(narrowViewerMedia?.matches ?? false);
     const infoDrawerHidden = computed(() => narrowViewer.value && !infoOpen.value);
-    const viewerUrl = ref('');
     const cardUrls = reactive<Record<string, string>>({});
     /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
     const thumbUrls = reactive<Record<string, string>>({});
@@ -82,9 +81,6 @@ export function useGalleryWorkspace() {
     const shellEl = ref<HTMLElement | null>(null);
     const { columnCount } = useMasonryColumns(shellEl);
     const objectUrls = new Set<string>();
-    /** 查看器当前显示的 blob URL，翻页时要主动释放 */
-    let viewerObjectUrl = '';
-    let viewerLoadToken = 0;
     let unmounted = false;
     let viewActive = true;
     let imageEpoch = 0;
@@ -125,9 +121,8 @@ export function useGalleryWorkspace() {
         clearSelection,
     } = useGallerySelection(visible);
 
-    const current = computed(() => {
-        const index = artworkIndexById(history.value, viewerItemId.value);
-        return index >= 0 ? history.value[index] : null;
+    const { viewerIndex, viewerUrl, current, openViewer, closeViewer, onViewerClosed, step } = useGalleryViewer({
+        history, visible, resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
 
     const {
@@ -169,7 +164,6 @@ export function useGalleryWorkspace() {
         objectUrls.clear();
         for (const id of Object.keys(cardUrls)) delete cardUrls[id];
         cardLruOrder.clear();
-        viewerObjectUrl = ''; viewerUrl.value = '';
     }
     /* ---------- 图片加载 ---------- */
     /**
@@ -178,7 +172,7 @@ export function useGalleryWorkspace() {
      * IntersectionObserver 只对进入视口 ±600px 的卡片发起 HD 读取，配合
      * LRU 上限滚动淘汰。旧实现是「全量读出 → 丢掉超出 40 张的」，几百张
      * 作品时绝大多数 IndexedDB 读取和 blob 创建都是纯浪费。
-     * 查看器大图单独走 hydrateViewer，不受上限影响。
+     * 查看器大图由 useGalleryViewer 独立管理，不受上限影响。
      */
     /** 缩略图是 KV 小 dataURL，读得快，并发放高 */
     const THUMB_CONCURRENCY = 8;
@@ -339,60 +333,6 @@ export function useGalleryWorkspace() {
             cardObserver.observe(el);
         }
     }
-    async function hydrateViewer(item: ArtworkRecord) {
-        // 上一张查看器大图用完就释放：卡片缩略图有 cardUrls 去重，
-        // 而查看器每翻一张都新建一个 blob URL，不放就攒到卸载才清。
-        releaseViewerUrl();
-        viewerUrl.value = '';
-        const token = ++viewerLoadToken;
-        const fallback = safeImageUrl(item.image_url);
-        try {
-            const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null;
-            if (unmounted || token !== viewerLoadToken || current.value?.id !== item.id)
-                return;
-            if (blob) {
-                viewerObjectUrl = URL.createObjectURL(blob);
-                objectUrls.add(viewerObjectUrl);
-                viewerUrl.value = viewerObjectUrl;
-            }
-            else if (fallback)
-                viewerUrl.value = fallback;
-            else if (item.image_data && String(item.image_data).startsWith('data:image/'))
-                viewerUrl.value = item.image_data;
-        }
-        catch {
-            if (!unmounted && token === viewerLoadToken) viewerUrl.value = '';
-        }
-    }
-    /** 查看器当前大图的 blob URL；卡片缩略图不走这里 */
-    function releaseViewerUrl() {
-        if (!viewerObjectUrl)
-            return;
-        URL.revokeObjectURL(viewerObjectUrl);
-        objectUrls.delete(viewerObjectUrl);
-        viewerObjectUrl = '';
-    }
-    /* ---------- Viewer 控制 ---------- */
-    let releaseViewerTimer: ReturnType<typeof setTimeout> | undefined;
-    function openViewer(index: number) {
-        clearTimeout(releaseViewerTimer);
-        const item = visible.value[index];
-        if (!item) return;
-        viewerItemId.value = item.id;
-        viewerIndex.value = index;
-        infoOpen.value = false;
-        compareMode.value = false;
-        void hydrateViewer(item);
-    }
-    function closeViewer() {
-        viewerLoadToken += 1;
-        viewerItemId.value = null;
-        viewerIndex.value = -1;
-        infoOpen.value = false;
-        compareMode.value = false;
-        clearTimeout(releaseViewerTimer);
-        releaseViewerTimer = setTimeout(() => { if (viewerIndex.value < 0) { releaseViewerUrl(); viewerUrl.value = ''; } }, 260);
-    }
     function toggleInfoDrawer() { if (!narrowViewer.value) return; if (!infoOpen.value) infoToggleBtn.value?.focus({ preventScroll: true }); infoOpen.value = !infoOpen.value; }
     function closeInfoDrawer() { infoOpen.value = false; }
     function syncNarrowViewer() { const nextNarrow = narrowViewerMedia?.matches ?? false; narrowViewer.value = nextNarrow; if (!nextNarrow && infoOpen.value) { closeInfoDrawer(); void nextTick(() => closeBtn.value?.focus({ preventScroll: true })); } }
@@ -402,15 +342,9 @@ export function useGalleryWorkspace() {
         onEscape: closeViewer,
         initialFocus: closeBtn,
     });
-    useFocusTrap(infoEl, () => narrowViewer.value && infoOpen.value, {
+    useFocusTrap(infoEl, () => viewerIndex.value >= 0 && narrowViewer.value && infoOpen.value, {
         onEscape: closeInfoDrawer, initialFocus: infoCloseBtn, lockScroll: false,
     });
-    function step(delta: number) {
-        const activeIndex = artworkIndexById(visible.value, viewerItemId.value);
-        const next = activeIndex + delta;
-        if (next >= 0 && next < visible.value.length)
-            openViewer(next);
-    }
     /* ---------- 删除 ---------- */
     /**
      * 从作品册移除一幅：历史条目 + IndexedDB 里的原图一起删，
@@ -483,14 +417,12 @@ export function useGalleryWorkspace() {
     let activatedOnce = false;
     onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void nextTick(() => { scanWallCards(); if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
     onDeactivated(() => {
-        viewActive = false; closeViewer(); clearTimeout(releaseViewerTimer); releaseImages();
+        viewActive = false; releaseImages();
         document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
         cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear();
     });
     onUnmounted(() => {
         unmounted = true;
-        clearTimeout(releaseViewerTimer);
-        viewerLoadToken += 1;
         cleanupFilterSync();
         cardObserver?.disconnect();
         cardObserver = null;
@@ -501,13 +433,6 @@ export function useGalleryWorkspace() {
         releaseImages();
     });
     watch(visible, () => {
-        if (viewerIndex.value >= 0) {
-            const activeIndex = artworkIndexById(visible.value, viewerItemId.value);
-            if (activeIndex < 0)
-                closeViewer();
-            else
-                viewerIndex.value = activeIndex;
-        }
         const ids = new Set(visible.value.map(item => item.id));
         selectedIds.value = new Set([...selectedIds.value].filter(id => ids.has(id)));
         void hydrateThumbs();
@@ -564,7 +489,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         masonryGroups, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
-        hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, step,
+        hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed, step,
         compareMode, hasComparableImage, viewerUrl, parentImageUrl, current, characterName,
         facts, downloadCurrent, copiedPrompt, copyPrompt, showToast, releaseCardResources,
     };

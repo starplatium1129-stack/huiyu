@@ -309,7 +309,10 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
-  overflow-x: hidden;
+  /* Clip horizontal artwork without creating a body scroll container. When a
+     native dialog locks html, overflow:hidden would otherwise make sticky
+     toolbars attach to body and jump offscreen until the modal closes. */
+  overflow-x: clip;
   /* 留白承载界面层级，淡淡的樱色只停在页面上缘。 */
   background-image: radial-gradient(ellipse at 15% 0%, var(--accent-soft), transparent 45rem);
 }
@@ -1838,28 +1841,8 @@ kbd,
   transition: transform var(--motion-press) var(--ease-out);
 }
 
-/* ── 弹窗 / 模态框平滑视口缩放与收拢过渡动效 ── */
-@keyframes modalScaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-/* 2026-08-22 动效审计 #7：.modal-card/.inpaint-modal 改由 layer-pop Transition
-   统一进出场（保留在下方选择器会与 Transition 双重动画）；dialog 与
-   .art-viewer.open 仍是 class/display 驱动、无 Transition 包裹，入场沿用本帧。 */
-dialog[open],
-.art-viewer.open {
-  animation: modalScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-
-
+/* Dialogs and overlays use useFluidSurface; a forwards CSS animation would
+   override its opacity/transform and suppress the exit motion. */
 
 /* ============================================================
    forced-colors（Windows 高对比度模式）适配

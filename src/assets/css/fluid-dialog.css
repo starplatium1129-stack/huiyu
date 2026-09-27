@@ -1,0 +1,2 @@
+/* Share the surface spring with the native top-layer scrim. Blur stays static. */
+dialog[data-fluid-dialog]::backdrop { opacity: var(--fluid-backdrop-opacity, 1); }

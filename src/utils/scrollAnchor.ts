@@ -15,6 +15,8 @@ export interface ScrollAnchor {
 }
 
 export interface RestoreAnchorOptions {
+  /** 调用方已完成 DOM 更新时可在绘制前恢复；默认下一帧，保留筛选前捕获的旧布局。 */
+  immediate?: boolean
   /** 每帧重试前询问；返回 false 立即停止（路由已离开、组件已卸载、锚点已被取代） */
   shouldContinue?: () => boolean
   /** 等待文档长到能容纳锚点的上限 */
@@ -47,7 +49,7 @@ export function restoreScrollAnchor(anchor: ScrollAnchor, options: RestoreAnchor
   if (typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') return () => undefined
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS
   const started = performance.now()
-  let frame = window.requestAnimationFrame(retry)
+  let frame = 0
   function cancel() {
     if (!frame) return
     window.cancelAnimationFrame(frame)
@@ -62,10 +64,14 @@ export function restoreScrollAnchor(anchor: ScrollAnchor, options: RestoreAnchor
       frame = window.requestAnimationFrame(retry)
       return
     }
-    window.scrollTo(anchor.left, Math.min(anchor.top, maxTop))
+    // Restoring context must not inherit html's smooth scrolling: that turns a
+    // return into a visible trip from the new page's top to the old position.
+    window.scrollTo({ left: anchor.left, top: Math.min(anchor.top, maxTop), behavior: 'instant' })
     if (reachable) options.onRestored?.()
     else options.onAbandoned?.(window.scrollY)
   }
+  if (options.immediate) retry()
+  else frame = window.requestAnimationFrame(retry)
   return cancel
 }
 

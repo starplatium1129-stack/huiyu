@@ -88,7 +88,7 @@ async function open(value: 'appearance' | 'keyboard') {
 }
 function restoreFocus() {
   const fallback = document.querySelector<HTMLElement>('.nav-more-trigger')
-  ;(usableFocus(trigger) ? trigger : usableFocus(fallback) ? fallback : document.querySelector<HTMLElement>('.nav-menu-toggle'))?.focus()
+  ;(usableFocus(trigger) ? trigger : usableFocus(fallback) ? fallback : document.querySelector<HTMLElement>('.nav-menu-toggle'))?.focus({ preventScroll: true })
 }
 function backdropClose(event: MouseEvent) {
   if (event.target !== dialog.value || !dialog.value) return

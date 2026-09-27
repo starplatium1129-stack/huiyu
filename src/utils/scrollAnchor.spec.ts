@@ -28,9 +28,9 @@ function setup() {
   window.cancelAnimationFrame = ((handle: number) => {
     frames[handle - 1] = () => undefined
   }) as typeof window.cancelAnimationFrame
-  window.scrollTo = ((x: number, y: number) => {
-    state.scrollX = x
-    state.scrollY = y
+  window.scrollTo = vi.fn((options: ScrollToOptions) => {
+    state.scrollX = options.left || 0
+    state.scrollY = options.top || 0
   }) as typeof window.scrollTo
   vi.spyOn(performance, 'now').mockImplementation(() => now)
 }
@@ -52,14 +52,29 @@ afterEach(() => {
   window.scrollTo = originalScrollTo
 })
 
-it('restores the anchor on the next frame when the document is tall enough', () => {
+it('restores a reachable anchor before painting without inheriting smooth scrolling', () => {
   setup()
   state.scrollY = 700
   const anchor = captureScrollAnchor()
   state.scrollY = 0
-  restoreScrollAnchor(anchor!)
-  runFrame()
+  restoreScrollAnchor(anchor!, { immediate: true })
   expect(state.scrollY).toBe(700)
+  expect(window.scrollTo).toHaveBeenCalledWith({ left: 0, top: 700, behavior: 'instant' })
+  expect(frames).toHaveLength(0)
+})
+
+it('defers pre-render callers so the old document height cannot settle a pending filter', () => {
+  setup()
+  const restored = vi.fn()
+  restoreScrollAnchor({ left: 0, top: 1400 }, { onRestored: restored })
+  expect(restored).not.toHaveBeenCalled()
+  state.scrollHeight = 1200
+  runFrame()
+  expect(restored).not.toHaveBeenCalled()
+  state.scrollHeight = 4000
+  runFrame()
+  expect(restored).toHaveBeenCalledOnce()
+  expect(state.scrollY).toBe(1400)
 })
 
 it('retries while the document is short, then lands once it grows back', () => {
@@ -95,6 +110,7 @@ it('keeps two concurrent restores independent', () => {
   state.scrollY = 700
   const first = captureScrollAnchor()
   state.scrollY = 0
+  state.scrollHeight = 1100
   const cancelFirst = restoreScrollAnchor(first!, { shouldContinue: () => true })
   state.scrollY = 300
   const second = captureScrollAnchor()
@@ -102,6 +118,7 @@ it('keeps two concurrent restores independent', () => {
   restoreScrollAnchor(second!, { shouldContinue: () => true })
 
   cancelFirst()
+  state.scrollHeight = 4000
   runFrame()
   expect(state.scrollY).toBe(300)
 })

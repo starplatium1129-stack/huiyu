@@ -1,5 +1,6 @@
 import { onDeactivated, onUnmounted, type Ref } from 'vue'
 import { useFluidSurface } from './useFluidSurface'
+import '@/assets/css/fluid-dialog.css'
 
 /**
  * 模态弹窗打开期间锁定页面滚动。
@@ -40,11 +41,7 @@ function unlockPageScroll() {
   const x = previousScrollX, y = previousScrollY, path = previousScrollPath, revision = scrollRevision
   const restore = () => {
     if (modalLocks || revision !== scrollRevision || window.location.pathname !== path) return
-    if (window.scrollX !== x || window.scrollY !== y) {
-      // This is position restoration, not navigation. CSS scroll-behavior:smooth
-      // must not turn a native focus jump into a visible trip through the page.
-      window.scrollTo({ left: x, top: y, behavior: 'instant' })
-    }
+    if (window.scrollX !== x || window.scrollY !== y) window.scrollTo({ left: x, top: y, behavior: 'instant' })
   }
   restore()
   // Native dialog focus restoration can run after the close event and move the
@@ -55,8 +52,8 @@ function unlockPageScroll() {
 }
 
 /** Keep native focus containment until exit ends; reopening preserves current motion. */
-export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
-  const surface = useFluidSurface()
+export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotion?: ReturnType<typeof useFluidSurface>) {
+  const surface = imageMotion ?? useFluidSurface(':scope > .viewer-layout, :scope > .ref-modal-layout')
   let intention = 0
   let locked = false
   let listenerTarget: HTMLDialogElement | null = null
@@ -95,12 +92,16 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>) {
     const el = dialog.value
     if (!el) return
     intention++
+    el.setAttribute('data-fluid-dialog', '')
     if (!el.open) {
       returnFocus = source && source !== document.body ? source : null
       surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
       // Native showModal can move focus and scroll; capture the reading position first.
       if (!locked) { locked = true; lockPageScroll() }
       try { el.showModal() } catch (error) { releaseScrollLock(); throw error }
+      // Native autofocus can queue smooth scrolling without changing the current
+      // coordinates yet. Always cancel that trip before the first fade frame.
+      window.scrollTo({ left: previousScrollX, top: previousScrollY, behavior: 'instant' })
       trackClose(el)
       if (source && source !== document.body && !el.contains(source)) {
         const from = source.getBoundingClientRect(), rect = el.getBoundingClientRect()

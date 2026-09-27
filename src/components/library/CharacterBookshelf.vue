@@ -14,6 +14,7 @@
       <p class="bookshelf-hint">{{ showingShelf ? '挑一本作品，翻开角色的故事' : '选择角色，查看完整档案' }}</p>
     </div>
 
+    <div ref="contentRoot">
     <template v-if="showingShelf">
       <div v-if="groups.length" ref="shelfGrid" class="bookshelf-grid" role="group" aria-label="作品书架">
         <article v-for="group in groups" :key="group.key" class="bookshelf-work">
@@ -59,11 +60,14 @@
         <button type="button" :disabled="page === pageCount" @click="changePage(page + 1)">下一页</button>
       </nav>
     </template>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, useId } from 'vue'
+import { nextTick, onScopeDispose, ref, useId } from 'vue'
+import { useFluidSurface } from '@/composables/useFluidSurface'
+import { captureScrollAnchor, restoreScrollAnchor, type ScrollAnchor } from '@/utils/scrollAnchor'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
@@ -79,6 +83,11 @@ const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const shelfGrid = ref<HTMLElement | null>(null)
 const characterGrid = ref<HTMLElement | null>(null)
 const resultsHeading = ref<HTMLElement | null>(null)
+const contentRoot = ref<HTMLElement | null>(null)
+const contentMotion = useFluidSurface()
+let shelfAnchor: ScrollAnchor | null = null
+let cancelRestore = () => {}
+onScopeDispose(() => cancelRestore())
 const coverOffsets = ref<Record<string, number>>({})
 function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
   const offset = (coverOffsets.value[key] || 0) % (covers.length || 1)
@@ -86,17 +95,41 @@ function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
 }
 const { query, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch } = useCharacterBookshelf(() => props.items)
 
-async function enterGroup(key: string) { openGroup(key); await nextTick(); resultsHeading.value?.focus() }
-async function switchMode(value: 'shelf' | 'characters') { changeMode(value); await nextTick(); searchInput.value?.focus() }
+function revealContent() {
+  const element = contentRoot.value
+  if (!element) return
+  contentMotion.dispose(element)
+  contentMotion.enter(element, () => contentMotion.dispose(element))
+}
+function focusResults() {
+  const heading = resultsHeading.value
+  if (!heading) return
+  heading.focus({ preventScroll: true })
+  if (heading.getBoundingClientRect().top < 70) heading.scrollIntoView({ block: 'start', behavior: 'instant' })
+}
+async function enterGroup(key: string) {
+  cancelRestore(); shelfAnchor = captureScrollAnchor()
+  openGroup(key); await nextTick(); focusResults(); revealContent()
+}
+async function switchMode(value: 'shelf' | 'characters') {
+  cancelRestore()
+  if (showingShelf.value) shelfAnchor = captureScrollAnchor()
+  changeMode(value); await nextTick()
+  if (value === 'shelf' && shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => showingShelf.value })
+  searchInput.value?.focus({ preventScroll: true }); revealContent()
+}
 async function backToShelf() {
   const key = series.value
+  cancelRestore()
   changeMode('shelf')
   await nextTick()
+  if (shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => showingShelf.value })
   const origin = [...(shelfGrid.value?.querySelectorAll<HTMLButtonElement>('[data-franchise]') || [])].find(button => button.dataset.franchise === key)
-  ;(origin || searchInput.value)?.focus()
+  ;(origin || searchInput.value)?.focus({ preventScroll: true })
+  revealContent()
 }
 async function clearQuery() { clearSearch(); await nextTick(); searchInput.value?.focus() }
-async function changePage(value: number) { page.value = value; await nextTick(); resultsHeading.value?.focus() }
+async function changePage(value: number) { page.value = value; await nextTick(); focusResults(); revealContent() }
 function onSearchKeydown(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) return
   if (event.key === 'ArrowDown') {
@@ -175,7 +208,7 @@ defineExpose({ focusSelected })
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="0"] { transform: translateY(-6%); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="1"] { transform: translate(-16%, 2%) rotate(-8deg); }
   html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="2"] { transform: translate(16%, 3%) rotate(8deg); }
-  html:not([data-reduced-motion="true"]) .bookshelf-character:hover { transform: translateY(-3px); border-color: var(--accent); }
+  html:not([data-reduced-motion="true"]) .bookshelf-character:hover { border-color: var(--accent); }
 }
 @media (max-width: 1200px) {
   .bookshelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

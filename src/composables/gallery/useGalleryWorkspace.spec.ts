@@ -47,7 +47,7 @@ beforeEach(() => {
   mocks.thumb.mockReset().mockResolvedValue('data:image/jpeg;base64,generated')
   mocks.snapshot.mockReset().mockImplementation(async () => ({ history: [record(1)], projects: [] }))
 })
-afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.unstubAllGlobals() })
+afterEach(() => { wrappers.splice(0).forEach(wrapper => wrapper.unmount()); vi.useRealTimers(); vi.unstubAllGlobals() })
 
 async function setup() {
   let gallery!: ReturnType<typeof useGalleryWorkspace>
@@ -91,6 +91,66 @@ it('releases gallery originals on deactivation while keeping filters and thumbna
   expect(env.gallery.cardUrls[1]).toBe('blob:gallery-3')
   expect(env.gallery.favoriteOnly.value).toBe(true)
   expect(env.wrapper.find('img').attributes('src')).toBe('blob:gallery-3')
+})
+
+it('keeps the image and comparison intact until the closing transition finishes', async () => {
+  const { gallery } = await setup()
+  gallery.openViewer(0)
+  await flushPromises()
+  const url = gallery.viewerUrl.value
+  gallery.compareMode.value = true
+  gallery.infoOpen.value = true
+  vi.useFakeTimers()
+  gallery.closeViewer()
+  vi.advanceTimersByTime(1000)
+  expect(gallery.viewerIndex.value).toBe(-1)
+  expect(gallery.current.value?.id).toBe(1)
+  expect(gallery.viewerUrl.value).toBe(url)
+  expect(gallery.compareMode.value).toBe(true)
+  expect(gallery.infoOpen.value).toBe(true)
+  expect(URL.revokeObjectURL).not.toHaveBeenCalled()
+  gallery.onViewerClosed()
+  expect(gallery.current.value).toBeNull()
+  expect(gallery.viewerUrl.value).toBe('')
+  expect(gallery.compareMode.value).toBe(false)
+  expect(gallery.infoOpen.value).toBe(false)
+  expect(URL.revokeObjectURL).toHaveBeenCalledExactlyOnceWith(url)
+})
+
+it('reuses the current image when closing is reversed and ignores an obsolete completion', async () => {
+  const { gallery } = await setup()
+  gallery.openViewer(0)
+  await flushPromises()
+  const url = gallery.viewerUrl.value
+  gallery.closeViewer()
+  gallery.openViewer(0)
+  gallery.onViewerClosed()
+  await flushPromises()
+  expect(gallery.viewerIndex.value).toBe(0)
+  expect(gallery.current.value?.id).toBe(1)
+  expect(gallery.viewerUrl.value).toBe(url)
+  expect(mocks.getImage).toHaveBeenCalledOnce()
+  expect(URL.revokeObjectURL).not.toHaveBeenCalled()
+})
+
+it('discards a pending image read after closing without disturbing the next artwork', async () => {
+  mocks.snapshot.mockResolvedValue({ history: [record(1), record(2)], projects: [] })
+  const { gallery } = await setup()
+  let finish!: (blob: Blob) => void
+  mocks.getImage.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  gallery.openViewer(0)
+  gallery.closeViewer()
+  gallery.openViewer(1)
+  await flushPromises()
+  const url = gallery.viewerUrl.value
+  finish(new Blob(['old image']))
+  await flushPromises()
+  expect(gallery.current.value?.id).toBe(gallery.visible.value[1].id)
+  expect(gallery.viewerUrl.value).toBe(url)
+  expect(URL.createObjectURL).toHaveBeenCalledOnce()
+  gallery.closeViewer()
+  gallery.onViewerClosed()
+  expect(URL.revokeObjectURL).toHaveBeenCalledExactlyOnceWith(url)
 })
 
 it('rejects a late original read after leaving, including a quick return to the same card', async () => {

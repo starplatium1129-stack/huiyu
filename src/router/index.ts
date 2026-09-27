@@ -91,7 +91,7 @@ const router = createRouter({
     cancelPendingScrollRestore()
     if (savedPosition) {
       routeScrollMemory.delete(to.fullPath)
-      return savedPosition
+      return { ...savedPosition, behavior: 'instant' }
     }
     if (to.path === from.path && !to.hash && !from.hash) return false
     if (to.hash) return { el: to.hash, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }
@@ -99,9 +99,9 @@ const router = createRouter({
     if (remembered) {
       routeScrollMemory.delete(to.fullPath)
       scheduleScrollRestore(to.fullPath, remembered)
-      return { ...remembered, behavior: 'auto' }
+      return { ...remembered, behavior: 'instant' }
     }
-    return { top: 0 }
+    return { top: 0, behavior: 'instant' }
   }
 })
 

@@ -84,7 +84,7 @@
     <Teleport to="body">
       <!-- 必须用 showModal() 打开（见 openViewer）：设 open 属性只是非模态 dialog，
            没有 top layer、没有 ::backdrop，背景不 inert，Tab 能直接跑到下面的网格里 -->
-      <dialog ref="dialogEl" class="showcase-viewer" aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
+      <dialog ref="dialogEl" class="showcase-viewer" data-image-transition aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <button class="viewer-close viewer-close-on-art" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
         <div v-if="viewerMounted && currentEntry" class="viewer-layout">
           <div class="viewer-art">
@@ -118,7 +118,7 @@
             </details>
             <div class="viewer-story">{{ currentEntry.story }}</div>
             <div class="viewer-actions">
-              <StudioTooltip v-if="workspaceTarget" :content="workspaceTarget.hint">
+              <StudioTooltip v-if="workspaceTarget" :content="viewerClosing ? null : workspaceTarget.hint">
                 <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
               </StudioTooltip>
               <span class="viewer-position" aria-live="polite">{{ currentIdx + 1 }} / {{ filtered.length }} · 方向键切换，Esc 关闭</span>
@@ -135,6 +135,8 @@
 import { resolveRuntimeUrl, runtimeFetch } from '@/platform/runtimeUrl'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
+import { useFluidSurface } from '@/composables/useFluidSurface'
+import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
@@ -189,8 +191,28 @@ let sentinelObserver: IntersectionObserver | null = null
 function loadMore() { visibleCount.value += PAGE_SIZE }
 const currentId   = ref('')
 const viewerMounted = ref(false)
+const viewerClosing = ref(false)
 const dialogEl    = ref<HTMLDialogElement | null>(null)
-const viewerMotion = useFluidDialog(dialogEl)
+const viewerHero = useImageOriginTransition()
+const viewerSurface = useFluidSurface(':scope > .viewer-layout')
+function sourceImage(id = currentId.value) {
+  return document.querySelector<HTMLImageElement>(`.sample[data-sample-id="${CSS.escape(id)}"] .sample-image`)
+}
+const viewerMotion = useFluidDialog(dialogEl, {
+  enter(el, done) {
+    const image = el.querySelector<HTMLImageElement>('.zoomable-img')
+    viewerSurface.enter(el, done)
+    if (image) void viewerHero.enter(image, el as HTMLElement)
+  },
+  leave(el, done) {
+    const image = el.querySelector<HTMLImageElement>('.zoomable-img')
+    void Promise.all([
+      new Promise<void>(resolve => viewerSurface.leave(el, resolve)),
+      image ? viewerHero.leave(image, el as HTMLElement, sourceImage()) : Promise.resolve(),
+    ]).then(done)
+  },
+  dispose(el) { viewerHero.cancel(); viewerSurface.dispose(el) },
+})
 const viewerImageFailed = ref(false)
 const viewerImageReady = ref(false)
 
@@ -272,6 +294,8 @@ const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) {
+  viewerHero.capture(dialogEl.value?.open ? null : sourceImage(id))
+  viewerClosing.value = false
   viewerMounted.value = true
   currentId.value = id
   viewerImageFailed.value = false
@@ -299,10 +323,19 @@ function clearLinkedScene() {
   void router.replace({ query })
 }
 function closeViewer() {
-  // Unmount Reka tooltip portals while the native dialog is still connected;
-  // tearing them down after dialog.close() leaves a stale Teleport anchor.
-  viewerMounted.value = false
-  viewerMotion.close(() => { clearLinkedScene() })
+  if (viewerClosing.value || !dialogEl.value?.open) return
+  // Clear only the tooltip portal before native close (Reka's Teleport anchor
+  // otherwise becomes stale). Keep the image/layout until the exit finishes:
+  // removing them here exposes an empty modal backdrop during the whole fade.
+  viewerClosing.value = true
+  void nextTick(() => {
+    if (!viewerClosing.value || !viewActive || unmounted) return
+    viewerMotion.close(() => {
+      viewerMounted.value = false
+      viewerClosing.value = false
+      clearLinkedScene()
+    })
+  })
 }
 
 // Native <dialog> owns the top layer, inert background, focus containment and
@@ -323,7 +356,7 @@ function openRandom() {
 function resetFilters() { searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
 
 function onKey(e: KeyboardEvent) {
-  if (!currentEntry.value || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return
+  if (!dialogEl.value?.open || viewerClosing.value || !currentEntry.value || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return
   if (e.target instanceof Element && e.target.closest('input,textarea,select,[contenteditable="true"]')) return
   if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1) }
   if (e.key === 'ArrowRight') { e.preventDefault(); move(1) }
@@ -433,14 +466,17 @@ onUnmounted(() => {
   padding: clamp(16px, 3vw, 40px);
   background: radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, var(--accent-glow) 20%, transparent), transparent 60%), var(--art-backdrop);
 }
-.showcase-viewer .viewer-art :deep(.zoomable-img) { max-height: 100%; }
-.showcase-viewer .viewer-art :deep(.zoom-transform-layer) { height: 100%; width: 100%; }
-.showcase-viewer .viewer-art img {
-  display: block; max-width: 100%; max-height: min(88vh, 860px);
-  width: auto; height: auto; object-fit: contain; border-radius: var(--r-lg);
-  opacity: 0; transition: opacity var(--motion-route) var(--ease-out);
-}
-.showcase-viewer .viewer-art img.viewer-image-ready { opacity: 1; }
+/* The image fits the actual art pane, including its padding; viewport-sized
+   limits used to clip the image and made a thumbnail-to-image flight impossible. */
+.showcase-viewer .viewer-art .zoomable-image-viewer { min-height: 0; }
+.showcase-viewer .viewer-art .zoom-transform-layer { height: 100%; width: 100%; }
+.showcase-viewer .viewer-art .zoomable-img { max-height: 100%; }
+/* Controls remain on the same dark art surface in both application themes. */
+.showcase-viewer .zoom-controls, .showcase-viewer .studio-tooltip { background: var(--art-scrim); color: var(--on-art-primary); }
+.showcase-viewer .zoom-control { background: var(--on-art-fill); color: var(--on-art-primary); }
+.showcase-viewer .zoom-control:focus-visible { outline-color: var(--on-art-primary); }
+.showcase-viewer .zoom-level { color: var(--on-art-primary); }
+.showcase-viewer .zoom-hint { padding: var(--s-1) var(--s-2); border-radius: var(--r-sm); background: var(--art-scrim); color: var(--on-art-primary); }
 .showcase-viewer .viewer-image-fallback { color:var(--on-art-secondary); font-size:var(--fs-body-sm); }
 .showcase-viewer .viewer-copy {
   min-width: 0; overflow-y: auto;
@@ -490,11 +526,10 @@ onUnmounted(() => {
   .showcase-viewer { padding: 0; }
   .showcase-viewer .viewer-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: minmax(0, 46dvh) minmax(0, 1fr);
     width: 100vw; max-height: 100vh; border-radius: 0; border: 0;
   }
   .showcase-viewer .viewer-art { padding: var(--s-3); }
-  .showcase-viewer .viewer-art img { max-height: 46vh; }
   .showcase-viewer .viewer-copy { border-left: 0; border-top: 1px solid var(--border-soft); }
 }
 </style>

@@ -1,4 +1,85 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
+
+async function returnedPositions(page: Page, selector: string, returnSelector: string) {
+  return page.evaluate(async ({ selector, returnSelector }) => {
+    const positions: number[] = []
+    if (returnSelector) document.querySelector<HTMLButtonElement>(returnSelector)!.click()
+    else history.back()
+    for (let frame = 0; frame < 30; frame++) {
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
+      const element = document.querySelector<HTMLElement>(selector)
+      if (element && getComputedStyle(element).display !== 'none' && element.getBoundingClientRect().height) positions.push(scrollY)
+    }
+    return positions
+  }, { selector, returnSelector })
+}
+
+for (const theme of ['dark', 'light']) {
+  test(`a loaded character portrait connects the card and archive in both directions ${theme}`, async ({ page }, info) => {
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.goto('/character')
+    await page.getByRole('button', { name: '全部角色', exact: true }).click()
+    const card = page.locator('.bookshelf-character[data-character="nene"]')
+    await expect.poll(() => card.locator('img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true)
+    await card.scrollIntoViewIfNeeded()
+    await page.evaluate(() => {
+      const original = Element.prototype.animate
+      const flights: Keyframe[][] = []
+      ;(window as unknown as { portraitFlights: Keyframe[][] }).portraitFlights = flights
+      Element.prototype.animate = function (frames, options) {
+        if (this.hasAttribute('data-archive-portrait-flight')) flights.push(frames as Keyframe[])
+        return original.call(this, frames, options)
+      }
+    })
+    await card.click()
+    await expect(page.getByRole('button', { name: '人物原画', exact: true })).toHaveAttribute('aria-pressed', 'true')
+    await expect.poll(() => page.evaluate(() => (window as unknown as { portraitFlights: Keyframe[][] }).portraitFlights.length)).toBe(1)
+    await expect(page.locator('[data-archive-portrait-flight]')).toHaveCount(0)
+    await page.screenshot({ path: info.outputPath(`portrait-connected-${theme}.png`) })
+    await page.goBack()
+    await expect(card).toBeFocused()
+    await expect.poll(() => page.evaluate(() => (window as unknown as { portraitFlights: Keyframe[][] }).portraitFlights.length)).toBe(2)
+    await expect(page.locator('[data-archive-portrait-flight]')).toHaveCount(0)
+    await expect(card.locator('img')).not.toHaveCSS('opacity', '0')
+    const flights = await page.evaluate(() => (window as unknown as { portraitFlights: Keyframe[][] }).portraitFlights)
+    expect(flights.every(frames => frames[0].transform !== frames[1].transform)).toBe(true)
+  })
+
+  test(`returning from a work restores the bookshelf before its first frame ${theme}`, async ({ page }, info) => {
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.goto('/character')
+    const work = page.locator('.bookshelf-open').nth(12)
+    await work.scrollIntoViewIfNeeded()
+    const before = await page.evaluate(() => scrollY)
+    expect(before).toBeGreaterThan(200)
+    await work.click()
+    await expect(page.locator('.bookshelf-results-heading')).toBeVisible()
+    const positions = await returnedPositions(page, '.bookshelf-grid', '.bookshelf-back')
+    expect(positions.length).toBeGreaterThan(5)
+    expect(Math.max(...positions.map(top => Math.abs(top - before)))).toBeLessThanOrEqual(2)
+    await page.screenshot({ path: info.outputPath(`bookshelf-return-${theme}.png`) })
+  })
+
+  for (const back of ['button', 'history']) {
+    test(`returning from a profile restores the selected row without scrolling ${theme} ${back}`, async ({ page }, info) => {
+      await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+      await page.goto('/character')
+      await page.getByRole('button', { name: '全部角色', exact: true }).click()
+      const character = page.locator('.bookshelf-character').nth(18)
+      await character.scrollIntoViewIfNeeded()
+      const id = await character.getAttribute('data-character')
+      const before = await page.evaluate(() => scrollY)
+      expect(before).toBeGreaterThan(200)
+      await character.click()
+      await expect(page.locator('.character-name')).toBeVisible()
+      const positions = await returnedPositions(page, '.character-bookshelf', back === 'button' ? '.archive-header-actions button' : '')
+      expect(positions.length).toBeGreaterThan(5)
+      expect(Math.max(...positions.map(top => Math.abs(top - before)))).toBeLessThanOrEqual(2)
+      await expect(page.locator(`.bookshelf-character[data-character="${id}"]`)).toBeFocused()
+      await page.screenshot({ path: info.outputPath(`profile-return-${theme}-${back}.png`) })
+    })
+  }
+}
 
 for (const theme of ['dark', 'light']) {
   test(`scene to archive transition is visible, interruptible and cleans up ${theme}`, async ({ page }, info) => {
@@ -46,4 +127,3 @@ test('archive navigation stays immediate with reduced motion', async ({ page }) 
   expect(await archive.evaluate(e => e.getAnimations().length)).toBe(0)
   await expect(archive).not.toHaveAttribute('inert')
 })
-

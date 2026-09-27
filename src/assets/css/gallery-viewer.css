@@ -28,14 +28,6 @@
 .viewer-info .viewer-more { margin-top:var(--s-5); }
 .viewer-more .viewer-actions { margin:0 0 var(--s-3); }
 .art-viewer { position:fixed; inset:0; z-index:var(--z-overlay); display:grid; grid-template-columns:minmax(0,1fr) minmax(310px,380px); background:var(--bg-base); color:var(--text-primary); }
-.art-viewer.layer-pop-enter-active,
-.art-viewer.layer-pop-leave-active { transition:opacity var(--motion-surface) var(--ease-out); }
-.art-viewer.layer-pop-enter-active > .viewer-stage,
-.art-viewer.layer-pop-leave-active > .viewer-stage { transition:transform var(--motion-surface) var(--ease-out),opacity var(--motion-surface) var(--ease-out); }
-.art-viewer.layer-pop-enter-from,
-.art-viewer.layer-pop-leave-to { opacity:0; }
-.art-viewer.layer-pop-enter-from > .viewer-stage { transform:scale(.985); opacity:0; }
-.art-viewer.layer-pop-leave-to > .viewer-stage { transform:scale(.98); opacity:0; }
 .viewer-compare-host { width:100%; height:calc(100vh - 120px); max-width:min(90vw, 1200px); display:flex; align-items:center; justify-content:center; }
 .viewer-compare-toggle {
   position:absolute; z-index:var(--z-raised); top:18px; right:64px;

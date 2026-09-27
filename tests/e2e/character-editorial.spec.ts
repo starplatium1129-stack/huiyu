@@ -59,7 +59,7 @@ async function fixture(page: Page, theme: string) {
 for (const theme of ['light', 'dark']) {
   test(`character archive actions and references ${theme}`, async ({ page }, testInfo) => {
     await fixture(page, theme)
-    await expect(page.locator('.character-hero')).toHaveClass(/revealed/)
+    await expect(page.locator('.character-hero')).toHaveCSS('opacity', '1')
     await expect(page.getByRole('link', { name: '以她开始绘制' })).toHaveAttribute('href', '/prompt-builder?char=natsume')
     await expect(page.getByRole('link', { name: '进入她的房间' })).toHaveAttribute('href', '/chat?character=natsume')
     for (const selector of ['.character-name', '.profile-kicker', '.profile-story', '.character-alias', '.tag-chip', '.voice-block', '.portrait-source']) {

@@ -1,5 +1,5 @@
 <template>
-  <article class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }" :data-rating="entry.rating">
+  <article class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }" :data-rating="entry.rating" :data-sample-id="entry.id">
     <button class="sample-visual" :class="{ 'sample-visual-measured': entry.width && entry.height }" type="button"
       :style="imageStyle"
       :aria-label="'查看 ' + entry.title + ' 大图'" @click="emit('open', entry.id)">
