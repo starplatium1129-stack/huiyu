@@ -9,9 +9,9 @@
         :aria-pressed="selected === album.type" :aria-label="`${album.title}，${album.count} 幅样张`" @click="emit('select', selected === album.type ? 'all' : album.type)">
         <span class="album-art">
           <span class="album-cover">
-            <img v-if="album.cover && !brokenThumbs.has(album.cover.id)" :src="resolveRuntimeUrl(thumbSrc(album.cover))" :crossorigin="runtimeResourceCors()"
-              alt="" loading="lazy" decoding="async" @error="emit('image-error', album.cover)" />
-            <span v-else class="album-placeholder"><ArchiveIcon name="gallery" /><span>翻开这本画册</span></span>
+            <RuntimeImage :src="album.cover ? thumbSrc(album.cover) : ''" alt="" loading="lazy" decoding="async">
+              <template #fallback><span class="album-placeholder"><ArchiveIcon name="gallery" /><span>翻开这本画册</span></span></template>
+            </RuntimeImage>
           </span>
           <span v-if="selected === album.type" class="album-selected"><ArchiveIcon name="success" /></span>
         </span>
@@ -25,18 +25,16 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { ShowcaseAlbum } from '@/composables/showcase/useShowcaseAlbums'
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import type { ShowcaseEntry, ShowcaseEntryType } from '@/utils/showcaseManifest'
 
 defineProps<{
   albums: ShowcaseAlbum[]
   selected: ShowcaseEntryType | 'all'
-  brokenThumbs: ReadonlySet<string>
   thumbSrc: (entry: ShowcaseEntry) => string
 }>()
 const emit = defineEmits<{
   select: [type: ShowcaseEntryType | 'all']
-  'image-error': [entry: ShowcaseEntry]
 }>()
 </script>
 
@@ -53,7 +51,7 @@ const emit = defineEmits<{
 .album-art { display: block; position: relative; margin: var(--s-1) var(--s-1) var(--s-3); aspect-ratio: 1.65; isolation: isolate; }
 .album-art::before { content: ''; position: absolute; z-index: -1; inset: -5px 7px 5px; border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-base); transform: rotate(-2deg); transition: transform var(--motion-hover); }
 .album-cover { display: block; height: 100%; overflow: hidden; border: 2px solid var(--bg-surface); border-radius: var(--r-lg); background: var(--bg-base); box-shadow: var(--shadow-sm); }
-.album-cover img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 28%; transition: transform var(--motion-hover); }
+.album-cover :deep(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 28%; transition: transform var(--motion-hover); }
 .album-placeholder { height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--s-2); color: var(--text-muted); font-size: var(--fs-label); }
 .album-placeholder > .archive-icon { font-size: var(--fs-title); }
 .album-card[aria-pressed="true"] .album-cover { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -65,8 +63,8 @@ const emit = defineEmits<{
 .album-card:focus-visible, .albums-all:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   html:not([data-reduced-motion="true"]) .album-card:hover .album-art::before { transform: translateY(-2px) rotate(-3deg); }
-  html:not([data-reduced-motion="true"]) .album-card:hover .album-cover img { transform: scale(1.035); }
+  html:not([data-reduced-motion="true"]) .album-card:hover .album-cover :deep(img) { transform: scale(1.035); }
 }
 @media (max-width: 768px) { .albums-track { grid-auto-columns: minmax(175px, 42%); gap: var(--s-4); } .showcase-albums { padding-bottom: var(--s-4); } }
-@media (prefers-reduced-motion: reduce) { .album-art::before, .album-cover img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .album-art::before, .album-cover :deep(img) { transition: none; } }
 </style>

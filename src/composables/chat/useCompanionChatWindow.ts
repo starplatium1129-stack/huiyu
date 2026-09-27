@@ -1,4 +1,6 @@
 import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
+import { createChatDraftPersistence } from './chatDraftPersistence'
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
@@ -150,7 +152,7 @@ function readLive() {
     if (typeof raw.chatReady === 'boolean') liveState.chatReady = raw.chatReady
     liveState.ts = Number(raw.ts) || 0
     if (liveInitialized && previousCharacter !== activeChar.value) {
-      clearTimeout(draftTimer)
+      draft.clear()
       storage.setDraft(previousCharacter, inputText.value)
       inputText.value = storage.draft(activeChar.value)
     }
@@ -162,7 +164,7 @@ async function onSend() {
   if (!canSend.value) return
   if (bridge) {
     const character = activeChar.value
-    clearTimeout(draftTimer)
+    draft.clear()
     storage.setDraft(character, inputText.value)
     sending.value = true
     try {
@@ -194,7 +196,7 @@ function switchCharacter(id: string) {
 }
 
 function openFullRoom() {
-  clearTimeout(draftTimer)
+  draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
   speechCancel(); speechSession.endSession()
   if (bridge) { bridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar.value)}`); return }
@@ -204,7 +206,7 @@ function openFullRoom() {
 }
 
 function closeWindow() {
-  clearTimeout(draftTimer)
+  draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
   speechCancel(); speechSession.endSession()
   // 直接 hide 聊天窗（不触发 window.close → CloseRequested 链路），避免
@@ -344,12 +346,10 @@ function onWindowKeyup(event: KeyboardEvent) {
 }
 
 /* —— 草稿回填与保存（与角色窗同键位，跨窗可接力） —— */
-let draftTimer = 0
+const draft = createChatDraftPersistence((character, value) => storage.setDraft(character, value))
+const releaseMaintenance = registerMaintenanceParticipant(() => { if (sending.value || liveState.busy) throw new Error('CHAT_BUSY') })
 function onInput() {
-  clearTimeout(draftTimer)
-  const value = inputText.value
-  const character = activeChar.value
-  draftTimer = window.setTimeout(() => storage.setDraft(character, value), 240) as unknown as number
+  draft.schedule(activeChar.value, inputText.value)
 }
 function resizeComposer() {
   const input = inputRef.value
@@ -413,7 +413,7 @@ onMounted(() => {
 
 function onStorageChange(event: StorageEvent) {
   if (event.key === CHAT_RESET_KEY) {
-    clearTimeout(draftTimer)
+    draft.clear()
     inputText.value = ''
     storage.canWrite()
     // canWrite clears in-memory content; do not reload while the publisher is still deleting.
@@ -439,7 +439,7 @@ onUnmounted(() => {
   window.removeEventListener('focus', onVisibilityChange)
   window.removeEventListener('blur', onVisibilityChange)
   stopSpeechSessionWatch()
-  clearTimeout(draftTimer)
+  draft.dispose(); releaseMaintenance()
   clearTimeout(errorTimer)
   clearTimeout(noticeTimer)
   window.removeEventListener('storage', onStorageChange)

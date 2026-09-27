@@ -4,6 +4,7 @@ import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecomm
 import { isSDParamKey, parsePromptBuilderDraft, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { storageWriteMessage } from '@/utils/storageWriteError'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import type { DrawSubject } from '@/utils/popularContent'
 import type { CharKey, Selections } from '@/types/promptHistory'
 import type { Scene } from '@/types/scene'
@@ -36,6 +37,14 @@ export function usePromptDraft(state: PromptDraftState) {
   // ── Draft persistence ────────────────────────────────────────────────────
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
+  let saveFailed = false
+  function persistDraft() {
+    if (draftTimer) clearTimeout(draftTimer)
+    draftTimer = null
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft())); saveFailed = false }
+    catch (error) { saveFailed = true; throw error }
+  }
+  const releaseMaintenance = registerMaintenanceParticipant(() => { if (draftTimer || saveFailed) persistDraft() })
 
   function snapshotDraft(): PromptBuilderDraft {
     const subjectSnapshot = subject.value.kind === 'popular'
@@ -126,7 +135,7 @@ export function usePromptDraft(state: PromptDraftState) {
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = setTimeout(() => {
       try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft()))
+        persistDraft()
       } catch (e) {
         // 2026-08-30 UX 审计：原先 catch {} 静默吞掉。配额写满时界面一切正常、
         // 用户以为草稿已存，刷新即丢——必须让失败可感知并给出补救动作。
@@ -148,6 +157,6 @@ export function usePromptDraft(state: PromptDraftState) {
   }
 
 
-  onScopeDispose(() => { if (draftTimer) clearTimeout(draftTimer) })
+  onScopeDispose(() => { releaseMaintenance(); if (draftTimer) clearTimeout(draftTimer) })
   return { snapshotDraft, saveDraft, restoreDraft }
 }

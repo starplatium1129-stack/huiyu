@@ -12,6 +12,62 @@ import { classifyWorkspaceRollback } from '../../server/workspace/activation';
 import { fingerprint } from '../../server/workspace/records';
 import type { MigrationEnvelope, MigrationRecord } from '../../types/migration';
 
+test('signed shutdown fences new HTTP work and drains already-admitted profile writes before releasing the owner', async () => {
+  const configRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-host-drain-'));
+  const secret = randomBytes(32).toString('hex'), sourceProfileId = `profile-${randomBytes(32).toString('hex')}`;
+  const app = express(), server = app.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const origin = `http://127.0.0.1:${(server.address() as import('node:net').AddressInfo).port}`;
+  let admit!: () => void, releaseWrite!: () => void, closing!: () => void, releaseProvider!: () => void;
+  const admitted = new Promise<void>(resolve => { admit = resolve; });
+  const writeGate = new Promise<void>(resolve => { releaseWrite = resolve; });
+  const closeStarted = new Promise<void>(resolve => { closing = resolve; });
+  const providerGate = new Promise<void>(resolve => { releaseProvider = resolve; });
+  const host = await createDesktopWorkspaceHost({ configRoot, secret, gatewayOrigin: origin, sourceProfileId,
+    beforeClose: () => { closing(); return providerGate; } });
+  await host.prepareCandidate(); const service = host.service!;
+  const owner = { workspaceId: service.workspaceId, principalId: `desktop:${sourceProfileId}`, protocolVersion: 1 as const };
+  const ownerFile = path.join(configRoot, 'workspaces', service.workspaceId, '.workspace-owner.json');
+  app.use(host.router);
+  app.post('/fixture/write', async (_req, res, next) => {
+    try { admit(); await writeGate; await service.request({ kind:'profile.saveSetting', operationId:randomUUID(), key:'aics_theme', value:'light', expectedRevision:null }, owner); res.json({ saved:true }); }
+    catch (error) { next(error); }
+  });
+  let reopened: Awaited<ReturnType<typeof createDesktopWorkspaceHost>> | undefined;
+  try {
+    const saving = fetch(`${origin}/fixture/write`, { method:'POST' }); await admitted;
+    const body = JSON.stringify({ action:'shutdown', windowId:'atelier', origin, sourceProfileId, timestamp:Date.now(), nonce:randomBytes(32).toString('hex') });
+    let drained = false;
+    const shutdown = fetch(`${origin}/api/desktop-host`, { method:'POST', body,
+      headers:{ 'content-type':'application/json', 'x-aics-host-proof':createHmac('sha256', secret).update(desktopHostMessage(body)).digest('hex') } }).then(response => { drained = true; return response; });
+    await closeStarted;
+    assert.equal((await fetch(`${origin}/fixture/write`, { method:'POST' })).status, 503);
+    releaseProvider(); await new Promise(resolve => setImmediate(resolve));
+    assert.equal(drained, false); assert.equal(fs.existsSync(ownerFile), true);
+    releaseWrite(); assert.equal((await saving).status, 200);
+    assert.equal((await shutdown).status, 200); assert.equal(fs.existsSync(ownerFile), false);
+    reopened = await createDesktopWorkspaceHost({ configRoot, secret, gatewayOrigin:origin, sourceProfileId });
+    const settings = await reopened.service!.request({ kind:'profile.readSettings' }, owner);
+    assert.ok(JSON.stringify(settings).includes('light'), 'admitted setting survives the upgrade handoff');
+  } finally {
+    releaseWrite(); releaseProvider(); await host.close(); await reopened?.close();
+    server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve()));
+    fs.rmSync(configRoot, { recursive:true, force:true });
+  }
+});
+
+test('failed drain remains closed to admission and does not release the private owner', async () => {
+  const configRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-host-drain-failed-'));
+  const host = await createDesktopWorkspaceHost({ configRoot, secret:randomBytes(32).toString('hex'), gatewayOrigin:'http://127.0.0.1:12345',
+    sourceProfileId:`profile-${randomBytes(32).toString('hex')}`, beforeClose:async () => { throw Error('fixture drain failure'); } });
+  await host.prepareCandidate(); const service = host.service!;
+  try {
+    await assert.rejects(host.close(), /fixture drain failure/);
+    assert.equal(host.closing, true);
+    assert.equal(fs.existsSync(path.join(configRoot, 'workspaces', service.workspaceId, '.workspace-owner.json')), true);
+    await assert.rejects(host.prepareCandidate(), /draining/);
+  } finally { await service.close(); fs.rmSync(configRoot, { recursive:true, force:true }); }
+});
+
 test('desktop authority imports, verifies backup, activates and reopens the same private library on a different port', async () => {
   const configRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-desktop-host-'));
   const sourceProfileId = `profile-${randomBytes(32).toString('hex')}`;

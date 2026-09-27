@@ -3,6 +3,7 @@ import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
 import { useVideoStore } from '@/stores/videoStore'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 interface ShotDraftDeps {
   aspectRatio: Ref<VideoBatch['aspectRatio']>
@@ -23,9 +24,11 @@ export function useShotDraft(deps: ShotDraftDeps) {
   const videoStore = useVideoStore()
 let restoringDraft = false
 let shotsDraftTimer = 0
+let saveFailed = false
 
 function persistShotsDraft() {
   if (restoringDraft) return
+  window.clearTimeout(shotsDraftTimer); shotsDraftTimer = 0
   const ok = videoStore.saveShotsDraft({
     aspectRatio: aspectRatio.value,
     quality: quality.value,
@@ -52,7 +55,13 @@ function persistShotsDraft() {
     updatedAt: Date.now(),
   })
   if (!ok) batchError.value = '分镜草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失'
+  saveFailed = !ok
 }
+const releaseMaintenance = registerMaintenanceParticipant(() => {
+  if (restoringDraft) throw new Error('DRAFT_RESTORING')
+  if (shotsDraftTimer || saveFailed) persistShotsDraft()
+  if (saveFailed) throw new Error('DRAFT_SAVE_FAILED')
+})
 
 watch(
   [shots, identityCard, aspectRatio, quality, steps, linkLastFrame, referenceCards],
@@ -113,6 +122,7 @@ async function restoreShotsDraft() {
 
 
   onBeforeUnmount(() => {
+    releaseMaintenance()
     window.clearTimeout(shotsDraftTimer)
     persistShotsDraft()
   })

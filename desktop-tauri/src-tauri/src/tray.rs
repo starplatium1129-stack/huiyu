@@ -33,6 +33,8 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
         })
         .menu(&build_menu(app)?)
         .on_menu_event(|app, event| {
+            if crate::maintenance::active(app)
+                && !(event.id().as_ref() == MENU_QUIT && crate::maintenance::admits(app, "quit")) { return; }
             let state = app.state::<AppState>();
             match event.id().as_ref() {
                 MENU_SHOW_COMPANION => {

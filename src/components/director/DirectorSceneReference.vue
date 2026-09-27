@@ -1,7 +1,7 @@
 <template>
   <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" aria-label="当前场景参考">
     <div class="scene-reference-picture" :class="{ 'is-restricted': restricted }">
-      <img :crossorigin="runtimeResourceCors()" v-if="canLoad && !failed" :key="imageUrl" :src="resolveRuntimeUrl(imageUrl)" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" @error="failed = true" />
+      <img v-if="image.src && !failed" v-bind="image" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" />
       <div v-else class="scene-reference-empty"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
       <span v-if="restricted && canLoad && !failed" class="scene-reference-mask">分级参考 · 已模糊</span>
     </div>
@@ -20,11 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
-import { runtimeFetch } from '@/platform/runtimeUrl'
+import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { COMPOSITION, LIGHTING, SHOT } from '@/config/promptConstants'
@@ -33,11 +33,12 @@ import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManif
 
 defineProps<{ size?: string }>()
 const pb = usePromptBuilderStore()
-const failed = ref(false)
 const loading = ref(true)
 const entries = ref<ShowcaseEntry[]>([])
-const controller = new AbortController()
-onMounted(async () => {
+watch(runtimeResourceIdentity, async (_identity, _previous, cleanup) => {
+  const controller = new AbortController()
+  cleanup(() => controller.abort())
+  entries.value = []; loading.value = true
   try {
     const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
     if (!response.ok) return
@@ -48,8 +49,7 @@ onMounted(async () => {
     if (!controller.signal.aborted) entries.value = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)
   } catch { /* Unverified references stay closed; drafting remains available. */ }
   finally { if (!controller.signal.aborted) loading.value = false }
-})
-onUnmounted(() => controller.abort())
+}, { immediate: true })
 const scene = computed(() => {
   const subject = pb.subject
   if (subject.kind === 'popular') {
@@ -67,7 +67,7 @@ const imageUrl = computed(() => {
   return /^(?:thumbs|images)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path) ? `/scene-showcase/${path}` : ''
 })
 const canLoad = computed(() => !!imageUrl.value && (!restricted.value || isLocalStudioHost()))
-watch(imageUrl, () => { failed.value = false })
+const { image, failed } = useRuntimeImage(() => canLoad.value ? imageUrl.value : '')
 const shot = computed(() => SHOT.find(item => item.id === pb.selections.shot)?.name ?? '跟随场景')
 const composition = computed(() => COMPOSITION.find(item => item.id === pb.selections.composition)?.name ?? '跟随场景')
 const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.lighting)?.name ?? '跟随场景')

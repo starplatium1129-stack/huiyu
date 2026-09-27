@@ -16,17 +16,13 @@
       <div v-if="thumbId" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
       <img
         v-if="thumbId && thumbSrc"
-        :key="thumbSrc"
-        :crossorigin="runtimeResourceCors()"
+        v-bind="thumbImage"
         class="sc-thumb"
         :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
-        :src="thumbSrc"
         alt=""
         loading="lazy"
         decoding="async"
         fetchpriority="auto"
-        @load="thumbLoaded = true"
-        @error="thumbFailed = true"
       />
       <span v-if="thumbFailed || !thumbId" class="sc-preview-unavailable">样张暂缺 · 场景可用</span>
       <span v-if="thumbId" class="sc-id">{{ thumbId.toUpperCase() }}</span>
@@ -51,9 +47,9 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
-import { computed, onDeactivated, onUnmounted, ref, watch } from 'vue'
+import { computed, onDeactivated, onUnmounted, ref } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 
 export interface SceneCardScene {
@@ -88,8 +84,6 @@ const emit = defineEmits<{ pick: [scene: SceneCardScene] }>()
 
 const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 
-const thumbFailed = ref(false)
-const thumbLoaded = ref(false)
 
 // Move a fixed gradient texture; coalesce pointer events to the latest position.
 const spotEl = ref<HTMLElement | null>(null)
@@ -126,13 +120,9 @@ const clickable = computed(() =>
 )
 const contentRating = computed(() => props.scene.rating || (props.scene.mature ? 'R18' : 'All'))
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
-const thumbSrc = computed(() => {
+const { image: thumbImage, src: thumbSrc, loaded: thumbLoaded, failed: thumbFailed } = useRuntimeImage(() => {
   const v = props.imgVersion ?? ''
-  return resolveRuntimeUrl(`/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`)
-})
-watch(thumbSrc, () => {
-  thumbLoaded.value = false
-  thumbFailed.value = false
+  return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
 })
 const tags = computed(() => {
   const limit = props.mode === 'strip' ? 2 : 3

@@ -9,7 +9,7 @@ const entries: ShowcaseEntry[] = [
   { id: 'adult', title: '样张', char: 'nene', type: 'lora', rating: 'R18', category: '', story: '', attempt: 1 },
 ]
 function render() {
-  return mount(ShowcaseAlbums, { props: { albums: buildShowcaseAlbums(entries), selected: 'all', brokenThumbs: new Set<string>(), thumbSrc: (entry: ShowcaseEntry) => `/scene-showcase/thumbs/${entry.id}.jpg` } })
+  return mount(ShowcaseAlbums, { props: { albums: buildShowcaseAlbums(entries), selected: 'all', thumbSrc: (entry: ShowcaseEntry) => `/scene-showcase/thumbs/${entry.id}.jpg` } })
 }
 
 describe('ShowcaseAlbums', () => {
@@ -36,11 +36,9 @@ describe('ShowcaseAlbums', () => {
     expect(wrapper.emitted('select')).toEqual([['lora']])
   })
 
-  it('reports cover errors to the shared thumbnail lifecycle and renders its fallback', async () => {
+  it('renders a cover fallback after its own load failure', async () => {
     const wrapper = render()
     await wrapper.get('img').trigger('error')
-    expect(wrapper.emitted('image-error')).toEqual([[entries[0]]])
-    await wrapper.setProps({ brokenThumbs: new Set(['safe']) })
     expect(wrapper.find('img').exists()).toBe(false)
     expect(wrapper.findAll('.album-placeholder')).toHaveLength(2)
   })

@@ -29,6 +29,35 @@ export async function createDesktopWorkspaceHost(options: DesktopWorkspaceHostOp
   let service: WorkspaceService | null = null;
   let mediaRouter: ReturnType<typeof createWorkspaceMediaRouter> | null = null;
   let operation: Promise<unknown> | null = null;
+  let closing = false;
+  let closePromise: Promise<void> | undefined;
+  const admitted = new Set<Promise<void>>();
+  // Frontend flush acknowledgements precede the signed shutdown. Once it arrives,
+  // block new HTTP work immediately, while requests already admitted can finish.
+  router.use((req, res, next) => {
+    if (req.path === '/api/desktop-host' || req.path === '/api/health') return next();
+    if (closing) return res.status(503).json({ error: '桌面正在维护', code: 'DESKTOP_DRAINING' });
+    // Result/media/voice GET streams can remain open while paused. They do not
+    // own durable mutations; only admitted write requests join the drain.
+    if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return next();
+    let finish!: () => void;
+    const work = new Promise<void>(resolve => { finish = resolve; });
+    admitted.add(work);
+    const done = () => { admitted.delete(work); finish(); };
+    res.once('finish', done); res.once('close', done);
+    next();
+  });
+  function close() {
+    if (closePromise) return closePromise;
+    closing = true;
+    closePromise = (async () => {
+      await operation?.catch(() => {});
+      await options.beforeClose?.();
+      while (admitted.size) await Promise.all([...admitted]);
+      await gateway?.close(); gateway = null; service = null;
+    })();
+    return closePromise;
+  }
   async function open(selected: WorkspacePointer, create = false) {
     service = await openWorkspace({ root: workspaceRoot(options.configRoot, selected.workspaceId), workspaceId: selected.workspaceId, create });
     gateway = createWorkspaceGateway({ service, allowedOrigins });
@@ -40,6 +69,7 @@ export async function createDesktopWorkspaceHost(options: DesktopWorkspaceHostOp
     return { workspaceId: service.workspaceId, principalId: `desktop:${options.sourceProfileId}`, protocolVersion: 1 };
   }
   async function exclusive<T>(work: () => Promise<T>): Promise<T> {
+    if (closing) throw new WorkspaceError('DESKTOP_DRAINING', 'Desktop is draining', 503);
     if (operation) throw new WorkspaceError('WORKSPACE_BUSY', 'Another host workspace operation is in progress', 409);
     const current = work(); operation = current;
     try { return await current; } finally { if (operation === current) operation = null; }
@@ -98,11 +128,11 @@ export async function createDesktopWorkspaceHost(options: DesktopWorkspaceHostOp
       if (!['atelier', 'companion', 'companion-chat'].includes(String(input.windowId))
         || input.sourceProfileId !== options.sourceProfileId || !allowedOrigins.includes(String(input.origin))) return res.status(403).json({ error: 'HOST_WINDOW' });
       if (input.action === 'shutdown') {
-        await operation?.catch(() => {});
-        await options.beforeClose?.();
-        await gateway?.close(); gateway = null; service = null;
+        if (input.windowId !== 'atelier') return res.status(403).json({ error: 'HOST_ROLE' });
+        await close();
         return res.json({ closed: true });
       }
+      if (closing) return res.status(503).json({ error: 'DESKTOP_DRAINING' });
       if (input.action === 'prepare-candidate' || input.action === 'activate' || input.action === 'enable-bundled') {
         if (input.windowId !== 'atelier') return res.status(403).json({ error: 'HOST_ROLE' });
         if (input.action === 'enable-bundled') {
@@ -126,6 +156,6 @@ export async function createDesktopWorkspaceHost(options: DesktopWorkspaceHostOp
     if (!gateway) return res.status(503).json({ error: '工作区尚未启用', code: 'WORKSPACE_UNAVAILABLE' });
     return mediaRouter!(req, res, error => error ? next(error) : gateway!.router(req, res, next));
   });
-  return { router, get service() { return service; }, get pointer() { return pointer; }, get authority() { return gateway?.authority ?? null; },
-    prepareCandidate, activate, async close() { await operation?.catch(() => {}); await options.beforeClose?.(); await gateway?.close(); } };
+  return { router, get closing() { return closing; }, get service() { return service; }, get pointer() { return pointer; }, get authority() { return gateway?.authority ?? null; },
+    prepareCandidate, activate, close };
 }

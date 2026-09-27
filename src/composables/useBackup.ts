@@ -13,6 +13,7 @@ import { confirmAction } from '@/composables/useConfirm'
 import { readWebBackupLibrary, readWebBackupCleanup, readWebBackupImages, readWebBackupImage, deleteWebBackupImages } from '../platform/web/profileBackupSource'
 import { createWorkspaceBackup, parseWorkspaceBackupReceipt, createWorkspaceRestoreCandidate, workspaceBackupActive, workspaceStorageHealth, collectWorkspaceGarbage, type WorkspaceBackupReceipt } from '../platform/desktop/backupActions'
 import { onDesktopRuntime } from '../platform/desktop/runtime'
+import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 import { artworkRepository } from '../storage/artworkRepository'
 import {
   normalizeBackup,
@@ -59,6 +60,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const busy = ref(false)
   const pending = ref<BackupFile | null>(null)
   const pendingWorkspace = ref<WorkspaceBackupReceipt | null>(null)
+  onScopeDispose(registerMaintenanceParticipant(() => { if (busy.value || pending.value || pendingWorkspace.value) throw new Error('BACKUP_BUSY') }))
   const desktopActive = ref(workspaceBackupActive())
   const removeRuntimeListener = onDesktopRuntime(() => { desktopActive.value = workspaceBackupActive() })
   onScopeDispose(removeRuntimeListener)

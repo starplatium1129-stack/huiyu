@@ -85,7 +85,12 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
       env: options.env || tauriEnvironment(workspaceRoot),
       windowsHide: false,
     });
-    if (result === 0 && source) buildBinding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle'));
+    if (result === 0 && source) {
+      try { buildBinding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle')); }
+      catch (error) {
+        throw Error(`Tauri CLI 已成功，但构建产物/回执校验失败；本次构建不可发行: ${error instanceof Error ? error.message : String(error)}`, { cause:error });
+      }
+    }
     return result;
   });
 }

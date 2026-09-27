@@ -3,6 +3,7 @@ fn main() {
         tauri_build::Attributes::new().app_manifest(
             tauri_build::AppManifest::new().commands(&[
                 "desktop_bootstrap",
+                "desktop_maintenance_ack",
                 "desktop_workspace_prepare",
                 "desktop_workspace_activate",
                 "desktop_workspace_enable_bundled",

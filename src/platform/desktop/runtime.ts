@@ -55,7 +55,7 @@ export function refreshDesktopRuntime(): Promise<void> {
       const next = bootstrap.runtime
       const changed = previous?.runtimeEpoch !== next?.runtimeEpoch || previous?.origin !== next?.origin
         || previous?.workspace?.generation !== next?.workspace?.generation
-      setRuntimeOrigin(next?.origin ?? null, true)
+      setRuntimeOrigin(next?.origin ?? null, true, next?.runtimeEpoch)
       if (changed) { epochController.abort(); epochController = new AbortController(); configureApiTransport(desktopRuntimeFetch) }
       publish({ connection: bootstrap.connection, bootstrap })
     } catch {

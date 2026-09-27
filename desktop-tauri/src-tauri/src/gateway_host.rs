@@ -35,7 +35,11 @@ pub fn request(base: &str, secret: &str, mut payload: serde_json::Value) -> Resu
     let proof: String = signature.as_ref().iter().map(|b| format!("{b:02x}")).collect();
     let host = base.strip_prefix("http://127.0.0.1:").ok_or("HOST_ORIGIN")?;
     let address = format!("127.0.0.1:{host}").to_socket_addrs().map_err(|_| "HOST_ADDRESS")?.next().ok_or("HOST_ADDRESS")?;
-    let timeout = if payload["action"] == "activate" { Duration::from_secs(120) } else { Duration::from_secs(3) };
+    let timeout = match payload["action"].as_str() {
+        Some("activate") => Duration::from_secs(120),
+        Some("shutdown") => Duration::from_secs(30),
+        _ => Duration::from_secs(3),
+    };
     let mut stream = TcpStream::connect_timeout(&address, Duration::from_secs(2)).map_err(|_| "HOST_UNAVAILABLE")?;
     stream.set_read_timeout(Some(timeout)).map_err(|_| "HOST_TIMEOUT")?;
     stream.set_write_timeout(Some(Duration::from_secs(3))).map_err(|_| "HOST_TIMEOUT")?;

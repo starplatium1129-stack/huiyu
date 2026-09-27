@@ -8,7 +8,7 @@ import { test } from 'node:test';
 
 const guard = path.resolve(__dirname, '../lib/desktop-deploy-guard.ps1');
 const windows = { skip: process.platform !== 'win32' };
-async function fixture(run: (f: { root: string; install: string; config: string; owner: string; check: (install?: string, config?: string) => ReturnType<typeof spawnSync>; start: () => Promise<ChildProcess> }) => Promise<void>) {
+async function fixture(run: (f: { root: string; install: string; config: string; owner: string; check: (install?: string, config?: string, mode?: string) => ReturnType<typeof spawnSync>; start: () => Promise<ChildProcess> }) => Promise<void>) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-deploy-guard-'));
   const install = path.join(root, 'install'), config = path.join(root, 'config');
   const workspace = path.join(config, 'workspaces', 'fixture');
@@ -16,16 +16,16 @@ async function fixture(run: (f: { root: string; install: string; config: string;
   fs.mkdirSync(install); fs.mkdirSync(workspace, { recursive: true });
   fs.writeFileSync(path.join(config, 'workspace-active.json'), JSON.stringify({ workspaceId: 'fixture' }));
   const probe = path.join(root, 'probe.ps1');
-  fs.writeFileSync(probe, `param($Guard,$Install,$Config)
+  fs.writeFileSync(probe, `param($Guard,$Install,$Config,$Mode)
 $ErrorActionPreference = 'Stop'
 . $Guard
-try { Assert-DesktopDeploymentStopped -InstallDir $Install -ConfigRoot $Config; exit 0 }
+try { if($Mode -eq 'maintain'){Stop-DesktopForDeployment -InstallDir $Install -ConfigRoot $Config}else{Assert-DesktopDeploymentStopped -InstallDir $Install -ConfigRoot $Config}; exit 0 }
 catch { Write-Output $_.Exception.Message; exit 27 }
 `);
   let child: ChildProcess | undefined;
   try {
     await run({ root, install, config, owner,
-      check: (target = install, data = config) => spawnSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', probe, guard, target, data], { encoding: 'utf8', windowsHide: true, timeout: 15000 }),
+      check: (target = install, data = config, mode = 'assert') => spawnSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', probe, guard, target, data, mode], { encoding: 'utf8', windowsHide: true, timeout: 15000 }),
       start: async () => {
         const executable = path.join(install, 'node.exe'), script = path.join(root, 'runtime.cjs');
         fs.copyFileSync(process.execPath, executable);
@@ -52,6 +52,9 @@ test('deployment waits for an actual runtime to quit and release its owner, with
     assert.match(String(blocked.stdout), /DESKTOP_RUNNING/);
     assert.equal(child.exitCode, null);
     assert.deepEqual(fs.readFileSync(f.owner), before);
+    const legacy = f.check(f.install, f.config, 'maintain');
+    assert.equal(legacy.status, 27); assert.match(String(legacy.stdout), /DESKTOP_MAINTENANCE_UNSUPPORTED/);
+    assert.equal(child.exitCode, null); assert.deepEqual(fs.readFileSync(f.owner), before);
     const unrelated = f.check(path.join(f.root, 'other-install'), path.join(f.root, 'other-config'));
     assert.equal(unrelated.status, 0, String(unrelated.stderr));
     const exited = once(child, 'exit'); child.send('quit'); await exited;
@@ -68,5 +71,56 @@ test('deployment preserves a stale owner instead of deleting it to make progress
     assert.equal(result.status, 27, String(result.stderr));
     assert.match(String(result.stdout), /WORKSPACE_LOCK_REMAINS/);
     assert.deepEqual(fs.readFileSync(f.owner), before);
+  });
+});
+
+test('capable local host is queried and drained; reused PID identity is rejected before invoking its CLI', windows, async () => {
+  await fixture(async f => {
+    const source = path.join(f.root, 'host.cs'), executable = path.join(f.install, 'ai-cg-studio-desktop.exe');
+    fs.writeFileSync(source, String.raw`
+using System; using System.IO; using System.Diagnostics; using System.Threading; using System.Collections.Generic; using System.Web.Script.Serialization;
+class FixtureHost {
+  static void Main(string[] args) {
+    string root=Environment.GetEnvironmentVariable("HUIYU_MAINTENANCE_FIXTURE"), config=Path.Combine(root,"config");
+    var json=new JavaScriptSerializer();
+    if(args.Length>0 && args[0]=="--desktop-maintenance") {File.WriteAllText(Path.Combine(root,"signal-"+args[3]),args[3]);return;}
+    var process=Process.GetCurrentProcess();
+    var identity=new Dictionary<string,object>{{"protocolVersion",1},{"instanceId",new string('a',64)},{"hostPid",process.Id},
+      {"startedAtFiletime",process.StartTime.ToUniversalTime().ToFileTimeUtc().ToString()},{"executable",process.MainModule.FileName},{"instanceNamespace","com.aics.studio"}};
+    File.WriteAllText(Path.Combine(config,"desktop-maintenance.json"),json.Serialize(identity));
+    string owner=Path.Combine(config,"workspaces","fixture",".workspace-owner.json");File.WriteAllText(owner,"fixture-owned");
+    Console.WriteLine("HOST_READY");Console.Out.Flush();
+    while(true) {foreach(string signal in Directory.GetFiles(root,"signal-*")) {
+      string id=File.ReadAllText(signal);File.Delete(signal);
+      var request=json.Deserialize<Dictionary<string,object>>(File.ReadAllText(Path.Combine(config,"desktop-maintenance",id+".request.json")));
+      bool closing=(string)request["command"]=="shutdown";
+      if(closing) {File.WriteAllText(Path.Combine(root,"drain-started"),"true");Thread.Sleep(150);File.Delete(owner);}
+      var response=new Dictionary<string,object>(identity);response["requestId"]=id;response["state"]=closing?"drained":"ready";response["reason"]=null;
+      string target=Path.Combine(config,"desktop-maintenance",id+".response.json");File.WriteAllText(target+".tmp",json.Serialize(response));File.Move(target+".tmp",target);
+      if(closing)return;
+    }Thread.Sleep(10);}
+  }
+}`);
+    const compile = path.join(f.root, 'compile.ps1');
+    fs.writeFileSync(compile, `param($Source,$Output)\n$ErrorActionPreference='Stop'\nAdd-Type -Path $Source -ReferencedAssemblies System.dll,System.Web.Extensions.dll -OutputAssembly $Output -OutputType ConsoleApplication\n`);
+    const built = spawnSync('powershell.exe', ['-NoProfile','-ExecutionPolicy','Bypass','-File',compile,source,executable], { encoding:'utf8', windowsHide:true });
+    assert.equal(built.status, 0, built.stderr);
+    const env = { ...process.env, HUIYU_MAINTENANCE_FIXTURE:f.root };
+    const child = spawn(executable, ['--fixture-host'], { windowsHide:true, env, stdio:['ignore','pipe','pipe'] });
+    try {
+      await once(child.stdout!, 'data');
+      const invoke = path.join(f.root, 'invoke.ps1');
+      fs.writeFileSync(invoke, `param($Guard,$Install,$Config,$Action)\n$ErrorActionPreference='Stop'\n. $Guard\ntry { if($Action -eq 'status'){Invoke-DesktopMaintenance -InstallDir $Install -ConfigRoot $Config -Command status -TimeoutSeconds 5 | ConvertTo-Json -Compress}else{Stop-DesktopForDeployment -InstallDir $Install -ConfigRoot $Config};exit 0 }catch{Write-Output $_.Exception.Message;exit 27}\n`);
+      const run = (action: string) => spawnSync('powershell.exe', ['-NoProfile','-ExecutionPolicy','Bypass','-File',invoke,guard,f.install,f.config,action], { encoding:'utf8', env, windowsHide:true, timeout:15000 });
+      const status = run('status'); assert.equal(status.status, 0, status.stdout + status.stderr); assert.match(String(status.stdout), /ready/);
+      assert.deepEqual(fs.readdirSync(path.join(f.config,'desktop-maintenance')), [], 'only this request files are removed');
+      const file = path.join(f.config, 'desktop-maintenance.json'), original = fs.readFileSync(file);
+      const identity = JSON.parse(String(original)); identity.startedAtFiletime = '111111111111111111'; fs.writeFileSync(file, JSON.stringify(identity));
+      const refused = run('status'); assert.equal(refused.status, 27); assert.match(String(refused.stdout), /DESKTOP_MAINTENANCE_IDENTITY/);
+      assert.equal(child.exitCode, null); fs.writeFileSync(file, original);
+      const exited = once(child, 'exit'), stopped = run('shutdown');
+      assert.equal(stopped.status, 0, stopped.stdout + stopped.stderr); await exited;
+      assert.equal(fs.existsSync(f.owner), false); assert.equal(fs.existsSync(path.join(f.root, 'drain-started')), true);
+    } finally { if (child.exitCode === null) { const exited = once(child, 'exit'); child.kill(); await exited; } }
   });
 });

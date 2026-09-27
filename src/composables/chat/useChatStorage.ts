@@ -1,5 +1,6 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
-import { reactive, ref } from 'vue'
+import { reactive, ref, getCurrentScope, onScopeDispose } from 'vue'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useChatArchiveStorage } from './useChatArchiveStorage'
 import { createChatCredentials } from '@/utils/chatCredentials'
 import { assertChatVersion, assertStoredChatVersion } from '@/utils/chatVersion'
@@ -75,6 +76,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   const archiveStorage = useChatArchiveStorage(characterIds, canWrite, onError)
   const { archive } = archiveStorage
   const pendingPreferences = new Map<string, string>()
+  let saveFailed = false
+  if (getCurrentScope()) onScopeDispose(registerMaintenanceParticipant(async () => {
+    if (!canWrite()) throw new Error('CHAT_WRITE_BLOCKED')
+    for (const [key, value] of pendingPreferences) savePreference(key, value)
+    if (pendingPreferences.size || saveFailed && !save(true, false, false) || !await saveArchive()) throw new Error('CHAT_SAVE_FAILED')
+  }))
   const messageSnapshots = new Map<string, string>()
   function rememberMessages() {
     messageSnapshots.clear()
@@ -356,7 +363,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   function save(mergeRemote = true, scrubCredential = false, flushArchive = true) {
-    if (!canWrite()) return false
+    if (!canWrite()) { saveFailed = true; return false }
     for (const [key, value] of pendingPreferences) savePreference(key, value)
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
@@ -367,8 +374,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       rememberMessages()
       localStorage.setItem('aics_chat_model', state.settings.model || '')
       if (flushArchive) void saveArchive()
-      return true
+      saveFailed = false; return true
     } catch {
+      saveFailed = true
       onError('浏览器存储空间不足，本轮聊天可能无法长期保存。')
       return false
     }

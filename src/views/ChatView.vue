@@ -319,7 +319,6 @@ import { useConversationReading } from '@/composables/chat/useConversationReadin
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
-import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatModelControls from '@/components/ChatModelControls.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
@@ -333,6 +332,7 @@ import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
+const ChatApiSettings = defineAsyncComponent(() => import('@/components/ChatApiSettings.vue'))
 
 const {
   chatListRef,

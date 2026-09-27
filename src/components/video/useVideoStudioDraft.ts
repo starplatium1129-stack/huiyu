@@ -3,6 +3,7 @@ import { artworkRepository } from '@/storage/artworkRepository'
 import { useVideoStore, type VideoDraftPayload } from '@/stores/videoStore'
 import { fetchVideoJob, type VideoDefaults, type VideoJob, type VideoMode } from '@/api/videoApi'
 import { ApiClientError } from '@/api/client'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 /**
  * 视频页创作草稿与任务重连（2026-09-06 体验报告 F1，自 VideoStudioView 下沉）。
@@ -46,9 +47,11 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   const videoStore = useVideoStore()
   let restoring = false
   let draftTimer = 0
+  let saveFailed = false
 
   function persistDraft() {
     if (restoring) return
+    window.clearTimeout(draftTimer); draftTimer = 0
     const draft: VideoDraftPayload = {
       mode: deps.selectedMode.value,
       prompt: deps.prompt.value,
@@ -65,13 +68,19 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
       lastFrameImageId: deps.lastFrameImageId.value,
       updatedAt: Date.now(),
     }
-    if (!videoStore.saveVideoDraft(draft)) {
+    saveFailed = !videoStore.saveVideoDraft(draft)
+    if (saveFailed) {
       deps.onPersistError('视频草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失')
     }
   }
 
   /** 监听草稿字段（防抖 350ms）；返回停止函数由调用方挂到卸载钩子。 */
   function startDraftWatch(): () => void {
+    const releaseMaintenance = registerMaintenanceParticipant(() => {
+      if (restoring) throw new Error('DRAFT_RESTORING')
+      if (draftTimer || saveFailed) persistDraft()
+      if (saveFailed) throw new Error('DRAFT_SAVE_FAILED')
+    })
     const stop = watch(
       [deps.selectedMode, deps.prompt, deps.negative, deps.selectedModelId, deps.aspectRatio,
         deps.quality, deps.steps, deps.duration, deps.camera, deps.motion, deps.seedText,
@@ -81,7 +90,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
         draftTimer = window.setTimeout(persistDraft, 350)
       },
     )
-    return () => { stop(); window.clearTimeout(draftTimer); persistDraft() }
+    return () => { releaseMaintenance(); stop(); window.clearTimeout(draftTimer); persistDraft() }
   }
 
   /** 单张帧图恢复：IndexedDB 取 blob 重建预览；失效返回 false（草稿其余部分照常）。 */

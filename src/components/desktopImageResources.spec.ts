@@ -18,6 +18,7 @@ it('loads scene thumbnails from the runtime without a shell-origin srcset overri
   expect(card.get('img').attributes('src')).toBe('http://127.0.0.1:3002/scene-showcase/thumbs/sc001.jpg')
   expect(card.get('img').attributes('srcset')).toBeUndefined()
   expect(card.get('img').attributes('crossorigin')).toBe('anonymous')
+  Object.defineProperties(card.get('img').element, { naturalWidth: { value: 320 }, naturalHeight: { value: 480 } })
   await card.get('img').trigger('load')
   expect(card.get('img').classes()).toContain('sc-thumb-ready')
 })

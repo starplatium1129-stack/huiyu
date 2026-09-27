@@ -17,12 +17,12 @@
         <span>{{ character.roomCode }}</span>
         <small>{{ character.roomMood }}</small>
       </div>
-      <img :crossorigin="runtimeResourceCors()" v-if="!portraitFailed" :key="staticPortraitSource" class="portrait-main" :src="resolveRuntimeUrl(staticPortraitSource)" :alt="character.name" @error="portraitFailed = true" />
+      <img v-if="portraitImage.src && !portraitFailed" v-bind="portraitImage" class="portrait-main" :alt="character.name" />
       <span v-if="usesMoodPortrait && !portraitFailed && !live2d.ready.value" class="stage-reference-caption">陪伴氛围参考 · 既有场景样张</span>
       <div v-if="portraitFailed && !live2d.ready.value" class="stage-portrait-missing" role="status">
         <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
         <span>立绘暂未加载，对话仍可继续</span>
-        <button type="button" class="btn btn-ghost btn-sm" @click="portraitFailed = false">重新加载立绘</button>
+        <button type="button" class="btn btn-ghost btn-sm" @click="retryPortrait">重新加载立绘</button>
       </div>
       <div ref="live2dHostRef" class="live2d-host" aria-hidden="true"></div>
       <div class="voice-halo" aria-hidden="true"></div>
@@ -151,7 +151,7 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
 import { getNativeLive2dCapabilities } from '@/platform/desktop/nativeLive2d'
 
@@ -213,12 +213,11 @@ const emit = defineEmits<{
 }>()
 
 const stageRef = ref<HTMLElement>()
-const portraitFailed = ref(false)
 const { available: moodPortraits } = useMoodReferences(['sc001', 'sc022'])
 const moodPortraitId = computed(() => props.activeId === 'nene' ? 'sc001' : props.activeId === 'natsume' ? 'sc022' : '')
 const usesMoodPortrait = computed(() => (props.surface || 'room') === 'room' && moodPortraits.value.has(moodPortraitId.value))
 const staticPortraitSource = computed(() => usesMoodPortrait.value ? `/scene-showcase/thumbs/${moodPortraitId.value}.jpg` : props.character.image)
-watch(staticPortraitSource, () => { portraitFailed.value = false })
+const { image: portraitImage, failed: portraitFailed, retry: retryPortrait } = useRuntimeImage(staticPortraitSource)
 const controlsRef = ref<InstanceType<typeof CharacterStageSettings>>()
 const ModelStudio = defineAsyncComponent(() => import('./ModelStudio.vue'))
 const localStudio = isLocalStudioHost()

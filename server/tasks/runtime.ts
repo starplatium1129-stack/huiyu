@@ -116,7 +116,8 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
         ...inputAccess(task),
         async submitting(providerName, fingerprint) {
           const current = await get(principal, task.taskId);
-          if (current.cancelRequestedAt || closed) throw new WorkspaceError('CANCELLED', 'Task was cancelled', 499);
+          if (current.cancelRequestedAt) throw new WorkspaceError('CANCELLED', 'Task was cancelled', 499);
+          if (closed) throw new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is draining', 503);
           await patch(principal, task.taskId, { status: 'submitting', recoveryState: 'normal', errorCode: null, submissionIntentAt: Date.now(), provider: providerName, providerFingerprint: fingerprint || provider.fingerprint() });
           schedule(principal, task.taskId);
         },
@@ -129,6 +130,10 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
     } catch (error) {
       const current = await get(principal, task.taskId);
       if (current.status === 'cancelled') return;
+      if (closed && !current.submissionIntentAt && !current.cancelRequestedAt) {
+        await patch(principal, task.taskId, { status:'queued', recoveryState:'interrupted', upstreamSettled:false, errorCode:'TASK_AWAITING_RESUME' });
+        return;
+      }
       await patch(principal, task.taskId, current.submissionIntentAt
         ? { recoveryState: 'unknown', errorCode: 'SUBMISSION_UNCONFIRMED' }
         : { status: 'failed', upstreamSettled: true, errorCode: 'TASK_VALIDATION_FAILED' });
@@ -208,8 +213,9 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
       if (closePromise) return closePromise;
       closed = true; for (const timer of pending.values()) clearTimeout(timer); pending.clear();
       closePromise = (async () => {
-        await Promise.allSettled(Object.values(providers).map(provider => provider.close?.()));
+        const results = await Promise.allSettled(Object.values(providers).map(provider => provider.close?.()));
         while (workInFlight.size) await Promise.allSettled([...workInFlight]);
+        if (results.some(result => result.status === 'rejected')) throw new WorkspaceError('TASK_DRAIN_FAILED', 'Provider shutdown did not complete; maintenance remains blocked', 503);
       })();
       return closePromise;
     },

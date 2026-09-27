@@ -1,4 +1,5 @@
 import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useSceneEditorModal } from './useSceneEditorModal.ts';
 import { useSceneImportExport } from './useSceneImportExport.ts';
 import { useSceneMaintenance } from './useSceneMaintenance.ts';
@@ -103,6 +104,10 @@ export function useSceneManagerWorkspace() {
         invalidateSceneCache: () => { sceneStore.loaded = false; },
     });
     const { TOOLS, saving, savingPhase, toolRunning, toolResult, toolResultTitle, backups, backupsLoading, backupsError, backupsExpanded, desktopPackaged, saveToProject, runTool, loadBackups, formatBackupTime, highlightedOutput, previewing, importConfirming } = maintenance;
+    const releaseMaintenance = registerMaintenanceParticipant(() => {
+        if (dirty.value || editing.value || bpEditing.value || tagModalOpen.value) throw new Error('UNSAVED_SCENE_FORM');
+        if (saving.value || toolRunning.value || importConfirming.value || importing.value) throw new Error('SCENE_BUSY');
+    });
     function editSessionKey() {
         return sceneContentKey({
             scene: editing.value ? { value: editing.value, tags: tagsInput.value, usage: usageInput.value, tier: curationTierValue.value, reason: curationReason.value } : null,
@@ -325,6 +330,7 @@ export function useSceneManagerWorkspace() {
     });
     let loadAbort: AbortController | null = null;
     onBeforeUnmount(() => {
+        releaseMaintenance();
         window.removeEventListener('beforeunload', onBeforeUnload);
         loadAbort?.abort();
     });

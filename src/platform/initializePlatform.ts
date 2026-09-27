@@ -8,12 +8,13 @@ import { createDesktopArtworkRepository } from './desktop/artworkRepository'
 import { getDesktopRuntime, initializeDesktopRuntime, onDesktopRuntime } from './desktop/runtime'
 import { hostApi } from './desktop/hostApi'
 import { isNativeDesktopOrigin } from '../../services/desktopOrigins.ts'
+import { maintenanceFrozen } from './maintenanceParticipants'
 
 export function isDesktopHost(): boolean {
   return '__TAURI_INTERNALS__' in window || Boolean(hostApi()) || isNativeDesktopOrigin(location.origin)
 }
 export async function initializePlatform(isBusy: () => boolean): Promise<() => void> {
-  let stopRuntime = () => {}, stopConnection = () => {}
+  let stopRuntime = () => {}, stopConnection = () => {}, stopMaintenance = () => {}
   if (isDesktopHost()) {
     setProfileConnectionBlocked(true)
     // While identity is unknown, every artwork call goes to a disconnected
@@ -27,6 +28,7 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
   if (isDesktopHost()) {
     let selected = '', syncing = Promise.resolve()
     const sync = async () => {
+      if (maintenanceFrozen()) return
       const state = getDesktopRuntime(), session = state.bootstrap?.runtime?.workspace
       if (state.connection !== 'ready') { setProfileConnectionBlocked(true); return }
       if (session?.domains.includes('artwork')) {
@@ -43,10 +45,12 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
     const failure = () => { setProfileConnectionBlocked(true); window.dispatchEvent(new CustomEvent('huiyu:profile-write-error', { detail: '本机资料尚未连接，请重试连接并保持窗口打开。' })) }
     await sync().catch(failure)
     stopConnection = onDesktopRuntime(() => { syncing = syncing.then(sync).catch(failure) })
+    const { installDesktopMaintenance } = await import('./desktop/maintenance')
+    stopMaintenance = installDesktopMaintenance({ isBusy, waitForSync: () => syncing })
   }
   const preventLoss = (event: BeforeUnloadEvent) => {
     if (hasPendingProfileWrites() || hasProfileRecoveryData()) { event.preventDefault(); event.returnValue = '' }
   }
   window.addEventListener('beforeunload', preventLoss)
-  return () => { stopConnection(); stopRuntime(); window.removeEventListener('beforeunload', preventLoss) }
+  return () => { stopMaintenance(); stopConnection(); stopRuntime(); window.removeEventListener('beforeunload', preventLoss) }
 }

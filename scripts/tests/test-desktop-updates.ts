@@ -15,20 +15,30 @@ const {
 
 const ROOT = path.resolve(__dirname, '..', '..');
 
-test('desktop build binding rejects same-version stale sources, tampering and missing receipts before side effects', () => {
+function buildBindingFixture() {
   const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
   const { execFileSync }: typeof import('node:child_process') = require('node:child_process');
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'desktop-binding-'));
   const put = (name: string, value: string) => { const file = path.join(root, name); fs.mkdirSync(path.dirname(file), { recursive:true }); fs.writeFileSync(file, value); };
   const git = (...args: string[]) => execFileSync('git', args, { cwd:root, stdio:'pipe', windowsHide:true });
+  git('init'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid');
+  put('.gitignore', 'runtime/\ndist/\ndesktop-tauri/\n'); put('package.json', '{"version":"1.0.0"}'); put('source.ts', 'A');
+  git('add', '.gitignore', 'package.json', 'source.ts'); git('commit', '-m', 'A');
+  put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/node.exe', 'node-A');
+  const native = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'; put(native, 'native-A');
+  const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/fixture.exe'; put(payload, 'payload-A');
+  return { root, put, git, binding, native, payload, remove() {
+    assert.equal(path.dirname(fs.realpathSync(root)), fs.realpathSync(os.tmpdir()));
+    assert.ok(path.basename(root).startsWith('desktop-binding-'));
+    fs.rmSync(root, { recursive:true, force:true });
+  } };
+}
+
+test('desktop build binding rejects same-version stale sources, tampering and missing receipts before side effects', () => {
+  const fixture = buildBindingFixture();
+  const { root, put, git, binding, payload } = fixture;
   let sideEffects = 0;
   try {
-    git('init'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid');
-    put('.gitignore', 'runtime/\ndist/\ndesktop-tauri/\n'); put('package.json', '{"version":"1.0.0"}'); put('source.ts', 'A');
-    git('add', '.gitignore', 'package.json', 'source.ts'); git('commit', '-m', 'A');
-    put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/node.exe', 'node-A');
-    put('desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe', 'native-A');
-    const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/fixture.exe'; put(payload, 'payload-A');
     const source = binding.sourceIdentity(root);
     binding.recordBuild(root, source);
     binding.verifyBuild(root, path.join(root, payload));
@@ -61,7 +71,100 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
     assert.throws(() => binding.verifyBuild(root), /缺少/);
     put(binding.receiptPath, '{}');
     assert.throws(() => binding.verifyBuild(root), /格式/);
-  } finally { fs.rmSync(root, { recursive:true, force:true }); }
+  } finally { fixture.remove(); }
+});
+
+test('official Tauri entry detaches only the Cargo release executable before binding', async () => {
+  const fixture = buildBindingFixture();
+  const { root, binding, native, payload } = fixture;
+  const { runTauri }: typeof import('../maintenance/run-tauri') = require('../maintenance/run-tauri');
+  const target = path.join(root, native), cache = path.join(root, 'desktop-tauri/src-tauri/target/release/deps/native.exe');
+  try {
+    const result = await runTauri(['build', '--ci', '--no-sign'], {
+      root, env:{}, npmCommand:'fixture-npm', tauriCli:'fixture-tauri',
+      checkEnvironment:() => ({ ready:true, checks:[], sdkRoot:root }), runCommand:() => 0,
+      prepareTauri:async () => ({ stage:root, runtimeJavaScriptFiles:[], webDir:root, sidecarPath:'fixture-node' }),
+      spawnTauri:() => {
+        fs.mkdirSync(path.dirname(cache), { recursive:true }); fs.renameSync(target, cache); fs.linkSync(cache, target);
+        assert.equal(fs.statSync(target).nlink, 2);
+        return 0;
+      },
+    });
+    assert.equal(result, 0);
+    assert.equal(fs.statSync(target).nlink, 1);
+    assert.equal(fs.statSync(cache).nlink, 1);
+    assert.equal(fs.readFileSync(target, 'utf8'), 'native-A');
+    binding.verifyBuild(root, path.join(root, payload));
+    fs.writeFileSync(cache, 'next Cargo image');
+    assert.equal(fs.readFileSync(target, 'utf8'), 'native-A', 'later Cargo cache writes cannot alter the bound image');
+    binding.verifyBuild(root);
+    const source = binding.sourceIdentity(root), previous = fs.readFileSync(path.join(root, binding.receiptPath));
+    const resource = path.join(root, 'desktop-tauri/src-tauri/resources/node.exe');
+    fs.linkSync(resource, path.join(root, 'runtime/resource-alias.exe'));
+    assert.throws(() => binding.recordBuild(root, source), /桌面产物不完整.*resources\/node.exe.*硬链接/);
+    assert.equal(fs.statSync(resource).nlink, 2, 'unrelated output hardlinks remain rejected, never materialized');
+    assert.deepEqual(fs.readFileSync(path.join(root, binding.receiptPath)), previous);
+    fs.linkSync(path.join(root, 'source.ts'), path.join(root, 'runtime/source-alias'));
+    assert.throws(() => binding.sourceIdentity(root), /发行源码身份不完整.*source.ts.*硬链接/);
+  } finally { fixture.remove(); }
+});
+
+test('a corrupted native copy preserves the shared EXE and prior receipt and fails the official entry', async (t) => {
+  const fixture = buildBindingFixture();
+  const { root, binding, native } = fixture;
+  const { runTauri }: typeof import('../maintenance/run-tauri') = require('../maintenance/run-tauri');
+  const target = path.join(root, native), cache = path.join(root, 'runtime/cargo-image.exe');
+  try {
+    binding.recordBuild(root, binding.sourceIdentity(root));
+    const previous = fs.readFileSync(path.join(root, binding.receiptPath));
+    fs.linkSync(target, cache);
+    const copy = fs.copyFileSync;
+    t.mock.method(fs, 'copyFileSync', (...[from, to, flags]: Parameters<typeof fs.copyFileSync>) => {
+      copy(from, to, flags);
+      if (String(from) === target) fs.writeFileSync(to, 'corrupt-copy');
+    });
+    await assert.rejects(runTauri(['build'], { root, env:{}, npmCommand:'fixture-npm', tauriCli:'fixture-tauri',
+      checkEnvironment:() => ({ ready:true, checks:[], sdkRoot:root }), runCommand:() => 0,
+      prepareTauri:async () => ({ stage:root, runtimeJavaScriptFiles:[], webDir:root, sidecarPath:'fixture-node' }), spawnTauri:() => 0,
+    }), /CLI 已成功.*回执校验失败.*独立副本字节校验失败/);
+    assert.equal(fs.statSync(target).nlink, 2);
+    assert.equal(fs.readFileSync(target, 'utf8'), 'native-A');
+    assert.equal(fs.readFileSync(cache, 'utf8'), 'native-A');
+    assert.deepEqual(fs.readFileSync(path.join(root, binding.receiptPath)), previous);
+    assert.equal(fs.readdirSync(path.dirname(target)).some(name => name.includes('.detach-')), false);
+  } finally { fixture.remove(); }
+});
+
+test('bundle and distribution binding failures preserve the last atomic receipt', (t) => {
+  const fixture = buildBindingFixture();
+  const { root, put, binding, native, payload } = fixture;
+  const receipt = path.join(root, binding.receiptPath), output = path.join(root, 'runtime/setup.exe');
+  try {
+    binding.recordBuild(root, binding.sourceIdentity(root), false);
+    const base = binding.verifyBuild(root);
+    binding.extendBuild(root, base);
+    binding.verifyBuild(root, path.join(root, payload));
+    const bundled = fs.readFileSync(receipt);
+    put(native, 'changed-native');
+    assert.throws(() => binding.extendBuild(root, base), /打包修改了原构建产物/);
+    assert.deepEqual(fs.readFileSync(receipt), bundled);
+    put(native, 'native-A');
+    assert.throws(() => binding.verifyDistribution(root, output), /发行封装绑定回执/);
+    put('runtime/setup.exe', 'wrapper-A');
+    const rename = fs.renameSync;
+    const failure = t.mock.method(fs, 'renameSync', (...[from, to]: Parameters<typeof fs.renameSync>) => {
+      if (String(to) === receipt) throw Error('fixture receipt rename denied');
+      return rename(from, to);
+    });
+    assert.throws(() => binding.bindDistribution(root, path.join(root, payload), output), /封装绑定回执写入失败.*原回执保留.*rename denied/);
+    assert.deepEqual(fs.readFileSync(receipt), bundled);
+    assert.equal(fs.readdirSync(path.dirname(receipt)).some(name => name.endsWith('.tmp')), false);
+    failure.mock.restore();
+    binding.bindDistribution(root, path.join(root, payload), output);
+    binding.verifyDistribution(root, output);
+    put('runtime/setup.exe', 'tampered-wrapper');
+    assert.throws(() => binding.verifyDistribution(root, output), /封装产物已变化.*拒绝签名或上传/);
+  } finally { fixture.remove(); }
 });
 
 test('桌面更新端点固定使用主项目 GitHub Releases', () => {

@@ -1,7 +1,11 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils'
 import { reactive, nextTick } from 'vue'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import DirectorSceneReference from './DirectorSceneReference.vue'
+import { setRuntimeFetch, setRuntimeOrigin } from '@/platform/runtimeUrl'
+
+enableAutoUnmount(afterEach)
+afterEach(() => { setRuntimeOrigin(null, false); vi.unstubAllGlobals() })
 
 const context = vi.hoisted(() => ({ store: {} as Record<string, unknown>, local: false }))
 vi.mock('@/stores/promptBuilderStore', () => ({ usePromptBuilderStore: () => context.store }))
@@ -24,6 +28,17 @@ beforeEach(() => {
 })
 
 describe('scene canvas reference', () => {
+  it('reloads a failed manifest when the desktop runtime becomes available', async () => {
+    setRuntimeFetch((input, init) => globalThis.fetch(input, init))
+    setRuntimeOrigin(null, true)
+    vi.mocked(fetch).mockRejectedValueOnce(new Error('runtime unavailable'))
+    const wrapper = mount(DirectorSceneReference)
+    await flushPromises()
+    expect(wrapper.find('img').exists()).toBe(false)
+    setRuntimeOrigin('http://127.0.0.1:3002', true, 'ready')
+    await flushPromises()
+    expect(wrapper.get('img').attributes('src')).toBe('http://127.0.0.1:3002/scene-showcase/thumbs/scene_one.jpg')
+  })
   it('labels references separately and recovers a failed sample when the scene changes', async () => {
     const wrapper = mount(DirectorSceneReference)
     await flushPromises()

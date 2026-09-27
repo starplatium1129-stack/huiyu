@@ -14,6 +14,7 @@ import { ref, type Ref } from 'vue'
 import { createVadSegmenter, rmsOf } from '@/utils/vadSegmenter'
 import { resampleTo16k, encodeWav16k, recognizeWithAsr } from '@/utils/voiceApi'
 import type { SpeechInputConfig } from '@/utils/speechInputConfig'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 export type VoiceInputState = 'idle' | 'acquiring' | 'capturing' | 'recognizing' | 'error'
 export type VoiceInputMode = 'manual' | 'auto'
@@ -75,6 +76,9 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   let startToken = 0
   let recognitionController: AbortController | null = null
   const pendingSegments: Float32Array[] = []
+  const releaseMaintenance = registerMaintenanceParticipant(() => {
+    if (capturing || recognizing || state.value === 'acquiring' || pendingSegments.length) throw new Error('SPEECH_BUSY')
+  })
 
   function setState(next: VoiceInputState, detail?: string): void {
     state.value = next
@@ -299,6 +303,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   }
 
   function release(): void {
+    releaseMaintenance()
     disposed = true
     cancel()
   }

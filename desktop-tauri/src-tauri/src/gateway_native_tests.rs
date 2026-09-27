@@ -1,5 +1,46 @@
 use super::*;
 
+#[test]
+fn maintenance_requires_positive_signed_drain_before_reaping_owned_child() {
+    let root = std::env::temp_dir().join(format!("huiyu-maintenance-gateway-{}", std::process::id()));
+    std::fs::create_dir_all(&root).unwrap();
+    let script = root.join("server.cjs");
+    std::fs::write(&script, r#"
+const fs=require('fs'),crypto=require('crypto');
+require('http').createServer((req,res)=>{
+  res.setHeader('Connection','close');
+  if(req.method==='POST') { let body='';req.on('data',c=>body+=c);req.on('end',()=>{
+    const proof=crypto.createHmac('sha256',process.env.AICS_DESKTOP_GATEWAY_TOKEN).update('aics-desktop-host:v1\n'+body).digest('hex');
+    if(req.headers['x-aics-host-proof']!==proof) {res.writeHead(401);return res.end('{}')}
+    if(!fs.existsSync('allow-drain')) {res.writeHead(503);return res.end('{}')}
+    setTimeout(()=>{fs.writeFileSync('drain-complete','true');res.end('{"closed":true}')},100);
+  });return; }
+  const challenge=req.headers['x-aics-desktop-challenge'];
+  res.end(JSON.stringify({ok:true,app:'ai-cg-studio',desktopProtocol:1,
+    desktopProof:crypto.createHmac('sha256',process.env.AICS_DESKTOP_GATEWAY_TOKEN).update(challenge||'').digest('hex')}));
+}).listen(Number(process.env.PORT),'127.0.0.1');
+"#).unwrap();
+    let listener = std::net::TcpListener::bind(("127.0.0.1", 0)).unwrap();
+    let port = listener.local_addr().unwrap().port(); drop(listener);
+    let supervisor = GatewaySupervisorBuilder::new(script, root.clone()).port(port).wait_ms(4000)
+        .env(vec![("AICS_DESKTOP_SOURCE_PROFILE_ID".into(), format!("profile-{}", "a".repeat(64)))]).build();
+    let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
+    runtime.block_on(async {
+        supervisor.start().await.unwrap();
+        let pid = supervisor.child.lock().unwrap().as_ref().unwrap().id();
+        assert!(supervisor.maintenance_stop().await.is_err());
+        assert_eq!(supervisor.child.lock().unwrap().as_ref().unwrap().id(), pid);
+        assert!(supervisor.child.lock().unwrap().as_mut().unwrap().try_wait().unwrap().is_none());
+        assert!(supervisor.start().await.is_err(), "failed drain must not reopen admission");
+        std::fs::write(root.join("allow-drain"), "fixture").unwrap();
+        supervisor.maintenance_stop().await.unwrap();
+        assert!(root.join("drain-complete").exists());
+        assert!(supervisor.child.lock().unwrap().is_none());
+        assert!(is_port_available(GATEWAY_HOST, port));
+    });
+    std::fs::remove_dir_all(root).unwrap();
+}
+
 fn fixture() -> (std::path::PathBuf, std::path::PathBuf, u16) {
     let root = std::env::temp_dir().join(format!("aics-gateway-test-{}-{}", std::process::id(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos()));
     std::fs::create_dir_all(&root).unwrap();

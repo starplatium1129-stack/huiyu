@@ -2,10 +2,15 @@ import { shallowRef } from 'vue'
 import type { FetchImplementation } from '../api/client.ts'
 import { isNativeDesktopOrigin } from '../../services/desktopOrigins.ts'
 const runtimeOrigin = shallowRef<string | null>(null)
+const resourceIdentity = shallowRef('')
 let desktopMode = false
 let transport: FetchImplementation | null = null
 
-export function setRuntimeOrigin(origin: string | null, desktop = false): void { runtimeOrigin.value = origin; desktopMode = desktop }
+export function setRuntimeOrigin(origin: string | null, desktop = false, epoch = ''): void {
+  runtimeOrigin.value = origin; desktopMode = desktop
+  resourceIdentity.value = `${desktop}:${origin ?? ''}:${epoch}`
+}
+export function runtimeResourceIdentity(): string { return resourceIdentity.value }
 export function setRuntimeFetch(fetcher: FetchImplementation): void { transport = fetcher }
 export function runtimeResourceCors(): 'anonymous' | undefined { return desktopMode ? 'anonymous' : undefined }
 

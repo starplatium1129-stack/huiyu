@@ -6,9 +6,11 @@ import { workspaceRequest } from '../api/workspace'
 import { migrateProfileToCandidate } from '../platform/web/migrationCoordinator'
 import { useTaskCenter } from './useTaskCenter'
 import { flushProfileWrites } from '../platform/web/profileStorage'
+import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 
 export function useWorkspaceMigration(onMessage: (message: string) => void) {
   const busy = ref(false), available = ref(false), progress = ref('')
+  onScopeDispose(registerMaintenanceParticipant(() => { if (busy.value) throw new Error('MIGRATION_BUSY') }))
   const bundledAvailable = ref(false), bundledVerified = ref(false)
   const tasks = useTaskCenter()
   let controller: AbortController | null = null

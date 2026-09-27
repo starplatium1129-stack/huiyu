@@ -47,6 +47,7 @@ export function createDesktopTasks(host: DesktopWorkspaceHost | undefined, provi
   let taskRouter: ReturnType<typeof createTaskRouter> | undefined;
   let recovery: Promise<void> | undefined;
   const connect = () => {
+    if (host?.closing) return false;
     if (!host?.pointer?.domains.includes('artwork') || !host.service || !host.authority) return false;
     if (!runtime) {
       runtime = createTaskRuntime({ workspace: host.service, providers: createTaskProviders(providers) });
@@ -60,6 +61,7 @@ export function createDesktopTasks(host: DesktopWorkspaceHost | undefined, provi
     try {
       if (!connect()) return res.status(503).json({ error: '任务工作区尚未激活', code: 'WORKSPACE_UNAVAILABLE' });
       await recovery;
+      if (host?.closing) return res.status(503).json({ error: '桌面正在维护', code: 'DESKTOP_DRAINING' });
       return taskRouter!(req, res, next);
     } catch (error) { next(error); }
   });

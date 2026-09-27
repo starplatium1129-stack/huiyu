@@ -91,7 +91,8 @@
 <script setup lang="ts">
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 
-import { computed, ref } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import {
@@ -166,6 +167,7 @@ const emit = defineEmits<{
 }>()
 
 const showApiKey = ref(false)
+onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_API_SETTINGS') }))
 const desktopCredentials = Boolean(getDesktopCapabilities())
 const testing = ref(false)
 const testState = ref('')

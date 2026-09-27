@@ -183,6 +183,27 @@ test('input media is protected in workspace and reconstructs provider files with
   } finally { await f.close(); }
 });
 
+test('maintenance preserves accepted but never submitted work for explicit resume', async () => {
+  let entered = false, upstreamSubmissions = 0, release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  const f = fixture(async (_task, hooks) => {
+    entered = true; await gate; await hooks.submitting('fake', 'approved-binding'); upstreamSubmissions++; await hooks.observed('explicit-resume');
+  });
+  try {
+    const task = await f.runtime.submit('desktop', request); await until(async () => entered);
+    const closing = f.runtime.close(); release(); await closing;
+    const paused = await f.runtime.get('desktop', task.taskId);
+    assert.equal(paused.status, 'queued'); assert.equal(paused.recoveryState, 'interrupted');
+    assert.equal(paused.errorCode, 'TASK_AWAITING_RESUME'); assert.equal(paused.cancelRequestedAt, null);
+    assert.equal(paused.submissionIntentAt, null); assert.equal(upstreamSubmissions, 0); assert.equal(f.cancellations, 0);
+    await f.restart(); await f.runtime.recover('desktop');
+    assert.equal(upstreamSubmissions, 0, 'restart and recovery must not automatically submit accepted work');
+    await f.runtime.resume('desktop', task.taskId);
+    await until(async () => Boolean((await f.runtime.get('desktop', task.taskId)).upstreamId));
+    assert.equal(upstreamSubmissions, 1);
+  } finally { release(); await f.close(); }
+});
+
 test('shutdown drains an in-flight upstream identity write before the workspace can close', async () => {
   let release!: () => void; const barrier = new Promise<void>(resolve => { release = resolve; });
   const f = fixture(async (_task, hooks) => { await hooks.submitting('fake', 'approved-binding'); await barrier; await hooks.observed('late-shutdown-id'); });

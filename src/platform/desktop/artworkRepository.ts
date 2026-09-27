@@ -3,6 +3,7 @@ import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '../..
 import { blobThumbDataUrl } from '../../utils/imageThumb.ts'
 import { workspaceRequest as request } from '../../api/workspace.ts'
 import { desktopRuntimeFetch, getDesktopRuntime } from './runtime.ts'
+import { trackMaintenanceWrite } from '../maintenanceParticipants'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number }
@@ -59,7 +60,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (!media.ok) throw new Error('作品原图读取未完成')
     return media.blob()
   }
-  return {
+  const repository: ArtworkRepository = {
     readHistory, readProjects, readRecentHistory: readHistory, readPreferenceHistory: readHistory,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
     getImage,
@@ -101,5 +102,17 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     async restoreArtwork(id) { return { restored: Boolean((await mutate('restoreArtwork', id))?.changed) } },
     async purgeExpiredTrash() { const result = await workspaceRequest<Receipt>({ kind: 'purgeExpiredTrash', operationId: crypto.randomUUID() }); return { purged: result.purged ?? 0 } },
     async listTrash() { return (await list(true)).filter(item => item.deletedAt !== null).map(item => ({ id: String(item.id), deletedAt: item.deletedAt!, historyEntries: [item.body], projectRefs: [], imageIds: item.body.image_id ? [item.body.image_id] : [] })) },
+  }
+  return { ...repository,
+    withStaging: work => trackMaintenanceWrite(work),
+    putImage: blob => trackMaintenanceWrite(() => repository.putImage(blob)),
+    deleteImage: alias => trackMaintenanceWrite(() => repository.deleteImage(alias)),
+    appendArtwork: artwork => trackMaintenanceWrite(() => repository.appendArtwork(artwork)),
+    patchArtwork: (id, patch) => trackMaintenanceWrite(() => repository.patchArtwork(id, patch)),
+    patchArtworks: patches => trackMaintenanceWrite(() => repository.patchArtworks(patches)),
+    deleteArtwork: id => trackMaintenanceWrite(() => repository.deleteArtwork(id)),
+    softDeleteArtwork: id => trackMaintenanceWrite(() => repository.softDeleteArtwork(id)),
+    restoreArtwork: id => trackMaintenanceWrite(() => repository.restoreArtwork(id)),
+    purgeExpiredTrash: () => trackMaintenanceWrite(() => repository.purgeExpiredTrash()),
   }
 }

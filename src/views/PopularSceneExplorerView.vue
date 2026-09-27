@@ -57,19 +57,21 @@
         <article v-for="blueprint in filtered" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
-          <RouterLink v-if="thumbSrc(blueprint)" class="pop-thumb" :class="{ 'is-missing': thumbFailed[thumbSrc(blueprint)] }" :to="drawUrl(blueprint)"
+          <RuntimeImage v-if="thumbSrc(blueprint)" :src="thumbSrc(blueprint)" v-slot="{ image, loaded, failed }">
+          <RouterLink class="pop-thumb" :class="{ 'is-missing': failed }" :to="drawUrl(blueprint)"
             :aria-label="`以「${blueprint.title}」开始绘制`">
-            <span class="pop-thumb-skeleton" :class="{ visible: !thumbState[thumbSrc(blueprint)] && !thumbFailed[thumbSrc(blueprint)] }" aria-hidden="true"></span>
-            <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(thumbSrc(blueprint))" alt="" loading="lazy" decoding="async"
+            <span class="pop-thumb-skeleton" :class="{ visible: !loaded && !failed }" aria-hidden="true"></span>
+            <img v-if="image.src" v-bind="image" alt="" loading="lazy" decoding="async"
               :class="{
                 'pop-thumb-r18': sampleRatingOf(blueprint) === 'R18',
-                'pop-thumb-missing': thumbFailed[thumbSrc(blueprint)],
-                'pop-thumb-ready': thumbState[thumbSrc(blueprint)],
+                'pop-thumb-missing': failed,
+                'pop-thumb-ready': loaded,
               }"
-              @load="onThumbLoad(thumbSrc(blueprint))" @error="onThumbError(thumbSrc(blueprint))" />
-            <span v-if="thumbFailed[thumbSrc(blueprint)]" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong><span>场景设定已就绪，可以直接绘制</span></span>
+              />
+            <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong><span>场景设定已就绪，可以直接绘制</span></span>
             <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
           </RouterLink>
+          </RuntimeImage>
           <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张待补充</strong><span>场景设定已就绪，可以直接绘制</span></span></div>
           <div class="pop-card-body">
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
@@ -100,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, onMounted } from 'vue'
@@ -202,17 +204,9 @@ function resetFilters() {
 
 /** 样张缩略图：与灵感场景一致，路径为展示库样张 `pc_<角色>_<蓝图>`；通用成人蓝图无样张。 */
 const thumbVersion = ref(Date.now())
-const thumbState = ref<Record<string, boolean>>({})
-const thumbFailed = ref<Record<string, boolean>>({})
 function thumbSrc(blueprint: SceneBlueprint): string {
   if (!blueprint.characterId || !selectedId.value) return ''
   return `/scene-showcase/thumbs/pc_${selectedId.value}_${blueprint.id}.jpg?v=${thumbVersion.value}`
-}
-function onThumbLoad(src: string) {
-  thumbState.value = { ...thumbState.value, [src]: true }
-}
-function onThumbError(src: string) {
-  thumbFailed.value = { ...thumbFailed.value, [src]: true }
 }
 
 async function init() {

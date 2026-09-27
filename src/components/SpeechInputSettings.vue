@@ -91,7 +91,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import {
   DEFAULT_SPEECH_INPUT_CONFIG,
@@ -102,6 +103,7 @@ import {
 } from '@/utils/speechInputConfig'
 
 const emit = defineEmits<{ save: []; close: [] }>()
+onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_SPEECH_SETTINGS') }))
 
 const draft = ref<SpeechInputConfig>(loadSpeechInputConfig())
 const showApiKey = ref(false)

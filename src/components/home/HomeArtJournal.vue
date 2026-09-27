@@ -5,19 +5,17 @@
       <RouterLink to="/showcase" class="journal-more">翻阅参考画册 <ArchiveIcon name="image" /></RouterLink>
     </header>
     <div class="journal-spread">
-      <RouterLink v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" class="journal-entry" :class="{ lead: index === 0 }" :to="(missingScenes.has(scene.id) ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
-        <div class="journal-art"><img :crossorigin="runtimeResourceCors()" v-if="!missingScenes.has(scene.id)" @error="missingScenes.add(scene.id)" :src="resolveRuntimeUrl('/scene-showcase/images/' + scene.id + '.jpg')" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><span v-else class="journal-missing">样张暂未连接<span>先看看这一幕的故事与设定</span></span></div>
-        <div class="journal-caption"><span class="journal-category">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read">{{ missingScenes.has(scene.id) ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
+      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="'/scene-showcase/images/' + scene.id + '.jpg'" v-slot="{ image, failed }">
+      <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :to="(failed ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
+        <div class="journal-art"><img v-if="image.src && !failed" v-bind="image" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><span v-else class="journal-missing">样张暂未连接<span>先看看这一幕的故事与设定</span></span></div>
+        <div class="journal-caption"><span class="journal-category">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read">{{ failed ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
       </RouterLink>
+      </RuntimeImage>
     </div>
   </section>
 </template>
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
-
-import { ref, watch } from 'vue'
-const missingScenes = ref(new Set<string>())
-watch(() => resolveRuntimeUrl('/scene-showcase/'), () => { missingScenes.value.clear() })
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 defineProps<{ scenes: Array<{ id: string; title?: string; story?: string; category?: string }> }>()
 function excerpt(story?: string) { return (story || '一些想留下的光影，一段只属于角色的时光。').replace(/^【[^】]+】/, '').slice(0, 84) }

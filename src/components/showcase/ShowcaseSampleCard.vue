@@ -3,8 +3,8 @@
     <button class="sample-visual" :class="{ 'sample-visual-measured': entry.width && entry.height }" type="button"
       :style="{ '--sample-ratio': entry.width && entry.height ? `${entry.width} / ${entry.height}` : '3 / 4' }"
       :aria-label="'查看 ' + entry.title + ' 大图'" @click="emit('open', entry.id)">
-      <img v-if="!broken" :crossorigin="runtimeResourceCors()" class="sample-image" :class="{ 'sample-image-ready': loaded }"
-        :src="resolveRuntimeUrl(src)" :alt="entry.title" :width="entry.width" :height="entry.height" loading="lazy" decoding="async" @load="emit('loaded', entry)" @error="emit('error', entry)" />
+      <img v-if="image.src && !broken" v-bind="image" class="sample-image" :class="{ 'sample-image-ready': loaded }"
+        :alt="entry.title" :width="entry.width" :height="entry.height" loading="lazy" decoding="async" />
       <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span>
       <span v-if="entry.rating === 'R18'" class="sample-sensitive"><strong>R18</strong><span>悬停或聚焦预览</span></span>
     </button>
@@ -23,11 +23,12 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
 
-defineProps<{ entry: ShowcaseEntry; src: string; loaded: boolean; broken: boolean; featured: boolean; characterLabel: string; typeLabel: string; ratingLabel: string }>()
-const emit = defineEmits<{ open: [id: string]; loaded: [entry: ShowcaseEntry]; error: [entry: ShowcaseEntry] }>()
+const props = defineProps<{ entry: ShowcaseEntry; src: string; featured: boolean; characterLabel: string; typeLabel: string; ratingLabel: string }>()
+const { image, loaded, failed: broken } = useRuntimeImage(() => props.src)
+const emit = defineEmits<{ open: [id: string] }>()
 </script>
 
 <style scoped>

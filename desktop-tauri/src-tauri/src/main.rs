@@ -22,6 +22,8 @@ mod window_state;
 mod window_presentation;
 mod chat_dock;
 mod live2d_framing;
+mod maintenance;
+mod maintenance_protocol;
 
 use std::sync::atomic::Ordering;
 use std::time::{Duration, Instant};
@@ -45,6 +47,7 @@ fn start_gateway_monitor(app: AppHandle) {
         loop {
             tokio::time::sleep(Duration::from_secs(5)).await;
             let state = app.state::<AppState>();
+            if maintenance::active(&app) || state.quitting.load(Ordering::SeqCst) { continue; }
             let Some(supervisor) = app.try_state::<gateway::GatewaySupervisor>() else {
                 continue;
             };
@@ -64,6 +67,7 @@ fn start_gateway_monitor(app: AppHandle) {
             failures = 0;
             state.warn(&format!("gateway unhealthy, restarting in {delay:?}"));
             tokio::time::sleep(delay).await;
+            if maintenance::active(&app) || state.quitting.load(Ordering::SeqCst) { continue; }
             match supervisor.start().await {
                 Ok(url) => {
                     if let Err(error) = main_shared::authorize_gateway_origin(&app, &url) {
@@ -91,6 +95,7 @@ fn start_gateway_monitor(app: AppHandle) {
 fn register_shortcuts(app: &AppHandle) {
     use tauri_plugin_global_shortcut::GlobalShortcutExt;
     let handler = |app: &AppHandle, shortcut: &tauri_plugin_global_shortcut::Shortcut, event: tauri_plugin_global_shortcut::ShortcutEvent| {
+        if maintenance::active(app) { return; }
         use tauri_plugin_global_shortcut::ShortcutState;
         if event.state() != ShortcutState::Pressed {
             return;
@@ -148,12 +153,17 @@ fn main() {
             let _ = SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         }
     }
+    let mut context = tauri::generate_context!();
+    let maintenance_namespace = maintenance::namespace().unwrap_or_else(|error| { eprintln!("{error}"); std::process::exit(2); });
+    let maintenance_single_instance = ui_entry::isolated_profile().is_none() || maintenance_namespace.is_some();
+    if let Some(namespace) = maintenance_namespace { context.config_mut().identifier = namespace; }
     let app = tauri::Builder::default()
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-        .plugin(if ui_entry::isolated_profile().is_some() {
+        .plugin(if !maintenance_single_instance {
             tauri::plugin::Builder::new("isolated-instance").build()
         } else { tauri_plugin_single_instance::init(|app, argv, _cwd| {
+            if maintenance::handle(app, &argv) || maintenance::active(app) { return; }
             let state = app.state::<AppState>();
             for arg in argv {
                 if arg.starts_with("aics://") {
@@ -178,6 +188,7 @@ fn main() {
         .invoke_handler({
             let handler: fn(tauri::ipc::Invoke) -> bool = tauri::generate_handler![
             bridge::desktop_bootstrap,
+            maintenance::desktop_maintenance_ack,
             bridge::desktop_workspace_prepare,
             bridge::desktop_workspace_activate,
             bridge::desktop_workspace_enable_bundled,
@@ -237,13 +248,22 @@ fn main() {
                     invoke.resolver.reject("IPC requires the current authenticated gateway origin");
                     return true;
                 }
+                if !maintenance::admits(view.app_handle(), invoke.message.command()) {
+                    invoke.resolver.reject("DESKTOP_MAINTENANCE: new host operations are frozen");
+                    return true;
+                }
                 handler(invoke)
             }
         })
         .setup(|app| {
+            // No existing single-instance host consumed this request. Do not
+            // launch a gateway, open user data, or create windows as a fallback.
+            if maintenance::is_client() { std::process::exit(3); }
             let state = AppState::new(paths::resolve_paths(app.handle()));
             app.manage(state);
             let state = app.state::<AppState>();
+            let publish = ui_entry::isolated_profile().is_none() || std::env::var("AICS_DESKTOP_MAINTENANCE_TEST").as_deref() == Ok("1");
+            app.manage(maintenance::MaintenanceHost::new(state.paths.config_root.clone(), app.config().identifier.clone(), publish).map_err(std::io::Error::other)?);
 
             if std::env::var("LIVE2D_SELFTEST").is_ok() {
                 let assets = app.state::<AppState>().paths.assets_root.clone();
@@ -439,7 +459,7 @@ fn main() {
             start_gateway_monitor(handle);
             Ok(())
         })
-        .build(tauri::generate_context!())
+        .build(context)
         .expect("error while building tauri application");
 
     // 窗口事件（move/resize → 防抖保存；atelier 关闭 → 隐藏）

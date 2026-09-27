@@ -42,11 +42,21 @@ if (-not $InstallDir) {
 $installDir = [IO.Path]::GetFullPath($InstallDir)
 $gatewayDir = Join-Path $installDir 'gateway'
 if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
+if ($QuietInstall -and -not $UseInstaller) { throw '-QuietInstall 仅可与 -UseInstaller 一起使用' }
+$setup = $null
+if ($UseInstaller) {
+  $setup = Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue |
+    Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  if (-not $setup) { throw 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri' }
+}
 
 . (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
 $configRoot = Join-Path $env:APPDATA 'com.aics.studio'
-# Fail before UAC/build/copy: the host's Quit action owns draining and lock release.
-Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot
+# Read-only preflight: UAC denial, missing payload or build failure must leave
+# the user's running application untouched. Actual drain occurs before writes.
+if (@(Get-DesktopInstallationProcesses -InstallDir $installDir).Count -gt 0) {
+  Get-DesktopMaintenanceIdentity -InstallDir $installDir -ConfigRoot $configRoot | Out-Null
+} else { Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot }
 
 # 源端已删除、但增量部署（Copy-Item 只合并不删除）会在安装目录永久堆积的历史目录。
 # 2026-08-29：character-references（~1.2G）已迁出项目到 AI 工作区，安装目录那份成冗余副本。
@@ -71,12 +81,12 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   exit $elevatedProcess.ExitCode
 }
 
-if ($QuietInstall -and -not $UseInstaller) { throw '-QuietInstall 仅可与 -UseInstaller 一起使用' }
 Start-Transcript -Path (Join-Path $root 'runtime\desktop-deploy-last.log') -Append | Out-Null
 
 # Narrow repair for 1.6.0: no dependency, executable or user-data replacement.
 if ($StartupRepair) {
   if (-not (Test-Path -LiteralPath (Join-Path $gatewayDir 'server.js'))) { throw "无效安装目录: $installDir" }
+  Stop-DesktopForDeployment -InstallDir $installDir -ConfigRoot $configRoot
   $destination = Join-Path $gatewayDir 'docs'
   New-Item -ItemType Directory -Force -Path $destination | Out-Null
   Copy-Item -Path (Join-Path $root 'docs\*') -Destination $destination -Recurse -Force
@@ -123,7 +133,7 @@ if (-not $SkipBuild) {
 
 # ---------------------------------------------------------- [2] 复核退出
 # A build may take minutes. Recheck before changing the installation.
-Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot
+Stop-DesktopForDeployment -InstallDir $installDir -ConfigRoot $configRoot
 Write-Host '[2/6] 应用、网关已退出，工作区锁已释放' -ForegroundColor DarkGray
 
 # ------------------------------------------------- [3] 清理源端删除型残留
@@ -147,9 +157,6 @@ if ($Cleanup) {
 # ------------------------------------------------------------ [4] 部署
 if ($UseInstaller) {
   Write-Host '[4/6] 运行完整安装包（请在向导中点「下一步」直到完成）...' -ForegroundColor Cyan
-  $setup = Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue |
-    Sort-Object LastWriteTime -Descending | Select-Object -First 1
-  if (-not $setup) { Write-Error 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri'; exit 1 }
   Write-Host "  $($setup.Name)（$([math]::Round($setup.Length / 1MB, 1)) MB）" -ForegroundColor DarkGray
   $setupProcess = if ($QuietInstall) {
     Start-Process -FilePath $setup.FullName -ArgumentList "/S /D=$installDir" -WindowStyle Hidden -Wait -PassThru
@@ -294,6 +301,8 @@ if (-not $NoRestart) {
   Write-Host '[6/6] 启动桌面端 ...' -ForegroundColor Cyan
   # 经 explorer 中转，让子进程脱离管理员令牌（UIPI 下拖放文件才正常）
   Start-Process explorer.exe -ArgumentList "`"$installDir\ai-cg-studio-desktop.exe`""
+  $startup = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot
+  Write-Host "  已验证宿主与所属网关就绪（PID $($startup.hostPid)）" -ForegroundColor DarkGray
 } else {
   Write-Host '[6/6] 已按 -NoRestart 跳过启动' -ForegroundColor DarkGray
 }

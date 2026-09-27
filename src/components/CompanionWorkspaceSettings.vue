@@ -35,7 +35,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 
@@ -53,6 +54,7 @@ const emit = defineEmits<{
 }>()
 
 const dialogEl = ref<HTMLElement | null>(null)
+onUnmounted(registerMaintenanceParticipant(() => { if (props.open || props.saving) throw new Error('OPEN_WORKSPACE_SETTINGS') }))
 const inputEl = ref<HTMLInputElement | null>(null)
 const { returnFocus } = useFocusTrap(dialogEl, () => props.open, { initialFocus: inputEl, onEscape: () => emit('close') })
 watch(() => props.open, (open) => {

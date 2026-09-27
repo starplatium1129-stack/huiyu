@@ -5,6 +5,7 @@ const profileDomainForKey = (key: string): ProfileDomain | null => {
   return domain === 'settings' || domain === 'chat' || domain === 'draft' ? domain : null
 }
 import { assertMigrationWritable } from './migrationBarrier.ts'
+import { assertMaintenanceWritable } from '../maintenanceParticipants'
 
 export interface ProfilePort {
   readSettings(): Promise<ProfileSnapshot>
@@ -53,6 +54,7 @@ export function profileWriteStatus(): { blocked: boolean; pending: boolean; erro
 export function hasProfileRecoveryData(): boolean { return recovery.size > 0 }
 export function exportProfileRecovery(): Blob { return new Blob([JSON.stringify({ format: 'huiyu-unsaved-profile', version: 1, records: [...recovery.values()] }, null, 2)], { type: 'application/json' }) }
 function assertProfileWritable() {
+  assertMaintenanceWritable()
   if (connectionBlocked) throw new Error('本机资料连接尚未确认，已暂停保存；请保持窗口打开并等待重连。')
   assertMigrationWritable()
 }
@@ -67,6 +69,7 @@ function publishError(error: unknown) {
   window.dispatchEvent(new CustomEvent('huiyu:profile-write-error', { detail: '本机资料尚未保存，请保持窗口打开并重新连接。' }))
 }
 function queueWrite(domain: ProfileDomain, key: string, value: unknown, session: boolean): void {
+  assertMaintenanceWritable()
   // Confirmed runtime authority can retain offline edits in memory. Unknown
   // startup authority still cannot write to the old browser source.
   assertMigrationWritable()

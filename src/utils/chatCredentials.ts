@@ -1,8 +1,14 @@
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
 import type { CompanionDesktopBridge } from '../types/desktop.d.ts'
+import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 
 const session = new Map<string, string>()
 const writes = new Map<string, Promise<void>>()
+const failedWrites = new Set<string>()
+registerMaintenanceParticipant(async () => {
+  await Promise.all(writes.values())
+  if (failedWrites.size) throw new Error('CREDENTIAL_SAVE_FAILED')
+})
 type CredentialBridge = Pick<CompanionDesktopBridge, 'readChatCredential' | 'writeChatCredential'>
 
 /** Web credentials live only in this page's memory. Desktop never falls back to plaintext. */
@@ -36,7 +42,9 @@ export function createChatCredentials(bridge: CredentialBridge | undefined = get
       commit?.()
     }))
     writes.set(endpoint, next)
-    try { await next } finally { if (writes.get(endpoint) === next) writes.delete(endpoint) }
+    try { await next; failedWrites.delete(endpoint) }
+    catch (error) { failedWrites.add(endpoint); throw error }
+    finally { if (writes.get(endpoint) === next) writes.delete(endpoint) }
   }
   async function load(endpoint: string, legacy: string, options?: { isCurrent: () => boolean; commit: (secret: string) => void }) {
     return locked(endpoint, async () => {

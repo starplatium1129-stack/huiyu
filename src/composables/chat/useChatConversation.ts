@@ -15,6 +15,8 @@ import { extractMoodTag } from '../../utils/moodTag.ts'
 import { hasChatUserProfile, type ChatUserProfile } from '../../utils/chatUserProfile.ts'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { abortableTask } from '../../utils/abortableTask.ts'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
+import { createChatDraftPersistence } from './chatDraftPersistence'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
 // 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
@@ -103,7 +105,8 @@ export function useChatConversation(options: ChatConversationOptions) {
   const streamingMid = ref('')
   const replyAnnouncement = ref('')
   let activeRequest: AbortController | null = null
-  let draftTimer = 0
+  const draft = createChatDraftPersistence((character, value) => options.storage.setDraft(character, value))
+  const releaseMaintenance = registerMaintenanceParticipant(() => { if (options.busy.value) throw new Error('CHAT_BUSY') })
 
   function abortCurrentRequest(silent = false) {
     if (!activeRequest) return false
@@ -149,7 +152,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     messages.push(assistant)
     options.storage.save()
     if (customText === undefined) {
-      clearTimeout(draftTimer)
+      draft.clear()
       inputText.value = ''
       options.storage.setDraft(characterId, '')
     }
@@ -507,19 +510,16 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   function onInputChange() {
-    clearTimeout(draftTimer)
-    const characterId = options.activeChar.value
-    const value = inputText.value
-    draftTimer = window.setTimeout(() => options.storage.setDraft(characterId, value), 240) as unknown as number
+    draft.schedule(options.activeChar.value, inputText.value)
   }
 
   function clearDraftInput() {
-    clearTimeout(draftTimer)
+    draft.clear()
     inputText.value = ''
   }
 
   function destroy() {
-    clearTimeout(draftTimer)
+    draft.dispose(); releaseMaintenance()
     options.storage.setDraft(options.activeChar.value, inputText.value)
     abortCurrentRequest(true)
   }

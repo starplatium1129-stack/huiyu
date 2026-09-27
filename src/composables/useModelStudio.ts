@@ -9,6 +9,7 @@ import { validateAdapterProfile, type Live2DAdapterProfile } from '../live2d/ada
 import type { Live2DModelHandle, Live2DStageSession } from '../live2d/types.ts'
 import { getCompanionCharacter, resolveCompanionAvatar } from '../utils/companionRegistry.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
+import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 interface SavedModel { id: string; revision: string; fingerprint: string; profile: Live2DAdapterProfile; disabled?: boolean; canRollback?: boolean }
 const errorText = (error: unknown) => error instanceof Error ? error.message : String(error)
@@ -66,7 +67,13 @@ export function useModelStudio(hostId: string) {
     }
   }
   function dispose() { request?.abort(); request = null; stopPreview() }
-  onUnmounted(dispose)
+  const releaseMaintenance = registerMaintenanceParticipant(() => {
+    if (busy.value || request) throw new Error('MODEL_BUSY')
+    if (inspection.value && !saved.value) throw new Error('UNSAVED_MODEL_IMPORT')
+    if (!fingerprint.value && Object.values(identity).some(Boolean)) throw new Error('UNSAVED_MODEL_FORM')
+    if (fingerprint.value && localStorage.getItem(draftKey()) !== JSON.stringify({ identity, mouth, leftEye, rightEye })) throw new Error('UNSAVED_MODEL_FORM')
+  })
+  onUnmounted(() => { releaseMaintenance(); dispose() })
 
   function applyTest() {
     if (!model) return

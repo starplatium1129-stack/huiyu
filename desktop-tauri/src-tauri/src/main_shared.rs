@@ -72,6 +72,7 @@ pub fn primary_work_area() -> (i64, i64, i64, i64) {
 }
 
 pub fn show_companion(app: &AppHandle, focus: bool) {
+    if crate::maintenance::active(app) { return; }
     let Some(w) = app.get_webview_window("companion") else { return };
     let was_visible = w.is_visible().unwrap_or(false);
     // 最小化状态下 show() 不解除最小化（2026-08-15 实机：窗口被最小化后
@@ -108,6 +109,7 @@ pub fn toggle_companion_visibility(app: &AppHandle) {
 }
 
 pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
+    if crate::maintenance::active(app) { return; }
     let pathname = normalize_atelier_path(target);
     if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
     let base = gateway_url.to_string();
@@ -158,6 +160,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
 }
 
 pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start: bool) -> tauri::Result<()> {
+    if crate::maintenance::active(app) { return Ok(()); }
     let state = app.state::<AppState>();
     let bounds = companion_bounds(&state);
     let source = crate::ui_entry::source(app, gateway_url, "/companion").map_err(|error| tauri::Error::Io(std::io::Error::other(error)))?;
@@ -196,6 +199,7 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start
 /// 与 atelier 一样不能在主线程 IPC 回调内同步创建（WebView2 需要消息泵），
 /// 放 tokio 线程执行。
 pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
+    if crate::maintenance::active(app) { return; }
     if let Some(w) = app.get_webview_window("companion-chat") {
         if !crate::ui_entry::isolated_hidden() { let _ = w.unminimize(); let _ = w.show(); }
         crate::chat_dock::follow(app);

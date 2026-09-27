@@ -8,7 +8,7 @@
       <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
     </header>
 
-    <ShowcaseAlbums v-if="!manifestLoading" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" :broken-thumbs="brokenThumbs" @select="typeFilter = $event" @image-error="markThumbError" />
+    <ShowcaseAlbums v-if="!manifestLoading" :albums="albums" :selected="typeFilter" :thumb-src="thumbSrc" @select="typeFilter = $event" />
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row">
@@ -74,9 +74,9 @@
 
     <div v-else class="showcase-grid stagger-container" data-reveal data-reveal-delay="1">
       <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
-        :loaded="loadedThumbs.has(entry.id)" :broken="brokenThumbs.has(entry.id)" :featured="featured.has(entry.id)"
+        :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :type-label="typeLabel(entry.type)" :rating-label="ratingLabel(entry.rating)"
-        @open="openViewer" @loaded="markThumbLoaded" @error="markThumbError" />
+        @open="openViewer" />
     </div>
 
     <div ref="loadSentinel" v-show="paged.length < filtered.length" class="load-wrap">
@@ -193,16 +193,9 @@ const currentId   = ref('')
 const viewerMounted = ref(false)
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const viewerMotion = useFluidDialog(dialogEl)
-const brokenThumbs = ref(new Set<string>())
-const loadedThumbs = ref(new Set<string>())
 const viewerImageFailed = ref(false)
 const viewerImageReady = ref(false)
 
-function markThumbLoaded(entry: ShowcaseEntry) {
-  if (!loadedThumbs.value.has(entry.id)) {
-    loadedThumbs.value = new Set([...loadedThumbs.value, entry.id])
-  }
-}
 const viewerVersion = ref(0)
 const imgVersion = ref(Date.now())
 const reloadError = ref('')
@@ -232,9 +225,6 @@ function thumbSrc(entry: ShowcaseEntry) {
 }
 function imgSrc(entry: ShowcaseEntry) {
   return entry.image ? `/scene-showcase/${entry.image}?cv=${imgVersion.value}&v=${viewerVersion.value}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}&v=${viewerVersion.value}`
-}
-function markThumbError(entry: ShowcaseEntry) {
-  brokenThumbs.value = new Set([...brokenThumbs.value, entry.id])
 }
 
 /** 角色筛选选项：收进统一的下拉筛选器，支持全部角色、工作室角色与热门角色。 */
@@ -356,8 +346,6 @@ async function loadManifest() {
     if (unmounted || revision !== manifestRevision) return
     manifestLoading.value = false
     imgVersion.value = Date.now()
-    loadedThumbs.value = new Set()
-    brokenThumbs.value = new Set()
     const parsed = parseShowcaseManifest(manifest)
     const curation = sceneStore.curation
     entries.value = parsed.entries

@@ -376,6 +376,30 @@ impl GatewaySupervisor {
 
     pub async fn stop(&self) { self.stop_sync(); }
 
+    /// Deployment requires a positive authenticated drain receipt. A timeout
+    /// retains the child and its owner for repair; it never authorizes install.
+    pub async fn maintenance_stop(&self) -> Result<(), String> {
+        self.stopping.store(true, Ordering::SeqCst);
+        let _start_guard = self.start_lock.lock().await;
+        self.stop_generation.fetch_add(1, Ordering::SeqCst);
+        if !self.owns_gateway() { return Err("MAINTENANCE_REQUIRES_OWNED_GATEWAY".into()); }
+        let secret = self.identity_token.lock().unwrap().clone().ok_or("HOST_IDENTITY_UNAVAILABLE")?;
+        let profile = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID").ok_or("HOST_PROFILE_UNAVAILABLE")?;
+        if !self.is_healthy() { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
+        let drained = host::request(&self.base_url(), &secret, serde_json::json!({
+            "action":"shutdown", "windowId":"atelier", "origin":self.base_url(), "sourceProfileId":profile.1,
+        }))?;
+        if drained["closed"] != true { return Err("MAINTENANCE_DRAIN_UNCONFIRMED".into()); }
+        let mut slot = self.child.lock().unwrap();
+        let child = slot.as_mut().ok_or("MAINTENANCE_CHILD_MISSING")?;
+        // The retained Child handle proves ownership. The gateway has finished
+        // durable writes and released its lease before this process is reaped.
+        terminate_child(child);
+        if child.try_wait().map_err(|_| "MAINTENANCE_CHILD_WAIT")?.is_none() { return Err("MAINTENANCE_CHILD_RUNNING".into()); }
+        slot.take(); self.owned.store(false, Ordering::SeqCst); self.authenticated.store(false, Ordering::SeqCst);
+        Ok(())
+    }
+
     /// 同步停止自有网关（应用退出路径使用，等价于 stop() 但非 async）。
     /// 实测 app.exit(0) 不触发 managed state 的 Drop（2026-08-15），
     /// 退出清理必须由调用方在 ExitRequested 放行前显式执行。
