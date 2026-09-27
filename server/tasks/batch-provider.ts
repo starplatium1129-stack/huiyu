@@ -62,27 +62,40 @@ export function createBatchTaskProvider(config: GenerationConfig, batches: Retur
       if (batch) await batches.cancel(batch);
       for (const shot of recoveredShots(task)) if (shot.upstreamId) await cancelComfy(config, { ...task, upstreamId: String(shot.upstreamId) });
     },
-    async action(task, name, hooks: TaskExecutionHooks) {
-      const protectedInputs = protectedInputHooks(config, hooks);
-      await protectedInputs.protect(task.input);
-      if (task.checkpoint) await protectedInputs.protect(task.checkpoint);
-      hooks = protectedInputs.hooks;
+    async action(task, name, hooks: TaskExecutionHooks, signal: AbortSignal) {
       let batch = live(task);
-      if (!['concat', 'continue'].includes(name)) throw new WorkspaceError('TASK_ACTION_INVALID', 'Unsupported batch action', 400);
-      if (!batch || name === 'continue') {
-        const recovered = await recover(task);
-        if (recovered.errorCode === 'BATCH_UPSTREAM_UNKNOWN' || (recovered.status === 'running' && !recovered.unknown)) throw new WorkspaceError('BATCH_RECOVERY_REVIEW', 'Submitted shots have not settled');
-        const shots = recovered.checkpoint?.shots as Array<Record<string, any>>;
-        // Continue only never submitted shots. Failed/cancelled shots require a new
-        // user generation action, never a disguised replay under the previous key.
-        if (shots.some(shot => shot.submissionIntentAt && shot.status !== 'succeeded')) throw new WorkspaceError('BATCH_RECOVERY_REVIEW', 'A submitted shot requires explicit replacement');
-        if (recovered.outputs?.length) await hooks.collect(recovered.outputs);
-        await hooks.checkpoint(recovered.checkpoint!);
-        batch = await batches.create(task.principalId, task.input, hooks, recovered.checkpoint);
+      signal.throwIfAborted();
+      const interrupt = () => { batch?.abortController.abort(); };
+      signal.addEventListener('abort', interrupt, { once: true });
+      try {
+        const protectedInputs = protectedInputHooks(config, hooks);
+        await protectedInputs.protect(task.input);
+        if (task.checkpoint) await protectedInputs.protect(task.checkpoint);
+        hooks = protectedInputs.hooks;
+        let recoveredCheckpoint: Record<string, unknown> | undefined;
+        if (!['concat', 'continue'].includes(name)) throw new WorkspaceError('TASK_ACTION_INVALID', 'Unsupported batch action', 400);
+        if (name === 'continue' && batch && batch.status !== 'paused') throw new WorkspaceError('BATCH_RESUME_UNSAFE', 'Batch is not paused', 409);
+        if (!batch || name === 'continue') {
+          const recovered = await recover(batch ? { ...task, checkpoint: batchCheckpoint(batch) } : task);
+          signal.throwIfAborted();
+          if (!recovered.checkpoint || recovered.errorCode === 'BATCH_UPSTREAM_UNKNOWN' || (recovered.status === 'running' && !recovered.unknown)) throw new WorkspaceError('BATCH_RECOVERY_REVIEW', 'Submitted shots have not settled');
+          const shots = recovered.checkpoint?.shots as Array<Record<string, any>>;
+          // Continue only never submitted shots. Failed/cancelled shots require a new
+          // user generation action, never a disguised replay under the previous key.
+          if (shots.some(shot => shot.submissionIntentAt && shot.status !== 'succeeded')) throw new WorkspaceError('BATCH_RECOVERY_REVIEW', 'A submitted shot requires explicit replacement');
+          if (recovered.outputs?.length) await hooks.collect(recovered.outputs);
+          await hooks.checkpoint(recovered.checkpoint);
+          signal.throwIfAborted();
+          recoveredCheckpoint = recovered.checkpoint;
+          if (!batch) batch = await batches.create(task.principalId, task.input, hooks, recoveredCheckpoint);
+        }
+        if (signal.aborted) { interrupt(); signal.throwIfAborted(); }
+        batch.taskHooks = hooks;
+        if (name === 'concat') await batches.concat(batch);
+        else await batches.resume(batch, recoveredCheckpoint);
+      } finally {
+        signal.removeEventListener('abort', interrupt);
       }
-      batch.taskHooks = hooks;
-      if (name === 'concat') await batches.concat(batch);
-      else await batches.resume(batch);
     },
   };
 }

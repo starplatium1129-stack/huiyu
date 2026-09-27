@@ -8,12 +8,19 @@ interface SecurityRequest {
   socket?: { remoteAddress?: string | null };
   headers: IncomingHttpHeaders;
   method?: string;
+  originalUrl?: string;
+  url?: string;
 }
 interface HeaderWriter { setHeader(name: string, value: string): any }
 interface BucketOptions { capacity?: any; refillMs?: any }
 
 let crypto: typeof import('crypto') = require('crypto');
 let envelope: typeof import('./http-envelope') = require('./http-envelope');
+const STUDIO_PAGE_PATHS = new Set([
+  '/', '/index.html', '/scene-explorer', '/popular-scenes', '/prompt-builder', '/video-studio',
+  '/chat', '/showcase', '/gallery', '/character', '/style', '/lora', '/scene-manager',
+  '/color-script', '/scenario', '/companion', '/companion-chat', '/control',
+]);
 
 function tokenMatches(expectedToken: string, value: any) {
   if (typeof value !== 'string') return false;
@@ -45,8 +52,11 @@ function hasLocalBrowserOrigin(req: SecurityRequest) {
     } catch (error) { return false; }
   }
   if (req.headers['sec-fetch-site'] !== 'cross-site') return true;
-  // 从其他页面点击本机链接仍可打开界面，跨站子资源与写操作不可借用本机权限。
-  return req.headers['sec-fetch-mode'] === 'navigate' && /^(GET|HEAD)$/.test(req.method || 'GET');
+  // 外站链接只可打开已知 SPA 文档；GET API（例如 TTS）也可能执行模型调用。
+  // originalUrl 保留挂载前路径，不能把 /api/... 路由内的 / 误认成首页。
+  const target = req.originalUrl || req.url;
+  return req.headers['sec-fetch-mode'] === 'navigate' && /^(GET|HEAD)$/.test(req.method || 'GET')
+    && !!target && STUDIO_PAGE_PATHS.has(normalizeRequestPath(target));
 }
 
 // 成人内容服务端锚点（2026-08-28）：本机直连默认授权（AGENTS.md 红线 #4，

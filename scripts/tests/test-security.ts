@@ -107,7 +107,8 @@ test('本机权限：拒绝外站浏览器来源，保留桌面、Vite 与原生
   }
   assert.equal(security.isDirectLocalRequest(mockReq({ method: 'POST', headers: { 'sec-fetch-site': 'cross-site' } })), false);
   assert.equal(security.isDirectLocalRequest(mockReq({ method: 'GET', headers: { 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'no-cors' } })), false);
-  assert.equal(security.isDirectLocalRequest(mockReq({ method: 'GET', headers: { 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'navigate' } })), true);
+  assert.equal(security.isDirectLocalRequest(mockReq({ method: 'GET', originalUrl: '/chat?character=nene',
+    headers: { 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'navigate' } })), true);
 });
 
 test('tokenAuth：本机放行、远程拒绝、token 放行', async () => {
@@ -183,7 +184,7 @@ test('hostAllowed：DNS rebinding 阻断与隧道放行', () => {
   assert.equal(security.hostAllowed('other.trycloudflare.com', 3000, 'abc.trycloudflare.com'), false, 'only the active tunnel host is allowed');
 });
 
-test('localOnly 单一来源：转发头/伪造 ip 拒绝，control/maintenance 复用同一份', async () => {
+test('localOnly：转发头/伪造 ip 拒绝，本机直连放行', async () => {
   const sharedLocalOnly = security.localOnly;
   const forwardedControl: any = await runMiddleware(sharedLocalOnly, mockReq({
     path: '/api/config',
@@ -207,10 +208,6 @@ test('localOnly 单一来源：转发头/伪造 ip 拒绝，control/maintenance 
 
   const directControl: any = await runMiddleware(sharedLocalOnly, mockReq({ path: '/api/config' }));
   assert.equal(directControl.nextCalled, true, 'direct loopback must pass');
-
-  const control: typeof import('../../routes/control') = require('../../routes/control');
-  assert.equal(control._test.localOnly, security.localOnly, 'routes/control.js must reuse server/security.localOnly, not a local copy');
-  assert.equal(maintenance._test.isDirectLocalRequest, security.isDirectLocalRequest, 'routes/maintenance.js must reuse server/security.isDirectLocalRequest');
 });
 
 test('诊断脱敏：URL 与 KV token 全部遮蔽', () => {

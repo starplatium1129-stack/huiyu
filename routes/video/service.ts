@@ -320,6 +320,8 @@ function createVideoService(config: VideoConfig, dependencies: VideoServiceDepen
     drainSubmissions: async () => { await Promise.allSettled([...submissions]); },
     get:get,
     getLost:getLost,
+    // Providers may discard registration only before writing a submission intent.
+    removeJob:removeJob,
     cancel:cancel,
     publicJob:publicJob,
     pendingCount:pendingCount,

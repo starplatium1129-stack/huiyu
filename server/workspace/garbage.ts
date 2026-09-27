@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import { assertSafePath } from './paths';
-import { mediaPath } from './media';
+import { digest, mediaPath } from './media';
+import { taskInputStagingKey, taskOutputStagingKey } from './task-media-keys';
 import { thumbnailPath } from './thumbnails';
 import { checkOperation, commitOperation, findOperation, insertOperation, TRASH_RETENTION_MS } from './records';
 import { nextRevision, type WorkspaceStorageContext } from './schema';
@@ -57,20 +58,39 @@ export function collectGarbage(context: WorkspaceStorageContext, principal: stri
       removed += 1;
     }
     const staging = assertSafePath(context.root, 'media/staging');
-    if (fs.existsSync(staging)) for (const key of fs.readdirSync(staging)) {
-      checkCancelled();
-      if (!/^[a-f0-9]{64}$/.test(key)) continue;
-      const operationState = context.db.prepare('SELECT state FROM operations WHERE op_key=?').get(key)?.state;
-      if (operationState !== 'committed' && operationState !== 'aborted') continue;
-      if (context.db.prepare('SELECT id FROM leases WHERE operation_key=? LIMIT 1').get(key)) continue;
-      const folder = assertSafePath(context.root, `media/staging/${key}`);
-      for (const name of fs.readdirSync(folder)) {
-        if (!/^[a-f0-9]{64}$/.test(name)) continue;
-        const file = assertSafePath(context.root, `media/staging/${key}/${name}`);
-        const stat = fs.statSync(file);
-        if (stat.isFile() && stat.mtimeMs <= Date.now() - TRASH_RETENTION_MS) fs.unlinkSync(file);
+    if (fs.existsSync(staging)) {
+      const completed = new Map<string, string | null>();
+      for (const row of context.db.prepare("SELECT op_key FROM operations WHERE state IN ('committed','aborted')").iterate()) {
+        completed.set(String(row.op_key), null);
       }
-      if (!fs.readdirSync(folder).length) fs.rmdirSync(folder);
+      // Task commits have their own durable records. A crash or busy file can leave
+      // their staging link behind even though the original was committed safely.
+      for (const row of context.db.prepare(`SELECT task_id,output_index AS identity,json_extract(media_json,'$.alias') AS alias,'output' AS kind
+        FROM task_outputs WHERE committed=1 UNION ALL
+        SELECT task_id,name AS identity,json_extract(media_json,'$.alias') AS alias,'input' AS kind
+        FROM task_inputs WHERE committed=1`).iterate()) {
+        const key = row.kind === 'output' ? taskOutputStagingKey(String(row.task_id), Number(row.identity))
+          : taskInputStagingKey(String(row.task_id), String(row.identity));
+        completed.set(key, digest(String(row.alias)));
+      }
+      const leased = new Set<string>();
+      for (const row of context.db.prepare('SELECT id,operation_key FROM leases').iterate()) {
+        leased.add(String(row.id));
+        if (row.operation_key !== null) leased.add(String(row.operation_key));
+      }
+      for (const key of fs.readdirSync(staging)) {
+        checkCancelled();
+        if (!/^[a-f0-9]{64}$/.test(key) || !completed.has(key) || leased.has(key)) continue;
+        const folder = assertSafePath(context.root, `media/staging/${key}`);
+        const aliasHash = completed.get(key);
+        for (const name of fs.readdirSync(folder)) {
+          if (!/^[a-f0-9]{64}$/.test(name) || (aliasHash && name !== aliasHash)) continue;
+          const file = assertSafePath(context.root, `media/staging/${key}/${name}`);
+          const stat = fs.statSync(file);
+          if (stat.isFile() && stat.mtimeMs <= Date.now() - TRASH_RETENTION_MS) fs.unlinkSync(file);
+        }
+        if (!fs.readdirSync(folder).length) fs.rmdirSync(folder);
+      }
     }
     const receipt = { operationId: command.operationId, kind: command.kind, revision: nextRevision(context), removed };
     commitOperation(context, operation.op_key, receipt);

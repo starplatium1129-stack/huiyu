@@ -288,6 +288,13 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     snapshots.remove(batch.id);
   }
 
+  function restoreShots(batch: any, recovered: Record<string, any>) {
+    batch.shots = recovered.shots.map((shot: any) => ({ ...shot, input: structuredClone(shot.input),
+      status: shot.status === 'succeeded' ? 'succeeded' : 'pending',
+      job: shot.result ? { id: shot.gatewayJobId, upstreamId: shot.upstreamId, result: shot.result } : null,
+    }));
+  }
+
   async function create(owner: any, batchInput: any, taskHooks?: import('../../server/tasks/provider').TaskExecutionHooks, recovered?: Record<string, any>) {
     let availability = media.modelAvailability(config, MODEL_BY_ID[batchInput.modelId]);
     if (!availability.available) {
@@ -332,10 +339,7 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
       kicking:false,
     };
     if (recovered) {
-      batch.shots = recovered.shots.map((shot: any) => ({ ...shot, input: structuredClone(shot.input),
-        status: shot.status === 'succeeded' ? 'succeeded' : 'pending',
-        job: shot.result ? { id: shot.gatewayJobId, upstreamId: shot.upstreamId, result: shot.result } : null,
-      }));
+      restoreShots(batch, recovered);
       batch.status = batch.shots.every((shot: any) => shot.status === 'succeeded') ? 'done' : 'paused';
     }
     batches.set(id, batch);
@@ -347,15 +351,17 @@ function createBatchService(config: any, videoService: any, dependencies: any) {
     return batch;
   }
 
-  async function resume(batch: any) {
+  async function resume(batch: any, recovered?: Record<string, unknown>) {
     if (closed || batch.status !== 'paused' || batch.kicking) throw serviceError(409, 'BATCH_RESUME_UNSAFE', '分镜尚未完成核对');
+    if (recovered) restoreShots(batch, recovered);
     const next = batch.shots.find((shot: any) => shot.status === 'pending');
     if (next && batch.linkLastFrame && next.index > 1 && !next.input.references?.length) {
       const previous = batch.shots[next.index - 2];
       const name = previous.tailFrame || await extractLastFrame(previous, batch.abortController.signal);
       if (name) { previous.tailFrame = name; if (next.input.image) next.input.lastFrame = name; else next.input.image = name; }
     }
-    batch.status = 'running'; await saveBatchCheckpoint(batch); void kick(batch);
+    if (closed || batch.status !== 'paused' || batch.abortController.signal.aborted) throw serviceError(409, 'BATCH_RESUME_UNSAFE', '分镜已停止');
+    batch.status = 'running'; await saveBatchCheckpoint(batch); await kick(batch);
     return batch;
   }
 

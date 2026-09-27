@@ -5,6 +5,58 @@ let gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-tes
 let generation: any = require('../../routes/generation');
 import { createWebUIProbe, type requestJson } from '../../server/generation/webui';
 import { createGenerationService } from '../../server/generation/service';
+import { createTaskProviders } from '../../server/tasks/providers';
+import type { TaskRecord } from '../../types/tasks';
+import type { TaskExecutionHooks } from '../../server/tasks/provider';
+import animaFactory = require('../../routes/anima/service');
+import animaValidation = require('../../routes/anima/validation');
+import videoFactory = require('../../routes/video/service');
+import batchFactory = require('../../routes/video/batch');
+
+async function verifyCheckpointCleanup(stack: Awaited<ReturnType<typeof gatewayStack.start>>) {
+  const config = stack.config;
+  const owner = 'checkpoint-fixture';
+  const wai = createGenerationService(config, { durableTasks: true });
+  const anima = animaFactory.createAnimaService(config, { durableTasks: true });
+  const video = videoFactory.createVideoService(config, { durableTasks: true });
+  const batch = batchFactory.createBatchService(config, video, {});
+  const providers = createTaskProviders({ config, generation: wai, anima, video, batch });
+  let failedId = '';
+  const hooks: TaskExecutionHooks = {
+    async checkpoint(value) { failedId = String(value.gatewayJobId); throw new Error('fixture checkpoint failed'); },
+    async submitting() { throw new Error('checkpoint failure must precede submission'); },
+    async observed() {}, async collect() {},
+  };
+  const task = (input: object) => ({ principalId: owner, input } as TaskRecord);
+  const imageInput = animaValidation.validateInput({ prompt:'neutral fixture', modelId:'anima-aesthetic-v1.1', width:832, height:1216, seed:42 });
+  const webInput = generation.validateInput({ prompt:'neutral fixture', width:832, height:1216, faceDetailer:true });
+  const submissionCount = async () => {
+    const sd = await json(await fetch(stack.upstreams.sd.url + '/__mock/state'));
+    const comfy = await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'));
+    return sd.calls.filter((call: { path: string }) => call.path === '/sdapi/v1/txt2img').length
+      + comfy.calls.filter((call: { path: string }) => call.path === '/prompt').length;
+  };
+  try {
+    const before = await submissionCount();
+    await assert.rejects(wai.submit(webInput, owner, hooks), /fixture checkpoint failed/);
+    assert.equal((await wai.getStatus()).webuiPending, 0);
+    assert.throws(() => wai.find(failedId, owner), /任务不存在/);
+    await assert.rejects(providers.anima!.submit(task(imageInput), hooks), /fixture checkpoint failed/);
+    assert.equal(anima.status().pending, 0);
+    assert.equal(anima.get(failedId, owner), null);
+    await assert.rejects(providers.video!.submit(task({ prompt:'neutral fixture', width:832, height:480, duration:3 }), hooks), /fixture checkpoint failed/);
+    assert.equal(video.pendingCount(), 0);
+    assert.equal(video.get(failedId, owner), null);
+    assert.equal(await submissionCount(), before, 'failed checkpoint never submits model work');
+    const retry = await wai.submit(webInput, owner);
+    const deadline = Date.now() + 3000;
+    while (wai.getJob(retry.id, owner).status === 'queued' || wai.getJob(retry.id, owner).status === 'running') {
+      if (Date.now() > deadline) throw new Error('healthy checkpoint retry did not finish');
+      await new Promise(resolve => setTimeout(resolve, 10));
+    }
+    assert.equal(wai.getJob(retry.id, owner).status, 'succeeded', 'healthy submission works after checkpoint failure');
+  } finally { wai.close(); anima.close(); video.close(); batch.close(); }
+}
 
 async function verifyProbeOwnership() {
   const releases: Array<(value: unknown) => void> = [];
@@ -130,6 +182,7 @@ async function run() {
    } });
    try {
      let base = stack.baseUrl;
+     await verifyCheckpointCleanup(stack);
      const isolated = createGenerationService(stack.config);
      try {
        const job = await isolated.submit(generation.validateInput({ ...requestBody, faceDetailer:true }), 'owner-a');

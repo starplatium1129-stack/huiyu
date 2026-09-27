@@ -526,6 +526,8 @@ function createAnimaService<Input extends ImageJobInput = ImageJobInput>(config:
     drainSubmissions: async () => { await Promise.allSettled([...submissions]); },
     get:get,
     getLost:getLost,
+    // Providers may discard registration only before writing a submission intent.
+    removeJob:removeJob,
     cancel:cancel,
     consumeResult:consumeResult,
       publicJob:function (job: ImageJob<Input>) { return publicJob(job, job.input && job.input.family === 'krea2' ? '/api/creative' : routeBase); },

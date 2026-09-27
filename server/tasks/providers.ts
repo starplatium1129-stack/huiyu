@@ -74,10 +74,11 @@ export function createTaskProviders(options: {
     async submit(task, hooks) {
       await providerInputs(config, hooks)(task.input);
       const job = anima.create(task.input as unknown as ImageJobInput, task.principalId);
-      await hooks.checkpoint({ gatewayJobId: job.id, effectiveInput: job.input });
       let attempted = false;
-      try { await anima.submit(job, { ...hooks, async submitting(name, identity) { await hooks.submitting(name, identity); attempted = true; } }); }
-      catch (error) { if (!attempted) await anima.cancel(job); throw error; }
+      try {
+        await hooks.checkpoint({ gatewayJobId: job.id, effectiveInput: job.input });
+        await anima.submit(job, { ...hooks, async submitting(name, identity) { await hooks.submitting(name, identity); attempted = true; } });
+      } catch (error) { if (!attempted) anima.removeJob(job); throw error; }
     },
     async query(task) {
       const job = anima.get(gatewayId(task), task.principalId);
@@ -127,10 +128,11 @@ export function createTaskProviders(options: {
       async submit(task, hooks) {
         await providerInputs(config, hooks)(task.input);
         const job = video.create(task.input as unknown as VideoInput, task.principalId);
-        await hooks.checkpoint({ gatewayJobId: job.id });
         let attempted = false;
-        try { await video.submit(job, { ...hooks, async submitting(name, identity) { await hooks.submitting(name, identity); attempted = true; } }); }
-        catch (error) { if (!attempted) await video.cancel(job); throw error; }
+        try {
+          await hooks.checkpoint({ gatewayJobId: job.id });
+          await video.submit(job, { ...hooks, async submitting(name, identity) { await hooks.submitting(name, identity); attempted = true; } });
+        } catch (error) { if (!attempted) video.removeJob(job); throw error; }
       },
       async query(task) {
         const job = video.get(gatewayId(task), task.principalId);

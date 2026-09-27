@@ -5,9 +5,11 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { DatabaseSync } from 'node:sqlite';
 import { openWorkspaceEngine } from '../../server/workspace/engine';
-import { digest, mediaPath } from '../../server/workspace/media';
+import { digest, mediaPath, stagingPath } from '../../server/workspace/media';
+import { taskInputStagingKey, taskOutputStagingKey } from '../../server/workspace/task-media-keys';
 import { TRASH_RETENTION_MS } from '../../server/workspace/records';
 import type { Checkpoint, EntityId, WorkspaceCommand, WorkspaceContext, WorkspaceResults } from '../../server/workspace/types';
+import type { TaskRecord } from '../../types/tasks';
 
 const bytes = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jM1sAAAAASUVORK5CYII=', 'base64');
 const media = { alias: 'image-1', sha256: digest(bytes), bytes: bytes.length, mime: 'image/png' };
@@ -155,6 +157,60 @@ async function run(): Promise<void> {
       assert.deepEqual(partial.softDeleteResults, [{ id: 'a', deleted: true }, { id: 'b', deleted: false, code: 'REVISION_CONFLICT' }, { id: 'missing', deleted: false, code: 'NOT_FOUND' }]);
       assert.deepEqual((await call(engine, { kind: 'listProjects' })).items[0].body.history_ids, ['b']);
       assertions += 15;
+    } finally { engine.close(); }
+
+    const taskStaging = path.join(root, 'task-staging');
+    engine = open(taskStaging, true);
+    try {
+      const now = Date.now(), taskId = 'gc-task';
+      const record: TaskRecord = { taskId, workspaceId: context.workspaceId, principalId: context.principalId,
+        requestKey: taskId, requestFingerprint: 'fixture', kind: 'anima', provider: 'fixture', providerFingerprint: 'fixture',
+        upstreamId: 'fixture-prompt', status: 'succeeded', recoveryState: 'normal', revision: 0, runtimeEpoch: 'fixture-epoch',
+        createdAt: now, updatedAt: now, submissionIntentAt: now, submissionObservedAt: now, cancelRequestedAt: null,
+        upstreamSettled: true, executionDeadline: now, input: {}, inputMediaRefs: [], resultState: 'none', resultRefs: [],
+        deliveryState: 'unseen', errorCode: null, metadata: {}, checkpoint: null, parentBatchId: null, stepIndex: null };
+      await call(engine, { kind: 'task.accept', record });
+      const resultBytes = Buffer.concat([bytes, Buffer.from('result')]);
+      const resultMedia = { ...media, alias: `task-${taskId}-0`, sha256: digest(resultBytes), bytes: resultBytes.length, index: 0 };
+      const inputKey = taskInputStagingKey(taskId, 'accepted.png');
+      const inputMedia = { ...media, alias: `task-input-${inputKey}` };
+      const pendingKey = taskInputStagingKey(taskId, 'pending.png');
+      const pendingBytes = Buffer.concat([bytes, Buffer.from('pending')]);
+      const pendingMedia = { ...media, alias: `task-input-${pendingKey}`, sha256: digest(pendingBytes), bytes: pendingBytes.length };
+      await call(engine, { kind: 'task.result.prepare', taskId, media: resultMedia });
+      await call(engine, { kind: 'task.result.chunk', taskId, index: 0, offset: 0, data: resultBytes });
+      await call(engine, { kind: 'task.input.prepare', taskId, name: 'accepted.png', media: inputMedia });
+      await call(engine, { kind: 'task.input.chunk', taskId, name: 'accepted.png', offset: 0, data: bytes });
+      await call(engine, { kind: 'task.input.prepare', taskId, name: 'pending.png', media: pendingMedia });
+      await call(engine, { kind: 'task.input.chunk', taskId, name: 'pending.png', offset: 0, data: pendingBytes });
+      const resultStaged = stagingPath(taskStaging, taskOutputStagingKey(taskId, 0), resultMedia.alias);
+      const inputStaged = stagingPath(taskStaging, inputKey, inputMedia.alias);
+      const pendingStaged = stagingPath(taskStaging, pendingKey, pendingMedia.alias);
+      const blocked = new Set([resultStaged, inputStaged]);
+      const originalUnlink = fs.unlinkSync;
+      fs.unlinkSync = file => {
+        if (blocked.has(String(file))) { const error: NodeJS.ErrnoException = new Error('fixture staging busy'); error.code = 'EBUSY'; throw error; }
+        originalUnlink(file);
+      };
+      try {
+        await call(engine, { kind: 'task.result.commit', taskId, index: 0 });
+        await call(engine, { kind: 'task.input.commit', taskId, name: 'accepted.png' });
+      } finally { fs.unlinkSync = originalUnlink; }
+      const committed = (await call(engine, { kind: 'task.get', taskId }))!;
+      assert.equal(committed.resultState, 'available');
+      await call(engine, { kind: 'task.patch', taskId, expectedRevision: committed.revision, patch: { deliveryState: 'discarded' } });
+      await call(engine, { kind: 'collectGarbage', operationId: 'recent-task-gc' });
+      assert.equal(fs.existsSync(resultStaged) && fs.existsSync(inputStaged), true, 'recent committed staging retains its grace period');
+      const old = new Date(Date.now() - TRASH_RETENTION_MS - 1000);
+      for (const file of [resultStaged, inputStaged, pendingStaged]) fs.utimesSync(file, old, old);
+      assert.equal((await call(engine, { kind: 'collectGarbage', operationId: 'expired-task-gc' })).removed, 1);
+      assert.equal(fs.existsSync(resultStaged), false, 'collect discarded output staging left by failed post-commit cleanup');
+      assert.equal(fs.existsSync(mediaPath(taskStaging, resultMedia.sha256)), false);
+      assert.equal(fs.existsSync(inputStaged), false, 'collect committed input staging without removing its authoritative original');
+      assert.deepEqual(Buffer.from((await call(engine, { kind: 'readMedia', alias: inputMedia.alias })).data), bytes);
+      assert.deepEqual(fs.readFileSync(pendingStaged), pendingBytes, 'an unfinished input remains resumable even after the grace period');
+      changeDatabase(taskStaging, db => assert.equal(db.prepare('SELECT kind FROM leases WHERE id=?').get(pendingKey)?.kind, 'task-input'));
+      assertions += 9;
     } finally { engine.close(); }
 
     const failures = path.join(root, 'failures');

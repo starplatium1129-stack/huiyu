@@ -78,7 +78,7 @@ test('local model import repairs optional entries, keeps source bytes, is idempo
       const remote = { 'x-forwarded-for': '203.0.113.10' }
       assert.deepEqual(await (await fetch(url + '/api/live2d-companions', { headers: remote })).json(), [])
       assert.equal((await fetch(url + entries[0].avatar.modelPath, { headers: remote })).status, 404)
-      assert.equal((await fetch(url + '/api/live2d-model/fixture/compact', { headers: remote })).status, 404)
+      assert.equal((await fetch(url + '/api/live2d-model/fixture/compact', { headers: remote })).status, 403)
       const body = { character: 'fixture', messages: [{ role: 'user', content: 'hi' }] }
       assert.ok(validateChatBody(body).error)
       const allowed = validateChatBody(body, entries[0].character.personaPrompt)

@@ -23,6 +23,6 @@ export interface TaskProvider extends TaskRecoveryProvider {
   prepare?(task: TaskRecord, hooks: Pick<TaskExecutionHooks, 'protectInput' | 'restoreInput'>): Promise<void>;
   validate(input: Record<string, unknown>): Record<string, unknown>;
   submit(task: TaskRecord, hooks: TaskExecutionHooks): Promise<void>;
-  action?(task: TaskRecord, name: string, hooks: TaskExecutionHooks): Promise<void>;
+  action?(task: TaskRecord, name: string, hooks: TaskExecutionHooks, signal: AbortSignal): Promise<void>;
   close?(): void | Promise<void>;
 }

@@ -1,6 +1,48 @@
 'use strict';
 const { test }: typeof import('node:test') = require('node:test');
 
+test('跨站导航只打开本机 SPA，不能无令牌触发 GET 配音', async () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  const fs: typeof import('node:fs') = require('node:fs');
+  const path: typeof import('node:path') = require('node:path');
+  const http: typeof import('node:http') = require('node:http');
+  const stack = await (require('./gateway-test-stack') as typeof import('./gateway-test-stack')).start({
+    prepare({ root, config }: { root: string; config: import('../../server/config-types').GatewayConfig }) {
+      config.ROOT_DIR = path.join(root, 'app');
+      config.ASSETS_ROOT = path.join(config.ROOT_DIR, 'assets');
+      fs.mkdirSync(path.join(config.ROOT_DIR, 'dist'), { recursive: true });
+      fs.writeFileSync(path.join(config.ROOT_DIR, 'dist/index.html'), '<html>navigation fixture</html>');
+      config.VOICE_PROFILES = { nene: { refAudioPath: 'fixture.wav', promptText: 'neutral fixture' } };
+    },
+  });
+  // Native HTTP preserves browser navigation headers; fetch() replaces the mode with cors.
+  const request = (url: string, headers: import('node:http').OutgoingHttpHeaders) => new Promise<{ status: number | undefined; bytes: Buffer }>((resolve, reject) => {
+    const req = http.get(stack.baseUrl + url, { headers }, res => {
+      const chunks: Buffer[] = [];
+      res.on('data', chunk => chunks.push(chunk));
+      res.once('error', reject);
+      res.once('end', () => resolve({ status: res.statusCode, bytes: Buffer.concat(chunks) }));
+    });
+    req.once('error', reject);
+  });
+  const tts = stack.upstreams.tts.mock as ReturnType<typeof import('./mock-upstreams').createTtsMock>;
+  try {
+    const navigation = { 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'navigate',
+      'sec-fetch-dest': 'document', referer: 'https://external.example/' };
+    const page = await request('/gallery?filter=recent', navigation);
+    assert.equal(page.status, 200);
+    assert.match(page.bytes.toString(), /navigation fixture/);
+    const audio = '/api/tts?voice=nene&language=ja&text=neutral-navigation-fixture';
+    assert.equal((await request(audio, navigation)).status, 401);
+    assert.equal(tts.state.calls.filter(call => call.path === '/tts').length, 0);
+    const localAudio = await request(audio, { 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'no-cors',
+      'sec-fetch-dest': 'audio', referer: stack.baseUrl + '/chat' });
+    assert.equal(localAudio.status, 200);
+    assert.equal(localAudio.bytes.toString('ascii', 0, 4), 'RIFF');
+    assert.equal(tts.state.calls.filter(call => call.path === '/tts').length, 1);
+  } finally { await stack.close(); }
+});
+
 test('远程同一身份不能借原生 SD 写接口绕过应用分级和方法限制', async () => {
   const assert: typeof import('node:assert/strict') = require('node:assert/strict');
   const stack: any = await (require('./gateway-test-stack') as typeof import('./gateway-test-stack')).start();

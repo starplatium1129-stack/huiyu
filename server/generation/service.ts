@@ -137,7 +137,15 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         webJob.admissionRelease = release;
         jobs.set(webJob.id, webJob);
         snapshots.save(webJob);
-        if (hooks) await hooks.checkpoint({ gatewayJobId: webJob.id, provider: 'webui', effectiveInput: webJob.input });
+        try {
+            if (hooks) await hooks.checkpoint({ gatewayJobId: webJob.id, provider: 'webui', effectiveInput: webJob.input });
+            if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
+        } catch (cause) {
+            jobs.delete(webJob.id);
+            snapshots.remove(webJob.id);
+            release();
+            throw cause;
+        }
         void webuiQueue.run(async function () {
             if (webJob.status === 'cancelled') return;
             if (hooks) await hooks.submitting('webui', '');
@@ -230,6 +238,7 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
             // Durable ledger owns an uncertain submission. Never turn a lost POST
             // response into cancellation or release its admission slot.
             if (hooks && job && attempted) { watchComfyAdmission(job, release); throw cause; }
+            if (hooks && job && !attempted) { comfy.removeJob(job); release(); throw cause; }
             if (registry.isClosed()) {
                 release();
                 if (job) await comfy.cancel(job).catch(() => {});

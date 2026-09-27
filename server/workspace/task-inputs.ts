@@ -1,4 +1,5 @@
-import { checkAvailableSpace, digest, publishMedia, releaseCommittedStaging, uploadedBytes, uploadMediaChunk } from './media';
+import { checkAvailableSpace, publishMedia, releaseCommittedStaging, uploadedBytes, uploadMediaChunk } from './media';
+import { taskInputStagingKey } from './task-media-keys';
 import { nextRevision, type WorkspaceStorageContext } from './schema';
 import { WorkspaceError, type MediaInput } from './types';
 import type { TaskInputCommand } from './task-types';
@@ -7,7 +8,7 @@ export function executeTaskInput(storage: WorkspaceStorageContext, principal: st
   const row = storage.db.prepare('SELECT record_json FROM tasks WHERE task_id=? AND principal_id=?').get(command.taskId, principal);
   if (!row) throw new WorkspaceError('TASK_NOT_FOUND', 'Task does not exist', 404);
   if (!/^[\w.-]{1,220}$/.test(command.name)) throw new WorkspaceError('TASK_INPUT_INVALID', 'Invalid protected input name');
-  const key = digest(`input:${command.taskId}:${command.name}`);
+  const key = taskInputStagingKey(command.taskId, command.name);
   const existing = storage.db.prepare('SELECT media_json,committed FROM task_inputs WHERE task_id=? AND name=?').get(command.taskId, command.name);
   const stored = existing ? JSON.parse(String(existing.media_json)) as MediaInput : null;
   if (command.kind === 'task.input.get') return existing?.committed === 1 ? stored : null;

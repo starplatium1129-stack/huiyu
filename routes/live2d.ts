@@ -2,7 +2,7 @@
 
 import type { GatewayConfig } from '../server/config-types';
 import path from 'node:path';
-const { isDirectLocalRequest }: typeof import('../server/security') = require('../server/security');
+const { isDirectLocalRequest, localOnly }: typeof import('../server/security') = require('../server/security');
 import { localLive2dRoot, readLocalCompanions } from '../services/live2d-local';
 import { modelFile } from '../services/live2d-manifest';
 import { createLive2dImportRouter } from './live2d-import';
@@ -60,20 +60,21 @@ function createLive2dRouter(config: Live2dConfig, dependencies?: Live2dRouterDep
   }));
 
   let textures: Live2dTextureService | null = config.LIVE2D_ROOT ? createLive2dTextureService(config.LIVE2D_ROOT) : null;
-  router.get('/api/live2d-model/:character/:quality', typedHandler(function (req, res) {
+  // Derived manifests/atlases have no remote review identity; retain the source media boundary.
+  router.get('/api/live2d-model/:character/:quality', localOnly, typedHandler(function (req, res) {
     try {
-      const selected = ['nene', 'natsume'].includes(String(req.params.character)) ? textures : isDirectLocalRequest(req) ? localTextures : null;
+      const selected = ['nene', 'natsume'].includes(String(req.params.character)) ? textures : localTextures;
       if (!selected) return res.status(404).end();
       res.setHeader('Cache-Control', 'no-cache');
       res.json(selected.manifest(String(req.params.character), String(req.params.quality)));
     } catch { res.status(404).json({ error:'Live2D model unavailable' }); }
   }));
-  router.get('/api/live2d-texture/:character/:quality/:index', typedHandler(async function (req, res) {
+  router.get('/api/live2d-texture/:character/:quality/:index', localOnly, typedHandler(async function (req, res) {
     try {
       const character = String(req.params.character);
       const quality = String(req.params.quality);
       const index = String(req.params.index);
-      const selected = ['nene', 'natsume'].includes(character) ? textures : isDirectLocalRequest(req) ? localTextures : null;
+      const selected = ['nene', 'natsume'].includes(character) ? textures : localTextures;
       if (!selected || !/^\d+\.webp$/.test(index)) return res.status(404).end();
       const image = await selected.texture(character, quality, Number(index.slice(0, -5)));
       res.setHeader('Cache-Control', 'no-cache');

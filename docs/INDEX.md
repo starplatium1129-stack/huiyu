@@ -94,6 +94,7 @@
 - [原状态页分批记录（截至 2026-09-27）](archive/completed/project-status-2026-09-27.md)：完整保留各批当时结果与限制，现行摘要仍见项目状态。
 
 - [后端审计与优化（2026-09-27）](audits/2026-09-27/backend-audit.md)：任务/自愈竞态、存储热路径、翻译和反推传输、配音配置与收件箱；[热路径样本](evidence/backend-hotpaths-2026-09-27.json)、[批量读取](evidence/backend-readpaths-2026-09-27.json)、[生命周期](evidence/backend-lifecycle-2026-09-27.json)、[配音与收件箱](evidence/backend-voice-inbox-2026-09-27.json)和安装边界分列。
+- [后端重构必要性复审与落实（2026-09-27）](audits/2026-09-27/backend-refactor-review.md)：五项任务、派生媒体权限与暂存回收缺口的修复前复现、同日实施及测试精简；源码验证、完整门禁失败与安装边界分别记录。
 
 - [工作流治理实施与复核（2026-09-13–14）](archive/audits/workflow-governance-2026-09-13-14.md)：合并 GLM 交接、W1 初版/复核及 A/RB/RC/RD、N1–N3、G1–G16 结果，保留分批失败与补验。
 - [资产与资料复核（2026-09-13）](archive/audits/asset-document-review-2026-09-13.md)：合并 Gemini 交付复核、G0–G5 资料范围及六份盘点的误报更正；原始 JSON 与验收证据保留。

@@ -9,6 +9,7 @@ import { openStorage } from '../../server/workspace/schema';
 import { executeTaskCommand } from '../../server/workspace/tasks';
 import { TASK_SCHEMA_SQL } from '../../server/workspace/task-schema';
 import { createTaskRuntime } from '../../server/tasks/runtime';
+import { createBatchTaskProvider } from '../../server/tasks/batch-provider';
 import type { TaskProvider, TaskExecutionHooks, TaskObservation } from '../../server/tasks/provider';
 import type { TaskRecord } from '../../types/tasks';
 import type { TaskCommand } from '../../server/workspace/task-types';
@@ -313,34 +314,92 @@ test('migrated legacy task summaries are read-only and scoped to their verified 
   } finally { await f.close(); }
 });
 
-test('restored batch stays paused and explicit continuation submits only the never sent shot', async () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-batch-fixture-'));
-  const config = { ROOT_DIR: root, AI_WORKSPACE_ROOT: root, COMFY_HOST: 'http://127.0.0.1:1' };
+test('concurrent continuation owns one live batch and reconciles in order without resubmitting a shot', async () => {
+  const f = fixture(); const root = f.root;
+  const cancellationPosts: string[] = [];
+  const upstream = http.createServer((req, res) => { req.resume(); cancellationPosts.push(req.url!); res.setHeader('Content-Type', 'application/json'); res.end('{}'); });
+  upstream.listen(0, '127.0.0.1'); await once(upstream, 'listening');
+  const host = `http://127.0.0.1:${(upstream.address() as import('node:net').AddressInfo).port}`;
+  const config = { ROOT_DIR: root, RUNTIME_ROOT: path.join(root, 'runtime'), AI_WORKSPACE_ROOT: root, COMFY_HOST: host, SD_HOST: 'http://127.0.0.1:1' };
   const model = videoConstants.MODEL_BY_ID['wan2.2-ti2v-5b'];
   for (const [folder, name] of model.requirements) { const file = path.join(root, 'ComfyUI', 'models', folder, name); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, 'fixture'); }
   const input = videoValidation.validateBatchInput({ modelId: model.id, aspectRatio: 'landscape', linkLastFrame: false,
     shots: [{ prompt: 'first fixture', seed: 11 }, { prompt: 'second fixture', seed: 22 }] }, config, { isLocal: true });
   const submitted: number[] = []; const checkpoints: Record<string, unknown>[] = [];
   const jobs = new Map<string, any>();
+  let submissionEntered = false, queryEntered = false, queries = 0, releaseSubmission!: () => void, releaseQuery!: () => void;
+  let concatEntered = false, concatSignal!: AbortSignal, releaseConcat!: () => void;
+  const submissionGate = new Promise<void>(resolve => { releaseSubmission = resolve; });
+  const queryGate = new Promise<void>(resolve => { releaseQuery = resolve; });
+  const concatGate = new Promise<void>(resolve => { releaseConcat = resolve; });
   const fakeVideo = {
-    create(value: any) { const job = { id: 'new-shot', input: value, status: 'queued', upstreamId: '', result: null }; jobs.set(job.id, job); return job; },
-    async submit(job: any, hooks: TaskExecutionHooks) { await hooks.submitting('comfy', 'fixture'); submitted.push(job.input.seed); job.upstreamId = 'second-prompt'; await hooks.observed(job.upstreamId); job.status = 'running'; },
+    create(value: any) { const job = { id: 'new-shot-' + jobs.size, input: value, status: 'queued', upstreamId: '', result: null }; jobs.set(job.id, job); return job; },
+    async submit(job: any, hooks: TaskExecutionHooks) { submissionEntered = true; await submissionGate; await hooks.submitting('comfy', 'fixture'); submitted.push(job.input.seed); job.upstreamId = 'second-prompt'; await hooks.observed(job.upstreamId); job.status = 'running'; },
     get(id: string) { return jobs.get(id); }, async cancel() {},
   };
-  const batches = batchFactory.createBatchService(config, fakeVideo, { batchPollIntervalMs: 5 });
+  const batches = batchFactory.createBatchService(config, fakeVideo, { batchPollIntervalMs: 5,
+    async runFfmpeg(_args: readonly string[], options: { signal: AbortSignal }) { concatEntered = true; concatSignal = options.signal; await concatGate; throw new Error('fixture transcode cancelled'); },
+  });
+  const provider = createBatchTaskProvider(config, batches, () => 'approved-binding');
+  const query = provider.query;
+  provider.query = async task => { queries++; if (!queryEntered) { queryEntered = true; await queryGate; } return query(task); };
+  const runtime = createTaskRuntime({ workspace: f.workspace, providers: { batch: provider }, pollMs: 60000 });
   const hooks: TaskExecutionHooks = { async submitting() {}, async observed() {}, async collect() {}, async checkpoint(value) { checkpoints.push(structuredClone(value)); } };
-  const previousResult = path.join(root, 'first.mp4'); fs.writeFileSync(previousResult, 'fixture');
+  const video = Buffer.from('000000186674797069736f6d0000000069736f6d6d703431', 'hex');
+  const previousResult = path.join(root, 'first.mp4'); fs.writeFileSync(previousResult, video);
+  const frame = path.join(root, 'ComfyUI', 'input', 'preserved-frame.png'); fs.mkdirSync(path.dirname(frame), { recursive: true }); fs.writeFileSync(frame, image);
   try {
     const recovered = { shots: input.shots.map((shot: any, index: number) => ({ index: index + 1, input: shot.input, attempts: index ? 0 : 1,
       status: index ? 'pending' : 'succeeded', upstreamId: index ? null : 'first-prompt', submissionIntentAt: index ? null : 123,
       gatewayJobId: index ? null : 'first-job', result: index ? null : { path: previousResult, mime: 'video/mp4' }, tailFrame: index ? null : 'preserved-frame.png' })) };
     const batch = await batches.create('desktop', input, hooks, recovered);
     assert.equal(batch.status, 'paused'); assert.deepEqual(submitted, []);
-    await batches.resume(batch);
-    await until(async () => submitted.length === 1 && Boolean((checkpoints.at(-1)?.shots as any[])?.[1].upstreamId));
+    const now = Date.now();
+    const record: TaskRecord = { taskId: 'batch-fixture', workspaceId: f.workspace.workspaceId, principalId: 'desktop', requestKey: 'batch-fixture',
+      requestFingerprint: 'fixture', kind: 'batch', provider: 'comfy', providerFingerprint: 'approved-binding', upstreamId: null,
+      status: 'running', recoveryState: 'unknown', revision: 0, runtimeEpoch: 'epoch-one', createdAt: now, updatedAt: now,
+      submissionIntentAt: 123, submissionObservedAt: 123, cancelRequestedAt: null, upstreamSettled: false, executionDeadline: now + 100000,
+      input, inputMediaRefs: [], resultState: 'none', resultRefs: [], deliveryState: 'unseen', errorCode: null,
+      metadata: {}, checkpoint: checkpoints.at(-1)!, parentBatchId: null, stepIndex: null };
+    await f.workspace.request({ kind: 'task.accept', record }, { principalId: 'desktop', workspaceId: f.workspace.workspaceId, protocolVersion: 1 });
+    const media = { alias: `task-${record.taskId}-0`, sha256: digest(video), bytes: video.length, mime: 'video/mp4', index: 0 };
+    const context = { principalId: 'desktop', workspaceId: f.workspace.workspaceId, protocolVersion: 1 as const };
+    await f.workspace.request({ kind: 'task.result.prepare', taskId: record.taskId, media }, context);
+    await f.workspace.request({ kind: 'task.result.chunk', taskId: record.taskId, index: 0, offset: 0, data: video }, context);
+    await f.workspace.request({ kind: 'task.result.commit', taskId: record.taskId, index: 0 }, context);
+    const before = runtime.reconcile('desktop', record.taskId);
+    await until(async () => queryEntered);
+    const first = runtime.action('desktop', record.taskId, 'continue');
+    const duplicate = runtime.action('desktop', record.taskId, 'continue');
+    assert.equal(duplicate, first);
+    await assert.rejects(runtime.action('other-principal', record.taskId, 'continue'), { code: 'TASK_NOT_FOUND' });
+    await immediate(); assert.equal(submissionEntered, false, 'continue waits for the older observation');
+    releaseQuery(); await before;
+    await until(async () => submissionEntered);
+    const after = runtime.reconcile('desktop', record.taskId);
+    await immediate(); assert.equal(queries, 1, 'a query cannot overtake the active action');
+    releaseSubmission(); await Promise.all([first, duplicate, after]);
     assert.deepEqual(submitted, [22]);
-    const shots = checkpoints.at(-1)?.shots as any[];
+    assert.equal(jobs.size, 1);
+    const current = await runtime.get('desktop', record.taskId);
+    assert.equal(current.checkpoint?.gatewayJobId, batch.id, 'continuation reuses the verified live owner');
+    const shots = current.checkpoint?.shots as any[];
     assert.equal(shots[0].upstreamId, 'first-prompt'); assert.equal(shots[0].tailFrame, 'preserved-frame.png');
     assert.equal(shots[1].upstreamId, 'second-prompt'); assert.ok(shots[1].submissionIntentAt);
-  } finally { batches.close(); fs.rmSync(root, { recursive: true, force: true }); }
+    const second = jobs.values().next().value!; second.result = { path: previousResult, mime: 'video/mp4' }; second.status = 'succeeded';
+    await until(async () => batch.status === 'done');
+    const concat = runtime.action('desktop', record.taskId, 'concat');
+    await until(async () => concatEntered);
+    const cancelled = await runtime.cancel('desktop', record.requestKey);
+    assert.ok(cancelled?.cancelRequestedAt, 'cancellation is acknowledged while the action is still draining');
+    assert.equal(concatSignal.aborted, true, 'the owned transcode receives cancellation before the action finishes');
+    await until(async () => cancellationPosts.length === 2);
+    assert.deepEqual(cancellationPosts, ['/api/jobs/first-prompt/cancel', '/api/jobs/second-prompt/cancel']);
+    let drained = false; const closing = runtime.close().then(() => { drained = true; });
+    await immediate(); assert.equal(drained, false, 'shutdown waits for the cancelled action to finish');
+    releaseConcat(); await assert.rejects(concat, /fixture transcode cancelled/); await closing;
+  } finally {
+    releaseQuery(); releaseSubmission(); releaseConcat(); await runtime.close();
+    upstream.closeAllConnections(); await new Promise<void>(resolve => upstream.close(() => resolve())); await f.close();
+  }
 });

@@ -252,204 +252,7 @@ async function consumeVoice(service: any, input: any) {
 }
 
 async function run() {
-  // 网站角色房间与 Companion 是独立视图，只共享最小会话编排。
-  let html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
-  let companionHtml = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
-  companionHtml += '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useCompanionWorkspace.ts'), 'utf8');
-  // 2026-08-22 行为运行时（30s 心跳：syncReminders + reconcileAutoListen）自
-  // CompanionView 下沉，tick 哨兵随之迁移；同轮语音输入簇（按住说话/Space
-  // 保持/唤醒会话/auto-listen gating）下沉 useCompanionSpeechInput。
-  let companionBehavior = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionBehaviorRuntime.ts'), 'utf8');
-  let companionSpeech = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionSpeechInput.ts'), 'utf8');
-  // d674a99 将角色房间会话核心迁入 chat/ 子目录（与 useChatConversation 等同层）
-  let roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useCharacterRoomSession.ts'), 'utf8');
-  // The session delegates profile loading and fact recall to useRoomMemory.
-  assert(roomSession.includes('} = useRoomMemory({'), 'the session must wire the memory owner');
-  roomSession += '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useRoomMemory.ts'), 'utf8');
-  let apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
-  let characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
-  let adapterProfile = fs.readFileSync(path.join(root, 'src', 'live2d', 'adapterProfile.ts'), 'utf8');
-  let voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
-  let voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
-  let live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
-  // 双后端抽象后 wl-live2d 专属逻辑（运行库导入/模型创建/画布布局）在
-  // browserBackend；源码哨兵断言检查两者合并，防止单侧重构回退。
-  let live2dBrowserBackend = fs.readFileSync(path.join(root, 'src', 'live2d', 'browserBackend.ts'), 'utf8');
-  let live2dStageModule = live2dModule + '\n' + live2dBrowserBackend;
-  let live2dSubmodules = fs.readdirSync(path.join(root, 'src', 'composables', 'live2d')).filter(function (name) { return name.endsWith('.ts'); }).map(function (name) { return fs.readFileSync(path.join(root, 'src', 'composables', 'live2d', name), 'utf8'); }).join('\n');
-  let live2dAggregated = live2dModule + '\n' + live2dBrowserBackend + '\n' + live2dSubmodules + '\n' + adapterProfile;
-  let chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
-  let mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
-  let streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
-  let chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatStorage.ts'), 'utf8');
-  let characterConfig = fs.readFileSync(path.join(root, 'src', 'config', 'characters.ts'), 'utf8');
-  let chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatProvider.ts'), 'utf8');
-  let chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatConversation.ts'), 'utf8');
-  let userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
-  let voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
-  let chatRouteSource = [
-    path.join(root, 'routes', 'chat.js'),
-    path.join(root, 'routes', 'chat-validation.js'),
-  ].filter(fs.existsSync).map(f => fs.readFileSync(f, 'utf8')).join('\n');
-  let serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
-
-  assert(html.includes('chat-page'), 'chat view must render the character room shell');
-  assert(companionHtml.includes('companion-page'), 'companion view must render its own desktop shell');
-  assert(!companionHtml.includes("import ChatView") && !companionHtml.includes('<ChatView'), 'companion must not wrap the website chat view');
-  assert(
-    html.includes('useCharacterRoomSession')
-      && companionHtml.includes('useCharacterRoomSession')
-      && roomSession.includes('useChatConversation')
-      && roomSession.includes('useChatProvider')
-      && roomSession.includes('useVoice'),
-    'website chat and companion must share only the character-room session core'
-  );
-  // 两个已登记角色可在真实舞台切换（tests/e2e/studio.spec.ts 会切到 nene 并断言服装记忆变化），
-  // 不再用注册表字符串推断「可选择」这一行为。
-  // chat.css 是路由专属样式：由 ChatView 自己 import，随 /chat 的懒加载块下发，
-  // 不再进全局包（它曾占 139KB 全局 CSS 的 13%，而只有一个路由用得到）。
-  assert(html.includes('assets/css/chat.css'), 'chat styles must be imported by the chat view');
-  assert(!mainTs.includes('assets/css/chat.css'), 'chat styles must not ship in the global entry bundle');
-  assert(roomSession.includes('useVoice') && html.includes('ChatCharacterStage'), 'shared session must own voice while the chat view composes the character stage');
-  assert(characterStageComponent.includes('useLive2D'), 'the character stage must own the Live2D lifecycle');
-  assert(characterStageComponent.includes("'live2d-ready': live2d.ready"), 'Vue must own the Live2D visibility class so voice state renders cannot restore the static portrait');
-  assert(html.includes('voice-console') && html.includes('replay-btn'), 'live voice and replay must share one visual control');
-  assert(!html.includes('portrait-blink') && !html.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');
-  assert(!chatCss.includes('portrait-talk'), 'static portraits must not scale or bounce while voice is playing');
-  assert(
-    roomSession.includes('useChatConversation')
-      && chatConversation.includes("runtimeFetch('/api/chat'")
-      && chatConversation.includes('parseNdjsonResponse'),
-    'chat conversation composable must stream from the gateway'
-  );
-  assert(
-    chatStorage.includes('historiesRevision')
-      && chatStorage.includes('historiesRevisions')
-      && chatStorage.includes('remoteRevision'),
-    'clearing a conversation must create a tombstone that blocks delayed stale saves'
-  );
-  assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
-  assert(html.includes('ChatUserProfilePanel') && userProfilePanel.includes('CHAT_RELATIONSHIPS'), 'user profile editing must have independent component ownership');
-  assert(html.includes('ChatMemoryPanel') && html.includes('messageRemembered'), 'manual long-term memory must have independent UI ownership');
-  // 档案与记忆是否真的进入请求，由本文件后面的真实 validateChatBody 场景断言
-  // （profiledPrompt / memoryValidation），不再靠调用点字符串推断。
-  assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
-  assert(
-    /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopWindowBounds,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?(?:releasePointerFocus,?\s*)?\}\)/.test(characterStageComponent)
-      && characterStageComponent.includes("emit('live2dEnabled'")
-      && characterStageComponent.includes("emit('outfitChanged'"),
-    'the character stage must expose only voice animation controls and persist Live2D preferences'
-  );
-  assert(
-    apiSettingsComponent.includes('chatApi.testProvider')
-      && apiSettingsComponent.includes('discoveredModels'),
-    'chat API settings must test credentials and discover models'
-  );
-  assert(chatConversation.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
-  assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
-  assert(!/\bany\b/.test(companionHtml), 'CompanionView boundaries must stay explicitly typed');
-  assert(companionSpeech.includes('useVoiceInput') && companionSpeech.includes('createSpeechSession') && companionSpeech.includes('loadSpeechInputConfig'), 'Companion speech must reuse the existing input/session modules');
-  // Space press/release and cancellation during microphone acquisition are exercised
-  // by the companion speech scenarios in tests/e2e/studio.spec.ts.
-  assert(companionSpeech.includes('documentHidden') && companionSpeech.includes('!dnd.value') && companionSpeech.includes('!inQuietHours.value'), 'Companion auto listening must gate visibility, DND, and quiet hours');
-  assert(/watch\(busy, value => \{\s*if \(value\) \{\s*speechHeldByKeyboard = false\s+speechHeldByPointer = false\s+speechSession\.markReplyBusy\(\)\s+speechCancel\(\)\s*\} else \{/.test(companionSpeech), 'busy=true must clear held inputs and cancel every speech mode before reconcile');
-  assert(companionHtml.includes('function setDesktopVisibility(visible: boolean)'), 'Companion visibility handler must remain present');
-  assert(companionHtml.includes('if (!visible)') && companionHtml.includes('cancelSpeechActivity()'), 'Companion window hiding must cancel speech');
-  assert(companionBehavior.includes('syncReminders()') && companionBehavior.includes('reconcileAutoListen()'), 'Companion behavior ticks must refresh quiet state and auto listening');
-  assert(companionHtml.includes('companion-speech-cluster') && companionSpeech.includes('speechRelease()') && companionSpeech.includes('speechSession.endSession()') && !companionSpeech.includes('/audio/transcriptions'), 'Companion speech must use one UI cluster, release on unmount, and avoid a second ASR fetch path');
-  assert(!/\bany\b/.test(roomSession), 'shared character-room session boundaries must stay explicitly typed');
-  assert(!/\bany\b/.test(chatConversation), 'chat conversation stream, cancellation, and draft boundaries must stay explicitly typed');
-  assert(!/\bany\b/.test(streamUtils), 'chat stream events and abort errors must stay explicitly typed');
-  assert(!/\bany\b/.test(chatStorage), 'persisted chat messages must stay explicitly typed');
-  assert(html.includes('streamingMid'), 'only the active assistant message may keep the streaming cursor');
-  assert(
-    voiceModule.includes('SentenceBuffer') && voiceModule.includes("'/api/tts?'") && voiceModule.includes('URLSearchParams'),
-    'voice must stream complete sentence WAV via the GET endpoint so public playback starts before the whole file is downloaded'
-  );
-  // GET audio integrity, cache reuse and in-flight sharing execute over real
-  // loopback HTTP in test-voice-cache; do not constrain their variable names here.
-  assert(
-    voiceModule.includes("consistency: 'locked'") && voiceModule.includes('referenceEmotion: meta.referenceEmotion'),
-    'voice must lock a stable identity reference while a sentence mood stays unchanged'
-  );
-  assert(
-    voiceStudio.includes('referenceEmotion: voiceEmotion.value,')
-      && !voiceStudio.includes("voiceEmotion.value === 'neutral' ? 'gentle'")
-      && voiceModule.includes('meta.referenceEmotion = rawEmotion'),
-    'neutral delivery must use the character main reference instead of silently borrowing gentle emotion'
-  );
-  assert(
-    voiceModule.includes('extractSpokenDialogue')
-      && voiceModule.includes("(directionText && rawEmotion !== 'neutral') || emotionChanged ? 'adaptive' : 'locked'")
-      && voiceModule.includes('const emotionChanged = Boolean(firstReference && emotion !== firstReference)')
-      && voiceModule.includes('retryLeft'),
-    'voice must omit roleplay directions, honor their emotion, and bound stuck synthesis'
-  );
-  // useVoice.spec.ts exercises timeout, interruption, replay cancellation and
-  // mid-playback errors. Slow-network extensions still lack a behavior fixture.
-  assert(voiceModule.includes('audio.networkState === 2') && voiceModule.includes('waitExtensions'),
-    'voice must extend slow generations instead of killing them');
-  assert(!/\bany\b/.test(voiceModule), 'voice queue, turn, API responses, and Web Audio boundaries must stay explicitly typed');
-  assert(
-    voiceModule.includes('readVoiceAvailability') && voiceModule.includes('voiceApi.translate'),
-    'voice API responses must be narrowed at the JSON boundary'
-  );
-  assert(voiceModule.includes('voiceApi.prepare') && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
-  assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
-  // 布局跟随与口型/表情写入分别由 layoutFit、useLive2D-api 与 interactions 行为测试覆盖；
-  // 这里只保留没有行为证据的 WebGL 上下文丢失恢复。
-  assert(live2dAggregated.includes('webglcontextlost'), 'Live2D must recover WebGL failures');
-  assert(live2dAggregated.includes('setOutfit') && live2dAggregated.includes('setSpeaking'), 'Live2D must switch authored outfits and drive speech state');
-  assert(
-    characterConfig.includes("{ id: 'school', label: '校服', expression: 'expression1' }")
-      && characterConfig.includes("{ id: 'casual', label: '常服', expression: 'expression2' }")
-      && characterConfig.includes("{ id: 'sleepwear', label: '睡衣', expression: 'expression3' }")
-      && characterConfig.includes("{ id: 'cosplay', label: 'COS 服', expression: 'expression4' }")
-      && characterConfig.includes("{ id: 'witch', label: '魔女服', expression: 'expression5' }")
-      && characterStageComponent.includes('class="wardrobe-trigger wardrobe-static"')
-      && characterStageComponent.includes('class="wardrobe-menu"')
-      && apiSettingsComponent.includes(':data-vendor="option.value"')
-      && live2dAggregated.includes('model.expression(target.expression)')
-      && !live2dAggregated.includes('LIVE2D_EXPRESSIONS')
-      && !html.includes('setExpression'),
-    'all five source-authored outfits must be explicit controls and must not be driven by chat emotion'
-  );
-  assert(
-    live2dAggregated.includes('INTERACTION_MOTIONS')
-      && live2dAggregated.includes('worldPoint')
-      && live2dAggregated.includes('model.hitTest(point.x, point.y)')
-      && live2dAggregated.includes('interactionFromStagePosition')
-      && live2dAggregated.includes('profile.stageHitZones?.find')
-      && live2dAggregated.includes("{ interactionId: 'Face', minY: 0.19, maxY: 0.29 }")
-      && live2dAggregated.includes("{ interactionId: 'LeftChest', minX: 0.40, maxX: 0.50, minY: 0.29, maxY: 0.42 }")
-      && live2dAggregated.includes("{ interactionId: 'Skirt', minY: 0.42, maxY: 0.57 }")
-      && live2dAggregated.includes("{ interactionId: 'Body', minY: 0.57, maxY: 1 }")
-      && live2dAggregated.includes('model.motion(interaction.group, undefined, 3)')
-      && live2dAggregated.includes("motionPreload: 'ALL'")
-      && live2dAggregated.includes('function markInteractionStarted')
-      && live2dAggregated.includes("interactionHint.value = '这个动作正在进行中'")
-      && live2dAggregated.includes("interactionHint.value = '动作没有启动，请重试'"),
-    'Live2D clicks must map source hit areas to authored motions with FORCE priority, report feedback only after startup, and distinguish an active motion from a real failure'
-  );
-  assert(!/\bany\b/.test(live2dAggregated), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
-  assert(
-    live2dAggregated.includes('readLive2DCatalog') && live2dAggregated.includes('readLibrary'),
-    'Live2D status JSON and dynamic runtime exports must be narrowed before use'
-  );
-  assert(!characterStageComponent.includes('live2d-quick-actions') && !live2dAggregated.includes('beginGreetingGesture'), 'Live2D must not expose simulated quick actions');
-  // 未显式启用前保持未加载，由 E2E 直接断言页面上的「启用 Live2D」状态文案。
-  assert(live2dAggregated.includes("'degraded'") && live2dAggregated.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
-  // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
-  assert(live2dStageModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
-  // PixiJS 需要 unsafe-eval：真实响应头在本文件后面的 HTTP 场景里逐路由断言
-  // （/chat 与 /companion 放行，/ 保持不放行），此处不再重复匹配 security.js 源码。
-  // 情绪关键词曾因编码损坏全部失效，导致语音永远 neutral
-  assert(!/\uFFFD/.test(streamUtils), 'emotion keywords must not contain replacement characters');
-  ['shy', 'happy', 'sad', 'serious', 'gentle'].forEach(function (emotion) {
-    assert(streamUtils.includes("'" + emotion + "'"), 'inferEmotion must classify ' + emotion);
-  });
-  assert(serverSource.includes('createGateway') && serverSource.includes("require('./routes/chat')"), 'gateway must use modular route composition');
-
+  // UI structure and naming belong to component/E2E tests; execute chat behavior here.
   let utils: typeof import('../../src/utils/stream.ts') = require('../../src/utils/stream.ts');
   let chatStatus: typeof import('../../src/utils/chatStatus.ts') = require('../../src/utils/chatStatus.ts');
   let parsedStatus = chatStatus.parseChatStatus({
@@ -672,7 +475,7 @@ async function run() {
       apiKey:'local-secret'
     });
     await chatRoute.streamCompatibleApi({
-      api:thinkingApi.value,
+      api:{ ...thinkingApi.value, vendor:'deepseek' },
       messages:[{ role:'system', content:'persona' }, { role:'user', content:'想一下' }],
       reasoning:'high'
     }, {
@@ -681,14 +484,15 @@ async function run() {
     });
     assert(reasoningChunks.join('') === '让我想想再想想', 'reasoning_content deltas must stream as reasoning events');
     assert(thinkingTokens.join('') === '答案是 42', 'final content must still stream after reasoning');
-    assert(
-      /input\.reasoning === 'low'\s*\?\s*\{\s*reasoning_effort\s*:\s*'high'\s*\}\s*:\s*\{\s*reasoning_effort\s*:\s*'max'\s*\}/.test(chatRouteSource),
-      'deepseek V4 must map low→high effort and medium/high→max effort with thinking enabled/disabled'
-    );
-    assert(
-      /reasoning_effort\s*:\s*input\.reasoning/.test(chatRouteSource),
-      'opencode endpoints must receive the OpenAI reasoning_effort parameter'
-    );
+    assert(mock.state.compatiblePayloads.at(-1).thinking.type === 'enabled'
+      && mock.state.compatiblePayloads.at(-1).reasoning_effort === 'max',
+    'DeepSeek reasoning parameters must reach the upstream payload');
+    await chatRoute.streamCompatibleApi({
+      api:{ ...thinkingApi.value, vendor:'opencode' },
+      messages:[{ role:'user', content:'fixture reasoning' }], reasoning:'low',
+    }, {});
+    assert(mock.state.compatiblePayloads.at(-1).reasoning_effort === 'low',
+      'OpenCode receives the requested reasoning effort');
     let badReasoning = chatRoute.validateChatBody({
       character:'nene',
       provider:'api',

@@ -22,7 +22,9 @@ export const taskFingerprint = (value: unknown) => createHash('sha256').update(s
 export function createTaskRuntime(options: { workspace: TaskWorkspace; providers: Partial<Record<TaskRecord['kind'], TaskProvider>>; pollMs?: number }) {
   const { workspace, providers } = options;
   const pending = new Map<string, ReturnType<typeof setTimeout>>();
-  const busy = new Set<string>();
+  const taskOperations = new Map<string, Promise<unknown>>();
+  const actions = new Map<string, { principal: string; name: string; controller: AbortController; work: Promise<TaskRecord> }>();
+  const cancellations = new Map<string, { identity: string; work: Promise<void> }>();
   const dispatched = new Set<string>();
   const preparing = new Set<string>();
   const workInFlight = new Set<Promise<unknown>>();
@@ -31,6 +33,15 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
   const track = <T>(work: Promise<T>): Promise<T> => {
     workInFlight.add(work); void work.then(() => workInFlight.delete(work), () => workInFlight.delete(work)); return work;
   };
+  function runTaskOperation<T>(id: string, operation: () => Promise<T>): Promise<T> {
+    // Claim the task before the first await. Observations and explicit actions
+    // must finish in order, so an older query cannot replace a continued batch.
+    const work = track((taskOperations.get(id) ?? Promise.resolve()).catch(() => {}).then(operation));
+    taskOperations.set(id, work);
+    const release = () => { if (taskOperations.get(id) === work) taskOperations.delete(id); };
+    void work.then(release, release);
+    return work;
+  }
   const context = (principalId: string): WorkspaceContext => ({ principalId, workspaceId: workspace.workspaceId, protocolVersion: 1 });
   const execute = <K extends TaskCommand['kind']>(principal: string, command: Extract<TaskCommand, { kind: K }>) =>
     workspace.request(command, context(principal)) as Promise<TaskResults[K]>;
@@ -73,6 +84,22 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
       restoreInput: (name: string, file: string) => track(access.restoreInput(name, file)),
     };
   };
+  function cancelUpstream(task: TaskRecord): Promise<void> {
+    const provider = providers[task.kind];
+    if (!provider || provider.fingerprint() !== task.providerFingerprint) return Promise.resolve();
+    // A late ID or new checkpoint can reveal work the first cancellation did not own.
+    const identity = taskFingerprint({ upstreamId: task.upstreamId, checkpoint: task.checkpoint });
+    const existing = cancellations.get(task.taskId);
+    if (existing?.identity === identity) return existing.work;
+    const work = track((async () => {
+      if (existing) await existing.work.catch(() => {});
+      const current = await get(task.principalId, task.taskId);
+      if (current.cancelRequestedAt && !current.upstreamSettled && provider.fingerprint() === current.providerFingerprint) await provider.cancel(current);
+    })());
+    cancellations.set(task.taskId, { identity, work });
+    void work.catch(() => { if (cancellations.get(task.taskId)?.work === work) cancellations.delete(task.taskId); });
+    return work;
+  }
   function schedule(principal: string, id: string) {
     if (closed || pending.has(id)) return;
     const timer = setTimeout(() => { pending.delete(id); void reconcile(principal, id).catch(() => {}); }, options.pollMs ?? 1500);
@@ -80,13 +107,13 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
   }
   async function reconcileTask(principal: string, id: string): Promise<TaskRecord> {
     let task = await get(principal, id);
-    if (closed || busy.has(id) || task.deliveryState === 'discarded' || (task.upstreamSettled && (task.status !== 'succeeded' || task.resultState === 'available'))) return task;
+    if (task.upstreamSettled) cancellations.delete(id);
+    if (closed || task.deliveryState === 'discarded' || (task.upstreamSettled && (task.status !== 'succeeded' || task.resultState === 'available'))) return task;
     const provider: TaskRecoveryProvider | undefined = providers[task.kind];
     if (!provider || provider.fingerprint() !== task.providerFingerprint) return patch(principal, id, { recoveryState: 'unknown', errorCode: 'PROVIDER_IDENTITY_CHANGED' });
     if (!task.submissionIntentAt) return dispatched.has(id) ? task : patch(principal, id, { recoveryState: 'interrupted', errorCode: 'TASK_AWAITING_RESUME' });
-    busy.add(id);
     try {
-      if (task.cancelRequestedAt && !task.upstreamSettled) await provider.cancel(task);
+      if (task.cancelRequestedAt && !task.upstreamSettled) await cancelUpstream(task);
       const observation = await provider.query(task);
       task = await get(principal, id);
       if (observation.outputs?.length) await collect(principal, id, observation.outputs);
@@ -99,14 +126,14 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
         ...(observation.status === 'succeeded' && !observation.outputs?.length && task.resultState !== 'available' ? { resultState: 'unavailable' } : {}),
       });
       if (!task.upstreamSettled && !observation.unknown) schedule(principal, id);
-      if (task.upstreamSettled) dispatched.delete(id);
+      if (task.upstreamSettled) { dispatched.delete(id); cancellations.delete(id); }
       return task;
     } catch (error) {
       task = await patch(principal, id, { recoveryState: 'unknown', errorCode: 'TASK_RECONCILE_REQUIRED' });
       return task;
-    } finally { busy.delete(id); }
+    }
   }
-  const reconcile = (principal: string, id: string) => track(reconcileTask(principal, id));
+  const reconcile = (principal: string, id: string) => runTaskOperation(id, () => reconcileTask(principal, id));
   async function dispatch(task: TaskRecord) {
     if (dispatched.has(task.taskId)) return;
     dispatched.add(task.taskId);
@@ -183,27 +210,50 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
     cancel(principal: string, requestKey: string) { return track((async () => {
       if (closed) throw new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is closed', 503);
       const task = await execute(principal, { kind: 'task.cancel', requestKey });
-      if (task && !task.upstreamSettled) void reconcile(principal, task.taskId).catch(() => {});
+      if (task && !task.upstreamSettled) {
+        const action = actions.get(task.taskId);
+        if (action) {
+          action.controller.abort(new WorkspaceError('CANCELLED', 'Task was cancelled', 499));
+          void cancelUpstream(task).then(() => reconcile(principal, task.taskId), () => reconcile(principal, task.taskId)).catch(() => {});
+        } else void reconcile(principal, task.taskId).catch(() => {});
+      }
       return task;
     })()); },
     reconcile,
-    action(principal: string, id: string, name: string) { return track((async () => {
-      if (closed) throw new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is closed', 503);
-      const task = await get(principal, id); const provider = providers[task.kind];
-      if (!provider?.action || provider.fingerprint() !== task.providerFingerprint) throw new WorkspaceError('TASK_ACTION_INVALID', 'Task action unavailable');
-      await track(provider.action(task, name, {
-        ...inputAccess(task),
-        async submitting() {
-          if (name !== 'continue' || (await get(principal, id)).cancelRequestedAt) throw new WorkspaceError('TASK_ACTION_INVALID', 'This action cannot submit generation');
-          await patch(principal, id, { status: 'running', recoveryState: 'normal' });
-        },
-        async observed() { throw new WorkspaceError('TASK_ACTION_INVALID', 'This action cannot submit generation'); },
-        async checkpoint(value) { await track(patch(principal, id, { checkpoint: value })); },
-        async collect(outputs) { if (!closed) await collect(principal, id, outputs); },
-      }));
-      if (name === 'continue') { await patch(principal, id, { recoveryState: 'normal', errorCode: null }); schedule(principal, id); }
-      return get(principal, id);
-    })()); },
+    action(principal: string, id: string, name: string) {
+      if (closed) return Promise.reject(new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is closed', 503));
+      const existing = actions.get(id);
+      if (existing) {
+        if (existing.principal === principal && existing.name === name) return existing.work;
+        return track(get(principal, id).then(() => { throw new WorkspaceError('TASK_ACTION_BUSY', 'Another task action is running', 409); }));
+      }
+      const controller = new AbortController();
+      const work = runTaskOperation(id, async () => {
+        if (closed) throw new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is closed', 503);
+        const task = await get(principal, id); const provider = providers[task.kind];
+        if (!provider?.action || provider.fingerprint() !== task.providerFingerprint) throw new WorkspaceError('TASK_ACTION_INVALID', 'Task action unavailable');
+        if (task.cancelRequestedAt) throw new WorkspaceError('TASK_ACTION_INVALID', 'Task was cancelled');
+        await track(provider.action(task, name, {
+          ...inputAccess(task),
+          async submitting() {
+            const current = await get(principal, id);
+            if (closed) throw new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is draining', 503);
+            if (name !== 'continue' || current.cancelRequestedAt) throw new WorkspaceError('TASK_ACTION_INVALID', 'This action cannot submit generation');
+            await patch(principal, id, { status: 'running', recoveryState: 'normal' });
+          },
+          async observed() { throw new WorkspaceError('TASK_ACTION_INVALID', 'This action cannot submit generation'); },
+          async checkpoint(value) { await track(patch(principal, id, { checkpoint: value })); },
+          async collect(outputs) { if (!closed) await collect(principal, id, outputs); },
+        }, controller.signal));
+        controller.signal.throwIfAborted();
+        if (name === 'continue') { await patch(principal, id, { recoveryState: 'normal', errorCode: null }); schedule(principal, id); }
+        return get(principal, id);
+      });
+      actions.set(id, { principal, name, controller, work });
+      const release = () => { actions.delete(id); };
+      void work.then(release, release);
+      return work;
+    },
     async resume(principal: string, id: string) {
       const task = await get(principal, id);
       if (closed) throw new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is closed', 503);
@@ -223,9 +273,11 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
     close() {
       if (closePromise) return closePromise;
       closed = true; for (const timer of pending.values()) clearTimeout(timer); pending.clear();
+      for (const action of actions.values()) action.controller.abort(new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is draining', 503));
       closePromise = (async () => {
         const results = await Promise.allSettled(Object.values(providers).map(provider => provider.close?.()));
         while (workInFlight.size) await Promise.allSettled([...workInFlight]);
+        cancellations.clear();
         if (results.some(result => result.status === 'rejected')) throw new WorkspaceError('TASK_DRAIN_FAILED', 'Provider shutdown did not complete; maintenance remains blocked', 503);
       })();
       return closePromise;

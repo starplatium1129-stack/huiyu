@@ -1,4 +1,5 @@
-import { checkAvailableSpace, digest, publishMedia, releaseCommittedStaging, uploadedBytes, uploadMediaChunk } from './media';
+import { checkAvailableSpace, publishMedia, releaseCommittedStaging, uploadedBytes, uploadMediaChunk } from './media';
+import { taskOutputStagingKey } from './task-media-keys';
 import { nextRevision, type WorkspaceStorageContext } from './schema';
 import { WorkspaceError, type WorkspaceContext, type ExecuteOptions } from './types';
 import type { TaskCommand, TaskResult, TaskPatch } from './task-types';
@@ -33,7 +34,6 @@ export function executeTaskCommand(storage: WorkspaceStorageContext, command: Ta
     if (!row) throw new WorkspaceError('TASK_RESULT_MISSING', 'Result was not prepared', 409);
     return JSON.parse(String(row.media_json));
   };
-  const outputKey = (id: string, index: number) => digest(`task:${id}:${index}`);
   switch (command.kind) {
     case 'task.legacy-history': {
       const rows = storage.db.prepare(`SELECT i.migration_id,i.body FROM migration_items i JOIN migration_sessions s ON s.migration_id=i.migration_id
@@ -113,17 +113,17 @@ export function executeTaskCommand(storage: WorkspaceStorageContext, command: Ta
       if (existing?.committed === 1) return { offset: media.bytes };
       checkAvailableSpace(storage.root, media.bytes);
       storage.db.prepare('INSERT OR IGNORE INTO task_outputs VALUES(?,?,?,0)').run(task.taskId, media.index, JSON.stringify(media));
-      storage.db.prepare('INSERT OR IGNORE INTO leases(id,kind,hash,created_at) VALUES(?,?,?,?)').run(outputKey(task.taskId, media.index), 'task-result', media.sha256, Date.now());
+      storage.db.prepare('INSERT OR IGNORE INTO leases(id,kind,hash,created_at) VALUES(?,?,?,?)').run(taskOutputStagingKey(task.taskId, media.index), 'task-result', media.sha256, Date.now());
       task.resultState = 'collecting'; write(task);
-      return { offset: uploadedBytes(storage.root, outputKey(task.taskId, media.index), media.alias) };
+      return { offset: uploadedBytes(storage.root, taskOutputStagingKey(task.taskId, media.index), media.alias) };
     });
     case 'task.result.chunk': {
       const media = output(command.taskId, command.index);
       if (storage.db.prepare('SELECT committed FROM task_outputs WHERE task_id=? AND output_index=?').get(command.taskId, command.index)?.committed === 1) return { offset: media.bytes };
-      return { offset: uploadMediaChunk(storage.root, outputKey(command.taskId, command.index), media, command.offset, command.data) };
+      return { offset: uploadMediaChunk(storage.root, taskOutputStagingKey(command.taskId, command.index), media, command.offset, command.data) };
     }
     case 'task.result.commit': {
-      const media = output(command.taskId, command.index); const key = outputKey(command.taskId, command.index);
+      const media = output(command.taskId, command.index); const key = taskOutputStagingKey(command.taskId, command.index);
       const current = requireTask(command.taskId);
       if (storage.db.prepare('SELECT committed FROM task_outputs WHERE task_id=? AND output_index=?').get(command.taskId, command.index)?.committed === 1) {
         releaseCommittedStaging(storage.root, key, media.alias); return current;
