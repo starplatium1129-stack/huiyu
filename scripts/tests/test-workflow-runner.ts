@@ -133,6 +133,7 @@ test('desktop batch preserves failure without deploying or waiting for input', {
     });
     assert.equal(result.error, undefined);
     assert.equal(result.status, 7);
+    assert.doesNotMatch(result.stdout + result.stderr, /not recognized|不是内部/);
   } finally {
     fs.unlinkSync(file);
     fs.rmdirSync(dir);
