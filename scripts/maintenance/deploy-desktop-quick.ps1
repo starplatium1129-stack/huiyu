@@ -25,7 +25,8 @@ param(
   [switch]$QuietInstall,
   [switch]$NoRestart,
   [switch]$StartupRepair,
-  [string]$InstallDir
+  [string]$InstallDir,
+  [string]$InstallerPath
 )
 
 $ErrorActionPreference = 'Stop'
@@ -43,11 +44,17 @@ $installDir = [IO.Path]::GetFullPath($InstallDir)
 $gatewayDir = Join-Path $installDir 'gateway'
 if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
 if ($QuietInstall -and -not $UseInstaller) { throw '-QuietInstall 仅可与 -UseInstaller 一起使用' }
+if ($InstallerPath -and -not $UseInstaller) { throw '-InstallerPath 仅可与 -UseInstaller 一起使用' }
 $setup = $null
 if ($UseInstaller) {
-  $setup = Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue |
-    Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  $setup = if ($InstallerPath) { Get-Item -LiteralPath $InstallerPath -ErrorAction Stop } else {
+    Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue |
+      Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  }
   if (-not $setup) { throw 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri' }
+  if ($setup.PSIsContainer -or $setup.Extension -ine '.exe') { throw 'InstallerPath 必须指向已验收的 EXE 安装包' }
+  # Keep the exact candidate across UAC, even if another build finishes meanwhile.
+  $InstallerPath = $setup.FullName
 }
 
 . (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
@@ -72,6 +79,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($SkipBuild)    { $argList += '-SkipBuild' }
   if ($Cleanup)      { $argList += '-Cleanup' }
   if ($UseInstaller) { $argList += '-UseInstaller' }
+  if ($InstallerPath) { $argList += @('-InstallerPath', "`"$InstallerPath`"") }
   if ($QuietInstall) { $argList += '-QuietInstall' }
   if ($NoRestart)    { $argList += '-NoRestart' }
   if ($StartupRepair) { $argList += '-StartupRepair' }

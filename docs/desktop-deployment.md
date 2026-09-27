@@ -34,6 +34,7 @@ Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x6
 ```bat
 deploy-desktop.bat                  :: 增量部署（默认）
 deploy-desktop.bat -UseInstaller    :: 完整安装（跑安装包）
+deploy-desktop.bat -UseInstaller -InstallerPath "D:\path\verified-setup.exe" :: 指定本次已验收安装包
 deploy-desktop.bat -SkipBuild       :: 已手动 build 过，跳过前端构建
 deploy-desktop.bat -NoRestart       :: 部署后不自动启动
 deploy-desktop.bat -UseInstaller -QuietInstall :: UAC 确认后自动安装并启动
@@ -44,6 +45,7 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 `-SyncLocalModels` 仅用于个人部署：核验并复制 `runtime/live2d-imports` 已登记文件至用户数据目录，保留旧模型版本；不会把候选 LPK/ZIP 或模型塞进可分发安装包。增量复制也排除 `assets/live2d-candidates`。
 `-QuietInstall` 仅用于完整安装，仍需要用户确认 UAC；安装器非零退出会明确报错。部署日志追加到 `runtime/desktop-deploy-last.log`，便于核对实际安装结果。
+`-InstallerPath` 显式选择包；未指定时仍从 `runtime/desktop-updates` 选最新包，但选定路径会固定并传过 UAC，不因另一构建随后完成而换包。并行开发或同版本多候选时使用显式路径。
 `-Cleanup` 默认已带（清理源端已删除的历史残留）。
 
 ---
