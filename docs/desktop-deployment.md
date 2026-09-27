@@ -5,6 +5,8 @@
 
 ## 打包前检查
 
+当前 SQLite 桌面工作区使用排他 owner 锁。安装前先通过应用的“退出 Companion”正常退出，确认自有网关已完成 drain、工作区 `.workspace-owner.json` 已释放；仅隐藏窗口不等于退出。部署脚本仍会强制停止残留进程，可能留下锁并令新网关拒绝启动。2026-09-27 图片修复部署曾触发此问题；残留锁须按已核实的进程身份进入维修，不能靠删除未知锁试启动。
+
 `package:tauri` 在资源暂存后自动按 `bundle.resources` 复制到仓库外隔离目录，用内置 Node 真正启动网关，验证健康检查、画室、桌宠、聊天及文档重定向。也可运行 `npm run wf -- desktop:verify-gateway`。不能用仓库根网关或 Live2D 自测替代此项，否则会漏掉安装包资源缺失。
 
 1.6.0 若出现只有托盘/任务栏图标、窗口不打开，诊断日志可能包含 `Cannot find module '../docs/redirects.json'`。运行 `deploy-desktop.bat -StartupRepair` 可补齐文档并刷新本安装的快捷方式图标，保留样张和用户数据；完整修复请安装 1.6.1。部署入口从卸载登记读取实际安装位置，多个安装需用 `-InstallDir` 明确选择。
