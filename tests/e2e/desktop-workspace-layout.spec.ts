@@ -42,10 +42,17 @@ for (const theme of ['dark', 'light']) {
         await page.goto(`${info.project.use.baseURL}/prompt-builder?scene=sc006`)
         await expect(page.locator('.desktop-titlebar')).toBeVisible()
         const generate = page.getByRole('button', { name: '生成图片', exact: true })
-        await expect(page.locator('.workspace-archive-bar')).toBeVisible()
-        const basic = await generate.boundingBox()
-        expect(basic!.y + basic!.height).toBeLessThanOrEqual(display.height)
+        await expect(page.getByRole('heading', { name: '开始绘制', exact: true })).toBeVisible()
+        // Scene mode is a scrolling document; expert mode below owns a fixed viewport.
+        await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'basic')
+        await expect(generate).toBeVisible()
+        // Service readiness can replace the tooltip-wrapped button. Scroll its
+        // persistent action group, then check the current button instance.
+        await page.getByRole('group', { name: '出图尺寸与生成', exact: true }).scrollIntoViewIfNeeded()
+        await expect(generate).toBeInViewport({ ratio: 1 })
         await page.getByRole('button', { name: '专家模式', exact: true }).click()
+        await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'pro')
+        await expect(page.locator('.director-inspector')).toBeVisible()
         const materials = (await page.locator('#drawing-materials').boundingBox())!
         const canvas = (await page.locator('#drawing-canvas').boundingBox())!
         const inspector = (await page.locator('.director-inspector').boundingBox())!
