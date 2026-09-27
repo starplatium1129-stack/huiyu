@@ -23,7 +23,7 @@ let wrapper: VueWrapper | undefined
 beforeEach(() => { access.local = true; access.eligibility = 'adult' })
 afterEach(() => { wrapper?.unmount() })
 async function mountLibrary() {
-  wrapper = shallowMount(PopularSceneExplorerView, { global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
+  wrapper = shallowMount(PopularSceneExplorerView, { global: { stubs: { RuntimeImage: false, RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' }, StudioTooltip: { template: '<slot />', inheritAttrs: false } } } })
   await flushPromises()
   return wrapper
 }

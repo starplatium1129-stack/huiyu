@@ -5,8 +5,8 @@ for (const theme of ['light','dark']) for (const width of [1440,390]) {
     await page.route(/^http:\/\/[^/]+\/api\//, route=>route.fulfill({status:503,json:{ok:false,error:'Isolated UI fixture'}}))
     await page.addInitScript(theme=>localStorage.setItem('aics_theme',theme),theme)
     await page.emulateMedia({reducedMotion:'reduce'})
-    for (const [route,label] of [['gallery','搜索作品'],['showcase','搜索画册'],['character','搜索角色、别名或作品']]) {
-      await page.goto('/'+route)
+    for (const [route,label] of [['gallery','搜索作品'],['showcase','搜索画册'],['character','搜索角色、别名或作品'],['popular-scenes','搜索场景']]) {
+      await page.goto('/'+route+(route==='popular-scenes'?'?character=furina':''))
       const input=page.getByRole('searchbox',{name:label,exact:true})
       await input.focus(); await input.press('ArrowLeft')
       await expect(input).toBeFocused()

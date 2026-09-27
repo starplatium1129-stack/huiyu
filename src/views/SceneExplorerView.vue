@@ -345,6 +345,7 @@ watch(companionId, (id) => { companionFailed[id] = false })
 .scene-search-wrap { position:relative; margin-bottom:var(--s-4); }
 .scene-search { width:100%; padding:var(--s-3) 42px var(--s-3) var(--s-4); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:var(--fs-body); outline:none; transition:border-color var(--motion-hover); }
 .scene-search:focus { border-color:var(--accent); }
+.scene-search:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .scene-search::placeholder { color:var(--text-muted); }
 .scene-search-clear { position:absolute; top:50%; right:9px; transform:translateY(-50%); width:28px; height:28px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
 .scene-search-clear:hover { color:var(--accent); background:var(--accent-soft); }

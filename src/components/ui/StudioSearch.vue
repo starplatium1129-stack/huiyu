@@ -30,4 +30,5 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-search button { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; border:0; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; }
 .studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
 .studio-search button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+@media(forced-colors:active) { .studio-search:focus-within { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }
 </style>
