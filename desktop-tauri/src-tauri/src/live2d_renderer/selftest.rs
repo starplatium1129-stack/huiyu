@@ -182,8 +182,26 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
         None => return Err("selftest: hit test produced no result".into()),
     }
 
+    let original_hwnd = *state.hwnd.lock().unwrap();
+    for _ in 0..2 {
+        let (reply, mut response) = tokio::sync::oneshot::channel();
+        tx.send(OverlayCommand::Destroy { reply }).map_err(|error| error.to_string())?;
+        let deadline = Instant::now() + Duration::from_secs(15);
+        while response.try_recv().is_err() {
+            if Instant::now() > deadline { return Err("selftest: destroy reply timeout".into()); }
+            thread::sleep(Duration::from_millis(20));
+        }
+        let rect = *state.rect.lock().unwrap();
+        apply_frame(&state, rect, true, None, None)?;
+        if state.model_ready.load(Ordering::SeqCst) || state.visible.load(Ordering::SeqCst)
+            || !state.renderer_attached.load(Ordering::SeqCst)
+            || *state.hwnd.lock().unwrap() != original_hwnd {
+            return Err("selftest: destroy must unload the model and preserve the command window".into());
+        }
+    }
+    let frames_before_reload = state.frame_count.load(Ordering::SeqCst);
     check(
-        "natsume set_character",
+        "natsume set_character after destroy",
         cmd(
             OverlayCommand::SetCharacter {
                 character: "natsume".into(),
@@ -194,6 +212,7 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
             120000,
         ),
     )?;
+    state.visible.store(true, Ordering::SeqCst);
     check(
         "natsume play_motion Start",
         cmd(
@@ -224,9 +243,9 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
     thread::sleep(Duration::from_secs(1));
     let frames = state.frame_count.load(Ordering::SeqCst);
     *state.cmd_tx.lock().unwrap() = None;
-    if frames == 0 {
+    if frames <= frames_before_reload {
         return Err(format!(
-            "selftest: no frames rendered (frame_count={frames})"
+            "selftest: no frames rendered after destroy/reload (frame_count={frames})"
         ));
     }
     println!("LIVE2D_SELFTEST_OK frames={frames}");

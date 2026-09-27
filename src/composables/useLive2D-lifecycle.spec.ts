@@ -134,18 +134,92 @@ describe('Live2D lifecycle races', () => {
     h.lifecycle.destroy()
   })
 
-  it('a hidden desktop stays paused after loading, speech wakeups and recovery', async () => {
+  it('a hidden desktop does not load through character changes, speech or recovery', async () => {
     const h = setup()
     vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
     h.lifecycle.setPaused(true)
+    await h.lifecycle.setCharacter('nene')
+    h.lifecycle.resumeRendering()
+    await h.lifecycle.recover()
+    expect(h.connect).not.toHaveBeenCalled()
+    h.lifecycle.setPaused(false)
+    await Promise.resolve()
+    expect(h.connect).toHaveBeenCalledOnce()
+    h.loaded()
+    expect(h.ctx.ready.value).toBe(true)
+    h.lifecycle.destroy()
+  })
+
+  it('hiding releases the session immediately and reopening reloads without changing preferences', async () => {
+    const h = setup()
     const loading = h.lifecycle.setCharacter('nene')
     await Promise.resolve()
     h.loaded()
     await loading
-    h.lifecycle.resumeRendering()
+    const outfit = h.ctx.outfit.value
+    h.lifecycle.setPaused(true)
+    expect(h.session.destroy).toHaveBeenCalledOnce()
+    expect(h.ctx.session).toBeNull()
+    expect(h.ctx.model).toBeNull()
+    expect(h.ctx.enabled.value).toBe(true)
+    expect(h.ctx.ready.value).toBe(false)
+    await h.lifecycle.setQuality('standard')
     await h.lifecycle.recover()
-    expect(h.session.setPaused).toHaveBeenLastCalledWith(true)
+    expect(h.connect).toHaveBeenCalledOnce()
     h.lifecycle.setPaused(false)
+    await Promise.resolve()
+    h.loaded()
+    expect(h.connect).toHaveBeenLastCalledWith(expect.objectContaining({ character: 'nene', textureScale: 2 }))
+    expect(h.ctx.outfit.value).toBe(outfit)
+    expect(h.ctx.ready.value).toBe(true)
+    h.lifecycle.destroy()
+  })
+
+  it('hiding cancels an in-flight load and a late session cannot revive the hidden pet', async () => {
+    const h = setup()
+    const connection = deferred<Live2DStageSession>()
+    h.connect.mockReturnValueOnce(connection.promise)
+    const loading = h.lifecycle.setCharacter('nene')
+    const signal = h.connect.mock.calls[0]![0].signal!
+    h.lifecycle.setPaused(true)
+    await loading
+    expect(signal.aborted).toBe(true)
+    expect(h.ctx.loading).toBeNull()
+    connection.resolve(h.session)
+    await Promise.resolve()
+    expect(h.session.destroy).toHaveBeenCalledOnce()
+    expect(h.ctx.session).toBeNull()
+    expect(h.ctx.ready.value).toBe(false)
+    expect(vi.getTimerCount()).toBe(0)
+    h.lifecycle.destroy()
+  })
+
+  it('reopening a pet explicitly disabled by the user does not load a model', async () => {
+    const h = setup()
+    h.lifecycle.disable()
+    await Promise.resolve()
+    h.lifecycle.setPaused(true)
+    h.lifecycle.setPaused(false)
+    await Promise.resolve()
+    expect(h.ctx.enabled.value).toBe(false)
+    expect(h.connect).not.toHaveBeenCalled()
+    h.lifecycle.destroy()
+  })
+
+  it('a browser background character change stays resumable without desktop unloading', async () => {
+    const h = setup()
+    const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
+    h.ctx.catalog!.models.natsume = { available: true, modelUrl: '/natsume.model3.json', source: '', missing: [] }
+    const initial = h.lifecycle.setCharacter('nene')
+    await Promise.resolve(); h.loaded(); await initial
+    hidden.mockReturnValue(true)
+    const switched = h.lifecycle.setCharacter('natsume')
+    await Promise.resolve(); h.loaded(); await switched
+    expect(h.ctx.loadedCharacter.value).toBe('natsume')
+    expect(h.model.visible).toBe(true)
+    expect(h.session.setPaused).toHaveBeenLastCalledWith(true)
+    hidden.mockReturnValue(false)
+    h.lifecycle.resumeRendering()
     expect(h.session.setPaused).toHaveBeenLastCalledWith(false)
     h.lifecycle.destroy()
   })

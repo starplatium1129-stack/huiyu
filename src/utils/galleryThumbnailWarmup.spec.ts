@@ -1,5 +1,9 @@
-import { describe, expect, it, vi } from 'vitest'
-import { createThumbnailWarmup, type ThumbnailWarmupDependencies } from './galleryThumbnailWarmup'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+const platform = vi.hoisted(() => ({ desktop: vi.fn(() => false) }))
+vi.mock('@/platform/initializePlatform', () => ({ isDesktopHost: platform.desktop }))
+import { createThumbnailWarmup, startGalleryThumbnailWarmup, type ThumbnailWarmupDependencies } from './galleryThumbnailWarmup'
+
+afterEach(() => { vi.unstubAllGlobals(); platform.desktop.mockReturnValue(false) })
 
 function harness(overrides: Partial<ThumbnailWarmupDependencies> = {}) {
   const queued = new Map<number, () => void>()
@@ -26,6 +30,26 @@ function harness(overrides: Partial<ThumbnailWarmupDependencies> = {}) {
 }
 
 describe('optional gallery thumbnail warmup', () => {
+  it('never schedules whole-library thumbnail work in a desktop window', () => {
+    const schedule = vi.fn()
+    vi.stubGlobal('navigator', { locks: { request: vi.fn() } })
+    vi.stubGlobal('requestIdleCallback', schedule)
+    platform.desktop.mockReturnValue(true)
+    const stop = startGalleryThumbnailWarmup()
+    expect(schedule).not.toHaveBeenCalled()
+    stop()
+  })
+  it('keeps cancellable persistent-thumbnail warmup available on the web', () => {
+    const schedule = vi.fn(() => 4), cancel = vi.fn()
+    vi.stubGlobal('navigator', { locks: { request: vi.fn() } })
+    vi.stubGlobal('requestIdleCallback', schedule)
+    vi.stubGlobal('cancelIdleCallback', cancel)
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible')
+    const stop = startGalleryThumbnailWarmup()
+    expect(schedule).toHaveBeenCalledOnce()
+    stop()
+    expect(cancel).toHaveBeenCalledWith(4)
+  })
   it('starts only while visible and visits each image once', async () => {
     const env = harness(); env.hide()
     const stop = createThumbnailWarmup(env.deps)

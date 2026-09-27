@@ -50,6 +50,7 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   const overlay = readOverlay()
   const adapter = read('desktop-tauri/src-tauri/src/live2d_adapter.rs')
   const renderer = read('desktop-tauri/native-live2d/src/renderer.rs')
+    + read('desktop-tauri/native-live2d/src/renderer_texture_upload.rs')
   const model = read('desktop-tauri/native-live2d/src/model.rs')
   const mainShared = read('desktop-tauri/src-tauri/src/main_shared.rs')
   const bridge = read('desktop-tauri/src-tauri/src/bridge.rs')

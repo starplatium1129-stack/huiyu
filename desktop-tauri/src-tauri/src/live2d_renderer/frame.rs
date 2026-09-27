@@ -1,6 +1,9 @@
 use super::*;
 
 pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRect, visible: bool, opacity: Option<u32>, companion: Option<isize>) -> Result<(), String> {
+    // A late layout update after Destroy may carry visible=true. It must not
+    // reveal an empty overlay or wake the idle command loop at the active FPS.
+    let visible = visible && state.model_ready.load(Ordering::SeqCst);
     let Some(hwnd) = state.hwnd.lock().unwrap().clone().map(|h| h as HWND) else {
         return Err("overlay window not ready".to_string());
     };

@@ -8,6 +8,10 @@ import { trackMaintenanceWrite } from '../maintenanceParticipants'
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number }
 interface Receipt { artwork?: Row; changed?: boolean; removed?: number; purged?: number }
+// Enough for the first gallery page and recently viewed results; never retain a
+// whole library. Count UTF-16 bytes conservatively even when the engine uses Latin-1.
+const THUMBNAIL_CACHE_LIMIT = 96
+const THUMBNAIL_CACHE_BYTES = 8 * 1024 * 1024
 export function createDesktopArtworkRepository(): ArtworkRepository {
   let workspaceId = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId
   function requireAuthority() {
@@ -17,6 +21,21 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   }
   const workspaceRequest = <T>(command: Record<string, unknown>): Promise<T> => { requireAuthority(); return request<T>(command) }
   const thumbnails = new Map<string, string>()
+  const thumbnailReads = new Map<string, Promise<string | null>>()
+  let thumbnailBytes = 0
+  function forgetThumbnail(id: string) {
+    const previous = thumbnails.get(id)
+    if (previous !== undefined) { thumbnailBytes -= (id.length + previous.length) * 2; thumbnails.delete(id) }
+  }
+  function rememberThumbnail(id: string, value: string) {
+    forgetThumbnail(id)
+    const bytes = (id.length + value.length) * 2
+    if (!value || bytes > THUMBNAIL_CACHE_BYTES) return
+    thumbnails.set(id, value); thumbnailBytes += bytes
+    while (thumbnails.size > THUMBNAIL_CACHE_LIMIT || thumbnailBytes > THUMBNAIL_CACHE_BYTES) {
+      forgetThumbnail(thumbnails.keys().next().value!)
+    }
+  }
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
   async function list(includeDeleted = false): Promise<Row[]> {
@@ -73,18 +92,34 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       await workspaceRequest({ kind: 'commitMedia', operationId })
       return alias
     },
-    async deleteImage(alias) { await workspaceRequest({ kind: 'releaseMedia', alias, operationId: crypto.randomUUID() }) },
+    async deleteImage(alias) {
+      await workspaceRequest({ kind: 'releaseMedia', alias, operationId: crypto.randomUUID() })
+      forgetThumbnail(alias); thumbnailReads.delete(alias)
+    },
     countImages: () => workspaceRequest<number>({ kind: 'countMedia' }),
     async getThumbnail(id) {
-      if (thumbnails.has(id)) return thumbnails.get(id)!
-      const blob = await getImage(id)
-      if (!blob || !blob.type.startsWith('image/')) return null
-      const thumb = await blobThumbDataUrl(blob)
-      if (thumb) thumbnails.set(id, thumb)
-      return thumb || null
+      requireAuthority()
+      const cached = thumbnails.get(id)
+      if (cached !== undefined) { thumbnails.delete(id); thumbnails.set(id, cached); return cached }
+      const active = thumbnailReads.get(id)
+      if (active) return active
+      let pending!: Promise<string | null>
+      pending = (async () => {
+        const blob = await getImage(id)
+        if (!blob || !blob.type.startsWith('image/')) return null
+        const thumb = await blobThumbDataUrl(blob)
+        requireAuthority()
+        // A thumbnail published while this read was decoding is already usable.
+        const latest = thumbnails.get(id)
+        if (latest !== undefined) return latest
+        if (thumb && thumbnailReads.get(id) === pending) rememberThumbnail(id, thumb)
+        return thumb || null
+      })().finally(() => { if (thumbnailReads.get(id) === pending) thumbnailReads.delete(id) })
+      thumbnailReads.set(id, pending)
+      return pending
     },
-    async setThumbnail(id, value) { thumbnails.set(id, value) },
-    async cacheThumbnail(id, blob) { const value = await blobThumbDataUrl(blob); if (value) thumbnails.set(id, value) },
+    async setThumbnail(id, value) { requireAuthority(); rememberThumbnail(id, value) },
+    async cacheThumbnail(id, blob) { const value = await blobThumbDataUrl(blob); if (value) { requireAuthority(); rememberThumbnail(id, value) } },
     withStaging: work => work(),
     async appendArtwork(artwork) {
       // Entity identity is the retry key. Lost acknowledgements can safely re-read

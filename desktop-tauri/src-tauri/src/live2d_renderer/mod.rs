@@ -163,11 +163,12 @@ fn reset_mouth_diagnostics(state: &Live2DOverlayState) {
 /// 清空"已加载模型"状态（setCharacter 前置与 destroy 共用）。
 /// 只动模型级状态，保留 window_ready/renderer_attached/cmd_tx：
 /// destroy 契约 = 释放模型与资源、隐藏 overlay，但渲染线程与窗口长期
-/// 复用，后续 setCharacter 可直接重新加载（避免重建 wgpu 上下文）。
+/// 复用，GPU 上下文随 destroy 释放，后续 setCharacter 按需重新建立。
 fn clear_model_state(state: &Live2DOverlayState) {
     state.model_ready.store(false, Ordering::SeqCst);
     *state.character.lock().unwrap() = None;
     *state.model_bounds.lock().unwrap() = None;
+    *state.hit_test_result.lock().unwrap() = None;
     reset_mouth_diagnostics(state);
 }
 

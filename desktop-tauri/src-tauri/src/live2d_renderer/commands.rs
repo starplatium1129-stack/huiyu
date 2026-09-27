@@ -2,7 +2,7 @@ use super::*;
 
 pub(super) fn handle_command(
     state: &Arc<Live2DOverlayState>,
-    ctx: &mut RenderContext,
+    context: &mut Option<RenderContext>,
     assets_root: &std::path::Path,
     local_root: Option<&std::path::Path>,
     app: Option<&RendererEvents>,
@@ -10,7 +10,71 @@ pub(super) fn handle_command(
     cmd: OverlayCommand,
 ) {
     match cmd {
-        OverlayCommand::Shutdown => { state.shutdown.store(true, Ordering::SeqCst); },
+        OverlayCommand::Shutdown => state.shutdown.store(true, Ordering::SeqCst),
+        OverlayCommand::SetMaxFps(fps) => state.target_fps.store(fps.clamp(1, 1000), Ordering::SeqCst),
+        OverlayCommand::Destroy { reply } => {
+            clear_model_state(state);
+            state.visible.store(false, Ordering::SeqCst);
+            unsafe { ShowWindow(hwnd, SW_HIDE); }
+            release_context(context);
+            state.surface_failures.store(0, Ordering::Relaxed);
+            state.surface_recoveries.store(0, Ordering::Relaxed);
+            // Keep HWND and command channel, but release the device and its pools.
+            // A subsequent SetCharacter recreates the GPU context on demand.
+            let _ = reply.send(());
+        }
+        cmd => {
+            if context.is_none() && matches!(&cmd, OverlayCommand::SetCharacter { .. }) {
+                match RenderContext::new() {
+                    Ok(ctx) => *context = Some(ctx),
+                    Err(error) => { reply_without_model(cmd, error); return; }
+                }
+            }
+            if let Some(ctx) = context.as_mut() {
+                if !handle_model_command(state, ctx, assets_root, local_root, app, hwnd, cmd) {
+                    release_context(context);
+                }
+            } else {
+                reply_without_model(cmd, "model not loaded".into());
+            }
+        }
+    }
+}
+
+fn release_context(context: &mut Option<RenderContext>) {
+    if let Some(mut ctx) = context.take() {
+        if let Some(renderer) = ctx.renderer.as_mut() {
+            renderer.release_model_resources();
+        }
+        // An intentional unload must not emit a device-lost/stopped event.
+        ctx.device.set_device_lost_callback(|_, _| {});
+        ctx.device.destroy();
+    }
+}
+
+fn reply_without_model(cmd: OverlayCommand, error: String) {
+    match cmd {
+        OverlayCommand::SetCharacter { reply, .. }
+        | OverlayCommand::PlayMotion { reply, .. }
+        | OverlayCommand::SetExpression { reply, .. }
+        | OverlayCommand::Snapshot { reply, .. } => { let _ = reply.send(Err(error)); }
+        OverlayCommand::HitTest { reply, .. } => { let _ = reply.send(Ok(Vec::new())); }
+        // Frame inputs arriving after unload are stale and must not allocate a device.
+        _ => {}
+    }
+}
+
+/// False means a failed load: even a partially constructed GPU context is discarded.
+fn handle_model_command(
+    state: &Arc<Live2DOverlayState>,
+    ctx: &mut RenderContext,
+    assets_root: &std::path::Path,
+    local_root: Option<&std::path::Path>,
+    app: Option<&RendererEvents>,
+    hwnd: HWND,
+    cmd: OverlayCommand,
+) -> bool {
+    match cmd {
         OverlayCommand::SetCharacter { character, texture_scale, adapter, reply } => {
             clear_model_state(state);
             ctx.mouth_level = 0.0;
@@ -23,6 +87,10 @@ pub(super) fn handle_command(
                 ctx.load_model(assets_root, &character, texture_scale, adapter, local_root)?;
                 ctx.start_initial_motion(app)
             })();
+            // Also release staging after a partially failed load.
+            if let Some(renderer) = ctx.renderer.as_mut() {
+                renderer.release_texture_uploads();
+            }
             if result.is_ok() {
                 *state.character.lock().unwrap() = Some(character.clone());
                 state.model_ready.store(true, Ordering::SeqCst);
@@ -33,7 +101,9 @@ pub(super) fn handle_command(
                     }
                 }
             }
+            let loaded = result.is_ok();
             let _ = reply.send(result);
+            return loaded;
         }
         OverlayCommand::PlayMotion {
             group,
@@ -104,9 +174,6 @@ pub(super) fn handle_command(
         OverlayCommand::SetGaze(x, y) => {
             ctx.gaze = (x.clamp(-1.0, 1.0), y.clamp(-1.0, 1.0));
         }
-        OverlayCommand::SetMaxFps(fps) => {
-            state.target_fps.store(fps.clamp(1, 1000), Ordering::SeqCst);
-        }
         OverlayCommand::HitTestAsync { x, y } => {
             let rect = *state.rect.lock().unwrap();
             let areas = ctx.hit_test(rect, *state.framing.lock().unwrap(), x, y);
@@ -143,28 +210,7 @@ pub(super) fn handle_command(
             })();
             let _ = reply.send(result);
         }
-        OverlayCommand::Destroy { reply } => {
-            if let Some(renderer) = ctx.renderer.as_mut() {
-                renderer.release_model_resources();
-            }
-            ctx.model = None;
-            ctx.textures.clear();
-            ctx.character = None;
-            ctx.profile = None;
-            ctx.overlay_settler = None;
-            ctx.hit_area_names.clear();
-            ctx.motion_counts.clear();
-            ctx.motion_durations.clear();
-            ctx.motion_last_indices.clear();
-            ctx.active_motion = None;
-            ctx.mouth_level = 0.0;
-            // destroy 契约：只清模型级状态，保留渲染线程与窗口（长期复用）。
-            // 前端 destroy 后仍可 setCharacter 重新加载；线程退出路径
-            // （窗口销毁/通道断开/致命错误）才广播 aics:live2d:stopped。
-            clear_model_state(state);
-            state.visible.store(false, Ordering::SeqCst);
-            unsafe { ShowWindow(hwnd, SW_HIDE); }
-            let _ = reply.send(());
-        }
+        OverlayCommand::Shutdown | OverlayCommand::SetMaxFps(_) | OverlayCommand::Destroy { .. } => unreachable!(),
     }
+    true
 }

@@ -1,4 +1,5 @@
 import { blobThumbDataUrl, thumbKey } from './imageThumb'
+import { isDesktopHost } from '@/platform/initializePlatform'
 
 export interface ThumbnailWarmupDependencies {
   list(): Promise<unknown>
@@ -72,6 +73,9 @@ export function createThumbnailWarmup(deps: ThumbnailWarmupDependencies): () => 
 }
 
 export function startGalleryThumbnailWarmup(): () => void {
+  // Web thumbnails persist in IndexedDB. Desktop thumbnails only live in RAM:
+  // scanning its whole library would decode every original again on each launch.
+  if (isDesktopHost()) return () => {}
   const locks = globalThis.navigator?.locks
   if (!locks) return () => {} // Skip optional work if cross-window exclusion is unavailable.
   return createThumbnailWarmup({

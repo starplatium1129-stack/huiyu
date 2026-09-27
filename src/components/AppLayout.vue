@@ -8,9 +8,8 @@
     <main id="main" class="page-main" tabindex="-1" :aria-busy="!!pendingPath || undefined">
       <RouterView v-slot="{ Component, route }">
         <Transition appear :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled" @leave-cancelled="onLeaveCancelled">
-          <!-- 作品册缓存：数百张大图的 blob URL 与解码结果常驻内存，
-               切到其他页再回来不重新从 IndexedDB 读图，秒开。
-               其余页面按需重建（各自 onMounted 拉最新数据）。 -->
+          <!-- 缓存页面的筛选、滚动与编辑状态；作品册停用时释放原图，
+               回来后按可见范围重读，避免后台常驻整页高清资源。 -->
           <KeepAlive :include="['GalleryView', 'ShowcaseView', 'PromptBuilderView', 'VideoStudioView']">
             <component :is="Component" :key="route.path" class="route-view" :data-route-path="route.fullPath" />
           </KeepAlive>

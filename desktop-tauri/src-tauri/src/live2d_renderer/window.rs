@@ -119,18 +119,9 @@ pub(crate) fn overlay_window_thread(
     let (tx, rx): (Sender<OverlayCommand>, Receiver<OverlayCommand>) = channel();
     *state.cmd_tx.lock().unwrap() = Some(tx);
 
-    let mut ctx = match RenderContext::new() {
-        Ok(ctx) => ctx,
-        Err(e) => {
-            eprintln!("[live2d] render context init failed: {e}");
-            unsafe {
-                DestroyWindow(hwnd);
-            }
-            reset_runtime_state(&state);
-            emit_stopped(app, &format!("render context init failed: {e}"));
-            return;
-        }
-    };
+    // Merely attaching the overlay must not allocate a GPU device. Destroy returns
+    // to this state while leaving the lightweight window/command loop reusable.
+    let mut ctx: Option<RenderContext> = None;
     state.renderer_attached.store(true, Ordering::SeqCst);
     state.window_ready.store(true, Ordering::SeqCst);
     state.starting.store(false, Ordering::SeqCst);
@@ -169,12 +160,19 @@ pub(crate) fn overlay_window_thread(
                 }
             }
         }
+        // apply_frame runs on the IPC thread; close the narrow race where it read
+        // model_ready just before Destroy and made the now-empty window visible.
+        if ctx.is_none() && state.visible.swap(false, Ordering::SeqCst) {
+            unsafe { ShowWindow(hwnd, SW_HIDE); }
+        }
         // 每帧 poll 一次以驱动 wgpu 的 device lost 回调（非阻塞，开销极小）。
         // 不 poll 就永远发现不了 GPU reset / TDR / 休眠唤醒后的设备失效：原实现
         // 会在已作废的资源上继续 submit + present，画面变成满屏雪花，且因为
         // surface 仍能拿到帧（只是内容作废）而毫无征兆，只能重启进程恢复。
         if running {
-            let _ = ctx.device.poll(wgpu::PollType::Poll);
+            if let Some(ctx) = ctx.as_ref() {
+                let _ = ctx.device.poll(wgpu::PollType::Poll);
+            }
             if DEVICE_LOST.swap(false, Ordering::SeqCst) {
                 let detail = DEVICE_LOST_DETAIL
                     .lock()
@@ -186,7 +184,7 @@ pub(crate) fn overlay_window_thread(
                 break;
             }
         }
-        if running && state.visible.load(Ordering::SeqCst) {
+        if let Some(ctx) = ctx.as_mut().filter(|_| running && state.visible.load(Ordering::SeqCst)) {
             let mut rect = *state.rect.lock().unwrap();
             if let (Some(companion), Some(offset)) = (
                 *state.companion_hwnd.lock().unwrap(),
@@ -240,7 +238,7 @@ pub(crate) fn overlay_window_thread(
                 }
             }
         }
-        if let Some(cmd) = if running { frame_pacing::wait(&rx, state.visible.load(Ordering::SeqCst), state.target_fps.load(Ordering::Relaxed), iteration_started.elapsed()) } else { None } {
+        if let Some(cmd) = if running { frame_pacing::wait(&rx, ctx.is_some() && state.visible.load(Ordering::SeqCst), state.target_fps.load(Ordering::Relaxed), iteration_started.elapsed()) } else { None } {
             handle_command(&state, &mut ctx, assets_root, environment.local_root.as_deref(), app, hwnd, cmd);
         }
     }

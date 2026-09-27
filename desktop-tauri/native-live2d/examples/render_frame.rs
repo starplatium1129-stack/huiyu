@@ -208,6 +208,7 @@ fn main() {
                 textures.push(renderer.load_texture(&rgba, w, h));
             }
         }
+        renderer.release_texture_uploads();
         if textures.is_empty() {
             eprintln!("no textures found");
             std::process::exit(2);

@@ -455,7 +455,6 @@ fn main() {
             if ui_entry::isolated_profile().is_none() { watchers::start_clipboard_watch(handle.clone()); }
             watchers::start_power_watch(handle.clone());
             watchers::start_display_watch(handle.clone());
-            watchers::start_hidden_degrade(handle.clone());
             start_gateway_monitor(handle);
             Ok(())
         })
@@ -498,7 +497,10 @@ fn main() {
                         if let Some(w) = app_handle.get_webview_window("atelier") {
                             let _ = w.hide();
                         }
-                    } else if label == "companion" || label == "companion-chat" {
+                    } else if label == "companion" {
+                        api.prevent_close();
+                        main_shared::hide_companion(app_handle);
+                    } else if label == "companion-chat" {
                         api.prevent_close();
                         if let Some(w) = app_handle.get_webview_window(&label) {
                             let _ = w.hide();

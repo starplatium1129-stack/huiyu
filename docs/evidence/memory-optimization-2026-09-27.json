@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "kind": "desktop-memory-optimization",
+  "date": "2026-09-27",
+  "status": "candidate-verified-not-installed",
+  "hardware": "Office laptop, AMD Radeon 880M integrated GPU, WebView2 153.0.4234.48",
+  "baseCommit": "4a3eebc5643a20a5a424c40fd3f73dfd3c3f7077",
+  "productionTouched": false,
+  "aiGenerationCalls": 0,
+  "quality": "original",
+  "before": {
+    "executableSha256": "5b2e67f029567b30a791f271453b2b9d15014a7f445e7899db04f8fecf0df42c",
+    "viewport": {
+      "width": 540,
+      "height": 760,
+      "dpr": 2
+    },
+    "samples": {
+      "workbench-only": {
+        "mainPrivateBytes": 34734080,
+        "mainWorkingSetBytes": 66453504,
+        "processTreePrivateBytes": 973930496,
+        "processTreeWorkingSetBytes": 1272881152,
+        "gpuSharedBytes": 448909312,
+        "gpuDedicatedBytes": 4071424,
+        "processCount": 10
+      },
+      "nene-loaded": {
+        "mainPrivateBytes": 1919860736,
+        "mainWorkingSetBytes": 1961250816,
+        "processTreePrivateBytes": 2977054720,
+        "processTreeWorkingSetBytes": 3269038080,
+        "gpuSharedBytes": 2259218432,
+        "gpuDedicatedBytes": 11702272,
+        "processCount": 10
+      },
+      "nene-hidden": {
+        "mainPrivateBytes": 1919827968,
+        "mainWorkingSetBytes": 1961279488,
+        "processTreePrivateBytes": 2770501632,
+        "processTreeWorkingSetBytes": 3069898752,
+        "gpuSharedBytes": 2126049280,
+        "gpuDedicatedBytes": 11268096,
+        "processCount": 10
+      },
+      "nene-reopened": {
+        "mainPrivateBytes": 1918148608,
+        "mainWorkingSetBytes": 1961250816,
+        "processTreePrivateBytes": 2776109056,
+        "processTreeWorkingSetBytes": 3077738496,
+        "gpuSharedBytes": 2274553856,
+        "gpuDedicatedBytes": 12914688,
+        "processCount": 10
+      },
+      "nene-os-closed": {
+        "mainPrivateBytes": 1918283776,
+        "mainWorkingSetBytes": 1961394176,
+        "processTreePrivateBytes": 2780258304,
+        "processTreeWorkingSetBytes": 3089076224,
+        "gpuSharedBytes": 2118447104,
+        "gpuDedicatedBytes": 11964416,
+        "processCount": 10
+      }
+    },
+    "hidden": {
+      "active": true,
+      "character": "nene",
+      "frameCount": 714,
+      "modelBounds": {
+        "height": 1286,
+        "width": 628,
+        "x": 286,
+        "y": 245
+      },
+      "mouthLevel": 0,
+      "mouthMappedValue": 0,
+      "ready": true,
+      "rect": {
+        "height": 1312,
+        "width": 1080,
+        "x": 60,
+        "y": 232
+      },
+      "renderErrors": 0,
+      "rendererAttached": true,
+      "starting": false,
+      "surfaceFailures": 0,
+      "surfaceRecoveries": 0,
+      "targetFps": 165,
+      "visible": false,
+      "windowReady": true
+    },
+    "osClosed": {
+      "active": true,
+      "character": "nene",
+      "frameCount": 1808,
+      "modelBounds": {
+        "height": 1268,
+        "width": 619,
+        "x": 290,
+        "y": 262
+      },
+      "mouthLevel": 0,
+      "mouthMappedValue": 0,
+      "ready": true,
+      "rect": {
+        "height": 1294,
+        "width": 1080,
+        "x": 60,
+        "y": 250
+      },
+      "renderErrors": 0,
+      "rendererAttached": true,
+      "starting": false,
+      "surfaceFailures": 0,
+      "surfaceRecoveries": 0,
+      "targetFps": 165,
+      "visible": true,
+      "windowReady": true
+    },
+    "checks": [
+      "isolated-workbench-cold-start",
+      "real-nene-display",
+      "hide-and-reopen",
+      "OS-close"
+    ]
+  },
+  "after": {
+    "executableSha256": "039887561107aca4d5496a192ce38bc461f2b47ad836e42c08448c598bb698fe",
+    "viewport": {
+      "width": 540,
+      "height": 760,
+      "dpr": 2
+    },
+    "samples": {
+      "workbench-only": {
+        "mainPrivateBytes": 35102720,
+        "mainWorkingSetBytes": 68820992,
+        "processTreePrivateBytes": 701140992,
+        "processTreeWorkingSetBytes": 999559168,
+        "gpuSharedBytes": 327065600,
+        "gpuDedicatedBytes": 5124096,
+        "processCount": 10
+      },
+      "nene-loaded": {
+        "mainPrivateBytes": 1650860032,
+        "mainWorkingSetBytes": 1694740480,
+        "processTreePrivateBytes": 2676252672,
+        "processTreeWorkingSetBytes": 2982211584,
+        "gpuSharedBytes": 2019409920,
+        "gpuDedicatedBytes": 13082624,
+        "processCount": 10
+      },
+      "nene-hidden": {
+        "mainPrivateBytes": 49840128,
+        "mainWorkingSetBytes": 85114880,
+        "processTreePrivateBytes": 960499712,
+        "processTreeWorkingSetBytes": 1266139136,
+        "gpuSharedBytes": 236625920,
+        "gpuDedicatedBytes": 4870144,
+        "processCount": 10
+      },
+      "nene-reopened": {
+        "mainPrivateBytes": 1643204608,
+        "mainWorkingSetBytes": 1686634496,
+        "processTreePrivateBytes": 2441154560,
+        "processTreeWorkingSetBytes": 2815414272,
+        "gpuSharedBytes": 1816379392,
+        "gpuDedicatedBytes": 13082624,
+        "processCount": 14
+      },
+      "nene-os-closed": {
+        "mainPrivateBytes": 115634176,
+        "mainWorkingSetBytes": 152121344,
+        "processTreePrivateBytes": 848793600,
+        "processTreeWorkingSetBytes": 1160429568,
+        "gpuSharedBytes": 272539648,
+        "gpuDedicatedBytes": 7008256,
+        "processCount": 10
+      },
+      "hidden-during-natsume-load": {
+        "mainPrivateBytes": 37961728,
+        "mainWorkingSetBytes": 78327808,
+        "processTreePrivateBytes": 820764672,
+        "processTreeWorkingSetBytes": 1139974144,
+        "gpuSharedBytes": 256286720,
+        "gpuDedicatedBytes": null,
+        "processCount": 10
+      },
+      "natsume-hidden": {
+        "mainPrivateBytes": 45006848,
+        "mainWorkingSetBytes": 79904768,
+        "processTreePrivateBytes": 669966336,
+        "processTreeWorkingSetBytes": 991928320,
+        "gpuSharedBytes": 254189568,
+        "gpuDedicatedBytes": 4935680,
+        "processCount": 10
+      }
+    },
+    "hidden": {
+      "active": true,
+      "character": null,
+      "frameCount": 650,
+      "modelBounds": null,
+      "mouthLevel": 0,
+      "mouthMappedValue": 0,
+      "ready": false,
+      "rect": {
+        "height": 1312,
+        "width": 1080,
+        "x": 60,
+        "y": 232
+      },
+      "renderErrors": 0,
+      "rendererAttached": true,
+      "starting": false,
+      "surfaceFailures": 0,
+      "surfaceRecoveries": 0,
+      "targetFps": 165,
+      "visible": false,
+      "windowReady": true
+    },
+    "osClosed": {
+      "active": true,
+      "character": null,
+      "frameCount": 1294,
+      "modelBounds": null,
+      "mouthLevel": 0,
+      "mouthMappedValue": 0,
+      "ready": false,
+      "rect": {
+        "height": 1312,
+        "width": 1080,
+        "x": 60,
+        "y": 232
+      },
+      "renderErrors": 0,
+      "rendererAttached": true,
+      "starting": false,
+      "surfaceFailures": 0,
+      "surfaceRecoveries": 0,
+      "targetFps": 165,
+      "visible": false,
+      "windowReady": true
+    },
+    "checks": [
+      "hide-during-model-load",
+      "real-natsume-reopen",
+      "isolated-workbench-cold-start",
+      "real-nene-display",
+      "hide-and-reopen",
+      "OS-close"
+    ]
+  },
+  "raw": {
+    "before": "runtime/memory-optimization/before-1790480916727/report.json",
+    "after": "runtime/memory-optimization/after-1790481390143/report.json",
+    "visual": "runtime/memory-optimization/after-1790481679459/report.json"
+  },
+  "changes": [
+    "Unload native model and GPU context on explicit stage hiding; reopen lazily while preserving preferences",
+    "Drop texture upload staging after loading and supersample resources on release",
+    "Route OS companion close through visibility notification; stop hidden cursor sampling and remove unused hidden-degrade loop",
+    "Skip desktop full-library thumbnail warmup; 96-item / 8-MiB bounded desktop thumbnail cache",
+    "Release gallery HD/viewer Blob URLs on deactivation and reject stale asynchronous results"
+  ],
+  "validation": {
+    "frontend": {
+      "live2dTests": 91,
+      "workbenchTests": 20,
+      "latestLifecycleTests": 18
+    },
+    "nativePureRustTests": 9,
+    "nativeContractTests": 6,
+    "galleryBrowserTests": 2,
+    "typecheck": "passed",
+    "monolith": "passed",
+    "webBudget": "passed",
+    "desktopBuild": "passed-in-isolated-worktree",
+    "nativeProductFlow": "passed",
+    "nativeStandaloneSelftest": "not-run",
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "visualReview": {
+      "galleryThemes": "Both real browser screenshots inspected; contrast assertions passed",
+      "nene": "Loaded native image and physical-coordinate desktop composite after reopen inspected; complete model",
+      "natsume": "Native image after reopen inspected; complete model",
+      "printWindow": "One incomplete PrintWindow image rejected as visual proof; validated with CopyFromScreen using native physical rect instead"
+    }
+  },
+  "limits": [
+    "Private bytes are committed memory, not exclusive physical RAM; GPU/shared memory must not be added to it.",
+    "Before is the installed build; after includes the repository UI at the stated base commit. Native comparison holds character, original textures, viewport and DPR constant; total-tree differences are not a pure UI A/B benchmark.",
+    "Empty isolated workspaces; no measured large-library RAM saving is claimed. Cache and stale-result behavior are verified by targeted tests.",
+    "Short samples; no long-duration soak or discrete-GPU measurement. Background gateway probes can briefly add child processes. Null GPU counters mean unavailable.",
+    "An in-flight native synchronous texture decode/upload completes before the queued Destroy; frontend cancellation is immediate.",
+    "Reopening the pet reloads its model. The installed production application has not been replaced."
+  ]
+}
