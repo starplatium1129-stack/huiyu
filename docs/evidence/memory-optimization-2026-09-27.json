@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "kind": "desktop-memory-optimization",
   "date": "2026-09-27",
-  "status": "candidate-verified-not-installed",
+  "status": "implemented-and-installed",
   "hardware": "Office laptop, AMD Radeon 880M integrated GPU, WebView2 153.0.4234.48",
   "baseCommit": "4a3eebc5643a20a5a424c40fd3f73dfd3c3f7077",
-  "productionTouched": false,
+  "productionTouched": true,
   "aiGenerationCalls": 0,
   "quality": "original",
   "before": {
@@ -296,6 +296,46 @@
     "Empty isolated workspaces; no measured large-library RAM saving is claimed. Cache and stale-result behavior are verified by targeted tests.",
     "Short samples; no long-duration soak or discrete-GPU measurement. Background gateway probes can briefly add child processes. Null GPU counters mean unavailable.",
     "An in-flight native synchronous texture decode/upload completes before the queued Destroy; frontend cancellation is immediate.",
-    "Reopening the pet reloads its model. The installed production application has not been replaced."
-  ]
+    "Reopening the pet reloads its model. The final installation is bound separately below; original performance samples remain attached to their own executable hashes."
+  ],
+  "installation": {
+    "date": "2026-09-27",
+    "sourceCommit": "60888df3223a6c070b45a1b2541ec7550992b537",
+    "version": "1.7.2",
+    "installerSha256": "2b481b94fa42a57001641ccd1d0c2c8b81343c68b12adbb92ada0ca6397cf150",
+    "installerBytes": 687307850,
+    "installedExeSha256": "5ffd1b710dae5d3647d7df2799e44cd2e205b6de3794ca85e2f237893aa3a885",
+    "exactNSISPayloadMatch": true,
+    "matchedRuntimeFiles": 1293,
+    "sourceSha256": "997c5dbb5254c037b002f5c214017f8c60d5344fbc9e1fff3c8bfcedc03a47fc",
+    "entry": "deploy-desktop.bat -UseInstaller -QuietInstall -NoRestart -InstallerPath <verified installer>",
+    "userApprovedScope": "Committed main 60888df3, including all prior UI and memory changes; later uncommitted backend changes excluded",
+    "tests": {
+      "targetedFrontend": 119,
+      "targetedBrowser": 13,
+      "typecheck": "passed",
+      "monolith": "passed",
+      "buildAndBinding": "passed"
+    },
+    "nativeChecks": [
+      "installed-host-and-original-workspace-ready",
+      "installed-native-hide-release-and-reopen",
+      "installed-workbench-and-home-images-both-themes"
+    ],
+    "decodedHomeImages": 12,
+    "normalStartupReady": true,
+    "temporaryDebugPortClosed": true,
+    "dataPreserved": true,
+    "settingsUnchanged": true,
+    "pointerPreserved": true,
+    "recordCounts": {
+      "settings": 12,
+      "chat": 1,
+      "draft": 3,
+      "artworks": 0,
+      "projects": 0,
+      "migrationItems": 15
+    },
+    "evidenceRoot": "runtime/memory-release-2026-09-27/"
+  }
 }

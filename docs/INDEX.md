@@ -6,7 +6,7 @@
 
 ## 本次用户指定的架构重构
 
-- [桌面内存回收优化证据](evidence/memory-optimization-2026-09-27.json)：桌宠隐藏释放 GPU context、工作台按需缩略缓存、图库原图回收及本机关闭/重开对照；候选已验证，尚未安装。
+- [桌面内存回收优化证据](evidence/memory-optimization-2026-09-27.json)：桌宠隐藏释放 GPU context、工作台按需缩略缓存、图库原图回收及本机关闭/重开对照；`60888df3` 已完整安装并验证资料保持。
 
 - [重构后可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)：普通图片加载、维护升级、构建回执及凭据授权修复；[安装与验证证据](evidence/reliability-followup-2026-09-27.json)。
 
