@@ -1,30 +1,29 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    DirectorDecisionsRail 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
   .pb .decision-summary {
-    justify-content:space-between; margin:0; cursor:pointer; list-style:none;
-    text-transform:none; user-select:none;
+    @apply tw:justify-between tw:m-0 tw:cursor-pointer; list-style:none;
+    @apply tw:normal-case tw:select-none;
   }
-  .pb .decision-summary::-webkit-details-marker { display:none; }
+  .pb .decision-summary::-webkit-details-marker { @apply tw:hidden; }
   .pb .decision-summary::after {
-    content:'›'; flex:0 0 auto; margin-left:auto; color:var(--text-muted);
-    font-size:var(--fs-body-lg); line-height:var(--lh-flush); transform:rotate(90deg);
+    content:'›'; flex:0 0 auto; @apply tw:ml-auto tw:text-muted tw:text-body-lg tw:leading-flush; transform:rotate(90deg);
     transition:transform var(--motion-hover) var(--ease-out),color var(--motion-hover);
   }
-  .pb .decision-fold[open] > .decision-summary { margin-bottom:var(--s-3); }
-  .pb .decision-fold[open] > .decision-summary::after { color:var(--accent); transform:rotate(-90deg); }
+  .pb .decision-fold[open] > .decision-summary { @apply tw:mb-s-3; }
+  .pb .decision-fold[open] > .decision-summary::after { @apply tw:text-accent; transform:rotate(-90deg); }
   .pb .decision-fold[open] > :not(summary) { animation: fade-in 0.22s var(--ease-out); }
   .pb .decision-current {
-    min-width:0; margin-left:auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-    color:var(--text-muted); font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:0;
+    @apply tw:min-w-0 tw:ml-auto tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-muted; font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:0;
   }
   .pb .option .opt-icon, .pb .option .option-icon { filter:saturate(.75); opacity:.92; transition:filter var(--motion-surface),opacity var(--motion-surface); }
   .pb .option:hover .opt-icon, .pb .option:hover .option-icon { filter:saturate(1); opacity:1; }
   .pb .option.selected .opt-icon, .pb .option.selected .option-icon { filter:saturate(1); opacity:1; }
-  .pb .opt-icon { display:block; font-size:var(--fs-title-xs); margin-bottom:2px; }
-  .pb .opt-name { display:block; font-weight:600; font-size:var(--fs-label-sm); color:var(--text-primary); }
+  .pb .opt-icon { @apply tw:block tw:text-title-xs tw:mb-[2px]; }
+  .pb .opt-name { @apply tw:block tw:font-semibold tw:text-label-sm tw:text-primary; }
   .pb .emotion-list, .pb .camera-list, .pb .lighting-list, .pb .comp-list {
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:var(--s-2);
+    @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); @apply tw:gap-s-2;
   }

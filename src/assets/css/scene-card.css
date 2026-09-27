@@ -1,3 +1,4 @@
+@reference "./tailwind.css";
 /* ============================================================
    Scene Card — 统一场景卡片(modifier:sc-strip / sc-recent)
    grid = 默认(Explorer / Gallery / 作品展示)
@@ -8,19 +9,16 @@
 .sc {
   --z-sc-media: 0;
   --z-sc-pointer-glow: 1;
-  position:relative;
+  @apply tw:relative;
   background: var(--bg-surface);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-dossier);
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  cursor: pointer;
+  @apply tw:overflow-hidden tw:flex tw:flex-col tw:cursor-pointer;
   content-visibility: auto;
   contain-intrinsic-size: auto 280px;
   /* 卡片抬升是 transform-only 物理弹簧；linear() 不支持时回退到 Bézier。 */
   transition: border-color var(--motion-hover), transform var(--spring-gentle-duration) var(--spring-gentle-ease), box-shadow var(--motion-control) var(--ease-out);
-  min-width: 0;
-  color: var(--text-primary);
+  @apply tw:min-w-0 tw:text-primary;
   text-decoration: none;
   box-shadow: none;
 }
@@ -35,11 +33,11 @@
   transition-duration: var(--motion-press);
 }
 .sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.sc-static { cursor: default; }
+.sc-static { @apply tw:cursor-default; }
 
 /* Cache a fixed-size light texture; pointer movement only changes its transform. */
 .sc::before {
-  content: ""; position: absolute; left:0; top:0; width:520px; height:520px; z-index: var(--z-sc-pointer-glow); pointer-events: none;
+  content: ""; @apply tw:absolute tw:left-0 tw:top-0 tw:w-[520px] tw:h-[520px]; z-index: var(--z-sc-pointer-glow); @apply tw:pointer-events-none;
   background: radial-gradient(260px circle at center,
     color-mix(in srgb, var(--accent) 12%, transparent), transparent 66%);
   transform:translate3d(calc(var(--sc-spot-x, 0px) - 260px),calc(var(--sc-spot-y, 0px) - 260px),0);
@@ -51,30 +49,28 @@
 
 /* ---- 视觉预览图区(审核样张优先,渐变兜底) ---- */
 .sc-band {
-  aspect-ratio: 16/10; position: relative; flex-shrink: 0;
-  display: flex; align-items: flex-end; padding: var(--s-2);
-  overflow: hidden;
+  aspect-ratio: 16/10; @apply tw:relative tw:shrink-0 tw:flex tw:items-end tw:p-s-2 tw:overflow-hidden;
   /* 无样张时的渐变兜底。曾由 SceneCard.vue 的 BAND_FALLBACK 常量内联注入 */
   background: linear-gradient(145deg, color-mix(in srgb, var(--bg-deep) 72%, var(--bg-elevated)), var(--bg-elevated));
 }
-.sc-band::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,var(--art-scrim-soft),transparent 30%,transparent 56%,var(--art-scrim)); pointer-events:none; z-index:var(--z-base); }
+.sc-band::after { content:""; @apply tw:absolute; inset:0; background:linear-gradient(180deg,var(--art-scrim-soft),transparent 30%,transparent 56%,var(--art-scrim)); @apply tw:pointer-events-none; z-index:var(--z-base); }
 .sc-thumb {
-  position: absolute; inset: 0; z-index: var(--z-sc-media); /* 缩略图是卡片底层,受 .sc-band:after 的渐变保护 */
-  width: 100%; height: 100%; object-fit: cover; object-position: center 22%;
+  @apply tw:absolute; inset: 0; z-index: var(--z-sc-media); /* 缩略图是卡片底层,受 .sc-band:after 的渐变保护 */
+  @apply tw:w-full tw:h-full tw:object-cover; object-position: center 22%;
   opacity:0; filter:blur(6px); transition: opacity var(--motion-surface) var(--ease-out), filter var(--motion-atmosphere) var(--ease-out), transform var(--motion-surface) var(--ease-out), filter var(--motion-surface);
 }
 .sc-thumb-ready { opacity:1; filter:blur(0); }
 /* 审计修复：骨架微光原为逐帧补间 background-position（无限循环 → 每帧重绘整块渐变），
    改为伪元素承载渐变 + transform:translateX 位移（合成器属性，零重绘）。
    渐变宽度 220%，位移 0 → -120% 与原背景位移量一致。 */
-.sc-thumb-skeleton { position:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; overflow:hidden; transition:opacity var(--motion-hover); }
+.sc-thumb-skeleton { @apply tw:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; @apply tw:overflow-hidden; transition:opacity var(--motion-hover); }
 .sc-thumb-skeleton::after {
-  content:""; position:absolute; top:0; bottom:0; left:0; width:220%;
+  content:""; @apply tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[220%];
   background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%);
 }
 .sc-thumb-skeleton.visible { opacity:1; }
 .sc-thumb-skeleton.visible::after { animation:archive-skeleton-shimmer 1.3s linear infinite; }
-.sc-thumb-missing { display: none; }
+.sc-thumb-missing { @apply tw:hidden; }
 .sc:hover .sc-thumb { transform: none; }
 /* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
 .sc-thumb-r18 { filter: blur(16px) saturate(.85); transform: scale(1.08); }
@@ -82,13 +78,13 @@
 .sc:hover .sc-thumb-r18, .sc:focus-within .sc-thumb-r18,
 .sc:hover .sc-thumb-r18.sc-thumb-ready, .sc:focus-within .sc-thumb-r18.sc-thumb-ready { filter: blur(0) saturate(1); transform: scale(1.08); }
 .sc[data-rating="R18"] .sc-band::before {
-  content:"R18 · 悬停预览"; position:absolute; z-index:var(--z-raised);
-  left:50%; top:50%; transform:translate(-50%,-50%);
-  padding:var(--s-2) var(--s-3); border:1px solid var(--on-art-line); border-radius:var(--r-pill);
+  content:"R18 · 悬停预览"; @apply tw:absolute; z-index:var(--z-raised);
+  @apply tw:left-[50%] tw:top-[50%]; transform:translate(-50%,-50%);
+  padding:var(--s-2) var(--s-3); border:1px solid var(--on-art-line); @apply tw:rounded-pill;
   background:var(--art-scrim); color:var(--on-art-primary);
   font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em;
   backdrop-filter:blur(10px); box-shadow:var(--shadow-sm);
-  pointer-events:none; opacity:1; transition:opacity var(--motion-hover);
+  @apply tw:pointer-events-none; opacity:1; transition:opacity var(--motion-hover);
 }
 .sc[data-rating="R18"]:hover .sc-band::before,
 .sc[data-rating="R18"]:focus-within .sc-band::before { opacity:0; }
@@ -99,34 +95,33 @@
   .sc:hover .sc-thumb-r18.sc-thumb-ready { transform: scale(1.03); }
 }
 .sc-cat {
-  position: relative; z-index: var(--z-raised);
-  margin-left: auto; font-size: var(--fs-mono-sm); font-weight: 700; letter-spacing: 0.05em;
-  background: var(--art-scrim); color: var(--on-art-primary); padding: 2px var(--s-2); border-radius: var(--r-md);
+  @apply tw:relative; z-index: var(--z-raised);
+  @apply tw:ml-auto tw:text-mono-sm tw:font-bold; letter-spacing: 0.05em;
+  background: var(--art-scrim); color: var(--on-art-primary); padding: 2px var(--s-2); @apply tw:rounded-md;
   backdrop-filter: blur(6px);
 }
 .sc-id {
-  position: absolute; z-index: var(--z-raised); left: var(--s-2); bottom: var(--s-2);
+  @apply tw:absolute; z-index: var(--z-raised); @apply tw:left-s-2 tw:bottom-s-2;
   font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: 0.12em;
   color: var(--on-art-primary); background: color-mix(in srgb, var(--art-scrim-soft) 88%, var(--bg-deep));
-  padding: 2px var(--s-2); border-radius: var(--r-sm); backdrop-filter: blur(6px);
+  padding: 2px var(--s-2); @apply tw:rounded-sm; backdrop-filter: blur(6px);
   box-shadow: inset 0 1px 0 var(--hl-inset-08), 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 .sc-badge {
-  position: absolute; z-index: var(--z-raised); top: var(--s-2); right: var(--s-2); font-size: var(--fs-mono-sm);
-  background: var(--accent); color: var(--text-inverse); padding: 1px var(--s-2); border-radius: var(--r-md);
+  @apply tw:absolute; z-index: var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:text-mono-sm;
+  background: var(--accent); @apply tw:text-inverse; padding: 1px var(--s-2); @apply tw:rounded-md;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 45%, transparent);
 }
-.sc-rating.r18 { background: var(--bg-surface); color: var(--danger-text); border: 1px solid var(--danger-text); }
-.sc-rating.r15 { background: var(--bg-surface); color: var(--warning-text); border: 1px solid var(--warning-text); }
+.sc-rating.r18 { background: var(--bg-surface); @apply tw:text-danger-text; border: 1px solid var(--danger-text); }
+.sc-rating.r15 { background: var(--bg-surface); @apply tw:text-warning-text; border: 1px solid var(--warning-text); }
 /* 精品层级徽标(图区左上) */
 .sc-tier {
-  position: absolute; z-index: var(--z-raised); top: var(--s-2); left: var(--s-2);
-  font-size: var(--fs-mono-sm); font-weight: 800; letter-spacing: 0.04em;
+  @apply tw:absolute; z-index: var(--z-raised); @apply tw:top-s-2 tw:left-s-2 tw:text-mono-sm tw:font-extrabold; letter-spacing: 0.04em;
   /* 徽标压在样张上:底色恒为深色(与主题无关),文字用角色品牌色的浅色调 */
   color: color-mix(in srgb, var(--accent) 40%, white);
   background: color-mix(in srgb, var(--accent) 62%, var(--art-scrim));
   border: 1px solid var(--on-art-line);
-  padding: 2px var(--s-2); border-radius: var(--r-pill); backdrop-filter: blur(8px);
+  padding: 2px var(--s-2); @apply tw:rounded-pill; backdrop-filter: blur(8px);
   box-shadow: inset 0 1px 0 var(--hl-inset-18), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 .sc-tier.signature {
@@ -135,64 +130,64 @@
 }
 
 /* ---- 主体 ---- */
-.sc-body { padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
-.sc-title { font-weight: 700; font-size: var(--fs-body); line-height: var(--lh-tight); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sc-story { font-size: var(--fs-label-sm); color: var(--text-muted); line-height: var(--lh-body); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.sc-tags { display: flex; gap: var(--s-1); flex-wrap: wrap; }
+.sc-body { @apply tw:p-s-3 tw:flex tw:flex-col tw:gap-s-1 tw:min-w-0; }
+.sc-title { @apply tw:font-bold tw:text-body tw:leading-tight tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis; }
+.sc-story { @apply tw:text-label-sm tw:text-muted tw:leading-body; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; @apply tw:overflow-hidden; }
+.sc-tags { @apply tw:flex tw:gap-s-1 tw:flex-wrap; }
 .sc-tag {
-  font-size: var(--fs-label-xs);
+  @apply tw:text-label-xs;
   padding: 2px 8px;
-  border-radius: var(--r-pill);
+  @apply tw:rounded-pill;
   background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
   border: 1px solid var(--border-soft);
-  color: var(--text-secondary);
+  @apply tw:text-secondary;
   letter-spacing: 0.02em;
   box-shadow: inset 0 1px 0 var(--hl-inset-06);
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover);
 }
 .sc-tag:hover {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
-  color: var(--text-primary);
+  @apply tw:text-primary;
   background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
 }
-.sc-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--s-1); font-size: var(--fs-mono-sm); color: var(--text-muted); }
-.sc-meta-r { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+.sc-meta { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-1 tw:text-mono-sm tw:text-muted; }
+.sc-meta-r { @apply tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:text-right; }
 
 /* ---- 操作按钮 ---- */
-.sc-actions { display: flex; gap: var(--s-1); margin-top: var(--s-1); }
+.sc-actions { @apply tw:flex tw:gap-s-1 tw:mt-s-1; }
 .sc-btn {
   /* 卡内紧凑操作:比全局 .btn-sm 更矮(卡片高度有限),故不复用 .btn */
-  flex: 1; text-align: center; font-size: var(--fs-label-xs); font-weight: 600;
-  padding: var(--s-1) var(--s-2); border-radius: var(--r-lg); text-decoration: none;
-  border: 1px solid var(--border-soft); color: var(--text-secondary);
+  flex: 1; @apply tw:text-center tw:text-label-xs tw:font-semibold;
+  padding: var(--s-1) var(--s-2); @apply tw:rounded-lg; text-decoration: none;
+  border: 1px solid var(--border-soft); @apply tw:text-secondary;
   background: var(--bg-deep);
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover),
               transform var(--motion-hover) var(--ease-out);
-  white-space: nowrap;
+  @apply tw:whitespace-nowrap;
 }
 .sc-btn:active { transform:scale(.97); }
-.sc-btn:hover { border-color: var(--accent); color: var(--accent); }
-.sc-btn-primary { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
-.sc-btn-primary:hover { background: var(--accent); color: var(--text-inverse); opacity: 0.92; }
+.sc-btn:hover { @apply tw:border-accent tw:text-accent; }
+.sc-btn-primary { background: var(--accent); @apply tw:text-inverse tw:border-accent; }
+.sc-btn-primary:hover { background: var(--accent); @apply tw:text-inverse; opacity: 0.92; }
 
 /* ---- strip 修饰(首页精选胶片:比网格卡更宽,故事多露一行) ---- */
-.sc-strip { width: 240px; flex: 0 0 240px; scroll-snap-align: start; }
+.sc-strip { @apply tw:w-[240px]; flex: 0 0 240px; scroll-snap-align: start; }
 .sc-strip .sc-story { -webkit-line-clamp: 3; }
-.sc-strip .sc-cat, .sc-strip .sc-rating, .sc-strip .sc-meta, .sc-strip .sc-tags, .sc-strip .sc-actions { display: none; }
+.sc-strip .sc-cat, .sc-strip .sc-rating, .sc-strip .sc-meta, .sc-strip .sc-tags, .sc-strip .sc-actions { @apply tw:hidden; }
 
 /* ---- recent 修饰 ---- */
 .sc-recent .sc-story { -webkit-line-clamp: 2; }
 
 /* ---- 空态 ---- */
 .sc-empty {
-  grid-column: 1 / -1; text-align: center; padding: var(--s-7) var(--s-5);
-  background: var(--bg-surface); border: 1px dashed var(--border-soft); border-radius: var(--r-lg);
+  grid-column: 1 / -1; @apply tw:text-center; padding: var(--s-7) var(--s-5);
+  background: var(--bg-surface); border: 1px dashed var(--border-soft); @apply tw:rounded-lg;
 }
-.sc-empty .ic { font-size: var(--fs-glyph); margin-bottom: var(--s-3); }
-.sc-empty p { color: var(--text-muted); margin-bottom: var(--s-4); }
+.sc-empty .ic { @apply tw:text-glyph tw:mb-s-3; }
+.sc-empty p { @apply tw:text-muted tw:mb-s-4; }
 /* 位移量：层宽 220%，要让右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
 @keyframes archive-skeleton-shimmer { to { transform: translateX(-54.5%); } }
 @media (prefers-reduced-motion: reduce) { .sc-thumb-skeleton.visible { animation:none; } }
 
 /* An unavailable preview is explicit; keep frame dimensions stable while it loads. */
-.sc-preview-unavailable { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--s-4); color: var(--text-muted); font-size: var(--fs-label-sm); background: var(--bg-deep); }
+.sc-preview-unavailable { @apply tw:absolute; inset: 0; @apply tw:grid; place-items: center; @apply tw:p-s-4 tw:text-muted tw:text-label-sm; background: var(--bg-deep); }

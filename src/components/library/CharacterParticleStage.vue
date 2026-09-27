@@ -1,22 +1,22 @@
 <template>
-  <section class="character-particle-stage" :style="{ '--archive-blue': theme.accent, '--character-aura': theme.aura }" :aria-label="`${name}的形象展台`">
-    <header class="portrait-stage-heading">
-      <div><span class="portrait-stage-kicker">光点成像 · CHARACTER PORTRAIT</span><h2>{{ name }}</h2></div>
-      <div class="portrait-stage-modes" role="group" aria-label="形象展示方式">
+  <section class="character-particle-stage tw:min-w-0 tw:overflow-hidden tw:rounded-lg" :style="{ '--archive-blue': theme.accent, '--character-aura': theme.aura }" :aria-label="`${name}的形象展台`">
+    <header class="portrait-stage-heading tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-4">
+      <div><span class="portrait-stage-kicker tw:text-secondary">光点成像 · CHARACTER PORTRAIT</span><h2>{{ name }}</h2></div>
+      <div class="portrait-stage-modes tw:flex tw:gap-s-1 tw:p-s-1 tw:rounded-pill" role="group" aria-label="形象展示方式">
         <button type="button" :aria-pressed="!showOriginal" :disabled="!loading && !available" @click="mode = 'particles'"><ArchiveIcon name="spark" />粒子形象</button>
         <button type="button" :aria-pressed="showOriginal" @click="mode = 'original'"><ArchiveIcon name="image" />人物原画</button>
       </div>
     </header>
-    <div v-show="!showOriginal" class="particle-theatre" :aria-busy="loading">
+    <div v-show="!showOriginal" class="particle-theatre tw:relative" :aria-busy="loading">
       <SemanticParticleField v-show="available" :shape="theme.shape" :portrait-id="characterId" :label="`${name}的人物粒子形象`" :caption="name" density="ambient" :portrait-reference-size="referenceSize" />
-      <div v-if="loading" class="particle-loading" role="status"><ArchiveIcon name="spark" /><span>正在聚拢{{ name }}的光点…</span></div>
+      <div v-if="loading" class="particle-loading tw:absolute tw:flex tw:items-center tw:justify-center tw:gap-s-3 tw:text-secondary tw:text-body-sm" role="status"><ArchiveIcon name="spark" /><span>正在聚拢{{ name }}的光点…</span></div>
     </div>
     <div v-show="showOriginal" class="stage-original"><slot /></div>
-    <footer class="portrait-stage-footer">
+    <footer class="portrait-stage-footer tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3">
       <p v-if="!loading && !available" role="status">这位角色的粒子形象暂不可用，先欣赏人物原画。</p>
       <p v-else>{{ showOriginal ? '从原画里的色彩与轮廓，走进她的故事。' : '移动指针，让光点散开、再聚成她的模样。' }}</p>
     </footer>
-    <p class="portrait-stage-note">切换左侧角色，光点也随之变换。系统减少动态效果时使用原有静态模式。</p>
+    <p class="portrait-stage-note tw:m-0 tw:text-secondary tw:text-label-xs tw:leading-body">切换左侧角色，光点也随之变换。系统减少动态效果时使用原有静态模式。</p>
   </section>
 </template>
 
@@ -47,22 +47,23 @@ watch(() => props.characterId, async (id, _old, onCleanup) => {
 </script>
 
 <style scoped>
-.character-particle-stage { min-width:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-.portrait-stage-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-4); padding:var(--s-5) var(--s-6); border-bottom:1px solid var(--border-soft); }
-.portrait-stage-kicker { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
-.portrait-stage-heading h2 { margin:var(--s-2) 0 0; color:var(--text-primary); font-size:var(--fs-title); font-weight:600; }
-.portrait-stage-modes { display:flex; gap:var(--s-1); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); }
-.portrait-stage-modes button { display:flex; align-items:center; gap:var(--s-2); min-height:40px; padding:var(--s-2) var(--s-3); border:1px solid transparent; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); font:500 var(--fs-label) var(--font-sans); cursor:pointer; }
-.portrait-stage-modes button[aria-pressed='true'] { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-surface); box-shadow:var(--shadow-sm); }
-.portrait-stage-modes button:disabled { color:var(--text-disabled); cursor:default; }
+@reference "../../assets/css/tailwind.css";
+.character-particle-stage { border:1px solid var(--border-soft); background:var(--bg-surface); }
+.portrait-stage-heading { padding:var(--s-5) var(--s-6); border-bottom:1px solid var(--border-soft); }
+.portrait-stage-kicker { font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
+.portrait-stage-heading h2 { margin:var(--s-2) 0 0; @apply tw:text-primary tw:text-title tw:font-semibold; }
+.portrait-stage-modes { border:1px solid var(--border-soft); background:var(--bg-base); }
+.portrait-stage-modes button { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px]; padding:var(--s-2) var(--s-3); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:500 var(--fs-label) var(--font-sans); @apply tw:cursor-pointer; }
+.portrait-stage-modes button[aria-pressed='true'] { @apply tw:text-primary tw:border-strong; background:var(--bg-surface); box-shadow:var(--shadow-sm); }
+.portrait-stage-modes button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .portrait-stage-modes button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-.particle-theatre { position:relative; height:clamp(440px,65dvh,760px); background:var(--bg-base); }
-.particle-theatre :deep(.semantic-particle-field) { width:100%; height:100%; min-height:0; }
-.particle-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:var(--s-3); color:var(--text-secondary); font-size:var(--fs-body-sm); }
+.particle-theatre { height:clamp(440px,65dvh,760px); background:var(--bg-base); }
+.particle-theatre :deep(.semantic-particle-field) { @apply tw:w-full tw:h-full tw:min-h-0; }
+.particle-loading { inset:0; }
 .stage-original :deep(.portrait) { border:0; border-radius:0; }
-.stage-original :deep(.portrait-image) { width:100%; height:clamp(440px,65dvh,760px); max-height:none; object-fit:contain; }
-.portrait-stage-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-3); padding:var(--s-4) var(--s-5); border-top:1px solid var(--border-soft); }
-.portrait-stage-footer p { margin:0; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
-.portrait-stage-note { margin:0; padding:0 var(--s-5) var(--s-4); color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
-@media(max-width:600px) { .portrait-stage-heading { padding:var(--s-4); } .particle-theatre { height:440px; } .portrait-stage-footer { padding:var(--s-3); } .portrait-stage-note { padding-inline:var(--s-3); } }
+.stage-original :deep(.portrait-image) { @apply tw:w-full; height:clamp(440px,65dvh,760px); max-height:none; @apply tw:object-contain; }
+.portrait-stage-footer { padding:var(--s-4) var(--s-5); border-top:1px solid var(--border-soft); }
+.portrait-stage-footer p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
+.portrait-stage-note { padding:0 var(--s-5) var(--s-4); }
+@media(max-width:600px) { .portrait-stage-heading { @apply tw:p-s-4; } .particle-theatre { @apply tw:h-[440px]; } .portrait-stage-footer { @apply tw:p-s-3; } .portrait-stage-note { padding-inline:var(--s-3); } }
 </style>

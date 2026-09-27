@@ -27,7 +27,7 @@
         <TaskCenterButton />
         <span class="control-nav-label">工作台管理</span>
         <AppearancePreferences launcher-only />
-        <nav class="control-rail-nav" aria-label="控制区">
+        <nav class="control-rail-nav tw:grid tw:gap-s-2" aria-label="控制区">
           <a v-for="item in sections" :key="item.id" class="control-rail-link" :href="'#' + item.id"
             :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id)">
             <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
@@ -40,7 +40,7 @@
         </div>
       </aside>
 
-      <div class="control-content">
+      <div class="control-content tw:min-w-0">
     <main id="control-main" class="control-shell" tabindex="-1">
       <ControlIntro :ready-label="readyLabel">
         <template #actions>
@@ -51,12 +51,12 @@
         </template>
       </ControlIntro>
 
-      <section id="control-overview" class="control-overview" aria-label="连接状态">
+      <section id="control-overview" class="control-overview tw:mb-s-5" aria-label="连接状态">
         <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ feedbackText }}</h2><p>{{ actionNote || '正在读取本机服务状态。' }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
         <div v-if="statusError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ statusError }}，服务状态待确认，请重新检测。</span><button class="btn btn-ghost btn-sm" @click="pollStatus(true)">重试检测</button></div>
         <div class="status-wall">
           <a v-for="service in serviceCards" :key="service.name" class="status-tile" href="#control-resources" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'" @click="openSection('control-resources')">
-            <span class="status-tile-head"><ArchiveIcon :name="service.icon" /><small>{{ service.name }}</small><span class="status-dot"></span></span>
+            <span class="status-tile-head tw:flex tw:items-center tw:gap-s-2"><ArchiveIcon :name="service.icon" /><small>{{ service.name }}</small><span class="status-dot"></span></span>
             <strong>{{ !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
             <span class="status-tile-detail">{{ service.detail }}</span>
           </a>
@@ -180,7 +180,7 @@
         <p class="panel-desc">设置绘图引擎与语音服务的本机地址。修改后统一保存并检测。</p>
 
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
-        <div class="field-row">
+        <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="sdHost">
             <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
@@ -188,7 +188,7 @@
         <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
-        <div class="field-row">
+        <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="comfyHost">
             <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
@@ -196,7 +196,7 @@
         <p class="field-help">用于 Anima、Krea 与视频生成，请填写本机 HTTP 地址。</p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
-        <div class="field-row">
+        <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="ttsHost">
             <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
@@ -206,14 +206,14 @@
         <details class="voice-config">
           <summary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></summary>
           <div class="voice-grid">
-            <div class="voice-card">
+            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">宁宁</div>
               <label class="sr-only" for="v-nene-ref">宁宁参考音频路径</label>
             <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
               <label class="sr-only" for="v-nene-prompt">宁宁提示文本（日文）</label>
             <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
             </div>
-            <div class="voice-card">
+            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">夏目</div>
               <label class="sr-only" for="v-nat-ref">夏目参考音频路径</label>
             <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
@@ -252,12 +252,12 @@
         >{{ mainBtnLabel }}</button>
         <p class="action-note">{{ tunnelActive ? '分享通道运行中；停止只关公网，不影响本机绘图与聊天。' : '启动后生成本地与分享入口。' }}</p>
 
-        <div class="access-grid">
+        <div class="access-grid tw:grid tw:gap-s-3">
           <div class="access-card">
             <div class="access-kicker">Local</div>
             <div class="access-title">本机地址</div>
             <div class="link-value">{{ localLink }}</div>
-            <div class="inline-actions">
+            <div class="inline-actions tw:flex tw:gap-s-2">
               <button class="btn btn-ghost btn-sm" type="button" @click="copy(localLink)">复制</button>
               <a class="btn btn-ghost btn-sm" :href="localLink" target="_blank" rel="noreferrer">打开</a>
             </div>
@@ -266,7 +266,7 @@
             <div class="access-kicker">Share</div>
             <div class="access-title">分享链接</div>
             <div class="link-value" :class="{ waiting: !shareLink }">{{ shareLink || (tunnelStatus === 'disabled' ? '未生成公网链接' : '等待分享链接…') }}</div>
-            <div class="inline-actions">
+            <div class="inline-actions tw:flex tw:gap-s-2">
               <button class="btn btn-ghost btn-sm" type="button" :disabled="!shareLink" @click="copy(shareLink)">复制</button>
             </div>
           </div>

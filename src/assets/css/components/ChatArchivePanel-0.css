@@ -1,0 +1,26 @@
+@reference "../tailwind.css";
+.chat-archive-panel {
+  @apply tw:grid tw:gap-s-3;
+  margin: 0 0 var(--s-4);
+  @apply tw:p-s-4;
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-lg;
+  background: var(--bg-surface);
+}
+.archive-panel-head {
+  @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3;
+}
+.archive-panel-head strong { @apply tw:block; }
+.archive-panel-head small { @apply tw:block tw:mt-[2px] tw:text-muted; }
+.archive-counts {
+  @apply tw:flex tw:flex-wrap;
+  gap: var(--s-2) var(--s-4);
+  @apply tw:text-secondary tw:text-label;
+}
+.archive-counts strong { @apply tw:text-accent; }
+.archive-actions {
+  @apply tw:flex tw:flex-wrap tw:gap-s-2;
+}
+.archive-file-input { @apply tw:hidden; }
+.danger { @apply tw:text-danger-text; }
+.danger:disabled { @apply tw:text-muted; }

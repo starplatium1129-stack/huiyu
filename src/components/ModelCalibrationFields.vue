@@ -25,6 +25,7 @@ const range = computed(() => props.parameters.find(item => item.id === props.bin
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
 /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度/最小高度）落在 wrapper。 */
-.model-calibration-fields .studio-select-wrapper { width: 100%; min-height: 40px; }
+.model-calibration-fields .studio-select-wrapper { @apply tw:w-full tw:min-h-[40px]; }
 </style>

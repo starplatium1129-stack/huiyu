@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerEl"
-    class="image-split-compare"
+    class="image-split-compare tw:relative tw:w-full tw:h-full tw:overflow-hidden tw:select-none tw:touch-none tw:cursor-ew-resize tw:rounded-sm tw:bg-deep"
     :class="{ 'is-dragging': isDragging }"
     role="slider"
     tabindex="0"
@@ -18,29 +18,29 @@
     @pointercancel="stopDrag"
   >
     <!-- Before Image (Base layer) -->
-    <div class="split-layer layer-before">
-      <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(beforeSrc)" :alt="beforeLabel || '原图'" class="split-img" draggable="false" />
-      <span class="split-badge badge-before">{{ beforeLabel || '换装前' }}</span>
+    <div class="split-layer layer-before tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none">
+      <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(beforeSrc)" :alt="beforeLabel || '原图'" class="split-img tw:w-full tw:h-full tw:object-contain tw:block" draggable="false" />
+      <span class="split-badge badge-before tw:absolute tw:top-[10px] tw:text-label-xs tw:[padding:3px_8px] tw:rounded-xs tw:[z-index:var(--z-canvas)] tw:font-medium tw:left-[10px] tw:[background:color-mix(in_srgb,_black_70%,_transparent)] tw:[color:color-mix(in_srgb,_white_85%,_transparent)] tw:[border:1px_solid_color-mix(in_srgb,_white_15%,_transparent)]">{{ beforeLabel || '换装前' }}</span>
     </div>
 
     <!-- After Image (Clipped overlay) -->
     <div
-      class="split-layer layer-after"
+      class="split-layer layer-after tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none"
       :style="splitLayerStyle"
     >
-      <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(afterSrc)" :alt="afterLabel || '换装后'" class="split-img" draggable="false" />
-      <span class="split-badge badge-after">{{ afterLabel || '换装后' }}</span>
+      <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(afterSrc)" :alt="afterLabel || '换装后'" class="split-img tw:w-full tw:h-full tw:object-contain tw:block" draggable="false" />
+      <span class="split-badge badge-after tw:absolute tw:top-[10px] tw:text-label-xs tw:[padding:3px_8px] tw:rounded-xs tw:[z-index:var(--z-canvas)] tw:font-medium tw:right-[10px] tw:[background:var(--compare-badge-fill)] tw:[color:var(--archive-blue)] tw:[border:1px_solid_var(--compare-badge-edge)]">{{ afterLabel || '换装后' }}</span>
     </div>
 
     <!-- Split Divider Handle -->
     <div
-      class="split-divider"
+      class="split-divider tw:absolute tw:top-0 tw:bottom-0 tw:[left:var(--split-pos,_50%)] tw:w-[2px] tw:[z-index:5] tw:pointer-events-none"
       :style="dividerStyle"
       aria-hidden="true"
     >
-      <div class="divider-line"></div>
-      <div class="divider-handle">
-        <ArchiveIcon name="compare" class="divider-icon" />
+      <div class="divider-line tw:absolute tw:inset-0 tw:[background:var(--archive-blue)] tw:[box-shadow:0_0_8px_var(--compare-divider-glow)]"></div>
+      <div class="divider-handle tw:absolute tw:top-1/2 tw:left-1/2 tw:w-[28px] tw:h-[28px] tw:rounded-full tw:bg-deep tw:[border:2px_solid_var(--archive-blue)] tw:[box-shadow:0_2px_8px_color-mix(in_srgb,_black_70%,_transparent)] tw:flex tw:items-center tw:justify-center tw:[color:var(--archive-blue)]">
+        <ArchiveIcon name="compare" class="divider-icon tw:text-label-sm" />
       </div>
     </div>
   </div>
@@ -128,103 +128,29 @@ function onKeydown(event: KeyboardEvent) {
 
 <style scoped>
 .image-split-compare {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  user-select: none;
-  touch-action: none;
-  cursor: ew-resize;
-  border-radius: var(--r-sm);
-  background: var(--bg-deep);
+  --compare-badge-fill: rgba(56, 189, 248, 0.2);
+  --compare-badge-edge: rgba(56, 189, 248, 0.4);
+  --compare-divider-glow: rgba(56, 189, 248, 0.6);
 }
-
 .image-split-compare:focus-visible {
   outline: 2px solid var(--archive-blue);
   outline-offset: -2px;
-}
-
-.split-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
 }
 
 .layer-after {
   clip-path: var(--split-clip, polygon(50% 0, 100% 0, 100% 100%, 50% 100%));
 }
 
-.split-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
 .split-badge {
-  position: absolute;
-  top: 10px;
-  font-size: var(--fs-label-xs);
-  padding: 3px 8px;
-  border-radius: var(--r-xs);
   backdrop-filter: blur(6px);
-  z-index: var(--z-canvas);
-  font-weight: 500;
-}
-
-.badge-before {
-  left: 10px;
-  background: color-mix(in srgb, black 70%, transparent);
-  color: color-mix(in srgb, white 85%, transparent);
-  border: 1px solid color-mix(in srgb, white 15%, transparent);
-}
-
-.badge-after {
-  right: 10px;
-  background: rgba(56, 189, 248, 0.2);
-  color: var(--archive-blue);
-  border: 1px solid rgba(56, 189, 248, 0.4);
 }
 
 .split-divider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--split-pos, 50%);
-  width: 2px;
   transform: translateX(-50%);
-  z-index: 5;
-  pointer-events: none;
-}
-
-.divider-line {
-  position: absolute;
-  inset: 0;
-  background: var(--archive-blue);
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
 }
 
 .divider-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--bg-deep);
-  border: 2px solid var(--archive-blue);
-  box-shadow: 0 2px 8px color-mix(in srgb, black 70%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--archive-blue);
-}
-
-.divider-icon {
-  font-size: var(--fs-label-sm);
 }
 
 .is-dragging .divider-handle {

@@ -1,6 +1,7 @@
+@reference "./tailwind.css";
 /* Actual backdrop refraction is restricted to structural chrome, never reading panels. */
 :root { --fluid-glass-filter: none; }
-.fluid-glass-definitions { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.fluid-glass-definitions { @apply tw:absolute tw:w-0 tw:h-0 tw:overflow-hidden tw:pointer-events-none; }
 :root:is([data-fluid-effects="low"], [data-reduced-glass="true"]) {
   --glass-fill: var(--bg-surface);
   --glass-fill-strong: var(--bg-elevated);
@@ -40,7 +41,7 @@
 }
 @media (prefers-contrast: more) {
   :root body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) {
-    border-color: var(--text-muted);
+    @apply tw:border-muted;
   }
 }
 @media (forced-colors: active) {

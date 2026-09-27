@@ -28,7 +28,7 @@ const root = path.resolve(__dirname, '..', '..');
 const read = (relative: string) => fs.readFileSync(path.join(root, relative), 'utf8');
 const readShowcaseView = () => [read('src/views/ShowcaseView.vue'), read('src/components/showcase/ShowcaseSampleCard.vue'), read('src/assets/css/showcase-view.css')].join('\n');
 
-test('showcase source contract: view, router, nav, server allowlist, exporter wording', () => {
+test('showcase source contract: view, router, nav, server allowlist, exporter wording', async () => {
   const view = readShowcaseView();
   const router = read('src/router/index.ts');
   const nav = read('src/components/AppNav.vue');
@@ -82,15 +82,35 @@ test('showcase source contract: view, router, nav, server allowlist, exporter wo
 
   // ── 画面比例：Grid 网格（2026-08-15 由 columns 瀑布流改为 Grid，修正
   //  columns 先填满一列的填序问题）+ 自适应高度 ────────────────────────────────
-  assert(
-    view.includes('.showcase-grid { display:grid')
-      && /grid-template-columns:repeat\(4/.test(view),
-    'sample wall must use the 4-up grid layout (columns→grid, 2026-08-15)',
-  );
-  assert(
-    /\.sample-image \{[^}]*width:100%[^}]*height:auto/.test(view),
-    'sample wall must preserve each image aspect ratio',
-  );
+  const { compile }: typeof import('@tailwindcss/node') = require('@tailwindcss/node');
+  const { parse }: typeof import('postcss') = require('postcss');
+  const sample = read('src/components/showcase/ShowcaseSampleCard.vue');
+  const imageClasses = sample.match(/class="([^"\n]*\bsample-image\b[^"\n]*)"/)?.[1].split(/\s+/) ?? [];
+  assert(imageClasses.includes('sample-image'), 'sample images must retain their styling hook');
+  const style = [...sample.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(match => match[1]).join('\n');
+  // Compile the actual theme and component styles, so @apply and template
+  // utilities must resolve to working CSS rather than merely match a spelling.
+  const compiled = await Promise.all([
+    ['src/assets/css', read('src/assets/css/tailwind.css')],
+    ['src/assets/css', read('src/assets/css/showcase-view.css')],
+    ['src/components/showcase', style],
+  ].map(async ([base, css]) => (await compile(css, { base: path.join(root, base), onDependency() {} })).build(imageClasses)));
+  const css = parse(compiled.join('\n'));
+  const declarations = (selectors: Set<string>) => {
+    const values: Record<string, string> = {};
+    for (const rule of css.nodes) {
+      if (rule.type === 'rule' && selectors.has(rule.selector)) {
+        rule.walkDecls(declaration => { values[declaration.prop] = declaration.value; });
+      }
+    }
+    return values;
+  };
+  const grid = declarations(new Set(['.showcase-grid']));
+  assert.strictEqual(grid.display, 'grid', 'sample wall must use CSS Grid');
+  assert.strictEqual(grid['grid-template-columns']?.replace(/\s/g, ''), 'repeat(4,minmax(0,1fr))', 'sample wall must use the 4-up grid layout');
+  const image = declarations(new Set(imageClasses.map(name => '.' + name.replace(/[^a-zA-Z0-9_-]/g, '\\$&'))));
+  assert.strictEqual(image.width, '100%', 'sample images must fill the card width');
+  assert.strictEqual(image.height, 'auto', 'sample wall must preserve each image aspect ratio');
 
   // ── 查看器必须脱离 scoped 样式（Teleport 到 body） ────────────────────────
   assert(

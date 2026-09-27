@@ -1,22 +1,23 @@
+@reference "../../tailwind.css";
 /* ============================================================
    DirectorStoryPanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
 /* Story */
-  .pb .story-input { width:100%; min-height:70px; padding:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:var(--fs-body); line-height:var(--lh-loose); outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); resize:vertical; font-family:var(--font-sans); box-sizing:border-box; }
-  .pb .story-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-  .pb .story-input::placeholder { color: var(--text-muted); }
-  .pb .scene-context, .pb .story-prompt-hint { display:flex; align-items:center; gap:var(--s-2); margin-top:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:color-mix(in srgb,var(--accent-soft) 48%,transparent); color:var(--text-muted); font-size:var(--fs-mono-sm); line-height:var(--lh-label); }
-  .pb .scene-context[hidden], .pb .story-prompt-hint[hidden] { display:none; }
-  .pb .scene-context strong, .pb .story-prompt-hint strong { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-secondary); }
-  .pb .scene-context button { margin-left:auto; flex:0 0 auto; border:0; background:transparent; color:var(--accent); cursor:pointer; font:650 var(--fs-mono-sm) var(--font-sans); }
-  .pb .story-chips { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-top: var(--s-2); }
-  .pb .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-pill); cursor: pointer; font:inherit; font-size: var(--fs-label-sm); color: var(--text-secondary); transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
-  .pb .story-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .pb .story-input { @apply tw:w-full tw:min-h-[70px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
+  .pb .story-input:focus { @apply tw:border-accent; box-shadow:0 0 0 3px var(--accent-soft); }
+  .pb .story-input::placeholder { @apply tw:text-muted; }
+  .pb .scene-context, .pb .story-prompt-hint { @apply tw:flex tw:items-center tw:gap-s-2 tw:mt-s-2; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-sm; background:color-mix(in srgb,var(--accent-soft) 48%,transparent); @apply tw:text-muted tw:text-mono-sm tw:leading-label; }
+  .pb .scene-context[hidden], .pb .story-prompt-hint[hidden] { @apply tw:hidden; }
+  .pb .scene-context strong, .pb .story-prompt-hint strong { @apply tw:min-w-0 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-secondary; }
+  .pb .scene-context button { @apply tw:ml-auto; flex:0 0 auto; border:0; background:transparent; @apply tw:text-accent tw:cursor-pointer; font:650 var(--fs-mono-sm) var(--font-sans); }
+  .pb .story-chips { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:mt-s-2; }
+  .pb .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-pill tw:cursor-pointer; font:inherit; @apply tw:text-label-sm tw:text-secondary; transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
+  .pb .story-chip:hover { @apply tw:border-accent tw:text-accent; }
   /* Visual description */
-  .pb .visual-description-label { display:block; margin-top:var(--s-4); margin-bottom:var(--s-2); font-size:var(--fs-label-sm); color:var(--text-secondary); }
-  .pb .visual-description-input { width:100%; min-height:88px; padding:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:var(--fs-body); line-height:var(--lh-loose); outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); resize:vertical; font-family:var(--font-sans); box-sizing:border-box; }
-  .pb .visual-description-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-  .pb .visual-description-input::placeholder { color: var(--text-muted); }
-  .pb .visual-description-hint { margin:var(--s-2) 0 0; color:var(--text-muted); font-size:var(--fs-mono-sm); line-height:var(--lh-body); }
+  .pb .visual-description-label { @apply tw:block tw:mt-s-4 tw:mb-s-2 tw:text-label-sm tw:text-secondary; }
+  .pb .visual-description-input { @apply tw:w-full tw:min-h-[88px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
+  .pb .visual-description-input:focus { @apply tw:border-accent; box-shadow:0 0 0 3px var(--accent-soft); }
+  .pb .visual-description-input::placeholder { @apply tw:text-muted; }
+  .pb .visual-description-hint { margin:var(--s-2) 0 0; @apply tw:text-muted tw:text-mono-sm tw:leading-body; }

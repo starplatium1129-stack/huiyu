@@ -147,17 +147,28 @@ assert(
 // director.css(91.6KB) + chat.css(18.6KB) 曾占 139KB 全局包的 79%，
 // 却只服务 /prompt-builder 与 /chat。移入视图后由 cssCodeSplit 切成路由块。
 const mainTs = read('src/main.ts');
-for (const css of ['design-system.css', 'scene-card.css', 'mood.css', 'viewer.css']) {
+for (const css of ['design-system.css', 'tailwind.css']) {
   assert(
     new RegExp(`assets/css/${css.replace('.', '\\.')}`).test(mainTs),
     `src/main.ts must import shared stylesheet ${css}`,
   );
 }
-for (const css of ['director.css', 'chat.css']) {
+for (const css of ['director.css', 'chat.css', 'scene-card.css', 'mood.css', 'viewer.css']) {
   assert(
     !new RegExp(`assets/css/${css.replace('.', '\\.')}`).test(mainTs),
     `${css} is route-scoped — it must not be imported globally in src/main.ts`,
   );
+}
+// Component-owned styles must load on every real consuming path, without
+// restoring them to the shared entry merely to satisfy a source-string test.
+for (const [css, owners] of [
+  ['scene-card.css', ['src/components/SceneCard.vue']],
+  ['mood.css', ['src/views/ColorScriptView.vue', 'src/views/StyleView.vue', 'src/components/director/DirectorDecisionsRail.vue']],
+  ['viewer.css', ['src/views/GalleryView.vue', 'src/views/ShowcaseView.vue']],
+] as const) {
+  for (const owner of owners) {
+    assert(read(owner).includes(`@/assets/css/${css}`), `${owner} must load its ${css} styles`);
+  }
 }
 assert(
   /assets\/css\/director\.css/.test(read('src/views/PromptBuilderView.vue')),
@@ -306,7 +317,10 @@ assert(
 );
 
 const controlViewSource = read('src/views/ControlView.vue') + '\n' + read('src/assets/css/control-view.css');
-const tunnelSwitchSource = read('src/components/visual/ToggleSwitch.vue');
+const tunnelSwitchComponent = read('src/components/visual/ToggleSwitch.vue');
+const tunnelStylePath = tunnelSwitchComponent.match(/<style\s+scoped\s+src="@\/([^\"]+)"/)?.[1];
+assert(tunnelStylePath, 'ToggleSwitch must retain scoped component styles');
+const tunnelSwitchSource = tunnelSwitchComponent + '\n' + read(`src/${tunnelStylePath}`);
 assert(
   /<ToggleSwitch\s+class="tunnel-switch-control"/.test(controlViewSource)
     && /transition:\s*transform\s+var\(--motion-hover\)/.test(tunnelSwitchSource)

@@ -14,20 +14,17 @@ function keydown(event: KeyboardEvent) {
 defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 </script>
 <template>
-  <div class="studio-search">
+  <div class="studio-search tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:py-0 tw:px-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-pill tw:bg-base tw:text-secondary">
     <ArchiveIcon name="search" />
-    <input :id="id" ref="input" v-model="value" class="studio-search-input" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
-    <button v-if="value" type="button" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
+    <input :id="id" ref="input" v-model="value" class="studio-search-input tw:w-full tw:min-w-0 tw:min-h-[44px] tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
+    <button v-if="value" type="button" class="tw:grid tw:place-items-center tw:[flex:0_0_32px] tw:w-[32px] tw:h-[32px] tw:border-0 tw:rounded-pill tw:bg-transparent tw:text-secondary tw:cursor-pointer" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>
 <style scoped>
-.studio-search { display:flex; align-items:center; gap:var(--s-2); min-width:0; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-secondary); }
 .studio-search:focus-within { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
-.studio-search input { width:100%; min-width:0; min-height:44px; padding:var(--s-2) 0; border:0; outline:0; background:transparent; color:var(--text-primary); font:400 var(--fs-body-sm) var(--font-sans); appearance:none; }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }
 .studio-search input::placeholder { color:var(--text-muted); }
-.studio-search button { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; border:0; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; }
 .studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
 .studio-search button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 @media(forced-colors:active) { .studio-search:focus-within { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }

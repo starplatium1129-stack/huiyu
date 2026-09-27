@@ -7,16 +7,16 @@
         class="utility-trigger"
         :aria-label="backupStale ? `数据工具（${backupReminder}）` : '数据工具'"
       >
-        <span class="utility-trigger-dots" aria-hidden="true">···</span>
-        <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
+        <span class="utility-trigger-dots tw:inline-flex tw:items-center tw:justify-center tw:mt-[-2px]" aria-hidden="true">···</span>
+        <span v-if="backupStale" class="utility-dot tw:absolute tw:top-[3px] tw:right-[3px] tw:w-[6px] tw:h-[6px]" aria-hidden="true"></span>
       </button>
     </template>
-    <div class="utility-heading">数据工具<button type="button" class="btn btn-ghost btn-icon" aria-label="关闭数据工具" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
+    <div class="utility-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-3 tw:text-primary tw:font-semibold">数据工具<button type="button" class="btn btn-ghost btn-icon" aria-label="关闭数据工具" @click="utilityOpen = false"><ArchiveIcon name="close" /></button></div>
       <div v-if="backupStale" class="utility-note" role="status">
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
-      <div class="utility-label">本地数据</div>
-      <div class="utility-actions">
+      <div class="utility-label tw:text-muted">本地数据</div>
+      <div class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip anchor :content="backup.desktopActive.value ? '完整备份保存在本机工作区，并下载恢复凭证' : '导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」'">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
             <ArchiveIcon name="download" /> {{ backup.desktopActive.value ? '创建工作区备份' : '导出备份 JSON' }}
@@ -35,9 +35,9 @@
           <ArchiveIcon name="upload" /> 从备份恢复
         </button>
       </div>
-      <div class="utility-divider"></div>
-      <div class="utility-label">创作蓝图</div>
-      <div class="utility-actions">
+      <div class="utility-divider tw:h-[1px]"></div>
+      <div class="utility-label tw:text-muted">创作蓝图</div>
+      <div class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
           <button class="btn btn-ghost wide" type="button" @click="exportBlueprint">
             <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
@@ -49,9 +49,9 @@
           </button>
         </StudioTooltip>
       </div>
-      <div class="utility-divider"></div>
-      <div class="utility-label">存储维护</div>
-      <div class="utility-actions">
+      <div class="utility-divider tw:h-[1px]"></div>
+      <div class="utility-label tw:text-muted">存储维护</div>
+      <div class="utility-actions tw:grid tw:gap-s-1">
         <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate()"><ArchiveIcon name="upload" /> 迁移至本机工作区</button>
         <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate(true)"><ArchiveIcon name="refresh" /> 继续已备份的迁移</button>
         <StudioTooltip v-if="migration.bundledAvailable.value" anchor :content="migration.bundledVerified.value ? '完成备份核对后，下次启动使用程序内置界面' : '此版本尚未完成桌面启动验收，继续使用当前入口'">
@@ -263,35 +263,26 @@ async function onBackupFilePicked(event: Event) {
 </script>
 
 <style scoped>
-.utility-trigger { position: relative; }
-.utility-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); color:var(--text-primary); font-weight:600; }
-.utility-label { margin:var(--s-3) 0 var(--s-2); color:var(--text-muted); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
-.utility-actions { display:grid; gap:var(--s-1); }
-.utility-actions .btn { justify-content:flex-start; min-height:44px; padding:var(--s-2) var(--s-3); font-size:var(--fs-label); }
+@reference "../assets/css/tailwind.css";
+.utility-trigger { @apply tw:relative; }
+.utility-label { margin:var(--s-3) 0 var(--s-2); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
+.utility-actions .btn { @apply tw:justify-start tw:min-h-[44px]; padding:var(--s-2) var(--s-3); @apply tw:text-label; }
 .utility-actions .btn:not(:disabled) { border-color:transparent; }
-.utility-actions .btn:hover:not(:disabled) { background:var(--bg-hover); color:var(--text-primary); }
-.utility-divider { height:1px; margin:var(--s-3) 0; background:var(--border-soft); }
+.utility-actions .btn:hover:not(:disabled) { background:var(--bg-hover); @apply tw:text-primary; }
+.utility-divider { margin:var(--s-3) 0; background:var(--border-soft); }
 .utility-trigger-dots {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   line-height: 1;
   letter-spacing: 0.08em;
-  margin-top: -2px;
 }
-.utility-dot {
-  position: absolute; top: 3px; right: 3px;
-  width: 6px; height: 6px; border-radius: 50%;
+.utility-dot { border-radius: 50%;
   background: var(--warning);
   box-shadow: 0 0 0 1.5px var(--bg-surface), 0 0 6px color-mix(in srgb, var(--warning) 60%, transparent);
 }
 .utility-note {
-  display: flex; align-items: center; gap: var(--s-2);
-  margin-bottom: var(--s-3); padding: var(--s-2) var(--s-3);
+  @apply tw:flex tw:items-center tw:gap-s-2 tw:mb-s-3; padding: var(--s-2) var(--s-3);
   border: 1px solid color-mix(in srgb, var(--warning) 45%, transparent);
-  border-radius: var(--r-md);
+  @apply tw:rounded-md;
   background: color-mix(in srgb, var(--warning) 10%, transparent);
-  color: var(--warning-text);
-  font-size: var(--fs-label);
+  @apply tw:text-warning-text tw:text-label;
 }
 </style>

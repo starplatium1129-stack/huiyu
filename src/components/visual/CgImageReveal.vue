@@ -1,12 +1,12 @@
 <template>
-  <div ref="containerRef" class="cg-image-reveal" :class="{ 'is-revealing': isRevealing, 'is-loaded': isLoaded }">
+  <div ref="containerRef" class="cg-image-reveal tw:relative tw:block tw:overflow-hidden tw:[border-radius:inherit] tw:bg-deep" :class="{ 'is-revealing': isRevealing, 'is-loaded': isLoaded }">
     <!-- Keying the image prevents a late event from the previous URL owning a new reveal. -->
     <img
       v-if="resolvedSrc"
       :key="resolvedSrc"
       :crossorigin="runtimeResourceCors()"
       ref="imgRef"
-      class="cg-image-target"
+      class="cg-image-target tw:block tw:w-full tw:h-full tw:object-contain"
       :class="imgClass"
       :src="resolvedSrc"
       :alt="alt || '生成的画面成片'"
@@ -16,8 +16,8 @@
       @error="onImageError"
       @click="$emit('click', $event)"
     />
-    <canvas v-show="isRevealing" ref="canvasRef" class="cg-reveal-canvas" aria-hidden="true" />
-    <div v-if="isRevealing && !lowEffects" class="cg-reveal-sweep" :style="sweepStyle" aria-hidden="true" />
+    <canvas v-show="isRevealing" ref="canvasRef" class="cg-reveal-canvas tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none tw:[z-index:2]" aria-hidden="true" />
+    <div v-if="isRevealing && !lowEffects" class="cg-reveal-sweep tw:absolute tw:inset-[-50%] tw:w-[200%] tw:h-[200%] tw:pointer-events-none tw:[z-index:3] tw:[mix-blend-mode:screen]" :style="sweepStyle" aria-hidden="true" />
   </div>
 </template>
 
@@ -237,38 +237,10 @@ defineExpose({ triggerReveal })
 </script>
 
 <style scoped>
-.cg-image-reveal {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  border-radius: inherit;
-  background: var(--bg-deep);
-}
-.cg-image-target {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.cg-reveal-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-}
 .cg-reveal-sweep {
-  position: absolute;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  pointer-events: none;
-  z-index: 3;
   transform: translate3d(var(--sweep-p, -15%), var(--sweep-p, -15%), 0) rotate(-45deg);
   opacity: var(--sweep-opacity, 0);
   background: linear-gradient(90deg, transparent 42%, color-mix(in srgb, var(--accent) 25%, transparent) 48%,
     var(--glass-specular) 50%, color-mix(in srgb, var(--accent-violet) 30%, transparent) 52%, transparent 58%);
-  mix-blend-mode: screen;
 }
 </style>

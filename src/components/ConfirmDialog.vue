@@ -78,45 +78,39 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
 .confirm-overlay {
-  position: fixed;
+  @apply tw:fixed;
   inset: 0;
   z-index: var(--z-confirm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--s-4);
+  @apply tw:flex tw:items-center tw:justify-center tw:p-s-4;
   background: var(--art-scrim);
   backdrop-filter: blur(6px);
 }
 .confirm-panel {
-  position:relative;
+  @apply tw:relative;
   width: min(380px, calc(100vw - 32px));
-  padding: var(--s-5);
+  @apply tw:p-s-5;
   border: 1px solid var(--glass-edge);
-  color: var(--text-primary);
+  @apply tw:text-primary;
 }
-.confirm-close { position:absolute; top:var(--s-3); right:var(--s-3); display:grid; place-items:center; width:40px; height:40px; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-secondary); cursor:pointer; }
+.confirm-close { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items:center; @apply tw:w-[40px] tw:h-[40px]; border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-base); @apply tw:text-secondary tw:cursor-pointer; }
 .confirm-close:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-.confirm-icon { padding-right:44px; min-height:28px; }
-.confirm-icon { display: block; margin-bottom: var(--s-2); color: var(--text-secondary); }
-.confirm-danger .confirm-icon { color: var(--danger-text); }
+.confirm-icon { @apply tw:pr-[44px] tw:min-h-[28px]; }
+.confirm-icon { @apply tw:block tw:mb-s-2 tw:text-secondary; }
+.confirm-danger .confirm-icon { @apply tw:text-danger-text; }
 .confirm-title {
   margin: 0 0 var(--s-2);
   font-size: var(--fs-body-lg, var(--fs-body));
-  font-weight: 700;
-  color: var(--text-primary);
+  @apply tw:font-bold tw:text-primary;
 }
 .confirm-message {
   margin: 0 0 var(--s-3);
   font-size: var(--fs-body-sm, var(--fs-body));
-  color: var(--text-secondary);
-  line-height: var(--lh-body);
+  @apply tw:text-secondary tw:leading-body;
 }
 .confirm-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--s-2);
+  @apply tw:flex tw:justify-end tw:gap-s-2;
 }
-.confirm-btn { min-width: 96px; }
+.confirm-btn { @apply tw:min-w-[96px]; }
 </style>

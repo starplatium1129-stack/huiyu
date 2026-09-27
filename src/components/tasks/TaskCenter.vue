@@ -5,7 +5,7 @@
     <details :open="!runtimeTasksEnabled"><summary v-if="runtimeTasksEnabled">旧版本任务摘要 · 仅供查看</summary>
     <nav v-if="!runtimeTasksEnabled" aria-label="任务筛选"><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" type="button" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button><button class="btn btn-ghost" type="button" @click="clearCompleted">清理完成记录</button><button class="btn btn-ghost" type="button" :disabled="refreshing" @click="refresh">{{ refreshing ? '查询中…' : '更新任务状态' }}</button></nav>
     <p v-if="storageError" role="status">{{ storageError }}</p><p v-if="recoveryError" role="status">{{ recoveryError }}</p><p v-if="feedback" role="status">{{ feedback }}</p>
-    <div class="task-list"><article v-for="task in visible" :key="task.id" class="task-card" :data-state="task.status"><div class="task-card-title"><strong>{{ task.title }}</strong><span>{{ (task.status === 'running' && task.stage ? GENERATION_STAGE_LABELS[task.stage] : labels[task.status]) || '待检查' }}</span></div><p>{{ task.message }}</p><progress v-if="task.status === 'running' && task.progress != null" :value="task.progress" max="100" :aria-label="task.title + '进度'" /><div class="task-actions"><RouterLink class="btn btn-ghost" :to="task.route" @click="opened = false">返回工作台</RouterLink><RouterLink v-if="task.resultRoute && task.status !== 'running'" class="btn btn-primary" :to="task.resultRoute" @click="opened = false">查看结果</RouterLink><button v-if="task.status === 'running' && (controls(task.id)?.cancel || (!controls(task.id) && task.backend))" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'cancel')">停止</button><button v-if="task.status === 'failed' && controls(task.id)?.retry" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'retry')">重试失败项</button></div></article><p v-if="!visible.length" class="task-empty">{{ selected === 'all' ? '还没有任务。开始创作后，这里会显示进度。' : '这个分类暂时没有任务。' }}</p></div>
+    <div class="task-list tw:overflow-y-auto tw:min-h-[120px] tw:grid tw:gap-s-3"><article v-for="task in visible" :key="task.id" class="task-card tw:p-s-4 tw:rounded-lg" :data-state="task.status"><div class="task-card-title"><strong>{{ task.title }}</strong><span>{{ (task.status === 'running' && task.stage ? GENERATION_STAGE_LABELS[task.stage] : labels[task.status]) || '待检查' }}</span></div><p>{{ task.message }}</p><progress v-if="task.status === 'running' && task.progress != null" :value="task.progress" max="100" :aria-label="task.title + '进度'" /><div class="task-actions tw:mt-s-3"><RouterLink class="btn btn-ghost" :to="task.route" @click="opened = false">返回工作台</RouterLink><RouterLink v-if="task.resultRoute && task.status !== 'running'" class="btn btn-primary" :to="task.resultRoute" @click="opened = false">查看结果</RouterLink><button v-if="task.status === 'running' && (controls(task.id)?.cancel || (!controls(task.id) && task.backend))" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'cancel')">停止</button><button v-if="task.status === 'failed' && controls(task.id)?.retry" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'retry')">重试失败项</button></div></article><p v-if="!visible.length" class="task-empty tw:p-s-5 tw:text-center">{{ selected === 'all' ? '还没有任务。开始创作后，这里会显示进度。' : '这个分类暂时没有任务。' }}</p></div>
     </details>
     <footer>{{ runtimeTasksEnabled ? '关闭任务面板只停止查看。退出应用后的恢复能力取决于生成引擎；未知状态会保留，结果不会自动入册。' : '刷新或关闭窗口会中断页面内调度；视频可回工作台重新查询，已入册图片保留在作品册。' }}</footer>
   </dialog></Teleport>
@@ -44,30 +44,28 @@ onUnmounted(() => { stopRuntime(); window.removeEventListener('beforeunload', be
 async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) return; busy.value = id; feedback.value = ''; try { const handler = controls(id)?.[action]; await (handler ? handler() : action === 'cancel' ? recovery.cancel(id) : undefined) } catch { feedback.value = '操作未完成，请回工作台检查后重试。' } finally { busy.value = '' } }
 </script>
 <style scoped>
-.task-center { margin: auto; width: min(780px, calc(100vw - 28px)); max-height: calc(100dvh - 40px); padding: var(--s-5); border: 1px solid var(--glass-edge); border-radius: var(--r-2xl); background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-glass-elevated); }
-.task-center[open] { display: flex; flex-direction: column; gap: var(--s-4); }
-.task-center { overflow-y: auto; }
-.task-center details { min-height: 0; }
-.task-center summary { cursor: pointer; color: var(--text-secondary); font-size: var(--fs-label); margin-block: var(--s-2); }
+@reference "../../assets/css/tailwind.css";
+.task-center { @apply tw:m-auto; width: min(780px, calc(100vw - 28px)); max-height: calc(100dvh - 40px); @apply tw:p-s-5; border: 1px solid var(--glass-edge); @apply tw:rounded-2xl; background: var(--bg-surface); @apply tw:text-primary; box-shadow: var(--shadow-glass-elevated); }
+.task-center[open] { @apply tw:flex tw:flex-col tw:gap-s-4; }
+.task-center { @apply tw:overflow-y-auto; }
+.task-center details { @apply tw:min-h-0; }
+.task-center summary { @apply tw:cursor-pointer tw:text-secondary tw:text-label; margin-block: var(--s-2); }
 .task-center::backdrop { background: var(--art-scrim); }
-.task-center header, .task-card-title { display: flex; align-items: start; justify-content: space-between; gap: var(--s-3); }
-.task-center h2 { margin: 0; font-size: var(--fs-title-xs); }
-.task-center p, .task-center footer { margin: var(--s-2) 0 0; font-size: var(--fs-label); color: var(--text-secondary); line-height: var(--lh-body); }
-.task-center nav, .task-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-.task-center nav [aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-.task-list { overflow-y: auto; min-height: 120px; display: grid; gap: var(--s-3); }
-.task-card { padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-deep); }
-.task-card-title strong { font-size: var(--fs-body-sm); overflow-wrap: anywhere; }
-.task-card-title span { flex-shrink: 0; color: var(--text-secondary); font-size: var(--fs-label); }
-.task-card[data-state="failed"] .task-card-title span { color: var(--warning-text); }
+.task-center header, .task-card-title { @apply tw:flex; align-items: start; @apply tw:justify-between tw:gap-s-3; }
+.task-center h2 { @apply tw:m-0 tw:text-title-xs; }
+.task-center p, .task-center footer { margin: var(--s-2) 0 0; @apply tw:text-label tw:text-secondary tw:leading-body; }
+.task-center nav, .task-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
+.task-center nav [aria-pressed="true"] { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-accent; }
+.task-card { border: 1px solid var(--border-soft); background: var(--bg-deep); }
+.task-card-title strong { @apply tw:text-body-sm; overflow-wrap: anywhere; }
+.task-card-title span { @apply tw:shrink-0 tw:text-secondary tw:text-label; }
+.task-card[data-state="failed"] .task-card-title span { @apply tw:text-warning-text; }
 .task-card progress {
-  display: block;
-  width: 100%;
-  height: 6px;
+  @apply tw:block tw:w-full tw:h-[6px];
   margin-block: var(--s-3);
-  overflow: hidden;
+  @apply tw:overflow-hidden;
   border: 0;
-  border-radius: var(--r-pill);
+  @apply tw:rounded-pill;
   background: color-mix(in srgb, var(--border-soft) 80%, transparent);
   -webkit-appearance: none;
   appearance: none;
@@ -76,16 +74,14 @@ async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) ret
   background: color-mix(in srgb, var(--border-soft) 80%, transparent);
 }
 .task-card progress::-webkit-progress-value {
-  border-radius: var(--r-pill);
+  @apply tw:rounded-pill;
   background: linear-gradient(90deg, var(--archive-cyan, var(--accent)), var(--accent));
   box-shadow: 0 0 8px -1px var(--accent-glow);
 }
 .task-card progress::-moz-progress-bar {
-  border-radius: var(--r-pill);
+  @apply tw:rounded-pill;
   background: linear-gradient(90deg, var(--archive-cyan, var(--accent)), var(--accent));
   box-shadow: 0 0 8px -1px var(--accent-glow);
 }
-.task-actions { margin-top: var(--s-3); }
-.task-empty { padding: var(--s-5); text-align: center; }
 @media (prefers-reduced-motion: reduce) { .task-center[open] { animation: none; } }
 </style>

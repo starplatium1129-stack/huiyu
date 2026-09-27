@@ -1,18 +1,19 @@
-/* ============================================================
+@reference "../../tailwind.css";
+   /* ============================================================
    PromptDataTools 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
    /* Teleport 到 body 的恢复弹层不能靠 `.pb` 祖先作用域；类名直接命名空间化。 */
-   .pb-backup-overlay { position:fixed; inset:0; z-index:var(--z-overlay); display:grid; place-items:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(10px); }
-   .pb-backup-card { width:min(520px,100%); padding:var(--s-5); border:1px solid var(--border-strong); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); transform-origin:50% 42%; }
-   .pb-backup-card h3 { font-size:var(--fs-title-xs); }
-   .pb-backup-card > p { margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-loose); }
-   .pb-backup-summary { display:grid; gap:3px; margin:var(--s-4) 0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
-   .pb-backup-summary strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-primary); font-size:var(--fs-label); }
-   .pb-backup-summary span { color:var(--text-muted); font-size:var(--fs-label-xs); }
-   .pb-backup-warning { color:var(--warning-text); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
-   .pb-backup-actions { display:flex; justify-content:flex-end; gap:var(--s-2); flex-wrap:wrap; }
+   .pb-backup-overlay { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; place-items:center; @apply tw:p-s-4; background:var(--art-backdrop); backdrop-filter:blur(10px); }
+   .pb-backup-card { width:min(520px,100%); @apply tw:p-s-5; border:1px solid var(--border-strong); @apply tw:rounded-xl; box-shadow:var(--shadow-lg); transform-origin:50% 42%; }
+   .pb-backup-card h3 { @apply tw:text-title-xs; }
+   .pb-backup-card > p { @apply tw:mt-s-2 tw:text-secondary tw:text-label tw:leading-loose; }
+   .pb-backup-summary { @apply tw:grid tw:gap-[3px]; margin:var(--s-4) 0; @apply tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-deep); }
+   .pb-backup-summary strong { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-primary tw:text-label; }
+   .pb-backup-summary span { @apply tw:text-muted tw:text-label-xs; }
+   .pb-backup-warning { @apply tw:text-warning-text tw:text-label-xs tw:leading-body; }
+   .pb-backup-actions { @apply tw:flex tw:justify-end tw:gap-s-2 tw:flex-wrap; }
   .pb-backup-card, .pb-managed-route-banner {
     background:
       linear-gradient(125deg,var(--glass-specular),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 9%,transparent)),

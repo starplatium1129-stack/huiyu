@@ -1,13 +1,9 @@
+@reference "./tailwind.css";
 .semantic-particle-field {
   --particle-primary: var(--text-primary);
   --particle-secondary: var(--text-muted);
   --particle-accent: var(--archive-blue);
-  position:relative;
-  min-width:0;
-  min-height:260px;
-  overflow:hidden;
-  isolation:isolate;
-  margin:0;
+  @apply tw:relative tw:min-w-0 tw:min-h-[260px] tw:overflow-hidden tw:isolate tw:m-0;
   background:
     linear-gradient(90deg,color-mix(in srgb,var(--border-soft) 54%,transparent) 1px,transparent 1px),
     linear-gradient(color-mix(in srgb,var(--border-soft) 54%,transparent) 1px,transparent 1px),
@@ -17,8 +13,7 @@
 .semantic-particle-field::before,
 .semantic-particle-field::after {
   content:"";
-  position:absolute;
-  pointer-events:none;
+  @apply tw:absolute tw:pointer-events-none;
   z-index:var(--z-base);
 }
 .semantic-particle-field::before {
@@ -27,38 +22,37 @@
   clip-path:polygon(0 0,24% 0,24% 1px,76% 1px,76% 0,100% 0,100% 100%,76% 100%,76% calc(100% - 1px),24% calc(100% - 1px),24% 100%,0 100%);
 }
 .semantic-particle-field::after {
-  left:50%; top:50%; width:5px; height:5px;
+  @apply tw:left-[50%] tw:top-[50%] tw:w-[5px] tw:h-[5px];
   border:1px solid var(--particle-accent);
   transform:translate(-50%,-50%) rotate(45deg);
   opacity:.7;
 }
 /* 图片点阵成像时隐藏中央菱形标记：它透在图片上会读成"幽灵图元" */
-.has-portrait::before,.has-portrait::after { display:none; }
+.has-portrait::before,.has-portrait::after { @apply tw:hidden; }
 .semantic-particle-field.has-portrait {
   background:
     radial-gradient(ellipse at 50% 42%, color-mix(in srgb,var(--particle-accent) 8%,transparent),transparent 68%),
     var(--bg-base);
 }
-canvas { display:none; position:absolute; inset:0; width:100%; height:100%; z-index:var(--z-base); }
-.has-canvas canvas { display:block; }
-.particle-fallback { display:grid; position:absolute; inset:0; place-items:center; }
-.has-canvas .particle-fallback { display:none; }
-.particle-fallback span { position:absolute; width:3px; height:3px; border-radius:50%; background:var(--particle-primary); transform:rotate(calc(var(--fallback-index,1) * 20deg)) translateX(72px); }
+canvas { @apply tw:hidden tw:absolute; inset:0; @apply tw:w-full tw:h-full; z-index:var(--z-base); }
+.has-canvas canvas { @apply tw:block; }
+.particle-fallback { @apply tw:grid tw:absolute; inset:0; place-items:center; }
+.has-canvas .particle-fallback { @apply tw:hidden; }
+.particle-fallback span { @apply tw:absolute tw:w-[3px] tw:h-[3px]; border-radius:50%; background:var(--particle-primary); transform:rotate(calc(var(--fallback-index,1) * 20deg)) translateX(72px); }
 .particle-fallback span:nth-child(3n) { background:var(--particle-accent); }
 .particle-caption {
-  position:absolute; z-index:var(--z-raised); right:var(--s-4); bottom:var(--s-3);
-  color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing:.12em; text-transform:uppercase;
+  @apply tw:absolute; z-index:var(--z-raised); @apply tw:right-s-4 tw:bottom-s-3 tw:text-muted; font:650 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing:.12em; @apply tw:uppercase;
 }
-.density-ambient { min-height:100%; background-size:56px 56px,56px 56px,auto; }
-.density-backdrop { min-height:100%; background-size:64px 64px,64px 64px,auto; }
-.is-bare { min-height:100%; background:none; }
-.is-bare::before,.is-bare::after,.is-bare .particle-caption { display:none; }
+.density-ambient { @apply tw:min-h-full; background-size:56px 56px,56px 56px,auto; }
+.density-backdrop { @apply tw:min-h-full; background-size:64px 64px,64px 64px,auto; }
+.is-bare { @apply tw:min-h-full; background:none; }
+.is-bare::before,.is-bare::after,.is-bare .particle-caption { @apply tw:hidden; }
 .signal-active canvas { opacity:.92; }
 .signal-warning canvas { opacity:.86; }
 @media (max-width: 768px) {
-  .semantic-particle-field { min-height:240px; background-size:34px 34px,34px 34px,auto; }
-  .particle-caption { right:var(--s-3); }
+  .semantic-particle-field { @apply tw:min-h-[240px]; background-size:34px 34px,34px 34px,auto; }
+  .particle-caption { @apply tw:right-s-3; }
 }
 @media (prefers-reduced-motion:reduce) {
   .semantic-particle-field { background-image:radial-gradient(circle at 50% 48%,color-mix(in srgb,var(--particle-accent) 12%,transparent),transparent 55%); }

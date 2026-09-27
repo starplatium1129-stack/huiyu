@@ -1,4 +1,4 @@
-<template><span ref="indicator" class="animated-selection" aria-hidden="true"></span></template>
+<template><span ref="indicator" class="animated-selection tw:absolute tw:[inset:0_auto_auto_0] tw:pointer-events-none tw:[border-radius:var(--selection-radius,_var(--r-md))] tw:[border:1px_solid_var(--glass-edge)] tw:[box-shadow:var(--selection-shadow,_var(--shadow-glass-sm))]" aria-hidden="true"></span></template>
 <script setup lang="ts">
 import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { createFluidMotion } from '@/utils/fluidSpring'
@@ -105,15 +105,9 @@ onUnmounted(() => {
 </script>
 <style scoped>
 .animated-selection {
-  position: absolute;
-  inset: 0 auto auto 0;
-  pointer-events: none;
   opacity: 0;
   transform-origin: 0 0;
-  border-radius: var(--selection-radius, var(--r-md));
   background: linear-gradient(135deg, var(--glass-highlight), transparent), var(--bg-elevated);
-  border: 1px solid var(--glass-edge);
-  box-shadow: var(--selection-shadow, var(--shadow-glass-sm));
   transition: opacity var(--motion-hover) var(--ease-out);
   will-change: transform, opacity;
 }

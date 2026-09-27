@@ -1,22 +1,22 @@
 <template>
   <aside class="character-directory" :class="{ 'directory-catalog': catalog }" aria-label="角色目录">
     <!-- 作品筛选：宽屏独立侧栏，窄屏折叠为单行横向筛选，始终只有一个纵向滚动区 -->
-    <div v-if="catalog" class="directory-rail">
-      <p class="directory-rail-title">按作品筛选</p>
-      <div ref="rail" class="directory-series" role="group" aria-label="按作品浏览" @keydown="onRailKeys">
+    <div v-if="catalog" class="directory-rail tw:flex tw:flex-col tw:gap-s-2 tw:min-w-0 tw:min-h-0 tw:pr-s-3">
+      <p class="directory-rail-title tw:m-0 tw:text-muted tw:text-label-xs tw:font-semibold">按作品筛选</p>
+      <div ref="rail" class="directory-series tw:flex tw:flex-col tw:gap-s-1 tw:min-h-0 tw:overflow-y-auto" role="group" aria-label="按作品浏览" @keydown="onRailKeys">
         <button type="button" :aria-pressed="!series" @click="series = ''">全部作品</button>
         <button v-for="group in groups" :key="group.key" type="button"
           :aria-pressed="series === group.key" @click="series = group.key">{{ group.label }} <span>{{ group.count }}</span></button>
       </div>
     </div>
-    <div class="directory-main">
+    <div class="directory-main tw:flex tw:min-h-0">
       <div class="directory-tools">
         <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
         <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" @keydown="onSearchKeydown" />
         <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="[{ value: '', label: '全部系列' }, ...groups.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))]" />
         <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
       </div>
-      <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
+      <div ref="list" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
         <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
           <CharacterPortrait :src="resolveRuntimeUrl(item.image)" :name="item.name" />
           <span class="directory-label">
@@ -25,16 +25,16 @@
               <small>{{ franchiseLabel(franchiseKey(item.source)) }}</small>
             </StudioTooltip>
           </span>
-          <span v-if="selectedId === item.id" class="directory-selected" aria-hidden="true"><ArchiveIcon name="success" /></span>
+          <span v-if="selectedId === item.id" class="directory-selected tw:ml-auto tw:text-accent" aria-hidden="true"><ArchiveIcon name="success" /></span>
         </button>
-        <div v-if="!results.length" class="directory-empty">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
+        <div v-if="!results.length" class="directory-empty tw:text-muted tw:text-label">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
       </div>
-      <nav v-if="pageCount > 1" class="directory-pagination" aria-label="角色分页">
+      <nav v-if="pageCount > 1" class="directory-pagination tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:mt-s-2 tw:text-secondary tw:text-label tw:shrink-0" aria-label="角色分页">
         <button type="button" :disabled="page === 1" @click="page--">上一页</button>
         <label>第 <StudioSelect v-model.number="page" label="跳转角色页" inline size="sm" :options="pageItems.map(n => ({ value: n, label: String(n) }))" /> / {{ pageCount }} 页</label>
         <button type="button" :disabled="page === pageCount" @click="page++">下一页</button>
       </nav>
-      <div class="directory-current"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
+      <div class="directory-current tw:text-label-xs tw:text-secondary tw:shrink-0"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
     </div>
   </aside>
 </template>
@@ -131,68 +131,67 @@ async function locateSelected() {
 }
 </script>
 <style scoped>
-.character-directory { position: sticky; top: 82px; display: flex; flex-direction: column; max-height: max(360px, calc(100dvh - 280px)); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); overflow: hidden; }
-.directory-main { display: flex; flex-direction: column; min-height: 0; flex: 1 1 auto; }
-.directory-tools { padding: var(--s-4); display: grid; gap: var(--s-3); flex-shrink: 0; }
-.directory-heading { display: flex; justify-content: space-between; font-size: var(--fs-body-sm); font-weight: 600; }
-.directory-heading span, .directory-count { color: var(--text-muted); font-size: var(--fs-label-xs); }
-.directory-tools input { min-width: 0; width: 100%; min-height: 40px; padding: var(--s-2) var(--s-3); color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); font: inherit; font-size: var(--fs-label); }
+@reference "../../assets/css/tailwind.css";
+.character-directory { @apply tw:sticky tw:top-[82px] tw:flex tw:flex-col; max-height: max(360px, calc(100dvh - 280px)); border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-hidden; }
+.directory-main { @apply tw:flex-col; flex: 1 1 auto; }
+.directory-tools { @apply tw:p-s-4 tw:grid tw:gap-s-3 tw:shrink-0; }
+.directory-heading { @apply tw:flex tw:justify-between tw:text-body-sm tw:font-semibold; }
+.directory-heading span, .directory-count { @apply tw:text-muted tw:text-label-xs; }
+.directory-tools input { @apply tw:min-w-0 tw:w-full tw:min-h-[40px]; padding: var(--s-2) var(--s-3); @apply tw:text-primary; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md; font: inherit; @apply tw:text-label; }
 /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度）落在 wrapper。 */
-.directory-tools .studio-select-wrapper { width: 100%; min-width: 0; min-height: 40px; }
-.directory-count, .directory-current { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); }
-.directory-count button, .directory-current button { padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font: inherit; }
-.directory-list { flex: 1 1 auto; min-height: 120px; overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }
-.directory-item { width: 100%; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2); margin-bottom: var(--s-1); text-align: left; background: transparent; border: 1px solid transparent; border-radius: var(--r-md); color: var(--text-primary); cursor: pointer; transition: transform var(--motion-hover); }
+.directory-tools .studio-select-wrapper { @apply tw:w-full tw:min-w-0 tw:min-h-[40px]; }
+.directory-count, .directory-current { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-2; }
+.directory-count button, .directory-current button { @apply tw:p-0; border: 0; background: transparent; @apply tw:text-accent tw:cursor-pointer; font: inherit; }
+.directory-list { flex: 1 1 auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }
+.directory-item { @apply tw:w-full tw:flex tw:items-center tw:gap-s-3 tw:p-s-2 tw:mb-s-1 tw:text-left; background: transparent; border: 1px solid transparent; @apply tw:rounded-md tw:text-primary tw:cursor-pointer; transition: transform var(--motion-hover); }
 .directory-item:hover { background: var(--bg-hover); }
-.directory-item[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.directory-item[aria-pressed="true"] { background: var(--accent-soft); @apply tw:border-accent; }
 .directory-item:active { transform: scale(.985); }
-.directory-item img, .directory-placeholder { width: 48px; height: 60px; flex-shrink: 0; border-radius: var(--r-sm); object-fit: cover; object-position: center 20%; background: var(--bg-elevated); }
-.directory-placeholder { display: grid; place-items: center; color: var(--accent); }
-.directory-label { min-width: 0; display: grid; gap: var(--s-1); }
-.directory-label strong { font-size: var(--fs-body-sm); font-weight: 600; }
-.directory-label small { font-size: var(--fs-label-xs); color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.directory-selected { margin-left: auto; color: var(--accent); }
-.directory-current { padding: var(--s-3) var(--s-4); border-top: 1px solid var(--border-soft); font-size: var(--fs-label-xs); color: var(--text-secondary); flex-shrink: 0; }
-.directory-empty { padding: var(--s-5) var(--s-3); color: var(--text-muted); font-size: var(--fs-label); }
-@media (max-width: 900px) { .character-directory { position: static; max-height: 360px; } }
+.directory-item img, .directory-placeholder { @apply tw:w-[48px] tw:h-[60px] tw:shrink-0 tw:rounded-sm tw:object-cover; object-position: center 20%; background: var(--bg-elevated); }
+.directory-placeholder { @apply tw:grid; place-items: center; @apply tw:text-accent; }
+.directory-label { @apply tw:min-w-0 tw:grid tw:gap-s-1; }
+.directory-label strong { @apply tw:text-body-sm tw:font-semibold; }
+.directory-label small { @apply tw:text-label-xs tw:text-muted tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
+.directory-current { padding: var(--s-3) var(--s-4); border-top: 1px solid var(--border-soft); }
+.directory-empty { padding: var(--s-5) var(--s-3); }
+@media (max-width: 900px) { .character-directory { @apply tw:static tw:max-h-[360px]; } }
 @media (prefers-reduced-motion: reduce) { .directory-item { transition: none; } }
 
 /* catalog：作品筛选侧栏 + 角色结果区，滚动职责分别归属筛选栏与结果列表。 */
-.directory-catalog { position: static; max-height: none; min-height: 0; flex: 1 1 auto; display: grid; grid-template-columns: minmax(0, 208px) minmax(0, 1fr); gap: var(--s-4); border: 0; background: transparent; }
-.directory-rail { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; min-height: 0; padding-right: var(--s-3); border-right: 1px solid var(--border-soft); }
-.directory-rail-title { margin: 0; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 600; }
-.directory-series { display: flex; flex-direction: column; gap: var(--s-1); min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
-.directory-series button, .directory-pagination button { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); min-height: 36px; color: var(--text-secondary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
-.directory-pagination .studio-select-wrapper { min-height: 36px; }
-.directory-series button { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); width: 100%; min-width: 0; text-align: left; line-height: var(--lh-body); overflow-wrap: anywhere; }
-.directory-series button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
-.directory-series button span { color: var(--text-muted); flex-shrink: 0; }
+.directory-catalog { @apply tw:static; max-height: none; @apply tw:min-h-0; flex: 1 1 auto; @apply tw:grid; grid-template-columns: minmax(0, 208px) minmax(0, 1fr); @apply tw:gap-s-4; border: 0; background: transparent; }
+.directory-rail { border-right: 1px solid var(--border-soft); }
+.directory-series { overscroll-behavior: contain; padding: var(--s-1) var(--s-1) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-1); }
+.directory-series button, .directory-pagination button { border: 1px solid var(--border-soft); @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:min-h-[36px] tw:text-secondary; background: var(--bg-deep); font: inherit; @apply tw:text-label tw:cursor-pointer; }
+.directory-pagination .studio-select-wrapper { @apply tw:min-h-[36px]; }
+.directory-series button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:text-left tw:leading-body; overflow-wrap: anywhere; }
+.directory-series button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent tw:border-accent; }
+.directory-series button span { @apply tw:text-muted tw:shrink-0; }
 /* 分页行给结果滚动区一个明确的下边界，让「未滚到底」与「被裁切」可区分。 */
-.directory-pagination { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); padding: var(--s-3) 0; margin-top: var(--s-2); border-top: 1px solid var(--border-soft); color: var(--text-secondary); font-size: var(--fs-label); flex-shrink: 0; }
-.directory-pagination button:disabled { color: var(--text-disabled); cursor: default; }
+.directory-pagination { padding: var(--s-3) 0; border-top: 1px solid var(--border-soft); }
+.directory-pagination button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .directory-catalog button:focus-visible,
 .directory-pagination :deep(.studio-select-trigger):focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .directory-catalog .directory-tools { padding: var(--s-3) 0 0; }
-.directory-catalog .directory-list { min-height: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: var(--s-2); padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
-.directory-catalog .directory-item { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: var(--s-3); margin: 0; min-width: 0; padding: var(--s-2); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); }
-.directory-catalog .directory-item :deep(.character-portrait) { width: 100%; height: 170px; border: 0; border-radius: var(--r-md); background: var(--bg-elevated); }
+.directory-catalog .directory-list { @apply tw:min-h-0 tw:grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); @apply tw:gap-s-2; padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
+.directory-catalog .directory-item { @apply tw:relative tw:flex tw:flex-col tw:items-stretch tw:gap-s-3 tw:m-0 tw:min-w-0 tw:p-s-2; background: var(--bg-surface); @apply tw:border-soft tw:rounded-lg; }
+.directory-catalog .directory-item :deep(.character-portrait) { @apply tw:w-full tw:h-[170px]; border: 0; @apply tw:rounded-md; background: var(--bg-elevated); }
 .directory-catalog .directory-item :deep(.character-portrait img) { transform: none; object-position: center 20%; }
 .directory-catalog .directory-label { padding: 0 var(--s-1) var(--s-2); }
-.directory-catalog .directory-label small { white-space: normal; line-height: var(--lh-body); }
-.directory-catalog .directory-selected { position: absolute; top: var(--s-3); right: var(--s-3); display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--accent); border-radius: var(--r-pill); background: var(--bg-surface); }
-.directory-catalog .directory-item:hover { border-color: var(--accent); transform: translateY(-2px); }
-.directory-catalog .directory-item[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
-.directory-catalog .directory-label strong { overflow-wrap: anywhere; line-height: var(--lh-body); }
+.directory-catalog .directory-label small { @apply tw:whitespace-normal tw:leading-body; }
+.directory-catalog .directory-selected { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items: center; @apply tw:w-[28px] tw:h-[28px]; border: 1px solid var(--accent); @apply tw:rounded-pill; background: var(--bg-surface); }
+.directory-catalog .directory-item:hover { @apply tw:border-accent; transform: translateY(-2px); }
+.directory-catalog .directory-item[aria-pressed="true"] { background: var(--accent-soft); @apply tw:border-accent; }
+.directory-catalog .directory-label strong { overflow-wrap: anywhere; @apply tw:leading-body; }
 .directory-catalog .directory-empty { grid-column: 1 / -1; }
 .directory-catalog .directory-current { padding-inline: 0; }
 /* 窄屏：作品筛选折叠成单行横向条，不再用固定高度裁掉第三行。 */
 @media (max-width: 900px) {
-  .directory-catalog { display: flex; flex-direction: column; gap: var(--s-3); }
+  .directory-catalog { @apply tw:flex tw:flex-col tw:gap-s-3; }
   /* 筛选条按内容取高，不参与纵向收缩，否则会被结果区挤成只有几像素高的裁切条。 */
   .directory-rail { flex: 0 0 auto; padding: 0 0 var(--s-2); border-right: 0; border-bottom: 1px solid var(--border-soft); }
-  .directory-rail-title { margin-bottom: var(--s-1); }
-  .directory-series { flex: 0 0 auto; flex-direction: row; flex-wrap: nowrap; min-height: 44px; overflow-x: auto; overflow-y: hidden; padding: var(--s-1) 0 var(--s-2); }
-  .directory-series button { flex: 0 0 auto; width: auto; white-space: nowrap; }
+  .directory-rail-title { @apply tw:mb-s-1; }
+  .directory-series { flex: 0 0 auto; @apply tw:flex-row tw:flex-nowrap tw:min-h-[44px] tw:overflow-x-auto tw:overflow-y-hidden; padding: var(--s-1) 0 var(--s-2); }
+  .directory-series button { flex: 0 0 auto; @apply tw:w-auto tw:whitespace-nowrap; }
 }
-@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directory-catalog .directory-item :deep(.character-portrait) { height: 138px; } }
+@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directory-catalog .directory-item :deep(.character-portrait) { @apply tw:h-[138px]; } }
 </style>

@@ -1,23 +1,19 @@
+@reference "../../tailwind.css";
 .pb .engine-switch {
   --engine-active-border: var(--mood-love);
   --engine-active-text: var(--mood-love-text);
-  display: flex;
-  gap: 8px;
+  @apply tw:flex tw:gap-[8px];
   margin: 4px 0 10px;
-  flex-wrap: wrap;
+  @apply tw:flex-wrap;
 }
 .pb .engine-btn {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: flex-start;
+  @apply tw:flex tw:flex-col tw:gap-[2px] tw:items-start;
   padding: 7px 14px;
-  border-radius: var(--r-md);
+  @apply tw:rounded-md;
   border: 1px solid var(--border-soft);
   background: var(--bg-surface);
   color: inherit;
-  font-size: var(--fs-label);
-  cursor: pointer;
+  @apply tw:text-label tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
 .pb .engine-btn:hover:not(:disabled):not(.active) {
@@ -26,40 +22,37 @@
 }
 .pb .engine-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .pb .engine-btn.active {
-  border-color: var(--accent);
+  @apply tw:border-accent;
   background: var(--bg-surface);
-  color: var(--accent);
+  @apply tw:text-accent;
   box-shadow: inset 3px 0 var(--accent);
 }
 .pb .engine-btn:disabled {
-  color: var(--text-disabled);
-  border-color: var(--border-soft);
+  @apply tw:text-disabled tw:border-soft;
   background: var(--bg-deep);
-  cursor: not-allowed;
+  @apply tw:cursor-not-allowed;
   opacity: 1;
 }
 .pb .engine-sub {
-  font-size: var(--fs-mono-sm);
-  color: var(--text-muted);
+  @apply tw:text-mono-sm tw:text-muted;
 }
-.pb .engine-btn:disabled .engine-sub { color: var(--text-disabled); }
+.pb .engine-btn:disabled .engine-sub { @apply tw:text-disabled; }
 .pb .base-model-picker {
-  display: grid;
+  @apply tw:grid;
   grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
+  @apply tw:items-center tw:gap-[10px];
   margin: 0 0 10px;
   padding: 10px 12px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
+  @apply tw:rounded-md;
   background: var(--bg-deep);
 }
-.pb .base-model-picker label { color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 700; }
+.pb .base-model-picker label { @apply tw:text-muted tw:text-label-xs tw:font-bold; }
 /* 原生 select 已迁至 StudioSelect：触发器沿用其统一样式，仅保留原 42px 高度 */
-.pb .base-model-picker .studio-select-wrapper { width: 100%; min-width: 0; }
-.pb .base-model-picker .studio-select-trigger { min-height: 42px; }
+.pb .base-model-picker .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
+.pb .base-model-picker .studio-select-trigger { @apply tw:min-h-[42px]; }
 
-.pb .engine-mark { width: 24px; height: 24px; flex-shrink: 0; }
-.pb .engine-copy { display: block; min-width: 0; overflow-wrap: anywhere; }
-.pb .base-model-picker { border-style: dashed; background: var(--bg-surface); padding: var(--s-3); gap: var(--s-2); }
-.pb .base-model-picker label { color: var(--text-secondary); }
+.pb .engine-mark { @apply tw:w-[24px] tw:h-[24px] tw:shrink-0; }
+.pb .engine-copy { @apply tw:block tw:min-w-0; overflow-wrap: anywhere; }
+.pb .base-model-picker { border-style: dashed; background: var(--bg-surface); @apply tw:p-s-3 tw:gap-s-2; }
+.pb .base-model-picker label { @apply tw:text-secondary; }

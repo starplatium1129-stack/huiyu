@@ -136,3 +136,4 @@ const metaText = computed(() =>
 onDeactivated(onSpotLeave)
 onUnmounted(onSpotLeave)
 </script>
+<style src="@/assets/css/scene-card.css"></style>

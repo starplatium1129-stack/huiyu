@@ -23,7 +23,7 @@ onMounted(() => { if (supported) checkForUpdate(true) })
 </script>
 
 <template>
-  <div v-if="supported && (availableVersion || errorText)" class="desktop-update-banner" role="status">
+  <div v-if="supported && (availableVersion || errorText)" class="desktop-update-banner tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:rounded-md tw:text-primary tw:text-body-sm tw:leading-body" role="status">
     <span class="desktop-update-text">
       <template v-if="availableVersion">桌面端新版本 {{ availableVersion }} 可用</template>
       <template v-else-if="errorText">更新检查失败：{{ errorText }}</template>
@@ -43,17 +43,9 @@ onMounted(() => { if (supported) checkForUpdate(true) })
 
 <style scoped>
 .desktop-update-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
   margin: var(--s-3) var(--s-4) 0;
   padding: var(--s-3) var(--s-4);
   border: 1px solid var(--border-strong);
-  border-radius: var(--r-md);
   background: var(--bg-surface);
-  color: var(--text-primary);
-  font-size: var(--fs-body-sm);
-  line-height: var(--lh-body);
 }
 </style>

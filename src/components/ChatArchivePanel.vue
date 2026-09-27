@@ -121,38 +121,4 @@ async function clearArchive() {
 }
 </script>
 
-<style scoped>
-.chat-archive-panel {
-  display: grid;
-  gap: var(--s-3);
-  margin: 0 0 var(--s-4);
-  padding: var(--s-4);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-lg);
-  background: var(--bg-surface);
-}
-.archive-panel-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--s-3);
-}
-.archive-panel-head strong { display: block; }
-.archive-panel-head small { display: block; margin-top: 2px; color: var(--text-muted); }
-.archive-counts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-2) var(--s-4);
-  color: var(--text-secondary);
-  font-size: var(--fs-label);
-}
-.archive-counts strong { color: var(--accent); }
-.archive-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-2);
-}
-.archive-file-input { display: none; }
-.danger { color: var(--danger-text); }
-.danger:disabled { color: var(--text-muted); }
-</style>
+<style scoped src="@/assets/css/components/ChatArchivePanel-0.css"></style>

@@ -1,46 +1,47 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    VoiceStudio 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
   /* Voice studio */
-  .pb .voice-studio { width:100%; box-sizing:border-box; grid-column:1; align-self:start; min-width:0; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:linear-gradient(145deg,var(--bg-deep),var(--bg-elevated)); }
-  .pb .voice-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); }
-  .pb .voice-head-actions { display:flex; align-items:center; gap:var(--s-2); flex:0 0 auto; }
-  .pb .voice-collapse { display:grid; place-items:center; width:28px; height:28px; padding:0; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; transition:color .15s ease, border-color .15s ease; }
-  .pb .voice-collapse:hover { color:var(--text-primary); border-color:var(--border-strong); }
-  .pb .voice-collapse svg { width:16px; height:16px; }
+  .pb .voice-studio { @apply tw:w-full tw:box-border; grid-column:1; align-self:start; @apply tw:min-w-0 tw:p-s-4; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:linear-gradient(145deg,var(--bg-deep),var(--bg-elevated)); }
+  .pb .voice-head { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3 tw:mb-s-3; }
+  .pb .voice-head-actions { @apply tw:flex tw:items-center tw:gap-s-2; flex:0 0 auto; }
+  .pb .voice-collapse { @apply tw:grid; place-items:center; @apply tw:w-[28px] tw:h-[28px] tw:p-0; border:1px solid var(--border-soft); @apply tw:rounded-sm; background:var(--bg-surface); @apply tw:text-secondary tw:cursor-pointer; transition:color .15s ease, border-color .15s ease; }
+  .pb .voice-collapse:hover { @apply tw:text-primary tw:border-strong; }
+  .pb .voice-collapse svg { @apply tw:w-[16px] tw:h-[16px]; }
   .pb .voice-panel-enter-active, .pb .voice-panel-leave-active { transition:opacity .16s ease, transform .16s ease; }
   .pb .voice-panel-enter-from, .pb .voice-panel-leave-to { opacity:0; transform:translateY(-4px); }
-  .pb .voice-title { font-size:var(--fs-body); font-weight:750; color:var(--text-primary); }
-  .pb .voice-sub { margin-top:3px; color:var(--text-muted); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
-  .pb .voice-state { flex:0 0 auto; padding:3px 8px; border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-muted); font-size:var(--fs-mono-sm); }
-  .pb .voice-state.ready { color:var(--success-text); border-color:color-mix(in srgb,var(--success) 45%,var(--border-soft)); }
-  .pb .voice-state.warn { color:var(--warning-text); border-color:color-mix(in srgb,var(--warning) 45%,var(--border-soft)); }
-  .pb .voice-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2); margin-bottom:var(--s-3); }
-  .pb .voice-field { display:grid; gap:4px; min-width:0; color:var(--text-muted); font-size:var(--fs-mono-sm); }
+  .pb .voice-title { @apply tw:text-body; font-weight:750; @apply tw:text-primary; }
+  .pb .voice-sub { @apply tw:mt-[3px] tw:text-muted tw:text-label-xs tw:leading-body; }
+  .pb .voice-state { flex:0 0 auto; padding:3px 8px; border:1px solid var(--border-soft); @apply tw:rounded-pill tw:text-muted tw:text-mono-sm; }
+  .pb .voice-state.ready { @apply tw:text-success-text; border-color:color-mix(in srgb,var(--success) 45%,var(--border-soft)); }
+  .pb .voice-state.warn { @apply tw:text-warning-text; border-color:color-mix(in srgb,var(--warning) 45%,var(--border-soft)); }
+  .pb .voice-controls { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2 tw:mb-s-3; }
+  .pb .voice-field { @apply tw:grid tw:gap-[4px] tw:min-w-0 tw:text-muted tw:text-mono-sm; }
   /* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；宽度继承组件默认 100%。 */
-  .pb .voice-text:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
-  .pb .voice-text { width:100%; min-height:130px; resize:vertical; box-sizing:border-box; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font: var(--fs-body-sm)/1.7 var(--font-sans); outline:none; }
-  .pb .voice-copy { padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface)); }
-  .pb .voice-copy-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
-  .pb .voice-copy-title { color:var(--text-primary); font-size:var(--fs-label-sm); font-weight:750; }
-  .pb .voice-copy-note { color:var(--text-muted); font-size:var(--fs-mono-sm); white-space:nowrap; }
-  .pb .voice-caption-text { min-height:112px; background:var(--bg-deep); font-size:var(--fs-body); line-height:var(--lh-loose); }
-  .pb .voice-script-details { margin-top:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); overflow:hidden; }
-  .pb .voice-script-details summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); padding:var(--s-3) var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-xs); cursor:pointer; list-style:none; user-select:none; }
-  .pb .voice-script-details summary::-webkit-details-marker { display:none; }
-  .pb .voice-script-details summary::after { content:'展开校对'; color:var(--text-muted); font-size:var(--fs-mono-sm); }
+  .pb .voice-text:focus { @apply tw:border-accent; box-shadow:0 0 0 2px var(--accent-glow); }
+  .pb .voice-text { @apply tw:w-full tw:min-h-[130px] tw:resize-y tw:box-border tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-primary; font: var(--fs-body-sm)/1.7 var(--font-sans); outline:none; }
+  .pb .voice-copy { @apply tw:p-s-3; border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border-soft)); @apply tw:rounded-md; background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface)); }
+  .pb .voice-copy-head { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:mb-s-2; }
+  .pb .voice-copy-title { @apply tw:text-primary tw:text-label-sm; font-weight:750; }
+  .pb .voice-copy-note { @apply tw:text-muted tw:text-mono-sm tw:whitespace-nowrap; }
+  .pb .voice-caption-text { @apply tw:min-h-[112px]; background:var(--bg-deep); @apply tw:text-body tw:leading-loose; }
+  .pb .voice-script-details { @apply tw:mt-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-deep); @apply tw:overflow-hidden; }
+  .pb .voice-script-details summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-3); @apply tw:text-secondary tw:text-label-xs tw:cursor-pointer; list-style:none; @apply tw:select-none; }
+  .pb .voice-script-details summary::-webkit-details-marker { @apply tw:hidden; }
+  .pb .voice-script-details summary::after { content:'展开校对'; @apply tw:text-muted tw:text-mono-sm; }
   .pb .voice-script-details[open] summary::after { content:'收起'; }
-  .pb .voice-script-details .voice-text { min-height:104px; margin:0 var(--s-3) var(--s-3); width:calc(100% - var(--s-3) * 2); background:var(--bg-surface); }
-  .pb .voice-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
+  .pb .voice-script-details .voice-text { @apply tw:min-h-[104px]; margin:0 var(--s-3) var(--s-3); width:calc(100% - var(--s-3) * 2); background:var(--bg-surface); }
+  .pb .voice-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3; }
   .pb .voice-actions .btn { flex:1 1 120px; }
   /* 审计修复: 不用 opacity 压字（压后低于 AA 4.5:1） */
-  .pb .voice-actions .btn:disabled { color: var(--text-disabled); border-color: var(--border-soft); background: var(--bg-surface); cursor:not-allowed; box-shadow:none; }
+  .pb .voice-actions .btn:disabled { @apply tw:text-disabled tw:border-soft; background: var(--bg-surface); @apply tw:cursor-not-allowed; box-shadow:none; }
   /* 2026-09-22：播放条换成 StudioMediaPlayer，主题外观由组件自带。
      原先靠 ::-webkit-media-controls-panel 给原生播放器上色的写法随之删除；
      这里只保留显隐与宽度。 */
-  .pb .voice-audio { display: none; width: 100%; margin-top: var(--s-3); }
-  .pb .voice-audio.show { display: grid; }
-  .pb .voice-download { display:none; width:100%; margin-top:var(--s-2); }
-  .pb .voice-download.show { display:inline-flex; justify-content:center; }
+  .pb .voice-audio { @apply tw:hidden tw:w-full tw:mt-s-3; }
+  .pb .voice-audio.show { @apply tw:grid; }
+  .pb .voice-download { @apply tw:hidden tw:w-full tw:mt-s-2; }
+  .pb .voice-download.show { @apply tw:inline-flex tw:justify-center; }

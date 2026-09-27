@@ -15,6 +15,7 @@
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const tailwind: typeof import('../lib/tailwind-style-audit') = require('../lib/tailwind-style-audit');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 
@@ -47,6 +48,11 @@ function appCssFiles() {
 /** 单文件组件 */
 function sfcFiles() {
   return walk('src', (n: string) => n.endsWith('.vue')).map(rel).sort();
+}
+
+/** Tailwind also scans TS class maps; tests/declarations are not application UI. */
+function utilityScriptFiles() {
+  return walk('src', (n: string) => n.endsWith('.ts') && !/\.(?:spec|d)\.ts$/.test(n)).map(rel).sort();
 }
 
 /** 仍在服务端直出的静态页（docs/），以及 SPA 入口 */
@@ -125,6 +131,7 @@ export = {
   read,
   appCssFiles,
   sfcFiles,
+  utilityScriptFiles,
   staticHtmlFiles,
   legacyDocsCssFiles,
   sfcStyleBlocks,
@@ -132,4 +139,5 @@ export = {
   inlineStyleAttrs,
   DESIGN_SYSTEM,
   isStandaloneReport,
+  ...tailwind,
 };

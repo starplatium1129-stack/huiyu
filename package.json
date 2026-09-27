@@ -154,6 +154,8 @@
     "@eslint/js": "^10.0.1",
     "@google/design.md": "^0.3.0",
     "@playwright/test": "^1.62.0",
+    "@tailwindcss/node": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
     "@tauri-apps/cli": "2.11.4",
     "@types/compression": "^1.8.1",
     "@types/express": "^5.0.6",
@@ -166,7 +168,9 @@
     "eslint": "^10.8.0",
     "eslint-plugin-vue": "^10.10.0",
     "happy-dom": "^20.11.6",
+    "postcss": "8.5.23",
     "rollup-plugin-visualizer": "^7.0.1",
+    "tailwindcss": "4.3.3",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.65.0",
     "vite": "^6.4.3",
@@ -181,7 +185,7 @@
   "browserslist": [
     "chrome >= 111",
     "edge >= 111",
-    "firefox >= 113",
+    "firefox >= 128",
     "safari >= 16.4"
   ]
 }

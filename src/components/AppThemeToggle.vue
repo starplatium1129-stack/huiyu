@@ -1,6 +1,6 @@
 <template>
   <StudioTooltip :content="label">
-    <button type="button" class="app-theme-toggle" :aria-label="label" :aria-pressed="theme === 'light'" @click="toggleTheme">
+    <button type="button" class="app-theme-toggle tw:inline-grid tw:place-items-center tw:shrink-0 tw:w-[40px] tw:h-[40px] tw:rounded-pill tw:text-secondary tw:cursor-pointer" :aria-label="label" :aria-pressed="theme === 'light'" @click="toggleTheme">
       <ArchiveIcon :name="theme === 'light' ? 'moon' : 'sun'" />
     </button>
   </StudioTooltip>
@@ -14,8 +14,9 @@ const { theme, toggleTheme } = useTheme()
 const label = computed(() => theme.value === 'light' ? '切换为深色模式' : '切换为亮色模式')
 </script>
 <style scoped>
-.app-theme-toggle { display: inline-grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; transition: transform var(--motion-control) var(--ease-out); }
-.app-theme-toggle:hover { color: var(--accent); }
+@reference "../assets/css/tailwind.css";
+.app-theme-toggle { border: 1px solid var(--border-soft); background: var(--bg-surface); transition: transform var(--motion-control) var(--ease-out); }
+.app-theme-toggle:hover { @apply tw:text-accent; }
 .app-theme-toggle:active { transform: scale(.94); }
 .app-theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>

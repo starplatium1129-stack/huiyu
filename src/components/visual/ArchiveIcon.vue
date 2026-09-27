@@ -46,13 +46,9 @@ const props = defineProps<{ name: ArchiveIconName }>()
 const def = computed(() => Object.hasOwn(ICON_DEFS, props.name) ? ICON_DEFS[props.name] : statusDefs.info)
 </script>
 
+
 <style scoped>
-.archive-icon {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  flex: 0 0 auto;
-  vertical-align: -.14em;
-  pointer-events: none;
-}
+@reference "../../assets/css/tailwind.css";
+/* Retain the primitive's scoped defaults: parent icon rules rely on this cascade. */
+.archive-icon { @apply tw:inline-block tw:w-[1em] tw:h-[1em] tw:flex-none tw:[vertical-align:-.14em] tw:pointer-events-none; }
 </style>

@@ -1,11 +1,43 @@
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
+import { compile, Polyfills, toSourceMap } from '@tailwindcss/node'
+import { dirname, resolve } from 'node:path'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { createRequire } from 'node:module'
 import { fileURLToPath, URL } from 'node:url'
 
 const runtimeRequire = createRequire(import.meta.url)
+
+/** All supported browsers implement color-mix (Chrome 111 / Safari 16.4 /
+ * Firefox 128). Tailwind's Vite plugin currently cannot configure its polyfills:
+ * https://github.com/tailwindlabs/tailwindcss/discussions/20037
+ * Compile component @apply through the same official compiler with only the
+ * @property fallback, avoiding duplicated color rules in every route. Keep the
+ * official plugin for utility discovery/HMR. Remove this hook when its public
+ * polyfill option is available; never drop these browser target requirements.
+ */
+function componentTailwindPlugin(): Plugin {
+  const sourceRoot = fileURLToPath(new URL('./src/', import.meta.url))
+  const entry = fileURLToPath(new URL('./src/assets/css/tailwind.css', import.meta.url))
+  return {
+    name: 'studio-tailwind-component-styles',
+    enforce: 'pre',
+    async transform(source, id) {
+      const file = resolve(id.split('?')[0])
+      if (!file.startsWith(sourceRoot) || file === entry ||
+          !(/\.css(?:\?|$)|[?&]type=style/.test(id)) ||
+          !/@(?:apply|reference|import)\b/.test(source)) return
+      const compiler = await compile(source, {
+        base: dirname(file), from: file, polyfills: Polyfills.AtProperty,
+        onDependency: dependency => this.addWatchFile(dependency),
+      })
+      const code = compiler.build([])
+      return { code, map: toSourceMap(compiler.buildSourceMap()).raw }
+    },
+  }
+}
 
 /** Resolve the cache-busting version at build time without editing a source store. */
 function dataVersionPlugin(): Plugin {
@@ -31,6 +63,8 @@ function dataVersionPlugin(): Plugin {
 // 生产时 Express 直接 serve dist/
 export default defineConfig(async ({ mode }) => {
   const plugins = [
+    componentTailwindPlugin(),
+    tailwindcss(),
     vue(),
     dataVersionPlugin(),
     // /assets/ 两头都要服务：SFC 模板里的 /assets/*.svg 会被 plugin-vue 改写成
@@ -106,7 +140,7 @@ export default defineConfig(async ({ mode }) => {
     // 避免与 Express 已有的 /assets/ 路由（角色图等）冲突
     assetsDir: '_app',
     // 固定构建目标，别随 Vite 默认值漂移；与 package.json 的 browserslist 对齐
-    target: ['chrome111', 'edge111', 'firefox113', 'safari16.4'],
+    target: ['chrome111', 'edge111', 'firefox128', 'safari16.4'],
     rollupOptions: {
       output: {
         manualChunks(id: string) {

@@ -1,15 +1,15 @@
 <template>
   <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" aria-label="当前场景参考">
-    <div class="scene-reference-picture" :class="{ 'is-restricted': restricted }">
+    <div class="scene-reference-picture tw:relative tw:overflow-hidden tw:grid tw:rounded-lg" :class="{ 'is-restricted': restricted }">
       <img v-if="image.src && !failed" v-bind="image" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" />
-      <div v-else class="scene-reference-empty"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
-      <span v-if="restricted && canLoad && !failed" class="scene-reference-mask">分级参考 · 已模糊</span>
+      <div v-else class="scene-reference-empty tw:grid tw:gap-s-3 tw:p-s-4 tw:text-secondary tw:text-label tw:text-center"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
+      <span v-if="restricted && canLoad && !failed" class="scene-reference-mask tw:absolute tw:grid tw:text-primary tw:text-label">分级参考 · 已模糊</span>
     </div>
     <figcaption>
-      <span class="scene-reference-label">场景参考 · 非本次生成</span>
+      <span class="scene-reference-label tw:block tw:mb-s-2 tw:text-secondary tw:text-label">场景参考 · 非本次生成</span>
       <strong>{{ scene.title }}</strong>
       <p>用于观察场景氛围。实际画面以当前角色、造型与生成设置为准。</p>
-      <dl class="scene-reference-settings">
+      <dl class="scene-reference-settings tw:flex tw:flex-wrap tw:m-0 tw:text-label">
         <div><dt>镜头</dt><dd>{{ shot }}</dd></div>
         <div><dt>构图</dt><dd>{{ composition }}</dd></div>
         <div><dt>光照</dt><dd>{{ lighting }}</dd></div>
@@ -74,20 +74,20 @@ const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.
 </script>
 
 <style scoped>
-.scene-reference { display:grid; grid-template-columns:minmax(120px,.9fr) minmax(0,1fr); gap:var(--s-4); margin:0 0 var(--s-4); text-align:left; align-items:center; }
-.scene-reference-picture { position:relative; overflow:hidden; display:grid; place-items:center; aspect-ratio:4/3; border-radius:var(--r-lg); background:var(--bg-base); }
-.scene-reference-picture img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; }
-.scene-reference.is-unconnected .scene-reference-picture { aspect-ratio:auto; min-height:104px; }
+@reference "../../assets/css/tailwind.css";
+.scene-reference { @apply tw:grid; grid-template-columns:minmax(120px,.9fr) minmax(0,1fr); @apply tw:gap-s-4; margin:0 0 var(--s-4); @apply tw:text-left tw:items-center; }
+.scene-reference-picture { place-items:center; aspect-ratio:4/3; background:var(--bg-base); }
+.scene-reference-picture img { @apply tw:absolute; inset:0; @apply tw:block tw:w-full tw:h-full tw:object-contain; }
+.scene-reference.is-unconnected .scene-reference-picture { aspect-ratio:auto; @apply tw:min-h-[104px]; }
 .scene-reference-picture.is-restricted img { filter:blur(24px); transform:scale(1.15); }
-.scene-reference-mask { position:absolute; inset:0; display:grid; place-items:center; background:color-mix(in srgb,var(--bg-surface) 85%,transparent); color:var(--text-primary); font-size:var(--fs-label); }
-.scene-reference-empty { display:grid; justify-items:center; gap:var(--s-3); padding:var(--s-4); color:var(--text-secondary); font-size:var(--fs-label); text-align:center; }
-.scene-reference-empty .archive-icon { width:32px; height:32px; }
-.scene-reference-label { display:block; margin-bottom:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); }
-figcaption strong { color:var(--text-primary); font-size:var(--fs-body); line-height:var(--lh-label); }
-figcaption p { margin:var(--s-2) 0 var(--s-3); color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-loose); }
-.scene-reference-settings { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); margin:0; font-size:var(--fs-label); }
-.scene-reference-settings dt { color:var(--text-secondary); }
-.scene-reference-settings dd { margin:var(--s-1) 0 0; color:var(--text-primary); }
-@container canvas-column (max-width:440px) { .scene-reference { grid-template-columns:1fr; } .scene-reference-picture { max-height:190px; aspect-ratio:16/9; } }
-@media (min-width:901px) and (max-height:760px) { .scene-reference-picture { max-height:180px; } }
+.scene-reference-mask { inset:0; place-items:center; background:color-mix(in srgb,var(--bg-surface) 85%,transparent); }
+.scene-reference-empty { justify-items:center; }
+.scene-reference-empty .archive-icon { @apply tw:w-[32px] tw:h-[32px]; }
+figcaption strong { @apply tw:text-primary tw:text-body tw:leading-label; }
+figcaption p { margin:var(--s-2) 0 var(--s-3); @apply tw:text-secondary tw:text-label tw:leading-loose; }
+.scene-reference-settings { gap:var(--s-2) var(--s-4); }
+.scene-reference-settings dt { @apply tw:text-secondary; }
+.scene-reference-settings dd { margin:var(--s-1) 0 0; @apply tw:text-primary; }
+@container canvas-column (max-width:440px) { .scene-reference { grid-template-columns:1fr; } .scene-reference-picture { @apply tw:max-h-[190px]; aspect-ratio:16/9; } }
+@media (min-width:901px) and (max-height:760px) { .scene-reference-picture { @apply tw:max-h-[180px]; } }
 </style>

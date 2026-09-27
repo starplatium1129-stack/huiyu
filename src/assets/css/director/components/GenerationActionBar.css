@@ -1,41 +1,41 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    GenerationActionBar 吸附式出图条 —— 尺寸 + 生成/停止
    （2026-08-28 审计：紧跟画布、滚动吸附于导航下沿，
     出图尺寸不再埋在栏底面板；主行动同步加载保证首屏即位）
    ============================================================ */
   .pb .gen-bar {
-    position: sticky; top: 54px; z-index: var(--z-sticky);
-    display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
+    @apply tw:sticky tw:top-[54px]; z-index: var(--z-sticky);
+    @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap;
     padding: var(--s-2) var(--s-4);
     border: 1px solid var(--glass-edge);
-    border-radius: var(--r-2xl);
+    @apply tw:rounded-2xl;
     background:
       linear-gradient(135deg,var(--glass-specular),transparent 34%,transparent 68%,color-mix(in srgb,var(--accent) 10%,transparent)),
       var(--glass-fill);
     box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 36px -6px rgba(4, 3, 16, 0.38);
     transition: border-color var(--motion-hover), box-shadow var(--motion-hover);
   }
-  .pb .gen-bar-size { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); font-size: var(--fs-body); }
-  .pb .gen-bar-aspect-icon { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
-  .pb .gen-bar-label { font-weight: 650; white-space: nowrap; }
+  .pb .gen-bar-size { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-muted tw:text-body; }
+  .pb .gen-bar-aspect-icon { @apply tw:w-[18px] tw:h-[18px] tw:text-accent tw:shrink-0; }
+  .pb .gen-bar-label { font-weight: 650; @apply tw:whitespace-nowrap; }
   .pb .gen-bar-size .studio-select-wrapper {
-    max-width: 220px; min-width: 140px;
+    @apply tw:max-w-[220px] tw:min-w-[140px];
   }
   /* 自动参数摘要：空间紧张时最先让位，信息在输出面板仍有完整版 */
   .pb .gen-bar-preset {
-    flex: 1 1 14rem; min-width: 0; overflow-wrap: anywhere;
-    color: var(--text-secondary); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans);
+    flex: 1 1 14rem; @apply tw:min-w-0; overflow-wrap: anywhere;
+    @apply tw:text-secondary; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans);
     font-variant-numeric: tabular-nums;
   }
   /* 校验未通过的原因：贴在按钮左侧常驻，比 title 悬停提示可靠 */
   .pb .gen-bar-blocked {
-    flex: 1 1 16rem; min-width: 0; margin-left: auto;
-    color: var(--danger-text); font-size: var(--fs-body); line-height: var(--lh-body);
+    flex: 1 1 16rem; @apply tw:min-w-0 tw:ml-auto tw:text-danger-text tw:text-body tw:leading-body;
   }
-  .pb .gen-bar-actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
+  .pb .gen-bar-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:ml-auto; }
   /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
-  .pb .gen-bar-blocked + .gen-bar-actions { margin-left: 0; }
-  .pb .gen-bar-actions .btn { min-height: 38px; font-size: var(--fs-body); padding: var(--s-2) var(--s-4); border-radius: var(--r-md); }
+  .pb .gen-bar-blocked + .gen-bar-actions { @apply tw:ml-0; }
+  .pb .gen-bar-actions .btn { @apply tw:min-h-[38px] tw:text-body; padding: var(--s-2) var(--s-4); @apply tw:rounded-md; }
   .pb .gen-bar-actions .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .pb .gen-bar-actions .btn-primary:not(:disabled) {
     box-shadow: 0 0 16px -2px var(--character-glow, var(--accent-glow));
@@ -44,13 +44,13 @@
   @media (max-width: 768px) {
     /* 移动端导航换行后实测高 ~63px（z-nav 高于本条），吸附点须让过导航，
        沿用站内 sticky 工具条的硬编码惯例（54/58px 同源） */
-    .pb .gen-bar { top: 66px; border-radius: var(--r-md); }
-    .pb .gen-bar-preset { display: none; }
-    .pb .gen-bar-size { flex: 1; min-width: 0; }
-    .pb .gen-bar-size .studio-select-wrapper { flex: 1; min-width: 0; max-width: none; }
-    .pb .gen-bar-size .studio-select-trigger { min-height: 44px; }
-    .pb .gen-bar-actions { margin-left: 0; }
-    .pb .gen-bar-actions .btn { min-height: 44px; }
+    .pb .gen-bar { @apply tw:top-[66px] tw:rounded-md; }
+    .pb .gen-bar-preset { @apply tw:hidden; }
+    .pb .gen-bar-size { flex: 1; @apply tw:min-w-0; }
+    .pb .gen-bar-size .studio-select-wrapper { flex: 1; @apply tw:min-w-0; max-width: none; }
+    .pb .gen-bar-size .studio-select-trigger { @apply tw:min-h-[44px]; }
+    .pb .gen-bar-actions { @apply tw:ml-0; }
+    .pb .gen-bar-actions .btn { @apply tw:min-h-[44px]; }
   }
   @media (max-width: 600px) {
     /* 尺寸独占一行，避免离线原因和生成按钮把所选尺寸挤成两位数字。 */

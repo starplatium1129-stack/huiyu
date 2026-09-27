@@ -13,7 +13,7 @@ const args = process.argv.slice(2).filter((a: any) => !a.startsWith('--'));
 // 静态文档,不占用应用 token 回归预算,显式豁免。
 const targets = args.length
   ? args
-  : [...sources.appCssFiles(), ...sources.sfcFiles(),
+  : [...sources.appCssFiles(), ...sources.sfcFiles(), ...sources.utilityScriptFiles(),
      ...sources.staticHtmlFiles(), ...sources.legacyDocsCssFiles()]
     .filter((f: any) => !sources.isStandaloneReport(f));
 
@@ -40,6 +40,9 @@ for (const rel of targets) {
   if (!fs.existsSync(abs)) { console.log('  (missing) ' + rel); continue; }
   const raw = fs.readFileSync(abs, 'utf8');
   let css = rel.endsWith('.css') ? raw : sources.sfcStyleBlocks(raw); // .vue 与 .html 的 <style> 块同一形态
+  // Count each candidate once, including class maps and @apply; arbitrary
+  // property utilities would otherwise also match the handwritten CSS regexes.
+  css = css.replace(/@apply\s+[^;]+;/g, '') + '\n' + sources.tailwindUtilities(raw).map(sources.utilityCss).join('\n');
   css = css.replace(/\/\*[\s\S]*?\*\//g, ' ');
   // token 定义行本身就是字面量的合法归宿(--accent-soft: rgba(...)),不算漂移。
   // 只统计"使用点"的字面量。

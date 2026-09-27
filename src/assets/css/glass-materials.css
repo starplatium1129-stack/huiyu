@@ -1,3 +1,4 @@
+@reference "./tailwind.css";
 /* Two device-local material choices. Both keep text and content unfiltered. */
 :root { --material-fill: color-mix(in srgb, var(--bg-surface) 96%, transparent); }
 :root[data-glass-material="liquid"] {
@@ -56,7 +57,7 @@
   :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { background:var(--bg-surface) !important; background-image:none !important; box-shadow:none !important; }
 }
 @media (prefers-contrast:more) {
-  :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { border-color:var(--text-muted); }
+  :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { @apply tw:border-muted; }
 }
 @media (forced-colors:active) {
   :root[data-glass-material] body :is(.nav, .nav-more-menu, .sticky-toolbar, .companion-toolbar, .toolbar-shell, .gallery-toolbar, .scene-toolbar, .pop-toolbar, .gen-bar, .pb .gen-bar, [data-fluid-glass]) { background:Canvas !important; background-image:none !important; border-color:CanvasText; box-shadow:none !important; }

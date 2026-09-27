@@ -1,14 +1,14 @@
 <template>
-  <section class="workspace-archive-bar" :data-state="state" :data-shape="shape" :aria-label="`${title}状态`">
-    <div class="workspace-code" aria-hidden="true">
+  <section class="workspace-archive-bar tw:flex tw:items-center tw:gap-s-4 tw:min-h-[44px] tw:mb-s-5 tw:py-s-3 tw:px-0 tw:[border-bottom:1px_solid_var(--border-soft)]" :data-state="state" :data-shape="shape" :aria-label="`${title}状态`">
+    <div class="workspace-code tw:flex-none tw:[color:var(--character-accent)] tw:[font:500_var(--fs-label)/var(--lh-label)_var(--font-mono)]" aria-hidden="true">
       <span>{{ chapter }}</span>
     </div>
-    <div class="workspace-copy">
-      <strong>{{ title }}</strong>
-      <span>{{ subtitle }}</span>
+    <div class="workspace-copy tw:flex tw:items-baseline tw:flex-wrap tw:gap-s-3 tw:flex-1 tw:min-w-0">
+      <strong class="tw:text-secondary tw:[font:500_var(--fs-label-xs)/var(--lh-label)_var(--font-sans)] tw:tracking-[.1em]">{{ title }}</strong>
+      <span class="tw:text-muted tw:text-label-xs tw:[overflow-wrap:anywhere]">{{ subtitle }}</span>
     </div>
-    <div class="workspace-state" role="status" aria-live="polite">
-      <span class="workspace-state-dot" aria-hidden="true"></span>
+    <div class="workspace-state tw:flex tw:items-center tw:gap-s-2 tw:text-secondary tw:[font:500_var(--fs-label-xs)/var(--lh-label)_var(--font-sans)]" role="status" aria-live="polite">
+      <span class="workspace-state-dot tw:w-[5px] tw:h-[5px] tw:shrink-0 tw:rounded-full tw:[background:var(--text-muted)]" aria-hidden="true"></span>
       {{ status }}
     </div>
   </section>
@@ -45,13 +45,6 @@ watch(() => [props.state, props.shape, props.status], signal)
 </script>
 
 <style scoped>
-.workspace-archive-bar { display: flex; align-items: center; gap: var(--s-4); min-height: 44px; margin-bottom: var(--s-5); padding: var(--s-3) 0; border-bottom: 1px solid var(--border-soft); }
-.workspace-code { flex: 0 0 auto; color: var(--character-accent); font: 500 var(--fs-label)/var(--lh-label) var(--font-mono); }
-.workspace-copy { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-3); flex: 1; min-width: 0; }
-.workspace-copy strong { color: var(--text-secondary); font: 500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing: .1em; }
-.workspace-copy > span { color: var(--text-muted); font-size: var(--fs-label-xs); overflow-wrap: anywhere; }
-.workspace-state { display: flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font: 500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
-.workspace-state-dot { width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: var(--text-muted); }
 [data-state="active"] .workspace-state-dot { background: var(--character-accent); }
 [data-state="success"] .workspace-state-dot { background: var(--success); }
 [data-state="warning"] .workspace-state-dot { background: var(--warning); }

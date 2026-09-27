@@ -1,53 +1,54 @@
+@reference "./tailwind.css";
 /* An explicit control layer: the open centre never changes the model's framing. */
-.companion-orbit { position: absolute; inset: 0; z-index: var(--z-overlay); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; pointer-events: none; color: var(--text-primary); }
+.companion-orbit { @apply tw:absolute; inset: 0; z-index: var(--z-overlay); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-[8px] tw:pointer-events-none tw:text-primary; }
 :root:has(.companion-preferences[open], .character-settings-dialog[open]) .companion-orbit { visibility: hidden; }
-.orbit-heading { position: absolute; top: 12px; left: 12px; display: flex; align-items: center; gap: 20px; padding: 8px 10px 8px 18px; border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-elevated); box-shadow: var(--shadow-glass-sm); pointer-events: auto; }
-.orbit-heading > div { display: flex; flex-direction: column; gap: 2px; }
-.orbit-kicker { color: var(--text-secondary); font-size: var(--fs-label-xs); letter-spacing: .15em; }
-.orbit-heading strong { font-size: var(--fs-body-sm); }
-.orbit-close { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: var(--bg-surface); color: var(--text-primary); cursor: pointer; }
-.orbit-wheel { position: relative; flex: 0 0 auto; width: var(--orbit-size); height: var(--orbit-size); }
-.orbit-segment > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.orbit-segment > svg > path { fill: var(--bg-elevated); stroke: var(--border-strong); stroke-width: .75; pointer-events: auto; cursor: pointer; }
+.orbit-heading { @apply tw:absolute tw:top-[12px] tw:left-[12px] tw:flex tw:items-center tw:gap-[20px]; padding: 8px 10px 8px 18px; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-elevated); box-shadow: var(--shadow-glass-sm); @apply tw:pointer-events-auto; }
+.orbit-heading > div { @apply tw:flex tw:flex-col tw:gap-[2px]; }
+.orbit-kicker { @apply tw:text-secondary tw:text-label-xs; letter-spacing: .15em; }
+.orbit-heading strong { @apply tw:text-body-sm; }
+.orbit-close { @apply tw:grid; place-items: center; @apply tw:w-[36px] tw:h-[36px] tw:p-0; border: 0; border-radius: 50%; background: var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; }
+.orbit-wheel { @apply tw:relative; flex: 0 0 auto; width: var(--orbit-size); height: var(--orbit-size); }
+.orbit-segment > svg { @apply tw:absolute; inset: 0; @apply tw:w-full tw:h-full tw:overflow-visible tw:pointer-events-none; }
+.orbit-segment > svg > path { fill: var(--bg-elevated); stroke: var(--border-strong); stroke-width: .75; @apply tw:pointer-events-auto tw:cursor-pointer; }
 .orbit-segment:has(button:hover) > svg > path, .orbit-segment:has(> svg > path:hover) > svg > path, .orbit-segment[data-active] > svg > path { fill: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); stroke: var(--accent); }
 .orbit-segment:has(button:focus-visible) > svg > path { stroke: var(--accent); stroke-width: 3; }
-.companion-orbit .orbit-action { position: absolute; left: var(--orbit-x); top: var(--orbit-y); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 54px; height: 50px; padding: 0; transform: translate(-50%, -50%); border: 0; border-radius: 0; background: transparent; color: var(--text-primary); box-shadow: none; cursor: pointer; pointer-events: auto; font-size: var(--fs-label-sm); line-height: 1.2; }
-.orbit-action .archive-icon { width: 22px; height: 22px; color: var(--accent); }
+.companion-orbit .orbit-action { @apply tw:absolute; left: var(--orbit-x); top: var(--orbit-y); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-[4px] tw:w-[54px] tw:h-[50px] tw:p-0; transform: translate(-50%, -50%); border: 0; border-radius: 0; background: transparent; @apply tw:text-primary; box-shadow: none; @apply tw:cursor-pointer tw:pointer-events-auto tw:text-label-sm; line-height: 1.2; }
+.orbit-action .archive-icon { @apply tw:w-[22px] tw:h-[22px] tw:text-accent; }
 .companion-orbit .orbit-action:is(:hover, :focus-visible, :active), .companion-orbit .orbit-segment[data-active] .orbit-action { background: transparent; box-shadow: none; }
 .companion-orbit .orbit-action:active { transform: translate(-50%, -50%) scale(.95); }
-.orbit-option { box-sizing: border-box; position: absolute; left: var(--orbit-x); top: var(--orbit-y); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; width: 58px; min-height: 66px; transform: translate(-50%, -50%); padding: 6px 4px; background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--r-lg); cursor: pointer; pointer-events: auto; }
-.orbit-option img { flex: 0 0 30px; width: 30px; height: 30px; object-fit: cover; object-position: top; border-radius: var(--r-sm); }
-.orbit-option > .archive-icon { width: 22px; height: 22px; }
-.orbit-option span { display: block; flex: 0 0 auto; max-width: 100%; min-height: 1.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-label-xs); line-height: 1.5; }
-.orbit-option[aria-pressed="true"], .orbit-option:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); }
-.orbit-selection { max-width: calc(100% - 24px); width: 320px; flex: 0 1 auto; min-height: 0; padding: 10px 12px; border-radius: var(--r-lg); border: 1px solid var(--border-soft); background: var(--bg-elevated); pointer-events: auto; overflow: auto; overscroll-behavior: contain; }
-.orbit-selection > header { display: flex; align-items: center; gap: 8px; }
-.orbit-selection > header strong { flex: 1; font-size: var(--fs-label); }
-.orbit-selection > header > span { color: var(--text-secondary); font-size: var(--fs-label-xs); }
-.orbit-selection > header button { display: grid; place-items: center; width: 32px; height: 32px; border: 0; border-radius: 50%; background: var(--bg-surface); color: var(--text-primary); cursor: pointer; }
+.orbit-option { @apply tw:box-border tw:absolute; left: var(--orbit-x); top: var(--orbit-y); @apply tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-[4px] tw:w-[58px] tw:min-h-[66px]; transform: translate(-50%, -50%); padding: 6px 4px; background: var(--bg-elevated); @apply tw:text-primary; border: 1px solid var(--border-strong); @apply tw:rounded-lg tw:cursor-pointer tw:pointer-events-auto; }
+.orbit-option img { flex: 0 0 30px; @apply tw:w-[30px] tw:h-[30px] tw:object-cover; object-position: top; @apply tw:rounded-sm; }
+.orbit-option > .archive-icon { @apply tw:w-[22px] tw:h-[22px]; }
+.orbit-option span { @apply tw:block; flex: 0 0 auto; @apply tw:max-w-full tw:min-h-[1.5em] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-label-xs; line-height: 1.5; }
+.orbit-option[aria-pressed="true"], .orbit-option:hover { @apply tw:border-accent; background: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); }
+.orbit-selection { max-width: calc(100% - 24px); @apply tw:w-[320px]; flex: 0 1 auto; @apply tw:min-h-0; padding: 10px 12px; @apply tw:rounded-lg; border: 1px solid var(--border-soft); background: var(--bg-elevated); @apply tw:pointer-events-auto tw:overflow-auto; overscroll-behavior: contain; }
+.orbit-selection > header { @apply tw:flex tw:items-center tw:gap-[8px]; }
+.orbit-selection > header strong { flex: 1; @apply tw:text-label; }
+.orbit-selection > header > span { @apply tw:text-secondary tw:text-label-xs; }
+.orbit-selection > header button { @apply tw:grid; place-items: center; @apply tw:w-[32px] tw:h-[32px]; border: 0; border-radius: 50%; background: var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; }
 .orbit-selection > header svg { transform: rotate(90deg); }
-.orbit-selection p { color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.7; margin: 8px 0; }
-.orbit-option-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-block: 12px; }
-.orbit-option-list button { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 8px; border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-surface); text-align: left; cursor: pointer; }
-.orbit-option-list button[aria-pressed="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); }
-.orbit-option-list span { font-size: var(--fs-label-sm); overflow-wrap: anywhere; }
-.orbit-option-list img { width: 32px; height: 40px; object-fit: cover; object-position: top; border-radius: var(--r-sm); }
-.orbit-option-list .archive-icon { flex-shrink: 0; width: 18px; height: 18px; }
-.orbit-pagination { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--text-secondary); font-size: var(--fs-label-sm); }
-.orbit-pagination button, .orbit-manage { min-height: 36px; padding: 6px 10px; border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-surface); cursor: pointer; }
-.orbit-manage { display: flex; justify-content: center; align-items: center; gap: 6px; width: 100%; margin-top: 8px; font-size: var(--fs-label-sm); }
-.orbit-guide, .orbit-feedback { margin: 0; max-width: calc(100% - 24px); padding: 8px 14px; background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-secondary); font-size: var(--fs-label-xs); line-height: 1.5; text-align: center; pointer-events: auto; }
+.orbit-selection p { @apply tw:text-secondary tw:text-label-sm; line-height: 1.7; margin: 8px 0; }
+.orbit-option-list { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-[8px]; margin-block: 12px; }
+.orbit-option-list button { @apply tw:flex tw:items-center tw:gap-[8px] tw:min-h-[52px] tw:p-[8px]; border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-primary; background: var(--bg-surface); @apply tw:text-left tw:cursor-pointer; }
+.orbit-option-list button[aria-pressed="true"] { @apply tw:border-accent; background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); }
+.orbit-option-list span { @apply tw:text-label-sm; overflow-wrap: anywhere; }
+.orbit-option-list img { @apply tw:w-[32px] tw:h-[40px] tw:object-cover; object-position: top; @apply tw:rounded-sm; }
+.orbit-option-list .archive-icon { @apply tw:shrink-0 tw:w-[18px] tw:h-[18px]; }
+.orbit-pagination { @apply tw:flex tw:items-center tw:justify-between tw:gap-[8px] tw:text-secondary tw:text-label-sm; }
+.orbit-pagination button, .orbit-manage { @apply tw:min-h-[36px]; padding: 6px 10px; border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-primary; background: var(--bg-surface); @apply tw:cursor-pointer; }
+.orbit-manage { @apply tw:flex tw:justify-center tw:items-center tw:gap-[6px] tw:w-full tw:mt-[8px] tw:text-label-sm; }
+.orbit-guide, .orbit-feedback { @apply tw:m-0; max-width: calc(100% - 24px); padding: 8px 14px; background: var(--bg-elevated); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:text-secondary tw:text-label-xs; line-height: 1.5; @apply tw:text-center tw:pointer-events-auto; }
 .orbit-guide span { margin-inline: 8px; }
-.orbit-feedback { max-height: 60px; overflow: auto; }
-.companion-orbit button:disabled { color: var(--text-disabled); cursor: default; }
+.orbit-feedback { @apply tw:max-h-[60px] tw:overflow-auto; }
+.companion-orbit button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .companion-orbit button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .companion-orbit .orbit-action:focus-visible { outline: none; }
 .companion-orbit.has-category:not(.is-compact) { --orbit-size: min(440px, calc(100dvh - 240px), calc(100vw - 24px)) !important; }
-.companion-orbit.is-compact { gap: 4px; }
-.companion-orbit.is-compact.has-category { box-sizing: border-box; padding-top: 80px; padding-bottom: 12px; }
+.companion-orbit.is-compact { @apply tw:gap-[4px]; }
+.companion-orbit.is-compact.has-category { @apply tw:box-border tw:pt-[80px] tw:pb-[12px]; }
 .companion-orbit.is-compact .orbit-wheel { width: var(--orbit-size); height: var(--orbit-size); }
-.companion-orbit.is-compact .orbit-action { width: 44px; height: 44px; gap: 2px; font-size: var(--fs-label-xs); }
-.companion-orbit.is-compact .orbit-action .archive-icon { width: 18px; height: 18px; }
+.companion-orbit.is-compact .orbit-action { @apply tw:w-[44px] tw:h-[44px] tw:gap-[2px] tw:text-label-xs; }
+.companion-orbit.is-compact .orbit-action .archive-icon { @apply tw:w-[18px] tw:h-[18px]; }
 .orbit-selection-compact { max-height: calc(100dvh - 110px); }
 .pet-orbit-enter-active, .pet-orbit-leave-active { transition: opacity 160ms ease, transform 220ms var(--ease-out); }
 .pet-orbit-enter-from, .pet-orbit-leave-to { opacity: 0; transform: scale(.96); }

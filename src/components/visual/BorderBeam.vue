@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="border-beam-wrap"
+    class="border-beam-wrap tw:relative tw:[border-radius:inherit]"
     :class="{
       'is-active': active,
       'is-running': active && canAnimate,
@@ -13,11 +13,11 @@
     :style="beamStyle"
   >
     <slot />
-    <div v-if="active" class="border-beam-track" aria-hidden="true">
-      <div class="border-beam-ray" />
+    <div v-if="active" class="border-beam-track tw:absolute tw:inset-0 tw:[border-radius:var(--beam-radius,inherit)] tw:[padding:var(--beam-border-width,1.5px)] tw:pointer-events-none tw:overflow-hidden tw:box-border tw:[z-index:2]" aria-hidden="true">
+      <div class="border-beam-ray tw:absolute tw:top-1/2 tw:left-1/2 tw:w-[var(--beam-extent)] tw:h-[var(--beam-extent)] tw:[background:var(--beam-gradient)]" />
     </div>
-    <div v-if="active && glow && !lowEffects" class="border-beam-bloom" aria-hidden="true">
-      <div class="border-beam-ray" />
+    <div v-if="active && glow && !lowEffects" class="border-beam-bloom tw:absolute tw:[border-radius:var(--beam-radius,inherit)] tw:[padding:var(--beam-border-width,1.5px)] tw:pointer-events-none tw:overflow-hidden tw:box-border tw:inset-[-1px] tw:[z-index:1] tw:[mix-blend-mode:screen]" aria-hidden="true">
+      <div class="border-beam-ray tw:absolute tw:top-1/2 tw:left-1/2 tw:w-[var(--beam-extent)] tw:h-[var(--beam-extent)] tw:[background:var(--beam-gradient)]" />
     </div>
   </div>
 </template>
@@ -68,7 +68,6 @@ const beamStyle = computed(() => ({
 </script>
 
 <style scoped>
-.border-beam-wrap { position: relative; border-radius: inherit; }
 .border-beam-wrap.is-standalone {
   position: absolute;
   inset: 0;
@@ -77,36 +76,20 @@ const beamStyle = computed(() => ({
 }
 .border-beam-track,
 .border-beam-bloom {
-  position: absolute;
-  inset: 0;
-  border-radius: var(--beam-radius, inherit);
-  padding: var(--beam-border-width, 1.5px);
-  pointer-events: none;
-  overflow: hidden;
-  box-sizing: border-box;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
 }
-.border-beam-track { z-index: 2; opacity: 0.85; }
+.border-beam-track { opacity: 0.85; }
 /* Bloom is edge-masked too, so it cannot wash across labels or artwork. */
 .border-beam-bloom {
-  inset: -1px;
-  z-index: 1;
   opacity: 0.3;
   filter: blur(6px);
-  mix-blend-mode: screen;
 }
 .size-sm .border-beam-bloom { filter: blur(3px); }
 .size-lg .border-beam-bloom { opacity: 0.2; }
 .border-beam-ray {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--beam-extent);
-  height: var(--beam-extent);
-  background: var(--beam-gradient);
   transform: translate(-50%, -50%) rotate(45deg);
 }
 .is-running .border-beam-ray {

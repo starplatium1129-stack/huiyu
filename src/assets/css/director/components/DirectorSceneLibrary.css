@@ -1,31 +1,32 @@
+@reference "../../tailwind.css";
   /* Scene library (compact list) */
-  .pb .scene-search-wrap { position: relative; margin-bottom: var(--s-2); }
-  .pb .scene-search { width: 100%; padding: var(--s-2) 34px var(--s-2) var(--s-3); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: var(--fs-body-sm); outline: none; }
-  .pb .scene-search:focus { border-color: var(--accent); }
-  .pb .scene-search::placeholder { color: var(--text-muted); }
-  .pb .scene-search-clear { position:absolute; top:50%; right:7px; transform:translateY(-50%); width:25px; height:25px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body); }
-  .pb .scene-search-clear:hover { color:var(--accent); background:var(--accent-soft); }
-  .pb .scene-filter-actions { display:inline-flex; align-items:center; gap:8px; }
-  .pb .scene-filter-label { color:var(--text-muted); font-size:var(--fs-mono-sm); font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:var(--s-2); }
-  .pb .scene-cats { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-bottom: var(--s-2); }
-  .pb .scene-filter-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); gap:var(--s-2); margin-bottom:var(--s-2); }
-  .pb .scene-filter-more { margin-bottom:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
-  .pb .scene-filter-more-toggle { width:100%; display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); min-height:36px; padding:var(--s-2) var(--s-3); border:0; background:transparent; color:var(--text-secondary); cursor:pointer; font:inherit; font-size:var(--fs-label-xs); text-align:left; }
-  .pb .scene-filter-more-toggle::after { content:'＋'; margin-left:auto; color:var(--text-muted); }
+  .pb .scene-search-wrap { @apply tw:relative tw:mb-s-2; }
+  .pb .scene-search { @apply tw:w-full; padding: var(--s-2) 34px var(--s-2) var(--s-3); background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md tw:text-primary tw:text-body-sm; outline: none; }
+  .pb .scene-search:focus { @apply tw:border-accent; }
+  .pb .scene-search::placeholder { @apply tw:text-muted; }
+  .pb .scene-search-clear { @apply tw:absolute tw:top-[50%] tw:right-[7px]; transform:translateY(-50%); @apply tw:w-[25px] tw:h-[25px]; border:0; border-radius:50%; background:transparent; @apply tw:text-muted tw:cursor-pointer tw:text-body; }
+  .pb .scene-search-clear:hover { @apply tw:text-accent; background:var(--accent-soft); }
+  .pb .scene-filter-actions { @apply tw:inline-flex tw:items-center tw:gap-[8px]; }
+  .pb .scene-filter-label { @apply tw:text-muted tw:text-mono-sm tw:font-bold; letter-spacing:.08em; @apply tw:uppercase tw:mb-s-2; }
+  .pb .scene-cats { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:mb-s-2; }
+  .pb .scene-filter-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); @apply tw:gap-s-2 tw:mb-s-2; }
+  .pb .scene-filter-more { @apply tw:mb-s-2; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-deep); }
+  .pb .scene-filter-more-toggle { @apply tw:w-full tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[36px]; padding:var(--s-2) var(--s-3); border:0; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:inherit; @apply tw:text-label-xs tw:text-left; }
+  .pb .scene-filter-more-toggle::after { content:'＋'; @apply tw:ml-auto tw:text-muted; }
   .pb .scene-filter-more.open .scene-filter-more-toggle::after { content:'−'; }
-  .pb .scene-filter-more.has-active .scene-filter-more-toggle { color:var(--accent); }
-  .pb .scene-filter-more-state { color:var(--text-muted); font-size:var(--fs-mono-sm); }
+  .pb .scene-filter-more.has-active .scene-filter-more-toggle { @apply tw:text-accent; }
+  .pb .scene-filter-more-state { @apply tw:text-muted tw:text-mono-sm; }
   .pb .scene-filter-more-body { padding:0 var(--s-3) var(--s-3); }
-  .pb .scene-filter-more .scene-filter-grid { margin-top:4px; }
-  .pb .scene-filter-field { display:grid; gap:3px; color:var(--text-muted); font-size:var(--fs-mono-sm); }
+  .pb .scene-filter-more .scene-filter-grid { @apply tw:mt-[4px]; }
+  .pb .scene-filter-field { @apply tw:grid tw:gap-[3px] tw:text-muted tw:text-mono-sm; }
     /* 原生 select 已迁至 StudioSelect：外观由触发器统一提供，这里保留宽度收敛。 */
-  .pb .scene-filter-field .studio-select-wrapper { width:100%; min-width:0; }
-  .pb .scene-mature-row { display:flex; align-items:center; justify-content:flex-end; margin-bottom:var(--s-2); }
-  .pb .scene-mature-row label { display:flex; align-items:center; gap:var(--s-2); color:var(--text-muted); cursor:pointer; font-size:var(--fs-label-xs); }
-  .pb .scene-cat { appearance:none; padding: 3px var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: var(--r-pill); cursor: pointer; font: 500 var(--fs-label-xs) var(--font-sans); transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
-  .pb .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
-  .pb .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
-  .pb .scene-item { display: flex; align-items: center; gap: var(--s-2); padding: 4px 8px; border-radius: var(--r-sm); cursor: pointer; transition: background var(--motion-hover); }
+  .pb .scene-filter-field .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
+  .pb .scene-mature-row { @apply tw:flex tw:items-center tw:justify-end tw:mb-s-2; }
+  .pb .scene-mature-row label { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-muted tw:cursor-pointer tw:text-label-xs; }
+  .pb .scene-cat { appearance:none; padding: 3px var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); @apply tw:text-secondary tw:rounded-pill tw:cursor-pointer; font: 500 var(--fs-label-xs) var(--font-sans); transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
+  .pb .scene-cat:hover { @apply tw:border-accent tw:text-accent; }
+  .pb .scene-cat.active { background: var(--accent); @apply tw:text-inverse tw:border-accent; }
+  .pb .scene-item { @apply tw:flex tw:items-center tw:gap-s-2; padding: 4px 8px; @apply tw:rounded-sm tw:cursor-pointer; transition: background var(--motion-hover); }
   .pb .scene-item:hover { background: var(--bg-hover); }
-  .pb .scene-item .si-name { font-size: var(--fs-label); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
-  .pb .scene-item .si-emo { font-size: var(--fs-mono-sm); color: var(--text-muted); }
+  .pb .scene-item .si-name { @apply tw:text-label tw:font-semibold tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis; flex: 1; }
+  .pb .scene-item .si-emo { @apply tw:text-mono-sm tw:text-muted; }

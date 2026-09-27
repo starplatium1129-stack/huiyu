@@ -37,7 +37,10 @@ function ratio(fg: any, bg: any) {
 // 精确匹配选择器，避免 :root 误取 :root[data-theme] 或嵌套规则。
 function block(selector: any, source: any = css) {
   const map: Record<string, any> = {};
-  const clean = source.replace(/\/\*[^]*?\*\//g, '');
+  const clean = source.replace(/\/\*[^]*?\*\//g, '')
+    // Statement at-rules precede the first selector after Tailwind migration.
+    // They have no token declarations and must not become part of its name.
+    .replace(/@(?:reference|import|charset|layer)\s+[^;{}]*;/g, '');
   for (const rule of clean.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
     if (!rule[1].split(',').map((s: any) => s.trim()).includes(selector)) continue;
     for (const match of rule[2].matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) map[match[1]] = match[2].trim();

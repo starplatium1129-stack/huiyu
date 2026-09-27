@@ -1,3 +1,4 @@
+@reference "./tailwind.css";
 /* Day atelier: paper surfaces and ink accents; artwork colors stay independent. */
 :root[data-theme="light"] {
   --ink-base: #1c1624;
@@ -74,7 +75,7 @@
 }
 :root[data-theme="light"] .semantic-particle-field {
   background: var(--particle-surface);
-  border-radius: var(--r-lg);
+  @apply tw:rounded-lg;
 }
 :root[data-theme="light"] .semantic-particle-field.has-portrait {
   background:
@@ -82,7 +83,7 @@
     radial-gradient(ellipse at 12% 95%, color-mix(in srgb, var(--archive-blue) 5%, transparent), transparent 58%),
     var(--particle-surface);
 }
-:root[data-theme="light"] .particle-caption { background: var(--bg-surface); color: var(--text-secondary); padding: var(--s-1) var(--s-2); border-radius: var(--r-sm); }
+:root[data-theme="light"] .particle-caption { background: var(--bg-surface); @apply tw:text-secondary; padding: var(--s-1) var(--s-2); @apply tw:rounded-sm; }
 :root[data-theme="light"] .semantic-particle-field canvas { opacity: 1; mix-blend-mode: normal; }
 :root[data-theme="light"] .showcase-viewer { --text-primary: var(--on-art-primary); --text-secondary: var(--on-art-secondary); --text-muted: var(--on-art-secondary); }
 :root[data-theme="light"] .home-hero[data-muse] { --accent-hover: var(--accent); }
@@ -91,11 +92,11 @@
 :root[data-theme="light"] .chat-page { --character-ink: color-mix(in srgb, var(--character-accent) 40%, var(--ink-base)); }
 
 /* Count labels remain readable instead of inheriting translucent dark-theme treatments. */
-:root[data-theme="light"] :is(.pop-franchise-count, .pop-char-btn small, .pop-cat em, .franchise-count, .popular-group-count, .cb-count) { opacity: 1; color: var(--text-muted); }
+:root[data-theme="light"] :is(.pop-franchise-count, .pop-char-btn small, .pop-cat em, .franchise-count, .popular-group-count, .cb-count) { opacity: 1; @apply tw:text-muted; }
 :root[data-theme="light"] .control-page .status-tile { opacity: 1; }
-:root[data-theme="light"] .workspace-code { color: var(--accent); }
+:root[data-theme="light"] .workspace-code { @apply tw:text-accent; }
 :root[data-theme="light"] .chat-page .api-settings-toggle { color: var(--character-ink, var(--accent)); }
-:root[data-theme="light"] .pb .director-mode-option.active { color: var(--accent); background: var(--bg-surface); }
+:root[data-theme="light"] .pb .director-mode-option.active { @apply tw:text-accent; background: var(--bg-surface); }
 :root[data-theme="light"] .semantic-particle-field { --particle-accent: color-mix(in srgb, var(--archive-blue) 48%, var(--ink-base)); }
 
 :root[data-theme="light"] .desktop-titlebar {

@@ -1,53 +1,52 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    GenerationParamsPanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
   /* Params */
-  .pb .controls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--s-3); }
-  .pb .settings-summary { padding:var(--s-3) var(--s-4); cursor:pointer; list-style:none; }
-  .pb .settings-summary::-webkit-details-marker { display:none; }
+  .pb .controls-grid { @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); @apply tw:gap-s-3; }
+  .pb .settings-summary { padding:var(--s-3) var(--s-4); @apply tw:cursor-pointer; list-style:none; }
+  .pb .settings-summary::-webkit-details-marker { @apply tw:hidden; }
   .pb .ctrl-full { grid-column:1 / -1; }
-  .pb .ctrl-hint { display:block; margin-top:var(--s-2); color:var(--text-muted); }
-  .pb .seed-lock-label { display:flex; align-items:center; gap:var(--s-1); cursor:pointer; }
-  .pb .seed-input-wrap { display:flex; align-items:center; gap:var(--s-1); }
+  .pb .ctrl-hint { @apply tw:block tw:mt-s-2 tw:text-muted; }
+  .pb .seed-lock-label { @apply tw:flex tw:items-center tw:gap-s-1 tw:cursor-pointer; }
+  .pb .seed-input-wrap { @apply tw:flex tw:items-center tw:gap-s-1; }
   /* 2px 纵向内距:高级设置浮层里的紧凑输入,升到 4px 会顶开两列网格 */
-  .pb .seed-input-wrap input { width:110px; padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-deep); color:var(--text-primary); font:400 var(--fs-label-sm) var(--font-mono); }
-  .pb .ctrl-seed { min-width: 160px; }
+  .pb .seed-input-wrap input { @apply tw:w-[110px]; padding:2px var(--s-2); border:1px solid var(--border-soft); @apply tw:rounded-sm; background:var(--bg-deep); @apply tw:text-primary; font:400 var(--fs-label-sm) var(--font-mono); }
+  .pb .ctrl-seed { @apply tw:min-w-[160px]; }
   /* CFG / Steps 由 select 改为可输入的数字框：沿用设计系统 .input，再按本面板的
      紧凑网格收一档（与 seed 输入框同一字号，避免两格高低不齐） */
   .pb .ctrl-num {
-    min-height: 36px;
+    @apply tw:min-h-[36px];
     padding: 2px var(--s-2);
     font: 400 var(--fs-label-sm) var(--font-mono);
   }
-  .pb .btn-mini { min-height: 28px; padding: 0 var(--s-2); font-size: var(--fs-label-xs); }
+  .pb .btn-mini { @apply tw:min-h-[28px]; padding: 0 var(--s-2); @apply tw:text-label-xs; }
   /* 标题行右侧的「恢复默认」：summary 默认是 list-item，改 flex 才能让按钮靠右。
      折叠用的 marker 已在上面 display:none，改 display 不会影响展开交互 */
-  .pb .settings-summary { display: flex; align-items: center; gap: var(--s-2); }
-  .pb .params-reset { margin-left: auto; flex-shrink: 0; }
+  .pb .settings-summary { @apply tw:flex tw:items-center tw:gap-s-2; }
+  .pb .params-reset { @apply tw:ml-auto tw:shrink-0; }
   .pb .negative-editor textarea {
-    min-height: 76px;
-    resize: vertical;
-    padding: var(--s-2);
+    @apply tw:min-h-[76px] tw:resize-y tw:p-s-2;
     border: 1px solid var(--border-soft);
-    border-radius: var(--r-sm);
+    @apply tw:rounded-sm;
     background: var(--bg-deep);
-    color: var(--text-primary);
+    @apply tw:text-primary;
     font: 400 var(--fs-label-sm) var(--font-mono);
-    line-height: var(--lh-body);
+    @apply tw:leading-body;
     outline: none;
   }
-  .pb .negative-editor textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+  .pb .negative-editor textarea:focus { @apply tw:border-accent; box-shadow: 0 0 0 2px var(--accent-soft); }
 
 /* Reading surfaces echo the character notebook without changing field behavior. */
-.pb .generation-settings .controls-grid { gap: var(--s-2); }
-.pb .generation-settings .ctrl { min-width: 0; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-base); }
-.pb .generation-settings .ctrl > label { color: var(--text-secondary); line-height: var(--lh-body); }
-.pb .generation-settings .ctrl input { min-height: 40px; width: 100%; min-width: 0; background: var(--bg-surface); border-radius: var(--r-md); }
+.pb .generation-settings .controls-grid { @apply tw:gap-s-2; }
+.pb .generation-settings .ctrl { @apply tw:min-w-0 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-base); }
+.pb .generation-settings .ctrl > label { @apply tw:text-secondary tw:leading-body; }
+.pb .generation-settings .ctrl input { @apply tw:min-h-[40px] tw:w-full tw:min-w-0; background: var(--bg-surface); @apply tw:rounded-md; }
 /* 原生 select 已迁至 StudioSelect：触发器统一样式，无需保留此处外观规则 */
 .pb .generation-settings .ctrl-seed { grid-column: 1 / -1; }
-.pb .generation-settings .seed-input-wrap { margin-top: var(--s-2); }
-.pb .generation-settings .seed-input-wrap input { flex: 1; width: 0; }
-.pb .generation-settings .toggle-row { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; align-items: center; }
-.pb .generation-settings .negative-editor textarea { width: 100%; box-sizing: border-box; background: var(--bg-surface); }
+.pb .generation-settings .seed-input-wrap { @apply tw:mt-s-2; }
+.pb .generation-settings .seed-input-wrap input { flex: 1; @apply tw:w-0; }
+.pb .generation-settings .toggle-row { grid-column: 1 / -1; @apply tw:flex-row tw:justify-between tw:items-center; }
+.pb .generation-settings .negative-editor textarea { @apply tw:w-full tw:box-border; background: var(--bg-surface); }

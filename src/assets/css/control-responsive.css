@@ -1,9 +1,10 @@
+@reference "./tailwind.css";
 @media (max-width: 900px) {
-  .control-mobile-nav { display: block; }
-  .control-layout { display: block; padding: 0; }
-  .control-rail { display: none; }
+  .control-mobile-nav { @apply tw:block; }
+  .control-layout { @apply tw:block tw:p-0; }
+  .control-rail { @apply tw:hidden; }
   .control-intro { grid-template-columns: 1fr; }
-  .control-count { display: none; }
+  .control-count { @apply tw:hidden; }
   .status-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .status-tile.primary { order: -1; }
   .status-tile.attention { order: 0; }
@@ -15,8 +16,8 @@
   .control-shell { padding: var(--s-5) var(--s-3) var(--s-8); }
   .status-wall, .mode-grid, .access-grid, .voice-grid, .resource-panel .mode-grid, .service-config-panel .voice-grid { grid-template-columns: 1fr; }
   .status-tile.primary { grid-column: auto; }
-  .field-row, .service-row, .tunnel-toggle-row { flex-direction: column; align-items: stretch; }
+  .field-row, .service-row, .tunnel-toggle-row { @apply tw:flex-col tw:items-stretch; }
   .service-row-actions .btn { flex: 1; }
-  .toolbar-note { display: none; }
-  .control-toolbar { border-radius: var(--r-xl); }
+  .toolbar-note { @apply tw:hidden; }
+  .control-toolbar { @apply tw:rounded-xl; }
 }

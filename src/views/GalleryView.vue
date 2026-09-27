@@ -62,7 +62,7 @@
 
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
       <span class="gallery-bulk-count" aria-live="polite">已选 {{ selectedIds.size }} / {{ visible.length }}</span>
-      <span class="gallery-bulk-actions">
+      <span class="gallery-bulk-actions tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:ml-auto">
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!visible.length"
           @click="selectAllVisible">{{ allVisibleSelected ? '取消全选' : '全选当前' }}</button>
@@ -206,7 +206,7 @@
                     <div v-else-if="!cardUrls[item.id] && !thumbUrls[item.id]" class="artwork-skeleton" aria-hidden="true"></div>
                   </div>
                     <div class="artwork-caption">
-                      <span class="artwork-caption-copy">
+                      <span class="artwork-caption-copy tw:min-w-0">
                         <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
                         <span class="artwork-date">{{ characterName(item.character, item) }} · {{ formatDate(stamp(item)) }}</span>
                       </span>
@@ -360,6 +360,7 @@
 </template>
 
 <script setup lang="ts">
+import '@/assets/css/viewer.css'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import FluidTransition from "@/components/visual/FluidTransition.vue"

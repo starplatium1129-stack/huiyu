@@ -1,89 +1,86 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    ManagedDrawingRouteCard 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
   .pb .managed-route-card {
-    display:grid; gap:var(--s-2); padding:var(--s-3) var(--s-4);
-    max-width:100%; box-sizing:border-box; overflow:hidden;
+    @apply tw:grid tw:gap-s-2; padding:var(--s-3) var(--s-4);
+    @apply tw:max-w-full tw:box-border tw:overflow-hidden;
     border:1px solid color-mix(in srgb,var(--success) 34%,var(--border-soft));
-    border-radius:var(--r-lg);
+    @apply tw:rounded-lg;
     background:linear-gradient(135deg,color-mix(in srgb,var(--success) 8%,var(--bg-surface)),var(--bg-surface));
     transition:background var(--motion-hover);
   }
   .pb .managed-route-card.is-collapsed {
     padding:var(--s-2) var(--s-3);
-    gap:0;
+    @apply tw:gap-0;
   }
   .pb .managed-route-card.experimental {
     border-color:color-mix(in srgb,var(--warning) 38%,var(--border-soft));
     background:linear-gradient(135deg,color-mix(in srgb,var(--warning) 8%,var(--bg-surface)),var(--bg-surface));
   }
-  .pb .managed-route-main { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); flex-wrap:wrap; max-width:100%; box-sizing:border-box; }
-  .pb .managed-route-copy { display:flex; align-items:center; gap:var(--s-2); min-width:0; flex-wrap:wrap; }
-  .pb .managed-route-card:not(.is-collapsed) .managed-route-copy { display:grid; gap:2px; }
-  .pb .managed-route-copy strong { color:var(--text-primary); font-size:var(--fs-body); word-break:break-word; }
-  .pb .managed-route-copy > span:last-child { color:var(--text-secondary); font-size:var(--fs-label); word-break:break-word; }
+  .pb .managed-route-main { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:flex-wrap tw:max-w-full tw:box-border; }
+  .pb .managed-route-copy { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:flex-wrap; }
+  .pb .managed-route-card:not(.is-collapsed) .managed-route-copy { @apply tw:grid tw:gap-[2px]; }
+  .pb .managed-route-copy strong { @apply tw:text-primary tw:text-body; word-break:break-word; }
+  .pb .managed-route-copy > span:last-child { @apply tw:text-secondary tw:text-label; word-break:break-word; }
   .pb .managed-route-kicker {
-    color:var(--success); font:700 var(--fs-mono-xs) var(--font-mono);
-    letter-spacing:.08em; text-transform:uppercase;
+    @apply tw:text-success; font:700 var(--fs-mono-xs) var(--font-mono);
+    letter-spacing:.08em; @apply tw:uppercase;
   }
-  .pb .managed-route-card.experimental .managed-route-kicker { color:var(--warning-text); }
-  .pb .managed-route-actions { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; margin-left:auto; }
+  .pb .managed-route-card.experimental .managed-route-kicker { @apply tw:text-warning-text; }
+  .pb .managed-route-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:ml-auto; }
   .pb .managed-route-apply {
-    flex:0 0 auto; min-height:28px; padding:0 var(--s-3);
-    border:1px solid var(--border-soft); border-radius:var(--r-md);
-    background:var(--bg-elevated); color:var(--text-primary); cursor:pointer;
-    font-size:var(--fs-label-sm);
+    flex:0 0 auto; @apply tw:min-h-[28px]; padding:0 var(--s-3);
+    border:1px solid var(--border-soft); @apply tw:rounded-md;
+    background:var(--bg-elevated); @apply tw:text-primary tw:cursor-pointer tw:text-label-sm;
     transition:transform var(--motion-press) var(--ease-out),border-color var(--motion-hover) var(--ease-out),background var(--motion-hover) var(--ease-out);
   }
   .pb .managed-route-apply:active { transform:scale(.97); }
   /* 审计修复: 不用 opacity 压字 */
-  .pb .managed-route-apply:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor:not-allowed; }
+  .pb .managed-route-apply:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
   .pb .managed-route-toggle {
-    min-height:28px; padding:0 var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md);
-    background:transparent; color:var(--text-secondary); cursor:pointer; font-size:var(--fs-label-sm);
+    @apply tw:min-h-[28px]; padding:0 var(--s-2); border:1px solid var(--border-soft); @apply tw:rounded-md;
+    background:transparent; @apply tw:text-secondary tw:cursor-pointer tw:text-label-sm;
     transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover);
   }
-  .pb .managed-route-toggle:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  .pb .managed-route-toggle:hover { @apply tw:border-accent tw:text-accent; background:var(--accent-soft); }
   .pb .managed-route-dismiss {
-    display:grid; place-items:center; width:28px; height:28px; padding:0; border:0;
-    border-radius:var(--r-md); background:transparent; color:var(--text-muted); cursor:pointer;
-    font-size:var(--fs-label-sm); transition:color var(--motion-hover),background var(--motion-hover);
+    @apply tw:grid; place-items:center; @apply tw:w-[28px] tw:h-[28px] tw:p-0; border:0;
+    @apply tw:rounded-md; background:transparent; @apply tw:text-muted tw:cursor-pointer tw:text-label-sm; transition:color var(--motion-hover),background var(--motion-hover);
   }
-  .pb .managed-route-dismiss:hover { color:var(--text-primary); background:var(--bg-elevated); }
-  .pb .managed-route-dismissed-wrap { display:flex; margin-bottom:var(--s-2); }
+  .pb .managed-route-dismiss:hover { @apply tw:text-primary; background:var(--bg-elevated); }
+  .pb .managed-route-dismissed-wrap { @apply tw:flex tw:mb-s-2; }
   .pb .managed-route-reopen-btn {
-    display:inline-flex; align-items:center; gap:var(--s-1); padding:2px var(--s-2);
-    border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface);
-    color:var(--text-muted); font-size:var(--fs-mono-xs); cursor:pointer; transition:color var(--motion-hover),border-color var(--motion-hover);
+    @apply tw:inline-flex tw:items-center tw:gap-s-1; padding:2px var(--s-2);
+    border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-surface);
+    @apply tw:text-muted tw:text-mono-xs tw:cursor-pointer; transition:color var(--motion-hover),border-color var(--motion-hover);
   }
-  .pb .managed-route-reopen-btn:hover { color:var(--accent); border-color:var(--accent); }
-  .pb .managed-route-facts { display:flex; flex-wrap:wrap; gap:var(--s-2); }
+  .pb .managed-route-reopen-btn:hover { @apply tw:text-accent tw:border-accent; }
+  .pb .managed-route-facts { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
   .pb .managed-route-facts span {
-    padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill);
-    color:var(--text-muted); font:600 var(--fs-mono-xs) var(--font-mono);
+    padding:2px var(--s-2); border:1px solid var(--border-soft); @apply tw:rounded-pill tw:text-muted; font:600 var(--fs-mono-xs) var(--font-mono);
   }
   .pb .managed-route-reasons {
-    display:grid; gap:3px; margin:0; padding-left:18px;
-    color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body);
+    @apply tw:grid tw:gap-[3px] tw:m-0 tw:pl-[18px] tw:text-secondary tw:text-label-sm tw:leading-body;
   }
-  .pb .successful-recipes { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
-  .pb .successful-recipes > span { color:var(--text-muted); font-size:var(--fs-label-sm); }
+  .pb .successful-recipes { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
+  .pb .successful-recipes > span { @apply tw:text-muted tw:text-label-sm; }
   .pb .successful-recipes button {
-    min-height:28px; padding:0 var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill);
-    background:transparent; color:var(--text-secondary); cursor:pointer;
+    @apply tw:min-h-[28px]; padding:0 var(--s-2); border:1px solid var(--border-soft); @apply tw:rounded-pill;
+    background:transparent; @apply tw:text-secondary tw:cursor-pointer;
     transition:transform var(--motion-press) var(--ease-out),border-color var(--motion-hover) var(--ease-out),color var(--motion-hover) var(--ease-out);
   }
   .pb .successful-recipes button:active { transform:scale(.97); }
   /* 审计修复: 不用 opacity 压字 */
-  .pb .successful-recipes button:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor:not-allowed; }
+  .pb .successful-recipes button:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
   @media (hover:hover) and (pointer:fine) {
     .pb .managed-route-apply:hover,
-    .pb .successful-recipes button:hover { border-color:var(--accent); color:var(--accent); }
+    .pb .successful-recipes button:hover { @apply tw:border-accent tw:text-accent; }
   }
   @media (max-width: 768px) {
-    .pb .director-mode-head, .pb .managed-route-main { align-items:stretch; flex-direction:column; }
-    .pb .director-mode-switch { align-self:flex-start; }
-    .pb .managed-route-apply { width:100%; }
+    .pb .director-mode-head, .pb .managed-route-main { @apply tw:items-stretch tw:flex-col; }
+    .pb .director-mode-switch { @apply tw:self-start; }
+    .pb .managed-route-apply { @apply tw:w-full; }
   }

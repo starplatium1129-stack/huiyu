@@ -1,10 +1,10 @@
 <template>
   <header v-if="visible" class="desktop-titlebar" aria-label="窗口标题栏" data-tauri-drag-region>
-    <div class="titlebar-brand">
-      <img class="titlebar-dot" src="/assets/favicon.svg" alt="" aria-hidden="true" />
-      <span class="titlebar-name">绘遇 · HUIYU</span>
+    <div class="titlebar-brand tw:flex tw:items-center tw:gap-[10px] tw:min-w-0 tw:overflow-hidden tw:whitespace-nowrap">
+      <img class="titlebar-dot tw:w-[22px] tw:h-[22px]" src="/assets/favicon.svg" alt="" aria-hidden="true" />
+      <span class="titlebar-name tw:font-semibold">绘遇 · HUIYU</span>
       <StudioTooltip v-if="pageTitle" :content="pageTitle">
-        <span class="titlebar-page">{{ pageTitle }}</span>
+        <span class="titlebar-page tw:pl-[10px] tw:overflow-hidden tw:text-ellipsis">{{ pageTitle }}</span>
       </StudioTooltip>
     </div>
     <div class="titlebar-controls" data-tauri-drag-region="false">
@@ -73,6 +73,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
 .desktop-titlebar {
   --desktop-titlebar-text: var(--text-secondary);
   --desktop-titlebar-name: var(--text-primary);
@@ -80,17 +81,15 @@ onUnmounted(() => {
   --desktop-titlebar-hover: var(--text-primary);
   --desktop-titlebar-hover-bg: var(--bg-elevated);
   --desktop-titlebar-press-bg: var(--accent-soft);
-  position: relative;
+  @apply tw:relative;
   flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @apply tw:flex tw:items-center tw:justify-between;
   height: var(--desktop-chrome-height, 38px);
   padding: 0 0 0 14px;
   background: var(--bg-surface);
   box-shadow: inset 0 -1px 0 var(--border-soft);
   -webkit-app-region: drag;
-  user-select: none;
+  @apply tw:select-none;
   color: var(--desktop-titlebar-text);
   font-size: 12.5px;
   letter-spacing: 0.02em;
@@ -98,57 +97,32 @@ onUnmounted(() => {
 /* 底部渐变发丝线：与整站「克制光效」一致，取代平直白边 */
 .desktop-titlebar::after {
   content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
+  @apply tw:absolute tw:left-0 tw:right-0 tw:bottom-0 tw:h-[1px];
   background: linear-gradient(90deg, transparent 2%, var(--accent-soft) 18%, transparent 98%);
-  pointer-events: none;
-}
-.titlebar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
+  @apply tw:pointer-events-none;
 }
 .titlebar-dot {
   flex: none;
-  width: 22px;
-  height: 22px;
 }
 .titlebar-name {
   color: var(--desktop-titlebar-name);
-  font-weight: 600;
   letter-spacing: 0.03em;
 }
 .titlebar-page {
-  padding-left: 10px;
   border-left: 1px solid var(--border-soft);
   color: var(--desktop-titlebar-page);
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .titlebar-controls {
-  display: flex;
-  align-items: center;
-  height: 100%;
+  @apply tw:flex tw:items-center tw:h-full;
   -webkit-app-region: no-drag;
 }
 .tb-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 100%;
+  @apply tw:inline-flex tw:items-center tw:justify-center tw:w-[46px] tw:h-full;
   border: 0;
-  margin: 0;
-  padding: 0;
+  @apply tw:m-0 tw:p-0;
   background: transparent;
   color: var(--desktop-titlebar-text);
-  cursor: default;
+  @apply tw:cursor-default;
 }
 .tb-btn:hover {
   background: var(--desktop-titlebar-hover-bg);
@@ -163,36 +137,35 @@ onUnmounted(() => {
 }
 .tb-close:hover {
   background: color-mix(in srgb, var(--danger) 12%, var(--bg-surface));
-  color: var(--danger-text);
+  @apply tw:text-danger-text;
 }
 .tb-close:active {
   background: color-mix(in srgb, var(--danger) 18%, var(--bg-surface));
 }
 @media (max-width: 600px) {
-  .titlebar-page { display: none; }
+  .titlebar-page { @apply tw:hidden; }
 }
 </style>
 
 <style>
+@reference "../assets/css/tailwind.css";
 html.aics-desktop-shell {
   --desktop-chrome-height: 38px;
-  height: 100%;
+  @apply tw:h-full;
 }
 html.aics-desktop-shell .page-root { min-height: calc(100dvh - var(--desktop-chrome-height)); }
 html.aics-desktop-shell body {
-  height: 100%;
+  @apply tw:h-full;
   /* Keep the document as the scroll owner. When a modal locks html, auto would
      turn this 100%-high body into a new scroller and clamp window.scrollY to 0. */
-  overflow-y: visible;
+  @apply tw:overflow-y-visible;
 }
 html.aics-desktop-shell #app {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  @apply tw:h-full tw:flex tw:flex-col;
 }
 html.aics-desktop-shell #app > .route-stage {
   flex: 1 1 auto;
-  min-height: 0;
+  @apply tw:min-h-0;
 }
 /* 桌面壳下 skip-link 的包含块在标题栏下方，translateY(-140%) 只上移 59px，
    底部仍会露出标题栏上方（实测 0-33px 可见）。隐藏态改 clip-path 完全裁剪

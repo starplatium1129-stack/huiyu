@@ -1,27 +1,28 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    DirectorScenesPanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
-  .pb .scene-filter-summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
-  .pb .scene-result-count { color:var(--text-muted); font-size:var(--fs-label-xs); }
-  .pb .scene-result-count strong { color:var(--accent); }
-  .pb .scene-filter-reset { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font:600 var(--fs-mono-sm) var(--font-sans); }
-  .pb .scene-filter-reset:hover { color:var(--accent); }
-  .pb .scene-list { display: flex; flex-direction: column; gap: var(--s-2); padding:var(--s-1); max-height: var(--scene-list-max-height, min(46vh, 540px)); overflow-y: auto; }
-  .pb #stepScene button.scene-card { border-radius:var(--r-lg); background:var(--bg-surface); transition:transform var(--motion-hover) var(--ease-out); }
-  .pb #stepScene button.scene-card.active { border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); background:var(--accent-soft); }
-  .pb .scene-selection-check { color:var(--accent); margin-top:3px; }
+  .pb .scene-filter-summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:mb-s-2; }
+  .pb .scene-result-count { @apply tw:text-muted tw:text-label-xs; }
+  .pb .scene-result-count strong { @apply tw:text-accent; }
+  .pb .scene-filter-reset { border:0; background:transparent; @apply tw:text-muted tw:cursor-pointer; font:600 var(--fs-mono-sm) var(--font-sans); }
+  .pb .scene-filter-reset:hover { @apply tw:text-accent; }
+  .pb .scene-list { @apply tw:flex tw:flex-col tw:gap-s-2 tw:p-s-1; max-height: var(--scene-list-max-height, min(46vh, 540px)); @apply tw:overflow-y-auto; }
+  .pb #stepScene button.scene-card { @apply tw:rounded-lg; background:var(--bg-surface); transition:transform var(--motion-hover) var(--ease-out); }
+  .pb #stepScene button.scene-card.active { @apply tw:border-accent; box-shadow:inset 0 0 0 1px var(--accent); background:var(--accent-soft); }
+  .pb .scene-selection-check { @apply tw:text-accent tw:mt-[3px]; }
   .pb #stepScene button.scene-card:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   @media (hover:hover) and (pointer:fine) { .pb #stepScene button.scene-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-sm); } }
   @media (prefers-reduced-motion:reduce) { .pb #stepScene button.scene-card { transition:none; transform:none; } }
   /* 与全局滚动条同一套渐变语言：细版但同色系，避免暗色下灰线突兀 */
-  .pb .scene-list::-webkit-scrollbar { width: 6px; }
+  .pb .scene-list::-webkit-scrollbar { @apply tw:w-[6px]; }
   .pb .scene-list::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 42%, transparent), color-mix(in srgb, var(--accent) 38%, transparent));
     border: 2px solid transparent;
     background-clip: padding-box;
-    border-radius: var(--r-pill);
+    @apply tw:rounded-pill;
   }
   .pb .scene-list::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));
@@ -30,58 +31,53 @@
   .pb .scene-search:focus ~ .scene-list,
   .pb .scene-list:hover { max-height: var(--scene-list-max-height, min(54vh, 640px)); }
   .pb .scene-scope {
-    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2px;
-    margin-bottom:var(--s-2); padding:3px;
-    border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-deep);
+    @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-[2px] tw:mb-s-2 tw:p-[3px];
+    border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-deep);
     box-shadow:inset 0 1px 3px color-mix(in srgb,var(--bg-base) 55%,transparent);
   }
   .pb .scene-scope button {
-    min-height:32px; padding:0 var(--s-2); border:1px solid transparent; border-radius:var(--r-pill);
-    background:transparent; color:var(--text-muted); cursor:pointer;
+    @apply tw:min-h-[32px]; padding:0 var(--s-2); border:1px solid transparent; @apply tw:rounded-pill;
+    background:transparent; @apply tw:text-muted tw:cursor-pointer;
     font:650 var(--fs-mono-xs) var(--font-sans);
     transition:background var(--motion-surface) var(--ease-out),color var(--motion-surface) var(--ease-out),
                border-color var(--motion-surface) var(--ease-out),box-shadow var(--motion-surface) var(--ease-out);
   }
-  .pb .scene-scope button:hover:not(.active) { color:var(--text-primary); background:var(--bg-hover); }
+  .pb .scene-scope button:hover:not(.active) { @apply tw:text-primary; background:var(--bg-hover); }
   .pb .scene-scope button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   .pb .scene-scope button:active { transform:scale(.97); }
   .pb .scene-scope button.active {
     background:color-mix(in srgb,var(--accent) 18%,var(--bg-elevated));
-    color:var(--accent);
+    @apply tw:text-accent;
     border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft));
     box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
-    font-weight:700;
+    @apply tw:font-bold;
   }
   .pb .scene-core-mark {
-    flex:0 0 auto; margin-left:auto; padding:2px 6px; border-radius:var(--r-pill);
-    background:var(--accent-soft); color:var(--accent);
+    flex:0 0 auto; @apply tw:ml-auto; padding:2px 6px; @apply tw:rounded-pill;
+    background:var(--accent-soft); @apply tw:text-accent;
     font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:0;
   }
   /* ---- 原先挂在 prompt-builder.html 上的内联样式,收敛为组件类 ---- */
-  .pb .scene-count-badge { color:var(--text-muted); font-weight:600; }
+  .pb .scene-count-badge { @apply tw:text-muted tw:font-semibold; }
   /* ── Vue SPA class aliases（模板类名与旧 HTML 控制器类名对齐） ── */
   .pb .scene-cat-btn {
-    appearance:none; min-height:28px; padding:3px var(--s-3); border:1px solid var(--border-soft);
-    background:var(--bg-surface); color:var(--text-secondary); border-radius:var(--r-pill);
-    cursor:pointer; font:500 var(--fs-label-xs) var(--font-sans);
+    appearance:none; @apply tw:min-h-[28px]; padding:3px var(--s-3); border:1px solid var(--border-soft);
+    background:var(--bg-surface); @apply tw:text-secondary tw:rounded-pill tw:cursor-pointer; font:500 var(--fs-label-xs) var(--font-sans);
     transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out);
   }
-  .pb .scene-cat-btn:hover:not(.active) { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); color:var(--text-primary); }
+  .pb .scene-cat-btn:hover:not(.active) { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); @apply tw:text-primary; }
   .pb .scene-cat-btn:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   .pb .scene-cat-btn:active { transform:translateY(1px) scale(.97); }
   .pb .scene-cat-btn.active {
     background:var(--accent-soft);
-    color:var(--accent);
-    border-color:var(--accent);
-    font-weight:600;
+    @apply tw:text-accent tw:border-accent tw:font-semibold;
   }
-  .pb .scene-card-title { display:flex; align-items:flex-start; gap:var(--s-2); font-weight:700; font-size:var(--fs-body); margin-bottom:2px; text-align:left; color:var(--text-primary); }
+  .pb .scene-card-title { @apply tw:flex tw:items-start tw:gap-s-2 tw:font-bold tw:text-body tw:mb-[2px] tw:text-left tw:text-primary; }
   .pb .scene-card-story {
-    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
-    font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:var(--lh-body); text-align:left;
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; @apply tw:overflow-hidden tw:text-label-sm tw:text-secondary tw:mb-s-2 tw:leading-body tw:text-left;
   }
-  .pb .scene-card-meta { display:flex; flex-wrap:wrap; gap:4px; }
+  .pb .scene-card-meta { @apply tw:flex tw:flex-wrap tw:gap-[4px]; }
   .pb .scene-cat-tag, .pb .scene-rating-tag {
-    font-size:var(--fs-label-xs); padding:2px 8px; border-radius:var(--r-sm);
-    background:var(--bg-deep); color:var(--text-muted);
+    @apply tw:text-label-xs; padding:2px 8px; @apply tw:rounded-sm;
+    background:var(--bg-deep); @apply tw:text-muted;
   }

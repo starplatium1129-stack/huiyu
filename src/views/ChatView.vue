@@ -321,9 +321,6 @@ import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch }
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
 import ChatModelControls from '@/components/ChatModelControls.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
-import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
-import ChatUserProfilePanel from '@/components/ChatUserProfilePanel.vue'
-import ChatMemoryPanel from '@/components/ChatMemoryPanel.vue'
 import ChatActionsMenu from '@/components/ChatActionsMenu.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -333,6 +330,10 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
 const ChatApiSettings = defineAsyncComponent(() => import('@/components/ChatApiSettings.vue'))
+// These panels mount only after a menu action; load their component CSS then too.
+const ChatArchivePanel = defineAsyncComponent(() => import('@/components/ChatArchivePanel.vue'))
+const ChatUserProfilePanel = defineAsyncComponent(() => import('@/components/ChatUserProfilePanel.vue'))
+const ChatMemoryPanel = defineAsyncComponent(() => import('@/components/ChatMemoryPanel.vue'))
 
 const {
   chatListRef,

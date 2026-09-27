@@ -1,238 +1,223 @@
+@reference "./tailwind.css";
 .batch-overlay {
-  position: fixed; inset: 0; z-index: var(--z-dock);
-  display: grid; place-items: center;
+  @apply tw:fixed; inset: 0; z-index: var(--z-dock);
+  @apply tw:grid; place-items: center;
   padding: clamp(12px, 3vw, 32px);
   background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
   backdrop-filter: blur(4px);
 }
 .batch-panel {
-  position: relative;
+  @apply tw:relative;
   width: min(920px, 100%);
   max-height: min(88vh, 940px);
-  display: grid; gap: var(--s-4);
+  @apply tw:grid tw:gap-s-4;
   padding: clamp(18px, 2.6vw, 28px);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-xl);
+  @apply tw:rounded-xl;
   background: var(--bg-surface);
   box-shadow: var(--shadow-md);
-  overflow: auto;
+  @apply tw:overflow-auto;
 }
 .batch-panel::before {
-  position: absolute; top: -1px; left: var(--s-5); width: 44px; height: 1px;
+  @apply tw:absolute tw:top-[-1px] tw:left-s-5 tw:w-[44px] tw:h-[1px];
   background: linear-gradient(90deg, var(--archive-cyan), transparent); content: "";
 }
-.batch-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
-.batch-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }
-.batch-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
-.batch-step { color: var(--accent); font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.batch-head { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3; }
+.batch-head h2 { margin: 2px 0 4px; @apply tw:text-title-sm; }
+.batch-head p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
+.batch-step { @apply tw:text-accent; font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; @apply tw:uppercase; }
 
 /* ── 配置态 ── */
-.batch-config-row { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-6); }
-.batch-field { display: grid; gap: var(--s-2); }
+.batch-config-row { @apply tw:flex tw:flex-wrap; gap: var(--s-4) var(--s-6); }
+.batch-field { @apply tw:grid tw:gap-s-2; }
 .batch-seg {
-  display: inline-flex; padding: 3px;
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  @apply tw:inline-flex tw:p-[3px];
+  border: 1px solid var(--border-soft); @apply tw:rounded-md;
   background: var(--bg-deep);
 }
 .batch-seg button {
-  min-height: 30px; padding: 0 var(--s-3);
-  border: 0; border-radius: var(--r-sm);
-  background: transparent; color: var(--text-muted);
-  font-size: var(--fs-label-sm); cursor: pointer;
+  @apply tw:min-h-[30px]; padding: 0 var(--s-3);
+  border: 0; @apply tw:rounded-sm;
+  background: transparent; @apply tw:text-muted tw:text-label-sm tw:cursor-pointer;
   transition: background var(--motion-hover), color var(--motion-hover);
 }
-.batch-seg button:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
-.batch-seg button.active { background: var(--accent); color: var(--text-inverse); }
+.batch-seg button:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
+.batch-seg button.active { background: var(--accent); @apply tw:text-inverse; }
 
-.batch-scene-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+.batch-scene-toolbar { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
 .batch-scene-toolbar .input { flex: 1 1 200px; }
 /* 原生 select 已迁至 StudioSelect：仅保留宽度收敛，外观由触发器统一样式接管 */
 .batch-scene-toolbar .studio-select-wrapper {
   flex: 0 1 auto;
-  max-width: 160px;
+  @apply tw:max-w-[160px];
 }
 
 .batch-scene-grid {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2);
-  max-height: 40vh; overflow: auto; padding: var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-2 tw:max-h-[40vh] tw:overflow-auto tw:p-s-2;
+  border: 1px solid var(--border-soft); @apply tw:rounded-md;
   background: var(--bg-deep);
 }
 .batch-scene-card {
-  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto;
-  column-gap: var(--s-2); align-items: center;
+  @apply tw:grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto;
+  @apply tw:gap-x-s-2 tw:items-center;
   padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-surface); color: inherit; text-align: left; cursor: pointer;
+  border: 1px solid var(--border-soft); @apply tw:rounded-md;
+  background: var(--bg-surface); color: inherit; @apply tw:text-left tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
 .batch-scene-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-scene-card.selected {
-  border-color: var(--accent);
+  @apply tw:border-accent;
   background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface));
 }
 .batch-scene-check {
   grid-row: 1 / span 2;
-  display: grid; place-items: center;
-  width: 22px; height: 22px;
+  @apply tw:grid; place-items: center;
+  @apply tw:w-[22px] tw:h-[22px];
   border: 1px solid var(--border-strong); border-radius: 50%;
   color: transparent;
   transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .batch-scene-card.selected .batch-scene-check {
-  border-color: var(--accent); background: var(--accent); color: var(--text-inverse);
+  @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse;
 }
-.batch-scene-check .archive-icon { width: 12px; }
+.batch-scene-check .archive-icon { @apply tw:w-[12px]; }
 .batch-scene-title {
-  min-width: 0; font-size: var(--fs-body-sm);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  @apply tw:min-w-0 tw:text-body-sm tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
 }
 .batch-scene-meta {
-  display: flex; align-items: center; gap: 4px;
-  color: var(--text-muted); font-size: var(--fs-label-xs);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  @apply tw:flex tw:items-center tw:gap-[4px] tw:text-muted tw:text-label-xs tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
 }
-.batch-scene-adult { flex: 0 0 auto; width: 12px; color: var(--accent); opacity: .8; }
+.batch-scene-adult { flex: 0 0 auto; @apply tw:w-[12px] tw:text-accent; opacity: .8; }
 
 /* ── 角色卡网格 ── */
 .batch-char-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: var(--s-2);
-  max-height: 40vh; overflow: auto; padding: var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); @apply tw:gap-s-2 tw:max-h-[40vh] tw:overflow-auto tw:p-s-2;
+  border: 1px solid var(--border-soft); @apply tw:rounded-md;
   background: var(--bg-deep);
 }
 .batch-char-card {
-  display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--s-2);
+  @apply tw:flex tw:flex-col tw:items-center tw:text-center tw:gap-s-2;
   padding: var(--s-3) var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-surface); color: inherit; cursor: pointer;
+  border: 1px solid var(--border-soft); @apply tw:rounded-md;
+  background: var(--bg-surface); color: inherit; @apply tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-press);
 }
 .batch-char-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-char-card.selected {
-  border-color: var(--accent);
+  @apply tw:border-accent;
   background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface));
 }
 .batch-char-avatar-wrap {
-  position: relative; width: 56px; height: 56px;
-  border-radius: var(--r-pill); overflow: hidden;
+  @apply tw:relative tw:w-[56px] tw:h-[56px] tw:rounded-pill tw:overflow-hidden;
   border: 1px solid var(--border-soft); background: var(--bg-deep);
 }
-.batch-char-avatar { width: 100%; height: 100%; object-fit: cover; }
+.batch-char-avatar { @apply tw:w-full tw:h-full tw:object-cover; }
 .batch-char-check {
-  position: absolute; right: 0; bottom: 0;
-  display: grid; place-items: center;
-  width: 20px; height: 20px;
+  @apply tw:absolute tw:right-0 tw:bottom-0 tw:grid; place-items: center;
+  @apply tw:w-[20px] tw:h-[20px];
   border-radius: 50%;
   border: 1px solid var(--border-strong);
   background: var(--bg-surface); color: transparent;
   transition: background var(--motion-hover), color var(--motion-hover), border-color var(--motion-hover);
 }
 .batch-char-card.selected .batch-char-check {
-  border-color: var(--accent); background: var(--accent); color: var(--text-inverse);
+  @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse;
 }
-.batch-char-check .archive-icon { width: 11px; }
-.batch-char-info { display: grid; gap: 2px; width: 100%; }
+.batch-char-check .archive-icon { @apply tw:w-[11px]; }
+.batch-char-info { @apply tw:grid tw:gap-[2px] tw:w-full; }
 .batch-char-name {
-  font-size: var(--fs-label-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  @apply tw:text-label-sm tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
 }
 .batch-char-franchise {
-  font-size: var(--fs-label-xs); color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  @apply tw:text-label-xs tw:text-muted tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
 }
 
-.batch-empty { grid-column: 1 / -1; margin: 0; padding: var(--s-4); color: var(--text-muted); font-size: var(--fs-body-sm); }
+.batch-empty { grid-column: 1 / -1; @apply tw:m-0 tw:p-s-4 tw:text-muted tw:text-body-sm; }
 
 /* ── 提示词基底卡片 ── */
 .batch-prompt-preview-card {
-  display: grid; gap: var(--s-1);
+  @apply tw:grid tw:gap-s-1;
   padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  border: 1px solid var(--border-soft); @apply tw:rounded-md;
   background: color-mix(in srgb, var(--accent) 4%, var(--bg-deep));
 }
 .batch-prompt-preview-head {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2);
+  @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2;
 }
 .batch-prompt-preview-title {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: var(--fs-label-sm); font-weight: 600; color: var(--accent);
+  @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:text-label-sm tw:font-semibold tw:text-accent;
 }
-.batch-prompt-preview-title .archive-icon { width: 14px; }
+.batch-prompt-preview-title .archive-icon { @apply tw:w-[14px]; }
 .batch-prompt-preview-badge {
-  font-size: var(--fs-label-xs); color: var(--text-muted);
+  @apply tw:text-label-xs tw:text-muted;
 }
 .batch-prompt-preview-text {
-  margin: 0; font-size: var(--fs-label-xs); line-height: 1.4; color: var(--text-secondary);
-  max-height: 4.2em; overflow-y: auto; word-break: break-all;
+  @apply tw:m-0 tw:text-label-xs; line-height: 1.4; @apply tw:text-secondary tw:max-h-[4.2em] tw:overflow-y-auto; word-break: break-all;
 }
 
 /* ── 结果态 ── */
-.batch-card-error { margin: var(--s-1) 0; color: var(--warning-text); font-size: var(--fs-label-xs); overflow-wrap: anywhere; }
-.batch-progress-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-2); }
-.batch-count-label { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
-.batch-progress { height: 3px; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
+.batch-card-error { margin: var(--s-1) 0; @apply tw:text-warning-text tw:text-label-xs; overflow-wrap: anywhere; }
+.batch-progress-head { @apply tw:flex tw:flex-wrap tw:items-baseline tw:justify-between tw:gap-s-2; }
+.batch-count-label { @apply tw:text-muted; font: 600 var(--fs-mono-xs) var(--font-mono); }
+.batch-progress { @apply tw:h-[3px] tw:overflow-hidden tw:rounded-pill; background: var(--bg-deep); }
 .batch-progress i {
-  display: block; height: 100%; width: 100%; transform-origin: left;
+  @apply tw:block tw:h-full tw:w-full; transform-origin: left;
   background: linear-gradient(90deg, var(--archive-cyan), var(--accent));
   transform: scaleX(var(--progress, 0%));
   transition: transform var(--motion-surface) var(--ease-out);
 }
 .batch-result-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3);
-  max-height: 44vh; overflow: auto; padding: var(--s-1);
+  @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); @apply tw:gap-s-3 tw:max-h-[44vh] tw:overflow-auto tw:p-s-1;
 }
-.batch-card { display: grid; gap: var(--s-1); margin: 0; }
+.batch-card { @apply tw:grid tw:gap-s-1 tw:m-0; }
 .batch-thumb-btn {
-  padding: 0; border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-deep); cursor: zoom-in; overflow: hidden;
+  @apply tw:p-0; border: 1px solid var(--border-soft); @apply tw:rounded-md;
+  background: var(--bg-deep); cursor: zoom-in; @apply tw:overflow-hidden;
   transition: border-color var(--motion-hover), transform var(--motion-press) var(--ease-out);
 }
-.batch-thumb-btn:hover { border-color: var(--accent); }
+.batch-thumb-btn:hover { @apply tw:border-accent; }
 .batch-thumb-btn:active { transform: scale(.98); }
-.batch-thumb { display: block; width: 100%; height: auto; object-fit: contain; }
+.batch-thumb { @apply tw:block tw:w-full tw:h-auto tw:object-contain; }
 .batch-thumb-placeholder {
-  display: grid; place-content: center; justify-items: center; gap: var(--s-2);
+  @apply tw:grid; place-content: center; justify-items: center; @apply tw:gap-s-2;
   aspect-ratio: 3 / 4;
-  border: 1px dashed var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-deep); color: var(--text-muted);
-  font-size: var(--fs-label-xs); text-align: center; padding: var(--s-2);
-  overflow: hidden;
+  border: 1px dashed var(--border-soft); @apply tw:rounded-md;
+  background: var(--bg-deep); @apply tw:text-muted tw:text-label-xs tw:text-center tw:p-s-2 tw:overflow-hidden;
 }
-.batch-thumb-placeholder .archive-icon { width: 20px; opacity: .7; }
-.batch-thumb-placeholder[data-state="running"] { border-style: solid; border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft)); color: var(--accent); }
+.batch-thumb-placeholder .archive-icon { @apply tw:w-[20px]; opacity: .7; }
+.batch-thumb-placeholder[data-state="running"] { border-style: solid; border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft)); @apply tw:text-accent; }
 .batch-thumb-placeholder[data-state="running"] .archive-icon { animation: batchPulse 1.4s ease-in-out infinite; }
-.batch-thumb-placeholder[data-state="failed"] { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); color: var(--danger-text); }
+.batch-thumb-placeholder[data-state="failed"] { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); @apply tw:text-danger-text; }
 @keyframes batchPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.88); } }
 @media (prefers-reduced-motion: reduce) { .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; } }
 
-.batch-card-caption { display: grid; gap: 1px; min-width: 0; }
-.batch-card-header-line { display: flex; align-items: center; gap: 6px; min-width: 0; }
-.batch-card-avatar { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
-.batch-card-title { font-size: var(--fs-label-sm); color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.batch-card-title em { color: var(--text-muted); font-style: normal; }
-.batch-card[data-state="failed"] .batch-card-title { color: var(--danger-text); }
-.batch-card-seed { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); font-size: var(--fs-label-xs); overflow: hidden;  white-space: normal; overflow-wrap: anywhere; }
+.batch-card-caption { @apply tw:grid tw:gap-[1px] tw:min-w-0; }
+.batch-card-header-line { @apply tw:flex tw:items-center tw:gap-[6px] tw:min-w-0; }
+.batch-card-avatar { @apply tw:w-[16px] tw:h-[16px]; border-radius: 50%; @apply tw:object-cover; flex: 0 0 auto; }
+.batch-card-title { @apply tw:text-label-sm tw:text-secondary tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
+.batch-card-title em { @apply tw:text-muted tw:not-italic; }
+.batch-card[data-state="failed"] .batch-card-title { @apply tw:text-danger-text; }
+.batch-card-seed { @apply tw:text-muted; font: 600 var(--fs-mono-xs) var(--font-mono); @apply tw:text-label-xs tw:overflow-hidden tw:whitespace-normal; overflow-wrap: anywhere; }
 
-.batch-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
-.batch-foot-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-.batch-hint { color: var(--text-muted); font-size: var(--fs-label-xs); }
+.batch-foot { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3; }
+.batch-foot-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
+.batch-hint { @apply tw:text-muted tw:text-label-xs; }
 
 /* 大图预览 */
 .batch-lightbox {
-  position: sticky; bottom: 0;
-  display: grid; justify-items: center; gap: var(--s-2);
-  padding: var(--s-4);
-  border: 1px solid var(--border-soft); border-radius: var(--r-lg);
+  @apply tw:sticky tw:bottom-0 tw:grid; justify-items: center; @apply tw:gap-s-2 tw:p-s-4;
+  border: 1px solid var(--border-soft); @apply tw:rounded-lg;
   background: color-mix(in srgb, var(--bg-deep) 85%, transparent);
   backdrop-filter: blur(6px);
 }
 .batch-lightbox img {
-  max-width: 100%; max-height: 58vh;
-  border-radius: var(--r-md); border: 1px solid var(--border-soft);
-  object-fit: contain; background: var(--bg-deep);
+  @apply tw:max-w-full tw:max-h-[58vh] tw:rounded-md; border: 1px solid var(--border-soft);
+  @apply tw:object-contain; background: var(--bg-deep);
 }
-.batch-lightbox-caption { margin: 0; color: var(--text-secondary); font-size: var(--fs-label-sm); }
-.batch-lightbox-caption em { color: var(--text-muted); font-style: normal; }
-.batch-lightbox-close { position: absolute; top: var(--s-3); right: var(--s-3); }
+.batch-lightbox-caption { @apply tw:m-0 tw:text-secondary tw:text-label-sm; }
+.batch-lightbox-caption em { @apply tw:text-muted tw:not-italic; }
+.batch-lightbox-close { @apply tw:absolute tw:top-s-3 tw:right-s-3; }
 
 @media (max-width: 768px) {
   .batch-scene-grid { grid-template-columns: 1fr; }

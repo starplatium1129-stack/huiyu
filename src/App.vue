@@ -3,7 +3,7 @@
   <RuntimeConnectionNotice />
   <RouteRecoveryBanner />
   <DesktopUpdateBanner v-if="!isCompanion" />
-  <div class="route-stage">
+  <div class="route-stage tw:grid tw:[align-items:start] tw:min-w-0">
     <RouterView v-slot="{ Component }">
       <Transition appear :css="false" @enter="enterLayout" @leave="leaveLayout" @enter-cancelled="layoutMotion.onEnterCancelled">
         <KeepAlive include="AppLayout"><component :is="Component" :data-route-path="route.fullPath" /></KeepAlive>
@@ -82,11 +82,6 @@ onUnmounted(() => stopThumbnailWarmup?.())
 </script>
 
 <style>
-.route-stage {
-  display: grid;
-  align-items: start;
-  min-width: 0;
-}
 .route-stage > * {
   grid-area: 1 / 1;
   min-width: 0;

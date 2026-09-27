@@ -1,23 +1,22 @@
+@reference "../../tailwind.css";
 /* 多场景批量出图入口行 */
-.pb .batch-entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin: var(--s-2) 0; }
-.pb .batch-entry-count { color: var(--text-secondary); font-size: var(--fs-label-xs); }
-.pb .linklike { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
+.pb .batch-entry-row { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-3; margin: var(--s-2) 0; }
+.pb .batch-entry-count { @apply tw:text-secondary tw:text-label-xs; }
+.pb .linklike { border: 0; @apply tw:p-0; background: none; @apply tw:text-accent; font: inherit; text-decoration: underline; @apply tw:cursor-pointer; }
 
 /* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
 .pb .auto-save-gallery-row {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
+  @apply tw:flex tw:items-center tw:gap-s-2;
   margin: var(--s-2) 0;
   padding: var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
+  @apply tw:rounded-md;
   background: var(--bg-elevated);
-  color: var(--text-primary);
+  @apply tw:text-primary;
 }
-.pb .auto-save-gallery-label { font-size: var(--fs-body-sm); color: var(--text-primary); }
-.pb .auto-save-gallery-hint { font-size: var(--fs-body-sm); color: var(--text-secondary); }
-.pb .auto-save-gallery-row { display:grid; grid-template-columns:auto minmax(0,1fr); }
-.pb .auto-save-gallery-hint { grid-column:2; line-height:var(--lh-body); }
-.pb .inspector-voice { border-top:1px solid var(--border-soft); margin-top:var(--s-3); padding-top:var(--s-2); }
-.pb .inspector-voice > summary { padding:var(--s-2) 0; color:var(--text-secondary); font-size:var(--fs-body-sm); cursor:pointer; }
+.pb .auto-save-gallery-label { @apply tw:text-body-sm tw:text-primary; }
+.pb .auto-save-gallery-hint { @apply tw:text-body-sm tw:text-secondary; }
+.pb .auto-save-gallery-row { @apply tw:grid; grid-template-columns:auto minmax(0,1fr); }
+.pb .auto-save-gallery-hint { grid-column:2; @apply tw:leading-body; }
+.pb .inspector-voice { border-top:1px solid var(--border-soft); @apply tw:mt-s-3 tw:pt-s-2; }
+.pb .inspector-voice > summary { padding:var(--s-2) 0; @apply tw:text-secondary tw:text-body-sm tw:cursor-pointer; }

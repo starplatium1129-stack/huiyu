@@ -1,0 +1,61 @@
+@reference "../tailwind.css";
+.chat-user-profile {
+  margin: 0 0 var(--s-4);
+  @apply tw:p-s-4;
+  border: 1px solid var(--border-strong);
+  @apply tw:rounded-lg;
+  background: var(--glass-fill);
+  box-shadow: var(--shadow-md);
+}
+.chat-user-profile header,
+.profile-actions {
+  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3;
+}
+.chat-user-profile header div { @apply tw:grid tw:gap-[2px]; }
+.chat-user-profile header span,
+.profile-grid label > span { @apply tw:text-muted tw:text-label-xs tw:font-bold; letter-spacing: .08em; }
+.chat-user-profile header strong { @apply tw:text-primary tw:text-title-xs; }
+.chat-user-profile > p { margin: var(--s-2) 0 var(--s-4); @apply tw:text-secondary tw:text-label; }
+.profile-close { border: 0; background: transparent; @apply tw:text-muted tw:text-title tw:cursor-pointer; }
+.profile-grid { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(180px, .5fr); @apply tw:gap-s-3; }
+.profile-grid label { @apply tw:grid tw:gap-[6px]; }
+.profile-grid input,
+.profile-grid textarea {
+  @apply tw:w-full;
+  padding: 9px 11px;
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-md;
+  background: var(--bg-deep);
+  @apply tw:text-primary;
+  font: inherit;
+}
+.profile-grid select {
+  @apply tw:w-full tw:min-h-[40px];
+  padding: 9px var(--s-7) 9px 11px;
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-md tw:bg-deep tw:text-primary;
+  font: inherit;
+  @apply tw:cursor-pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 14px) calc(50% - 1px),
+    calc(100% - 10px) calc(50% - 1px);
+  background-size: 5px 5px;
+  transition: border-color var(--motion-hover) var(--ease-out);
+}
+.profile-grid select:is(:hover, :focus-visible) {
+  @apply tw:border-accent;
+}
+.profile-note { grid-column: 1 / -1; }
+.profile-note small { justify-self: end; @apply tw:text-muted tw:text-mono-sm; }
+.profile-actions { @apply tw:justify-end tw:mt-s-3; }
+@media (max-width: 600px) {
+  .profile-grid { grid-template-columns: 1fr; }
+  .profile-note { grid-column: auto; }
+}

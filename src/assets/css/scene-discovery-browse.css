@@ -1,26 +1,27 @@
+@reference "./tailwind.css";
 /* 先看画面：页头保留角色陪伴，窄屏把个人视图收进筛选。 */
 .scene-discovery .scene-atlas { grid-template-columns:minmax(0,1fr) auto 144px; }
-.scene-discovery .scene-atlas-portrait { min-height:144px; }
-.scene-discovery .mood-rail { min-height:52px; }
-.scene-discovery .mood-rail small { font-size:var(--fs-label); }
+.scene-discovery .scene-atlas-portrait { @apply tw:min-h-[144px]; }
+.scene-discovery .mood-rail { @apply tw:min-h-[52px]; }
+.scene-discovery .mood-rail small { @apply tw:text-label; }
 .scene-discovery .scene-personal-label,
 .scene-discovery .scene-personal-nav button,
 .scene-discovery .filter-toggle,
-.scene-discovery .scene-count { font-size:var(--fs-body-sm); }
+.scene-discovery .scene-count { @apply tw:text-body-sm; }
 @media (max-width:768px) {
-  .scene-discovery .scene-atlas { grid-template-columns:minmax(0,1fr) 88px; grid-template-areas:'copy portrait' 'choices choices' 'moods moods'; gap:var(--s-2); }
-  .scene-discovery .scene-atlas-portrait { min-height:100px; }
-  .scene-discovery .scene-atlas-portrait figcaption { display:none; }
-  .scene-discovery .scene-atlas .subtitle { font-size:var(--fs-body-sm); line-height:var(--lh-body); margin:0; }
-  .scene-discovery .companion-switch { margin-top:0; }
-  .scene-discovery .mood-rail { display:flex; align-items:center; gap:var(--s-2); min-height:44px; flex-basis:auto; }
-  .scene-discovery .mood-icon { float:none; margin:0; }
-  .scene-discovery .mood-rail strong { white-space:nowrap; }
-  .scene-discovery .mood-rail small { display:none; }
-  .scene-discovery .toolbar-primary { display:grid; grid-template-columns:minmax(0,1fr) auto; }
-  .scene-discovery .toolbar-primary .scene-count { grid-column:1 / -1; grid-row:2; font-weight:400; }
-  .scene-discovery .scene-toolbar:not(.filters-expanded) .scene-personal-nav { display:none; }
-  .scene-discovery .scene-personal-nav { flex-wrap:wrap; overflow:visible; }
-  .scene-discovery .scene-personal-label { width:100%; }
-  .scene-discovery .search-intent { margin:0; font-size:var(--fs-body-sm); }
+  .scene-discovery .scene-atlas { grid-template-columns:minmax(0,1fr) 88px; grid-template-areas:'copy portrait' 'choices choices' 'moods moods'; @apply tw:gap-s-2; }
+  .scene-discovery .scene-atlas-portrait { @apply tw:min-h-[100px]; }
+  .scene-discovery .scene-atlas-portrait figcaption { @apply tw:hidden; }
+  .scene-discovery .scene-atlas .subtitle { @apply tw:text-body-sm tw:leading-body tw:m-0; }
+  .scene-discovery .companion-switch { @apply tw:mt-0; }
+  .scene-discovery .mood-rail { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px]; flex-basis:auto; }
+  .scene-discovery .mood-icon { float:none; @apply tw:m-0; }
+  .scene-discovery .mood-rail strong { @apply tw:whitespace-nowrap; }
+  .scene-discovery .mood-rail small { @apply tw:hidden; }
+  .scene-discovery .toolbar-primary { @apply tw:grid; grid-template-columns:minmax(0,1fr) auto; }
+  .scene-discovery .toolbar-primary .scene-count { grid-column:1 / -1; grid-row:2; @apply tw:font-normal; }
+  .scene-discovery .scene-toolbar:not(.filters-expanded) .scene-personal-nav { @apply tw:hidden; }
+  .scene-discovery .scene-personal-nav { @apply tw:flex-wrap tw:overflow-visible; }
+  .scene-discovery .scene-personal-label { @apply tw:w-full; }
+  .scene-discovery .search-intent { @apply tw:m-0 tw:text-body-sm; }
 }

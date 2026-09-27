@@ -68,11 +68,17 @@ function stripComments(content: string) {
 
 function scanFile(filepath: any) {
   let content: string;
+  let raw: string;
   try {
-    content = stripComments(fs.readFileSync(filepath, 'utf8'));
+    raw = fs.readFileSync(filepath, 'utf8');
+    content = stripComments(raw).replace(/@apply\s+[^;]+;/g, statement => statement.replace(/[^\n]/g, ' '));
   } catch (e) { return []; }
 
-  let warnings: any[] = [];
+  // New utility declarations use the project's semantic tokens. Hex, CSS color
+  // functions and named colors in arbitrary values must not create a new palette.
+  let warnings: any[] = sources.tailwindColorLiterals(raw).map(utility => ({
+    file: filepath, line: utility.line, hex: utility.candidate, text: 'Tailwind 任意颜色必须引用设计令牌',
+  }));
   let lines = content.split('\n');
 
   if (filepath.endsWith('.css')) {
@@ -131,7 +137,8 @@ function main() {
       let full = path.join(dirPath, entry.name);
       if (entry.isDirectory()) {
         if (entry.name !== 'vendor' && entry.name !== 'archive') walkDir(full);
-      } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css') || entry.name.endsWith('.vue')) {
+      } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css') || entry.name.endsWith('.vue')
+        || (entry.name.endsWith('.ts') && !/\.(?:spec|d)\.ts$/.test(entry.name) && path.relative(root, full).startsWith('src' + path.sep))) {
         if (sources.isStandaloneReport(path.relative(root, full))) return;
         allWarnings = allWarnings.concat(scanFile(full));
       }
@@ -168,4 +175,6 @@ function main() {
   if (process.argv.includes('--check')) process.exitCode = 1;
 }
 
-main();
+if (require.main === module) main();
+
+export = { scanFile };

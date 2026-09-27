@@ -43,7 +43,7 @@
       </button>
     </section>
 
-    <nav v-if="selectedMode !== 'shots'" class="video-jump-nav" aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">01 镜头描述</a><a href="#video-settings">02 画幅与时长</a><a href="#video-queue">03 查看成片</a></nav>
+    <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:flex tw:flex-wrap tw:gap-s-3 tw:mb-s-4" aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">01 镜头描述</a><a href="#video-settings">02 画幅与时长</a><a href="#video-queue">03 查看成片</a></nav>
     <div class="video-workspace">
       <div class="video-creation-column">
         <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
@@ -77,7 +77,7 @@
             <span class="video-count">首尾画面衔接</span>
           </div>
           <div class="video-dual-frame-grid">
-            <div class="video-frame-slot">
+            <div class="video-frame-slot tw:grid tw:gap-s-2 tw:content-start">
               <span class="field-label">A · 故事开始 / 输入首帧</span>
               <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
@@ -87,7 +87,7 @@
               </label>
               <button v-if="videoImageUrl" class="btn btn-ghost btn-block" type="button" @click="clearFirstFrame">移除首帧</button>
             </div>
-            <div class="video-frame-slot">
+            <div class="video-frame-slot tw:grid tw:gap-s-2 tw:content-start">
               <span class="field-label">B · 故事落点 / 输入尾帧</span>
               <img v-if="lastFrameUrl" class="video-first-frame" :src="lastFrameUrl" alt="视频尾帧" />
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
@@ -122,7 +122,7 @@
             rows="7"
             placeholder="例如：黄昏的电车站，少女回头看向镜头，风吹起发丝和裙摆，镜头缓慢推进，暖色逆光，动作自然连续。"
           ></textarea>
-          <div class="video-prompt-guidance">
+          <div class="video-prompt-guidance tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3">
             <span>建议写清：主体</span>
             <span>动作</span>
             <span>环境</span>
@@ -139,9 +139,9 @@
             </div>
           </div>
 
-          <div class="video-choice-group">
+          <div class="video-choice-group tw:grid tw:gap-s-2">
             <span class="field-label">画幅</span>
-            <div class="video-choice-grid video-choice-grid--three" role="group" aria-label="选择视频画幅">
+            <div class="video-choice-grid video-choice-grid--three tw:grid tw:gap-s-2" role="group" aria-label="选择视频画幅">
               <button
                 v-for="item in aspectOptions"
                 :key="item.id"

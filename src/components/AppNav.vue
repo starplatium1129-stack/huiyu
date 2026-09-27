@@ -53,7 +53,7 @@
         <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
           <button
             type="button"
-            class="nav-search"
+            class="nav-search tw:grid tw:w-[40px] tw:h-[40px] tw:p-0 tw:text-muted tw:cursor-pointer"
             aria-label="搜索页面、场景与作品"
             @click="openSearch"
           ><ArchiveIcon name="search" /></button>
@@ -246,44 +246,37 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
+
 .nav-links a[data-pending="true"], .nav-links a[data-intent="true"],
 .nav-more[data-pending="true"] .nav-more-trigger, .nav-more[data-intent="true"] .nav-more-trigger {
   outline: 1px solid var(--border-strong);
   outline-offset: -1px;
   background: var(--accent-soft);
-  color: var(--text-primary);
+  @apply tw:text-primary;
 }
 
 /* logo.svg 是 132×48 的完整字标（图形 + 绘遇），
    只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */
 .nav-logo {
-  display: block;
-  height: 32px;
-  width: auto;
-  max-width: 190px;
+  @apply tw:block tw:h-[32px] tw:w-auto tw:max-w-[190px];
 }
-.nav-brand { gap: var(--s-2); }
+.nav-brand { @apply tw:gap-s-2; }
 @media (max-width: 480px) {
-  .nav-logo { height: 28px; max-width: 150px; }
+  .nav-logo { @apply tw:h-[28px] tw:max-w-[150px]; }
 }
 
 /* 搜索入口：与音效开关同规格的圆形图标钮，视觉权重低于导航项 */
 .nav-search {
-  display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
   border: 1px solid var(--border-soft);
   border-radius: 50%;
   background: var(--bg-surface);
-  color: var(--text-muted);
-  cursor: pointer;
   transition: color var(--motion-hover), border-color var(--motion-hover),
     background var(--motion-hover), transform var(--motion-hover);
 }
 .nav-search:hover {
-  color: var(--accent);
+  @apply tw:text-accent;
   border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));
   background: var(--accent-soft);
 }

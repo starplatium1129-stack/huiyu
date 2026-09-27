@@ -1,3 +1,5 @@
+@reference "../tailwind.css";
+
 /* ============================================================
    绘遇 · Director workspace character tokens
    Character identity is supplied at runtime by src/utils/characterTheme.ts.
@@ -68,20 +70,14 @@
 body:has(.pb[data-character])::before {
   opacity: 0.46;
   filter: blur(55px);
-  width: 48rem;
-  height: 48rem;
-  top: -18rem;
-  right: -10rem;
+  @apply tw:w-[48rem] tw:h-[48rem] tw:top-[-18rem] tw:right-[-10rem];
   background: radial-gradient(circle, var(--character-aura, rgba(216,180,254,.42)) 0, transparent 70%);
   transition: opacity var(--motion-atmosphere) var(--ease-out);
 }
 body:has(.pb[data-character])::after {
   opacity: 0.38;
   filter: blur(50px);
-  width: 42rem;
-  height: 42rem;
-  bottom: -16rem;
-  left: -8rem;
+  @apply tw:w-[42rem] tw:h-[42rem] tw:bottom-[-16rem] tw:left-[-8rem];
   background: radial-gradient(circle, var(--character-aura-secondary, rgba(255,143,196,.28)) 0, transparent 72%);
   transition: opacity var(--motion-atmosphere) var(--ease-out);
 }

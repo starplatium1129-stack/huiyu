@@ -1,18 +1,17 @@
+@reference "./tailwind.css";
 /* ============================================================
    绘遇 · Artwork viewer 共享层 (copied from css/viewer.css)
    ============================================================ */
 .viewer-close {
-  display: grid; place-items: center;
-  width: 40px; height: 40px;
+  @apply tw:grid; place-items: center;
+  @apply tw:w-[40px] tw:h-[40px];
   border: 1px solid var(--border-soft);
   border-radius: 50%;
   background: var(--bg-deep);
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: var(--fs-title-xs);
+  @apply tw:text-secondary tw:cursor-pointer tw:text-title-xs;
   transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover);
 }
-.viewer-close:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.viewer-close:hover { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); }
 .viewer-close-on-art {
   border-color: var(--on-art-line);
   background: var(--art-scrim);
@@ -25,15 +24,15 @@
   color: var(--on-art-primary);
 }
 .viewer-kicker {
-  color: var(--accent);
+  @apply tw:text-accent;
   font: 700 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .13em;
-  text-transform: uppercase;
+  @apply tw:uppercase;
 }
-.viewer-story { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-loose); }
-.viewer-story-on-art { margin: var(--s-5) 0; color: var(--on-art-primary); font-style: italic; }
-.viewer-actions { display: grid; gap: var(--s-2); margin-top: var(--s-5); }
-.viewer-actions .btn { justify-content: center; }
+.viewer-story { @apply tw:text-secondary tw:text-body-sm tw:leading-loose; }
+.viewer-story-on-art { margin: var(--s-5) 0; color: var(--on-art-primary); @apply tw:italic; }
+.viewer-actions { @apply tw:grid tw:gap-s-2 tw:mt-s-5; }
+.viewer-actions .btn { @apply tw:justify-center; }
 
 /* On-art controls must not inherit light-page ink on a dark viewing surface. */
 .art-viewer .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success) {

@@ -1,17 +1,17 @@
 <template>
   <section class="light-notebook" aria-labelledby="light-notebook-title">
-    <header class="notebook-heading">
-      <div><p class="notebook-kicker">光色观察 / 01—03</p><h2 id="light-notebook-title">先看光，再决定这一幕的心情</h2></div>
+    <header class="notebook-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
+      <div><p class="notebook-kicker tw:text-accent tw:text-body-sm tw:mb-s-2">光色观察 / 01—03</p><h2 id="light-notebook-title">先看光，再决定这一幕的心情</h2></div>
       <p>并排翻看画册，观察光源、冷暖与明暗怎样改变叙事。</p>
     </header>
-    <div class="comparison-choices" aria-label="选择光色对照">
+    <div class="comparison-choices tw:flex tw:flex-wrap tw:gap-s-2" aria-label="选择光色对照">
       <button v-for="(pair, index) in PAIRS" :key="pair.name" type="button" :aria-pressed="active === index" @click="active = index">
         <span>0{{ index + 1 }}</span>{{ pair.name }}
       </button>
     </div>
-    <p class="comparison-question">{{ current.question }}</p>
-    <div class="comparison-spread">
-      <figure v-for="sample in current.samples" :key="sample.id" class="light-study">
+    <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary">{{ current.question }}</p>
+    <div class="comparison-spread tw:grid tw:gap-s-5">
+      <figure v-for="sample in current.samples" :key="sample.id" class="light-study tw:min-w-0 tw:m-0 tw:overflow-hidden tw:rounded-lg">
         <RouterLink v-if="available.has(sample.id) && !failed.has(sample.id)" class="study-image" :to="'/showcase?scene=' + sample.id" :aria-label="'查看参考原图：' + sample.title">
           <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl('/scene-showcase/thumbs/' + sample.id + '.jpg')" :alt="sample.title + '，' + sample.light" width="560" height="818" loading="lazy" decoding="async" @error="failed.add(sample.id)" />
         </RouterLink>
@@ -21,19 +21,19 @@
           <p>{{ loading ? '正在核对样张目录' : '可继续阅读观察笔记，或选用下方情绪色板。' }}</p>
         </div>
         <figcaption>
-          <div class="study-label"><span>画册参考 · {{ sample.id }}</span><span>{{ sample.tone }}</span></div>
+          <div class="study-label tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2 tw:text-muted tw:text-body-sm"><span>画册参考 · {{ sample.id }}</span><span>{{ sample.tone }}</span></div>
           <h3>{{ sample.name }}</h3>
-          <p class="study-title">《{{ sample.title }}》</p>
+          <p class="study-title tw:text-secondary tw:text-body-sm">《{{ sample.title }}》</p>
           <dl>
             <div><dt>看光源</dt><dd>{{ sample.light }}</dd></div>
             <div><dt>看色调</dt><dd>{{ sample.color }}</dd></div>
             <div><dt>读氛围</dt><dd>{{ sample.feeling }}</dd></div>
           </dl>
-          <button type="button" class="study-mood" @click="emit('choose', sample.mood)">试试「{{ sample.moodName }}」色板<ArchiveIcon name="palette" /></button>
+          <button type="button" class="study-mood tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent tw:text-body-sm tw:font-semibold tw:cursor-pointer" @click="emit('choose', sample.mood)">试试「{{ sample.moodName }}」色板<ArchiveIcon name="palette" /></button>
         </figcaption>
       </figure>
     </div>
-    <p class="reference-note"><ArchiveIcon name="image" /><span>以上为已有场景样张，供光色与构图参考；人物、场景和光源各不相同，不是同一画面的参数对照实验，也不代表下方色板的实测生成结果。点击画面可查看画册原图。</span></p>
+    <p class="reference-note tw:flex tw:gap-s-2 tw:mt-s-4 tw:p-s-3 tw:rounded-sm tw:text-secondary tw:text-body-sm tw:leading-body"><ArchiveIcon name="image" /><span>以上为已有场景样张，供光色与构图参考；人物、场景和光源各不相同，不是同一画面的参数对照实验，也不代表下方色板的实测生成结果。点击画面可查看画册原图。</span></p>
   </section>
 </template>
 
@@ -67,35 +67,33 @@ const failed = ref(new Set<string>())
 </script>
 
 <style scoped>
+@reference "../../assets/css/tailwind.css";
 .light-notebook { margin-block:var(--s-6) var(--s-7); }
-.notebook-heading { display:flex; align-items:end; justify-content:space-between; gap:var(--s-5); margin-bottom:var(--s-4); }
-.notebook-kicker { color:var(--accent); font-size:var(--fs-body-sm); letter-spacing:.06em; margin-bottom:var(--s-2); }
-.notebook-heading h2 { margin:0; color:var(--text-primary); font:500 var(--fs-title)/var(--lh-label) var(--font-serif); }
-.notebook-heading > p { max-width:280px; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
-.comparison-choices { display:flex; flex-wrap:wrap; gap:var(--s-2); }
-.comparison-choices button { display:flex; align-items:center; gap:var(--s-2); min-height:44px; padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); background:var(--bg-surface); font-size:var(--fs-body-sm); cursor:pointer; }
-.comparison-choices button span { color:var(--text-muted); font-family:var(--font-mono); }
-.comparison-choices button[aria-pressed="true"] { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); font-weight:600; }
-.comparison-question { margin:var(--s-4) 0; font-size:var(--fs-body); line-height:var(--lh-body); color:var(--text-secondary); }
-.comparison-spread { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-5); }
-.light-study { min-width:0; margin:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-.study-image { display:flex; align-items:center; justify-content:center; width:100%; height:360px; background:var(--bg-elevated); overflow:hidden; }
-.study-image img { display:block; width:100%; height:100%; object-fit:contain; }
-.study-unavailable { padding:var(--s-5); flex-direction:column; gap:var(--s-3); text-align:center; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
-.study-unavailable .archive-icon { width:36px; height:36px; color:var(--accent); }
-.study-unavailable.is-unconnected { height:auto; min-height:140px; }
+.notebook-heading { align-items:end; }
+.notebook-kicker { letter-spacing:.06em; }
+.notebook-heading h2 { @apply tw:m-0 tw:text-primary; font:500 var(--fs-title)/var(--lh-label) var(--font-serif); }
+.notebook-heading > p { @apply tw:max-w-[280px] tw:text-secondary tw:text-body-sm tw:leading-body; }
+.comparison-choices button { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px]; padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); @apply tw:rounded-pill tw:text-secondary; background:var(--bg-surface); @apply tw:text-body-sm tw:cursor-pointer; }
+.comparison-choices button span { @apply tw:text-muted tw:font-mono; }
+.comparison-choices button[aria-pressed="true"] { @apply tw:text-accent tw:border-accent; background:var(--accent-soft); @apply tw:font-semibold; }
+.comparison-question { margin:var(--s-4) 0; }
+.comparison-spread { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.light-study { border:1px solid var(--border-soft); background:var(--bg-surface); }
+.study-image { @apply tw:flex tw:items-center tw:justify-center tw:w-full tw:h-[360px]; background:var(--bg-elevated); @apply tw:overflow-hidden; }
+.study-image img { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
+.study-unavailable { @apply tw:p-s-5 tw:flex-col tw:gap-s-3 tw:text-center tw:text-secondary tw:text-body-sm tw:leading-body; }
+.study-unavailable .archive-icon { @apply tw:w-[36px] tw:h-[36px] tw:text-accent; }
+.study-unavailable.is-unconnected { @apply tw:h-auto tw:min-h-[140px]; }
 figcaption { padding:var(--s-4) var(--s-5); }
-.study-label { display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s-2); color:var(--text-muted); font-size:var(--fs-body-sm); }
-.light-study h3 { margin:var(--s-3) 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); color:var(--text-primary); }
-.study-title { color:var(--text-secondary); font-size:var(--fs-body-sm); }
-dl { margin:var(--s-4) 0 var(--s-2); display:grid; gap:var(--s-3); }
-dl > div { display:grid; grid-template-columns:4em minmax(0,1fr); gap:var(--s-2); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
-dt { color:var(--text-primary); font-weight:600; }
-dd { margin:0; color:var(--text-secondary); }
-.study-mood { display:inline-flex; align-items:center; gap:var(--s-2); min-height:44px; border:0; background:transparent; color:var(--accent); font-size:var(--fs-body-sm); font-weight:600; cursor:pointer; padding:var(--s-2) 0; }
-.reference-note { display:flex; gap:var(--s-2); align-items:start; margin-top:var(--s-4); padding:var(--s-3); background:var(--bg-base); border-radius:var(--r-sm); color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
-.reference-note .archive-icon { flex-shrink:0; margin-top:3px; }
+.light-study h3 { margin:var(--s-3) 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); @apply tw:text-primary; }
+dl { margin:var(--s-4) 0 var(--s-2); @apply tw:grid tw:gap-s-3; }
+dl > div { @apply tw:grid; grid-template-columns:4em minmax(0,1fr); @apply tw:gap-s-2 tw:text-body-sm tw:leading-body; }
+dt { @apply tw:text-primary tw:font-semibold; }
+dd { @apply tw:m-0 tw:text-secondary; }
+.study-mood { border:0; background:transparent; padding:var(--s-2) 0; }
+.reference-note { align-items:start; background:var(--bg-base); }
+.reference-note .archive-icon { @apply tw:shrink-0 tw:mt-[3px]; }
 button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
-@media(max-width:768px) { .notebook-heading { flex-direction:column; align-items:start; gap:var(--s-3); } .notebook-heading > p { max-width:none; } .comparison-spread { gap:var(--s-3); } figcaption { padding:var(--s-4); } dl > div { grid-template-columns:1fr; gap:var(--s-1); } .study-image { height:280px; } }
-@media(max-width:480px) { .comparison-spread { grid-template-columns:1fr; } .study-image { height:340px; } .notebook-heading h2 { font-size:var(--fs-title-sm); } }
+@media(max-width:768px) { .notebook-heading { @apply tw:flex-col; align-items:start; @apply tw:gap-s-3; } .notebook-heading > p { max-width:none; } .comparison-spread { @apply tw:gap-s-3; } figcaption { @apply tw:p-s-4; } dl > div { grid-template-columns:1fr; @apply tw:gap-s-1; } .study-image { @apply tw:h-[280px]; } }
+@media(max-width:480px) { .comparison-spread { grid-template-columns:1fr; } .study-image { @apply tw:h-[340px]; } .notebook-heading h2 { @apply tw:text-title-sm; } }
 </style>

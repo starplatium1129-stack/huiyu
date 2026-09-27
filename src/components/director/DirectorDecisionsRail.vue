@@ -94,6 +94,7 @@
 </template>
 
 <script setup lang="ts">
+import '@/assets/css/mood.css'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

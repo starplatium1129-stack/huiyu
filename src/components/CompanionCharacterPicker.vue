@@ -138,12 +138,10 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
 </template>
 
 <style>
+@reference "../assets/css/tailwind.css";
 .companion-picker {
   --companion-option-accent: var(--character-accent);
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  max-width: 220px;
+  @apply tw:relative tw:w-full tw:min-w-0 tw:max-w-[220px];
 }
 .companion-picker[data-character='nene'],
 .companion-picker-option[data-value='nene'] { --companion-option-accent: var(--nene-violet); }
@@ -151,20 +149,14 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
 .companion-picker-option[data-value='natsume'] { --companion-option-accent: var(--natsume-amber); }
 
 .companion-picker-trigger {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  width: 100%;
-  min-width: 0;
-  min-height: 40px;
+  @apply tw:flex tw:items-center tw:gap-s-2 tw:w-full tw:min-w-0 tw:min-h-[40px];
   padding: 4px 9px 4px 7px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-pill);
+  @apply tw:rounded-pill;
   background: color-mix(in srgb, var(--bg-surface) 92%, var(--companion-option-accent) 8%);
-  color: var(--text-primary);
+  @apply tw:text-primary;
   box-shadow: inset 0 1px 0 var(--glass-highlight);
-  cursor: pointer;
-  text-align: left;
+  @apply tw:cursor-pointer tw:text-left;
   transition: border-color var(--motion-hover), background-color var(--motion-hover), box-shadow var(--motion-hover);
 }
 .companion-picker-trigger:hover,
@@ -179,116 +171,95 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
 
 .companion-picker-mark,
 .companion-picker-option-mark {
-  display: grid;
+  @apply tw:grid;
   flex: 0 0 auto;
   place-items: center;
   border: 1px solid color-mix(in srgb, var(--companion-option-accent) 45%, var(--border-soft));
   border-radius: 50%;
   background: color-mix(in srgb, var(--companion-option-accent) 12%, var(--bg-surface));
 }
-.companion-picker-mark { width: 27px; height: 27px; }
-.companion-picker-option-mark { width: 34px; height: 34px; }
+.companion-picker-mark { @apply tw:w-[27px] tw:h-[27px]; }
+.companion-picker-option-mark { @apply tw:w-[34px] tw:h-[34px]; }
 .companion-picker-mark i,
 .companion-picker-option-mark i {
-  width: 8px;
-  height: 8px;
+  @apply tw:w-[8px] tw:h-[8px];
   border-radius: 50%;
   background: var(--companion-option-accent);
   box-shadow: 0 0 9px color-mix(in srgb, var(--companion-option-accent) 48%, transparent);
 }
-.companion-picker-option-mark i { width: 10px; height: 10px; }
+.companion-picker-option-mark i { @apply tw:w-[10px] tw:h-[10px]; }
 
 .companion-picker-copy,
 .companion-picker-option-copy {
-  display: flex;
-  min-width: 0;
+  @apply tw:flex tw:min-w-0;
   flex: 1;
-  flex-direction: column;
+  @apply tw:flex-col;
 }
 .companion-picker-copy strong,
 .companion-picker-option-copy strong {
-  overflow: hidden;
-  color: var(--text-primary);
+  @apply tw:overflow-hidden tw:text-primary;
   font: 600 var(--fs-label)/var(--lh-tight) var(--font-sans);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @apply tw:text-ellipsis tw:whitespace-nowrap;
 }
 .companion-picker-copy small,
 .companion-picker-option-copy small {
-  overflow: hidden;
-  color: var(--text-secondary);
+  @apply tw:overflow-hidden tw:text-secondary;
   font: 500 var(--fs-label-xs)/var(--lh-tight) var(--font-sans);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @apply tw:text-ellipsis tw:whitespace-nowrap;
 }
 
 .companion-picker-chevron {
   flex: 0 0 auto;
-  width: 15px;
-  height: 15px;
-  color: var(--text-secondary);
+  @apply tw:w-[15px] tw:h-[15px] tw:text-secondary;
   transition: transform var(--motion-hover) var(--ease-out);
 }
 .companion-picker-trigger[data-state='open'] .companion-picker-chevron { transform: rotate(180deg); }
 
 .companion-picker-content {
   -webkit-app-region: no-drag;
-  position: absolute;
+  @apply tw:absolute;
   z-index: var(--z-popover);
   top: calc(100% + 8px);
-  right: 0;
+  @apply tw:right-0;
   width: min(260px, calc(100vw - 16px));
   max-height: min(360px, calc(100dvh - 80px));
-  overflow: hidden;
-  padding: var(--s-2);
+  @apply tw:overflow-hidden tw:p-s-2;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-xl);
+  @apply tw:rounded-xl;
   background: var(--bg-elevated);
-  color: var(--text-primary);
+  @apply tw:text-primary;
   box-shadow: var(--shadow-glass-elevated);
 }
-html.companion-desktop .companion-picker-content { right: auto; left: 0; -webkit-app-region: no-drag; }
+html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-0; -webkit-app-region: no-drag; }
 .companion-picker-menu-enter-active,
 .companion-picker-menu-leave-active { transition: opacity var(--motion-hover), transform var(--motion-hover) var(--ease-out); }
 .companion-picker-menu-enter-from,
 .companion-picker-menu-leave-to { opacity: 0; transform: translateY(-4px) scale(.98); }
 
 .companion-picker-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-  margin-bottom: var(--s-1);
+  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-1;
   padding: var(--s-2) var(--s-2) var(--s-3);
   border-bottom: 1px solid var(--border-soft);
 }
-.companion-picker-heading > span { display: inline-flex; align-items: center; gap: var(--s-2); font: 650 var(--fs-label-sm) var(--font-sans); }
-.companion-picker-heading .archive-icon { width: 16px; height: 16px; color: var(--character-accent); }
-.companion-picker-heading small { color: var(--text-secondary); font: 500 var(--fs-label-xs) var(--font-sans); }
+.companion-picker-heading > span { @apply tw:inline-flex tw:items-center tw:gap-s-2; font: 650 var(--fs-label-sm) var(--font-sans); }
+.companion-picker-heading .archive-icon { @apply tw:w-[16px] tw:h-[16px]; color: var(--character-accent); }
+.companion-picker-heading small { @apply tw:text-secondary; font: 500 var(--fs-label-xs) var(--font-sans); }
 
 .companion-picker-viewport {
   -webkit-app-region: no-drag;
   touch-action: pan-y;
   max-height: min(290px, calc(100dvh - 140px));
-  overflow-y: auto;
+  @apply tw:overflow-y-auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
 }
 .companion-picker-option {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  width: 100%;
-  min-height: 52px;
-  padding: var(--s-2);
+  @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[52px] tw:p-s-2;
   border: 0;
-  border-radius: var(--r-lg);
+  @apply tw:rounded-lg;
   outline: none;
   background: transparent;
-  color: var(--text-primary);
-  cursor: pointer;
-  text-align: left;
-  user-select: none;
+  @apply tw:text-primary tw:cursor-pointer tw:text-left tw:select-none;
 }
 .companion-picker-option:is(:hover, .is-active) { background: var(--bg-hover); }
 .companion-picker-option[aria-selected='true'] {
@@ -299,20 +270,19 @@ html.companion-desktop .companion-picker-content { right: auto; left: 0; -webkit
   border-color: color-mix(in srgb, var(--companion-option-accent) 72%, var(--border-soft));
 }
 .companion-picker-check {
-  display: grid;
+  @apply tw:grid;
   flex: 0 0 26px;
-  width: 26px;
-  height: 26px;
+  @apply tw:w-[26px] tw:h-[26px];
   place-items: center;
   border-radius: 50%;
   background: color-mix(in srgb, var(--companion-option-accent) 15%, transparent);
   color: var(--companion-option-accent);
 }
-.companion-picker-check .archive-icon { width: 15px; height: 15px; }
+.companion-picker-check .archive-icon { @apply tw:w-[15px] tw:h-[15px]; }
 
 @media (max-width: 400px) {
-  .companion-picker-trigger { min-height: 38px; }
-  .companion-picker-mark { width: 25px; height: 25px; }
+  .companion-picker-trigger { @apply tw:min-h-[38px]; }
+  .companion-picker-mark { @apply tw:w-[25px] tw:h-[25px]; }
 }
 @media (prefers-reduced-motion: reduce) {
   .companion-picker-chevron,

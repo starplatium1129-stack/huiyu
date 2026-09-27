@@ -20,9 +20,9 @@
           <img :crossorigin="runtimeResourceCors()" v-else class="history-placeholder" :src="resolveRuntimeUrl(placeholderUrl)" alt="" aria-hidden="true">
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
           <StudioTooltip content="勾选后可批量加入分镜">
-            <label class="history-pick">
-              <input v-model="selectedSet" type="checkbox" :value="item.id" class="history-pick-input" />
-              <span class="history-pick-box" aria-hidden="true">
+            <label class="history-pick tw:absolute tw:top-[6px] tw:left-[6px] tw:inline-flex tw:items-center tw:justify-center tw:cursor-pointer">
+              <input v-model="selectedSet" type="checkbox" :value="item.id" class="history-pick-input tw:absolute tw:w-[1px] tw:h-[1px] tw:pointer-events-none" />
+              <span class="history-pick-box tw:grid tw:w-[20px] tw:h-[20px] tw:rounded-sm" aria-hidden="true">
                 <ArchiveIcon name="success" class="history-pick-check" />
               </span>
             </label>
@@ -125,40 +125,28 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.history-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
+@reference "../assets/css/tailwind.css";
+.history-head { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2; }
 .history-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-2);
+  @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2;
   padding: var(--s-5) var(--s-4);
-  color: var(--text-muted);
-  text-align: center;
-  font-size: var(--fs-label-sm);
+  @apply tw:text-muted tw:text-center tw:text-label-sm;
   background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
   border: 1px dashed var(--border-soft);
-  border-radius: var(--r-md);
+  @apply tw:rounded-md;
 }
 .history-empty-icon {
-  font-size: var(--fs-title);
+  @apply tw:text-title;
   color: var(--archive-blue);
   opacity: 0.7;
 }
-.history-batch { display: inline-flex; gap: var(--s-1); }
+.history-batch { @apply tw:inline-flex tw:gap-s-1; }
 .history-pick {
-  position: absolute; top: 6px; left: 6px;
-  display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer;
   z-index: 2;
 }
-.history-pick-input {
-  position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;
+.history-pick-input { opacity: 0;
 }
-.history-pick-box {
-  display: grid; place-items: center;
-  width: 20px; height: 20px;
-  border-radius: var(--r-sm);
+.history-pick-box { place-items: center;
   background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
   border: 1px solid var(--border-strong);
   color: transparent;
@@ -167,13 +155,12 @@ onBeforeUnmount(() => {
   transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .history-pick:hover .history-pick-box {
-  border-color: var(--accent);
+  @apply tw:border-accent;
   background: color-mix(in srgb, var(--accent-soft) 60%, var(--bg-surface));
 }
 .history-pick-input:checked + .history-pick-box {
   background: var(--accent);
-  border-color: var(--accent);
-  color: var(--text-inverse);
+  @apply tw:border-accent tw:text-inverse;
   box-shadow: 0 0 10px -1px var(--accent-glow);
 }
 .history-pick-input:focus-visible + .history-pick-box {
@@ -181,8 +168,8 @@ onBeforeUnmount(() => {
   outline-offset: 2px;
 }
 .history-pick-check {
-  width: 13px; height: 13px;
+  @apply tw:w-[13px] tw:h-[13px];
 }
-.history-item[data-selected="true"] { outline: 1px solid var(--accent); outline-offset: -1px; border-radius: var(--r-md); }
-.history-thumb { position: relative; }
+.history-item[data-selected="true"] { outline: 1px solid var(--accent); outline-offset: -1px; @apply tw:rounded-md; }
+.history-thumb { @apply tw:relative; }
 </style>

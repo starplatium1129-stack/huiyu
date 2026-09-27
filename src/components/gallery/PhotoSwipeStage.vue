@@ -1,6 +1,6 @@
 <template>
-  <div ref="host" class="photoswipe-stage" aria-label="手势观画">
-    <div class="photoswipe-tools">
+  <div ref="host" class="photoswipe-stage tw:absolute" aria-label="手势观画">
+    <div class="photoswipe-tools tw:absolute tw:flex tw:justify-center tw:items-center tw:flex-wrap tw:gap-s-2 tw:pointer-events-none tw:text-label-xs">
       <button class="btn btn-ghost" type="button" aria-label="缩放作品" @click="toggleZoom"><ArchiveIcon name="search" /> 缩放</button>
       <span>双指或滚轮缩放 · 滑动切图</span>
     </div>
@@ -139,12 +139,13 @@ onBeforeUnmount(dispose)
 </script>
 
 <style scoped>
-.photoswipe-stage { position: absolute; inset: 60px 48px; }
-.photoswipe-stage :deep(.pswp) { position: absolute; z-index: 0; }
+@reference "../../assets/css/tailwind.css";
+.photoswipe-stage { inset: 60px 48px; }
+.photoswipe-stage :deep(.pswp) { @apply tw:absolute; z-index: 0; }
 .photoswipe-stage :deep(.pswp__error-msg) { color: var(--on-art-primary); }
-.photoswipe-stage :deep(.pswp__top-bar) { display: none; }
-.photoswipe-tools { position: absolute; z-index: 1; inset: auto 0 0; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: var(--s-2); pointer-events: none; color: var(--on-art-secondary); font-size: var(--fs-label-xs); }
-.photoswipe-tools button { pointer-events: auto; background: var(--art-scrim); color: var(--on-art-primary); }
-.photoswipe-tools span { background: var(--art-scrim); padding: var(--s-1); }
+.photoswipe-stage :deep(.pswp__top-bar) { @apply tw:hidden; }
+.photoswipe-tools { z-index: 1; inset: auto 0 0; color: var(--on-art-secondary); }
+.photoswipe-tools button { @apply tw:pointer-events-auto; background: var(--art-scrim); color: var(--on-art-primary); }
+.photoswipe-tools span { background: var(--art-scrim); @apply tw:p-s-1; }
 @media (max-width: 600px) { .photoswipe-stage { inset: 60px 38px 76px; } }
 </style>

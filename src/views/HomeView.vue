@@ -1,12 +1,12 @@
 <template>
   <article class="home-page">
-    <section class="container home-opening" aria-label="画室序章">
+    <section class="container home-opening tw:pt-s-6" aria-label="画室序章">
       <div class="home-hero" :data-muse="homeMuse">
         <div class="hero-copy">
           <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
           <p class="hero-sub">选角色、挑场景，用 AI 生成二次元 CG。<br />从现成灵感开始，也能自己编排画面与光影。</p>
-          <div class="ctas">
+          <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
             <RouterLink to="/showcase" class="btn btn-lg btn-ghost">先看参考样张 <ArchiveIcon name="image" /></RouterLink>
           </div>

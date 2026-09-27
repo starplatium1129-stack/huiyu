@@ -1,0 +1,10 @@
+@reference "../tailwind.css";
+.character-card .character-tabs { max-width: calc(100% - 24px); @apply tw:overflow-x-auto; }
+.character-card .character-tab { @apply tw:shrink-0 tw:whitespace-nowrap; }
+.character-card .character-tab.active { @apply tw:text-primary tw:border-strong; background: var(--bg-surface); }
+.live2d-capability-report { @apply tw:mt-[8px] tw:text-secondary; font-size: 12px; }
+.live2d-capability-report summary { @apply tw:min-h-[32px] tw:cursor-pointer tw:text-primary; }
+.live2d-capability-report ul { @apply tw:grid tw:gap-[6px]; margin: 6px 0 0; @apply tw:p-0; list-style: none; }
+.live2d-capability-report li { @apply tw:grid; grid-template-columns: minmax(4em, auto) auto; gap: 2px 8px; }
+.live2d-capability-report strong { @apply tw:text-primary; font-weight: 650; }
+.live2d-capability-report small { grid-column: 1 / -1; @apply tw:text-secondary; overflow-wrap: anywhere; }

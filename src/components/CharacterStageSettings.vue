@@ -47,17 +47,4 @@ function onBackdrop(event: MouseEvent) { if (isBackdropClick(event, dialog.value
 defineExpose({ open, close })
 </script>
 
-<style scoped>
-.character-controls > summary { display: flex; align-items: center; justify-content: flex-end; gap: 6px; min-height: 32px; color: var(--text-primary); cursor: pointer; font-size: var(--fs-label-sm); list-style: none; }
-.character-controls > summary svg { width: 16px; height: 16px; }
-.character-controls-panel { position: absolute; z-index: var(--z-popover); left: 10px; right: 10px; bottom: calc(100% + 8px); max-height: min(450px, 65dvh); overflow-y: auto; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-elevated); box-shadow: var(--shadow-lg); }
-.character-settings-dialog { box-sizing: border-box; width: min(440px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); margin: auto; padding: 0; overflow: hidden; color: var(--text-primary); background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); }
-.character-settings-dialog[open] { display: flex; flex-direction: column; }
-.character-settings-dialog::backdrop { background: var(--art-backdrop); }
-.character-settings-heading { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-3); border-bottom: 1px solid var(--border-soft); }
-.character-settings-heading h2 { margin: 0; font-size: var(--fs-body); line-height: var(--lh-body); }
-.character-settings-close { display: grid; place-items: center; flex: 0 0 44px; height: 44px; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-surface); color: var(--text-primary); cursor: pointer; }
-.character-settings-close svg { width: 18px; height: 18px; }
-.character-settings-dialog .character-controls-panel { position: static; min-height: 0; max-height: none; overflow: auto; overscroll-behavior: contain; padding: var(--s-4); border: 0; border-radius: 0; box-shadow: none; }
-.character-settings-dialog :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-</style>
+<style scoped src="@/assets/css/components/CharacterStageSettings-0.css"></style>

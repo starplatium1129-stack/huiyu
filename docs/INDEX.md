@@ -23,6 +23,8 @@
 
 源码维护与构建见 [TypeScript 开发与维护](guides/engineering/typescript-development.md)，包含类型归属、缓存、开发重启和验证入口。
 
+组件布局、主题令牌与工具类约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；[本次迁移记录](audits/2026-09-27/tailwind-migration.md)区分构建、浏览器验收与环境限制。
+
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
 ## 架构契约与实施追溯

@@ -18,10 +18,10 @@
     </ArchiveStatePanel>
 
     <template v-else>
-      <div class="pop-toolbar">
-        <div class="pop-toolbar-row">
+      <div class="pop-toolbar tw:grid tw:gap-s-3 tw:mb-s-3">
+        <div class="pop-toolbar-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
           <StudioSearch v-model="query" class="pop-search-field" id="popularSceneSearch" label="搜索场景" placeholder="搜索场景、地点或氛围…" />
-          <div class="pop-rating-filters" role="group" aria-label="分级筛选">
+          <div class="pop-rating-filters tw:inline-flex tw:items-center tw:gap-s-1" role="group" aria-label="分级筛选">
             <button v-for="r in RATING_OPTS" :key="r.v" type="button" class="pop-rating-pill"
               :class="{ active: ratingFilter === r.v, ['rating-' + r.v]: r.v !== 'all' }"
               :aria-pressed="ratingFilter === r.v"

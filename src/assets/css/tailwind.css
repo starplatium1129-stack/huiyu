@@ -1,0 +1,95 @@
+/* Keep the existing reset and runtime theme authority. Utilities are deliberately
+   unlayered: the app's scoped styles and material selectors must retain their
+   specificity, while utilities must outrank the universal margin/padding reset.
+   The tw: prefix prevents collisions with semantic hooks such as .hidden.
+   No Preflight: introducing a second reset would change native controls/SVGs. */
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" prefix(tw) source(none);
+@source "../../**/*.vue";
+@source "../../**/*.ts";
+@source not "../../**/*.spec.ts";
+@source not "../../**/*.test.ts";
+@source "../../../index.html";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Inline aliases resolve on each element, including character-themed subtrees
+   and Reka portals. These aliases never duplicate light/dark palette values. */
+@theme inline {
+  --color-*: initial;
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-tertiary: var(--text-tertiary);
+  --color-disabled: var(--text-disabled);
+  --color-inverse: var(--text-inverse);
+  --color-deep: var(--bg-deep);
+  --color-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-hover: var(--bg-hover);
+  --color-soft: var(--border-soft);
+  --color-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-success-text: var(--success-text);
+  --color-warning-text: var(--warning-text);
+  --color-danger-text: var(--danger-text);
+  --color-info-text: var(--info-text);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+  --spacing-s-1: var(--s-1);
+  --spacing-s-2: var(--s-2);
+  --spacing-s-3: var(--s-3);
+  --spacing-s-4: var(--s-4);
+  --spacing-s-5: var(--s-5);
+  --spacing-s-6: var(--s-6);
+  --spacing-s-7: var(--s-7);
+  --spacing-s-8: var(--s-8);
+  --radius-*: initial;
+  --radius-xs: var(--r-xs);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --radius-2xl: var(--r-2xl);
+  --radius-3xl: var(--r-3xl);
+  --radius-stage: var(--r-stage);
+  --radius-pill: var(--r-pill);
+  --text-*: initial;
+  --text-mono-xs: var(--fs-mono-xs);
+  --text-mono-sm: var(--fs-mono-sm);
+  --text-label-xs: var(--fs-label-xs);
+  --text-label-sm: var(--fs-label-sm);
+  --text-label: var(--fs-label);
+  --text-body-sm: var(--fs-body-sm);
+  --text-body: var(--fs-body);
+  --text-body-lg: var(--fs-body-lg);
+  --text-title-xs: var(--fs-title-xs);
+  --text-title-sm: var(--fs-title-sm);
+  --text-title: var(--fs-title);
+  --text-display: var(--fs-display);
+  --text-glyph: var(--fs-glyph);
+  --text-glyph-lg: var(--fs-glyph-lg);
+  --text-brand-caption: var(--fs-brand-caption);
+  --text-ios-control: var(--fs-ios-control);
+  --text-stage-glyph: var(--fs-stage-glyph);
+  --leading-flush: var(--lh-flush);
+  --leading-tight: var(--lh-tight);
+  --leading-label: var(--lh-label);
+  --leading-body: var(--lh-body);
+  --leading-loose: var(--lh-loose);
+}

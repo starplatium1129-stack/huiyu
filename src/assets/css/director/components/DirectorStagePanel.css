@@ -1,21 +1,22 @@
-/* ============================================================
+@reference "../../tailwind.css";
+   /* ============================================================
    DirectorStagePanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
    .pb .result-image-wrap {
-     position:relative; overflow:hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
+     @apply tw:relative tw:overflow-hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
      /* 成片容器轻移，图片自身单独显现，操作文字保持清晰。 */
      animation:directorViewIn var(--motion-control) var(--ease-out);
-     border-radius:var(--r-stage); background:var(--bg-deep);
+     @apply tw:rounded-stage; background:var(--bg-deep);
      box-shadow:inset 0 1px 0 var(--glass-specular), 0 20px 50px color-mix(in srgb, black 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
    }
     .pb .result-image-wrap.archive-canvas { border-color:color-mix(in srgb,var(--archive-cyan) 38%,var(--border-soft)); border-radius:var(--r-dossier); }
     .pb .result-image-reveal {
-      display:block; width:100%; max-height:min(78vh,920px); margin:0 auto;
+      @apply tw:block tw:w-full; max-height:min(78vh,920px); margin:0 auto;
     }
     .pb .result-image {
-     display:block; width:100%; max-height:min(78vh,920px); object-fit:contain;
+     @apply tw:block tw:w-full; max-height:min(78vh,920px); @apply tw:object-contain;
      margin:0 auto; background:radial-gradient(circle at 50% 40%,var(--bg-elevated),var(--bg-deep));
      opacity:0; transform:scale(.98); filter:none;
      animation:aicsBloomReveal var(--motion-control) var(--ease-out) both;
@@ -23,11 +24,10 @@
    /* CgImageReveal owns its image; the legacy animation must not pin opacity/transform. */
    .pb .result-image-reveal .result-image { animation:none; opacity:1; transform:none; }
    .pb .result-image-actions {
-     display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:var(--s-2);
-     padding:var(--s-3); border-top:1px solid var(--border-soft);
+     @apply tw:flex tw:items-center tw:justify-center tw:flex-wrap tw:gap-s-2 tw:p-s-3; border-top:1px solid var(--border-soft);
      background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
    }
-   .pb .archive-canvas .result-image-actions { justify-content:flex-end; border-top-color:color-mix(in srgb,var(--archive-cyan) 24%,var(--border-soft)); font-family:var(--font-mono); }
+   .pb .archive-canvas .result-image-actions { @apply tw:justify-end; border-top-color:color-mix(in srgb,var(--archive-cyan) 24%,var(--border-soft)); @apply tw:font-mono; }
   .pb[data-character="triad"] .stage-placeholder {
     background:
       radial-gradient(circle at 22% 20%,color-mix(in srgb,var(--nene-violet) 13%,transparent),transparent 34%),
@@ -35,7 +35,7 @@
       linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 88%,transparent),var(--bg-deep));
   }
   .pb .stage-placeholder::after {
-    content:''; position:absolute; z-index:var(--z-base); inset:-35% -55%; pointer-events:none;
+    content:''; @apply tw:absolute; z-index:var(--z-base); inset:-35% -55%; @apply tw:pointer-events-none;
     background:linear-gradient(108deg,transparent 38%,var(--glass-specular) 49%,transparent 60%);
     opacity:0; transform:translateX(-22%) rotate(-4deg);
   }
@@ -45,10 +45,10 @@
      占位层退出时绝对定位浮层化，避免与进入中的结果层双占布局撑跳高度
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
      只补间 opacity/transform。结果容器用 directorViewIn，图片由 CgImageReveal 接管。 */
-  .pb .stage-slot { position:relative; }
+  .pb .stage-slot { @apply tw:relative; }
   .pb .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
   .pb .stage-swap-leave-active {
-    position:absolute; inset:0; z-index:var(--z-raised);
+    @apply tw:absolute; inset:0; z-index:var(--z-raised);
     transition:opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
@@ -63,28 +63,27 @@
     animation:none;
   }
   .pb .stage-generating-copy {
-    position:relative; z-index:var(--z-raised);
-    display:grid; gap:var(--s-2); justify-items:center;
+    @apply tw:relative; z-index:var(--z-raised);
+    @apply tw:grid tw:gap-s-2; justify-items:center;
   }
   .pb .stage-generating-title {
-    color:var(--text-primary); font-size:var(--fs-title-xs); font-weight:720;
+    @apply tw:text-primary tw:text-title-xs; font-weight:720;
     letter-spacing:-.01em;
   }
-  .pb .stage-generating-sub { color:var(--text-muted); font:500 var(--fs-mono-sm) var(--font-mono); }
+  .pb .stage-generating-sub { @apply tw:text-muted; font:500 var(--fs-mono-sm) var(--font-mono); }
   .pb .stage-progress-ring {
-    width:100%; max-width:260px; height:4px; margin-top:var(--s-2);
-    border-radius:var(--r-pill); overflow:hidden;
+    @apply tw:w-full tw:max-w-[260px] tw:h-[4px] tw:mt-s-2 tw:rounded-pill tw:overflow-hidden;
     background:color-mix(in srgb,var(--text-muted) 22%,transparent);
   }
   .pb .stage-progress-ring > i {
-    display:block; height:100%; border-radius:inherit;
+    @apply tw:block tw:h-full; border-radius:inherit;
     background:linear-gradient(90deg,var(--accent),var(--accent-hover));
     /* 进度由模板的 --progress 载体提供(内联 style 只放数据)；scale 百分比补间不触发布局 */
-    width:100%; transform-origin:left center; transform:scaleX(var(--progress, 0%));
+    @apply tw:w-full; transform-origin:left center; transform:scaleX(var(--progress, 0%));
     transition:transform var(--motion-surface) var(--ease-out);
   }
    .pb .stage-progress-ring.is-indeterminate > i {
-     width:38%; transform:translateX(-120%); animation:stage-progress-indeterminate 1.15s linear infinite;
+     @apply tw:w-[38%]; transform:translateX(-120%); animation:stage-progress-indeterminate 1.15s linear infinite;
    }
   @media (prefers-reduced-motion: reduce) {
     .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-placeholder.is-generating::before, .pb .stage-progress-ring.is-indeterminate > i { animation:none !important; }
@@ -98,36 +97,36 @@
   }
 
 /* Secondary result actions expand in flow, so they never cover the artwork. */
-.pb .result-tools-disclosure { width: 100%; color: var(--text-secondary); font-size: var(--fs-label); }
-.pb .result-image-actions > .btn { min-height:40px; }
-.pb .result-tools-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); width:fit-content; max-width:100%; min-height:40px; padding:var(--s-2) var(--s-3); cursor:pointer; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); line-height:var(--lh-label); }
-.pb .result-tools-disclosure[open] > summary { color:var(--text-primary); border-color:var(--accent); background:var(--accent-soft); }
-.pb .result-tools-count { color:var(--text-secondary); }
-.pb .result-tools-chevron { width:16px; height:16px; transition:transform var(--motion-hover) var(--ease-out); }
+.pb .result-tools-disclosure { @apply tw:w-full tw:text-secondary tw:text-label; }
+.pb .result-image-actions > .btn { @apply tw:min-h-[40px]; }
+.pb .result-tools-disclosure > summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2; width:fit-content; @apply tw:max-w-full tw:min-h-[40px]; padding:var(--s-2) var(--s-3); @apply tw:cursor-pointer; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:leading-label; }
+.pb .result-tools-disclosure[open] > summary { @apply tw:text-primary tw:border-accent; background:var(--accent-soft); }
+.pb .result-tools-count { @apply tw:text-secondary; }
+.pb .result-tools-chevron { @apply tw:w-[16px] tw:h-[16px]; transition:transform var(--motion-hover) var(--ease-out); }
 .pb .result-tools-disclosure[open] .result-tools-chevron { transform:rotate(180deg); }
 .pb .result-tools-disclosure > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* Expert mode already scrolls the outer action area; keep one scroll owner. */
-.pb .result-tools-grid { display:grid; gap:var(--s-3); padding-top:var(--s-3); }
-.pb .result-tools-group { display:grid; grid-template-columns:3em minmax(0,1fr); align-items:start; gap:var(--s-2); min-width:0; }
-.pb .result-tools-group + .result-tools-group { border-top:1px solid var(--border-soft); padding-top:var(--s-3); }
-.pb .result-tools-label { padding-block:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-label); }
-.pb .result-tool-buttons { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); min-width:0; }
-.pb .result-tool-buttons > * { max-width:100%; }
-.pb .result-tool-buttons .btn { min-height:40px; max-width:100%; white-space:normal; text-align:left; }
+.pb .result-tools-grid { @apply tw:grid tw:gap-s-3 tw:pt-s-3; }
+.pb .result-tools-group { @apply tw:grid; grid-template-columns:3em minmax(0,1fr); align-items:start; @apply tw:gap-s-2 tw:min-w-0; }
+.pb .result-tools-group + .result-tools-group { border-top:1px solid var(--border-soft); @apply tw:pt-s-3; }
+.pb .result-tools-label { padding-block:var(--s-2); @apply tw:text-secondary tw:text-label tw:leading-label; }
+.pb .result-tool-buttons { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:min-w-0; }
+.pb .result-tool-buttons > * { @apply tw:max-w-full; }
+.pb .result-tool-buttons .btn { @apply tw:min-h-[40px] tw:max-w-full tw:whitespace-normal tw:text-left; }
 @media (max-width:600px) {
-  .pb .result-image-actions > .btn, .pb .result-tool-buttons .btn, .pb .result-tools-disclosure > summary { min-height:44px; }
+  .pb .result-image-actions > .btn, .pb .result-tool-buttons .btn, .pb .result-tools-disclosure > summary { @apply tw:min-h-[44px]; }
 }
 @media (prefers-reduced-motion:reduce) { .pb .result-tools-chevron { transition:none; } }
-.pb .stage-progress-details { margin-top: var(--s-3); color: var(--text-secondary); font-size: var(--fs-label); }
-.pb .stage-progress-details summary { cursor: pointer; }
+.pb .stage-progress-details { @apply tw:mt-s-3 tw:text-secondary tw:text-label; }
+.pb .stage-progress-details summary { @apply tw:cursor-pointer; }
 
 /* Reference and status share a paper surface; reference imagery is never a result. */
-.pb.atelier-workspace .stage-content { width:100%; min-width:0; padding:64px var(--s-5) var(--s-5); }
+.pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:64px var(--s-5) var(--s-5); }
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
-.pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { display:none; }
-.pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { font-size:var(--fs-body); }
-.pb .stage-result-heading { display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s-2); padding:var(--s-3) var(--s-4); background:var(--bg-surface); color:var(--text-secondary); font-size:var(--fs-label); border-bottom:1px solid var(--border-soft); }
-.pb .stage-result-heading > :first-child { color:var(--text-primary); font-weight:600; }
-.pb .stage-result-status { display:inline-flex; align-items:center; gap:var(--s-2); }
-.pb .stage-error-detail { display:block; max-height:100px; overflow:auto; margin-top:var(--s-2); overflow-wrap:anywhere; }
+.pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-mark { @apply tw:hidden; }
+.pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
+.pb .stage-result-heading { @apply tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2; padding:var(--s-3) var(--s-4); background:var(--bg-surface); @apply tw:text-secondary tw:text-label; border-bottom:1px solid var(--border-soft); }
+.pb .stage-result-heading > :first-child { @apply tw:text-primary tw:font-semibold; }
+.pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
+.pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }
 .pb .stage-placeholder.is-generating::after { z-index:var(--z-base); }

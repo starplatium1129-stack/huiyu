@@ -37,7 +37,7 @@ const MARKER = 'compositor-exempt';
 
 // transition 值里属性名不带冒号（"width 0.08s ease-out"），须按名比对；
 // 不含 line-height（文字排版微调几乎不构成逐帧动画热路径）、border-*width（罕见且易误报）。
-const KEYFRAME_LAYOUT_DECL = /(?:^|[\s;{(])((?:max|min)-(?:width|height)|(?:margin|padding)(?:-(?:top|bottom|left|right))?|grid-template-(?:rows|columns)|(?:width|height|top|bottom|left|right))\s*:/g;
+const KEYFRAME_LAYOUT_DECL = /(?:^|[\s;{(])((?:max|min)-(?:width|height)|(?:margin|padding|inset)(?:-(?:top|bottom|left|right|inline|block)(?:-(?:start|end))?)?|grid-template-(?:rows|columns)|(?:width|height|top|bottom|left|right|gap|row-gap|column-gap|flex-basis))\s*:/g;
 const TRANSITION_DECL = /transition(?:-property)?\s*:\s*([^;{}]+)/g;
 const KEYFRAMES_BLOCK = /@(?:-\w+-)?keyframes\s+[\w-]+\s*\{/g;
 const SHORTHAND_PARTS = /^(max|min)-(width|height)$/;
@@ -56,13 +56,14 @@ const KEYFRAME_REPAINT_DECL = new RegExp('(?:^|[\\s;{])(' + REPAINT_NAMES.join('
 
 function isLayoutName(token: any) {
   const name = token.replace(/!important$/i, '').trim().toLowerCase();
-  if (!name || name === 'all' || name === 'none' || name.startsWith('--')) return false;
+  if (!name || name === 'none' || name.startsWith('--')) return false;
+  if (name === 'all') return true;
   if (SHORTHAND_PARTS.test(name)) return true;
-  if (/^(margin|padding)(-(top|bottom|left|right))?$/.test(name)) return true;
+  if (/^(margin|padding|inset)(-(top|bottom|left|right|inline|block)(-(start|end))?)?$/.test(name)) return true;
   // grid-template-rows/columns 是逐帧重排属性，此前漏检
   // （design-system.css 的 .anim-collapse-grid 靠它做折叠动画，门禁却放过）。
   if (/^grid-template-(rows|columns)$/.test(name)) return true;
-  return ['width', 'height', 'top', 'bottom', 'left', 'right'].includes(name);
+  return ['width', 'height', 'top', 'bottom', 'left', 'right', 'gap', 'row-gap', 'column-gap', 'flex-basis'].includes(name);
 }
 
 function isRepaintName(token: any) {
@@ -96,6 +97,8 @@ function scanTransitionValue(css: any, match: any) {
 }
 
 function scanCss(relPath: any, css: any) {
+  css = sources.expandTailwindApply(css.replace(/\/\*[\s\S]*?\*\//g, (comment: string) =>
+    comment.includes(MARKER) ? comment : comment.replace(/[^\n]/g, ' ')));
   const findings: any[] = [];
 
   for (const match of css.matchAll(TRANSITION_DECL)) {
@@ -151,15 +154,27 @@ function scanCss(relPath: any, css: any) {
   return findings.map((f: any) => ({ file: relPath, ...f }));
 }
 
+function scanUtilityAnimations(relPath: string, source: string) {
+  return sources.tailwindUtilities(source).flatMap(utility => scanCss(relPath, sources.utilityCss(utility)).map(finding => ({
+    ...finding,
+    snippet: `L${utility.line} ${utility.candidate}`,
+    exempt: finding.warnOnly || findExemption(source, utility.index),
+  })));
+}
+
 function collect() {
-  const targets = [...sources.appCssFiles(), ...sources.sfcFiles()];
+  const targets = [...sources.appCssFiles(), ...sources.sfcFiles(), ...sources.utilityScriptFiles()];
   const all: any[] = [];
   for (const relPath of targets) {
     const abs = path.join(root, relPath);
     if (!fs.existsSync(abs)) continue; // 与 scan-style-literals 同口径：缺失仅提示不阻断
     const raw = fs.readFileSync(abs, 'utf8');
-    const css = relPath.endsWith('.vue') ? sources.sfcStyleBlocks(raw) : raw;
+    const css = relPath.endsWith('.css') ? raw : sources.sfcStyleBlocks(raw);
     all.push(...scanCss(relPath, css));
+    if (!relPath.endsWith('.css')) {
+      const classes = raw.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, block => block.replace(/[^\n]/g, ' '));
+      all.push(...scanUtilityAnimations(relPath, classes));
+    }
   }
   return all;
 }
@@ -225,6 +240,6 @@ function main() {
   console.log('动效合成器铁律门禁通过。');
 }
 
-main();
+if (require.main === module) main();
 
-export = { isLayoutName, scanCss, collect };
+export = { isLayoutName, scanCss, scanUtilityAnimations, collect };

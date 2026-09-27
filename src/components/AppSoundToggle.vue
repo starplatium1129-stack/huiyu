@@ -2,7 +2,7 @@
   <StudioTooltip :content="soundEnabled ? '界面音效已开启' : '界面音效已关闭'">
     <button
       type="button"
-      class="sound-toggle"
+      class="sound-toggle tw:grid tw:place-items-center tw:w-[32px] tw:h-[32px] tw:p-0 tw:rounded-[50%] tw:text-muted tw:cursor-pointer"
       data-interface-sound-toggle
       :class="{ active: soundEnabled }"
       :aria-pressed="soundEnabled"
@@ -24,16 +24,8 @@ const { soundEnabled, toggleSound } = useInterfaceFeedback()
 
 <style scoped>
 .sound-toggle {
-  display:grid;
-  place-items:center;
-  width:32px;
-  height:32px;
-  padding:0;
   border:1px solid var(--border-soft);
-  border-radius:50%;
   background:var(--bg-surface);
-  color:var(--text-muted);
-  cursor:pointer;
   transition:color var(--motion-hover),border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover);
 }
 .sound-toggle.active { color:var(--archive-blue); border-color:color-mix(in srgb,var(--archive-blue) 48%,var(--border-soft)); background:var(--archive-blue-soft); }

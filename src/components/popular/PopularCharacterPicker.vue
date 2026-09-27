@@ -48,13 +48,13 @@ const sourceLabel = computed(() => {
 </script>
 
 <template>
-  <div class="popular-picker">
+  <div class="popular-picker tw:grid tw:gap-s-4">
     <!-- 当前角色：状态与「浏览全部」同处一个按钮，只保留一层稳定底色 + 一个强调动作，
          不再让卡片和浏览按钮各自成框、各自打开同一个弹窗。 -->
-    <button type="button" class="character-browse-button" aria-haspopup="dialog" @click="browserMotion.open()">
-      <span class="character-browse-trigger">
+    <button type="button" class="character-browse-button tw:grid tw:gap-0 tw:w-full tw:min-w-0 tw:p-0 tw:rounded-lg tw:overflow-hidden tw:text-left tw:cursor-pointer" aria-haspopup="dialog" @click="browserMotion.open()">
+      <span class="character-browse-trigger tw:flex tw:items-center tw:gap-s-3 tw:min-w-0 tw:p-s-3">
         <CharacterPortrait :src="resolveRuntimeUrl(selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined)" :name="selectedCharacter?.displayName || '角色'" />
-        <span class="character-current-text">
+        <span class="character-current-text tw:min-w-0 tw:grid tw:gap-s-2">
           <small class="character-current-kicker">这一幕的主角</small>
           <strong>{{ selectedCharacter?.displayName || '选择创作角色' }}</strong>
           <StudioTooltip :content="sourceLabel">
@@ -62,7 +62,7 @@ const sourceLabel = computed(() => {
           </StudioTooltip>
         </span>
       </span>
-      <span class="character-browse-all"><ArchiveIcon name="search" />浏览全部 {{ characters.length }} 位角色</span>
+      <span class="character-browse-all tw:flex tw:justify-center tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent"><ArchiveIcon name="search" />浏览全部 {{ characters.length }} 位角色</span>
     </button>
     <Teleport to="body">
       <dialog ref="browserDialog" class="character-browser-dialog" :aria-labelledby="dialogTitle" @cancel.prevent="browserMotion.close()">
@@ -70,13 +70,13 @@ const sourceLabel = computed(() => {
         <CharacterDirectory :items="directoryItems" :selected-id="selectedCharacterId" v-model:search="searchProxy" catalog :page-size="18" @select="selectFromDirectory" @dismiss="browserMotion.close()" />
       </dialog>
     </Teleport>
-    <div v-if="selectedCharacter" class="popular-outfits">
-      <div class="popular-outfits-head">
+    <div v-if="selectedCharacter" class="popular-outfits tw:grid tw:gap-s-2">
+      <div class="popular-outfits-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:text-label-sm">
         <ArchiveIcon name="wardrobe" class="outfits-head-icon" />
         <strong>造型手帖</strong>
-        <span class="outfits-count">{{ selectedCharacter.outfits.length }} 套官方服装</span>
+        <span class="outfits-count tw:ml-auto tw:text-secondary tw:text-label-xs">{{ selectedCharacter.outfits.length }} 套官方服装</span>
       </div>
-      <div class="outfit-chips" role="group" aria-label="官方服装">
+      <div class="outfit-chips tw:grid tw:gap-s-2" role="group" aria-label="官方服装">
         <button v-for="outfit in selectedCharacter.outfits" :key="outfit.id"
           type="button" class="outfit-chip"
           :class="{ active: selectedOutfit?.id === outfit.id }"
@@ -91,47 +91,26 @@ const sourceLabel = computed(() => {
 </template>
 
 <style scoped>
-.popular-picker { display: grid; gap: var(--s-4); }
-
+@reference "../../assets/css/tailwind.css";
 /* 当前角色按钮：整体一个点击目标，内部只有「稳定阅读底色」与「强调动作」两层。 */
 .character-browse-button {
-  display: grid;
-  gap: 0;
-  width: 100%;
-  min-width: 0;
-  padding: 0;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-lg);
-  overflow: hidden;
   background: var(--bg-surface);
   color: inherit;
   font: inherit;
-  text-align: left;
-  cursor: pointer;
 }
-.character-browse-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--r-lg); }
+.character-browse-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; @apply tw:rounded-lg; }
 .character-browse-trigger {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  min-width: 0;
-  padding: var(--s-3);
   background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface) 70%);
   transition: background var(--motion-hover) var(--ease-out);
 }
-.character-current-text { min-width: 0; display: grid; gap: var(--s-2); overflow-wrap: anywhere; }
-.character-current-text strong { color: var(--text-primary); font-size: var(--fs-title-xs); font-weight: 650; line-height: var(--lh-body); }
-.character-current-text small { color: var(--text-secondary); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
+.character-current-text { overflow-wrap: anywhere; }
+.character-current-text strong { @apply tw:text-primary tw:text-title-xs; font-weight: 650; @apply tw:leading-body; }
+.character-current-text small { @apply tw:text-secondary tw:text-label-xs tw:leading-body; }
 .character-browse-all {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--s-2);
-  min-height: 44px;
   padding: var(--s-2) var(--s-3);
   border-top: 1px solid var(--border-soft);
   background: var(--bg-surface);
-  color: var(--accent);
   font: 600 var(--fs-label) var(--font-sans);
   transition: background var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
 }
@@ -139,67 +118,46 @@ const sourceLabel = computed(() => {
 .character-browse-button:hover .character-browse-all { background: var(--bg-hover); }
 .character-browse-button:active .character-browse-all { transform: scale(.98); }
 
-.character-browser-dialog { margin: auto; width: min(1040px, calc(100vw - 32px)); height: min(800px, calc(100dvh - 48px)); max-height: calc(100dvh - 32px); padding: var(--s-5); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-lg); }
+.character-browser-dialog { @apply tw:m-auto; width: min(1040px, calc(100vw - 32px)); height: min(800px, calc(100dvh - 48px)); max-height: calc(100dvh - 32px); @apply tw:p-s-5; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; box-shadow: var(--shadow-lg); }
 /* 滚动职责下放到筛选栏与结果区，弹窗本体不再套一层滚动。 */
-.character-browser-dialog[open] { display: flex; flex-direction: column; gap: var(--s-3); overflow: hidden; }
+.character-browser-dialog[open] { @apply tw:flex tw:flex-col tw:gap-s-3 tw:overflow-hidden; }
 .character-browser-dialog::backdrop { background: var(--art-scrim); }
-.character-browser-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); flex-shrink: 0; }
-.character-browser-heading h2 { margin: 0; font-size: var(--fs-title-xs); line-height: var(--lh-body); }
-.character-browser-heading p { margin: var(--s-1) 0; font-size: var(--fs-label); color: var(--text-muted); line-height: var(--lh-body); }
-.character-browser-heading button { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); color: var(--text-primary); cursor: pointer; }
+.character-browser-heading { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3 tw:shrink-0; }
+.character-browser-heading h2 { @apply tw:m-0 tw:text-title-xs tw:leading-body; }
+.character-browser-heading p { margin: var(--s-1) 0; @apply tw:text-label tw:text-muted tw:leading-body; }
+.character-browser-heading button { @apply tw:grid; place-items: center; @apply tw:shrink-0 tw:w-[40px] tw:h-[40px]; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-deep); @apply tw:text-primary tw:cursor-pointer; }
 .character-browser-heading button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-.popular-outfits { display: grid; gap: var(--s-2); }
-.popular-outfits-head {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  flex-wrap: wrap;
-  font-size: var(--fs-label-sm);
-}
 .outfits-head-icon {
-  width: 14px;
-  height: 14px;
+  @apply tw:w-[14px] tw:h-[14px];
   color: var(--pb-active);
 }
-.outfits-count { margin-left: auto; color: var(--text-secondary); font-size: var(--fs-label-xs); }
 .outfit-chips {
-  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr));
-  gap: var(--s-2);
 }
 .outfit-chip {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  min-height: 48px;
-  min-width: 0;
+  @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[48px] tw:min-w-0;
   padding: var(--s-2) var(--s-3);
-  border-radius: var(--r-md);
-  text-align: left;
-  line-height: var(--lh-body);
+  @apply tw:rounded-md tw:text-left tw:leading-body;
   border: 1px solid var(--border-strong);
   background: var(--bg-surface);
-  color: var(--text-secondary);
-  font-size: var(--fs-label-sm);
-  cursor: pointer;
+  @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer;
 }
-.outfit-chip:hover { border-color: var(--accent); color: var(--accent); }
+.outfit-chip:hover { @apply tw:border-accent tw:text-accent; }
 .outfit-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .outfit-chip.active {
-  border-color: var(--accent);
+  @apply tw:border-accent;
   background: var(--bg-surface);
-  color: var(--accent);
+  @apply tw:text-accent;
   box-shadow: inset 3px 0 var(--accent);
 }
 @media (prefers-reduced-motion: reduce) {
   .character-browse-button:active .character-browse-all { transform: none; }
   .character-browser-dialog[open] { animation: none; }
 }
-@media (max-width: 540px) { .character-browser-dialog { padding: var(--s-3); } }
-.character-browse-trigger :deep(.character-portrait) { width: 86px; height: 116px; border-radius: var(--r-md); border: 1px solid var(--glass-edge); box-shadow: var(--shadow-sm); transform: rotate(-3deg); transition: transform var(--motion-hover) var(--ease-out); }
-.character-current-text .character-current-kicker { color: var(--accent); letter-spacing: .08em; }
-.outfit-chip .archive-icon { width: 16px; height: 16px; flex-shrink: 0; }
+@media (max-width: 540px) { .character-browser-dialog { @apply tw:p-s-3; } }
+.character-browse-trigger :deep(.character-portrait) { @apply tw:w-[86px] tw:h-[116px] tw:rounded-md; border: 1px solid var(--glass-edge); box-shadow: var(--shadow-sm); transform: rotate(-3deg); transition: transform var(--motion-hover) var(--ease-out); }
+.character-current-text .character-current-kicker { @apply tw:text-accent; letter-spacing: .08em; }
+.outfit-chip .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
 .outfit-chip span { overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { .character-browse-trigger :deep(.character-portrait) { transition: none; } .character-browse-button:hover .character-portrait { transform: none; } }
 </style>

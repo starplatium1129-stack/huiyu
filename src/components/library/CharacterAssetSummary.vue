@@ -1,4 +1,4 @@
-<template><section class="asset-summary" aria-label="角色素材状态"><div><strong>创作素材</strong><p role="status">{{ checking ? '正在检查默认服装参考图…' : problem || `默认服装参考图 ${available} / ${total} 可读取` }}</p></div><button class="btn btn-ghost" type="button" :disabled="checking" @click="check(true)">重新检查</button></section></template>
+<template><section class="asset-summary tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-4 tw:p-s-4 tw:rounded-lg tw:text-primary" aria-label="角色素材状态"><div><strong class="tw:text-body-sm">创作素材</strong><p class="tw:m-0 tw:mt-s-1 tw:text-label tw:leading-body tw:text-secondary" role="status">{{ checking ? '正在检查默认服装参考图…' : problem || `默认服装参考图 ${available} / ${total} 可读取` }}</p></div><button class="btn btn-ghost" type="button" :disabled="checking" @click="check(true)">重新检查</button></section></template>
 <script setup lang="ts">
 import { runtimeFetch } from '@/platform/runtimeUrl'
 
@@ -31,7 +31,5 @@ watch(() => props.characterId, () => { void check() }, { immediate: true })
 onUnmounted(() => controller?.abort())
 </script>
 <style scoped>
-.asset-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-4); padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-primary); }
-.asset-summary strong { font-size: var(--fs-body-sm); }
-.asset-summary p { margin: var(--s-1) 0 0; font-size: var(--fs-label); line-height: var(--lh-body); color: var(--text-secondary); }
+.asset-summary { border: 1px solid var(--border-soft); background: var(--bg-surface); }
 </style>

@@ -3,7 +3,7 @@
   <aside
     v-if="visible"
     ref="guideEl"
-    class="guest-guide"
+    class="guest-guide tw:fixed tw:grid tw:p-s-5"
     role="dialog"
     aria-modal="true"
     aria-describedby="guest-guide-description"
@@ -12,7 +12,7 @@
   >
     <div class="guest-guide-card">
       <div class="guest-guide-body">
-        <span class="guest-guide-kicker">初次见面 · {{ isLocalHost ? '一次导览' : '访客导览' }}</span>
+        <span class="guest-guide-kicker tw:text-accent">初次见面 · {{ isLocalHost ? '一次导览' : '访客导览' }}</span>
         <h2 id="guest-guide-title">欢迎来到 绘遇</h2>
 
         <!-- 本机主人：讲的是「怎么上手」，不是「这是谁的电脑」 -->
@@ -43,9 +43,9 @@
           </ul>
         </template>
       </div>
-      <div class="guest-guide-actions">
+      <div class="guest-guide-actions tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:flex-wrap">
         <!-- docs/ 由网关静态托管（server.js /docs），42 份文档此前在应用内零入口 -->
-        <a class="guest-guide-doc" href="/docs/getting-started.html" target="_blank" rel="noopener">翻开使用指南</a>
+        <a class="guest-guide-doc tw:text-secondary tw:text-label-sm" href="/docs/getting-started.html" target="_blank" rel="noopener">翻开使用指南</a>
         <button ref="dismissButton" class="btn btn-primary" type="button" @click="dismiss">
           {{ isLocalHost ? '开始创作' : '知道了，开始浏览' }}
         </button>
@@ -95,54 +95,47 @@ function dismiss() {
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
 .guest-guide {
-  position: fixed;
   z-index: var(--z-overlay);
   inset: 0;
-  display: grid;
   place-items: center;
-  padding: var(--s-5);
   background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
   backdrop-filter: blur(10px);
 }
 .guest-guide-card {
   width: min(520px, 100%);
-  display: grid;
-  gap: var(--s-4);
-  padding: var(--s-6);
+  @apply tw:grid tw:gap-s-4 tw:p-s-6;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-xl);
+  @apply tw:rounded-xl;
   background: var(--bg-surface);
   box-shadow: var(--shadow-lg);
 }
 .guest-guide-kicker {
-  color: var(--accent);
   font: 700 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .14em;
 }
 .guest-guide-body h2 { margin: var(--s-1) 0 var(--s-2); }
-.guest-guide-body p { margin: 0 0 var(--s-3); color: var(--text-secondary); line-height: var(--lh-loose); }
-.guest-guide-body ul { margin: 0; padding-left: var(--s-4); display: grid; gap: var(--s-2); color: var(--text-secondary); }
-.guest-guide-body strong { color: var(--text-primary); }
+.guest-guide-body p { margin: 0 0 var(--s-3); @apply tw:text-secondary tw:leading-loose; }
+.guest-guide-body ul { @apply tw:m-0 tw:pl-s-4 tw:grid tw:gap-s-2 tw:text-secondary; }
+.guest-guide-body strong { @apply tw:text-primary; }
 .guest-guide-body kbd {
   padding: 1px 5px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-sm);
+  @apply tw:rounded-sm;
   background: var(--bg-deep);
   font: 650 var(--fs-mono-xs) var(--font-mono);
 }
-.guest-guide-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; }
 .guest-guide-doc {
-  color: var(--text-secondary); font-size: var(--fs-label-sm);
   text-decoration: underline; text-underline-offset: 3px;
 }
-.guest-guide-doc:hover { color: var(--accent); }
+.guest-guide-doc:hover { @apply tw:text-accent; }
 .guest-guide-doc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   .guest-guide { backdrop-filter: none; animation: none; }
   .guest-guide-card { animation: none; }
 }
 @media (max-width: 600px) {
-  .guest-guide-card { padding: var(--s-4); }
+  .guest-guide-card { @apply tw:p-s-4; }
 }
 </style>

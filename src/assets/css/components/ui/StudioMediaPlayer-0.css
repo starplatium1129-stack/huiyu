@@ -1,0 +1,74 @@
+@reference "../../tailwind.css";
+/* Shared control bases retain selector precedence and avoid repeated template payload. */
+.studio-media { @apply tw:grid tw:gap-s-2 tw:m-0 tw:min-w-0; }
+.studio-media-frame { @apply tw:block tw:w-full tw:[max-height:var(--media-max-height,_60vh)] tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-deep tw:cursor-pointer; }
+.studio-media-bar { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:py-s-1 tw:px-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-pill tw:bg-surface; }
+.studio-media-btn { @apply tw:grid tw:place-items-center tw:[flex:0_0_34px] tw:w-[34px] tw:h-[34px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-full tw:bg-transparent tw:text-primary tw:cursor-pointer; }
+.studio-media-seek { @apply tw:flex-auto tw:min-w-0 tw:h-[24px] tw:m-0 tw:border-0 tw:bg-transparent tw:cursor-pointer tw:appearance-none; }
+.studio-media-time { @apply tw:flex-none tw:text-secondary tw:[font:500_var(--fs-label-sm)_var(--font-mono)] tw:tabular-nums tw:whitespace-nowrap; }
+.studio-media-transcript { @apply tw:p-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-secondary tw:text-body-sm; }
+.studio-media-error { @apply tw:m-0 tw:[color:var(--danger)] tw:text-label-sm; }
+
+.studio-media[data-kind='audio'] .studio-media-audio { display: none; }
+.studio-media-btn {
+  transition: background-color var(--motion-hover) var(--ease-out), border-color var(--motion-hover) var(--ease-out);
+}
+.studio-media-btn:hover { border-color: var(--border-soft); background: var(--bg-hover); }
+.studio-media-btn:disabled { color: var(--text-disabled); cursor: not-allowed; }
+.studio-media-btn .archive-icon { width: 16px; height: 16px; }
+
+/* ── 进度轨道 ──
+   不写原生控件外观：appearance 全关，用自定义属性 --progress 画已播段，
+   仅改背景与 transform，不触发重排。 */
+.studio-media-seek {
+  -webkit-appearance: none;
+}
+.studio-media-seek:disabled { cursor: not-allowed; }
+.studio-media-seek::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(
+    to right,
+    var(--accent) 0 var(--progress, 0%),
+    color-mix(in srgb, var(--text-muted) 30%, transparent) var(--progress, 0%) 100%
+  );
+}
+.studio-media-seek::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 3px solid var(--bg-surface);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  -webkit-appearance: none;
+}
+.studio-media-seek::-moz-range-track {
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--text-muted) 30%, transparent);
+}
+.studio-media-seek::-moz-range-progress {
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+}
+.studio-media-seek::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  border: 3px solid var(--bg-surface);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+}
+.studio-media-seek:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+
+@media (max-width: 600px) {
+  .studio-media-btn { flex-basis: 40px; width: 40px; height: 40px; }
+}
+@media (forced-colors: active) {
+  .studio-media-bar { border-color: CanvasText; }
+  .studio-media-seek::-webkit-slider-runnable-track { background: CanvasText; }
+}

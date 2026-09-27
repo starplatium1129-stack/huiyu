@@ -1,5 +1,5 @@
 <template>
-  <div class="archive-corner-frame" :class="`corner-${variant}`" aria-hidden="true">
+  <div class="archive-corner-frame tw:absolute tw:[z-index:var(--z-raised)] tw:inset-[10px] tw:pointer-events-none" :class="`corner-${variant}`" aria-hidden="true">
     <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
   </div>
 </template>
@@ -12,12 +12,6 @@ withDefaults(defineProps<{
 </script>
 
 <style scoped>
-.archive-corner-frame {
-  position: absolute;
-  z-index: var(--z-raised);
-  inset: 10px;
-  pointer-events: none;
-}
 .archive-corner-frame i {
   position: absolute;
   width: 24px;

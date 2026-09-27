@@ -273,6 +273,16 @@ for (const rel of cssFiles) {
 }
 
 // ---- 报告 ------------------------------------------------------------------
+// Template classes and @apply obey the same radius-token rule as declarations.
+for (const rel of [...cssFiles, ...htmlFiles, ...sfcFiles, ...sources.utilityScriptFiles()]) {
+  for (const utility of sources.tailwindUtilities(fs.readFileSync(path.join(root, rel), 'utf8'))) {
+    for (const { property, value } of utility.declarations) {
+      if (property !== 'border-radius' || value.includes('var(') || /^(?:(?:50%|0)(?:\s+(?:50%|0))*|inherit|initial|unset|revert)$/.test(value)) continue;
+      fail(`${rel}:${utility.line} Tailwind 圆角必须使用设计令牌或 50%（圆形）: ${utility.candidate}`);
+    }
+  }
+}
+
 if (failures.length) {
   console.error('样式债门禁失败:');
   for (const message of failures) console.error('  - ' + message);
@@ -292,6 +302,7 @@ test('contrast: parses real theme overrides, nested mixes and alpha without sile
   const { block, resolveColor, ratio, themes, characterThemes }: typeof import('../maintenance/check-contrast') = require('../maintenance/check-contrast');
   const css = ':root[data-theme="light"] { --ink: #111; } :root { --ink: #fff; }';
   assert.equal(block(':root', css)['--ink'], '#fff');
+  assert.equal(block(':root[data-theme="light"]', '@reference "./tailwind.css";\n' + css)['--ink'], '#111');
   assert.throws(() => block('.missing', css), /Missing CSS token block/);
   assert.equal(themes.length, 2);
   assert.notEqual((themes[0][1] as Record<string, any>)['--text-primary'], (themes[1][1] as Record<string, any>)['--text-primary']);
@@ -306,4 +317,54 @@ test('contrast: parses real theme overrides, nested mixes and alpha without sile
   assert.equal(resolveColor({}, 'rgba(..,0,0,1)'), null);
   assert.equal(resolveColor({}, 'color-mix(in srgb, #fff ..%, #000)'), null);
   assert.ok(characterThemes().some(([name]: any) => name.startsWith('light /')));
+});
+
+test('Tailwind source audit sees variants, arbitrary properties and dynamic class maps', () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  const source = `<template><div class="tw:[&>span]:hover:text-[#123456] tw:text-[length:14px] tw:z-50"
+    :class="{ 'tw:rounded-[12px]': active, 'tw:bg-[var(--bg-surface)]': !active }" /></template>
+    <style>.item { @apply tw:[font-size:18px] tw:transition-[width,opacity]; }</style>
+    <!-- tw:bg-[#abcdef] --> /* tw:z-[999] */`;
+  const utilities = sources.tailwindUtilities(source);
+  assert.equal(utilities.length, 7);
+  assert.equal(utilities[0].candidate, 'tw:[&>span]:hover:text-[#123456]');
+  assert.equal(sources.tailwindColorLiterals(source).length, 1);
+  const declarations = utilities.map(sources.utilityCss).join('\n');
+  assert.match(declarations, /font-size: 14px/);
+  assert.match(declarations, /font-size: 18px/);
+  assert.match(declarations, /border-radius: 12px/);
+  assert.match(declarations, /z-index: 50/);
+  assert.match(declarations, /transition-property: width,opacity/);
+});
+
+test('color lint rejects utility hex, function and named literals while accepting theme tokens', () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  const { scanFile }: typeof import('../maintenance/lint-colors') = require('../maintenance/lint-colors');
+  const directory = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'huiyu-tailwind-colors-'));
+  const file = path.join(directory, 'Example.vue');
+  try {
+    fs.writeFileSync(file, `<template><div class="tw:bg-[#12345678] tw:text-[red] tw:bg-[rgb(1_2_3)] tw:text-primary tw:bg-[var(--bg-surface)]" /></template>
+      <style>.item { @apply tw:border-[color:hsl(20_30%_40%)]; }</style>`);
+    assert.equal(scanFile(file).length, 4);
+    assert.equal(sources.tailwindColorLiterals('tw:bg-[color-mix(in_srgb,var(--accent)_40%,#123456)]').length, 1);
+    assert.equal(sources.tailwindColorLiterals('tw:bg-[transparent] tw:text-[currentColor] tw:text-[var(--ink)]').length, 0);
+    assert.equal(sources.tailwindColorLiterals('tw:[border-style:dashed]').length, 0);
+  } finally {
+    if (fs.existsSync(file)) fs.unlinkSync(file);
+    fs.rmdirSync(directory);
+  }
+});
+
+test('compositor gate catches layout utilities in transitions and keyframes', () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  const { scanCss, scanUtilityAnimations }: typeof import('../maintenance/lint-animations') = require('../maintenance/lint-animations');
+  const css = '.item { @apply tw:transition-[height,opacity]; } @keyframes grow { to { @apply tw:w-full tw:px-[12px]; } }';
+  assert.equal(scanCss('fixture.css', css).filter(f => !f.warnOnly).length, 3);
+  assert.equal(scanCss('fixture.css', '@keyframes shift { to { @apply tw:-left-[12px] tw:inset-x-0 tw:size-[40px]; } }').length, 4);
+  const unsafe = '<div class="tw:hover:transition-[width] tw:transition-all tw:[transition:inset_200ms]" />';
+  assert.equal(scanUtilityAnimations('fixture.vue', unsafe).filter(f => !f.exempt).length, 3);
+  assert.equal(scanUtilityAnimations('fixture.vue', '<div class="tw:transition-[transform,opacity]" />').length, 0);
+  assert.equal(scanCss('fixture.css', '/* @apply tw:transition-[height]; */').length, 0);
+  const exempt = '/* compositor-exempt: bounded disclosure with unknown content height */ <div class="tw:transition-[height]" />';
+  assert.equal(scanUtilityAnimations('fixture.vue', exempt)[0].exempt, true);
 });

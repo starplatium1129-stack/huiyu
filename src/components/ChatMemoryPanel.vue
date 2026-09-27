@@ -63,31 +63,4 @@ async function requestDelete(id: string) {
 }
 </script>
 
-<style scoped>
-.chat-memory-panel {
-  margin: 0 0 var(--s-4);
-  padding: var(--s-4);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-lg);
-  background: var(--glass-fill);
-  box-shadow: var(--shadow-md);
-}
-.chat-memory-panel header,
-.memory-item > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-}
-.chat-memory-panel header div { display: grid; gap: 2px; }
-.chat-memory-panel header span { color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 700; letter-spacing: .08em; }
-.chat-memory-panel header strong { color: var(--text-primary); font-size: var(--fs-title-xs); }
-.chat-memory-panel > p { margin: var(--s-2) 0 var(--s-4); color: var(--text-secondary); font-size: var(--fs-label); }
-.memory-close { border: 0; background: transparent; color: var(--text-muted); font-size: var(--fs-title); cursor: pointer; }
-.memory-empty { padding: var(--s-4); border: 1px dashed var(--border-soft); border-radius: var(--r-md); color: var(--text-muted); text-align: center; }
-.memory-list { display: grid; gap: var(--s-3); }
-.memory-item { display: grid; gap: var(--s-2); }
-.memory-item textarea { width: 100%; padding: 9px 11px; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); color: var(--text-primary); font: inherit; }
-.memory-item > div { justify-content: flex-end; }
-.memory-item > div span { margin-right: auto; color: var(--text-muted); font-size: var(--fs-mono-sm); }
-</style>
+<style scoped src="@/assets/css/components/ChatMemoryPanel-0.css"></style>

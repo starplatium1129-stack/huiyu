@@ -16,7 +16,7 @@
 
     <ColorLightNotebook @choose="chooseMood" />
 
-    <p class="emphasis-plain mb-3">今日心境色板 · Mood Palette</p>
+    <p class="emphasis-plain tw:mb-s-3 tw:font-semibold tw:text-primary">今日心境色板 · Mood Palette</p>
     <div ref="moodGrid" class="mood-grid stagger-container" data-reveal data-reveal-delay="1">
       <button
         v-for="m in MOODS" :key="m.id"
@@ -43,7 +43,7 @@
           <span class="mood-icon" :style="{ '--mood-color': selected.color }"><ArchiveIcon :name="selected.iconName" /></span>
           {{ selected.name }} → 色彩 → 光照
         </h3>
-        <div class="palette">
+        <div class="palette tw:mb-s-4 tw:flex tw:flex-wrap tw:gap-s-2">
           <div v-for="c in selected.palette" :key="c" class="palette-swatch">
             <span class="palette-color" :style="{ '--swatch': c }" aria-hidden="true"></span>
             <span class="palette-code">{{ c }}</span>
@@ -60,7 +60,7 @@
         </div>
         <div class="prompt-label">自动翻译 Prompt</div>
         <div class="prompt-code" v-html="colorizedPrompt"></div>
-        <div class="result-actions">
+        <div class="result-actions tw:flex tw:flex-wrap tw:gap-s-2">
           <button class="btn btn-primary" type="button" @click="copyPrompt"><ArchiveIcon name="copy" /> 复制 Prompt</button>
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 带入工作台使用</RouterLink>
@@ -70,7 +70,7 @@
     </Transition>
 
     <h2 class="section-title spaced-lg">美术指导 · 色彩语言</h2>
-    <p class="note mb-3">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>
+    <p class="note tw:mb-s-3 tw:text-body-sm tw:text-muted">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>
     <div class="art-ref">
       <div class="art-ref-card good">
         <div class="art-ref-title"><ArchiveIcon name="success" /> 推荐使用</div>
@@ -87,7 +87,7 @@
     </div>
 
     <h2 class="section-title spaced">光影指导 · 让光芒诉说故事</h2>
-    <p class="note mb-3">每一束光线都有出现的理由，它服务于此刻的空气、时间与叙事。</p>
+    <p class="note tw:mb-s-3 tw:text-body-sm tw:text-muted">每一束光线都有出现的理由，它服务于此刻的空气、时间与叙事。</p>
     <div class="lighting-ref">
       <div v-for="l in LIGHTINGS" :key="l.name" class="lighting-mini">
         <div class="lighting-icon"><ArchiveIcon :name="l.iconName" /></div>
@@ -99,6 +99,7 @@
 </template>
 
 <script setup lang="ts">
+import '@/assets/css/mood.css'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
 import ColorLightNotebook from '@/components/library/ColorLightNotebook.vue'
@@ -198,49 +199,44 @@ function exportTxt() {
 // 在任何样式表里都没有定义，那个提示一直是页面底部的无样式裸文本。
 </script>
 
-<style scoped>
-.emphasis-plain { color:var(--text-primary); font-weight:600; }
-.mb-3 { margin-bottom:var(--s-3); }
-.note { color:var(--text-muted); font-size:var(--fs-body-sm); }
-.section-title { font-size:var(--fs-title-sm); font-weight:700; margin-bottom:var(--s-2); }
+<style scoped>@reference "../assets/css/tailwind.css";
+.section-title { @apply tw:text-title-sm tw:font-bold tw:mb-s-2; }
 /* 章节间距:替代原先三处内联 style="margin-top:..." */
-.section-title.spaced-lg { margin-top:var(--s-8); }
-.section-title.spaced { margin-top:var(--s-6); }
-.palette { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-4); }
+.section-title.spaced-lg { @apply tw:mt-s-8; }
+.section-title.spaced { @apply tw:mt-s-6; }
 
-.result-panel { padding:var(--s-5); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-surface); margin-top:var(--s-5); }
-.result-panel h3 { margin-bottom:var(--s-3); font-size:var(--fs-title-sm); }
+.result-panel { @apply tw:p-s-5; border:1px solid var(--accent); @apply tw:rounded-xl; background:var(--bg-surface); @apply tw:mt-s-5; }
+.result-panel h3 { @apply tw:mb-s-3 tw:text-title-sm; }
 /* 色号使用稳定阅读底色，不受任意深浅的样本色影响。 */
-.palette-swatch { width:76px; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
-.palette-color { display:block; height:48px; background:var(--swatch); }
-.palette-code { display:block; padding:var(--s-2) var(--s-1); text-align:center; color:var(--text-primary); font:500 var(--fs-body-sm)/var(--lh-label) var(--font-mono); }
-.mapping-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
-.mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); }
-.mapping-label { font-size:var(--fs-label-sm); color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:var(--s-1); }
-.mapping-value { font-size:var(--fs-body); font-weight:600; }
-.prompt-label { margin-bottom:var(--s-1); color:var(--accent); font-size:var(--fs-label-sm); font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
-.prompt-code { padding:var(--s-3); background:var(--bg-elevated); border-radius:var(--r-md); font-family:var(--font-mono); font-size:var(--fs-mono-sm); line-height:var(--lh-loose); margin-bottom:var(--s-3); word-break:break-word; }
-:deep(.violate) { color:var(--danger-text); text-decoration:underline wavy; }
-.art-warn { display:none; align-items:center; gap:var(--s-2); background:color-mix(in srgb,var(--warning) 12%,transparent); border:1px solid var(--warning); border-radius:var(--r-md); padding:var(--s-2) var(--s-3); margin-bottom:var(--s-3); color:var(--warning-text); font-size:var(--fs-label); }
-.art-warn.show { display:flex; }
-.result-actions { display:flex; gap:var(--s-2); flex-wrap:wrap; }
+.palette-swatch { @apply tw:w-[76px] tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); }
+.palette-color { @apply tw:block tw:h-[48px]; background:var(--swatch); }
+.palette-code { @apply tw:block; padding:var(--s-2) var(--s-1); @apply tw:text-center tw:text-primary; font:500 var(--fs-body-sm)/var(--lh-label) var(--font-mono); }
+.mapping-grid { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); @apply tw:gap-s-3 tw:mb-s-4; }
+.mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3; }
+.mapping-label { @apply tw:text-label-sm tw:text-muted tw:uppercase; letter-spacing:.05em; @apply tw:mb-s-1; }
+.mapping-value { @apply tw:text-body tw:font-semibold; }
+.prompt-label { @apply tw:mb-s-1 tw:text-accent tw:text-label-sm tw:font-semibold; letter-spacing:.06em; @apply tw:uppercase; }
+.prompt-code { @apply tw:p-s-3; background:var(--bg-elevated); @apply tw:rounded-md tw:font-mono tw:text-mono-sm tw:leading-loose tw:mb-s-3; word-break:break-word; }
+:deep(.violate) { @apply tw:text-danger-text; text-decoration:underline wavy; }
+.art-warn { @apply tw:hidden tw:items-center tw:gap-s-2; background:color-mix(in srgb,var(--warning) 12%,transparent); border:1px solid var(--warning); @apply tw:rounded-md; padding:var(--s-2) var(--s-3); @apply tw:mb-s-3 tw:text-warning-text tw:text-label; }
+.art-warn.show { @apply tw:flex; }
 
-.art-ref { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); margin-bottom:var(--s-5); }
-.art-ref-card { border-radius:var(--r-lg); padding:var(--s-4); border:1px solid var(--border-soft); }
+.art-ref { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-3 tw:mb-s-5; }
+.art-ref-card { @apply tw:rounded-lg tw:p-s-4; border:1px solid var(--border-soft); }
 .art-ref-card.good { background:color-mix(in srgb,var(--success) 6%,transparent); border-color:color-mix(in srgb,var(--success) 30%,transparent); }
 .art-ref-card.bad { background:color-mix(in srgb,var(--danger) 6%,transparent); border-color:color-mix(in srgb,var(--danger) 30%,transparent); }
-.art-ref-title { font-size:var(--fs-body); font-weight:700; margin-bottom:var(--s-2); }
-.art-ref-card.good .art-ref-title { color:var(--success-text); }
-.art-ref-card.bad .art-ref-title { color:var(--danger-text); }
-.art-tag { display:inline-block; margin:2px 3px; padding:3px var(--s-3); border-radius:var(--r-pill); font-size:var(--fs-label-sm); font-weight:600; }
-.art-tag.ok { background:color-mix(in srgb,var(--success) 12%,transparent); color:var(--success-text); }
-.art-tag.no { background:color-mix(in srgb,var(--danger) 12%,transparent); color:var(--danger-text); }
+.art-ref-title { @apply tw:text-body tw:font-bold tw:mb-s-2; }
+.art-ref-card.good .art-ref-title { @apply tw:text-success-text; }
+.art-ref-card.bad .art-ref-title { @apply tw:text-danger-text; }
+.art-tag { @apply tw:inline-block; margin:2px 3px; padding:3px var(--s-3); @apply tw:rounded-pill tw:text-label-sm tw:font-semibold; }
+.art-tag.ok { background:color-mix(in srgb,var(--success) 12%,transparent); @apply tw:text-success-text; }
+.art-tag.no { background:color-mix(in srgb,var(--danger) 12%,transparent); @apply tw:text-danger-text; }
 
-.lighting-ref { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:var(--s-2); margin-bottom:var(--s-5); }
-.lighting-mini { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); text-align:center; }
-.lighting-icon { margin-bottom:2px; font-size:var(--fs-title); }
-.lighting-name { font-size:var(--fs-body-sm); font-weight:600; }
-.lighting-reason { font-size:var(--fs-body-sm); color:var(--text-secondary); margin-top:var(--s-2); line-height:var(--lh-body); }
+.lighting-ref { @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); @apply tw:gap-s-2 tw:mb-s-5; }
+.lighting-mini { background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3 tw:text-center; }
+.lighting-icon { @apply tw:mb-[2px] tw:text-title; }
+.lighting-name { @apply tw:text-body-sm tw:font-semibold; }
+.lighting-reason { @apply tw:text-body-sm tw:text-secondary tw:mt-s-2 tw:leading-body; }
 
 .fade-up-enter-active { transition:opacity var(--motion-route),transform var(--motion-route); }
 .fade-up-enter-from { opacity:0; transform:translateY(12px); }

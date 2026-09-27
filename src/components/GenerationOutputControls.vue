@@ -26,7 +26,7 @@
       </details>
     </div>
 
-    <div v-if="presetSummary" class="generation-auto-summary">
+    <div v-if="presetSummary" class="generation-auto-summary tw:flex tw:items-baseline tw:justify-between tw:gap-[12px] tw:mb-[10px] tw:rounded-md tw:text-muted tw:text-body tw:leading-body tw:flex-wrap">
       <span>自动参数</span>
       <strong>{{ presetSummary }}</strong>
     </div>
@@ -109,35 +109,24 @@ const upscalerOptions: StudioSelectOption[] = [
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
 .generation-auto-summary {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
   padding: 9px 11px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
   background: var(--bg-deep);
-  color: var(--text-muted);
-  font-size: var(--fs-body);
-  line-height:var(--lh-body);
-  flex-wrap:wrap;
 }
 .control-icon-inline {
-  width: 14px;
-  height: 14px;
-  display: inline-block;
+  @apply tw:w-[14px] tw:h-[14px] tw:inline-block;
   vertical-align: -2px;
-  color: var(--accent);
+  @apply tw:text-accent;
 }
 .btn-hires-action-quick {
-  color: var(--accent);
+  @apply tw:text-accent;
   border-color: color-mix(in srgb, var(--accent) 30%, var(--border-soft));
   background: color-mix(in srgb, var(--accent-soft) 30%, transparent);
 }
 .btn-hires-action-quick:hover {
   background: var(--accent-soft);
-  border-color: var(--accent);
+  @apply tw:border-accent;
 }
 </style>

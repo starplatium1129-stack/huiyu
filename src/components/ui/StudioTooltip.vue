@@ -182,9 +182,12 @@ watch(() => props.anchor, () => {
 
 <!-- Reka portals cross component roots; keep these uniquely prefixed rules global. -->
 <style>
+@reference "../../assets/css/tailwind.css";
+.studio-tooltip-anchor { @apply tw:contents; }
+.studio-tooltip { @apply tw:[z-index:var(--z-popover)] tw:[max-width:min(320px,_calc(100vw_-_24px))] tw:py-s-2 tw:px-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-elevated tw:text-primary tw:text-label-sm tw:leading-body tw:shadow-(--shadow-md); }
+.studio-tooltip-arrow { @apply tw:[fill:var(--bg-elevated)]; }
 /* 默认 display:contents —— 外壳不产生盒子，DOM 结构与布局对调用方完全透明。
    只有 anchor 模式才真的生成一个能接住指针的盒子。 */
-.studio-tooltip-anchor { display: contents; }
 .studio-tooltip-anchor[data-anchor] {
   display: inline-flex;
   align-items: center;
@@ -195,16 +198,6 @@ watch(() => props.anchor, () => {
 .studio-tooltip-anchor[data-anchor] > :disabled { pointer-events: none; }
 
 .studio-tooltip {
-  z-index: var(--z-popover);
-  max-width: min(320px, calc(100vw - 24px));
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-  font-size: var(--fs-label-sm);
-  line-height: var(--lh-body);
-  box-shadow: var(--shadow-md);
   transform-origin: var(--reka-tooltip-content-transform-origin, center);
 }
 .studio-tooltip[data-state='open'] { animation:studio-tooltip-in var(--motion-control) var(--ease-out) both; }
@@ -213,7 +206,6 @@ watch(() => props.anchor, () => {
 @keyframes studio-tooltip-out { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-1px) scale(.99); } }
 /* 渲染进 dialog 时要盖过弹窗内部最高层（--z-overlay 是弹窗层） */
 .studio-tooltip[data-in-dialog] { z-index: calc(var(--z-overlay) + 1); }
-.studio-tooltip-arrow { fill: var(--bg-elevated); }
 @media (prefers-reduced-motion: reduce) { .studio-tooltip[data-state] { animation: none; } }
 @media (forced-colors: active) { .studio-tooltip { background: Canvas; border-color: CanvasText; } .studio-tooltip-arrow { fill: Canvas; } }
 </style>

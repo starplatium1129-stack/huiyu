@@ -1,37 +1,38 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    GenerationOutputControls 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
-  .pb .sd-inline-options { display:flex; gap:var(--s-3); align-items:center; margin-bottom:var(--s-3); flex-wrap:wrap; font-size:var(--fs-label); color:var(--text-muted); }
-  .pb .sd-inline-options label { display:flex; align-items:center; gap:var(--s-2); cursor:pointer; }
+  .pb .sd-inline-options { @apply tw:flex tw:gap-s-3 tw:items-center tw:mb-s-3 tw:flex-wrap tw:text-label tw:text-muted; }
+  .pb .sd-inline-options label { @apply tw:flex tw:items-center tw:gap-s-2 tw:cursor-pointer; }
   /* 原生 select 已迁至 StudioSelect：仅需保留宽度收敛，外观由触发器统一样式接管 */
-  .pb .sd-inline-options .studio-select-wrapper { max-width:220px; min-width:140px; }
-  .pb .sd-inline-options .hires-label { display:flex; align-items:center; gap:var(--s-2); cursor:pointer; color:var(--text-secondary); font-size:var(--fs-label); white-space:nowrap; }
-  .pb .sd-advanced-options { position:relative; }
-  .pb .sd-advanced-options > summary { display:inline-flex; align-items:center; gap:var(--s-2); min-height:32px; padding:4px var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:color-mix(in srgb,var(--bg-surface) 82%,transparent); color:var(--text-secondary); cursor:pointer; font-size:var(--fs-label-sm); font-weight:650; list-style:none; transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover); }
-  .pb .sd-advanced-options > summary::-webkit-details-marker { display:none; }
-  .pb .sd-advanced-options > summary::after { content:'›'; display:inline-block; color:var(--text-muted); transform:rotate(90deg); transition:transform var(--motion-hover); }
-  .pb .sd-advanced-options > summary:hover { border-color:color-mix(in srgb,var(--accent) 46%,var(--border-soft)); color:var(--text-primary); }
-  .pb .sd-advanced-options[open] > summary { border-color:color-mix(in srgb,var(--accent) 48%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
+  .pb .sd-inline-options .studio-select-wrapper { @apply tw:max-w-[220px] tw:min-w-[140px]; }
+  .pb .sd-inline-options .hires-label { @apply tw:flex tw:items-center tw:gap-s-2 tw:cursor-pointer tw:text-secondary tw:text-label tw:whitespace-nowrap; }
+  .pb .sd-advanced-options { @apply tw:relative; }
+  .pb .sd-advanced-options > summary { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[32px]; padding:4px var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-pill; background:color-mix(in srgb,var(--bg-surface) 82%,transparent); @apply tw:text-secondary tw:cursor-pointer tw:text-label-sm; font-weight:650; list-style:none; transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover); }
+  .pb .sd-advanced-options > summary::-webkit-details-marker { @apply tw:hidden; }
+  .pb .sd-advanced-options > summary::after { content:'›'; @apply tw:inline-block tw:text-muted; transform:rotate(90deg); transition:transform var(--motion-hover); }
+  .pb .sd-advanced-options > summary:hover { border-color:color-mix(in srgb,var(--accent) 46%,var(--border-soft)); @apply tw:text-primary; }
+  .pb .sd-advanced-options[open] > summary { border-color:color-mix(in srgb,var(--accent) 48%,var(--border-soft)); background:var(--accent-soft); @apply tw:text-accent; }
   .pb .sd-advanced-options[open] > summary::after { transform:rotate(-90deg); }
-  .pb .sd-advanced-grid { position:absolute; z-index:var(--z-popover); top:calc(100% + 8px); right:0; display:grid; grid-template-columns:repeat(2,minmax(150px,1fr)); gap:var(--s-2) var(--s-3); width:max-content; min-width:390px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:color-mix(in srgb,var(--bg-elevated) 94%,transparent); box-shadow:var(--shadow-md); backdrop-filter:blur(22px) saturate(125%); }
-  .pb .sd-advanced-grid label { justify-content:space-between; }
+  .pb .sd-advanced-grid { @apply tw:absolute; z-index:var(--z-popover); top:calc(100% + 8px); @apply tw:right-0 tw:grid; grid-template-columns:repeat(2,minmax(150px,1fr)); gap:var(--s-2) var(--s-3); width:max-content; @apply tw:min-w-[390px] tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md; background:color-mix(in srgb,var(--bg-elevated) 94%,transparent); box-shadow:var(--shadow-md); backdrop-filter:blur(22px) saturate(125%); }
+  .pb .sd-advanced-grid label { @apply tw:justify-between; }
   /* 原生 select 已迁至 StudioSelect：触发器统一样式，仅保留宽度收敛与原 36px 高度 */
-  .pb .sd-advanced-grid .studio-select-wrapper { width: 100%; min-width: 0; }
-  .pb .sd-advanced-grid .studio-select-trigger { min-height: 36px; }
+  .pb .sd-advanced-grid .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
+  .pb .sd-advanced-grid .studio-select-trigger { @apply tw:min-h-[36px]; }
   .pb .sd-advanced-grid input[type="number"] {
-    min-height: 36px;
+    @apply tw:min-h-[36px];
     padding: 6px var(--s-3);
     border: 1px solid var(--border-soft);
-    border-radius: var(--r-md);
+    @apply tw:rounded-md;
     background: var(--bg-surface);
-    color: var(--text-primary);
+    @apply tw:text-primary;
     outline: none;
   }
-  .pb .sd-advanced-grid #sdSeedDisplay { grid-column:1 / -1; min-height:1em; }
-  .pb .sd-vram-hint { color:var(--text-muted); font:500 var(--fs-mono-xs) var(--font-mono); white-space:nowrap; }
-  .pb .sd-vram-hint.warn { color:var(--warning-text); }
-  .pb .sd-vram-hint.danger { color:var(--danger-text); font-weight:650; }
-  .pb .sd-base-resolution-hint { color:var(--warning-text); font:500 var(--fs-mono-xs) var(--font-mono); white-space:nowrap; }
-  .pb .sd-base-resolution-hint.danger { color:var(--danger-text); font-weight:650; }
+  .pb .sd-advanced-grid #sdSeedDisplay { grid-column:1 / -1; @apply tw:min-h-[1em]; }
+  .pb .sd-vram-hint { @apply tw:text-muted; font:500 var(--fs-mono-xs) var(--font-mono); @apply tw:whitespace-nowrap; }
+  .pb .sd-vram-hint.warn { @apply tw:text-warning-text; }
+  .pb .sd-vram-hint.danger { @apply tw:text-danger-text; font-weight:650; }
+  .pb .sd-base-resolution-hint { @apply tw:text-warning-text; font:500 var(--fs-mono-xs) var(--font-mono); @apply tw:whitespace-nowrap; }
+  .pb .sd-base-resolution-hint.danger { @apply tw:text-danger-text; font-weight:650; }

@@ -1,3 +1,5 @@
+@reference "./tailwind.css";
+
 /* ============================================================
    绘遇 · Color mood cards
    原先同一组件在 css/director.css、tools/color-script.html、tools/style.html
@@ -8,16 +10,14 @@
 
 /* 基准:色彩剧本页的中等密度 */
 .mood-grid {
-  display: grid;
+  @apply tw:grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--mood-col, 130px), 1fr));
-  gap: var(--s-3);
+  @apply tw:gap-s-3;
 }
 .mood-card {
-  overflow: hidden;
-  width: 100%;
-  padding: 0;
+  @apply tw:overflow-hidden tw:w-full tw:p-0;
   border: 2px solid var(--border-soft);
-  border-radius: var(--r-lg);
+  @apply tw:rounded-lg;
   background: var(--bg-surface);
   /* --mood-color 只用来喂 currentColor(选中态描边),不要让它继承成文字色 ——
      六种 mood 都是高亮度色,当文字最差只有 1.38:1。文字色见 .mood-name。
@@ -25,34 +25,33 @@
      未作用域限定的 .mood-card .mood-name 覆盖才看起来正常;那条泄漏一旦
      收敛(director.css 移入路由块),标题就会当场掉到 1.38:1。 */
   font: inherit;
-  text-align: left;
-  cursor: pointer;
+  @apply tw:text-left tw:cursor-pointer;
   transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out), box-shadow var(--motion-surface);
 }
-.mood-card:hover { border-color: var(--accent); }
+.mood-card:hover { @apply tw:border-accent; }
 /* 选中态用自身情绪色描边。border-color 属于非文字图形(3:1),
    直接用 --mood-color 没问题;文字则一律走 --text-primary。 */
 .mood-card.active { border-color: var(--mood-color, var(--accent)); box-shadow: var(--glow-md); }
-.mood-card.selected { border-color: var(--accent); box-shadow: var(--glow-sm); }
-.mood-strip { display: flex; height: var(--mood-strip-h, 36px); }
+.mood-card.selected { @apply tw:border-accent; box-shadow: var(--glow-sm); }
+.mood-strip { @apply tw:flex; height: var(--mood-strip-h, 36px); }
 .mood-swatch { flex: 1; background: var(--swatch, transparent); }
 .mood-body { padding: var(--s-2) var(--s-3); }
 /* 标题必须是常规文字色。design-system.css 提供了 --mood-*-text 压深版,
    但卡片标题本身不需要染色 —— 色彩信号已经由上方的 .mood-strip 色条给足了。 */
-.mood-name { color: var(--text-primary); font-size: var(--fs-body); font-weight: 600; }
-.mood-en { color: var(--text-muted); font: 400 var(--fs-label-xs) var(--font-mono); }
-.mood-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-label); }
+.mood-name { @apply tw:text-primary tw:text-body tw:font-semibold; }
+.mood-en { @apply tw:text-muted; font: 400 var(--fs-label-xs) var(--font-mono); }
+.mood-desc { @apply tw:text-muted tw:text-label-xs tw:leading-label; }
 
 /* 画风页:更大的取色卡 */
 .mood-grid-lg { --mood-col: 160px; --mood-strip-h: 40px; }
-.mood-grid-lg .mood-name { font-weight: 700; }
+.mood-grid-lg .mood-name { @apply tw:font-bold; }
 
 /* 导演台右栏:极紧凑,一行放得下 4 张 */
-.mood-grid-sm { --mood-col: 64px; --mood-strip-h: 20px; gap: var(--s-2); }
-.mood-grid-sm .mood-card { border-radius: var(--r-md); background: var(--bg-deep); }
+.mood-grid-sm { --mood-col: 64px; --mood-strip-h: 20px; @apply tw:gap-s-2; }
+.mood-grid-sm .mood-card { @apply tw:rounded-md; background: var(--bg-deep); }
 /* 2px 5px:紧凑卡内部微调,升到 4px 会让右栏多出一行 */
 .mood-grid-sm .mood-body { padding: 2px 5px; }
-.mood-grid-sm .mood-name { font-size: var(--fs-mono-sm); }
+.mood-grid-sm .mood-name { @apply tw:text-mono-sm; }
 
 @media (hover: hover) and (pointer: fine) {
   .mood-card:hover { transform: translateY(-2px); }

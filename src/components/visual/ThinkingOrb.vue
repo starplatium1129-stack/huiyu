@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="thinking-orb-host"
+    class="thinking-orb-host tw:inline-flex tw:items-center tw:justify-center tw:align-middle tw:relative tw:[line-height:0] tw:select-none"
     :class="{
       [`size-${typeof size === 'string' ? size : 'custom'}`]: true,
       'is-paused': paused || !canAnimate,
@@ -10,7 +10,7 @@
     role="status"
     :aria-label="ariaLabel || stateLabel"
   >
-    <canvas ref="canvasRef" class="thinking-orb-canvas" aria-hidden="true" />
+    <canvas ref="canvasRef" class="thinking-orb-canvas tw:block tw:pointer-events-none" aria-hidden="true" />
   </div>
 </template>
 
@@ -210,18 +210,7 @@ onBeforeUnmount(stopLoop)
 </script>
 
 <style scoped>
-.thinking-orb-host {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  position: relative;
-  line-height: 0;
-  user-select: none;
-}
 .thinking-orb-canvas {
-  display: block;
-  pointer-events: none;
   filter: drop-shadow(0 0 10px var(--accent-glow, rgba(242, 168, 190, 0.4)));
 }
 .size-sm .thinking-orb-canvas {

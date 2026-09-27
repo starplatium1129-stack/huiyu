@@ -1,10 +1,10 @@
 <template>
-  <div class="browsing-directory">
+  <div class="browsing-directory tw:sticky tw:top-[82px] tw:min-w-0">
     <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" aria-haspopup="dialog"
       :aria-label="'选择角色，当前' + (selected?.name || '未选择')" @click="openDirectory">
       <CharacterPortrait :src="resolveRuntimeUrl(selected?.image)" :name="selected?.name || '角色'" />
-      <span class="pocket-copy"><small>这一页的主角</small><strong>{{ selected?.name || '选择角色' }}</strong></span>
-      <span class="pocket-action">换一位<ArchiveIcon name="search" /></span>
+      <span class="pocket-copy tw:grid tw:gap-s-1 tw:min-w-0"><small>这一页的主角</small><strong>{{ selected?.name || '选择角色' }}</strong></span>
+      <span class="pocket-action tw:ml-auto tw:flex tw:gap-s-2 tw:items-center tw:shrink-0 tw:text-accent">换一位<ArchiveIcon name="search" /></span>
     </button>
     <!-- One directory keeps search, franchise and selection when the window changes size. -->
     <Teleport v-if="dialogHost" :to="dialogHost" :disabled="!narrow">
@@ -12,10 +12,10 @@
         :catalog="narrow" :page-size="narrow ? 18 : 0" @select="choose" @dismiss="motion.close()" />
     </Teleport>
     <Teleport to="body">
-      <dialog ref="dialog" class="directory-sheet" :aria-labelledby="headingId" @cancel.prevent="motion.close()"
+      <dialog ref="dialog" class="directory-sheet tw:m-auto tw:p-s-5 tw:rounded-xl tw:text-primary tw:overflow-hidden" :aria-labelledby="headingId" @cancel.prevent="motion.close()"
         @click="isBackdropClick($event, dialog) && motion.close()">
-        <header class="directory-sheet-heading"><div><h2 :id="headingId">翻开角色画集</h2><p>按作品寻找，或输入她的名字。</p></div><button type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
-        <div ref="dialogHost" class="directory-sheet-content"></div>
+        <header class="directory-sheet-heading tw:flex tw:justify-between tw:gap-s-3 tw:shrink-0"><div><h2 :id="headingId">翻开角色画集</h2><p>按作品寻找，或输入她的名字。</p></div><button type="button" aria-label="关闭角色画集" @click="motion.close()"><ArchiveIcon name="close" /></button></header>
+        <div ref="dialogHost" class="directory-sheet-content tw:flex tw:min-h-0 tw:overflow-hidden"></div>
       </dialog>
     </Teleport>
   </div>
@@ -62,23 +62,22 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 </script>
 
 <style scoped>
-.browsing-directory { position:sticky; top:82px; min-width:0; }
-.browsing-directory :deep(.character-directory) { position:static; }
-.directory-pocket { display:flex; align-items:center; gap:var(--s-3); width:100%; min-height:80px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); text-align:left; cursor:pointer; }
-.pocket-copy { display:grid; gap:var(--s-1); min-width:0; }
-.pocket-copy small { color:var(--text-secondary); font-size:var(--fs-body-sm); }
+@reference "../../assets/css/tailwind.css";
+.browsing-directory :deep(.character-directory) { @apply tw:static; }
+.directory-pocket { @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[80px] tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:text-primary tw:text-left tw:cursor-pointer; }
+.pocket-copy small { @apply tw:text-secondary tw:text-body-sm; }
 .pocket-copy strong { font:600 var(--fs-body)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; }
-.pocket-action { margin-left:auto; display:flex; gap:var(--s-2); align-items:center; flex-shrink:0; color:var(--accent); font:500 var(--fs-body-sm) var(--font-sans); }
-.directory-sheet { width:min(960px,calc(100vw - 32px)); height:min(780px,calc(100dvh - 32px)); max-width:none; max-height:none; margin:auto; padding:var(--s-5); border:1px solid var(--border-strong); border-radius:var(--r-xl); color:var(--text-primary); background:var(--bg-surface); box-shadow:var(--shadow-lg); overflow:hidden; }
-.directory-sheet[open] { display:flex; flex-direction:column; gap:var(--s-3); }
+.pocket-action { font:500 var(--fs-body-sm) var(--font-sans); }
+.directory-sheet { width:min(960px,calc(100vw - 32px)); height:min(780px,calc(100dvh - 32px)); max-width:none; max-height:none; border:1px solid var(--border-strong); background:var(--bg-surface); box-shadow:var(--shadow-lg); }
+.directory-sheet[open] { @apply tw:flex tw:flex-col tw:gap-s-3; }
 .directory-sheet::backdrop { background:var(--art-backdrop); }
-.directory-sheet-heading { display:flex; align-items:start; justify-content:space-between; gap:var(--s-3); flex-shrink:0; }
+.directory-sheet-heading { align-items:start; }
 .directory-sheet-heading h2 { margin:0 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
-.directory-sheet-heading p { margin:0; color:var(--text-secondary); font-size:var(--fs-body-sm); }
-.directory-sheet-heading button { display:grid; place-items:center; width:44px; height:44px; flex-shrink:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); cursor:pointer; }
-.directory-sheet-content { display:flex; flex:1; min-height:0; overflow:hidden; }
-.directory-sheet-content :deep(.character-directory) { width:100%; }
+.directory-sheet-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm; }
+.directory-sheet-heading button { @apply tw:grid; place-items:center; @apply tw:w-[44px] tw:h-[44px] tw:shrink-0; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-base); @apply tw:text-primary tw:cursor-pointer; }
+.directory-sheet-content { flex:1; }
+.directory-sheet-content :deep(.character-directory) { @apply tw:w-full; }
 .directory-pocket:focus-visible, .directory-sheet-heading button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-@media (max-width:900px) { .browsing-directory { position:static; } }
-@media (max-width:540px) { .directory-sheet { padding:var(--s-3); } }
+@media (max-width:900px) { .browsing-directory { @apply tw:static; } }
+@media (max-width:540px) { .directory-sheet { @apply tw:p-s-3; } }
 </style>

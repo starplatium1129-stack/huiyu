@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="voice-glow-container"
+    class="voice-glow-container tw:absolute tw:bottom-0 tw:left-0 tw:right-0 tw:pointer-events-none tw:overflow-hidden tw:[z-index:1] tw:[border-bottom-left-radius:inherit] tw:[border-bottom-right-radius:inherit]"
     :class="{
       'is-active': active && canPresent,
       'is-processing': processing,
@@ -10,7 +10,7 @@
     }"
     aria-hidden="true"
   >
-    <canvas ref="canvasRef" class="voice-glow-canvas" />
+    <canvas ref="canvasRef" class="voice-glow-canvas tw:block tw:w-full tw:pointer-events-none" />
   </div>
 </template>
 
@@ -165,23 +165,11 @@ onBeforeUnmount(stopAnimation)
 
 <style scoped>
 .voice-glow-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-  border-bottom-left-radius: inherit;
-  border-bottom-right-radius: inherit;
   opacity: 0;
   transition: opacity var(--motion-control, 200ms) var(--ease-out, ease-out);
 }
 .voice-glow-container.is-active { opacity: 1; }
 .voice-glow-canvas {
-  display: block;
-  width: 100%;
-  pointer-events: none;
   filter: drop-shadow(0 -2px 8px var(--accent-glow, rgba(242, 168, 190, 0.35)));
 }
 .is-low-effects { transition: none; }

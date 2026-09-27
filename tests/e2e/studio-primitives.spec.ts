@@ -3,6 +3,30 @@ import { installShowcaseFixture } from './helpers/showcase'
 import { textContrast } from './helpers/contrast'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 
+for (const theme of ['dark', 'light']) {
+  test(`chat menu lazily opens styled panels ${theme}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion:'reduce' })
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.route(/^http:\/\/[^/]+\/api\//, route => route.fulfill({ json:{ ok:true, online:false, models:[], loras:[], styleLoras:[] } }))
+    await page.goto('/chat')
+    await expect(page.locator('h1')).toBeVisible()
+    for (const [label, selector, closeLabel] of [
+      ['对话归档', '.chat-archive-panel', '收起'],
+      ['长期记忆', '.chat-memory-panel', '关闭长期记忆'],
+      ['我的档案', '.chat-user-profile', '关闭用户档案'],
+    ]) {
+      await page.locator('.chat-more-trigger').click()
+      await page.getByRole('menuitem', { name:label, exact:true }).click()
+      const panel = page.locator(selector).filter({ visible:true })
+      await expect(panel).toHaveCount(1)
+      await expect(panel).toHaveCSS('border-top-style', 'solid')
+      expect(await panel.locator('strong').first().evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      await panel.getByRole('button', { name:closeLabel, exact:true }).click()
+      await expect(panel).toHaveCount(0)
+    }
+  })
+}
+
 async function contained(locator: Locator, width: number, height: number) {
   const box = (await locator.boundingBox())!
   expect(box.x).toBeGreaterThanOrEqual(0)
@@ -13,7 +37,7 @@ async function contained(locator: Locator, width: number, height: number) {
 
 for (const theme of ['light', 'dark']) {
   for (const width of [1440, 390]) {
-    test(`searchable character filter ${theme} ${width}`, async ({ page }, info) => {
+    test(`character select keyboard filter ${theme} ${width}`, async ({ page }, info) => {
       await page.setViewportSize({ width, height:844 })
       await page.emulateMedia({ reducedMotion:'reduce' })
       await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
@@ -22,37 +46,52 @@ for (const theme of ['light', 'dark']) {
       await expect(page.locator('.sample')).toHaveCount(2)
       await page.locator('.showcase-filters > summary').press('Enter')
       const field = page.getByRole('combobox', { name:'筛选角色', exact:true })
-      await expect(field).toHaveValue('全部角色')
-      await field.fill('不存在的角色')
-      await expect(page.getByText('没有匹配项，试试其他名字')).toBeVisible()
-      await field.press('Escape')
-      await expect(field).toHaveValue('全部角色')
-      await expect(page.locator('.sample')).toHaveCount(2)
-      await field.fill('雷电')
+      await expect(field).toHaveAttribute('data-value', 'all')
+      await expect(field).toHaveText('全部角色')
+      const list = page.locator('.studio-select-content')
       const option = page.getByRole('option', { name:'雷电将军', exact:true })
-      await expect(option).toBeVisible()
-      await expect(page.locator('.studio-combobox-content').getByRole('option')).toHaveCount(1)
+      // Highlighting a different choice must not commit it when Escape closes the portal.
       await field.press('ArrowDown')
-      await field.press('Enter')
-      await expect(field).toHaveValue('雷电将军')
+      await expect(list).toBeVisible()
+      await page.keyboard.press('End')
+      await expect(option).toBeFocused()
+      await page.keyboard.press('Escape')
+      await expect(list).toBeHidden()
+      await expect(field).toBeFocused()
+      await expect(field).toHaveAttribute('data-value', 'all')
+      await expect(page.locator('.sample')).toHaveCount(2)
+      await field.press('ArrowDown')
+      await page.keyboard.press('End')
+      await expect(option).toBeFocused()
+      await page.keyboard.press('Enter')
+      await expect(field).toHaveAttribute('data-value', 'raiden_shogun')
+      await expect(field).toHaveText('雷电将军')
       await expect(field).toBeFocused()
       await expect(page.locator('.sample')).toHaveCount(1)
       await expect(page.locator('.sample-title')).toContainText('天守阁')
-      await page.getByRole('button', { name:'展开筛选角色' }).click()
-      const list = page.locator('.studio-combobox-content')
+      await field.press('Enter')
       await expect(list).toBeVisible()
+      await expect(option).toHaveAttribute('data-state', 'checked')
+      await expect(page.locator('.showcase-filters .studio-select-content')).toHaveCount(0)
       await contained(list, width, 844)
       expect(await option.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
       if (width === 390) expect((await option.boundingBox())!.height).toBeGreaterThanOrEqual(44)
-      await page.screenshot({ path:info.outputPath(`combobox-${theme}-${width}.png`) })
-      await field.press('Escape')
+      await page.screenshot({ path:info.outputPath(`select-${theme}-${width}.png`) })
+      await page.keyboard.press('Escape')
+      await expect(list).toBeHidden()
+      await expect(field).toBeFocused()
       await page.getByRole('button', { name:'清除筛选', exact:true }).click()
-      await expect(field).toHaveValue('全部角色')
+      await expect(field).toHaveAttribute('data-value', 'all')
+      await expect(field).toHaveText('全部角色')
       await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'popular')
-      await field.fill('雷电')
-      await option.click()
+      await field.press('ArrowDown')
+      await page.keyboard.press('End')
+      await expect(option).toBeFocused()
+      await page.keyboard.press('Enter')
+      await expect(field).toHaveAttribute('data-value', 'raiden_shogun')
       await pickStudioOptionByValue(page.getByLabel('筛选作品类型'), 'scene')
-      await expect(field).toHaveValue('全部角色')
+      await expect(field).toHaveAttribute('data-value', 'all')
+      await expect(field).toHaveText('全部角色')
       await expect(page.locator('.sample-title')).toContainText('测试场景')
     })
   }

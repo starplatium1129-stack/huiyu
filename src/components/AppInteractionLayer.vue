@@ -88,10 +88,11 @@ onUnmounted(() => {
 })
 </script>
 <style scoped>
-.route-loader { position: fixed; z-index: var(--z-toast); inset: 0 0 auto; height: 2px; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity var(--motion-hover) ease; }
+@reference "../assets/css/tailwind.css";
+.route-loader { @apply tw:fixed; z-index: var(--z-toast); inset: 0 0 auto; @apply tw:h-[2px] tw:pointer-events-none tw:overflow-hidden; opacity: 0; transition: opacity var(--motion-hover) ease; }
 .route-loader.active { opacity: 1; }
-.route-loader i { display: block; width: 35%; height: 100%; background: var(--accent); transform: translateX(-110%); }
+.route-loader i { @apply tw:block tw:w-[35%] tw:h-full; background: var(--accent); transform: translateX(-110%); }
 .route-loader.active i { animation: route-progress 1.2s ease-in-out infinite; }
 @keyframes route-progress { to { transform: translateX(390%); } }
-@media (prefers-reduced-motion: reduce) { .route-loader { display: none; } }
+@media (prefers-reduced-motion: reduce) { .route-loader { @apply tw:hidden; } }
 </style>

@@ -206,67 +206,51 @@ function onToastLeave(el: Element, done: () => void) {
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
+
 .toast-stack {
-  position: fixed;
-  bottom: var(--s-6);
-  right: var(--s-4);
-  left: auto;
+  @apply tw:fixed tw:bottom-s-6 tw:right-s-4 tw:left-auto;
   width: min(360px, calc(100vw - 2 * var(--s-4)));
   max-height: min(40dvh, 320px);
-  overflow-y: auto;
+  @apply tw:overflow-y-auto;
   overscroll-behavior: contain;
   /* 走 z 阶梯。9999 会盖住 --z-skip(500) 的跳转链接 */
   z-index: var(--z-toast);
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: stretch;
-  gap: var(--s-2);
-  pointer-events: none;
+  @apply tw:flex tw:flex-col-reverse tw:items-stretch tw:gap-s-2 tw:pointer-events-none;
 }
 
 .toast-item {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
+  @apply tw:flex tw:items-center tw:gap-s-2;
   padding: var(--s-3) var(--s-4);
-  border-radius: var(--r-lg);
+  @apply tw:rounded-lg;
   border: 1px solid var(--border-soft);
   background: var(--bg-elevated);
   backdrop-filter: blur(16px);
   /* 走 token:硬编码 rgba 在浅色主题下是脏灰,而 --glass-shadow 已按主题调过 */
   box-shadow: var(--glass-shadow), 0 1px 0 var(--glass-highlight) inset;
-  font-size: var(--fs-body-sm);
-  font-weight: 600;
-  color: var(--text-primary);
-  pointer-events: auto;
-  cursor: grab;
-  user-select: none;
+  @apply tw:text-body-sm tw:font-semibold tw:text-primary tw:pointer-events-auto tw:cursor-grab tw:select-none;
   touch-action: pan-y;
   max-width: min(460px, 90vw);
-  white-space: pre-wrap;
+  @apply tw:whitespace-pre-wrap;
   word-break: break-word;
   transition: box-shadow var(--motion-hover);
 }
-.toast-item:active { cursor: grabbing; }
+.toast-item:active { @apply tw:cursor-grabbing; }
 .toast-item:hover {
   border-color: color-mix(in srgb, var(--accent) 35%, var(--border-soft));
 }
 
-.toast-icon { display:grid; place-items:center; font-size: 1em; flex-shrink: 0; }
-.toast-msg  { flex: 1; min-width: 0; line-height: var(--lh-label); }
+.toast-icon { @apply tw:grid; place-items:center; font-size: 1em; @apply tw:shrink-0; }
+.toast-msg  { flex: 1; @apply tw:min-w-0 tw:leading-label; }
 .toast-action {
-  max-width: 45%;
-  white-space: normal;
-  flex-shrink: 0;
+  @apply tw:max-w-[45%] tw:whitespace-normal tw:shrink-0;
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border-soft));
   background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent);
+  @apply tw:text-accent;
   font: inherit;
-  font-weight: 700;
+  @apply tw:font-bold;
   padding: var(--s-1) var(--s-3);
-  border-radius: var(--r-md);
-  cursor: pointer;
-  line-height: var(--lh-flush);
+  @apply tw:rounded-md tw:cursor-pointer tw:leading-flush;
   transition: background var(--motion-hover), border-color var(--motion-hover);
 }
 .toast-action:hover {
@@ -274,18 +258,18 @@ function onToastLeave(el: Element, done: () => void) {
   border-color: color-mix(in srgb, var(--accent) 65%, var(--border-soft));
 }
 .toast-action:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.toast-close { display:grid; place-items:center; min-width:28px; min-height:28px; flex-shrink:0; background:none; border:none; color:var(--text-secondary); cursor:pointer; padding:var(--s-1); font-size:.9em; line-height:var(--lh-flush); }
-.toast-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+.toast-close { @apply tw:grid; place-items:center; @apply tw:min-w-[28px] tw:min-h-[28px] tw:shrink-0; background:none; border:none; @apply tw:text-secondary tw:cursor-pointer tw:p-s-1; font-size:.9em; @apply tw:leading-flush; }
+.toast-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; @apply tw:rounded-sm; }
 
 /* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
    (原 token 是给色块/描边调的,浅色主题下当图标只有 1.9–2.6:1) */
 .toast-success { border-color: color-mix(in srgb, var(--success) 40%, var(--border-soft)); }
-.toast-success .toast-icon { color: var(--success-text); }
+.toast-success .toast-icon { @apply tw:text-success-text; }
 .toast-error   { border-color: color-mix(in srgb, var(--danger)  40%, var(--border-soft)); }
-.toast-error   .toast-icon { color: var(--danger-text); }
+.toast-error   .toast-icon { @apply tw:text-danger-text; }
 .toast-warning { border-color: color-mix(in srgb, var(--warning) 40%, var(--border-soft)); }
-.toast-warning .toast-icon { color: var(--warning-text); }
-.toast-info    .toast-icon { color: var(--accent); }
+.toast-warning .toast-icon { @apply tw:text-warning-text; }
+.toast-info    .toast-icon { @apply tw:text-accent; }
 
 /* TransitionGroup 进出由 motion spring 接管，这里只留布局稳定类 */
 </style>

@@ -20,7 +20,7 @@ for (const theme of ['dark', 'light']) {
     await page.goto('/character')
     await page.getByRole('button', { name: '全部角色', exact: true }).click()
     const card = page.locator('.bookshelf-character[data-character="nene"]')
-    await expect.poll(() => card.locator('img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true)
+    await expect.poll(() => card.locator('img').evaluate(image => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0)).toBe(true)
     await card.scrollIntoViewIfNeeded()
     await page.evaluate(() => {
       const original = Element.prototype.animate

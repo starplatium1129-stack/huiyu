@@ -42,36 +42,36 @@ const categoryChips = computed(() => {
 </script>
 
 <template>
-  <div class="blueprint-picker">
-    <div class="blueprint-cats" role="group" aria-label="蓝图分类">
+  <div class="blueprint-picker tw:contents">
+    <div class="blueprint-cats tw:flex tw:gap-[6px] tw:flex-wrap" role="group" aria-label="蓝图分类">
       <button v-for="chip in categoryChips" :key="chip.id"
-        type="button" class="blueprint-cat-btn"
+        type="button" class="blueprint-cat-btn tw:inline-flex tw:items-center tw:gap-[5px] tw:rounded-pill tw:text-secondary tw:cursor-pointer"
         :class="{ active: props.category === chip.id, adult: chip.adult }"
         :aria-pressed="props.category === chip.id"
         @click="emit('update:category', chip.id === 'all' ? 'all' : chip.id)">
         {{ chip.label }}<em v-if="chip.count">{{ chip.count }}</em>
       </button>
     </div>
-    <div class="blueprint-reco-head">
-      <span v-if="!props.showAll" class="blueprint-reco-note" role="status">推荐 {{ props.recommended.length }} 个场景</span>
-      <span v-else class="blueprint-reco-note" role="status">{{ props.filtered.length }} 个可选场景</span>
-      <button type="button" class="blueprint-reco-btn" @click="emit('toggle')">
+    <div class="blueprint-reco-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:mb-s-2">
+      <span v-if="!props.showAll" class="blueprint-reco-note tw:text-mono-sm tw:text-muted" role="status">推荐 {{ props.recommended.length }} 个场景</span>
+      <span v-else class="blueprint-reco-note tw:text-mono-sm tw:text-muted" role="status">{{ props.filtered.length }} 个可选场景</span>
+      <button type="button" class="blueprint-reco-btn tw:min-h-[28px] tw:rounded-md tw:text-secondary tw:text-mono-sm tw:cursor-pointer" @click="emit('toggle')">
         {{ props.showAll ? '收起 · 只看推荐' : '查看全部' }}
       </button>
-      <button v-if="!props.showAll" type="button" class="blueprint-reco-btn" @click="emit('rotate')">换一批</button>
+      <button v-if="!props.showAll" type="button" class="blueprint-reco-btn tw:min-h-[28px] tw:rounded-md tw:text-secondary tw:text-mono-sm tw:cursor-pointer" @click="emit('rotate')">换一批</button>
     </div>
     <div v-if="!props.dataReady" class="scene-loading">正在加载热门角色场景…</div>
     <div v-else-if="!props.filtered.length" class="scene-empty">没有符合条件的场景建议</div>
-    <div v-else class="blueprint-list">
+    <div v-else class="blueprint-list tw:flex tw:flex-col tw:gap-s-2 tw:p-s-1">
       <button v-for="blueprint in (props.showAll ? props.filtered : props.recommended)"
-        :key="blueprint.id" type="button" class="blueprint-card"
+        :key="blueprint.id" type="button" class="blueprint-card tw:flex tw:flex-col tw:gap-s-2 tw:text-left tw:p-s-3 tw:rounded-lg tw:cursor-pointer"
         :class="{ active: props.selectedBlueprintId === blueprint.id }"
         :data-adult="blueprint.adult ? 'true' : 'false'"
         :aria-pressed="props.selectedBlueprintId === blueprint.id"
         @click="emit('select', blueprint)">
-        <span class="blueprint-title"><ArchiveIcon v-if="props.selectedBlueprintId === blueprint.id" name="success" class="blueprint-check" />{{ blueprint.title }}<span v-if="blueprint.adult" class="scene-rating-tag">R18</span></span>
-        <span class="blueprint-desc">{{ blueprint.description }}</span>
-        <span class="blueprint-meta">
+        <span class="blueprint-title tw:text-label tw:font-semibold tw:flex tw:items-center tw:gap-[6px]"><ArchiveIcon v-if="props.selectedBlueprintId === blueprint.id" name="success" class="blueprint-check" />{{ blueprint.title }}<span v-if="blueprint.adult" class="scene-rating-tag">R18</span></span>
+        <span class="blueprint-desc tw:text-label-xs tw:text-secondary tw:leading-label tw:overflow-hidden">{{ blueprint.description }}</span>
+        <span class="blueprint-meta tw:flex tw:gap-s-2 tw:flex-wrap tw:text-mono-xs tw:text-muted">
           <span>{{ blueprint.category }}</span>
           <span>{{ blueprint.location }}</span>
           <span>{{ blueprint.recommendedSize.replace('x', '×') }}</span>
@@ -82,91 +82,51 @@ const categoryChips = computed(() => {
 </template>
 
 <style scoped>
-.blueprint-picker {
-  display: contents;
-}
+@reference "../../assets/css/tailwind.css";
 .blueprint-cats {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
   margin: var(--s-1) 0 var(--s-2);
 }
 .blueprint-cat-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
   padding: 3px var(--s-3);
-  border-radius: var(--r-pill);
   border: 1px solid var(--border-soft);
   background: var(--glass-fill);
-  color: var(--text-secondary);
   font: 650 var(--fs-label-sm) var(--font-sans);
-  cursor: pointer;
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-cat-btn:active { transform: translateY(1px) scale(.96); }
-.blueprint-cat-btn em { font-style: normal; font: 700 var(--fs-mono-xs) var(--font-mono); color: var(--text-muted); }
-.blueprint-cat-btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); color: var(--text-primary); }
+.blueprint-cat-btn em { @apply tw:not-italic; font: 700 var(--fs-mono-xs) var(--font-mono); @apply tw:text-muted; }
+.blueprint-cat-btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); @apply tw:text-primary; }
 .blueprint-cat-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .blueprint-cat-btn.active {
   border-color: var(--pb-active, var(--accent));
   background: color-mix(in srgb, var(--mood-love) 18%, var(--bg-elevated));
-  color: var(--accent);
+  @apply tw:text-accent;
 }
 .blueprint-cat-btn.adult { border-color: color-mix(in srgb, var(--danger-text) 40%, var(--border-soft)); }
-.blueprint-cat-btn.adult em { color: var(--danger-text); opacity: .9; }
+.blueprint-cat-btn.adult em { @apply tw:text-danger-text; opacity: .9; }
 .blueprint-cat-btn.adult:hover,
 .blueprint-cat-btn.adult.active {
-  border-color: var(--danger-text);
+  @apply tw:border-danger-text;
   background: var(--bg-elevated);
-  color: var(--danger-text);
-}
-.blueprint-reco-head {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  flex-wrap: wrap;
-  margin-bottom: var(--s-2);
-}
-.blueprint-reco-note {
-  font-size: var(--fs-mono-sm);
-  color: var(--text-muted);
+  @apply tw:text-danger-text;
 }
 .blueprint-reco-btn {
-  min-height: 28px;
   padding: 3px var(--s-3);
-  border-radius: var(--r-md);
   border: 1px solid var(--border-soft);
   background: var(--glass-fill);
-  color: var(--text-secondary);
-  font-size: var(--fs-mono-sm);
-  cursor: pointer;
   transition: border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
-.blueprint-reco-btn:hover { border-color: var(--accent); color: var(--accent); }
+.blueprint-reco-btn:hover { @apply tw:border-accent tw:text-accent; }
 .blueprint-reco-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .blueprint-reco-btn:active { transform: translateY(1px) scale(.96); }
-.blueprint-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
-  padding:var(--s-1);
-}
 .blueprint-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
-  text-align: left;
-  padding: var(--s-3);
-  border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
   background: var(--bg-surface);
   color: inherit;
-  cursor: pointer;
   transition: transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-@media (hover:hover) and (pointer:fine) { .blueprint-card:hover { transform:translateY(-2px); border-color:var(--accent); box-shadow:var(--shadow-sm); } }
+@media (hover:hover) and (pointer:fine) { .blueprint-card:hover { transform:translateY(-2px); @apply tw:border-accent; box-shadow:var(--shadow-sm); } }
 .blueprint-card.active {
   border-color: var(--pb-active, var(--accent));
   border-left-color: var(--pb-active, var(--accent));
@@ -176,29 +136,11 @@ const categoryChips = computed(() => {
 .blueprint-card[data-adult="true"] { border-left-color: color-mix(in srgb, var(--danger-text) 55%, transparent); }
 .blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }
 .blueprint-card:active { transform: translateY(0) scale(.99); }
-.blueprint-check { color:var(--accent); }
+.blueprint-check { @apply tw:text-accent; }
 @media (prefers-reduced-motion:reduce) { .blueprint-card { transition:none; transform:none; } }
-.blueprint-title {
-  font-size: var(--fs-label);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 .blueprint-desc {
-  font-size: var(--fs-label-xs);
-  color: var(--text-secondary);
-  line-height: var(--lh-label);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-.blueprint-meta {
-  display: flex;
-  gap: var(--s-2);
-  flex-wrap: wrap;
-  font-size: var(--fs-mono-xs);
-  color: var(--text-muted);
 }
 </style>

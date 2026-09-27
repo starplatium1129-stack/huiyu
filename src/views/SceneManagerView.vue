@@ -18,7 +18,7 @@
           <span v-if="saving && savingPhase" class="saving-phase">{{ savingPhase }}</span>
         </div>
       </div>
-      <div class="sm-head-actions">
+      <div class="sm-head-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:shrink-0 tw:max-w-full">
         <button class="btn btn-ghost" type="button" :disabled="loading || saving || desktopPackaged || toolRunning || previewing" @click="loadFromStore(true)">重新读取</button>
         <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="loading"><ArchiveIcon name="download" /> 导出 JSON</button>
         <button class="btn btn-ghost" type="button" :disabled="!canPreview" @click="tab = 'tools'; previewChanges()"><ArchiveIcon name="eye" /> 影响预览</button>

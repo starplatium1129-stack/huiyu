@@ -1,31 +1,31 @@
-/* 画面舞台 */
+@reference "../tailwind.css";
+  /* 画面舞台 */
   .pb .stage-placeholder {
-    position:relative; isolation:isolate; overflow:hidden;
+    @apply tw:relative tw:isolate tw:overflow-hidden;
     /* 画布切换只轻移表面，不再次模糊文字或持有变换图层。 */
     animation:directorViewIn var(--motion-control) var(--ease-out);
     min-height:clamp(380px, 46vh, 560px);
-    max-height:580px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    @apply tw:max-h-[580px] tw:flex tw:flex-col tw:items-center tw:justify-center tw:text-center;
     border:1px solid color-mix(in srgb,var(--archive-cyan) 18%,var(--border-soft));
-    border-radius:var(--r-stage);
+    @apply tw:rounded-stage;
     background:
       radial-gradient(circle at 28% 18%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 35%),
       linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 86%,transparent),var(--bg-deep));
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-lg);
     transition:background var(--motion-atmosphere) ease,border-color var(--motion-atmosphere) ease,box-shadow var(--motion-atmosphere) ease;
   }
-  .pb .stage-placeholder::before { content:''; position:absolute; inset:0; z-index:var(--z-stage-backdrop); background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,color-mix(in srgb,var(--character-accent) 8%,transparent),transparent 26%); pointer-events:none; }
+  .pb .stage-placeholder::before { content:''; @apply tw:absolute; inset:0; z-index:var(--z-stage-backdrop); background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,color-mix(in srgb,var(--character-accent) 8%,transparent),transparent 26%); @apply tw:pointer-events-none; }
 
   @media (min-width: 2560px) {
     .pb .stage-placeholder {
       min-height: clamp(420px, 48vh, 580px);
-      max-height: 620px;
+      @apply tw:max-h-[620px];
     }
     .pb .story-input {
-      min-height: 80px;
+      @apply tw:min-h-[80px];
     }
     .pb .visual-description-input {
-      min-height: 72px;
+      @apply tw:min-h-[72px];
     }
     .pb .scene-list {
       max-height: min(55vh, 680px);
@@ -33,20 +33,19 @@
   }
   /* 位置与表面合并于此(原先 :703 又声明了一次 left/right/top/padding/border/radius) */
    .pb .stage-chrome {
-     position:absolute; z-index:var(--z-raised); top:14px; left:16px; right:16px;
-     display:flex; align-items:center; justify-content:space-between;
+     @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[14px] tw:left-[16px] tw:right-[16px] tw:flex tw:items-center tw:justify-between;
      padding:var(--s-2) var(--s-3); border:1px solid var(--glass-edge); border-radius:var(--r-terminal);
-     color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em;
+     @apply tw:text-muted; font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em;
    }
   /* 生成中魔法阵：双环断弧反向旋转（conic 断弧 + mask 环带裁切，零硬编码色；
      只有 .is-generating 时淡入，reduced-motion 由全局动画降级） */
   .pb .stage-magic-ring {
-    position:absolute; z-index:var(--z-base);
-    left:50%; top:46%;
+    @apply tw:absolute; z-index:var(--z-base);
+    @apply tw:left-[50%] tw:top-[46%];
     width:min(40vw,470px); aspect-ratio:1;
     transform:translate(-50%,-50%);
     border-radius:50%;
-    pointer-events:none;
+    @apply tw:pointer-events-none;
     opacity:0;
     transition:opacity var(--motion-atmosphere) var(--ease-out);
     background:
@@ -56,7 +55,7 @@
     mask:radial-gradient(closest-side, transparent 0 76%, var(--text-primary) 76% 79%, transparent 79%);
   }
   .pb .stage-magic-ring::after {
-    content:''; position:absolute; inset:19%;
+    content:''; @apply tw:absolute; inset:19%;
     border-radius:50%;
     background:conic-gradient(from 200deg, transparent 0 32%, color-mix(in srgb,var(--accent-hover) 32%,transparent) 50% 64%, transparent 84%);
     -webkit-mask:radial-gradient(closest-side, transparent 0 70%, var(--text-primary) 70% 74%, transparent 74%);
@@ -81,13 +80,13 @@
     50% { transform: scale(1.03); opacity: 0.92; }
     100% { transform: scale(1.01); opacity: 0.72; }
   }
-  .pb .stage-ready { display:flex; align-items:center; gap:var(--s-2); }
-  .pb .stage-ready::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
-  .pb .stage-placeholder.is-error .stage-ready { color:var(--danger-text); }
+  .pb .stage-ready { @apply tw:flex tw:items-center tw:gap-s-2; }
+  .pb .stage-ready::before { content:''; @apply tw:w-[6px] tw:h-[6px]; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
+  .pb .stage-placeholder.is-error .stage-ready { @apply tw:text-danger-text; }
   .pb .stage-placeholder.is-error .stage-ready::before { background:var(--danger); box-shadow:0 0 10px color-mix(in srgb,var(--danger) 50%,transparent); }
-  .pb .stage-placeholder.is-paused .stage-ready { color:var(--warning-text); }
+  .pb .stage-placeholder.is-paused .stage-ready { @apply tw:text-warning-text; }
   .pb .stage-placeholder.is-paused .stage-ready::before { background:var(--warning); box-shadow:0 0 10px color-mix(in srgb,var(--warning) 50%,transparent); }
-  .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); pointer-events:none; transition:opacity var(--motion-atmosphere) ease,filter var(--motion-atmosphere) ease,transform var(--motion-atmosphere) var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
+  .pb .stage-muse { @apply tw:absolute; z-index:var(--z-base); @apply tw:right-[-12%] tw:bottom-[-3%] tw:w-[52%] tw:h-[92%] tw:object-contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); @apply tw:pointer-events-none; transition:opacity var(--motion-atmosphere) ease,filter var(--motion-atmosphere) ease,transform var(--motion-atmosphere) var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
   /* 审计修复：呼吸动画原为逐帧补间 filter（6s 无限循环 · 大图离屏合成 = 常驻每帧开销）。
      .stage-muse 是 <img>，无法挂伪元素承载滤镜层；而 saturate .76→.88 / contrast .96→1.02
      的差值本就几乎不可感，故去掉 filter 补间、只保留 transform 呼吸（合成器属性，零重绘）。 */
@@ -100,16 +99,16 @@
   }
   .pb[data-character="natsume"] .stage-muse.natsume { filter:saturate(.78) contrast(.96) sepia(.04); }
   .pb[data-character="triad"] .stage-muse { opacity:.16; }
-  .pb[data-character="triad"] .stage-muse.nene { right:auto; left:-12%; }
-  .pb[data-character="triad"] .stage-muse.natsume { right:-12%; }
-  .pb .stage-message { position:relative; z-index:var(--z-raised); width:min(58%,430px); transform:translateX(-24%); }
+  .pb[data-character="triad"] .stage-muse.nene { @apply tw:right-auto tw:left-[-12%]; }
+  .pb[data-character="triad"] .stage-muse.natsume { @apply tw:right-[-12%]; }
+  .pb .stage-message { @apply tw:relative; z-index:var(--z-raised); width:min(58%,430px); transform:translateX(-24%); }
   .pb[data-character="triad"] .stage-message { transform:none; }
-  .pb .stage-placeholder-icon { width:68px; height:68px; display:grid; place-items:center; margin:0 auto var(--s-4); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-2xl); background:color-mix(in srgb,var(--accent-soft) 68%,transparent); color:var(--accent); font:700 var(--fs-stage-glyph) var(--font-serif); box-shadow:0 22px 64px var(--accent-glow); }
+  .pb .stage-placeholder-icon { @apply tw:w-[68px] tw:h-[68px] tw:grid; place-items:center; margin:0 auto var(--s-4); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); @apply tw:rounded-2xl; background:color-mix(in srgb,var(--accent-soft) 68%,transparent); @apply tw:text-accent; font:700 var(--fs-stage-glyph) var(--font-serif); box-shadow:0 22px 64px var(--accent-glow); }
   /* 装饰性汉字水印「綾」使用独立光学字号,不属于文本字号阶梯 */
-  .pb .stage-placeholder-title { color:var(--text-primary); font-size:var(--fs-title-xs); font-weight:720; letter-spacing:-.01em; }
-  .pb .stage-placeholder-copy { max-width:330px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label); line-height:var(--lh-loose); }
-  .pb .stage-quick-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:var(--s-4); }
-  .pb .stage-quick-actions .btn { min-height:40px; }
+  .pb .stage-placeholder-title { @apply tw:text-primary tw:text-title-xs; font-weight:720; letter-spacing:-.01em; }
+  .pb .stage-placeholder-copy { @apply tw:max-w-[330px] tw:mt-s-2 tw:text-muted tw:text-label tw:leading-loose; }
+  .pb .stage-quick-actions { @apply tw:flex tw:justify-center tw:flex-wrap tw:gap-[8px] tw:mt-s-4; }
+  .pb .stage-quick-actions .btn { @apply tw:min-h-[40px]; }
   /* 2026-08-28 审计修复：生成中舞台不再被 step-4 隐藏——结果态的隐藏由组件
      v-show="!displayResultUrl" 承担；生成期间 is-generating 态（魔法阵 + 进度环）
      是全引擎唯一进度源，Anima 场景模式不再黑盒等待。 */
@@ -117,46 +116,46 @@
   body:has(.pb.focus-mode) .site-footer,
   .pb.focus-mode .nav-back, .pb.focus-mode .pb-header,
   .pb.focus-mode .col-left, .pb.focus-mode .col-right, .pb.focus-mode .history-wrap, .pb.focus-mode .collapsible,
-  .pb.focus-mode .footer { display:none !important; }
+  .pb.focus-mode .footer { @apply tw:hidden!; }
   .pb.focus-mode .api-status, .pb.focus-mode .utility-menu,
-  .pb.focus-mode .col-center > .monitor, .pb.focus-mode .col-center > .generation-settings { display:none !important; }
+  .pb.focus-mode .col-center > .monitor, .pb.focus-mode .col-center > .generation-settings { @apply tw:hidden!; }
   /* 专注成片模式：配音面板（含折叠态）整体不占舞台——配音是独立工序，出片时不需要 */
-  .pb.focus-mode .voice-studio { display:none !important; }
-  .pb.focus-mode .pb-topline { align-items:center; justify-content:flex-end; margin-bottom:var(--s-3); }
+  .pb.focus-mode .voice-studio { @apply tw:hidden!; }
+  .pb.focus-mode .pb-topline { @apply tw:items-center tw:justify-end tw:mb-s-3; }
   /* 专注成片：舞台恢复大尺寸（单列全宽），输出控制台保持紧凑防空位 */
   .pb.focus-mode .stage-placeholder { min-height:clamp(380px, 46vh, 560px); }
   .pb.focus-mode #stepResult { min-height:clamp(300px, 40vh, 420px); }
   /* Prompt 监视器默认折叠 */
   .pb .monitor-preview-collapsed .preview-output,
   .pb .monitor-preview-collapsed .token-row,
-  .pb .monitor-preview-collapsed .art-warn { display: none; }
-  .pb .monitor-toggle { display:inline-block; margin-left:auto; font-size:var(--fs-label-sm); opacity:0.7; cursor:pointer; }
+  .pb .monitor-preview-collapsed .art-warn { @apply tw:hidden; }
+  .pb .monitor-toggle { @apply tw:inline-block tw:ml-auto tw:text-label-sm; opacity:0.7; @apply tw:cursor-pointer; }
   .pb .monitor-toggle:hover { opacity:1; }
   /* Step workflow */
-  .pb .stepbar { display:flex; align-items:center; gap:0; padding:var(--s-3) 0 var(--s-5); }
+  .pb .stepbar { @apply tw:flex tw:items-center tw:gap-0; padding:var(--s-3) 0 var(--s-5); }
   /* Vue SPA 始终展示输出面板；旧 step-4 流程仅抬高高度。
      2026-08-28：min-height 收窄到 has-result——生成期间舞台自持进度，
      输出面板不再膨胀抢视口（消除点生成瞬间的整页跳变）。 */
-  .pb #stepResult { display:flex; flex-direction:column; gap:var(--s-3); }
+  .pb #stepResult { @apply tw:flex tw:flex-col tw:gap-s-3; }
   .pb.has-result #stepResult { min-height:clamp(300px, 40vh, 420px); }
-  .pb #stepResult > .panel-title { order:0; margin-bottom:0; }
-   .pb #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
+  .pb #stepResult > .panel-title { order:0; @apply tw:mb-0; }
+   .pb #stepResult > .voice-studio { order:4; @apply tw:w-full; max-width:none; @apply tw:overflow-hidden tw:static; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */
-  .pb .scene-card { position:relative; padding:0; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); transition:border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out); overflow:hidden; flex-shrink:0; min-height:0; }
-  .pb .scene-card:hover, .pb .scene-card:focus-within { border-color:var(--accent); }
-  .pb .scene-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:var(--r-md) 0 0 var(--r-md); }
-  .pb .scene-card-main { display:flex; align-items:flex-start; gap:var(--s-3); width:100%; min-height:100%; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; text-align:left; font:inherit; cursor:pointer; }
+  .pb .scene-card { @apply tw:relative tw:p-0; background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-md; transition:border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out); @apply tw:overflow-hidden tw:shrink-0 tw:min-h-0; }
+  .pb .scene-card:hover, .pb .scene-card:focus-within { @apply tw:border-accent; }
+  .pb .scene-card::before { content:''; @apply tw:absolute tw:left-0 tw:top-0 tw:bottom-0 tw:w-[4px]; border-radius:var(--r-md) 0 0 var(--r-md); }
+  .pb .scene-card-main { @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:min-h-full; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; @apply tw:text-left; font:inherit; @apply tw:cursor-pointer; }
   .pb .scene-card-main:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
   /* 左栏场景紧凑缩略图(审核样张,404 时自动移除) */
-  .pb .scene-thumb { width:64px; height:64px; flex:0 0 64px; border-radius:var(--r-md); object-fit:cover; object-position:center 22%; background:var(--bg-deep); border:1px solid var(--border-soft); transition:filter var(--motion-surface); }
+  .pb .scene-thumb { @apply tw:w-[64px] tw:h-[64px]; flex:0 0 64px; @apply tw:rounded-md tw:object-cover; object-position:center 22%; background:var(--bg-deep); border:1px solid var(--border-soft); transition:filter var(--motion-surface); }
   .pb .scene-thumb.r18 { filter:blur(12px) saturate(.85); }
   .pb .scene-card:hover .scene-thumb.r18, .pb .scene-card:focus-within .scene-thumb.r18 { filter:none; }
-  .pb .scene-text { flex:1; min-width:0; display:flex; flex-direction:column; }
-  .pb .scene-card .scene-direct-btn { position:absolute; right:var(--s-2); bottom:var(--s-2); display:inline-flex; z-index:var(--z-raised); padding:var(--s-1) var(--s-3); font-size:var(--fs-label-sm); font-weight:600; background:var(--accent); color:var(--text-inverse); border-radius:var(--r-pill); box-shadow:var(--shadow-md); cursor:pointer; border:none; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(4px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out),visibility var(--motion-hover); }
-  .pb .scene-card:hover .scene-direct-btn, .pb .scene-card:focus-within .scene-direct-btn { opacity:1; visibility:visible; pointer-events:auto; transform:translateY(0); }
+  .pb .scene-text { flex:1; @apply tw:min-w-0 tw:flex tw:flex-col; }
+  .pb .scene-card .scene-direct-btn { @apply tw:absolute tw:right-s-2 tw:bottom-s-2 tw:inline-flex; z-index:var(--z-raised); padding:var(--s-1) var(--s-3); @apply tw:text-label-sm tw:font-semibold; background:var(--accent); @apply tw:text-inverse tw:rounded-pill; box-shadow:var(--shadow-md); @apply tw:cursor-pointer; border:none; opacity:0; visibility:hidden; @apply tw:pointer-events-none; transform:translateY(4px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out),visibility var(--motion-hover); }
+  .pb .scene-card:hover .scene-direct-btn, .pb .scene-card:focus-within .scene-direct-btn { opacity:1; visibility:visible; @apply tw:pointer-events-auto; transform:translateY(0); }
   .pb .scene-card .scene-direct-btn:hover { transform:none; }
-  .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md); }
-  .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; box-shadow:inset 0 0 0 3px var(--accent-glow); opacity:0; animation:obScenePulse .9s ease 1; }
+  .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { @apply tw:border-accent; box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md); }
+  .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { content:''; @apply tw:absolute; inset:0; border-radius:inherit; @apply tw:pointer-events-none; box-shadow:inset 0 0 0 3px var(--accent-glow); opacity:0; animation:obScenePulse .9s ease 1; }
   .pb .scene-card[data-char-match="0"] { opacity:0.45; }
   @keyframes obScenePulse { 0%,100%{opacity:0;transform:scale(.985);} 50%{opacity:1;transform:scale(1);} }
   @media (prefers-reduced-motion: reduce) { .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { animation:none; } }
@@ -169,16 +168,16 @@
   .pb .scene-card[data-category="R15"]::before { background:linear-gradient(180deg,#CFD8DC,#37474F); }
   .pb .scene-card[data-category="Active_Sync_Scenes"]::before { background:linear-gradient(180deg,#7C4DFF,#311B92); }
   .pb .scene-card[data-category="战斗"]::before { background:linear-gradient(180deg,#EF5350,#B71C1C); }
-  .pb .scene-name { display:block; font-weight:700; font-size:var(--fs-body); margin-bottom:2px; }
-  .pb .scene-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:var(--lh-body); }
-  .pb .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
-  .pb .scene-tag { font-size:var(--fs-label-sm) !important; padding:3px 8px; font-weight:600; background:var(--bg-deep); border-radius:var(--r-sm); color:var(--text-muted); }
-  .pb .scene-tag.emotion { background:var(--accent-soft); color:var(--accent); }
+  .pb .scene-name { @apply tw:block tw:font-bold tw:text-body tw:mb-[2px]; }
+  .pb .scene-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; @apply tw:overflow-hidden tw:text-label-sm tw:text-secondary tw:mb-s-2 tw:leading-body; }
+  .pb .scene-meta { @apply tw:flex tw:flex-wrap tw:gap-[4px]; }
+  .pb .scene-tag { @apply tw:text-label-sm!; padding:3px 8px; @apply tw:font-semibold; background:var(--bg-deep); @apply tw:rounded-sm tw:text-muted; }
+  .pb .scene-tag.emotion { background:var(--accent-soft); @apply tw:text-accent; }
   .pb .scene-tag.rating.r18 { background:color-mix(in srgb, var(--danger) 22%, var(--bg-deep)); color:color-mix(in srgb, var(--danger) 70%, #fff); }
   .pb .scene-tag.rating.r15 { background:color-mix(in srgb, var(--warning) 24%, var(--bg-deep)); color:color-mix(in srgb, var(--warning) 74%, #fff); }
   .pb .scene-card[data-rating="R18"]::before { background:linear-gradient(180deg,#e85d75,#8d1732); }
   .pb .scene-card[data-rating="R15"]::before { background:linear-gradient(180deg,#d6a039,#7a5210); }
-  .pb .scene-card.is-current { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
+  .pb .scene-card.is-current { @apply tw:border-accent; box-shadow:0 0 0 2px var(--accent-soft); }
   /* 故事联想 tag 高亮 */
   .pb .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
   .pb .tag-chip[data-suggested="1"]::after { content:' · 联想'; font-size:0.6em; }
@@ -187,10 +186,10 @@
   .pb .panel {
     background:color-mix(in srgb,var(--bg-surface) 96%,var(--bg-base));
     border:1px solid color-mix(in srgb,var(--border-soft) 62%,transparent);
-    border-radius:var(--r-md); padding:var(--s-4); box-shadow:none; position:relative;
+    @apply tw:rounded-md tw:p-s-4; box-shadow:none; @apply tw:relative;
     transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover);
   }
-  .pb .col-left .panel::before, .pb .col-right .panel::before { content:''; position:absolute; top:-1px; left:var(--s-4); width:34px; height:1px; background:var(--archive-blue); opacity:.72; pointer-events:none; }
+  .pb .col-left .panel::before, .pb .col-right .panel::before { content:''; @apply tw:absolute tw:top-[-1px] tw:left-s-4 tw:w-[34px] tw:h-[1px]; background:var(--archive-blue); opacity:.72; @apply tw:pointer-events-none; }
   .pb .col-left .panel:hover, .pb .col-right .panel:hover {
     border-color:color-mix(in srgb,var(--border-soft) 92%,transparent);
   }

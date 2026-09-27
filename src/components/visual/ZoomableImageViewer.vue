@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerEl"
-    class="zoomable-image-viewer"
+    class="zoomable-image-viewer tw:relative tw:w-full tw:h-full tw:min-h-[280px] tw:flex tw:items-center tw:justify-center tw:overflow-hidden tw:select-none tw:cursor-zoom-in tw:touch-none"
     :class="{ 'is-zoomed': scale > 1.01, 'is-panning': isPanning }"
     role="group"
     tabindex="0"
@@ -15,12 +15,12 @@
     @dblclick="toggleZoom"
   >
     <div
-      class="zoom-transform-layer"
+      class="zoom-transform-layer tw:relative tw:flex tw:items-center tw:justify-center tw:max-w-full tw:max-h-full"
       :style="zoomLayerStyle"
     >
       <!-- 骨架屏占位 -->
-      <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder">
-        <div class="skeleton-shimmer"></div>
+      <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder tw:absolute tw:inset-0 tw:min-w-[240px] tw:min-h-[320px] tw:[border-radius:var(--r-lg,_12px)] tw:[background:color-mix(in_srgb,_white_4%,_transparent)] tw:overflow-hidden">
+        <div class="skeleton-shimmer tw:absolute tw:inset-0"></div>
       </div>
 
       <!-- 真实图片 -->
@@ -29,7 +29,7 @@
         ref="imageEl"
         :src="resolveRuntimeUrl(displayedSrc)"
         :alt="alt"
-        class="zoomable-img"
+        class="zoomable-img tw:block tw:max-w-full tw:[max-height:min(88vh,_860px)] tw:w-auto tw:h-auto tw:object-contain tw:[border-radius:var(--r-lg,_12px)]"
         :class="{ 'is-ready': imageReady || !!previewSrc }"
         draggable="false"
         @load="onImageLoad"
@@ -38,12 +38,12 @@
 
       <!-- Decode the original offscreen while the already-loaded thumbnail stays visible. -->
       <img v-if="displayedSrc !== src && !fullImageFailed" :key="src" ref="fullImageEl"
-        :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(src)" class="zoomable-preload"
+        :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(src)" class="zoomable-preload tw:hidden"
         alt="" aria-hidden="true" @load="upgradeImage" @error="onFullImageError" />
-      <span v-if="fullImageFailed && !imageFailed" class="preview-quality-note" role="status">高清图暂时无法读取，当前显示缩略图</span>
+      <span v-if="fullImageFailed && !imageFailed" class="preview-quality-note tw:absolute tw:top-s-3 tw:left-s-3 tw:right-s-3 tw:p-s-2 tw:rounded-sm tw:[background:var(--art-scrim)] tw:[color:var(--on-art-primary)] tw:text-label-sm tw:text-center" role="status">高清图暂时无法读取，当前显示缩略图</span>
 
       <!-- 失败占位 -->
-      <div v-if="imageFailed" class="image-fallback">
+      <div v-if="imageFailed" class="image-fallback tw:[color:var(--on-art-secondary,_color-mix(in_srgb,_white_60%,_transparent))] tw:[font-size:var(--fs-body-sm,_0.85rem)]">
         <slot name="fallback">
           <span>图片暂时无法读取</span>
         </slot>
@@ -51,19 +51,19 @@
     </div>
 
     <!-- 缩放控制始终可见，键盘和触摸用户不必先猜测手势。 -->
-    <div class="zoom-controls" role="group" aria-label="图片缩放控制" @pointerdown.stop @dblclick.stop>
-      <span class="zoom-level" aria-live="polite">{{ Math.round(scale * 100) }}%</span>
-      <button type="button" class="zoom-control" aria-label="放大图片" @pointerdown.stop @click.stop="zoomIn">
+    <div class="zoom-controls tw:absolute tw:bottom-[12px] tw:left-1/2 tw:flex tw:items-center tw:gap-[6px] tw:p-[4px] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_84%,_transparent)] tw:border tw:border-solid tw:border-soft tw:[z-index:var(--z-raised)] tw:text-label-sm tw:text-primary" role="group" aria-label="图片缩放控制" @pointerdown.stop @dblclick.stop>
+      <span class="zoom-level tw:[margin:0_4px] tw:[font-family:var(--font-mono,_monospace)] tw:font-semibold tw:[color:var(--archive-blue)]" aria-live="polite">{{ Math.round(scale * 100) }}%</span>
+      <button type="button" class="zoom-control tw:grid tw:place-items-center tw:w-[36px] tw:h-[36px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-full tw:[background:color-mix(in_srgb,_var(--bg-elevated)_78%,_transparent)] tw:text-primary tw:cursor-pointer" aria-label="放大图片" @pointerdown.stop @click.stop="zoomIn">
         <ArchiveIcon name="expand" />
       </button>
-      <button type="button" class="zoom-control" aria-label="缩小图片" @pointerdown.stop @click.stop="zoomOut">
+      <button type="button" class="zoom-control tw:grid tw:place-items-center tw:w-[36px] tw:h-[36px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-full tw:[background:color-mix(in_srgb,_var(--bg-elevated)_78%,_transparent)] tw:text-primary tw:cursor-pointer" aria-label="缩小图片" @pointerdown.stop @click.stop="zoomOut">
         <ArchiveIcon name="compress" />
       </button>
-      <button type="button" class="zoom-control btn-reset-zoom" aria-label="还原图片缩放" @pointerdown.stop @click.stop="resetZoom">
+      <button type="button" class="zoom-control btn-reset-zoom tw:grid tw:place-items-center tw:w-[36px] tw:h-[36px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-full tw:[background:color-mix(in_srgb,_var(--bg-elevated)_78%,_transparent)] tw:text-primary tw:cursor-pointer" aria-label="还原图片缩放" @pointerdown.stop @click.stop="resetZoom">
         <ArchiveIcon name="refresh" />
       </button>
     </div>
-    <div v-if="scale <= 1.01" class="zoom-hint">
+    <div v-if="scale <= 1.01" class="zoom-hint tw:absolute tw:bottom-[8px] tw:right-[12px] tw:text-mono-sm tw:[color:color-mix(in_srgb,_white_40%,_transparent)] tw:pointer-events-none">
       双击或滚轮放大查看细节
     </div>
   </div>
@@ -250,23 +250,6 @@ function stopPan(event: PointerEvent) {
 </script>
 
 <style scoped>
-.zoomable-preload { display: none; }
-.preview-quality-note { position: absolute; top: var(--s-3); left: var(--s-3); right: var(--s-3); padding: var(--s-2); border-radius: var(--r-sm); background: var(--art-scrim); color: var(--on-art-primary); font-size: var(--fs-label-sm); text-align: center; }
-
-.zoomable-image-viewer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  user-select: none;
-  cursor: zoom-in;
-  touch-action: none;
-}
-
 .zoomable-image-viewer:focus-visible {
   outline: 2px solid var(--archive-blue);
   outline-offset: -2px;
@@ -285,30 +268,12 @@ function stopPan(event: PointerEvent) {
 }
 
 .zoom-transform-layer {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 100%;
-  max-height: 100%;
   transform: var(--zoom-transform, none);
   transform-origin: center center;
   transition: transform var(--motion-control) var(--ease-out);
 }
 
-.skeleton-placeholder {
-  position: absolute;
-  inset: 0;
-  min-width: 240px;
-  min-height: 320px;
-  border-radius: var(--r-lg, 12px);
-  background: color-mix(in srgb, white 4%, transparent);
-  overflow: hidden;
-}
-
 .skeleton-shimmer {
-  position: absolute;
-  inset: 0;
   transform: translateX(-100%);
   background: linear-gradient(
     90deg,
@@ -326,13 +291,6 @@ function stopPan(event: PointerEvent) {
 }
 
 .zoomable-img {
-  display: block;
-  max-width: 100%;
-  max-height: min(88vh, 860px);
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: var(--r-lg, 12px);
   opacity: 0;
   filter: blur(8px);
   transition: opacity var(--motion-route) ease, filter var(--motion-route-cut) ease;
@@ -343,47 +301,9 @@ function stopPan(event: PointerEvent) {
   filter: blur(0);
 }
 
-.image-fallback {
-  color: var(--on-art-secondary, color-mix(in srgb, white 60%, transparent));
-  font-size: var(--fs-body-sm, 0.85rem);
-}
-
 .zoom-controls {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--bg-deep) 84%, transparent);
-  border: 1px solid var(--border-soft);
   backdrop-filter: blur(8px);
-  z-index: var(--z-raised);
-  font-size: var(--fs-label-sm);
-  color: var(--text-primary);
-}
-
-.zoom-level {
-  margin: 0 4px;
-  font-family: var(--font-mono, monospace);
-  font-weight: 600;
-  color: var(--archive-blue);
-}
-
-.zoom-control {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--bg-elevated) 78%, transparent);
-  color: var(--text-primary);
-  cursor: pointer;
 }
 
 .zoom-control:hover {
@@ -408,15 +328,6 @@ function stopPan(event: PointerEvent) {
 
 @media (max-width: 600px) {
   .zoom-hint { display: none; }
-}
-
-.zoom-hint {
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-  font-size: var(--fs-mono-sm);
-  color: color-mix(in srgb, white 40%, transparent);
-  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

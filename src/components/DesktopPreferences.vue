@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isDesktop" id="control-personalization" class="desktop-preferences" aria-labelledby="desktop-preferences-title">
+  <section v-if="isDesktop" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-lg" aria-labelledby="desktop-preferences-title">
     <div>
       <h2 id="desktop-preferences-title">我的桌面工作台</h2>
       <p>从常用页面开始，外观沿用你选择的深浅主题。</p>
@@ -37,20 +37,18 @@ function saveStartPageValue(value: string | number) {
 </script>
 
 <style scoped>
-.desktop-preferences { display: grid; gap: var(--s-3); padding: var(--s-5); margin-block: var(--s-5); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); }
-.desktop-preferences h2 { margin: 0 0 var(--s-2); color: var(--text-primary); font-size: var(--fs-body); }
-.desktop-preferences p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); }
-.desktop-preferences label { color: var(--text-primary); }
+@reference "../assets/css/tailwind.css";
+.desktop-preferences { margin-block: var(--s-5); border: 1px solid var(--border-soft); background: var(--bg-surface); }
+.desktop-preferences h2 { margin: 0 0 var(--s-2); @apply tw:text-primary tw:text-body; }
+.desktop-preferences p { @apply tw:m-0 tw:text-secondary tw:text-body-sm; }
+.desktop-preferences label { @apply tw:text-primary; }
 .desktop-preferences select {
-  width: 100%;
-  min-height: 44px;
+  @apply tw:w-full tw:min-h-[44px];
   padding: var(--s-3) var(--s-7) var(--s-3) var(--s-3);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background-color: var(--bg-elevated);
-  color: var(--text-primary);
+  @apply tw:rounded-md tw:bg-elevated tw:text-primary;
   font: inherit;
-  cursor: pointer;
+  @apply tw:cursor-pointer;
   outline: none;
   -webkit-appearance: none;
   appearance: none;
@@ -65,10 +63,10 @@ function saveStartPageValue(value: string | number) {
   transition: border-color var(--motion-hover) var(--ease-out);
 }
 .desktop-preferences select:hover {
-  border-color: var(--accent);
+  @apply tw:border-accent;
 }
 .desktop-preferences select:focus-visible {
-  border-color: var(--accent);
+  @apply tw:border-accent;
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }

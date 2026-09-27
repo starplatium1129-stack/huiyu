@@ -66,11 +66,12 @@ function inputValue(event: Event): string {
 </script>
 
 <style scoped>
-.companion-workspace-settings { box-sizing: border-box; width: min(420px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); padding: var(--s-4); margin: auto; overflow: auto; color: var(--text-primary); background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); }
-.companion-workspace-settings[open] { display: grid; gap: var(--s-4); }
+@reference "../assets/css/tailwind.css";
+.companion-workspace-settings { @apply tw:box-border; width: min(420px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); @apply tw:p-s-4 tw:m-auto tw:overflow-auto tw:text-primary; background: var(--bg-elevated); border: 1px solid var(--border-soft); @apply tw:rounded-lg; box-shadow: var(--shadow-lg); }
+.companion-workspace-settings[open] { @apply tw:grid tw:gap-s-4; }
 .companion-workspace-settings::backdrop { background: var(--art-backdrop); }
-.companion-workspace-settings > div:first-child { display: grid; gap: var(--s-2); }
-.companion-workspace-settings span { font-size: var(--fs-label-sm); color: var(--text-secondary); line-height: var(--lh-body); }
-input { width: 100%; min-width: 0; min-height: 44px; padding: var(--s-2); border: 1px solid var(--border-strong); border-radius: var(--r-sm); color: var(--text-primary); background: var(--bg-surface); }
-.companion-workspace-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.companion-workspace-settings > div:first-child { @apply tw:grid tw:gap-s-2; }
+.companion-workspace-settings span { @apply tw:text-label-sm tw:text-secondary tw:leading-body; }
+input { @apply tw:w-full tw:min-w-0 tw:min-h-[44px] tw:p-s-2; border: 1px solid var(--border-strong); @apply tw:rounded-sm tw:text-primary; background: var(--bg-surface); }
+.companion-workspace-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 </style>

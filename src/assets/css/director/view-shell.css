@@ -1,20 +1,20 @@
+@reference "../tailwind.css";
 /* 反推服装顶替提示条（2026-08-29）：热门角色服装被参考图顶替时的告知与恢复 */
 .outfit-override-note {
-  display: flex; align-items: center; gap: var(--s-2);
-  margin-bottom: var(--s-3); padding: var(--s-2) var(--s-3);
+  @apply tw:flex tw:items-center tw:gap-s-2 tw:mb-s-3; padding: var(--s-2) var(--s-3);
   border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--border-soft));
-  border-radius: var(--r-md); background: var(--accent-soft);
-  font-size: var(--fs-label-xs); line-height: var(--lh-label);
+  @apply tw:rounded-md; background: var(--accent-soft);
+  @apply tw:text-label-xs tw:leading-label;
 }
-.outfit-override-icon { flex: 0 0 auto; width: 15px; height: 15px; color: var(--accent); }
-.outfit-override-text { flex: 1 1 auto; min-width: 0; color: var(--text-secondary); }
+.outfit-override-icon { flex: 0 0 auto; @apply tw:w-[15px] tw:h-[15px] tw:text-accent; }
+.outfit-override-text { flex: 1 1 auto; @apply tw:min-w-0 tw:text-secondary; }
 .outfit-override-restore {
   flex: 0 0 auto; padding: 4px 10px; border: 1px solid var(--border-strong);
-  border-radius: var(--r-pill); background: var(--bg-elevated);
-  color: var(--text-primary); font-size: var(--fs-label-xs); cursor: pointer;
+  @apply tw:rounded-pill; background: var(--bg-elevated);
+  @apply tw:text-primary tw:text-label-xs tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
-.outfit-override-restore:hover { border-color: var(--accent); background: var(--bg-hover); }
+.outfit-override-restore:hover { @apply tw:border-accent; background: var(--bg-hover); }
 .outfit-override-restore:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .pb {
@@ -24,15 +24,14 @@
   --pb-badge-blue: var(--info);
   --pb-badge-green: var(--success);
   /* 2026-08-15 rella 化：导演台静态夜空衬底（工作台不浮动，只留静谧辉光） */
-  position: relative;
-  isolation: isolate;
+  @apply tw:relative tw:isolate;
 }
 .pb::before {
   content: "";
-  position: absolute;
+  @apply tw:absolute;
   inset: 0;
   z-index: var(--z-below);
-  pointer-events: none;
+  @apply tw:pointer-events-none;
   background:
     radial-gradient(30rem 20rem at 92% -6%, var(--rella-glow-cyan), transparent 64%),
     radial-gradient(26rem 18rem at -4% 88%, var(--rella-glow-violet), transparent 62%);

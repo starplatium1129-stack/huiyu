@@ -3,8 +3,8 @@
     <Transition :css="false" @enter="surface.enter" @leave="surface.leave" @after-leave="surface.dispose">
     <div v-show="open" class="global-search" :inert="!open" :aria-hidden="!open" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
-        <div class="gs-heading"><strong>快速查找</strong><span>页面、场景与作品</span></div>
-        <div class="gs-input-row">
+        <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>页面、场景与作品</span></div>
+        <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3">
           <ArchiveIcon name="search" class="gs-search-icon" />
           <input
             ref="inputEl"
@@ -23,18 +23,18 @@
             @keydown="onInputKeydown"
           />
           <StudioTooltip content="关闭搜索（Esc）">
-            <button type="button" class="gs-esc" aria-label="关闭搜索" @click="close()"><ArchiveIcon name="close" /></button>
+            <button type="button" class="gs-esc tw:inline-grid tw:w-[40px] tw:h-[40px] tw:cursor-pointer tw:rounded-pill tw:text-muted" aria-label="关闭搜索" @click="close()"><ArchiveIcon name="close" /></button>
           </StudioTooltip>
         </div>
 
-        <p v-if="worksError" class="gs-empty" role="alert">{{ worksError }}</p>
-        <p v-else-if="worksLoading" class="gs-empty" role="status">正在读取作品…</p>
-        <div :id="listboxId" ref="resultsEl" class="gs-results" role="listbox" aria-label="搜索结果">
+        <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
+        <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
+        <div :id="listboxId" ref="resultsEl" class="gs-results tw:overflow-y-auto tw:p-s-3" role="listbox" aria-label="搜索结果">
           <template v-if="!query.trim()">
-            <section v-if="filteredActions.length" class="gs-group">
-              <h4 class="gs-group-title">快捷操作</h4>
+            <section v-if="filteredActions.length" class="gs-group tw:mb-s-2">
+              <h4 class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">快捷操作</h4>
               <button v-for="(item, i) in filteredActions" :key="'a' + item.id" type="button"
-                class="gs-row" :class="{ active: activeIndex === i }" role="option"
+                class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" :class="{ active: activeIndex === i }" role="option"
                 :id="resultId('action', item.id)"
                 :aria-selected="activeIndex === i"
                 tabindex="-1"
@@ -43,10 +43,10 @@
                 <small>{{ item.hint }}</small>
               </button>
             </section>
-            <section v-if="filteredPages.length" class="gs-group">
-              <h4 class="gs-group-title">页面</h4>
+            <section v-if="filteredPages.length" class="gs-group tw:mb-s-2">
+              <h4 class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">页面</h4>
               <button v-for="(item, i) in filteredPages" :key="'p' + item.id" type="button"
-                class="gs-row" :class="{ active: activeIndex === filteredActions.length + i }" role="option"
+                class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" :class="{ active: activeIndex === filteredActions.length + i }" role="option"
                 :id="resultId('page', item.id)"
                 :aria-selected="activeIndex === filteredActions.length + i"
                 tabindex="-1"
@@ -58,10 +58,10 @@
           </template>
 
           <template v-else>
-            <section v-if="filteredPages.length" class="gs-group">
-              <h4 class="gs-group-title">页面</h4>
+            <section v-if="filteredPages.length" class="gs-group tw:mb-s-2">
+              <h4 class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">页面</h4>
               <button v-for="(item, i) in filteredPages" :key="'p' + item.id" type="button"
-                class="gs-row" :class="{ active: activeIndex === i }" role="option"
+                class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" :class="{ active: activeIndex === i }" role="option"
                 :id="resultId('page', item.id)"
                 :aria-selected="activeIndex === i"
                 tabindex="-1"
@@ -70,10 +70,10 @@
                 <small>{{ item.path }}</small>
               </button>
             </section>
-            <section v-if="filteredScenes.length" class="gs-group">
-              <h4 class="gs-group-title">灵感场景 · {{ filteredScenes.length }}</h4>
+            <section v-if="filteredScenes.length" class="gs-group tw:mb-s-2">
+              <h4 class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">灵感场景 · {{ filteredScenes.length }}</h4>
               <button v-for="(item, i) in filteredScenes" :key="'s' + item.id" type="button"
-                class="gs-row" :class="{ active: activeIndex === filteredPages.length + i }" role="option"
+                class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" :class="{ active: activeIndex === filteredPages.length + i }" role="option"
                 :id="resultId('scene', item.id)"
                 :aria-selected="activeIndex === filteredPages.length + i"
                 tabindex="-1"
@@ -82,10 +82,10 @@
                 <small>{{ item.meta }}</small>
               </button>
             </section>
-            <section v-if="filteredWorks.length" class="gs-group">
-              <h4 class="gs-group-title">作品 · {{ filteredWorks.length }}</h4>
+            <section v-if="filteredWorks.length" class="gs-group tw:mb-s-2">
+              <h4 class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">作品 · {{ filteredWorks.length }}</h4>
               <button v-for="(item, i) in filteredWorks" :key="'w' + item.id" type="button"
-                class="gs-row" :class="{ active: activeIndex === filteredPages.length + filteredScenes.length + i }" role="option"
+                class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" :class="{ active: activeIndex === filteredPages.length + filteredScenes.length + i }" role="option"
                 :id="resultId('work', item.id)"
                 :aria-selected="activeIndex === filteredPages.length + filteredScenes.length + i"
                 tabindex="-1"
@@ -94,13 +94,13 @@
                 <small>{{ item.meta }}</small>
               </button>
             </section>
-            <p v-if="!worksError && !worksLoading && !filteredPages.length && !filteredScenes.length && !filteredWorks.length" class="gs-empty">
+            <p v-if="!worksError && !worksLoading && !filteredPages.length && !filteredScenes.length && !filteredWorks.length" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm">
               没有匹配的结果，试试场景标题、标签或作品名。
             </p>
           </template>
         </div>
-        <p :id="searchAnnouncementId" class="gs-sr-status" role="status" aria-live="polite" aria-atomic="true">{{ resultsAnnouncement }}</p>
-        <div class="gs-footer" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
+        <p :id="searchAnnouncementId" class="gs-sr-status tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden tw:whitespace-nowrap" role="status" aria-live="polite" aria-atomic="true">{{ resultsAnnouncement }}</p>
+        <div class="gs-footer tw:flex tw:justify-between tw:gap-s-3 tw:text-muted tw:text-label-sm" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
       </div>
     </div>
     </Transition>
@@ -378,9 +378,10 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@reference "../assets/css/tailwind.css";
 .global-search {
-  position: fixed; inset: 0; z-index: var(--z-overlay);
-  display: flex; align-items: flex-start; justify-content: center;
+  @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
+  @apply tw:flex tw:items-start tw:justify-center;
   padding: clamp(8vh, 14vh, 20vh) var(--s-4) 0;
   background: color-mix(in srgb, var(--art-backdrop) 72%, transparent);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
@@ -388,57 +389,48 @@ onUnmounted(() => {
 .gs-panel {
   width: min(640px, 96vw);
   border: 1px solid var(--glass-edge);
-  border-radius: var(--r-2xl);
+  @apply tw:rounded-2xl;
   background: var(--bg-surface);
   box-shadow: var(--shadow-glass-elevated);
-  overflow: hidden;
+  @apply tw:overflow-hidden;
 }
 .gs-input-row {
-  display: flex; align-items: center; gap: var(--s-3);
   padding: var(--s-4) var(--s-5);
   background: var(--bg-base);
   border-bottom: 1px solid var(--border-soft);
 }
-.gs-search-icon { color: var(--text-muted); flex: 0 0 auto; }
+.gs-search-icon { @apply tw:text-muted; flex: 0 0 auto; }
 .gs-input {
-  flex: 1; min-width: 0;
+  flex: 1; @apply tw:min-w-0;
   background: transparent; border: 0; outline: 0;
-  color: var(--text-primary); font-size: var(--fs-body-lg);
-  min-height: 32px;
+  @apply tw:text-primary tw:text-body-lg tw:min-h-[32px];
 }
 .gs-input:focus-visible { outline: none; box-shadow: none; }
 .gs-input-row:focus-within { box-shadow: inset 0 -2px var(--accent); }
-.gs-input::placeholder { color: var(--text-muted); }
-.gs-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-5); color:var(--text-primary); font-size:var(--fs-body-sm); }
-.gs-heading span { color:var(--text-secondary); font-size:var(--fs-label-xs); }
-.gs-esc {
-  display: inline-grid; place-items: center; width: 40px; height: 40px;
-  background: var(--bg-surface); cursor: pointer;
+.gs-input::placeholder { @apply tw:text-muted; }
+.gs-heading { padding:var(--s-3) var(--s-5); }
+.gs-heading span { @apply tw:text-secondary tw:text-label-xs; }
+.gs-esc { place-items: center;
+  background: var(--bg-surface);
   flex: 0 0 auto;
   padding: 2px var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-pill);
-  color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono);
+  border: 1px solid var(--border-soft); font: 600 var(--fs-mono-xs) var(--font-mono);
 }
-.gs-results { max-height: min(52vh, 480px); overflow-y: auto; padding: var(--s-3); }
-.gs-group { margin-bottom: var(--s-2); }
+.gs-results { max-height: min(52vh, 480px); }
 .gs-group-title {
   margin: var(--s-2) var(--s-2) var(--s-1);
-  color: var(--text-muted);
-  font-size: var(--fs-label-sm); font-weight: 600;
 }
-.gs-row {
-  display: flex; align-items: center; gap: var(--s-3);
-  width: 100%; min-height: 46px; padding: var(--s-2) var(--s-3);
-  border: 0; border-radius: var(--r-md);
-  background: transparent; color: var(--text-primary);
-  font: inherit; text-align: left; cursor: pointer;
+.gs-row { padding: var(--s-2) var(--s-3);
+  border: 0;
+  background: transparent;
+  font: inherit;
 }
-.gs-row small { margin-left: auto; color: var(--text-muted); font-size: var(--fs-label-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46%; }
-.gs-row.active { background: var(--accent-soft); color: var(--text-primary); }
-.gs-row.active small { color: var(--text-secondary); }
-.gs-footer { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border-soft); color: var(--text-muted); background: var(--bg-surface); font-size: var(--fs-label-sm); }
-.gs-sr-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
-@media (max-width: 600px) { .global-search { padding-top: var(--s-5); } .gs-input { font-size: var(--fs-body); } .gs-results { max-height: 60dvh; } }
-.gs-empty { padding: var(--s-6) var(--s-4); color: var(--text-muted); text-align: center; font-size: var(--fs-body-sm); }
+.gs-row small { @apply tw:ml-auto tw:text-muted tw:text-label-sm tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:max-w-[46%]; }
+.gs-row.active { background: var(--accent-soft); @apply tw:text-primary; }
+.gs-row.active small { @apply tw:text-secondary; }
+.gs-footer { padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border-soft); background: var(--bg-surface); }
+.gs-sr-status { clip: rect(0 0 0 0); clip-path: inset(50%); border: 0; }
+@media (max-width: 600px) { .global-search { @apply tw:pt-s-5; } .gs-input { @apply tw:text-body; } .gs-results { @apply tw:max-h-[60dvh]; } }
+.gs-empty { padding: var(--s-6) var(--s-4); }
 @media (prefers-reduced-motion: reduce) { .gs-panel { animation: none; } }
 </style>

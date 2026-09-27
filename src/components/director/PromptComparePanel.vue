@@ -45,20 +45,21 @@ onMounted(() => { emit('ready', dialog.value); closeButton.value?.focus({ preven
 onBeforeUnmount(() => emit('ready', null))
 </script>
 <style>
-.pb-compare { width:min(1320px, 96vw); max-height:92vh; overflow-y:auto; padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-stage); background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg); transform-origin:center; }
-.pb-compare-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-4); }
-.pb-compare-kicker { color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
-.pb-compare-head h3 { margin:2px 0 0; font-size:var(--fs-title); }
-.pb-compare-head .btn-compare-close { display:inline-flex; align-items:center; gap:4px; border-radius:var(--r-md); }
-.pb-compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-4); align-items:start; }
-.pb-compare-card { min-width:0; border:1px solid var(--border-soft); border-radius:var(--r-2xl); overflow:hidden; background:var(--bg-elevated); }
-.pb-compare-visual { position:relative; background:var(--art-backdrop); display:grid; place-items:center; padding:var(--s-2); }
-.pb-compare-visual img { display:block; max-width:100%; max-height:72vh; width:auto; height:auto; object-fit:contain; }
-.pb-compare-tag { position:absolute; top:var(--s-3); left:var(--s-3); padding:2px var(--s-3); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); font:700 var(--fs-mono-sm) var(--font-mono); }
-.pb-compare-tag.current { background:var(--accent); color:var(--text-inverse); }
-.pb-compare-facts { display:flex; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-3); }
-.pb-compare-facts span { padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); font:600 var(--fs-mono-xs) var(--font-mono); }
-.pb-compare-facts .pb-compare-time { color:var(--text-muted); }
-@media (max-width: 900px) { .pb-compare-grid { grid-template-columns:1fr; } .pb-compare-visual img { max-height:56vh; } }
-.pb-compare-overlay { position:fixed; inset:0; z-index:var(--z-overlay); display:grid; place-items:center; padding:var(--s-4); background:color-mix(in srgb, var(--art-backdrop) 78%, transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+@reference "../../assets/css/tailwind.css";
+.pb-compare { width:min(1320px, 96vw); @apply tw:max-h-[92vh] tw:overflow-y-auto tw:p-s-5; border:1px solid var(--border-soft); @apply tw:rounded-stage; background:var(--bg-surface); @apply tw:text-primary; box-shadow:var(--shadow-lg); transform-origin:center; }
+.pb-compare-head { @apply tw:flex tw:items-center tw:justify-between tw:mb-s-4; }
+.pb-compare-kicker { @apply tw:text-muted; font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
+.pb-compare-head h3 { margin:2px 0 0; @apply tw:text-title; }
+.pb-compare-head .btn-compare-close { @apply tw:inline-flex tw:items-center tw:gap-[4px] tw:rounded-md; }
+.pb-compare-grid { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-4; align-items:start; }
+.pb-compare-card { @apply tw:min-w-0; border:1px solid var(--border-soft); @apply tw:rounded-2xl tw:overflow-hidden; background:var(--bg-elevated); }
+.pb-compare-visual { @apply tw:relative; background:var(--art-backdrop); @apply tw:grid; place-items:center; @apply tw:p-s-2; }
+.pb-compare-visual img { @apply tw:block tw:max-w-full tw:max-h-[72vh] tw:w-auto tw:h-auto tw:object-contain; }
+.pb-compare-tag { @apply tw:absolute tw:top-s-3 tw:left-s-3; padding:2px var(--s-3); @apply tw:rounded-pill; background:var(--bg-surface); @apply tw:text-secondary; font:700 var(--fs-mono-sm) var(--font-mono); }
+.pb-compare-tag.current { background:var(--accent); @apply tw:text-inverse; }
+.pb-compare-facts { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:p-s-3; }
+.pb-compare-facts span { padding:2px var(--s-2); border:1px solid var(--border-soft); @apply tw:rounded-pill tw:text-secondary; font:600 var(--fs-mono-xs) var(--font-mono); }
+.pb-compare-facts .pb-compare-time { @apply tw:text-muted; }
+@media (max-width: 900px) { .pb-compare-grid { grid-template-columns:1fr; } .pb-compare-visual img { @apply tw:max-h-[56vh]; } }
+.pb-compare-overlay { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; place-items:center; @apply tw:p-s-4; background:color-mix(in srgb, var(--art-backdrop) 78%, transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
 </style>

@@ -1,7 +1,8 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    AnimaInpaintModal 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
   /* Review modal */
-  .pb .review-card { width: 100%; max-width: 460px; max-height: 90dvh; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--r-xl); padding: var(--s-6); box-shadow: var(--shadow-lg); }
+  .pb .review-card { @apply tw:w-full tw:max-w-[460px] tw:max-h-[90dvh] tw:overflow-y-auto; background: var(--bg-surface); border: 1px solid var(--accent); @apply tw:rounded-xl tw:p-s-6; box-shadow: var(--shadow-lg); }

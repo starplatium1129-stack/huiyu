@@ -528,14 +528,4 @@ defineExpose({
 })
 </script>
 
-<style scoped>
-.character-card .character-tabs { max-width: calc(100% - 24px); overflow-x: auto; }
-.character-card .character-tab { flex-shrink: 0; white-space: nowrap; }
-.character-card .character-tab.active { color: var(--text-primary); border-color: var(--border-strong); background: var(--bg-surface); }
-.live2d-capability-report { margin-top: 8px; color: var(--text-secondary); font-size: 12px; }
-.live2d-capability-report summary { min-height: 32px; cursor: pointer; color: var(--text-primary); }
-.live2d-capability-report ul { display: grid; gap: 6px; margin: 6px 0 0; padding: 0; list-style: none; }
-.live2d-capability-report li { display: grid; grid-template-columns: minmax(4em, auto) auto; gap: 2px 8px; }
-.live2d-capability-report strong { color: var(--text-primary); font-weight: 650; }
-.live2d-capability-report small { grid-column: 1 / -1; color: var(--text-secondary); overflow-wrap: anywhere; }
-</style>
+<style scoped src="@/assets/css/components/ChatCharacterStage-0.css"></style>

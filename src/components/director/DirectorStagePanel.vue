@@ -309,19 +309,20 @@ async function interrogateCurrentImage() {
 </script>
 
 <style scoped>
+@reference "../../assets/css/tailwind.css";
 /* F2：入册状态徽章（设计令牌，深色模式对比度由令牌保证） */
 .stage-archive-badge {
-  align-self: center;
+  @apply tw:self-center;
   padding: 3px var(--s-2);
-  border-radius: var(--r-pill);
+  @apply tw:rounded-pill;
   font: 700 var(--fs-mono-xs) var(--font-mono);
 }
 .stage-archive-badge[data-archived="true"] {
   background: color-mix(in srgb, var(--success) 14%, transparent);
-  color: var(--success-text);
+  @apply tw:text-success-text;
 }
 .stage-archive-badge[data-archived="false"] {
   background: color-mix(in srgb, var(--warning) 12%, transparent);
-  color: var(--warning-text);
+  @apply tw:text-warning-text;
 }
 </style>

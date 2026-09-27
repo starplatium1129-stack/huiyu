@@ -1,39 +1,39 @@
-/* ============================================================
+@reference "../../tailwind.css";
+  /* ============================================================
    DirectorTagWorkbench 面板样式 —— 随 defineAsyncComponent 组件懒加载
    （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
-  .pb .expert-tags-header { gap: var(--s-2); }
-  .pb .expert-tags-actions { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
-  .pb .expert-tags-actions .search-icon { width: 12px; height: 12px; }
+  .pb .expert-tags-header { @apply tw:gap-s-2; }
+  .pb .expert-tags-actions { @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:ml-auto; }
+  .pb .expert-tags-actions .search-icon { @apply tw:w-[12px] tw:h-[12px]; }
   /* 反推引擎徽标（WD14 真实模型 / 启发式兜底） */
   .pb .tag-interrogate-engine {
-    display:inline-flex; align-items:center; gap:4px;
-    font-size:var(--fs-mono-xs); font-family:var(--font-mono); color:var(--accent);
-    padding:2px 8px; border-radius:var(--r-pill); border:1px solid color-mix(in srgb,var(--accent) 35%,var(--border-soft));
-    background:var(--accent-soft); white-space:nowrap; cursor:help;
+    @apply tw:inline-flex tw:items-center tw:gap-[4px] tw:text-mono-xs tw:font-mono tw:text-accent;
+    padding:2px 8px; @apply tw:rounded-pill; border:1px solid color-mix(in srgb,var(--accent) 35%,var(--border-soft));
+    background:var(--accent-soft); @apply tw:whitespace-nowrap; cursor:help;
   }
-  .pb .tag-interrogate-engine.is-fallback { color:var(--text-muted); border-color:var(--border-soft); background:transparent; }
-  .pb .expert-tags-header { display:flex; align-items:center; justify-content:space-between; width:100%; }
-  .pb .expert-tag-count { margin-left:var(--s-2); font-size:var(--fs-label-xs); color:var(--accent); font-weight:600; padding:2px 6px; border-radius:var(--r-pill); background:var(--accent-soft); }
-  .pb .clear-tags-btn { font-size:var(--fs-label-xs); padding:2px 8px; border-radius:var(--r-sm); color:var(--text-muted); }
-  .pb .clear-tags-btn:hover { color:var(--danger-text); border-color:var(--danger); }
-  .pb .manual-tags { display:flex; flex-wrap:wrap; gap:6px; min-height:32px; margin-bottom:var(--s-2); padding:var(--s-2); border-radius:var(--r-md); background:color-mix(in srgb,var(--bg-deep) 70%,transparent); border:1px dashed var(--border-soft); }
+  .pb .tag-interrogate-engine.is-fallback { @apply tw:text-muted tw:border-soft; background:transparent; }
+  .pb .expert-tags-header { @apply tw:flex tw:items-center tw:justify-between tw:w-full; }
+  .pb .expert-tag-count { @apply tw:ml-s-2 tw:text-label-xs tw:text-accent tw:font-semibold; padding:2px 6px; @apply tw:rounded-pill; background:var(--accent-soft); }
+  .pb .clear-tags-btn { @apply tw:text-label-xs; padding:2px 8px; @apply tw:rounded-sm tw:text-muted; }
+  .pb .clear-tags-btn:hover { @apply tw:text-danger-text tw:border-danger; }
+  .pb .manual-tags { @apply tw:flex tw:flex-wrap tw:gap-[6px] tw:min-h-[32px] tw:mb-s-2 tw:p-s-2 tw:rounded-md; background:color-mix(in srgb,var(--bg-deep) 70%,transparent); border:1px dashed var(--border-soft); }
   .pb .manual-tags.empty { border-style:dashed; padding:var(--s-2) var(--s-3); }
-  .pb .manual-tags-empty-hint { margin:0; font-size:var(--fs-label-xs); color:var(--text-muted); line-height:var(--lh-body); }
+  .pb .manual-tags-empty-hint { @apply tw:m-0 tw:text-label-xs tw:text-muted tw:leading-body; }
   .pb .manual-tag {
-    display:inline-flex; flex-direction:column; align-items:flex-start; gap:1px;
-    padding:4px 22px 4px 10px; position:relative;
-    border:1px solid var(--border-strong); border-radius:var(--r-md);
-    background:color-mix(in srgb, var(--bg-elevated) 88%, transparent); color:var(--text-primary); font-size:var(--fs-label-xs);
+    @apply tw:inline-flex tw:flex-col tw:items-start tw:gap-[1px];
+    padding:4px 22px 4px 10px; @apply tw:relative;
+    border:1px solid var(--border-strong); @apply tw:rounded-md;
+    background:color-mix(in srgb, var(--bg-elevated) 88%, transparent); @apply tw:text-primary tw:text-label-xs;
     box-shadow:inset 0 1px 0 var(--glass-highlight);
     transition:transform var(--motion-hover) var(--ease-out), border-color var(--motion-hover), box-shadow var(--motion-hover), background var(--motion-hover);
   }
   .pb .manual-tag:hover { transform:translateY(-1px); }
   .pb .manual-tag[data-weight-tier="boost"] {
-    border-color:var(--accent);
+    @apply tw:border-accent;
     background:var(--accent-soft);
-    color:var(--accent);
+    @apply tw:text-accent;
     box-shadow:0 0 8px color-mix(in srgb,var(--accent) 24%,transparent);
   }
   .pb .manual-tag[data-weight-tier="strong-boost"] {
@@ -49,9 +49,9 @@
     box-shadow:none;
     opacity:.88;
   }
-  .pb .manual-tag-en { font-family:var(--font-mono); font-weight:700; letter-spacing:.02em; }
-  .pb .manual-tag-cn { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-tight); }
-  .pb .manual-tag .tag-remove { position:absolute; top:2px; right:4px; }
+  .pb .manual-tag-en { @apply tw:font-mono tw:font-bold; letter-spacing:.02em; }
+  .pb .manual-tag-cn { @apply tw:text-secondary tw:text-label-xs tw:leading-tight; }
+  .pb .manual-tag .tag-remove { @apply tw:absolute tw:top-[2px] tw:right-[4px]; }
   .pb .universal-wardrobe-section {
     border-color: color-mix(in srgb, var(--mood-love) 40%, var(--border-soft));
     background: color-mix(in srgb, var(--mood-love) 8%, var(--bg-deep));
@@ -65,67 +65,67 @@
     color: var(--mood-love);
   }
   .pb .outfit-presets {
-    display:grid; gap:var(--s-2); margin:var(--s-3) 0;
-    padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft));
-    border-radius:var(--r-md); background:color-mix(in srgb,var(--accent-soft) 42%,var(--bg-deep));
+    @apply tw:grid tw:gap-s-2; margin:var(--s-3) 0;
+    @apply tw:p-s-3; border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft));
+    @apply tw:rounded-md; background:color-mix(in srgb,var(--accent-soft) 42%,var(--bg-deep));
   }
-  .pb .outfit-presets-head { display:flex; align-items:baseline; justify-content:space-between; gap:var(--s-2); flex-wrap:wrap; }
-  .pb .outfit-presets-head strong { color:var(--text-primary); font-size:var(--fs-label); }
-  .pb .outfit-presets-head span { color:var(--text-muted); font-size:var(--fs-label-xs); }
-  .pb .outfit-preset-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2); }
+  .pb .outfit-presets-head { @apply tw:flex tw:items-baseline tw:justify-between tw:gap-s-2 tw:flex-wrap; }
+  .pb .outfit-presets-head strong { @apply tw:text-primary tw:text-label; }
+  .pb .outfit-presets-head span { @apply tw:text-muted tw:text-label-xs; }
+  .pb .outfit-preset-list { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2; }
   .pb .outfit-preset {
-    display:grid; gap:3px; min-width:0; padding:var(--s-2);
-    border:1px solid var(--border-soft); border-radius:var(--r-sm);
-    background:var(--bg-deep); color:var(--text-secondary); cursor:pointer; text-align:left;
+    @apply tw:grid tw:gap-[3px] tw:min-w-0 tw:p-s-2;
+    border:1px solid var(--border-soft); @apply tw:rounded-sm;
+    background:var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer tw:text-left;
   }
   .pb .outfit-preset:hover, .pb .outfit-preset.selected {
-    border-color:var(--accent); background:var(--accent-soft); color:var(--accent);
+    @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent;
   }
-  .pb .outfit-preset strong, .pb .outfit-preset small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .pb .outfit-preset strong { font-size:var(--fs-label-sm); }
-  .pb .outfit-preset small { color:var(--text-muted); font:var(--fs-mono-xs) var(--font-mono); }
+  .pb .outfit-preset strong, .pb .outfit-preset small { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
+  .pb .outfit-preset strong { @apply tw:text-label-sm; }
+  .pb .outfit-preset small { @apply tw:text-muted; font:var(--fs-mono-xs) var(--font-mono); }
   .pb .r18-controls {
-    display:grid; gap:var(--s-2); margin-top:var(--s-2); padding-top:var(--s-3);
+    @apply tw:grid tw:gap-s-2 tw:mt-s-2 tw:pt-s-3;
     border-top:1px solid var(--border-soft);
   }
-  .pb .r18-controls-head strong { color:var(--danger-text); }
+  .pb .r18-controls-head strong { @apply tw:text-danger-text; }
   .pb .r18-control {
     border-color:color-mix(in srgb,var(--danger) 28%,var(--border-soft));
     background:color-mix(in srgb,var(--danger) 5%,var(--bg-deep));
   }
   .pb .r18-control:hover, .pb .r18-control.selected {
-    border-color:var(--danger);
+    @apply tw:border-danger;
     background:color-mix(in srgb,var(--danger) 12%,var(--bg-deep));
-    color:var(--danger-text);
+    @apply tw:text-danger-text;
   }
   .pb .r18-control.selected { box-shadow:inset 3px 0 0 var(--danger); }
   @media (max-width:480px) {
     .pb .outfit-preset-list { grid-template-columns:1fr; }
   }
   .pb .tag-remove {
-    border:0; background:transparent; color:inherit; cursor:pointer;
-    font:inherit; opacity:.7; line-height:var(--lh-flush); padding:0;
+    border:0; background:transparent; color:inherit; @apply tw:cursor-pointer;
+    font:inherit; opacity:.7; @apply tw:leading-flush tw:p-0;
   }
   .pb .tag-remove:hover { opacity:1; }
   .pb .tag-input {
-    width:100%; min-height:36px; padding:var(--s-2) var(--s-3);
-    border:1px solid var(--border-soft); border-radius:var(--r-md);
-    background:var(--bg-deep); color:var(--text-primary); font:400 var(--fs-label) var(--font-sans); outline:none;
+    @apply tw:w-full tw:min-h-[36px]; padding:var(--s-2) var(--s-3);
+    border:1px solid var(--border-soft); @apply tw:rounded-md;
+    background:var(--bg-deep); @apply tw:text-primary; font:400 var(--fs-label) var(--font-sans); outline:none;
   }
-  .pb .tag-input:focus { border-color:var(--accent); box-shadow:var(--ring); }
-  .pb .tag-browser { display:grid; gap:var(--s-2); margin-bottom:var(--s-3); }
-  .pb .tag-categories { display:flex; gap:4px; overflow-x:auto; padding-bottom:2px; scrollbar-width:thin; }
+  .pb .tag-input:focus { @apply tw:border-accent; box-shadow:var(--ring); }
+  .pb .tag-browser { @apply tw:grid tw:gap-s-2 tw:mb-s-3; }
+  .pb .tag-categories { @apply tw:flex tw:gap-[4px] tw:overflow-x-auto tw:pb-[2px]; scrollbar-width:thin; }
   .pb .tag-categories button {
-    flex:0 0 auto; min-height:28px; padding:0 var(--s-2);
-    border:1px solid var(--border-soft); border-radius:var(--r-pill);
-    background:var(--bg-deep); color:var(--text-muted); cursor:pointer;
+    flex:0 0 auto; @apply tw:min-h-[28px]; padding:0 var(--s-2);
+    border:1px solid var(--border-soft); @apply tw:rounded-pill;
+    background:var(--bg-deep); @apply tw:text-muted tw:cursor-pointer;
     font:600 var(--fs-mono-xs) var(--font-sans);
   }
-  .pb .tag-categories button.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
-  .pb .tag-results { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; max-height:280px; overflow:auto; padding-right:2px; }
+  .pb .tag-categories button.active { @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent; }
+  .pb .tag-results { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-[4px] tw:max-h-[280px] tw:overflow-auto tw:pr-[2px]; }
   /* 截断告知：还有多少条没显示（2026-08-30 UX 审计——原先静默截断，用户以为库里只有这些） */
-  .pb .tag-more-hint { margin:6px 0 0; color:var(--text-muted); font-size:var(--fs-label-sm); line-height:var(--lh-label); }
-  .pb .expert-tag-panel .tag-results { grid-template-columns:repeat(4,minmax(0,1fr)); max-height:430px; }
+  .pb .tag-more-hint { margin:6px 0 0; @apply tw:text-muted tw:text-label-sm tw:leading-label; }
+  .pb .expert-tag-panel .tag-results { grid-template-columns:repeat(4,minmax(0,1fr)); @apply tw:max-h-[430px]; }
   @media (max-width:768px) {
     .pb .expert-tag-panel .tag-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
   }
@@ -133,11 +133,11 @@
     .pb .expert-tag-panel .tag-results { grid-template-columns:1fr; }
   }
   .pb .tag-results button {
-    display:grid; gap:1px; min-width:0; padding:7px var(--s-2);
-    border:1px solid var(--border-soft); border-radius:var(--r-sm);
-    background:var(--bg-deep); color:var(--text-secondary); cursor:pointer; text-align:left;
+    @apply tw:grid tw:gap-[1px] tw:min-w-0; padding:7px var(--s-2);
+    border:1px solid var(--border-soft); @apply tw:rounded-sm;
+    background:var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer tw:text-left;
   }
   .pb .tag-results button:hover,
-  .pb .tag-results button.selected { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
-  .pb .tag-results strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-label-sm); }
-  .pb .tag-results small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted); font:var(--fs-mono-xs) var(--font-mono); }
+  .pb .tag-results button.selected { @apply tw:border-accent; background:var(--accent-soft); @apply tw:text-accent; }
+  .pb .tag-results strong { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-label-sm; }
+  .pb .tag-results small { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-muted; font:var(--fs-mono-xs) var(--font-mono); }
