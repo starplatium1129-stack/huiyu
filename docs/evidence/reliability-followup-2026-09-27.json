@@ -15,7 +15,7 @@
     "sourceSha256": "519e4f289e75ab3ce36dbd39b543b235135450a4e77f3e98ce977ac1cb54b7fe",
     "buildSha256": "10a97bd5d9edc9bb41280532d70d8488ae5e05e798518f504b03954b96235e33",
     "releaseCommit": "1eae9ba706301a4b6d1c897b3486e0056e774ea2",
-    "selectedInstallerBytes": 686965583,
+    "selectedInstallerBytes": 686971861,
     "actualPayload": {
       "installedExeSha256": "30553235921b052ba514cb8f66c9c83f8b903ea26329b4aec1051bcb63700794",
       "installerSha256": "92749491be01f1961f244ca882569ee59ff4067eb4d8fd8a33f4ca3eaba8041d",
