@@ -24,6 +24,7 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
   const pending = new Map<string, ReturnType<typeof setTimeout>>();
   const busy = new Set<string>();
   const dispatched = new Set<string>();
+  const preparing = new Set<string>();
   const workInFlight = new Set<Promise<unknown>>();
   let closed = false;
   let closePromise: Promise<void> | undefined;
@@ -107,11 +108,17 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
   }
   const reconcile = (principal: string, id: string) => track(reconcileTask(principal, id));
   async function dispatch(task: TaskRecord) {
+    if (dispatched.has(task.taskId)) return;
     dispatched.add(task.taskId);
     const principal = task.principalId;
     const provider = providers[task.kind]!;
     try {
-      if ((await get(principal, task.taskId)).cancelRequestedAt) return;
+      const current = await get(principal, task.taskId);
+      if (current.cancelRequestedAt || current.submissionIntentAt || current.upstreamSettled || current.status !== 'queued') return;
+      if (closed) {
+        await patch(principal, task.taskId, { recoveryState: 'interrupted', errorCode: 'TASK_AWAITING_RESUME' });
+        return;
+      }
       await provider.submit(task, {
         ...inputAccess(task),
         async submitting(providerName, fingerprint) {
@@ -137,7 +144,7 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
       await patch(principal, task.taskId, current.submissionIntentAt
         ? { recoveryState: 'unknown', errorCode: 'SUBMISSION_UNCONFIRMED' }
         : { status: 'failed', upstreamSettled: true, errorCode: 'TASK_VALIDATION_FAILED' });
-    }
+    } finally { dispatched.delete(task.taskId); }
   }
   return {
     runtimeEpoch: workspace.runtimeEpoch,
@@ -165,8 +172,10 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
         deliveryState: 'unseen', errorCode: null, metadata: { context: structuredClone(request.context ?? {}) }, checkpoint: null, parentBatchId: null, stepIndex: null,
       } });
       if (created && !task.cancelRequestedAt && provider.prepare) {
+        preparing.add(task.taskId);
         try { await track(provider.prepare(task, inputAccess(task))); }
         catch (error) { await patch(principal, task.taskId, { status: 'failed', upstreamSettled: true, errorCode: 'TASK_INPUT_UNAVAILABLE' }); throw error; }
+        finally { preparing.delete(task.taskId); }
       }
       if (created && !task.cancelRequestedAt) void track(dispatch(task)).catch(() => {});
       return get(principal, task.taskId);
@@ -197,8 +206,10 @@ export function createTaskRuntime(options: { workspace: TaskWorkspace; providers
     })()); },
     async resume(principal: string, id: string) {
       const task = await get(principal, id);
-      if (task.submissionIntentAt || task.cancelRequestedAt || task.status !== 'queued') throw new WorkspaceError('TASK_RESUME_UNSAFE', 'Only never submitted queued work can resume');
       if (closed) throw new WorkspaceError('TASK_RUNTIME_CLOSED', 'Task runtime is closed', 503);
+      if (preparing.has(id) || dispatched.has(id)) return task;
+      if (task.submissionIntentAt || task.cancelRequestedAt || task.status !== 'queued') throw new WorkspaceError('TASK_RESUME_UNSAFE', 'Only never submitted queued work can resume');
+      if (providers[task.kind]?.fingerprint() !== task.providerFingerprint) throw new WorkspaceError('TASK_RESUME_UNSAFE', 'Task provider identity changed; queued work cannot resume', 409);
       void track(dispatch(task)).catch(() => {}); return task;
     },
     async recover(principal: string) {

@@ -90,8 +90,10 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
         return { online: false, provider: null, webuiOnline: false, comfyFallbackOnline: false, checkpoint: '', samplers: [], schedulers: [], models: [], loras: Object.keys(LORAS).map(function (id) { return { id: id, character: LORAS[id].character, available: safeComfyResource(config, 'loras', LORAS[id].file) }; }), capabilities: { basic: false, hires: false, hiresUpscalers: [], faceDetailer: false }, pending: Math.max(admitted, actualWebui + actualComfy), maxPending: MAX_PENDING, webuiPending: actualWebui, comfyPending: actualComfy };
     }
     async function getStatus() {
-        let webui = await probeWebUI();
-        let comfyOnline = await comfy.probe().catch(function () { return false; });
+        const [webui, comfyOnline] = await Promise.all([
+            probeWebUI(),
+            comfy.probe().catch(function () { return false; }),
+        ]);
         let data = status();
         data.online = webui.online || comfyOnline;
         data.webuiOnline = webui.online;
@@ -160,8 +162,10 @@ export function createGenerationService(config: GenerationConfig, dependencies: 
     async function submit(input: GenerationInput, ownerId: string, hooks?: import('../tasks/provider').TaskExecutionHooks) {
         if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
         // fresh：路由决策不能吃缓存——上游刚下线时必须立即失败而不是送进注定失败的分支
-        let webui = await probeWebUI({ fresh: true });
-        let comfyOnline = await comfy.probe().catch(function () { return false; });
+        const [webui, comfyOnline] = await Promise.all([
+            probeWebUI({ fresh: true }),
+            comfy.probe().catch(function () { return false; }),
+        ]);
         if (registry.isClosed()) throw error(503, 'GENERATION_CLOSED', '生成服务已关闭');
         let webuiSupportsSampler = webui.samplers.length === 0 || webui.samplers.indexOf(input.sampler) !== -1;
         let webuiSupportsScheduler = !input.webuiScheduler || webui.schedulers.length === 0 || webui.schedulers.indexOf(input.webuiScheduler) !== -1 || webui.schedulers.indexOf(input.webuiScheduler === 'karras' ? 'Karras' : input.webuiScheduler) !== -1;

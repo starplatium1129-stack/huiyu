@@ -147,8 +147,6 @@ function isAbortError(error: unknown): boolean {
 
 async function request(baseUrl: string, pathname: string, options?: RequestOptions): Promise<RequestResult> {
   const opts = options || {};
-  // Pin checked DNS answers; neither proxy DNS nor pooled sockets may bypass validation.
-  const publicAddress = opts.publicOnly ? await resolvePublicAddress(new URL(pathname, baseUrl)) : null;
   return new Promise(function (resolve, reject) {
     let target: URL;
     try {
@@ -175,20 +173,17 @@ async function request(baseUrl: string, pathname: string, options?: RequestOptio
     const timeoutMessage = opts.timeoutMessage || 'Upstream request timed out';
 
     let settled = false;
+    let stopped = false;
     let responseRef: IncomingMessage | null = null;
     let req: ClientRequest | null = null;
     let connectReq: ClientRequest | null = null;
-    const deadline = opts.totalTimeoutMs ? setTimeout(() => {
-      const error = new UpstreamError('Upstream total deadline exceeded', { code: 'UPSTREAM_DEADLINE' });
-      req?.destroy(error);
-      connectReq?.destroy(error);
-      responseRef?.destroy(error);
-      if (!settled) reject(error);
-      cleanupAbort();
-    }, opts.totalTimeoutMs) : null;
+    const deadline = opts.totalTimeoutMs ? setTimeout(() => failRequest(
+      new UpstreamError('Upstream total deadline exceeded', { code: 'UPSTREAM_DEADLINE' })
+    ), opts.totalTimeoutMs) : null;
     deadline?.unref();
 
     function onResponse(response: IncomingMessage) {
+      if (stopped) { response.destroy(); return; }
       settled = true;
       responseRef = response;
       response.once('close', cleanupAbort);
@@ -196,122 +191,120 @@ async function request(baseUrl: string, pathname: string, options?: RequestOptio
     }
 
     function onAbort() {
-      if (req && !req.destroyed) req.destroy(abortError());
-      else if (connectReq && !connectReq.destroyed) connectReq.destroy(abortError());
+      failRequest(abortError());
     }
     function cleanupAbort() {
       if (deadline) clearTimeout(deadline);
       if (opts.signal) opts.signal.removeEventListener('abort', onAbort);
     }
+    // One cancellation owner covers DNS, CONNECT, TLS and response consumption.
+    // A late DNS/CONNECT completion must never start work after this request stops.
+    function failRequest(error: Error) {
+      if (stopped) return;
+      stopped = true;
+      cleanupAbort();
+      req?.destroy(error);
+      connectReq?.destroy(error);
+      if (responseRef && !responseRef.destroyed) responseRef.destroy(error);
+      if (!settled) { settled = true; reject(error); }
+    }
+    opts.signal?.addEventListener('abort', onAbort, { once: true });
 
     function attachResponse(clientReq: ClientRequest) {
       req = clientReq;
       clientReq.setTimeout(timeoutMs, function () {
-        clientReq.destroy(new UpstreamError(timeoutMessage, { code: 'UPSTREAM_TIMEOUT' }));
+        failRequest(new UpstreamError(timeoutMessage, { code: 'UPSTREAM_TIMEOUT' }));
       });
-      clientReq.on('error', function (error) {
-        cleanupAbort();
-        if (!settled) {
-          reject(error);
-          return;
-        }
-        // 响应头已发出（流式场景）：不能静默吞掉 socket 错误，
-        // 否则 TTS 音频流 / SSE 聊天流中途断连时调用方只看到"流提前结束"，
-        // 无法区分正常结束与上游截断。把错误传给 response 流，让
-        // for await / data 读取方能感知并抛给调用方的 catch。
-        if (responseRef && !responseRef.destroyed && !responseRef.complete) {
-          responseRef.destroy(error);
-        }
-      });
-      if (opts.signal) opts.signal.addEventListener('abort', onAbort, { once: true });
+      clientReq.on('error', failRequest);
       clientReq.end(payload === null ? undefined : payload);
     }
 
-    const proxy = opts.publicOnly ? null : resolveProxy(target);
-    if (!proxy) {
-      const transport = target.protocol === 'https:' ? https : http;
-      const agent = target.protocol === 'https:' ? DIRECT_HTTPS_AGENT : DIRECT_HTTP_AGENT;
-      const direct = transport.request(target, {
-        method: method, headers: headers, agent: publicAddress ? false : agent,
-        ...(publicAddress ? { lookup: (_hostname, _options, callback) => {
-          if (typeof _options === 'object' && _options.all) callback(null, [publicAddress]);
-          else callback(null, publicAddress.address, publicAddress.family);
-        } } : {})
-      }, onResponse);
-      attachResponse(direct);
-      return;
-    }
+    async function startRequest() {
+      // Pin checked DNS answers; neither proxy DNS nor pooled sockets may bypass validation.
+      const publicAddress = opts.publicOnly ? await resolvePublicAddress(target) : null;
+      if (stopped) return;
+      const proxy = opts.publicOnly ? null : resolveProxy(target);
+      if (!proxy) {
+        const transport = target.protocol === 'https:' ? https : http;
+        const agent = target.protocol === 'https:' ? DIRECT_HTTPS_AGENT : DIRECT_HTTP_AGENT;
+        const direct = transport.request(target, {
+          method: method, headers: headers, agent: publicAddress ? false : agent,
+          ...(publicAddress ? { lookup: (_hostname, _options, callback) => {
+            if (typeof _options === 'object' && _options.all) callback(null, [publicAddress]);
+            else callback(null, publicAddress.address, publicAddress.family);
+          } } : {})
+        }, onResponse);
+        attachResponse(direct);
+        return;
+      }
 
-    // 代理路径：http 目标走正向代理（path 为完整 URL）；
-    // https 目标先 CONNECT 隧道，再在隧道 socket 上做 TLS。
-    const proxyAuth = proxy.auth
-      ? 'Basic ' + Buffer.from(proxy.auth).toString('base64')
-      : undefined;
+      // 代理路径：http 目标走正向代理（path 为完整 URL）；
+      // https 目标先 CONNECT 隧道，再在隧道 socket 上做 TLS。
+      const proxyAuth = proxy.auth
+        ? 'Basic ' + Buffer.from(proxy.auth).toString('base64')
+        : undefined;
 
-    if (target.protocol !== 'https:') {
-      const proxied = http.request({
+      if (target.protocol !== 'https:') {
+        const proxied = http.request({
+          host: proxy.host,
+          port: proxy.port,
+          path: target.toString(),
+          method: method,
+          headers: proxyAuth ? Object.assign({ 'Proxy-Authorization': proxyAuth }, headers) : headers
+        }, onResponse);
+        attachResponse(proxied);
+        return;
+      }
+
+      const connect = http.request({
         host: proxy.host,
         port: proxy.port,
-        path: target.toString(),
-        method: method,
-        headers: proxyAuth ? Object.assign({ 'Proxy-Authorization': proxyAuth }, headers) : headers
-      }, onResponse);
-      attachResponse(proxied);
-      return;
-    }
-
-    const connect = http.request({
-      host: proxy.host,
-      port: proxy.port,
-      method: 'CONNECT',
-      path: target.hostname + ':' + (target.port || '443'),
-      headers: proxyAuth ? { 'Proxy-Authorization': proxyAuth } : undefined
-    });
-    connectReq = connect;
-    connect.setTimeout(timeoutMs, function () {
-      connect.destroy(new UpstreamError(timeoutMessage, { code: 'UPSTREAM_TIMEOUT' }));
-    });
-    connect.on('error', function (error) {
-      cleanupAbort();
-      if (!settled) reject(error);
-    });
-    connect.on('connect', function (res, socket) {
-      connectReq = null;
-      if (!res || res.statusCode !== 200) {
-        socket.destroy();
-        cleanupAbort();
-        if (!settled) {
-          reject(new UpstreamError('Proxy CONNECT failed with ' + (res && res.statusCode || 0), {
+        method: 'CONNECT',
+        path: target.hostname + ':' + (target.port || '443'),
+        headers: proxyAuth ? { 'Proxy-Authorization': proxyAuth } : undefined
+      });
+      connectReq = connect;
+      connect.setTimeout(timeoutMs, function () {
+        failRequest(new UpstreamError(timeoutMessage, { code: 'UPSTREAM_TIMEOUT' }));
+      });
+      connect.on('error', failRequest);
+      connect.on('connect', function (res, socket) {
+        if (stopped) { socket.destroy(); return; }
+        connect.setTimeout(0);
+        connectReq = null;
+        if (!res || res.statusCode !== 200) {
+          socket.destroy();
+          failRequest(new UpstreamError('Proxy CONNECT failed with ' + (res && res.statusCode || 0), {
             code: 'UPSTREAM_STATUS',
             status: (res && res.statusCode) || 502
           }));
+          return;
         }
-        return;
-      }
-      try {
-        // https.request 对"已连接"的 socket 不会自动做 TLS 握手（会直接发明文），
-        // 因此先手动 tls.connect 包装成 TLS socket 再交给请求层；
-        // 握手是异步的，https.request 监听的 secureConnect 事件不会错过。
-        const tlsSocket = tls.connect({
-          socket: socket,
-          servername: target.hostname
-        });
-        const secureReq = https.request({
-          host: target.hostname,
-          port: target.port || 443,
-          path: target.pathname + target.search,
-          method: method,
-          headers: headers,
-          createConnection: function () { return tlsSocket; }
-        }, onResponse);
-        attachResponse(secureReq);
-      } catch (error) {
-        socket.destroy();
-        cleanupAbort();
-        if (!settled) reject(error instanceof Error ? error : new Error(String(error)));
-      }
-    });
-    connect.end();
+        try {
+          // https.request 对"已连接"的 socket 不会自动做 TLS 握手（会直接发明文），
+          // 因此先手动 tls.connect 包装成 TLS socket 再交给请求层；
+          // 握手是异步的，https.request 监听的 secureConnect 事件不会错过。
+          const tlsSocket = tls.connect({
+            socket: socket,
+            servername: target.hostname
+          });
+          const secureReq = https.request({
+            host: target.hostname,
+            port: target.port || 443,
+            path: target.pathname + target.search,
+            method: method,
+            headers: headers,
+            createConnection: function () { return tlsSocket; }
+          }, onResponse);
+          attachResponse(secureReq);
+        } catch (error) {
+          socket.destroy();
+          failRequest(error instanceof Error ? error : new Error(String(error)));
+        }
+      });
+      connect.end();
+    }
+    void startRequest().catch(failRequest);
   });
 }
 

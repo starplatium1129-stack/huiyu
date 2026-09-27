@@ -102,3 +102,72 @@ test('service watchdog: stop clears timers and reports stopped', async () => {
   assert.strictEqual(service.calls.probe, before, 'stop() must clear the interval');
   assert.strictEqual(watchdog.status().running, false);
 });
+
+test('service watchdog: a scheduled restart respects a later manual stop', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const state = { online: true, managed: true };
+  const service = fakeService('tts', state);
+  const watchdog = createServiceWatchdog({ services: [service], intervalMs: 1000 });
+  t.after(() => watchdog.stop());
+  watchdog.start(); await watchdog.check(); await Promise.resolve();
+  state.online = false;
+  await watchdog.check();
+  assert.equal(watchdog.status().services.tts.restarting, true);
+  state.managed = false;
+  t.mock.timers.tick(1000);
+  await Promise.resolve();
+  assert.equal(service.calls.restart, 0);
+  assert.equal(watchdog.status().services.tts.restarting, false);
+});
+
+test('service watchdog: late probes cannot publish state after stop', async (t) => {
+  let release!: (value: boolean) => void;
+  const probe = new Promise<boolean>(resolve => { release = resolve; });
+  const service = { name: 'tts', probe: () => probe, restart: async () => ({ ok: true }), shouldManage: () => true };
+  const watchdog = createServiceWatchdog({ services: [service] });
+  t.after(() => { release(true); watchdog.stop(); });
+  watchdog.start(); watchdog.stop();
+  const before = watchdog.status();
+  release(true); await Promise.resolve(); await Promise.resolve();
+  assert.deepEqual(watchdog.status(), before);
+});
+
+test('service watchdog: health probes cannot release an in-flight restart slot', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const state = { online: true, managed: true };
+  let release!: () => void, restarts = 0;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  const service = { name: 'tts', probe: async () => state.online, shouldManage: () => state.managed,
+    restart: async () => { restarts++; await gate; return { ok: true }; } };
+  const watchdog = createServiceWatchdog({ services: [service], intervalMs: 1000 });
+  t.after(() => { release(); watchdog.stop(); });
+  watchdog.start(); await Promise.resolve(); await Promise.resolve();
+  state.online = false; await watchdog.check();
+  t.mock.timers.tick(1000); await Promise.resolve(); await Promise.resolve();
+  assert.equal(restarts, 1);
+  state.online = true; await watchdog.check();
+  state.online = false; await watchdog.check();
+  t.mock.timers.tick(2000); await Promise.resolve(); await Promise.resolve();
+  assert.equal(restarts, 1, 'the previous restart still owns its slot');
+});
+
+test('service watchdog: old restart completion cannot emit into a restarted lifecycle', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const state = { online: true, managed: true };
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  const events: string[] = [];
+  const service = { name: 'tts', probe: async () => state.online, shouldManage: () => state.managed,
+    restart: async () => { await gate; return { ok: true }; } };
+  const watchdog = createServiceWatchdog({ services: [service], intervalMs: 1000, onEvent: event => events.push(event.kind) });
+  t.after(() => { release(); watchdog.stop(); });
+  watchdog.start(); await Promise.resolve(); await Promise.resolve();
+  state.online = false; await watchdog.check();
+  t.mock.timers.tick(1000); await Promise.resolve(); await Promise.resolve();
+  watchdog.stop(); state.managed = false; watchdog.start();
+  await Promise.resolve(); await Promise.resolve();
+  const before = [...events];
+  release(); await Promise.resolve(); await Promise.resolve();
+  assert.deepEqual(events, before);
+  assert.equal(watchdog.status().services.tts.lastRestartAt, 0);
+});

@@ -40,6 +40,7 @@ interface ServiceEntry {
   wasHealthy: boolean;
   managed: boolean;
   restarting: boolean;
+  restartInFlight: boolean;
   attempt: number;
   lastError: string;
   lastRestartAt: number;
@@ -66,6 +67,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
   let timer: ReturnType<typeof setInterval> | null = null;
   let running = false;
   let checking = false;
+  let generation = 0;
 
   function entry(service: WatchdogService): ServiceEntry {
     let current = entries.get(service.name);
@@ -75,6 +77,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
         wasHealthy: false,
         managed: false,
         restarting: false,
+        restartInFlight: false,
         attempt: 0,
         lastError: '',
         lastRestartAt: 0,
@@ -90,24 +93,30 @@ function createServiceWatchdog(options: WatchdogOptions) {
       clearTimeout(current.timer);
       current.timer = null;
     }
-    current.restarting = false;
+    current.restarting = running && current.restartInFlight;
   }
 
   function scheduleRestart(service: WatchdogService, current: ServiceEntry) {
-    if (!running || current.restarting) return;
+    if (!running || current.restarting || current.restartInFlight) return;
+    const scheduledGeneration = generation;
     const delay = Math.min(maxBackoffMs, intervalMs * Math.pow(2, current.attempt));
     current.restarting = true;
     current.timer = setTimeout(function () {
       current.timer = null;
       void (async function () {
-        if (!running) return;
+        if (!running || scheduledGeneration !== generation) return;
+        current.managed = service.shouldManage();
+        if (!current.managed) { clearRestartTimer(current); return; }
+        current.restartInFlight = true;
         let result: { ok: boolean; error?: string };
         try {
           result = await service.restart();
         } catch (error) {
           result = { ok: false, error: error instanceof Error ? error.message : String(error) };
         }
+        current.restartInFlight = false;
         current.restarting = false;
+        if (!running || scheduledGeneration !== generation || !service.shouldManage()) return;
         if (result && result.ok) {
           current.attempt = 0;
           current.lastError = '';
@@ -134,6 +143,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
   async function check(): Promise<void> {
     if (checking || !running) return;
     checking = true;
+    const checkedGeneration = generation;
     try {
       for (const service of services) {
         const current = entry(service);
@@ -143,6 +153,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
         } catch {
           healthy = false;
         }
+        if (!running || checkedGeneration !== generation) return;
         current.healthy = healthy;
         current.managed = service.shouldManage();
         if (!current.managed) {
@@ -161,7 +172,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
           continue;
         }
         // 曾经健康 → 现在掉线：触发自愈；从未健康则不动（等待手动启动）。
-        if ((current.wasHealthy || (current.attempt === 0 && service.recoverOnStart && service.recoverOnStart())) && !current.restarting) {
+        if ((current.wasHealthy || (current.attempt === 0 && service.recoverOnStart && service.recoverOnStart())) && !current.restarting && !current.restartInFlight) {
           if (options.onEvent) options.onEvent({ service: service.name, kind: 'down' });
           scheduleRestart(service, current);
         }
@@ -173,6 +184,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
 
   function start(): void {
     if (running) return;
+    generation++;
     running = true;
     timer = setInterval(function () { void check(); }, intervalMs);
     if (typeof timer.unref === 'function') timer.unref();
@@ -181,6 +193,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
 
   function stop(): void {
     running = false;
+    generation++;
     if (timer) {
       clearInterval(timer);
       timer = null;

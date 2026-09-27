@@ -41,7 +41,7 @@ function createComfyProgressMonitor<Job extends ProgressJob = ProgressJob>(confi
   let closed = false;
 
   function scheduleReconnect() {
-    if (closed || reconnectTimer) return;
+    if (closed || !subscriptions.size || reconnectTimer) return;
     reconnectTimer = setTimeout(function () {
       reconnectTimer = null;
       connect();
@@ -81,31 +81,31 @@ function createComfyProgressMonitor<Job extends ProgressJob = ProgressJob>(confi
   }
 
   function connect() {
-    if (closed || socket) return;
+    if (closed || !subscriptions.size || socket) return;
+    if (reconnectTimer) clearTimeout(reconnectTimer);
+    reconnectTimer = null;
     let next: ProgressSocket;
     try { next = new WebSocketImpl(websocketUrl(config.COMFY_HOST, clientId)); } catch (error) { scheduleReconnect(); return; }
     socket = next;
-    next.on('message', handleMessage);
-    next.on('open', function () { if (typeof options.onOpen === 'function') options.onOpen(); });
-    next.on('error', function (error) { if (typeof options.onError === 'function') options.onError(error); });
+    next.on('message', function (raw, isBinary) { if (socket === next) handleMessage(raw, isBinary); });
+    next.on('open', function () { if (socket === next && typeof options.onOpen === 'function') options.onOpen(); });
+    next.on('error', function (error) { if (socket === next && typeof options.onError === 'function') options.onError(error); });
     next.on('close', function () {
-      if (socket === next) socket = null;
+      if (socket !== next) return;
+      socket = null;
       scheduleReconnect();
     });
   }
 
   function watch(promptId: any, job: Job) {
+    if (closed) return;
     subscriptions.set(String(promptId), job);
     connect();
   }
 
-  function unwatch(promptId: any) { subscriptions.delete(String(promptId)); }
-
-  function close() {
-    closed = true;
+  function disconnect() {
     if (reconnectTimer) clearTimeout(reconnectTimer);
     reconnectTimer = null;
-    subscriptions.clear();
     if (socket) {
       let current = socket;
       socket = null;
@@ -113,7 +113,17 @@ function createComfyProgressMonitor<Job extends ProgressJob = ProgressJob>(confi
     }
   }
 
-  connect();
+  function unwatch(promptId: any) {
+    subscriptions.delete(String(promptId));
+    if (!subscriptions.size) disconnect();
+  }
+
+  function close() {
+    closed = true;
+    subscriptions.clear();
+    disconnect();
+  }
+
   return { watch:watch, unwatch:unwatch, close:close, handleMessage:handleMessage };
 }
 

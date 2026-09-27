@@ -94,6 +94,8 @@
 
 ## 已完成批次与历史记录
 
+- [后端审计与优化（2026-09-27）](audits/2026-09-27/backend-audit.md)：取消/任务/自愈竞态修复，以及进度连接、探测和存储热路径优化；[隔离性能样本](evidence/backend-hotpaths-2026-09-27.json)与安装边界分列。
+
 - [工作流治理实施与复核（2026-09-13–14）](archive/audits/workflow-governance-2026-09-13-14.md)：合并 GLM 交接、W1 初版/复核及 A/RB/RC/RD、N1–N3、G1–G16 结果，保留分批失败与补验。
 - [资产与资料复核（2026-09-13）](archive/audits/asset-document-review-2026-09-13.md)：合并 Gemini 交付复核、G0–G5 资料范围及六份盘点的误报更正；原始 JSON 与验收证据保留。
 

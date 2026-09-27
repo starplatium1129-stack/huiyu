@@ -67,11 +67,12 @@ function updateMembership(context: WorkspaceStorageContext, projectKey: string, 
   if (!project) return;
   context.db.prepare('DELETE FROM project_artworks WHERE project_key=?').run(projectKey);
   const insert = context.db.prepare('INSERT INTO project_artworks VALUES(?,?,?)');
+  const findArtwork = context.db.prepare('SELECT id_json,deleted_at FROM artworks WHERE id_key=?');
   const ids = keys.map((key, index) => {
-    const artwork = artworkByKey(context, key);
-    if (!artwork || artwork.deletedAt !== null) throw new WorkspaceError('NOT_FOUND', 'Project artwork does not exist', 404);
+    const artwork = findArtwork.get(key);
+    if (!artwork || artwork.deleted_at !== null) throw new WorkspaceError('NOT_FOUND', 'Project artwork does not exist', 404);
     insert.run(projectKey, key, index);
-    return artwork.id;
+    return JSON.parse(String(artwork.id_json)) as EntityId;
   });
   context.db.prepare('UPDATE projects SET body=?,revision=? WHERE id_key=?')
     .run(JSON.stringify({ ...project.body, history_ids: ids }), revision, projectKey);

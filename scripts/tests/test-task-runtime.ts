@@ -204,6 +204,56 @@ test('maintenance preserves accepted but never submitted work for explicit resum
   } finally { release(); await f.close(); }
 });
 
+test('concurrent resumes submit a never-sent task only once', async () => {
+  let entered = false, release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  const f = fixture(async (_task, hooks) => { entered = true; await gate; await hooks.submitting('fake', 'approved-binding'); await hooks.observed('resumed-once'); });
+  try {
+    const task = await f.runtime.submit('desktop', request);
+    await until(async () => entered);
+    await Promise.all([f.runtime.resume('desktop', task.taskId), f.runtime.resume('desktop', task.taskId)]);
+    await immediate();
+    assert.equal(f.submissions, 1, 'an active dispatch must not be duplicated by resume');
+    release();
+    await until(async () => Boolean((await f.runtime.get('desktop', task.taskId)).upstreamId));
+  } finally { release(); await f.close(); }
+});
+
+test('resume cannot bypass accepted input preparation', async () => {
+  let entered = false, release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  const f = fixture();
+  const provider: TaskProvider = { fingerprint: () => 'approved-binding', validate: input => input,
+    async prepare() { entered = true; await gate; },
+    async submit(_task, hooks) { submissions++; await hooks.submitting('fake', 'approved-binding'); await hooks.observed('prepared-once'); },
+    async query() { return { status: 'running', settled: false }; }, async cancel() {} };
+  let submissions = 0;
+  const runtime = createTaskRuntime({ workspace: f.workspace, providers: { anima: provider }, pollMs: 60000 });
+  try {
+    const accepted = runtime.submit('desktop', request);
+    await until(async () => entered);
+    const task = await runtime.findByRequestKey('desktop', request.requestKey); assert.ok(task);
+    await runtime.resume('desktop', task.taskId);
+    await immediate(); assert.equal(submissions, 0);
+    release(); await accepted;
+    await until(async () => Boolean((await runtime.get('desktop', task.taskId)).upstreamId));
+    assert.equal(submissions, 1);
+  } finally { release(); await runtime.close(); await f.close(); }
+});
+
+test('queued work cannot resume against a replacement backend', async () => {
+  let entered = false, release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  const f = fixture(async (_task, hooks) => { entered = true; await gate; await hooks.submitting('fake', 'approved-binding'); });
+  try {
+    const task = await f.runtime.submit('desktop', request); await until(async () => entered);
+    const closing = f.runtime.close(); release(); await closing;
+    await f.restart(); f.changeBinding();
+    await assert.rejects(f.runtime.resume('desktop', task.taskId), { code: 'TASK_RESUME_UNSAFE' });
+    assert.equal(f.submissions, 1);
+  } finally { release(); await f.close(); }
+});
+
 test('shutdown drains an in-flight upstream identity write before the workspace can close', async () => {
   let release!: () => void; const barrier = new Promise<void>(resolve => { release = resolve; });
   const f = fixture(async (_task, hooks) => { await hooks.submitting('fake', 'approved-binding'); await barrier; await hooks.observed('late-shutdown-id'); });

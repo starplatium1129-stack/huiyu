@@ -21,22 +21,27 @@ export function collectGarbage(context: WorkspaceStorageContext, principal: stri
   return context.transaction(() => {
     const directory = assertSafePath(context.root, 'media/objects');
     let removed = 0;
-    const protectedHash = context.db.prepare('SELECT hash FROM media_refs WHERE hash=? UNION SELECT hash FROM leases WHERE hash=? LIMIT 1');
+    // BEGIN IMMEDIATE keeps references and leases fixed for this collection pass.
+    // Read them once instead of scanning the reference table for every object.
+    const protectedHashes = new Set(context.db.prepare('SELECT hash FROM media_refs UNION SELECT hash FROM leases WHERE hash IS NOT NULL')
+      .all().map(row => String(row.hash)));
+    const deleteAliases = context.db.prepare('DELETE FROM media_aliases WHERE hash=?');
+    const deleteObject = context.db.prepare('DELETE FROM media_objects WHERE hash=?');
     if (fs.existsSync(directory)) for (const prefix of fs.readdirSync(directory)) {
       if (!/^[a-f0-9]{2}$/.test(prefix)) continue;
       const folder = assertSafePath(context.root, `media/objects/${prefix}`);
       if (!fs.statSync(folder).isDirectory()) continue;
       for (const hash of fs.readdirSync(folder)) {
         checkCancelled();
-        if (!/^[a-f0-9]{64}$/.test(hash) || hash.slice(0, 2) !== prefix || protectedHash.get(hash, hash)) continue;
+        if (!/^[a-f0-9]{64}$/.test(hash) || hash.slice(0, 2) !== prefix || protectedHashes.has(hash)) continue;
         const file = mediaPath(context.root, hash);
         const stat = fs.statSync(file);
         if (!stat.isFile() || stat.mtimeMs > Date.now() - TRASH_RETENTION_MS) continue;
         fs.unlinkSync(file);
         const thumbnail = thumbnailPath(context.root, hash);
         if (fs.existsSync(thumbnail)) fs.unlinkSync(thumbnail);
-        context.db.prepare('DELETE FROM media_aliases WHERE hash=?').run(hash);
-        context.db.prepare('DELETE FROM media_objects WHERE hash=?').run(hash);
+        deleteAliases.run(hash);
+        deleteObject.run(hash);
         removed += 1;
       }
     }
@@ -44,11 +49,11 @@ export function collectGarbage(context: WorkspaceStorageContext, principal: stri
     // committed. Reconcile only missing, unprotected metadata; live refs never qualify.
     for (const row of context.db.prepare('SELECT hash FROM media_objects').all()) {
       const hash = String(row.hash);
-      if (protectedHash.get(hash, hash) || fs.existsSync(mediaPath(context.root, hash))) continue;
+      if (protectedHashes.has(hash) || fs.existsSync(mediaPath(context.root, hash))) continue;
       const thumbnail = thumbnailPath(context.root, hash);
       if (fs.existsSync(thumbnail)) fs.unlinkSync(thumbnail);
-      context.db.prepare('DELETE FROM media_aliases WHERE hash=?').run(hash);
-      context.db.prepare('DELETE FROM media_objects WHERE hash=?').run(hash);
+      deleteAliases.run(hash);
+      deleteObject.run(hash);
       removed += 1;
     }
     const staging = assertSafePath(context.root, 'media/staging');
