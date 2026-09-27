@@ -1,5 +1,5 @@
 import { installDesktopHostFixture } from './helpers/desktopHost'
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Locator, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { textContrast } from './helpers/contrast'
 declare global {
@@ -50,6 +50,18 @@ async function settledOrbit(page: Page) {
   return orbit
 }
 
+/** The button is transparent; its actual painted backdrop is its sibling sector. */
+async function sectorTextContrast(button: Locator) {
+  const previous = await button.evaluate(element => {
+    const style = element.getAttribute('style')
+    const sector = element.parentElement!.querySelector(':scope > svg > path')!
+    ;(element as HTMLElement).style.setProperty('background-color', getComputedStyle(sector).fill, 'important')
+    return style
+  })
+  try { return await button.locator('span').evaluate(textContrast) }
+  finally { await button.evaluate((element, style) => { if (style === null) element.removeAttribute('style'); else element.setAttribute('style', style) }, previous) }
+}
+
 test('native pet window keeps the frameless transparent builder contract', () => {
   const source = readFileSync('desktop-tauri/src-tauri/src/main_shared.rs', 'utf8')
   const pet = source.slice(source.indexOf('pub fn create_companion_window'), source.indexOf('pub fn open_companion_chat'))
@@ -71,12 +83,30 @@ for (const theme of ['light', 'dark']) {
       for (const name of ['设置', '打开聊天', '切换陪伴角色', '角色表情', '互动动作', '置顶窗口', '鼠标穿透', '隐藏桌宠']) {
         const button = orbit.getByRole('button', { name, exact: true })
         await expect(button).toBeInViewport({ ratio: 1 })
-        expect(await button.locator('span').evaluate(textContrast), name).toBeGreaterThanOrEqual(4.5)
+        await expect(button).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+        expect(await sectorTextContrast(button), name).toBeGreaterThanOrEqual(4.5)
         expect(await button.evaluate(el => {
           const r = el.getBoundingClientRect()
           return el.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2))
         }), `${name} can receive pointer input`).toBe(true)
       }
+      const action = orbit.getByRole('button', { name: '设置', exact: true })
+      const sector = action.locator('..').locator(':scope > svg > path')
+      const edge = await sector.evaluate(element => {
+        const path = element as SVGPathElement, point = path.getPointAtLength(path.getTotalLength() * .05)
+        const inside = new DOMPoint(220 + (point.x - 220) * .97, 220 + (point.y - 220) * .97).matrixTransform(path.getScreenCTM()!)
+        return { x: inside.x, y: inside.y }
+      })
+      await page.mouse.move(edge.x, edge.y)
+      expect(await sector.evaluate(element => element.matches(':hover'))).toBe(true)
+      await expect(action).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+      const hoveredFill = await sector.evaluate(element => getComputedStyle(element).fill)
+      await action.locator('.archive-icon').hover()
+      await expect(action).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+      expect(await sector.evaluate(element => getComputedStyle(element).fill)).toBe(hoveredFill)
+      expect(await sectorTextContrast(action)).toBeGreaterThanOrEqual(4.5)
+      await page.screenshot({ path: testInfo.outputPath(`orbit-icon-hover-${theme}-${viewport.width}.png`), omitBackground: true })
+      await page.mouse.move(2, viewport.height - 2)
       for (const selector of ['.orbit-kicker', '.orbit-heading strong', '.orbit-guide']) {
         expect(await orbit.locator(selector).evaluate(textContrast), selector).toBeGreaterThanOrEqual(4.5)
       }
@@ -99,7 +129,7 @@ for (const theme of ['light', 'dark']) {
       await pin.click()
       await expect(pin).toHaveAttribute('aria-pressed', 'true')
       await expect.poll(() => page.evaluate(() => window.petFixture!.pinned)).toBe(true)
-      expect(await pin.locator('span').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      expect(await sectorTextContrast(pin)).toBeGreaterThanOrEqual(4.5)
       await pin.click()
       await expect(pin).toHaveAttribute('aria-pressed', 'false')
       await orbit.getByRole('button', { name: '切换陪伴角色', exact: true }).click()
@@ -111,6 +141,16 @@ for (const theme of ['light', 'dark']) {
       } else await expect(orbit.locator('.orbit-option').first()).toBeVisible()
       for (const option of await orbit.locator('.orbit-option span, .orbit-option-list button > span').all()) {
         expect(await option.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+        expect(await option.evaluate(element => {
+          const button = element.closest('button')!.getBoundingClientRect(), bounds = element.getBoundingClientRect()
+          const range = document.createRange(); range.selectNodeContents(element)
+          return element.scrollHeight <= element.clientHeight + 1 && [...range.getClientRects()].every(rect =>
+            rect.top >= Math.max(button.top, bounds.top) - 1 && rect.bottom <= Math.min(button.bottom, bounds.bottom) + 1)
+        }), 'character names fit vertically inside their cards').toBe(true)
+      }
+      if (viewport.width === 540) {
+        await expect(orbit.getByRole('button', { name: '绫地宁宁', exact: true }).locator('span')).toHaveText('宁宁')
+        await expect(orbit.getByRole('button', { name: '四季夏目', exact: true }).locator('span')).toHaveText('夏目')
       }
       expect(await orbit.locator('.orbit-selection > header strong').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
       expect(await orbit.locator('.orbit-selection > header > span').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
@@ -143,9 +183,8 @@ for (const theme of ['light', 'dark']) {
       await orbit.getByRole('button', { name: '鼠标穿透', exact: true }).press('Enter')
       await expect.poll(() => page.evaluate(() => window.petFixture!.pass)).toBe(false)
     })
-  }
-  test(`orbit preferences return focus and preserve model framing ${theme}`, async ({ page }) => {
-    await page.setViewportSize({ width: 540, height: 760 })
+  test(`orbit preferences tabs return focus and fit ${theme} ${viewport.width}`, async ({ page }, testInfo) => {
+    await page.setViewportSize(viewport)
     await desktop(page, theme)
     const before = await page.locator('.live2d-host').boundingBox()
     await page.keyboard.press('Shift+F10')
@@ -155,15 +194,48 @@ for (const theme of ['light', 'dark']) {
     for (const close of ['button', 'escape']) {
       await settings.click()
       await expect(dialog).toBeVisible()
+      await dialog.evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished.catch(() => {}))) })
       await expect(dialog.getByRole('button', { name: '关闭桌宠设置', exact: true })).toBeFocused()
       expect(await page.locator('.live2d-host').boundingBox()).toEqual(before)
+      await expect(dialog.getByRole('tab', { name: '角色', exact: true })).toHaveAttribute('aria-selected', 'true')
+      for (const tab of ['角色', '陪伴', '更多']) {
+        await dialog.getByRole('tab', { name: tab, exact: true }).click()
+        await expect(dialog.getByRole('tab', { name: tab, exact: true })).toHaveAttribute('aria-selected', 'true')
+        if (tab === '角色') await expect(dialog.getByRole('button', { name: '角色取景与外观', exact: true })).toBeVisible()
+        if (tab === '陪伴') await expect(dialog.getByRole('slider', { name: '桌宠音量', exact: true })).toBeVisible()
+        if (tab === '更多') await expect(dialog.getByRole('button', { name: /AI 工作区/ })).toBeVisible()
+        await expect(dialog.getByRole('button', { name: '鼠标穿透', exact: true })).toHaveCount(0)
+        await expect(dialog.getByRole('button', { name: '隐藏桌宠', exact: true })).toHaveCount(0)
+        for (const label of await dialog.getByRole('tab').all()) {
+          await expect(label).toBeInViewport({ ratio: 1 })
+          expect(await label.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+        }
+        const bounds = await dialog.boundingBox()
+        expect(bounds && bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.width <= viewport.width && bounds.y + bounds.height <= viewport.height).toBeTruthy()
+        await page.screenshot({ path: testInfo.outputPath(`preferences-${tab}-${theme}-${viewport.width}.png`) })
+      }
+      await dialog.getByRole('tab', { name: '更多', exact: true }).press('Home')
+      await expect(dialog.getByRole('tab', { name: '角色', exact: true })).toBeFocused()
+      await page.keyboard.press('ArrowRight')
+      await expect(dialog.getByRole('tab', { name: '陪伴', exact: true })).toHaveAttribute('aria-selected', 'true')
+      await page.keyboard.press('End')
+      await expect(dialog.getByRole('tab', { name: '更多', exact: true })).toBeFocused()
+      // The content owns scrolling; the title, tabs and close control stay reachable.
+      await page.setViewportSize({ width: viewport.width, height: 320 })
+      const body = dialog.locator('.companion-preferences-body')
+      expect(await body.evaluate(element => ['auto', 'scroll'].includes(getComputedStyle(element).overflowY))).toBe(true)
+      await body.evaluate(element => { element.scrollTop = element.scrollHeight })
+      await expect(dialog.getByRole('button', { name: '关闭桌宠设置', exact: true })).toBeInViewport({ ratio: 1 })
+      await expect(dialog.getByRole('tab', { name: '更多', exact: true })).toBeInViewport({ ratio: 1 })
       if (close === 'button') await dialog.getByRole('button', { name: '关闭桌宠设置', exact: true }).click()
       else await page.keyboard.press('Escape')
       await expect(dialog).toBeHidden()
       await expect(settings).toBeFocused()
       await expect(orbit).toBeVisible()
+      await page.setViewportSize(viewport)
     }
   })
+  }
   test(`pet character settings fit the window and can always close ${theme}`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 360, height: 480 })
     await desktop(page, theme)
@@ -265,14 +337,8 @@ for (const theme of ['light', 'dark']) {
     await page.mouse.move(240, 360)
     await expect(page.locator('.companion-toolbar')).toBeHidden()
     await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
-    await page.getByRole('button', { name: '设置', exact: true }).click()
-    const preferences = page.getByRole('dialog', { name: '桌宠设置', exact: true })
-    await expect(preferences).toBeVisible()
-    await preferences.getByRole('button', { name: '鼠标穿透', exact: true }).click()
+    await page.getByRole('region', { name: '桌宠环形菜单', exact: true }).getByRole('button', { name: '鼠标穿透', exact: true }).click()
     await expect.poll(() => page.evaluate(() => window.petFixture!.pass)).toBe(true)
-    await page.keyboard.press('Escape')
-    await expect(preferences).toBeHidden()
-    await page.keyboard.press('Escape')
     await expect(page.locator('.companion-orbit')).toBeHidden()
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('aics_companion_chat_live_v1') || '{}').chatReady)).toBe(true)
     await page.evaluate(() => window.petFixture!.send({ command: 'send', character: 'natsume', text: '气泡测试' }))

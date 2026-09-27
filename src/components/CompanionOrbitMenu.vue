@@ -10,7 +10,7 @@
         <div v-for="(action, index) in actions" :key="action.id" class="orbit-segment"
           :data-active="active(action) || undefined" :data-tone="action.id">
           <svg viewBox="0 0 440 440" aria-hidden="true"><path :d="orbitSector(index)" @click="activate(action)" /></svg>
-          <button type="button" class="orbit-action" :class="{ 'companion-settings-btn': action.id === 'settings' }"
+          <button type="button" class="orbit-action" :class="{ 'orbit-settings-trigger': action.id === 'settings' }"
             :style="{ '--orbit-x': position(orbitAngle(index), 127).left, '--orbit-y': position(orbitAngle(index), 127).top }" :aria-label="action.label" :aria-pressed="action.toggle ? active(action) : undefined"
             :aria-expanded="action.category ? category === action.category : undefined" :data-category-button="action.category || undefined"
             @click="activate(action)">
@@ -24,7 +24,7 @@
             :disabled="category !== 'characters' && (!controls?.ready || expressionBusy)" :title="option.label" @click="choose(option)">
             <RuntimeImage v-if="option.image" :src="option.image" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
             <ArchiveIcon v-else :name="category === 'motions' ? 'spark' : 'happy'" />
-            <span>{{ option.label }}</span>
+            <span>{{ option.shortLabel || option.label }}</span>
           </button>
         </template>
       </div>
@@ -77,7 +77,7 @@ const emit = defineEmits<{
 }>()
 type Category = 'characters' | 'motions' | 'expressions'
 interface Action { id: string; short: string; label: string; icon: ArchiveIconName; category?: Category; toggle?: boolean }
-interface Option { id: string; label: string; image?: string }
+interface Option { id: string; label: string; shortLabel?: string; image?: string }
 const root = ref<HTMLElement | null>(null)
 const { compact, size, category, page, key } = useCompanionOrbit(() => props.open, root, () => emit('close'))
 const feedback = ref(''), expressionBusy = ref(false)
@@ -94,7 +94,7 @@ const actions: Action[] = [
   { id: 'hide', short: '隐藏', label: '隐藏桌宠', icon: 'moon' },
 ]
 const characters: Option[] = listCompanionUiCharacters().map(character => ({
-  id: character.id, label: character.name,
+  id: character.id, label: character.name, shortLabel: character.shortName,
   image: resolveCompanionAvatar(character.id)?.avatar.thumbnailUrl || getCompanionCharacterConfig(character.id)?.image,
 }))
 const options = computed<Option[]>(() => category.value === 'characters' ? characters : category.value === 'motions' ? props.controls?.motions || []
