@@ -54,6 +54,12 @@ export function useImageOriginTransition() {
   let flight: Flight | null = null
   let revision = 0
   let stopWaiting: (() => void) | null = null
+  let pendingProxy: HTMLImageElement | null = null
+
+  function clearPendingProxy() {
+    const image = pendingProxy; pendingProxy = null
+    image?.removeAttribute('src')
+  }
 
   function clearFlight() {
     const old = flight; flight = null
@@ -65,6 +71,7 @@ export function useImageOriginTransition() {
   function cancel() {
     revision++
     stopWaiting?.(); stopWaiting = null
+    clearPendingProxy()
     clearFlight()
   }
   function capture(sourceImg: HTMLImageElement | null) {
@@ -84,8 +91,9 @@ export function useImageOriginTransition() {
       }
       const loaded = () => {
         if (!image.naturalWidth) return finish(false)
-        if (typeof image.decode === 'function') void image.decode().then(() => finish(true), () => finish(false))
-        else finish(true)
+        if (typeof image.decode !== 'function') return finish(true)
+        try { void image.decode().then(() => finish(image.complete && image.naturalWidth > 0), () => finish(false)) }
+        catch { finish(false) }
       }
       const failed = () => finish(false), stopped = () => finish(false)
       const timer = setTimeout(() => finish(false), timeout)
@@ -96,22 +104,26 @@ export function useImageOriginTransition() {
   }
 
   async function move(direction: 'enter' | 'leave', target: HTMLImageElement, host: HTMLElement, sourceImg?: HTMLImageElement | null) {
+    const startedAt = performance.now()
+    const enterDeadline = capturedAt + 180
     const token = ++revision
     stopWaiting?.(); stopWaiting = null
+    clearPendingProxy()
     if (direction === 'leave' && sourceImg !== undefined) origin = safeOrigin(sourceImg)
-    if (!origin || prefersReducedMotion() || document.hidden || !target.isConnected || typeof target.animate !== 'function') { clearFlight(); return }
+    const source = origin
+    if (!source || prefersReducedMotion() || document.hidden || !target.isConnected || typeof target.animate !== 'function') { clearFlight(); return }
     if (direction === 'enter' && flight?.target !== target) {
-      const remaining = 180 - (performance.now() - capturedAt)
+      const remaining = enterDeadline - performance.now()
       if (remaining <= 0 || !await ready(target, remaining)) { if (token === revision) clearFlight(); return }
     }
     if (token !== revision) return
     if (!target.isConnected || !host.isConnected) { clearFlight(); return }
-    const destination = imageRect(target)
+    let destination = imageRect(target)
     if (!destination.width || !destination.height || !target.naturalWidth) { clearFlight(); return }
     // A zoomed/cropped image must not reveal pixels outside its current viewport,
     // and unrelated thumbnail crops must not stretch into a different aspect ratio.
-    if (!visibleTarget(destination, target, host) || Math.abs((origin.rect.width / origin.rect.height) / (destination.width / destination.height) - 1) > .02) { clearFlight(); return }
-    let from = direction === 'enter' ? origin.rect : destination
+    if (!visibleTarget(destination, target, host) || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) { clearFlight(); return }
+    let from = direction === 'enter' ? source.rect : destination
     if (flight?.target === target && flight.host === host) {
       from = flight.proxy.getBoundingClientRect()
       flight.animation?.cancel(); flight.animation = null
@@ -119,9 +131,33 @@ export function useImageOriginTransition() {
     } else {
       clearFlight()
       const proxy = document.createElement('img')
-      proxy.src = target.currentSrc || target.src || origin.src
+      pendingProxy = proxy
+      // The desktop gateway requires the same CORS provenance as the real image.
+      // Set request attributes before src; a decoded target does not make a new
+      // no-CORS request safe or guarantee that the proxy itself can be decoded.
+      if (target.crossOrigin !== null) proxy.crossOrigin = target.crossOrigin
+      proxy.referrerPolicy = target.referrerPolicy
+      proxy.decoding = 'async'; proxy.loading = 'eager'
       proxy.alt = ''; proxy.setAttribute('aria-hidden', 'true')
       proxy.setAttribute('data-image-origin-proxy', '')
+      const requestSrc = target.currentSrc || target.src || source.src
+      proxy.src = requestSrc
+      // Leaving cannot delay the owning 300ms fade. A cache miss gets a plain
+      // fade; successful decode time is also deducted from the 280ms flight.
+      const remaining = direction === 'enter' ? enterDeadline - performance.now() : 20 - (performance.now() - startedAt)
+      const decoded = remaining > 0 && await ready(proxy, remaining)
+      if (pendingProxy === proxy) pendingProxy = null
+      if (!decoded || token !== revision || !target.isConnected || !host.isConnected || (target.currentSrc || target.src) !== requestSrc) {
+        proxy.removeAttribute('src')
+        if (token === revision) clearFlight()
+        return
+      }
+      destination = imageRect(target)
+      if (!destination.width || !destination.height || !visibleTarget(destination, target, host)
+        || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) {
+        proxy.removeAttribute('src'); return
+      }
+      from = direction === 'enter' ? source.rect : destination
       Object.assign(proxy.style, {
         position: 'fixed', inset: '0 auto auto 0', display: 'block', margin: '0', border: '0',
         width: `${destination.width}px`, height: `${destination.height}px`, maxWidth: 'none', maxHeight: 'none',
@@ -139,7 +175,7 @@ export function useImageOriginTransition() {
       } }
     }
     const active = flight!
-    const to = direction === 'enter' ? destination : origin.rect
+    const to = direction === 'enter' ? destination : source.rect
     const width = Number.parseFloat(active.proxy.style.width), height = Number.parseFloat(active.proxy.style.height)
     const transform = (rect: ImageRect) => `translate(${rect.left}px, ${rect.top}px) scale(${rect.width / width}, ${rect.height / height})`
     active.proxy.dataset.imageOriginDirection = direction
@@ -147,7 +183,8 @@ export function useImageOriginTransition() {
       active.settle = resolve
       try {
         const animation = active.proxy.animate([{ transform: transform(from) }, { transform: transform(to) }], {
-          duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both',
+          duration: direction === 'leave' ? Math.max(0, 280 - (performance.now() - startedAt)) : 280,
+          easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both',
         })
         active.animation = animation
         void animation.finished.then(() => {
