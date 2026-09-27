@@ -340,26 +340,15 @@ for (const marker of ['faceDetailer', 'face_yolov8s.pt', 'hand_yolov8n.pt', 'bui
 
 const sdGenerate = read('src/composables/generation/useSDGenerate.ts');
 const generationApiSource = read('src/api/generationApi.ts');
-if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('generationApi')) {
-  fail('SD composable must use the shared production request builder and the application generation API module');
+if (!sdGenerate.includes('buildTxt2ImgRequest')) {
+  fail('SD composable must use the shared production request builder');
 }
 if (!generationApiSource.includes('/api/generation/jobs')) {
   fail('generation API module must own the application generation job endpoints');
 }
-if (!sdGenerate.includes("accepted.job.provider === 'comfy' ? 'comfy' : 'webui'")) {
-  fail('SD provider state must fail safe to WebUI when the server response is missing or unknown');
-}
-if (!sdGenerate.includes("'SD WebUI 生成中…'") || !sdGenerate.includes("'ComfyUI 生成中'")) {
-  fail('SD generation status text must distinguish the Comfy-first and WebUI providers');
-}
-// 2026-08-29：job API 无真实进度（Comfy ws 未接 job 通道），假进度轮询退役——
-// progress 仅反映终态（成功 100），失败/排队路径不虚构百分比。
-if (sdGenerate.includes('pollInFlight') || sdGenerate.includes('void pollProgress(token)')) {
-  fail('fake progress polling must stay retired (progress only reflects terminal states)');
-}
-if (!sdGenerate.includes("job.status === 'succeeded' ? 100")) {
-  fail('SD progress must pin terminal success to 100 and otherwise consume real job.progress (no fabricated percent)');
-}
+// useSDGenerate.spec.ts drives the real Web session through the API mock: provider,
+// progress, timeout and cancellation do not depend on which module owns the calls.
+// useSDGenerate-durable.spec.ts separately covers the desktop execution owner.
 
 // ── 4. 样式层仍提供共享 chrome ───────────────────────────────────────────
 function readDirectorCss() {

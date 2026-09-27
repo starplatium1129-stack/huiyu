@@ -21,8 +21,8 @@ type Baseline = Record<string, number>;
  *   node scripts/tests/test-monolith-budget.js --update-baseline
  * 重新生成（拆分质量仍由 code review 把关，本门禁只防回涨）。
  *
- * 扫描范围与 eslint.config.js max-lines 块保持一致：
- *   src 与 routes 与 services 下的 .ts/.vue/.js 文件 + server.js
+ * 扫描业务源码以及维护入口和支撑模块：
+ *   src/routes/services/server/scripts/maintenance/scripts/lib + server.ts
  * （services 根层 *.js 与 *.d.ts 是 build:runtime 编译产物，与 eslint ignores 一并排除）
  */
 
@@ -35,8 +35,8 @@ const root = path.resolve(__dirname, '..', '..');
 const BASELINE_FILE = path.join(__dirname, 'monolith-baseline.json');
 const RED_LINE = 500;
 
-// 与 eslint.config.js 的 ignores / max-lines files 对齐
-const SCAN_DIRS = ['src', 'routes', 'services', 'server'];
+// 维护入口与支撑模块同样执行 500 行预算，防止拆分后在工具侧重新堆积。
+const SCAN_DIRS = ['src', 'routes', 'services', 'server', 'scripts/maintenance', 'scripts/lib'];
 const SCAN_EXT = /\.(ts|vue|js)$/;
 // services 根层的编译产物三件套不入库也不参检（与 eslint ignores 一致）
 const COMPILED_AT_SERVICES_ROOT = (rel: string) =>
@@ -160,6 +160,4 @@ if (process.argv.includes('--update-baseline')) {
   console.log(`基线已更新：${Object.keys(next).length} 个文件 > ${RED_LINE} 有效行 → scripts/tests/monolith-baseline.json`);
   for (const [rel, count] of Object.entries(next)) console.log(`  ${String(count).padStart(5)}  ${rel}`);
 }
-
-
 

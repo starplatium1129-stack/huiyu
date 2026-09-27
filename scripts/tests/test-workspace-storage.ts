@@ -112,6 +112,43 @@ async function run(): Promise<void> {
       assertions += 17;
     } finally { engine.close(); }
 
+    const batches = path.join(root, 'batches');
+    let rejectBatch = false;
+    engine = open(batches, true, phase => { if (rejectBatch && phase === 'metadata-written') throw new Error('fixture commit failure'); });
+    try {
+      const first = await save(engine, 'a', 'batch-save-a', 'batch-image-a');
+      const second = await save(engine, 'b', 'batch-save-b', 'batch-image-b');
+      await call(engine, { kind: 'saveProject', operationId: 'batch-project', project: { id: 'album' }, artworkIds: ['a', 'b'], expectedRevision: null });
+      const lookup = await call(engine, { kind: 'getArtworks', ids: ['a', 'b', 'missing'] });
+      assert.deepEqual(lookup.map(item => item?.revision ?? null), [first.revision, second.revision, null]);
+      const command: Extract<WorkspaceCommand, { kind: 'softDeleteArtworks' }> = { kind: 'softDeleteArtworks', operationId: 'batch-delete',
+        items: [{ id: 'a', expectedRevision: first.revision }, { id: 'b', expectedRevision: second.revision }] };
+      rejectBatch = true;
+      await assert.rejects(call(engine, command), /fixture commit failure/);
+      rejectBatch = false;
+      assert.equal((await call(engine, { kind: 'listArtworks' })).items.length, 2);
+      assert.deepEqual((await call(engine, { kind: 'listProjects' })).items[0].body.history_ids, ['a', 'b']);
+      assert.equal(await call(engine, { kind: 'getOperation', operationId: command.operationId }), null);
+      let checks = 0;
+      await assert.rejects(engine.execute(command, context, { isCancelled: () => ++checks === 3 }), { code: 'CANCELLED' });
+      assert.equal((await call(engine, { kind: 'listArtworks' })).items.length, 2);
+      const receipt = await call(engine, command);
+      assert.deepEqual(receipt.softDeleteResults, [{ id: 'a', deleted: true }, { id: 'b', deleted: true }]);
+      assert.deepEqual(await call(engine, command), receipt, 'lost acknowledgement returns the same per-item receipt');
+      await assert.rejects(call(engine, { ...command, items: command.items.slice(0, 1) }), { code: 'OPERATION_CONFLICT' });
+      assert.deepEqual((await call(engine, { kind: 'listProjects' })).items[0].body.history_ids, []);
+      const restored = await call(engine, { kind: 'restoreArtwork', operationId: 'batch-restore-a', id: 'a', expectedRevision: receipt.revision });
+      await call(engine, { kind: 'restoreArtwork', operationId: 'batch-restore-b', id: 'b', expectedRevision: receipt.revision });
+      assert.deepEqual((await call(engine, { kind: 'listProjects' })).items[0].body.history_ids, ['a', 'b']);
+      assert.deepEqual(Buffer.from((await call(engine, { kind: 'readMedia', alias: 'batch-image-a' })).data), bytes);
+      const partial = await call(engine, { kind: 'softDeleteArtworks', operationId: 'partial-delete', items: [
+        { id: 'a', expectedRevision: restored.revision }, { id: 'b', expectedRevision: 0 }, { id: 'missing', expectedRevision: 0 },
+      ] });
+      assert.deepEqual(partial.softDeleteResults, [{ id: 'a', deleted: true }, { id: 'b', deleted: false, code: 'REVISION_CONFLICT' }, { id: 'missing', deleted: false, code: 'NOT_FOUND' }]);
+      assert.deepEqual((await call(engine, { kind: 'listProjects' })).items[0].body.history_ids, ['b']);
+      assertions += 15;
+    } finally { engine.close(); }
+
     const failures = path.join(root, 'failures');
     engine = open(failures, true);
     try {

@@ -51,6 +51,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-api-client.js',
     'test-artwork-persistence-prototype.js',
     'test-workspace-storage.js',
+    'test-workspace-thumbnails.js',
     'test-workspace-client.js',
     'test-workspace-backup.js',
     'test-workspace-migration.js',
@@ -90,7 +91,6 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-logger-safety.js',
     'test-compare-snapshots.js',
     'test-inpaint-showcase-candidates.js',
-    'test-interrogate-merge.js',
     'test-lora-catalog.js',
     'test-manual-review.js',
     'test-mood-tag.js',
@@ -141,7 +141,6 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-vad-segmenter.js',
     'test-voice-baseline.js',
     'test-voice-profile-contract.js',
-    'test-video-prompt-prose.js',
     'test-wav-quality.js',
   ]),
   contract: Object.freeze([

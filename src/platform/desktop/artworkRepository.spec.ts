@@ -1,15 +1,11 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-const mocks = vi.hoisted(() => ({ request: vi.fn(), fetch: vi.fn(), thumb: vi.fn(), state: { connection: 'ready', bootstrap: { runtime: { workspace: { workspaceId: 'library-1', domains: ['artwork'] } } } } }))
+const mocks = vi.hoisted(() => ({ request: vi.fn(), state: { connection: 'ready', bootstrap: { runtime: { workspace: { workspaceId: 'library-1', domains: ['artwork'] } } } } }))
 vi.mock('@/api/workspace', () => ({ workspaceRequest: mocks.request }))
-vi.mock('./runtime', () => ({ getDesktopRuntime: () => mocks.state, desktopRuntimeFetch: mocks.fetch }))
-vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: mocks.thumb }))
+vi.mock('./runtime', () => ({ getDesktopRuntime: () => mocks.state, desktopRuntimeFetch: vi.fn() }))
 import { createDesktopArtworkRepository } from './artworkRepository'
 
-beforeEach(() => {
-  mocks.fetch.mockReset().mockResolvedValue({ status: 404 })
-  mocks.thumb.mockReset().mockResolvedValue('data:image/jpeg;base64,cached')
-})
+beforeEach(() => { mocks.request.mockResolvedValue(null) })
 afterEach(() => { mocks.request.mockReset(); mocks.state.connection = 'ready'; mocks.state.bootstrap.runtime.workspace = { workspaceId: 'library-1', domains: ['artwork'] } })
 it('does not write into a migration candidate or a different library after reconnecting', async () => {
   const repository = createDesktopArtworkRepository()
@@ -36,25 +32,41 @@ it('keeps detached loaded history while disconnected and uses the same artwork i
   expect(writes.map(command => command.operationId)).toEqual(['artwork:saved', 'artwork:saved'])
 })
 
-function availableImage() {
-  mocks.fetch.mockImplementation(async path => path === '/api/workspace/media-capabilities'
-    ? { ok: true, json: async () => ({ url: '/media/image' }) }
-    : { ok: true, blob: async () => new Blob(['fixture'], { type: 'image/png' }) })
-}
+it('deletes a batch with one revision lookup and one mutation while retaining per-record failures', async () => {
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'getArtworks') return [{ id: 1, revision: 4, deletedAt: null }, { id: 'two', revision: 7, deletedAt: null }, null]
+    if (command.kind === 'softDeleteArtworks') return { softDeleteResults: [{ id: 1, deleted: true }, { id: 'two', deleted: false, code: 'REVISION_CONFLICT' }] }
+    throw new Error('unexpected single-artwork request')
+  })
+  const repository = createDesktopArtworkRepository()
+  expect(await repository.softDeleteArtworks([1, 'two', 'missing'])).toEqual([
+    { id: 1, deleted: true }, { id: 'two', deleted: false }, { id: 'missing', deleted: false },
+  ])
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['getArtworks', 'softDeleteArtworks'])
+  expect(mocks.request.mock.calls[1][0].items).toEqual([{ id: 1, expectedRevision: 4 }, { id: 'two', expectedRevision: 7 }])
+})
 
-it('shares in-flight thumbnail decoding and reuses its completed result', async () => {
-  availableImage()
+it('resolves a lost batch acknowledgement from the original operation receipt', async () => {
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'getArtworks') return [{ id: 'one', revision: 1, deletedAt: null }]
+    if (command.kind === 'softDeleteArtworks') throw new Error('lost response')
+    return { state: 'committed', receipt: { softDeleteResults: [{ id: 'one', deleted: true }] } }
+  })
+  expect(await createDesktopArtworkRepository().softDeleteArtworks(['one'])).toEqual([{ id: 'one', deleted: true }])
+  expect(mocks.request.mock.calls[2][0]).toEqual({ kind: 'getOperation', operationId: mocks.request.mock.calls[1][0].operationId })
+})
+
+it('shares in-flight derived preview reads and reuses the completed result', async () => {
   let finish!: (value: string) => void
-  mocks.thumb.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  mocks.request.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
   const repository = createDesktopArtworkRepository()
   const first = repository.getThumbnail('image'), second = repository.getThumbnail('image')
   await flushPromises()
-  expect(mocks.fetch).toHaveBeenCalledTimes(2)
-  expect(mocks.thumb).toHaveBeenCalledOnce()
+  expect(mocks.request).toHaveBeenCalledOnce()
   finish('data:image/jpeg;base64,one')
   expect(await Promise.all([first, second])).toEqual(['data:image/jpeg;base64,one', 'data:image/jpeg;base64,one'])
   expect(await repository.getThumbnail('image')).toBe('data:image/jpeg;base64,one')
-  expect(mocks.fetch).toHaveBeenCalledTimes(2)
+  expect(mocks.request).toHaveBeenCalledOnce()
 })
 
 it('evicts the least recently used entry above 96 thumbnails', async () => {
@@ -65,7 +77,7 @@ it('evicts the least recently used entry above 96 thumbnails', async () => {
   expect(await repository.getThumbnail('image-0')).toBe('data:image/jpeg;base64,0')
   expect(await repository.getThumbnail('image-1')).toBeNull()
   expect(await repository.getThumbnail('image-95')).toBe('data:image/jpeg;base64,95')
-  expect(mocks.fetch).toHaveBeenCalledOnce()
+  expect(mocks.request).toHaveBeenCalledExactlyOnceWith({ kind: 'readThumbnail', alias: 'image-1' })
 })
 
 it('also bounds thumbnail string storage to 8 MiB, below the entry limit', async () => {
@@ -80,22 +92,20 @@ it('also bounds thumbnail string storage to 8 MiB, below the entry limit', async
 })
 
 it('returns an oversized generated thumbnail without retaining it in the cache', async () => {
-  availableImage()
   const value = 'data:image/jpeg;base64,' + 'A'.repeat(4 * 1024 * 1024)
-  mocks.thumb.mockResolvedValue(value)
+  mocks.request.mockResolvedValue(value)
   const repository = createDesktopArtworkRepository()
   expect(await repository.getThumbnail('large')).toBe(value)
   expect(await repository.getThumbnail('large')).toBe(value)
-  expect(mocks.thumb).toHaveBeenCalledTimes(2)
+  expect(mocks.request).toHaveBeenCalledTimes(2)
 })
 
-it('retries failed decoding and preserves an explicitly published thumbnail over a late decode', async () => {
-  availableImage()
-  mocks.thumb.mockRejectedValueOnce(new Error('decoder unavailable'))
+it('retries failed preview reads and preserves an explicitly published thumbnail over a late preview read', async () => {
+  mocks.request.mockRejectedValueOnce(new Error('preview unavailable'))
   const repository = createDesktopArtworkRepository()
-  await expect(repository.getThumbnail('image')).rejects.toThrow('decoder unavailable')
+  await expect(repository.getThumbnail('image')).rejects.toThrow('preview unavailable')
   let finish!: (value: string) => void
-  mocks.thumb.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  mocks.request.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
   const retry = repository.getThumbnail('image')
   await flushPromises()
   await repository.setThumbnail('image', 'data:image/jpeg;base64,new')
@@ -105,15 +115,14 @@ it('retries failed decoding and preserves an explicitly published thumbnail over
 })
 
 it('forgets released media and cannot repopulate its cache from an older read', async () => {
-  availableImage()
   let finish!: (value: string) => void
-  mocks.thumb.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  mocks.request.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
   const repository = createDesktopArtworkRepository()
   const read = repository.getThumbnail('image')
   await flushPromises()
   await repository.deleteImage('image')
   finish('data:image/jpeg;base64,released')
   await read
-  mocks.fetch.mockResolvedValue({ status: 404 })
+  mocks.request.mockResolvedValue(null)
   expect(await repository.getThumbnail('image')).toBeNull()
 })

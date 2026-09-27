@@ -20,7 +20,9 @@
 
 const { spawnSync } = (require('node:child_process') as typeof import('node:child_process'));
 const path = (require('node:path') as typeof import('node:path'));
+const fs: typeof import('node:fs') = require('node:fs');
 const { contractJobs }: typeof import('../tests/contract-test-policy') = require('../tests/contract-test-policy');
+const { QUALITY_TEST_SUITES, qualityTestMetadata }: typeof import('../tests/quality-test-inventory') = require('../tests/quality-test-inventory');
 const {
   runSuiteFiles,
   runUnitSuite,
@@ -28,12 +30,16 @@ const {
   runNpmScript,
   printExcerpt,
   formatDuration,
+  SUITE_TIMEOUT_MS,
   root,
 } = (require('../tests/run-quality-suite') as typeof import('../tests/run-quality-suite'));
 
 const testsDir = path.join(root, 'scripts', 'tests');
 interface GateOptions { verbose: boolean; keepGoing: boolean }
-type GateArea = 'ui' | 'server' | 'data' | 'full';
+type GateArea = 'ui' | 'server' | 'data' | 'tests' | 'full';
+interface GatePlan { areas: GateArea[]; testFiles: string[] }
+const registeredTests = new Map(Object.entries(QUALITY_TEST_SUITES)
+  .flatMap(([suite, files]) => files.map(file => [file, suite as keyof typeof QUALITY_TEST_SUITES] as const)));
 
 function runNpmStep(name: string, script: string, timeout: number, verbose: boolean) {
   if (verbose) {
@@ -66,6 +72,17 @@ function suiteFiles(names: readonly string[], label: string, { verbose, keepGoin
 }
 
 const AREA_STEPS = {
+  tests(files: readonly string[], { verbose, keepGoing }: GateOptions) {
+    // Test sources and their dependencies must be current before running generated entries.
+    const built = runNpmStep('build:runtime', 'build:runtime', 300_000, verbose);
+    if (built) return built;
+    if (files.some(file => registeredTests.get(file) !== 'check')) {
+      (require('../lib/ensure-data-build') as typeof import('../lib/ensure-data-build')).ensureAll({ onlyIfMissing: true });
+    }
+    return runSuiteFiles(files.map(file => ({
+      name: file, file: path.join(testsDir, file), timeoutMs: qualityTestMetadata(file).timeoutMs ?? SUITE_TIMEOUT_MS[registeredTests.get(file)!],
+    })), { label: 'changed-tests', timeout: 180_000, verbose, keepGoing });
+  },
   ui({ verbose, keepGoing }: GateOptions) {
     let code = runNpmStep('typecheck:app', 'typecheck:app', 300_000, verbose);
     if (code === 0 || keepGoing) code = runNpmStep('vitest', 'test:frontend', 300_000, verbose) || code;
@@ -110,19 +127,29 @@ const AREA_STEPS = {
   },
 };
 
-function classifyFiles(files: readonly string[]): GateArea[] {
+function classifyFiles(files: readonly string[]): GatePlan {
   const areas = new Set<GateArea>();
+  const testFiles = new Set<string>();
+  const full = (): GatePlan => ({ areas: ['full'], testFiles: [] });
   for (const raw of files) {
     const p = raw.replace(/\\/g, '/');
+    const testName = /^scripts\/tests\/(test-[^/]+\.(?:ts|mts|js|mjs))$/.exec(p)?.[1]
+      .replace(/\.mts$/, '.mjs').replace(/\.ts$/, '.js');
+    if (testName && registeredTests.has(testName)
+      && fs.existsSync(path.join(testsDir, testName.replace(/\.mjs$/, '.mts').replace(/\.js$/, '.ts')))) {
+      areas.add('tests');
+      testFiles.add(testName);
+      continue;
+    }
     if (/^(scripts|desktop-tauri|tests|\.github)\//.test(p)
-      || /^(package(?:-lock)?\.json|.*config\.[^/]+|deploy-desktop\.bat)$/.test(p)) return ['full'];
+      || /^(package(?:-lock)?\.json|.*config\.[^/]+|deploy-desktop\.bat)$/.test(p)) return full();
     if (/^(src|css|public)\//.test(p) || p === 'index.html') areas.add('ui');
     if (/^(routes|server|services)\//.test(p) || /^server\.(?:js|ts)$/.test(p)) areas.add('server');
     if (/^(data|assets)\//.test(p)) areas.add('data');
     if (!/^(docs\/|.*\.md$)/.test(p) && !/^(src|css|public|routes|server|services|data|assets)\//.test(p)
-      && !['index.html', 'server.js', 'server.ts'].includes(p)) return ['full'];
+      && !['index.html', 'server.js', 'server.ts'].includes(p)) return full();
   }
-  return [...areas];
+  return { areas: [...areas], testFiles: [...testFiles] };
 }
 
 function detectAreas() {
@@ -150,11 +177,12 @@ async function main(argv: string[]) {
   const areaArg = argv.find((arg: any) => ['ui', 'server', 'data', 'all', 'full'].includes(arg)) as GateArea | 'all' | undefined;
 
   let areas: GateArea[];
+  let testFiles: string[] = [];
   if (areaArg) {
     // 'full' 保持原样走下方 full 专属分支（含 check 套件与打包预算）；'all' 展开三块
     areas = areaArg === 'all' ? ['ui', 'server', 'data'] : [areaArg];
   } else {
-    try { areas = detectAreas(); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
+    try { ({ areas, testFiles } = detectAreas()); } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
     if (!areas.length) {
       console.log('gate:quick 未检测到需运行门禁的代码改动（可能仅文档）；显式指定面积或用 full。');
       return 0;
@@ -170,6 +198,10 @@ async function main(argv: string[]) {
   for (const area of areas) {
     if (exitCode && !keepGoing) break;
     console.log(`── gate ${area} ──`);
+    if (area === 'tests') {
+      exitCode = AREA_STEPS.tests(testFiles, { verbose, keepGoing }) || exitCode;
+      continue;
+    }
     if (area === 'ui') {
       exitCode = AREA_STEPS.ui({ verbose, keepGoing }) || exitCode;
       continue;

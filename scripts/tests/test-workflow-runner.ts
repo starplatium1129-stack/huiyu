@@ -101,11 +101,38 @@ test('npm argument forwarding preserves spaces and metacharacters', () => {
   assert.deepEqual(args.slice(-3), ['--', '--character', 'a & b']);
 });
 test('quick gate covers root server, dependencies, scripts and rejects typos', async () => {
-  assert.deepEqual(classifyFiles(['server.js']), ['server']);
-  for (const file of ['package-lock.json', 'scripts/workflow.js', '.github/workflows/quality.yml', 'vite.config.ts']) assert.deepEqual(classifyFiles([file]), ['full']);
-  assert.deepEqual(classifyFiles(['docs/workflow.md']), []);
-  assert.deepEqual(classifyFiles(['src/中文.vue', 'data/a.json']), ['ui', 'data']);
+  assert.deepEqual(classifyFiles(['server.js']), { areas: ['server'], testFiles: [] });
+  for (const file of ['package-lock.json', 'scripts/workflow.js', '.github/workflows/quality.yml', 'vite.config.ts']) assert.deepEqual(classifyFiles([file]), { areas: ['full'], testFiles: [] });
+  assert.deepEqual(classifyFiles(['docs/workflow.md']), { areas: [], testFiles: [] });
+  assert.deepEqual(classifyFiles(['src/中文.vue', 'data/a.json']), { areas: ['ui', 'data'], testFiles: [] });
   assert.equal(await gate(['servre']), 2);
+});
+
+test('quick gate selects registered Node tests once across source and generated paths', () => {
+  assert.deepEqual(classifyFiles([
+    'scripts/tests/test-api-client.ts', 'scripts\\tests\\test-api-client.js',
+    'scripts/tests/test-chat.ts', 'scripts/tests/test-module-boundaries.mts', 'docs/workflow.md',
+  ]), { areas: ['tests'], testFiles: ['test-api-client.js', 'test-chat.js', 'test-module-boundaries.mjs'] });
+  assert.deepEqual(classifyFiles(['src/utils/stream.spec.ts', 'scripts/tests/test-chat.ts']), {
+    areas: ['ui', 'tests'], testFiles: ['test-chat.js'],
+  });
+});
+
+test('quick gate keeps shared runners, unknown or removed tests and browser tests at full scope', () => {
+  for (const file of [
+    'scripts/tests/quality-test-inventory.ts', 'scripts/tests/run-quality-suite.ts',
+    'scripts/tests/gateway-test-stack.ts', 'scripts/build-node.mts',
+    'scripts/tests/test-unknown.ts', 'scripts/tests/test-removed-fixture.ts',
+    'scripts/tests/test-electron-shell.mts', 'tests/e2e/studio.spec.ts',
+  ]) {
+    assert.deepEqual(classifyFiles(['scripts/tests/test-api-client.ts', file]), { areas: ['full'], testFiles: [] }, file);
+  }
+});
+
+test('quick gate does not execute stale generated tests when their registered source was deleted', t => {
+  const exists = fs.existsSync;
+  t.mock.method(fs, 'existsSync', (file: import('node:fs').PathLike) => String(file).endsWith('test-api-client.ts') ? false : exists(file));
+  assert.deepEqual(classifyFiles(['scripts/tests/test-api-client.ts']), { areas: ['full'], testFiles: [] });
 });
 
 test('invalid contract concurrency fails before full-gate execution while help stays read-only', async () => {

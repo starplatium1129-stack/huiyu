@@ -47,6 +47,9 @@ async function setup(query = '', loadData: () => Promise<void> = async () => {})
   let workspace!: ReturnType<typeof usePromptWorkspace>
   const wrapper = mount(defineComponent({ setup() { workspace = usePromptWorkspace(); return () => h('div') } }), { global: { plugins: [pinia, router] } })
   wrappers.push(wrapper)
+  // SD status and video tools load lazily during mount; flushPromises alone does
+  // not wait for Vite to finish those imports before the lifecycle applies links.
+  await vi.dynamicImportSettled()
   await flushPromises()
   return { workspace, pb, catalog, router, wrapper, load, loadHistory, restoreDraft, saveDraft }
 }
