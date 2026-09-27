@@ -6,6 +6,8 @@
 
 ## 本次用户指定的架构重构
 
+- [重构后可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)：普通图片加载、维护升级、构建回执及凭据授权修复；[安装与验证证据](evidence/reliability-followup-2026-09-27.json)。
+
 - [桌面图片恢复与安装证据](evidence/desktop-images-2026-09-27.json)：独立 UI 图片跨域、灵感缩略图路径及连接恢复修复，实际安装版图片验收和资料保持。
 
 - [复审后的架构重构执行计划](architecture/REFACTOR-EXECUTION-PLAN.md)：固定源码基线、14 处计划修正、存储迁移/任务恢复/桌面接入规范和 R0–R13 依赖门槛；配套 [Codex 执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md) 提供每批文件、命令与停止条件。R0 已完成，见 [R0 实施记录](architecture/R0-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r0-2026-09-26.json)；R1 实现/定向验收完成，见 [R1 实施记录](architecture/R1-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r1-2026-09-26.json)；R2 代码、隔离及 sidecar 门槛完成，见 [R2 实施记录](architecture/R2-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r2-2026-09-26.json)。R3–R11 主线实现、正式安装、当前资料迁移与独立界面切换已完成，见 [主线实施记录](architecture/R3-R11-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-mainline-2026-09-26.json)。真实 WebView2、旧来源副本与正式切换证据分列；旧来源/备份保留，历史 3000 凭据未合并。[R12 独立渲染进程实验](architecture/R12-EXECUTION-REPORT.md)已完成本机画面/故障隔离/线程对照，正式默认未切换。[R13 Electron 宿主对照](architecture/R13-EXECUTION-REPORT.md)已完成，同 UI/本机样本未显示足以换宿主的整体收益，保留 Tauri；见 [R13 脱敏证据](evidence/architecture-r13-2026-09-27.json)。

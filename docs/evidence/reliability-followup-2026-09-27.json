@@ -1,0 +1,211 @@
+{
+  "date": "2026-09-27",
+  "scope": "ordinary media loading, verified maintenance upgrades, formal build binding",
+  "status": "implemented-and-installed",
+  "commits": {
+    "baseline": "7881358a60542a1c09556555624a72afaa447e8d",
+    "implementation": "ee08ac5a52d0aa7c896af0da124536b00b77c59b",
+    "credentialOriginAndPowerShell": "f7737586",
+    "installedApplication": "1eae9ba706301a4b6d1c897b3486e0056e774ea2",
+    "batchBannerFollowup": "c505f41a"
+  },
+  "build": {
+    "installer": "D:/code/ai-cg-studio-main/runtime/desktop-updates/AI-CG-Studio_1.7.2_1eae9ba7-credentials-setup.exe",
+    "sha256": "92749491be01f1961f244ca882569ee59ff4067eb4d8fd8a33f4ca3eaba8041d",
+    "sourceSha256": "519e4f289e75ab3ce36dbd39b543b235135450a4e77f3e98ce977ac1cb54b7fe",
+    "buildSha256": "10a97bd5d9edc9bb41280532d70d8488ae5e05e798518f504b03954b96235e33",
+    "releaseCommit": "1eae9ba706301a4b6d1c897b3486e0056e774ea2",
+    "selectedInstallerBytes": 686965583,
+    "actualPayload": {
+      "installedExeSha256": "30553235921b052ba514cb8f66c9c83f8b903ea26329b4aec1051bcb63700794",
+      "installerSha256": "92749491be01f1961f244ca882569ee59ff4067eb4d8fd8a33f4ca3eaba8041d",
+      "exactWholeExecutableBytesMatch": true,
+      "payloadOffset": 12118384
+    },
+    "ordinaryEntry": "npm run wf -- desktop:package-local",
+    "log": "runtime/post-refactor-reliability/credential-final/package.log",
+    "sourceSelection": "isolated managed checkout; concurrent main UI changes excluded",
+    "sourceBindingNote": "Captured build-source bytes are retained in credential-final/build-binding.json; later batch working-copy CRLF normalization/banner tooling changes are not a new application build."
+  },
+  "tests": {
+    "media": {
+      "passed": 23,
+      "scope": "7 targeted frontend files; source identity, reconnect, fallback, ratings and manifest recovery"
+    },
+    "maintenanceFrontend": {
+      "status": "passed",
+      "handshakeCases": 6,
+      "realApiFormCase": 1,
+      "regressionGroups": [
+        30,
+        94
+      ],
+      "groupsMayOverlap": true,
+      "evidence": "agent execution outputs in this task; actual native integration below"
+    },
+    "buildBinding": {
+      "passed": 23,
+      "evidence": "runtime/refactor-build-receipt/isolated-tests.log"
+    },
+    "maintenanceBackend": {
+      "nodePassed": 18,
+      "rustInitialPassed": 3,
+      "rustBlockedQuitPassed": 1,
+      "evidence": "runtime/maintenance-lifecycle-2026-09-27/report.json"
+    },
+    "credentialOrigin": {
+      "passed": 1,
+      "evidence": "runtime/maintenance-lifecycle-2026-09-27/credential-origin-fix.json"
+    },
+    "isolatedCredentialNaming": {
+      "passed": 1,
+      "evidence": "runtime/post-refactor-reliability/credential-final/report.json"
+    },
+    "applicationTypes": {
+      "status": "passed",
+      "evidence": "runtime/post-refactor-reliability/app-types.log"
+    },
+    "architecture": {
+      "status": "passed",
+      "evidence": "runtime/post-refactor-reliability/architecture.log"
+    },
+    "monolith": {
+      "status": "passed",
+      "files": 946,
+      "exemptions": 0,
+      "evidence": "runtime/post-refactor-reliability/monolith.log"
+    },
+    "batchAndWorkflow": {
+      "passed": 22,
+      "evidence": "runtime/post-refactor-reliability/batch-check.log"
+    },
+    "fullValidate": "not-run; selected behavior, builds and actual host paths verified"
+  },
+  "nativeIntegration": {
+    "report": "runtime/post-refactor-reliability/native-1790474273694/report.json",
+    "reportSha256": "fcfd638aeabda74cf2f5b23ca092e05d3ede52e645bffa7e66c41ffdbf6af6d9",
+    "candidateExeSha256": "2273d8c8bebc733df7820b1e2e443a0cf367294c99b3b3350424dfb30971c027",
+    "isolatedProfile": true,
+    "threeWindows": true,
+    "decodedImages": {
+      "home": 12,
+      "scene": 12,
+      "showcase": 24,
+      "popular": 9
+    },
+    "targetImageFailures": 0,
+    "themeMethod": "actual theme toggle for page captures; temporary DOM tokens only for the frozen maintenance overlay",
+    "themesReviewed": [
+      "light",
+      "dark"
+    ],
+    "unsubmittedApiForm": "OPEN_API_SETTINGS",
+    "pendingDraftSavedBeforeExit": true,
+    "shutdown": "drained",
+    "restart": "ready",
+    "sameWorkspaceAfterRestart": true,
+    "finalShutdown": "drained",
+    "ownerReleased": true,
+    "hostAndGatewayReadinessDoesNotAloneProveUi": true
+  },
+  "credentialIntegration": {
+    "report": "runtime/post-refactor-reliability/credential-final/native-1790476346068/report.json",
+    "reportSha256": "162ecd55e15d5ac4ad8455ac0d35f3310f460947c476bb30e00de682a3a8c3bc",
+    "candidateExeSha256": "d06cebbe7a8b23ee7b4f7ba221f52970f0c2e778445e2c56e1227f617047c351",
+    "namespace": "Huiyu/Test/ChatApi/<hash of isolated profile path>/<unique invalid endpoint>",
+    "readWriteReadbackPassed": true,
+    "testCredentialCleared": true,
+    "shutdown": "drained",
+    "ownerReleased": true,
+    "productionVaultAccessedByCandidateTest": false,
+    "productionCredentialNamesChanged": false
+  },
+  "installation": {
+    "status": "passed",
+    "entry": "deploy-desktop.bat -UseInstaller -QuietInstall -InstallerPath <explicit verified package> -InstallDir D:/AI-CG-Studio",
+    "log": "runtime/post-refactor-reliability/credential-final/deploy-last.log",
+    "installedExeSha256": "30553235921b052ba514cb8f66c9c83f8b903ea26329b4aec1051bcb63700794",
+    "exactExecutableMatchesNsisPayload": true,
+    "hostAndAuthenticatedGatewayReady": true,
+    "hostPidAtVerification": 25100,
+    "lastMaintenanceProbe": "cancelled / OPEN_EDITOR; current editing window left running",
+    "productionCdpEnabledByThisFinalInstall": false,
+    "uiEvidenceReuse": "same frontend source as the fully exercised isolated candidate; no forced production restart to repeat UI checks"
+  },
+  "preservation": {
+    "workspacePointerSame": true,
+    "domains": {
+      "settings": {
+        "before": 11,
+        "after": 12,
+        "sameHash": false
+      },
+      "chat": {
+        "before": 1,
+        "after": 1,
+        "sameHash": true
+      },
+      "draft": {
+        "before": 3,
+        "after": 3,
+        "sameHash": true
+      }
+    },
+    "tables": {
+      "artworks": {
+        "before": 0,
+        "after": 0,
+        "sameHash": true
+      },
+      "projects": {
+        "before": 0,
+        "after": 0,
+        "sameHash": true
+      },
+      "migration_items": {
+        "before": 15,
+        "after": 15,
+        "sameHash": true
+      }
+    },
+    "installedExeSha256": "30553235921b052ba514cb8f66c9c83f8b903ea26329b4aec1051bcb63700794",
+    "readOnlyDatabaseSnapshot": true,
+    "settingsChanges": [
+      {
+        "key": "aics_live2d_quality_v1",
+        "change": "added"
+      }
+    ],
+    "snapshotEvidence": "runtime/post-refactor-reliability/credential-install/pre-install-preservation.json",
+    "comparisonEvidence": "runtime/post-refactor-reliability/credential-install/post-install-preservation.json",
+    "migrationRepeated": false,
+    "databaseRestored": false,
+    "userKeysPrinted": false
+  },
+  "retainedFailures": [
+    {
+      "report": "runtime/post-refactor-reliability/native-1790473903144/report.json",
+      "reason": "Harness did not open the Description tab before selecting its textbox"
+    },
+    {
+      "report": "runtime/post-refactor-reliability/native-1790474103589/report.json",
+      "reason": "Harness waited for POST; real draft transport is PUT"
+    },
+    {
+      "log": "runtime/post-refactor-reliability/package-credential-fix.log",
+      "reason": "Binding correctly rejected another session changing shared source during build; switched to managed checkout"
+    },
+    {
+      "reason": "First installed maintenance refused CREDENTIAL_SAVE_FAILED; fixed legacy HTTP-only credential authorization and waited for user to retain inputs and exit"
+    },
+    {
+      "reason": "Batch UTF-8 help parse errors did not stop PowerShell installation; external launcher help changed to ASCII and failure-path smoke passed"
+    }
+  ],
+  "limits": [
+    "No new real generation tasks submitted",
+    "No long-duration GPU/power benchmark or other-device acceptance",
+    "No automatic submission of open editors or deletion of unknown workspace owners",
+    "Other concurrently developed UI source remains in main but is outside this selected installed build"
+  ]
+}
