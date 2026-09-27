@@ -12,7 +12,7 @@
         :class="{ 'artwork-pending': trashBusy === entry.id }"
       >
         <div class="artwork-media" style="--art-ratio: 1">
-          <img
+          <img :crossorigin="runtimeResourceCors()"
             v-if="trashThumbs[entry.id]"
             class="artwork-image"
             :src="resolveRuntimeUrl(trashThumbs[entry.id])"

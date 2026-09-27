@@ -175,7 +175,7 @@
                 >
                   <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
                     <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
-                    <img
+                    <img :crossorigin="runtimeResourceCors()"
                       v-if="thumbUrls[item.id]"
                       class="artwork-image"
                       :src="resolveRuntimeUrl(thumbUrls[item.id])"
@@ -186,7 +186,7 @@
                       @load="measure(item, $event)"
                     />
                     <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
-                    <img
+                    <img :crossorigin="runtimeResourceCors()"
                       v-if="cardUrls[item.id]"
                       class="artwork-image artwork-image-hd"
                       :src="resolveRuntimeUrl(cardUrls[item.id])"

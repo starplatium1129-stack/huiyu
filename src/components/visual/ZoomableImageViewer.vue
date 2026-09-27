@@ -24,7 +24,7 @@
       </div>
 
       <!-- 真实图片 -->
-      <img
+      <img :crossorigin="runtimeResourceCors()"
         v-show="!imageFailed"
         ref="imageEl"
         :src="resolveRuntimeUrl(src)"

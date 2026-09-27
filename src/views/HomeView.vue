@@ -22,12 +22,12 @@
           </RouterLink>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" aria-label="宁宁与夏目的角色视觉">
-          <img :crossorigin="runtimeResourceCors()" v-if="!heroFailed.nene" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="resolveRuntimeUrl(heroAssets.nene)" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" @error="heroFailed.nene = true" />
+          <img :crossorigin="runtimeResourceCors()" v-if="heroAssets.nene && !heroFailed.nene" :key="heroAssets.nene" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="resolveRuntimeUrl(heroAssets.nene)" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" @error="heroFailed.nene = true" />
           <div v-else class="hero-fallback nene" :class="{ 'is-current': homeMuse === 'nene' }" aria-hidden="true">
             <ArchiveIcon name="image" />
             <span class="hero-fallback-text">主视觉暂未加载</span>
           </div>
-          <img :crossorigin="runtimeResourceCors()" v-if="!heroFailed.natsume" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :src="resolveRuntimeUrl(heroAssets.natsume)" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" @error="heroFailed.natsume = true" />
+          <img :crossorigin="runtimeResourceCors()" v-if="heroAssets.natsume && !heroFailed.natsume" :key="heroAssets.natsume" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :src="resolveRuntimeUrl(heroAssets.natsume)" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" @error="heroFailed.natsume = true" />
           <div v-else class="hero-fallback natsume" :class="{ 'is-current': homeMuse === 'natsume' }" aria-hidden="true">
             <ArchiveIcon name="image" />
             <span class="hero-fallback-text">主视觉暂未加载</span>
@@ -98,7 +98,8 @@
               :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
             >
               <img
-                v-if="!isPortraitFailed(c.id)"
+                :crossorigin="runtimeResourceCors()"
+                v-if="portraitSrc(c.id) && !isPortraitFailed(c.id)"
                 :key="portraitSrc(c.id)"
                 :src="resolveRuntimeUrl(portraitSrc(c.id))"
                 :alt="c.displayName"
@@ -251,15 +252,15 @@ const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 // Bundled approved covers are authoritative; copied showcase editions may contain older home art.
-const heroAssets = Object.freeze({
-  nene: '/assets/characters/nene-home-cg-1024.webp',
-  natsume: '/assets/characters/natsume-home-cg-1024.webp',
-})
+const heroAssets = computed(() => ({
+  nene: resolveRuntimeUrl('/assets/characters/nene-home-cg-1024.webp'),
+  natsume: resolveRuntimeUrl('/assets/characters/natsume-home-cg-1024.webp'),
+}))
 
 // ── 图片失败回退：每张图独立跟踪，失败只换占位不循环重试 ──
-// 英雄图：按角色各记一个失败态；src 是内置常量，重试入口是用户切换 muse（watch 重置后重挂 img）。
+// Runtime readiness changes the resolved URL; retry that new source without reloading the page.
 const heroFailed = reactive({ nene: false, natsume: false })
-watch(homeMuse, (muse) => { heroFailed[muse] = false })
+watch([homeMuse, heroAssets], () => { heroFailed.nene = false; heroFailed.natsume = false })
 
 // 热门横条：以完整 src（含 ?v= 版本）为键；版本变化产生新键自动重试，img :key 重挂避免
 // 旧请求的 error 误标新 src。同一失败 src 在本页生命周期内不重复请求。
@@ -283,7 +284,7 @@ function portraitSrc(id: string): string {
   // 横条卡片仅 ~180px 宽，加载 1.2MB 原图曾把首页资源预算打爆 5 倍（16MB）。
   // 改用 build-character-thumbs.py 预生成的 360px WebP 缩略图（~19KB/张）；
   // 源 PNG 重发后需重跑该脚本（mtime 过期自动重建）。
-  return popularPortraitSrc(id, sceneStore.version || 3)
+  return resolveRuntimeUrl(popularPortraitSrc(id, sceneStore.version || 3))
 }
 
 

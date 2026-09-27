@@ -15,12 +15,12 @@
     <div class="sc-band">
       <div v-if="thumbId" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
       <img
-        v-if="thumbId"
+        v-if="thumbId && thumbSrc"
+        :key="thumbSrc"
+        :crossorigin="runtimeResourceCors()"
         class="sc-thumb"
         :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
-        :src="resolveRuntimeUrl(thumbSrc)"
-        :srcset="`${thumbSrc} 320w, ${thumbSrc} 640w`"
-        sizes="(max-width: 760px) 50vw, (max-width: 1000px) 33vw, 25vw"
+        :src="thumbSrc"
         alt=""
         loading="lazy"
         decoding="async"
@@ -128,7 +128,7 @@ const contentRating = computed(() => props.scene.rating || (props.scene.mature ?
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
 const thumbSrc = computed(() => {
   const v = props.imgVersion ?? ''
-  return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
+  return resolveRuntimeUrl(`/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`)
 })
 watch(thumbSrc, () => {
   thumbLoaded.value = false

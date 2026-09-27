@@ -15,8 +15,9 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 const missingScenes = ref(new Set<string>())
+watch(() => resolveRuntimeUrl('/scene-showcase/'), () => { missingScenes.value.clear() })
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 defineProps<{ scenes: Array<{ id: string; title?: string; story?: string; category?: string }> }>()
 function excerpt(story?: string) { return (story || '一些想留下的光影，一段只属于角色的时光。').replace(/^【[^】]+】/, '').slice(0, 84) }

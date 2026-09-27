@@ -142,6 +142,7 @@
           >
             <div class="char-ref-image-wrap">
               <img
+                :crossorigin="runtimeResourceCors()"
                 v-if="refItem.url && !unavailableReferences.has(refItem.url)"
                 :src="resolveRuntimeUrl(`${refItem.url}?t=${refVersion}`)"
                 :alt="refItem.name"
@@ -310,9 +311,9 @@ const directoryItems = computed(() => characters.value.map(character => ({
 
 const portraitSources = computed(() => {
   const profile = current.value
-  const main = profile?.portrait?.image || ''
+  const main = resolveRuntimeUrl(profile?.portrait?.image)
   return { id: profile?.id || '', main,
-    thumb: profile?.type === 'popular' ? popularPortraitSrc(profile.id) : '' }
+    thumb: profile?.type === 'popular' ? resolveRuntimeUrl(popularPortraitSrc(profile.id)) : '' }
 })
 const { view: portraitView, ratio: portraitRatio, fail: failPortrait,
   loaded: loadPortrait, isLoaded: portraitLoaded } = usePortraitFallback(portraitSources)

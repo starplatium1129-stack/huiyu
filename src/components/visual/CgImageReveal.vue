@@ -2,11 +2,13 @@
   <div ref="containerRef" class="cg-image-reveal" :class="{ 'is-revealing': isRevealing, 'is-loaded': isLoaded }">
     <!-- Keying the image prevents a late event from the previous URL owning a new reveal. -->
     <img
-      :key="src"
+      v-if="resolvedSrc"
+      :key="resolvedSrc"
+      :crossorigin="runtimeResourceCors()"
       ref="imgRef"
       class="cg-image-target"
       :class="imgClass"
-      :src="resolveRuntimeUrl(src)"
+      :src="resolvedSrc"
       :alt="alt || '生成的画面成片'"
       loading="eager"
       decoding="async"
@@ -42,6 +44,7 @@ const emit = defineEmits<{
   'reveal-complete': []
 }>()
 const containerRef = ref<HTMLElement | null>(null)
+const resolvedSrc = computed(() => resolveRuntimeUrl(props.src))
 const imgRef = ref<HTMLImageElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const { canAnimate, lowEffects } = useVisualActivity(containerRef)
@@ -79,7 +82,7 @@ function finishReveal(): void {
 }
 
 function isCurrentImage(img: HTMLImageElement | null): img is HTMLImageElement {
-  return Boolean(img && img === imgRef.value && img.getAttribute('src') === props.src)
+  return Boolean(img && img === imgRef.value && img.getAttribute('src') === resolvedSrc.value)
 }
 
 function triggerReveal(): void {
@@ -213,13 +216,13 @@ function onImageError(event: Event): void {
 }
 
 // Cancel synchronously; inspect the replacement DOM only after Vue has patched it.
-watch(() => props.src, () => {
+watch(resolvedSrc, () => {
   stopAnimation()
   isLoaded.value = false
   handledImage = null
   completedImage = null
 }, { flush: 'sync' })
-watch(() => props.src, handleReadyImage, { flush: 'post' })
+watch(resolvedSrc, handleReadyImage, { flush: 'post' })
 watch([canAnimate, lowEffects], () => {
   if (isRevealing.value && (!canAnimate.value || lowEffects.value)) finishReveal()
 }, { flush: 'sync' })
