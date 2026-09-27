@@ -97,6 +97,15 @@
 .pb .studio-character-duet .studio-character-copy { padding:0 var(--s-2); }
 .pb .studio-character-duet .studio-character-check { position:static; margin-left:auto; flex-shrink:0; }
 .pb .studio-character-choice:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.pb .char-btn.studio-character-choice { border-radius:var(--r-lg); border-color:var(--border-soft); background:var(--bg-surface); transition:transform var(--motion-hover) var(--ease-out); }
+.pb .char-btn.studio-character-choice.active { border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); }
+.pb .studio-character-copy { padding-block:var(--s-3); }
+@media (hover:hover) and (pointer:fine) {
+  .pb .char-btn.studio-character-choice:hover { transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .pb .char-btn.studio-character-choice { transition:none; transform:none; }
+}
 .pb .studio-traits-label { margin:var(--s-4) 0 0; color:var(--text-secondary); font-size:var(--fs-body-sm); }
 .pb .studio-traits-label + .traits-row { margin-top:var(--s-2); }
 .pb .trait-chip { min-height:32px; font-size:var(--fs-body-sm); }

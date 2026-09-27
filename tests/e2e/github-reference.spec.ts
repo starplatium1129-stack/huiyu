@@ -51,6 +51,7 @@ for (const theme of ['light', 'dark']) {
     const oldTransform = await page.locator('.zoom-transform-layer').getAttribute('style')
     await page.locator('.zoomable-img').dblclick()
     await expect(page.locator('.zoom-transform-layer')).not.toHaveAttribute('style', oldTransform!)
+    await page.locator('.viewer-more summary').click()
     await page.getByRole('button', { name: '尝试手势观画', exact: true }).click()
     const image = page.locator('.pswp__item[aria-hidden="false"] .pswp__img:not(.pswp__img--placeholder)')
     await expect(image).toBeVisible()

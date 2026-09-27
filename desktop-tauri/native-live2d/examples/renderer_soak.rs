@@ -137,6 +137,7 @@ fn load_character(
         let (width, height) = image.dimensions();
         textures.push(renderer.load_texture(&image.into_raw(), width, height));
     }
+    renderer.release_texture_uploads();
     if textures.is_empty() {
         return Err(format!("{name}: no textures"));
     }

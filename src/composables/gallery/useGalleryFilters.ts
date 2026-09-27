@@ -5,6 +5,7 @@ import { matchesArtwork } from '@/utils/artworkSearch';
 import { dayGroup, searchHaystack } from './galleryHelpers';
 import { buildMasonryGroups } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
+import { artworkTags } from './artworkTags';
 
 export interface UseGalleryFiltersOptions {
   history: Ref<ArtworkRecord[]>;
@@ -29,6 +30,13 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   /** 展墙搜索（2026-08-30 UX 审计 P1）：此前只有「收藏 + 项目」两个控件，
    *  攒到几百张后找某张旧作只能靠翻。 */
   const searchQuery = ref('');
+  const tagFilter = ref('');
+  const tagOptions = computed(() => {
+    const counts = new Map<string, number>();
+    for (const item of history.value) for (const tag of artworkTags(item)) counts.set(tag, (counts.get(tag) || 0) + 1);
+    if (tagFilter.value && !counts.has(tagFilter.value)) counts.set(tagFilter.value, 0);
+    return [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([value, count]) => ({ value, label: `${value} · ${count}` }));
+  });
 
   /* ---------- 派生数据 ---------- */
   const visible = computed(() => {
@@ -39,6 +47,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
         source = source.filter(i => Array.isArray(p.history_ids) && p.history_ids.includes(i.id));
     }
     const term = searchQuery.value.trim().toLowerCase();
+    if (tagFilter.value) source = source.filter(item => artworkTags(item).includes(tagFilter.value));
     if (term)
       source = source.filter(i => matchesArtwork(searchHaystack(i), term));
     // 历史是按生成顺序 append 的，展墙必须自己排：最新在前。
@@ -72,11 +81,13 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     favoriteOnly.value = false;
     projectFilter.value = '';
     searchQuery.value = '';
+    tagFilter.value = '';
   }
 
   /* ---------- 筛选状态进 URL（2026-08-30 UX 审计 P1）---------- */
   function restoreFiltersFromQuery() {
     const q = route.query;
+    tagFilter.value = typeof q.tag === 'string' ? q.tag : '';
     if (typeof q.fav === 'string')
       favoriteOnly.value = q.fav === '1';
     if (typeof q.project === 'string')
@@ -92,13 +103,16 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     const fav = q.fav === '1';
     const project = typeof q.project === 'string' ? q.project : '';
     const term = typeof q.q === 'string' ? q.q : '';
-    if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim())
+    const tag = typeof q.tag === 'string' ? q.tag : '';
+    if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim() && tag === tagFilter.value)
       return;
     if (syncTimer)
       clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
       syncTimer = null;
       const query: LocationQueryRaw = { ...route.query };
+      if (tagFilter.value) query.tag = tagFilter.value;
+      else delete query.tag;
       if (favoriteOnly.value)
         query.fav = '1';
       else
@@ -134,13 +148,14 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }
 
   // 筛选变化回到第一页，让用户始终从最新作品看起
-  watch([favoriteOnly, projectFilter, searchQuery], () => {
+  watch([favoriteOnly, projectFilter, searchQuery, tagFilter], () => {
     renderLimit.value = PAGE_SIZE;
     onFilterReset?.();
     syncFiltersToQuery();
   });
 
   return {
+    tagFilter, tagOptions,
     favoriteOnly,
     projectFilter,
     searchQuery,

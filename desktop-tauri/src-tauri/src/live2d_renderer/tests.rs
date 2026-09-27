@@ -139,3 +139,47 @@
         assert!(state.renderer_attached.load(std::sync::atomic::Ordering::SeqCst));
         assert!(state.cmd_tx.lock().unwrap().is_some());
     }
+
+    #[test]
+    fn unloaded_commands_reply_without_creating_a_gpu_context() {
+        use super::{handle_command, OverlayCommand};
+        use std::sync::{Arc, atomic::Ordering};
+        let state = Arc::new(Live2DOverlayState::default());
+        state.window_ready.store(true, Ordering::SeqCst);
+        state.renderer_attached.store(true, Ordering::SeqCst);
+        let (tx, _rx) = std::sync::mpsc::channel();
+        *state.cmd_tx.lock().unwrap() = Some(tx);
+        let mut ctx = None;
+        let mut dispatch = |cmd| handle_command(&state, &mut ctx, std::path::Path::new("."), None, None, std::ptr::null_mut(), cmd);
+        dispatch(OverlayCommand::SetMaxFps(60));
+        dispatch(OverlayCommand::SetGaze(0.5, -0.5));
+        dispatch(OverlayCommand::SetMouthLevel(0.8));
+        dispatch(OverlayCommand::SetEmotion { name: "happy".into(), intensity: 1.0 });
+        assert_eq!(state.target_fps.load(Ordering::SeqCst), 60);
+
+        let (reply, mut response) = tokio::sync::oneshot::channel();
+        dispatch(OverlayCommand::PlayMotion { group: "Idle".into(), index: None, priority: None, reply });
+        assert_eq!(response.try_recv().unwrap(), Err("model not loaded".into()));
+        let (reply, mut response) = tokio::sync::oneshot::channel();
+        dispatch(OverlayCommand::SetExpression { name: "smile".into(), reply });
+        assert!(response.try_recv().unwrap().is_err());
+        let (reply, mut response) = tokio::sync::oneshot::channel();
+        dispatch(OverlayCommand::Snapshot { path: "unused.png".into(), reply });
+        assert!(response.try_recv().unwrap().is_err());
+        let (reply, mut response) = tokio::sync::oneshot::channel();
+        dispatch(OverlayCommand::HitTest { x: 0.5, y: 0.5, reply });
+        assert_eq!(response.try_recv().unwrap(), Ok(Vec::new()));
+
+        for _ in 0..2 {
+            let (reply, mut response) = tokio::sync::oneshot::channel();
+            dispatch(OverlayCommand::Destroy { reply });
+            assert_eq!(response.try_recv(), Ok(()));
+        }
+        assert!(state.window_ready.load(Ordering::SeqCst));
+        assert!(state.renderer_attached.load(Ordering::SeqCst));
+        assert!(state.cmd_tx.lock().unwrap().is_some());
+        assert!(!state.shutdown.load(Ordering::SeqCst));
+        dispatch(OverlayCommand::Shutdown);
+        assert!(state.shutdown.load(Ordering::SeqCst));
+        assert!(ctx.is_none(), "idle commands and Destroy must not allocate a GPU device");
+    }

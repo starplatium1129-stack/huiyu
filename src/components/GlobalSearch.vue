@@ -3,6 +3,7 @@
     <Transition :css="false" @enter="surface.enter" @leave="surface.leave" @after-leave="surface.dispose">
     <div v-show="open" class="global-search" :inert="!open" :aria-hidden="!open" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
+        <div class="gs-heading"><strong>快速查找</strong><span>页面、场景与作品</span></div>
         <div class="gs-input-row">
           <ArchiveIcon name="search" class="gs-search-icon" />
           <input
@@ -395,7 +396,7 @@ onUnmounted(() => {
 .gs-input-row {
   display: flex; align-items: center; gap: var(--s-3);
   padding: var(--s-4) var(--s-5);
-  background: linear-gradient(120deg, var(--glass-highlight), transparent), var(--bg-surface);
+  background: var(--bg-base);
   border-bottom: 1px solid var(--border-soft);
 }
 .gs-search-icon { color: var(--text-muted); flex: 0 0 auto; }
@@ -408,12 +409,14 @@ onUnmounted(() => {
 .gs-input:focus-visible { outline: none; box-shadow: none; }
 .gs-input-row:focus-within { box-shadow: inset 0 -2px var(--accent); }
 .gs-input::placeholder { color: var(--text-muted); }
+.gs-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-5); color:var(--text-primary); font-size:var(--fs-body-sm); }
+.gs-heading span { color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .gs-esc {
-  display: inline-grid; place-items: center; width: 36px; height: 36px;
+  display: inline-grid; place-items: center; width: 40px; height: 40px;
   background: var(--bg-surface); cursor: pointer;
   flex: 0 0 auto;
   padding: 2px var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-sm);
+  border: 1px solid var(--border-soft); border-radius: var(--r-pill);
   color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono);
 }
 .gs-results { max-height: min(52vh, 480px); overflow-y: auto; padding: var(--s-3); }

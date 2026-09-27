@@ -30,22 +30,26 @@
           :aria-expanded="settingsOpen"
           @click="settingsOpen = !settingsOpen"
         ><ArchiveIcon name="gear" /><span>设置</span></button>
-        <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar">
-          <AppearancePreferences launcher-only @open="settingsOpen = false" />
-          <div class="companion-pop-group">
-            <strong>陪伴</strong>
-            <span class="companion-pop-item">{{ affectionInfo.title }} · {{ affectionScore }}</span>
-            <button type="button" class="companion-pop-item" @click="openAppearance">角色取景与外观</button>
+        <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
+          <div class="companion-pop-group" data-preference-pane="character">
+            <strong>角色外观</strong>
+            <button type="button" class="companion-pop-item" @click="openAppearance"><ArchiveIcon name="wardrobe" /><span>角色取景与外观</span><ArchiveIcon class="preference-chevron" name="chevron-down" /></button>
             <Live2DQualityControl :native="Boolean(desktopBridge)" />
+          </div>
+          <div class="companion-pop-group" data-preference-pane="companion">
+            <strong>声音与问候</strong>
+            <span class="companion-pop-item">{{ affectionInfo.title }} · {{ affectionScore }}</span>
             <ToggleSwitch class="companion-pop-item companion-pop-switch" :model-value="autoVoice" label="实时配音" @update:model-value="setAutoVoice">
               <StudioTooltip content="播放聊天回复和新问候；勿扰时暂停主动问候">
                 <span>实时配音：{{ autoVoice ? '开' : '关' }}</span>
               </StudioTooltip>
             </ToggleSwitch>
-            <button v-if="behaviorEnabled" type="button" class="companion-pop-item" :aria-pressed="dnd" @click="toggleDnd">
-              {{ dnd ? '关闭勿扰（恢复主动问候）' : '开启勿扰（暂停主动问候）' }}
-            </button>
-            <button type="button" class="companion-pop-item" @click="importInputRef?.click()">导入图片到作品册</button>
+            <ToggleSwitch v-if="behaviorEnabled" class="companion-pop-item companion-pop-switch" :model-value="dnd" label="勿扰模式" @update:model-value="toggleDnd">
+              <span>勿扰模式<small>暂停主动问候</small></span>
+            </ToggleSwitch>
+            <label class="companion-pop-item companion-pop-volume"><span>音量 <small>{{ volume }}%</small></span>
+              <input type="range" v-model.number="volume" min="0" max="100" aria-label="桌宠音量" @input="onVolumeChange" />
+            </label>
           </div>
           <input
             ref="importInputRef"
@@ -56,41 +60,24 @@
             aria-label="导入本地图片到作品册"
             @change="onImportInputChange"
           />
-          <div v-if="desktopBridge" class="companion-pop-group">
-            <strong>窗口</strong>
-            <button type="button" class="companion-pop-item" :aria-pressed="alwaysOnTop" @click="togglePin">
-              {{ alwaysOnTop ? '取消置顶' : '置顶窗口' }}
-            </button>
-            <StudioTooltip :content="ignoreMouseEvents ? '恢复窗口交互（Ctrl+Shift+P）' : '开启鼠标穿透（Ctrl+Shift+P）'">
-              <button
-                type="button"
-                class="companion-pop-item"
-                :aria-pressed="ignoreMouseEvents"
-                @click="toggleMouseEvents"
-              >{{ ignoreMouseEvents ? '恢复窗口交互' : '鼠标穿透' }}</button>
-            </StudioTooltip>
-            <StudioTooltip content="隐藏 Companion（Ctrl+Shift+Space）">
-              <button type="button" class="companion-pop-item" @click="desktopBridge.hide">隐藏 Companion</button>
-            </StudioTooltip>
+          <div class="companion-pop-group" data-preference-pane="more">
+            <strong>界面偏好</strong>
+            <AppearancePreferences launcher-only @open="settingsOpen = false" />
             <StudioTooltip content="沉浸模式：只保留角色与对话（Esc 退出）">
-              <button type="button" class="companion-pop-item" @click="enterImmersive">沉浸模式</button>
+              <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="settingsOpen = false; petGestures.controlsOpen.value = false; enterImmersive()"><ArchiveIcon name="moon" /><span>沉浸模式</span></button>
             </StudioTooltip>
           </div>
-          <div class="companion-pop-group">
+          <div class="companion-pop-group" data-preference-pane="more">
             <strong>工作台</strong>
             <StudioTooltip content="打开完整工作台（Ctrl+Shift+A）">
-              <button type="button" class="companion-pop-item" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')">打开完整工作台</button>
+              <button type="button" class="companion-pop-item" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')"><ArchiveIcon name="palette" /><span>打开完整工作台</span></button>
             </StudioTooltip>
-            <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar)}`)">完整房间（聊天）</button>
+            <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar)}`)"><ArchiveIcon name="chat" /><span>完整房间（聊天）</span></button>
             <RouterLink v-else class="companion-pop-item" :to="{ path: '/chat', query: { character: activeChar } }">完整房间（聊天）</RouterLink>
+            <button type="button" class="companion-pop-item" @click="importInputRef?.click()"><ArchiveIcon name="image" /><span>导入图片到作品册</span></button>
           </div>
-          <div v-if="desktopBridge" class="companion-pop-group">
-            <strong>诊断</strong>
-            <StudioTooltip :content="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Native Live2D 目标 165 FPS'">
-              <span class="companion-pop-item">
-                {{ onBatteryPower ? 'Live2D 30 FPS（电池）' : 'Live2D 165 FPS（接电）' }}
-              </span>
-            </StudioTooltip>
+          <div v-if="desktopBridge" class="companion-pop-group" data-preference-pane="more">
+            <strong>本机资源</strong>
             <StudioTooltip :content="workspaceTooltip">
               <button
                 ref="workspaceTriggerEl"
@@ -105,19 +92,6 @@
                 <ArchiveIcon :name="workspaceExists ? 'success' : 'error'" />
                 <span>{{ workspaceExists ? 'AI 工作区已就绪' : 'AI 工作区缺失' }}</span>
               </button>
-            </StudioTooltip>
-            <StudioTooltip content="桌宠音量">
-              <label class="companion-pop-item companion-pop-volume">
-                <span>音量 <small>{{ volume }}%</small></span>
-                <input
-                  type="range"
-                  v-model.number="volume"
-                  min="0"
-                  max="100"
-                  aria-label="桌宠音量"
-                  @input="onVolumeChange"
-                />
-              </label>
             </StudioTooltip>
           </div>
         </CompanionPreferences>

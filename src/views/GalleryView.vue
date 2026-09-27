@@ -4,6 +4,11 @@
       <div>
         <div class="gallery-kicker">HUIYU / PRIVATE COLLECTION</div>
         <h1 class="gallery-title">我的作品</h1>
+        <nav v-if="projectFilter && !trashMode" class="gallery-breadcrumb" aria-label="画册位置">
+          <button type="button" @click="projectFilter = ''">全部画册</button>
+          <ArchiveIcon name="chevron-down" />
+          <span aria-current="page">{{ projects.find(project => project.id === projectFilter)?.title || '当前画册' }}</span>
+        </nav>
         <p class="gallery-subtitle">收藏每一次心动，让灵感从这里继续。</p>
       </div>
       <RouterLink class="btn btn-primary gallery-create" to="/prompt-builder">
@@ -15,6 +20,7 @@
 
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
       <div class="gallery-browse-controls" role="group" aria-label="浏览作品">
+      <AnimatedSelection />
       <button class="gallery-filter" :class="{ active: !favoriteOnly && !trashMode }" type="button"
         :aria-pressed="!favoriteOnly && !trashMode" @click="favoriteOnly = false; trashMode && toggleTrashMode()">全部作品</button>
       <button class="gallery-filter" :class="{ active: favoriteOnly && !trashMode }" type="button" :aria-pressed="favoriteOnly && !trashMode" @click="favoriteOnly = trashMode || !favoriteOnly; trashMode && toggleTrashMode()">
@@ -26,11 +32,7 @@
         最高频也最痛苦的动作，此前只能靠翻。检索范围含场景名、角色、当时写的
         故事与完整 prompt——很多旧作只记得里面出现过某个词。
       -->
-      <div class="gallery-search-field">
-        <input ref="searchInput" v-model="searchQuery" type="search" class="gallery-search" aria-label="搜索作品"
-          placeholder="搜场景、角色或关键词…" />
-        <button v-if="searchQuery" class="gallery-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''; searchInput?.focus()">×</button>
-      </div>
+      <StudioSearch v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
       <StudioSelect v-model="projectFilter" class="gallery-project" label="按项目筛选" :options="[{ value: '', label: '全部项目' }, ...projects.map(p => ({ value: p.id, label: p.title }))]" />
       <!--
         多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
@@ -47,6 +49,11 @@
         <ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}
       </button>
       </div>
+    </div>
+    <div v-if="!trashMode && tagOptions.length" ref="tagControls" class="gallery-tags" role="group" aria-label="作品标签筛选">
+      <ArchiveIcon name="pin" /><StudioSelect v-model="tagFilter" label="按标签筛选" :options="[{value:'',label:'全部标签'}, ...tagOptions]" />
+      <button v-if="tagFilter" type="button" class="gallery-filter" @click="tagFilter = ''">清除标签：{{ tagFilter }}<ArchiveIcon name="close" /></button>
+      <span v-else>按作品保存的标签查找</span>
     </div>
     <div class="gallery-summary" aria-live="polite">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : '作品展墙' }}</strong>{{ trashMode ? `${trashItems.length} 幅作品` : countLabel }}</span>
@@ -233,8 +240,8 @@
           ref="viewerEl"
         >
       <section class="viewer-stage" @click.self="closeInfoDrawer">
-        <button class="viewer-close viewer-close-on-art" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn">×</button>
-        <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)">‹</button>
+        <button class="viewer-close" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn"><ArchiveIcon name="close" /></button>
+        <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)"><ArchiveIcon name="chevron-down" /></button>
         <template v-if="compareMode && hasComparableImage && viewerUrl">
           <div class="viewer-compare-host">
             <ImageCompareSlider
@@ -256,13 +263,13 @@
           </template>
         </ZoomableImageViewer>
         <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
-        <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)">›</button>
+        <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)"><ArchiveIcon name="chevron-down" /></button>
         <StudioTooltip v-if="hasComparableImage && viewerUrl" :content="compareMode ? '退出对比' : '开启对比滑块'">
           <button class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :aria-pressed="compareMode" @click="compareMode = !compareMode">
             <ArchiveIcon name="spark" /> 对比
           </button>
         </StudioTooltip>
-        <button ref="infoToggleBtn" class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="viewer-info" :aria-expanded="infoOpen" @click="toggleInfoDrawer">i</button>
+        <button ref="infoToggleBtn" class="viewer-info-toggle" type="button" aria-label="作品信息" aria-controls="viewer-info" :aria-expanded="infoOpen" @click="toggleInfoDrawer"><ArchiveIcon name="info" /></button>
         <div class="viewer-position">{{ viewerIndex + 1 }} / {{ visible.length }}</div>
       </section>
 
@@ -283,32 +290,46 @@
         </header>
         <h2 id="viewer-info-title" class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
         <div class="viewer-meta">
-          {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }} · v{{ displayedCurrent.version || 1 }}
+          {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }}
         </div>
-        <div class="viewer-story viewer-story-on-art">{{ displayedCurrent.story || '这幅作品还没有附加文字。' }}</div>
-        <div class="viewer-facts">
+        <section class="viewer-section" aria-label="作品信息">
+          <h3>作品信息</h3>
+          <p class="viewer-story">{{ displayedCurrent.story || '这幅作品还没有附加文字。' }}</p>
+          <div v-if="artworkTags(displayedCurrent).length" class="viewer-tags" aria-label="作品标签">
+            <button v-for="tag in artworkTags(displayedCurrent)" :key="tag" type="button" @click="filterByTag(tag)">{{ tag }}</button>
+          </div>
+          <dl class="viewer-record">
+            <div><dt>尺寸</dt><dd>{{ displayedCurrent.size || (displayedCurrent.width && displayedCurrent.height ? `${displayedCurrent.width} × ${displayedCurrent.height}` : '未记录') }}</dd></div>
+            <div><dt>版本</dt><dd>v{{ displayedCurrent.version || 1 }}</dd></div>
+          </dl>
+        </section>
+        <details class="viewer-details" :key="displayedCurrent.id">
+          <summary>创作参数与 Prompt <ArchiveIcon name="chevron-down" /><span>查看配方</span></summary>
+          <div class="viewer-facts">
           <div class="viewer-fact" v-for="f in facts" :key="f.label">
             <small>{{ f.label }}</small>
             <StudioTooltip :content="f.value || '—'">
               <strong>{{ f.value || '—' }}</strong>
             </StudioTooltip>
           </div>
-        </div>
-        <details class="viewer-details">
-          <summary>创作参数与 Prompt</summary>
+          </div>
           <div class="viewer-prompt">{{ displayedCurrent.prompt || '未保存 Prompt' }}</div>
         </details>
-        <div class="viewer-actions">
-          <button class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" @click="gestureViewer = !gestureViewer">{{ gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
+        <div class="viewer-actions viewer-primary-actions" aria-label="作品操作">
           <button class="btn btn-ghost" type="button"
             :class="{ 'btn-favorite-on': displayedCurrent.favorite }"
             :aria-pressed="!!displayedCurrent.favorite"
             @click="toggleFavorite(displayedCurrent)">
             <ArchiveIcon name="love" /><span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
           </button>
-          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
+          <button class="btn btn-ghost" type="button" @click="downloadCurrent"><ArchiveIcon name="download" />下载原图</button>
+          <RouterLink class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
+        </div>
+        <details class="viewer-details viewer-more" :key="`tools-${displayedCurrent.id}`">
+          <summary>更多操作 <ArchiveIcon name="chevron-down" /><span>重跑、复制与管理</span></summary>
+          <div class="viewer-actions">
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
-          <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
+          <button class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" @click="gestureViewer = !gestureViewer">{{ gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
           <button
             class="btn btn-ghost"
             :class="{ 'btn-copied-success': copiedPrompt }"
@@ -326,7 +347,8 @@
             <button class="btn btn-ghost" type="button" :disabled="deleting"
               @click="pendingDeleteId = null">取消</button>
           </template>
-        </div>
+          </div>
+        </details>
       </aside>
         </div>
       </FluidTransition>
@@ -340,11 +362,13 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import FluidTransition from "@/components/visual/FluidTransition.vue"
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { defineAsyncComponent, ref, watch } from 'vue'
+import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
 const gestureViewer = ref(false)
-const searchInput = ref<HTMLInputElement | null>(null)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
 import GalleryProjectAlbums from '@/components/gallery/GalleryProjectAlbums.vue'
@@ -355,6 +379,7 @@ import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryProjectAlbums } from '@/composables/gallery/useGalleryProjectAlbums'
 const {
+tagFilter, tagOptions,
 closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
 searchQuery,
 favoriteOnly,
@@ -424,6 +449,11 @@ copiedPrompt,
 copyPrompt
 } = useGalleryWorkspace()
 const { albums } = useGalleryProjectAlbums({ projects, history, thumbUrls, cardUrls })
+const tagControls = ref<HTMLElement | null>(null)
+async function filterByTag(tag: string) {
+  closeViewer(); tagFilter.value = tag
+  await nextTick(); tagControls.value?.querySelector<HTMLElement>('[role="combobox"]')?.focus()
+}
 
 const displayedCurrent = ref(current.value)
 const displayedIndex = ref(viewerIndex.value)

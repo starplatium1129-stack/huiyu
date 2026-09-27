@@ -37,6 +37,7 @@ export function createLifecycleController(
   },
 ) {
   const setState = hooks.setState
+  const desktopHidden = () => ctx.desktopVisible === false
   let removeMotionListener: (() => void) | undefined
   /**
    * 原生渲染线程停止（GPU 设备丢失 / swapchain 不可恢复）后的自动重试。
@@ -172,7 +173,7 @@ export function createLifecycleController(
       setState('static', '静态立绘', info?.source || '该角色暂无 Live2D 模型')
       return
     }
-    if (!ctx.enabled.value) {
+    if (!ctx.enabled.value || desktopHidden()) {
       setVisible(false)
       ctx.interactionHint.value = ''
       setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
@@ -186,7 +187,7 @@ export function createLifecycleController(
     // Wait for that request to settle, then retry the character that is still
     // selected instead of returning the obsolete request's result.
     if (ctx.loading) await ctx.loading
-    if (ctx.destroyed.value || !ctx.enabled.value || char !== ctx.character.value) return
+    if (ctx.destroyed.value || !ctx.enabled.value || desktopHidden() || char !== ctx.character.value) return
     if (ctx.ready.value && ctx.loadedCharacter.value === char) {
       setVisible(true); setState('ready', 'Live2D 已连接')
       syncPause(); controllers.layoutFit.layout(); return
@@ -396,6 +397,10 @@ export function createLifecycleController(
 
   function setPaused(paused: boolean) {
     ctx.desktopVisible = !paused
+    // Explicit desktop hiding releases the model; a background browser tab or
+    // reduced-motion preference still only pauses. Keep the enabled preference
+    // so recover() reloads the latest character/outfit when the pet is reopened.
+    if (paused) { destroyRuntime(); return }
     syncPause()
   }
 

@@ -28,7 +28,7 @@ function open() {
   if (dialog.value) {
     const source = document.activeElement instanceof HTMLElement ? document.activeElement : null
     // The menu item disappears when it opens this dialog; return to its persistent launcher.
-    const launcher = document.querySelector<HTMLElement>('.companion-orbit .companion-settings-btn')
+    const launcher = document.querySelector<HTMLElement>('.orbit-settings-trigger')
       ?? source?.closest('.companion-page')?.querySelector<HTMLElement>('.companion-settings-btn')
     fluid.open(launcher ?? source)
   } else if (details.value) {

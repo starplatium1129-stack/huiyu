@@ -44,7 +44,11 @@ export function useGalleryWorkspace() {
     const { ratioOf, measure, forgetRatio } = useArtworkRatios({
         pending: thumbPending,
         hasThumb: item => Boolean(thumbUrls[item.id]),
-        saveThumb: (item, dataUrl, imageId) => artworkRepository.setThumbnail(imageId, dataUrl).then(() => { thumbUrls[item.id] = dataUrl; }),
+        saveThumb: async (item, dataUrl, imageId) => {
+            const epoch = imageEpoch;
+            await artworkRepository.setThumbnail(imageId, dataUrl);
+            if (!unmounted && viewActive && epoch === imageEpoch) thumbUrls[item.id] = dataUrl;
+        },
     });
     /**
      * HD 层解码完成：回填真实比例 + 淡入覆盖缩略图。
@@ -83,9 +87,11 @@ export function useGalleryWorkspace() {
     let viewerLoadToken = 0;
     let unmounted = false;
     let viewActive = true;
+    let imageEpoch = 0;
 
     const {
         favoriteOnly,
+        tagFilter, tagOptions,
         projectFilter,
         searchQuery,
         visible,
@@ -157,9 +163,13 @@ export function useGalleryWorkspace() {
     function markImageMissing(id: string | number) {
         missingImageIds.value = new Set([...missingImageIds.value, id]);
     }
-    function revokeAll() {
+    function releaseImages() {
+        imageEpoch++;
         objectUrls.forEach(u => URL.revokeObjectURL(u));
         objectUrls.clear();
+        for (const id of Object.keys(cardUrls)) delete cardUrls[id];
+        cardLruOrder.clear();
+        viewerObjectUrl = ''; viewerUrl.value = '';
     }
     /* ---------- 图片加载 ---------- */
     /**
@@ -184,33 +194,30 @@ export function useGalleryWorkspace() {
         cardLruOrder.delete(id);
         cardLruOrder.set(id, 1);
     }
+    function releaseCardImage(id: string | number) {
+        const url = cardUrls[id];
+        if (url?.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url); }
+        delete cardUrls[id];
+        cardLruOrder.delete(id);
+    }
     function trimCardUrls() {
-        if (cardLruOrder.size <= HD_CACHE_LIMIT)
-            return;
-        const excess = cardLruOrder.size - HD_CACHE_LIMIT;
-        for (const id of [...cardLruOrder.keys()].slice(0, excess)) {
-            cardLruOrder.delete(id);
-            const url = cardUrls[id];
-            if (url && url.startsWith('blob:')) {
-                URL.revokeObjectURL(url);
-                objectUrls.delete(url);
-            }
-            delete cardUrls[id];
-        }
+        const excess = Math.max(0, cardLruOrder.size - HD_CACHE_LIMIT);
+        for (const id of [...cardLruOrder.keys()].slice(0, excess)) releaseCardImage(id);
     }
     async function hydrateThumbs() {
+        const epoch = imageEpoch;
         // 只为已进入渲染窗口的作品取缩略图（分页外的不预取）
         const pending = pagedVisible.value.filter(item => !cardUrls[item.id] && !thumbUrls[item.id]);
         let index = 0;
         async function worker() {
             while (index < pending.length) {
                 const item = pending[index++];
-                if (unmounted || !viewActive) return;
+                if (unmounted || !viewActive || epoch !== imageEpoch) return;
                 if (!item.image_id)
                     continue;
                 try {
                     const thumb = await artworkRepository.getThumbnail(item.image_id);
-                    if (unmounted)
+                    if (unmounted || !viewActive || epoch !== imageEpoch)
                         return;
                     if (typeof thumb === 'string' && thumb.startsWith('data:image/')) {
                         thumbUrls[item.id] = thumb;
@@ -222,11 +229,12 @@ export function useGalleryWorkspace() {
         await Promise.all(Array.from({ length: Math.min(THUMB_CONCURRENCY, pending.length) }, () => worker()));
     }
     async function hydrateCard(item: ArtworkRecord) {
+        const epoch = imageEpoch;
         const fallback = safeImageUrl(item.image_url);
         let resolved = false;
         try {
             const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null;
-            if (unmounted || !viewActive) return;
+            if (unmounted || !viewActive || epoch !== imageEpoch) return;
             if (blob) {
                 cardUrls[item.id] = trackUrl(URL.createObjectURL(blob));
                 resolved = true;
@@ -237,7 +245,7 @@ export function useGalleryWorkspace() {
                 if (imageId && !thumbUrls[item.id] && !thumbPending.has(imageId)) {
                     thumbPending.add(imageId);
                     blobThumbDataUrl(blob).then(dataUrl => {
-                        if (dataUrl && !unmounted && viewActive && history.value.some(entry => entry.id === item.id)) {
+                        if (dataUrl && !unmounted && viewActive && epoch === imageEpoch && history.value.some(entry => entry.id === item.id)) {
                             thumbUrls[item.id] = dataUrl;
                             void artworkRepository.setThumbnail(imageId, dataUrl);
                         }
@@ -256,6 +264,7 @@ export function useGalleryWorkspace() {
                 markImageMissing(item.id);
         }
         catch {
+            if (unmounted || !viewActive || epoch !== imageEpoch) return;
             if (fallback) {
                 cardUrls[item.id] = fallback;
                 resolved = true;
@@ -267,12 +276,7 @@ export function useGalleryWorkspace() {
             return;
         // 读取期间被删除的条目：URL 不入册直接释放，避免缓存里留下孤儿
         if (!history.value.some(entry => entry.id === item.id)) {
-            const url = cardUrls[item.id];
-            if (url && url.startsWith('blob:')) {
-                URL.revokeObjectURL(url);
-                objectUrls.delete(url);
-            }
-            delete cardUrls[item.id];
+            releaseCardImage(item.id);
             return;
         }
         touchCardLru(item.id);
@@ -294,10 +298,11 @@ export function useGalleryWorkspace() {
         if (unmounted || !viewActive) { cardQueue.length = 0; queuedCardIds.clear(); return; }
         while (cardWorkers < CARD_CONCURRENCY && cardQueue.length) {
             const item = cardQueue.shift()!;
+            const epoch = imageEpoch;
             cardWorkers += 1;
             void hydrateCard(item).finally(() => {
                 cardWorkers -= 1;
-                queuedCardIds.delete(item.id);
+                if (epoch === imageEpoch) queuedCardIds.delete(item.id);
                 pumpCardQueue();
             });
         }
@@ -363,12 +368,8 @@ export function useGalleryWorkspace() {
     function releaseViewerUrl() {
         if (!viewerObjectUrl)
             return;
-        // 缩略图可能复用同一个 URL，只释放没被 cardUrls 引用的
-        const stillUsed = Object.values(cardUrls).includes(viewerObjectUrl);
-        if (!stillUsed) {
-            URL.revokeObjectURL(viewerObjectUrl);
-            objectUrls.delete(viewerObjectUrl);
-        }
+        URL.revokeObjectURL(viewerObjectUrl);
+        objectUrls.delete(viewerObjectUrl);
         viewerObjectUrl = '';
     }
     /* ---------- Viewer 控制 ---------- */
@@ -432,13 +433,7 @@ export function useGalleryWorkspace() {
      * 等于把最花力气修好的工程又捅一个洞。
      */
     function releaseCardResources(id: string | number) {
-        const url = cardUrls[id];
-        if (url && url.startsWith('blob:')) {
-            URL.revokeObjectURL(url);
-            objectUrls.delete(url);
-        }
-        delete cardUrls[id];
-        cardLruOrder.delete(id);
+        releaseCardImage(id);
         delete thumbUrls[id];
         if (missingImageIds.value.delete(id))
             missingImageIds.value = new Set(missingImageIds.value);
@@ -482,21 +477,16 @@ export function useGalleryWorkspace() {
         await nextTick();
         scanWallCards();
     });
-    /**
-     * 作品册被 AppLayout 的 KeepAlive 缓存（数百张大图 blob 与解码结果常驻内存，
-     * 切走再回来秒开，不需要重新从 IndexedDB 读图）。
-     *
-     * 代价是 onMounted 只在**首次**进入时跑一次，此后重新激活不会重读 KV：
-     * 画出一张 →「保存快照」→ 进作品册，看到的仍是离开时那份旧列表，
-     * 用户会判定「保存失败」并重复保存、甚至重画（2026-08-30 UX 审计 P0-7）。
-     *
-     * 这里只增量重读 KV，不重建 blob 缓存（revokeAll 挂在 onUnmounted，
-     * 缓存期间不触发）——既修掉陈旧列表，又不丢 KeepAlive 的意义。
-     * 列表若真有变化，watch(visible) 会自动补缩略图并重挂观察器。
-     */
+    // KeepAlive preserves filters, pagination and small thumbnails. Leaving the
+    // gallery releases original images; the next activation hydrates visible cards
+    // and refreshes metadata so newly saved works appear without losing state.
     let activatedOnce = false;
     onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void nextTick(() => { scanWallCards(); if (moreObserver && sentinelEl.value) moreObserver.observe(sentinelEl.value); }); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
-    onDeactivated(() => { viewActive = false; closeViewer(); document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear(); cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear(); });
+    onDeactivated(() => {
+        viewActive = false; closeViewer(); clearTimeout(releaseViewerTimer); releaseImages();
+        document.removeEventListener('keydown', onKeydown); cardQueue.length = 0; queuedCardIds.clear();
+        cardObserver?.disconnect(); moreObserver?.disconnect(); observedCards.clear();
+    });
     onUnmounted(() => {
         unmounted = true;
         clearTimeout(releaseViewerTimer);
@@ -508,7 +498,7 @@ export function useGalleryWorkspace() {
         moreObserver?.disconnect();
         moreObserver = null; narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
         document.removeEventListener('keydown', onKeydown);
-        revokeAll();
+        releaseImages();
     });
     watch(visible, () => {
         if (viewerIndex.value >= 0) {
@@ -566,7 +556,7 @@ export function useGalleryWorkspace() {
     function bulkDelete(): Promise<void> { return bulkDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage }); }
     return {
 closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
-        countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects,
+        countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, loadGalleryStorage, trashBusy, trashThumbs, trashPrompt,

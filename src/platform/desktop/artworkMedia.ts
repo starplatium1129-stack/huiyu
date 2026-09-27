@@ -1,6 +1,10 @@
 import { blobThumbDataUrl } from '../../utils/imageThumb.ts'
 import { desktopRuntimeFetch, getDesktopRuntime } from './runtime.ts'
 
+// Count keys and strings conservatively as UTF-16, retaining only recent pages.
+const THUMBNAIL_CACHE_LIMIT = 96
+const THUMBNAIL_CACHE_BYTES = 8 * 1024 * 1024
+
 /** Desktop thumbnails are derived in the workspace, so cold gallery visits never
  * download originals just to create previews. Original reads only share in-flight
  * work: resolved large blobs remain owned and released by their callers. */
@@ -8,15 +12,29 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
   const images = new Map<string, Promise<Blob | null>>()
   const pendingThumbnails = new Map<string, Promise<string | null>>()
   const thumbnails = new Map<string, string>()
+  let thumbnailBytes = 0
   function key(id: string) {
     requireAuthority()
     const runtime = getDesktopRuntime().bootstrap?.runtime
     return JSON.stringify([runtime?.runtimeEpoch, runtime?.workspace?.generation, id])
   }
+  function forget(identity: string) {
+    const previous = thumbnails.get(identity)
+    if (previous !== undefined) { thumbnailBytes -= (identity.length + previous.length) * 2; thumbnails.delete(identity) }
+  }
   function remember(identity: string, value: string) {
-    thumbnails.delete(identity)
-    thumbnails.set(identity, value)
-    if (thumbnails.size > 200) thumbnails.delete(thumbnails.keys().next().value!)
+    forget(identity)
+    const bytes = (identity.length + value.length) * 2
+    if (!value || bytes > THUMBNAIL_CACHE_BYTES) return
+    thumbnails.set(identity, value); thumbnailBytes += bytes
+    while (thumbnails.size > THUMBNAIL_CACHE_LIMIT || thumbnailBytes > THUMBNAIL_CACHE_BYTES) {
+      forget(thumbnails.keys().next().value!)
+    }
+  }
+  function forgetThumbnail(id: string) {
+    const identity = key(id)
+    forget(identity)
+    pendingThumbnails.delete(identity)
   }
   async function fetchImage(id: string): Promise<Blob | null> {
     const signal = AbortSignal.timeout(35_000)
@@ -55,7 +73,11 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
     try {
       const value = await pending
       if (key(id) !== identity) throw new Error('作品库连接已变化，请重新读取')
-      if (value) remember(identity, value)
+      // Explicit publication wins over an earlier read; a released read cannot
+      // repopulate memory after deleteImage has removed it from the pending map.
+      const latest = thumbnails.get(identity)
+      if (latest !== undefined) return latest
+      if (value && pendingThumbnails.get(identity) === pending) remember(identity, value)
       return value
     } finally { if (pendingThumbnails.get(identity) === pending) pendingThumbnails.delete(identity) }
   }
@@ -65,5 +87,5 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
     const value = await blobThumbDataUrl(blob)
     if (value && key(id) === identity) remember(identity, value)
   }
-  return { getImage, getThumbnail, setThumbnail, cacheThumbnail }
+  return { getImage, getThumbnail, setThumbnail, cacheThumbnail, forgetThumbnail }
 }

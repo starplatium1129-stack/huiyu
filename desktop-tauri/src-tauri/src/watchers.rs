@@ -4,19 +4,23 @@ use std::time::{Duration, Instant};
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager};
 use windows_sys::Win32::Foundation::POINT;
-use windows_sys::Win32::Graphics::Gdi::{EnumDisplayMonitors, GetDC, HDC};
+use windows_sys::Win32::Graphics::Gdi::{EnumDisplayMonitors, HDC};
 use windows_sys::Win32::System::DataExchange::{CloseClipboard, GetClipboardData, OpenClipboard};
 use windows_sys::Win32::System::Memory::{GlobalLock, GlobalSize, GlobalUnlock};
 use windows_sys::Win32::System::Power::GetSystemPowerStatus;
 use windows_sys::Win32::UI::WindowsAndMessaging::GetCursorPos;
 
-/// 全局鼠标轮询：约 30fps，坐标变化 >=2px 才发；窗口穿透/隐藏时依然工作。
+/// 全局鼠标轮询：约 30fps，坐标变化 >=2px 才发；仅可见桌宠需要凝视事件。
 /// 事件名 aics:global-mouse，payload 与 Electron 版 desktop:global-mouse 同构。
 pub fn start_global_mouse_watch(app: AppHandle) {
     thread::spawn(move || {
         let mut last_x = i32::MAX;
         let mut last_y = i32::MAX;
         loop {
+            let Some(window) = app.get_webview_window("companion").filter(|window| window.is_visible().unwrap_or(false)) else {
+                thread::sleep(Duration::from_millis(500));
+                continue;
+            };
             thread::sleep(Duration::from_millis(33));
             let mut pt = POINT { x: 0, y: 0 };
             unsafe {
@@ -29,7 +33,7 @@ pub fn start_global_mouse_watch(app: AppHandle) {
             }
             last_x = pt.x;
             last_y = pt.y;
-            let state = app.get_webview_window("companion").and_then(|w| {
+            let state = Some(window).and_then(|w| {
                 match (w.outer_position().ok(), w.outer_size().ok()) {
                     (Some(p), Some(s)) => Some(GlobalMouse {
                         x: pt.x,
@@ -283,11 +287,6 @@ unsafe extern "system" fn monitor_enum_proc(
 
 fn primary_work_area() -> (i32, i32, i32, i32) {
     unsafe {
-        let hdc = GetDC(std::ptr::null_mut());
-        if hdc.is_null() {
-            return (0, 0, 0, 0);
-        }
-        let _ = hdc;
         let x = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(76); // SM_XVIRTUALSCREEN
         let y = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(77);
         let w = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(78);
@@ -318,27 +317,4 @@ fn clamp_windows(app: &AppHandle) {
             let _ = w.set_position(tauri::PhysicalPosition::new(bounds.x as i32, bounds.y as i32));
         }
     }
-}
-
-/// 隐藏降载（O3）：隐藏 10 分钟后通知渲染端暂停 Live2D 渲染循环。
-/// （WebView2 无 backgroundThrottling 开关，改用渲染端配合 + 帧率控制）
-pub fn start_hidden_degrade(app: AppHandle) {
-    thread::spawn(move || {
-        let mut hidden_since: Option<Instant> = None;
-        loop {
-            thread::sleep(Duration::from_secs(30));
-            let visible = app
-                .get_webview_window("companion")
-                .map(|w| w.is_visible().unwrap_or(false))
-                .unwrap_or(true);
-            if visible {
-                hidden_since = None;
-                continue;
-            }
-            let since = *hidden_since.get_or_insert(Instant::now());
-            if since.elapsed() >= Duration::from_secs(600) {
-                let _ = app.emit("aics:degrade", true);
-            }
-        }
-    });
 }

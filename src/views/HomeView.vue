@@ -121,11 +121,12 @@
           <p class="hint">从画一张图，到讲一个故事。让灵感有个去处。</p>
         </div>
       </div>
-      <div class="tools-grid">
+      <div class="tools-grid home-bento">
         <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">01 / MAKE</span>
           <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
           <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
+          <span class="home-entry-preview" aria-hidden="true"><RuntimeImage :src="homeMuse === 'nene' ? natsumeHero.src : neneHero.src" alt="" loading="lazy" /></span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">

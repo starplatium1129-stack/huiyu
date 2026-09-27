@@ -63,6 +63,7 @@
           type="button"
           @click="$emit('selectScene', scene)">
           <div class="scene-card-title">
+            <ArchiveIcon v-if="pb.sceneId === scene.id" name="success" class="scene-selection-check" />
             {{ scene.title }}
             <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
           </div>

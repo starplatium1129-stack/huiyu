@@ -16,7 +16,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     workspaceId ??= session.workspaceId
   }
   const workspaceRequest = <T>(command: Record<string, unknown>): Promise<T> => { requireAuthority(); return request<T>(command) }
-  const media = createDesktopArtworkMedia(requireAuthority, id => workspaceRequest<string | null>({ kind: 'readThumbnail', alias: id }))
+  const { forgetThumbnail, ...media } = createDesktopArtworkMedia(requireAuthority, id => workspaceRequest<string | null>({ kind: 'readThumbnail', alias: id }))
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
   async function list(includeDeleted = false): Promise<Row[]> {
@@ -84,7 +84,10 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       await workspaceRequest({ kind: 'commitMedia', operationId })
       return alias
     },
-    async deleteImage(alias) { await workspaceRequest({ kind: 'releaseMedia', alias, operationId: crypto.randomUUID() }) },
+    async deleteImage(alias) {
+      await workspaceRequest({ kind: 'releaseMedia', alias, operationId: crypto.randomUUID() })
+      forgetThumbnail(alias)
+    },
     countImages: () => workspaceRequest<number>({ kind: 'countMedia' }),
     withStaging: work => work(),
     async appendArtwork(artwork) {

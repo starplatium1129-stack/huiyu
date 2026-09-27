@@ -1,7 +1,6 @@
 import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect, type Locator, type Page } from '@playwright/test'
 import { mkdirSync, writeFileSync } from 'node:fs'
-import { textContrast } from './helpers/contrast'
 
 async function desktopFixture(page: Page, theme: string, failRelay = false, credentials = false) {
   await page.addInitScript(({ theme, failRelay, credentials }) => {
@@ -182,6 +181,7 @@ for (const theme of ['dark', 'light']) {
       const panel = page.getByRole('dialog', { name: '桌宠设置', exact: true })
       await expect(panel).toBeVisible()
       await expect(panel.locator('select, input[type="checkbox"], input[type="radio"]')).toHaveCount(0)
+      await panel.getByRole('tab', { name: '陪伴', exact: true }).click()
       expect(await panel.getByRole('slider', { name: '桌宠音量' }).evaluate(element => getComputedStyle(element).appearance)).toBe('none')
       const bounds = await panel.boundingBox()
       expect(bounds && bounds.x >= 0 && bounds.y + bounds.height <= height).toBeTruthy()
@@ -190,7 +190,7 @@ for (const theme of ['dark', 'light']) {
       await page.keyboard.press('Escape')
       await expect(panel).toBeHidden()
       await expect(orbit.getByRole('button', { name: '设置', exact: true })).toBeFocused()
-      const contrast = await orbit.getByRole('button', { name: '切换陪伴角色', exact: true }).locator('span').evaluate(textContrast)
+      const contrast = await paintedTextContrast(orbit.getByRole('button', { name: '切换陪伴角色', exact: true }).locator('span'))
       expect(contrast).toBeGreaterThanOrEqual(4.5)
       await page.keyboard.press('Escape')
       await expect(orbit).toBeHidden()
@@ -243,6 +243,7 @@ test('AI 工作区 dialog owns Escape and restores its trigger', async ({ page }
   await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
   await page.getByRole('button', { name: '设置', exact: true }).click()
   const settings = page.getByRole('dialog', { name: '桌宠设置', exact: true })
+  await settings.getByRole('tab', { name: '更多', exact: true }).click()
   const trigger = settings.getByRole('button', { name: /AI 工作区/ })
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
   await trigger.dispatchEvent('click')

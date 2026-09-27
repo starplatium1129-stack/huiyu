@@ -250,7 +250,7 @@ export function useCompanionWorkspace() {
         if (!settingsOpen.value)
             return;
         const target = event.target;
-        if (target instanceof Element && target.closest('.companion-settings-popover, .companion-settings-btn, .companion-preferences, .companion-workspace-settings'))
+        if (target instanceof Element && target.closest('.companion-settings-popover, .companion-settings-btn, .orbit-settings-trigger, .companion-preferences, .companion-workspace-settings'))
             return;
         settingsOpen.value = false;
     }

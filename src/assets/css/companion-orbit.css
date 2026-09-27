@@ -1,5 +1,6 @@
 /* An explicit control layer: the open centre never changes the model's framing. */
 .companion-orbit { position: absolute; inset: 0; z-index: var(--z-overlay); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; pointer-events: none; color: var(--text-primary); }
+:root:has(.companion-preferences[open], .character-settings-dialog[open]) .companion-orbit { visibility: hidden; }
 .orbit-heading { position: absolute; top: 12px; left: 12px; display: flex; align-items: center; gap: 20px; padding: 8px 10px 8px 18px; border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-elevated); box-shadow: var(--shadow-glass-sm); pointer-events: auto; }
 .orbit-heading > div { display: flex; flex-direction: column; gap: 2px; }
 .orbit-kicker { color: var(--text-secondary); font-size: var(--fs-label-xs); letter-spacing: .15em; }
@@ -10,14 +11,14 @@
 .orbit-segment > svg > path { fill: var(--bg-elevated); stroke: var(--border-strong); stroke-width: .75; pointer-events: auto; cursor: pointer; }
 .orbit-segment:has(button:hover) > svg > path, .orbit-segment:has(> svg > path:hover) > svg > path, .orbit-segment[data-active] > svg > path { fill: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); stroke: var(--accent); }
 .orbit-segment:has(button:focus-visible) > svg > path { stroke: var(--accent); stroke-width: 3; }
-.companion-orbit .orbit-action { position: absolute; left: var(--orbit-x); top: var(--orbit-y); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 54px; height: 50px; padding: 0; transform: translate(-50%, -50%); border: 0; border-radius: var(--r-md); background: var(--bg-elevated); color: var(--text-primary); box-shadow: none; cursor: pointer; pointer-events: auto; font-size: var(--fs-label-sm); line-height: 1.2; }
+.companion-orbit .orbit-action { position: absolute; left: var(--orbit-x); top: var(--orbit-y); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 54px; height: 50px; padding: 0; transform: translate(-50%, -50%); border: 0; border-radius: 0; background: transparent; color: var(--text-primary); box-shadow: none; cursor: pointer; pointer-events: auto; font-size: var(--fs-label-sm); line-height: 1.2; }
 .orbit-action .archive-icon { width: 22px; height: 22px; color: var(--accent); }
-.companion-orbit .orbit-action:hover, .orbit-segment[data-active] .orbit-action { background: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); }
+.companion-orbit .orbit-action:is(:hover, :focus-visible, :active), .companion-orbit .orbit-segment[data-active] .orbit-action { background: transparent; box-shadow: none; }
 .companion-orbit .orbit-action:active { transform: translate(-50%, -50%) scale(.95); }
-.orbit-option { position: absolute; left: var(--orbit-x); top: var(--orbit-y); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px; width: 54px; height: 54px; transform: translate(-50%, -50%); padding: 4px; background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--r-lg); cursor: pointer; pointer-events: auto; }
-.orbit-option img { width: 30px; height: 30px; object-fit: cover; object-position: top; border-radius: var(--r-sm); }
+.orbit-option { box-sizing: border-box; position: absolute; left: var(--orbit-x); top: var(--orbit-y); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; width: 58px; min-height: 66px; transform: translate(-50%, -50%); padding: 6px 4px; background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--r-lg); cursor: pointer; pointer-events: auto; }
+.orbit-option img { flex: 0 0 30px; width: 30px; height: 30px; object-fit: cover; object-position: top; border-radius: var(--r-sm); }
 .orbit-option > .archive-icon { width: 22px; height: 22px; }
-.orbit-option span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-label-xs); }
+.orbit-option span { display: block; flex: 0 0 auto; max-width: 100%; min-height: 1.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-label-xs); line-height: 1.5; }
 .orbit-option[aria-pressed="true"], .orbit-option:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); }
 .orbit-selection { max-width: calc(100% - 24px); width: 320px; flex: 0 1 auto; min-height: 0; padding: 10px 12px; border-radius: var(--r-lg); border: 1px solid var(--border-soft); background: var(--bg-elevated); pointer-events: auto; overflow: auto; overscroll-behavior: contain; }
 .orbit-selection > header { display: flex; align-items: center; gap: 8px; }
@@ -40,6 +41,7 @@
 .orbit-feedback { max-height: 60px; overflow: auto; }
 .companion-orbit button:disabled { color: var(--text-disabled); cursor: default; }
 .companion-orbit button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.companion-orbit .orbit-action:focus-visible { outline: none; }
 .companion-orbit.has-category:not(.is-compact) { --orbit-size: min(440px, calc(100dvh - 240px), calc(100vw - 24px)) !important; }
 .companion-orbit.is-compact { gap: 4px; }
 .companion-orbit.is-compact.has-category { box-sizing: border-box; padding-top: 80px; padding-bottom: 12px; }
