@@ -1,6 +1,7 @@
 import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect, type Locator, type Page } from '@playwright/test'
 import { mkdirSync, writeFileSync } from 'node:fs'
+import { textContrast } from './helpers/contrast'
 
 async function desktopFixture(page: Page, theme: string, failRelay = false, credentials = false) {
   await page.addInitScript(({ theme, failRelay, credentials }) => {
@@ -174,31 +175,27 @@ for (const theme of ['dark', 'light']) {
       // checking the current right-click / Shift+F10 contract.
       await expect(page.locator('.companion-chat-chip')).toBeHidden()
       await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
-      await expect(page.locator('.companion-chat-chip')).toBeVisible()
-      await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
+      const orbit = page.getByRole('region', { name: '桌宠环形菜单', exact: true })
+      await expect(orbit.getByRole('button', { name: '打开聊天', exact: true })).toBeVisible()
+      await expect(orbit.locator('.orbit-heading strong')).toHaveText('绫地宁宁')
       await page.getByRole('button', { name: '设置', exact: true }).click()
-      const panel = page.locator('.companion-settings-popover')
+      const panel = page.getByRole('dialog', { name: '桌宠设置', exact: true })
       await expect(panel).toBeVisible()
       await expect(panel.locator('select, input[type="checkbox"], input[type="radio"]')).toHaveCount(0)
       expect(await panel.getByRole('slider', { name: '桌宠音量' }).evaluate(element => getComputedStyle(element).appearance)).toBe('none')
-      const contrast = await page.getByRole('combobox', { name: '切换陪伴角色' }).evaluate(element => {
-        const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1
-        const context = canvas.getContext('2d')!
-        const rgb = (value: string) => { context.clearRect(0, 0, 1, 1); context.fillStyle = value; context.fillRect(0, 0, 1, 1); return [...context.getImageData(0, 0, 1, 1).data].slice(0, 3) }
-        const luminance = (color: number[]) => color.map(v => { v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4 }).reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0)
-        const style = getComputedStyle(element)
-        const foreground = luminance(rgb(style.color)), background = luminance(rgb(style.backgroundColor))
-        return (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05)
-      })
-      expect(contrast).toBeGreaterThanOrEqual(4.5)
       const bounds = await panel.boundingBox()
       expect(bounds && bounds.x >= 0 && bounds.y + bounds.height <= height).toBeTruthy()
       await page.screenshot({ path: `.review-shots/companion-focus-${theme}-${width}.png` })
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
       await page.keyboard.press('Escape')
       await expect(panel).toBeHidden()
+      await expect(orbit.getByRole('button', { name: '设置', exact: true })).toBeFocused()
+      const contrast = await orbit.getByRole('button', { name: '切换陪伴角色', exact: true }).locator('span').evaluate(textContrast)
+      expect(contrast).toBeGreaterThanOrEqual(4.5)
+      await page.keyboard.press('Escape')
+      await expect(orbit).toBeHidden()
       await page.locator('.companion-page').press('Shift+F10')
-      await expect(page.locator('.companion-chat-chip')).toBeVisible()
+      await expect(orbit.getByRole('button', { name: '打开聊天', exact: true })).toBeVisible()
       await page.keyboard.press('Escape')
       const reminder = page.locator('.companion-float-reminder p').first()
       await expect(reminder).toBeVisible()
@@ -245,7 +242,7 @@ test('AI 工作区 dialog owns Escape and restores its trigger', async ({ page }
   await page.goto('/companion')
   await page.locator('.companion-page').click({ button: 'right', position: { x: 12, y: 12 } })
   await page.getByRole('button', { name: '设置', exact: true }).click()
-  const settings = page.locator('.companion-settings-popover')
+  const settings = page.getByRole('dialog', { name: '桌宠设置', exact: true })
   const trigger = settings.getByRole('button', { name: /AI 工作区/ })
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
   await trigger.dispatchEvent('click')

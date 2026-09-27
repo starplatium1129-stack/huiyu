@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs'
 import { textContrast } from './helpers/contrast'
 declare global {
   interface Window {
-    petFixture?: { open: number; hide: number; closeChat: number; drag: number; docked: boolean; pass: boolean; send(payload: { command: string; character: string; text: string }): void }
+    petFixture?: { open: number; hide: number; closeChat: number; drag: number; docked: boolean; pass: boolean; pinned: boolean; send(payload: { command: string; character: string; text: string }): void }
   }
 }
 
@@ -13,14 +13,15 @@ async function desktop(page: Page, theme: string, live = false) {
   await page.route('**/assets/theme-bootstrap.js', route => route.fulfill({ path: 'assets/theme-bootstrap.js', contentType: 'text/javascript' }))
   await page.route(/^http:\/\/[^/]+\/api\/(?!live2d)/, route => route.fulfill({ json: { ok: true, online: false, models: [] } }))
   await page.route('**/api/chat-status', route => route.fulfill({ json: { online: true, models: [{ name: 'fixture' }], model: 'fixture' } }))
+  if (!live) await page.route('**/api/live2d-status', route => route.fulfill({ json: { models: {} } }))
   await page.route('**/api/chat', route => route.fulfill({ contentType: 'application/x-ndjson', body: JSON.stringify({ type: 'token', content: '我就在这里。' + '这是一段用于检查气泡换行的完整回复。'.repeat(6) }) + '\n{"type":"done"}\n' }))
   await page.addInitScript(({ theme, live }) => {
     localStorage.setItem('aics_theme', theme)
     localStorage.setItem('aics_live2d_quality_v1', 'compact')
     localStorage.setItem('aics_companion_behavior_v1', JSON.stringify({ enabled: false, dnd: true }))
     localStorage.setItem('aics_companion_live2d_v1', String(live))
-    localStorage.setItem('aics_chat_v1', JSON.stringify({ version: 3, active: 'natsume', histories: {}, settings: { autoVoice: false, chatProvider: 'local' } }))
-    const fixture = { open: 0, hide: 0, closeChat: 0, drag: 0, docked: true, pass: false, send: (_payload: unknown) => {} }
+    localStorage.setItem('aics_chat_v1', JSON.stringify({ version: 3, active: 'natsume', histories: {}, settings: { autoVoice: false, provider: 'local' } }))
+    const fixture = { open: 0, hide: 0, closeChat: 0, drag: 0, docked: true, pass: false, pinned: false, send: (_payload: unknown) => {} }
     Object.assign(window, { petFixture: fixture })
     const methods: Record<string, unknown> = {
       isDesktop: true,
@@ -29,6 +30,7 @@ async function desktop(page: Page, theme: string, live = false) {
       getWindowState: async () => ({ maximized: false, focused: true }), getWindowZoom: async () => 1,
       openChat: async () => { fixture.open++ }, hide: () => { fixture.hide++ },
       startDragging: async () => { fixture.drag++ },
+      toggleAlwaysOnTop: async () => { fixture.pinned = !fixture.pinned; return fixture.pinned },
       hideChatWindow: async () => { fixture.closeChat++ }, getChatDocked: async () => fixture.docked,
       setChatDocked: async (value: boolean) => { fixture.docked = value; return value },
       setIgnoreMouseEvents: (value: boolean) => { fixture.pass = value },
@@ -40,6 +42,14 @@ async function desktop(page: Page, theme: string, live = false) {
   await expect(page.locator('html')).toHaveClass(/companion-desktop/)
 }
 
+async function settledOrbit(page: Page) {
+  const orbit = page.getByRole('region', { name: '桌宠环形菜单', exact: true })
+  await expect(orbit).toBeVisible()
+  await expect(orbit).toHaveCSS('opacity', '1')
+  await expect(orbit).toHaveCSS('transform', 'none')
+  return orbit
+}
+
 test('native pet window keeps the frameless transparent builder contract', () => {
   const source = readFileSync('desktop-tauri/src-tauri/src/main_shared.rs', 'utf8')
   const pet = source.slice(source.indexOf('pub fn create_companion_window'), source.indexOf('pub fn open_companion_chat'))
@@ -47,6 +57,113 @@ test('native pet window keeps the frameless transparent builder contract', () =>
 })
 
 for (const theme of ['light', 'dark']) {
+  for (const viewport of [{ width: 540, height: 760 }, { width: 360, height: 480 }]) {
+    test(`orbit menu geometry, keyboard and actions ${theme} ${viewport.width}`, async ({ page }, testInfo) => {
+      await page.setViewportSize(viewport)
+      await desktop(page, theme)
+      const host = page.locator('.live2d-host')
+      const before = await host.boundingBox()
+      expect(before).not.toBeNull()
+      await page.locator('.companion-page').focus()
+      await page.keyboard.press('Shift+F10')
+      const orbit = await settledOrbit(page)
+      await expect(orbit.getByRole('button', { name: '收起桌宠菜单' })).toBeFocused()
+      for (const name of ['设置', '打开聊天', '切换陪伴角色', '角色表情', '互动动作', '置顶窗口', '鼠标穿透', '隐藏桌宠']) {
+        const button = orbit.getByRole('button', { name, exact: true })
+        await expect(button).toBeInViewport({ ratio: 1 })
+        expect(await button.locator('span').evaluate(textContrast), name).toBeGreaterThanOrEqual(4.5)
+        expect(await button.evaluate(el => {
+          const r = el.getBoundingClientRect()
+          return el.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2))
+        }), `${name} can receive pointer input`).toBe(true)
+      }
+      for (const selector of ['.orbit-kicker', '.orbit-heading strong', '.orbit-guide']) {
+        expect(await orbit.locator(selector).evaluate(textContrast), selector).toBeGreaterThanOrEqual(4.5)
+      }
+      // The empty centre must remain available to the actual character stage.
+      expect(await orbit.locator('.orbit-wheel').evaluate(el => {
+        const r = el.getBoundingClientRect()
+        return Boolean(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)?.closest('.portrait-stage'))
+      })).toBe(true)
+      expect(await host.boundingBox()).toEqual(before)
+      await page.screenshot({ path: testInfo.outputPath(`orbit-main-${theme}-${viewport.width}.png`), omitBackground: true })
+      const heading = await orbit.locator('.orbit-heading strong').boundingBox()
+      expect(heading).not.toBeNull()
+      await page.mouse.move(heading!.x + 4, heading!.y + 4)
+      await page.mouse.down()
+      await page.mouse.move(heading!.x + 36, heading!.y + 20, { steps: 4 })
+      await page.mouse.up()
+      await expect.poll(() => page.evaluate(() => window.petFixture!.drag)).toBe(0)
+      await expect(orbit).toBeVisible()
+      const pin = orbit.getByRole('button', { name: '置顶窗口', exact: true })
+      await pin.click()
+      await expect(pin).toHaveAttribute('aria-pressed', 'true')
+      await expect.poll(() => page.evaluate(() => window.petFixture!.pinned)).toBe(true)
+      expect(await pin.locator('span').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      await pin.click()
+      await expect(pin).toHaveAttribute('aria-pressed', 'false')
+      await orbit.getByRole('button', { name: '切换陪伴角色', exact: true }).click()
+      await expect(orbit.getByRole('region', { name: '陪伴角色', exact: true })).toBeVisible()
+      if (viewport.width === 360) {
+        await expect(orbit.locator('.orbit-wheel')).toHaveCount(0)
+        await expect(orbit.locator('.orbit-option-list')).toBeVisible()
+        await expect(orbit.getByRole('button', { name: '绫地宁宁', exact: true })).toBeInViewport({ ratio: 1 })
+      } else await expect(orbit.locator('.orbit-option').first()).toBeVisible()
+      for (const option of await orbit.locator('.orbit-option span, .orbit-option-list button > span').all()) {
+        expect(await option.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      }
+      expect(await orbit.locator('.orbit-selection > header strong').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      expect(await orbit.locator('.orbit-selection > header > span').evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+      expect(await host.boundingBox()).toEqual(before)
+      await page.screenshot({ path: testInfo.outputPath(`orbit-characters-${theme}-${viewport.width}.png`), omitBackground: true })
+      await page.keyboard.press('Escape')
+      await expect(orbit.getByRole('region', { name: '陪伴角色', exact: true })).toHaveCount(0)
+      await expect(orbit.getByRole('button', { name: '切换陪伴角色', exact: true })).toBeFocused()
+      await page.keyboard.press('Escape')
+      await expect(orbit).toBeHidden()
+      await expect(page.locator('.companion-page')).toBeFocused()
+      await page.keyboard.press('Shift+F10')
+      await settledOrbit(page)
+      await page.keyboard.press('Shift+Tab')
+      await expect(orbit.getByRole('button', { name: '隐藏桌宠', exact: true })).toBeFocused()
+      await page.keyboard.press('Tab')
+      await expect(orbit.getByRole('button', { name: '收起桌宠菜单', exact: true })).toBeFocused()
+      await orbit.getByRole('button', { name: '切换陪伴角色', exact: true }).click()
+      await orbit.getByRole('button', { name: '绫地宁宁', exact: true }).click()
+      await expect(page.locator('.companion-page')).toHaveAttribute('data-character', 'nene')
+      await expect(orbit).toBeHidden()
+      await page.keyboard.press('Shift+F10')
+      await settledOrbit(page)
+      await orbit.getByRole('button', { name: '鼠标穿透', exact: true }).click()
+      await expect.poll(() => page.evaluate(() => window.petFixture!.pass)).toBe(true)
+      await expect(orbit).toBeHidden()
+      await page.keyboard.press('Shift+F10')
+      await settledOrbit(page)
+      await expect(orbit.getByRole('button', { name: '鼠标穿透', exact: true })).toHaveAttribute('aria-pressed', 'true')
+      await orbit.getByRole('button', { name: '鼠标穿透', exact: true }).press('Enter')
+      await expect.poll(() => page.evaluate(() => window.petFixture!.pass)).toBe(false)
+    })
+  }
+  test(`orbit preferences return focus and preserve model framing ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: 540, height: 760 })
+    await desktop(page, theme)
+    const before = await page.locator('.live2d-host').boundingBox()
+    await page.keyboard.press('Shift+F10')
+    const orbit = await settledOrbit(page)
+    const settings = orbit.getByRole('button', { name: '设置', exact: true })
+    const dialog = page.getByRole('dialog', { name: '桌宠设置', exact: true })
+    for (const close of ['button', 'escape']) {
+      await settings.click()
+      await expect(dialog).toBeVisible()
+      await expect(dialog.getByRole('button', { name: '关闭桌宠设置', exact: true })).toBeFocused()
+      expect(await page.locator('.live2d-host').boundingBox()).toEqual(before)
+      if (close === 'button') await dialog.getByRole('button', { name: '关闭桌宠设置', exact: true }).click()
+      else await page.keyboard.press('Escape')
+      await expect(dialog).toBeHidden()
+      await expect(settings).toBeFocused()
+      await expect(orbit).toBeVisible()
+    }
+  })
   test(`pet character settings fit the window and can always close ${theme}`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 360, height: 480 })
     await desktop(page, theme)
@@ -149,9 +266,14 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('.companion-toolbar')).toBeHidden()
     await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
     await page.getByRole('button', { name: '设置', exact: true }).click()
-    await page.getByRole('button', { name: '鼠标穿透', exact: true }).click()
+    const preferences = page.getByRole('dialog', { name: '桌宠设置', exact: true })
+    await expect(preferences).toBeVisible()
+    await preferences.getByRole('button', { name: '鼠标穿透', exact: true }).click()
     await expect.poll(() => page.evaluate(() => window.petFixture!.pass)).toBe(true)
     await page.keyboard.press('Escape')
+    await expect(preferences).toBeHidden()
+    await page.keyboard.press('Escape')
+    await expect(page.locator('.companion-orbit')).toBeHidden()
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('aics_companion_chat_live_v1') || '{}').chatReady)).toBe(true)
     await page.evaluate(() => window.petFixture!.send({ command: 'send', character: 'natsume', text: '气泡测试' }))
     await expect(page.locator('.companion-reply-preview')).toContainText('我就在这里')
@@ -169,7 +291,59 @@ for (const theme of ['light', 'dark']) {
     await expect.poll(() => page.evaluate(() => window.petFixture!.hide)).toBe(1)
     await page.setViewportSize({ width: 360, height: 520 })
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await expect(page.locator('.companion-orbit')).toBeHidden()
+    await page.keyboard.press('Shift+F10')
+    await settledOrbit(page)
     await expect(page.getByRole('button', { name: '隐藏桌宠', exact: true })).toBeInViewport()
+  })
+
+  test(`orbit real built-in models and authored head interaction ${theme}`, async ({ page }, testInfo) => {
+    test.skip(process.env.AICS_LIVE2D_IMPORTS !== '1', 'Requires private local assets')
+    test.setTimeout(120000)
+    await page.setViewportSize({ width: 540, height: 760 })
+    await desktop(page, theme, true)
+    for (const id of ['natsume', 'nene']) {
+      const host = page.locator('.live2d-host')
+      if (id === 'nene') {
+        await page.keyboard.press('Shift+F10')
+        const menu = await settledOrbit(page)
+        await menu.getByRole('button', { name: '切换陪伴角色', exact: true }).click()
+        await menu.locator(`button[data-value="${id}"]`).click()
+      }
+      await expect(page.locator('.companion-page')).toHaveAttribute('data-character', id)
+      await expect(host).toHaveAttribute('data-state', 'ready', { timeout: 45000 })
+      await expect(host.locator('canvas')).toBeVisible()
+      const frame = await host.boundingBox()
+      await page.keyboard.press('Shift+F10')
+      const menu = await settledOrbit(page)
+      await page.screenshot({ path: testInfo.outputPath(`orbit-real-${id}-${theme}.png`), omitBackground: true })
+      await menu.getByRole('button', { name: '互动动作', exact: true }).click()
+      const head = menu.locator('button[data-value="Head"]')
+      await expect(head).toBeEnabled()
+      await page.locator('.portrait-stage').evaluate(element => {
+        element.classList.remove('live2d-reacting')
+        element.removeAttribute('data-test-motion-started')
+        // Vue can reconcile the class immediately after the real motion callback.
+        // Latch its observed transition instead of depending on poll timing.
+        const observer = new MutationObserver(records => {
+          if (element.classList.contains('live2d-reacting') || records.some(record => record.oldValue?.includes('live2d-reacting'))) {
+            element.setAttribute('data-test-motion-started', 'true')
+            observer.disconnect()
+          }
+        })
+        observer.observe(element, { attributes: true, attributeFilter: ['class'], attributeOldValue: true })
+      })
+      await head.click()
+      // This class is set only after the actual model motion reports it started.
+      await expect(page.locator('.portrait-stage')).toHaveAttribute('data-test-motion-started', 'true', { timeout: 15000 })
+      await expect(menu.locator('.orbit-feedback')).not.toBeEmpty()
+      await expect(menu.locator('.orbit-feedback')).not.toContainText(/尚未解锁|没有启动|暂时不可用/)
+      expect(await host.boundingBox()).toEqual(frame)
+      await page.screenshot({ path: testInfo.outputPath(`orbit-real-${id}-head-${theme}.png`), omitBackground: true })
+      await page.keyboard.press('Escape')
+      await page.keyboard.press('Escape')
+      await expect(menu).toBeHidden()
+    }
   })
 
   test(`frameless pet real models and transparent corners ${theme}`, async ({ page }, testInfo) => {
@@ -180,9 +354,9 @@ for (const theme of ['light', 'dark']) {
     for (const id of ['natsume', 'hatsune_miku', 'frieren']) {
       await page.mouse.move(20, 110)
       await page.locator('.companion-page').dispatchEvent('contextmenu', { button: 2 })
-      await page.getByRole('combobox', { name: '切换陪伴角色', exact: true }).click()
-      await page.locator(`.companion-picker-option[data-value="${id}"]`).click()
-      await expect(page.locator('.companion-toolbar')).toBeHidden()
+      await page.getByRole('button', { name: '切换陪伴角色', exact: true }).click()
+      await page.locator(`.companion-orbit button[data-value="${id}"]`).click()
+      await expect(page.locator('.companion-orbit')).toBeHidden()
       await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45000 })
       await expect(page.locator('.live2d-host canvas')).toBeVisible()
       await expect(page.locator('.live2d-host')).toHaveCSS('filter', 'none')

@@ -215,12 +215,16 @@ export function createInteractionController(
 
     const soundUrl = dispatched?.entry?.sound
     const targetIndex = typeof motionIndex === 'number' ? motionIndex : undefined
-    const result = ctx.model.motion(interaction.group, targetIndex, 3)
+    const model = ctx.model, session = ctx.session, character = ctx.character.value
+    const current = () => ctx.model === model && ctx.session === session && ctx.character.value === character && ctx.ready.value && !ctx.destroyed.value
+    const result = model.motion(interaction.group, targetIndex, 3)
     if (isCatchable(result)) {
       result.then((started: unknown) => {
+        if (!current()) return
         if (started === true) markInteractionStarted(interaction, customText, soundUrl)
         else interactionFailed(interaction)
       }).catch((error: unknown) => {
+        if (!current()) return
         ctx.interactionHint.value = '动作暂时不可用，请重试'
         hooks.setState('degraded', 'Live2D 动作暂不可用', errorMessage(error), true)
       })
@@ -280,7 +284,13 @@ export function createInteractionController(
     ctx.stageEl.addEventListener('click', ctx.pointerClickHandler)
   }
 
-  return { bind, stopAudio, beginOverlaySettle }
+  function playById(id: string) {
+    if (ctx.loadedCharacter.value !== ctx.character.value) return
+    const interaction = ctx.adapter?.interactions[id]
+    if (interaction) playInteraction(interaction)
+  }
+
+  return { bind, stopAudio, beginOverlaySettle, playById }
 }
 
 function errorMessage(error: unknown): string {

@@ -90,7 +90,7 @@ export function installDesktopInteraction(router: Router) {
   const remembered = new Map<string, { element: HTMLElement; id: string }>()
   let keyboardNavigation = false
   const main = () => document.querySelector<HTMLElement>('.companion-chat-body, .companion-conversation') || document.querySelector<HTMLElement>('main#main, main')
-  const nav = () => [...document.querySelectorAll<HTMLElement>('nav[aria-label="主导航"], .control-rail, .control-mobile-nav, .companion-toolbar, .companion-chat-titlebar, .companion-desktop-float')].find(usableFocus)
+  const nav = () => document.querySelector<HTMLElement>('.companion-orbit') || [...document.querySelectorAll<HTMLElement>('nav[aria-label="主导航"], .control-rail, .control-mobile-nav, .companion-toolbar, .companion-chat-titlebar, .companion-desktop-float')].find(usableFocus)
   const modalOpen = () => [...document.querySelectorAll<HTMLElement>('dialog[open], [aria-modal="true"]')].some(usableFocus)
   function remember(event: FocusEvent) {
     const element = event.target

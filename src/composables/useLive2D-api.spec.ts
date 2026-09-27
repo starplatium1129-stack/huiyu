@@ -12,7 +12,7 @@ describe('useLive2D 组合根 · API 冻结契约', () => {
     expect(Object.keys(api).sort()).toEqual([
       'adapterReport', 'attachEmotionRuntime', 'backendFallback', 'backendKind', 'character', 'destroy',
       'disable', 'enable', 'enabled', 'init', 'interactionHint', 'layout',
-      'loadedCharacter', 'mouthValue', 'outfit', 'quality', 'ready', 'recover', 'releasePointerFocus',
+      'loadedCharacter', 'mouthValue', 'outfit', 'playPetMotion', 'quality', 'ready', 'recover', 'releasePointerFocus',
       'retry', 'setAudioLevel', 'setCharacter', 'setDesktopWindowBounds', 'setExpression', 'setGlobalPointer',
       'setMaxFps', 'setMouth', 'setOutfit', 'setQuality', 'setVolume', 'setPaused', 'setSpeaking',
       'syncNativeEmotion',

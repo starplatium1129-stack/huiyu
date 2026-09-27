@@ -1,5 +1,6 @@
 <template>
   <article
+    tabindex="-1"
     class="companion-page"
     :class="{ 'has-character-picker': companionCharacters.length > 3, 'companion-redesign': true }"
     :data-character="activeChar"
@@ -11,21 +12,17 @@
     @pointerdown.capture="petGestures.beginDrag"
     @click.capture="petGestures.click"
     @dblclick="petGestures.doubleClick"
-    @change="petGestures.changed"
   >
     <div class="companion-ambience" aria-hidden="true">
       <i></i><i></i><i></i>
     </div>
-    <header class="companion-toolbar" :data-hidden="immersive ? 'true' : undefined">
+    <header class="companion-toolbar" :class="{ 'companion-orbit-preferences-host': desktopBridge }" :data-hidden="immersive ? 'true' : undefined">
       <div class="companion-identity" aria-live="polite">
         <span>陪伴模式</span>
         <h1>与{{ currentCharacter.name }}相伴</h1>
       </div>
       <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" />
       <div class="companion-toolbar-actions">
-        <StudioTooltip v-if="desktopBridge" content="拖动桌宠">
-          <span class="companion-drag-handle" data-tauri-drag-region tabindex="0"><ArchiveIcon name="menu" aria-hidden="true" /><span>移动</span></span>
-        </StudioTooltip>
         <button
           type="button"
           class="companion-settings-btn"
@@ -33,16 +30,12 @@
           :aria-expanded="settingsOpen"
           @click="settingsOpen = !settingsOpen"
         ><ArchiveIcon name="gear" /><span>设置</span></button>
-        <StudioTooltip v-if="desktopBridge" content="隐藏桌宠（Ctrl+Shift+Space 可恢复）">
-          <button class="companion-hide-btn" type="button" aria-label="隐藏桌宠" @click="desktopBridge.hide"><ArchiveIcon name="close" /></button>
-        </StudioTooltip>
-        <FluidTransition>
-<div v-if="settingsOpen" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop>
+        <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar">
           <AppearancePreferences launcher-only @open="settingsOpen = false" />
           <div class="companion-pop-group">
             <strong>陪伴</strong>
             <span class="companion-pop-item">{{ affectionInfo.title }} · {{ affectionScore }}</span>
-            <button type="button" class="companion-pop-item" @click="settingsOpen = false; characterStageRef?.openSettings?.()">角色取景与外观</button>
+            <button type="button" class="companion-pop-item" @click="openAppearance">角色取景与外观</button>
             <Live2DQualityControl :native="Boolean(desktopBridge)" />
             <ToggleSwitch class="companion-pop-item companion-pop-switch" :model-value="autoVoice" label="实时配音" @update:model-value="setAutoVoice">
               <StudioTooltip content="播放聊天回复和新问候；勿扰时暂停主动问候">
@@ -127,8 +120,7 @@
               </label>
             </StudioTooltip>
           </div>
-        </div>
-</FluidTransition>
+        </CompanionPreferences>
       </div>
     </header>
 
@@ -194,25 +186,8 @@
             <button type="button" class="companion-reminder-dismiss" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)">×</button>
           </div>
         </TransitionGroup>
-        <Transition name="layer-fade">
-        <div v-if="clipboardCard" class="companion-clipboard-card" role="status" aria-live="polite">
-          <img v-if="clipboardCard.kind === 'image'" :src="clipboardCard.previewUrl" alt="" />
-          <div>
-            <strong>{{ clipboardCard.kind === 'image' ? '检测到复制的图片' : '检测到复制的文本' }}</strong>
-            <p v-if="clipboardCard.kind === 'text'" class="companion-clipboard-preview">{{ clipboardCard.text }}</p>
-          </div>
-          <div class="companion-clipboard-actions">
-            <button
-              v-if="clipboardCard.kind === 'image'"
-              type="button"
-              class="btn btn-secondary btn-sm"
-              @click="inspectClipboardImage"
-            >让{{ currentCharacter.name }}看看</button>
-            <button type="button" class="btn btn-primary btn-sm" @click="acceptClipboardCard">{{ clipboardCard.kind === 'image' ? '存入作品册' : `发给${currentCharacter.name}` }}</button>
-            <button type="button" class="btn btn-ghost btn-sm" @click="dismissClipboardCard">忽略</button>
-          </div>
-        </div>
-        </Transition>
+        <CompanionClipboardCard :card="clipboardCard" :character-name="currentCharacter.name"
+          @inspect="inspectClipboardImage" @accept="acceptClipboardCard" @dismiss="dismissClipboardCard" />
         <div ref="chatListRef" class="companion-bubbles" role="log" aria-label="最近对话">
           <div v-if="!companionMessages.length" class="companion-empty">
             <span>{{ currentCharacter.name }}</span>
@@ -371,15 +346,23 @@
         @open-reminder="openReminderRoute"
         @dismiss-reminder="dismissReminder"
       />
+      <CompanionOrbitMenu v-if="desktopBridge" :open="petGestures.controlsOpen.value" :character-id="activeChar"
+        :character-name="currentCharacter.name" :pinned="alwaysOnTop" :pass-through="ignoreMouseEvents"
+        :controls="characterStageRef?.petControls" :set-expression="characterStageRef?.setPetExpression"
+        @close="petGestures.controlsOpen.value = false" @settings="settingsOpen = true" @appearance="openAppearance"
+        @chat="openChatWindow" @pin="togglePin" @pass="toggleMouseEvents" @hide="desktopBridge.hide"
+        @character="switchPetCharacter" @motion="characterStageRef?.playPetMotion?.($event)" />
     </main>
   </article>
 </template>
 
 <script setup lang="ts">
 
-import FluidTransition from "@/components/visual/FluidTransition.vue"
+import CompanionPreferences from '@/components/CompanionPreferences.vue'
+import CompanionOrbitMenu from '@/components/CompanionOrbitMenu.vue'
+import CompanionClipboardCard from '@/components/CompanionClipboardCard.vue'
 import VoiceGlow from "@/components/visual/VoiceGlow.vue"
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, ref, watch } from 'vue'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
@@ -503,6 +486,12 @@ function closeWorkspace() {
 }
 
 const petGestures = usePetGestures(desktopBridge, openChatWindow)
+watch(petGestures.controlsOpen, open => { if (!open) settingsOpen.value = false })
+
+function openAppearance() {
+  settingsOpen.value = false
+  characterStageRef.value?.openSettings?.()
+}
 
 function switchPetCharacter(id: string) {
   switchCharacter(id)

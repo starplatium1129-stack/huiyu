@@ -171,6 +171,7 @@ import {
   resolveCompanionAvatar,
 } from '@/utils/companionRegistry'
 import { useLive2D } from '@/composables/useLive2D'
+import { useCharacterPetControls } from '@/composables/chat/useCharacterPetControls'
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
@@ -505,6 +506,7 @@ onUnmounted(() => {
 })
 
 defineExpose({
+  ...useCharacterPetControls(() => props.activeId, live2d),
   openSettings,
   setSpeaking,
   setMouth,

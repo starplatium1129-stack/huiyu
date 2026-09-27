@@ -250,7 +250,7 @@ export function useCompanionWorkspace() {
         if (!settingsOpen.value)
             return;
         const target = event.target;
-        if (target instanceof Element && target.closest('.companion-settings-popover, .companion-settings-btn'))
+        if (target instanceof Element && target.closest('.companion-settings-popover, .companion-settings-btn, .companion-preferences, .companion-workspace-settings'))
             return;
         settingsOpen.value = false;
     }
@@ -285,7 +285,7 @@ export function useCompanionWorkspace() {
             if (!viewAlive || !desktopWindowVisible.value)
                 return;
             // Editing or choosing a character must not be interrupted by idle hiding.
-            if (settingsOpen.value || workspaceOpen.value || document.querySelector('.character-controls[open]') || window.getSelection()?.toString()) return;
+            if (settingsOpen.value || workspaceOpen.value || document.querySelector('.character-controls[open], .companion-orbit, dialog[open]') || window.getSelection()?.toString()) return;
             if (document.activeElement instanceof HTMLTextAreaElement
                 || document.activeElement instanceof HTMLInputElement
                 || document.activeElement instanceof HTMLSelectElement)

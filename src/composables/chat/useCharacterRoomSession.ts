@@ -17,8 +17,12 @@ import { withChatTurn } from '@/utils/chatTurnOwnership'
 import { CHAT_TURN_KEY } from '@/utils/storageKeys'
 import { useRoomMemory } from '@/composables/chat/useRoomMemory'
 import { useRoomSetup } from '@/composables/chat/useRoomSetup'
+import type { CharacterPetControls } from '@/composables/chat/useCharacterPetControls'
 
 interface CharacterStageHandle {
+  petControls?: CharacterPetControls
+  playPetMotion?: (id: string) => void
+  setPetExpression?: (id: string) => Promise<boolean>
   openSettings?: () => void
   setSpeaking: (value: boolean) => void
   setMouth: (value: number) => void

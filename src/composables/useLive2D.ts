@@ -1,4 +1,5 @@
 import type { EmotionRuntime } from '@/utils/emotionRuntime'
+import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 import { createLive2DCtx, type Live2DStatus } from '@/composables/live2d/context'
 import { createPointerGazeController } from '@/composables/live2d/pointerGaze'
 import { createInteractionController } from '@/composables/live2d/interactions'
@@ -76,13 +77,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   async function setExpression(name: string): Promise<boolean> {
     if (!ctx.ready.value || ctx.loadedCharacter.value !== ctx.character.value) return false
-    const { resolveCompanionAvatar } = await import('@/utils/companionRegistry')
     const options = resolveCompanionAvatar(ctx.character.value)?.avatar.expressions || []
     if (name && !options.some(option => option.id === name)) return false
-    const model = ctx.model
+    const model = ctx.model, session = ctx.session, character = ctx.character.value
     try {
       const result = await model?.expression(name)
-      if (model !== ctx.model) return false
+      if (model !== ctx.model || session !== ctx.session || character !== ctx.character.value || !ctx.ready.value || ctx.destroyed.value) return false
       if (result) {
         ctx.expressionParamIds = new Set(options.find(option => option.id === name)?.parameterIds || [])
         lifecycle.resumeRendering()
@@ -116,5 +116,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     layout: layoutFit.layout, retry: lifecycle.retry, destroy: lifecycle.destroy,
     setGlobalPointer: pointerGaze.setGlobalPointer, releasePointerFocus: pointerGaze.release,
     setDesktopWindowBounds: layoutFit.setDesktopWindowBounds, syncNativeEmotion: emotionClock.syncIntent,
+    playPetMotion: interactions.playById,
   }
 }

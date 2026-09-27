@@ -5,7 +5,7 @@ export function usePetGestures(bridge: import('@/types/desktop').CompanionDeskto
   const controlsOpen = ref(false)
   let origin: { x: number; y: number } | null = null
   let suppressClickUntil = 0
-  const interactive = (target: EventTarget | null) => target instanceof Element && Boolean(target.closest('button, a, input, select, textarea, summary, .companion-toolbar, .character-controls-panel'))
+  const interactive = (target: EventTarget | null) => target instanceof Element && Boolean(target.closest('button, a, input, select, textarea, summary, .companion-toolbar, .companion-orbit, .character-controls-panel'))
   function contextMenu(event: MouseEvent) {
     if (!bridge || event.target instanceof Element && event.target.closest('input,textarea')) return
     event.preventDefault(); controlsOpen.value = !controlsOpen.value
@@ -31,13 +31,8 @@ export function usePetGestures(bridge: import('@/types/desktop').CompanionDeskto
     if (!bridge || interactive(event.target) || Date.now() < suppressClickUntil) return
     event.preventDefault(); openChat()
   }
-  function changed(event: Event) {
-    if (bridge && event.target instanceof HTMLSelectElement && event.target.closest('.companion-toolbar .companion-picker')) {
-      controlsOpen.value = false; event.target.blur()
-    }
-  }
   function key(event: KeyboardEvent) {
-    if (!bridge) return
+    if (!bridge || event.defaultPrevented || document.querySelector('dialog[open]')) return
     if (event.key === 'Escape') controlsOpen.value = false
     if (event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10') {
       event.preventDefault(); controlsOpen.value = !controlsOpen.value
@@ -45,5 +40,5 @@ export function usePetGestures(bridge: import('@/types/desktop').CompanionDeskto
   }
   onMounted(() => { window.addEventListener('pointermove', move, { passive: false }); window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag); window.addEventListener('keydown', key) })
   onUnmounted(() => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', endDrag); window.removeEventListener('pointercancel', endDrag); window.removeEventListener('keydown', key) })
-  return { controlsOpen, contextMenu, beginDrag, click, doubleClick, changed }
+  return { controlsOpen, contextMenu, beginDrag, click, doubleClick }
 }

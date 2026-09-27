@@ -1,15 +1,13 @@
 <template>
-  <FluidTransition>
-    <div
-      v-if="open"
+  <Teleport to="body">
+    <dialog
       id="companion-workspace-settings"
       ref="dialogEl"
       class="companion-workspace-settings"
-      role="dialog"
-      aria-modal="true"
       aria-label="AI 工作区设置"
       aria-describedby="companion-workspace-description"
-      @keydown.esc.stop.prevent="emit('close')"
+      @keydown.esc.stop
+      @cancel.prevent.stop="emit('close')"
     >
       <div>
         <strong>AI 工作区</strong>
@@ -17,6 +15,7 @@
       </div>
       <input
         ref="inputEl"
+        autofocus
         :value="modelValue"
         type="text"
         placeholder="目录路径"
@@ -30,15 +29,14 @@
         </button>
         <button type="button" class="btn btn-ghost" @click="emit('close')">关闭</button>
       </div>
-    </div>
-  </FluidTransition>
+    </dialog>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
-import FluidTransition from '@/components/visual/FluidTransition.vue'
-import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useFluidDialog } from '@/composables/useFluidDialog'
 
 const props = defineProps<{
   open: boolean
@@ -53,15 +51,26 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void
 }>()
 
-const dialogEl = ref<HTMLElement | null>(null)
+const dialogEl = ref<HTMLDialogElement | null>(null)
 onUnmounted(registerMaintenanceParticipant(() => { if (props.open || props.saving) throw new Error('OPEN_WORKSPACE_SETTINGS') }))
 const inputEl = ref<HTMLInputElement | null>(null)
-const { returnFocus } = useFocusTrap(dialogEl, () => props.open, { initialFocus: inputEl, onEscape: () => emit('close') })
+const fluid = useFluidDialog(dialogEl)
 watch(() => props.open, (open) => {
-  if (open && props.returnFocusEl) returnFocus.value = props.returnFocusEl
+  if (open) { fluid.open(props.returnFocusEl); inputEl.value?.focus() }
+  else fluid.close()
 }, { flush: 'post' })
 
 function inputValue(event: Event): string {
   return (event.target as HTMLInputElement).value
 }
 </script>
+
+<style scoped>
+.companion-workspace-settings { box-sizing: border-box; width: min(420px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); padding: var(--s-4); margin: auto; overflow: auto; color: var(--text-primary); background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); }
+.companion-workspace-settings[open] { display: grid; gap: var(--s-4); }
+.companion-workspace-settings::backdrop { background: var(--art-backdrop); }
+.companion-workspace-settings > div:first-child { display: grid; gap: var(--s-2); }
+.companion-workspace-settings span { font-size: var(--fs-label-sm); color: var(--text-secondary); line-height: var(--lh-body); }
+input { width: 100%; min-width: 0; min-height: 44px; padding: var(--s-2); border: 1px solid var(--border-strong); border-radius: var(--r-sm); color: var(--text-primary); background: var(--bg-surface); }
+.companion-workspace-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+</style>

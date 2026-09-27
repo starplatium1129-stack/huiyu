@@ -115,3 +115,7 @@ html.companion-desktop .companion-page.companion-redesign[data-controls-open] .c
   .companion-chat-redesign .companion-chat-mini { width: 30px; height: 36px; }
   html.companion-desktop .companion-redesign .companion-settings-popover { position:fixed; top:calc(var(--s-7) + var(--s-2)); right:var(--s-2); left:var(--s-2); width:auto; }
 }
+
+/* Native pet controls now live around the character; the legacy toolbar is web-only. */
+html.companion-desktop .companion-page.companion-redesign .companion-toolbar.companion-orbit-preferences-host,
+html.companion-desktop .companion-page.companion-redesign .companion-chat-chip { display: none; }
