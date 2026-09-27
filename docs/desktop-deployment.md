@@ -5,6 +5,8 @@
 
 本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；2026-09-27 的完整安装见[当次证据](evidence/memory-optimization-2026-09-27.json)。前端变化需要重新打包并完整安装；脚本默认的增量模式适用于下面决策表中的网关、数据和动态资源变化。后续源码改动需另行核对安装身份。
 
+2026-09-28 源码已将后端载荷改为 `gateway/huiyu-runtime.exe` 与锁定的原生 DLL，旧 Node 源码不随产品作为回退服务。本次 Rust 构建/安装与上述旧安装分开验收；目前原生发行材料未完成，`releaseReady=false`。后端 EXE、DLL或桌面 EXE变化必须完整安装，不能靠 `-SkipBuild` 把旧程序变成新版本。只有当前构建绑定已通过、可复制资源发生变化时才使用既有增量入口。
+
 ## 打包前检查
 
 当前 SQLite 桌面工作区使用排他 owner 锁。支持维护协议的新宿主可由部署入口正常退出：先做只读能力/进程身份核对并准备安装包或构建，写入安装目录前通知现有三个窗口冻结输入、确认延迟保存；全部确认后才通过宿主既有认证通道停止新请求，排空已准入写入、回收自有网关并确认锁释放。任一窗口仍忙、配置表单未提交或保存失败，部署就取消，不代替用户提交配置。只隐藏窗口不等于退出。
@@ -13,9 +15,9 @@
 
 `npm run wf -- check:desktop-deploy` 使用临时安装目录、独立 owner 记录及真实进程夹具，验证受控退出、旧版本拒绝、进程身份变化与未知残留锁保留；不操作当前安装或触发 UAC。安装后重启会核对新宿主实例及其认证网关就绪，页面/图片显示另做实际界面验收。`-NoRestart` 不执行启动确认，不能据此记录启动成功。
 
-`package:tauri` 在资源暂存后自动按 `bundle.resources` 复制到仓库外隔离目录，用内置 Node 真正启动网关，验证健康检查、画室、桌宠、聊天及文档重定向。也可运行 `npm run wf -- desktop:verify-gateway`。不能用仓库根网关或 Live2D 自测替代此项，否则会漏掉安装包资源缺失。
+`package:tauri` 暂存实际 Rust EXE、原生 DLL、清单与资源，并按 `bundle.resources` 在仓库外隔离布局启动该 EXE；验证器拒绝旧 `server.js`、服务端 `node_modules` 等误入载荷。可用 `npm run wf -- desktop:verify-gateway` 或 `desktop:rust-bundle` 复验。开发机旧 Node 网关或 Live2D 自测不能代替实际包布局验证；最终结果见[迁移记录](architecture/NODE-RUST-MIGRATION-REPORT.md)。
 
-1.6.0 若出现只有托盘/任务栏图标、窗口不打开，诊断日志可能包含 `Cannot find module '../docs/redirects.json'`。运行 `deploy-desktop.bat -StartupRepair` 可补齐文档并刷新本安装的快捷方式图标，保留样张和用户数据；完整修复请安装 1.6.1。部署入口从卸载登记读取实际安装位置，多个安装需用 `-InstallDir` 明确选择。
+旧 1.6.0 的缺失 `docs/redirects.json` 修复属于历史 Node 版本，应使用对应版本的发行流程。当前 `-StartupRepair` 仅为已匹配 Rust 构建的安装同步文档、图标和快捷方式，不能升级旧 Node 安装。部署入口从卸载登记读取实际安装位置，多个安装需用 `-InstallDir` 明确选择。
 
 先运行 `npm run wf -- desktop:doctor --json`，确认 Windows x64、Node.js、Rust MSVC、Visual C++、Windows SDK 和 Cubism Native SDK 全部就绪。`npm run package:tauri` 会在构建前自动执行同一检查，缺失时立即给出具体安装指引。
 
@@ -61,29 +63,30 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 | `src/**` 前端代码（Vue / TS / CSS），已启用独立 UI | **完整安装** | 前端编译进 EXE，必须重新打包 |
 | `src/**` 前端代码，仍使用旧 HTTP UI 来源 | **增量** | 只需换网关 `dist/` |
 | `data/` 场景、热门角色数据 | **增量** | 只需换 `data/` 产物 |
-| `routes/` `server/` `services/` `scripts/lib/` | **增量** | 网关 JS 直接复制即可 |
+| `runtime-rs/src/`、Cargo 锁文件或后端 EXE | **完整安装** | 产品运行 Rust EXE，不能复制旧网关 JS 代替构建 |
+| 旧 `routes/` `server/` `services/` 对照代码 | 先核对实际用途 | 旧实现不随产品启动；改它们不等于修改 Rust 后端 |
 | `assets/` 新增/修改静态资源 | **增量** | 直接复制 |
 | `assets/` **删除**了资源 | **增量** | 必须带 `-Cleanup`，否则安装目录里那份会永久残留 |
-| `package.json` 新增运行时依赖 | **完整安装** | 依赖在 `node_modules`，增量不碰它 |
-| `scripts/maintenance/desktop-stage-resources.ts` 的 `RUNTIME_DEPENDENCIES` | **完整安装** | 改了白名单要重新打包才生效；修改 TS 源，不手改生成 JS |
+| 原生 DLL、依赖清单、载荷规则变化 | **完整安装** | 更新字节/哈希、许可清单和构建绑定，再验证实际 bundle |
+| `package.json` / 构建工具变化 | 重建受影响产物后判断 | Node 只用于开发构建；若改变 bundled UI、EXE或DLL，仍须完整安装 |
 | Rust 代码（`desktop-tauri/src-tauri/src/`） | **完整安装** | 增量不替换 exe |
 | `tauri.conf.json`（版本号、CSP、资源清单等） | **完整安装** | 同上 |
 | 首次安装 / 换机器 / 桌面端起不来 | **完整安装** | 需要 exe 和完整目录结构 |
 
-判断口诀：**只动了「会被复制进去的文件」→ 增量；动了 `node_modules` 或 exe 本身 → 完整安装。**
+判断依据：**已绑定构建中的数据/静态资源变化可增量；bundled UI、EXE或DLL变化必须完整安装。**
 
 ---
 
 ## 二、两种模式做了什么
 
-### 增量部署（默认，秒级）
-1. `npm run build`（除非 `-SkipBuild`）
+### 增量部署（默认）
+1. 准备当前构建并核验绑定；已有相同构建可用 `-SkipBuild`
 2. 请求已核验宿主维护退出，排空写入并确认自有网关退出、owner 锁释放
 3. 清理 `-Cleanup` 登记的残留目录
 4. 刷新 `build-scenes` / `build-popular` / `build-blueprints` 数据产物
-5. 依次复制 `data` → `dist` → `assets` → `routes` → `server` → `docs` → `services` → `scripts/lib` → `server.js`
+5. 按已验证暂存白名单复制数据与静态资源，`data` 先于 `dist`；不复制旧服务端 JS 来更新 Rust 逻辑
 6. 剪枝 `dist/_app` 里失效的内容哈希 chunk
-7. 清 WebView2 缓存，验证反推依赖，重启
+7. 清 WebView2 缓存，核验原生载荷与新宿主身份后重启；EXE/DLL不匹配应改走完整安装
 
 > 复制顺序有讲究：**data 必须先于 dist**。客户端用 `?v=DATA_VERSION` 请求 data，
 > 若新 dist（新版本号）曾对着旧 data 提供过一次，WebView2 会把旧内容以 immutable
@@ -91,23 +94,17 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 ### 完整安装（`-UseInstaller`，约 1 分钟 + 向导）
 使用 `-InstallerPath` 指定的已验收安装包；未指定时选定并固定 `runtime/desktop-updates/` 下最新的 `*-setup.exe`。NSIS 是安装核心，正式发行可由现代安装展示层封装。
-它会覆盖整个 `gateway/`（**包括 `node_modules`**）并替换 exe。
+它替换当前 `gateway/` 载荷、后端/桌面 EXE与原生库；旧布局残留按部署清单核验，不手工删除用户资料。
 
 ---
 
 ## 三、三个必须知道的坑
 
-### 1. 新增运行时依赖，光 `npm install` 没用
-`scripts/maintenance/desktop-stage-resources.ts` 的 `RUNTIME_DEPENDENCIES` 白名单决定了 gateway 的
-`package.json` 里有什么、npm 会装什么。新依赖**必须登记进白名单再重新打包**，
-否则网页版正常、桌面端静默降级——不报错，只是功能退化。
-
-> 2026-08-29 实例：`onnxruntime-node` + `sharp` 漏登记，真实反推在桌面端一直走启发式兜底。
+### 1. 原生依赖需要绑定真实载荷
+`runtime-rs/native-dependencies.windows-x64.json` 固定 DLL字节/哈希及发行材料状态，`desktop-rust-inputs.ts` 核验后暂存。新增或替换依赖要重建后端和桌面载荷；开发机能加载不证明安装包完整。`onnxruntime-node` / `sharp` 留在开发对照依赖中，不是新的产品运行依赖。
 
 ### 2. 依赖变了，顺序必须是「先打包，再安装」
-NSIS 安装会**覆盖整个 `gateway/node_modules`**。所以：
-- ✅ 先 `npm run package:tauri` 产出新包 → 再 `-UseInstaller` 安装
-- ❌ 先手动给已安装网关补依赖 → 再装新包 = 白装，会被覆盖掉
+先经受控构建产出并核验当前包，再使用 `-UseInstaller`；不向已安装目录手工补 DLL或 Node 依赖。构建成功和隔离 bundle 通过仍不等于完成许可材料、UAC与实际安装验收。
 
 ### 3. 源端删除的资源不会自动消失
 `Copy-Item -Recurse -Force` **只合并不删除**。源里删掉的目录，安装目录里那份会永久堆积。
@@ -162,14 +159,13 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
 只有选「卸载应用」才会删旧文件（但那样不会装新的）。
 
 **Q：装完怎么确认真实反推能用？**
-脚本最后一步会 `require('onnxruntime-node')` + `require('sharp')`。
-要更彻底可以模拟网关环境跑一次推理（需设置 `AI_WORKSPACE_ROOT` 指向 AI 工作区）。
+先核对已安装 Rust EXE和原生 DLL的哈希、健康/反推状态，再按明确授权使用真实权重核验输出。中性图片或小模型夹具只证明对应消费链；既有 Node `require` 成功不能认证 Rust 安装或真实 WD14效果。
 
 **Q：为什么必须我点 UAC？**
 写入 `C:\Program Files` 需要管理员。部署入口会请求 Windows 提权，由用户确认 UAC；取消授权时返回失败，不记录安装成功。
 
 **Q：安装包多大算正常？**
-应与上一版采用相同压缩方式的安装包比较，以实际产物为准。打包内容主要来自 `desktop-tauri/src-tauri/resources`，还包含程序与 Node 运行时。本地测试包跳过压缩，通常明显更大；正式 LZMA 包突然变大时，检查是否误带入模型权重、参考素材或其他大媒体。
+应与上一版采用相同压缩方式的安装包比较，以实际产物为准。当前载荷包括桌面/Rust后端程序、原生 DLL和资源，不包含生产 Node。测试包与正式 LZMA包不能直接比大小；还需检查是否误带模型权重、私有参考素材或旧依赖目录。
 
 ## 发行构建身份（011）
 

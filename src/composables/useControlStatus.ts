@@ -202,10 +202,11 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     }
 
     const ae = document.activeElement as HTMLElement | null
-    syncConfigField(sdHost, data.sdHost)
-    syncConfigField(comfyHost, data.comfyHost)
-    syncConfigField(ttsHost, data.ttsHost)
-    const voices = data.voices || {}
+    const displayedConfig = data.restartRequired && data.savedConfig ? data.savedConfig : data
+    syncConfigField(sdHost, displayedConfig.sdHost)
+    syncConfigField(comfyHost, displayedConfig.comfyHost)
+    syncConfigField(ttsHost, displayedConfig.ttsHost)
+    const voices = displayedConfig.voices || {}
     syncConfigField(voiceNeneRef, voices.nene?.refAudioPath)
     syncConfigField(voiceNenePrompt, voices.nene?.promptText)
     syncConfigField(voiceNatsumeRef, voices.natsume?.refAudioPath)
@@ -238,6 +239,11 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '浏览可用 · 等待生成服务'
       actionNote.value = '网站本身正常。按需启动绘图或语音服务，也可以先浏览角色与场景。'
+    }
+    if (data.restartRequired) {
+      feedbackClass.value = 'config-feedback warn'
+      feedbackText.value = '配置已保存，重新启动应用后生效'
+      actionNote.value = '当前连接仍使用原设置；重新启动后会使用下方已保存的配置。'
     }
     serviceChecking.value = false
   }

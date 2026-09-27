@@ -1,0 +1,32 @@
+[
+  {
+    "file": "MPL-2.0.txt",
+    "source": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/MPL-2.0.txt",
+    "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172",
+    "bytes": 16727
+  },
+  {
+    "file": "libnsgif-vips-8.18.6-COPYING",
+    "source": "https://raw.githubusercontent.com/libvips/libvips/v8.18.6/libvips/foreign/libnsgif/COPYING",
+    "sha256": "1469b759cf18e43c6e1b4ff892307d3962cbbb337ac497620d6690a219fad10c",
+    "bytes": 1133
+  },
+  {
+    "file": "libnsgif-vips-8.18.6-README.md",
+    "source": "https://raw.githubusercontent.com/libvips/libvips/v8.18.6/libvips/foreign/libnsgif/README.md",
+    "sha256": "61ee852f3dc7b79d1e066756498c86fb08965e250e19a6331286dac699c84ab0",
+    "bytes": 423
+  },
+  {
+    "file": "libnsgif-vips-8.18.6-update.sh",
+    "source": "https://raw.githubusercontent.com/libvips/libvips/v8.18.6/libvips/foreign/libnsgif/update.sh",
+    "sha256": "f1b7a91827246887386006fe1bff912f0b1c536aaec18aacb2842ea388cff9fd",
+    "bytes": 568
+  },
+  {
+    "file": "mxe-d973945/mxe.github.mk",
+    "source": "https://raw.githubusercontent.com/kleisauke/mxe/d973945bb92c7783d5afa41bb2b8d2e1a04eaba3/mxe.github.mk",
+    "sha256": "fba6a2534f297288ea641daadf40180a904c41af18105cdf0aa3c8cd8912c85f",
+    "bytes": 9214
+  }
+]

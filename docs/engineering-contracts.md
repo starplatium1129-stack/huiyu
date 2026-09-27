@@ -1,6 +1,6 @@
 # 工程与角色接入契约
 
-> 维护日期：2026-09-27。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
+> 维护日期：2026-09-28。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
 
 ## 模块边界
 
@@ -8,7 +8,9 @@
 - **组件与逻辑分层**：
   - 复杂业务逻辑与状态机下沉至专属 composable（如 `usePromptSdQueue`、`useAnimaInpaint`、`usePopularPromptAssembly`），保持 View 纯粹。
   - `src/application/` 编排用例与端口，不依赖具体存储、API、Pinia、Vue 或 Node 平台实现；`src/platform/web/` 与 `src/platform/desktop/` 提供适配，`src/api/` 处理传输和响应解码。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不反向依赖 `src/`，包括纯类型与间接导入。
-- **网关服务**：桌面 gateway 包由主工作区同一 `package-lock.json` 派生运行时依赖。编辑 `server.ts` 源码，`server.js` 为生成入口；SPA fallback 排除 `/api`，网页资源优先提供已构建的 `dist/`。旧路由风格兼容不能作为桌面使用另一份依赖版本的依据。
+- **网关服务**：产品后端为 `runtime-rs/` 的独立 Rust 进程，桌面与独立服务共用 HTTP/流式协议；依赖锁定于 `runtime-rs/Cargo.lock`。SPA fallback 排除 `/api`，网页优先使用已构建的 `dist/`。旧 Node 源码及其测试暂留作行为对照，不随产品充当回退后端；Node/npm 仍可用于前端、开发维护与构建编排。
+- **原生与交付边界**：图像和 ONNX DLL 按 `runtime-rs/native-dependencies.windows-x64.json` 的真实字节/哈希暂存，构建回执绑定 Rust 源码、EXE、DLL 与许可证清单。`releaseReady=false` 不等于可发行；真实权重、安装、UAC与设备效果必须另有证据。新运行时的回退不能启动另一后端同时写同一 workspace。
+- **运行时维护**：产品请求使用 Rust 内容/资源事务及原生恢复入口，不能 fork Node 脚本补未迁功能。启动聚合只从权威源生成产物；完整发布包保持只读。pin、参考发布审核、资源独立审批及未知状态拒绝均保持原契约，静态挂载和哈希不代表视觉交付。
 - **生图双引擎**：
   - **Anima (ComfyUI / Pencil)**：高质量动漫与局部换装（Inpaint），支持 TeaCache 加速、手绘/CLIPSeg 遮罩与 `ImageCompositeMasked` 像素级原图回贴。
   - **Krea 2（自研 DiT + Qwen3-VL 编码器，非 SD3.5 系）**：当前本地编译使用英文 prose，清理标签堆词、评分词和括号权重，negative 为空；CFG 以实际节点定义为准，不把本地约束泛化为所有版本能力。提示词按 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md) 执行，人物环境融合见 [叙事 CG 规范](guides/prompts/narrative-cg-prompt-standard.md)；历史研究不覆盖当前实现与后续证据。

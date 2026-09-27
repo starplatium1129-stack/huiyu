@@ -106,8 +106,9 @@ pub struct GatewaySupervisor {
     host: String,
     port: u16,
     cwd: std::path::PathBuf,
-    server_path: std::path::PathBuf,
-    node_path: Option<std::path::PathBuf>,
+    runtime_path: std::path::PathBuf,
+    #[cfg(test)]
+    fixture_args: Vec<std::path::PathBuf>,
     env: Vec<(String, String)>,
     wait_ms: u64,
     on_exit: Option<Arc<dyn Fn(i32) + Send + Sync>>,
@@ -128,8 +129,9 @@ pub struct GatewaySupervisorBuilder {
     host: String,
     port: u16,
     cwd: std::path::PathBuf,
-    server_path: std::path::PathBuf,
-    node_path: Option<std::path::PathBuf>,
+    runtime_path: std::path::PathBuf,
+    #[cfg(test)]
+    fixture_args: Vec<std::path::PathBuf>,
     env: Vec<(String, String)>,
     wait_ms: u64,
     on_exit: Option<Arc<dyn Fn(i32) + Send + Sync>>,
@@ -137,13 +139,14 @@ pub struct GatewaySupervisorBuilder {
 }
 
 impl GatewaySupervisorBuilder {
-    pub fn new(server_path: std::path::PathBuf, cwd: std::path::PathBuf) -> Self {
+    pub fn new(runtime_path: std::path::PathBuf, cwd: std::path::PathBuf) -> Self {
         Self {
             host: GATEWAY_HOST.to_string(),
             port: 3000,
             cwd,
-            server_path,
-            node_path: None,
+            runtime_path,
+            #[cfg(test)]
+            fixture_args: Vec::new(),
             env: Vec::new(),
             wait_ms: 20_000,
             on_exit: None,
@@ -153,13 +156,6 @@ impl GatewaySupervisorBuilder {
 
     pub fn port(mut self, port: u16) -> Self {
         self.port = port;
-        self
-    }
-
-    /// 打包模式优先使用 sidecar node（binaries/node-<triple>.exe）；
-    /// dev 模式走系统 node。
-    pub fn node_path(mut self, node_path: Option<std::path::PathBuf>) -> Self {
-        self.node_path = node_path;
         self
     }
 
@@ -190,8 +186,9 @@ impl GatewaySupervisorBuilder {
             host: self.host,
             port: self.port,
             cwd: self.cwd,
-            server_path: self.server_path,
-            node_path: self.node_path,
+            runtime_path: self.runtime_path,
+            #[cfg(test)]
+            fixture_args: self.fixture_args,
             env: self.env,
             wait_ms: self.wait_ms,
             on_exit: self.on_exit,
@@ -252,6 +249,9 @@ impl GatewaySupervisor {
         if self.stopping.load(Ordering::Relaxed) {
             return Err("Gateway start cancelled".into());
         }
+        if !self.runtime_path.is_absolute() || !self.runtime_path.is_file() {
+            return Err(format!("Rust runtime executable is missing or not absolute: {}", self.runtime_path.display()));
+        }
         if self.identity_token.lock().unwrap().as_ref().is_some_and(|token| !identity::valid_secret(token)) {
             return Err("AICS_DESKTOP_ATTACH_TOKEN must be exactly 64 lowercase hexadecimal characters".into());
         }
@@ -285,14 +285,12 @@ impl GatewaySupervisor {
         self.stopping.store(false, Ordering::Relaxed);
 
 
-        let node = self
-            .node_path
-            .clone()
-            .filter(|p| p.exists())
-            .unwrap_or_else(|| std::path::PathBuf::from("node"));
-        let mut command = Command::new(&node);
+        let mut command = Command::new(&self.runtime_path);
+        #[cfg(test)]
+        command.args(&self.fixture_args);
         command
-            .arg(&self.server_path)
+            .arg("--app-root").arg(&self.cwd)
+            .arg("--bind").arg(format!("{}:{}", self.host, port))
             .current_dir(&self.cwd)
             .env("HOST", &self.host)
             .env("PORT", port.to_string())
@@ -306,7 +304,7 @@ impl GatewaySupervisor {
         command.env("AICS_DESKTOP_GATEWAY_TOKEN", token);
 
         // Windows：GUI 应用（windows_subsystem=windows）派生控制台子进程时，
-        // 不带 CREATE_NO_WINDOW 会为 node.exe 新建一个可见的控制台窗口（打开应用即弹窗）。
+        // 不带 CREATE_NO_WINDOW 会为 runtime 新建一个可见的控制台窗口（打开应用即弹窗）。
         // 该标志让网关在后台无窗口运行；stdout/stderr 仍经 pipe 回传日志。
         #[cfg(windows)]
         command.creation_flags(0x0800_0000); // CREATE_NO_WINDOW
@@ -416,7 +414,7 @@ impl GatewaySupervisor {
 }
 
 /// 应用退出（含托盘 quit → app.exit）时清理自己拥有的网关子进程。
-/// 之前缺失该清理：sidecar node 成为孤儿进程继续占用端口（2026-08-15 实机复现）。
+/// 之前缺失该清理：网关 sidecar 成为孤儿进程继续占用端口（2026-08-15 实机复现）。
 /// attach 模式（owned=false）不触碰外部网关。kill 后 wait 回收句柄。
 impl Drop for GatewaySupervisor {
     fn drop(&mut self) {

@@ -2,8 +2,8 @@
 # drain and child teardown; this script never kills processes or removes locks.
 function Get-DesktopInstallationProcesses {
   param([string]$InstallDir)
-  $executables = @((Join-Path $InstallDir 'ai-cg-studio-desktop.exe'), (Join-Path $InstallDir 'node.exe'))
-  @(Get-Process -Name 'ai-cg-studio-desktop','node' -ErrorAction SilentlyContinue |
+  $executables = @((Join-Path $InstallDir 'ai-cg-studio-desktop.exe'), (Join-Path $InstallDir 'gateway\huiyu-runtime.exe'))
+  @(Get-Process -Name 'ai-cg-studio-desktop','huiyu-runtime' -ErrorAction SilentlyContinue |
     Where-Object { $_.Path -and $executables -contains $_.Path })
 }
 
@@ -118,5 +118,48 @@ function Assert-DesktopDeploymentStopped {
     if (Test-Path -LiteralPath $owner) {
       throw "WORKSPACE_LOCK_REMAINS: 工作区 $workspaceId 仍有 owner 锁，请先完成退出或维修。锁和资料均未修改。"
     }
+  }
+}
+
+# A resource refresh cannot replace executable/runtime dependencies. Both sides
+# must be plain files in their explicit roots; missing Rust layouts need install.
+function Resolve-DesktopChildPath {
+  param([string]$Root, [string]$Relative)
+  $base = [IO.Path]::GetFullPath($Root).TrimEnd('\','/')
+  $target = [IO.Path]::GetFullPath((Join-Path $base $Relative))
+  if (-not $target.StartsWith($base + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'DESKTOP_PATH_ESCAPE' }
+  $current = $base
+  foreach ($part in @('') + $Relative.Split([char[]]'\/')) {
+    if ($part) { $current = Join-Path $current $part }
+    if (Test-Path -LiteralPath $current) {
+      if ((Get-Item -LiteralPath $current -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'DESKTOP_LINK_UNSUPPORTED' }
+    }
+  }
+  return $target
+}
+# Windows PowerShell may inherit a pwsh-only PSModulePath. Hash through .NET so
+# dependency verification never relies on module discovery or weaker fallbacks.
+function Get-DesktopFileSha256 {
+  param([string]$Path)
+  $stream = [IO.File]::OpenRead($Path)
+  try {
+    $algorithm = [Security.Cryptography.SHA256]::Create()
+    try { return [BitConverter]::ToString($algorithm.ComputeHash($stream)).Replace('-', '') }
+    finally { $algorithm.Dispose() }
+  } finally { $stream.Dispose() }
+}
+
+function Assert-DesktopRuntimeMatches {
+  param([string]$StageGateway, [string]$InstallDir, [string]$HostExecutable)
+  $pairs = @(
+    @{ Source = $HostExecutable; Target = (Resolve-DesktopChildPath $InstallDir 'ai-cg-studio-desktop.exe') },
+    @{ Source = (Resolve-DesktopChildPath $StageGateway 'huiyu-runtime.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\huiyu-runtime.exe') },
+    @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\onnxruntime.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\onnxruntime.dll') },
+    @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\libvips-42.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\libvips-42.dll') }
+  )
+  foreach ($pair in $pairs) {
+    if (-not (Test-Path -LiteralPath $pair.Source -PathType Leaf) -or -not (Test-Path -LiteralPath $pair.Target -PathType Leaf)) { throw 'DESKTOP_FULL_INSTALL_REQUIRED: Rust runtime/native dependency missing; use -UseInstaller.' }
+    if ((Get-Item -LiteralPath $pair.Source).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'DESKTOP_LINK_UNSUPPORTED' }
+    if ((Get-DesktopFileSha256 -Path $pair.Source) -ne (Get-DesktopFileSha256 -Path $pair.Target)) { throw 'DESKTOP_FULL_INSTALL_REQUIRED: executable or DLL differs; use -UseInstaller.' }
   }
 }

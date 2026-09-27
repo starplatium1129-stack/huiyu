@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "platform": "win32-x64",
+  "status": "candidate-local-native-validation",
+  "loadPolicy": "app_root/native or explicit absolute AICS_ORT_DYLIB_PATH/AICS_VIPS_DYLIB_PATH; LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_SYSTEM32",
+  "files": [
+    {
+      "name": "libvips-42.dll",
+      "source": "node_modules/@img/sharp-win32-x64/lib/libvips-42.dll",
+      "version": "8.18.6",
+      "package": "@img/sharp-win32-x64@0.35.4",
+      "bytes": 18614784,
+      "sha256": "e6cc51bbc763e7deda536c6f56ce96b4c51ea769690ce4f4ed07607527b81dae",
+      "imports": {
+        "regular": [
+          "KERNEL32.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-filesystem-l1-1-0.dll",
+          "api-ms-win-crt-private-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-time-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-utility-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll",
+          "ADVAPI32.dll",
+          "SHELL32.dll",
+          "ole32.dll",
+          "api-ms-win-crt-environment-l1-1-0.dll",
+          "USER32.dll",
+          "WS2_32.dll",
+          "api-ms-win-core-synch-l1-2-0.dll",
+          "ntdll.dll",
+          "bcryptprimitives.dll",
+          "api-ms-win-crt-process-l1-1-0.dll",
+          "bcrypt.dll",
+          "api-ms-win-crt-multibyte-l1-1-0.dll",
+          "IPHLPAPI.DLL",
+          "SHLWAPI.dll",
+          "DNSAPI.dll"
+        ],
+        "delayed": []
+      },
+      "packageSource": {
+        "provenance": "Existing package-lock.json; package archive not redownloaded by this audit",
+        "noNodeRequired": "Read archive or existing local file; do not execute npm scripts or load Node bindings",
+        "url": "https://registry.npmjs.org/@img/sharp-win32-x64/-/sharp-win32-x64-0.35.4.tgz",
+        "integrity": "sha512-XtmnYhBcrORsJ4XJngyzr/EWP0hRZLAZRFaApdKuviyqF78+ylxh2y06ZmtULAMOnObJ3ucpN0AcwSWnMowTRg=="
+      },
+      "upstreamBinary": {
+        "entry": "vips-dev-8.18/bin/libvips-42.dll",
+        "sha256": "42ceea0c2f53d1244f3cb54c059881487b37452ee46c1c98c0d4b47480b20588",
+        "publisherDigestUrl": "https://github.com/libvips/build-win64-mxe/releases/expanded_assets/v8.18.6",
+        "url": "https://github.com/libvips/build-win64-mxe/releases/download/v8.18.6/vips-dev-x64-web-8.18.6-static.zip",
+        "installedDllExactMatch": true,
+        "evidence": "native-licenses/libvips-8.18.6-release-evidence.json",
+        "versionManifestExactMatch": true,
+        "bytes": 9322134
+      }
+    },
+    {
+      "name": "onnxruntime.dll",
+      "source": "node_modules/onnxruntime-node/bin/napi-v6/win32/x64/onnxruntime.dll",
+      "version": "1.30.0",
+      "package": "onnxruntime-node@1.30.0",
+      "bytes": 28754232,
+      "sha256": "508c362f5673483dd3a086379c392795b2e42d10d5e6f3f90ebd7ac21c97af67",
+      "imports": {
+        "regular": [
+          "api-ms-win-core-libraryloader-l1-2-0.dll",
+          "api-ms-win-core-string-l1-1-0.dll",
+          "api-ms-win-core-errorhandling-l1-1-0.dll",
+          "api-ms-win-core-synch-l1-1-0.dll",
+          "api-ms-win-core-heap-l1-1-0.dll",
+          "api-ms-win-core-processthreads-l1-1-0.dll",
+          "api-ms-win-core-localization-l1-2-0.dll",
+          "api-ms-win-core-debug-l1-1-0.dll",
+          "api-ms-win-core-handle-l1-1-0.dll",
+          "api-ms-win-core-memory-l1-1-0.dll",
+          "api-ms-win-core-processenvironment-l1-1-0.dll",
+          "api-ms-win-core-sysinfo-l1-2-0.dll",
+          "api-ms-win-core-kernel32-legacy-l1-1-1.dll",
+          "api-ms-win-core-file-l1-1-0.dll",
+          "api-ms-win-core-file-l1-2-0.dll",
+          "api-ms-win-core-synch-l1-2-0.dll",
+          "api-ms-win-core-sysinfo-l1-1-0.dll",
+          "api-ms-win-core-io-l1-1-0.dll",
+          "api-ms-win-core-processtopology-l1-1-0.dll",
+          "api-ms-win-core-processthreads-l1-1-1.dll",
+          "api-ms-win-eventing-provider-l1-1-0.dll",
+          "api-ms-win-core-registry-l1-1-0.dll",
+          "api-ms-win-service-core-l1-1-1.dll",
+          "api-ms-win-service-management-l1-1-0.dll",
+          "api-ms-win-core-heap-l2-1-0.dll",
+          "api-ms-win-core-path-l1-1-0.dll",
+          "api-ms-win-core-libraryloader-l1-2-1.dll",
+          "api-ms-win-core-profile-l1-1-0.dll",
+          "api-ms-win-core-rtlsupport-l1-1-0.dll",
+          "api-ms-win-core-synch-l1-2-1.dll",
+          "api-ms-win-core-kernel32-legacy-l1-1-6.dll",
+          "api-ms-win-core-kernel32-legacy-l1-1-0.dll",
+          "api-ms-win-core-console-l2-1-0.dll",
+          "api-ms-win-core-console-l1-1-0.dll",
+          "SETUPAPI.dll",
+          "KERNEL32.dll",
+          "MSVCP140.dll",
+          "MSVCP140_1.dll",
+          "MSVCP140_ATOMIC_WAIT.dll",
+          "dbghelp.dll",
+          "VCRUNTIME140_1.dll",
+          "VCRUNTIME140.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll",
+          "api-ms-win-crt-time-l1-1-0.dll",
+          "api-ms-win-crt-filesystem-l1-1-0.dll",
+          "api-ms-win-crt-environment-l1-1-0.dll"
+        ],
+        "delayed": [
+          "SHELL32.dll",
+          "DirectML.dll",
+          "d3d12.dll",
+          "dxgi.dll",
+          "USER32.dll"
+        ]
+      },
+      "packageSource": {
+        "provenance": "Existing package-lock.json; package archive not redownloaded by this audit",
+        "noNodeRequired": "Read archive or existing local file; do not execute npm scripts or load Node bindings",
+        "url": "https://registry.npmjs.org/onnxruntime-node/-/onnxruntime-node-1.30.0.tgz",
+        "integrity": "sha512-twhs1C2C/BFkz1yc5OY0KIU2GUq6DURO7hD4bx5Q2Qy3nAMJwRXW8xU3NVczE29VA9lolLOYepoD8fjTGOfIqw=="
+      }
+    }
+  ],
+  "licenses": [
+    {
+      "file": "native-licenses/sharp-package-LICENSE.txt",
+      "source": "node_modules/@img/sharp-win32-x64/LICENSE",
+      "upstream": "https://github.com/lovell/sharp/blob/v0.35.4/LICENSE",
+      "bytes": 10464,
+      "sha256": "dc1f5d2d43c5531dfe0acaf4e950ea5dbe3e61e1850cf0e983bda7efc10d6693"
+    },
+    {
+      "file": "native-licenses/sharp-libvips-third-party-README.md",
+      "source": "node_modules/@img/sharp-win32-x64/README.md",
+      "upstream": "https://www.npmjs.com/package/@img/sharp-win32-x64/v/0.35.4",
+      "bytes": 4913,
+      "sha256": "280e7d164420cfc1a1b192a582bf53e3dba97b86a5c3575f878b674ad1d41e13"
+    },
+    {
+      "file": "native-licenses/sharp-libvips-versions.json",
+      "source": "node_modules/@img/sharp-win32-x64/versions.json",
+      "upstream": "https://www.npmjs.com/package/@img/sharp-win32-x64/v/0.35.4",
+      "bytes": 597,
+      "sha256": "d551c859958f06b8088957f679c29be1ff53760191f7401e8183460fc5f58cf4"
+    },
+    {
+      "file": "native-licenses/onnxruntime-LICENSE.txt",
+      "source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/LICENSE",
+      "upstream": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/LICENSE",
+      "bytes": 1073,
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
+    },
+    {
+      "file": "native-licenses/onnxruntime-ThirdPartyNotices.txt",
+      "source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/ThirdPartyNotices.txt",
+      "upstream": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.30.0/ThirdPartyNotices.txt",
+      "bytes": 338088,
+      "sha256": "143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3"
+    },
+    {
+      "file": "native-licenses/LGPL-3.0.txt",
+      "source": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/LGPL-3.0-or-later.txt",
+      "upstream": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/LGPL-3.0-or-later.txt",
+      "bytes": 42098,
+      "sha256": "996af0513df21f7496288951c41428a03c174e9e4a9d63665c57d670f845ccb1"
+    },
+    {
+      "file": "native-licenses/GPL-3.0.txt",
+      "source": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/GPL-3.0-or-later.txt",
+      "upstream": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/GPL-3.0-or-later.txt",
+      "bytes": 34674,
+      "sha256": "fb981668c18a279e285fc4d83fba1e836cc84dd4daa73c9697d3cfd2d8aca6e0"
+    }
+  ],
+  "libvipsComponents": {
+    "aom": "3.14.1",
+    "archive": "3.8.9",
+    "cairo": "1.18.4",
+    "cgif": "0.5.3",
+    "exif": "0.6.26",
+    "expat": "2.8.3",
+    "ffi": "3.8.0",
+    "fontconfig": "2.18.3",
+    "freetype": "2.14.3",
+    "fribidi": "1.0.16",
+    "glib": "2.89.4",
+    "harfbuzz": "14.3.1",
+    "heif": "1.23.2",
+    "highway": "1.4.0",
+    "imagequant": "2.4.1",
+    "lcms": "2.19.1",
+    "mozjpeg": "0826579",
+    "pango": "1.58.2",
+    "pixman": "0.46.4",
+    "png": "1.6.58",
+    "proxy-libintl": "0.5",
+    "rsvg": "2.62.91",
+    "tiff": "4.7.2",
+    "uhdr": "2.0.2",
+    "vips": "8.18.6",
+    "webp": "1.6.0",
+    "xml2": "2.15.3",
+    "zlib-ng": "2.3.3"
+  },
+  "redistribution": {
+    "onnx": "Include LICENSE and ThirdPartyNotices from matching v1.30.0 source. CPU provider only; DirectML/dxcompiler/dxil and Node bindings are not used.",
+    "libvips": "Official MXE v8.18.6 web-static DLL matches installed npm DLL. Source archives for all 28 versioned components match build recipe SHA256; original notices are collected, including bundled libnsgif MIT. See native-licenses/README.md for unresolved linked Rust/toolchain closure, build provenance and redistribution obligations.",
+    "pending": [
+      "Resolve the Windows linked feature/target SBOM and complete notices for librsvg Rust crates (350 Cargo.lock registry packages include dev/optional packages) and compiler static runtimes.",
+      "Pin the release build OCI digest and exact MXE/toolchain base; source archives and recipe snapshot do not by themselves prove a reproducible complete Corresponding Source package.",
+      "Review and implement the selected LGPL/MPL source delivery, modification/recombination, replaceable-DLL and product-terms requirements; do not treat license-file collection as distribution approval.",
+      "Validate the final installer native search and prerequisite VC++ runtime, plus CPU WD14 with authorized real weights; isolated toy inference is not production model validation."
+    ]
+  },
+  "licenseEvidence": {
+    "index": "native-licenses/materials.sha256.json",
+    "additionalPinnedSubprojects": [
+      "glib-pcre2 10.46 source matches Wrap SHA256",
+      "glib-gvdb 2b42fc75f09dbe1cd1057580b5782b08f2dcb400 archive retrieved; Wrap has no publisher archive checksum"
+    ],
+    "librsvgCargoLockPackageCount": 350,
+    "versionedSourceArchivesMatchingRecipes": 28,
+    "components": "native-licenses/components.json",
+    "collectedAtUtc": "2026-09-27T16:18:58.1436809Z",
+    "embeddedLibnsgif": {
+      "source": "https://github.com/libvips/libvips/tree/v8.18.6/libvips/foreign/libnsgif",
+      "license": "MIT",
+      "notice": "native-licenses/components/vips/libvips/foreign/libnsgif/COPYING",
+      "version": "vendored in libvips 8.18.6; upstream standalone version/commit not recorded"
+    },
+    "publicRedistributionApproved": false,
+    "librsvgCargoSourceIndex": "native-licenses/librsvg-2.62.91-cargo-sources.json",
+    "versionedComponents": 28,
+    "completeLinkedLicenseClosure": false,
+    "readme": "native-licenses/README.md",
+    "indexBytes": 54072,
+    "indexSha256": "bc2d31525bd09eafc235aad2e8eea9a91a60f68a26f0b597edac0609a2446ecc"
+  },
+  "systemRuntimePolicy": {
+    "vcppImports": [
+      "MSVCP140.dll",
+      "MSVCP140_1.dll",
+      "MSVCP140_ATOMIC_WAIT.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll"
+    ],
+    "optionalProvider": "CPU only; preserve delayed import records but do not bundle DirectML/dxcompiler/dxil for an unused provider",
+    "distribution": "Windows system components and officially supported VC++ Redistributable; no system DLLs copied in this audit"
+  }
+}

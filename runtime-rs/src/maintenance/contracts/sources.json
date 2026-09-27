@@ -1,0 +1,40 @@
+{
+  "formatVersion": 1,
+  "extracted": "2026-09-27",
+  "method": "Recipe data exported mechanically from the existing pure TypeScript module; validation behavior ported separately.",
+  "sources": [
+    {
+      "path": "scripts/maintenance/validate-content-contracts.ts",
+      "sha256": "ae79e30124b17ba08c9f2296db2de2edd2d839c54be349d83661bd9c1d86cf79"
+    },
+    {
+      "path": "scripts/maintenance/check-ref-urls.ts",
+      "sha256": "3fc97475e2d4f61afa19e4180036bde9cea808758803fcffa5f854f36b422f56"
+    },
+    {
+      "path": "scripts/lib/data-version.ts",
+      "sha256": "372d897487090651a769a57aef6560e0d7e73a736fdef50758d0211bcacd76c9"
+    },
+    {
+      "path": "src/utils/popularContent.ts",
+      "sha256": "050351d768f2286cb132783808a94de3ed585f918e3af27385ab973f52dc461e"
+    },
+    {
+      "path": "src/utils/popularParseGuards.ts",
+      "sha256": "2a0f21bba452370c6605286c89f61fe2ca41118ffb2fff807037959c837f60f5"
+    },
+    {
+      "path": "src/utils/popularPromptBuilder.ts",
+      "sha256": "ab2632e55c5c1cbd2aadd51dd2f7f7e17f759b78e76ea6096f7c52b83cdf0c66"
+    },
+    {
+      "path": "src/utils/blueprintComposition.ts",
+      "sha256": "177e10c0e9fc79064deb263b75664487733bd254089d957c6c255dc08e640a52"
+    },
+    {
+      "path": "src/config/kreaStyleRecipes.ts",
+      "sha256": "055d0340e3f0bec7b69a5c552da43e8acce71d1195346487b49460197b5705bc"
+    }
+  ],
+  "recipeSha256": "dc06bea00ff7cc9d67e8156d9d95a41fc3b73a2b713081d87cd55fe7d786c4d7"
+}

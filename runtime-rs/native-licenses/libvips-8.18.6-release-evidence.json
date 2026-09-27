@@ -1,0 +1,30 @@
+{
+  "url": "https://github.com/libvips/build-win64-mxe/releases/download/v8.18.6/vips-dev-x64-web-8.18.6-static.zip",
+  "bytes": 9322134,
+  "sha256": "42ceea0c2f53d1244f3cb54c059881487b37452ee46c1c98c0d4b47480b20588",
+  "retrievedAt": "2026-09-27T16:04:45.3565170Z",
+  "dlls": [
+    {
+      "path": "vips-dev-8.18/bin/libvips-42.dll",
+      "bytes": 18614784,
+      "sha256": "e6cc51bbc763e7deda536c6f56ce96b4c51ea769690ce4f4ed07607527b81dae"
+    }
+  ],
+  "documents": [
+    {
+      "path": "vips-dev-8.18/LICENSE",
+      "bytes": 26530,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+    },
+    {
+      "path": "vips-dev-8.18/README.md",
+      "bytes": 10176,
+      "sha256": "e173c8181f47e84df8ae2b7932030d059b73862747bd069fd5cb9e17810466fc"
+    },
+    {
+      "path": "vips-dev-8.18/versions.json",
+      "bytes": 597,
+      "sha256": "d551c859958f06b8088957f679c29be1ff53760191f7401e8183460fc5f58cf4"
+    }
+  ]
+}

@@ -1,17 +1,19 @@
 # 项目状态
 
-> 核对日期：2026-09-27；仓库版本 1.7.2。此页只维护现行实现、数据登记规模与交付边界。待办查 [未来规划](roadmap.md)，逐批测试、失败和安装过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
+> 核对日期：2026-09-28；仓库版本 1.7.2。本轮更新 Rust 迁移状态，数据规模仍为 9 月 27 日登记快照。待办查 [未来规划](roadmap.md)，旧批次过程查 [分批记录快照](archive/completed/project-status-2026-09-27.md)。
 
 ## 源码与本机安装
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 仓库源码 | 架构主线、UI/媒体和内存回收修复已合入；`e0e5c692` 另包含后端热路径与任务生命周期修复 | [后端实施记录](audits/2026-09-27/backend-audit.md) |
+| 当前迁移工作区 | 产品后端、npm 服务入口与 Tauri gateway 暂存已改接 Rust；前端/桌面壳保留，旧 Node 源码尚未删除 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)；最终构建/门禁身份待补，不能冒认为已发布版本 |
 | 最近有完整证据的本机安装 | `main@60888df3` 的 1.7.2；包含此前 UI、收藏浏览、结果架、焦点与桌宠改动，后续后端修改未纳入该安装 | [安装身份与内存验证](evidence/memory-optimization-2026-09-27.json) |
 | 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [R3–R11 主线记录](architecture/R3-R11-EXECUTION-REPORT.md) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [R12](architecture/R12-EXECUTION-REPORT.md)、[R13](architecture/R13-EXECUTION-REPORT.md) |
 
 源码、构建、安装和设备验收分别核对。表中安装身份来自已保存证据，本次文档整理未重新运行安装器、访问生产资料或复验设备；工作区后续修改不自动获得该安装的通过结论。
+
+本次 Rust 迁移已有隔离存储、模拟上游、维护/资源事务与 Node 差分证据；Rust release、7 项工作区一致性及图库/控制台双主题浏览器验证已通过当轮检查。旧 Node 单元/契约和仍启动旧网关的 E2E 只证明旧实现；完整门禁、暂存/桌面构建及安装包指标继续收口，详见执行记录。真实模型、新安装/UAC及原生发行材料未完成，`releaseReady=false`。
 
 当前工作区已接入 Tailwind CSS 4.3.3，迁移常规组件/页面样式并保留原有深浅主题、Reka 交互及定制视觉；Firefox 最低版本经确认调整为 128。Web/desktop UI 构建及浏览器验收见 [迁移记录](audits/2026-09-27/tailwind-migration.md)，完整门禁仍有记录中的既有环境/基线失败，本轮未同步正式桌面安装。
 
@@ -19,7 +21,7 @@
 
 | 范围 | 已实现行为 | 证据与限制 |
 | --- | --- | --- |
-| Web 与桌面持久化 | Web 保留 IndexedDB 等浏览器存储；激活的桌面 workspace 由 Node runtime 管理 SQLite 元数据和媒体，失联不降级双写旧库 | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)；历史 3000 来源凭据、其他机器和实际用户库回退仍单列 |
+| Web 与桌面持久化 | Web 保留 IndexedDB；当前源码由 Rust runtime 管理桌面 SQLite 元数据和媒体，保持原 schema/回执，失联不降级双写旧库 | [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md)；新 Rust 安装、历史 3000 来源凭据、其他机器和实际用户库回退仍单列 |
 | 任务与结果 | runtime 持有已接受任务、幂等身份、取消与结果收件箱；页面卸载解除订阅，重连查询任务状态 | [任务契约](architecture/TASK-RUNTIME-DESIGN.md)；真实 provider、长回复/工具流与复杂故障组合仍需目标环境验收 |
 | 创作 | SD、Anima、Krea 2 各有编译/请求边界，支持工作台、换装、场景蓝图、作品入册与视频分镜 | [工程契约](engineering-contracts.md)；聊天绘画工具目前只准备草稿，真实生成及视频效果按 roadmap 验收 |
 | 内容维护 | 人物、服装、蓝图和参考按权威源维护；变更集/事务、候选审核、不可变发布与资源恢复已接线 | [维护手册](maintenance.md)、[候选审核工作流](workflow.md#参考库候选审核与版本发布)；pending、登记与结构检查不计为图片交付 |
@@ -50,6 +52,6 @@
 当前页不滚动累加测试数量。各次通过、失败、跳过、环境与源码/构建身份留在对应执行记录；历史 PASS 不能替代当前工作区验证。局部改动按 [工作流分层规则](workflow.md#门禁与构建) 选择检查。
 
 - [未来规划](roadmap.md)：待开发、待验收、暂停与待决策事项；同一缺口按 ID 维护。
-- [计划索引](../plans/README.md)：005–012 和长期架构目标，进入前先查剩余范围。
+- [计划索引](../plans/README.md)：005–013 和长期架构目标，进入前先查剩余范围。
 - [分批记录快照](archive/completed/project-status-2026-09-27.md)：此前状态页的完整过程，包括当时未安装、失败及补验说明。
 - [文档索引](INDEX.md)：专题规范、实施报告、证据及研究资料。

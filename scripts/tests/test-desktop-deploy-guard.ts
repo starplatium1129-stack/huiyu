@@ -27,7 +27,8 @@ catch { Write-Output $_.Exception.Message; exit 27 }
     await run({ root, install, config, owner,
       check: (target = install, data = config, mode = 'assert') => spawnSync('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', probe, guard, target, data, mode], { encoding: 'utf8', windowsHide: true, timeout: 15000 }),
       start: async () => {
-        const executable = path.join(install, 'node.exe'), script = path.join(root, 'runtime.cjs');
+        const executable = path.join(install, 'gateway/huiyu-runtime.exe'), script = path.join(root, 'runtime.cjs');
+        fs.mkdirSync(path.dirname(executable),{recursive:true});
         fs.copyFileSync(process.execPath, executable);
         fs.writeFileSync(script, `const fs=require('node:fs'); const owner=process.argv[2];
 fs.writeFileSync(owner,JSON.stringify({workspaceId:'fixture',pid:process.pid,nonce:'fixture',startedAt:performance.timeOrigin}));
@@ -71,6 +72,24 @@ test('deployment preserves a stale owner instead of deleting it to make progress
     assert.equal(result.status, 27, String(result.stderr));
     assert.match(String(result.stdout), /WORKSPACE_LOCK_REMAINS/);
     assert.deepEqual(fs.readFileSync(f.owner), before);
+  });
+});
+
+test('resource-only deployment requires matching Rust executable, DLLs and embedded UI host',windows,async()=>{
+  await fixture(async f=>{
+    const stage=path.join(f.root,'stage'),host=path.join(f.root,'candidate-host.exe');
+    const put=(file:string,data:string)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,data);};
+    put(host,'host');put(path.join(f.install,'ai-cg-studio-desktop.exe'),'host');
+    for(const name of ['huiyu-runtime.exe','native/onnxruntime.dll','native/libvips-42.dll']){put(path.join(stage,name),name);put(path.join(f.install,'gateway',name),name);}
+    const script=path.join(f.root,'native-check.ps1');
+    fs.writeFileSync(script,"param($Guard,$Stage,$Install,$HostFile)\n$ErrorActionPreference='Stop'\n. $Guard\ntry{Assert-DesktopRuntimeMatches -StageGateway $Stage -InstallDir $Install -HostExecutable $HostFile;exit 0}catch{Write-Output $_.Exception.Message;exit 27}\n");
+    const check=()=>spawnSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',script,guard,stage,f.install,host],{encoding:'utf8',windowsHide:true,timeout:15000});
+    const success=check();assert.equal(success.status,0,success.stdout+success.stderr);
+    for(const name of ['huiyu-runtime.exe','native/onnxruntime.dll','native/libvips-42.dll']){
+      put(path.join(stage,name),'changed');const denied=check();assert.equal(denied.status,27);assert.match(String(denied.stdout),/DESKTOP_FULL_INSTALL_REQUIRED/);
+      assert.equal(fs.readFileSync(path.join(f.install,'gateway',name),'utf8'),name);put(path.join(stage,name),name);
+    }
+    put(host,'changed embedded desktop UI');assert.match(String(check().stdout),/DESKTOP_FULL_INSTALL_REQUIRED/);
   });
 });
 

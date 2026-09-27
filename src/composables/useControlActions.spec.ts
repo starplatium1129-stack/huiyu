@@ -26,3 +26,23 @@ it('configuration saves ignore repeated clicks and allow retry after failure', a
   expect(saveConfig).toHaveBeenCalledTimes(2)
   expect(showToast).toHaveBeenCalledWith('生成服务配置已保存')
 })
+
+it('reports saved configuration awaiting restart and does not start sharing with stale settings', async () => {
+  let pending = false
+  const status = {
+    lastStatus: () => ({ restartRequired: pending }), pollStatus: vi.fn(), feedbackText: ref(''),
+    sdHost: ref('http://localhost:7860'), comfyHost: ref('http://localhost:8188'), ttsHost: ref('http://localhost:9880'),
+    voiceNeneRef: ref(''), voiceNenePrompt: ref(''), voiceNatsumeRef: ref(''), voiceNatsumePrompt: ref(''),
+  } as unknown as Parameters<typeof useControlActions>[0]
+  const saveConfig = vi.fn().mockResolvedValue({ ok: true, restartRequired: true, message: '配置已保存，重新启动应用后生效' })
+  const start = vi.fn()
+  const showToast = vi.fn()
+  const control = { saveConfig, start } as unknown as NonNullable<Parameters<typeof useControlActions>[1]['control']>
+  const actions = useControlActions(status, { control, showToast })
+  await actions.saveConfig()
+  expect(showToast).toHaveBeenCalledWith('配置已保存，重新启动应用后生效')
+  pending = true
+  await actions.doStart()
+  expect(saveConfig).toHaveBeenCalledTimes(1)
+  expect(start).not.toHaveBeenCalled()
+})

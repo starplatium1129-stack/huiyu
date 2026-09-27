@@ -1,0 +1,313 @@
+{
+  "MODELS": {
+    "anima-base-v1.0": {
+      "file": "anima-base-v1.0.safetensors",
+      "label": "Anima Base v1.0",
+      "family": "anima",
+      "profileId": "anima_base_v10",
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "sizes": [
+        "832x1216",
+        "960x1536",
+        "1024x1024",
+        "1216x832"
+      ]
+    },
+    "anima-aesthetic-v1.1": {
+      "file": "anima-aesthetic-v1.1.safetensors",
+      "label": "Anima Aesthetic v1.1",
+      "family": "anima",
+      "profileId": "anima_aesthetic_v11",
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "sizes": [
+        "832x1216",
+        "1024x1024",
+        "1216x832"
+      ],
+      "noLora": true
+    },
+    "anima-2.9b-preview-v1": {
+      "file": "Anima-2.9B-preview-v1.safetensors",
+      "label": "Anima 2.9B Preview v1",
+      "family": "anima",
+      "profileId": "anima_29b_preview_v1",
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "sizes": [
+        "832x1216",
+        "960x1536",
+        "1152x1536",
+        "1536x1152",
+        "1024x1024",
+        "1216x832"
+      ],
+      "noLora": true
+    },
+    "anima-yume-v1.0": {
+      "file": "AnimaYume_v10_final_base.safetensors",
+      "label": "Anima Yume v1.0",
+      "family": "anima",
+      "profileId": "anima_yume_v10",
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "sizes": [
+        "832x1216",
+        "960x1536",
+        "1024x1024",
+        "1216x832"
+      ],
+      "noLora": true
+    },
+    "anima-miaomiao-v1.2": {
+      "file": "miaomiaoHarem_anima12.safetensors",
+      "label": "MiaoMiao Harem Anima v1.2",
+      "family": "anima",
+      "profileId": "anima_miaomiao_v12",
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "sizes": [
+        "832x1216",
+        "960x1536",
+        "1152x1536",
+        "1536x1152",
+        "1024x1024",
+        "1216x832"
+      ],
+      "noLora": true
+    },
+    "anima-miaomiao-v1.6": {
+      "file": "miaomiaoHarem_anima16.safetensors",
+      "label": "MiaoMiao Harem Anima v1.6",
+      "family": "anima",
+      "profileId": "anima_miaomiao_v16",
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "sizes": [
+        "832x1216",
+        "960x1536",
+        "1152x1536",
+        "1536x1152",
+        "1024x1024",
+        "1216x832"
+      ],
+      "noLora": true
+    },
+    "krea2-turbo-fp8": {
+      "file": "krea2_turbo_fp8_scaled.safetensors",
+      "label": "Krea 2 Turbo",
+      "family": "krea2",
+      "profileId": "krea2_turbo_fp8",
+      "steps": 12,
+      "cfg": 1,
+      "sampler": "er_sde",
+      "scheduler": "simple",
+      "sizes": [
+        "1024x1024",
+        "1024x1536",
+        "1536x1024"
+      ],
+      "noLora": true,
+      "rebalance": {
+        "preset": "standard",
+        "multiplier": 1.1,
+        "normalizeTaps": false
+      }
+    }
+  },
+  "PROFILE_BY_MODEL": {
+    "anima-base-v1.0": "anima_base_v10",
+    "anima-aesthetic-v1.1": "anima_aesthetic_v11",
+    "anima-yume-v1.0": "anima_yume_v10",
+    "anima-2.9b-preview-v1": "anima_29b_preview_v1",
+    "anima-miaomiao-v1.2": "anima_miaomiao_v12",
+    "anima-miaomiao-v1.6": "anima_miaomiao_v16",
+    "krea2-turbo-fp8": "krea2_turbo_fp8"
+  },
+  "LORAS": {
+    "L_NENE_V21_ANIMA": {
+      "file": "ayachi_nene_v21_anima.safetensors",
+      "name": "ayachi_nene_v21_anima",
+      "character": "nene",
+      "compatibleModels": [
+        "anima-base-v1.0",
+        "anima-aesthetic-v1.1",
+        "anima-yume-v1.0",
+        "anima-2.9b-preview-v1",
+        "anima-miaomiao-v1.2",
+        "anima-miaomiao-v1.6"
+      ],
+      "minStrength": 0.65,
+      "maxStrength": 1
+    },
+    "L_NAT_V21_ANIMA": {
+      "file": "shiki_natsume_v21_anima.safetensors",
+      "name": "shiki_natsume_v21_anima",
+      "character": "natsume",
+      "compatibleModels": [
+        "anima-base-v1.0",
+        "anima-aesthetic-v1.1",
+        "anima-yume-v1.0",
+        "anima-2.9b-preview-v1",
+        "anima-miaomiao-v1.2",
+        "anima-miaomiao-v1.6"
+      ],
+      "minStrength": 0.65,
+      "maxStrength": 1
+    }
+  },
+  "KREA_STYLE_LORAS": {
+    "darkbrush": {
+      "file": "krea2_darkbrush.safetensors",
+      "trigger": "monochrome ink wash style"
+    },
+    "dotmatrix": {
+      "file": "krea2_dotmatrix.safetensors",
+      "trigger": "monochrome stippling style"
+    },
+    "kidsdrawing": {
+      "file": "krea2_kidsdrawing.safetensors",
+      "trigger": "naive expressive sketch style"
+    },
+    "neondrip": {
+      "file": "krea2_neondrip.safetensors",
+      "trigger": "textured abstract style"
+    },
+    "rainywindow": {
+      "file": "krea2_rainywindow.safetensors",
+      "trigger": "rainy window style"
+    },
+    "retroanime": {
+      "file": "krea2_retroanime.safetensors",
+      "trigger": "purple retro anime style"
+    },
+    "softwatercolor": {
+      "file": "krea2_softwatercolor.safetensors",
+      "trigger": "art deco watercolor style"
+    },
+    "sunsetblur": {
+      "file": "krea2_sunsetblur.safetensors",
+      "trigger": "ethereal motion blur style"
+    },
+    "vintagetarot": {
+      "file": "krea2_vintagetarot.safetensors",
+      "trigger": "vintage tarot style"
+    }
+  },
+  "CHARACTERS": {
+    "nene": {
+      "id": "nene",
+      "label": "绫地宁宁",
+      "loraId": "L_NENE_V21_ANIMA"
+    },
+    "natsume": {
+      "id": "natsume",
+      "label": "四季夏目",
+      "loraId": "L_NAT_V21_ANIMA"
+    }
+  },
+  "contract": {
+    "ANIMA_DEFAULTS": {
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple"
+    },
+    "HIRES_SAMPLER": "res_multistep",
+    "HIRES_SCHEDULER": "sgm_uniform",
+    "KREA_DEFAULTS": {
+      "steps": 12,
+      "cfg": 1,
+      "sampler": "er_sde",
+      "scheduler": "simple"
+    },
+    "MANUAL_REPAIR_PRESET": {
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple"
+    },
+    "PARAMETER_LIMITS": {
+      "steps": {
+        "min": 1,
+        "max": 60,
+        "integer": true
+      },
+      "cfg": {
+        "min": 0.5,
+        "max": 10,
+        "integer": false
+      },
+      "seed": {
+        "min": 0,
+        "max": 9007199254740991,
+        "integer": true
+      },
+      "teaCacheThresh": {
+        "min": 0,
+        "max": 1,
+        "integer": false
+      },
+      "denoisingStrength": {
+        "min": 0.1,
+        "max": 1,
+        "integer": false
+      },
+      "growMaskBy": {
+        "min": 0,
+        "max": 32,
+        "integer": true
+      },
+      "maskThreshold": {
+        "min": 0.05,
+        "max": 0.95,
+        "integer": false
+      }
+    },
+    "ALLOWED_INPUT_KEYS": [
+      "prompt",
+      "negative",
+      "modelId",
+      "loraId",
+      "loraStrength",
+      "width",
+      "height",
+      "steps",
+      "cfg",
+      "seed",
+      "character",
+      "styleLoraId",
+      "hiresFix",
+      "hiresScale",
+      "hiresDenoise",
+      "hiresSteps",
+      "hiresUpscaler",
+      "teaCache",
+      "teaCacheThresh",
+      "initImage",
+      "maskImage",
+      "maskPrompt",
+      "maskThreshold",
+      "denoisingStrength",
+      "growMaskBy",
+      "adultEnabled"
+    ],
+    "CHARACTER_LORA_BINDINGS": {
+      "nene": "L_NENE_V21_ANIMA",
+      "natsume": "L_NAT_V21_ANIMA"
+    }
+  }
+}

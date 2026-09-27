@@ -1,0 +1,1541 @@
+{
+  "files": [
+    {
+      "sha256": "c311366c25925adb92353dc3db194bdef11e2d40a4e61c5c6d7b3c409ebbcc46",
+      "bytes": 12,
+      "file": ".gitignore"
+    },
+    {
+      "sha256": "5d5d35a87014c7086b49dccce59bb075531fee2e0e85716fa87456ef0b699aaa",
+      "bytes": 14411,
+      "file": "build-win64-mxe-v8.18.6-evidence.json"
+    },
+    {
+      "sha256": "6c01bde0e623b54282a76dcd73e3d378d8385702e04c0a89d65a6fb8cbecee3b",
+      "bytes": 77,
+      "file": "build-win64-mxe-v8.18.6/.gitattributes"
+    },
+    {
+      "sha256": "9cd74a28c7ec756df2fe129cf8984acef1ab488bab8297d28d503338e247f565",
+      "bytes": 1788,
+      "file": "build-win64-mxe-v8.18.6/.github/workflows/oci-publish.yml"
+    },
+    {
+      "sha256": "10d8c59e20a0b8c9399af7622d6d87291ebecfc508e956b8d20a130ccfeebd0e",
+      "bytes": 72,
+      "file": "build-win64-mxe-v8.18.6/.gitignore"
+    },
+    {
+      "sha256": "21f8ae16447d9987493519ac33d91344ffc7783eb70dc64965eea926f7d64cfa",
+      "bytes": 7471,
+      "file": "build-win64-mxe-v8.18.6/build.sh"
+    },
+    {
+      "sha256": "f129aea9a60575d24cf80a82ccbe551c1f9aad496760c955cd29194b29992aa6",
+      "bytes": 1263,
+      "file": "build-win64-mxe-v8.18.6/build/aom.mk"
+    },
+    {
+      "sha256": "f83f452c014880cdd01cbfdfc8bb18b1ad4b662919a1f8c7db75c8e50d3be6eb",
+      "bytes": 690,
+      "file": "build-win64-mxe-v8.18.6/build/cgif.mk"
+    },
+    {
+      "sha256": "9b1a766fd12253cecee01f7c460dc9fd0178aa9182c65e2b9a0985b15f51e6c0",
+      "bytes": 881,
+      "file": "build-win64-mxe-v8.18.6/build/highway.mk"
+    },
+    {
+      "sha256": "28571a33ddb8414873ea08fd8b4016bf2661b02e0e039f9b44d27b318546569d",
+      "bytes": 808,
+      "file": "build-win64-mxe-v8.18.6/build/libdicom.mk"
+    },
+    {
+      "sha256": "cbfb6cdfbab51f13978a9a5d4290ddcd909ca5f2aca1f08412be8eb7fc663ebe",
+      "bytes": 1052,
+      "file": "build-win64-mxe-v8.18.6/build/libheif.mk"
+    },
+    {
+      "sha256": "effe30fe26814beb688a8cb7877515e7051995c806c4fa09726f5c21b6c6013c",
+      "bytes": 652,
+      "file": "build-win64-mxe-v8.18.6/build/libimagequant.mk"
+    },
+    {
+      "sha256": "9c440807d06a96bd90ef659c49002119052298db15574cda956a2309b156b19b",
+      "bytes": 1221,
+      "file": "build-win64-mxe-v8.18.6/build/libjxl.mk"
+    },
+    {
+      "sha256": "7dd1bb5d868f1262776d187a43ac0bedbddcbfeefb9fc0ba00eb7a2d4a2a2675",
+      "bytes": 1029,
+      "file": "build-win64-mxe-v8.18.6/build/nifticlib.mk"
+    },
+    {
+      "sha256": "15af7de7acf0f395aba3e475304576dceeaa4b4167ec56292e71e6062fc0e8e8",
+      "bytes": 1482,
+      "file": "build-win64-mxe-v8.18.6/build/nip4.mk"
+    },
+    {
+      "sha256": "0500e58a4aace3fd75180e8e734caa6fe5d754eec6e54050a89c636d0d47a8cf",
+      "bytes": 744,
+      "file": "build-win64-mxe-v8.18.6/build/openslide.mk"
+    },
+    {
+      "sha256": "b8703578a653b609eacd91f1bc88bf6449acf3cc7ed553b0c75dda13d25eb51b",
+      "bytes": 33438,
+      "file": "build-win64-mxe-v8.18.6/build/overrides.mk"
+    },
+    {
+      "sha256": "c4f15c4be72f9df33c7af874486227961e7e7263b03d0f6e2907d753fa9f31aa",
+      "bytes": 1522,
+      "file": "build-win64-mxe-v8.18.6/build/patches/aom-3-fixes.patch"
+    },
+    {
+      "sha256": "e9fa4176252f278e8d53ca110959797ac7f636da9f8dfb0d8d5b4c2db69b3b08",
+      "bytes": 19182,
+      "file": "build-win64-mxe-v8.18.6/build/patches/cairo-1-fixes.patch"
+    },
+    {
+      "sha256": "96eca5ad103861c380c202054401d02e13b14643fe71c665a2fb00b51ffe8db1",
+      "bytes": 1325,
+      "file": "build-win64-mxe-v8.18.6/build/patches/cairo-1-nanoserver-compat.patch"
+    },
+    {
+      "sha256": "452d8b94ea7a17f3b0abbe858d799fd774fe0097e21f639f412b3b00662c3a73",
+      "bytes": 2312,
+      "file": "build-win64-mxe-v8.18.6/build/patches/fontconfig-2-fixes.patch"
+    },
+    {
+      "sha256": "482901be8e32a92e9dca5cd0f555ae9ce961300a4b98a62f6e3bf8ce0aa64451",
+      "bytes": 3162,
+      "file": "build-win64-mxe-v8.18.6/build/patches/gdk-pixbuf-2-fixes.patch"
+    },
+    {
+      "sha256": "65fd140acf960794197b0b38cbc234c5c08f211d8ab679b1695df456250b8a76",
+      "bytes": 1193,
+      "file": "build-win64-mxe-v8.18.6/build/patches/glib-2-dllexport-static.patch"
+    },
+    {
+      "sha256": "9778d07b7cb8bdcedd474f345f85ae844542cb34fb38ec6c72cf3615a12b03c5",
+      "bytes": 2146,
+      "file": "build-win64-mxe-v8.18.6/build/patches/glib-2-fixes.patch"
+    },
+    {
+      "sha256": "81013d38fc18da12522bc3c58d8988d2ac9ee9ca5a55bd4e68486044aa55191f",
+      "bytes": 7759,
+      "file": "build-win64-mxe-v8.18.6/build/patches/glib-2-without-gregex.patch"
+    },
+    {
+      "sha256": "66dbbd92404b11316d7bc896889c531697328d645af989e5a0c11aab76fbbca4",
+      "bytes": 1146,
+      "file": "build-win64-mxe-v8.18.6/build/patches/glib-2-without-win32appinfo.patch"
+    },
+    {
+      "sha256": "493f256e08407d479a76e62622069025d3ac290263864761688dbf74cb568fcf",
+      "bytes": 7317,
+      "file": "build-win64-mxe-v8.18.6/build/patches/imagemagick-7-disable-network.patch"
+    },
+    {
+      "sha256": "785b884d4963a3e522e5d831ebda4a5e0ea9ee281a9e0df6affa13b0e7711f47",
+      "bytes": 840,
+      "file": "build-win64-mxe-v8.18.6/build/patches/imath-3-fixes.patch"
+    },
+    {
+      "sha256": "846ad069dca01304f6fcbe92ff29636b4183d8eef3d275349dc91cedc8a313c7",
+      "bytes": 1289,
+      "file": "build-win64-mxe-v8.18.6/build/patches/libheif-1-fixes.patch"
+    },
+    {
+      "sha256": "159b0704488ea123f6d57febbd908507868c5875bc8a7837ca8eca80d1541b29",
+      "bytes": 1807,
+      "file": "build-win64-mxe-v8.18.6/build/patches/libjpeg-turbo-3-fixes.patch"
+    },
+    {
+      "sha256": "169e92a78762d44751e78c7c8a1305d0f19d8614aff759d3d06d47c4979eb2c1",
+      "bytes": 1270,
+      "file": "build-win64-mxe-v8.18.6/build/patches/libraw-0.22-fixes.patch"
+    },
+    {
+      "sha256": "4806547a27937b4ad0f7bae4e17d34e12c959e5fef91756951726ec71e8a0910",
+      "bytes": 5972,
+      "file": "build-win64-mxe-v8.18.6/build/patches/librsvg-2-fixes.patch"
+    },
+    {
+      "sha256": "66912b00a1da59a5f58d71a95def05e1b48cd8b49bbd01cffff49d4e8daff030",
+      "bytes": 2487,
+      "file": "build-win64-mxe-v8.18.6/build/patches/libtool-2-fixes.patch"
+    },
+    {
+      "sha256": "ec36b3e3d5aa05a86ce0ca743c0504e6cfb2d5539b7a45b6c78c8e7b52018f6f",
+      "bytes": 994,
+      "file": "build-win64-mxe-v8.18.6/build/patches/libxml2-2-fixes.patch"
+    },
+    {
+      "sha256": "9bc50605ac2a95fa066e0e095d625ba363f379ac7fe00f4a7d9418a84ab13e36",
+      "bytes": 819,
+      "file": "build-win64-mxe-v8.18.6/build/patches/matio-1-fixes.patch"
+    },
+    {
+      "sha256": "bc6f13605ea0d46ada65385c9148c0c90ce213841c61b827d07c6b526cfe5bbf",
+      "bytes": 8286,
+      "file": "build-win64-mxe-v8.18.6/build/patches/nifticlib-3-fixes.patch"
+    },
+    {
+      "sha256": "cd60a6b627c484fbf0e6864912ca7e431277ff2586fefb81d24b7a868fade5fe",
+      "bytes": 3030,
+      "file": "build-win64-mxe-v8.18.6/build/patches/openexr-2-fixes.patch"
+    },
+    {
+      "sha256": "cd643e3d034e313e13c14ae2da8af2ebd2ce10f9dee5f53319e214d0ff678747",
+      "bytes": 3540,
+      "file": "build-win64-mxe-v8.18.6/build/patches/openslide-4-without-gregex.patch"
+    },
+    {
+      "sha256": "ddc21cb75272d3269fd39a517bc48ba2533bf95125cafe17d346ccb4251b358e",
+      "bytes": 748,
+      "file": "build-win64-mxe-v8.18.6/build/patches/poppler-26-fixes.patch"
+    },
+    {
+      "sha256": "3f84717c76922434368b1b8bf54b6dad649ca35ee79f00028fa5a4db1b3a9e9a",
+      "bytes": 1243,
+      "file": "build-win64-mxe-v8.18.6/build/patches/sqlite-3-fixes.patch"
+    },
+    {
+      "sha256": "c308dd7c65a2bee0fea7471a71916dea1a5f48d698ebedeff41904b38074484b",
+      "bytes": 6224,
+      "file": "build-win64-mxe-v8.18.6/build/patches/uhdr-1-fixes.patch"
+    },
+    {
+      "sha256": "203e1df29951bd860c72384c4da06cb3d3935a35e7367f720136da6d35b357d3",
+      "bytes": 1596,
+      "file": "build-win64-mxe-v8.18.6/build/patches/zlib-1-fixes.patch"
+    },
+    {
+      "sha256": "102ef4514d25e2dd1f56ebd03ee9647b5ed1fc633b3048145b0adcbd5e3036b5",
+      "bytes": 795,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/all-deps/overrides.mk"
+    },
+    {
+      "sha256": "fe5bcc0e041324873cd8917aa0e06832d5d231046433bf7a6a45cc429f5fc3e8",
+      "bytes": 2852,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/all-deps/patches/vips-8-dlldir-as-libdir.patch"
+    },
+    {
+      "sha256": "8fb8c4992977f16cecbc8782fd4a495411130d344dbd39b5ed28f1eda454f591",
+      "bytes": 3902,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/all-deps/vips-all.mk"
+    },
+    {
+      "sha256": "948558c83718acbe5726ccc547c2b6295da23dc51245cb15c2040cf49f0431f5",
+      "bytes": 395,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/ffi-compat/overrides.mk"
+    },
+    {
+      "sha256": "a1b3cb835461cc0091854b9c3ad63f5960f3671be80f89f45bf981ef2a669578",
+      "bytes": 2198,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/ffi-compat/patches/glib-2-static.patch"
+    },
+    {
+      "sha256": "0466b8492a4b8be908c3dd03c8388d07692e8f39bf343b229d7a7cfa41c5ff60",
+      "bytes": 704,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/gtk4/directx-headers.mk"
+    },
+    {
+      "sha256": "f8b1744c233d680740d1d8bfa2ecbda7cc512e382cd47ecf8e155de466603027",
+      "bytes": 896,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/gtk4/graphene.mk"
+    },
+    {
+      "sha256": "92e18f85c76d2da7136c7fccd766e486f542e1dbb67235b3522f4138f3382ef5",
+      "bytes": 1100,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/gtk4/gtk4.mk"
+    },
+    {
+      "sha256": "8d40f9b28b0b6313f056c5b3bde37df02af5b40a34c7f319c641bb27cff4601c",
+      "bytes": 1246,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/gtk4/overrides.mk"
+    },
+    {
+      "sha256": "b686c13fea2486f5ccee6c73fb0ce66690849b97686f84e7e55592a16b155f39",
+      "bytes": 1780,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/gtk4/patches/gtk-4-fixes.patch"
+    },
+    {
+      "sha256": "40096e7ba74599c4e9a12266a00703335d523522100f98e6a66f27eb2c8ab23b",
+      "bytes": 774,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/hevc-deps/libde265.mk"
+    },
+    {
+      "sha256": "22f31ead3b8f6473c758fab69973d87281c60aa2d7ed03f9653a30372dd2a1a3",
+      "bytes": 3006,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/hevc-deps/overrides.mk"
+    },
+    {
+      "sha256": "834953e5467184f892d6d78da8d2cc93512fda606b2e3560b56993a3208b35d4",
+      "bytes": 1036,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/hevc-deps/patches/x265-4-fixes-crlf.patch"
+    },
+    {
+      "sha256": "b974096fa7f8067d2f4edca960ed58e3b0cbb298cb1f187b6df20238b545a655",
+      "bytes": 1281,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/jpegli/jpegli.mk"
+    },
+    {
+      "sha256": "9780b2411f98d0dfbf611e08e967cd73135379e25d2a9d7dd766cfa19fcac690",
+      "bytes": 695,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/jpegli/overrides.mk"
+    },
+    {
+      "sha256": "29a0504361cf47eaa20717ae6bfdc533715f9df5b0c705b399637a6d6ca49037",
+      "bytes": 19103,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/jpegli/patches/jpegli-0.12-fixes.patch"
+    },
+    {
+      "sha256": "d5e7af68bce6e54b2fd7b50a5f70fa14aea43eff6ab044c7ac9256e1f672641f",
+      "bytes": 1064,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/mozjpeg/mozjpeg.mk"
+    },
+    {
+      "sha256": "e0c1de0e84ed7d46318452cdaead6111862bcd9b7ef37fa3b37f0b208cb9f7b4",
+      "bytes": 883,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/mozjpeg/overrides.mk"
+    },
+    {
+      "sha256": "7952f72840a29a815740bbcdbf986903a800a97af3685d2654f0d020641e89c1",
+      "bytes": 2420,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/mozjpeg/patches/mozjpeg-4-fixes.patch"
+    },
+    {
+      "sha256": "3ddb71285d43dde5c75a0080cc62cbc158d32359af132b8314e76b85b9205764",
+      "bytes": 7615,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/mozjpeg/patches/mozjpeg-4-pr-453.patch"
+    },
+    {
+      "sha256": "44c54d98c92f9290aa232f95e0399a4b79cf5cebb47e765f4c92fb9dc161f19d",
+      "bytes": 215,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/nightly/overrides.mk"
+    },
+    {
+      "sha256": "7743f7bb299ef280d5f5718341de423a2be5c8553fb88b79cfd0d066a0e899fc",
+      "bytes": 283,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/proxy-libintl/overrides.mk"
+    },
+    {
+      "sha256": "a8386926e1023d3183a48a3f69687ab13ec5639ad07496cdf5f045f0993fb0fd",
+      "bytes": 782,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/proxy-libintl/patches/proxy-libintl-1-fixes.patch"
+    },
+    {
+      "sha256": "3322209995d2a56e84998007c6ef8aa7e3d87200490bff1c032e5c6caae04836",
+      "bytes": 675,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/proxy-libintl/proxy-libintl.mk"
+    },
+    {
+      "sha256": "73175da2b6562abdead5ad66544858d83e6ce74cec62ee49a8619a93805388bb",
+      "bytes": 462,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/web-deps/overrides.mk"
+    },
+    {
+      "sha256": "faffedbbb6d83ac063c48378656efffdf3445c7f2797281cefd0ca1860b21477",
+      "bytes": 2664,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/web-deps/vips-web.mk"
+    },
+    {
+      "sha256": "ac2b54ad1429cca7486c1848f7709759adb6248df9ea3739e979fd58ee87dfb0",
+      "bytes": 1385,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/zlib-ng/overrides.mk"
+    },
+    {
+      "sha256": "22f110cc8b1566db3726d0d448ab04cd11297f062368bdd77971adf9455b852b",
+      "bytes": 1031,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/zlib-ng/patches/zlib-ng-2-fixes.patch"
+    },
+    {
+      "sha256": "6a5b902348cd00b68adfc436f2a349bcd0b44ed9a7b7289a21cf8c07e8c9a647",
+      "bytes": 772,
+      "file": "build-win64-mxe-v8.18.6/build/plugins/zlib-ng/zlib-ng.mk"
+    },
+    {
+      "sha256": "5adf14e1c147437d3f234f53f8a723c27a7e68e3daeb854759a621685939ea21",
+      "bytes": 1179,
+      "file": "build-win64-mxe-v8.18.6/build/settings/debug.mk"
+    },
+    {
+      "sha256": "39a2f1d06a7d6d2cc0c0756af7b646234e681ce752907f815d1c1f5075c3c2d6",
+      "bytes": 1319,
+      "file": "build-win64-mxe-v8.18.6/build/settings/release.mk"
+    },
+    {
+      "sha256": "c7098df2dc28bcdcba9f89d1ec911a2811ab9234249c4c2b613130e44b6080cd",
+      "bytes": 1023,
+      "file": "build-win64-mxe-v8.18.6/build/uhdr.mk"
+    },
+    {
+      "sha256": "8097e70cea300e6cac2e228b61eebd94d5a5c54981d5dcccbfe87934663be91c",
+      "bytes": 1189,
+      "file": "build-win64-mxe-v8.18.6/build/vips.mk"
+    },
+    {
+      "sha256": "65cfe210e36f4198be2a524c92a408e555d75637f555e35a7f23436851178812",
+      "bytes": 1269,
+      "file": "build-win64-mxe-v8.18.6/build/vipsdisp.mk"
+    },
+    {
+      "sha256": "3a10f483c1965bb885bf2618423b491179b5886523cdeb35df3339aa7fd1d726",
+      "bytes": 854,
+      "file": "build-win64-mxe-v8.18.6/container/base.Dockerfile"
+    },
+    {
+      "sha256": "0817cff4f940ccf477997f93b6833f839e9ddaa9a0a865cdf64a96df510de747",
+      "bytes": 925,
+      "file": "build-win64-mxe-v8.18.6/container/Dockerfile"
+    },
+    {
+      "sha256": "2ecff5d96ee7eecbb98bd1209456dbe1e5875ea796780d2ba5c0efd29cb6c6ee",
+      "bytes": 1300,
+      "file": "build-win64-mxe-v8.18.6/packaging/gendeflibs.sh"
+    },
+    {
+      "sha256": "9c2bac9519249d48c29bb15102abfe1c82059815468f9cba4c249c0784ffcc41",
+      "bytes": 4737,
+      "file": "build-win64-mxe-v8.18.6/packaging/package-gtk.sh"
+    },
+    {
+      "sha256": "bd10062a2a507134ae4d610077a020c0a05348f7262e0e6d809ab75ba56fa389",
+      "bytes": 4923,
+      "file": "build-win64-mxe-v8.18.6/packaging/package-vips.sh"
+    },
+    {
+      "sha256": "0e3d0c08f9ca6f1e41997a58d38b766db368021edc4ca27201adc4494ed22f27",
+      "bytes": 613,
+      "file": "build-win64-mxe-v8.18.6/packaging/package.sh"
+    },
+    {
+      "sha256": "8054b721966778edbacc76fbcecac6d9061583fbb7c5d3ffefe6ae4c2aca8057",
+      "bytes": 1057,
+      "file": "build-win64-mxe-v8.18.6/packaging/variables.sh"
+    },
+    {
+      "sha256": "b8497d90d55fe7b053e7e290ca80aeafbb811fd347dee7c61b6b8b60fc6b67f9",
+      "bytes": 11708,
+      "file": "build-win64-mxe-v8.18.6/README.md"
+    },
+    {
+      "sha256": "cc9c4f05d8a7794837e7aaaf09b35a300845892a048b15a6fcf56d9c294d9c2e",
+      "bytes": 285,
+      "file": "build-win64-mxe-v8.18.6/TODO.md"
+    },
+    {
+      "sha256": "a708f26723b1563d3fffded0fc7f4a3a29833113f264af9ff18e5ce606cbeae3",
+      "bytes": 75896,
+      "file": "components.json"
+    },
+    {
+      "sha256": "1bf4faf64255fc1ffe1428e56f58f36050eeaac47a6401e532ca15823d21e9ac",
+      "bytes": 13105,
+      "file": "components/aom/AUTHORS"
+    },
+    {
+      "sha256": "4764a286d8b2faeaf42f4418e7d7a28d58fc8fd4d00a3d0a7f44b0a4099de7f2",
+      "bytes": 1316,
+      "file": "components/aom/LICENSE"
+    },
+    {
+      "sha256": "661fb8e504744e95587b556b94a58343448300606a41bea8c7a9b97125696e61",
+      "bytes": 5701,
+      "file": "components/aom/PATENTS"
+    },
+    {
+      "sha256": "499041ddee5227b6f29ca06c17803e5fe24d60f243c69635cd76b7ba08d0ddd5",
+      "bytes": 1504,
+      "file": "components/aom/third_party/fastfeat/LICENSE"
+    },
+    {
+      "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+      "bytes": 1475,
+      "file": "components/aom/third_party/googletest/src/LICENSE"
+    },
+    {
+      "sha256": "d25e82e26acd42ca3ccc9993622631163425b869b9e16284226d534cff6470f2",
+      "bytes": 1515,
+      "file": "components/aom/third_party/highway/LICENSE-BSD3"
+    },
+    {
+      "sha256": "3edb5f5496bfff3d6d4a62fa75fe996b814920d0d6e348c2e65c589e7ac5d177",
+      "bytes": 137,
+      "file": "components/aom/third_party/libwebm/AUTHORS.TXT"
+    },
+    {
+      "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+      "bytes": 1496,
+      "file": "components/aom/third_party/libwebm/LICENSE.TXT"
+    },
+    {
+      "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c",
+      "bytes": 1436,
+      "file": "components/aom/third_party/libwebm/PATENTS.TXT"
+    },
+    {
+      "sha256": "2b2cc1180c7e6988328ad2033b04b80117419db9c4c584918bbb3cfec7e9364f",
+      "bytes": 1506,
+      "file": "components/aom/third_party/libyuv/LICENSE"
+    },
+    {
+      "sha256": "ff6c857ce2708e87701323078aef115c1872a1f80a9649f86dc899b48083bc60",
+      "bytes": 1084,
+      "file": "components/aom/third_party/vector/LICENSE"
+    },
+    {
+      "sha256": "719d8fa235f2068e0ae6d6a7dceb0a7720d7840f0f0ebed29957989e6ded3cd8",
+      "bytes": 936,
+      "file": "components/aom/third_party/x86inc/LICENSE"
+    },
+    {
+      "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+      "bytes": 3089,
+      "file": "components/archive/COPYING"
+    },
+    {
+      "sha256": "7118b55c2d911781622ecb281d9e11fd7eeb5f46c8925e6d740f96f89e79a8fe",
+      "bytes": 8148,
+      "file": "components/cairo/AUTHORS"
+    },
+    {
+      "sha256": "67228a9f7c5f9b67c58f556f1be178f62da4d9e2e6285318d8c74d567255abdf",
+      "bytes": 1576,
+      "file": "components/cairo/COPYING"
+    },
+    {
+      "sha256": "9e9e8608c4cdda51a78cc3a385f4ec9a2e4c96d5ecad74ac8bca5fca3e563b7d",
+      "bytes": 26533,
+      "file": "components/cairo/COPYING-LGPL-2.1"
+    },
+    {
+      "sha256": "53692a2ed6c6a2c6ec9b32dd0b820dfae91e0a1fcdf625ca9ed0bdf8705fcc4f",
+      "bytes": 25755,
+      "file": "components/cairo/COPYING-MPL-1.1"
+    },
+    {
+      "sha256": "6f93b45ea874706058ae35bc02df79c3f9daf00948672eea8394cc25d1327d49",
+      "bytes": 229,
+      "file": "components/cairo/perf/COPYING"
+    },
+    {
+      "sha256": "bc9a017cc61558713011802f0f0a6824da99ae8f209e2e337496db6d5768618d",
+      "bytes": 601,
+      "file": "components/cairo/subprojects/expat.wrap"
+    },
+    {
+      "sha256": "a9df19d71dc2ac0be17904fb6bf95c76260ccf861439c710ead52bb045a8807f",
+      "bytes": 445,
+      "file": "components/cairo/subprojects/fontconfig.wrap"
+    },
+    {
+      "sha256": "fe930c2b167276a29969423687008dfaecb5b33dd509b95b07a9256235142d99",
+      "bytes": 453,
+      "file": "components/cairo/subprojects/freetype2.wrap"
+    },
+    {
+      "sha256": "a400c4d0ee5301513bd82f9aace1b3f91af4c534d6192dc49cda9d5e6480e3e5",
+      "bytes": 541,
+      "file": "components/cairo/subprojects/glib.wrap"
+    },
+    {
+      "sha256": "3305f6a8fb4714b62a3d0e2151fe5a9ef4674d05a812378cf1d0485a97d5333c",
+      "bytes": 589,
+      "file": "components/cairo/subprojects/libpng.wrap"
+    },
+    {
+      "sha256": "805702242e470993fa2aa2c5996246a8d0ac66b443cc8273075e714c1280152f",
+      "bytes": 403,
+      "file": "components/cairo/subprojects/pixman.wrap"
+    },
+    {
+      "sha256": "6aa5c2e03aedf723af8574cb5f85bdbe14380cff9d5646f14e08dda7d343b026",
+      "bytes": 551,
+      "file": "components/cairo/subprojects/zlib.wrap"
+    },
+    {
+      "sha256": "a37812e0e27a211272d4c27fa45028c3653e78bb708acccb77c94128dc72b98e",
+      "bytes": 1026,
+      "file": "components/cairo/test/COPYING"
+    },
+    {
+      "sha256": "25f4d4ce651b1ee6aff713ff986275d6c190a8537e36437886f8bf1497b0a174",
+      "bytes": 656,
+      "file": "components/cairo/util/cairo-script/COPYING"
+    },
+    {
+      "sha256": "421158645572270264a980b8b130dd988138e4dae20144e22455446e0ef90902",
+      "bytes": 179,
+      "file": "components/cairo/util/cairo-trace/COPYING"
+    },
+    {
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "bytes": 35147,
+      "file": "components/cairo/util/cairo-trace/COPYING-GPL-3"
+    },
+    {
+      "sha256": "008e976b6e5e7155ee24322073f42cab7cd6daf90bc2322f1d5c3aacab94111c",
+      "bytes": 138,
+      "file": "components/cairo/util/COPYING"
+    },
+    {
+      "sha256": "76ed8a61cb7e254cab424641ebbb4069d08bf820dfe00f6f7ab5485057ca003d",
+      "bytes": 193,
+      "file": "components/cgif/AUTHORS"
+    },
+    {
+      "sha256": "7264dede477abab4ac3fe8236beb8153845c04ccd33b18f281085087e219fc6d",
+      "bytes": 1099,
+      "file": "components/cgif/LICENSE"
+    },
+    {
+      "sha256": "a19ef6f43014fc57829658087d0c2bf59d97482e015cf553d7a68124603cbc44",
+      "bytes": 240,
+      "file": "components/exif/AUTHORS"
+    },
+    {
+      "sha256": "36b6d3fa47916943fd5fec313c584784946047ec1337a78b440e5992cb595f89",
+      "bytes": 26434,
+      "file": "components/exif/COPYING"
+    },
+    {
+      "sha256": "59f14371c6b75912cfebb46e6247ee5146766e803a0365b124e5d3011e7d0877",
+      "bytes": 142,
+      "file": "components/expat/AUTHORS"
+    },
+    {
+      "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+      "bytes": 1144,
+      "file": "components/expat/COPYING"
+    },
+    {
+      "sha256": "17b64dc60f3b6897a60f971e288b973f655c2edcdf08b25f3c3dd5549857881c",
+      "bytes": 1132,
+      "file": "components/ffi/LICENSE"
+    },
+    {
+      "sha256": "e67978cd18816c0cb7d29aaaacde7b7447402c2fb321a051698890a8eaedda94",
+      "bytes": 18698,
+      "file": "components/ffi/LICENSE-BUILDTOOLS"
+    },
+    {
+      "sha256": "db6d73a160bb2de10268f88ef60aae91771fefdeee4992b791c76ce6592a4a4b",
+      "bytes": 62,
+      "file": "components/fontconfig/AUTHORS"
+    },
+    {
+      "sha256": "78a394b29b1a08daab91889b8c87fa5450c27146b3b77d59dcdccc7c5952530a",
+      "bytes": 2788,
+      "file": "components/fontconfig/Cargo.lock"
+    },
+    {
+      "sha256": "6aa571cb8109a23748b386c62ae8384115253e90ece19790aa194579c29e7513",
+      "bytes": 611,
+      "file": "components/fontconfig/Cargo.toml"
+    },
+    {
+      "sha256": "51a51aa9823704fd90bccc616cdd17ebabb5b2b3e9cbde886ca02c7002288067",
+      "bytes": 8616,
+      "file": "components/fontconfig/COPYING"
+    },
+    {
+      "sha256": "96cd41535d82b5945edf8b4532d7c7eb26df0614454e5768b4bf57f62ec0596b",
+      "bytes": 190,
+      "file": "components/fontconfig/fc-fontations/fcint-bindings/Cargo.toml"
+    },
+    {
+      "sha256": "2e13a81c52a557bb1eeeea20350bbc589109a6bd2b65ed27a51304f6871c9c57",
+      "bytes": 163,
+      "file": "components/fontconfig/fc-fontations/fontconfig-bindings/Cargo.toml"
+    },
+    {
+      "sha256": "ffdb2686e5f24eb87c273639e2ba3df5d5ffb9f6e0145b47c77d1725e20b03de",
+      "bytes": 601,
+      "file": "components/fontconfig/subprojects/expat.wrap"
+    },
+    {
+      "sha256": "f116568780c5c6e40e9efc787b1244da9e70e6e1f86a1337f603ec114a271d46",
+      "bytes": 162,
+      "file": "components/fontconfig/subprojects/freetype2.wrap"
+    },
+    {
+      "sha256": "58ab57947a174d0e3bb79dac09082046a590f0d25ced3e57a16704abc2424b90",
+      "bytes": 176,
+      "file": "components/fontconfig/subprojects/gperf.wrap"
+    },
+    {
+      "sha256": "2b8ce91474460f9b708001101630cc97034db464aebcc75e205be1aab17db226",
+      "bytes": 590,
+      "file": "components/fontconfig/subprojects/libpng.wrap"
+    },
+    {
+      "sha256": "cca98b0f08c877547ba761ea498b85d1b55e47326c7e9d9c22f941619d8be0eb",
+      "bytes": 613,
+      "file": "components/fontconfig/subprojects/libxml2.wrap"
+    },
+    {
+      "sha256": "37e68040d898c9eb43e4747ac4baa5585c76f89b5da0cbb095fe26c231278297",
+      "bytes": 551,
+      "file": "components/fontconfig/subprojects/zlib.wrap"
+    },
+    {
+      "sha256": "5a5ee54c5001bbad1cdc1a57cc3dd4c42199b2da09d39c7ee41fab002d02967f",
+      "bytes": 6743,
+      "file": "components/freetype/docs/FTL.TXT"
+    },
+    {
+      "sha256": "bd36c8b474855fa294c2ec5c184544478ef3720aad37d65a6296a4f264fd2d3b",
+      "bytes": 2149,
+      "file": "components/freetype/LICENSE.TXT"
+    },
+    {
+      "sha256": "147b05412cc67f2efa2be866e87e45a94d65d2da5a37d6bf9986ee2cc069f740",
+      "bytes": 495,
+      "file": "components/freetype/subprojects/harfbuzz.wrap"
+    },
+    {
+      "sha256": "03030bfddbaacf13e40a3fc539ccccb16a33201e7c7d55008999059aa7aabd81",
+      "bytes": 703,
+      "file": "components/freetype/subprojects/libpng.wrap"
+    },
+    {
+      "sha256": "9a7916471716b8bdd107f82114477304b79759ea7f934254d4a0bc5af184d7c8",
+      "bytes": 653,
+      "file": "components/freetype/subprojects/zlib.wrap"
+    },
+    {
+      "sha256": "cb173f55c9514c8f38f4647ac3fedd5f8611358d331e65ab955da931e826861c",
+      "bytes": 1640,
+      "file": "components/fribidi/AUTHORS"
+    },
+    {
+      "sha256": "32434afcc8666ba060e111d715bfdb6c2d5dd8a35fa4d3ab8ad67d8f850d2f2b",
+      "bytes": 26440,
+      "file": "components/fribidi/COPYING"
+    },
+    {
+      "sha256": "bdbcdaa7858872393e9d6b216bbdc8a23e99d98dd6cdb7cda19458025b9e19fc",
+      "bytes": 26445,
+      "file": "components/glib-gvdb/COPYING"
+    },
+    {
+      "sha256": "5749785c8bdefafcb5d798270ed0a967036fe2ca63dcedade1627565dfef81d2",
+      "bytes": 26001,
+      "file": "components/glib-gvdb/LICENSES/LGPL-2.1-or-later.txt"
+    },
+    {
+      "sha256": "1bbf636fa9d7e863bd524af8a3d7229d0c8f88ad740b20f866f25cefaca98fb7",
+      "bytes": 3855,
+      "file": "components/glib-pcre2/AUTHORS.md"
+    },
+    {
+      "sha256": "c666ec2313dba24523ccad88f4c04ea4b24fad6545263a35b1d4ab2b08efe50a",
+      "bytes": 1326,
+      "file": "components/glib-pcre2/cmake/COPYING-CMAKE-SCRIPTS"
+    },
+    {
+      "sha256": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+      "bytes": 97,
+      "file": "components/glib-pcre2/COPYING"
+    },
+    {
+      "sha256": "9cf7ac6976099a1d856826d3ef1b093bd6b84489dc6100628ac79e740cf9885a",
+      "bytes": 3867,
+      "file": "components/glib-pcre2/LICENCE.md"
+    },
+    {
+      "sha256": "b4f60a02b2b1f82764f8295b2eafbfcd4c33f596d70abcf5cb3c3623b1cfbc6d",
+      "bytes": 122,
+      "file": "components/glib/docs/reference/AUTHORS"
+    },
+    {
+      "sha256": "b1ec1d0e5947f81e815d8771f7d4d90671a94bb10a42dc687fb566de461a57aa",
+      "bytes": 1698,
+      "file": "components/glib/docs/reference/COPYING"
+    },
+    {
+      "sha256": "28073c8c65c072387b778ba00b6c24a2ff1b573ca4415e151aa91fab5a6454be",
+      "bytes": 25,
+      "file": "components/glib/gmodule/AUTHORS"
+    },
+    {
+      "sha256": "7ecc7db84298adb05d2cf10339c63a5315a1c5c270a68d97d7d40a53b508ccde",
+      "bytes": 8987,
+      "file": "components/glib/LICENSES/AFL-2.0.txt"
+    },
+    {
+      "sha256": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff",
+      "bytes": 10280,
+      "file": "components/glib/LICENSES/Apache-2.0.txt"
+    },
+    {
+      "sha256": "3f941b3b89cf7b8370ceb83cc76d2120d471b58735d8ca60238a751a48d7f72f",
+      "bytes": 22240,
+      "file": "components/glib/LICENSES/CC-BY-SA-3.0.txt"
+    },
+    {
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "bytes": 7048,
+      "file": "components/glib/LICENSES/CC0-1.0.txt"
+    },
+    {
+      "sha256": "aaf135472f81c5b4a0dca9367e5bb5e9750032b5bebe5442b36e4c0a47430df3",
+      "bytes": 17337,
+      "file": "components/glib/LICENSES/GPL-2.0-or-later.txt"
+    },
+    {
+      "sha256": "fa6f36630bb1e0c571d34b2bbdf188d08495c9dbf58f28cac112f303fc1f58fb",
+      "bytes": 25967,
+      "file": "components/glib/LICENSES/LGPL-2.1-only.txt"
+    },
+    {
+      "sha256": "fa6f36630bb1e0c571d34b2bbdf188d08495c9dbf58f28cac112f303fc1f58fb",
+      "bytes": 25967,
+      "file": "components/glib/LICENSES/LGPL-2.1-or-later.txt"
+    },
+    {
+      "sha256": "fb261b2d5dbe76c4850f90da763210bc385e52428df6bbfd7b06295ac8a32914",
+      "bytes": 841,
+      "file": "components/glib/LICENSES/LicenseRef-old-glib-tests.txt"
+    },
+    {
+      "sha256": "e34c58338bd89d43e709e226610d8f32b3e3c47f4ad9a99a8dc1d4ac7842488e",
+      "bytes": 919,
+      "file": "components/glib/LICENSES/LLVM-exception.txt"
+    },
+    {
+      "sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+      "bytes": 1078,
+      "file": "components/glib/LICENSES/MIT.txt"
+    },
+    {
+      "sha256": "6214f8b1300bb9f37b16ebc146f8f61af0187e0025042ff95c8b3030744a8795",
+      "bytes": 23669,
+      "file": "components/glib/LICENSES/MPL-1.1.txt"
+    },
+    {
+      "sha256": "e1baa25ea3e44e2a854e870592368b45e9fac205cae4c3c60e193709c0857a8f",
+      "bytes": 211,
+      "file": "components/glib/subprojects/gi-docgen.wrap"
+    },
+    {
+      "sha256": "272b13dcf9e4ba1b9aa1727ebeb59e043716c0f555ca6957a6211b163b94cee6",
+      "bytes": 100,
+      "file": "components/glib/subprojects/gtk-doc.wrap"
+    },
+    {
+      "sha256": "d669f93cb531a04d719dcc5b790838452c918eea0a6134ae2bf17b470eb7838c",
+      "bytes": 163,
+      "file": "components/glib/subprojects/gvdb.wrap"
+    },
+    {
+      "sha256": "bdbcdaa7858872393e9d6b216bbdc8a23e99d98dd6cdb7cda19458025b9e19fc",
+      "bytes": 26445,
+      "file": "components/glib/subprojects/gvdb/COPYING"
+    },
+    {
+      "sha256": "5749785c8bdefafcb5d798270ed0a967036fe2ca63dcedade1627565dfef81d2",
+      "bytes": 26001,
+      "file": "components/glib/subprojects/gvdb/LICENSES/LGPL-2.1-or-later.txt"
+    },
+    {
+      "sha256": "1d56093bbe4d8158295c1be7b0fd62a9818b5e7d771ab55e3e0c057b10e9e99b",
+      "bytes": 609,
+      "file": "components/glib/subprojects/libffi.wrap"
+    },
+    {
+      "sha256": "a790b22a6f8e2c21404fec9795209d6d0fb760fe40981adc332d3222dfe4553f",
+      "bytes": 796,
+      "file": "components/glib/subprojects/pcre2.wrap"
+    },
+    {
+      "sha256": "ca5a4e2734f8f82ed211d9c3e62560ebe68670533902f42aad961313029b0c46",
+      "bytes": 417,
+      "file": "components/glib/subprojects/proxy-libintl.wrap"
+    },
+    {
+      "sha256": "84414f4b755314900c9f68b0471a30aaf201599a500b38fd687d1f02b4d439ae",
+      "bytes": 134,
+      "file": "components/glib/subprojects/sysprof.wrap"
+    },
+    {
+      "sha256": "6aa5c2e03aedf723af8574cb5f85bdbe14380cff9d5646f14e08dda7d343b026",
+      "bytes": 551,
+      "file": "components/glib/subprojects/zlib.wrap"
+    },
+    {
+      "sha256": "19bfe8f5ed100636cd24ab0c90a3f71c21d8b02d9ba00719447a0faab364d49f",
+      "bytes": 201,
+      "file": "components/harfbuzz/AUTHORS"
+    },
+    {
+      "sha256": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64",
+      "bytes": 1971,
+      "file": "components/harfbuzz/COPYING"
+    },
+    {
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "bytes": 1141,
+      "file": "components/harfbuzz/src/ms-use/COPYING"
+    },
+    {
+      "sha256": "f7b20276f1e521fb39d557cc4771cbafb89bc244fa5068e9caaf33055852751a",
+      "bytes": 773,
+      "file": "components/harfbuzz/src/rust/Cargo.toml"
+    },
+    {
+      "sha256": "5f9ddd87fee6abe40ec01ad51d94b82cecff7e6be38bb6affc10773ba95abe8f",
+      "bytes": 229,
+      "file": "components/harfbuzz/src/wasm/rust/harfbuzz-wasm/Cargo.toml"
+    },
+    {
+      "sha256": "a394b86b691dd815776ce7803cb6e75617b03323a29d8237fd184278c4802792",
+      "bytes": 229,
+      "file": "components/harfbuzz/src/wasm/sample/rust/hello-wasm/Cargo.toml"
+    },
+    {
+      "sha256": "e5f316991bbefe1ff77ad906f4b7c3f817fc96c39982a02eaf27c81d4d999f0d",
+      "bytes": 441,
+      "file": "components/harfbuzz/subprojects/cairo.wrap"
+    },
+    {
+      "sha256": "0153b6907f46e632e2c9fb740446d4ec77dea475fbf2b4a60017e5f4d8a08077",
+      "bytes": 422,
+      "file": "components/harfbuzz/subprojects/freetype2.wrap"
+    },
+    {
+      "sha256": "5d410574cb6598020c2f88749c01c9c76c22254f3c3e90e1bcfe58f164068627",
+      "bytes": 451,
+      "file": "components/harfbuzz/subprojects/glew.wrap"
+    },
+    {
+      "sha256": "019b8eb85b3e939a42319cbb51c42aa2fff60ac644b072587448df2de3fea74a",
+      "bytes": 554,
+      "file": "components/harfbuzz/subprojects/glfw.wrap"
+    },
+    {
+      "sha256": "e610c90a5a903b0fc9c934142e1a5844f84451ce1354340d2230f09c61429cdc",
+      "bytes": 640,
+      "file": "components/harfbuzz/subprojects/glib.wrap"
+    },
+    {
+      "sha256": "3e1fc6557c2eb42b2d2f53999edb8684b9796ea9b8fafadac6091eba4c4f56d6",
+      "bytes": 657,
+      "file": "components/harfbuzz/subprojects/google-benchmark.wrap"
+    },
+    {
+      "sha256": "cac5de25e5b6e4b0625758b2efb82041b7b5d1bc75e83c32d76f7a4486a98ad8",
+      "bytes": 490,
+      "file": "components/harfbuzz/subprojects/graphite2.wrap"
+    },
+    {
+      "sha256": "2ee7ad42e48f8c4f9afe619f67226e3e6e0d85e25c5cbd3603f90df3325b6a43",
+      "bytes": 770,
+      "file": "components/harfbuzz/subprojects/icu.wrap"
+    },
+    {
+      "sha256": "06bb7e177ac33cfa2d436baec215c3510da7eb919a60f87262a4eeabb28b8b37",
+      "bytes": 140,
+      "file": "components/harfbuzz/subprojects/kbts.wrap"
+    },
+    {
+      "sha256": "ab89c1e7e8b76aff9a12fd20ce8d05b77666eac87d4f5c33f2e0f7a619097c38",
+      "bytes": 609,
+      "file": "components/harfbuzz/subprojects/libffi.wrap"
+    },
+    {
+      "sha256": "03030bfddbaacf13e40a3fc539ccccb16a33201e7c7d55008999059aa7aabd81",
+      "bytes": 703,
+      "file": "components/harfbuzz/subprojects/libpng.wrap"
+    },
+    {
+      "sha256": "42e608b3a113dc9c6ae50c8c8ed043c32732fbe67ccd235f52c269be9ba02183",
+      "bytes": 265,
+      "file": "components/harfbuzz/subprojects/ragel.wrap"
+    },
+    {
+      "sha256": "9a7916471716b8bdd107f82114477304b79759ea7f934254d4a0bc5af184d7c8",
+      "bytes": 653,
+      "file": "components/harfbuzz/subprojects/zlib.wrap"
+    },
+    {
+      "sha256": "9b35b8485f69cd298fccbb3c40a827dc06cf1185553bef827903497d2944a8d7",
+      "bytes": 4370,
+      "file": "components/harfbuzz/test/COPYING"
+    },
+    {
+      "sha256": "f55f74bf740db07bb032a90aa74af4307adea3d489c1ccba12453cf0c0a764cb",
+      "bytes": 593,
+      "file": "components/harfbuzz/test/shape/data/aots/COPYING"
+    },
+    {
+      "sha256": "d24039e4d22c9bc72096f6174374539d92a3d6e1163938546ec59179fe095e6f",
+      "bytes": 584,
+      "file": "components/harfbuzz/test/shape/data/text-rendering-tests/COPYING"
+    },
+    {
+      "sha256": "fa81ce652315b013359d6e8e4744335f31a50c7c192907176d3632f78a3b4596",
+      "bytes": 44366,
+      "file": "components/heif/COPYING"
+    },
+    {
+      "sha256": "278ee9bbb13ecb080a131c68927bd589a6a56fd5449ce25e8e594c858864830d",
+      "bytes": 1066,
+      "file": "components/heif/examples/COPYING"
+    },
+    {
+      "sha256": "6e4ecf1cae052b678ea3178dd4b3652d581ee66a82d58db8800dd7d80dd6de76",
+      "bytes": 825,
+      "file": "components/highway/debian/copyright"
+    },
+    {
+      "sha256": "e340270d4f64384569a91d546acb5b094d69ce47f0c015db77abb74dc6f815af",
+      "bytes": 20785,
+      "file": "components/highway/LICENSE"
+    },
+    {
+      "sha256": "656242e3c9faf27a5c75595bc0eb8570d988361f0a0cfc1b6fb52ccae2341626",
+      "bytes": 682,
+      "file": "components/highway/subprojects/gtest.wrap"
+    },
+    {
+      "sha256": "7391bfbcde4404cefb9849553362c3ab436f929f5cc1abb57071ec045590ee99",
+      "bytes": 1851,
+      "file": "components/imagequant/COPYRIGHT"
+    },
+    {
+      "sha256": "4847d97cd41e980794939b1d2694bd8f67b92856ec80e95c2fcfc34066f0df93",
+      "bytes": 1010,
+      "file": "components/lcms/AUTHORS"
+    },
+    {
+      "sha256": "6dbd60437f8ef91d8de1f08ad75882547fd4931bfcc3566a0735f28db1484d31",
+      "bytes": 1080,
+      "file": "components/lcms/LICENSE"
+    },
+    {
+      "sha256": "c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271",
+      "bytes": 35146,
+      "file": "components/lcms/plugins/fast_float/COPYING.GPL3"
+    },
+    {
+      "sha256": "c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271",
+      "bytes": 35146,
+      "file": "components/lcms/plugins/threaded/COPYING.GPL3"
+    },
+    {
+      "sha256": "8baac37d14eed89b82ffcb041677dd701164eb5cc0f26e165fe47eb11afa0dca",
+      "bytes": 3234,
+      "file": "components/lcms/utils/jpgicc/LICENSE_iccjpeg"
+    },
+    {
+      "sha256": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+      "bytes": 19274,
+      "file": "components/mozjpeg/java/doc/legal/LICENSE"
+    },
+    {
+      "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+      "bytes": 5620,
+      "file": "components/mozjpeg/LICENSE.md"
+    },
+    {
+      "sha256": "933e1427ec78050c76396182fd9819a23fef58c17e997b67581852167be971db",
+      "bytes": 2172,
+      "file": "components/mozjpeg/release/License.rtf"
+    },
+    {
+      "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5",
+      "bytes": 25292,
+      "file": "components/pango/COPYING"
+    },
+    {
+      "sha256": "ff724510cf6671ff503a3247411950ca667aeb1289341811fc09cf68a3ce4640",
+      "bytes": 238,
+      "file": "components/pango/subprojects/cairo.wrap"
+    },
+    {
+      "sha256": "b371e21035b70723de192cf5e6f60c5297c8a56102cdb92399df59d4e2a35911",
+      "bytes": 224,
+      "file": "components/pango/subprojects/fontconfig.wrap"
+    },
+    {
+      "sha256": "769c69a6e0c3460385bda41baec7fb7fcaa13d6977bdec0798b0d93f03584e22",
+      "bytes": 153,
+      "file": "components/pango/subprojects/freetype2.wrap"
+    },
+    {
+      "sha256": "2aea0ccdfddf4e0cc2135fe9059f8ebe929c36527b217f0809fd76c0ecaf02c1",
+      "bytes": 188,
+      "file": "components/pango/subprojects/fribidi.wrap"
+    },
+    {
+      "sha256": "bcf440c82e6e16a765f3e51e3246c2cf72234b6e159722955da936aed388b175",
+      "bytes": 209,
+      "file": "components/pango/subprojects/gi-docgen.wrap"
+    },
+    {
+      "sha256": "ccf4421b2e02348b39526facdf94bb4585dbff3e7ee2f62bc51e9592575d6b42",
+      "bytes": 443,
+      "file": "components/pango/subprojects/glib.wrap"
+    },
+    {
+      "sha256": "a3e03bef5521ba49f2991a29cfcdfc3c887046ea756958b4d91e8c2cc61d405e",
+      "bytes": 413,
+      "file": "components/pango/subprojects/gobject-introspection.wrap"
+    },
+    {
+      "sha256": "45b5779e59848d62672c7de2d78c39bcc4c32b60fec2a1ac24a1bc63c5350a05",
+      "bytes": 192,
+      "file": "components/pango/subprojects/harfbuzz.wrap"
+    },
+    {
+      "sha256": "7e747d261eaaf10a95ac7533c5b1ff720204d2aef40869f6bf323b0630ea6b06",
+      "bytes": 241,
+      "file": "components/pango/subprojects/sysprof.wrap"
+    },
+    {
+      "sha256": "fac9270f0987b96ff4533fca3548c633e02083cbba4a0172a3b149b2e4019793",
+      "bytes": 2087,
+      "file": "components/pixman/COPYING"
+    },
+    {
+      "sha256": "0c777e9f2a67bd4058ab91050eb7a56106c92ed038ba8fe5f54c83344f2d93ca",
+      "bytes": 1773,
+      "file": "components/png/AUTHORS"
+    },
+    {
+      "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+      "bytes": 1036,
+      "file": "components/png/ci/LICENSE_MIT.txt"
+    },
+    {
+      "sha256": "d6cb0e9e560f51085556949a84af12b79a00f10ab8b66c752537faf7cd665572",
+      "bytes": 18097,
+      "file": "components/png/contrib/gregbook/COPYING"
+    },
+    {
+      "sha256": "b6a03c1803eb58ffb1f1278d5c7d4096c4c116e66dce8a7553e8c77d163c3438",
+      "bytes": 2373,
+      "file": "components/png/contrib/gregbook/LICENSE"
+    },
+    {
+      "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+      "bytes": 1036,
+      "file": "components/png/contrib/pngexif/LICENSE_MIT.txt"
+    },
+    {
+      "sha256": "1806f1f10d393e9e377b3a8d1b968452b54f1a90378f14eeef45426946ace330",
+      "bytes": 1164,
+      "file": "components/png/contrib/pngminus/LICENSE.txt"
+    },
+    {
+      "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+      "bytes": 5345,
+      "file": "components/png/LICENSE"
+    },
+    {
+      "sha256": "50633b976f0133862c921aa67d56de2c0b42eb344c8ca3853686efb092a447db",
+      "bytes": 862,
+      "file": "components/png/scripts/cmake/AUTHORS.md"
+    },
+    {
+      "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5",
+      "bytes": 25292,
+      "file": "components/proxy-libintl/COPYING"
+    },
+    {
+      "sha256": "e485a525eff0257256ecaacb7f8d7c3c4cae7255eb70c6963aa9ec200b38b208",
+      "bytes": 322,
+      "file": "components/rsvg/afl-fuzz/Cargo.toml"
+    },
+    {
+      "sha256": "14e765b9c1097d93f4b842a6ad23172b530cc00dfe7a5aae1b9afefdca54531b",
+      "bytes": 1798,
+      "file": "components/rsvg/AUTHORS"
+    },
+    {
+      "sha256": "fcca33feb66f75fb02199902cee0a5072cb491020d655463dfeffffc9d626941",
+      "bytes": 84674,
+      "file": "components/rsvg/Cargo.lock"
+    },
+    {
+      "sha256": "2b31af45debf11de20a99f8aaea177348a5b1bea62a69f0547c86b50244773b0",
+      "bytes": 2441,
+      "file": "components/rsvg/Cargo.toml"
+    },
+    {
+      "sha256": "b2e11b2ea1e293dc19e37da43a1bf982940d6e6b12ff162820bef1eb33ee2dd3",
+      "bytes": 461,
+      "file": "components/rsvg/ci/Cargo.toml"
+    },
+    {
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "bytes": 26530,
+      "file": "components/rsvg/COPYING.LIB"
+    },
+    {
+      "sha256": "e31c999020130abf4be6eb18db713faedab37f6cfb6080c574f078f07f7ddcb4",
+      "bytes": 491,
+      "file": "components/rsvg/fuzz/Cargo.toml"
+    },
+    {
+      "sha256": "44d58917a367cb240f681bc999cb2df4125600a41c2a19c48ac8537886289fc6",
+      "bytes": 641,
+      "file": "components/rsvg/gdk-pixbuf-loader/Cargo.toml"
+    },
+    {
+      "sha256": "0b55c706b9f9c8a4515941cdef12ff130242a4f44ed4d0f7703c07b18095d570",
+      "bytes": 904,
+      "file": "components/rsvg/librsvg-c/Cargo.toml"
+    },
+    {
+      "sha256": "e356cf1cae52472d491bde50ec1836a66b352df1cb6eebe4fe06fd20a95516e0",
+      "bytes": 959,
+      "file": "components/rsvg/librsvg-rebind/librsvg-rebind/Cargo.toml"
+    },
+    {
+      "sha256": "d8b461f6345d92528f4956bd1e53caaa2d13962be28023a126f2fba06a5b3a57",
+      "bytes": 1251,
+      "file": "components/rsvg/librsvg-rebind/librsvg-rebind/sys/Cargo.toml"
+    },
+    {
+      "sha256": "f9c4c77baa3828004ee54b8a4f2db2e88ed44a6237a493965bf551fac0fcb62d",
+      "bytes": 1023,
+      "file": "components/rsvg/librsvg-rebind/LICENSE"
+    },
+    {
+      "sha256": "8f370834d267f608aa03f73d6deb4b78b0440d6238b6389535ccca1f61e2ff7a",
+      "bytes": 597,
+      "file": "components/rsvg/pango-examples/Cargo.toml"
+    },
+    {
+      "sha256": "6d51399ecffc97461dbbee5a262103c99ecc8baed0ecf8ec70c8a9d3b413966f",
+      "bytes": 1751,
+      "file": "components/rsvg/rsvg_convert/Cargo.toml"
+    },
+    {
+      "sha256": "964815527bf97cb996fe73d987448dfa65c2a2144370d82428e01479c1b71e09",
+      "bytes": 615,
+      "file": "components/rsvg/rsvg-bench/Cargo.toml"
+    },
+    {
+      "sha256": "7c68ed69ddfaca59c50d0da1f959e6298a759f0362b24aaed060f92af618d262",
+      "bytes": 3572,
+      "file": "components/rsvg/rsvg/Cargo.toml"
+    },
+    {
+      "sha256": "02e86af3b805e0f2075ebb5ac512831f6ab2a97ddeb186de076c418956418ba1",
+      "bytes": 1181,
+      "file": "components/tiff/doc/html-prebuilt/_sources/project/license.rst.txt"
+    },
+    {
+      "sha256": "6c9436f8e9f58a79e044949e360291b9c910715fad31cdaed66bc61b0dcf33e6",
+      "bytes": 5663,
+      "file": "components/tiff/doc/html-prebuilt/project/license.html"
+    },
+    {
+      "sha256": "02e86af3b805e0f2075ebb5ac512831f6ab2a97ddeb186de076c418956418ba1",
+      "bytes": 1181,
+      "file": "components/tiff/doc/project/license.rst"
+    },
+    {
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+      "bytes": 2416,
+      "file": "components/tiff/LICENSE.md"
+    },
+    {
+      "sha256": "746d8c9c414b335bb7c9615918a15a6489a4dcc1c5c3aac2bda410d1072c332a",
+      "bytes": 66,
+      "file": "components/uhdr/adobe-hdr-gain-map-license/NOTICE"
+    },
+    {
+      "sha256": "c9247b5cb07866938643cc238292434e6f2af8642e1fce10771c0e4cc7909316",
+      "bytes": 12566,
+      "file": "components/uhdr/LICENSE"
+    },
+    {
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "file": "components/uhdr/LICENSE-APACHE"
+    },
+    {
+      "sha256": "029624bf1488ed7b8c92727d267c95f588c9c12fa6932c207884c2641a7e9d37",
+      "bytes": 1088,
+      "file": "components/uhdr/LICENSE-MIT"
+    },
+    {
+      "sha256": "c4b2cd68902b8c4a82c9b5ddebe15538acbce7f70a88fcc751e1e921bde89f7f",
+      "bytes": 19354,
+      "file": "components/uhdr/tests/data/LICENSE"
+    },
+    {
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "file": "components/uhdr/third_party/image_io/LICENSE"
+    },
+    {
+      "sha256": "d47e8390fb0d7ad4a18f26aedd6283c7ab6b5b4fabab536ccb4db7f9f6d90c08",
+      "bytes": 1721,
+      "file": "components/uhdr/third_party/image_io/src/modp_b64/LICENSE"
+    },
+    {
+      "sha256": "1469b759cf18e43c6e1b4ff892307d3962cbbb337ac497620d6690a219fad10c",
+      "bytes": 1133,
+      "file": "components/vips/libvips/foreign/libnsgif/COPYING"
+    },
+    {
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "bytes": 26530,
+      "file": "components/vips/LICENSE"
+    },
+    {
+      "sha256": "f251be89fd442bd9d701360730aea163cc8e2076ff03528f59267dc2c4f8b60a",
+      "bytes": 3279,
+      "file": "components/webp/AUTHORS"
+    },
+    {
+      "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+      "bytes": 1496,
+      "file": "components/webp/COPYING"
+    },
+    {
+      "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c",
+      "bytes": 1436,
+      "file": "components/webp/PATENTS"
+    },
+    {
+      "sha256": "5d4873884a890122a4b9b20ad56ac6f7da1d796a5bfcf04a427970ac96217626",
+      "bytes": 1314,
+      "file": "components/xml2/Copyright"
+    },
+    {
+      "sha256": "d6a2cb265a0a249a234b89eeffa7f316ebe5bff546672a0a2b1a861dd2238460",
+      "bytes": 1270,
+      "file": "components/xml2/result/html-tokenizer/NOTICE"
+    },
+    {
+      "sha256": "d6a2cb265a0a249a234b89eeffa7f316ebe5bff546672a0a2b1a861dd2238460",
+      "bytes": 1270,
+      "file": "components/xml2/test/html-tokenizer/NOTICE"
+    },
+    {
+      "sha256": "6c9f0d975b41afaa34d22f55bb8986ce69e5cb7ad327cb2b28820cd425edf5ee",
+      "bytes": 867,
+      "file": "components/zlib-ng/LICENSE.md"
+    },
+    {
+      "sha256": "fb981668c18a279e285fc4d83fba1e836cc84dd4daa73c9697d3cfd2d8aca6e0",
+      "bytes": 34674,
+      "file": "GPL-3.0.txt"
+    },
+    {
+      "sha256": "996af0513df21f7496288951c41428a03c174e9e4a9d63665c57d670f845ccb1",
+      "bytes": 42098,
+      "file": "LGPL-3.0.txt"
+    },
+    {
+      "sha256": "1469b759cf18e43c6e1b4ff892307d3962cbbb337ac497620d6690a219fad10c",
+      "bytes": 1133,
+      "file": "libnsgif-vips-8.18.6-COPYING"
+    },
+    {
+      "sha256": "61ee852f3dc7b79d1e066756498c86fb08965e250e19a6331286dac699c84ab0",
+      "bytes": 423,
+      "file": "libnsgif-vips-8.18.6-README.md"
+    },
+    {
+      "sha256": "f1b7a91827246887386006fe1bff912f0b1c536aaec18aacb2842ea388cff9fd",
+      "bytes": 568,
+      "file": "libnsgif-vips-8.18.6-update.sh"
+    },
+    {
+      "sha256": "a80efa1aa484cd3902d1a9e66536400f08b15657662919e8ee4afd5e99e3bc86",
+      "bytes": 130948,
+      "file": "librsvg-2.62.91-cargo-sources.json"
+    },
+    {
+      "sha256": "e12992a82572de7d8d25890126bfe1217b1891dd068f4398374954d2760eaa2a",
+      "bytes": 983,
+      "file": "libvips-8.18.6-release-evidence.json"
+    },
+    {
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "bytes": 26530,
+      "file": "libvips-8.18.6-release/LICENSE"
+    },
+    {
+      "sha256": "e173c8181f47e84df8ae2b7932030d059b73862747bd069fd5cb9e17810466fc",
+      "bytes": 10176,
+      "file": "libvips-8.18.6-release/README.md"
+    },
+    {
+      "sha256": "d551c859958f06b8088957f679c29be1ff53760191f7401e8183460fc5f58cf4",
+      "bytes": 597,
+      "file": "libvips-8.18.6-release/versions.json"
+    },
+    {
+      "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172",
+      "bytes": 16727,
+      "file": "MPL-2.0.txt"
+    },
+    {
+      "sha256": "8635b0a1680ec574e1965e3b0dd3cc69ef7bfb0ff4a60d9663d0e56d9fece1ff",
+      "bytes": 2240,
+      "file": "mxe-d973945/LICENSE.md"
+    },
+    {
+      "sha256": "fba6a2534f297288ea641daadf40180a904c41af18105cdf0aa3c8cd8912c85f",
+      "bytes": 9214,
+      "file": "mxe-d973945/mxe.github.mk"
+    },
+    {
+      "sha256": "1cda3e7e201dbb980b197d1b1e84a70a5fa0eba073411c8824eccdfedc75174f",
+      "bytes": 3266,
+      "file": "mxe-d973945/README.md"
+    },
+    {
+      "sha256": "164caa6db2cf36c8f0b8eb2d05e238fc54982fcabb2f259eab27e6c5a4ca93a3",
+      "bytes": 1334,
+      "file": "mxe-d973945/src/cairo.mk"
+    },
+    {
+      "sha256": "5ac79bb2633e990c2731644e0bbc441ca8ee65412f75e6e65dc11766c6ade0bc",
+      "bytes": 1232,
+      "file": "mxe-d973945/src/expat.mk"
+    },
+    {
+      "sha256": "916fe0892c799c4efd577c9ee3a022e1d186205cce063a4b29e67264eea0cd5c",
+      "bytes": 1143,
+      "file": "mxe-d973945/src/fontconfig.mk"
+    },
+    {
+      "sha256": "2c45a146e388f5b62e8d26090f1957745f13394ae2fb13fb25b277d433659357",
+      "bytes": 1839,
+      "file": "mxe-d973945/src/freetype.mk"
+    },
+    {
+      "sha256": "6c34bbfdbb443bbc93e48a511b1c6f510499964c4fb5e3e1bb838d9bfa32319e",
+      "bytes": 625,
+      "file": "mxe-d973945/src/fribidi.mk"
+    },
+    {
+      "sha256": "3e0fa007fe8ccefee59ae02143ca53bd52d2c3c8bc80fc2bffb5c34846182f20",
+      "bytes": 2164,
+      "file": "mxe-d973945/src/glib.mk"
+    },
+    {
+      "sha256": "42a56bf19136d6d3f30564505df7a14ae894a11b202edc580930e464abc9dffc",
+      "bytes": 942,
+      "file": "mxe-d973945/src/harfbuzz.mk"
+    },
+    {
+      "sha256": "6af44f4f8b6466b78c29da654b8bb484db34f3624e42f3e931169e376eb12ee1",
+      "bytes": 1050,
+      "file": "mxe-d973945/src/lcms.mk"
+    },
+    {
+      "sha256": "6b00d42b5e73d374c9598fdc50128b4680338a8b344ebb88232c4a9eaa1444c0",
+      "bytes": 1404,
+      "file": "mxe-d973945/src/libarchive.mk"
+    },
+    {
+      "sha256": "54bf88456972afed0004c9759a621cb5b9345613eed4c0ca41f1c2757e1a48aa",
+      "bytes": 813,
+      "file": "mxe-d973945/src/libexif.mk"
+    },
+    {
+      "sha256": "6d709798c9f7dcc2fa4922bf168f08bb469e52e7340c139ac97fbcd6f1eacb3a",
+      "bytes": 1119,
+      "file": "mxe-d973945/src/libffi.mk"
+    },
+    {
+      "sha256": "32d04c88afe7257e2448166705373823eb3713d398e817e14e0d4ce90bcf1e3b",
+      "bytes": 1320,
+      "file": "mxe-d973945/src/libpng.mk"
+    },
+    {
+      "sha256": "0a36007a64dc9b7d02ee247bf61dc049d3c7a9a690fcc37b0e5bcf051678cf78",
+      "bytes": 1417,
+      "file": "mxe-d973945/src/librsvg.mk"
+    },
+    {
+      "sha256": "92e1c4ead0476ae09992263a731e15000685b381d6fed950d6d08ba630eaea2d",
+      "bytes": 946,
+      "file": "mxe-d973945/src/libwebp.mk"
+    },
+    {
+      "sha256": "39c1990fc98f9fa4504036d3781b7f9cff2fb82e79ff193320efc4982feb91ff",
+      "bytes": 1273,
+      "file": "mxe-d973945/src/libxml2.mk"
+    },
+    {
+      "sha256": "8643cd7571046afa828b31e1f8b92549c40132f2111c9a252b58b7ce2da63995",
+      "bytes": 1077,
+      "file": "mxe-d973945/src/pango.mk"
+    },
+    {
+      "sha256": "cf8b9da9ca119f9051f09b71a3739611f7c1f7102a93424f9aabd595b9f1d5a1",
+      "bytes": 944,
+      "file": "mxe-d973945/src/pixman.mk"
+    },
+    {
+      "sha256": "c288b2abc50a73654a83c0d55bee03e7c1b43277bd45e322ed5cd0d6adbd50a5",
+      "bytes": 889,
+      "file": "mxe-d973945/src/tiff.mk"
+    },
+    {
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c",
+      "bytes": 1073,
+      "file": "onnxruntime-LICENSE.txt"
+    },
+    {
+      "sha256": "143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3",
+      "bytes": 338088,
+      "file": "onnxruntime-ThirdPartyNotices.txt"
+    },
+    {
+      "sha256": "8f4484f48d17010837d3721d796cd05b94f1a94d8a691ea9f1f288935a46495a",
+      "bytes": 8153,
+      "file": "README.md"
+    },
+    {
+      "sha256": "280e7d164420cfc1a1b192a582bf53e3dba97b86a5c3575f878b674ad1d41e13",
+      "bytes": 4913,
+      "file": "sharp-libvips-third-party-README.md"
+    },
+    {
+      "sha256": "25ffcfa69e28b1913ced27ec778b90f24911a1bb3021253577e8b0af55db0d49",
+      "bytes": 4230,
+      "file": "sharp-libvips-v1.3.3-THIRD-PARTY-NOTICES.md"
+    },
+    {
+      "sha256": "02253a2d39a6b1cfd2c1deacb0947f7d2a3398a522236f7efc4d57e82cbfe980",
+      "bytes": 595,
+      "file": "sharp-libvips-v1.3.3-versions.properties"
+    },
+    {
+      "sha256": "52f2d9d76b07d4b4ad1720659b1e9bbc76121b85f21d9d084a85af28014473f3",
+      "bytes": 1262,
+      "file": "sharp-libvips-v1.3.3-win.sh"
+    },
+    {
+      "sha256": "d551c859958f06b8088957f679c29be1ff53760191f7401e8183460fc5f58cf4",
+      "bytes": 597,
+      "file": "sharp-libvips-versions.json"
+    },
+    {
+      "sha256": "dc1f5d2d43c5531dfe0acaf4e950ea5dbe3e61e1850cf0e983bda7efc10d6693",
+      "bytes": 10464,
+      "file": "sharp-package-LICENSE.txt"
+    },
+    {
+      "sha256": "d3f42308ce427b18f53f0367bb03fb233c31a37aad0eb65c3d3232f4ab0edd74",
+      "bytes": 1327,
+      "file": "supplemental-evidence.json"
+    }
+  ],
+  "scope": "Pinned review materials except the editable collection tool, ignored source archive cache and this index; these are not all license texts",
+  "schemaVersion": 1
+}

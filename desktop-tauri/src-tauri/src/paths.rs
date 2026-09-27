@@ -7,10 +7,11 @@ pub const DEV_PROJECT_ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../..")
 
 #[derive(Clone)]
 pub struct DesktopPaths {
+    pub is_packaged: bool,
     pub app_root: PathBuf,
     #[allow(dead_code)]
     pub resource_root: PathBuf,
-    pub gateway_script: PathBuf,
+    pub gateway_executable: PathBuf,
     pub gateway_cwd: PathBuf,
     pub assets_root: PathBuf,
     pub tools_root: PathBuf,
@@ -24,7 +25,6 @@ pub struct DesktopPaths {
     pub companion_chat_window_file: PathBuf,
     pub atelier_window_file: PathBuf,
     pub preferences_file: PathBuf,
-    pub sidecar_node: Option<PathBuf>,
 }
 
 fn first_existing(candidates: &[PathBuf]) -> PathBuf {
@@ -35,7 +35,7 @@ fn first_existing(candidates: &[PathBuf]) -> PathBuf {
         .unwrap_or_else(|| candidates[0].clone())
 }
 
-/// 去掉 Windows `\\?\` UNC 前缀（std::fs::canonicalize 会引入；node 等
+/// 去掉 Windows `\\?\` UNC 前缀（std::fs::canonicalize 会引入；一些
 /// 外部程序解析 `\\?\C:` 会失败）。
 fn simplify_path(path: PathBuf) -> PathBuf {
     let text = path.to_string_lossy();
@@ -46,7 +46,7 @@ fn simplify_path(path: PathBuf) -> PathBuf {
     }
 }
 
-/// 打包模式：resource_dir 下有 gateway/server.js 即为 packaged；
+/// 打包模式使用 resource_dir/gateway/huiyu-runtime.exe；缺失时启动失败。
 /// dev 模式（cargo run / tauri dev）直接用仓库根。
 pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
     let resource_root = simplify_path(
@@ -61,50 +61,31 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
             .expect("Desktop configuration directory is unavailable")),
     );
 
-    // 诊断：resource_dir 与候选布局（打包模式资源在 exe 旁 resources/ 下）
-    let _packaged_gateway_candidates = [
-        resource_root.join("gateway").join("server.js"),
-        resource_root
-            .parent()
-            .unwrap_or(&resource_root)
-            .join("resources")
-            .join("gateway")
-            .join("server.js"),
-    ];
-    // Windows 打包布局：resource_dir() = exe 目录，NSIS 把资源平铺到安装根
-    // （gateway/、node.exe）；手动布局（本机解包测试）在 exe 旁 resources/ 下。
-    // dev 模式（cargo run）resource_dir = target/debug——tauri 会把打包资源
-    // 复制进 target 目录，必须排除，否则 dev 被误判为 packaged。
     let resources_dir = resource_root.join("resources");
-    let gateway_dir = first_existing(&[
-        resource_root.join("gateway"),
-        resources_dir.join("gateway"),
-    ]);
-    let is_cargo_target = resource_root
-        .file_name()
-        .map(|n| {
-            let n = n.to_string_lossy();
-            (n == "debug" || n == "release")
-                && resource_root
-                    .parent()
-                    .and_then(|p| p.file_name())
-                    .map(|p| p.to_string_lossy() == "target")
-                    .unwrap_or(false)
-        })
-        .unwrap_or(false);
-    let is_packaged = !is_cargo_target && gateway_dir.join("server.js").exists();
-
-    let (app_root, gateway_script) = if is_packaged {
-        // 打包布局：网关代码根（相当于 Electron 的 asar 根，ROOT_DIR 语义 =
-        // 含 dist/assets/tools/data 的网关根）
-        let script = gateway_dir.join("server.js");
-        (gateway_dir.clone(), script)
-    } else {
-        let root = PathBuf::from(DEV_PROJECT_ROOT);
-        (root.clone(), root.join("server.js"))
+    let gateway_candidates = [
+        resource_root.join("gateway"), resources_dir.join("gateway"),
+    ];
+    let gateway_dir = gateway_candidates.iter().find(|dir|dir.join("huiyu-runtime.exe").is_file())
+        .cloned().unwrap_or_else(||first_existing(&gateway_candidates));
+    let is_cargo_target = resource_root.file_name().is_some_and(|name| {
+        (name == "debug" || name == "release")
+            && resource_root.ancestors().skip(1).take(2).any(|parent| parent.file_name().is_some_and(|name| name == "target"))
+    }) || option_env!("CARGO_TARGET_DIR").is_some_and(|target| {
+        let target=PathBuf::from(target);
+        target.is_absolute() && resource_root.starts_with(target)
+    });
+    // An installed layout missing its executable is a broken installation, never
+    // permission to silently read this build machine's source tree or Node files.
+    let is_packaged = !is_cargo_target && (gateway_dir.join("huiyu-runtime.exe").is_file() || !cfg!(debug_assertions));
+    let app_root = if is_packaged { gateway_dir } else {
+        simplify_path(std::fs::canonicalize(DEV_PROJECT_ROOT).unwrap_or_else(|_| PathBuf::from(DEV_PROJECT_ROOT)))
     };
-
-    let gateway_cwd = gateway_script.parent().unwrap_or(&app_root).to_path_buf();
+    let gateway_executable = if is_packaged { app_root.join("huiyu-runtime.exe") } else {
+        let override_path = if cfg!(debug_assertions) { std::env::var_os("AICS_DESKTOP_RUNTIME_EXE").map(PathBuf::from) } else { None };
+        select_dev_runtime(&app_root, override_path)
+    };
+    // Assets/configuration are rooted at the gateway payload, not target/debug.
+    let gateway_cwd = app_root.clone();
     let assets_root = first_existing(&[
         app_root.join("assets"),
         resources_dir.join("assets"),
@@ -117,26 +98,15 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
     ]);
     let runtime_root = config_root.join("gateway");
 
-    // sidecar node：NSIS 安装布局在安装根 node.exe（externalBin 重命名）；
-    // 手动/开发布局在 resource_root/binaries/node-<triple>.exe
-    let sidecar_node = if is_packaged {
-        first_existing(&[
-            resource_root.join("node.exe"),
-            resource_root.join("binaries").join("node-x86_64-pc-windows-msvc.exe"),
-        ])
-        .into()
-    } else {
-        None
-    };
-
     let profile_root = crate::ui_entry::isolated_profile().unwrap_or_else(|| app.path().app_local_data_dir().expect("WebView profile directory is unavailable"));
     // Failure retains a closed migration boundary; it does not invent a new
     // identity for unreadable data. The bundled UI can still show diagnostics.
     let source_profile_id = crate::gateway::profile_id(&profile_root).unwrap_or_default();
     DesktopPaths {
+        is_packaged,
         app_root,
         resource_root,
-        gateway_script,
+        gateway_executable,
         gateway_cwd,
         assets_root,
         tools_root,
@@ -150,10 +120,19 @@ pub fn resolve_paths(app: &tauri::AppHandle) -> DesktopPaths {
         companion_chat_window_file: config_root.join("companion-chat-window.json"),
         atelier_window_file: config_root.join("atelier-window.json"),
         preferences_file: config_root.join("companion-preferences.json"),
-        sidecar_node,
     }
 }
 
+/// Explicit debug overrides are authoritative even when invalid: start reports
+/// the missing/non-absolute executable instead of falling back to another build.
+fn select_dev_runtime(root: &Path, override_path: Option<PathBuf>) -> PathBuf {
+    if let Some(path) = override_path { return path; }
+    let candidates=[
+        root.join("runtime-rs/target/debug/huiyu-runtime.exe"),
+        root.join("runtime-rs/target/release/huiyu-runtime.exe"),
+    ];
+    candidates.iter().find(|path|path.is_file()).cloned().unwrap_or_else(||candidates[0].clone())
+}
 /// Electron 旧版数据目录候选（数据迁移源）：%APPDATA%\ai-cg-studio
 pub fn electron_user_data_candidates() -> Vec<PathBuf> {
     let base = std::env::var("APPDATA").unwrap_or_default();
@@ -223,6 +202,17 @@ pub fn migrate_electron_data(config_root: &Path, runtime_root: &Path) -> Vec<Str
 mod tests {
     use super::*;
     use std::fs;
+
+    #[test]
+    fn runtime_override_never_falls_back_to_another_build() {
+        let root=std::env::temp_dir().join(format!("huiyu-runtime-paths-{}",std::process::id()));
+        let release=root.join("runtime-rs/target/release/huiyu-runtime.exe");
+        fs::create_dir_all(release.parent().unwrap()).unwrap();fs::write(&release,b"fixture").unwrap();
+        assert_eq!(select_dev_runtime(&root,None),release);
+        let missing=root.join("not-built.exe");assert_eq!(select_dev_runtime(&root,Some(missing.clone())),missing);
+        let relative=PathBuf::from("relative.exe");assert_eq!(select_dev_runtime(&root,Some(relative.clone())),relative);
+        fs::remove_dir_all(root).unwrap();
+    }
 
     #[test]
     fn migrate_copies_electron_json_and_token() {

@@ -209,5 +209,5 @@ function qualityTestMetadata(file: string): TestMetadata {
   return QUALITY_TEST_METADATA[file] ?? { domain: 'unclassified', environment: 'node', parallelSafety: 'unreviewed', resources: ['unreviewed'] };
 }
 // Browser and real packaged-Windows probes have separate explicit execution prerequisites.
-const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs', 'test-workspace-sidecar.js', 'test-workspace-migration-browser.mjs', 'test-desktop-library-browser.mjs', 'test-task-center-browser.mjs', 'test-live2d-renderer-process.mjs', 'test-electron-shell.mjs']);
+const QUALITY_EXTERNAL_TESTS = Object.freeze(['test-resource-ui-visual.mjs', 'test-rust-bundle.js', 'test-workspace-migration-browser.mjs', 'test-desktop-library-browser.mjs', 'test-task-center-browser.mjs', 'test-live2d-renderer-process.mjs', 'test-electron-shell.mjs']);
 export = { QUALITY_TEST_SUITES, QUALITY_TEST_METADATA, QUALITY_EXTERNAL_TESTS, qualityTestMetadata };

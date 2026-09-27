@@ -1,0 +1,6671 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-09-27",
+  "baselineCommit": "aba7e24bc3989ef9957ea1ab97ab47521b6dbfac",
+  "status": "pending",
+  "scope": "Node production implementation; frontend and developer Node tools retained",
+  "method": {
+    "runtimeModules": "TypeScript AST after in-memory transpile removes type-only imports; runtime .js resolved to handwritten .ts; explicit worker/fork/maintenance edges included",
+    "http": "literal/array/chained Express registrations plus manually expanded dispatch; middleware mounts separate; GET implicit HEAD not double-counted",
+    "packageClosure": "package-lock npm roots including optional platform packages; lock closure is not installed Windows package count",
+    "limitations": [
+      "Static inventory is not executed endpoint coverage or Rust parity.",
+      "Static middleware and parameter paths represent open-ended resources, not enumerated concrete URLs.",
+      "All statuses are pending until behavioral equivalence is verified; this baseline does not track concurrent candidate implementation progress.",
+      "External providers/processes remain external; source-only npm build and operator-opt-in run_command do not require shipping Node."
+    ]
+  },
+  "summary": {
+    "routeRecords": 164,
+    "workspaceCommands": 55,
+    "maintenanceTasks": 4,
+    "runtimeSourceModules": 227,
+    "npmLockPackages": 143
+  },
+  "httpRoutes": [
+    {
+      "method": "POST",
+      "path": "/api/anima/images",
+      "source": "routes/anima.ts",
+      "line": 74,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/anima/jobs/:id/result",
+      "source": "routes/anima.ts",
+      "line": 123,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/anima/jobs/:id",
+      "source": "routes/anima.ts",
+      "line": 170,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/anima/jobs/:id",
+      "source": "routes/anima.ts",
+      "line": 159,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/anima/jobs",
+      "source": "routes/anima.ts",
+      "line": 100,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/anima/status",
+      "source": "routes/anima.ts",
+      "line": 58,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/creative/images",
+      "source": "routes/anima.ts",
+      "line": 74,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/creative/jobs/:id/result",
+      "source": "routes/anima.ts",
+      "line": 123,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/creative/jobs/:id",
+      "source": "routes/anima.ts",
+      "line": 170,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/creative/jobs/:id",
+      "source": "routes/anima.ts",
+      "line": 159,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/creative/jobs",
+      "source": "routes/anima.ts",
+      "line": 100,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/creative/status",
+      "source": "routes/anima.ts",
+      "line": 58,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/chat-provider/host-config",
+      "source": "routes/chat.ts",
+      "line": 382,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/chat-provider/host-config",
+      "source": "routes/chat.ts",
+      "line": 365,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat-provider/host-config",
+      "source": "routes/chat.ts",
+      "line": 370,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat-provider/test",
+      "source": "routes/chat.ts",
+      "line": 346,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/chat-status",
+      "source": "routes/chat.ts",
+      "line": 338,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat",
+      "source": "routes/chat.ts",
+      "line": 391,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/config",
+      "source": "routes/control.ts",
+      "line": 323,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/build-web",
+      "source": "routes/control.ts",
+      "line": 377,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/preference",
+      "source": "routes/control.ts",
+      "line": 364,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/start",
+      "source": "routes/control.ts",
+      "line": 283,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/stop",
+      "source": "routes/control.ts",
+      "line": 305,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/mode",
+      "source": "routes/control/services.ts",
+      "line": 222,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/service/comfy",
+      "source": "routes/control/services.ts",
+      "line": 162,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/service/ollama",
+      "source": "routes/control/services.ts",
+      "line": 141,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/service/voice",
+      "source": "routes/control/services.ts",
+      "line": 22,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/service/webui",
+      "source": "routes/control/services.ts",
+      "line": 75,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/diagnostics",
+      "source": "routes/control/status.ts",
+      "line": 154,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/logs",
+      "source": "routes/control/status.ts",
+      "line": 187,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/sd-status",
+      "source": "routes/control/status.ts",
+      "line": 24,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/share-link",
+      "source": "routes/control/status.ts",
+      "line": 144,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "source": "routes/control/status.ts",
+      "line": 69,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/desktop-tools",
+      "source": "routes/desktop-tools.ts",
+      "line": 362,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/generation/jobs/:id/result",
+      "source": "routes/generation.ts",
+      "line": 54,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/generation/jobs/:id",
+      "source": "routes/generation.ts",
+      "line": 77,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/generation/jobs/:id",
+      "source": "routes/generation.ts",
+      "line": 44,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/generation/jobs",
+      "source": "routes/generation.ts",
+      "line": 29,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/generation/status",
+      "source": "routes/generation.ts",
+      "line": 25,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/interrogate/status",
+      "source": "routes/interrogate.ts",
+      "line": 301,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/interrogate",
+      "source": "routes/interrogate.ts",
+      "line": 220,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/live2d-import/:id/rollback",
+      "source": "routes/live2d-import.ts",
+      "line": 33,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/live2d-import/:id",
+      "source": "routes/live2d-import.ts",
+      "line": 36,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live2d-import/:id",
+      "source": "routes/live2d-import.ts",
+      "line": 25,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/live2d-import/:id",
+      "source": "routes/live2d-import.ts",
+      "line": 30,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/live2d-import",
+      "source": "routes/live2d-import.ts",
+      "line": 10,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live2d-companions",
+      "source": "routes/live2d.ts",
+      "line": 36,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live2d-local/:character/*file",
+      "source": "routes/live2d.ts",
+      "line": 40,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live2d-model/:character/:quality",
+      "source": "routes/live2d.ts",
+      "line": 64,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live2d-status",
+      "source": "routes/live2d.ts",
+      "line": 50,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live2d-texture/:character/:quality/:index",
+      "source": "routes/live2d.ts",
+      "line": 72,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/maintenance/scenes-state",
+      "source": "routes/maintenance-scene-save.ts",
+      "line": 160,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/scenes/changes",
+      "source": "routes/maintenance-scene-save.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "save mode table",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/scenes/import",
+      "source": "routes/maintenance-scene-save.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "save mode table",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/scenes/preview",
+      "source": "routes/maintenance-scene-save.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "save mode table",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/scenes",
+      "source": "routes/maintenance-scene-save.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "save mode table",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/maintenance/backups",
+      "source": "routes/maintenance.ts",
+      "line": 248,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/maintenance/home-hero",
+      "source": "routes/maintenance.ts",
+      "line": 284,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/home-hero",
+      "source": "routes/maintenance.ts",
+      "line": 410,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/maintenance/recovery-status",
+      "source": "routes/maintenance.ts",
+      "line": 165,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/run",
+      "source": "routes/maintenance.ts",
+      "line": 458,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/maintenance/showcase",
+      "source": "routes/maintenance.ts",
+      "line": 306,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/api/character-reference-profile/:id",
+      "source": "routes/resources-reference.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "reference profile",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/character-references/*",
+      "source": "routes/resources-reference.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "verified resource allowlist",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/data/character-reference-view.json",
+      "source": "routes/resources-reference.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "verified projection",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/resources/status",
+      "source": "routes/resources.ts",
+      "line": 25,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/resources/tasks/:id/cancel",
+      "source": "routes/resources.ts",
+      "line": 45,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/resources/tasks",
+      "source": "routes/resources.ts",
+      "line": 31,
+      "registration": "express",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/v1/:id/concat",
+      "source": "routes/tasks.ts",
+      "line": 48,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/v1/:id/continue",
+      "source": "routes/tasks.ts",
+      "line": 49,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/tasks/v1/:id/delivery",
+      "source": "routes/tasks.ts",
+      "line": 50,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/v1/:id/reconcile",
+      "source": "routes/tasks.ts",
+      "line": 46,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/v1/:id/results/:index",
+      "source": "routes/tasks.ts",
+      "line": 54,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/v1/:id/resume",
+      "source": "routes/tasks.ts",
+      "line": 47,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/tasks/v1/:id",
+      "source": "routes/tasks.ts",
+      "line": 45,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/v1/:id",
+      "source": "routes/tasks.ts",
+      "line": 44,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/tasks/v1/by-key/:key",
+      "source": "routes/tasks.ts",
+      "line": 43,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/v1/by-key/:key",
+      "source": "routes/tasks.ts",
+      "line": 42,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/v1/",
+      "source": "routes/tasks.ts",
+      "line": 34,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tasks/v1/legacy-history",
+      "source": "routes/tasks.ts",
+      "line": 35,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/tasks/v1/",
+      "source": "routes/tasks.ts",
+      "line": 36,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video-ai/dialogue",
+      "source": "routes/video-ai.ts",
+      "line": 229,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video-ai/polish",
+      "source": "routes/video-ai.ts",
+      "line": 191,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video-ai/review",
+      "source": "routes/video-ai.ts",
+      "line": 250,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video-ai/rewrite",
+      "source": "routes/video-ai.ts",
+      "line": 160,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video-ai/script",
+      "source": "routes/video-ai.ts",
+      "line": 271,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/video-ai/status",
+      "source": "routes/video-ai.ts",
+      "line": 133,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video/batches/:id/concat",
+      "source": "routes/video.ts",
+      "line": 274,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/video/batches/:id/result",
+      "source": "routes/video.ts",
+      "line": 288,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video/batches/:id/shots/:index/retry",
+      "source": "routes/video.ts",
+      "line": 256,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/video/batches/:id",
+      "source": "routes/video.ts",
+      "line": 246,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/video/batches/:id",
+      "source": "routes/video.ts",
+      "line": 237,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video/batches",
+      "source": "routes/video.ts",
+      "line": 214,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video/images",
+      "source": "routes/video.ts",
+      "line": 108,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/video/jobs/:id/result",
+      "source": "routes/video.ts",
+      "line": 183,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/video/jobs/:id",
+      "source": "routes/video.ts",
+      "line": 173,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/video/jobs/:id",
+      "source": "routes/video.ts",
+      "line": 163,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video/jobs",
+      "source": "routes/video.ts",
+      "line": 140,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/video/status",
+      "source": "routes/video.ts",
+      "line": 58,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/video/storyboard",
+      "source": "routes/video.ts",
+      "line": 202,
+      "registration": "express",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/translate",
+      "source": "routes/voice.ts",
+      "line": 124,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tts-status",
+      "source": "routes/voice.ts",
+      "line": 148,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/tts",
+      "source": "routes/voice.ts",
+      "line": 238,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/tts",
+      "source": "routes/voice.ts",
+      "line": 198,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/voice/prepare",
+      "source": "routes/voice.ts",
+      "line": 165,
+      "registration": "express",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workspace/migrations/:migrationId/media/:alias/chunks",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "migration.media",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workspace/migrations/:migrationId/records/:itemId/chunks",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "migration.recordChunk",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/migrations/:migrationId/records/:itemId",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "migration.record",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/migrations/:migrationId/verify",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "migration.verify",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/migrations/:migrationId",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "migration.status",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/migrations",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "migration.begin",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/profile/chat/reset",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "profile.resetChat",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/profile/chat",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "profile.readChat",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workspace/profile/chat",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "profile.saveChatRecord",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/profile/drafts",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "profile.readDrafts",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workspace/profile/drafts",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "profile.saveDraft",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/profile/settings",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "profile.readSettings",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workspace/profile/settings",
+      "source": "routes/workspace-profile.ts",
+      "registration": "manual-dispatch",
+      "dispatch": "profile.saveSetting",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/artwork-saves/:operationId/abort",
+      "source": "routes/workspace.ts",
+      "line": 175,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workspace/artwork-saves/:operationId/chunks",
+      "source": "routes/workspace.ts",
+      "line": 170,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/artwork-saves/:operationId/commit",
+      "source": "routes/workspace.ts",
+      "line": 173,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/artwork-saves/:operationId",
+      "source": "routes/workspace.ts",
+      "line": 167,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/workspace/artworks/:id/permanent",
+      "source": "routes/workspace.ts",
+      "line": 184,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/artworks/:id/restore",
+      "source": "routes/workspace.ts",
+      "line": 185,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/workspace/artworks/:id",
+      "source": "routes/workspace.ts",
+      "line": 181,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/artworks/:id",
+      "source": "routes/workspace.ts",
+      "line": 150,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/workspace/artworks/:id",
+      "source": "routes/workspace.ts",
+      "line": 177,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/artworks/lookup",
+      "source": "routes/workspace.ts",
+      "line": 151,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/artworks/trash-batch",
+      "source": "routes/workspace.ts",
+      "line": 156,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/artworks",
+      "source": "routes/workspace.ts",
+      "line": 145,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/artworks",
+      "source": "routes/workspace.ts",
+      "line": 144,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/backups/:backupId/restore",
+      "source": "routes/workspace.ts",
+      "line": 204,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/backups",
+      "source": "routes/workspace.ts",
+      "line": 203,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workspace/media-uploads/:operationId/chunks",
+      "source": "routes/workspace.ts",
+      "line": 141,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/media-uploads/:operationId/commit",
+      "source": "routes/workspace.ts",
+      "line": 142,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/media-uploads/:operationId",
+      "source": "routes/workspace.ts",
+      "line": 140,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/media/:alias/chunks",
+      "source": "routes/workspace.ts",
+      "line": 199,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/media/:alias/thumbnail",
+      "source": "routes/workspace.ts",
+      "line": 139,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/workspace/media/:alias",
+      "source": "routes/workspace.ts",
+      "line": 143,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/media/collect",
+      "source": "routes/workspace.ts",
+      "line": 196,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/media/count",
+      "source": "routes/workspace.ts",
+      "line": 138,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/operations/:operationId",
+      "source": "routes/workspace.ts",
+      "line": 165,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/projects",
+      "source": "routes/workspace.ts",
+      "line": 164,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/projects",
+      "source": "routes/workspace.ts",
+      "line": 188,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/status",
+      "source": "routes/workspace.ts",
+      "line": 137,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/trash/purge",
+      "source": "routes/workspace.ts",
+      "line": 194,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/^(?!\\/api).*/",
+      "source": "server.ts",
+      "line": 364,
+      "registration": "express",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "source": "server.ts",
+      "line": 156,
+      "registration": "express",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "source": "server.ts",
+      "line": 200,
+      "registration": "express",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/index.html",
+      "source": "server.ts",
+      "line": 200,
+      "registration": "express",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/sdapi/v1/txt2img",
+      "source": "server.ts",
+      "line": 348,
+      "registration": "express",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/sdapi/v1/interrupt",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 11,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/sdapi/v1/options",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 7,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/sdapi/v1/options",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 11,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/sdapi/v1/progress",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 7,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/sdapi/v1/samplers",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 7,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/sdapi/v1/schedulers",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 7,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/sdapi/v1/sd-models",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 7,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/sdapi/v1/txt2img",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 11,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "GET|HEAD",
+      "path": "/sdapi/v1/upscalers",
+      "source": "server/sd-proxy-policy.ts",
+      "line": 7,
+      "registration": "proxy-allowlist",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workspace/media-capabilities",
+      "source": "server/workspace/host-media.ts",
+      "line": 23,
+      "registration": "express",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace/media-content/:alias",
+      "source": "server/workspace/host-media.ts",
+      "line": 40,
+      "registration": "chained-route",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "HEAD",
+      "path": "/api/workspace/media-content/:alias",
+      "source": "server/workspace/host-media.ts",
+      "line": 40,
+      "registration": "chained-route",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "method": "POST",
+      "path": "/api/desktop-host",
+      "source": "server/workspace/host.ts",
+      "line": 122,
+      "registration": "express",
+      "batch": "M1",
+      "status": "pending"
+    }
+  ],
+  "middlewareMounts": [
+    {
+      "source": "routes/live2d.ts",
+      "line": 30,
+      "paths": null,
+      "expression": "router.use(createLive2dImportRouter(localRoot))",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/live2d-import.ts",
+      "line": 8,
+      "paths": [
+        "/api/live2d-import"
+      ],
+      "expression": "router.use('/api/live2d-import', localOnly)",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/live2d-import.ts",
+      "line": 29,
+      "paths": [
+        "/api/live2d-import/:id"
+      ],
+      "expression": "router.use('/api/live2d-import/:id', express.json({ limit: '96kb' }))",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/live2d-import.ts",
+      "line": 39,
+      "paths": [
+        "/api/live2d-import"
+      ],
+      "expression": "router.use('/api/live2d-import', ((error, _req, res, _next) => { const status = error?.type === 'entity.too.large' ? 413 : 400 res.status(status).json({ error: status === 4",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/desktop-tools.ts",
+      "line": 359,
+      "paths": [
+        "/api/desktop-tools"
+      ],
+      "expression": "router.use('/api/desktop-tools', express.json({ limit: '768kb' }))",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/desktop-tools.ts",
+      "line": 360,
+      "paths": [
+        "/api/desktop-tools"
+      ],
+      "expression": "router.use('/api/desktop-tools', security.localOnly)",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/workspace.ts",
+      "line": 59,
+      "paths": null,
+      "expression": "router.use((req, res, next) => { res.setHeader('Cache-Control', 'no-store'); res.vary('Origin'); if (typeof req.headers.origin === 'string' && authority.allowsOrigin(re",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "source": "routes/workspace.ts",
+      "line": 78,
+      "paths": null,
+      "expression": "router.use(express.json({ limit: '2mb', reviver: (_key: string, value: unknown) => { if (typeof value === 'number' && !Number.isFinite(value)) return invalid('工作区 JSON 数值必须有限')",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "source": "routes/workspace.ts",
+      "line": 132,
+      "paths": null,
+      "expression": "router.use((req, res, next) => { if (!req.path.startsWith('/profile/') && !req.path.startsWith('/migrations')) return next(); return handle(req, res, () => profileWorkspace",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "source": "routes/workspace.ts",
+      "line": 206,
+      "paths": null,
+      "expression": "router.use((_req, res) => envelope.fail(res, 404, '工作区接口不存在', { code: 'WORKSPACE_ROUTE' }))",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "source": "routes/voice.ts",
+      "line": 102,
+      "paths": null,
+      "expression": "router.use((_req, res, next) => { if (lifecycle.signal.aborted) return envelope.fail(res, 503, '语音服务已关闭'); next(); })",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "source": "routes/tasks.ts",
+      "line": 15,
+      "paths": null,
+      "expression": "router.use((req, res, next) => { res.setHeader('Cache-Control', 'no-store'); res.vary('Origin'); if (typeof req.headers.origin === 'string' && authority.allowsOrigin(req)) ",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "source": "routes/tasks.ts",
+      "line": 29,
+      "paths": null,
+      "expression": "router.use(express.json({ limit: '256kb' }))",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "source": "routes/resources.ts",
+      "line": 20,
+      "paths": [
+        "/api/resources"
+      ],
+      "expression": "router.use('/api/resources', security.localOnly, (req, res, next) => { res.setHeader('Cache-Control', 'no-store'); if (!security.hostAllowed(req.headers.host, config.PORT, ",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/maintenance.ts",
+      "line": 162,
+      "paths": [
+        "/data",
+        "/scene-showcase"
+      ],
+      "expression": "router.use(['/data', '/scene-showcase'], maintenanceReadBarrier(leaseOptions))",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "routes/maintenance.ts",
+      "line": 163,
+      "paths": [
+        "/api/maintenance/home-hero"
+      ],
+      "expression": "router.use('/api/maintenance/home-hero', (req, res, next) => req.method === 'GET' ? maintenanceReadBarrier(leaseOptions)(req, res, next) : next())",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "source": "server/desktop-runtime.ts",
+      "line": 60,
+      "paths": null,
+      "expression": "router.use(async (req, res, next) => { try { if (!connect()) return res.status(503).json({ error: '任务工作区尚未激活', code: 'WORKSPACE_UNAVAILABLE' }); await recovery; ",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server/workspace/host.ts",
+      "line": 37,
+      "paths": null,
+      "expression": "router.use((req, res, next) => { if (req.path === '/api/desktop-host' || req.path === '/api/health') return next(); if (closing) return res.status(503).json({ error: '桌面正在维",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "source": "server/workspace/host.ts",
+      "line": 154,
+      "paths": [
+        "/api/workspace"
+      ],
+      "expression": "router.use('/api/workspace', (req, res, next) => { if (operation) return res.status(503).json({ error: '工作区正在维护', code: 'WORKSPACE_MAINTENANCE' }); if (!gateway) return res",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "source": "server/workspace/host-media.ts",
+      "line": 13,
+      "paths": null,
+      "expression": "router.use((req, res, next) => { if (!req.path.startsWith('/media-capabilities') && !req.path.startsWith('/media-content/')) return next(); res.vary('Origin'); if (type",
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 74,
+      "paths": null,
+      "expression": "app.use(security.responseHeaders)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 80,
+      "paths": null,
+      "expression": "app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 81,
+      "paths": null,
+      "expression": "app.use(desktopResourceCors(options.desktopHost))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 81,
+      "paths": null,
+      "expression": "app.use(options.desktopHost.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 82,
+      "paths": null,
+      "expression": "app.use(security.tokenAuth(config.TOKEN))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 84,
+      "paths": [
+        "/api/workspace"
+      ],
+      "expression": "app.use('/api/workspace', options.workspace?.router || ((_req, res) => { envelope.fail(res, 404, '私人工作区尚未启用', { code: 'WORKSPACE_DISABLED' }); }))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 90,
+      "paths": [
+        "/data",
+        "/scene-showcase",
+        "/api/character-reference-profile"
+      ],
+      "expression": "app.use(['/data', '/scene-showcase', '/api/character-reference-profile'], maintenanceReadBarrier({ rootDir: config.ROOT_DIR, runtimeRoot: config.RUNTIME_ROOT, showcaseRoot: c",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 94,
+      "paths": null,
+      "expression": "app.use(resources.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 96,
+      "paths": null,
+      "expression": "app.use(createRemoteContent(config))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 99,
+      "paths": null,
+      "expression": "app.use(resources.staticMiddleware)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 100,
+      "paths": null,
+      "expression": "app.use(createReferenceResources(config))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 101,
+      "paths": [
+        "/docs"
+      ],
+      "expression": "app.use('/docs', (require('./server/docs') as typeof import('./server/docs')).redirectLegacyDocs)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 103,
+      "paths": [
+        "/assets"
+      ],
+      "expression": "app.use('/assets', rejectPrivateAssetPath)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 104,
+      "paths": null,
+      "expression": "app.use(precompressed(config.ROOT_DIR, { assetsRoot: config.ASSETS_ROOT }))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 108,
+      "paths": null,
+      "expression": "app.use(compression({ threshold:1024, filter: function (req, res) { let contentType = String(res.getHeader('Content-Type') || ''); if (/\\bapplication\\/x-ndjson\\",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 128,
+      "paths": [
+        "/api/tasks/v1"
+      ],
+      "expression": "app.use('/api/tasks/v1', desktopTasks.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 144,
+      "paths": null,
+      "expression": "app.use(chat.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 145,
+      "paths": null,
+      "expression": "app.use(voice.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 146,
+      "paths": null,
+      "expression": "app.use(live2d.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 147,
+      "paths": null,
+      "expression": "app.use(maintenance.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 148,
+      "paths": null,
+      "expression": "app.use(control)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 149,
+      "paths": null,
+      "expression": "app.use(anima.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 150,
+      "paths": null,
+      "expression": "app.use(generation.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 151,
+      "paths": null,
+      "expression": "app.use(interrogate.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 152,
+      "paths": null,
+      "expression": "app.use(video.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 153,
+      "paths": null,
+      "expression": "app.use(videoAi.router)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 154,
+      "paths": null,
+      "expression": "app.use(desktopTools)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 190,
+      "paths": [
+        "/_app"
+      ],
+      "expression": "app.use('/_app', express.static(path.join(DIST_DIR, '_app'), { dotfiles:'deny', index:false, immutable:true, maxAge:ONE_YEAR }))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 197,
+      "paths": null,
+      "expression": "app.use(express.static(DIST_DIR, staticOptions(ONE_DAY)))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 205,
+      "paths": [
+        "/css"
+      ],
+      "expression": "app.use('/css', express.static(path.join(config.ROOT_DIR, 'css'), staticOptions(ONE_DAY)))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 208,
+      "paths": [
+        "/src/assets/css"
+      ],
+      "expression": "app.use('/src/assets/css', function (req, res, next) { if (!['/design-system.css', '/light-theme.css'].includes(req.path)) return res.status(404).end(); next(); }, expres",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 214,
+      "paths": [
+        "/assets/live2d",
+        "/assets/live2d-current"
+      ],
+      "expression": "app.use(['/assets/live2d', '/assets/live2d-current'], function (req, res, next) { res.setHeader('Cache-Control', 'private, no-cache'); next(); }, express.static(config.LI",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 225,
+      "paths": [
+        "/assets"
+      ],
+      "expression": "app.use('/assets', function (req, res, next) { res.setHeader('Cache-Control', 'private, no-cache'); next(); }, express.static(config.ASSETS_ROOT, { dotfiles: 'deny', ",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 236,
+      "paths": [
+        "/character-references"
+      ],
+      "expression": "app.use('/character-references', function (req, res, next) { res.setHeader('Cache-Control', 'private, no-cache'); next(); }, express.static(config.CHARACTER_REF_ROO",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 255,
+      "paths": [
+        "/data"
+      ],
+      "expression": "app.use('/data', function (req, res, next) { let name = req.path.replace(/^\\//, ''); if (PUBLIC_DATA_FILES.indexOf(name) === -1) return res.status(404).end(); // 参考标准由多",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 273,
+      "paths": [
+        "/scene-showcase"
+      ],
+      "expression": "app.use('/scene-showcase', function (req, res, next) { if (!config.SCENE_SHOWCASE_DIR) return res.status(404).end(); // 白名单同时约束了 images|thumbs 下的 scNNN / artist_ / pc_ / lo",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 283,
+      "paths": [
+        "/docs"
+      ],
+      "expression": "app.use('/docs', express.static(path.join(config.ROOT_DIR, 'docs'), Object.assign(staticOptions(ONE_DAY), { index:'index.html' })))",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 284,
+      "paths": [
+        "/tools"
+      ],
+      "expression": "app.use('/tools', function (req, res, next) { if (req.path === '/control-server.js') return res.status(404).end(); next(); }, express.static(config.TOOLS_ROOT, staticOpti",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 347,
+      "paths": null,
+      "expression": "app.use(sdProxyPolicy.middleware)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 351,
+      "paths": null,
+      "expression": "app.use(sdProxy)",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 355,
+      "paths": [
+        "/sdapi",
+        "/controlnet",
+        "/adetailer",
+        "/comfy",
+        "/prompt",
+        "/queue",
+        "/history",
+        "/object_info",
+        "/interrupt",
+        "/view"
+      ],
+      "expression": "app.use([ '/sdapi', '/controlnet', '/adetailer', '/comfy', '/prompt', '/queue', '/history', '/object_info', '/interrupt', '/view' ], function (req, res) { envelope.fa",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 374,
+      "paths": [
+        "/api"
+      ],
+      "expression": "app.use('/api', function (req, res) { envelope.fail(res, 404, '接口不存在: ' + req.method + ' ' + req.baseUrl + req.path); })",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "source": "server.ts",
+      "line": 378,
+      "paths": null,
+      "expression": "app.use(function (error: any, req: Request, res: Response, next: NextFunction) { if (res.headersSent) return next(error); // 尊重 err.status/err.statusCode：否则 express.static ",
+      "batch": "M3",
+      "status": "pending"
+    }
+  ],
+  "dynamicRegistrations": [
+    {
+      "source": "routes/maintenance-scene-save.ts",
+      "line": 153,
+      "method": "POST",
+      "expression": "url"
+    }
+  ],
+  "workspaceCommands": [
+    {
+      "kind": "status",
+      "source": "server/workspace/types.ts",
+      "line": 39,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "listArtworks",
+      "source": "server/workspace/types.ts",
+      "line": 40,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "getArtwork",
+      "source": "server/workspace/types.ts",
+      "line": 41,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "getArtworks",
+      "source": "server/workspace/types.ts",
+      "line": 42,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "listProjects",
+      "source": "server/workspace/types.ts",
+      "line": 43,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "prepareSave",
+      "source": "server/workspace/types.ts",
+      "line": 44,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "uploadChunk",
+      "source": "server/workspace/types.ts",
+      "line": 45,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "commitSave",
+      "source": "server/workspace/types.ts",
+      "line": 46,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "abortSave",
+      "source": "server/workspace/types.ts",
+      "line": 47,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "getOperation",
+      "source": "server/workspace/types.ts",
+      "line": 48,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "patchArtwork",
+      "source": "server/workspace/types.ts",
+      "line": 49,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "softDeleteArtwork",
+      "source": "server/workspace/types.ts",
+      "line": 50,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "softDeleteArtworks",
+      "source": "server/workspace/types.ts",
+      "line": 51,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "hardDeleteArtwork",
+      "source": "server/workspace/types.ts",
+      "line": 52,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "restoreArtwork",
+      "source": "server/workspace/types.ts",
+      "line": 53,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "saveProject",
+      "source": "server/workspace/types.ts",
+      "line": 54,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "purgeExpiredTrash",
+      "source": "server/workspace/types.ts",
+      "line": 55,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "collectGarbage",
+      "source": "server/workspace/types.ts",
+      "line": 56,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "readMedia",
+      "source": "server/workspace/types.ts",
+      "line": 57,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "readThumbnail",
+      "source": "server/workspace/types.ts",
+      "line": 58,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "backup",
+      "source": "server/workspace/types.ts",
+      "line": 59,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "restoreBackup",
+      "source": "server/workspace/types.ts",
+      "line": 60,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "profile.readSettings",
+      "source": "server/workspace/profile-types.ts",
+      "line": 3,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "profile.saveSetting",
+      "source": "server/workspace/profile-types.ts",
+      "line": 4,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "profile.readChat",
+      "source": "server/workspace/profile-types.ts",
+      "line": 5,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "profile.saveChatRecord",
+      "source": "server/workspace/profile-types.ts",
+      "line": 6,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "profile.resetChat",
+      "source": "server/workspace/profile-types.ts",
+      "line": 7,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "profile.readDrafts",
+      "source": "server/workspace/profile-types.ts",
+      "line": 8,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "profile.saveDraft",
+      "source": "server/workspace/profile-types.ts",
+      "line": 9,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "migration.begin",
+      "source": "server/workspace/migration-types.ts",
+      "line": 3,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "migration.record",
+      "source": "server/workspace/migration-types.ts",
+      "line": 4,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "migration.recordChunk",
+      "source": "server/workspace/migration-types.ts",
+      "line": 5,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "migration.media",
+      "source": "server/workspace/migration-types.ts",
+      "line": 6,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "migration.verify",
+      "source": "server/workspace/migration-types.ts",
+      "line": 7,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "migration.status",
+      "source": "server/workspace/migration-types.ts",
+      "line": 8,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "migration.activate",
+      "source": "server/workspace/migration-types.ts",
+      "line": 9,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "task.accept",
+      "source": "server/workspace/task-types.ts",
+      "line": 8,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.list",
+      "source": "server/workspace/task-types.ts",
+      "line": 9,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.legacy-history",
+      "source": "server/workspace/task-types.ts",
+      "line": 10,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.get",
+      "source": "server/workspace/task-types.ts",
+      "line": 11,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.patch",
+      "source": "server/workspace/task-types.ts",
+      "line": 12,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.cancel",
+      "source": "server/workspace/task-types.ts",
+      "line": 13,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.result.prepare",
+      "source": "server/workspace/task-types.ts",
+      "line": 14,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.result.chunk",
+      "source": "server/workspace/task-types.ts",
+      "line": 15,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.result.commit",
+      "source": "server/workspace/task-types.ts",
+      "line": 16,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.input.prepare",
+      "source": "server/workspace/task-types.ts",
+      "line": 18,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.input.chunk",
+      "source": "server/workspace/task-types.ts",
+      "line": 19,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.input.commit",
+      "source": "server/workspace/task-types.ts",
+      "line": 20,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "task.input.get",
+      "source": "server/workspace/task-types.ts",
+      "line": 21,
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "prepareMedia",
+      "source": "server/workspace/library-media.ts",
+      "line": 7,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "uploadMediaChunk",
+      "source": "server/workspace/library-media.ts",
+      "line": 8,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "commitMedia",
+      "source": "server/workspace/library-media.ts",
+      "line": 9,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "releaseMedia",
+      "source": "server/workspace/library-media.ts",
+      "line": 10,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "appendArtwork",
+      "source": "server/workspace/library-media.ts",
+      "line": 11,
+      "batch": "M2",
+      "status": "pending"
+    },
+    {
+      "kind": "countMedia",
+      "source": "server/workspace/library-media.ts",
+      "line": 12,
+      "batch": "M2",
+      "status": "pending"
+    }
+  ],
+  "desktopHostActions": [
+    {
+      "command": "session",
+      "source": "server/workspace/host.ts",
+      "dispatch": "POST /api/desktop-host",
+      "batch": "M1/M2",
+      "status": "pending"
+    },
+    {
+      "command": "prepare-candidate",
+      "source": "server/workspace/host.ts",
+      "dispatch": "POST /api/desktop-host",
+      "batch": "M1/M2",
+      "status": "pending"
+    },
+    {
+      "command": "activate",
+      "source": "server/workspace/host.ts",
+      "dispatch": "POST /api/desktop-host",
+      "batch": "M1/M2",
+      "status": "pending"
+    },
+    {
+      "command": "enable-bundled",
+      "source": "server/workspace/host.ts",
+      "dispatch": "POST /api/desktop-host",
+      "batch": "M1/M2",
+      "status": "pending"
+    },
+    {
+      "command": "shutdown",
+      "source": "server/workspace/host.ts",
+      "dispatch": "POST /api/desktop-host",
+      "batch": "M1/M2",
+      "status": "pending"
+    }
+  ],
+  "desktopTools": [
+    {
+      "command": "list_files",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "read_file",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "write_file",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "run_command",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "read_image",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "get_workspace_info",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "capture_screen",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "generate_character_image",
+      "source": "routes/desktop-tools.ts",
+      "dispatch": "POST /api/desktop-tools; also chat companion tool",
+      "batch": "M6",
+      "status": "pending"
+    }
+  ],
+  "maintenanceTasks": [
+    {
+      "command": "lint-colors",
+      "source": "scripts/maintenance/lint-colors.ts",
+      "args": [],
+      "dispatch": "POST /api/maintenance/run body.task",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "validate",
+      "source": "scripts/maintenance/validate-scenes.ts",
+      "args": [],
+      "dispatch": "POST /api/maintenance/run body.task",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "classify",
+      "source": "scripts/maintenance/classify-scene-ratings.ts",
+      "args": [
+        "--write"
+      ],
+      "dispatch": "POST /api/maintenance/run body.task",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "optimize",
+      "source": "scripts/maintenance/optimize-scenes.ts",
+      "args": [
+        "--write"
+      ],
+      "dispatch": "POST /api/maintenance/run body.task",
+      "batch": "M6",
+      "status": "pending"
+    }
+  ],
+  "maintenanceSavePipeline": [
+    "classify-scene-ratings --write",
+    "optimize-scenes --write",
+    "validate-scenes"
+  ],
+  "externalCommands": [
+    {
+      "command": "powershell.exe managed-webui.ps1 -Action Start|Stop|Status",
+      "source": "routes/control.ts",
+      "target": "scripts/lib/managed-webui.ps1",
+      "scope": "external-service-control",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "powershell.exe managed-comfyui.ps1 -Action Start|Stop|Status",
+      "source": "routes/control.ts",
+      "target": "scripts/lib/managed-comfyui.ps1",
+      "scope": "external-service-control",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "powershell.exe Start-Voice.ps1|Stop-Voice.ps1",
+      "source": "routes/control/services.ts",
+      "target": "AI_WORKSPACE_ROOT/Voice (external)",
+      "scope": "external-service-control",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "configured python translate-zh-ja.py [--serve --port N]",
+      "source": "services/translation-service.ts",
+      "target": "tools/translate-zh-ja.py",
+      "scope": "external-python-inference",
+      "batch": "M5",
+      "status": "pending"
+    },
+    {
+      "command": "ffmpeg <fixed concat arguments>",
+      "source": "routes/video/batch.ts",
+      "scope": "external-media-tool",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "command": "configured cloudflared tunnel",
+      "source": "server/tunnel.ts",
+      "scope": "external-tunnel",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "command": "taskkill.exe /PID ... /T /F",
+      "source": "server/process-tree.ts",
+      "scope": "windows-process-reaping",
+      "batch": "M3",
+      "status": "pending"
+    },
+    {
+      "command": "npm run build",
+      "source": "routes/control/web-build.ts",
+      "scope": "source-mode-build-only; preserve developer Node toolchain",
+      "batch": "M7",
+      "status": "pending"
+    },
+    {
+      "command": "trusted run_command allowlist: python|python3|pythonw|pwsh|powershell|node|npm|npx|git|conda or allowed workspace path",
+      "source": "routes/desktop-tools.ts",
+      "scope": "operator-opt-in system account tooling; not packaged Node dependency",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "PowerShell screen capture",
+      "source": "routes/desktop-tools.ts",
+      "scope": "local desktop tool",
+      "batch": "M6",
+      "status": "pending"
+    }
+  ],
+  "runtimeModules": [
+    {
+      "source": "routes/anima.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/constants.ts",
+        "routes/anima/errors.ts",
+        "routes/anima/media.ts",
+        "routes/anima/service.ts",
+        "routes/anima/validation.ts",
+        "routes/anima/workflows.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/anima-generation-contract.ts",
+        "server/anima-model-catalog.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "services/image-admission.ts"
+      ],
+      "external": [
+        "crypto",
+        "express",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/anima/constants.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/anima/errors.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/anima/job-state.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/anima/media.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/constants.ts",
+        "routes/anima/errors.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/anima-model-catalog.ts",
+        "server/comfy-client.ts"
+      ],
+      "external": [
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/anima/service.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/constants.ts",
+        "routes/anima/errors.ts",
+        "routes/anima/job-state.ts",
+        "routes/anima/media.ts",
+        "routes/anima/workflows.ts",
+        "routes/superres.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/anima-generation-contract.ts",
+        "server/anima-model-catalog.ts",
+        "server/comfy-client.ts",
+        "server/comfy-progress.ts",
+        "server/job-runner.ts",
+        "server/job-snapshot.ts",
+        "server/upstream-health.ts"
+      ],
+      "external": [
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/anima/validation.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/constants.ts",
+        "routes/anima/errors.ts",
+        "server/anima-generation-contract.ts",
+        "server/anima-model-catalog.ts",
+        "server/security.ts",
+        "server/validation-core.ts"
+      ],
+      "external": [
+        "crypto"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/anima/workflows.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/constants.ts",
+        "server/anima-generation-contract.ts",
+        "server/anima-model-catalog.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/chat-content.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/chat-validation.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "routes/chat-content.ts",
+        "server/chat-character-prompts.ts",
+        "server/companion-tools.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/chat.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "routes/chat-validation.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/chat-character-prompts.ts",
+        "server/chat-host-config.ts",
+        "server/companion-tools.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "services/http-client.ts",
+        "services/live2d-local.ts",
+        "services/ollama-service.ts",
+        "services/stream-budget.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/control.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "routes/control/script-runner.ts",
+        "routes/control/services.ts",
+        "routes/control/status.ts",
+        "routes/control/web-build.ts",
+        "routes/maintenance.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "server/upstream-health.ts",
+        "services/control-operation.ts",
+        "services/service-watchdog.ts"
+      ],
+      "external": [
+        "express",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/control/script-runner.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts",
+        "server/process-tree.ts"
+      ],
+      "external": [
+        "child_process",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/control/services.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "server/http-envelope.ts",
+        "server/security.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/control/status.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "server/diagnostics.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "server/upstream-health.ts"
+      ],
+      "external": [
+        "fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/control/web-build.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "routes/maintenance.ts"
+      ],
+      "external": [
+        "child_process",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/desktop-tools.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "server/config.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "server/tool-command.ts",
+        "server/tool-process.ts",
+        "server/validation-core.ts",
+        "server/workspace-path.ts"
+      ],
+      "external": [
+        "crypto",
+        "express",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/generation.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts",
+        "server/generation/constants.ts",
+        "server/generation/resources.ts",
+        "server/generation/service.ts",
+        "server/generation/validation.ts",
+        "server/generation/workflow.ts",
+        "server/http-envelope.ts",
+        "server/security.ts"
+      ],
+      "external": [
+        "express",
+        "node:crypto",
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/interrogate.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts",
+        "server/http-envelope.ts",
+        "server/interrogate-client.ts",
+        "server/security.ts",
+        "services/http-client.ts"
+      ],
+      "external": [
+        "crypto",
+        "express",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/live2d-import.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "server/security.ts",
+        "services/live2d-import-editor.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/live2d.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "routes/live2d-import.ts",
+        "server/security.ts",
+        "server/typed-route.ts",
+        "services/live2d-local.ts",
+        "services/live2d-manifest.ts",
+        "services/live2d-service.ts",
+        "services/live2d-textures.ts"
+      ],
+      "external": [
+        "express",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/maintenance-backup.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-recovery-backup.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/maintenance-content-products.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/blueprint-write.ts",
+        "scripts/lib/data-version.ts",
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/popular-store.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path",
+        "node:zlib"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/maintenance-read-barrier.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-lease.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/maintenance-scene-save.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "routes/maintenance-content-products.ts",
+        "routes/maintenance-scene-state.ts",
+        "routes/maintenance-validation.ts",
+        "scripts/lib/maintenance-lease.ts",
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/maintenance-transaction.ts",
+        "scripts/lib/runtime-errors.ts",
+        "scripts/lib/scene-change-set.ts",
+        "scripts/lib/scene-write.ts",
+        "scripts/maintenance/validate-content-contracts.ts",
+        "server/http-envelope.ts"
+      ],
+      "external": [
+        "express",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/maintenance-scene-state.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/blueprint-store.ts",
+        "scripts/lib/data-version.ts",
+        "scripts/lib/maintenance-lease.ts",
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/maintenance-validation.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/maintenance.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "routes/maintenance-backup.ts",
+        "routes/maintenance-content-products.ts",
+        "routes/maintenance-read-barrier.ts",
+        "routes/maintenance-scene-save.ts",
+        "routes/maintenance-validation.ts",
+        "scripts/lib/data-version.ts",
+        "scripts/lib/maintenance-lease.ts",
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/maintenance-transaction-process.ts",
+        "scripts/lib/maintenance-transaction-snapshot.ts",
+        "scripts/lib/maintenance-transaction.ts",
+        "scripts/lib/runtime-errors.ts",
+        "scripts/lib/scene-store.ts",
+        "scripts/lib/scene-write.ts",
+        "scripts/maintenance/classify-scene-ratings.ts",
+        "scripts/maintenance/lint-colors.ts",
+        "scripts/maintenance/optimize-scenes.ts",
+        "scripts/maintenance/validate-scenes.ts",
+        "server/http-envelope.ts",
+        "server/process-tree.ts",
+        "server/security.ts"
+      ],
+      "external": [
+        "express",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/resources-reference.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/reference-candidate-publish.ts",
+        "scripts/lib/resource-install-fs.ts",
+        "server/character-reference-profile.ts",
+        "server/security.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/resources-static.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-install-fs.ts",
+        "server/security.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/resources.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "routes/resources-static.ts",
+        "scripts/lib/resource-install-config.ts",
+        "scripts/lib/resource-install-gateway.ts",
+        "scripts/lib/resource-install-policy.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "server/typed-route.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/superres.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/tasks.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts",
+        "server/http-envelope.ts",
+        "server/workspace/auth.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video-ai-config.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "server/chat-host-config.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video-ai-output.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video-ai-prompts.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video-ai.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "routes/video-ai-config.ts",
+        "routes/video-ai-output.ts",
+        "routes/video-ai-prompts.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "services/http-client.ts",
+        "services/ollama-service.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video-stream.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video-stream.ts",
+        "routes/video/batch.ts",
+        "routes/video/constants.ts",
+        "routes/video/engine.ts",
+        "routes/video/media.ts",
+        "routes/video/service.ts",
+        "routes/video/storyboard.ts",
+        "routes/video/validation.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "services/image-admission.ts"
+      ],
+      "external": [
+        "crypto",
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/batch.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/constants.ts",
+        "routes/video/errors.ts",
+        "routes/video/media.ts",
+        "routes/video/validation.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/job-snapshot.ts",
+        "server/process-tree.ts",
+        "server/tasks/batch-checkpoint.ts",
+        "services/serial-queue.ts"
+      ],
+      "external": [
+        "child_process",
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/comfy.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/constants.ts",
+        "routes/video/errors.ts",
+        "routes/video/media.ts",
+        "server/comfy-client.ts"
+      ],
+      "external": [
+        "fs",
+        "http",
+        "https"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/constants.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "server/video-model-catalog.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/engine.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/comfy.ts",
+        "routes/video/workflows.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/errors.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/media.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/constants.ts",
+        "routes/video/errors.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/prose.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/service.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/comfy.ts",
+        "routes/video/constants.ts",
+        "routes/video/engine.ts",
+        "routes/video/errors.ts",
+        "routes/video/media.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/comfy-client.ts",
+        "server/job-runner.ts",
+        "server/job-snapshot.ts",
+        "server/upstream-health.ts"
+      ],
+      "external": [
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/storyboard.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/validation.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/constants.ts",
+        "routes/video/errors.ts",
+        "routes/video/media.ts",
+        "routes/video/prose.ts",
+        "server/validation-core.ts"
+      ],
+      "external": [
+        "crypto",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/video/workflows.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/constants.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/voice.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts",
+        "server/http-envelope.ts",
+        "server/security.ts",
+        "server/typed-route.ts",
+        "services/http-client.ts",
+        "services/translation-service.ts",
+        "services/tts-service.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "routes/workspace-profile.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/types.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "routes/workspace.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "routes/workspace-profile.ts",
+        "server/http-envelope.ts",
+        "server/workspace/auth.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/blueprint-change-plan.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/blueprint-store.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/popular-store.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/blueprint-write.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/blueprint-change-plan.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/content-contract-root.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/data-version.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/ensure-data-build.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/blueprint-store.ts",
+        "scripts/lib/popular-store.ts",
+        "scripts/lib/reference-store.ts",
+        "scripts/lib/scene-store.ts",
+        "scripts/lib/tag-store.ts",
+        "scripts/maintenance/precompress.ts"
+      ],
+      "external": [
+        "fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/generation-candidates.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/generation-gateway.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:os",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/generation-gateway.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:timers/promises",
+        "node:zlib"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/maintenance-lease.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-recovery-backup.ts",
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/maintenance-recovery-backup.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-recovery-fs.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/maintenance-recovery-fs.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/data-version.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/maintenance-transaction-child.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "node:module"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/maintenance-transaction-process.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/maintenance-transaction-child.ts"
+      ],
+      "external": [
+        "node:child_process",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/maintenance-transaction-snapshot.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/data-version.ts",
+        "scripts/lib/maintenance-recovery-fs.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/maintenance-transaction.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-lease.ts",
+        "scripts/lib/maintenance-recovery-backup.ts",
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/manual-scene-ratings.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/popular-store.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/prompt-policy.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/reference-candidate-publish.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/generation-candidates.ts",
+        "scripts/lib/reference-candidate-review.ts",
+        "scripts/lib/resource-install-fs.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/reference-candidate-review.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/generation-candidates.ts",
+        "scripts/lib/generation-gateway.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/reference-store.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-lease.ts",
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/maintenance-transaction.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-download-http.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-install-fs.ts"
+      ],
+      "external": [
+        "node:http",
+        "node:https"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-download.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-download-http.ts",
+        "scripts/lib/resource-install-copy.ts",
+        "scripts/lib/resource-install-fs.ts",
+        "scripts/lib/resource-install-policy.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-config.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-download-http.ts",
+        "scripts/lib/resource-install-fs.ts",
+        "scripts/lib/resource-install-policy.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-copy.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-install-fs.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-fs.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:os",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-gateway.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-download.ts",
+        "scripts/lib/resource-install-config.ts",
+        "scripts/lib/resource-install-fs.ts",
+        "scripts/lib/resource-install-live2d.ts",
+        "scripts/lib/resource-install-policy.ts",
+        "scripts/lib/resource-install-resolver.ts",
+        "scripts/lib/resource-install.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-live2d.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-install-fs.ts"
+      ],
+      "external": [
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-policy.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-install-fs.ts",
+        "scripts/lib/resource-manifest.ts",
+        "scripts/lib/resource-pack-delta.ts",
+        "scripts/lib/resource-pack-verify.ts"
+      ],
+      "external": [
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-resolver.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-download-http.ts",
+        "scripts/lib/resource-install-fs.ts",
+        "scripts/lib/resource-install-policy.ts",
+        "scripts/lib/resource-install-state.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install-state.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-install-fs.ts",
+        "scripts/lib/resource-install-policy.ts",
+        "scripts/lib/resource-pack-delta.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-install.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-install-copy.ts",
+        "scripts/lib/resource-install-fs.ts",
+        "scripts/lib/resource-install-policy.ts",
+        "scripts/lib/resource-install-state.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-manifest.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-pack-delta.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-manifest.ts",
+        "scripts/lib/resource-pack.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-pack-verify.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-manifest.ts",
+        "scripts/lib/resource-pack-delta.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/resource-pack.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/resource-manifest.ts",
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/runtime-errors.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/runtime-paths.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/scene-change-set.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/scene-id.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/scene-id.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/scene-render-contract.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/promptPolicy.ts",
+        "src/utils/sceneInference.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/scene-store.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/scene-write.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/maintenance-recovery-fs.ts",
+        "scripts/lib/runtime-errors.ts",
+        "scripts/lib/scene-id.ts",
+        "scripts/lib/scene-store.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/tag-files.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/tag-store.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/tag-files.ts",
+        "scripts/lib/tag-validation.ts"
+      ],
+      "external": [
+        "fs",
+        "node:zlib",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/tag-validation.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/lib/tailwind-style-audit.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/check-ref-urls.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/content-contract-root.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/config.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/classify-scene-ratings.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/prompt-policy.ts",
+        "scripts/lib/runtime-errors.ts",
+        "scripts/lib/scene-store.ts",
+        "scripts/lib/scene-write.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/lint-colors.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/maintenance/style-sources.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/optimize-scenes.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/prompt-policy.ts",
+        "scripts/lib/scene-render-contract.ts",
+        "scripts/lib/scene-store.ts",
+        "scripts/lib/scene-write.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/precompress.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "node:util",
+        "path",
+        "zlib"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/style-sources.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/tailwind-style-audit.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/validate-content-contracts.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/content-contract-root.ts",
+        "scripts/lib/data-version.ts",
+        "scripts/lib/runtime-errors.ts",
+        "scripts/maintenance/check-ref-urls.ts",
+        "scripts/maintenance/precompress.ts",
+        "src/config/kreaStyleRecipes.ts",
+        "src/utils/popularContent.ts"
+      ],
+      "external": [
+        "fs",
+        "path",
+        "zlib"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "scripts/maintenance/validate-scenes.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/manual-scene-ratings.ts",
+        "scripts/lib/prompt-policy.ts",
+        "scripts/lib/runtime-errors.ts",
+        "scripts/lib/scene-id.ts",
+        "scripts/lib/scene-render-contract.ts",
+        "scripts/lib/scene-store.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "routes/anima.ts",
+        "routes/chat.ts",
+        "routes/control.ts",
+        "routes/desktop-tools.ts",
+        "routes/generation.ts",
+        "routes/interrogate.ts",
+        "routes/live2d.ts",
+        "routes/maintenance-read-barrier.ts",
+        "routes/maintenance.ts",
+        "routes/resources-reference.ts",
+        "routes/resources.ts",
+        "routes/video-ai.ts",
+        "routes/video.ts",
+        "routes/voice.ts",
+        "scripts/lib/ensure-data-build.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/config.ts",
+        "server/desktop-runtime.ts",
+        "server/docs.ts",
+        "server/http-envelope.ts",
+        "server/logger.ts",
+        "server/precompressed.ts",
+        "server/public-data.ts",
+        "server/remote-content.ts",
+        "server/sd-proxy-policy.ts",
+        "server/security.ts",
+        "server/showcase-assets.ts",
+        "server/static-path-policy.ts",
+        "server/tunnel.ts"
+      ],
+      "external": [
+        "child_process",
+        "compression",
+        "express",
+        "fs",
+        "http-proxy-middleware",
+        "node:crypto",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/anima-generation-contract.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/anima-model-catalog.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/anima-generation-contract.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/buffered-request.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "http",
+        "https"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/character-reference-profile.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/chat-character-prompts.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/chat-host-config.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/comfy-client.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/buffered-request.ts"
+      ],
+      "external": [
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/comfy-progress.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "ws"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/companion-tools.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/config.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-paths.ts",
+        "server/security.ts"
+      ],
+      "external": [
+        "crypto",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/desktop-runtime.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "routes/tasks.ts",
+        "server/security.ts",
+        "server/tasks/providers.ts",
+        "server/tasks/runtime.ts",
+        "server/workspace/host.ts",
+        "services/desktopOrigins.ts"
+      ],
+      "external": [
+        "express"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/diagnostics.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/docs.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "docs/redirects.json"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/generation/constants.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/superres.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/generation/errors.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/generation/resources.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/superres.ts",
+        "server/generation/constants.ts",
+        "server/generation/errors.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/generation/service.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/service.ts",
+        "scripts/lib/runtime-errors.ts",
+        "server/generation/constants.ts",
+        "server/generation/errors.ts",
+        "server/generation/resources.ts",
+        "server/generation/webui.ts",
+        "server/generation/workflow.ts",
+        "server/job-runner.ts",
+        "server/job-snapshot.ts",
+        "services/serial-queue.ts"
+      ],
+      "external": [
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/generation/validation.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "server/generation/constants.ts",
+        "server/generation/errors.ts",
+        "server/security.ts",
+        "server/validation-core.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/generation/webui.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts",
+        "server/generation/constants.ts",
+        "server/generation/errors.ts",
+        "server/generation/resources.ts",
+        "services/http-client.ts"
+      ],
+      "external": [
+        "node:crypto"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/generation/workflow.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "server/generation/constants.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/http-envelope.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/interrogate-client.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "server/interrogate-engine.ts",
+        "server/interrogate-worker.ts"
+      ],
+      "external": [
+        "node:path",
+        "node:worker_threads"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/interrogate-engine.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "fs",
+        "onnxruntime-node",
+        "path",
+        "sharp"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/interrogate-worker.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "server/interrogate-engine.ts"
+      ],
+      "external": [
+        "node:worker_threads"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/job-runner.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/job-snapshot.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/logger.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/precompressed.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/public-data.ts",
+        "server/static-path-policy.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/process-tree.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "child_process"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/public-data.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/remote-content.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/public-data.ts",
+        "server/security.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs/promises",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/sd-proxy-policy.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/http-envelope.ts",
+        "server/security.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/security.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/http-envelope.ts",
+        "services/desktopOrigins.ts"
+      ],
+      "external": [
+        "crypto"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/showcase-assets.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/static-path-policy.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tasks/batch-checkpoint.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/tasks/batch-provider.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/video/comfy.ts",
+        "routes/video/media.ts",
+        "routes/video/validation.ts",
+        "server/tasks/batch-checkpoint.ts",
+        "server/tasks/comfy-recovery.ts",
+        "server/tasks/inputs.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tasks/comfy-recovery.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "server/comfy-client.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/tasks/input-storage.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tasks/inputs.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/media.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tasks/providers.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "routes/anima/constants.ts",
+        "routes/anima/media.ts",
+        "routes/anima/validation.ts",
+        "routes/video/comfy.ts",
+        "routes/video/constants.ts",
+        "routes/video/validation.ts",
+        "server/generation/constants.ts",
+        "server/generation/validation.ts",
+        "server/tasks/batch-provider.ts",
+        "server/tasks/comfy-recovery.ts",
+        "server/tasks/inputs.ts",
+        "server/tasks/runtime.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tasks/runtime.ts",
+      "batch": "M4",
+      "status": "pending",
+      "local": [
+        "server/tasks/input-storage.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tool-command.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-errors.ts"
+      ],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tool-process.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/process-tree.ts"
+      ],
+      "external": [
+        "child_process"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/tunnel.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "scripts/lib/runtime-paths.ts",
+        "server/process-tree.ts"
+      ],
+      "external": [
+        "child_process",
+        "fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/typed-route.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/upstream-health.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/buffered-request.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/validation-core.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "server/security.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/video-model-catalog.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace-path.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/activation.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/paths.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/auth.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/security.ts"
+      ],
+      "external": [
+        "node:crypto"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/backup.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/paths.ts",
+        "server/workspace/records.ts",
+        "server/workspace/schema-upgrade.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path",
+        "node:sqlite",
+        "node:timers/promises"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/client.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/owner.ts",
+        "server/workspace/types.ts",
+        "server/workspace/worker.ts"
+      ],
+      "external": [
+        "node:path",
+        "node:worker_threads"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/engine.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/backup.ts",
+        "server/workspace/garbage.ts",
+        "server/workspace/library-media.ts",
+        "server/workspace/media.ts",
+        "server/workspace/migration-commands.ts",
+        "server/workspace/profile-commands.ts",
+        "server/workspace/records.ts",
+        "server/workspace/saves.ts",
+        "server/workspace/schema-upgrade.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/tasks.ts",
+        "server/workspace/thumbnails.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/garbage.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/paths.ts",
+        "server/workspace/records.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/task-media-keys.ts",
+        "server/workspace/thumbnails.ts"
+      ],
+      "external": [
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/gateway.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "routes/workspace.ts",
+        "server/workspace/auth.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/host-auth.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/security.ts"
+      ],
+      "external": [
+        "node:crypto"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/host-media.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/security.ts"
+      ],
+      "external": [
+        "express",
+        "node:crypto",
+        "node:events"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/host.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/activation.ts",
+        "server/workspace/client.ts",
+        "server/workspace/gateway.ts",
+        "server/workspace/host-auth.ts",
+        "server/workspace/host-media.ts",
+        "server/workspace/types.ts",
+        "services/desktopOrigins.ts"
+      ],
+      "external": [
+        "express",
+        "node:crypto"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/library-media.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/records.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/media.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/paths.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/migration-commands.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/migration-records.ts",
+        "server/workspace/profile-fields.ts",
+        "server/workspace/records.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/migration-records.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/records.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/migration-schema.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/owner.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/paths.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:child_process",
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/paths.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/profile-commands.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/profile-fields.ts",
+        "server/workspace/records.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/profile-fields.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/records.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/saves.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/records.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/schema-upgrade.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/migration-schema.ts",
+        "server/workspace/paths.ts",
+        "server/workspace/task-schema.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/schema.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/paths.ts",
+        "server/workspace/schema-upgrade.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:sqlite"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/task-inputs.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/task-media-keys.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/task-media-keys.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/task-schema.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/tasks.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/media.ts",
+        "server/workspace/schema.ts",
+        "server/workspace/task-inputs.ts",
+        "server/workspace/task-media-keys.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/thumbnails.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/paths.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path",
+        "sharp"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/types.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "server/workspace/worker.ts",
+      "batch": "M2",
+      "status": "pending",
+      "local": [
+        "server/workspace/engine.ts",
+        "server/workspace/types.ts"
+      ],
+      "external": [
+        "node:worker_threads"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/control-operation.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "services/desktopOrigins.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "services/http-client.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "services/public-upstream.ts"
+      ],
+      "external": [
+        "http",
+        "https",
+        "tls"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/image-admission.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "services/serial-queue.ts"
+      ],
+      "external": [
+        "crypto",
+        "fs",
+        "path",
+        "sharp"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/live2d-import-editor.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "services/live2d-import-profile.ts",
+        "services/live2d-manifest.ts",
+        "services/live2d-upload-checks.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/live2d-import-profile.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "services/live2d-local.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "services/live2d-manifest.ts"
+      ],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/live2d-manifest.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "node:fs",
+        "node:path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/live2d-service.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/live2d-textures.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "services/live2d-manifest.ts"
+      ],
+      "external": [
+        "node:crypto",
+        "node:fs",
+        "node:path",
+        "sharp"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/live2d-upload-checks.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "services/ollama-service.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "services/http-client.ts",
+        "services/serial-queue.ts",
+        "services/stream-budget.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "services/public-upstream.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [
+        "node:dns/promises",
+        "node:net"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/serial-queue.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "services/service-watchdog.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "services/stream-budget.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [
+        "services/http-client.ts"
+      ],
+      "external": [
+        "string_decoder"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/translation-service.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "services/http-client.ts",
+        "services/serial-queue.ts"
+      ],
+      "external": [
+        "child_process",
+        "fs",
+        "path"
+      ],
+      "dynamic": []
+    },
+    {
+      "source": "services/tts-service.ts",
+      "batch": "M5",
+      "status": "pending",
+      "local": [
+        "services/http-client.ts",
+        "services/serial-queue.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/config/kreaStyleRecipes.ts",
+      "batch": "M3",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/blueprintComposition.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/promptPolicy.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/blueprintLighting.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/blueprintRecommendations.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/characterControlTokens.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/promptPolicy.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/drawCapabilities.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/popularBlueprintDecisions.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/blueprintLighting.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/popularContent.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/blueprintComposition.ts",
+        "src/utils/blueprintRecommendations.ts",
+        "src/utils/popularBlueprintDecisions.ts",
+        "src/utils/popularParseGuards.ts",
+        "src/utils/popularPromptBuilder.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/popularParseGuards.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/popularPromptBuilder.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/blueprintComposition.ts",
+        "src/utils/popularBlueprintDecisions.ts",
+        "src/utils/promptCompiler.ts",
+        "src/utils/promptPhraseTables.ts",
+        "src/utils/promptPolicy.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/promptCompiler.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/drawCapabilities.ts",
+        "src/utils/promptCompilerCore.ts",
+        "src/utils/promptLiteralTags.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/promptCompilerCore.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/drawCapabilities.ts",
+        "src/utils/promptPhraseTables.ts",
+        "src/utils/promptPolicy.ts",
+        "src/utils/sceneInference.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/promptDiagnostics.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/drawCapabilities.ts",
+        "src/utils/promptFramingTokens.ts",
+        "src/utils/promptPolicy.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/promptFramingTokens.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/promptLiteralTags.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/promptPhraseTables.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/promptPolicy.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/characterControlTokens.ts",
+        "src/utils/drawCapabilities.ts",
+        "src/utils/promptDiagnostics.ts",
+        "src/utils/promptFramingTokens.ts",
+        "src/utils/sceneFraming.ts",
+        "src/utils/soloTemplateSanitize.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/sceneFraming.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/sceneInference.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [],
+      "external": [],
+      "dynamic": []
+    },
+    {
+      "source": "src/utils/soloTemplateSanitize.ts",
+      "batch": "M6",
+      "status": "pending",
+      "local": [
+        "src/utils/promptPolicy.ts"
+      ],
+      "external": [],
+      "dynamic": []
+    }
+  ],
+  "explicitDynamicEdges": {
+    "server/workspace/client.ts": [
+      "server/workspace/worker.ts"
+    ],
+    "server/interrogate-client.ts": [
+      "server/interrogate-worker.ts"
+    ],
+    "scripts/lib/maintenance-transaction-process.ts": [
+      "scripts/lib/maintenance-transaction-child.ts"
+    ],
+    "routes/maintenance.ts": [
+      "scripts/maintenance/lint-colors.ts",
+      "scripts/maintenance/validate-scenes.ts",
+      "scripts/maintenance/classify-scene-ratings.ts",
+      "scripts/maintenance/optimize-scenes.ts"
+    ],
+    "routes/maintenance-scene-save.ts": [
+      "scripts/maintenance/validate-content-contracts.ts"
+    ]
+  },
+  "unresolvedRelativeImports": [],
+  "npmRoots": [
+    {
+      "name": "compression",
+      "version": "^1.8.1"
+    },
+    {
+      "name": "express",
+      "version": "^5.2.1"
+    },
+    {
+      "name": "http-proxy-middleware",
+      "version": "^4.2.0"
+    },
+    {
+      "name": "onnxruntime-node",
+      "version": "1.30.0"
+    },
+    {
+      "name": "sharp",
+      "version": "^0.35.4"
+    },
+    {
+      "name": "ws",
+      "version": "8.21.3"
+    }
+  ],
+  "npmLockPackages": [
+    {
+      "path": "node_modules/@emnapi/runtime",
+      "version": "1.11.3",
+      "optional": true
+    },
+    {
+      "path": "node_modules/@img/colour",
+      "version": "1.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/@img/sharp-darwin-arm64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-darwin-x64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-freebsd-wasm32",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "freebsd"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-darwin-arm64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-darwin-x64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linux-arm",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linux-arm64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linux-ppc64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "ppc64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linux-riscv64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "riscv64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linux-s390x",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "s390x"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linux-x64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linuxmusl-arm64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-libvips-linuxmusl-x64",
+      "version": "1.3.3",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linux-arm",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linux-arm64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linux-ppc64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "ppc64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linux-riscv64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "riscv64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linux-s390x",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "s390x"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linux-x64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linuxmusl-arm64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-linuxmusl-x64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-wasm32",
+      "version": "0.35.4",
+      "optional": true
+    },
+    {
+      "path": "node_modules/@img/sharp-webcontainers-wasm32",
+      "version": "0.35.4",
+      "optional": true,
+      "cpu": [
+        "wasm32"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-win32-arm64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "win32"
+      ],
+      "cpu": [
+        "arm64"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-win32-ia32",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "win32"
+      ],
+      "cpu": [
+        "ia32"
+      ]
+    },
+    {
+      "path": "node_modules/@img/sharp-win32-x64",
+      "version": "0.35.4",
+      "optional": true,
+      "os": [
+        "win32"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    },
+    {
+      "path": "node_modules/accepts",
+      "version": "2.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/adm-zip",
+      "version": "0.6.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/body-parser",
+      "version": "2.3.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/body-parser/node_modules/content-type",
+      "version": "2.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/body-parser/node_modules/debug",
+      "version": "4.4.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/body-parser/node_modules/ms",
+      "version": "2.1.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/braces",
+      "version": "3.0.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/bytes",
+      "version": "3.1.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/call-bind-apply-helpers",
+      "version": "1.0.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/call-bound",
+      "version": "1.0.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/compressible",
+      "version": "2.0.18",
+      "optional": false
+    },
+    {
+      "path": "node_modules/compression",
+      "version": "1.8.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/compression/node_modules/negotiator",
+      "version": "0.6.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/content-disposition",
+      "version": "1.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/content-type",
+      "version": "1.0.5",
+      "optional": false
+    },
+    {
+      "path": "node_modules/cookie",
+      "version": "0.7.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/cookie-signature",
+      "version": "1.2.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/debug",
+      "version": "2.6.9",
+      "optional": false
+    },
+    {
+      "path": "node_modules/define-data-property",
+      "version": "1.1.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/define-properties",
+      "version": "1.2.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/depd",
+      "version": "2.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/detect-libc",
+      "version": "2.1.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/dunder-proto",
+      "version": "1.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/ee-first",
+      "version": "1.1.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/encodeurl",
+      "version": "2.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/es-define-property",
+      "version": "1.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/es-errors",
+      "version": "1.3.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/es-object-atoms",
+      "version": "1.1.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/escape-html",
+      "version": "1.0.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/etag",
+      "version": "1.8.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/express",
+      "version": "5.2.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/express/node_modules/debug",
+      "version": "4.4.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/express/node_modules/ms",
+      "version": "2.1.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/fill-range",
+      "version": "7.1.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/finalhandler",
+      "version": "2.1.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/finalhandler/node_modules/debug",
+      "version": "4.4.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/finalhandler/node_modules/ms",
+      "version": "2.1.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/forwarded",
+      "version": "0.2.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/fresh",
+      "version": "2.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/function-bind",
+      "version": "1.1.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/get-intrinsic",
+      "version": "1.3.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/get-proto",
+      "version": "1.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/global-agent",
+      "version": "4.1.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/global-agent/node_modules/semver",
+      "version": "7.8.5",
+      "optional": false
+    },
+    {
+      "path": "node_modules/globalthis",
+      "version": "1.0.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/gopd",
+      "version": "1.2.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/has-property-descriptors",
+      "version": "1.0.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/has-symbols",
+      "version": "1.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/hasown",
+      "version": "2.0.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/http-errors",
+      "version": "2.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/http-proxy-middleware",
+      "version": "4.2.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/http-proxy-middleware/node_modules/debug",
+      "version": "4.4.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/http-proxy-middleware/node_modules/ms",
+      "version": "2.1.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/httpxy",
+      "version": "0.5.5",
+      "optional": false
+    },
+    {
+      "path": "node_modules/iconv-lite",
+      "version": "0.7.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/inherits",
+      "version": "2.0.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/ipaddr.js",
+      "version": "1.9.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/is-extglob",
+      "version": "2.1.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/is-glob",
+      "version": "4.0.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/is-number",
+      "version": "7.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/is-plain-obj",
+      "version": "4.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/is-promise",
+      "version": "4.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/matcher",
+      "version": "4.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/matcher/node_modules/escape-string-regexp",
+      "version": "4.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/math-intrinsics",
+      "version": "1.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/media-typer",
+      "version": "1.1.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/merge-descriptors",
+      "version": "2.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/micromatch",
+      "version": "4.0.8",
+      "optional": false
+    },
+    {
+      "path": "node_modules/mime-db",
+      "version": "1.54.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/mime-types",
+      "version": "3.0.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/ms",
+      "version": "2.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/negotiator",
+      "version": "1.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/negotiator/node_modules/content-type",
+      "version": "2.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/object-inspect",
+      "version": "1.13.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/object-keys",
+      "version": "1.1.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/on-finished",
+      "version": "2.4.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/on-headers",
+      "version": "1.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/once",
+      "version": "1.4.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/onnxruntime-common",
+      "version": "1.30.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/onnxruntime-node",
+      "version": "1.30.0",
+      "optional": false,
+      "os": [
+        "win32",
+        "darwin",
+        "linux"
+      ]
+    },
+    {
+      "path": "node_modules/parseurl",
+      "version": "1.3.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/path-to-regexp",
+      "version": "8.4.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/picomatch",
+      "version": "2.3.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/proxy-addr",
+      "version": "2.0.7",
+      "optional": false
+    },
+    {
+      "path": "node_modules/qs",
+      "version": "6.16.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/range-parser",
+      "version": "1.3.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/raw-body",
+      "version": "3.0.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/router",
+      "version": "2.2.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/router/node_modules/debug",
+      "version": "4.4.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/router/node_modules/ms",
+      "version": "2.1.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/safe-buffer",
+      "version": "5.2.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/safer-buffer",
+      "version": "2.1.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/send",
+      "version": "1.2.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/send/node_modules/debug",
+      "version": "4.4.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/send/node_modules/ms",
+      "version": "2.1.3",
+      "optional": false
+    },
+    {
+      "path": "node_modules/serialize-error",
+      "version": "8.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/serve-static",
+      "version": "2.2.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/setprototypeof",
+      "version": "1.2.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/sharp",
+      "version": "0.35.4",
+      "optional": false
+    },
+    {
+      "path": "node_modules/sharp/node_modules/semver",
+      "version": "7.8.5",
+      "optional": false
+    },
+    {
+      "path": "node_modules/side-channel",
+      "version": "1.1.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/side-channel-list",
+      "version": "1.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/side-channel-map",
+      "version": "1.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/side-channel-weakmap",
+      "version": "1.0.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/statuses",
+      "version": "2.0.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/to-regex-range",
+      "version": "5.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/toidentifier",
+      "version": "1.0.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/tslib",
+      "version": "2.8.1",
+      "optional": false
+    },
+    {
+      "path": "node_modules/type-fest",
+      "version": "0.20.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/type-is",
+      "version": "2.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/type-is/node_modules/content-type",
+      "version": "2.1.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/unpipe",
+      "version": "1.0.0",
+      "optional": false
+    },
+    {
+      "path": "node_modules/vary",
+      "version": "1.1.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/wrappy",
+      "version": "1.0.2",
+      "optional": false
+    },
+    {
+      "path": "node_modules/ws",
+      "version": "8.21.3",
+      "optional": false
+    }
+  ],
+  "unresolvedPackages": [],
+  "resourceActions": [
+    {
+      "command": "import",
+      "source": "scripts/lib/resource-install-gateway.ts",
+      "dispatch": "POST /api/resources/tasks",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "download",
+      "source": "scripts/lib/resource-install-gateway.ts",
+      "dispatch": "POST /api/resources/tasks",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "recover",
+      "source": "scripts/lib/resource-install-gateway.ts",
+      "dispatch": "POST /api/resources/tasks",
+      "batch": "M6",
+      "status": "pending"
+    },
+    {
+      "command": "rollback",
+      "source": "scripts/lib/resource-install-gateway.ts",
+      "dispatch": "POST /api/resources/tasks",
+      "batch": "M6",
+      "status": "pending"
+    }
+  ],
+  "taskProviders": [
+    {
+      "kind": "anima",
+      "source": "server/tasks/providers.ts",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "creative",
+      "source": "server/tasks/providers.ts",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "generation",
+      "source": "server/tasks/providers.ts",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "video",
+      "source": "server/tasks/providers.ts",
+      "batch": "M4",
+      "status": "pending"
+    },
+    {
+      "kind": "batch",
+      "source": "server/tasks/batch-provider.ts",
+      "batch": "M4",
+      "status": "pending"
+    }
+  ]
+}

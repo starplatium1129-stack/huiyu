@@ -1,0 +1,9 @@
+// Legacy scanning operates only on explicitly supplied neutral text fixtures.
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'../../../..'),ts=require(path.join(root,'node_modules/typescript'));
+let fixtures=new Map();const cache=new Map();
+const fixtureFs={readFileSync(file){if(!fixtures.has(file))throw new Error('Not an isolated color fixture');return fixtures.get(file);}};
+function load(relative){const file=path.join(root,relative+'.ts');if(cache.has(file))return cache.get(file).exports;const module={exports:{}};cache.set(file,module);let code=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;if(relative==='scripts/maintenance/lint-colors')code+='\nmodule.exports.ALLOWED=[...ALLOWED]';if(relative==='scripts/maintenance/style-sources')code+='\nmodule.exports.STANDALONE_REPORTS=[...STANDALONE_REPORTS]';const req=name=>{if(name==='fs')return fixtureFs;if(name==='path')return path;if(!name.startsWith('.'))throw new Error(name);return load(path.relative(root,path.resolve(path.dirname(file),name)).replaceAll('\\','/'));};req.main=null;vm.runInNewContext(code,{module,exports:module.exports,require:req,__dirname:path.dirname(file),console,process:{argv:[]}}, {filename:file});return module.exports;}
+const lint=load('scripts/maintenance/lint-colors'),sources=load('scripts/maintenance/style-sources');
+if(process.argv.includes('--constants'))process.stdout.write(JSON.stringify({allowed:lint.ALLOWED,reports:sources.STANDALONE_REPORTS},null,2));
+else{const cases=JSON.parse(fs.readFileSync(0,'utf8'));fixtures=new Map(cases.map(item=>[item.file,item.source]));process.stdout.write(JSON.stringify(cases.map(item=>lint.scanFile(item.file))));}

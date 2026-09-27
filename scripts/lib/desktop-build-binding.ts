@@ -72,7 +72,7 @@ function writeReceipt(root: string, receipt: unknown, stage: string) {
 }
 function sourceIdentity(root: string) {
   const names = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd:root, encoding:'utf8', windowsHide:true }).split('\0')
-    .filter(name => name && !/^(docs|plans)\//.test(name) && !/\.md$/i.test(name));
+    .filter(name => name && !/^(docs|plans)\//.test(name) && (!/\.md$/i.test(name) || name.startsWith('runtime-rs/native-licenses/')));
   const selection: Selection[] = [...new Set(names)].map(name => ({ kind:'file', path:name }));
   return completeSnapshot(root, selection, '发行源码身份不完整，请检查源码文件后完整构建');
 }
@@ -80,6 +80,7 @@ function buildSelection(root: string, includeBundle = true): Selection[] {
   const selected: Selection[] = [
     { kind:'tree', path:'dist' },
     { kind:'tree', path:'desktop-tauri/src-tauri/resources' },
+    { kind:'tree', path:'desktop-tauri/web' },
     { kind:'file', path:exe },
   ];
   if (includeBundle) selected.push({ kind:'tree', path:bundle });
@@ -127,4 +128,16 @@ function verifyDistribution(root: string, output: string) {
   const actual = completeSnapshot(root, [{ kind:'file', path:relative }], '发行封装产物身份不完整，拒绝签名或上传');
   if (actual.sha256 !== receipt.distribution.sha256) throw Error('发行封装产物已变化，拒绝签名或上传');
 }
-export = { sourceIdentity, recordBuild, verifyBuild, extendBuild, bindDistribution, verifyDistribution, receiptPath };
+function verifyDeployment(root:string,payload?:string){
+  const receipt=verifyBuild(root);
+  if(payload){const relative=path.relative(root,payload).replaceAll('\\','/');
+    if(receipt.build.entries.some((entry:{path:string;status:string})=>entry.status==='file'&&entry.path===relative))verifyBuild(root,payload);
+    else verifyDistribution(root,payload);
+  }
+  return receipt;
+}
+if(require.main===module){
+  try{const args=process.argv.slice(2);if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}
+  catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
+}
+export = { sourceIdentity, recordBuild, verifyBuild, extendBuild, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };

@@ -24,7 +24,7 @@ function buildBindingFixture() {
   git('init'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid');
   put('.gitignore', 'runtime/\ndist/\ndesktop-tauri/\n'); put('package.json', '{"version":"1.0.0"}'); put('source.ts', 'A');
   git('add', '.gitignore', 'package.json', 'source.ts'); git('commit', '-m', 'A');
-  put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/node.exe', 'node-A');
+  put('dist/index.html', 'frontend-A'); put('desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe', 'rust-A'); put('desktop-tauri/web/index.html', 'desktop-UI');
   const native = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'; put(native, 'native-A');
   const payload = 'desktop-tauri/src-tauri/target/release/bundle/nsis/fixture.exe'; put(payload, 'payload-A');
   return { root, put, git, binding, native, payload, remove() {
@@ -42,6 +42,7 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
     const source = binding.sourceIdentity(root);
     binding.recordBuild(root, source);
     binding.verifyBuild(root, path.join(root, payload));
+    binding.verifyDeployment(root,path.join(root,payload));
     put('docs/note.md', 'documentation only');
     binding.verifyBuild(root);
     put('source.ts', 'B'); git('add', 'source.ts'); git('commit', '-m', 'B');
@@ -65,7 +66,7 @@ test('desktop build binding rejects same-version stale sources, tampering and mi
     put(payload, 'tampered');
     assert.throws(() => binding.verifyBuild(root), /改写/);
     put(payload, 'payload-A');
-    fs.unlinkSync(path.join(root, 'desktop-tauri/src-tauri/resources/node.exe'));
+    fs.unlinkSync(path.join(root, 'desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe'));
     assert.throws(() => binding.verifyBuild(root), /缺失|改写/);
     fs.unlinkSync(path.join(root, binding.receiptPath));
     assert.throws(() => binding.verifyBuild(root), /缺少/);
@@ -83,7 +84,7 @@ test('official Tauri entry detaches only the Cargo release executable before bin
     const result = await runTauri(['build', '--ci', '--no-sign'], {
       root, env:{}, npmCommand:'fixture-npm', tauriCli:'fixture-tauri',
       checkEnvironment:() => ({ ready:true, checks:[], sdkRoot:root }), runCommand:() => 0,
-      prepareTauri:async () => ({ stage:root, runtimeJavaScriptFiles:[], webDir:root, sidecarPath:'fixture-node' }),
+      prepareTauri:async () => ({ stage:root, runtimeExecutable:'fixture-rust', releaseReady:false, pending:[], webDir:root }),
       spawnTauri:() => {
         fs.mkdirSync(path.dirname(cache), { recursive:true }); fs.renameSync(target, cache); fs.linkSync(cache, target);
         assert.equal(fs.statSync(target).nlink, 2);
@@ -99,9 +100,9 @@ test('official Tauri entry detaches only the Cargo release executable before bin
     assert.equal(fs.readFileSync(target, 'utf8'), 'native-A', 'later Cargo cache writes cannot alter the bound image');
     binding.verifyBuild(root);
     const source = binding.sourceIdentity(root), previous = fs.readFileSync(path.join(root, binding.receiptPath));
-    const resource = path.join(root, 'desktop-tauri/src-tauri/resources/node.exe');
+    const resource = path.join(root, 'desktop-tauri/src-tauri/resources/gateway/huiyu-runtime.exe');
     fs.linkSync(resource, path.join(root, 'runtime/resource-alias.exe'));
-    assert.throws(() => binding.recordBuild(root, source), /桌面产物不完整.*resources\/node.exe.*硬链接/);
+    assert.throws(() => binding.recordBuild(root, source), /桌面产物不完整.*resources\/gateway\/huiyu-runtime.exe.*硬链接/);
     assert.equal(fs.statSync(resource).nlink, 2, 'unrelated output hardlinks remain rejected, never materialized');
     assert.deepEqual(fs.readFileSync(path.join(root, binding.receiptPath)), previous);
     fs.linkSync(path.join(root, 'source.ts'), path.join(root, 'runtime/source-alias'));
@@ -125,7 +126,7 @@ test('a corrupted native copy preserves the shared EXE and prior receipt and fai
     });
     await assert.rejects(runTauri(['build'], { root, env:{}, npmCommand:'fixture-npm', tauriCli:'fixture-tauri',
       checkEnvironment:() => ({ ready:true, checks:[], sdkRoot:root }), runCommand:() => 0,
-      prepareTauri:async () => ({ stage:root, runtimeJavaScriptFiles:[], webDir:root, sidecarPath:'fixture-node' }), spawnTauri:() => 0,
+      prepareTauri:async () => ({ stage:root, runtimeExecutable:'fixture-rust', releaseReady:false, pending:[], webDir:root }), spawnTauri:() => 0,
     }), /CLI 已成功.*回执校验失败.*独立副本字节校验失败/);
     assert.equal(fs.statSync(target).nlink, 2);
     assert.equal(fs.readFileSync(target, 'utf8'), 'native-A');

@@ -69,9 +69,7 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
       ? { command: options.npmCommand, args: options.npmArgs || [] }
       : resolveNpmInvocation();
     const run = options.runCommand || runCommand;
-    let status = run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot });
-    if (status !== 0) return status;
-    status = run(npm.command, [...npm.args, 'run', 'test:services-generated'], { cwd: workspaceRoot });
+    const status = run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot });
     if (status !== 0) return status;
 
     const prepare = options.prepareTauri || prepareTauri;

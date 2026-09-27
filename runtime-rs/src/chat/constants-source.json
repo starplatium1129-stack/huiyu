@@ -1,0 +1,13 @@
+{
+  "kind": "literal-ast-extraction",
+  "sources": [
+    {
+      "file": "server/chat-character-prompts.ts",
+      "sha256": "c4910c6b3c58a80e140576e5b6f48fee511506cac4824c1586e2cfe7b8bd1ef1"
+    },
+    {
+      "file": "server/companion-tools.ts",
+      "sha256": "62eb3de61c001f77eeebb43914394c680c84758c635bda84382981de66185bdc"
+    }
+  ]
+}

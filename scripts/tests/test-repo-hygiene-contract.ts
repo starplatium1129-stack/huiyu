@@ -238,3 +238,33 @@ test('Git discovery errors fail closed', async (t) => {
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   await assert.rejects(() => scanRepository(directory), /git rev-parse --show-toplevel failed/);
 });
+
+test('native license originals require each tree own inventory and exact byte digest', async (t) => {
+  const root = createRepository(t), base = 'runtime-rs/native-licenses/';
+  const original = `${base}components/fixture/COPYING.LIB`, readme = `${base}README.md`;
+  const indexPath = `${base}materials.sha256.json`, manifestPath = 'runtime-rs/native-dependencies.windows-x64.json';
+  function materialSet(raw: string, notes = 'editable notes\n') {
+    write(root, original, raw); write(root, readme, notes);
+    const entries = [{ file: 'components/fixture/COPYING.LIB', bytes: Buffer.byteLength(raw), sha256: sha256(Buffer.from(raw)) },
+      { file: 'README.md', bytes: Buffer.byteLength(notes), sha256: sha256(Buffer.from(notes)) }];
+    const index = JSON.stringify({ schemaVersion: 1, files: entries }) + '\n';
+    write(root, indexPath, index);
+    write(root, manifestPath, JSON.stringify({ licenses: [{ ...entries[0], file: 'native-licenses/components/fixture/COPYING.LIB' }],
+      licenseEvidence: { index: 'native-licenses/materials.sha256.json', indexBytes: Buffer.byteLength(index), indexSha256: sha256(Buffer.from(index)),
+        readme: 'native-licenses/README.md', components: 'native-licenses/components/fixture/COPYING.LIB', librsvgCargoSourceIndex: 'native-licenses/components/fixture/COPYING.LIB' } }) + '\n');
+  }
+  materialSet('upstream CRLF\r\ntrailing  \r\n');
+  git(root, ['add', '--', original, readme, indexPath, manifestPath]);
+  assert.equal((await scanRepository(root)).violations.length, 0);
+  write(root, original, 'tampered original\r\n ');
+  await assert.rejects(() => scanRepository(root), /Native material.*SHA-256/);
+  git(root, ['add', '--', original]);
+  write(root, original, 'upstream CRLF\r\ntrailing  \r\n');
+  await assert.rejects(() => scanRepository(root), /Native material.*SHA-256/, 'valid worktree cannot bless changed index bytes');
+  git(root, ['add', '--', original]);
+  materialSet('updated upstream receipt\r\n ');
+  assert.equal((await scanRepository(root)).violations.length, 0, 'different valid index and worktree receipts are checked separately');
+  materialSet('updated upstream receipt\r\n ', 'editable notes  \n');
+  const ordinary = await scanRepository(root);
+  assert.equal(violationsFor(ordinary, 'worktree', readme, 'trailing-whitespace').length, 1, 'own README is never a formatting exemption');
+});

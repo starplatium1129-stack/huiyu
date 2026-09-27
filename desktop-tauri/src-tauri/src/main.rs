@@ -319,7 +319,7 @@ fn main() {
                 }
             }
 
-            let is_packaged = app.package_info().version.major > 0 && !cfg!(debug_assertions);
+            let is_packaged = state.paths.is_packaged;
             let configured_port = std::env::var("PORT")
                 .ok()
                 .and_then(|v| v.parse::<u16>().ok())
@@ -327,19 +327,16 @@ fn main() {
                 .unwrap_or_else(|| window_state::load_desktop_gateway_port(&state.paths.gateway_port_file, 3000));
 
             let log_path = state.paths.desktop_log.clone();
-            let sidecar_node = state.paths.sidecar_node.clone();
             state.info(&format!(
-                "gateway paths: packaged={is_packaged} script={} cwd={} node={}",
-                state.paths.gateway_script.display(),
-                state.paths.gateway_cwd.display(),
-                sidecar_node.as_ref().map(|p| p.display().to_string()).unwrap_or_else(|| "system-node".into())
+                "gateway paths: packaged={is_packaged} executable={} cwd={}",
+                state.paths.gateway_executable.display(),
+                state.paths.gateway_cwd.display()
             ));
             let supervisor = gateway::GatewaySupervisorBuilder::new(
-                state.paths.gateway_script.clone(),
+                state.paths.gateway_executable.clone(),
                 state.paths.gateway_cwd.clone(),
             )
             .port(configured_port)
-            .node_path(sidecar_node)
             .env({
                 let mut env = main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap()));
                 if ui_entry::bundled(app.handle()) { env.push(("AICS_DESKTOP_BUNDLED_UI".into(), "1".into())); }

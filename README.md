@@ -10,6 +10,8 @@
 
 Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
 
+The current source uses a Rust product backend. Node remains a frontend/development build tool and a legacy behavior oracle; the existing 1.7.2 download is a separate, previously published build. Rust installation, real-model acceptance and native redistribution materials are not complete (`releaseReady=false`): see the [migration report](docs/architecture/NODE-RUST-MIGRATION-REPORT.md).
+
 ## About
 
 绘遇 (HUIYU) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
@@ -48,7 +50,8 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 | Component | Required | Notes |
 | :--- | :---: | :--- |
-| Node.js | **Yes** | `>= 22.18` (npm 11.x), check with `node -v` |
+| Node.js | Source builds | `>= 22.18` (npm 11.x), for frontend, tooling and legacy comparison tests; not the product backend |
+| Rust/MSVC toolchain | Source builds | Builds `runtime-rs` and the Windows desktop shell; a packaged installation does not need a compiler |
 | Windows | **Yes** | Primary environment; launcher & desktop shell are Windows-first |
 | A1111 / Forge / ReForge WebUI | Optional* | Started via Stability Matrix with `--api --port 7860` launch args — needed for SD/WAI generation |
 | ComfyUI | Optional* | On `http://127.0.0.1:8188` — needed for the Anima / Krea 2 / Wan / H3 engine paths |
@@ -73,15 +76,16 @@ npm install
 
 `control.bat` also runs this automatically on first launch.
 
-### Step 3 — Build the runtime services
+### Step 3 — Build the tools and Rust backend
 
-The generated runtime `.js` files are gitignored. Dependency installation already builds them; after editing runtime sources, rebuild them with:
+Generated tooling and legacy-oracle `.js` files are gitignored. Build them and the actual backend separately:
 
 ```bash
 npm run build:runtime
+npm run wf -- rust:build
 ```
 
-`npm start` rebuilds them through `prestart`. The launchers (`control.bat` / `start.ps1`) build missing web and runtime outputs before starting the gateway.
+`npm start` prepares the JavaScript tools and starts the Rust service through Cargo. `build:runtime` alone does not build the Rust executable. For the desktop, use the existing [deployment entry](docs/desktop-deployment.md); EXE/DLL changes require a full installation.
 
 ### Step 4 — Start
 
@@ -101,7 +105,7 @@ Skip the tunnel with `$env:DISABLE_TUNNEL = '1'` if you only need the local gate
 **C. Development (HMR).** Run two terminals:
 
 ```powershell
-npm run dev:server   # Express gateway on :3000 (API, SD proxy, static)
+npm run dev:server   # Rust gateway on :3000; watches runtime-rs source
 npm run dev          # Vite dev server with HMR on :5173
 ```
 
@@ -144,7 +148,7 @@ This is a personal project first, but well-scoped contributions are welcome. Rea
 
 ### Development setup
 
-See Installation Step 4-C (two terminals: Express gateway + Vite HMR). `npm run typecheck` and `npm run lint:js` give quick feedback while editing.
+See Installation Step 4-C (Rust gateway + Vite HMR). Use `rust:check` for backend changes; `npm run typecheck` and `npm run lint:js` cover the TypeScript/frontend tooling.
 
 ### Quality gates — choose by change scope
 

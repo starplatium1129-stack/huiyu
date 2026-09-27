@@ -10,6 +10,8 @@
 
 当前规模与能力边界见 [项目状态](docs/project-status.md)，硬件要求与模型下载见 [全功能开箱指南](docs/guides/setup-and-models.md)，后续事项见 [未来规划](docs/roadmap.md)。
 
+当前源码的产品后端已改为 Rust；Node 保留于前端/开发构建和旧行为对照。已有 1.7.2 下载属于此前发布构建，本次 Rust 安装、真实模型验收及原生发行材料尚未完成（`releaseReady=false`），详见[迁移执行记录](docs/architecture/NODE-RUST-MIGRATION-REPORT.md)。
+
 ## 项目定位
 
 绘遇 HUIYU (Lingji Atelier) 是我为个人创作整理的一套本地工具，平时自己使用，也会临时分享给身边的朋友。它不是公开运营的平台，也不提供账号、社区、商店或云端同步。
@@ -49,7 +51,8 @@
 
 | 组件 | 必需 | 说明 |
 | :--- | :---: | :--- |
-| Node.js | **是** | `>= 22.18`（npm 11.x），用 `node -v` 确认 |
+| Node.js | 源码构建需要 | `>= 22.18`（npm 11.x），用于前端、开发工具与旧实现对照，不是产品后端 |
+| Rust/MSVC 工具链 | 源码构建需要 | 构建 `runtime-rs` 和 Windows 桌面壳；安装成品不需要编译器 |
 | Windows | **是** | 主要使用环境；启动器与桌面壳均为 Windows 优先 |
 | A1111 / Forge / ReForge WebUI | 可选* | 由 Stability Matrix 启动，启动参数带 `--api --port 7860` — SD/WAI 出图需要 |
 | ComfyUI | 可选* | 位于 `http://127.0.0.1:8188` — Anima / Krea 2 / Wan / H3 引擎路径需要 |
@@ -74,15 +77,16 @@ npm install
 
 `control.bat` 首次启动时也会自动执行 `npm install`。
 
-### 第 3 步 — 编译运行时服务
+### 第 3 步 — 编译开发工具与 Rust 后端
 
-生成的运行时 `.js` 不入库。安装依赖时已自动编译；修改运行时源码后可执行：
+生成的开发工具和旧实现对照 `.js` 不入库。它们与实际后端分开构建：
 
 ```bash
 npm run build:runtime
+npm run wf -- rust:build
 ```
 
-`npm start` 经 `prestart` 重新编译；启动器（`control.bat` / `start.ps1`）会在网页或运行时产物缺失时构建，再启动网关。
+`npm start` 准备 JavaScript 工具后，通过 Cargo 启动 Rust 服务；单独 `build:runtime` 不会构建 Rust EXE。桌面继续使用[既有部署入口](docs/desktop-deployment.md)，EXE/DLL变化需要完整安装。
 
 ### 第 4 步 — 启动
 
@@ -102,7 +106,7 @@ npm run start:run
 **C. 开发模式（HMR）。** 开两个终端：
 
 ```powershell
-npm run dev:server   # Express 网关 :3000（API、SD 代理、静态服务）
+npm run dev:server   # Rust 网关 :3000，监听 runtime-rs 源码变化
 npm run dev          # Vite 开发服务器 :5173（热更新）
 ```
 
@@ -145,7 +149,7 @@ npm run build                       # 生产构建 + 140KB 路由预算 + 预压
 
 ### 开发环境
 
-见「安装」第 4 步 C（两个终端：Express 网关 + Vite HMR）。编辑过程中 `npm run typecheck` 与 `npm run lint:js` 可快速反馈。
+见「安装」第 4 步 C（Rust 网关 + Vite HMR）。后端改动用 `rust:check`；`npm run typecheck` 与 `npm run lint:js` 检查 TypeScript/前端工具。
 
 ### 质量门禁——按影响范围选择
 

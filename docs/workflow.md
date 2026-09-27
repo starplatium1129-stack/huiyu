@@ -1,6 +1,6 @@
 # 统一工作流手册
 
-> 维护日期：2026-09-27。命令注册与默认参数以 scripts/workflow.ts 源码为准，运行入口 scripts/workflow.js 由构建生成；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
+> 维护日期：2026-09-28。命令注册与默认参数以 scripts/workflow.ts 源码为准，scripts/workflow.js 为开发工具的生成入口；产品后端由 Rust 提供，此页不以 Node 工具生成完成代替后端构建。
 
 ## 先查入口
 
@@ -232,7 +232,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 保存同步场景/蓝图源分片、聚合、现有压缩伴生文件并重新计算 DATA_VERSION；客户端版本由 `virtual:data-version` 注入，不写回 `sceneStore.ts`。进程内队列结合持久化跨进程 lease/journal 和精确文件备份；活进程或未能证明已退出的进程不被抢锁。保存中或存在未恢复事务时，受保护内容读取拒绝返回半写状态。`/api/maintenance/recovery-status` 是本机只读状态入口；损坏元数据不会被自动清除。实际断电和文件系统持久性仍需设备验收。
 
-`maintenance:recover --root <项目根> [--runtime-root <运行目录>] [--showcase-root <可信样张根>]` 默认只读预览，恢复计划输出 stdout。保存该 JSON 后，显式 `--apply --recovery-plan <保存的预览JSON>` 才恢复；执行时重新核对签名、根身份、备份/当前字节、PID 与事务 nonce。`--plan` 是工作流保留的零执行预览，不能用来传恢复文件；`--help` 与裸 `--plan` 均不读取目标。活进程、未知状态、损坏 journal 或漂移计划拒绝恢复，失败保留精确回滚记录。退出 0 为可用预览或恢复成功，1 为阻塞/冲突/失败，2 为参数错误。
+`maintenance:recover --root <绝对项目根> --runtime-root <绝对运行目录> [--showcase-root <绝对样张根>] [--backup-id <ID>] [--out <新计划文件>]` 现调用原生 Rust 恢复 CLI，默认只读预览并输出 JSON；`--out` 不覆盖已有文件。审核后用相同根参数和 `--apply-plan <保存的签名JSON>` 显式应用，不能同时带 `--out` 或 `--backup-id`。重新核对签名、根身份、备份/当前字节、PID 与 nonce；活进程、未知锁、损坏 journal 或漂移拒绝恢复。需先 `rust:build`，也可直接运行 EXE 的 `maintenance-recovery` 子命令，无需启动网关。旧 Node 恢复工具不覆盖新启动聚合的词条备份范围。工作流 `--plan` 仍是零执行命令预览；退出 0 为可用预览/成功，1 为阻塞/失败，2 为参数错误。
 
 `audit:impact --base <本地commit/ref>` 对照历史与当前源/产物，保留删除、重命名、旧新角色/服装关系和字节证据；`audit:ownership --consistency` 核对热门角色、蓝图、场景分组/core/index 与已覆盖参考字段镜像。未知约束明确保留，增量报告仅生成计划，不执行命令；不能将局部相等视为全库通过。impact 参数错误退出 2、已证明问题退出 1；ownership 显式一致性检查的 unknown/mismatch 退出 1。
 
@@ -257,6 +257,25 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 `reference:render`、`showcase:batch-miaomiao`、`showcase:fill-gaps` 经工作流调用均需 `--output <隔离候选目录>`，包括预览；底层直接脚本的 dry-run 可省略 output。网关优先级为 `--gateway > GATEWAY_URL > BASE > AICS_COMMS_BASE > http://127.0.0.1:3000`。候选 review 始终 pending；已知 job 恢复，响应丢失的未知提交需核对后显式 `--retry-unknown`。参考库 full 使用上面的独立人工审核与发布预览；真实模型/画面及激活验收按对应机器执行。
 
 ## 门禁与构建
+
+### Rust 运行时迁移
+
+产品后端为 `runtime-rs/`，Node 只负责前端/开发工具和旧行为对照。先 `npm run build:runtime` 准备工作流及 Node oracle，再运行：
+
+- `npm run wf -- rust:check`：Rust 格式、Clippy 和隔离行为测试，不连接生产库或真实模型；显式原生素材/DLL用例与普通默认用例分开记录。
+- `npm run wf -- rust:build`：按 `runtime-rs/Cargo.lock` 构建 release 二进制及 `runtime/rust-evidence/build.json` 源码/EXE绑定，不替换桌面安装。需已有 Rust/MSVC 工具链，首次可能下载锁定 crate。
+- `npm run wf -- rust:parity`：先准备上述两类构建，再通过两个独立临时库核验 Node/Rust HTTP、旧回执重试、媒体 Range 和 Rust 写入后 Node 重开；顺序测量分页读取并记录实际行数和轮次。可设 `AICS_RUST_RUNTIME_EXE` 指定已构建候选，`AICS_RUST_PARITY_REPORT` 保存 JSON。报告是工作区切片，不能当作整机内存或完整后端迁移收益。
+- `npm run wf -- rust:licenses:collect`：PowerShell 7 按 `components.json` 的固定配方下载公开源码并提取许可材料，跳过已核验项；不安装或执行源码。缓存不入 Git，材料变化后必须更新 `materials.sha256.json` 及根 manifest 绑定。完整来源和发行待办见[原生材料说明](../runtime-rs/native-licenses/README.md)。
+
+设置 `AICS_RUST_BROWSER_REPORT=<新证据目录>` 会在同一 parity 运行中调用 `browser.mjs`，用真实 Rust 服务执行图库/控制台双主题操作并保留截图；`AICS_RUST_APP_ROOT=<已暂存gateway>` 可验证该布局及其中的 EXE，未设置时使用源码应用根。夹具设置关闭真实模型/隧道并使用临时配置和 workspace，不能把它改指用户资料作普通回归。
+
+- `npm run wf -- desktop:rust-bundle`：使用已暂存的实际 Rust EXE/DLL和 bundle 映射，在仓库外临时布局验证；不下载、安装或访问用户库。它替代旧 `desktop:workspace-sidecar`，不能以开发机上的 Node 启动成功替代原生包验证。
+
+源码服务用 `npm start` / `npm run start:run`（开发包装器调用 Cargo/Rust）；直接入口为 `runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210`。工作区须显式私有路径/身份或受控桌面激活；未知请求不落回 Node。`build:runtime` 仍生成旧 Node 与维护工具 JS，不会产出 Rust EXE。
+
+旧 Node unit/contract 和仍启动旧网关的 Playwright 结果只作旧行为对照。Rust 真正端到端由 `runtime-rs/tests/parity.mjs` 与其 `browser.mjs` 验证；最终结果、失败及默认浏览器测试栈切换分别记录，不能按路由挂载数量宣称完整覆盖。当前实现/待验见[执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)和 [013](../plans/013-node-to-rust-migration.md)。安装/UAC、真实模型、原生发行材料未完成，`releaseReady=false`。
+
+### 按改动选择检查
 
 内容契约 CLI（`check:content` / `test:content`）支持 `AICS_DATA_ROOT || AICS_APP_ROOT || 仓库根`。该根须提供完整 data/assets/src/stores 布局；数据、压缩产物和 DATA_VERSION 核对均使用所选根，缺文件失败，不回退到仓库数据。校验规则代码仍从代码仓库加载；显式外部素材路径配置仍生效。隔离回归 `test-content-contract-root.js` 验证根优先级、损坏定位、零写入及不读取仓库数据域。
 
@@ -291,7 +310,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | check:quick | npm run check 的全部已注册并行检查 |
 | check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build；validate 内部使用 `test:unit:run` / `test:contract:run` 复用 check 阶段已准备的运行时，独立运行 `test:unit` / `test:contract` 仍会先执行 `build:runtime` |
 | gate:full | npm run check（内含 typecheck:app/typecheck）+ vitest + unit + contract + build，全量入口 |
-| build:web / build:runtime | 前端与预算/预压；服务、网关、维护/测试及独立浏览器脚本的严格检查与编译；`build:web:run` / `start:run` 是组合流程复用的内部无准备入口 |
+| build:web / build:runtime / rust:build | 前端预算/预压；Node 开发维护/旧对照脚本编译；Rust 产品后端 release 构建。三者不相互替代，`start:run` 启动 Rust |
 | check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；包含 Vue/TS 工具类及 `@apply` 取样，维护约定见 [Tailwind 样式维护](guides/engineering/tailwind-styling.md)；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
 | check:domain-types | 指定公共作品/生成类型、结果快照及保存用例的可达依赖；复用 AST/真实路径/别名/再导出/Vue 脚本解析；禁止直连具体存储/API/Node 平台；类型边单列，违规、未知路径和运行候选循环阻断 |
@@ -317,7 +336,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `npm run wf -- desktop:storage-benchmark` 独立运行桌面持久化候选比较：使用 Node 内置 `node:sqlite`、已安装 Playwright 浏览器（可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`）和临时目录，输出 JSON 后清理夹具，不连接生产网关、不打开真实浏览器资料。比较 1,000/10,000 条作品索引及 64 对原图/缩略图，各三轮；耗时不设 CI 阈值，运行时不要并发构建或浏览器测试。方法限制和推荐结论见 [计划 005](../plans/005-desktop-architecture-consolidation.md)。迁移/任务日志故障注入原型已登记 unit 套件，均不接入生产运行时。
 
-`npm run wf -- desktop:workspace-sidecar` 在 Windows 上用已有、固定哈希的 Node sidecar 验证生产 workspace worker。先运行 `npm run build:runtime`；探针复用实际 staging 文件选择及 Tauri 资源映射，复制到临时安装布局，执行 SQLite 保存、重开、备份和候选恢复。仅使用临时库，不下载、不安装、不读取用户库；通过证明该 sidecar 和本次 worker 产物可运行，不替代正式安装、WebView2 或物理断电验收。该入口单独执行，不混入跨平台 unit 套件。
+`npm run wf -- desktop:rust-bundle` 使用真实 bundle 映射和当前 Rust 载荷验证隔离安装布局；先准备 `rust:build` 与桌面 staging。旧 `desktop:workspace-sidecar` 已退出注册表，旧 Node worker测试仅作对照。临时库验证不能替代正式安装、WebView2 或物理断电验收。
 
 `npm run wf -- desktop:renderer-process-check --exe <候选EXE> --assets-root <已有assets目录> --out <新证据目录>` 在 Windows 上验证 Live2D 独立渲染进程；先生成 Node 测试入口并构建支持 `--live2d-renderer-probe-host` / `--live2d-renderer-child` 的候选 EXE。脚本使用独立 config/profile、可见测试窗口与现有宁宁/夏目模型，记录 GPU 快照、帧数和 60/120/165 FPS 各两秒实测（可用 `--sample-ms` 调整），检验加载中杀子进程、超时、父进程存活、显式重连以及 Shutdown/EOF/父进程突然退出的无孤儿回收。GPU 快照须实际查看；帧率为测量值，没有把目标帧率视为性能门禁。只读模型资源，不启动已安装生产应用、不访问生产资料、不下载或调用 AI 生成。该入口与其他 GPU 测量串行，单独运行，不进入默认 unit/validate 套件；证据目录保留 JSONL、stderr、PNG 和结果 JSON。
 
@@ -345,7 +364,7 @@ Electron 验收修复后可显式使用 `--resume-native <旧report.json>` 只�
 
 Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/src-tauri/Cargo.lock`（发行桌面壳）和 `desktop-tauri/native-live2d/Cargo.lock`（原生渲染器独立构建）；PoC 锁文件不冒充发行依赖。发现 advisory 或扫描不可用均失败，保留 JSON、stderr、退出码、工具版本、源码 SHA 和锁文件哈希。原生 SDK 不属于 Cargo advisory 数据库：`native-live2d/build.rs` 声明 Cubism Native 5-r.5，实际 SDK 字节与许可仍需发行机单独记录。两份 Cargo 清单与 npm 锁文件随 CI artifact 保存；14 天留存不能代替长期发行归档。
 
-发行交接继续复用 `capture:delivery`：源码选择包含 npm/Cargo 锁文件与 SDK 构建配置，构建选择包含安装包、暂存网关的实际 package-lock、随包 Node 版本/哈希和实际 Cubism SDK 版本/哈希清单。先捕获身份，再运行扫描/门禁，结果记录写实际命令、运行环境、素材模式、失败/跳过及日志相对路径；按 `--baseline/--record` 绑定结果。尚无安装包或 SDK 时保持该项 pending，不能用开发机 Node 或声明 SDK 版本填作随包实测值。
+发行交接继续复用 `capture:delivery`：源码选择包含 npm/Cargo 锁文件与 SDK 构建配置，构建选择包含安装包、Rust EXE、原生 DLL/许可证清单、暂存资源及实际 Cubism SDK身份。Node是开发构建工具，不再填作随包后端。先捕获身份，再记录实际命令、环境、失败/跳过和日志；缺失安装包、SDK或原生发行材料保持 pending，不以声明值替代实测。
 
 交付时将回执与选中的脱敏日志/哈希清单一并放入受控发行 artifact，或把脱敏摘要登记到 docs/evidence 并加入文档索引；仅引用 runtime 路径无法跨机器移交。接收方恢复相同相对路径后运行 `audit:delivery`，核对 source/build 和日志是否 fresh，分别填写 installation、deviceAcceptance、modelAcceptance。现有失效检查能检出选中源码、构建或日志字节变化；哈希不认证日志语义，也不补签未运行项目。
 
@@ -384,9 +403,9 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
 
-桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认跳过前端构建（dist 需已构建，数据聚合产物仍会刷新，版本由 `virtual:data-version` 运行时解析）；`deploy:desktop:full` 执行完整构建加增量流程；两个入口的默认增量模式都会清 WebView2 缓存并默认重启桌面端。
+桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认复用匹配当前源码的桌面构建回执和暂存资源，不在安装目录重建数据；`deploy:desktop:full` 先执行完整桌面构建，再校验能否同步静态资源。只有宿主 EXE、Rust EXE 和两个 DLL 均与安装版本一致时才允许增量，否则须完整安装。默认同步会清 WebView2 缓存并重启桌面端。
 
-可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已验收EXE>` 需直接运行 bat）：`-UseInstaller` 使用完整安装包，默认先选择 `runtime/desktop-updates` 最新 `*-setup.exe`，也可显式指定 `-InstallerPath`；选择结果在 UAC 前固定并透传，避免提升权限期间换成另一份包。缺包退出 1，隐含跳过本地构建；`-QuietInstall` 仅随 `-UseInstaller` 静默安装，`-NoRestart` 结束后不启动，`-StartupRepair` 是 1.6.0 窄修复、与 `-UseInstaller` 互斥。非管理员时脚本经 UAC 重启，需用户确认。依赖/exe 变化的完整安装与 UAC 见[部署指南](desktop-deployment.md)。
+可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已验收EXE>` 需直接运行 bat）：`-UseInstaller` 使用完整安装包，默认先选择 `runtime/desktop-updates` 最新 `*-setup.exe`，也可显式指定 `-InstallerPath`；选择结果在 UAC 前固定并透传，避免提升权限期间换成另一份包。缺包退出 1，隐含跳过本地构建；`-QuietInstall` 仅随 `-UseInstaller` 静默安装，`-NoRestart` 结束后不启动，`-StartupRepair` 只同步当前绑定版本的文档、图标与快捷方式，与 `-UseInstaller` 互斥。非管理员时脚本经 UAC 重启，需用户确认。依赖/exe 变化的完整安装与 UAC 见[部署指南](desktop-deployment.md)。
 
 批处理入口的单杠字母开关可以登记于 run.switches，help/plan/audit 共用；其他入口仍要求双杠元数据键。`--plan` 会显示所传安装开关的行为标签而不启动执行器。默认与开关标签是可能副作用说明，不做标签抵消或参数权限判断；具体互斥及跳过行为以本段和部署实现为准。
 
@@ -406,6 +425,6 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 ### 011 发行输入绑定（2026-09-21）
 
-完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和 Markdown），复用 delivery-identity 的路径/字节哈希。生成 runtime/delivery-evidence/desktop-build-binding.json，绑定 dist、暂存 resources（含网关、锁文件和 Node）、原生 exe；打包构建另绑定 NSIS 目录。仅原生构建不会把目录中遗留的旧 NSIS 纳入新身份。
+完整桌面构建在锁内捕获受 Git 管理及未忽略源码（排除 docs、plans 和一般 Markdown；原生许可目录中的 Markdown 仍纳入），复用 delivery-identity 的路径/字节哈希。`runtime/delivery-evidence/desktop-build-binding.json` 绑定 dist、桌面内嵌 web、暂存 Rust gateway/原生 DLL/清单及桌面 EXE，打包构建另绑定 NSIS；`runtime/rust-evidence/build.json` 绑定后端源码和 release EXE。仅原生构建不把旧 NSIS 纳入新身份，`releaseReady` 的发行材料状态仍须单独核对。
 
 skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同版本源码不同、锁文件变化、混包、缺回执和篡改在封装/签名/上传前拒绝。封装后追加分发文件身份并在签名/上传前核对。正常版本修改先构建再提交相同字节可用，不要求循环提交 SHA；仅文档变化不失效。旧包缺回执不能补写身份冒认已构建，应在原源码完整重建并重新审核；不得将同版本重建包冒充原公开资产。

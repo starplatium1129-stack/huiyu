@@ -137,7 +137,7 @@ pub fn set_autostart(app: AppHandle, enabled: bool) -> bool {
 
 #[tauri::command]
 pub fn is_packaged(app: AppHandle) -> bool {
-    app.package_info().version.major > 0 && !cfg!(debug_assertions)
+    app.state::<AppState>().paths.is_packaged
 }
 
 #[tauri::command]
