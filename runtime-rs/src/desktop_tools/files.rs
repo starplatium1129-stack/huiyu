@@ -20,8 +20,7 @@ pub(super) async fn list(root: &Path, input: &Value) -> Result<Value> {
             entry.file_name().to_string_lossy().into_owned(),
         ));
     }
-    let locale: Locale = sys_locale::get_locale()
-        .unwrap_or_else(|| "en-US".into())
+    let locale: Locale = crate::collation::system_locale()
         .parse()
         .map_err(|_| Error::plain("目录排序区域设置不可用"))?;
     let collator = Collator::try_new(locale.into(), CollatorOptions::default())

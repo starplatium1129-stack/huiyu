@@ -87,6 +87,7 @@ async fn file_tools_use_actual_workspace_and_reject_escape_or_oversized_data() {
     .await;
     assert_eq!(read["output"], "你好，Rust");
     let (_, listed) = call(&app, json!({"name":"list_files","args":{"path":""}}), false).await;
+    assert_eq!(listed["ok"], true, "{listed}");
     assert!(listed["output"].as_str().unwrap().contains("notes/"));
     let (_, escape) = call(
         &app,

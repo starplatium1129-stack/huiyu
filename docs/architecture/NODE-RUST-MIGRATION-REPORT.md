@@ -28,7 +28,7 @@
 - Krea 的 init/mask 编辑请求明确返回 501，避免旧图忽略输入仍声称完成；H3 无 T8 的参考图、Wan 不支持的多镜头尾帧连接在受理前拒绝。
 - 分镜保持本机访问，明确拒绝成人分级输入；未知提交只查询原任务，不自动再次提交。执行成功但结果持久化失败时保留可重收集状态，不重占 GPU 提交新任务。
 
-Linux 的 `C`/`POSIX` 系统 locale 按 [Node 24.18 的 V8 实现](https://github.com/nodejs/node/blob/v24.18.0/deps/v8/src/execution/isolate.cc#L6711)映射为 `en-US`，避免任务运行时在初始化时退出；已有账本记录的 locale 仍按原值严格解析。Unix 磁盘余量计算使用宽整数饱和转换，避免 x64 专属的同型转换 Clippy 失败。当前本机 Windows 定向验证不冒充 Linux CI 已运行。
+Linux 的 `C`/`POSIX` 系统 locale 按 [Node 24.18 的 V8 实现](https://github.com/nodejs/node/blob/v24.18.0/deps/v8/src/execution/isolate.cc#L6711)映射为 `en-US`，避免任务运行时在初始化时退出；已有账本记录的 locale 仍按原值严格解析。Unix 磁盘余量计算使用宽整数饱和转换，避免 x64 专属的同型转换 Clippy 失败。首次 Linux CI 已通过格式与 Clippy，单元测试为 64 过/1 失败/1 原生专项忽略；失败暴露目录列表另有一处未规范化系统 locale。现将目录列表与任务指纹接到同一模块，保留旧账本 locale，相关本机 5 项定向回归通过；Linux 复验结果以 PR #11 最新运行记录为准。展示层与图像实现未改，双主题和原生字节对照证据复用；最终 release 的协议复验见 `parity-locale-final.json`。
 
 验收还修复了输入保护期间重复恢复分发、成功结果保存失败后无法重收集、未确认结束任务不能取消，以及手动恢复未重新挂接监视的问题。Windows Live2D 路径检查不再提前查询不完整的 `\\?\C:` 前缀；规范化路径下导入、编辑和目录扫描已定向通过，junction/symlink 仍拒绝。
 
@@ -45,7 +45,7 @@ Linux 的 `C`/`POSIX` 系统 locale 按 [Node 24.18 的 V8 实现](https://githu
 | `node-test-frontend.log`、`node-test-unit-run.log`、`node-test-contract-run.log` | 当轮前端 233 文件/1605 用例、旧实现 unit 1170 用例、contract 39 文件通过 | Node 单元/契约通过不能替代 Rust 测试 |
 | `full-gate.log`、`node-test-check.log`、`hygiene.json` | 保留早期失败。后续 Node check `--all` 为 19 过/1 失败，仅继承的原生 title 36/35；hygiene 通过，材料与暂存契约 26 项通过、1 项非 Windows 专属用例跳过 | 整体 Node check 仍不是全绿；原失败记录不覆盖为成功 |
 | `ui/failed-dark.*`、`ui-final/failed-control-dark.*` | 保留图库读取及控制台的较早失败 | 不能删除失败历史后只展示成功截图 |
-| `build.json`、`release-build-final.log` | 当前 Rust release 构建完成，25,286,656 字节；源码选择身份与 EXE 哈希已写回执 | 只绑定后端构建，桌面安装包和许可仍单列 |
+| `build.json`、`release-build-final.log` | 当前 Rust release 构建完成，25,287,680 字节；源码选择身份与 EXE 哈希已写回执 | 只绑定后端构建，桌面安装包和许可仍单列 |
 | `parity-final.json`、`ui-final/rust-*.png` | 7 项 Node/Rust 工作区一致性通过；图库/控制台深浅主题通过，workspace 失败 0，截图已人工查看 | 使用隔离资料与中性设置；不覆盖全站、模型或桌面安装 |
 | 原生及桌面补验 | 已暂存 DLL 对 12 种 WD14 预处理像素差异均为 0；36 个派生文件逐字节一致；332 字节 toy ONNX 在 CPU 通过；实际 Tauri 配置的 debug 构建完成，独立 bundle 首轮启动 232 ms，最终 EXE 重验 204 ms | 小模型/中性素材及一次启动样本不证明真实权重、release安装或发行材料完成 |
 
@@ -57,10 +57,10 @@ Linux 的 `C`/`POSIX` 系统 locale 按 [Node 24.18 的 V8 实现](https://githu
 
 | 项目 | 当前记录 |
 | --- | --- |
-| 最终源码提交/内容身份 | Rust 源选择身份 `f5a5fa90dc559ece0a206de784186f1d3a24da7d9e01d3b159f64103e1aeec16`；交付分支 `codex/node-to-rust`，提交见 Git 记录；桌面 release/安装绑定仍未生成 |
+| 最终源码提交/内容身份 | Rust 源选择身份 `660ea68242f6a64da6f2278df13716f639ddb6a19a41319a04036782f6b9940c`；交付分支 `codex/node-to-rust`，提交见 Git 记录；桌面 release/安装绑定仍未生成 |
 | Rust 门禁 | 当前已记录全 targets Clippy、64 lib+16 integration 通过，locale 修复后新增/原有 fingerprint 两项定向通过，原生 4 项显式通过；Live2D 规范化路径与链接拒绝定向 2 项通过。最终日志/源码绑定随交付回执核对 |
 | Node 完整 check | `--all` 19 过/1 失败：原生 title 36 > 基线 35；没有放宽断言或宣称全量通过 |
-| release runtime | 25,286,656 字节；SHA-256 `7ee335de5d3911be7122e21d2a381ca7ca29ac4e79db3aba233aef8bd8a9040b`；见 `runtime/rust-evidence/build.json` |
+| release runtime | 25,287,680 字节；SHA-256 `3350ce3cc8e902e79a86340d6026679656768af8e954a2ee78f71e8744596ff3`；见 `runtime/rust-evidence/build.json` |
 | 暂存 bundle、桌面 EXE/NSIS、发行输入绑定 | stage+独立 bundle 启动通过；实际配置的 Tauri debug 构建 49.23 s 完成。最终 release桌面/NSIS与回执待补，不等于已安装 |
 | Rust 浏览器端到端与双主题 | `parity-final.json` 中图库与控制台均通过；实际暂存 bundle 独立启动亦通过，默认 Rust E2E 五条主流程通过，全站矩阵未跑 |
 | 工作区 HTTP 读取切片 | 1002 记录、5×40 轮；p50 Node 15.09–15.36 ms、Rust 14.63–15.41 ms，未得出加速结论 |

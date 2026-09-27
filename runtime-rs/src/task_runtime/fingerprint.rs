@@ -16,23 +16,7 @@ pub struct Fingerprint {
 }
 impl Fingerprint {
     pub fn system() -> Result<Self> {
-        Self::from_system_locale(sys_locale::get_locale().as_deref())
-    }
-    fn from_system_locale(locale: Option<&str>) -> Result<Self> {
-        let locale = locale.unwrap_or("en-US");
-        // sys-locale strips the encoding from C.UTF-8. Match Node/V8's
-        // Isolate::DefaultLocale mapping of the ICU C/POSIX fallback to en-US;
-        // persisted ledger locales still pass through the strict parser below.
-        // https://github.com/nodejs/node/blob/v24.18.0/deps/v8/src/execution/isolate.cc#L6711
-        let locale = if ["C", "POSIX", "en-US-POSIX"]
-            .iter()
-            .any(|fallback| locale.eq_ignore_ascii_case(fallback))
-        {
-            "en-US"
-        } else {
-            locale
-        };
-        Self::new(locale)
+        Self::new(&crate::collation::system_locale())
     }
     pub fn new(locale: &str) -> Result<Self> {
         let parsed: Locale = locale.parse().map_err(|_| {
@@ -99,7 +83,10 @@ mod tests {
         let value = serde_json::json!({"ä": 1, "z": 2, "A": 3, "a": 4});
         let expected = Fingerprint::new("en-US").unwrap().hash(&value);
         for locale in [None, Some("C"), Some("POSIX"), Some("en-US-POSIX")] {
-            let codec = Fingerprint::from_system_locale(locale).unwrap();
+            let codec = Fingerprint::new(crate::collation::normalize_system_locale(
+                locale.unwrap_or("en-US"),
+            ))
+            .unwrap();
             assert_eq!(codec.locale, "en-US");
             assert_eq!(codec.hash(&value), expected);
         }

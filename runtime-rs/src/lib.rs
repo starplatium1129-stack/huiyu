@@ -1,6 +1,7 @@
 mod admission;
 pub mod bootstrap;
 pub mod chat;
+mod collation;
 pub mod config;
 pub mod control;
 pub mod desktop_tools;
