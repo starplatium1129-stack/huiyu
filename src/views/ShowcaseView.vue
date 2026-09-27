@@ -90,6 +90,7 @@
           <div class="viewer-art">
             <ZoomableImageViewer
               :src="resolveRuntimeUrl(imgSrc(currentEntry))"
+              :preview-src="viewerPreviewSrc"
               :alt="currentEntry.title"
               @load="viewerImageReady = true"
               @error="viewerImageFailed = true"
@@ -192,6 +193,7 @@ function loadMore() { visibleCount.value += PAGE_SIZE }
 const currentId   = ref('')
 const viewerMounted = ref(false)
 const viewerClosing = ref(false)
+const viewerPreviewSrc = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const viewerHero = useImageOriginTransition()
 const viewerSurface = useFluidSurface(':scope > .viewer-layout')
@@ -294,13 +296,15 @@ const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) {
-  viewerHero.capture(dialogEl.value?.open ? null : sourceImage(id))
+  viewerPreviewSrc.value = viewerHero.capture(sourceImage(id))
+  if (dialogEl.value?.open) viewerHero.capture(null)
+  // Normal reopen uses the same decoded resource. Only a failed image needs a retry key.
+  if (viewerImageFailed.value) viewerVersion.value++
   viewerClosing.value = false
   viewerMounted.value = true
   currentId.value = id
   viewerImageFailed.value = false
   viewerImageReady.value = false
-  viewerVersion.value = Date.now()
   // Opening after the computed entry has rendered avoids relying on a same-card
   // close/reopen value change, which is not guaranteed during dialog teardown.
   void nextTick(() => {

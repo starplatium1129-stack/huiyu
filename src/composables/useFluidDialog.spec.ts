@@ -35,6 +35,20 @@ const overflow = () => document.documentElement.style.overflow
 /** 复现「原生 close 事件在任务队列末尾派发」：重开之后再让旧事件到达。 */
 const flushNativeClose = (dialog: HTMLDialogElement) => dialog.dispatchEvent(new Event('close'))
 
+function readingPosition(initial = 640) {
+  const original = Object.getOwnPropertyDescriptor(window, 'scrollY')
+  let y = initial
+  const frames: FrameRequestCallback[] = []
+  Object.defineProperty(window, 'scrollY', { configurable: true, get: () => y })
+  const scroll = vi.spyOn(window, 'scrollTo').mockImplementation((options: ScrollToOptions | number, top?: number) => { y = typeof options === 'number' ? top! : options.top! })
+  const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frames.push(callback); return frames.length })
+  return {
+    get y() { return y }, set y(value: number) { y = value }, scroll,
+    paint() { const callbacks = frames.splice(0); callbacks.forEach(callback => callback(0)); return y },
+    restore() { raf.mockRestore(); scroll.mockRestore(); if (original) Object.defineProperty(window, 'scrollY', original) },
+  }
+}
+
 describe('modal page scroll lock', () => {
   beforeEach(() => {
     document.documentElement.dataset.motion = 'reduce'
@@ -154,6 +168,39 @@ describe('modal page scroll lock', () => {
       expect(scroll).toHaveBeenCalledWith({ left: window.scrollX, top: window.scrollY, behavior: 'instant' })
     } finally { scroll.mockRestore() }
   })
+  it('restores native close scroll and focus before a deferred close event can expose a frame', () => {
+    const vm = spawn(), dialog = dialogOf(vm)
+    const trigger = document.createElement('button')
+    document.body.append(trigger)
+    const original = Object.getOwnPropertyDescriptor(window, 'scrollY')
+    let y = 640
+    const frames: FrameRequestCallback[] = []
+    const visibleFrames: number[] = []
+    Object.defineProperty(window, 'scrollY', { configurable: true, get: () => y })
+    const scroll = vi.spyOn(window, 'scrollTo').mockImplementation((options: ScrollToOptions | number, top?: number) => { y = typeof options === 'number' ? top! : options.top! })
+    const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frames.push(callback); return frames.length })
+    const focus = vi.spyOn(trigger, 'focus')
+    vi.spyOn(dialog, 'close').mockImplementation(() => {
+      dialog.removeAttribute('open'); y = 0
+      requestAnimationFrame(() => flushNativeClose(dialog))
+    })
+    try {
+      vm.open(trigger); focus.mockClear()
+      vm.close()
+      visibleFrames.push(y)
+      const focusedBeforeFrame = focus.mock.calls.some(([options]) => options?.preventScroll)
+      for (let tick = 0; frames.length && tick < 5; tick++) {
+        const callbacks = frames.splice(0)
+        callbacks.forEach(callback => callback(tick))
+        visibleFrames.push(y)
+      }
+      expect(visibleFrames.every(top => top === 640)).toBe(true)
+      expect(focusedBeforeFrame).toBe(true)
+    } finally {
+      trigger.remove(); raf.mockRestore(); scroll.mockRestore(); focus.mockRestore()
+      if (original) Object.defineProperty(window, 'scrollY', original)
+    }
+  })
   it('does not let an old deferred restore move a newly opened modal', () => {
     const first = spawn(), second = spawn()
     const frames:FrameRequestCallback[] = []
@@ -169,6 +216,64 @@ describe('modal page scroll lock', () => {
       expect(scroll).not.toHaveBeenCalled()
       second.close();flushNativeClose(dialogOf(second))
     } finally {raf.mockRestore();scroll.mockRestore();if(original)Object.defineProperty(window,'scrollY',original)}
+  })
+  it('cancels a native close smooth scroll that has not moved yet', () => {
+    const vm = spawn(), dialog = dialogOf(vm), reading = readingPosition()
+    let pending = false
+    const close = vi.spyOn(dialog, 'close').mockImplementation(() => {
+      dialog.removeAttribute('open'); pending = true
+      requestAnimationFrame(() => { if (pending) reading.y = 0; flushNativeClose(dialog) })
+    })
+    reading.scroll.mockImplementation((options: ScrollToOptions | number, top?: number) => {
+      pending = false; reading.y = typeof options === 'number' ? top! : options.top!
+    })
+    try {
+      vm.open(null); reading.scroll.mockClear(); vm.close()
+      expect(reading.scroll).toHaveBeenCalledWith({ left: 0, top: 640, behavior: 'instant' })
+      expect(pending).toBe(false)
+      expect([reading.y, reading.paint(), reading.paint()]).toEqual([640, 640, 640])
+    } finally { close.mockRestore(); reading.restore() }
+  })
+
+  it('corrects a nested native close without releasing the remaining modal lock', () => {
+    const first = spawn(), second = spawn(), reading = readingPosition()
+    const inner = dialogOf(second)
+    const close = vi.spyOn(inner, 'close').mockImplementation(() => { inner.removeAttribute('open'); reading.y = 0 })
+    try {
+      first.open(null); second.open(null); second.close()
+      expect(overflow()).toBe('hidden')
+      expect(reading.y).toBe(640)
+      first.close(); expect(overflow()).toBe('')
+      flushNativeClose(inner)
+      expect(reading.y).toBe(640)
+    } finally { close.mockRestore(); reading.restore() }
+  })
+
+  it('settles native scroll after dispose closes the dialog, without focusing an old trigger', () => {
+    const vm = spawn(), dialog = dialogOf(vm), reading = readingPosition()
+    const trigger = document.createElement('button'); document.body.append(trigger)
+    const focus = vi.spyOn(trigger, 'focus')
+    const close = vi.spyOn(dialog, 'close').mockImplementation(() => { dialog.removeAttribute('open'); reading.y = 0 })
+    try {
+      vm.open(trigger); focus.mockClear(); vm.dispose()
+      expect(reading.y).toBe(640)
+      expect(focus).not.toHaveBeenCalled()
+      expect(overflow()).toBe('')
+    } finally { close.mockRestore(); focus.mockRestore(); trigger.remove(); reading.restore() }
+  })
+
+  it.each(['/gallery', '/showcase?tab=other', '/showcase#/gallery'])('does not restore a closed route after navigation to %s', target => {
+    const previous = window.location.href
+    history.replaceState(null, '', '/showcase#/showcase')
+    const vm = spawn(), dialog = dialogOf(vm), reading = readingPosition()
+    try {
+      vm.open(null); vm.close(); reading.scroll.mockClear()
+      history.replaceState(null, '', target); reading.y = 80
+      flushNativeClose(dialog)
+      reading.paint(); reading.paint()
+      expect(reading.y).toBe(80)
+      expect(reading.scroll).not.toHaveBeenCalled()
+    } finally { reading.restore(); history.replaceState(null, '', previous) }
   })
 })
 

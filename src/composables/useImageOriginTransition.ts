@@ -67,7 +67,10 @@ export function useImageOriginTransition() {
     stopWaiting?.(); stopWaiting = null
     clearFlight()
   }
-  function capture(sourceImg: HTMLImageElement | null) { origin = safeOrigin(sourceImg); capturedAt = performance.now() }
+  function capture(sourceImg: HTMLImageElement | null) {
+    origin = safeOrigin(sourceImg); capturedAt = performance.now()
+    return origin?.src || ''
+  }
 
   function ready(image: HTMLImageElement, timeout: number): Promise<boolean> {
     return new Promise(resolve => {

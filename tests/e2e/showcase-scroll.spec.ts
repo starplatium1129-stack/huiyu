@@ -230,3 +230,54 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('[data-image-origin-proxy]')).toHaveCount(0)
   })
 }
+
+for (const theme of ['light', 'dark']) {
+  test(`cold artbook preview keeps the clicked photo until its original decodes ${theme}`, async ({ page }, info) => {
+    await installShowcaseFixture(page)
+    await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    let releaseOriginal!: () => void
+    const gate = new Promise<void>(resolve => { releaseOriginal = resolve })
+    const originalUrls: string[] = []
+    await page.route(/\/scene-showcase\/images\/[^?]+/, async route => {
+      originalUrls.push(route.request().url())
+      await gate
+      await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="832" height="1216"><rect width="832" height="1216" fill="#746687"/><text x="80" y="160" fill="white" font-size="48">ORIGINAL READY</text></svg>' })
+    })
+    await page.goto('/showcase')
+    const opener = page.locator('.sample-visual').first()
+    await opener.scrollIntoViewIfNeeded()
+    await expect(opener.locator('img')).toHaveClass(/sample-image-ready/)
+    const thumb = await opener.locator('img').evaluate((img: HTMLImageElement) => img.currentSrc)
+    await opener.click()
+    const dialog = page.locator('.showcase-viewer'), picture = dialog.locator('.zoomable-img')
+    await expect.poll(() => originalUrls.length).toBe(1)
+    await expect(dialog).toHaveCSS('opacity', '1')
+    await expect(picture).toHaveClass(/is-ready/)
+    expect(await picture.evaluate((img: HTMLImageElement) => img.currentSrc)).toBe(thumb)
+    expect(await picture.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
+    await expect(dialog.locator('.skeleton-placeholder')).toHaveCount(0)
+    await page.screenshot({ path: info.outputPath(`cold-photo-${theme}.png`) })
+    const frames = page.evaluate(() => new Promise<Array<{ width: number; opacity: number; skeleton: boolean }>>(resolve => {
+      const samples: Array<{ width: number; opacity: number; skeleton: boolean }> = []
+      const sample = () => {
+        const img = document.querySelector<HTMLImageElement>('.showcase-viewer .zoomable-img')!
+        samples.push({ width: img.naturalWidth, opacity: Number(getComputedStyle(img).opacity), skeleton: !!document.querySelector('.showcase-viewer .skeleton-placeholder') })
+        if (samples.length === 30) { resolve(samples); return }
+        requestAnimationFrame(sample)
+      }
+      requestAnimationFrame(sample)
+    }))
+    releaseOriginal()
+    await expect(picture).toHaveAttribute('src', /\/images\//)
+    expect((await frames).every(frame => frame.width > 0 && frame.opacity === 1 && !frame.skeleton)).toBe(true)
+    await page.getByRole('button', { name: '关闭大图', exact: true }).click()
+    await expect(dialog).toBeHidden()
+    await opener.click()
+    await expect(dialog.locator('.zoomable-preload')).toHaveCount(0)
+    await expect(picture).toHaveAttribute('src', /\/images\//)
+    expect(new Set(originalUrls).size).toBe(1)
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeHidden()
+  })
+}

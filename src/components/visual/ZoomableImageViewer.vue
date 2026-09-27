@@ -19,7 +19,7 @@
       :style="zoomLayerStyle"
     >
       <!-- 骨架屏占位 -->
-      <div v-if="!imageReady && !imageFailed" class="skeleton-placeholder">
+      <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder">
         <div class="skeleton-shimmer"></div>
       </div>
 
@@ -27,14 +27,20 @@
       <img :crossorigin="runtimeResourceCors()"
         v-show="!imageFailed"
         ref="imageEl"
-        :src="resolveRuntimeUrl(src)"
+        :src="resolveRuntimeUrl(displayedSrc)"
         :alt="alt"
         class="zoomable-img"
-        :class="{ 'is-ready': imageReady }"
+        :class="{ 'is-ready': imageReady || !!previewSrc }"
         draggable="false"
         @load="onImageLoad"
         @error="onImageError"
       />
+
+      <!-- Decode the original offscreen while the already-loaded thumbnail stays visible. -->
+      <img v-if="displayedSrc !== src && !fullImageFailed" :key="src" ref="fullImageEl"
+        :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(src)" class="zoomable-preload"
+        alt="" aria-hidden="true" @load="upgradeImage" @error="onFullImageError" />
+      <span v-if="fullImageFailed && !imageFailed" class="preview-quality-note" role="status">高清图暂时无法读取，当前显示缩略图</span>
 
       <!-- 失败占位 -->
       <div v-if="imageFailed" class="image-fallback">
@@ -66,11 +72,13 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 const props = defineProps<{
   src: string
+  /** An already-visible, unrestricted thumbnail; it keeps the first frame continuous. */
+  previewSrc?: string
   alt?: string
   minScale?: number
   maxScale?: number
@@ -86,6 +94,11 @@ const maxScale = props.maxScale ?? 4
 
 const containerEl = ref<HTMLElement | null>(null)
 const imageEl = ref<HTMLImageElement | null>(null)
+const fullImageEl = ref<HTMLImageElement | null>(null)
+const displayedSrc = ref(props.previewSrc || props.src)
+const fullImageFailed = ref(false)
+let sourceRevision = 0
+onBeforeUnmount(() => { sourceRevision++ })
 const imageReady = ref(false)
 const imageFailed = ref(false)
 
@@ -113,12 +126,24 @@ function onImageLoad() {
 }
 
 function onImageError() {
+  if (displayedSrc.value !== props.src) { displayedSrc.value = props.src; return }
   imageReady.value = false
   imageFailed.value = true
   emit('error')
 }
 
-watch(() => props.src, () => {
+async function upgradeImage(event: Event) {
+  const image = event.target as HTMLImageElement, revision = sourceRevision
+  try { if (typeof image.decode === 'function') await image.decode() }
+  catch { if (revision === sourceRevision && fullImageEl.value === image) onFullImageError(); return }
+  if (revision === sourceRevision && fullImageEl.value === image) displayedSrc.value = props.src
+}
+function onFullImageError() { fullImageFailed.value = true; emit('error') }
+
+watch(() => [props.src, props.previewSrc], () => {
+  sourceRevision++
+  displayedSrc.value = props.previewSrc || props.src
+  fullImageFailed.value = false
   imageReady.value = false
   imageFailed.value = false
   resetZoom()
@@ -225,6 +250,9 @@ function stopPan(event: PointerEvent) {
 </script>
 
 <style scoped>
+.zoomable-preload { display: none; }
+.preview-quality-note { position: absolute; top: var(--s-3); left: var(--s-3); right: var(--s-3); padding: var(--s-2); border-radius: var(--r-sm); background: var(--art-scrim); color: var(--on-art-primary); font-size: var(--fs-label-sm); text-align: center; }
+
 .zoomable-image-viewer {
   position: relative;
   width: 100%;
