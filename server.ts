@@ -395,7 +395,7 @@ function createGateway(options: GatewayOptions = {}) {
 
   async function close() {
     if (options.desktopHost) await desktopTasks.close();
-    resources.close();
+    resources.close(); const interrogateClosed = interrogate.close();
     voice.close();
     if (anima && typeof anima.close === 'function') anima.close();
     if (generation && typeof generation.close === 'function') generation.close();
@@ -404,7 +404,7 @@ function createGateway(options: GatewayOptions = {}) {
     if (control && typeof control.close === 'function') control.close();
     if (tunnelManager) tunnelManager.stop();
     await options.workspace?.close();
-    await options.desktopHost?.close();
+    await options.desktopHost?.close(); await interrogateClosed;
   }
 
   // 将控制函数暴露给 gatewayState，供 control 路由调用

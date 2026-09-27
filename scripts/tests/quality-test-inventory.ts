@@ -169,6 +169,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-scene-maintenance-save.js',
     'test-interrogate-routes.js',
     'test-interrogate-engine.js',
+    'test-interrogate-client.js',
     'test-live2d-route.js',
     'test-character-reference-contract.js',
     'test-pinned-scene-prompts.js',

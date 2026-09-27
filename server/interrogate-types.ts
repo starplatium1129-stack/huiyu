@@ -29,6 +29,8 @@ export interface ModelSession {
 }
 
 export interface InterrogateOptions {
+  signal?: AbortSignal;
+  timeoutMs?: number;
   config?: InterrogateConfig | null;
   threshold?: number;
   characterThreshold?: number;

@@ -10,7 +10,7 @@ import fs = require('fs');
 import path = require('path');
 import http = require('http');
 import type { AddressInfo } from 'net';
-import wd14 = require('../../server/interrogate-engine');
+import wd14 = require('../../server/interrogate-client');
 
 let assert: typeof import('assert/strict') = require('assert/strict');
 let gatewayStack: typeof import('./gateway-test-stack') = require('./gateway-test-stack');
@@ -134,13 +134,14 @@ async function run() {
   console.log('test-interrogate-routes: ok');
 }
 
-const originalInterrogate = wd14.interrogateTag;
-const originalProbe = wd14.probe;
-wd14.interrogateTag = async () => ({ ok:false, reason:'fixture disables real inference' });
-wd14.probe = () => ({ available:false, reason:'fixture disables real models' });
+const originalCreate = wd14.createInterrogateClient;
+wd14.createInterrogateClient = () => ({
+  interrogateTag: async () => ({ ok:false, reason:'fixture disables real inference' }),
+  probe: () => ({ available:false, reason:'fixture disables real models' }),
+  close: async () => undefined,
+});
 run().finally(() => {
-  wd14.interrogateTag = originalInterrogate;
-  wd14.probe = originalProbe;
+  wd14.createInterrogateClient = originalCreate;
 }).catch(function (error) {
   console.error(error);
   process.exit(1);

@@ -27,7 +27,7 @@ test('desktop SDK discovery supports the workspace and does not ignore an explic
 });
 
 test('game installer preserves upstream install and maintenance behavior', () => {
-  const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/installer/vendor/tauri-2.11.4.nsi'), 'utf8');
+  const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/installer/vendor/tauri-2.12.0.nsi'), 'utf8');
   const themed = customizeTemplate(source, 'C:\\preview\\art.bmp', 'C:\\preview\\game-ui.nsh');
   const sections = (text: any) => text.slice(text.indexOf('Section EarlyChecks'));
   let payload = sections(themed);

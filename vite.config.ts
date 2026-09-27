@@ -141,9 +141,12 @@ export default defineConfig(async ({ mode }) => {
     assetsDir: '_app',
     // 固定构建目标，别随 Vite 默认值漂移；与 package.json 的 browserslist 对齐
     target: ['chrome111', 'edge111', 'firefox128', 'safari16.4'],
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks(id: string) {
+        codeSplitting: {
+          // Split feature groups by their actual consumers, retaining lazy
+          // boundaries when shared helpers also appear in another route.
+          groups: [{ entriesAware: true, name(id: string) {
           // 框架单独成块：应用代码改动不该让 Vue/Router/Pinia 的缓存一起失效
           if (id.includes('node_modules/vue/') ||
               id.includes('node_modules/@vue/') ||
@@ -154,10 +157,8 @@ export default defineConfig(async ({ mode }) => {
           if (id.includes('node_modules/motion/') || id.includes('node_modules/framer-motion/')) {
             return 'motion'
           }
-          // 共享基础模块单独成块：client/storageKeys/characters 等被入口链与
-          // 多个异步块共同引用，不固定时会被 rollup 吸进 live2d 手工块；
-          // vite/preload-helper 是所有动态导入 chunk 的公共助手，同样必须
-          // 固定——否则入口和所有路由闭包会静态背上整个 live2d 依赖（73KB）。
+          // Shared helpers belong outside the Live2D group. entriesAware also
+          // separates consumers within each group to retain lazy boundaries.
           if (id.includes('node_modules/@vueuse/') ||
               id.includes('src/api/client') ||
               id.includes('src/api/mediaStatusApi') ||
@@ -186,7 +187,8 @@ export default defineConfig(async ({ mode }) => {
             return 'live2d'
           }
           return undefined
-        }
+        } }],
+        },
       }
     }
   }

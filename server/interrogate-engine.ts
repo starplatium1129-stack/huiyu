@@ -129,6 +129,11 @@ function loadTags(csvPath: PathOrFileDescriptor) {
 let sessionCache: ModelSession | null = null; // { onnxPath, session, inputName, outputName }
 async function getSession(engine: NonNullable<ReturnType<typeof loadNative>>, model: InterrogateModel) {
   if (sessionCache && sessionCache.onnxPath === model.onnxPath && sessionCache.session) return sessionCache;
+  if (sessionCache) {
+    const previous = sessionCache;
+    sessionCache = null;
+    await previous.session.release();
+  }
   let session = await engine.ort.InferenceSession.create(model.onnxPath, { executionProviders: ['cpu'] });
   sessionCache = {
     onnxPath: model.onnxPath,
@@ -143,15 +148,20 @@ async function getSession(engine: NonNullable<ReturnType<typeof loadNative>>, mo
  * 图像预处理：等比缩放 + 白底居中 → RGB → BGR float32 [448*448*3]
  * 与 pysssss 节点逐位一致（sharp fit:contain 等价于「resize 到最长边 + 白边填充」）。
  */
-async function preprocess(sharpLib: Sharp, imageBuffer: Buffer) {
-  let image = sharpLib(imageBuffer).rotate().toColourspace('srgb');
+async function preprocess(sharpLib: Sharp, imageBuffer: Buffer, check: () => void) {
+  let image = sharpLib(imageBuffer, { limitInputPixels: 32 * 1024 * 1024, animated: false }).rotate().toColourspace('srgb');
+  try {
   let meta = await image.metadata();
+  check();
   if (!meta.width || !meta.height) throw new Error('无法读取图片尺寸');
+  if (meta.width > 8192 || meta.height > 8192) throw new Error('图片尺寸超过反推解码上限');
   let resized = await image
     .resize(MODEL_SIZE, MODEL_SIZE, { fit: 'contain', background: { r: 255, g: 255, b: 255 } })
     .removeAlpha()
     .raw()
+    .timeout({ seconds: 5 })
     .toBuffer({ resolveWithObject: true });
+  check();
   let rgb = resized.data; // Uint8Array 448*448*3
   let n = MODEL_SIZE * MODEL_SIZE * 3;
   let floatData = new Float32Array(n);
@@ -163,13 +173,14 @@ async function preprocess(sharpLib: Sharp, imageBuffer: Buffer) {
     floatData[o + 2] = rgb[o];
   }
   return floatData;
+  } finally { image.destroy(); }
 }
 
 /**
  * 反推主入口：真实 WD14 推理。
  * @returns {Promise<{ok:boolean, engine:string, model:string, tags:string[], characterTags:string[], scores:object, rating:object, meta:object}|{ok:false, reason:string}>}
  */
-async function interrogateTag(imageBuffer: Buffer, options: InterrogateOptions = {}): Promise<InterrogateResult> {
+async function runInterrogate(imageBuffer: Buffer, options: InterrogateOptions, check: () => void): Promise<InterrogateResult> {
   options = options || {};
   let engine = loadNative();
   if (!engine) return { ok: false, reason: nativeLoadError || 'onnxruntime/sharp 不可用' };
@@ -182,12 +193,17 @@ async function interrogateTag(imageBuffer: Buffer, options: InterrogateOptions =
   let topN = options.topN === undefined ? DEFAULT_TOP_N : Number(options.topN);
 
   let cached = await getSession(engine, model);
+  check();
   let tags = loadTags(model.csvPath);
 
-  let floatData = await preprocess(engine.sharp, imageBuffer);
+  let floatData = await preprocess(engine.sharp, imageBuffer, check);
   let feeds: Record<string, import('onnxruntime-node').Tensor> = {};
   feeds[cached.inputName] = new engine.ort.Tensor('float32', floatData, [1, MODEL_SIZE, MODEL_SIZE, 3]);
-  let outputs = await cached.session.run(feeds);
+  let outputs: Awaited<ReturnType<typeof cached.session.run>> | undefined;
+  try {
+  check();
+  outputs = await cached.session.run(feeds);
+  check();
   let probs = outputs[cached.outputName].data as Float32Array; // WD14 sigmoid output: float32 [9083]
 
   // 角色(general)与角色名(character)分离；2026-08-29：tags 只含 general，
@@ -235,6 +251,32 @@ async function interrogateTag(imageBuffer: Buffer, options: InterrogateOptions =
       ms: 0
     }
   };
+  } finally {
+    for (const tensor of Object.values(feeds)) tensor.dispose();
+    if (outputs) for (const tensor of Object.values(outputs)) tensor.dispose();
+  }
+}
+
+let running = false;
+/** ONNX's Node binding runs synchronously inside setImmediate. This deadline is
+ * checked between stages and rejects late output; it cannot interrupt native
+ * inference. Retain the single admission slot until native work actually exits.
+ * A dedicated process/worker is required if responsive cancellation is needed. */
+async function interrogateTag(imageBuffer: Buffer, options: InterrogateOptions = {}): Promise<InterrogateResult> {
+  const timeoutMs = options.timeoutMs ?? 60_000;
+  if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120_000) throw new Error('Invalid WD14 timeout');
+  const deadline = performance.now() + timeoutMs;
+  const check = () => {
+    options.signal?.throwIfAborted();
+    if (performance.now() >= deadline) throw Object.assign(new Error('WD14 推理超过时限'), { code: 'INTERROGATE_TIMEOUT', status: 504 });
+  };
+  check();
+  if (running) throw Object.assign(new Error('WD14 正在处理另一张图片'), { code: 'INTERROGATE_BUSY', status: 429 });
+  // This admission gate also deduplicates session creation without allowing
+  // cancelled callers to start a second native run while the first drains.
+  running = true;
+  try { return await runInterrogate(imageBuffer, options, check); }
+  finally { running = false; }
 }
 
 /** 探测引擎可用性（不加载 session，轻量） */

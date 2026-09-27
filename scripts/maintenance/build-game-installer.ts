@@ -9,7 +9,7 @@ type Sharp = (input?: any, options?: any) => any;
 const sharp: Sharp = require('sharp');
 const ROOT = path.resolve(__dirname, '../..');
 const INSTALLER = path.join(ROOT, 'desktop-tauri/src-tauri/installer');
-const TEMPLATE_HASH = '20f4ecc730defb71f1342eaeaec4021df13be3d843abba0effe88ea5835fa079';
+const TEMPLATE_HASH = 'dabed59013b1d78b879a1a85bc7f2eed2993b33a9a90cdabe5946de3d3950597';
 
 function replaceOnce(source: any, from: any, to: any) {
   if (source.split(from).length !== 2) throw new Error(`Installer template anchor drift: ${from.slice(0, 65)}`);
@@ -77,7 +77,7 @@ async function bitmap(source: any, destination: any, width: any = 1920, height: 
 }
 
 async function buildGameInstaller({ preview = false, capture = false, page = 'welcome' }: any = {}) {
-  const vendor = fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.11.4.nsi'));
+  const vendor = fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.12.0.nsi'));
   if (crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
   const generated = path.join(INSTALLER, 'generated');
   fs.mkdirSync(generated, { recursive: true });
@@ -116,7 +116,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
       } finally { windows.terminateOwnedPids([pid]); }
     }
   }
-  console.log('[installer] game pages and bitmap ready (Tauri 2.11.4 pinned)');
+  console.log('[installer] game pages and bitmap ready (Tauri 2.12.0 pinned)');
 }
 
 if (require.main === module) {

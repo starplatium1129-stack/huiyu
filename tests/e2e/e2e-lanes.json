@@ -85,6 +85,13 @@
     { "file": "workbench-loading.spec.ts", "lane": "critical", "risk": "工作台加载", "reason": "加载/失败/重试状态直接影响主流程，保留关键 lane。" },
     { "file": "workbench-polish.spec.ts", "lane": "nightly", "risk": "工作台视觉", "reason": "工作台细节视觉回归量大，纳入夜间矩阵。" },
     { "file": "chat-archive-concurrency.spec.ts", "lane": "critical", "risk": "Cross-window archive loss and deleted records returning", "reason": "Real IndexedDB and Web Locks transactions, migration and backup regressions" },
-    { "file": "model-studio.spec.ts", "lane": "nightly", "risk": "Local model import, calibration, theme and preview lifetime", "reason": "Includes real bundled Cubism model with an isolated bounded texture copy" }
+    { "file": "model-studio.spec.ts", "lane": "nightly", "risk": "Local model import, calibration, theme and preview lifetime", "reason": "Includes real bundled Cubism model with an isolated bounded texture copy" },
+    { "file": "ui-finish.spec.ts", "lane": "nightly", "risk": "首页、书架与导航双主题布局", "reason": "覆盖桌面与窄屏布局和文字对比度。" },
+    { "file": "desktop-image-origin.spec.ts", "lane": "critical", "risk": "桌面图片来源与解码", "reason": "打包 UI 的跨源图片和长目录回归。" },
+    { "file": "fluid-dialog-scroll.spec.ts", "lane": "critical", "risk": "弹窗关闭滚动恢复", "reason": "原生关闭与减少动态效果下的阅读位置保护。" },
+    { "file": "focus-controls.spec.ts", "lane": "critical", "risk": "控件焦点可见性", "reason": "系统强制颜色及双主题键盘交互。" },
+    { "file": "result-shelf.spec.ts", "lane": "critical", "risk": "结果预览影响生成参数", "reason": "确保预览不改写当前配方。" },
+    { "file": "search-focus.spec.ts", "lane": "critical", "risk": "搜索焦点漂移", "reason": "跨页面搜索输入及滚动位置保护。" },
+    { "file": "showcase-scroll.spec.ts", "lane": "critical", "risk": "参考预览滚动恢复", "reason": "覆盖原生焦点与键盘关闭路径。" }
   ]
 }

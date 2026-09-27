@@ -23,7 +23,7 @@ let path: typeof import('path') = require('path');
 let crypto: typeof import('crypto') = require('crypto');
 let security: typeof import('../server/security') = require('../server/security');
 let envelope: typeof import('../server/http-envelope') = require('../server/http-envelope');
-let wd14: typeof import('../server/interrogate-engine') = require('../server/interrogate-engine');
+let wd14Client: typeof import('../server/interrogate-client') = require('../server/interrogate-client');
 
 let MAX_BODY = '16mb';
 let MAX_IMAGE_BYTES = 12 * 1024 * 1024; // base64前 12M ≈ dataURL 16M
@@ -212,6 +212,7 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
 }
 
 function createInterrogateRouter(config: any) {
+  const wd14 = wd14Client.createInterrogateClient();
   let router = express.Router();
   let limit = security.rateLimit({ capacity: 12, refillMs: 5000, label: '反推' });
 
@@ -232,7 +233,10 @@ function createInterrogateRouter(config: any) {
       let imageBuffer = Buffer.from(imageBase64, 'base64');
 
       // 0) 本地 WD14 真实 ONNX 推理（最优先：不依赖 WebUI/ComfyUI 进程在线，零网络）
-      let wd14Result = await wd14.interrogateTag(imageBuffer, { config: config, threshold: threshold }).catch(function () { return null; });
+      let wd14Result = await wd14.interrogateTag(imageBuffer, { config: config, threshold: threshold, signal }).catch(function (error) {
+        if (signal.aborted || ['INTERROGATE_BUSY', 'INTERROGATE_TIMEOUT', 'INTERROGATE_CLOSED'].includes(String(runtimeErrorCode(error)))) throw error;
+        return null;
+      });
       signal.throwIfAborted();
       if (wd14Result && wd14Result.ok) {
         let derivedCaption = captionFromTags(wd14Result.tags);
@@ -305,7 +309,7 @@ function createInterrogateRouter(config: any) {
     });
   });
 
-  return { router: router };
+  return { router: router, close: wd14.close };
 }
 
 export = { createInterrogateRouter: createInterrogateRouter };
