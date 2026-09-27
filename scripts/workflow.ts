@@ -143,6 +143,8 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/lib/workflow-runner.js:7-21', unknown: [] } },
   'check:workflows': { desc: '工作流执行与门禁路由回归测试', cmd: ['node', 'scripts/tests/test-workflow-runner.js'], docs: 'docs/workflow.md',
     run: { nature: ['isolated-fixture'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-workflow-runner.js:13-108', unknown: [] } },
+  'check:desktop-deploy': { desc: '隔离验证部署退出前置检查，不停止真实应用或安装', cmd: ['node', 'scripts/tests/test-desktop-deploy-guard.js'], docs: 'docs/desktop-deployment.md',
+    run: { nature: ['isolated-fixture'], machine: ['node', 'windows'], switches: {}, resume: 'idempotent', evidence: 'scripts/tests/test-desktop-deploy-guard.ts', unknown: ['不触发真实 UAC 或安装器'] } },
   'dev:web': { desc: '启动前端开发服务', cmd: ['npm', 'run', 'dev'], docs: 'docs/workflow.md',
     run: { nature: ['service'], machine: ['node'], switches: {}, resume: 'na', evidence: 'package.json scripts.dev', unknown: [] } },
   'dev:server': { desc: '监视 TypeScript 变更，通过检查后重启网关', cmd: ['npm', 'run', 'dev:server'], docs: 'docs/workflow.md',

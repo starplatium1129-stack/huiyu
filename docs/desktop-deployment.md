@@ -5,7 +5,9 @@
 
 ## 打包前检查
 
-当前 SQLite 桌面工作区使用排他 owner 锁。安装前先通过应用的“退出 Companion”正常退出，确认自有网关已完成 drain、工作区 `.workspace-owner.json` 已释放；仅隐藏窗口不等于退出。部署脚本仍会强制停止残留进程，可能留下锁并令新网关拒绝启动。2026-09-27 图片修复部署曾触发此问题；残留锁须按已核实的进程身份进入维修，不能靠删除未知锁试启动。
+当前 SQLite 桌面工作区使用排他 owner 锁。安装前先通过应用的“退出 Companion”正常退出，让自有网关完成 drain 并释放工作区锁；仅隐藏窗口不等于退出。2026-09-27 已移除部署脚本（含 StartupRepair）的强制终止逻辑：提权/构建前和安装目录写入前检查目标安装进程与 active/candidate 工作区锁，尚未退出或锁残留就非零退出，不停止进程、不删除锁。残留锁须按已核实的进程身份维修。提权父进程会等待子进程结束并返回真实退出码，UAC 取消或安装失败不再显示成功。
+
+`npm run wf -- check:desktop-deploy` 使用临时安装目录、独立 owner 记录及真实 Node 夹具进程，验证运行时不被强杀、正常退出后放行、未知残留锁保留；不操作当前安装或触发 UAC。
 
 `package:tauri` 在资源暂存后自动按 `bundle.resources` 复制到仓库外隔离目录，用内置 Node 真正启动网关，验证健康检查、画室、桌宠、聊天及文档重定向。也可运行 `npm run wf -- desktop:verify-gateway`。不能用仓库根网关或 Live2D 自测替代此项，否则会漏掉安装包资源缺失。
 
@@ -34,7 +36,7 @@ deploy-desktop.bat -UseInstaller -QuietInstall :: UAC 确认后自动安装并�
 deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机导入模型至用户目录
 ```
 
-两者都会：停应用 → 清 WebView2 缓存 → 验证反推依赖 → 重启桌面端。
+两者都会：确认应用/网关已退出且锁已释放 → 部署 → 清 WebView2 缓存 → 验证反推依赖 → 重启桌面端。
 
 `-SyncLocalModels` 仅用于个人部署：核验并复制 `runtime/live2d-imports` 已登记文件至用户数据目录，保留旧模型版本；不会把候选 LPK/ZIP 或模型塞进可分发安装包。增量复制也排除 `assets/live2d-candidates`。
 `-QuietInstall` 仅用于完整安装，仍需要用户确认 UAC；安装器非零退出会明确报错。部署日志追加到 `runtime/desktop-deploy-last.log`，便于核对实际安装结果。

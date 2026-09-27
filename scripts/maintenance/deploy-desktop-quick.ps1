@@ -2,7 +2,7 @@
 #
 # 两种模式（二选一，默认增量）：
 #   增量部署（默认）  把新鲜的 dist/data/assets/routes/... 复制到已安装网关，秒级生效。
-#                    适用于前端代码改动，也是日常开发最常用的方式。
+#                    适用于网关与静态资源；独立打包 UI 改动必须完整安装。
 #   -UseInstaller    运行 runtime\desktop-updates 下最新的完整安装包（用户在向导里点几下）。
 #                    适用于 gateway 依赖变化、Rust 壳改动或全新安装。
 #
@@ -43,6 +43,11 @@ $installDir = [IO.Path]::GetFullPath($InstallDir)
 $gatewayDir = Join-Path $installDir 'gateway'
 if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
 
+. (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
+$configRoot = Join-Path $env:APPDATA 'com.aics.studio'
+# Fail before UAC/build/copy: the host's Quit action owns draining and lock release.
+Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot
+
 # 源端已删除、但增量部署（Copy-Item 只合并不删除）会在安装目录永久堆积的历史目录。
 # 2026-08-29：character-references（~1.2G）已迁出项目到 AI 工作区，安装目录那份成冗余副本。
 # 凡是「源端删除型」的迁移，都必须在这里登记，否则增量部署永远清不掉。
@@ -62,13 +67,8 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($StartupRepair) { $argList += '-StartupRepair' }
   if ($SyncLocalModels) { $argList += '-SyncLocalModels' }
   $argList += @('-InstallDir', "`"$installDir`"")
-  if ($QuietInstall) {
-    $argList = @($argList | Where-Object { $_ -ne '-NoExit' })
-    Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ')
-  } else {
-    Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ')
-  }
-  exit 0
+  $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -Wait -PassThru
+  exit $elevatedProcess.ExitCode
 }
 
 if ($QuietInstall -and -not $UseInstaller) { throw '-QuietInstall 仅可与 -UseInstaller 一起使用' }
@@ -96,8 +96,6 @@ if ($StartupRepair) {
   }
   Add-Type -TypeDefinition 'using System.Runtime.InteropServices; public class HuiyuShell { [DllImport("shell32.dll")] public static extern void SHChangeNotify(uint e, uint f, System.IntPtr a, System.IntPtr b); }'
   [HuiyuShell]::SHChangeNotify(0x08000000, 0, [IntPtr]::Zero, [IntPtr]::Zero)
-  Get-Process -Name 'ai-cg-studio-desktop' -ErrorAction SilentlyContinue |
-    Where-Object { $_.Path -ieq (Join-Path $installDir 'ai-cg-studio-desktop.exe') } | Stop-Process
   if (-not $NoRestart) { Start-Process explorer.exe -ArgumentList "`"$installDir\ai-cg-studio-desktop.exe`"" }
   Write-Host "启动资源和快捷方式图标已修复: $installDir"
   Stop-Transcript | Out-Null
@@ -123,19 +121,10 @@ if (-not $SkipBuild) {
   Write-Host '[1/6] 跳过构建（-SkipBuild / 安装包模式）' -ForegroundColor DarkGray
 }
 
-# ---------------------------------------------------------- [2] 停应用
-$appProcs = Get-Process -Name 'ai-cg-studio-desktop' -ErrorAction SilentlyContinue |
-  Where-Object { $_.Path -ieq (Join-Path $installDir 'ai-cg-studio-desktop.exe') }
-$sidecar = Get-Process -Name 'node' -ErrorAction SilentlyContinue |
-  Where-Object { $_.Path -ieq (Join-Path $installDir 'node.exe') }
-if ($appProcs -or $sidecar) {
-  Write-Host '[2/6] 停止本安装目录的应用与网关 ...' -ForegroundColor Cyan
-  $appProcs | Stop-Process -Force -ErrorAction SilentlyContinue
-  $sidecar | Stop-Process -Force -ErrorAction SilentlyContinue
-  Start-Sleep -Seconds 2
-} else {
-  Write-Host '[2/6] 应用未在运行' -ForegroundColor DarkGray
-}
+# ---------------------------------------------------------- [2] 复核退出
+# A build may take minutes. Recheck before changing the installation.
+Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot
+Write-Host '[2/6] 应用、网关已退出，工作区锁已释放' -ForegroundColor DarkGray
 
 # ------------------------------------------------- [3] 清理源端删除型残留
 if ($Cleanup) {
@@ -163,7 +152,7 @@ if ($UseInstaller) {
   if (-not $setup) { Write-Error 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri'; exit 1 }
   Write-Host "  $($setup.Name)（$([math]::Round($setup.Length / 1MB, 1)) MB）" -ForegroundColor DarkGray
   $setupProcess = if ($QuietInstall) {
-    Start-Process -FilePath $setup.FullName -ArgumentList "/S /D=$installDir" -Wait -PassThru
+    Start-Process -FilePath $setup.FullName -ArgumentList "/S /D=$installDir" -WindowStyle Hidden -Wait -PassThru
   } else {
     Start-Process -FilePath $setup.FullName -Wait -PassThru
   }

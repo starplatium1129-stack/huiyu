@@ -31,6 +31,7 @@
 | 预览即将执行的命令 | `npm run wf -- data:build --plan` |
 | 检查入口是否失效 | `npm run wf -- audit:workflows --json` |
 | 检查工作流行为回归 | `npm run wf -- check:workflows` |
+| 检查部署退出与锁保护 | `npm run wf -- check:desktop-deploy`（Windows 隔离夹具，不操作实际安装） |
 | 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（已纳入 check 与 CI，候选须人工复核） |
 | 查看内容覆盖差额 | `npm run wf -- audit:coverage`（只读报告：热门服装→参考登记、角色→主题选择器；`--json` 机器可读；信息性，不作为门禁失败依据） |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |

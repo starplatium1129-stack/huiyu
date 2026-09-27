@@ -34,6 +34,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-test-process-pool.js',
     'test-precompress-runner.js',
     'test-workflow-conditions.js',
+    'test-desktop-deploy-guard.js',
     'test-runtime-errors.js',
     'test-quality-report.js',
     'test-content-ownership.js',
@@ -190,6 +191,7 @@ interface TestMetadata {
   resources: readonly string[]; timeoutMs?: number;
 }
 const QUALITY_TEST_METADATA: Readonly<Record<string, TestMetadata>> = Object.freeze({
+  'test-desktop-deploy-guard.js': { domain: 'desktop-deployment', environment: 'windows', parallelSafety: 'isolated', resources: ['temporary-install-and-config', 'owned-node-fixture'], timeoutMs: 60_000 },
   'test-webui-lifecycle.js': { domain:'generation-lifecycle', environment:'node-loopback', parallelSafety:'isolated', resources:['temporary-directory', 'loopback-http', 'process-local-mocks'] },
   'test-logger-safety.js': { domain:'diagnostics', environment:'node', parallelSafety:'isolated', resources:['temporary-directory', 'process-local-mocks'] },
   'test-api-client.js': { domain: 'generation-api', environment: 'node', parallelSafety: 'isolated', resources: ['mock-fetch', 'timers'] },
