@@ -1,4 +1,5 @@
 import { confirmAction } from '@/composables/useConfirm';
+import { ARTWORK_DELETE_BATCH_SIZE } from '@/application/artwork/artworkRepository';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { type ArtworkRecord } from '@/types/artwork';
 import { storageWriteMessage } from '@/utils/storageWriteError';
@@ -99,14 +100,17 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
     const ids = [...selectedIds.value];
     const failed: (string | number)[] = [];
     try {
-        for (const id of ids) {
+        let unconfirmed = false;
+        for (let offset = 0; offset < ids.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
+            const batch = ids.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE);
             try {
-                const result = await artworkRepository.softDeleteArtwork(id);
-                if (!result.deleted)
-                    failed.push(id);
+                const results = await artworkRepository.softDeleteArtworks(batch);
+                const deleted = new Set(results.filter(result => result.deleted).map(result => result.id));
+                failed.push(...batch.filter(id => !deleted.has(id)));
             }
             catch {
-                failed.push(id);
+                failed.push(...batch);
+                unconfirmed = true;
             }
         }
         const done = ids.length - failed.length;
@@ -115,16 +119,18 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
             if (viewerIndex.value >= 0)
                 closeViewer();
             // 软删已在仓储层摘掉项目引用，整体重载一次即可同步展墙与项目下拉
+            const failedIds = new Set(failed);
             for (const id of ids)
-                if (!failed.includes(id))
+                if (!failedIds.has(id))
                     releaseCardResources(id);
             selectedIds.value = new Set(failed);
-            await loadGalleryStorage();
         }
+        // Also reconcile an unknown commit; never leave a successfully deleted batch visible after a lost response.
+        if (done || unconfirmed) await loadGalleryStorage();
         if (failed.length) {
             showToast(done
-                ? `${done} 幅已移入回收站，${failed.length} 幅没成功，请重试`
-                : `一幅都没能移进去，请重试`, 'warning', 5000);
+                ? `${done} 幅已移入回收站，${failed.length} 幅未确认成功，请重新读取后重试`
+                : `尚未确认作品已移入回收站，请重新读取后重试`, 'warning', 5000);
         }
         else {
             showToast(`${done} 幅已移入回收站，30 天内可撤销`, 'info', 6000, {

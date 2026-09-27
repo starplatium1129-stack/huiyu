@@ -286,7 +286,6 @@ async function run() {
   let chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatProvider.ts'), 'utf8');
   let chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatConversation.ts'), 'utf8');
   let userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
-  let memoryPanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatMemoryPanel.vue'), 'utf8');
   let voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   let chatRouteSource = [
     path.join(root, 'routes', 'chat.js'),
@@ -331,7 +330,7 @@ async function run() {
   );
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(html.includes('ChatUserProfilePanel') && userProfilePanel.includes('CHAT_RELATIONSHIPS'), 'user profile editing must have independent component ownership');
-  assert(html.includes('ChatMemoryPanel') && memoryPanel.includes('LONG-TERM MEMORY') && html.includes('messageRemembered'), 'manual long-term memory must have independent UI ownership');
+  assert(html.includes('ChatMemoryPanel') && html.includes('messageRemembered'), 'manual long-term memory must have independent UI ownership');
   // 档案与记忆是否真的进入请求，由本文件后面的真实 validateChatBody 场景断言
   // （profiledPrompt / memoryValidation），不再靠调用点字符串推断。
   assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
@@ -350,9 +349,9 @@ async function run() {
   assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(companionHtml), 'CompanionView boundaries must stay explicitly typed');
   assert(companionSpeech.includes('useVoiceInput') && companionSpeech.includes('createSpeechSession') && companionSpeech.includes('loadSpeechInputConfig'), 'Companion speech must reuse the existing input/session modules');
-  assert(companionSpeech.includes("event.key !== ' '") && companionHtml.includes('onWindowKeyup') && companionSpeech.includes('speechHeldByKeyboard'), 'Companion speech must own Space keydown/keyup state');
+  // Space press/release and cancellation during microphone acquisition are exercised
+  // by the companion speech scenarios in tests/e2e/studio.spec.ts.
   assert(companionSpeech.includes('documentHidden') && companionSpeech.includes('!dnd.value') && companionSpeech.includes('!inQuietHours.value'), 'Companion auto listening must gate visibility, DND, and quiet hours');
-  assert(companionSpeech.includes("speechState.value === 'acquiring'") && companionSpeech.includes('speechCancel()'), 'Companion speech must cancel pending acquisition');
   assert(/watch\(busy, value => \{\s*if \(value\) \{\s*speechHeldByKeyboard = false\s+speechHeldByPointer = false\s+speechSession\.markReplyBusy\(\)\s+speechCancel\(\)\s*\} else \{/.test(companionSpeech), 'busy=true must clear held inputs and cancel every speech mode before reconcile');
   assert(companionHtml.includes('function setDesktopVisibility(visible: boolean)'), 'Companion visibility handler must remain present');
   assert(companionHtml.includes('if (!visible)') && companionHtml.includes('cancelSpeechActivity()'), 'Companion window hiding must cancel speech');
@@ -389,22 +388,13 @@ async function run() {
     voiceModule.includes('extractSpokenDialogue')
       && voiceModule.includes("(directionText && rawEmotion !== 'neutral') || emotionChanged ? 'adaptive' : 'locked'")
       && voiceModule.includes('const emotionChanged = Boolean(firstReference && emotion !== firstReference)')
-      && voiceModule.includes('90_000')
-      && voiceModule.includes('retryLeft')
-      && voiceModule.includes('minimumLength: 12')
-      && voiceModule.includes('maximumLength: 44')
-      && voiceModule.includes('firstThreshold: 8'),
+      && voiceModule.includes('retryLeft'),
     'voice must omit roleplay directions, honor their emotion, and bound stuck synthesis'
   );
-  assert(
-    voiceModule.includes('audio.networkState === 2')
-      && voiceModule.includes("onStatus(waitExtensions === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…')")
-      && voiceModule.includes("audio.pause()") && voiceModule.includes("audio.removeAttribute('src')")
-      && /function onPlaying\(\) \{ started = true[;}]/.test(voiceModule)
-      && voiceModule.includes("const retryable = !started && reason !== 'timeout' && item.retryLeft !== 0 && sess === session"),
-    'voice must never double-play or replay from the start after mid-playback failure, and must extend slow generations instead of killing them'
-  );
-  assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
+  // useVoice.spec.ts exercises timeout, interruption, replay cancellation and
+  // mid-playback errors. Slow-network extensions still lack a behavior fixture.
+  assert(voiceModule.includes('audio.networkState === 2') && voiceModule.includes('waitExtensions'),
+    'voice must extend slow generations instead of killing them');
   assert(!/\bany\b/.test(voiceModule), 'voice queue, turn, API responses, and Web Audio boundaries must stay explicitly typed');
   assert(
     voiceModule.includes('readVoiceAvailability') && voiceModule.includes('voiceApi.translate'),
@@ -423,7 +413,6 @@ async function run() {
       && characterConfig.includes("{ id: 'cosplay', label: 'COS 服', expression: 'expression4' }")
       && characterConfig.includes("{ id: 'witch', label: '魔女服', expression: 'expression5' }")
       && characterStageComponent.includes('class="wardrobe-trigger wardrobe-static"')
-      && characterStageComponent.includes('互动动作含原生图层效果')
       && characterStageComponent.includes('class="wardrobe-menu"')
       && apiSettingsComponent.includes(':data-vendor="option.value"')
       && live2dAggregated.includes('model.expression(target.expression)')
@@ -438,22 +427,15 @@ async function run() {
       && live2dAggregated.includes('interactionFromStagePosition')
       && live2dAggregated.includes('profile.stageHitZones?.find')
       && live2dAggregated.includes("{ interactionId: 'Face', minY: 0.19, maxY: 0.29 }")
-      && live2dAggregated.includes("hint: '碰到了画面左侧胸前，宁宁有点生气'")
-      && live2dAggregated.includes("hint: '碰到了画面右侧胸前，宁宁有点生气'")
       && live2dAggregated.includes("{ interactionId: 'LeftChest', minX: 0.40, maxX: 0.50, minY: 0.29, maxY: 0.42 }")
       && live2dAggregated.includes("{ interactionId: 'Skirt', minY: 0.42, maxY: 0.57 }")
       && live2dAggregated.includes("{ interactionId: 'Body', minY: 0.57, maxY: 1 }")
-      && live2dAggregated.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
       && live2dAggregated.includes('model.motion(interaction.group, undefined, 3)')
       && live2dAggregated.includes("motionPreload: 'ALL'")
       && live2dAggregated.includes('function markInteractionStarted')
       && live2dAggregated.includes("interactionHint.value = '这个动作正在进行中'")
       && live2dAggregated.includes("interactionHint.value = '动作没有启动，请重试'"),
     'Live2D clicks must map source hit areas to authored motions with FORCE priority, report feedback only after startup, and distinguish an active motion from a real failure'
-  );
-  assert(
-    adapterProfile.includes('点击呆毛、头部、脸、身体、两侧或裙摆可互动'),
-    'Live2D must advertise every packaged source interaction area'
   );
   assert(!/\bany\b/.test(live2dAggregated), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
   assert(

@@ -172,22 +172,31 @@ function writeProcessTree(root: any) {
 function nativeBridge(base: any) {
   const ts: typeof import('typescript') = require('typescript');
   const sourceRoot = path.resolve(__dirname, '../../src');
+  const servicesRoot = path.resolve(__dirname, '../../services');
   const modules = new Map<string, Record<string, unknown>>();
   // Execute the production adapter and its production cancellation client. Only
   // the browser/native host and loopback endpoint are supplied by this fixture.
   function load(file: string): Record<string, unknown> {
     const filename = file.endsWith('.ts') ? file : `${file}.ts`;
-    assert.ok(filename.startsWith(sourceRoot + path.sep));
+    assert.ok([sourceRoot, servicesRoot].some(root => filename.startsWith(root + path.sep)));
     const cached = modules.get(filename); if (cached) return cached;
     const exports: Record<string, unknown> = {}; modules.set(filename, exports);
     const output = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
       compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS },
+      // Vite supplies import.meta.env in production. Supply only that host metadata
+      // before CommonJS compilation; the actual transport modules still execute.
+      transformers: { before: [context => source => {
+        const visit: import('typescript').Visitor = node => ts.isMetaProperty(node) && node.keywordToken === ts.SyntaxKind.ImportKeyword
+          ? ts.factory.createIdentifier('__viteImportMeta') : ts.visitEachChild(node, visit, context);
+        return ts.visitNode(source, visit) as import('typescript').SourceFile;
+      }] },
     }).outputText;
     vm.runInNewContext(output, {
       exports, window: { __TAURI__: {} }, AbortController, Headers, URL, structuredClone, setTimeout, clearTimeout,
+      __viteImportMeta: { env: { MODE: 'test' } },
       fetch: (url: string, options: RequestInit) => fetch(base + url, options),
-      require: (specifier: string) => load(specifier.startsWith('@/')
-        ? path.join(sourceRoot, specifier.slice(2)) : path.resolve(path.dirname(filename), specifier)),
+      require: (specifier: string) => specifier.startsWith('@/') ? load(path.join(sourceRoot, specifier.slice(2)))
+        : specifier.startsWith('.') ? load(path.resolve(path.dirname(filename), specifier)) : require(specifier),
     }, { filename });
     return exports;
   }

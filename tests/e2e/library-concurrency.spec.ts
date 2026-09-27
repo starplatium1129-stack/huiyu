@@ -19,7 +19,7 @@ type LibraryFixture = {
   artworkRepository: {
     appendArtwork(entry: { id: string; favorite?: boolean }): Promise<unknown[]>
     patchArtwork(id: string, patch: Record<string, unknown>): Promise<unknown>
-    softDeleteArtwork(id: string): Promise<unknown>
+    softDeleteArtworks(ids: string[]): Promise<Array<{ id: string; deleted: boolean }>>
     restoreArtwork(id: string): Promise<unknown>
     purgeExpiredTrash(): Promise<{ purged: number }>
   }
@@ -228,7 +228,7 @@ test('two pages preserve every concurrent history append in real IndexedDB', asy
   }
 })
 
-test('append, favorite, delete, restore and backup merge share the same cross-page boundary', async ({ page, context }) => {
+test('append, favorite, batch delete, restore and backup merge share the same cross-page boundary', async ({ page, context }) => {
   const other = await context.newPage()
   await Promise.all([enter(page), enter(other)])
   await page.evaluate(() => window.libraryFixture.artworkRepository.appendArtwork({ id: 'original' }))
@@ -240,12 +240,18 @@ test('append, favorite, delete, restore and backup merge share the same cross-pa
   expect(await page.evaluate(async () => (await window.libraryFixture.kvGet(window.libraryFixture.ARTWORK_HISTORY_KEY))?.find(item => item.id === 'original')?.favorite)).toBe(true)
   await Promise.all([
     page.evaluate(() => window.libraryFixture.artworkRepository.appendArtwork({ id: 'third' })),
-    other.evaluate(() => window.libraryFixture.artworkRepository.softDeleteArtwork('original')),
+    other.evaluate(async () => {
+      const results = await window.libraryFixture.artworkRepository.softDeleteArtworks(['original', 'second'])
+      if (results.length !== 2 || results.some(result => !result.deleted)) throw new Error('Batch deletion did not commit both works')
+    }),
   ])
-  expect(await ids(page)).toEqual(['second', 'third'])
+  expect(await ids(page)).toEqual(['third'])
   await Promise.all([
     page.evaluate(() => window.libraryFixture.artworkRepository.appendArtwork({ id: 'fourth' })),
-    other.evaluate(() => window.libraryFixture.artworkRepository.restoreArtwork('original')),
+    other.evaluate(async () => {
+      await window.libraryFixture.artworkRepository.restoreArtwork('original')
+      await window.libraryFixture.artworkRepository.restoreArtwork('second')
+    }),
   ])
   await Promise.all([
     page.evaluate(() => window.libraryFixture.artworkRepository.appendArtwork({ id: 'fifth' })),

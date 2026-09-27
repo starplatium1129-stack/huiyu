@@ -1,17 +1,13 @@
-import type { ArtworkRepository, ArtworkProjectRecord } from '../../application/artwork/artworkRepository.ts'
+import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkProjectRecord, type ArtworkSoftDeleteResult } from '../../application/artwork/artworkRepository.ts'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
-import { blobThumbDataUrl } from '../../utils/imageThumb.ts'
+import { createDesktopArtworkMedia } from './artworkMedia.ts'
 import { workspaceRequest as request } from '../../api/workspace.ts'
-import { desktopRuntimeFetch, getDesktopRuntime } from './runtime.ts'
-import { trackMaintenanceWrite } from '../maintenanceParticipants'
+import { getDesktopRuntime } from './runtime.ts'
+import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number }
-interface Receipt { artwork?: Row; changed?: boolean; removed?: number; purged?: number }
-// Enough for the first gallery page and recently viewed results; never retain a
-// whole library. Count UTF-16 bytes conservatively even when the engine uses Latin-1.
-const THUMBNAIL_CACHE_LIMIT = 96
-const THUMBNAIL_CACHE_BYTES = 8 * 1024 * 1024
+interface Receipt { artwork?: Row; changed?: boolean; removed?: number; purged?: number; softDeleteResults?: ArtworkSoftDeleteResult[] }
 export function createDesktopArtworkRepository(): ArtworkRepository {
   let workspaceId = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId
   function requireAuthority() {
@@ -20,22 +16,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     workspaceId ??= session.workspaceId
   }
   const workspaceRequest = <T>(command: Record<string, unknown>): Promise<T> => { requireAuthority(); return request<T>(command) }
-  const thumbnails = new Map<string, string>()
-  const thumbnailReads = new Map<string, Promise<string | null>>()
-  let thumbnailBytes = 0
-  function forgetThumbnail(id: string) {
-    const previous = thumbnails.get(id)
-    if (previous !== undefined) { thumbnailBytes -= (id.length + previous.length) * 2; thumbnails.delete(id) }
-  }
-  function rememberThumbnail(id: string, value: string) {
-    forgetThumbnail(id)
-    const bytes = (id.length + value.length) * 2
-    if (!value || bytes > THUMBNAIL_CACHE_BYTES) return
-    thumbnails.set(id, value); thumbnailBytes += bytes
-    while (thumbnails.size > THUMBNAIL_CACHE_LIMIT || thumbnailBytes > THUMBNAIL_CACHE_BYTES) {
-      forgetThumbnail(thumbnails.keys().next().value!)
-    }
-  }
+  const { forgetThumbnail, ...media } = createDesktopArtworkMedia(requireAuthority, id => workspaceRequest<string | null>({ kind: 'readThumbnail', alias: id }))
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
   async function list(includeDeleted = false): Promise<Row[]> {
@@ -69,20 +50,31 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     historyLoaded = false; projectsLoaded = false
     return result
   }
-  async function getImage(id: string): Promise<Blob | null> {
-    requireAuthority()
-    const response = await desktopRuntimeFetch('/api/workspace/media-capabilities', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ alias: id }) })
-    if (response.status === 404) return null
-    if (!response.ok) throw new Error('作品原图暂时不可用')
-    const capability = await response.json() as { url: string }
-    const media = await desktopRuntimeFetch(capability.url)
-    if (!media.ok) throw new Error('作品原图读取未完成')
-    return media.blob()
+  async function softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
+    if (!ids.length || ids.length > ARTWORK_DELETE_BATCH_SIZE) throw new Error('作品删除批次大小无效')
+    const requested = ids.slice()
+    const uniqueIds = [...new Map(requested.map(id => [String(id).trim(), id])).values()]
+    const rows = await workspaceRequest<Array<Row | null>>({ kind: 'getArtworks', ids: uniqueIds })
+    const items = rows.filter((item): item is Row => Boolean(item && item.deletedAt === null))
+      .map(item => ({ id: item.id, expectedRevision: item.revision }))
+    if (!items.length) return requested.map(id => ({ id, deleted: false }))
+    const operationId = crypto.randomUUID()
+    let receipt: Receipt
+    try { receipt = await workspaceRequest<Receipt>({ kind: 'softDeleteArtworks', operationId, items }) }
+    catch (error) {
+      // A lost response may hide a committed batch. Read its stable receipt before reporting failure.
+      const operation = await workspaceRequest<{ state: string; receipt?: Receipt } | null>({ kind: 'getOperation', operationId }).catch(() => null)
+      if (operation?.state !== 'committed' || !operation.receipt?.softDeleteResults) throw error
+      receipt = operation.receipt
+    }
+    historyLoaded = false; projectsLoaded = false
+    const deleted = new Set((receipt.softDeleteResults ?? []).filter(item => item.deleted).map(item => String(item.id).trim()))
+    return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
   const repository: ArtworkRepository = {
     readHistory, readProjects, readRecentHistory: readHistory, readPreferenceHistory: readHistory,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
-    getImage,
+    ...media,
     async putImage(blob) {
       const bytes = new Uint8Array(await blob.arrayBuffer())
       const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(value => value.toString(16).padStart(2, '0')).join('')
@@ -94,32 +86,9 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     },
     async deleteImage(alias) {
       await workspaceRequest({ kind: 'releaseMedia', alias, operationId: crypto.randomUUID() })
-      forgetThumbnail(alias); thumbnailReads.delete(alias)
+      forgetThumbnail(alias)
     },
     countImages: () => workspaceRequest<number>({ kind: 'countMedia' }),
-    async getThumbnail(id) {
-      requireAuthority()
-      const cached = thumbnails.get(id)
-      if (cached !== undefined) { thumbnails.delete(id); thumbnails.set(id, cached); return cached }
-      const active = thumbnailReads.get(id)
-      if (active) return active
-      let pending!: Promise<string | null>
-      pending = (async () => {
-        const blob = await getImage(id)
-        if (!blob || !blob.type.startsWith('image/')) return null
-        const thumb = await blobThumbDataUrl(blob)
-        requireAuthority()
-        // A thumbnail published while this read was decoding is already usable.
-        const latest = thumbnails.get(id)
-        if (latest !== undefined) return latest
-        if (thumb && thumbnailReads.get(id) === pending) rememberThumbnail(id, thumb)
-        return thumb || null
-      })().finally(() => { if (thumbnailReads.get(id) === pending) thumbnailReads.delete(id) })
-      thumbnailReads.set(id, pending)
-      return pending
-    },
-    async setThumbnail(id, value) { requireAuthority(); rememberThumbnail(id, value) },
-    async cacheThumbnail(id, blob) { const value = await blobThumbDataUrl(blob); if (value) { requireAuthority(); rememberThumbnail(id, value) } },
     withStaging: work => work(),
     async appendArtwork(artwork) {
       // Entity identity is the retry key. Lost acknowledgements can safely re-read
@@ -134,6 +103,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       return { deleted: Boolean(result?.changed), historyChanged: Boolean(result?.changed), removedImageIds: [], removedThumbnailIds: [], removedProjectReferences: result?.removed ?? 0 }
     },
     async softDeleteArtwork(id) { return { deleted: Boolean((await mutate('softDeleteArtwork', id))?.changed) } },
+    softDeleteArtworks,
     async restoreArtwork(id) { return { restored: Boolean((await mutate('restoreArtwork', id))?.changed) } },
     async purgeExpiredTrash() { const result = await workspaceRequest<Receipt>({ kind: 'purgeExpiredTrash', operationId: crypto.randomUUID() }); return { purged: result.purged ?? 0 } },
     async listTrash() { return (await list(true)).filter(item => item.deletedAt !== null).map(item => ({ id: String(item.id), deletedAt: item.deletedAt!, historyEntries: [item.body], projectRefs: [], imageIds: item.body.image_id ? [item.body.image_id] : [] })) },
@@ -147,6 +117,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     patchArtworks: patches => trackMaintenanceWrite(() => repository.patchArtworks(patches)),
     deleteArtwork: id => trackMaintenanceWrite(() => repository.deleteArtwork(id)),
     softDeleteArtwork: id => trackMaintenanceWrite(() => repository.softDeleteArtwork(id)),
+    softDeleteArtworks: ids => trackMaintenanceWrite(() => repository.softDeleteArtworks(ids)),
     restoreArtwork: id => trackMaintenanceWrite(() => repository.restoreArtwork(id)),
     purgeExpiredTrash: () => trackMaintenanceWrite(() => repository.purgeExpiredTrash()),
   }

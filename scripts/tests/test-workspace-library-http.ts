@@ -9,6 +9,7 @@ import { openWorkspace } from '../../server/workspace/client';
 import { createWorkspaceGateway } from '../../server/workspace/gateway';
 import { BASE_SCHEMA_SQL, openStorage } from '../../server/workspace/schema';
 import { DatabaseSync } from 'node:sqlite';
+import sharp from 'sharp';
 
 test('desktop library HTTP saves temporary originals, deduplicates lost acknowledgements, edits and restores with project references', async t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-library-http-'));
@@ -26,11 +27,12 @@ test('desktop library HTTP saves temporary originals, deduplicates lost acknowle
     assert.equal(response.status, 200, JSON.stringify(payload));
     return payload.result;
   }
-  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jD1sAAAAASUVORK5CYII=', 'base64');
+  const png = await sharp({ create: { width: 4, height: 4, channels: 3, background: '#808080' } }).png().toBuffer();
   const media = { alias: 'temporary-original', sha256: createHash('sha256').update(png).digest('hex'), mime: 'image/png', bytes: png.length };
   await request('/media-uploads/upload-1', 'POST', { media });
   await request('/media-uploads/upload-1/chunks', 'PUT', { offset: 0, data: png.toString('base64') });
   const original = await request('/media-uploads/upload-1/commit', 'POST', {});
+  assert.match(await request('/media/temporary-original/thumbnail'), /^data:image\/jpeg;base64,/);
   assert.deepEqual(await request('/media-uploads/upload-1/commit', 'POST', {}), original);
   assert.equal(await request('/media/count'), 1);
   assert.equal((await request('/artworks')).items.length, 0, 'temporary original does not add gallery artwork');
@@ -53,9 +55,17 @@ test('desktop library HTTP saves temporary originals, deduplicates lost acknowle
   const restored = await request('/artworks/42/restore?idType=number', 'POST', { operationId: 'restore', expectedRevision: deleted.artwork.revision });
   assert.deepEqual((await request('/projects')).items[0].body.history_ids, [42]);
   assert.deepEqual(restored.artwork.body.unknown, { original: true });
+  const lookup = await request('/artworks/lookup', 'POST', { ids: [42, 'missing'] });
+  assert.equal(lookup[0].revision, restored.artwork.revision);
+  assert.equal(lookup[1], null);
+  const batch = { operationId: 'batch-trash', items: [{ id: 42, expectedRevision: lookup[0].revision }, { id: 'missing', expectedRevision: 0 }] };
+  const batchReceipt = await request('/artworks/trash-batch', 'POST', batch);
+  assert.deepEqual(batchReceipt.softDeleteResults, [{ id: 42, deleted: true }, { id: 'missing', deleted: false, code: 'NOT_FOUND' }]);
+  assert.deepEqual(await request('/artworks/trash-batch', 'POST', batch), batchReceipt);
+  const afterBatch = await request('/artworks/42/restore?idType=number', 'POST', { operationId: 'restore-batch', expectedRevision: batchReceipt.revision });
   await request('/media/temporary-original', 'DELETE', { operationId: 'release' });
   assert.equal((await request('/artworks')).items[0].body.image_id, media.alias, 'release cannot destroy attached original');
-  await request('/artworks/42/permanent?idType=number', 'DELETE', { operationId: 'delete', expectedRevision: restored.artwork.revision });
+  await request('/artworks/42/permanent?idType=number', 'DELETE', { operationId: 'delete', expectedRevision: afterBatch.artwork.revision });
   assert.equal((await request('/artworks?includeDeleted=true')).items.length, 0);
   const setting = await request('/profile/settings', 'PUT', { operationId: 'theme', key: 'aics_theme', value: 'dark', expectedRevision: null });
   assert.equal(setting.value, 'dark');

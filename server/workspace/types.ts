@@ -17,6 +17,7 @@ export interface MutationReceipt {
   backupId?: string;
   candidateId?: string;
   mediaCount?: number;
+  softDeleteResults?: Array<{ id: EntityId; deleted: boolean; code?: 'NOT_FOUND' | 'REVISION_CONFLICT' }>;
 }
 export interface OperationState {
   operationId: string;
@@ -38,6 +39,7 @@ type CoreWorkspaceCommand =
   | { kind: 'status' }
   | { kind: 'listArtworks'; limit?: number; cursor?: string; includeDeleted?: boolean }
   | { kind: 'getArtwork'; id: EntityId }
+  | { kind: 'getArtworks'; ids: EntityId[] }
   | { kind: 'listProjects' }
   | { kind: 'prepareSave'; operationId: string; artwork: WorkspaceBody; media: MediaInput }
   | { kind: 'uploadChunk'; operationId: string; offset: number; data: Uint8Array }
@@ -46,12 +48,14 @@ type CoreWorkspaceCommand =
   | { kind: 'getOperation'; operationId: string }
   | { kind: 'patchArtwork'; operationId: string; id: EntityId; expectedRevision: number; patch: Record<string, JsonValue> }
   | { kind: 'softDeleteArtwork'; operationId: string; id: EntityId; expectedRevision: number }
+  | { kind: 'softDeleteArtworks'; operationId: string; items: Array<{ id: EntityId; expectedRevision: number }> }
   | { kind: 'hardDeleteArtwork'; operationId: string; id: EntityId; expectedRevision: number }
   | { kind: 'restoreArtwork'; operationId: string; id: EntityId; expectedRevision: number }
   | { kind: 'saveProject'; operationId: string; project: WorkspaceBody; artworkIds: EntityId[]; expectedRevision: number | null }
   | { kind: 'purgeExpiredTrash'; operationId: string }
   | { kind: 'collectGarbage'; operationId: string }
   | { kind: 'readMedia'; alias: string; offset?: number; length?: number }
+  | { kind: 'readThumbnail'; alias: string }
   | { kind: 'backup'; operationId: string }
   | { kind: 'restoreBackup'; operationId: string; backupId: string };
 
@@ -60,6 +64,7 @@ export interface WorkspaceResults extends TaskResults, MigrationResults, Profile
   status: WorkspaceStatus;
   listArtworks: { items: WorkspaceArtwork[]; nextCursor: string | null; revision: number };
   getArtwork: WorkspaceArtwork | null;
+  getArtworks: Array<WorkspaceArtwork | null>;
   listProjects: { items: WorkspaceProject[]; revision: number };
   prepareSave: OperationState;
   uploadChunk: { operationId: string; offset: number };
@@ -68,12 +73,14 @@ export interface WorkspaceResults extends TaskResults, MigrationResults, Profile
   getOperation: OperationState | null;
   patchArtwork: MutationReceipt;
   softDeleteArtwork: MutationReceipt;
+  softDeleteArtworks: MutationReceipt;
   hardDeleteArtwork: MutationReceipt;
   restoreArtwork: MutationReceipt;
   saveProject: MutationReceipt;
   purgeExpiredTrash: MutationReceipt;
   collectGarbage: MutationReceipt;
   readMedia: { data: Uint8Array; mime: string; totalBytes: number; sha256: string; offset: number };
+  readThumbnail: string | null;
   backup: { backupId: string; revision: number; mediaCount: number };
   restoreBackup: { candidateId: string; revision: number; mediaCount: number };
 }
@@ -93,7 +100,7 @@ export class WorkspaceError extends Error {
   }
 }
 export function isWorkspaceMutation(command: WorkspaceCommand): boolean {
-  return !['status', 'listArtworks', 'getArtwork', 'listProjects', 'getOperation', 'readMedia', 'task.list', 'task.get', 'migration.status',
+  return !['status', 'listArtworks', 'getArtwork', 'getArtworks', 'listProjects', 'getOperation', 'readMedia', 'readThumbnail', 'task.list', 'task.get', 'migration.status',
     'profile.readSettings', 'profile.readChat', 'profile.readDrafts', 'countMedia', 'task.input.get', 'task.legacy-history'].includes(command.kind);
 }
 import type { TaskCommand, TaskResults } from './task-types';

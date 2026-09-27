@@ -1,5 +1,81 @@
 import { describe, expect, it } from 'vitest'
-import { characterConflictNote, isCensorTag, mergeInterrogatedTags } from './interrogateMerge'
+import { characterConflictNote, collectInterrogateContext, identityDomainOf, isCensorTag, mergeInterrogatedTags } from './interrogateMerge'
+
+const NENE_IDENTITY = ['1girl', 'solo', 'ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'pink_hair_ribbons']
+
+describe('interrogateMerge · 身份与编译上下文', () => {
+  it('去掉手动词、身份行和场景行中已有的词条', () => {
+    const result = mergeInterrogatedTags({
+      tags: ['blush', 'white_hair', 'classroom', 'looking_at_viewer', 'sitting'],
+      manualTags: new Set(['blush']), identityTokens: NENE_IDENTITY,
+      sceneTokens: ['classroom', 'school_uniform'],
+    })
+    expect(result.accepted).toEqual(['looking_at_viewer', 'sitting'])
+    expect(result.duplicates.sort()).toEqual(['blush', 'classroom', 'white_hair'])
+    expect(result.conflicts).toEqual([])
+  })
+
+  it('发色、瞳色、发型与发长冲突带上原因，湿发等状态词仍可接受', () => {
+    const result = mergeInterrogatedTags({
+      tags: ['black_hair', 'blue_eyes', 'twintails', 'short_hair', 'wet_hair', 'bare_shoulders'],
+      manualTags: new Set(), identityTokens: NENE_IDENTITY,
+    })
+    expect(result.conflicts.map(item => item.tag)).toEqual(['black_hair', 'blue_eyes', 'twintails', 'short_hair'])
+    expect(result.accepted).toEqual(['wet_hair', 'bare_shoulders'])
+    for (const conflict of result.conflicts) {
+      expect(conflict.domain).toBeTruthy()
+      expect(conflict.reason).toContain('当前角色')
+    }
+  })
+
+  it('空身份域可叠加，但复合发色词仍占据发色域', () => {
+    const result = mergeInterrogatedTags({
+      tags: ['hat', 'black_hair'], manualTags: new Set(),
+      identityTokens: ['1girl', 'solo', 'shiki_natsume', 'very_long_black_hair', 'golden_yellow_eyes', 'mole_under_eye'],
+    })
+    expect(result.accepted).toContain('hat')
+    expect(result.accepted).not.toContain('black_hair')
+  })
+
+  it('已有单人身份时拒绝两个女生与多人词条', () => {
+    const result = mergeInterrogatedTags({ tags: ['2girls', 'multiple_girls'], manualTags: new Set(), identityTokens: NENE_IDENTITY })
+    expect(result.accepted).toEqual([])
+    expect(result.conflicts.map(item => item.domain)).toEqual(['主体数量', '主体数量'])
+  })
+
+  it('身份域包含外观和人数，但不含服装或视线', () => {
+    for (const [tag, domain] of Object.entries({ purple_hair: 'hairColor', golden_eyes: 'eyeColor', side_bun: 'hairStyle', very_long_hair: 'hairLength', '1girl': 'subjectCount' })) {
+      expect(identityDomainOf(tag)?.name).toBe(domain)
+    }
+    expect(identityDomainOf('school_uniform')).toBeNull()
+    expect(identityDomainOf('looking_at_viewer')).toBeNull()
+  })
+
+  it('冲突提示说明按当前角色作画；缺少识别角色时不提示', () => {
+    const note = characterConflictNote(['hatsune_miku', 'kagamine_rin'], NENE_IDENTITY)
+    expect(note).toContain('hatsune_miku')
+    expect(note).toContain('已按当前角色作画')
+    expect(characterConflictNote([], NENE_IDENTITY)).toBeNull()
+    expect(characterConflictNote(undefined, NENE_IDENTITY)).toBeNull()
+  })
+
+  it('工作室读取角色与场景词，热门角色读取身份、服装与蓝图；搜索标签不进入编译上下文', () => {
+    const studio = collectInterrogateContext({
+      kind: 'studio', charPrompt: '1girl, solo, ayachi_nene, white_hair, purple_eyes',
+      scenePrompt: '1girl, classroom, school_uniform, <lora:ayachi_nene_v21_anima:0.8>', sceneTags: ['hair_ribbon'],
+    })
+    expect(studio.identityTokens).toContain('ayachi_nene')
+    expect(studio.sceneTokens).toContain('classroom')
+    expect(studio.sceneTokens).not.toContain('hair_ribbon')
+    const popular = collectInterrogateContext({
+      kind: 'popular',
+      character: { identityTokens: ['frieren', '1girl', 'solo', 'purple_eyes'], exactTokens: ['frieren'], outfitTokens: ['robe', 'white_robe'] },
+      blueprintTokens: ['library', 'sitting'],
+    })
+    expect(popular.identityTokens).toEqual(['frieren', '1girl', 'solo', 'purple_eyes', 'frieren', 'robe', 'white_robe'])
+    expect(popular.sceneTokens).toEqual(['library', 'sitting'])
+  })
+})
 
 describe('interrogateMerge · 马赛克/打码词条自动过滤（2026-08-29）', () => {
   it('打码类词条全部进 filtered，不进 accepted', () => {
@@ -209,12 +285,12 @@ describe('反推冲突审计回归', () => {
     expect(result.conflicts.map(item => item.tag)).toEqual(['swimsuit'])
   })
 
-  it('姿势最大还原：反推站姿优先采纳，自动将 manualTags 中的旧坐姿列入清理，同批多个姿势优先保留首个', () => {
+  it.each([{ identityTokens: [] }, { identityTokens: NENE_IDENTITY }])('姿势最大还原：替换旧坐姿，同批只保留首个姿势（身份 $identityTokens）', ({ identityTokens }) => {
     // 1. manualTags 中有 sitting，反推 standing → standing 采纳，sitting 列入淘汰
     const replaceResult = mergeInterrogatedTags({
       tags: ['standing', 'smile'],
       manualTags: new Set(['sitting']),
-      identityTokens: [],
+      identityTokens,
     })
     expect(replaceResult.accepted).toEqual(['standing', 'smile'])
     expect(replaceResult.obsoleteManualTags).toEqual(['sitting'])
@@ -226,11 +302,11 @@ describe('反推冲突审计回归', () => {
     expect(batch.conflicts.map(c => c.tag)).toEqual(['standing', 'lying'])
   })
 
-  it('视线与神态还原：反推闭眼优先采纳，自动清理 manualTags 中的直视词', () => {
+  it.each([{ identityTokens: [] }, { identityTokens: NENE_IDENTITY }])('反推闭眼清理旧直视词（身份 $identityTokens）', ({ identityTokens }) => {
     const eyeResult = mergeInterrogatedTags({
       tags: ['closed_eyes'],
       manualTags: new Set(['looking_at_viewer']),
-      identityTokens: [],
+      identityTokens,
     })
     expect(eyeResult.accepted).toEqual(['closed_eyes'])
     expect(eyeResult.obsoleteManualTags).toEqual(['looking_at_viewer'])
@@ -246,10 +322,10 @@ describe('反推冲突审计回归', () => {
     expect(barefootResult.obsoleteManualTags).toEqual(['boots'])
   })
 
-  it('镜头可见性：特写镜头下自动忽略脚部与鞋袜部件', () => {
+  it.each([{ identityTokens: [] }, { identityTokens: NENE_IDENTITY }])('特写镜头忽略脚部与鞋袜部件（身份 $identityTokens）', ({ identityTokens }) => {
     const result = mergeInterrogatedTags({
       tags: ['blush', 'boots', 'thighhighs', 'earrings'],
-      identityTokens: [],
+      identityTokens,
       manualTags: new Set(),
       shot: 'close',
     })
