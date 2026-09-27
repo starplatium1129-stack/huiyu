@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, ref, useId, watch } from 'vue'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 
 withDefaults(defineProps<{
   label: string
@@ -22,6 +23,7 @@ watch(selected, async () => { await nextTick(); if (scrollArea.value) scrollArea
   <TabsRoot v-model="selected" :as="as" :unmount-on-hide="false" class="studio-tabs-root">
     <slot name="heading" />
     <TabsList v-show="!stacked" :aria-label="label" class="studio-tabs-list" :class="listClass">
+      <AnimatedSelection target="[aria-selected='true']" />
       <TabsTrigger v-for="tab in tabs" :key="tab.id" :value="tab.id" as-child>
       <button type="button"
         :id="`${idPrefix || generatedId}-tab-${tab.id}`" :aria-controls="`${idPrefix || generatedId}-${tab.id}`"
@@ -46,10 +48,10 @@ watch(selected, async () => { await nextTick(); if (scrollArea.value) scrollArea
 
 <style>
 .studio-tabs-root { min-width:0; }
-.studio-tabs-list { display:flex; gap:var(--s-1); padding:var(--s-1); margin:0 var(--s-3) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
-.studio-tabs-trigger { display:flex; justify-content:center; align-items:center; flex:1; gap:var(--s-1); min-width:0; min-height:40px; padding:var(--s-2); border:1px solid transparent; border-radius:var(--r-md); background:transparent; color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
+.studio-tabs-list { position:relative; isolation:isolate; display:flex; gap:var(--s-1); padding:var(--s-1); margin:0 var(--s-3) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.studio-tabs-trigger { position:relative; z-index:var(--z-raised); display:flex; justify-content:center; align-items:center; flex:1; gap:var(--s-1); min-width:0; min-height:40px; padding:var(--s-2); border:1px solid transparent; border-radius:var(--r-md); background:transparent; color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
 .studio-tabs-trigger:hover { background:var(--bg-hover); color:var(--text-primary); }
-.studio-tabs-trigger[data-state='active'] { border-color:var(--border-soft); background:var(--bg-surface); color:var(--accent); box-shadow:var(--shadow-sm); }
+.studio-tabs-trigger[data-state='active'] { color:var(--accent); }
 .studio-tabs-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
 .studio-tabs-count { min-width:18px; padding:0 var(--s-1); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); font-size:var(--fs-label-xs); }
 .studio-tabs-panels { min-height:0; min-width:0; }

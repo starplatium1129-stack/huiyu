@@ -22,6 +22,17 @@ function setup(items: readonly DirectoryCharacter[] = characters, selectedId = '
 }
 
 describe('角色作品书架', () => {
+  it('翻转封面只轮换代表画像，不打开档案或丢失分组', async () => {
+    const page = setup()
+    const work = page.findAll('.bookshelf-work').find(card => card.text().includes('原神'))!
+    const before = work.find('[data-slot="0"] img').attributes('src')
+    await work.get('.bookshelf-flip-row button').trigger('click')
+    expect(work.find('[data-slot="0"] img').attributes('src')).not.toBe(before)
+    expect(page.findAll('.bookshelf-work')).toHaveLength(3)
+    expect(page.emitted('select')).toBeUndefined()
+    for (let index = 0; index < 4; index++) await work.get('.bookshelf-flip-row button').trigger('click')
+    expect(work.find('[data-slot="0"] img').attributes('src')).toBe(before)
+  })
   it('默认按真实作品归组，合并中英文来源，最多展示五张有效封面', () => {
     const page = setup()
     expect(page.findAll('.bookshelf-work')).toHaveLength(3)
@@ -130,7 +141,7 @@ describe('角色作品书架', () => {
     await page.setProps({ items: characters.slice(0, 2) })
     expect(page.findAll('[data-character]')).toHaveLength(2)
     await page.setProps({ items: [] })
-    await page.get('.bookshelf-modes button:first-child').trigger('click')
+    await page.get('.bookshelf-modes button:first-of-type').trigger('click')
     expect(page.get('.bookshelf-empty').text()).toBe('角色目录暂时为空。')
   })
 })

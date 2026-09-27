@@ -17,6 +17,7 @@
           :aria-label="state.title"
           :aria-describedby="state.message ? messageId : undefined"
         >
+          <button class="confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
           <span class="confirm-icon" aria-hidden="true">
             <ArchiveIcon :name="state.danger ? 'warning' : 'info'" />
           </span>
@@ -89,11 +90,15 @@ onUnmounted(() => {
   backdrop-filter: blur(6px);
 }
 .confirm-panel {
+  position:relative;
   width: min(380px, calc(100vw - 32px));
   padding: var(--s-5);
   border: 1px solid var(--glass-edge);
   color: var(--text-primary);
 }
+.confirm-close { position:absolute; top:var(--s-3); right:var(--s-3); display:grid; place-items:center; width:40px; height:40px; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-secondary); cursor:pointer; }
+.confirm-close:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.confirm-icon { padding-right:44px; min-height:28px; }
 .confirm-icon { display: block; margin-bottom: var(--s-2); color: var(--text-secondary); }
 .confirm-danger .confirm-icon { color: var(--danger-text); }
 .confirm-title {

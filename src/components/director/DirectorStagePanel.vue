@@ -4,7 +4,7 @@
     <!-- 容器保留轻量入场；图片显现只由 CgImageReveal 驱动。 -->
     <Transition name="stage-swap">
       <section
-        v-if="!displayResultUrl"
+        v-if="!displayResultUrl && !browsingResult"
         class="stage-placeholder"
       :class="{
         'is-generating': generationBusy,
@@ -104,7 +104,7 @@
     </Transition>
 
     <!-- Result image -->
-    <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
+    <div v-if="displayResultUrl && !browsingResult" class="result-image-wrap archive-canvas">
       <div class="stage-result-heading">
         <span>生成结果</span>
         <span class="stage-result-status" role="status">
@@ -138,6 +138,8 @@
       />
       <div v-if="interrogateError && displayResultUrl" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
     </div>
+    <DirectorResultShelf :history="history || []" :previous="previousResult" :current-url="displayResultUrl" :busy="generationBusy"
+      @preview="browsingResult = $event" @resume="$emit('resumeHistory', $event)" @saved="$emit('saved')" />
     <!-- 供两态共用的上传入口 -->
     <input ref="interrogateInputRef2" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
   </div>
@@ -158,9 +160,13 @@ import ThinkingOrb from '@/components/visual/ThinkingOrb.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
+import type { ArtworkRecord } from '@/types/artwork'
+import type { ResultSnapshot } from '@/composables/prompt/promptResultSnapshot'
 import '@/assets/css/director/components/DirectorStagePanel.css'
 
 const props = defineProps<{
+  history?: ArtworkRecord[]
+  previousResult?: ResultSnapshot | null
   displayResultUrl: string
   canvasSize?: string
   generationBusy: boolean
@@ -185,6 +191,7 @@ const props = defineProps<{
 
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
 const revealedResults = ref(new Set<string>())
+const browsingResult = ref(false)
 function rememberResultReveal() {
   const source = props.displayResultUrl
   if (!source || revealedResults.value.has(source)) return
@@ -197,8 +204,11 @@ function rememberResultReveal() {
 
 // Result-only tools load after an image exists.
 const DirectorResultTools = defineAsyncComponent(() => import('./DirectorResultTools.vue'))
+const DirectorResultShelf = defineAsyncComponent(() => import('./DirectorResultShelf.vue'))
 
 const emit = defineEmits<{
+  resumeHistory: [entry: ArtworkRecord]
+  saved: []
   generate: []
   openInpaint: []
   openRecovery: []

@@ -1,0 +1,36 @@
+import { expect, test } from '@playwright/test'
+import { textContrast } from './helpers/contrast'
+for (const theme of ['light','dark']) for (const width of [1440,390]) {
+  test(`home, bookshelf and navigation finish ${theme} ${width}`,async({page},info)=>{
+    await page.setViewportSize({width,height:1000})
+    await page.route(/^http:\/\/[^/]+\/api\//,route=>route.fulfill({status:503,json:{ok:false,error:'Isolated UI test'}}))
+    await page.addInitScript(theme=>localStorage.setItem('aics_theme',theme),theme)
+    await page.emulateMedia({reducedMotion:'reduce'})
+    await page.goto('/')
+    const cards=page.locator('.home-bento .tool-card')
+    await expect(cards).toHaveCount(5)
+    const first=await cards.first().boundingBox(),second=await cards.nth(1).boundingBox()
+    if(width>1000) { expect(first!.height).toBeGreaterThan(second!.height); expect(first!.width).toBeGreaterThan(second!.width) }
+    else expect(second!.y).toBeGreaterThan(first!.y)
+    expect(await page.locator('.home-bento .t').first().evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1)
+    await cards.first().scrollIntoViewIfNeeded()
+    await page.screenshot({path:info.outputPath(`home-bento-${theme}-${width}.png`)})
+    if(width<900) await page.getByRole('button',{name:'打开导航菜单',exact:true}).click()
+    await page.getByRole('button',{name:'更多',exact:true}).click()
+    const menu=page.getByRole('dialog',{name:'更多页面',exact:true})
+    await expect(menu).toContainText('画室导航')
+    await menu.getByRole('button',{name:'关闭更多页面',exact:true}).click()
+    await expect(menu).toBeHidden()
+    await page.goto('/character')
+    const flip=page.getByRole('button',{name:/^下一张封面：/}).first()
+    await expect(flip).toBeVisible()
+    const group=flip.locator('xpath=ancestor::article[1]')
+    const before=await group.locator('.bookshelf-flip-row > span').innerText()
+    await flip.click()
+    await expect(group.locator('.bookshelf-flip-row > span')).not.toHaveText(before)
+    await expect(page.locator('.bookshelf-grid')).toBeVisible()
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1)
+    await page.screenshot({path:info.outputPath(`bookshelf-flip-${theme}-${width}.png`)})
+  })
+}

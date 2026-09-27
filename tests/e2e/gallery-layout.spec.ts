@@ -18,6 +18,7 @@ async function seedGallery(page: Page, theme: string, empty = false) {
       id: `gallery-review-${index}`, sceneTitle: ['午后，和你', '光的形状', '一封写给秋日的长信：保留完整标题以验证小屏幕上的省略与布局', '雨后的街角', '海与她', '某个下午'][index],
       character: index % 2 ? 'nene' : 'natsume', prompt: 'Neutral UI review fixture',
       image_url: `/assets/gallery-fixture-${index}`, favorite: index < 2,
+      manual_tags: index < 2 ? ['春日'] : ['夜景'],
       timestamp: Date.now() - index * 1000, width: 832, height: 1216,
     }))))
     localStorage.setItem('aics_pb_projects', JSON.stringify([{ id: 'review', title: '秋日手记', history_ids: ['gallery-review-0', 'gallery-review-1'] }]))
@@ -53,9 +54,34 @@ for (const theme of ['light', 'dark']) {
     await expect(cards).toHaveCount(6)
     await pickStudioOptionByValue(page.getByLabel('按项目筛选'), 'review')
     await expect(cards).toHaveCount(2)
-    await pickStudioOptionByValue(page.getByLabel('按项目筛选'), '')
+    await expect(page.getByRole('navigation', { name: '画册位置' })).toContainText('秋日手记')
+    await page.getByRole('button', { name: '全部画册', exact: true }).click()
+    await expect(cards).toHaveCount(6)
     await cards.first().locator('.artwork-button').click()
     await expect(page.getByRole('dialog', { name: '作品观赏模式' })).toBeVisible()
+    const viewer = page.getByRole('dialog', { name: '作品观赏模式' })
+    await viewer.getByRole('button', {name:'春日',exact:true}).click()
+    await expect(viewer).toBeHidden()
+    await expect(cards).toHaveCount(2)
+    await expect(page.getByLabel('按标签筛选')).toBeFocused()
+    await page.getByRole('button',{name:'清除标签：春日'}).click()
+    await expect(cards).toHaveCount(6)
+    await cards.first().locator('.artwork-button').click()
+    await expect(viewer.getByRole('link', { name: '沿用配方', exact: true })).toBeVisible()
+    await expect(viewer.getByRole('button', { name: '下载原图', exact: true })).toBeVisible()
+    await expect(viewer.getByRole('link', { name: '原参重跑', exact: true })).toBeHidden()
+    await expect(viewer.locator('.viewer-facts')).toBeHidden()
+    for (const selector of ['.viewer-title', '.viewer-meta', '.viewer-story', '.viewer-section h3', '.viewer-details summary']) {
+      expect(await viewer.locator(selector).first().evaluate(textContrast), selector).toBeGreaterThanOrEqual(4.5)
+    }
+    await viewer.locator('.viewer-more summary').click()
+    await expect(viewer.getByRole('link', { name: '原参重跑', exact: true })).toBeVisible()
+    await viewer.locator('.viewer-details:not(.viewer-more) summary').click()
+    await expect(viewer.locator('.viewer-facts')).toBeVisible()
+    await viewer.getByRole('button', { name: '下一幅', exact: true }).click()
+    await expect(viewer.locator('.viewer-facts')).toBeHidden()
+    await expect(viewer.getByRole('link', { name: '原参重跑', exact: true })).toBeHidden()
+    await viewer.getByRole('button', { name: '上一幅', exact: true }).click()
     await page.keyboard.press('Escape')
     await expect(cards.first().locator('.artwork-button')).toBeFocused()
     await page.getByRole('button', { name: '选择', exact: true }).click()
@@ -128,7 +154,8 @@ for (const theme of ['light', 'dark']) {
       await page.setViewportSize({ width, height: 960 })
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
       const columns = page.locator('.gallery-columns').first()
-      await expect.poll(async () => columns.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(await columns.locator('.gallery-col').count())
+      await expect(columns).toBeVisible()
+      await expect.poll(() => columns.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length === el.querySelectorAll(':scope > .gallery-col').length)).toBe(true)
       await expect(page.getByRole('button', { name: '选择', exact: true })).toBeInViewport()
       await expect(page.getByRole('searchbox', { name: '搜索作品' })).toBeInViewport()
       await page.screenshot({ path: testInfo.outputPath(`gallery-${theme}-${width}.png`) })

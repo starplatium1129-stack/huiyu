@@ -11,13 +11,7 @@
 
 .toolbar-shell { position:sticky; top:70px; z-index:var(--z-sticky); margin-bottom:var(--s-5); }
 .search-row { display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; }
-.search-field { position:relative; display:flex; align-items:center; flex:1 1 300px; gap:var(--s-3); min-width:0; padding-inline:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-muted); }
-.search-field:focus-within { outline:2px solid var(--accent); outline-offset:2px; }
-.search-field .scene-search { width:100%; min-width:0; min-height:44px; padding:var(--s-2) 28px var(--s-2) 0; border:0; outline:none; background:transparent; color:var(--text-primary); font:inherit; font-size:var(--fs-body-sm); }
-.search-field .scene-search:focus-visible { outline:none; }
-.scene-search::placeholder { color:var(--text-muted); }
-.scene-search-clear { position:absolute; top:50%; right:var(--s-2); transform:translateY(-50%); display:grid; place-items:center; width:32px; height:32px; border:0; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; }
-.scene-search-clear:hover { background:var(--accent-soft); color:var(--accent); }
+.search-field { flex:1 1 300px; min-width:0; }
 .filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; align-items:center; }
 .filter-pill { min-height:36px; padding:var(--s-2) var(--s-4); border:1px solid transparent; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label) var(--font-sans); }
 .filter-pill.active,.filter-pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
@@ -61,3 +55,7 @@
 @media (prefers-reduced-motion:reduce) { .showcase-filters > summary > .archive-icon { transition:none; } }
 @media (prefers-contrast:more) { .showcase-page .toolbar-shell { border-color:var(--text-muted); } }
 @media (forced-colors:active) { .showcase-page .toolbar-shell { background:Canvas; border-color:CanvasText; } }
+
+.collection-scope { position:relative; isolation:isolate; padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); --selection-radius:var(--r-pill); }
+.collection-scope .filter-pill { position:relative; z-index:var(--z-raised); min-height:40px; }
+.collection-scope .filter-pill.active { background:transparent; border-color:transparent; color:var(--accent); }

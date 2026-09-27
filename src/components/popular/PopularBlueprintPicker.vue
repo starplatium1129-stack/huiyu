@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { SceneBlueprint } from '@/utils/popularContent'
 
 const props = defineProps<{
@@ -68,7 +69,7 @@ const categoryChips = computed(() => {
         :data-adult="blueprint.adult ? 'true' : 'false'"
         :aria-pressed="props.selectedBlueprintId === blueprint.id"
         @click="emit('select', blueprint)">
-        <span class="blueprint-title">{{ blueprint.title }}<span v-if="blueprint.adult" class="scene-rating-tag">R18</span></span>
+        <span class="blueprint-title"><ArchiveIcon v-if="props.selectedBlueprintId === blueprint.id" name="success" class="blueprint-check" />{{ blueprint.title }}<span v-if="blueprint.adult" class="scene-rating-tag">R18</span></span>
         <span class="blueprint-desc">{{ blueprint.description }}</span>
         <span class="blueprint-meta">
           <span>{{ blueprint.category }}</span>
@@ -148,36 +149,35 @@ const categoryChips = computed(() => {
 .blueprint-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--s-2);
+  padding:var(--s-1);
 }
 .blueprint-card {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--s-2);
   text-align: left;
-  padding: var(--s-2) var(--s-3);
-  border-radius: var(--r-md);
+  padding: var(--s-3);
+  border-radius: var(--r-lg);
   border: 1px solid var(--border-soft);
-  border-left: 3px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
-  background: var(--glass-fill);
+  background: var(--bg-surface);
   color: inherit;
   cursor: pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover);
+  transition: transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.blueprint-card:hover {
-  transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft));
-}
+@media (hover:hover) and (pointer:fine) { .blueprint-card:hover { transform:translateY(-2px); border-color:var(--accent); box-shadow:var(--shadow-sm); } }
 .blueprint-card.active {
   border-color: var(--pb-active, var(--accent));
   border-left-color: var(--pb-active, var(--accent));
-  background: color-mix(in srgb, var(--mood-love) 12%, transparent);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent);
 }
 .blueprint-card[data-adult="true"] { border-left-color: color-mix(in srgb, var(--danger-text) 55%, transparent); }
 .blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }
 .blueprint-card:active { transform: translateY(0) scale(.99); }
+.blueprint-check { color:var(--accent); }
+@media (prefers-reduced-motion:reduce) { .blueprint-card { transition:none; transform:none; } }
 .blueprint-title {
   font-size: var(--fs-label);
   font-weight: 600;

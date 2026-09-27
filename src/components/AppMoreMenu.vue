@@ -20,6 +20,7 @@ onMounted(() => emit('ready'))
 <template>
   <StudioPopover v-model:open="open" label="更多页面" content-class="nav-more-menu" @close-auto-focus="emit('closeAutoFocus', $event)">
     <template #trigger><button type="button" class="nav-more-trigger">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button></template>
+    <header class="nav-more-heading"><strong>画室导航</strong><button type="button" aria-label="关闭更多页面" @click="open = false"><ArchiveIcon name="close" /></button></header>
     <template v-for="group in groups" :key="group.heading">
       <div class="nav-more-group-label">{{ group.heading }}</div>
       <StudioTooltip
@@ -34,6 +35,7 @@ onMounted(() => emit('ready'))
           :data-pending="pendingPath === item.to || undefined" :data-intent="intentPath === item.to || undefined"
           @click="emit('navigate')">
           <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
+          <small v-if="activeId === item.id" class="nav-current-label">当前</small>
         </RouterLink>
       </StudioTooltip>
     </template>
@@ -49,6 +51,9 @@ onMounted(() => emit('ready'))
 .nav-more-menu a:hover,.nav-more-menu a.active { color:var(--accent); background:var(--accent-soft); }
 .nav-more-menu a[data-pending='true'],.nav-more-menu a[data-intent='true'] { outline:1px solid var(--border-strong); outline-offset:-1px; background:var(--accent-soft); color:var(--text-primary); }
 .nav-more-menu .archive-icon { flex-shrink:0; width:16px; height:16px; }
+.nav-more-heading { grid-column:1 / -1; display:flex; justify-content:space-between; align-items:center; gap:var(--s-3); color:var(--text-primary); font-size:var(--fs-body-sm); padding-bottom:var(--s-2); border-bottom:1px solid var(--border-soft); }
+.nav-more-heading button { display:grid; place-items:center; min-width:40px; min-height:40px; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-secondary); cursor:pointer; }
+.nav-more-menu .nav-current-label { margin-left:auto; color:var(--accent); font-size:var(--fs-label-xs); }
 .nav-more-menu :is(a,button):focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
 .nav-more-menu .nav-help { grid-column:1 / -1; min-height:44px; padding:var(--s-3); margin-top:var(--s-2); border:0; border-top:1px solid var(--border-soft); border-radius:var(--r-md); background:transparent; color:var(--text-secondary); text-align:left; font:500 var(--fs-label)/var(--lh-body) var(--font-sans); cursor:pointer; }
 .nav-more-menu .nav-help:hover { background:var(--bg-hover); }

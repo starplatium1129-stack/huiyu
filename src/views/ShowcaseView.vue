@@ -12,12 +12,9 @@
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row">
-        <div class="search-field">
-          <ArchiveIcon name="search" />
-          <input ref="searchInput" v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" aria-label="搜索画册" @keydown.esc.prevent="searchQuery = ''" placeholder="搜索场景、情绪、角色或关键词…" />
-          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空搜索" @click="searchQuery=''; searchInput?.focus()"><ArchiveIcon name="close" /></button>
-        </div>
-        <div class="filter-group">
+        <StudioSearch v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
+        <div class="filter-group collection-scope" role="group" aria-label="样张来源">
+          <AnimatedSelection />
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
         <button v-if="hasFilters" class="filter-reset" type="button" @click="resetFilters">清除筛选</button>
@@ -145,6 +142,8 @@ import { showcaseDestination } from '@/utils/showcaseDestination'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import ShowcaseAlbums from '@/components/showcase/ShowcaseAlbums.vue'
@@ -179,7 +178,6 @@ const unavailable = ref(false)
 /** manifest 未返回前显示加载面板，避免闪现错误的"没有匹配样张"空状态 */
 const manifestLoading = ref(true)
 const searchQuery = ref('')
-const searchInput = ref<HTMLInputElement | null>(null)
 const scope       = ref<'all' | 'featured'>('all')
 const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
 const charFilter  = ref<string>('all')

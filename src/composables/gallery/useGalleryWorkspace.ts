@@ -86,6 +86,7 @@ export function useGalleryWorkspace() {
 
     const {
         favoriteOnly,
+        tagFilter, tagOptions,
         projectFilter,
         searchQuery,
         visible,
@@ -566,7 +567,7 @@ export function useGalleryWorkspace() {
     function bulkDelete(): Promise<void> { return bulkDeleteAction({ showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage }); }
     return {
 closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
-        countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects,
+        countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, loadGalleryStorage, trashBusy, trashThumbs, trashPrompt,

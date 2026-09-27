@@ -64,6 +64,10 @@
       <div class="director-col col-center" id="drawing-canvas">
 
         <DirectorStagePanel
+          :history="pb.history"
+          :previous-result="prevResult"
+          @resumeHistory="resumeHistory"
+          @saved="pb.loadHistory"
           :canvas-size="genBarSize"
           :display-result-url="displayResultUrl"
           :generation-busy="generationBusy"

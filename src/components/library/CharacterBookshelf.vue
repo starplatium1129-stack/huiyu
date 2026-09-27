@@ -3,25 +3,23 @@
     <header class="bookshelf-header">
       <p class="bookshelf-total">{{ items.length }} 位角色<span aria-hidden="true"> · </span>{{ groups.length }} 部作品</p>
       <div class="bookshelf-modes" role="group" aria-label="角色浏览方式">
+        <AnimatedSelection />
         <button type="button" :aria-pressed="showingShelf" @click="switchMode('shelf')"><ArchiveIcon name="gallery" />作品书架</button>
         <button type="button" :aria-pressed="!showingShelf" @click="switchMode('characters')"><ArchiveIcon name="character" />全部角色</button>
       </div>
     </header>
 
     <div class="bookshelf-search-row">
-      <div class="bookshelf-search">
-        <ArchiveIcon name="search" />
-        <input :id="searchId" ref="searchInput" v-model="query" type="search" aria-label="搜索角色、别名或作品" placeholder="搜索角色、别名或作品…" @keydown="onSearchKeydown" />
-      </div>
-      <button v-if="term" type="button" class="bookshelf-text-button" @click="clearQuery">清除搜索</button>
-      <p v-else class="bookshelf-hint">{{ showingShelf ? '挑一本作品，翻开角色的故事' : '选择角色，查看完整档案' }}</p>
+      <StudioSearch :id="searchId" ref="searchInput" v-model="query" class="bookshelf-search" label="搜索角色、别名或作品" placeholder="搜索角色、别名或作品…" @keydown="onSearchKeydown" />
+      <p class="bookshelf-hint">{{ showingShelf ? '挑一本作品，翻开角色的故事' : '选择角色，查看完整档案' }}</p>
     </div>
 
     <template v-if="showingShelf">
       <div v-if="groups.length" ref="shelfGrid" class="bookshelf-grid" role="group" aria-label="作品书架">
-        <button v-for="group in groups" :key="group.key" type="button" class="bookshelf-work" :data-franchise="group.key" :aria-label="`${group.label}，${group.count} 位角色`" @click="enterGroup(group.key)">
+        <article v-for="group in groups" :key="group.key" class="bookshelf-work">
+        <button type="button" class="bookshelf-open" :data-franchise="group.key" :aria-label="`${group.label}，${group.count} 位角色`" @click="enterGroup(group.key)">
           <span class="bookshelf-cover-stage" :class="{ 'is-empty': !group.covers.length }" aria-hidden="true">
-            <span v-for="(cover, index) in group.covers" :key="cover.id" class="bookshelf-cover" :data-slot="index">
+            <span v-for="(cover, index) in rotatedCovers(group.key, group.covers)" :key="cover.id" class="bookshelf-cover" :data-slot="index">
               <CharacterPortrait :src="cover.image" :name="cover.name" />
             </span>
             <span v-if="!group.covers.length" class="bookshelf-cover-placeholder"><ArchiveIcon name="gallery" /><span>封面待补充</span></span>
@@ -29,6 +27,11 @@
           <span class="bookshelf-work-title">{{ group.label }}</span>
           <span class="bookshelf-work-count">{{ group.count }} 位角色<ArchiveIcon name="chevron-down" /></span>
         </button>
+        <div v-if="group.covers.length > 1" class="bookshelf-flip-row">
+          <span aria-live="polite">{{ rotatedCovers(group.key, group.covers)[0]?.name }}</span>
+          <button type="button" :aria-label="`下一张封面：${group.label}`" @click="coverOffsets[group.key] = ((coverOffsets[group.key] || 0) + 1) % group.covers.length"><ArchiveIcon name="refresh" /><span>{{ ((coverOffsets[group.key] || 0) % group.covers.length) + 1 }} / {{ group.covers.length }}</span></button>
+        </div>
+        </article>
       </div>
       <p v-else class="bookshelf-empty" role="status">角色目录暂时为空。</p>
     </template>
@@ -63,6 +66,8 @@
 import { nextTick, ref, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import type { DirectoryCharacter } from './CharacterDirectory.vue'
 import { useCharacterBookshelf } from '@/composables/useCharacterBookshelf'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
@@ -70,10 +75,15 @@ import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 const props = defineProps<{ items: readonly DirectoryCharacter[]; selectedId?: string }>()
 const emit = defineEmits<{ select: [id: string] }>()
 const searchId = useId()
-const searchInput = ref<HTMLInputElement | null>(null)
+const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const shelfGrid = ref<HTMLElement | null>(null)
 const characterGrid = ref<HTMLElement | null>(null)
 const resultsHeading = ref<HTMLElement | null>(null)
+const coverOffsets = ref<Record<string, number>>({})
+function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
+  const offset = (coverOffsets.value[key] || 0) % (covers.length || 1)
+  return [...covers.slice(offset), ...covers.slice(0, offset)]
+}
 const { query, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch } = useCharacterBookshelf(() => props.items)
 
 async function enterGroup(key: string) { openGroup(key); await nextTick(); resultsHeading.value?.focus() }
@@ -111,16 +121,18 @@ defineExpose({ focusSelected })
 .bookshelf-header { display: flex; align-items: center; justify-content: space-between; gap: var(--s-5); }
 .bookshelf-total { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); }
 .bookshelf-total span { margin-inline: var(--s-2); }
-.bookshelf-modes { display: flex; gap: var(--s-1); flex-shrink: 0; padding: var(--s-1); border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-base); }
-.bookshelf-modes button { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); border: 1px solid transparent; border-radius: var(--r-pill); padding: var(--s-2) var(--s-4); min-height: 40px; background: transparent; color: var(--text-secondary); font: inherit; font-size: var(--fs-label); cursor: pointer; }
-.bookshelf-modes button[aria-pressed="true"] { background: var(--bg-surface); border-color: var(--border-soft); color: var(--accent); box-shadow: var(--shadow-sm); }
+.bookshelf-modes { position:relative; isolation:isolate; --selection-radius:var(--r-pill); display: flex; gap: var(--s-1); flex-shrink: 0; padding: var(--s-1); border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-base); }
+.bookshelf-modes button { position:relative; z-index:var(--z-raised); display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); border: 1px solid transparent; border-radius: var(--r-pill); padding: var(--s-2) var(--s-4); min-height: 40px; background: transparent; color: var(--text-secondary); font: inherit; font-size: var(--fs-label); cursor: pointer; }
+.bookshelf-modes button[aria-pressed="true"] { color:var(--accent); }
 .bookshelf-search-row { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-4); padding-bottom: var(--s-4); border-bottom: 1px solid var(--border-soft); }
-.bookshelf-search { display: flex; align-items: center; gap: var(--s-3); flex: 1; max-width: 620px; min-width: 0; padding: 0 var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-base); color: var(--text-muted); }
-.bookshelf-search:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
-.bookshelf-search input { width: 100%; min-width: 0; min-height: 46px; border: 0; outline: none; background: transparent; color: var(--text-primary); font: inherit; font-size: var(--fs-body-sm); }
-.bookshelf-search input::placeholder { color: var(--text-muted); }
+.bookshelf-search { flex:1; max-width:620px; }
 .bookshelf-hint { margin: 0; color: var(--text-muted); font-size: var(--fs-label); line-height: var(--lh-body); }
 .bookshelf-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 48px); row-gap: var(--s-6); padding: var(--s-5) 0 var(--s-3); }
+.bookshelf-open { width:100%; display:flex; flex-direction:column; align-items:center; padding:0; border:0; border-radius:var(--r-lg); background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.bookshelf-flip-row { display:flex; align-items:center; justify-content:center; gap:var(--s-2); width:100%; margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); }
+.bookshelf-flip-row > span { min-width:0; max-width:60%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bookshelf-flip-row button { display:flex; align-items:center; gap:var(--s-1); flex-shrink:0; min-height:36px; padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-secondary); font:inherit; cursor:pointer; }
+.bookshelf-flip-row button:hover { border-color:var(--accent); color:var(--accent); }
 .bookshelf-work { min-width: 0; display: flex; flex-direction: column; align-items: center; padding: var(--s-2) 0 var(--s-4); border: 0; border-radius: var(--r-lg); background: transparent; color: inherit; font: inherit; cursor: pointer; }
 .bookshelf-cover-stage { position: relative; display: block; width: 100%; aspect-ratio: 1.15; margin-bottom: var(--s-4); isolation: isolate; }
 .bookshelf-cover { position: absolute; left: 21%; top: 5%; width: 58%; height: 86%; border: 3px solid var(--bg-surface); border-radius: var(--r-lg); box-shadow: var(--shadow-md); transform-origin: center 85%; transition: transform var(--motion-hover); overflow: hidden; }
