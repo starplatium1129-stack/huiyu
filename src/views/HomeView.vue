@@ -126,7 +126,7 @@
           <span class="tool-index" aria-hidden="true">01 / MAKE</span>
           <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
           <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
-          <span class="home-entry-preview" aria-hidden="true"><RuntimeImage :src="homeMuse === 'nene' ? neneHero.src : natsumeHero.src" alt="" loading="lazy" /></span>
+          <span class="home-entry-preview" aria-hidden="true"><RuntimeImage src="/assets/characters/popular-violet_evergarden.png" alt="" loading="lazy" /></span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
