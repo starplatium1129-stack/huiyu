@@ -1,12 +1,14 @@
-use tauri::{State, WebviewWindow};
-use crate::state::AppState;
+use tauri::{Manager, WebviewWindow};
 
-fn authorize(window: &WebviewWindow, state: &AppState) -> Result<(), String> {
-    let expected = state.gateway_url.lock().map_err(|_| "Gateway unavailable")?.clone();
-    let expected = tauri::Url::parse(&expected).map_err(|_| "Gateway unavailable")?;
+fn credential_window(label: &str) -> bool {
+    matches!(label, "atelier" | "companion" | "companion-chat")
+}
+fn authorize(window: &WebviewWindow) -> Result<(), String> {
     let actual = window.url().map_err(|_| "Window unavailable")?;
-    if expected.scheme() != "http" || expected.host_str() != Some("127.0.0.1")
-        || actual.origin() != expected.origin() {
+    // Share the host's registered legacy/bundled source policy. Requiring the
+    // bundled document to equal the sidecar's HTTP origin rejects every key.
+    if !credential_window(window.label())
+        || !crate::main_shared::is_gateway_origin(window.app_handle(), &actual) {
         return Err("Untrusted credential request".into());
     }
     Ok(())
@@ -67,14 +69,14 @@ fn read(_: &[u16]) -> Result<Option<String>, String> { Err("Secure credentials r
 fn write(_: &mut [u16], _: &str) -> Result<(), String> { Err("Secure credentials require Windows".into()) }
 
 #[tauri::command]
-pub fn chat_credential_read(window: WebviewWindow, state: State<'_, AppState>, endpoint: String) -> Result<Option<String>, String> {
-    authorize(&window, &state)?;
+pub fn chat_credential_read(window: WebviewWindow, endpoint: String) -> Result<Option<String>, String> {
+    authorize(&window)?;
     read(&target(&endpoint)?)
 }
 
 #[tauri::command]
-pub fn chat_credential_write(window: WebviewWindow, state: State<'_, AppState>, endpoint: String, secret: String) -> Result<(), String> {
-    authorize(&window, &state)?;
+pub fn chat_credential_write(window: WebviewWindow, endpoint: String, secret: String) -> Result<(), String> {
+    authorize(&window)?;
     if secret.len() > 1000 { return Err("Credential exceeds limit".into()); }
     write(&mut target(&endpoint)?, &secret)
 }
@@ -82,6 +84,24 @@ pub fn chat_credential_write(window: WebviewWindow, state: State<'_, AppState>, 
 #[cfg(all(test, windows))]
 mod tests {
     use super::*;
+
+    #[test]
+    fn credential_source_boundaries_match_registered_desktop_sources() {
+        use crate::main_shared::registered_desktop_origin;
+        let expected = "http://127.0.0.1:4312";
+        for label in ["atelier", "companion", "companion-chat"] { assert!(credential_window(label)); }
+        assert!(!credential_window("preview"));
+        assert!(!credential_window(""));
+        for source in ["http://tauri.localhost/", "https://tauri.localhost/index.html#/companion"] {
+            let actual = source.parse().unwrap();
+            assert!(registered_desktop_origin(expected, true, &actual));
+            assert!(!registered_desktop_origin(expected, false, &actual));
+        }
+        assert!(registered_desktop_origin(expected, false, &"http://127.0.0.1:4312/chat".parse().unwrap()));
+        for source in ["http://localhost:4312/", "http://127.0.0.1:3000/", "http://tauri.localhost:4312/", "https://tauri.localhost.example/", "https://example.test/"] {
+            assert!(!registered_desktop_origin(expected, true, &source.parse().unwrap()));
+        }
+    }
 
     #[test]
     fn isolated_credential_round_trip_and_clear() {

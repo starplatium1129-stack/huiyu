@@ -7,6 +7,12 @@ pub fn same_gateway_origin(expected: &str, url: &tauri::Url) -> bool {
         && url.origin() == gateway.origin()
 }
 
+/// Pure form of the host's existing registered source policy, shared by native
+/// credential authorization and the global IPC guard through main_shared.
+pub fn registered_desktop_origin(expected: &str, bundled: bool, url: &tauri::Url) -> bool {
+    (bundled && crate::ui_entry::native_origin(url)) || same_gateway_origin(expected, url)
+}
+
 
 #[cfg(test)]
 mod gateway_origin_tests {

@@ -18,7 +18,8 @@ function Get-DesktopMaintenanceIdentity {
   $identity = Get-Content -LiteralPath $capability -Raw -Encoding UTF8 | ConvertFrom-Json
   $expected = Join-Path ([IO.Path]::GetFullPath($InstallDir)) 'ai-cg-studio-desktop.exe'
   if ($identity.protocolVersion -ne 1 -or $identity.instanceId -notmatch '^[a-f0-9]{64}$' -or
-      $identity.hostPid -isnot [int] -or $identity.hostPid -le 0 -or $identity.executable -ine $expected -or
+      ($identity.hostPid -isnot [int] -and $identity.hostPid -isnot [long]) -or
+      $identity.hostPid -le 0 -or $identity.hostPid -gt [int]::MaxValue -or $identity.executable -ine $expected -or
       $identity.startedAtFiletime -notmatch '^\d{16,20}$' -or
       $identity.instanceNamespace -notmatch '^com\.aics\.studio(?:\.maintenance\.[a-f0-9]{64})?$') { throw 'DESKTOP_MAINTENANCE_IDENTITY: 能力描述与本次安装不匹配。' }
   $hostProcess = Get-Process -Id $identity.hostPid -ErrorAction SilentlyContinue

@@ -377,7 +377,7 @@ mod tests {
 }
 #[path = "gateway_origin.rs"]
 mod gateway_origin;
-pub use gateway_origin::same_gateway_origin;
+pub use gateway_origin::{same_gateway_origin, registered_desktop_origin};
 
 pub fn is_gateway_navigation(app: &AppHandle, url: &tauri::Url) -> bool {
     if crate::ui_entry::bundled(app) && crate::ui_entry::native_origin(url) { return true; }
@@ -388,11 +388,10 @@ pub fn is_gateway_navigation(app: &AppHandle, url: &tauri::Url) -> bool {
 
 pub fn is_gateway_origin(app: &AppHandle, url: &tauri::Url) -> bool {
     let Some(state) = app.try_state::<AppState>() else { return false; };
-    if crate::ui_entry::bundled(app) && crate::ui_entry::native_origin(url) { return true; }
     // Retain capabilities for an already loaded trusted document while the
     // runtime reconnects. Every new navigation still verifies fresh identity.
     let expected = state.gateway_url.lock().unwrap().clone();
-    same_gateway_origin(&expected, url)
+    registered_desktop_origin(&expected, crate::ui_entry::bundled(app), url)
 }
 
 /// Static capabilities grant no remote origin. Add only the proven startup origin.
