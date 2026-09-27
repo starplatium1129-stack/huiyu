@@ -181,7 +181,9 @@ html.aics-desktop-shell {
 html.aics-desktop-shell .page-root { min-height: calc(100dvh - var(--desktop-chrome-height)); }
 html.aics-desktop-shell body {
   height: 100%;
-  overflow-y: auto;
+  /* Keep the document as the scroll owner. When a modal locks html, auto would
+     turn this 100%-high body into a new scroller and clamp window.scrollY to 0. */
+  overflow-y: visible;
 }
 html.aics-desktop-shell #app {
   height: 100%;
