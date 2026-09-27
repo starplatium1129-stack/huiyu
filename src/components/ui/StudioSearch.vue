@@ -16,13 +16,13 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 <template>
   <div class="studio-search">
     <ArchiveIcon name="search" />
-    <input :id="id" ref="input" v-model="value" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
+    <input :id="id" ref="input" v-model="value" class="studio-search-input" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
     <button v-if="value" type="button" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>
 <style scoped>
 .studio-search { display:flex; align-items:center; gap:var(--s-2); min-width:0; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-secondary); }
-.studio-search:focus-within { outline:2px solid var(--accent); outline-offset:2px; }
+.studio-search:focus-within { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
 .studio-search input { width:100%; min-width:0; min-height:44px; padding:var(--s-2) 0; border:0; outline:0; background:transparent; color:var(--text-primary); font:400 var(--fs-body-sm) var(--font-sans); appearance:none; }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }
