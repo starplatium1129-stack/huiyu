@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { readWorkspaceThumbnail } from './thumbnails';
 import { executeLibraryMedia } from './library-media';
 import { executeTaskCommand } from './tasks';
 import type { TaskCommand } from './task-types';
@@ -10,7 +11,7 @@ import type { ProfileCommand } from './profile-types';
 import { backupWorkspace, restoreBackup } from './backup';
 import { collectGarbage } from './garbage';
 import { MAX_CHUNK_BYTES, mediaPath, verifyMedia } from './media';
-import { artworkByKey, checkOperation, commitOperation, entityKey, findOperation, insertOperation, mutateRecord, projectByKey } from './records';
+import { artworkByKey, checkOperation, commitOperation, entityKey, findOperation, insertOperation, mutateRecord, projectByKey, softDeleteArtworks } from './records';
 import { abortSave, commitSave, prepareSave, saveOperationState, uploadSaveChunk, verifyArtworkMedia } from './saves';
 import { openStorage, type StorageCheckpoint } from './schema';
 import { isWorkspaceMutation, WorkspaceError, type ExecuteOptions, type MutationReceipt,
@@ -81,6 +82,10 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
             nextCursor: rows.length > limit ? String(rows[limit - 1].id_key) : null, revision: revision() };
         }
         case 'getArtwork': return artworkByKey(storage, entityKey(command.id));
+        case 'getArtworks': {
+          if (!Array.isArray(command.ids) || !command.ids.length || command.ids.length > 200) throw new WorkspaceError('INVALID_COMMAND', 'Artwork lookup must contain 1–200 IDs', 400);
+          return command.ids.map(id => artworkByKey(storage, entityKey(id)));
+        }
         case 'listProjects': return { items: storage.db.prepare('SELECT id_key FROM projects ORDER BY id_key').all().map(row => projectByKey(storage, String(row.id_key))!), revision: revision() };
         case 'prepareSave': return prepareSave(storage, principal, command);
         case 'uploadChunk': return uploadSaveChunk(storage, principal, command);
@@ -95,12 +100,17 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
           return mutateRecord(storage, principal, command);
         case 'patchArtwork': case 'softDeleteArtwork': case 'hardDeleteArtwork': case 'saveProject': case 'purgeExpiredTrash':
           return mutateRecord(storage, principal, command);
+        case 'softDeleteArtworks': return softDeleteArtworks(storage, principal, command, checkCancelled);
         case 'collectGarbage': return collectGarbage(storage, principal, command, checkCancelled);
+        case 'readThumbnail':
         case 'readMedia': {
           const media = storage.db.prepare('SELECT m.hash,m.bytes,m.mime FROM media_aliases a JOIN media_objects m ON m.hash=a.hash WHERE a.alias=?').get(command.alias);
-          if (!media) throw new WorkspaceError('NOT_FOUND', 'Media does not exist', 404);
-          const offset = command.offset ?? 0;
-          const length = command.length ?? MAX_CHUNK_BYTES;
+          if (!media) {
+            if (command.kind === 'readThumbnail') return null;
+            throw new WorkspaceError('NOT_FOUND', 'Media does not exist', 404);
+          }
+          const offset = command.kind === 'readMedia' ? command.offset ?? 0 : 0;
+          const length = command.kind === 'readMedia' ? command.length ?? MAX_CHUNK_BYTES : MAX_CHUNK_BYTES;
           if (!Number.isSafeInteger(offset) || offset < 0 || offset > Number(media.bytes) || !Number.isSafeInteger(length) || length < 1 || length > MAX_CHUNK_BYTES) {
             throw new WorkspaceError('INVALID_COMMAND', 'Invalid media read range', 400);
           }
@@ -114,6 +124,8 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
             if (verifiedMedia.size >= 256) verifiedMedia.delete(verifiedMedia.keys().next().value!);
             verifiedMedia.set(file, identity);
           }
+          if (command.kind === 'readThumbnail') return readWorkspaceThumbnail(storage.root,
+            { file, sha256: String(media.hash), mime: String(media.mime) }, checkCancelled);
           const data = Buffer.alloc(Math.min(length, Number(media.bytes) - offset));
           const fd = fs.openSync(file, 'r');
           try { fs.readSync(fd, data, 0, data.length, offset); } finally { fs.closeSync(fd); }

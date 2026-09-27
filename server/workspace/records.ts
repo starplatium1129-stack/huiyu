@@ -80,6 +80,66 @@ function membership(context: WorkspaceStorageContext, projectKey: string): strin
   return context.db.prepare('SELECT artwork_key FROM project_artworks WHERE project_key=? ORDER BY position').all(projectKey).map(row => String(row.artwork_key));
 }
 
+/** Bound the transaction and retain per-record conflicts; successful records commit together. */
+export function softDeleteArtworks(context: WorkspaceStorageContext, principal: string,
+  command: Extract<WorkspaceCommand, { kind: 'softDeleteArtworks' }>, checkCancelled: () => void): MutationReceipt {
+  if (!Array.isArray(command.items) || !command.items.length || command.items.length > 200) {
+    throw new WorkspaceError('INVALID_COMMAND', 'Delete batch must contain 1–200 artworks', 400);
+  }
+  const keys = command.items.map(item => {
+    if (!item || !Number.isSafeInteger(item.expectedRevision) || item.expectedRevision < 0) {
+      throw new WorkspaceError('INVALID_COMMAND', 'Expected artwork revision is required', 400);
+    }
+    return entityKey(item.id);
+  });
+  if (new Set(keys).size !== keys.length) throw new WorkspaceError('INVALID_COMMAND', 'Delete batch contains duplicate artworks', 400);
+  const result = context.transaction(() => {
+    const previous = findOperation(context, principal, command.operationId);
+    if (previous) {
+      checkOperation(previous, command.kind, command);
+      if (previous.receipt_json) return JSON.parse(previous.receipt_json) as MutationReceipt;
+    }
+    const operationKey = previous?.op_key ?? insertOperation(context, principal, command.operationId, command.kind, command);
+    const selected = new Map<string, WorkspaceArtwork>();
+    const softDeleteResults = command.items.map((item, index) => {
+      const artwork = artworkByKey(context, keys[index]);
+      if (!artwork || artwork.deletedAt !== null) return { id: item.id, deleted: false, code: 'NOT_FOUND' as const };
+      if (artwork.revision !== item.expectedRevision) return { id: item.id, deleted: false, code: 'REVISION_CONFLICT' as const };
+      selected.set(keys[index], artwork);
+      return { id: item.id, deleted: true };
+    });
+    const revision = nextRevision(context), deletedAt = Date.now();
+    const affectedProjects = new Set<string>();
+    const references = context.db.prepare(`SELECT artwork_key,project_key,position FROM project_artworks WHERE artwork_key IN (${keys.map(() => '?').join(',')})`).all(...keys);
+    const refsByArtwork = new Map<string, Array<{ project_key: string; position: number }>>();
+    for (const ref of references) {
+      const key = String(ref.artwork_key);
+      if (!selected.has(key)) continue;
+      const refs = refsByArtwork.get(key) ?? [];
+      refs.push({ project_key: String(ref.project_key), position: Number(ref.position) }); refsByArtwork.set(key, refs);
+      affectedProjects.add(String(ref.project_key));
+    }
+    const trash = context.db.prepare('INSERT INTO trash VALUES(?,?,?,?)');
+    const markDeleted = context.db.prepare('UPDATE artworks SET deleted_at=?,revision=? WHERE id_key=?');
+    const protectMedia = context.db.prepare("UPDATE media_refs SET owner_kind='trash' WHERE owner_kind='artwork' AND owner_id=?");
+    for (const [key, artwork] of selected) {
+      checkCancelled();
+      trash.run(key, deletedAt, JSON.stringify(artwork.body), JSON.stringify(refsByArtwork.get(key) ?? []));
+      markDeleted.run(deletedAt, revision, key); protectMedia.run(key);
+    }
+    for (const projectKey of affectedProjects) {
+      checkCancelled();
+      updateMembership(context, projectKey, membership(context, projectKey).filter(key => !selected.has(key)), revision);
+    }
+    const receipt: MutationReceipt = { operationId: command.operationId, kind: command.kind, revision, softDeleteResults };
+    context.checkpoint('metadata-written');
+    commitOperation(context, operationKey, receipt);
+    return receipt;
+  });
+  context.checkpoint('committed');
+  return result;
+}
+
 type RecordMutation = Extract<WorkspaceCommand, { kind: 'patchArtwork' | 'softDeleteArtwork' | 'hardDeleteArtwork' | 'restoreArtwork' | 'saveProject' | 'purgeExpiredTrash' }>;
 export function mutateRecord(context: WorkspaceStorageContext, principal: string, command: RecordMutation): MutationReceipt {
   const result = context.transaction(() => {

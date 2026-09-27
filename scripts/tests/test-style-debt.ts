@@ -1,4 +1,5 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
+import ts from 'typescript';
 'use strict';
 
 // 样式债门禁 —— 防止本次全局美术校准的成果回归。
@@ -16,6 +17,42 @@ const sources: typeof import('../maintenance/style-sources') = require('../maint
 
 const { test }: typeof import('node:test') = require('node:test');
 
+// Inspect property names independently of their values: template interpolation
+// and nested expressions can contain braces without ending the style object.
+function dynamicCustomPropsOnly(value: string): boolean {
+  const tree = ts.createSourceFile('inline-style.ts', `(${value})`, ts.ScriptTarget.Latest, true);
+  const statement = tree.statements[0];
+  if (tree.statements.length !== 1 || !statement || !ts.isExpressionStatement(statement)) return false;
+  let expression = statement.expression;
+  while (ts.isParenthesizedExpression(expression)) expression = expression.expression;
+  if (!ts.isObjectLiteralExpression(expression) || !expression.properties.length
+    || expression.getLastToken(tree)?.kind !== ts.SyntaxKind.CloseBraceToken) return false;
+  return expression.properties.every(property => {
+    if (!ts.isPropertyAssignment(property) || !property.initializer.getWidth(tree)) return false;
+    const name = ts.isComputedPropertyName(property.name) ? property.name.expression : property.name;
+    return ts.isStringLiteralLike(name) && /^--[\w-]+$/.test(name.text);
+  });
+}
+
+test('dynamic style carriers accept custom-property keys with template and nested values', () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  for (const value of [
+    "{ '--sample-ratio': entry.width && entry.height ? `${entry.width} / ${entry.height}` : '3 / 4' }",
+    "{ '--fill': enabled ? '80%' : '0', '--opacity': values[index] ?? '1' }",
+    "({ ['--offset']: ({ value: '}' }).value, '--color': color })",
+  ]) assert.equal(dynamicCustomPropsOnly(value), true, value);
+});
+
+test('dynamic style carriers reject ordinary keys, unknown computed keys and spreads', () => {
+  const assert: typeof import('node:assert/strict') = require('node:assert/strict');
+  for (const value of [
+    "{ '--fill': '80%', color: 'red' }", "{ color: 'red', '--fill': '80%' }",
+    "{ '--fill': '80%', ['opacity']: 1 }", "{ [property]: value }",
+    "{ '--fill': '80%', ...otherStyles }", "{ get '--fill'() { return '80%' } }",
+    "{ '--fill': }", "{ '--fill': '80%'", "[ { '--fill': '80%' }, otherStyles ]",
+  ]) assert.equal(dynamicCustomPropsOnly(value), false, value);
+});
+
 test("style-debt", () => {
 const root = sources.ROOT;
 const failures: string[] = [];
@@ -28,8 +65,6 @@ const sfcFiles = sources.sfcFiles();
 // ---- 1. 内联 style 预算 ----------------------------------------------------
 // 允许的唯一形态:自定义属性载体。值属于数据(评分/比例/进度),样式规则仍在 CSS 里。
 const CUSTOM_PROP_ONLY = /^\s*(--[\w-]+\s*:\s*[^;]+;?\s*)+$/;
-// 动态绑定 :style 里的对象字面量也只允许承载自定义属性
-const DYNAMIC_CUSTOM_PROP_ONLY = /^\s*\{\s*(?:'--[\w-]+'|"--[\w-]+"|\[[^\]]+\])\s*:[^}]*\}\s*$/;
 // :style="someRef" 的形态:去 <script> 里查该标识符的定义,确认它只产出自定义属性
 const IDENTIFIER_ONLY = /^\s*[A-Za-z_$][\w$]*\s*$/;
 
@@ -106,7 +141,7 @@ for (const rel of sfcFiles) {
   const templateStartLine = source.slice(0, source.indexOf(template)).split('\n').length - 1;
   for (const attr of sources.inlineStyleAttrs(template)) {
     if (attr.dynamic) {
-      if (DYNAMIC_CUSTOM_PROP_ONLY.test(attr.value)) continue;
+      if (dynamicCustomPropsOnly(attr.value)) continue;
       if (IDENTIFIER_ONLY.test(attr.value) && bindsOnlyCustomProps(styleCarrierSearchScope(path.join(root, rel), source), attr.value.trim())) continue;
     } else if (CUSTOM_PROP_ONLY.test(attr.value)) continue;
     const prefix = attr.dynamic ? ':style' : 'style';

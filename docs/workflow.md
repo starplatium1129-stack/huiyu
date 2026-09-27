@@ -271,7 +271,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
 
-`gate:quick` 自动分类是保守兜底，测试文件/脚本路径会触发 full；已明确影响范围时可使用显式面积或定向入口。工具帮助中的“提交前”描述不表示所有提交都必须运行全量。本节规定选择原则，不改变脚本的实际分类行为。
+`gate:quick` 自动分类从 `quality-test-inventory.ts` 选择已登记的 Node 测试：只改这些测试与文档时，先更新运行入口，再只运行所改测试，沿用所属套件时限与缺失数据准备。源文件与生成入口去重，失败处理复用现有执行器；混合业务改动继续叠加对应领域检查。前端 spec 仍归 ui；E2E、共享夹具、runner、注册表、构建器、未知或删除的测试等继续触发 full。已明确影响范围时可用显式面积或定向入口。工具帮助中的“提交前”不表示所有提交都必须运行全量。
 
 ### 验证并发与复用
 
@@ -293,7 +293,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | gate:full | npm run check（内含 typecheck:app/typecheck）+ vitest + unit + contract + build，全量入口 |
 | build:web / build:runtime | 前端与预算/预压；服务、网关、维护/测试及独立浏览器脚本的严格检查与编译；`build:web:run` / `start:run` 是组合流程复用的内部无准备入口 |
 | check:style-debt | 样式字面值趋势、颜色、动画和双主题全局/角色令牌对比度；字面量默认只报告，`npm run test:style-debt:strict` 才阻断；动态组件另做视觉验收 |
-| check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
+| check:monolith / check:pinned-scenes / check:rewrite | 体量检查覆盖应用、服务及 `scripts/maintenance` 维护入口、`scripts/lib` 支撑模块；定稿与改写完整性继续独立检查。rewrite 交付需传 --delivery，基线经本地 Git 读取（默认 b1ccfc0，--baseline 可改） |
 | check:domain-types | 指定公共作品/生成类型、结果快照及保存用例的可达依赖；复用 AST/真实路径/别名/再导出/Vue 脚本解析；禁止直连具体存储/API/Node 平台；类型边单列，违规、未知路径和运行候选循环阻断 |
 | check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
 | test:contract / test:e2e:critical | 契约套件与关键浏览器回归；test:e2e:critical 工作流走无 build 的 `test:e2e:critical:run` 入口，复用已有构建产物（npm 脚本 `test:e2e:critical` 才先 build） |

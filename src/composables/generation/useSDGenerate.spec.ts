@@ -4,7 +4,7 @@ import { useSDGenerate } from './useSDGenerate'
 const api = vi.hoisted(() => ({ createJob: vi.fn(), getJob: vi.fn(), deleteJob: vi.fn().mockResolvedValue({}) }))
 vi.mock('@/api/generationApi', () => ({ generationApi: api }))
 vi.mock('@/utils/runtimeEnvironment', () => ({ isLocalStudioHost: () => false }))
-afterEach(() => { vi.clearAllMocks(); vi.restoreAllMocks() })
+afterEach(() => { vi.clearAllMocks(); vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers() })
 
 it('freezes lazy submission input and preserves zero LoRA strength', async () => {
   api.createJob.mockResolvedValue({ job: { id: 'failed', status: 'failed', error: 'fixture failure' } })
@@ -52,5 +52,39 @@ it('late acceptance after cancellation is explicitly deleted and stays cancelled
   await request
   expect(api.deleteJob).toHaveBeenCalledWith('late')
   expect(sd.taskState.value).toBe('cancelled')
+  sd.dispose()
+})
+
+it.each([
+  { received: 'comfy', provider: 'comfy', label: 'ComfyUI' },
+  { received: undefined, provider: 'webui', label: 'SD WebUI' },
+])('reports $provider progress from the real Web session without inventing percentages', async ({ received, provider, label }) => {
+  vi.useFakeTimers()
+  api.createJob.mockResolvedValue({ job: { id: 'progress', status: 'queued', provider: received } })
+  api.getJob.mockResolvedValueOnce({ job: { id: 'progress', status: 'running' } })
+    .mockResolvedValueOnce({ job: { id: 'progress', status: 'running', progress: 0.375 } })
+    .mockResolvedValueOnce({ job: { id: 'progress', status: 'succeeded', resultUrl: '/progress.png' } })
+  const sd = useSDGenerate()
+  let terminalProgress: number | null = null
+  vi.stubGlobal('fetch', vi.fn(async () => {
+    terminalProgress = sd.progress.value
+    return new Response(new Blob(['fixture'], { type: 'image/png' }), { headers: { 'content-type': 'image/png' } })
+  }))
+  vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:progress')
+  vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+  const request = sd.generate({ prompt: 'Progress fixture' })
+  await vi.waitFor(() => expect(sd.taskState.value).toBe('queued'))
+  expect(sd.provider.value).toBe(provider)
+  await vi.advanceTimersByTimeAsync(700)
+  expect(sd.progress.value).toBeNull()
+  expect(sd.statusText.value).toContain(label)
+  await vi.advanceTimersByTimeAsync(350)
+  expect(sd.progress.value).toBeNull()
+  await vi.advanceTimersByTimeAsync(350)
+  expect(sd.progress.value).toBe(38)
+  await vi.advanceTimersByTimeAsync(700)
+  await expect(request).resolves.toBe('blob:progress')
+  expect(terminalProgress).toBe(100)
+  expect(sd.taskState.value).toBe('succeeded')
   sd.dispose()
 })

@@ -136,6 +136,7 @@ export function createWorkspaceRouter(service: WorkspaceService, authority: Work
 
   router.get('/status', (req, res) => handle(req, res, () => ({ kind: 'status' })));
   router.get('/media/count', (req, res) => handle(req, res, () => ({ kind: 'countMedia' })));
+  router.get('/media/:alias/thumbnail', (req, res) => handle(req, res, () => ({ kind: 'readThumbnail', alias: text(req.params.alias) })));
   router.post('/media-uploads/:operationId', (req, res) => handle(req, res, () => ({ kind: 'prepareMedia', operationId: operationId(req), media: media(record(req.body).media) })));
   router.put('/media-uploads/:operationId/chunks', (req, res) => handle(req, res, () => ({ kind: 'uploadMediaChunk', operationId: operationId(req), offset: integer(record(req.body).offset), data: chunk(record(req.body).data) })));
   router.post('/media-uploads/:operationId/commit', (req, res) => handle(req, res, () => ({ kind: 'commitMedia', operationId: operationId(req) })));
@@ -147,6 +148,19 @@ export function createWorkspaceRouter(service: WorkspaceService, authority: Work
     ...(req.query.includeDeleted !== undefined ? { includeDeleted: req.query.includeDeleted === 'true' } : {}),
   })));
   router.get('/artworks/:id', (req, res) => handle(req, res, () => ({ kind: 'getArtwork', id: routeId(req) })));
+  router.post('/artworks/lookup', (req, res) => handle(req, res, () => {
+    const ids = record(req.body).ids;
+    if (!Array.isArray(ids) || !ids.length || ids.length > 200) return invalid();
+    return { kind: 'getArtworks', ids: ids.map(entityId) };
+  }));
+  router.post('/artworks/trash-batch', (req, res) => handle(req, res, () => {
+    const items = record(req.body).items;
+    if (!Array.isArray(items) || !items.length || items.length > 200) return invalid();
+    return { kind: 'softDeleteArtworks', operationId: operationId(req), items: items.map(value => {
+      const item = record(value);
+      return { id: entityId(item.id), expectedRevision: integer(item.expectedRevision) };
+    }) };
+  }));
   router.get('/projects', (req, res) => handle(req, res, () => ({ kind: 'listProjects' })));
   router.get('/operations/:operationId', (req, res) => handle(req, res,
     () => ({ kind: 'getOperation', operationId: operationId(req) })));

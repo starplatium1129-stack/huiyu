@@ -5,7 +5,7 @@ const profileDomainForKey = (key: string): ProfileDomain | null => {
   return domain === 'settings' || domain === 'chat' || domain === 'draft' ? domain : null
 }
 import { assertMigrationWritable } from './migrationBarrier.ts'
-import { assertMaintenanceWritable } from '../maintenanceParticipants'
+import { assertMaintenanceWritable } from '../maintenanceParticipants.ts'
 
 export interface ProfilePort {
   readSettings(): Promise<ProfileSnapshot>

@@ -57,10 +57,9 @@ test('showcase source contract: view, router, nav, server allowlist, exporter wo
     view.includes('manifestController.abort()'),
     'manifest loading must be cancelled when the view unmounts',
   );
-  assert(
-    view.includes('brokenThumbs') && view.includes('viewerImageFailed'),
-    'thumbnail and viewer image failures must render explicit fallbacks',
-  );
+  // ShowcaseSampleCard.spec.ts dispatches an image error and verifies that the
+  // thumbnail disappears and its fallback renders; no parent-owned failure map is required.
+  assert(view.includes('viewerImageFailed'), 'viewer image failures must render explicit fallbacks');
   assert(!/\bany\b/.test(view), 'ShowcaseView must not regress to explicit any types');
 
   // ── R18 处理：可直接筛选 + 默认模糊，不要确认弹窗 ─────────────────────────

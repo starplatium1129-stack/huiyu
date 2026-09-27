@@ -44,7 +44,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
-const { spawnSync }: typeof import('child_process') = require('child_process');
+const { IMAGE_BOX, IMAGE_QUALITY, THUMB_BOX, THUMB_QUALITY, convertImages }: typeof import('../lib/showcase-image-conversion.js') = require('../lib/showcase-image-conversion.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
@@ -58,11 +58,6 @@ const DEFAULT_FROM = path.join(
 const DEFAULT_SHOWCASE_ROOT = path.join(AI_ROOT, 'SceneShowcase');
 const DEFAULT_TARGET = '2026-08-15_v22';
 const DEFAULT_SOURCE = '2026-08-15_v22';
-
-const IMAGE_BOX = '1800x2400';
-const IMAGE_QUALITY = 94;
-const THUMB_BOX = '480x640';
-const THUMB_QUALITY = 85;
 const HOME_HERO_SCENES = Object.freeze({ nene: 'sc002', natsume: 'sc005' });
 
 function argument(name: any, fallback: any = '') {
@@ -338,28 +333,6 @@ function sourcePathFor(record: any, from: any) {
     throw new Error(`image path escapes the candidate directory for ${label}: ${JSON.stringify(rel)}`);
   }
   return resolved;
-}
-
-function convertImages(python: any, sourceFile: any, imageOut: any, thumbOut: any) {
-  const result = spawnSync(python, [
-    path.join(ROOT, 'scripts', 'maintenance', 'convert-showcase-image.py'),
-    sourceFile,
-    imageOut,
-    thumbOut,
-    '--image-box', IMAGE_BOX,
-    '--image-quality', String(IMAGE_QUALITY),
-    '--thumb-box', THUMB_BOX,
-    '--thumb-quality', String(THUMB_QUALITY),
-  ], { encoding: 'utf8', timeout: 120000, windowsHide: true });
-  if (result.error) throw new Error(`image conversion could not run (${python}): ${result.error.message}`);
-  if (result.status !== 0) {
-    throw new Error(`image conversion failed for ${sourceFile}:\n${result.stderr || result.stdout || 'unknown error'}`);
-  }
-  for (const out of [imageOut, thumbOut]) {
-    if (!fs.existsSync(out) || fs.statSync(out).size === 0) {
-      throw new Error(`image conversion produced no output: ${out}`);
-    }
-  }
 }
 
 /** 完整验证：manifest 可被生产解析器接受、计数自洽、id 唯一、资产存在且符合白名单。 */

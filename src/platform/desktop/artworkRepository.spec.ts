@@ -29,3 +29,27 @@ it('keeps detached loaded history while disconnected and uses the same artwork i
   const writes = mocks.request.mock.calls.map(([command]) => command).filter(command => command.kind === 'appendArtwork')
   expect(writes.map(command => command.operationId)).toEqual(['artwork:saved', 'artwork:saved'])
 })
+
+it('deletes a batch with one revision lookup and one mutation while retaining per-record failures', async () => {
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'getArtworks') return [{ id: 1, revision: 4, deletedAt: null }, { id: 'two', revision: 7, deletedAt: null }, null]
+    if (command.kind === 'softDeleteArtworks') return { softDeleteResults: [{ id: 1, deleted: true }, { id: 'two', deleted: false, code: 'REVISION_CONFLICT' }] }
+    throw new Error('unexpected single-artwork request')
+  })
+  const repository = createDesktopArtworkRepository()
+  expect(await repository.softDeleteArtworks([1, 'two', 'missing'])).toEqual([
+    { id: 1, deleted: true }, { id: 'two', deleted: false }, { id: 'missing', deleted: false },
+  ])
+  expect(mocks.request.mock.calls.map(([command]) => command.kind)).toEqual(['getArtworks', 'softDeleteArtworks'])
+  expect(mocks.request.mock.calls[1][0].items).toEqual([{ id: 1, expectedRevision: 4 }, { id: 'two', expectedRevision: 7 }])
+})
+
+it('resolves a lost batch acknowledgement from the original operation receipt', async () => {
+  mocks.request.mockImplementation(async command => {
+    if (command.kind === 'getArtworks') return [{ id: 'one', revision: 1, deletedAt: null }]
+    if (command.kind === 'softDeleteArtworks') throw new Error('lost response')
+    return { state: 'committed', receipt: { softDeleteResults: [{ id: 'one', deleted: true }] } }
+  })
+  expect(await createDesktopArtworkRepository().softDeleteArtworks(['one'])).toEqual([{ id: 'one', deleted: true }])
+  expect(mocks.request.mock.calls[2][0]).toEqual({ kind: 'getOperation', operationId: mocks.request.mock.calls[1][0].operationId })
+})

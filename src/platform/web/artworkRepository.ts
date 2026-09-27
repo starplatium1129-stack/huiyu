@@ -6,8 +6,8 @@ import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/use
 import { thumbKey } from '../../utils/imageThumb.ts'
 import { ARTWORK_HISTORY_QUARANTINE_KEY } from '../../utils/storageKeys.ts'
 import { parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
-import type { ArtworkRepository, ArtworkDeleteResult, TrashEntry } from '../../application/artwork/artworkRepository.ts'
-import { type ArtworkKvAdapter, type ArtworkImageAdapter, type WebArtworkRepositoryDependencies, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, removeProjectReferences, callSafely, ArtworkDeletionError } from './artworkStorage.ts'
+import { ARTWORK_DELETE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type TrashEntry } from '../../application/artwork/artworkRepository.ts'
+import { type ArtworkKvAdapter, type ArtworkImageAdapter, type WebArtworkRepositoryDependencies, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely, ArtworkDeletionError } from './artworkStorage.ts'
 import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
@@ -79,55 +79,57 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
     await kv.set(ARTWORK_TRASH_KEY, entries)
   }
 
-  async function softDeleteArtworkNow(id: string | number): Promise<{ deleted: boolean }> {
-    const targetId = comparableId(id)
-    if (!targetId) throw new Error('作品 ID 无效')
-
-    const [historySnapshot, projectsSnapshot] = await Promise.all([
+  async function softDeleteArtworksNow(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
+    if (!ids.length || ids.length > ARTWORK_DELETE_BATCH_SIZE) throw new Error('作品删除批次大小无效')
+    const targets = new Set(ids.map(id => { const key = comparableId(id); if (!key) throw new Error('作品 ID 无效'); return key }))
+    const [historySnapshot, projectsSnapshot, trash] = await Promise.all([
       kv.get(ARTWORK_HISTORY_KEY),
       kv.get(ARTWORK_PROJECTS_KEY),
+      readTrash(),
     ])
     const history = arrayValue(historySnapshot) ?? []
-    const targetEntries = history.filter(item => recordId(item) === targetId)
-    if (!targetEntries.length) {
-      // history 里没有：可能已被彻底删除，也可能是恢复竞态——都不重复入站
-      return { deleted: false }
+    const removed = new Map<string, unknown[]>()
+    const nextHistory: unknown[] = []
+    for (const item of history) {
+      const key = recordId(item)
+      if (!key || !targets.has(key)) { nextHistory.push(item); continue }
+      const entries = removed.get(key) ?? []
+      entries.push(item); removed.set(key, entries)
     }
-    const nextHistory = history.filter(item => recordId(item) !== targetId)
-    const projectUpdate = removeProjectReferences(projectsSnapshot, targetId)
-
-    // 记录删除前的引用关系（恢复时只补回「快照有而现在没有」的引用）
-    const projects = arrayValue(projectsSnapshot) ?? []
-    const projectRefs = projects.map(project => {
+    const results = ids.map(id => ({ id, deleted: removed.has(comparableId(id)!) }))
+    if (!removed.size) return results
+    const projectRefs = new Map<string, TrashEntry['projectRefs']>()
+    let projectsChanged = false
+    const nextProjects = (arrayValue(projectsSnapshot) ?? []).map(project => {
       const source = record(project)
-      return {
-        projectId: source?.id ?? null,
-        hadReference: Boolean(source && Array.isArray(source.history_ids)
-          && source.history_ids.some(ref => comparableId(ref) === targetId)),
+      if (!source || !Array.isArray(source.history_ids)) return project
+      const matched = new Set<string>()
+      const kept = source.history_ids.filter(id => {
+        const key = comparableId(id)
+        if (!key || !removed.has(key)) return true
+        matched.add(key); return false
+      })
+      for (const key of matched) {
+        const refs = projectRefs.get(key) ?? []
+        refs.push({ projectId: source.id ?? null, hadReference: true }); projectRefs.set(key, refs)
       }
+      if (!matched.size) return project
+      projectsChanged = true
+      return { ...source, history_ids: kept }
     })
-
-    const targetImageIds = unique(targetEntries.map(imageId))
     const remainingImageIds = new Set(unique(nextHistory.map(imageId)))
-    const ownedImageIds = targetImageIds.filter(image => !remainingImageIds.has(image))
-
-    const trash = await readTrash()
-    // 同 id 重复软删（删除后没恢复又删一次的竞态）：后删的覆盖
-    const nextTrash = trash.filter(entry => entry.id !== targetId)
-    nextTrash.push({
-      id: targetId,
-      deletedAt: Date.now(),
-      historyEntries: targetEntries,
-      projectRefs,
-      imageIds: ownedImageIds,
+    const nextTrash = trash.filter(entry => !removed.has(entry.id))
+    const deletedAt = Date.now()
+    for (const [id, historyEntries] of removed) nextTrash.push({
+      id, deletedAt, historyEntries, projectRefs: projectRefs.get(id) ?? [],
+      imageIds: unique(historyEntries.map(imageId)).filter(image => !remainingImageIds.has(image)),
     })
-
     await commitRelatedRecords([
       { key: ARTWORK_HISTORY_KEY, value: nextHistory },
-      ...(projectUpdate.changed ? [{ key: ARTWORK_PROJECTS_KEY, value: projectUpdate.value }] : []),
+      ...(projectsChanged ? [{ key: ARTWORK_PROJECTS_KEY, value: nextProjects }] : []),
       { key: ARTWORK_TRASH_KEY, value: nextTrash },
     ], '作品删除')
-    return { deleted: true }
+    return results
   }
 
   async function restoreArtworkNow(id: string | number): Promise<{ restored: boolean; missingImageIds?: string[] }> {
@@ -222,7 +224,12 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
   }
 
   function softDeleteArtwork(id: string | number): Promise<{ deleted: boolean }> {
-    return enqueue(() => softDeleteArtworkNow(id))
+    return enqueue(async () => ({ deleted: (await softDeleteArtworksNow([id]))[0].deleted }))
+  }
+
+  function softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
+    const snapshot = ids.slice()
+    return enqueue(() => softDeleteArtworksNow(snapshot))
   }
 
   function restoreArtwork(id: string | number): Promise<{ restored: boolean; missingImageIds?: string[] }> {
@@ -305,5 +312,5 @@ export function createWebArtworkRepository(dependencies: WebArtworkRepositoryDep
 
   const reads = createArtworkReads(kv, dependencies, work => dependencies.kv ? work() : withArtworkMutation(work))
   const media = createArtworkMedia(kv, images, dependencies)
-  return { ...reads, ...media, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
+  return { ...reads, ...media, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
 }

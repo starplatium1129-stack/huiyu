@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import { assertSafePath } from './paths';
 import { mediaPath } from './media';
+import { thumbnailPath } from './thumbnails';
 import { checkOperation, commitOperation, findOperation, insertOperation, TRASH_RETENTION_MS } from './records';
 import { nextRevision, type WorkspaceStorageContext } from './schema';
 import type { MutationReceipt, WorkspaceCommand } from './types';
@@ -32,6 +33,8 @@ export function collectGarbage(context: WorkspaceStorageContext, principal: stri
         const stat = fs.statSync(file);
         if (!stat.isFile() || stat.mtimeMs > Date.now() - TRASH_RETENTION_MS) continue;
         fs.unlinkSync(file);
+        const thumbnail = thumbnailPath(context.root, hash);
+        if (fs.existsSync(thumbnail)) fs.unlinkSync(thumbnail);
         context.db.prepare('DELETE FROM media_aliases WHERE hash=?').run(hash);
         context.db.prepare('DELETE FROM media_objects WHERE hash=?').run(hash);
         removed += 1;
@@ -42,6 +45,8 @@ export function collectGarbage(context: WorkspaceStorageContext, principal: stri
     for (const row of context.db.prepare('SELECT hash FROM media_objects').all()) {
       const hash = String(row.hash);
       if (protectedHash.get(hash, hash) || fs.existsSync(mediaPath(context.root, hash))) continue;
+      const thumbnail = thumbnailPath(context.root, hash);
+      if (fs.existsSync(thumbnail)) fs.unlinkSync(thumbnail);
       context.db.prepare('DELETE FROM media_aliases WHERE hash=?').run(hash);
       context.db.prepare('DELETE FROM media_objects WHERE hash=?').run(hash);
       removed += 1;
