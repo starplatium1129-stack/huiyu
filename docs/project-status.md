@@ -6,14 +6,14 @@
 
 | 层次 | 当前状态 | 依据 |
 | --- | --- | --- |
-| 当前迁移工作区 | 产品后端、npm 服务入口与 Tauri gateway 暂存已改接 Rust；前端/桌面壳保留，旧 Node 源码尚未删除 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)；最终构建/门禁身份待补，不能冒认为已发布版本 |
+| 当前迁移工作区 | 产品后端与服务入口改接 Rust；Tauri release、NSIS 候选和构建绑定已生成；前端/桌面壳保留，旧 Node 对照源码尚未删除 | [迁移执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)；分支 `codex/node-to-rust`，不是已安装或已发布版本 |
 | 最近有完整证据的本机安装 | `main@60888df3` 的 1.7.2；包含此前 UI、收藏浏览、结果架、焦点与桌宠改动，后续后端修改未纳入该安装 | [安装身份与内存验证](evidence/memory-optimization-2026-09-27.json) |
 | 资料迁移 | 当前旧来源 3002 已正式迁入 SQLite workspace，启用本地打包 UI；旧来源及独立备份保留 | [R3–R11 主线记录](architecture/R3-R11-EXECUTION-REPORT.md) |
 | 实验默认 | 正式桌面仍用 Tauri 与线程渲染；R12 独立进程、R13 Electron 只保留实验入口 | [R12](architecture/R12-EXECUTION-REPORT.md)、[R13](architecture/R13-EXECUTION-REPORT.md) |
 
 源码、构建、安装和设备验收分别核对。表中安装身份来自已保存证据，本次文档整理未重新运行安装器、访问生产资料或复验设备；工作区后续修改不自动获得该安装的通过结论。
 
-本次 Rust 迁移已有隔离存储、模拟上游、维护/资源事务与 Node 差分证据；Rust release、7 项工作区一致性及图库/控制台双主题浏览器验证已通过当轮检查。旧 Node 单元/契约和仍启动旧网关的 E2E 只证明旧实现；完整门禁、暂存/桌面构建及安装包指标继续收口，详见执行记录。真实模型、新安装/UAC及原生发行材料未完成，`releaseReady=false`。
+本次 Rust 迁移已有隔离存储、模拟上游、维护/资源事务与 Node 差分证据。Windows/Linux release、Linux Rust 检查、7 项工作区一致性、图库/控制台双主题及默认 Rust 测试栈的五条主流程通过；Tauri release/NSIS 候选已通过构建输入绑定。旧 Node 单元/契约仅证明旧实现；总门禁仍有继承的 title 36/35 失败，不能标为全绿。真实模型、新安装/UAC及原生发行材料未完成，`releaseReady=false`。
 
 当前工作区已接入 Tailwind CSS 4.3.3，迁移常规组件/页面样式并保留原有深浅主题、Reka 交互及定制视觉；Firefox 最低版本经确认调整为 128。Web/desktop UI 构建及浏览器验收见 [迁移记录](audits/2026-09-27/tailwind-migration.md)，完整门禁仍有记录中的既有环境/基线失败，本轮未同步正式桌面安装。
 
