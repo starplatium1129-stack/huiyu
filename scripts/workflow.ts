@@ -414,7 +414,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     docs: 'docs/desktop-deployment.md',
     run: {
       nature: ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], machine: ['windows'],
-      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
+      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-InstallerPath': ['writes-release'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
       evidence: 'deploy-desktop.bat:18,22; scripts/maintenance/deploy-desktop-quick.ps1:20-28,114-122,178-184,290-296; scripts/lib/workflow-runner.js:178-182',
       unknown: [],
       notes: [
@@ -430,7 +430,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     docs: 'docs/desktop-deployment.md',
     run: {
       nature: ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], machine: ['windows'],
-      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
+      switches: { '-SkipBuild': ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-InstallerPath': ['writes-release'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
       evidence: 'deploy-desktop.bat:18,22; scripts/maintenance/deploy-desktop-quick.ps1:20-28,114-119,178-184,186-211,290-296',
       unknown: [],
       notes: [

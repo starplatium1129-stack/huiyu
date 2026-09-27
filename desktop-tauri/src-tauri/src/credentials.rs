@@ -15,12 +15,27 @@ fn authorize(window: &WebviewWindow) -> Result<(), String> {
 }
 
 fn target(endpoint: &str) -> Result<Vec<u16>, String> {
+    target_for_profile(endpoint, crate::ui_entry::isolated_profile().as_deref())
+}
+
+fn target_for_profile(endpoint: &str, isolated_profile: Option<&std::path::Path>) -> Result<Vec<u16>, String> {
     let url = tauri::Url::parse(endpoint).map_err(|_| "Invalid API endpoint")?;
     if !["http", "https"].contains(&url.scheme()) || endpoint.len() > 500
         || !url.username().is_empty() || url.password().is_some() {
         return Err("Invalid API endpoint".into());
     }
-    Ok(format!("Huiyu/ChatApi/{}", endpoint.trim_end_matches('/')).encode_utf16().chain(Some(0)).collect())
+    let prefix = match isolated_profile {
+        Some(profile) => {
+            if !profile.is_absolute() { return Err("Isolated credential profile must be absolute".into()); }
+            // No filesystem/vault lookup: an explicit test profile must never
+            // read or overwrite the production endpoint's global target.
+            let digest = ring::digest::digest(&ring::digest::SHA256, profile.as_os_str().as_encoded_bytes());
+            let hash: String = digest.as_ref().iter().map(|byte| format!("{byte:02x}")).collect();
+            format!("Huiyu/Test/ChatApi/{hash}")
+        }
+        None => "Huiyu/ChatApi".into(),
+    };
+    Ok(format!("{prefix}/{}", endpoint.trim_end_matches('/')).encode_utf16().chain(Some(0)).collect())
 }
 
 #[cfg(windows)]
@@ -84,6 +99,24 @@ pub fn chat_credential_write(window: WebviewWindow, endpoint: String, secret: St
 #[cfg(all(test, windows))]
 mod tests {
     use super::*;
+
+    #[test]
+    fn isolated_credential_targets_preserve_production_and_separate_profiles() {
+        use std::path::Path;
+        let endpoint = "https://credential-fixture.invalid/v1/";
+        let production = target_for_profile(endpoint, None).unwrap();
+        let expected: Vec<u16> = "Huiyu/ChatApi/https://credential-fixture.invalid/v1".encode_utf16().chain(Some(0)).collect();
+        assert_eq!(production, expected, "production target bytes must remain unchanged");
+        let profile = Path::new(r"C:\fixtures\profile-one");
+        let isolated = target_for_profile(endpoint, Some(profile)).unwrap();
+        assert_ne!(isolated, production);
+        assert_eq!(isolated, target_for_profile(endpoint, Some(profile)).unwrap());
+        assert_ne!(isolated, target_for_profile(endpoint, Some(Path::new(r"C:\fixtures\profile-two"))).unwrap());
+        assert!(target_for_profile(endpoint, Some(Path::new("relative-profile"))).is_err());
+        let text = String::from_utf16(&isolated[..isolated.len() - 1]).unwrap();
+        assert!(text.starts_with("Huiyu/Test/ChatApi/"));
+        assert!(!text.contains("fixtures"), "target stores only a hash of the isolated profile path");
+    }
 
     #[test]
     fn credential_source_boundaries_match_registered_desktop_sources() {
