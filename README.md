@@ -40,7 +40,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
   - Live2D lip sync driven by audio amplitude and emotion-matched expressions.
   - VRAM resource scheduler: one-click draw-first / chat-first modes with automatic model unloading.
 - **Desktop Companion (Tauri 2)**:
-  - Lightweight desktop shell with Companion + Atelier dual windows, system tray, Native Live2D overlay, and elevated quick-deploy pipeline (`deploy-desktop-quick.ps1`).
+  - Lightweight desktop shell with Companion + Atelier windows, system tray, Native Live2D overlay, and desktop synchronization through `deploy-desktop.bat`.
 
 ## Installation
 
@@ -75,25 +75,25 @@ npm install
 
 ### Step 3 — Build the runtime services
 
-Fresh clones must compile the TypeScript runtime once — the generated `.js` files are gitignored:
+The generated runtime `.js` files are gitignored. Dependency installation already builds them; after editing runtime sources, rebuild them with:
 
 ```bash
 npm run build:runtime
 ```
 
-`npm start` and the launchers (`control.bat` / `start.ps1`) already do this via the `prestart` hook, so you can skip this step if you launch through them.
+`npm start` rebuilds them through `prestart`. The launchers (`control.bat` / `start.ps1`) build missing web and runtime outputs before starting the gateway.
 
 ### Step 4 — Start
 
-**A. Control panel (recommended).** Start your WebUI first (note the address from its log, usually `http://127.0.0.1:7860`), then double-click `control.bat`, confirm the WebUI address, click **启动并生成分享链接**, and finally **打开本地网站（无需 Token）** for local use — or copy the token-protected link to share with a friend. Click **停止全部服务** when done.
+**A. Control panel (recommended).** Start your WebUI first (note the address from its log, usually `http://127.0.0.1:7860`), then double-click `control.bat` and confirm its address in the control room (`/control`). Use **本机地址 → 打开** for local use. Enable public sharing and click **启动并生成分享链接** when you need a friend link. **停止公网分享** closes the tunnel; stop optional AI services individually in **服务与显存**.
 
 **B. Manual (troubleshooting / full logs).**
 
 ```powershell
 npm install
-npm run build:runtime
+npm run build
 $env:SD_HOST = 'http://127.0.0.1:7860'   # WebUI address
-node server.js
+npm run start:run
 ```
 
 Skip the tunnel with `$env:DISABLE_TUNNEL = '1'` if you only need the local gateway. Press `Ctrl+C` to stop.
@@ -112,8 +112,8 @@ Full setup details, optional components (voice, chat, dual-character composition
 ### A. From a Scene to a finished image
 
 1. Open the **Scene Library** (`场景库`), filter by character / content rating, and pick a Scene — story, mood, camera, lighting and prompt are already assembled.
-2. Enter the **Director's Studio** (`导演台`), pick one of the 38 curated artist styles, and hit generate.
-3. The prompt compiler automatically targets the active engine: SD/WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), or Krea 2 Turbo (3–5 sentences of natural-language prose).
+2. Enter the **Director's Studio** (`导演台`), pick a curated artist style, and hit generate.
+3. The prompt compiler automatically targets the active engine: SD/WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), or Krea 2 Turbo (English natural-language prose).
 
 ### B. AI narrative short film (click-only flow)
 
@@ -128,10 +128,10 @@ Full setup details, optional components (voice, chat, dual-character composition
 ### D. Everyday command-line operations
 
 ```powershell
-npm run workflow -- --help          # unified entry for 140+ maintenance scripts
+npm run workflow -- --help          # unified maintenance entry
 npm run workflow -- data:validate   # verify data shards & DATA_VERSION after editing scene data
 npm run workflow -- gate:quick ui   # layered quality gate by change area (ui/server/data/all)
-npm run scenes:import               # rebuild data/scenes.json from shards (batch-aware)
+npm run scenes:build                # rebuild scene products from source shards
 npm run popular:build               # rebuild data/popular-characters.json
 npm run build                       # production bundle + 140KB route budget + precompression
 ```
@@ -140,25 +140,25 @@ The complete script index is in [docs/workflow.md](docs/workflow.md).
 
 ## Contributing
 
-This is a personal project first, but well-scoped contributions are welcome. Before touching anything, read in this order: [docs/INDEX.md](docs/INDEX.md) (master doc index) → [docs/workflow.md](docs/workflow.md) (unified script entry) → **AGENTS.md** (collaboration charter — the highest authority in this repo).
+This is a personal project first, but well-scoped contributions are welcome. Read **AGENTS.md** for collaboration rules, then consult [docs/INDEX.md](docs/INDEX.md) and the relevant [workflow](docs/workflow.md). Current user instructions take precedence over general repository guidance.
 
 ### Development setup
 
 See Installation Step 4-C (two terminals: Express gateway + Vite HMR). `npm run typecheck` and `npm run lint:js` give quick feedback while editing.
 
-### Quality gates — must pass before any commit
+### Quality gates — choose by change scope
 
 ```
-[1. State/logic self-test] ─► [2. Type check] ─► [3. Contract tests] ─► [4. Build budget] ─► [5. Precise commit]
+[Change scope] ─► [Required checks] ─► [Build when in scope] ─► [Precise commit]
 ```
 
 ```powershell
 npm run typecheck:app           # zero errors for Vue SFCs
-npm run workflow -- check:full  # full validation suite (13 parallel checks + unit + contract)
+npm run workflow -- check:full  # quality checks + frontend/unit/contract suites
 npm run build                   # production build, 140KB per-route budget
 ```
 
-For fast iteration run only the area you touched: `npm run workflow -- gate:quick ui|server|data|all`. `npm run validate` intentionally does not run the production build; run `npm run build` separately when the release bundle or bundle budgets are in scope. When the private reference root is unavailable, use the hermetic structure contract explicitly (PowerShell): `$env:AICS_REFERENCE_AUDIT_MODE='structure'; npm run validate`; do not treat that as physical-asset approval.
+Choose the required checks using the [workflow scope table](docs/workflow.md#门禁与构建). `gate:quick ui|server|data|all` selects an area; cross-domain or build-chain changes use `gate:full`. Preparing a commit does not expand the verification scope. `npm run validate` does not run the production build; run `npm run build` when the bundle is in scope. When the private reference root is unavailable, use the structure contract explicitly (PowerShell): `$env:AICS_REFERENCE_AUDIT_MODE='structure'; npm run validate`; do not treat that as physical-asset approval.
 
 ### Commit discipline (hard rules)
 
@@ -198,11 +198,14 @@ huiyu/
 ├── index.html              # Vite SPA entry point (no global scripts)
 ├── vite.config.ts          # Vite build config + dev proxy to Express
 ├── control.bat             # Windows control panel launcher
-├── server.js               # Express: static serving, SD proxy, sharing
+├── server.ts               # Gateway source; server.js is generated
 ├── src/                    # Vue 3 SPA source (Vite build target)
 │   ├── config/             #   Character constants, artist styles, prompt definitions
 │   ├── utils/              #   Stream parsing, character reference data, prompt compiler
 │   ├── stores/             #   Pinia: scene data, prompt-builder state
+│   ├── application/        #   Use cases and persistence ports
+│   ├── platform/           #   Web and desktop adapters
+│   ├── api/                #   Transport and response decoding
 │   ├── composables/        #   Chat storage, Live2D, voice, SD generate, IndexedDB
 │   ├── components/         #   AppLayout, AppNav, SceneCard, Video Studio components
 │   ├── views/              #   One .vue per route (all lazy-loaded)

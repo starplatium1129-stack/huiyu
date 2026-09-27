@@ -4,7 +4,7 @@
 
 ## 0. 接手规则：只读本批所需内容
 
-首次读总计划、复审 A01–A14、本手册和 AGENTS.md；进入某批时再读对应规范及该批入口。不重新研究 Vue vs React、SQLite vs IndexedDB 或 Tauri vs Electron，不重做 005 已完成的布局/接口阶段。
+接续工作先读 AGENTS.md 与当前[未来规划](../roadmap.md)，再按受影响领域读取已落地契约；本手册的 R0–R13 清单保留历史施工顺序，不要求重新领取已完成批次。不重新研究 Vue vs React、SQLite vs IndexedDB 或 Tauri vs Electron，不重做 005 已完成的布局/接口阶段。
 
 先运行只读检查：
 
@@ -12,14 +12,14 @@
 git status --short
 git diff --stat
 git diff --cached --stat
-git fetch origin
+git rev-parse HEAD
+git branch --show-current
 git rev-parse origin/main
-git rev-parse origin/docs/architecture-refactor-plan
 ```
 
 审查基线为 `8939d9769501788482968eb6666a584adab739c1`。若 main 改变，先按本批文件做 diff 复核，不用旧 SHA 冒充当前基线。不能覆盖其他会话修改、git add . 或 reset --hard。
 
-PR #10 未合并时，可以从其最新 head 建立独立 R0 分支/工作树并注明依赖 #10；不要为取得文档擅自合并 PR。计划合并后再对齐 main。后续代码批次不要继续写进纯文档 PR #10。
+PR #10 和 R0 的分支开工方式属于历史交接。当前以实际 HEAD、工作区差异及 main 的受影响内容为依据，不依赖旧文档分支继续施工。
 
 现有依赖和 lockfile 匹配时不重复安装。需要安装时先核对 `.nvmrc` / packageManager；执行安装、模型调用或桌面部署前遵守仓库授权边界。
 
@@ -82,7 +82,7 @@ Gate：新增合法/非法依赖夹具能分别通过/失败；注释、类型�
 
 ## 3. R1 — 收口已有仓储与最小 bootstrap
 
-状态：实现与定向验收完成，含 7 项隔离 E2E 与最终类型/lint；原生安装/WebView2 未验。实际接线和保留的失败记录见 [R1 实施记录](R1-EXECUTION-REPORT.md)。
+R1 当次状态：实现与定向验收完成，含 7 项隔离 E2E 与最终类型/lint；该轮原生安装/WebView2 未验。实际接线和失败记录见 [R1 实施记录](R1-EXECUTION-REPORT.md)，后续本机安装见 [R3–R11 记录](R3-R11-EXECUTION-REPORT.md)。
 
 读：[Workspace 1–3 节](WORKSPACE-MIGRATION-DESIGN.md)、[Desktop 3–4 节](DESKTOP-INTEGRATION-DESIGN.md)。
 
@@ -96,7 +96,7 @@ Gate：新增合法/非法依赖夹具能分别通过/失败；注释、类型�
 
 ## 4. R2 — Workspace 内核与受保护 API
 
-状态：代码、隔离测试及实际 sidecar 门槛完成，默认关闭、未启用生产；不是完整 NSIS 安装/WebView2 验收。实现边界、当次结果与过程修复见 [R2 实施记录](R2-EXECUTION-REPORT.md)。
+R2 当次状态：代码、隔离测试及实际 sidecar 门槛完成，默认关闭、未启用生产；该轮不是完整 NSIS 安装/WebView2 验收。实现边界、当次结果与过程修复见 [R2 实施记录](R2-EXECUTION-REPORT.md)；后续本机激活与安装见 [R3–R11 记录](R3-R11-EXECUTION-REPORT.md)。
 
 建议新增生产文件归入 `server/workspace/`，路由按当前 server/routes 组织；worker 是该目录内的实际 TS 源，不导入 `scripts/tests/prototypes`。
 
@@ -218,6 +218,8 @@ R12 原生 renderer process 对照当前线程；R13 Electron shell 对照 Tauri
 
 每次结束仅交代本批改动、实际验证、未验证项和下一批入口；不要重复输出整个方案。
 
-## 可直接交给 Codex 的第一条任务
+## 可直接交给 Codex 的第一条任务（历史模板）
+
+以下提示只记录当时的 R0 授权和范围，不用于当前已完成主线的重新开工。
 
 > 阅读 AGENTS.md、重构总计划和本手册 R0。先核对实际 main/head 与审查基线差异，只复查本批受影响假设。不要重新做框架或数据库选型研究。本轮仅完成 R0：记录基线、更新窄工程契约、建立可逐步收紧的依赖护栏和测试。保留旧边但禁止新增违规边；不执行真实数据迁移、不切 origin、不启动真实模型、不安装桌面产物。根据实际命令报告 passed/failed/blocked/not-run，不把本文档或旧原型的 PASS 当作新验收。R0 交付后停止，列出 R1 的受控文件与阻塞项。

@@ -114,8 +114,8 @@ R4/R9 的上线 gate 还要求复制 profile 演练、校验通过的备份/恢�
 
 测试只使用隔离 workspace、临时端口和假上游，除非相应真实操作已获授权。没有因本计划而授权清理用户库、启动真实 GPU、安装应用或处理 UAC。
 
-## 7. 首轮执行的明确边界
+## 7. 首轮执行边界（历史记录）
 
-第一轮仅完成 R0，使用[执行手册末尾提示](CODEX-EXECUTION-RUNBOOK.md)。现有 SQLite 和任务恢复原型已有路径和历史证据，不重复开发同类演示；R1 再建立实际可替换边界。
+第一轮当时仅完成 R0，使用[执行手册末尾历史提示](CODEX-EXECUTION-RUNBOOK.md#可直接交给-codex-的第一条任务历史模板)。该轮不重复开发 SQLite 和任务恢复原型，R1 随后建立实际可替换边界。R0–R11 现已完成，不从本节重新开工；后续工作按当前[未来规划](../roadmap.md)及受影响契约接续。
 
-方案复审当时未运行项目测试或实施护栏；R0 的实际命令、失败及证据单列于[实施记录](R0-EXECUTION-REPORT.md)。后续仓储接线与最小 bootstrap 见 [R1 记录](R1-EXECUTION-REPORT.md)，默认关闭的 workspace 与隔离/sidecar 验证见 [R2 记录](R2-EXECUTION-REPORT.md)；未迁移用户数据或切换来源。Windows 原生、真实用户库和最终性能仍由各批门槛验证，不能用方案写得详细替代实测。
+方案复审当时未运行项目测试或实施护栏；R0 的实际命令、失败及证据单列于[实施记录](R0-EXECUTION-REPORT.md)。仓储接线与最小 bootstrap 见 [R1 记录](R1-EXECUTION-REPORT.md)，R2 当次默认关闭的 workspace 与隔离/sidecar 验证见 [R2 记录](R2-EXECUTION-REPORT.md)。后续安装、当前来源迁移与激活见 [R3–R11 记录](R3-R11-EXECUTION-REPORT.md)；各批历史未验项只描述当次范围，不能覆盖后续已取得的证据，也不能扩展成其他设备或真实模型均已通过。

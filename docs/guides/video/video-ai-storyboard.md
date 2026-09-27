@@ -1,5 +1,7 @@
 # 分镜短片「AI 整理」链路（2026-08-16）
 
+> 历史实现记录（2026-09-27 整理）：下文保留 8 月 16–17 日的交接、接口与验证范围，不代表当前完整视频功能或文件所有权。现行能力见 [项目状态](../../project-status.md)，未验收项见 [未来规划](../../roadmap.md)。当前源码入口为 `src/components/video/ShotListEditor.vue`、`src/api/videoApi.ts` 与 `routes/video-ai.ts`，已包含整批编排、对白建议、质量检查及脚本生成；批量绘图调度已移至 `src/composables/generation/useBatchDraw.ts`。历史执行命令中的 `.js` 为构建后入口，不应直接换成 `.ts` 执行。
+
 > 给视频页分镜模式加的智能化层：从绘图页带入的镜头，点一次「✦ AI 整理分镜」
 > 就把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/主体运动/对白。
 > 服务端新文件 `routes/video-ai.js`（不碰 `routes/video.js`），前端改动

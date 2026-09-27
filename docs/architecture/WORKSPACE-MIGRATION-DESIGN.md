@@ -1,8 +1,8 @@
 # Workspace 与数据迁移实施规范
 
-> 设计规范，尚未接入生产。对应新版 R1–R4，以及 R9 的剩余来源数据迁移。入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
+> 已落地的实施契约；对应修订版 R1–R4 与 R9。入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
 
-> 实现状态：R1 仓储收口已完成；R2 内核/API 的代码、隔离及 sidecar 门槛完成，见 [R2 实施记录](R2-EXECUTION-REPORT.md) 与 [验证证据](../evidence/architecture-r2-2026-09-26.json)。激活状态：默认关闭，旧 Web 权威保持；R3 旧来源盘点/迁移器与 R4 真实数据激活仍待执行，原生安装/WebView2 未验。
+> 主线已接入；本机 `3002` 来源迁移、SQLite authority 激活及 bundled UI 切换见 [R3–R11 实施记录](R3-R11-EXECUTION-REPORT.md)，当前安装身份以[项目状态](../project-status.md)为准。激活由持久 workspace 指针决定，不自动迁移其他来源；Web 继续使用独立 IndexedDB。R2 报告保留当次默认关闭的历史边界，不能作为当前未激活的结论。
 
 ## 1. 已定方案与所有权
 
@@ -26,7 +26,7 @@ R2 必须用实际打包 sidecar 验证 SQLite 版本、事务、备份、worker
   backups/<backupId>/
 ```
 
-“Workspace v2”指产品架构版本，不代表第一份生产数据库必须叫 schema v2。不得复用测试 candidate.sqlite。私人库不得放进安装目录、dist、AI_WORKSPACE_ROOT 或可自动清空的 runtime cache。
+“Workspace v2”指产品架构版本，不代表第一份生产数据库必须叫 schema v2。当前 schema 为 v3，按 v1 → v2（迁移/profile）→ v3（任务）顺序升级；上面的 v1 是初始建库版本。不得复用测试 candidate.sqlite。私人库不得放进安装目录、dist、AI_WORKSPACE_ROOT 或可自动清空的 runtime cache。
 
 根路径不可写、磁盘断开、身份不匹配、schema 较新时，显示诊断并拒绝写入；禁止自动改用另一个路径创建空库。
 

@@ -28,7 +28,7 @@
 - 高频动画只用 transform/opacity；例外必须写 `/* compositor-exempt: 理由 */` 并评审基线。新增或修改图标使用 `ArchiveIcon.vue` 的手绘线条 SVG，不使用 Emoji 或实心图标。
 - 当前支持深浅主题，新增/修改 UI 均需两种主题视觉审查、WCAG AA 对比度与扫光不压字。禁用文字用 `--text-disabled`，不得 opacity 压字。check-contrast 覆盖双主题全局令牌与角色强调色；组件动态样式、图片叠字和实际布局仍需浏览器视觉验收。
 - 保持本机/远程分级边界：`adultEnabled = isLocalStudioHost()`；远程、隧道、未知或未授权状态 fail-closed，保留拒绝与模糊遮罩。分级字段约定见 [内容与接入契约](docs/engineering-contracts.md#角色接入)。
-- `assets/character-references/` 不入 Git；运行时经 `/data/character-reference-view.json` 懒加载。pending 占位不能计为已交付资产。
+- `assets/character-references/` 不入 Git；参考权威源为 `data/references/` 分片，运行时经 `/api/character-reference-profile/:id` 按人物懒加载；两个旧参考 JSON 仅为兼容聚合。pending 占位不能计为已交付资产。
 - 单体有效行数上限 500；存量豁免只降不升，门禁为 `test-monolith-budget.js`，基线为 `scripts/tests/monolith-baseline.json`。
 
 ## 实施与交付

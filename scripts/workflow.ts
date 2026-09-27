@@ -111,8 +111,8 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['network-download', 'writes-product'], machine: ['node', 'network'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/download-minimax-h3.js:51-54,72,104', unknown: [], notes: ['约 44GB；中断文件重跑从零重下，已完成文件跳过'] } },
   'models:check': { desc: '体检当前硬件（显存/内存）与模型就绪状态', cmd: ['node', 'scripts/maintenance/check-models-environment.js'], docs: 'docs/guides/setup-and-models.md',
     run: { nature: ['read-only'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/check-models-environment.ts', unknown: [] } },
-  'models:download-wd14': { desc: '一键高速下载 WD14 本地反推模型（约 150MB）', cmd: ['node', 'scripts/maintenance/download-wd14.js'], docs: 'docs/guides/setup-and-models.md',
-    run: { nature: ['network-download', 'writes-product'], machine: ['node', 'network'], switches: { '--official': ['network-download'] }, resume: 'idempotent', evidence: 'scripts/maintenance/download-wd14.ts', unknown: [], notes: ['默认从 hf-mirror.com 高速下载；--official 从 HuggingFace 官方下载'] } },
+  'models:download-wd14': { desc: '下载 WD14 本地反推模型（约 150MB）', cmd: ['node', 'scripts/maintenance/download-wd14.js'], opts: '--mirror（HF-Mirror）或 --official（HuggingFace）；默认 ModelScope', docs: 'docs/guides/setup-and-models.md',
+    run: { nature: ['network-download', 'writes-product'], machine: ['node', 'network'], switches: { '--mirror': ['network-download'], '--official': ['network-download'] }, resume: 'idempotent', evidence: 'scripts/maintenance/download-wd14.ts', unknown: [], notes: ['默认从 ModelScope 下载；--mirror 从 hf-mirror.com 下载；--official 从 HuggingFace 官方下载；两开关同传时 official 优先'] } },
   'desktop:verify-gateway': { desc: '按安装包资源映射隔离验证网关和桌宠页面', cmd: ['node', 'scripts/maintenance/verify-desktop-gateway.js'], docs: 'docs/desktop-deployment.md',
     run: { nature: ['isolated-fixture', 'service'], machine: ['windows', 'node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/verify-desktop-gateway.js:47-85', unknown: [] } },
   'desktop:doctor': { desc: '检查 Windows 桌面打包工具链与 Cubism SDK', cmd: ['node', 'scripts/maintenance/desktop-build-environment.js'], docs: 'docs/desktop-deployment.md',
@@ -379,7 +379,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['guard', 'self-heal-missing', 'isolated-fixture', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:65-118,174-189', unknown: ['实际范围由 Git 变更或位置参数决定，此处列可能发生的行为'], notes: ['scripts/config 等变更会升级 full 并执行构建；data 面积含三个 --check 构建守卫；纯文档改动跳过'] },
   },
   'gate:full': {
-    desc: '全量门禁：check（内含双 typecheck）+ vitest + unit + contract + 打包预算（横切重构/提交前）',
+    desc: '全量门禁：check（内含双 typecheck）+ vitest + unit + contract + 打包预算（横切重构/未知影响面）',
     cmd: ['node', 'scripts/maintenance/gate-quick.js', 'full'],
     docs: 'docs/workflow.md',
     run: { nature: ['read-only', 'self-heal-missing', 'writes-product'], machine: ['node', 'build-present'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/gate-quick.js:174-189; scripts/maintenance/run-check-parallel.js:22-25', unknown: [], notes: ['typecheck:app/typecheck 已包含在 check 编排内（run-check-parallel.js:24-25），不单独重复执行；末步执行 npm run build:web:run，复用 check 阶段已准备的 runtime（vite+预算+预压）'] },
@@ -570,7 +570,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '历史活跃库维护流水线（直接写源/资产）；新角色使用候选审核发布流程',
     cmd: ['npm', 'run', 'character:onboard'],
     docs: 'docs/guides/characters/character-onboarding-workflow.md',
-    run: { nature: ['writes-source', 'external-model', 'writes-product'], machine: ['gateway', 'node', 'python-pillow'], switches: { '--skip-render': ['writes-source'], '--deploy': ['writes-release'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/workflow-onboard-popular-character.js:23-348', unknown: [], notes: ['--skip-render 跳过出图但不能据此声明资产完成；--deploy 走 deploy-desktop-quick.ps1 -NoRestart'] },
+    run: { nature: ['writes-source', 'external-model', 'writes-product'], machine: ['gateway', 'node', 'python-pillow'], switches: { '--skip-render': ['writes-source'], '--deploy': ['writes-release'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/workflow-onboard-popular-character.js:23-348', unknown: [], notes: ['--skip-render 跳过出图但不能据此声明资产完成；历史 --deploy 仍直连 deploy-desktop-quick.ps1 -NoRestart，现行桌面同步另用 deploy-desktop.bat'] },
   },
   'audit:coverage': {
     desc: '只读差额报告：热门服装→参考登记、角色→主题选择器覆盖差额（信息性，不作为门禁失败依据）',

@@ -1,6 +1,6 @@
 # 可维护性试点边界
 
-本页规定作品历史、提示词工作台和观画适配的维护入口。当前实施和验收见 [项目状态](../../project-status.md)，待验事项见 [roadmap](../../roadmap.md)，固定基线审查见 [M01–M10](../../research/engineering/maintainability-optimization-2026-09-19.md)。
+本页规定作品历史、提示词工作台和观画适配的维护入口，按当前平台边界更新。当前实施和验收见 [项目状态](../../project-status.md)，待验事项见 [roadmap](../../roadmap.md)，早期试点基线见 [M01–M10](../../research/engineering/maintainability-optimization-2026-09-19.md)。
 
 ## 历史与工作台依赖
 
@@ -8,13 +8,13 @@
 
 | 公开入口 | 内部依赖 / 所有权 | 对应回归 |
 | --- | --- | --- |
-| promptHistoryStore | 从 KV 读取 ArtworkRecord[]，调用 artworkRepository 软删/恢复；持有读取代际；不声明旧作品具有完整配方 | promptHistoryStore.spec、artworkRepository.test |
+| promptHistoryStore | 经 artworkRepository 读取 ArtworkRecord[]、项目及软删/恢复；平台适配选择 Web 或桌面 workspace；持有读取代际，不声明旧作品具有完整配方 | promptHistoryStore.spec、artworkRepository.test、desktop/artworkRepository.spec |
 | promptBuilderStore | 保留创作状态和兼容接口；草稿、筛选和作品持久化分别经 usePromptDraft / usePromptSceneFilters / usePromptArtworkHistory；后者复用 historyStore 同一 ref | promptBuilderStore.spec、usePromptDraft.spec、promptBuilderHistory.spec |
 | types/promptHistory | 新生成记录、角色和工作台选择的纯类型；store 保留兼容转导出 | typecheck:app / typecheck:tests |
 | historyRecipe → usePromptHistoryApply | 只读校验投影，不写回数据库；无效引擎拒绝覆盖草稿，旧缺字段保留缺失并显示检查说明；合法零值与原 ID 保留 | historyRecipe.spec、usePromptHistoryApply.spec、usePromptDeepLink.spec |
 | generationApi → generationResponse → generationTask | 统一客户端负责传输，解码器检查业务字段，generationTask 唯一映射 UI 阶段；非空未知阶段保持 unknown，未知进度保持 null | generationApi.spec、generationTask.spec、test-api-client |
 
-纯类型允许 import type 引用现有兼容入口；没有证据表明纯计算依赖了 store 的运行时常量，因此本轮不移动提示词映射和编译常量。
+前端纯类型可按既有规则使用现存转导出入口；runtime 不得反向依赖 `src/`，包括纯类型和间接边。应用用例通过端口与平台适配连接，不能从纯计算层引入 Store 或具体持久化实现；当前规则见 `scripts/lib/refactor-boundaries.ts`，早期试点决策不放宽该护栏。
 
 长期架构计划对已明确迁出的 `types/promptHistory`、`types/artwork`、`types/generation`、`types/anima` 和 `utils/resultContext` 增加更窄的保护：它们的可达依赖连类型边也不再引用 Store/展示层/Vue。`check:domain-types` 检查实际路径与间接导入，复用 `source-imports.ts` 的 AST 读取能力；原 ESLint 试点及 PhotoSwipe/存储规则继续保留。其余兼容入口按既有规则逐步迁移，不扩大为全仓类型禁令。范围、unknown 与验证见 [架构首批记录](../../research/engineering/architecture-a01-2026-09-19.md)。
 
@@ -22,7 +22,7 @@ ESLint 的 huiyu/module-boundaries 对以下方向执行检查：types 与 histo
 
 ## 资源所有权
 
-生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入现有图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。`check:domain-types` 同时保护该用例及其可达依赖，拒绝具体存储/API 与运行时 Node 平台依赖；兼容默认值在保存调用开始时复制，等待暂存或测量时不再读取当前表单。这仍不等价于所有生成入口的完整任务提交快照。最新边界见 [维护性整理](../../research/engineering/architecture-maintenance-2026-09-20.md)，机械抽取的旧时序见 [A02.1 记录](../../research/engineering/architecture-a02-2026-09-19.md)。
+生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。`check:domain-types` 与重构护栏保护用例及其可达依赖，拒绝具体存储/API 与 Node 平台实现。保存输入在异步工作开始前复制；runtime 任务另在接收时保存输入与结果上下文，两者是各自独立的快照边界。写入应答丢失时按作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)，早期抽取时序见 [A02.1 记录](../../research/engineering/architecture-a02-2026-09-19.md)。
 
 WAI HTTP 入口只依赖 `server/generation/` 的类型、校验、业务和兼容导出。业务可复用 `routes/anima/service` 与纯超分资源模块，不可加载顶层 HTTP 路由或 Express；校验器仅允许 Express 的请求类型。工作台不得直接导入持久化/传输实现，草稿与筛选适配不得反向加载 Store 或作品服务。本次模块禁止显式 any；这些约束纳入既有 ESLint 门禁和允许/拒绝夹具，不声称覆盖全仓所有间接边。
 

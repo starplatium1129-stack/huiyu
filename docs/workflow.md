@@ -1,6 +1,6 @@
 # 统一工作流手册
 
-> 维护日期：2026-09-15。命令注册与默认参数以 scripts/workflow.ts 源码为准，运行入口 scripts/workflow.js 由构建生成；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
+> 维护日期：2026-09-27。命令注册与默认参数以 scripts/workflow.ts 源码为准，运行入口 scripts/workflow.js 由构建生成；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
 
 ## 先查入口
 
@@ -33,7 +33,7 @@
 | 检查工作流行为回归 | `npm run wf -- check:workflows` |
 | 检查部署退出与锁保护 | `npm run wf -- check:desktop-deploy`（Windows 隔离夹具，不操作实际安装） |
 | 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（已纳入 check 与 CI，候选须人工复核） |
-| 查看内容覆盖差额 | `npm run wf -- audit:coverage`（只读报告：热门服装→参考登记、角色→主题选择器；`--json` 机器可读；信息性，不作为门禁失败依据） |
+| 查看内容覆盖差额 | `npm run wf -- audit:coverage`（只读报告：热门服装→参考登记、角色→主题契约；`--json` 机器可读；覆盖差额本身不作为门禁失败依据） |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
 | 检查办公机工程入口 | `npm run wf -- office:health`（只检查目录与入口，不代替工具链验证） |
 | 只读严格检查 TypeScript | `npm run wf -- check:typescript`（服务、网关、工具与独立浏览器脚本） |
@@ -48,7 +48,7 @@
 
 ### 内容覆盖差额报告
 
-`audit:coverage` 对照热门服装分片与参考索引（standards/view）、characters.json 与 `tokens.css` 主题选择器，输出差额清单：缺参考登记、登记未出图（pending）、URL 已填缺实图、无法核实（素材根缺失，与 `check:ref-urls` 同一解析）、参考库独有形态（来源需另行核对，不直接判为自动生成或可删除）；主题侧区分显式主题、默认主题允许项（nene）、待补与旧别名选择器（如 `historia_reiss` → 建议 `krista_lenz`，须人工确认）。结构错误（清单缺文件、跨分片重复 ID、manifest 批次数缺失/不符、standards↔view 镜像破坏）退出 1；覆盖差额只报告，恒退出 0——历史覆盖缺口是待办清单，不是门禁失败，也不授权自动登记或补图。
+`audit:coverage` 对照热门服装分片与参考索引（standards/view），输出缺登记、pending、URL 已填缺实图、素材根不可核实及参考库独有形态。主题侧识别 `tokens.css` 的通用运行时主题契约；当前角色强调色由 `characterTheme.ts` 从档案与调校例外派生，普通新角色无需新增选择器。没有通用契约的旧布局才区分显式选择器、默认允许项、缺失与旧别名。报告不验证颜色对比度、CSS 层叠或视觉效果。结构错误退出 1；覆盖差额本身只报告、不授权自动登记或补图。
 
 ### 只读交付证据审计（W2 最小切片）
 
@@ -166,7 +166,7 @@
 
 ## 角色接入
 
-`character:onboard --character <id>` 为自动化辅助；`--skip-render` 跳过出图，不能据此声明资产完成；`--deploy` 涉及桌面同步。必须同时核对 [六层契约](engineering-contracts.md#角色接入) 和 [接入步骤](guides/characters/character-onboarding-workflow.md)。
+`character:onboard --character <id>` 为自动化辅助；`--skip-render` 跳过出图，不能据此声明资产完成。历史 `--deploy` 仍直连底层 PowerShell，不作为现行安装入口；接入核验后另用 `deploy-desktop.bat` 完成桌面同步。必须同时核对 [六层契约](engineering-contracts.md#角色接入) 和 [接入步骤](guides/characters/character-onboarding-workflow.md)。
 
 `audit:impact` 的 `referenceEvidence` 按所选角色/服装统计参考 view 的显式 references：total、pendingCount（pending=true 或缺非空 URL）、urlDeclaredCount、reviewDeclaredCount。pending 优先于 declared-unverified；空数组为 empty，缺角色/服装/references 为 missing，坏或缺 view 为 unknown，未知计数为 null。reviewStatus 仅区分字段声明与 unknown，assetStatus 始终 unverified。显式 outfit 仅过滤对应 character，路径带入其他角色保留全部服装。保留 reference 关联与复验；不访问 URL、图片或素材根，不把声明当成资产或审核通过。
 
@@ -184,7 +184,7 @@
 
 `node scripts/workflow.js audit:ownership --json` 读取当前根目录结构，报告人物档案、热门身份/服装、场景、蓝图、精选、退役、参考标准/view、主题及外部样张的字段职责、读取者、写入边界和机器条件。`--root <隔离目录>` 可替换数据根；`--domain <characters|popular|scenes|blueprints|curation|retired|references|themes|showcase>` 仅检查指定域。
 
-entries 的 role 保留 source/product 职责；status 为 source/product/missing/invalid/external-unknown。manifest 按当前 files 结构解析；场景按 .1 起连续批次优先，否则读取逻辑单文件。检查真实路径边界、JSON 及浅层容器，输出实际字段名；不证明完整 schema、源产物一致性、字段语义、审核或图片质量。参考 view 是合并投影且登记器也会写入；外部样张固定 external-unknown，不扫描外部清单或图片。
+entries 的 role 保留 source/product 职责；status 为 source/product/missing/invalid/external-unknown。manifest 按对应领域结构解析；场景按 .1 起连续批次优先，否则读取逻辑单文件。检查真实路径边界、JSON 及浅层容器，输出实际字段名；默认不证明完整 schema、源产物一致性、字段语义、审核或图片质量。参考权威在 `data/references/` 人物分片与 manifest，standards/view 是兼容聚合，登记器经 reference-store 同步写回源与产物；外部样张保持 external-unknown，不扫描外部清单或图片。
 
 写入入口仅展示，不执行 builders（包括可能自愈写入的 --check）、模型或网络。`--help` / `--plan` 不读取目标目录；退出码 0 表示读取完成（允许 external-unknown），1 表示有 missing/invalid，2 表示参数或根目录错误。隔离回归：`node scripts/tests/test-content-ownership.js`。
 
@@ -271,7 +271,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 构建用于验证产物或准备同步，不能代替视觉/设备验收。同一内容的检查不因提交而重跑；后续修复只重跑受影响范围。已核对隔离与权限边界的测试可直接执行和修复，无需逐步请求批准。
 
-`gate:quick` 自动分类从 `quality-test-inventory.ts` 选择已登记的 Node 测试：只改这些测试与文档时，先更新运行入口，再只运行所改测试，沿用所属套件时限与缺失数据准备。源文件与生成入口去重，失败处理复用现有执行器；混合业务改动继续叠加对应领域检查。前端 spec 仍归 ui；E2E、共享夹具、runner、注册表、构建器、未知或删除的测试等继续触发 full。已明确影响范围时可用显式面积或定向入口。工具帮助中的“提交前”不表示所有提交都必须运行全量。
+`gate:quick` 自动分类从 `quality-test-inventory.ts` 选择已登记的 Node 测试：只改这些测试与文档时，先更新运行入口，再只运行所改测试，沿用所属套件时限与缺失数据准备。源文件与生成入口去重，失败处理复用现有执行器；混合业务改动继续叠加对应领域检查。前端 spec 仍归 ui；E2E、共享夹具、runner、注册表、构建器、未知或删除的测试等继续触发 full。已明确影响范围时可用显式面积或定向入口；提交本身不扩大检查范围。
 
 ### 验证并发与复用
 
@@ -327,7 +327,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 Electron 验收修复后可显式使用 `--resume-native <旧report.json>` 只补原生消费链与退出重开，或 `--resume-costs <旧report.json>` 仅补两个成本样本和退出重开。先确认改动未影响已通过范围；runner绑定原EXE/Node哈希及同一隔离资料目录；原生补测还要求相同UI，成本补测可接新UI，但旧功能/画面仍标原UI哈希，不能冒称当前UI当次验证。新报告标出引用，原失败报告保留，失效成本剔除而不重标通过。Windows GUI Electron 的 stdin 会启动即关闭，显式 `probe` 配置使用随机本机命名管道；控制连接不暴露给网页，关闭后正常退出。进程树通过父子创建时间排除历史ParentPid复用，异常清理只使用持有的根ChildProcess句柄，禁止枚举PID通杀。
 
-`npm run wf -- desktop:thumbnail-benchmark` 直接抽取当前 `App.vue` 的预热函数，在临时 loopback 服务和私有浏览器上下文运行真实 IndexedDB 与图片解码。1k/10k 历史共用 64 张中性 1024px 图，前台/后台/双页各三轮观察五秒；报告实际 visibility、读写/生成次数、重复图片读取、CDP JS 堆与脚本/任务时间及源码/夹具哈希。后台未实际 hidden 时标为 unavailable，不模拟后台性能，不把小图结果当作用户大图/GPU成本。独占运行后保存 stdout JSON；不新增性能阻断阈值。
+`npm run wf -- desktop:thumbnail-benchmark` 复用生产 `galleryThumbnailWarmup.ts` 的调度核心，在临时 loopback 服务和私有浏览器上下文运行真实 IndexedDB 与图片解码；它测量 Web 预热，桌面 workspace 当前不做全库预热。1k/10k 历史共用 64 张中性 1024px 图，前台/后台/双页各三轮观察五秒；报告实际 visibility、读写/生成次数、重复图片读取、CDP JS 堆与脚本/任务时间及源码/夹具哈希。后台未实际 hidden 时标为 unavailable，不模拟后台性能，不把小图结果当作用户大图/GPU成本。独占运行后保存 stdout JSON；不新增性能阻断阈值。
 
 `npm run wf -- desktop:restore-benchmark` 在新私有上下文按 1k/10k 历史各跑三轮，64 张确定性中性噪声 PNG 经真实 `buildBackupBlob → Blob.text → JSON.parse/normalizeBackup → restoreBackupData`，核对条目、原图字节数、图片重映射及旧原图保全。分别报告导出/读取/解析/恢复时间、实际备份字节与约 25ms CDP JS 堆采样；observedPeak 是观测下界，不含 Blob 原生后备内存、完整进程/GPU，也不代表 512MiB 峰值、可取消性或断电恢复。独占运行，无生产库访问。
 
@@ -374,7 +374,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 聊天个人 API 密钥在 Windows 桌面版由系统凭据管理器按 API 地址保存，网页端只放在当前页面内存；浏览器持久设置保留地址/模型，不保存新密钥。旧明文记录只有安全写入和读回一致后才清除；失败保留可恢复旧值并提示重试，不降级为新明文写入。配置面板可独立清除个人密钥；备份导出排除尚未迁移的旧密钥。站主托管配置仍是服务端受限文件，与个人凭据迁移分开验收。原生测试仅使用唯一 `Huiyu/Test` 目标，不读取已有个人凭据；系统凭据库失败、升级与最终安装须另留真实 Windows 验收。
 
 - `models:check`：扫描当前硬件显存与 ComfyUI/反推模型就绪状态；
-- `models:download-wd14`：一键从国内高速镜像（hf-mirror）下载本地 WD14 真实反推模型（约 150MB）；
+- `models:download-wd14`：默认从 ModelScope 下载本地 WD14 反推模型；显式 `--mirror` 切换 HF-mirror，其他可用参数先查帮助；
 - `models:download-h3 --models-root <ComfyUI模型目录>`：H3 可选模型下载入口；该操作下载大文件，不属于质量检查或普通安装的自动步骤。
 
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
@@ -386,7 +386,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 
 桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认跳过前端构建（dist 需已构建，数据聚合产物仍会刷新，版本由 `virtual:data-version` 运行时解析）；`deploy:desktop:full` 执行完整构建加增量流程；两个入口的默认增量模式都会清 WebView2 缓存并默认重启桌面端。
 
-可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` 需直接运行 bat）：`-UseInstaller` 改跑 `runtime/desktop-updates` 最新安装包（前置：先用 `package:tauri` 产出 `*-setup.exe`，缺失退出 1；隐含跳过本地构建）、`-QuietInstall`（仅随 `-UseInstaller` 静默安装）、`-NoRestart`（结束后不启动）、`-StartupRepair`（1.6.0 窄修复，与 `-UseInstaller` 互斥）。非管理员时脚本经 UAC 重启并透传全部参数，需用户确认。依赖/exe 变化的完整安装与 UAC 见 [部署指南](desktop-deployment.md)。
+可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已验收EXE>` 需直接运行 bat）：`-UseInstaller` 使用完整安装包，默认先选择 `runtime/desktop-updates` 最新 `*-setup.exe`，也可显式指定 `-InstallerPath`；选择结果在 UAC 前固定并透传，避免提升权限期间换成另一份包。缺包退出 1，隐含跳过本地构建；`-QuietInstall` 仅随 `-UseInstaller` 静默安装，`-NoRestart` 结束后不启动，`-StartupRepair` 是 1.6.0 窄修复、与 `-UseInstaller` 互斥。非管理员时脚本经 UAC 重启，需用户确认。依赖/exe 变化的完整安装与 UAC 见[部署指南](desktop-deployment.md)。
 
 批处理入口的单杠字母开关可以登记于 run.switches，help/plan/audit 共用；其他入口仍要求双杠元数据键。`--plan` 会显示所传安装开关的行为标签而不启动执行器。默认与开关标签是可能副作用说明，不做标签抵消或参数权限判断；具体互斥及跳过行为以本段和部署实现为准。
 
@@ -402,7 +402,7 @@ Dependency Audit 另以固定 `cargo-audit 0.21.2` 分别扫描 `desktop-tauri/s
 | Nightly visual regression | 每日北京时间 02:00 / 手动：主题、截图与视觉矩阵 |
 | Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
 
-当前办公机修复与未执行范围见 [1.7.1](releases/v1.7.1.md)；[独立审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md) 保留修复前证据，[工作流审计（2026-09-08）](archive/audits/workflow-audit-2026-09-08.md) 保留为历史。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
+当前实现、安装范围与未执行项目见[项目状态](project-status.md)和[未来规划](roadmap.md)。[1.7.1](releases/v1.7.1.md)、[独立审计（2026-09-12）](archive/audits/office-independent-audit-2026-09-12.md)及[工作流审计（2026-09-08）](archive/audits/workflow-audit-2026-09-08.md)保留当时证据。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
 
 ### 011 发行输入绑定（2026-09-21）
 

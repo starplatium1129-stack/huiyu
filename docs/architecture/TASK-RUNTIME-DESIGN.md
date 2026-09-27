@@ -1,6 +1,6 @@
 # Durable Task Runtime 实施规范
 
-> 设计规范，尚未接入生产。对应新版 R5–R7。前置：workspace 写入、权限和恢复协议已通过隔离测试；入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
+> 已落地的实施契约，对应修订版 R5–R7。桌面在已激活 workspace 上使用 durable runtime；Web 数据域与任务行为保持各自平台边界。实现、隔离验收及本机安装范围见 [R3–R11 实施记录](R3-R11-EXECUTION-REPORT.md)，当前安装身份以[项目状态](../project-status.md)为准。真实模型、并发负载及其他设备验收不由安装记录替代；入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
 
 ## 1. 产品语义先固定
 
@@ -37,7 +37,7 @@ principalId 从服务端认证产生，不信任 body 自报 owner。桌面稳�
 
 ## 3. 幂等接受协议
 
-新增任务 API 的具体路径在 R5 固化，推荐版本化 `/api/tasks/v1`；不是再实现一套 provider。服务内部调用现有 generation/anima/video 逻辑，将持久化点接入它们。
+任务 API 已固定为 `/api/tasks/v1`，由 `routes/tasks.ts` 接入已激活桌面 workspace。服务内部调用现有 generation/anima/video 逻辑，将持久化点接入它们，不另建 provider。
 
 1. 客户端在提交动作开始生成 requestKey；页面组件销毁后，应用级提交句柄仍能查询这个 key。一次用户重试原请求使用同 key；用户明确“重新生成”才创建新 key。
 2. 服务端校验权限、参数和准入，在短事务中建立唯一 `(principalId, requestKey)` 与 taskId，保存参数指纹、冻结输入及 queued 状态。

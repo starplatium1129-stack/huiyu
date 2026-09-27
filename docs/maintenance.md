@@ -1,6 +1,6 @@
 # 场景库维护手册
 
-场景库采用“维护页面 → 分片源文件 → 自动构建 → 浏览器产物”的结构。日常维护通过网页完成；底层仍按小文件保存，网页继续读取一个兼容的聚合文件。
+场景库采用“维护页面 → 分片源文件 → 自动构建 → 浏览器产物”的结构。开发工作区日常维护通过本机网页完成；底层按小文件保存，网页按需读取 core、index 与角色分组产物，完整聚合供维护和兼容读取。桌面安装版不开放场景源库写入接口。
 
 ## 速查表
 
@@ -21,7 +21,7 @@
 | 检查 CSS 是否有硬编码颜色 | 命令行执行 `npm run lint:colors`，输出 0 条就干净 |
 | 查看备份历史 | 场景管理 → 维护工具 → 备份历史 |
 
-本地作品备份恢复会先暂存新图片，再统一更新作品和项目；覆盖恢复保留旧原图，确认结果后可通过存储清理释放空间。清理会保护回收站、项目与当前标签页草稿引用；操作前先关闭其他创作标签页并导出备份。失败时保留恢复候选，可重试；细节及设备验收边界见[剩余功能升级记录](archive/audits/remaining-features-upgrade-2026-09-10.md)。
+网页作品备份恢复会先暂存新图片，再统一更新作品和项目；覆盖恢复保留旧原图，确认结果后可通过存储清理释放空间。清理会保护回收站、项目与当前标签页草稿引用；操作前先关闭其他创作标签页并导出备份。桌面 workspace 使用本机私库备份和恢复候选，下载的 JSON 是绑定当前 workspace 的恢复凭证；旧网页备份通过独立迁移入口处理，不能直接覆盖桌面库。当前边界见[工程契约](engineering-contracts.md#重构期间的任务与持久化边界)，早期网页恢复记录见[历史升级记录](archive/audits/remaining-features-upgrade-2026-09-10.md)。
 
 所有颜色都应该通过 `var(--xxx)` 引用设计 token，不要直接写 `#XXXXXX`。
 做完任何 CSS 改动后养成运行 `npm run lint:colors` 的习惯，可以避免设计退化。
@@ -58,18 +58,19 @@
 | `data/blueprints/*.json` | 热门角色场景蓝图唯一数据源，每个 franchise 一个文件 | 是，按系列文件直接编辑 |
 | `data/blueprints/manifest.json` | 热门角色场景蓝图分片清单：声明系列文件与合并顺序 | 新增系列时编辑（`blueprints:split` 会自动补） |
 | `data/scene-blueprints.json` | 供静态网页与网关读取的蓝图构建产物，由 `npm run blueprints:build` 从分片生成；**不入库**，网关启动/维护脚本自愈重建 | 否 |
-| `data/scenes.json`、`data/scenes-nene/natsume/shared.json`、`data/scenes-core.json`、`data/scenes-index.json` | 供静态网页读取的构建产物；**不入库**（2026-08-28 起），由 `scripts/lib/ensure-data-build.js` 在网关启动/门禁缺失时自愈重建 | 否 |
-| `data/character-reference-standards.json` | 角色 × 多服装 4 视角参考标准的手写权威源；结构契约 `scripts/contracts/character-reference-standards.schema.json`（ajv，`test:contract` 阶段校验） | 是，改后跑 `node scripts/tests/test-character-reference-contract.js` |
-| `data/character-reference-view.json` | 前端懒加载的参考档案视图；视角字段必须逐字段镜像 standards，由同一契约测试交叉校验（漂移即红） | 否，改 standards 后同步此文件 |
+| `data/scenes.json`、`data/scenes-nene.json`、`data/scenes-natsume.json`、`data/scenes-shared.json`、`data/scenes-core.json`、`data/scenes-index.json` | 供网页读取的构建产物；**不入库**，由 `scripts/lib/ensure-data-build.js` 在网关启动/门禁缺失时自愈重建 | 否 |
+| `data/references/<人物ID>.json`、`data/references/manifest.json` | 参考登记权威源；每个人物分片同时保存 standard 与 view，manifest 声明元数据和顺序 | 登记/同步经 `scripts/lib/reference-store.ts` 写回；改后检查参考契约并运行 `reference:build` |
+| `data/character-reference-standards.json`、`data/character-reference-view.json` | 从人物分片生成的兼容聚合，**不入库**；前端懒加载 view，镜像契约由 `test-character-reference-contract.js` 核对 | 否，运行 `npm run wf -- reference:build` |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
 | `scripts/lib/scene-store.ts` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `src/utils/sceneUX.ts` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
 | `tools/nav.ts`、`tools/local-status.ts` | 静态 HTML 手册导航与轻量服务状态；不控制 Vue 应用导航 | 页面入口或服务状态契约变化时编辑 |
 | `src/utils/quickCreate.ts` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
-| `src/utils/storageHealth.ts` | 历史损坏、缺图、孤立图和容量诊断 | 存储体检规则变化时编辑 |
+| `src/utils/storageHealth.ts`、`src/platform/desktop/backupActions.ts` | 网页存储诊断与桌面 workspace 状态/清理各自的入口 | 修改对应平台规则 |
 | `src/utils/sdError.ts` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
-| `src/utils/sdRequest.ts` | 浏览器与维护脚本共用的 SD 请求构建、扩展参数和响应解析 | SD 参数或扩展协议变化时编辑 |
-| `src/utils/backupCore.ts` | 本地备份格式、版本迁移、校验与合并规则 | 备份结构变化时编辑 |
+| `src/utils/sdRequest.ts` | 前端 SD 请求构建、扩展参数和响应解析；网关输入与上游协议在 runtime 边界另行校验 | SD 参数或扩展协议变化时编辑 |
+| `src/utils/backupCore.ts`、`src/platform/desktop/backupActions.ts` | 网页备份格式/迁移规则与桌面 workspace 备份凭证/候选恢复 | 修改对应平台备份契约 |
+| `src/application/artwork/artworkRepository.ts`、`src/storage/artworkRepository.ts`、`src/platform/web/`、`src/platform/desktop/` | 作品端口、当前平台委派与两种持久化适配；桌面 workspace 由 `server/workspace/` 管理 SQLite 和媒体文件 | 不让 View 直接绑定数据库；桌面激活后不回落写旧浏览器库 |
 | `src/views/PromptBuilderView.vue`、`src/stores/promptBuilderStore.ts`、`src/components/` | 导演台编排、状态与独立生命周期组件 | 修改对应职责时编辑 |
 | `server.ts`（运行 `server.js`） | 只负责组装网关、中间件、静态资源、SD 代理和进程启动 | 新增顶层能力时编辑 |
 | `server/config.ts`、`server/security.ts`（运行对应 .js） | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
@@ -80,19 +81,19 @@
 
 ## 人物、服装与参考域的维护边界
 
-2026-09-13 按实际解析和写入链核对。此处补充上表，不另建一套字段契约；验证范围仍按 [工作流分层规则](workflow.md#门禁与构建) 选择，不因编辑档案就默认执行全部构建或参考同步。
+此处补充上表，不另建一套字段契约；验证范围按 [工作流分层规则](workflow.md#门禁与构建) 选择，不因编辑档案就默认执行全部构建或参考同步。2026-09-13 的旧聚合与静态主题复核仅作历史依据。
 
 | 域 | 维护与读取入口 | 要保留的边界 |
 | --- | --- | --- |
 | 人物档案 | `data/characters.json` → `src/utils/characterProfiles.ts` → CharacterView | 详情解析仅保留其显式字段；JSON 中存在 traits/visual_dna 等字段不代表详情页正在展示。保存链还会清理 lora.recommended_scene 引用 |
 | 热门生成身份 | `data/popular/` 源 → popular:build → 聚合 → `src/utils/popularContent.ts` | 展示档案与生成身份用途独立；不能把两份同名字段机械合并 |
 | 服装 | 热门分片 outfits，经 parseOutfit 解析；工作室服装另见 useDirectorCatalog、promptPolicy 与 promptBuilderStore | 热门服装按角色 ID + 服装 ID 定位；parseOutfit 保留 default，不保留分片 isDefault；参考 view 的 isDefault 属于另一条派生链 |
-| 参考标准与视图 | standards/view；写入者包括 sync-multi-outfit-standards 和 register-pending-reference-outfits | view 是合并投影且登记器会写入，不是纯覆盖产物。镜像契约通过不代表图片存在或已审核 |
+| 参考标准与视图 | `data/references/` → reference:build → standards/view 聚合；登记与旧库同步统一经 reference-store 写回分片 | 分片内保留完整 view 投影，不能只编辑旧聚合。镜像契约通过不代表图片存在或已审核 |
 | 角色蓝图 | `data/blueprints/` 源 → blueprints:build → 聚合；运行时按角色解析 outfitId | UI 保存通过变更集与持久化事务同步源分片、聚合及版本；旧基线返回 409 并保留草稿，存在未恢复事务时读取拒绝半写状态。隔离验证与真实断电边界见 [当前实现](project-status.md) 和 [剩余验收](roadmap.md#后续工作流与内容数据治理)；旧风险证据保留在 [历史复核](archive/audits/asset-document-review-2026-09-13.md) |
 
 参考同步有实际数据写入，不能作为档案编辑后的固定必跑步骤：`sync-multi-outfit-standards.js` 根据磁盘四个参考机位是否齐全过滤热门服装，并允许角色级旧机位路径回退；在缺素材根的机器上运行可能写出空形态。名称启发式产生的 isNsfw 与该磁盘过滤是两条独立逻辑，不能据此解释某形态缺失原因。同步中的 `o.default || idx === 0` 无条件将首套标成默认；若其他服装也标 default，需检查输出是否出现双默认，不能称为“仅无标记时兜底”。
 
-`accent_color` 有机器读取者：覆盖审计 `report-content-coverage.js` 将其带入缺主题报告，但不与 tokens.css 比对。主题渲染以实际 CSS 为准；不同颜色值不能直接判为数据冲突。更多已核实范围与未验收项见 [盘点复核](archive/audits/asset-document-review-2026-09-13.md)。
+`accent_color` 由 `src/utils/characterTheme.ts` 参与运行时主题派生，已有调校例外优先，缺失或非法值回退默认强调色。`tokens.css` 保留通用派生规则，普通新角色无需新增选择器；覆盖审计识别该通用契约，但不证明颜色对比度或实际渲染。主题改动仍需双主题视觉检查。旧静态主题结论见[历史复核](archive/audits/asset-document-review-2026-09-13.md)。
 
 ## 角色聊天、实时语音与 Live2D
 
@@ -135,7 +136,7 @@ npm run test:voice-quality
 
 ## 作品册
 
-作品册由 `src/views/GalleryView.vue` 提供展览布局，`useKVStore` 与 `useImageStore` 负责 IndexedDB 数据。展墙按作品记录尺寸和图片解码后的真实尺寸保留比例，禁止为统一卡片高度使用 `object-fit: cover`。列表只延迟读取缩略展示，进入观画模式后再加载选中作品；离开页面或切换筛选时必须释放 Blob Object URL。
+作品册由 `src/views/GalleryView.vue` 提供展览布局，通过作品 Repository 读取当前平台数据：Web adapter 使用 IndexedDB，桌面激活后由 workspace 管理私库与媒体文件。展墙按作品记录尺寸和图片解码后的真实尺寸保留比例，禁止为统一卡片高度使用 `object-fit: cover`。列表只延迟读取缩略图，进入观画模式后再加载选中作品；页面停用、卸载或切换筛选时释放高清原图与查看器 Blob URL，迟到读取不得填回旧激活代次。
 
 修改作品册后至少运行 `npm run test:gallery`，并分别检查横图、竖图、方图、空作品册、键盘方向键、侧栏和移动端两列布局。
 
@@ -147,9 +148,9 @@ npm run test:voice-quality
 
 `npm run test:e2e` 使用本机 Chrome/Edge 或 Playwright Chromium 打开首页、导演台、场景管理、作品册、控制面板与角色房间，覆盖外部控制器加载、场景数据、作品比例、沉浸观画、首页性能预算和热页 chrome。本机可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 或依赖配置中的本机浏览器探测。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
 
-前端由 `vue-tsc` 检查 SFC 与 TypeScript；网关运行时模块由 `tsconfig.runtime.json` 编译为同目录 `.js`/`.d.ts`，这些产物被 Git 忽略，不提交。新增共享契约时优先定义在生产模块旁或 `src/types/`，测试直接加载生产 TypeScript，不再维护 JavaScript 测试副本。
+前端由 `vue-tsc` 检查 SFC 与 TypeScript；服务使用 `tsconfig.runtime.json`，网关/路由/维护使用 `tsconfig.node.json`，测试和独立浏览器脚本有各自配置。`build:runtime` 生成对应运行文件，产物被 Git 忽略。前端领域类型放 `src/types/`，跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不得反向依赖 `src/`，纯类型也受检查。测试直接加载生产 TypeScript，不维护另一份 JavaScript 源码。
 
-CI 在 `.github/workflows/quality.yml`：push 与 PR 执行 `npm ci` → `npm run validate` → Playwright Chromium e2e。
+CI 在 `.github/workflows/quality.yml`：push 与 PR 分别运行静态检查、前端覆盖率与 unit、contract 和最低 Node 兼容检查；关键 Chromium e2e 等待前三个检查任务通过。各任务独立安装和构建，不能复用另一任务工作区的 dist。
 
 `scripts/maintenance/validate-content-contracts.js` 检查角色 ID、身份锚点、肖像文件、LoRA 强度、测试场景和场景角色引用。它已进入 `npm run validate`，修改 `characters.json` 或 `loras.json` 时不再依赖人工发现引用断裂。
 
@@ -161,9 +162,9 @@ GPU 串行队列源文件是 `services/serial-queue.ts`（emit 为同目录 `.js
 
 TTS 服务源文件是 `services/tts-service.ts`（emit 为同目录 `.js`）。负责声线校验、参考音频/权重切换与 GPT-SoVITS 串行合成。修改后运行 `npm run build:runtime`、`npm run test:voice-profile` 与 `npm run test:chat`。
 
-Ollama 服务源文件是 `services/ollama-service.ts`（emit 为同目录 `.js`）。负责模型列表、keep_alive 切换与 NDJSON 流式对话。修改后运行 `npm run build:runtime`、`npm run test:chat` 与 `npm run test:resource-scheduling`。
+Ollama 服务源文件是 `services/ollama-service.ts`（emit 为同目录 `.js`）。负责模型列表、keep_alive 切换与 NDJSON 流式对话。修改后运行 `npm run build:runtime`、`npm run test:chat` 与 `npm run test:resource`。
 
-翻译服务源文件是 `services/translation-service.ts`（emit 为同目录 `.js`）。负责常驻中日翻译进程、缓存、HTTP 请求与 spawn-per-call 回退。修改后运行 `npm run build:runtime` 与 `npm run test:resource-scheduling`。
+翻译服务源文件是 `services/translation-service.ts`（emit 为同目录 `.js`）。负责常驻中日翻译进程、缓存、HTTP 请求与 spawn-per-call 回退。修改后运行 `npm run build:runtime` 与 `npm run test:resource`，并定向运行受影响的翻译行为测试。
 
 Live2D 服务源文件是 `services/live2d-service.ts`（emit 为同目录 `.js`）。负责模型清单引用收集、路径逃逸防护与可用性检查。修改后运行 `npm run build:runtime` 与 `npm run test:live2d`。
 
@@ -195,9 +196,9 @@ VOICE_BASELINE_LIVE=1 VOICE_BASELINE_WRITE=1 npm run benchmark:voice-baseline
 2. 点击“新增场景”，或复制一个相近场景后修改。
 3. 表单内保存只是暂存，可以继续检查其他场景。
 4. 点击页面顶部“保存到项目”。
-5. 系统会自动创建完整事务备份、写入正确分片、同步 Tag 与推荐层级、统一评级与提示词，并运行场景校验。
+5. 系统会创建声明范围内的事务备份、写入分片、同步 Tag 与推荐层级，执行分级、规范化和场景编译契约校验。
 
-页面顶部会显示待保存修改数量。标题和故事是必填项，招牌场景还必须填写推荐理由；如果带着未保存修改离开，浏览器会先提醒。检查失败时，场景分片、聚合文件、Tag、推荐配置、角色/LoRA 引用、Manifest 和受影响样张会作为一个事务恢复。下架场景也只有在点击“保存到项目”并通过校验后才会真正生效。
+页面顶部会显示待保存修改数量。标题和故事是必填项，招牌场景还必须填写推荐理由；如果带着未保存修改离开，浏览器会先提醒。检查失败时按事务声明恢复受影响文件；中断或恢复失败保留 journal 并拒绝半写内容读取，须按[恢复工作流](workflow.md#办公机工程阶段入口2026-09-15)处理。下架场景只有在点击“保存到项目”并通过校验后才生效。保存通过不代表真实画面验收。
 
 ## 替换场景样张
 
@@ -214,7 +215,7 @@ VOICE_BASELINE_LIVE=1 VOICE_BASELINE_WRITE=1 npm run benchmark:voice-baseline
 
 - `searchAliases` 同时承担同义词扩展和中文整句意图拆解。优先添加完整的二字以上词语；单字仅在用户独立输入时识别，避免“夏目”误命中“夏日”。
 - 搜索结果先按标题、角色、情绪、地点、故事等字段的命中强度排序，再结合个人偏好和主理人精选顺序。
-- 个人偏好只读取浏览器本机的作品历史，根据使用次数、五维评分、收藏和最近使用时间计算；不上传、不新增远程追踪。
+- 个人偏好只读取当前平台的本机作品历史，根据使用次数、五维评分、收藏和最近使用时间计算；Web 与桌面各用自己的持久权威，不上传、不新增远程追踪。
 - 没有历史记录时，智能推荐会自动退回主理人精选顺序，因此新用户体验不依赖个人数据。
 
 ## 快速创作
@@ -232,11 +233,11 @@ VOICE_BASELINE_LIVE=1 VOICE_BASELINE_WRITE=1 npm run benchmark:voice-baseline
 
 ## 本地备份与生成队列
 
-- 备份文件通过 `src/utils/backupCore.ts` 统一声明格式与版本，脚本测试直接覆盖该生产核心。历史记录仍会在恢复后经过现有的历史迁移函数，旧记录无需手动转换。
-- 合并恢复以记录 ID 去重，备份中的同 ID 数据优先；覆盖恢复会先明确确认，并替换当前项目、记录、设置与本地图片。
+- 网页备份通过 `src/utils/backupCore.ts` 声明格式与版本；合并恢复按记录 ID 去重，备份中的同 ID 数据优先，覆盖恢复先明确确认。旧历史继续经过已有迁移函数。
+- 桌面 workspace 备份由 `src/platform/desktop/backupActions.ts` 请求 runtime 保存私库与媒体，并下载恢复凭证；恢复先创建核验候选，不将网页 JSON 直接覆盖为桌面主库。
 - 网关维护备份落在 `runtime/maintenance-backups/`，每次“保存到项目”或替换样张前都会写入一份带时间戳与 label 的完整快照；场景管理 → 维护工具 → 备份历史可查看最近 50 份清单（ID / label / 创建时间 / 文件数）。
 - 队列任务在加入时冻结 Prompt、负面词、角色、场景、构图、项目和 SD 参数，后续修改工作台不会污染已排队任务或其作品记录。
-- 队列只负责当前页面会话中的顺序生成，不持久化未完成任务，避免刷新后意外继续调用 SD。
+- 桌面 workspace 已接收的任务由 runtime 持久管理，离开页面只停止观察，明确取消经任务命令执行；接收应答丢失按稳定请求身份查询，不自动重投。Web 待办队列保存快照，恢复后暂停，用户继续后才出图；它不等同于桌面 runtime 任务。
 
 ## 从旧版场景管理器导出文件恢复
 
@@ -283,7 +284,7 @@ node scripts/maintenance/apply-scene-patch.js --patch patch.json --apply
 
 特性：
 - 经典场景与热门角色蓝图统一支持
-- 自动跳过 `data/prompt-pinned-scenes.json` 中受保护字段
+- 命中 `data/prompt-pinned-scenes.json` 的受保护字段时拒绝整批；基线缺失或损坏同样拒绝
 - 写盘前自动备份到 `runtime/maintenance-backups/`
 - 写盘后自动跑 `validate-scenes.js` + `validate-content-contracts.js`
 - 校验失败自动回滚
@@ -298,13 +299,13 @@ npm run validate
 该命令依次检查：
 
 - 聚合文件是否与分片完全一致；
-- 标签、Prompt 和负面词是否已经规范化；
+- 场景实际编译后的镜头、Prompt 与负面词契约是否一致；可选格式建议不等于必须重写正文；
 - 内容分级是否与场景描写一致；
 - Scene ID、角色、时间、日文叙事与角色 DNA 是否有效。
-- 导演台外部模块是否完整、可解析，并按既定顺序载入。
+- 前端、网关和模块依赖边界及对应行为回归。
 - 本地备份能否创建、迁移旧版本、合并记录并拒绝未知的新版本。
 
-只要该命令通过，提交中的场景源和网页读取数据就是同步的。
+通过仅表示本次源码/产物与所选工程契约检查通过，不包含生产网页构建、真实出图、参考图片或桌面设备验收；按[分层规则](workflow.md#门禁与构建)补受影响范围。
 
 ## 维护约束
 

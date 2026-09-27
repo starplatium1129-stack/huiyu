@@ -1,6 +1,6 @@
 # 桌面启动、连接与能力边界实施规范
 
-> 设计规范，尚未接入生产。R1 实现最小安全 bootstrap；R8 收敛完整桥接/连接层；R9 才切换 bundled UI。入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
+> 已落地的实施契约。R1 的最小 bootstrap、R8 的类型化桥接/连接层与 R9 的 bundled UI 已接入；本机真实安装、`3002` 来源迁移和独立界面切换见 [R3–R11 实施记录](R3-R11-EXECUTION-REPORT.md)，当前安装身份以[项目状态](../project-status.md)为准。来源切换仍由经过验证的持久激活指针决定，普通构建不自动迁移其他 profile；入口：[总计划](REFACTOR-EXECUTION-PLAN.md)。
 
 ## 1. 默认选择，不再把 transport 留给下一轮研究
 

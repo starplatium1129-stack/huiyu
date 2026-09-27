@@ -4,11 +4,12 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors'
  * scripts/maintenance/download-wd14.ts
  *
  * 一键下载本地 WD14 真实反推模型（wd-v1-4-moat-tagger-v2）。
- * 默认使用 hf-mirror.com（国内高速镜像），无需翻墙。
+ * 默认使用 ModelScope；--mirror 切换 HF-Mirror，--official 切换 HuggingFace。
  * 下载完成后放进 runtime/models/interrogate/，自动点亮前端真实反推。
  *
  * 用法：
- *   node scripts/maintenance/download-wd14.js              # 默认从 hf-mirror.com 高速下载
+ *   node scripts/maintenance/download-wd14.js              # 默认从 ModelScope 下载
+ *   node scripts/maintenance/download-wd14.js --mirror    # 从 HF-Mirror 下载
  *   node scripts/maintenance/download-wd14.js --official  # 从 HuggingFace 官方源下载
  */
 
@@ -40,7 +41,7 @@ function getFileUrl(remotePath: string): string {
   if (USE_MIRROR) {
     return `https://hf-mirror.com/SmilingWolf/wd-v1-4-moat-tagger-v2/resolve/main/${remotePath}`
   }
-  // 默认使用 ModelScope（国内阿里云千兆直连 CDN，免代理、最稳最快）
+  // 默认使用 ModelScope；实际速度与可达性由运行环境决定。
   return `https://www.modelscope.cn/models/fireicewolf/wd-v1-4-moat-tagger-v2/resolve/master/${remotePath}`
 }
 

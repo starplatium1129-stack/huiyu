@@ -43,7 +43,7 @@
 
 ## 二、双引擎（Anima vs. Krea 2）编写范式
 
-| 维度 | Anima (Pencil-XL / SDXL) | Krea 2 (Flow / Diffusion) |
+| 维度 | Anima | 本地 Krea 2 |
 | :--- | :--- | :--- |
 | **核心驱动** | 标签矩阵（Danbooru Tags）为主，散文为辅 | 纯自然语言散文（Prose）主导 |
 | **NSFW 载体** | `nsfwTokens` 进入 `exactControls` | `nsfwProse` 置于 `sceneProse` 最首位 |

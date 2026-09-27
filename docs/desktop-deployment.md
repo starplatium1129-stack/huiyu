@@ -3,6 +3,8 @@
 统一入口只有一个：**`deploy-desktop.bat`**（项目根）。实现脚本也只有一个：
 `scripts/maintenance/deploy-desktop-quick.ps1`。不要再新建部署脚本。
 
+本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；2026-09-27 的完整安装见[当次证据](evidence/memory-optimization-2026-09-27.json)。前端变化需要重新打包并完整安装；脚本默认的增量模式适用于下面决策表中的网关、数据和动态资源变化。后续源码改动需另行核对安装身份。
+
 ## 打包前检查
 
 当前 SQLite 桌面工作区使用排他 owner 锁。支持维护协议的新宿主可由部署入口正常退出：先做只读能力/进程身份核对并准备安装包或构建，写入安装目录前通知现有三个窗口冻结输入、确认延迟保存；全部确认后才通过宿主既有认证通道停止新请求，排空已准入写入、回收自有网关并确认锁释放。任一窗口仍忙、配置表单未提交或保存失败，部署就取消，不代替用户提交配置。只隐藏窗口不等于退出。
@@ -32,7 +34,7 @@ Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x6
 本机反复验证可使用 `npm run wf -- desktop:package-local`：仍经过完整前端构建、资源暂存和原生编译，使用 `desktop-tauri/tauri.local.json` 跳过压缩，生成更大的本地安装包，避免反复等待压缩。普通打包入口使用默认 LZMA 压缩。本地无签名密钥时生成未签名安装包，不用于自动更新发布。
 
 ```bat
-deploy-desktop.bat                  :: 增量部署（默认）
+deploy-desktop.bat                  :: 网关/数据增量部署（脚本默认；bundled UI 前端变化用完整安装）
 deploy-desktop.bat -UseInstaller    :: 完整安装（跑安装包）
 deploy-desktop.bat -UseInstaller -InstallerPath "D:\path\verified-setup.exe" :: 指定本次已验收安装包
 deploy-desktop.bat -SkipBuild       :: 已手动 build 过，跳过前端构建
@@ -63,7 +65,7 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 | `assets/` 新增/修改静态资源 | **增量** | 直接复制 |
 | `assets/` **删除**了资源 | **增量** | 必须带 `-Cleanup`，否则安装目录里那份会永久残留 |
 | `package.json` 新增运行时依赖 | **完整安装** | 依赖在 `node_modules`，增量不碰它 |
-| `desktop-stage-resources.js` 的 `RUNTIME_DEPENDENCIES` | **完整安装** | 改了白名单要重新打包才生效 |
+| `scripts/maintenance/desktop-stage-resources.ts` 的 `RUNTIME_DEPENDENCIES` | **完整安装** | 改了白名单要重新打包才生效；修改 TS 源，不手改生成 JS |
 | Rust 代码（`desktop-tauri/src-tauri/src/`） | **完整安装** | 增量不替换 exe |
 | `tauri.conf.json`（版本号、CSP、资源清单等） | **完整安装** | 同上 |
 | 首次安装 / 换机器 / 桌面端起不来 | **完整安装** | 需要 exe 和完整目录结构 |
@@ -76,10 +78,10 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 ### 增量部署（默认，秒级）
 1. `npm run build`（除非 `-SkipBuild`）
-2. 停应用 + 停 3123 网关端口
+2. 请求已核验宿主维护退出，排空写入并确认自有网关退出、owner 锁释放
 3. 清理 `-Cleanup` 登记的残留目录
-4. 刷新 `build-scenes` / `build-popular` 数据产物
-5. 依次复制 `data` → `dist` → `assets` → `routes` → `server` → `services` → `scripts/lib` → `server.js`
+4. 刷新 `build-scenes` / `build-popular` / `build-blueprints` 数据产物
+5. 依次复制 `data` → `dist` → `assets` → `routes` → `server` → `docs` → `services` → `scripts/lib` → `server.js`
 6. 剪枝 `dist/_app` 里失效的内容哈希 chunk
 7. 清 WebView2 缓存，验证反推依赖，重启
 
@@ -88,7 +90,7 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 > 一年缓存写进新 URL，之后再也不刷新。
 
 ### 完整安装（`-UseInstaller`，约 1 分钟 + 向导）
-跑 `runtime/desktop-updates/` 下最新的 `*-setup.exe`（NSIS）。
+使用 `-InstallerPath` 指定的已验收安装包；未指定时选定并固定 `runtime/desktop-updates/` 下最新的 `*-setup.exe`。NSIS 是安装核心，正式发行可由现代安装展示层封装。
 它会覆盖整个 `gateway/`（**包括 `node_modules`**）并替换 exe。
 
 ---
@@ -96,7 +98,7 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 ## 三、三个必须知道的坑
 
 ### 1. 新增运行时依赖，光 `npm install` 没用
-`desktop-stage-resources.js:35` 的 `RUNTIME_DEPENDENCIES` 白名单决定了 gateway 的
+`scripts/maintenance/desktop-stage-resources.ts` 的 `RUNTIME_DEPENDENCIES` 白名单决定了 gateway 的
 `package.json` 里有什么、npm 会装什么。新依赖**必须登记进白名单再重新打包**，
 否则网页版正常、桌面端静默降级——不报错，只是功能退化。
 
@@ -164,8 +166,7 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
 要更彻底可以模拟网关环境跑一次推理（需设置 `AI_WORKSPACE_ROOT` 指向 AI 工作区）。
 
 **Q：为什么必须我点 UAC？**
-写入 `C:\Program Files` 需要管理员。agent 侧发起提权（`Start-Process -Verb RunAs`、
-Bash 调 powershell）被安全策略拦截——这是命令校验规则，不是权限问题，只能由用户确认。
+写入 `C:\Program Files` 需要管理员。部署入口会请求 Windows 提权，由用户确认 UAC；取消授权时返回失败，不记录安装成功。
 
 **Q：安装包多大算正常？**
 应与上一版采用相同压缩方式的安装包比较，以实际产物为准。打包内容主要来自 `desktop-tauri/src-tauri/resources`，还包含程序与 Node 运行时。本地测试包跳过压缩，通常明显更大；正式 LZMA 包突然变大时，检查是否误带入模型权重、参考素材或其他大媒体。

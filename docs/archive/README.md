@@ -4,6 +4,11 @@
 
 [返回主索引](../INDEX.md)
 
+## 分批状态快照
+
+- [项目状态分批记录（截至 2026-09-27）](completed/project-status-2026-09-27.md)：从现行状态页移出的完整过程，保留失败、补验、当时未安装及旧数据快照。最新实现和本机安装只在 [项目状态](../project-status.md) 维护。
+- [项目状态（2026-08-31）](completed/project-status-2026-08-31.md)：更早的状态快照。
+
 
 <a id="audits"></a>
 
@@ -13,7 +18,7 @@
 - [资产与资料复核（2026-09-13）](audits/asset-document-review-2026-09-13.md)：资产误报更正、六份盘点结论与后续资料交付边界。
 
 
-- [页面切换、工作台动效与旧模块清理（2026-09-15）](audits/ui-navigation-and-unused-2026-09-15.md)：导航/动效验证和后续删除分阶段记录；桌面同步仍未完成。
+- [页面切换、工作台动效与旧模块清理（2026-09-15）](audits/ui-navigation-and-unused-2026-09-15.md)：导航/动效验证、后续删除及当时未同步安装的记录；后续交付查当前状态。
 - [场景滚动与角色档案补全（2026-09-12）](audits/scene-scroll-character-profiles-2026-09-12.md)
 - [全站交互细节审查与优化（2026-09-12）](audits/interaction-detail-polish-2026-09-12.md)
 

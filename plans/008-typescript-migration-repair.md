@@ -1,9 +1,11 @@
-# 008 — TypeScript 迁移修复（本机收尾完成，外置素材/实机验收待补）
+# 008 — TypeScript 迁移修复（阶段收尾完成）
 
-- **Status**: LOCAL_COMPLETE — 类型、构建、测试与 NSIS 打包已通过；参考素材目录与安装器实机验收仍需在目标环境完成
-- **Branch**: 已 fast-forward 到 `main`（工作分支 `codex/ts-migration-repair-20260915` 与 main 同一提交）
+> 2026-09-27 入口核对：后续本机完整安装已有证据，最新身份统一见 [项目状态](../docs/project-status.md)。下方保留 9 月 16 日的类型收尾、分批验证与当时待验范围；其中安装/UAC 未执行的说明不是当前本机状态。外置参考素材、其他机器、真实模型与未覆盖设备组合按 [未来规划](../docs/roadmap.md) 验收，历史 PASS 不替代最新工作区检查。
+
+- **2026-09-16 Status**: LOCAL_COMPLETE — 类型、构建、测试与 NSIS 打包已通过；参考素材目录与安装器实机验收当时仍需在目标环境完成
+- **阶段 Branch**: 已 fast-forward 到 `main`（当时工作分支 `codex/ts-migration-repair-20260915` 与 main 同一提交）
 - **Commit**: 机械阶段 20 个检查点，最新为「索引签名规则后的收敛」（见 `git log --oneline`）
-- **Severity**: BLOCKER — 构建、测试、桌面打包、CI 全链路不可用
+- **原始 Severity**: BLOCKER — 迁移初期构建、测试、桌面打包、CI 全链路不可用
 - **Category**: Build / TypeScript 迁移
 - **剩余规模**: 0 个类型错误（node 0 + tests 0）
 
@@ -13,10 +15,10 @@
 - 行为验证：`test:frontend` 783/783、`test:unit` 1036 用例、`test:contract` 33/33 通过；`test:check` 通过。
 - 产物链路：TypeScript 强制重建通过；已取消跟踪 448 个迁移生成 JS/MJS，保留 3 个 Live2D vendor JS 与 `poc/audit-stability-apply.cjs`；前端 `npm run build` 与 NSIS `npm run package:tauri` 均通过。
 - 后续复验：最新蓝图基线重新预压缩，关键浏览器回归 312/312 通过，NSIS 包已重建并再次通过隔离网关验证；TypeScript 四项目与 `typecheck:app` 仍为 exit 0。
-- 当前综合 `npm run check` 仅剩 `content-contracts` / `ref-urls`：本机未配置 `AICS_CHARACTER_REF_ROOT`，因此 2534 个外置参考图声明无法做文件存在性核验。未修改索引或用 pending 掩盖缺图。
+- 当时综合 `npm run check` 仅剩 `content-contracts` / `ref-urls`：本机未配置 `AICS_CHARACTER_REF_ROOT`，因此 2534 个外置参考图声明无法做文件存在性核验。未修改索引或用 pending 掩盖缺图。
 - 未执行：安装器启动、UAC、Windows 实机/双屏 DPI、Live2D 原生与真实模型出图验收；这些需要目标机器和外部素材/服务。
 
-## 已完成
+## 阶段已完成（2026-09-16 记录）
 
 - [x] TypeScript 迁移收敛：`node`、`tests` 类型错误均为 0；`services`、`browser`、`node`、`tests` 四个官方项目检查全部通过。
 - [x] 迁移生成物治理：强制重建通过，448 个生成的 JS/MJS 已取消 Git 跟踪；保留 3 个 Live2D vendor JS 与 `poc/audit-stability-apply.cjs` 例外。
@@ -25,7 +27,9 @@
 - [x] 产物验证：前端生产构建、数据预压缩、桌面资源暂存与 NSIS 安装器打包均通过；隔离网关验证 PASS。
 - [x] 本计划已按当前实测结果更新，历史迁移快照与最终结果已区分。
 
-## 待完成
+## 当时待验清单（2026-09-16 记录）
+
+此清单保留当时未执行项；后续本机安装结果与当前剩余范围从上方入口读取，不把同一安装再列为待执行。
 
 - [ ] 在目标环境提供外置参考素材根目录并配置 `AICS_CHARACTER_REF_ROOT`，重新执行 `content-contracts` 与 `ref-urls`，完成 2534 个参考图声明的文件存在性核验；不得通过修改索引或标记 pending 绕过。
 - [ ] 在上述检查变绿后，补跑一次完整的 `npm run validate` 作为端到端收口证据（其前端、单元、契约子套件已单独通过）。

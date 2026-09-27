@@ -2,7 +2,9 @@
 
 > 2026-09-12 建立并执行；本轮基线 `2fb33c7`，执行结果与证据见文末。总优先级见 [未来规划](../docs/roadmap.md)。
 
-## 当前状态（截至 2026-09-16）
+> 后续状态核对（2026-09-27）：本文保留 9 月 12–16 日的评估与执行历史。C/D 的后续选型与生产实现已由 [R0–R11 架构主线](../docs/architecture/REFACTOR-EXECUTION-PLAN.md)替代；本机已完成 SQLite 激活、`3002` 来源迁移及 bundled UI 切换，9 月 27 日安装已有[证据](../docs/evidence/memory-optimization-2026-09-27.json)，当前安装身份以[项目状态](../docs/project-status.md)为准。下面“继续使用 IndexedDB”“尚未安装”只描述当时范围；Web 仍保留独立 IndexedDB。真实模型、其他设备及物理断电等未覆盖项继续按 roadmap 验收。
+
+## 阶段状态（截至 2026-09-16，历史）
 
 ### 已完成
 

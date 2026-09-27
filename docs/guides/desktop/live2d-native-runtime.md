@@ -9,7 +9,7 @@
 
 2026-09-12 新增可选纹理画质与调度修复：房间和桌宠设置均可选原始、标准、节能，默认原始。标准/节能的纹理宽高分别除以 2/4，原始资源不改写；原生桥通过 `supportsTextureQuality` 声明支持，再接收 `textureScale`（1/2/4），旧桥继续原始画质。浏览器模型与渲染使用同一个应用时钟，显式桌宠可见性优先于非活动 WebView 的隐藏状态；原生隐藏等待可由命令唤醒。测试范围和测量见[本次移植复核与修复报告](../../archive/audits/live2d-port-fixes-2026-09-12.md)。本轮复用主工作区已有的 Cubism Native 5-r.5，以隔离输出完成 `cargo check --tests --locked --offline` 和 C++ 桥编译；6 项纯 Rust 测试、312 项关键浏览器回归和 2 项桥模拟测试通过。未完整链接或运行原生应用，以下历史原生 PASS 不适用于本轮新增原生逻辑。
 
-Native 路径已完成产品链路和 renderer 收口，但仍是桌面发布门禁的一部分，不替代浏览器路径，也不能在 D-10 完成前称为正式发布版本。浏览器默认使用 `wl-live2d`；Companion 可见启动时才按桌面契约请求 Native，`--hidden`、隐藏窗口和用户显式关闭时不得下载或加载大模型。
+Native 路径已完成产品链路和 renderer 收口；当前安装身份以[项目状态](../../project-status.md)为准，2026-09-27 的实际画面、隐藏释放和重开范围见[当次安装证据](../../evidence/memory-optimization-2026-09-27.json)。正式默认仍为线程 renderer，R12 独立进程与 R13 Electron 均为实验。本机安装不等于公开发布或 D-10 全部设备组合通过。浏览器默认使用 `wl-live2d`；Companion 可见启动时才按桌面契约请求 Native，`--hidden`、隐藏窗口和用户显式关闭时不得下载或加载大模型。
 
 宁宁与夏目 Native release snapshot 的角色完整性、动作、口型、情绪、hit-test、mask、透明度和颜色均通过人工检查。与 wl-live2d 对照时，同一动画帧的姿势、构图和部件完整性一致；剩余明度/饱和度差异属于校准级差异，不是结构缺陷。
 
@@ -18,8 +18,8 @@ Native 路径已完成产品链路和 renderer 收口，但仍是桌面发布门
 ```text
 ChatCharacterStage / useLive2D
   -> src/live2d/browserBackend.ts | nativeBackend.ts
-  -> window.aicsLive2dNative
-  -> Tauri shim / bridge
+  -> src/platform/desktop/nativeLive2d.ts
+  -> hostApi.ts typed IPC / Rust bridge
   -> desktop-tauri/src-tauri/src/live2d_overlay.rs
   -> desktop-tauri/native-live2d
   -> Cubism Core + official Framework + wgpu
@@ -59,7 +59,9 @@ ChatCharacterStage / useLive2D
 - 换角色和 destroy 必须释放 geometry、mask、uniform、upload、纹理和 CPU scratch。零长度/null FFI 数据必须 checked，不能构造未定义的 slice。
 - Surface `Lost`/`Outdated` 立即 reconfigure 且不计为成功帧；Timeout 跳帧，OutOfMemory 终止渲染循环。Soak 固定 DX12、剥离 `L2D_*` 调试环境并验证角色切换、最小工作量和最终释放。
 
-## 验证证据
+## 历史验证证据（当次范围）
+
+下列测试数量与 soak 记录属于原生接入阶段，不代表对当前源码重新执行；当前安装与卸载契约证据见上面的 2026-09-27 记录。
 
 - `cargo test --locked --manifest-path desktop-tauri/src-tauri/Cargo.toml`：13/13。
 - `npm run test:live2d-native:release`：3/3 snapshot，exit 0；真实加载宁宁/夏目并覆盖动作、口型、情绪、hit-test 和 PNG。
@@ -76,8 +78,8 @@ ChatCharacterStage / useLive2D
 
 ## 当前限制与接入点
 
-1. D-10 真实安装产品验收仍 BLOCKED：当前会话缺少管理员权限，GPT-SoVITS 离线，只有 100% 单屏，125/150% DPI、多屏、真实安装/迁移/卸载和 self-hosted Windows workflow 尚无完整证据。
-2. renderer selftest 和 renderer soak 不能替代安装包产品链路；D-10 还必须验证资源路径、窗口对齐、真实 TTS 口型、隐藏/恢复和 300 秒安装产品稳定性。
+1. 本机完整安装、当前 `3002` 来源迁移及独立 UI 已取得证据，不能继续列为整体未执行。D-10 未覆盖的真实 TTS、125/150% DPI、多屏、卸载、self-hosted Windows workflow 及其他设备组合仍需分别验收，不沿用旧会话的权限/服务状态作为当前阻塞原因。
+2. renderer selftest 和 renderer soak 不能替代安装包产品链路；已有安装画面、隐藏/重开检查只覆盖记录中的操作，真实 TTS 口型和安装产品的长时稳定性仍需对应证据。
 3. 夏目 `ParamMouthForm3` 的真实 TTS 桌面回归仍待环境恢复；离线映射 contract 已通过，不得据此宣称真实音频已验收。
 4. 30 分钟 soak 是发布前可选强化；当前固定 Windows Native gate 是 300 秒，不应加入无 GPU 的默认 `validate`。
 5. 后续接入只使用 `src/types/live2dNative.ts`、`live2d-native-overlay-plan.md` 和公开 backend API；不得把参数级 hack、源项目 WAV 或未验证 motion/expression 当作新能力。

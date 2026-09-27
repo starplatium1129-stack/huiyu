@@ -61,7 +61,7 @@ node scripts/build-node.mts --help
 
 ## 类型归属
 
-角色、服装、场景、生成状态及提示词计划复用 `src/types/` 的实际业务定义。原工具和 store 的类型导出保留兼容入口，不重复维护另一份字段表。仅需类型的后端模块直接引用纯类型文件，避免把 Vue 状态模块引入网关。
+前端角色、服装、场景、生成状态及提示词计划复用 `src/types/` 的业务定义。现存工具和 store 的类型转导出不构成另一份字段表；内部重构清理过时入口，不新增永久 shim。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；后端不得反向引用 `src/`，纯类型及间接依赖同样纳入 `check:domain-types` 的重构护栏。
 
 配置类型从配置加载函数的返回值推导；工作流注册元数据由 `scripts/lib/workflow-types.ts` 描述。HTTP、文件和进程等边界使用实际接口。文件内容与外部返回值仍需要运行时校验，类型声明不代替数据验证。
 
@@ -79,7 +79,7 @@ node scripts/build-node.mts --help
 
 @types/node 26 是声明来源，不是运行时承诺；本轮保留锁文件与依赖版本。引入新 Node API 时需在最低运行时补回归，类型检查本身不能证明该 API 已存在。
 
-ESLint 编辑入口为 eslint.config.mts；eslint.config.js 仅兼容转发到该源码，避免两份配置漂移。生成 JS 不作为源码 lint；浏览器/服务的关键环境误用由 no-restricted-globals 与各 tsc 配置共同检查，正反例在 test-module-boundaries.mts。600 有效行硬门禁仍由 test-monolith-budget.ts 唯一维护，删除过时的 1000 行预警。
+ESLint 编辑入口为 eslint.config.mts；eslint.config.js 仅转发到该源码，避免两份配置漂移。生成 JS 不作为源码 lint；浏览器/服务的关键环境误用由 no-restricted-globals 与各 tsc 配置共同检查，正反例在 test-module-boundaries.mts。单体 500 有效行上限由 test-monolith-budget.ts 维护，存量超限文件按 monolith-baseline.json 只降不升。
 
 ## 参考
 

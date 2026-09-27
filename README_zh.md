@@ -30,7 +30,7 @@
   - 自动检查辅助人工审核；缺人工决定保持 pending，明确通过后才显式发布不可变版本。具体步骤见[候选审核与版本发布](docs/workflow.md#参考库候选审核与版本发布)。
   - 标准化参考资产契约为下游 MiniMax H3 Ref2VA 视频生成提供稳定的角色锁脸保障。
 - **多生成引擎协同与 精选动漫画风**：
-  - 跨引擎提示词自动编译：支持 Stable Diffusion / WAI (Danbooru tags)、Anima 1.1 (`@artist` + 原生标签流) 与 Krea 2 Turbo (3~5 句纯英文自然语言)。
+  - 跨引擎提示词自动编译：支持 Stable Diffusion / WAI (Danbooru tags)、Anima (`@artist` + 原生标签流，当前默认 MiaoMiao Harem v1.2) 与 Krea 2 Turbo (纯英文自然语言)。
   - 内置精选动漫画风与作监级风格（如猫富ちゃお/动画工房、浅野恭司/WIT Studio、Rella 星夜月光、深崎暮人、So-bin 等）。
   - 在 reForge 环境中自动增强双人构图：Regional Prompter 分离提示词区域，逐场景 OpenPose 稳定站位。
 - **AI 叙事视频工作台（Video Studio）**：
@@ -41,7 +41,7 @@
   - Live2D 立绘随真实语音振幅对口型、随情感切换表情零件。
   - 控制面板提供显存资源调度：绘图优先 / 聊天优先一键切换，模型按需卸载。
 - **桌面端伴侣（Tauri 2）**：
-  - 轻量 Tauri 2 桌面端（Companion + Atelier 双窗口、托盘、Native Live2D overlay），支持增量极速部署流水线（`deploy-desktop-quick.ps1`）。
+  - 轻量 Tauri 2 桌面端（Companion + Atelier 窗口、托盘、Native Live2D overlay），通过 `deploy-desktop.bat` 同步桌面端。
 
 ## 安装
 
@@ -76,25 +76,25 @@ npm install
 
 ### 第 3 步 — 编译运行时服务
 
-全新克隆后必须先把 TypeScript 运行时编译一次——生成的 `.js` 不入库（已被 Git 忽略）：
+生成的运行时 `.js` 不入库。安装依赖时已自动编译；修改运行时源码后可执行：
 
 ```bash
 npm run build:runtime
 ```
 
-通过 `npm start` 或启动器（`control.bat` / `start.ps1`）启动时会经 `prestart` 钩子自动补齐这一步，可以跳过。
+`npm start` 经 `prestart` 重新编译；启动器（`control.bat` / `start.ps1`）会在网页或运行时产物缺失时构建，再启动网关。
 
 ### 第 4 步 — 启动
 
-**A. 控制面板（推荐）。** 先在 Stability Matrix 中启动 WebUI（记下日志中的地址，通常是 `http://127.0.0.1:7860`），然后双击 `control.bat`，确认 WebUI 地址后点击 **启动并生成分享链接**，再点 **打开本地网站（无需 Token）** 本地使用；需要分享时复制带 Token 的链接给朋友。使用结束点击 **停止全部服务**。
+**A. 控制面板（推荐）。** 先在 Stability Matrix 中启动 WebUI（记下日志中的地址，通常是 `http://127.0.0.1:7860`），然后双击 `control.bat`，在控制室（`/control`）确认地址。自己使用点击 **本机地址 → 打开**；需要分享时开启公网分享通道，再点 **启动并生成分享链接**。**停止公网分享** 只关闭隧道，AI 服务在“服务与显存”区逐项停止。
 
 **B. 手动启动（排错 / 看完整日志）。**
 
 ```powershell
 npm install
-npm run build:runtime
+npm run build
 $env:SD_HOST = 'http://127.0.0.1:7860'   # WebUI 地址
-node server.js
+npm run start:run
 ```
 
 只想测试本地网关时先设置 `$env:DISABLE_TUNNEL = '1'` 跳过公网隧道。`Ctrl+C` 停止。
@@ -113,8 +113,8 @@ npm run dev          # Vite 开发服务器 :5173（热更新）
 ### A. 从场景到一张成图
 
 1. 打开**场景库**，按角色 / 内容分级筛选，点开一个 Scene——故事、情绪、镜头、光照与 Prompt 已全部就位。
-2. 进入**导演台**，从 39 位精选画风中挑选一个，点击生成。
-3. 提示词编译器会自动适配当前引擎：SD/WAI（Danbooru 标签）、Anima 1.1（`@artist` + 原生标签流）或 Krea 2 Turbo（3~5 句纯英文散文）。
+2. 进入**导演台**，挑选一个精选画风，点击生成。
+3. 提示词编译器会自动适配当前引擎：SD/WAI（Danbooru 标签）、Anima（`@artist` + 原生标签流）或 Krea 2 Turbo（纯英文散文）。
 
 ### B. AI 叙事短片（纯点击流）
 
@@ -129,10 +129,10 @@ npm run dev          # Vite 开发服务器 :5173（热更新）
 ### D. 常用命令行操作
 
 ```powershell
-npm run workflow -- --help          # 140+ 维护脚本的统一入口
+npm run workflow -- --help          # 维护操作的统一入口
 npm run workflow -- data:validate   # 编辑场景数据后校验分片与 DATA_VERSION
 npm run workflow -- gate:quick ui   # 按改动面积分层跑门禁（ui/server/data/all）
-npm run scenes:import               # 从分片重建 data/scenes.json（批次感知）
+npm run scenes:build                # 从源分片重建场景产物
 npm run popular:build               # 重建 data/popular-characters.json
 npm run build                       # 生产构建 + 140KB 路由预算 + 预压缩
 ```
@@ -141,25 +141,25 @@ npm run build                       # 生产构建 + 140KB 路由预算 + 预压
 
 ## 贡献指南
 
-这个项目首先是个人项目，但欢迎范围明确的贡献。动手前请按顺序先读：[docs/INDEX.md](docs/INDEX.md)（文档全景索引）→ [docs/workflow.md](docs/workflow.md)（统一脚本入口）→ **AGENTS.md**（协作宪章，本仓库最高权威）。
+这个项目首先是个人项目，但欢迎范围明确的贡献。动手前先读 **AGENTS.md** 的协作规则，再按本次任务查 [docs/INDEX.md](docs/INDEX.md) 和 [docs/workflow.md](docs/workflow.md)。当前用户要求优先于仓库一般指导。
 
 ### 开发环境
 
 见「安装」第 4 步 C（两个终端：Express 网关 + Vite HMR）。编辑过程中 `npm run typecheck` 与 `npm run lint:js` 可快速反馈。
 
-### 质量门禁——提交前必须全部通过
+### 质量门禁——按影响范围选择
 
 ```
-[1. 状态与逻辑自测] ─► [2. 静态类型检查] ─► [3. 契约测试] ─► [4. 打包预算] ─► [5. 精准提交]
+[确认影响范围] ─► [必要检查] ─► [产物在范围内时构建] ─► [精准提交]
 ```
 
 ```powershell
 npm run typecheck:app           # Vue SFC 类型检查，零 Error 退出
-npm run workflow -- check:full  # 完整校验（13 项并行检查 + 单测 + 契约）
-npm run build                   # 生产构建，18 个路由严守 140KB 预算
+npm run workflow -- check:full  # 质量检查 + 前端/单测/契约套件
+npm run build                   # 生产构建，路由与依赖预算以当次报告为准
 ```
 
-快速迭代只跑改动面积：`npm run workflow -- gate:quick ui|server|data|all`。
+必要检查按[工作流分层表](docs/workflow.md#门禁与构建)选择：局部改动可用 `gate:quick ui|server|data|all`，跨域或构建链改动用 `gate:full`；准备提交本身不扩大验证范围。`npm run validate` 不包含生产构建，构建产物在范围内时另跑 `npm run build`。缺私有参考素材的机器可显式使用 `AICS_REFERENCE_AUDIT_MODE=structure`，它不代表图片交付通过。
 
 ### 提交纪律（硬性红线）
 
@@ -174,7 +174,7 @@ npm run build                   # 生产构建，18 个路由严守 140KB 预算
 - **内容分级 Fail-Closed**。R18 内容默认模糊遮罩；`adultEligibility` + `adultEnabled` 双重把关，未知或未授权状态必须严格拒绝，不得回退"安全"断言。
 - **定稿场景是字节级基线**。`data/prompt-pinned-scenes.json` 中 100 条定稿场景的渲染字段严禁被批量工具触碰（`npm run scenes:pin` 强制校验）；确需修改时先真实出图自测。
 - **严禁偷懒式批量交付**。批量重写必须逐条全量真实改写，通过 `test-prompt-rewrite-integrity.js`（覆盖率=声明数、无模板签名、保留率≤50%、prose 相似度≤60%）。
-- **只维护深色主题**。浅色主题已下线，新增颜色只写一遍；禁用态用 `--text-disabled` 令牌，不得用 `opacity` 压字。
+- **深浅双主题**。新增或修改 UI 均需两主题视觉检查与 WCAG AA 对比度核对；禁用态用 `--text-disabled` 令牌，不得用 `opacity` 压字。
 - **样式契约以 DESIGN.md 为准**。运行时 CSS 是派生实现，冲突时以契约为准。
 
 ### 测试
@@ -199,11 +199,14 @@ huiyu/
 ├── index.html              # Vite SPA 入口（无全局脚本注入）
 ├── vite.config.ts          # Vite 构建配置 + dev 代理
 ├── control.bat             # Windows 控制面板入口
-├── server.js               # Express：静态服务、SD 代理、临时分享
+├── server.ts               # 网关源码；server.js 为生成入口
 ├── src/                    # Vue 3 SPA 源码（Vite 构建目标）
 │   ├── config/             #   角色常量、画师库、导演台静态定义
 │   ├── utils/              #   流式解析、角色参考库数据、Prompt 编译器
 │   ├── stores/             #   Pinia：场景数据、导演台状态
+│   ├── application/        #   用例编排与持久化端口
+│   ├── platform/           #   Web 与桌面适配
+│   ├── api/                #   传输与响应解码
 │   ├── composables/        #   Voice / Live2D / Chat / SD / IndexedDB
 │   ├── components/         #   布局、导航、主题切换、视频工作台组件
 │   ├── views/              #   每路由一个 Vue 视图组件（全部懒加载）
@@ -216,7 +219,7 @@ huiyu/
 ├── assets/                 # 静态资源（角色立绘、Live2D、vendor SDK）
 ├── docs/                   # 创作规范、质量标准、全景索引（docs/INDEX.md）
 ├── scripts/                # 维护、测试、参考图生成与运行辅助脚本
-└── runtime/                # 本机配置、日志、进程状态与朋友生成图（Git 忽略）
+└── runtime/                # 本机配置、日志、进程状态与运行产物（Git 忽略）
 ```
 
 ## 维护与校验
@@ -224,7 +227,7 @@ huiyu/
 ```powershell
 npm run typecheck:app     # Vue SFC 与前端 TypeScript 类型检查
 npm run build             # 构建生产前端产物
-npm run validate          # 完整校验：代码规范 + 构建 + 类型检查 + 契约测试
+npm run validate          # 质量检查 + 前端/单测/契约套件，不含生产构建
 ```
 
 日常增删场景、修改故事、维护标签或替换样张，直接使用网站中的 **更多 → 场景管理**。

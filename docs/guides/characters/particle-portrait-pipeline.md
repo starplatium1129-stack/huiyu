@@ -1,6 +1,6 @@
 # 角色点阵粒子管线（操作手册）
 
-> 当前入口（2026-09-09）：角色场景页的粒子肖像是品牌特色，支持深浅主题。本文的接入步骤继续有效；下方 2026-08-16 的像素实验与验证结论仅代表当时记录。
+> 当前入口（2026-09-27 核对）：角色场景页的粒子肖像支持深浅主题。原图与点云接入仍走下方流程；运行时参数以实际组件为准，下方 2026-08-16 的像素实验与验证结论仅代表当时记录。浅色调色板现经 `src/utils/particlePortrait.ts` 的 `lightPortraitColor` 做保留色相的色度增强，不能把历史“原始调色板”结论当成当前实现。
 > 新角色的完整接入见 [角色工作流](character-onboarding-workflow.md)，粒子表现约束见 [设计规范](../../../DESIGN.md)。
 
 角色粒子由原图离线生成点云；当前页面入口为 `src/views/PopularSceneExplorerView.vue`，渲染器为 `src/components/visual/SemanticParticleField.vue`。其他页面是否展示，以实际组件挂载为准。
@@ -15,8 +15,8 @@
    npm run particles:build -- rem_rezero  # 只跑指定角色
    ```
    产物：`assets/particles/p_<角色id>.json`（~100KB/角色，随 assets 一起部署）。
-3. **完事**。前端按角色 id 懒加载 `p_<id>.json`，存在即整图点阵成像，
-   不存在自动回落 `characterParticleTheme` 的抽象形状——新角色忘跑脚本也不会白屏。
+3. **核对交付状态与页面**。前端按角色 id 懒加载 `p_<id>.json`，但会先检查 `data/popular-onboarding.json` 的 `portraitPending`；登记仍为 pending 时不请求点云，文件存在不能计为已交付。确认真实原图与缩略图后再更新相应交付状态，按角色工作流完成检查。
+   点云缺失、不可用或 pending 时回落 `characterParticleTheme` 的抽象形状。
 
 工作室角色（宁宁/夏目）的图名映射在脚本的 `STUDIO_PORTRAITS` 里维护。
 
@@ -30,7 +30,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy pillow
 
 不需要 rembg / GPU / 大模型（v5 起整图复刻不再抠像，纯 numpy+Pillow 秒级）。
 
-## 可调参数（脚本顶部常量）
+## 参数记录（脚本常量与历史渲染基线）
 
 | 常量 | 默认 | 说明 |
 |---|---|---|
@@ -38,7 +38,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy pillow
 | `PALETTE_SIZE` | 36 | k-means 主色数（base36 索引上限就是 36） |
 | `FEATHER_RATIO` | 0.05 | 边缘羽化比例。过大（曾用 0.14）会"像没拼完的拼图" |
 
-前端侧（`SemanticParticleField`）可调：点数下限（hero 8000/ambient 6000）、
+以下为 2026-08-16 的前端侧（`SemanticParticleField`）参数记录，不是当前所有渲染器的统一配置：点数下限（hero 8000/ambient 6000）、
 点径比 **0.3×点距**（2026-08-16 对齐参考实现，0.55 会粘连成位图）、
 深色主题 screen 混合（暗部隐入、亮部发光，提亮版调色板）/ 浅色主题
 source-over 0.95 + **原始调色板** + **极亮色（>0.72）右下阴影界定**

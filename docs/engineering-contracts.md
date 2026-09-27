@@ -1,13 +1,14 @@
 # 工程与角色接入契约
 
-> 维护日期：2026-09-26。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
+> 维护日期：2026-09-27。与 [AGENTS.md](../AGENTS.md) 配套阅读；此页保留模块约束，当前规模只维护在 [项目状态](project-status.md)。
 
 ## 模块边界
 
 - **前端架构**：Vue 3 + Vite + TypeScript + Pinia（`src/stores/` + `src/views/` 路由全懒加载）。
 - **组件与逻辑分层**：
   - 复杂业务逻辑与状态机下沉至专属 composable（如 `usePromptSdQueue`、`useAnimaInpaint`、`usePopularPromptAssembly`），保持 View 纯粹。
-- **网关服务**：桌面 gateway 包由主工作区同一 `package-lock.json` 派生运行时依赖；`server.js` 的 SPA fallback 使用正则 `/^(?!\/api).*/`，保持对 Express 4/5 路由风格的部署侧兼容。
+  - `src/application/` 编排用例与端口，不依赖具体存储、API、Pinia、Vue 或 Node 平台实现；`src/platform/web/` 与 `src/platform/desktop/` 提供适配，`src/api/` 处理传输和响应解码。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不反向依赖 `src/`，包括纯类型与间接导入。
+- **网关服务**：桌面 gateway 包由主工作区同一 `package-lock.json` 派生运行时依赖。编辑 `server.ts` 源码，`server.js` 为生成入口；SPA fallback 排除 `/api`，网页资源优先提供已构建的 `dist/`。旧路由风格兼容不能作为桌面使用另一份依赖版本的依据。
 - **生图双引擎**：
   - **Anima (ComfyUI / Pencil)**：高质量动漫与局部换装（Inpaint），支持 TeaCache 加速、手绘/CLIPSeg 遮罩与 `ImageCompositeMasked` 像素级原图回贴。
   - **Krea 2（自研 DiT + Qwen3-VL 编码器，非 SD3.5 系）**：当前本地编译使用英文 prose，清理标签堆词、评分词和括号权重，negative 为空；CFG 以实际节点定义为准，不把本地约束泛化为所有版本能力。提示词按 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md) 执行，人物环境融合见 [叙事 CG 规范](guides/prompts/narrative-cg-prompt-standard.md)；历史研究不覆盖当前实现与后续证据。
@@ -18,7 +19,7 @@
 
 ## 重构期间的任务与持久化边界
 
-以下约束已按 [重构总计划](architecture/REFACTOR-EXECUTION-PLAN.md) 接入 R0–R11 主线；实现、本机迁移与交付范围见 [主线记录](architecture/R3-R11-EXECUTION-REPORT.md)。实际模型、其他设备和历史来源的未覆盖条件继续按 roadmap 单列，不用代码完成替代这些验收。
+以下约束已按 [重构总计划](architecture/REFACTOR-EXECUTION-PLAN.md) 接入 R0–R11 主线，并继续约束后续维护；实现、本机迁移与交付范围见 [主线记录](architecture/R3-R11-EXECUTION-REPORT.md)。实际模型、其他设备和历史来源的未覆盖条件继续按 roadmap 单列，不用代码完成替代这些验收。
 
 - **任务所有权**：runtime 已接受的任务由 runtime 持有身份、执行和结果状态；页面卸载只解除订阅、停止页面查询并释放页面拥有的媒体与监听资源。用户明确取消通过独立任务取消命令表达，不能由页面卸载、客户端读取超时或连接断开隐式代替。尚未被接受的交互请求可取消；接受应答丢失属于未知结果，须按稳定请求身份查询，不能据此断言未接受或自动重提。
 - **单一持久权威**：每个领域在每个数据域只有一个可写权威。Web adapter 是长期合法的平台实现，继续拥有独立浏览器数据；桌面 workspace 激活后，旧作品库仅作受控迁移来源或只读保留，不得因 runtime 不可用自动回落写入旧库，不得双写两份主库。Pinia 保留编辑和展示状态，缓存不构成第二份持久事实。

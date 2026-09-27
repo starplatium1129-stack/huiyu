@@ -1,22 +1,8 @@
 # 项目文档索引
 
-更新于 2026-09-26。已完成范围、实际待办、研究资料和历史记录分别查阅；旧计划的启动说明不作为当前任务。
+更新于 2026-09-27。已完成范围、实际待办、研究资料和历史记录分别查阅；旧计划的启动说明不作为当前任务。
 
 日常只读下面八个入口；遇到具体问题再查专题。历史测试结果不能替代当前验收。
-
-## 本次用户指定的架构重构
-
-- [桌面内存回收优化证据](evidence/memory-optimization-2026-09-27.json)：桌宠隐藏释放 GPU context、工作台按需缩略缓存、图库原图回收及本机关闭/重开对照；`60888df3` 已完整安装并验证资料保持。
-
-- [重构后可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)：普通图片加载、维护升级、构建回执及凭据授权修复；[安装与验证证据](evidence/reliability-followup-2026-09-27.json)。
-
-- [桌面图片恢复与安装证据](evidence/desktop-images-2026-09-27.json)：独立 UI 图片跨域、灵感缩略图路径及连接恢复修复，实际安装版图片验收和资料保持。
-
-- [复审后的架构重构执行计划](architecture/REFACTOR-EXECUTION-PLAN.md)：固定源码基线、14 处计划修正、存储迁移/任务恢复/桌面接入规范和 R0–R13 依赖门槛；配套 [Codex 执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md) 提供每批文件、命令与停止条件。R0 已完成，见 [R0 实施记录](architecture/R0-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r0-2026-09-26.json)；R1 实现/定向验收完成，见 [R1 实施记录](architecture/R1-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r1-2026-09-26.json)；R2 代码、隔离及 sidecar 门槛完成，见 [R2 实施记录](architecture/R2-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-r2-2026-09-26.json)。R3–R11 主线实现、正式安装、当前资料迁移与独立界面切换已完成，见 [主线实施记录](architecture/R3-R11-EXECUTION-REPORT.md) 与 [验证证据](evidence/architecture-mainline-2026-09-26.json)。真实 WebView2、旧来源副本与正式切换证据分列；旧来源/备份保留，历史 3000 凭据未合并。[R12 独立渲染进程实验](architecture/R12-EXECUTION-REPORT.md)已完成本机画面/故障隔离/线程对照，正式默认未切换。[R13 Electron 宿主对照](architecture/R13-EXECUTION-REPORT.md)已完成，同 UI/本机样本未显示足以换宿主的整体收益，保留 Tauri；见 [R13 脱敏证据](evidence/architecture-r13-2026-09-27.json)。
-
-本次指定任务按该专项执行；其他待办和优先级仍查未来规划。设计、代码、隔离证据与实际安装状态以各实施记录明确区分。
-
-2026-09-27 最新 UI 与 Live2D 修复已联合安装，当前状态与限制见 [项目状态](project-status.md)和[联合部署证据](evidence/desktop-ui-live2d-2026-09-27.json)。
 
 ## 日常入口
 
@@ -39,6 +25,16 @@
 
 图像提示词维护见 [skill 入口](../.agents/skills/studio-prompt-craft/SKILL.md)；按任务选择 [Anima](../.agents/skills/studio-prompt-craft/references/anima.md)、[Krea](../.agents/skills/studio-prompt-craft/references/krea.md) 或 [数据写入与验收](../.agents/skills/studio-prompt-craft/references/delivery.md)，不默认全部读取。
 
+## 架构契约与实施追溯
+
+现行实现与最近本机安装以 [项目状态](project-status.md) 为准；设计目标、分批证据和剩余条件分别查下列资料，不从旧计划的启动提示重新派工。
+
+- 现行契约：[Workspace 与迁移](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[任务运行时](architecture/TASK-RUNTIME-DESIGN.md)、[桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)。
+- 目标与批次定义：[重构总计划](architecture/REFACTOR-EXECUTION-PLAN.md)、[执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md)、[原基线复审](architecture/REFACTOR-AUDIT.md)。
+- 主线记录：[R0](architecture/R0-EXECUTION-REPORT.md)、[R1](architecture/R1-EXECUTION-REPORT.md)、[R2](architecture/R2-EXECUTION-REPORT.md)、[R3–R11](architecture/R3-R11-EXECUTION-REPORT.md)；验证 JSON 随各报告列出。
+- 独立实验：[R12 渲染进程](architecture/R12-EXECUTION-REPORT.md)、[R13 Electron 对照](architecture/R13-EXECUTION-REPORT.md)；正式默认与采用边界查当前状态。
+- 后续交付：[可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)、[图片恢复](evidence/desktop-images-2026-09-27.json)、[UI/Live2D 联合安装](evidence/desktop-ui-live2d-2026-09-27.json)、[内存优化与最近安装](evidence/memory-optimization-2026-09-27.json)；每份证据绑定自己的源码/构建。
+
 ## 待办与专项验收入口
 
 以下计划可能包含已完成阶段；只从 [未来规划](roadmap.md) 选择剩余事项。
@@ -49,7 +45,7 @@
 - [剩余任务与验收顺序](roadmap.md)：桌面同步、真实资源与设备验收、完整语义覆盖及暂停事项；已接通的办公机工程不重复列入。
 - [UI 细节打磨与分批审核（007）](../plans/007-ui-detail-polish-and-review.md)：U0–U5 及后续浏览器打磨已有记录，保留 U6 后续补丁交付、真机验收和未覆盖状态；原启动任务属于历史。
 - [工作流与内容数据治理（006）](../plans/006-workflow-and-content-governance.md)：保存事务、资源生命周期、审核发布、历史检查和交付绑定的设计与验收边界。
-- [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局/接口与计划内评估已完成；拟议的新增存储/恢复方案不等于已接入生产，现有行为保留，原生设备验收单列。
+- [PC 桌面架构整理（005）](../plans/005-desktop-architecture-consolidation.md)：布局/接口和存储原型评估；后续桌面 SQLite 主线状态查项目状态，Web journal、大备份和设备范围查未来规划。
 
 ## 已执行审计与实施证据
 
@@ -80,7 +76,7 @@
 研究和旧任务包不构成当前实施清单；已采纳部分查项目状态，未采纳方案需另定范围。
 
 - [可选轻盈 / 液态玻璃（2026-09-20）](research/engineering/glass-material-modes-2026-09-20.md)：设备内材质偏好、按需折射、资源释放、辅助显示回退及双主题验收。
-- [聊天房间与桌宠视觉设计方案（2026-09-20）](research/desktop/live2d-visual-plan-2026-09-20.md)：8 模型取景采样与 GitHub 参考；A 批聊天房间、B 批无边框桌宠已完成定向检查，安装版与完整设备验收待执行。
+- [聊天房间与桌宠视觉设计方案（2026-09-20）](research/desktop/live2d-visual-plan-2026-09-20.md)：当时的模型取景采样、视觉依据与分批检查；后续安装和未覆盖设备条件分别查项目状态与未来规划。
 - [本机 Live2D 候选接入（2026-09-20）](research/desktop/live2d-candidate-integration-2026-09-20.md)：本机模型与 Native 适配、影退役、开放聊天舞台、桌宠与独立聊天窗重构；双主题真实模型检查与桌面实测边界。
 - [可维护性增量审查（2026-09-19）](research/engineering/maintainability-optimization-2026-09-19.md)：M01–M10 的固定基线、依据与实施边界；执行结果见项目状态，剩余事项见 roadmap。
 - [工程研究资料归档](research/engineering/README.md)：资产、图片候选、容器与文案、文档证据及未执行验收用例的已核验范围。
@@ -94,13 +90,15 @@
 
 ## 已完成批次与历史记录
 
+- [文档漂移整理（2026-09-27）](audits/2026-09-27/documentation-drift.md)：源码/安装、权威分片、操作命令、工程边界与目录路由的核对；记录验证范围和未执行项。
+- [原状态页分批记录（截至 2026-09-27）](archive/completed/project-status-2026-09-27.md)：完整保留各批当时结果与限制，现行摘要仍见项目状态。
+
 - [后端审计与优化（2026-09-27）](audits/2026-09-27/backend-audit.md)：取消/任务/自愈竞态修复，以及进度连接、探测和存储热路径优化；[隔离性能样本](evidence/backend-hotpaths-2026-09-27.json)与安装边界分列。
 
 - [工作流治理实施与复核（2026-09-13–14）](archive/audits/workflow-governance-2026-09-13-14.md)：合并 GLM 交接、W1 初版/复核及 A/RB/RC/RD、N1–N3、G1–G16 结果，保留分批失败与补验。
 - [资产与资料复核（2026-09-13）](archive/audits/asset-document-review-2026-09-13.md)：合并 Gemini 交付复核、G0–G5 资料范围及六份盘点的误报更正；原始 JSON 与验收证据保留。
 
-- [项目状态](project-status.md)：已实现范围与分阶段验证边界；内容数量保留日期，不把旧统计当作新盘点。
-- [页面切换、工作台动效与旧模块清理（2026-09-15）](archive/audits/ui-navigation-and-unused-2026-09-15.md)：导航阶段 41 项浏览器回归与后续删除分别记录；两处旧实现及专属测试已移除，安装版尚未同步。
+- [页面切换、工作台动效与旧模块清理（2026-09-15）](archive/audits/ui-navigation-and-unused-2026-09-15.md)：当时导航回归、删除和未安装的分阶段记录；后续安装见当前状态。
 - [场景保存提交复审](archive/audits/scene-save-review-2026-09-13.md)：草稿 ID、快照版本、增量分片、完整性与失败恢复的历史复审；当前实现与剩余验收分别见项目状态和 roadmap。
 - [场景滚动与角色档案补全](archive/audits/scene-scroll-character-profiles-2026-09-12.md)：专家模式完整列表滚动、旧字段恢复显示与六位角色资料来源。
 - [全站交互细节优化（2026-09-12）](archive/audits/interaction-detail-polish-2026-09-12.md)：状态联动、菜单/搜索/灯箱焦点、录音、分镜反馈与双主题页面复验。
