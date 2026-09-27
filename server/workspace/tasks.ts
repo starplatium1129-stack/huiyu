@@ -1,4 +1,4 @@
-import { checkAvailableSpace, digest, publishMedia, uploadedBytes, uploadMediaChunk } from './media';
+import { checkAvailableSpace, digest, publishMedia, releaseCommittedStaging, uploadedBytes, uploadMediaChunk } from './media';
 import { nextRevision, type WorkspaceStorageContext } from './schema';
 import { WorkspaceError, type WorkspaceContext, type ExecuteOptions } from './types';
 import type { TaskCommand, TaskResult, TaskPatch } from './task-types';
@@ -119,12 +119,17 @@ export function executeTaskCommand(storage: WorkspaceStorageContext, command: Ta
     });
     case 'task.result.chunk': {
       const media = output(command.taskId, command.index);
+      if (storage.db.prepare('SELECT committed FROM task_outputs WHERE task_id=? AND output_index=?').get(command.taskId, command.index)?.committed === 1) return { offset: media.bytes };
       return { offset: uploadMediaChunk(storage.root, outputKey(command.taskId, command.index), media, command.offset, command.data) };
     }
     case 'task.result.commit': {
       const media = output(command.taskId, command.index); const key = outputKey(command.taskId, command.index);
+      const current = requireTask(command.taskId);
+      if (storage.db.prepare('SELECT committed FROM task_outputs WHERE task_id=? AND output_index=?').get(command.taskId, command.index)?.committed === 1) {
+        releaseCommittedStaging(storage.root, key, media.alias); return current;
+      }
       publishMedia(storage.root, key, media, () => { if (options.isCancelled?.()) throw new WorkspaceError('CANCELLED', 'Task result collection interrupted', 499); });
-      return storage.transaction(() => {
+      const committed = storage.transaction(() => {
         const task = requireTask(command.taskId);
         if (task.deliveryState === 'discarded') return task;
         storage.db.prepare('INSERT OR IGNORE INTO media_objects VALUES(?,?,?)').run(media.sha256, media.bytes, media.mime);
@@ -136,6 +141,8 @@ export function executeTaskCommand(storage: WorkspaceStorageContext, command: Ta
         task.resultState = 'available';
         return write(task);
       });
+      releaseCommittedStaging(storage.root, key, media.alias);
+      return committed;
     }
   }
   throw new WorkspaceError('TASK_INVALID', 'Unknown task command', 400);

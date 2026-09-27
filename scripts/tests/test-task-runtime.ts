@@ -17,7 +17,7 @@ import animaValidation = require('../../routes/anima/validation');
 import batchFactory = require('../../routes/video/batch');
 import videoValidation = require('../../routes/video/validation');
 import videoConstants = require('../../routes/video/constants');
-import { mediaPath } from '../../server/workspace/media';
+import { digest, mediaPath, stagingPath } from '../../server/workspace/media';
 
 const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jM1sAAAAASUVORK5CYII=', 'base64');
 const immediate = () => new Promise<void>(resolve => setImmediate(resolve));
@@ -111,6 +111,11 @@ test('collector publishes verified inbox media without artwork creation; restart
     await until(async () => { await f.runtime.reconcile('desktop', task.taskId); return (await f.runtime.get('desktop', task.taskId)).resultState === 'available'; });
     const result = await f.runtime.get('desktop', task.taskId);
     assert.equal(result.resultRefs[0].bytes, image.length);
+    assert.equal(fs.existsSync(stagingPath(f.root, digest(`task:${task.taskId}:0`), result.resultRefs[0].alias)), false);
+    const repeated = await f.workspace.request({ kind: 'task.result.commit', taskId: task.taskId, index: 0 }, { principalId: 'desktop', workspaceId: f.workspace.workspaceId, protocolVersion: 1 }) as TaskRecord;
+    assert.equal(repeated.revision, result.revision, 'acknowledged result commits do not create a new revision');
+    await f.workspace.request({ kind: 'task.result.chunk', taskId: task.taskId, index: 0, offset: 0, data: image }, { principalId: 'desktop', workspaceId: f.workspace.workspaceId, protocolVersion: 1 });
+    assert.equal(fs.existsSync(stagingPath(f.root, digest(`task:${task.taskId}:0`), result.resultRefs[0].alias)), false);
     assert.equal(Number(f.storage.db.prepare("SELECT count(*) AS n FROM media_refs WHERE owner_kind='task-result'").get()?.n), 1);
     assert.equal(Number(f.storage.db.prepare('SELECT count(*) AS n FROM artworks').get()?.n), 0);
     await f.restart(); await f.runtime.recover('desktop'); assert.equal(f.submissions, 1);
@@ -178,6 +183,11 @@ test('input media is protected in workspace and reconstructs provider files with
     await until(async () => Boolean((await f.runtime.get('desktop', task.taskId)).upstreamId));
     const current = await f.runtime.get('desktop', task.taskId);
     assert.equal(current.inputMediaRefs.length, 1); assert.deepEqual(fs.readFileSync(copied), image);
+    assert.equal(fs.existsSync(stagingPath(f.root, digest(`input:${task.taskId}:first-frame.png`), current.inputMediaRefs[0])), false);
+    await f.workspace.request({ kind: 'task.input.commit', taskId: task.taskId, name: 'first-frame.png' }, { principalId: 'desktop', workspaceId: f.workspace.workspaceId, protocolVersion: 1 });
+    assert.equal((await f.runtime.get('desktop', task.taskId)).revision, current.revision);
+    await f.workspace.request({ kind: 'task.input.chunk', taskId: task.taskId, name: 'first-frame.png', offset: 0, data: image }, { principalId: 'desktop', workspaceId: f.workspace.workspaceId, protocolVersion: 1 });
+    assert.equal(fs.existsSync(stagingPath(f.root, digest(`input:${task.taskId}:first-frame.png`), current.inputMediaRefs[0])), false);
     assert.equal(Number(f.storage.db.prepare("SELECT count(*) AS n FROM media_refs WHERE owner_kind='task-input'").get()?.n), 1);
     assert.equal(current.resultRefs.length, 0); assert.equal(f.submissions, 1);
   } finally { await f.close(); }

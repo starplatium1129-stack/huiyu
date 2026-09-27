@@ -113,6 +113,17 @@ export function publishMedia(root: string, operationKey: string, media: StoredMe
   syncDirectory(path.dirname(destination));
 }
 
+/** Only call after the durable commit; deleting a staging link cannot compensate
+ * for or invalidate that commit. An acknowledged retry can repeat cleanup. */
+export function releaseCommittedStaging(root: string, operationKey: string, alias: string): void {
+  try {
+    const staged = stagingPath(root, operationKey, alias);
+    try { fs.unlinkSync(staged); }
+    catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') return; }
+    try { fs.rmdirSync(path.dirname(staged)); } catch { /* Another staged alias may still own this directory. */ }
+  } catch { /* Keep the committed receipt authoritative if cleanup is unavailable. */ }
+}
+
 export function uploadedBytes(root: string, operationKey: string, alias: string): number {
   const file = stagingPath(root, operationKey, alias);
   if (!fs.existsSync(file)) return 0;

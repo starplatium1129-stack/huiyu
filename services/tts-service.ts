@@ -152,7 +152,6 @@ function validateInput(
   let consistency = String((input && input.consistency) || 'adaptive').toLowerCase();
   let referenceEmotion = String((input && input.referenceEmotion) || emotion).toLowerCase();
   let speed = Number(input && input.speed);
-  const profile = profiles[voice];
 
   if (!(VOICES as readonly string[]).includes(voice)) {
     return { error: '不支持的角色声线', status: 400 };
@@ -163,6 +162,7 @@ function validateInput(
   if (!rawText || rawText.length > 2000) {
     return { error: '台词长度必须在 1—2000 字之间', status: 400 };
   }
+  const profile = profiles[voice] ? structuredClone(profiles[voice]) : undefined;
   if (!profile || !profile.refAudioPath || !profile.promptText) {
     return { error: '该角色尚未在启动控制面板配置 GPT-SoVITS 参考音频', status: 409 };
   }
@@ -230,30 +230,31 @@ function statusError(message: string, status: number): StatusError {
 }
 
 function createTtsService(options: TtsServiceOptions) {
-  const host = options.host;
-  const profiles = options.profiles || {};
   const queue = new SerialQueue('gpt-sovits');
   let activeGptWeights = '';
   let activeSoVitsWeights = '';
   let activeVoice = '';
+  let activeHost = '';
 
   function voiceMap(): Record<string, boolean> {
     const result: Record<string, boolean> = {};
     for (const id of VOICES) {
-      const profile = profiles[id] || {};
+      const profile = options.profiles?.[id] || {};
       result[id] = !!(profile.refAudioPath && profile.promptText);
     }
     return result;
   }
 
   async function isOnline(signal?: AbortSignal): Promise<boolean> {
+    const host = options.host;
     try {
       const result = await httpClient.request(host, '/docs', {
         timeoutMs: 1500,
+        totalTimeoutMs: 1500,
         timeoutMessage: 'GPT-SoVITS status request timed out',
         signal: signal
       });
-      result.response.resume();
+      await httpClient.readBody(result.response);
       const statusCode = result.response.statusCode || 0;
       return statusCode >= 200 && statusCode < 500;
     } catch (error) {
@@ -262,36 +263,45 @@ function createTtsService(options: TtsServiceOptions) {
     }
   }
 
-  async function setWeights(pathname: string, signal?: AbortSignal): Promise<void> {
+  async function setWeights(host: string, pathname: string, signal?: AbortSignal): Promise<void> {
     await httpClient.expectSuccess(host, pathname, {
       timeoutMs: 30000,
       signal: signal
     });
   }
 
-  async function activate(voice: string, profile: VoiceProfile, signal?: AbortSignal): Promise<void> {
-    if (profile.sovitsWeightsPath && profile.sovitsWeightsPath !== activeSoVitsWeights) {
-      await setWeights(
-        '/set_sovits_weights?weights_path=' + encodeURIComponent(profile.sovitsWeightsPath),
-        signal
-      );
+  async function activate(host: string, voice: string, profile: VoiceProfile, signal?: AbortSignal): Promise<void> {
+    try {
+      if (profile.sovitsWeightsPath && (host !== activeHost || profile.sovitsWeightsPath !== activeSoVitsWeights)) {
+        await setWeights(
+          host,
+          '/set_sovits_weights?weights_path=' + encodeURIComponent(profile.sovitsWeightsPath),
+          signal
+        );
+      }
+      if (profile.gptWeightsPath && (host !== activeHost || profile.gptWeightsPath !== activeGptWeights)) {
+        await setWeights(
+          host,
+          '/set_gpt_weights?weights_path=' + encodeURIComponent(profile.gptWeightsPath),
+          signal
+        );
+      }
+    } catch (error) {
+      // A partial switch invalidates the previous voice too; returning to it
+      // must restore both weights instead of trusting the last successful pair.
+      activeHost = ''; activeGptWeights = ''; activeSoVitsWeights = ''; activeVoice = '';
+      throw error;
     }
-    if (profile.gptWeightsPath && profile.gptWeightsPath !== activeGptWeights) {
-      await setWeights(
-        '/set_gpt_weights?weights_path=' + encodeURIComponent(profile.gptWeightsPath),
-        signal
-      );
-    }
-    // Commit cache state only after the entire upstream switch succeeds. A
-    // partial switch must be retried in full because the engine state is unknown.
     activeSoVitsWeights = profile.sovitsWeightsPath || '';
     activeGptWeights = profile.gptWeightsPath || '';
     activeVoice = voice;
+    activeHost = host;
   }
 
   function prepare(voice: string, signal?: AbortSignal): Promise<PrepareResult> {
     const voiceId = String(voice || '');
-    const profile = profiles[voiceId];
+    const host = options.host;
+    const profile = options.profiles?.[voiceId];
     if (
       !(VOICES as readonly string[]).includes(voiceId) ||
       !profile ||
@@ -300,16 +310,18 @@ function createTtsService(options: TtsServiceOptions) {
     ) {
       return Promise.reject(statusError('该角色尚未配置可用声线', 409));
     }
+    const frozenProfile = structuredClone(profile);
     return queue.run(async function (queueMeta) {
       if (signal && signal.aborted) throw httpClient.abortError();
-      await activate(voiceId, profile, signal);
+      await activate(host, voiceId, frozenProfile, signal);
       return { voice: voiceId, queueWaitMs: queueMeta.waitMs };
     }, { signal: signal });
   }
 
   function stream(input: VoiceTtsInput, optionsForStream?: StreamOptions): Promise<QueueWaitResult> {
     const streamOpts = optionsForStream || {};
-    const validation = validateInput(input, profiles);
+    const host = options.host;
+    const validation = validateInput(input, options.profiles || {});
     if (!validation.value) {
       return Promise.reject(statusError(validation.error || 'invalid TTS input', validation.status || 400));
     }
@@ -317,7 +329,7 @@ function createTtsService(options: TtsServiceOptions) {
     const validated: ValidatedTtsInput = validation.value;
     return queue.run(async function (queueMeta) {
       if (streamOpts.signal && streamOpts.signal.aborted) throw httpClient.abortError();
-      await activate(validated.voice, validated.profile, streamOpts.signal);
+      await activate(host, validated.voice, validated.profile, streamOpts.signal);
       const upstream = await httpClient.request(host, '/tts', {
         method: 'POST',
         json: validated.payload,
@@ -325,6 +337,7 @@ function createTtsService(options: TtsServiceOptions) {
         // 也足以兜住异常。5 分钟超时会卡死整条 GPU 队列 5 分钟，
         // 缩短后挂起的引擎更快失败并释放队列（客户端会自动提示重播）。
         timeoutMs: 180 * 1000,
+        totalTimeoutMs: 180 * 1000,
         timeoutMessage: 'GPT-SoVITS 生成超时',
         signal: streamOpts.signal
       });
@@ -358,7 +371,7 @@ function createTtsService(options: TtsServiceOptions) {
       online: await isOnline(signal),
       engine: 'GPT-SoVITS',
       voices: voiceMap(),
-      activeVoice: activeVoice,
+      activeVoice: activeHost === options.host ? activeVoice : '',
       queue: queue.status()
     };
   }
@@ -368,7 +381,7 @@ function createTtsService(options: TtsServiceOptions) {
     prepare: prepare,
     stream: stream,
     validate: function (input: VoiceTtsInput) {
-      return validateInput(input, profiles);
+      return validateInput(input, options.profiles || {});
     },
     queueStatus: function (): { name: string; active: number; pending: number } {
       return queue.status();

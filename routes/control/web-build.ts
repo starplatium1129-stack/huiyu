@@ -95,6 +95,14 @@ function runWebBuild(config: any, callback: any) {
     maintenanceRuntime.killProcessTree(child);
   }, WEB_BUILD_TIMEOUT_MS);
   let tail = '';
+  let finished = false;
+  function finish(result: { ok: boolean; error: string | null; durationMs: number; tail: string }) {
+    if (finished) return;
+    finished = true;
+    clearTimeout(timeout);
+    WEB_BUILD_LOCK = false;
+    callback(result);
+  }
   let onOutput = function (chunk: any) {
     let text = String(chunk || '');
     tail = (tail + text).slice(-4000);
@@ -102,14 +110,10 @@ function runWebBuild(config: any, callback: any) {
   child.stdout.on('data', onOutput);
   child.stderr.on('data', onOutput);
   child.on('error', function (error) {
-    clearTimeout(timeout);
-    WEB_BUILD_LOCK = false;
-    callback({ ok:false, error:error.message, durationMs:Date.now() - startedAt, tail:tail });
+    finish({ ok:false, error:error.message, durationMs:Date.now() - startedAt, tail:tail });
   });
   child.on('close', function (code) {
-    clearTimeout(timeout);
-    WEB_BUILD_LOCK = false;
-    callback({
+    finish({
       ok:code === 0 && !timedOut,
       error:timedOut ? '构建超时（' + Math.round(WEB_BUILD_TIMEOUT_MS / 60000) + ' 分钟）已终止'
         : (code === 0 ? null : '构建失败（退出码 ' + code + '）'),

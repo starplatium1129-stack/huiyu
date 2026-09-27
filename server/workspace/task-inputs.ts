@@ -1,4 +1,4 @@
-import { checkAvailableSpace, digest, publishMedia, uploadedBytes, uploadMediaChunk } from './media';
+import { checkAvailableSpace, digest, publishMedia, releaseCommittedStaging, uploadedBytes, uploadMediaChunk } from './media';
 import { nextRevision, type WorkspaceStorageContext } from './schema';
 import { WorkspaceError, type MediaInput } from './types';
 import type { TaskInputCommand } from './task-types';
@@ -23,9 +23,10 @@ export function executeTaskInput(storage: WorkspaceStorageContext, principal: st
     return { offset: uploadedBytes(storage.root, key, media.alias) };
   });
   if (!stored) throw new WorkspaceError('TASK_INPUT_MISSING', 'Protected task input is missing');
-  if (command.kind === 'task.input.chunk') return { offset: uploadMediaChunk(storage.root, key, stored, command.offset, command.data) };
+  if (command.kind === 'task.input.chunk') return { offset: existing?.committed === 1 ? stored.bytes : uploadMediaChunk(storage.root, key, stored, command.offset, command.data) };
+  if (existing?.committed === 1) { releaseCommittedStaging(storage.root, key, stored.alias); return stored; }
   publishMedia(storage.root, key, stored);
-  return storage.transaction(() => {
+  const committed = storage.transaction(() => {
     storage.db.prepare('INSERT OR IGNORE INTO media_objects VALUES(?,?,?)').run(stored.sha256, stored.bytes, stored.mime);
     storage.db.prepare('INSERT OR IGNORE INTO media_aliases VALUES(?,?)').run(stored.alias, stored.sha256);
     storage.db.prepare('INSERT OR IGNORE INTO media_refs VALUES(?,?,?)').run('task-input', command.taskId, stored.sha256);
@@ -38,4 +39,6 @@ export function executeTaskInput(storage: WorkspaceStorageContext, principal: st
     storage.db.prepare('UPDATE tasks SET record_json=? WHERE task_id=?').run(JSON.stringify(task), task.taskId);
     return stored;
   });
+  releaseCommittedStaging(storage.root, key, stored.alias);
+  return committed;
 }

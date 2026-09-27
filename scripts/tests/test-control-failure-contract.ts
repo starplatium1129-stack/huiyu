@@ -22,6 +22,56 @@ let WINDOWS_POWERSHELL_TEST = process.platform === 'win32'
   ? {}
   : { skip:'requires Windows PowerShell process ownership semantics' };
 
+test('managed status probes share concurrent window refreshes', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-managed-status-'));
+  const runtime = runtimePaths.createRuntimePaths(root);
+  const upstream = http.createServer((_req, res) => { res.setHeader('Content-Type', 'application/json'); res.end('{"models":[]}'); });
+  const upstreamUrl = await listen(upstream);
+  const config = baseConfig(root, runtime);
+  Object.assign(config, { SD_HOST: upstreamUrl, COMFY_HOST: upstreamUrl, TTS_HOST: upstreamUrl, OLLAMA_HOST: upstreamUrl, SELF_HEALING_INTERVAL_MS: 60000 });
+  const scripts = path.join(root, 'scripts/lib'); fs.mkdirSync(scripts, { recursive: true });
+  for (const name of ['webui', 'comfyui']) fs.writeFileSync(path.join(scripts, `managed-${name}.ps1`), '# fixture');
+  const calls = { webui: 0, comfy: 0 }, releases: Array<() => void> = [];
+  const router = createControlRouter(config, () => ({}), {
+    runScriptAsync(file: string, args: string[]) {
+      assert.strictEqual(args[1], 'Status');
+      calls[file.endsWith('managed-webui.ps1') ? 'webui' : 'comfy']++;
+      return new Promise(resolve => releases.push(() => resolve({ ok: true, message: '{"managed":true}' })));
+    },
+  });
+  const app = express(); let received = 0;
+  app.use((req, _res, next) => { if (req.path === '/api/status') received++; next(); }); app.use(router);
+  const server = http.createServer(app), base = await listen(server);
+  try {
+    const pending = Promise.all(Array.from({ length: 3 }, () => getJson(base, '/api/status?fresh=1')));
+    await waitFor(() => received === 3, 'three concurrent status requests');
+    releases.forEach(release => release());
+    const statuses = await pending;
+    assert.deepStrictEqual(calls, { webui: 1, comfy: 1 });
+    assert.ok(statuses.every(row => row.json.webuiManaged && row.json.comfyManaged));
+    await getJson(base, '/api/status');
+    assert.deepStrictEqual(calls, { webui: 1, comfy: 1 }, 'ordinary polls reuse the completed cache');
+  } finally {
+    router.close(); releases.forEach(release => release());
+    server.closeAllConnections(); upstream.closeAllConnections(); await close(server); await close(upstream);
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('failed web build completes once when spawn emits error followed by close', t => {
+  const { PassThrough } = require('node:stream') as typeof import('node:stream');
+  const { runWebBuild } = require('../../routes/control/web-build') as typeof import('../../routes/control/web-build');
+  const child = new childProcess.ChildProcess();
+  const stdout = new PassThrough(), stderr = new PassThrough();
+  Object.assign(child, { stdout, stderr });
+  t.mock.method(childProcess, 'spawn', () => child);
+  const replies: Array<{ ok: boolean }> = [];
+  runWebBuild({ ROOT_DIR: os.tmpdir() }, (result: { ok: boolean }) => replies.push(result));
+  child.emit('error', new Error('fixture spawn failure')); child.emit('close', -1);
+  stdout.destroy(); stderr.destroy();
+  assert.strictEqual(replies.length, 1); assert.strictEqual(replies[0].ok, false);
+});
+
 function listen(server: any): Promise<string> {
   return new Promise<string>(function (resolve, reject) {
     server.once('error', reject);
@@ -168,7 +218,8 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
         nene:{
           refAudioPath:'nene.wav', promptText:'reference',
           sovitsWeightsPath:'nene.pth', gptWeightsPath:'nene.ckpt'
-        }
+        },
+        natsume:{ refAudioPath:'natsume.wav', promptText:'reference', sovitsWeightsPath:'natsume.pth', gptWeightsPath:'natsume.ckpt' },
       }
     });
     let firstFailure = await tts.prepare('nene').then(function () { return null; }, function (error) { return error; });
@@ -183,6 +234,12 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     });
     assert.strictEqual(sovitsRequests.length, 2,
       'retrying a partial weight switch must reapply the SoVITS weight instead of trusting stale cache state');
+    weightMock.state.rejectGpt = true;
+    await assert.rejects(tts.prepare('natsume'));
+    weightMock.state.rejectGpt = false;
+    await tts.prepare('nene');
+    assert.strictEqual(weightMock.state.paths.filter((pathname: string) => pathname.includes('weights_path=nene.pth')).length, 3,
+      'returning to the previous voice after a failed switch must restore its SoVITS weights');
     await close(weightMock.server);
     weightMock = null;
 

@@ -366,14 +366,8 @@ async function run() {
     voiceModule.includes('SentenceBuffer') && voiceModule.includes("'/api/tts?'") && voiceModule.includes('URLSearchParams'),
     'voice must stream complete sentence WAV via the GET endpoint so public playback starts before the whole file is downloaded'
   );
-  assert(
-    voiceRoute.includes('router.get(\'/api/tts\'')
-      && voiceRoute.includes('Buffer.concat') && voiceRoute.includes('fixWavHeaderServer')
-      && voiceRoute.includes('ttsAudioCache')
-      && voiceRoute.includes('inFlightTts')
-      && voiceRoute.includes('body.emotion'),
-    'streaming endpoint must collect, fix and cache the complete sentence WAV server-side and coalesce identical in-flight generations'
-  );
+  // GET audio integrity, cache reuse and in-flight sharing execute over real
+  // loopback HTTP in test-voice-cache; do not constrain their variable names here.
   assert(
     voiceModule.includes("consistency: 'locked'") && voiceModule.includes('referenceEmotion: meta.referenceEmotion'),
     'voice must lock a stable identity reference while a sentence mood stays unchanged'

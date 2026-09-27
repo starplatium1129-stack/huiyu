@@ -150,56 +150,37 @@ function createControlRouter(config: any, gatewayRef: () => any, dependencies: a
 
   // managed-webui.ps1 -Action Status 单次实测 ~2.2 秒，而控制面板 3 秒轮询一次 →
   // 不缓存的话面板一开就永久重叠 spawn PowerShell。缓存 + in-flight 去重 + fresh=1 强制刷新。
-  let WEBUI_STATUS_TTL = 15000;
-  let webuiStatusCache = { at:0, managed:false, comfy:false };
-  let webuiStatusInflight: any = null;
-
-  function readWebuiManaged(force: boolean) {
-    if (!fs.existsSync(WEBUI_MANAGER_SCRIPT)) return Promise.resolve(state.webuiManaged);
-    let cacheFresh = Date.now() - webuiStatusCache.at < WEBUI_STATUS_TTL;
-    if (!force && cacheFresh) return Promise.resolve(webuiStatusCache.managed);
-    // 已有探测在飞就复用，避免并发轮询叠加 spawn
-    if (webuiStatusInflight) return webuiStatusInflight;
-
-    webuiStatusInflight = runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Status'), 15000)
-      .then(function (status: any) {
-        webuiStatusCache.at = Date.now();
+  const MANAGED_STATUS_TTL = 15000;
+  type ManagedStatus = { at: number; managed: boolean; host: string; inflight: Promise<boolean> | null };
+  const managedStatuses: Record<'webui' | 'comfy', ManagedStatus> = {
+    webui: { at: 0, managed: false, host: '', inflight: null },
+    comfy: { at: 0, managed: false, host: '', inflight: null },
+  };
+  function readManaged(service: 'webui' | 'comfy', force: boolean): Promise<boolean> {
+    const script = service === 'webui' ? WEBUI_MANAGER_SCRIPT : COMFY_MANAGER_SCRIPT;
+    const label = service === 'webui' ? 'WebUI' : 'ComfyUI';
+    if (!fs.existsSync(script)) return Promise.resolve(service === 'webui' ? state.webuiManaged : state.comfyManaged);
+    const host = String(service === 'webui' ? config.SD_HOST : config.COMFY_HOST);
+    let cached = managedStatuses[service];
+    if (cached.host !== host) cached = managedStatuses[service] = { at: 0, managed: false, host, inflight: null };
+    if (!force && Date.now() - cached.at < MANAGED_STATUS_TTL) return Promise.resolve(cached.managed);
+    if (cached.inflight) return cached.inflight;
+    const work: Promise<boolean> = runManagedScript(script, managedScriptArgs(service, 'Status'), 15000)
+      .then(function (status: { ok?: boolean; message?: string }) {
+        cached.at = Date.now();
         if (status.ok && status.message) {
-          try {
-            webuiStatusCache.managed = !!JSON.parse(status.message).managed;
-          } catch (error) {
-            // 输出不是合法 JSON：留个痕，别静默把旧值当新值
-            controlLog('WebUI 状态脚本输出无法解析，沿用上一次结果');
-          }
+          try { cached.managed = !!JSON.parse(status.message).managed; }
+          catch { controlLog(label + ' 状态脚本输出无法解析，沿用上一次结果'); }
         }
-        return webuiStatusCache.managed;
+        return cached.managed;
       })
-      .catch(function (error: { message: string; }) {
-        controlLog('WebUI 状态探测失败: ' + error.message);
-        return webuiStatusCache.managed;
+      .catch(function (error: unknown) {
+        controlLog(label + ' 状态探测失败: ' + runtimeErrorMessage(error));
+        return cached.managed;
       })
-      .finally(function () { webuiStatusInflight = null; });
-
-    return webuiStatusInflight;
-  }
-
-  function readComfyManaged(force: boolean) {
-    if (!fs.existsSync(COMFY_MANAGER_SCRIPT)) return Promise.resolve(state.comfyManaged);
-    let cacheFresh = Date.now() - webuiStatusCache.at < WEBUI_STATUS_TTL;
-    if (!force && cacheFresh) return Promise.resolve(webuiStatusCache.comfy);
-    return runManagedScript(COMFY_MANAGER_SCRIPT, managedScriptArgs('comfy', 'Status'), 15000)
-      .then(function (status: any) {
-        webuiStatusCache.at = Date.now();
-        if (status.ok && status.message) {
-          try { webuiStatusCache.comfy = !!JSON.parse(status.message).managed; }
-          catch (error) { controlLog('ComfyUI 状态脚本输出无法解析，沿用上一次结果'); }
-        }
-        return webuiStatusCache.comfy;
-      })
-      .catch(function (error: { message: string; }) {
-        controlLog('ComfyUI 状态探测失败: ' + error.message);
-        return webuiStatusCache.comfy;
-      });
+      .finally(function () { cached.inflight = null; });
+    cached.inflight = work;
+    return work;
   }
 
   async function refreshServiceStates(force?: any) {
@@ -229,8 +210,8 @@ function createControlRouter(config: any, gatewayRef: () => any, dependencies: a
       pingComfy(config.COMFY_HOST, 2500),
       pingTts(config.TTS_HOST, 2500),
       pingOllamaDetail(config.OLLAMA_HOST, 3000),
-      readWebuiManaged(!!force),
-      readComfyManaged(!!force)
+      readManaged('webui', !!force),
+      readManaged('comfy', !!force)
     ]);
     state.sdOnline = results[0];
     state.comfyOnline = results[1];

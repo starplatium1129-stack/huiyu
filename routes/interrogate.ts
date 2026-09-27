@@ -17,8 +17,7 @@ import { WithImplicitCoercion } from 'node:buffer';
  */
 
 let express: typeof import('express') = require('express');
-let http: typeof import('http') = require('http');
-let https: typeof import('https') = require('https');
+let httpClient: typeof import('../services/http-client') = require('../services/http-client');
 let fs: typeof import('fs') = require('fs');
 let path: typeof import('path') = require('path');
 let crypto: typeof import('crypto') = require('crypto');
@@ -28,6 +27,7 @@ let wd14: typeof import('../server/interrogate-engine') = require('../server/int
 
 let MAX_BODY = '16mb';
 let MAX_IMAGE_BYTES = 12 * 1024 * 1024; // base64前 12M ≈ dataURL 16M
+const MAX_UPSTREAM_BYTES = 4 * 1024 * 1024;
 let ALLOWED_MODE = new Set(['tag', 'caption']);
 let DEFAULT_THRESHOLD = 0.35;
 
@@ -60,31 +60,10 @@ function validateImageBase64(b64: string|any[]) {
   return raw;
 }
 
-function requestJson(config: { [x: string]: string|URL; }, hostKey: string, method: string, pathname: string, body: { image: string; threshold?: number; model: string; }|null, timeout: number) {
-  return new Promise(function (resolve, reject) {
-    let target;
-    try { target = new URL(config[hostKey]); } catch (e) { reject(serviceError(502, 'UPSTREAM_CONFIG_INVALID', '上游地址无效')); return; }
-    target.pathname = pathname; target.search = '';
-    let payload = body == null ? null : Buffer.from(JSON.stringify(body));
-    let client = target.protocol === 'https:' ? https : http;
-    let req = client.request({
-      protocol: target.protocol, hostname: target.hostname, port: target.port,
-      path: target.pathname, method: method, timeout: timeout || 8000,
-      headers: Object.assign({ Accept: 'application/json' }, payload ? { 'Content-Type': 'application/json', 'Content-Length': payload.length } : {})
-    }, function (res) {
-      let chunks: any = []; let size = 0;
-      res.on('data', function (c) { size += c.length; if (size > 4 * 1024 * 1024) { req.destroy(serviceError(502, 'UPSTREAM_RESPONSE_TOO_LARGE', '上游响应过大')); return; } chunks.push(c); });
-      res.on('end', function () {
-        let raw = Buffer.concat(chunks).toString('utf8'); let data;
-        try { data = raw ? JSON.parse(raw) : null; } catch (e) { reject(serviceError(502, 'INVALID_UPSTREAM_RESPONSE', '上游返回无效 JSON')); return; }
-        if (res.statusCode! < 200 || res.statusCode! >= 300) { reject(serviceError(502, 'UPSTREAM_ERROR', '上游请求失败', { status: res.statusCode, data: data })); return; }
-        resolve(data);
-      });
-    });
-    req.on('error', function (e) { reject(serviceError(502, 'UPSTREAM_UNAVAILABLE', e.message)); });
-    req.on('timeout', function () { req.destroy(serviceError(504, 'UPSTREAM_TIMEOUT', '上游请求超时')); });
-    if (payload) req.write(payload);
-    req.end();
+function requestJson(config: { [x: string]: string|URL; }, hostKey: string, method: string, pathname: string, body: { image: string; threshold?: number; model: string; }|null, timeout: number, signal: AbortSignal) {
+  return httpClient.readJson(String(config[hostKey]), pathname, {
+    method, json: body ?? undefined, headers: { Accept: 'application/json' },
+    timeoutMs: timeout, totalTimeoutMs: timeout, limit: MAX_UPSTREAM_BYTES, signal,
   });
 }
 
@@ -163,31 +142,31 @@ function captionFromTags(tags: any[]|undefined) {
   return subject + ', ' + uniq.join(', ');
 }
 
-async function tryWebUIInterrogate(config: { [x: string]: string|URL; }, imageBase64: string, threshold: number) {
+async function tryWebUIInterrogate(config: { [x: string]: string|URL; }, imageBase64: string, threshold: number, signal: AbortSignal) {
   // 1) 扩展 wd14 tagger: POST /tagger/v1/interrogate  {image, threshold, model}
   try {
-    let r: any = await requestJson(config, 'SD_HOST', 'POST', '/tagger/v1/interrogate', { image: imageBase64, threshold: threshold, model: 'wd-v1-4-moat-tagger-v2' }, 12000);
+    let r: any = await requestJson(config, 'SD_HOST', 'POST', '/tagger/v1/interrogate', { image: imageBase64, threshold: threshold, model: 'wd-v1-4-moat-tagger-v2' }, 12000, signal);
     if (r && Array.isArray(r.tags)) return { tags: r.tags, scores: r.scores || {} };
     if (r && r.caption) return { tags: String(r.caption).split(',').map(function (s) { return s.trim(); }).filter(Boolean), scores: {} };
-  } catch (e) { /* 扩展未装，继续 */ }
+  } catch (e) { if (httpClient.isAbortError(e)) throw e; /* 扩展未装，继续 */ }
   // 2) 原生 SD interrogate: POST /sdapi/v1/interrogate
   try {
-    let r2: any = await requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/interrogate', { image: imageBase64, model: 'wd14' }, 12000);
+    let r2: any = await requestJson(config, 'SD_HOST', 'POST', '/sdapi/v1/interrogate', { image: imageBase64, model: 'wd14' }, 12000, signal);
     if (r2 && typeof r2.caption === 'string') {
       let tags = r2.caption.split(',').map(function (s: string) { return s.trim(); }).filter(Boolean);
       return { tags: tags, scores: {} };
     }
-  } catch (e) { }
+  } catch (e) { if (httpClient.isAbortError(e)) throw e; }
   return null;
 }
 
 function comfyInputRoot(config: any) {
   return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'input');
 }
-async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBase64: WithImplicitCoercion<string>, threshold: number, mode: string) {
+async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBase64: WithImplicitCoercion<string>, threshold: number, mode: string, signal: AbortSignal) {
   if (mode !== 'tag') return null; // caption 仍走启发式，后续可接 JoyCaption/Florence2
   try {
-    let info: any = await requestJson(config, 'COMFY_HOST', 'GET', '/object_info', null, 5000);
+    let info: any = await requestJson(config, 'COMFY_HOST', 'GET', '/object_info', null, 5000, signal);
     // WD14Tagger 节点名在 pysssss 实现为 "WD14Tagger|pysssss"
     let hasWD = info && (info['WD14Tagger|pysssss'] || info['WD14Tagger']);
     if (!hasWD) return null;
@@ -203,30 +182,15 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
 
     // 调用 WD14 的轻量 HTTP 接口（直接返回 tags 字符串，自动走 hf-mirror 下载）
     let query = '/pysssss/wd14tagger/tag?filename=' + encodeURIComponent(filename) + '&type=input';
-    let result = await new Promise(function (resolve, reject) {
-      let u;
-      try { u = new URL(config.COMFY_HOST); } catch (e) { reject(e); return; }
-      let client = u.protocol === 'https:' ? https : http;
-      let req = client.request({
-        protocol: u.protocol, hostname: u.hostname, port: u.port,
-        path: query, method: 'GET', timeout: 60000,
-        headers: { Accept: 'application/json' }
-      }, function (res) {
-        let chunks: any = []; res.on('data', function (c) { chunks.push(c); });
-        res.on('end', function () {
-          let raw = Buffer.concat(chunks).toString('utf8');
-          if (res.statusCode! < 200 || res.statusCode! >= 300) return reject(new Error('WD14 tag failed ' + res.statusCode + ' ' + raw.slice(0, 300)));
-          try {
-            let data = JSON.parse(raw);
-            // 节点返回字符串或数组，兼容两种
-            let text = Array.isArray(data) ? String(data[0] || '') : (typeof data === 'string' ? data : JSON.stringify(data));
-            resolve(text);
-          } catch (e) { resolve(raw); }
-        });
-      });
-      req.on('error', reject);
-      req.on('timeout', function () { req.destroy(new Error('WD14 timeout')); });
-      req.end();
+    let result = await httpClient.expectSuccess(String(config.COMFY_HOST), query, {
+      headers: { Accept: 'application/json' }, timeoutMs: 60000, totalTimeoutMs: 60000, limit: MAX_UPSTREAM_BYTES, signal,
+    }).then(function ({ body }) {
+      const raw = body.toString('utf8');
+      try {
+        const data = JSON.parse(raw);
+        // 节点返回字符串或数组，兼容两种
+        return Array.isArray(data) ? String(data[0] || '') : (typeof data === 'string' ? data : JSON.stringify(data));
+      } catch { return raw; }
     }).finally(function () {
       // 清理临时输入图（模型下载期间可能需重试，稍延迟删）
       setTimeout(function () { void fs.promises.unlink(target).catch(() => {}); }, 5000).unref();
@@ -241,6 +205,7 @@ async function tryComfyInterrogate(config: { COMFY_HOST: string|URL; }, imageBas
     tags = Object.values(uniq);
     return { tags: tags, scores: {}, caption: tags.join(', ') };
   } catch (e) {
+    if (httpClient.isAbortError(e)) throw e;
     // 首次调用会触发模型下载（hf-mirror），可能超时；返回 null 让上层走启发式，下次再试即命中本地缓存
     return null;
   }
@@ -252,6 +217,10 @@ function createInterrogateRouter(config: any) {
 
   // 反推会上传图片并触发本机模型/临时文件写入；远程隧道不得借用本机权限。
   router.post('/api/interrogate', security.localOnly, limit, express.json({ limit: MAX_BODY }), async function (req, res) {
+    const controller = new AbortController();
+    req.once('aborted', () => controller.abort());
+    res.once('close', () => { if (!res.writableEnded) controller.abort(); });
+    const signal = controller.signal;
     try {
       let body = req.body;
       if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON');
@@ -264,6 +233,7 @@ function createInterrogateRouter(config: any) {
 
       // 0) 本地 WD14 真实 ONNX 推理（最优先：不依赖 WebUI/ComfyUI 进程在线，零网络）
       let wd14Result = await wd14.interrogateTag(imageBuffer, { config: config, threshold: threshold }).catch(function () { return null; });
+      signal.throwIfAborted();
       if (wd14Result && wd14Result.ok) {
         let derivedCaption = captionFromTags(wd14Result.tags);
         return envelope.ok(res, {
@@ -283,7 +253,8 @@ function createInterrogateRouter(config: any) {
       }
 
       // 1) 本地 WebUI 优先（纯本机，不走 8317）
-      let webuiResult: any = await tryWebUIInterrogate(config, imageBase64, threshold).catch(function () { return null; });
+      let webuiResult: any = await tryWebUIInterrogate(config, imageBase64, threshold, signal);
+      signal.throwIfAborted();
       if (webuiResult && webuiResult.tags && webuiResult.tags.length) {
         return envelope.ok(res, {
           engine: 'webui',
@@ -298,7 +269,8 @@ function createInterrogateRouter(config: any) {
       }
 
       // 2) ComfyUI 本地节点
-      let comfyResult = await tryComfyInterrogate(config, imageBase64, threshold, mode).catch(function () { return null; });
+      let comfyResult = await tryComfyInterrogate(config, imageBase64, threshold, mode, signal);
+      signal.throwIfAborted();
       if (comfyResult && comfyResult.tags) {
         return envelope.ok(res, Object.assign({ engine: 'comfy', mode: mode, threshold: threshold, editable: true }, comfyResult));
       }
@@ -316,6 +288,7 @@ function createInterrogateRouter(config: any) {
         warning: '未找到本地 WD14 反推模型（onnxruntime/权重缺失），当前为启发式演示兜底；安装 ComfyUI-WD14-Tagger 节点或配置 AICS_WD14_MODEL_DIR 后自动升级为真实反推'
       });
     } catch (e) {
+      if (signal.aborted) return;
       return envelope.fail(res, runtimeErrorStatus(e) || 500, runtimeErrorMessage(e) || '反推失败', { code: runtimeErrorCode(e) || 'INTERROGATE_FAILED' });
     }
   });

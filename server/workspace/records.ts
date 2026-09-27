@@ -48,13 +48,18 @@ export function commitOperation(context: WorkspaceStorageContext, key: string, r
 }
 export function artworkByKey(context: WorkspaceStorageContext, key: string): WorkspaceArtwork | null {
   const row = context.db.prepare('SELECT id_json,body,revision,deleted_at FROM artworks WHERE id_key=?').get(key);
-  if (!row) return null;
+  return row ? decodeArtwork(row) : null;
+}
+export function decodeArtwork(row: Record<string, unknown>): WorkspaceArtwork {
   return { id: JSON.parse(String(row.id_json)) as EntityId, body: JSON.parse(String(row.body)) as WorkspaceBody,
     revision: Number(row.revision), deletedAt: row.deleted_at === null ? null : Number(row.deleted_at) };
 }
 export function projectByKey(context: WorkspaceStorageContext, key: string): WorkspaceProject | null {
   const row = context.db.prepare('SELECT id_json,body,revision FROM projects WHERE id_key=?').get(key);
-  return row ? { id: JSON.parse(String(row.id_json)) as EntityId, body: JSON.parse(String(row.body)) as WorkspaceBody, revision: Number(row.revision) } : null;
+  return row ? decodeProject(row) : null;
+}
+export function decodeProject(row: Record<string, unknown>): WorkspaceProject {
+  return { id: JSON.parse(String(row.id_json)) as EntityId, body: JSON.parse(String(row.body)) as WorkspaceBody, revision: Number(row.revision) };
 }
 function requireArtwork(context: WorkspaceStorageContext, id: EntityId, expectedRevision: number): WorkspaceArtwork {
   const record = artworkByKey(context, entityKey(id));

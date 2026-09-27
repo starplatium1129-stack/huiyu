@@ -11,7 +11,7 @@ import type { ProfileCommand } from './profile-types';
 import { backupWorkspace, restoreBackup } from './backup';
 import { collectGarbage } from './garbage';
 import { MAX_CHUNK_BYTES, mediaPath, verifyMedia } from './media';
-import { artworkByKey, checkOperation, commitOperation, entityKey, findOperation, insertOperation, mutateRecord, projectByKey, softDeleteArtworks } from './records';
+import { artworkByKey, checkOperation, commitOperation, decodeArtwork, decodeProject, entityKey, findOperation, insertOperation, mutateRecord, softDeleteArtworks } from './records';
 import { abortSave, commitSave, prepareSave, saveOperationState, uploadSaveChunk, verifyArtworkMedia } from './saves';
 import { openStorage, type StorageCheckpoint } from './schema';
 import { isWorkspaceMutation, WorkspaceError, type ExecuteOptions, type MutationReceipt,
@@ -76,17 +76,30 @@ export function openWorkspaceEngine(options: { root: string; workspaceId: string
         case 'listArtworks': {
           const limit = command.limit ?? 100;
           if (!Number.isInteger(limit) || limit < 1 || limit > 200) throw new WorkspaceError('INVALID_COMMAND', 'List limit must be 1–200', 400);
-          const rows = storage.db.prepare(`SELECT id_key FROM artworks WHERE id_key>? ${command.includeDeleted ? '' : 'AND deleted_at IS NULL'} ORDER BY id_key LIMIT ?`)
-            .all(command.cursor ?? '', limit + 1);
-          return { items: rows.slice(0, limit).map(row => artworkByKey(storage, String(row.id_key))!),
-            nextCursor: rows.length > limit ? String(rows[limit - 1].id_key) : null, revision: revision() };
+          const rows = storage.db.prepare(`SELECT id_key,id_json,body,revision,deleted_at FROM artworks WHERE id_key>? ${command.includeDeleted ? '' : 'AND deleted_at IS NULL'} ORDER BY id_key LIMIT ?`)
+            .iterate(command.cursor ?? '', limit + 1);
+          const items: WorkspaceResults['listArtworks']['items'] = [];
+          let lastKey = '', nextCursor: string | null = null;
+          for (const row of rows) {
+            if (items.length === limit) { nextCursor = lastKey; break; }
+            items.push(decodeArtwork(row)); lastKey = String(row.id_key);
+          }
+          return { items, nextCursor, revision: revision() };
         }
         case 'getArtwork': return artworkByKey(storage, entityKey(command.id));
         case 'getArtworks': {
           if (!Array.isArray(command.ids) || !command.ids.length || command.ids.length > 200) throw new WorkspaceError('INVALID_COMMAND', 'Artwork lookup must contain 1–200 IDs', 400);
-          return command.ids.map(id => artworkByKey(storage, entityKey(id)));
+          const keys = command.ids.map(entityKey);
+          const rows = storage.db.prepare(`SELECT id_key,id_json,body,revision,deleted_at FROM artworks WHERE id_key IN (${keys.map(() => '?').join(',')})`).iterate(...keys);
+          const positions = new Map<string, number[]>();
+          keys.forEach((key, index) => {
+            const matches = positions.get(key) ?? []; matches.push(index); positions.set(key, matches);
+          });
+          const items: WorkspaceResults['getArtworks'] = Array(keys.length).fill(null);
+          for (const row of rows) for (const index of positions.get(String(row.id_key))!) items[index] = decodeArtwork(row);
+          return items;
         }
-        case 'listProjects': return { items: storage.db.prepare('SELECT id_key FROM projects ORDER BY id_key').all().map(row => projectByKey(storage, String(row.id_key))!), revision: revision() };
+        case 'listProjects': return { items: storage.db.prepare('SELECT id_json,body,revision FROM projects ORDER BY id_key').all().map(decodeProject), revision: revision() };
         case 'prepareSave': return prepareSave(storage, principal, command);
         case 'uploadChunk': return uploadSaveChunk(storage, principal, command);
         case 'commitSave': return commitSave(storage, principal, command.operationId, checkCancelled);

@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { checkAvailableSpace, MAX_CHUNK_BYTES, mediaPath, publishMedia, stagingPath, uploadedBytes, uploadMediaChunk, verifyMedia } from './media';
+import { checkAvailableSpace, MAX_CHUNK_BYTES, mediaPath, publishMedia, releaseCommittedStaging, uploadedBytes, uploadMediaChunk, verifyMedia } from './media';
 import { artworkByKey, checkOperation, commitOperation, entityKey, findOperation, insertOperation, operationState, type OperationRow } from './records';
 import { nextRevision, type WorkspaceStorageContext } from './schema';
 import { WorkspaceError, type MutationReceipt, type OperationState, type WorkspaceCommand } from './types';
@@ -90,9 +90,7 @@ export function commitSave(context: WorkspaceStorageContext, principal: string, 
   context.checkpoint('committed');
   // The committed receipt is authoritative. Leaving a staging hardlink after a crash
   // is harmless; never remove immutable media as compensation for a lost response.
-  const staged = stagingPath(context.root, row.op_key, input.media.alias);
-  try { if (fs.existsSync(staged)) fs.unlinkSync(staged); }
-  catch { /* The committed receipt wins; GC can retry this owned staging hardlink later. */ }
+  releaseCommittedStaging(context.root, row.op_key, input.media.alias);
   return receipt;
 }
 export function abortSave(context: WorkspaceStorageContext, principal: string, id: string): OperationState {

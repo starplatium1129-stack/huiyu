@@ -79,6 +79,14 @@ async function run(): Promise<void> {
       const numeric = await call(engine, { kind: 'commitSave', operationId: 'save-1' });
       await assert.rejects(save(engine, '42', 'save-collision', 'image-collision'), { code: 'OPERATION_CONFLICT' });
       const string = await save(engine, '43', 'save-2', 'image-2');
+      const firstPage = await call(engine, { kind: 'listArtworks', limit: 1 });
+      assert.deepEqual(firstPage.items.map(row => row.id), [42]);
+      const secondPage = await call(engine, { kind: 'listArtworks', limit: 1, cursor: firstPage.nextCursor! });
+      assert.deepEqual(secondPage.items.map(row => row.id), ['43']);
+      assert.equal(secondPage.nextCursor, null);
+      const ordered = await call(engine, { kind: 'getArtworks', ids: ['43', 42, 'missing', 42] });
+      assert.deepEqual(ordered.map(row => row?.id ?? null), ['43', 42, null, 42]);
+      assert.notEqual(ordered[1]!.body, ordered[3]!.body);
       const project = await call(engine, { kind: 'saveProject', operationId: 'project-1', project: { id: 'project', future: 'preserved' }, artworkIds: [42, '43'], expectedRevision: null });
       assert.deepEqual(project.project?.body.history_ids, [42, '43']);
       await assert.rejects(call(engine, { kind: 'saveProject', operationId: 'project-dangling', project: { id: 'bad' }, artworkIds: ['missing'], expectedRevision: null }), { code: 'NOT_FOUND' });
@@ -109,7 +117,7 @@ async function run(): Promise<void> {
       await call(engine, { kind: 'abortSave', operationId: 'pending-save' });
       assert.equal((await call(engine, { kind: 'collectGarbage', operationId: 'gc-free' })).removed, 1);
       assert.equal(fs.existsSync(object), false);
-      assertions += 17;
+      assertions += 22;
     } finally { engine.close(); }
 
     const batches = path.join(root, 'batches');

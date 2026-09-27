@@ -83,11 +83,15 @@ async function run() {
   }
   // Isolated WD14 HTTP fixture: verifies async upload and write-failure fallback.
   let calls = 0;
+  let holdTags = false, started!: () => void, disconnected!: () => void;
+  const tagStarted = new Promise<void>(resolve => { started = resolve; });
+  const tagDisconnected = new Promise<void>(resolve => { disconnected = resolve; });
   const comfy = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
     if (req.url === '/object_info') return res.end(JSON.stringify({ WD14Tagger: {} }));
     if (req.url?.startsWith('/pysssss/wd14tagger/tag')) {
       calls += 1;
+      if (holdTags) { res.write('partial tags'); res.once('close', disconnected); started(); return; }
       return res.end(JSON.stringify('1girl, blue_hair'));
     }
     res.end('{}');
@@ -110,6 +114,18 @@ async function run() {
     const fallback = await json(await post(fixture.baseUrl, { mode:'tag', image:TINY_PNG }));
     assert.equal(fallback.engine, 'heuristic');
     assert.equal(calls, 1, 'failed writes must not submit nonexistent images upstream');
+    fs.promises.writeFile = originalWrite;
+    holdTags = true;
+    const controller = new AbortController();
+    const request = fetch(fixture.baseUrl + '/api/interrogate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'tag', image: TINY_PNG }), signal: controller.signal,
+    }).catch(error => error);
+    await tagStarted; controller.abort(); await request;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    try {
+      await Promise.race([tagDisconnected, new Promise<never>((_, reject) => { timeout = setTimeout(() => reject(new Error('Disconnected interrogation left its upstream request open')), 1500); })]);
+    } finally { clearTimeout(timeout); }
   } finally {
     fs.promises.writeFile = originalWrite;
     await fixture.close();

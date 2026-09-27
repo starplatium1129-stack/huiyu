@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-27",
+  "baseCommit": "e0e5c692299418fa5422c0a94d8fb402a15a28e1",
+  "scope": "Fifth backend audit batch; includes uncommitted third/fourth batch prerequisites",
+  "changes": [
+    {
+      "path": "routes/voice.ts",
+      "behavior": "Per-router audio cache and shared work; keys include backend, weights and resolved synthesis payload; closure cancels owned requests and clears cache",
+      "cacheEntries": 60,
+      "cacheBytes": 134217728,
+      "oversizedItem": "Delivered normally without entering cache"
+    },
+    {
+      "path": "services/tts-service.ts",
+      "behavior": "Read live configuration at admission, snapshot queued host/profile and invalidate the weight cache after a partial switch",
+      "generationDeadlineMs": 180000
+    },
+    {
+      "paths": [
+        "server/workspace/tasks.ts",
+        "server/workspace/task-inputs.ts",
+        "server/workspace/media.ts",
+        "server/workspace/saves.ts"
+      ],
+      "behavior": "Acknowledged commits return existing state; post-commit owned staging links are removed; replayed chunks do not recreate staging"
+    }
+  ],
+  "validation": {
+    "runtimeBuild": "passed",
+    "runs": [
+      {
+        "command": "node --test scripts/tests/test-voice-cache.js scripts/tests/test-task-runtime.js scripts/tests/test-control-failure-contract.js scripts/tests/test-workspace-storage.js",
+        "exitCode": 0,
+        "tests": 27,
+        "passed": 27
+      },
+      {
+        "command": "node --test scripts/tests/test-chat.js scripts/tests/test-voice-cache.js scripts/tests/test-workspace-backup.js",
+        "exitCode": 1,
+        "reason": "Old chat assertion matched the literal body.emotion cache implementation; other tests passed"
+      },
+      {
+        "command": "node --test scripts/tests/test-chat.js scripts/tests/test-voice-cache.js",
+        "exitCode": 0,
+        "tests": 6,
+        "passed": 6,
+        "reason": "Literal source assertion replaced by existing real HTTP audio/cache checks"
+      },
+      {
+        "command": "node --test scripts/tests/test-chat.js scripts/tests/test-voice-cache.js scripts/tests/test-workspace-backup.js",
+        "scope": "Workspace backup file's three passing checks reused from the earlier run; unchanged afterwards"
+      }
+    ],
+    "newBehaviorTests": 2,
+    "existingExtensions": [
+      "WAV header length",
+      "returning to old voice after partial weight switch",
+      "commit revision stability",
+      "owned staging cleanup and duplicate chunk replay"
+    ],
+    "lintErrors": 0,
+    "existingTaskTestLintWarnings": 6,
+    "monolithBudget": "passed",
+    "diffWhitespace": "passed"
+  },
+  "environment": {
+    "node": "v24.18.0",
+    "platform": "win32",
+    "media": "small neutral PNG and synthetic PCM WAV",
+    "models": "mock HTTP backends; no AI generation"
+  },
+  "limitations": [
+    "No real GPT-SoVITS voice quality, installed desktop or GPU acceptance",
+    "Post-commit staging cleanup is best effort and never invalidates a durable commit",
+    "Cache byte limits do not measure peak generation-buffer memory",
+    "No performance-speed claim; this batch verifies behavior and removes redundant committed writes",
+    "Third through fifth batch changes remain uncommitted"
+  ]
+}
