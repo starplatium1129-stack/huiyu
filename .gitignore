@@ -42,7 +42,6 @@ services/**/*.d.ts
 /assets/theme-bootstrap.js
 /docs/guides/prompts/*.js
 /eslint.config.mjs
-/poc/audit-stability-apply.cjs
 /poc/live2d-compare/probe.mjs
 /poc/live2d-compare/probe2.mjs
 /poc/live2d-compare/shot.mjs
