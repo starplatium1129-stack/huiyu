@@ -72,7 +72,7 @@ impl Translation {
                 &self.cancel,
             )
             .await
-            .is_ok_and(|(status, _, _)| status == 200)
+            .is_ok_and(|(status, _)| status == 200)
     }
     pub async fn status(&self) -> Value {
         let ready = self.ping().await;
@@ -209,7 +209,7 @@ impl Translation {
         }
         let current = async {
             self.prepare().await?;
-            let (status, value, _) = self
+            let (status, value) = self
                 .transport
                 .json(
                     &self.settings.translation_url,
@@ -220,7 +220,7 @@ impl Translation {
                     &self.cancel,
                 )
                 .await?;
-            let value = value.filter(|value| {
+            let value = value.ok().filter(|value| {
                 value["translation"]
                     .as_str()
                     .is_some_and(|text| !text.is_empty())

@@ -82,9 +82,9 @@ impl Service {
                 cancel,
             )
             .await
-            .is_ok_and(|(status, value, _)| {
+            .is_ok_and(|(status, value)| {
                 (200..300).contains(&status)
-                    && value.is_some_and(|v| v.get("MiniMaxH3DualClockSamplerT8").is_some())
+                    && value.is_ok_and(|v| v.get("MiniMaxH3DualClockSamplerT8").is_some())
             });
         cache.0
     }

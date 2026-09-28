@@ -72,6 +72,7 @@ impl LocalUpstream {
 
     /// Bounded JSON transport for status/model catalogs; non-success HTTP statuses
     /// are returned to callers, preserving provider-specific reachability rules.
+    /// The body is parsed JSON, or the original lossy text when parsing fails.
     pub async fn json(
         &self,
         base: &str,
@@ -80,7 +81,7 @@ impl LocalUpstream {
         timeout: Duration,
         max_bytes: usize,
         cancel: &CancellationToken,
-    ) -> Result<(u16, Option<Value>, String)> {
+    ) -> Result<(u16, std::result::Result<Value, String>)> {
         let base = local_url(base)?;
         if !path.starts_with('/') || path.starts_with("//") {
             return Err(ApiError::invalid("Invalid upstream path"));
@@ -118,8 +119,7 @@ impl LocalUpstream {
                 }
                 data.extend_from_slice(&chunk);
             }
-            let raw = String::from_utf8_lossy(&data).into_owned();
-            Ok((status, serde_json::from_slice(&data).ok(), raw))
+            Ok((status, decode_body(data)))
         };
         tokio::select! { result = future => result, _ = cancel.cancelled() => Err(ApiError::new(499, "ABORTED", "上游请求已取消")) }
     }
@@ -139,3 +139,17 @@ fn upstream_error(error: reqwest::Error) -> ApiError {
         "上游服务请求未完成",
     )
 }
+
+// Catalog JSON and plain-text tagger replies are mutually exclusive. Avoid
+// retaining a duplicate UTF-8 body alongside parsed JSON; reuse the byte buffer
+// for plain text. Invalid UTF-8 retains the provider fallback's lossy semantics.
+fn decode_body(data: Vec<u8>) -> std::result::Result<Value, String> {
+    serde_json::from_slice(&data).map_err(|_| {
+        String::from_utf8(data)
+            .unwrap_or_else(|error| String::from_utf8_lossy(error.as_bytes()).into_owned())
+    })
+}
+
+#[cfg(test)]
+#[path = "client_tests.rs"]
+mod tests;

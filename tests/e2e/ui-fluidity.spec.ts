@@ -102,6 +102,7 @@ for (const theme of ['dark', 'light']) {
 for (const theme of ['dark', 'light']) {
   test(`009 particles honor app motion and hidden/resume without stale drawing ${theme}`, async ({ page }) => {
     await page.addInitScript(() => {
+      // Both renderers composite into this 2D canvas; count frames, not points.
       const clear = CanvasRenderingContext2D.prototype.clearRect
       CanvasRenderingContext2D.prototype.clearRect = function (...args: Parameters<CanvasRenderingContext2D['clearRect']>) {
         if (this.canvas.closest('.semantic-particle-field')) this.canvas.dataset.officeDraws = String(Number(this.canvas.dataset.officeDraws || 0) + 1)
@@ -114,8 +115,9 @@ for (const theme of ['dark', 'light']) {
     await page.route('**/assets/particles/p_*.json', route => route.fulfill({ json: {
       id: '009-neutral-cloud', aspect: 1, palette: ['#a8abc0'], grid: { w: 8, h: 8, cells: '0'.repeat(64) },
     } }))
-    await page.goto('/popular-scenes')
-    const field = page.locator('.pop-hero-field')
+    // Portrait particles now live in the character profile, not the scene list.
+    await page.goto('/character?character=nene')
+    const field = page.locator('.character-particle-stage .semantic-particle-field')
     await expect(field).toHaveClass(/has-canvas/)
     const canvas = field.locator('canvas')
     const count = async () => Number(await canvas.getAttribute('data-office-draws') || 0)
@@ -128,8 +130,8 @@ for (const theme of ['dark', 'light']) {
     }
     await motion('reduce'); await expect(field).toHaveClass(/is-static/)
     const stopped = await count()
-    // An observation window proves absence of drawing, not a readiness delay.
-    await page.waitForTimeout(120); expect(await count()).toBe(stopped)
+    // An observation window proves absence of rendering, not just a static class.
+    await page.waitForTimeout(1200); expect(await count()).toBe(stopped)
     await page.screenshot({ path: test.info().outputPath(`009-particles-${theme}-reduce.png`) })
     await motion('full'); await expect(field).not.toHaveClass(/is-static/)
     await expect.poll(count).toBeGreaterThan(stopped)
@@ -138,9 +140,9 @@ for (const theme of ['dark', 'light']) {
       try {
         Object.defineProperty(document, 'hidden', { configurable: true, get: () => true })
         document.dispatchEvent(new Event('visibilitychange'))
-        const canvas = document.querySelector<HTMLCanvasElement>('.pop-hero-field canvas')!
+        const canvas = document.querySelector<HTMLCanvasElement>('.character-particle-stage canvas')!
         const before = canvas.dataset.officeDraws
-        await new Promise(resolve => setTimeout(resolve, 120))
+        await new Promise(resolve => setTimeout(resolve, 1200))
         if (canvas.dataset.officeDraws !== before) throw new Error('Hidden particles kept drawing')
       } finally {
         if (original) Object.defineProperty(document, 'hidden', original)

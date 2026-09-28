@@ -245,7 +245,7 @@ impl ControlService {
     pub(super) async fn unload(&self) -> Result<()> {
         let settings = self.settings();
         let host = settings["ollamaHost"].as_str().unwrap_or("");
-        let (status, data, _) = self.request(host, "/api/ps", None, 4).await?;
+        let (status, data) = self.request(host, "/api/ps", None, 4).await?;
         if !(200..300).contains(&status) {
             return Err(ApiError::new(502, "OLLAMA_UNAVAILABLE", "Ollama 未响应"));
         }
@@ -254,7 +254,7 @@ impl ControlService {
             let Some(name) = model["name"].as_str().or_else(|| model["model"].as_str()) else {
                 continue;
             };
-            let (status, _, _) = self
+            let (status, _) = self
                 .request(
                     host,
                     "/api/generate",
@@ -270,7 +270,7 @@ impl ControlService {
                 ));
             }
         }
-        let (status, data, _) = self.request(host, "/api/ps", None, 4).await?;
+        let (status, data) = self.request(host, "/api/ps", None, 4).await?;
         if !(200..300).contains(&status)
             || data
                 .as_ref()

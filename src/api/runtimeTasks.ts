@@ -17,15 +17,31 @@ function ensureAuthority() {
 export const runtimeResultPath = (task: TaskRecord, index = 0) => `${base}/${encodeURIComponent(task.taskId)}/results/${index}`
 export const isRuntimeResultPath = (url: string) => /^\/api\/tasks\/v1\/[\w-]+\/results\/\d+$/.test(url)
 
-function remember(task: TaskRecord): TaskRecord {
-  if (task.runtimeEpoch !== epoch()) throw new Error('运行时已更换，请重新读取任务')
-  const current = taskRecords.value.find(value => value.taskId === task.taskId)
-  if (!current || current.runtimeEpoch !== task.runtimeEpoch || current.revision <= task.revision) {
-    taskRecords.value = [copyTask(task), ...taskRecords.value.filter(value => value.taskId !== task.taskId)].sort((a, b) => b.createdAt - a.createdAt)
+function mergeTasks(incoming: readonly TaskRecord[]): void {
+  // Validate the whole response before publishing any partial state. Revisions
+  // identify immutable runtime snapshots; unchanged polling must not clone and
+  // re-sort every task or invalidate all derived UI snapshots every 2.5 seconds.
+  const expected = epoch()
+  if (incoming.some(task => task.runtimeEpoch !== expected)) throw new Error('运行时已更换，请重新读取任务')
+  const records = new Map(taskRecords.value.map(task => [task.taskId, task]))
+  let changed = false
+  for (const task of incoming) {
+    const current = records.get(task.taskId)
+    if (!current || current.runtimeEpoch !== task.runtimeEpoch || current.revision < task.revision) {
+      records.set(task.taskId, copyTask(task)); changed = true
+    }
   }
-  for (const [input, pending] of unresolved) if (pending.key === task.requestKey) unresolved.delete(input)
-  pendingTaskRequests.value = [...unresolved.values()]
-  return copyTask(current && current.runtimeEpoch === task.runtimeEpoch && current.revision > task.revision ? current : task)
+  if (changed) taskRecords.value = [...records.values()].sort((a, b) => b.createdAt - a.createdAt)
+  const received = new Set(incoming.map(task => task.requestKey))
+  let resolved = false
+  for (const [input, pending] of unresolved) if (received.has(pending.key)) { unresolved.delete(input); resolved = true }
+  if (resolved) pendingTaskRequests.value = [...unresolved.values()]
+}
+function remember(task: TaskRecord): TaskRecord {
+  mergeTasks([task])
+  // Callers still own a detached result, never the stored record or a mutable
+  // cross-layer shared reference. List refresh has no unused return copies.
+  return copyTask(taskRecords.value.find(value => value.taskId === task.taskId)!)
 }
 async function request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal): Promise<T> {
   ensureAuthority()
@@ -42,7 +58,7 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
   try {
     const list = await request<{ items: TaskRecord[] }>('', 'GET', undefined, signal)
     if (read !== activeRead) return
-    for (const task of list.items) remember(task)
+    mergeTasks(list.items)
     runtimeTaskError.value = ''
   } catch (error) { if (!signal?.aborted) runtimeTaskError.value = error instanceof Error ? error.message : '任务暂时无法读取'; throw error }
 }

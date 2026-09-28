@@ -1,0 +1,1147 @@
+{
+  "date": "2026-09-28T04:47:21.103Z",
+  "machineRole": "Office validation machine AMD 880M; user primary machine RTX 4070 Ti SUPER was not measured",
+  "fixture": "Existing ui-fluidity office neutral profile and 8x8 particle cloud, isolated Rust mock-stack web-only offset21000",
+  "limitations": [
+    "CPU deltas belong only to the isolated test browser GPU/renderer processes; one-core percentage is CPU seconds / wall seconds * 100, not total machine percent.",
+    "GPU engine percentages are independent Windows counter instances and must not be summed into total GPU utilization.",
+    "Full/reduce/full uses the actual persisted application motion preference plus storage event. Hidden is a document.hidden getter/visibilitychange test injection, not OS minimization.",
+    "Single five-second windows are acceptance observations, not a stable cross-machine performance benchmark.",
+    "Windows CIM startup/query overhead extended actual observation windows beyond the five-second minimum; use recorded elapsedSeconds. Sampling cadence is approximately one second plus CIM query overhead."
+  ],
+  "windows": [
+    {
+      "mode": "full",
+      "elapsedSeconds": 12.482114600000001,
+      "drawsBefore": 87,
+      "drawsAfter": 1584,
+      "fieldClass": "semantic-particle-field density-ambient signal-idle has-canvas has-portrait",
+      "cpu": [
+        {
+          "pid": 33320,
+          "type": "renderer",
+          "beforeCpuSeconds": 0.056771,
+          "afterCpuSeconds": 0.057567,
+          "deltaCpuSeconds": 0.0007959999999999981,
+          "oneCorePercent": 0.0063771245939369765
+        },
+        {
+          "pid": 30948,
+          "type": "renderer",
+          "beforeCpuSeconds": 1.923271,
+          "afterCpuSeconds": 4.04088,
+          "deltaCpuSeconds": 2.117609,
+          "oneCorePercent": 16.96514627417377
+        },
+        {
+          "pid": 29704,
+          "type": "GPU",
+          "beforeCpuSeconds": 1.514395,
+          "afterCpuSeconds": 5.041777,
+          "deltaCpuSeconds": 3.527382,
+          "oneCorePercent": 28.25949058343047
+        }
+      ],
+      "gpuCounters": [
+        {
+          "timestamp": "2026-09-28T04:47:31.9967078Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 6
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:33.3517637Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 6
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:34.6500886Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 4
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:35.9488672Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 4
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:37.2467895Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 5
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        }
+      ]
+    },
+    {
+      "mode": "reduce",
+      "elapsedSeconds": 6.808234700000001,
+      "drawsBefore": 1586,
+      "drawsAfter": 1586,
+      "fieldClass": "semantic-particle-field density-ambient signal-idle is-static has-canvas has-portrait",
+      "cpu": [
+        {
+          "pid": 33320,
+          "type": "renderer",
+          "beforeCpuSeconds": 0.057567,
+          "afterCpuSeconds": 0.0576,
+          "deltaCpuSeconds": 0.00003299999999999831,
+          "oneCorePercent": 0.0004847071444231836
+        },
+        {
+          "pid": 30948,
+          "type": "renderer",
+          "beforeCpuSeconds": 4.0616,
+          "afterCpuSeconds": 4.066789,
+          "deltaCpuSeconds": 0.005188999999999666,
+          "oneCorePercent": 0.07621652643672323
+        },
+        {
+          "pid": 29704,
+          "type": "GPU",
+          "beforeCpuSeconds": 5.049721,
+          "afterCpuSeconds": 5.050686,
+          "deltaCpuSeconds": 0.0009649999999998826,
+          "oneCorePercent": 0.014174011950555737
+        }
+      ],
+      "gpuCounters": [
+        {
+          "timestamp": "2026-09-28T04:47:39.1008345Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:40.4219916Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:41.7136247Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:43.0203135Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:44.3306985Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        }
+      ]
+    },
+    {
+      "mode": "full",
+      "elapsedSeconds": 6.7308256,
+      "drawsBefore": 1620,
+      "drawsAfter": 2427,
+      "fieldClass": "semantic-particle-field density-ambient signal-idle has-canvas has-portrait",
+      "cpu": [
+        {
+          "pid": 33320,
+          "type": "renderer",
+          "beforeCpuSeconds": 0.0576,
+          "afterCpuSeconds": 0.0576,
+          "deltaCpuSeconds": 0,
+          "oneCorePercent": 0
+        },
+        {
+          "pid": 30948,
+          "type": "renderer",
+          "beforeCpuSeconds": 4.135351,
+          "afterCpuSeconds": 5.495373,
+          "deltaCpuSeconds": 1.3600219999999998,
+          "oneCorePercent": 20.205871921566352
+        },
+        {
+          "pid": 29704,
+          "type": "GPU",
+          "beforeCpuSeconds": 5.138605,
+          "afterCpuSeconds": 7.252344,
+          "deltaCpuSeconds": 2.113739,
+          "oneCorePercent": 31.403859282879054
+        }
+      ],
+      "gpuCounters": [
+        {
+          "timestamp": "2026-09-28T04:47:46.1243329Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 7
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:47.4462483Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 7
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:48.7436240Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 7
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:50.0470202Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 7
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:51.3430801Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 5
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        }
+      ]
+    },
+    {
+      "mode": "hidden",
+      "elapsedSeconds": 6.742569100000001,
+      "drawsBefore": 2428,
+      "drawsAfter": 2428,
+      "fieldClass": "semantic-particle-field density-ambient signal-idle has-canvas has-portrait",
+      "cpu": [
+        {
+          "pid": 33320,
+          "type": "renderer",
+          "beforeCpuSeconds": 0.0576,
+          "afterCpuSeconds": 0.05788,
+          "deltaCpuSeconds": 0.00028000000000000247,
+          "oneCorePercent": 0.004152719769679519
+        },
+        {
+          "pid": 30948,
+          "type": "renderer",
+          "beforeCpuSeconds": 5.501421,
+          "afterCpuSeconds": 5.505902,
+          "deltaCpuSeconds": 0.004481000000000179,
+          "oneCorePercent": 0.06645834745690894
+        },
+        {
+          "pid": 29704,
+          "type": "GPU",
+          "beforeCpuSeconds": 7.257411,
+          "afterCpuSeconds": 7.259268,
+          "deltaCpuSeconds": 0.0018569999999993314,
+          "oneCorePercent": 0.027541430758185798
+        }
+      ],
+      "gpuCounters": [
+        {
+          "timestamp": "2026-09-28T04:47:53.1184183Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:54.4477303Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:55.7478545Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:57.0481117Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        },
+        {
+          "timestamp": "2026-09-28T04:47:58.3704850Z",
+          "engines": [
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_0_engtype_3D",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_1_engtype_Copy",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_2_engtype_Compute 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_3_engtype_Timer 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_4_engtype_Security 1",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_5_engtype_Video JPEG 0",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_6_engtype_Video Processor",
+              "UtilizationPercentage": 0
+            },
+            {
+              "Name": "pid_29704_luid_0x00000000_0x00014438_phys_0_eng_7_engtype_Video Codec Engine",
+              "UtilizationPercentage": 0
+            }
+          ],
+          "available": true
+        }
+      ]
+    }
+  ],
+  "hardware": {
+    "gpu": {
+      "devices": [
+        {
+          "vendorId": 4098,
+          "deviceId": 5390,
+          "subSysId": 3758365957,
+          "revision": 196,
+          "vendorString": "",
+          "deviceString": "AMD Radeon(TM) 880M Graphics",
+          "driverVendor": "AMD",
+          "driverVersion": "32.0.31021.5001"
+        },
+        {
+          "vendorId": 4098,
+          "deviceId": 5390,
+          "subSysId": 3758365957,
+          "revision": 196,
+          "vendorString": "",
+          "deviceString": "AMD Radeon(TM) 880M Graphics",
+          "driverVendor": "",
+          "driverVersion": "32.0.31021.5001"
+        },
+        {
+          "vendorId": 4098,
+          "deviceId": 5390,
+          "subSysId": 3758365957,
+          "revision": 196,
+          "vendorString": "",
+          "deviceString": "AMD Radeon(TM) 880M Graphics",
+          "driverVendor": "",
+          "driverVersion": "32.0.31021.5001"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.26100.6725"
+        }
+      ],
+      "auxAttributes": {
+        "amdSwitchable": false,
+        "bgra8OverlaySupport": "SOFTWARE",
+        "canSupportThreadedTextureMailbox": false,
+        "directComposition": true,
+        "directMLFeatureLevel": "Not supported",
+        "directRenderingVersion": "",
+        "displayType": "ANGLE_D3D11",
+        "dx12FeatureLevel": "Not supported",
+        "glExtensions": "GL_AMD_performance_monitor GL_ANGLE_base_vertex_base_instance_shader_builtin GL_ANGLE_blob_cache GL_ANGLE_client_arrays GL_ANGLE_clip_cull_distance GL_ANGLE_copy_texture_3d GL_ANGLE_depth_texture GL_ANGLE_framebuffer_blit GL_ANGLE_framebuffer_multisample GL_ANGLE_get_serialized_context_string GL_ANGLE_get_tex_level_parameter GL_ANGLE_instanced_arrays GL_ANGLE_memory_size GL_ANGLE_multiview_multisample GL_ANGLE_pack_reverse_row_order GL_ANGLE_polygon_mode GL_ANGLE_program_binary_readiness_query GL_ANGLE_program_cache_control GL_ANGLE_provoking_vertex GL_ANGLE_renderability_validation GL_ANGLE_request_extension GL_ANGLE_robust_client_memory GL_ANGLE_shader_pixel_local_storage GL_ANGLE_shader_pixel_local_storage_coherent GL_ANGLE_stencil_texturing GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_ANGLE_texture_multisample GL_ANGLE_texture_usage GL_ANGLE_translated_shader_source GL_APPLE_clip_distance GL_ARM_rgba8 GL_CHROMIUM_bind_generates_resource GL_CHROMIUM_bind_uniform_location GL_CHROMIUM_copy_compressed_texture GL_CHROMIUM_copy_texture GL_CHROMIUM_lose_context GL_EXT_EGL_image_external_wrap_modes GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_conservative_depth GL_EXT_debug_label GL_EXT_debug_marker GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB GL_EXT_shader_texture_lod GL_EXT_texture_border_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_filter_anisotropic GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_rg GL_EXT_texture_storage GL_EXT_texture_type_2_10_10_10_REV GL_EXT_unpack_subimage GL_KHR_debug GL_KHR_parallel_shader_compile GL_KHR_robustness GL_NV_EGL_stream_consumer_external GL_NV_fence GL_NV_framebuffer_blit GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_shader_noperspective_interpolation GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_depth24 GL_OES_depth32 GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_get_program_binary GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_variables GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_surfaceless_context GL_OES_texture_border_clamp GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_vertex_array_object GL_OVR_multiview GL_OVR_multiview2 ",
+        "glImplementationParts": "(gl=egl-angle,angle=d3d11)",
+        "glRenderer": "ANGLE (AMD, AMD Radeon(TM) 880M Graphics (0x0000150E) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.31021.5001)",
+        "glResetNotificationStrategy": 33362,
+        "glVendor": "Google Inc. (AMD)",
+        "glVersion": "OpenGL ES 3.0 (ANGLE 2.1.48011 git hash: 2fd3933aabc6)",
+        "glWsExtensions": "EGL_EXT_create_context_robustness EGL_ANGLE_d3d_share_handle_client_buffer EGL_ANGLE_d3d_texture_client_buffer EGL_ANGLE_surface_d3d_texture_2d_share_handle EGL_ANGLE_query_surface_pointer EGL_ANGLE_window_fixed_size EGL_ANGLE_keyed_mutex EGL_ANGLE_surface_orientation EGL_ANGLE_direct_composition EGL_NV_post_sub_buffer EGL_KHR_create_context EGL_KHR_image EGL_KHR_image_base EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_gl_renderbuffer_image EGL_KHR_get_all_proc_addresses EGL_KHR_stream EGL_KHR_stream_consumer_gltexture EGL_NV_stream_consumer_gltexture_yuv EGL_ANGLE_stream_producer_d3d_texture EGL_ANGLE_create_context_webgl_compatibility EGL_CHROMIUM_create_context_bind_generates_resource EGL_CHROMIUM_sync_control EGL_EXT_pixel_format_float EGL_KHR_surfaceless_context EGL_ANGLE_display_texture_share_group EGL_ANGLE_display_semaphore_share_group EGL_ANGLE_create_context_client_arrays EGL_ANGLE_program_cache_control EGL_ANGLE_robust_resource_initialization EGL_ANGLE_create_context_extensions_enabled EGL_ANDROID_blob_cache EGL_ANDROID_recordable EGL_ANGLE_image_d3d11_texture EGL_ANGLE_create_context_backwards_compatible EGL_KHR_no_config_context EGL_KHR_create_context_no_error EGL_KHR_reusable_sync EGL_ANGLE_memory_usage_report ",
+        "glWsVendor": "Google Inc. (AMD)",
+        "glWsVersion": "1.5 (ANGLE 2.1.48011 git hash: 2fd3933aabc6)",
+        "inProcessGpu": false,
+        "initializationTime": 0.12694,
+        "isAsan": false,
+        "isClangCoverage": false,
+        "jpegDecodeAcceleratorSupported": false,
+        "maxMsaaSamples": "8",
+        "nv12OverlaySupport": "SOFTWARE",
+        "optimus": false,
+        "p010OverlaySupport": "SOFTWARE",
+        "passthroughCmdDecoder": true,
+        "pixelShaderVersion": "5.0",
+        "playreadyHardwareDrmSupport": false,
+        "processCrashCount": 0,
+        "rgb10a2OverlaySupport": "SOFTWARE",
+        "sandboxed": false,
+        "skiaBackendType": "GaneshGL",
+        "subpixelFontRendering": true,
+        "supportsD3dSharedImages": true,
+        "supportsDirectML": false,
+        "supportsDx12": false,
+        "supportsOverlays": true,
+        "supportsVulkan": false,
+        "targetCpuBits": 64,
+        "vertexShaderVersion": "5.0",
+        "visibilityCallbackCallCount": 0,
+        "vulkanVersion": "Not supported",
+        "yuy2OverlaySupport": "SOFTWARE"
+      },
+      "featureStatus": {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "enabled",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "enabled",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "enabled",
+        "webgl": "enabled",
+        "webgpu": "enabled",
+        "webnn": "disabled_off"
+      },
+      "driverBugWorkarounds": [
+        "disable_d3d11_vp9_ksvc_decoding",
+        "disable_d3d12_video_encoder",
+        "disable_h264_accelerator_sw_brc",
+        "disable_ms_video_super_resolution",
+        "disable_nv12_dynamic_textures",
+        "disable_video_overlay_if_moving",
+        "disable_vp_auto_hdr",
+        "disable_vp_super_resolution",
+        "disallow_vp9_resilient_dxva_decoding",
+        "enable_webgl_timer_query_extensions",
+        "exit_on_context_lost",
+        "force_rgb10a2_overlay_support",
+        "disabled_extension_GL_KHR_blend_equation_advanced",
+        "disabled_extension_GL_KHR_blend_equation_advanced_coherent"
+      ],
+      "videoDecoding": [],
+      "videoEncoding": []
+    },
+    "modelName": "",
+    "modelVersion": "",
+    "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=\"C:\\Users\\20864\\AppData\\Local\\Temp\\playwright_chromiumdev_profile-XHXUFW\" --remote-debugging-pipe --no-startup-window --noerrdialogs --flag-switches-begin --flag-switches-end --enable-unsafe-swiftshader"
+  },
+  "errors": [],
+  "blockedWrites": [],
+  "cleanup": {
+    "browserClosed": true,
+    "stackShutdown": true
+  },
+  "summary": [
+    {
+      "mode": "full",
+      "elapsedSeconds": 12.482114600000001,
+      "clearRectCalls": 1497,
+      "rendererOneCorePercent": 16.971523398767705,
+      "gpuProcessOneCorePercent": 28.25949058343047,
+      "gpu3DEnginePercentSamples": [
+        [
+          6
+        ],
+        [
+          6
+        ],
+        [
+          4
+        ],
+        [
+          4
+        ],
+        [
+          5
+        ]
+      ]
+    },
+    {
+      "mode": "reduce",
+      "elapsedSeconds": 6.808234700000001,
+      "clearRectCalls": 0,
+      "rendererOneCorePercent": 0.07670123358114642,
+      "gpuProcessOneCorePercent": 0.014174011950555737,
+      "gpu3DEnginePercentSamples": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "full",
+      "elapsedSeconds": 6.7308256,
+      "clearRectCalls": 807,
+      "rendererOneCorePercent": 20.205871921566352,
+      "gpuProcessOneCorePercent": 31.403859282879054,
+      "gpu3DEnginePercentSamples": [
+        [
+          7
+        ],
+        [
+          7
+        ],
+        [
+          7
+        ],
+        [
+          7
+        ],
+        [
+          5
+        ]
+      ]
+    },
+    {
+      "mode": "hidden",
+      "elapsedSeconds": 6.742569100000001,
+      "clearRectCalls": 0,
+      "rendererOneCorePercent": 0.07061106722658846,
+      "gpuProcessOneCorePercent": 0.027541430758185798,
+      "gpu3DEnginePercentSamples": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    }
+  ]
+}

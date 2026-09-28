@@ -18,7 +18,13 @@ export function createArtworkMedia(kv: ArtworkKvAdapter, images: ArtworkImageAda
   }
 
   return {
-    getImage: (id: string) => dependencies.images ? images.get(id).then(record => record?.blob ?? null) : imgGet(id),
+    getImage: async (id: string, signal?: AbortSignal) => {
+      // IndexedDB adapter reads are not abortable; suppress obsolete publication.
+      signal?.throwIfAborted()
+      const blob = dependencies.images ? (await images.get(id))?.blob ?? null : await imgGet(id)
+      signal?.throwIfAborted()
+      return blob
+    },
     putImage: (blob: Blob) => dependencies.images?.put ? dependencies.images.put(blob) : imgPut(blob),
     deleteImage: (id: string) => images.deleteMany([id]),
     countImages: () => dependencies.images?.count ? dependencies.images.count() : imgCount(),

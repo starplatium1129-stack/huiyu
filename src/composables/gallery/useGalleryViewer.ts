@@ -19,6 +19,7 @@ export function useGalleryViewer(options: {
   let objectUrl = ''
   let loadToken = 0
   let disposed = false
+  let loading: AbortController | null = null
 
   function releaseImage() {
     if (objectUrl) URL.revokeObjectURL(objectUrl)
@@ -27,11 +28,14 @@ export function useGalleryViewer(options: {
   }
 
   async function hydrate(item: ArtworkRecord) {
+    loading?.abort()
+    const request = new AbortController()
+    loading = request
     releaseImage()
     const token = ++loadToken
     const fallback = safeImageUrl(item.image_url)
     try {
-      const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null
+      const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
       if (disposed || token !== loadToken || current.value?.id !== item.id) return
       if (blob) {
         objectUrl = URL.createObjectURL(blob)
@@ -40,7 +44,7 @@ export function useGalleryViewer(options: {
       else if (item.image_data?.startsWith('data:image/')) viewerUrl.value = item.image_data
     } catch {
       if (!disposed && token === loadToken) viewerUrl.value = ''
-    }
+    } finally { if (loading === request) loading = null }
   }
 
   function openViewer(index: number) {
@@ -54,6 +58,7 @@ export function useGalleryViewer(options: {
   }
 
   function closeViewer() {
+    loading?.abort(); loading = null
     loadToken++
     viewerIndex.value = -1
     // Keep image, comparison and metadata intact while the surface leaves.

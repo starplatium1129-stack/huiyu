@@ -1,7 +1,6 @@
 import { computed, nextTick, ref, watch, type Ref } from 'vue';
 import type { LocationQueryRaw, RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork';
-import { matchesArtwork } from '@/utils/artworkSearch';
 import { dayGroup, searchHaystack } from './galleryHelpers';
 import { buildMasonryGroups } from './useMasonryWall';
 import type { GalleryProject } from './galleryStorage';
@@ -39,19 +38,34 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   });
 
   /* ---------- 派生数据 ---------- */
+  // Sorting and prompt normalization depend on library metadata, not the current
+  // query. Keep these separate so each keystroke only scans the prepared rows.
+  const sortedHistory = computed(() => history.value
+    .map(item => ({ item, timestamp: artworkTimestamp(item) }))
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .map(entry => entry.item));
+  const searching = computed(() => searchQuery.value.trim().length > 0);
+  const searchIndex = computed(() => searching.value
+    ? new Map(history.value.map(item => [item, searchHaystack(item)])) : null);
+  // A cleared search no longer needs normalized prompts or their reactive
+  // dependencies. Force lazy computed invalidation to release that memory even
+  // when the cached gallery stays mounted. Nonempty keystrokes reuse the index.
+  watch(searching, active => { if (!active) void searchIndex.value; }, { flush: 'sync' });
+  const projectIds = computed(() => {
+    const project = projects.value.find(item => item.id === projectFilter.value);
+    return project ? new Set(Array.isArray(project.history_ids) ? project.history_ids : []) : null;
+  });
   const visible = computed(() => {
-    let source = favoriteOnly.value ? history.value.filter(i => i.favorite) : history.value.slice();
-    if (projectFilter.value) {
-      const p = projects.value.find(x => x.id === projectFilter.value);
-      if (p)
-        source = source.filter(i => Array.isArray(p.history_ids) && p.history_ids.includes(i.id));
-    }
-    const term = searchQuery.value.trim().toLowerCase();
-    if (tagFilter.value) source = source.filter(item => artworkTags(item).includes(tagFilter.value));
-    if (term)
-      source = source.filter(i => matchesArtwork(searchHaystack(i), term));
-    // 历史是按生成顺序 append 的，展墙必须自己排：最新在前。
-    return source.sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a));
+    const favorites = favoriteOnly.value, tag = tagFilter.value;
+    const ids = projectFilter.value ? projectIds.value : null;
+    const terms = searchQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const index = terms.length ? searchIndex.value : null;
+    return sortedHistory.value.filter(item => {
+      if (favorites && !item.favorite) return false;
+      if (ids && !ids.has(item.id)) return false;
+      if (tag && !artworkTags(item).includes(tag)) return false;
+      return !index || terms.every(term => index.get(item)!.includes(term));
+    });
   });
 
   const favoriteCount = computed(() => history.value.filter(i => i.favorite).length);

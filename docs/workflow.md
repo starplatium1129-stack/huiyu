@@ -334,6 +334,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 `office-code.spec.ts` 同属关键浏览器入口，覆盖文档安全策略、存储受限导航、键盘出图入册、按需对比面板及脱敏诊断下载；麦克风策略使用浏览器模拟设备与真实响应头，不读取操作员麦克风。`library-concurrency.spec.ts` 使用真实双页 IndexedDB/Web Locks，验证并发入册、收藏、软删恢复、备份合并与失败重试；页面壳是隔离夹具，仓储源码和存储未替换。`office-performance.bench.ts` 经独立性能入口执行，记录本机 runtime 下的冷／热进入与首次操作耗时，不与浏览器回归争抢资源。生成链路使用模拟上游，不代表真实模型或桌面安装验收。
 
+`ui-fluidity-office.bench.ts` 默认每组 20 次往返；显式 `AICS_OFFICE_RESOURCE_SAMPLES=100` 可延长到 100 次（范围 20–100），每 10 次和最终检查点采集 GC 后堆/DOM/监听器。非默认样本数输出到 `runtime/ui-fluidity-office-<次数>/`，不覆盖旧 20 次证据。用 `--config=playwright.performance.config.ts --project=fluidity-office --grep 'full round 1$'` 选择深浅主题各一组；这不冒充默认完整三组或真实 GPU/进程内存验收。测试独占运行，不与构建、GPU 基准并发。
+
 `npm run wf -- desktop:storage-benchmark` 独立运行桌面持久化候选比较：使用 Node 内置 `node:sqlite`、已安装 Playwright 浏览器（可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`）和临时目录，输出 JSON 后清理夹具，不连接生产网关、不打开真实浏览器资料。比较 1,000/10,000 条作品索引及 64 对原图/缩略图，各三轮；耗时不设 CI 阈值，运行时不要并发构建或浏览器测试。方法限制和推荐结论见 [计划 005](../plans/005-desktop-architecture-consolidation.md)。迁移/任务日志故障注入原型已登记 unit 套件，均不接入生产运行时。
 
 `npm run wf -- desktop:rust-bundle` 使用真实 bundle 映射和当前 Rust 载荷验证隔离安装布局；先准备 `rust:build` 与桌面 staging。旧 `desktop:workspace-sidecar` 已退出注册表，旧 Node worker测试仅作对照。临时库验证不能替代正式安装、WebView2 或物理断电验收。

@@ -25,20 +25,25 @@ const dialog = ref<HTMLDialogElement | null>(null), urls = ref<Record<string, st
 const motion = useFluidDialog(dialog)
 const owned = new Set<string>()
 let version = 0
+let loadingRequest: AbortController | null = null
 const title = (item: ArtworkRecord) => item.sceneTitle || item.scene || '未命名作品'
 function onDialogClick(event: MouseEvent) {
   if (isBackdropClick(event, dialog.value)) emit('close')
 }
-function release() { version++; for (const url of owned) URL.revokeObjectURL(url); owned.clear(); urls.value = {} }
+function cancelLoading() { loadingRequest?.abort(); loadingRequest = null; version++ }
+function release() { cancelLoading(); for (const url of owned) URL.revokeObjectURL(url); owned.clear(); urls.value = {} }
 watch(() => props.open, async open => {
-  if (!open) { motion.close(release); return }
-  release(); error.value = ''; await nextTick()
-  if (!props.open) return
-  motion.open(); loading.value = true
+  if (!open) { cancelLoading(); motion.close(release); return }
+  release(); error.value = ''
   const current = version
+  await nextTick()
+  if (!props.open || current !== version) return
+  motion.open(); loading.value = true
+  const request = new AbortController()
+  loadingRequest = request
   await Promise.all(props.items.map(async item => {
     try {
-      const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null
+      const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
       if (current !== version) return
       if (blob) { const url = URL.createObjectURL(blob); owned.add(url); urls.value[String(item.id)] = url }
       else {
@@ -48,6 +53,7 @@ watch(() => props.open, async open => {
     } catch { /* Each unavailable image keeps its own recovery placeholder. */ }
   }))
   if (current === version) loading.value = false
+  if (loadingRequest === request) loadingRequest = null
 }, { immediate: true })
 async function save(patches: Array<{ id: string | number; patch: Partial<ArtworkRecord> }>) {
   if (busy.value) return

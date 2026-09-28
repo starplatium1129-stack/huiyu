@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-28",
+  "baselineCommit": "7c9d6a2dc1d93c10307d355cb006d02a5ddae74a",
+  "environment": {
+    "platform": "Windows x64",
+    "profile": "cargo test debug; native libvips optimized DLL",
+    "nativeLibrarySha256": "e6cc51bbc763e7deda536c6f56ce96b4c51ea769690ce4f4ed07607527b81dae"
+  },
+  "candidateFiles": [
+    {
+      "path": "runtime-rs/src/storage/schema.rs",
+      "sha256": "cf1facc843f44c9d5e42b845e886e932fa5d53f8e4dcc38c5215cacccb881b86"
+    },
+    {
+      "path": "runtime-rs/src/storage/thumbnail.rs",
+      "sha256": "1e19d39cf1a3fd06844bf00add9e3688ff651de7281b838b9a4d43db7d0b9c1a"
+    },
+    {
+      "path": "runtime-rs/src/storage/thumbnail/queue.rs",
+      "sha256": "22ff1137e90ae73b6eae892bc2e3b538f18d5eb69b4f712cd53636dcb0cb2a75"
+    },
+    {
+      "path": "runtime-rs/tests/storage_indexes.rs",
+      "sha256": "fe497128e8a63621147bc05f5ae6249b49c908044c99c4284495195c50cda240"
+    },
+    {
+      "path": "runtime-rs/tests/storage_thumbnails.rs",
+      "sha256": "44c0fd2d830f6b5ec55a911f2d42cf83c37760785e02f2734219ca921b40040a"
+    }
+  ],
+  "thumbnail": {
+    "command": "cargo test --manifest-path runtime-rs/Cargo.toml --locked --test storage_thumbnails benchmark_thumbnail_work -- --ignored --nocapture",
+    "nativeEnvironment": "AICS_TEST_VIPS_DLL=<absolute node_modules/@img/sharp-win32-x64/lib/libvips-42.dll>",
+    "beforeSamples": {
+      "cold-single": {
+        "wallMs": [
+          85.6653,
+          79.1738,
+          81.1001,
+          84.1643,
+          78.2447,
+          79.2506,
+          78.0426
+        ],
+        "cpuMs": [
+          93.75,
+          93.75,
+          93.75,
+          78.125,
+          93.75,
+          93.75,
+          78.125
+        ]
+      },
+      "cold-duplicate": {
+        "wallMs": [
+          82.4625,
+          80.891,
+          80.8754,
+          80.5921,
+          84.9872,
+          89.1591,
+          88.7294
+        ],
+        "cpuMs": [
+          265.625,
+          234.375,
+          203.125,
+          156.25,
+          171.875,
+          218.75,
+          234.375
+        ]
+      },
+      "warm-duplicate": {
+        "wallMs": [
+          4.7507,
+          4.2291,
+          4.2,
+          4.0369,
+          4.1833,
+          4.3679,
+          4.1451
+        ],
+        "cpuMs": [
+          0,
+          0,
+          15.625,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "after": {
+      "native": true,
+      "debugAssertions": true,
+      "width": 2048,
+      "height": 3072,
+      "rounds": 7,
+      "outputSha256": "3e7a869b3743c17695c707144bafe072deeac0f64833b02a712d0443ac148dd0",
+      "samples": [
+        {
+          "case": "cold-single",
+          "requests": 1,
+          "wallMs": 81.488,
+          "cpuMs": 78.125
+        },
+        {
+          "case": "cold-duplicate",
+          "requests": 8,
+          "wallMs": 84.9168,
+          "cpuMs": 125
+        },
+        {
+          "case": "warm-duplicate",
+          "requests": 8,
+          "wallMs": 4.3071,
+          "cpuMs": 0
+        },
+        {
+          "case": "cold-single",
+          "requests": 1,
+          "wallMs": 79.3749,
+          "cpuMs": 78.125
+        },
+        {
+          "case": "cold-duplicate",
+          "requests": 8,
+          "wallMs": 88.6174,
+          "cpuMs": 140.625
+        },
+        {
+          "case": "warm-duplicate",
+          "requests": 8,
+          "wallMs": 4.5246,
+          "cpuMs": 0
+        },
+        {
+          "case": "cold-single",
+          "requests": 1,
+          "wallMs": 80.2399,
+          "cpuMs": 78.125
+        },
+        {
+          "case": "cold-duplicate",
+          "requests": 8,
+          "wallMs": 87.52890000000001,
+          "cpuMs": 140.625
+        },
+        {
+          "case": "warm-duplicate",
+          "requests": 8,
+          "wallMs": 4.1773,
+          "cpuMs": 0
+        },
+        {
+          "case": "cold-single",
+          "requests": 1,
+          "wallMs": 84.13,
+          "cpuMs": 93.75
+        },
+        {
+          "case": "cold-duplicate",
+          "requests": 8,
+          "wallMs": 93.88340000000001,
+          "cpuMs": 93.75
+        },
+        {
+          "case": "warm-duplicate",
+          "requests": 8,
+          "wallMs": 4.1712,
+          "cpuMs": 0
+        },
+        {
+          "case": "cold-single",
+          "requests": 1,
+          "wallMs": 79.7311,
+          "cpuMs": 93.75
+        },
+        {
+          "case": "cold-duplicate",
+          "requests": 8,
+          "wallMs": 84.0662,
+          "cpuMs": 140.625
+        },
+        {
+          "case": "warm-duplicate",
+          "requests": 8,
+          "wallMs": 4.0837,
+          "cpuMs": 0
+        },
+        {
+          "case": "cold-single",
+          "requests": 1,
+          "wallMs": 85.1974,
+          "cpuMs": 93.75
+        },
+        {
+          "case": "cold-duplicate",
+          "requests": 8,
+          "wallMs": 87.8277,
+          "cpuMs": 93.75
+        },
+        {
+          "case": "warm-duplicate",
+          "requests": 8,
+          "wallMs": 4.05,
+          "cpuMs": 0
+        },
+        {
+          "case": "cold-single",
+          "requests": 1,
+          "wallMs": 78.7229,
+          "cpuMs": 78.125
+        },
+        {
+          "case": "cold-duplicate",
+          "requests": 8,
+          "wallMs": 85.7778,
+          "cpuMs": 109.375
+        },
+        {
+          "case": "warm-duplicate",
+          "requests": 8,
+          "wallMs": 4.6301,
+          "cpuMs": 0
+        }
+      ]
+    },
+    "medians": {
+      "cold-single": {
+        "before": {
+          "wallMs": 79.2506,
+          "cpuMs": 93.75
+        },
+        "after": {
+          "wallMs": 80.2399,
+          "cpuMs": 78.125
+        }
+      },
+      "cold-duplicate": {
+        "before": {
+          "wallMs": 82.4625,
+          "cpuMs": 218.75
+        },
+        "after": {
+          "wallMs": 87.52890000000001,
+          "cpuMs": 125
+        }
+      },
+      "warm-duplicate": {
+        "before": {
+          "wallMs": 4.2,
+          "cpuMs": 0
+        },
+        "after": {
+          "wallMs": 4.1773,
+          "cpuMs": 0
+        }
+      }
+    },
+    "beforeOutputSha256": "3e7a869b3743c17695c707144bafe072deeac0f64833b02a712d0443ac148dd0",
+    "outputByteIdentical": true,
+    "cpuMeasurement": "GetProcessTimes, whole benchmark process including native worker threads; 15.625ms quantization visible"
+  },
+  "reverseIndex": {
+    "command": "cargo test --manifest-path runtime-rs/Cargo.toml --locked --test storage_indexes benchmark_reverse_lookup -- --ignored --nocapture",
+    "rows": 100000,
+    "lookups": 200,
+    "before": {
+      "samplesMs": [
+        385.2036,
+        449.027,
+        449.0627
+      ],
+      "queryPlan": "SCAN project_artworks"
+    },
+    "after": {
+      "samplesMs": [
+        0.4833,
+        0.293,
+        0.2594
+      ],
+      "queryPlan": "SEARCH project_artworks USING INDEX project_artworks_artwork (artwork_key=?)"
+    }
+  },
+  "limitations": [
+    "Isolated synthetic data; no production workspace or model execution.",
+    "Debug Rust orchestration and bundled native DLL; not release app latency, full-process peak memory, GPU or power measurements.",
+    "Index benchmark times lookup only; excludes index creation, write overhead and full deletion transactions.",
+    "Thumbnail CPU cost decreases but cold duplicate wall time increases slightly in this sample; no single-image speedup claim.",
+    "No desktop build/install, UI rendering changes, or long-duration device acceptance."
+  ],
+  "checks": {
+    "initialClippy": "Failed on a test-only drop(Pin<&mut Future>); fixed with lexical scope.",
+    "parallelRust": "70 lib tests passed, 1 failed, 1 ignored. Existing interrogate protocol fallback expected webui but observed heuristic.",
+    "isolatedInterrogateRetry": "passed",
+    "serialRust": "RUST_TEST_THREADS=1 npm run wf -- rust:check passed: fmt, all-target Clippy, 71 lib and 19 integration tests. Four native tests and two opt-in benchmarks skipped; both benchmarks separately passed. Does not erase the initial parallel failure.",
+    "targetedStorage": "5 passed, 2 opt-in benchmarks skipped by default; both benchmarks separately executed and passed",
+    "monolith": "passed: 1436 files, zero exemptions"
+  }
+}

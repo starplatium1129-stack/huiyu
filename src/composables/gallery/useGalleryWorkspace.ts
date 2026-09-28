@@ -84,6 +84,7 @@ export function useGalleryWorkspace() {
     let unmounted = false;
     let viewActive = true;
     let imageEpoch = 0;
+    let imageReads = new AbortController();
 
     const {
         favoriteOnly,
@@ -160,6 +161,7 @@ export function useGalleryWorkspace() {
     }
     function releaseImages() {
         imageEpoch++;
+        imageReads.abort(); imageReads = new AbortController();
         objectUrls.forEach(u => URL.revokeObjectURL(u));
         objectUrls.clear();
         for (const id of Object.keys(cardUrls)) delete cardUrls[id];
@@ -227,7 +229,7 @@ export function useGalleryWorkspace() {
         const fallback = safeImageUrl(item.image_url);
         let resolved = false;
         try {
-            const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null;
+            const blob = item.image_id ? await artworkRepository.getImage(item.image_id, imageReads.signal) : null;
             if (unmounted || !viewActive || epoch !== imageEpoch) return;
             if (blob) {
                 cardUrls[item.id] = trackUrl(URL.createObjectURL(blob));

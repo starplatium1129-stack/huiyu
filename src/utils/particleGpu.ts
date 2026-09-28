@@ -119,6 +119,8 @@ export function createParticleGpuRenderer() {
   gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0)
   let data = new Float32Array(0), source: readonly ParticleBodyPoint[] | null = null
   let groups: number[][] = [], colorKey = '', colors: number[][] = [], outlines: boolean[] = []
+  let heads: Bounds[] = [], tails: Bounds[] = [], starts: number[] = []
+  let outlineKey = '', under: number[] = []
   let textureWidth = 0, textureHeight = 0
 
   return {
@@ -132,9 +134,13 @@ export function createParticleGpuRenderer() {
         colorKey = key; colors = paints.map(rgb)
         outlines = paints.map(color => !style.darkTheme && particleNeedsOutline(color, style.surface))
       }
+      if (outlineKey !== style.outline) { outlineKey = style.outline; under = rgb(outlineKey) }
       if (source !== points || groups.length !== paints.length) {
         source = points; groups = paints.map(() => [])
         points.forEach((point, index) => groups[Math.min(paints.length - 1, Math.max(0, point.paint))].push(index))
+        heads = groups.map(emptyBounds); tails = groups.map(emptyBounds)
+        let start = 0
+        starts = groups.map(indices => { const offset = start; start += indices.length; return offset })
       }
       const w = Math.round(width * dpr), h = Math.round(height * dpr)
       if (textureWidth !== w || textureHeight !== h) {
@@ -148,10 +154,10 @@ export function createParticleGpuRenderer() {
         data = new Float32Array(points.length * 5)
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferData(gl.ARRAY_BUFFER, data.byteLength, gl.DYNAMIC_DRAW)
       }
-      const heads = groups.map(emptyBounds), tails = groups.map(emptyBounds), starts: number[] = []
       let cursor = 0
       groups.forEach((indices, group) => {
-        starts.push(cursor / 5)
+        heads[group][0] = heads[group][1] = tails[group][0] = tails[group][1] = Infinity
+        heads[group][2] = heads[group][3] = tails[group][2] = tails[group][3] = -Infinity
         const radius = (style.radii[group] || 1) * (style.darkTheme ? 1 : LIGHT_PARTICLE_SCALE) * style.energyScale
         for (const index of indices) {
           const p = points[index], r = radius * p.size
@@ -162,11 +168,16 @@ export function createParticleGpuRenderer() {
           }
         }
       })
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferSubData(gl.ARRAY_BUFFER, 0, data.subarray(0, cursor))
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+      // WebGL2 accepts a range of the reusable array; no temporary view each frame.
+      // A zero length means "the rest" in this overload, so skip empty uploads.
+      if (cursor) gl.bufferSubData(gl.ARRAY_BUFFER, 0, data, 0, cursor)
       gl.viewport(0, 0, w, h); gl.disable(gl.SCISSOR_TEST)
       gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT)
       gl.enable(gl.SCISSOR_TEST); gl.enable(gl.BLEND)
-      const under = rgb(style.outline)
+      gl.useProgram(maskProgram)
+      gl.uniform2f(maskResolution, w / dpr, h / dpr); gl.uniform1f(maskDpr, dpr)
+      gl.useProgram(compositeProgram); gl.uniform2f(compositeResolution, w / dpr, h / dpr)
       const drawGroup = (group: number, pass: number, color: number[], alpha: number) => {
         const b = pass >= 2 ? tails[group] : heads[group]
         const x = Math.max(0, Math.floor(b[0] * dpr)), y = Math.max(0, Math.floor(b[1] * dpr))
@@ -175,13 +186,12 @@ export function createParticleGpuRenderer() {
         gl.scissor(x, h - bottom, right - x, bottom - y)
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer); gl.clear(gl.COLOR_BUFFER_BIT)
         gl.useProgram(maskProgram); gl.bindVertexArray(vao)
-        gl.uniform2f(maskResolution, w / dpr, h / dpr); gl.uniform1f(maskDpr, dpr); gl.uniform1i(kind, pass)
+        gl.uniform1i(kind, pass)
         gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 20, starts[group] * 20)
         gl.vertexAttribPointer(1, 1, gl.FLOAT, false, 20, starts[group] * 20 + 16)
         gl.blendEquation(gl.MAX); gl.blendFunc(gl.ONE, gl.ONE)
         gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, groups[group].length)
         gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.useProgram(compositeProgram); gl.bindVertexArray(compositeVao)
-        gl.uniform2f(compositeResolution, w / dpr, h / dpr)
         gl.uniform4f(boundsUniform, x / dpr, y / dpr, right / dpr, bottom / dpr)
         gl.uniform4f(paintUniform, color[0], color[1], color[2], alpha)
         gl.blendEquation(gl.FUNC_ADD)
@@ -198,12 +208,14 @@ export function createParticleGpuRenderer() {
       return true
     },
     release() {
+      if (disposed) return
       disposed = true
       gl.deleteBuffer(buffer); gl.deleteTexture(texture); gl.deleteFramebuffer(framebuffer)
       gl.deleteVertexArray(vao); gl.deleteVertexArray(compositeVao)
       gl.deleteProgram(maskProgram); gl.deleteProgram(compositeProgram)
       gl.getExtension('WEBGL_lose_context')?.loseContext()
       canvas.width = canvas.height = 0; source = null; groups = []; data = new Float32Array(0)
+      heads = []; tails = []; starts = []; colors = []; outlines = []; under = []
     },
   }
 }

@@ -9,18 +9,20 @@ import { gazeFromClientPoint, gazeSettled, stepGaze } from '@/utils/live2dGaze'
  * 执行——全库唯一复位路径，本模块不自带清理副本。
  */
 export function createPointerGazeController(ctx: Live2DCtx) {
+  let pendingPointer: { x: number; y: number; global: boolean; token: number } | null = null
+
+  function queuePointer(x: number, y: number, global: boolean) {
+    if (!ctx.ready.value || !ctx.model || ctx.destroyed.value || isStageHidden(ctx) || prefersReducedMotion()) return
+    // High-rate pointer devices can deliver many events per rendered frame.
+    // Measure the stage once, using the latest coordinates at frame time.
+    pendingPointer = { x, y, global, token: ctx.lifecycleToken }
+    schedule()
+  }
+
   function bind() {
     if (!ctx.stageEl || ctx.pointerGazeHandler) return
     ctx.pointerGazeHandler = (event) => {
-      const rect = ctx.stageEl?.getBoundingClientRect()
-      if (!rect?.width || !rect.height) return
-      const target = gazeFromClientPoint(event.clientX, event.clientY, rect)
-      ctx.gaze.x = target.x
-      ctx.gaze.y = target.y
-      ctx.gaze.active = true
-      const focus = ctx.model?.focus
-      ctx.gaze.kind = focus ? 'native' : 'fallback'
-      schedule()
+      queuePointer(event.clientX, event.clientY, false)
     }
     ctx.pointerGazeLeaveHandler = release
     ctx.stageEl.addEventListener('mousemove', ctx.pointerGazeHandler)
@@ -35,7 +37,19 @@ export function createPointerGazeController(ctx: Live2DCtx) {
 
   function runFrame(now: number) {
     ctx.frames.gaze = 0
+    const pointer = pendingPointer
+    pendingPointer = null
     if (!ctx.ready.value || !ctx.model || ctx.destroyed.value || isStageHidden(ctx) || prefersReducedMotion()) return
+    if (pointer && pointer.token === ctx.lifecycleToken) {
+      const rect = ctx.stageEl?.getBoundingClientRect()
+      if (rect?.width && rect.height) {
+        const target = gazeFromClientPoint(pointer.x, pointer.y, rect, pointer.global ? 0.82 : 1)
+        ctx.gaze.x = target.x
+        ctx.gaze.y = target.y
+        ctx.gaze.active = true
+        ctx.gaze.kind = pointer.global ? 'global' : typeof ctx.model.focus === 'function' ? 'native' : 'fallback'
+      }
+    }
     const dt = Math.max(1 / 240, Math.min(0.05, (now - ctx.gaze.lastFrame) / 1000))
     ctx.gaze.lastFrame = now
     const next = stepGaze(
@@ -74,6 +88,7 @@ export function createPointerGazeController(ctx: Live2DCtx) {
   }
 
   function release() {
+    pendingPointer = null
     ctx.gaze.active = false
     ctx.gaze.x = 0
     ctx.gaze.y = 0
@@ -88,18 +103,10 @@ export function createPointerGazeController(ctx: Live2DCtx) {
    * DOM 事件负责（更平滑），这里只处理鼠标在窗口外的时刻。
    */
   function setGlobalPointer(screenX: number, screenY: number, windowBounds: { x: number; y: number; width: number; height: number }): void {
-    if (!ctx.ready.value || !ctx.model) return
-    const rect = ctx.stageEl?.getBoundingClientRect()
-    if (!rect?.width || !rect.height) return
     // 无边框窗口的 bounds 即内容区在屏幕上的位置：clientX = 屏幕坐标 − bounds
     const clientX = screenX - windowBounds.x
     const clientY = screenY - windowBounds.y
-    const target = gazeFromClientPoint(clientX, clientY, rect, 0.82)
-    ctx.gaze.x = target.x
-    ctx.gaze.y = target.y
-    ctx.gaze.active = true
-    ctx.gaze.kind = 'global'
-    schedule()
+    queuePointer(clientX, clientY, true)
   }
 
   return { bind, release, setGlobalPointer }

@@ -10,8 +10,11 @@ import { measureIdleFrameInterval, startFrameProbe, stopFrameProbe, summarizeFra
 
 declare global { interface Window { __officeFrameCount(): number } }
 
-const OUTPUT = 'runtime/ui-fluidity-office'
-const SAMPLES = 20
+// Default F0 stays at 20. Explicit longer sessions investigate heap trends;
+// separate output directories preserve previously captured 20-cycle evidence.
+const SAMPLES = Number(process.env.AICS_OFFICE_RESOURCE_SAMPLES || 20)
+if (!Number.isInteger(SAMPLES) || SAMPLES < 20 || SAMPLES > 100) throw new Error('AICS_OFFICE_RESOURCE_SAMPLES must be an integer from 20 to 100')
+const OUTPUT = SAMPLES === 20 ? 'runtime/ui-fluidity-office' : `runtime/ui-fluidity-office-${SAMPLES}`
 const ROUNDS = 3
 const hash = (text: string | Buffer) => createHash('sha256').update(text).digest('hex')
 function buildIdentity() {
@@ -53,7 +56,7 @@ async function showcaseRoundTrip(page: Page) {
 for (const theme of ['dark', 'light']) for (const mode of ['full', 'low'] as const) {
   for (let run = 1; run <= ROUNDS; run++) {
     test(`009 office steady resources ${theme} ${mode} round ${run}`, async ({ page, context, browser }) => {
-      test.setTimeout(240_000)
+      test.setTimeout(Math.max(240_000, SAMPLES * 12_000))
       await page.addInitScript(() => {
         const request = window.requestAnimationFrame.bind(window), cancel = window.cancelAnimationFrame.bind(window)
         const pending = new Set<number>()
@@ -126,8 +129,9 @@ for (const theme of ['dark', 'light']) for (const mode of ['full', 'low'] as con
             }
           })
           await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
-          const resources = await snapshot(sample === 10 || sample === 20)
+          const resources = await snapshot(sample % 10 === 0 || sample === SAMPLES)
           rows.push({ sample, gallery, showcase, hiddenFrames, resources, rawProbe, frameProxy: summarizeFrameProbe(rawProbe, idleIntervalMs) })
+          if (resources.gc) console.log('009-OFFICE-CHECKPOINT', JSON.stringify({ theme, mode, run, sample, resources }))
           expect(resources.routeRoots).toBe(1)
           expect(writes).toEqual([])
         }

@@ -278,6 +278,12 @@ pub(super) fn open(
         sync_dir(&root)?;
     }
     verify_identity(&db, &workspace_id, 3)?;
+    // Additive access-path optimization: keep the v3 data/backup protocol intact.
+    // Reapply on open so existing v3 workspaces and restored older snapshots
+    // receive the reverse lookup used by artwork deletion and FK checks.
+    db.execute_batch(
+        "CREATE INDEX IF NOT EXISTS project_artworks_artwork ON project_artworks(artwork_key);",
+    )?;
     Ok(Context {
         db,
         root,

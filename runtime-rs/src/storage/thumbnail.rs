@@ -1,3 +1,5 @@
+mod queue;
+
 use super::{Storage, schema, string};
 use crate::error::{ApiError, Result};
 use base64::{Engine, engine::general_purpose::STANDARD};
@@ -6,15 +8,10 @@ use image::{
     imageops::FilterType,
 };
 use serde_json::Value;
-use std::{
-    fs,
-    path::Path,
-    sync::{Arc, OnceLock},
-};
-use tokio::sync::Semaphore;
+use std::{fs, path::Path, sync::OnceLock};
 use tokio_util::sync::CancellationToken;
 
-static DECODERS: OnceLock<Arc<Semaphore>> = OnceLock::new();
+static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 struct Cancel(CancellationToken);
 impl Drop for Cancel {
     fn drop(&mut self) {
@@ -46,23 +43,23 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
         Err(error) => return Err(error.into()),
     }
-    let permit = DECODERS
-        .get_or_init(|| Arc::new(Semaphore::new(2)))
-        .clone()
-        .acquire_owned()
-        .await
-        .map_err(|_| ApiError::new(503, "STORAGE_UNAVAILABLE", "Thumbnail worker unavailable"))?;
-    // A visible grid can request the same original repeatedly while the first
-    // decoder runs. Reuse its result after waiting instead of decoding again.
+    let queue = DECODERS.get_or_init(queue::Queue::new);
+    // Coalesce the same workspace/hash/cache-version before taking a decoder
+    // slot. Otherwise two windows can both miss the cache and decode it twice.
+    let image_guard = queue.image(cache.clone()).await;
     match tokio::fs::read(&cache).await {
         Ok(bytes) => return Ok(format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into()),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
         Err(error) => return Err(error.into()),
     }
+    let permit = queue.decoder().await?;
     let cancel = Cancel(CancellationToken::new());
     let cancelled = cancel.0.clone();
     tokio::task::spawn_blocking(move || {
         let _permit = permit;
+        // Cancellation drops the awaiting future, not a running blocking
+        // decoder. Keep the image lock until that worker really finishes.
+        let _image_guard = image_guard;
         if cancelled.is_cancelled() {
             return Ok(Value::Null);
         }

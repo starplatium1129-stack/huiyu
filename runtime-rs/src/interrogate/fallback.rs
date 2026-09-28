@@ -47,7 +47,7 @@ impl Fallback {
             if cancel.is_cancelled() {
                 return Err(cancelled());
             }
-            if let Ok((status, Some(result), _)) = response {
+            if let Ok((status, Ok(result))) = response {
                 if !(200..300).contains(&status) {
                     continue;
                 }
@@ -82,7 +82,7 @@ impl Fallback {
     }
     pub async fn comfy(&self, image: &[u8], cancel: &CancellationToken) -> Result<Option<Value>> {
         let result: Result<Option<Value>> = async {
-            let (status, info, _) = self
+            let (status, info) = self
                 .transport
                 .json(
                     &self.settings.comfy,
@@ -117,7 +117,7 @@ impl Fallback {
                 .finish();
             // Preserve the installed node API: it applies its own configured tag
             // threshold and may fetch its own weights. No fabricated scores.
-            let (status, value, raw) = self
+            let (status, value) = self
                 .transport
                 .json(
                     &self.settings.comfy,
@@ -132,13 +132,13 @@ impl Fallback {
                 return Ok(None);
             }
             let text = match value {
-                Some(Value::String(text)) => text,
-                Some(Value::Array(items)) => items
+                Ok(Value::String(text)) => text,
+                Ok(Value::Array(items)) => items
                     .first()
                     .and_then(Value::as_str)
                     .unwrap_or("")
                     .to_owned(),
-                None => raw,
+                Err(raw) => raw,
                 _ => String::new(),
             };
             let mut keys = HashMap::<String, usize>::new();

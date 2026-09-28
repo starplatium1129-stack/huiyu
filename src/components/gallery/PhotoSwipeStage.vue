@@ -25,7 +25,7 @@ let resize: ResizeObserver | null = null
 const urls = new Map<number, string>()
 // Only URLs created here may be revoked; image_url can be borrowed from Gallery.
 const ownedUrls = new Set<string>()
-const pending = new Set<number>()
+const pending = new Map<number, AbortController>()
 const decoding = new Set<HTMLImageElement>()
 function toggleZoom() { viewer?.toggleZoom() }
 
@@ -34,6 +34,7 @@ function releaseUrl(url: string) {
 }
 function dispose() {
   revision++
+  for (const request of pending.values()) request.abort()
   resize?.disconnect(); resize = null
   const previous = viewer; viewer = null
   try { previous?.destroy() } catch { /* finish cleanup even after partial initialization */ }
@@ -68,6 +69,15 @@ function start() {
   instance.on('change', () => {
     if (revision !== token) return
     if (instance.currIndex !== props.index) emit('change', instance.currIndex)
+    for (const [index, request] of pending) {
+      if (Math.abs(index - instance.currIndex) <= 2) continue
+      pending.delete(index)
+      request.abort()
+      if (!urls.has(index)) {
+        instance.contentLoader.getContentByIndex(index)?.destroy()
+        instance.contentLoader.removeByIndex(index)
+      }
+    }
     // Only current and neighboring decoded images survive long browsing sessions.
     for (const [index, url] of urls) {
       if (Math.abs(index - instance.currIndex) <= 2) continue
@@ -84,13 +94,14 @@ function start() {
     if (data[index]?.src) return
     event.preventDefault()
     if (pending.has(index)) return
-    pending.add(index)
+    const request = new AbortController()
+    pending.set(index, request)
     void (async () => {
       let url = ''
       try {
         const item = items[index]
-        const blob = item.image_id ? await artworkRepository.getImage(item.image_id) : null
-        if (revision !== token) return
+        const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
+        if (revision !== token || request.signal.aborted) return
         url = blob ? URL.createObjectURL(blob) : safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
         if (blob) ownedUrls.add(url)
         if (!url) throw new Error('missing image')
@@ -99,7 +110,7 @@ function start() {
         decoding.add(image)
         image.src = url
         try { await image.decode() } finally { decoding.delete(image) }
-        if (revision !== token || Math.abs(index - instance.currIndex) > 2) {
+        if (revision !== token || request.signal.aborted || Math.abs(index - instance.currIndex) > 2) {
           releaseUrl(url)
           if (revision === token && urls.get(index) === url) urls.delete(index)
           return
@@ -110,8 +121,8 @@ function start() {
       } catch {
         releaseUrl(url)
         if (revision === token && urls.get(index) === url) urls.delete(index)
-        if (revision === token) event.content.onError()
-      } finally { if (revision === token) pending.delete(index) }
+        if (revision === token && !request.signal.aborted) event.content.onError()
+      } finally { if (pending.get(index) === request) pending.delete(index) }
     })()
   })
   instance.on('afterInit', () => {

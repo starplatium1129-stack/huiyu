@@ -6,7 +6,7 @@ impl ControlService {
         path: &str,
         body: Option<&Value>,
         seconds: u64,
-    ) -> Result<(u16, Option<Value>, String)> {
+    ) -> Result<(u16, Option<Value>)> {
         self.transport
             .json(
                 host,
@@ -17,6 +17,7 @@ impl ControlService {
                 &self.shutdown,
             )
             .await
+            .map(|(status, body)| (status, body.ok()))
     }
     pub(super) async fn online(&self, index: usize, settings: &Value) -> bool {
         if index == 3 {
@@ -29,18 +30,18 @@ impl ControlService {
         };
         let host = settings[key].as_str().unwrap_or("");
         match self.request(host, path, None, 3).await {
-            Ok((status, _, _)) => (200..if strict { 300 } else { 500 }).contains(&status),
+            Ok((status, _)) => (200..if strict { 300 } else { 500 }).contains(&status),
             Err(_) if index == 2 => self
                 .request(host, "/", None, 3)
                 .await
-                .is_ok_and(|(status, _, _)| (200..500).contains(&status)),
+                .is_ok_and(|(status, _)| (200..500).contains(&status)),
             Err(_) => false,
         }
     }
     async fn ollama(&self, settings: &Value) -> Value {
         let host = settings["ollamaHost"].as_str().unwrap_or("");
         match self.request(host, "/api/ps", None, 3).await {
-            Ok((status, data, _)) if (200..300).contains(&status) => {
+            Ok((status, data)) if (200..300).contains(&status) => {
                 let data = data.unwrap_or(Value::Null);
                 let models = data["models"].as_array().cloned().unwrap_or_default();
                 let names: Vec<&str> = models
@@ -63,7 +64,7 @@ impl ControlService {
                 let online = if result.is_err() {
                     self.request(host, "/api/tags", None, 3)
                         .await
-                        .is_ok_and(|(s, _, _)| s == 200)
+                        .is_ok_and(|(s, _)| s == 200)
                 } else {
                     false
                 };

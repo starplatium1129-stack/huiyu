@@ -1,0 +1,51 @@
+{
+  "phase": "before",
+  "node": "v24.18.0",
+  "artworks": 10000,
+  "rounds": 5,
+  "samples": [
+    {
+      "base": 17075384,
+      "searched": 41781168,
+      "cleared": 41807632,
+      "released": 9458096,
+      "searchExtraBytes": 24705784,
+      "retainedAfterClearBytes": 24732248
+    },
+    {
+      "base": 17091504,
+      "searched": 41798936,
+      "cleared": 41838400,
+      "released": 9487768,
+      "searchExtraBytes": 24707432,
+      "retainedAfterClearBytes": 24746896
+    },
+    {
+      "base": 17113096,
+      "searched": 41815792,
+      "cleared": 41849800,
+      "released": 9491184,
+      "searchExtraBytes": 24702696,
+      "retainedAfterClearBytes": 24736704
+    },
+    {
+      "base": 17120080,
+      "searched": 41837384,
+      "cleared": 41880872,
+      "released": 9520888,
+      "searchExtraBytes": 24717304,
+      "retainedAfterClearBytes": 24760792
+    },
+    {
+      "base": 17145680,
+      "searched": 41847328,
+      "cleared": 41879624,
+      "released": 9521152,
+      "searchExtraBytes": 24701648,
+      "retainedAfterClearBytes": 24733944
+    }
+  ],
+  "medianSearchExtraBytes": 24705784,
+  "medianRetainedAfterClearBytes": 24736704,
+  "limitations": "Node/Vue with explicit GC; metadata and sort warmed before baseline. Heap deltas include reactive dependencies and normalized index, not browser/native RSS or GPU memory."
+}

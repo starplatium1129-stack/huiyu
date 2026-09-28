@@ -364,11 +364,11 @@ async fn sd_status(Extension(s): Extension<Arc<ControlService>>) -> Response {
     );
     let online = models
         .as_ref()
-        .is_ok_and(|(status, _, _)| (200..300).contains(status));
-    let names = |response: Result<(u16, Option<Value>, String)>, keys: &[&str]| -> Vec<Value> {
+        .is_ok_and(|(status, _)| (200..300).contains(status));
+    let names = |response: Result<(u16, Option<Value>)>, keys: &[&str]| -> Vec<Value> {
         response
             .ok()
-            .and_then(|(_, v, _)| v)
+            .and_then(|(_, v)| v)
             .and_then(|v| v.as_array().cloned())
             .unwrap_or_default()
             .iter()
@@ -384,7 +384,7 @@ async fn sd_status(Extension(s): Extension<Arc<ControlService>>) -> Response {
             })
             .collect()
     };
-    let value = json!({"online":online,"host":host,"models":if online{names(models,&["title","model_name","name"])}else{vec![]},"samplers":names(samplers,&["name"]),"schedulers":names(schedulers,&["name","label"]),"upscalers":names(upscalers,&["name"]),"checkpoint":options.ok().and_then(|(_,v,_)|v).and_then(|v|v["sd_model_checkpoint"].as_str().map(str::to_owned)).unwrap_or_default(),"error":if online{String::new()}else{format!("SD WebUI 未响应（{host}）")}});
+    let value = json!({"online":online,"host":host,"models":if online{names(models,&["title","model_name","name"])}else{vec![]},"samplers":names(samplers,&["name"]),"schedulers":names(schedulers,&["name","label"]),"upscalers":names(upscalers,&["name"]),"checkpoint":options.ok().and_then(|(_,v)|v).and_then(|v|v["sd_model_checkpoint"].as_str().map(str::to_owned)).unwrap_or_default(),"error":if online{String::new()}else{format!("SD WebUI 未响应（{host}）")}});
     let mut response = Json(value).into_response();
     response
         .headers_mut()

@@ -1,4 +1,5 @@
 import { onActivated, onDeactivated, ref } from 'vue'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 
 interface ParticlePerformanceHooks {
   rebuild: () => void
@@ -16,6 +17,10 @@ export function useParticlePerformanceLifecycle(hooks: ParticlePerformanceHooks)
   const reduceMotion = ref(false)
   const active = ref(true)
 
+  function startIfVisible() {
+    if (active.value && !reduceMotion.value && !document.hidden && hooks.visible()) hooks.start()
+  }
+
   function syncEffectsPreference(rebuild = true) {
     const root = document.documentElement
     const next = root.dataset.fluidEffects === 'low' || root.dataset.reducedGlass === 'true'
@@ -24,30 +29,40 @@ export function useParticlePerformanceLifecycle(hooks: ParticlePerformanceHooks)
     if (!rebuild || !active.value) return
     hooks.stop()
     hooks.rebuild()
-    hooks.start()
+    startIfVisible()
   }
 
   function onRootPreferenceChanged() {
+    syncMotionPreference()
     syncEffectsPreference()
-    hooks.paletteChanged()
+    if (active.value) hooks.paletteChanged()
   }
 
   function onVisibilityChange() {
     if (document.hidden) hooks.stop()
-    else if (active.value && hooks.visible()) hooks.start()
+    else startIfVisible()
   }
 
-  function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
-    reduceMotion.value = event.matches
-    if (reduceMotion.value) hooks.stop()
+  function syncMotionPreference(rebuild = true) {
+    const next = prefersReducedMotion()
+    if (next === reduceMotion.value) return
+    reduceMotion.value = next
+    if (!rebuild || !active.value) return
+    hooks.stop()
     hooks.rebuild()
+    startIfVisible()
+  }
+
+  function onMotionPreference(_event: MediaQueryListEvent | MediaQueryList) {
+    syncMotionPreference()
   }
 
   onActivated(() => {
     active.value = true
+    syncMotionPreference(false)
     syncEffectsPreference(false)
     hooks.resize()
-    hooks.start()
+    startIfVisible()
   })
   onDeactivated(() => {
     active.value = false

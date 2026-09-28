@@ -81,7 +81,7 @@ impl Speech {
                 &self.cancel,
             )
             .await
-            .is_ok_and(|(status, _, _)| (200..500).contains(&status));
+            .is_ok_and(|(status, _)| (200..500).contains(&status));
         let voice = self.active.lock().unwrap().voice.clone();
         json!({"online": online, "engine": "GPT-SoVITS", "voices": {
             "nene": self.settings.profiles.get("nene").is_some_and(|p| p.configured()),
@@ -120,7 +120,7 @@ impl Speech {
                 )
                 .await;
             match result {
-                Ok((status, _, _)) if (200..300).contains(&status) => {}
+                Ok((status, _)) if (200..300).contains(&status) => {}
                 _ => {
                     *self.active.lock().unwrap() = Active::default();
                     return Err(ApiError::new(

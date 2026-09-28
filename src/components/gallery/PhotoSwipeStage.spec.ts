@@ -2,11 +2,13 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import PhotoSwipeStage from './PhotoSwipeStage.vue'
 
-const mocks = vi.hoisted(() => ({ read: vi.fn(), failed: vi.fn(), destroyed: vi.fn(), refreshed: vi.fn(), init: vi.fn() }))
+const mocks = vi.hoisted(() => ({ read: vi.fn(), failed: vi.fn(), destroyed: vi.fn(), refreshed: vi.fn(), init: vi.fn(), change: vi.fn(), removed: vi.fn() }))
 vi.mock('@/storage/artworkRepository', () => ({ artworkRepository: { getImage: mocks.read } }))
 vi.mock('photoswipe', () => ({ default: class {
   events: Record<string, (event: unknown) => void> = {}
   currIndex = 0
+  contentLoader = { getContentByIndex: () => undefined, removeByIndex: mocks.removed }
+  constructor() { mocks.change.mockImplementation((index: number) => { this.currIndex = index; this.events.change(undefined) }) }
   on(name: string, callback: (event: unknown) => void) { this.events[name] = callback }
   refreshSlideContent(index: number) { mocks.refreshed(index) }
   init() { mocks.init(); this.events.contentLoad({ content: { index: 0, onError: mocks.failed }, preventDefault() {} }) }
@@ -15,6 +17,18 @@ vi.mock('photoswipe', () => ({ default: class {
   destroy() { mocks.destroyed() }
 } }))
 afterEach(() => { vi.restoreAllMocks(); vi.clearAllMocks() })
+
+it('moving outside the preload neighborhood aborts and evicts unfinished slide content', async () => {
+  mocks.read.mockImplementationOnce(() => new Promise(() => {}))
+  const wrapper = mount(PhotoSwipeStage, { props: { items: [{ id: 0, image_id: 'zero' }, { id: 1 }, { id: 2 }, { id: 3 }], index: 0 } })
+  await flushPromises()
+  const signal = mocks.read.mock.calls[0][1] as AbortSignal
+  mocks.change(3)
+  expect(signal.aborted).toBe(true)
+  expect(mocks.removed).toHaveBeenCalledWith(0)
+  expect(mocks.failed).not.toHaveBeenCalled()
+  wrapper.unmount()
+})
 
 it('closing during decode immediately releases its URL and rejects late publication', async () => {
   mocks.read.mockResolvedValue(new Blob(['fixture'], { type: 'image/png' }))
@@ -49,6 +63,7 @@ it('A-B-A switching discards old storage reads and owns only new URLs', async ()
   const wrapper = mount(PhotoSwipeStage, { props: { items: [{ id: 'a', image_id: 'a' }], index: 0 } })
   await flushPromises()
   await wrapper.setProps({ items: [{ id: 'b', image_id: 'b' }] }); await flushPromises()
+  expect(mocks.read.mock.calls[0][1].aborted).toBe(true)
   await wrapper.setProps({ items: [{ id: 'a', image_id: 'a' }] }); await flushPromises()
   first(new Blob(['old'])); await flushPromises()
   expect(create).toHaveBeenCalledTimes(2)

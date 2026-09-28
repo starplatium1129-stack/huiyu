@@ -9,7 +9,7 @@ const THUMBNAIL_CACHE_BYTES = 8 * 1024 * 1024
  * download originals just to create previews. Original reads only share in-flight
  * work: resolved large blobs remain owned and released by their callers. */
 export function createDesktopArtworkMedia(requireAuthority: () => void, readThumbnail: (id: string) => Promise<string | null>) {
-  const images = new Map<string, Promise<Blob | null>>()
+  const images = new Map<string, { controller: AbortController; promise: Promise<Blob | null>; readers: number }>()
   const pendingThumbnails = new Map<string, Promise<string | null>>()
   const thumbnails = new Map<string, string>()
   let thumbnailBytes = 0
@@ -36,30 +36,62 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
     forget(identity)
     pendingThumbnails.delete(identity)
   }
-  async function fetchImage(id: string): Promise<Blob | null> {
-    const signal = AbortSignal.timeout(35_000)
+  async function fetchImage(id: string, signal: AbortSignal): Promise<Blob | null> {
     const response = await desktopRuntimeFetch('/api/workspace/media-capabilities', { method: 'POST', signal,
       headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ alias: id }) })
     if (response.status === 404) return null
     if (!response.ok) throw new Error('作品原图暂时不可用')
     const capability = await response.json() as { url: string }
+    signal.throwIfAborted()
     const media = await desktopRuntimeFetch(capability.url, { signal })
     if (!media.ok) throw new Error('作品原图读取未完成')
     return media.blob()
   }
-  async function getImage(id: string): Promise<Blob | null> {
+  async function getImage(id: string, signal?: AbortSignal): Promise<Blob | null> {
+    signal?.throwIfAborted()
     const identity = key(id)
     let pending = images.get(identity)
     if (!pending) {
-      pending = fetchImage(id)
+      const controller = new AbortController()
+      const timer = setTimeout(() => controller.abort(new DOMException('作品原图读取超时', 'TimeoutError')), 35_000)
+      const entry = { controller, readers: 0, promise: Promise.resolve<Blob | null>(null) }
+      const cleanup = () => {
+        clearTimeout(timer)
+        if (images.get(identity) === entry) images.delete(identity)
+      }
+      controller.signal.addEventListener('abort', cleanup, { once: true })
+      entry.promise = fetchImage(id, controller.signal).finally(() => {
+        cleanup()
+        controller.signal.removeEventListener('abort', cleanup)
+      })
+      pending = entry
       images.set(identity, pending)
     }
-    try {
-      const value = await pending
-      if (key(id) !== identity) throw new Error('作品库连接已变化，请重新读取')
-      return value
-    }
-    finally { if (images.get(identity) === pending) images.delete(identity) }
+    const entry = pending
+    entry.readers++
+    return new Promise<Blob | null>((resolve, reject) => {
+      let settled = false
+      const finish = (error?: unknown, value?: Blob | null) => {
+        if (settled) return
+        settled = true
+        signal?.removeEventListener('abort', cancel)
+        entry.controller.signal.removeEventListener('abort', abort)
+        if (--entry.readers === 0 && images.get(identity) === entry) entry.controller.abort()
+        if (error !== undefined) reject(error)
+        else resolve(value ?? null)
+      }
+      const cancel = () => finish(signal?.reason)
+      const abort = () => finish(entry.controller.signal.reason)
+      signal?.addEventListener('abort', cancel, { once: true })
+      entry.controller.signal.addEventListener('abort', abort, { once: true })
+      entry.promise.then(value => {
+        if (settled) return
+        try {
+          if (key(id) !== identity) throw new Error('作品库连接已变化，请重新读取')
+          finish(undefined, value)
+        } catch (error) { finish(error) }
+      }, error => finish(error))
+    })
   }
   async function getThumbnail(id: string): Promise<string | null> {
     const identity = key(id)

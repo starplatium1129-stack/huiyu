@@ -96,6 +96,30 @@ PR #11 以 `f05f8724` 合并。首次安装后，校验发现宿主仅有 Tauri 
 
 最后移除测试专用截止时间入口后，最终源码再次通过格式、全 targets Clippy 和 9 项聊天定向测试；其余未受影响的 Rust 检查沿用上述结果。
 
+## 2026-09-28 存储性能首批优化
+
+本轮从隔离基准选择两个可验证热点，未改生成参数、图片算法或媒体校验语义。[原始测量与源码哈希](../evidence/rust-storage-performance-2026-09-28.json)保存样本、DLL 身份和限制。
+
+| 范围 | 改动及实测 |
+| --- | --- |
+| 同图冷缓存并发 | 按工作区、图片哈希和缓存版本串行检查缓存，再占用原有两个解码名额。同图请求等待已有解码，其他图片仍能并行；取消等待者不提前释放阻塞解码器持有的锁。弱引用表在后续冷请求时清理失效项，不保留全部历史图片。 |
+| 缩略图成本 | Windows、本机 libvips、2048×3072 中性 PNG、8 个同图请求、7 轮：CPU 时间中位数 218.75 → 125 ms（约减少 43%），墙钟 82.46 → 87.53 ms；热缓存墙钟 4.20 → 4.18 ms。输出字节哈希一致。此项节省重复 CPU 工作，不宣称单张图片加速。 |
+| 项目成员反查 | 增加 `project_artworks(artwork_key)` 索引；打开已有 v3 工作区及恢复候选时幂等补齐，保持 schema/revision 协议。10 万关系、200 次反查、3 轮中位数 449.03 → 0.293 ms，查询计划由 SCAN 变为 SEARCH。仅统计查询，不含首次索引建立、写入维护或完整删除事务。 |
+
+基准使用 Rust debug 测试程序；图像处理使用现有原生 DLL。CPU 计时包含该测试进程的原生线程，有 Windows 计时粒度限制。这些结果不代表 release 桌面总体速度、内存峰值、GPU 或长时功耗。媒体 HTTP 已按 64 KiB 流式读取，暂未发现需要更改的整文件复制；本轮未为降低成本而删减哈希验证或持久化同步。
+
+可复现入口：
+
+```powershell
+$env:AICS_TEST_VIPS_DLL = (Resolve-Path node_modules/@img/sharp-win32-x64/lib/libvips-42.dll).Path
+cargo test --manifest-path runtime-rs/Cargo.toml --locked --test storage_thumbnails benchmark_thumbnail_work -- --ignored --nocapture
+cargo test --manifest-path runtime-rs/Cargo.toml --locked --test storage_indexes benchmark_reverse_lookup -- --ignored --nocapture
+```
+
+两条基准各自在临时数据中执行，顺序运行、不与构建或其他基准并行；没有耗时门槛。缩略图的旧实现样本在本轮修改前采集，当前入口只测当前实现；索引基准在独立内存库中执行无索引/有索引两组。
+
+新回归验证了不同图片解码名额、取消等待者清理、并发输出一致、新/旧 v3 库、删除恢复顺序和备份恢复。最终 `RUST_TEST_THREADS=1 npm run wf -- rust:check` 的格式、Clippy、71 项单元及 19 项集成测试通过；4 项原生专项按原配置跳过，2 项手动基准另行通过；单体门禁通过。默认并行运行曾有 1 项已有反推模拟测试失败（预期 webui、实际 heuristic），单独及串行重跑通过，未修改或放宽该测试。未访问用户作品库、调用真实模型、构建发行包或更新桌面安装。
+
 ## 恢复与后续
 
 `maintenance-recovery` 默认只读预览，`--out` 只创建新计划；应用必须显式 `--apply-plan` 并重核签名、根、journal、进程及当前文件。原生入口覆盖启动聚合新增的词条备份范围，不能改用旧 Node 恢复白名单处理这些新事务。用法见[工作流](../workflow.md#rust-运行时迁移)。

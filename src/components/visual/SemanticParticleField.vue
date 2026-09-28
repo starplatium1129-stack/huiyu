@@ -525,7 +525,7 @@ onMounted(() => {
   }, { rootMargin: '120px' })
   intersectionObserver.observe(host.value)
   themeObserver = new MutationObserver(performance.onRootPreferenceChanged)
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-fluid-effects', 'data-reduced-glass'] })
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-fluid-effects', 'data-reduced-glass', 'data-motion'] })
   document.addEventListener('visibilitychange', performance.onVisibilityChange)
   readPalette()
   resize()

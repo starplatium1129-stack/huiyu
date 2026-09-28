@@ -38,7 +38,7 @@ export interface ArtworkRepository {
   readRecentHistory(): Promise<ArtworkRecord[]>
   /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */
   readPreferenceHistory(): Promise<unknown[]>
-  getImage(id: string): Promise<Blob | null>
+  getImage(id: string, signal?: AbortSignal): Promise<Blob | null>
   putImage(blob: Blob): Promise<string>
   deleteImage(id: string): Promise<void>
   countImages(): Promise<number>

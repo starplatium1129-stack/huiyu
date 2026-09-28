@@ -1,0 +1,42 @@
+{
+  "samples": [
+    {
+      "preserveDrawingBuffer": false,
+      "initial": [
+        255,
+        128,
+        64,
+        255
+      ],
+      "afterTwoFrames": [
+        255,
+        128,
+        64,
+        255
+      ]
+    },
+    {
+      "preserveDrawingBuffer": true,
+      "initial": [
+        255,
+        128,
+        64,
+        255
+      ],
+      "afterTwoFrames": [
+        255,
+        128,
+        64,
+        255
+      ]
+    }
+  ],
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0",
+  "decision": "Do not reuse default WebGL canvas across frames without a defined preservation strategy. The observed preservation on this driver is not a portable API guarantee. No product cache was added.",
+  "source": "https://registry.khronos.org/webgl/specs/latest/1.0/#the-webgl-context",
+  "constraint": "WebGL Drawing Buffer specification states that source-image operations after rendering function return can have undefined behavior when preserveDrawingBuffer is false; true can cause significant performance loss on some platforms.",
+  "alternatives": [
+    "preserveDrawingBuffer true requires measured moving-frame and memory-cost validation",
+    "Explicit RGBA framebuffer or image cache adds approximately 2 MiB at 1024 x 512, before driver overhead"
+  ]
+}

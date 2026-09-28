@@ -3,9 +3,11 @@ use axum::{
     body::{Body, Bytes},
     response::{IntoResponse, Response},
 };
-use futures_util::{Stream, StreamExt};
+use futures_util::StreamExt;
+mod lines;
+use lines::Lines;
 use serde_json::{Value, json};
-use std::{collections::VecDeque, convert::Infallible, pin::Pin};
+use std::{collections::VecDeque, convert::Infallible};
 use tokio_util::sync::CancellationToken;
 
 #[derive(Clone, Copy)]
@@ -20,52 +22,6 @@ pub(super) struct Prepared {
     pub wait_ms: u64,
     pub protocol: Protocol,
     pub permit: Option<Permit>,
-}
-struct Lines {
-    source: Pin<Box<dyn Stream<Item = std::result::Result<Bytes, reqwest::Error>> + Send>>,
-    buffer: Vec<u8>,
-    total: usize,
-    ended: bool,
-    idle: Duration,
-}
-impl Lines {
-    async fn next(&mut self) -> Result<Option<String>> {
-        loop {
-            let newline = self.buffer.iter().position(|b| *b == b'\n');
-            let length = newline.unwrap_or(self.buffer.len());
-            if length > 1024 * 1024 {
-                return Err(Error::stream("STREAM_BUDGET", "响应超过单帧预算"));
-            }
-            if let Some(index) = newline {
-                let mut bytes = self.buffer.drain(..=index).collect::<Vec<_>>();
-                bytes.pop();
-                return Ok(Some(String::from_utf8_lossy(&bytes).into_owned()));
-            }
-            if self.ended {
-                return if self.buffer.is_empty() {
-                    Ok(None)
-                } else {
-                    Ok(Some(
-                        String::from_utf8_lossy(&std::mem::take(&mut self.buffer)).into_owned(),
-                    ))
-                };
-            }
-            match tokio::time::timeout(self.idle, self.source.next())
-                .await
-                .map_err(|_| Error::stream("UPSTREAM_TIMEOUT", "聊天流超时"))?
-            {
-                Some(Ok(chunk)) => {
-                    self.total = self.total.saturating_add(chunk.len());
-                    if self.total > 16 * 1024 * 1024 {
-                        return Err(Error::stream("STREAM_BUDGET", "响应超过总字节预算"));
-                    }
-                    self.buffer.extend_from_slice(&chunk);
-                }
-                Some(Err(_)) => return Err(Error::stream("INCOMPLETE_STREAM", "聊天流中断")),
-                None => self.ended = true,
-            }
-        }
-    }
 }
 struct Events {
     lines: Lines,
@@ -187,17 +143,14 @@ impl Events {
 fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
     let wait = prepared.wait_ms;
     Events {
-        lines: Lines {
-            source: prepared.response.bytes_stream().boxed(),
-            buffer: Vec::new(),
-            total: 0,
-            ended: false,
-            idle: Duration::from_secs(if matches!(prepared.protocol, Protocol::Ollama) {
+        lines: Lines::new(
+            prepared.response.bytes_stream().boxed(),
+            Duration::from_secs(if matches!(prepared.protocol, Protocol::Ollama) {
                 180
             } else {
                 120
             }),
-        },
+        ),
         protocol: prepared.protocol,
         decoder: Decoder::default(),
         pending: VecDeque::from([json!({"type":"meta","model":prepared.model,"queueWaitMs":wait})]),

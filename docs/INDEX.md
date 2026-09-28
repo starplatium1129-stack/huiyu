@@ -34,13 +34,16 @@
 现行实现与最近本机安装以 [项目状态](project-status.md) 为准；设计目标、分批证据和剩余条件分别查下列资料，不从旧计划的启动提示重新派工。
 
 - 现行契约：[Workspace 与迁移](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[任务运行时](architecture/TASK-RUNTIME-DESIGN.md)、[桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)。
-- [Node → Rust 执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)：产品后端与构建入口切换、差分验证与发行边界；[9 月 28 日安装证据](evidence/rust-installation-2026-09-28.json)记录 main 合并、完整安装及 Rust 运行时核验。
+- [Node → Rust 执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)：产品后端与构建入口切换、差分验证与发行边界；[9 月 28 日安装证据](evidence/rust-installation-2026-09-28.json)记录 main 合并、完整安装及 Rust 运行时核验；[存储性能测量](evidence/rust-storage-performance-2026-09-28.json)记录同图解码合并与项目反查索引的隔离基准。
 - 目标与批次定义：[重构总计划](architecture/REFACTOR-EXECUTION-PLAN.md)、[执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md)、[原基线复审](architecture/REFACTOR-AUDIT.md)。
 - 主线记录：[R0](architecture/R0-EXECUTION-REPORT.md)、[R1](architecture/R1-EXECUTION-REPORT.md)、[R2](architecture/R2-EXECUTION-REPORT.md)、[R3–R11](architecture/R3-R11-EXECUTION-REPORT.md)；验证 JSON 随各报告列出。
 - 独立实验：[R12 渲染进程](architecture/R12-EXECUTION-REPORT.md)、[R13 Electron 对照](architecture/R13-EXECUTION-REPORT.md)；正式默认与采用边界查当前状态。
 - 后续交付：[可靠性收尾](architecture/RELIABILITY-FOLLOWUP-REPORT.md)、[图片恢复](evidence/desktop-images-2026-09-27.json)、[UI/Live2D 联合安装](evidence/desktop-ui-live2d-2026-09-27.json)、[内存优化与最近安装](evidence/memory-optimization-2026-09-27.json)；每份证据绑定自己的源码/构建。
 
 ## 待办与专项验收入口
+
+- [9 月 28 日跨层性能优化与验收](audits/2026-09-28/performance.md)：图库搜索、Live2D 指针、Rust 流解析与前批存储优化，区分局部基准、浏览器资源和真机待验。
+- [同日 CPU、内存与 GPU 资源收口](audits/2026-09-28/resource-performance.md)：原图取消、任务轮询、JSON 分配、搜索缓存释放、880M 硬件对照，以及未采用方案与 4070 Ti S 待验边界。
 
 - [Node.js 运行时迁移到 Rust（013）](../plans/013-node-to-rust-migration.md)：后端与入口切换、main 合并及本机安装已完成，真实模型、设备和发行材料继续收口；[接口与生产依赖矩阵](architecture/NODE-RUST-MIGRATION-MATRIX.md)保留旧实现范围，pending 不是当前完成率。
 
