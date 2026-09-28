@@ -95,6 +95,11 @@ function main() {
       ...process.env,
       LIVE2D_SELFTEST: '1',
       LIVE2D_SNAPSHOT_DIR: SNAPSHOT_DIR,
+      // A running installed desktop must not consume this invocation through
+      // its single-instance channel. Keep all test identity/configuration in
+      // the same disposable root as the snapshots, never the operator profile.
+      AICS_DESKTOP_CONFIG_ROOT: path.join(SNAPSHOT_DIR, 'config'),
+      AICS_DESKTOP_WEBVIEW_DATA_DIR: path.join(SNAPSHOT_DIR, 'webview'),
     },
     // Release binaries use the Windows GUI subsystem. Inheriting a file
     // handle is reliable here, while piped stdio can silently lose output.

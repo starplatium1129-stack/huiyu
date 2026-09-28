@@ -325,6 +325,7 @@ fn main() -> Result<(), String> {
             config.size,
             false,
             None,
+            true,
         );
         renderer.queue.submit(std::iter::once(encoder.finish()));
         renderer
