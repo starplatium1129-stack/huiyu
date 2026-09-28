@@ -334,7 +334,7 @@ export const useSceneStore = defineStore('scenes', () => {
     return entry.promise
   }
 
-  function beginNewEpoch() {
+  function invalidate() {
     loadEpoch += 1
     version.value += 1
     loaded.value = false
@@ -356,7 +356,7 @@ export const useSceneStore = defineStore('scenes', () => {
   function loadCharacter(char: string, force = false): Promise<void> {
     const shard = resolveShard(char)
     if (force) {
-      beginNewEpoch()
+      invalidate()
       inflightByKey.delete(`char:${shard}`)
     }
     return beginTargetLoad(`char:${shard}`, async (_isCurrent, epoch, requestVersion) => {
@@ -372,7 +372,7 @@ export const useSceneStore = defineStore('scenes', () => {
   /** 只加载默认"人设核心"视图所需的数据（index + shared + core 精选子集）。 */
   function loadCore(force = false): Promise<void> {
     if (force) {
-      beginNewEpoch()
+      invalidate()
       inflightByKey.delete('core')
     }
     return beginTargetLoad('core', async (_isCurrent, epoch, requestVersion) => {
@@ -430,7 +430,7 @@ export const useSceneStore = defineStore('scenes', () => {
    */
   function load(force = false): Promise<void> {
     if (force) {
-      beginNewEpoch()
+      invalidate()
       inflightByKey.delete('full')
     }
     if (loaded.value && !force) return Promise.resolve()
@@ -454,7 +454,7 @@ export const useSceneStore = defineStore('scenes', () => {
   /** 角色档案首屏壳：只取角色目录与热门角色，不等待场景/蓝图大资源。 */
   function loadCharacterShell(force = false): Promise<void> {
     if (force) {
-      beginNewEpoch()
+      invalidate()
       inflightByKey.delete('character-shell')
     }
     return loadMeta(force, false, new Set(['characters.json', 'popular-characters.json']))
@@ -471,7 +471,7 @@ export const useSceneStore = defineStore('scenes', () => {
   /** 场景维护只需要角色元数据；不要为一个编辑器首屏拉取三份场景分片。 */
   function loadMetadata(force = false): Promise<void> {
     if (force) {
-      beginNewEpoch()
+      invalidate()
       inflightByKey.delete('metadata')
     }
     return loadMeta(force, true)
@@ -505,6 +505,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadBrowserScenes, loadBlueprintCatalog, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, byId, count,
+    load, loadBrowserScenes, loadBlueprintCatalog, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, ensureCharacter, ensureCore, reload, invalidate, byId, count,
   }
 })

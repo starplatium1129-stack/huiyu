@@ -64,7 +64,11 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         if !PUBLIC_DATA_FILES.contains(&name) {
             return StatusCode::NOT_FOUND.into_response();
         }
-        (root.join("data"), name.to_owned(), false)
+        (
+            state.config.content_root().join("data"),
+            name.to_owned(),
+            false,
+        )
     } else if let Some(name) = path.strip_prefix("/assets/") {
         if name
             .split('/')
@@ -100,6 +104,12 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     } else {
         return StatusCode::NOT_FOUND.into_response();
     };
+    let content_root = state.config.content_root();
+    let compressed_root = if path.starts_with("/data/") {
+        &content_root
+    } else {
+        root
+    };
     let file = base.join(&relative);
     let Some(metadata) = inside(&base, &file).await else {
         return StatusCode::NOT_FOUND.into_response();
@@ -116,7 +126,7 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         request.headers_mut().remove("if-modified-since");
     }
     if let Some(response) = crate::remote_content::precompressed(
-        root,
+        compressed_root,
         &assets,
         request.method(),
         request.uri(),

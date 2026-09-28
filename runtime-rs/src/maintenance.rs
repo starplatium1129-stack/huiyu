@@ -90,7 +90,6 @@ impl IntoResponse for Error {
 }
 pub struct MaintenanceService {
     options: Options,
-    packaged: bool,
     cache: Mutex<Option<(u64, Bytes)>>,
     hero: Mutex<Option<(std::time::Instant, Value)>>,
     write_slots: Arc<tokio::sync::Semaphore>,
@@ -104,11 +103,11 @@ impl MaintenanceService {
         let showcase = showcase::root(config);
         Self {
             options: Options {
-                root: config.app_root.clone(),
+                assets_root: Some(config.assets_root()),
+                root: config.content_root(),
                 runtime: config.runtime_root.clone(),
                 showcase,
             },
-            packaged: std::env::var("AICS_DESKTOP_PACKAGED").as_deref() == Ok("1"),
             cache: Mutex::new(None),
             hero: Mutex::new(None),
             write_slots: Arc::new(tokio::sync::Semaphore::new(8)),
@@ -200,17 +199,6 @@ fn authorize(
     let _ = service;
     Ok(())
 }
-fn source_only(service: &MaintenanceService) -> Result<()> {
-    if service.packaged {
-        Err(Error::new(
-            501,
-            "DESKTOP_MAINTENANCE_UNAVAILABLE",
-            "桌面应用模式下场景内容编辑不可用（数据位于只读的应用包内）。请在源码开发模式中编辑场景内容。",
-        ))
-    } else {
-        Ok(())
-    }
-}
 async fn blocking<T: Send + 'static>(
     work: impl FnOnce() -> Result<T> + Send + 'static,
 ) -> Result<T> {
@@ -225,7 +213,6 @@ async fn status(
     headers: HeaderMap,
 ) -> Result<Response> {
     authorize(&app, &service, &headers, peer)?;
-    source_only(&service)?;
     let value=blocking(move||{let state=journal::inspect(&service.options);Ok(json!({"ok":state["status"]=="free","status":state["status"],"recoveryRequired":state["recoveryRequired"],"code":state["code"],"transactionId":state["journal"]["nonce"],"phase":state["journal"]["phase"],"backup":state["journal"]["backup"]["id"]}))}).await?;
     Ok(([("cache-control", "no-store")], Json(value)).into_response())
 }
@@ -246,7 +233,6 @@ async fn scenes(
     headers: HeaderMap,
 ) -> Result<Response> {
     authorize(&app, &service, &headers, peer)?;
-    source_only(&service)?;
     let bytes = blocking(move || service.scene_state()).await?;
     Ok((
         [
@@ -265,7 +251,6 @@ async fn changes(
     body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
 ) -> Result<Response> {
     authorize(&app, &service, &headers, peer)?;
-    source_only(&service)?;
     let body = body.map_err(|error| {
         Error::new(
             error.status().as_u16(),
@@ -291,9 +276,7 @@ async fn save_content(
         uri.path(),
         "/api/maintenance/showcase" | "/api/maintenance/home-hero"
     );
-    if !product {
-        source_only(&service)?;
-    }
+
     let body = body.map_err(|error| {
         Error::new(
             error.status().as_u16(),
@@ -345,7 +328,7 @@ async fn home_hero(Extension(service): Extension<Arc<MaintenanceService>>) -> Re
 }
 
 /// Attach after authorization and before static/precompressed/reference serving.
-/// Mutable content is buffered only in source mode, matching the old lease fence.
+/// Mutable content shares the transaction fence in source and packaged modes.
 pub async fn read_barrier(
     State(service): State<Arc<MaintenanceService>>,
     request: Request,
@@ -355,8 +338,7 @@ pub async fn read_barrier(
         .decode_utf8()
         .map(|s| s.to_ascii_lowercase())
         .unwrap_or_default();
-    if service.packaged
-        || !matches!(*request.method(), Method::GET | Method::HEAD)
+    if !matches!(*request.method(), Method::GET | Method::HEAD)
         || ![
             "/data",
             "/scene-showcase",

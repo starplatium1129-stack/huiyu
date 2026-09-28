@@ -131,6 +131,13 @@ fn fixture(root: &Path) {
 }
 #[tokio::test]
 async fn actual_http_save_commits_and_failed_validation_restores_original_bytes() {
+    http_save(false).await;
+}
+#[tokio::test]
+async fn packaged_http_save_uses_writable_content_and_preserves_bundle() {
+    http_save(true).await;
+}
+async fn http_save(packaged: bool) {
     let directory = tempfile::tempdir().unwrap();
     let root = directory.path().join("app");
     fixture(&root);
@@ -153,14 +160,19 @@ async fn actual_http_save_commits_and_failed_validation_restores_original_bytes(
         workspace_id: None,
         create_workspace: false,
     });
+    config.prepare_content_for(packaged).unwrap();
+    let bundled = std::fs::read(root.join("data/scenes/nene-core.json")).unwrap();
+    let package_root = root;
+    let root = config.content_root_for(packaged);
     let options = Options {
+        assets_root: Some(package_root.join("assets")),
         root: root.clone(),
         runtime: config.runtime_root.clone(),
         showcase: None,
     };
     let mut service = MaintenanceService::new(&config);
     service.options = options.clone();
-    service.packaged = false;
+    let config_for_restart = config.clone();
     let app = router(Arc::new(service)).with_state(AppState::new(
         config,
         Arc::new(HostAuthority::new(None, None, None)),
@@ -258,4 +270,18 @@ async fn actual_http_save_commits_and_failed_validation_restores_original_bytes(
         std::fs::read(root.join("data/blueprints/fixture.json")).unwrap()
     );
     assert_eq!(journal::inspect(&options)["status"], "free");
+    if packaged {
+        assert_eq!(
+            bundled,
+            std::fs::read(package_root.join("data/scenes/nene-core.json")).unwrap()
+        );
+        let saved = std::fs::read(root.join("data/scenes/nene-core.json")).unwrap();
+        assert_ne!(saved, bundled);
+        // Restart and package upgrades must never replace local edits.
+        config_for_restart.prepare_content_for(true).unwrap();
+        assert_eq!(
+            saved,
+            std::fs::read(root.join("data/scenes/nene-core.json")).unwrap()
+        );
+    }
 }

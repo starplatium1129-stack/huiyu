@@ -121,6 +121,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
         ));
     }
     let options = Options {
+        assets_root: None,
         root: root(flags.get("--root").copied(), "--root")?,
         runtime: root(flags.get("--runtime-root").copied(), "--runtime-root")?,
         showcase: flags
@@ -152,6 +153,7 @@ mod tests {
         let before = b"{\"version\":1,\"meanings\":{\"neutral\":\"fixture\"}}";
         std::fs::write(&file, before).unwrap();
         let options = Options {
+            assets_root: None,
             root: app.clone(),
             runtime: runtime.clone(),
             showcase: None,

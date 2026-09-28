@@ -96,6 +96,7 @@ fn content_gate_matches_node_and_rejects_stale_products_and_pollution() {
     let root = directory.path();
     fixture(root);
     let options = Options {
+        assets_root: None,
         root: root.into(),
         runtime: root.join("runtime"),
         showcase: None,

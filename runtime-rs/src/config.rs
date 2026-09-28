@@ -1,4 +1,5 @@
 use crate::error::{ApiError, Result};
+mod content;
 mod token;
 use serde_json::Value;
 use std::{
@@ -29,6 +30,26 @@ pub struct Config {
 }
 
 impl Config {
+    pub fn is_packaged(&self) -> bool {
+        env::var("AICS_DESKTOP_PACKAGED").as_deref() == Ok("1")
+    }
+    pub fn content_root(&self) -> PathBuf {
+        self.content_root_for(self.is_packaged())
+    }
+    pub(crate) fn content_root_for(&self, packaged: bool) -> PathBuf {
+        if packaged {
+            self.runtime_root.join("content")
+        } else {
+            self.app_root.clone()
+        }
+    }
+    pub fn prepare_content(&self) -> Result<()> {
+        self.prepare_content_for(self.is_packaged())
+    }
+    pub(crate) fn prepare_content_for(&self, packaged: bool) -> Result<()> {
+        content::prepare(&self.app_root, &self.content_root_for(packaged), packaged)
+    }
+
     pub fn tools_root(&self) -> PathBuf {
         let path = env::var_os("AICS_TOOLS_ROOT")
             .map(PathBuf::from)

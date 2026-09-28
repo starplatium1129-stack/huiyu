@@ -205,7 +205,7 @@ async fn handle(
         ));
     }
     app.host.check_available()?;
-    let root = app.config.app_root.clone();
+    let root = app.config.content_root();
     let value =
         tokio::task::spawn_blocking(move || resolve(&root, &body["blueprintId"], &body["intent"]))
             .await

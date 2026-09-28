@@ -108,7 +108,7 @@ impl RemoteContent {
         );
         showcase.dedup();
         Self {
-            app: config.app_root.clone(),
+            app: config.content_root(),
             runtime: config.runtime_root.clone(),
             assets: absolute(
                 env::var_os("AICS_ASSETS_ROOT")

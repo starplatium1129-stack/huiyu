@@ -108,6 +108,7 @@ fn prepared_sources_refuse_stale_bytes_and_commit_exact_owned_shards() {
         &json!({"characters":[{"id":"alpha","franchise":"First's Set","outfits":[{"id":"coat"}]},{"id":"beta","franchise":"Second Set","outfits":[{"id":"coat"}]},{"id":"gamma","franchise":"New / Series","outfits":[{"id":"coat"}]}]}),
     );
     let options = Options {
+        assets_root: None,
         root: root.clone(),
         runtime: temp.path().join("runtime"),
         showcase: None,

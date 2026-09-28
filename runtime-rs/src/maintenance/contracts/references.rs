@@ -1,7 +1,7 @@
 use super::*;
 use std::path::PathBuf;
 
-pub(super) fn validate(root: &Path, issues: &mut Vec<String>) -> Value {
+pub(super) fn validate(root: &Path, assets_root: Option<&Path>, issues: &mut Vec<String>) -> Value {
     let view = match read(root, "data/character-reference-view.json") {
         Ok(v) => v,
         Err(error) => {
@@ -13,8 +13,9 @@ pub(super) fn validate(root: &Path, issues: &mut Vec<String>) -> Value {
         issues.push("character-reference-view: 视图文件不是角色对象表".into());
         return Value::Null;
     }
-    let assets = std::env::var_os("AICS_ASSETS_ROOT")
-        .map(PathBuf::from)
+    let assets = assets_root
+        .map(Path::to_path_buf)
+        .or_else(|| std::env::var_os("AICS_ASSETS_ROOT").map(PathBuf::from))
         .unwrap_or_else(|| root.join("assets"));
     let assets = std::path::absolute(assets).unwrap_or_else(|_| root.join("assets"));
     let references = crate::reference::reference_root(root).filter(|p| p.is_dir());

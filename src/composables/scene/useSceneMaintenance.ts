@@ -1,5 +1,4 @@
-import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
-import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch, type Ref } from 'vue'
+import { computed, onBeforeUnmount, ref, shallowRef, watch, type Ref } from 'vue'
 import { ApiClientError } from '../../api/client.ts'
 import { maintenanceApi } from '../../api/maintenanceApi.ts'
 import type { BackupEntry } from '../../api/maintenanceApi.ts'
@@ -18,7 +17,7 @@ export interface SceneMaintenanceDeps {
   /** 宿主持有的脏标记（编辑/导入/标签/策展/蓝图任一改动置位）。 */
   dirty: Ref<boolean>
   loading: Ref<boolean>
-  /** 宿主持有的维护提示通道（保存进度/备份编号/桌面只读提示共用）。 */
+  /** 宿主持有的维护提示通道（保存进度/备份编号/读取状态提示共用）。 */
   maintenanceHint: Ref<string>
   /** 同一响应取得的不可变完整快照和版本；缺少任一项都禁止写入。 */
   baseVersion: () => number | null
@@ -41,7 +40,7 @@ const TOOLS: Array<{ id: string; iconName: 'palette' | 'success' | 'filter' | 'g
  * 场景管理页「维护任务」簇（2026-08-22 自 SceneManagerView 下沉）。
  *
  * 基于不可变基线的变更集保存、只读影响预览、维护工具和备份历史。
- * 桌面打包模式探测（data 只读、保存与维护任务禁用）在此自持。
+ * Web 与桌面共用服务端权威快照，未取得基线时保持只读。
  */
 export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   const { scenes, tags, curation, blueprints, dirty, maintenanceHint } = deps
@@ -55,8 +54,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   const backupsLoading = ref(false)
   const backupsError = ref('')
   const backupsExpanded = ref(false)
-  /** 桌面打包模式：data 在只读应用包内，场景保存与维护任务不可用 */
-  const desktopPackaged = ref(!!getDesktopCapabilities())
+  const maintenanceReadonly = computed(() => deps.baselineSnapshot() === null || !Number.isSafeInteger(deps.baseVersion()))
   const importConfirming = ref(false)
   const needsReload = ref(false)
   const preview = shallowRef<SceneChangesPreview | null>(null)
@@ -69,7 +67,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   let previewRequest = 0
 
   const canPreview = computed(() => !deps.loading.value && !saving.value && !previewing.value
-    && !toolRunning.value && !desktopPackaged.value && !importConfirming.value && !needsReload.value && deps.baselineSnapshot() !== null
+    && !toolRunning.value && !maintenanceReadonly.value && !importConfirming.value && !needsReload.value && deps.baselineSnapshot() !== null
     && Number.isSafeInteger(deps.baseVersion()))
   const canSave = computed(() => canPreview.value && dirty.value)
   const currentSnapshot = (): SceneMaintenanceSnapshot => ({
@@ -88,7 +86,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
     previewCompanions.value = []
   }
   // Invalidate synchronously: an old response must never become the current draft's preview.
-  watch([scenes, tags, curation, blueprints, deps.baseVersion, deps.baselineSnapshot, deps.loading, desktopPackaged, () => deps.editSessionKey?.() ?? ''],
+  watch([scenes, tags, curation, blueprints, deps.baseVersion, deps.baselineSnapshot, deps.loading, maintenanceReadonly, () => deps.editSessionKey?.() ?? ''],
     invalidatePreview, { deep: true, flush: 'sync' })
   watch([deps.baseVersion, deps.baselineSnapshot], () => { needsReload.value = false }, { flush: 'sync' })
   onBeforeUnmount(invalidatePreview)
@@ -160,7 +158,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   }
 
   async function previewChanges() {
-    if (deps.loading.value || saving.value || previewing.value || toolRunning.value || desktopPackaged.value || importConfirming.value) return
+    if (deps.loading.value || saving.value || previewing.value || toolRunning.value || importConfirming.value) return
     invalidatePreview()
     previewInvalidated.value = false
     const request = previewRequest
@@ -191,7 +189,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   }
 
   async function persistSceneDraft(mode: 'changes' | 'import') {
-    if (!dirty.value || deps.loading.value || saving.value || previewing.value || toolRunning.value || desktopPackaged.value || importConfirming.value) return
+    if (!dirty.value || deps.loading.value || saving.value || previewing.value || toolRunning.value || importConfirming.value) return
     invalidatePreview()
     try {
       const submission = prepareSubmission()
@@ -238,7 +236,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   }
 
   async function runTool(taskId: string) {
-    if (deps.loading.value || toolRunning.value || saving.value || previewing.value || desktopPackaged.value || importConfirming.value) return
+    if (deps.loading.value || toolRunning.value || saving.value || previewing.value || maintenanceReadonly.value || importConfirming.value) return
     const tool = TOOLS.find(t => t.id === taskId)
     if (!tool) return
     invalidatePreview()
@@ -280,14 +278,6 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   // 模板兼容别名
   const highlightedOutput = highlightedToolOutput
 
-  onMounted(() => {
-    if (getDesktopCapabilities()) {
-      getDesktopCapabilities()!.isPackaged().then(packaged => {
-        desktopPackaged.value = packaged
-        if (packaged) maintenanceHint.value = '桌面应用模式：场景内容位于只读应用包内，保存与维护任务不可用'
-      }).catch(() => { maintenanceHint.value = '无法确认桌面写入状态，已保持只读，请重新读取' })
-    }
-  })
 
   return {
     TOOLS,
@@ -300,7 +290,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
     backupsLoading,
     backupsError,
     backupsExpanded,
-    desktopPackaged,
+    maintenanceReadonly,
     saveToProject: () => persistSceneDraft('changes'),
     importSnapshotToProject: () => persistSceneDraft('import'),
     importConfirming,

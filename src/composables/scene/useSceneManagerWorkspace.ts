@@ -1,4 +1,3 @@
-import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useSceneEditorModal } from './useSceneEditorModal.ts';
 import { useSceneImportExport } from './useSceneImportExport.ts';
@@ -83,12 +82,12 @@ export function useSceneManagerWorkspace() {
         tags,
         curation,
         blueprints,
-        canImport: () => !loading.value && !desktopPackaged.value && !toolRunning.value,
+        canImport: () => !loading.value && !maintenanceReadonly.value && !toolRunning.value,
         markDirty,
         esc,
         errorMessage,
     });
-    // ── 维护任务：落盘/工具/备份/桌面只读探测（已下沉 useSceneMaintenance）────
+    // ── 维护任务：落盘/工具/备份/写入状态（已下沉 useSceneMaintenance）────
     const maintenance = useSceneMaintenance({
         scenes,
         tags,
@@ -101,9 +100,9 @@ export function useSceneManagerWorkspace() {
         baselineSnapshot: () => sceneBaseline.value,
         adoptSceneState,
         editSessionKey,
-        invalidateSceneCache: () => { sceneStore.loaded = false; },
+        invalidateSceneCache: () => sceneStore.invalidate(),
     });
-    const { TOOLS, saving, savingPhase, toolRunning, toolResult, toolResultTitle, backups, backupsLoading, backupsError, backupsExpanded, desktopPackaged, saveToProject, runTool, loadBackups, formatBackupTime, highlightedOutput, previewing, importConfirming } = maintenance;
+    const { TOOLS, saving, savingPhase, toolRunning, toolResult, toolResultTitle, backups, backupsLoading, backupsError, backupsExpanded, maintenanceReadonly, saveToProject, runTool, loadBackups, formatBackupTime, highlightedOutput, previewing, importConfirming } = maintenance;
     const releaseMaintenance = registerMaintenanceParticipant(() => {
         if (dirty.value || editing.value || bpEditing.value || tagModalOpen.value) throw new Error('UNSAVED_SCENE_FORM');
         if (saving.value || toolRunning.value || importConfirming.value || importing.value) throw new Error('SCENE_BUSY');
@@ -335,7 +334,7 @@ export function useSceneManagerWorkspace() {
         loadAbort?.abort();
     });
     /**
-     * 可写编辑器通过同一响应读取内容与版本；打包桌面仅加载只读展示数据。
+     * Web 与桌面通过同一响应读取权威内容与版本。
      */
     let reloadRunning = false;
     async function loadFromStore(force = false) {
@@ -357,46 +356,26 @@ export function useSceneManagerWorkspace() {
         loading.value = true;
         const draftBefore = sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() });
         try {
-            const packaged = getDesktopCapabilities() ? await getDesktopCapabilities()!.isPackaged() : false;
-            desktopPackaged.value = packaged;
-            if (!packaged) {
-                // 角色显示名是辅助元数据；权威内容读取不能被它阻塞。
-                // 两条请求并行启动，state 成功即可建立可写基线。
-                void (force ? sceneStore.loadMetadata(true) : sceneStore.loadMetadata()).catch((error) => {
-                    console.warn('scene maintenance metadata load failed', error)
-                })
-                const state = await maintenanceApi.getScenesState({ signal: controller.signal });
-                if (sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() }) !== draftBefore) {
-                    dirty.value = true;
-                    maintenanceHint.value = '读取期间有新编辑，已保留草稿与原基线。请先导出，再重新读取并合并';
-                    return;
-                }
-                const snapshot = cloneSceneSnapshot(state.snapshot);
-                scenes.value = snapshot.scenes;
-                blueprints.value = snapshot.blueprints;
-                tags.value = snapshot.tags;
-                curation.value = snapshot.curation;
-                adoptSceneState(state.version, state.snapshot);
-                dirty.value = false;
-                loadError.value = '';
-                maintenanceHint.value = '已读取最新场景快照';
+            // 角色显示名是辅助元数据；权威内容读取不能被它阻塞。
+            // 两条请求并行启动，state 成功即可建立可写基线。
+            void (force ? sceneStore.loadMetadata(true) : sceneStore.loadMetadata()).catch((error) => {
+                console.warn('scene maintenance metadata load failed', error)
+            })
+            const state = await maintenanceApi.getScenesState({ signal: controller.signal });
+            if (sceneContentKey({ scenes: scenes.value, tags: tags.value, curation: curation.value, blueprints: blueprints.value, editor: editSessionKey() }) !== draftBefore) {
+                dirty.value = true;
+                maintenanceHint.value = '读取期间有新编辑，已保留草稿与原基线。请先导出，再重新读取并合并';
                 return;
             }
-            await (force ? sceneStore.reload() : sceneStore.load());
-            if (sceneStore.error)
-                throw new Error(sceneStore.error);
-            if (!Array.isArray(sceneStore.scenes))
-                throw new Error('scenes.json 格式错误');
-            // 同样不能 structuredClone reactive proxy，数据源本身是 JSON。
-            scenes.value = JSON.parse(JSON.stringify(sceneStore.scenes)) as SceneDraft[];
-            blueprints.value = JSON.parse(JSON.stringify(sceneStore.sceneBlueprints)) as SceneBlueprint[];
-            tags.value = JSON.parse(JSON.stringify(sceneStore.tags)) as TagRecord[];
-            curation.value = JSON.parse(JSON.stringify(sceneStore.curation)) as CurationData;
-            loadError.value = '';
-            // 打包桌面不建立可写基线。
-            sceneStateVersion.value = null;
-            sceneBaseline.value = null;
+            const snapshot = cloneSceneSnapshot(state.snapshot);
+            scenes.value = snapshot.scenes;
+            blueprints.value = snapshot.blueprints;
+            tags.value = snapshot.tags;
+            curation.value = snapshot.curation;
+            adoptSceneState(state.version, state.snapshot);
             dirty.value = false;
+            loadError.value = '';
+            maintenanceHint.value = '已读取最新场景快照';
         }
         catch (err) {
             if (controller.signal.aborted) return;
@@ -414,7 +393,7 @@ export function useSceneManagerWorkspace() {
     }
     /** 服务端分配下一个稳定场景 ID；失败返回 null，禁止猜测退役 ID。 */
     async function allocateNextSceneId(): Promise<string | null> {
-        if (loading.value || desktopPackaged.value || !sceneBaseline.value) return null;
+        if (loading.value || maintenanceReadonly.value || !sceneBaseline.value) return null;
         try {
             const state = await maintenanceApi.getScenesState();
             if (!state.nextSceneId) maintenanceHint.value = '场景 ID 已用尽，无法新增或复制';
@@ -444,7 +423,7 @@ modalEl,
 showcaseFileEl,
 heroFileEl,
         tab, scenes, loading, loadError, saving, dirty,
-        desktopPackaged, maintenanceHint, savingPhase, exportJSON, saveToProject, loadFromStore,
+        maintenanceReadonly, maintenanceHint, savingPhase, exportJSON, saveToProject, loadFromStore,
         stats, TABS, recordCounts, sceneRecords, openAddModal, openEditModal,
         duplicateScene, deleteScene, blueprintRecords, openBlueprintAddModal, openBlueprintEditModal, duplicateBlueprint,
         deleteBlueprint, tagSearch, tagCatFilter, tagCats, startAddTag, filteredTags,

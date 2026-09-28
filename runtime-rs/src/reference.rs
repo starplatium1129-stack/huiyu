@@ -82,11 +82,11 @@ async fn respond(
     } else if id.as_ref().is_some_and(|id| !valid_id(id)) {
         Err(ApiError::new(400, "REFERENCE_ID", "角色 ID 无效"))
     } else {
-        let root = state.config.app_root.clone();
+        let root = state.config.content_root();
+        let media = reference_root(&state.config.app_root);
         tokio::task::spawn_blocking(move || {
             let mut slot = readers.lock().map_err(|_| unavailable())?;
-            let reader =
-                slot.get_or_insert_with(|| Reader::new(root.clone(), reference_root(&root)));
+            let reader = slot.get_or_insert_with(|| Reader::new(root.clone(), media));
             reader.read(id.as_deref())
         })
         .await

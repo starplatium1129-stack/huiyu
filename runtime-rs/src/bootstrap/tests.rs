@@ -220,6 +220,7 @@ fn five_domain_startup_matches_node_products_and_second_start_is_readonly() {
             .all(|name| unchanged[*name]["rebuilt"] == false)
     );
     assert_eq!(before, bytes_tree(&rust));
+    config.prepare_content_for(true).unwrap();
     let packaged = run(&config, &CancellationToken::new(), true).unwrap();
     assert_eq!(packaged["packaged"], true);
     assert_eq!(before, bytes_tree(&rust));

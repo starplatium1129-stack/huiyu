@@ -1,6 +1,6 @@
 use super::*;
 
-pub(super) fn validate(root: &Path, data: &Value, issues: &mut Vec<String>) {
+pub(super) fn validate(root: &Path, assets: Option<&Path>, data: &Value, issues: &mut Vec<String>) {
     let (characters, loras, scenes) = (&data["characters"], &data["loras"], &data["scenes"]);
     let initial = issues.len();
     if !characters.is_array() || list(characters).is_empty() {
@@ -43,7 +43,15 @@ pub(super) fn validate(root: &Path, data: &Value, issues: &mut Vec<String>) {
             None => issues.push(format!("{label}.portrait.image is required")),
             Some(image) => {
                 let path = image.split('?').next().unwrap_or(image);
-                if !root.join("data").join(path).exists() {
+                let file = match (
+                    assets,
+                    path.strip_prefix("../assets/")
+                        .or_else(|| path.strip_prefix("/assets/")),
+                ) {
+                    (Some(assets), Some(relative)) => assets.join(relative),
+                    _ => root.join("data").join(path),
+                };
+                if !file.exists() {
                     issues.push(format!("{label}.portrait.image does not exist: {image}"));
                 }
             }

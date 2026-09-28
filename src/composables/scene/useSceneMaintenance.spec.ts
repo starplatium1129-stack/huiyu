@@ -165,13 +165,13 @@ describe('maintenance delta saving and edit protection', () => {
     expect(deps.dirty.value).toBe(true)
     expect(deps.adoptSceneState).not.toHaveBeenCalled()
   })
-  it('keeps an unknown packaged-desktop state read-only', async () => {
-    desktopFixture.current = { isPackaged: vi.fn().mockRejectedValue(new Error('unavailable')) } as never
+  it('allows desktop saving once an authoritative baseline is available', async () => {
+    desktopFixture.current = { isPackaged: vi.fn().mockResolvedValue(true) } as never
     const { tools } = setup()
     await flushPromises()
+    expect(tools.canSave.value).toBe(true)
     await tools.saveToProject()
-    expect(tools.canSave.value).toBe(false)
-    expect(maintenanceApi.saveSceneChanges).not.toHaveBeenCalled()
+    expect(maintenanceApi.saveSceneChanges).toHaveBeenCalledTimes(1)
   })
 })
 

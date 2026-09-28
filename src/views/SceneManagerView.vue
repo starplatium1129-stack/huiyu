@@ -14,17 +14,17 @@
         <h1 class="title">场景维护</h1>
         <div class="maintenance-state" :class="{ dirty: dirty }">
           <strong id="maintenanceTitle">{{ loading ? '正在读取场景档案' : (loadError ? '场景档案暂不可用' : (dirty ? '有尚未保存的修改' : '已同步')) }}</strong>
-          <span v-if="!desktopPackaged" id="maintenanceHint" role="status" aria-live="polite">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
+          <span id="maintenanceHint" role="status" aria-live="polite">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
           <span v-if="saving && savingPhase" class="saving-phase">{{ savingPhase }}</span>
         </div>
       </div>
       <div class="sm-head-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:shrink-0 tw:max-w-full">
-        <button class="btn btn-ghost" type="button" :disabled="loading || saving || desktopPackaged || toolRunning || previewing" @click="loadFromStore(true)">重新读取</button>
+        <button class="btn btn-ghost" type="button" :disabled="loading || saving || toolRunning || previewing" @click="loadFromStore(true)">重新读取</button>
         <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="loading"><ArchiveIcon name="download" /> 导出 JSON</button>
         <button class="btn btn-ghost" type="button" :disabled="!canPreview" @click="tab = 'tools'; previewChanges()"><ArchiveIcon name="eye" /> 影响预览</button>
-        <StudioTooltip anchor :content="desktopPackaged ? '桌面应用模式不支持保存场景内容' : undefined">
+        <StudioTooltip anchor :content="maintenanceReadonly ? '请先读取完整场景数据' : undefined">
           <button class="btn btn-primary" type="button" :disabled="!canSave" @click="saveToProject">
-            {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '保存到项目') }}
+            {{ saving ? '正在保存…' : (maintenanceReadonly ? '等待场景数据' : '保存到项目') }}
           </button>
         </StudioTooltip>
       </div>
@@ -37,7 +37,6 @@
       message="正在从本地数据源同步场景、标签和维护记录。"
     />
 
-    <p v-if="desktopPackaged" class="manager-readonly" role="status"><ArchiveIcon name="eye" />桌面只读模式：可查看完整内容、复制和导出；编辑与保存请在开发工作区中进行。</p>
 
     <ArchiveStatePanel
       v-if="!loading && loadError"
@@ -57,15 +56,15 @@
         <p>选择记录查看详情。编辑后先保存草稿，再保存到项目。</p>
       </nav>
       <div class="manager-content" v-content-motion="tab">
-      <MaintenanceCatalog v-show="tab === 'scenes'" :records="sceneRecords" kind="scene" label="场景" :readonly="desktopPackaged" @add="openAddModal" @edit="openEditModal" @duplicate="duplicateScene" @remove="deleteScene" />
-      <MaintenanceCatalog v-show="tab === 'blueprints'" :records="blueprintRecords" kind="blueprint" label="蓝图" :readonly="desktopPackaged" @add="openBlueprintAddModal" @edit="openBlueprintEditModal" @duplicate="duplicateBlueprint" @remove="deleteBlueprint" />
+      <MaintenanceCatalog v-show="tab === 'scenes'" :records="sceneRecords" kind="scene" label="场景" :readonly="maintenanceReadonly" @add="openAddModal" @edit="openEditModal" @duplicate="duplicateScene" @remove="deleteScene" />
+      <MaintenanceCatalog v-show="tab === 'blueprints'" :records="blueprintRecords" kind="blueprint" label="蓝图" :readonly="maintenanceReadonly" @add="openBlueprintAddModal" @edit="openBlueprintEditModal" @duplicate="duplicateBlueprint" @remove="deleteBlueprint" />
 
       <!-- 标签库 -->
       <template v-if="tab==='tags'">
         <div class="toolbar">
           <input v-model="tagSearch" class="search-input" type="search" aria-label="搜索标签（英文、中文或分类）" placeholder="搜索标签（英文/中文/分类）…" />
           <StudioSelect v-model="tagCatFilter" class="filter-select" label="标签分类" :options="[{ value: '', label: '全部分类' }, ...tagCats.map(c => ({ value: c, label: c }))]" />
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="startAddTag">＋ 新增标签</button>
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="maintenanceReadonly" @click="startAddTag">＋ 新增标签</button>
           <span class="list-meta">{{ filteredTags.length }} / {{ tags.length }} 个</span>
         </div>
         <div class="table-wrap">
@@ -86,8 +85,8 @@
                 <td>{{ tagUsage[t.en] || 0 }}</td>
                 <td>
                   <div class="action-btns">
-                    <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="startEditTag(t.id)">编辑</button>
-                    <button class="btn btn-danger btn-sm" type="button" :disabled="desktopPackaged" @click="deleteTag(t.id)">删除</button>
+                    <button class="btn btn-ghost btn-sm" type="button" :disabled="maintenanceReadonly" @click="startEditTag(t.id)">编辑</button>
+                    <button class="btn btn-danger btn-sm" type="button" :disabled="maintenanceReadonly" @click="deleteTag(t.id)">删除</button>
                   </div>
                 </td>
               </tr>
@@ -120,8 +119,8 @@
             <div class="image-preview-head">
               <strong>首页 · {{ selectedHeroTitle }}</strong>
               <span class="row-tight">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || desktopPackaged" @click="pickHero">上传 / 替换</button>
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || desktopPackaged" @click="resetHero">恢复内置图</button>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || maintenanceReadonly" @click="pickHero">上传 / 替换</button>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || maintenanceReadonly" @click="resetHero">恢复内置图</button>
                 <button class="btn btn-ghost btn-sm" type="button" @click="selectedHeroId = ''">关闭</button>
               </span>
             </div>
@@ -163,7 +162,7 @@
           <div class="image-preview-head">
             <strong>{{ selectedImageId }} · {{ selectedImageTitle }}</strong>
             <span class="row-tight">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || desktopPackaged" @click="pickShowcase">上传 / 替换样张</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy || maintenanceReadonly" @click="pickShowcase">上传 / 替换样张</button>
               <button class="btn btn-ghost btn-sm" type="button" @click="selectedImageId = ''">关闭</button>
             </span>
           </div>
@@ -195,8 +194,8 @@
               <span class="rating-badge" :class="'rating-' + (s.rating || 'All')">{{ s.rating || 'All' }}</span>
             </span>
             <div class="action-btns">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="openEditModal(s.id)">编辑</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="desktopPackaged" @click="deleteSceneFromDup(s.id)">下架</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="maintenanceReadonly" @click="openEditModal(s.id)">编辑</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="maintenanceReadonly" @click="deleteSceneFromDup(s.id)">下架</button>
             </div>
           </div>
         </div>
@@ -207,8 +206,8 @@
         <p class="note">粘贴单个或多个场景 JSON（数组或对象），校验后加入列表。记得保存到项目。</p>
         <textarea v-model="importInput" class="import-input" aria-label="场景导入 JSON" rows="10" placeholder='[{ "id":"sc1000", "title":"…", "story":"…", "char":"nene", "rating":"All" }]'></textarea>
         <div class="import-actions">
-          <button class="btn btn-primary" type="button" :disabled="desktopPackaged || importing || toolRunning" @click="importScenes">校验并导入</button>
-          <button class="btn btn-ghost" type="button" :disabled="desktopPackaged || importing || toolRunning" @click="loadFullSnapshot">载入完整快照草稿</button>
+          <button class="btn btn-primary" type="button" :disabled="maintenanceReadonly || importing || toolRunning" @click="importScenes">校验并导入</button>
+          <button class="btn btn-ghost" type="button" :disabled="maintenanceReadonly || importing || toolRunning" @click="loadFullSnapshot">载入完整快照草稿</button>
           <button class="btn btn-ghost" type="button" @click="importInput=''; importResult=''">清空</button>
         </div>
         <div v-if="importResult" class="import-result" v-html="importResult"></div>
@@ -220,8 +219,8 @@
       <template v-if="tab==='tools'">
         <SceneImpactPreview :preview="preview" :groups="previewGroups" :companions="previewCompanions" :busy="previewing" :enabled="canPreview" :error="previewError" :invalidated="previewInvalidated" :empty="previewEmpty" @preview="previewChanges" />
         <div class="tool-grid">
-          <StudioTooltip v-for="t in TOOLS" :key="t.id" anchor :content="desktopPackaged ? '桌面应用模式不支持维护任务' : undefined">
-            <button class="sm-tool-card" type="button" :disabled="toolRunning || desktopPackaged || saving || previewing" @click="runTool(t.id)">
+          <StudioTooltip v-for="t in TOOLS" :key="t.id" anchor :content="maintenanceReadonly ? '桌面应用模式不支持维护任务' : undefined">
+            <button class="sm-tool-card" type="button" :disabled="toolRunning || maintenanceReadonly || saving || previewing" @click="runTool(t.id)">
               <div class="sm-tool-icon"><ArchiveIcon :name="t.iconName" /></div>
               <div class="sm-tool-label">{{ t.label }}</div>
               <div class="sm-tool-desc">{{ t.desc }}</div>
@@ -274,17 +273,17 @@
           <fieldset class="form-section">
             <legend class="form-legend">基础信息</legend>
             <div class="form-grid">
-              <label class="form-group"><span class="field-label">ID</span><input v-model="editing.id" class="input" :disabled="!!editingId || desktopPackaged" placeholder="sc001" /></label>
-              <label class="form-group"><span class="field-label">标题 *</span><input v-model="editing.title" class="input" :disabled="desktopPackaged" required :aria-invalid="!editing.title.trim() && triedSave" :class="{invalid: !editing.title.trim() && triedSave}" /></label>
-              <label class="form-group"><span class="field-label">分类</span><input v-model="editing.category" class="input" :disabled="desktopPackaged" placeholder="恋爱 / 日常 / 校园…" /></label>
+              <label class="form-group"><span class="field-label">ID</span><input v-model="editing.id" class="input" :disabled="!!editingId || maintenanceReadonly" placeholder="sc001" /></label>
+              <label class="form-group"><span class="field-label">标题 *</span><input v-model="editing.title" class="input" :disabled="maintenanceReadonly" required :aria-invalid="!editing.title.trim() && triedSave" :class="{invalid: !editing.title.trim() && triedSave}" /></label>
+              <label class="form-group"><span class="field-label">分类</span><input v-model="editing.category" class="input" :disabled="maintenanceReadonly" placeholder="恋爱 / 日常 / 校园…" /></label>
               <label class="form-group">
                 <span class="field-label">角色</span>
-                <StudioSelect v-model="editing.char" class="filter-select" label="角色" :disabled="desktopPackaged" @update:model-value="updateCharacterDefaults" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" />
+                <StudioSelect v-model="editing.char" class="filter-select" label="角色" :disabled="maintenanceReadonly" @update:model-value="updateCharacterDefaults" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" />
               </label>
-              <label class="form-group"><span class="field-label">LoRA</span><input v-model="editing.lora" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">LoRA</span><input v-model="editing.lora" class="input" :disabled="maintenanceReadonly" /></label>
               <label class="form-group">
                 <span class="field-label">分级</span>
-                <StudioSelect v-model="editing.rating" class="filter-select" label="分级" :disabled="desktopPackaged" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
+                <StudioSelect v-model="editing.rating" class="filter-select" label="分级" :disabled="maintenanceReadonly" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
               </label>
             </div>
           </fieldset>
@@ -292,26 +291,26 @@
           <fieldset class="form-section">
             <legend class="form-legend">叙事信息</legend>
             <div class="form-grid">
-              <label class="form-group form-group-full"><span class="field-label">故事 *</span><textarea v-model="editing.story" class="input" :disabled="desktopPackaged" rows="3" required :aria-invalid="!editing.story.trim() && triedSave" :class="{invalid: !editing.story.trim() && triedSave}"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">故事日文</span><textarea v-model="editing.storyJa" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
-              <label class="form-group"><span class="field-label">地点</span><input v-model="editing.location" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">天气</span><input v-model="editing.weather" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">镜头</span><input v-model="editing.camera" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">光照</span><input v-model="editing.lighting" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">季节</span><input v-model="editing.season" class="input" :disabled="desktopPackaged" placeholder="春/夏/秋/冬/不限" /></label>
-              <label class="form-group"><span class="field-label">时段</span><input v-model="editing.time" class="input" :disabled="desktopPackaged" placeholder="清晨/白天/黄昏/深夜" /></label>
-              <label class="form-group"><span class="field-label">timeOfDay</span><input v-model="editing.timeOfDay" class="input" :disabled="desktopPackaged" placeholder="morning/noon/late_night" /></label>
+              <label class="form-group form-group-full"><span class="field-label">故事 *</span><textarea v-model="editing.story" class="input" :disabled="maintenanceReadonly" rows="3" required :aria-invalid="!editing.story.trim() && triedSave" :class="{invalid: !editing.story.trim() && triedSave}"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">故事日文</span><textarea v-model="editing.storyJa" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
+              <label class="form-group"><span class="field-label">地点</span><input v-model="editing.location" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">天气</span><input v-model="editing.weather" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">镜头</span><input v-model="editing.camera" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">光照</span><input v-model="editing.lighting" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">季节</span><input v-model="editing.season" class="input" :disabled="maintenanceReadonly" placeholder="春/夏/秋/冬/不限" /></label>
+              <label class="form-group"><span class="field-label">时段</span><input v-model="editing.time" class="input" :disabled="maintenanceReadonly" placeholder="清晨/白天/黄昏/深夜" /></label>
+              <label class="form-group"><span class="field-label">timeOfDay</span><input v-model="editing.timeOfDay" class="input" :disabled="maintenanceReadonly" placeholder="morning/noon/late_night" /></label>
             </div>
           </fieldset>
 
           <fieldset class="form-section">
             <legend class="form-legend">视觉标签</legend>
             <div class="form-grid">
-              <label class="form-group form-group-full"><span class="field-label">标签（逗号分隔）</span><input v-model="tagsInput" class="input" :disabled="desktopPackaged" placeholder="silk, looking_back,…" /></label>
-              <label class="form-group form-group-full"><span class="field-label">用途（逗号分隔）</span><input v-model="usageInput" class="input" :disabled="desktopPackaged" placeholder="壁纸, 表情包" /></label>
-              <label class="form-group form-group-full"><span class="field-label">画面提示词</span><textarea v-model="editing.prompt" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">负面提示词</span><textarea v-model="editing.negative" class="input input-mono" :disabled="desktopPackaged" rows="2"></textarea></label>
-              <label class="form-group"><span class="field-label">情绪</span><input v-model="editing.emotion" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group form-group-full"><span class="field-label">标签（逗号分隔）</span><input v-model="tagsInput" class="input" :disabled="maintenanceReadonly" placeholder="silk, looking_back,…" /></label>
+              <label class="form-group form-group-full"><span class="field-label">用途（逗号分隔）</span><input v-model="usageInput" class="input" :disabled="maintenanceReadonly" placeholder="壁纸, 表情包" /></label>
+              <label class="form-group form-group-full"><span class="field-label">画面提示词</span><textarea v-model="editing.prompt" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">负面提示词</span><textarea v-model="editing.negative" class="input input-mono" :disabled="maintenanceReadonly" rows="2"></textarea></label>
+              <label class="form-group"><span class="field-label">情绪</span><input v-model="editing.emotion" class="input" :disabled="maintenanceReadonly" /></label>
             </div>
           </fieldset>
 
@@ -320,9 +319,9 @@
             <div class="form-grid">
               <label class="form-group">
                 <span class="field-label">策展层级</span>
-                <StudioSelect v-model="curationTierValue" class="filter-select" label="策展层级" :disabled="desktopPackaged" @update:model-value="onCurationTierChange" :options="[{ value: 'normal', label: '普通' }, { value: 'review', label: '待审' }, { value: 'curated', label: '精选' }, { value: 'signature', label: '招牌' }]" />
+                <StudioSelect v-model="curationTierValue" class="filter-select" label="策展层级" :disabled="maintenanceReadonly" @update:model-value="onCurationTierChange" :options="[{ value: 'normal', label: '普通' }, { value: 'review', label: '待审' }, { value: 'curated', label: '精选' }, { value: 'signature', label: '招牌' }]" />
               </label>
-              <label class="form-group form-group-full"><span class="field-label">推荐理由（招牌必填）</span><input v-model="curationReason" class="input" :disabled="desktopPackaged || curationTierValue==='normal'||curationTierValue==='review'" :aria-invalid="curationTierValue==='signature' && !curationReason.trim() && triedSave" :class="{invalid: curationTierValue==='signature' && !curationReason.trim() && triedSave}" /></label>
+              <label class="form-group form-group-full"><span class="field-label">推荐理由（招牌必填）</span><input v-model="curationReason" class="input" :disabled="maintenanceReadonly || curationTierValue==='normal'||curationTierValue==='review'" :aria-invalid="curationTierValue==='signature' && !curationReason.trim() && triedSave" :class="{invalid: curationTierValue==='signature' && !curationReason.trim() && triedSave}" /></label>
             </div>
           </fieldset>
           <p v-if="formHint" id="scene-form-hint" class="form-hint" role="alert">{{ formHint }}</p>
@@ -352,52 +351,52 @@
           <fieldset class="form-section">
             <legend class="form-legend">基础信息</legend>
             <div class="form-grid">
-              <label class="form-group"><span class="field-label">ID *</span><input v-model="bpEditing.id" class="input" :disabled="!!bpEditingId || desktopPackaged" placeholder="bp_001 / character_scene" /></label>
-              <label class="form-group"><span class="field-label">标题 *</span><input v-model="bpEditing.title" class="input" :disabled="desktopPackaged" required :aria-invalid="!bpEditing.title.trim() && bpTriedSave" :class="{invalid: !bpEditing.title.trim() && bpTriedSave}" /></label>
-              <label class="form-group"><span class="field-label">角色 *</span><input v-model="bpEditing.characterId" class="input" :disabled="desktopPackaged" required :aria-invalid="!bpEditing.characterId?.trim() && bpTriedSave" :class="{invalid: !bpEditing.characterId?.trim() && bpTriedSave}" placeholder="raiden_shogun / nene" /></label>
-              <label class="form-group"><span class="field-label">分类</span><input v-model="bpEditing.category" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">服装 outfitId</span><input v-model="bpEditing.outfitId" class="input" :disabled="desktopPackaged" placeholder="default / school / witch…" /></label>
+              <label class="form-group"><span class="field-label">ID *</span><input v-model="bpEditing.id" class="input" :disabled="!!bpEditingId || maintenanceReadonly" placeholder="bp_001 / character_scene" /></label>
+              <label class="form-group"><span class="field-label">标题 *</span><input v-model="bpEditing.title" class="input" :disabled="maintenanceReadonly" required :aria-invalid="!bpEditing.title.trim() && bpTriedSave" :class="{invalid: !bpEditing.title.trim() && bpTriedSave}" /></label>
+              <label class="form-group"><span class="field-label">角色 *</span><input v-model="bpEditing.characterId" class="input" :disabled="maintenanceReadonly" required :aria-invalid="!bpEditing.characterId?.trim() && bpTriedSave" :class="{invalid: !bpEditing.characterId?.trim() && bpTriedSave}" placeholder="raiden_shogun / nene" /></label>
+              <label class="form-group"><span class="field-label">分类</span><input v-model="bpEditing.category" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">服装 outfitId</span><input v-model="bpEditing.outfitId" class="input" :disabled="maintenanceReadonly" placeholder="default / school / witch…" /></label>
               <label class="form-group">
                 <span class="field-label">样张定级</span>
-                <StudioSelect v-model="bpEditing.sampleRating" class="filter-select" label="样张定级" :disabled="desktopPackaged" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
+                <StudioSelect v-model="bpEditing.sampleRating" class="filter-select" label="样张定级" :disabled="maintenanceReadonly" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
               </label>
-              <ToggleSwitch v-model="bpEditing.adult" :disabled="desktopPackaged" class="form-group form-check" label="成人蓝图（adult）"><span>成人蓝图（adult）</span></ToggleSwitch>
-              <label class="form-group form-group-full"><span class="field-label">描述</span><textarea v-model="bpEditing.description" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
+              <ToggleSwitch v-model="bpEditing.adult" :disabled="maintenanceReadonly" class="form-group form-check" label="成人蓝图（adult）"><span>成人蓝图（adult）</span></ToggleSwitch>
+              <label class="form-group form-group-full"><span class="field-label">描述</span><textarea v-model="bpEditing.description" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
             </div>
           </fieldset>
 
           <fieldset class="form-section">
             <legend class="form-legend">场景要素</legend>
             <div class="form-grid">
-              <label class="form-group"><span class="field-label">地点</span><input v-model="bpEditing.location" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">动作</span><input v-model="bpEditing.action" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">时段</span><input v-model="bpEditing.timeOfDay" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">光照</span><input v-model="bpEditing.lighting" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">镜头</span><input v-model="bpEditing.camera" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">情绪</span><input v-model="bpEditing.mood" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group form-group-full"><span class="field-label">场景标签（逗号分隔）</span><input v-model="bpSceneTagsInput" class="input" :disabled="desktopPackaged" placeholder="inazuma, shoji, night…" /></label>
-              <label class="form-group form-group-full"><span class="field-label">推荐尺寸</span><input v-model="bpEditing.recommendedSize" class="input" :disabled="desktopPackaged" placeholder="832x1216 / 1024x1024" /></label>
+              <label class="form-group"><span class="field-label">地点</span><input v-model="bpEditing.location" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">动作</span><input v-model="bpEditing.action" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">时段</span><input v-model="bpEditing.timeOfDay" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">光照</span><input v-model="bpEditing.lighting" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">镜头</span><input v-model="bpEditing.camera" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">情绪</span><input v-model="bpEditing.mood" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group form-group-full"><span class="field-label">场景标签（逗号分隔）</span><input v-model="bpSceneTagsInput" class="input" :disabled="maintenanceReadonly" placeholder="inazuma, shoji, night…" /></label>
+              <label class="form-group form-group-full"><span class="field-label">推荐尺寸</span><input v-model="bpEditing.recommendedSize" class="input" :disabled="maintenanceReadonly" placeholder="832x1216 / 1024x1024" /></label>
             </div>
           </fieldset>
 
           <fieldset class="form-section">
             <legend class="form-legend">Prompt 数据（核心）</legend>
             <div class="form-grid">
-              <label class="form-group form-group-full"><span class="field-label">Krea 散文 promptProse</span><textarea v-model="bpEditing.promptProse" class="input" :disabled="desktopPackaged" rows="4"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">Anima 标签 promptTokens（逗号分隔）*</span><textarea v-model="bpPromptTokensInput" class="input input-mono" :disabled="desktopPackaged" rows="3" required></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">负面 negativeTokens（逗号分隔）*</span><textarea v-model="bpNegativeTokensInput" class="input input-mono" :disabled="desktopPackaged" rows="3" required></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">Krea 散文 promptProse</span><textarea v-model="bpEditing.promptProse" class="input" :disabled="maintenanceReadonly" rows="4"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">Anima 标签 promptTokens（逗号分隔）*</span><textarea v-model="bpPromptTokensInput" class="input input-mono" :disabled="maintenanceReadonly" rows="3" required></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">负面 negativeTokens（逗号分隔）*</span><textarea v-model="bpNegativeTokensInput" class="input input-mono" :disabled="maintenanceReadonly" rows="3" required></textarea></label>
             </div>
           </fieldset>
 
           <fieldset class="form-section">
             <legend class="form-legend">风格 / 成人扩展</legend>
             <div class="form-grid">
-              <label class="form-group"><span class="field-label">Krea 风格 hint</span><input v-model="bpEditing.kreaStyleHint" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group"><span class="field-label">Anima 风格 hint</span><input v-model="bpEditing.animaStyleHint" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group form-group-full"><span class="field-label">成人画师提示</span><input v-model="bpEditing.adultArtistHint" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group form-group-full"><span class="field-label">NSFW 标签（逗号分隔）</span><input v-model="bpNsfwTokensInput" class="input" :disabled="desktopPackaged" /></label>
-              <label class="form-group form-group-full"><span class="field-label">NSFW 散文</span><textarea v-model="bpEditing.nsfwProse" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">验收覆盖 coverageTags（逗号分隔）</span><input v-model="bpCoverageTagsInput" class="input" :disabled="desktopPackaged" placeholder="iconic, daily, special_nsfw" /></label>
+              <label class="form-group"><span class="field-label">Krea 风格 hint</span><input v-model="bpEditing.kreaStyleHint" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">Anima 风格 hint</span><input v-model="bpEditing.animaStyleHint" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group form-group-full"><span class="field-label">成人画师提示</span><input v-model="bpEditing.adultArtistHint" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group form-group-full"><span class="field-label">NSFW 标签（逗号分隔）</span><input v-model="bpNsfwTokensInput" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group form-group-full"><span class="field-label">NSFW 散文</span><textarea v-model="bpEditing.nsfwProse" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">验收覆盖 coverageTags（逗号分隔）</span><input v-model="bpCoverageTagsInput" class="input" :disabled="maintenanceReadonly" placeholder="iconic, daily, special_nsfw" /></label>
             </div>
           </fieldset>
 
@@ -428,19 +427,19 @@
           <div class="form-grid form-grid-single">
             <label class="form-group">
               <span class="field-label">英文名 *</span>
-              <input v-model="tagForm.en" class="input" :disabled="desktopPackaged" placeholder="Danbooru 格式，用下划线" />
+              <input v-model="tagForm.en" class="input" :disabled="maintenanceReadonly" placeholder="Danbooru 格式，用下划线" />
             </label>
             <label class="form-group">
               <span class="field-label">中文名 *</span>
-              <input v-model="tagForm.cn" class="input" :disabled="desktopPackaged" placeholder="标签中文名" />
+              <input v-model="tagForm.cn" class="input" :disabled="maintenanceReadonly" placeholder="标签中文名" />
             </label>
             <label class="form-group">
               <span class="field-label">分类 *</span>
-              <StudioSelect v-model="tagForm.cat" class="filter-select" label="分类" :disabled="desktopPackaged" :options="tagCats.map(c => ({ value: c, label: c }))" />
+              <StudioSelect v-model="tagForm.cat" class="filter-select" label="分类" :disabled="maintenanceReadonly" :options="tagCats.map(c => ({ value: c, label: c }))" />
             </label>
             <label class="form-group">
               <span class="field-label">权重 * (0–2)</span>
-              <input v-model.number="tagForm.weight" class="input" :disabled="desktopPackaged" type="number" :min="0" :max="2" :step="0.1" />
+              <input v-model.number="tagForm.weight" class="input" :disabled="maintenanceReadonly" type="number" :min="0" :max="2" :step="0.1" />
             </label>
           </div>
           <p v-if="tagFormError" class="form-hint" role="alert">{{ tagFormError }}</p>
@@ -473,7 +472,7 @@ const {
 canSave, canPreview, preview, previewing, previewError, previewInvalidated, previewEmpty,
 previewCompanions, previewGroups, previewChanges, fullImportLoaded, importing, loadFullSnapshot, importSnapshotToProject,
  tagModalEl,bpModalEl,modalEl,showcaseFileEl,heroFileEl,tab, scenes, loading, loadError, saving, dirty,
-desktopPackaged, maintenanceHint, savingPhase, exportJSON, saveToProject, loadFromStore,
+maintenanceReadonly, maintenanceHint, savingPhase, exportJSON, saveToProject, loadFromStore,
 stats, TABS, recordCounts, sceneRecords, openAddModal, openEditModal,
 duplicateScene, deleteScene, blueprintRecords, openBlueprintAddModal, openBlueprintEditModal, duplicateBlueprint,
 deleteBlueprint, tagSearch, tagCatFilter, tagCats, startAddTag, filteredTags,

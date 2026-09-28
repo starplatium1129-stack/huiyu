@@ -219,14 +219,15 @@ pub fn ensure(config: &Config, cancel: &CancellationToken) -> Result<Value> {
 fn run(config: &Config, cancel: &CancellationToken, packaged: bool) -> Result<Value> {
     cancelled(cancel)?;
     let options = Options {
-        root: config.app_root.clone(),
+        assets_root: Some(config.assets_root()),
+        root: config.content_root_for(packaged),
         runtime: config.runtime_root.clone(),
         showcase: None,
     };
     let mut result = json!({});
     if packaged {
         for name in PRODUCTS {
-            if fs::safe(&config.app_root.join("data").join(name), false, true)?.is_none() {
+            if fs::safe(&options.root.join("data").join(name), false, true)?.is_none() {
                 return Err(invalid(format!("发布包缺少聚合产物：{name}")));
             }
         }

@@ -66,10 +66,10 @@ pub(super) async fn serve(
         if !security::is_direct_local(request.headers(),peer.ip()) {return Err(ApiError::new(403,"REFERENCE_LOCAL_ONLY","该参考资源仅限本机使用"));}
         if relative.contains(['\\','\0',':'])||relative.split('/').any(|part|part.is_empty()||part.starts_with('.')){return Ok(StatusCode::NOT_FOUND.into_response());}
         let permit=tokio::select! {permit=slots.acquire_owned()=>permit.map_err(|_|unavailable())?,_=state.shutdown.cancelled()=>return Err(unavailable())};
-        let root=state.config.app_root.clone();let target=relative.clone();
+        let root=state.config.content_root();let media=reference_root(&state.config.app_root);let target=relative.clone();
         let asset=tokio::task::spawn_blocking(move||{
             let mut slot=readers.lock().map_err(|_|unavailable())?;
-            let reader=slot.get_or_insert_with(||Reader::new(root.clone(),reference_root(&root)));
+            let reader=slot.get_or_insert_with(||Reader::new(root.clone(),media));
             Ok::<_,ApiError>((reader.asset(&target)?,permit))
         }).await.map_err(|_|unavailable())??;
         let response=match asset {

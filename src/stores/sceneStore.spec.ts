@@ -80,6 +80,22 @@ describe('sceneStore · 全量加载', () => {
     expect(calls.every(u => u.includes(`v=${DATA_VERSION}`))).toBe(true)
   })
 
+  it('maintenance invalidation reloads cached shards and metadata on the next visit', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    const store = useSceneStore()
+    await store.load()
+    routes['scenes-nene.json'] = [scene('sc002', { title: 'desktop saved' })]
+    routes['curation.json'] = { curatedSceneIds: ['sc002'] }
+    const count = calls.length
+    store.invalidate()
+    expect(calls).toHaveLength(count)
+    await store.ensureCharacter('nene')
+    expect(store.scenes.find(row => row.id === 'sc002')?.title).toBe('desktop saved')
+    expect(store.curation.curatedSceneIds).toEqual(['sc002'])
+    expect(calls.length).toBeGreaterThan(count)
+  })
+
   it('force 重载会递增版本号绕过浏览器缓存', async () => {
     routes = {
       'scenes-shared.json': [], 'scenes-nene.json': [], 'scenes-natsume.json': [],

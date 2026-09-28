@@ -5,7 +5,7 @@
       <ArchiveStatePanel v-if="record.adult && !local" compact kind="warning" title="此内容仅限本机查看" message="请在本机工作台打开这条记录。" />
       <template v-else>
         <div class="inspector-actions">
-          <StudioTooltip anchor :content="readonly ? '桌面模式仅可查看和导出' : undefined">
+          <StudioTooltip anchor :content="readonly ? '请先读取完整场景数据' : undefined">
             <button class="btn btn-primary btn-sm" type="button" :disabled="readonly" @click="$emit('edit', record.id)">编辑</button>
           </StudioTooltip>
           <RouterLink v-if="record.href" class="btn btn-ghost btn-sm" :to="record.href">使用此场景</RouterLink><button class="btn btn-ghost btn-sm" type="button" @click="copy(JSON.stringify(record.raw, null, 2), '记录 JSON')">复制 JSON</button><details :key="record.id" class="inspector-more"><summary>更多操作</summary><div><button class="btn btn-ghost btn-sm" type="button" :disabled="readonly" @click="$emit('duplicate', record.id)">复制为新记录</button><button class="btn btn-danger btn-sm" type="button" :disabled="readonly" @click="$emit('remove', record.id)">{{ kind === 'scene' ? '下架' : '删除' }}</button></div></details></div>

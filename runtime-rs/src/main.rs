@@ -22,6 +22,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
     let mut config = Config::from_env()?;
+    config.prepare_content()?;
     let shutdown = CancellationToken::new();
     let signal = shutdown.clone();
     let signal_task = tokio::spawn(async move {

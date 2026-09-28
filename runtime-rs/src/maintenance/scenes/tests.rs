@@ -69,6 +69,7 @@ fn stable_batches_and_browser_products_match_node_and_rollback_exactly() {
     );
     let expected: Value = serde_json::from_slice(&result.stdout).unwrap();
     let options = Options {
+        assets_root: None,
         root: root.clone(),
         runtime: directory.path().join("runtime"),
         showcase: None,

@@ -87,13 +87,13 @@ fn fixture() -> (
         create_workspace: false,
     });
     let options = Options {
+        assets_root: None,
         root,
         runtime: config.runtime_root.clone(),
         showcase: None,
     };
     let service = Arc::new(MaintenanceService {
         options: options.clone(),
-        packaged: false,
         cache: Mutex::new(None),
         hero: Mutex::new(None),
         write_slots: Arc::new(tokio::sync::Semaphore::new(8)),

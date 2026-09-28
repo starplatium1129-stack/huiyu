@@ -47,6 +47,7 @@ fn fixture(base: &Path) -> Options {
         .unwrap();
     }
     Options {
+        assets_root: None,
         root,
         runtime: base.join("runtime"),
         showcase: Some(showcase),

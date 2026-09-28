@@ -228,7 +228,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 本阶段衔接后端、场景管理界面、资源服务及维护工具；工程验证在办公机隔离环境执行，真实模型、资产质量和主力机安装/设备验收分别留存。
 
-场景维护使用 `/api/maintenance/scenes/preview`、`/changes` 与独立 `/import`；旧 `/scenes` 全量请求保持兼容。预览与变更集接收 `{baseVersion, changeSet:{version:1, scenes:{upsert:[],remove:[]}, blueprints?, tags?, curation?}}`。upsert 是完整记录，未知字段保留，remove 只能列现有 ID，旧基线返回 409。普通界面保存仅提交实际变更，完整导入单独确认；读取和保存使用同一完整快照及基线，冲突保留草稿，在途编辑不被旧回执覆盖。预览显示新增、修改、退役、相关引用及未知检查范围，不冒充真实画面验收。前后端均支持 sc1000+ 规范安全整数，已退役 ID 不复用；安装版源库写入仍返回 501。
+场景维护使用 `/api/maintenance/scenes/preview`、`/changes` 与独立 `/import`；旧 `/scenes` 全量请求保持兼容。预览与变更集接收 `{baseVersion, changeSet:{version:1, scenes:{upsert:[],remove:[]}, blueprints?, tags?, curation?}}`。upsert 是完整记录，未知字段保留，remove 只能列现有 ID，旧基线返回 409。普通界面保存仅提交实际变更，完整导入单独确认；读取和保存使用同一完整快照及基线，冲突保留草稿，在途编辑不被旧回执覆盖。预览显示新增、修改、退役、相关引用及未知检查范围，不冒充真实画面验收。前后端均支持 sc1000+ 规范安全整数，已退役 ID 不复用。桌面安装版与 Web 共用快照、预览、变更集和备份接口；安装版首次启动从包内 data 原子初始化到 `AICS_RUNTIME_ROOT/content/data`，后续以该用户副本为权威，保存不修改安装包。重启及升级不覆盖已有副本；包内新增内容不会自动合并，可通过维护页显式导入。损坏或不完整副本不回退写入安装包，须检查备份恢复；原生恢复 CLI 的 `--root` 应指向 `AICS_RUNTIME_ROOT/content`，`--runtime-root` 仍指向运行目录。保存后会作废场景与元数据缓存。源码构建操作仍不属于安装版能力。
 
 保存同步场景/蓝图源分片、聚合、现有压缩伴生文件并重新计算 DATA_VERSION；客户端版本由 `virtual:data-version` 注入，不写回 `sceneStore.ts`。进程内队列结合持久化跨进程 lease/journal 和精确文件备份；活进程或未能证明已退出的进程不被抢锁。保存中或存在未恢复事务时，受保护内容读取拒绝返回半写状态。`/api/maintenance/recovery-status` 是本机只读状态入口；损坏元数据不会被自动清除。实际断电和文件系统持久性仍需设备验收。
 

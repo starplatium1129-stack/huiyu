@@ -2,7 +2,7 @@
   <section class="maintenance-catalog" :aria-label="`${label}维护工作台`">
     <div class="catalog-toolbar">
       <label class="catalog-search"><ArchiveIcon name="search" /><input v-model="search" type="search" :aria-label="`搜索管理${label}`" placeholder="搜索标题、ID、角色、故事或提示词" /></label>
-      <StudioTooltip anchor :content="readonly ? '桌面模式仅可查看和导出' : undefined">
+      <StudioTooltip anchor :content="readonly ? '请先读取完整场景数据' : undefined">
         <button class="btn btn-primary btn-sm" type="button" :disabled="readonly" @click="$emit('add')">新增{{ label }}</button>
       </StudioTooltip>
     </div>

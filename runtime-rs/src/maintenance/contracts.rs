@@ -30,13 +30,16 @@ pub(super) fn validate(options: &Options) -> Result<Value> {
         }
     };
     if let Some(data) = &data {
-        core::validate(root, data, &mut issues);
+        core::validate(root, options.assets_root.as_deref(), data, &mut issues);
         core::shards(root, data, &mut issues);
     }
     popular::validate(root, &mut issues);
     artifacts::validate(root, &mut issues);
-    let reference = references::validate(root, &mut issues);
+    let reference = references::validate(root, options.assets_root.as_deref(), &mut issues);
     match super::scenes::sync_version(root) {
+        // Desktop content has no source tree; its version is computed from the
+        // same JSON bytes consumed by the runtime. Source builds also audit the import.
+        Ok(_) if *root == options.runtime.join("content") => {}
         Ok(version) => match std::fs::read_to_string(root.join("src/stores/sceneStore.ts")) {
             Ok(source) => {
                 if !regex::Regex::new(r#"from\s+['"]virtual:data-version['"]"#)

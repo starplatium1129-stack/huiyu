@@ -7,12 +7,13 @@ import type { SceneMaintenanceSnapshot, SceneDraft } from '@/types/api'
 
 const mock = vi.hoisted(() => ({
   getState: vi.fn(), load: vi.fn(), reload: vi.fn(), loadMetadata: vi.fn(async () => {}), confirm: vi.fn(),
-  saveChanges: vi.fn(), preview: vi.fn(),
+  saveChanges: vi.fn(), preview: vi.fn(), invalidate: vi.fn(), packaged: false,
   maintenanceDeps: null as unknown as SceneMaintenanceDeps,
 }))
+vi.mock('@/platform/desktop/capabilities', () => ({ getDesktopCapabilities: () => mock.packaged ? { isPackaged: async () => true } : undefined }))
 vi.mock('@/api/maintenanceApi', () => ({ maintenanceApi: { getScenesState: mock.getState, saveSceneChanges: mock.saveChanges, previewSceneChanges: mock.preview } }))
 vi.mock('@/stores/sceneStore', () => ({ useSceneStore: () => ({
-  load: mock.load, reload: mock.reload, loadMetadata: mock.loadMetadata, popularCharacters: [], sceneBlueprints: [],
+  load: mock.load, reload: mock.reload, invalidate: mock.invalidate, loadMetadata: mock.loadMetadata, popularCharacters: [], sceneBlueprints: [],
   scenes: [{ id: 'sc001', title: 'stale cache' }], tags: [], curation: {},
 }) }))
 vi.mock('@/composables/useConfirm', () => ({ confirmAction: mock.confirm }))
@@ -33,7 +34,7 @@ beforeEach(() => {
   mock.confirm.mockResolvedValue(true)
   mock.getState.mockResolvedValue({ ok: true, version: 7, nextSceneId: 'sc1000', snapshot: snapshot() })
 })
-afterEach(() => { wrapper?.unmount(); vi.resetAllMocks() })
+afterEach(() => { wrapper?.unmount(); vi.resetAllMocks(); mock.packaged = false })
 function setup() {
   let workspace!: ReturnType<typeof useSceneManagerWorkspace>
   wrapper = mount(defineComponent({ setup() { workspace = useSceneManagerWorkspace(); return () => null } }))
@@ -56,6 +57,25 @@ describe('scene editor snapshot loading', () => {
     await workspace.loadFromStore(true)
     expect(mock.getState).toHaveBeenCalledTimes(1)
     expect(workspace.dirty.value).toBe(true)
+  })
+  it('loads, saves and reloads the authoritative snapshot in a packaged desktop', async () => {
+    mock.packaged = true
+    const workspace = setup()
+    await flushPromises()
+    expect(workspace.maintenanceReadonly.value).toBe(false)
+    workspace.scenes.value[0].title = 'desktop edit'
+    workspace.dirty.value = true
+    const saved = snapshot()
+    saved.scenes[0].title = 'desktop edit'
+    mock.saveChanges.mockResolvedValue({ ok: true, count: 1, backup: 'desktop-fixture', version: 8, snapshot: saved })
+    await workspace.saveToProject()
+    expect(mock.saveChanges).toHaveBeenCalledWith(expect.objectContaining({ baseVersion: 7 }))
+    expect(mock.invalidate).toHaveBeenCalledTimes(1)
+    mock.getState.mockResolvedValue({ ok: true, version: 8, snapshot: saved })
+    await workspace.loadFromStore(true)
+    expect(workspace.scenes.value[0].title).toBe('desktop edit')
+    expect(mock.maintenanceDeps.baseVersion()).toBe(8)
+    expect(mock.load).not.toHaveBeenCalled()
   })
   it('keeps the authoritative snapshot when auxiliary metadata fails', async () => {
     mock.loadMetadata.mockRejectedValueOnce(new Error('metadata offline'))

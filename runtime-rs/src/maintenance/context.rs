@@ -20,6 +20,7 @@ pub const VERSIONED_FILES: &[&str] = &[
 ];
 #[derive(Clone)]
 pub struct Options {
+    pub assets_root: Option<PathBuf>,
     pub root: PathBuf,
     pub runtime: PathBuf,
     pub showcase: Option<PathBuf>,
@@ -35,6 +36,7 @@ pub(super) struct Context {
 impl Context {
     pub fn new(options: &Options) -> Result<Self> {
         let options = Options {
+            assets_root: options.assets_root.clone(),
             root: fs::absolute(&options.root)?,
             runtime: fs::absolute(&options.runtime)?,
             showcase: options
