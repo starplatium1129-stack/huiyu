@@ -9,7 +9,7 @@ R0–R11 主线代码、受影响验收、NSIS 安装及用户授权后的当前
 
 ## 当前执行顺序
 
-当前优先收口 [013：Node → Rust](../plans/013-node-to-rust-migration.md) 的实际安装与发行验收。产品后端、入口和默认 E2E 已切到 Rust；Windows/Linux 构建、Rust 检查、双主题/五条主流程、Tauri release/NSIS 候选及输入绑定已有证据。剩余为继承的 title 门禁、原生依赖发行材料（`releaseReady=false`）、授权后的安装/UAC、真实模型与设备验收。前端、Tauri 保留；旧 Node 对照源码退出时机单独记录。
+当前优先收口 [013：Node → Rust](../plans/013-node-to-rust-migration.md) 的真实模型/设备与发行验收。产品后端、入口和默认 E2E 已切到 Rust；Windows/Linux 构建、Rust 检查、双主题/五条主流程及候选输入绑定已有证据，main 合并和本机完整安装/UAC、运行时身份核验也已完成。剩余为继承的 title 门禁、原生依赖发行材料（`releaseReady=false`）、真实模型和完整设备/资料验收。前端、Tauri 保留；旧 Node 源码与旧安装程序残留退出时机单独记录。
 
 1. 本轮指定的归档并发、保存补偿及 010 检查器/模型导入校准已完成办公机实现和记录范围验证，见 [尾项记录](audits/2026-09-21/office-tail-completion.md)。后续优先主力机验收；下方长期架构和另定范围不自动扩为本轮任务。
 2. 9 月 27 日本机安装已完成 UI/Live2D 与内存回收修复交付；最新身份只维护在 [当前安装边界](project-status.md#源码与本机安装)。其后源码及工作区修改、其他目标机器仍按 V07/U6 各自核对身份和交付，既有 3002 来源迁移和独立 UI 配置保持。

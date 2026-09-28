@@ -1,6 +1,6 @@
 # Node → Rust 运行时迁移执行记录
 
-更新于 2026-09-28。当前工作区已将产品后端、独立服务入口与桌面 gateway 载荷改为 `runtime-rs/` 的 `huiyu-runtime`。Vue/TypeScript 前端、Tauri 壳和 Native Live2D 保留。本地候选已构建并验证；**尚未安装或公开发布本次 Rust 版本，`releaseReady=false`**。既有 1.7.2 安装身份见[项目状态](../project-status.md)，不能用旧安装证据认证新后端。
+更新于 2026-09-28。产品后端、独立服务入口与桌面 gateway 已改为 `runtime-rs/` 的 `huiyu-runtime`；Vue/TypeScript 前端、Tauri 壳和 Native Live2D 保留。下文保留候选构建记录。后续经用户授权，PR #11 已合并 main，并完成 Rust 版 1.7.2 的本机安装与启动核验，见[安装证据](../evidence/rust-installation-2026-09-28.json)。**尚未公开发布，原生发行材料仍为 `releaseReady=false`**。
 
 ## 范围与实现
 
@@ -57,21 +57,21 @@ Linux 的 `C`/`POSIX` 系统 locale 按 [Node 24.18 的 V8 实现](https://githu
 
 | 项目 | 当前记录 |
 | --- | --- |
-| 最终源码提交/内容身份 | 代码提交 `c1f30f9e`；Rust 源选择身份 `660ea68242f6a64da6f2278df13716f639ddb6a19a41319a04036782f6b9940c`。交付分支 `codex/node-to-rust`；后续文档更新不改变已验证代码。桌面构建/NSIS 绑定已生成，实际安装身份未生成 |
+| 最终源码提交/内容身份 | 代码提交 `c1f30f9e`；Rust 源选择身份 `660ea68242f6a64da6f2278df13716f639ddb6a19a41319a04036782f6b9940c`。交付分支 `codex/node-to-rust`；后续文档更新不改变已验证代码。桌面构建/NSIS 绑定已生成；后续实际安装身份见下文及安装证据 |
 | Rust 门禁 | [Linux CI](https://github.com/starplatium1129-stack/huiyu/actions/runs/36339429625) 的格式、全 targets Clippy、65 项 lib+16 项 integration、release 及 Node 协议对照全部通过。4 项原生专项在 Windows 显式通过；本机 locale/Live2D 定向回归通过 |
 | Node 完整 check | `--all` 19 过/1 失败：原生 title 36 > 基线 35；没有放宽断言或宣称全量通过 |
 | release runtime | 25,287,680 字节；SHA-256 `3350ce3cc8e902e79a86340d6026679656768af8e954a2ee78f71e8744596ff3`；见 `runtime/rust-evidence/build.json` |
-| 暂存 bundle、桌面 EXE/NSIS、发行输入绑定 | stage+独立 bundle 启动通过；Tauri release 与 NSIS 候选已完成，`verifyDeployment` 对源码、全部构建输入及安装包校验通过。Updater 签名按 `--no-sign` 跳过，未安装或发布 |
+| 暂存 bundle、桌面 EXE/NSIS、发行输入绑定 | stage+独立 bundle 启动通过；Tauri release/NSIS 与 `verifyDeployment` 绑定通过。Updater 签名按 `--no-sign` 跳过；后续本机安装已完成，未公开发布 |
 | Rust 浏览器端到端与双主题 | `parity-final.json` 中图库与控制台均通过；实际暂存 bundle 独立启动亦通过，默认 Rust E2E 五条主流程通过，全站矩阵未跑 |
 | 工作区 HTTP 读取切片 | 1002 记录、5×40 轮；p50 Node 15.09–15.36 ms、Rust 14.63–15.41 ms，未得出加速结论 |
 | 启动、安装包体及完整进程树成本 | NSIS 候选 400.83 MiB，大部分体积为保留的静态资源；尚无相同负载/压缩口径的整机对照，不把分页切片推广为全产品收益 |
-| 安装/UAC、重启、多窗及用户资料回退 | 未执行本次 Rust 安装验收；走[唯一部署入口](../desktop-deployment.md) |
+| 安装/UAC、重启、多窗及用户资料回退 | 后续已通过唯一部署入口安装，用户确认 UAC；认证宿主与 Rust 网关 ready，现有 workspace owner 与 Rust PID 一致。多窗/资料回退的完整设备矩阵未重做 |
 | 真实生成/视频、Ollama/语音、WD14 权重 | 未执行本次真实模型验收；模拟服务和小模型不替代目标工作量 |
 | 原生依赖发行材料 | 未完成，`releaseReady=false` |
 
 原生材料以 [Windows x64 清单](../../runtime-rs/native-dependencies.windows-x64.json)及[随附说明](../../runtime-rs/native-licenses/README.md)为准。目前仍需完成实际链接特性/目标的 SBOM 与 notices、Rust/编译器静态运行库闭包、构建镜像与工具链身份、对应源码及产品分发要求核对，并验最终安装包的 DLL/VC++ 环境。收集许可证文本或校验字节不等于获得发行结论。
 
-### Windows 本地安装候选
+### 首次 Windows 本地安装候选（后续已替换）
 
 `npm run package:tauri` 从上述代码完成完整构建；使用已有 Cubism Native R5 SDK，没有安装 SDK 或应用。回执为 `runtime/delivery-evidence/desktop-build-binding.json`，候选摘要为 `runtime/rust-evidence/desktop-package-final.json`。
 
@@ -82,8 +82,14 @@ Linux 的 `C`/`POSIX` 系统 locale 按 [Node 24.18 的 V8 实现](https://githu
 
 桌面源选择身份为 `d015cea3968174a7ad2def5ce43d2970c4f9eb639cb28d4925f16c772d325324`，构建产物身份为 `cb55434f2b9d36728180eb76a9a978397755177e4ec29f5f7b156c0fadef5384`。保留仓库 1.7.2 版本号只用于本地候选；它不是已发布 1.7.2 的同一产物，不可冒充或覆盖公开资产。实际安装仍仅走 `deploy-desktop.bat`，UAC 由用户操作。
 
+### main 合并与实际安装
+
+PR #11 以 `f05f8724` 合并。首次安装后，校验发现宿主仅有 Tauri 正常写入的 `UNK → NSS` 三字节标记变化；`42041f46` 修复为从已绑定源推导这一个确定变换并核对完整 SHA-256，任意其它修改仍拒绝，定向夹具通过。随后使用既有 `desktop:package-local` 无压缩方式重新完整构建，经 `deploy-desktop.bat -UseInstaller -QuietInstall -SkipBuild` 安装成功并启动。新包与实际文件哈希统一见[安装证据](../evidence/rust-installation-2026-09-28.json)，上面的 400.83 MiB 候选属于历史记录。
+
+运行中的宿主位于 `D:/AI-CG-Studio/ai-cg-studio-desktop.exe`，子进程为 `gateway/huiyu-runtime.exe`；认证维护状态与网关健康检查通过，现有 SQLite workspace owner 已对应 Rust PID。旧 Node 程序残留文件未清理，也未被本应用启动。本次没有主动调用真实模型或把本地安装当作公开发行。
+
 ## 恢复与后续
 
 `maintenance-recovery` 默认只读预览，`--out` 只创建新计划；应用必须显式 `--apply-plan` 并重核签名、根、journal、进程及当前文件。原生入口覆盖启动聚合新增的词条备份范围，不能改用旧 Node 恢复白名单处理这些新事务。用法见[工作流](../workflow.md#rust-运行时迁移)。
 
-剩余工作按[013 计划](../../plans/013-node-to-rust-migration.md)和[未来规划](../roadmap.md)收口：继承的 title 门禁、全站浏览器/整机对照、发行材料及授权后的安装/模型/设备验收，然后确定旧后端源码退出时机。当前不删除旧库、旧来源或已有备份，不把 pending 资产计为交付。
+剩余工作按[013 计划](../../plans/013-node-to-rust-migration.md)和[未来规划](../roadmap.md)收口：继承的 title 门禁、全站浏览器/整机对照、发行材料及真实模型/完整设备验收，然后确定旧后端源码和旧安装程序残留的退出时机。当前不删除旧库、旧来源或已有备份，不把 pending 资产计为交付。

@@ -1,6 +1,6 @@
 # 013：Node.js 运行时迁移到 Rust
 
-更新于 2026-09-28。状态：**后端实现与产品入口切换已落地，最终构建、发行材料及安装/真实模型验收仍在收口**。最初的工期估算不再作为当前排期。执行、失败和证据边界见[迁移执行记录](../docs/architecture/NODE-RUST-MIGRATION-REPORT.md)；正式安装身份仍见[项目状态](../docs/project-status.md)。
+更新于 2026-09-28。状态：**后端切换、main 合并与本机安装/启动核验已完成，发行材料及真实模型/设备验收仍待收口**。最初的工期估算不再作为当前排期。执行、失败和证据边界见[迁移执行记录](../docs/architecture/NODE-RUST-MIGRATION-REPORT.md)；安装身份见[项目状态](../docs/project-status.md)。
 
 ## 范围与当前架构
 
@@ -13,13 +13,13 @@
 | 批次 | 实际完成范围 | 尚需收口 |
 | --- | --- | --- |
 | M0 范围 | `aba7e24b` 的 227 模块闭包、164 HTTP 登记、55 workspace command、4 维护任务；动态 worker/维护边入册 | 清单 pending 保留范围基线语义；当前源码/构建身份见执行记录，整机成本对照仍待测 |
-| M1 纵向接线 | health、桌面认证、工作区与真实 Vue 图库接线，隔离协议夹具 | 最终浏览器操作证据与新安装确认 |
+| M1 纵向接线 | health、桌面认证、工作区与真实 Vue 图库接线、双主题证据；新安装认证与 workspace owner 核验通过 | 完整浏览器/多窗设备矩阵 |
 | M2 存储 | 单写者、schema、回执、媒体/profile/迁移、备份/恢复/GC | 真实用户库升级/回退、断电、磁盘/规模条件 |
 | M3 网关与安全 | Host/Origin/token/会话、静态/预压、远程投影、参考、代理与 WS | 隧道、授权素材和完整远程页面验收 |
 | M4 任务与创作 | accepted/取消/unknown 恢复、五种 provider、输入快照/收件箱、视频批次 | 真实模型、GPU、长任务及最终视频效果 |
 | M5 聊天与语音 | 个人/托管 API、Ollama、工具协议、翻译/TTS、队列和取消 | 真实语音、长流、设备与服务生命周期 |
-| M6 媒体与维护 | 图片/WD14、Live2D、内容事务/校验/上传、资源 full/delta/续传/恢复、五域聚合、恢复 CLI、控制面 | 原生 DLL 最终安装、真实权重与视觉/设备；未实际安装资源或出图 |
-| M7 产品交付 | Rust EXE/DLL 载荷、Tauri release、NSIS 候选与输入绑定通过；独立 bundle、双主题与五条 Rust 主流程通过 | 继承的 title 门禁、许可/SBOM、安装/UAC、真实模型、旧实现退出；`releaseReady=false` |
+| M6 媒体与维护 | 图片/WD14、Live2D、内容事务/校验/上传、资源 full/delta/续传/恢复、五域聚合、恢复 CLI、控制面；两份原生 DLL 安装哈希一致 | 真实权重与视觉/设备；未实际安装额外资源包或出图 |
+| M7 产品交付 | Rust EXE/DLL、Tauri release、NSIS 与输入绑定通过；main 合并及本机完整安装/UAC、认证启动通过 | 继承的 title 门禁、许可/SBOM、真实模型/完整设备验收、旧实现退出；`releaseReady=false` |
 
 “实现”不等于每个分支均验收。已保存日志、失败及定向补测见执行记录，不从路由数量推算覆盖率。Node 单元/契约保留旧行为对照；默认 Playwright 已启动 Rust，Node 仅提供假上游，五条主流程实际重跑通过。Rust 专项另用隔离 `parity.mjs` / `browser.mjs` 验证工作区与双主题。Linux CI 的格式、Clippy、65 项单元/16 项集成、release 与协议对照已通过。
 
@@ -37,8 +37,8 @@
 
 1. 保留当前源码、Rust/前端/对照及 release/NSIS 的绑定证据；原有 title 36/35 门禁尚未消除，全站浏览器矩阵与整机成本对照另验。
 2. 完成原生依赖 SBOM/notices、工具链与对应源码等发行材料；`releaseReady=false` 期间不记为可公开发行。
-3. 授权后通过 `deploy-desktop.bat` 完整安装 Rust 后端，核验 UAC、启动身份、私库、三窗、原生库、恢复与退出。
+3. 已通过 `deploy-desktop.bat` 完整安装并核验 UAC、启动身份、workspace owner 与原生库；三窗、实际资料回退和长期退出/恢复场景仍按设备矩阵补验。
 4. 按目标设备验证真实生成、视频、聊天/语音、WD14 与资源；再进行同负载成本测量。
 5. 稳定升级/回退证据齐备后，单独清理不再需要的旧后端实现和旧暂存规则；保留开发工具与受支持 importer。
 
-命令与恢复入口见[工作流](../docs/workflow.md#rust-运行时迁移)，安装边界见[部署指南](../docs/desktop-deployment.md)。本轮隔离夹具没有修改真实工作区、素材或提示词，没有自动安装或发布。
+命令与恢复入口见[工作流](../docs/workflow.md#rust-运行时迁移)，安装边界见[部署指南](../docs/desktop-deployment.md)。隔离实现阶段未修改真实资料；后续经用户明确授权安装新版并重开既有 workspace，没有主动调用真实模型或公开发布。

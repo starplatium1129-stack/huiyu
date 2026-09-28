@@ -34,7 +34,7 @@
 现行实现与最近本机安装以 [项目状态](project-status.md) 为准；设计目标、分批证据和剩余条件分别查下列资料，不从旧计划的启动提示重新派工。
 
 - 现行契约：[Workspace 与迁移](architecture/WORKSPACE-MIGRATION-DESIGN.md)、[任务运行时](architecture/TASK-RUNTIME-DESIGN.md)、[桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)。
-- [Node → Rust 执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)：产品后端与构建入口切换、隔离差分证据、失败/补测、最终构建待补及安装/模型/发行材料边界。
+- [Node → Rust 执行记录](architecture/NODE-RUST-MIGRATION-REPORT.md)：产品后端与构建入口切换、差分验证与发行边界；[9 月 28 日安装证据](evidence/rust-installation-2026-09-28.json)记录 main 合并、完整安装及 Rust 运行时核验。
 - 目标与批次定义：[重构总计划](architecture/REFACTOR-EXECUTION-PLAN.md)、[执行手册](architecture/CODEX-EXECUTION-RUNBOOK.md)、[原基线复审](architecture/REFACTOR-AUDIT.md)。
 - 主线记录：[R0](architecture/R0-EXECUTION-REPORT.md)、[R1](architecture/R1-EXECUTION-REPORT.md)、[R2](architecture/R2-EXECUTION-REPORT.md)、[R3–R11](architecture/R3-R11-EXECUTION-REPORT.md)；验证 JSON 随各报告列出。
 - 独立实验：[R12 渲染进程](architecture/R12-EXECUTION-REPORT.md)、[R13 Electron 对照](architecture/R13-EXECUTION-REPORT.md)；正式默认与采用边界查当前状态。
@@ -42,7 +42,7 @@
 
 ## 待办与专项验收入口
 
-- [Node.js 运行时迁移到 Rust（013）](../plans/013-node-to-rust-migration.md)：后端实现与入口切换已落地，最终构建、许可和真实安装/模型验收继续收口；[接口与生产依赖矩阵](architecture/NODE-RUST-MIGRATION-MATRIX.md)保留旧实现范围，pending 不是当前完成率。
+- [Node.js 运行时迁移到 Rust（013）](../plans/013-node-to-rust-migration.md)：后端与入口切换、main 合并及本机安装已完成，真实模型、设备和发行材料继续收口；[接口与生产依赖矩阵](architecture/NODE-RUST-MIGRATION-MATRIX.md)保留旧实现范围，pending 不是当前完成率。
 
 以下计划可能包含已完成阶段；只从 [未来规划](roadmap.md) 选择剩余事项。
 

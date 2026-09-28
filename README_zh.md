@@ -10,7 +10,7 @@
 
 当前规模与能力边界见 [项目状态](docs/project-status.md)，硬件要求与模型下载见 [全功能开箱指南](docs/guides/setup-and-models.md)，后续事项见 [未来规划](docs/roadmap.md)。
 
-当前源码的产品后端已改为 Rust；Node 保留于前端/开发构建和旧行为对照。已有 1.7.2 下载属于此前发布构建，本次 Rust 安装、真实模型验收及原生发行材料尚未完成（`releaseReady=false`），详见[迁移执行记录](docs/architecture/NODE-RUST-MIGRATION-REPORT.md)。
+当前源码的产品后端已改为 Rust；Node 保留于前端/开发构建和旧行为对照。已有 1.7.2 下载属于此前发布构建；Rust 版已完成本机安装与运行时核验，真实模型/设备验收及原生发行材料仍未完成（`releaseReady=false`），详见[迁移执行记录](docs/architecture/NODE-RUST-MIGRATION-REPORT.md)。
 
 ## 项目定位
 

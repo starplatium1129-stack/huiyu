@@ -10,7 +10,7 @@
 
 Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
 
-The current source uses a Rust product backend. Node remains a frontend/development build tool and a legacy behavior oracle; the existing 1.7.2 download is a separate, previously published build. Rust installation, real-model acceptance and native redistribution materials are not complete (`releaseReady=false`): see the [migration report](docs/architecture/NODE-RUST-MIGRATION-REPORT.md).
+The current source uses a Rust product backend. Node remains a frontend/development build tool and a legacy behavior oracle; the existing 1.7.2 download is a separate, previously published build. The Rust version has been installed and its runtime verified locally. Real-model/device acceptance and native redistribution materials remain incomplete (`releaseReady=false`): see the [migration report](docs/architecture/NODE-RUST-MIGRATION-REPORT.md).
 
 ## About
 
