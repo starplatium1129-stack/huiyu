@@ -3,8 +3,8 @@ import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
 test.use({ baseURL: `http://127.0.0.1:${MOCK_PORTS.gateway}` })
 
-for (const theme of ['dark', 'light']) {
-  test(`model catalog failure, retry, search and character handoff ${theme}`, async ({ page }, testInfo) => {
+for (const theme of ['dark']) {
+  test(`model catalog failure, retry, search and character handoff ${theme}`, async ({ page }) => {
     const files: string[] = []
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     page.on('request', req => { const path = new URL(req.url()).pathname; if (path.startsWith('/data/')) files.push(path) })
@@ -26,13 +26,12 @@ for (const theme of ['dark', 'light']) {
     await card.getByRole('button', { name: '复制触发词' }).click()
     await expect(page.locator('html')).toHaveAttribute('data-copied-trigger', /shiki_natsume/)
     await card.scrollIntoViewIfNeeded()
-    await page.screenshot({ path: testInfo.outputPath(`lora-${theme}.png`) })
     await card.getByRole('link', { name: '用此角色绘制' }).click()
     await expect(page.locator('article.pb')).toHaveAttribute('data-character', 'natsume')
   })
 
-  test(`missing style references keep palette actions close ${theme}`, async ({ page }, testInfo) => {
-    await page.setViewportSize({ width: 390, height: 900 })
+  test(`missing style references keep palette actions close ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: 900, height: 900 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ status: 404, json: {} }))
@@ -41,14 +40,13 @@ for (const theme of ['dark', 'light']) {
     const action = page.getByRole('link', { name: /用这个调子绘制/ }).first()
     const box = await action.boundingBox()
     expect(box!.y).toBeLessThan(900)
-    await page.screenshot({ path: testInfo.outputPath(`style-${theme}.png`) })
     await action.click()
     await expect(page.locator('article.pb')).toBeVisible()
     await expect(page).toHaveURL(/mood=joy/)
   })
 
-  for (const width of [390, 768, 900, 901, 1280, 1440]) {
-    test(`canvas remains single and precedes narrow materials ${theme} ${width}`, async ({ page }, testInfo) => {
+  for (const width of [900, 1440]) {
+    test(`canvas remains single and precedes narrow materials ${theme} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 })
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
@@ -66,7 +64,6 @@ for (const theme of ['dark', 'light']) {
         expect(await page.locator('#drawing-canvas').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('#drawing-materials')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true)
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-      await page.screenshot({ path: testInfo.outputPath(`canvas-${theme}-${width}.png`) })
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
       await expect(page.locator('article.pb')).toHaveAttribute('data-character', 'natsume')
       await expect(page.locator('#drawing-canvas')).toHaveCount(1)
@@ -74,15 +71,14 @@ for (const theme of ['dark', 'light']) {
   }
 }
 
-for (const theme of ['dark', 'light']) test(`missing notebook references stay compact and palette returns keyboard focus ${theme}`, async ({ page }, testInfo) => {
-  await page.setViewportSize({ width: 390, height: 900 })
+for (const theme of ['dark']) test(`missing notebook references stay compact and palette returns keyboard focus ${theme}`, async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 })
   await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
   await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ status: 404, json: {} }))
   await page.goto('/color-script')
   await page.locator('.color-reading > summary').click()
   await expect(page.locator('.study-unavailable.is-unconnected')).toHaveCount(2)
   expect((await page.locator('.study-unavailable').first().boundingBox())!.height).toBeLessThan(200)
-  await page.screenshot({ path: testInfo.outputPath(`color-compact-${theme}.png`) })
   const mood = page.locator('.mood-card[data-mood="joy"]')
   await mood.focus(); await page.keyboard.press('Enter')
   await page.getByRole('button', { name: '换一个情绪' }).click()
@@ -90,11 +86,10 @@ for (const theme of ['dark', 'light']) test(`missing notebook references stay co
   await page.goto('/scenario')
   await expect(page.locator('.scenario-cover.is-unconnected')).toHaveCount(3)
   expect((await page.locator('.scenario-cover').first().boundingBox())!.height).toBe(88)
-  await page.screenshot({ path: testInfo.outputPath(`scenario-compact-${theme}.png`) })
 })
 
 test('remote hostname refuses mature scene browsing even if a local fixture delivers the full catalog', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 900 })
+  await page.setViewportSize({ width: 900, height: 900 })
   await page.route('**/*', async route => {
     const url = new URL(route.request().url())
     if (url.hostname !== 'audit-remote.invalid') return route.abort()

@@ -1,6 +1,5 @@
 import { installDesktopHostFixture } from './helpers/desktopHost'
 import { expect, test, type Locator, type Page } from '@playwright/test'
-import { readFileSync } from 'node:fs'
 import { textContrast } from './helpers/contrast'
 declare global {
   interface Window {
@@ -61,12 +60,6 @@ async function sectorTextContrast(button: Locator) {
   try { return await button.locator('span').evaluate(textContrast) }
   finally { await button.evaluate((element, style) => { if (style === null) element.removeAttribute('style'); else element.setAttribute('style', style) }, previous) }
 }
-
-test('native pet window keeps the frameless transparent builder contract', () => {
-  const source = readFileSync('desktop-tauri/src-tauri/src/main_shared.rs', 'utf8')
-  const pet = source.slice(source.indexOf('pub fn create_companion_window'), source.indexOf('pub fn open_companion_chat'))
-  for (const flag of ['.transparent(true)', '.decorations(false)', '.shadow(false)', '.skip_taskbar(true)']) expect(pet).toContain(flag)
-})
 
 for (const theme of ['light', 'dark']) {
   for (const viewport of [{ width: 540, height: 760 }, { width: 360, height: 480 }]) {

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
-for (const theme of ['light', 'dark']) for (const width of [1440, 390]) {
+for (const theme of ['light', 'dark']) for (const width of [1440]) {
   test(`tabs and data tools preserve focus ${theme} ${width}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height:844 })
     await page.emulateMedia({ reducedMotion:'reduce' })

@@ -19,11 +19,11 @@ async function hoverAndWaitForParticleFrame(page: Page, field: Locator) {
 }
 
 for (const theme of ['dark', 'light']) {
-  for (const width of [1600, 390]) {
+  for (const width of [1600]) {
     test(`original particle style in the larger theatre ${theme} ${width}`, async ({ page }, info) => {
       test.setTimeout(45_000)
       await page.emulateMedia({ reducedMotion: 'no-preference' })
-      await page.setViewportSize({ width, height: width === 390 ? 844 : 1150 })
+      await page.setViewportSize({ width, height: 1150 })
       await page.bringToFront()
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
       await page.goto('/character?character=nene')
@@ -36,7 +36,7 @@ for (const theme of ['dark', 'light']) {
       await expect(page.locator('.character-hero')).toHaveClass(/revealed/)
       const frame = await field.boundingBox()
       expect(frame!.height).toBeGreaterThanOrEqual(430)
-      if (width === 1600) expect(frame!.width).toBeGreaterThan(1000)
+      expect(frame!.width).toBeGreaterThan(1000)
       await expect(field).toHaveClass(/density-ambient/)
       await expect(field).not.toHaveClass(/is-bare/)
       const background = await field.evaluate(e => getComputedStyle(e).backgroundImage)

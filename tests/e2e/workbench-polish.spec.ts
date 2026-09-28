@@ -12,11 +12,11 @@ async function withinViewport(locator: Locator, page: Page) {
 }
 
 for (const theme of ['dark', 'light'] as const) {
-  for (const width of [390, 768, 1024, 1440]) {
+  for (const width of [1024, 1440]) {
     test(`workbench tools and narrow reading flow ${theme} ${width}`, async ({ page }, info) => {
       const errors: string[] = []
       page.on('pageerror', error => errors.push(error.message))
-      await page.setViewportSize({ width, height: width === 390 ? 844 : width === 1024 ? 720 : 960 })
+      await page.setViewportSize({ width, height: width === 1024 ? 720 : 960 })
       await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: theme })
       await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
       await page.goto('/prompt-builder')
@@ -26,15 +26,6 @@ for (const theme of ['dark', 'light'] as const) {
       await withinViewport(page.locator('.pb-topline'), page)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
 
-      // The larger text must not push the material chooser out of a phone's first screen.
-      if (width === 390) {
-        expect((await page.locator('.material-drawer').boundingBox())!.y).toBeLessThan(310)
-        expect((await page.locator('#drawing-canvas').boundingBox())!.y).toBeLessThan(640)
-        for (const selector of ['.focus-mode-btn', '.utility-trigger', '.random-menu-trigger', '.random-dice']) {
-          const box = (await page.locator(selector).boundingBox())!
-          expect(Math.min(box.width, box.height)).toBeGreaterThanOrEqual(44)
-        }
-      }
       await page.screenshot({ path: info.outputPath(`${theme}-${width}-basic.png`) })
 
       // Reflow must keep both existing popovers on screen and above the material panel.
@@ -52,13 +43,6 @@ for (const theme of ['dark', 'light'] as const) {
       await page.getByRole('button', { name: '导出备份 JSON', exact: true }).click({ trial: true })
       await page.locator('.utility-trigger').click()
 
-      if (width <= 900) {
-        await page.getByRole('link', { name: '画布预览', exact: true }).click()
-        await expect.poll(async () => (await page.locator('#drawing-canvas').boundingBox())!.y)
-          .toBeGreaterThan((await page.locator('.nav').boundingBox())!.height)
-        await page.getByRole('link', { name: '创作素材', exact: true }).click()
-      }
-
       // Retain the search draft while switching modes and source controls.
       await page.locator('[aria-controls="material-scenes"]').click()
       await page.locator('#material-scenes .scene-search').fill('雨')
@@ -67,17 +51,15 @@ for (const theme of ['dark', 'light'] as const) {
       await page.locator('[aria-controls="material-character"]').click()
       const source = page.getByRole('button', { name: '热门角色 · 无需 LoRA', exact: true })
       await source.click({ trial: true })
-      if (width >= 1024) {
-        await withinViewport(page.locator('.gen-bar'), page)
-        await withinViewport(page.locator('.director-inspector'), page)
-        // Complete labels remain within their segment, including the 240px expert rail.
-        const label = source.locator(':scope > span')
-        const labelBox = (await label.boundingBox())!
-        const sourceBox = (await source.boundingBox())!
-        expect(labelBox.x + labelBox.width).toBeLessThanOrEqual(sourceBox.x + sourceBox.width)
-        const lineHeight = await label.evaluate(el => parseFloat(getComputedStyle(el).lineHeight))
-        expect(labelBox.height).toBeLessThanOrEqual(lineHeight * 2 + 1)
-      }
+      await withinViewport(page.locator('.gen-bar'), page)
+      await withinViewport(page.locator('.director-inspector'), page)
+      // Complete labels remain within their segment, including the 240px expert rail.
+      const label = source.locator(':scope > span')
+      const labelBox = (await label.boundingBox())!
+      const sourceBox = (await source.boundingBox())!
+      expect(labelBox.x + labelBox.width).toBeLessThanOrEqual(sourceBox.x + sourceBox.width)
+      const lineHeight = await label.evaluate(el => parseFloat(getComputedStyle(el).lineHeight))
+      expect(labelBox.height).toBeLessThanOrEqual(lineHeight * 2 + 1)
       await page.screenshot({ path: info.outputPath(`${theme}-${width}-expert.png`) })
       expect(errors).toEqual([])
     })

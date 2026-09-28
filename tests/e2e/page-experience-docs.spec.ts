@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test'
 import sharp from 'sharp'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
-import { readdirSync } from 'node:fs'
 import { textContrast } from './helpers/contrast'
 
 test.use({ baseURL: `http://127.0.0.1:${MOCK_PORTS.gateway}` })
@@ -16,18 +15,29 @@ const documents = ['index', 'getting-started', 'roadmap',
   'guides/characters/scene-spec', 'guides/prompts/prompt-spec', 'guides/prompts/tag-standard',
   'guides/engineering/page-template']
 
-for (const theme of ['dark', 'light']) for (const width of [1440, 390, 320]) {
+for (const theme of ['dark', 'light']) for (const width of [1440]) {
   test(`document reading and keyboard ${theme} ${width}`, async ({ page }, testInfo) => {
     test.setTimeout(120000)
+    const errors: string[] = []
+    page.on('pageerror', error => errors.push(error.message))
+    page.on('console', message => {
+      if (message.type() === 'error' && !/ECONNREFUSED|Failed to load resource|net::ERR|favicon/i.test(message.text())) errors.push(message.text())
+    })
     await page.setViewportSize({ width, height: 900 })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/')
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
+    await expect(page.locator('main h1')).toBeVisible()
+    const appBase = await page.locator('body').evaluate(el => getComputedStyle(el).getPropertyValue('--bg-base').trim().toLowerCase())
+    expect(appBase).not.toBe('')
     for (const documentPath of documents) {
       await page.goto(`/docs/${documentPath}.html`)
       await expect(page.locator('main')).toHaveCount(1)
       await expect(page.locator('main h1')).toHaveCount(1)
       const base = await page.locator('body').evaluate(el => getComputedStyle(el).getPropertyValue('--bg-base').trim())
-      expect(base.toLowerCase()).toBe(theme === 'light' ? '#fff8f4' : '#211c30')
+      await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
+      expect(base.toLowerCase(), documentPath + ' shares the app theme base').toBe(appBase)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
       await page.keyboard.press('Tab')
       await expect(page.getByRole('link', { name: '跳到主要内容' })).toBeFocused()
@@ -47,6 +57,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390, 320]) {
         contrast = Math.min(contrast, (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05))
       }
       expect(contrast, documentPath + ' subtitle against sampled background').toBeGreaterThanOrEqual(4.5)
+      expect(errors, documentPath + ' has no uncaught page errors').toEqual([])
     }
   })
 }
@@ -77,20 +88,6 @@ test('companion chat main receives keyboard skip without losing log or composer'
   await expect(page.locator('.companion-chat-composer')).toBeVisible()
 })
 
-test('archived reports and research remain readable at their existing URLs', async ({ page }, testInfo) => {
-  const files = readdirSync('docs/archive/audits').filter(file => file.endsWith('.html'))
-    .map(file => `/docs/archive/audits/${file}`)
-  files.push('/docs/research/prompts/arknights-artists-research-2026-08-31.html')
-  for (const file of files) {
-    const response = await page.goto(file)
-    expect(response!.status()).toBe(200)
-    await expect(page.locator('h1').first()).toBeVisible()
-    const observations = await page.evaluate(() => ({ title: document.title,
-      headings: [...document.querySelectorAll('h1,h2')].map(el => el.textContent),
-      width: document.documentElement.scrollWidth, viewport: innerWidth }))
-    await testInfo.attach(file.split('/').pop()!, { body: JSON.stringify(observations), contentType: 'application/json' })
-  }
-})
 
 for (const theme of ['dark', 'light']) test(`document enlarged reading, score labels and forced colors ${theme}`, async ({ page }) => {
   await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)

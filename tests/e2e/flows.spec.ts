@@ -483,7 +483,7 @@ test('flow 3d · 聊天中断：停止后已生成的片段保留并标记', asy
   await expect(page.locator('.message.assistant.streaming')).toHaveCount(0);
 });
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`chat recovery ${theme} · 断线保留回复并能继续发送`, async ({ page }) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme);
     await page.goto('/chat');
@@ -641,7 +641,7 @@ test('flow 4b · 备份：损坏文件不得污染本地数据', async ({ page }
 // ─────────────────────────────────────────────────────────────────────────────
 // 5. 场景保存
 // ─────────────────────────────────────────────────────────────────────────────
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`backup atomic recovery ${theme} · metadata failure preserves originals`, async ({ page }) => {
     await page.addInitScript(value => {
       localStorage.setItem('aics_theme', value)
@@ -988,7 +988,8 @@ test('flow 6h · studio→popular 深链：工作室场景进热门角色出图�
   const studioStory = await page.locator('.story-input').inputValue();
 
   // 第 2 步：SPA 跳到热门角色场景（不整页刷新），点「开始绘制」进入 popular 模式
-  await page.locator('a[href="/popular-scenes"]').first().click();
+  await page.getByRole('button', { name: '更多', exact: true }).click();
+  await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '角色场景', exact: true }).click();
   await page.waitForURL(/popular-scenes/, { timeout: 20000 });
   await page.waitForSelector('.pop-card .pop-draw-action', { timeout: 20000 });
   await page.locator('.pop-card .pop-draw-action').first().click();

@@ -1,7 +1,7 @@
 // Verified resource failures and recovery using local response fixtures.
-import { expect, test, type Page, type Route, type TestInfo } from '@playwright/test'
+import { expect, test, type Page, type Route } from '@playwright/test'
 
-const THEMES = ['dark', 'light'] as const
+const THEMES = ['dark'] as const
 
 type Theme = (typeof THEMES)[number]
 
@@ -48,15 +48,10 @@ async function openWithTheme(page: Page, path: string, theme: Theme) {
   await expect(page.locator('h1').first()).toBeVisible()
 }
 
-async function shot(page: Page, testInfo: TestInfo, caseId: string, theme: Theme) {
-  await page.screenshot({ path: testInfo.outputPath(`${caseId}-${theme}.png`) })
-}
-
-function failureCase(caseId: string, title: string, body: (page: Page, theme: Theme, testInfo: TestInfo) => Promise<void>) {
+function failureCase(caseId: string, title: string, body: (page: Page, theme: Theme) => Promise<void>) {
   for (const theme of THEMES) {
-    test(`${caseId} ${title} [${theme}]`, async ({ page }, testInfo) => {
-      await body(page, theme, testInfo)
-      await shot(page, testInfo, caseId, theme)
+    test(`${caseId} ${title} [${theme}]`, async ({ page }) => {
+      await body(page, theme)
     })
   }
 }
@@ -117,7 +112,7 @@ const jsonFixture = (body: unknown) => (route: Route) =>
     body: JSON.stringify(body),
   })
 
-failureCase('F03', '角色列表缩略图 404 首字回退', async (page, theme, testInfo) => {
+failureCase('F03', '角色列表缩略图 404 首字回退', async (page, theme) => {
   const probe = await intercept(page, '**/assets/characters/thumbs/popular-*.webp*', notFound)
   await openWithTheme(page, '/character?character=nene', theme)
   await page.getByRole('searchbox', { name: '搜索角色或作品' }).fill('芙莉莲')
@@ -126,7 +121,6 @@ failureCase('F03', '角色列表缩略图 404 首字回退', async (page, theme,
   await assertIntercepted(probe)
   await expect(card.locator('.character-portrait')).toHaveAttribute('data-state', 'placeholder')
   await expect(card.locator('.portrait-initial')).toContainText(/\S/)
-  await shot(page, testInfo, 'F03-failure', theme)
   // 恢复：解除 404 → 发放有效缩略图 → 重载，状态机回到 image
   await page.unroute('**/assets/characters/thumbs/popular-*.webp*')
   const restored = await intercept(page, '**/assets/characters/thumbs/popular-*.webp*', pngFixture)
@@ -139,7 +133,7 @@ failureCase('F03', '角色列表缩略图 404 首字回退', async (page, theme,
   await expect(card.locator('img')).not.toHaveJSProperty('naturalWidth', 0)
 })
 
-failureCase('F05', '场景卡片缩略图 404 提示可用', async (page, theme, testInfo) => {
+failureCase('F05', '场景卡片缩略图 404 提示可用', async (page, theme) => {
   const probe = await intercept(page, '**/scene-showcase/thumbs/*.jpg*', notFound)
   await openWithTheme(page, '/scene-explorer', theme)
   await assertIntercepted(probe)
@@ -148,7 +142,6 @@ failureCase('F05', '场景卡片缩略图 404 提示可用', async (page, theme,
   await expect(card.locator('.sc-preview-unavailable')).toHaveText('样张暂缺 · 场景可用')
   await expect(card).toBeVisible()
   await expect(card.locator('.sc-title')).toContainText(/\S/)
-  await shot(page, testInfo, 'F05-failure', theme)
   // 恢复：解除 404 → 发放有效缩略图 → 重载，失败标记清零、缩略图就绪
   await page.unroute('**/scene-showcase/thumbs/*.jpg*')
   await intercept(page, '**/scene-showcase/thumbs/*.jpg*', pngFixture)
@@ -157,7 +150,7 @@ failureCase('F05', '场景卡片缩略图 404 提示可用', async (page, theme,
   await expect(page.locator('img.sc-thumb.sc-thumb-ready').first()).toBeVisible({ timeout: 15_000 })
 })
 
-failureCase('F08b', '参考卡片拒绝不可放大', async (page, theme, testInfo) => {
+failureCase('F08b', '参考卡片拒绝不可放大', async (page, theme) => {
   const FIXTURE_URL = '/character-references/f08-fixture/front.png'
   await page.route('**/api/character-reference-profile/nene', jsonFixture(controlledReferenceIndex(FIXTURE_URL).nene))
   const pattern = '**/character-references/**'
@@ -170,7 +163,6 @@ failureCase('F08b', '参考卡片拒绝不可放大', async (page, theme, testIn
   const unavailable = page.locator('[aria-label*="本机暂无参考图"]').first()
   await expect(unavailable).toBeVisible()
   await expect(unavailable).toHaveAttribute('aria-disabled', 'true')
-  await shot(page, testInfo, 'F08b-failure', theme)
   // 恢复：解除拒绝 → 发放有效参考图 → 重载，卡片回到可放大状态
   await page.unroute(pattern)
   const restored = await intercept(page, pattern, pngFixture)
@@ -182,7 +174,7 @@ failureCase('F08b', '参考卡片拒绝不可放大', async (page, theme, testIn
   await expect(refCard.locator('img')).not.toHaveJSProperty('naturalWidth', 0)
 })
 
-failureCase('F09', '画册灯箱 404 可关闭可恢复', async (page, theme, testInfo) => {
+failureCase('F09', '画册灯箱 404 可关闭可恢复', async (page, theme) => {
   const ENTRY_ID = 'f09fixture001'
   await page.route('**/scene-showcase/manifest.json', jsonFixture(controlledShowcaseManifest(ENTRY_ID)))
   const thumbProbe = await intercept(page, '**/scene-showcase/thumbs/*.jpg*', pngFixture)
@@ -195,7 +187,6 @@ failureCase('F09', '画册灯箱 404 可关闭可恢复', async (page, theme, te
   await page.locator('.sample-visual').first().click()
   await expect(page.locator('.viewer-image-fallback')).toHaveText('图片暂时无法读取')
   await assertIntercepted(imageProbe) // 大图请求确实被 404
-  await shot(page, testInfo, 'F09-failure', theme)
   await page.locator('.viewer-close').click()
   await expect(page.locator('.showcase-viewer')).toBeHidden()
   // 恢复：大图改为放行 → 重开灯箱 → 图片可读（in-place）

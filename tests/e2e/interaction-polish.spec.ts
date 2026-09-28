@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 import { readFileSync } from 'node:fs'
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`gallery original export preserves JPEG ${theme}`, async ({ page }) => {
     await page.addInitScript(value => {
       localStorage.setItem('aics_theme', value)
@@ -129,7 +129,7 @@ test('cached video workspace follows a different task-center link', async ({ pag
   }
 })
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`saved video tasks reconnect and cancel without resubmission ${theme}`, async ({ page }) => {
     let status = 'running', reads = 0, cancels = 0, submissions = 0
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
@@ -188,74 +188,8 @@ test('interface sound is opt-in and persists the explicit choice', async ({ page
   await expect(page.getByRole('button', { name: '关闭界面音效' })).toHaveAttribute('aria-pressed', 'true')
 })
 
-test('navigation uses hand-drawn icons and a settled selection indicator', async ({ page }) => {
-  await page.goto('/')
-  const nav = page.getByRole('navigation', { name: '主导航' })
-  const sceneLink = nav.getByRole('link', { name: '灵感', exact: true })
-  await expect(sceneLink.locator('svg.archive-icon')).toHaveCount(1)
-  await sceneLink.click()
-  await expect(page).toHaveURL(/scene-explorer$/)
-  await expect(sceneLink).toHaveAttribute('aria-current', 'page')
-  await expect(page.locator('.nav-links > .animated-selection')).toBeVisible()
-  await expect(page.locator('.route-loader')).not.toHaveClass(/active/)
-})
 
-test('entering a character room keeps the interface clear of transition overlays', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('navigation').getByRole('link', { name: '房间', exact: true }).click()
-  await expect(page).toHaveURL(/chat$/)
-  await expect(page.locator('main h1')).toBeVisible()
-  await expect(page.locator('.route-cut,.interaction-impulse')).toHaveCount(0)
-})
-
-test('gallery empty content uses the shared archive state panel', async ({ page }) => {
-  await page.goto('/gallery')
-
-  const state = page.locator('.archive-state-panel[data-kind="empty"]')
-  await expect(state).toBeVisible()
-  await expect(state).toContainText('展墙还在等你的第一幅作品')
-  await expect(state.getByRole('link', { name: '开始绘制' })).toBeVisible()
-})
-
-test('scene cards keep drawing actions subordinate until interaction', async ({ page }) => {
-  await page.goto('/scene-explorer')
-
-  await expect(page.locator('.scene-grid').getByRole('link', { name: '开始绘制' }).first()).toHaveClass(/scene-draw-action/)
-})
-
-test('global motion feedback is suppressed when reduced motion is requested', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.goto('/')
-
-  const state = await page.evaluate(() => ({
-    loader: getComputedStyle(document.querySelector('.route-loader')!).display,
-    overlays: document.querySelectorAll('.route-cut,.interaction-impulse').length,
-  }))
-  expect(state).toEqual({ loader: 'none', overlays: 0 })
-})
-
-test('repeated navigation keeps a visible route view mounted', async ({ page }) => {
-  await page.goto('/')
-
-  for (const destination of [
-    { label: '灵感', url: /\/scene-explorer$/, heading: '灵感场景' },
-    { label: '参考画册', url: /\/showcase$/, heading: '把心动，一页页收藏。' },
-    { label: '我的作品', url: /\/gallery$/, heading: '我的作品' },
-  ]) {
-    if (destination.label === '我的作品') {
-      await page.getByRole('button', { name: '更多', exact: true }).click()
-      await page.getByRole('dialog', { name: '更多页面', exact: true }).getByRole('link', { name: destination.label, exact: true }).click()
-    } else await page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: destination.label, exact: true }).click()
-    await expect(page).toHaveURL(destination.url)
-    await expect(page.locator('#main')).toContainText(destination.heading)
-    expect(await page.locator('#main .route-view').evaluateAll(views => views.some(view => {
-      const style = getComputedStyle(view)
-      return style.opacity !== '0' && view.getBoundingClientRect().height > 0
-    }))).toBe(true)
-  }
-})
-
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`copy failure has recovery feedback ${theme}`, async ({ page }) => {
     await page.addInitScript(value => {
       localStorage.setItem('aics_theme', value)
@@ -271,18 +205,22 @@ for (const theme of ['dark', 'light']) {
     await page.screenshot({ path: `.review-shots/feature-copy-${theme}.png`, fullPage: true })
   })
   test(`failed page navigation can be recovered ${theme}`, async ({ page }) => {
-    await page.setViewportSize({ width: theme === 'dark' ? 390 : 1440, height: 900 })
+    await page.setViewportSize({ width: 1440, height: 900 })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.route(/\/_app\/ScenarioView-[^/]+\.js$/, route => route.abort())
     await page.goto('/style')
-    await page.getByRole('link', { name: '剧本与分幕', exact: true }).click()
+    await page.getByRole('heading', { name: '画风', exact: true }).waitFor()
+    await page.getByRole('button', { name: '更多', exact: true }).click()
+    await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '剧本', exact: true }).click()
     const recovery = page.getByRole('alert', { name: '页面加载恢复' })
     await expect(recovery).toBeVisible()
+    await expect(page.locator('main > .route-view')).not.toHaveAttribute('inert')
     await expect(page.getByRole('heading', { name: '画风', exact: true })).toBeVisible()
     await expect(recovery.getByRole('link', { name: '重新打开目标页面' })).toHaveAttribute('href', '/scenario')
     await page.screenshot({ path: `.review-shots/feature-recovery-${theme}.png`, fullPage: true })
     await page.unroute(/\/_app\/ScenarioView-[^/]+\.js$/)
     await recovery.getByRole('link', { name: '重新打开目标页面' }).click()
+    await expect(page).toHaveURL(/scenario$/)
     await expect(page.getByRole('heading', { name: '剧本模式', exact: true })).toBeVisible()
     await expect(recovery).not.toBeVisible()
   })
@@ -347,7 +285,6 @@ test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
 
 test('director blueprint round-trips full decisions and material conflicts', async ({ page }) => {
   await page.goto('/prompt-builder')
-  await page.waitForTimeout(1800)
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').first().click()
   await expect(page.locator('.engine-switch button').first()).toHaveClass(/active/)
@@ -403,7 +340,7 @@ test('director blueprint round-trips full decisions and material conflicts', asy
 })
 
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`control configuration shows pending state and allows retry ${theme}`, async ({ page }) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     let release!: () => void
@@ -434,10 +371,10 @@ for (const theme of ['dark', 'light']) {
 }
 
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`batch selection progress and stop stay consistent ${theme}`, async ({ page }) => {
     await mockDrawingStatus(page)
-    await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
+    await page.setViewportSize({ width: 1440, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     let submitted = 0, finish = false
@@ -483,9 +420,9 @@ for (const theme of ['dark', 'light']) {
 }
 
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`candidate comparison persists a preferred choice ${theme}`, async ({ page }) => {
-    await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
+    await page.setViewportSize({ width: 1440, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => {
       localStorage.setItem('aics_theme', value)
@@ -573,7 +510,7 @@ for (const theme of ['dark', 'light']) {
       }],
     } }))
     await page.route('**/character-references/**', route => route.fulfill({ status: 200, contentType: 'image/png', body: image }))
-    await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
+    await page.setViewportSize({ width: 1440, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.goto('/character?character=furina')

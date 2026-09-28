@@ -50,18 +50,6 @@ for (const theme of ['light', 'dark']) {
   })
 }
 
-test('script selection stays accessible beside the current acts', async ({ page }) => {
-  await page.goto('/scenario')
-  await expect(page.locator('.scenario-list')).toBeVisible()
-  await expect(page.locator('.acts')).toBeVisible()
-  const card = page.locator('.scenario-card').nth(1)
-  await card.click()
-  await expect(card).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.locator('.viewer-h2')).toContainText('雨天')
-  await expect(page.locator('.scenario-list')).toBeVisible()
-})
-
-
 test('the loading frame honors light mode before application scripts arrive', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('aics_theme', 'light'))
   await page.route('**/_app/*.js', route => route.abort())

@@ -58,7 +58,7 @@ async function desktopPage(page: Page, gateway: string, longCatalog: boolean) {
   return { denied, imageModes }
 }
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   for (const longCatalog of [false, true]) {
   test(`desktop preview ${longCatalog ? 'keeps long-catalog scroll' : 'presents decoded CORS images'} ${theme}`, async ({ page, baseURL }, info) => {
     const requests = await desktopPage(page, baseURL!, longCatalog)

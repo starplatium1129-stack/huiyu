@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-for (const theme of ['light','dark']) for (const width of [1440,390]) {
+for (const theme of ['light','dark']) for (const width of [1440]) {
   test(`collection search owns a single focus ring ${theme} ${width}`, async ({page}, info) => {
     await page.setViewportSize({width,height:1000})
     await page.route(/^http:\/\/[^/]+\/api\//, route=>route.fulfill({status:503,json:{ok:false,error:'Isolated UI fixture'}}))

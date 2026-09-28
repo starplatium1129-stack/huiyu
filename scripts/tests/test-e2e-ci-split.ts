@@ -43,8 +43,8 @@ const specsForLane = function (lane: string) {
     .map(function (entry) { return entry.file; }).sort();
 };
 
-assert.strictEqual(pkg.scripts['test:e2e'], 'npm run build && npm run test:e2e:all');
-assert.match(pkg.scripts['test:e2e:all'], /^playwright test$/);
+assert.strictEqual(pkg.scripts['test:e2e'], 'npm run test:e2e:critical');
+assert.strictEqual(pkg.scripts['test:e2e:all'], 'node scripts/tests/run-e2e-lane.js all');
 assert.match(pkg.scripts['test:e2e:critical'], /npm run build && npm run test:e2e:critical:run/);
 assert.match(pkg.scripts['test:e2e:nightly'], /npm run build && npm run test:e2e:nightly:run/);
 
@@ -54,17 +54,22 @@ assert.deepStrictEqual(criticalSpecs, specsForLane('critical'),
 const manifestNightlySpecs = getSpecsForLane('nightly');
 assert.deepStrictEqual(manifestNightlySpecs, specsForLane('nightly'),
   'runner nightly specs must match the lane manifest');
+assert.deepStrictEqual(getSpecsForLane('all'), [...criticalSpecs, ...manifestNightlySpecs].sort(),
+  'automated all must include both regular lanes and exclude manual/device acceptance');
 
-for (const spec of ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts', 'anima-quick.spec.ts', 'interaction-polish.spec.ts']) {
+for (const spec of ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts', 'anima-quick.spec.ts', 'library-concurrency.spec.ts', 'chat-archive-concurrency.spec.ts']) {
   assert(criticalSpecs.includes(spec), `critical browser regression must include ${spec}`);
 }
 assert(!criticalSpecs.some(spec => /capture\.spec\.ts|theme-audit\.spec\.ts/.test(spec)),
   'visual audit specs must not make PR browser regression slower');
 
-for (const spec of ['theme-audit.spec.ts', 'capture.spec.ts', 'particle-atmosphere.spec.ts', 'particle-narrative.spec.ts', 'archive-visual-language.spec.ts']) {
+for (const spec of ['theme-audit.spec.ts', 'ui-layout.spec.ts', 'resource-recovery.spec.ts']) {
   assert(manifestNightlySpecs.includes(spec), `nightly visual regression must include ${spec}`);
 }
 const nightlySpecs = manifestNightlySpecs;
+assert(!manifestSpecs.includes('capture.spec.ts'), 'assertion-free screenshot capture is not a regression suite');
+assert(specsForLane('device').includes('studio-live2d.spec.ts'),
+  'actual bundled model loading must stay outside routine browser regression');
 const overlap = criticalSpecs.filter(function (spec) { return nightlySpecs.includes(spec); });
 assert.deepStrictEqual(overlap, [], 'critical 与 nightly 分组不得重叠');
 assert(!nightlySpecs.some(spec => ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts'].includes(spec)),

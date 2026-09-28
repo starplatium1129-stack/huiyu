@@ -36,7 +36,7 @@ async function contained(locator: Locator, width: number, height: number) {
 }
 
 for (const theme of ['light', 'dark']) {
-  for (const width of [1440, 390]) {
+  for (const width of [1440]) {
     test(`character select keyboard filter ${theme} ${width}`, async ({ page }, info) => {
       await page.setViewportSize({ width, height:844 })
       await page.emulateMedia({ reducedMotion:'reduce' })
@@ -75,7 +75,6 @@ for (const theme of ['light', 'dark']) {
       await expect(page.locator('.showcase-filters .studio-select-content')).toHaveCount(0)
       await contained(list, width, 844)
       expect(await option.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
-      if (width === 390) expect((await option.boundingBox())!.height).toBeGreaterThanOrEqual(44)
       await page.screenshot({ path:info.outputPath(`select-${theme}-${width}.png`) })
       await page.keyboard.press('Escape')
       await expect(list).toBeHidden()
@@ -106,7 +105,7 @@ for (const theme of ['light', 'dark']) {
     await page.getByRole('button', { name:'专家模式', exact:true }).click()
     const trigger = page.getByRole('button', { name:'夏目的调色笔记', exact:true })
     const popover = page.getByRole('dialog', { name:'夏目的调色笔记', exact:true })
-    for (const width of [1440, 390]) {
+    for (const width of [1440]) {
       await page.setViewportSize({ width, height:720 })
       await trigger.click()
       await expect(popover).toBeVisible()

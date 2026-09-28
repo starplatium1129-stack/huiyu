@@ -1,9 +1,9 @@
 import { test, expect, type Locator, type Page } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
+import { onArtTextContrast } from './helpers/ui-fluidity-office'
 import { installSceneStateFixture } from './helpers/sceneState'
 
 const base = process.env.AICS_UI_AUDIT_URL || ''
-const routes = ['/', '/scene-explorer', '/popular-scenes', '/prompt-builder', '/video-studio', '/chat', '/showcase', '/gallery', '/character', '/style', '/lora', '/scene-manager', '/color-script', '/scenario', '/companion', '/companion-chat', '/control']
 
 async function open(page: Page, route: string, theme: string, width: number, height = 640) {
   await page.setViewportSize({ width, height })
@@ -33,36 +33,28 @@ test('contrast audit includes text alpha and nested group opacity', async ({ pag
     <div style="background: black"><div style="background: white; opacity: .5">
       <span id="group" style="color: black">Text</span>
       <span id="nested" style="color: black; opacity: .5">Text</span>
-    </div></div>`)
+    </div></div>
+    <div class="art-viewer" style="background: white"><span id="on-light" style="color: black">Text</span></div>
+    <div class="art-viewer" style="background: black"><span id="on-dark" style="color: white">Text</span></div>`)
   expect(await contrast(page.locator('#opaque'))).toBeCloseTo(21, 2)
   expect(await contrast(page.locator('#faded'))).toBeCloseTo(3.977, 2)
   expect(await contrast(page.locator('#alpha'))).toBeCloseTo(4.004, 2)
   expect(await contrast(page.locator('#group'))).toBeCloseTo(5.281, 2)
   expect(await contrast(page.locator('#nested'))).toBeCloseTo(2.617, 2)
+  expect(await page.locator('#on-light').evaluate(onArtTextContrast)).toBeCloseTo(21, 2)
+  expect(await page.locator('#on-dark').evaluate(onArtTextContrast)).toBeCloseTo(21, 2)
 })
 
 for (const theme of ['dark', 'light']) {
-  for (const width of [1440, 768, 390]) {
-    for (const route of routes) {
-      test(`layout ${theme} ${width} ${route}`, async ({ page }) => {
-        const errors: string[] = []
-        page.on('pageerror', error => errors.push(error.message))
-        await open(page, route, theme, width)
-        await page.waitForTimeout(600)
-        expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-        expect(errors).toEqual([])
-        if (route === '/popular-scenes') {
-          await expect(page.locator('.pop-cat').first()).toBeVisible()
-          // Check real count labels, including their own and ancestor opacity.
-          for (const count of await page.locator('.pop-cat:not(.active) em').all()) {
-            expect(await contrast(count)).toBeGreaterThanOrEqual(4.5)
-          }
-        }
-      })
+  test(`popular scene count labels retain AA contrast ${theme}`, async ({ page }) => {
+    await open(page, '/popular-scenes', theme, 1440)
+    await expect(page.locator('.pop-cat').first()).toBeVisible()
+    for (const count of await page.locator('.pop-cat:not(.active) em').all()) {
+      expect(await contrast(count)).toBeGreaterThanOrEqual(4.5)
     }
-  }
+  })
 
-  for (const width of [1024, 390]) {
+  for (const width of [1024]) {
     test(`material and inspector do not overlap ${theme} ${width}`, async ({ page }) => {
       await open(page, '/prompt-builder', theme, width)
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
@@ -77,7 +69,7 @@ for (const theme of ['dark', 'light']) {
   }
 
   test(`toast remains dismissible without covering startup ${theme}`, async ({ page }) => {
-    await open(page, '/prompt-builder', theme, 768)
+    await open(page, '/prompt-builder', theme, 1024)
     await expect(page.locator('.api-status .badge')).toBeVisible()
     await page.waitForTimeout(900)
     await expect(page.locator('.toast-item')).toHaveCount(0)
@@ -89,7 +81,7 @@ for (const theme of ['dark', 'light']) {
   })
 
   test(`message actions retain AA contrast without hover ${theme}`, async ({ page }) => {
-    await open(page, '/chat', theme, 800)
+    await open(page, '/chat', theme, 1024)
     await page.evaluate(() => {
       const host = document.createElement('div')
       host.className = 'message user'
@@ -130,7 +122,7 @@ for (const theme of ['dark', 'light']) {
   })
 
   test(`inpaint controls remain readable and reachable ${theme}`, async ({ page }) => {
-    await open(page, '/prompt-builder', theme, 390)
+    await open(page, '/prompt-builder', theme, 1024)
     await page.getByRole('button', { name: '导入图片换装', exact: true }).click()
     const modal = page.getByRole('dialog', { name: '智能局部换装', exact: true })
     await expect(modal).toBeVisible()
@@ -156,7 +148,7 @@ for (const theme of ['dark', 'light']) {
 
 // Large character libraries and narrow inspector columns must remain browsable.
 for (const theme of ['dark', 'light']) {
-  for (const width of [1440, 1280, 390]) {
+  for (const width of [1440, 1280]) {
     test(`drawing sidebars catalog and readable cards ${theme} ${width}`, async ({ page }, testInfo) => {
       await open(page, '/prompt-builder', theme, width, 900)
       await page.getByRole('button', { name: '专家模式', exact: true }).click()

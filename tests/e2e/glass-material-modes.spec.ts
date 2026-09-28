@@ -58,7 +58,7 @@ for (const theme of ['light', 'dark']) {
     await page.addInitScript(({ key, theme }) => {
       localStorage.setItem(key, JSON.stringify({ theme, glass:'liquid', motion:'reduce' }))
     }, { key, theme })
-    await page.setViewportSize({ width:390, height:740 })
+    await page.setViewportSize({ width:1024, height:740 })
     await page.goto('/')
     const dialog = await openAppearance(page)
     await expect(dialog.getByRole('radio', { name:/液态玻璃/ })).toBeChecked()

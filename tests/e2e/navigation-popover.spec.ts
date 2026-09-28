@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
-for (const theme of ['light', 'dark']) for (const width of [1440, 900, 800, 390]) {
+for (const { theme, width } of [{ theme: 'light', width: 1440 }, { theme: 'dark', width: 900 }]) {
   test(`more navigation and settings handoff ${theme} ${width}`, async ({ page }, info) => {
     const menuRequests: string[] = []
     page.on('request', request => { if (/AppMoreMenu/.test(request.url())) menuRequests.push(request.url()) })
@@ -15,11 +15,11 @@ for (const theme of ['light', 'dark']) for (const width of [1440, 900, 800, 390]
     await expect(page.getByRole('heading', { name:'灵感场景', exact:true })).toBeVisible()
     expect(menuRequests).toEqual([])
     const compact = width <= 900
-    const mobile = page.locator('.nav-menu-toggle')
+    const compactToggle = page.locator('.nav-menu-toggle')
     if (compact) {
-      await expect(mobile).toBeVisible()
+      await expect(compactToggle).toBeVisible()
       expect(await page.locator('.nav').evaluate(element => element.getBoundingClientRect().height)).toBeLessThanOrEqual(80)
-      await mobile.click()
+      await compactToggle.click()
     }
     const trigger = page.getByRole('button', { name:'更多', exact:true })
     await trigger.click()
@@ -36,7 +36,7 @@ for (const theme of ['light', 'dark']) for (const width of [1440, 900, 800, 390]
     await page.keyboard.press('Escape')
     await expect(menu).toHaveCount(0)
     await expect(trigger).toBeFocused()
-    if (compact) await expect(mobile).toHaveAttribute('aria-expanded', 'true')
+    if (compact) await expect(compactToggle).toHaveAttribute('aria-expanded', 'true')
     if (width === 1440) {
       await trigger.click()
       await expect(menu).toBeVisible()
@@ -49,7 +49,7 @@ for (const theme of ['light', 'dark']) for (const width of [1440, 900, 800, 390]
     await expect(page).toHaveURL(/\/gallery$/)
     await expect(page.locator('main h1')).toBeFocused()
     await expect(menu).toHaveCount(0)
-    if (compact) await mobile.click()
+    if (compact) await compactToggle.click()
     await trigger.click()
     await menu.getByRole('button', { name:'外观与动态效果', exact:true }).click()
     const appearance = page.locator('.appearance-dialog')
@@ -58,15 +58,15 @@ for (const theme of ['light', 'dark']) for (const width of [1440, 900, 800, 390]
     await expect.poll(() => appearance.evaluate(el => el.contains(document.activeElement))).toBe(true)
     await page.keyboard.press('Escape')
     await expect(appearance).toBeHidden()
-    await expect(compact ? mobile : trigger).toBeFocused()
-    if (compact) await mobile.click()
+    await expect(compact ? compactToggle : trigger).toBeFocused()
+    if (compact) await compactToggle.click()
     await trigger.click()
     await menu.getByRole('button', { name:'初次来访 · 使用指南' }).click()
     const guide = page.getByRole('dialog', { name:'访客导览' })
     await expect(guide).toBeVisible()
     await page.keyboard.press('Escape')
     await expect(guide).toBeHidden()
-    await expect(compact ? mobile : trigger).toBeFocused()
+    await expect(compact ? compactToggle : trigger).toBeFocused()
   })
 }
 

@@ -105,8 +105,8 @@ export async function previewRoundTrip(page: Page, keyboard = false) {
 }
 
 /** Conservative on-art text bound: composite the real overlay on both black and
- * white. The darkest foreground over the brightest backdrop is a lower bound
- * for any underlying page/image. No CSS is changed for the measurement. */
+ * white. Separated foreground/background luminance intervals bound either text
+ * polarity for any underlying image. No CSS is changed for the measurement. */
 export function onArtTextContrast(element: Element) {
   const viewer = element.closest('.art-viewer')
   if (!viewer) throw new Error('Expected an artwork-viewer descendant')
@@ -129,7 +129,13 @@ export function onArtTextContrast(element: Element) {
     ctx.fillStyle = getComputedStyle(element).color; ctx.fillRect(0, 0, 1, 1)
     return { background, foreground: luminance() }
   })
-  const foreground = Math.min(...samples.map(sample => sample.foreground))
-  const background = Math.max(...samples.map(sample => sample.background))
-  return foreground > background ? (foreground + .05) / (background + .05) : 1
+  const foregroundLow = Math.min(...samples.map(sample => sample.foreground))
+  const foregroundHigh = Math.max(...samples.map(sample => sample.foreground))
+  const backgroundLow = Math.min(...samples.map(sample => sample.background))
+  const backgroundHigh = Math.max(...samples.map(sample => sample.background))
+  // Both themes are valid: bound light-on-dark and dark-on-light separately.
+  // Overlapping luminance intervals cannot certify a contrast floor above 1.
+  if (foregroundLow > backgroundHigh) return (foregroundLow + .05) / (backgroundHigh + .05)
+  if (backgroundLow > foregroundHigh) return (backgroundLow + .05) / (foregroundHigh + .05)
+  return 1
 }

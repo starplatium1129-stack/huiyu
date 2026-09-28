@@ -2,11 +2,13 @@ import { test, expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { THEME_KEY } from '../../src/utils/storageKeys';
 import { characterThemeStyle } from '../../src/utils/characterTheme';
+import { POPULAR_CHARACTER_THEMES } from '../../src/utils/characterThemeCatalog';
+import { installSceneStateFixture } from './helpers/sceneState';
 
 const characterRecords = JSON.parse(readFileSync('data/characters.json', 'utf8')) as Array<{ id: string; accent_color?: string }>;
 const characterThemes = characterRecords
   .filter(record => typeof record?.id === 'string' && record.id.length > 0)
-  .map(record => ({ id: record.id, style: characterThemeStyle(record.id, characterRecords) }));
+  .map(record => ({ id: record.id, style: characterThemeStyle(record.id, characterRecords, POPULAR_CHARACTER_THEMES) }));
 
 // 美术巡检 —— 全局美术校准后的回归网。
 // 检查三类会真实破相的问题:
@@ -21,6 +23,10 @@ const characterThemes = characterRecords
 const PAGES = [
   '/',
   '/scene-explorer',
+  '/popular-scenes',
+  '/video-studio',
+  '/companion',
+  '/companion-chat',
   '/showcase',
   '/gallery',
   '/character',
@@ -32,17 +38,26 @@ const PAGES = [
   '/scene-manager',
   '/prompt-builder',
   '/chat',
-  '/docs/index.html',
-  '/docs/guides/art/philosophy.html',
-  '/docs/roadmap.html',
-  '/docs/guides/art/quality-standard.html',
-  '/docs/guides/art/art-direction.html',
-  '/docs/guides/characters/scene-spec.html',
-  '/docs/guides/prompts/prompt-spec.html',
-  '/docs/guides/prompts/tag-standard.html',
-  '/docs/guides/art/worldview.html',
-  '/docs/getting-started.html'
 ];
+
+// These main workspaces expose exactly one heading inside their main landmark.
+const MAIN_HEADING_ROUTES = new Set([
+  '/', '/prompt-builder', '/scene-explorer', '/gallery', '/showcase', '/character',
+  '/video-studio', '/chat', '/style', '/lora', '/color-script', '/scenario',
+  '/control', '/scene-manager', '/popular-scenes',
+]);
+
+const ROUTE_TITLES: Record<string, string> = {
+  '/': '绘遇', '/prompt-builder': '绘制工作台 · 绘遇', '/gallery': '我的作品 · 绘遇',
+  '/scene-explorer': '灵感场景 · 绘遇', '/showcase': '参考画册 · 绘遇', '/chat': '角色房间 · 绘遇',
+  '/companion': '桌面陪伴 · 绘遇', '/control': '控制面板 · 绘遇',
+  '/scene-manager': '场景管理 · 绘遇', '/character': '角色档案 · 绘遇',
+  '/color-script': '色彩情绪 · 绘遇', '/lora': '模型资料 · 绘遇', '/style': '画风 · 绘遇',
+};
+const ROUTE_ARTWORK: Record<string, string> = {
+  '/scene-explorer': '.scene-grid .sc', '/popular-scenes': '.pop-thumb',
+  '/character': '.character-particle-stage',
+};
 
 const THEMES = ['dark', 'light'] as const;
 
@@ -72,7 +87,16 @@ for (const theme of THEMES) {
     test(`[${theme}] ${target} renders without errors, overflow or unreadable text`, async ({ page }) => {
       const errors = collectErrors(page);
       await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: THEME_KEY, value: theme });
-      await page.goto(target);
+      if (target === '/scene-manager') await installSceneStateFixture(page);
+      // The artwork assertion came from the selected-profile path, not the empty directory overview.
+      await page.goto(target === '/character' ? '/character?character=nene' : target);
+      await expect(page.locator('h1').first()).toBeVisible();
+      if (MAIN_HEADING_ROUTES.has(target)) await expect(page.locator('main h1')).toHaveCount(1);
+      if (ROUTE_TITLES[target]) {
+        await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+        await expect(page).toHaveTitle(ROUTE_TITLES[target]);
+      }
+      if (ROUTE_ARTWORK[target]) await expect(page.locator(ROUTE_ARTWORK[target]).first()).toBeVisible();
       await applyTheme(page, theme);
       // SPA 路由要等异步场景数据与图片落位，否则会在半渲染状态上做判定。
       // 控制面板每 3 秒轮询 /api/status（内部还要探测 SD/TTS/Ollama），
@@ -197,7 +221,6 @@ for (const theme of THEMES) {
     });
   }
 }
-
 
 for (const theme of THEMES) {
   test('[' + theme + '] character accent meets AA on computed workspace surfaces', async ({ page }) => {

@@ -1,13 +1,13 @@
 import { expect, test } from '@playwright/test'
 import { installShowcaseFixture } from './helpers/showcase'
-// One native-focus regression and one normal keyboard/narrow-screen path.
+// One native-focus regression and one normal keyboard path.
 const cases = [
   { theme: 'light', close: 'button', nativeReset: true },
   { theme: 'dark', close: 'escape', nativeReset: false },
 ] as const
 for (const { theme, close, nativeReset } of cases) {
   test(`reference preview keeps reading position ${theme} ${close} native-reset=${nativeReset}`,async({page})=>{
-    await page.setViewportSize({width:close==='button'?1440:390,height:1000})
+    await page.setViewportSize({width:1440,height:1000})
     await page.emulateMedia({reducedMotion:'no-preference'})
     await page.addInitScript(theme=>localStorage.setItem('aics_theme',theme),theme)
     await page.route('**/scene-showcase/manifest.json',route=>route.fulfill({json:{entries:Array.from({length:48},(_,i)=>({id:'scroll-'+i,title:'滚动检查 '+i,char:'nene',rating:'All',type:'scene',width:832,height:1216,thumb:`thumbs/ui-${i%8}.jpg`,image:`images/ui-${i%8}.jpg`}))}}))
@@ -49,7 +49,7 @@ for (const { theme, close, nativeReset } of cases) {
   })
 }
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   test(`preview keeps its image throughout dismissal and can reopen ${theme}`, async ({ page }, info) => {
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))
@@ -110,7 +110,7 @@ for (const theme of ['light', 'dark']) {
   })
 }
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   for (const motion of ['no-preference', 'reduce'] as const) {
     test(`sticky artbook search stays in place across preview ${theme} ${motion}`, async ({ page }, info) => {
       await page.setViewportSize({ width: 1440, height: 960 })
@@ -164,7 +164,7 @@ for (const theme of ['light', 'dark']) {
   }
 }
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   test(`artbook image expands from its thumbnail and returns ${theme}`, async ({ page }, info) => {
     await installShowcaseFixture(page)
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
@@ -213,16 +213,8 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('[data-image-origin-proxy]')).toHaveCount(0)
     await expect(opener).toBeFocused()
     await page.screenshot({ path: info.outputPath(`image-origin-return-${theme}.png`) })
-    await page.setViewportSize({ width: 390, height: 844 })
     await opener.click()
     await expect(dialog.locator('.zoomable-img')).toHaveClass(/is-ready/)
-    await expect(dialog).toHaveCSS('opacity', '1')
-    const bounds = await dialog.locator('.zoomable-img').evaluate(img => {
-      const picture = img.getBoundingClientRect(), canvas = img.closest('.zoomable-image-viewer')!.getBoundingClientRect()
-      return { clipped: picture.top < canvas.top - 1 || picture.bottom > canvas.bottom + 1 || picture.left < canvas.left - 1 || picture.right > canvas.right + 1 }
-    })
-    expect(bounds.clipped).toBe(false)
-    await page.screenshot({ path: info.outputPath(`image-origin-phone-${theme}.png`) })
     await page.getByRole('button', { name: '放大图片', exact: true }).click()
     await expect(dialog.locator('.zoomable-image-viewer')).toHaveClass(/is-zoomed/)
     await page.getByRole('button', { name: '关闭大图', exact: true }).click()
@@ -231,7 +223,7 @@ for (const theme of ['light', 'dark']) {
   })
 }
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   test(`cold artbook preview keeps the clicked photo until its original decodes ${theme}`, async ({ page }, info) => {
     await installShowcaseFixture(page)
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)

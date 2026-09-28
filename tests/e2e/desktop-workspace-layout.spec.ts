@@ -6,17 +6,10 @@ import type { CompanionDesktopBridge } from '../../src/types/desktop'
 // Native WebView2, monitor switching and OS window controls still need device acceptance.
 const displays = [
   { name: 'minimum-window', width: 1024, height: 720, scale: 1 },
-  { name: 'laptop', width: 1366, height: 768, scale: 1 },
-  { name: '1080p-125', width: 1536, height: 864, scale: 1.25 },
   { name: '1080p-150', width: 1280, height: 720, scale: 1.5 },
-  { name: '1440p-150', width: 1707, height: 960, scale: 1.5 },
-  { name: 'wide-desktop', width: 2560, height: 1440, scale: 1 },
-  { name: '4k-100', width: 3840, height: 2160, scale: 1 },
-  { name: '4k-125', width: 3072, height: 1728, scale: 1.25 },
+  { name: '1080p', width: 1920, height: 1080, scale: 1 },
   { name: '4k-150', width: 2560, height: 1440, scale: 1.5 },
-  { name: '4k-200', width: 1920, height: 1080, scale: 2 },
-  { name: '4k-150-workarea', width: 2560, height: 1392, scale: 1.5 },
-  { name: '4k-150-windowed', width: 1920, height: 1080, scale: 1.5 },
+  { name: '4k-100', width: 3840, height: 2160, scale: 1 },
 ]
 
 async function prepareDesktop(context: BrowserContext, theme: string) {

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
-for (const theme of ['light', 'dark']) for (const width of [1440, 390]) {
+for (const theme of ['light', 'dark']) for (const width of [1440]) {
   test(`result shelf previews without changing the live recipe ${theme} ${width}`, async ({page}, info) => {
     await page.setViewportSize({width,height:960})
     await page.route(/^http:\/\/[^/]+\/api\//, route=>route.fulfill({status:503,json:{ok:false,error:'Isolated offline fixture'}}))

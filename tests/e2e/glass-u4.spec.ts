@@ -134,7 +134,7 @@ for (const theme of ['dark', 'light'] as const) {
       })
     }
 
-    for (const width of [1440, 390]) {
+    for (const width of [1440]) {
       test(`real dialog stays readable, keeps padding clicks and restores focus at ${width}px`, async ({ page }, info) => {
         await page.setViewportSize({ width, height: 900 })
         await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -155,7 +155,7 @@ for (const theme of ['dark', 'light'] as const) {
           if (cycle === 0) await page.screenshot({ path: info.outputPath(`dialog-${theme}-${width}.png`) })
           await page.keyboard.press('Escape')
           await expect(dialog).not.toBeVisible()
-          await expect(page.locator(width === 390 ? '.nav-menu-toggle' : '.nav-more-trigger')).toBeFocused()
+          await expect(page.locator('.nav-more-trigger')).toBeFocused()
         }
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
         await expect(page.locator('html')).toBeVisible()

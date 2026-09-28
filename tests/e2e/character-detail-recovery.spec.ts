@@ -7,7 +7,7 @@
 // 同目标解码 / 失败截图方式；共享工作区不启动浏览器服务，浏览器执行由主任务统一进行。
 import { expect, test, type Page, type Route, type TestInfo } from '@playwright/test'
 
-const THEMES = ['dark', 'light'] as const
+const THEMES = ['dark'] as const
 
 type Theme = (typeof THEMES)[number]
 

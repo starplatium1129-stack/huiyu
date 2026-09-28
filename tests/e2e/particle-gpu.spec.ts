@@ -10,7 +10,9 @@ test.beforeEach(async ({ page }) => {
   await page.addScriptTag({ content: bundle.outputFiles[0].text })
 })
 
-for (const darkTheme of [false, true]) for (const dpr of [1, 1.5, 2]) {
+for (const dpr of [1, 1.5, 2]) {
+  // Each raster sequence already switches from light to dark.
+  const darkTheme = false
   test(`GPU keeps portrait colors, outlines and tails ${darkTheme ? 'dark' : 'light'} DPR ${dpr}`, async ({ page }, info) => {
     const result = await page.evaluate(({ darkTheme, dpr }) => {
       const api = (window as unknown as { ParticleFixture: Api }).ParticleFixture

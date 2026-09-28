@@ -43,7 +43,7 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - name: Install browser runtime
         run: npx playwright install --with-deps chromium
-      - name: Run full theme audit and screenshot matrix
+      - name: Run desktop theme and extended regression
         run: npm run test:e2e:nightly:run
         env:
           CI: '1'
@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: nightly-visual-review
-          # capture.spec.ts writes PNGs under a hidden directory. Opt in only
+          # Visual regression specs write PNGs under a hidden directory. Opt in only
           # for these screenshots, not arbitrary hidden files in the workspace.
           path: .review-shots/*.png
           include-hidden-files: true

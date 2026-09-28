@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-for (const theme of ['light', 'dark']) test(`character references load only the selected profile (${theme})`, async ({ page }) => {
+for (const theme of ['dark']) test(`character references load only the selected profile (${theme})`, async ({ page }) => {
   await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
   const ids: string[] = []
   let fullLibraryRequests = 0

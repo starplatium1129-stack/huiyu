@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { SCENARIOS, SCENARIO_RES_MAP } from '../../src/config/scenarios'
 import MOCK_PORTS from '../../scripts/lib/e2e-ports.js'
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   for (const character of ['nene', 'natsume']) {
     test(`scenario handoff preserves all stories and mock request ${theme} ${character}`, async ({ page, request }, testInfo) => {
       test.setTimeout(120000)
@@ -31,7 +31,6 @@ for (const theme of ['dark', 'light']) {
         expect([body.width, body.height]).toEqual([width, height])
         await expect(page.locator('img.result-image')).toBeVisible({ timeout: 30000 })
         await testInfo.attach(`${scenario.id}-request`, { body: JSON.stringify(body), contentType: 'application/json' })
-        await page.screenshot({ path: testInfo.outputPath(`${scenario.id}-${character}-${theme}.png`) })
         await page.goBack()
         await expect(page.locator('.scenario-page')).toBeVisible()
       }
@@ -39,7 +38,7 @@ for (const theme of ['dark', 'light']) {
   }
 }
 
-for (const theme of ['dark', 'light']) test(`popular context leaves no identity in scenario and model handoffs ${theme}`, async ({ page }, testInfo) => {
+for (const theme of ['dark']) test(`popular context leaves no identity in scenario and model handoffs ${theme}`, async ({ page }, testInfo) => {
   test.setTimeout(90000)
   await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
   for (const [origin, target] of [['popular=furina', 'scenario'], ['popular=furina', 'lora'], ['scene=sc006', 'scenario']]) {

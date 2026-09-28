@@ -6,6 +6,7 @@ export default defineConfig({
   ...regression,
   workers: 1,
   projects: [
+    { name: 'home-budget', testMatch: /home-performance\.bench\.ts$/ },
     { name: 'performance', testMatch: /office-performance\.bench\.ts$/ },
     { name: 'fluidity', testMatch: /ui-fluidity\.bench\.ts$/, use: { trace: 'off' } },
     { name: 'fluidity-office', testMatch: /ui-fluidity-office\.bench\.ts$/, use: { trace: 'off' } },

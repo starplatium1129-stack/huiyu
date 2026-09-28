@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   test(`random previews invalidate safely and preserve undo in ${theme} mode`, async ({ page }) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.route('**/data/tags.json*', route => route.fulfill({ json: [

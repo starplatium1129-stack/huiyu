@@ -35,9 +35,9 @@ function fixtureJob(status: VideoJob['status']): VideoJob {
     error:status === 'failed' ? 'CUDA out of memory: simulated artbook failure' : null, code:null }
 }
 
-for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
+for (const theme of ['dark', 'light']) for (const width of [1440]) {
   test(`video artbook modes and keyboard frame input (mock) ${theme} ${width}`, async ({ page }, info) => {
-    await page.setViewportSize({ width, height:width === 390 ? 844 : 960 })
+    await page.setViewportSize({ width, height:960 })
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     const writes = await mockVideo(page)

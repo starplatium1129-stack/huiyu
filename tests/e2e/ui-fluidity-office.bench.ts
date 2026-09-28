@@ -53,7 +53,7 @@ async function showcaseRoundTrip(page: Page) {
   return { preparedScrollY, scrollBefore: before, scrollAfter: after, scrollError: Math.abs(after - before) }
 }
 
-for (const theme of ['dark', 'light']) for (const mode of ['full', 'low'] as const) {
+for (const theme of ['dark']) for (const mode of ['full', 'low'] as const) {
   for (let run = 1; run <= ROUNDS; run++) {
     test(`009 office steady resources ${theme} ${mode} round ${run}`, async ({ page, context, browser }) => {
       test.setTimeout(Math.max(240_000, SAMPLES * 12_000))

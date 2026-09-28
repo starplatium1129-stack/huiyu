@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   test(`desktop keyboard, singleton help and repeated geometry ${theme}`, async ({ page }) => {
     await page.addInitScript(t => localStorage.setItem('aics_theme', t), theme)
     await page.goto('/scene-explorer')

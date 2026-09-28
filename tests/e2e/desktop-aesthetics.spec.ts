@@ -101,7 +101,7 @@ for (const theme of ['light', 'dark']) {
     })
   }
 
-  test(`character context survives profile and scene navigation ${theme}`, async ({ page }) => {
+  if (theme === 'dark') test(`character context survives profile and scene navigation ${theme}`, async ({ page }) => {
     await prepare(page, theme)
     await page.setViewportSize({ width: 1920, height: 1080 })
     for (const [id, target] of [['nene', '/scene-explorer'], ['sakurajima_mai', '/popular-scenes']]) {

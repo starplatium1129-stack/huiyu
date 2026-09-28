@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
-for (const theme of ['light','dark']) for (const width of [1440,390]) {
+for (const theme of ['light','dark']) for (const width of [1440]) {
   test(`home, bookshelf and navigation finish ${theme} ${width}`,async({page},info)=>{
     await page.setViewportSize({width,height:1000})
     await page.route(/^http:\/\/[^/]+\/api\//,route=>route.fulfill({status:503,json:{ok:false,error:'Isolated UI test'}}))
@@ -10,13 +10,12 @@ for (const theme of ['light','dark']) for (const width of [1440,390]) {
     const cards=page.locator('.home-bento .tool-card')
     await expect(cards).toHaveCount(5)
     const first=await cards.first().boundingBox(),second=await cards.nth(1).boundingBox()
-    if(width>1000) { expect(first!.height).toBeGreaterThan(second!.height); expect(first!.width).toBeGreaterThan(second!.width) }
-    else expect(second!.y).toBeGreaterThan(first!.y)
+    expect(first!.height).toBeGreaterThan(second!.height)
+    expect(first!.width).toBeGreaterThan(second!.width)
     expect(await page.locator('.home-bento .t').first().evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
     expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(1)
     await cards.first().scrollIntoViewIfNeeded()
     await page.screenshot({path:info.outputPath(`home-bento-${theme}-${width}.png`)})
-    if(width<900) await page.getByRole('button',{name:'打开导航菜单',exact:true}).click()
     await page.getByRole('button',{name:'更多',exact:true}).click()
     const menu=page.getByRole('dialog',{name:'更多页面',exact:true})
     await expect(menu).toContainText('画室导航')

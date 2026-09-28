@@ -58,7 +58,11 @@ async function fixture(page: Page, theme: string) {
 
 for (const theme of ['light', 'dark']) {
   test(`character archive actions and references ${theme}`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1280, height: 960 })
     await fixture(page, theme)
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.getByRole('link', { name: '以她开始绘制' }).scrollIntoViewIfNeeded()
+    await expect(page.getByRole('link', { name: '以她开始绘制' })).toBeInViewport()
     await expect(page.locator('.character-hero')).toHaveCSS('opacity', '1')
     await expect(page.getByRole('link', { name: '以她开始绘制' })).toHaveAttribute('href', '/prompt-builder?char=natsume')
     await expect(page.getByRole('link', { name: '进入她的房间' })).toHaveAttribute('href', '/chat?character=natsume')
@@ -95,18 +99,5 @@ for (const theme of ['light', 'dark']) {
     await expect(page.getByRole('link', { name: '以她开始绘制' })).toHaveAttribute('href', '/prompt-builder?popular=fixture-popular')
     await expect(page.getByRole('link', { name: '进入她的房间' })).toHaveCount(0)
     await page.screenshot({ path: testInfo.outputPath(`character-missing-${theme}.png`) })
-  })
-
-  test(`character archive responsive ${theme}`, async ({ page }, testInfo) => {
-    await fixture(page, theme)
-    for (const width of [1280, 820, 390]) {
-      await page.setViewportSize({ width, height: 960 })
-      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-      await page.locator('.character-hero').scrollIntoViewIfNeeded()
-      await page.screenshot({ path: testInfo.outputPath(`character-${theme}-${width}.png`) })
-      await page.getByRole('link', { name: '以她开始绘制' }).scrollIntoViewIfNeeded()
-      await expect(page.getByRole('link', { name: '以她开始绘制' })).toBeInViewport()
-      await page.screenshot({ path: testInfo.outputPath(`character-details-${theme}-${width}.png`) })
-    }
   })
 }

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { SCENARIOS, substituteScenarioPrompt } from '../../src/config/scenarios'
+import type { VideoStatusResponse } from '../../src/api/videoApi'
 import { textContrast } from './helpers/contrast'
 import { installSceneReferences } from './helpers/showcase'
 import { pickStudioOptionByValue } from './helpers/studioSelect'
@@ -20,9 +21,11 @@ async function installVideoFixture(page: Page) {
     const url = new URL(route.request().url())
     if (url.pathname === '/api/video/status') return route.fulfill({ json: {
       ok: true, online: false, pending: 0, maxPending: 2,
-      models: [{ id:'minimax-h3', label:'MiniMax H3', available:true, executable:true, modes:['text','image','first-last-frame'], requirements:[], missing:[] }],
-      qualities: [], defaults: { modelId:'minimax-h3' }, t8:{ available:false, reason:'离线编辑测试' },
-    } })
+      models: [{ id:'minimax-h3', label:'MiniMax H3', family:'H3', tier:'本地', summary:'隔离分镜编辑夹具',
+        available:true, executable:true, reason:'离线编辑', modes:['text','image','first-last-frame'], requirements:[], missing:[] }],
+      qualities: [], defaults: { modelId:'minimax-h3', aspectRatio:'landscape', duration:3, camera:'still', motion:'subtle', quality:'standard' },
+      t8:{ available:false, reason:'离线编辑测试' },
+    } satisfies VideoStatusResponse })
     if (url.pathname === '/api/video/images') return route.fulfill({ json: { ok:true, name:'storyboard-fixture.jpg', bytes:4096 } })
     if (route.request().method() !== 'GET') submitted.push(url.pathname)
     return route.fulfill({ json: { ok:true, jobs:[], batches:[] } })
@@ -30,10 +33,10 @@ async function installVideoFixture(page: Page) {
   return submitted
 }
 
-for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
+for (const theme of ['dark', 'light']) for (const width of [1440]) {
   test(`story notebook preserves prompts and shot handoff ${theme} ${width}`, async ({ page }, info) => {
     await installSceneReferences(page)
-    await page.setViewportSize({ width, height: width === 390 ? 844 : 960 })
+    await page.setViewportSize({ width, height: 960 })
     await page.emulateMedia({ reducedMotion:'reduce' })
     await page.addInitScript(theme => {
       localStorage.setItem('aics_theme', theme)
@@ -49,6 +52,9 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
         const card = page.locator('.scenario-card').nth(index)
         await card.focus(); await page.keyboard.press('Enter')
         await expect(card).toHaveAttribute('aria-pressed', 'true')
+        await expect(page.locator('.scenario-list')).toBeVisible()
+        await expect(page.locator('.acts')).toBeVisible()
+        await expect(page.locator('.viewer-h2')).toContainText(scenario.name)
         await expect(page.locator('.act')).toHaveCount(scenario.acts.length)
         await expect(page.locator('.act-details[open]')).toHaveCount(0)
         for (const [actIndex, act] of scenario.acts.entries()) {
@@ -89,7 +95,7 @@ for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
     await expect(overview.locator('img')).toHaveCount(1)
     await expect(overview.locator('img')).toHaveCSS('object-fit', 'contain')
     await expect.poll(() => overview.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
-    await page.locator('.shot-row').nth(1).getByTitle('上移', { exact:true }).click()
+    await page.locator('.shot-row').nth(1).getByRole('button', { name:'上移镜头', exact:true }).click()
     await expect(page.locator('.storyboard-frame').first()).toContainText(acts[1]!.desc)
     await expect(page.locator('.storyboard-frame').nth(1).locator('img')).toHaveCount(1)
     await expect(page.locator('.storyboard-frame').nth(1)).toContainText('5 秒')

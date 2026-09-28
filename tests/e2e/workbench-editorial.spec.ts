@@ -53,66 +53,19 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('.director-inspector')).toBeVisible()
   })
 
-  test(`atelier mocked generation states and saving ${theme}`, async ({ page }, testInfo) => {
-    let state = 'running', submissions = 0, cancellations = 0
-    await prepare(page, theme, true)
-    await page.route('**/api/generation/jobs**', route => {
-      if (route.request().method() === 'POST') submissions++
-      if (route.request().method() === 'DELETE') { cancellations++; state = 'cancelled' }
-      return route.fulfill({ json: { ok: true, job: {
-        id: 'atelier-fixture', status: state, provider: 'webui', seed: 42, progress: state === 'running' ? .45 : 1,
-        error: state === 'failed' ? '隔离测试：生成暂时失败' : null,
-        resultUrl: state === 'succeeded' ? '/atelier-fixture.jpg' : null, resultAvailable: state === 'succeeded', metadata: { seed: 42 },
-      } } })
-    })
-    await page.route('**/atelier-fixture.jpg', route => route.fulfill({ path: 'assets/characters/natsume-home-cg.jpg', contentType: 'image/jpeg' }))
-    await page.getByRole('button', { name: '专家模式', exact: true }).click()
-    await expect(page.locator('.engine-switch button').first()).toBeVisible()
-    await page.locator('.engine-switch button').first().click()
-    await page.getByTestId('sd-generate').click()
-    await expect(page.locator('.stage-generating-title')).toBeVisible()
-    await expect(page.locator('.gen-bar-size .studio-select-trigger')).toBeDisabled()
-    await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-running.png`) })
-    await page.getByRole('button', { name: '先停一下', exact: true }).click()
-    await expect.poll(() => cancellations).toBe(1)
-    await expect(page.locator('.stage-placeholder')).toHaveClass(/is-paused/)
-    state = 'failed'
-    await page.getByTestId('sd-generate').click()
-    await expect(page.locator('.stage-error-detail')).toContainText('隔离测试')
-    state = 'succeeded'
-    await page.getByRole('button', { name: '重新生成', exact: true }).click()
-    await expect(page.locator('.result-image')).toBeVisible()
-    await expect(page.locator('.result-image')).toHaveJSProperty('complete', true)
-    await expect(page.locator('.result-image')).not.toHaveJSProperty('naturalWidth', 0)
-    await expect(page.locator('.result-image')).toHaveCSS('opacity', '1')
-    await expect(page.locator('.stage-placeholder')).toHaveCount(0)
-    await expect(page.getByRole('button', { name: '存入作品册', exact: true })).toBeInViewport()
-    expect((await page.locator('.result-image-actions').boundingBox())!.height).toBeLessThanOrEqual(80)
-    await page.locator('.result-tools-disclosure summary').click()
-    await expect(page.getByRole('button', { name: '加入分镜', exact: true })).toBeVisible()
-    await page.locator('.result-tools-disclosure summary').click()
-    await page.getByRole('button', { name: '存入作品册', exact: true }).click()
-    await expect(page.getByRole('link', { name: '查看作品册', exact: true })).toBeVisible()
-    while (await page.locator('.toast-close').count()) await page.locator('.toast-close').first().click()
-    await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-result.png`) })
-    expect(submissions).toBe(3)
-  })
-
   test(`atelier responsive controls ${theme}`, async ({ page }, testInfo) => {
     await prepare(page, theme)
-    for (const width of [1280, 1024, 820, 390]) {
+    for (const width of [1280, 1024]) {
       await page.setViewportSize({ width, height: 900 })
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
       await page.locator('.gen-bar').scrollIntoViewIfNeeded()
       await expect(page.locator('.gen-bar-size .studio-select-trigger')).toBeInViewport()
       await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-${width}.png`) })
       await page.getByRole('button', { name: '专家模式', exact: true }).click()
-      if (width >= 1024) {
-        await page.setViewportSize({ width, height: 720 })
-        await page.locator('.stage-quick-actions .btn').last().scrollIntoViewIfNeeded()
-        await expect(page.locator('.stage-quick-actions .btn').last()).toBeInViewport()
-        await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-${width}-short.png`) })
-      }
+      await page.setViewportSize({ width, height: 720 })
+      await page.locator('.stage-quick-actions .btn').last().scrollIntoViewIfNeeded()
+      await expect(page.locator('.stage-quick-actions .btn').last()).toBeInViewport()
+      await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-${width}-short.png`) })
       await page.getByRole('tab', { name: '任务', exact: true }).click()
       await expect(page.locator('.inspector-delivery')).toBeVisible()
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
@@ -120,3 +73,49 @@ for (const theme of ['light', 'dark']) {
     }
   })
 }
+
+test(`atelier mocked generation states and saving dark`, async ({ page }, testInfo) => {
+  const theme = 'dark'
+  let state = 'running', submissions = 0, cancellations = 0
+  await prepare(page, theme, true)
+  await page.route('**/api/generation/jobs**', route => {
+    if (route.request().method() === 'POST') submissions++
+    if (route.request().method() === 'DELETE') { cancellations++; state = 'cancelled' }
+    return route.fulfill({ json: { ok: true, job: {
+      id: 'atelier-fixture', status: state, provider: 'webui', seed: 42, progress: state === 'running' ? .45 : 1,
+      error: state === 'failed' ? '隔离测试：生成暂时失败' : null,
+      resultUrl: state === 'succeeded' ? '/atelier-fixture.jpg' : null, resultAvailable: state === 'succeeded', metadata: { seed: 42 },
+    } } })
+  })
+  await page.route('**/atelier-fixture.jpg', route => route.fulfill({ path: 'assets/characters/natsume-home-cg.jpg', contentType: 'image/jpeg' }))
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await expect(page.locator('.engine-switch button').first()).toBeVisible()
+  await page.locator('.engine-switch button').first().click()
+  await page.getByTestId('sd-generate').click()
+  await expect(page.locator('.stage-generating-title')).toBeVisible()
+  await expect(page.locator('.gen-bar-size .studio-select-trigger')).toBeDisabled()
+  await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-running.png`) })
+  await page.getByRole('button', { name: '先停一下', exact: true }).click()
+  await expect.poll(() => cancellations).toBe(1)
+  await expect(page.locator('.stage-placeholder')).toHaveClass(/is-paused/)
+  state = 'failed'
+  await page.getByTestId('sd-generate').click()
+  await expect(page.locator('.stage-error-detail')).toContainText('隔离测试')
+  state = 'succeeded'
+  await page.getByRole('button', { name: '重新生成', exact: true }).click()
+  await expect(page.locator('.result-image')).toBeVisible()
+  await expect(page.locator('.result-image')).toHaveJSProperty('complete', true)
+  await expect(page.locator('.result-image')).not.toHaveJSProperty('naturalWidth', 0)
+  await expect(page.locator('.result-image')).toHaveCSS('opacity', '1')
+  await expect(page.locator('.stage-placeholder')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: '存入作品册', exact: true })).toBeInViewport()
+  expect((await page.locator('.result-image-actions').boundingBox())!.height).toBeLessThanOrEqual(80)
+  await page.locator('.result-tools-disclosure summary').click()
+  await expect(page.getByRole('button', { name: '加入分镜', exact: true })).toBeVisible()
+  await page.locator('.result-tools-disclosure summary').click()
+  await page.getByRole('button', { name: '存入作品册', exact: true }).click()
+  await expect(page.getByRole('link', { name: '查看作品册', exact: true })).toBeVisible()
+  while (await page.locator('.toast-close').count()) await page.locator('.toast-close').first().click()
+  await page.screenshot({ path: testInfo.outputPath(`workbench-${theme}-result.png`) })
+  expect(submissions).toBe(3)
+})

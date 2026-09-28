@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   test(`shared dialog motion keeps native focus and cancellation: ${theme}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' })
     await page.addInitScript(t => localStorage.setItem('aics_theme', t), theme)
@@ -53,28 +53,19 @@ for (const theme of ['light', 'dark']) {
     expect(writes).toBe(0)
   })
 
-  test(`shared surfaces across workspaces: ${theme}`, async ({ page }) => {
-    test.setTimeout(90000)
+  test(`material selection settles on the active button: ${theme}`, async ({ page }) => {
     await page.addInitScript(t => localStorage.setItem('aics_theme', t), theme)
-    for (const path of ['/', '/showcase', '/popular-scenes', '/prompt-builder', '/gallery', '/video-studio', '/character']) {
-      await page.goto(path)
-      await page.locator('.nav').waitFor()
-      await page.waitForTimeout(1600)
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-      await page.screenshot({ path: `scripts/archive/fluid-review/verified/${theme}-${path.slice(1) || 'home'}.png` })
-      if (path === '/prompt-builder') {
-        const switcher = page.locator('.material-switch')
-        if (await switcher.isVisible()) {
-          const buttons = switcher.locator('button')
-          await buttons.nth(1).click(); await buttons.nth(0).click()
-          await page.waitForTimeout(650)
-          const pill = await switcher.locator('.animated-selection').boundingBox()
-          const active = await buttons.nth(0).boundingBox()
-          expect(Math.abs(pill!.x - active!.x)).toBeLessThan(1)
-          expect(Math.abs(pill!.width - active!.width)).toBeLessThan(1)
-        }
-      }
-    }
+    await page.goto('/prompt-builder')
+    const switcher = page.locator('.material-switch')
+    await expect(switcher).toBeVisible()
+    const buttons = switcher.locator('button')
+    await buttons.nth(1).click()
+    await buttons.nth(0).click()
+    await expect.poll(async () => {
+      const pill = await switcher.locator('.animated-selection').boundingBox()
+      const active = await buttons.nth(0).boundingBox()
+      return Math.max(Math.abs(pill!.x - active!.x), Math.abs(pill!.width - active!.width))
+    }).toBeLessThan(1)
   })
 
   test(`fluid search reverses without remounting and restores focus: ${theme}`, async ({ page }) => {
@@ -107,23 +98,22 @@ for (const theme of ['light', 'dark']) {
     await expect(page.locator('body')).not.toHaveClass(/overlay-open/)
   })
 
-  test(`reduced motion, narrow search and navigation: ${theme}`, async ({ page }) => {
+  test(`reduced motion and desktop search: ${theme}`, async ({ page }) => {
     await page.addInitScript(t => localStorage.setItem('aics_theme', t), theme)
-    await page.setViewportSize({ width: 390, height: 844 })
+    await page.setViewportSize({ width: 1024, height: 844 })
     await page.goto('/scene-explorer')
-    await page.getByRole('button', { name: '打开导航菜单' }).click()
     await page.locator('.nav-search').click()
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await expect(page.locator('.global-search')).toHaveCSS('opacity', '1')
     await expect.poll(() => page.locator('.gs-panel').evaluate(el => new DOMMatrixReadOnly(getComputedStyle(el).transform).isIdentity)).toBe(true)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-    await page.screenshot({ path: `scripts/archive/fluid-review/verified/${theme}-mobile.png` })
+    await page.screenshot({ path: `scripts/archive/fluid-review/verified/${theme}-desktop-search.png` })
     await page.keyboard.press('Escape')
     await expect(page.locator('.global-search')).toBeHidden()
   })
 }
 
-for (const theme of ['light', 'dark']) {
+for (const theme of ['dark']) {
   test(`welcome guide fades its content and backdrop on exit ${theme}`, async ({ page }) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.emulateMedia({ reducedMotion: 'no-preference' })

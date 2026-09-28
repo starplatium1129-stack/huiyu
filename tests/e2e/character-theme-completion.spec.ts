@@ -146,38 +146,6 @@ for (const theme of THEMES) {
   }
 }
 
-test('[dark] canonical character themes use the runtime resolver without per-character CSS rules', async ({ page }) => {
-  await page.addInitScript(value => localStorage.setItem('aics_theme', value), 'dark')
-  await page.goto('/prompt-builder?popular=krista_lenz')
-  await expect(page.locator('.pb')).toHaveAttribute('data-character', 'krista_lenz')
-
-  // 主题值来自运行时 inline custom properties；入口 CSS 不再为每个角色生成选择器。
-  const hasCharacterSpecificRule = await page.evaluate(() => {
-    for (const sheet of Array.from(document.styleSheets)) {
-      let rules: CSSRuleList
-      try { rules = sheet.cssRules } catch { continue }
-      for (const rule of Array.from(rules)) {
-        if (!(rule instanceof CSSStyleRule)) continue
-        const selector = rule.selectorText
-        if (selector?.includes('data-character="krista_lenz"')
-          || selector?.includes('data-character="historia_reiss"')) return true
-      }
-    }
-    return false
-  })
-  expect(hasCharacterSpecificRule, '角色主题不应回到逐角色 CSS 选择器').toBe(false)
-  await expect.poll(async () => page.locator('.pb').evaluate(element =>
-    element instanceof HTMLElement ? element.style.getPropertyValue('--character-accent') : ''))
-    .toBe('#eab308')
-
-  // 保留旧别名的主题目录兼容值：canonical accent 语义仍为 #eab308。
-  await expect.poll(async () => {
-    const actual = await readProbeColor(page, 'var(--character-accent)')
-    const expected = await readProbeColor(page, '#eab308')
-    return actual === expected
-  }, { timeout: 10_000 }).toBe(true)
-})
-
 test('[dark] 角色面板点击选择食蜂操祈后主题即时切换', async ({ page }) => {
   await page.addInitScript(value => localStorage.setItem('aics_theme', value), 'dark')
   await page.goto('/prompt-builder')

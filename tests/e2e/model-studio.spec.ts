@@ -38,7 +38,7 @@ async function openStudio(page: Page, theme: string, mockRuntime = true, compani
   await expect(page.getByRole('dialog', { name: '模型导入与校准' })).toBeVisible()
 }
 
-for (const theme of ['dark', 'light']) test(`companion model studio is reachable and restores settings focus ${theme}`, async ({ page }) => {
+for (const theme of ['dark']) test(`companion model studio is reachable and restores settings focus ${theme}`, async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 720 })
   await openStudio(page, theme, true, true)
   const dialog = page.getByRole('dialog', { name: '模型导入与校准', exact: true })
@@ -49,7 +49,7 @@ for (const theme of ['dark', 'light']) test(`companion model studio is reachable
   await expect(page.getByRole('button', { name: '导入或校准模型', exact: true })).toBeFocused()
 })
 
-for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
+for (const theme of ['dark', 'light']) for (const width of [1440]) {
   test(`model studio ${theme} ${width}: folder, calibrated save, reset and focus`, async ({ page }) => {
     await page.setViewportSize({ width, height: 960 })
     await openStudio(page, theme)

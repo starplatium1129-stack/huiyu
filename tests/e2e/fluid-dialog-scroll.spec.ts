@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { installShowcaseFixture } from './helpers/showcase'
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   for (const motion of ['no-preference', 'reduce'] as const) {
     test(`native close cannot expose a top-of-page frame ${theme} ${motion}`, async ({ page }, info) => {
       await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)

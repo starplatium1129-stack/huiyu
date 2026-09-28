@@ -26,7 +26,9 @@ function loadLaneManifest(): LaneManifest {
 function getSpecsForLane(lane: string): string[] {
   const manifest = loadLaneManifest();
   return manifest.specs
-    .filter((entry: LaneManifestEntry) => entry.lane === lane)
+    .filter((entry: LaneManifestEntry) => lane === 'all'
+      ? entry.lane === 'critical' || entry.lane === 'nightly'
+      : entry.lane === lane)
     .map((entry: LaneManifestEntry) => entry.file)
     .sort();
 }

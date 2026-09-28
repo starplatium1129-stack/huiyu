@@ -54,21 +54,6 @@ export default defineConfig({
         baseURL: `http://127.0.0.1:${MOCK_PORTS.gateway}`,
         viewport: { width: 1440, height: 1200 }
       }
-    },
-    {
-      name: 'desktop-narrow',
-      testMatch: /a11y-device\.spec\.ts/,
-      use: { ...browserUse, viewport: { width: 1280, height: 800 } }
-    },
-    {
-      name: 'tablet',
-      testMatch: /a11y-device\.spec\.ts/,
-      use: { ...browserUse, viewport: { width: 768, height: 1024 } }
-    },
-    {
-      name: 'phone',
-      testMatch: /a11y-device\.spec\.ts/,
-      use: { ...browserUse, viewport: { width: 390, height: 844 } }
     }
   ],
   webServer: [

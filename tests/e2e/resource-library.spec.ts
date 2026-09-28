@@ -16,14 +16,14 @@ const task = (action: ResourceAction, state: ResourceTask['state']): ResourceTas
   state, phase: 'copy-progress', bytes: 2, total: 3, startedAt: 1, finishedAt: 0, error: null,
 })
 
-for (const theme of ['dark', 'light'] as const) {
-  for (const width of [1440, 390]) {
-    test(`resource library in control room ${theme} ${width}`, async ({ page }, testInfo) => {
+for (const theme of ['dark'] as const) {
+  for (const width of [1440]) {
+    test(`resource library in control room ${theme} ${width}`, async ({ page }) => {
       let state = initial()
       const writes: unknown[] = []
       const errors: string[] = []
       page.on('pageerror', error => errors.push(error.message))
-      await page.setViewportSize({ width, height: width === 390 ? 844 : 960 })
+      await page.setViewportSize({ width, height: 960 })
       await page.addInitScript(({ theme, themeKey, guideKey }) => {
         localStorage.setItem(themeKey, theme); localStorage.setItem(guideKey, '1')
       }, { theme, themeKey: THEME_KEY, guideKey: GUEST_GUIDE_DISMISSED_KEY })
@@ -55,14 +55,12 @@ for (const theme of ['dark', 'light'] as const) {
       await pickStudioOptionByValue(select, 'portraits')
       const install = panel.getByRole('button', { name: '安装所选版本' })
       await install.focus(); await expect(install).toBeFocused()
-      await panel.screenshot({ path: testInfo.outputPath(`resource-library-${theme}-${width}-ready.png`) })
       expect((await panel.boundingBox())!.width).toBeLessThanOrEqual(width)
       await page.keyboard.press('Enter')
       await expect(panel.getByRole('progressbar')).toBeVisible()
       await expect(select).toBeDisabled()
       await panel.getByRole('button', { name: '取消操作' }).click()
       await expect(panel).toContainText('已取消，可继续恢复')
-      await panel.screenshot({ path: testInfo.outputPath(`resource-library-${theme}-${width}-cancelled.png`) })
       await panel.getByRole('button', { name: '继续恢复' }).click()
       await expect(panel).toContainText('资源操作已完成')
       await expect(panel.getByRole('button', { name: '继续恢复' })).toHaveCount(0)

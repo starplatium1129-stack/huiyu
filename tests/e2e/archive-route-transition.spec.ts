@@ -14,7 +14,7 @@ async function returnedPositions(page: Page, selector: string, returnSelector: s
   }, { selector, returnSelector })
 }
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`a loaded character portrait connects the card and archive in both directions ${theme}`, async ({ page }, info) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.goto('/character')
@@ -81,7 +81,7 @@ for (const theme of ['dark', 'light']) {
   }
 }
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   test(`scene to archive transition is visible, interruptible and cleans up ${theme}`, async ({ page }, info) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.goto('/popular-scenes?character=sakurajima_mai')

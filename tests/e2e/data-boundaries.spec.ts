@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import { textContrast } from './helpers/contrast'
 
 for (const theme of ['dark', 'light']) {
-  test(`global search finds the oldest of 10000 works ${theme}`, async ({ page }) => {
+  if (theme === 'dark') test(`global search finds the oldest of 10000 works ${theme}`, async ({ page }) => {
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/')
@@ -77,7 +77,7 @@ for (const theme of ['dark', 'light']) {
     await page.reload()
     expect(await page.evaluate(() => localStorage.getItem('aics_user_profile_v1'))).toBeNull()
   })
-  test(`future chat remains byte-identical after navigation and reload ${theme}`, async ({ page, context }) => {
+  if (theme === 'dark') test(`future chat remains byte-identical after navigation and reload ${theme}`, async ({ page, context }) => {
     const original = '{ "version": 999, "sentinel": "neutral-future", "histories": {"raiden_shogun": []} }'
     await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)
     await page.emulateMedia({ reducedMotion: 'reduce' })

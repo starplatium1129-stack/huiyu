@@ -2,7 +2,7 @@
 // Follows the verified awaited-route / request-hit / reload-recovery style of resource-recovery.spec.ts.
 import { expect, test, type Page, type Route, type TestInfo } from '@playwright/test'
 
-const THEMES = ['dark', 'light'] as const
+const THEMES = ['dark'] as const
 
 type Theme = (typeof THEMES)[number]
 

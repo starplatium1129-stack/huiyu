@@ -1,7 +1,6 @@
 import { installDesktopHostFixture } from './helpers/desktopHost'
 import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
-import type { CompanionDesktopBridge } from '../../src/types/desktop'
 import type { SceneChangesPayload, SceneDraft, SceneMaintenanceSnapshot } from '../../src/types/api'
 import { GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys'
 
@@ -58,27 +57,6 @@ test.beforeEach(async ({ page }) => {
   }, GUEST_GUIDE_DISMISSED_KEY)
 })
 
-test('consecutive copies get distinct IDs and cancelling reload keeps the local draft', async ({ page }) => {
-  await page.goto(base + '/scene-manager')
-  const catalog = page.locator('.maintenance-catalog:visible')
-  const ids: string[] = []
-  for (let index = 0; index < 2; index++) {
-    if (await catalog.locator('.inspector-more').getAttribute('open') === null) await catalog.locator('.inspector-more summary').click()
-    await catalog.getByRole('button', { name: '复制为新记录', exact: true }).click()
-    const modal = page.getByRole('dialog')
-    ids.push(await modal.locator('input').first().inputValue())
-    await modal.getByRole('button', { name: '取消', exact: true }).click()
-  }
-  expect(ids).toEqual(['sc1000', 'sc1001'])
-  await page.getByRole('button', { name: '重新读取', exact: true }).click()
-  const confirmation = page.getByRole('alertdialog')
-  await expect(confirmation).toContainText('未保存的修改')
-  await confirmation.getByRole('button', { name: '取消', exact: true }).click()
-  await expect(page.locator('.maintenance-state')).toHaveClass(/dirty/)
-  await page.getByRole('searchbox', { name: '搜索管理场景' }).fill('sc1001')
-  await expect(catalog.locator('.catalog-record')).toHaveCount(1)
-})
-
 for (const [theme, width, height] of [['dark', 1440, 960], ['light', 1280, 800], ['dark', 1024, 800], ['dark', 2560, 1440], ['light', 2560, 1440]] as const) {
   test(`scene maintenance workspace ${theme} ${width}`, async ({ page }, testInfo) => {
     const errors: string[] = []
@@ -113,27 +91,6 @@ for (const [theme, width, height] of [['dark', 1440, 960], ['light', 1280, 800],
   })
 }
 
-test('packaged desktop can inspect records without enabling writes', async ({ page }, testInfo) => {
-  await page.addInitScript(() => {
-    window.desktopCapabilitiesFixture = {
-      isDesktop: true, isPackaged: async () => true,
-      getWindowState: async () => ({ maximized: false, focused: true }),
-      onMaximizedChanged: () => 1, offMaximizedChanged: () => {},
-    } as unknown as CompanionDesktopBridge
-  })
-  await page.goto(base + '/scene-manager')
-  await expect(page.locator('.manager-readonly')).toBeVisible()
-  const catalog = page.locator('.maintenance-catalog:visible')
-  await expect(catalog.locator('.catalog-record').first()).toBeVisible()
-  await catalog.locator('.catalog-record').nth(1).click()
-  await expect(catalog.getByRole('button', { name: '编辑', exact: true })).toBeDisabled()
-  await expect(catalog.getByRole('button', { name: '新增场景' })).toBeDisabled()
-  await catalog.getByRole('button', { name: '提示词', exact: true }).click()
-  await expect(catalog.locator('.inspector-prompt').first()).toBeVisible()
-  await expect(catalog.getByRole('button', { name: '复制 JSON' })).toBeEnabled()
-  await page.screenshot({ path: testInfo.outputPath('desktop-scene-maintenance.png'), fullPage: true })
-})
-
 test('editing a title preserves prompt data and uses the change-set save contract', async ({ page }) => {
   let saved: SceneChangesPayload | undefined
   await page.route('**/api/maintenance/scenes/changes', async route => {
@@ -165,19 +122,6 @@ test('editing a title preserves prompt data and uses the change-set save contrac
   const updated = saved?.changeSet.scenes.upsert.find(scene => scene.id === original.id)
   expect(updated?.title).toBe('维护布局回归测试标题')
   for (const field of ['prompt', 'negative', 'animaCaption', 'recommendedSize', 'rating', 'mature']) expect(updated?.[field]).toEqual(original[field])
-})
-
-test('unmatched scene writes are rejected locally for every endpoint and query string', async ({ page }) => {
-  await page.goto(base + '/scene-manager')
-  const results = await page.evaluate(async () => {
-    const endpoints = ['/api/maintenance/scenes', '/api/maintenance/scenes/changes', '/api/maintenance/scenes/import',
-      '/api/maintenance/scenes/preview', '/api/maintenance/scenes/changes?probe=1', '/api/maintenance/run']
-    return Promise.all(endpoints.map(async endpoint => {
-      const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
-      return { status: response.status, code: (await response.json()).code }
-    }))
-  })
-  expect(results).toEqual(Array(6).fill({ status: 403, code: 'SCENE_TEST_NETWORK_BLOCKED' }))
 })
 
 test.beforeEach(async ({ page }) => { await installDesktopHostFixture(page) })

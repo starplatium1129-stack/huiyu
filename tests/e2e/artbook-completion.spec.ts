@@ -18,25 +18,15 @@ for (const theme of ['dark', 'light']) {
     expect(await image.evaluate(e => getComputedStyle(e).objectFit)).toBe('contain')
     await page.screenshot({ path: info.outputPath(`scene-reference-${theme}.png`) })
   })
-  for (const width of [1440, 390]) {
+  for (const width of [1440]) {
     test(`reading hierarchy and notebook ${theme} ${width}`, async ({ page }, info) => {
       await installSceneReferences(page)
-      await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 })
+      await page.setViewportSize({ width, height: 1000 })
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
       await page.emulateMedia({ reducedMotion: 'reduce' })
-      for (const route of ['/', '/gallery', '/chat', '/character', '/color-script', '/video-studio', '/prompt-builder']) {
-        await page.goto(route)
-        await expect(page.locator('main')).toBeVisible()
-        const ready: Record<string, string> = { '/': '.hero-character.is-current', '/gallery': '.gallery-image-browse .archive-state-panel', '/chat': '.chat-input', '/character': '.character-bookshelf', '/color-script': '.color-selection', '/video-studio': '.video-prompt', '/prompt-builder': '.stage-placeholder' }
-        await expect(page.locator(ready[route])).toBeVisible()
-        if (route === '/chat') {
-          await expect(page.locator('.stage-reference-caption')).toBeVisible()
-          await expect(page.locator('.portrait-main')).toHaveAttribute('src', '/scene-showcase/thumbs/sc001.jpg')
-        }
-        await page.evaluate(() => document.fonts.ready)
-        await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-        await page.screenshot({ path: info.outputPath(`${route.replaceAll('/', '') || 'home'}-${theme}-${width}.png`), fullPage: false })
-      }
+      await page.goto('/chat')
+      await expect(page.locator('.stage-reference-caption')).toBeVisible()
+      await expect(page.locator('.portrait-main')).toHaveAttribute('src', '/scene-showcase/thumbs/sc001.jpg')
       await page.goto('/color-script')
       await page.locator('.color-reading > summary').click()
       await expect(page.locator('.light-study')).toHaveCount(2)

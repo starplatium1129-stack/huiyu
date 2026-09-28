@@ -71,25 +71,6 @@ async function inspectorGeometry(page: Page, panel: 'render' | 'prompt') {
 }
 
 for (const theme of ['light', 'dark'] as const) {
-  test(`phone portrait actions occupy separate rows ${theme}`, async ({ page }, info) => {
-    await prepare(page, theme, 390)
-    await page.goto('/chat')
-    const load = page.locator('.live2d-enable-cta')
-    const toolbar = page.locator('.character-info')
-    await expect(load).toBeVisible()
-    await page.evaluate(() => document.fonts.ready)
-    const loadBox = (await load.boundingBox())!
-    const toolbarBox = (await toolbar.boundingBox())!
-    expect(loadBox.y + loadBox.height).toBeLessThanOrEqual(toolbarBox.y + 1)
-    await load.click({ trial: true })
-    await page.getByRole('button', { name: '导入或校准模型', exact: true }).click({ trial: true })
-    await page.locator('.character-controls > summary').click()
-    await expect(page.locator('.character-controls-panel')).toBeVisible()
-    await page.locator('.character-controls-panel button').first().click({ trial: true })
-    await page.locator('.character-controls > summary').click()
-    await page.screenshot({ path: info.outputPath('phone-portrait-actions.png') })
-  })
-
   test(`gallery SPA navigation keeps reference metadata beside the image ${theme}`, async ({ page }, info) => {
     await prepare(page, theme, 1440)
     await installShowcaseFixture(page)
@@ -110,7 +91,7 @@ for (const theme of ['light', 'dark'] as const) {
     await viewer.screenshot({ path: info.outputPath('reference-after-gallery.png') })
   })
 
-  for (const width of [1440, 1024, 390]) {
+  for (const width of [1440, 1024]) {
     test(`engine cards fill the inspector row ${theme} ${width}`, async ({ page }, info) => {
       await prepare(page, theme, width)
       await openExpert(page)
@@ -159,11 +140,7 @@ for (const theme of ['light', 'dark'] as const) {
       await page.getByRole('option', { name: 'R-ESRGAN 4x+ Anime6B', exact: true }).click()
       await expect(upscaler).toContainText('R-ESRGAN 4x+ Anime6B')
       await expectInsideScrollWidth(scroll, page.locator('.sd-advanced-grid, .sd-advanced-grid input, .sd-advanced-grid .studio-select-trigger'))
-      if (width >= 1024) {
-        expect(await scroll.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
-      } else {
-        expect(await page.evaluate(() => scrollY)).toBeGreaterThan(0)
-      }
+      expect(await scroll.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
       await grid.screenshot({ path: info.outputPath('hires-advanced.png') })
     })

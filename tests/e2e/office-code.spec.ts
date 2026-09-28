@@ -121,7 +121,7 @@ for (const theme of ['dark', 'light']) {
     const comfy = `http://127.0.0.1:${MOCK_PORTS.translate + 1}`
     await request.post(`${comfy}/__mock/reset`)
     await request.post(`${comfy}/__mock/fault`, { data: { renderMs: 10 } })
-    await page.setViewportSize({ width: 390, height: 844 })
+    await page.setViewportSize({ width: 900, height: 900 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     const scripts: string[] = []

@@ -8,7 +8,7 @@ for (const theme of ['dark', 'light']) {
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     })
-    test('home visual character choice keeps the creation entry and selected room', async ({ page }) => {
+    if (theme === 'dark') test('home visual character choice keeps the creation entry and selected room', async ({ page }) => {
       await page.goto(base + '/')
       await page.getByRole('button', { name: '四季夏目', exact: true }).click()
       await expect(page.getByRole('button', { name: '四季夏目', exact: true })).toHaveAttribute('aria-pressed', 'true')
@@ -25,7 +25,7 @@ for (const theme of ['dark', 'light']) {
       await expect(page).toHaveURL(/\/chat\?character=natsume$/)
       await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume')
     })
-    test('adjusting a scene never silently submits generation', async ({ page }) => {
+    if (theme === 'dark') test('adjusting a scene never silently submits generation', async ({ page }) => {
       const submitted: string[] = []
       page.on('request', request => {
         if (request.method() === 'POST' && /txt2img|\/generate|\/generation/.test(request.url())) submitted.push(request.url())
@@ -53,7 +53,7 @@ for (const theme of ['dark', 'light']) {
       expect(inspector.x).toBeGreaterThanOrEqual(canvas.x + canvas.width)
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
     })
-    test('room settings are discoverable without occupying the default conversation', async ({ page }) => {
+    if (theme === 'dark') test('room settings are discoverable without occupying the default conversation', async ({ page }) => {
       await page.goto(base + '/chat')
       await expect(page.locator('.room-model-settings')).toBeVisible()
       await expect(page.locator('.provider-switch')).toBeHidden()

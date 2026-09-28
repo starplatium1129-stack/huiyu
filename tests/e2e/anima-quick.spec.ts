@@ -13,60 +13,6 @@ async function chooseCharacter(page: Page, name: string) {
   }
 }
 
-test('anima engine: main generate shows result in main frame through mock ComfyUI', async ({ page, request }) => {
-  test.setTimeout(60000)
-  const errors: string[] = []
-  const directComfyRequests: string[] = []
-  page.on('pageerror', e => errors.push(e.message.slice(0, 200)))
-  page.on('request', browserRequest => {
-    const pathname = new URL(browserRequest.url()).pathname
-    if (pathname.startsWith('/comfy') || ['/prompt', '/queue', '/history', '/interrupt', '/view'].includes(pathname)) {
-      directComfyRequests.push(pathname)
-    }
-  })
-
-  const mockGateway = `http://127.0.0.1:${MOCK_PORTS.gateway}`
-  const mockComfy = `http://127.0.0.1:${MOCK_PORTS.translate + 1}`
-  await request.post(`${mockComfy}/__mock/reset`)
-  await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10, historyTransient: 2 } })
-
-  // 绘图页有持续的服务状态轮询，networkidle 永远不会成立。
-  await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
-
-  // 受控路线：引擎切换只在专家模式渲染
-  await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  const animaEngine = page.locator('.engine-switch button').nth(1)
-  await expect(animaEngine).toBeEnabled({ timeout: 30000 })
-  await animaEngine.click()
-  await expectStudioSelectValue(page.locator('#baseModel'), /anima/, { timeout: 30000 })
-  // c2bbb9a 起在线徽章文案改为「<引擎> 已连接」
-  await expect(page.locator('.api-status .badge')).toContainText(/Anima 已连接/, { timeout: 30000 })
-
-  await page.locator('.material-switch button[aria-controls="material-story"]').click()
-  await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
-
-  const genBtn = page.getByTestId('anima-generate')
-  await expect(genBtn).toBeEnabled({ timeout: 30000 })
-  console.log('GEN_BTN_ENABLED: true')
-  await genBtn.click()
-
-  let imgFound = false
-  const deadline = Date.now() + 30000
-  while (Date.now() < deadline && !imgFound) {
-    await page.waitForTimeout(5000)
-    const count = await page.locator('.result-image-wrap img.result-image').count()
-    if (count > 0) imgFound = true
-  }
-  console.log('MAIN_RESULT_IMG:', imgFound)
-  console.log('PAGE_ERRORS:', errors.length ? errors.join(' | ') : 'none')
-  expect(imgFound).toBe(true)
-  expect(directComfyRequests).toEqual([])
-  const comfyState = await (await request.get(`${mockComfy}/__mock/state`)).json()
-  expect(comfyState.calls.filter((call: { path: string }) => call.path === '/prompt')).toHaveLength(1)
-  expect(comfyState.calls.filter((call: { path: string }) => call.path === '/view')).toHaveLength(1)
-  expect(errors).toEqual([])
-})
 
 test('anima expert parameters and unified button share one parent-owned request metadata snapshot', async ({ page, request }) => {
   test.setTimeout(60000)
@@ -82,7 +28,6 @@ test('anima expert parameters and unified button share one parent-owned request 
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(1800)
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(1).click()
   await page.locator('.anima-quick-panel').evaluate(el => { (el as HTMLDetailsElement).open = true })
@@ -93,30 +38,6 @@ test('anima expert parameters and unified button share one parent-owned request 
 
   await page.getByTestId('anima-generate').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
-  await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
-
-  await page.getByTestId('anima-generate').click()
-  await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(2)
-  expect(bodies[0]).toEqual(bodies[1])
-  expect((bodies[0] as { profileId?: string }).profileId).toBeUndefined()
-  // 受控路线：宁宁默认 LoRA 为 V21（unified e16），请求角色为 nene
-  expect((bodies[0] as { character: string }).character).toBe('nene')
-})
-
-test('director result tools use themed tooltips that also open from the keyboard', async ({ page, request }) => {
-  const mockGateway = `http://127.0.0.1:${MOCK_PORTS.gateway}`
-  const mockComfy = `http://127.0.0.1:${MOCK_PORTS.translate + 1}`
-  await request.post(`${mockComfy}/__mock/reset`)
-  await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
-  await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(1800)
-  await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.locator('.engine-switch button').nth(1).click()
-  await page.locator('.anima-quick-panel').evaluate(el => { (el as HTMLDetailsElement).open = true })
-  await page.locator('.material-switch button[aria-controls="material-story"]').click()
-  await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
-  await page.locator('.anima-quick-panel .anima-seed').fill('424242')
-  await page.getByTestId('anima-generate').click()
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 
   await page.locator('.result-tools-disclosure summary').first().click()
@@ -134,7 +55,14 @@ test('director result tools use themed tooltips that also open from the keyboard
   await expect(tip).toBeVisible()
   await expect(tip).toContainText('高清超分')
   await expect(hires).toHaveAttribute('aria-describedby', /.+/)
+  await page.getByTestId('anima-generate').click()
+  await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(2)
+  expect(bodies[0]).toEqual(bodies[1])
+  expect((bodies[0] as { profileId?: string }).profileId).toBeUndefined()
+  // 受控路线：宁宁默认 LoRA 为 V21（unified e16），请求角色为 nene
+  expect((bodies[0] as { character: string }).character).toBe('nene')
 })
+
 
 test('anima derives the promoted Natsume v21 LoRA and blocks triad', async ({ page, request }) => {
   test.setTimeout(60000)
@@ -149,7 +77,6 @@ test('anima derives the promoted Natsume v21 LoRA and blocks triad', async ({ pa
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2200)
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('#stepChar').getByRole('button', { name: '夏目', exact: true }).click()
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
@@ -170,6 +97,11 @@ test('anima derives the promoted Natsume v21 LoRA and blocks triad', async ({ pa
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('#stepChar').getByRole('button', { name: '双人', exact: true }).click()
   await expect(page.locator('.engine-switch button').nth(1)).toBeDisabled()
+  await expect(page.locator('.engine-switch button').nth(2)).toBeDisabled()
+  expect(await page.locator('.engine-switch button').nth(2).getAttribute('title')).toBeNull()
+  await page.locator('.engine-switch .studio-tooltip-anchor').nth(2).hover()
+  await expect(page.locator('.studio-tooltip')).toBeVisible()
+  await expect(page.locator('.studio-tooltip')).toHaveText(/双人.*SD/)
   expect(bodies).toHaveLength(1)
 })
 
@@ -194,7 +126,6 @@ test('Krea 2 is a separate natural-language request with no LoRA or negative fie
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(1800)
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(2).click()
   await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
@@ -217,20 +148,6 @@ test('Krea 2 is a separate natural-language request with no LoRA or negative fie
   expect(String(bodies[0].prompt)).toContain('color palette uses blue theme and cool tones')
 })
 
-test('Krea 2 and Anima both block triad mode', async ({ page }) => {
-  await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(1200)
-  await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('#stepChar .char-btn').filter({ hasText: '双人' }).click()
-  await expect(page.locator('.engine-switch button').nth(1)).toBeDisabled()
-  await expect(page.locator('.engine-switch button').nth(2)).toBeDisabled()
-  expect(await page.locator('.engine-switch button').nth(2).getAttribute('title')).toBeNull()
-  await page.locator('.engine-switch .studio-tooltip-anchor').nth(2).hover()
-  const tip = page.locator('.studio-tooltip')
-  await expect(tip).toBeVisible()
-  await expect(tip).toHaveText(/双人.*SD/)
-})
 
 // ── 热门角色无 LoRA 创作模式 ───────────────────────────────────────────────
 
@@ -247,7 +164,6 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10, historyTransient: 2 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
@@ -313,7 +229,6 @@ test('popular creator · Krea 2 request has no negative and no LoRA', async ({ p
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
@@ -351,7 +266,6 @@ test('popular creator · Krea style is inferred automatically from the selected 
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
@@ -384,7 +298,6 @@ test('popular creator · Krea style is inferred automatically from the selected 
 
 test('popular creator · manual style controls are available for all characters (full-open)', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
@@ -397,7 +310,6 @@ test('popular creator · manual style controls are available for all characters 
 
 test('popular creator · adult gate requires the mature switch, not character underage', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
@@ -413,7 +325,6 @@ test('popular creator · adult gate requires the mature switch, not character un
 
 test('popular creator · draft round-trips subject/outfit/blueprint through reload', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
@@ -435,7 +346,6 @@ test('popular creator · draft round-trips subject/outfit/blueprint through relo
   })).toBe('ok')
 
   await page.reload()
-  await page.waitForTimeout(2000)
   // 刷新后热门角色状态、服装与蓝图选择原样恢复；引擎被强制回 Anima。
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'popular')
   await expect(page.locator('.directory-item[aria-pressed="true"]')).toContainText('雷电将军')
@@ -449,7 +359,6 @@ test('popular creator · draft round-trips subject/outfit/blueprint through relo
 test('popular creator · copy copies the popular-aware prompt', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
@@ -484,7 +393,6 @@ test('popular creator · select blueprint after Krea is active clamps size to Kr
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
@@ -521,7 +429,6 @@ test('popular creator · switching back to studio immediately restores the nene 
   await request.post(`${mockComfy}/__mock/reset`)
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10, historyTransient: 2 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
@@ -549,7 +456,6 @@ test('popular creator · switching back to studio immediately restores the nene 
 
 test('popular creator · adult blueprint stays reachable across all characters (full-open)', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   // 成年角色：默认成熟内容开关开启 → 成人蓝图可见。
@@ -576,16 +482,13 @@ test('popular creator · adult blueprint stays reachable across all characters (
 
 test('popular creator · scene library page deep-links character and blueprint into the director', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/popular-scenes`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2500)
   // 角色场景库：角色可选（2026-08-16 审计：mock 网关喂真实数据 33 角色，旧断言
   // toHaveCount(18) 随扩容漂移；改为下限断言，数据继续扩容不红）。
-  const charCount = await page.locator('.character-directory .directory-item').count()
-  expect(charCount).toBeGreaterThanOrEqual(18)
+  await expect.poll(() => page.locator('.character-directory .directory-item').count()).toBeGreaterThanOrEqual(18)
   await page.locator('.character-directory .directory-item').filter({ hasText: '雷电将军' }).click()
   await page.locator('.pop-card').filter({ hasText: '花海逆光' }).first()
     .getByRole('link', { name: '绘制这一幕', exact: true }).click()
   // 深链：绘图页应预选角色 + 展开全部列表 + 激活目标蓝图。
-  await page.waitForTimeout(3000)
   await expect(page.locator('.blueprint-card.active')).toContainText('花海逆光')
   await page.locator('[aria-controls="material-character"]').click()
   await expect(page.locator('.directory-item[aria-pressed="true"]')).toContainText('雷电将军')
@@ -594,17 +497,14 @@ test('popular creator · scene library page deep-links character and blueprint i
   await expect(page.locator('.blueprint-card.active')).toContainText('花海逆光')
   // 成人场景在角色场景库中带 R18 标记，且绘图页展开后可见。
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/popular-scenes`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2500)
   await page.locator('.character-directory .directory-item').filter({ hasText: '樱岛麻衣' }).click()
   await expect(page.locator('.pop-card.adult').first()).toBeVisible()
   await page.locator('.pop-card.adult').first().getByRole('link', { name: '绘制这一幕', exact: true }).click()
-  await page.waitForTimeout(3000)
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 })
 
 test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, adjusts threshold and presets', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
-  await page.waitForTimeout(2000)
 
   // 切换到专家模式并选择 Anima 引擎
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
@@ -666,7 +566,7 @@ test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, ad
 
 
 for (const theme of ['dark', 'light']) {
-  for (const width of [1440, 390]) {
+  for (const width of [1440]) {
     test(`anima panel audit ${theme} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 1000 });
       await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme);

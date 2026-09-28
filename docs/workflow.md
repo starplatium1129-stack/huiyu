@@ -320,19 +320,32 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | check:domain-types | 指定公共作品/生成类型、结果快照及保存用例的可达依赖；复用 AST/真实路径/别名/再导出/Vue 脚本解析；禁止直连具体存储/API/Node 平台；类型边单列，违规、未知路径和运行候选循环阻断 |
 | check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
 | test:contract / test:e2e:critical | 契约套件与关键浏览器回归；test:e2e:critical 工作流走无 build 的 `test:e2e:critical:run` 入口，复用已有构建产物（npm 脚本 `test:e2e:critical` 才先 build） |
+| test:e2e / test:e2e:all | 默认 `test:e2e` 构建后只跑 critical；已有构建的 `test:e2e:all` 运行 critical + nightly，不包含 manual/device |
 | test:e2e:performance | 已构建产物的单 worker 冷／热进入与首次操作测量；与回归分开执行 |
 
 质量套件可设置 AICS_TEST_REPORT_DIR 为隔离日志目录，保存逐文件状态、失败分类、超时、耗时和 Node 跳过数量；原有单项命令与 fail-fast/--all 语义不变。JSON 与日志按 [报告契约](guides/engineering/maintainability-boundaries.md#测试职责与报告) 接入 capture:delivery；报告不是已执行门禁的替代品。Quality 仍独立构建各 lane，并新增 Node 22.18 的锁定安装、构建和网关烟雾检查。
 
-关键浏览器回归包含 `ui-layout.spec.ts` 的双主题/多尺寸布局与可读性检查。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
+E2E 仅覆盖桌面客户端与桌面浏览器，不再运行 phone/tablet 项目或手机、平板专用尺寸及触屏用例。保留桌面窄窗口、分屏、双主题、键鼠可达性与减少动态效果检查；桌宠原生小窗口尺寸不属于移动端，继续覆盖。不要把手机尺寸替换成同数量的桌面尺寸来扩大矩阵。
 
-`github-reference.spec.ts` 已加入关键回归：统一词条、固定种子候选、配方兼容检查和 PhotoSwipe 试验。图库使用中性本地图片夹具，双主题各 20 次开关；DOM/Blob URL 趋势保留在 `runtime/github-reference/`，双指采用 CDP 模拟，不代表真实模型、实体触屏或 GPU 内存验收。
+分组清单为 `tests/e2e/e2e-lanes.json`：critical 保留生成/保存、并发数据安全、草稿与状态、主导航和键盘操作；nightly 保留主题、资源恢复与扩展交互；manual 保存按变更选择的独立专项；device 仍需明确的设备或模型资产条件。无断言的 `capture.spec.ts` 已删除。`npx playwright test tests/e2e/<文件>.spec.ts --project desktop --workers 1` 可显式运行普通浏览器专项，可再用 `--grep` 选择相关场景；真实维护和 Live2D 等继续使用各自的隔离入口。裸 `npx playwright test` 仍会发现全部文件，不作为常规回归入口。
+
+小改动先选测试，不先运行整套：工具/composable 逻辑用 `npx vitest run <相关spec>`；局部 UI 只运行相关 E2E 文件或场景，真实颜色/布局保留双主题，纯数据和状态逻辑不重复主题。提交本身不增加检查范围，同一产物已有证据可复用。当前 `test:e2e` 默认的95项也不是每次局部修改都必跑；跨层核心改动与 PR 门禁才使用 critical。详情见 [全量必要性审计](audits/2026-09-28/e2e-necessity-audit.md)。
+
+2026-09-28 第二轮逐项审计覆盖101个原始文件（98回归+3基准）、432处测试声明及参数组：回归库存913→646，critical225→95（8文件），nightly409、manual99、device43，自动全量504。首页预算移至独立性能入口，实际模型加载从 `studio.spec.ts` 拆至 `studio-live2d.spec.ts` 设备/资产专项。核心95项实际验证最终90通过、5失败；失败对应 Rust OOM/TTS 错误详情丢失及尾斜杠权限策略，原断言保留，未把失败移出门禁或标记跳过。报告记录全部文件的决定、定向复验与未执行范围。
+
+2026-09-28 第一轮记录（历史统计）：默认配置展开项从 1138 降至 913；critical 从 37 文件/554 项降至 17 文件/225 项，nightly 为 56 文件/465 项，manual 为 19 文件/167 项，device 为 6 文件/56 项。自动全量入口共 690 项；库存数量包含手动与设备专项，不代表全部执行或通过。删除移动端矩阵及重复巡检，合并保留独有断言，未削弱生成、数据安全或分级边界。
+
+本次验证复用已有 dist 和隔离 Rust 测试栈，受影响浏览器覆盖合计 110 项在修正旧夹具后通过：54 个页面主题巡检、2 个角色色板检查、工作区/粒子/材质交互 32 项、桌面布局/导航/键盘操作 22 项。E2E TypeScript、分组契约、三种自动入口枚举与差异格式检查通过；未运行全部 913 项或原生设备验收。旧夹具修正包括静态背景结构、现行菜单名称和加载完成后的角色色板；200% 文本检查保留键盘关闭和无溢出，删除触控尺寸要求。定向复验产物与最终枚举位于被忽略的 `runtime/e2e-desktop-slim*`。角色色板加载失败时的原始颜色回退未纳入本次色板通过结论。
+
+应用页面错误、溢出和可读性巡检统一在 `theme-audit.spec.ts`，文档由 `page-experience-docs.spec.ts` 一次完成主题、错误、键盘及实际 AA 检查，不重复页面巡游；`ui-layout.spec.ts` 仅保留独有的对比度、侧栏和交互检查，均为扩展回归。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
+
+`github-reference.spec.ts` 属于扩展回归：统一词条、固定种子候选、配方兼容检查和 PhotoSwipe 试验。图库使用中性本地图片夹具，保留鼠标缩放、键盘操作和双主题各 20 次开关；DOM/Blob URL 趋势保留在 `runtime/github-reference/`，不代表真实模型或 GPU 内存验收。
 
 资源故障与恢复的定向用例在 `tests/e2e/resource-recovery.spec.ts`：角色列表头像、场景卡片、参考卡片与画册灯箱，共四种流程的深浅主题检查。使用本地响应夹具，确认故障请求命中并验证恢复后的图片加载。可运行 `node node_modules/@playwright/test/cli.js test tests/e2e/resource-recovery.spec.ts --project desktop --workers 1`；需要已有 dist，设置独立 AICS_E2E_PORT_OFFSET 可隔离服务端口与运行目录。该文件由默认 e2e 发现，未加入显式 critical 清单；不代表参考灯箱、Live2D 或全部离线资源验收。
 
-首页英雄图/热门横条回退见 `home-image-recovery.spec.ts`，角色详情主图/缩略图失败及恢复见 `character-detail-recovery.spec.ts`；`image-fallback-visual.spec.ts` 覆盖两处新增文字 AA 对比度、标签避让与普通桌面/2560×1440 DPR1.5/390×844 窄屏的双主题截图。它们沿用上述 Playwright 定向入口，默认 e2e 可发现，未加入显式 critical 清单。DPR1.5 是浏览器等效视口，不替代主力机 Windows DPI/WebView2 验收；装饰遮罩与实际图像叠字仍需查看截图。
+首页英雄图/热门横条回退见 `home-image-recovery.spec.ts`，角色详情主图/缩略图失败及恢复见 `character-detail-recovery.spec.ts`；`image-fallback-visual.spec.ts` 覆盖两处新增文字 AA 对比度、标签避让与普通桌面/2560×1440 DPR1.5 的双主题截图。它们沿用上述 Playwright 定向入口，默认 e2e 可发现，未加入显式 critical 清单。DPR1.5 是浏览器等效视口，不替代主力机 Windows DPI/WebView2 验收；装饰遮罩与实际图像叠字仍需查看截图。
 
-`illustration-recovery.spec.ts` 补充场景手帖两角色图片失败/切换/恢复与 404 页插图回退、返回导航；内含双主题及 1440/768/390 宽度的占位/台词避让和 AA 检查。404 插图的固定 src 会被构建成带哈希的资源地址，拦截测试须兼容实际打包路径，不能只核对源码 URL。
+`illustration-recovery.spec.ts` 补充场景手帖两角色图片失败/切换/恢复与 404 页插图回退、返回导航；纯恢复逻辑执行一次，1440桌面占位/台词避让和 AA 检查保留双主题。404 插图的固定 src 会被构建成带哈希的资源地址，拦截测试须兼容实际打包路径，不能只核对源码 URL。
 
 `workbench-loading.spec.ts` 检查生产构建的实际脚本请求：未打开的素材分类、专家面板和结果弹窗应保持未加载；首次打开后切换分类不丢搜索或草稿。覆盖场景／专家模式与深浅主题，防止只拆分文件却仍在首屏请求全部分片。
 

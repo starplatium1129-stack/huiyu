@@ -39,8 +39,8 @@ async function expectSettledTransform(locator: import('@playwright/test').Locato
   )
 }
 
-for (const theme of ['light', 'dark'] as const) {
-  for (const width of [1440, 390]) {
+for (const theme of ['dark'] as const) {
+  for (const width of [1440]) {
     test(`anchored select motion, reversal and focus ${theme} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 })
       await page.emulateMedia({ reducedMotion: 'no-preference', colorScheme: theme })

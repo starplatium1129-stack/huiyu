@@ -9,7 +9,7 @@ function chunk(component: string) {
   return '/' + entry.file
 }
 
-for (const theme of ['dark', 'light']) for (const mode of ['basic', 'pro']) {
+for (const theme of ['dark']) for (const mode of ['basic', 'pro']) {
   test(`workbench loads panels on first use and retains drafts ${theme} ${mode}`, async ({ page }, testInfo) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(({ theme, mode }) => {

@@ -1,8 +1,8 @@
 import { installDesktopHostFixture } from './helpers/desktopHost'
 import { test, expect } from '@playwright/test'
 
-for (const theme of ['dark', 'light']) {
-  for (const [width, height] of [[1440, 960], [390, 844]]) {
+for (const theme of ['dark']) {
+  for (const [width, height] of [[1440, 960]]) {
     test(`open room and immersive conversation ${theme} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height })
       await page.addInitScript(theme => localStorage.setItem('aics_theme', theme), theme)

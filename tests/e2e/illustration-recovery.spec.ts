@@ -53,7 +53,7 @@ async function shot(page: Page, testInfo: TestInfo, caseId: string, theme: Theme
 }
 
 function failureCase(caseId: string, title: string, body: (page: Page, theme: Theme, testInfo: TestInfo) => Promise<void>) {
-  for (const theme of THEMES) {
+  for (const theme of ['dark'] as const) {
     test(`${caseId} ${title} [${theme}]`, async ({ page }, testInfo) => {
       await body(page, theme, testInfo)
       await shot(page, testInfo, caseId, theme)
@@ -149,7 +149,7 @@ failureCase('P1', '404 页插图占位可读且返回入口可用并恢复', asy
   await expect(page.locator('.notfound-page h1')).toHaveText('页面走丢了')
 })
 
-for (const viewport of [{ width: 1440, height: 960 }, { width: 768, height: 1024 }, { width: 390, height: 844 }]) {
+for (const viewport of [{ width: 1440, height: 960 }]) {
   for (const theme of THEMES) {
     test(`illustration fallback layout ${viewport.width} ${theme}`, async ({ page }, info) => {
       await page.setViewportSize(viewport)
@@ -161,20 +161,15 @@ for (const viewport of [{ width: 1440, height: 960 }, { width: 768, height: 1024
       await portrait.scrollIntoViewIfNeeded()
       expect(await text.evaluate(textContrast)).toBeGreaterThanOrEqual(4.5)
       const caption = portrait.locator('figcaption')
-      if (viewport.width <= 768) {
-        // 窄屏按当前画册布局隐藏台词，避免压缩角色占位；桌面才验证两层间距。
-        await expect(caption).toBeHidden()
-      } else {
-        await expect(caption).toBeVisible()
-        const separated = await portrait.evaluate(element => {
-          const placeholder = element.querySelector('.companion-fallback.current .companion-fallback-text')!
-          const captionElement = element.querySelector('figcaption')!
-          const a = document.createRange(), b = document.createRange()
-          a.selectNodeContents(placeholder); b.selectNodeContents(captionElement)
-          return a.getBoundingClientRect().bottom + 4 <= b.getBoundingClientRect().top
-        })
-        expect(separated, '占位提示不得与台词重叠').toBe(true)
-      }
+      await expect(caption).toBeVisible()
+      const separated = await portrait.evaluate(element => {
+        const placeholder = element.querySelector('.companion-fallback.current .companion-fallback-text')!
+        const captionElement = element.querySelector('figcaption')!
+        const a = document.createRange(), b = document.createRange()
+        a.selectNodeContents(placeholder); b.selectNodeContents(captionElement)
+        return a.getBoundingClientRect().bottom + 4 <= b.getBoundingClientRect().top
+      })
+      expect(separated, '占位提示不得与台词重叠').toBe(true)
       await portrait.screenshot({ path: info.outputPath(`scene-${viewport.width}-${theme}.png`) })
       await intercept(page, '**/natsume-coffee*.webp*', notFound)
       await page.goto('/no-such-page-glm', { waitUntil: 'domcontentloaded' })

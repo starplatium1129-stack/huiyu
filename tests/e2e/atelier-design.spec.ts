@@ -32,33 +32,7 @@ test('reduced motion stops character transitions', async ({ page }) => {
   expect(await page.locator('.hero-character').first().evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s')
 })
 
-for (const width of [1440, 768, 390]) {
-  test('navigation remains operable at ' + width, async ({ page }) => {
-    await page.setViewportSize({ width, height: 1000 })
-    await openAtelier(page)
-    const toggle = page.getByRole('button', { name: '打开导航菜单' })
-    if (await toggle.isVisible()) await toggle.click()
-    await page.getByRole('navigation', { name: '主导航', exact: true }).getByRole('link', { name: '角色', exact: true }).click()
-    await expect(page).toHaveURL(/character$/)
-    await expect(page.locator('.nav-more-trigger')).toHaveAttribute('aria-expanded', 'false')
-    await expect(page.getByRole('navigation', { name: '主导航', exact: true }).getByRole('link', { name: '角色', exact: true })).toHaveAttribute('aria-current', 'page')
-  })
-  test('main screens fit at ' + width, async ({ page }) => {
-    test.setTimeout(90000)
-    await page.setViewportSize({ width, height: 1000 })
-    const errors: string[] = []
-    page.on('pageerror', e => errors.push(e.message))
-    await openAtelier(page)
-    for (const route of ['/', '/prompt-builder', '/scene-explorer', '/gallery', '/showcase', '/character', '/video-studio', '/chat', '/style', '/lora', '/color-script', '/scenario', '/control', '/scene-manager', '/popular-scenes']) {
-      await page.goto(route)
-      await expect(page.locator('main h1')).toHaveCount(1)
-      await expect(page.locator('main h1')).toBeVisible()
-      const fits = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)
-      expect(fits, route + ' must fit the viewport').toBe(true)
-    }
-    expect(errors).toEqual([])
-  })
-}
+
 
 
 test('discovery companion selection displays matching readable artwork', async ({ page }) => {

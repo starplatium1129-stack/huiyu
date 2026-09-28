@@ -63,11 +63,11 @@ async function editTitle(page: Page, title: string) {
 }
 
 for (const theme of ['dark', 'light'] as const) {
-  for (const width of [1440, 390]) {
+  for (const width of [1440]) {
     test(`impact preview ${theme} ${width}: text, keyboard, contrast and layout`, async ({ page }, testInfo) => {
       const errors: string[] = []
       page.on('pageerror', error => errors.push(error.message))
-      await page.setViewportSize({ width, height: width === 390 ? 844 : 960 })
+      await page.setViewportSize({ width, height: 960 })
       await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: THEME_KEY, value: theme })
       await goto(page)
       await stageSnapshot(page)
@@ -108,21 +108,6 @@ for (const theme of ['dark', 'light'] as const) {
     })
   }
 }
-
-test('ordinary save posts only the exact changes and the loaded version', async ({ page }) => {
-  let body: SceneChangesPayload | undefined
-  await page.route('**/api/maintenance/scenes/changes', route => {
-    body = route.request().postDataJSON()
-    return route.fulfill({ json: { ok: true, count: 3, version: 43, snapshot: edited(), backup: 'isolated-fixture' } })
-  })
-  await goto(page)
-  await stageSnapshot(page)
-  await page.getByRole('button', { name: '保存到项目', exact: true }).click()
-  await expect(page.locator('#maintenanceTitle')).toHaveText('已同步')
-  expect(body).toEqual({ baseVersion: 42, changeSet: { version: 1,
-    scenes: { upsert: [edited().scenes[0], edited().scenes[2]], remove: ['sc999'] },
-    blueprints: { upsert: edited().blueprints, remove: ['bp_001'] }, tags: edited().tags, curation: {} } })
-})
 
 test('preview posts the exact delta and never issues a save or import request', async ({ page }) => {
   let body: SceneChangesPayload | undefined
@@ -234,17 +219,35 @@ test('consecutive copies keep sc1000+ IDs complete through the editor and search
     await expect(page.getByRole('dialog').getByLabel('ID', { exact: true })).toHaveValue(id)
     await page.getByRole('dialog').getByRole('button', { name: '取消', exact: true }).click()
   }
+  await page.getByRole('button', { name: '重新读取', exact: true }).click()
+  const confirmation = page.getByRole('alertdialog')
+  await expect(confirmation).toContainText('未保存的修改')
+  await confirmation.getByRole('button', { name: '取消', exact: true }).click()
+  await expect(page.locator('.maintenance-state')).toHaveClass(/dirty/)
   await page.getByRole('searchbox', { name: '搜索管理场景' }).fill('sc1002')
   await expect(catalog.locator('.catalog-record')).toHaveCount(1)
   await expect(page.getByRole('region', { name: '场景详情', exact: true })).toContainText('sc1002')
 })
 
-test('packaged desktop stays read-only while complete export remains available', async ({ page }) => {
+test('packaged desktop can edit an authoritative snapshot while complete export remains available', async ({ page }) => {
   await page.addInitScript(() => { window.desktopCapabilitiesFixture = { isPackaged: async () => true } as never })
   await goto(page)
-  await expect(page.locator('.manager-readonly')).toBeVisible()
-  await expect(page.getByRole('button', { name: '桌面模式不可保存', exact: true })).toBeDisabled()
-  await expect(page.getByRole('button', { name: '影响预览', exact: true })).toBeDisabled()
+  await expect(page.getByRole('button', { name: '保存到项目', exact: true })).toBeDisabled()
+  await expect(page.getByRole('button', { name: '影响预览', exact: true })).toBeEnabled()
+  await expect(page.getByRole('button', { name: '导出 JSON', exact: true })).toBeEnabled()
+  const catalog = page.locator('.maintenance-catalog:visible')
+  await expect(catalog.locator('.catalog-record').first()).toBeVisible()
+  await catalog.locator('.catalog-record').nth(1).click()
+  await expect(catalog.getByRole('button', { name: '编辑', exact: true })).toBeEnabled()
+  await expect(catalog.getByRole('button', { name: '新增场景' })).toBeEnabled()
+  await catalog.getByRole('button', { name: '提示词', exact: true }).click()
+  await expect(catalog.locator('.inspector-prompt').first()).toBeVisible()
+  await expect(catalog.getByRole('button', { name: '复制 JSON' })).toBeEnabled()
+  await catalog.getByRole('button', { name: '编辑', exact: true }).click()
+  await page.getByLabel('标题 *', { exact: true }).fill('桌面本地草稿')
+  await page.getByRole('dialog').getByRole('button', { name: '保存', exact: true }).click()
+  await expect(catalog.locator('h2')).toHaveText('桌面本地草稿')
+  await expect(page.getByRole('button', { name: '保存到项目', exact: true })).toBeEnabled()
   await expect(page.getByRole('button', { name: '导出 JSON', exact: true })).toBeEnabled()
 })
 

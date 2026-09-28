@@ -31,6 +31,9 @@ for (const theme of ['dark', 'light']) {
       await page.goto(base + '/control')
       await expect(page.locator('.control-count')).toHaveText('3 / 4 服务在线')
       await expect(page.locator('.status-tile')).toHaveCount(4)
+      await expect(page.locator('.control-mobile-nav')).toBeHidden()
+      await expect(page.locator('.control-rail')).toBeVisible()
+      await expect(page.locator('.control-rail-link')).toHaveCount(6)
       await expect(page.locator('.control-rail-foot button').first()).toBeVisible()
       const controls = (await page.locator('.service-rows').boundingBox())!
       expect(controls.y + controls.height).toBeLessThan(1000)

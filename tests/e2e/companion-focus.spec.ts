@@ -91,7 +91,7 @@ async function paintedTextContrast(locator: Locator) {
   }, { encoded: screenshot!.toString('base64'), measurement })
 }
 
-for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for (const width of [1440, 390]) {
+for (const desktop of [false, true]) for (const theme of ['dark', 'light']) for (const width of [1440]) {
   test(`personal API credential controls ${desktop ? 'desktop' : 'web'} ${theme} ${width}`, async ({ page }) => {
     if (desktop) await desktopFixture(page, theme, false, true)
     await page.addInitScript(theme => {
@@ -304,7 +304,7 @@ test('companion chat rejects an unknown live character instead of borrowing anot
 })
 
 for (const theme of ['dark', 'light']) {
-  test(`companion microphone control follows reply and voice state ${theme}`, async ({ page }, testInfo) => {
+  if (theme === 'dark') test(`companion microphone control follows reply and voice state ${theme}`, async ({ page }, testInfo) => {
     await desktopFixture(page, theme, true)
     await page.addInitScript(() => {
       localStorage.setItem('aics_speech_input_v1', JSON.stringify({ enabled: true,
@@ -325,7 +325,7 @@ for (const theme of ['dark', 'light']) {
       await page.screenshot({ path: testInfo.outputPath(`microphone-${theme}-${phase}.png`) })
     }
   })
-  test(`companion capability report explains pending and unsupported mappings in ${theme} theme`, async ({ page }) => {
+  if (theme === 'dark') test(`companion capability report explains pending and unsupported mappings in ${theme} theme`, async ({ page }) => {
     await desktopFixture(page, theme)
     await page.goto('/chat')
     await page.locator('.character-controls > summary').click()

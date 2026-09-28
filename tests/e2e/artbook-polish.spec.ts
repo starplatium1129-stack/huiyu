@@ -16,9 +16,9 @@ for (const theme of ['dark', 'light']) {
     }
   })
 
-  for (const width of [1440, 1280, 390]) {
+  for (const width of [1440, 1280]) {
     test(`artbook references keep selection and layout ${theme} ${width}`, async ({ page }, info) => {
-      await page.setViewportSize({ width, height: width === 390 ? 844 : 960 })
+      await page.setViewportSize({ width, height: 960 })
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.goto('/style')

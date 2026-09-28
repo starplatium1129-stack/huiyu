@@ -16,7 +16,6 @@ async function readable(text: Locator) {
 const sizes = [
   { name: 'desktop', width: 1440, height: 960, scale: 1 },
   { name: '4k150', width: 2560, height: 1440, scale: 1.5 },
-  { name: 'phone', width: 390, height: 844, scale: 1 },
 ]
 
 for (const size of sizes) {

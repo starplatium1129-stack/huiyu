@@ -52,7 +52,7 @@ for (const theme of ['light', 'dark']) {
     })
   }
 
-  test(`palette applies before optional notebook reading ${theme}`, async ({ page }) => {
+  if (theme === 'dark') test(`palette applies before optional notebook reading ${theme}`, async ({ page }) => {
     await prepare(page, theme)
     await page.goto('/color-script')
     const reading = page.locator('.color-reading')
@@ -78,7 +78,7 @@ for (const theme of ['light', 'dark']) {
     await expect(page).toHaveURL(/\/prompt-builder\?mood=calm$/)
   })
 
-  test(`model actions preserve availability boundaries and disclose history on demand ${theme}`, async ({ page }) => {
+  if (theme === 'dark') test(`model actions preserve availability boundaries and disclose history on demand ${theme}`, async ({ page }) => {
     await prepare(page, theme)
     await page.goto('/lora')
     await expect(page.locator('.lora-card')).toHaveCount(3)

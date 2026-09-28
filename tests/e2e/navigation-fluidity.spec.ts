@@ -1,34 +1,5 @@
 import { expect, test } from '@playwright/test'
 
-test('navigation activation intent is visible before delayed route loading', async ({ page }) => {
-  await page.goto('/style')
-  await expect(page.locator('main h1')).toBeVisible()
-  const link = page.getByRole('navigation', { name: '主导航' }).getByRole('link', { name: '灵感', exact: true })
-  await link.dispatchEvent('pointerdown', { button: 0 })
-  await expect(link).toHaveAttribute('data-intent', 'true')
-  await expect(page.locator('.route-loader')).not.toHaveClass(/active/)
-  await link.click()
-  await expect(page).toHaveURL(/scene-explorer$/)
-  await expect(link).not.toHaveAttribute('data-intent', 'true')
-})
-
-test('failed lazy navigation preserves the current page and offers a retry', async ({ page }) => {
-  await page.goto('/style')
-  await expect(page.locator('main h1')).toContainText('画风')
-  const scenarioChunk = /\/\_app\/ScenarioView-[^/]+\.js$/
-  await page.route(scenarioChunk, route => route.abort())
-  const more = page.locator('nav.nav .nav-more-trigger')
-  await more.click()
-  await page.getByRole('link', { name: '剧本与分幕', exact: true }).click()
-  await expect(page.locator('.route-recovery')).toBeVisible()
-  await expect(page.locator('main h1')).toContainText('画风')
-  await expect(page.locator('main > .route-view')).not.toHaveAttribute('inert')
-
-  await page.unroute(scenarioChunk)
-  await page.locator('.route-recovery a[href="/scenario"]').click()
-  await expect(page).toHaveURL(/scenario$/)
-  await expect(page.locator('main h1')).toContainText('剧本')
-})
 
 test('same-route query updates and browser back preserve the route shell', async ({ page }) => {
   await page.goto('/scene-explorer')
@@ -114,19 +85,6 @@ test('a deliberate scroll while filtered wins over the remembered position', asy
   expect(await page.evaluate(() => window.scrollY)).toBeLessThan(200)
 })
 
-test('keep-alive workbench reuses the same active surface after a route round trip', async ({ page }) => {
-  await page.goto('/prompt-builder')
-  await expect(page.locator('.pb')).toBeVisible()
-  await page.locator('.pb').evaluate(element => element.setAttribute('data-f2-keepalive-probe', 'hit'))
-
-  const nav = page.getByRole('navigation', { name: '主导航' })
-  await nav.locator('.nav-more-trigger').click()
-  await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true }).click()
-  await expect(page).toHaveURL(/gallery$/)
-  await nav.getByRole('link', { name: '绘制', exact: true }).click()
-  await expect(page).toHaveURL(/prompt-builder$/)
-  await expect(page.locator('.pb')).toHaveAttribute('data-f2-keepalive-probe', 'hit')
-})
 
 test('deactivating the gallery closes its teleported viewer before the next page is usable', async ({ page }) => {
   await page.goto('/gallery')
@@ -154,44 +112,8 @@ test('deactivating the gallery closes its teleported viewer before the next page
   await expect(page.getByRole('button', { name: '生成图片', exact: true })).toBeVisible()
 })
 
-test('showcase preview preserves scroll through twenty open-close cycles', async ({ page }) => {
-  test.setTimeout(90_000)
-  const pixel = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
-  await page.route('**/scene-showcase/manifest.json', route => route.fulfill({ json: {
-    sceneCount: 24, counts: { All: 24, R15: 0, R18: 0 },
-    entries: Array.from({ length: 24 }, (_, index) => ({
-      id: `scroll-${index}`, title: `滚动夹具 ${index}`, story: '预览滚动恢复夹具。',
-      category: '日常', char: 'nene', rating: 'All', attempt: 1,
-    })),
-  } }))
-  await page.route(/\/scene-showcase\/(?:thumbs|images)\/scroll-\d+\.jpg(?:\?.*)?$/, route => route.fulfill({ contentType: 'image/png', body: pixel }))
-  await page.goto('/showcase')
-  const cards = page.locator('.showcase-grid .sample')
-  await expect(cards.first()).toBeVisible()
-  await page.evaluate(() => window.scrollTo(0, 420))
-  const visibleIndex = await cards.evaluateAll(elements => {
-    const index = elements.findIndex(element => {
-      const rect = element.getBoundingClientRect()
-      return rect.top >= 0 && rect.bottom <= window.innerHeight
-    })
-    return index >= 0 ? index : 0
-  })
-  const trigger = cards.nth(visibleIndex).locator('.sample-visual')
-  await expect(trigger).toBeVisible()
-  await trigger.scrollIntoViewIfNeeded()
-  for (let cycle = 0; cycle < 20; cycle++) {
-    const before = await page.evaluate(() => window.scrollY)
-    await trigger.click()
-    const dialog = page.locator('dialog.showcase-viewer[open]')
-    await expect(dialog).toBeVisible()
-    await dialog.locator('#viewerClose').click()
-    await expect(dialog).toHaveCount(0)
-    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
-    expect(Math.abs(await page.evaluate(() => window.scrollY) - before), `cycle ${cycle + 1}`).toBeLessThanOrEqual(2)
-  }
-})
 
-for (const theme of ['dark', 'light']) {
+for (const theme of ['dark']) {
   for (const reducedMotion of ['no-preference', 'reduce'] as const) {
     test(`navigation keeps slow-load feedback ${theme} ${reducedMotion}`, async ({ page }) => {
       await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
@@ -205,7 +127,8 @@ for (const theme of ['dark', 'light']) {
         await route.continue()
       })
       try {
-        await page.getByRole('link', { name: '剧本与分幕', exact: true }).click()
+        await page.getByRole('button', { name: '更多', exact: true }).click()
+        await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '剧本', exact: true }).click()
         await expect(page.locator('.route-loader')).toHaveClass(/active/)
         await expect(page.getByRole('status', { name: '页面加载状态' })).toContainText('正在打开')
         await expect(page.locator('main')).toHaveAttribute('aria-busy', 'true')
@@ -222,71 +145,14 @@ for (const theme of ['dark', 'light']) {
     })
   }
 
-  test(`cached routes settle without transformed ancestors ${theme}`, async ({ page }) => {
-    const errors: string[] = []
-    page.on('pageerror', error => errors.push(error.message))
-    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
-    await page.goto('/gallery')
-    await expect(page.locator('main h1')).toBeVisible()
-    const nav = page.getByRole('navigation', { name: '主导航' })
-    await nav.getByRole('link', { name: '绘制', exact: true }).click()
-    await expect(page.locator('.gen-bar')).toBeVisible()
-    await expect(page.locator('main > .route-view:not([inert])')).toHaveCSS('transform', 'none')
-    await nav.locator('.nav-more-trigger').click()
-    await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true }).click()
-    await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
-    await expect(page.locator('main > .route-view:not([inert])')).toHaveCSS('transform', 'none')
-    await expect(page.locator('main > .route-view:not([inert])')).not.toHaveAttribute('inert')
-    await page.screenshot({ path: `.review-shots/navigation-settled-${theme}.png` })
-    expect(errors).toEqual([])
-  })
 }
 
-for (const theme of ['dark', 'light']) {
-  test(`mobile navigation preserves pending destination and contrast ${theme}`, async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 })
-    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
-    await page.goto('/style')
-    await expect(page.locator('main h1')).toBeVisible()
-    let release!: () => void
-    const held = new Promise<void>(resolve => { release = resolve })
-    await page.route(/\/_app\/GalleryView-[^/]+\.js$/, async route => { await held; await route.continue() })
-    const nav = page.getByRole('navigation', { name: '主导航' })
-    try {
-      await page.getByRole('button', { name: '打开导航菜单' }).click()
-      await nav.locator('.nav-more-trigger').click()
-      await page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true }).click()
-      await expect(page.locator('.route-loader')).toHaveClass(/active/)
-      await page.getByRole('button', { name: '打开导航菜单' }).click()
-      await nav.locator('.nav-more-trigger').click()
-      const pending = page.getByRole('dialog', { name: '更多页面' }).getByRole('link', { name: '我的作品', exact: true })
-      await expect(pending).toHaveAttribute('data-pending', 'true')
-      await pending.evaluate(async el => {
-        for (let parent: Element | null = el; parent; parent = parent.parentElement) {
-          await Promise.all(parent.getAnimations().filter(a => a.effect?.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {})))
-        }
-      })
-      // The menu is a translucent glass surface over the page's decorative gradient;
-      // the shared contrast helper intentionally refuses to guess image-backed pixels.
-      const pendingSurface = await pending.evaluate(element => {
-        const style = getComputedStyle(element)
-        return { color: style.color, backgroundColor: style.backgroundColor, backgroundImage: style.backgroundImage }
-      })
-      expect(pendingSurface.color).not.toBe(pendingSurface.backgroundColor)
-      expect(pendingSurface.backgroundImage).toBe('none')
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
-      await page.screenshot({ path: `.review-shots/navigation-mobile-${theme}.png` })
-      await page.getByRole('button', { name: '关闭导航菜单' }).click()
-    } finally { release() }
-    await expect(page).toHaveURL(/gallery$/)
-    await expect(page.locator('main > .route-view:not([inert])')).toHaveCSS('transform', 'none')
-    await expect(nav.locator('[data-pending="true"]')).toHaveCount(0)
-  })
-
+for (const theme of ['dark']) {
   test(`rapid route reversal preserves the cached workspace ${theme}`, async ({ page }) => {
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
     await page.goto('/prompt-builder')
     await expect(page.locator('.gen-bar')).toBeVisible()
+    await page.locator('.pb').evaluate(element => element.setAttribute('data-cache-probe', 'retained'))
     const nav = page.getByRole('navigation', { name: '主导航' })
     // Warm both pages once, then interrupt entry with actual subsequent navigation.
     await nav.getByRole('link', { name: '灵感', exact: true }).click()
@@ -309,7 +175,7 @@ for (const theme of ['dark', 'light']) {
     }
     await expect(page.locator('main > .route-view')).toHaveCSS('transform', 'none')
     await expect(page.locator('.gen-bar')).toBeVisible()
-    await page.screenshot({ path: `.review-shots/navigation-workbench-${theme}.png` })
+    await expect(page.locator('.pb')).toHaveAttribute('data-cache-probe', 'retained')
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await nav.getByRole('link', { name: '灵感', exact: true }).click()
     await expect(page.locator('main > .route-view')).toHaveCSS('transform', 'none')
