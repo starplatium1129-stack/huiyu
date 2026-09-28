@@ -23,10 +23,10 @@ import { useSceneStore } from '@/stores/sceneStore';
 import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
 import { type SDRecoveryId } from '@/utils/sdError';
-import { computed, onActivated, onDeactivated, onUnmounted, reactive, ref, toRef, watch } from 'vue';
+import { computed, reactive, ref, toRef, watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { DRAW_ENGINE_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
-import { applyCharacterAtmosphere, characterThemeStyle, clearCharacterAtmosphere } from '@/utils/characterTheme';
+import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
     const router = useRouter();
@@ -36,14 +36,7 @@ export function usePromptWorkspace() {
     const sd = useSDGenerate();
     const { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery, characterShifting } = usePromptWorkspaceUi(pb, route);
     const currentCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char);
-    const currentCharacterThemeStyle = computed(() => (characterThemeStyle(currentCharacterId.value, sceneStore.characters)));
-    const syncCharacterAtmosphere = () => applyCharacterAtmosphere(currentCharacterId.value, sceneStore.characters);
-    // The director page is kept alive. Scope the document-level atmosphere to its
-    // active lifetime so a hidden workbench cannot tint unrelated routes.
-    watch([currentCharacterId, () => sceneStore.characters], syncCharacterAtmosphere, { immediate: true });
-    onActivated(syncCharacterAtmosphere);
-    onDeactivated(clearCharacterAtmosphere);
-    onUnmounted(clearCharacterAtmosphere);
+    const currentCharacterThemeStyle = useCharacterAtmosphere(() => currentCharacterId.value, () => sceneStore.characters);
 
     // ── UI state ──────────────────────────────────────────────────────────────
     const sdSize = ref('832x1216');

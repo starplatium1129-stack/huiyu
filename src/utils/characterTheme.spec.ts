@@ -1,14 +1,23 @@
 import { afterEach, describe, expect, it } from 'vitest'
+import { createHash } from 'node:crypto'
 import {
   applyCharacterAtmosphere,
   characterThemeStyle,
   clearCharacterAtmosphere,
   resolveCharacterTheme,
+  STUDIO_CHARACTER_THEMES,
 } from './characterTheme'
+import { POPULAR_CHARACTER_THEMES } from './characterThemeCatalog'
 
 afterEach(() => clearCharacterAtmosphere())
 
 describe('characterTheme', () => {
+  it('preserves all 162 calibrated theme and CSS outputs from the pre-split catalog', () => {
+    const ids = Object.keys({ ...STUDIO_CHARACTER_THEMES, ...POPULAR_CHARACTER_THEMES }).sort()
+    const values = ids.map(id => [id, resolveCharacterTheme(id, [], POPULAR_CHARACTER_THEMES), characterThemeStyle(id, [], POPULAR_CHARACTER_THEMES)])
+    expect(ids).toHaveLength(162)
+    expect(createHash('sha256').update(JSON.stringify(values)).digest('hex')).toBe('936448b91d9495813f8d9acd07054da875c8c14fde0c0a6f30ee951790307ab7')
+  })
   it('keeps a tuned character palette while exposing derived custom properties', () => {
     const theme = resolveCharacterTheme('natsume', [])
     const style = characterThemeStyle('natsume', []) as Record<string, string>

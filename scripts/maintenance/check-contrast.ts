@@ -130,11 +130,12 @@ function resolveColor(tokens: any, expr: any, parentRgb?: any, depth: any = 0) {
 function characterThemes() {
   const director = sources.read('src/assets/css/director/tokens.css');
   const { characterThemeStyle }: typeof import('../../src/utils/characterTheme.ts') = require('../../src/utils/characterTheme.ts');
+  const { POPULAR_CHARACTER_THEMES }: typeof import('../../src/utils/characterThemeCatalog.ts') = require('../../src/utils/characterThemeCatalog.ts');
   const records = JSON.parse((require('node:fs') as typeof import('node:fs')).readFileSync('data/characters.json', 'utf8'));
   const base = block('.pb', director);
   return themes.flatMap(([theme, tokens]: any) => records.map((record: any) => {
     const id = String(record?.id || '');
-    const inline = characterThemeStyle(id, records);
+    const inline = characterThemeStyle(id, records, POPULAR_CHARACTER_THEMES);
     return [theme + ' / .pb[data-character="' + id + '"]', {
       ...tokens,
       ...base,
