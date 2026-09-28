@@ -12,6 +12,7 @@ pub(super) fn collection(items: &Value) -> Result<&Vec<Value>> {
         .ok_or_else(|| Error::invalid("场景 数据格式或数量超出限制"))?;
     let mut seen = HashSet::new();
     for scene in items {
+        super::generated::validate(scene, false)?;
         let id = scene["id"]
             .as_str()
             .filter(|id| !id.trim().is_empty())

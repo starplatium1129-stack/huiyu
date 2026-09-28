@@ -94,7 +94,10 @@ fn prompt(value: &str) -> String {
         .join(" BREAK ")
 }
 pub(in crate::maintenance) fn optimize(scene: &Value, pins: &Value) -> Value {
-    if truthy(&pins[&text(&scene["id"])]) || !trim(&text(&scene["auditRevision"])).is_empty() {
+    if crate::maintenance::generated::valid(scene)
+        || truthy(&pins[&text(&scene["id"])])
+        || !trim(&text(&scene["auditRevision"])).is_empty()
+    {
         return scene.clone();
     }
     let intent = intent(scene);
@@ -210,6 +213,7 @@ pub(in crate::maintenance) fn optimize(scene: &Value, pins: &Value) -> Value {
 pub(in crate::maintenance) fn classify(input: &[Value], pins: &Value) -> Result<Vec<Value>> {
     let mut ids = HashSet::new();
     for scene in input {
+        crate::maintenance::generated::validate(scene, false)?;
         let id = text(&scene["id"]);
         if !re!(r"^sc[0-9]+$").is_match(&id)
             || !ids.insert(id.clone())
@@ -236,13 +240,17 @@ pub(in crate::maintenance) fn classify(input: &[Value], pins: &Value) -> Result<
         if truthy(&pins[&id]) {
             continue;
         }
-        let rating = CONSTANTS["manual"][&id].as_str().unwrap_or_else(|| {
-            if scene["mature"] == true || scene["rating"] == "R18" {
-                "R18"
-            } else {
-                policy::rating(scene)
-            }
-        });
+        let rating = if crate::maintenance::generated::valid(scene) {
+            crate::maintenance::generated::rating(scene)
+        } else {
+            CONSTANTS["manual"][&id].as_str().unwrap_or_else(|| {
+                if scene["mature"] == true || scene["rating"] == "R18" {
+                    "R18"
+                } else {
+                    policy::rating(scene)
+                }
+            })
+        };
         let category = text(&scene["category"]);
         let category = if category.is_empty() {
             "日常"

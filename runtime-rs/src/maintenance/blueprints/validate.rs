@@ -202,6 +202,7 @@ pub fn collection(items: &Value) -> Result<&Vec<Value>> {
         .ok_or_else(|| Error::invalid("蓝图 数据格式或数量超出限制"))?;
     let mut ids = HashSet::new();
     for item in items {
+        crate::maintenance::generated::validate(item, true)?;
         let id = item["id"]
             .as_str()
             .filter(|id| !id.trim().is_empty())

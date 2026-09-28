@@ -36,6 +36,12 @@ pub(super) fn optimizer_issues(scenes: &[Value], pins: &Value) -> Vec<String> {
         if !ids.insert(id.clone()) {
             errors.push(format!("{id}: duplicate id"));
         }
+        if scene.get("generatedRecipe").is_some() {
+            if let Err(error) = super::generated::validate(scene, false) {
+                errors.push(format!("{id}: {}", error.message));
+            }
+            continue;
+        }
         if ["title", "story", "prompt", "negative"]
             .iter()
             .any(|key| !prompt::truthy(&scene[*key]))

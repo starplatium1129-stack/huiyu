@@ -121,6 +121,10 @@ fn negative(value: &Value) -> Value {
     )
 }
 fn one_blueprint(value: &Value) -> std::result::Result<Option<Value>, String> {
+    if value.get("generatedRecipe").is_some() {
+        crate::maintenance::generated::validate(value, true).map_err(|e| e.message)?;
+        return Ok(Some(value.clone()));
+    }
     if !value.is_object() {
         return Ok(None);
     }
@@ -182,6 +186,11 @@ pub(super) fn blueprints(value: Value) -> std::result::Result<Vec<Value>, String
     } else {
         &value
     };
+    for item in list(source) {
+        if item.get("generatedRecipe").is_some() {
+            crate::maintenance::generated::validate(item, true).map_err(|e| e.message)?;
+        }
+    }
     let parsed: Vec<_> = list(source)
         .iter()
         .filter_map(|item| one_blueprint(item).ok().flatten())

@@ -30,6 +30,7 @@ export function useSceneManagerWorkspace() {
         { id: 'blueprints', label: '蓝图库' },
         { id: 'tags', label: '标签库' },
         { id: 'images', label: '样张' },
+        { id: 'portraits', label: '角色图片' },
         { id: 'duplicates', label: '重复检测' },
         { id: 'import', label: '导入' },
         { id: 'tools', label: '维护工具' },
@@ -201,11 +202,13 @@ export function useSceneManagerWorkspace() {
             return;
         }
         e.sceneTags = splitList(bpSceneTagsInput.value);
-        e.promptTokens = splitList(bpPromptTokensInput.value);
-        e.negativeTokens = splitList(bpNegativeTokensInput.value);
+        if (!e.generatedRecipe) {
+            e.promptTokens = splitList(bpPromptTokensInput.value);
+            e.negativeTokens = splitList(bpNegativeTokensInput.value);
+        }
         e.nsfwTokens = splitList(bpNsfwTokensInput.value);
         e.coverageTags = splitList(bpCoverageTagsInput.value);
-        if (!e.promptTokens.length || !e.negativeTokens.length) {
+        if (!e.generatedRecipe && (!e.promptTokens.length || !e.negativeTokens.length)) {
             bpFormHint.value = 'promptTokens 和 negativeTokens 至少各填一项';
             return;
         }

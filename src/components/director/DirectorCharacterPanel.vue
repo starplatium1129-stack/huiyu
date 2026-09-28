@@ -23,8 +23,8 @@
           :aria-pressed="pb.char === c.id"
           @click="pb.setChar(c.id)">
           <span class="studio-character-art" :class="{ 'studio-duet-art': c.id === 'triad' }" aria-hidden="true">
-            <CharacterPortrait v-if="c.id !== 'natsume'" src="/assets/characters/nene-home-cg-512.webp" name="宁宁" />
-            <CharacterPortrait v-if="c.id !== 'nene'" src="/assets/characters/natsume-home-cg-512.webp" name="夏目" />
+            <CharacterPortrait v-if="c.id !== 'natsume'" :src="characterArtEntry('nene')?.thumbnailUrl || '/assets/characters/nene-home-cg-512.webp'" name="宁宁" />
+            <CharacterPortrait v-if="c.id !== 'nene'" :src="characterArtEntry('natsume')?.thumbnailUrl || '/assets/characters/natsume-home-cg-512.webp'" name="夏目" />
           </span>
           <span class="studio-character-copy"><strong>{{ c.label }}</strong><small>{{ c.id === 'nene' ? '绫地宁宁' : c.id === 'natsume' ? '四季夏目' : '宁宁与夏目' }}</small></span>
           <ArchiveIcon v-if="pb.char === c.id" name="success" class="studio-character-check" />
@@ -55,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { characterArtEntry } from '@/platform/characterArtState'
 import { ref, defineAsyncComponent } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { charOptions } from '@/composables/scene/directorOptions'

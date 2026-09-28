@@ -49,9 +49,10 @@ import MaintenanceRecordDetail from './MaintenanceRecordDetail.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import '@/assets/css/maintenance-workspace.css'
-const props = defineProps<{ records: MaintenanceRecord[]; kind: 'scene' | 'blueprint'; label: string; readonly: boolean }>()
+const props = defineProps<{ records: MaintenanceRecord[]; kind: 'scene' | 'blueprint'; label: string; readonly: boolean; focusId?: string }>()
 defineEmits<{ add: []; edit: [id: string]; duplicate: [id: string]; remove: [id: string] }>()
 const { search, character, category, rating, focus, sort, page, selectedId, categories, characters, filtered, paged, selected, totalPages, hasFilters, missing, reset } = useMaintenanceCatalog(toRef(props, 'records'))
+watch(() => props.focusId, id => { if (id) { search.value = id; selectedId.value = id; page.value = 1 } }, { immediate: true })
 const local = isLocalStudioHost()
 const listEl = ref<HTMLElement | null>(null)
 watch([page, search, character, category, rating, focus, sort], async () => {

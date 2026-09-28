@@ -130,11 +130,11 @@
         @reveal-complete="rememberResultReveal"
       />
       <DirectorResultTools
-        v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, savingResult, resultTemporary }"
+        v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
         @interrogateCurrent="interrogateCurrentImage" @interrogateUpload="triggerInterrogatePick"
         @openInpaint="$emit('openInpaint')" @update:inpaintCompareActive="$emit('update:inpaintCompareActive', $event)"
         @upscale="$emit('upscale')" @goVideo="$emit('goVideo')" @addToShots="$emit('addToShots')" @goShots="$emit('goShots')"
-        @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')" @clearResult="$emit('clearResult')"
+        @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')" @clearResult="$emit('clearResult')"
       />
       <div v-if="interrogateError && displayResultUrl" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
     </div>
@@ -183,6 +183,7 @@ const props = defineProps<{
   hasPrevResult: boolean
   /** 当前结果是否已入册（null = 画布无结果，不显示徽章）。 */
   resultArchived?: boolean | null
+  capturingScene?: boolean
   savingResult?: boolean
   resultTemporary?: boolean
   /** Anima/Krea 暂存里还有上一张未入册成片（失败/取消后可找回）。 */
@@ -218,6 +219,7 @@ const emit = defineEmits<{
   goVideo: []
   addToShots: []
   goShots: []
+  saveScene: []
   saveResult: []
   openCompare: []
   clearResult: []

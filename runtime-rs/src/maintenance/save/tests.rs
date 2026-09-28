@@ -245,6 +245,58 @@ async fn http_save(packaged: bool) {
         std::fs::read(root.join("data/scenes.json.gz")).unwrap()
     );
     assert_eq!(journal::inspect(&options)["status"], "free");
+    // A captured rendered request survives the real HTTP transaction without editorial rewrites.
+    let mut captured = before.value["snapshot"]["scenes"][0].clone();
+    captured["id"] = "sc305".into();
+    captured["title"] = "My image".into();
+    captured["story"] = "窗边阅读".into();
+    captured["storyJa"] = "".into();
+    captured["prompt"] = "A woman reading beside a window.\n  Soft light.".into();
+    captured["negative"] = "".into();
+    captured["rating"] = "R15".into();
+    captured["generatedRecipe"] = json!({"version":1,"engine":"krea2","prompt":captured["prompt"],"negative":"","parameters":{"seed":123,"steps":"20","cfg":"6","size":"768×1024","loras":[]}});
+    let payload = |scene: &Value| json!({"baseVersion":state::version(&root).unwrap(),"changeSet":{"version":1,"scenes":{"upsert":[scene],"remove":[]}}});
+    let (status, captured_saved) = call(&app, payload(&captured), "127.0.0.1:1234").await;
+    assert_eq!(status, StatusCode::OK, "{captured_saved}");
+    let stored = captured_saved["snapshot"]["scenes"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["id"] == "sc305")
+        .unwrap();
+    assert_eq!(stored["prompt"], captured["prompt"]);
+    assert_eq!(stored["generatedRecipe"], captured["generatedRecipe"]);
+    assert_eq!(stored["negative"], "");
+    assert_eq!(
+        stored["rating"], "R15",
+        "an explicit conservative rating is never lowered"
+    );
+    let version = state::version(&root).unwrap();
+    for field in ["version", "parameters", "prompt"] {
+        let mut invalid = captured.clone();
+        invalid["generatedRecipe"][field] = match field {
+            "version" => json!(2),
+            "parameters" => json!({"arbitrary":{"nested":true}}),
+            _ => json!("different prompt"),
+        };
+        let (status, rejected) = call(&app, payload(&invalid), "127.0.0.1:1234").await;
+        assert_eq!(status, StatusCode::BAD_REQUEST, "{rejected}");
+        assert_eq!(version, state::version(&root).unwrap());
+    }
+    captured["id"] = "sc306".into();
+    captured["rating"] = "All".into();
+    captured["prompt"] = "1girl, nude".into();
+    captured["generatedRecipe"]["prompt"] = captured["prompt"].clone();
+    let (status, elevated) = call(&app, payload(&captured), "127.0.0.1:1234").await;
+    assert_eq!(status, StatusCode::OK, "{elevated}");
+    let elevated = elevated["snapshot"]["scenes"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["id"] == "sc306")
+        .unwrap();
+    assert_ne!(elevated["rating"], "All");
+    assert_eq!(elevated["prompt"], captured["prompt"]);
     for task in ["validate", "classify", "optimize"] {
         let result =
             super::super::commands::run(&options, &json!({"task":task}), &CancellationToken::new())
@@ -270,6 +322,54 @@ async fn http_save(packaged: bool) {
         std::fs::read(root.join("data/blueprints/fixture.json")).unwrap()
     );
     assert_eq!(journal::inspect(&options)["status"], "free");
+    for engine in ["krea2", "anima"] {
+        let current = state::read(&options).unwrap();
+        let mut generated = current.value["snapshot"]["blueprints"][0].clone();
+        generated["id"] = format!("captured-{engine}").into();
+        generated["title"] = "My captured room".into();
+        generated["description"] = "阅读".into();
+        generated["sampleRating"] = "All".into();
+        generated["adult"] = false.into();
+        generated["compositionIntent"] = "single".into();
+        generated["promptTokens"] = if engine == "krea2" {
+            json!([])
+        } else {
+            json!(["A quiet room."])
+        };
+        generated["promptProse"] = if engine == "krea2" {
+            "A quiet room."
+        } else {
+            ""
+        }
+        .into();
+        generated["negativeTokens"] = json!([]);
+        generated["generatedRecipe"] = json!({"version":1,"engine":engine,"prompt":"A quiet room.","negative":"","parameters":{"size":"1024x1024"}});
+        let body = json!({"baseVersion":current.value["version"],"changeSet":{"version":1,"scenes":{"upsert":[],"remove":[]},"blueprints":{"upsert":[generated],"remove":[]}}});
+        let (status, saved) = call(&app, body, "127.0.0.1:1234").await;
+        assert_eq!(status, StatusCode::OK, "{saved}");
+        let stored = saved["snapshot"]["blueprints"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|b| b["id"] == generated["id"])
+            .unwrap();
+        assert_eq!(stored["generatedRecipe"], generated["generatedRecipe"]);
+        assert_eq!(stored["promptTokens"], generated["promptTokens"]);
+        assert_eq!(stored["promptProse"], generated["promptProse"]);
+        let saved_version = saved["version"].clone();
+        if engine == "krea2" {
+            generated["promptTokens"] = json!(["a different scene"]);
+        } else {
+            generated["promptProse"] = "A different scene.".into();
+        }
+        let invalid = json!({"baseVersion":saved_version,"changeSet":{"version":1,"scenes":{"upsert":[],"remove":[]},"blueprints":{"upsert":[generated],"remove":[]}}});
+        let (status, rejected) = call(&app, invalid, "127.0.0.1:1234").await;
+        assert_eq!(status, StatusCode::BAD_REQUEST, "{rejected}");
+        assert_eq!(
+            state::version(&root).unwrap(),
+            saved_version.as_u64().unwrap()
+        );
+    }
     if packaged {
         assert_eq!(
             bundled,

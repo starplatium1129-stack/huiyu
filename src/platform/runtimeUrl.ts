@@ -1,6 +1,7 @@
 import { shallowRef } from 'vue'
 import type { FetchImplementation } from '../api/client.ts'
 import { isNativeDesktopOrigin } from '../../services/desktopOrigins.ts'
+import { remapCharacterArt } from './characterArtState.ts'
 const runtimeOrigin = shallowRef<string | null>(null)
 const resourceIdentity = shallowRef('')
 let desktopMode = false
@@ -25,6 +26,7 @@ export const runtimeFetch: FetchImplementation = (input, init) => {
 export function resolveRuntimeUrl(value: string | null | undefined): string {
   if (!value) return ''
   if (/^(blob:|data:)/.test(value)) return value
+  value = remapCharacterArt(value)
   if (!desktopMode) return value
   if ((import.meta as ImportMeta & { env?: { MODE?: string } }).env?.MODE === 'desktop' && (value.startsWith('./_app/') || value.startsWith('/_app/')
     || ['/assets/favicon.svg', '/assets/logo.svg', '/assets/logo-light.svg'].includes(value))) return value

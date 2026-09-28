@@ -1,4 +1,5 @@
-import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { runtimeFetch, runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
+import { characterArtEntry, characterArtRevision } from '../platform/characterArtState.ts'
 import type { ParticlePoint } from './particleShapes.ts'
 import { isPopularPortraitPending } from './popularPortraitSource.ts'
 
@@ -97,17 +98,19 @@ export function shouldUnderlay(hex: string): boolean {
 }
 
 export function portraitCloudUrl(id: string): string {
-  return `/assets/particles/p_${encodeURIComponent(id)}.json`
+  return characterArtEntry(id)?.particleUrl || `/assets/particles/p_${encodeURIComponent(id)}.json`
 }
+export function portraitCloudIdentity(id: string): string { return `${runtimeResourceIdentity()}:${id}:${characterArtRevision(id)}` }
 
 /** 懒加载角色点云；不存在（404）或失败返回 null，结果缓存（含失败，避免反复 404）。 */
 export function loadPortraitCloud(id: string): Promise<PortraitCloud | null> {
   if (!id || isPopularPortraitPending(id)) return Promise.resolve(null)
-  const cached = cloudCache.get(id)
+  const key = portraitCloudIdentity(id)
+  const cached = cloudCache.get(key)
   if (cached !== undefined) return Promise.resolve(cached)
-  const pending = pendingLoads.get(id)
+  const pending = pendingLoads.get(key)
   if (pending) return pending
-  const task = runtimeFetch(portraitCloudUrl(id))
+  const task = runtimeFetch(portraitCloudUrl(id), { signal: AbortSignal.timeout(10_000) })
     .then(async res => {
       const cloud = res.ok ? await res.json() as PortraitCloud : null
       const usable = cloud
@@ -115,15 +118,20 @@ export function loadPortraitCloud(id: string): Promise<PortraitCloud | null> {
         && cloud.grid && cloud.grid.w > 4 && cloud.grid.h > 4
         && typeof cloud.grid.cells === 'string'
         && cloud.grid.cells.length >= cloud.grid.w * cloud.grid.h * 0.9
-      cloudCache.set(id, usable ? cloud : null)
-      return cloudCache.get(id) ?? null
+      if (key !== portraitCloudIdentity(id)) return null
+      if (cloudCache.size >= 80) cloudCache.delete(cloudCache.keys().next().value!)
+      cloudCache.set(key, usable ? cloud : null)
+      return cloudCache.get(key) ?? null
     })
     .catch(() => {
-      cloudCache.set(id, null)
+      if (key === portraitCloudIdentity(id)) {
+        if (cloudCache.size >= 80) cloudCache.delete(cloudCache.keys().next().value!)
+        cloudCache.set(key, null)
+      }
       return null
     })
-    .finally(() => { pendingLoads.delete(id) })
-  pendingLoads.set(id, task)
+    .finally(() => { pendingLoads.delete(key) })
+  pendingLoads.set(key, task)
   return task
 }
 

@@ -179,6 +179,14 @@ pub fn prepare(options: &Options, incoming: &[Value], previous: &[Value]) -> Res
         .filter_map(|bp| bp["id"].as_str().map(|id| (id, bp)))
         .collect::<HashMap<_, _>>();
     for blueprint in incoming {
+        if blueprint.get("generatedRecipe").is_some()
+            && blueprint["adult"] == true
+            && characters
+                .get(blueprint["characterId"].as_str().unwrap_or(""))
+                .is_none_or(|c| c["adultEligibility"] != "adult")
+        {
+            return Err(Error::invalid("生成场景的角色未确认成年，不能保存成人蓝图"));
+        }
         if old
             .get(blueprint["id"].as_str().unwrap_or(""))
             .is_some_and(|old| {

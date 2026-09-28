@@ -24,7 +24,7 @@
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
-import { loadPortraitCloud } from '@/utils/particlePortrait'
+import { loadPortraitCloud, portraitCloudIdentity } from '@/utils/particlePortrait'
 
 const SemanticParticleField = defineAsyncComponent(() => import('@/components/visual/SemanticParticleField.vue'))
 const props = defineProps<{ characterId: string; name: string; initialOriginal?: boolean }>()
@@ -35,11 +35,11 @@ const mode = ref<'particles' | 'original'>(props.initialOriginal ? 'original' : 
 const available = ref(false)
 const loading = ref(true)
 const showOriginal = computed(() => mode.value === 'original' || (!loading.value && !available.value))
-watch(() => props.characterId, async (id, _old, onCleanup) => {
+watch(() => portraitCloudIdentity(props.characterId), async (_identity, _old, onCleanup) => {
   let cancelled = false
   onCleanup(() => { cancelled = true })
   loading.value = true
-  const cloud = await loadPortraitCloud(id)
+  const cloud = await loadPortraitCloud(props.characterId)
   if (cancelled) return
   available.value = !!cloud
   loading.value = false

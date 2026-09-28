@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "extracted": "2026-09-27",
+  "extracted": "2026-09-28",
   "method": "Recipe data exported mechanically from the existing pure TypeScript module; validation behavior ported separately.",
   "sources": [
     {
@@ -17,7 +17,7 @@
     },
     {
       "path": "src/utils/popularContent.ts",
-      "sha256": "050351d768f2286cb132783808a94de3ed585f918e3af27385ab973f52dc461e"
+      "sha256": "abf3dbae27a553115aaad070d3b303444dd7e91b39601b03d78cc5d6e8c7f1c9"
     },
     {
       "path": "src/utils/popularParseGuards.ts",

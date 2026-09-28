@@ -8,6 +8,7 @@ mod content_products;
 mod context;
 mod contracts;
 pub(crate) mod fs;
+mod generated;
 mod identity;
 pub mod journal;
 mod preview;

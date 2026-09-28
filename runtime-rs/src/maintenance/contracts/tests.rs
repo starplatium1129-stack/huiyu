@@ -101,7 +101,8 @@ fn content_gate_matches_node_and_rejects_stale_products_and_pollution() {
         runtime: root.join("runtime"),
         showcase: None,
     };
-    assert!(old_issues(root).is_empty());
+    let initial_issues = old_issues(root);
+    assert!(initial_issues.is_empty(), "{initial_issues:?}");
     let audit = validate(&options).unwrap();
     assert_eq!(audit["referenceAudit"]["pending"], 1);
     let mut popular = read(root, "data/popular-characters.json").unwrap();

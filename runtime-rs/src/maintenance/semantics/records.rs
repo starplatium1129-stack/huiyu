@@ -56,6 +56,18 @@ pub(super) fn validate(
             errors.push(format!("{label}: scene must be an object"));
             continue;
         }
+        if scene.get("generatedRecipe").is_some() {
+            if let Err(error) = crate::maintenance::generated::validate(scene, false) {
+                errors.push(format!("{label}: {}", error.message));
+            }
+            if !ids.insert(id.clone()) {
+                errors.push(format!("{label}: duplicate id"));
+            }
+            if scene["rating"] != crate::maintenance::generated::rating(scene) {
+                errors.push(format!("{label}: captured rating is too low"));
+            }
+            continue;
+        }
         for key in REQUIRED {
             let value = &scene[*key];
             if value.is_null() || value == "" || value.as_array().is_some_and(Vec::is_empty) {

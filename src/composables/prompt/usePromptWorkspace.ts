@@ -1,3 +1,4 @@
+import { useGeneratedSceneCapture } from './useGeneratedSceneCapture';
 import type { ArtworkRecord } from '@/types/artwork'
 import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
@@ -225,6 +226,10 @@ export function usePromptWorkspace() {
         setDrawEngine,
     });
     const { displayedResultHistoryId, resultArchived, savingResult, resultTemporary, saveCurrentResult, restoreTempResult, discardTemp } = tempResultTools;
+    const { capturedScene, capturingScene, captureScene, closeSceneCapture } = useGeneratedSceneCapture({
+        engine: drawEngine, url: displayResultUrl, busy: generationBusy, anima: animaState,
+        sdContext: resultContext, sdPrompt: sd.resultPrompt, flash: message => pb.flash(message),
+    });
     // ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
     // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
     // ComfyUI 任务）→ 每张自动入册历史 → 面板内直接预览挑选。
@@ -522,6 +527,7 @@ export function usePromptWorkspace() {
         popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession,
     });
     return {
+        capturedScene, capturingScene, captureScene, closeSceneCapture,
         pb, displayResultUrl, characterShifting, currentCharacterThemeStyle, popularCharacter, sd,
         animaSession, archiveBarShape, modeDescription, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,

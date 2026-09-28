@@ -264,7 +264,7 @@ function portraitSrc(id: string): string {
   // 横条卡片仅 ~180px 宽，加载 1.2MB 原图曾把首页资源预算打爆 5 倍（16MB）。
   // 改用 build-character-thumbs.py 预生成的 360px WebP 缩略图（~19KB/张）；
   // 源 PNG 重发后需重跑该脚本（mtime 过期自动重建）。
-  return popularPortraitSrc(id, sceneStore.version || 3)
+  return resolveRuntimeUrl(popularPortraitSrc(id, sceneStore.version || 3))
 }
 
 

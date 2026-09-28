@@ -56,9 +56,10 @@
         <p>选择记录查看详情。编辑后先保存草稿，再保存到项目。</p>
       </nav>
       <div class="manager-content" v-content-motion="tab">
-      <MaintenanceCatalog v-show="tab === 'scenes'" :records="sceneRecords" kind="scene" label="场景" :readonly="maintenanceReadonly" @add="openAddModal" @edit="openEditModal" @duplicate="duplicateScene" @remove="deleteScene" />
-      <MaintenanceCatalog v-show="tab === 'blueprints'" :records="blueprintRecords" kind="blueprint" label="蓝图" :readonly="maintenanceReadonly" @add="openBlueprintAddModal" @edit="openBlueprintEditModal" @duplicate="duplicateBlueprint" @remove="deleteBlueprint" />
+      <MaintenanceCatalog v-show="tab === 'scenes'" :records="sceneRecords" kind="scene" label="场景" :focus-id="sceneRecords.some(row => row.id === createdSceneId) ? createdSceneId : ''" :readonly="maintenanceReadonly" @add="openAddModal" @edit="openEditModal" @duplicate="duplicateScene" @remove="deleteScene" />
+      <MaintenanceCatalog v-show="tab === 'blueprints'" :records="blueprintRecords" kind="blueprint" label="蓝图" :focus-id="blueprintRecords.some(row => row.id === createdSceneId) ? createdSceneId : ''" :readonly="maintenanceReadonly" @add="openBlueprintAddModal" @edit="openBlueprintEditModal" @duplicate="duplicateBlueprint" @remove="deleteBlueprint" />
 
+      <CharacterArtManager v-if="portraitsVisited" v-show="tab === 'portraits'" :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" />
       <!-- 标签库 -->
       <template v-if="tab==='tags'">
         <div class="toolbar">
@@ -270,6 +271,7 @@
           aria-labelledby="scene-editor-title"
         >
           <h2 id="scene-editor-title">{{ editingId ? '编辑场景 · ' + editing.id : '新增场景' }}</h2>
+          <p v-if="editing.generatedRecipe" class="field-hint">来自已生成画面：角色和来源提示词只读保留；名称与说明可修改。想改变画面时，可在创作页调整、重新生成后另存场景。</p>
           <fieldset class="form-section">
             <legend class="form-legend">基础信息</legend>
             <div class="form-grid">
@@ -278,9 +280,9 @@
               <label class="form-group"><span class="field-label">分类</span><input v-model="editing.category" class="input" :disabled="maintenanceReadonly" placeholder="恋爱 / 日常 / 校园…" /></label>
               <label class="form-group">
                 <span class="field-label">角色</span>
-                <StudioSelect v-model="editing.char" class="filter-select" label="角色" :disabled="maintenanceReadonly" @update:model-value="updateCharacterDefaults" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" />
+                <StudioSelect v-model="editing.char" class="filter-select" label="角色" :disabled="maintenanceReadonly || !!editing.generatedRecipe" @update:model-value="updateCharacterDefaults" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }, { value: 'triad', label: '双人' }]" />
               </label>
-              <label class="form-group"><span class="field-label">LoRA</span><input v-model="editing.lora" class="input" :disabled="maintenanceReadonly" /></label>
+              <label class="form-group"><span class="field-label">LoRA</span><input v-model="editing.lora" class="input" :disabled="maintenanceReadonly || !!editing.generatedRecipe" /></label>
               <label class="form-group">
                 <span class="field-label">分级</span>
                 <StudioSelect v-model="editing.rating" class="filter-select" label="分级" :disabled="maintenanceReadonly" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
@@ -308,8 +310,8 @@
             <div class="form-grid">
               <label class="form-group form-group-full"><span class="field-label">标签（逗号分隔）</span><input v-model="tagsInput" class="input" :disabled="maintenanceReadonly" placeholder="silk, looking_back,…" /></label>
               <label class="form-group form-group-full"><span class="field-label">用途（逗号分隔）</span><input v-model="usageInput" class="input" :disabled="maintenanceReadonly" placeholder="壁纸, 表情包" /></label>
-              <label class="form-group form-group-full"><span class="field-label">画面提示词</span><textarea v-model="editing.prompt" class="input" :disabled="maintenanceReadonly" rows="2"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">负面提示词</span><textarea v-model="editing.negative" class="input input-mono" :disabled="maintenanceReadonly" rows="2"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">画面提示词</span><textarea v-model="editing.prompt" class="input" :disabled="maintenanceReadonly || !!editing.generatedRecipe" rows="2"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">负面提示词</span><textarea v-model="editing.negative" class="input input-mono" :disabled="maintenanceReadonly || !!editing.generatedRecipe" rows="2"></textarea></label>
               <label class="form-group"><span class="field-label">情绪</span><input v-model="editing.emotion" class="input" :disabled="maintenanceReadonly" /></label>
             </div>
           </fieldset>
@@ -348,14 +350,15 @@
           aria-labelledby="blueprint-editor-title"
         >
           <h2 id="blueprint-editor-title">{{ bpEditingId ? '编辑蓝图 · ' + bpEditing.id : '新增蓝图' }}</h2>
+          <p v-if="bpEditing.generatedRecipe" class="field-hint">来自已生成画面：角色、服装和来源提示词只读保留；可修改名称、说明和分类。</p>
           <fieldset class="form-section">
             <legend class="form-legend">基础信息</legend>
             <div class="form-grid">
               <label class="form-group"><span class="field-label">ID *</span><input v-model="bpEditing.id" class="input" :disabled="!!bpEditingId || maintenanceReadonly" placeholder="bp_001 / character_scene" /></label>
               <label class="form-group"><span class="field-label">标题 *</span><input v-model="bpEditing.title" class="input" :disabled="maintenanceReadonly" required :aria-invalid="!bpEditing.title.trim() && bpTriedSave" :class="{invalid: !bpEditing.title.trim() && bpTriedSave}" /></label>
-              <label class="form-group"><span class="field-label">角色 *</span><input v-model="bpEditing.characterId" class="input" :disabled="maintenanceReadonly" required :aria-invalid="!bpEditing.characterId?.trim() && bpTriedSave" :class="{invalid: !bpEditing.characterId?.trim() && bpTriedSave}" placeholder="raiden_shogun / nene" /></label>
+              <label class="form-group"><span class="field-label">角色 *</span><input v-model="bpEditing.characterId" class="input" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" required :aria-invalid="!bpEditing.characterId?.trim() && bpTriedSave" :class="{invalid: !bpEditing.characterId?.trim() && bpTriedSave}" placeholder="raiden_shogun / nene" /></label>
               <label class="form-group"><span class="field-label">分类</span><input v-model="bpEditing.category" class="input" :disabled="maintenanceReadonly" /></label>
-              <label class="form-group"><span class="field-label">服装 outfitId</span><input v-model="bpEditing.outfitId" class="input" :disabled="maintenanceReadonly" placeholder="default / school / witch…" /></label>
+              <label class="form-group"><span class="field-label">服装 outfitId</span><input v-model="bpEditing.outfitId" class="input" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" placeholder="default / school / witch…" /></label>
               <label class="form-group">
                 <span class="field-label">样张定级</span>
                 <StudioSelect v-model="bpEditing.sampleRating" class="filter-select" label="样张定级" :disabled="maintenanceReadonly" :options="[{ value: 'All', label: 'All' }, { value: 'R15', label: 'R15' }, { value: 'R18', label: 'R18' }]" />
@@ -382,9 +385,9 @@
           <fieldset class="form-section">
             <legend class="form-legend">Prompt 数据（核心）</legend>
             <div class="form-grid">
-              <label class="form-group form-group-full"><span class="field-label">Krea 散文 promptProse</span><textarea v-model="bpEditing.promptProse" class="input" :disabled="maintenanceReadonly" rows="4"></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">Anima 标签 promptTokens（逗号分隔）*</span><textarea v-model="bpPromptTokensInput" class="input input-mono" :disabled="maintenanceReadonly" rows="3" required></textarea></label>
-              <label class="form-group form-group-full"><span class="field-label">负面 negativeTokens（逗号分隔）*</span><textarea v-model="bpNegativeTokensInput" class="input input-mono" :disabled="maintenanceReadonly" rows="3" required></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">Krea 散文 promptProse</span><textarea v-model="bpEditing.promptProse" class="input" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" rows="4"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">Anima 标签 promptTokens（逗号分隔）*</span><textarea v-model="bpPromptTokensInput" class="input input-mono" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" rows="3" required></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">负面 negativeTokens（逗号分隔）*</span><textarea v-model="bpNegativeTokensInput" class="input input-mono" :disabled="maintenanceReadonly || !!bpEditing.generatedRecipe" rows="3" required></textarea></label>
             </div>
           </fieldset>
 
@@ -455,6 +458,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import FluidTransition from "@/components/visual/FluidTransition.vue"
@@ -492,6 +497,13 @@ bpEditingId, bpTriedSave, bpSceneTagsInput, bpPromptTokensInput, bpNegativeToken
 bpCoverageTagsInput, bpFormHint, saveBlueprint, copyBlueprintJson, tagModalOpen, closeTagModal,
 tagEditing, tagForm, tagFormError, submitTag,
 } = useSceneManagerWorkspace()
+const CharacterArtManager = defineAsyncComponent(() => import('@/components/maintenance/CharacterArtManager.vue'))
+const portraitsVisited = ref(false)
+watch(tab, value => { if (value === 'portraits') portraitsVisited.value = true }, { immediate: true })
+const route = useRoute()
+watch(() => route.query.tab, value => { if (value === 'portraits') tab.value = 'portraits' }, { immediate: true })
+const createdSceneId = computed(() => typeof route.query.created === 'string' ? route.query.created : '')
+watch(blueprintRecords, rows => { if (createdSceneId.value && rows.some(row => row.id === createdSceneId.value)) tab.value = 'blueprints' }, { immediate: true })
 </script>
 
 <style scoped src="@/assets/css/scene-manager-view.css"></style>

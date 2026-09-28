@@ -58,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+import { characterArtEntry } from '@/platform/characterArtState'
 import { computed, ref, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import RuntimeImage from './visual/RuntimeImage.vue'
@@ -93,11 +94,11 @@ const actions: Action[] = [
   { id: 'pass', short: '穿透', label: '鼠标穿透', icon: 'eye', toggle: true },
   { id: 'hide', short: '隐藏', label: '隐藏桌宠', icon: 'moon' },
 ]
-const characters: Option[] = listCompanionUiCharacters().map(character => ({
+const characters = computed<Option[]>(() => listCompanionUiCharacters().map(character => ({
   id: character.id, label: character.name, shortLabel: character.shortName,
-  image: resolveCompanionAvatar(character.id)?.avatar.thumbnailUrl || getCompanionCharacterConfig(character.id)?.image,
-}))
-const options = computed<Option[]>(() => category.value === 'characters' ? characters : category.value === 'motions' ? props.controls?.motions || []
+  image: characterArtEntry(character.id)?.thumbnailUrl || resolveCompanionAvatar(character.id)?.avatar.thumbnailUrl || getCompanionCharacterConfig(character.id)?.image,
+})))
+const options = computed<Option[]>(() => category.value === 'characters' ? characters.value : category.value === 'motions' ? props.controls?.motions || []
   : props.controls?.expressions.length ? [{ id: '', label: '恢复默认' }, ...props.controls.expressions] : [])
 const pages = computed(() => Math.max(1, Math.ceil(options.value.length / 8)))
 const visibleOptions = computed(() => options.value.slice(page.value * 8, (page.value + 1) * 8))

@@ -2,6 +2,7 @@
 export type BlueprintCompositionIntent = 'single' | 'group' | 'triptych'
 
 export interface SceneBlueprint {
+  generatedRecipe?: import('./generatedRecipe').GeneratedRecipe
   compositionIntent?: BlueprintCompositionIntent
   id: string
   title: string

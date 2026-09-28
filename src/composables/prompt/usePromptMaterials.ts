@@ -3,6 +3,7 @@ import type { Scene } from '@/stores/promptBuilderStore'
 import { useDirectorDerived } from '@/composables/scene/useDirectorDerived'
 import { useDirectorPopular, type UseDirectorPopularInput } from '@/composables/scene/useDirectorPopular'
 import { readHiddenScenes, recordSceneUsage, rememberRecent } from '@/utils/sceneUX'
+import { applyGeneratedSceneSettings } from '@/composables/scene/applyGeneratedSceneSettings'
 
 export type SceneCollection = 'core' | 'curated' | 'all'
 export type VoiceStudioHandle = { setSuggestedCaption?: (caption: string) => void }
@@ -35,6 +36,7 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
     sceneLimit.value = 20
   }
   function selectScene(scene: Scene) {
+    if (generationBusy.value) { pb.flash('生成进行中，完成或停止后再载入场景'); return }
     // Refresh the studio model whitelist immediately when leaving a popular character.
     if (pb.isPopular) void refreshAnimaBackend()
     pb.loadScene(scene)
@@ -46,6 +48,10 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
     recordSceneUsage(scene)
     sceneLimit.value = 20
     popular.syncManagedRoute()
+    if (scene.generatedRecipe) {
+      try { pb.flash(`已载入生成场景；${applyGeneratedSceneSettings(scene.generatedRecipe, input).join('；')}`, 9000) }
+      catch (error) { pb.flash(error instanceof Error ? error.message : '生成配方无法载入', 9000, 'warning') }
+    }
   }
   const currentBlueprintData = computed(() => ({
     ...pb.snapshotDraft(),

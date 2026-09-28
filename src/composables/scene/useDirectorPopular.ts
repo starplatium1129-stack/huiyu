@@ -15,6 +15,7 @@ import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
 import type { DrawEngine } from '@/storage/settingsRepository'
+import { applyGeneratedSceneSettings } from './applyGeneratedSceneSettings'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type SDGenerate = ReturnType<typeof useSDGenerate>
@@ -180,6 +181,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   }
 
   function selectBlueprint(blueprint: SceneBlueprint) {
+    if (generationBusy.value) { flash('生成进行中，完成或停止后再载入场景'); return }
     if (pb.subject.kind !== 'popular') return
     // 若蓝图本身绑定了专属服装形态（如泳池蓝图绑定 summer_swimsuit_night），
     // 则自动将当前角色的服装同步切换到该形态，确保生图与故事描述 100% 一致。
@@ -198,7 +200,10 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     // 场景故事跟随所选蓝图（与工作室 selectScene → loadScene 写 story 对齐）：
     // 否则从工作室切热门后 story 框会残留上一个场景的故事。
     pb.setStory(blueprint.description)
-    flash(`已选用场景「${blueprint.title}」，服装/镜头/光照已自动适配`)
+    if (blueprint.generatedRecipe) {
+      try { flash(`已载入生成场景；${applyGeneratedSceneSettings(blueprint.generatedRecipe, input).join('；')}`) }
+      catch (error) { flash(error instanceof Error ? error.message : '生成配方无法载入') }
+    } else flash(`已选用场景「${blueprint.title}」，服装/镜头/光照已自动适配`)
   }
 
   function rotateBlueprintSet() {
@@ -210,9 +215,17 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     showAllBlueprints.value = !showAllBlueprints.value
   }
 
+  function currentGeneratedRecipe() {
+    const subject = pb.subject
+    return subject.kind === 'popular'
+      ? pb.sceneBlueprints.find(item => item.id === subject.blueprintId)?.generatedRecipe
+      : pb.activeScene?.generatedRecipe
+  }
   async function applyManagedRoute(options: { silent?: boolean } = {}): Promise<void> {
+    const selection = JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode])
     const route = await refreshManagedRoute()
-    if (generationBusy.value) return
+    if (generationBusy.value || selection !== JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode])
+      || (options.silent && currentGeneratedRecipe())) return
     const selectedModel = route.engine === 'sd'
       ? pb.sdModelName || sd.checkpoint.value
       : animaState.value.modelId
@@ -237,7 +250,10 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   }
 
   function syncManagedRoute() {
-    void (pb.directorMode === 'basic' ? applyManagedRoute({ silent: true }) : refreshManagedRoute())
+    const savedRecipe = currentGeneratedRecipe()
+    // Saved result settings are deliberate; an automatic basic-mode recommendation
+    // must not replace their engine after the selection's synchronous restoration.
+    void (pb.directorMode === 'basic' && !savedRecipe ? applyManagedRoute({ silent: true }) : refreshManagedRoute())
   }
 
   /** 热门角色草稿恢复：同步无 LoRA 底模与蓝图尺寸/导演决策，并立即刷新 backend，
@@ -245,6 +261,13 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
    *  由宿主 onMounted 在 loadData/loadHistory 之后调用。 */
   function restorePopularDraft() {
     if (!pb.isPopular || pb.subject.kind !== 'popular') return
+    const savedRecipe = currentGeneratedRecipe()
+    if (savedRecipe) {
+      try { flash(applyGeneratedSceneSettings(savedRecipe, input).join('；')) }
+      catch (error) { flash(error instanceof Error ? error.message : '生成配方无法载入') }
+      void refreshAnimaBackend()
+      return
+    }
     const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-miaomiao-v1.2'
     if (animaState.value.models.some(model => model.id === recommendedEngine)) {
       patchAnimaState({ modelId: recommendedEngine, loraId: '' })

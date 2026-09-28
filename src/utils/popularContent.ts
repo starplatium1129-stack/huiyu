@@ -17,6 +17,7 @@ import {
   stringValue,
 } from './popularParseGuards.ts'
 import { parseCompositionIntent } from './blueprintComposition.ts'
+import { parseGeneratedRecipe } from './generatedSceneDraft.ts'
 export * from './popularBlueprintDecisions.ts'
 export * from './popularPromptBuilder.ts'
 
@@ -120,22 +121,31 @@ export function parsePopularCharacters(value: unknown): PopularCharacter[] {
 export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
   if (!isRecord(value)) return null
   const id = requiredString(value, 'id')
+  const generatedRecipe = value.generatedRecipe === undefined ? undefined : parseGeneratedRecipe(value.generatedRecipe)
+  const descriptive = (key: string) => generatedRecipe ? stringValue(value[key]) ?? '' : requiredString(value, key)
+  if (generatedRecipe) {
+    const prose = generatedRecipe.engine === 'krea2' ? generatedRecipe.prompt : ''
+    const tokens = generatedRecipe.engine === 'krea2' ? [] : [generatedRecipe.prompt]
+    const negative = generatedRecipe.negative ? [generatedRecipe.negative] : []
+    if (value.promptProse !== prose || JSON.stringify(value.promptTokens) !== JSON.stringify(tokens)
+      || JSON.stringify(value.negativeTokens) !== JSON.stringify(negative)) throw new Error('生成场景提示词与保存配方不一致')
+  }
   return {
     id,
     title: requiredString(value, 'title'),
     category: requiredString(value, 'category'),
     description: requiredString(value, 'description'),
     characterId: stringValue(value.characterId) || undefined,
-    location: requiredString(value, 'location'),
-    action: requiredString(value, 'action'),
-    timeOfDay: requiredString(value, 'timeOfDay'),
-    lighting: requiredString(value, 'lighting'),
-    camera: requiredString(value, 'camera'),
-    mood: requiredString(value, 'mood'),
+    location: descriptive('location'),
+    action: descriptive('action'),
+    timeOfDay: descriptive('timeOfDay'),
+    lighting: descriptive('lighting'),
+    camera: descriptive('camera'),
+    mood: descriptive('mood'),
     sceneTags: stringList(value.sceneTags),
-    promptProse: requiredString(value, 'promptProse'),
-    promptTokens: requiredStringList(value, 'promptTokens'),
-    negativeTokens: negativeStringList(value.negativeTokens),
+    promptProse: generatedRecipe ? value.promptProse as string : requiredString(value, 'promptProse'),
+    promptTokens: generatedRecipe ? [...value.promptTokens as string[]] : requiredStringList(value, 'promptTokens'),
+    negativeTokens: generatedRecipe ? [...value.negativeTokens as string[]] : negativeStringList(value.negativeTokens),
     recommendedSize: requiredString(value, 'recommendedSize'),
     adult: value.adult === true,
     compositionIntent: parseCompositionIntent(value.compositionIntent),
@@ -151,6 +161,7 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     outfitId: stringValue(value.outfitId),
     // 2026-08-23 场景库二次优化：验收覆盖标注（iconic/daily/special_nsfw）。
     coverageTags: stringList(value.coverageTags),
+    ...(generatedRecipe ? { generatedRecipe } : {}),
   }
 }
 

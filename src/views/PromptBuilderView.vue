@@ -84,6 +84,7 @@
           :has-prev-result="!!prevResult"
           :result-archived="resultArchived"
           :saving-result="savingResult"
+          :capturing-scene="capturingScene"
           :result-temporary="resultTemporary"
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
@@ -96,6 +97,7 @@
           @addToShots="addToShots"
           @goShots="goToShots"
           @saveResult="saveResult"
+          @saveScene="captureScene"
           @openCompare="compareOpen = true"
           @clearResult="onClearResult"
           @restoreStashed="onRestoreStashed"
@@ -173,6 +175,7 @@
 
     <!-- Toast 已于 2026-08-29 UX 收编退役，统一走全局 useToast（AppToast）；空壳 Transition 一并清除 -->
 
+    <GeneratedSceneDialog v-if="capturedScene" :source="capturedScene" @close="closeSceneCapture" />
     <DeferredPanel :active="compareOpen || inpaintOpen">
       <PromptResultDialogs :bindings="dialogBindings" />
     </DeferredPanel>
@@ -183,6 +186,7 @@
 import '@/assets/css/director.css'
 import { defineAsyncComponent } from 'vue'
 import { charOptions } from '@/composables/scene/directorOptions'
+const GeneratedSceneDialog = defineAsyncComponent(() => import('@/components/maintenance/GeneratedSceneDialog.vue'))
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
 const PromptResultDialogs = defineAsyncComponent(() => import('@/components/director/PromptResultDialogs.vue'))
 const PromptInspectorRender = defineAsyncComponent(() => import('@/components/director/PromptInspectorRender.vue'))
@@ -207,6 +211,7 @@ const GenerationActionBar = defineAsyncComponent(() => import('@/components/dire
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
 const {
+capturedScene, capturingScene, captureScene, closeSceneCapture,
 pb,
 displayResultUrl,
 characterShifting,

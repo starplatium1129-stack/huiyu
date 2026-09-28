@@ -44,7 +44,8 @@
             <span class="portrait-missing-text">{{ portraitMissingText }}</span>
           </div>
           <div class="portrait-footer">
-            <span class="portrait-badge"><ArchiveIcon name="image" /> {{ isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
+            <RouterLink v-if="isLocalStudioHost()" class="btn btn-ghost btn-sm" :to="{ path: '/scene-manager', query: { tab: 'portraits', character: current.id } }"><ArchiveIcon name="image" />更换立绘</RouterLink>
+            <span class="portrait-badge"><ArchiveIcon name="image" /> {{ characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
             <span v-if="showFallbackNote" class="portrait-fallback-note">原图无法读取，已显示现有缩略图</span>
             <StudioTooltip :content="current.source">
               <span class="portrait-source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
@@ -271,7 +272,10 @@
 </template>
 
 <script setup lang="ts">
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { popularPortraitFullSrc } from '@/utils/popularPortraitSource'
+import { characterArtEntry } from '@/platform/characterArtState'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useCharacterPortraitTransition } from '@/composables/useCharacterPortraitTransition'
@@ -319,7 +323,8 @@ const directoryItems = computed(() => characters.value.map(character => ({
 
 const portraitSources = computed(() => {
   const profile = current.value
-  const main = resolveRuntimeUrl(profile?.portrait?.image)
+  const main = resolveRuntimeUrl(profile?.type === 'popular' ? popularPortraitFullSrc(profile.id)
+    : (characterArtEntry(profile?.id || '')?.portraitUrl || profile?.portrait?.image))
   return { id: profile?.id || '', main,
     thumb: profile?.type === 'popular' ? resolveRuntimeUrl(popularPortraitSrc(profile.id)) : '' }
 })

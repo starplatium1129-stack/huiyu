@@ -1,5 +1,6 @@
 mod admission;
 pub mod bootstrap;
+pub mod character_art;
 pub mod chat;
 mod collation;
 pub mod config;
@@ -92,6 +93,7 @@ pub fn router(state: AppState) -> Router {
         .merge(host::router())
         .merge(workspace_http::router())
         .merge(reference::router())
+        .merge(character_art::router())
         .merge(upstream::router(&state.config))
         .merge(tasks_http::router());
     if let Some(service) = &state.chat {

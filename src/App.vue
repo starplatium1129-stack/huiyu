@@ -37,8 +37,10 @@ import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
 import { useRouteTransition } from '@/composables/useRouteTransition'
+import { useCharacterArtRefresh } from '@/composables/useCharacterArtRefresh'
 
 const route = useRoute()
+useCharacterArtRefresh()
 const router = useRouter()
 const layoutMotion = useRouteTransition(undefined, { initialFade: true })
 function enterLayout(element: Element, done: () => void) {

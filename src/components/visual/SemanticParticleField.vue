@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
-import { loadPortraitCloud, samplePortraitPoints, legibleParticleColor, lightPortraitColor, type PortraitCloud } from '@/utils/particlePortrait'
+import { loadPortraitCloud, portraitCloudIdentity, samplePortraitPoints, legibleParticleColor, lightPortraitColor, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 import { useParticlePerformanceLifecycle } from '@/composables/useParticlePerformanceLifecycle'
 import { preferredParticleCount, type PortraitReferenceSize } from '@/utils/particleDensity'
@@ -244,6 +244,8 @@ function setShape(animate = true) {
     particles.forEach((particle) => {
       particle.x = particle.targetX
       particle.y = particle.targetY
+      particle.prevX = particle.x
+      particle.prevY = particle.y
       particle.velocityX = 0
       particle.velocityY = 0
     })
@@ -478,7 +480,7 @@ function onPointerLeave() {
 }
 
 watch(() => props.shape, () => { if (!portraitCloud) setShape(true) })
-watch(() => props.portraitId, id => { void applyPortrait(id) })
+watch(() => portraitCloudIdentity(props.portraitId), () => { void applyPortrait(props.portraitId) })
 watch(() => props.density, () => {
   stopLoop()
   resize()
@@ -534,7 +536,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  gpuRenderer?.release()
+  portraitToken++; gpuRenderer?.release()
   snapshot.release()
   performance.active.value = false
   stopLoop()

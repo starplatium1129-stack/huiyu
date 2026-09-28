@@ -58,6 +58,24 @@ describe('scene editor snapshot loading', () => {
     expect(mock.getState).toHaveBeenCalledTimes(1)
     expect(workspace.dirty.value).toBe(true)
   })
+  it('allows renaming a captured Krea blueprint without adding token or negative placeholders', async () => {
+    const data = snapshot()
+    const blueprint = {
+      id: 'character_saved', title: 'Original', characterId: 'character', outfitId: 'default',
+      category: '我的场景', description: 'A quiet window.', location: '', action: '', timeOfDay: '',
+      lighting: '', camera: '', mood: '', sceneTags: [], promptProse: 'A woman watches rain.',
+      promptTokens: [], negativeTokens: [], recommendedSize: '1024x1024', adult: false,
+      generatedRecipe: { version: 1 as const, engine: 'krea2' as const, prompt: 'A woman watches rain.', negative: '', parameters: { size: '1024x1024' } },
+    }
+    data.blueprints.push(blueprint)
+    mock.getState.mockResolvedValue({ ok: true, version: 7, snapshot: data })
+    const workspace = setup(); await flushPromises()
+    workspace.openBlueprintEditModal(blueprint.id)
+    workspace.bpEditing.value!.title = 'Renamed'
+    workspace.saveBlueprint()
+    expect(mock.maintenanceDeps.blueprints.value[0]).toMatchObject({ title: 'Renamed', promptTokens: [], negativeTokens: [], generatedRecipe: blueprint.generatedRecipe })
+    expect(workspace.dirty.value).toBe(true)
+  })
   it('loads, saves and reloads the authoritative snapshot in a packaged desktop', async () => {
     mock.packaged = true
     const workspace = setup()

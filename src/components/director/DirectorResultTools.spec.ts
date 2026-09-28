@@ -18,6 +18,10 @@ describe('result tools', () => {
     const compare = buttons.find(button => button.text() === '与上一张对比')!
     expect(save.element.closest('details')).toBeNull()
     expect(compare.element.closest('details')).toBeNull()
+    const scene = buttons.find(button => button.text().includes('保存为场景'))!
+    expect(scene.element.closest('details')).toBeNull()
+    await scene.trigger('click')
+    expect(wrapper.emitted('saveScene')).toHaveLength(1)
     await save.trigger('click')
     await compare.trigger('click')
     expect(wrapper.emitted('saveResult')).toHaveLength(1)

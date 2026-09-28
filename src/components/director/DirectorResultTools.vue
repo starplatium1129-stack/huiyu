@@ -7,6 +7,7 @@
         </span>
         <RouterLink v-if="resultArchived" class="btn btn-primary" to="/gallery">查看作品册</RouterLink>
         <button v-else class="btn btn-primary" type="button" :disabled="savingResult" @click="$emit('saveResult')">{{ savingResult ? '正在入册…' : '存入作品册' }}</button>
+        <button class="btn btn-ghost" type="button" :disabled="generationBusy || capturingScene" @click="$emit('saveScene')"><ArchiveIcon name="gallery" />{{ capturingScene ? '正在读取成片…' : '保存为场景' }}</button>
         <button class="btn btn-ghost" type="button" :disabled="!hasPrevResult" @click="$emit('openCompare')">
           与上一张对比
         </button>
@@ -161,6 +162,7 @@ defineProps<{
   shotsPending: number
   hasPrevResult: boolean
   resultArchived?: boolean | null
+  capturingScene?: boolean
   savingResult?: boolean
   resultTemporary?: boolean
 }>()
@@ -174,6 +176,7 @@ defineEmits<{
   goVideo: []
   addToShots: []
   goShots: []
+  saveScene: []
   saveResult: []
   openCompare: []
   clearResult: []
